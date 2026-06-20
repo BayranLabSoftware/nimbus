@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { m } from '../../units.js';
 import { LANDSLIDE_PRESETS, simulateLandslide } from './simulate.js';
 
 describe('simulateLandslide', () => {
@@ -67,6 +68,39 @@ describe('simulateLandslide', () => {
     expect(r.tsunami).not.toBeNull();
     if (r.tsunami === null) return;
     expect(r.tsunami.sourceAmplitude as number).toBeCloseTo(48, 0); // 0.4 × 120 m cap
+  });
+
+  describe('Watts submerged-density-contrast factor (slideDensity)', () => {
+    // Deep basin so the McCowan breaking cap (0.4·depth) never binds and
+    // the density factor is visible in the source amplitude.
+    const baseInput = {
+      volumeM3: 1e7,
+      slopeAngleDeg: 20,
+      meanOceanDepth: m(4_000),
+      regime: 'subaerial' as const,
+    };
+    const sourceAmp = (slideDensity?: number): number => {
+      const r = simulateLandslide(
+        slideDensity === undefined ? baseInput : { ...baseInput, slideDensity }
+      );
+      return (r.tsunami?.sourceAmplitude as number | undefined) ?? 0;
+    };
+
+    it('default (omitted) equals the subaerial reference density 2500', () => {
+      // Factor 1 at the reference density → historic calibration intact.
+      expect(sourceAmp()).toBeCloseTo(sourceAmp(2_500), 6);
+    });
+
+    it('a denser slide makes a bigger wave; a softer one a smaller wave', () => {
+      const dflt = sourceAmp();
+      expect(sourceAmp(2_900)).toBeGreaterThan(dflt); // dense basalt block
+      expect(sourceAmp(1_500)).toBeLessThan(dflt); // soft sediment
+    });
+
+    it('a near-neutrally-buoyant slide (ρ ≈ seawater) makes essentially no wave', () => {
+      expect(sourceAmp(1_025)).toBeLessThan(0.5);
+      expect(sourceAmp(1_000)).toBe(0); // less dense than water → buoyant
+    });
   });
 
   it('characteristicLength matches V^(1/3)', () => {

@@ -33,12 +33,13 @@ export interface PeakGroundAccelerationInput {
  * **Uncertainty (published).** Joyner & Boore (1981) Table 4 reports a
  * standard error of σ_log10(A) ≈ 0.26 — i.e. ±factor 1.82 in linear
  * acceleration at a 1-σ confidence level. The popular-science display
- * shows the central value. NOTE: the earthquake Monte-Carlo path
- * (`montecarlo/earthquakeMonteCarlo.ts`) currently propagates only the
- * INPUT uncertainties (Mw, depth, Vs30); it does NOT yet sample this
- * regression σ_log10(A), so the displayed P10/P90 bands are a LOWER
- * bound on the true predictive scatter (the regression σ typically
- * dominates the input contribution). Outside the calibration window
+ * shows the central value; the earthquake Monte-Carlo path
+ * (`montecarlo/earthquakeMonteCarlo.ts`) folds in a representative
+ * ground-motion aleatory residual (σ_lnY ≈ 0.50, the NGA-West2 total;
+ * {@link EARTHQUAKE_INPUT_SIGMA.groundMotion}) as a multiplicative
+ * exp(N(0, σ)) factor on the PGA, on top of the input (Mw, depth, Vs30)
+ * spread — so the P10/P90 bands reflect the dominant regression scatter,
+ * not just the input contribution. Outside the calibration window
  * (Mw < 5.0, Mw > 7.7, R > 370 km) σ is larger and biases are possible
  * — the V&V suite uses `TOL_SCALING_LAW` (`tolerances.ts`) to absorb
  * the published scatter.

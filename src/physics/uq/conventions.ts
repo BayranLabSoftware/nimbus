@@ -91,6 +91,20 @@ export const EARTHQUAKE_INPUT_SIGMA = {
   /** Vs30 site velocity — fraction-relative σ = 30 %. Wald & Allen
    *  2007 topographic-slope proxy uncertainty (their Fig. 6). */
   vs30: { kind: 'linear-fraction', sigma: 0.3, source: 'Wald & Allen 2007 Fig. 6' },
+  /** Ground-motion aleatory residual — log-normal σ_lnY ≈ 0.50 (the
+   *  total NGA-West2 standard deviation for PGA at the rock reference;
+   *  Boore et al. 2014 Table 11). This is the GMPE's intrinsic
+   *  event-to-event + site scatter ABOUT the median, sampled per
+   *  Monte-Carlo realisation as a multiplicative factor exp(N(0, σ)) on
+   *  the ground motion (and propagated consistently to the MMI and the
+   *  contour / liquefaction radii). It is the dominant uncertainty on a
+   *  single-site PGA — larger than the magnitude / depth / Vs30 input
+   *  contributions combined. */
+  groundMotion: {
+    kind: 'lognormal',
+    sigma: 0.5,
+    source: 'Boore et al. 2014 σ_lnY ≈ 0.50 (NGA-West2 total)',
+  },
 } as const satisfies Record<string, SigmaConvention>;
 
 /**

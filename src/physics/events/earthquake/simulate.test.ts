@@ -34,6 +34,49 @@ describe('simulateEarthquake', () => {
     expect(r.ruptureLength).toBe(rExplicit.ruptureLength);
   });
 
+  describe('ground-motion aleatory residual (groundMotionResidualLn)', () => {
+    const base = { magnitude: 7.0, faultType: 'reverse' as const };
+
+    it('default (omitted) is identical to an explicit residual of 0', () => {
+      const a = simulateEarthquake(base);
+      const b = simulateEarthquake({ ...base, groundMotionResidualLn: 0 });
+      expect(a.shaking.pgaAt20kmNGA).toBe(b.shaking.pgaAt20kmNGA);
+      expect(a.shaking.mmi8Radius).toBe(b.shaking.mmi8Radius);
+      expect(a.shaking.liquefactionRadius).toBe(b.shaking.liquefactionRadius);
+    });
+
+    it('a positive residual scales every PGA by exp(residual)', () => {
+      const r0 = simulateEarthquake(base);
+      const rUp = simulateEarthquake({ ...base, groundMotionResidualLn: Math.log(2) });
+      // exp(ln 2) = 2× on the ground motion.
+      expect(rUp.shaking.pgaAt20kmNGA as number).toBeCloseTo(
+        2 * (r0.shaking.pgaAt20kmNGA as number),
+        6
+      );
+      expect(rUp.shaking.pgaAt20km as number).toBeCloseTo(2 * (r0.shaking.pgaAt20km as number), 6);
+    });
+
+    it('a positive residual pushes the MMI contour & liquefaction radii outward', () => {
+      const r0 = simulateEarthquake(base);
+      const rUp = simulateEarthquake({ ...base, groundMotionResidualLn: Math.log(2) });
+      expect(rUp.shaking.mmi8Radius as number).toBeGreaterThan(r0.shaking.mmi8Radius);
+      expect(rUp.shaking.liquefactionRadius as number).toBeGreaterThan(
+        r0.shaking.liquefactionRadius
+      );
+      // …and a negative residual pulls them in.
+      const rDown = simulateEarthquake({ ...base, groundMotionResidualLn: -Math.log(2) });
+      expect(rDown.shaking.mmi8Radius as number).toBeLessThan(r0.shaking.mmi8Radius);
+    });
+
+    it('raises the epicentral MMI but leaves rupture length untouched', () => {
+      const r0 = simulateEarthquake(base);
+      const rUp = simulateEarthquake({ ...base, groundMotionResidualLn: Math.log(2) });
+      expect(rUp.shaking.mmiAtEpicenter).toBeGreaterThan(r0.shaking.mmiAtEpicenter);
+      // Rupture length is a magnitude regression — independent of ground motion.
+      expect(rUp.ruptureLength).toBe(r0.ruptureLength);
+    });
+  });
+
   it('preserves inputs in the result blob', () => {
     const r = simulateEarthquake(EARTHQUAKE_PRESETS.NORTHRIDGE_1994.input);
     expect(r.inputs).toBe(EARTHQUAKE_PRESETS.NORTHRIDGE_1994.input);

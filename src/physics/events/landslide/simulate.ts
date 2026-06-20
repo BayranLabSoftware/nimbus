@@ -76,6 +76,12 @@ export interface LandslideScenarioInput {
    *  Currently used only as metadata in the report; both regimes use
    *  the same Watts source formula in this layer. */
   regime?: LandslideRegime;
+  /** Slide bulk density (kg/m³). Drives the Watts submerged
+   *  specific-gravity factor in {@link volcanoTsunami}: a dense rock
+   *  avalanche makes a bigger wave than a soft sediment slump of the
+   *  same volume. Defaults to the regime reference density (rock for
+   *  subaerial, marine sediment for submarine) → historic calibration. */
+  slideDensity?: number;
 }
 
 export interface LandslideScenarioResult {
@@ -116,6 +122,7 @@ export function simulateLandslide(input: LandslideScenarioInput): LandslideScena
     ...(input.confinementDynamicFactor !== undefined && {
       confinementDynamicFactor: input.confinementDynamicFactor,
     }),
+    ...(input.slideDensity !== undefined && { slideDensity: input.slideDensity }),
   });
   return {
     inputs: input,

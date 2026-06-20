@@ -1,3 +1,4 @@
+import { SEAWATER_DENSITY } from '../../constants.js';
 import type { Meters, Seconds, SquareMeters } from '../../units.js';
 import { m } from '../../units.js';
 import { impactAmplitudeAtDistance } from '../tsunami/impact.js';
@@ -28,17 +29,19 @@ import { tsunamiTravelTime } from '../tsunami/propagation.js';
  * **What this keeps and what it drops vs. Watts (2000).** The cube-root
  * scaling captures the basic geometry — the slide block's characteristic
  * linear dimension grows as V^(1/3), and the maximum vertical wave
- * excursion roughly tracks that dimension scaled by the slope. Watts'
- * full characteristic amplitude additionally depends on the slide
- * THICKNESS, the submerged density contrast (ρ_slide/ρ_water − 1) and
- * the slide Froude number / acceleration. This module does NOT carry
- * those terms explicitly — they are folded into the two calibrated
- * regime prefactors (rigid subaerial block vs. soft submarine
- * sediment). That is why there is no equation number from Watts (2000):
- * this is a calibrated envelope reproducing the benchmark events within
- * the genuine ±factor-2 landslide-source scatter (Tappin 2017,
- * Earth-Science Reviews 169: 73–101), not a transcription of Watts'
- * equations. Treat the output as order-of-magnitude.
+ * excursion roughly tracks that dimension scaled by the slope. The
+ * submerged density contrast γ = (ρ_slide/ρ_water − 1) — a primary
+ * driver in Watts' theory — IS carried explicitly via the optional
+ * `slideDensity` (the amplitude scales by γ/γ_ref about a regime
+ * reference density; see {@link VolcanoTsunamiInput.slideDensity}), so a
+ * dense basalt block makes a bigger wave than a soft mud slump of equal
+ * volume. What remains folded into the calibrated regime prefactors (and
+ * NOT modelled explicitly) is the slide THICKNESS and the Froude
+ * number / acceleration. So this is still a calibrated envelope, not a
+ * transcription of Watts' numbered equations — it reproduces the
+ * benchmark events within the genuine ±factor-2 landslide-source scatter
+ * (Tappin 2017, Earth-Science Reviews 169: 73–101). Treat the output as
+ * order-of-magnitude.
  *
  * The caller's volume is the COLLAPSED block; for caldera events
  * "slope" should be set to the post-collapse caldera-wall angle
@@ -91,6 +94,27 @@ import { tsunamiTravelTime } from '../tsunami/propagation.js';
  */
 export const VOLCANO_TSUNAMI_PREFACTOR_SUBAERIAL = 0.4;
 export const VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE = 0.005;
+
+/**
+ * Reference slide bulk densities (kg/m³) at which each regime's
+ * prefactor K was calibrated. The Watts (2000) characteristic amplitude
+ * scales with the SUBMERGED specific gravity γ = ρ_slide/ρ_water − 1,
+ * so the source amplitude carries an explicit γ-ratio factor
+ * (γ / γ_ref); at the reference density the factor is 1 and the output
+ * equals the historic calibration exactly.
+ *
+ *   - Subaerial reference: volcanic edifice rock ≈ 2500 kg/m³ — the
+ *     material of the Anak Krakatau 2018 flank against which K = 0.4
+ *     was calibrated.
+ *   - Submarine reference: water-saturated marine sediment ≈ 1950 kg/m³
+ *     — the Storegga continental-slope material behind K = 0.005.
+ *
+ * Making γ explicit restores the density dependence that the bare
+ * V^(1/3) form dropped: a dense basalt block makes a markedly larger
+ * wave than a soft mud slump of the same volume and slope.
+ */
+export const VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL = 2_500;
+export const VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBMARINE = 1_950;
 
 /**
  * Default prefactor — kept for back-compat with callers that did not
@@ -175,6 +199,16 @@ export interface VolcanoTsunamiInput {
   /** Regime selects the per-style prefactor. Defaults to 'subaerial'
    *  for back-compat with the volcano-collapse callers. */
   regime?: LandslideTsunamiRegime;
+  /** Slide bulk density (kg/m³). Drives the Watts (2000) submerged
+   *  specific-gravity factor γ = ρ_slide/ρ_water − 1: the open-ocean
+   *  source amplitude is scaled by γ/γ_ref, where γ_ref is the regime
+   *  reference density ({@link VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL}
+   *  / `…_SUBMARINE`). Defaults to the regime reference (factor 1 →
+   *  historic calibration). A denser slide (basalt ≈ 2900) makes a
+   *  bigger wave; a near-neutrally-buoyant one makes essentially none.
+   *  Ignored by the confined-basin branch, which is displacement-volume
+   *  driven to first order. */
+  slideDensity?: number;
 }
 
 export interface VolcanoTsunamiResult {
@@ -245,7 +279,26 @@ export function volcanoTsunami(input: VolcanoTsunamiInput): VolcanoTsunamiResult
     const dynamicAmp = staticRise * confinementFactor;
     eta0 = Math.min(dynamicAmp, sourceWaterDepth);
   } else {
-    const wattsAmplitude = K * Math.cbrt(V) * Math.sin(theta);
+    // Watts (2000) submerged specific-gravity factor γ/γ_ref. γ_ref is
+    // the regime's calibration density, so an unspecified slideDensity
+    // (or one equal to the reference) gives factor 1 and reproduces the
+    // historic K calibration exactly. A slide less dense than seawater
+    // is buoyant and displaces no water column → factor 0.
+    const seawater = SEAWATER_DENSITY as number;
+    const refDensity =
+      input.regime === 'submarine'
+        ? VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBMARINE
+        : VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL;
+    const density =
+      input.slideDensity !== undefined &&
+      Number.isFinite(input.slideDensity) &&
+      input.slideDensity > 0
+        ? input.slideDensity
+        : refDensity;
+    const gamma = density / seawater - 1;
+    const gammaRef = refDensity / seawater - 1;
+    const gammaFactor = gamma > 0 ? gamma / gammaRef : 0;
+    const wattsAmplitude = K * gammaFactor * Math.cbrt(V) * Math.sin(theta);
     const breakingCap = (sourceWaterDepth as number) * 0.4;
     eta0 = Math.min(wattsAmplitude, breakingCap);
   }

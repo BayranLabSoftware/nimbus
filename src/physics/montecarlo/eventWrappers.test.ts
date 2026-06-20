@@ -75,6 +75,35 @@ describe('runEarthquakeMonteCarlo — Tōhoku', () => {
     expect(lenKm).toBeGreaterThan(200);
     expect(lenKm).toBeLessThan(1_500);
   });
+
+  it('PGA band folds in the GMPE σ_lnY ≈ 0.5 (P90/P10 ≳ factor 2)', () => {
+    const out = runEarthquakeMonteCarlo({
+      nominal: EARTHQUAKE_PRESETS.NORTHRIDGE_1994.input,
+      rng: mulberry32('northridge-gm'),
+      iterations: 400,
+    });
+    const pga = out.metrics.pgaAt20kmNGA;
+    // With σ_lnY ≈ 0.5, the ±1.28σ (P10–P90) spread on a lognormal is a
+    // factor exp(2·1.2816·0.5) ≈ 3.6. Input-only sampling (the old
+    // behaviour) gave a much narrower band; require at least factor 2 so
+    // a regression that drops the ground-motion residual trips this.
+    expect(pga.p90 / Math.max(pga.p10, 1e-9)).toBeGreaterThan(2);
+    expect(pga.p50).toBeGreaterThan(0);
+  });
+
+  it('reproducibility: same seed returns bit-identical percentiles', () => {
+    const run = (): ReturnType<typeof runEarthquakeMonteCarlo> =>
+      runEarthquakeMonteCarlo({
+        nominal: EARTHQUAKE_PRESETS.NORTHRIDGE_1994.input,
+        rng: mulberry32('eq-seed-dup'),
+        iterations: 150,
+      });
+    const a = run();
+    const b = run();
+    expect(a.metrics.pgaAt20kmNGA.p50).toBe(b.metrics.pgaAt20kmNGA.p50);
+    expect(a.metrics.pgaAt20kmNGA.p10).toBe(b.metrics.pgaAt20kmNGA.p10);
+    expect(a.metrics.mmi8Radius.p90).toBe(b.metrics.mmi8Radius.p90);
+  });
 });
 
 describe('runVolcanoMonteCarlo — Pinatubo', () => {

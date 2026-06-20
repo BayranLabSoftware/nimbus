@@ -160,7 +160,7 @@ Carlo wrappers for sampled inputs).
 | Tsunami arrival time      | tsunami/fastMarching.ts             | eikonal `\|∇T\|² = 1/c²`, c = √(gh)                 | Sethian 1996                      | ±15%      |
 | Tsunami shoaling          | events/tsunami/propagation.ts       | A_s = A_d (h_d / h_s)^¼                             | Green 1838                        | ±25%      |
 | Tsunami runup             | events/tsunami/extendedEffects.ts   | R = 2.831 d √(cot β) (H/d)^(5/4)                    | Synolakis 1987                    | ±30%      |
-| Submarine landslide tsun. | events/volcano/tsunami.ts           | η₀ = K · V^(1/3) · sinθ (Watts-inspired, calib.)    | Watts 2000 (inspired)             | ±factor 2 |
+| Submarine landslide tsun. | events/volcano/tsunami.ts           | η₀ = K·(γ/γ_ref)·V^(1/3)·sinθ, γ = ρ_s/ρ_w − 1      | Watts 2000 (inspired)             | ±factor 2 |
 | Atmospheric profile       | atmosphere/ussa1976.ts              | U.S. Standard Atmosphere 1976                       | NOAA-S/T 76-1562                  | ±5%       |
 
 **How to read the σ column.** Where σ is given as a percent it is the

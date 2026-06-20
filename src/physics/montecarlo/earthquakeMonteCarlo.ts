@@ -6,7 +6,7 @@ import { runMonteCarlo } from './engine.js';
 import { sampleNormal, type Rng } from './sampling.js';
 
 /**
- * Monte-Carlo wrapper for the earthquake pipeline. The three
+ * Monte-Carlo wrapper for the earthquake pipeline. The
  * physically-uncertain inputs are:
  *
  *   magnitude  — reporting uncertainty on Mw is ±0.1 for
@@ -17,6 +17,15 @@ import { sampleNormal, type Rng } from './sampling.js';
  *                nominal depth with a 2 km minimum.
  *   vs30       — N(760, 300) on the rock-reference baseline; or
  *                ±30 % lognormal when the caller supplied one.
+ *
+ * We ALSO sample the ground-motion aleatory residual — the GMPE's
+ * intrinsic σ_lnY ≈ 0.50 scatter about the median (Boore et al. 2014).
+ * Without it the PGA / MMI / contour-radius bands reflected only the
+ * input spread and materially UNDER-stated the true predictive scatter
+ * (the regression σ dominates). It is sampled as `N(0, σ_lnY)` in
+ * ln-space and threaded through `simulateEarthquake` as
+ * `groundMotionResidualLn`, which applies exp(residual) consistently to
+ * every PGA-derived quantity.
  *
  * We do not re-sample the fault type — it's a categorical input
  * picked by the user from a dropdown, not an uncertain measurement.
@@ -59,10 +68,14 @@ function earthquakeSampler(
     const vs30Nominal = nominal.vs30 ?? 760;
     const vs30Sigma = EARTHQUAKE_INPUT_SIGMA.vs30.sigma * vs30Nominal;
     const vs30 = Math.max(sampleNormal(rng, vs30Nominal, vs30Sigma), 100);
+    // GMPE aleatory residual in ln-space: N(0, σ_lnY). Threaded into
+    // simulateEarthquake, which scales every PGA by exp(residual).
+    const groundMotionResidualLn = sampleNormal(rng, 0, EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma);
     const out: EarthquakeScenarioInput = {
       magnitude,
       depth: m(depth),
       vs30,
+      groundMotionResidualLn,
     };
     if (nominal.faultType !== undefined) out.faultType = nominal.faultType;
     if (nominal.subductionInterface !== undefined)

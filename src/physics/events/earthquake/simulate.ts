@@ -1,6 +1,6 @@
 import { nehrpClassFromVs30, type NEHRPClass } from '../../elevation/index.js';
 import type { Meters, MetersPerSecondSquared, NewtonMeters } from '../../units.js';
-import { m } from '../../units.js';
+import { m, mps2 } from '../../units.js';
 import { generateAftershockSequence, type AftershockSequenceResult } from './aftershocks.js';
 import {
   distanceForPga,
@@ -83,6 +83,15 @@ export interface EarthquakeScenarioInput {
    *  to {@link ruptureLengthOverride} for events where the observed W
    *  diverges from the Strasser/Wells-Coppersmith median. */
   ruptureWidthOverride?: Meters;
+  /** Ground-motion aleatory residual in natural-log units (default 0).
+   *  Applied as a multiplicative factor exp(residual) to EVERY PGA
+   *  value, and propagated consistently to the epicentral MMI and to
+   *  the MMI-contour / liquefaction radii (which move outward for a
+   *  positive residual). This is the hook the Monte-Carlo wrapper uses
+   *  to sample the GMPE's intrinsic σ_lnY ≈ 0.50 scatter
+   *  ({@link EARTHQUAKE_INPUT_SIGMA.groundMotion}); the deterministic
+   *  pipeline leaves it at 0, so the median scenario is unchanged. */
+  groundMotionResidualLn?: number;
 }
 
 /**
@@ -197,33 +206,56 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // true for shallow megathrusts: Tōhoku 500×200 km).
   const isExtendedSource = input.magnitude >= 7.5 || input.subductionInterface === true;
 
-  const pgaAt20km = peakGroundAcceleration({ magnitude: input.magnitude, distance: m(20_000) });
-  const pgaAt100km = peakGroundAcceleration({ magnitude: input.magnitude, distance: m(100_000) });
-  const epicentralPga = peakGroundAcceleration({
-    magnitude: input.magnitude,
-    distance: m(0),
-  });
+  // Ground-motion aleatory residual: exp(residual) scales every PGA.
+  // Default 0 → gm = 1 → median scenario unchanged. The Monte-Carlo
+  // wrapper samples `residual ~ N(0, σ_lnY)` so the displayed bands
+  // fold in the GMPE's intrinsic scatter, not just the input spread.
+  const residual = input.groundMotionResidualLn ?? 0;
+  const gm = Number.isFinite(residual) ? Math.exp(residual) : 1;
+  const scalePga = (p: MetersPerSecondSquared): MetersPerSecondSquared => mps2((p as number) * gm);
+  // A given fixed PGA target is reached, under the perturbed field,
+  // where the MEDIAN PGA equals target / gm — so contour radii inflate
+  // for gm > 1 and shrink for gm < 1.
+  const target = (pga: MetersPerSecondSquared): MetersPerSecondSquared =>
+    mps2((pga as number) / gm);
+
+  const pgaAt20km = scalePga(
+    peakGroundAcceleration({ magnitude: input.magnitude, distance: m(20_000) })
+  );
+  const pgaAt100km = scalePga(
+    peakGroundAcceleration({ magnitude: input.magnitude, distance: m(100_000) })
+  );
+  const epicentralPga = scalePga(
+    peakGroundAcceleration({
+      magnitude: input.magnitude,
+      distance: m(0),
+    })
+  );
 
   const ngaFault: NGAFaultType =
     faultType === 'strike-slip' || faultType === 'normal' || faultType === 'reverse'
       ? faultType
       : 'unspecified';
-  const pgaAt20kmNGA = peakGroundAccelerationNGAWest2({
-    magnitude: input.magnitude,
-    distance: m(20_000),
-    faultType: ngaFault,
-    vs30,
-  });
-  const pgaAt100kmNGA = peakGroundAccelerationNGAWest2({
-    magnitude: input.magnitude,
-    distance: m(100_000),
-    faultType: ngaFault,
-    vs30,
-  });
+  const pgaAt20kmNGA = scalePga(
+    peakGroundAccelerationNGAWest2({
+      magnitude: input.magnitude,
+      distance: m(20_000),
+      faultType: ngaFault,
+      vs30,
+    })
+  );
+  const pgaAt100kmNGA = scalePga(
+    peakGroundAccelerationNGAWest2({
+      magnitude: input.magnitude,
+      distance: m(100_000),
+      faultType: ngaFault,
+      vs30,
+    })
+  );
 
-  const mmi7Radius = distanceForPga(input.magnitude, pgaFromMercalliIntensity(7));
-  const mmi8Radius = distanceForPga(input.magnitude, pgaFromMercalliIntensity(8));
-  const mmi9Radius = distanceForPga(input.magnitude, pgaFromMercalliIntensity(9));
+  const mmi7Radius = distanceForPga(input.magnitude, target(pgaFromMercalliIntensity(7)));
+  const mmi8Radius = distanceForPga(input.magnitude, target(pgaFromMercalliIntensity(8)));
+  const mmi9Radius = distanceForPga(input.magnitude, target(pgaFromMercalliIntensity(9)));
 
   const waterDepthM = (input.waterDepth as number | undefined) ?? 0;
   const isSubmarine = Number.isFinite(waterDepthM) && waterDepthM > 0;
@@ -244,7 +276,7 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
       mmi7Radius,
       mmi8Radius,
       mmi9Radius,
-      liquefactionRadius: liquefactionRadius(input.magnitude),
+      liquefactionRadius: liquefactionRadius(input.magnitude, gm),
       siteVs30: vs30,
       siteClass: nehrpClassFromVs30(vs30),
     },

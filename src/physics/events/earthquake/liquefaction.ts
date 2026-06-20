@@ -43,8 +43,15 @@ export function liquefactionPgaThreshold(magnitude: number): MetersPerSecondSqua
 
 /** Ground-range radius (m) within which liquefaction is likely on
  *  saturated sandy soil for a given magnitude, using the legacy
- *  Joyner–Boore PGA attenuation as the ground-motion model. */
-export function liquefactionRadius(magnitude: number): Meters {
+ *  Joyner–Boore PGA attenuation as the ground-motion model.
+ *
+ *  `groundMotionScale` (default 1) multiplies the ground motion to
+ *  carry a GMPE aleatory residual: a realisation with factor g reaches
+ *  the liquefaction threshold where the MEDIAN PGA = threshold / g, so
+ *  g > 1 pushes the radius out and g < 1 pulls it in. The deterministic
+ *  pipeline and the impact-cascade caller leave it at 1. */
+export function liquefactionRadius(magnitude: number, groundMotionScale = 1): Meters {
   const threshold = liquefactionPgaThreshold(magnitude);
-  return distanceForPga(magnitude, threshold);
+  const g = Number.isFinite(groundMotionScale) && groundMotionScale > 0 ? groundMotionScale : 1;
+  return distanceForPga(magnitude, mps2((threshold as number) / g));
 }
