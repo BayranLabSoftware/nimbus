@@ -2,8 +2,8 @@
  * U.S. Standard Atmosphere, 1976 (USSA-76).
  *
  * Piecewise-linear-temperature reference atmosphere extending from
- * sea level (geometric altitude 0 m) to the upper mesosphere (≈ 86 km
- * geopotential), maintained by NOAA / NASA / USAF as the canonical
+ * sea level (geometric altitude 0 m) to the upper mesosphere (86 km
+ * geometric = 84 852 m geopotential), maintained by NOAA / NASA / USAF as the canonical
  * reference for atmospheric-entry dynamics, ballistic propagation,
  * and aviation. Replaces the constant-density / constant-scale-height
  * approximation used previously by the airburst classifier
@@ -30,19 +30,25 @@
  *
  *     ρ(h) = P(h) · M / (R* · T(h))
  *
- * The 7-layer table covers 0 → 86 km. Above 86 km the model switches
- * to a more complex molecular-mass-dependent regime that the popular-
- * science envelope here does not need; the upper-altitude callers
- * (HEMP at 400 km for Starfish Prime, stratospheric dust injection)
- * use macroscopic flux/coupling factors that don't read pressure from
- * this module. We clamp queries above 86 km to the layer-7 ceiling
- * value and document the truncation.
+ * The 7-layer table covers 0 → 86 km. Above the model top the
+ * atmosphere switches to a more complex molecular-mass-dependent regime
+ * that the popular-science envelope here does not need; the
+ * upper-altitude callers (HEMP at 400 km for Starfish Prime,
+ * stratospheric dust injection) use macroscopic flux/coupling factors
+ * that don't read pressure from this module. We clamp queries above the
+ * ceiling to the layer-7 model-top value and document the truncation.
  *
  * Geopotential vs geometric altitude: USSA-76 distinguishes the two
- * (h_geopot = R_E · z / (R_E + z)). For altitudes ≤ 86 km the
- * difference is < 1.4 % — well below the tolerance of any downstream
- * physics in this project — so we treat the input as geopotential and
- * note the simplification here for correctness-aware reviewers.
+ * (h_geopot = R_E · z / (R_E + z), with R_E = 6 356 766 m). For
+ * altitudes ≤ 86 km the difference is < 1.4 % — well below the
+ * tolerance of any downstream physics in this project — so we treat the
+ * input as geopotential. The one place it matters is the MODEL TOP:
+ * USSA-76's 86 km top is a GEOMETRIC altitude, equal to 84 852 m
+ * geopotential. We therefore clamp at 84 852 m geopotential, so the
+ * ceiling reproduces the published 86 km (geometric) row
+ * (T ≈ 186.9 K, P ≈ 0.373 Pa). Clamping at 86 000 m geopotential
+ * instead would over-extrapolate layer 7 by ~1.15 km and bias the
+ * ceiling P/ρ ~18 % low.
  *
  * References:
  *   National Oceanic and Atmospheric Administration, National
@@ -112,7 +118,13 @@ const LAYERS: AtmosphericLayer[] = (() => {
   return layers;
 })();
 
-const LAYER_CEILING_M = 86_000;
+/** USSA-76 model top expressed as GEOPOTENTIAL altitude: the published
+ *  86 km GEOMETRIC ceiling equals 84 852 m geopotential
+ *  (h_geo = R_E·z/(R_E+z), R_E = 6 356 766 m, z = 86 000 m). Inputs are
+ *  treated as geopotential, so this is the correct clamp: evaluating at
+ *  it returns the published 86 km (geometric) row rather than
+ *  over-extrapolating layer 7 to 86 km geopotential. */
+const LAYER_CEILING_M = 84_852;
 
 function layerForAltitude(altitudeMeters: number): AtmosphericLayer {
   const z = Math.max(0, Math.min(altitudeMeters, LAYER_CEILING_M));

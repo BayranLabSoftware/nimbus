@@ -60,6 +60,26 @@ import { seismicMomentFromMagnitude } from './seismicMoment.js';
  *     subset).
  *   - Strike-slip (Kunlun 2001 ≈ 400×60 km, San Andreas-class):
  *     L/W ≈ 5 (Wells & Coppersmith 1994 strike-slip subset).
+ *
+ * KNOWN INTERNAL INCONSISTENCY (documented, not a bug). The tsunami
+ * source here derives W = L / 2.5 for the slip estimate, whereas
+ * `simulate.ts` reports the rupture rectangle's W from the INDEPENDENT
+ * Strasser (2010) width regression (which implies L/W ≈ 3.4 at Mw 9.1).
+ * So the same megathrust can show two slightly different widths (~25 %)
+ * in one result object — both within the W&C/Strasser scatter. They are
+ * kept separate on purpose: the rendered rupture rectangle uses the
+ * direct width regression, while the tsunami slip uses the Hayes-2017-
+ * calibrated aspect that reproduces DART amplitudes.
+ *
+ * CAVEAT ON SLIP MAGNITUDE. Because the W&C/Strasser AREA regressions
+ * saturate above ~Mw 8, the M₀-derived mean slip at Mw 9+ comes out on
+ * the HIGH side (≈ 20 m for Tōhoku vs an observed average ≈ 10 m). The
+ * final seafloor uplift still lands in-band because the shallow-dip
+ * sin(δ) projection ({@link dipDependentUpliftFactor}) and the coupling
+ * factor ({@link WAVE_COUPLING_EFFICIENCY}) are calibrated against the
+ * Tōhoku DART + Sumatra anchors. That is calibration to a few targets,
+ * NOT independent validation — treat the far-field amplitude as
+ * order-of-magnitude.
  */
 function ruptureAspectRatio(input: SeismicTsunamiInput): number {
   if (input.subductionInterface) return 2.5;

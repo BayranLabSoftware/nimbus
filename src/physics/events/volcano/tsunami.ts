@@ -15,18 +15,30 @@ import { tsunamiTravelTime } from '../tsunami/propagation.js';
  *     observed coastal run-up 30–40 m around the Sunda Strait
  *     (Self 1992; Maeno & Imamura 2011, J. Geophys. Res. 116: B09205).
  *
- * For the popular-science envelope we use a single Watts (2000)-style
- * form calibrated against Anak Krakatau's observed source amplitude:
+ * For the popular-science envelope we use a Watts (2000)-INSPIRED
+ * calibrated parameterisation (NOT Watts' published predictive
+ * equation):
  *
- *     η_source = 0.10 · V^(1/3) · sin(θ)        (m, with V in m³, θ in rad)
+ *     η_source = K · V^(1/3) · sin(θ)        (m, with V in m³, θ in rad)
  *
- * The cube-root scaling captures the basic geometry — the slide block's
- * characteristic linear dimension grows as V^(1/3), and the maximum
- * vertical excursion of the wave roughly tracks that dimension scaled
- * by the slope projection. The 0.10 prefactor reproduces Anak Krakatau
- * within the modelling scatter (factor of ≈ 2 against observation,
- * which is typical for landslide-tsunami source models — see Tappin
- * 2017, Earth-Science Reviews 169: 73–101 for the published spread).
+ * where K is a regime-dependent prefactor (see
+ * {@link VOLCANO_TSUNAMI_PREFACTOR_SUBAERIAL} /
+ * {@link VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE}).
+ *
+ * **What this keeps and what it drops vs. Watts (2000).** The cube-root
+ * scaling captures the basic geometry — the slide block's characteristic
+ * linear dimension grows as V^(1/3), and the maximum vertical wave
+ * excursion roughly tracks that dimension scaled by the slope. Watts'
+ * full characteristic amplitude additionally depends on the slide
+ * THICKNESS, the submerged density contrast (ρ_slide/ρ_water − 1) and
+ * the slide Froude number / acceleration. This module does NOT carry
+ * those terms explicitly — they are folded into the two calibrated
+ * regime prefactors (rigid subaerial block vs. soft submarine
+ * sediment). That is why there is no equation number from Watts (2000):
+ * this is a calibrated envelope reproducing the benchmark events within
+ * the genuine ±factor-2 landslide-source scatter (Tappin 2017,
+ * Earth-Science Reviews 169: 73–101), not a transcription of Watts'
+ * equations. Treat the output as order-of-magnitude.
  *
  * The caller's volume is the COLLAPSED block; for caldera events
  * "slope" should be set to the post-collapse caldera-wall angle
@@ -34,9 +46,10 @@ import { tsunamiTravelTime } from '../tsunami/propagation.js';
  * is the failure-plane dip (≈ 20° for Anak Krakatau-class events).
  *
  * Far-field amplitude propagation reuses the Ward & Asphaug (2000)
- * 1/r decay primitive — the cavity radius is back-derived from the
- * source amplitude via η_source = R_cavity / 2 so the existing
- * `impactAmplitudeAtDistance` plumbing handles the long-wave spread.
+ * 1/r decay primitive; the cavity radius that seeds it is the slide's
+ * characteristic linear scale (V^(1/3), or √(area/π) when a footprint
+ * is supplied), NOT the impact-style 2·η_source back-derivation — see
+ * the inline note on `cavityRadius` below.
  *
  * References:
  *   Watts, P. (2000). "Tsunami features of solid block underwater
@@ -167,9 +180,9 @@ export interface VolcanoTsunamiInput {
 export interface VolcanoTsunamiResult {
   /** Initial wave amplitude at the source (m). */
   sourceAmplitude: Meters;
-  /** Equivalent Ward-Asphaug cavity radius (m), back-derived from
-   *  source amplitude as 2·η_source so the existing 1/r propagation
-   *  primitives apply unchanged. */
+  /** Equivalent cavity radius (m) seeding the 1/r far-field decay —
+   *  the slide's characteristic linear scale V^(1/3) (or √(area/π) when
+   *  a slide footprint is supplied), NOT the impact-style 2·η_source. */
   cavityRadius: Meters;
   /** Far-field amplitude at 100 km from the volcano (m). */
   amplitudeAt100km: Meters;

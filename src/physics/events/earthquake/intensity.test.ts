@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { mps2 } from '../../units.js';
-import { modifiedMercalliIntensity, pgaFromMercalliIntensity } from './intensity.js';
+import {
+  mmiFromPgaEuropean,
+  modifiedMercalliIntensity,
+  pgaFromMercalliIntensity,
+} from './intensity.js';
 
 describe('modifiedMercalliIntensity (Worden et al. 2012)', () => {
   it('PGA ≈ 1.8 m/s² (Northridge-like) → MMI ≈ 6.7 (strong shaking)', () => {
@@ -46,5 +50,22 @@ describe('pgaFromMercalliIntensity (inverse of Worden 2012)', () => {
     const pga = pgaFromMercalliIntensity(7) as number;
     expect(pga).toBeGreaterThan(1.5);
     expect(pga).toBeLessThan(3.0);
+  });
+});
+
+describe('mmiFromPgaEuropean (Faenza & Michelini 2010, MCS in Italy)', () => {
+  it('PGA = 1 m/s² (100 cm/s²) → MCS ≈ 6.84 per the linear regression', () => {
+    // MCS = 1.68 + 2.58·log₁₀(100) = 1.68 + 5.16 = 6.84.
+    expect(mmiFromPgaEuropean(mps2(1))).toBeCloseTo(6.84, 2);
+  });
+
+  it('grows monotonically with PGA and floors at the not-felt cutoff', () => {
+    expect(mmiFromPgaEuropean(mps2(2))).toBeGreaterThan(mmiFromPgaEuropean(mps2(0.5)));
+    // At the 1 cm/s² not-felt floor: MCS = 1.68 + 2.58·log10(1) = 1.68.
+    expect(mmiFromPgaEuropean(mps2(1e-6))).toBeCloseTo(1.68, 2);
+  });
+
+  it('clamps to the [1, 12] intensity range', () => {
+    expect(mmiFromPgaEuropean(mps2(1_000))).toBe(12);
   });
 });

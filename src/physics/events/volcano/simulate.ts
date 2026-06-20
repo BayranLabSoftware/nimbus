@@ -32,10 +32,11 @@ export interface VolcanoScenarioInput {
    *  to orient the isopach polygon on the globe. */
   windDirectionDegrees?: number;
   /** Optional directional lateral-blast envelope (sector flank
-   *  collapse). When present the result exposes a runout ≈ 4× the
-   *  axisymmetric pyroclastic runout (Glicken 1996 fit for the 18 May
-   *  1980 Mt St Helens event), oriented along {@link
-   *  lateralBlast.directionDeg} with the supplied opening angle. */
+   *  collapse). When present the result exposes a runout ≈ 2.5× the
+   *  axisymmetric pyroclastic runout, calibrated so the Mt St Helens
+   *  preset lands on Glicken's (1996) observed ≈ 27 km directed-blast
+   *  reach, oriented along {@link lateralBlast.directionDeg} with the
+   *  supplied opening angle. */
   lateralBlast?: {
     /** Compass azimuth of the blast axis (° clockwise from N). */
     directionDeg: number;
@@ -134,9 +135,17 @@ export interface VolcanoScenarioResult {
 }
 
 /** Empirical multiplier on the axisymmetric pyroclastic runout
- *  used to estimate lateral-blast reach. Calibrated to Mt St Helens
- *  1980 (27 km blast vs ≈ 7 km PDC). */
-const LATERAL_BLAST_RUNOUT_MULTIPLIER = 4;
+ *  used to estimate lateral-blast reach.
+ *
+ *  Calibrated against the MODEL's OWN PDC base, not the observed PDC.
+ *  Glicken (1996) gives the 18 May 1980 Mt St Helens directed-blast
+ *  reach ≈ 27 km. This module's {@link pyroclasticRunout} returns
+ *  ≈ 10.6 km for the MSH preset (V = 1.2 km³ → 10·V_km³^(1/3)), so the
+ *  multiplier that lands the blast on Glicken's 27 km is 27/10.6 ≈ 2.5.
+ *  (The previous ×4 came from the observed-PDC ratio 27/≈7, but was
+ *  applied to the model's 10.6 km base, over-predicting the blast at
+ *  ≈ 42 km. Anchoring to the model's base removes that double-count.) */
+const LATERAL_BLAST_RUNOUT_MULTIPLIER = 2.5;
 
 /**
  * Composite volcano scenario — wraps the volcanic primitives into a

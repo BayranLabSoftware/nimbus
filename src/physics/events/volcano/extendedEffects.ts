@@ -14,23 +14,52 @@ import { m } from '../../units.js';
  */
 
 /**
- * Pyroclastic-density-current runout using the Dade & Huppert (1998)
- * energy-line model:
+ * Pyroclastic-density-current runout using the energy-line ("Heim
+ * coefficient") mobility model:
  *
- *   Dade, W. B. & Huppert, H. E. (1998). "Long-runout rockfalls."
- *    Geology 26 (9): 803–806; and "Emplacement of the 1.8 Ga Sudbury
- *    ejecta layer" Nature 393 (6680): 160–162. DOI: 10.1038/30179.
- *   Hayashi & Self (1992). "A comparison of pyroclastic flow and
- *    debris avalanche mobility." J. Geophys. Res. 97 (B6).
+ *   Hayashi, J. N. & Self, S. (1992). "A comparison of pyroclastic flow
+ *    and debris avalanche mobility." J. Geophys. Res. 97 (B6): 9063–9071.
+ *    DOI: 10.1029/92JB00173 — the PDC energy-line / mobility reference.
+ *   Sheridan, M. F. (1979). "Emplacement of pyroclastic flows: a
+ *    review." GSA Special Paper 180: 125–136 — H/L mobility ratio.
+ *   (The energy-line concept for long-runout granular flows is also
+ *    developed by Dade & Huppert 1998 for rockfalls; it is NOT a PDC
+ *    paper, so it is not cited as the source here.)
  *
- * The flow descends along an effective "energy line" of slope H/L
- * ~ 0.08–0.12 for dense PDCs. Given a plume (or column-collapse)
- * height H, the runout is L ≈ H / slope. Use 0.10 as the median.
+ * A column-collapse PDC descends along an effective "energy line" of
+ * slope H/L ≈ 0.08–0.12 for dense flows, so the runout is
+ * L ≈ H_collapse / slope.
+ *
+ * **The drop height is the column-COLLAPSE height, not the buoyant
+ * plume top.** A Plinian column collapses from the unstable lower part
+ * of the eruption column — a few km — well below the buoyant plume top
+ * that {@link plumeHeight} (Mastin 2009) returns. Feeding the full
+ * Mastin plume top (tens of km) into the energy line inflates the
+ * runout by ~10× (e.g. a 37 km Krakatau plume would give an absurd
+ * 370 km PDC). We take the collapse height as a fraction of the plume
+ * top (default {@link PDC_COLLAPSE_HEIGHT_FRACTION} = 0.25; Sparks 1986
+ * / Woods 1988 put column-collapse heights at ~10–40 % of the
+ * equivalent buoyant column). Result is an order-of-magnitude UPPER
+ * bound — the ±factor-2 scatter is carried by the UI band.
+ *
+ * @param plumeHeight  buoyant plume top (m) from Mastin 2009
+ * @param slopeHoverL  energy-line slope H/L (default 0.10)
+ * @param collapseHeightFraction  fraction of the plume top that the
+ *                    collapsing fountain reaches (default 0.25)
  */
-export function pdcRunoutEnergyLine(plumeHeight: Meters, slopeHoverL = 0.1): Meters {
+export const PDC_COLLAPSE_HEIGHT_FRACTION = 0.25;
+
+export function pdcRunoutEnergyLine(
+  plumeHeight: Meters,
+  slopeHoverL = 0.1,
+  collapseHeightFraction = PDC_COLLAPSE_HEIGHT_FRACTION
+): Meters {
   const H = plumeHeight as number;
-  if (!Number.isFinite(H) || H <= 0 || slopeHoverL <= 0) return m(0);
-  return m(H / slopeHoverL);
+  if (!Number.isFinite(H) || H <= 0 || slopeHoverL <= 0 || collapseHeightFraction <= 0) {
+    return m(0);
+  }
+  const collapseHeight = H * collapseHeightFraction;
+  return m(collapseHeight / slopeHoverL);
 }
 
 /**
@@ -81,7 +110,9 @@ export function climateCoolingFromVEI(vei: number): number {
  *
  *     Area(1 mm) ≈ C · V^0.8     (V in km³, Area in km²)
  *
- * with C ≈ 3 × 10³ km²·km⁻²·⁴. Order-of-magnitude only; real
+ * with C ≈ 6 × 10⁴ km²·km⁻²·⁴ (see the in-body calibration note — the
+ * Pyle 1989 fit is K ≈ 5×10⁴, NOT the 3×10³ used before the Phase-10
+ * audit, which under-predicted by ~20×). Order-of-magnitude only; real
  * fallout is wind-shaped and requires HYSPLIT-like Lagrangian
  * advection for a realistic footprint.
  */
@@ -111,8 +142,17 @@ export function ashfallArea1mm(totalEjectaVolume: number): number {
  * within a factor of 2. The Iverson-style band has wide (±factor 2)
  * scatter around the fit.
  *
- * Reference: Vallance, J. W. & Iverson, R. M. (2015). "Lahars and
- * their deposits." In Encyclopedia of Volcanoes (2nd ed.),
+ * NOTE ON THE CITATION. Iverson et al. (1998)'s published statistical
+ * relation is for inundation *area* (planimetric A ∝ V^(2/3) and
+ * cross-sectional area ∝ V^(2/3)), NOT a direct volume→runout-length
+ * law. The form below is a runout-LENGTH recast (length ≈ area/width,
+ * giving an exponent near 0.4), calibrated to the MSH observation —
+ * not a transcription of a numbered Iverson equation.
+ *
+ * Reference: Iverson, R. M., Schilling, S. P. & Vallance, J. W. (1998).
+ * "Objective delineation of lahar-inundation hazard zones." GSA Bull.
+ * 110 (8): 972–984; Vallance, J. W. & Iverson, R. M. (2015). "Lahars
+ * and their deposits." In Encyclopedia of Volcanoes (2nd ed.),
  * pp. 649–664. Academic Press / Elsevier.
  */
 export function laharRunout(laharVolumeM3: number): Meters {

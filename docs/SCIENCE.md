@@ -144,13 +144,13 @@ Carlo wrappers for sampled inputs).
 | Crater depth (complex)    | events/impact/crater.ts             | d = 1.044 D^0.301                                   | Pike 1980, Table III              | ±30%      |
 | Seismic Mw from impact    | events/impact/seismic.ts            | Mw ≈ 0.67 log₁₀ E - 5.87                            | Schultz & Gault 1975              | ±0.3 Mw   |
 | Seismic moment Mw → M₀    | events/earthquake/seismicMoment.ts  | M₀ = 10^(1.5 Mw + 9.1) N·m                          | Hanks & Kanamori 1979             | ±0.1 Mw   |
-| MMI from PGV              | events/earthquake/mmi.ts            | MMI = 3.78 + 1.47 log₁₀(PGV)                        | Wald et al. 1999                  | ±0.5 MMI  |
+| MMI from PGA              | events/earthquake/intensity.ts      | MMI = piecewise a + b·log₁₀(PGA)                    | Worden et al. 2012                | ±0.5 MMI  |
 | Rupture area from Mw      | events/earthquake/rupture.ts        | A = 10^(Mw - 4.0)                                   | Wells & Coppersmith 1994          | ±0.3 dec  |
 | Aftershock rate (Omori)   | events/earthquake/aftershocks.ts    | n(t) = K (t + c)^-p                                 | Reasenberg & Jones 1989           | ±factor 2 |
 | Plume height              | events/volcano/plumeHeight.ts       | H = 2.0 V̇^0.241                                     | Mastin et al. 2009                | ±50%      |
 | VEI ↔ ejecta volume       | events/volcano/vei.ts               | VEI = log₁₀(V) - 4 (V in m³)                        | Newhall & Self 1982               | discrete  |
 | Ashfall isopach           | events/volcano/ashfall.ts           | Suzuki 1983 column + Ganser 1993 fallout            | Bonadonna & Phillips 2003         | ±factor 2 |
-| Pyroclastic runout        | events/volcano/pyroclasticRunout.ts | r = 8.97 V^0.40                                     | Sheridan 1979 / Dade & Huppert 98 | ±70%      |
+| Pyroclastic runout        | events/volcano/pyroclasticRunout.ts | L = 10 · V_km³^(1/3) (H/L ≈ 0.1)                    | Sheridan 1979 / Hayashi & Self 92 | ±70%      |
 | Lateral-blast wedge       | events/volcano/extendedEffects.ts   | Glicken 1996 directed-blast                         | Glicken 1996                      | ±50%      |
 | Overpressure ring         | events/explosion/overpressure.ts    | P = f(W, R/W^⅓) Sadovsky                            | Glasstone & Dolan 1977            | ±15%      |
 | Thermal fluence           | events/explosion/thermal.ts         | Q = η Y / (4π R²) τ_atm                             | Glasstone & Dolan 1977            | ±25%      |
@@ -159,8 +159,8 @@ Carlo wrappers for sampled inputs).
 | Tsunami far-field amp.    | events/tsunami/impact.ts            | A(r) = A₀ R_C / r · damping(r)                      | Ward & Asphaug + Wünnemann 2007   | ±factor 3 |
 | Tsunami arrival time      | tsunami/fastMarching.ts             | eikonal `\|∇T\|² = 1/c²`, c = √(gh)                 | Sethian 1996                      | ±15%      |
 | Tsunami shoaling          | events/tsunami/propagation.ts       | A_s = A_d (h_d / h_s)^¼                             | Green 1838                        | ±25%      |
-| Tsunami runup             | tsunami/coastalSlope.ts             | R / A = 2.831 (cot β)^½ (A/h)^¼                     | Synolakis 1987                    | ±30%      |
-| Submarine landslide tsun. | events/landslide/tsunami.ts         | Watts 2000 solid-block source                       | Watts 2000                        | ±factor 2 |
+| Tsunami runup             | events/tsunami/extendedEffects.ts   | R = 2.831 d √(cot β) (H/d)^(5/4)                    | Synolakis 1987                    | ±30%      |
+| Submarine landslide tsun. | events/volcano/tsunami.ts           | η₀ = K · V^(1/3) · sinθ (Watts-inspired, calib.)    | Watts 2000 (inspired)             | ±factor 2 |
 | Atmospheric profile       | atmosphere/ussa1976.ts              | U.S. Standard Atmosphere 1976                       | NOAA-S/T 76-1562                  | ±5%       |
 
 **How to read the σ column.** Where σ is given as a percent it is the

@@ -100,16 +100,30 @@ export interface ImpactAmplitudeAtDistanceInput {
 
 /**
  * Far-field tsunami amplitude from a Ward–Asphaug impact source, using
- * the 1/r geometric decay that holds for shallow-water waves on an
- * otherwise undisturbed ocean:
+ * a 1/r decay:
  *
  *     A(r) = A₀ · R_C / r        (r ≥ R_C)
  *
  * Inside the cavity (r < R_C) we clamp to the source amplitude — the
  * simulator is not interested in the near-field detail there.
  *
- * Source: Ward & Asphaug (2000), Section 4 (cylindrical spreading of
- * gravity waves in shallow water, with mean-depth cancellation).
+ * IMPORTANT — terminology and the two spreading laws in this repo.
+ * Purely geometric *cylindrical* (radial 2-D) spreading conserves
+ * energy flux around a growing ring and gives amplitude ∝ 1/√r — and
+ * that is what the bathymetric propagation pipeline
+ * (`tsunami/amplitudeField.ts`) uses. The 1/r used HERE is faster than
+ * cylindrical: it is the Ward & Asphaug impact-source envelope, where
+ * the extra 1/√r over geometric spreading stands in for the frequency
+ * dispersion that makes short-wavelength impact waves decay faster than
+ * classical seismic tsunamis (Melosh 2003; Wünnemann 2007 — the
+ * "impact tsunamis are over-rated" result). So the two paths
+ * legitimately differ: the near-field impact headline (this function)
+ * is intentionally conservative at 1/r, while the on-globe field uses
+ * physical cylindrical 1/√r. The {@link wunnemannDampingFactor} adds a
+ * further √r reduction on top of this 1/r when the "best-estimate" row
+ * is wanted.
+ *
+ * Source: Ward & Asphaug (2000), Section 4.
  */
 export function impactAmplitudeAtDistance(input: ImpactAmplitudeAtDistanceInput): Meters {
   const A0 = input.sourceAmplitude as number;

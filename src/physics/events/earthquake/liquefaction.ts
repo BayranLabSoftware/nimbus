@@ -10,9 +10,8 @@ import { distanceForPga } from './attenuation.js';
  *    workshops on evaluation of liquefaction resistance of soils."
  *    ASCE Journal of Geotechnical and Geoenvironmental Engineering
  *    127 (4): 297–313. DOI: 10.1061/(ASCE)1090-0241(2001)127:4(297).
- *   Idriss, I. M. (1999). "An update of the Seed-Idriss simplified
- *    procedure for evaluating liquefaction potential." TRB Workshop
- *    Paper, MSF from Eq. 6.
+ *   Idriss MSF (NCEER lower-bound form), as tabulated in Youd & Idriss
+ *    (2001) Eq. 11: MSF = 10^2.24 / M_w^2.56.
  *
  * The engineering procedure is complex (CSR vs. CRR curves, fines
  * content correction, effective-stress reduction with depth). This
@@ -24,9 +23,12 @@ import { distanceForPga } from './attenuation.js';
 /** Reference PGA threshold for liquefaction at Mw 7.5 (g units). */
 const PGA_THRESHOLD_M75_G = 0.1;
 
-/** Idriss (1999) magnitude scaling factor: accounts for the longer
- *  shaking duration of larger events triggering liquefaction at lower
- *  PGA. MSF(7.5) = 1 by construction. */
+/** Idriss magnitude scaling factor (Youd & Idriss 2001, NCEER form):
+ *  MSF = 10^2.24 / M_w^2.56, which accounts for the longer shaking
+ *  duration of larger events triggering liquefaction at lower PGA.
+ *  Written here in the algebraically-identical pivot form (M/7.5)^−2.56
+ *  — note 7.5^2.56 = 10^2.24, so the two are the same expression with
+ *  MSF(7.5) = 1 by construction. */
 export function liquefactionMagnitudeScalingFactor(magnitude: number): number {
   if (!Number.isFinite(magnitude) || magnitude <= 0) return 1;
   return Math.pow(magnitude / 7.5, -2.56);

@@ -33,11 +33,15 @@ export interface PeakGroundAccelerationInput {
  * **Uncertainty (published).** Joyner & Boore (1981) Table 4 reports a
  * standard error of σ_log10(A) ≈ 0.26 — i.e. ±factor 1.82 in linear
  * acceleration at a 1-σ confidence level. The popular-science display
- * shows the central value; the Monte-Carlo path (`montecarlo/...`)
- * samples this σ to produce P10/P50/P90 bands. Outside the calibration
- * window (Mw < 5.0, Mw > 7.7, R > 370 km) σ is larger and biases are
- * possible — the V&V suite uses `TOL_SCALING_LAW` (`tolerances.ts`)
- * to absorb the published scatter.
+ * shows the central value. NOTE: the earthquake Monte-Carlo path
+ * (`montecarlo/earthquakeMonteCarlo.ts`) currently propagates only the
+ * INPUT uncertainties (Mw, depth, Vs30); it does NOT yet sample this
+ * regression σ_log10(A), so the displayed P10/P90 bands are a LOWER
+ * bound on the true predictive scatter (the regression σ typically
+ * dominates the input contribution). Outside the calibration window
+ * (Mw < 5.0, Mw > 7.7, R > 370 km) σ is larger and biases are possible
+ * — the V&V suite uses `TOL_SCALING_LAW` (`tolerances.ts`) to absorb
+ * the published scatter.
  *
  * Source: Joyner & Boore (1981), "Peak horizontal acceleration and
  * velocity from strong-motion records…", BSSA 71(6), pp. 2011–2038.
@@ -95,10 +99,12 @@ export function distanceForPga(magnitude: number, target: MetersPerSecondSquared
  *      {@link vs30SiteFactor}).
  *
  * Implementation uses the published Table 2 coefficients for PGA at
- * Vs30 = 760 m/s (rock reference). The sign on e_6 follows the form
- * that produces physically monotonic PGA(M) saturation (the Boore 2014
- * paper is the authoritative reference if the reader wants to audit
- * the derivative behaviour).
+ * Vs30 = 760 m/s (rock reference). The post-hinge magnitude slope
+ * e_6 = −0.1662 is NEGATIVE in the published table: above the hinge
+ * magnitude M_h = 5.5 the event term `e + e_6·(M − M_h)` grows more
+ * slowly, modelling the well-documented large-magnitude saturation of
+ * PGA. (A positive e_6 would make PGA accelerate with magnitude — the
+ * opposite of saturation — and roughly trebles the M ≥ 8 PGA.)
  *
  * Valid for shallow crustal events with 3 ≤ Mw ≤ 8.5 and R_JB ≤ 400 km.
  * For megathrust subduction events, callers should prefer the
@@ -128,7 +134,7 @@ const BSSA14_PGA = {
   e3: 0.4539, // reverse
   e4: 1.431,
   e5: 0.05053,
-  e6: 0.1662, // post-hinge slope; positive for monotonic PGA saturation
+  e6: -0.1662, // post-hinge magnitude slope (negative → large-M PGA saturation), Boore et al. 2014 Table 2
   c1: -1.134,
   c2: 0.1917,
   c3: -0.008088,
@@ -144,7 +150,16 @@ export interface NGAInput extends PeakGroundAccelerationInput {
 }
 
 /** Site-response amplification factor for arbitrary Vs30 against the
- *  Boore 2014 rock reference (760 m/s). Simplified linear form. */
+ *  Boore 2014 rock reference (760 m/s).
+ *
+ *  NOTE: this is a Nimbus-chosen power-law SURROGATE
+ *  `(vs30/760)^(-0.4)`, NOT the published BSSA14 site term. The real
+ *  BSSA14 F_S is a linear + nonlinear pair (F_lin with slope c = −0.6
+ *  below V_lin, plus an amplitude-dependent F_nl soil de-amplification
+ *  under strong shaking). The −0.4 exponent gives the right ballpark
+ *  (Vs30 300 → ≈1.45×) for the popular-science display but omits the
+ *  nonlinear soft-soil saturation at high PGA, so it can over-amplify
+ *  near-source soft-soil motion. Treat as order-of-magnitude. */
 export function vs30SiteFactor(vs30: number): number {
   if (!Number.isFinite(vs30) || vs30 <= 0) return 1;
   return Math.exp(-0.4 * Math.log(vs30 / 760));

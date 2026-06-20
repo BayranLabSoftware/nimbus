@@ -9,14 +9,21 @@ describe('bandFor', () => {
     expect(b.high).toBeCloseTo(1_300, 6);
   });
 
-  it('returns factor-2 band for ashfall area and lahar runout', () => {
-    expect(bandFor(100, 'ashfallArea').high).toBeCloseTo(200, 6);
-    expect(bandFor(100, 'laharRunout').low).toBe(0);
+  it('returns a multiplicative factor-2 band for ashfall area and lahar runout', () => {
+    const ash = bandFor(100, 'ashfallArea');
+    expect(ash.high).toBeCloseTo(200, 6); // 2× value
+    expect(ash.low).toBeCloseTo(50, 6); // value/2 — NOT zero (regression guard)
+    const lahar = bandFor(100, 'laharRunout');
+    expect(lahar.high).toBeCloseTo(200, 6);
+    expect(lahar.low).toBeCloseTo(50, 6);
+    expect(lahar.low).toBeGreaterThan(0);
   });
 
-  it('returns factor-3 band for tsunami far-field', () => {
-    const b = bandFor(10, 'tsunamiWunnemannFarField');
-    expect(b.high).toBeCloseTo(30, 6);
+  it('returns a multiplicative factor-3 band for tsunami far-field', () => {
+    const b = bandFor(30, 'tsunamiWunnemannFarField');
+    expect(b.high).toBeCloseTo(90, 6); // 3× value
+    expect(b.low).toBeCloseTo(10, 6); // value/3 — NOT zero
+    expect(b.low).toBeGreaterThan(0);
   });
 
   it('collapses to zero on non-positive or non-finite input', () => {

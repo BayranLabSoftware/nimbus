@@ -131,11 +131,12 @@ export interface AtmosphericEntryResult {
     lightDamage: Meters;
   };
   /** Empirical Kinney-Graham → bolide-airburst amplification factor
-   *  applied to BOTH the thermal-flash and shock-wave radii (see
-   *  {@link bolideAirburstAmplification}). 1.0 for surface bursts and
-   *  INTACT events; ≈ 3 for a Tunguska-class 8 km burst, ≈ 7 for a
-   *  Chelyabinsk-class 27 km burst. Surfaced in the report panel so
-   *  the user sees how big the altitude correction is. */
+   *  applied to the SHOCK-WAVE radii only (the Whitham/Sachs argument
+   *  is a blast-wave result; see {@link bolideAirburstAmplification}).
+   *  Thermal-flash radii are NOT amplified by it. 1.0 for surface
+   *  bursts and INTACT events; ≈ 3 for a Tunguska-class 8 km burst,
+   *  ≈ 7 for a Chelyabinsk-class 27 km burst. Surfaced in the report
+   *  panel so the user sees how big the altitude correction is. */
   airburstAmplificationFactor: number;
 }
 
@@ -166,12 +167,13 @@ const ZERO_ENTRY_DAMAGE = {
 
 /**
  * Closed-form altitude amplification factor that lifts the Kinney-
- * Graham (1985) surface-burst overpressure radii — and the matching
- * Glasstone & Dolan §7 thermal-fluence radii — to the bolide-entry
- * geometry at altitude. The factor is built from three textbook
- * physics ingredients, all cited; the only fit is the
- * shock-regime exponent that interpolates between two well-known
- * limiting cases.
+ * Graham (1985) surface-burst overpressure radii to the bolide-entry
+ * geometry at altitude. It is a BLAST-WAVE result and is applied only
+ * to the shock-wave radii — NOT to the thermal-flash radii, whose
+ * inverse-square line-of-sight geometry does not share the weak-shock
+ * pressure-invariance argument. The factor is built from three textbook
+ * physics ingredients, all cited; the only fit is the shock-regime
+ * exponent that interpolates between two well-known limiting cases.
  *
  * 1. **Whitham (1974) weak-shock invariance** through a stratified
  *    atmosphere. For weak shocks moving down through layers of
@@ -301,32 +303,46 @@ function computeEntryDamage(
   // Boslough & Crawford 2008).
   const blastEnergy = J(atmosphericYieldJ * IMPACT_BLAST_COUPLING);
   const factor = bolideAirburstAmplification(burstAltitudeM);
-  const scale = (raw: Meters): Meters => m((raw as number) * factor);
+  // The Whitham/Sachs amplification is a BLAST-WAVE argument (weak-shock
+  // overpressure invariance through a stratified atmosphere). It applies
+  // ONLY to the shock-wave radii. Thermal fluence is governed by
+  // line-of-sight inverse-square geometry plus atmospheric transmission;
+  // a burst at altitude has a LONGER slant path to a ground observer, so
+  // the burn radius does not grow with altitude the way the shock reach
+  // does. Multiplying the thermal radii by `factor` (the old behaviour)
+  // was physically backwards — it inflated the high-altitude flash-burn
+  // reach by up to 7×. Thermal radii therefore use the bare inverse-
+  // square envelope (τ = 1) here; HOB-dependent attenuation is the
+  // separate `heightOfBurst` path in thermal.ts.
+  const scaleShock = (raw: Meters): Meters => m((raw as number) * factor);
   const safeDistance = (target: Pascals): Meters => {
     try {
-      return scale(distanceForOverpressure(blastEnergy, target));
+      return scaleShock(distanceForOverpressure(blastEnergy, target));
     } catch {
       return m(0);
     }
   };
   return {
     flashBurnRadii: {
-      // Phase-17 thermal calibration. The atmospheric-entry flash-burn
-      // radii are an impact phenomenon (thermal pulse from a meteor /
-      // bolide entry, not a nuclear detonation), so the burn-radius
-      // helpers must be passed the impact luminous efficiency rather
-      // than the nuclear default. See the matching note in
-      // `damageRings.ts` for the citation chain (Collins-Melosh-Marcus
-      // 2005 / Toon 1997).
-      firstDegree: scale(
-        firstDegreeBurnRadius({ yieldEnergy, thermalPartition: IMPACT_LUMINOUS_EFFICIENCY })
-      ),
-      secondDegree: scale(
-        secondDegreeBurnRadius({ yieldEnergy, thermalPartition: IMPACT_LUMINOUS_EFFICIENCY })
-      ),
-      thirdDegree: scale(
-        thirdDegreeBurnRadius({ yieldEnergy, thermalPartition: IMPACT_LUMINOUS_EFFICIENCY })
-      ),
+      // The atmospheric-entry flash-burn radii are an impact phenomenon
+      // (thermal pulse from a meteor / bolide entry, not a nuclear
+      // detonation), so the burn-radius helpers are passed the impact
+      // luminous efficiency rather than the nuclear default. See the
+      // matching note in `damageRings.ts` for the citation chain
+      // (Collins-Melosh-Marcus 2005 / Toon 1997). No blast-amplification
+      // factor is applied (see the note above).
+      firstDegree: firstDegreeBurnRadius({
+        yieldEnergy,
+        thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+      }),
+      secondDegree: secondDegreeBurnRadius({
+        yieldEnergy,
+        thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+      }),
+      thirdDegree: thirdDegreeBurnRadius({
+        yieldEnergy,
+        thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+      }),
     },
     shockWaveRadii: {
       fivePsi: safeDistance(OVERPRESSURE_BUILDING_COLLAPSE),

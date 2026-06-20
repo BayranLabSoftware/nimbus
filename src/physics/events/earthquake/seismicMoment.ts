@@ -35,7 +35,9 @@ export function seismicMomentFromMagnitude(magnitude: number): NewtonMeters {
  * Exact within Float64 round-off — see {@link seismicMomentFromMagnitude}
  * for the uncertainty discussion.
  *
- * Source: Hanks & Kanamori (1979), Eq. 8.
+ * Source: Hanks & Kanamori (1979), "A moment magnitude scale", JGR
+ * 84(B5), pp. 2348–2350 (algebraic inverse of the defining relation;
+ * the 3-page note has no numbered equations). DOI: 10.1029/JB084iB05p02348.
  */
 export function momentMagnitudeFromSeismicMoment(moment: NewtonMeters): number {
   return (Math.log10(moment) - 9.1) / 1.5;

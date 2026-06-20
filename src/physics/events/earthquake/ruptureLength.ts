@@ -62,9 +62,10 @@ export interface SurfaceRuptureLengthInput {
  * i.e. ±factor 1.91 in surface rupture length at 1-σ. The aggregated
  * "all" coefficients carry the largest scatter because they pool
  * tectonically distinct events; per-fault coefficients are tighter.
- * The Monte-Carlo path samples log10(SRL) ~ 𝒩(predicted, σ²) before
- * geometry construction so the displayed stadium polygon reflects
- * the published band.
+ * NOTE: the earthquake Monte-Carlo path currently samples only the
+ * INPUT Mw (and depth, Vs30), not this regression σ_log10(SRL); the
+ * displayed rupture band therefore reflects magnitude uncertainty alone
+ * and is a lower bound on the full published scatter.
  */
 export function surfaceRuptureLength(input: SurfaceRuptureLengthInput): Meters {
   const { magnitude, faultType = 'all' } = input;

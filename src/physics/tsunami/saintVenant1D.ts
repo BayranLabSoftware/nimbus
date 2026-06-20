@@ -393,7 +393,24 @@ export function simulateSaintVenant1D(input: SaintVenant1DInput): SaintVenant1DR
     for (let i = 0; i < N; i++) {
       const fluxDivMass = (fluxMass[i + 1] ?? 0) - (fluxMass[i] ?? 0);
       const fluxDivMom = (fluxMom[i + 1] ?? 0) - (fluxMom[i] ?? 0);
-      // Topography slope source: -g·h·∂z/∂x, centred difference.
+      // Topography slope source: -g·h·∂z/∂x, plain centred difference.
+      //
+      // LIMITATION (documented, not a bug): this naive centred source is
+      // NOT well-balanced for the C-property. Paired with the HLL flux it
+      // does not exactly cancel the pressure-flux gradient of a
+      // lake-at-rest state over a SLOPING bed, so a still lake on varying
+      // bathymetry can develop small spurious "numerical tsunami"
+      // currents of order g·h·|∂z/∂x|·Δt. Only the wall BOUNDARY is
+      // hydrostatically balanced (see the wall-BC note above). A truly
+      // well-balanced interior needs the GeoClaw George-LeVeque (2008)
+      // augmented Riemann solver, which is out of scope for this
+      // popular-science teaching solver. The spurious currents scale as
+      // g·h·|∂z/∂x|: negligible on abyssal-plain grades (≤ 1:1000) but
+      // reaching ≈ 1 m/s on a steep 1:100 slope after ~10 min — NOT
+      // negligible there. So treat near-shore results over steep
+      // bathymetry as order-of-magnitude only. The lake-at-rest tests in
+      // {@link saintVenant1D.test.ts} pin the flat-bed exact balance and
+      // characterise the sloping-bed spurious-current magnitude.
       const zL = z[Math.max(i - 1, 0)] ?? 0;
       const zR = z[Math.min(i + 1, N - 1)] ?? 0;
       const dzdx = (zR - zL) / (2 * dx);

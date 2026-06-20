@@ -52,19 +52,21 @@ describe('simulateLandslide', () => {
     expect(r.tsunami.sourceAmplitude as number).toBeLessThan(300);
   });
 
-  it('Lituya preset produces a tsunami in the 30-60 m band (saturation cap)', () => {
+  it('Lituya preset is capped by the breaking limit at ≈ 48 m (documented under-prediction)', () => {
     // Lituya 1958 is a documented limitation: the fjord geometry
-    // amplifies the wave to 524 m run-up, but an open-ocean Watts
+    // amplifies the wave to 524 m run-up, but an open-ocean Watts-style
     // source can't capture reflection/focusing inside a narrow inlet.
-    // With the new regime-aware prefactor (subaerial K=0.4) and the
-    // 40 % depth-saturation cap, we land in the 30-60 m band — still
-    // an order-of-magnitude under-prediction, kept on purpose so the
-    // module header's caveat about Lituya stays accurate.
+    // For this preset the McCowan breaking cap is the SOLE binding
+    // constraint: 0.4 × 120 m source depth = 48 m, below the uncapped
+    // K=0.4 Watts-style value (≈ 71 m), which is therefore discarded.
+    // So the result is ≈ 48 m — an order-of-magnitude under-prediction
+    // of the observed run-up, kept on purpose so the module header's
+    // Lituya caveat stays accurate. (Change the depth and the answer
+    // moves; change K alone and it does not, until K drops below ~0.27.)
     const r = simulateLandslide(LANDSLIDE_PRESETS.LITUYA_BAY_1958.input);
     expect(r.tsunami).not.toBeNull();
     if (r.tsunami === null) return;
-    expect(r.tsunami.sourceAmplitude as number).toBeGreaterThan(20);
-    expect(r.tsunami.sourceAmplitude as number).toBeLessThan(80);
+    expect(r.tsunami.sourceAmplitude as number).toBeCloseTo(48, 0); // 0.4 × 120 m cap
   });
 
   it('characteristicLength matches V^(1/3)', () => {

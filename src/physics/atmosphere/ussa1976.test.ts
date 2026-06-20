@@ -70,6 +70,18 @@ describe('USSA 1976', () => {
     expect(ussaPressure(400_000)).toBeCloseTo(ussaPressure(86_000), 6);
   });
 
+  it('reproduces the published 86 km (geometric) model-top row', () => {
+    // USSA-76's 86 km model top is a GEOMETRIC altitude = 84 852 m
+    // geopotential. The ceiling clamp lands there, so it must match the
+    // published table row: T ≈ 186.87 K, P ≈ 0.3734 Pa, ρ ≈ 6.96e-6.
+    // (Clamping at 86 000 m geopotential instead biased P/ρ ~18 % low.)
+    expect(ussaTemperature(86_000)).toBeCloseTo(186.9, 0); // K, ±0.5
+    expect(ussaPressure(86_000)).toBeGreaterThan(0.34); // Pa
+    expect(ussaPressure(86_000)).toBeLessThan(0.41);
+    expect(ussaDensity(86_000)).toBeGreaterThan(6.3e-6);
+    expect(ussaDensity(86_000)).toBeLessThan(7.6e-6);
+  });
+
   it('clamps queries below sea level to the surface reference', () => {
     expect(ussaTemperature(-500)).toBeCloseTo(USSA_SEA_LEVEL_TEMPERATURE, 6);
     expect(ussaDensity(-1_000)).toBeCloseTo(USSA_SEA_LEVEL_DENSITY, 3);

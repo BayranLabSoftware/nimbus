@@ -1,54 +1,51 @@
+import { OUTPUT_SIGMA } from './uq/conventions.js';
+
 /**
  * Confidence-band metadata for outputs whose published 1σ scatter is
  * large enough that rendering a single sharp number — or a crisp ring
  * on a map — is scientifically misleading.
  *
- * The numerical σ values listed here mirror the OUTPUT_SIGMA dictionary
- * in src/physics/uq/conventions.ts — that module is the single source
- * of truth and carries the per-quantity citation. This file is kept
- * for back-compat with existing callers (`bandFor()` is widely used
- * across the UI); future code should import from `uq/conventions.ts`.
+ * **Single source of truth.** The per-quantity σ (and its *kind* —
+ * symmetric linear vs. multiplicative log-normal) lives in
+ * {@link OUTPUT_SIGMA} in `src/physics/uq/conventions.ts`, alongside the
+ * citation for each value. This module consumes that table and turns a
+ * point estimate into the ±band the UI should draw. It deliberately
+ * holds no σ numbers of its own so the two can never drift apart again
+ * (they used to: this file previously declared a *linear* σ = 1.0 / 2.0
+ * for the factor-2 / factor-3 quantities, which drove the lower bound to
+ * **zero** — implying e.g. that the far-field tsunami amplitude could
+ * vanish. See the band semantics below.)
+ *
+ * **Band semantics.**
+ *   - `linear-fraction` (σ a fraction of the value): a symmetric band
+ *     `[value·(1 − σ), value·(1 + σ)]`, clamped at zero on the low side.
+ *     Used for moderately scattered, near-symmetric quantities
+ *     (firestorm radii ±30 %, run-up ±30 %, pyroclastic runout ±70 %).
+ *   - `lognormal` (σ in natural-log units): a *multiplicative* band
+ *     `[value·e^(−σ), value·e^(+σ)]` — the physically correct shape for
+ *     scale-spanning, "factor-of-N" quantities. A factor-2 band
+ *     (σ = ln 2) becomes `[value/2, 2·value]`; a factor-3 band
+ *     (σ = ln 3) becomes `[value/3, 3·value]`. The low side is strictly
+ *     positive, never zero.
  *
  * The physics modules still emit point estimates; this module only
- * declares the ±σ% band the UI should draw around each value.
- *
- * σ values sourced from the original papers:
- *   - firestormIgnition / firestormSustain : Glasstone & Dolan §7.40,
- *     ±1σ on fluence threshold ≈ 30 %.
- *   - plumeHeight : Mastin 2009 Fig. 2 + Aubry 2023 GRL, ±factor-2
- *     scatter around the median (half-range ≈ 50 %).
- *   - pyroclasticRunout : Sheridan 1979 statistical vs Dade & Huppert
- *     1998 energy-line upper bound; treat the fit as ±70 %.
- *   - ashfallArea1mm : Walker 1980 / Pyle 1989 isopach scaling, ±factor-2.
- *   - laharRunout : Iverson 1997 volume-runout, ±factor-2.
- *   - tsunamiRunup / tsunamiWunnemannFarField : Synolakis 1987 run-up
- *     ±30 %; Wünnemann far-field ±factor-3 at continent range.
- *
- * Each entry is the *half-range* of the band: low = value · (1 − σ),
- * high = value · (1 + σ). For factor-k bands we store σ such that
- * (1 + σ) = k, so "factor-2" is σ = 1.0 (high = 2·value, low = 0).
+ * declares the band the UI draws around each value.
  */
 
-export type ConfidenceField =
-  | 'firestormIgnition'
-  | 'firestormSustain'
-  | 'plumeHeight'
-  | 'pyroclasticRunout'
-  | 'ashfallArea'
-  | 'laharRunout'
-  | 'tsunamiRunup'
-  | 'tsunamiWunnemannFarField';
+export type ConfidenceField = keyof typeof OUTPUT_SIGMA;
 
-export const CONFIDENCE_SIGMA: Record<ConfidenceField, number> = {
-  firestormIgnition: 0.3,
-  firestormSustain: 0.3,
-  plumeHeight: 0.5,
-  pyroclasticRunout: 0.7,
-  ashfallArea: 1.0,
-  laharRunout: 1.0,
-  tsunamiRunup: 0.3,
-  tsunamiWunnemannFarField: 2.0,
-};
+/**
+ * Effective 1σ magnitude for each field (natural-log units for
+ * log-normal quantities, fractional for linear ones). Mirrors the σ
+ * carried by {@link OUTPUT_SIGMA}; retained for back-compat with
+ * callers that only need the scalar (e.g. sanity-bound tests).
+ */
+export const CONFIDENCE_SIGMA: Record<ConfidenceField, number> = Object.fromEntries(
+  (Object.keys(OUTPUT_SIGMA) as ConfidenceField[]).map((field) => [
+    field,
+    OUTPUT_SIGMA[field].sigma,
+  ])
+) as Record<ConfidenceField, number>;
 
 export interface ConfidenceBand {
   value: number;
@@ -59,10 +56,22 @@ export interface ConfidenceBand {
 
 /** Wrap a point estimate with its declared confidence band. */
 export function bandFor(value: number, field: ConfidenceField): ConfidenceBand {
-  const sigma = CONFIDENCE_SIGMA[field];
+  const convention = OUTPUT_SIGMA[field];
+  const sigma = convention.sigma;
   if (!Number.isFinite(value) || value <= 0) {
     return { value: 0, low: 0, high: 0, sigma };
   }
+  if (convention.kind === 'lognormal') {
+    // Multiplicative band: [value/k, value·k] with k = e^σ.
+    return {
+      value,
+      low: value * Math.exp(-sigma),
+      high: value * Math.exp(sigma),
+      sigma,
+    };
+  }
+  // linear-fraction (and the unused linear-absolute fallback): symmetric
+  // band clamped at zero on the low side.
   return {
     value,
     low: Math.max(value * (1 - sigma), 0),

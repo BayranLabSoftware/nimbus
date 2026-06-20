@@ -111,20 +111,31 @@ export function manningPropagationDamping(input: {
 }
 
 /**
- * Liu-Synolakis-Park 2005 friction correction on a Synolakis 1987
- * plane-beach run-up. Returns a multiplier in (0, 1] that the caller
- * applies to the frictionless Synolakis result.
+ * Friction correction on a Synolakis 1987 plane-beach run-up. Returns a
+ * multiplier in (0, 1] that the caller applies to the frictionless
+ * Synolakis result.
  *
  *     R_friction / R_Synolakis = (1 + k · n² · cot β / √h_off)^(-1/2)
  *
- * with the empirical k ≈ 12 calibrated by reading Park et al. 2013
- * Fig. 6 (sand-beach laboratory wave-flume tests) at the popular-
- * science envelope: n=0.025, slope 1:100, h_off=10 m → ~10 % run-up
- * reduction. n=0.06 (vegetated coast) on the same beach → ~30 %
- * reduction. n=0.025 on a steep 1:30 beach → ~3 % reduction (steeper
- * beach gives the wave less time to dissipate). These three anchor
- * points reproduce the Liu-Synolakis-Park 2005 analytical envelope
- * within ~10 %.
+ * NOTE ON ATTRIBUTION. This closed form is a Nimbus-CHOSEN parametric
+ * fit, not a transcription of a numbered equation. The structural
+ * dependence (friction reduces run-up; the effect grows with n² and
+ * with cot β, and weakens with deeper offshore reference h) follows the
+ * frictional long-wave run-up analyses of Liu, Lynett & Synolakis
+ * (2005) and Park et al. (2013); the empirical k ≈ 12 was calibrated by
+ * reading Park et al. 2013 Fig. 6 (sand-beach wave-flume tests) at the
+ * popular-science envelope: n=0.025, slope 1:100, h_off=10 m → ~10 %
+ * run-up reduction; n=0.06 (vegetated coast) on the same beach → ~30 %;
+ * n=0.025 on a steep 1:30 beach → ~3 % (steeper beach gives the wave
+ * less time to dissipate).
+ *
+ * References:
+ *   Liu, P. L.-F., Lynett, P. & Synolakis, C. E. (2005). "Analytical
+ *    solutions for forced long waves on a sloping beach." J. Fluid
+ *    Mech. 478: 101–109.
+ *   Park, H., Cox, D. T., Lynett, P. J., et al. (2013). "Tsunami
+ *    inundation modeling in constructed environments." Coastal
+ *    Engineering 79: 9–21.
  *
  * Returns 1 (no friction correction) for non-positive or infinite
  * inputs — the caller falls back to the unmodified Synolakis result.

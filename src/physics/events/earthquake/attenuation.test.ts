@@ -72,15 +72,40 @@ describe('distanceForPga (bisection inverse of Joyner-Boore)', () => {
 });
 
 describe('peakGroundAccelerationNGAWest2 (Boore 2014 BSSA14)', () => {
-  it('Tōhoku 2011 Mw 9.1 @ R_JB ~100 km on rock → PGA ≈ 0.2–0.6 g', () => {
+  it('Tōhoku 2011 Mw 9.1 @ R_JB ~100 km on rock → PGA ≈ 0.12 g (BSSA14 median)', () => {
     const a = peakGroundAccelerationNGAWest2({
       magnitude: 9.1,
       distance: meters(100_000),
       faultType: 'reverse',
     }) as number;
     const aG = a / STANDARD_GRAVITY;
-    expect(aG).toBeGreaterThan(0.1);
-    expect(aG).toBeLessThan(0.8);
+    // BSSA14 median with the published NEGATIVE e6 = −0.1662 gives
+    // ≈ 0.12 g here (observed Tōhoku rock PGA at ~100 km ran ~0.1 g).
+    // This bracket is deliberately tight: the previous (0.1, 0.8) range
+    // masked a sign-flip on e6 that trebled the large-Mw PGA to ≈ 0.40 g.
+    expect(aG).toBeGreaterThan(0.08);
+    expect(aG).toBeLessThan(0.2);
+  });
+
+  it('near-source event-term saturates above the hinge (negative e6)', () => {
+    // Near the source the path term's magnitude dependence is weak, so the
+    // event term dominates the M-scaling. With the published NEGATIVE e6 a
+    // +1.6 step from M7.5 to M9.1 (both well past M_h = 5.5) lifts PGA only
+    // ≈ 1.22×. A sign-flipped (positive) e6 would make it ≈ 2.07×, so the
+    // < 1.6 guard pins the sign that the loose magnitude tests cannot.
+    const R = meters(0);
+    const big = peakGroundAccelerationNGAWest2({
+      magnitude: 9.1,
+      distance: R,
+      faultType: 'reverse',
+    }) as number;
+    const mid = peakGroundAccelerationNGAWest2({
+      magnitude: 7.5,
+      distance: R,
+      faultType: 'reverse',
+    }) as number;
+    expect(big).toBeGreaterThan(mid); // still monotone in M
+    expect(big / mid).toBeLessThan(1.6);
   });
 
   it('Northridge Mw 6.7 @ R_JB 20 km on rock → PGA ≈ 0.1–0.35 g (observed 0.1–0.4)', () => {

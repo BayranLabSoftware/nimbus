@@ -7,16 +7,28 @@ import {
   pdcRunoutEnergyLine,
 } from './extendedEffects.js';
 
-describe('pdcRunoutEnergyLine (Dade & Huppert 1998)', () => {
-  it('VEI 6 Krakatoa plume 37 km → energy-line runout ≈ 370 km (upper bound)', () => {
+describe('pdcRunoutEnergyLine (Hayashi & Self 1992 energy line)', () => {
+  it('VEI 6 Krakatoa plume 37 km → energy-line runout ≈ 92 km (upper bound)', () => {
+    // Drop height is the column-COLLAPSE height (0.25 × 37 km = 9.25 km),
+    // not the buoyant plume top — so L = 9250 / 0.1 ≈ 92.5 km, an
+    // order of magnitude below the unphysical 370 km the plume-top
+    // height used to give.
     const L = pdcRunoutEnergyLine(m(37_000)) as number;
-    expect(L).toBeCloseTo(370_000, -3);
+    expect(L).toBeGreaterThan(80_000);
+    expect(L).toBeLessThan(110_000);
   });
 
   it('scales linearly with plume height at fixed slope', () => {
     const a = pdcRunoutEnergyLine(m(10_000)) as number;
     const b = pdcRunoutEnergyLine(m(20_000)) as number;
     expect(b / a).toBeCloseTo(2, 6);
+  });
+
+  it('uses the collapse-height fraction (0.25), not the full plume top', () => {
+    // L = collapseFraction · H / slope = 0.25 · 20000 / 0.1 = 50 000 m.
+    expect(pdcRunoutEnergyLine(m(20_000)) as number).toBeCloseTo(50_000, 6);
+    // Overriding the fraction to 1.0 recovers the raw plume-top value.
+    expect(pdcRunoutEnergyLine(m(20_000), 0.1, 1.0) as number).toBeCloseTo(200_000, 6);
   });
 
   it('custom slope 0.08 (very mobile) gives longer runout than 0.15', () => {
@@ -28,6 +40,7 @@ describe('pdcRunoutEnergyLine (Dade & Huppert 1998)', () => {
   it('returns 0 for zero or negative inputs', () => {
     expect(pdcRunoutEnergyLine(m(0))).toBe(0);
     expect(pdcRunoutEnergyLine(m(10_000), 0)).toBe(0);
+    expect(pdcRunoutEnergyLine(m(10_000), 0.1, 0)).toBe(0);
   });
 });
 

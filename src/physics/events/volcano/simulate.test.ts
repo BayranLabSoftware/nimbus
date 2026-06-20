@@ -35,13 +35,15 @@ describe('simulateVolcano', () => {
     expect(simulateVolcano(input).inputs).toBe(input);
   });
 
-  it('Mt St Helens preset emits a lateral-blast envelope ≈ 4× the PDC runout', () => {
+  it('Mt St Helens preset emits a lateral-blast envelope ≈ 2.5× PDC, ≈ Glicken 27 km', () => {
     const r = simulateVolcano(VOLCANO_PRESETS.MT_ST_HELENS_1980.input);
     expect(r.lateralBlast).toBeDefined();
     if (!r.lateralBlast) return;
-    expect(r.lateralBlast.runout as number).toBeGreaterThan(
-      4 * (r.pyroclasticRunout as number) - 1
-    );
+    // Multiplier is 2.5× the model's own PDC base…
+    expect(r.lateralBlast.runout as number).toBeCloseTo(2.5 * (r.pyroclasticRunout as number), 0);
+    // …which lands on Glicken (1996)'s observed ≈ 27 km directed blast.
+    expect(r.lateralBlast.runout as number).toBeGreaterThan(22_000);
+    expect(r.lateralBlast.runout as number).toBeLessThan(32_000);
     expect(r.lateralBlast.directionDeg).toBe(0);
     expect(r.lateralBlast.sectorAngleDeg).toBe(180);
     // 180° wedge area = ½ · π · r² (half disk).

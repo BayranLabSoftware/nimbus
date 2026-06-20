@@ -527,3 +527,53 @@ describe('saintVenant1D — boundary / degenerate input handling', () => {
     expect(a.timeStepsExecuted).toBe(b.timeStepsExecuted);
   });
 });
+
+describe('saintVenant1D — lake-at-rest (C-property characterisation)', () => {
+  it('keeps a still lake EXACTLY still over a FLAT bed (well-balanced)', () => {
+    // η = 0 everywhere, flat bed at −1000 m → h = 1000 m, u = 0. With a
+    // flat bed the topography source is identically zero, so the scheme
+    // is trivially well-balanced and the lake must stay perfectly still.
+    const N = 120;
+    const dx = 2_000;
+    const z = new Array<number>(N).fill(-1_000);
+    const eta0 = new Array<number>(N).fill(0);
+    const r = simulateSaintVenant1D({
+      bathymetryM: z,
+      cellWidthM: dx,
+      initialDisplacementM: eta0,
+      durationS: 600,
+      manningN: 0,
+    });
+    const maxU = Math.max(...r.finalVelocityMPerS.map((u) => Math.abs(u)));
+    expect(maxU).toBeLessThan(1e-9);
+  });
+
+  it('spurious currents over a SLOPING bed stay bounded (NOT well-balanced)', () => {
+    // η = 0, bed sloping from −3000 m to −1000 m over 200 km (a steep
+    // 1:100 grade) → a still lake. This scheme is NOT well-balanced on a
+    // sloping bed (plain centred topography source + HLL flux), so
+    // spurious currents appear. This test characterises their magnitude
+    // as a regression guard. On this aggressive 1:100 grade they reach
+    // ≈ 1 m/s after 10 minutes — NOT negligible, comparable to a weak
+    // tsunami current, which is exactly why near-shore results over steep
+    // bathymetry are order-of-magnitude only. On gentler abyssal-plain
+    // grades (≤ 1:1000) the imbalance scales down with g·h·|∂z/∂x| and is
+    // far smaller. We cap at 1.5 m/s: a future change that worsens the
+    // imbalance trips this; a well-balanced source should drive it to ~0.
+    const N = 100;
+    const dx = 2_000;
+    const z: number[] = [];
+    for (let i = 0; i < N; i++) z.push(-3_000 + (2_000 * i) / (N - 1));
+    const eta0 = new Array<number>(N).fill(0);
+    const r = simulateSaintVenant1D({
+      bathymetryM: z,
+      cellWidthM: dx,
+      initialDisplacementM: eta0,
+      durationS: 600,
+      manningN: 0,
+    });
+    const maxU = Math.max(...r.finalVelocityMPerS.map((u) => Math.abs(u)));
+    expect(Number.isFinite(maxU)).toBe(true);
+    expect(maxU).toBeLessThan(1.5);
+  });
+});

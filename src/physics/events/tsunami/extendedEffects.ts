@@ -5,8 +5,9 @@ import { m } from '../../units.js';
 /**
  * Extended tsunami estimators beyond the Ward & Asphaug impact source:
  *   - Synolakis 1987 sloping-beach run-up,
- *   - Watts 2000 submarine-landslide source amplitude,
- *   - Heidarzadeh & Satake 2015 frequency-dependent far-field dispersion.
+ *   - a Watts 2000-inspired submarine-landslide source amplitude,
+ *   - a heuristic frequency-dispersion far-field amplitude envelope
+ *     (Kajiura 1963 theory / Watada et al. 2014 trans-oceanic data).
  *
  * All fits carry ≥ ±factor-2 scatter on real data; use for
  * order-of-magnitude presentation only.
@@ -15,10 +16,22 @@ import { m } from '../../units.js';
 /**
  * Run-up height of a long-wave tsunami on a plane-slope beach.
  *
+ * Canonical Synolakis (1987) non-breaking run-up law:
+ *
+ *     R / d = 2.831 · √(cot β) · (H / d)^(5/4)
+ *
+ * The implementation below writes it in the algebraically-IDENTICAL
+ * pivot form (prefactor H, exponent ¼ on H/d):
+ *
  *     R_max = 2.831 · H · √(cot β) · (H / d)^(1/4)
  *
- * where H is the incident deep-ocean wave amplitude, β the beach slope
- * angle, and d the offshore water depth at which H is measured.
+ * because  H · (H/d)^(1/4) = d · (H/d)^(5/4) = H^(5/4) · d^(−1/4).
+ * (The ¼ here is NOT the canonical exponent — the full H-dependence is
+ * 5/4 once the leading H is folded in. Do not "simplify" by dropping
+ * the leading H.) where H is the incident deep-ocean wave amplitude,
+ * β the beach slope angle, and d the offshore water depth at which H
+ * is measured. Valid for NON-BREAKING waves; the caller caps run-up at
+ * ~4× the incident amplitude (McCowan 1894 breaking limit).
  *
  * Reference: Synolakis, C. E. (1987). "The runup of solitary waves."
  * Journal of Fluid Mechanics 185: 523–545.
@@ -46,13 +59,19 @@ export function synolakisRunup(
  *    Engineering 126 (3): 144–152.
  *    DOI: 10.1061/(ASCE)0733-950X(2000)126:3(144).
  *
- * Simplified form tuned against the Watts Fig. 3 curves:
+ * Watts (2000)-INSPIRED simplified form (NOT Watts' published
+ * equation):
  *
  *     A₀ ≈ 0.1 · V^(1/3) · sin(θ)
  *
- * with V the slide bulk volume (m³) and θ the slope angle. Reproduces
- * the Aitape-PNG 1998 slide (V ≈ 4 × 10⁶ m³, θ ≈ 10°) within a factor
- * of 2 against the observed 10–15 m local runup.
+ * with V the slide bulk volume (m³) and θ the slope angle. Watts' full
+ * characteristic amplitude additionally depends on slide thickness, the
+ * submerged density contrast (ρ_slide/ρ_water − 1) and the slide Froude
+ * number — none of which appear here; they are absorbed into the 0.1
+ * prefactor. So this is a calibrated envelope, not a transcription of
+ * Watts: it reproduces the Aitape-PNG 1998 slide (V ≈ 4 × 10⁶ m³,
+ * θ ≈ 10°) within a factor of 2 against the observed 10–15 m local
+ * runup. Order-of-magnitude only.
  */
 export function submarineLandslideAmplitude(slideVolumeM3: number, slopeRad: number): Meters {
   if (!Number.isFinite(slideVolumeM3) || slideVolumeM3 <= 0) return m(0);
@@ -63,14 +82,24 @@ export function submarineLandslideAmplitude(slideVolumeM3: number, slopeRad: num
 
 /**
  * Dispersion-induced amplitude correction for a far-field tsunami.
- * Empirical decay multiplier on top of the 1/r geometric spreading,
- * following the frequency-dependent dispersion observed at DART buoys
- * for the 2004 Sumatra and 2011 Tōhoku events (Heidarzadeh & Satake
- * 2015, JGR Oceans 120 (11)).
  *
- *   Reference: Heidarzadeh, M. & Satake, K. (2015). "Source properties
- *    of the 1998 July 17 Papua New Guinea tsunami based on tide gauge
- *    records and numerical simulation." GJI 202 (1): 361–377.
+ * This is a HEURISTIC exponential envelope, `exp(−r / 2500 km)`, NOT a
+ * transcription of a published equation. Frequency dispersion gradually
+ * stretches the leading tsunami wave train and lowers its peak with
+ * propagation distance; the 2 500 km scale length is calibrated so the
+ * envelope eats ≈ 50 % at 5 000 km and ≈ 80 % at 10 000 km, the rough
+ * far-field amplitude/phase reductions documented for trans-oceanic
+ * events. (The classic dispersion theory is Kajiura 1963; the modern
+ * trans-Pacific reduction for the 2011 Tōhoku event is quantified by
+ * Watada et al. 2014.) Use for order-of-magnitude far-field display.
+ *
+ *   References:
+ *     Kajiura, K. (1963). "The leading wave of a tsunami." Bull.
+ *      Earthquake Res. Inst. 41: 535–571.
+ *     Watada, S., Kusumoto, S. & Satake, K. (2014). "Simulating
+ *      tsunami waveforms using ... dispersion, elastic loading, and
+ *      gravitational potential." JGR Solid Earth 119 (5): 4287–4310.
+ *      DOI: 10.1002/2013JB010841.
  *
  * Returns a factor ≤ 1 that scales the Ward–Asphaug / seismic-tsunami
  * amplitude at distance r.

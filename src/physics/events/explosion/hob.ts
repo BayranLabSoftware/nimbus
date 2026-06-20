@@ -64,13 +64,18 @@ export function hobRegime(scaled: number): HobRegime {
  *   Trinity 1945 (21 kt, near-surface tower): factor ≈ 0.90 →
  *     surface-burst regime, matches observed Trinity crater + blast.
  *
- * Piecewise fit (scaled HOB in m/kt^(1/3)):
- *   z < 50     → 0.85                            (surface coupling)
- *   50–150     → 0.85 + 0.65·(z−50)/100          (linear ramp 0.85→1.50)
+ * Piecewise fit (scaled HOB in m/kt^(1/3)), as implemented below:
+ *   z < 50     → 1.00                            (surface coupling)
+ *   50–150     → 1.00 + 0.50·(z−50)/100          (linear ramp 1.00→1.50)
  *   150–300    → 1.50                            (Mach-stem optimum)
  *   300–700    → 1.50 − 0.80·(z−300)/400         (linear roll-off 1.50→0.70)
  *   700–1500   → 0.70 · exp(−(z−700)/1500)       (exponential to ~0.45)
  *   z ≥ 1500   → 0.25                            (stratospheric)
+ *
+ * The surface baseline is 1.0 (not the pre-Phase-17 0.85): Glasstone &
+ * Dolan 1977 Fig. 3.74a / Tab 12.20 publish surface-burst overpressure
+ * radii that ALREADY fold in ground-coupling loss, so an extra ×0.85
+ * double-counted it and pushed Castle Bravo / 1 Mt surface off-benchmark.
  *
  * Reference: Glasstone & Dolan (1977), Fig 3.74a/b for the optimum-
  * airburst envelope; Wellerstein NUKEMAP for cross-calibration on

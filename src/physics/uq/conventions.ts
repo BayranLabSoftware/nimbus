@@ -115,14 +115,14 @@ export const OUTPUT_SIGMA = {
     sigma: 0.7,
     source: 'Sheridan 1979 vs Dade & Huppert 1998',
   },
-  ashfallArea: { kind: 'lognormal', sigma: 0.69, source: 'Walker 1980 / Pyle 1989' }, // ln(2) ≈ 0.69
-  laharRunout: { kind: 'lognormal', sigma: 0.69, source: 'Iverson 1997 volume-runout' },
+  ashfallArea: { kind: 'lognormal', sigma: Math.LN2, source: 'Walker 1980 / Pyle 1989' }, // factor-2 band
+  laharRunout: { kind: 'lognormal', sigma: Math.LN2, source: 'Iverson 1997 volume-runout' }, // factor-2 band
   tsunamiRunup: { kind: 'linear-fraction', sigma: 0.3, source: 'Synolakis 1987 run-up' },
   tsunamiWunnemannFarField: {
     kind: 'lognormal',
-    sigma: 1.1,
+    sigma: Math.log(3),
     source: 'Wünnemann et al. 2007 Fig. 6',
-  }, // ln(3) ≈ 1.1
+  }, // factor-3 band
 } as const satisfies Record<string, SigmaConvention>;
 
 /**
