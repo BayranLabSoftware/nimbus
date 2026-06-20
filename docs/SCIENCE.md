@@ -236,3 +236,29 @@ depending on the study). In those cases:
 Better to surface uncertainty than pretend it isn't there. A
 popular-science audience deserves "we know this to ±30%", not a fake
 two-decimal-place precision.
+
+### Calibrated fits flagged as such
+
+A few headline quantities are NOT transcriptions of a published
+equation but **calibrated envelopes** fit to one or two benchmark
+events. They are honest order-of-magnitude estimates, and each is
+labelled in its JSDoc as a fit (not the cited authors' formula):
+
+- **Impact-tsunami source amplitude** (`events/tsunami/impact.ts`,
+  `impactSourceAmplitude`) — a saturating fit to the Range 2022 /
+  Bralower 2018 hydrocode envelope, not Ward & Asphaug's raw
+  A₀ = R_C/2. The impact-tsunami hazard itself is contested (Melosh
+  2003 "over-rated"; Wünnemann 2007), so the far-field row carries an
+  explicit Wünnemann damping and a ±factor-3 band.
+- **Landslide / volcanic-collapse source amplitude**
+  (`events/volcano/tsunami.ts`) — a Watts-2000-INSPIRED
+  `K·(γ/γ_ref)·V^(1/3)·sinθ` calibrated per regime, not Watts'
+  predictive equation (slide thickness and Froude number are folded
+  into the regime prefactor).
+- **Seismic-tsunami coupling triplet** (`events/earthquake/seismicTsunami.ts`)
+  — the rupture aspect, dip-uplift, and wave-coupling factors are
+  tuned to the Tōhoku DART + Sumatra anchors; that is calibration to a
+  few targets, not independent validation.
+- **Bolide airburst amplification** (`effects/atmosphericEntry.ts`) —
+  the Sachs exponent β = 5/3 is effectively a single fitted knob
+  landing Chelyabinsk / Tunguska on observation.

@@ -61,8 +61,9 @@ export const SUZUKI_K = 1;
  *  extend the 1-mm isopach downwind instead of diluting it. */
 export const ALONG_WIND_SOURCE_FACTOR = 0.5;
 /** Crosswind Gaussian turbulent-diffusion factor. σ_y(x) grows as
- *  √(1 + x / (diffusion length)) — Pasquill-Gifford D-class profile
- *  truncated to the far field. CROSSWIND_BASE · H is the initial
+ *  √(1 + x / (diffusion length)) — a Pasquill-Gifford-INSPIRED
+ *  neutral-stability growth (the √-form resembles, but is not, the
+ *  literal PG D-class σ_y curve). CROSSWIND_BASE · H is the initial
  *  source width; CROSSWIND_DIFFUSION_SCALE is the downwind distance
  *  at which σ_y has doubled from source width. */
 export const CROSSWIND_BASE_FACTOR = 0.3;
@@ -177,8 +178,11 @@ const SUZUKI_NORMALISATION = (() => {
  *
  * Each (grain class, release height) pair deposits its mass at the
  * downwind range where the fall time at that height equals the wind
- * advection time — a lateral Gaussian spreads the mass crosswind
- * with σ_y(x) = 0.2·x (Pyle 1989 isopach aspect).
+ * advection time — a lateral Gaussian spreads the mass crosswind with
+ * σ_y(x) = max(H·{@link CROSSWIND_BASE_FACTOR}, 500 m)·√(1 + x/L_diff),
+ * a sub-linear turbulent-diffusion growth (NOT the older σ_y = 0.2·x
+ * isopach-aspect form — that comment was stale; the √-growth is what is
+ * actually computed below).
  */
 export function ashfallMassLoading(input: AshDepositInput): number {
   const H = input.plumeHeight as number;

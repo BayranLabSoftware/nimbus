@@ -17,16 +17,20 @@ import type { KilogramPerCubicMeter, Meters } from '../units.js';
  * results and the Eltanin geological record (1-4 km asteroid in
  * 5 km Pacific deep ocean, 2.5 Ma, NO observable seafloor crater).
  *
- * The fix. Crawford & Mader 1998 derived an exponential absorption
- * profile for the impactor's kinetic energy as it traverses the
- * water column. The fraction reaching the seafloor scales as
+ * The fix. Crawford & Mader 1998 showed the impactor's kinetic energy
+ * is progressively absorbed as it traverses the water column; we model
+ * that with an exponential absorption profile (a Nimbus parameterisation
+ * calibrated to the Gisler 2011 hydrocode runs, NOT a closed-form
+ * equation transcribed from Crawford & Mader). The fraction reaching
+ * the seafloor scales as
  *
  *     f_seafloor = exp(−d_water / d_critical)
  *     d_critical = β · L · sqrt(ρ_i / ρ_water)
  *
- * with β ≈ 0.5 calibrated against Gisler et al. (2011) RAGE
- * hydrocode runs. The complementary fraction f_water = 1 − f_seafloor
- * is what couples into the water cavity / tsunami source.
+ * with the calibration coefficient β ≈ 0.5 ({@link WATER_COLUMN_COUPLING_BETA},
+ * fit to Gisler et al. 2011 RAGE runs). The complementary fraction
+ * f_water = 1 − f_seafloor is what couples into the water cavity /
+ * tsunami source.
  *
  * Calibration anchors (β = 0.5, ρ_water = 1025 kg/m³):
  *   - Chicxulub on 100 m shelf  → f_seafloor ≈ 0.99 (crater intact)
@@ -34,10 +38,15 @@ import type { KilogramPerCubicMeter, Meters } from '../units.js';
  *   - Eltanin (1 km, 5 km basin)  → f_seafloor ≈ 0.003 (no crater) ✓
  *   - 100 m bolide in 4 km basin  → f_seafloor ≈ 0     (no crater)
  *
- * The Gisler 2011 hydrocode regime boundary is "seafloor crater
- * suppressed once d_water > 5-7 × L"; the exponential form recovers
- * this transition at d_water/L ≈ 5 → f_seafloor ≈ 6 % (for
- * stony-density bodies), inside the Gisler envelope.
+ * Two mechanisms suppress the seafloor crater, and the OPERATIVE one is
+ * the hard cutoff (below), which fires EARLIER than the exponential
+ * decay alone: for a stony body the cutoff triggers at d_water/L ≈ 2.57
+ * (density-corrected, see {@link WATER_COLUMN_DISRUPTION_RATIO}), while
+ * the bare exponential would still leave ≈ 6 % seafloor coupling out at
+ * d_water/L ≈ 5. Both lie inside the Gisler 2011 "crater suppressed once
+ * d_water > 5–7 × L" envelope; the cutoff is the conservative choice
+ * that matches the Gersonde 1997 Eltanin "no crater" record. The
+ * exponential governs only the PARTIAL-coupling regime below the cutoff.
  *
  * References:
  *   Crawford, D.A. & Mader, C.L. (1998). "Modeling Asteroid Impact

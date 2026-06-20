@@ -328,6 +328,14 @@ export function volcanoTsunami(input: VolcanoTsunamiInput): VolcanoTsunamiResult
       ? Math.sqrt(footprintArea / Math.PI)
       : Math.cbrt(V)
   );
+  // Far field uses the UNDAMPED Ward-Asphaug 1/r primitive
+  // ({@link impactAmplitudeAtDistance}), NOT the Wünnemann-damped impact
+  // variant. The Wünnemann/Melosh damping is specific to short-wavelength
+  // IMPACT-cavity waves; it is not transferable as-is to a slope-failure
+  // source. So the slide far-field here is the OPTIMISTIC (upper-envelope)
+  // 1/r reach — real landslide tsunamis also disperse and decay somewhat
+  // faster than 1/r at trans-basin range (Tappin 2017), so read these as
+  // an upper bound, not a best estimate.
   const amp100 = impactAmplitudeAtDistance({
     sourceAmplitude,
     cavityRadius,

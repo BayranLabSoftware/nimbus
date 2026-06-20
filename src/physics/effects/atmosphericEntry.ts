@@ -83,15 +83,25 @@ export interface AtmosphericEntryResult {
    * Fraction of the original kinetic energy that reaches the ground
    * as cratering / seismic work. Complement (1 − this) is deposited
    * in the atmosphere as thermal + blast.
+   *
+   * NOTE: the ramp that maps burst altitude → ground fraction
+   * (≈ 0.02 for a complete airburst ≥ 15 km, rising to ≈ 0.30 near the
+   * surface) is a Nimbus HEURISTIC, not a Chyba/Collins equation. The
+   * trend is physically correct (higher burst → less ground coupling);
+   * the specific break points / slopes are uncited engineering choices.
    */
   energyFractionToGround: number;
   /** Penetration-depth bonus added to the breakup-to-burst gap by the
-   *  pancake's mass — `1.2 · ln(D/10) · H_scale` (Chyba et al. 1993,
-   *  Collins et al. 2005). For very large bodies (D ≫ 10 m) this can
-   *  exceed the breakup altitude itself, so the body never bursts in
-   *  the atmosphere and the simulator flags it `INTACT` even though
-   *  fragmentation began at high altitude. 0 for objects below the
-   *  10 m reference diameter. */
+   *  pancake's mass. The CONCEPT — that larger bodies penetrate deeper
+   *  before peak energy deposition — is from Chyba et al. (1993) /
+   *  Collins et al. (2005); the specific functional form
+   *  `1.2 · ln(D/10) · H_scale` and its coefficient are a Nimbus tuning
+   *  calibrated against Tunguska + Chelyabinsk (see
+   *  {@link PENETRATION_COEFFICIENT}), NOT a transcribed equation. For
+   *  very large bodies (D ≫ 10 m) this can exceed the breakup altitude
+   *  itself, so the body never bursts in the atmosphere and the
+   *  simulator flags it `INTACT` even though fragmentation began at high
+   *  altitude. 0 for objects below the 10 m reference diameter. */
   penetrationBonus: Meters;
   /** Yield deposited in the atmosphere as the entry-phase fireball
    *  and shock pulse — `(1 − energyFractionToGround) · KE`, expressed
@@ -204,7 +214,12 @@ const ZERO_ENTRY_DAMAGE = {
  *
  *     f(h_b) = (P_ground / P_amb(h_b))^(1/β)
  *
- * with `β = 5/3`. No two-point fit, no fudge slope.
+ * with `β = 5/3`. Caveat: combining the weak-shock pressure invariance
+ * (an amplification at a FIXED point) with the Sachs ΔP∼R^(−β) decay (to
+ * convert that into a RADIUS gain) is a plausibility argument, not a
+ * rigorous derivation — β = 5/3 is effectively a single fitted knob,
+ * chosen because it lands Chelyabinsk (~7×) and Tunguska (~2.7×) on
+ * observation. Treat the factor as an order-of-magnitude correction.
  *
  * Validation against the canonical reference events:
  *   - Chelyabinsk 2013, simulator's burst altitude ≈ 22 km →

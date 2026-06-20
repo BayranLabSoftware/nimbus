@@ -84,7 +84,8 @@ function normaliseAzimuth(degrees: number): number {
  *   - Schultz, P. H. & Anderson, R. R. (1996). "Asymmetry of ejecta
  *     and target damage in oblique impacts." LPSC XXVII, 1149–1150.
  *
- * Analytical envelope used here:
+ * Analytical envelope used here (a Nimbus fit chosen to track the cited
+ * data, NOT a transcribed equation from any of the papers below):
  *
  *     b/a ≡ semiMinor / semiMajor  =  max( 0.40,  sin(θ)^(1/3) )
  *
@@ -147,7 +148,8 @@ export function craterAsymmetry(impactAngleDeg: number, impactAzimuthDeg: number
  * elongates a few per cent more because the radiating fireball travels
  * further along the trajectory before ablating.
  *
- * Two-knob popular-science envelope used here:
+ * Two-knob popular-science envelope used here (a Nimbus fit bracketing
+ * the Pierazzo & Artemieva 2003 hydrocode range, NOT their equation):
  *
  *     downrangeBoost(θ)   =  α · max( 0, 1 − sin(θ) )
  *     crossrangeShrink(θ) =  α · 0.5 · max( 0, 1 − sin(θ) )
