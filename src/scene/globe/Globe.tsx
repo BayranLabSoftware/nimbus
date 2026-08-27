@@ -1143,36 +1143,44 @@ export function Globe(): JSX.Element {
     // events that don't propagate to a useful amplitude simply do
     // not get a tsunami overlay, which is the physically honest
     // outcome.
-    const buildWaveTriangleVerts = (
+    /**
+     * Scia-cometa (regia tsunami): un breve tratto luminoso orientato
+     * col fronte, testa avanti e coda che sfuma (taper del materiale
+     * glow). Sostituisce il tappeto di freccine: un ordine di
+     * grandezza in meno di segni, e la densità — non la forma —
+     * racconta l'ampiezza.
+     */
+    const buildCometPositions = (
       lat0: number,
       lon0: number,
       dirEast: number,
       dirNorth: number,
-      sizeM: number
+      lengthM: number
     ): Cartesian3[] | null => {
       const mag = Math.hypot(dirEast, dirNorth);
       if (mag === 0) return null;
       const dx = dirEast / mag;
       const dy = dirNorth / mag;
-      const px = -dy;
-      const py = dx;
       const cosLat = Math.max(Math.cos((lat0 * Math.PI) / 180), 1e-6);
       const mPerLat = 111_000;
       const mPerLon = 111_000 * cosLat;
-      const apexLat = lat0 + (sizeM * dy) / mPerLat;
-      const apexLon = lon0 + (sizeM * dx) / mPerLon;
-      const bcLat = lat0 - ((sizeM / 3) * dy) / mPerLat;
-      const bcLon = lon0 - ((sizeM / 3) * dx) / mPerLon;
-      const baseHalfM = sizeM / 3;
-      const b1Lat = bcLat + (baseHalfM * py) / mPerLat;
-      const b1Lon = bcLon + (baseHalfM * px) / mPerLon;
-      const b2Lat = bcLat - (baseHalfM * py) / mPerLat;
-      const b2Lon = bcLon - (baseHalfM * px) / mPerLon;
+      const headLat = lat0 + (0.35 * lengthM * dy) / mPerLat;
+      const headLon = lon0 + (0.35 * lengthM * dx) / mPerLon;
+      const tailLat = lat0 - (0.65 * lengthM * dy) / mPerLat;
+      const tailLon = lon0 - (0.65 * lengthM * dx) / mPerLon;
+      if (Math.abs(headLat) > 89 || Math.abs(tailLat) > 89) return null;
       return [
-        Cartesian3.fromDegrees(apexLon, apexLat),
-        Cartesian3.fromDegrees(b1Lon, b1Lat),
-        Cartesian3.fromDegrees(b2Lon, b2Lat),
+        Cartesian3.fromDegrees(headLon, headLat, 1_500),
+        Cartesian3.fromDegrees(tailLon, tailLat, 1_500),
       ];
+    };
+
+    /** Hash deterministico cella→[0,1) per la semina pesata: stessa
+     *  URL, stessa scena — niente Math.random nella regia. */
+    const cellHash01 = (a: number, b: number): number => {
+      let h = (Math.imul(a | 0, 374761393) + Math.imul(b | 0, 668265263)) | 0;
+      h = Math.imul(h ^ (h >>> 13), 1274126177) | 0;
+      return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
     };
 
     const sampleArrivalGradient = (
@@ -2149,8 +2157,12 @@ export function Globe(): JSX.Element {
             // size and colour do NOT encode intensity (the heatmap
             // does that). Only the rotation varies, which is the
             // local direction of propagation.
-            const ARROW_COLOR = Color.fromCssColorString('#1f2937'); // slate-800
-            const ARROW_ALPHA = 0.85;
+            const COMET_COLOR = Color.fromCssColorString('#BFE8F5');
+            const cometMaterial = new PolylineGlowMaterialProperty({
+              color: COMET_COLOR.withAlpha(0.55),
+              glowPower: 0.3,
+              taperPower: 0.45,
+            });
             const ARROW_SIZE_M = 30_000;
             const MIN_AMPLITUDE_M = 1.0;
             // Cap on total arrow entities. 39 000 entities for a
@@ -2160,7 +2172,10 @@ export function Globe(): JSX.Element {
             // to read as a continuous flow-field on a 1920px viewport,
             // cheap enough that creation + purge + render stay
             // sub-200 ms even on planetary footprints.
-            const MAX_ARROWS = 3_000;
+            // La semina pesata sull'ampiezza sotto taglia ancora, quindi
+            // il tetto geometrico può stare più basso del vecchio 3 000:
+            // il risultato tipico è qualche centinaio di comete.
+            const MAX_ARROWS = 1_200;
             const latLo = Math.max(-85, Math.ceil(gGrid.minLat));
             const latHi = Math.min(85, Math.floor(gGrid.maxLat));
             const lonLo = Math.max(-180, Math.ceil(gGrid.minLon));
@@ -2225,35 +2240,31 @@ export function Globe(): JSX.Element {
                   lon
                 );
                 if (dir.east === 0 && dir.north === 0) continue;
-                // Triangle size scales with the geographic step so
-                // bigger-spaced arrows stay visually proportionate to
-                // their cell. step=1 → 30 km, step=4 → 60 km, capped
-                // so very dense events don't get postage-stamp arrows.
-                const adaptiveSizeM = ARROW_SIZE_M * Math.min(stepDeg, 3);
-                const verts = buildWaveTriangleVerts(lat, lon, dir.east, dir.north, adaptiveSizeM);
-                if (verts === null) continue;
+                // Semina pesata sull'ampiezza: ogni cella tira un hash
+                // deterministico e sopravvive con probabilità che
+                // cresce con l'onda locale. Dove il mare è alto le
+                // comete si addensano; dove è appena ≥ 1 m ne resta
+                // una su sei.
+                const weight = Math.min(1, 0.15 + (0.85 * amplitude) / 6);
+                if (cellHash01(lat, lon) > weight) continue;
+                const lengthM = ARROW_SIZE_M * 2.4 * Math.min(stepDeg, 3);
+                const positions = buildCometPositions(lat, lon, dir.east, dir.north, lengthM);
+                if (positions === null) continue;
                 const id = `tsunami-arrow-${lat.toString()}-${lon.toString()}`;
                 viewer.entities.add({
                   id,
-                  polygon: {
-                    hierarchy: new PolygonHierarchy(verts),
-                    material: ARROW_COLOR.withAlpha(ARROW_ALPHA),
-                    outline: false,
-                    // Lifted 1 km above sea level so the hover-pick ray
-                    // hits the arrow BEFORE any damage ring (which is
-                    // CLAMP_TO_GROUND at the sea-level terrain). 1 km is
-                    // visually invisible at globe zoom (sub-pixel offset
-                    // from the underlying surface) but enough to win
-                    // the pick competition every time.
-                    height: 1_000,
+                  polyline: {
+                    positions,
+                    width: 3,
+                    material: cometMaterial,
                   },
                 });
-                // Tooltip: hovering over an arrow shows the local wave
+                // Tooltip: hovering over a streak shows the local wave
                 // height at that point in metres, sourced directly
                 // from the FMM amplitude field. The tooltip's
                 // `radiusM` slot is repurposed as the amplitude — the
                 // formatter switches based on `kind`.
-                registerRingTooltip(id, 'tsunamiWaveAmplitude', amplitude, ARROW_COLOR);
+                registerRingTooltip(id, 'tsunamiWaveAmplitude', amplitude, COMET_COLOR);
                 totalArrows++;
               }
             }
@@ -2519,14 +2530,18 @@ export function Globe(): JSX.Element {
         // STILL get a visual hint of the wave direction near the
         // source, instead of leaving the user with an empty map.
         // Same gating as the global pass: amplitude ≥ 1 m and arrival
-        // finite. Same primitive (small dark triangle, neutral grey)
-        // and same tooltip kind, so the user reads the two layers as
-        // a single uniform glyph field.
+        // finite. Same glyph (comet streak, amplitude-weighted
+        // seeding) and same tooltip kind, so the user reads the two
+        // layers as a single uniform field.
         try {
           const ampField = bathymetricTsunami.amplitude;
           const arrField = bathymetricTsunami.field;
-          const LOCAL_ARROW_COLOR = Color.fromCssColorString('#1f2937');
-          const LOCAL_ARROW_ALPHA = 0.85;
+          const LOCAL_COMET_COLOR = Color.fromCssColorString('#BFE8F5');
+          const localCometMaterial = new PolylineGlowMaterialProperty({
+            color: LOCAL_COMET_COLOR.withAlpha(0.55),
+            glowPower: 0.3,
+            taperPower: 0.45,
+          });
           const LOCAL_ARROW_SIZE_M = 6_000;
           const LOCAL_MIN_AMPLITUDE_M = 1.0;
           // Aim for ~10 arrows per side on the tile (~100 total).
@@ -2559,25 +2574,26 @@ export function Globe(): JSX.Element {
                 cellLon
               );
               if (dir.east === 0 && dir.north === 0) continue;
-              const verts = buildWaveTriangleVerts(
+              const weight = Math.min(1, 0.15 + (0.85 * amp) / 6);
+              if (cellHash01(i, j) > weight) continue;
+              const positions = buildCometPositions(
                 cellLat,
                 cellLon,
                 dir.east,
                 dir.north,
-                LOCAL_ARROW_SIZE_M
+                LOCAL_ARROW_SIZE_M * 2.4
               );
-              if (verts === null) continue;
+              if (positions === null) continue;
               const id = `tsunami-arrow-local-${i.toString()}-${j.toString()}`;
               viewer.entities.add({
                 id,
-                polygon: {
-                  hierarchy: new PolygonHierarchy(verts),
-                  material: LOCAL_ARROW_COLOR.withAlpha(LOCAL_ARROW_ALPHA),
-                  outline: false,
-                  height: 1_000,
+                polyline: {
+                  positions,
+                  width: 3,
+                  material: localCometMaterial,
                 },
               });
-              registerRingTooltip(id, 'tsunamiWaveAmplitude', amp, LOCAL_ARROW_COLOR);
+              registerRingTooltip(id, 'tsunamiWaveAmplitude', amp, LOCAL_COMET_COLOR);
               localArrows += 1;
             }
           }
