@@ -364,7 +364,7 @@ export function RingLegend(): JSX.Element {
                     >
                       <span
                         className={styles.swatch}
-                        style={{ backgroundColor: row.color }}
+                        style={{ backgroundColor: row.color, color: row.color }}
                         aria-hidden="true"
                       />
                       <span className={styles.label}>{row.label}</span>

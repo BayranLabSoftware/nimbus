@@ -27,12 +27,13 @@
 }
 
 .heading {
-  font-size: 11px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   margin: 0;
-  opacity: 0.85;
+  color: var(--accent, #e8a33d);
 }
 
 .headerActions {
@@ -159,22 +160,22 @@
 .row {
   display: block;
   padding: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-.row:first-child {
-  border-top: 0;
+/* Alternate-row wash, come nella tavola: niente filetti, solo strati. */
+.row:nth-child(odd) .rowButton {
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
 .rowButton {
   /* Reset the native button styling so the row reads exactly like the
    * legacy <li> row, then add a clickable affordance. */
   display: grid;
-  grid-template-columns: 12px 1fr auto;
+  grid-template-columns: 8px 1fr auto;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   width: 100%;
-  padding: 4px 4px;
+  padding: 6px 8px;
   margin: 0;
   font-family: inherit;
   font-size: 12px;
@@ -213,11 +214,12 @@
 }
 
 .swatch {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+  width: 4px;
+  height: 15px;
+  border-radius: 999px;
+  background: currentColor;
   box-shadow: 0 0 6px currentColor;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  justify-self: center;
 }
 
 .label {
