@@ -603,6 +603,25 @@ export function Globe(): JSX.Element {
       // HDR: con l'imagery fotografica lascia respirare le alte luci
       // (ghiacci, deserti) invece di tosarle al bianco.
       viewer.scene.highDynamicRange = true;
+      // Bloom tenue sui bordi caldi (anelli, cresta d'onda, marker):
+      // valori scelti dal vivo — sotto questa soglia non si nota,
+      // sopra scivola nel videogioco.
+      const bloom = viewer.scene.postProcessStages.bloom;
+      bloom.enabled = true;
+      // Cesium tipizza `uniforms` come `any`; il contratto reale del
+      // BloomStage è questo quintetto numerico.
+      const bloomUniforms = bloom.uniforms as {
+        contrast: number;
+        brightness: number;
+        delta: number;
+        sigma: number;
+        stepSize: number;
+      };
+      bloomUniforms.contrast = 110;
+      bloomUniforms.brightness = -0.4;
+      bloomUniforms.delta = 0.9;
+      bloomUniforms.sigma = 2.2;
+      bloomUniforms.stepSize = 1.6;
 
       // --- Camera controls -------------------------------------------
       // Cesium ships with all six gestures wired to the trackball

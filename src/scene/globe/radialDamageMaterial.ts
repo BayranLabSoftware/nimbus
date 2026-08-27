@@ -17,11 +17,14 @@ import { Color, Event, Material } from 'cesium';
 const FABRIC_TYPE = 'RadialDamageRing';
 
 /**
- * Fragment shader: smoothly ramps alpha from 0 at the centre to a
- * peak rim at r ≈ 0.96, with a soft body fill so the interior reads
- * as a translucent dome rather than a hollow circle. `r` is the
- * Euclidean distance from the ellipse centre, normalised so r = 1.0
- * lands exactly on the ellipse boundary inscribed in the [0, 1]²
+ * Fragment shader — the «bordo acceso, interno al 10%» law from the
+ * approved art direction: the ring is an edge-lit contour, not a
+ * blanket. The interior keeps a whisper of fill (≤ 10% alpha) so the
+ * affected area still reads as an area, while the rim carries the
+ * signal — pushed above 1.0 in the diffuse term so the scene's HDR
+ * bloom bites exactly there and nowhere else. `r` is the Euclidean
+ * distance from the ellipse centre, normalised so r = 1.0 lands
+ * exactly on the ellipse boundary inscribed in the [0, 1]²
  * texture-coordinate frame Cesium hands to ground primitives.
  */
 const FABRIC_SOURCE = `
@@ -31,11 +34,11 @@ czm_material czm_getMaterial(czm_materialInput materialInput) {
   float r = length(st) * 2.0;
   if (r > 1.02) discard;
 
-  float body = smoothstep(0.0, 1.0, r) * 0.42;
-  float rim = smoothstep(0.85, 0.96, r) * (1.0 - smoothstep(0.96, 1.02, r));
+  float body = smoothstep(0.0, 1.0, r) * 0.10;
+  float rim = smoothstep(0.88, 0.97, r) * (1.0 - smoothstep(0.97, 1.02, r));
 
-  material.diffuse = color.rgb;
-  material.alpha = clamp(body + rim * 0.7, 0.0, 1.0) * color.a;
+  material.diffuse = color.rgb * (1.0 + rim * 0.25);
+  material.alpha = clamp(body + rim * 0.75, 0.0, 1.0) * color.a;
   return material;
 }
 `;
