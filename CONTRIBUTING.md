@@ -120,7 +120,7 @@ will be sent back for a rebase.
 - [ ] `pnpm test` passes
 - [ ] `pnpm build` passes
 - [ ] User-facing change has a changeset (`pnpm changeset`)
-- [ ] Docs updated where relevant (README, CLAUDE.md, docs/)
+- [ ] Docs updated where relevant (README, docs/)
 - [ ] Every commit signed off
 - [ ] No new asset without a [docs/ASSETS.md](docs/ASSETS.md) entry
 - [ ] Physics change has a unit test against a published value plus a

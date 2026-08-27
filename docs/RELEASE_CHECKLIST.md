@@ -19,11 +19,10 @@ or have a written reason in the release PR before pushing the
       substituted.
 - [x] All `GITHUB_USERNAME` placeholders substituted (repo:
       `anred88-stack/Nimbus`).
-- [ ] `TBD` in `LICENSE`, `NOTICE`, `CODEOWNERS` replaced with the
-      real copyright holder.
-- [ ] `conduct@example.com` and `security@example.com` replaced with
-      real addresses in `CODE_OF_CONDUCT.md` and `SECURITY.md`.
-- [ ] `PROJECT_TAGLINE` in `CLAUDE.md` updated to the final wording.
+- [x] `TBD` copyright holder replaced in `LICENSE` and `NOTICE`.
+- [x] Placeholder contact addresses replaced in `CODE_OF_CONDUCT.md`
+      and `SECURITY.md`.
+- [ ] `PROJECT_TAGLINE` in `docs/DEVELOPMENT.md` updated to the final wording.
 
 ## 2. CI / deploy
 

@@ -106,13 +106,12 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   `GITHUB_USERNAME` placeholders substituted across `package.json`,
   `index.html`, the i18n JSON, the landing page, the deploy workflow,
   README, NOTICE, LICENSE, the announcement draft, the release
-  checklist, and CLAUDE.md.
+  checklist, and the development handbook.
 
 ### Pending for v1.0
 
-- Replace `TBD` copyright holder in `LICENSE` and `NOTICE`.
-- Replace `conduct@example.com` and `security@example.com` with real
-  contact addresses.
+- ~~Replace the `TBD` copyright holder and the placeholder contact
+  addresses~~ — done.
 - Set `VITE_PLAUSIBLE_DOMAIN` in the Cloudflare Pages production
   environment.
 - Real-device QA pass on iOS Safari and Android Chrome (Playwright

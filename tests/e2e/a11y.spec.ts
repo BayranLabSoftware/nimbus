@@ -13,7 +13,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 /**
  * Accessibility audits run with axe-core against the WCAG 2.1 AA
- * ruleset (the project's stated target per CLAUDE.md). We fail the
+ * ruleset (the project's stated target per docs/DEVELOPMENT.md). We fail the
  * test on any violation — not just criticals — because M5's exit
  * criterion is "Lighthouse a11y = 100", i.e. zero known issues.
  *

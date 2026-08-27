@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Please do not file a public issue. Email **security@example.com** with:
+Please do not file a public issue. Email **bayranlabsoftware@gmail.com** with:
 
 - a description of the vulnerability,
 - steps to reproduce or a proof of concept,

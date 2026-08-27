@@ -7,7 +7,7 @@ import type { StorybookConfig } from '@storybook/react-vite';
  *
  * Addons kept minimal on purpose:
  *   - addon-a11y: WCAG AA is a project-level requirement (see
- *     CLAUDE.md), so an in-canvas axe pass is table-stakes.
+ *     docs/DEVELOPMENT.md), so an in-canvas axe pass is table-stakes.
  *
  * `docs.autodocs: 'tag'` opts only tagged components into generated
  * docs, avoiding surprise pages. Add stories and extra addons as the UI

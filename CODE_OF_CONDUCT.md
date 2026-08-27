@@ -55,7 +55,7 @@ is officially representing the community in public spaces.
 ## Enforcement
 
 Report abusive, harassing, or otherwise unacceptable behaviour to the
-maintainers at **conduct@example.com**. Reports will be reviewed and
+maintainers at **bayranlabsoftware@gmail.com**. Reports will be reviewed and
 investigated promptly and fairly. All maintainers are obligated to
 respect the privacy and security of the reporter.
 
