@@ -13,19 +13,22 @@
 }
 
 .back {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.05);
   color: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-s, 8px);
   padding: 8px 14px;
   font-size: 13px;
   cursor: pointer;
   margin-bottom: 24px;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease;
 }
 
 .back:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .back:focus-visible {
@@ -57,7 +60,7 @@
   margin: 0 0 12px 0;
   letter-spacing: -0.01em;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(251, 191, 36, 0.25);
+  border-bottom: 1px solid rgba(232, 163, 61, 0.3);
 }
 
 .prose {
@@ -74,26 +77,27 @@
 }
 
 .formula {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  background: var(--glass-bg, rgba(16, 22, 35, 0.68));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.09));
+  border-radius: var(--radius-m, 12px);
   padding: 18px 20px;
+  box-shadow: inset 0 1px 0 var(--glass-highlight, rgba(255, 255, 255, 0.07));
 }
 
 .formulaName {
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 10px 0;
-  color: #fbbf24;
+  color: var(--accent, #e8a33d);
 }
 
 .formulaBlock {
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-size: 13px;
   padding: 10px 12px;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-s, 8px);
   margin: 0 0 10px 0;
   white-space: pre-wrap;
   overflow-x: auto;
@@ -128,16 +132,16 @@
 .validationList li {
   font-size: 13px;
   padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-s, 8px);
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
 .validationList strong {
-  color: #fbbf24;
+  color: var(--accent, #e8a33d);
   font-size: 12px;
   letter-spacing: 0.02em;
 }

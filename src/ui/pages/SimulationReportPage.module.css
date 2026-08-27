@@ -1,13 +1,17 @@
 /*
  * Per-scenario Simulation Report — designed to be printed to PDF via
- * the browser's built-in Print → Save as PDF dialog. On screen it
- * uses a light paper-style background so "what you see is what you
- * print"; no dark-mode → light-mode surprise at print time.
+ * the browser's built-in Print → Save as PDF dialog. The SHEET stays
+ * paper-white so what you print is exactly what you see; the desk it
+ * lies on is the app's dark console world (redesign 2026-08), so the
+ * page reads as a print preview inside Nimbus rather than a jump to
+ * another product. @media print strips the desk entirely.
  */
 
 .root {
   min-height: 100vh;
-  background: #e9ecf2;
+  background:
+    radial-gradient(1200px 500px at 50% -10%, rgba(232, 163, 61, 0.06), transparent 60%),
+    var(--bg-top, #0a0e16);
   color: #111;
   font-family: var(--font-body, 'Inter', system-ui, sans-serif);
   line-height: 1.55;
@@ -26,31 +30,36 @@
 
 .toolButton,
 .printButton {
-  background: #fff;
-  color: #111;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-s, 8px);
   padding: 8px 14px;
   font: inherit;
   font-size: 13px;
   cursor: pointer;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease;
 }
 
-.toolButton:hover,
-.printButton:hover {
-  background: #f5f5f5;
-  border-color: rgba(0, 0, 0, 0.4);
+.toolButton:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .printButton {
-  background: #111;
-  color: #fff;
-  border-color: #111;
-  font-weight: 600;
+  background: linear-gradient(180deg, #f2b45a, #e8a33d 55%, #c9852b);
+  color: #201302;
+  border: none;
+  font-weight: 700;
+  box-shadow:
+    0 6px 18px rgba(232, 163, 61, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .printButton:hover {
-  background: #000;
+  filter: brightness(1.08);
 }
 
 .toolButton:focus-visible,
@@ -64,8 +73,8 @@
   margin: 0 auto;
   background: #fff;
   padding: 56px 64px 64px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  box-shadow: var(--elev-3, 0 20px 55px rgba(0, 0, 0, 0.55));
+  border-radius: var(--radius-s, 8px);
 }
 
 .header {
@@ -78,7 +87,7 @@
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #555;
+  color: #a06b1c;
   margin: 0 0 6px 0;
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
 }
