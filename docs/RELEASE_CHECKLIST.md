@@ -49,9 +49,13 @@ or have a written reason in the release PR before pushing the
 - [ ] `VITE_PLAUSIBLE_DOMAIN` set in the Pages production environment
       (not preview, not dev).
 - [ ] `VITE_STADIA_API_KEY` set in the Pages production environment.
-      Register a free domain-restricted key on stadiamaps.com and
-      thread it through the basemap URL (currently keyless dev path
-      in `Globe.tsx`).
+      Register a free domain-restricted key on stadiamaps.com and add
+      the deploy domain to it. The wiring in `Globe.tsx` is done: the
+      key is appended to the basemap URL when the variable is set, and
+      the URL stays keyless when it is not, so local development is
+      untouched. Without the key on a public origin the tiles come
+      back unauthorised and the globe renders black — silently, with
+      nothing in the console.
 - [ ] Plausible dashboard receives pageviews within 10 minutes of a
       deploy.
 - [ ] Privacy / analytics note in the footer or About dialog.

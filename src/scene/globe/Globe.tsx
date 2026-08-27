@@ -79,10 +79,18 @@ Ion.defaultAccessToken = '';
 //   2. The tiles bake in hill-shading, which gives the otherwise
 //      flat ellipsoid a sense of 3D relief without us having to
 //      load a Cesium terrain provider.
-// Stadia allows keyless requests for non-commercial use; production
-// builds should set VITE_STADIA_API_KEY (see docs/ASSETS.md and
-// docs/RELEASE_CHECKLIST.md).
-const BASE_TILE_URL = 'https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}@2x.png';
+// Stadia allows keyless requests from localhost and modest
+// non-commercial traffic, but a deployed origin needs a
+// domain-restricted key or the tiles come back unauthorised and the
+// globe renders black — no error in the console, just an unlit sphere
+// against the starfield. Register a free key on stadiamaps.com, add
+// the deploy domain to it, and set VITE_STADIA_API_KEY in the Pages
+// production environment. Without the variable the URL stays exactly
+// as it was, so local development keeps working untouched.
+const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY ?? '';
+const BASE_TILE_URL =
+  'https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}@2x.png' +
+  (STADIA_API_KEY ? `?api_key=${STADIA_API_KEY}` : '');
 const BASE_TILE_ATTRIBUTION =
   '© Stadia Maps · © Stamen Design · © OpenMapTiles · © OpenStreetMap contributors';
 

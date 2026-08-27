@@ -7,6 +7,10 @@ interface ImportMetaEnv {
   /** Optional override for the Plausible script host, e.g. a
    *  self-hosted proxy. Defaults to `https://plausible.io`. */
   readonly VITE_PLAUSIBLE_API_HOST?: string;
+  /** Chiave Stadia Maps con dominio registrato. Da localhost si puo'
+   *  lasciare vuota; da un dominio pubblico senza chiave le tessere
+   *  del globo non arrivano e la Terra resta nera. */
+  readonly VITE_STADIA_API_KEY?: string;
 }
 
 interface ImportMeta {
