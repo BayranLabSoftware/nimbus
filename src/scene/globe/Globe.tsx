@@ -2542,54 +2542,78 @@ export function Globe(): JSX.Element {
             minLon: -180,
             maxLon: 180,
             frameCount: 28,
+            endPercentile: 0.85,
             stride: 2,
             minChainPoints: 6,
           });
           const MAX_CHAINS_PER_FRAME = 12;
-          const headMaterial = new PolylineGlowMaterialProperty({
-            color: Color.fromCssColorString('#F2FDFF'),
-            glowPower: 0.35,
-          });
-          const trailMaterialA = new PolylineGlowMaterialProperty({
-            color: Color.fromCssColorString('#BDEFFC').withAlpha(0.55),
-            glowPower: 0.25,
-          });
-          const trailMaterialB = new PolylineGlowMaterialProperty({
-            color: Color.fromCssColorString('#8ED3E8').withAlpha(0.25),
-            glowPower: 0.2,
-          });
+          // Blu dell'acqua per la cresta in mare (richiesta di Andrea,
+          // e coerente con l'art direction: «il blu è dell'acqua»);
+          // l'onda d'urto sulla terraferma resta il cerchio dorato
+          // della cascata. Testa azzurra accesa, coda che scivola
+          // verso il blu profondo.
+          const CREST_HEAD = Color.fromCssColorString('#2F8FE8');
+          const CREST_TAIL = Color.fromCssColorString('#154E8F');
+          // Un colore-istanza dedicato per fotogramma, passato al
+          // materiale UNA volta e poi mutato sul posto. La prima
+          // versione scambiava tre MaterialProperty condivisi a ogni
+          // passo: ogni scambio ricostruiva le primitive ed era la
+          // causa dello scatto. Qui niente swap e niente allocazioni
+          // per tick — solo uniform che cambiano mentre la scena
+          // renderizza.
+          const frameColors = frames.map(() => CREST_HEAD.withAlpha(0));
           const frameEntities: Entity[][] = frames.map((frame, k) => {
             const chains = [...frame.chains]
               .sort((a, b) => b.length - a.length)
               .slice(0, MAX_CHAINS_PER_FRAME);
+            // CallbackProperty (non-costante): una ConstantProperty
+            // verrebbe letta una volta sola e la mutazione in place
+            // non arriverebbe mai alla GPU.
+            const material = new PolylineGlowMaterialProperty({
+              color: new CallbackProperty(() => frameColors[k] ?? Color.TRANSPARENT, false),
+              // Glow contenuto: con l'HDR+bloom della scena un glow
+              // pieno satura l'azzurro verso il bianco e l'acqua
+              // smette di essere blu.
+              glowPower: 0.32,
+            });
             return chains.map((chain, i) =>
               viewer.entities.add({
                 id: `tsunami-crest-${k.toString()}-${i.toString()}`,
-                show: false,
                 polyline: {
                   // Quota fissa di 2 km, come le frecce: il DEM ArcGIS
                   // include la batimetria, quindi una polilinea
                   // drappeggiata finirebbe sul fondale, sotto il
-                  // rettangolo della velatura. A zoom planetario
-                  // l'offset è sub-pixel.
+                  // rettangolo della velatura. Entità sempre accese:
+                  // la visibilità la governa l'alpha del materiale.
                   positions: chain.map((pt) => Cartesian3.fromDegrees(pt.lon, pt.lat, 2_000)),
-                  width: 7,
-                  material: headMaterial,
+                  width: 8,
+                  material,
                 },
               })
             );
           });
           if (frameEntities.length > 0) {
-            const CREST_LOOP_MS = 12_000;
-            const setFrameRole = (k: number, role: 'head' | 'a' | 'b' | 'off'): void => {
-              const list = frameEntities[k];
-              if (list === undefined) return;
-              for (const e of list) {
-                e.show = role !== 'off';
-                if (e.polyline && role !== 'off') {
-                  e.polyline.material =
-                    role === 'head' ? headMaterial : role === 'a' ? trailMaterialA : trailMaterialB;
+            const CREST_LOOP_MS = 9_000;
+            // Scia dietro la testa e accensione morbida davanti,
+            // misurate in fotogrammi: la posizione continua p scorre
+            // e ogni contorno si accende e si spegne in dissolvenza.
+            const TRAIL_SPAN = 3.2;
+            const LEAD_SPAN = 0.6;
+            const paint = (pos: number): void => {
+              for (let k = 0; k < frameColors.length; k++) {
+                const tint = frameColors[k];
+                if (tint === undefined) continue;
+                const d = pos - k;
+                let a = 0;
+                if (d >= 0 && d <= TRAIL_SPAN) a = 1 - d / TRAIL_SPAN;
+                else if (d < 0 && -d <= LEAD_SPAN) a = 1 + d / LEAD_SPAN;
+                if (a <= 0) {
+                  tint.alpha = 0;
+                  continue;
                 }
+                const mix = d > 0 ? Math.min(1, d / TRAIL_SPAN) : 0;
+                Color.lerp(CREST_HEAD, CREST_TAIL, mix, tint);
+                tint.alpha = a;
               }
             };
             const crestReduceMotion =
@@ -2598,16 +2622,11 @@ export function Globe(): JSX.Element {
             if (crestReduceMotion) {
               // Fotogramma intermedio fisso, come da regia: niente
               // animazione, ma la cresta esiste e racconta la scena.
-              setFrameRole(Math.floor(frameEntities.length * 0.4), 'head');
+              paint(frameColors.length * 0.4);
+              viewer.scene.requestRender();
             } else {
-              const crestT0 = performance.now();
-              let crestHandle = 0;
-              let crestCancelled = false;
-              let lastHead = -1;
               // Impulso alla sorgente: un battito radiale che parte
               // insieme al primo fotogramma di ogni giro della cresta.
-              // Un anello sottile che si espande e sfuma in ~900 ms —
-              // «un battito, non un fuoco d'artificio».
               const PULSE_MS = 900;
               const pulseCenter = Cartesian3.fromDegrees(
                 bathymetricTsunami.sourceLongitude,
@@ -2620,7 +2639,7 @@ export function Globe(): JSX.Element {
                   cavityEntity?.ellipse?.semiMajorAxis?.getValue(viewer.clock.currentTime) ?? 0
                 ) || 120_000
               );
-              const pulseColor = Color.fromCssColorString('#F2FDFF');
+              const pulseColor = Color.fromCssColorString('#9FD9FF');
               const pulseEntity = viewer.entities.add({
                 id: 'tsunami-crest-pulse',
                 position: pulseCenter,
@@ -2635,25 +2654,21 @@ export function Globe(): JSX.Element {
                   height: 2_000,
                 },
               });
+              const crestT0 = performance.now();
+              let crestHandle = 0;
+              let crestCancelled = false;
+              let lastLoop = -1;
               let pulseT0 = -1;
               const crestTick = (): void => {
                 if (crestCancelled || viewer.isDestroyed()) return;
                 const now = performance.now();
-                const u = ((now - crestT0) % CREST_LOOP_MS) / CREST_LOOP_MS;
-                const head = Math.min(
-                  frameEntities.length - 1,
-                  Math.floor(u * frameEntities.length)
-                );
-                if (head !== lastHead) {
-                  if (head < lastHead || lastHead === -1) pulseT0 = now; // giro nuovo
-                  for (let k = 0; k < frameEntities.length; k++) {
-                    const role =
-                      k === head ? 'head' : k === head - 1 ? 'a' : k === head - 2 ? 'b' : 'off';
-                    setFrameRole(k, role);
-                  }
-                  lastHead = head;
-                  viewer.scene.requestRender();
+                const elapsed = now - crestT0;
+                const loopN = Math.floor(elapsed / CREST_LOOP_MS);
+                if (loopN !== lastLoop) {
+                  lastLoop = loopN;
+                  pulseT0 = now; // battito a ogni giro nuovo
                 }
+                paint(((elapsed % CREST_LOOP_MS) / CREST_LOOP_MS) * frameColors.length);
                 if (pulseT0 >= 0) {
                   const pt = (now - pulseT0) / PULSE_MS;
                   const ellipse = pulseEntity.ellipse;
@@ -2661,9 +2676,10 @@ export function Globe(): JSX.Element {
                     pulseEntity.show = false;
                     pulseT0 = -1;
                   } else {
-                    // Entrambi gli assi nella stessa istruzione sincrona:
-                    // due CallbackProperty indipendenti farebbero scattare
-                    // l'invariante minor ≤ major di EllipseGeometry.
+                    // Entrambi gli assi nella stessa istruzione
+                    // sincrona: due CallbackProperty indipendenti
+                    // farebbero scattare l'invariante minor ≤ major
+                    // di EllipseGeometry.
                     const r = pulseBaseM * (0.6 + 1.1 * pt);
                     (
                       ellipse as unknown as { semiMajorAxis: number; semiMinorAxis: number }
@@ -2672,11 +2688,11 @@ export function Globe(): JSX.Element {
                       ellipse as unknown as { semiMajorAxis: number; semiMinorAxis: number }
                     ).semiMinorAxis = r;
                     (ellipse as unknown as { outlineColor: Color }).outlineColor =
-                      pulseColor.withAlpha(0.75 * (1 - pt));
+                      pulseColor.withAlpha(0.7 * (1 - pt));
                     pulseEntity.show = true;
                   }
-                  viewer.scene.requestRender();
                 }
+                viewer.scene.requestRender();
                 crestHandle = requestAnimationFrame(crestTick);
               };
               crestHandle = requestAnimationFrame(crestTick);

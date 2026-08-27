@@ -58,20 +58,21 @@ const INFERNO_STOPS: readonly (readonly [number, number, number])[] = [
 
 /**
  * Continuous cold→warm veil for the tsunami amplitude field — the
- * «velatura» of the approved art direction. Below ~2 m the ocean just
- * deepens toward blue; past 3 m the tint warms through the brand
- * amber into red. Perceptually the blue end stays close to water so
- * the planet keeps reading as a planet under the veil.
+ * «velatura» of the approved art direction. Below ~2 m the ocean
+ * DEEPENS toward navy («si scurisce di blu dove l'onda è debole»);
+ * past 3 m the tint warms through the brand amber into red. The low
+ * half is deliberately dark: a light cyan here camouflaged the
+ * travelling crest, which must stay the protagonist over the veil.
  * Stops span 1 m → 10 m absolute amplitude (sqrt-scaled by callers).
  */
 const WAVE_VEIL_STOPS: readonly (readonly [number, number, number])[] = [
-  [24, 62, 118],
-  [32, 96, 160],
-  [58, 140, 196],
-  [96, 190, 216],
-  [125, 216, 232],
-  [168, 210, 190],
-  [214, 186, 110],
+  [13, 35, 72],
+  [18, 48, 94],
+  [23, 64, 111],
+  [32, 83, 128],
+  [46, 107, 143],
+  [74, 132, 150],
+  [166, 160, 110],
   [232, 163, 61],
   [224, 110, 40],
   [204, 60, 38],
