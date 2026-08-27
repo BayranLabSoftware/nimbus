@@ -675,6 +675,7 @@
     "tooltip": {
       "radiusLine": "Raggio: ≈ {{value}}",
       "waveHeightLine": "Altezza dell'onda: ≈ {{value}}",
+      "runupLine": "run-up: {{value}}",
       "ring": {
         "craterRim": {
           "title": "Cratere d'impatto",
@@ -771,6 +772,10 @@
         "ashfallPlume": {
           "title": "Ricaduta cenere · ≥ 1 mm",
           "description": "La cenere vulcanica si deposita oltre 1 mm di spessore. Sotto il proprio peso (umida è densa quasi quanto la sabbia bagnata) fa crollare i tetti più deboli, rovina i raccolti, blocca aeroporti e motori, irrita polmoni e occhi."
+        },
+        "tsunamiRunup": {
+          "title": "Impatto costiero · run-up",
+          "description": "Altezza verticale di risalita dell'onda su questa costa (Synolakis 1987, spiaggia piana con pendenza locale dal DEM). Il marcatore è dimensionato sul run-up: più è alto, più l'onda sale sulla terraferma. Valore indicativo di campo lontano — l'inondazione reale dipende dalla morfologia fine della costa."
         }
       },
       "aftershock": {

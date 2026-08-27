@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { buildCrestFrames, finitePercentile, stitchSegmentsIntoChains } from './tsunamiCrest.js';
+import {
+  buildCrestFrames,
+  finitePercentile,
+  pickRunupPeaks,
+  stitchSegmentsIntoChains,
+} from './tsunamiCrest.js';
 
 describe('stitchSegmentsIntoChains', () => {
   it('joins segments sharing endpoints into one ordered chain', () => {
@@ -141,5 +146,41 @@ describe('buildCrestFrames', () => {
     });
     expect(frames).toHaveLength(5);
     expect(frames[2]!.chains.length).toBeGreaterThan(0);
+  });
+});
+
+describe('pickRunupPeaks', () => {
+  it('keeps only the strongest cell per bin, sorted descending', () => {
+    const peaks = pickRunupPeaks(
+      [
+        { latitude: 10.1, longitude: 20.1, runupM: 3 },
+        { latitude: 10.4, longitude: 20.3, runupM: 7 }, // stesso bin 2°, vince
+        { latitude: 40.0, longitude: -5.0, runupM: 4 },
+      ],
+      { binDeg: 2, minRunupM: 2, maxCount: 10 }
+    );
+    expect(peaks.map((p) => p.runupM)).toEqual([7, 4]);
+  });
+
+  it('drops cells below the threshold and honours maxCount', () => {
+    const cells = Array.from({ length: 30 }, (_, i) => ({
+      latitude: i * 3,
+      longitude: 0,
+      runupM: i * 0.5,
+    }));
+    const peaks = pickRunupPeaks(cells, { binDeg: 2, minRunupM: 2, maxCount: 5 });
+    expect(peaks).toHaveLength(5);
+    expect(peaks[0]!.runupM).toBeCloseTo(14.5);
+    expect(peaks.every((p) => p.runupM >= 2)).toBe(true);
+  });
+
+  it('ignores non-finite run-ups', () => {
+    expect(
+      pickRunupPeaks([{ latitude: 0, longitude: 0, runupM: Number.NaN }], {
+        binDeg: 2,
+        minRunupM: 1,
+        maxCount: 5,
+      })
+    ).toEqual([]);
   });
 });

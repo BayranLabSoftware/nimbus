@@ -28,6 +28,7 @@ export type RingTooltipKind =
   | 'tsunamiIsochrone4h'
   | 'tsunamiIsochrone8h'
   | 'tsunamiWaveAmplitude'
+  | 'tsunamiRunup'
   | 'mmi7'
   | 'mmi8'
   | 'mmi9'
@@ -121,9 +122,12 @@ export const RingTooltip = forwardRef(function RingTooltip(
     // line therefore reads "wave height: X m" instead of "radius: X km".
     // All other ring kinds keep the legacy radius formatter.
     const isWaveAmplitude = ringInfo.kind === 'tsunamiWaveAmplitude';
-    const metaLine = isWaveAmplitude
-      ? t('globe.tooltip.waveHeightLine', { value: formatWaveHeight(ringInfo.radiusM) })
-      : t('globe.tooltip.radiusLine', { value: formatRadius(ringInfo.radiusM) });
+    const isRunup = ringInfo.kind === 'tsunamiRunup';
+    const metaLine = isRunup
+      ? t('globe.tooltip.runupLine', { value: formatWaveHeight(ringInfo.radiusM) })
+      : isWaveAmplitude
+        ? t('globe.tooltip.waveHeightLine', { value: formatWaveHeight(ringInfo.radiusM) })
+        : t('globe.tooltip.radiusLine', { value: formatRadius(ringInfo.radiusM) });
     return (
       <>
         <div className={styles.titleBar} style={{ backgroundColor: ringInfo.color }} aria-hidden />

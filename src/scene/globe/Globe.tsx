@@ -48,11 +48,12 @@ import {
   toDeepWaterEquivalent,
   WAVE_CONTOUR_STYLES,
 } from '../heatmap.js';
-import { extractAmplitudeContours } from '../../physics/tsunami/index.js';
+import { computeRunupField, extractAmplitudeContours } from '../../physics/tsunami/index.js';
 import { renderRadialEcdfBitmap } from '../radialEcdfBitmap.js';
 import {
   buildCrestFrames,
   extractFrontContour,
+  pickRunupPeaks,
   stitchSegmentsIntoChains,
 } from '../tsunamiCrest.js';
 import {
@@ -1181,6 +1182,49 @@ export function Globe(): JSX.Element {
       let h = (Math.imul(a | 0, 374761393) + Math.imul(b | 0, 668265263)) | 0;
       h = Math.imul(h ^ (h >>> 13), 1274126177) | 0;
       return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+    };
+
+    /**
+     * Marcatori d'impatto costiero (regia tsunami): dove il run-up
+     * Synolakis supera la soglia, un punto pulsante sulla costa,
+     * dimensionato e tinto sul run-up. Il battito vive in una
+     * CallbackProperty sull'alone; con prefers-reduced-motion il
+     * marcatore resta acceso fisso.
+     */
+    const addRunupMarkers = (
+      peaks: readonly { latitude: number; longitude: number; runupM: number }[],
+      idPrefix: string
+    ): void => {
+      const reduce =
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      peaks.forEach((peak, index) => {
+        const tint =
+          peak.runupM >= 10
+            ? Color.fromCssColorString('#CC3C26')
+            : peak.runupM >= 5
+              ? Color.fromCssColorString('#E06E28')
+              : Color.fromCssColorString('#E8A33D');
+        const size = 7 + 9 * Math.min(1, peak.runupM / 15);
+        const phase = (index * 467) % 1_400;
+        const haloColor = reduce
+          ? tint.withAlpha(0.5)
+          : new CallbackProperty(() => {
+              const t = ((Date.now() + phase) % 1_400) / 1_400;
+              return tint.withAlpha(0.25 + 0.35 * Math.sin(t * Math.PI * 2) ** 2);
+            }, false);
+        viewer.entities.add({
+          id: `${idPrefix}-${index.toString()}`,
+          position: Cartesian3.fromDegrees(peak.longitude, peak.latitude, 2_000),
+          point: {
+            pixelSize: size,
+            color: tint.withAlpha(0.9),
+            outlineColor: haloColor,
+            outlineWidth: 5,
+          },
+        });
+        registerRingTooltip(`${idPrefix}-${index.toString()}`, 'tsunamiRunup', peak.runupM, tint);
+      });
     };
 
     const sampleArrivalGradient = (
@@ -2355,20 +2399,77 @@ export function Globe(): JSX.Element {
               let crestHandle = 0;
               let crestCancelled = false;
               let lastHead = -1;
+              // Impulso alla sorgente: un battito radiale che parte
+              // insieme al primo fotogramma di ogni giro della cresta.
+              // Un anello sottile che si espande e sfuma in ~900 ms —
+              // «un battito, non un fuoco d'artificio».
+              const PULSE_MS = 900;
+              const pulseCenter = Cartesian3.fromDegrees(
+                bathymetricTsunami.sourceLongitude,
+                bathymetricTsunami.sourceLatitude
+              );
+              const cavityEntity = viewer.entities.getById(TSUNAMI_CAVITY_ID);
+              const pulseBaseM = Math.max(
+                40_000,
+                Number(
+                  cavityEntity?.ellipse?.semiMajorAxis?.getValue(viewer.clock.currentTime) ?? 0
+                ) || 120_000
+              );
+              const pulseColor = Color.fromCssColorString('#F2FDFF');
+              const pulseEntity = viewer.entities.add({
+                id: 'tsunami-crest-pulse',
+                position: pulseCenter,
+                show: false,
+                ellipse: {
+                  semiMajorAxis: pulseBaseM,
+                  semiMinorAxis: pulseBaseM,
+                  fill: false,
+                  outline: true,
+                  outlineColor: pulseColor.withAlpha(0),
+                  outlineWidth: 3,
+                  height: 2_000,
+                },
+              });
+              let pulseT0 = -1;
               const crestTick = (): void => {
                 if (crestCancelled || viewer.isDestroyed()) return;
-                const u = ((performance.now() - crestT0) % CREST_LOOP_MS) / CREST_LOOP_MS;
+                const now = performance.now();
+                const u = ((now - crestT0) % CREST_LOOP_MS) / CREST_LOOP_MS;
                 const head = Math.min(
                   frameEntities.length - 1,
                   Math.floor(u * frameEntities.length)
                 );
                 if (head !== lastHead) {
+                  if (head < lastHead || lastHead === -1) pulseT0 = now; // giro nuovo
                   for (let k = 0; k < frameEntities.length; k++) {
                     const role =
                       k === head ? 'head' : k === head - 1 ? 'a' : k === head - 2 ? 'b' : 'off';
                     setFrameRole(k, role);
                   }
                   lastHead = head;
+                  viewer.scene.requestRender();
+                }
+                if (pulseT0 >= 0) {
+                  const pt = (now - pulseT0) / PULSE_MS;
+                  const ellipse = pulseEntity.ellipse;
+                  if (pt >= 1 || ellipse === undefined) {
+                    pulseEntity.show = false;
+                    pulseT0 = -1;
+                  } else {
+                    // Entrambi gli assi nella stessa istruzione sincrona:
+                    // due CallbackProperty indipendenti farebbero scattare
+                    // l'invariante minor ≤ major di EllipseGeometry.
+                    const r = pulseBaseM * (0.6 + 1.1 * pt);
+                    (
+                      ellipse as unknown as { semiMajorAxis: number; semiMinorAxis: number }
+                    ).semiMajorAxis = r;
+                    (
+                      ellipse as unknown as { semiMajorAxis: number; semiMinorAxis: number }
+                    ).semiMinorAxis = r;
+                    (ellipse as unknown as { outlineColor: Color }).outlineColor =
+                      pulseColor.withAlpha(0.75 * (1 - pt));
+                    pulseEntity.show = true;
+                  }
                   viewer.scene.requestRender();
                 }
                 crestHandle = requestAnimationFrame(crestTick);
@@ -2442,6 +2543,30 @@ export function Globe(): JSX.Element {
           }
         } catch (err: unknown) {
           console.warn('[Globe] tsunami isochrones render failed:', err);
+        }
+        // ── Impatti costieri globali ────────────────────────────────
+        // Run-up Synolakis sul mosaico planetario: pochi picchi, uno
+        // per bacino di 3°, esclusa la zona già coperta dal tile
+        // locale ad alta risoluzione.
+        try {
+          const gGridRunup = useAppStore.getState().globalBathymetricGrid;
+          if (gGridRunup !== null) {
+            const gRunup = computeRunupField({
+              amplitudeField: globalAmpField,
+              grid: gGridRunup,
+            });
+            const peaks = pickRunupPeaks(
+              gRunup.cells.filter(
+                (c) =>
+                  Math.abs(c.latitude - ringAnchor.latitude) > 1.5 ||
+                  Math.abs(c.longitude - ringAnchor.longitude) > 1.5
+              ),
+              { binDeg: 3, minRunupM: 2, maxCount: 14 }
+            );
+            addRunupMarkers(peaks, 'tsunami-runup-global');
+          }
+        } catch (err: unknown) {
+          console.warn('[Globe] global runup markers failed:', err);
         }
         if (import.meta.env.DEV) {
           console.info(
@@ -2604,6 +2729,21 @@ export function Globe(): JSX.Element {
           }
         } catch (err: unknown) {
           console.warn('[Globe] local tsunami arrow render failed:', err);
+        }
+        // ── Impatti costieri locali (tile ~150 km, run-up già in
+        // bathymetricTsunami.runup) ─────────────────────────────────
+        try {
+          const runupField = bathymetricTsunami.runup;
+          if (runupField !== undefined) {
+            const peaks = pickRunupPeaks(runupField.cells, {
+              binDeg: 0.25,
+              minRunupM: 2,
+              maxCount: 8,
+            });
+            addRunupMarkers(peaks, 'tsunami-runup-local');
+          }
+        } catch (err: unknown) {
+          console.warn('[Globe] local runup markers failed:', err);
         }
       }
     }

@@ -675,6 +675,7 @@
     "tooltip": {
       "radiusLine": "Radius: ≈ {{value}}",
       "waveHeightLine": "Wave height: ≈ {{value}}",
+      "runupLine": "run-up: {{value}}",
       "ring": {
         "craterRim": {
           "title": "Impact crater",
@@ -771,6 +772,10 @@
         "ashfallPlume": {
           "title": "Ashfall · ≥ 1 mm",
           "description": "Volcanic ash deposits more than 1 mm thick. Under its own weight (when wet, almost as dense as wet sand) it collapses weak roofs, ruins crops, grounds aircraft and engines, and irritates lungs and eyes."
+        },
+        "tsunamiRunup": {
+          "title": "Coastal impact · run-up",
+          "description": "Vertical run-up height of the wave on this coast (Synolakis 1987, plane beach with the local DEM slope). The marker is sized on the run-up: the higher it is, the further the wave climbs inland. Far-field indicative value — actual inundation depends on fine coastal morphology."
         }
       },
       "aftershock": {

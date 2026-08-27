@@ -306,3 +306,34 @@ export function buildCrestFrames(input: CrestFramesInput): CrestFrame[] {
     ),
   }));
 }
+
+/** Sparse coastal run-up cell, as produced by the physics layer. */
+export interface RunupPeakCell {
+  latitude: number;
+  longitude: number;
+  runupM: number;
+}
+
+/**
+ * Pick the coastal cells worth a marker: bin the sparse run-up cells
+ * on a coarse geographic grid, keep only the strongest cell per bin
+ * (a fjord coast yields hundreds of near-identical neighbours), then
+ * return the top peaks above the threshold, strongest first. Pure and
+ * deterministic — marker placement must survive a URL reload.
+ */
+export function pickRunupPeaks(
+  cells: readonly RunupPeakCell[],
+  options: { binDeg: number; minRunupM: number; maxCount: number }
+): RunupPeakCell[] {
+  const { binDeg, minRunupM, maxCount } = options;
+  const best = new Map<string, RunupPeakCell>();
+  for (const cell of cells) {
+    if (!Number.isFinite(cell.runupM) || cell.runupM < minRunupM) continue;
+    const key = `${Math.floor(cell.latitude / binDeg).toString()}:${Math.floor(
+      cell.longitude / binDeg
+    ).toString()}`;
+    const current = best.get(key);
+    if (current === undefined || cell.runupM > current.runupM) best.set(key, cell);
+  }
+  return [...best.values()].sort((a, b) => b.runupM - a.runupM).slice(0, maxCount);
+}
