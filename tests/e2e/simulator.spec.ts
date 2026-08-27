@@ -125,7 +125,7 @@ test.describe('simulator flow', () => {
     // active volcano preset (not the dropdown's first option), so the
     // caption updates to Krakatau's note about the Sunda Strait
     // paroxysmal eruption.
-    await page.getByLabel('Event type').selectOption('volcano');
+    await page.getByRole('radio', { name: 'Volcanic eruption' }).check();
     await expect(page.getByText(/Sunda Strait paroxysmal eruption/)).toBeVisible();
   });
 
@@ -153,10 +153,10 @@ test.describe('simulator flow', () => {
     await page.getByRole('button', { name: 'Try the simulator →' }).click();
     await expandSimulatorPanelIfCollapsed(page);
 
-    const eventTypeSelect = page.getByLabel('Event type');
-    await expect(eventTypeSelect).toBeVisible();
+    const eventType = (label: string) => page.getByRole('radio', { name: label });
+    await expect(eventType('Cosmic impact')).toBeChecked();
 
-    await eventTypeSelect.selectOption('explosion');
+    await eventType('Nuclear explosion').check();
     await expect(page.getByLabel('Preset').locator('option')).toHaveText([
       'Hiroshima 1945',
       'Nagasaki 1945',
@@ -170,7 +170,7 @@ test.describe('simulator flow', () => {
       '1 Mt reference',
     ]);
 
-    await eventTypeSelect.selectOption('earthquake');
+    await eventType('Earthquake').check();
     await expect(page.getByLabel('Preset').locator('option')).toHaveText([
       'Valdivia 1960',
       'Great Alaska 1964',
@@ -184,7 +184,7 @@ test.describe('simulator flow', () => {
       'Amatrice 2016',
     ]);
 
-    await eventTypeSelect.selectOption('volcano');
+    await eventType('Volcanic eruption').check();
     await expect(page.getByLabel('Preset').locator('option')).toHaveText([
       'Vesuvius 79 CE',
       'Krakatau 1883',
@@ -198,7 +198,7 @@ test.describe('simulator flow', () => {
       'Anak Krakatau 2018',
     ]);
 
-    await eventTypeSelect.selectOption('landslide');
+    await eventType('Submarine landslide').check();
     await expect(page.getByLabel('Preset').locator('option')).toHaveText([
       'Storegga ≈ 8 200 BP',
       'Vaiont 1963',
@@ -221,7 +221,7 @@ test.describe('simulator flow', () => {
     await page.getByLabel('Preset').selectOption('TUNGUSKA');
     await expect.poll(() => new URL(page.url()).searchParams.get('p')).toBe('TUNGUSKA');
 
-    await page.getByLabel('Event type').selectOption('volcano');
+    await page.getByRole('radio', { name: 'Volcanic eruption' }).check();
     await expect.poll(() => new URL(page.url()).searchParams.get('t')).toBe('volcano');
     await expect.poll(() => new URL(page.url()).searchParams.get('p')).toBe('KRAKATAU_1883');
 
@@ -235,7 +235,7 @@ test.describe('simulator flow', () => {
 
     // The landing CTA is bypassed because mode=globe, so the panel is
     // already mounted with the earthquake preset pre-selected.
-    await expect(page.getByLabel('Event type')).toHaveValue('earthquake');
+    await expect(page.getByRole('radio', { name: 'Earthquake' })).toBeChecked();
     await expect(page.getByLabel('Preset')).toHaveValue('NORTHRIDGE_1994');
   });
 

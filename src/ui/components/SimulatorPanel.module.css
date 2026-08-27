@@ -97,12 +97,94 @@
 }
 
 .title {
-  font-size: 13px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   margin: 0;
-  opacity: 0.75;
+  color: var(--accent, #e8a33d);
+}
+
+/* Segmented event-family selector. Real radio inputs carry the
+ * semantics; the label is the visible pill. */
+.segFieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.seg {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: var(--radius-m);
+}
+
+.segItem {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 3px;
+  padding: 8px 2px 6px;
+  border-radius: var(--radius-s);
+  color: rgba(255, 255, 255, 0.62);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.segItem svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.segItem:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.segItem:has(.segInput:checked) {
+  background: linear-gradient(180deg, rgba(232, 163, 61, 0.24), rgba(232, 163, 61, 0.1));
+  color: var(--accent, #e8a33d);
+  box-shadow: inset 0 0 0 1px rgba(232, 163, 61, 0.4);
+}
+
+.segItem:has(.segInput:focus-visible) {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+/* The input invisibly covers its whole pill so pointer events land on
+ * the control itself, not on the label text above it. */
+.segInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.segLabel {
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
 }
 
 .field {
@@ -120,12 +202,17 @@
 .select {
   font-family: inherit;
   font-size: 14px;
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.04);
+  padding: 10px 34px 10px 12px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23b8b5ae' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E")
+      no-repeat right 12px center,
+    rgba(255, 255, 255, 0.045);
   color: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.09));
+  border-radius: var(--radius-m);
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .select:focus-visible {
@@ -149,12 +236,10 @@
 .customParams {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px 12px;
-  padding: 12px;
+  gap: 7px;
+  padding: 0;
   margin: 0;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border: 0;
 }
 
 .customParamsLegend {
@@ -171,6 +256,20 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  padding: 7px 10px 8px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-s);
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+/* The cell, not the bare input, carries the focus ring: the input
+ * itself is chromeless so the whole cell reads as the control. */
+.paramField:focus-within {
+  border-color: rgba(232, 163, 61, 0.6);
+  box-shadow: 0 0 0 1px rgba(232, 163, 61, 0.35);
 }
 
 .paramLabel {
@@ -181,18 +280,69 @@
 .paramInput {
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-size: 13px;
-  padding: 6px 8px;
-  background: rgba(255, 255, 255, 0.05);
+  padding: 0;
+  background: transparent;
   color: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+  border: none;
+  border-radius: 0;
   width: 100%;
   box-sizing: border-box;
 }
 
 .paramInput:focus-visible {
-  outline: 2px solid #fbbf24;
-  outline-offset: 1px;
+  outline: none; /* the cell's :focus-within ring is the indicator */
+}
+
+select.paramInput {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M1 1.5l4 4 4-4' fill='none' stroke='%23b8b5ae' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat right 2px center;
+  padding-right: 18px;
+}
+
+/* Custom range slider — thin track, amber-haloed thumb. */
+.paramInput[type='range'] {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 22px;
+  cursor: pointer;
+}
+
+.paramInput[type='range']::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.paramInput[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: #f4f1ea;
+  box-shadow:
+    0 0 0 4px rgba(232, 163, 61, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.paramInput[type='range']::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.paramInput[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: #f4f1ea;
+  box-shadow:
+    0 0 0 4px rgba(232, 163, 61, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .paramInput option {
@@ -225,12 +375,24 @@
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   opacity: 0.85;
   padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-s);
   min-height: 40px;
   display: flex;
   align-items: center;
+  gap: 8px;
   line-height: 1.4;
+}
+
+.status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
 }
 
 .status[data-state='ready'] {
@@ -270,21 +432,25 @@
 .trigger {
   font-family: inherit;
   font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  letter-spacing: 0.01em;
   padding: 12px 16px;
-  background: #fbbf24;
-  color: #18181b;
+  background: linear-gradient(180deg, #f2b45a, #e8a33d 55%, #c9852b);
+  color: #201302;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-m);
   cursor: pointer;
+  box-shadow:
+    0 6px 18px rgba(232, 163, 61, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
   transition:
-    background 150ms ease,
-    transform 150ms ease;
+    filter 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .trigger:hover:not(:disabled) {
-  background: #fcd34d;
+  filter: brightness(1.08);
 }
 
 .trigger:active:not(:disabled) {
@@ -300,6 +466,19 @@
   background: rgba(255, 255, 255, 0.06);
   color: rgba(255, 255, 255, 0.4);
   cursor: not-allowed;
+  box-shadow: none;
+}
+
+.secondaryRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.secondaryRow .secondary {
+  flex: 1 1 30%;
+  padding: 9px 8px;
+  font-size: 12px;
 }
 
 .secondary {
@@ -307,10 +486,10 @@
   font-size: 13px;
   letter-spacing: 0.02em;
   padding: 10px 14px;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-s);
   cursor: pointer;
   transition:
     background 150ms ease,
@@ -336,12 +515,25 @@
 
 .result {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 14px;
-  padding: 12px;
-  background: rgba(251, 191, 36, 0.06);
-  border: 1px solid rgba(251, 191, 36, 0.22);
-  border-radius: 8px;
+  grid-template-columns: 1fr auto;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-s);
+  overflow: hidden;
+}
+
+.result dt,
+.result dd {
+  margin: 0;
+  padding: 7px 10px;
+}
+
+.result dt:nth-of-type(even),
+.result dd:nth-of-type(even) {
+  background: rgba(255, 255, 255, 0.03);
 }
 
 /* Category heading rendered above every results <dl>. Visible-only —
@@ -374,15 +566,18 @@
 
 .resultLabel {
   font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0.03em;
   opacity: 0.7;
+  align-self: center;
 }
 
 .resultValue {
   font-size: 13px;
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  align-self: center;
 }
 
 .globalBadge {

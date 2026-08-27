@@ -98,6 +98,41 @@ const LANDSLIDE_PRESET_IDS: LandslidePresetId[] = [
 ];
 const EVENT_TYPES: EventType[] = ['impact', 'explosion', 'earthquake', 'volcano', 'landslide'];
 
+/* One pictogram per event family, stroked in currentColor so the
+ * segmented control can tint the active family without extra CSS. */
+const EVENT_GLYPH_PATHS: Record<EventType, JSX.Element> = {
+  impact: (
+    <>
+      <circle cx="14.5" cy="14.5" r="4.5" />
+      <path d="M3 3l6.2 6.2M8 2l4 4M2 8l4 4" />
+    </>
+  ),
+  explosion: (
+    <path d="M10 2v4.5M10 13.5V18M2 10h4.5M13.5 10H18M4.3 4.3l3.2 3.2M12.5 12.5l3.2 3.2M15.7 4.3l-3.2 3.2M7.5 12.5l-3.2 3.2" />
+  ),
+  earthquake: <path d="M2 10h3.5l2-5 3 10 2.5-7 1.5 2H18" />,
+  volcano: (
+    <>
+      <path d="M7 8l-5 9h16L13 8" />
+      <path d="M7 8c1 1.5 5 1.5 6 0M10 5.5V2M6.5 4.5L5 3M13.5 4.5L15 3" />
+    </>
+  ),
+  landslide: (
+    <>
+      <path d="M2 4l8 9 8 4H2z" />
+      <path d="M12.5 6.5l1.5-1.5M15 9l1.5-1.5" />
+    </>
+  ),
+};
+
+function EventGlyph({ type }: { type: EventType }): JSX.Element {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+      {EVENT_GLYPH_PATHS[type]}
+    </svg>
+  );
+}
+
 // Unit tier tables for the multi-scale formatters. Order matters:
 // the formatter walks tiers smallest-unit first and accepts the
 // first one whose rounded value is < 1000, so a 999.6 m value
@@ -361,7 +396,7 @@ export function SimulatorPanel(): JSX.Element {
   const populationExposure = useAppStore((s) => s.populationExposure);
   const populationStatus = useAppStore((s) => s.populationStatus);
 
-  const handleEventTypeChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+  const handleEventTypeChange = (event: ChangeEvent<HTMLInputElement>): void => {
     selectEventType(event.target.value as EventType);
   };
 
@@ -509,23 +544,25 @@ export function SimulatorPanel(): JSX.Element {
       </div>
 
       <div className={styles.body}>
-        <div className={styles.field}>
-          <label htmlFor="event-type-select" className={styles.label}>
-            {t('simulator.eventType')}
-          </label>
-          <select
-            id="event-type-select"
-            className={styles.select}
-            value={eventType}
-            onChange={handleEventTypeChange}
-          >
+        <fieldset className={styles.segFieldset}>
+          <legend className={styles.label}>{t('simulator.eventType')}</legend>
+          <div className={styles.seg}>
             {EVENT_TYPES.map((type) => (
-              <option key={type} value={type}>
-                {t(`simulator.eventTypes.${type}`)}
-              </option>
+              <label key={type} className={styles.segItem}>
+                <input
+                  type="radio"
+                  name="event-type"
+                  value={type}
+                  checked={eventType === type}
+                  onChange={handleEventTypeChange}
+                  className={styles.segInput}
+                />
+                <EventGlyph type={type} />
+                <span className={styles.segLabel}>{t(`simulator.eventTypes.${type}`)}</span>
+              </label>
             ))}
-          </select>
-        </div>
+          </div>
+        </fieldset>
 
         <div className={styles.field}>
           <label htmlFor="preset-select" className={styles.label}>
@@ -574,48 +611,50 @@ export function SimulatorPanel(): JSX.Element {
           {isRunning ? t('simulator.running') : t('simulator.launch')}
         </button>
 
-        <button
-          type="button"
-          className={styles.secondary}
-          onClick={handleCopyLink}
-          data-state={copied ? 'copied' : 'idle'}
-        >
-          <span aria-live="polite">
-            {copied ? t('simulator.linkCopied') : t('simulator.copyLink')}
-          </span>
-        </button>
-
-        {result !== null && (
+        <div className={styles.secondaryRow}>
           <button
             type="button"
             className={styles.secondary}
-            onClick={() => {
-              setMode('report');
-            }}
+            onClick={handleCopyLink}
+            data-state={copied ? 'copied' : 'idle'}
           >
-            {t('simulator.downloadReport')}
+            <span aria-live="polite">
+              {copied ? t('simulator.linkCopied') : t('simulator.copyLink')}
+            </span>
           </button>
-        )}
 
-        {result !== null && (
-          <button
-            type="button"
-            className={styles.secondary}
-            onClick={() => {
-              evaluateMonteCarlo();
-            }}
-            disabled={monteCarloStatus === 'running'}
-            data-state={
-              monteCarloStatus === 'running' ? 'running' : monteCarlo === null ? 'idle' : 'ready'
-            }
-          >
-            {monteCarloStatus === 'running'
-              ? t('simulator.runningMonteCarlo')
-              : monteCarlo === null
-                ? t('simulator.runMonteCarlo')
-                : t('simulator.rerunMonteCarlo')}
-          </button>
-        )}
+          {result !== null && (
+            <button
+              type="button"
+              className={styles.secondary}
+              onClick={() => {
+                setMode('report');
+              }}
+            >
+              {t('simulator.downloadReport')}
+            </button>
+          )}
+
+          {result !== null && (
+            <button
+              type="button"
+              className={styles.secondary}
+              onClick={() => {
+                evaluateMonteCarlo();
+              }}
+              disabled={monteCarloStatus === 'running'}
+              data-state={
+                monteCarloStatus === 'running' ? 'running' : monteCarlo === null ? 'idle' : 'ready'
+              }
+            >
+              {monteCarloStatus === 'running'
+                ? t('simulator.runningMonteCarlo')
+                : monteCarlo === null
+                  ? t('simulator.runMonteCarlo')
+                  : t('simulator.rerunMonteCarlo')}
+            </button>
+          )}
+        </div>
 
         {/* Phase-21d — Coastal Deep Dive: Tier-2 Saint-Venant 1D-radial
             solver. Available only when the active scenario has a tsunami
