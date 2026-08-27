@@ -579,8 +579,18 @@ export function Globe(): JSX.Element {
       // the entity geometry actually handed to Cesium — drawn radii,
       // positions, screen projection — instead of guessing from pixels.
       // Inert for normal visitors: no query param, no handle.
-      if (new URLSearchParams(window.location.search).has('probe')) {
+      const debugParams = new URLSearchParams(window.location.search);
+      if (debugParams.has('probe')) {
         (window as unknown as { __nimbusViewer?: Viewer }).__nimbusViewer = viewer;
+      }
+      // `?fps` mostra il contatore di fotogrammi di Cesium in un angolo
+      // della scena. Serve a rispondere alla domanda che conta prima di
+      // aggiungere qualunque effetto: quanto margine ha DAVVERO la
+      // macchina di chi guarda? Leggere il numero sullo schermo evita
+      // di dover aprire la console del browser. Inerte senza il
+      // parametro, esattamente come `?probe`.
+      if (debugParams.has('fps')) {
+        viewer.scene.debugShowFramesPerSecond = true;
       }
 
       viewer.imageryLayers.removeAll();
