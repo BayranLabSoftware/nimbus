@@ -3377,12 +3377,23 @@ export function Globe(): JSX.Element {
       // Mushroom-cloud / fireball VFX (impacts + explosions only).
       // Synchronised with the ring cascade so the user sees the flash
       // bloom alongside the thermal ring's reveal — same beat.
+      // PROTOTIPO `?vol`: palla di fuoco volumetrica con shader al
+      // posto degli ellissoidi colorati, per confrontare le due rese
+      // sullo stesso evento. Mai su rasterizzatore software: sei
+      // campioni di rumore per frammento lo metterebbero in ginocchio.
+      // `?vol` la accende dove c'è una GPU; `?vol=force` la accende
+      // comunque, che serve a collaudare lo shader in ambienti senza
+      // scheda grafica (il browser headless dei test lo è).
+      const volParam = new URLSearchParams(window.location.search).get('vol');
+      const fireballVolumetrica =
+        volParam !== null && (volParam === 'force' || !softwareRendererRef.current);
       if (result.type === 'impact') {
         cancelExplosionVfxRef.current = spawnExplosionVfxFromJoules({
           viewer,
           latitude: ringAnchor.latitude,
           longitude: ringAnchor.longitude,
           energyJoules: result.data.impactor.kineticEnergy,
+          volumetricFireball: fireballVolumetrica,
         });
       } else if (result.type === 'explosion') {
         cancelExplosionVfxRef.current = spawnExplosionVfxFromJoules({
@@ -3390,6 +3401,7 @@ export function Globe(): JSX.Element {
           latitude: ringAnchor.latitude,
           longitude: ringAnchor.longitude,
           energyJoules: result.data.yield.joules,
+          volumetricFireball: fireballVolumetrica,
         });
       } else if (result.type === 'volcano') {
         // La colonna eruttiva col suo ombrello: il corpo che all'evento

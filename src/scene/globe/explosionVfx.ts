@@ -9,6 +9,7 @@ import {
   type Viewer,
 } from 'cesium';
 import { cloudMaterialFromProperty } from './cloudMaterial.js';
+import { VolumetricFireballMaterialProperty } from './fireballMaterial.js';
 
 /**
  * Empirical mushroom-cloud altitude vs yield, fitted to the canonical
@@ -39,6 +40,10 @@ export interface ExplosionVfxInput {
   /** Total explosion energy expressed as TNT-equivalent kilotons.
    *  Drives both the size and the vertical reach of the cloud. */
   yieldKilotons: number;
+  /** PROTOTIPO: palla di fuoco volumetrica con shader al posto dei
+   *  due ellissoidi colorati. Attivato dal parametro `?vol` per poter
+   *  confrontare le due rese sullo stesso evento. */
+  volumetricFireball?: boolean;
 }
 
 const FIREBALL_BURST_S = 0.5;
@@ -176,17 +181,65 @@ export function spawnExplosionVfx(input: ExplosionVfxInput): () => void {
     const end = Color.fromCssColorString(CLOUD_COLOURS.fireOuter).withAlpha(0);
     return Color.lerp(start, end, fadeT, new Color());
   }, false);
-  entities.push(
-    viewer.entities.add({
-      id: 'explosion-vfx-fireball-core',
-      position: Cartesian3.fromDegrees(longitude, latitude, fireballRadiusM * 0.5),
-      ellipsoid: {
-        radii: fireballCoreRadii,
-        material: new ColorMaterialProperty(fireballCoreColour),
-        outline: false,
-      },
-    })
-  );
+  // PROTOTIPO Strada 2: una sola sfera con densita' interna al posto
+  // dei due ellissoidi. Vive piu' a lungo del nucleo classico perche'
+  // il senso del confronto e' poterla guardare.
+  if (input.volumetricFireball === true) {
+    const volRadii = new CallbackProperty(() => {
+      const e = elapsedSec();
+      const cresce = easeOutCubic(e / (FIREBALL_BURST_S * 1.4));
+      const r = Math.max(1, fireballRadiusM * 2.2 * cresce);
+      return new Cartesian3(r, r, r * 0.92);
+    }, false);
+    const nucleo = new Color();
+    const bordo = new Color();
+    const materiale = new VolumetricFireballMaterialProperty(() => {
+      const e = elapsedSec();
+      const spegnimento = Math.min(1, e / 4.0);
+      // Il nucleo passa da bianco a giallo mentre si raffredda; il
+      // bordo dal rosso vivo al rosso cupo, e tutto perde opacita'.
+      Color.lerp(
+        Color.fromCssColorString('#FFFDF0'),
+        Color.fromCssColorString('#FFC24A'),
+        spegnimento,
+        nucleo
+      );
+      nucleo.alpha = Math.max(0, 1 - spegnimento) * fadeAlpha();
+      Color.lerp(
+        Color.fromCssColorString('#FF6A18'),
+        Color.fromCssColorString('#7A1206'),
+        spegnimento,
+        bordo
+      );
+      return {
+        nucleo,
+        bordo,
+        tempo: e * 0.6,
+        // La turbolenza cresce mentre la palla si gonfia e si sfalda.
+        turbolenza: 2.2 + 1.6 * spegnimento,
+        intensita: 1.6 * (1 - 0.5 * spegnimento),
+      };
+    });
+    entities.push(
+      viewer.entities.add({
+        id: 'explosion-vfx-fireball-volumetric',
+        position: Cartesian3.fromDegrees(longitude, latitude, fireballRadiusM * 1.1),
+        ellipsoid: { radii: volRadii, material: materiale, outline: false },
+      })
+    );
+  } else {
+    entities.push(
+      viewer.entities.add({
+        id: 'explosion-vfx-fireball-core',
+        position: Cartesian3.fromDegrees(longitude, latitude, fireballRadiusM * 0.5),
+        ellipsoid: {
+          radii: fireballCoreRadii,
+          material: new ColorMaterialProperty(fireballCoreColour),
+          outline: false,
+        },
+      })
+    );
+  }
 
   // -------- Cupola d'urto -----------------------------------------
   // Un emisfero traslucido che si espande dal punto di scoppio: e' il
