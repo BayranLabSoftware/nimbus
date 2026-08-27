@@ -518,6 +518,15 @@ export function Globe(): JSX.Element {
         timeline: false,
       });
 
+      // Instrumentation hook, opt-in via `?probe` in the URL: exposes
+      // the viewer so an automated audit (Playwright + script) can read
+      // the entity geometry actually handed to Cesium — drawn radii,
+      // positions, screen projection — instead of guessing from pixels.
+      // Inert for normal visitors: no query param, no handle.
+      if (new URLSearchParams(window.location.search).has('probe')) {
+        (window as unknown as { __nimbusViewer?: Viewer }).__nimbusViewer = viewer;
+      }
+
       viewer.imageryLayers.removeAll();
       viewer.imageryLayers.addImageryProvider(
         new UrlTemplateImageryProvider({
