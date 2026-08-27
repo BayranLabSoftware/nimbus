@@ -70,29 +70,51 @@ import styles from './Globe.module.css';
  */
 Ion.defaultAccessToken = '';
 
-// Stadia Maps' "Stamen Terrain" basemap: shaded-relief topography
-// rendered from OpenStreetMap data. Two reasons we use it instead
-// of the raw OSM tiles served at tile.openstreetmap.org:
+// Basemap, in two tiers.
+//
+// Preferred: Stadia Maps' "Stamen Terrain" — shaded-relief topography
+// rendered from OpenStreetMap data. Two reasons it beats the raw OSM
+// tiles served at tile.openstreetmap.org:
 //   1. Place names are localised to English (`name:en` from OSM),
 //      so the globe stays legible when the user pans into Asia
 //      where OSM serves CJK / Devanagari / Thai script by default.
 //   2. The tiles bake in hill-shading, which gives the otherwise
-//      flat ellipsoid a sense of 3D relief without us having to
-//      load a Cesium terrain provider.
-// Stadia allows keyless requests from localhost and modest
-// non-commercial traffic, but a deployed origin needs a
-// domain-restricted key or the tiles come back unauthorised and the
-// globe renders black — no error in the console, just an unlit sphere
-// against the starfield. Register a free key on stadiamaps.com, add
-// the deploy domain to it, and set VITE_STADIA_API_KEY in the Pages
-// production environment. Without the variable the URL stays exactly
-// as it was, so local development keeps working untouched.
+//      flat ellipsoid a sense of 3D relief for free.
+//
+// Stadia serves keyless requests only from localhost and 127.0.0.1.
+// From any deployed origin a keyless request comes back 429 and the
+// globe renders black — no console error, just an unlit sphere against
+// the starfield, which a first-time visitor reads as a broken app.
+//
+// So a deployment without VITE_STADIA_API_KEY falls back to plain OSM
+// instead of showing nothing. The fallback loses the hill-shading and
+// the English labels; it does not lose the globe. Set the variable
+// (register a free domain-restricted key on stadiamaps.com) to get the
+// intended look back.
 const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY ?? '';
-const BASE_TILE_URL =
-  'https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}@2x.png' +
-  (STADIA_API_KEY ? `?api_key=${STADIA_API_KEY}` : '');
-const BASE_TILE_ATTRIBUTION =
-  '© Stadia Maps · © Stamen Design · © OpenMapTiles · © OpenStreetMap contributors';
+
+const STADIA_TILES = {
+  // The query string only appears when there is a key to put in it:
+  // an empty `?api_key=` is rejected, where no parameter at all is the
+  // keyless path Stadia allows from a dev server.
+  url:
+    'https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}@2x.png' +
+    (STADIA_API_KEY ? `?api_key=${STADIA_API_KEY}` : ''),
+  attribution: '© Stadia Maps · © Stamen Design · © OpenMapTiles · © OpenStreetMap contributors',
+} as const;
+
+const OSM_TILES = {
+  url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+  attribution: '© OpenStreetMap contributors',
+} as const;
+
+// Keyless is fine on a dev server; anywhere else it needs the key.
+const isLocalOrigin =
+  typeof window !== 'undefined' &&
+  ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+
+const { url: BASE_TILE_URL, attribution: BASE_TILE_ATTRIBUTION } =
+  STADIA_API_KEY || isLocalOrigin ? STADIA_TILES : OSM_TILES;
 
 /**
  * Ring palette — every hex is chosen for two constraints:

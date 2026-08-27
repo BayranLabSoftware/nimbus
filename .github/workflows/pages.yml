@@ -1,0 +1,68 @@
+# Publishes the built simulator to GitHub Pages on every push to main.
+#
+# The repository ships a Cloudflare Pages workflow too (deploy.yml),
+# gated behind ENABLE_CF_DEPLOY. The two are alternatives, not rivals:
+# Cloudflare gives a root domain and works from a private repository,
+# Pages needs neither an account nor a token. Leave the Cloudflare
+# variable unset and this one is the live site.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One deploy at a time, and never cancel one half-way: an interrupted
+# deploy leaves the site serving a partial build.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        env:
+          # Project sites live under /<repo>/, so the bundle needs the
+          # sub-path baked into its asset URLs.
+          BASE_PATH: /${{ github.event.repository.name }}/
+          # Optional: without it the globe falls back to plain OSM
+          # tiles, which work from any origin without a key.
+          VITE_STADIA_API_KEY: ${{ secrets.STADIA_API_KEY }}
+        run: pnpm build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
