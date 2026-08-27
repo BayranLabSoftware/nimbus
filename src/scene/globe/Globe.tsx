@@ -2,11 +2,13 @@ import {
   ArcGISTiledElevationTerrainProvider,
   BoundingSphere,
   CallbackProperty,
+  Cartesian2,
   Cartesian3,
   Cartographic,
   Color,
   HeadingPitchRange,
   HeightReference,
+  HorizontalOrigin,
   ImageMaterialProperty,
   LabelStyle,
   Ion,
@@ -298,6 +300,8 @@ const SIM_ENTITY_PREFIXES: readonly string[] = [
   'lateral-blast', // LATERAL_BLAST_ID
   'cascade-', // WAVEFRONT_INDICATOR_ID
   'fuzzy-mc-', // FUZZY_RING_ID_PREFIX
+  'beacon-', // altitude beacons: airburst flash, HOB, eruption column
+  'fault-', // rupture trace polyline
 ];
 
 function purgeSimulationEntities(viewer: Viewer): void {
@@ -1227,6 +1231,69 @@ export function Globe(): JSX.Element {
       });
     };
 
+    /**
+     * Faro di quota (tavola 4): un segno verticale al punto in cui
+     * succede la cosa — lo scoppio dell'airburst, la detonazione in
+     * quota, la sommità della colonna eruttiva — con la tacca
+     * dell'altitudine in mono. Un fusto luminoso che sfuma verso il
+     * suolo e un vertice che pulsa piano: l'unica cosa che distingue
+     * un evento in quota da uno al suolo, prima invisibile.
+     */
+    const addAltitudeBeacon = (opts: {
+      idPrefix: string;
+      latitude: number;
+      longitude: number;
+      altitudeM: number;
+      color: Color;
+    }): void => {
+      if (!Number.isFinite(opts.altitudeM) || opts.altitudeM < 500) return;
+      const top = Cartesian3.fromDegrees(opts.longitude, opts.latitude, opts.altitudeM);
+      viewer.entities.add({
+        id: `${opts.idPrefix}-shaft`,
+        polyline: {
+          // Vertice per primo: il taper del glow lascia il fusto
+          // acceso in alto e lo sfuma verso terra.
+          positions: [top, Cartesian3.fromDegrees(opts.longitude, opts.latitude, 0)],
+          width: 4,
+          material: new PolylineGlowMaterialProperty({
+            color: opts.color.withAlpha(0.8),
+            glowPower: 0.35,
+            taperPower: 0.55,
+          }),
+        },
+      });
+      const reduce =
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const haloColor = reduce
+        ? opts.color.withAlpha(0.45)
+        : new CallbackProperty(() => {
+            const t = (Date.now() % 1_800) / 1_800;
+            return opts.color.withAlpha(0.2 + 0.35 * Math.sin(t * Math.PI * 2) ** 2);
+          }, false);
+      const km = opts.altitudeM / 1_000;
+      viewer.entities.add({
+        id: `${opts.idPrefix}-top`,
+        position: top,
+        point: {
+          pixelSize: 9,
+          color: Color.WHITE.withAlpha(0.95),
+          outlineColor: haloColor,
+          outlineWidth: 6,
+        },
+        label: {
+          text: `${km >= 10 ? km.toFixed(0) : km.toFixed(1)} km`,
+          font: '11px "JetBrains Mono", monospace',
+          fillColor: opts.color.withAlpha(0.95),
+          outlineColor: Color.fromCssColorString('#0A0E16').withAlpha(0.85),
+          outlineWidth: 2,
+          style: LabelStyle.FILL_AND_OUTLINE,
+          pixelOffset: new Cartesian2(26, 0),
+          horizontalOrigin: HorizontalOrigin.LEFT,
+        },
+      });
+    };
+
     const sampleArrivalGradient = (
       arrivalTimes: Float32Array,
       gnLat: number,
@@ -1347,6 +1414,18 @@ export function Globe(): JSX.Element {
 
     // --- Impact: 4 damage rings + optional tsunami cavity ------------
     if (result.type === 'impact') {
+      // Faro di quota: solo quando il bolide scoppia davvero in aria.
+      // Un impatto INTACT arriva al suolo e non ha nulla da segnare.
+      const entry = result.data.entry;
+      if (entry.regime === 'COMPLETE_AIRBURST' || entry.regime === 'PARTIAL_AIRBURST') {
+        addAltitudeBeacon({
+          idPrefix: 'beacon-airburst',
+          latitude: ringAnchor.latitude,
+          longitude: ringAnchor.longitude,
+          altitudeM: entry.burstAltitude,
+          color: Color.fromCssColorString('#FFD98A'),
+        });
+      }
       const radii = result.data.damage;
       const asymmetries = result.data.damageAsymmetry;
       const impactRingKind: Record<keyof ImpactDamageRadii, RingKind> = {
@@ -1530,6 +1609,7 @@ export function Globe(): JSX.Element {
           entity,
           physicalTimeSeconds: event.timeAfterMainshock,
           finalPixelSize: pixelSize,
+          haloColor: color,
         });
         registerAftershockTooltip(entityId, event.magnitude, event.timeAfterMainshock, color);
       });
@@ -1621,6 +1701,83 @@ export function Globe(): JSX.Element {
           });
           registerRingTooltip(id, tooltipKind, radius, color);
         }
+
+        // ── La faglia in scena (tavola 4) ─────────────────────────
+        // La rottura come traccia luminosa lungo lo strike, che si
+        // accende propagandosi dall'ipocentro verso le due estremità
+        // (~1,2 s). I dati ci sono già: ruptureLength e strike sono
+        // gli stessi che disegnano lo stadio. Sugli eventi sottomarini
+        // la traccia vola a quota fissa (il DEM è il fondale, e il
+        // velo tsunami la coprirebbe); a terra drappeggia il rilievo.
+        {
+          const θ = (strikeAzimuthDeg * Math.PI) / 180;
+          const eastDir = Math.sin(θ);
+          const northDir = Math.cos(θ);
+          const cosLat = Math.max(Math.cos((ringAnchor.latitude * Math.PI) / 180), 1e-6);
+          const mPerLat = 111_000;
+          const mPerLon = 111_000 * cosLat;
+          const SAMPLE_M = 12_000;
+          const steps = Math.max(4, Math.ceil(halfL / SAMPLE_M));
+          const tracePoint = (sM: number): Cartesian3 => {
+            const lat = ringAnchor.latitude + (sM * northDir) / mPerLat;
+            const lon = ringAnchor.longitude + (sM * eastDir) / mPerLon;
+            return isSubmarine
+              ? Cartesian3.fromDegrees(lon, lat, 2_500)
+              : Cartesian3.fromDegrees(lon, lat);
+          };
+          // Punti simmetrici attorno all'ipocentro: indice 0 = centro.
+          const half: number[] = [];
+          for (let k = 0; k <= steps; k++) half.push((k / steps) * halfL);
+          const fullPositions = [
+            ...half
+              .slice(1)
+              .reverse()
+              .map((d) => tracePoint(-d)),
+            tracePoint(0),
+            ...half.slice(1).map((d) => tracePoint(d)),
+          ];
+          const faultMaterial = new PolylineGlowMaterialProperty({
+            color: Color.fromCssColorString('#FF8A5C').withAlpha(0.95),
+            glowPower: 0.32,
+          });
+          const faultEntity = viewer.entities.add({
+            id: 'fault-trace',
+            polyline: {
+              positions: fullPositions,
+              width: 6,
+              material: faultMaterial,
+              ...(isSubmarine ? {} : { clampToGround: true }),
+            },
+          });
+          const faultReduce =
+            typeof window.matchMedia === 'function' &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!faultReduce) {
+            const IGNITION_MS = 1_200;
+            const centreIndex = steps; // indice del punto-ipocentro
+            const t0 = performance.now();
+            const tick = (): void => {
+              if (viewer.isDestroyed()) return;
+              // Se la purge ha rimosso la traccia (nuova simulazione),
+              // il ciclo muore da solo.
+              if (viewer.entities.getById('fault-trace') !== faultEntity) return;
+              const f = Math.min(1, (performance.now() - t0) / IGNITION_MS);
+              const reach = Math.max(1, Math.round(f * steps));
+              const poly = faultEntity.polyline;
+              if (poly !== undefined) {
+                (poly as unknown as { positions: Cartesian3[] }).positions = fullPositions.slice(
+                  centreIndex - reach,
+                  centreIndex + reach + 1
+                );
+              }
+              viewer.scene.requestRender();
+              if (f < 1) requestAnimationFrame(tick);
+            };
+            (faultEntity.polyline as unknown as { positions: Cartesian3[] }).positions =
+              fullPositions.slice(centreIndex - 1, centreIndex + 2);
+            requestAnimationFrame(tick);
+          }
+        }
       } else {
         // Small / continental event: the rupture rectangle is well
         // inside the MMI VII point-source radius, so a circular ring
@@ -1659,6 +1816,16 @@ export function Globe(): JSX.Element {
 
     // --- Explosion: blast / burn / crater rings + radiation / EMP ----
     if (result.type === 'explosion') {
+      const hob = result.data.inputs.heightOfBurst;
+      if (hob !== undefined) {
+        addAltitudeBeacon({
+          idPrefix: 'beacon-hob',
+          latitude: ringAnchor.latitude,
+          longitude: ringAnchor.longitude,
+          altitudeM: hob,
+          color: Color.fromCssColorString('#FFD98A'),
+        });
+      }
       const blast = result.data.blast;
       const thermal = result.data.thermal;
       const crater = result.data.crater;
@@ -1942,6 +2109,15 @@ export function Globe(): JSX.Element {
     }
 
     // --- Volcano: pyroclastic-flow reach ring ------------------------
+    if (result.type === 'volcano') {
+      addAltitudeBeacon({
+        idPrefix: 'beacon-volcano-column',
+        latitude: ringAnchor.latitude,
+        longitude: ringAnchor.longitude,
+        altitudeM: result.data.plumeHeight,
+        color: Color.fromCssColorString('#E3DCCB'),
+      });
+    }
     const pyroRadius = result.type === 'volcano' ? result.data.pyroclasticRunout : 0;
     if (result.type === 'volcano' && Number.isFinite(pyroRadius) && pyroRadius > 0) {
       const entity = viewer.entities.add({
@@ -2657,79 +2833,87 @@ export function Globe(): JSX.Element {
         // Same gating as the global pass: amplitude ≥ 1 m and arrival
         // finite. Same glyph (comet streak, amplitude-weighted
         // seeding) and same tooltip kind, so the user reads the two
-        // layers as a single uniform field.
-        try {
-          const ampField = bathymetricTsunami.amplitude;
-          const arrField = bathymetricTsunami.field;
-          const LOCAL_COMET_COLOR = Color.fromCssColorString('#BFE8F5');
-          const localCometMaterial = new PolylineGlowMaterialProperty({
-            color: LOCAL_COMET_COLOR.withAlpha(0.55),
-            glowPower: 0.3,
-            taperPower: 0.45,
-          });
-          const LOCAL_ARROW_SIZE_M = 6_000;
-          const LOCAL_MIN_AMPLITUDE_M = 1.0;
-          // Aim for ~10 arrows per side on the tile (~100 total).
-          // Stride is computed from the actual nLat / nLon so it
-          // adapts if the local tile resolution changes.
-          const TARGET_LOCAL_PER_SIDE = 10;
-          const stride = Math.max(
-            1,
-            Math.floor(Math.min(ampField.nLat, ampField.nLon) / TARGET_LOCAL_PER_SIDE)
-          );
-          let localArrows = 0;
-          for (let i = 0; i < ampField.nLat; i += stride) {
-            for (let j = 0; j < ampField.nLon; j += stride) {
-              const amp = ampField.amplitudes[i * ampField.nLon + j] ?? 0;
-              if (!Number.isFinite(amp) || amp < LOCAL_MIN_AMPLITUDE_M) continue;
-              const arrival =
-                arrField.arrivalTimes[i * arrField.nLon + j] ?? Number.POSITIVE_INFINITY;
-              if (!Number.isFinite(arrival)) continue;
-              const cellLat = grid.maxLat - (i / (ampField.nLat - 1)) * (grid.maxLat - grid.minLat);
-              const cellLon = grid.minLon + (j / (ampField.nLon - 1)) * (grid.maxLon - grid.minLon);
-              const dir = sampleArrivalGradient(
-                arrField.arrivalTimes,
-                arrField.nLat,
-                arrField.nLon,
-                grid.minLat,
-                grid.maxLat,
-                grid.minLon,
-                grid.maxLon,
-                cellLat,
-                cellLon
-              );
-              if (dir.east === 0 && dir.north === 0) continue;
-              const weight = Math.min(1, 0.15 + (0.85 * amp) / 6);
-              if (cellHash01(i, j) > weight) continue;
-              const positions = buildCometPositions(
-                cellLat,
-                cellLon,
-                dir.east,
-                dir.north,
-                LOCAL_ARROW_SIZE_M * 2.4
-              );
-              if (positions === null) continue;
-              const id = `tsunami-arrow-local-${i.toString()}-${j.toString()}`;
-              viewer.entities.add({
-                id,
-                polyline: {
-                  positions,
-                  width: 3,
-                  material: localCometMaterial,
-                },
-              });
-              registerRingTooltip(id, 'tsunamiWaveAmplitude', amp, LOCAL_COMET_COLOR);
-              localArrows += 1;
-            }
-          }
-          if (import.meta.env.DEV) {
-            console.info(
-              `[Globe] tsunami local arrows: ${localArrows.toString()} placed (stride ${stride.toString()} cells over ${ampField.nLat.toString()}×${ampField.nLon.toString()} tile)`
+        // layers as a single uniform field. Fallback only: when the
+        // global layer is active, the dense local-tile tuft over the
+        // source would just duplicate it as noise.
+        const globalCometsActive =
+          bathymetricTsunami.global?.amplitude !== undefined &&
+          bathymetricTsunami.global.amplitude.maxAmplitude >= 1;
+        if (!globalCometsActive)
+          try {
+            const ampField = bathymetricTsunami.amplitude;
+            const arrField = bathymetricTsunami.field;
+            const LOCAL_COMET_COLOR = Color.fromCssColorString('#BFE8F5');
+            const localCometMaterial = new PolylineGlowMaterialProperty({
+              color: LOCAL_COMET_COLOR.withAlpha(0.55),
+              glowPower: 0.3,
+              taperPower: 0.45,
+            });
+            const LOCAL_ARROW_SIZE_M = 6_000;
+            const LOCAL_MIN_AMPLITUDE_M = 1.0;
+            // Aim for ~10 arrows per side on the tile (~100 total).
+            // Stride is computed from the actual nLat / nLon so it
+            // adapts if the local tile resolution changes.
+            const TARGET_LOCAL_PER_SIDE = 10;
+            const stride = Math.max(
+              1,
+              Math.floor(Math.min(ampField.nLat, ampField.nLon) / TARGET_LOCAL_PER_SIDE)
             );
+            let localArrows = 0;
+            for (let i = 0; i < ampField.nLat; i += stride) {
+              for (let j = 0; j < ampField.nLon; j += stride) {
+                const amp = ampField.amplitudes[i * ampField.nLon + j] ?? 0;
+                if (!Number.isFinite(amp) || amp < LOCAL_MIN_AMPLITUDE_M) continue;
+                const arrival =
+                  arrField.arrivalTimes[i * arrField.nLon + j] ?? Number.POSITIVE_INFINITY;
+                if (!Number.isFinite(arrival)) continue;
+                const cellLat =
+                  grid.maxLat - (i / (ampField.nLat - 1)) * (grid.maxLat - grid.minLat);
+                const cellLon =
+                  grid.minLon + (j / (ampField.nLon - 1)) * (grid.maxLon - grid.minLon);
+                const dir = sampleArrivalGradient(
+                  arrField.arrivalTimes,
+                  arrField.nLat,
+                  arrField.nLon,
+                  grid.minLat,
+                  grid.maxLat,
+                  grid.minLon,
+                  grid.maxLon,
+                  cellLat,
+                  cellLon
+                );
+                if (dir.east === 0 && dir.north === 0) continue;
+                const weight = Math.min(1, 0.15 + (0.85 * amp) / 6);
+                if (cellHash01(i, j) > weight) continue;
+                const positions = buildCometPositions(
+                  cellLat,
+                  cellLon,
+                  dir.east,
+                  dir.north,
+                  LOCAL_ARROW_SIZE_M * 2.4
+                );
+                if (positions === null) continue;
+                const id = `tsunami-arrow-local-${i.toString()}-${j.toString()}`;
+                viewer.entities.add({
+                  id,
+                  polyline: {
+                    positions,
+                    width: 3,
+                    material: localCometMaterial,
+                  },
+                });
+                registerRingTooltip(id, 'tsunamiWaveAmplitude', amp, LOCAL_COMET_COLOR);
+                localArrows += 1;
+              }
+            }
+            if (import.meta.env.DEV) {
+              console.info(
+                `[Globe] tsunami local arrows: ${localArrows.toString()} placed (stride ${stride.toString()} cells over ${ampField.nLat.toString()}×${ampField.nLon.toString()} tile)`
+              );
+            }
+          } catch (err: unknown) {
+            console.warn('[Globe] local tsunami arrow render failed:', err);
           }
-        } catch (err: unknown) {
-          console.warn('[Globe] local tsunami arrow render failed:', err);
-        }
         // ── Impatti costieri locali (tile ~150 km, run-up già in
         // bathymetricTsunami.runup) ─────────────────────────────────
         try {

@@ -1,3 +1,4 @@
+import { Color } from 'cesium';
 import type { Entity } from 'cesium';
 
 /**
@@ -36,6 +37,12 @@ const ANIMATION_MS = 4_000;
  *  itself. Was a 200 ms overshoot pop previously; now a monotone
  *  ramp 0 → final size over the same budget. */
 const FADE_IN_MS = 300;
+/** Bagliore di nascita («ogni scossa nasce, brilla e sfuma», tavola
+ *  4). Vive sull'ALONE del punto — outline che si accende e decade —
+ *  così la geometria del marcatore resta monotona e il vincolo
+ *  dell'audit Phase 8a (niente overshoot di taglia) resta rispettato:
+ *  quello che pulsa è la luce, non il dato. */
+const BIRTH_GLOW_MS = 700;
 
 export interface AftershockAnimationSpec {
   /** Cesium entity carrying a `point` graphic. */
@@ -45,6 +52,9 @@ export interface AftershockAnimationSpec {
   /** Final pixel size (settled state). The pop ramps from
    *  POP_OVERSHOOT × this back down to it. */
   finalPixelSize: number;
+  /** Tint for the birth glow halo. Falls back to no glow when
+   *  omitted. */
+  haloColor?: Color;
 }
 
 function prefersReducedMotion(): boolean {
@@ -81,6 +91,15 @@ export function animateAftershocksImperatively(
       (entity.point as unknown as Record<string, any>).pixelSize = value;
     }
   };
+  const writeHalo = (entity: Entity, color: Color, width: number): void => {
+    if (entity.point !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const point = entity.point as unknown as Record<string, any>;
+      point.outlineColor = color;
+      point.outlineWidth = width;
+    }
+  };
+  const settledHalo = Color.BLACK;
 
   // Reduced-motion branch: settle immediately, no rAF.
   if (prefersReducedMotion()) {
@@ -134,8 +153,17 @@ export function animateAftershocksImperatively(
       } else {
         writePixelSize(spec.entity, spec.finalPixelSize);
       }
+      if (spec.haloColor !== undefined) {
+        if (sinceReveal < BIRTH_GLOW_MS) {
+          const g = 1 - sinceReveal / BIRTH_GLOW_MS;
+          writeHalo(spec.entity, spec.haloColor.withAlpha(0.85 * g), 1 + 5 * g);
+          allRevealed = false;
+        } else {
+          writeHalo(spec.entity, settledHalo, 1);
+        }
+      }
     }
-    if (!allRevealed && elapsed < ANIMATION_MS + FADE_IN_MS) {
+    if (!allRevealed && elapsed < ANIMATION_MS + BIRTH_GLOW_MS) {
       rafHandle = requestAnimationFrame(tick);
     } else {
       // Force-settle every entity at the end so we never leave a
@@ -143,6 +171,7 @@ export function animateAftershocksImperatively(
       for (const spec of specs) {
         writeShow(spec.entity, true);
         writePixelSize(spec.entity, spec.finalPixelSize);
+        if (spec.haloColor !== undefined) writeHalo(spec.entity, settledHalo, 1);
       }
     }
   };
@@ -155,6 +184,7 @@ export function animateAftershocksImperatively(
     for (const spec of specs) {
       writeShow(spec.entity, true);
       writePixelSize(spec.entity, spec.finalPixelSize);
+      if (spec.haloColor !== undefined) writeHalo(spec.entity, settledHalo, 1);
     }
   };
 }
