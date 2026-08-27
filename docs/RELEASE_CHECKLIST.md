@@ -47,7 +47,6 @@ or have a written reason in the release PR before pushing the
 
 - [ ] `VITE_PLAUSIBLE_DOMAIN` set in the Pages production environment
       (not preview, not dev).
-- [ ] `VITE_STADIA_API_KEY` set in the Pages production environment.
       Register a free domain-restricted key on stadiamaps.com and add
       the deploy domain to it. The wiring in `Globe.tsx` is done: the
       key is appended to the basemap URL when the variable is set, and

@@ -70,51 +70,15 @@ import styles from './Globe.module.css';
  */
 Ion.defaultAccessToken = '';
 
-// Basemap, in two tiers.
-//
-// Preferred: Stadia Maps' "Stamen Terrain" — shaded-relief topography
-// rendered from OpenStreetMap data. Two reasons it beats the raw OSM
-// tiles served at tile.openstreetmap.org:
-//   1. Place names are localised to English (`name:en` from OSM),
-//      so the globe stays legible when the user pans into Asia
-//      where OSM serves CJK / Devanagari / Thai script by default.
-//   2. The tiles bake in hill-shading, which gives the otherwise
-//      flat ellipsoid a sense of 3D relief for free.
-//
-// Stadia serves keyless requests only from localhost and 127.0.0.1.
-// From any deployed origin a keyless request comes back 429 and the
-// globe renders black — no console error, just an unlit sphere against
-// the starfield, which a first-time visitor reads as a broken app.
-//
-// So a deployment without VITE_STADIA_API_KEY falls back to plain OSM
-// instead of showing nothing. The fallback loses the hill-shading and
-// the English labels; it does not lose the globe. Set the variable
-// (register a free domain-restricted key on stadiamaps.com) to get the
-// intended look back.
-const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY ?? '';
-
-const STADIA_TILES = {
-  // The query string only appears when there is a key to put in it:
-  // an empty `?api_key=` is rejected, where no parameter at all is the
-  // keyless path Stadia allows from a dev server.
-  url:
-    'https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}@2x.png' +
-    (STADIA_API_KEY ? `?api_key=${STADIA_API_KEY}` : ''),
-  attribution: '© Stadia Maps · © Stamen Design · © OpenMapTiles · © OpenStreetMap contributors',
-} as const;
-
-const OSM_TILES = {
-  url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-  attribution: '© OpenStreetMap contributors',
-} as const;
-
-// Keyless is fine on a dev server; anywhere else it needs the key.
-const isLocalOrigin =
-  typeof window !== 'undefined' &&
-  ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
-
-const { url: BASE_TILE_URL, attribution: BASE_TILE_ATTRIBUTION } =
-  STADIA_API_KEY || isLocalOrigin ? STADIA_TILES : OSM_TILES;
+// Regia «documentario satellitare» (tavola 2, approvata): il globo è
+// fotografia orbitale, non cartografia. Esri World Imagery è servito
+// senza chiave da qualunque origine — a differenza dello Stadia/Stamen
+// usato in precedenza, che fuori da localhost rispondeva 429 e lasciava
+// una sfera nera — quindi il look di produzione e quello di sviluppo
+// coincidono. Lo schema tile di ArcGIS è {z}/{y}/{x}, non {z}/{x}/{y}.
+const BASE_TILE_URL =
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+const BASE_TILE_ATTRIBUTION = 'Esri, Maxar, Earthstar Geographics, and the GIS User Community';
 
 /**
  * Ring palette — every hex is chosen for two constraints:
@@ -528,13 +492,24 @@ export function Globe(): JSX.Element {
       }
 
       viewer.imageryLayers.removeAll();
-      viewer.imageryLayers.addImageryProvider(
+      const baseLayer = viewer.imageryLayers.addImageryProvider(
         new UrlTemplateImageryProvider({
           url: BASE_TILE_URL,
           credit: BASE_TILE_ATTRIBUTION,
           maximumLevel: 18,
         })
       );
+      // Colour grade della fotografia satellitare: desaturata di poco e
+      // con un filo piu' di contrasto, verso il registro documentario —
+      // mai la cartolina. Valori scelti dal vivo sulla scena reale.
+      baseLayer.saturation = 0.82;
+      baseLayer.contrast = 1.08;
+      baseLayer.brightness = 0.92;
+      baseLayer.gamma = 1.05;
+      // Web Mercator si ferma a ±85°: oltre, il globo mostrerebbe il
+      // proprio baseColor come un disco nero sul polo. Un tono ghiaccio
+      // spento fa leggere la calotta scoperta come banchisa.
+      viewer.scene.globe.baseColor = Color.fromCssColorString('#dbe3e8');
 
       // Phase 14 — open-data 3D terrain provider.
       //
@@ -571,6 +546,29 @@ export function Globe(): JSX.Element {
           console.warn('[Globe] terrain provider fetch failed; falling back to ellipsoid:', err);
         });
 
+      // Il DEM ArcGIS (come l'imagery) è Web Mercator: oltre ±85° non
+      // esistono tile di terreno e il globo resta con un foro nero sul
+      // polo. Due calotte disegnate sull'ellissoide lo chiudono: a nord
+      // banchisa al livello del mare, a sud il plateau antartico alla
+      // sua quota reale, così non affonda sotto il bordo del DEM.
+      const POLAR_CAP_COLOR = Color.fromCssColorString('#dde6ec');
+      const POLAR_CAP_RADIUS = 590_000; // 85°→90° ≈ 556 km, più un soprammesso
+      for (const cap of [
+        { id: 'polar-cap-north', lat: 90, height: 0 },
+        { id: 'polar-cap-south', lat: -90, height: 2_700 },
+      ]) {
+        viewer.entities.add({
+          id: cap.id,
+          position: Cartesian3.fromDegrees(0, cap.lat),
+          ellipse: {
+            semiMajorAxis: POLAR_CAP_RADIUS,
+            semiMinorAxis: POLAR_CAP_RADIUS,
+            height: cap.height,
+            material: POLAR_CAP_COLOR,
+          },
+        });
+      }
+
       // Live solar illumination: the globe is shaded by the sun's real
       // position at the clock's current time. When a location is later
       // picked, `viewer.clock.currentTime` is anchored to the local
@@ -595,9 +593,16 @@ export function Globe(): JSX.Element {
       // types `skyAtmosphere` as optional because some build modes
       // strip it; in our default Viewer config it is always present.
       if (viewer.scene.skyAtmosphere !== undefined) {
-        viewer.scene.skyAtmosphere.saturationShift = 0.1;
-        viewer.scene.skyAtmosphere.brightnessShift = -0.05;
+        viewer.scene.skyAtmosphere.brightnessShift = 0.08;
+        viewer.scene.skyAtmosphere.saturationShift = 0.22;
+        viewer.scene.skyAtmosphere.hueShift = -0.015;
       }
+      // Un velo d'aria sui fianchi del globo: alle inquadrature larghe
+      // del simulatore ammorbidisce l'orizzonte senza mangiare dettaglio.
+      viewer.scene.fog.density = 0.00012;
+      // HDR: con l'imagery fotografica lascia respirare le alte luci
+      // (ghiacci, deserti) invece di tosarle al bianco.
+      viewer.scene.highDynamicRange = true;
 
       // --- Camera controls -------------------------------------------
       // Cesium ships with all six gestures wired to the trackball

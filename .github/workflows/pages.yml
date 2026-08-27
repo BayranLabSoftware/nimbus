@@ -51,9 +51,6 @@ jobs:
           # Project sites live under /<repo>/, so the bundle needs the
           # sub-path baked into its asset URLs.
           BASE_PATH: /${{ github.event.repository.name }}/
-          # Optional: without it the globe falls back to plain OSM
-          # tiles, which work from any origin without a key.
-          VITE_STADIA_API_KEY: ${{ secrets.STADIA_API_KEY }}
         run: pnpm build
 
       # One manual step precedes the first run of this workflow:

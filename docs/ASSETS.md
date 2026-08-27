@@ -65,26 +65,25 @@ post-v1.0 work:
 
 ### Network services
 
-| Service                             | Purpose                      | Licence / terms                         | Source URL                                          | Added      |
-| ----------------------------------- | ---------------------------- | --------------------------------------- | --------------------------------------------------- | ---------- |
-| Stadia Maps · Stamen Terrain raster | Globe basemap in `Globe.tsx` | Free for non-commercial; key for prod   | https://stadiamaps.com/products/maps/stamen-terrain | 2026-04-27 |
-| AWS Terrain Tiles                   | Bathymetry / DEM samples     | CC0                                     | https://registry.opendata.aws/terrain-tiles/        | 2026-04-23 |
-| WorldPop 2020 1 km mosaic           | Population exposure (COG)    | CC-BY-4.0 (academic, attribution req'd) | https://www.worldpop.org/                           | 2026-04-23 |
+| Service                   | Purpose                      | Licence / terms                         | Source URL                                                                | Added      |
+| ------------------------- | ---------------------------- | --------------------------------------- | ------------------------------------------------------------------------- | ---------- |
+| Esri World Imagery raster | Globe basemap in `Globe.tsx` | Free with attribution (Esri tile terms) | https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9 | 2026-08-27 |
+| AWS Terrain Tiles         | Bathymetry / DEM samples     | CC0                                     | https://registry.opendata.aws/terrain-tiles/                              | 2026-04-23 |
+| WorldPop 2020 1 km mosaic | Population exposure (COG)    | CC-BY-4.0 (academic, attribution req'd) | https://www.worldpop.org/                                                 | 2026-04-23 |
 
-Stamen Terrain compliance:
+World Imagery compliance:
 
-- Attribution `© Stadia Maps · © Stamen Design · © OpenMapTiles · © OpenStreetMap contributors`
-  is shown in the Cesium credit overlay (wired via
+- Attribution `Esri, Maxar, Earthstar Geographics, and the GIS User
+Community` is shown in the Cesium credit overlay (wired via
   `UrlTemplateImageryProvider.credit`).
-- Choice driven by two needs: place names rendered in English
-  (`name:en` from OpenMapTiles vendor data) so the globe stays
-  legible across Asia, and shaded-relief baked into the raster so the
-  ellipsoid reads as 3D without us hosting Cesium-format terrain.
-- Stadia's policy allows keyless requests for development and modest
-  non-commercial traffic. For the production build we will register
-  for a free domain-restricted API key and inject it via
-  `VITE_STADIA_API_KEY` (entry to add when the v1.0 deploy goes
-  live; tracked in `docs/RELEASE_CHECKLIST.md`).
+- Chosen for the satellite-documentary art direction: the globe reads
+  as orbital photography rather than cartography, and the tiles are
+  served keyless from any origin, so the deployed site and the dev
+  server share one look with zero configuration. (The previous
+  Stadia/Stamen basemap needed an API key outside localhost.)
+- Web Mercator stops at ±85°; the polar gap this leaves in both the
+  imagery and the ArcGIS DEM is covered by two ice-cap entities drawn
+  in `Globe.tsx`.
 
 ## Adding a new asset
 

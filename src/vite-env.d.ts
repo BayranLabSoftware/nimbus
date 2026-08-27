@@ -10,7 +10,6 @@ interface ImportMetaEnv {
   /** Chiave Stadia Maps con dominio registrato. Da localhost si puo'
    *  lasciare vuota; da un dominio pubblico senza chiave le tessere
    *  del globo non arrivano e la Terra resta nera. */
-  readonly VITE_STADIA_API_KEY?: string;
 }
 
 interface ImportMeta {

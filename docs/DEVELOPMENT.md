@@ -210,8 +210,8 @@ What's in `main` today:
   `git tag -s v1.0.0 && git push --tags` triggers verify → publish
   end-to-end.
 
-Remaining for v1.0: set `VITE_STADIA_API_KEY` and
-`VITE_PLAUSIBLE_DOMAIN` in production, do a real-device QA pass
+Remaining for v1.0: set `VITE_PLAUSIBLE_DOMAIN` in production,
+do a real-device QA pass
 on iOS / Android, polish the announcement copy. See
 [docs/ROADMAP.md](docs/ROADMAP.md) and
 [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md).
@@ -228,7 +228,7 @@ release:
   name the holder.
 - ~~Placeholder contact addresses~~ — resolved: `CODE_OF_CONDUCT.md`
   and `SECURITY.md` point at the project address.
-- Basemap tiles need `VITE_STADIA_API_KEY` on any deployed origin, or
-  the globe renders black. Register a domain-restricted key.
+- ~~Basemap API key~~ — resolved: the Esri World Imagery basemap is
+  keyless from any origin.
 - `PROJECT_TAGLINE` is currently: "Simulate catastrophic events on an
   interactive 3D globe." Revisit before the v1.0 announcement.
