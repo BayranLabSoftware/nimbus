@@ -41,6 +41,20 @@
   --space-8: 2rem;
   --space-12: 3rem;
   --space-16: 4rem;
+
+  /* Material system — regia visiva, tavola 1 («vetro d'osservatorio»).
+     Every floating surface over the globe shares this one recipe, so
+     depth reads as a system rather than per-panel improvisation. */
+  --glass-bg: rgba(16, 22, 35, 0.68);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-blur: 18px;
+  --glass-highlight: rgba(255, 255, 255, 0.07);
+  --radius-s: 8px;
+  --radius-m: 12px;
+  --radius-l: 16px;
+  --elev-1: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --elev-2: 0 12px 34px rgba(0, 0, 0, 0.42);
+  --elev-3: 0 20px 55px rgba(0, 0, 0, 0.55);
 }
 
 *,

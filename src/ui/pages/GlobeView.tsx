@@ -1,7 +1,6 @@
 import type { JSX } from 'react';
 import { Globe } from '../../scene/globe/index.js';
-import { AboutDialog } from '../components/AboutDialog.js';
-import { GlossaryDialog } from '../components/GlossaryDialog.js';
+import { AppBar } from '../components/AppBar.js';
 import { RingLegend } from '../components/RingLegend.js';
 import { SimulatorPanel } from '../components/SimulatorPanel.js';
 import styles from './GlobeView.module.css';
@@ -18,8 +17,7 @@ export function GlobeView(): JSX.Element {
   return (
     <div className={styles.root}>
       <Globe />
-      <AboutDialog />
-      <GlossaryDialog />
+      <AppBar />
       <SimulatorPanel />
       <RingLegend />
     </div>

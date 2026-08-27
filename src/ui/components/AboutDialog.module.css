@@ -1,31 +1,22 @@
 .trigger {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  padding: 8px 12px;
+  padding: 7px 12px;
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: rgba(12, 14, 20, 0.75);
-  backdrop-filter: blur(8px);
+  background: transparent;
   color: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-s);
   cursor: pointer;
-  z-index: 10;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
 }
 
-/* Mobile: keep the trigger in the top-left corner where the
- * SimulatorPanel does NOT extend (the panel snaps to the bottom-left
- * quadrant on narrow viewports — see SimulatorPanel.module.css).
- * Putting the About / Glossary triggers at the bottom would overlap
- * the panel and make them unclickable; the previous mobile rule
- * 'bottom: 16px' was the cause of the E2E mobile-chrome /
- * mobile-safari failures. */
-
 .trigger:hover {
-  background: rgba(30, 34, 46, 0.9);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--glass-border);
 }
 
 .trigger:focus-visible {

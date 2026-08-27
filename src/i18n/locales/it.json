@@ -1069,21 +1069,29 @@
   },
   "presets": {
     "impact": {
-      "CHICXULUB": { "note": "Impattore K-Pg, 66 Ma — Hildebrand et al. 1991; Morgan et al. 2016" },
+      "CHICXULUB": {
+        "note": "Impattore K-Pg, 66 Ma — Hildebrand et al. 1991; Morgan et al. 2016"
+      },
       "CHICXULUB_OCEAN": {
         "note": "Impattore K-Pg su piattaforma carbonatica di 100 m, cascata tsunami Ward & Asphaug"
       },
       "TUNGUSKA": {
         "note": "Airburst di bolide condritico a 30°, 30 giugno 1908 — Boslough & Crawford 2008. Notare l'impronta asimmetrica di ejecta sottovento alla direzione di ingresso."
       },
-      "METEOR_CRATER": { "note": "Meteorite ferroso, ≈50 ka — Kring 2007" },
+      "METEOR_CRATER": {
+        "note": "Meteorite ferroso, ≈50 ka — Kring 2007"
+      },
       "CHELYABINSK": {
         "note": "Airburst di bolide di tipo S a 18°, 15 feb 2013 — Popova et al. 2013 Science. Marcata asimmetria a farfalla per l'angolo di ingresso molto basso (Schultz & Anderson 1996)."
       }
     },
     "explosion": {
-      "HIROSHIMA_1945": { "note": "«Little Boy», ordigno a uranio a cannone; airburst a 580 m" },
-      "NAGASAKI_1945": { "note": "«Fat Man», ordigno al plutonio a implosione; airburst a 503 m" },
+      "HIROSHIMA_1945": {
+        "note": "«Little Boy», ordigno a uranio a cannone; airburst a 580 m"
+      },
+      "NAGASAKI_1945": {
+        "note": "«Fat Man», ordigno al plutonio a implosione; airburst a 503 m"
+      },
       "BEIRUT_2020": {
         "note": "≈ 2 750 t di NH₄NO₃, ≈ 0,5 kt TNT-equivalenti, esplosione superficiale al porto"
       },
@@ -1096,7 +1104,9 @@
       "STARFISH_PRIME_1962": {
         "note": "Test HEMP esoatmosferico: 1,4 Mt a 400 km di quota — guasti ai lampioni di Oahu a 1 450 km"
       },
-      "ONE_MEGATON": { "note": "Ordigno generico da 1 Mt — «come si presenta un megatone?»" }
+      "ONE_MEGATON": {
+        "note": "Ordigno generico da 1 Mt — «come si presenta un megatone?»"
+      }
     },
     "earthquake": {
       "TOHOKU_2011": {
@@ -1108,8 +1118,12 @@
       "LISBON_1755": {
         "note": "Megathrust atlantico sulla zona di frattura Azzorre–Gibilterra; tsunami trans-oceanico"
       },
-      "NORTHRIDGE_1994": { "note": "Rottura blind-thrust sotto la San Fernando Valley" },
-      "KUNLUN_2001": { "note": "Rottura strike-slip sulla faglia del Kunlun, altopiano tibetano" }
+      "NORTHRIDGE_1994": {
+        "note": "Rottura blind-thrust sotto la San Fernando Valley"
+      },
+      "KUNLUN_2001": {
+        "note": "Rottura strike-slip sulla faglia del Kunlun, altopiano tibetano"
+      }
     },
     "volcano": {
       "KRAKATAU_1883": {
@@ -1121,8 +1135,12 @@
       "MT_ST_HELENS_1980": {
         "note": "Esplosione laterale di arco vulcanico Cascade + colonna pliniana, VEI 5"
       },
-      "TAMBORA_1815": { "note": "La più grande eruzione documentata nella storia, VEI 7" },
-      "PINATUBO_1991": { "note": "L'eruzione VEI 6 meglio strumentata — Koyaguchi & Tokuno 1993" }
+      "TAMBORA_1815": {
+        "note": "La più grande eruzione documentata nella storia, VEI 7"
+      },
+      "PINATUBO_1991": {
+        "note": "L'eruzione VEI 6 meglio strumentata — Koyaguchi & Tokuno 1993"
+      }
     },
     "landslide": {
       "LITUYA_BAY_1958": {
@@ -1135,5 +1153,8 @@
         "note": "Collasso sub-aereo del fianco — stesso evento fisico del preset vulcanico, qui inquadrato come frana"
       }
     }
+  },
+  "appBar": {
+    "label": "Barra applicazione"
   }
 }

@@ -1066,5 +1066,8 @@
     "nuclearCrater": "Apparent surface-burst crater diameter D = K · W_kt^0.3 (Nordyke 1977), with K tied to the ground type — hard rock, firm ground, dry soil, wet coral.",
     "atmosphericEntry": "Fragmentation-onset altitude h_b = H · ln(ρ₀v² / Y), where dynamic pressure first exceeds the impactor's tensile strength Y (Chyba et al. 1993, Nature 361: 40; Collins et al. 2005, M&PS 40, Eq. 9). Burst altitude is set 2 scale heights below h_b, minus a diameter-dependent penetration bonus that lets large bodies sail through the atmosphere intact.",
     "bolideAirburstAmplification": "Closed-form altitude amplification f(h) = (P_0 / P_amb(h))^(1/β) with β = 5/3 (Sachs intermediate-shock exponent). Built from Whitham (1974) §8.2 weak-shock invariance ΔP/P_amb ≈ const through stratified atmosphere, Sachs (1944) blast scaling ΔP ∝ R^(−β), and the U.S. Standard Atmosphere 1976 (NOAA-S/T 76-1562) for actual P(h). Capped at 15× for stratospheric scenarios. Validates within ~1 % on Chelyabinsk 2013 (Brown et al. 2013 Nature 503: 238) and within ~15 % on Tunguska 1908."
+  },
+  "appBar": {
+    "label": "Application bar"
   }
 }
