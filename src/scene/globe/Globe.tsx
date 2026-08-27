@@ -3121,87 +3121,126 @@ export function Globe(): JSX.Element {
       if (ringSpecs.length === 0) return;
       cancelRingAnimationRef.current = animateRingsImperatively(ringSpecs);
 
-      // Wavefront indicator — a single thin bright outline ring
-      // that grows at constant linear speed from the burst centre
-      // out to the largest damage threshold. Acts as the
-      // unmistakeable "you are watching a shock wave move
-      // outward" cue: even if the per-band ring growth feels
-      // subtle (e.g. closely-spaced thresholds), the user always
-      // sees ONE moving wavefront. The ring is purely visual and
-      // does NOT correspond to any single physics threshold.
+      // Fronte d'urto — la controparte di terra della cresta tsunami
+      // (richiesta di Andrea): un bordo che viaggia IN CICLO con due
+      // anelli di scia che sfumano, e che cambia colore attraversando
+      // le soglie della legenda — dentro la zona del cratere è rosso
+      // cratere, superata la soglia termica prende l'arancio, e così
+      // via fino al giallo pallido dell'ultimo anello. I colori non
+      // sono una seconda tavolozza: vengono letti dagli anelli veri
+      // della cascata, così legenda, anelli e fronte dicono la stessa
+      // cosa per ogni tipo di evento.
       const cascadeMaxRadiusM = ringSpecs.reduce((m, s) => Math.max(m, s.finalSemiMajor), 0);
       if (cascadeMaxRadiusM > 0) {
-        const cascadeT0 = performance.now();
-        const cascadeDurationMs = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 1_800
-          : 5_000;
-        const wavefrontFadeMs = 800;
-        // CRITICAL: do NOT use a single `CallbackProperty` for both
-        // semi-major and semi-minor axes. Cesium reads each property
-        // independently during a frame and a callback that derives
-        // its value from `performance.now()` returns a slightly
-        // larger value on the second call — `semiMinorAxis` ends up
-        // greater than `semiMajorAxis`, the EllipseGeometry invariant
-        // check throws, and rendering stops dead. The original
-        // `ringAnimation.ts` header documents this exact failure mode
-        // and is the reason the cascade animator uses direct property
-        // mutation instead. Use the same approach here.
-        const wavefrontEntity = viewer.entities.add({
-          id: WAVEFRONT_INDICATOR_ID,
-          position: centerCartesian,
-          ellipse: {
-            semiMajorAxis: RING_INITIAL_RADIUS_M,
-            semiMinorAxis: RING_INITIAL_RADIUS_M,
-            // No fill — the wavefront is a propagating EDGE, not a
-            // filled disc. Cesium's outline renders as a ground
-            // polyline, always visible regardless of camera pitch.
-            fill: false,
-            outline: true,
-            outlineColor: Color.fromCssColorString('#facc15').withAlpha(0.95),
-            outlineWidth: 6,
-            height: 0,
-            heightReference: HeightReference.CLAMP_TO_GROUND,
+        // Zone di colore: (raggio, colore) dagli anelli disegnati,
+        // ordinate dal centro verso fuori.
+        const zones = ringSpecs
+          .map((spec) => {
+            const c = spec.entity.ellipse?.outlineColor?.getValue(viewer.clock.currentTime) as
+              | Color
+              | undefined;
+            return c === undefined ? null : { r: spec.finalSemiMajor, color: c };
+          })
+          .filter((z): z is { r: number; color: Color } => z !== null)
+          .sort((a, b) => a.r - b.r);
+        const fallbackGold = Color.fromCssColorString('#facc15');
+        const blendBandM = cascadeMaxRadiusM * 0.08;
+        const zoneColorAt = (r: number, out: Color): Color => {
+          if (zones.length === 0) return Color.clone(fallbackGold, out);
+          let idx = zones.findIndex((z) => z.r >= r);
+          if (idx === -1) idx = zones.length - 1;
+          const current = zones[idx];
+          if (current === undefined) return Color.clone(fallbackGold, out);
+          const previous = idx > 0 ? zones[idx - 1] : undefined;
+          if (previous !== undefined && blendBandM > 0) {
+            const d = r - previous.r;
+            if (d >= 0 && d < blendBandM) {
+              return Color.lerp(previous.color, current.color, d / blendBandM, out);
+            }
+          }
+          return Color.clone(current.color, out);
+        };
+
+        const makeFrontRing = (suffix: string, width: number): Entity =>
+          viewer.entities.add({
+            id: `${WAVEFRONT_INDICATOR_ID}${suffix}`,
+            position: centerCartesian,
+            ellipse: {
+              semiMajorAxis: RING_INITIAL_RADIUS_M,
+              semiMinorAxis: RING_INITIAL_RADIUS_M,
+              // No fill — the wavefront is a propagating EDGE. The
+              // outline renders as a ground polyline, always visible
+              // regardless of camera pitch.
+              fill: false,
+              outline: true,
+              outlineColor: fallbackGold.withAlpha(0),
+              outlineWidth: width,
+              height: 0,
+              heightReference: HeightReference.CLAMP_TO_GROUND,
+            },
+          });
+        const frontHead = makeFrontRing('', 6);
+        const frontTrailA = makeFrontRing('-trail-a', 4);
+        const frontTrailB = makeFrontRing('-trail-b', 3);
+        const rings: { entity: Entity; lagM: number; alpha: number; scratch: Color }[] = [
+          { entity: frontHead, lagM: 0, alpha: 0.95, scratch: new Color() },
+          {
+            entity: frontTrailA,
+            lagM: cascadeMaxRadiusM * 0.06,
+            alpha: 0.45,
+            scratch: new Color(),
           },
-        });
-        // Stand-alone rAF loop for the wavefront — runs alongside the
-        // ring cascade's loop but writes to its own entity. Both axes
-        // mutated in the same synchronous statement so Cesium never
-        // sees a frame where minor > major. Outline alpha mutated
-        // straight on the property too, no `CallbackProperty` round-
-        // trip required for the colour either.
-        const wavefrontGoldA = Color.fromCssColorString('#facc15');
-        const wavefrontGoldB = Color.fromCssColorString('#facc15');
-        wavefrontGoldA.alpha = 0.95;
+          { entity: frontTrailB, lagM: cascadeMaxRadiusM * 0.13, alpha: 0.2, scratch: new Color() },
+        ];
+        const reduceMotionFront = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        // Primo passaggio in sincrono con la cascata (5 s), poi il
+        // fronte continua a girare come la cresta tsunami. Con
+        // prefers-reduced-motion: un solo passaggio veloce e via.
+        const FRONT_LOOP_MS = reduceMotionFront ? 1_800 : 7_000;
+        const cascadeT0 = performance.now();
         let wavefrontHandle = 0;
         let wavefrontCancelled = false;
+        const removeFrontRings = (): void => {
+          if (viewer.isDestroyed()) return;
+          for (const ring of rings) {
+            const stale = viewer.entities.getById(ring.entity.id);
+            if (stale) viewer.entities.remove(stale);
+          }
+        };
         const wavefrontTick = (): void => {
-          if (wavefrontCancelled) return;
-          const ellipse = wavefrontEntity.ellipse;
-          if (!ellipse) return;
+          if (wavefrontCancelled || viewer.isDestroyed()) return;
           const elapsed = performance.now() - cascadeT0;
-          const t = Math.min(elapsed / cascadeDurationMs, 1);
-          // Linear (not eased) growth so the ring appears to move at
-          // constant speed — the canonical "shock front travelling"
-          // percept.
-          const r = cascadeMaxRadiusM * t;
-          (ellipse as unknown as { semiMajorAxis: number; semiMinorAxis: number }).semiMajorAxis =
-            r;
-          (ellipse as unknown as { semiMajorAxis: number; semiMinorAxis: number }).semiMinorAxis =
-            r;
-          if (elapsed >= cascadeDurationMs) {
-            const fadeT = Math.min((elapsed - cascadeDurationMs) / wavefrontFadeMs, 1);
-            wavefrontGoldB.red = wavefrontGoldA.red;
-            wavefrontGoldB.green = wavefrontGoldA.green;
-            wavefrontGoldB.blue = wavefrontGoldA.blue;
-            wavefrontGoldB.alpha = 0.95 * (1 - fadeT);
-            (ellipse as unknown as { outlineColor: Color }).outlineColor = wavefrontGoldB;
+          if (reduceMotionFront && elapsed >= FRONT_LOOP_MS) {
+            removeFrontRings();
+            return;
           }
-          if (elapsed < cascadeDurationMs + wavefrontFadeMs) {
-            wavefrontHandle = requestAnimationFrame(wavefrontTick);
-          } else if (!viewer.isDestroyed()) {
-            // Self-remove once the fade-out completes.
-            viewer.entities.remove(wavefrontEntity);
+          const rHead = cascadeMaxRadiusM * ((elapsed % FRONT_LOOP_MS) / FRONT_LOOP_MS);
+          for (const ring of rings) {
+            const ellipse = ring.entity.ellipse;
+            if (ellipse === undefined) continue;
+            const r = rHead - ring.lagM;
+            if (r <= RING_INITIAL_RADIUS_M) {
+              ring.scratch.alpha = 0;
+              (ellipse as unknown as { outlineColor: Color }).outlineColor = ring.scratch;
+              continue;
+            }
+            // CRITICAL: entrambi gli assi nella stessa istruzione
+            // sincrona — due CallbackProperty indipendenti farebbero
+            // scattare l'invariante minor ≤ major di EllipseGeometry
+            // (vedi l'header di ringAnimation.ts).
+            (ellipse as unknown as { semiMajorAxis: number; semiMinorAxis: number }).semiMajorAxis =
+              r;
+            (ellipse as unknown as { semiMajorAxis: number; semiMinorAxis: number }).semiMinorAxis =
+              r;
+            zoneColorAt(r, ring.scratch);
+            // La testa si spegne dolcemente sull'ultimo 6% del giro,
+            // così il riavvio dal centro non è uno stacco secco.
+            const tail = 1 - rHead / cascadeMaxRadiusM;
+            ring.scratch.alpha = ring.alpha * Math.min(1, tail / 0.06);
+            (ellipse as unknown as { outlineColor: Color }).outlineColor = ring.scratch;
           }
+          viewer.scene.requestRender();
+          wavefrontHandle = requestAnimationFrame(wavefrontTick);
         };
         wavefrontHandle = requestAnimationFrame(wavefrontTick);
         cancelWavefrontRef.current = (): void => {
@@ -3209,10 +3248,7 @@ export function Globe(): JSX.Element {
           if (typeof cancelAnimationFrame === 'function') {
             cancelAnimationFrame(wavefrontHandle);
           }
-          if (!viewer.isDestroyed()) {
-            const stale = viewer.entities.getById(WAVEFRONT_INDICATOR_ID);
-            if (stale) viewer.entities.remove(stale);
-          }
+          removeFrontRings();
         };
       }
 
