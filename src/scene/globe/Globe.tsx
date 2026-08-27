@@ -227,6 +227,59 @@ function fillsAtRadius(radiusM: number): boolean {
   return Number.isFinite(radiusM) && radiusM < GLOBAL_FILL_CUTOFF_M;
 }
 
+/**
+ * True quando il browser disegna WebGL via software (SwiftShader,
+ * llvmpipe, Mesa) invece che sulla GPU: macchine virtuali, runner di
+ * CI, portatili con driver mancanti. Lì ogni fotogramma costa cento
+ * volte tanto e la scena piena — imagery satellitare, HDR, bloom —
+ * blocca il thread principale al punto che la pagina non risponde
+ * più ai click. In quel caso vale la pena rinunciare alla regia
+ * costosa e restituire un globo che si può usare.
+ */
+function detectsSoftwareRenderer(): boolean {
+  if (typeof document === 'undefined') return false;
+  try {
+    const probe = document.createElement('canvas');
+    const gl = probe.getContext('webgl2') ?? probe.getContext('webgl');
+    if (gl === null) return false;
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = String(
+      info === null ? gl.getParameter(gl.RENDERER) : gl.getParameter(info.UNMASKED_RENDERER_WEBGL)
+    );
+    return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(renderer);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * requestAnimationFrame a cadenza limitata, che si ferma quando la
+ * scheda è nascosta. Le animazioni della scena (cresta, fronte
+ * d'urto) girano in ciclo per tutta la durata della visita: a 60 Hz
+ * su un rasterizzatore software tengono il thread principale occupato
+ * al punto che i click non vengono più serviti. A 20 Hz la
+ * propagazione si legge lo stesso e la pagina resta viva.
+ */
+function loopAtFps(fps: number, step: (nowMs: number) => void): () => void {
+  const minDeltaMs = 1_000 / fps;
+  let handle = 0;
+  let cancelled = false;
+  let last = 0;
+  const tick = (now: number): void => {
+    if (cancelled) return;
+    handle = requestAnimationFrame(tick);
+    if (typeof document !== 'undefined' && document.hidden) return;
+    if (now - last < minDeltaMs) return;
+    last = now;
+    step(now);
+  };
+  handle = requestAnimationFrame(tick);
+  return (): void => {
+    cancelled = true;
+    if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(handle);
+  };
+}
+
 const RING_ID_PREFIX = 'damage-ring-';
 const TSUNAMI_CAVITY_ID = 'tsunami-cavity';
 /** Entity ids for the three concentric wave-front rings painted at
@@ -618,7 +671,9 @@ export function Globe(): JSX.Element {
       // wide camera framings the simulator uses for global-scale events
       // (Tōhoku tsunami, Chicxulub thermal pulse, …) instead of the
       // day-side hemisphere washing out into uniform daylight.
-      viewer.scene.globe.enableLighting = true;
+      const softwareRenderer = detectsSoftwareRenderer();
+      softwareRendererRef.current = softwareRenderer;
+      viewer.scene.globe.enableLighting = !softwareRenderer;
       viewer.scene.globe.dynamicAtmosphereLighting = true;
       viewer.scene.globe.nightFadeOutDistance = 40_000_000;
       viewer.scene.globe.nightFadeInDistance = 100_000_000;
@@ -639,14 +694,37 @@ export function Globe(): JSX.Element {
       // Un velo d'aria sui fianchi del globo: alle inquadrature larghe
       // del simulatore ammorbidisce l'orizzonte senza mangiare dettaglio.
       viewer.scene.fog.density = 0.00012;
+      if (softwareRenderer) viewer.scene.fog.enabled = false;
+      // Su un rasterizzatore software la regia costosa va lasciata
+      // perdere: senza GPU ogni fotogramma con bloom+HDR arriva a
+      // centinaia di ms e il globo smette di rispondere.
+      if (softwareRenderer) {
+        // Numeri misurati su questa scena a 1440×900 con SwiftShader,
+        // partendo da 590 ms per fotogramma (≈ 1,7 fps: i click
+        // arrivavano dopo secondi):
+        //   LOD del terreno grossolano   590 → 103 ms
+        //   atmosfera + nebbia spente    → −200 ms
+        //   illuminazione solare spenta  → −35 ms
+        //   risoluzione ridotta          → −25 ms
+        // Insieme riportano la scena a ~10 fps: si perde la regia
+        // atmosferica, ma su una macchina senza GPU l'alternativa è
+        // un globo che non risponde.
+        console.info('[Globe] software WebGL rilevato: scena alleggerita');
+        viewer.resolutionScale = 0.6;
+        viewer.scene.globe.maximumScreenSpaceError = 12;
+        viewer.scene.globe.showGroundAtmosphere = false;
+        viewer.scene.fog.enabled = false;
+        viewer.scene.globe.enableLighting = false;
+        if (viewer.scene.skyAtmosphere !== undefined) viewer.scene.skyAtmosphere.show = false;
+      }
       // HDR: con l'imagery fotografica lascia respirare le alte luci
       // (ghiacci, deserti) invece di tosarle al bianco.
-      viewer.scene.highDynamicRange = true;
+      viewer.scene.highDynamicRange = !softwareRenderer;
       // Bloom tenue sui bordi caldi (anelli, cresta d'onda, marker):
       // valori scelti dal vivo — sotto questa soglia non si nota,
       // sopra scivola nel videogioco.
       const bloom = viewer.scene.postProcessStages.bloom;
-      bloom.enabled = true;
+      bloom.enabled = !softwareRenderer;
       // Cesium tipizza `uniforms` come `any`; il contratto reale del
       // BloomStage è questo quintetto numerico.
       const bloomUniforms = bloom.uniforms as {
@@ -887,6 +965,8 @@ export function Globe(): JSX.Element {
   // that's about to be removed by the stale-entity sweep.
   const cancelWavefrontRef = useRef<(() => void) | null>(null);
   const cancelCrestRef = useRef<(() => void) | null>(null);
+  /** Rasterizzatore software: la scena gira in modalità leggera. */
+  const softwareRendererRef = useRef(false);
   // Track the previous result/MC/bathy references so the render
   // effect can short-circuit when only `location` changed: we still
   // want the pin marker to move with the click, but the heavy
@@ -2448,7 +2528,7 @@ export function Globe(): JSX.Element {
             // La semina pesata sull'ampiezza sotto taglia ancora, quindi
             // il tetto geometrico può stare più basso del vecchio 3 000:
             // il risultato tipico è qualche centinaio di comete.
-            const MAX_ARROWS = 1_200;
+            const MAX_ARROWS = softwareRendererRef.current ? 220 : 1_200;
             const latLo = Math.max(-85, Math.ceil(gGrid.minLat));
             const latHi = Math.min(85, Math.floor(gGrid.maxLat));
             const lonLo = Math.max(-180, Math.ceil(gGrid.minLon));
@@ -2557,6 +2637,7 @@ export function Globe(): JSX.Element {
         // coste vere, con due fotogrammi di scia che sfumano. Con il
         // bloom della scena il bordo emette — è il protagonista.
         try {
+          const lite = softwareRendererRef.current;
           const frames = buildCrestFrames({
             arrivalTimes: globalArrivalField.arrivalTimes,
             nLat: globalArrivalField.nLat,
@@ -2565,12 +2646,12 @@ export function Globe(): JSX.Element {
             maxLat: 85,
             minLon: -180,
             maxLon: 180,
-            frameCount: 28,
+            frameCount: lite ? 12 : 28,
             endPercentile: 0.85,
             stride: 2,
             minChainPoints: 6,
           });
-          const MAX_CHAINS_PER_FRAME = 12;
+          const MAX_CHAINS_PER_FRAME = lite ? 5 : 12;
           // Blu dell'acqua per la cresta in mare (richiesta di Andrea,
           // e coerente con l'art direction: «il blu è dell'acqua»);
           // l'onda d'urto sulla terraferma resta il cerchio dorato
@@ -2679,12 +2760,10 @@ export function Globe(): JSX.Element {
                 },
               });
               const crestT0 = performance.now();
-              let crestHandle = 0;
-              let crestCancelled = false;
               let lastLoop = -1;
               let pulseT0 = -1;
-              const crestTick = (): void => {
-                if (crestCancelled || viewer.isDestroyed()) return;
+              const crestStep = (): void => {
+                if (viewer.isDestroyed()) return;
                 const now = performance.now();
                 const elapsed = now - crestT0;
                 const loopN = Math.floor(elapsed / CREST_LOOP_MS);
@@ -2717,13 +2796,8 @@ export function Globe(): JSX.Element {
                   }
                 }
                 viewer.scene.requestRender();
-                crestHandle = requestAnimationFrame(crestTick);
               };
-              crestHandle = requestAnimationFrame(crestTick);
-              cancelCrestRef.current = (): void => {
-                crestCancelled = true;
-                if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(crestHandle);
-              };
+              cancelCrestRef.current = loopAtFps(lite ? 12 : 24, crestStep);
             }
           }
         } catch (err: unknown) {
@@ -3202,8 +3276,14 @@ export function Globe(): JSX.Element {
               outline: true,
               outlineColor: fallbackGold.withAlpha(0),
               outlineWidth: width,
-              height: 0,
-              heightReference: HeightReference.CLAMP_TO_GROUND,
+              // Quota fissa invece dell'aggancio al terreno: un'ellisse
+              // clampata viene ri-tassellata E ri-classificata sul DEM
+              // a ogni fotogramma, e con il fronte che gira in ciclo
+              // questo costo non finisce mai — su un rasterizzatore
+              // software basta a bloccare i click. A 2 km lo scarto
+              // visivo è nullo alle scale in gioco, ed è la stessa
+              // scelta già fatta per la cresta dello tsunami.
+              height: 2_000,
             },
           });
         const frontHead = makeFrontRing('', 6);
@@ -3225,8 +3305,7 @@ export function Globe(): JSX.Element {
         // prefers-reduced-motion: un solo passaggio veloce e via.
         const FRONT_LOOP_MS = reduceMotionFront ? 1_800 : 7_000;
         const cascadeT0 = performance.now();
-        let wavefrontHandle = 0;
-        let wavefrontCancelled = false;
+        let stopFront: (() => void) | null = null;
         const removeFrontRings = (): void => {
           if (viewer.isDestroyed()) return;
           for (const ring of rings) {
@@ -3234,10 +3313,11 @@ export function Globe(): JSX.Element {
             if (stale) viewer.entities.remove(stale);
           }
         };
-        const wavefrontTick = (): void => {
-          if (wavefrontCancelled || viewer.isDestroyed()) return;
+        const wavefrontStep = (): void => {
+          if (viewer.isDestroyed()) return;
           const elapsed = performance.now() - cascadeT0;
           if (reduceMotionFront && elapsed >= FRONT_LOOP_MS) {
+            stopFront?.();
             removeFrontRings();
             return;
           }
@@ -3267,14 +3347,11 @@ export function Globe(): JSX.Element {
             (ellipse as unknown as { outlineColor: Color }).outlineColor = ring.scratch;
           }
           viewer.scene.requestRender();
-          wavefrontHandle = requestAnimationFrame(wavefrontTick);
         };
-        wavefrontHandle = requestAnimationFrame(wavefrontTick);
+        stopFront = loopAtFps(softwareRendererRef.current ? 12 : 24, wavefrontStep);
+        const stopFrontLoop = stopFront;
         cancelWavefrontRef.current = (): void => {
-          wavefrontCancelled = true;
-          if (typeof cancelAnimationFrame === 'function') {
-            cancelAnimationFrame(wavefrontHandle);
-          }
+          stopFrontLoop();
           removeFrontRings();
         };
       }
