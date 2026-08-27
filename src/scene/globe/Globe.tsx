@@ -208,6 +208,25 @@ const MARKER_HALO_ID = 'impact-marker-halo';
  *  shadowed terrain. */
 const MARKER_COLOR = Color.fromCssColorString('#FCD34D');
 const WAVEFRONT_INDICATOR_ID = 'cascade-wavefront-indicator';
+/**
+ * Oltre questo raggio la campitura interna sparisce e resta solo il
+ * contorno acceso. Il velo interno serve alla scala in cui l'area
+ * colpita è un luogo — una città, una regione; quando l'anello copre
+ * un oceano intero (l'impulso termico di Chicxulub arriva
+ * all'antipode, 20 015 km) i dischi pieni si sommano in una poltiglia
+ * che seppellisce tutto quello che succede in mare. Alla scala
+ * continentale il bordo dice già tutto: è la legge «contorni, non
+ * campiture» applicata dove le campiture fanno più danno, ed è ciò
+ * che rende leggibili insieme gli effetti di terra e quelli d'acqua
+ * negli eventi misti.
+ */
+const GLOBAL_FILL_CUTOFF_M = 800_000;
+
+/** True quando l'anello è abbastanza piccolo da meritare il velo interno. */
+function fillsAtRadius(radiusM: number): boolean {
+  return Number.isFinite(radiusM) && radiusM < GLOBAL_FILL_CUTOFF_M;
+}
+
 const RING_ID_PREFIX = 'damage-ring-';
 const TSUNAMI_CAVITY_ID = 'tsunami-cavity';
 /** Entity ids for the three concentric wave-front rings painted at
@@ -1458,6 +1477,7 @@ export function Globe(): JSX.Element {
             semiMinorAxis: RING_INITIAL_RADIUS_M,
             rotation: geom.cesiumRotation,
             material: radialDamageMaterial(RING_COLORS[key], 0.85),
+            fill: fillsAtRadius(radius),
             outline: true,
             outlineColor: RING_COLORS[key].withAlpha(0.5),
             height: 0,
@@ -1549,6 +1569,7 @@ export function Globe(): JSX.Element {
             semiMinorAxis: RING_INITIAL_RADIUS_M,
             rotation: cesiumRotation,
             material: radialDamageMaterial(EJECTA_BLANKET_COLOR, 0.7),
+            fill: fillsAtRadius(blanketRadius),
             outline: true,
             outlineColor: EJECTA_BLANKET_COLOR.withAlpha(0.45),
             height: 0,
@@ -1801,6 +1822,7 @@ export function Globe(): JSX.Element {
               semiMajorAxis: RING_INITIAL_RADIUS_M,
               semiMinorAxis: RING_INITIAL_RADIUS_M,
               material: radialDamageMaterial(color, fillAlpha),
+              fill: fillsAtRadius(radius),
               outline: true,
               outlineColor: color.withAlpha(outlineAlpha),
               height: 0,
@@ -1972,6 +1994,7 @@ export function Globe(): JSX.Element {
             semiMinorAxis: RING_INITIAL_RADIUS_M,
             rotation: geom.cesiumRotation,
             material: radialDamageMaterial(color, explosionFillAlpha),
+            fill: fillsAtRadius(radius),
             outline: true,
             outlineColor: color.withAlpha(explosionOutlineAlpha),
             height: 0,
@@ -2351,6 +2374,7 @@ export function Globe(): JSX.Element {
           const gDisplay = smoothFieldForContours(gDeep, gAmp.nLat, gAmp.nLon, 2);
           const gHeatmap = renderScalarFieldHeatmap(gDisplay, gAmp.nLat, gAmp.nLon, {
             opacity: 0.38,
+            opacityByValue: { min: 0.22, max: 0.62 },
             colormap: 'waveVeil',
             valueMin: 1,
             valueMax: 10,
@@ -2552,7 +2576,7 @@ export function Globe(): JSX.Element {
           // l'onda d'urto sulla terraferma resta il cerchio dorato
           // della cascata. Testa azzurra accesa, coda che scivola
           // verso il blu profondo.
-          const CREST_HEAD = Color.fromCssColorString('#2F8FE8');
+          const CREST_HEAD = Color.fromCssColorString('#2A80D8');
           const CREST_TAIL = Color.fromCssColorString('#154E8F');
           // Un colore-istanza dedicato per fotogramma, passato al
           // materiale UNA volta e poi mutato sul posto. La prima
@@ -2574,7 +2598,7 @@ export function Globe(): JSX.Element {
               // Glow contenuto: con l'HDR+bloom della scena un glow
               // pieno satura l'azzurro verso il bianco e l'acqua
               // smette di essere blu.
-              glowPower: 0.32,
+              glowPower: 0.2,
             });
             return chains.map((chain, i) =>
               viewer.entities.add({
@@ -2605,8 +2629,8 @@ export function Globe(): JSX.Element {
                 if (tint === undefined) continue;
                 const d = pos - k;
                 let a = 0;
-                if (d >= 0 && d <= TRAIL_SPAN) a = 1 - d / TRAIL_SPAN;
-                else if (d < 0 && -d <= LEAD_SPAN) a = 1 + d / LEAD_SPAN;
+                if (d >= 0 && d <= TRAIL_SPAN) a = 0.88 * (1 - d / TRAIL_SPAN);
+                else if (d < 0 && -d <= LEAD_SPAN) a = 0.88 * (1 + d / LEAD_SPAN);
                 if (a <= 0) {
                   tint.alpha = 0;
                   continue;
@@ -2806,7 +2830,16 @@ export function Globe(): JSX.Element {
       // dots are now exposed only in the analysis panel, never on the
       // globe (per the Phase 16 directive that the map should never
       // show indicators on land).
+      // Il tile locale è un rettangolo a bordi netti: sopra il velo
+      // planetario si vedrebbe come una toppa quadrata attorno alla
+      // sorgente. Quando il layer globale copre già la scena il tile
+      // locale non aggiunge informazione, solo un artefatto — quindi
+      // resta un fallback per gli eventi che il globale non serve.
+      const globalVeilActive =
+        bathymetricTsunami.global?.amplitude !== undefined &&
+        bathymetricTsunami.global.amplitude.maxAmplitude >= 1;
       if (
+        !globalVeilActive &&
         grid !== null &&
         Number.isFinite(grid.minLat) &&
         Number.isFinite(grid.maxLat) &&
@@ -2878,87 +2911,81 @@ export function Globe(): JSX.Element {
         // Same gating as the global pass: amplitude ≥ 1 m and arrival
         // finite. Same glyph (comet streak, amplitude-weighted
         // seeding) and same tooltip kind, so the user reads the two
-        // layers as a single uniform field. Fallback only: when the
-        // global layer is active, the dense local-tile tuft over the
-        // source would just duplicate it as noise.
-        const globalCometsActive =
-          bathymetricTsunami.global?.amplitude !== undefined &&
-          bathymetricTsunami.global.amplitude.maxAmplitude >= 1;
-        if (!globalCometsActive)
-          try {
-            const ampField = bathymetricTsunami.amplitude;
-            const arrField = bathymetricTsunami.field;
-            const LOCAL_COMET_COLOR = Color.fromCssColorString('#BFE8F5');
-            const localCometMaterial = new PolylineGlowMaterialProperty({
-              color: LOCAL_COMET_COLOR.withAlpha(0.55),
-              glowPower: 0.3,
-              taperPower: 0.45,
-            });
-            const LOCAL_ARROW_SIZE_M = 6_000;
-            const LOCAL_MIN_AMPLITUDE_M = 1.0;
-            // Aim for ~10 arrows per side on the tile (~100 total).
-            // Stride is computed from the actual nLat / nLon so it
-            // adapts if the local tile resolution changes.
-            const TARGET_LOCAL_PER_SIDE = 10;
-            const stride = Math.max(
-              1,
-              Math.floor(Math.min(ampField.nLat, ampField.nLon) / TARGET_LOCAL_PER_SIDE)
-            );
-            let localArrows = 0;
-            for (let i = 0; i < ampField.nLat; i += stride) {
-              for (let j = 0; j < ampField.nLon; j += stride) {
-                const amp = ampField.amplitudes[i * ampField.nLon + j] ?? 0;
-                if (!Number.isFinite(amp) || amp < LOCAL_MIN_AMPLITUDE_M) continue;
-                const arrival =
-                  arrField.arrivalTimes[i * arrField.nLon + j] ?? Number.POSITIVE_INFINITY;
-                if (!Number.isFinite(arrival)) continue;
-                const cellLat =
-                  grid.maxLat - (i / (ampField.nLat - 1)) * (grid.maxLat - grid.minLat);
-                const cellLon =
-                  grid.minLon + (j / (ampField.nLon - 1)) * (grid.maxLon - grid.minLon);
-                const dir = sampleArrivalGradient(
-                  arrField.arrivalTimes,
-                  arrField.nLat,
-                  arrField.nLon,
-                  grid.minLat,
-                  grid.maxLat,
-                  grid.minLon,
-                  grid.maxLon,
-                  cellLat,
-                  cellLon
-                );
-                if (dir.east === 0 && dir.north === 0) continue;
-                const weight = Math.min(1, 0.15 + (0.85 * amp) / 6);
-                if (cellHash01(i, j) > weight) continue;
-                const positions = buildCometPositions(
-                  cellLat,
-                  cellLon,
-                  dir.east,
-                  dir.north,
-                  LOCAL_ARROW_SIZE_M * 2.4
-                );
-                if (positions === null) continue;
-                const id = `tsunami-arrow-local-${i.toString()}-${j.toString()}`;
-                viewer.entities.add({
-                  id,
-                  polyline: {
-                    positions,
-                    width: 3,
-                    material: localCometMaterial,
-                  },
-                });
-                registerRingTooltip(id, 'tsunamiWaveAmplitude', amp, LOCAL_COMET_COLOR);
-                localArrows += 1;
-              }
-            }
-            if (import.meta.env.DEV) {
-              console.info(
-                `[Globe] tsunami local arrows: ${localArrows.toString()} placed (stride ${stride.toString()} cells over ${ampField.nLat.toString()}×${ampField.nLon.toString()} tile)`
+        // layers as a single uniform field. The whole local block is
+        // already gated on the global layer being absent, so these
+        // streaks never double the planetary ones.
+        try {
+          const ampField = bathymetricTsunami.amplitude;
+          const arrField = bathymetricTsunami.field;
+          const LOCAL_COMET_COLOR = Color.fromCssColorString('#BFE8F5');
+          const localCometMaterial = new PolylineGlowMaterialProperty({
+            color: LOCAL_COMET_COLOR.withAlpha(0.55),
+            glowPower: 0.3,
+            taperPower: 0.45,
+          });
+          const LOCAL_ARROW_SIZE_M = 6_000;
+          const LOCAL_MIN_AMPLITUDE_M = 1.0;
+          // Aim for ~10 arrows per side on the tile (~100 total).
+          // Stride is computed from the actual nLat / nLon so it
+          // adapts if the local tile resolution changes.
+          const TARGET_LOCAL_PER_SIDE = 10;
+          const stride = Math.max(
+            1,
+            Math.floor(Math.min(ampField.nLat, ampField.nLon) / TARGET_LOCAL_PER_SIDE)
+          );
+          let localArrows = 0;
+          for (let i = 0; i < ampField.nLat; i += stride) {
+            for (let j = 0; j < ampField.nLon; j += stride) {
+              const amp = ampField.amplitudes[i * ampField.nLon + j] ?? 0;
+              if (!Number.isFinite(amp) || amp < LOCAL_MIN_AMPLITUDE_M) continue;
+              const arrival =
+                arrField.arrivalTimes[i * arrField.nLon + j] ?? Number.POSITIVE_INFINITY;
+              if (!Number.isFinite(arrival)) continue;
+              const cellLat = grid.maxLat - (i / (ampField.nLat - 1)) * (grid.maxLat - grid.minLat);
+              const cellLon = grid.minLon + (j / (ampField.nLon - 1)) * (grid.maxLon - grid.minLon);
+              const dir = sampleArrivalGradient(
+                arrField.arrivalTimes,
+                arrField.nLat,
+                arrField.nLon,
+                grid.minLat,
+                grid.maxLat,
+                grid.minLon,
+                grid.maxLon,
+                cellLat,
+                cellLon
               );
+              if (dir.east === 0 && dir.north === 0) continue;
+              const weight = Math.min(1, 0.15 + (0.85 * amp) / 6);
+              if (cellHash01(i, j) > weight) continue;
+              const positions = buildCometPositions(
+                cellLat,
+                cellLon,
+                dir.east,
+                dir.north,
+                LOCAL_ARROW_SIZE_M * 2.4
+              );
+              if (positions === null) continue;
+              const id = `tsunami-arrow-local-${i.toString()}-${j.toString()}`;
+              viewer.entities.add({
+                id,
+                polyline: {
+                  positions,
+                  width: 3,
+                  material: localCometMaterial,
+                },
+              });
+              registerRingTooltip(id, 'tsunamiWaveAmplitude', amp, LOCAL_COMET_COLOR);
+              localArrows += 1;
             }
-          } catch (err: unknown) {
-            console.warn('[Globe] local tsunami arrow render failed:', err);
           }
+          if (import.meta.env.DEV) {
+            console.info(
+              `[Globe] tsunami local arrows: ${localArrows.toString()} placed (stride ${stride.toString()} cells over ${ampField.nLat.toString()}×${ampField.nLon.toString()} tile)`
+            );
+          }
+        } catch (err: unknown) {
+          console.warn('[Globe] local tsunami arrow render failed:', err);
+        }
         // ── Impatti costieri locali (tile ~150 km, run-up già in
         // bathymetricTsunami.runup) ─────────────────────────────────
         try {

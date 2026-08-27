@@ -66,16 +66,16 @@ const INFERNO_STOPS: readonly (readonly [number, number, number])[] = [
  * Stops span 1 m → 10 m absolute amplitude (sqrt-scaled by callers).
  */
 const WAVE_VEIL_STOPS: readonly (readonly [number, number, number])[] = [
-  [13, 35, 72],
-  [18, 48, 94],
-  [23, 64, 111],
-  [32, 83, 128],
-  [46, 107, 143],
-  [74, 132, 150],
-  [166, 160, 110],
-  [232, 163, 61],
-  [224, 110, 40],
-  [204, 60, 38],
+  [10, 28, 60],
+  [14, 42, 84],
+  [18, 58, 105],
+  [24, 76, 125],
+  [32, 96, 140],
+  [52, 120, 150],
+  [190, 120, 60],
+  [222, 150, 55],
+  [226, 110, 42],
+  [210, 70, 40],
   [178, 24, 32],
 ];
 
@@ -171,6 +171,14 @@ export interface HeatmapOptions {
    *  of the palette on the low end, where tsunami amplitudes crowd.
    *  Defaults to 'linear'. */
   scale?: 'linear' | 'sqrt';
+  /** Ramp the per-pixel alpha with the value instead of using the
+   *  flat {@link opacity}. A veil at one fixed opacity has to choose
+   *  between whispering everywhere and shouting everywhere: over an
+   *  ocean where the wave is catastrophic the warm tint ends up
+   *  half-transparent and blends with the turquoise water into mud.
+   *  Ramping lets the field stay a whisper at the honesty threshold
+   *  and assert itself where the wave is dangerous. */
+  opacityByValue?: { min: number; max: number };
 }
 
 export interface HeatmapResult {
@@ -268,6 +276,7 @@ export function renderScalarFieldHeatmap(
       const sourceJ = oj * downsample;
       const v = samples[sourceI * nLon + sourceJ] ?? Number.NaN;
       const base = (oi * outNLon + oj) * 4;
+      let pixelAlpha = alpha;
       if (!Number.isFinite(v) || v <= transparentBelow) {
         img.data[base + 3] = 0;
         continue;
@@ -298,11 +307,15 @@ export function renderScalarFieldHeatmap(
         let t = Math.max(0, Math.min(1, (v - vMin) / range));
         if (options.scale === 'sqrt') t = Math.sqrt(t);
         [r, g, b] = sampleColormap(t, colormap);
+        if (options.opacityByValue !== undefined) {
+          const { min, max } = options.opacityByValue;
+          pixelAlpha = Math.round(255 * (min + (max - min) * t));
+        }
       }
       img.data[base] = r;
       img.data[base + 1] = g;
       img.data[base + 2] = b;
-      img.data[base + 3] = alpha;
+      img.data[base + 3] = pixelAlpha;
     }
   }
   ctx.putImageData(img, 0, 0);
