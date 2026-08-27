@@ -56,7 +56,29 @@ const INFERNO_STOPS: readonly (readonly [number, number, number])[] = [
   [252, 255, 164],
 ];
 
-export type Colormap = 'viridis' | 'inferno';
+/**
+ * Continuous cold→warm veil for the tsunami amplitude field — the
+ * «velatura» of the approved art direction. Below ~2 m the ocean just
+ * deepens toward blue; past 3 m the tint warms through the brand
+ * amber into red. Perceptually the blue end stays close to water so
+ * the planet keeps reading as a planet under the veil.
+ * Stops span 1 m → 10 m absolute amplitude (sqrt-scaled by callers).
+ */
+const WAVE_VEIL_STOPS: readonly (readonly [number, number, number])[] = [
+  [24, 62, 118],
+  [32, 96, 160],
+  [58, 140, 196],
+  [96, 190, 216],
+  [125, 216, 232],
+  [168, 210, 190],
+  [214, 186, 110],
+  [232, 163, 61],
+  [224, 110, 40],
+  [204, 60, 38],
+  [178, 24, 32],
+];
+
+export type Colormap = 'viridis' | 'inferno' | 'waveVeil';
 
 /**
  * Discrete band: when present in {@link HeatmapOptions}, replaces the
@@ -97,7 +119,9 @@ export const WAVE_AMPLITUDE_BANDS: readonly DiscreteBand[] = [
 ];
 
 function stopsFor(name: Colormap): readonly (readonly [number, number, number])[] {
-  return name === 'inferno' ? INFERNO_STOPS : VIRIDIS_STOPS;
+  if (name === 'inferno') return INFERNO_STOPS;
+  if (name === 'waveVeil') return WAVE_VEIL_STOPS;
+  return VIRIDIS_STOPS;
 }
 
 /** Sample a 16-stop colormap at t ∈ [0, 1]. */
@@ -142,6 +166,10 @@ export interface HeatmapOptions {
    *  band lookup (see {@link DiscreteBand}). Cells with value below
    *  the first band's `minValue` are fully transparent. */
   discreteBands?: readonly DiscreteBand[];
+  /** Normalisation curve for continuous colormaps. 'sqrt' spends more
+   *  of the palette on the low end, where tsunami amplitudes crowd.
+   *  Defaults to 'linear'. */
+  scale?: 'linear' | 'sqrt';
 }
 
 export interface HeatmapResult {
@@ -266,7 +294,8 @@ export function renderScalarFieldHeatmap(
         }
         [r, g, b] = chosen;
       } else {
-        const t = Math.max(0, Math.min(1, (v - vMin) / range));
+        let t = Math.max(0, Math.min(1, (v - vMin) / range));
+        if (options.scale === 'sqrt') t = Math.sqrt(t);
         [r, g, b] = sampleColormap(t, colormap);
       }
       img.data[base] = r;
@@ -277,4 +306,133 @@ export function renderScalarFieldHeatmap(
   }
   ctx.putImageData(img, 0, 0);
   return { canvas, valueMin: vMin, valueMax: vMax };
+}
+
+/**
+ * NOAA thresholds drawn as contour LINES over the veil — the grammar
+ * of the approved tsunami direction: the field is a tint, the
+ * thresholds are lines, never fills. Colours walk the same cold→warm
+ * ramp as the veil so line and tint read as one system.
+ */
+export const WAVE_CONTOUR_STYLES: readonly { threshold: number; css: string }[] = [
+  { threshold: 1, css: 'rgba(125, 216, 232, 0.9)' },
+  { threshold: 3, css: 'rgba(232, 163, 61, 0.9)' },
+  { threshold: 6, css: 'rgba(224, 110, 40, 0.9)' },
+  { threshold: 10, css: 'rgba(204, 60, 38, 0.9)' },
+];
+
+export interface ContourOverlaySegment {
+  lat1: number;
+  lon1: number;
+  lat2: number;
+  lon2: number;
+}
+
+/**
+ * Stroke marching-squares segments onto a heatmap canvas, in the same
+ * geographic frame the canvas itself was rasterised in — so the lines
+ * register with the tint at every zoom, for free, in a single entity.
+ * Segments that jump the antimeridian are skipped rather than drawn
+ * across the whole canvas.
+ */
+export function drawContourOverlay(
+  canvas: HTMLCanvasElement,
+  bands: readonly { segments: readonly ContourOverlaySegment[]; css: string }[],
+  bounds: { minLat: number; maxLat: number; minLon: number; maxLon: number },
+  lineWidth = 1
+): void {
+  const ctx = canvas.getContext('2d');
+  if (ctx === null) return;
+  const lonSpan = bounds.maxLon - bounds.minLon;
+  const latSpan = bounds.maxLat - bounds.minLat;
+  if (lonSpan <= 0 || latSpan <= 0) return;
+  const px = (lon: number): number => ((lon - bounds.minLon) / lonSpan) * canvas.width;
+  const py = (lat: number): number => ((bounds.maxLat - lat) / latSpan) * canvas.height;
+  ctx.lineWidth = lineWidth;
+  ctx.lineCap = 'round';
+  for (const band of bands) {
+    ctx.strokeStyle = band.css;
+    ctx.beginPath();
+    for (const seg of band.segments) {
+      if (Math.abs(seg.lon2 - seg.lon1) > 180) continue;
+      ctx.moveTo(px(seg.lon1), py(seg.lat1));
+      ctx.lineTo(px(seg.lon2), py(seg.lat2));
+    }
+    ctx.stroke();
+  }
+}
+
+/**
+ * NaN-aware 3×3 mean smoothing, for CONTOUR EXTRACTION only — the
+ * veil renders the raw field. Marching squares on the raw amplitude
+ * grid turns single coastal cells amplified by Green's law into
+ * orange confetti along every shoreline; one or two smoothing passes
+ * dissolve the single-cell speckle while leaving basin-scale
+ * structure (and the underlying data) untouched. Land / unreachable
+ * cells stay NaN and never bleed into the ocean average.
+ */
+export function smoothFieldForContours(
+  values: Float32Array,
+  nLat: number,
+  nLon: number,
+  passes = 1
+): Float32Array {
+  let src = Float32Array.from(values);
+  let dst = new Float32Array(values.length);
+  for (let pass = 0; pass < passes; pass++) {
+    for (let i = 0; i < nLat; i++) {
+      for (let j = 0; j < nLon; j++) {
+        const idx = i * nLon + j;
+        const centre = src[idx] ?? Number.NaN;
+        if (!Number.isFinite(centre)) {
+          dst[idx] = Number.NaN;
+          continue;
+        }
+        let sum = 0;
+        let n = 0;
+        for (let di = -1; di <= 1; di++) {
+          const ii = i + di;
+          if (ii < 0 || ii >= nLat) continue;
+          for (let dj = -1; dj <= 1; dj++) {
+            const jj = j + dj;
+            if (jj < 0 || jj >= nLon) continue;
+            const v = src[ii * nLon + jj] ?? Number.NaN;
+            if (!Number.isFinite(v)) continue;
+            sum += v;
+            n++;
+          }
+        }
+        dst[idx] = n > 0 ? sum / n : Number.NaN;
+      }
+    }
+    [src, dst] = [dst, src];
+  }
+  return src;
+}
+
+/**
+ * Convert the shoaled amplitude field to its deep-water equivalent
+ * for DISPLAY. Green's law (A ∝ h^-1/4) makes the last wet cell
+ * before every coast 3–5× hotter than the open ocean, which paints a
+ * warm fringe along every shoreline of the planet — technically true,
+ * cartographically noise. NOAA propagation maps show deep-water
+ * amplitude for exactly this reason; coastal run-up is a separate
+ * quantity with its own markers. Cells at or deeper than `refDepthM`
+ * pass through unchanged.
+ */
+export function toDeepWaterEquivalent(
+  amplitudes: Float32Array,
+  elevations: ArrayLike<number>,
+  refDepthM = 1_000
+): Float32Array {
+  const out = Float32Array.from(amplitudes);
+  for (let i = 0; i < out.length; i++) {
+    const a = out[i] ?? Number.NaN;
+    if (!Number.isFinite(a)) continue;
+    const elevation = elevations[i] ?? 0;
+    const depth = -elevation;
+    if (depth <= 0 || depth >= refDepthM) continue;
+    out[i] = a * Math.pow(depth / refDepthM, 0.25);
+  }
+  return out;
 }

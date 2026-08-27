@@ -33,12 +33,19 @@ import {
   type Coordinates,
 } from '../../store/index.js';
 import type { WindAdvectedAshfall } from '../../physics/events/volcano/index.js';
-// extractAmplitudeContours retired in Phase 16 with the iso-amplitude
-// triangle and polyline layers. The new tsunami visualisation reads
-// the FMM amplitude field directly via the heatmap discrete-band
-// renderer + the regular-grid arrow loop, no contour extraction.
+// extractAmplitudeContours is back (it left in Phase 16 with the old
+// triangle layers): the approved tsunami direction draws the NOAA
+// thresholds as marching-squares contour lines over a continuous
+// amplitude veil.
 import { buildExceedanceProbability } from '../../physics/uq/ecdf.js';
-import { renderScalarFieldHeatmap, WAVE_AMPLITUDE_BANDS } from '../heatmap.js';
+import {
+  drawContourOverlay,
+  renderScalarFieldHeatmap,
+  smoothFieldForContours,
+  toDeepWaterEquivalent,
+  WAVE_CONTOUR_STYLES,
+} from '../heatmap.js';
+import { extractAmplitudeContours } from '../../physics/tsunami/index.js';
 import { renderRadialEcdfBitmap } from '../radialEcdfBitmap.js';
 import {
   animateAftershocksImperatively,
@@ -509,7 +516,7 @@ export function Globe(): JSX.Element {
       // Web Mercator si ferma a ±85°: oltre, il globo mostrerebbe il
       // proprio baseColor come un disco nero sul polo. Un tono ghiaccio
       // spento fa leggere la calotta scoperta come banchisa.
-      viewer.scene.globe.baseColor = Color.fromCssColorString('#dbe3e8');
+      viewer.scene.globe.baseColor = Color.fromCssColorString('#c6d1d8');
 
       // Phase 14 — open-data 3D terrain provider.
       //
@@ -551,7 +558,7 @@ export function Globe(): JSX.Element {
       // polo. Due calotte disegnate sull'ellissoide lo chiudono: a nord
       // banchisa al livello del mare, a sud il plateau antartico alla
       // sua quota reale, così non affonda sotto il bordo del DEM.
-      const POLAR_CAP_COLOR = Color.fromCssColorString('#dde6ec');
+      const POLAR_CAP_COLOR = Color.fromCssColorString('#c6d1d8');
       const POLAR_CAP_RADIUS = 590_000; // 85°→90° ≈ 556 km, più un soprammesso
       for (const cap of [
         { id: 'polar-cap-north', lat: 90, height: 0 },
@@ -2058,16 +2065,52 @@ export function Globe(): JSX.Element {
         const tGlobalStart = performance.now();
         try {
           const gAmp = globalAmpField;
-          const gHeatmap = renderScalarFieldHeatmap(gAmp.amplitudes, gAmp.nLat, gAmp.nLon, {
-            opacity: 0.6,
-            discreteBands: WAVE_AMPLITUDE_BANDS,
+          // Velatura d'ampiezza (regia tsunami approvata): LUT continua
+          // fredda→calda ad alpha basso al posto delle quattro campiture
+          // NOAA — l'oceano si scurisce dove l'onda è debole e scalda
+          // oltre i 3 m, ma il pianeta resta leggibile sotto. La soglia
+          // di onestà resta 1 m: sotto, nessun pixel.
+          // Il campo levigato serve sia alla velatura sia ai contorni:
+          // senza, l'amplificazione di Green sulle celle costiere
+          // singole spruzza coriandoli caldi lungo ogni litorale.
+          const gGridForVeil = useAppStore.getState().globalBathymetricGrid;
+          const gDeep =
+            gGridForVeil !== null
+              ? toDeepWaterEquivalent(gAmp.amplitudes, gGridForVeil.samples)
+              : gAmp.amplitudes;
+          const gDisplay = smoothFieldForContours(gDeep, gAmp.nLat, gAmp.nLon, 2);
+          const gHeatmap = renderScalarFieldHeatmap(gDisplay, gAmp.nLat, gAmp.nLon, {
+            opacity: 0.38,
+            colormap: 'waveVeil',
+            valueMin: 1,
+            valueMax: 10,
+            transparentBelow: 1,
+            scale: 'sqrt',
             // downsample 2× — the global 1024² grid maps to a 512²
             // canvas that Cesium stretches over the planet rectangle.
-            // Discrete bands stay sharp (no interpolation between
-            // adjacent pixels) so the 4-band silhouette reads cleanly
-            // even at the smaller canvas size.
             downsample: 2,
           });
+          // Le soglie NOAA diventano linee di contorno (marching
+          // squares) tracciate sullo stesso canvas: registrazione
+          // perfetta con la velatura e nessuna entità in più.
+          drawContourOverlay(
+            gHeatmap.canvas,
+            WAVE_CONTOUR_STYLES.map(({ threshold, css }) => ({
+              css,
+              segments:
+                extractAmplitudeContours({
+                  amplitudes: gDisplay,
+                  nLat: gAmp.nLat,
+                  nLon: gAmp.nLon,
+                  minLat: -85,
+                  maxLat: 85,
+                  minLon: -180,
+                  maxLon: 180,
+                  thresholds: [threshold],
+                })[0]?.segments ?? [],
+            })),
+            { minLat: -85, maxLat: 85, minLon: -180, maxLon: 180 }
+          );
           viewer.entities.add({
             id: 'tsunami-fmm-amplitude-global',
             rectangle: {
@@ -2237,14 +2280,38 @@ export function Globe(): JSX.Element {
       ) {
         try {
           const ampField = bathymetricTsunami.amplitude;
-          const ampHeatmap = renderScalarFieldHeatmap(
-            ampField.amplitudes,
+          const localDisplay = smoothFieldForContours(
+            toDeepWaterEquivalent(ampField.amplitudes, grid.samples),
             ampField.nLat,
             ampField.nLon,
-            {
-              opacity: 0.7,
-              discreteBands: WAVE_AMPLITUDE_BANDS,
-            }
+            2
+          );
+          const ampHeatmap = renderScalarFieldHeatmap(localDisplay, ampField.nLat, ampField.nLon, {
+            opacity: 0.45,
+            colormap: 'waveVeil',
+            valueMin: 1,
+            valueMax: 10,
+            transparentBelow: 1,
+            scale: 'sqrt',
+          });
+          drawContourOverlay(
+            ampHeatmap.canvas,
+            WAVE_CONTOUR_STYLES.map(({ threshold, css }) => ({
+              css,
+              segments:
+                extractAmplitudeContours({
+                  amplitudes: localDisplay,
+                  nLat: ampField.nLat,
+                  nLon: ampField.nLon,
+                  minLat: grid.minLat,
+                  maxLat: grid.maxLat,
+                  minLon: grid.minLon,
+                  maxLon: grid.maxLon,
+                  thresholds: [threshold],
+                })[0]?.segments ?? [],
+            })),
+            { minLat: grid.minLat, maxLat: grid.maxLat, minLon: grid.minLon, maxLon: grid.maxLon },
+            1.5
           );
           viewer.entities.add({
             id: FMM_AMPLITUDE_HEATMAP_ID,
