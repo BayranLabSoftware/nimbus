@@ -210,19 +210,14 @@ function buildExplosionInput(args: ParsedArgs): ExplosionScenarioInput {
     );
   }
   const base: ExplosionScenarioInput = EXPLOSION_PRESETS[presetId].input;
-  const out: ExplosionScenarioInput = {
+  // Spread the whole preset (the Phase-14 fix passed heightOfBurst /
+  // waterDepth / meanOceanDepth through by hand; spreading covers any
+  // field a future preset adds), then apply the CLI overrides.
+  return {
+    ...base,
     yieldMegatons: args.yieldMegatons ?? base.yieldMegatons,
     groundType: args.ground ?? base.groundType ?? 'FIRM_GROUND',
   };
-  // Pre-Phase-14 the CLI dropped heightOfBurst and waterDepth on the
-  // floor when widening the preset to ExplosionScenarioInput. The
-  // Hiroshima preset (heightOfBurst=580) was therefore simulated as
-  // a contact surface burst, masking the HOB amplification factor
-  // 1.5 in the audit. Pass them through explicitly.
-  if (base.heightOfBurst !== undefined) out.heightOfBurst = base.heightOfBurst;
-  if (base.waterDepth !== undefined) out.waterDepth = base.waterDepth;
-  if (base.meanOceanDepth !== undefined) out.meanOceanDepth = base.meanOceanDepth;
-  return out;
 }
 
 function buildImpactInput(args: ParsedArgs): ImpactScenarioInput {
@@ -276,19 +271,22 @@ function buildEarthquakeInput(args: ParsedArgs): EarthquakeScenarioInput {
     );
   }
   const base: EarthquakeScenarioInput = EARTHQUAKE_PRESETS[presetId].input;
+  // Spread the WHOLE preset, then apply CLI overrides. This tool has
+  // been bitten twice by the enumerate-the-fields pattern (Phase 14:
+  // heightOfBurst dropped, Hiroshima audited as a surface burst;
+  // Phase 17: impactorStrength dropped, iron impactors mis-classified)
+  // and the same rake struck again here: subductionInterface and
+  // strikeAzimuthDeg fell on the floor, so `--preset TOHOKU_2011`
+  // silently validated a Wells & Coppersmith continental rupture
+  // (746 km) while the app correctly runs Strasser 2010 interface
+  // scaling (702 km). Spreading makes new preset fields flow through
+  // without anyone having to remember this file exists.
   const input: EarthquakeScenarioInput = {
+    ...base,
     magnitude: args.magnitude ?? base.magnitude,
   };
-  if (args.depth !== undefined) {
-    input.depth = meters(args.depth);
-  } else if (base.depth !== undefined) {
-    input.depth = base.depth;
-  }
-  if (args.fault !== undefined) {
-    input.faultType = args.fault;
-  } else if (base.faultType !== undefined) {
-    input.faultType = base.faultType;
-  }
+  if (args.depth !== undefined) input.depth = meters(args.depth);
+  if (args.fault !== undefined) input.faultType = args.fault;
   return input;
 }
 
@@ -300,7 +298,12 @@ function buildVolcanoInput(args: ParsedArgs): VolcanoScenarioInput {
     );
   }
   const base = VOLCANO_PRESETS[presetId].input;
+  // Same field-drop bug as the earthquake builder: only two fields
+  // survived the copy, so Krakatau lost its caldera-collapse tsunami
+  // (collapseVolume, sourceWaterDepth), every preset lost windSpeed
+  // (no ashfall footprint) and laharVolume. Spread, then override.
   return {
+    ...base,
     volumeEruptionRate: args.vRate ?? base.volumeEruptionRate,
     totalEjectaVolume: args.ejecta ?? base.totalEjectaVolume,
   };
