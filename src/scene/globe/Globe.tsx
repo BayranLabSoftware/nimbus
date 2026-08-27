@@ -12,6 +12,7 @@ import {
   JulianDate,
   Math as CesiumMath,
   PolygonHierarchy,
+  PolylineGlowMaterialProperty,
   Rectangle,
   ScreenSpaceEventHandler,
   ScreenSpaceEventType,
@@ -47,6 +48,7 @@ import {
 } from '../heatmap.js';
 import { extractAmplitudeContours } from '../../physics/tsunami/index.js';
 import { renderRadialEcdfBitmap } from '../radialEcdfBitmap.js';
+import { buildCrestFrames } from '../tsunamiCrest.js';
 import {
   animateAftershocksImperatively,
   type AftershockAnimationSpec,
@@ -854,6 +856,7 @@ export function Globe(): JSX.Element {
   // on every re-evaluate so stale loops don't keep mutating an entity
   // that's about to be removed by the stale-entity sweep.
   const cancelWavefrontRef = useRef<(() => void) | null>(null);
+  const cancelCrestRef = useRef<(() => void) | null>(null);
   // Track the previous result/MC/bathy references so the render
   // effect can short-circuit when only `location` changed: we still
   // want the pin marker to move with the click, but the heavy
@@ -890,6 +893,10 @@ export function Globe(): JSX.Element {
     if (cancelWavefrontRef.current) {
       cancelWavefrontRef.current();
       cancelWavefrontRef.current = null;
+    }
+    if (cancelCrestRef.current) {
+      cancelCrestRef.current();
+      cancelCrestRef.current = null;
     }
 
     // Drop tooltip metadata that's about to belong to vanished entities,
@@ -2252,6 +2259,112 @@ export function Globe(): JSX.Element {
           }
         } catch (err: unknown) {
           console.warn('[Globe] tsunami arrow render failed:', err);
+        }
+        // ── La cresta che si propaga (regia tsunami approvata) ──────
+        // Il campo dei tempi FMM viene ricampionato in ~28 fotogrammi
+        // di iso-contorno (marching squares + concatenazione), e un
+        // ciclo rAF li fa avanzare: un fronte luminoso che segue le
+        // coste vere, con due fotogrammi di scia che sfumano. Con il
+        // bloom della scena il bordo emette — è il protagonista.
+        try {
+          const frames = buildCrestFrames({
+            arrivalTimes: globalArrivalField.arrivalTimes,
+            nLat: globalArrivalField.nLat,
+            nLon: globalArrivalField.nLon,
+            minLat: -85,
+            maxLat: 85,
+            minLon: -180,
+            maxLon: 180,
+            frameCount: 28,
+            stride: 2,
+            minChainPoints: 6,
+          });
+          const MAX_CHAINS_PER_FRAME = 12;
+          const headMaterial = new PolylineGlowMaterialProperty({
+            color: Color.fromCssColorString('#F2FDFF'),
+            glowPower: 0.35,
+          });
+          const trailMaterialA = new PolylineGlowMaterialProperty({
+            color: Color.fromCssColorString('#BDEFFC').withAlpha(0.55),
+            glowPower: 0.25,
+          });
+          const trailMaterialB = new PolylineGlowMaterialProperty({
+            color: Color.fromCssColorString('#8ED3E8').withAlpha(0.25),
+            glowPower: 0.2,
+          });
+          const frameEntities: Entity[][] = frames.map((frame, k) => {
+            const chains = [...frame.chains]
+              .sort((a, b) => b.length - a.length)
+              .slice(0, MAX_CHAINS_PER_FRAME);
+            return chains.map((chain, i) =>
+              viewer.entities.add({
+                id: `tsunami-crest-${k.toString()}-${i.toString()}`,
+                show: false,
+                polyline: {
+                  // Quota fissa di 2 km, come le frecce: il DEM ArcGIS
+                  // include la batimetria, quindi una polilinea
+                  // drappeggiata finirebbe sul fondale, sotto il
+                  // rettangolo della velatura. A zoom planetario
+                  // l'offset è sub-pixel.
+                  positions: chain.map((pt) => Cartesian3.fromDegrees(pt.lon, pt.lat, 2_000)),
+                  width: 7,
+                  material: headMaterial,
+                },
+              })
+            );
+          });
+          if (frameEntities.length > 0) {
+            const CREST_LOOP_MS = 12_000;
+            const setFrameRole = (k: number, role: 'head' | 'a' | 'b' | 'off'): void => {
+              const list = frameEntities[k];
+              if (list === undefined) return;
+              for (const e of list) {
+                e.show = role !== 'off';
+                if (e.polyline && role !== 'off') {
+                  e.polyline.material =
+                    role === 'head' ? headMaterial : role === 'a' ? trailMaterialA : trailMaterialB;
+                }
+              }
+            };
+            const crestReduceMotion =
+              typeof window.matchMedia === 'function' &&
+              window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (crestReduceMotion) {
+              // Fotogramma intermedio fisso, come da regia: niente
+              // animazione, ma la cresta esiste e racconta la scena.
+              setFrameRole(Math.floor(frameEntities.length * 0.4), 'head');
+            } else {
+              const crestT0 = performance.now();
+              let crestHandle = 0;
+              let crestCancelled = false;
+              let lastHead = -1;
+              const crestTick = (): void => {
+                if (crestCancelled || viewer.isDestroyed()) return;
+                const u = ((performance.now() - crestT0) % CREST_LOOP_MS) / CREST_LOOP_MS;
+                const head = Math.min(
+                  frameEntities.length - 1,
+                  Math.floor(u * frameEntities.length)
+                );
+                if (head !== lastHead) {
+                  for (let k = 0; k < frameEntities.length; k++) {
+                    const role =
+                      k === head ? 'head' : k === head - 1 ? 'a' : k === head - 2 ? 'b' : 'off';
+                    setFrameRole(k, role);
+                  }
+                  lastHead = head;
+                  viewer.scene.requestRender();
+                }
+                crestHandle = requestAnimationFrame(crestTick);
+              };
+              crestHandle = requestAnimationFrame(crestTick);
+              cancelCrestRef.current = (): void => {
+                crestCancelled = true;
+                if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(crestHandle);
+              };
+            }
+          }
+        } catch (err: unknown) {
+          console.warn('[Globe] tsunami crest render failed:', err);
         }
         if (import.meta.env.DEV) {
           console.info(
