@@ -1537,9 +1537,12 @@ export function Globe(): JSX.Element {
             id,
             polygon: {
               hierarchy: new PolygonHierarchy(verts),
-              material: color.withAlpha(fillAlpha * 0.4),
+              // Legge del contorno (tavola 4): il poligono di rottura
+              // tiene un velo del 10% e affida il segnale al bordo,
+              // come gli anelli ellittici col materiale radiale.
+              material: color.withAlpha(fillAlpha * 0.12),
               outline: true,
-              outlineColor: color.withAlpha(outlineAlpha),
+              outlineColor: color.withAlpha(Math.min(1, outlineAlpha * 1.8)),
               height: 0,
               heightReference: HeightReference.CLAMP_TO_GROUND,
             },
