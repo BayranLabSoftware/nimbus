@@ -56,13 +56,13 @@ jobs:
           VITE_STADIA_API_KEY: ${{ secrets.STADIA_API_KEY }}
         run: pnpm build
 
-      # `enablement` turns Pages on via the API when it has never been
-      # switched on by hand. Without it the deploy fails with "Get
-      # Pages site failed" on a repository whose Pages settings were
-      # never touched — which is every repository, the first time.
+      # One manual step precedes the first run of this workflow:
+      # Settings -> Pages -> Build and deployment -> Source:
+      # "GitHub Actions". The workflow token cannot do it — creating a
+      # Pages site through the API answers "Resource not accessible by
+      # integration" — so `enablement: true` only turns a clear
+      # configuration error into a confusing permissions one.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
