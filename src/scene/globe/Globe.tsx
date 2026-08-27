@@ -2225,13 +2225,42 @@ export function Globe(): JSX.Element {
           semiMinorAxis: clampToGreatCircle(crosswind),
           rotation: cesiumRotation,
           material: radialDamageMaterial(ASHFALL_PLUME_COLOR, 0.55),
-          outline: true,
-          outlineColor: ASHFALL_PLUME_COLOR.withAlpha(0.5),
+          outline: false,
           height: 0,
           heightReference: HeightReference.CLAMP_TO_GROUND,
         },
       });
       registerRingTooltip(ASHFALL_PLUME_ID, 'ashfallPlume', downwind, ASHFALL_PLUME_COLOR);
+      // Isopaca 1 mm tratteggiata — il linguaggio delle mappe VAAC.
+      // Il perimetro dell'ellisse di ricaduta ridisegnato come
+      // polilinea a tratti sopra la velatura del riempimento.
+      const ISO_POINTS = 96;
+      const isoPositions: Cartesian3[] = [];
+      const aM = clampToGreatCircle(halfRange);
+      const bM = clampToGreatCircle(crosswind);
+      for (let k = 0; k <= ISO_POINTS; k++) {
+        const t = (k / ISO_POINTS) * Math.PI * 2;
+        // Frame locale: x lungo il vento, y trasversale.
+        const x = aM * Math.cos(t);
+        const y = bM * Math.sin(t);
+        const north = x * Math.cos(windDirRad) - y * Math.sin(windDirRad);
+        const east = x * Math.sin(windDirRad) + y * Math.cos(windDirRad);
+        const lat = plumeLat + north / 111_000;
+        const lon = plumeLon + east / (111_000 * Math.max(Math.cos(latRad), 1e-6));
+        isoPositions.push(Cartesian3.fromDegrees(lon, lat));
+      }
+      viewer.entities.add({
+        id: 'ashfall-isopach-1mm',
+        polyline: {
+          positions: isoPositions,
+          width: 2,
+          clampToGround: true,
+          material: new PolylineDashMaterialProperty({
+            color: ASHFALL_PLUME_COLOR.withAlpha(0.8),
+            dashLength: 14,
+          }),
+        },
+      });
     }
 
     // --- Tsunami amplitude heatmap + wave-direction arrows (Phase 16).
