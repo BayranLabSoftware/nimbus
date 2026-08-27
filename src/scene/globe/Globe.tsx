@@ -8,10 +8,12 @@ import {
   HeadingPitchRange,
   HeightReference,
   ImageMaterialProperty,
+  LabelStyle,
   Ion,
   JulianDate,
   Math as CesiumMath,
   PolygonHierarchy,
+  PolylineDashMaterialProperty,
   PolylineGlowMaterialProperty,
   Rectangle,
   ScreenSpaceEventHandler,
@@ -48,7 +50,11 @@ import {
 } from '../heatmap.js';
 import { extractAmplitudeContours } from '../../physics/tsunami/index.js';
 import { renderRadialEcdfBitmap } from '../radialEcdfBitmap.js';
-import { buildCrestFrames } from '../tsunamiCrest.js';
+import {
+  buildCrestFrames,
+  extractFrontContour,
+  stitchSegmentsIntoChains,
+} from '../tsunamiCrest.js';
 import {
   animateAftershocksImperatively,
   type AftershockAnimationSpec,
@@ -2365,6 +2371,66 @@ export function Globe(): JSX.Element {
           }
         } catch (err: unknown) {
           console.warn('[Globe] tsunami crest render failed:', err);
+        }
+        // ── Isocrone orarie (revival della Fase 16) ─────────────────
+        // Il linguaggio delle mappe NOAA: anelli tratteggiati sottili a
+        // +1h / +2h / +4h / +8h con etichetta mono, estratti dallo
+        // stesso campo dei tempi con lo stesso estrattore del fronte
+        // (quindi niente coste ricalcate). Statici: il tempo che scorre
+        // lo racconta la cresta, le isocrone sono la scala graduata.
+        try {
+          const ISOCHRONE_HOURS = [1, 2, 4, 8];
+          const isoMaterial = new PolylineDashMaterialProperty({
+            color: Color.fromCssColorString('#CFE8F2').withAlpha(0.4),
+            dashLength: 12,
+          });
+          const isoLabelColor = Color.fromCssColorString('#CFE8F2').withAlpha(0.85);
+          for (const hours of ISOCHRONE_HOURS) {
+            const chains = stitchSegmentsIntoChains(
+              extractFrontContour({
+                values: globalArrivalField.arrivalTimes,
+                nLat: globalArrivalField.nLat,
+                nLon: globalArrivalField.nLon,
+                minLat: -85,
+                maxLat: 85,
+                minLon: -180,
+                maxLon: 180,
+                threshold: hours * 3_600,
+              }),
+              8
+            )
+              .sort((a, b) => b.length - a.length)
+              .slice(0, 6);
+            chains.forEach((chain, i) => {
+              viewer.entities.add({
+                id: `tsunami-isochrone-${hours.toString()}h-${i.toString()}`,
+                polyline: {
+                  positions: chain.map((pt) => Cartesian3.fromDegrees(pt.lon, pt.lat, 2_000)),
+                  width: 1.6,
+                  material: isoMaterial,
+                },
+              });
+            });
+            const longest = chains[0];
+            const anchor = longest?.[Math.floor((longest.length * 2) / 3)];
+            if (anchor !== undefined) {
+              viewer.entities.add({
+                id: `tsunami-isochrone-${hours.toString()}h-label`,
+                position: Cartesian3.fromDegrees(anchor.lon, anchor.lat, 2_000),
+                label: {
+                  text: `+${hours.toString()} h`,
+                  font: '11px "JetBrains Mono", monospace',
+                  fillColor: isoLabelColor,
+                  outlineColor: Color.fromCssColorString('#0A0E16').withAlpha(0.8),
+                  outlineWidth: 2,
+                  style: LabelStyle.FILL_AND_OUTLINE,
+                  scale: 1,
+                },
+              });
+            }
+          }
+        } catch (err: unknown) {
+          console.warn('[Globe] tsunami isochrones render failed:', err);
         }
         if (import.meta.env.DEV) {
           console.info(
