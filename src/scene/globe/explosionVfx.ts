@@ -47,6 +47,9 @@ const STEM_RISE_S = 2.8;
 const CAP_DELAY_S = 1.6;
 const CAP_GROWTH_S = 2.6;
 const TOTAL_LIFETIME_S = 7.0;
+/** Durata della cupola d'urto: il fronte in aria supera la scala
+ *  visibile in pochi secondi, poi non c'e' piu' niente da mostrare. */
+const DOME_S = 4.5;
 const FADE_OUT_S = 1.8;
 
 /** easeOutCubic — slows as t approaches 1, matches the visual
@@ -130,6 +133,13 @@ export function spawnExplosionVfx(input: ExplosionVfxInput): () => void {
   }
 
   const altitudeM = mushroomCloudAltitudeMeters(yieldKilotons);
+  // Cupola d'urto — l'onda di pressione come emisfero traslucido che
+  // si espande, non come cerchio disegnato a terra. Il raggio segue
+  // la legge di scala cubica dell'energia (Glasstone & Dolan §3.66:
+  // le distanze di sovrappressione scalano con W^(1/3)), tarata sul
+  // raggio a 1 psi; e' un volume, quindi si vede da qualunque
+  // angolazione e da' profondita' alla scena.
+  const domeMaxM = Math.min(1_400 * Math.cbrt(yieldKilotons), 150_000);
   const stemRadiusM = Math.max(80, altitudeM * 0.04);
   const capRadiusM = Math.max(250, altitudeM * 0.35);
   const fireballRadiusM = Math.max(60, altitudeM * 0.025);
@@ -173,6 +183,37 @@ export function spawnExplosionVfx(input: ExplosionVfxInput): () => void {
       ellipsoid: {
         radii: fireballCoreRadii,
         material: new ColorMaterialProperty(fireballCoreColour),
+        outline: false,
+      },
+    })
+  );
+
+  // -------- Cupola d'urto -----------------------------------------
+  // Un emisfero traslucido che si espande dal punto di scoppio: e' il
+  // fronte di pressione come VOLUME, quindi conserva la profondita' da
+  // qualunque angolazione, al contrario del cerchio disegnato a terra.
+  // Sfuma mentre cresce, come fa l'onda perdendo energia.
+  const domeRadii = new CallbackProperty(() => {
+    const u = Math.min(elapsedSec() / DOME_S, 1);
+    // Radice quadrata: parte veloce e rallenta, come un fronte che si
+    // espande perdendo pressione.
+    const r = Math.max(1, domeMaxM * Math.sqrt(u));
+    return new Cartesian3(r, r, r * 0.5);
+  }, false);
+  const domeColour = new CallbackProperty(() => {
+    const u = Math.min(elapsedSec() / DOME_S, 1);
+    // Visibile per quasi tutta la corsa, poi si spegne in fretta: un
+    // fronte che sfuma subito non si legge come volume.
+    const spegnimento = u < 0.7 ? 1 : 1 - (u - 0.7) / 0.3;
+    return Color.fromCssColorString('#DCEBFF').withAlpha(0.34 * spegnimento * fadeAlpha());
+  }, false);
+  entities.push(
+    viewer.entities.add({
+      id: 'explosion-vfx-shock-dome',
+      position: Cartesian3.fromDegrees(longitude, latitude, 0),
+      ellipsoid: {
+        radii: domeRadii,
+        material: new ColorMaterialProperty(domeColour),
         outline: false,
       },
     })

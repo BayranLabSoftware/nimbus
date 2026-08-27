@@ -75,7 +75,8 @@ import {
 } from '../terrainSampling.js';
 import { buildRuptureStadiumPolygon } from '../stadiumPolygon.js';
 import { AftershockDetailCard } from './AftershockDetailCard.js';
-import { spawnExplosionVfxFromJoules } from './explosionVfx.js';
+import { mushroomCloudAltitudeMeters, spawnExplosionVfxFromJoules } from './explosionVfx.js';
+import { spawnEruptionColumn } from './eruptionVfx.js';
 import { radialDamageMaterial } from './radialDamageMaterial.js';
 import { RingTooltip, type HoverInfo, type RingTooltipKind } from './RingTooltip.js';
 import styles from './Globe.module.css';
@@ -373,6 +374,7 @@ const SIM_ENTITY_PREFIXES: readonly string[] = [
   'cascade-', // WAVEFRONT_INDICATOR_ID
   'fuzzy-mc-', // FUZZY_RING_ID_PREFIX
   'beacon-', // altitude beacons: airburst flash, HOB, eruption column
+  'eruption-vfx-', // colonna eruttiva 3D + ombrello
   'fault-', // rupture trace polyline
 ];
 
@@ -977,6 +979,8 @@ export function Globe(): JSX.Element {
   const cancelCrestRef = useRef<(() => void) | null>(null);
   /** Rasterizzatore software: la scena gira in modalità leggera. */
   const softwareRendererRef = useRef(false);
+  /** Annulla la ritirata programmata della camera (battuta 2). */
+  const cancelOverviewFlyRef = useRef<(() => void) | null>(null);
   // Track the previous result/MC/bathy references so the render
   // effect can short-circuit when only `location` changed: we still
   // want the pin marker to move with the click, but the heavy
@@ -1017,6 +1021,10 @@ export function Globe(): JSX.Element {
     if (cancelCrestRef.current) {
       cancelCrestRef.current();
       cancelCrestRef.current = null;
+    }
+    if (cancelOverviewFlyRef.current) {
+      cancelOverviewFlyRef.current();
+      cancelOverviewFlyRef.current = null;
     }
 
     // Drop tooltip metadata that's about to belong to vanished entities,
@@ -3383,8 +3391,52 @@ export function Globe(): JSX.Element {
           longitude: ringAnchor.longitude,
           energyJoules: result.data.yield.joules,
         });
+      } else if (result.type === 'volcano') {
+        // La colonna eruttiva col suo ombrello: il corpo che all'evento
+        // vulcanico mancava (il faro di quota resta come tacca leggibile
+        // dall'alto, quando la colonna non è inquadrata di profilo).
+        cancelExplosionVfxRef.current = spawnEruptionColumn({
+          viewer,
+          latitude: ringAnchor.latitude,
+          longitude: ringAnchor.longitude,
+          plumeHeightM: result.data.plumeHeight,
+        });
       }
     };
+    // ── Camera a due tempi ──────────────────────────────────────────
+    // Nessuna inquadratura può mostrare insieme una nube alta 30 km e
+    // anelli larghi 6 000: sono tre ordini di grandezza. Quindi il
+    // racconto si spezza in due battute, come farebbe un documentario:
+    //   1. primo piano obliquo sull'evento mentre i volumi crescono,
+    //   2. ritirata sulla vista analitica, dove gli anelli sono la
+    //      storia.
+    // Con prefers-reduced-motion la prima battuta salta e si va dritti
+    // alla seconda.
+    const cloudTopM =
+      result.type === 'impact'
+        ? mushroomCloudAltitudeMeters(result.data.impactor.kineticEnergy / 4.184e12)
+        : result.type === 'explosion'
+          ? mushroomCloudAltitudeMeters(result.data.yield.joules / 4.184e12)
+          : result.type === 'volcano'
+            ? (result.data.plumeHeight as number)
+            : 0;
+    const wantsCloseUp = !reduceMotion && cloudTopM > 2_000;
+    if (wantsCloseUp) {
+      // Distanza tarata sull'altezza del volume, non sul raggio degli
+      // anelli: il soggetto di questa battuta è la colonna.
+      const closeRange = Math.max(90_000, cloudTopM * 4.5);
+      viewer.camera.flyToBoundingSphere(new BoundingSphere(centerCartesian, cloudTopM * 0.6), {
+        duration: 1.2,
+        // 40° fuori dalla verticale: abbastanza obliquo perché i volumi
+        // abbiano profondità, abbastanza alto da non perdere il suolo.
+        offset: new HeadingPitchRange(
+          CesiumMath.toRadians(35),
+          -CesiumMath.toRadians(50),
+          closeRange
+        ),
+        complete: startCascade,
+      });
+    }
     if (frameRadius > 0) {
       // Cap padded radius at half-Earth so planetary-scale scenarios
       // (Chicxulub light-damage ≈ 6 800 km) don't push the camera
@@ -3403,7 +3455,11 @@ export function Globe(): JSX.Element {
       //    caused `enableRotate` left-drags to orbit the camera around
       //    a pick-point in deep space whenever the cursor missed the
       //    Earth disc, drifting the epicentre off-centre.
-      const isCloudEvent = result.type === 'impact' || result.type === 'explosion';
+      // Eventi con un volume in quota: la vista analitica conserva una
+      // leggera obliquità, altrimenti la colonna o il fungo tornano a
+      // essere un cerchio visto dall'alto.
+      const isCloudEvent =
+        result.type === 'impact' || result.type === 'explosion' || result.type === 'volcano';
       const cameraPitchRad = isCloudEvent ? -CesiumMath.toRadians(75) : -Math.PI / 2;
       // Range = camera-to-target distance. The previous ×2.5 multiplier
       // pushed the camera 14 000 km up for planetary scenarios — past
@@ -3414,11 +3470,26 @@ export function Globe(): JSX.Element {
       // additionally clamped so the post-fly camera stays inside the
       // configured `maximumZoomDistance`.
       const range = Math.min(padded * 1.6, 28_000_000);
-      viewer.camera.flyToBoundingSphere(new BoundingSphere(centerCartesian, padded), {
-        duration: reduceMotion ? 0 : 0.6,
-        offset: new HeadingPitchRange(0, cameraPitchRad, range),
-        complete: startCascade,
-      });
+      const flyToOverview = (): void => {
+        if (viewer.isDestroyed()) return;
+        viewer.camera.flyToBoundingSphere(new BoundingSphere(centerCartesian, padded), {
+          duration: reduceMotion ? 0 : 1.4,
+          offset: new HeadingPitchRange(0, cameraPitchRad, range),
+          // La cascata parte con la vista analitica solo quando NON
+          // c'è stata la battuta ravvicinata (che l'ha già avviata).
+          ...(wantsCloseUp ? {} : { complete: startCascade }),
+        });
+      };
+      if (wantsCloseUp) {
+        // Sei secondi di primo piano: il tempo che la nube impiega a
+        // salire e il cappello ad aprirsi (vedi explosionVfx).
+        const overviewTimer = window.setTimeout(flyToOverview, 6_000);
+        cancelOverviewFlyRef.current = (): void => {
+          window.clearTimeout(overviewTimer);
+        };
+      } else {
+        flyToOverview();
+      }
     } else {
       // No camera fly required (e.g. landslide scenarios with no
       // surface ring) — kick the cascade off immediately so the
