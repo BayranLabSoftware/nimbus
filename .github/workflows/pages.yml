@@ -30,8 +30,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Enable Corepack
-        run: corepack enable
+      # pnpm before setup-node: the cache resolver shells out to
+      # `pnpm store path`, and with only `corepack enable` the shim is
+      # registered but the binary is not yet provisioned, so the step
+      # fails before a single dependency is fetched.
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
 
       - uses: actions/setup-node@v4
         with:
@@ -51,7 +56,13 @@ jobs:
           VITE_STADIA_API_KEY: ${{ secrets.STADIA_API_KEY }}
         run: pnpm build
 
+      # `enablement` turns Pages on via the API when it has never been
+      # switched on by hand. Without it the deploy fails with "Get
+      # Pages site failed" on a repository whose Pages settings were
+      # never touched — which is every repository, the first time.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
