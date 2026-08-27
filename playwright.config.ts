@@ -28,7 +28,14 @@ export default defineConfig({
   // starts failing on transient network errors. CI keeps its 1-worker
   // throttle to minimise Cesium asset-load flakiness.
   workers: isCI ? 1 : 6,
-  reporter: [['html', { open: 'never' }], ['list']],
+  // On CI add the `github` reporter: it emits ::error annotations, so
+  // a failing test shows its file, line and message on the check
+  // itself — readable without downloading the report artifact (which
+  // needs a token). Diagnosing a red CI run should not require
+  // credentials the whole team may not have.
+  reporter: isCI
+    ? [['html', { open: 'never' }], ['list'], ['github']]
+    : [['html', { open: 'never' }], ['list']],
   // Per-test wall-clock budget. Default is 30 s — generous enough
   // locally, but Cesium init under Pixel 7 emulation on a 2-core
   // Ubuntu runner regularly exceeds it.
