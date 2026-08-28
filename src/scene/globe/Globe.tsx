@@ -46,8 +46,10 @@ import { buildExceedanceProbability } from '../../physics/uq/ecdf.js';
 import {
   drawContourOverlay,
   renderScalarFieldHeatmap,
+  levelSeparatesField,
   smoothFieldForContours,
   toDeepWaterEquivalent,
+  veilUpperBound,
   WAVE_CONTOUR_STYLES,
 } from '../heatmap.js';
 import { computeRunupField, extractAmplitudeContours } from '../../physics/tsunami/index.js';
@@ -211,7 +213,12 @@ const MARKER_COLOR = Color.fromCssColorString('#FCD34D');
 const WAVEFRONT_INDICATOR_ID = 'cascade-wavefront-indicator';
 /**
  * Oltre questo raggio la campitura interna sparisce e resta solo il
- * contorno acceso. Il velo interno serve alla scala in cui l'area
+ * contorno acceso. Misurato sul posto: a 800 km passavano ancora gli
+ * anelli da 242 e 711 km, che a scala continentale sono dischi da un
+ * milione e mezzo di chilometri quadrati — sommati al velo tsunami
+ * rendevano la mappa una tinta unita in cui l'onda non si vedeva
+ * affatto. A 200 km il velo interno resta dove aiuta (una città, una
+ * regione) e sparisce dove copre e basta. Il velo interno serve alla scala in cui l'area
  * colpita è un luogo — una città, una regione; quando l'anello copre
  * un oceano intero (l'impulso termico di Chicxulub arriva
  * all'antipode, 20 015 km) i dischi pieni si sommano in una poltiglia
@@ -221,7 +228,7 @@ const WAVEFRONT_INDICATOR_ID = 'cascade-wavefront-indicator';
  * che rende leggibili insieme gli effetti di terra e quelli d'acqua
  * negli eventi misti.
  */
-const GLOBAL_FILL_CUTOFF_M = 800_000;
+const GLOBAL_FILL_CUTOFF_M = 200_000;
 
 /** True quando l'anello è abbastanza piccolo da meritare il velo interno. */
 function fillsAtRadius(radiusM: number): boolean {
@@ -307,6 +314,28 @@ const AFTERSHOCK_COLOR_HIGH = Color.fromCssColorString('#b91c1c');
 // Isochrone polylines and the arrival-time heatmap retired in Phase 16.
 const FMM_AMPLITUDE_HEATMAP_ID = 'tsunami-fmm-amplitude';
 const SIGMA_BAND_SUFFIX = '-sigma-band';
+
+/**
+ * Quanto vale la velatura globale a questa quota di camera.
+ *
+ * Il campo globale è calcolato su un reticolo di circa 0,7° — quasi
+ * ottanta chilometri per texel. Visto dallo spazio è una mappa; a
+ * duemila chilometri di quota ogni texel copre una cinquantina di
+ * pixel e la stessa immagine diventa un mosaico di quadroni aranciati
+ * che nasconde tutto ciò che invece È risolto: contorni NOAA, cresta,
+ * marcatori di run-up, isocrone. Sfumandola in discesa non si perde
+ * informazione, si smette di disegnarne una che il dato non ha.
+ */
+const VEIL_FULL_H_M = 4_000_000;
+const VEIL_GONE_H_M = 1_200_000;
+
+function veilAltitudeFade(viewer: Viewer): number {
+  const h = viewer.camera.positionCartographic.height;
+  if (!Number.isFinite(h)) return 1;
+  if (h >= VEIL_FULL_H_M) return 1;
+  if (h <= VEIL_GONE_H_M) return 0;
+  return (h - VEIL_GONE_H_M) / (VEIL_FULL_H_M - VEIL_GONE_H_M);
+}
 
 /**
  * Per-ring 1σ scatter expressed as a fractional half-range on the
@@ -1478,8 +1507,14 @@ export function Globe(): JSX.Element {
           semiMinorAxis: RING_INITIAL_RADIUS_M,
           rotation: cesiumRotation,
           // Translucent fill keeps the halo readable without the
-          // sharp outline competing with the main ring's outline.
+          // sharp outline competing with the main ring's outline —
+          // ma solo alla scala in cui una campitura aiuta. Alle
+          // dimensioni continentali queste bande sono dischi da un
+          // milione di km² che, sommandosi fra loro e al velo tsunami,
+          // riempivano la mappa di una tinta unita: erano l'ultimo
+          // strato che nascondeva l'onda.
           material: color.withAlpha(0.08),
+          fill: fillsAtRadius(upperSemiMajor),
           outline: true,
           outlineColor: color.withAlpha(0.3),
           height: 0,
@@ -2472,10 +2507,17 @@ export function Globe(): JSX.Element {
           const gDisplay = smoothFieldForContours(gDeep, gAmp.nLat, gAmp.nLon, 2);
           const gHeatmap = renderScalarFieldHeatmap(gDisplay, gAmp.nLat, gAmp.nLon, {
             opacity: 0.38,
-            opacityByValue: { min: 0.22, max: 0.62 },
+            // Misurato sul posto: col tetto al 50% un impatto che porta
+            // tutto l'oceano sopra i dieci metri dipingeva l'intera
+            // vista di arancione uniforme (RGB medio 174,97,58 contro
+            // il 41,99,110 del mare pulito) e cresta, scie e coste
+            // sparivano sotto. A un terzo il campo si legge ancora ma
+            // il pianeta resta visibile: è la differenza fra una
+            // velatura e una coperta.
+            opacityByValue: { min: 0.1, max: 0.34 },
             colormap: 'waveVeil',
             valueMin: 1,
-            valueMax: 10,
+            valueMax: veilUpperBound(gDisplay),
             transparentBelow: 1,
             scale: 'sqrt',
             // downsample 2× — the global 1024² grid maps to a 512²
@@ -2483,11 +2525,20 @@ export function Globe(): JSX.Element {
             downsample: 2,
           });
           // Le soglie NOAA diventano linee di contorno (marching
-          // squares) tracciate sullo stesso canvas: registrazione
-          // perfetta con la velatura e nessuna entità in più.
+          // squares). Vivono su un canvas PROPRIO, non su quello della
+          // velatura: la velatura svanisce scendendo perché è un
+          // raster grossolano, mentre una isolinea è geometria esatta a
+          // qualunque scala e deve restare — è lei che dice «da qui in
+          // là si superano i tre metri». Stesso rettangolo, quindi
+          // registrazione identica; una entità in più, sfumata a zero.
+          const contourCanvas = document.createElement('canvas');
+          contourCanvas.width = gHeatmap.canvas.width;
+          contourCanvas.height = gHeatmap.canvas.height;
           drawContourOverlay(
-            gHeatmap.canvas,
-            WAVE_CONTOUR_STYLES.map(({ threshold, css }) => ({
+            contourCanvas,
+            WAVE_CONTOUR_STYLES.filter(({ threshold }) =>
+              levelSeparatesField(gDisplay, threshold)
+            ).map(({ threshold, css }) => ({
               css,
               segments:
                 extractAmplitudeContours({
@@ -2510,8 +2561,27 @@ export function Globe(): JSX.Element {
               material: new ImageMaterialProperty({
                 image: gHeatmap.canvas,
                 transparent: true,
+                // Dissolvenza per quota: vedi veilAltitudeFade.
+                color: new CallbackProperty(
+                  () => Color.WHITE.withAlpha(veilAltitudeFade(viewer)),
+                  false
+                ),
               }),
               height: 0,
+            },
+          });
+          viewer.entities.add({
+            id: 'tsunami-fmm-contours-global',
+            rectangle: {
+              coordinates: Rectangle.fromDegrees(-180, -85, 180, 85),
+              material: new ImageMaterialProperty({
+                image: contourCanvas,
+                transparent: true,
+              }),
+              // Un chilometro sopra la velatura: a scala planetaria è
+              // nulla, ma basta a evitare che le due superfici si
+              // contendano lo stesso pixel di profondità.
+              height: 1_000,
             },
           });
         } catch (err: unknown) {
@@ -2666,17 +2736,34 @@ export function Globe(): JSX.Element {
             maxLon: 180,
             frameCount: lite ? 12 : 28,
             endPercentile: 0.85,
-            stride: 2,
-            minChainPoints: 6,
+            // Passo pieno sul campo globale. A passo doppio la
+            // marching-squares perdeva il fronte proprio dove serve:
+            // scartando ogni cella che tocca terra, un bacino stretto
+            // come il Golfo del Messico si riduceva a qualche
+            // frammento di poche celle. Il costo e' un conto
+            // aritmetico fatto UNA volta alla fine del calcolo.
+            stride: lite ? 2 : 1,
+            minChainPoints: 4,
           });
-          const MAX_CHAINS_PER_FRAME = lite ? 5 : 12;
+          // Il fronte di uno tsunami globale non e' una curva sola: e'
+          // un arco per bacino, spezzato da isole e penisole. Tenendo
+          // solo le 12 catene piu' lunghe del PIANETA si buttavano via
+          // proprio quelle vicine all'osservatore ogni volta che gli
+          // archi maggiori stavano in un altro oceano. Ora il tetto e'
+          // largo e la spesa la governa un budget di punti.
+          const MAX_CHAINS_PER_FRAME = lite ? 8 : 48;
+          const MAX_POINTS_PER_FRAME = lite ? 1_500 : 9_000;
           // Blu dell'acqua per la cresta in mare (richiesta di Andrea,
           // e coerente con l'art direction: «il blu è dell'acqua»);
           // l'onda d'urto sulla terraferma resta il cerchio dorato
           // della cascata. Testa azzurra accesa, coda che scivola
           // verso il blu profondo.
-          const CREST_HEAD = Color.fromCssColorString('#2A80D8');
-          const CREST_TAIL = Color.fromCssColorString('#154E8F');
+          // Testa quasi ciano: il blu medio di prima spariva sopra la
+          // velatura calda di un evento catastrofico (misurato: la
+          // cresta toccava lo 0,3 % dei pixel). La coda scende al blu
+          // profondo, cosi' la direzione di marcia resta leggibile.
+          const CREST_HEAD = Color.fromCssColorString('#63D2FF');
+          const CREST_TAIL = Color.fromCssColorString('#1B5FAF');
           // Un colore-istanza dedicato per fotogramma, passato al
           // materiale UNA volta e poi mutato sul posto. La prima
           // versione scambiava tre MaterialProperty condivisi a ogni
@@ -2686,9 +2773,14 @@ export function Globe(): JSX.Element {
           // renderizza.
           const frameColors = frames.map(() => CREST_HEAD.withAlpha(0));
           const frameEntities: Entity[][] = frames.map((frame, k) => {
-            const chains = [...frame.chains]
-              .sort((a, b) => b.length - a.length)
-              .slice(0, MAX_CHAINS_PER_FRAME);
+            const chains: (typeof frame.chains)[number][] = [];
+            let punti = 0;
+            for (const chain of [...frame.chains].sort((a, b) => b.length - a.length)) {
+              if (chains.length >= MAX_CHAINS_PER_FRAME) break;
+              if (punti + chain.length > MAX_POINTS_PER_FRAME && chains.length > 0) break;
+              chains.push(chain);
+              punti += chain.length;
+            }
             // CallbackProperty (non-costante): una ConstantProperty
             // verrebbe letta una volta sola e la mutazione in place
             // non arriverebbe mai alla GPU.
@@ -2697,7 +2789,7 @@ export function Globe(): JSX.Element {
               // Glow contenuto: con l'HDR+bloom della scena un glow
               // pieno satura l'azzurro verso il bianco e l'acqua
               // smette di essere blu.
-              glowPower: 0.2,
+              glowPower: 0.32,
             });
             return chains.map((chain, i) =>
               viewer.entities.add({
@@ -2709,7 +2801,7 @@ export function Globe(): JSX.Element {
                   // rettangolo della velatura. Entità sempre accese:
                   // la visibilità la governa l'alpha del materiale.
                   positions: chain.map((pt) => Cartesian3.fromDegrees(pt.lon, pt.lat, 2_000)),
-                  width: 8,
+                  width: 11,
                   material,
                 },
               })
@@ -2968,15 +3060,18 @@ export function Globe(): JSX.Element {
           );
           const ampHeatmap = renderScalarFieldHeatmap(localDisplay, ampField.nLat, ampField.nLon, {
             opacity: 0.45,
+            opacityByValue: { min: 0.12, max: 0.36 },
             colormap: 'waveVeil',
             valueMin: 1,
-            valueMax: 10,
+            valueMax: veilUpperBound(localDisplay),
             transparentBelow: 1,
             scale: 'sqrt',
           });
           drawContourOverlay(
             ampHeatmap.canvas,
-            WAVE_CONTOUR_STYLES.map(({ threshold, css }) => ({
+            WAVE_CONTOUR_STYLES.filter(({ threshold }) =>
+              levelSeparatesField(localDisplay, threshold)
+            ).map(({ threshold, css }) => ({
               css,
               segments:
                 extractAmplitudeContours({

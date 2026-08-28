@@ -328,6 +328,45 @@ export function renderScalarFieldHeatmap(
  * thresholds are lines, never fills. Colours walk the same cold→warm
  * ramp as the veil so line and tint read as one system.
  */
+/**
+ * Un livello di contorno si disegna solo se separa davvero il campo.
+ *
+ * Un'isolinea ha senso quando divide un «sopra» da un «sotto»: è
+ * quella la sua informazione. Se la soglia è superata dal 99 % del
+ * mare — e per un impatto da centinaia di gigatoni la soglia dei tre
+ * metri lo è ovunque — la marching-squares non trova più un confine,
+ * trova il rumore attorno a un altopiano, e lo ricalca cella per
+ * cella: il risultato è un ghirigoro che riempie il bacino di tinta
+ * invece di tracciarci una linea dentro. Misurato su un impatto in
+ * Florida: erano i contorni, non la velatura, a dipingere di arancione
+ * l'intera vista (RGB 92,81,79 contro 52,92,102 senza).
+ *
+ * Il criterio è quindi statistico e non estetico: si tiene la soglia
+ * se la frazione di mare che la supera sta lontana da 0 e da 1.
+ */
+export function levelSeparatesField(
+  values: ArrayLike<number>,
+  threshold: number,
+  minFraction = 0.02,
+  maxFraction = 0.9
+): boolean {
+  let bagnate = 0;
+  let sopra = 0;
+  // Indice esplicito: `ArrayLike` non e' iterabile, e il campo globale
+  // ha un milione di celle — copiarlo in un array solo per usare
+  // for-of costerebbe piu' del conteggio stesso.
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  for (let i = 0; i < values.length; i++) {
+    const v = values[i];
+    if (v === undefined || !Number.isFinite(v) || v <= 0) continue;
+    bagnate++;
+    if (v >= threshold) sopra++;
+  }
+  if (bagnate === 0) return false;
+  const frazione = sopra / bagnate;
+  return frazione >= minFraction && frazione <= maxFraction;
+}
+
 export const WAVE_CONTOUR_STYLES: readonly { threshold: number; css: string }[] = [
   { threshold: 1, css: 'rgba(125, 216, 232, 0.9)' },
   { threshold: 3, css: 'rgba(232, 163, 61, 0.9)' },
@@ -449,4 +488,28 @@ export function toDeepWaterEquivalent(
     out[i] = a * Math.pow(depth / refDepthM, 0.25);
   }
   return out;
+}
+
+/**
+ * Il valore che deve corrispondere al colore più caldo della velatura.
+ *
+ * Con un tetto fisso a 10 m un evento moderato si legge bene, ma un
+ * impatto che porta l'oceano intero sopra i cento metri satura tutto:
+ * ogni pixel finisce sull'ultimo colore e la mappa diventa un lenzuolo
+ * arancione uniforme, dove la cresta, le scie e le coste spariscono.
+ * Prendendo invece un percentile alto del campo, la scala si adatta
+ * all'evento e dentro l'evento resta contrasto — vicino alla sorgente
+ * più caldo, in campo lontano più freddo. Il minimo di 10 m tiene ferma
+ * la lettura per gli eventi normali, dove la soglia NOAA è il
+ * riferimento giusto.
+ */
+export function veilUpperBound(values: Float32Array, percentile = 0.98): number {
+  const finiti: number[] = [];
+  for (const v of Array.prototype.slice.call(values) as number[]) {
+    if (Number.isFinite(v) && v > 0) finiti.push(v);
+  }
+  if (finiti.length === 0) return 10;
+  finiti.sort((a, b) => a - b);
+  const idx = Math.min(finiti.length - 1, Math.round(percentile * (finiti.length - 1)));
+  return Math.max(10, finiti[idx] ?? 10);
 }
