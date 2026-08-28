@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import {
   findNearbyOceanDepth,
+  findNearestOceanPoint,
   OCEAN_FLOOR_M,
   sampleElevation,
   sampleSlope,
@@ -11,6 +12,7 @@ import {
   computeBathymetricTsunami,
   type BathymetricTsunamiResult,
 } from '../physics/tsunami/index.js';
+import { distanceForOverpressure } from '../physics/events/impact/index.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
 import { populationInRadius, type PopulationLookupResult } from '../scene/populationLookup.js';
 import { wrap, type Remote } from 'comlink';
@@ -59,7 +61,7 @@ import {
   type ImpactScenarioInput,
   type ImpactScenarioResult,
 } from '../physics/simulate.js';
-import { deg, degreesToRadians, kgPerM3, m, mps, Pa, sqm } from '../physics/units.js';
+import { deg, degreesToRadians, J, kgPerM3, m, mps, Pa, sqm } from '../physics/units.js';
 
 /** Top-level event categories the simulator supports. */
 export type EventType = 'impact' | 'explosion' | 'earthquake' | 'volcano' | 'landslide';
@@ -649,10 +651,53 @@ function deriveBeachSlope(
  *  the coastal-impact tsunami gate (see {@link gateImpactByTerrain}). */
 const COASTAL_OCEAN_SEARCH_RADIUS_M = 5_000;
 
+/**
+ * Fin dove cercare il mare, per un evento di energia data.
+ *
+ * Il valore fisso di 5 km sopra nasceva dai casi costieri (Beirut sul
+ * molo, Castle Bravo sulla scogliera di Bikini) ed è giusto per loro.
+ * Ma è la ragione per cui una testata enorme sulla penisola della
+ * Florida non produceva alcuno tsunami: il mare sta a decine di
+ * chilometri, la ricerca non lo trovava, e il ramo dell'onda restava
+ * spento in silenzio. Fisicamente è falso — un'esplosione che rade al
+ * suolo tutto per duecento chilometri solleva l'oceano che ha accanto.
+ *
+ * Il criterio: il mare si accoppia se cade dentro il raggio in cui la
+ * sovrappressione vale ancora 5 psi, cioè dove l'onda d'urto abbatte
+ * gli edifici. È la stessa soglia che la scena disegna come «crollo
+ * edifici», quindi la regola è leggibile e verificabile: se il mare è
+ * dentro quell'anello, l'onda parte. Sotto i 5 km resta il valore
+ * storico, così i casi costieri già tarati non cambiano.
+ */
+/** Energia dell'evento in joule, qualunque sia il tipo: serve a
+ *  decidere fin dove il mare viene ancora sollevato. */
+function energiaEventoJoule(result: ActiveResult): number {
+  if (result.type === 'impact') return result.data.impactor.kineticEnergy;
+  if (result.type === 'explosion') return result.data.yield.joules;
+  return 0;
+}
+
+function coastalSearchRadiusForYield(yieldJoules: number): number {
+  if (!Number.isFinite(yieldJoules) || yieldJoules <= 0) {
+    return COASTAL_OCEAN_SEARCH_RADIUS_M;
+  }
+  const r5psi = distanceForOverpressure(J(yieldJoules), Pa(34_474)) as number;
+  if (!Number.isFinite(r5psi)) return COASTAL_OCEAN_SEARCH_RADIUS_M;
+  // Tetto a 400 km: oltre, la geometria «sorgente puntiforme in acqua»
+  // del modello non regge più e prometteremmo una precisione che non
+  // abbiamo.
+  return Math.min(400_000, Math.max(COASTAL_OCEAN_SEARCH_RADIUS_M, r5psi));
+}
+
 export function gateImpactByTerrain(
   data: ImpactScenarioResult,
   isOpenWater: boolean,
-  isCoastalSynth: boolean
+  isCoastalSynth: boolean,
+  /** Distanza entro cui il mare è stato cercato (m). Il controllo di
+   *  credibilità confronta la cavità con QUESTA distanza, non con una
+   *  costante: cercando più lontano bisogna anche pretendere di più
+   *  perché l'onda sia credibile. */
+  searchRadiusM: number = COASTAL_OCEAN_SEARCH_RADIUS_M
 ): ImpactScenarioResult {
   let gated: ImpactScenarioResult = data;
   if (isOpenWater) {
@@ -680,7 +725,7 @@ export function gateImpactByTerrain(
   // the cavity actually couples to the basin.
   if (isCoastalSynth && gated.tsunami !== undefined) {
     const cavity = gated.tsunami.cavityRadius as number;
-    if (!Number.isFinite(cavity) || cavity < COASTAL_OCEAN_SEARCH_RADIUS_M) {
+    if (!Number.isFinite(cavity) || cavity < searchRadiusM) {
       const { tsunami: _dropped, ...rest } = gated;
       gated = rest;
     }
@@ -1314,6 +1359,16 @@ export const useAppStore = create<AppStore>((set, get) => ({
         // credible (small impactors don't reach the sea even when it's
         // 5 km away; Chicxulub-class events do).
         let impactClickIsCoastalSynth = false;
+        // Stessa regola dell'esplosione: quanto lontano l'impatto
+        // solleva ancora il mare. L'energia cinetica si ricava dagli
+        // ingressi (massa dalla densità e dal diametro), perché qui la
+        // simulazione non è ancora stata eseguita.
+        const impattoRaggio = (impactInput.impactorDiameter as number) / 2;
+        const impattoMassa =
+          (4 / 3) * Math.PI * impattoRaggio ** 3 * (impactInput.impactorDensity as number);
+        const impactSearchRadiusM = coastalSearchRadiusForYield(
+          0.5 * impattoMassa * (impactInput.impactVelocity as number) ** 2
+        );
         if (
           impactInput.waterDepth === undefined &&
           impactClickZ !== undefined &&
@@ -1331,12 +1386,21 @@ export const useAppStore = create<AppStore>((set, get) => ({
             // surrounding water — preserves realism for a Tunguska on
             // Sicily while letting a Chicxulub-class event on the
             // Yucatán shore still produce its mega-tsunami.
-            const coastalDepth = findNearbyOceanDepth(
-              state.elevationGrid,
-              state.location.latitude,
-              state.location.longitude,
-              COASTAL_OCEAN_SEARCH_RADIUS_M
-            );
+            const coastalDepth =
+              findNearbyOceanDepth(
+                state.elevationGrid,
+                state.location.latitude,
+                state.location.longitude,
+                impactSearchRadiusM
+              ) ??
+              (state.globalBathymetricGrid !== null
+                ? findNearbyOceanDepth(
+                    state.globalBathymetricGrid,
+                    state.location.latitude,
+                    state.location.longitude,
+                    impactSearchRadiusM
+                  )
+                : null);
             if (coastalDepth !== null) {
               const cappedDepth = Math.min(coastalDepth, 200);
               impactInput = { ...impactInput, waterDepth: m(cappedDepth) };
@@ -1359,7 +1423,12 @@ export const useAppStore = create<AppStore>((set, get) => ({
         const impactData = await sim.simulateImpact(impactInput);
         result = {
           type: 'impact',
-          data: gateImpactByTerrain(impactData, impactClickIsOpenWater, impactClickIsCoastalSynth),
+          data: gateImpactByTerrain(
+            impactData,
+            impactClickIsOpenWater,
+            impactClickIsCoastalSynth,
+            impactSearchRadiusM
+          ),
         };
       } else if (state.eventType === 'explosion') {
         // Auto-derive waterDepth from bathymetry (same pattern as
@@ -1397,13 +1466,30 @@ export const useAppStore = create<AppStore>((set, get) => ({
             if (explosionClickIsOpenWater) {
               explosionInput = { ...explosionInput, waterDepth: m(-z) };
             } else {
-              // Land cell — try the 5 km neighbourhood.
-              const coastalDepth = findNearbyOceanDepth(
-                state.elevationGrid,
-                state.location.latitude,
-                state.location.longitude,
-                5_000
-              );
+              // Cella di terra: si cerca il mare fin dove l'onda d'urto
+              // lo solleverebbe ancora (raggio dei 5 psi), non entro un
+              // raggio fisso. Con una testata enorme nell'entroterra
+              // della Florida il mare è a decine di chilometri: col
+              // vecchio limite di 5 km non veniva mai trovato e lo
+              // tsunami spariva senza dirlo a nessuno.
+              const raggio = coastalSearchRadiusForYield(explosionInput.yieldMegatons * 4.184e15);
+              // La tessera locale copre ~150 km: oltre, si interroga il
+              // mosaico batimetrico planetario, se già caricato.
+              const coastalDepth =
+                findNearbyOceanDepth(
+                  state.elevationGrid,
+                  state.location.latitude,
+                  state.location.longitude,
+                  raggio
+                ) ??
+                (state.globalBathymetricGrid !== null
+                  ? findNearbyOceanDepth(
+                      state.globalBathymetricGrid,
+                      state.location.latitude,
+                      state.location.longitude,
+                      raggio
+                    )
+                  : null);
               if (coastalDepth !== null) {
                 const cappedDepth = Math.min(coastalDepth, 200);
                 explosionInput = { ...explosionInput, waterDepth: m(cappedDepth) };
@@ -1510,10 +1596,32 @@ export const useAppStore = create<AppStore>((set, get) => ({
           // forwarding it lets the Globe render the wave-height
           // heatmap on top of the arrival contours.
           const tsunamiMeta = extractTsunamiMeta(result);
+          // Dove nasce l'onda. Se il punto colpito è terraferma —
+          // un'esplosione o un impatto nell'entroterra che comunque
+          // solleva il mare vicino — la propagazione NON può partire da
+          // lì: il campo dei tempi d'arrivo è definito solo sull'acqua e
+          // uscirebbe vuoto, lasciando una mappa muta con la sola
+          // cavità disegnata. La sorgente si sposta quindi sul punto di
+          // mare più vicino, che è il luogo fisico in cui l'energia
+          // entra nell'oceano.
+          const sorgente = (() => {
+            const clic = { lat: state.location.latitude, lon: state.location.longitude };
+            const z = gridCoversLocation(state.elevationGrid, state.location)
+              ? sampleElevation(state.elevationGrid, clic.lat, clic.lon)
+              : undefined;
+            if (z === undefined || z < OCEAN_FLOOR_M) return clic;
+            const raggio = coastalSearchRadiusForYield(energiaEventoJoule(result));
+            const mare =
+              findNearestOceanPoint(state.elevationGrid, clic.lat, clic.lon, raggio) ??
+              (state.globalBathymetricGrid !== null
+                ? findNearestOceanPoint(state.globalBathymetricGrid, clic.lat, clic.lon, raggio)
+                : null);
+            return mare === null ? clic : { lat: mare.latitude, lon: mare.longitude };
+          })();
           bathymetricTsunami = await sim.computeBathymetricTsunami({
             grid: state.elevationGrid,
-            sourceLatitude: state.location.latitude,
-            sourceLongitude: state.location.longitude,
+            sourceLatitude: sorgente.lat,
+            sourceLongitude: sorgente.lon,
             ...(tsunamiMeta !== null && {
               sourceAmplitudeM: tsunamiMeta.sourceAmplitudeM,
               sourceCavityRadiusM: tsunamiMeta.sourceCavityRadiusM,

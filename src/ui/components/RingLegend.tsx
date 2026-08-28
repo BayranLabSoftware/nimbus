@@ -45,6 +45,12 @@ const SWATCH: Record<string, string> = {
   lateralBlast: '#BE185D',
   ashfallPlume: '#9CA3AF',
   ejectaBlanket: '#78350F',
+  seismicFront: '#FFFFFF',
+  // Il fronte d'urto non è una zona di danno ma un bordo che viaggia:
+  // bianco puro, l'unico tono che nessun anello usa (il danno leggero
+  // è crema, non bianco). Così a colpo d'occhio si distingue ciò che
+  // si muove da ciò che resta.
+  shockFront: '#FFFFFF',
 };
 
 interface LegendRow {
@@ -130,14 +136,30 @@ function pushTsunamiWaveFronts(
 function buildRingRows(result: ActiveResult | null, t: (key: string) => string): LegendRow[] {
   if (result === null) return [];
   const out: LegendRow[] = [];
+  let raggioMassimo = 0;
   const push = (key: keyof typeof SWATCH, radiusM: number): void => {
     if (!Number.isFinite(radiusM) || radiusM <= 0) return;
+    if (radiusM > raggioMassimo) raggioMassimo = radiusM;
     out.push({
       key,
       label: t(`globe.ringLabel.${key}`),
       color: SWATCH[key] ?? '#ffffff',
       radiusLabel: formatRange(radiusM),
       global: isGlobalReach(radiusM),
+    });
+  };
+
+  /** Il fronte corre fino all'anello più esterno: la sua riga di
+   *  legenda porta quella distanza. Va aggiunta DOPO gli anelli, così
+   *  il massimo è già noto. */
+  const pushFront = (key: 'shockFront' | 'seismicFront'): void => {
+    if (raggioMassimo <= 0) return;
+    out.push({
+      key,
+      label: t(`globe.ringLabel.${key}`),
+      color: SWATCH[key] ?? '#ffffff',
+      radiusLabel: formatRange(raggioMassimo),
+      global: isGlobalReach(raggioMassimo),
     });
   };
 
@@ -163,6 +185,7 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
           t
         );
       }
+      pushFront('shockFront');
       break;
     }
     case 'explosion': {
@@ -196,6 +219,7 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
           t
         );
       }
+      pushFront('shockFront');
       break;
     }
     case 'earthquake': {
@@ -219,6 +243,7 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
           t
         );
       }
+      pushFront('seismicFront');
       break;
     }
     case 'volcano': {

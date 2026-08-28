@@ -640,7 +640,9 @@
       "pyroclasticRunout": "Flusso piroclastico",
       "lateralBlast": "Esplosione laterale",
       "ashfallPlume": "Pennacchio cenere",
-      "ejectaBlanket": "Coltre di ejecta"
+      "ejectaBlanket": "Coltre di ejecta",
+      "shockFront": "Onda d'urto · fronte in corsa",
+      "seismicFront": "Fronte sismico · in propagazione"
     },
     "legend": {
       "heading": "Legenda anelli",

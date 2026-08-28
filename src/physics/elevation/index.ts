@@ -4,6 +4,7 @@ export {
   sampleSlope,
   sampleElevationAndSlope,
   findNearbyOceanDepth,
+  findNearestOceanPoint,
   OCEAN_FLOOR_M,
   type ElevationGrid,
   type ElevationSample,

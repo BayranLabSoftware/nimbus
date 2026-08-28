@@ -181,6 +181,57 @@ export function sampleElevationAndSlope(
  */
 export const OCEAN_FLOOR_M = -10;
 
+/**
+ * Il punto di mare PIÙ VICINO entro il raggio, con la sua profondità.
+ *
+ * A cosa serve, e perché non basta {@link findNearbyOceanDepth}: quella
+ * risponde «quanto è profondo il bacino qui intorno», che è ciò che
+ * serve alla sorgente dell'onda. Ma se l'evento è nell'entroterra, la
+ * propagazione non può partire dal punto colpito — lì c'è terra, e il
+ * fronte non ha acqua su cui viaggiare: il campo dei tempi d'arrivo
+ * esce vuoto e la mappa resta muta. L'onda nasce dove il mare comincia,
+ * ed è questa funzione a dire dove.
+ */
+export function findNearestOceanPoint(
+  grid: ElevationGrid,
+  lat: number,
+  lon: number,
+  searchRadiusM: number
+): { latitude: number; longitude: number; depthM: number } | null {
+  if (searchRadiusM <= 0 || !Number.isFinite(searchRadiusM)) return null;
+  const latRad = (lat * Math.PI) / 180;
+  const metersPerDegLat = (EARTH_RADIUS_M * Math.PI) / 180;
+  const metersPerDegLon = metersPerDegLat * Math.max(Math.cos(latRad), 1e-6);
+  const dLat = searchRadiusM / metersPerDegLat;
+  const dLon = searchRadiusM / metersPerDegLon;
+
+  // Lattice più fitto della ricerca di profondità: qui conta la
+  // posizione, non la statistica, e un passo grossolano piazzerebbe la
+  // sorgente decine di chilometri fuori posto.
+  const N = 25;
+  let migliore: { latitude: number; longitude: number; depthM: number } | null = null;
+  let minDist2 = Number.POSITIVE_INFINITY;
+  for (let ii = 0; ii < N; ii++) {
+    for (let jj = 0; jj < N; jj++) {
+      const sLat = lat + ((ii / (N - 1)) * 2 - 1) * dLat;
+      const sLon = lon + ((jj / (N - 1)) * 2 - 1) * dLon;
+      if (sLat < grid.minLat || sLat > grid.maxLat || sLon < grid.minLon || sLon > grid.maxLon) {
+        continue;
+      }
+      const z = sampleElevation(grid, sLat, sLon);
+      if (z >= OCEAN_FLOOR_M) continue;
+      const dy = (sLat - lat) * metersPerDegLat;
+      const dx = (sLon - lon) * metersPerDegLon;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < minDist2) {
+        minDist2 = d2;
+        migliore = { latitude: sLat, longitude: sLon, depthM: -z };
+      }
+    }
+  }
+  return migliore;
+}
+
 export function findNearbyOceanDepth(
   grid: ElevationGrid,
   lat: number,

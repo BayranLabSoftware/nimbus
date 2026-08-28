@@ -3269,35 +3269,18 @@ export function Globe(): JSX.Element {
       // della cascata, così legenda, anelli e fronte dicono la stessa
       // cosa per ogni tipo di evento.
       const cascadeMaxRadiusM = ringSpecs.reduce((m, s) => Math.max(m, s.finalSemiMajor), 0);
-      if (cascadeMaxRadiusM > 0) {
+      const eventoConFronte =
+        result.type === 'impact' || result.type === 'explosion' || result.type === 'earthquake';
+      if (cascadeMaxRadiusM > 0 && eventoConFronte) {
         // Zone di colore: (raggio, colore) dagli anelli disegnati,
         // ordinate dal centro verso fuori.
-        const zones = ringSpecs
-          .map((spec) => {
-            const c = spec.entity.ellipse?.outlineColor?.getValue(viewer.clock.currentTime) as
-              | Color
-              | undefined;
-            return c === undefined ? null : { r: spec.finalSemiMajor, color: c };
-          })
-          .filter((z): z is { r: number; color: Color } => z !== null)
-          .sort((a, b) => a.r - b.r);
-        const fallbackGold = Color.fromCssColorString('#facc15');
-        const blendBandM = cascadeMaxRadiusM * 0.08;
-        const zoneColorAt = (r: number, out: Color): Color => {
-          if (zones.length === 0) return Color.clone(fallbackGold, out);
-          let idx = zones.findIndex((z) => z.r >= r);
-          if (idx === -1) idx = zones.length - 1;
-          const current = zones[idx];
-          if (current === undefined) return Color.clone(fallbackGold, out);
-          const previous = idx > 0 ? zones[idx - 1] : undefined;
-          if (previous !== undefined && blendBandM > 0) {
-            const d = r - previous.r;
-            if (d >= 0 && d < blendBandM) {
-              return Color.lerp(previous.color, current.color, d / blendBandM, out);
-            }
-          }
-          return Color.clone(current.color, out);
-        };
+        // Colore PROPRIO, non prestato dagli anelli. Prendendo la tinta
+        // della zona attraversata, il fronte si confondeva con gli
+        // anelli fermi e non si capiva quale fosse la cosa in
+        // movimento. Il bianco non appartiene a nessun anello (il danno
+        // leggero è crema) ed è anche il modo in cui un fronte di
+        // pressione si vede davvero nelle fotografie Schlieren.
+        const frontColour = Color.fromCssColorString('#FFFFFF');
 
         const makeFrontRing = (suffix: string, width: number): Entity =>
           viewer.entities.add({
@@ -3311,7 +3294,7 @@ export function Globe(): JSX.Element {
               // regardless of camera pitch.
               fill: false,
               outline: true,
-              outlineColor: fallbackGold.withAlpha(0),
+              outlineColor: frontColour.withAlpha(0),
               outlineWidth: width,
               // Quota fissa invece dell'aggancio al terreno: un'ellisse
               // clampata viene ri-tassellata E ri-classificata sul DEM
@@ -3323,6 +3306,13 @@ export function Globe(): JSX.Element {
               height: 2_000,
             },
           });
+        // Chiave di legenda: per un'esplosione o un impatto è un'onda
+        // d'urto in aria, per un terremoto è il fronte sismico. Gli
+        // altri eventi non hanno un fronte unico che si propaga, e
+        // infatti non lo disegnano affatto.
+        // (il ramo è già ristretto agli eventi con fronte, quindi qui
+        // restano solo terremoto da una parte e blast dall'altra)
+        const frontKey = result.type === 'earthquake' ? 'seismicFront' : 'shockFront';
         const frontHead = makeFrontRing('', 6);
         const frontTrailA = makeFrontRing('-trail-a', 4);
         const frontTrailB = makeFrontRing('-trail-b', 3);
@@ -3367,9 +3357,15 @@ export function Globe(): JSX.Element {
           // R ∝ (E/ρ)^(1/5) · t^(2/5). Il fronte scatta e poi rallenta,
           // invece di viaggiare a velocità costante come faceva prima.
           const rHead = cascadeMaxRadiusM * Math.pow(u, 0.4);
+          const spento = hiddenRingKeysRef.current.has(frontKey);
           for (const ring of rings) {
             const ellipse = ring.entity.ellipse;
             if (ellipse === undefined) continue;
+            if (spento) {
+              ring.scratch.alpha = 0;
+              (ellipse as unknown as { outlineColor: Color }).outlineColor = ring.scratch;
+              continue;
+            }
             const r = rHead - ring.lagM;
             if (r <= RING_INITIAL_RADIUS_M) {
               ring.scratch.alpha = 0;
@@ -3384,7 +3380,7 @@ export function Globe(): JSX.Element {
               r;
             (ellipse as unknown as { semiMajorAxis: number; semiMinorAxis: number }).semiMinorAxis =
               r;
-            zoneColorAt(r, ring.scratch);
+            Color.clone(frontColour, ring.scratch);
             // L'energia si distribuisce su una superficie che cresce:
             // il fronte si sbiadisce mentre si allarga, e negli ultimi
             // istanti si spegne del tutto. Nessun ritorno al centro.

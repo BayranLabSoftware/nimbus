@@ -640,7 +640,9 @@
       "pyroclasticRunout": "Pyroclastic flow",
       "lateralBlast": "Lateral blast",
       "ashfallPlume": "Ashfall plume",
-      "ejectaBlanket": "Ejecta blanket"
+      "ejectaBlanket": "Ejecta blanket",
+      "shockFront": "Shock front · travelling",
+      "seismicFront": "Seismic front · travelling"
     },
     "legend": {
       "heading": "Ring legend",
