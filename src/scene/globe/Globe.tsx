@@ -2716,20 +2716,29 @@ export function Globe(): JSX.Element {
             );
           });
           if (frameEntities.length > 0) {
-            const CREST_LOOP_MS = 9_000;
+            // La corsa dura 9 s, poi la cresta si spegne e resta buio
+            // per 1,8 s prima di ricominciare. Senza questa pausa il
+            // fronte rientrava di colpo alla sorgente e l'occhio lo
+            // leggeva come un'onda che va avanti e indietro — cosa che
+            // nessuna onda fa. Così invece si legge per quello che è:
+            // una replica della propagazione, come le animazioni
+            // NOAA, non un'oscillazione.
+            const CREST_SWEEP_MS = 9_000;
+            const CREST_PAUSE_MS = 1_800;
+            const CREST_CYCLE_MS = CREST_SWEEP_MS + CREST_PAUSE_MS;
             // Scia dietro la testa e accensione morbida davanti,
             // misurate in fotogrammi: la posizione continua p scorre
             // e ogni contorno si accende e si spegne in dissolvenza.
             const TRAIL_SPAN = 3.2;
             const LEAD_SPAN = 0.6;
-            const paint = (pos: number): void => {
+            const paint = (pos: number, attenuazione = 1): void => {
               for (let k = 0; k < frameColors.length; k++) {
                 const tint = frameColors[k];
                 if (tint === undefined) continue;
                 const d = pos - k;
                 let a = 0;
-                if (d >= 0 && d <= TRAIL_SPAN) a = 0.88 * (1 - d / TRAIL_SPAN);
-                else if (d < 0 && -d <= LEAD_SPAN) a = 0.88 * (1 + d / LEAD_SPAN);
+                if (d >= 0 && d <= TRAIL_SPAN) a = 0.88 * (1 - d / TRAIL_SPAN) * attenuazione;
+                else if (d < 0 && -d <= LEAD_SPAN) a = 0.88 * (1 + d / LEAD_SPAN) * attenuazione;
                 if (a <= 0) {
                   tint.alpha = 0;
                   continue;
@@ -2784,12 +2793,22 @@ export function Globe(): JSX.Element {
                 if (viewer.isDestroyed()) return;
                 const now = performance.now();
                 const elapsed = now - crestT0;
-                const loopN = Math.floor(elapsed / CREST_LOOP_MS);
+                const loopN = Math.floor(elapsed / CREST_CYCLE_MS);
                 if (loopN !== lastLoop) {
                   lastLoop = loopN;
-                  pulseT0 = now; // battito a ogni giro nuovo
+                  pulseT0 = now; // battito all'inizio di ogni replica
                 }
-                paint(((elapsed % CREST_LOOP_MS) / CREST_LOOP_MS) * frameColors.length);
+                const nelCiclo = elapsed % CREST_CYCLE_MS;
+                if (nelCiclo > CREST_SWEEP_MS) {
+                  // Pausa fra una replica e l'altra: tutto spento.
+                  paint(-1e6, 0);
+                } else {
+                  const avanzamento = nelCiclo / CREST_SWEEP_MS;
+                  // Ultimo 15% della corsa: la cresta si dissolve prima
+                  // della pausa, così non scompare di scatto.
+                  const attenuazione = avanzamento > 0.85 ? 1 - (avanzamento - 0.85) / 0.15 : 1;
+                  paint(avanzamento * frameColors.length, attenuazione);
+                }
                 if (pulseT0 >= 0) {
                   const pt = (now - pulseT0) / PULSE_MS;
                   const ellipse = pulseEntity.ellipse;
@@ -3318,10 +3337,13 @@ export function Globe(): JSX.Element {
           { entity: frontTrailB, lagM: cascadeMaxRadiusM * 0.13, alpha: 0.2, scratch: new Color() },
         ];
         const reduceMotionFront = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        // Primo passaggio in sincrono con la cascata (5 s), poi il
-        // fronte continua a girare come la cresta tsunami. Con
-        // prefers-reduced-motion: un solo passaggio veloce e via.
-        const FRONT_LOOP_MS = reduceMotionFront ? 1_800 : 7_000;
+        // UN SOLO passaggio. La versione precedente rimetteva il fronte
+        // al centro ogni 7 s: sul globo si leggeva come un'onda che va
+        // avanti e indietro, che è esattamente ciò che un'onda d'urto
+        // NON fa. Un fronte di pressione parte una volta, si allarga
+        // perdendo energia e muore quando è sceso alla velocità del
+        // suono. Qui finisce e sparisce.
+        const FRONT_DURATION_MS = reduceMotionFront ? 1_800 : 6_500;
         const cascadeT0 = performance.now();
         let stopFront: (() => void) | null = null;
         const removeFrontRings = (): void => {
@@ -3334,12 +3356,17 @@ export function Globe(): JSX.Element {
         const wavefrontStep = (): void => {
           if (viewer.isDestroyed()) return;
           const elapsed = performance.now() - cascadeT0;
-          if (reduceMotionFront && elapsed >= FRONT_LOOP_MS) {
+          const u = Math.min(1, elapsed / FRONT_DURATION_MS);
+          if (u >= 1) {
+            // Il fronte ha finito la sua corsa: si toglie di scena.
             stopFront?.();
             removeFrontRings();
             return;
           }
-          const rHead = cascadeMaxRadiusM * ((elapsed % FRONT_LOOP_MS) / FRONT_LOOP_MS);
+          // Legge di Sedov–Taylor per un'esplosione puntiforme forte:
+          // R ∝ (E/ρ)^(1/5) · t^(2/5). Il fronte scatta e poi rallenta,
+          // invece di viaggiare a velocità costante come faceva prima.
+          const rHead = cascadeMaxRadiusM * Math.pow(u, 0.4);
           for (const ring of rings) {
             const ellipse = ring.entity.ellipse;
             if (ellipse === undefined) continue;
@@ -3358,10 +3385,11 @@ export function Globe(): JSX.Element {
             (ellipse as unknown as { semiMajorAxis: number; semiMinorAxis: number }).semiMinorAxis =
               r;
             zoneColorAt(r, ring.scratch);
-            // La testa si spegne dolcemente sull'ultimo 6% del giro,
-            // così il riavvio dal centro non è uno stacco secco.
-            const tail = 1 - rHead / cascadeMaxRadiusM;
-            ring.scratch.alpha = ring.alpha * Math.min(1, tail / 0.06);
+            // L'energia si distribuisce su una superficie che cresce:
+            // il fronte si sbiadisce mentre si allarga, e negli ultimi
+            // istanti si spegne del tutto. Nessun ritorno al centro.
+            const decadimento = Math.pow(1 - u, 0.55);
+            ring.scratch.alpha = ring.alpha * decadimento;
             (ellipse as unknown as { outlineColor: Color }).outlineColor = ring.scratch;
           }
           viewer.scene.requestRender();
