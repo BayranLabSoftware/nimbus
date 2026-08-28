@@ -1,6 +1,18 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { resetAppStore, useAppStore } from './useAppStore.js';
 import { hydrateStoreFromUrl, maybeAutoEvaluate, writeStoreToHistory } from './urlSync.js';
+import { fetchTerrainGridForLocation } from '../scene/terrainSampling.js';
+import type * as TerrainSampling from '../scene/terrainSampling.js';
+
+// La tessera di terreno arriva dalla rete: qui si intercetta per
+// osservare SE viene chiesta, che è il punto del test di regressione.
+vi.mock('../scene/terrainSampling.js', async (originale) => {
+  const vero = await originale<typeof TerrainSampling>();
+  return {
+    ...vero,
+    fetchTerrainGridForLocation: vi.fn(() => Promise.reject(new Error('rete assente'))),
+  };
+});
 
 /** Minimal window-like stub that satisfies writeStoreToHistory — the
  *  function only uses `location.{pathname,search,hash,href}` and
@@ -69,6 +81,22 @@ describe('maybeAutoEvaluate', () => {
     useAppStore.getState().setLocation({ latitude: 38.1, longitude: 142.4 });
     useAppStore.getState().setMode('globe');
     await maybeAutoEvaluate(useAppStore.getState());
+    expect(useAppStore.getState().result).not.toBeNull();
+  });
+
+  // Regressione: un report aperto dal proprio indirizzo usciva senza
+  // tsunami, perché la tessera di terreno la scaricava il componente
+  // del globo — che in modalità report non viene mai montato — e la
+  // simulazione partiva senza. Un link condiviso deve riprodurre la
+  // stessa scienza di chi passa dal globo.
+  it('chiede la tessera di terreno prima di simulare, anche fuori dal globo', async () => {
+    const finto = vi.mocked(fetchTerrainGridForLocation);
+    finto.mockClear();
+    useAppStore.getState().setLocation({ latitude: 25.4102, longitude: -81.0466 });
+    useAppStore.getState().setMode('report');
+    await maybeAutoEvaluate(useAppStore.getState());
+    expect(finto).toHaveBeenCalledWith(25.4102, -81.0466);
+    // E la simulazione gira comunque quando la rete non risponde.
     expect(useAppStore.getState().result).not.toBeNull();
   });
 

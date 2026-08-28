@@ -6,6 +6,7 @@ import {
   projectSyncableState,
 } from './urlState.js';
 import { URL_KEYS } from './urlState.js';
+import { fetchTerrainGridForLocation } from '../scene/terrainSampling.js';
 import { useAppStore, type AppStore } from './useAppStore.js';
 
 /**
@@ -26,9 +27,32 @@ export function hydrateStoreFromUrl(url: string, store: AppStore): void {
  * Applies only when location is set and the view mode is not landing.
  */
 export async function maybeAutoEvaluate(store: AppStore): Promise<void> {
-  if (store.location !== null && store.mode !== 'landing') {
-    await store.evaluate();
+  if (store.location === null || store.mode === 'landing') return;
+
+  // La tessera di terreno serve alla SIMULAZIONE, non alla vista: da
+  // essa escono la profondità dell'acqua vicina (e quindi l'intero
+  // ramo tsunami), il Vs30 di Wald & Allen per i terremoti e la
+  // pendenza di spiaggia per il run-up. Finora però la scaricava il
+  // componente del globo, che in modalità report non viene mai
+  // montato: aprendo un report dal suo indirizzo la simulazione
+  // girava senza terreno e uscivano numeri diversi — nel caso che ha
+  // segnalato Andrea, un impatto sulla costa della Florida senza una
+  // riga di tsunami, mentre lo stesso scenario passando dal globo ce
+  // l'aveva. Un link condiviso deve riprodurre la stessa scienza,
+  // quindi qui si aspetta la tessera e poi si simula.
+  if (store.elevationGrid === null) {
+    try {
+      const grid = await fetchTerrainGridForLocation(
+        store.location.latitude,
+        store.location.longitude
+      );
+      useAppStore.getState().setElevationGrid(grid);
+    } catch {
+      // Rete assente o tessera mancante: si prosegue con i valori di
+      // riferimento, esattamente come faceva il globo.
+    }
   }
+  await useAppStore.getState().evaluate();
 }
 
 /**
