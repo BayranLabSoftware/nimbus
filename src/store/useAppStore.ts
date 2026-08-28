@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import {
   findNearbyOceanDepth,
-  findNearestOceanPoint,
+  findNearestWaterPoint,
   OCEAN_FLOOR_M,
   sampleElevation,
   sampleSlope,
@@ -693,11 +693,12 @@ export function gateImpactByTerrain(
   data: ImpactScenarioResult,
   isOpenWater: boolean,
   isCoastalSynth: boolean,
-  /** Distanza entro cui il mare è stato cercato (m). Il controllo di
-   *  credibilità confronta la cavità con QUESTA distanza, non con una
-   *  costante: cercando più lontano bisogna anche pretendere di più
-   *  perché l'onda sia credibile. */
-  searchRadiusM: number = COASTAL_OCEAN_SEARCH_RADIUS_M
+  /** Distanza REALE della riva più vicina (m). L'onda è credibile se
+   *  la cavità arriva fino all'acqua: confrontarla col raggio di
+   *  RICERCA (che può valere centinaia di km) chiedeva l'impossibile e
+   *  scartava anche gli tsunami veri — è il difetto che ha lasciato
+   *  senza onda un impatto da 295 Gt sulla costa della Florida. */
+  shoreDistanceM: number = COASTAL_OCEAN_SEARCH_RADIUS_M
 ): ImpactScenarioResult {
   let gated: ImpactScenarioResult = data;
   if (isOpenWater) {
@@ -724,8 +725,19 @@ export function gateImpactByTerrain(
   // wouldn't generate a wave. Keep the synthesised result only when
   // the cavity actually couples to the basin.
   if (isCoastalSynth && gated.tsunami !== undefined) {
+    // Che cosa deve arrivare all'acqua. La cavità è la bolla che
+    // l'impatto scaverebbe SE cadesse in mare; a terra, ciò che
+    // raggiunge davvero la riva è il CRATERE. Pesare solo la cavità
+    // scartava casi limite reali: 295 Gt sulla costa della Florida
+    // danno una cavità di 9 km contro una riva a 10 — respinto —
+    // mentre il cratere ha raggio 11,6 km e la costa se la mangia.
     const cavity = gated.tsunami.cavityRadius as number;
-    if (!Number.isFinite(cavity) || cavity < searchRadiusM) {
+    const craterRim = gated.damage.craterRim as number;
+    const portata = Math.max(
+      Number.isFinite(cavity) ? cavity : 0,
+      Number.isFinite(craterRim) ? craterRim : 0
+    );
+    if (portata <= 0 || portata < shoreDistanceM) {
       const { tsunami: _dropped, ...rest } = gated;
       gated = rest;
     }
@@ -1359,6 +1371,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
         // credible (small impactors don't reach the sea even when it's
         // 5 km away; Chicxulub-class events do).
         let impactClickIsCoastalSynth = false;
+        /** Distanza dalla riva più vicina (m). Infinito se non c'è
+         *  acqua entro il raggio in cui l'evento la potrebbe muovere. */
+        let impactShoreDistanceM = Number.POSITIVE_INFINITY;
         // Stessa regola dell'esplosione: quanto lontano l'impatto
         // solleva ancora il mare. L'energia cinetica si ricava dagli
         // ingressi (massa dalla densità e dal diametro), perché qui la
@@ -1401,6 +1416,27 @@ export const useAppStore = create<AppStore>((set, get) => ({
                     impactSearchRadiusM
                   )
                 : null);
+
+            // Quanto dista davvero la riva: è il numero contro cui va
+            // pesata la credibilità dell'onda. Confrontare la cavità
+            // col RAGGIO DI RICERCA (fino a centinaia di km) chiedeva
+            // l'impossibile e scartava anche gli tsunami veri.
+            const acqua =
+              findNearestWaterPoint(
+                state.elevationGrid,
+                state.location.latitude,
+                state.location.longitude,
+                impactSearchRadiusM
+              ) ??
+              (state.globalBathymetricGrid !== null
+                ? findNearestWaterPoint(
+                    state.globalBathymetricGrid,
+                    state.location.latitude,
+                    state.location.longitude,
+                    impactSearchRadiusM
+                  )
+                : null);
+            impactShoreDistanceM = acqua === null ? Number.POSITIVE_INFINITY : acqua.distanceM;
             if (coastalDepth !== null) {
               const cappedDepth = Math.min(coastalDepth, 200);
               impactInput = { ...impactInput, waterDepth: m(cappedDepth) };
@@ -1427,7 +1463,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
             impactData,
             impactClickIsOpenWater,
             impactClickIsCoastalSynth,
-            impactSearchRadiusM
+            impactShoreDistanceM
           ),
         };
       } else if (state.eventType === 'explosion') {
@@ -1612,9 +1648,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
             if (z === undefined || z < OCEAN_FLOOR_M) return clic;
             const raggio = coastalSearchRadiusForYield(energiaEventoJoule(result));
             const mare =
-              findNearestOceanPoint(state.elevationGrid, clic.lat, clic.lon, raggio) ??
+              findNearestWaterPoint(state.elevationGrid, clic.lat, clic.lon, raggio) ??
               (state.globalBathymetricGrid !== null
-                ? findNearestOceanPoint(state.globalBathymetricGrid, clic.lat, clic.lon, raggio)
+                ? findNearestWaterPoint(state.globalBathymetricGrid, clic.lat, clic.lon, raggio)
                 : null);
             return mare === null ? clic : { lat: mare.latitude, lon: mare.longitude };
           })();

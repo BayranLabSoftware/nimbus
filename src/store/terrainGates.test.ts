@@ -70,6 +70,28 @@ describe('gateImpactByTerrain', () => {
     const out = gateImpactByTerrain(synth, false, true);
     expect(out.tsunami).toBeUndefined();
   });
+
+  // Regressione: il report di un impatto da 295 Gt sulla costa della
+  // Florida usciva SENZA tsunami. La cavità (9 km) restava sotto la
+  // riva (10 km) e il controllo scartava l'onda — ma il cratere ha
+  // raggio 11,6 km e la costa la inghiotte. Da qui la portata
+  // dell'evento è il massimo fra cavità e cratere.
+  it("tiene l'onda quando è il CRATERE ad arrivare al mare, non la cavità", () => {
+    const boltysh = simulateImpact({
+      ...IMPACT_PRESETS.BOLTYSH.input,
+      waterDepth: m(200),
+    });
+    expect(boltysh.tsunami).toBeDefined();
+    const cavita = boltysh.tsunami?.cavityRadius as number;
+    const cratere = boltysh.damage.craterRim as number;
+    // La condizione che rende significativo il test: senza il cratere
+    // il controllo boccerebbe l'onda.
+    expect(cratere).toBeGreaterThan(cavita);
+    const riva = (cavita + cratere) / 2; // riva fra le due portate
+    expect(gateImpactByTerrain(boltysh, false, true, riva).tsunami).toBeDefined();
+    // E oltre la portata del cratere l'onda deve sparire davvero.
+    expect(gateImpactByTerrain(boltysh, false, true, cratere * 3).tsunami).toBeUndefined();
+  });
 });
 
 describe('gateExplosionByTerrain', () => {

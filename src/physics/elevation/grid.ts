@@ -192,11 +192,51 @@ export const OCEAN_FLOOR_M = -10;
  * esce vuoto e la mappa resta muta. L'onda nasce dove il mare comincia,
  * ed è questa funzione a dire dove.
  */
+/** Soglia per rispondere a «qui c'è acqua?». Diversa da
+ *  {@link OCEAN_FLOOR_M}, che serve a rispondere a «quanto è profondo il
+ *  bacino»: una baia di tre metri è acqua a tutti gli effetti — se un
+ *  cratere la raggiunge, l'onda parte — ma non è il fondale su cui
+ *  calcolare la propagazione. Confondere le due domande faceva
+ *  ignorare la Florida Bay, che al largo degli Everglades comincia a
+ *  pochi chilometri dalla costa. */
+export const SHORELINE_M = -1;
+
+/**
+ * Il punto d'acqua più vicino, cercato per anelli crescenti.
+ *
+ * Un solo reticolo sul raggio massimo ha passi enormi quando il raggio
+ * è grande — a 300 km il passo è 25 km, e l'acqua a otto chilometri
+ * dal punto colpito viene «vista» a settanta. Provando prima da vicino
+ * il passo resta fine dove conta, e ci si allarga solo se davvero non
+ * c'è nulla.
+ */
+export function findNearestWaterPoint(
+  grid: ElevationGrid,
+  lat: number,
+  lon: number,
+  maxRadiusM: number,
+  thresholdM: number = SHORELINE_M
+): { latitude: number; longitude: number; depthM: number; distanceM: number } | null {
+  const metersPerDegLat = (EARTH_RADIUS_M * Math.PI) / 180;
+  const metersPerDegLon = metersPerDegLat * Math.max(Math.cos((lat * Math.PI) / 180), 1e-6);
+  for (const raggio of [5_000, 20_000, 60_000, 150_000, maxRadiusM]) {
+    if (raggio > maxRadiusM * 1.0001) break;
+    const p = findNearestOceanPoint(grid, lat, lon, raggio, thresholdM);
+    if (p === null) continue;
+    const dy = (p.latitude - lat) * metersPerDegLat;
+    const dx = (p.longitude - lon) * metersPerDegLon;
+    return { ...p, distanceM: Math.hypot(dx, dy) };
+  }
+  return null;
+}
+
 export function findNearestOceanPoint(
   grid: ElevationGrid,
   lat: number,
   lon: number,
-  searchRadiusM: number
+  searchRadiusM: number,
+  /** Quota sotto la quale la cella conta come acqua. */
+  thresholdM: number = OCEAN_FLOOR_M
 ): { latitude: number; longitude: number; depthM: number } | null {
   if (searchRadiusM <= 0 || !Number.isFinite(searchRadiusM)) return null;
   const latRad = (lat * Math.PI) / 180;
@@ -219,7 +259,7 @@ export function findNearestOceanPoint(
         continue;
       }
       const z = sampleElevation(grid, sLat, sLon);
-      if (z >= OCEAN_FLOOR_M) continue;
+      if (z >= thresholdM) continue;
       const dy = (sLat - lat) * metersPerDegLat;
       const dx = (sLon - lon) * metersPerDegLon;
       const d2 = dx * dx + dy * dy;
