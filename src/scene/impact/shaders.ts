@@ -83,6 +83,13 @@ uniform float uHasWorld;
 uniform vec3  uMeanNear;
 uniform vec3  uMeanFar;
 uniform vec3  uMeanWorld;
+/* Elevation range the height-field march brackets against, in metres.
+   Taken from the middle level, not the close tile and not the planet:
+   the close tile spans a few tens of kilometres and misses every real
+   mountain, so they fall back to the smooth sphere and read as a
+   printed texture; the planet's range is eighteen kilometres thick and
+   makes the march step over everything. */
+uniform vec2  uMarchRange;
 
 // Effect footprints, in km. Zero means this event has none.
 uniform vec3  uThermal;    // 3rd, 2nd, 1st degree burn
@@ -112,8 +119,12 @@ const float RE  = 6371.008;          // km, IUGG mean radius
    a scene that spans hundreds of kilometres it erased the landscape. */
 const float FOG_BETA = 0.0035;       // per km at sea level
 const float FOG_H    = 8.0;          // km, density scale height
-/* Longest path the height-field march will cover, in km. */
-const float MARCH_MAX_LENGTH = 180.0;
+/* Longest path the height-field march will cover, in km.
+   Where the march runs out it falls back to the smooth sphere, which
+   sits ABOVE the real ground — so a cap that bites inside the visible
+   range draws a raised ledge along the skyline. Far enough out that
+   the fallback happens past the horizon. */
+const float MARCH_MAX_LENGTH = 700.0;
 const float PI  = 3.14159265359;
 const float MPD = 111.19492664;      // km per degree of latitude
 
@@ -235,7 +246,15 @@ float aerialDepth(float yCam, float yHit, float pathLen){
    stops carrying the information. */
 vec3 contour(vec3 col, float d, float radius, vec3 tint, float strength){
   if (radius <= 0.0 || strength <= 0.0) return col;
-  float w = max(fwidth(d) * 1.6, radius * 0.0015);
+  float px = fwidth(d);
+  /* At grazing incidence one pixel spans tens of kilometres of ground,
+     the derivative explodes, and the hairline turns into a band wide
+     enough that EVERY threshold matches at once — ten contours adding
+     together into a bright wall along the skyline. Past a quarter of
+     the radius per pixel the contour cannot be resolved at all, so
+     the honest thing is to not draw it. */
+  if (px > radius * 0.25) return col;
+  float w = max(px * 1.6, radius * 0.0015);
   return col + tint * (1.0 - smoothstep(0.0, w, abs(d - radius))) * strength;
 }
 
@@ -251,10 +270,25 @@ float ground(vec2 xz){
   return h + bowl + rim + ejct;
 }
 
-/* Curved Earth: a sphere centred one radius below the origin. */
+/* Curved Earth: a sphere centred one radius below the origin.
+ *
+ * The naive form computes dot(oc, oc) - RE*RE, a difference of two
+ * numbers near 4e7. In 32-bit that leaves about four significant
+ * digits, and at grazing incidence — which is the whole horizon — the
+ * discriminant quantises and the skyline breaks into rectangular
+ * steps. The local frame has its origin ON the sphere, so the same
+ * quantity has an exact closed form with no cancellation at all:
+ *
+ *   |oc|^2 - RE^2 = 2*RE*ro.y + dot(ro, ro)
+ */
+float sphereC(vec3 ro){
+  return 2.0 * RE * ro.y + dot(ro, ro);
+}
+
 float hitEarth(vec3 ro, vec3 rd){
   vec3 oc = ro + vec3(0.0, RE, 0.0);
-  float b = dot(oc, rd), c = dot(oc, oc) - RE * RE, h = b * b - c;
+  float b = dot(oc, rd);
+  float h = b * b - sphereC(ro);
   if (h < 0.0) return -1.0;
   float t = -b - sqrt(h);
   return t > 0.0 ? t : -1.0;
@@ -263,9 +297,12 @@ float hitEarth(vec3 ro, vec3 rd){
    the origin. Used to bracket the height field between its own floor
    and ceiling, so the march has a tight, correct interval. */
 float hitShell(vec3 ro, vec3 rd, float h, out float tFar){
-  float R = RE + h;
   vec3 oc = ro + vec3(0.0, RE, 0.0);
-  float b = dot(oc, rd), c = dot(oc, oc) - R * R, disc = b * b - c;
+  float b = dot(oc, rd);
+  // Same cancellation-free identity, offset by the shell height:
+  //   |oc|^2 - (RE+h)^2 = 2*RE*(ro.y - h) + dot(ro, ro) - h*h
+  float c = 2.0 * RE * (ro.y - h) + dot(ro, ro) - h * h;
+  float disc = b * b - c;
   if (disc < 0.0){ tFar = -1.0; return -1.0; }
   float q = sqrt(disc);
   tFar = -b + q;
@@ -300,8 +337,8 @@ float marchGround(vec3 ro, vec3 rd, float tSphere){
      bracket has to stay thin. Terrain outside it falls back to the
      smooth sphere with its normal map, which near the horizon is a
      few pixels tall and indistinguishable. */
-  float relief = max((uElev.y - uElev.z) / 1000.0, uCraterD) + 0.05;
-  float floorH = min((uElev.x - uElev.z) / 1000.0, -uCraterD) - 0.05;
+  float relief = max((uMarchRange.y - uElev.z) / 1000.0, uCraterD) + 0.05;
+  float floorH = min((uMarchRange.x - uElev.z) / 1000.0, -uCraterD) - 0.05;
   float ceilFar, floorFar;
   float tCeil = hitShell(ro, rd, relief + 0.05, ceilFar);
   float tFloor = hitShell(ro, rd, floorH, floorFar);
@@ -314,7 +351,16 @@ float marchGround(vec3 ro, vec3 rd, float tSphere){
   t1 = min(t1, t0 + MARCH_MAX_LENGTH);
   if (t1 <= t0) return tSphere;
 
-  const int STEPS = 56;
+  /* If the ray is ALREADY under the surface where the bracket starts,
+     the terrain here is higher than the range the bracket was built
+     from — mountains outside the middle tile, read off the coarse
+     planet level. Marching anyway bisects between two points that are
+     both underground and pins the hit to the ceiling shell, which
+     draws a row of flat rectangular notches along the horizon. The
+     smooth sphere is the honest answer out there. */
+  if ((ro + rd * t0).y - surfaceAt((ro + rd * t0).xz) < 0.0) return tSphere;
+
+  const int STEPS = 72;
   float dt = (t1 - t0) / float(STEPS);
   float prev = t0;
   for (int i = 1; i <= STEPS; i++){

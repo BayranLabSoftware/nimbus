@@ -229,3 +229,16 @@ export function projectPoint(vp: Float32Array, point: Vec3): { x: number; y: num
   const w = at(3) * point[0] + at(7) * point[1] + at(11) * point[2] + at(15);
   return w === 0 ? { x: 0, y: 0, w } : { x: x / w, y: y / w, w };
 }
+
+/**
+ * Furthest the camera can get from ground zero for this scene, in
+ * metres. The terrain loader needs it: how much ground has to be
+ * covered by a real mosaic is set by how far the viewer can pull
+ * back, not by how big the event is. Sizing the middle tile on the
+ * event instead gave a 456 m burst a 36 km tile — a sharp square
+ * with a twenty-kilometre-per-pixel planet immediately outside it.
+ */
+export function maxCameraDistance(framingReach: number, effectsReach: number): number {
+  const zoom = maxZoomForReach(framingReach, effectsReach);
+  return Math.max(framingReach, 1) * 1.45 * zoom;
+}

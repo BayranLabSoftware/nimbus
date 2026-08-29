@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { s } from '../../physics/units.js';
-import { loadMosaic, loadWorldMosaic } from '../../scene/geo/tileMosaic.js';
+import { loadMosaic } from '../../scene/geo/tileMosaic.js';
 import { ImpactRenderer } from '../../scene/impact/ImpactRenderer.js';
 import {
   DEFAULT_ORBIT,
   clampOrbit,
+  maxCameraDistance,
   maxZoomForReach,
   type OrbitState,
 } from '../../scene/impact/camera.js';
@@ -87,6 +88,22 @@ export function ImpactView(): JSX.Element {
   const reachMeters = scene?.framingReach ?? 0;
   const effectsReach = scene?.effectsReach ?? 0;
   const maxZoom = maxZoomForReach(reachMeters, effectsReach);
+  /* Three levels, sized to what can actually end up on screen.
+     Nothing past the horizon is visible, so the outermost level does
+     not have to be the whole planet — it has to reach the horizon.
+     A fixed planet-wide level was 20 km per pixel, and where it met
+     the middle tile it drew a row of rectangular notches along the
+     skyline out of its own texels. */
+  const cameraRange = maxCameraDistance(reachMeters, effectsReach);
+  // Camera height at full pitch, and the horizon from there.
+  const cameraHeight = Math.max(cameraRange * 0.234 * 1.35, 1_000);
+  const horizonRange = Math.sqrt(2 * 6_371_008 * cameraHeight);
+  /** Working area: the ground the viewer actually studies. */
+  const midSpan = Math.min(6_000_000, Math.max(200_000, cameraRange * 3, effectsReach * 2.4));
+  /** Everything out to the skyline. Clamped to the equator, at which
+   *  point the planner drops to the coarsest level and the block
+   *  covers most of the hemisphere anyway. */
+  const farSpan = Math.min(40_075_017, 2.4 * (cameraRange + horizonRange));
   const durationSeconds = scene?.duration ?? 0;
   const blastEnergy = scene?.blastEnergy ?? 0;
 
@@ -187,15 +204,18 @@ export function ImpactView(): JSX.Element {
         setTerrain('failed');
       });
 
-    // The planet, once, cached across scenarios. It is what guarantees
-    // there is ground all the way to the horizon however far back the
-    // camera goes, instead of a square of terrain in flat colour.
-    void loadWorldMosaic()
+    // Outermost level: real ground all the way to the skyline.
+    void loadMosaic({
+      latitude: originLat,
+      longitude: originLon,
+      spanMeters: farSpan,
+      tiles: 6,
+    })
       .then((world) => {
         if (!cancelled) rendererRef.current?.setMosaic(world, 'world');
       })
       .catch((error: unknown) => {
-        console.warn('[ImpactView] world terrain unavailable:', error);
+        console.warn('[ImpactView] horizon terrain unavailable:', error);
       });
 
     // Middle level, always. The close tile covers barely thirty
@@ -207,7 +227,7 @@ export function ImpactView(): JSX.Element {
       void loadMosaic({
         latitude: originLat,
         longitude: originLon,
-        spanMeters: Math.max(effectsReach * 2.4, reachMeters * 80),
+        spanMeters: midSpan,
         tiles: 6,
       })
         .then((wide) => {
@@ -222,7 +242,7 @@ export function ImpactView(): JSX.Element {
     return () => {
       cancelled = true;
     };
-  }, [hasScene, originLat, originLon, reachMeters, effectsReach]);
+  }, [hasScene, originLat, originLon, reachMeters, effectsReach, midSpan, farSpan]);
 
   // ---- render loop -------------------------------------------------
   useEffect(() => {

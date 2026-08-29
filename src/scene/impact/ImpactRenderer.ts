@@ -492,6 +492,17 @@ export class ImpactRenderer {
     const mWorld = mean(world);
     gl.uniform3f(this.location(p, 'uMeanWorld'), mWorld[0], mWorld[1], mWorld[2]);
 
+    // Bracket the march on the MIDDLE level's relief. The close tile
+    // spans tens of kilometres and knows nothing about the mountains
+    // on the horizon; the planet's range is too thick for the march to
+    // resolve anything inside it.
+    const marchLayer = far ?? mosaic;
+    gl.uniform2f(
+      this.location(p, 'uMarchRange'),
+      marchLayer?.elevation.min ?? 0,
+      marchLayer?.elevation.max ?? 1
+    );
+
     // Effect footprints. Zero disables an effect the event lacks —
     // an airburst has no crater and a conventional charge no EMP.
     gl.uniform3f(
