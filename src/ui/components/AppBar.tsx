@@ -4,6 +4,7 @@ import { useAppStore } from '../../store/index.js';
 import { AboutDialog } from './AboutDialog.js';
 import { GlossaryDialog } from './GlossaryDialog.js';
 import { LanguageSwitch } from './LanguageSwitch.js';
+import { ViewSwitch } from './ViewSwitch.js';
 import styles from './AppBar.module.css';
 
 /**
@@ -28,6 +29,7 @@ export function AppBar(): JSX.Element {
       </span>
       <span className={styles.crumb}>{t(`simulator.eventTypes.${eventType}`)}</span>
       <span className={styles.spacer} />
+      <ViewSwitch />
       <div className={styles.utilities}>
         <AboutDialog />
         <GlossaryDialog />

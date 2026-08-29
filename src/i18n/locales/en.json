@@ -1075,6 +1075,27 @@
     "bolideAirburstAmplification": "Closed-form altitude amplification f(h) = (P_0 / P_amb(h))^(1/β) with β = 5/3 (Sachs intermediate-shock exponent). Built from Whitham (1974) §8.2 weak-shock invariance ΔP/P_amb ≈ const through stratified atmosphere, Sachs (1944) blast scaling ΔP ∝ R^(−β), and the U.S. Standard Atmosphere 1976 (NOAA-S/T 76-1562) for actual P(h). Capped at 15× for stratospheric scenarios. Validates within ~1 % on Chelyabinsk 2013 (Brown et al. 2013 Nature 503: 238) and within ~15 % on Tunguska 1908."
   },
   "appBar": {
-    "label": "Application bar"
+    "label": "Application bar",
+    "viewGlobe": "Globe",
+    "viewImpact": "Close-up",
+    "viewSwitchLabel": "Viewpoint",
+    "viewImpactUnavailable": "The close-up view is available for impacts and explosions"
+  },
+  "impactView": {
+    "title": "Close-up",
+    "needsResult": "Launch a simulation to see it from the ground.",
+    "unsupported": "This event family has no close-up view yet.",
+    "loading": "Loading terrain…",
+    "terrainFailed": "Terrain unavailable — showing the event on a bare surface.",
+    "noWebgl": "WebGL2 is required for the close-up view.",
+    "play": "Play",
+    "pause": "Pause",
+    "time": "Simulation time",
+    "fireball": "fireball",
+    "shock": "shock front",
+    "temperature": "temperature",
+    "crater": "crater",
+    "hint": "drag to orbit · scroll to zoom",
+    "sources": "Esri World Imagery · AWS Terrain Tiles"
   }
 }

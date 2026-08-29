@@ -76,7 +76,10 @@ export interface Coordinates {
   longitude: number;
 }
 
-export type ViewMode = 'landing' | 'globe' | 'methodology' | 'report';
+/** `impact` is the close-up renderer: the same simulation seen from
+ *  ground level instead of from orbit. It is only meaningful for the
+ *  event families that produce a fireball and a crater. */
+export type ViewMode = 'landing' | 'globe' | 'impact' | 'methodology' | 'report';
 export type SimulationStatus = 'idle' | 'running' | 'error';
 export type MonteCarloStatus = 'idle' | 'running' | 'error';
 export type TransitionPhase = 'idle' | 'fading-out' | 'fading-in';

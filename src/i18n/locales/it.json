@@ -1162,6 +1162,27 @@
     }
   },
   "appBar": {
-    "label": "Barra applicazione"
+    "label": "Barra applicazione",
+    "viewGlobe": "Globo",
+    "viewImpact": "Ravvicinata",
+    "viewSwitchLabel": "Punto di vista",
+    "viewImpactUnavailable": "La vista ravvicinata è disponibile per impatti ed esplosioni"
+  },
+  "impactView": {
+    "title": "Vista ravvicinata",
+    "needsResult": "Lancia una simulazione per vederla da terra.",
+    "unsupported": "Questa famiglia di eventi non ha ancora una vista ravvicinata.",
+    "loading": "Carico il terreno…",
+    "terrainFailed": "Terreno non disponibile — evento su superficie spoglia.",
+    "noWebgl": "La vista ravvicinata richiede WebGL2.",
+    "play": "Play",
+    "pause": "Pausa",
+    "time": "Tempo di simulazione",
+    "fireball": "palla di fuoco",
+    "shock": "fronte d'urto",
+    "temperature": "temperatura",
+    "crater": "cratere",
+    "hint": "trascina per orbitare · rotella per avvicinarti",
+    "sources": "Esri World Imagery · AWS Terrain Tiles"
   }
 }

@@ -16,6 +16,15 @@ const GlobeView = lazy(() =>
   import('./pages/GlobeView.js').then((mod) => ({ default: mod.GlobeView }))
 );
 
+/**
+ * The close-up renderer is its own chunk too. It shares no code with
+ * Cesium — it is a plain WebGL2 pipeline — so a visitor who only ever
+ * uses the globe never downloads it, and vice versa.
+ */
+const ImpactView = lazy(() =>
+  import('./pages/ImpactView.js').then((mod) => ({ default: mod.ImpactView }))
+);
+
 function CurrentView(): JSX.Element {
   const mode = useAppStore((s) => s.mode);
 
@@ -23,6 +32,14 @@ function CurrentView(): JSX.Element {
     return (
       <Suspense fallback={null}>
         <GlobeView />
+      </Suspense>
+    );
+  }
+
+  if (mode === 'impact') {
+    return (
+      <Suspense fallback={null}>
+        <ImpactView />
       </Suspense>
     );
   }

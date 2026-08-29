@@ -57,7 +57,13 @@ function isEventType(value: string | null): value is EventType {
 }
 
 function isViewMode(value: string | null): value is ViewMode {
-  return value === 'landing' || value === 'globe' || value === 'methodology' || value === 'report';
+  return (
+    value === 'landing' ||
+    value === 'globe' ||
+    value === 'impact' ||
+    value === 'methodology' ||
+    value === 'report'
+  );
 }
 
 function numberParam(search: URLSearchParams, key: string): number | null {

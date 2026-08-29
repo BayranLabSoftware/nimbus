@@ -184,3 +184,25 @@ describe('knownUrlKeys', () => {
     expect(knownUrlKeys()).toEqual(Object.values(URL_KEYS));
   });
 });
+
+describe('impact close-up mode in the URL', () => {
+  it('is accepted so a close-up link survives a reload', () => {
+    const intent = decodeSearchParamsToIntent(
+      new URLSearchParams('t=explosion&p=HIROSHIMA_1945&lat=27.89&lon=-81.59&m=impact')
+    );
+    expect(intent.mode).toBe('impact');
+  });
+
+  it('round-trips through encode → decode', () => {
+    const params = encodeStateToSearchParams({
+      ...projectSyncableState(useAppStore.getState()),
+      mode: 'impact',
+    });
+    expect(params.get(URL_KEYS.mode)).toBe('impact');
+    expect(decodeSearchParamsToIntent(params).mode).toBe('impact');
+  });
+
+  it('still rejects a mode that does not exist', () => {
+    expect(decodeSearchParamsToIntent(new URLSearchParams('m=nonsense')).mode).toBeNull();
+  });
+});
