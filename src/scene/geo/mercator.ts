@@ -196,6 +196,25 @@ export function localToGeo(
 }
 
 /**
+ * Geographic degrees to the local scene frame (metres east / north of
+ * ground zero). Exact inverse of localToGeo, and like it — and like
+ * the shader's toGeo, which the three of them must all mirror — the
+ * longitude scale is taken at the point's own latitude.
+ */
+export function geoToLocal(
+  lonDeg: number,
+  latDeg: number,
+  lat0Deg: number,
+  lon0Deg: number
+): { eastM: number; northM: number } {
+  const cos = Math.max(Math.cos(clampLat(latDeg) * RAD), 1e-6);
+  return {
+    eastM: (lonDeg - lon0Deg) * METERS_PER_DEG_LAT * cos,
+    northM: (latDeg - lat0Deg) * METERS_PER_DEG_LAT,
+  };
+}
+
+/**
  * Great-circle distance between two points, in metres, via the
  * haversine formula.
  *

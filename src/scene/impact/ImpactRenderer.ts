@@ -1,5 +1,7 @@
-import type { MosaicBounds } from '../geo/mercator.js';
+import { geoToMosaicUV, type MosaicBounds } from '../geo/mercator.js';
+import { sampleNormalised } from '../geo/terrarium.js';
 import type { LoadedMosaic } from '../geo/tileMosaic.js';
+import type { BuildingMesh } from '../geo/extrude.js';
 import { effectColorArray } from './effectStyle.js';
 import type { CameraPose } from './camera.js';
 import { FOV_Y, poseFor, rayBasis, viewProjection, type OrbitState } from './camera.js';
@@ -7,6 +9,8 @@ import { effectArrival, effectRadius, type ImpactFrame, type ImpactScene } from 
 import {
   BLUR_FS,
   BRIGHT_FS,
+  BUILDING_FS,
+  BUILDING_VS,
   COMPOSITE_FS,
   PARTICLE_FS,
   PARTICLE_VS,
@@ -40,7 +44,15 @@ const TEXTURE_UNITS = {
   bloomWide: 2,
   imagery: 3,
   elevation: 4,
+  bldAlbedo: 5,
+  bldNormalT: 6,
 } as const;
+
+/**
+ * Beyond this the tallest building is under a pixel and the whole
+ * raster pass is spent on nothing. Metres of camera distance.
+ */
+const BUILDING_VISIBLE_M = 60_000;
 
 /**
  * Levels in the terrain pyramid, coarsest first. Two array textures
@@ -120,6 +132,7 @@ export class ImpactRenderer {
   private readonly programs: {
     scene: WebGLProgram;
     particles: WebGLProgram;
+    buildings: WebGLProgram;
     bright: WebGLProgram;
     blur: WebGLProgram;
     composite: WebGLProgram;
@@ -142,6 +155,24 @@ export class ImpactRenderer {
   private readonly layers: (LoadedMosaic | null)[] = Array.from({ length: MAX_LAYERS }, () => null);
   private scratch: HTMLCanvasElement | null = null;
   private staging: HTMLCanvasElement | null = null;
+
+  // ---- buildings -------------------------------------------------
+  private bldTarget: {
+    framebuffer: WebGLFramebuffer;
+    albedo: WebGLTexture;
+    normalT: WebGLTexture;
+    depth: WebGLRenderbuffer;
+  } | null = null;
+  private bldVao: WebGLVertexArrayObject | null = null;
+  private bldBuffers: WebGLBuffer[] = [];
+  private bldIndexCount = 0;
+
+  /** Elevation at ground zero, cached per pyramid generation: the
+   *  camera-anchored levels each carry their block centre's origin,
+   *  which is NOT the scene's datum. */
+  private layerGeneration = 0;
+  private originCache: { generation: number; lat: number; lon: number; value: number } | null =
+    null;
 
   private width = 0;
   private height = 0;
@@ -166,6 +197,7 @@ export class ImpactRenderer {
     this.programs = {
       scene: this.link(QUAD_VS, SCENE_FS, 'scene'),
       particles: this.link(PARTICLE_VS, PARTICLE_FS, 'particles'),
+      buildings: this.link(BUILDING_VS, BUILDING_FS, 'buildings'),
       bright: this.link(QUAD_VS, BRIGHT_FS, 'bright'),
       blur: this.link(QUAD_VS, BLUR_FS, 'blur'),
       composite: this.link(QUAD_VS, COMPOSITE_FS, 'composite'),
@@ -291,6 +323,8 @@ export class ImpactRenderer {
     const half = (v: number): number => Math.max(2, v >> 1);
     const eighth = (v: number): number => Math.max(2, v >> 3);
     this.scene = this.target(width, height);
+    this.disposeBuildingTarget();
+    this.bldTarget = this.buildingTarget(width, height);
     this.nearA = this.target(half(width), half(height));
     this.nearB = this.target(half(width), half(height));
     this.wideA = this.target(eighth(width), eighth(height));
@@ -310,6 +344,7 @@ export class ImpactRenderer {
     const { gl } = this;
     const slot = Math.min(Math.max(level, 0), MAX_LAYERS - 1);
     this.layers[slot] = mosaic;
+    this.layerGeneration++;
 
     const dst = this.fit(mosaic.imagery);
     gl.bindTexture(gl.TEXTURE_2D_ARRAY, this.imageryArray);
@@ -386,6 +421,128 @@ export class ImpactRenderer {
     return canvas;
   }
 
+  /**
+   * The building G-buffer: albedo, normal + view distance, and a real
+   * depth buffer so facades occlude each other. Sized with the scene
+   * target — the raymarch reads it with texelFetch at 1:1.
+   */
+  private buildingTarget(width: number, height: number): NonNullable<typeof this.bldTarget> {
+    const { gl } = this;
+    const albedo = required(gl.createTexture(), 'the building albedo target');
+    gl.bindTexture(gl.TEXTURE_2D, albedo);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    const normalT = required(gl.createTexture(), 'the building normal target');
+    gl.bindTexture(gl.TEXTURE_2D, normalT);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, width, height, 0, gl.RGBA, gl.HALF_FLOAT, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    const depth = required(gl.createRenderbuffer(), 'the building depth buffer');
+    gl.bindRenderbuffer(gl.RENDERBUFFER, depth);
+    gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT24, width, height);
+    const framebuffer = required(gl.createFramebuffer(), 'the building framebuffer');
+    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, albedo, 0);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, normalT, 0);
+    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depth);
+    gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1]);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    return { framebuffer, albedo, normalT, depth };
+  }
+
+  private disposeBuildingTarget(): void {
+    const { gl } = this;
+    const t = this.bldTarget;
+    if (t === null) return;
+    gl.deleteFramebuffer(t.framebuffer);
+    gl.deleteTexture(t.albedo);
+    gl.deleteTexture(t.normalT);
+    gl.deleteRenderbuffer(t.depth);
+    this.bldTarget = null;
+  }
+
+  /**
+   * Upload the extruded city, or clear it with null. One interleaved
+   * set of buffers, one draw per frame.
+   */
+  setBuildings(mesh: BuildingMesh | null): void {
+    const { gl } = this;
+    if (this.bldVao !== null) gl.deleteVertexArray(this.bldVao);
+    for (const buffer of this.bldBuffers) gl.deleteBuffer(buffer);
+    this.bldVao = null;
+    this.bldBuffers = [];
+    this.bldIndexCount = 0;
+    if (mesh === null || mesh.triangleCount === 0) return;
+
+    const program = this.programs.buildings;
+    const vao = required(gl.createVertexArray(), 'the building vertex array');
+    gl.bindVertexArray(vao);
+
+    const attach = (
+      name: string,
+      data: Float32Array | Int8Array,
+      size: number,
+      type: number,
+      normalised: boolean
+    ): WebGLBuffer => {
+      const buffer = required(gl.createBuffer(), `the building ${name} buffer`);
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+      const location = gl.getAttribLocation(program, name);
+      if (location >= 0) {
+        gl.enableVertexAttribArray(location);
+        gl.vertexAttribPointer(location, size, type, normalised, 0, 0);
+      }
+      return buffer;
+    };
+    this.bldBuffers.push(attach('aPos', mesh.positions, 3, gl.FLOAT, false));
+    this.bldBuffers.push(attach('aNrm', mesh.normals, 4, gl.BYTE, true));
+    this.bldBuffers.push(attach('aId', mesh.ids, 1, gl.FLOAT, false));
+    const index = required(gl.createBuffer(), 'the building index buffer');
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, mesh.indices, gl.STATIC_DRAW);
+    this.bldBuffers.push(index);
+
+    gl.bindVertexArray(null);
+    this.bldVao = vao;
+    this.bldIndexCount = mesh.indices.length;
+  }
+
+  /**
+   * Terrain elevation at ground zero, from the finest pyramid level
+   * covering it. The levels follow the camera and each records its own
+   * block-centre origin, so none of them can be trusted as the datum
+   * directly — but their FIELDS still contain ground zero while the
+   * camera is anywhere near the event, and the datum must not drift
+   * when the camera crosses a block boundary.
+   */
+  private originElevation(lat: number, lon: number): number {
+    const cached = this.originCache;
+    if (
+      cached !== null &&
+      cached.generation === this.layerGeneration &&
+      cached.lat === lat &&
+      cached.lon === lon
+    ) {
+      return cached.value;
+    }
+    let value = 0;
+    for (const layer of this.layers) {
+      if (layer === null) continue;
+      const uv = geoToMosaicUV(lon, lat, layer.elevationBlock.bounds);
+      if (uv.u < 0.002 || uv.u > 0.998 || uv.v < 0.002 || uv.v > 0.998) continue;
+      value = sampleNormalised(layer.elevation, uv.u, uv.v);
+      break;
+    }
+    this.originCache = { generation: this.layerGeneration, lat, lon, value };
+    return value;
+  }
+
   // ---- drawing ---------------------------------------------------
 
   /** Camera pose for a frame — exposed so a caller can reuse it for
@@ -411,9 +568,59 @@ export class ImpactRenderer {
     const km = (metres: number): number => metres / 1_000;
     const aspect = this.width / this.height;
 
+    gl.disable(gl.BLEND);
+
+    // ---- 0. buildings --------------------------------------------
+    // Raster first, raymarch second: the scene pass composites this
+    // G-buffer by distance and lights the facades itself, so the two
+    // worlds share one sun instead of wearing two.
+    const bldPose = viewProjection(
+      {
+        ...pose,
+        position: [km(pose.position[0]), km(pose.position[1]), km(pose.position[2])],
+        target: [km(pose.target[0]), km(pose.target[1]), km(pose.target[2])],
+      },
+      aspect,
+      FOV_Y,
+      Math.max(km(pose.distance) * 1e-4, 2e-3),
+      300
+    );
+    const drawBuildings =
+      this.bldIndexCount > 0 && this.bldTarget !== null && pose.distance < BUILDING_VISIBLE_M;
+    if (drawBuildings && this.bldTarget !== null && this.bldVao !== null) {
+      const b = this.programs.buildings;
+      gl.bindFramebuffer(gl.FRAMEBUFFER, this.bldTarget.framebuffer);
+      gl.viewport(0, 0, this.width, this.height);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clearDepth(1);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.enable(gl.DEPTH_TEST);
+      // Winding is normalised by the extruder and pinned by its tests,
+      // which is what buys dropping every interior face here.
+      gl.enable(gl.CULL_FACE);
+      gl.cullFace(gl.BACK);
+      gl.useProgram(b);
+      gl.uniformMatrix4fv(this.location(b, 'uVP'), false, bldPose);
+      gl.uniform3f(
+        this.location(b, 'uCam'),
+        km(pose.position[0]),
+        km(pose.position[1]),
+        km(pose.position[2])
+      );
+      gl.bindVertexArray(this.bldVao);
+      gl.drawElements(gl.TRIANGLES, this.bldIndexCount, gl.UNSIGNED_INT, 0);
+      gl.disable(gl.CULL_FACE);
+      gl.disable(gl.DEPTH_TEST);
+    } else if (this.bldTarget !== null) {
+      // Stale facades from the last site must not haunt this one.
+      gl.bindFramebuffer(gl.FRAMEBUFFER, this.bldTarget.framebuffer);
+      gl.viewport(0, 0, this.width, this.height);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+    }
+
     gl.bindVertexArray(this.vao);
     gl.disable(gl.DEPTH_TEST);
-    gl.disable(gl.BLEND);
 
     // ---- 1. scene ------------------------------------------------
     const p = this.programs.scene;
@@ -481,7 +688,10 @@ export class ImpactRenderer {
       this.location(p, 'uElev'),
       finest?.elevation.min ?? 0,
       finest?.elevation.max ?? 1,
-      finest?.elevationAtOrigin ?? 0
+      // NOT finest.elevationAtOrigin: the camera-anchored levels each
+      // carry their own block centre, and a datum that jumps when the
+      // camera crosses a block boundary pops the whole landscape.
+      this.originElevation(scene.latitude, scene.longitude)
     );
     gl.uniform2f(this.location(p, 'uOrg'), scene.latitude, scene.longitude);
     gl.uniform3f(this.location(p, 'uAvg'), 0.5, 0.46, 0.38);
@@ -536,6 +746,15 @@ export class ImpactRenderer {
     gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.elevation);
     gl.bindTexture(gl.TEXTURE_2D_ARRAY, this.elevationArray);
     gl.uniform1i(this.location(p, 'uDemArr'), TEXTURE_UNITS.elevation);
+    if (this.bldTarget !== null) {
+      gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.bldAlbedo);
+      gl.bindTexture(gl.TEXTURE_2D, this.bldTarget.albedo);
+      gl.uniform1i(this.location(p, 'uBldAlb'), TEXTURE_UNITS.bldAlbedo);
+      gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.bldNormalT);
+      gl.bindTexture(gl.TEXTURE_2D, this.bldTarget.normalT);
+      gl.uniform1i(this.location(p, 'uBldNT'), TEXTURE_UNITS.bldNormalT);
+    }
+    gl.uniform1f(this.location(p, 'uHasBld'), drawBuildings ? 1 : 0);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 
     // ---- 2. ejecta -----------------------------------------------
@@ -569,6 +788,12 @@ export class ImpactRenderer {
       gl.uniform1f(this.location(q, 'uTime'), frame.time);
       gl.uniform1f(this.location(q, 'uCraterR'), km(scene.craterRadius));
       gl.uniform1f(this.location(q, 'uMaxSpeed'), km(scene.ejectaLaunchSpeed));
+      if (this.bldTarget !== null) {
+        gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.bldNormalT);
+        gl.bindTexture(gl.TEXTURE_2D, this.bldTarget.normalT);
+        gl.uniform1i(this.location(q, 'uBldNT'), TEXTURE_UNITS.bldNormalT);
+      }
+      gl.uniform1f(this.location(q, 'uHasBld'), drawBuildings ? 1 : 0);
       gl.drawArrays(gl.POINTS, 0, PARTICLE_COUNT);
       gl.disable(gl.BLEND);
     }
@@ -638,6 +863,10 @@ export class ImpactRenderer {
     this.scene = this.nearA = this.nearB = this.wideA = this.wideB = null;
     gl.deleteTexture(this.imageryArray);
     gl.deleteTexture(this.elevationArray);
+    this.disposeBuildingTarget();
+    if (this.bldVao !== null) gl.deleteVertexArray(this.bldVao);
+    for (const buffer of this.bldBuffers) gl.deleteBuffer(buffer);
+    this.bldBuffers = [];
     gl.deleteVertexArray(this.vao);
     for (const program of Object.values(this.programs)) gl.deleteProgram(program);
     this.uniforms.clear();

@@ -128,3 +128,26 @@ export function sampleElevation(field: ElevationField, u: number, v: number): nu
   const bottom = at(x0, y1) * (1 - fx) + at(x1, y1) * fx;
   return top * (1 - fy) + bottom * fy;
 }
+
+/**
+ * Elevation in metres at a fractional position of a NORMALISED field,
+ * bilinearly interpolated. The renderer keeps only the normalised form
+ * after upload; this is how CPU-side consumers — the building layer
+ * seating its foundations, the datum at ground zero — read it back
+ * without holding the raw decode alive.
+ */
+export function sampleNormalised(elevation: NormalisedElevation, u: number, v: number): number {
+  const { bytes, width, height, min, max } = elevation;
+  const x = Math.min(Math.max(u, 0), 1) * (width - 1);
+  const y = Math.min(Math.max(v, 0), 1) * (height - 1);
+  const x0 = Math.floor(x);
+  const y0 = Math.floor(y);
+  const x1 = Math.min(x0 + 1, width - 1);
+  const y1 = Math.min(y0 + 1, height - 1);
+  const fx = x - x0;
+  const fy = y - y0;
+  const at = (px: number, py: number): number => bytes[py * width + px] ?? 0;
+  const top = at(x0, y0) * (1 - fx) + at(x1, y0) * fx;
+  const bottom = at(x0, y1) * (1 - fx) + at(x1, y1) * fx;
+  return decodeNormalised(top * (1 - fy) + bottom * fy, min, max);
+}

@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   BLUR_FS,
   BRIGHT_FS,
+  BUILDING_FS,
+  BUILDING_VS,
   COMPOSITE_FS,
   PARTICLE_FS,
   PARTICLE_VS,
@@ -12,6 +14,8 @@ import {
 const SOURCES: readonly (readonly [string, string])[] = [
   ['QUAD_VS', QUAD_VS],
   ['SCENE_FS', SCENE_FS],
+  ['BUILDING_VS', BUILDING_VS],
+  ['BUILDING_FS', BUILDING_FS],
   ['PARTICLE_VS', PARTICLE_VS],
   ['PARTICLE_FS', PARTICLE_FS],
   ['BRIGHT_FS', BRIGHT_FS],

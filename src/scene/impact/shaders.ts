@@ -77,6 +77,15 @@ uniform int   uLayerCount;
 uniform vec3  uElev;       // metres: min, max, value at ground zero (finest level)
 uniform vec3  uAvg;        // fallback colour where no level covers
 
+/* Building G-buffer, laid down by the raster pass that runs before
+   this one. Alpha of the first marks coverage; w of the second is the
+   hit distance along this very ray, in km — the unit everything here
+   already speaks. One depth, one lighting model: a building pixel
+   re-enters the pipeline below exactly where a terrain pixel does. */
+uniform sampler2D uBldAlb;
+uniform sampler2D uBldNT;
+uniform float uHasBld;
+
 uniform vec2  uOrg;        // lat0, lon0 (degrees)
 
 /* Elevation range the height-field march brackets against, in metres.
@@ -584,6 +593,14 @@ void main(){
   vec3 ro = uCam;
   float tGround = hitEarth(ro, rd);
 
+  vec4 bldA = vec4(0.0);
+  vec4 bldNT = vec4(0.0);
+  if (uHasBld > 0.5){
+    bldA = texelFetch(uBldAlb, ivec2(gl_FragCoord.xy), 0);
+    if (bldA.a > 0.5) bldNT = texelFetch(uBldNT, ivec2(gl_FragCoord.xy), 0);
+  }
+  bool bldHit = bldA.a > 0.5 && bldNT.w > 0.0;
+
   /* Sky from the stratosphere: black overhead, blue at the limb. */
   float up = clamp(rd.y, -1.0, 1.0);
   vec3 sky = mix(vec3(0.16, 0.32, 0.55), vec3(0.005, 0.010, 0.028), pow(clamp(up, 0.0, 1.0), 0.42));
@@ -594,21 +611,43 @@ void main(){
        * smoothstep(0.06, 0.5, up);
   vec3 col = sky;
 
-  if (tGround > 0.0){
-    float t = marchGround(ro, rd, tGround);
-    if (t <= 0.0) t = tGround;
+  // Whatever the ray hits first — analytic ground or rasterised
+  // building — occludes the volumetrics further down.
+  float tOcc = tGround;
+
+  if (tGround > 0.0 || bldHit){
+    float t = tGround;
+    if (tGround > 0.0){
+      t = marchGround(ro, rd, tGround);
+      if (t <= 0.0) t = tGround;
+    }
+    // A building wins where it is nearer — and where the ray misses
+    // the planet entirely, a rooftop against the sky is still a hit.
+    bool onBld = bldHit && (tGround <= 0.0 || bldNT.w < t);
+    if (onBld) t = bldNT.w;
+    tOcc = t;
     vec3 p = ro + rd * t;
     float d = length(p.xz);
 
+    vec3 N;
+    vec3 Ns;
+    vec3 albedo;
+    float water = 0.0;
+    float grain = 0.5;
+    if (onBld){
+      N = normalize(bldNT.xyz);
+      Ns = N;
+      albedo = bldA.rgb;
+    } else {
     float eps = max(uCraterR * 0.035, d * 0.0016);
     float h0 = ground(p.xz);
-    vec3 N = normalize(vec3(-(ground(p.xz + vec2(eps, 0.0)) - h0) / eps, 1.0,
-                            -(ground(p.xz + vec2(0.0, eps)) - h0) / eps));
+    N = normalize(vec3(-(ground(p.xz + vec2(eps, 0.0)) - h0) / eps, 1.0,
+                       -(ground(p.xz + vec2(0.0, eps)) - h0) / eps));
     N = normalize(N + vec3(-p.x / RE, 0.0, -p.z / RE));
 
-    float grain = fbm(vec3(p.xz * (9.0 / max(uCraterR, 0.05)), 0.0), 4);
+    grain = fbm(vec3(p.xz * (9.0 / max(uCraterR, 0.05)), 0.0), 4);
     vec2 geo = toGeo(p.xz);
-    float water, demInside;
+    float demInside;
     terrain(p.xz, water, demInside);
 
     /* ── The terrain pyramid, coarse to fine ──────────────────────
@@ -660,7 +699,7 @@ void main(){
     micro *= inside * (1.0 - water);
 
     photo = mix(vec3(dot(photo, vec3(0.299, 0.587, 0.114))), photo, 1.25);
-    vec3 albedo = mix(uAvg * uAvg * (0.72 + 0.56 * grain), photo, inside);
+    albedo = mix(uAvg * uAvg * (0.72 + 0.56 * grain), photo, inside);
 
     /* Satellite imagery is shot near local noon with the sun close to
        overhead, so the shading it carries is nearly flat and it fights
@@ -673,9 +712,10 @@ void main(){
     // the foreground, plus a fine rock grain below even that.
     vec3 rock = vec3(fbm(vec3(p.xz * 260.0, 11.0), 3) - 0.5, 0.0,
                      fbm(vec3(p.xz * 260.0, 29.0), 3) - 0.5);
-    vec3 Ns = normalize(N
+    Ns = normalize(N
       + photoRelief(geo, fine) * (micro * 0.55)
       + rock * (micro * 0.10));
+    }
 
     /* ── Every consequence that visibly alters the ground ──────────
        Each one appears only once its own physics has reached this
@@ -804,7 +844,7 @@ void main(){
        viewer needs. Radiation and EMP appear ONLY here, because they
        change nothing you could photograph. */
     float mapFade = smoothstep(1.6, 6.0, uScale);
-    if (mapFade > 0.002){
+    if (mapFade > 0.002 && !onBld){
       float k = mapFade * 0.85;
       lit = contour(lit, d, uCraterR,   uEffectColor[0],  k);
       lit = contour(lit, d, uFireEj.y,  uEffectColor[1],  k * 0.7);
@@ -872,7 +912,7 @@ void main(){
       float b = dot(oc, rd), cc = dot(oc, oc) - R * R, hh = b * b - cc;
       if (hh > 0.0){
         float sq = sqrt(hh), t0 = max(-b - sq, 0.0), t1 = -b + sq;
-        if (tGround > 0.0) t1 = min(t1, tGround);
+        if (tOcc > 0.0) t1 = min(t1, tOcc);
         // Optical depth of about six across the fireball's diameter:
         // opaque where the plasma is, translucent across a stem a
         // third of that width.
@@ -897,7 +937,7 @@ void main(){
       } else if (ro.y < -0.01 || ro.y > top) {
         tb = -1.0;
       }
-      if (tGround > 0.0) tb = min(tb, tGround);
+      if (tOcc > 0.0) tb = min(tb, tOcc);
 
       /* Clip to the cylinder the wall actually lives in. A ray that
          skims the horizon enters the slab and never leaves it, so
@@ -948,6 +988,7 @@ uniform float uCraterR;    // km
 uniform float uMaxSpeed;   // km/s
 out vec3 vColor;
 out float vAlpha;
+out float vT;
 const float G = 0.00980665; // km/s^2
 
 float hash11(float p){ p = fract(p * 0.1031); p *= p + 33.33; p *= p + p; return fract(p); }
@@ -980,6 +1021,7 @@ void main(){
   gl_Position = uVP * vec4(p, 1.0);
 
   float dist = length(p - uCam);
+  vT = dist;
   gl_PointSize = clamp(uRes.y * 0.0022 * (0.30 + 1.1 * u2 + 7.0 * big)
                        * max(uCraterR, 0.15) / max(dist, 0.02), 1.0, 40.0);
   float T = mix(2700.0, 520.0, clamp(tf / (tLand * 0.85 + 0.3), 0.0, 1.0));
@@ -994,12 +1036,77 @@ export const PARTICLE_FS = `#version 300 es
 precision highp float;
 in vec3 vColor;
 in float vAlpha;
+in float vT;
+uniform sampler2D uBldNT;
+uniform float uHasBld;
 out vec4 fragColor;
 void main(){
+  // A glowing streak drawn over the facade it is actually behind
+  // breaks the scene worse than any missing streak would.
+  if (uHasBld > 0.5){
+    float tB = texelFetch(uBldNT, ivec2(gl_FragCoord.xy), 0).w;
+    if (tB > 0.0 && tB < vT) discard;
+  }
   vec2 c = gl_PointCoord - 0.5;
   float r = length(c);
   if (r > 0.5) discard;
   fragColor = vec4(vColor * exp(-r * r * 9.0) * vAlpha * 1.7, 1.0);
+}`;
+
+/**
+ * Buildings: a plain raster pass into a small G-buffer, run before
+ * the raymarch. The raymarch cannot afford to intersect a hundred
+ * thousand arbitrary polygons per ray, and the raster pass cannot
+ * afford a second copy of the scene's light. So each does the one
+ * thing it is good at: this pass answers "what is the nearest facade
+ * along this pixel, and what is it made of", and the scene shader
+ * lights that answer with the same sun, the same fireball and the
+ * same charring it applies to the ground.
+ */
+export const BUILDING_VS = `#version 300 es
+precision highp float;
+uniform mat4 uVP;
+in vec3 aPos;    // km, local frame
+in vec4 aNrm;    // xyz normal, w: 0 wall, 1 roof
+in float aId;
+out vec3 vWorld;
+out vec3 vNrm;
+out float vPart;
+out float vId;
+void main(){
+  vWorld = aPos;
+  vNrm = aNrm.xyz;
+  vPart = aNrm.w;
+  vId = aId;
+  gl_Position = uVP * vec4(aPos, 1.0);
+}`;
+
+export const BUILDING_FS = `#version 300 es
+precision highp float;
+uniform vec3 uCam;   // km
+in vec3 vWorld;
+in vec3 vNrm;
+in float vPart;
+in float vId;
+layout(location = 0) out vec4 oAlbedo;
+layout(location = 1) out vec4 oNormalT;
+
+float hash11(float x){ x = fract(x * 0.1031); x *= x + 33.33; x *= x + x; return fract(x); }
+
+void main(){
+  /* Albedo in LINEAR light, like everything the scene shader eats.
+     Blocks arrive merged, so the variation is per block: plaster and
+     concrete walls, a roofscape split between terracotta, pale
+     concrete and slate. Phase C replaces the roof palette with the
+     orthophoto's own colour at the footprint. */
+  float seed = hash11(vId + 0.731);
+  vec3 wall = mix(vec3(0.230, 0.208, 0.182), vec3(0.128, 0.120, 0.112), seed);
+  float r = hash11(vId + 17.13);
+  vec3 roof = r < 0.45 ? mix(vec3(0.150, 0.072, 0.048), vec3(0.205, 0.110, 0.075), seed)
+            : r < 0.80 ? mix(vec3(0.170, 0.163, 0.150), vec3(0.225, 0.218, 0.205), seed)
+                       : vec3(0.072, 0.075, 0.082);
+  oAlbedo = vec4(mix(wall, roof, step(0.5, vPart)), 1.0);
+  oNormalT = vec4(normalize(vNrm), length(vWorld - uCam));
 }`;
 
 export const BRIGHT_FS = `#version 300 es

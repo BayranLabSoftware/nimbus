@@ -1096,7 +1096,7 @@
     "temperature": "temperature",
     "crater": "crater rim",
     "hint": "drag to orbit · scroll to zoom",
-    "sources": "Esri World Imagery · AWS Terrain Tiles",
+    "sources": "Esri World Imagery · AWS Terrain Tiles · © OpenStreetMap contributors · OpenFreeMap",
     "ejecta": "ejecta blanket",
     "thermal3": "3rd-degree burn",
     "thermal2": "2nd-degree burn",

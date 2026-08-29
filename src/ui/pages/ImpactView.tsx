@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { s } from '../../physics/units.js';
 import { localToGeo, zoomForSpan, zoomForTexel } from '../../scene/geo/mercator.js';
 import { changedLevels, planPyramid } from '../../scene/geo/pyramid.js';
+import { loadBuildingsForSite } from '../../scene/impact/buildings.js';
 import { loadMosaic } from '../../scene/geo/tileMosaic.js';
 import { MAX_LAYERS, ImpactRenderer } from '../../scene/impact/ImpactRenderer.js';
 import {
@@ -107,6 +108,9 @@ export function ImpactView(): JSX.Element {
   const originLon = scene?.longitude ?? 0;
   const reachMeters = scene?.framingReach ?? 0;
   const effectsReach = scene?.effectsReach ?? 0;
+  // Stable primitive for the buildings effect: the 5 psi ring is what
+  // sizes the loaded disc.
+  const blast5 = scene?.effects.find((e) => e.id === 'blast5')?.radius ?? 0;
   const maxZoom = maxZoomForReach(reachMeters, effectsReach);
   /* Three levels, sized to what can actually end up on screen.
      Nothing past the horizon is visible, so the outermost level does
@@ -268,6 +272,30 @@ export function ImpactView(): JSX.Element {
   useEffect(() => {
     syncRef.current = syncTerrain;
   }, [syncTerrain]);
+
+  // ---- buildings ---------------------------------------------------
+  // Extruded OSM footprints around ground zero. Null is a fine
+  // answer — deserts and oceans simply have none — so failures only
+  // warn: the scene must never depend on this layer existing.
+  useEffect(() => {
+    if (!hasScene) return;
+    let cancelled = false;
+    rendererRef.current?.setBuildings(null);
+    loadBuildingsForSite(
+      { latitude: originLat, longitude: originLon, r5psiMeters: blast5 },
+      { isCancelled: () => cancelled }
+    )
+      .then((mesh) => {
+        if (!cancelled && mesh !== null) rendererRef.current?.setBuildings(mesh);
+      })
+      .catch((error: unknown) => {
+        console.warn('[ImpactView] buildings unavailable:', error);
+      });
+    return () => {
+      cancelled = true;
+      rendererRef.current?.setBuildings(null);
+    };
+  }, [hasScene, originLat, originLon, blast5]);
 
   // A change of site or of scale invalidates every block we hold.
   useEffect(() => {
