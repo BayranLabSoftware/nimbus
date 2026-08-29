@@ -3,6 +3,7 @@ import { changedLevels, planPyramid } from './pyramid.js';
 import { tileSpanMeters } from './mercator.js';
 
 const ROME = { latitude: 41.9028, longitude: 12.4964 };
+const ROME_ANCHOR = { latitude: ROME.latitude, longitude: ROME.longitude };
 
 const base = {
   ...ROME,
@@ -79,5 +80,33 @@ describe('changedLevels', () => {
   it('treats a level that has never loaded as changed', () => {
     const plan = planPyramid(base);
     expect(changedLevels(plan, new Map()).length).toBe(plan.length);
+  });
+});
+
+describe('per-level anchors', () => {
+  it('puts each level over its own anchor', () => {
+    // Fine level over the near ground, coarse level 30 km away over
+    // the view centre — the map-altitude case that motivated this.
+    const far = { latitude: ROME.latitude + 0.27, longitude: ROME.longitude };
+    const plan = planPyramid({
+      ...base,
+      anchors: Array.from({ length: 16 }, (_, i) => (i < 4 ? ROME_ANCHOR : far)),
+    });
+    const fine = plan[0];
+    const coarse = plan.find((l) => l.zoom === 10);
+    expect(fine).toBeDefined();
+    expect(coarse).toBeDefined();
+    if (fine === undefined || coarse === undefined) return;
+    expect(Math.abs(fine.latitude - ROME.latitude)).toBeLessThan(0.01);
+    // A z10 block is two ~38 km tiles: the centre can sit half a
+    // block from the anchor. What matters is that it moved to the far
+    // anchor's neighbourhood, thirty kilometres from Rome's.
+    expect(Math.abs(coarse.latitude - far.latitude)).toBeLessThan(0.4);
+    expect(Math.abs(coarse.latitude - ROME.latitude)).toBeGreaterThan(0.1);
+  });
+
+  it('falls back to the request point where anchors run short', () => {
+    const plan = planPyramid({ ...base, anchors: [] });
+    expect(plan[0]?.key).toBe(planPyramid(base)[0]?.key);
   });
 });

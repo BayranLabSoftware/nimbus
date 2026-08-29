@@ -32,11 +32,16 @@ import styles from './ImpactView.module.css';
  *  so every level reaches the GPU without being resampled. */
 const PYRAMID_TILES = 2;
 
-/** The tightest the camera may zoom in, as a fraction of the auto-framed
- *  distance. Mirrors MIN_ZOOM in scene/impact/camera.ts, which is not
- *  exported: it is a camera limit, and this is the only other place
- *  that needs to know how close the viewer can actually get. */
-const MIN_ZOOM_RATIO = 0.25;
+/** What the terrain ladder needs to know about the current view:
+ *  the nearest ground on screen (anchor and sharpness of the finest
+ *  level) and the ground at the view centre (where the coarse levels
+ *  slide toward). */
+interface TerrainView {
+  readonly near: { readonly latitude: number; readonly longitude: number };
+  readonly centre: { readonly latitude: number; readonly longitude: number };
+  /** Camera to the near ground point, metres. */
+  readonly nearDistance: number;
+}
 
 /**
  * Close-up view: the same simulation the globe shows as rings, seen
@@ -78,7 +83,8 @@ export function ImpactView(): JSX.Element {
   const loadedLevels = useRef(new Map<number, string>());
   /** Latest terrain sync, so the render loop — which is registered
    *  once — never calls a stale closure over the camera limits. */
-  const syncRef = useRef<((lat: number, lon: number) => void) | null>(null);
+  const syncRef = useRef<((view: TerrainView) => void) | null>(null);
+  const zoomFineRef = useRef<number | null>(null);
   const maxZoomRef = useRef(4);
   const sceneRef = useRef<ImpactScene | null>(null);
   const scrubRef = useRef<HTMLInputElement | null>(null);
@@ -209,26 +215,50 @@ export function ImpactView(): JSX.Element {
      sharp blocks are small, and a small block is only useful where
      the small pixels are — under the camera. */
   const syncTerrain = useCallback(
-    (latitude: number, longitude: number): void => {
+    (view: TerrainView): void => {
       const renderer = rendererRef.current;
       if (renderer === null) return;
 
-      /* Two numbers set the ladder. The sharpest zoom is the one whose
-         texel matches the pixel footprint when the camera is as close
-         as it goes — asking for more downloads detail no screen can
-         show, asking for less is the blur. The coarsest has to reach
-         the skyline, or pulling all the way back shows a square of map
-         floating in nothing. If the span between them needs more
-         levels than there are slots, the step widens rather than the
-         far end being dropped. */
-      const nearest = (cameraRange * MIN_ZOOM_RATIO) / Math.max(maxZoom, MIN_ZOOM_RATIO);
-      const wantedTexel = Math.max((nearest * 2 * Math.tan(FOV_Y / 2)) / 900, 0.05);
-      const zoomFine = zoomForTexel(latitude, wantedTexel);
-      const zoomCoarse = zoomForSpan(latitude, horizonSpan, PYRAMID_TILES, 19);
+      /* Two numbers set the ladder. The sharpest zoom matches the
+         pixel footprint at the NEAREST ground actually on screen —
+         asking for more downloads detail no pixel will sample, asking
+         for less is the blur. The coarsest has to reach the skyline,
+         or pulling all the way back shows a square of map floating in
+         nothing. If the span between them needs more levels than
+         there are slots, the step widens rather than the far end
+         being dropped.
+
+         The sharp zoom follows the CURRENT camera, with hysteresis:
+         re-planning the ladder every time a zoom gesture grazes a
+         threshold would churn tiles for nothing, so the ladder only
+         moves once the footprint has crossed the threshold by a third. */
+      const wantedTexel = Math.max((view.nearDistance * 2 * Math.tan(FOV_Y / 2)) / 900, 0.05);
+      let zoomFine = zoomForTexel(view.near.latitude, wantedTexel);
+      const held = zoomFineRef.current;
+      if (held !== null && zoomFine !== held) {
+        const heldTexel =
+          (40_075_017 * Math.cos((view.near.latitude * Math.PI) / 180)) / (256 * 2 ** held);
+        if (wantedTexel > heldTexel / 1.33 && wantedTexel < heldTexel * 1.33) zoomFine = held;
+      }
+      zoomFineRef.current = zoomFine;
+      const zoomCoarse = zoomForSpan(view.near.latitude, horizonSpan, PYRAMID_TILES, 19);
+
+      /* Per-level anchors: the sharp levels sit under the nearest
+         ground on screen, the coarse ones slide out to where the view
+         centre lands. See scene/geo/pyramid.ts for why one anchor
+         cannot serve both. */
+      const anchors = Array.from({ length: MAX_LAYERS }, (_, i) => {
+        const t = Math.min(1, i / 5);
+        return {
+          latitude: view.near.latitude + (view.centre.latitude - view.near.latitude) * t,
+          longitude: view.near.longitude + (view.centre.longitude - view.near.longitude) * t,
+        };
+      });
 
       const plan = planPyramid({
-        latitude,
-        longitude,
+        latitude: view.near.latitude,
+        longitude: view.near.longitude,
+        anchors,
         zoomFine,
         zoomCoarse,
         step: Math.max(1, Math.ceil((zoomFine - zoomCoarse) / (MAX_LAYERS - 1))),
@@ -266,7 +296,7 @@ export function ImpactView(): JSX.Element {
           });
       }
     },
-    [cameraRange, maxZoom, horizonSpan, reachMeters]
+    [horizonSpan, reachMeters]
   );
 
   useEffect(() => {
@@ -301,9 +331,18 @@ export function ImpactView(): JSX.Element {
   useEffect(() => {
     if (!hasScene) return;
     loadedLevels.current.clear();
+    zoomFineRef.current = null;
     setTerrain('loading');
-    syncTerrain(originLat, originLon);
-  }, [hasScene, originLat, originLon, syncTerrain]);
+    // Before the first frame there is no pose: seed the ladder at
+    // ground zero from the closest the camera can get. The render
+    // loop refines it within a fifth of a second.
+    const nearest = (cameraRange * 0.25) / Math.max(maxZoom, 0.25);
+    syncTerrain({
+      near: { latitude: originLat, longitude: originLon },
+      centre: { latitude: originLat, longitude: originLon },
+      nearDistance: Math.max(nearest, 500),
+    });
+  }, [hasScene, originLat, originLon, syncTerrain, cameraRange, maxZoom]);
 
   // ---- render loop -------------------------------------------------
   useEffect(() => {
@@ -343,19 +382,43 @@ export function ImpactView(): JSX.Element {
 
       const pose = renderer.poseFor(current, frame, orbitRef.current);
 
-      /* Keep the pyramid under the camera. Five times a second is
+      /* Keep the pyramid under the VIEW. Five times a second is
          plenty: planning is sixteen tile-index computations and a
          string compare per level, and anything that has not crossed a
-         block boundary resolves to no work at all. */
+         block boundary resolves to no work at all.
+         Two ground points describe the view: where the bottom of the
+         frame meets the ground (the nearest pixels, which set the
+         sharpest level) and where the view centre lands (which the
+         coarse levels slide toward). */
       if (now - lastSync > 200) {
         lastSync = now;
-        const ground = localToGeo(
-          pose.position[0],
-          pose.position[2],
-          current.latitude,
-          current.longitude
-        );
-        syncRef.current?.(ground.lat, ground.lon);
+        const hit = (dir: readonly [number, number, number]): [number, number] | null => {
+          if (dir[1] >= -1e-4) return null;
+          const t = Math.min(-pose.position[1] / dir[1], 600_000);
+          return [pose.position[0] + dir[0] * t, pose.position[2] + dir[2] * t];
+        };
+        const tanY = Math.tan(FOV_Y / 2);
+        const down: [number, number, number] = [
+          pose.forward[0] - pose.up[0] * 0.85 * tanY,
+          pose.forward[1] - pose.up[1] * 0.85 * tanY,
+          pose.forward[2] - pose.up[2] * 0.85 * tanY,
+        ];
+        const nearXZ = hit(down) ?? [pose.position[0], pose.position[2]];
+        const centreXZ = hit(pose.forward) ?? [current.framingReach * 0, 0];
+        const near = localToGeo(nearXZ[0], nearXZ[1], current.latitude, current.longitude);
+        const centre = localToGeo(centreXZ[0], centreXZ[1], current.latitude, current.longitude);
+        syncRef.current?.({
+          near: { latitude: near.lat, longitude: near.lon },
+          centre: { latitude: centre.lat, longitude: centre.lon },
+          nearDistance: Math.max(
+            Math.hypot(
+              nearXZ[0] - pose.position[0],
+              pose.position[1],
+              nearXZ[1] - pose.position[2]
+            ),
+            50
+          ),
+        });
       }
 
       const scale = pose.distance / Math.max(current.framingReach, 1);

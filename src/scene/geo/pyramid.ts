@@ -44,9 +44,19 @@ export interface PyramidLevel {
 }
 
 export interface PyramidRequest {
-  /** Where the camera is, in degrees — not where the event is. */
+  /** Fallback anchor for every level, in degrees. */
   readonly latitude: number;
   readonly longitude: number;
+  /**
+   * Optional per-level anchors. The right anchor is not one point:
+   * the sharp levels belong under the NEAREST ground on screen — the
+   * bottom of the frame — while the coarse levels belong out where
+   * the view centre lands. A camera orbiting the event from map
+   * altitude looks AT the event; anchoring everything under the
+   * camera itself parks the sharpest data behind the view, where no
+   * pixel will ever sample it.
+   */
+  readonly anchors?: readonly { readonly latitude: number; readonly longitude: number }[];
   /** Zoom of the sharpest level. */
   readonly zoomFine: number;
   /** Zoom levels between one pyramid level and the next. */
@@ -69,14 +79,15 @@ export interface PyramidRequest {
  * distance is.
  */
 export function planPyramid(request: PyramidRequest): PyramidLevel[] {
-  const { latitude, longitude, tiles } = request;
+  const { tiles } = request;
   const step = Math.max(1, Math.round(request.step));
   const levels: PyramidLevel[] = [];
 
   for (let level = 0; level < request.levels; level++) {
     const zoom = request.zoomFine - level * step;
     if (zoom < 0) break;
-    const block = tileBlockAround(longitude, latitude, zoom, tiles);
+    const anchor = request.anchors?.[level] ?? request;
+    const block = tileBlockAround(anchor.longitude, anchor.latitude, zoom, tiles);
     // The block's own centre, so the same block always asks the same
     // question however the camera drifted inside it.
     const nw = tileToLonLat(block.x0, block.y0, zoom);
