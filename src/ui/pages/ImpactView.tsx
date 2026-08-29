@@ -421,6 +421,36 @@ export function ImpactView(): JSX.Element {
         });
       }
 
+      /* ── Direction ────────────────────────────────────────────
+         Two gentle hands on the camera, both only while the event is
+         RUNNING and the operator has let go for a few seconds, and
+         both instantly overridden by any touch.
+         The slow orbit keeps the scene alive — a static camera on a
+         churning column reads as a freeze-frame. The pull-back keeps
+         the FRONT in frame: the one thing this view exists to show
+         would otherwise walk out of it within seconds. Outward only,
+         never zooming in on its own, and eased so it reads as a
+         camera operator, not a spring. */
+      if (state.playing && now - lastInput.current > 5_000) {
+        const dt = Math.min(delta, 100);
+        const followed = frame.shockRadius * 3.1;
+        const autoFrame = pose.distance / Math.max(orbitRef.current.zoom, 1e-6);
+        const zTarget = Math.min(followed / autoFrame, maxZoomRef.current);
+        const eased =
+          zTarget > orbitRef.current.zoom
+            ? orbitRef.current.zoom +
+              (zTarget - orbitRef.current.zoom) * (1 - Math.exp(-dt * 0.0007))
+            : orbitRef.current.zoom;
+        orbitRef.current = clampOrbit(
+          {
+            yaw: orbitRef.current.yaw + dt * 0.000042,
+            pitch: orbitRef.current.pitch,
+            zoom: eased,
+          },
+          maxZoomRef.current
+        );
+      }
+
       const scale = pose.distance / Math.max(current.framingReach, 1);
       const inMapRange = scale > 1.9;
       setMapRange((prev) => (prev === inMapRange ? prev : inMapRange));
@@ -437,9 +467,13 @@ export function ImpactView(): JSX.Element {
   // ---- input --------------------------------------------------------
   const dragging = useRef(false);
   const lastPointer = useRef({ x: 0, y: 0 });
+  /** Wall-clock of the last hands-on-camera moment. The direction
+   *  yields to the operator: any touch silences it for a while. */
+  const lastInput = useRef(0);
 
   const onPointerDown = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
     dragging.current = true;
+    lastInput.current = performance.now();
     lastPointer.current = { x: e.clientX, y: e.clientY };
     e.currentTarget.setPointerCapture(e.pointerId);
   }, []);
@@ -448,6 +482,7 @@ export function ImpactView(): JSX.Element {
   }, []);
   const onPointerMove = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!dragging.current) return;
+    lastInput.current = performance.now();
     orbitRef.current = clampOrbit(
       {
         yaw: orbitRef.current.yaw + (e.clientX - lastPointer.current.x) * 0.006,
@@ -464,6 +499,7 @@ export function ImpactView(): JSX.Element {
     if (canvas === null) return;
     const onWheel = (e: WheelEvent): void => {
       e.preventDefault();
+      lastInput.current = performance.now();
       orbitRef.current = clampOrbit(
         { ...orbitRef.current, zoom: orbitRef.current.zoom * Math.exp(e.deltaY * 0.0011) },
         maxZoomRef.current
