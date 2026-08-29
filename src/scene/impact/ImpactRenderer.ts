@@ -394,7 +394,10 @@ export class ImpactRenderer {
     gl.uniform1f(this.location(p, 'uScour'), km(frame.scourRadius));
     gl.uniform1f(this.location(p, 'uDust'), frame.dustOpacity);
     gl.uniform1f(this.location(p, 'uFlash'), frame.flash);
-    gl.uniform1f(this.location(p, 'uFogK'), 3.5 / Math.max(km(scene.framingReach), 0.5) / 1_000);
+    // Dust loading only. The air's own extinction is a constant in the
+    // shader now; tying it to the scene's framing reach made the haze
+    // scale with how small the event was, which is backwards.
+    gl.uniform1f(this.location(p, 'uFogK'), 1);
     gl.uniform1f(this.location(p, 'uGrainF'), 6 / Math.max(km(scene.craterRadius), 0.05));
 
     const mosaic = this.mosaic;
@@ -488,15 +491,6 @@ export class ImpactRenderer {
     gl.uniform3f(this.location(p, 'uMeanFar'), mFar[0], mFar[1], mFar[2]);
     const mWorld = mean(world);
     gl.uniform3f(this.location(p, 'uMeanWorld'), mWorld[0], mWorld[1], mWorld[2]);
-
-    let reliefMin = mosaic?.elevation.min ?? 0;
-    let reliefMax = mosaic?.elevation.max ?? 1;
-    for (const layer of [far, world]) {
-      if (layer === null) continue;
-      reliefMin = Math.min(reliefMin, layer.elevation.min);
-      reliefMax = Math.max(reliefMax, layer.elevation.max);
-    }
-    gl.uniform2f(this.location(p, 'uReliefRange'), reliefMin, reliefMax);
 
     // Effect footprints. Zero disables an effect the event lacks —
     // an airburst has no crater and a conventional charge no EMP.

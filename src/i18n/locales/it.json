@@ -1195,6 +1195,7 @@
     "radiation": "radiazione LD50",
     "emp": "impronta EMP",
     "legendTitle": "Effetti",
-    "legendHint": "allontanati per leggere i contorni"
+    "legendHint": "allontanati per leggere i contorni",
+    "renderFailed": "Il renderer non è partito — dettagli nella console del browser."
   }
 }

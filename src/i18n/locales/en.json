@@ -1108,6 +1108,7 @@
     "radiation": "radiation LD50",
     "emp": "EMP footprint",
     "legendTitle": "Effects",
-    "legendHint": "pull back to read the contours"
+    "legendHint": "pull back to read the contours",
+    "renderFailed": "The renderer failed to start — see the browser console."
   }
 }

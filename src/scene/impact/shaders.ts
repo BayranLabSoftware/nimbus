@@ -44,7 +44,7 @@ uniform float uCraterD;    // km
 uniform float uScour;      // km
 uniform float uDust;       // 0..1
 uniform float uFlash;      // 0..1
-uniform float uFogK;       // extinction per km
+uniform float uFogK;       // extra extinction from lofted dust, 0..1
 uniform float uGrainF;     // terrain grain frequency, cycles per km
 
 uniform sampler2D uImg;    // satellite imagery
@@ -78,12 +78,11 @@ uniform vec4  uImgBndW;
 uniform vec4  uDemBndW;
 uniform vec2  uElevW;
 uniform float uHasWorld;
-// Mean linear colour of each level's imagery, and the widest elevation
-// range across the levels that are bound.
+// Mean linear colour of each level's imagery, used to match exposure
+// where two levels meet.
 uniform vec3  uMeanNear;
 uniform vec3  uMeanFar;
 uniform vec3  uMeanWorld;
-uniform vec2  uReliefRange;  // metres, min and max across all levels
 
 // Effect footprints, in km. Zero means this event has none.
 uniform vec3  uThermal;    // 3rd, 2nd, 1st degree burn
@@ -100,6 +99,21 @@ uniform float uScale;
 uniform vec3  uEffectColor[11];
 
 const float RE  = 6371.008;          // km, IUGG mean radius
+/* Aerial perspective. Extinction at sea level for a clear day —
+   roughly a 120 km meteorological visual range — and the 8 km density
+   scale height of the lower atmosphere. Both are properties of the
+   AIR, not of the event: the previous version scaled the coefficient
+   by the scenario's framing reach, so a small burst (Hiroshima frames
+   at 456 m) got an enormous per-kilometre extinction and everything
+   past a couple of hundred kilometres washed out into the sky. The
+   map was there the whole time; the fog was eating it. */
+/* Clear day, Rayleigh-dominated: a meteorological visual range near
+   300 km. The first attempt used 120 km, which is a hazy day, and over
+   a scene that spans hundreds of kilometres it erased the landscape. */
+const float FOG_BETA = 0.0035;       // per km at sea level
+const float FOG_H    = 8.0;          // km, density scale height
+/* Longest path the height-field march will cover, in km. */
+const float MARCH_MAX_LENGTH = 180.0;
 const float PI  = 3.14159265359;
 const float MPD = 111.19492664;      // km per degree of latitude
 
@@ -205,6 +219,16 @@ float groundFast(vec2 xz){
     + uCraterD * 0.10 * exp(-d / (k * 3.4));
 }
 
+/* Optical depth along a ray through an exponential atmosphere,
+   integrated analytically. Heights are above sea level, in km. */
+float aerialDepth(float yCam, float yHit, float pathLen){
+  float a = max(yCam, 0.0);
+  float b = max(yHit, 0.0);
+  float dy = a - b;
+  if (abs(dy) < 1e-4) return FOG_BETA * pathLen * exp(-b / FOG_H);
+  return FOG_BETA * pathLen * (FOG_H / dy) * (exp(-b / FOG_H) - exp(-a / FOG_H));
+}
+
 /* One threshold ring, thinned by the screen-space derivative so it
    stays a hairline at any zoom. Contours are the analytical register:
    they fade IN as the camera pulls back and the volumetric detail
@@ -267,19 +291,27 @@ float surfaceAt(vec2 xz){
  * crossing. Returns -1 when the ray misses the ground entirely.
  */
 float marchGround(vec3 ro, vec3 rd, float tSphere){
-  // Bracket the march against the WIDEST relief across every bound
-  // level, not just the close tile's. Terrain outside that tile can be
-  // kilometres higher or lower, and a bracket that misses it either
-  // never finds the crossing or bisects between two points that are
-  // both underground.
-  float relief = max((uReliefRange.y - uElev.z) / 1000.0, uCraterD);
-  float floorH = min((uReliefRange.x - uElev.z) / 1000.0, -uCraterD) - 0.05;
+  /* Bracket tightly, on the LOCAL relief.
+     Widening it to the global DEM range looked more correct and was
+     much worse: the shell became eighteen kilometres thick, a grazing
+     ray spends five hundred kilometres inside it, and fifty-six steps
+     across that resolve nothing at all — the surface turns to mush.
+     Step size is what decides whether the march sees a hill, so the
+     bracket has to stay thin. Terrain outside it falls back to the
+     smooth sphere with its normal map, which near the horizon is a
+     few pixels tall and indistinguishable. */
+  float relief = max((uElev.y - uElev.z) / 1000.0, uCraterD) + 0.05;
+  float floorH = min((uElev.x - uElev.z) / 1000.0, -uCraterD) - 0.05;
   float ceilFar, floorFar;
   float tCeil = hitShell(ro, rd, relief + 0.05, ceilFar);
   float tFloor = hitShell(ro, rd, floorH, floorFar);
 
   float t0 = max(tCeil, 0.0);
   float t1 = tFloor > 0.0 ? tFloor : (tSphere > 0.0 ? tSphere * 1.35 : ceilFar);
+  // Hard cap on how far the march runs. A ray that skims the shell can
+  // stay inside it for hundreds of kilometres; past this the sphere is
+  // the honest answer and a coarse march is worse than none.
+  t1 = min(t1, t0 + MARCH_MAX_LENGTH);
   if (t1 <= t0) return tSphere;
 
   const int STEPS = 56;
@@ -473,8 +505,11 @@ void main(){
     if (water > 0.01){
       vec3 wN = normalize(mix(N, vec3(0.0, 1.0, 0.0) + vec3(-p.x, 0.0, -p.z) / RE, water));
       vec3 hv = normalize(uSun - rd);
-      lit = mix(lit, albedo * 0.55 * shade
-                + vec3(1.0, 0.94, 0.82) * pow(max(dot(wN, hv), 0.0), 260.0) * 2.4, water);
+      // Sun glint. A very tight lobe over a nearly flat surface gives
+      // one blown, hard-edged white patch; broadening it and cutting
+      // the gain turns it back into a sheen.
+      float glint = pow(max(dot(wN, hv), 0.0), 90.0);
+      lit = mix(lit, albedo * 0.55 * shade + vec3(1.0, 0.94, 0.82) * glint * 0.7, water);
     }
 
     /* The fireball is the dominant light source. This single term is
@@ -539,8 +574,26 @@ void main(){
     // Aerial perspective. Kept light: the camera spends most of its
     // range above the bulk of the atmosphere, and an over-driven haze
     // washes the far landscape into the sky.
-    float fog = 1.0 - exp(-t * uFogK * 0.45 * (1.0 + 0.6 * smoothstep(0.0, 1.0, uDust)));
-    col = mix(lit, sky * 0.9 + vec3(0.05, 0.06, 0.08), clamp(fog, 0.0, 0.92));
+    // Aerial perspective from the actual air column between the camera
+    // and the ground, plus whatever dust the event has lofted.
+    float seaLevel = uElev.z / 1000.0;
+    float tau = aerialDepth(ro.y + seaLevel, p.y + seaLevel, t)
+              * (1.0 + 1.4 * uFogK * smoothstep(0.0, 1.0, uDust));
+    float fog = min(1.0 - exp(-tau), 0.72);
+    /* Blend toward the light the air scatters IN, not toward the sky
+       overhead. Reusing the zenith colour for a downward ray mixes in
+       a saturated blue that is brighter, in linear light, than the
+       ground it is covering — so distance did not soften the
+       landscape, it deleted it. The haze warms toward the sun (Mie
+       forward scattering) and dims on the night side. */
+    float towardSun = max(dot(rd, uSun), 0.0);
+    vec3 haze = mix(vec3(0.110, 0.150, 0.220), vec3(0.260, 0.205, 0.145),
+                    pow(towardSun, 4.0));
+    // Day/night factor from the sun's elevation at this point: the
+    // haze has nothing to scatter after dark.
+    float daylight = smoothstep(-0.14, 0.16, dot(N, uSun));
+    haze *= 0.30 + 0.90 * daylight;
+    col = mix(lit, haze, fog);
   }
 
   /* Volume: fireball, stem, cap, and the dust wall at the front. */

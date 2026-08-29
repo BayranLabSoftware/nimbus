@@ -69,7 +69,11 @@ export function ImpactView(): JSX.Element {
   const [mapRange, setMapRange] = useState(false);
   const [nowSeconds, setNowSeconds] = useState(0);
   const [terrain, setTerrain] = useState<TerrainState>('idle');
-  const [webglFailed, setWebglFailed] = useState(false);
+  // Distinguishing these two matters: "no WebGL2" sends the reader to
+  // check their browser, while a shader that failed to compile is our
+  // bug and the console has the line number. Collapsing both into one
+  // message costs whoever debugs it the obvious first question.
+  const [glFailure, setGlFailure] = useState<'none' | 'unsupported' | 'shader'>('none');
 
   const scene = buildScene(result, evaluatedAt);
   sceneRef.current = scene;
@@ -95,15 +99,15 @@ export function ImpactView(): JSX.Element {
     if (canvas === null || !hasScene) return;
     const gl = canvas.getContext('webgl2', { antialias: false, alpha: false });
     if (gl === null) {
-      setWebglFailed(true);
+      setGlFailure('unsupported');
       return;
     }
     let renderer: ImpactRenderer;
     try {
       renderer = new ImpactRenderer(gl);
     } catch (error) {
-      console.warn('[ImpactView] renderer init failed:', error);
-      setWebglFailed(true);
+      console.error('[ImpactView] renderer init failed:', error);
+      setGlFailure('shader');
       return;
     }
     rendererRef.current = renderer;
@@ -312,16 +316,18 @@ export function ImpactView(): JSX.Element {
   }, [hasScene]);
 
   // ---- markup --------------------------------------------------------
-  if (missing || unsupported || webglFailed) {
+  if (missing || unsupported || glFailure !== 'none') {
     return (
       <div className={styles.root}>
         <AppBar />
         <p className={styles.placeholder}>
-          {webglFailed
+          {glFailure === 'unsupported'
             ? t('impactView.noWebgl')
-            : unsupported
-              ? t('impactView.unsupported')
-              : t('impactView.needsResult')}
+            : glFailure === 'shader'
+              ? t('impactView.renderFailed')
+              : unsupported
+                ? t('impactView.unsupported')
+                : t('impactView.needsResult')}
         </p>
       </div>
     );
