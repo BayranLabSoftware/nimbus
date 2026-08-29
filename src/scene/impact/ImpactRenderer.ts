@@ -5,7 +5,13 @@ import type { BuildingMesh } from '../geo/extrude.js';
 import { effectColorArray } from './effectStyle.js';
 import type { CameraPose } from './camera.js';
 import { FOV_Y, poseFor, rayBasis, viewProjection, type OrbitState } from './camera.js';
-import { effectArrival, effectRadius, type ImpactFrame, type ImpactScene } from './scene.js';
+import {
+  collapseSpan,
+  effectArrival,
+  effectRadius,
+  type ImpactFrame,
+  type ImpactScene,
+} from './scene.js';
 import {
   BLUR_FS,
   BRIGHT_FS,
@@ -46,6 +52,7 @@ const TEXTURE_UNITS = {
   elevation: 4,
   bldAlbedo: 5,
   bldNormalT: 6,
+  bldData: 7,
 } as const;
 
 /**
@@ -165,6 +172,7 @@ export class ImpactRenderer {
   } | null = null;
   private bldVao: WebGLVertexArrayObject | null = null;
   private bldBuffers: WebGLBuffer[] = [];
+  private bldDataTexture: WebGLTexture | null = null;
   private bldIndexCount = 0;
 
   /** Elevation at ground zero, cached per pyramid generation: the
@@ -474,10 +482,27 @@ export class ImpactRenderer {
     const { gl } = this;
     if (this.bldVao !== null) gl.deleteVertexArray(this.bldVao);
     for (const buffer of this.bldBuffers) gl.deleteBuffer(buffer);
+    if (this.bldDataTexture !== null) gl.deleteTexture(this.bldDataTexture);
     this.bldVao = null;
     this.bldBuffers = [];
+    this.bldDataTexture = null;
     this.bldIndexCount = 0;
     if (mesh === null || mesh.triangleCount === 0) return;
+
+    // Per-building data — centre, base, height — as a float texture
+    // the vertex shader indexes by building id: the collapse needs the
+    // BLOCK's distance from ground zero, not each vertex's own.
+    const rows = Math.max(1, Math.ceil(mesh.buildingCount / 1024));
+    const padded = new Float32Array(1024 * rows * 4);
+    padded.set(mesh.data);
+    const dataTexture = required(gl.createTexture(), 'the building data texture');
+    gl.bindTexture(gl.TEXTURE_2D, dataTexture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, 1024, rows, 0, gl.RGBA, gl.FLOAT, padded);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    this.bldDataTexture = dataTexture;
 
     const program = this.programs.buildings;
     const vao = required(gl.createVertexArray(), 'the building vertex array');
@@ -607,6 +632,23 @@ export class ImpactRenderer {
         km(pose.position[1]),
         km(pose.position[2])
       );
+      gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.bldData);
+      gl.bindTexture(gl.TEXTURE_2D, this.bldDataTexture);
+      gl.uniform1i(this.location(b, 'uBldData'), TEXTURE_UNITS.bldData);
+      /* The destruction, wired to the numbers the scene already
+         computed. The fireball's ground print — an airburst's fireball
+         can hang entirely above the roofline, which is why Hiroshima's
+         dome stood at ground zero — the crater, the front, and the
+         span it covered in the last 1.6 s of simulated time. */
+      const fireY = km(frame.fireballAltitude);
+      const fireR = km(frame.fireballRadius);
+      const vapR = fireY < fireR ? Math.sqrt(fireR * fireR - fireY * fireY) : 0;
+      gl.uniform1f(this.location(b, 'uShock'), km(frame.shockRadius));
+      gl.uniform1f(this.location(b, 'uSpan'), km(collapseSpan(scene, frame.time)));
+      gl.uniform1f(this.location(b, 'uVapR'), vapR);
+      gl.uniform1f(this.location(b, 'uCraterR'), km(scene.craterRadius));
+      gl.uniform1f(this.location(b, 'uR5'), km(effectRadius(scene, 'blast5')));
+      gl.uniform1f(this.location(b, 'uR1'), km(effectRadius(scene, 'blast1')));
       gl.bindVertexArray(this.bldVao);
       gl.drawElements(gl.TRIANGLES, this.bldIndexCount, gl.UNSIGNED_INT, 0);
       gl.disable(gl.CULL_FACE);
@@ -866,6 +908,7 @@ export class ImpactRenderer {
     this.disposeBuildingTarget();
     if (this.bldVao !== null) gl.deleteVertexArray(this.bldVao);
     for (const buffer of this.bldBuffers) gl.deleteBuffer(buffer);
+    if (this.bldDataTexture !== null) gl.deleteTexture(this.bldDataTexture);
     this.bldBuffers = [];
     gl.deleteVertexArray(this.vao);
     for (const program of Object.values(this.programs)) gl.deleteProgram(program);

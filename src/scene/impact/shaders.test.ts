@@ -81,6 +81,14 @@ describe('shader sources', () => {
     }
   });
 
+  it('gives the building data texture an explicit highp sampler', () => {
+    // In a VERTEX shader sampler2D defaults to LOWP — a range of about
+    // two — and the building data texture holds kilometres. This is
+    // the vertex-shader twin of the sampler2DArray guard above: it
+    // compiles fine everywhere and reads garbage on real GPUs.
+    expect(BUILDING_VS).toMatch(/precision\s+highp\s+sampler2D\s*;/);
+  });
+
   it('never samples a mosaic without clamping into range', () => {
     // An unclamped UV smears the edge texel across the whole horizon.
     const samples = SCENE_FS.match(/texture\(u(Img|Dem)\w*,\s*([^)]+)\)/g) ?? [];

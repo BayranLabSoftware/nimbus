@@ -1065,7 +1065,20 @@ void main(){
  */
 export const BUILDING_VS = `#version 300 es
 precision highp float;
-uniform mat4 uVP;
+// The default sampler2D precision in a VERTEX shader is lowp — a
+// range of about two. The data texture holds kilometres. Without this
+// line every centre reads as garbage and the city collapses into a
+// point, which is exactly the kind of bug that ships because it
+// compiles.
+precision highp sampler2D;
+uniform mat4  uVP;
+uniform sampler2D uBldData; // per building: centre east, centre north, base, height (km)
+uniform float uShock;    // current front ground range, km
+uniform float uSpan;     // ground the front covered in the last 1.6 s, km
+uniform float uVapR;     // fireball ground-intersection radius, km
+uniform float uCraterR;  // final crater radius, km
+uniform float uR5;       // 5 psi ring, km — full collapse inside
+uniform float uR1;       // 1 psi ring, km — intact beyond
 in vec3 aPos;    // km, local frame
 in vec4 aNrm;    // xyz normal, w: 0 wall, 1 roof
 in float aId;
@@ -1073,12 +1086,60 @@ out vec3 vWorld;
 out vec3 vNrm;
 out float vPart;
 out float vId;
+out float vDamage;
+
+float hashv(float x){ x = fract(x * 0.1031); x *= x + 33.33; x *= x + x; return fract(x); }
+
 void main(){
-  vWorld = aPos;
+  int id = int(aId + 0.5);
+  vec4 bld = texelFetch(uBldData, ivec2(id & 1023, id >> 10), 0);
+  vec2 centre = bld.xy;
+  float base = bld.z;
+  float height = max(bld.w, 1e-4);
+  float d = length(centre);
+
+  /* Vaporised or excavated: the fireball's ground print and the
+     crater are places where a building does not become rubble, it
+     stops being matter. The front always leads the fireball, so by
+     the time either condition is true the shock has passed. */
+  if (d < uVapR || (d < uCraterR && uShock > d)){
+    gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+    vWorld = vec3(0.0); vNrm = vec3(0.0, 1.0, 0.0);
+    vPart = 0.0; vId = aId; vDamage = 1.0;
+    return;
+  }
+
+  /* Collapse. The whole block falls as one thing, keyed on ITS
+     distance from ground zero: raw rises 0 to 1 over the 1.6 s the
+     front takes to cover uSpan past this building, squared so the
+     fall accelerates the way falling does. The damage ceiling grades
+     the ring structure the legend already states: everything inside
+     5 psi comes down, sagging tapers to nothing at 1 psi. */
+  float raw = clamp((uShock - d) / max(uSpan, 0.02), 0.0, 1.0);
+  float ceilD = uR5 > 0.0 ? 1.0 - smoothstep(uR5, max(uR1, uR5 * 1.5), d) : 0.0;
+  float p = raw * raw * ceilD;
+
+  float seed = hashv(aId + 0.731);
+  float frac = clamp((aPos.y - base) / height, 0.0, 1.0);
+  // Height falls to a rubble pile; the footprint spreads a little;
+  // the top translates away from ground zero — dynamic pressure is a
+  // push, not just a squeeze — with a per-block sideways lean so the
+  // skyline does not fall in lockstep.
+  vec3 pos = aPos;
+  pos.y = base + (aPos.y - base) * mix(1.0, 0.15, p);
+  vec2 dir = centre / max(d, 1e-4);
+  vec2 perp = vec2(-dir.y, dir.x);
+  vec2 spread = (aPos.xz - centre) * (0.22 * p);
+  pos.xz += spread
+          + dir * (height * 0.5 * p * frac)
+          + perp * ((seed - 0.5) * 0.8 * height * p * frac);
+
+  vWorld = pos;
   vNrm = aNrm.xyz;
   vPart = aNrm.w;
   vId = aId;
-  gl_Position = uVP * vec4(aPos, 1.0);
+  vDamage = p;
+  gl_Position = uVP * vec4(pos, 1.0);
 }`;
 
 export const BUILDING_FS = `#version 300 es
@@ -1088,6 +1149,7 @@ in vec3 vWorld;
 in vec3 vNrm;
 in float vPart;
 in float vId;
+in float vDamage;
 layout(location = 0) out vec4 oAlbedo;
 layout(location = 1) out vec4 oNormalT;
 
@@ -1105,7 +1167,11 @@ void main(){
   vec3 roof = r < 0.45 ? mix(vec3(0.150, 0.072, 0.048), vec3(0.205, 0.110, 0.075), seed)
             : r < 0.80 ? mix(vec3(0.170, 0.163, 0.150), vec3(0.225, 0.218, 0.205), seed)
                        : vec3(0.072, 0.075, 0.082);
-  oAlbedo = vec4(mix(wall, roof, step(0.5, vPart)), 1.0);
+  vec3 albedo = mix(wall, roof, step(0.5, vPart));
+  // Rubble is masonry ground to dust: identity fades with the form.
+  vec3 dust = vec3(0.192, 0.168, 0.142) * (0.75 + 0.5 * seed);
+  albedo = mix(albedo, dust, clamp(vDamage * 1.15, 0.0, 0.85));
+  oAlbedo = vec4(albedo, 1.0);
   oNormalT = vec4(normalize(vNrm), length(vWorld - uCam));
 }`;
 

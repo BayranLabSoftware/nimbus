@@ -12,6 +12,8 @@ import {
   openingTime,
   sceneFromExplosion,
   sceneFromImpact,
+  collapseSpan,
+  COLLAPSE_DURATION,
 } from './scene.js';
 import { EFFECT_SLOTS, EFFECT_STYLE, effectColorArray, effectCss } from './effectStyle.js';
 import { m } from '../../physics/units.js';
@@ -334,5 +336,35 @@ describe('openingTime — where the playhead lands when the view opens', () => {
 
   it('scales with the event rather than being a fixed number of seconds', () => {
     expect(openingTime(chicxulub)).toBeGreaterThan(openingTime(meteorCrater));
+  });
+});
+
+describe('collapseSpan', () => {
+  const scene = sceneFromExplosion(
+    simulateExplosion(EXPLOSION_PRESETS.HIROSHIMA_1945.input),
+    ORIGIN
+  );
+
+  it('is the distance the front just covered, never less than the floor', () => {
+    for (const t of [1, 3, 8, 20, 60]) {
+      const span = collapseSpan(scene, s(t));
+      expect(span).toBeGreaterThanOrEqual(30);
+      // Never more than the front's whole run so far.
+      expect(span).toBeLessThanOrEqual(frameAt(scene, s(t)).shockRadius + 1);
+    }
+  });
+
+  it('shrinks as the front decelerates, so every collapse lasts the same', () => {
+    // Sedov: R ~ t^(2/5), decelerating. The span at 3 s must exceed
+    // the span at 30 s, or a late collapse would play out slower than
+    // an early one.
+    expect(collapseSpan(scene, s(3))).toBeGreaterThan(collapseSpan(scene, s(30)));
+  });
+
+  it('matches the front displacement it claims to be', () => {
+    const t = 10;
+    const expected =
+      frameAt(scene, s(t)).shockRadius - frameAt(scene, s(t - COLLAPSE_DURATION)).shockRadius;
+    expect(collapseSpan(scene, s(t))).toBeCloseTo(Math.max(expected, 30), 6);
   });
 });

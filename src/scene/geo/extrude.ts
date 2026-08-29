@@ -46,6 +46,14 @@ export interface BuildingMesh {
   /** 1 float per vertex: index of the building it belongs to. */
   readonly ids: Float32Array;
   readonly indices: Uint32Array;
+  /**
+   * 4 floats per building: centre east, centre north (km), base (km),
+   * height (km). The collapse runs in the vertex shader and needs the
+   * building's identity — the whole block falls as one thing, keyed on
+   * ITS distance from ground zero, not each vertex's — so this rides
+   * up as a data texture indexed by the per-vertex id.
+   */
+  readonly data: Float32Array;
   readonly vertexCount: number;
   readonly triangleCount: number;
   readonly buildingCount: number;
@@ -181,6 +189,7 @@ export function extrudeBuildings(
   maxTriangles = 1_500_000
 ): BuildingMesh {
   const sink: Sink = { pos: [], nrm: [], ids: [], idx: [], vertices: 0, triangles: 0 };
+  const data: number[] = [];
   let built = 0;
   let dropped = 0;
 
@@ -200,6 +209,15 @@ export function extrudeBuildings(
     extrudeWalls(sink, outer, bottom, top, id);
     for (const hole of holes) extrudeWalls(sink, hole, bottom, top, id);
     extrudeRoof(sink, building, top, id);
+    let cx = 0;
+    let cz = 0;
+    for (const point of outer.points) {
+      cx += point[0];
+      cz += point[1];
+    }
+    cx /= outer.points.length;
+    cz /= outer.points.length;
+    data.push(cx, cz, raw.baseKm, raw.heightKm);
     built++;
   }
 
@@ -208,6 +226,7 @@ export function extrudeBuildings(
     normals: new Int8Array(sink.nrm),
     ids: new Float32Array(sink.ids),
     indices: new Uint32Array(sink.idx),
+    data: new Float32Array(data),
     vertexCount: sink.vertices,
     triangleCount: sink.triangles,
     buildingCount: built,
@@ -235,12 +254,14 @@ export function mergeMeshes(parts: readonly BuildingMesh[]): BuildingMesh {
   const normals = new Int8Array(vertices * 4);
   const ids = new Float32Array(vertices);
   const indices = new Uint32Array(triangles * 3);
+  const data = new Float32Array(buildings * 4);
   let vo = 0;
   let io = 0;
   let idOffset = 0;
   for (const p of parts) {
     positions.set(p.positions, vo * 3);
     normals.set(p.normals, vo * 4);
+    data.set(p.data, idOffset * 4);
     for (let i = 0; i < p.vertexCount; i++) {
       ids[vo + i] = (p.ids[i] ?? 0) + idOffset;
     }
@@ -256,6 +277,7 @@ export function mergeMeshes(parts: readonly BuildingMesh[]): BuildingMesh {
     normals,
     ids,
     indices,
+    data,
     vertexCount: vertices,
     triangleCount: triangles,
     buildingCount: buildings,

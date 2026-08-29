@@ -407,6 +407,34 @@ export function frameAt(scene: ImpactScene, time: Seconds): ImpactFrame {
   };
 }
 
+/**
+ * How long a building takes to fall once the front hits it, in
+ * simulated seconds. ILLUSTRATIVE: framed structures fail over roughly
+ * one to two seconds (progressive collapse, not detonation), and 1.6 s
+ * reads right at every yield.
+ */
+export const COLLAPSE_DURATION = s(1.6);
+
+/**
+ * Ground distance the shock front covers in the last COLLAPSE_DURATION
+ * of simulated time. QUANTITATIVE in what matters: dividing
+ * (front radius - building distance) by this span makes every
+ * building's collapse last exactly COLLAPSE_DURATION from the moment
+ * the front reaches it, at any yield — because the span shortens by
+ * itself as the front decelerates. The floor keeps a stalled front
+ * from freezing a collapse half-finished.
+ */
+export function collapseSpan(scene: ImpactScene, time: Seconds): Meters {
+  const input = {
+    blastEnergy: scene.blastEnergy,
+    fireballRadius: scene.fireballRadius,
+    arrival: scene.arrival,
+  };
+  const now = blastWaveStateAt(input, s(Math.max(time, 0)));
+  const before = blastWaveStateAt(input, s(Math.max(time - COLLAPSE_DURATION, 0)));
+  return m(Math.max(now.shockRadius - before.shockRadius, 30));
+}
+
 /** Radius of one named effect, or 0 when the event does not have it. */
 export function effectRadius(scene: ImpactScene, id: string): number {
   return scene.effects.find((e) => e.id === id)?.radius ?? 0;

@@ -227,6 +227,17 @@ describe('reverseRing', () => {
   });
 });
 
+describe('building data', () => {
+  it('records one centre, base and height per building', () => {
+    const m = extrudeBuildings([{ ...square(), baseKm: 0.12 }]);
+    expect(m.data.length).toBe(4);
+    expect(m.data[0]).toBeCloseTo(0.005, 9); // centre east
+    expect(m.data[1]).toBeCloseTo(0.005, 9); // centre north
+    expect(m.data[2]).toBeCloseTo(0.12, 6); // base (float32)
+    expect(m.data[3]).toBeCloseTo(0.01, 6); // height (float32)
+  });
+});
+
 describe('mergeMeshes', () => {
   it('offsets indices and building ids so parts stay distinct', () => {
     const a = extrudeBuildings([square()]);
@@ -236,6 +247,9 @@ describe('mergeMeshes', () => {
     expect(merged.triangleCount).toBe(a.triangleCount * 2);
     expect(merged.buildingCount).toBe(2);
     expect(merged.ids[a.vertexCount] ?? -1).toBe(1);
+    // Per-building data concatenates in id order.
+    expect(merged.data.length).toBe(8);
+    expect(merged.data[4]).toBeCloseTo(a.data[0] ?? NaN, 9);
     let max = 0;
     for (const i of merged.indices) max = Math.max(max, i);
     expect(max).toBe(merged.vertexCount - 1);
