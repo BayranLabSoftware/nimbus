@@ -72,6 +72,13 @@ uniform vec4  uLayerDemBnd[MAX_LAYERS];  // the DEM caps out at z15, so it
                                          // covers more ground than the photo
 uniform vec2  uLayerElev[MAX_LAYERS];    // metres: min, max
 uniform vec3  uLayerMean[MAX_LAYERS];    // mean linear colour, for exposure
+/* Arrival ramp, 0..1 per level. A tile that pops in fully formed
+   reads as a glitch; the same tile fading up over half a second
+   reads as focus. Elevation fades with it, so relief GROWS out of
+   the coarser level instead of snapping. Wall-clock driven and
+   purely cosmetic: the simulation stays a pure function of its own
+   clock. */
+uniform float uLayerFade[MAX_LAYERS];
 uniform int   uLayerCount;
 
 uniform vec3  uElev;       // metres: min, max, value at ground zero (finest level)
@@ -240,7 +247,7 @@ float elevationAt(vec2 xz, out float water, out float inside){
   for (int i = 0; i < MAX_LAYERS; i++){
     if (i >= uLayerCount || remaining < 0.004) break;
     vec2 uv = toUV(geo, uLayerDemBnd[i]);
-    float w = insideUVDem(uv);
+    float w = insideUVDem(uv) * uLayerFade[i];
     if (w <= 0.0) continue;
     float take = w * remaining;
     float e = texture(uDemArr, vec3(clamp(uv, 0.0015, 0.9985), float(i))).r;
@@ -445,9 +452,13 @@ float envelope(vec3 p, float turb, float turbCol, out float fireFrac){
   float rr = length(vec3(q.x, q.y * (1.0 + 0.85 * smoothstep(0.6, 3.0, rise)), q.z));
   // Cauliflower, not a flying saucer: the lumps have to be a large
   // fraction of the cap and the falloff sharp enough to read as
-  // separate billows rather than one soft fringe.
-  float edge = capR * (0.60 + 0.88 * turb);
-  float cap = 1.0 - smoothstep(edge * 0.86, edge * 1.06, rr);
+  // separate billows rather than one soft fringe. In the first
+  // seconds, before buoyancy stretches anything, the surface is ALL
+  // billow — the modulation deepens and the falloff tightens while
+  // the bubble is young, and relaxes as the cap matures.
+  float young = 1.0 - smoothstep(0.3, 1.8, rise);
+  float edge = capR * (0.60 - 0.10 * young + (0.88 + 0.45 * young) * turb);
+  float cap = 1.0 - smoothstep(edge * (0.86 + 0.05 * young), edge * (1.06 - 0.03 * young), rr);
   float torus = 1.0 - smoothstep(capR * 0.30, capR * 0.95,
                  abs(length(q.xz) - capR * 0.62) + abs(q.y) * 1.5);
   cap = mix(cap, max(cap * 0.55, torus), smoothstep(1.2, 3.2, rise));
@@ -676,7 +687,7 @@ void main(){
     for (int i = 0; i < MAX_LAYERS; i++){
       if (i >= uLayerCount || remaining < 0.004) break;
       vec2 uv = toUV(geo, uLayerImgBnd[i]);
-      float w = insideUV(uv);
+      float w = insideUV(uv) * uLayerFade[i];
       if (w <= 0.0) continue;
       if (fine < 0) fine = i;
       float take = w * remaining;

@@ -161,8 +161,11 @@ export class ImpactRenderer {
 
   private readonly imageryArray: WebGLTexture;
   private readonly elevationArray: WebGLTexture;
-  /** Coarsest first. A hole is a level still in flight, not an error. */
+  /** Finest first. A hole is a level still in flight, not an error. */
   private readonly layers: (LoadedMosaic | null)[] = Array.from({ length: MAX_LAYERS }, () => null);
+  /** Wall-clock arrival of each level, for the fade-up. Cosmetic
+   *  only: the simulation stays a pure function of its own clock. */
+  private readonly layerArrival: number[] = Array.from({ length: MAX_LAYERS }, () => 0);
   private scratch: HTMLCanvasElement | null = null;
   private staging: HTMLCanvasElement | null = null;
 
@@ -359,6 +362,11 @@ export class ImpactRenderer {
   setMosaic(mosaic: LoadedMosaic, level = 0): void {
     const { gl } = this;
     const slot = Math.min(Math.max(level, 0), MAX_LAYERS - 1);
+    // A REPLACEMENT block fades up too — but only when it is actually
+    // a different block, or every camera nudge would blink the ground.
+    if (this.layers[slot]?.imageryBlock.bounds !== mosaic.imageryBlock.bounds) {
+      this.layerArrival[slot] = performance.now();
+    }
     this.layers[slot] = mosaic;
     this.layerGeneration++;
 
@@ -734,6 +742,15 @@ export class ImpactRenderer {
     gl.uniform4fv(this.location(p, 'uLayerDemBnd'), demBnd);
     gl.uniform2fv(this.location(p, 'uLayerElev'), elev);
     gl.uniform3fv(this.location(p, 'uLayerMean'), mean);
+    const fades = new Float32Array(MAX_LAYERS);
+    const wall = performance.now();
+    for (let i = 0; i < MAX_LAYERS; i++) {
+      fades[i] =
+        this.layers[i] === null
+          ? 0
+          : Math.min(1, Math.max(0, (wall - (this.layerArrival[i] ?? 0)) / 600));
+    }
+    gl.uniform1fv(this.location(p, 'uLayerFade'), fades);
     gl.uniform1i(this.location(p, 'uLayerCount'), MAX_LAYERS);
 
     // Ground zero sits at y = 0 in the local frame, so the scene needs
