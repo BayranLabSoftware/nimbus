@@ -174,3 +174,57 @@
     display: none;
   }
 }
+
+.legend {
+  position: absolute;
+  left: 20px;
+  bottom: 92px;
+  z-index: 5;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 11px 13px;
+  border-radius: 3px;
+  background: rgb(9 12 19 / 76%);
+  border: 1px solid #1d2531;
+  backdrop-filter: blur(12px);
+  transition: opacity 0.35s;
+}
+.legendTitle {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #525e6e;
+  margin: 0 0 4px;
+}
+.legendRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #8a97a8;
+}
+.legendSwatch {
+  width: 11px;
+  height: 2px;
+  flex: 0 0 auto;
+  border-radius: 1px;
+}
+.legendValue {
+  margin-left: auto;
+  padding-left: 14px;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-variant-numeric: tabular-nums;
+  color: #e4e9f0;
+}
+.legendPending {
+  opacity: 0.35;
+}
+
+@media (width <= 820px) {
+  .legend {
+    display: none;
+  }
+}

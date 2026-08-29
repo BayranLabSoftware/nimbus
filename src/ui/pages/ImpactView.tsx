@@ -3,14 +3,21 @@ import { useTranslation } from 'react-i18next';
 import { s } from '../../physics/units.js';
 import { loadMosaic } from '../../scene/geo/tileMosaic.js';
 import { ImpactRenderer } from '../../scene/impact/ImpactRenderer.js';
-import { DEFAULT_ORBIT, clampOrbit, type OrbitState } from '../../scene/impact/camera.js';
+import {
+  DEFAULT_ORBIT,
+  clampOrbit,
+  maxZoomForReach,
+  type OrbitState,
+} from '../../scene/impact/camera.js';
 import {
   frameAt,
+  openingTime,
   sceneFromExplosion,
   sceneFromImpact,
   type ImpactScene,
 } from '../../scene/impact/scene.js';
 import { SimClock, scrubToTime, timeToScrub } from '../../scene/simClock.js';
+import { effectCss } from '../../scene/impact/effectStyle.js';
 import { useAppStore, type ActiveResult, type Coordinates } from '../../store/index.js';
 import { AppBar } from '../components/AppBar.js';
 import styles from './ImpactView.module.css';
@@ -43,16 +50,24 @@ export function ImpactView(): JSX.Element {
   const { t } = useTranslation();
   const result = useAppStore((st) => st.result);
   const evaluatedAt = useAppStore((st) => st.lastEvaluatedAtLocation);
+  const urlTime = useAppStore((st) => st.simTime);
+  const setSimTime = useAppStore((st) => st.setSimTime);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rendererRef = useRef<ImpactRenderer | null>(null);
   const clockRef = useRef<SimClock | null>(null);
   const orbitRef = useRef<OrbitState>(DEFAULT_ORBIT);
+  const maxZoomRef = useRef(4);
   const sceneRef = useRef<ImpactScene | null>(null);
   const scrubRef = useRef<HTMLInputElement | null>(null);
   const hudRef = useRef<Record<string, HTMLSpanElement | null>>({});
 
   const [playing, setPlaying] = useState(true);
+  // Flipped by the render loop when the camera crosses into map
+  // range. Kept as a boolean, not the raw distance, so pulling back
+  // does not re-render React on every frame.
+  const [mapRange, setMapRange] = useState(false);
+  const [nowSeconds, setNowSeconds] = useState(0);
   const [terrain, setTerrain] = useState<TerrainState>('idle');
   const [webglFailed, setWebglFailed] = useState(false);
 
@@ -66,6 +81,8 @@ export function ImpactView(): JSX.Element {
   const originLat = scene?.latitude ?? 0;
   const originLon = scene?.longitude ?? 0;
   const reachMeters = scene?.framingReach ?? 0;
+  const effectsReach = scene?.effectsReach ?? 0;
+  const maxZoom = maxZoomForReach(reachMeters, effectsReach);
   const durationSeconds = scene?.duration ?? 0;
   const blastEnergy = scene?.blastEnergy ?? 0;
 
@@ -107,29 +124,57 @@ export function ImpactView(): JSX.Element {
       rateMultiplier: reduced ? 0.5 : 1,
     });
     clockRef.current = clock;
-    clock.play();
-    setPlaying(true);
-    const off = clock.subscribe((state) => setPlaying(state.playing));
+    const current = sceneRef.current;
+    if (urlTime !== null) {
+      // A link that carries a playhead opens on that exact frame,
+      // paused, because the sender chose it.
+      clock.seek(s(urlTime));
+    } else if (current !== null) {
+      clock.seek(openingTime(current));
+      clock.play();
+    }
+    setPlaying(clock.getState().playing);
+    const off = clock.subscribe((state) => {
+      setPlaying(state.playing);
+      // Publish the playhead only when it settles. Writing it on every
+      // frame would rewrite the URL sixty times a second; writing it
+      // on a pause or a scrub is exactly when someone means to share.
+      setSimTime(state.playing ? null : state.time);
+    });
     return () => {
       off();
       clockRef.current = null;
     };
+    // `urlTime` is read once, when the scenario mounts: re-seeking on
+    // every publish would fight the playhead.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasScene, durationSeconds, blastEnergy]);
+
+  // Keep the adaptive zoom ceiling in a ref so the wheel handler,
+  // which is registered once, always sees the current scene's.
+  useEffect(() => {
+    maxZoomRef.current = maxZoom;
+  }, [maxZoom]);
 
   // ---- terrain -----------------------------------------------------
   useEffect(() => {
     if (!hasScene) return;
     let cancelled = false;
     setTerrain('loading');
-    loadMosaic({
+    // Two mosaics. The close one is what you stand in; the wide one
+    // keeps the ground real once you pull back far enough to take in
+    // the outer contours, which on a megatonne event is a hundred
+    // times further out. Without it the far ground is a flat average.
+    const near = loadMosaic({
       latitude: originLat,
       longitude: originLon,
       spanMeters: reachMeters * 12,
       tiles: 6,
-    })
+    });
+    near
       .then((mosaic) => {
         if (cancelled) return;
-        rendererRef.current?.setMosaic(mosaic);
+        rendererRef.current?.setMosaic(mosaic, 'near');
         setTerrain('ready');
       })
       .catch((error: unknown) => {
@@ -137,10 +182,27 @@ export function ImpactView(): JSX.Element {
         console.warn('[ImpactView] terrain unavailable:', error);
         setTerrain('failed');
       });
+
+    if (effectsReach > reachMeters * 6) {
+      void loadMosaic({
+        latitude: originLat,
+        longitude: originLon,
+        spanMeters: effectsReach * 2.4,
+        tiles: 6,
+      })
+        .then((wide) => {
+          if (!cancelled) rendererRef.current?.setMosaic(wide, 'far');
+        })
+        .catch((error: unknown) => {
+          // Non-fatal: the close tile still covers where the viewer
+          // starts, and the far ground falls back to a flat colour.
+          console.warn('[ImpactView] wide terrain unavailable:', error);
+        });
+    }
     return () => {
       cancelled = true;
     };
-  }, [hasScene, originLat, originLon, reachMeters]);
+  }, [hasScene, originLat, originLon, reachMeters, effectsReach]);
 
   // ---- render loop -------------------------------------------------
   useEffect(() => {
@@ -176,6 +238,15 @@ export function ImpactView(): JSX.Element {
       set('shock', formatLength(frame.shockRadius));
       set('temperature', `${(frame.fireballTemperature / 1_000).toFixed(1)} kK`);
       set('crater', `${formatLength(current.craterRadius * 2)} ø`);
+
+      const scale =
+        renderer.poseFor(current, frame, orbitRef.current).distance /
+        Math.max(current.framingReach, 1);
+      const inMapRange = scale > 1.9;
+      setMapRange((prev) => (prev === inMapRange ? prev : inMapRange));
+      // One update per second is enough to grey out the effects that
+      // have not arrived yet; the HUD itself is written imperatively.
+      setNowSeconds((prev) => (Math.abs(prev - state.time) > 0.5 ? state.time : prev));
     };
     handle = requestAnimationFrame(step);
     return () => {
@@ -197,11 +268,14 @@ export function ImpactView(): JSX.Element {
   }, []);
   const onPointerMove = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!dragging.current) return;
-    orbitRef.current = clampOrbit({
-      yaw: orbitRef.current.yaw + (e.clientX - lastPointer.current.x) * 0.006,
-      pitch: orbitRef.current.pitch - (e.clientY - lastPointer.current.y) * 0.004,
-      zoom: orbitRef.current.zoom,
-    });
+    orbitRef.current = clampOrbit(
+      {
+        yaw: orbitRef.current.yaw + (e.clientX - lastPointer.current.x) * 0.006,
+        pitch: orbitRef.current.pitch - (e.clientY - lastPointer.current.y) * 0.004,
+        zoom: orbitRef.current.zoom,
+      },
+      maxZoomRef.current
+    );
     lastPointer.current = { x: e.clientX, y: e.clientY };
   }, []);
 
@@ -210,10 +284,10 @@ export function ImpactView(): JSX.Element {
     if (canvas === null) return;
     const onWheel = (e: WheelEvent): void => {
       e.preventDefault();
-      orbitRef.current = clampOrbit({
-        ...orbitRef.current,
-        zoom: orbitRef.current.zoom * Math.exp(e.deltaY * 0.0011),
-      });
+      orbitRef.current = clampOrbit(
+        { ...orbitRef.current, zoom: orbitRef.current.zoom * Math.exp(e.deltaY * 0.0011) },
+        maxZoomRef.current
+      );
     };
     canvas.addEventListener('wheel', onWheel, { passive: false });
     return () => {
@@ -281,7 +355,43 @@ export function ImpactView(): JSX.Element {
         ))}
       </div>
 
-      <p className={styles.hint}>{t('impactView.hint')}</p>
+      {scene !== null && scene.effects.length > 0 && (
+        <div
+          className={styles.legend}
+          style={{ opacity: mapRange ? 1 : 0 }}
+          aria-hidden={!mapRange}
+        >
+          <p className={styles.legendTitle}>{t('impactView.legendTitle')}</p>
+          {scene.effects
+            .slice()
+            .reverse()
+            .map((effect) => (
+              <div
+                key={effect.id}
+                className={
+                  nowSeconds < effect.arrival
+                    ? `${styles.legendRow ?? ''} ${styles.legendPending ?? ''}`
+                    : (styles.legendRow ?? '')
+                }
+              >
+                <i
+                  className={styles.legendSwatch}
+                  style={{ background: effectCss(effect.id) }}
+                  aria-hidden="true"
+                />
+                <span>{t(`impactView.${effect.labelKey}`)}</span>
+                <span className={styles.legendValue}>{formatLength(effect.radius)}</span>
+              </div>
+            ))}
+        </div>
+      )}
+
+      <p className={styles.hint}>
+        {t('impactView.hint')}
+        {!mapRange && scene !== null && scene.effectsReach > scene.framingReach * 6
+          ? ` · ${t('impactView.legendHint')}`
+          : ''}
+      </p>
       <p className={styles.sources}>{t('impactView.sources')}</p>
 
       <div className={styles.transport}>

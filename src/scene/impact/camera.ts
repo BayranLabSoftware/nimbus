@@ -34,14 +34,28 @@ export const FOV_Y = (48 * Math.PI) / 180;
 const MIN_PITCH = 0.04;
 const MAX_PITCH = 1.35;
 const MIN_ZOOM = 0.25;
-const MAX_ZOOM = 4;
+/** Default ceiling. Callers that know how far the event's own effects
+ *  reach should pass their own: a blast contour a thousand times the
+ *  fireball radius is only visible if the camera is allowed to get far
+ *  enough away to see it. */
+export const DEFAULT_MAX_ZOOM = 4;
 
-export function clampOrbit(orbit: OrbitState): OrbitState {
+export function clampOrbit(orbit: OrbitState, maxZoom = DEFAULT_MAX_ZOOM): OrbitState {
   return {
     yaw: orbit.yaw,
     pitch: Math.min(Math.max(orbit.pitch, MIN_PITCH), MAX_PITCH),
-    zoom: Math.min(Math.max(orbit.zoom, MIN_ZOOM), MAX_ZOOM),
+    zoom: Math.min(Math.max(orbit.zoom, MIN_ZOOM), Math.max(MIN_ZOOM, maxZoom)),
   };
+}
+
+/**
+ * How far out the camera must be allowed to go for this scene: far
+ * enough that the outermost effect fits in the frame, with headroom.
+ * Returned as a zoom multiplier on the auto-framed distance.
+ */
+export function maxZoomForReach(framingReach: number, effectsReach: number): number {
+  if (!(framingReach > 0)) return DEFAULT_MAX_ZOOM;
+  return Math.max(DEFAULT_MAX_ZOOM, (effectsReach * 1.9) / framingReach);
 }
 
 const sub = (a: Vec3, b: Vec3): Vec3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
@@ -105,7 +119,9 @@ export interface CameraPose {
  * shot rather than climbing out of the top of the frame.
  */
 export function poseFor(input: FramingInput, orbit: OrbitState): CameraPose {
-  const o = clampOrbit(orbit);
+  // Already clamped by the caller; re-clamping here with the default
+  // ceiling would undo a scene-specific one.
+  const o = orbit;
   const dist = autoFrameDistance(input) * o.zoom;
   const height = dist * CAMERA_HEIGHT_RATIO * (0.4 + o.pitch);
   const position: Vec3 = [dist * Math.cos(o.yaw), height, dist * Math.sin(o.yaw)];

@@ -23,6 +23,8 @@ export const URL_KEYS = {
   latitude: 'lat',
   longitude: 'lon',
   mode: 'm',
+  // `t` is already the event type, so the playhead gets its own key.
+  simTime: 'ts',
   // impact CUSTOM overrides
   diameter: 'd',
   velocity: 's',
@@ -44,6 +46,7 @@ type SyncableState = Pick<
   | 'landslide'
   | 'location'
   | 'mode'
+  | 'simTime'
 >;
 
 function isEventType(value: string | null): value is EventType {
@@ -129,6 +132,13 @@ export function encodeStateToSearchParams(state: SyncableState): URLSearchParams
     params.set(URL_KEYS.mode, state.mode);
   }
 
+  // The playhead only belongs in the URL when there is a view that
+  // uses it. Emitting it from the globe would put a number in every
+  // shared link that nothing reads back.
+  if (state.mode === 'impact' && state.simTime !== null) {
+    params.set(URL_KEYS.simTime, trim(state.simTime, 2));
+  }
+
   return params;
 }
 
@@ -144,6 +154,8 @@ export interface DecodedStateIntent {
   /** Present only when both lat and lon parsed into valid ranges. */
   location: { latitude: number; longitude: number } | null;
   mode: ViewMode | null;
+  /** Playhead in simulation seconds; null when the URL carries none. */
+  simTime: number | null;
   /** Only filled when preset === 'CUSTOM' and at least one override is set. */
   impactCustomInput: {
     impactorDiameter?: number;
@@ -196,6 +208,9 @@ export function decodeSearchParamsToIntent(search: URLSearchParams): DecodedStat
   const rawMode = search.get(URL_KEYS.mode);
   const mode = isViewMode(rawMode) ? rawMode : null;
 
+  const rawTime = numberParam(search, URL_KEYS.simTime);
+  const simTime = rawTime !== null && rawTime >= 0 && rawTime < 1e7 ? rawTime : null;
+
   let impactCustomInput: DecodedStateIntent['impactCustomInput'] = null;
   if (eventType === 'impact' && preset === 'CUSTOM') {
     const custom: NonNullable<DecodedStateIntent['impactCustomInput']> = {};
@@ -218,7 +233,7 @@ export function decodeSearchParamsToIntent(search: URLSearchParams): DecodedStat
     impactCustomInput = Object.keys(custom).length > 0 ? custom : null;
   }
 
-  return { eventType, preset, location, mode, impactCustomInput };
+  return { eventType, preset, location, mode, simTime, impactCustomInput };
 }
 
 /**
@@ -231,7 +246,14 @@ export function decodeUrl(url: string, base = 'http://localhost/'): DecodedState
     const parsed = new URL(url, base);
     return decodeSearchParamsToIntent(parsed.searchParams);
   } catch {
-    return { eventType: null, preset: null, location: null, mode: null, impactCustomInput: null };
+    return {
+      eventType: null,
+      preset: null,
+      location: null,
+      mode: null,
+      simTime: null,
+      impactCustomInput: null,
+    };
   }
 }
 
@@ -260,6 +282,7 @@ export function applyIntentToStore(intent: DecodedStateIntent, store: AppStore):
   if (intent.mode !== null) {
     store.setMode(intent.mode);
   }
+  store.setSimTime(intent.simTime);
 }
 
 /**
@@ -278,6 +301,7 @@ export function projectSyncableState(store: AppStore): SyncableState {
     landslide: store.landslide,
     location: store.location,
     mode: store.mode,
+    simTime: store.simTime,
   };
 }
 

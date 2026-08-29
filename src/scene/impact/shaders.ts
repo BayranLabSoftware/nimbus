@@ -59,6 +59,30 @@ uniform vec3  uElev;       // metres: min, max, value at ground zero
 uniform vec2  uOrg;        // lat0, lon0 (degrees)
 uniform vec3  uAvg;        // fallback colour outside the mosaic
 
+// Second, wider mosaic. Pulling the camera back to take in a
+// thousand-kilometre contour leaves the close tile behind, and without
+// this the ground outside it collapses to one flat average colour.
+uniform sampler2D uImg2;
+uniform sampler2D uDem2;
+uniform vec4  uImgBnd2;
+uniform vec4  uDemBnd2;
+uniform vec2  uElev2;      // metres: min, max of the wide DEM
+uniform float uHasFar;     // 1 when the wide mosaic is bound
+
+// Effect footprints, in km. Zero means this event has none.
+uniform vec3  uThermal;    // 3rd, 2nd, 1st degree burn
+uniform vec3  uBlastR;     // 5 psi, 1 psi, 0.5 psi
+uniform vec2  uFireEj;     // firestorm ignition, ejecta blanket edge
+uniform vec2  uRadEmp;     // radiation LD50, EMP footprint
+uniform float uEjArrival;  // s, when the blanket has landed
+// Camera distance over framing reach: crossfades from "standing next
+// to it" to "looking at a map of it".
+uniform float uScale;
+// Contour palette, uploaded from scene/impact/effectStyle.ts. NOT
+// duplicated here: the legend and the shader index the same table, so
+// a colour cannot drift out of sync between them.
+uniform vec3  uEffectColor[11];
+
 const float RE  = 6371.008;          // km, IUGG mean radius
 const float PI  = 3.14159265359;
 const float MPD = 111.19492664;      // km per degree of latitude
@@ -105,17 +129,36 @@ vec2 toUV(vec2 lonlat, vec4 bnd){
 }
 float insideUV(vec2 uv){ vec2 e = min(uv, 1.0 - uv); return smoothstep(0.0, 0.030, min(e.x, e.y)); }
 
-/* Real terrain height (km) above the impact site's own elevation. */
+/* Real terrain height (km) above the impact site's own elevation.
+   Reads the close mosaic where it covers, the wide one beyond it. */
 float terrain(vec2 xz, out float water, out float inside){
-  vec2 uv = toUV(toGeo(xz), uDemBnd);
-  inside = insideUV(uv);
-  float e = texture(uDem, clamp(uv, 0.0015, 0.9985)).r;
-  float metres = uElev.x + e * (uElev.y - uElev.x);
+  vec2 geo = toGeo(xz);
+  vec2 uvN = toUV(geo, uDemBnd);
+  float inN = insideUV(uvN);
+  float metres = uElev.x + texture(uDem, clamp(uvN, 0.0015, 0.9985)).r * (uElev.y - uElev.x);
+  float inF = 0.0;
+  if (uHasFar > 0.5){
+    vec2 uvF = toUV(geo, uDemBnd2);
+    inF = insideUV(uvF);
+    float wide = uElev2.x + texture(uDem2, clamp(uvF, 0.0015, 0.9985)).r * (uElev2.y - uElev2.x);
+    metres = mix(wide, metres, inN);
+  }
+  inside = max(inN, inF);
   water = 1.0 - smoothstep(-8.0, 3.0, metres);
   float h = (metres - uElev.z) / 1000.0;
   // The DEM arrives as 8 bits; a little grain breaks the terracing.
   h += (fbm(vec3(xz * uGrainF, 0.0), 3) - 0.5) * uCraterD * 0.035;
   return h * inside;
+}
+
+/* One threshold ring, thinned by the screen-space derivative so it
+   stays a hairline at any zoom. Contours are the analytical register:
+   they fade IN as the camera pulls back and the volumetric detail
+   stops carrying the information. */
+vec3 contour(vec3 col, float d, float radius, vec3 tint, float strength){
+  if (radius <= 0.0 || strength <= 0.0) return col;
+  float w = max(fwidth(d) * 1.6, radius * 0.0015);
+  return col + tint * (1.0 - smoothstep(0.0, w, abs(d - radius))) * strength;
 }
 
 /* Real terrain plus the deformation the impact inflicts on it. */
@@ -222,21 +265,60 @@ void main(){
     N = normalize(N + vec3(-p.x / RE, 0.0, -p.z / RE));
 
     float grain = fbm(vec3(p.xz * (9.0 / max(uCraterR, 0.05)), 0.0), 4);
-    vec2 uvI = toUV(toGeo(p.xz), uImgBnd);
+    vec2 geo = toGeo(p.xz);
+    vec2 uvI = toUV(geo, uImgBnd);
     float inside = insideUV(uvI);
     float water, demInside;
     terrain(p.xz, water, demInside);
 
     vec3 photo = pow(texture(uImg, clamp(uvI, 0.0015, 0.9985)).rgb, vec3(2.2));
+    if (uHasFar > 0.5){
+      vec2 uvF = toUV(geo, uImgBnd2);
+      vec3 wide = pow(texture(uImg2, clamp(uvF, 0.0015, 0.9985)).rgb, vec3(2.2));
+      photo = mix(wide, photo, inside);
+      inside = max(inside, insideUV(uvF));
+    }
     photo = mix(vec3(dot(photo, vec3(0.299, 0.587, 0.114))), photo, 1.25);
     vec3 albedo = mix(uAvg * uAvg * (0.72 + 0.56 * grain), photo, inside);
 
-    /* Scoured ground behind the front. */
-    float scour = 1.0 - smoothstep(uScour * 0.80, uScour * 1.02, d);
-    albedo = mix(albedo, mix(vec3(0.072, 0.061, 0.052), vec3(0.163, 0.138, 0.112), grain), scour * 0.93);
-    /* Ejecta blanket around the rim. */
-    float blanket = 1.0 - smoothstep(uCraterR, uCraterR * 4.0, d);
-    albedo = mix(albedo, vec3(0.315, 0.272, 0.231), blanket * 0.7 * (1.0 - scour * 0.5));
+    /* ── Every consequence that visibly alters the ground ──────────
+       Each one appears only once its own physics has reached this
+       distance. The thermal pulse travels at light speed and is
+       therefore already here; the blast waits for the front; the
+       ejecta wait out their ballistic flight. Radiation and EMP are
+       NOT in this list: they leave the surface looking exactly as it
+       was, and are drawn as contours further down. */
+
+    // Thermal: char graded across the three burn thresholds.
+    float th3 = uThermal.x, th2 = uThermal.y, th1 = uThermal.z;
+    float thermalOn = smoothstep(0.0, 0.25, uTime);
+    float charHeavy = th3 > 0.0 ? (1.0 - smoothstep(th3 * 0.75, th3, d)) : 0.0;
+    float charMid   = th2 > 0.0 ? (1.0 - smoothstep(th2 * 0.80, th2, d)) : 0.0;
+    float charLight = th1 > 0.0 ? (1.0 - smoothstep(th1 * 0.85, th1, d)) : 0.0;
+    albedo = mix(albedo, vec3(0.118, 0.092, 0.070), charLight * 0.30 * thermalOn);
+    albedo = mix(albedo, vec3(0.070, 0.052, 0.040), charMid * 0.45 * thermalOn);
+    albedo = mix(albedo, vec3(0.031, 0.025, 0.021), charHeavy * 0.88 * thermalOn);
+
+    // Blast: scour graded across the overpressure thresholds, and
+    // only where the front has already gone past.
+    float passed = 1.0 - smoothstep(uShock * 0.985, uShock * 1.015, d);
+    float b5 = uBlastR.x > 0.0 ? (1.0 - smoothstep(uBlastR.x * 0.80, uBlastR.x, d)) : 0.0;
+    float b1 = uBlastR.y > 0.0 ? (1.0 - smoothstep(uBlastR.y * 0.85, uBlastR.y, d)) : 0.0;
+    float bl = uBlastR.z > 0.0 ? (1.0 - smoothstep(uBlastR.z * 0.90, uBlastR.z, d)) : 0.0;
+    float scour = max(1.0 - smoothstep(uScour * 0.80, uScour * 1.02, d), b5) * passed;
+    vec3 stripped = mix(vec3(0.072, 0.061, 0.052), vec3(0.163, 0.138, 0.112), grain);
+    albedo = mix(albedo, albedo * 0.72, bl * 0.35 * passed);
+    albedo = mix(albedo, mix(albedo * 0.45, stripped, 0.55), b1 * 0.55 * passed);
+    albedo = mix(albedo, stripped, scour * 0.90);
+
+    // Ejecta blanket: pale dust with radial streaks, once it lands.
+    float ejR = max(uFireEj.y, uCraterR * 4.0);
+    float ejLanded = smoothstep(uEjArrival * 0.4, uEjArrival + 0.6, uTime);
+    vec3 radial = normalize(vec3(p.x, 0.0, p.z) + vec3(1e-6));
+    float streak = fbm(radial * 34.0, 3);
+    float blanket = (1.0 - smoothstep(uCraterR, ejR, d)) * ejLanded;
+    albedo = mix(albedo, vec3(0.315, 0.272, 0.231),
+                 blanket * (0.40 + 0.45 * smoothstep(0.42, 0.78, streak)));
 
     /* The imagery already carries its own illumination, so the Lambert
        term is lifted: it adds relief, it does not relight the scene. */
@@ -273,7 +355,41 @@ void main(){
     lit += vec3(0.80, 0.88, 1.0) * exp(-pow((d - uShock) / fw, 2.0)) * 0.55 * smoothstep(0.0, 0.1, uTime);
     lit += blackbody(1400.0) * exp(-pow((d - uShock * 0.93) / (fw * 2.6), 2.0)) * 0.25;
 
+    /* Firestorm. Fires do not start with the flash: they take tens of
+       seconds to catch and merge. Drawn as flickering embers plus the
+       smoke that dulls everything under them. */
+    if (uFireEj.x > 0.0){
+      float fireZone = 1.0 - smoothstep(uFireEj.x * 0.75, uFireEj.x, d);
+      float caught = smoothstep(4.0, 45.0, uTime) * fireZone;
+      float patches = smoothstep(0.52, 0.80, fbm(vec3(p.xz * (12.0 / max(uFireEj.x, 0.05)), uTime * 0.05), 4));
+      float flicker = 0.72 + 0.28 * fbm(vec3(p.xz * 40.0, uTime * 1.7), 2);
+      lit = mix(lit, lit * 0.55, caught * 0.55);                       // smoke pall
+      lit += blackbody(1150.0) * caught * patches * flicker * 1.9;     // embers
+    }
+
     lit += vec3(1.0, 0.95, 0.88) * uFlash * 2.2 * max(dot(N, Ln), 0.0);
+
+    /* ── The analytical register ──────────────────────────────────
+       Threshold contours, faded in with camera distance. Up close the
+       material change IS the information; from a map altitude the
+       material change is a smudge and the cited number is what the
+       viewer needs. Radiation and EMP appear ONLY here, because they
+       change nothing you could photograph. */
+    float mapFade = smoothstep(1.6, 6.0, uScale);
+    if (mapFade > 0.002){
+      float k = mapFade * 0.85;
+      lit = contour(lit, d, uCraterR,   uEffectColor[0],  k);
+      lit = contour(lit, d, uFireEj.y,  uEffectColor[1],  k * 0.7);
+      lit = contour(lit, d, uThermal.x, uEffectColor[2],  k);
+      lit = contour(lit, d, uThermal.y, uEffectColor[3],  k * 0.8);
+      lit = contour(lit, d, uThermal.z, uEffectColor[4],  k * 0.7);
+      lit = contour(lit, d, uFireEj.x,  uEffectColor[5],  k * 0.8);
+      lit = contour(lit, d, uBlastR.x,  uEffectColor[6],  k);
+      lit = contour(lit, d, uBlastR.y,  uEffectColor[7],  k * 0.9);
+      lit = contour(lit, d, uBlastR.z,  uEffectColor[8],  k * 0.8);
+      lit = contour(lit, d, uRadEmp.x,  uEffectColor[9],  k);
+      lit = contour(lit, d, uRadEmp.y,  uEffectColor[10], k * 0.8);
+    }
 
     float fog = 1.0 - exp(-t * uFogK * (1.0 + 0.6 * smoothstep(0.0, 1.0, uDust)));
     col = mix(lit, sky * 0.9 + vec3(0.05, 0.06, 0.08), clamp(fog, 0.0, 0.92));

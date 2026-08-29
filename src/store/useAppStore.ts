@@ -431,6 +431,10 @@ export interface AppStore {
 
   // --- View state ------------------------------------------------------
   mode: ViewMode;
+  /** Playhead of the close-up view, in simulation seconds. Part of the
+   *  shareable state: a link can hand someone one exact frame, not
+   *  just the scenario. Null until the close-up has been opened. */
+  simTime: number | null;
   transitionPhase: TransitionPhase;
 
   // --- Actions ---------------------------------------------------------
@@ -486,6 +490,7 @@ export interface AppStore {
   /** Reset the Deep Dive state to idle. */
   clearDeepDive: () => void;
   setMode: (mode: ViewMode) => void;
+  setSimTime: (seconds: number | null) => void;
   transitionTo: (mode: ViewMode, options?: { instant?: boolean }) => void;
   reset: () => void;
 }
@@ -539,6 +544,7 @@ type InitialSlice = Pick<
   | 'elevationGrid'
   | 'globalBathymetricGrid'
   | 'mode'
+  | 'simTime'
   | 'transitionPhase'
 >;
 
@@ -584,6 +590,7 @@ function initialState(): InitialSlice {
     elevationGrid: null,
     globalBathymetricGrid: null,
     mode: 'landing',
+    simTime: null,
     transitionPhase: 'idle',
   };
 }
@@ -1911,6 +1918,10 @@ export const useAppStore = create<AppStore>((set, get) => ({
 
   setMode: (mode) => {
     set({ mode, transitionPhase: 'idle' });
+  },
+
+  setSimTime: (seconds) => {
+    set({ simTime: seconds === null || !Number.isFinite(seconds) ? null : Math.max(seconds, 0) });
   },
 
   transitionTo: (target, options) => {

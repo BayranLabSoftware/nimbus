@@ -4,12 +4,16 @@ import { EXPLOSION_PRESETS, simulateExplosion } from '../../physics/events/explo
 import { IMPACT_PRESETS, simulateImpact } from '../../physics/simulate.js';
 import { s } from '../../physics/units.js';
 import {
+  effectArrival,
+  effectRadius,
   ejectaRangeForSpeed,
   ejectaSpeedForRange,
   frameAt,
+  openingTime,
   sceneFromExplosion,
   sceneFromImpact,
 } from './scene.js';
+import { EFFECT_SLOTS, EFFECT_STYLE, effectColorArray, effectCss } from './effectStyle.js';
 import { m } from '../../physics/units.js';
 
 const ORIGIN = { latitude: 35.0272, longitude: -111.0225 };
@@ -194,5 +198,141 @@ describe('frameAt — the per-frame snapshot', () => {
 
   it('clamps a negative time to the instant of contact', () => {
     expect(frameAt(meteorCrater, s(-10)).time).toBe(0);
+  });
+});
+
+describe('effect zones — every consequence, not just two', () => {
+  const hiroshima = sceneFromExplosion(
+    simulateExplosion(EXPLOSION_PRESETS.HIROSHIMA_1945.input),
+    ORIGIN
+  );
+
+  it('a nuclear burst carries thermal, blast, fire, radiation and EMP', () => {
+    const kinds = new Set(oneMegaton.effects.map((e) => e.kind));
+    for (const kind of ['thermal', 'blast', 'firestorm', 'radiation'] as const) {
+      expect(kinds.has(kind), kind).toBe(true);
+    }
+  });
+
+  it('an impact carries thermal, blast, ejecta and a crater', () => {
+    const kinds = new Set(meteorCrater.effects.map((e) => e.kind));
+    for (const kind of ['thermal', 'blast', 'ejecta', 'crater'] as const) {
+      expect(kinds.has(kind), kind).toBe(true);
+    }
+  });
+
+  it('drops the effects an event does not have instead of drawing zeros', () => {
+    // Hiroshima is an airburst: no crater, therefore no ejecta.
+    expect(effectRadius(hiroshima, 'crater')).toBe(0);
+    expect(hiroshima.effects.some((e) => e.kind === 'crater')).toBe(false);
+    expect(hiroshima.effects.some((e) => e.kind === 'ejecta')).toBe(false);
+  });
+
+  it('sorts outward so the legend reads inner-to-outer', () => {
+    for (const scene of [meteorCrater, oneMegaton, chicxulub]) {
+      for (let i = 1; i < scene.effects.length; i++) {
+        expect(scene.effects[i]?.radius ?? 0).toBeGreaterThanOrEqual(
+          scene.effects[i - 1]?.radius ?? 0
+        );
+      }
+    }
+  });
+
+  it('marks radiation and EMP as non-material — they change nothing you could photograph', () => {
+    for (const effect of oneMegaton.effects) {
+      const invisible = effect.kind === 'radiation' || effect.kind === 'emp';
+      expect(effect.material, effect.id).toBe(!invisible);
+    }
+  });
+
+  it('gives the thermal pulse a zero arrival: it travels at light speed', () => {
+    expect(effectArrival(oneMegaton, 'thermal3')).toBe(0);
+    expect(effectArrival(oneMegaton, 'radiation')).toBe(0);
+  });
+
+  it('makes blast arrive later the further out the threshold sits', () => {
+    const a = effectArrival(oneMegaton, 'blast5');
+    const b = effectArrival(oneMegaton, 'blast1');
+    const c = effectArrival(oneMegaton, 'blastLight');
+    expect(b).toBeGreaterThan(a);
+    expect(c).toBeGreaterThan(b);
+  });
+
+  it('makes the blast arrival agree with the shock front the renderer draws', () => {
+    // The contour and the moving front must not disagree about when
+    // the wave crosses a threshold.
+    const t = effectArrival(oneMegaton, 'blast1');
+    const frame = frameAt(oneMegaton, s(t));
+    expect(frame.shockRadius).toBeCloseTo(effectRadius(oneMegaton, 'blast1'), -2);
+  });
+
+  it('gives the ejecta a ballistic flight time, not an instant one', () => {
+    expect(effectArrival(meteorCrater, 'ejecta')).toBeGreaterThan(1);
+  });
+
+  it('effectsReach covers every effect, so the camera can frame them all', () => {
+    for (const scene of [meteorCrater, oneMegaton, chicxulub]) {
+      for (const effect of scene.effects) {
+        expect(scene.effectsReach).toBeGreaterThanOrEqual(effect.radius);
+      }
+      expect(scene.effectsReach).toBeGreaterThan(scene.framingReach);
+    }
+  });
+
+  it('returns 0 for an effect the scene does not have', () => {
+    expect(effectRadius(meteorCrater, 'not-a-thing')).toBe(0);
+    expect(effectArrival(meteorCrater, 'not-a-thing')).toBe(0);
+  });
+});
+
+describe('effect palette — one table, two consumers', () => {
+  it('gives every effect id a distinct uniform slot', () => {
+    const slots = Object.values(EFFECT_STYLE).map((s2) => s2.slot);
+    expect(new Set(slots).size).toBe(slots.length);
+    expect(Math.max(...slots)).toBeLessThan(EFFECT_SLOTS);
+  });
+
+  it('packs the palette in slot order for the shader', () => {
+    const packed = effectColorArray();
+    expect(packed.length).toBe(EFFECT_SLOTS * 3);
+    for (const style of Object.values(EFFECT_STYLE)) {
+      expect(packed[style.slot * 3]).toBeCloseTo(style.rgb[0], 6);
+      expect(packed[style.slot * 3 + 2]).toBeCloseTo(style.rgb[2], 6);
+    }
+  });
+
+  it('gives the legend the same colour the shader gets', () => {
+    // The bug this pins: the Cesium legend still advertises contours
+    // in colours that appear nowhere in the scene.
+    expect(effectCss('blast5')).toBe('rgb(250 204 20)');
+    expect(effectCss('nope')).toBe('transparent');
+  });
+
+  it('has a style for every effect any scenario produces', () => {
+    for (const scene of [meteorCrater, oneMegaton, chicxulub]) {
+      for (const effect of scene.effects) {
+        expect(EFFECT_STYLE[effect.id], effect.id).toBeDefined();
+      }
+    }
+  });
+});
+
+describe('openingTime — where the playhead lands when the view opens', () => {
+  it('is past the flash, so the first frame is not a white rectangle', () => {
+    for (const scene of [meteorCrater, oneMegaton, chicxulub]) {
+      const t = openingTime(scene);
+      expect(frameAt(scene, t).flash).toBeLessThan(0.1);
+    }
+  });
+
+  it('is still early: the fireball must not have finished', () => {
+    for (const scene of [meteorCrater, oneMegaton, chicxulub]) {
+      expect(openingTime(scene)).toBeLessThan(scene.duration * 0.26);
+      expect(frameAt(scene, openingTime(scene)).fireballTemperature).toBeGreaterThan(1_000);
+    }
+  });
+
+  it('scales with the event rather than being a fixed number of seconds', () => {
+    expect(openingTime(chicxulub)).toBeGreaterThan(openingTime(meteorCrater));
   });
 });

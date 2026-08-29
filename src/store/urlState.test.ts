@@ -133,6 +133,7 @@ describe('applyIntentToStore', () => {
         preset: 'NORTHRIDGE_1994',
         location: { latitude: 34.2, longitude: -118.5 },
         mode: 'globe',
+        simTime: null,
         impactCustomInput: null,
       },
       useAppStore.getState()
@@ -151,6 +152,7 @@ describe('applyIntentToStore', () => {
         preset: 'CUSTOM',
         location: null,
         mode: null,
+        simTime: null,
         impactCustomInput: { impactorDiameter: 250 },
       },
       useAppStore.getState()

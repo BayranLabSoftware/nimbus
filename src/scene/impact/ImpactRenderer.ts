@@ -1,7 +1,8 @@
 import type { LoadedMosaic } from '../geo/tileMosaic.js';
+import { effectColorArray } from './effectStyle.js';
 import type { CameraPose } from './camera.js';
 import { FOV_Y, poseFor, rayBasis, viewProjection, type OrbitState } from './camera.js';
-import type { ImpactFrame, ImpactScene } from './scene.js';
+import { effectArrival, effectRadius, type ImpactFrame, type ImpactScene } from './scene.js';
 import {
   BLUR_FS,
   BRIGHT_FS,
@@ -38,6 +39,8 @@ const TEXTURE_UNITS = {
   bloomWide: 2,
   imagery: 3,
   elevation: 4,
+  imageryFar: 5,
+  elevationFar: 6,
 } as const;
 
 /** Fraction of the device pixel grid we actually render at. The scene
@@ -87,6 +90,7 @@ export class ImpactRenderer {
   private readonly vao: WebGLVertexArrayObject;
   private readonly uniforms = new Map<WebGLProgram, Map<string, WebGLUniformLocation | null>>();
   private readonly anisotropy: number;
+  private readonly effectColors = effectColorArray();
   private readonly anisotropyExt: EXT_texture_filter_anisotropic | null;
 
   private scene: RenderTarget | null = null;
@@ -97,7 +101,10 @@ export class ImpactRenderer {
 
   private imageryTexture: WebGLTexture;
   private elevationTexture: WebGLTexture;
+  private imageryFarTexture: WebGLTexture;
+  private elevationFarTexture: WebGLTexture;
   private mosaic: LoadedMosaic | null = null;
+  private farMosaic: LoadedMosaic | null = null;
 
   private width = 0;
   private height = 0;
@@ -130,6 +137,8 @@ export class ImpactRenderer {
 
     this.imageryTexture = this.placeholder([120, 108, 88, 255]);
     this.elevationTexture = this.placeholder([128, 128, 128, 255]);
+    this.imageryFarTexture = this.placeholder([120, 108, 88, 255]);
+    this.elevationFarTexture = this.placeholder([128, 128, 128, 255]);
 
     const sun = options.sunDirection ?? [-0.42, 0.2, -0.88];
     const len = Math.hypot(sun[0], sun[1], sun[2]) || 1;
@@ -251,19 +260,26 @@ export class ImpactRenderer {
     return true;
   }
 
-  /** Upload a mosaic. Safe to call repeatedly; replaces what is bound. */
-  setMosaic(mosaic: LoadedMosaic): void {
+  /**
+   * Upload a mosaic. `layer` picks which one: the close tile the
+   * viewer starts on, or the wide one that keeps the ground real once
+   * they pull back past its edge. Safe to call repeatedly.
+   */
+  setMosaic(mosaic: LoadedMosaic, layer: 'near' | 'far' = 'near'): void {
     const { gl } = this;
-    this.mosaic = mosaic;
+    const near = layer === 'near';
+    if (near) this.mosaic = mosaic;
+    else this.farMosaic = mosaic;
 
-    gl.deleteTexture(this.imageryTexture);
+    gl.deleteTexture(near ? this.imageryTexture : this.imageryFarTexture);
     const imagery = required(gl.createTexture(), 'the imagery texture');
     gl.bindTexture(gl.TEXTURE_2D, imagery);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mosaic.imagery);
     this.finishTexture();
-    this.imageryTexture = imagery;
+    if (near) this.imageryTexture = imagery;
+    else this.imageryFarTexture = imagery;
 
-    gl.deleteTexture(this.elevationTexture);
+    gl.deleteTexture(near ? this.elevationTexture : this.elevationFarTexture);
     const elevation = required(gl.createTexture(), 'the elevation texture');
     const { bytes, width, height } = mosaic.elevation;
     // One byte per sample, expanded to RGBA: WebGL2's single-channel
@@ -279,7 +295,8 @@ export class ImpactRenderer {
     gl.bindTexture(gl.TEXTURE_2D, elevation);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, rgba);
     this.finishTexture();
-    this.elevationTexture = elevation;
+    if (near) this.elevationTexture = elevation;
+    else this.elevationFarTexture = elevation;
   }
 
   private finishTexture(): void {
@@ -381,6 +398,63 @@ export class ImpactRenderer {
     );
     gl.uniform2f(this.location(p, 'uOrg'), scene.latitude, scene.longitude);
     gl.uniform3f(this.location(p, 'uAvg'), 0.5, 0.46, 0.38);
+
+    // Wide mosaic
+    const far = this.farMosaic;
+    const farImg = far?.imageryBlock.bounds;
+    const farDem = far?.elevationBlock.bounds;
+    gl.uniform1f(this.location(p, 'uHasFar'), far === null ? 0 : 1);
+    gl.uniform4f(
+      this.location(p, 'uImgBnd2'),
+      farImg?.lonWest ?? -1,
+      farImg?.lonEast ?? 1,
+      farImg?.latNorth ?? 1,
+      farImg?.latSouth ?? -1
+    );
+    gl.uniform4f(
+      this.location(p, 'uDemBnd2'),
+      farDem?.lonWest ?? -1,
+      farDem?.lonEast ?? 1,
+      farDem?.latNorth ?? 1,
+      farDem?.latSouth ?? -1
+    );
+    gl.uniform2f(this.location(p, 'uElev2'), far?.elevation.min ?? 0, far?.elevation.max ?? 1);
+    gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.imageryFar);
+    gl.bindTexture(gl.TEXTURE_2D, this.imageryFarTexture);
+    gl.uniform1i(this.location(p, 'uImg2'), TEXTURE_UNITS.imageryFar);
+    gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.elevationFar);
+    gl.bindTexture(gl.TEXTURE_2D, this.elevationFarTexture);
+    gl.uniform1i(this.location(p, 'uDem2'), TEXTURE_UNITS.elevationFar);
+
+    // Effect footprints. Zero disables an effect the event lacks —
+    // an airburst has no crater and a conventional charge no EMP.
+    gl.uniform3f(
+      this.location(p, 'uThermal'),
+      km(effectRadius(scene, 'thermal3')),
+      km(effectRadius(scene, 'thermal2')),
+      km(effectRadius(scene, 'thermal1'))
+    );
+    gl.uniform3f(
+      this.location(p, 'uBlastR'),
+      km(effectRadius(scene, 'blast5')),
+      km(effectRadius(scene, 'blast1')),
+      km(effectRadius(scene, 'blastLight'))
+    );
+    gl.uniform2f(
+      this.location(p, 'uFireEj'),
+      km(effectRadius(scene, 'firestorm')),
+      km(effectRadius(scene, 'ejecta'))
+    );
+    gl.uniform2f(
+      this.location(p, 'uRadEmp'),
+      km(effectRadius(scene, 'radiation')),
+      km(effectRadius(scene, 'emp'))
+    );
+    gl.uniform1f(this.location(p, 'uEjArrival'), effectArrival(scene, 'ejecta'));
+    gl.uniform3fv(this.location(p, 'uEffectColor'), this.effectColors);
+    // Camera distance over framing reach: the crossfade from a place
+    // you are standing in to a map you are reading.
+    gl.uniform1f(this.location(p, 'uScale'), pose.distance / Math.max(scene.framingReach, 1));
     gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.imagery);
     gl.bindTexture(gl.TEXTURE_2D, this.imageryTexture);
     gl.uniform1i(this.location(p, 'uImg'), TEXTURE_UNITS.imagery);
@@ -489,6 +563,8 @@ export class ImpactRenderer {
     this.scene = this.nearA = this.nearB = this.wideA = this.wideB = null;
     gl.deleteTexture(this.imageryTexture);
     gl.deleteTexture(this.elevationTexture);
+    gl.deleteTexture(this.imageryFarTexture);
+    gl.deleteTexture(this.elevationFarTexture);
     gl.deleteVertexArray(this.vao);
     for (const program of Object.values(this.programs)) gl.deleteProgram(program);
     this.uniforms.clear();

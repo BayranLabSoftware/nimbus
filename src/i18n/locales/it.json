@@ -1181,8 +1181,20 @@
     "fireball": "palla di fuoco",
     "shock": "fronte d'urto",
     "temperature": "temperatura",
-    "crater": "cratere",
+    "crater": "orlo del cratere",
     "hint": "trascina per orbitare · rotella per avvicinarti",
-    "sources": "Esri World Imagery · AWS Terrain Tiles"
+    "sources": "Esri World Imagery · AWS Terrain Tiles",
+    "ejecta": "coltre di ejecta",
+    "thermal3": "ustione di 3° grado",
+    "thermal2": "ustione di 2° grado",
+    "thermal1": "ustione di 1° grado",
+    "firestorm": "tempesta di fuoco",
+    "blast5": "5 psi · crollo edifici",
+    "blast1": "1 psi · rottura vetri",
+    "blastLight": "0.5 psi · vetri sparsi",
+    "radiation": "radiazione LD50",
+    "emp": "impronta EMP",
+    "legendTitle": "Effetti",
+    "legendHint": "allontanati per leggere i contorni"
   }
 }
