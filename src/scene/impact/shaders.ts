@@ -536,6 +536,10 @@ void marchVolume(vec3 ro, vec3 rd, float t0, float t1, int steps,
     float de = density(p, T, hot);
     if (de <= 0.004) continue;
     float a = 1.0 - exp(-de * dt * extinction);
+    // The shadow march is five more envelope evaluations. A sample
+    // that contributes under two percent of the final pixel does not
+    // earn them; it takes the average and moves on.
+    float weight = a * trans;
     vec3 emit = blackbody(T) * (0.5 + 5.2 * smoothstep(650.0, 3200.0, T)) * hot;
     vec3 toF = vec3(0.0, max(uFireY, uFireR * 0.4), 0.0) - p;
     float fd = max(length(toF), uFireR * 0.7);
@@ -546,7 +550,7 @@ void marchVolume(vec3 ro, vec3 rd, float t0, float t1, int steps,
        precisely because most of the volume no longer receives it, and
        the sky term is dimmed by the same occlusion — the inside of a
        dust column does not see the sky either. */
-    float shade = sunlight(p);
+    float shade = weight < 0.02 ? 0.5 : sunlight(p);
     /* Pulverised rock reflects about a third of what hits it. The
        previous albedo was effectively 0.95, which is fresh snow: with
        the fireball cooled past its emissive range — 400 K twelve
@@ -631,7 +635,12 @@ void main(){
        would only alias, so it is faded out there. */
     float texM = texelMetres(fine);
     float footM = length(fwidth(p.xz)) * 1000.0;
-    float micro = 1.0 - smoothstep(texM * 1.2, texM * 5.0, footM);
+    /* The fade is generous because the effect attenuates itself: the
+       four taps are offset by one texel of the base level, so the
+       hardware picks the same mip as the main sample and the gradient
+       flattens out on its own as the pixel grows. The window only has
+       to stop the last, aliasing-prone stretch. */
+    float micro = 1.0 - smoothstep(texM * 2.0, texM * 14.0, footM);
     micro *= inside * (1.0 - water);
 
     photo = mix(vec3(dot(photo, vec3(0.299, 0.587, 0.114))), photo, 1.25);
@@ -703,8 +712,14 @@ void main(){
     float lam = max(dot(Ns, uSun), 0.0);
     float skyView = 0.5 + 0.5 * N.y;                 // flat ground sees all of it
     float shade = 0.14 + 1.15 * lam;
-    vec3 lit = albedo * shade * vec3(1.0, 0.92, 0.80) * 1.45
-             + albedo * vec3(0.16, 0.21, 0.32) * skyView * 0.55;
+    /* Exposure. The sun sits eleven degrees up, so flat ground returns
+       about a fifth of the key light; at the old gain that came out as
+       a dark brown smear and read as a bad photograph rather than as
+       late afternoon. A real camera exposes for the scene in front of
+       it, and so does this one. The low sun is kept deliberately: it
+       is what makes the relief below read at all. */
+    vec3 lit = albedo * shade * vec3(1.0, 0.92, 0.80) * 2.25
+             + albedo * vec3(0.16, 0.21, 0.32) * skyView * 0.80;
     if (water > 0.01){
       vec3 wN = normalize(mix(Ns, vec3(0.0, 1.0, 0.0) + vec3(-p.x, 0.0, -p.z) / RE, water));
       vec3 hv = normalize(uSun - rd);
@@ -782,7 +797,11 @@ void main(){
     float seaLevel = uElev.z / 1000.0;
     float tau = aerialDepth(ro.y + seaLevel, p.y + seaLevel, t)
               * (1.0 + 1.4 * uFogK * smoothstep(0.0, 1.0, uDust));
-    float fog = min(1.0 - exp(-tau), 0.72);
+    // Capped below one on purpose. The integral is honest, but a low
+    // sun over a long path puts the in-scattered haze brighter than
+    // the ground it covers, and letting it run to saturation deletes
+    // the landscape instead of softening it.
+    float fog = min(1.0 - exp(-tau), 0.58);
     /* Blend toward the light the air scatters IN, not toward the sky
        overhead. Reusing the zenith colour for a downward ray mixes in
        a saturated blue that is brighter, in linear light, than the
@@ -790,7 +809,7 @@ void main(){
        landscape, it deleted it. The haze warms toward the sun (Mie
        forward scattering) and dims on the night side. */
     float towardSun = max(dot(rd, uSun), 0.0);
-    vec3 haze = mix(vec3(0.110, 0.150, 0.220), vec3(0.260, 0.205, 0.145),
+    vec3 haze = mix(vec3(0.075, 0.100, 0.150), vec3(0.185, 0.150, 0.108),
                     pow(towardSun, 4.0));
     // Day/night factor from the sun's elevation at this point: the
     // haze has nothing to scatter after dark.
