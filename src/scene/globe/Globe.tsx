@@ -28,6 +28,7 @@ import 'cesium/Build/Cesium/Widgets/widgets.css';
 import type { JSX } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { EARTH_GREAT_CIRCLE_MAX, clampToGreatCircle } from '../../physics/earthScale.js';
+import { orientedEllipse } from './orientedEllipse.js';
 import { ISOTROPIC_RING, type RingAsymmetry } from '../../physics/effects/asymmetry.js';
 import { aftershockShakingFootprint } from '../../physics/events/earthquake/aftershocks.js';
 import type { ImpactDamageRadii } from '../../physics/events/impact/damageRings.js';
@@ -2331,13 +2332,20 @@ export function Globe(): JSX.Element {
       const blastLat = ringAnchor.latitude + northOffsetDeg;
       const blastLon = ringAnchor.longitude + eastOffsetDeg;
       const cesiumRotation = Math.PI / 2 - dirRad;
+      // See orientedEllipse.ts: this exact footprint is why the
+      // St Helens and Pelee presets stopped the globe's rendering.
+      const blastEllipse = orientedEllipse(
+        clampToGreatCircle(halfRange),
+        clampToGreatCircle(crosswindHalfWidth),
+        cesiumRotation
+      );
       viewer.entities.add({
         id: LATERAL_BLAST_ID,
         position: Cartesian3.fromDegrees(blastLon, blastLat),
         ellipse: {
-          semiMajorAxis: clampToGreatCircle(halfRange),
-          semiMinorAxis: clampToGreatCircle(crosswindHalfWidth),
-          rotation: cesiumRotation,
+          semiMajorAxis: blastEllipse.semiMajorAxis,
+          semiMinorAxis: blastEllipse.semiMinorAxis,
+          rotation: blastEllipse.rotation,
           material: radialDamageMaterial(LATERAL_BLAST_COLOR, 0.9),
           outline: true,
           outlineColor: LATERAL_BLAST_COLOR.withAlpha(0.55),
@@ -2373,13 +2381,21 @@ export function Globe(): JSX.Element {
       // Wind direction is clockwise from North. Convert: ccwFromEast =
       // π/2 − windDirRad.
       const cesiumRotation = Math.PI / 2 - windDirRad;
+      // Same invariant, same cure as the lateral blast: a plume wider
+      // than half its throw is legitimate ash physics, not a
+      // legitimate reason to kill the render loop.
+      const plumeEllipse = orientedEllipse(
+        clampToGreatCircle(halfRange),
+        clampToGreatCircle(crosswind),
+        cesiumRotation
+      );
       viewer.entities.add({
         id: ASHFALL_PLUME_ID,
         position: Cartesian3.fromDegrees(plumeLon, plumeLat),
         ellipse: {
-          semiMajorAxis: clampToGreatCircle(halfRange),
-          semiMinorAxis: clampToGreatCircle(crosswind),
-          rotation: cesiumRotation,
+          semiMajorAxis: plumeEllipse.semiMajorAxis,
+          semiMinorAxis: plumeEllipse.semiMinorAxis,
+          rotation: plumeEllipse.rotation,
           material: radialDamageMaterial(ASHFALL_PLUME_COLOR, 0.55),
           outline: false,
           height: 0,
