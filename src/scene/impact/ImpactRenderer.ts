@@ -1,3 +1,4 @@
+import type { MosaicBounds } from '../geo/mercator.js';
 import type { LoadedMosaic } from '../geo/tileMosaic.js';
 import { effectColorArray } from './effectStyle.js';
 import type { CameraPose } from './camera.js';
@@ -39,11 +40,39 @@ const TEXTURE_UNITS = {
   bloomWide: 2,
   imagery: 3,
   elevation: 4,
-  imageryFar: 5,
-  elevationFar: 6,
-  imageryWorld: 7,
-  elevationWorld: 8,
 } as const;
+
+/**
+ * Levels in the terrain pyramid, coarsest first. Two array textures
+ * hold all of them, so a level is an index rather than another pair of
+ * samplers and another five uniforms — which is what a real streaming
+ * quadtree will need when it replaces this fixed set.
+ *
+ * Must match MAX_LAYERS in the shader.
+ */
+export const MAX_LAYERS = 6;
+
+/**
+ * Every layer of an array texture is the same size, so each mosaic is
+ * resampled onto this grid on upload. 1024 keeps the finest level at
+ * its native 4x256 px while costing 4 x 1024^2 x 4 B = 16 MB per array.
+ */
+const LAYER_PX = 1024;
+const LAYER_MIPS = 11; // log2(1024) + 1
+
+/**
+ * Bounds for a level that has not loaded yet. Chosen so the shader's
+ * insideUV falls to exactly zero rather than relying on a NaN: the
+ * longitude denominator is 1 degree wide and a billion degrees away,
+ * so u is around -1e9 and the smoothstep clamps off. Using a real
+ * degenerate box (zero width) would divide by zero instead.
+ */
+const ABSENT_BOUNDS: MosaicBounds = {
+  lonWest: 1e9,
+  lonEast: 1e9 + 1,
+  latNorth: 1,
+  latSouth: 0,
+};
 
 /** Fraction of the device pixel grid we actually render at. The scene
  *  pass is a raymarch with a volume integral; full native resolution
@@ -67,9 +96,6 @@ function required<T>(value: T | null | undefined, what: string): T {
   }
   return value;
 }
-
-/** Which level of the terrain pyramid a mosaic belongs to. */
-export type MosaicLayer = 'near' | 'far' | 'world';
 
 interface RenderTarget {
   texture: WebGLTexture;
@@ -104,15 +130,12 @@ export class ImpactRenderer {
   private wideA: RenderTarget | null = null;
   private wideB: RenderTarget | null = null;
 
-  private imageryTexture: WebGLTexture;
-  private elevationTexture: WebGLTexture;
-  private imageryFarTexture: WebGLTexture;
-  private elevationFarTexture: WebGLTexture;
-  private imageryWorldTexture: WebGLTexture;
-  private elevationWorldTexture: WebGLTexture;
-  private mosaic: LoadedMosaic | null = null;
-  private farMosaic: LoadedMosaic | null = null;
-  private worldMosaic: LoadedMosaic | null = null;
+  private readonly imageryArray: WebGLTexture;
+  private readonly elevationArray: WebGLTexture;
+  /** Coarsest first. A hole is a level still in flight, not an error. */
+  private readonly layers: (LoadedMosaic | null)[] = Array.from({ length: MAX_LAYERS }, () => null);
+  private scratch: HTMLCanvasElement | null = null;
+  private staging: HTMLCanvasElement | null = null;
 
   private width = 0;
   private height = 0;
@@ -143,12 +166,8 @@ export class ImpactRenderer {
     };
     this.vao = required(gl.createVertexArray(), 'a vertex array');
 
-    this.imageryTexture = this.placeholder([120, 108, 88, 255]);
-    this.elevationTexture = this.placeholder([128, 128, 128, 255]);
-    this.imageryFarTexture = this.placeholder([120, 108, 88, 255]);
-    this.elevationFarTexture = this.placeholder([128, 128, 128, 255]);
-    this.imageryWorldTexture = this.placeholder([120, 108, 88, 255]);
-    this.elevationWorldTexture = this.placeholder([128, 128, 128, 255]);
+    this.imageryArray = this.layerArray();
+    this.elevationArray = this.layerArray();
 
     const sun = options.sunDirection ?? [-0.42, 0.2, -0.88];
     const len = Math.hypot(sun[0], sun[1], sun[2]) || 1;
@@ -203,25 +222,28 @@ export class ImpactRenderer {
     return perProgram.get(name) ?? null;
   }
 
-  private placeholder(rgba: readonly [number, number, number, number]): WebGLTexture {
+  /**
+   * One array texture for the whole pyramid. Storage is allocated up
+   * front for every level: WebGL zero-fills it, and a level that has
+   * not arrived is kept out of the shader by its bounds, not by an
+   * unbound sampler.
+   */
+  private layerArray(): WebGLTexture {
     const { gl } = this;
-    const texture = required(gl.createTexture(), 'a placeholder texture');
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGBA,
-      1,
-      1,
-      0,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      new Uint8Array(rgba)
-    );
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    const texture = required(gl.createTexture(), 'a pyramid array texture');
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY, texture);
+    gl.texStorage3D(gl.TEXTURE_2D_ARRAY, LAYER_MIPS, gl.RGBA8, LAYER_PX, LAYER_PX, MAX_LAYERS);
+    gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    if (this.anisotropyExt !== null) {
+      gl.texParameterf(
+        gl.TEXTURE_2D_ARRAY,
+        this.anisotropyExt.TEXTURE_MAX_ANISOTROPY_EXT,
+        this.anisotropy
+      );
+    }
     return texture;
   }
 
@@ -271,72 +293,91 @@ export class ImpactRenderer {
   }
 
   /**
-   * Upload a mosaic. `layer` picks which one: the close tile the
-   * viewer starts on, or the wide one that keeps the ground real once
-   * they pull back past its edge. Safe to call repeatedly.
+   * Upload one level of the pyramid. `level` is 0 for the coarsest and
+   * MAX_LAYERS - 1 for the sharpest; the shader walks them in that
+   * order and lets the finest one that covers a point win. Levels may
+   * arrive in any order — the planet-wide fallback is a handful of
+   * tiles and lands long before the close block does. Safe to call
+   * repeatedly on the same level.
    */
-  setMosaic(mosaic: LoadedMosaic, layer: MosaicLayer = 'near'): void {
+  setMosaic(mosaic: LoadedMosaic, level = MAX_LAYERS - 1): void {
     const { gl } = this;
-    if (layer === 'near') this.mosaic = mosaic;
-    else if (layer === 'far') this.farMosaic = mosaic;
-    else this.worldMosaic = mosaic;
+    const slot = Math.min(Math.max(level, 0), MAX_LAYERS - 1);
+    this.layers[slot] = mosaic;
 
-    const oldImagery =
-      layer === 'near'
-        ? this.imageryTexture
-        : layer === 'far'
-          ? this.imageryFarTexture
-          : this.imageryWorldTexture;
-    gl.deleteTexture(oldImagery);
-    const imagery = required(gl.createTexture(), 'the imagery texture');
-    gl.bindTexture(gl.TEXTURE_2D, imagery);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mosaic.imagery);
-    this.finishTexture();
-    if (layer === 'near') this.imageryTexture = imagery;
-    else if (layer === 'far') this.imageryFarTexture = imagery;
-    else this.imageryWorldTexture = imagery;
+    const dst = this.fit(mosaic.imagery);
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY, this.imageryArray);
+    gl.texSubImage3D(
+      gl.TEXTURE_2D_ARRAY,
+      0,
+      0,
+      0,
+      slot,
+      LAYER_PX,
+      LAYER_PX,
+      1,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      dst
+    );
+    gl.generateMipmap(gl.TEXTURE_2D_ARRAY);
 
-    const oldElevation =
-      layer === 'near'
-        ? this.elevationTexture
-        : layer === 'far'
-          ? this.elevationFarTexture
-          : this.elevationWorldTexture;
-    gl.deleteTexture(oldElevation);
-    const elevation = required(gl.createTexture(), 'the elevation texture');
-    const { bytes, width, height } = mosaic.elevation;
-    // One byte per sample, expanded to RGBA: WebGL2's single-channel
-    // R8 path needs an unpack alignment dance that buys nothing here.
-    const rgba = new Uint8Array(width * height * 4);
-    for (let i = 0; i < bytes.length; i++) {
-      const v = bytes[i] ?? 0;
-      rgba[i * 4] = v;
-      rgba[i * 4 + 1] = v;
-      rgba[i * 4 + 2] = v;
-      rgba[i * 4 + 3] = 255;
-    }
-    gl.bindTexture(gl.TEXTURE_2D, elevation);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, rgba);
-    this.finishTexture();
-    if (layer === 'near') this.elevationTexture = elevation;
-    else if (layer === 'far') this.elevationFarTexture = elevation;
-    else this.elevationWorldTexture = elevation;
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY, this.elevationArray);
+    gl.texSubImage3D(
+      gl.TEXTURE_2D_ARRAY,
+      0,
+      0,
+      0,
+      slot,
+      LAYER_PX,
+      LAYER_PX,
+      1,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      this.fit(this.elevationCanvas(mosaic))
+    );
+    gl.generateMipmap(gl.TEXTURE_2D_ARRAY);
   }
 
-  private finishTexture(): void {
-    const { gl } = this;
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    if (this.anisotropyExt !== null) {
-      gl.texParameterf(
-        gl.TEXTURE_2D,
-        this.anisotropyExt.TEXTURE_MAX_ANISOTROPY_EXT,
-        this.anisotropy
-      );
+  /**
+   * The normalised DEM arrives as one byte per sample. Painting it into
+   * a canvas lets the same resampling path serve both layers, and lets
+   * the GPU take a canvas instead of a hand-built RGBA buffer.
+   */
+  private elevationCanvas(mosaic: LoadedMosaic): HTMLCanvasElement {
+    const { bytes, width, height } = mosaic.elevation;
+    this.staging ??= document.createElement('canvas');
+    const canvas = this.staging;
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (ctx === null) throw new Error('ImpactRenderer: 2D canvas context unavailable');
+    const image = ctx.createImageData(width, height);
+    for (let i = 0; i < bytes.length; i++) {
+      const v = bytes[i] ?? 0;
+      image.data[i * 4] = v;
+      image.data[i * 4 + 1] = v;
+      image.data[i * 4 + 2] = v;
+      image.data[i * 4 + 3] = 255;
     }
+    ctx.putImageData(image, 0, 0);
+    return canvas;
+  }
+
+  /** Resample a mosaic onto the array's fixed grid. */
+  private fit(source: HTMLCanvasElement): HTMLCanvasElement {
+    if (source.width === LAYER_PX && source.height === LAYER_PX) return source;
+    this.scratch ??= document.createElement('canvas');
+    const canvas = this.scratch;
+    canvas.width = LAYER_PX;
+    canvas.height = LAYER_PX;
+    const ctx = canvas.getContext('2d');
+    if (ctx === null) throw new Error('ImpactRenderer: 2D canvas context unavailable');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.clearRect(0, 0, LAYER_PX, LAYER_PX);
+    ctx.drawImage(source, 0, 0, LAYER_PX, LAYER_PX);
+    return canvas;
   }
 
   // ---- drawing ---------------------------------------------------
@@ -400,103 +441,50 @@ export class ImpactRenderer {
     gl.uniform1f(this.location(p, 'uFogK'), 1);
     gl.uniform1f(this.location(p, 'uGrainF'), 6 / Math.max(km(scene.craterRadius), 0.05));
 
-    const mosaic = this.mosaic;
-    const imgBounds = mosaic?.imageryBlock.bounds;
-    const demBounds = mosaic?.elevationBlock.bounds;
-    gl.uniform4f(
-      this.location(p, 'uImgBnd'),
-      imgBounds?.lonWest ?? -1,
-      imgBounds?.lonEast ?? 1,
-      imgBounds?.latNorth ?? 1,
-      imgBounds?.latSouth ?? -1
-    );
-    gl.uniform4f(
-      this.location(p, 'uDemBnd'),
-      demBounds?.lonWest ?? -1,
-      demBounds?.lonEast ?? 1,
-      demBounds?.latNorth ?? 1,
-      demBounds?.latSouth ?? -1
-    );
+    /* ── The terrain pyramid ────────────────────────────────────
+       Every level is handed to the shader with its own bounds, its own
+       elevation range and its own mean colour, and the shader picks
+       the finest that covers each pixel. Levels still in flight get
+       ABSENT_BOUNDS so they simply never cover anything. */
+    const imgBnd = new Float32Array(MAX_LAYERS * 4);
+    const demBnd = new Float32Array(MAX_LAYERS * 4);
+    const elev = new Float32Array(MAX_LAYERS * 2);
+    const mean = new Float32Array(MAX_LAYERS * 3);
+    // Neutral desert, in linear light: what an absent level's exposure
+    // is matched against so a division never blows up.
+    const NEUTRAL: readonly [number, number, number] = [0.25, 0.21, 0.14];
+    for (let i = 0; i < MAX_LAYERS; i++) {
+      const layer = this.layers[i] ?? null;
+      const ib = layer?.imageryBlock.bounds ?? ABSENT_BOUNDS;
+      const db = layer?.elevationBlock.bounds ?? ABSENT_BOUNDS;
+      imgBnd.set([ib.lonWest, ib.lonEast, ib.latNorth, ib.latSouth], i * 4);
+      demBnd.set([db.lonWest, db.lonEast, db.latNorth, db.latSouth], i * 4);
+      elev.set([layer?.elevation.min ?? 0, layer?.elevation.max ?? 1], i * 2);
+      mean.set(layer?.meanColor ?? NEUTRAL, i * 3);
+    }
+    gl.uniform4fv(this.location(p, 'uLayerImgBnd'), imgBnd);
+    gl.uniform4fv(this.location(p, 'uLayerDemBnd'), demBnd);
+    gl.uniform2fv(this.location(p, 'uLayerElev'), elev);
+    gl.uniform3fv(this.location(p, 'uLayerMean'), mean);
+    gl.uniform1i(this.location(p, 'uLayerCount'), MAX_LAYERS);
+
+    // Ground zero sits at y = 0 in the local frame, so the scene needs
+    // the elevation there from the sharpest level that has it.
+    const finest = [...this.layers].reverse().find((l) => l !== null) ?? null;
     gl.uniform3f(
       this.location(p, 'uElev'),
-      mosaic?.elevation.min ?? 0,
-      mosaic?.elevation.max ?? 1,
-      mosaic?.elevationAtOrigin ?? 0
+      finest?.elevation.min ?? 0,
+      finest?.elevation.max ?? 1,
+      finest?.elevationAtOrigin ?? 0
     );
     gl.uniform2f(this.location(p, 'uOrg'), scene.latitude, scene.longitude);
     gl.uniform3f(this.location(p, 'uAvg'), 0.5, 0.46, 0.38);
 
-    // Wide mosaic
-    const far = this.farMosaic;
-    const farImg = far?.imageryBlock.bounds;
-    const farDem = far?.elevationBlock.bounds;
-    gl.uniform1f(this.location(p, 'uHasFar'), far === null ? 0 : 1);
-    gl.uniform4f(
-      this.location(p, 'uImgBnd2'),
-      farImg?.lonWest ?? -1,
-      farImg?.lonEast ?? 1,
-      farImg?.latNorth ?? 1,
-      farImg?.latSouth ?? -1
-    );
-    gl.uniform4f(
-      this.location(p, 'uDemBnd2'),
-      farDem?.lonWest ?? -1,
-      farDem?.lonEast ?? 1,
-      farDem?.latNorth ?? 1,
-      farDem?.latSouth ?? -1
-    );
-    gl.uniform2f(this.location(p, 'uElev2'), far?.elevation.min ?? 0, far?.elevation.max ?? 1);
-    gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.imageryFar);
-    gl.bindTexture(gl.TEXTURE_2D, this.imageryFarTexture);
-    gl.uniform1i(this.location(p, 'uImg2'), TEXTURE_UNITS.imageryFar);
-    gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.elevationFar);
-    gl.bindTexture(gl.TEXTURE_2D, this.elevationFarTexture);
-    gl.uniform1i(this.location(p, 'uDem2'), TEXTURE_UNITS.elevationFar);
-
-    // World level
-    const world = this.worldMosaic;
-    const wImg = world?.imageryBlock.bounds;
-    const wDem = world?.elevationBlock.bounds;
-    gl.uniform1f(this.location(p, 'uHasWorld'), world === null ? 0 : 1);
-    gl.uniform4f(
-      this.location(p, 'uImgBndW'),
-      wImg?.lonWest ?? -1,
-      wImg?.lonEast ?? 1,
-      wImg?.latNorth ?? 1,
-      wImg?.latSouth ?? -1
-    );
-    gl.uniform4f(
-      this.location(p, 'uDemBndW'),
-      wDem?.lonWest ?? -1,
-      wDem?.lonEast ?? 1,
-      wDem?.latNorth ?? 1,
-      wDem?.latSouth ?? -1
-    );
-    gl.uniform2f(this.location(p, 'uElevW'), world?.elevation.min ?? 0, world?.elevation.max ?? 1);
-    gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.imageryWorld);
-    gl.bindTexture(gl.TEXTURE_2D, this.imageryWorldTexture);
-    gl.uniform1i(this.location(p, 'uImgW'), TEXTURE_UNITS.imageryWorld);
-    gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.elevationWorld);
-    gl.bindTexture(gl.TEXTURE_2D, this.elevationWorldTexture);
-    gl.uniform1i(this.location(p, 'uDemW'), TEXTURE_UNITS.elevationWorld);
-
-    // Exposure matching between levels, and the widest relief across
-    // whichever levels are actually bound.
-    const NEUTRAL: readonly [number, number, number] = [0.25, 0.21, 0.14];
-    const mean = (mo: LoadedMosaic | null): readonly [number, number, number] =>
-      mo?.meanColor ?? NEUTRAL;
-    const mNear = mean(mosaic);
-    gl.uniform3f(this.location(p, 'uMeanNear'), mNear[0], mNear[1], mNear[2]);
-    const mFar = mean(far);
-    gl.uniform3f(this.location(p, 'uMeanFar'), mFar[0], mFar[1], mFar[2]);
-    const mWorld = mean(world);
-    gl.uniform3f(this.location(p, 'uMeanWorld'), mWorld[0], mWorld[1], mWorld[2]);
-
-    // Bracket the march on the MIDDLE level's relief. The close tile
-    // spans tens of kilometres and knows nothing about the mountains
-    // on the horizon; the planet's range is too thick for the march to
-    // resolve anything inside it.
-    const marchLayer = far ?? mosaic;
+    /* Bracket the raymarch on a MIDDLE level's relief. The sharpest
+       block spans a few kilometres and knows nothing about the
+       mountains on the horizon; the planet's range is 20 km thick and
+       nothing the march can afford resolves anything inside it. */
+    const marchLayer = this.layers[1] ?? this.layers[0] ?? finest;
     gl.uniform2f(
       this.location(p, 'uMarchRange'),
       marchLayer?.elevation.min ?? 0,
@@ -533,11 +521,11 @@ export class ImpactRenderer {
     // you are standing in to a map you are reading.
     gl.uniform1f(this.location(p, 'uScale'), pose.distance / Math.max(scene.framingReach, 1));
     gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.imagery);
-    gl.bindTexture(gl.TEXTURE_2D, this.imageryTexture);
-    gl.uniform1i(this.location(p, 'uImg'), TEXTURE_UNITS.imagery);
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY, this.imageryArray);
+    gl.uniform1i(this.location(p, 'uImgArr'), TEXTURE_UNITS.imagery);
     gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.elevation);
-    gl.bindTexture(gl.TEXTURE_2D, this.elevationTexture);
-    gl.uniform1i(this.location(p, 'uDem'), TEXTURE_UNITS.elevation);
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY, this.elevationArray);
+    gl.uniform1i(this.location(p, 'uDemArr'), TEXTURE_UNITS.elevation);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 
     // ---- 2. ejecta -----------------------------------------------
@@ -638,12 +626,8 @@ export class ImpactRenderer {
       this.disposeTarget(t);
     }
     this.scene = this.nearA = this.nearB = this.wideA = this.wideB = null;
-    gl.deleteTexture(this.imageryTexture);
-    gl.deleteTexture(this.elevationTexture);
-    gl.deleteTexture(this.imageryFarTexture);
-    gl.deleteTexture(this.elevationFarTexture);
-    gl.deleteTexture(this.imageryWorldTexture);
-    gl.deleteTexture(this.elevationWorldTexture);
+    gl.deleteTexture(this.imageryArray);
+    gl.deleteTexture(this.elevationArray);
     gl.deleteVertexArray(this.vao);
     for (const program of Object.values(this.programs)) gl.deleteProgram(program);
     this.uniforms.clear();

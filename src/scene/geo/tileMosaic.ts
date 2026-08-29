@@ -63,6 +63,11 @@ export interface MosaicRequest {
   readonly spanMeters: number;
   /** Block side, in tiles. Higher = sharper but more requests (n²). */
   readonly tiles: number;
+  /** Force a zoom instead of deriving one from the span. A pyramid
+   *  wants exact, evenly-spaced levels; letting the planner round each
+   *  span to the nearest zoom makes the steps between levels uneven,
+   *  which shows up as one blurry band and one sharp one. */
+  readonly zoom?: number;
 }
 
 /** Everything the renderer needs to bind one site. */
@@ -115,7 +120,10 @@ export function planMosaic(
   request: MosaicRequest,
   source: TileSource
 ): { block: TileBlock; requests: number } {
-  const z = zoomForSpan(request.latitude, request.spanMeters, request.tiles, source.maxZoom);
+  const z =
+    request.zoom === undefined
+      ? zoomForSpan(request.latitude, request.spanMeters, request.tiles, source.maxZoom)
+      : Math.min(Math.max(Math.round(request.zoom), 0), source.maxZoom);
   const block = tileBlockAround(request.longitude, request.latitude, z, request.tiles);
   return { block, requests: block.tiles * block.tiles };
 }
@@ -178,9 +186,13 @@ async function stitch(
 const cache = new Map<string, Promise<LoadedMosaic>>();
 
 function cacheKey(r: MosaicRequest): string {
-  return [r.latitude.toFixed(5), r.longitude.toFixed(5), Math.round(r.spanMeters), r.tiles].join(
-    '|'
-  );
+  return [
+    r.latitude.toFixed(5),
+    r.longitude.toFixed(5),
+    Math.round(r.spanMeters),
+    r.tiles,
+    r.zoom ?? 'auto',
+  ].join('|');
 }
 
 /**

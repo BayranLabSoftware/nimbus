@@ -47,42 +47,31 @@ uniform float uFlash;      // 0..1
 uniform float uFogK;       // extra extinction from lofted dust, 0..1
 uniform float uGrainF;     // terrain grain frequency, cycles per km
 
-uniform sampler2D uImg;    // satellite imagery
-uniform sampler2D uDem;    // normalised elevation, one channel
-uniform vec4  uImgBnd;     // lonWest, lonEast, latNorth, latSouth
-uniform vec4  uDemBnd;     // imagery and elevation are planned on
-                           // independent zoom grids, so they do NOT
-                           // share bounds — mapping both through the
-                           // same rectangle would shift the terrain
-                           // against the photograph.
-uniform vec3  uElev;       // metres: min, max, value at ground zero
+/* Terrain pyramid. Four levels, coarsest first, all the same size and
+   all in one array texture: adding a level is data, not another pair
+   of samplers and another five uniforms. Imagery and elevation keep
+   separate bounds — the terrain source stops at zoom 15 while the
+   imagery goes to 19, so at close range the two blocks are genuinely
+   different patches of ground and pretending otherwise would put the
+   photograph in the wrong place. */
+#define MAX_LAYERS 6
+// sampler2DArray has no default precision in GLSL ES 3.00 the way
+// sampler2D does; without this the shader will not compile.
+precision highp sampler2DArray;
+uniform sampler2DArray uImgArr;
+uniform sampler2DArray uDemArr;
+uniform vec4  uLayerImgBnd[MAX_LAYERS];  // lonWest, lonEast, latNorth, latSouth
+uniform vec4  uLayerDemBnd[MAX_LAYERS];  // the DEM caps out at z15, so it
+                                         // covers more ground than the photo
+uniform vec2  uLayerElev[MAX_LAYERS];    // metres: min, max
+uniform vec3  uLayerMean[MAX_LAYERS];    // mean linear colour, for exposure
+uniform int   uLayerCount;
+
+uniform vec3  uElev;       // metres: min, max, value at ground zero (finest level)
+uniform vec3  uAvg;        // fallback colour where no level covers
+
 uniform vec2  uOrg;        // lat0, lon0 (degrees)
-uniform vec3  uAvg;        // fallback colour outside the mosaic
 
-// Second, wider mosaic. Pulling the camera back to take in a
-// thousand-kilometre contour leaves the close tile behind, and without
-// this the ground outside it collapses to one flat average colour.
-uniform sampler2D uImg2;
-uniform sampler2D uDem2;
-uniform vec4  uImgBnd2;
-uniform vec4  uDemBnd2;
-uniform vec2  uElev2;      // metres: min, max of the wide DEM
-uniform float uHasFar;     // 1 when the wide mosaic is bound
-
-// Third level: the whole planet, coarse. Without it the map is a
-// square of terrain floating in flat colour, and pulling the camera
-// back runs off the edge of the world.
-uniform sampler2D uImgW;
-uniform sampler2D uDemW;
-uniform vec4  uImgBndW;
-uniform vec4  uDemBndW;
-uniform vec2  uElevW;
-uniform float uHasWorld;
-// Mean linear colour of each level's imagery, used to match exposure
-// where two levels meet.
-uniform vec3  uMeanNear;
-uniform vec3  uMeanFar;
-uniform vec3  uMeanWorld;
 /* Elevation range the height-field march brackets against, in metres.
    Taken from the middle level, not the close tile and not the planet:
    the close tile spans a few tens of kilometres and misses every real
@@ -174,33 +163,64 @@ vec2 toUV(vec2 lonlat, vec4 bnd){
    landscape. */
 float insideUV(vec2 uv){ vec2 e = min(uv, 1.0 - uv); return smoothstep(0.0, 0.090, min(e.x, e.y)); }
 
-/* Real terrain height (km) above the impact site's own elevation.
-   Reads the close mosaic where it covers, the wide one beyond it. */
-/* Elevation in metres, taking the finest level that covers this point:
-   the close tile, then the wide one, then the planet. */
+float lumOf(vec3 c){ return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
+
+/* Imagery luminance at one point of one level. Clamped like every
+   other mosaic read: a UV that walks off the block would wrap onto the
+   opposite edge of a completely different piece of ground. */
+float lumAt(vec2 uv, float layer){
+  return lumOf(texture(uImgArr, vec3(clamp(uv, 0.0015, 0.9985), layer)).rgb);
+}
+
+/* Micro-relief taken from the imagery itself.
+   The DEM stops at about 30 m/px. Inside that a hillside is a flat
+   plane with a photograph glued to it, which is precisely what reads
+   as a printed map. The photograph still carries the ground's own
+   texture at metre scale in its luminance, so treating that luminance
+   as a height field and taking its gradient recovers a normal that
+   responds to OUR sun instead of the one baked into the picture.
+   This is shading only. It never touches the surface the rays hit,
+   the elevation the physics reads, or any reported number: it is a
+   lighting cue, and is faded out as soon as the pixel is coarser than
+   the texel it would be inventing detail from. */
+vec3 photoRelief(vec2 geo, int lvl){
+  vec4 b = uLayerImgBnd[lvl];
+  vec2 uv = toUV(geo, b);
+  vec2 tx = 1.0 / vec2(textureSize(uImgArr, 0).xy);
+  float l = float(lvl);
+  float xa = lumAt(uv - vec2(tx.x, 0.0), l);
+  float xb = lumAt(uv + vec2(tx.x, 0.0), l);
+  float ya = lumAt(uv - vec2(0.0, tx.y), l);
+  float yb = lumAt(uv + vec2(0.0, tx.y), l);
+  // uv.y runs south, world +z runs north, hence the sign on the second.
+  return vec3(-(xb - xa) * 0.5, 0.0, (yb - ya) * 0.5);
+}
+
+/* Metres covered by one imagery texel at this level — the yardstick
+   for deciding when the pixel has outrun the data. */
+float texelMetres(int lvl){
+  vec4 b = uLayerImgBnd[lvl];
+  return (b.z - b.w) * 111320.0 / float(textureSize(uImgArr, 0).y);
+}
+
+/* Real terrain height (km) above the impact site's own elevation. */
+
+/* Elevation in metres from the finest level that covers this point.
+   Walks the pyramid coarse to fine so the sharpest available data
+   always wins, and nothing is left uncovered while any level reaches. */
 float elevationAt(vec2 xz, out float water, out float inside){
   vec2 geo = toGeo(xz);
   float metres = 0.0;
   float cover = 0.0;
-
-  if (uHasWorld > 0.5){
-    vec2 uvW = toUV(geo, uDemBndW);
-    metres = uElevW.x + texture(uDemW, clamp(uvW, 0.0015, 0.9985)).r * (uElevW.y - uElevW.x);
-    cover = insideUV(uvW);
+  for (int i = 0; i < MAX_LAYERS; i++){
+    if (i >= uLayerCount) break;
+    vec2 uv = toUV(geo, uLayerDemBnd[i]);
+    float w = insideUV(uv);
+    if (w <= 0.0) continue;
+    float e = texture(uDemArr, vec3(clamp(uv, 0.0015, 0.9985), float(i))).r;
+    metres = mix(metres, uLayerElev[i].x + e * (uLayerElev[i].y - uLayerElev[i].x), w);
+    cover = max(cover, w);
   }
-  if (uHasFar > 0.5){
-    vec2 uvF = toUV(geo, uDemBnd2);
-    float inF = insideUV(uvF);
-    float wide = uElev2.x + texture(uDem2, clamp(uvF, 0.0015, 0.9985)).r * (uElev2.y - uElev2.x);
-    metres = mix(metres, wide, inF);
-    cover = max(cover, inF);
-  }
-  vec2 uvN = toUV(geo, uDemBnd);
-  float inN = insideUV(uvN);
-  float near = uElev.x + texture(uDem, clamp(uvN, 0.0015, 0.9985)).r * (uElev.y - uElev.x);
-  metres = mix(metres, near, inN);
-  cover = max(cover, inN);
-
   inside = cover;
   water = 1.0 - smoothstep(-8.0, 3.0, metres);
   return metres;
@@ -386,23 +406,34 @@ float marchGround(vec3 ro, vec3 rd, float tSphere){
 /* Volume density. 'hot' separates gas that EMITS from dust that only
    SCATTERS: without the split a cooled mushroom cap renders as an
    opaque black blob, because it neither emits nor receives. */
-float density(vec3 p, out float temp, out float hot){
-  float sc = 2.1 / max(uFireR, 0.02);
-  float n1 = fbm(p * sc + vec3(0.0, -uTime * 0.30, uTime * 0.07), 4);
-  float n2 = fbm(p * sc * 3.1 + vec3(uTime * 0.15, 0.0, -uTime * 0.11), 3);
-  float turb = 0.62 * n1 + 0.38 * n2;
-
+/* The column as geometry, with the turbulence passed in.
+   Split out from density() so the shadow march can reuse it with the
+   turbulence frozen: seven noise evaluations per sample is affordable
+   once along the view ray and not five more times towards the sun,
+   and a light ray does not need the fine structure to know whether it
+   is inside the column. */
+float envelope(vec3 p, float turb, float turbCol, out float fireFrac){
   vec3 q = p - vec3(0.0, uFireY, 0.0);
   float rise = uFireY / max(uFireR, 0.01);
   float capR = uFireR * (1.0 + 0.42 * smoothstep(0.0, 2.0, rise));
   float rr = length(vec3(q.x, q.y * (1.0 + 0.85 * smoothstep(0.6, 3.0, rise)), q.z));
-  float edge = capR * (0.72 + 0.62 * turb);
-  float cap = 1.0 - smoothstep(edge * 0.80, edge * 1.10, rr);
+  // Cauliflower, not a flying saucer: the lumps have to be a large
+  // fraction of the cap and the falloff sharp enough to read as
+  // separate billows rather than one soft fringe.
+  float edge = capR * (0.60 + 0.88 * turb);
+  float cap = 1.0 - smoothstep(edge * 0.86, edge * 1.06, rr);
   float torus = 1.0 - smoothstep(capR * 0.30, capR * 0.95,
                  abs(length(q.xz) - capR * 0.62) + abs(q.y) * 1.5);
   cap = mix(cap, max(cap * 0.55, torus), smoothstep(1.2, 3.2, rise));
 
-  float stem = (1.0 - smoothstep(uStemR * 0.35, uStemR * (1.15 + 0.7 * turb), length(p.xz)))
+  /* The stem takes its own turbulence. Modulating it at the fireball's
+     scale gave a smooth pipe with a fine crust — the frequency that
+     reads as a rising column is set by the column's own width, and it
+     has to wander sideways as well as ripple. */
+  float lean = (turbCol - 0.5) * uStemR * 1.9;
+  float rStem = length(p.xz - vec2(lean, lean * 0.6));
+  float stem = (1.0 - smoothstep(uStemR * (0.28 + 0.30 * turbCol),
+                                 uStemR * (1.05 + 0.85 * turbCol), rStem))
              * smoothstep(-0.01, uFireR * 0.30, p.y)
              * (1.0 - smoothstep(uFireY * 0.72, uFireY * 1.02, p.y))
              * step(0.001, uStemR);
@@ -412,16 +443,126 @@ float density(vec3 p, out float temp, out float hot){
              * (1.0 - smoothstep(0.0, max(wallH, 1e-4), p.y)) * step(-0.001, p.y)
              * smoothstep(0.0, 0.15, uTime) * (0.55 + 0.9 * turb);
 
-  float fire = max(cap, stem * 0.80);
-  float dust = max(ring, stem * 0.55 * smoothstep(0.8, 2.5, rise));
-  float d = clamp(max(fire, dust) * (0.5 + 1.0 * turb), 0.0, 1.0);
+  /* The stem is drawn-up dust, not plasma: it has to be thinner than
+     the cap and shot through with its own turbulence, or it renders as
+     a solid pillar with the cap balanced on top. */
+  stem *= 0.30 + 0.85 * turbCol;
+  float fire = max(cap, stem * 0.55);
+  float dust = max(ring, stem * 0.70 * smoothstep(0.8, 2.5, rise));
+  fireFrac = clamp(fire / max(fire + dust, 1e-4), 0.0, 1.0);
+  return clamp(max(fire, dust) * (0.5 + 1.0 * turb), 0.0, 1.0);
+}
+
+float density(vec3 p, out float temp, out float hot){
+  float sc = 2.1 / max(uFireR, 0.02);
+  float n1 = fbm(p * sc + vec3(0.0, -uTime * 0.30, uTime * 0.07), 4);
+  float n2 = fbm(p * sc * 3.1 + vec3(uTime * 0.15, 0.0, -uTime * 0.11), 3);
+  float turb = 0.62 * n1 + 0.38 * n2;
+  // Column-scale turbulence: wide, and stretched along the rise.
+  float cs = 1.0 / max(uStemR * 2.2, 0.05);
+  float turbCol = fbm(vec3(p.x, p.y * 0.30, p.z) * cs + vec3(0.0, -uTime * 0.05, 3.7), 3);
+
+  float ff;
+  float d = envelope(p, turb, turbCol, ff);
   // Geometry alone is not enough: once the bubble drops below ~700 K
   // it is dust, not incandescent gas, and must be lit rather than emit.
-  hot = clamp(fire / max(fire + dust, 1e-4), 0.0, 1.0) * smoothstep(680.0, 2100.0, uFireT);
+  hot = ff * smoothstep(680.0, 2100.0, uFireT);
 
+  vec3 q = p - vec3(0.0, uFireY, 0.0);
+  float capR = uFireR * (1.0 + 0.42 * smoothstep(0.0, 2.0, uFireY / max(uFireR, 0.01)));
   float core = 1.0 - smoothstep(0.0, capR * 1.05, length(q));
   temp = mix(520.0, uFireT, pow(clamp(core, 0.0, 1.0), 0.62));
   return d;
+}
+
+/* Optical depth between a point and the sun. Without it every sample
+   in the column is lit identically, the volume has no near side and no
+   far side, and a kilometre of pulverised rock reads as a bank of
+   white smoke. Five taps is enough to separate the lit flank from the
+   shadowed one, which is the whole job — this is not a
+   radiative-transfer solution and is not offered as one. */
+float sunDepth(vec3 p){
+  float ss = max(max(uFireR, uStemR), 0.02) * 0.85;
+  float tau = 0.0;
+  for (int j = 0; j < 5; j++){
+    vec3 q = p + uSun * (ss * (float(j) + 0.5));
+    if (q.y < 0.0) break;
+    float ff;
+    tau += envelope(q, 0.5, 0.5, ff) * ss;
+  }
+  return tau * (2.6 / max(uFireR, 0.02));
+}
+
+/* How much sunlight reaches a point, direct beam plus two broader
+   lobes standing in for multiple scattering.
+   Single scattering alone makes an optically thick cloud black, which
+   is not what a mushroom cap looks like: light that fails to arrive
+   straight from the sun still arrives after a few bounces, and that
+   is the whole difference between a grey cloud and a silhouette. The
+   lobes are normalised so an unshadowed sample still gets exactly one
+   unit of light. */
+float sunlight(vec3 p){
+  float tau = sunDepth(p);
+  return (exp(-tau) + 0.42 * exp(-tau * 0.22) + 0.20 * exp(-tau * 0.06)) / 1.62;
+}
+
+/* Radius of the cap, which also sets the scale of everything above
+   the ground. Recomputed rather than passed around: it is four
+   operations and it must not drift between the density field and the
+   volume that brackets it. */
+float capRadius(){
+  return uFireR * (1.0 + 0.42 * smoothstep(0.0, 2.0, uFireY / max(uFireR, 0.01)));
+}
+
+/* One pass of the volume integral over [t0, t1].
+   Two passes, not one, because the two things in this volume live at
+   completely different scales. The column is a couple of hundred
+   metres across; the dust wall rides the shock front, kilometres out.
+   A single sphere holding both gives a step longer than the column is
+   wide, and a step that long samples the column exactly once, at full
+   strength — which is how a translucent dust column comes out as an
+   opaque white slab with hard vertical sides. */
+void marchVolume(vec3 ro, vec3 rd, float t0, float t1, int steps,
+                 float jit, float extinction, vec3 fireCol, float sunPhase,
+                 inout float trans, inout vec3 acc){
+  const int MAX_STEPS = 40;
+  if (t1 <= t0) return;
+  float dt = (t1 - t0) / float(steps);
+  for (int i = 0; i < MAX_STEPS; i++){
+    if (i >= steps || trans < 0.015) break;
+    vec3 p = ro + rd * (t0 + dt * (float(i) + jit));
+    if (p.y < -0.005) continue;
+    float T, hot;
+    float de = density(p, T, hot);
+    if (de <= 0.004) continue;
+    float a = 1.0 - exp(-de * dt * extinction);
+    vec3 emit = blackbody(T) * (0.5 + 5.2 * smoothstep(650.0, 3200.0, T)) * hot;
+    vec3 toF = vec3(0.0, max(uFireY, uFireR * 0.4), 0.0) - p;
+    float fd = max(length(toF), uFireR * 0.7);
+    /* Dust is LIT, never emissive. What was missing was not brightness
+       but shadow: with every sample lit the same, the volume had no
+       near side and no far side, and a kilometre of pulverised rock
+       came out as a bank of white smoke. The sun term can be strong
+       precisely because most of the volume no longer receives it, and
+       the sky term is dimmed by the same occlusion — the inside of a
+       dust column does not see the sky either. */
+    float shade = sunlight(p);
+    /* Pulverised rock reflects about a third of what hits it. The
+       previous albedo was effectively 0.95, which is fresh snow: with
+       the fireball cooled past its emissive range — 400 K twelve
+       seconds after a fifteen-kilotonne burst — scattering is ALL
+       there is, and an albedo near one turns the column into a white
+       slab no amount of shadowing can rescue. */
+    vec3 scatter = vec3(0.34, 0.30, 0.25) * sunPhase * shade
+                 // Sky above, dusty ground below. Both dimmed by the
+                 // same occlusion: the inside of a column sees neither.
+                 + mix(vec3(0.09, 0.07, 0.055), vec3(0.10, 0.13, 0.20),
+                       clamp(0.5 + 0.5 * normalize(p - vec3(0.0, uFireY, 0.0)).y, 0.0, 1.0))
+                   * (0.22 + 0.78 * shade)
+                 + fireCol * ((uFireR * uFireR) / (fd * fd)) * 3.2;
+    acc += (emit + scatter * (1.0 - hot)) * a * trans;
+    trans *= 1.0 - a * 0.94;
+  }
 }
 
 void main(){
@@ -455,45 +596,61 @@ void main(){
 
     float grain = fbm(vec3(p.xz * (9.0 / max(uCraterR, 0.05)), 0.0), 4);
     vec2 geo = toGeo(p.xz);
-    vec2 uvI = toUV(geo, uImgBnd);
-    float inside = insideUV(uvI);
     float water, demInside;
     terrain(p.xz, water, demInside);
 
-    // Finest level that covers this point: close tile, wide tile,
-    // then the planet. Something always covers it, so the ground never
-    // runs out before the horizon does.
-    /* Level selection.
-       Coverage alone is not enough. The close tile is sharper and has
-       its own exposure, so at map altitude its border shows up as a
-       bright rectangle sitting on the coarser level underneath — which
-       is how a tile block gets read as "the map is a square". Two
-       things fix it: fade a level out once the camera is far enough
-       that its extra detail is wasted, and normalise every level's
-       exposure onto the close tile's, so where two levels meet they
-       agree on brightness. */
-    vec3 photo = vec3(0.0);
-    float cover = 0.0;
-    vec3 target = uMeanNear;
+    /* ── The terrain pyramid, coarse to fine ──────────────────────
+       Every level is used wherever it covers, at full strength. An
+       earlier version faded the sharp level out as the camera pulled
+       back, on the theory that its detail was wasted at map altitude;
+       what that actually did was throw away the only sharp data on
+       screen and fall back on a level eight times coarser, which is
+       why the map went soft the moment you zoomed out. A border does
+       not need a fade to nothing — it needs a fade to the level
+       underneath, which insideUV already gives, plus a shared
+       exposure so the two agree on brightness where they meet. */
+    vec3 photo = uAvg * uAvg;
+    float inside = 0.0;
+    int fine = 0;
+    vec3 target = uLayerMean[max(uLayerCount - 1, 0)];
+    for (int i = 0; i < MAX_LAYERS; i++){
+      if (i >= uLayerCount) break;
+      vec2 uv = toUV(geo, uLayerImgBnd[i]);
+      float w = insideUV(uv);
+      if (w <= 0.0) continue;
+      vec3 c = pow(texture(uImgArr, vec3(clamp(uv, 0.0015, 0.9985), float(i))).rgb, vec3(2.2));
+      photo = mix(photo, c * (target / max(uLayerMean[i], vec3(1e-3))), w);
+      inside = max(inside, w);
+      fine = i;
+    }
 
-    if (uHasWorld > 0.5){
-      vec2 uvW = toUV(geo, uImgBndW);
-      vec3 c = pow(texture(uImgW, clamp(uvW, 0.0015, 0.9985)).rgb, vec3(2.2));
-      photo = c * (target / uMeanWorld);
-      cover = insideUV(uvW);
-    }
-    if (uHasFar > 0.5){
-      vec2 uvF = toUV(geo, uImgBnd2);
-      float inF = insideUV(uvF) * (1.0 - smoothstep(90.0, 220.0, uScale));
-      vec3 c = pow(texture(uImg2, clamp(uvF, 0.0015, 0.9985)).rgb, vec3(2.2));
-      photo = mix(photo, c * (target / uMeanFar), inF);
-      cover = max(cover, inF);
-    }
-    float nearW = inside * (1.0 - smoothstep(5.0, 14.0, uScale));
-    photo = mix(photo, pow(texture(uImg, clamp(uvI, 0.0015, 0.9985)).rgb, vec3(2.2)), nearW);
-    inside = max(cover, nearW);
+    /* Foreground relief. The pixel footprint comes from the screen-space
+       derivative of the ground position, so it already accounts for
+       distance and for grazing incidence; once it is coarser than a
+       texel there is no detail left to recover and the perturbation
+       would only alias, so it is faded out there. */
+    float texM = texelMetres(fine);
+    float footM = length(fwidth(p.xz)) * 1000.0;
+    float micro = 1.0 - smoothstep(texM * 1.2, texM * 5.0, footM);
+    micro *= inside * (1.0 - water);
+
     photo = mix(vec3(dot(photo, vec3(0.299, 0.587, 0.114))), photo, 1.25);
     vec3 albedo = mix(uAvg * uAvg * (0.72 + 0.56 * grain), photo, inside);
+
+    /* Satellite imagery is shot near local noon with the sun close to
+       overhead, so the shading it carries is nearly flat and it fights
+       whatever sun angle the scene is using. Pulling that baked
+       contrast down where the relief takes over stops the two from
+       being added on top of each other. */
+    albedo = mix(albedo, vec3(lumOf(albedo)) * 0.55 + albedo * 0.45, micro * 0.5);
+
+    // Shading normal: geometry, plus the imagery's own micro-relief in
+    // the foreground, plus a fine rock grain below even that.
+    vec3 rock = vec3(fbm(vec3(p.xz * 260.0, 11.0), 3) - 0.5, 0.0,
+                     fbm(vec3(p.xz * 260.0, 29.0), 3) - 0.5);
+    vec3 Ns = normalize(N
+      + photoRelief(geo, fine) * (micro * 0.55)
+      + rock * (micro * 0.10));
 
     /* ── Every consequence that visibly alters the ground ──────────
        Each one appears only once its own physics has reached this
@@ -543,13 +700,13 @@ void main(){
        photograph pasted on a sphere. A low floor plus a sky term that
        follows how much sky the slope can actually see gives the hills
        back without inventing light. */
-    float lam = max(dot(N, uSun), 0.0);
+    float lam = max(dot(Ns, uSun), 0.0);
     float skyView = 0.5 + 0.5 * N.y;                 // flat ground sees all of it
     float shade = 0.14 + 1.15 * lam;
     vec3 lit = albedo * shade * vec3(1.0, 0.92, 0.80) * 1.45
              + albedo * vec3(0.16, 0.21, 0.32) * skyView * 0.55;
     if (water > 0.01){
-      vec3 wN = normalize(mix(N, vec3(0.0, 1.0, 0.0) + vec3(-p.x, 0.0, -p.z) / RE, water));
+      vec3 wN = normalize(mix(Ns, vec3(0.0, 1.0, 0.0) + vec3(-p.x, 0.0, -p.z) / RE, water));
       vec3 hv = normalize(uSun - rd);
       // Sun glint. A very tight lobe over a nearly flat surface gives
       // one blown, hard-edged white patch; broadening it and cutting
@@ -566,7 +723,7 @@ void main(){
     vec3 Ln = L / Ld;
     float att = (uFireR * uFireR) / (Ld * Ld);
     vec3 fireCol = blackbody(uFireT);
-    lit += albedo * fireCol * max(dot(N, Ln), 0.0) * att * 7.0;
+    lit += albedo * fireCol * max(dot(Ns, Ln), 0.0) * att * 7.0;
 
     /* Molten crater floor, cracks staying hot as it radiates away. */
     float melt = 1.0 - smoothstep(uCraterR * 0.55, uCraterR * 1.02, d);
@@ -593,7 +750,7 @@ void main(){
       lit += blackbody(1150.0) * caught * patches * flicker * 1.9;     // embers
     }
 
-    lit += vec3(1.0, 0.95, 0.88) * uFlash * 2.2 * max(dot(N, Ln), 0.0);
+    lit += vec3(1.0, 0.95, 0.88) * uFlash * 2.2 * max(dot(Ns, Ln), 0.0);
 
     /* ── The analytical register ──────────────────────────────────
        Threshold contours, faded in with camera distance. Up close the
@@ -642,45 +799,83 @@ void main(){
     col = mix(lit, haze, fog);
   }
 
-  /* Volume: fireball, stem, cap, and the dust wall at the front. */
+  /* Volume: fireball, stem and cap in one bracket, the dust wall at
+     the shock front in another. */
   {
-    float R = max(uFireR * 2.6, uShock * 1.05);
-    vec3 c = vec3(0.0, max(uFireY, uFireR), 0.0);
-    vec3 oc = ro - c;
-    float b = dot(oc, rd), cc = dot(oc, oc) - R * R, hh = b * b - cc;
-    if (hh > 0.0){
-      float sq = sqrt(hh), t0 = max(-b - sq, 0.0), t1 = -b + sq;
-      if (tGround > 0.0) t1 = min(t1, tGround);
-      if (t1 > t0){
-        const int STEPS = 34;
-        float dt = (t1 - t0) / float(STEPS);
-        float trans = 1.0;
-        vec3 acc = vec3(0.0);
-        vec3 fireCol = blackbody(uFireT);
-        float sunPhase = 0.42 + 0.58 * pow(max(dot(rd, uSun), 0.0), 1.6);
-        for (int i = 0; i < STEPS; i++){
-          if (trans < 0.015) break;
-          vec3 p = ro + rd * (t0 + dt * (float(i) + 0.5));
-          if (p.y < -0.005) continue;
-          float T, hot;
-          float de = density(p, T, hot);
-          if (de <= 0.004) continue;
-          float a = 1.0 - exp(-de * dt * (3.1 / max(uFireR, 0.02)));
-          vec3 emit = blackbody(T) * (0.5 + 5.2 * smoothstep(650.0, 3200.0, T)) * hot;
-          vec3 toF = vec3(0.0, max(uFireY, uFireR * 0.4), 0.0) - p;
-          float fd = max(length(toF), uFireR * 0.7);
-          // Dust is LIT, never emissive — but it is still dust, not
-          // snow. Overdriving the sun term turns the column into a
-          // white-out that flattens the whole frame.
-          vec3 scatter = vec3(0.52, 0.46, 0.38) * sunPhase * 1.25
-                       + vec3(0.14, 0.19, 0.30) * (0.5 + 0.5 * normalize(p - vec3(0.0, uFireY, 0.0)).y)
-                       + fireCol * ((uFireR * uFireR) / (fd * fd)) * 3.2;
-          acc += (emit + scatter * (1.0 - hot)) * a * trans;
-          trans *= 1.0 - a * 0.94;
-        }
-        col = col * trans + acc;
+    // Start each ray at a different fraction of a step. Evenly spaced
+    // samples through a soft volume lay down concentric shells;
+    // dithering the start turns the banding into noise, which is what
+    // dust looks like anyway.
+    float jit = hash31(vec3(gl_FragCoord.xy, 7.0));
+    float trans = 1.0;
+    vec3 acc = vec3(0.0);
+    vec3 fireCol = blackbody(uFireT);
+    // Mie forward scattering: dust is far brighter with the sun behind
+    // you than in front of it.
+    float sunPhase = 0.42 + 0.58 * pow(max(dot(rd, uSun), 0.0), 1.6);
+    float capR = capRadius();
+
+    // --- the column ---
+    {
+      vec3 c = vec3(0.0, uFireY * 0.55, 0.0);
+      float R = max(uFireY * 0.62 + capR * 1.7, capR * 2.3);
+      vec3 oc = ro - c;
+      float b = dot(oc, rd), cc = dot(oc, oc) - R * R, hh = b * b - cc;
+      if (hh > 0.0){
+        float sq = sqrt(hh), t0 = max(-b - sq, 0.0), t1 = -b + sq;
+        if (tGround > 0.0) t1 = min(t1, tGround);
+        // Optical depth of about six across the fireball's diameter:
+        // opaque where the plasma is, translucent across a stem a
+        // third of that width.
+        marchVolume(ro, rd, t0, t1, 34, jit, 3.1 / max(uFireR, 0.02),
+                    fireCol, sunPhase, trans, acc);
       }
     }
+
+    // --- the dust wall riding the front ---
+    // A thin disc on the ground, so it is bracketed as a slab rather
+    // than as a sphere kilometres deep and almost entirely empty.
+    float wallH = max(uShock * 0.085 * uDust, 1e-4);
+    if (uShock > capR * 1.5){
+      float top = wallH * 3.0;
+      // Where the ray crosses y = -0.01 and y = top.
+      float ta = 0.0, tb = MARCH_MAX_LENGTH;
+      if (abs(rd.y) > 1e-6){
+        float u0 = (-0.01 - ro.y) / rd.y;
+        float u1 = (top - ro.y) / rd.y;
+        ta = max(0.0, min(u0, u1));
+        tb = max(u0, u1);
+      } else if (ro.y < -0.01 || ro.y > top) {
+        tb = -1.0;
+      }
+      if (tGround > 0.0) tb = min(tb, tGround);
+
+      /* Clip to the cylinder the wall actually lives in. A ray that
+         skims the horizon enters the slab and never leaves it, so
+         without this it runs for hundreds of kilometres and its
+         twenty-two samples land wherever the dither puts them — which
+         is what painted a band of speckle right across the skyline. */
+      float Rw = uShock * 1.25;
+      float A = dot(rd.xz, rd.xz);
+      float B = dot(ro.xz, rd.xz);
+      float C = dot(ro.xz, ro.xz) - Rw * Rw;
+      if (A < 1e-9){
+        if (C > 0.0) tb = -1.0;
+      } else {
+        float disc = B * B - A * C;
+        if (disc <= 0.0) tb = -1.0;
+        else {
+          float sq2 = sqrt(disc);
+          ta = max(ta, (-B - sq2) / A);
+          tb = min(tb, (-B + sq2) / A);
+        }
+      }
+
+      marchVolume(ro, rd, ta, tb, 22, jit, 2.2 / max(uShock * 0.08, 0.02),
+                  fireCol, sunPhase, trans, acc);
+    }
+
+    col = col * trans + acc;
   }
 
   col += vec3(1.0, 0.96, 0.90) * uFlash * uFlash * 1.6;

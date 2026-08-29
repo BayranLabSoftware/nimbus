@@ -66,6 +66,17 @@ describe('shader sources', () => {
     }
   });
 
+  it('declares a precision for every sampler type it uses', () => {
+    // GLSL ES 3.00 gives sampler2D a default precision in fragment
+    // shaders and gives sampler2DArray none. Omitting it is not a
+    // warning, it is a compile error, and the shader only fails on a
+    // real GPU — no unit test that reads the string will notice.
+    for (const [name, source] of SOURCES) {
+      if (!source.includes('sampler2DArray')) continue;
+      expect(source, name).toMatch(/precision\s+(low|medium|high)p\s+sampler2DArray\s*;/);
+    }
+  });
+
   it('never samples a mosaic without clamping into range', () => {
     // An unclamped UV smears the edge texel across the whole horizon.
     const samples = SCENE_FS.match(/texture\(u(Img|Dem)\w*,\s*([^)]+)\)/g) ?? [];

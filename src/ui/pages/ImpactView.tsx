@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { s } from '../../physics/units.js';
+import { zoomForSpan } from '../../scene/geo/mercator.js';
 import { loadMosaic } from '../../scene/geo/tileMosaic.js';
-import { ImpactRenderer } from '../../scene/impact/ImpactRenderer.js';
+import { MAX_LAYERS, ImpactRenderer } from '../../scene/impact/ImpactRenderer.js';
 import {
   DEFAULT_ORBIT,
   clampOrbit,
@@ -22,6 +23,11 @@ import { effectCss } from '../../scene/impact/effectStyle.js';
 import { useAppStore, type ActiveResult, type Coordinates } from '../../store/index.js';
 import { AppBar } from '../components/AppBar.js';
 import styles from './ImpactView.module.css';
+
+/** Block side, in tiles, for every level of the terrain pyramid.
+ *  4 x 256 px is exactly the array-texture layer the renderer holds,
+ *  so the sharpest level is uploaded without being resampled. */
+const PYRAMID_TILES = 4;
 
 /**
  * Close-up view: the same simulation the globe shows as rings, seen
@@ -99,7 +105,6 @@ export function ImpactView(): JSX.Element {
   const cameraHeight = Math.max(cameraRange * 0.234 * 1.35, 1_000);
   const horizonRange = Math.sqrt(2 * 6_371_008 * cameraHeight);
   /** Working area: the ground the viewer actually studies. */
-  const midSpan = Math.min(6_000_000, Math.max(200_000, cameraRange * 3, effectsReach * 2.4));
   /** Everything out to the skyline. Clamped to the equator, at which
    *  point the planner drops to the coarsest level and the block
    *  covers most of the hemisphere anyway. */
@@ -182,67 +187,70 @@ export function ImpactView(): JSX.Element {
     if (!hasScene) return;
     let cancelled = false;
     setTerrain('loading');
-    // Two mosaics. The close one is what you stand in; the wide one
-    // keeps the ground real once you pull back far enough to take in
-    // the outer contours, which on a megatonne event is a hundred
-    // times further out. Without it the far ground is a flat average.
-    const near = loadMosaic({
-      latitude: originLat,
-      longitude: originLon,
-      spanMeters: reachMeters * 12,
-      tiles: 6,
-    });
-    near
-      .then((mosaic) => {
-        if (cancelled) return;
-        rendererRef.current?.setMosaic(mosaic, 'near');
-        setTerrain('ready');
-      })
-      .catch((error: unknown) => {
-        if (cancelled) return;
-        console.warn('[ImpactView] terrain unavailable:', error);
-        setTerrain('failed');
-      });
 
-    // Outermost level: real ground all the way to the skyline.
-    void loadMosaic({
-      latitude: originLat,
-      longitude: originLon,
-      spanMeters: farSpan,
-      tiles: 6,
-    })
-      .then((world) => {
-        if (!cancelled) rendererRef.current?.setMosaic(world, 'world');
-      })
-      .catch((error: unknown) => {
-        console.warn('[ImpactView] horizon terrain unavailable:', error);
-      });
+    /* The pyramid. Four levels of the same square block, spaced evenly
+       in zoom between what the camera sees when it is standing in the
+       event and what it sees from the top of its travel.
+       Two things are deliberate here. Every level is requested at a
+       forced zoom rather than letting the planner round each span:
+       rounded spans give uneven steps, which read as one sharp band
+       and one blurry one. And every level asks for 4x4 tiles, which is
+       exactly the 1024 px the renderer's array texture holds, so the
+       sharpest data reaches the GPU without being resampled on the way
+       in. */
+    /* The sharpest level covers a tight block, not the whole event.
+       Sizing it to hold every contour is what made the ground blurry:
+       a 1024 px block over thirty kilometres is thirty-five metres a
+       pixel however close you stand. A third of the reach at the same
+       tile count is ten times sharper, and the level below it picks up
+       the moment the camera leaves that block. The upper clamp keeps a
+       continental event from spending its sharpest level on fifteen
+       kilometres of ground the camera never gets within a thousand
+       kilometres of. */
+    const nearSpan = Math.min(
+      Math.max(reachMeters * 0.9, 1_200),
+      Math.max(reachMeters / 40, 15_000)
+    );
+    const zFine = zoomForSpan(originLat, nearSpan, PYRAMID_TILES, 19);
+    const zCoarse = zoomForSpan(originLat, farSpan, PYRAMID_TILES, 19);
+    const zooms: number[] = [];
+    for (let i = 0; i < MAX_LAYERS; i++) {
+      const t = i / (MAX_LAYERS - 1);
+      const z = Math.round(zCoarse + (zFine - zCoarse) * t);
+      // A shallow event can want the same zoom twice. Two identical
+      // levels are two identical downloads for no extra detail.
+      if (!zooms.includes(z)) zooms.push(z);
+    }
 
-    // Middle level, always. The close tile covers barely thirty
-    // kilometres; the moment the camera pulls back it is gone and the
-    // world level alone is twenty kilometres per pixel. This is the
-    // band that carries actual landscape while the contours are being
-    // read.
-    {
-      void loadMosaic({
+    zooms.forEach((zoom, level) => {
+      const finest = level === zooms.length - 1;
+      loadMosaic({
         latitude: originLat,
         longitude: originLon,
-        spanMeters: midSpan,
-        tiles: 6,
+        // The span is only a hint once the zoom is forced; the block
+        // size follows from the tile count.
+        spanMeters: nearSpan,
+        tiles: PYRAMID_TILES,
+        zoom,
       })
-        .then((wide) => {
-          if (!cancelled) rendererRef.current?.setMosaic(wide, 'far');
+        .then((mosaic) => {
+          if (cancelled) return;
+          rendererRef.current?.setMosaic(mosaic, level);
+          if (finest) setTerrain('ready');
         })
         .catch((error: unknown) => {
-          // Non-fatal: the close tile still covers where the viewer
-          // starts, and the far ground falls back to a flat colour.
-          console.warn('[ImpactView] wide terrain unavailable:', error);
+          if (cancelled) return;
+          console.warn(`[ImpactView] terrain level z${String(zoom)} unavailable:`, error);
+          // Only the sharpest level failing is worth telling the
+          // viewer about: the others degrade to the level below.
+          if (finest) setTerrain('failed');
         });
-    }
+    });
+
     return () => {
       cancelled = true;
     };
-  }, [hasScene, originLat, originLon, reachMeters, effectsReach, midSpan, farSpan]);
+  }, [hasScene, originLat, originLon, reachMeters, farSpan]);
 
   // ---- render loop -------------------------------------------------
   useEffect(() => {
