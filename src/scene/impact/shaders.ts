@@ -178,6 +178,15 @@ vec2 toUV(vec2 lonlat, vec4 bnd){
    a hard edge between them shows up as a rectangle drawn on the
    landscape. */
 float insideUV(vec2 uv){ vec2 e = min(uv, 1.0 - uv); return smoothstep(0.0, 0.090, min(e.x, e.y)); }
+/* The ELEVATION handoff gets double the fade. Two levels resample the
+   same truth at different zooms, so where one takes over from the
+   other there is a step of a few metres — invisible from above,
+   but at grazing incidence a few metres vertical is many pixels, and
+   the step reads as a dark dash riding the horizon. A wider blend
+   spreads the step across enough ground to sink it. The imagery keeps
+   the tight fade: blurring photographs twice as wide is a visible
+   cost, and a colour step has no silhouette. */
+float insideUVDem(vec2 uv){ vec2 e = min(uv, 1.0 - uv); return smoothstep(0.0, 0.190, min(e.x, e.y)); }
 
 float lumOf(vec3 c){ return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
 
@@ -231,7 +240,7 @@ float elevationAt(vec2 xz, out float water, out float inside){
   for (int i = 0; i < MAX_LAYERS; i++){
     if (i >= uLayerCount || remaining < 0.004) break;
     vec2 uv = toUV(geo, uLayerDemBnd[i]);
-    float w = insideUV(uv);
+    float w = insideUVDem(uv);
     if (w <= 0.0) continue;
     float take = w * remaining;
     float e = texture(uDemArr, vec3(clamp(uv, 0.0015, 0.9985), float(i))).r;
@@ -820,8 +829,14 @@ void main(){
     /* The front at the ground: a thin compression line, freshly
        stripped earth right behind it. */
     float fw = max(uShock * 0.012, uCraterR * 0.05);
-    lit += vec3(0.80, 0.88, 1.0) * exp(-pow((d - uShock) / fw, 2.0)) * 0.55 * smoothstep(0.0, 0.1, uTime);
-    lit += blackbody(1400.0) * exp(-pow((d - uShock * 0.93) / (fw * 2.6), 2.0)) * 0.25;
+    /* Seen edge-on from far away the line subtends a fraction of a
+       pixel; at full brightness it smears into hard dashes riding the
+       skyline. Energy says the average contribution of a sub-pixel
+       line scales with (line width / pixel footprint) — so scale it. */
+    float lineAtt = clamp(fw / (fwidth(d) + 1e-5), 0.0, 1.0);
+    lit += vec3(0.80, 0.88, 1.0) * exp(-pow((d - uShock) / fw, 2.0)) * 0.55 * lineAtt
+         * smoothstep(0.0, 0.1, uTime);
+    lit += blackbody(1400.0) * exp(-pow((d - uShock * 0.93) / (fw * 2.6), 2.0)) * 0.25 * lineAtt;
 
     /* Firestorm. Fires do not start with the flash: they take tens of
        seconds to catch and merge. Drawn as flickering embers plus the
@@ -1072,7 +1087,7 @@ precision highp float;
 // compiles.
 precision highp sampler2D;
 uniform mat4  uVP;
-uniform sampler2D uBldData; // per building: centre east, centre north, base, height (km)
+uniform sampler2D uBldData; // 2 texels per building: centre/base/height, roof colour/footprint
 uniform float uShock;    // current front ground range, km
 uniform float uSpan;     // ground the front covered in the last 1.6 s, km
 uniform float uVapR;     // fireball ground-intersection radius, km
@@ -1087,16 +1102,20 @@ out vec3 vNrm;
 out float vPart;
 out float vId;
 out float vDamage;
+out vec3 vRoof;
 
 float hashv(float x){ x = fract(x * 0.1031); x *= x + 33.33; x *= x + x; return fract(x); }
 
 void main(){
   int id = int(aId + 0.5);
-  vec4 bld = texelFetch(uBldData, ivec2(id & 1023, id >> 10), 0);
+  // Two texels per building; 2i is even, so both always share a row.
+  vec4 bld = texelFetch(uBldData, ivec2((id * 2) & 1023, (id * 2) >> 10), 0);
+  vec4 extra = texelFetch(uBldData, ivec2((id * 2 + 1) & 1023, (id * 2 + 1) >> 10), 0);
   vec2 centre = bld.xy;
   float base = bld.z;
   float height = max(bld.w, 1e-4);
   float d = length(centre);
+  vRoof = extra.rgb;
 
   /* Vaporised or excavated: the fireball's ground print and the
      crater are places where a building does not become rubble, it
@@ -1105,7 +1124,7 @@ void main(){
   if (d < uVapR || (d < uCraterR && uShock > d)){
     gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
     vWorld = vec3(0.0); vNrm = vec3(0.0, 1.0, 0.0);
-    vPart = 0.0; vId = aId; vDamage = 1.0;
+    vPart = 0.0; vId = aId; vDamage = 1.0; vRoof = vec3(-1.0, 0.0, 0.0);
     return;
   }
 
@@ -1150,6 +1169,7 @@ in vec3 vNrm;
 in float vPart;
 in float vId;
 in float vDamage;
+in vec3 vRoof;
 layout(location = 0) out vec4 oAlbedo;
 layout(location = 1) out vec4 oNormalT;
 
@@ -1157,22 +1177,143 @@ float hash11(float x){ x = fract(x * 0.1031); x *= x + 33.33; x *= x + x; return
 
 void main(){
   /* Albedo in LINEAR light, like everything the scene shader eats.
-     Blocks arrive merged, so the variation is per block: plaster and
-     concrete walls, a roofscape split between terracotta, pale
-     concrete and slate. Phase C replaces the roof palette with the
-     orthophoto's own colour at the footprint. */
+     The roof comes from the ORTHOPHOTO at this very footprint, so the
+     roofscape blends with the map instead of sitting on it — a
+     picture standing up rather than a model on a picture. The
+     procedural palette survives as the fallback for footprints the
+     imagery never covered (roof red carries the -1 sentinel), and the
+     walls stay procedural with a pull toward the roof: facades and
+     roofs of a block share a palette in most cities. */
   float seed = hash11(vId + 0.731);
   vec3 wall = mix(vec3(0.230, 0.208, 0.182), vec3(0.128, 0.120, 0.112), seed);
   float r = hash11(vId + 17.13);
   vec3 roof = r < 0.45 ? mix(vec3(0.150, 0.072, 0.048), vec3(0.205, 0.110, 0.075), seed)
             : r < 0.80 ? mix(vec3(0.170, 0.163, 0.150), vec3(0.225, 0.218, 0.205), seed)
                        : vec3(0.072, 0.075, 0.082);
+  if (vRoof.r >= 0.0){
+    roof = vRoof;
+    wall = mix(wall, vRoof, 0.22);
+  }
   vec3 albedo = mix(wall, roof, step(0.5, vPart));
   // Rubble is masonry ground to dust: identity fades with the form.
   vec3 dust = vec3(0.192, 0.168, 0.142) * (0.75 + 0.5 * seed);
   albedo = mix(albedo, dust, clamp(vDamage * 1.15, 0.0, 0.85));
   oAlbedo = vec4(albedo, 1.0);
   oNormalT = vec4(normalize(vNrm), length(vWorld - uCam));
+}`;
+
+/**
+ * Collapse dust. Each collapsing block throws up a puff of masonry
+ * dust sized by its own footprint and height, timed by the same
+ * (front radius - distance) / span clock as the collapse itself — so
+ * the dust ring expands WITH the front, and scrubbing backwards
+ * un-throws it. Closed form of (particle, t): no state, no emitter
+ * bookkeeping, nothing to reset.
+ *
+ * Particle id maps to a building by modulo, so however many particles
+ * the budget grants, every block gets its share and a whole city's
+ * worth of puffs is one draw call. Blocks outside their collapse
+ * window clip themselves away.
+ */
+export const DUST_VS = `#version 300 es
+precision highp float;
+// Same trap as the building pass: vertex-shader sampler2D defaults to
+// lowp, and this texture holds kilometres.
+precision highp sampler2D;
+uniform mat4  uVP;
+uniform vec3  uCam;      // km
+uniform vec2  uRes;
+uniform sampler2D uBldData;
+uniform int   uBldCount;
+uniform float uShock;    // km
+uniform float uSpan;     // km covered in the last 1.6 s
+uniform float uVapR;     // km — inside, matter left as vapour, not dust
+uniform float uCraterR;  // km
+uniform float uR5;       // km
+uniform float uR1;       // km
+out vec3  vColor;
+out float vAlpha;
+out float vT;
+
+float hash11(float x){ x = fract(x * 0.1031); x *= x + 33.33; x *= x + x; return fract(x); }
+
+void main(){
+  int id = gl_VertexID;
+  int b = uBldCount > 0 ? id % uBldCount : 0;
+  float sub = float(id / max(uBldCount, 1));
+  vec4 bld = texelFetch(uBldData, ivec2((b * 2) & 1023, (b * 2) >> 10), 0);
+  vec4 extra = texelFetch(uBldData, ivec2((b * 2 + 1) & 1023, (b * 2 + 1) >> 10), 0);
+  vec2 centre = bld.xy;
+  float base = bld.z;
+  float height = max(bld.w, 2e-3);
+  float radius = max(extra.w, 2e-3);
+  float d = length(centre);
+
+  /* The same clock as the collapse, run a little past it: dust hangs
+     around for about twice the fall. Vaporised and excavated blocks
+     never dust — their matter left in the fireball. */
+  float raw = (uShock - d) / max(uSpan, 0.02);
+  float ceilD = uR5 > 0.0 ? 1.0 - smoothstep(uR5, max(uR1, uR5 * 1.5), d) : 0.0;
+  float gone = max(step(d, uVapR), step(d, uCraterR) * step(d, uShock));
+  float age = raw / 2.6;
+  if (age <= 0.0 || age >= 1.0 || ceilD < 0.05 || gone > 0.5){
+    gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+    vColor = vec3(0.0); vAlpha = 0.0; vT = 1.0;
+    return;
+  }
+
+  float fid = float(id);
+  float u1 = hash11(fid * 1.213 + 3.1);
+  float u2 = hash11(fid * 2.531 + 11.7);
+  float u3 = hash11(fid * 4.117 + 29.3);
+  float ang = (u1 + sub * 0.37) * 6.2831853;
+
+  // Born on the footprint's rim — walls shed the dust — rising to a
+  // fraction of the lost height and drifting away from ground zero
+  // with the wind the front just was.
+  vec2 rim = centre + vec2(cos(ang), sin(ang)) * radius * (0.4 + 0.8 * u2);
+  vec2 away = centre / max(d, 1e-4);
+  float rise = height * (0.25 + 1.1 * u3) * min(age * 2.2, 1.0);
+  vec2 drift = away * (height * 0.9 + radius * 0.6) * age
+             + vec2(cos(ang), sin(ang)) * radius * 0.7 * age;
+  vec3 p = vec3(rim.x + drift.x, base + rise, rim.y + drift.y);
+
+  gl_Position = uVP * vec4(p, 1.0);
+  float dist = max(length(p - uCam), 0.02);
+  vT = dist;
+  gl_PointSize = clamp(uRes.y * 0.0016 * (radius + height * 0.8) * (0.5 + 2.2 * age) / dist,
+                       1.0, 64.0);
+
+  // Masonry dust in linear light, tinted by the block's own roof
+  // where the orthophoto gave one, with the fade-in of a cloud
+  // billowing and the long tail of it settling.
+  vec3 masonry = vec3(0.235, 0.208, 0.178);
+  vec3 tint = extra.r >= 0.0 ? extra.rgb : masonry;
+  vColor = mix(masonry, tint, 0.35) * (0.75 + 0.5 * u2);
+  vAlpha = smoothstep(0.0, 0.10, age) * (1.0 - smoothstep(0.45, 1.0, age)) * ceilD
+         * (0.16 + 0.22 * u3);
+}`;
+
+export const DUST_FS = `#version 300 es
+precision highp float;
+in vec3  vColor;
+in float vAlpha;
+in float vT;
+uniform sampler2D uBldNT;
+uniform float uHasBld;
+out vec4 fragColor;
+void main(){
+  if (uHasBld > 0.5){
+    float tB = texelFetch(uBldNT, ivec2(gl_FragCoord.xy), 0).w;
+    if (tB > 0.0 && tB < vT) discard;
+  }
+  vec2 c = gl_PointCoord - 0.5;
+  float r2 = dot(c, c);
+  if (r2 > 0.25) discard;
+  // Premultiplied, NOT additive: dust is matter that covers, and an
+  // additive puff reads as a glow no masonry ever emitted.
+  float a = vAlpha * exp(-r2 * 10.0);
+  fragColor = vec4(vColor * a * 1.5, a);
 }`;
 
 export const BRIGHT_FS = `#version 300 es

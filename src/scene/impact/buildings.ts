@@ -142,10 +142,11 @@ export async function loadBuildingsForSite(
 
   const dem = await demTask;
   if (cancelled()) return null;
+  const sampleRoof = roofSampler(dem);
 
   const locals: (LocalBuilding & { area: number })[] = [];
   for (const footprint of footprints) {
-    const local = toLocal(footprint, site, dem, radius);
+    const local = toLocal(footprint, site, dem, radius, sampleRoof);
     if (local !== null) locals.push(local);
   }
   // Largest first, so the triangle budget trims garden sheds, not
@@ -166,11 +167,51 @@ export async function loadBuildingsForSite(
   return mesh.triangleCount === 0 ? null : mesh;
 }
 
+/**
+ * Roof colours straight from the orthophoto: getImageData once over
+ * the whole mosaic, then every footprint indexes it. Roofs sampled
+ * from the same photograph as the ground blend with the map instead
+ * of sitting on it — the difference between a model placed on a
+ * picture and a picture standing up.
+ *
+ * Returns null where a 2D context is unavailable (tests, contexts
+ * without canvas readback): the sentinel path, not an error.
+ */
+function roofSampler(
+  mosaic: LoadedMosaic | null
+): ((lon: number, lat: number) => readonly [number, number, number] | null) | null {
+  if (mosaic === null) return null;
+  let pixels: ImageData;
+  try {
+    const context = mosaic.imagery.getContext('2d', { willReadFrequently: true });
+    if (context === null) return null;
+    pixels = context.getImageData(0, 0, mosaic.imagery.width, mosaic.imagery.height);
+  } catch {
+    return null;
+  }
+  const { data, width, height } = pixels;
+  const bounds = mosaic.imageryBlock.bounds;
+  return (lon, lat) => {
+    const uv = geoToMosaicUV(lon, lat, bounds);
+    if (uv.u < 0 || uv.u > 1 || uv.v < 0 || uv.v > 1) return null;
+    const x = Math.min(width - 1, Math.round(uv.u * (width - 1)));
+    const y = Math.min(height - 1, Math.round(uv.v * (height - 1)));
+    const i = (y * width + x) * 4;
+    // sRGB bytes to linear light, the only currency the shader takes.
+    return [
+      ((data[i] ?? 128) / 255) ** 2.2,
+      ((data[i + 1] ?? 118) / 255) ** 2.2,
+      ((data[i + 2] ?? 104) / 255) ** 2.2,
+    ];
+  };
+}
+
 function toLocal(
   footprint: BuildingFootprint,
   site: BuildingSite,
   dem: LoadedMosaic | null,
-  radiusMeters: number
+  radiusMeters: number,
+  sampleRoof: ReturnType<typeof roofSampler>
 ): (LocalBuilding & { area: number }) | null {
   const toKm = (lon: number, lat: number): [number, number] => {
     const p = geoToLocal(lon, lat, site.latitude, site.longitude);
@@ -198,6 +239,7 @@ function toLocal(
   }
   area = Math.abs(area) / 2;
 
+  let roofColor: readonly [number, number, number] | undefined;
   let baseKm = 0;
   if (dem !== null) {
     if (footprint.outer.points.length > 0) {
@@ -212,6 +254,7 @@ function toLocal(
       if (uv.u >= 0 && uv.u <= 1 && uv.v >= 0 && uv.v <= 1) {
         baseKm = (sampleNormalised(dem.elevation, uv.u, uv.v) - dem.elevationAtOrigin) / 1_000;
       }
+      roofColor = sampleRoof?.(geo.lon, geo.lat) ?? undefined;
     }
   }
 
@@ -225,5 +268,6 @@ function toLocal(
     heightKm: footprint.heightMeters / 1_000,
     minHeightKm: footprint.minHeightMeters / 1_000,
     area,
+    ...(roofColor === undefined ? {} : { roofColor }),
   };
 }

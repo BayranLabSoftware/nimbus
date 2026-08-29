@@ -18,6 +18,8 @@ import {
   BUILDING_FS,
   BUILDING_VS,
   COMPOSITE_FS,
+  DUST_FS,
+  DUST_VS,
   PARTICLE_FS,
   PARTICLE_VS,
   QUAD_VS,
@@ -140,6 +142,7 @@ export class ImpactRenderer {
     scene: WebGLProgram;
     particles: WebGLProgram;
     buildings: WebGLProgram;
+    dust: WebGLProgram;
     bright: WebGLProgram;
     blur: WebGLProgram;
     composite: WebGLProgram;
@@ -174,6 +177,10 @@ export class ImpactRenderer {
   private bldBuffers: WebGLBuffer[] = [];
   private bldDataTexture: WebGLTexture | null = null;
   private bldIndexCount = 0;
+  private bldCount = 0;
+  /** Dust points per frame: enough that every block gets a share,
+   *  capped so a metropolis does not become a particle benchmark. */
+  private dustCount = 0;
 
   /** Elevation at ground zero, cached per pyramid generation: the
    *  camera-anchored levels each carry their block centre's origin,
@@ -206,6 +213,7 @@ export class ImpactRenderer {
       scene: this.link(QUAD_VS, SCENE_FS, 'scene'),
       particles: this.link(PARTICLE_VS, PARTICLE_FS, 'particles'),
       buildings: this.link(BUILDING_VS, BUILDING_FS, 'buildings'),
+      dust: this.link(DUST_VS, DUST_FS, 'dust'),
       bright: this.link(QUAD_VS, BRIGHT_FS, 'bright'),
       blur: this.link(QUAD_VS, BLUR_FS, 'blur'),
       composite: this.link(QUAD_VS, COMPOSITE_FS, 'composite'),
@@ -487,12 +495,17 @@ export class ImpactRenderer {
     this.bldBuffers = [];
     this.bldDataTexture = null;
     this.bldIndexCount = 0;
+    this.bldCount = 0;
+    this.dustCount = 0;
     if (mesh === null || mesh.triangleCount === 0) return;
 
     // Per-building data — centre, base, height — as a float texture
     // the vertex shader indexes by building id: the collapse needs the
     // BLOCK's distance from ground zero, not each vertex's own.
-    const rows = Math.max(1, Math.ceil(mesh.buildingCount / 1024));
+    this.bldCount = mesh.buildingCount;
+    this.dustCount = Math.min(120_000, mesh.buildingCount * 8);
+    // Two RGBA32F texels per building: geometry, then roof + footprint.
+    const rows = Math.max(1, Math.ceil((mesh.buildingCount * 2) / 1024));
     const padded = new Float32Array(1024 * rows * 4);
     padded.set(mesh.data);
     const dataTexture = required(gl.createTexture(), 'the building data texture');
@@ -837,6 +850,45 @@ export class ImpactRenderer {
       }
       gl.uniform1f(this.location(q, 'uHasBld'), drawBuildings ? 1 : 0);
       gl.drawArrays(gl.POINTS, 0, PARTICLE_COUNT);
+      gl.disable(gl.BLEND);
+    }
+
+    // ---- 2b. collapse dust ---------------------------------------
+    // One draw for every puff in the city. Premultiplied over, not
+    // additive: dust covers what is behind it, it does not glow.
+    if (drawBuildings && this.dustCount > 0) {
+      const dprog = this.programs.dust;
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      gl.useProgram(dprog);
+      gl.uniformMatrix4fv(this.location(dprog, 'uVP'), false, bldPose);
+      gl.uniform3f(
+        this.location(dprog, 'uCam'),
+        km(pose.position[0]),
+        km(pose.position[1]),
+        km(pose.position[2])
+      );
+      gl.uniform2f(this.location(dprog, 'uRes'), this.width, this.height);
+      gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.bldData);
+      gl.bindTexture(gl.TEXTURE_2D, this.bldDataTexture);
+      gl.uniform1i(this.location(dprog, 'uBldData'), TEXTURE_UNITS.bldData);
+      gl.uniform1i(this.location(dprog, 'uBldCount'), this.bldCount);
+      const fireY = km(frame.fireballAltitude);
+      const fireR = km(frame.fireballRadius);
+      const vapR = fireY < fireR ? Math.sqrt(fireR * fireR - fireY * fireY) : 0;
+      gl.uniform1f(this.location(dprog, 'uShock'), km(frame.shockRadius));
+      gl.uniform1f(this.location(dprog, 'uSpan'), km(collapseSpan(scene, frame.time)));
+      gl.uniform1f(this.location(dprog, 'uVapR'), vapR);
+      gl.uniform1f(this.location(dprog, 'uCraterR'), km(scene.craterRadius));
+      gl.uniform1f(this.location(dprog, 'uR5'), km(effectRadius(scene, 'blast5')));
+      gl.uniform1f(this.location(dprog, 'uR1'), km(effectRadius(scene, 'blast1')));
+      if (this.bldTarget !== null) {
+        gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.bldNormalT);
+        gl.bindTexture(gl.TEXTURE_2D, this.bldTarget.normalT);
+        gl.uniform1i(this.location(dprog, 'uBldNT'), TEXTURE_UNITS.bldNormalT);
+      }
+      gl.uniform1f(this.location(dprog, 'uHasBld'), 1);
+      gl.drawArrays(gl.POINTS, 0, this.dustCount);
       gl.disable(gl.BLEND);
     }
 

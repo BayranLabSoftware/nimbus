@@ -228,13 +228,21 @@ describe('reverseRing', () => {
 });
 
 describe('building data', () => {
-  it('records one centre, base and height per building', () => {
-    const m = extrudeBuildings([{ ...square(), baseKm: 0.12 }]);
-    expect(m.data.length).toBe(4);
+  it('records centre, base, height, roof and footprint per building', () => {
+    const m = extrudeBuildings([{ ...square(), baseKm: 0.12, roofColor: [0.2, 0.1, 0.05] }]);
+    expect(m.data.length).toBe(8);
     expect(m.data[0]).toBeCloseTo(0.005, 9); // centre east
     expect(m.data[1]).toBeCloseTo(0.005, 9); // centre north
     expect(m.data[2]).toBeCloseTo(0.12, 6); // base (float32)
     expect(m.data[3]).toBeCloseTo(0.01, 6); // height (float32)
+    expect(m.data[4]).toBeCloseTo(0.2, 6); // roof, linear
+    // 10 m square: equivalent-disc radius sqrt(A/pi).
+    expect(m.data[7]).toBeCloseTo(Math.sqrt(0.0001 / Math.PI), 6);
+  });
+
+  it('marks a missing roof sample with the sentinel, not a colour', () => {
+    const m = extrudeBuildings([square()]);
+    expect(m.data[4]).toBe(-1);
   });
 });
 
@@ -248,8 +256,8 @@ describe('mergeMeshes', () => {
     expect(merged.buildingCount).toBe(2);
     expect(merged.ids[a.vertexCount] ?? -1).toBe(1);
     // Per-building data concatenates in id order.
-    expect(merged.data.length).toBe(8);
-    expect(merged.data[4]).toBeCloseTo(a.data[0] ?? NaN, 9);
+    expect(merged.data.length).toBe(16);
+    expect(merged.data[8]).toBeCloseTo(a.data[0] ?? NaN, 9);
     let max = 0;
     for (const i of merged.indices) max = Math.max(max, i);
     expect(max).toBe(merged.vertexCount - 1);

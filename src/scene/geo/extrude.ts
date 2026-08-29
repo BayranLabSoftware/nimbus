@@ -36,6 +36,13 @@ export interface LocalBuilding {
   readonly baseKm: number;
   readonly heightKm: number;
   readonly minHeightKm: number;
+  /**
+   * Roof albedo in LINEAR light, sampled from the orthophoto at the
+   * footprint, so the roofscape blends with the map instead of
+   * sitting on it. Absent where no imagery covered the spot — the
+   * shader then falls back to its procedural palette.
+   */
+  readonly roofColor?: readonly [number, number, number];
 }
 
 export interface BuildingMesh {
@@ -47,11 +54,14 @@ export interface BuildingMesh {
   readonly ids: Float32Array;
   readonly indices: Uint32Array;
   /**
-   * 4 floats per building: centre east, centre north (km), base (km),
-   * height (km). The collapse runs in the vertex shader and needs the
-   * building's identity — the whole block falls as one thing, keyed on
-   * ITS distance from ground zero, not each vertex's — so this rides
-   * up as a data texture indexed by the per-vertex id.
+   * 8 floats — two RGBA32F texels — per building:
+   *   [cx, cz, base, height,  roofR, roofG, roofB, footprintRadius]
+   * (km, linear light, km). The collapse and the dust run in shaders
+   * and need the building's identity — the whole block falls as one
+   * thing, keyed on ITS distance from ground zero, not each
+   * vertex's — so this rides up as a data texture indexed by the
+   * per-vertex id. Roof red is -1 where no orthophoto covered the
+   * footprint: the sentinel that sends the shader to its palette.
    */
   readonly data: Float32Array;
   readonly vertexCount: number;
@@ -217,7 +227,11 @@ export function extrudeBuildings(
     }
     cx /= outer.points.length;
     cz /= outer.points.length;
-    data.push(cx, cz, raw.baseKm, raw.heightKm);
+    // Equivalent-disc radius of the footprint: what sizes the dust
+    // cloud a collapse throws up.
+    const radius = Math.sqrt(Math.abs(signedArea2(outer.points)) / 2 / Math.PI);
+    const roof = raw.roofColor ?? [-1, 0, 0];
+    data.push(cx, cz, raw.baseKm, raw.heightKm, roof[0], roof[1], roof[2], radius);
     built++;
   }
 
@@ -254,14 +268,14 @@ export function mergeMeshes(parts: readonly BuildingMesh[]): BuildingMesh {
   const normals = new Int8Array(vertices * 4);
   const ids = new Float32Array(vertices);
   const indices = new Uint32Array(triangles * 3);
-  const data = new Float32Array(buildings * 4);
+  const data = new Float32Array(buildings * 8);
   let vo = 0;
   let io = 0;
   let idOffset = 0;
   for (const p of parts) {
     positions.set(p.positions, vo * 3);
     normals.set(p.normals, vo * 4);
-    data.set(p.data, idOffset * 4);
+    data.set(p.data, idOffset * 8);
     for (let i = 0; i < p.vertexCount; i++) {
       ids[vo + i] = (p.ids[i] ?? 0) + idOffset;
     }

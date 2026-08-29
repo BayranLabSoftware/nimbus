@@ -4,6 +4,8 @@ import {
   BRIGHT_FS,
   BUILDING_FS,
   BUILDING_VS,
+  DUST_FS,
+  DUST_VS,
   COMPOSITE_FS,
   PARTICLE_FS,
   PARTICLE_VS,
@@ -16,6 +18,8 @@ const SOURCES: readonly (readonly [string, string])[] = [
   ['SCENE_FS', SCENE_FS],
   ['BUILDING_VS', BUILDING_VS],
   ['BUILDING_FS', BUILDING_FS],
+  ['DUST_VS', DUST_VS],
+  ['DUST_FS', DUST_FS],
   ['PARTICLE_VS', PARTICLE_VS],
   ['PARTICLE_FS', PARTICLE_FS],
   ['BRIGHT_FS', BRIGHT_FS],
@@ -81,12 +85,15 @@ describe('shader sources', () => {
     }
   });
 
-  it('gives the building data texture an explicit highp sampler', () => {
+  it('gives every vertex-shader sampler an explicit highp precision', () => {
     // In a VERTEX shader sampler2D defaults to LOWP — a range of about
-    // two — and the building data texture holds kilometres. This is
-    // the vertex-shader twin of the sampler2DArray guard above: it
+    // two — and the data textures hold kilometres. This is the
+    // vertex-shader twin of the sampler2DArray guard above: it
     // compiles fine everywhere and reads garbage on real GPUs.
-    expect(BUILDING_VS).toMatch(/precision\s+highp\s+sampler2D\s*;/);
+    for (const [name, source] of SOURCES) {
+      if (!name.endsWith('_VS') || !source.includes('uniform sampler2D')) continue;
+      expect(source, name).toMatch(/precision\s+highp\s+sampler2D\s*;/);
+    }
   });
 
   it('never samples a mosaic without clamping into range', () => {
