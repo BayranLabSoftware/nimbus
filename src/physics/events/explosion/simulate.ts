@@ -15,7 +15,7 @@ import { initialRadiationRadii, type RadiationDoseResult } from './radiation.js'
 import { firstDegreeBurnRadius, secondDegreeBurnRadius, thirdDegreeBurnRadius } from './thermal.js';
 import { explosionTsunami, type ExplosionTsunamiResult } from './underwaterBurst.js';
 import type { Joules, Meters, MetersPerSecond, Pascals, SquareMeters } from '../../units.js';
-import { Mt, m, mps, megatonsToJoules, Pa } from '../../units.js';
+import { Mt, m, mps, megatonsToJoules, Pa, sqm } from '../../units.js';
 
 /**
  * Ground-type preset used to drive the nuclear-crater coefficient.
@@ -201,15 +201,39 @@ const ONE_PSI = Pa(6_895);
  * No new physics — see overpressure.ts, thermal.ts, cratering.ts, and
  * impact/damageRings.ts for equation-level citations.
  */
+/**
+ * Above this height of burst the ground-path damage families — blast,
+ * burns, firestorm, initial radiation — are zero: ambient pressure is
+ * below 1% of sea level and the fitted curves are outside their
+ * domain. Glasstone & Dolan (1977), §1.36 (high-altitude bursts).
+ * Metres.
+ */
+export const HIGH_ALTITUDE_CUTOFF_M = 30_000;
+
 export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScenarioResult {
   const groundType = input.groundType ?? 'FIRM_GROUND';
   const yieldJoules = megatonsToJoules(Mt(input.yieldMegatons));
   const yieldKilotons = input.yieldMegatons * 1_000;
 
   const hobMeters = input.heightOfBurst === undefined ? 0 : (input.heightOfBurst as number);
+
+  /* Above ~30 km there is no meaningful air path to the ground:
+     ambient pressure is under 1% of sea level, and Glasstone & Dolan
+     (1977, §1.36) class these as HIGH-ALTITUDE bursts with
+     qualitatively different phenomenology — HEMP and auroral display,
+     not blast and burns. The scaled-HOB blast curves, the
+     Beer-Lambert thermal attenuation and the initial-radiation range
+     tables are all fitted INSIDE the atmosphere; feeding them a
+     400 km burst quietly saturates them at their domain edge and
+     reports 5 psi rings and third-degree burns that never happened.
+     Starfish Prime's ground-level record is street lamps failing on
+     Oahu — an EMP story, which is exactly the family left running. */
+  const exoatmospheric = hobMeters >= HIGH_ALTITUDE_CUTOFF_M;
+  const grounded = (radius: Meters): Meters => (exoatmospheric ? m(0) : radius);
+
   const z = scaledHeightOfBurst(hobMeters, yieldKilotons);
   const regime = hobRegime(z);
-  const factor = hobBlastFactor(z);
+  const factor = exoatmospheric ? 0 : hobBlastFactor(z);
 
   const r5psi = distanceForOverpressure(yieldJoules, FIVE_PSI);
   const r1psi = distanceForOverpressure(yieldJoules, ONE_PSI);
@@ -248,9 +272,9 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       hobFactor: factor,
     },
     thermal: {
-      thirdDegreeBurnRadius: burn3,
-      secondDegreeBurnRadius: burn2,
-      firstDegreeBurnRadius: burn1,
+      thirdDegreeBurnRadius: grounded(burn3),
+      secondDegreeBurnRadius: grounded(burn2),
+      firstDegreeBurnRadius: grounded(burn1),
     },
     peakWind: {
       at1km: peakWindAtRange({ distance: m(1_000), yieldEnergy: yieldJoules }),
@@ -259,10 +283,10 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       at50km: peakWindAtRange({ distance: m(50_000), yieldEnergy: yieldJoules }),
     },
     firestorm: {
-      ignitionRadius: flammableIgnitionRadius({ yieldEnergy: yieldJoules }),
-      sustainRadius: firestormSustainRadius({ yieldEnergy: yieldJoules }),
-      ignitionArea: flammableIgnitionArea({ yieldEnergy: yieldJoules }),
-      sustainArea: firestormArea({ yieldEnergy: yieldJoules }),
+      ignitionRadius: grounded(flammableIgnitionRadius({ yieldEnergy: yieldJoules })),
+      sustainRadius: grounded(firestormSustainRadius({ yieldEnergy: yieldJoules })),
+      ignitionArea: exoatmospheric ? sqm(0) : flammableIgnitionArea({ yieldEnergy: yieldJoules }),
+      sustainArea: exoatmospheric ? sqm(0) : firestormArea({ yieldEnergy: yieldJoules }),
     },
     crater: {
       // Glasstone & Dolan §6.10: a nuclear airburst at sufficient
@@ -281,7 +305,9 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
             })
           : m(0),
     },
-    radiation: initialRadiationRadii(input.yieldMegatons),
+    radiation: exoatmospheric
+      ? { ld50Radius: m(0), ld100Radius: m(0), arsThresholdRadius: m(0) }
+      : initialRadiationRadii(input.yieldMegatons),
     emp: electromagneticPulse(input.yieldMegatons, hobMeters),
     isContactWaterBurst: false,
     asymmetry: {

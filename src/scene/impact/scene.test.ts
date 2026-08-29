@@ -368,3 +368,43 @@ describe('collapseSpan', () => {
     expect(collapseSpan(scene, s(t))).toBeCloseTo(Math.max(expected, 30), 6);
   });
 });
+
+describe('exoatmospheric bursts — Starfish Prime', () => {
+  const starfish = sceneFromExplosion(
+    simulateExplosion(EXPLOSION_PRESETS.STARFISH_PRIME_1962.input),
+    ORIGIN
+  );
+
+  it('knows the ground never feels it', () => {
+    expect(starfish.groundCoupled).toBe(false);
+    expect(starfish.burstAltitude).toBe(400_000);
+    // ...while a 580 m airburst is very much coupled.
+    const hiroshima = sceneFromExplosion(
+      simulateExplosion(EXPLOSION_PRESETS.HIROSHIMA_1945.input),
+      ORIGIN
+    );
+    expect(hiroshima.groundCoupled).toBe(true);
+  });
+
+  it('stages light without matter: no stem, no dust, no scour, no front', () => {
+    for (const t of [0.05, 1, 10, 60]) {
+      const f = frameAt(starfish, s(t));
+      expect(f.shockRadius).toBe(0);
+      expect(f.stemRadius).toBe(0);
+      expect(f.dustOpacity).toBe(0);
+      expect(f.scourRadius).toBe(0);
+      expect(f.craterDepth).toBe(0);
+      // The fireball hangs at its real altitude — Starfish's was
+      // visible from Hawaii — not on somebody's lawn.
+      expect(f.fireballAltitude).toBeGreaterThanOrEqual(400_000);
+    }
+    // The one thing the ground DOES see: the sky lights up.
+    expect(frameAt(starfish, s(0.01)).flash).toBeGreaterThan(0.5);
+  });
+
+  it('still carries its real story: the EMP footprint', () => {
+    const emp = starfish.effects.find((e) => e.id === 'emp');
+    expect(emp).toBeDefined();
+    expect(emp?.radius ?? 0).toBeGreaterThan(500_000);
+  });
+});

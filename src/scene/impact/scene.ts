@@ -106,6 +106,18 @@ export interface ImpactScene extends SceneOrigin {
   /** Radius of the outermost effect (m) — how far you must pull the
    *  camera back before the whole story is in frame. */
   readonly effectsReach: Meters;
+  /** Detonation altitude above the ground (m). Zero for impacts and
+   *  surface bursts. */
+  readonly burstAltitude: Meters;
+  /**
+   * Whether the blast reaches the ground AT ALL. Starfish Prime —
+   * 1.4 Mt at 400 km, in space — has no shock wave at the surface, no
+   * dust, no crater, no collapse: its ground-level reality is a sky
+   * that lights up and an EMP that reaches Hawaii. Staging it as a
+   * ground fireball with a rising column is not a simplification, it
+   * is a different event.
+   */
+  readonly groundCoupled: boolean;
 }
 
 /**
@@ -170,6 +182,8 @@ function build(params: {
   craterDepth: Meters;
   ejectaRange: Meters;
   outerRadius: Meters;
+  burstAltitude?: Meters;
+  groundCoupled?: boolean;
 }): ImpactScene {
   const outer = m(Math.max(params.outerRadius, params.fireballRadius * 4, 1_000));
   const arrival = buildShockArrival(params.blastEnergy, params.fireballRadius, outer);
@@ -193,6 +207,8 @@ function build(params: {
     duration: sequenceDuration(arrival, params.fireballRadius),
     arrival,
     framingReach: framingReach(params.fireballRadius, params.craterRadius),
+    burstAltitude: params.burstAltitude ?? m(0),
+    groundCoupled: params.groundCoupled ?? true,
   };
 }
 
@@ -278,6 +294,13 @@ export function sceneFromExplosion(
   origin: SceneOrigin
 ): ImpactScene {
   const energy = J(result.yield.joules);
+  const burstAltitude = m(result.inputs.heightOfBurst ?? 0);
+  /* Above roughly the stratosphere there is no meaningful air for the
+     shock to travel down through, and the blast model itself agrees:
+     every HOB-adjusted overpressure ring is zero. Either signal alone
+     marks the burst as decoupled from the ground. */
+  const groundCoupled =
+    (burstAltitude as number) < 30_000 || (result.blast.lightDamageRadiusHob as number) > 0;
   const craterRadius = m(result.crater.apparentDiameter / 2);
   const fireballRadius = nuclearFireballRadius(joulesToKilotons(energy));
   const ejectaRange = m(craterRadius * 4);
@@ -292,6 +315,8 @@ export function sceneFromExplosion(
   return build({
     origin,
     blastEnergy: energy,
+    burstAltitude,
+    groundCoupled,
     fireballRadius,
     // Glasstone §6.06: the apparent crater is a shallow bowl, depth
     // roughly a quarter of its diameter for a surface burst.
@@ -391,6 +416,29 @@ export function frameAt(scene: ImpactScene, time: Seconds): ImpactFrame {
   const breakaway = breakawayTime(scene.blastEnergy, scene.fireballRadius);
   const riseStart = breakaway * 2.2 + 0.4;
   const risen = Math.max(0, t - riseStart);
+
+  /* A burst the ground never feels keeps its light and loses its
+     matter: the fireball sits at its real altitude — Starfish Prime's
+     was VISIBLE from Hawaii, 1 400 km out — and the flash still
+     floods the sky, but there is no stem to raise, no dust wall to
+     drive, no ground to scour, no crater to dig. Rendering those
+     anyway would not be a simplification; it would be a different
+     event. */
+  if (!scene.groundCoupled) {
+    return {
+      time: s(t),
+      shockRadius: m(0),
+      fireballRadius: blast.fireballRadius,
+      fireballTemperature: blast.fireballTemperature,
+      fireballAltitude: m(scene.burstAltitude + blast.fireballAltitude),
+      stemRadius: m(0),
+      scourRadius: m(0),
+      craterDepth: m(0),
+      dustOpacity: 0,
+      flash: Math.exp(-((t / (breakaway * 0.55 + 0.05)) ** 1.4)),
+      brokenAway: blast.brokenAway,
+    };
+  }
 
   return {
     time: s(t),
