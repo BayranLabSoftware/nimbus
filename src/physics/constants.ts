@@ -126,3 +126,17 @@ export const CRUSTAL_RIGIDITY = 3.0e10;
 // Mastin et al. (2009), JVGR 186(1-2), Table 1.
 // DOI: 10.1016/j.jvolgeores.2009.01.008. kg/m^3.
 export const DRE_DENSITY = 2_500 as KilogramPerCubicMeter;
+
+// Sea-level air density, ICAO Standard Atmosphere (Doc 7488-CD, 1993) /
+// ISO 2533. Drives the Taylor-Sedov blast-wave solution in
+// src/physics/effects/blastWave.ts. kg/m^3.
+export const SEA_LEVEL_AIR_DENSITY = 1.225 as KilogramPerCubicMeter;
+
+// Sea-level speed of sound in dry air at 288.15 K:
+//   c = sqrt(gamma * R_specific * T) = sqrt(1.4 * 287.053 * 288.15).
+// ISO 2533 / ICAO Standard Atmosphere. m/s.
+export const SEA_LEVEL_SOUND_SPEED = 340.29 as MetersPerSecond;
+
+// Ratio of specific heats for dry air at ambient conditions.
+// Used by the Rankine-Hugoniot normal-shock relations. Dimensionless.
+export const AIR_HEAT_CAPACITY_RATIO = 1.4;
