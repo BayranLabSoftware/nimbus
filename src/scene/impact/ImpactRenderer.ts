@@ -477,6 +477,27 @@ export class ImpactRenderer {
     gl.bindTexture(gl.TEXTURE_2D, this.elevationWorldTexture);
     gl.uniform1i(this.location(p, 'uDemW'), TEXTURE_UNITS.elevationWorld);
 
+    // Exposure matching between levels, and the widest relief across
+    // whichever levels are actually bound.
+    const NEUTRAL: readonly [number, number, number] = [0.25, 0.21, 0.14];
+    const mean = (mo: LoadedMosaic | null): readonly [number, number, number] =>
+      mo?.meanColor ?? NEUTRAL;
+    const mNear = mean(mosaic);
+    gl.uniform3f(this.location(p, 'uMeanNear'), mNear[0], mNear[1], mNear[2]);
+    const mFar = mean(far);
+    gl.uniform3f(this.location(p, 'uMeanFar'), mFar[0], mFar[1], mFar[2]);
+    const mWorld = mean(world);
+    gl.uniform3f(this.location(p, 'uMeanWorld'), mWorld[0], mWorld[1], mWorld[2]);
+
+    let reliefMin = mosaic?.elevation.min ?? 0;
+    let reliefMax = mosaic?.elevation.max ?? 1;
+    for (const layer of [far, world]) {
+      if (layer === null) continue;
+      reliefMin = Math.min(reliefMin, layer.elevation.min);
+      reliefMax = Math.max(reliefMax, layer.elevation.max);
+    }
+    gl.uniform2f(this.location(p, 'uReliefRange'), reliefMin, reliefMax);
+
     // Effect footprints. Zero disables an effect the event lacks —
     // an airburst has no crater and a conventional charge no EMP.
     gl.uniform3f(

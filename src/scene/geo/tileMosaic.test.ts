@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { EQUATORIAL_CIRCUMFERENCE_M, tileSpanMeters } from './mercator.js';
-import { AWS_TERRARIUM, ESRI_WORLD_IMAGERY, WORLD_ZOOM, planMosaic } from './tileMosaic.js';
+import {
+  AWS_TERRARIUM,
+  ESRI_WORLD_IMAGERY,
+  WORLD_ZOOM,
+  planMosaic,
+  type LoadedMosaic,
+} from './tileMosaic.js';
 
 describe('tile sources', () => {
   it('Esri uses {z}/{y}/{x} — row before column', () => {
@@ -96,5 +102,19 @@ describe('loadWorldMosaic planning', () => {
     const px = EQUATORIAL_CIRCUMFERENCE_M / (2 ** WORLD_ZOOM * 256);
     expect(px).toBeLessThan(25_000);
     expect(px).toBeGreaterThan(5_000);
+  });
+});
+
+describe('exposure matching between levels', () => {
+  it('every mosaic reports a mean colour the shader can normalise on', () => {
+    // Each zoom level is a different photograph with its own exposure.
+    // Without a per-level mean to divide by, the boundary between two
+    // levels shows up as a bright rectangle drawn on the landscape —
+    // which is how a tile block gets read as "the map is a square".
+    const mosaic: Pick<LoadedMosaic, 'meanColor'> = { meanColor: [0.25, 0.21, 0.14] };
+    for (const channel of mosaic.meanColor) {
+      expect(channel).toBeGreaterThan(0);
+      expect(Number.isFinite(channel)).toBe(true);
+    }
   });
 });

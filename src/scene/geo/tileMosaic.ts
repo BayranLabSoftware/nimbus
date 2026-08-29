@@ -78,6 +78,12 @@ export interface LoadedMosaic {
   readonly elevationAtOrigin: number;
   /** Tiles that failed to load, per layer. Non-zero means holes. */
   readonly missing: { imagery: number; elevation: number };
+  /** Mean linear colour of the imagery. Each zoom level is a different
+   *  photograph with its own exposure, so without matching them the
+   *  boundary between two levels reads as a bright rectangle drawn on
+   *  the landscape — which is exactly how a tile block gets mistaken
+   *  for "the map is a square". */
+  readonly meanColor: readonly [number, number, number];
   readonly attribution: readonly string[];
 }
 
@@ -112,6 +118,28 @@ export function planMosaic(
   const z = zoomForSpan(request.latitude, request.spanMeters, request.tiles, source.maxZoom);
   const block = tileBlockAround(request.longitude, request.latitude, z, request.tiles);
   return { block, requests: block.tiles * block.tiles };
+}
+
+/** Average linear colour of a canvas, sampled at 16x16. */
+function meanColorOf(canvas: HTMLCanvasElement): [number, number, number] {
+  const small = document.createElement('canvas');
+  small.width = 16;
+  small.height = 16;
+  const ctx = small.getContext('2d', { willReadFrequently: true });
+  if (ctx === null) return [0.5, 0.46, 0.38];
+  ctx.drawImage(canvas, 0, 0, 16, 16);
+  const { data } = ctx.getImageData(0, 0, 16, 16);
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  const n = 16 * 16;
+  for (let i = 0; i < n; i++) {
+    // Average in LINEAR light: averaging sRGB bytes biases dark.
+    r += ((data[i * 4] ?? 0) / 255) ** 2.2;
+    g += ((data[i * 4 + 1] ?? 0) / 255) ** 2.2;
+    b += ((data[i * 4 + 2] ?? 0) / 255) ** 2.2;
+  }
+  return [Math.max(r / n, 1e-4), Math.max(g / n, 1e-4), Math.max(b / n, 1e-4)];
 }
 
 async function stitch(
@@ -206,6 +234,7 @@ export async function loadMosaic(
       elevationBlock: elevationPlan.block,
       elevationAtOrigin,
       missing: { imagery: img.missing, elevation: dem.missing },
+      meanColor: meanColorOf(img.canvas),
       attribution: [imagerySource.attribution, elevationSource.attribution],
     };
   })();

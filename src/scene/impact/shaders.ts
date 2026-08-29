@@ -78,6 +78,12 @@ uniform vec4  uImgBndW;
 uniform vec4  uDemBndW;
 uniform vec2  uElevW;
 uniform float uHasWorld;
+// Mean linear colour of each level's imagery, and the widest elevation
+// range across the levels that are bound.
+uniform vec3  uMeanNear;
+uniform vec3  uMeanFar;
+uniform vec3  uMeanWorld;
+uniform vec2  uReliefRange;  // metres, min and max across all levels
 
 // Effect footprints, in km. Zero means this event has none.
 uniform vec3  uThermal;    // 3rd, 2nd, 1st degree burn
@@ -261,8 +267,13 @@ float surfaceAt(vec2 xz){
  * crossing. Returns -1 when the ray misses the ground entirely.
  */
 float marchGround(vec3 ro, vec3 rd, float tSphere){
-  float relief = max((uElev.y - uElev.z) / 1000.0, uCraterD);
-  float floorH = min((uElev.x - uElev.z) / 1000.0, -uCraterD) - 0.05;
+  // Bracket the march against the WIDEST relief across every bound
+  // level, not just the close tile's. Terrain outside that tile can be
+  // kilometres higher or lower, and a bracket that misses it either
+  // never finds the crossing or bisects between two points that are
+  // both underground.
+  float relief = max((uReliefRange.y - uElev.z) / 1000.0, uCraterD);
+  float floorH = min((uReliefRange.x - uElev.z) / 1000.0, -uCraterD) - 0.05;
   float ceilFar, floorFar;
   float tCeil = hitShell(ro, rd, relief + 0.05, ceilFar);
   float tFloor = hitShell(ro, rd, floorH, floorFar);
@@ -374,21 +385,35 @@ void main(){
     // Finest level that covers this point: close tile, wide tile,
     // then the planet. Something always covers it, so the ground never
     // runs out before the horizon does.
+    /* Level selection.
+       Coverage alone is not enough. The close tile is sharper and has
+       its own exposure, so at map altitude its border shows up as a
+       bright rectangle sitting on the coarser level underneath — which
+       is how a tile block gets read as "the map is a square". Two
+       things fix it: fade a level out once the camera is far enough
+       that its extra detail is wasted, and normalise every level's
+       exposure onto the close tile's, so where two levels meet they
+       agree on brightness. */
     vec3 photo = vec3(0.0);
     float cover = 0.0;
+    vec3 target = uMeanNear;
+
     if (uHasWorld > 0.5){
       vec2 uvW = toUV(geo, uImgBndW);
-      photo = pow(texture(uImgW, clamp(uvW, 0.0015, 0.9985)).rgb, vec3(2.2));
+      vec3 c = pow(texture(uImgW, clamp(uvW, 0.0015, 0.9985)).rgb, vec3(2.2));
+      photo = c * (target / uMeanWorld);
       cover = insideUV(uvW);
     }
     if (uHasFar > 0.5){
       vec2 uvF = toUV(geo, uImgBnd2);
-      float inF = insideUV(uvF);
-      photo = mix(photo, pow(texture(uImg2, clamp(uvF, 0.0015, 0.9985)).rgb, vec3(2.2)), inF);
+      float inF = insideUV(uvF) * (1.0 - smoothstep(90.0, 220.0, uScale));
+      vec3 c = pow(texture(uImg2, clamp(uvF, 0.0015, 0.9985)).rgb, vec3(2.2));
+      photo = mix(photo, c * (target / uMeanFar), inF);
       cover = max(cover, inF);
     }
-    photo = mix(photo, pow(texture(uImg, clamp(uvI, 0.0015, 0.9985)).rgb, vec3(2.2)), inside);
-    inside = max(cover, inside);
+    float nearW = inside * (1.0 - smoothstep(5.0, 14.0, uScale));
+    photo = mix(photo, pow(texture(uImg, clamp(uvI, 0.0015, 0.9985)).rgb, vec3(2.2)), nearW);
+    inside = max(cover, nearW);
     photo = mix(vec3(dot(photo, vec3(0.299, 0.587, 0.114))), photo, 1.25);
     vec3 albedo = mix(uAvg * uAvg * (0.72 + 0.56 * grain), photo, inside);
 
