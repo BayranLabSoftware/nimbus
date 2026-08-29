@@ -183,7 +183,28 @@ async function stitch(
   return { canvas, missing };
 }
 
+/**
+ * Loaded mosaics, most-recently-used last.
+ *
+ * A cap is not optional here. The pyramid follows the camera, so one
+ * slow orbit walks the sharpest level across dozens of distinct
+ * blocks; each holds a 512 px canvas and its elevation field, and an
+ * unbounded map would quietly grow into hundreds of megabytes over a
+ * few minutes of looking around.
+ */
+const CACHE_LIMIT = 72;
 const cache = new Map<string, Promise<LoadedMosaic>>();
+
+/** Move a key to the most-recent end, evicting the oldest past the cap. */
+function touch(key: string, task: Promise<LoadedMosaic>): void {
+  cache.delete(key);
+  cache.set(key, task);
+  while (cache.size > CACHE_LIMIT) {
+    const oldest = cache.keys().next();
+    if (oldest.done === true) break;
+    cache.delete(oldest.value);
+  }
+}
 
 function cacheKey(r: MosaicRequest): string {
   return [
@@ -212,7 +233,10 @@ export async function loadMosaic(
 ): Promise<LoadedMosaic> {
   const key = cacheKey(request);
   const hit = cache.get(key);
-  if (hit !== undefined) return hit;
+  if (hit !== undefined) {
+    touch(key, hit);
+    return hit;
+  }
 
   const load = options.imageLoader ?? defaultImageLoader;
   const imagerySource = options.imagerySource ?? ESRI_WORLD_IMAGERY;
@@ -251,7 +275,7 @@ export async function loadMosaic(
     };
   })();
 
-  cache.set(key, task);
+  touch(key, task);
   // A failed load must not poison the cache for the rest of the session.
   task.catch(() => cache.delete(key));
   return task;

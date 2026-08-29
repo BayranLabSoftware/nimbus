@@ -50,15 +50,21 @@ const TEXTURE_UNITS = {
  *
  * Must match MAX_LAYERS in the shader.
  */
-export const MAX_LAYERS = 6;
+export const MAX_LAYERS = 16;
 
 /**
  * Every layer of an array texture is the same size, so each mosaic is
- * resampled onto this grid on upload. 1024 keeps the finest level at
- * its native 4x256 px while costing 4 x 1024^2 x 4 B = 16 MB per array.
+ * resampled onto this grid on upload. 512 is a 2x2 tile block at its
+ * native resolution, and twelve of them cost 12 x 512^2 x 4 B = 12 MB
+ * per array — which is what buys twelve levels instead of six.
+ *
+ * Small blocks are not a compromise here. A level's half-extent is 256
+ * texels, and the pixel footprint at that distance is about a quarter
+ * of a texel, so the block runs out at almost exactly the distance
+ * where the next level down is the right sharpness anyway.
  */
-const LAYER_PX = 1024;
-const LAYER_MIPS = 11; // log2(1024) + 1
+const LAYER_PX = 512;
+const LAYER_MIPS = 10; // log2(512) + 1
 
 /**
  * Bounds for a level that has not loaded yet. Chosen so the shader's
@@ -293,14 +299,14 @@ export class ImpactRenderer {
   }
 
   /**
-   * Upload one level of the pyramid. `level` is 0 for the coarsest and
-   * MAX_LAYERS - 1 for the sharpest; the shader walks them in that
-   * order and lets the finest one that covers a point win. Levels may
-   * arrive in any order — the planet-wide fallback is a handful of
+   * Upload one level of the pyramid. `level` is 0 for the SHARPEST and
+   * MAX_LAYERS - 1 for the coarsest; the shader walks outwards from 0
+   * and stops as soon as the levels it has passed cover the pixel.
+   * Levels may arrive in any order — the planet-wide fallback is four
    * tiles and lands long before the close block does. Safe to call
    * repeatedly on the same level.
    */
-  setMosaic(mosaic: LoadedMosaic, level = MAX_LAYERS - 1): void {
+  setMosaic(mosaic: LoadedMosaic, level = 0): void {
     const { gl } = this;
     const slot = Math.min(Math.max(level, 0), MAX_LAYERS - 1);
     this.layers[slot] = mosaic;
@@ -470,7 +476,7 @@ export class ImpactRenderer {
 
     // Ground zero sits at y = 0 in the local frame, so the scene needs
     // the elevation there from the sharpest level that has it.
-    const finest = [...this.layers].reverse().find((l) => l !== null) ?? null;
+    const finest = this.layers.find((l) => l !== null) ?? null;
     gl.uniform3f(
       this.location(p, 'uElev'),
       finest?.elevation.min ?? 0,
@@ -481,10 +487,14 @@ export class ImpactRenderer {
     gl.uniform3f(this.location(p, 'uAvg'), 0.5, 0.46, 0.38);
 
     /* Bracket the raymarch on a MIDDLE level's relief. The sharpest
-       block spans a few kilometres and knows nothing about the
+       block spans a few hundred metres and knows nothing about the
        mountains on the horizon; the planet's range is 20 km thick and
        nothing the march can afford resolves anything inside it. */
-    const marchLayer = this.layers[1] ?? this.layers[0] ?? finest;
+    const mid = Math.floor(MAX_LAYERS / 2);
+    const marchLayer =
+      this.layers.slice(mid).find((l) => l !== null) ??
+      [...this.layers].reverse().find((l) => l !== null) ??
+      finest;
     gl.uniform2f(
       this.location(p, 'uMarchRange'),
       marchLayer?.elevation.min ?? 0,

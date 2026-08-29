@@ -94,6 +94,21 @@ export function zoomForSpan(
   return Math.min(maxZoom, Math.max(0, Math.floor(Math.log2(ratio))));
 }
 
+/**
+ * The zoom whose tiles are about `metresPerPixel` on the ground at this
+ * latitude, rounded up so the data is at least as sharp as asked for.
+ *
+ * The pyramid is built from this rather than from a ground span: what
+ * decides whether the map looks sharp is how a texel compares with a
+ * screen pixel, and a span only says so indirectly.
+ */
+export function zoomForTexel(latDeg: number, metresPerPixel: number, maxZoom = 19): number {
+  if (!(metresPerPixel > 0)) return maxZoom;
+  const ground = EQUATORIAL_CIRCUMFERENCE_M * Math.cos(clampLat(latDeg) * RAD);
+  const z = Math.log2(ground / (256 * metresPerPixel));
+  return Math.min(maxZoom, Math.max(0, Math.ceil(z)));
+}
+
 export interface MosaicBounds {
   readonly lonWest: number;
   readonly lonEast: number;

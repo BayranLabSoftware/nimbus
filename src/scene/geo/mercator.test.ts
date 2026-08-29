@@ -10,6 +10,7 @@ import {
   mercatorY,
   tileBlockAround,
   tileSpanMeters,
+  zoomForTexel,
   tileToLonLat,
   zoomForSpan,
 } from './mercator.js';
@@ -229,5 +230,32 @@ describe('tileBlockAround at world scale', () => {
     expect(block.bounds.lonEast).toBeCloseTo(180, 6);
     expect(block.bounds.latNorth).toBeCloseTo(MERCATOR_MAX_LAT, 5);
     expect(block.bounds.latSouth).toBeCloseTo(-MERCATOR_MAX_LAT, 5);
+  });
+});
+
+describe('zoomForTexel', () => {
+  it('asks for the zoom whose texel is at least as sharp as requested', () => {
+    // Rome. Esri World Imagery tops out at z19 there, which is
+    // 0.222 m/px — measured, not assumed.
+    expect(zoomForTexel(41.9028, 0.222)).toBe(19);
+    expect(zoomForTexel(41.9028, 1.78)).toBe(16);
+    expect(zoomForTexel(41.9028, 28.5)).toBe(12);
+  });
+
+  it('never promises data the source does not have', () => {
+    // A camera pressed against the ground would want centimetres.
+    expect(zoomForTexel(41.9028, 0.001)).toBe(19);
+    expect(zoomForTexel(41.9028, 0.001, 15)).toBe(15);
+  });
+
+  it('accounts for the Mercator stretch with latitude', () => {
+    // The same zoom covers less ground per texel further from the
+    // equator, so a polar site reaches a given sharpness sooner.
+    expect(zoomForTexel(70, 10)).toBeLessThan(zoomForTexel(0, 10));
+  });
+
+  it('degrades rather than throwing on a nonsense request', () => {
+    expect(zoomForTexel(41.9, 0)).toBe(19);
+    expect(zoomForTexel(41.9, -5)).toBe(19);
   });
 });

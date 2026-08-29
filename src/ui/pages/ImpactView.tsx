@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { s } from '../../physics/units.js';
-import { zoomForSpan } from '../../scene/geo/mercator.js';
+import { localToGeo, zoomForSpan, zoomForTexel } from '../../scene/geo/mercator.js';
+import { changedLevels, planPyramid } from '../../scene/geo/pyramid.js';
 import { loadMosaic } from '../../scene/geo/tileMosaic.js';
 import { MAX_LAYERS, ImpactRenderer } from '../../scene/impact/ImpactRenderer.js';
 import {
   DEFAULT_ORBIT,
+  FOV_Y,
   clampOrbit,
   maxCameraDistance,
   maxZoomForReach,
@@ -25,9 +27,15 @@ import { AppBar } from '../components/AppBar.js';
 import styles from './ImpactView.module.css';
 
 /** Block side, in tiles, for every level of the terrain pyramid.
- *  4 x 256 px is exactly the array-texture layer the renderer holds,
- *  so the sharpest level is uploaded without being resampled. */
-const PYRAMID_TILES = 4;
+ *  2 x 256 px is exactly the array-texture layer the renderer holds,
+ *  so every level reaches the GPU without being resampled. */
+const PYRAMID_TILES = 2;
+
+/** The tightest the camera may zoom in, as a fraction of the auto-framed
+ *  distance. Mirrors MIN_ZOOM in scene/impact/camera.ts, which is not
+ *  exported: it is a camera limit, and this is the only other place
+ *  that needs to know how close the viewer can actually get. */
+const MIN_ZOOM_RATIO = 0.25;
 
 /**
  * Close-up view: the same simulation the globe shows as rings, seen
@@ -64,6 +72,12 @@ export function ImpactView(): JSX.Element {
   const rendererRef = useRef<ImpactRenderer | null>(null);
   const clockRef = useRef<SimClock | null>(null);
   const orbitRef = useRef<OrbitState>(DEFAULT_ORBIT);
+  /** Level index to the block key it is holding, so a camera nudge
+   *  re-fetches only the levels that actually moved. */
+  const loadedLevels = useRef(new Map<number, string>());
+  /** Latest terrain sync, so the render loop — which is registered
+   *  once — never calls a stale closure over the camera limits. */
+  const syncRef = useRef<((lat: number, lon: number) => void) | null>(null);
   const maxZoomRef = useRef(4);
   const sceneRef = useRef<ImpactScene | null>(null);
   const scrubRef = useRef<HTMLInputElement | null>(null);
@@ -108,7 +122,9 @@ export function ImpactView(): JSX.Element {
   /** Everything out to the skyline. Clamped to the equator, at which
    *  point the planner drops to the coarsest level and the block
    *  covers most of the hemisphere anyway. */
-  const farSpan = Math.min(40_075_017, 2.4 * (cameraRange + horizonRange));
+  /** Everything out to the skyline: the coarsest level has to reach it,
+   *  or pulling all the way back shows a square of map in empty space. */
+  const horizonSpan = Math.min(40_075_017, 2.4 * (cameraRange + horizonRange));
   const durationSeconds = scene?.duration ?? 0;
   const blastEnergy = scene?.blastEnergy ?? 0;
 
@@ -182,81 +198,91 @@ export function ImpactView(): JSX.Element {
     maxZoomRef.current = maxZoom;
   }, [maxZoom]);
 
-  // ---- terrain -----------------------------------------------------
+  /* ---- terrain -----------------------------------------------------
+     The pyramid follows the camera. See scene/geo/pyramid.ts for why
+     centring it on the event cannot be made sharp; the short version
+     is that sharpness is bounded by a block's pixel count, so the
+     sharp blocks are small, and a small block is only useful where
+     the small pixels are — under the camera. */
+  const syncTerrain = useCallback(
+    (latitude: number, longitude: number): void => {
+      const renderer = rendererRef.current;
+      if (renderer === null) return;
+
+      /* Two numbers set the ladder. The sharpest zoom is the one whose
+         texel matches the pixel footprint when the camera is as close
+         as it goes — asking for more downloads detail no screen can
+         show, asking for less is the blur. The coarsest has to reach
+         the skyline, or pulling all the way back shows a square of map
+         floating in nothing. If the span between them needs more
+         levels than there are slots, the step widens rather than the
+         far end being dropped. */
+      const nearest = (cameraRange * MIN_ZOOM_RATIO) / Math.max(maxZoom, MIN_ZOOM_RATIO);
+      const wantedTexel = Math.max((nearest * 2 * Math.tan(FOV_Y / 2)) / 900, 0.05);
+      const zoomFine = zoomForTexel(latitude, wantedTexel);
+      const zoomCoarse = zoomForSpan(latitude, horizonSpan, PYRAMID_TILES, 19);
+
+      const plan = planPyramid({
+        latitude,
+        longitude,
+        zoomFine,
+        zoomCoarse,
+        step: Math.max(1, Math.ceil((zoomFine - zoomCoarse) / (MAX_LAYERS - 1))),
+        levels: MAX_LAYERS,
+        tiles: PYRAMID_TILES,
+      });
+
+      for (const entry of changedLevels(plan, loadedLevels.current)) {
+        // Claim the slot before awaiting, or a camera that keeps moving
+        // re-requests the same block on every tick until it lands.
+        loadedLevels.current.set(entry.level, entry.key);
+        loadMosaic({
+          latitude: entry.latitude,
+          longitude: entry.longitude,
+          // Ignored once the zoom is forced; the block size follows
+          // from the tile count.
+          spanMeters: Math.max(reachMeters, 1_000),
+          tiles: PYRAMID_TILES,
+          zoom: entry.zoom,
+        })
+          .then((mosaic) => {
+            // The camera may have moved on while this was in flight.
+            if (loadedLevels.current.get(entry.level) !== entry.key) return;
+            rendererRef.current?.setMosaic(mosaic, entry.level);
+            if (entry.level === 0) setTerrain('ready');
+          })
+          .catch((error: unknown) => {
+            if (loadedLevels.current.get(entry.level) === entry.key) {
+              loadedLevels.current.delete(entry.level);
+            }
+            console.warn(`[ImpactView] terrain z${String(entry.zoom)} unavailable:`, error);
+            // Only the sharpest level failing is worth reporting: the
+            // rest degrade to the level below.
+            if (entry.level === 0) setTerrain('failed');
+          });
+      }
+    },
+    [cameraRange, maxZoom, horizonSpan, reachMeters]
+  );
+
+  useEffect(() => {
+    syncRef.current = syncTerrain;
+  }, [syncTerrain]);
+
+  // A change of site or of scale invalidates every block we hold.
   useEffect(() => {
     if (!hasScene) return;
-    let cancelled = false;
+    loadedLevels.current.clear();
     setTerrain('loading');
-
-    /* The pyramid. Four levels of the same square block, spaced evenly
-       in zoom between what the camera sees when it is standing in the
-       event and what it sees from the top of its travel.
-       Two things are deliberate here. Every level is requested at a
-       forced zoom rather than letting the planner round each span:
-       rounded spans give uneven steps, which read as one sharp band
-       and one blurry one. And every level asks for 4x4 tiles, which is
-       exactly the 1024 px the renderer's array texture holds, so the
-       sharpest data reaches the GPU without being resampled on the way
-       in. */
-    /* The sharpest level covers a tight block, not the whole event.
-       Sizing it to hold every contour is what made the ground blurry:
-       a 1024 px block over thirty kilometres is thirty-five metres a
-       pixel however close you stand. A third of the reach at the same
-       tile count is ten times sharper, and the level below it picks up
-       the moment the camera leaves that block. The upper clamp keeps a
-       continental event from spending its sharpest level on fifteen
-       kilometres of ground the camera never gets within a thousand
-       kilometres of. */
-    const nearSpan = Math.min(
-      Math.max(reachMeters * 0.9, 1_200),
-      Math.max(reachMeters / 40, 15_000)
-    );
-    const zFine = zoomForSpan(originLat, nearSpan, PYRAMID_TILES, 19);
-    const zCoarse = zoomForSpan(originLat, farSpan, PYRAMID_TILES, 19);
-    const zooms: number[] = [];
-    for (let i = 0; i < MAX_LAYERS; i++) {
-      const t = i / (MAX_LAYERS - 1);
-      const z = Math.round(zCoarse + (zFine - zCoarse) * t);
-      // A shallow event can want the same zoom twice. Two identical
-      // levels are two identical downloads for no extra detail.
-      if (!zooms.includes(z)) zooms.push(z);
-    }
-
-    zooms.forEach((zoom, level) => {
-      const finest = level === zooms.length - 1;
-      loadMosaic({
-        latitude: originLat,
-        longitude: originLon,
-        // The span is only a hint once the zoom is forced; the block
-        // size follows from the tile count.
-        spanMeters: nearSpan,
-        tiles: PYRAMID_TILES,
-        zoom,
-      })
-        .then((mosaic) => {
-          if (cancelled) return;
-          rendererRef.current?.setMosaic(mosaic, level);
-          if (finest) setTerrain('ready');
-        })
-        .catch((error: unknown) => {
-          if (cancelled) return;
-          console.warn(`[ImpactView] terrain level z${String(zoom)} unavailable:`, error);
-          // Only the sharpest level failing is worth telling the
-          // viewer about: the others degrade to the level below.
-          if (finest) setTerrain('failed');
-        });
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [hasScene, originLat, originLon, reachMeters, farSpan]);
+    syncTerrain(originLat, originLon);
+  }, [hasScene, originLat, originLon, syncTerrain]);
 
   // ---- render loop -------------------------------------------------
   useEffect(() => {
     if (!hasScene) return;
     let handle = 0;
     let last = 0;
+    let lastSync = 0;
     const step = (now: number): void => {
       handle = requestAnimationFrame(step);
       const renderer = rendererRef.current;
@@ -287,9 +313,24 @@ export function ImpactView(): JSX.Element {
       set('temperature', `${(frame.fireballTemperature / 1_000).toFixed(1)} kK`);
       set('crater', `${formatLength(current.craterRadius * 2)} ø`);
 
-      const scale =
-        renderer.poseFor(current, frame, orbitRef.current).distance /
-        Math.max(current.framingReach, 1);
+      const pose = renderer.poseFor(current, frame, orbitRef.current);
+
+      /* Keep the pyramid under the camera. Five times a second is
+         plenty: planning is sixteen tile-index computations and a
+         string compare per level, and anything that has not crossed a
+         block boundary resolves to no work at all. */
+      if (now - lastSync > 200) {
+        lastSync = now;
+        const ground = localToGeo(
+          pose.position[0],
+          pose.position[2],
+          current.latitude,
+          current.longitude
+        );
+        syncRef.current?.(ground.lat, ground.lon);
+      }
+
+      const scale = pose.distance / Math.max(current.framingReach, 1);
       const inMapRange = scale > 1.9;
       setMapRange((prev) => (prev === inMapRange ? prev : inMapRange));
       // One update per second is enough to grey out the effects that

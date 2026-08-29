@@ -47,14 +47,21 @@ uniform float uFlash;      // 0..1
 uniform float uFogK;       // extra extinction from lofted dust, 0..1
 uniform float uGrainF;     // terrain grain frequency, cycles per km
 
-/* Terrain pyramid. Four levels, coarsest first, all the same size and
-   all in one array texture: adding a level is data, not another pair
-   of samplers and another five uniforms. Imagery and elevation keep
+/* Terrain pyramid. Levels are ordered FINEST FIRST and each covers
+   twice the ground of the one before it, all the same size and all in
+   one array texture: adding a level is data, not another pair of
+   samplers and another five uniforms.
+
+   Finest first is what makes twelve levels affordable. The lookup
+   walks outwards and stops as soon as the levels it has passed
+   account for the whole pixel, so a point well inside the sharp block
+   costs one texture fetch and a point on a border costs two —
+   never twelve. Imagery and elevation keep
    separate bounds — the terrain source stops at zoom 15 while the
    imagery goes to 19, so at close range the two blocks are genuinely
    different patches of ground and pretending otherwise would put the
    photograph in the wrong place. */
-#define MAX_LAYERS 6
+#define MAX_LAYERS 16
 // sampler2DArray has no default precision in GLSL ES 3.00 the way
 // sampler2D does; without this the shader will not compile.
 precision highp sampler2DArray;
@@ -211,17 +218,18 @@ float texelMetres(int lvl){
 float elevationAt(vec2 xz, out float water, out float inside){
   vec2 geo = toGeo(xz);
   float metres = 0.0;
-  float cover = 0.0;
+  float remaining = 1.0;
   for (int i = 0; i < MAX_LAYERS; i++){
-    if (i >= uLayerCount) break;
+    if (i >= uLayerCount || remaining < 0.004) break;
     vec2 uv = toUV(geo, uLayerDemBnd[i]);
     float w = insideUV(uv);
     if (w <= 0.0) continue;
+    float take = w * remaining;
     float e = texture(uDemArr, vec3(clamp(uv, 0.0015, 0.9985), float(i))).r;
-    metres = mix(metres, uLayerElev[i].x + e * (uLayerElev[i].y - uLayerElev[i].x), w);
-    cover = max(cover, w);
+    metres += (uLayerElev[i].x + e * (uLayerElev[i].y - uLayerElev[i].x)) * take;
+    remaining -= take;
   }
-  inside = cover;
+  inside = 1.0 - remaining;
   water = 1.0 - smoothstep(-8.0, 3.0, metres);
   return metres;
 }
@@ -613,20 +621,28 @@ void main(){
        not need a fade to nothing — it needs a fade to the level
        underneath, which insideUV already gives, plus a shared
        exposure so the two agree on brightness where they meet. */
-    vec3 photo = uAvg * uAvg;
-    float inside = 0.0;
-    int fine = 0;
-    vec3 target = uLayerMean[max(uLayerCount - 1, 0)];
+    vec3 photo = vec3(0.0);
+    float remaining = 1.0;
+    int fine = -1;
+    vec3 target = uLayerMean[0];
     for (int i = 0; i < MAX_LAYERS; i++){
-      if (i >= uLayerCount) break;
+      if (i >= uLayerCount || remaining < 0.004) break;
       vec2 uv = toUV(geo, uLayerImgBnd[i]);
       float w = insideUV(uv);
       if (w <= 0.0) continue;
+      if (fine < 0) fine = i;
+      float take = w * remaining;
+      // Every level is a different photograph with its own exposure.
+      // Matching them onto the sharpest one is what stops the border
+      // between two levels reading as a bright rectangle painted on
+      // the landscape.
       vec3 c = pow(texture(uImgArr, vec3(clamp(uv, 0.0015, 0.9985), float(i))).rgb, vec3(2.2));
-      photo = mix(photo, c * (target / max(uLayerMean[i], vec3(1e-3))), w);
-      inside = max(inside, w);
-      fine = i;
+      photo += c * (target / max(uLayerMean[i], vec3(1e-3))) * take;
+      remaining -= take;
     }
+    float inside = 1.0 - remaining;
+    if (fine < 0) fine = 0;
+    photo += uAvg * uAvg * remaining;
 
     /* Foreground relief. The pixel footprint comes from the screen-space
        derivative of the ground position, so it already accounts for
@@ -675,9 +691,21 @@ void main(){
     float charHeavy = th3 > 0.0 ? (1.0 - smoothstep(th3 * 0.75, th3, d)) : 0.0;
     float charMid   = th2 > 0.0 ? (1.0 - smoothstep(th2 * 0.80, th2, d)) : 0.0;
     float charLight = th1 > 0.0 ? (1.0 - smoothstep(th1 * 0.85, th1, d)) : 0.0;
-    albedo = mix(albedo, vec3(0.118, 0.092, 0.070), charLight * 0.30 * thermalOn);
-    albedo = mix(albedo, vec3(0.070, 0.052, 0.040), charMid * 0.45 * thermalOn);
-    albedo = mix(albedo, vec3(0.031, 0.025, 0.021), charHeavy * 0.88 * thermalOn);
+    /* Burning and scouring change the ground's TONE. They do not
+       replace what is underneath, and the difference is not cosmetic.
+       The aerial photographs taken over Hiroshima afterwards show the
+       street grid, the rivers and the building foundations perfectly
+       legible: the city was flattened, not erased. Painting a flat
+       colour over the imagery is therefore wrong twice — it loses the
+       one thing those photographs are famous for, and it turns the
+       whole near field into a smear the moment the front passes the
+       camera, which is most of what the viewer is looking at.
+       This factor carries the ground's own light and dark through
+       every layer below. */
+    float structure = clamp(lumOf(albedo) / 0.16, 0.35, 2.1);
+    albedo = mix(albedo, vec3(0.118, 0.092, 0.070) * structure, charLight * 0.30 * thermalOn);
+    albedo = mix(albedo, vec3(0.070, 0.052, 0.040) * structure, charMid * 0.45 * thermalOn);
+    albedo = mix(albedo, vec3(0.031, 0.025, 0.021) * structure, charHeavy * 0.88 * thermalOn);
 
     // Blast: scour graded across the overpressure thresholds, and
     // only where the front has already gone past.
@@ -686,10 +714,12 @@ void main(){
     float b1 = uBlastR.y > 0.0 ? (1.0 - smoothstep(uBlastR.y * 0.85, uBlastR.y, d)) : 0.0;
     float bl = uBlastR.z > 0.0 ? (1.0 - smoothstep(uBlastR.z * 0.90, uBlastR.z, d)) : 0.0;
     float scour = max(1.0 - smoothstep(uScour * 0.80, uScour * 1.02, d), b5) * passed;
-    vec3 stripped = mix(vec3(0.072, 0.061, 0.052), vec3(0.163, 0.138, 0.112), grain);
+    // Debris colour, ground structure.
+    vec3 stripped =
+      mix(vec3(0.072, 0.061, 0.052), vec3(0.163, 0.138, 0.112), grain) * structure;
     albedo = mix(albedo, albedo * 0.72, bl * 0.35 * passed);
     albedo = mix(albedo, mix(albedo * 0.45, stripped, 0.55), b1 * 0.55 * passed);
-    albedo = mix(albedo, stripped, scour * 0.90);
+    albedo = mix(albedo, stripped, scour * 0.82);
 
     // Ejecta blanket: pale dust with radial streaks, once it lands.
     float ejR = max(uFireEj.y, uCraterR * 4.0);
