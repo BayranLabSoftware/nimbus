@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { tileSpanMeters } from './mercator.js';
-import { AWS_TERRARIUM, ESRI_WORLD_IMAGERY, planMosaic } from './tileMosaic.js';
+import { EQUATORIAL_CIRCUMFERENCE_M, tileSpanMeters } from './mercator.js';
+import { AWS_TERRARIUM, ESRI_WORLD_IMAGERY, WORLD_ZOOM, planMosaic } from './tileMosaic.js';
 
 describe('tile sources', () => {
   it('Esri uses {z}/{y}/{x} — row before column', () => {
@@ -64,5 +64,37 @@ describe('planMosaic', () => {
     const a = planMosaic(barringer, ESRI_WORLD_IMAGERY).block;
     const b = planMosaic(barringer, ESRI_WORLD_IMAGERY).block;
     expect(a).toEqual(b);
+  });
+});
+
+describe('loadWorldMosaic planning', () => {
+  it('plans the world at WORLD_ZOOM, not at the coarsest level', () => {
+    // Regression: a span larger than the equator made the planner pick
+    // zoom 1 — a 512 px planet at 78 km per pixel, which covers three
+    // texels of a visible landscape and reads as flat colour.
+    const tiles = 2 ** WORLD_ZOOM;
+    const plan = planMosaic(
+      { latitude: 0, longitude: 0, spanMeters: EQUATORIAL_CIRCUMFERENCE_M, tiles },
+      ESRI_WORLD_IMAGERY
+    );
+    expect(plan.block.z).toBe(WORLD_ZOOM);
+    expect(plan.block.tiles).toBe(tiles);
+  });
+
+  it('covers the entire planet', () => {
+    const tiles = 2 ** WORLD_ZOOM;
+    const plan = planMosaic(
+      { latitude: 0, longitude: 0, spanMeters: EQUATORIAL_CIRCUMFERENCE_M, tiles },
+      ESRI_WORLD_IMAGERY
+    );
+    expect(plan.block.bounds.lonWest).toBeCloseTo(-180, 6);
+    expect(plan.block.bounds.lonEast).toBeCloseTo(180, 6);
+  });
+
+  it('is coarse but not absurdly so', () => {
+    // 2048 px around the equator: about 20 km per pixel.
+    const px = EQUATORIAL_CIRCUMFERENCE_M / (2 ** WORLD_ZOOM * 256);
+    expect(px).toBeLessThan(25_000);
+    expect(px).toBeGreaterThan(5_000);
   });
 });

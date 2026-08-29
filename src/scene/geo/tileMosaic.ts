@@ -1,5 +1,10 @@
 import type { MosaicBounds, TileBlock } from './mercator.js';
-import { geoToMosaicUV, tileBlockAround, zoomForSpan } from './mercator.js';
+import {
+  EQUATORIAL_CIRCUMFERENCE_M,
+  geoToMosaicUV,
+  tileBlockAround,
+  zoomForSpan,
+} from './mercator.js';
 import type { NormalisedElevation } from './terrarium.js';
 import { decodeTerrarium, normaliseElevation, sampleElevation } from './terrarium.js';
 
@@ -209,6 +214,38 @@ export async function loadMosaic(
   // A failed load must not poison the cache for the rest of the session.
   task.catch(() => cache.delete(key));
   return task;
+}
+
+/**
+ * Zoom level of the world-covering fallback. Level 3 is 8x8 tiles —
+ * 2048 px around the equator, roughly 20 km per pixel. Coarse, but it
+ * is real geography, and it means that however far the camera pulls
+ * back there is map all the way to the horizon instead of a square of
+ * terrain floating in flat colour.
+ */
+export const WORLD_ZOOM = 3;
+
+/**
+ * The whole planet, once. Cached like any other mosaic, so switching
+ * scenarios re-uses it rather than re-fetching 128 tiles.
+ */
+export function loadWorldMosaic(
+  options: { imageLoader?: ImageLoader } = {}
+): Promise<LoadedMosaic> {
+  const tiles = 2 ** WORLD_ZOOM;
+  return loadMosaic(
+    {
+      latitude: 0,
+      longitude: 0,
+      // Exactly the equator: with `tiles` = 2^WORLD_ZOOM the planner
+      // lands on WORLD_ZOOM and the block clamps to the full grid.
+      // Asking for a larger span drops it to zoom 1 — a 512 px planet,
+      // which is 78 km per pixel and reads as flat colour.
+      spanMeters: EQUATORIAL_CIRCUMFERENCE_M,
+      tiles,
+    },
+    options
+  );
 }
 
 /** Drop every cached mosaic. Exposed for tests and for a hard reset. */

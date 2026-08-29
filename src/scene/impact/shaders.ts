@@ -69,6 +69,16 @@ uniform vec4  uDemBnd2;
 uniform vec2  uElev2;      // metres: min, max of the wide DEM
 uniform float uHasFar;     // 1 when the wide mosaic is bound
 
+// Third level: the whole planet, coarse. Without it the map is a
+// square of terrain floating in flat colour, and pulling the camera
+// back runs off the edge of the world.
+uniform sampler2D uImgW;
+uniform sampler2D uDemW;
+uniform vec4  uImgBndW;
+uniform vec4  uDemBndW;
+uniform vec2  uElevW;
+uniform float uHasWorld;
+
 // Effect footprints, in km. Zero means this event has none.
 uniform vec3  uThermal;    // 3rd, 2nd, 1st degree burn
 uniform vec3  uBlastR;     // 5 psi, 1 psi, 0.5 psi
@@ -127,28 +137,66 @@ vec2 toUV(vec2 lonlat, vec4 bnd){
   float mY = log(tan(radians(45.0 + clamp(lonlat.y, -84.0, 84.0) * 0.5)));
   return vec2(u, (mN - mY) / (mN - mS));
 }
-float insideUV(vec2 uv){ vec2 e = min(uv, 1.0 - uv); return smoothstep(0.0, 0.030, min(e.x, e.y)); }
+/* Coverage of a mosaic level, faded at the border. The fade has to be
+   wide: each level is a different zoom of a different photograph, so
+   a hard edge between them shows up as a rectangle drawn on the
+   landscape. */
+float insideUV(vec2 uv){ vec2 e = min(uv, 1.0 - uv); return smoothstep(0.0, 0.090, min(e.x, e.y)); }
 
 /* Real terrain height (km) above the impact site's own elevation.
    Reads the close mosaic where it covers, the wide one beyond it. */
-float terrain(vec2 xz, out float water, out float inside){
+/* Elevation in metres, taking the finest level that covers this point:
+   the close tile, then the wide one, then the planet. */
+float elevationAt(vec2 xz, out float water, out float inside){
   vec2 geo = toGeo(xz);
-  vec2 uvN = toUV(geo, uDemBnd);
-  float inN = insideUV(uvN);
-  float metres = uElev.x + texture(uDem, clamp(uvN, 0.0015, 0.9985)).r * (uElev.y - uElev.x);
-  float inF = 0.0;
+  float metres = 0.0;
+  float cover = 0.0;
+
+  if (uHasWorld > 0.5){
+    vec2 uvW = toUV(geo, uDemBndW);
+    metres = uElevW.x + texture(uDemW, clamp(uvW, 0.0015, 0.9985)).r * (uElevW.y - uElevW.x);
+    cover = insideUV(uvW);
+  }
   if (uHasFar > 0.5){
     vec2 uvF = toUV(geo, uDemBnd2);
-    inF = insideUV(uvF);
+    float inF = insideUV(uvF);
     float wide = uElev2.x + texture(uDem2, clamp(uvF, 0.0015, 0.9985)).r * (uElev2.y - uElev2.x);
-    metres = mix(wide, metres, inN);
+    metres = mix(metres, wide, inF);
+    cover = max(cover, inF);
   }
-  inside = max(inN, inF);
+  vec2 uvN = toUV(geo, uDemBnd);
+  float inN = insideUV(uvN);
+  float near = uElev.x + texture(uDem, clamp(uvN, 0.0015, 0.9985)).r * (uElev.y - uElev.x);
+  metres = mix(metres, near, inN);
+  cover = max(cover, inN);
+
+  inside = cover;
   water = 1.0 - smoothstep(-8.0, 3.0, metres);
+  return metres;
+}
+
+/* Terrain height in km, referenced to the impact site's own ground. */
+float terrain(vec2 xz, out float water, out float inside){
+  float metres = elevationAt(xz, water, inside);
   float h = (metres - uElev.z) / 1000.0;
   // The DEM arrives as 8 bits; a little grain breaks the terracing.
   h += (fbm(vec3(xz * uGrainF, 0.0), 3) - 0.5) * uCraterD * 0.035;
   return h * inside;
+}
+
+/* Same surface without the grain octave — the raymarch calls this
+   dozens of times per pixel and the noise is invisible at that step
+   size anyway. */
+float groundFast(vec2 xz){
+  float water, inside;
+  float metres = elevationAt(xz, water, inside);
+  float h = ((metres - uElev.z) / 1000.0) * inside;
+  float d = length(xz);
+  float k = max(uCraterR, 1e-4);
+  return h
+    - uCraterD * exp(-pow(d / (k * 0.82), 2.4))
+    + uCraterD * 0.42 * exp(-pow((d - k) / (k * 0.30), 2.0))
+    + uCraterD * 0.10 * exp(-d / (k * 3.4));
 }
 
 /* One threshold ring, thinned by the screen-space derivative so it
@@ -181,17 +229,69 @@ float hitEarth(vec3 ro, vec3 rd){
   float t = -b - sqrt(h);
   return t > 0.0 ? t : -1.0;
 }
-/* Refine against the height field. Only worth doing near the crater,
-   where the bowl and rim actually break the smooth sphere. */
-float refineGround(vec3 ro, vec3 rd, float t0){
-  float t = t0 * 0.72, dt = (t0 * 0.55) / 22.0;
-  for (int i = 0; i < 22; i++){
+/* Intersect a sphere of radius RE + h centred one Earth radius below
+   the origin. Used to bracket the height field between its own floor
+   and ceiling, so the march has a tight, correct interval. */
+float hitShell(vec3 ro, vec3 rd, float h, out float tFar){
+  float R = RE + h;
+  vec3 oc = ro + vec3(0.0, RE, 0.0);
+  float b = dot(oc, rd), c = dot(oc, oc) - R * R, disc = b * b - c;
+  if (disc < 0.0){ tFar = -1.0; return -1.0; }
+  float q = sqrt(disc);
+  tFar = -b + q;
+  return -b - q;
+}
+
+/* Height of the terrain surface, in the local frame, at the ground
+   point under the ray — curvature included. */
+float surfaceAt(vec2 xz){
+  return -(dot(xz, xz)) / (2.0 * RE) + groundFast(xz);
+}
+
+/*
+ * Real height-field intersection.
+ *
+ * The earlier version only refined within a few crater radii and let
+ * the smooth sphere stand in everywhere else, so the landscape had a
+ * perturbed normal but no silhouette: seen edge-on — which is how this
+ * camera sees almost everything — hills read as paint, not as hills.
+ *
+ * March between the ceiling and floor shells of the actual relief, so
+ * the interval is as tight as the data allows, then bisect the
+ * crossing. Returns -1 when the ray misses the ground entirely.
+ */
+float marchGround(vec3 ro, vec3 rd, float tSphere){
+  float relief = max((uElev.y - uElev.z) / 1000.0, uCraterD);
+  float floorH = min((uElev.x - uElev.z) / 1000.0, -uCraterD) - 0.05;
+  float ceilFar, floorFar;
+  float tCeil = hitShell(ro, rd, relief + 0.05, ceilFar);
+  float tFloor = hitShell(ro, rd, floorH, floorFar);
+
+  float t0 = max(tCeil, 0.0);
+  float t1 = tFloor > 0.0 ? tFloor : (tSphere > 0.0 ? tSphere * 1.35 : ceilFar);
+  if (t1 <= t0) return tSphere;
+
+  const int STEPS = 56;
+  float dt = (t1 - t0) / float(STEPS);
+  float prev = t0;
+  for (int i = 1; i <= STEPS; i++){
+    float t = t0 + dt * float(i);
     vec3 p = ro + rd * t;
-    float surf = -(dot(p.xz, p.xz)) / (2.0 * RE) + ground(p.xz);
-    if (p.y < surf) return t - dt * 0.5;
-    t += dt;
+    float gap = p.y - surfaceAt(p.xz);
+    if (gap < 0.0){
+      // Bisect: eight halvings put the hit inside a few metres even on
+      // a kilometre-long step.
+      float lo = prev, hi = t;
+      for (int k = 0; k < 8; k++){
+        float mid = 0.5 * (lo + hi);
+        vec3 q = ro + rd * mid;
+        if (q.y - surfaceAt(q.xz) < 0.0) hi = mid; else lo = mid;
+      }
+      return 0.5 * (lo + hi);
+    }
+    prev = t;
   }
-  return t0;
+  return tSphere;
 }
 
 /* Volume density. 'hot' separates gas that EMITS from dust that only
@@ -253,8 +353,8 @@ void main(){
   vec3 col = sky;
 
   if (tGround > 0.0){
-    float t = tGround;
-    if (length((ro + rd * tGround).xz) < uCraterR * 7.0) t = refineGround(ro, rd, tGround);
+    float t = marchGround(ro, rd, tGround);
+    if (t <= 0.0) t = tGround;
     vec3 p = ro + rd * t;
     float d = length(p.xz);
 
@@ -271,13 +371,24 @@ void main(){
     float water, demInside;
     terrain(p.xz, water, demInside);
 
-    vec3 photo = pow(texture(uImg, clamp(uvI, 0.0015, 0.9985)).rgb, vec3(2.2));
+    // Finest level that covers this point: close tile, wide tile,
+    // then the planet. Something always covers it, so the ground never
+    // runs out before the horizon does.
+    vec3 photo = vec3(0.0);
+    float cover = 0.0;
+    if (uHasWorld > 0.5){
+      vec2 uvW = toUV(geo, uImgBndW);
+      photo = pow(texture(uImgW, clamp(uvW, 0.0015, 0.9985)).rgb, vec3(2.2));
+      cover = insideUV(uvW);
+    }
     if (uHasFar > 0.5){
       vec2 uvF = toUV(geo, uImgBnd2);
-      vec3 wide = pow(texture(uImg2, clamp(uvF, 0.0015, 0.9985)).rgb, vec3(2.2));
-      photo = mix(wide, photo, inside);
-      inside = max(inside, insideUV(uvF));
+      float inF = insideUV(uvF);
+      photo = mix(photo, pow(texture(uImg2, clamp(uvF, 0.0015, 0.9985)).rgb, vec3(2.2)), inF);
+      cover = max(cover, inF);
     }
+    photo = mix(photo, pow(texture(uImg, clamp(uvI, 0.0015, 0.9985)).rgb, vec3(2.2)), inside);
+    inside = max(cover, inside);
     photo = mix(vec3(dot(photo, vec3(0.299, 0.587, 0.114))), photo, 1.25);
     vec3 albedo = mix(uAvg * uAvg * (0.72 + 0.56 * grain), photo, inside);
 
@@ -322,9 +433,18 @@ void main(){
 
     /* The imagery already carries its own illumination, so the Lambert
        term is lifted: it adds relief, it does not relight the scene. */
+    /* Relief needs contrast. The imagery carries its own lighting, so
+       the Lambert term cannot be used raw — but lifting it to a 0.38
+       floor, as it was, leaves a slope facing away from the sun as
+       bright as one facing it, and the landscape flattens into a
+       photograph pasted on a sphere. A low floor plus a sky term that
+       follows how much sky the slope can actually see gives the hills
+       back without inventing light. */
     float lam = max(dot(N, uSun), 0.0);
-    float shade = 0.38 + 0.72 * lam;
-    vec3 lit = albedo * shade * vec3(1.0, 0.92, 0.80) * 1.55 + albedo * vec3(0.06, 0.08, 0.13);
+    float skyView = 0.5 + 0.5 * N.y;                 // flat ground sees all of it
+    float shade = 0.14 + 1.15 * lam;
+    vec3 lit = albedo * shade * vec3(1.0, 0.92, 0.80) * 1.45
+             + albedo * vec3(0.16, 0.21, 0.32) * skyView * 0.55;
     if (water > 0.01){
       vec3 wN = normalize(mix(N, vec3(0.0, 1.0, 0.0) + vec3(-p.x, 0.0, -p.z) / RE, water));
       vec3 hv = normalize(uSun - rd);
@@ -391,7 +511,10 @@ void main(){
       lit = contour(lit, d, uRadEmp.y,  uEffectColor[10], k * 0.8);
     }
 
-    float fog = 1.0 - exp(-t * uFogK * (1.0 + 0.6 * smoothstep(0.0, 1.0, uDust)));
+    // Aerial perspective. Kept light: the camera spends most of its
+    // range above the bulk of the atmosphere, and an over-driven haze
+    // washes the far landscape into the sky.
+    float fog = 1.0 - exp(-t * uFogK * 0.45 * (1.0 + 0.6 * smoothstep(0.0, 1.0, uDust)));
     col = mix(lit, sky * 0.9 + vec3(0.05, 0.06, 0.08), clamp(fog, 0.0, 0.92));
   }
 

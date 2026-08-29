@@ -209,3 +209,25 @@ describe('greatCircleDistance — haversine, not acos(dot)', () => {
     expect(antipodal).toBeCloseTo(Math.PI * 6_371_008, 0);
   });
 });
+
+describe('tileBlockAround at world scale', () => {
+  it('never asks for more tiles than the grid has', () => {
+    // Requesting a 6x6 block at zoom 0 used to reach for tiles that do
+    // not exist; every one of them came back as a hole.
+    for (const z of [0, 1, 2, 3]) {
+      const block = tileBlockAround(0, 0, z, 8);
+      expect(block.tiles).toBeLessThanOrEqual(2 ** z);
+      expect(block.x0 + block.tiles).toBeLessThanOrEqual(2 ** z);
+      expect(block.y0 + block.tiles).toBeLessThanOrEqual(2 ** z);
+    }
+  });
+
+  it('covers the whole world when the block fills the grid', () => {
+    const block = tileBlockAround(0, 0, 3, 8);
+    expect(block.tiles).toBe(8);
+    expect(block.bounds.lonWest).toBeCloseTo(-180, 6);
+    expect(block.bounds.lonEast).toBeCloseTo(180, 6);
+    expect(block.bounds.latNorth).toBeCloseTo(MERCATOR_MAX_LAT, 5);
+    expect(block.bounds.latSouth).toBeCloseTo(-MERCATOR_MAX_LAT, 5);
+  });
+});

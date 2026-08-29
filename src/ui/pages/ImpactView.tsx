@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { s } from '../../physics/units.js';
-import { loadMosaic } from '../../scene/geo/tileMosaic.js';
+import { loadMosaic, loadWorldMosaic } from '../../scene/geo/tileMosaic.js';
 import { ImpactRenderer } from '../../scene/impact/ImpactRenderer.js';
 import {
   DEFAULT_ORBIT,
@@ -183,11 +183,27 @@ export function ImpactView(): JSX.Element {
         setTerrain('failed');
       });
 
-    if (effectsReach > reachMeters * 6) {
+    // The planet, once, cached across scenarios. It is what guarantees
+    // there is ground all the way to the horizon however far back the
+    // camera goes, instead of a square of terrain in flat colour.
+    void loadWorldMosaic()
+      .then((world) => {
+        if (!cancelled) rendererRef.current?.setMosaic(world, 'world');
+      })
+      .catch((error: unknown) => {
+        console.warn('[ImpactView] world terrain unavailable:', error);
+      });
+
+    // Middle level, always. The close tile covers barely thirty
+    // kilometres; the moment the camera pulls back it is gone and the
+    // world level alone is twenty kilometres per pixel. This is the
+    // band that carries actual landscape while the contours are being
+    // read.
+    {
       void loadMosaic({
         latitude: originLat,
         longitude: originLon,
-        spanMeters: effectsReach * 2.4,
+        spanMeters: Math.max(effectsReach * 2.4, reachMeters * 80),
         tiles: 6,
       })
         .then((wide) => {

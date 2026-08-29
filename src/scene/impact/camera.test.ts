@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
+  DEFAULT_MAX_ZOOM,
   DEFAULT_ORBIT,
   FOV_Y,
+  MAX_CAMERA_DISTANCE_M,
+  maxZoomForReach,
   autoFrameDistance,
   clampOrbit,
   poseFor,
@@ -189,5 +192,34 @@ describe('rayBasis', () => {
     const b = rayBasis(poseFor(framing, DEFAULT_ORBIT));
     expect(b.length).toBe(9);
     expect([...b].every(Number.isFinite)).toBe(true);
+  });
+});
+
+describe('maxZoomForReach', () => {
+  it('lets the camera get past the outermost effect', () => {
+    // 1 Mt at Yucca Flat: 2.44 km framing reach, 25 km of effects. The
+    // old fixed ceiling of 4x could not bring the outer contour into
+    // frame at all.
+    const z = maxZoomForReach(2_440, 25_070);
+    expect(z).toBeGreaterThan(4);
+    expect(2_440 * 1.45 * z).toBeGreaterThan(25_070);
+  });
+
+  it('never returns less than the default ceiling', () => {
+    expect(maxZoomForReach(10_000, 1)).toBe(DEFAULT_MAX_ZOOM);
+    expect(maxZoomForReach(0, 1e6)).toBe(DEFAULT_MAX_ZOOM);
+    expect(maxZoomForReach(Number.NaN, 1e6)).toBe(DEFAULT_MAX_ZOOM);
+  });
+
+  it('stops before the tangent frame stops being a sphere', () => {
+    // Chicxulub reaches 12 600 km. Following that with the camera
+    // would shear the geography, so the ceiling is absolute.
+    const framing = 448_670;
+    const z = maxZoomForReach(framing, 12_590_000);
+    expect(framing * 1.45 * z).toBeLessThanOrEqual(MAX_CAMERA_DISTANCE_M * 1.0001);
+  });
+
+  it('scales with the event rather than being one fixed number', () => {
+    expect(maxZoomForReach(2_440, 25_070)).not.toBeCloseTo(maxZoomForReach(2_440, 5_000), 3);
   });
 });

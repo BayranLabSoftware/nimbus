@@ -41,6 +41,8 @@ const TEXTURE_UNITS = {
   elevation: 4,
   imageryFar: 5,
   elevationFar: 6,
+  imageryWorld: 7,
+  elevationWorld: 8,
 } as const;
 
 /** Fraction of the device pixel grid we actually render at. The scene
@@ -65,6 +67,9 @@ function required<T>(value: T | null | undefined, what: string): T {
   }
   return value;
 }
+
+/** Which level of the terrain pyramid a mosaic belongs to. */
+export type MosaicLayer = 'near' | 'far' | 'world';
 
 interface RenderTarget {
   texture: WebGLTexture;
@@ -103,8 +108,11 @@ export class ImpactRenderer {
   private elevationTexture: WebGLTexture;
   private imageryFarTexture: WebGLTexture;
   private elevationFarTexture: WebGLTexture;
+  private imageryWorldTexture: WebGLTexture;
+  private elevationWorldTexture: WebGLTexture;
   private mosaic: LoadedMosaic | null = null;
   private farMosaic: LoadedMosaic | null = null;
+  private worldMosaic: LoadedMosaic | null = null;
 
   private width = 0;
   private height = 0;
@@ -139,6 +147,8 @@ export class ImpactRenderer {
     this.elevationTexture = this.placeholder([128, 128, 128, 255]);
     this.imageryFarTexture = this.placeholder([120, 108, 88, 255]);
     this.elevationFarTexture = this.placeholder([128, 128, 128, 255]);
+    this.imageryWorldTexture = this.placeholder([120, 108, 88, 255]);
+    this.elevationWorldTexture = this.placeholder([128, 128, 128, 255]);
 
     const sun = options.sunDirection ?? [-0.42, 0.2, -0.88];
     const len = Math.hypot(sun[0], sun[1], sun[2]) || 1;
@@ -265,21 +275,34 @@ export class ImpactRenderer {
    * viewer starts on, or the wide one that keeps the ground real once
    * they pull back past its edge. Safe to call repeatedly.
    */
-  setMosaic(mosaic: LoadedMosaic, layer: 'near' | 'far' = 'near'): void {
+  setMosaic(mosaic: LoadedMosaic, layer: MosaicLayer = 'near'): void {
     const { gl } = this;
-    const near = layer === 'near';
-    if (near) this.mosaic = mosaic;
-    else this.farMosaic = mosaic;
+    if (layer === 'near') this.mosaic = mosaic;
+    else if (layer === 'far') this.farMosaic = mosaic;
+    else this.worldMosaic = mosaic;
 
-    gl.deleteTexture(near ? this.imageryTexture : this.imageryFarTexture);
+    const oldImagery =
+      layer === 'near'
+        ? this.imageryTexture
+        : layer === 'far'
+          ? this.imageryFarTexture
+          : this.imageryWorldTexture;
+    gl.deleteTexture(oldImagery);
     const imagery = required(gl.createTexture(), 'the imagery texture');
     gl.bindTexture(gl.TEXTURE_2D, imagery);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mosaic.imagery);
     this.finishTexture();
-    if (near) this.imageryTexture = imagery;
-    else this.imageryFarTexture = imagery;
+    if (layer === 'near') this.imageryTexture = imagery;
+    else if (layer === 'far') this.imageryFarTexture = imagery;
+    else this.imageryWorldTexture = imagery;
 
-    gl.deleteTexture(near ? this.elevationTexture : this.elevationFarTexture);
+    const oldElevation =
+      layer === 'near'
+        ? this.elevationTexture
+        : layer === 'far'
+          ? this.elevationFarTexture
+          : this.elevationWorldTexture;
+    gl.deleteTexture(oldElevation);
     const elevation = required(gl.createTexture(), 'the elevation texture');
     const { bytes, width, height } = mosaic.elevation;
     // One byte per sample, expanded to RGBA: WebGL2's single-channel
@@ -295,8 +318,9 @@ export class ImpactRenderer {
     gl.bindTexture(gl.TEXTURE_2D, elevation);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, rgba);
     this.finishTexture();
-    if (near) this.elevationTexture = elevation;
-    else this.elevationFarTexture = elevation;
+    if (layer === 'near') this.elevationTexture = elevation;
+    else if (layer === 'far') this.elevationFarTexture = elevation;
+    else this.elevationWorldTexture = elevation;
   }
 
   private finishTexture(): void {
@@ -425,6 +449,33 @@ export class ImpactRenderer {
     gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.elevationFar);
     gl.bindTexture(gl.TEXTURE_2D, this.elevationFarTexture);
     gl.uniform1i(this.location(p, 'uDem2'), TEXTURE_UNITS.elevationFar);
+
+    // World level
+    const world = this.worldMosaic;
+    const wImg = world?.imageryBlock.bounds;
+    const wDem = world?.elevationBlock.bounds;
+    gl.uniform1f(this.location(p, 'uHasWorld'), world === null ? 0 : 1);
+    gl.uniform4f(
+      this.location(p, 'uImgBndW'),
+      wImg?.lonWest ?? -1,
+      wImg?.lonEast ?? 1,
+      wImg?.latNorth ?? 1,
+      wImg?.latSouth ?? -1
+    );
+    gl.uniform4f(
+      this.location(p, 'uDemBndW'),
+      wDem?.lonWest ?? -1,
+      wDem?.lonEast ?? 1,
+      wDem?.latNorth ?? 1,
+      wDem?.latSouth ?? -1
+    );
+    gl.uniform2f(this.location(p, 'uElevW'), world?.elevation.min ?? 0, world?.elevation.max ?? 1);
+    gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.imageryWorld);
+    gl.bindTexture(gl.TEXTURE_2D, this.imageryWorldTexture);
+    gl.uniform1i(this.location(p, 'uImgW'), TEXTURE_UNITS.imageryWorld);
+    gl.activeTexture(gl.TEXTURE0 + TEXTURE_UNITS.elevationWorld);
+    gl.bindTexture(gl.TEXTURE_2D, this.elevationWorldTexture);
+    gl.uniform1i(this.location(p, 'uDemW'), TEXTURE_UNITS.elevationWorld);
 
     // Effect footprints. Zero disables an effect the event lacks —
     // an airburst has no crater and a conventional charge no EMP.
@@ -565,6 +616,8 @@ export class ImpactRenderer {
     gl.deleteTexture(this.elevationTexture);
     gl.deleteTexture(this.imageryFarTexture);
     gl.deleteTexture(this.elevationFarTexture);
+    gl.deleteTexture(this.imageryWorldTexture);
+    gl.deleteTexture(this.elevationWorldTexture);
     gl.deleteVertexArray(this.vao);
     for (const program of Object.values(this.programs)) gl.deleteProgram(program);
     this.uniforms.clear();

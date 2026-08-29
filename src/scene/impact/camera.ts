@@ -34,6 +34,8 @@ export const FOV_Y = (48 * Math.PI) / 180;
 const MIN_PITCH = 0.04;
 const MAX_PITCH = 1.35;
 const MIN_ZOOM = 0.25;
+/** How far the camera may get from ground zero, in metres. */
+export const MAX_CAMERA_DISTANCE_M = 3_000_000;
 /** Default ceiling. Callers that know how far the event's own effects
  *  reach should pass their own: a blast contour a thousand times the
  *  fireball radius is only visible if the camera is allowed to get far
@@ -55,7 +57,16 @@ export function clampOrbit(orbit: OrbitState, maxZoom = DEFAULT_MAX_ZOOM): Orbit
  */
 export function maxZoomForReach(framingReach: number, effectsReach: number): number {
   if (!(framingReach > 0)) return DEFAULT_MAX_ZOOM;
-  return Math.max(DEFAULT_MAX_ZOOM, (effectsReach * 1.9) / framingReach);
+  // Room to keep going past the outermost contour, so the viewer can
+  // put the whole footprint in a landscape rather than filling the
+  // frame with it.
+  const wanted = (effectsReach * 5) / framingReach;
+  // Absolute ceiling. The scene works in a tangent frame around the
+  // impact point; a few thousand kilometres out that stops being a
+  // good approximation of the sphere and the geography would start to
+  // shear. Better to stop than to draw a wrong map.
+  const absolute = MAX_CAMERA_DISTANCE_M / (framingReach * 1.45);
+  return Math.max(DEFAULT_MAX_ZOOM, Math.min(wanted, absolute));
 }
 
 const sub = (a: Vec3, b: Vec3): Vec3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];

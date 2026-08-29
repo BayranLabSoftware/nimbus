@@ -125,7 +125,10 @@ export function tileBlockAround(
   tiles: number
 ): TileBlock {
   const n = 2 ** z;
-  const side = Math.max(1, Math.floor(tiles));
+  // Never ask for more tiles than the grid has: at low zoom a 6x6
+  // request would reach for tiles that do not exist and come back as
+  // holes. Clamping here keeps the world-covering case honest.
+  const side = Math.min(Math.max(1, Math.floor(tiles)), n);
   const c = lonLatToTile(lonDeg, latDeg, z);
   const x0 = Math.min(Math.max(Math.floor(c.x - side / 2), 0), Math.max(0, n - side));
   const y0 = Math.min(Math.max(Math.floor(c.y - side / 2), 0), Math.max(0, n - side));
