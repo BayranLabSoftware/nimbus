@@ -30,10 +30,25 @@ export function LandingPage() {
       </a>
 
       <header className={styles.header}>
-        <div className={styles.brand}>
-          <span className={styles.brandMark} aria-hidden="true" />
-          <span className={styles.brandName}>{t('landing.projectName')}</span>
-        </div>
+        {/* Il marchio della casa, in alto a sinistra e cliccabile: stessa
+            posizione e stessa misura che ha sulle altre pagine del sito. Il
+            nome del prodotto non si perde, e' il titolo qui sotto. L'indirizzo
+            e' assoluto e non parte da BASE_URL come quello dell'informativa:
+            la pagina d'ingresso di BayranLab sta alla radice del dominio,
+            fuori dalla base dell'app, e in sviluppo non esiste affatto. */}
+        <a
+          className={styles.brand}
+          href="https://bayranlabsoftware.github.io/"
+          aria-label="BayranLab Software"
+        >
+          <img
+            className={styles.brandLogo}
+            src={`${import.meta.env.BASE_URL}bayranlab-logo.png`}
+            alt="BayranLab Software"
+            width={614}
+            height={189}
+          />
+        </a>
         <nav className={styles.nav} aria-label="Primary">
           <LanguageSwitch />
         </nav>
@@ -41,7 +56,6 @@ export function LandingPage() {
 
       <main id="main" className={styles.main}>
         <section className={styles.hero} aria-labelledby="hero-title">
-          <p className={styles.eyebrow}>{t('landing.comingSoon')}</p>
           <h1 id="hero-title" className={styles.title}>
             {t('landing.projectName')}
           </h1>
@@ -55,9 +69,6 @@ export function LandingPage() {
             >
               {t('landing.cta.enterSimulator')}
             </button>
-            <a className={styles.cta} href={REPO_URL} target="_blank" rel="noopener noreferrer">
-              {t('landing.cta.github')}
-            </a>
             <a className={styles.cta} href="#features">
               {t('landing.cta.science')}
             </a>
