@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('landing page', () => {
-  test('renders hero content and primary CTA', async ({ page }) => {
+  test('renders hero content and the way in', async ({ page }) => {
     await page.goto('/?lng=en');
 
     // Skip-link present and focusable.
@@ -13,27 +13,32 @@ test.describe('landing page', () => {
     await expect(h1).toHaveCount(1);
     await expect(h1).toBeVisible();
 
-    // Primary CTA points at the repo and opens in a new tab safely.
-    const ghCta = page.getByRole('link', { name: 'Star on GitHub' });
-    await expect(ghCta).toBeVisible();
-    await expect(ghCta).toHaveAttribute('target', '_blank');
-    await expect(ghCta).toHaveAttribute('rel', /noopener/);
-    await expect(ghCta).toHaveAttribute('rel', /noreferrer/);
+    // The house mark sits top-left and leads home. It replaced the
+    // wordmark, and the "Star on GitHub" call to action left with it —
+    // the primary control on this page is the one that opens the
+    // simulator.
+    const brand = page.getByRole('link', { name: 'BayranLab Software' });
+    await expect(brand).toBeVisible();
+    await expect(brand).toHaveAttribute('href', /bayranlabsoftware/);
+
+    const enter = page.getByRole('button', { name: /Try the simulator|Prova il simulatore/ });
+    await expect(enter).toBeVisible();
   });
 
   test('language switch flips EN ↔ IT and updates <html lang>', async ({ page }) => {
     await page.goto('/?lng=en');
 
-    // Start in English.
+    // Start in English. The tagline carries the language now that the
+    // "Coming soon" eyebrow is gone.
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await expect(page.getByText('Coming soon')).toBeVisible();
+    await expect(page.getByText('Simulate catastrophic events')).toBeVisible();
 
     // Button is labelled for screen readers regardless of language.
     const button = page.getByRole('button', { name: /Switch language|Cambia lingua/ });
     await button.click();
 
     await expect(page.locator('html')).toHaveAttribute('lang', 'it');
-    await expect(page.getByText('In arrivo')).toBeVisible();
+    await expect(page.getByText("Simula l'impatto di eventi catastrofici")).toBeVisible();
 
     // Flip back.
     await button.click();
