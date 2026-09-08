@@ -107,21 +107,21 @@ export interface ImpactAmplitudeAtDistanceInput {
  * Inside the cavity (r < R_C) we clamp to the source amplitude — the
  * simulator is not interested in the near-field detail there.
  *
- * IMPORTANT — terminology and the two spreading laws in this repo.
+ * IMPORTANT — terminology and the spreading laws in this repo.
  * Purely geometric *cylindrical* (radial 2-D) spreading conserves
- * energy flux around a growing ring and gives amplitude ∝ 1/√r — and
- * that is what the bathymetric propagation pipeline
- * (`tsunami/amplitudeField.ts`) uses. The 1/r used HERE is faster than
- * cylindrical: it is the Ward & Asphaug impact-source envelope, where
- * the extra 1/√r over geometric spreading stands in for the frequency
- * dispersion that makes short-wavelength impact waves decay faster than
- * classical seismic tsunamis (Melosh 2003; Wünnemann 2007 — the
- * "impact tsunamis are over-rated" result). So the two paths
- * legitimately differ: the near-field impact headline (this function)
- * is intentionally conservative at 1/r, while the on-globe field uses
- * physical cylindrical 1/√r. The {@link wunnemannDampingFactor} adds a
- * further √r reduction on top of this 1/r when the "best-estimate" row
- * is wanted.
+ * energy flux around a growing ring and gives amplitude ∝ 1/√r — the
+ * law the bathymetric pipeline (`tsunami/amplitudeField.ts`) applies
+ * to seismic, volcanic and landslide sources. The 1/r used HERE is
+ * faster than cylindrical: it is the Ward & Asphaug impact-source
+ * envelope, where the extra 1/√r over geometric spreading stands in
+ * for the frequency dispersion that makes short-wavelength impact
+ * waves decay faster than classical seismic tsunamis (Melosh 2003;
+ * Wünnemann 2007 — the "impact tsunamis are over-rated" result). It
+ * is kept as the historical Ward & Asphaug reference row. The
+ * simulator's best estimate for impact sources — in the readouts AND
+ * in the on-globe field — is the Wünnemann, Collins & Weiss (2010)
+ * rim wave (`./wunnemann.ts`), whose exponent spans r^−0.5 (shallow
+ * shelf) to r^−1.2 (deep ocean) around this 1/r.
  *
  * Source: Ward & Asphaug (2000), Section 4.
  */
@@ -131,42 +131,4 @@ export function impactAmplitudeAtDistance(input: ImpactAmplitudeAtDistanceInput)
   const r = input.distance as number;
   if (r <= RC) return m(A0);
   return m((A0 * RC) / r);
-}
-
-/**
- * Hydrocode-informed damping factor that scales down the Ward–Asphaug
- * 1/r far-field amplitude. The linear analytic model systematically
- * over-predicts impact-tsunami amplitudes because short-wavelength
- * waves dissipate faster than classical shallow-water tsunamis, and
- * near-source non-linearities partition energy into many modes.
- *
- * Reference:
- *   Wünnemann, K., Weiss, R., & Hofmann, K. (2007).
- *   "Characteristics of oceanic impact-induced large water waves —
- *    Re-evaluation of the tsunami hazard."
- *   Meteoritics & Planetary Science 42 (11): 1893–1903.
- *   DOI: 10.1111/j.1945-5100.2007.tb00548.x.
- *   Melosh, H. J. (2003). "Impact-generated tsunamis: An over-rated
- *    hazard." Lunar & Planetary Science 34, Abstract 2013.
- *
- * Simplified fit to their Fig. 6 hydrocode curves:
- *   damping(r) = min(1, 0.8 · sqrt(100 km / r))
- * → 0.8 at 100 km; 0.25 at 1 000 km; 0.11 at 5 000 km.
- */
-export function wunnemannDampingFactor(distance: Meters): number {
-  const r = distance as number;
-  if (!Number.isFinite(r) || r <= 0) return 1;
-  const reference = 100_000; // 100 km anchor
-  return Math.min(1, 0.8 * Math.sqrt(reference / r));
-}
-
-/**
- * Wünnemann/Melosh-corrected far-field amplitude — the honest,
- * hydrocode-informed replacement for the unconstrained Ward–Asphaug
- * 1/r reach. Used as the "best-estimate" row in the UI next to the
- * unmodified Ward–Asphaug envelope.
- */
-export function impactAmplitudeWunnemann(input: ImpactAmplitudeAtDistanceInput): Meters {
-  const ward = impactAmplitudeAtDistance(input) as number;
-  return m(ward * wunnemannDampingFactor(input.distance));
 }

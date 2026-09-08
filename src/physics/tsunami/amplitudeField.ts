@@ -21,21 +21,28 @@ import type { FastMarchingResult } from './fastMarching.js';
  *      This is the dominant driver of run-up enhancement near the
  *      coast, where local depth drops by orders of magnitude.
  *
- *   2. **Cylindrical geometric spreading.** A point source on a flat
- *      basin emits cylindrically; energy scales as 1/r so amplitude
- *      scales as 1/√r. We approximate the ray-path distance r by
- *      `c_avg · T(x)` where c_avg is the geometric mean of the source
- *      and local celerities — exact only for straight-ray propagation
- *      but a first-order improvement on the no-spread limit.
+ *   2. **Radial spreading.** A point source on a flat basin emits
+ *      cylindrically; energy scales as 1/r so amplitude scales as
+ *      1/√r — the default `spreadingExponent` of 0.5, right for the
+ *      long non-dispersive waves of seismic, volcanic and landslide
+ *      sources. Impact sources pass the Wünnemann, Collins & Weiss
+ *      (2010) rim-wave exponent q_r instead (0.5 on a shallow shelf,
+ *      up to 1.2 in the deep ocean — `events/tsunami/wunnemann.ts`),
+ *      which folds the faster dispersive decay of short impact waves
+ *      into the same radial law. We approximate the ray-path
+ *      distance r by `c_avg · T(x)` where c_avg is the geometric mean
+ *      of the source and local celerities — exact only for
+ *      straight-ray propagation but a first-order improvement on the
+ *      no-spread limit.
  *
  * The combined update at every reachable cell is therefore
  *
- *     A(x) = A₀ · (h₀ / h(x))^(1/4) · √(R₀ / R(x))
+ *     A(x) = A₀ · (h₀ / h(x))^(1/4) · (R₀ / R(x))^q
  *
  * with R₀ the source cavity radius (the wave is "saturated" inside,
- * so we clamp R(x) ≥ R₀ to avoid divide-by-near-zero blow-ups). Land
- * cells (h ≤ minDepth) inherit Infinity from the FMM result and are
- * masked out by the renderer.
+ * so we clamp R(x) ≥ R₀ to avoid divide-by-near-zero blow-ups) and
+ * q the spreading exponent. Land cells (h ≤ minDepth) inherit
+ * Infinity from the FMM result and are masked out by the renderer.
  *
  * What this model deliberately does NOT do:
  *   - Refraction / focusing along bathymetric ridges. Real ray paths
@@ -43,10 +50,13 @@ import type { FastMarchingResult } from './fastMarching.js';
  *     amplify the wave by 5–10×. The FMM gives us only T, not the
  *     gradient of T along characteristics, so we cannot do
  *     proper transport-equation amplitude propagation here.
- *   - Dispersion. Long waves are non-dispersive in the shallow-water
- *     limit; intermediate-frequency components (impact tsunamis with
- *     wavelengths ~ basin depth) disperse measurably over 10 000 km
- *     and our 1/√r decay overstates the far-field amplitude.
+ *   - Dispersion, beyond what the exponent captures. Long waves are
+ *     non-dispersive in the shallow-water limit; intermediate-
+ *     frequency components (impact tsunamis with wavelengths ~ basin
+ *     depth) disperse measurably over 10 000 km. The Wünnemann
+ *     exponent absorbs this for impacts in the constant-depth sense;
+ *     the 1/√r default still overstates the far field for any other
+ *     short-wavelength source.
  *   - Non-linear wave breaking. The 1/r-shoaling product diverges as
  *     h → 0; we clamp to a 50 m floor.
  *
@@ -95,6 +105,11 @@ export interface AmplitudeFieldInput {
   /** Minimum ocean depth (m) to treat as water — propagated from the
    *  same FMM input so the masks line up. */
   minDepthMeters?: number;
+  /** Radial spreading exponent q in A ∝ (R₀ / r)^q. Defaults to 0.5
+   *  (cylindrical energy conservation). Impact sources pass the
+   *  Wünnemann 2010 rim-wave exponent. Values outside (0, 3] are
+   *  clamped. */
+  spreadingExponent?: number;
 }
 
 export interface AmplitudeField {
@@ -114,6 +129,9 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
   const sourceDepth = Math.max(input.sourceDepthM ?? 1_000, MIN_PROPAGATION_DEPTH);
   const g = input.surfaceGravity ?? STANDARD_GRAVITY;
   const minDepth = input.minDepthMeters ?? 10;
+  const q = Number.isFinite(input.spreadingExponent)
+    ? Math.min(3, Math.max(0.05, input.spreadingExponent ?? 0.5))
+    : 0.5;
   const nCells = arrivalField.nLat * arrivalField.nLon;
   const amplitudes = new Float32Array(nCells);
   amplitudes.fill(NaN);
@@ -141,7 +159,7 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
     // far away (limit cases of a constant-depth ocean).
     const cAvg = Math.sqrt(c0 * cLocal);
     const r = Math.max(cAvg * T, sourceCavityRadiusM);
-    const spread = Math.sqrt(sourceCavityRadiusM / r);
+    const spread = (sourceCavityRadiusM / r) ** q;
 
     const A = sourceAmplitudeM * shoaling * spread;
     amplitudes[i] = A;

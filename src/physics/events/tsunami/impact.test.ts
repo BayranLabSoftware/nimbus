@@ -1,13 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { IMPACT_PRESETS, simulateImpact } from '../../simulate.js';
 import { m as meters, megatonsToJoules, Mt } from '../../units.js';
-import {
-  impactAmplitudeAtDistance,
-  impactAmplitudeWunnemann,
-  impactCavityRadius,
-  impactSourceAmplitude,
-  wunnemannDampingFactor,
-} from './impact.js';
+import { impactAmplitudeAtDistance, impactCavityRadius, impactSourceAmplitude } from './impact.js';
 
 describe('impactCavityRadius (Ward & Asphaug 2000)', () => {
   it('Chicxulub-class impactor opens an ~80 km water-column cavity', () => {
@@ -107,32 +101,5 @@ describe('impactAmplitudeAtDistance', () => {
     // A₀(R_C ≈ 84 km) ≈ 1.45 km → A₀·R_C/r ≈ 122 m.
     expect(A).toBeGreaterThan(80);
     expect(A).toBeLessThan(200);
-  });
-});
-
-describe('wunnemannDampingFactor (Wünnemann 2007 / Melosh 2003)', () => {
-  it('returns ~0.8 at 100 km (anchor) and < 1 at all finite distances', () => {
-    expect(wunnemannDampingFactor(meters(100_000))).toBeCloseTo(0.8, 2);
-  });
-
-  it('drops to ~0.25 at 1 000 km and ~0.11 at 5 000 km', () => {
-    expect(wunnemannDampingFactor(meters(1_000_000))).toBeCloseTo(0.253, 2);
-    expect(wunnemannDampingFactor(meters(5_000_000))).toBeCloseTo(0.113, 2);
-  });
-
-  it('clamps to 1 for distances below the anchor (no over-correction)', () => {
-    expect(wunnemannDampingFactor(meters(10_000))).toBe(1);
-    expect(wunnemannDampingFactor(meters(0))).toBe(1);
-  });
-
-  it('applying the factor to Ward–Asphaug gives a 4–10× smaller far field', () => {
-    const chicxulub = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
-    const RC = impactCavityRadius({ kineticEnergy: chicxulub.impactor.kineticEnergy });
-    const A0 = impactSourceAmplitude(RC);
-    const common = { sourceAmplitude: A0, cavityRadius: RC, distance: meters(1_000_000) };
-    const ward = impactAmplitudeAtDistance(common) as number;
-    const wunnemann = impactAmplitudeWunnemann(common) as number;
-    expect(ward / wunnemann).toBeGreaterThan(3);
-    expect(ward / wunnemann).toBeLessThan(10);
   });
 });

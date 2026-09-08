@@ -92,6 +92,15 @@ const wunnemann2007: Citation = {
   doi: '10.1111/j.1945-5100.2007.tb00548.x',
 };
 
+const wunnemann2010: Citation = {
+  authors: 'Wünnemann, K., Collins, G. S. & Weiss, R.',
+  year: 2010,
+  title:
+    "Impact of a cosmic body into Earth's ocean and the generation of a large tsunami wave: insight from numerical modeling",
+  venue: 'Reviews of Geophysics 48, RG4006',
+  doi: '10.1029/2009RG000308',
+};
+
 const toon1997: Citation = {
   authors: 'Toon, O. B., Zahnle, K., Morrison, D., Turco, R. P. & Covey, C.',
   year: 1997,
@@ -640,11 +649,21 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       },
       {
         id: 'impact-tsunami-wunnemann',
-        name: 'Tsunami hydrocode damping',
-        formula: 'f_damp(r) = min(1, 0.8 · √(100 km / r))',
+        name: 'Impact-tsunami far field (rim wave)',
+        formula:
+          'A_r(r) = min(0.14 R_w, h) · (R_w / r)^q_r ;  q_r = min(1.2, 0.5 + 2 e^(−1.75 L/h))',
         description:
-          'Wünnemann 2007 / Melosh 2003: short-wavelength impact waves dissipate 4–10× faster than classical tsunamis at continent-crossing range.',
-        citation: wunnemann2007,
+          'Wünnemann, Collins & Weiss 2010 eqs. 9a/10a. The rim wave is the shallow-water-type wave that survives into the far field: pure r^−0.5 spreading when the impactor dwarfs the water depth, r^−1.2 for a deep-ocean strike. This is the amplitude the run-up, the friction and dispersion corrections, the legend and the bathymetric veil on the globe all start from.',
+        citation: wunnemann2010,
+      },
+      {
+        id: 'impact-tsunami-wunnemann-envelope',
+        name: 'Impact-tsunami published envelope',
+        formula:
+          'A_up = min(0.28 R_w, h) · R_w / r ;  A_low = min{A_r, 0.06 · min(R_w/3, h) · (5R_w / r)^q_c},  q_c = 3 e^(−0.8 L/h) (h/L ≥ 2)',
+        description:
+          'Wünnemann, Collins & Weiss 2010 eqs. 7–8 and 9b/10b — the upper and lower bounds the Earth Impact Effects Program reports. The collapse wave forms only when the water column is at least twice the impactor diameter and breaks near the source, which is why the lower bound for a deep-ocean impact is decimetres at 1 000 km while the upper bound is tens of metres: the far-field hazard of impact tsunamis is still an open question (Wünnemann 2007, Melosh 2003).',
+        citation: wunnemann2010,
       },
       {
         id: 'penetration-bonus',
@@ -1286,6 +1305,7 @@ export const CITATIONS = {
   mcgetchin1973,
   ward2000,
   wunnemann2007,
+  wunnemann2010,
   toon1997,
   prinn1987,
   brittConsolmagno2003,

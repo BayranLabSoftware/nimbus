@@ -189,3 +189,60 @@ describe('computeAmplitudeField', () => {
     expect(eastA).toBeGreaterThan(westA);
   });
 });
+
+describe('computeAmplitudeField — spreadingExponent', () => {
+  function wideFlatGrid(): ReturnType<typeof makeElevationGrid> {
+    const N = 81;
+    const samples = new Float32Array(N * N);
+    samples.fill(-4_000);
+    return makeElevationGrid({
+      minLat: -4,
+      maxLat: 4,
+      minLon: -4,
+      maxLon: 4,
+      nLat: N,
+      nLon: N,
+      samples,
+    });
+  }
+
+  it('an exponent of 1 decays twice as fast (in log space) as the cylindrical default', () => {
+    const grid = wideFlatGrid();
+    const arrival = computeTsunamiArrivalField({ grid, sourceLatitude: 0, sourceLongitude: 0 });
+    const base = {
+      arrivalField: arrival,
+      grid,
+      sourceAmplitudeM: 30,
+      sourceCavityRadiusM: 10_000,
+      sourceDepthM: 4_000,
+    };
+    const cylindrical = computeAmplitudeField(base);
+    const steep = computeAmplitudeField({ ...base, spreadingExponent: 1 });
+    const midRow = Math.floor(cylindrical.nLat / 2);
+    const midCol = Math.floor(cylindrical.nLon / 2);
+    const cellsPerDeg = (cylindrical.nLon - 1) / 8;
+    const idx = midRow * cylindrical.nLon + midCol + Math.round(2 * cellsPerDeg);
+    const a = cylindrical.amplitudes[idx];
+    const b = steep.amplitudes[idx];
+    expect(a).toBeDefined();
+    expect(b).toBeDefined();
+    if (a === undefined || b === undefined) return;
+    // (R₀/r)^1 = ((R₀/r)^0.5)² ⇒ A_steep / A₀ = (A_cyl / A₀)²
+    expect(b / 30).toBeCloseTo((a / 30) ** 2, 3);
+    expect(b).toBeLessThan(a);
+  });
+
+  it('clamps absurd exponents instead of producing NaN or growth', () => {
+    const grid = wideFlatGrid();
+    const arrival = computeTsunamiArrivalField({ grid, sourceLatitude: 0, sourceLongitude: 0 });
+    const field = computeAmplitudeField({
+      arrivalField: arrival,
+      grid,
+      sourceAmplitudeM: 30,
+      sourceCavityRadiusM: 10_000,
+      spreadingExponent: Number.NaN,
+    });
+    expect(field.maxAmplitude).toBeLessThanOrEqual(30 * 4);
+    expect(Number.isFinite(field.maxAmplitude)).toBe(true);
+  });
+});

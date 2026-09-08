@@ -84,8 +84,11 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
   }
 
   if (result.tsunami) {
-    triggers.push(cite('ward2000', 'Water-column cavity and 1/r cylindrical spreading.'));
-    triggers.push(cite('wunnemann2007', 'Short-wavelength tsunami hydrocode damping.'));
+    triggers.push(cite('ward2000', 'Water-column cavity and 1/r reference envelope.'));
+    triggers.push(
+      cite('wunnemann2010', 'Rim-wave far field (eq. 9a) and published envelope (eqs. 7–8).')
+    );
+    triggers.push(cite('wunnemann2007', 'Hydrocode attenuation exponents behind eqs. 10a/10b.'));
     triggers.push(cite('synolakis1987', 'Plane-beach solitary-wave run-up at coast.'));
     triggers.push(
       cite('heidarzadehSatake2015', 'Far-field dispersion multiplier (DART-calibrated).')

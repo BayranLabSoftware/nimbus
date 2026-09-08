@@ -149,12 +149,28 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
         value: `${(r.tsunami.amplitudeAt1000km as number).toFixed(2)} m`,
       },
       {
-        label: 'Tsunami A @ 1 000 km (Wünnemann-corrected)',
+        label: 'Tsunami A @ 1 000 km (Wünnemann 2010 rim wave)',
         value: `${(r.tsunami.amplitudeAt1000kmWunnemann as number).toFixed(2)} m`,
+      },
+      {
+        label: 'Tsunami A @ 1 000 km (Wünnemann 2010 envelope)',
+        value: `${(r.tsunami.amplitudeAt1000kmLower as number).toFixed(2)} – ${(r.tsunami.amplitudeAt1000kmUpper as number).toFixed(2)} m`,
+      },
+      {
+        label: 'Rim-wave height at cavity rim',
+        value: `${(r.tsunami.rimWaveSourceAmplitude as number).toFixed(1)} m`,
+      },
+      {
+        label: 'Wave regime h/L · rim-wave exponent q_r',
+        value: `${r.tsunami.depthToImpactorRatio.toFixed(2)} · ${r.tsunami.rimWaveExponent.toFixed(2)}${r.tsunami.collapseWaveForms ? ` (collapse wave q_c ${r.tsunami.collapseWaveExponent.toFixed(2)})` : ''}`,
       },
       {
         label: 'Tsunami A @ 5 000 km (Ward-Asphaug)',
         value: `${(r.tsunami.amplitudeAt5000km as number).toFixed(2)} m`,
+      },
+      {
+        label: 'Tsunami A @ 5 000 km (Wünnemann 2010 envelope)',
+        value: `${(r.tsunami.amplitudeAt5000kmLower as number).toFixed(2)} – ${(r.tsunami.amplitudeAt5000kmUpper as number).toFixed(2)} m`,
       },
       {
         label: 'Tsunami A @ 5 000 km (dispersion-corrected)',

@@ -81,9 +81,11 @@ function formatRange(radiusM: number): string {
  * open-ocean amplitude thresholds) to the legend, computing each radius
  * from the SAME closed-form law the Globe layer uses to paint the rings.
  *
- *   - Cavity-collapse (Ward & Asphaug 2000) for impact, explosion,
- *     volcano-collapse, and submarine-landslide sources:
- *         A(r) = A₀ · R_C / r          ⇒  r = A₀ · R_C / A_target
+ *   - Cavity-collapse for explosion, volcano-collapse and submarine-
+ *     landslide sources (Ward & Asphaug 2000, q = 1), and the
+ *     Wünnemann, Collins & Weiss (2010) rim wave for impact sources
+ *     (q = q_r, 0.5 on a shelf → 1.2 in the deep ocean):
+ *         A(r) = A₀ · (R_C / r)^q      ⇒  r = R_C · (A₀ / A_target)^(1/q)
  *   - Cylindrical line-source (Hanks-Kanamori → Okada → 1/√r) for
  *     megathrust earthquakes:
  *         A(r) = A₀ · √(R₀ / r)        ⇒  r = R₀ · (A₀ / A_target)²
@@ -95,7 +97,7 @@ function formatRange(radiusM: number): string {
 function pushTsunamiWaveFronts(
   out: LegendRow[],
   source:
-    | { mode: 'cavity'; sourceAmplitude: number; cavityRadius: number }
+    | { mode: 'cavity'; sourceAmplitude: number; cavityRadius: number; exponent?: number }
     | { mode: 'cylindrical'; sourceAmplitude: number; halfLength: number },
   t: (key: string) => string
 ): void {
@@ -110,7 +112,8 @@ function pushTsunamiWaveFronts(
     let radius: number;
     if (source.mode === 'cavity') {
       if (source.cavityRadius <= 0) continue;
-      radius = (source.sourceAmplitude * source.cavityRadius) / tier.amplitude;
+      const q = source.exponent ?? 1;
+      radius = source.cavityRadius * (source.sourceAmplitude / tier.amplitude) ** (1 / q);
     } else {
       if (source.halfLength <= 0) continue;
       const ratio = source.sourceAmplitude / tier.amplitude;
@@ -175,12 +178,14 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
       push('ejectaBlanket', result.data.ejecta.blanketEdge1mm);
       if (result.data.tsunami) {
         push('tsunamiCavity', result.data.tsunami.cavityRadius);
+        // Same law as the veil on the globe: Wünnemann 2010 rim wave.
         pushTsunamiWaveFronts(
           out,
           {
             mode: 'cavity',
-            sourceAmplitude: result.data.tsunami.sourceAmplitude,
+            sourceAmplitude: result.data.tsunami.rimWaveSourceAmplitude,
             cavityRadius: result.data.tsunami.cavityRadius,
+            exponent: result.data.tsunami.rimWaveExponent,
           },
           t
         );

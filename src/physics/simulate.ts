@@ -55,10 +55,14 @@ import {
 import { nonLinearShoalingAmplitude } from './events/tsunami/nonLinearShoaling.js';
 import {
   impactAmplitudeAtDistance,
-  impactAmplitudeWunnemann,
   impactCavityRadius,
   impactSourceAmplitude,
 } from './events/tsunami/impact.js';
+import {
+  wunnemannAttenuation,
+  wunnemannFarField,
+  wunnemannRimWaveSourceAmplitude,
+} from './events/tsunami/wunnemann.js';
 import { shallowWaterWaveSpeed, tsunamiTravelTime } from './events/tsunami/propagation.js';
 import type {
   Joules,
@@ -131,18 +135,45 @@ export interface ImpactTsunamiResult {
   amplitudeAt1000km: Meters;
   /** Far-field amplitude at 5 000 km from the impact (m). */
   amplitudeAt5000km: Meters;
-  /** Wünnemann 2007 / Melosh 2003 hydrocode-corrected amplitude at
-   *  1 000 km — the "best-estimate" over the Ward–Asphaug envelope. */
+  /** Wünnemann, Collins & Weiss (2010) rim-wave amplitude at 1 000 km
+   *  (their eq. 9a) — the simulator's best estimate for the far field,
+   *  and the law the on-globe amplitude field propagates. */
   amplitudeAt1000kmWunnemann: Meters;
-  /** Wünnemann-corrected amplitude at 5 000 km. */
+  /** Rim-wave amplitude at 5 000 km (Wünnemann 2010 eq. 9a). */
   amplitudeAt5000kmWunnemann: Meters;
+  /** Wünnemann 2010 rim-wave height at the cavity rim,
+   *  min(0.14 R_w, h): the source amplitude behind the two rows above
+   *  and behind the bathymetric propagation on the globe. */
+  rimWaveSourceAmplitude: Meters;
+  /** Rim-wave attenuation exponent q_r (Wünnemann 2010 eq. 10a):
+   *  0.5 for an impactor much larger than the water depth (pure
+   *  cylindrical spreading), 1.2 for a deep-ocean strike. */
+  rimWaveExponent: number;
+  /** Collapse-wave attenuation exponent q_c (eq. 10b). Only
+   *  meaningful when {@link collapseWaveForms} is true. */
+  collapseWaveExponent: number;
+  /** True when the water column is at least twice the impactor
+   *  diameter, so a collapse wave forms as the cavity refills. */
+  collapseWaveForms: boolean;
+  /** h / L — water depth over impactor diameter, the regime selector. */
+  depthToImpactorRatio: number;
+  /** Published upper bound of the Wünnemann 2010 envelope at 1 000 km
+   *  (eq. 7, re-ordered against eq. 8 where the two cross). */
+  amplitudeAt1000kmUpper: Meters;
+  /** Published lower bound of the envelope at 1 000 km (eq. 8). */
+  amplitudeAt1000kmLower: Meters;
+  /** Envelope upper bound at 5 000 km. */
+  amplitudeAt5000kmUpper: Meters;
+  /** Envelope lower bound at 5 000 km. */
+  amplitudeAt5000kmLower: Meters;
   /** Travel time from the impact point to the 1 000 km contour (s). */
   travelTimeTo1000km: Seconds;
   /** Basin depth used for the travel-time calculation (m). */
   meanOceanDepth: Meters;
   /** Synolakis (1987) run-up on a 1:100 beach with 10 m offshore depth,
-   *  using the Wünnemann-damped amplitude at 1 000 km as the incident
-   *  wave. Illustrative coastal-inundation estimate. */
+   *  using the Wünnemann 2010 rim-wave amplitude at 1 000 km (after
+   *  Manning propagation damping) as the incident wave. Illustrative
+   *  coastal-inundation estimate. */
   runupAt1000km: Meters;
   /** Heidarzadeh & Satake (2015) dispersion-corrected amplitude at
    *  5 000 km from the source. */
@@ -187,8 +218,8 @@ export interface ImpactTsunamiResult {
    *  surfaced as a tooltip diagnostic. */
   characteristicAbsorptionDepth: Meters;
   /** Phase-19 Manning-friction-corrected far-field amplitude at
-   *  1 000 km. Same as {@link amplitudeAt1000kmWunnemann} multiplied
-   *  by the open-ocean Manning damping factor (Imamura 1995,
+   *  1 000 km. {@link amplitudeAt1000kmWunnemann} multiplied by the
+   *  open-ocean Manning damping factor (Imamura 1995,
    *  n = 0.025) over the 1 000 km path at the basin's mean depth.
    *  Smaller than the unmodified 1/r reach by ~3 % at deep-ocean
    *  depth, ~30 % at shelf depth. */
@@ -325,8 +356,9 @@ export interface ImpactScenarioResult {
  * a Vitest unit.
  *
  * Cascade logic (M3): when `input.waterDepth > 0` the evaluator also
- * invokes the Ward & Asphaug (2000) impact-tsunami chain to produce
- * a `tsunami` sub-result. Nothing else in the pipeline changes — the
+ * invokes the impact-tsunami chain — Ward & Asphaug (2000) cavity,
+ * Wünnemann, Collins & Weiss (2010) far field — to produce a
+ * `tsunami` sub-result. Nothing else in the pipeline changes — the
  * seabed crater and seismic magnitude are unaffected by the overlying
  * water column for the popular-science display envelope.
  *
@@ -626,16 +658,32 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       cavityRadius,
       distance: m(5_000_000),
     });
-    const amp1000W = impactAmplitudeWunnemann({
-      sourceAmplitude,
-      cavityRadius,
-      distance: m(1_000_000),
+    // Wünnemann, Collins & Weiss (2010) far field. The Ward rows above
+    // stay as the historical reference; the rim wave (eq. 9a) is the
+    // best estimate every downstream consumer uses — run-up, Manning
+    // damping, dispersion, the legend and the on-globe field — and
+    // the published envelope (eqs. 7 / 8) travels alongside so the UI
+    // can show the spread instead of a single number. The regime is
+    // set by the water depth AT THE SITE over the impactor diameter:
+    // on a 100 m shelf even a Chicxulub-class body is "shallow
+    // water" (rim wave only, r^−0.5), in 4 km of open ocean a 1 km
+    // asteroid is "deep water" (r^−1.2 rim wave plus a collapse wave
+    // that breaks near the source).
+    const siteDepth = m(waterDepth);
+    const wunnemannRegime = wunnemannAttenuation({
+      impactorDiameter: input.impactorDiameter,
+      waterDepth: siteDepth,
     });
-    const amp5000W = impactAmplitudeWunnemann({
-      sourceAmplitude,
+    const rimWaveSourceAmplitude = wunnemannRimWaveSourceAmplitude(cavityRadius, siteDepth);
+    const wunnemannCommon = {
       cavityRadius,
-      distance: m(5_000_000),
-    });
+      waterDepth: siteDepth,
+      impactorDiameter: input.impactorDiameter,
+    };
+    const wunnemann1000 = wunnemannFarField({ ...wunnemannCommon, distance: m(1_000_000) });
+    const wunnemann5000 = wunnemannFarField({ ...wunnemannCommon, distance: m(5_000_000) });
+    const amp1000W = wunnemann1000.rimWave;
+    const amp5000W = wunnemann5000.rimWave;
     // Pick the beach slope: caller-supplied DEM slope when the store
     // sampled one at the click site, otherwise the textbook 1:100
     // plane-beach reference. Below the lower bound (1:1000, ~0.057°)
@@ -717,6 +765,15 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       amplitudeAt5000km: amp5000,
       amplitudeAt1000kmWunnemann: amp1000W,
       amplitudeAt5000kmWunnemann: amp5000W,
+      rimWaveSourceAmplitude,
+      rimWaveExponent: wunnemannRegime.rimWaveExponent,
+      collapseWaveExponent: wunnemannRegime.collapseWaveExponent,
+      collapseWaveForms: wunnemannRegime.collapseWaveForms,
+      depthToImpactorRatio: wunnemannRegime.depthToImpactorRatio,
+      amplitudeAt1000kmUpper: wunnemann1000.upper,
+      amplitudeAt1000kmLower: wunnemann1000.lower,
+      amplitudeAt5000kmUpper: wunnemann5000.upper,
+      amplitudeAt5000kmLower: wunnemann5000.lower,
       travelTimeTo1000km: tsunamiTravelTime(m(1_000_000), meanOceanDepth),
       meanOceanDepth,
       runupAt1000km: runup,

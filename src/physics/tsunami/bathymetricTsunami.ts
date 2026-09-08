@@ -49,12 +49,16 @@ export interface BathymetricTsunamiInput {
    *  show the wave-height heatmap on top of the arrival contours. */
   sourceAmplitudeM?: number;
   /** Companion to sourceAmplitudeM — the cavity radius that seeded
-   *  the wave. Together they parameterise the Green-law + 1/√r
-   *  amplitude propagation. */
+   *  the wave. Together they parameterise the Green-law + radial
+   *  spreading amplitude propagation. */
   sourceCavityRadiusM?: number;
   /** Mean depth at the source (m). Falls through to the amplitude
    *  module's default (1 000 m) when omitted. */
   sourceDepthM?: number;
+  /** Radial spreading exponent for the amplitude field — 0.5
+   *  (cylindrical) when omitted; impact sources pass the Wünnemann
+   *  2010 rim-wave exponent. See `amplitudeField.ts`. */
+  spreadingExponent?: number;
   /** Phase 11 — optional low-resolution global grid (~40 km/pixel,
    *  full planet). When provided alongside `grid`, the orchestrator
    *  emits an additional global FMM + amplitude pair so the renderer
@@ -134,6 +138,9 @@ export function computeBathymetricTsunami(
       sourceAmplitudeM: input.sourceAmplitudeM,
       sourceCavityRadiusM: input.sourceCavityRadiusM,
       ...(input.sourceDepthM !== undefined && { sourceDepthM: input.sourceDepthM }),
+      ...(input.spreadingExponent !== undefined && {
+        spreadingExponent: input.spreadingExponent,
+      }),
     });
     result.amplitude = amplitude;
     result.runup = computeRunupField({ amplitudeField: amplitude, grid: input.grid });
@@ -173,6 +180,9 @@ export function computeBathymetricTsunami(
         sourceAmplitudeM: input.sourceAmplitudeM,
         sourceCavityRadiusM: input.sourceCavityRadiusM,
         ...(input.sourceDepthM !== undefined && { sourceDepthM: input.sourceDepthM }),
+        ...(input.spreadingExponent !== undefined && {
+          spreadingExponent: input.spreadingExponent,
+        }),
       });
     }
     result.global = globalLayer;
