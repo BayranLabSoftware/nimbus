@@ -241,3 +241,46 @@ describe('populationLookup grid views — land fraction and fine tiles', () => {
     expect(counted).toBeLessThan(expected * 1.05);
   });
 });
+
+describe('populationLookup land density', () => {
+  const { landDensityAt, coarseView } = _internals;
+  const meta = {
+    cellDeg: 1,
+    nLon: 360,
+    nLat: 180,
+    minLat: -90,
+    maxLat: 90,
+    minLon: -180,
+    maxLon: 180,
+    pMax: 2e7,
+    source: 'test',
+  };
+  const encode = (p: number): number =>
+    Math.round((255 * Math.log(1 + p)) / Math.log(1 + meta.pMax));
+
+  it('is people over land in the 3 × 3 neighbourhood, sea cells adding no land', () => {
+    // A coast: column lon 0…1 holds 10 000 people on half-land cells,
+    // west of it sea (no people, no land), east of it empty land.
+    const values = new Uint8Array(360 * 180);
+    const land = new Uint8Array(360 * 180);
+    for (let r = 0; r < 180; r++) {
+      values[r * 360 + 180] = encode(10_000);
+      land[r * 360 + 180] = 128; // half land
+      land[r * 360 + 181] = 255; // empty land east
+      land[r * 360 + 182] = 255;
+    }
+    const view = coarseView({ meta, values, land });
+    const cellKm2 = 111.19 * 111.19 * Math.cos((0.5 * Math.PI) / 180);
+    // At the coast cell: 3 rows × (half cell + one land cell) of land, 3 × 10 000 people.
+    const atCoast = landDensityAt(view, 0.5, 0.5);
+    const expectedCoast = (3 * 10_000) / (3 * (0.5 + 1) * cellKm2);
+    expect(atCoast / expectedCoast).toBeGreaterThan(0.9);
+    expect(atCoast / expectedCoast).toBeLessThan(1.1);
+    // On the sea cell west of the coast the neighbourhood still sees the coast.
+    const offshore = landDensityAt(view, 0.5, -0.5);
+    expect(offshore).toBeGreaterThan(0);
+    expect(offshore).toBeCloseTo((3 * 10_000) / (3 * 0.5 * cellKm2), -1);
+    // Far at sea: nobody, no land.
+    expect(landDensityAt(view, 0.5, -20)).toBe(0);
+  });
+});

@@ -7,6 +7,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The coastal toll of the wave.** The tsunami is counted wherever
+  the wave map touches a coast: every run-up cell of the local grid
+  and of the planet beyond it carries its beach slope, its length of
+  coast and the wave's arrival time; the strip the water crosses is the
+  Bretschneider & Wybro inundation distance (10 km at most), the people in it come from the
+  coastal land density of the 2.5′ tiles, and the share that dies
+  follows the mean flow depth through the log-normal form of
+  Koshimura 2009 and Jonkman 2008, with no warning. The toll is
+  binned by arrival and the counter rises as the wave lands, hours
+  after the impact for a far coast; the panel shows it apart, and a
+  submarine landslide gets its first death toll.
 - **Population at 2.5′ with a land fraction.** Thirty 60° × 30° tiles
   of the GHS-POP 2020 grid at 2.5′ (≈ 4.6 km, 5 MB in all, fetched on
   demand) serve rings up to 1 500 km and the coast; the 0.125° planet
@@ -34,8 +45,7 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   lateral blasts — with the low–high band and the physical elapsed
   time beside the figure. A provisional figure from the shipped
   raster appears within milliseconds and glides to the WorldPop figure
-  when that lands. Tsunami deaths are still not counted, and the label
-  says so.
+  when that lands. The tsunami toll joined later in the same release.
 - **Estimated casualties.** WorldPop 2020 population inside every
   hazard band (zonal-statistics API up to 100 000 km², a shipped
   0.125° GHS-POP aggregate beyond) times published vulnerability

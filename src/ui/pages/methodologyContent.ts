@@ -156,6 +156,22 @@ const glasstoneDolan1977: Citation = {
   venue: 'U.S. Department of Defense / Department of Energy',
 };
 
+const koshimura2009: Citation = {
+  authors: 'Koshimura, S., Oie, T., Yanagisawa, H., & Imamura, F.',
+  year: 2009,
+  title:
+    'Developing fragility functions for tsunami damage estimation using numerical model and post-tsunami data from Banda Aceh, Indonesia',
+  venue: 'Coastal Engineering Journal, 51(3), 243–273',
+  doi: '10.1142/S0578563409002004',
+};
+const jonkman2008: Citation = {
+  authors: 'Jonkman, S. N., Vrijling, J. K., & Vrouwenvelder, A. C. W. M.',
+  year: 2008,
+  title:
+    'Methods for the estimation of loss of life due to floods: a literature review and a proposal for a new method',
+  venue: 'Natural Hazards, 46(3), 353–389',
+  doi: '10.1007/s11069-008-9227-5',
+};
 const postol1986: Citation = {
   authors: 'Postol, T. A.',
   year: 1986,
@@ -1293,7 +1309,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'What the death toll is not',
         formula: 'order of magnitude, low–high band, sources on the label',
         description:
-          'Every figure assumes no evacuation, no warning and no care, and leaves out fallout, initial radiation, famine, disease and the tsunami toll (counting people in a run-up field needs a coastal DEM and an inundation model the simulator does not have). Numbers are printed to two significant figures with their band, next to the vulnerability function and the population source that produced them.',
+          'Every figure assumes no evacuation, no warning and no care, and leaves out fallout, initial radiation, famine and disease ; the tsunami toll rests on a run-up height and a beach slope, not on an inundation map. Numbers are printed to two significant figures with their band, next to the vulnerability function and the population source that produced them.',
         citation: ota1979,
       },
       {
@@ -1321,6 +1337,15 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         description:
           'OTA 1979 counts the injured and expects most of the seriously injured to die for lack of care — two thousand burn beds in the whole country against hundreds of thousands of burn casualties. A share of the prompt injured is counted as dying within the first month, shown apart from the prompt toll in the panel and dated in the sweep so the counter keeps rising for weeks.',
         citation: ota1979,
+      },
+      {
+        id: 'casualties-tsunami',
+        name: 'The coastal toll of the wave',
+        formula:
+          'H = √(A · R); X = 0.06 · H^(4/3) / n², n = 0.03 (≤ 10 km); people = land density × X × coast; ν(h) = Φ(ln(h/θ)/β), h = H/2, θ = 8 m unwarned (≤ 30 min) → 16 m warned (≥ 3 h), 4 m Banda Aceh high, β = 0.8',
+        description:
+          'For every coastal cell the wave map reaches — the local grid and, beyond it, the planet at 40 km — the water height at the shore is the geometric mean of the arriving amplitude and the plane-beach run-up (about 9 m on the 2011 Tōhoku coast), the strip it crosses is the Bretschneider & Wybro inundation distance Hills & Mader used for impact tsunamis (1.3 km for 9 m, the Tōhoku mean), the 2.5′ population tiles give the land density around the cell, and the share of the people in the strip who die follows the mean flow depth through the log-normal form Koshimura fitted to Banda Aceh and Jonkman reviewed for floods. A coast reached within half an hour has no warning; from three hours on it has been warned and emptied, the thresholds shifting on a log scale in between, Banda Aceh the high end throughout. The toll is binned by arrival time and the counter rises as the wave lands, hours after the impact for a far coast. The run-up is a height, not an inundation map; the coast is where the rasters are coarsest; expect a factor of three either way.',
+        citation: koshimura2009,
       },
       {
         id: 'casualties-sweep',
@@ -1413,6 +1438,8 @@ export const CITATIONS = {
   brittConsolmagno2003,
   glasstoneDolan1977,
   postol1986,
+  koshimura2009,
+  jonkman2008,
   kinneyGraham1985,
   nordyke1977,
   needham2018,

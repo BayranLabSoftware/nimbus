@@ -18,6 +18,7 @@ import type {
   PopulationLookupResult,
   PopulationPolygon,
   PopulationLookupOptions,
+  PopulationDensityOptions,
 } from '../scene/populationLookup.js';
 import { buildRuptureStadiumLatLon } from '../scene/stadiumPolygon.js';
 import {
@@ -79,6 +80,13 @@ import { deg, degreesToRadians, J, kgPerM3, m, mps, Pa, sqm } from '../physics/u
 import { IMPACT_BLAST_COUPLING } from '../physics/constants.js';
 import { arrivalFunctionFor, buildCasualtyTimeline } from '../physics/casualtyTimeline.js';
 import type { CasualtyTimeline } from '../physics/casualtyTimeline.js';
+import {
+  estimateTsunamiCasualties,
+  mergeTsunamiCasualties,
+  type TsunamiCasualtyEstimate,
+  type TsunamiCoastCell,
+} from '../physics/tsunamiCasualties.js';
+import type { RunupCell } from '../physics/tsunami/runupField.js';
 
 /** Top-level event categories the simulator supports. */
 export type EventType = 'impact' | 'explosion' | 'earthquake' | 'volcano' | 'landslide';
@@ -425,6 +433,11 @@ export interface AppStore {
    *  model does not cover (`casualtyStatus` says which). */
   casualties: CasualtyResult | null;
   casualtyStatus: CasualtyStatus;
+  /** The toll of the event's own hazards — blast, shaking, the
+   *  current — before the coastal toll is added. */
+  casualtiesBase: CasualtyResult | null;
+  /** The coastal toll of the wave, when the wave map reached a coast. */
+  tsunamiCasualties: TsunamiCasualtyEstimate | null;
   /** The estimate as a sweep in time — when the hazard front reaches
    *  each band — rebuilt with every estimate. */
   casualtyTimeline: CasualtyTimeline | null;
@@ -543,6 +556,9 @@ export interface AppStore {
   clearDeepDive: () => void;
   setMode: (mode: ViewMode) => void;
   setSimTime: (seconds: number | null) => void;
+  /** Recount the coastal toll from the current wave map — called when
+   *  the map lands or grows, and by tests. */
+  recomputeTsunamiCasualties: () => Promise<void>;
   transitionTo: (mode: ViewMode, options?: { instant?: boolean }) => void;
   reset: () => void;
 }
@@ -587,6 +603,8 @@ type InitialSlice = Pick<
   | 'populationStatus'
   | 'casualties'
   | 'casualtyStatus'
+  | 'casualtiesBase'
+  | 'tsunamiCasualties'
   | 'casualtyTimeline'
   | 'casualtyClockStartedAt'
   | 'monteCarlo'
@@ -666,6 +684,8 @@ function initialState(): InitialSlice {
     populationExposure: null,
     populationStatus: 'idle',
     casualties: null,
+    casualtiesBase: null,
+    tsunamiCasualties: null,
     casualtyTimeline: null,
     casualtyClockStartedAt: null,
     casualtyStatus: 'idle',
@@ -1058,6 +1078,20 @@ export function configurePopulationLookup(lookup: PopulationLookup | null): void
   populationLookup = lookup;
 }
 
+/** Land population density (people per km² of land) around each point. */
+export type PopulationDensityLookup = (
+  points: readonly { latitude: number; longitude: number }[],
+  options?: PopulationDensityOptions
+) => Promise<Float32Array | null>;
+
+let populationDensity: PopulationDensityLookup | null = null;
+
+/** Register the coastal-density backend, like the population lookup:
+ *  the app shell passes the raster reader; unit tests pass null. */
+export function configurePopulationDensity(lookup: PopulationDensityLookup | null): void {
+  populationDensity = lookup;
+}
+
 /** How long a Launch waits for the planetary mosaic before going
  *  ahead with the local tile only. Generous for a slow connection,
  *  short enough that a stalled fetch never holds the button hostage;
@@ -1350,6 +1384,89 @@ function casualtyTimelineFor(result: ActiveResult, estimate: CasualtyEstimate): 
 }
 
 /**
+ * The toll on screen: the event's own toll plus the coastal toll of
+ * the wave, merged, dated, with the counter's clock started once.
+ */
+function publishCasualties(
+  result: ActiveResult,
+  get: () => AppStore,
+  set: (partial: Partial<AppStore>) => void
+): void {
+  const base = get().casualtiesBase;
+  const tsunami = get().tsunamiCasualties;
+  if (base === null && tsunami === null) return;
+  const estimate: CasualtyEstimate =
+    tsunami === null && base !== null
+      ? base
+      : mergeTsunamiCasualties(base, tsunami ?? EMPTY_TSUNAMI);
+  const merged: CasualtyResult = {
+    ...estimate,
+    source: base?.source ?? TSUNAMI_TOLL_SOURCE,
+    method: base?.method ?? 'fine-raster',
+    provisional: base?.provisional ?? false,
+  };
+  set({
+    casualties: merged,
+    casualtyTimeline: casualtyTimelineFor(result, merged),
+    casualtyClockStartedAt: get().casualtyClockStartedAt ?? performance.now(),
+    ...(base === null && { casualtyStatus: 'idle' as const }),
+  });
+}
+
+const EMPTY_TSUNAMI: TsunamiCasualtyEstimate = {
+  exposed: 0,
+  deaths: 0,
+  deathsLow: 0,
+  deathsHigh: 0,
+  firstArrivalS: 0,
+  lastArrivalS: 0,
+  bands: [],
+  cellCount: 0,
+};
+const TSUNAMI_TOLL_SOURCE = 'GHS-POP 2020 (JRC), coastal land density';
+
+/**
+ * The coastal toll: every run-up cell of the wave map — the local
+ * grid's, and the planet's beyond it — with its arrival time, the
+ * land density around it from the population rasters, the strip the
+ * water crosses and the share the depth kills. Runs when the wave map
+ * lands and again when the planetary layer completes it; a newer
+ * result or a newer map drops this run's numbers.
+ */
+async function runTsunamiCasualties(
+  result: ActiveResult,
+  get: () => AppStore,
+  set: (partial: Partial<AppStore>) => void
+): Promise<void> {
+  const lookup = populationDensity;
+  const layer = get().bathymetricTsunami;
+  if (lookup === null || layer === null) return;
+  const local = get().elevationGrid;
+  const cells: RunupCell[] = [...(layer.runup?.cells ?? [])];
+  for (const cell of layer.global?.runup?.cells ?? []) {
+    // The planet's coasts beyond the local grid; inside it the local
+    // cells already count, at a finer spacing.
+    if (local !== null && gridCoversLocation(local, cell)) continue;
+    cells.push(cell);
+  }
+  if (cells.length === 0) {
+    set({ tsunamiCasualties: null });
+    return;
+  }
+  const densities = await lookup(
+    cells.map((c) => ({ latitude: c.latitude, longitude: c.longitude }))
+  );
+  if (get().result !== result || get().bathymetricTsunami !== layer) return;
+  if (densities === null) return;
+  const coast: TsunamiCoastCell[] = cells.map((c, i) => ({
+    ...c,
+    densityPerKm2: densities[i] ?? 0,
+  }));
+  set({ tsunamiCasualties: estimateTsunamiCasualties(coast) });
+  publishCasualties(result, get, set);
+}
+
+/**
  * Fetch the population inside every band (and the headline exposure
  * ring), then turn the plan into an estimate. Two passes: the shipped
  * coarse raster first, which answers in milliseconds and gives the bar
@@ -1450,11 +1567,10 @@ async function runCasualtyLookup(
     }
     const estimate = estimateCasualties(plan, cumulative);
     set({
-      casualties: { ...estimate, source, method, provisional },
-      casualtyTimeline: casualtyTimelineFor(result, estimate),
-      casualtyClockStartedAt: get().casualtyClockStartedAt ?? performance.now(),
+      casualtiesBase: { ...estimate, source, method, provisional },
       casualtyStatus: provisional ? 'fetching' : 'idle',
     });
+    publishCasualties(result, get, set);
   };
 
   const fast = await collect({ fast: true });
@@ -1555,6 +1671,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
       populationExposure: null,
       populationStatus: 'idle',
       casualties: null,
+      casualtiesBase: null,
+      tsunamiCasualties: null,
       casualtyTimeline: null,
       casualtyClockStartedAt: null,
       casualtyStatus: 'idle',
@@ -1606,6 +1724,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -1631,6 +1751,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -1656,6 +1778,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -1681,6 +1805,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -1706,6 +1832,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -1759,6 +1887,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -1798,6 +1928,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -1837,6 +1969,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -1878,6 +2012,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -1916,6 +2052,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -2011,7 +2149,14 @@ export const useAppStore = create<AppStore>((set, get) => ({
       if (evaluationAtStart !== currentEvaluationId) return;
       if (get().result !== result) return;
       set({ bathymetricTsunami: layer });
+      void runTsunamiCasualties(result, get, set);
     });
+  },
+
+  recomputeTsunamiCasualties: async () => {
+    const result = get().result;
+    if (result === null) return;
+    await runTsunamiCasualties(result, get, set);
   },
 
   evaluate: async () => {
@@ -2278,6 +2423,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'fetching',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
@@ -2304,6 +2451,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
         });
         void runCasualtyLookup(result, plan, headline, state.location, get, set);
       }
+      if (bathymetricTsunami !== null) void runTsunamiCasualties(result, get, set);
     } catch (err) {
       // Same cancellation guard as the success path: if a newer
       // evaluate() superseded this one, do not let its error
@@ -2318,6 +2466,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
         casualtyTimeline: null,
         casualtyClockStartedAt: null,
         casualtyStatus: 'idle',

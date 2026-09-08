@@ -652,6 +652,9 @@ export function Globe(): JSX.Element {
       const debugParams = new URLSearchParams(window.location.search);
       if (debugParams.has('probe')) {
         (window as unknown as { __nimbusViewer?: Viewer }).__nimbusViewer = viewer;
+        // The store too, so a probe can read the wave map and the toll
+        // behind what it sees drawn.
+        (window as unknown as { __nimbusStore?: typeof useAppStore }).__nimbusStore = useAppStore;
       }
       // `?fps` mostra il contatore di fotogrammi di Cesium in un angolo
       // della scena. Serve a rispondere alla domanda che conta prima di

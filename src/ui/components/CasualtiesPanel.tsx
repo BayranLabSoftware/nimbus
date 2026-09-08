@@ -1,9 +1,10 @@
 import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { CasualtyEstimate } from '../../physics/casualties.js';
+import type { BandEstimate, CasualtyEstimate } from '../../physics/casualties.js';
 import type { PopulationLookupMethod } from '../../scene/populationLookup.js';
 import type { CasualtyStatus } from '../../store/index.js';
 import { formatPeople, formatWithUnitTiers, type UnitTier } from '../utils/numberFormat.js';
+import { formatElapsed } from '../utils/timeFormat.js';
 import styles from './SimulatorPanel.module.css';
 
 const TIERS_RANGE: readonly UnitTier[] = [
@@ -13,6 +14,15 @@ const TIERS_RANGE: readonly UnitTier[] = [
 
 /** People, rounded to the precision the model deserves: two
  *  significant figures — "≈ 66 000", never "65 812". */
+/** The i18n suffix of a band's label: its OTA class, the coast the
+ *  wave reached, a burns-only annulus, or the single-hazard key. */
+function bandLabelKey(band: BandEstimate, model: CasualtyEstimate['model']): string {
+  if (band.hazards[0] === 'tsunami') return 'tsunami';
+  if (band.psiBand !== undefined) return band.psiBand;
+  if (model === 'blast' && band.hazards.includes('thermal')) return 'thermalOnly';
+  return band.key;
+}
+
 export interface CasualtiesPanelProps {
   casualties:
     | (CasualtyEstimate & { source: string; method: PopulationLookupMethod; provisional?: boolean })
@@ -85,6 +95,19 @@ export function CasualtiesPanel({
                 <dd className={styles.resultValue}>{people(casualties.injured)}</dd>
               </>
             )}
+            {(casualties.tsunamiDeaths ?? 0) > 0 && (
+              <>
+                <dt className={styles.resultLabel}>{t('casualties.tsunamiDeaths')}</dt>
+                <dd className={styles.resultValue}>
+                  {people(casualties.tsunamiDeaths ?? 0)}
+                  <span style={{ opacity: 0.75 }}>
+                    {' '}
+                    ({people(casualties.tsunamiDeathsLow ?? 0)} –{' '}
+                    {people(casualties.tsunamiDeathsHigh ?? 0)})
+                  </span>
+                </dd>
+              </>
+            )}
             <dt className={styles.resultLabel}>{t('casualties.exposed')}</dt>
             <dd className={styles.resultValue}>{people(casualties.exposed)}</dd>
           </dl>
@@ -103,14 +126,11 @@ export function CasualtiesPanel({
               <tbody>
                 {casualties.bands.map((band) => (
                   <tr key={band.key}>
+                    <td>{t(`casualties.band.${bandLabelKey(band, casualties.model)}`)}</td>
                     <td>
-                      {t(
-                        `casualties.band.${band.psiBand ?? (band.hazards.includes('thermal') && casualties.model === 'blast' ? 'thermalOnly' : band.key)}`
-                      )}
-                    </td>
-                    <td>
-                      {formatWithUnitTiers(band.innerRadiusM, TIERS_RANGE)} –{' '}
-                      {formatWithUnitTiers(band.outerRadiusM, TIERS_RANGE)}
+                      {band.window !== undefined
+                        ? `${formatElapsed(band.window.startS)} – ${formatElapsed(band.window.endS)}`
+                        : `${formatWithUnitTiers(band.innerRadiusM, TIERS_RANGE)} – ${formatWithUnitTiers(band.outerRadiusM, TIERS_RANGE)}`}
                     </td>
                     <td>{people(band.population)}</td>
                     <td>

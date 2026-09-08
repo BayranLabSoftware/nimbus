@@ -30,7 +30,8 @@ Mw 9, between an inland impact and one in the open ocean.
   follow the Wünnemann, Collins & Weiss (2010) rim-wave far field.
 - Estimated casualties per hazard band — WorldPop 2020 population
   (zonal-statistics API, no key) times OTA 1979 blast, USGS PAGER
-  shaking and Auker 2013 pyroclastic mortality, with a low–high band.
+  shaking, Auker 2013 pyroclastic mortality, burns, mass fire, later
+  deaths and the coastal toll of the wave, with a low–high band.
   The bar of the globe view counts the toll as the hazard front sweeps
   the bands, with the low–high band and the physical clock beside it.
 - Monte-Carlo P10/P90 confidence rings around the nominal damage circles.

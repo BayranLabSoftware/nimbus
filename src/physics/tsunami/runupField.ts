@@ -2,6 +2,7 @@ import { synolakisRunup } from '../events/tsunami/extendedEffects.js';
 import type { ElevationGrid } from '../elevation/index.js';
 import { m } from '../units.js';
 import type { AmplitudeField } from './amplitudeField.js';
+import type { FastMarchingResult } from './fastMarching.js';
 
 /**
  * Coastal run-up field — Synolakis 1987 plane-beach run-up applied
@@ -57,6 +58,10 @@ export interface RunupFieldInput {
   amplitudeField: AmplitudeField;
   /** Bathymetric / topographic grid that produced the FMM field. */
   grid: ElevationGrid;
+  /** Arrival-time field on the same grid; when given, every coastal
+   *  cell is stamped with the wave's arrival, which the casualty
+   *  sweep dates the coastal toll by. */
+  arrivalField?: FastMarchingResult;
   /** Minimum offshore depth (m) at which to evaluate Synolakis.
    *  Defaults to 50 m — the same floor used by amplitudeField for
    *  the Green's-law cap, kept consistent here so the two modules
@@ -71,6 +76,17 @@ export interface RunupCell {
   longitude: number;
   /** Run-up height at this cell (m, vertical above mean sea level). */
   runupM: number;
+  /** The shoaled wave amplitude at the cell (m) the run-up was made
+   *  from — the wave height arriving at the shore. */
+  amplitudeM: number;
+  /** Beach slope the run-up was evaluated on (rad), bounded to the
+   *  Synolakis range; the inundation strip is runup / tan(slope). */
+  slopeRad: number;
+  /** Length of coast this cell stands for (m): the grid spacing. */
+  spacingM: number;
+  /** Wave arrival at this cell (s after the source), when the input
+   *  carried an arrival field; Infinity where the wave never arrives. */
+  arrivalS?: number;
 }
 
 export interface RunupField {
@@ -157,12 +173,20 @@ export function computeRunupField(input: RunupFieldInput): RunupField {
   const minDepth = input.minOffshoreDepthM ?? 50;
   const dLatDeg = (grid.maxLat - grid.minLat) / (nLat - 1);
   const dLonDeg = (grid.maxLon - grid.minLon) / (nLon - 1);
+  const metersPerDegLat = 111_194.93;
+  const arrivals = input.arrivalField?.arrivalTimes;
 
   const cells: RunupCell[] = [];
   let maxRunupM = 0;
 
   for (let i = 0; i < nLat; i++) {
     const lat = grid.maxLat - i * dLatDeg;
+    // The coast this row's cells stand for: the mean of the two
+    // spacings, the row's east–west one shrinking with the latitude.
+    const spacingM =
+      0.5 *
+      (dLatDeg * metersPerDegLat +
+        dLonDeg * metersPerDegLat * Math.max(Math.cos((lat * Math.PI) / 180), 1e-6));
     for (let j = 0; j < nLon; j++) {
       if (!isCoastal(grid, i, j)) continue;
       const idx = i * nLon + j;
@@ -175,7 +199,16 @@ export function computeRunupField(input: RunupFieldInput): RunupField {
       const Rcapped = Math.min(R, RUNUP_CAP_FACTOR * A);
       if (!Number.isFinite(Rcapped) || Rcapped <= 0) continue;
       const lon = grid.minLon + j * dLonDeg;
-      cells.push({ latitude: lat, longitude: lon, runupM: Rcapped });
+      const arrival = arrivals?.[idx];
+      cells.push({
+        latitude: lat,
+        longitude: lon,
+        runupM: Rcapped,
+        amplitudeM: A,
+        slopeRad: beta,
+        spacingM,
+        ...(arrival !== undefined && { arrivalS: arrival }),
+      });
       if (Rcapped > maxRunupM) maxRunupM = Rcapped;
     }
   }

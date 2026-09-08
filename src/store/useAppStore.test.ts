@@ -5,6 +5,7 @@ import { IMPACT_PRESETS } from '../physics/simulate.js';
 import { makeElevationGrid, type ElevationGrid } from '../physics/elevation/index.js';
 import {
   TRANSITION_HALF_MS,
+  configurePopulationDensity,
   configurePopulationLookup,
   configureTerrainLoaders,
   resetAppStore,
@@ -418,5 +419,76 @@ describe('useAppStore — casualty estimate', () => {
     useAppStore.getState().setLocation({ latitude: 63, longitude: 4 });
     await useAppStore.getState().evaluate();
     expect(useAppStore.getState().casualtyStatus).toBe('unsupported');
+  });
+});
+
+describe('useAppStore — coastal toll of the wave', () => {
+  afterEach(() => {
+    configurePopulationLookup(null);
+    configurePopulationDensity(null);
+  });
+
+  it('adds the wave toll to the blast toll from the run-up cells and their land density', async () => {
+    configurePopulationLookup((lat, lon, radiusM) =>
+      Promise.resolve({
+        exposed: Math.round(5_000 * Math.PI * (radiusM / 1_000) ** 2),
+        source: 'test',
+        method: 'worldpop-api' as const,
+        radiusM,
+        bbox: { minLat: lat, maxLat: lat, minLon: lon, maxLon: lon },
+      })
+    );
+    const asked: number[] = [];
+    configurePopulationDensity((points) => {
+      asked.push(points.length);
+      return Promise.resolve(new Float32Array(points.length).fill(3_000));
+    });
+    useAppStore.getState().selectPreset('HIROSHIMA_1945');
+    useAppStore.getState().setLocation({ latitude: 40.85, longitude: 14.27 });
+    await useAppStore.getState().evaluate();
+    await vi.waitFor(() => {
+      expect(useAppStore.getState().casualtyStatus).toBe('idle');
+      expect(useAppStore.getState().casualties?.provisional).toBe(false);
+    });
+    const before = useAppStore.getState().casualties;
+    if (before === null) throw new Error('casualties');
+    // No wave map in a unit test: fake one with a coast of run-up cells.
+    const cells = Array.from({ length: 30 }, (_, i) => ({
+      latitude: 40.8 + i * 0.01,
+      longitude: 14.3,
+      runupM: 6,
+      slopeRad: Math.atan(1 / 100),
+      spacingM: 1_000,
+      arrivalS: 1_800 + i * 60,
+    }));
+    const result = useAppStore.getState().result;
+    if (result === null) throw new Error('result');
+    useAppStore.setState({
+      bathymetricTsunami: {
+        field: { arrivalTimes: new Float32Array(0), nLat: 0, nLon: 0, reachableCount: 0 },
+        isochrones: [],
+        sourceLatitude: 40.85,
+        sourceLongitude: 14.27,
+        seeds: [],
+        globalSeeds: [],
+        runup: { cells, maxRunupM: 6 },
+      } as unknown as NonNullable<ReturnType<typeof useAppStore.getState>['bathymetricTsunami']>,
+    });
+    await useAppStore.getState().recomputeTsunamiCasualties();
+    const after = useAppStore.getState().casualties;
+    if (after === null) throw new Error('casualties');
+    expect(asked).toEqual([30]);
+    expect(after.tsunamiDeaths ?? 0).toBeGreaterThan(0);
+    expect(after.deaths).toBe(before.deaths + (after.tsunamiDeaths ?? 0));
+    expect(after.model).toBe('blast');
+    expect(after.bands.some((b) => b.hazards[0] === 'tsunami' && b.window !== undefined)).toBe(
+      true
+    );
+    const timeline = useAppStore.getState().casualtyTimeline;
+    if (timeline === null) throw new Error('timeline');
+    expect(timeline.bands.some((b) => b.hazard === 'tsunami')).toBe(true);
+    // The wave lands after the blast: its first band starts at the first arrival.
+    const wave = timeline.bands.filter((b) => b.hazard === 'tsunami');
+    expect(Math.min(...wave.map((b) => b.startS))).toBeGreaterThanOrEqual(1_800);
   });
 });

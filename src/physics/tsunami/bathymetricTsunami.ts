@@ -84,6 +84,9 @@ export interface BathymetricLayer {
   field: FastMarchingResult;
   isochrones: IsochroneBand[];
   amplitude?: AmplitudeField;
+  /** Synolakis run-up along the planet's coasts, with arrival times,
+   *  for the coastal toll of a trans-oceanic wave. */
+  runup?: RunupField;
 }
 
 export interface BathymetricTsunamiResult {
@@ -169,7 +172,11 @@ export function computeBathymetricTsunami(
       }),
     });
     result.amplitude = amplitude;
-    result.runup = computeRunupField({ amplitudeField: amplitude, grid: input.grid });
+    result.runup = computeRunupField({
+      amplitudeField: amplitude,
+      grid: input.grid,
+      arrivalField: field,
+    });
   }
 
   // ---- Phase 11 global low-res layer (optional) -----------------
@@ -210,6 +217,13 @@ export function computeBathymetricTsunami(
         ...(input.spreadingExponent !== undefined && {
           spreadingExponent: input.spreadingExponent,
         }),
+      });
+    }
+    if (globalLayer.amplitude !== undefined) {
+      globalLayer.runup = computeRunupField({
+        amplitudeField: globalLayer.amplitude,
+        grid: input.globalGrid,
+        arrivalField: globalField,
       });
     }
     result.global = globalLayer;

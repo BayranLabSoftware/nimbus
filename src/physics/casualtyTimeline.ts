@@ -30,7 +30,9 @@ import { m } from './units.js';
  *                to about six hours (Glasstone & Dolan §7.71, the
  *                Hiroshima fire storm);
  *   delayed      the untreated injured, from the first day to the
- *                first month.
+ *                first month;
+ *   tsunami      the wave landing on each coast at its arrival time,
+ *                binned, the water doing its work over the bin.
  *
  * The one assumption of the radial sweeps is that people are spread
  * uniformly within a band: the same assumption the estimate itself
@@ -78,6 +80,9 @@ export interface SweepBandRef {
   hazard: CasualtyHazard;
   innerRadiusM: number;
   outerRadiusM: number;
+  /** A dated toll's window (s), for the hazards that arrive as a
+   *  time rather than a front — the tsunami's coastal toll. */
+  window?: { startS: number; endS: number };
 }
 
 /** Arrival time (s) of the hazard at ground range `radiusM` inside the
@@ -137,6 +142,10 @@ export function arrivalFunctionFor(input: ArrivalInput): ArrivalFunction {
         return radiusM / PYROCLASTIC_FRONT_SPEED;
       case 'lateralBlast':
         return radiusM / LATERAL_BLAST_FRONT_SPEED;
+      case 'tsunami': {
+        const w = band.window ?? { startS: 0, endS: 0 };
+        return rampArrival(w.startS, w.endS)(radiusM, band);
+      }
     }
   };
 }
@@ -217,6 +226,7 @@ export function buildCasualtyTimeline(
         hazard: part.hazard,
         innerRadiusM: inner,
         outerRadiusM: outer,
+        ...(band.window !== undefined && { window: band.window }),
       };
       const radii = new Float64Array(n);
       const times = new Float64Array(n);

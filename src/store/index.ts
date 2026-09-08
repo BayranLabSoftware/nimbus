@@ -1,5 +1,6 @@
 export {
   TRANSITION_HALF_MS,
+  configurePopulationDensity,
   configurePopulationLookup,
   configureTerrainLoaders,
   resetAppStore,
@@ -23,6 +24,7 @@ export {
   type ExplosionInputOverrides,
   type ImpactInputOverrides,
   type VolcanoInputOverrides,
+  type PopulationDensityLookup,
   type PopulationLookup,
   type SimulationStatus,
   type TerrainLoaders,

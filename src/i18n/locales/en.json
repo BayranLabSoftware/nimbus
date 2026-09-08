@@ -1128,7 +1128,7 @@
     "casualtiesPending": "estimating…",
     "casualtiesBand": "{{low}} – {{high}}",
     "casualtiesProvisional": "provisional",
-    "casualtiesTitle": "Estimated deaths as the event unfolds: the figure rises with the shock front, the burns, the mass fire and, over the weeks, the injured without care; for earthquakes and volcanoes with the shaking or the current. An order of magnitude, tsunami excluded: the details are in the panel.",
+    "casualtiesTitle": "Estimated deaths as the event unfolds: the figure rises with the shock front, the burns, the mass fire, over the hours the wave landing on the coasts and, over the weeks, the injured without care; for earthquakes and volcanoes with the shaking or the current. An order of magnitude: the details are in the panel.",
     "casualtiesFinal": "Estimated deaths: {{deaths}}, from {{low}} to {{high}}, {{time}} after the event."
   },
   "impactView": {
@@ -1165,7 +1165,7 @@
     "label": "Estimated casualties",
     "loading": "Estimating: WorldPop is counting the population inside each damage band (15–45 s per band)…",
     "unavailable": "Estimate unavailable: neither the WorldPop API nor the fallback raster answered.",
-    "unsupported": "No estimate for this event: the model covers blast, shaking and pyroclastic flows. The tsunami map shows where the wave lands, not how many people it reaches.",
+    "unsupported": "No estimate for this event: the model covers blast, shaking, pyroclastic currents and the coast the wave reaches; the tsunami count appears when the wave map touches a coast.",
     "deaths": "Estimated deaths (low – high)",
     "injured": "Estimated injured (prompt effects)",
     "exposed": "Population inside the outermost band",
@@ -1187,12 +1187,14 @@
       "mmi7": "MMI VII",
       "pyroclastic": "Pyroclastic flow",
       "lateralBlast": "Lateral blast",
-      "thermalOnly": "Burns only"
+      "thermalOnly": "Burns only",
+      "tsunami": "Coast reached by the wave"
     },
     "model": {
       "blast": "Collapse and blast: OTA 1979, The Effects of Nuclear War, table 2 (98 % at ≥ 12 psi, 50 % at 5 psi, 5 % at 2 psi). Burns: Glasstone & Dolan 1977, ch. XII, on the 25 % in sight of the fireball (10–50 %), 50 % mortality (30–80 %) inside the third-degree radius. Mass fire: 30 % of the survivors (10–80 %, Hamburg and Dresden at the low end, Postol's 1986 superfire at the high end). Later deaths: 30 % of the injured within weeks without care (10–60 %, OTA 1979). In every band the hazards act in sequence on the survivors; nobody dies twice",
       "shaking": "PAGER fatality rate ν(S) = Φ(ln(S/θ)/β), Jaiswal & Wald 2010. Central value for an average building stock (θ = 13.5, β = 0.22); the low end is an earthquake-engineered stock (Japan, United States), the high end unreinforced masonry (Iran, Haiti): three orders of magnitude, because the simulator does not know the houses under the ring",
-      "pyroclastic": "90 % inside the pyroclastic flow without evacuation, Auker et al. 2013"
+      "pyroclastic": "90 % inside the pyroclastic flow without evacuation, Auker et al. 2013",
+      "tsunami": "Tsunami: for every coastal cell the wave reaches the water height at the shore is H = √(A · R), the geometric mean of the arriving amplitude and the Synolakis run-up; the flooded strip is the Bretschneider & Wybro 1976 inundation distance, X = 0.06 · H^(4/3) / n² with n = 0.03 (1.3 km for 9 m, the 2011 Tōhoku mean; 10 km at most); the people are the land density from the GHS-POP tiles; the mortality is log-normal in the mean depth H/2 (θ = 8 m, β = 0.8 for a coast reached within half an hour, unwarned; 16 m from three hours on, when the coast has been warned and evacuated as at Tōhoku 2011, with a logarithmic transition; 4 m as at Banda Aceh 2004 for the high end, always), the form of Koshimura et al. 2009 and Jonkman et al. 2008"
     },
     "method": {
       "cog": "population from the configured COG raster",
@@ -1200,7 +1202,7 @@
       "coarse-raster": "population: {{source}}",
       "fine-raster": "population: {{source}}, 2.5′ tiles"
     },
-    "disclaimer": "An order of magnitude, not a count: no evacuation, no warning, no care. Tsunami, fallout, initial radiation, famine and disease excluded. The published scatter of every vulnerability function is a factor 2–5.",
+    "disclaimer": "An order of magnitude, not a count: no care, and no warning where the wave arrives within half an hour. The tsunami is counted where the wave map touches the coast, with the flooded strip estimated from the run-up. Fallout, initial radiation, famine and disease excluded. The published scatter of every vulnerability function is a factor 2–5.",
     "provisional": "Provisional figure from the 4.6 km tiles: WorldPop is counting the bands and will replace it.",
     "promptDeaths": "of which prompt",
     "delayedDeaths": "of which within weeks (min – max)",
@@ -1211,7 +1213,9 @@
       "delayed": "later deaths",
       "shaking": "shaking",
       "pyroclastic": "pyroclastic current",
-      "lateralBlast": "lateral blast"
-    }
+      "lateralBlast": "lateral blast",
+      "tsunami": "tsunami"
+    },
+    "tsunamiDeaths": "of which tsunami, as the wave lands (min – max)"
   }
 }

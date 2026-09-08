@@ -896,6 +896,107 @@ export async function populationInRadius(
   };
 }
 
+/** Tiles one density query may pull: a coast of a planetary wave
+ *  runs through many; the rest fall back to the planet raster. */
+const FINE_MAX_TILES_DENSITY = 12;
+
+/**
+ * Land population density (people per km² of land) around a point,
+ * from a grid view: the 3 × 3 cells around it, people over land
+ * area, so a coastal cell whose neighbour is all sea does not drag
+ * the density down and one that is all city does not inflate it.
+ */
+function landDensityAt(view: GridView, lat: number, lon: number): number {
+  const row = Math.min(view.nLat - 1, Math.max(0, Math.floor((view.maxLat - lat) / view.cellDeg)));
+  const col = Math.floor((lon - view.minLon) / view.cellDeg);
+  const cellLatKm = (view.cellDeg * Math.PI * EARTH_RADIUS_M) / 180 / 1_000;
+  const cellLonKm = cellLatKm * Math.max(Math.cos((lat * Math.PI) / 180), 1e-6);
+  let people = 0;
+  let landKm2 = 0;
+  for (let dr = -1; dr <= 1; dr++) {
+    const r = row + dr;
+    if (r < 0 || r >= view.nLat) continue;
+    for (let dc = -1; dc <= 1; dc++) {
+      const c = (((col + dc) % view.nLon) + view.nLon) % view.nLon;
+      const cell = view.cellAt(r, c);
+      if (cell.landFraction <= 0 && cell.people <= 0) continue;
+      people += cell.people;
+      landKm2 += cellLatKm * cellLonKm * Math.max(cell.landFraction, cell.people > 0 ? 1 / 255 : 0);
+    }
+  }
+  return landKm2 > 0 ? people / landKm2 : 0;
+}
+
+export interface PopulationDensityOptions {
+  /** Skip the fine tiles: the planet raster only. */
+  coarseOnly?: boolean;
+}
+
+/**
+ * Land population density (people per km² of land) around each of
+ * `points`, for the coastal toll of a tsunami: the 2.5′ tiles where
+ * they hold the point and at most `FINE_MAX_TILES_DENSITY` of them
+ * are needed — the tiles with the most points first — the 0.125°
+ * planet for the rest. Null when neither raster is available.
+ */
+export async function populationDensityAt(
+  points: readonly { latitude: number; longitude: number }[],
+  options?: PopulationDensityOptions
+): Promise<Float32Array | null> {
+  const out = new Float32Array(points.length);
+  if (points.length === 0) return out;
+  const coarse = await loadCoarseRaster();
+  const index = options?.coarseOnly === true ? null : await loadFineIndex();
+  if (coarse === null && index === null) return null;
+  const tiles = new Map<string, FineTile>();
+  if (index !== null) {
+    const present = new Set(index.tiles);
+    const counts = new Map<string, number>();
+    for (const p of points) {
+      const col = Math.floor(((((p.longitude + 180) % 360) + 360) % 360) / index.tileWidthDeg);
+      const row = Math.min(
+        index.tileRows - 1,
+        Math.max(0, Math.floor((90 - p.latitude) / index.tileHeightDeg))
+      );
+      const name = `${col.toString()}_${row.toString()}`;
+      if (present.has(name)) counts.set(name, (counts.get(name) ?? 0) + 1);
+    }
+    const wanted = [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, FINE_MAX_TILES_DENSITY)
+      .map(([name]) => name);
+    const loaded = await Promise.all(wanted.map((name) => loadFineTile(index, name)));
+    wanted.forEach((name, i) => {
+      const tile = loaded[i];
+      if (tile !== null && tile !== undefined) tiles.set(name, tile);
+    });
+  }
+  const fine = index !== null ? fineView(index, tiles) : null;
+  const planet = coarse !== null ? coarseView(coarse) : null;
+  points.forEach((p, i) => {
+    let density = 0;
+    if (fine !== null && index !== null) {
+      const col = Math.floor(((((p.longitude + 180) % 360) + 360) % 360) / index.tileWidthDeg);
+      const row = Math.min(
+        index.tileRows - 1,
+        Math.max(0, Math.floor((90 - p.latitude) / index.tileHeightDeg))
+      );
+      const name = `${col.toString()}_${row.toString()}`;
+      if (tiles.has(name)) {
+        density = landDensityAt(fine, p.latitude, p.longitude);
+        out[i] = density;
+        return;
+      }
+      if (!index.tiles.includes(name) && planet === null) {
+        out[i] = 0; // a tile with nobody in it
+        return;
+      }
+    }
+    out[i] = planet !== null ? landDensityAt(planet, p.latitude, p.longitude) : density;
+  });
+  return out;
+}
+
 /** Test helper — clears every cache and re-enables every backend. */
 export function _resetPopulationLookupCache(): void {
   cachedTiff = null;
@@ -910,6 +1011,7 @@ export function _resetPopulationLookupCache(): void {
 
 /** Exposed for unit tests of the geometry helpers. */
 export const _internals = {
+  landDensityAt,
   sumGridCircle,
   sumGridRing,
   tilesForBbox,

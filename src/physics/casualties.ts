@@ -96,7 +96,8 @@ export type CasualtyHazard =
   | 'delayed'
   | 'shaking'
   | 'pyroclastic'
-  | 'lateralBlast';
+  | 'lateralBlast'
+  | 'tsunami';
 
 /** A low / central / high triple for a vulnerability parameter. */
 export interface Triple {
@@ -151,8 +152,9 @@ export interface CasualtyBand {
 }
 
 export interface CasualtyPlan {
-  /** 'blast' | 'shaking' | 'pyroclastic' — which source the bands come from. */
-  model: 'blast' | 'shaking' | 'pyroclastic';
+  /** 'blast' | 'shaking' | 'pyroclastic' — which source the bands come
+   *  from; an estimate made of the coastal toll alone is 'tsunami'. */
+  model: 'blast' | 'shaking' | 'pyroclastic' | 'tsunami';
   /** Annuli, inner to outer, contiguous. */
   bands: CasualtyBand[];
 }
@@ -489,6 +491,10 @@ export interface BandEstimate {
   psiBand?: 'blast12psi' | 'blast5psi' | 'blast2psi' | 'blast1psi';
   /** The hazards acting in the band, in order. */
   hazards: CasualtyHazard[];
+  /** For a toll dated rather than placed — the coastal toll of a
+   *  tsunami, binned by arrival — the window (s) it falls in; the
+   *  radii are then meaningless. */
+  window?: { startS: number; endS: number };
   /** People inside the annulus. */
   population: number;
   /** Combined prompt mortality (0–1). */
@@ -521,11 +527,17 @@ export interface CasualtyEstimate {
   delayedDeathsHigh: number;
   /** Prompt injuries (0 for the models without an injury rate). */
   injured: number;
+  /** The coastal toll of the tsunami, when the wave map reached a
+   *  coast; part of `deaths`. */
+  tsunamiDeaths?: number;
+  tsunamiDeathsLow?: number;
+  tsunamiDeathsHigh?: number;
   bands: BandEstimate[];
 }
 
 /** The single-hazard models carry their hazard in the model or the key. */
 function hazardOf(plan: CasualtyPlan, band: CasualtyBand): CasualtyHazard {
+  if (plan.model === 'tsunami') return 'tsunami';
   if (plan.model === 'shaking') return 'shaking';
   if (plan.model === 'pyroclastic')
     return band.key === 'lateralBlast' ? 'lateralBlast' : 'pyroclastic';

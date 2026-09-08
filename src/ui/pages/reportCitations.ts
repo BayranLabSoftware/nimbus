@@ -98,6 +98,7 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
     );
     triggers.push(cite('wunnemann2007', 'Hydrocode attenuation exponents behind eqs. 10a/10b.'));
     triggers.push(cite('synolakis1987', 'Plane-beach solitary-wave run-up at coast.'));
+    triggers.push(cite('koshimura2009', 'Coastal toll by inundation depth (casualty estimate).'));
     triggers.push(
       cite('heidarzadehSatake2015', 'Far-field dispersion multiplier (DART-calibrated).')
     );
@@ -187,6 +188,7 @@ export function collectEarthquakeCitations(result: EarthquakeScenarioResult): Tr
 
   if (result.tsunami) {
     triggers.push(cite('synolakis1987', 'Plane-beach tsunami run-up at coast.'));
+    triggers.push(cite('koshimura2009', 'Coastal toll by inundation depth (casualty estimate).'));
     triggers.push(cite('heidarzadehSatake2015', 'Far-field dispersion multiplier.'));
     triggers.push(cite('ward2000', 'Cylindrical wave spreading from the rupture source.'));
   }
