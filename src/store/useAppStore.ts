@@ -969,13 +969,19 @@ function gridCoversLocation(grid: ElevationGrid, c: Coordinates): boolean {
 /** Strip out the source-amplitude metadata the FMM amplitude module
  *  needs from whichever event-type tsunami block fired. Returns null
  *  when no headline amplitude can be derived (e.g. an earthquake
- *  tsunami missing its initialAmplitude). */
-function extractTsunamiMeta(result: ActiveResult): {
+ *  tsunami missing its initialAmplitude).
+ *
+ *  Exported for the test that pins the field against the event's own
+ *  published far-field amplitude — the map and the caption beside it
+ *  have to agree. */
+export function extractTsunamiMeta(result: ActiveResult): {
   sourceAmplitudeM: number;
   sourceCavityRadiusM: number;
   sourceDepthM: number;
-  /** Radial spreading exponent for the amplitude field. Omitted →
-   *  the field's cylindrical 0.5 default. */
+  /** Radial spreading exponent for the amplitude field: the same law
+   *  the event's own module used to publish its far-field amplitude,
+   *  so the veil on the globe and the number printed under it agree.
+   *  Pinned by `fieldScalarAgreement.test.ts`. */
   spreadingExponent?: number;
 } | null {
   if (result.type === 'impact' && result.data.tsunami !== undefined) {
@@ -992,6 +998,15 @@ function extractTsunamiMeta(result: ActiveResult): {
       spreadingExponent: t.rimWaveExponent,
     };
   }
+  // A burst, a caldera collapse and a submarine landslide leave the
+  // field its geometric 0.5: energy spreading over a circumference is
+  // 1/√r whatever made the wave. Their own modules publish the
+  // far-field row along Lamb 1932's 1/r instead, which is geometry
+  // plus the dispersion a short wave suffers over a thousand
+  // kilometres — right there, and fatal in the near field, where it
+  // would put the Sunda Strait coasts under half a metre of water
+  // that drowned four hundred people. The two laws are pinned apart,
+  // with the reason, in fieldScalarAgreement.test.ts.
   if (result.type === 'explosion' && result.data.tsunami !== undefined) {
     const t = result.data.tsunami;
     return {
@@ -1018,13 +1033,15 @@ function extractTsunamiMeta(result: ActiveResult): {
   }
   if (result.type === 'earthquake' && result.data.tsunami !== undefined) {
     const t = result.data.tsunami;
-    // Earthquake tsunami doesn't carry a cavity radius — back-derive
-    // one from the rupture length so the geometric-spreading factor
-    // has a sensible R₀. The 1 000 m default depth covers most
+    // Earthquake tsunami doesn't carry a cavity radius — take the one
+    // its own module spreads from, the half-length of the rupture
+    // line (seismicTsunami.ts: R₀ = L / 2). A quarter-length, which
+    // this used to pass, made the veil a factor √2 quieter than the
+    // amplitude row beside it. The 4 000 m depth covers most
     // megathrust subduction zones.
     return {
       sourceAmplitudeM: t.initialAmplitude,
-      sourceCavityRadiusM: Math.max((result.data.ruptureLength as number) / 4, 10_000),
+      sourceCavityRadiusM: Math.max((result.data.ruptureLength as number) / 2, 10_000),
       sourceDepthM: 4_000,
     };
   }

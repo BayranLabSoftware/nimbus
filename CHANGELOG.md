@@ -98,6 +98,22 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The veil and the caption beside it.** The store handed the tsunami
+  amplitude field a quarter of the rupture length where the seismic
+  module spreads from a half, so the wave drawn on the globe stood a
+  factor √2 below the "wave at 1 000 km" printed under it. Fixed, and
+  pinned by a test that runs the field's law on the metadata the store
+  passes and demands the event's own published amplitude back. Tōhoku's
+  coastal toll moves from 13 000 to 48 000 against a recorded 18 500:
+  the closer figure had been right for the wrong reason, two errors
+  cancelling. The same test pins, with its size and its reason, the
+  divergence that must stay — the veil spreads geometrically for the
+  near field, a compact source's published row carries the dispersion
+  of a thousand kilometres, and neither law survives in the other's
+  territory.
+
+### Fixed
+
 - **Ocean impacts showed tsunami numbers but no tsunami on the map.**
   `evaluate()` now waits for the terrain tile under the pick and for
   the planetary bathymetric mosaic (bounded at 8 s) before

@@ -364,19 +364,37 @@ one person across the Pacific), and the thresholds shift on a log
 scale in between, Banda Aceh the high end throughout.
 The toll is binned by arrival time and the sweep raises the counter
 as the wave lands, hours after the impact for a far coast; the panel
-shows it apart. Calibrated against the two events with a complete record. Tōhoku 2011
-in the simulator kills 13 000 people on the Pacific coasts against the
-18 500 the wave took, with a band from 1 600 to 170 000 — the central
-figure inside a factor of one and a half, which is as close as an
-order-of-magnitude model has any business being. Anak Krakatau 2018
-reads 8 700 against 437: still twenty times high, and the reason is
-upstream of this module — a flank collapse makes a short-wavelength
-wave that a 40 km planetary grid cannot decay properly, so the Sunda
-Strait coasts receive a near-source amplitude they never saw. Its
-honesty: a run-up height and an empirical reach are not an inundation
-map, the coast is where the rasters are coarsest, and the band is a
-factor of three either way — wider where the source is small and
-close.
+shows it apart. Calibrated against the two events with a complete record, and the
+calibration is what found the next defect. Tōhoku 2011 first read
+13 000 dead against the 18 500 the wave took — until the store was
+caught handing the amplitude field a quarter of the rupture length
+where the seismic module spreads from a half, leaving the veil a
+factor √2 quieter than the amplitude row printed beside it. With the
+contradiction removed the same run reads 48 000: two and a half times
+the record rather than three quarters of it, and inside the band this
+model claims. The closer number had been right for the wrong reason,
+two errors cancelling.
+
+Anak Krakatau 2018 reads 8 700 against 437, twenty times high, and
+the reason sits upstream in a place worth naming. The veil spreads
+geometrically, energy over a growing circumference, A ∝ (R₀/r)^0.5.
+The far-field row a compact source publishes follows Lamb 1932's 1/r,
+which is that geometry plus the dispersion a short wave suffers over
+a thousand kilometres. Both are right where they are used, and
+neither can be used where the other is: forcing the veil onto the 1/r
+law — tried, measured, reverted — puts the Sunda Strait under half a
+metre of water where the survey found metres, and the coastal toll
+falls to one death against 437. A single power law cannot hold the
+near field and the far field of a short wave at once. What the
+simulator would need is dispersion in the field itself, with a scale
+length set by the source's wavelength rather than the fixed 2 500 km
+calibrated for megathrusts. Until then the divergence is pinned with
+its size in `fieldScalarAgreement.test.ts`, so it stays visible.
+
+Its honesty: a run-up height and an empirical reach are not an
+inundation map, the coast is where the rasters are coarsest, and the
+band is a factor of three either way — wider where the source is
+small and close.
 
 ### When the deaths happen (Phase 24)
 
