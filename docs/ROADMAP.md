@@ -165,6 +165,50 @@ is deferred.
 
 ---
 
+## The goal this is all for
+
+Stated by Andrea on 8 September 2026, at the end of the day the
+casualty model landed:
+
+> Accuracy a scientific laboratory would trust what we tell it, with
+> the simplicity we have today for making the public understand.
+
+Worth writing down because the two halves are usually assumed to fight
+each other, and here they do not.
+
+A laboratory does not trust a number because it is accurate. It trusts
+it because it can see where the number came from, how far it can be
+wrong, and what was left out. Nimbus cannot be more accurate than the
+literature it stands on — nobody can, short of a hydrocode and a
+cluster — and it does not need to be. What it can be is the thing a
+lab trusts: every number traceable to the paper it came from, every
+band honest about the scatter that paper reports, every gap declared
+rather than smoothed over. That is a discipline, not a compute budget,
+and this project is already most of the way there.
+
+The public wants one number; a laboratory wants a distribution. That
+tension is presentational and not scientific, and it resolves the way
+the panel already resolves it: lead with the figure, carry the band
+beside it, keep the provenance one click away, and never let a
+composed number wear the same confidence as a measured one. Simplicity
+helps here rather than hurting — a figure with a band and a source is
+simpler to trust than a bare figure with neither.
+
+So the goal decomposes into things that can actually be done, and they
+are the ones below: a net that measures the model against every event
+with a recorded outcome, no contradiction left shipping, a visible
+grade on every number saying how it is known, and the physics fixed
+where it is wrong rather than tuned where it is convenient.
+
+One thing on the list is not code and belongs here rather than in a
+milestone: a laboratory trusts what other laboratories have checked.
+The golden dataset, the replay fixtures and the validation report are
+the machinery for exactly that; what is missing is an outside reader
+who has never seen this repository sitting down with the methodology
+page and trying to break it. That step is worth planning for.
+
+---
+
 ## M8 — The toll, and what it still gets wrong _(open)_
 
 The casualty model landed on 8 September 2026: blast, burns, mass
