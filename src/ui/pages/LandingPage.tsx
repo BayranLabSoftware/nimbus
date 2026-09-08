@@ -95,6 +95,12 @@ export function LandingPage() {
           <span aria-hidden="true">·</span>
           <span>{t('footer.license')}</span>
           <span aria-hidden="true">·</span>
+          {/* Pagina statica servita da public/privacy/. Il percorso parte da
+              BASE_URL e non da un relativo: l'app vive sotto /nimbus/ sul sito
+              e sotto / in sviluppo, e un "privacy/" secco si romperebbe in uno
+              dei due casi. */}
+          <a href={`${import.meta.env.BASE_URL}privacy/`}>{t('footer.privacy')}</a>
+          <span aria-hidden="true">·</span>
           <span>{t('footer.madeIn')}</span>
         </div>
         <p className={styles.footerCredits}>{t('footer.credits')}</p>
