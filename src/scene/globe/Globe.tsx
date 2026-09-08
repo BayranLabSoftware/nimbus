@@ -25,6 +25,7 @@ import {
   type Entity,
 } from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
+import i18next from 'i18next';
 import type { JSX } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { EARTH_GREAT_CIRCLE_MAX, clampToGreatCircle } from '../../physics/earthScale.js';
@@ -81,6 +82,23 @@ import { AftershockDetailCard } from './AftershockDetailCard.js';
 import { mushroomCloudAltitudeMeters, spawnExplosionVfxFromJoules } from './explosionVfx.js';
 import { spawnEruptionColumn } from './eruptionVfx.js';
 import { radialDamageMaterial } from './radialDamageMaterial.js';
+import {
+  addRingEdge,
+  addRingLabel,
+  addSigmaBandLine,
+  formatRingRadius,
+  outlinePointAtBearing,
+  ringOutlinePositions,
+  spreadLabelBearings,
+} from './ringPresentation.js';
+import {
+  cityDisplayName,
+  formatPopulation,
+  isCityPick,
+  loadCityIndex,
+  mountCityLayer,
+  type CityLayerHandle,
+} from './cityLabels.js';
 import { RingTooltip, type HoverInfo, type RingTooltipKind } from './RingTooltip.js';
 import styles from './Globe.module.css';
 
@@ -213,27 +231,18 @@ const MARKER_HALO_ID = 'impact-marker-halo';
 const MARKER_COLOR = Color.fromCssColorString('#FCD34D');
 const WAVEFRONT_INDICATOR_ID = 'cascade-wavefront-indicator';
 /**
- * Oltre questo raggio la campitura interna sparisce e resta solo il
- * contorno acceso. Misurato sul posto: a 800 km passavano ancora gli
- * anelli da 242 e 711 km, che a scala continentale sono dischi da un
- * milione e mezzo di chilometri quadrati — sommati al velo tsunami
- * rendevano la mappa una tinta unita in cui l'onda non si vedeva
- * affatto. A 200 km il velo interno resta dove aiuta (una città, una
- * regione) e sparisce dove copre e basta. Il velo interno serve alla scala in cui l'area
- * colpita è un luogo — una città, una regione; quando l'anello copre
- * un oceano intero (l'impulso termico di Chicxulub arriva
- * all'antipode, 20 015 km) i dischi pieni si sommano in una poltiglia
- * che seppellisce tutto quello che succede in mare. Alla scala
- * continentale il bordo dice già tutto: è la legge «contorni, non
- * campiture» applicata dove le campiture fanno più danno, ed è ciò
- * che rende leggibili insieme gli effetti di terra e quelli d'acqua
- * negli eventi misti.
+ * Opacità della campitura di zona in funzione del raggio. Le zone
+ * sono corone che non si sovrappongono (vedi radialDamageMaterial),
+ * quindi la campitura non si somma più e può restare accesa a ogni
+ * scala; alle dimensioni planetarie (l'impulso termico di Chicxulub
+ * arriva all'antipode) si dimezza, così il velo tsunami e le coste
+ * restano leggibili sotto una zona da milioni di km².
  */
-const GLOBAL_FILL_CUTOFF_M = 200_000;
+const PLANETARY_ZONE_RADIUS_M = 3_000_000;
 
-/** True quando l'anello è abbastanza piccolo da meritare il velo interno. */
-function fillsAtRadius(radiusM: number): boolean {
-  return Number.isFinite(radiusM) && radiusM < GLOBAL_FILL_CUTOFF_M;
+function zoneFillAlpha(radiusM: number, base: number): number {
+  if (!Number.isFinite(radiusM) || radiusM <= 0) return base;
+  return radiusM > PLANETARY_ZONE_RADIUS_M ? base * 0.55 : base;
 }
 
 /**
@@ -314,7 +323,6 @@ const AFTERSHOCK_COLOR_LOW = Color.fromCssColorString('#fbbf24');
 const AFTERSHOCK_COLOR_HIGH = Color.fromCssColorString('#b91c1c');
 // Isochrone polylines and the arrival-time heatmap retired in Phase 16.
 const FMM_AMPLITUDE_HEATMAP_ID = 'tsunami-fmm-amplitude';
-const SIGMA_BAND_SUFFIX = '-sigma-band';
 
 /**
  * Quanto vale la velatura globale a questa quota di camera.
@@ -458,6 +466,18 @@ function localSolarNoonForLongitude(longitudeDeg: number): JulianDate {
   return JulianDate.fromDate(new Date(noonUtcMs - offsetMs));
 }
 
+/** Caption stamped at a contour's rim: short threshold name + radius,
+ *  e.g. "5 psi · 1,7 km". Falls back to the legend label when no short
+ *  form exists for the kind. */
+function ringCaption(kind: RingTooltipKind, radiusM: number, language: string): string {
+  const short = i18next.t(`globe.ringShort.${kind}`, { lng: language, defaultValue: '' });
+  const name =
+    short.length > 0
+      ? short
+      : i18next.t(`globe.ringLabel.${kind}`, { lng: language, defaultValue: kind });
+  return `${name} · ${formatRingRadius(radiusM, language)}`;
+}
+
 export function Globe(): JSX.Element {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewerRef = useRef<Viewer | null>(null);
@@ -501,6 +521,13 @@ export function Globe(): JSX.Element {
   const setElevationGrid = useAppStore((s) => s.setElevationGrid);
   const setGlobalBathymetricGrid = useAppStore((s) => s.setGlobalBathymetricGrid);
   const hiddenRingKeys = useAppStore((s) => s.hiddenRingKeys);
+  const showCityLabels = useAppStore((s) => s.showCityLabels);
+  const cameraRequest = useAppStore((s) => s.cameraRequest);
+  /** Dots + names of the Natural Earth city index, once loaded. */
+  const cityLayerRef = useRef<CityLayerHandle | null>(null);
+  /** Threshold captions stamped at each contour's rim, so a language
+   *  switch can rewrite them in place. */
+  const ringLabelsRef = useRef<Map<Entity, { kind: RingTooltipKind; radiusM: number }>>(new Map());
 
   // The entity-rebuild useEffect below depends on `result` and friends,
   // not on `hiddenRingKeys` — flipping a legend toggle must NOT restart
@@ -836,6 +863,17 @@ export function Globe(): JSX.Element {
           }
         }
 
+        // A city dot or name under the cursor: the pick lands on the
+        // city itself, not on whatever pixel of terrain sits behind
+        // it — that is the point of drawing the names.
+        for (const p of picks) {
+          const rawId = (p as { id?: unknown }).id;
+          if (isCityPick(rawId)) {
+            setLocation({ latitude: rawId.nimbusCity.lat, longitude: rawId.nimbusCity.lon });
+            return;
+          }
+        }
+
         // Empty-globe click: shift the simulation epicentre (which
         // also clears any pinned aftershock — see store action).
         const cartesian = viewer?.camera.pickEllipsoid(
@@ -872,8 +910,22 @@ export function Globe(): JSX.Element {
         let bestRing: HoverInfo | null = null;
         let bestRadius = Infinity;
         let aftershockHit: HoverInfo | null = null;
+        let cityHit: HoverInfo | null = null;
         for (const p of picks) {
-          const pickedId = (p as { id?: { id?: unknown } | undefined }).id?.id;
+          const rawId = (p as { id?: unknown }).id;
+          if (isCityPick(rawId)) {
+            if (cityHit === null) {
+              const city = rawId.nimbusCity;
+              cityHit = {
+                type: 'city',
+                name: cityDisplayName(city, i18next.language),
+                population: formatPopulation(city.popMax, i18next.language),
+                capital: city.capital,
+              };
+            }
+            continue;
+          }
+          const pickedId = (rawId as { id?: unknown } | undefined)?.id;
           if (typeof pickedId !== 'string') continue;
           const meta = tooltipMetaRef.current.get(pickedId);
           if (!meta) continue;
@@ -884,11 +936,53 @@ export function Globe(): JSX.Element {
             aftershockHit = meta;
           }
         }
-        const next = bestRing ?? aftershockHit;
-        setHoverInfo((prev) => (prev === next ? prev : next));
+        // A city wins over the ring underneath it: the name is the
+        // smaller, more specific target.
+        const next = cityHit ?? bestRing ?? aftershockHit;
+        setHoverInfo((prev) => {
+          if (prev === next) return prev;
+          // City hover info is rebuilt on every move; keep the previous
+          // object while it describes the same city so React doesn't
+          // re-render the tooltip sixty times a second.
+          if (prev?.type === 'city' && next?.type === 'city' && prev.name === next.name)
+            return prev;
+          return next;
+        });
       }, ScreenSpaceEventType.MOUSE_MOVE);
 
       viewerRef.current = viewer;
+
+      // Cities: dots + names from the Natural Earth index, mounted as
+      // soon as the static asset arrives. The language follows the UI
+      // switch in place — no rebuild.
+      const cityLanguageListener = (lng: string): void => {
+        cityLayerRef.current?.setLanguage(lng);
+        for (const [labelEntity, meta] of ringLabelsRef.current) {
+          if (labelEntity.label !== undefined) {
+            (labelEntity.label as unknown as { text: string }).text = ringCaption(
+              meta.kind,
+              meta.radiusM,
+              lng
+            );
+          }
+        }
+        viewer?.scene.requestRender();
+      };
+      i18next.on('languageChanged', cityLanguageListener);
+      const mountedViewer = viewer;
+      void loadCityIndex().then((cities) => {
+        const v = viewerRef.current;
+        if (!v || v.isDestroyed() || v !== mountedViewer) return;
+        const layer = mountCityLayer(v, cities, {
+          language: i18next.language,
+          lite: softwareRenderer,
+        });
+        layer.setVisible(useAppStore.getState().showCityLabels);
+        cityLayerRef.current = layer;
+        if (import.meta.env.DEV) {
+          console.info(`[Globe] city labels: ${layer.count.toString()} placed`);
+        }
+      });
 
       // WebGL context-loss survival ----------------------------------
       // When the user resizes the window aggressively, switches the
@@ -959,6 +1053,9 @@ export function Globe(): JSX.Element {
         canvasEl.removeEventListener('webglcontextrestored', onContextRestored, false);
         canvasEl.removeEventListener('mouseleave', onCanvasLeave, false);
         resizeObserver?.disconnect();
+        i18next.off('languageChanged', cityLanguageListener);
+        cityLayerRef.current?.destroy();
+        cityLayerRef.current = null;
       };
     } catch (err) {
       // Browser can't run Cesium (e.g. Safari < 16.4 without
@@ -986,6 +1083,27 @@ export function Globe(): JSX.Element {
       viewerRef.current = null;
     };
   }, [setLocation, selectAftershock]);
+
+  // City names follow the AppBar toggle.
+  useEffect(() => {
+    cityLayerRef.current?.setVisible(showCityLabels);
+  }, [showCityLabels]);
+
+  // Camera flights asked for by the UI (the city search): a top-down
+  // framing of the requested radius, or an instant cut under
+  // prefers-reduced-motion. The pin has already moved via the store.
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer || viewer.isDestroyed() || cameraRequest === null) return;
+    const target = Cartesian3.fromDegrees(cameraRequest.longitude, cameraRequest.latitude);
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    viewer.camera.flyToBoundingSphere(new BoundingSphere(target, cameraRequest.rangeM), {
+      duration: reduce ? 0 : 1.4,
+      offset: new HeadingPitchRange(0, -CesiumMath.PI_OVER_TWO, cameraRequest.rangeM * 2.4),
+    });
+  }, [cameraRequest]);
 
   // --- Marker + damage rings ------------------------------------------
   // Cancel function for the currently-running ring animation; reset
@@ -1061,6 +1179,7 @@ export function Globe(): JSX.Element {
     // and clear any in-flight hover so a stale reference doesn't survive
     // into the next scenario.
     tooltipMetaRef.current.clear();
+    ringLabelsRef.current.clear();
     setHoverInfo(null);
 
     /** Register tooltip metadata for an entity. Called inline at every
@@ -1090,6 +1209,8 @@ export function Globe(): JSX.Element {
       // primitive the entity actually carries.
       if (entity.ellipse !== undefined) entity.ellipse.show = showProperty;
       if (entity.polygon !== undefined) entity.polygon.show = showProperty;
+      if (entity.polyline !== undefined) entity.polyline.show = showProperty;
+      if (entity.label !== undefined) entity.label.show = showProperty;
     };
 
     /** Aftershock counterpart: stores the magnitude + onset so the
@@ -1207,10 +1328,12 @@ export function Globe(): JSX.Element {
       entity: Entity,
       kind: RingKind,
       semiMajor: number,
-      semiMinor?: number
+      semiMinor?: number,
+      onComplete?: () => void
     ): void => {
       const spec: RingAnimationSpec = { entity, kind, finalSemiMajor: semiMajor };
       if (semiMinor !== undefined) spec.finalSemiMinor = semiMinor;
+      if (onComplete !== undefined) spec.onComplete = onComplete;
       ringSpecs.push(spec);
     };
 
@@ -1252,6 +1375,191 @@ export function Globe(): JSX.Element {
         semiMinor,
         cesiumRotation: Math.PI / 2 - azimuthRad,
       };
+    };
+
+    /**
+     * One damage contour, drawn as a ZONE — the annulus between the
+     * previous threshold and this one — plus, once its radius is
+     * reached, a crisp ground contour, a rim caption and (for kinds
+     * with a published σ) a dashed line at R(1+σ). Animated contours
+     * join the cascade and are stamped by its `onComplete`; static
+     * footprints (rupture polygons, plumes, blast wedges) are stamped
+     * immediately.
+     */
+    interface DamageRingSpec {
+      id: string;
+      kind: RingKind;
+      tooltipKind: RingTooltipKind;
+      color: Color;
+      /** Nominal ground-range radius (m) — what tooltip and label say. */
+      radiusM: number;
+      geom: {
+        position: Cartesian3;
+        semiMajor: number;
+        semiMinor: number;
+        cesiumRotation: number;
+        latDeg: number;
+        lonDeg: number;
+      };
+      /** Semi-major axis (m) of the next contour inward — the inner edge
+       *  of this zone. 0 for the innermost (a full disc). */
+      innerSemiMajorM: number;
+      fillAlpha: number;
+      /** Key into RING_RADIUS_SIGMA for the dashed upper-σ line. */
+      sigmaKey?: string;
+      labelBearingDeg: number;
+      animate: boolean;
+      label: boolean;
+      /** False for shapes that carry their own outline (ashfall isopach). */
+      edge: boolean;
+    }
+
+    const stampRing = (spec: DamageRingSpec): void => {
+      if (viewer.isDestroyed()) return;
+      // A newer evaluate may have purged the entity before its cascade
+      // window closed; nothing to decorate then.
+      if (viewer.entities.getById(spec.id) === undefined) return;
+      const a = clampToGreatCircle(spec.geom.semiMajor) as number;
+      const b = clampToGreatCircle(spec.geom.semiMinor) as number;
+      const outline = ringOutlinePositions({
+        centerLatDeg: spec.geom.latDeg,
+        centerLonDeg: spec.geom.lonDeg,
+        semiMajorM: a,
+        semiMinorM: b,
+        rotationRad: spec.geom.cesiumRotation,
+      });
+      if (spec.edge) {
+        for (const e of addRingEdge(viewer, outline, { id: spec.id, color: spec.color })) {
+          registerRingTooltip(e.id, spec.tooltipKind, spec.radiusM, spec.color);
+        }
+      }
+      if (spec.sigmaKey !== undefined) {
+        const sigma = RING_RADIUS_SIGMA[spec.sigmaKey];
+        // Below 0.18 the dashed line would sit inside the contour's own
+        // stroke at any practical zoom.
+        if (sigma !== undefined && sigma >= 0.18) {
+          const upper = ringOutlinePositions({
+            centerLatDeg: spec.geom.latDeg,
+            centerLonDeg: spec.geom.lonDeg,
+            semiMajorM: clampToGreatCircle(a * (1 + sigma)),
+            semiMinorM: clampToGreatCircle(b * (1 + sigma)),
+            rotationRad: spec.geom.cesiumRotation,
+          });
+          const band = addSigmaBandLine(viewer, spec.id, upper, spec.color);
+          if (band !== null) {
+            registerRingTooltip(band.id, spec.tooltipKind, spec.radiusM, spec.color);
+          }
+        }
+      }
+      if (spec.label) {
+        const anchorPoint = outlinePointAtBearing(
+          outline,
+          spec.geom.latDeg,
+          spec.geom.lonDeg,
+          spec.labelBearingDeg
+        );
+        if (anchorPoint !== null) {
+          const labelEntity = addRingLabel(viewer, {
+            id: spec.id,
+            text: ringCaption(spec.tooltipKind, spec.radiusM, i18next.language),
+            color: spec.color,
+            position: anchorPoint,
+            radiusM: spec.radiusM,
+          });
+          registerRingTooltip(labelEntity.id, spec.tooltipKind, spec.radiusM, spec.color);
+          ringLabelsRef.current.set(labelEntity, { kind: spec.tooltipKind, radiusM: spec.radiusM });
+        }
+      }
+      viewer.scene.requestRender();
+    };
+
+    const addDamageRing = (spec: DamageRingSpec): Entity => {
+      const finalMajor = clampToGreatCircle(spec.geom.semiMajor) as number;
+      const finalMinor = clampToGreatCircle(spec.geom.semiMinor) as number;
+      const entity: Entity = viewer.entities.add({
+        id: spec.id,
+        position: spec.geom.position,
+        ellipse: {
+          semiMajorAxis: spec.animate ? RING_INITIAL_RADIUS_M : Math.max(finalMajor, finalMinor),
+          semiMinorAxis: spec.animate ? RING_INITIAL_RADIUS_M : Math.min(finalMajor, finalMinor),
+          rotation: spec.geom.cesiumRotation,
+          // The inner edge follows the ellipse's CURRENT radius: while
+          // the cascade grows the ring from the previous threshold to
+          // this one, the painted band is exactly [previous, front].
+          material: radialDamageMaterial(spec.color, spec.fillAlpha, () => {
+            const current = entity.ellipse?.semiMajorAxis?.getValue(viewer.clock.currentTime) as
+              | number
+              | undefined;
+            if (typeof current !== 'number' || current <= 0) return 0;
+            return spec.innerSemiMajorM / current;
+          }),
+          fill: true,
+          outline: false,
+          height: 0,
+          heightReference: HeightReference.CLAMP_TO_GROUND,
+        },
+      });
+      if (spec.animate) {
+        scheduleRing(entity, spec.kind, spec.geom.semiMajor, spec.geom.semiMinor, () => {
+          stampRing(spec);
+        });
+      } else {
+        stampRing(spec);
+      }
+      registerRingTooltip(spec.id, spec.tooltipKind, spec.radiusM, spec.color);
+      return entity;
+    };
+
+    /**
+     * A nested set of contours around one centre (the blast rings, the
+     * MMI contours): sorted by radius, each zone's inner edge is the
+     * previous contour, and the rim captions are staggered so close
+     * radii don't print over each other.
+     */
+    type FamilyMember = Omit<DamageRingSpec, 'innerSemiMajorM' | 'labelBearingDeg'>;
+    const addRingFamily = (members: FamilyMember[]): void => {
+      const sorted = [...members].sort((x, y) => x.radiusM - y.radiusM);
+      const bearings = spreadLabelBearings(sorted.length);
+      sorted.forEach((member, i) => {
+        const previous = i > 0 ? sorted[i - 1] : undefined;
+        addDamageRing({
+          ...member,
+          innerSemiMajorM: previous !== undefined ? previous.geom.semiMajor : 0,
+          labelBearingDeg: bearings[i] ?? 45,
+        });
+      });
+    };
+
+    /** Circular geometry helper for contours without an asymmetry
+     *  record. */
+    const circularGeom = (radiusM: number): DamageRingSpec['geom'] => ({
+      position: centerCartesian,
+      semiMajor: radiusM,
+      semiMinor: radiusM,
+      cesiumRotation: 0,
+      latDeg: ringAnchor.latitude,
+      lonDeg: ringAnchor.longitude,
+    });
+
+    /** Tsunami source cavity — the same blue disc for every event
+     *  family, so an underwater burst and an ocean impact read as the
+     *  same phenomenon. */
+    const addCavityRing = (cavityRadius: number): void => {
+      if (!Number.isFinite(cavityRadius) || cavityRadius <= 0) return;
+      addDamageRing({
+        id: TSUNAMI_CAVITY_ID,
+        kind: 'tsunamiCavity',
+        tooltipKind: 'tsunamiCavity',
+        color: TSUNAMI_CAVITY_COLOR,
+        radiusM: cavityRadius,
+        geom: circularGeom(cavityRadius),
+        innerSemiMajorM: 0,
+        fillAlpha: 0.2,
+        labelBearingDeg: 225,
+        animate: true,
+        label: true,
+        edge: true,
+      });
     };
 
     /**
@@ -1474,57 +1782,6 @@ export function Globe(): JSX.Element {
       return { north: dNorth, east: dEast };
     };
 
-    /**
-     * Phase 8b — make the published 1σ scatter visually proportional
-     * to the band width on the globe. After the main ring is spawned
-     * via scheduleRing, this helper adds a sibling "upper-σ" entity
-     * at R(1+σ) with a soft fill + thin outline. The eye reads the
-     * inner solid contour as "best estimate" and the outer halo as
-     * "the wave might extend this far".
-     *
-     * Pulls σ from RING_RADIUS_SIGMA. Returns silently when σ is
-     * below 0.18 (halo would be < 1 mm at typical zoom — not legible).
-     */
-    const addUpperSigmaBand = (
-      baseEntityId: string,
-      sigmaKey: string,
-      kind: RingKind,
-      baseSemiMajor: number,
-      baseSemiMinor: number,
-      position: Cartesian3,
-      color: Color,
-      cesiumRotation: number
-    ): void => {
-      const sigma = RING_RADIUS_SIGMA[sigmaKey];
-      if (sigma === undefined || sigma < 0.18) return;
-      const upperSemiMajor = clampToGreatCircle(baseSemiMajor * (1 + sigma));
-      const upperSemiMinor = clampToGreatCircle(baseSemiMinor * (1 + sigma));
-      if (!Number.isFinite(upperSemiMajor) || upperSemiMajor <= baseSemiMajor) return;
-      const bandEntity = viewer.entities.add({
-        id: `${baseEntityId}${SIGMA_BAND_SUFFIX}`,
-        position,
-        ellipse: {
-          semiMajorAxis: RING_INITIAL_RADIUS_M,
-          semiMinorAxis: RING_INITIAL_RADIUS_M,
-          rotation: cesiumRotation,
-          // Translucent fill keeps the halo readable without the
-          // sharp outline competing with the main ring's outline —
-          // ma solo alla scala in cui una campitura aiuta. Alle
-          // dimensioni continentali queste bande sono dischi da un
-          // milione di km² che, sommandosi fra loro e al velo tsunami,
-          // riempivano la mappa di una tinta unita: erano l'ultimo
-          // strato che nascondeva l'onda.
-          material: color.withAlpha(0.08),
-          fill: fillsAtRadius(upperSemiMajor),
-          outline: true,
-          outlineColor: color.withAlpha(0.3),
-          height: 0,
-          heightReference: HeightReference.CLAMP_TO_GROUND,
-        },
-      });
-      scheduleRing(bandEntity, kind, upperSemiMajor, upperSemiMinor);
-    };
-
     // Bullseye marker: a tight gold core dot wrapped in a faint
     // gold halo. Two entities so the halo can render with a
     // transparent fill (Cesium points don't allow per-channel alpha
@@ -1589,10 +1846,10 @@ export function Globe(): JSX.Element {
         overpressure1psi: 'overpressure',
         lightDamage: 'overpressure',
       };
+      const impactFamily: FamilyMember[] = [];
       (Object.keys(RING_COLORS) as (keyof ImpactDamageRadii)[]).forEach((key) => {
         const radius = radii[key] as number;
         if (!Number.isFinite(radius) || radius <= 0) return;
-        const entityId = `${RING_ID_PREFIX}${key}`;
         // Per-ring asymmetry: oblique impacts elongate downrange and
         // shrink cross-range per Pierazzo & Melosh / Pierazzo &
         // Artemieva envelopes. The geometry helper folds in the
@@ -1603,62 +1860,30 @@ export function Globe(): JSX.Element {
           ringAnchor.latitude,
           ringAnchor.longitude
         );
-        const entity = viewer.entities.add({
-          id: entityId,
-          position: geom.position,
-          ellipse: {
-            semiMajorAxis: RING_INITIAL_RADIUS_M,
-            semiMinorAxis: RING_INITIAL_RADIUS_M,
-            rotation: geom.cesiumRotation,
-            material: radialDamageMaterial(RING_COLORS[key], 0.85),
-            fill: fillsAtRadius(radius),
-            outline: true,
-            outlineColor: RING_COLORS[key].withAlpha(0.5),
-            height: 0,
-            heightReference: HeightReference.CLAMP_TO_GROUND,
-          },
+        impactFamily.push({
+          id: `${RING_ID_PREFIX}${key}`,
+          kind: impactRingKind[key],
+          tooltipKind: key,
+          color: RING_COLORS[key],
+          // Tooltip and caption report the NOMINAL ground-range radius
+          // (not the elongated semi-major) — that is what is
+          // scientifically meaningful ("crater rim 8.5 km"). The
+          // asymmetric on-screen shape is a rendering refinement, not
+          // a different physical quantity.
+          radiusM: radius,
+          geom: { ...geom, latDeg: ringAnchor.latitude, lonDeg: ringAnchor.longitude },
+          fillAlpha: zoneFillAlpha(radius, key === 'craterRim' ? 0.3 : 0.2),
+          sigmaKey: key,
+          animate: true,
+          label: true,
+          edge: true,
         });
-        scheduleRing(entity, impactRingKind[key], geom.semiMajor, geom.semiMinor);
-        addUpperSigmaBand(
-          entityId,
-          key,
-          impactRingKind[key],
-          geom.semiMajor,
-          geom.semiMinor,
-          geom.position,
-          RING_COLORS[key],
-          geom.cesiumRotation
-        );
-        // Tooltip continues to report the NOMINAL ground-range radius
-        // (not the elongated semi-major) — that is what is
-        // scientifically meaningful and what the tooltip text claims
-        // ("crater rim 8.5 km"). The asymmetric on-screen shape is
-        // a rendering refinement, not a different physical quantity.
-        registerRingTooltip(entityId, key, radius, RING_COLORS[key]);
       });
+      addRingFamily(impactFamily);
       if (result.data.tsunami) {
         const cavityRadius = result.data.tsunami.cavityRadius as number;
         if (Number.isFinite(cavityRadius) && cavityRadius > 0) {
-          const entity = viewer.entities.add({
-            id: TSUNAMI_CAVITY_ID,
-            position: centerCartesian,
-            ellipse: {
-              semiMajorAxis: RING_INITIAL_RADIUS_M,
-              semiMinorAxis: RING_INITIAL_RADIUS_M,
-              material: radialDamageMaterial(TSUNAMI_CAVITY_COLOR, 0.65),
-              outline: true,
-              outlineColor: TSUNAMI_CAVITY_COLOR.withAlpha(0.45),
-              height: 0,
-              heightReference: HeightReference.CLAMP_TO_GROUND,
-            },
-          });
-          scheduleRing(entity, 'tsunamiCavity', cavityRadius);
-          registerRingTooltip(
-            TSUNAMI_CAVITY_ID,
-            'tsunamiCavity',
-            cavityRadius,
-            TSUNAMI_CAVITY_COLOR
-          );
+          addCavityRing(cavityRadius);
         }
         // Phase 16 — wave-front rings retired. The propagating wave is
         // now rendered globally as the discrete-band amplitude heatmap
@@ -1695,36 +1920,32 @@ export function Globe(): JSX.Element {
         // full size on the same frame the result lands. The
         // asymmetric semi-major / semi-minor pair is honored by
         // the animator just like every other ring.
-        const ejectaEntity = viewer.entities.add({
+        // The blanket is what lies OUTSIDE the crater: painted as a zone
+        // from the crater rim outward, so it never tints the crater
+        // floor. Joins the cascade on the crater's beat — they are the
+        // same physical event (excavation) and belong together.
+        addDamageRing({
           id: EJECTA_BLANKET_ID,
-          position: Cartesian3.fromDegrees(blanketLon, blanketLat),
-          ellipse: {
-            semiMajorAxis: RING_INITIAL_RADIUS_M,
-            semiMinorAxis: RING_INITIAL_RADIUS_M,
-            rotation: cesiumRotation,
-            material: radialDamageMaterial(EJECTA_BLANKET_COLOR, 0.7),
-            fill: fillsAtRadius(blanketRadius),
-            outline: true,
-            outlineColor: EJECTA_BLANKET_COLOR.withAlpha(0.45),
-            height: 0,
-            heightReference: HeightReference.CLAMP_TO_GROUND,
+          kind: 'crater',
+          tooltipKind: 'ejectaBlanket',
+          color: EJECTA_BLANKET_COLOR,
+          radiusM: blanketRadius,
+          geom: {
+            position: Cartesian3.fromDegrees(blanketLon, blanketLat),
+            semiMajor: clampToGreatCircle(semiMajor),
+            semiMinor: clampToGreatCircle(semiMinor),
+            cesiumRotation,
+            latDeg: blanketLat,
+            lonDeg: blanketLon,
           },
+          innerSemiMajorM: radii.craterRim,
+          fillAlpha: zoneFillAlpha(blanketRadius, 0.16),
+          sigmaKey: 'ejectaBlanket',
+          labelBearingDeg: 135,
+          animate: true,
+          label: true,
+          edge: true,
         });
-        // Use the 'crater' kind so the ejecta reveals on the same
-        // ~300 ms beat as the crater rim — they're the same physical
-        // event (excavation) and visually belong together.
-        scheduleRing(
-          ejectaEntity,
-          'crater',
-          clampToGreatCircle(semiMajor),
-          clampToGreatCircle(semiMinor)
-        );
-        registerRingTooltip(
-          EJECTA_BLANKET_ID,
-          'ejectaBlanket',
-          blanketRadius,
-          EJECTA_BLANKET_COLOR
-        );
       }
     }
 
@@ -1855,6 +2076,30 @@ export function Globe(): JSX.Element {
             },
           });
           registerRingTooltip(id, tooltipKind, radius, color);
+          // Crisp contour + rim caption on the rupture footprint, the
+          // same language as the circular contours.
+          const first = verts[0];
+          const loop = first !== undefined ? [...verts, first] : verts;
+          for (const e of addRingEdge(viewer, loop, { id, color })) {
+            registerRingTooltip(e.id, tooltipKind, radius, color);
+          }
+          const stadiumAnchor = outlinePointAtBearing(
+            verts,
+            ringAnchor.latitude,
+            ringAnchor.longitude,
+            45
+          );
+          if (stadiumAnchor !== null) {
+            const labelEntity = addRingLabel(viewer, {
+              id,
+              text: ringCaption(tooltipKind, radius, i18next.language),
+              color,
+              position: stadiumAnchor,
+              radiusM: radius,
+            });
+            registerRingTooltip(labelEntity.id, tooltipKind, radius, color);
+            ringLabelsRef.current.set(labelEntity, { kind: tooltipKind, radiusM: radius });
+          }
         }
 
         // ── La faglia in scena (tavola 4) ─────────────────────────
@@ -1947,26 +2192,24 @@ export function Globe(): JSX.Element {
           'mmi-ring-8': 'mmi8',
           'mmi-ring-9': 'mmi9',
         };
+        const mmiFamily: FamilyMember[] = [];
         contours.forEach(({ id, radius, color }) => {
           if (!Number.isFinite(radius) || radius <= 0) return;
-          const entity = viewer.entities.add({
+          mmiFamily.push({
             id,
-            position: centerCartesian,
-            ellipse: {
-              semiMajorAxis: RING_INITIAL_RADIUS_M,
-              semiMinorAxis: RING_INITIAL_RADIUS_M,
-              material: radialDamageMaterial(color, fillAlpha),
-              fill: fillsAtRadius(radius),
-              outline: true,
-              outlineColor: color.withAlpha(outlineAlpha),
-              height: 0,
-              heightReference: HeightReference.CLAMP_TO_GROUND,
-            },
+            kind: 'mmi',
+            tooltipKind: mmiKindFor[id],
+            color,
+            radiusM: radius,
+            geom: circularGeom(radius),
+            fillAlpha: zoneFillAlpha(radius, fillAlpha * 0.26),
+            sigmaKey: mmiKindFor[id],
+            animate: true,
+            label: true,
+            edge: true,
           });
-          scheduleRing(entity, 'mmi', radius);
-          addUpperSigmaBand(id, mmiKindFor[id], 'mmi', radius, radius, centerCartesian, color, 0);
-          registerRingTooltip(id, mmiKindFor[id], radius, color);
         });
+        addRingFamily(mmiFamily);
       }
     }
 
@@ -2105,7 +2348,7 @@ export function Globe(): JSX.Element {
       // reference.
       const isContactWaterBurst = result.data.isContactWaterBurst;
       const explosionFillAlpha = isContactWaterBurst ? 0.4 : 0.85;
-      const explosionOutlineAlpha = isContactWaterBurst ? 0.3 : 0.5;
+      const explosionFamily: FamilyMember[] = [];
       explosionRings.forEach(({ id, radius, color, kind, tooltipKind, asymmetry: asym }) => {
         if (!Number.isFinite(radius) || radius <= 0) return;
         // Surface-burst nuclear/conventional explosions are rotationally
@@ -2120,60 +2363,31 @@ export function Globe(): JSX.Element {
           ringAnchor.latitude,
           ringAnchor.longitude
         );
-        const entity = viewer.entities.add({
+        explosionFamily.push({
           id,
-          position: geom.position,
-          ellipse: {
-            semiMajorAxis: RING_INITIAL_RADIUS_M,
-            semiMinorAxis: RING_INITIAL_RADIUS_M,
-            rotation: geom.cesiumRotation,
-            material: radialDamageMaterial(color, explosionFillAlpha),
-            fill: fillsAtRadius(radius),
-            outline: true,
-            outlineColor: color.withAlpha(explosionOutlineAlpha),
-            height: 0,
-            heightReference: HeightReference.CLAMP_TO_GROUND,
-          },
-        });
-        scheduleRing(entity, kind, geom.semiMajor, geom.semiMinor);
-        addUpperSigmaBand(
-          id,
-          tooltipKind,
           kind,
-          geom.semiMajor,
-          geom.semiMinor,
-          geom.position,
+          tooltipKind,
           color,
-          geom.cesiumRotation
-        );
-        registerRingTooltip(id, tooltipKind, radius, color);
+          radiusM: radius,
+          geom: { ...geom, latDeg: ringAnchor.latitude, lonDeg: ringAnchor.longitude },
+          fillAlpha: zoneFillAlpha(
+            radius,
+            explosionFillAlpha * (id === 'explosion-crater' ? 0.36 : 0.24)
+          ),
+          sigmaKey: tooltipKind,
+          animate: true,
+          label: true,
+          edge: true,
+        });
       });
+      addRingFamily(explosionFamily);
       // Underwater / contact-water burst cavity. Same colour as the
       // impact-tsunami cavity so the two cascades read as the same
       // family of phenomena on the globe.
       if (result.data.tsunami) {
         const cavityRadius = result.data.tsunami.cavityRadius as number;
         if (Number.isFinite(cavityRadius) && cavityRadius > 0) {
-          const entity = viewer.entities.add({
-            id: TSUNAMI_CAVITY_ID,
-            position: centerCartesian,
-            ellipse: {
-              semiMajorAxis: RING_INITIAL_RADIUS_M,
-              semiMinorAxis: RING_INITIAL_RADIUS_M,
-              material: radialDamageMaterial(TSUNAMI_CAVITY_COLOR, 0.65),
-              outline: true,
-              outlineColor: TSUNAMI_CAVITY_COLOR.withAlpha(0.45),
-              height: 0,
-              heightReference: HeightReference.CLAMP_TO_GROUND,
-            },
-          });
-          scheduleRing(entity, 'tsunamiCavity', cavityRadius);
-          registerRingTooltip(
-            TSUNAMI_CAVITY_ID,
-            'tsunamiCavity',
-            cavityRadius,
-            TSUNAMI_CAVITY_COLOR
-          );
+          addCavityRing(cavityRadius);
         }
         // Wave-front rings retired in Phase 16 — see impact branch.
       }
@@ -2183,21 +2397,7 @@ export function Globe(): JSX.Element {
     if (result.type === 'landslide' && result.data.tsunami !== null) {
       const cavityRadius = result.data.tsunami.cavityRadius as number;
       if (Number.isFinite(cavityRadius) && cavityRadius > 0) {
-        const entity = viewer.entities.add({
-          id: TSUNAMI_CAVITY_ID,
-          position: centerCartesian,
-          ellipse: {
-            semiMajorAxis: RING_INITIAL_RADIUS_M,
-            semiMinorAxis: RING_INITIAL_RADIUS_M,
-            material: radialDamageMaterial(TSUNAMI_CAVITY_COLOR, 0.65),
-            outline: true,
-            outlineColor: TSUNAMI_CAVITY_COLOR.withAlpha(0.45),
-            height: 0,
-            heightReference: HeightReference.CLAMP_TO_GROUND,
-          },
-        });
-        scheduleRing(entity, 'tsunamiCavity', cavityRadius);
-        registerRingTooltip(TSUNAMI_CAVITY_ID, 'tsunamiCavity', cavityRadius, TSUNAMI_CAVITY_COLOR);
+        addCavityRing(cavityRadius);
       }
       // Wave-front rings retired in Phase 16 — see impact branch.
     }
@@ -2206,21 +2406,7 @@ export function Globe(): JSX.Element {
     if (result.type === 'volcano' && result.data.tsunami) {
       const cavityRadius = result.data.tsunami.cavityRadius as number;
       if (Number.isFinite(cavityRadius) && cavityRadius > 0) {
-        const entity = viewer.entities.add({
-          id: TSUNAMI_CAVITY_ID,
-          position: centerCartesian,
-          ellipse: {
-            semiMajorAxis: RING_INITIAL_RADIUS_M,
-            semiMinorAxis: RING_INITIAL_RADIUS_M,
-            material: radialDamageMaterial(TSUNAMI_CAVITY_COLOR, 0.65),
-            outline: true,
-            outlineColor: TSUNAMI_CAVITY_COLOR.withAlpha(0.45),
-            height: 0,
-            heightReference: HeightReference.CLAMP_TO_GROUND,
-          },
-        });
-        scheduleRing(entity, 'tsunamiCavity', cavityRadius);
-        registerRingTooltip(TSUNAMI_CAVITY_ID, 'tsunamiCavity', cavityRadius, TSUNAMI_CAVITY_COLOR);
+        addCavityRing(cavityRadius);
       }
       // Wave-front rings retired in Phase 16 — see impact branch.
     }
@@ -2241,26 +2427,7 @@ export function Globe(): JSX.Element {
     if (result.type === 'earthquake' && result.data.tsunami !== undefined) {
       const eqCavityRadius = Math.max((result.data.ruptureLength as number) / 4, 10_000);
       if (Number.isFinite(eqCavityRadius) && eqCavityRadius > 0) {
-        const entity = viewer.entities.add({
-          id: TSUNAMI_CAVITY_ID,
-          position: centerCartesian,
-          ellipse: {
-            semiMajorAxis: RING_INITIAL_RADIUS_M,
-            semiMinorAxis: RING_INITIAL_RADIUS_M,
-            material: radialDamageMaterial(TSUNAMI_CAVITY_COLOR, 0.65),
-            outline: true,
-            outlineColor: TSUNAMI_CAVITY_COLOR.withAlpha(0.45),
-            height: 0,
-            heightReference: HeightReference.CLAMP_TO_GROUND,
-          },
-        });
-        scheduleRing(entity, 'tsunamiCavity', eqCavityRadius);
-        registerRingTooltip(
-          TSUNAMI_CAVITY_ID,
-          'tsunamiCavity',
-          eqCavityRadius,
-          TSUNAMI_CAVITY_COLOR
-        );
+        addCavityRing(eqCavityRadius);
       }
       // Wave-front rings retired in Phase 16 — see impact branch.
     }
@@ -2277,36 +2444,21 @@ export function Globe(): JSX.Element {
     }
     const pyroRadius = result.type === 'volcano' ? result.data.pyroclasticRunout : 0;
     if (result.type === 'volcano' && Number.isFinite(pyroRadius) && pyroRadius > 0) {
-      const entity = viewer.entities.add({
+      addDamageRing({
         id: PYROCLASTIC_RING_ID,
-        position: centerCartesian,
-        ellipse: {
-          semiMajorAxis: RING_INITIAL_RADIUS_M,
-          semiMinorAxis: RING_INITIAL_RADIUS_M,
-          material: radialDamageMaterial(PYROCLASTIC_RING_COLOR, 0.85),
-          outline: true,
-          outlineColor: PYROCLASTIC_RING_COLOR.withAlpha(0.5),
-          height: 0,
-          heightReference: HeightReference.CLAMP_TO_GROUND,
-        },
+        kind: 'overpressure',
+        tooltipKind: 'pyroclasticRunout',
+        color: PYROCLASTIC_RING_COLOR,
+        radiusM: pyroRadius,
+        geom: circularGeom(pyroRadius),
+        innerSemiMajorM: 0,
+        fillAlpha: zoneFillAlpha(pyroRadius, 0.24),
+        sigmaKey: 'pyroclasticRunout',
+        labelBearingDeg: 45,
+        animate: true,
+        label: true,
+        edge: true,
       });
-      scheduleRing(entity, 'overpressure', pyroRadius);
-      addUpperSigmaBand(
-        PYROCLASTIC_RING_ID,
-        'pyroclasticRunout',
-        'overpressure',
-        pyroRadius,
-        pyroRadius,
-        centerCartesian,
-        PYROCLASTIC_RING_COLOR,
-        0
-      );
-      registerRingTooltip(
-        PYROCLASTIC_RING_ID,
-        'pyroclasticRunout',
-        pyroRadius,
-        PYROCLASTIC_RING_COLOR
-      );
     }
 
     // --- Volcano: lateral-blast envelope (sector flank collapse) ---
@@ -2339,21 +2491,29 @@ export function Globe(): JSX.Element {
         clampToGreatCircle(crosswindHalfWidth),
         cesiumRotation
       );
-      viewer.entities.add({
+      addDamageRing({
         id: LATERAL_BLAST_ID,
-        position: Cartesian3.fromDegrees(blastLon, blastLat),
-        ellipse: {
-          semiMajorAxis: blastEllipse.semiMajorAxis,
-          semiMinorAxis: blastEllipse.semiMinorAxis,
-          rotation: blastEllipse.rotation,
-          material: radialDamageMaterial(LATERAL_BLAST_COLOR, 0.9),
-          outline: true,
-          outlineColor: LATERAL_BLAST_COLOR.withAlpha(0.55),
-          height: 0,
-          heightReference: HeightReference.CLAMP_TO_GROUND,
+        kind: 'overpressure',
+        tooltipKind: 'lateralBlast',
+        color: LATERAL_BLAST_COLOR,
+        radiusM: runout,
+        geom: {
+          position: Cartesian3.fromDegrees(blastLon, blastLat),
+          semiMajor: blastEllipse.semiMajorAxis,
+          semiMinor: blastEllipse.semiMinorAxis,
+          cesiumRotation: blastEllipse.rotation,
+          latDeg: blastLat,
+          lonDeg: blastLon,
         },
+        innerSemiMajorM: 0,
+        fillAlpha: zoneFillAlpha(runout, 0.22),
+        sigmaKey: 'lateralBlast',
+        // Caption downrange, where the wedge points.
+        labelBearingDeg: lateralBlast.directionDeg,
+        animate: false,
+        label: true,
+        edge: true,
       });
-      registerRingTooltip(LATERAL_BLAST_ID, 'lateralBlast', runout, LATERAL_BLAST_COLOR);
     }
 
     // --- Volcano: wind-advected ashfall plume -----------------------
@@ -2389,20 +2549,29 @@ export function Globe(): JSX.Element {
         clampToGreatCircle(crosswind),
         cesiumRotation
       );
-      viewer.entities.add({
+      addDamageRing({
         id: ASHFALL_PLUME_ID,
-        position: Cartesian3.fromDegrees(plumeLon, plumeLat),
-        ellipse: {
-          semiMajorAxis: plumeEllipse.semiMajorAxis,
-          semiMinorAxis: plumeEllipse.semiMinorAxis,
-          rotation: plumeEllipse.rotation,
-          material: radialDamageMaterial(ASHFALL_PLUME_COLOR, 0.55),
-          outline: false,
-          height: 0,
-          heightReference: HeightReference.CLAMP_TO_GROUND,
+        kind: 'ashfall',
+        tooltipKind: 'ashfallPlume',
+        color: ASHFALL_PLUME_COLOR,
+        radiusM: downwind,
+        geom: {
+          position: Cartesian3.fromDegrees(plumeLon, plumeLat),
+          semiMajor: plumeEllipse.semiMajorAxis,
+          semiMinor: plumeEllipse.semiMinorAxis,
+          cesiumRotation: plumeEllipse.rotation,
+          latDeg: plumeLat,
+          lonDeg: plumeLon,
         },
+        innerSemiMajorM: 0,
+        fillAlpha: zoneFillAlpha(downwind, 0.14),
+        // Caption downwind, where the ash goes.
+        labelBearingDeg: ashfall.windDirectionDegrees,
+        animate: false,
+        label: true,
+        // The dashed 1 mm isopach below is the plume's own outline.
+        edge: false,
       });
-      registerRingTooltip(ASHFALL_PLUME_ID, 'ashfallPlume', downwind, ASHFALL_PLUME_COLOR);
       // Isopaca 1 mm tratteggiata — il linguaggio delle mappe VAAC.
       // Il perimetro dell'ellisse di ricaduta ridisegnato come
       // polilinea a tratti sopra la velatura del riempimento.
@@ -3884,6 +4053,9 @@ function computeFrameRadius(
   };
   if (result.type === 'impact') {
     bump(result.data.damage.overpressure1psi);
+    // The outermost contour drawn is the 0.5 psi light-damage ring:
+    // framing on 1 psi cut it off at the edge of the first view.
+    bump(result.data.damage.lightDamage);
     bump(result.data.firestorm.sustainRadius);
     bump(result.data.ejecta.blanketEdge1m);
     // The asymmetric blanket extends past blanketEdge1mm by the
@@ -3897,6 +4069,7 @@ function computeFrameRadius(
     if (result.data.tsunami) bump(result.data.tsunami.cavityRadius);
   } else if (result.type === 'explosion') {
     bump(result.data.blast.overpressure1psiRadiusHob);
+    bump(result.data.blast.lightDamageRadiusHob);
     bump(result.data.thermal.thirdDegreeBurnRadius);
     bump(result.data.firestorm.sustainRadius);
     if (result.data.emp.regime !== 'NEGLIGIBLE') bump(result.data.emp.affectedRadius);

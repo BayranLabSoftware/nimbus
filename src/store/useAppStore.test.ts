@@ -2,7 +2,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { EARTHQUAKE_PRESETS } from '../physics/events/earthquake/index.js';
 import { VOLCANO_PRESETS } from '../physics/events/volcano/index.js';
 import { IMPACT_PRESETS } from '../physics/simulate.js';
-import { TRANSITION_HALF_MS, resetAppStore, useAppStore } from './useAppStore.js';
+import { makeElevationGrid, type ElevationGrid } from '../physics/elevation/index.js';
+import {
+  TRANSITION_HALF_MS,
+  configureTerrainLoaders,
+  resetAppStore,
+  useAppStore,
+} from './useAppStore.js';
 
 beforeEach(() => {
   resetAppStore();
@@ -204,4 +210,90 @@ describe('useAppStore — reset', () => {
     expect(s.result).toBeNull();
     expect(s.mode).toBe('landing');
   });
+});
+
+describe('useAppStore — terrain before physics', () => {
+  /** A flat 4 km ocean tile centred on the given point, wide enough to
+   *  cover any nearby click. */
+  function oceanTile(lat: number, lon: number): ElevationGrid {
+    const N = 32;
+    const samples = new Float32Array(N * N);
+    samples.fill(-4_000);
+    return makeElevationGrid({
+      minLat: lat - 1,
+      maxLat: lat + 1,
+      minLon: lon - 1,
+      maxLon: lon + 1,
+      nLat: N,
+      nLon: N,
+      samples,
+    });
+  }
+
+  afterEach(() => {
+    configureTerrainLoaders(null);
+  });
+
+  it('awaits the local tile under the pick, so an ocean click gets its tsunami on the first Launch', async () => {
+    const local = vi.fn((lat: number, lon: number) => Promise.resolve(oceanTile(lat, lon)));
+    // The mosaic fails fast (offline): evaluate must not wait for it.
+    configureTerrainLoaders({ local, global: () => Promise.reject(new Error('offline')) });
+    useAppStore.getState().selectPreset('CHICXULUB');
+    useAppStore.getState().setLocation({ latitude: 30, longitude: -40 });
+    await useAppStore.getState().evaluate();
+    expect(local).toHaveBeenCalledWith(30, -40);
+    const s = useAppStore.getState();
+    expect(s.elevationGrid).not.toBeNull();
+    expect(s.result?.type).toBe('impact');
+    if (s.result?.type === 'impact') {
+      // Water under the pick → the tsunami branch fired → the
+      // bathymetric layer exists (local only: the mosaic never came).
+      expect(s.result.data.tsunami).toBeDefined();
+    }
+    expect(s.bathymetricTsunami).not.toBeNull();
+    expect(s.bathymetricTsunami?.global).toBeUndefined();
+  }, 20_000);
+
+  it('does not touch the network when no loaders are configured', async () => {
+    useAppStore.getState().setLocation({ latitude: 30, longitude: -40 });
+    await useAppStore.getState().evaluate();
+    expect(useAppStore.getState().elevationGrid).toBeNull();
+    expect(useAppStore.getState().result).not.toBeNull();
+  });
+
+  it('a mosaic that lands after Launch completes the tsunami layer of the result on screen', async () => {
+    configureTerrainLoaders({
+      local: (lat, lon) => Promise.resolve(oceanTile(lat, lon)),
+      global: () => Promise.reject(new Error('offline')),
+    });
+    useAppStore.getState().selectPreset('CHICXULUB');
+    useAppStore.getState().setLocation({ latitude: 30, longitude: -40 });
+    await useAppStore.getState().evaluate();
+    const before = useAppStore.getState();
+    expect(before.bathymetricTsunami?.global).toBeUndefined();
+    const result = before.result;
+
+    // The planetary mosaic arrives late: a coarse flat ocean.
+    const N = 64;
+    const samples = new Float32Array(N * N);
+    samples.fill(-4_000);
+    const mosaic = makeElevationGrid({
+      minLat: -85,
+      maxLat: 85,
+      minLon: -180,
+      maxLon: 180,
+      nLat: N,
+      nLon: N,
+      samples,
+    });
+    useAppStore.getState().setGlobalBathymetricGrid(mosaic);
+    await vi.waitFor(
+      () => {
+        expect(useAppStore.getState().bathymetricTsunami?.global).toBeDefined();
+      },
+      { timeout: 15_000 }
+    );
+    // Same physics result — only the propagation layer was completed.
+    expect(useAppStore.getState().result).toBe(result);
+  }, 30_000);
 });

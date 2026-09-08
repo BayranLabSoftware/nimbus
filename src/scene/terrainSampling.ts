@@ -61,6 +61,11 @@ interface CachedTile {
 }
 
 const cache: CachedTile[] = [];
+/** Tiles being fetched right now, keyed like the cache. Two callers
+ *  asking for the same tile in the same second — the globe reacting
+ *  to a click and a Launch pressed straight after it — share one
+ *  request and one decode instead of racing each other. */
+const inflight = new Map<string, Promise<ElevationGrid>>();
 
 function lookupCache(key: string): ElevationGrid | null {
   const hit = cache.find((t) => t.key === key);
@@ -118,26 +123,36 @@ export async function fetchTerrainGridForLocation(
   const key = `${TILE_ZOOM.toString()}/${x.toString()}/${y.toString()}`;
   const cached = lookupCache(key);
   if (cached !== null) return cached;
+  const pending = inflight.get(key);
+  if (pending !== undefined) return pending;
 
   const url = TERRAIN_TILE_URL.replace('{z}', TILE_ZOOM.toString())
     .replace('{x}', x.toString())
     .replace('{y}', y.toString());
 
-  const samples = await decodeTerrariumTile(url);
-  const bounds = tileBounds(x, y, TILE_ZOOM);
-  // The terrarium PNG is north-to-south row-major, same convention
-  // as ElevationGrid — no transpose needed.
-  const grid = makeElevationGrid({
-    minLat: bounds.minLat,
-    maxLat: bounds.maxLat,
-    minLon: bounds.minLon,
-    maxLon: bounds.maxLon,
-    nLat: TILE_PIXELS,
-    nLon: TILE_PIXELS,
-    samples,
-  });
-  pushCache(key, grid);
-  return grid;
+  const request = (async (): Promise<ElevationGrid> => {
+    const samples = await decodeTerrariumTile(url);
+    const bounds = tileBounds(x, y, TILE_ZOOM);
+    // The terrarium PNG is north-to-south row-major, same convention
+    // as ElevationGrid — no transpose needed.
+    const grid = makeElevationGrid({
+      minLat: bounds.minLat,
+      maxLat: bounds.maxLat,
+      minLon: bounds.minLon,
+      maxLon: bounds.maxLon,
+      nLat: TILE_PIXELS,
+      nLon: TILE_PIXELS,
+      samples,
+    });
+    pushCache(key, grid);
+    return grid;
+  })();
+  inflight.set(key, request);
+  try {
+    return await request;
+  } finally {
+    inflight.delete(key);
+  }
 }
 
 /**
@@ -280,9 +295,14 @@ export async function fetchGlobalBathymetricMosaic(): Promise<ElevationGrid> {
       samples,
     });
     globalMosaicCache = grid;
-    globalMosaicInflight = null;
     return grid;
   })();
-
+  // Whatever happens, the next caller must be able to retry: a failed
+  // fetch left `globalMosaicInflight` pointing at a rejected promise
+  // for the rest of the session, so a Launch after a transient
+  // network error could never get the planetary layer back.
+  globalMosaicInflight = globalMosaicInflight.finally(() => {
+    globalMosaicInflight = null;
+  });
   return globalMosaicInflight;
 }

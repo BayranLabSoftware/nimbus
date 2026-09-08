@@ -206,8 +206,14 @@
     "tsunamiCavity": "Raggio cavità in acqua",
     "tsunamiAt1000km": "Onda a 1 000 km (Ward)",
     "tsunamiAt5000km": "Onda a 5 000 km (Ward)",
-    "tsunamiAt1000kmWunnemann": "Onda a 1 000 km (Wünnemann)",
-    "tsunamiAt5000kmWunnemann": "Onda a 5 000 km (Wünnemann)",
+    "tsunamiAt1000kmWunnemann": "Onda a 1 000 km (Wünnemann 2010, onda di bordo)",
+    "tsunamiAt1000kmRange": "Onda a 1 000 km — intervallo pubblicato",
+    "tsunamiAt5000kmRange": "Onda a 5 000 km — intervallo pubblicato",
+    "tsunamiRimWaveSource": "Altezza d'onda al bordo della cavità",
+    "tsunamiRegime": "Regime dell'onda (h/L)",
+    "tsunamiRegimeShallow": "acqua bassa — solo onda di bordo, decadimento r^−{{q}}",
+    "tsunamiRegimeDeep": "acqua profonda — onda di bordo r^−{{q}} + onda di collasso r^−{{qc}}",
+    "tsunamiAt5000kmWunnemann": "Onda a 5 000 km (Wünnemann 2010, onda di bordo)",
     "runupAt1000km": "Run-up costiero @ 1 000 km (Synolakis)",
     "tsunamiAt5000kmDispersed": "Onda a 5 000 km (dispersa)",
     "tsunamiArrival": "Arrivo a 1 000 km",
@@ -353,6 +359,12 @@
       "charLength": "Lunghezza caratteristica (V^⅓)",
       "tsunamiAmp": "Ampiezza tsunami alla sorgente",
       "tsunamiTravel": "Tempo arrivo tsunami a 100 km"
+    },
+    "citySearch": {
+      "label": "Vai a una città",
+      "placeholder": "Cerca una città… (es. Napoli)",
+      "empty": "Nessuna città trovata",
+      "go": "Vai"
     }
   },
   "cascade": {
@@ -657,7 +669,7 @@
       "uncertaintyNote": "Ogni raggio è una linea netta sulla mappa ma in realtà è una banda: la dispersione 1σ pubblicata è ±15–30 % per anelli blast e sismici, fattore 2 per pennacchi e tsunami in campo lontano. Vedi pagina metodologia per la banda di ogni grandezza.",
       "tsunamiStatus": {
         "globalActive": "Mappa tsunami: layer globale + locale attivi — propagazione trans-oceanica renderizzata.",
-        "localOnly": "Mappa tsunami: solo layer locale (~150 km) — calcolo mosaico globale fallito; controlla la console.",
+        "localOnly": "Mappa tsunami: solo layer locale (~150 km) — il mosaico planetario non era pronto per questa simulazione; verrà completata appena arriva, altrimenti premi di nuovo Avvia simulazione.",
         "globalLoading": "Mappa tsunami: solo layer locale — mosaico globale in caricamento, premi Launch tra un momento."
       }
     },
@@ -791,7 +803,30 @@
         "minutes": "{{value}} min",
         "hours": "{{value}} h",
         "days": "{{value}} g"
+      },
+      "city": {
+        "populationLine": "{{value}} abitanti (area metropolitana)",
+        "capital": "Capitale",
+        "hint": "Clicca per usare la città come epicentro."
       }
+    },
+    "ringShort": {
+      "craterRim": "Cratere",
+      "thirdDegreeBurn": "Ustioni III°",
+      "secondDegreeBurn": "Ustioni II°",
+      "overpressure5psi": "5 psi",
+      "overpressure1psi": "1 psi",
+      "lightDamage": "0,5 psi",
+      "radiationLD50": "LD₅₀ radiazione",
+      "empAffected": "EMP",
+      "mmi7": "MMI VII",
+      "mmi8": "MMI VIII",
+      "mmi9": "MMI IX",
+      "tsunamiCavity": "Cavità",
+      "pyroclasticRunout": "Flusso piroclastico",
+      "lateralBlast": "Blast laterale",
+      "ashfallPlume": "Cenere 1 mm",
+      "ejectaBlanket": "Ejecta"
     }
   },
   "report": {
@@ -1047,7 +1082,8 @@
     "seismicMagnitudeTW": "Stima moderna da Teanby & Wookey (2011) EPSL 303: M₀ = k·E con efficienza sismica k ≈ 10⁻⁴, poi Mw via Hanks–Kanamori (1979). Scende di 2–3 unità rispetto a Schultz-Gault — upper bound più difendibile.",
     "tsunamiCavity": "Raggio cavità in acqua R_C = (3·E / (2π·ρ_w·g))^(1/4) dalla forma energia-partizione di Ward & Asphaug (2000).",
     "tsunamiFarField": "Ampiezza campo-lontano A(r) = A₀·R_C/r (Ward & Asphaug 2000) — decadimento geometrico 1/r di un'onda di gravità in acqua poco profonda.",
-    "tsunamiWunnemann": "Correzione da codice idrodinamico (Wünnemann, Weiss & Hofmann 2007, M&PS 42; Melosh 2003). Le onde di impatto a corta lunghezza d'onda si dissipano più velocemente del tsunami classico, riducendo le ampiezze Ward–Asphaug di 4–10× a distanza continentale.",
+    "tsunamiWunnemann": "Onda di bordo di Wünnemann, Collins & Weiss 2010 (Rev. Geophys. 48, eq. 9a/10a): A(r) = min(0,14 R_w, h)·(R_w/r)^q_r, con q_r = min(1,2; 0,5 + 2e^(−1,75 L/h)). In acqua bassa l'onda decade come r^−0,5 (dispersione geometrica), in oceano profondo come r^−1,2: è la stima migliore che il simulatore usa per il run-up e per la propagazione batimetrica sul globo.",
+    "tsunamiWunnemannBounds": "Inviluppo pubblicato da Wünnemann, Collins & Weiss 2010 (eq. 7–8): limite superiore min(0,28 R_w, h)·R_w/r; limite inferiore il minore fra onda di bordo e onda di collasso 0,06·min(R_w/3, h)·(5R_w/r)^q_c, quest'ultima solo per h/L ≥ 2. Lo stesso intervallo che riporta l'Earth Impact Effects Program.",
     "synolakisRunup": "Run-up costiero su spiaggia piana 1:100 con profondità offshore 10 m (Synolakis 1987, JFM 185 523–545). R = 2.831·H·√(cot β)·(H/d)^(1/4). Altezza di inondazione illustrativa — il run-up reale dipende da batimetria, geometria portuale e regime di frangimento.",
     "tsunamiDispersion": "Correzione di dispersione dipendente dalla frequenza nel campo lontano (Heidarzadeh & Satake 2015 GJI 202 / JGR Oceans 120). Decadimento esponenziale con scala ~2 500 km oltre l'inviluppo 1/r Wünnemann/Ward — riproduce i record DART-buoy di Sumatra 2004 e Tōhoku 2011.",
     "seismicMoment": "Momento sismico M₀ = 10^(1.5·Mw + 9.1) N·m — forma SI della scala di magnitudo momento di Hanks & Kanamori (1979).",
@@ -1166,7 +1202,10 @@
     "viewGlobe": "Globo",
     "viewImpact": "Ravvicinata",
     "viewSwitchLabel": "Punto di vista",
-    "viewImpactUnavailable": "La vista ravvicinata è disponibile per impatti ed esplosioni"
+    "viewImpactUnavailable": "La vista ravvicinata è disponibile per impatti ed esplosioni",
+    "cities": "Città",
+    "citiesShow": "Mostra i nomi delle città sul globo",
+    "citiesHide": "Nascondi i nomi delle città sul globo"
   },
   "impactView": {
     "title": "Vista ravvicinata",

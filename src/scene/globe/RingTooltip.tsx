@@ -55,7 +55,16 @@ export interface AftershockHoverInfo {
   color: string;
 }
 
-export type HoverInfo = RingHoverInfo | AftershockHoverInfo;
+export interface CityHoverInfo {
+  type: 'city';
+  /** Name in the active UI language. */
+  name: string;
+  /** Pre-formatted population caption ("3,3 M"); empty when unknown. */
+  population: string;
+  capital: boolean;
+}
+
+export type HoverInfo = RingHoverInfo | AftershockHoverInfo | CityHoverInfo;
 
 function formatRadius(radiusM: number): string {
   if (!Number.isFinite(radiusM) || radiusM <= 0) return '—';
@@ -154,6 +163,20 @@ export const RingTooltip = forwardRef(function RingTooltip(
     </>
   );
 
+  const renderCity = (city: CityHoverInfo): JSX.Element => (
+    <>
+      <div className={styles.titleBar} style={{ backgroundColor: '#F4F1EA' }} aria-hidden />
+      <h3 className={styles.title}>{city.name}</h3>
+      {city.population.length > 0 && (
+        <p className={styles.meta}>
+          {t('globe.tooltip.city.populationLine', { value: city.population })}
+        </p>
+      )}
+      {city.capital && <p className={styles.meta}>{t('globe.tooltip.city.capital')}</p>}
+      <p className={styles.description}>{t('globe.tooltip.city.hint')}</p>
+    </>
+  );
+
   return (
     <div
       ref={ref}
@@ -165,6 +188,7 @@ export const RingTooltip = forwardRef(function RingTooltip(
     >
       {info?.type === 'ring' && renderRing(info)}
       {info?.type === 'aftershock' && renderAftershock(info)}
+      {info?.type === 'city' && renderCity(info)}
     </div>
   );
 });

@@ -365,6 +365,15 @@ export interface AppStore {
    *  preset, location, or evaluate so a stale "I hid the 5 m wave-front"
    *  doesn't persist into the next scenario. */
   hiddenRingKeys: ReadonlySet<string>;
+  /** Whether the Natural Earth city index (dots + names) is drawn on
+   *  the globe. Remembered in localStorage: someone who turns the
+   *  names off for a clean screenshot shouldn't have to do it again
+   *  on every visit. */
+  showCityLabels: boolean;
+  /** Camera flight asked for by the UI — the city search in the
+   *  simulator panel. The globe consumes it by `seq`; the store never
+   *  moves the camera itself. */
+  cameraRequest: CameraRequest | null;
 
   // --- Simulation lifecycle -------------------------------------------
   result: ActiveResult | null;
@@ -467,6 +476,12 @@ export interface AppStore {
   /** Reset every legend toggle so all rings render again. Wired to a
    *  "show all" button in the legend header. */
   showAllRings: () => void;
+  /** Flip the city dots + names on the globe. */
+  toggleCityLabels: () => void;
+  /** Ask the globe to fly the camera over `target`, framing `rangeM`
+   *  metres around it. Idempotent per call: every request gets a new
+   *  sequence number so the same city can be flown to twice. */
+  requestCameraFlight: (target: Coordinates, rangeM: number) => void;
   /** Install the global DEM raster. Called once at startup by the app
    *  shell after fetching the binary asset. `null` reverts to the
    *  rock-reference (Vs30 = 760) default. */
@@ -528,6 +543,8 @@ type InitialSlice = Pick<
   | 'location'
   | 'selectedAftershockIndex'
   | 'hiddenRingKeys'
+  | 'showCityLabels'
+  | 'cameraRequest'
   | 'result'
   | 'bathymetricTsunami'
   | 'populationExposure'
@@ -547,6 +564,38 @@ type InitialSlice = Pick<
   | 'simTime'
   | 'transitionPhase'
 >;
+
+/** localStorage key for the city-labels preference. */
+const CITY_LABELS_PREF_KEY = 'nimbus.showCityLabels';
+
+function readCityLabelsPreference(): boolean {
+  try {
+    if (typeof localStorage === 'undefined') return true;
+    return localStorage.getItem(CITY_LABELS_PREF_KEY) !== 'off';
+  } catch {
+    return true;
+  }
+}
+
+function writeCityLabelsPreference(show: boolean): void {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    localStorage.setItem(CITY_LABELS_PREF_KEY, show ? 'on' : 'off');
+  } catch {
+    // Private mode / quota: the toggle still works for the session.
+  }
+}
+
+export interface CameraRequest {
+  latitude: number;
+  longitude: number;
+  /** Radius (m) the globe should frame around the target. */
+  rangeM: number;
+  /** Monotonic counter so identical consecutive requests still fire. */
+  seq: number;
+}
+
+let cameraRequestSeq = 0;
 
 function initialState(): InitialSlice {
   return {
@@ -574,6 +623,8 @@ function initialState(): InitialSlice {
     location: null,
     selectedAftershockIndex: null,
     hiddenRingKeys: new Set<string>(),
+    showCityLabels: readCityLabelsPreference(),
+    cameraRequest: null,
     result: null,
     bathymetricTsunami: null,
     populationExposure: null,
@@ -824,15 +875,26 @@ function gridCoversLocation(grid: ElevationGrid, c: Coordinates): boolean {
  *  needs from whichever event-type tsunami block fired. Returns null
  *  when no headline amplitude can be derived (e.g. an earthquake
  *  tsunami missing its initialAmplitude). */
-function extractTsunamiMeta(
-  result: ActiveResult
-): { sourceAmplitudeM: number; sourceCavityRadiusM: number; sourceDepthM: number } | null {
+function extractTsunamiMeta(result: ActiveResult): {
+  sourceAmplitudeM: number;
+  sourceCavityRadiusM: number;
+  sourceDepthM: number;
+  /** Radial spreading exponent for the amplitude field. Omitted →
+   *  the field's cylindrical 0.5 default. */
+  spreadingExponent?: number;
+} | null {
   if (result.type === 'impact' && result.data.tsunami !== undefined) {
     const t = result.data.tsunami;
+    // Impact sources propagate the Wünnemann, Collins & Weiss (2010)
+    // rim wave: its height at the cavity rim, min(0.14 R_w, h), and
+    // its regime-dependent exponent q_r. This is what the panel's
+    // "Wünnemann" rows report, so the veil on the globe and the
+    // numbers beside it come from the same law.
     return {
-      sourceAmplitudeM: t.sourceAmplitude,
+      sourceAmplitudeM: t.rimWaveSourceAmplitude,
       sourceCavityRadiusM: t.cavityRadius,
       sourceDepthM: t.meanOceanDepth,
+      spreadingExponent: t.rimWaveExponent,
     };
   }
   if (result.type === 'explosion' && result.data.tsunami !== undefined) {
@@ -872,6 +934,206 @@ function extractTsunamiMeta(
     };
   }
   return null;
+}
+
+/**
+ * Terrain rasters `evaluate()` needs before it can simulate honestly:
+ * the local Terrarium tile (water depth under the click, Vs30 slope,
+ * beach slope) and the planetary bathymetric mosaic (the trans-oceanic
+ * tsunami layer). Both are fetched by the scene layer; the app shell
+ * registers the loaders once at boot (`useUrlStateSync`) and the store
+ * awaits them at every Launch. Unit tests leave them unset, so no
+ * network is touched there.
+ *
+ * Why the store waits instead of "the next Launch picks it up": a
+ * user who clicks the ocean and presses Launch a second later used to
+ * get a result computed against the PREVIOUS click's tile (no water
+ * depth → no tsunami), and a Launch issued before the 800 KB mosaic
+ * arrived drew the tsunami on a 150 km square only — the "impact
+ * gives tsunami numbers but no tsunami on the map" report. Waiting
+ * for the rasters costs at most a couple of seconds on first load and
+ * nothing afterwards (both are cached for the session).
+ */
+export interface TerrainLoaders {
+  local: (latitude: number, longitude: number) => Promise<ElevationGrid>;
+  global: () => Promise<ElevationGrid>;
+}
+
+let terrainLoaders: TerrainLoaders | null = null;
+
+export function configureTerrainLoaders(loaders: TerrainLoaders | null): void {
+  terrainLoaders = loaders;
+}
+
+/** How long a Launch waits for the planetary mosaic before going
+ *  ahead with the local tile only. Generous for a slow connection,
+ *  short enough that a stalled fetch never holds the button hostage;
+ *  if the mosaic lands later, {@link AppStore.setGlobalBathymetricGrid}
+ *  completes the tsunami layer of the result already on screen. */
+const GLOBAL_MOSAIC_WAIT_MS = 8_000;
+
+function settleWithin<T>(promise: Promise<T>, ms: number): Promise<T | null> {
+  return new Promise<T | null>((resolve) => {
+    const timer = setTimeout(() => {
+      resolve(null);
+    }, ms);
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      () => {
+        clearTimeout(timer);
+        resolve(null);
+      }
+    );
+  });
+}
+
+async function ensureTerrainForEvaluate(
+  get: () => AppStore,
+  set: (partial: Partial<AppStore>) => void
+): Promise<void> {
+  const loaders = terrainLoaders;
+  if (loaders === null) return;
+  const { location, elevationGrid, globalBathymetricGrid } = get();
+  const pending: Promise<void>[] = [];
+  if (
+    location !== null &&
+    (elevationGrid === null || !gridCoversLocation(elevationGrid, location))
+  ) {
+    pending.push(
+      settleWithin(
+        loaders.local(location.latitude, location.longitude),
+        GLOBAL_MOSAIC_WAIT_MS
+      ).then((grid) => {
+        if (grid === null) return;
+        const now = get();
+        // The user may have clicked elsewhere while the tile was in
+        // flight: only install it if it still serves the pick.
+        if (now.location !== null && gridCoversLocation(grid, now.location)) {
+          set({ elevationGrid: grid });
+        }
+      })
+    );
+  }
+  if (globalBathymetricGrid === null) {
+    pending.push(
+      settleWithin(loaders.global(), GLOBAL_MOSAIC_WAIT_MS).then((grid) => {
+        if (grid !== null && get().globalBathymetricGrid === null) {
+          set({ globalBathymetricGrid: grid });
+        }
+      })
+    );
+  }
+  await Promise.all(pending);
+}
+
+/** True when the result carries a tsunami source the bathymetric
+ *  pipeline can propagate. */
+function resultTriggersTsunami(result: ActiveResult): boolean {
+  return (
+    (result.type === 'impact' && result.data.tsunami !== undefined) ||
+    (result.type === 'earthquake' && result.data.tsunami !== undefined) ||
+    (result.type === 'explosion' && result.data.tsunami !== undefined) ||
+    (result.type === 'volcano' && result.data.tsunami !== undefined) ||
+    (result.type === 'landslide' && result.data.tsunami !== null)
+  );
+}
+
+interface BathymetricContext {
+  /** Where the simulation was run — the FMM source point. */
+  location: Coordinates;
+  /** Local high-res tile covering `location`. */
+  elevationGrid: ElevationGrid;
+  /** Planetary mosaic, when it has arrived. */
+  globalBathymetricGrid: ElevationGrid | null;
+}
+
+/**
+ * Bathymetric-tsunami layer (FMM arrival field, amplitude veil,
+ * run-up) for a result. Shared by `evaluate()` and by the late-mosaic
+ * completion in `setGlobalBathymetricGrid`, so both paths seed the
+ * propagation identically. Routed through the physics worker — on
+ * continental grids this is the slowest step in the pipeline
+ * (200 ms – 2 s) and keeping it on the main thread is what froze
+ * the UI before the worker existed. Returns null when the result has
+ * no tsunami source or the compute fails.
+ */
+async function computeBathymetricLayerForResult(
+  result: ActiveResult,
+  ctx: BathymetricContext,
+  sim: ReturnType<typeof getSimulationWorker>
+): Promise<BathymetricTsunamiResult | null> {
+  if (!resultTriggersTsunami(result)) return null;
+  const tsunamiStart = performance.now();
+  let bathymetricTsunami: BathymetricTsunamiResult | null = null;
+  try {
+    // Pull the source amplitude + cavity radius from whichever
+    // event-type tsunami block fired. The amplitude module
+    // gracefully no-ops when the metadata is missing, but
+    // forwarding it lets the Globe render the wave-height
+    // heatmap on top of the arrival contours.
+    const tsunamiMeta = extractTsunamiMeta(result);
+    // Dove nasce l'onda. Se il punto colpito è terraferma —
+    // un'esplosione o un impatto nell'entroterra che comunque
+    // solleva il mare vicino — la propagazione NON può partire da
+    // lì: il campo dei tempi d'arrivo è definito solo sull'acqua e
+    // uscirebbe vuoto, lasciando una mappa muta con la sola
+    // cavità disegnata. La sorgente si sposta quindi sul punto di
+    // mare più vicino, che è il luogo fisico in cui l'energia
+    // entra nell'oceano.
+    const sorgente = (() => {
+      const clic = { lat: ctx.location.latitude, lon: ctx.location.longitude };
+      const z = gridCoversLocation(ctx.elevationGrid, ctx.location)
+        ? sampleElevation(ctx.elevationGrid, clic.lat, clic.lon)
+        : undefined;
+      if (z === undefined || z < OCEAN_FLOOR_M) return clic;
+      const raggio = coastalSearchRadiusForYield(energiaEventoJoule(result));
+      const mare =
+        findNearestWaterPoint(ctx.elevationGrid, clic.lat, clic.lon, raggio) ??
+        (ctx.globalBathymetricGrid !== null
+          ? findNearestWaterPoint(ctx.globalBathymetricGrid, clic.lat, clic.lon, raggio)
+          : null);
+      return mare === null ? clic : { lat: mare.latitude, lon: mare.longitude };
+    })();
+    bathymetricTsunami = await sim.computeBathymetricTsunami({
+      grid: ctx.elevationGrid,
+      sourceLatitude: sorgente.lat,
+      sourceLongitude: sorgente.lon,
+      ...(tsunamiMeta !== null && {
+        sourceAmplitudeM: tsunamiMeta.sourceAmplitudeM,
+        sourceCavityRadiusM: tsunamiMeta.sourceCavityRadiusM,
+        sourceDepthM: tsunamiMeta.sourceDepthM,
+        ...(tsunamiMeta.spreadingExponent !== undefined && {
+          spreadingExponent: tsunamiMeta.spreadingExponent,
+        }),
+      }),
+      // Phase 11 — splice in the global low-res mosaic when
+      // available so the orchestrator emits trans-oceanic
+      // iso-contours alongside the local high-res ones.
+      ...(ctx.globalBathymetricGrid !== null && {
+        globalGrid: ctx.globalBathymetricGrid,
+      }),
+    });
+  } catch (err) {
+    // If the grid doesn't cover the source, FMM won't throw but
+    // isochrones may be empty — fall back to null silently.
+    // We still log the error in dev mode so a real bug doesn't
+    // hide behind the "expected silent fallback" semantics.
+    if (import.meta.env.DEV) {
+      console.warn('[store] bathymetric tsunami compute failed:', err);
+    }
+    bathymetricTsunami = null;
+  }
+  if (import.meta.env.DEV) {
+    const elapsed = performance.now() - tsunamiStart;
+    const hasGlobal = bathymetricTsunami?.global !== undefined;
+    console.info(
+      `[store] bathymetric tsunami: ${elapsed.toFixed(0)}ms ${hasGlobal ? '(local + global)' : '(local only)'}`
+    );
+  }
+  return bathymetricTsunami;
 }
 
 /** Pick the most representative damage radius for the population
@@ -983,6 +1245,27 @@ export const useAppStore = create<AppStore>((set, get) => ({
 
   showAllRings: () => {
     set({ hiddenRingKeys: new Set<string>() });
+  },
+
+  toggleCityLabels: () => {
+    const next = !get().showCityLabels;
+    writeCityLabelsPreference(next);
+    set({ showCityLabels: next });
+  },
+
+  requestCameraFlight: (target, rangeM) => {
+    if (!isValidCoordinates(target)) {
+      throw new Error(`Invalid camera target: ${JSON.stringify(target)}.`);
+    }
+    cameraRequestSeq += 1;
+    set({
+      cameraRequest: {
+        latitude: target.latitude,
+        longitude: target.longitude,
+        rangeM: Number.isFinite(rangeM) && rangeM > 0 ? rangeM : 100_000,
+        seq: cameraRequestSeq,
+      },
+    });
   },
 
   selectPreset: (id) => {
@@ -1326,16 +1609,45 @@ export const useAppStore = create<AppStore>((set, get) => ({
   },
 
   setGlobalBathymetricGrid: (grid) => {
-    // Identical contract to setElevationGrid: the next evaluate()
-    // picks up the new grid; we never auto-fire from inside the
-    // setter. The grid is loaded asynchronously at app startup; the
-    // first Launch before it arrives gets only the local high-res
-    // layer (Phase 7 behaviour); subsequent Launches get both.
     set({ globalBathymetricGrid: grid });
+    if (grid === null) return;
+    // A mosaic that lands AFTER a Launch completes the tsunami layer
+    // of the result already on screen. This is not a re-simulation —
+    // the physics result and every number in the panel stay exactly
+    // as they are; only the trans-oceanic propagation that was
+    // missing gets drawn. Guarded by the evaluation token so a Launch
+    // issued meanwhile always wins.
+    const state = get();
+    if (
+      state.status === 'running' ||
+      state.result === null ||
+      state.lastEvaluatedAtLocation === null ||
+      state.elevationGrid === null ||
+      !gridCoversLocation(state.elevationGrid, state.lastEvaluatedAtLocation) ||
+      !resultTriggersTsunami(state.result) ||
+      state.bathymetricTsunami?.global !== undefined
+    ) {
+      return;
+    }
+    const result = state.result;
+    const evaluationAtStart = currentEvaluationId;
+    void computeBathymetricLayerForResult(
+      result,
+      {
+        location: state.lastEvaluatedAtLocation,
+        elevationGrid: state.elevationGrid,
+        globalBathymetricGrid: grid,
+      },
+      getSimulationWorker()
+    ).then((layer) => {
+      if (layer === null) return;
+      if (evaluationAtStart !== currentEvaluationId) return;
+      if (get().result !== result) return;
+      set({ bathymetricTsunami: layer });
+    });
   },
 
   evaluate: async () => {
-    const state = get();
     // Phase 12a — cancellation token. Bumped every evaluate() so that
     // a previous in-flight run whose physics finishes AFTER a fresh
     // Launch is detected and its writes are dropped. Prevents the
@@ -1343,6 +1655,12 @@ export const useAppStore = create<AppStore>((set, get) => ({
     // an undefined .global field overwrites a fresh one.
     const evaluationId = (currentEvaluationId += 1);
     set({ status: 'running', error: null });
+    // Terrain before physics: the local tile under the pick and the
+    // planetary mosaic decide whether there is water to displace and
+    // how far the wave is drawn. See `ensureTerrainForEvaluate`.
+    await ensureTerrainForEvaluate(get, set);
+    if (evaluationId !== currentEvaluationId) return;
+    const state = get();
     const sim = getSimulationWorker();
     try {
       let result: ActiveResult;
@@ -1617,86 +1935,22 @@ export const useAppStore = create<AppStore>((set, get) => ({
         result = { type: 'landslide', data: await sim.simulateLandslide(state.landslide.input) };
       }
 
-      // Bathymetric-tsunami isochrones (FMM). Computed next to the
-      // event result whenever:
-      //   1. An ElevationGrid has been injected at app startup, and
-      //   2. The run actually produced a tsunami source, and
-      //   3. A location is known (the FMM source point).
-      // Routed through the same physics worker as the simulate*()
-      // calls — on continental grids this is the slowest step in
-      // the pipeline (200 ms – 2 s) and keeping it on the main
-      // thread is what froze the UI before this fix.
+      // Bathymetric-tsunami layer (FMM arrival field + amplitude veil
+      // + run-up) — see `computeBathymetricLayerForResult`. The grids
+      // are re-read here rather than taken from `state`: the terrain
+      // wait above may have installed them after `state` was captured.
       let bathymetricTsunami: BathymetricTsunamiResult | null = null;
-      const triggersTsunami =
-        (result.type === 'impact' && result.data.tsunami !== undefined) ||
-        (result.type === 'earthquake' && result.data.tsunami !== undefined) ||
-        (result.type === 'explosion' && result.data.tsunami !== undefined) ||
-        (result.type === 'volcano' && result.data.tsunami !== undefined) ||
-        (result.type === 'landslide' && result.data.tsunami !== null);
-      if (triggersTsunami && state.elevationGrid !== null && state.location !== null) {
-        const tsunamiStart = performance.now();
-        try {
-          // Pull the source amplitude + cavity radius from whichever
-          // event-type tsunami block fired. The amplitude module
-          // gracefully no-ops when the metadata is missing, but
-          // forwarding it lets the Globe render the wave-height
-          // heatmap on top of the arrival contours.
-          const tsunamiMeta = extractTsunamiMeta(result);
-          // Dove nasce l'onda. Se il punto colpito è terraferma —
-          // un'esplosione o un impatto nell'entroterra che comunque
-          // solleva il mare vicino — la propagazione NON può partire da
-          // lì: il campo dei tempi d'arrivo è definito solo sull'acqua e
-          // uscirebbe vuoto, lasciando una mappa muta con la sola
-          // cavità disegnata. La sorgente si sposta quindi sul punto di
-          // mare più vicino, che è il luogo fisico in cui l'energia
-          // entra nell'oceano.
-          const sorgente = (() => {
-            const clic = { lat: state.location.latitude, lon: state.location.longitude };
-            const z = gridCoversLocation(state.elevationGrid, state.location)
-              ? sampleElevation(state.elevationGrid, clic.lat, clic.lon)
-              : undefined;
-            if (z === undefined || z < OCEAN_FLOOR_M) return clic;
-            const raggio = coastalSearchRadiusForYield(energiaEventoJoule(result));
-            const mare =
-              findNearestWaterPoint(state.elevationGrid, clic.lat, clic.lon, raggio) ??
-              (state.globalBathymetricGrid !== null
-                ? findNearestWaterPoint(state.globalBathymetricGrid, clic.lat, clic.lon, raggio)
-                : null);
-            return mare === null ? clic : { lat: mare.latitude, lon: mare.longitude };
-          })();
-          bathymetricTsunami = await sim.computeBathymetricTsunami({
-            grid: state.elevationGrid,
-            sourceLatitude: sorgente.lat,
-            sourceLongitude: sorgente.lon,
-            ...(tsunamiMeta !== null && {
-              sourceAmplitudeM: tsunamiMeta.sourceAmplitudeM,
-              sourceCavityRadiusM: tsunamiMeta.sourceCavityRadiusM,
-              sourceDepthM: tsunamiMeta.sourceDepthM,
-            }),
-            // Phase 11 — splice in the global low-res mosaic when
-            // available so the orchestrator emits trans-oceanic
-            // iso-contours alongside the local high-res ones.
-            ...(state.globalBathymetricGrid !== null && {
-              globalGrid: state.globalBathymetricGrid,
-            }),
-          });
-        } catch (err) {
-          // If the grid doesn't cover the source, FMM won't throw but
-          // isochrones may be empty — fall back to null silently.
-          // We still log the error in dev mode so a real bug doesn't
-          // hide behind the "expected silent fallback" semantics.
-          if (import.meta.env.DEV) {
-            console.warn('[store] bathymetric tsunami compute failed:', err);
-          }
-          bathymetricTsunami = null;
-        }
-        if (import.meta.env.DEV) {
-          const elapsed = performance.now() - tsunamiStart;
-          const hasGlobal = bathymetricTsunami?.global !== undefined;
-          console.info(
-            `[store] bathymetric tsunami: ${elapsed.toFixed(0)}ms ${hasGlobal ? '(local + global)' : '(local only)'}`
-          );
-        }
+      const terrainNow = get();
+      if (state.location !== null && terrainNow.elevationGrid !== null) {
+        bathymetricTsunami = await computeBathymetricLayerForResult(
+          result,
+          {
+            location: state.location,
+            elevationGrid: terrainNow.elevationGrid,
+            globalBathymetricGrid: terrainNow.globalBathymetricGrid,
+          },
+          sim
+        );
       }
 
       // Cancellation guard — drop the write if a newer evaluate()

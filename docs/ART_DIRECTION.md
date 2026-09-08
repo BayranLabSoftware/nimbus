@@ -104,14 +104,39 @@ daylight.
 
 ## Ring rendering
 
-Damage rings are 2D ground primitives, not extruded volumes — their
-geographic radius reads literally on the imagery. The fill is a
-registered Cesium Fabric type, `RadialDamageRing`
-(`src/scene/globe/radialDamageMaterial.ts`): alpha ramps from 0 at
-the centre to a marked rim near the boundary, giving each ring the
-perceptual cue of a translucent dome without faking volumetric
-geometry. Outline strokes are a thin solid edge so the ring's exact
-radius is unambiguous.
+A damage threshold is a contour; the area between two contours is a
+zone. The globe draws both, and nothing else:
+
+- **Zones**, not stacked discs. Each contour paints only the annulus
+  between the previous threshold and itself (`RadialDamageRing`
+  Fabric in `src/scene/globe/radialDamageMaterial.ts`, uniform
+  `innerFraction`), so a six-ring blast reads as six flat tints that
+  tile the ground — the way a published hazard map does — instead of
+  six translucent discs summing into a mush at the centre. During the
+  cascade the inner edge tracks the ring's current radius, so the
+  band being painted is exactly "previous threshold → front".
+- **Contours** are clamped ground polylines (2.2 px core in the ring
+  colour over a 4.6 px dark under-line), stamped the instant the
+  cascade lands each ring. A 1 px hairline is not a contour; a bloomed
+  rim is not a contour either — the rim glow of earlier revisions is
+  gone, bloom stays for the crest, the marker and the fault trace.
+- **Captions at the rim.** Every contour names its threshold and
+  radius on the map — `5 psi · 1,7 km`, `MMI VIII · 34,9 km` — in
+  JetBrains Mono on a dark callout pill, spread around the family
+  like pinwheel spokes so close radii never overprint, and dropped
+  when the ring is under ≈ 60 px on screen. The legend stays as the
+  full explanation; the caption is what you read while looking at
+  the planet.
+- **Uncertainty** is a dashed line at R(1+σ), not a second filled
+  halo (`src/scene/globe/ringPresentation.ts`).
+- **Cities** (`src/scene/globe/cityLabels.ts`) are the one neutral
+  layer allowed on the photograph: off-white dot + name from the
+  Natural Earth index, density governed by Natural Earth's own label
+  zoom tiers, clickable as an epicentre. Colour is earned — cities
+  never take one.
+
+Rings still occupy their true geographic radius; the presentation
+never exaggerates a metre.
 
 ## Asset strategy
 

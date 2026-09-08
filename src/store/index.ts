@@ -1,5 +1,6 @@
 export {
   TRANSITION_HALF_MS,
+  configureTerrainLoaders,
   resetAppStore,
   useAppStore,
   type ActiveEarthquakePreset,
@@ -11,6 +12,7 @@ export {
   type DeepDiveResult,
   type AnyPresetId,
   type AppStore,
+  type CameraRequest,
   type Coordinates,
   type EventType,
   type MonteCarloStatus,
@@ -19,6 +21,7 @@ export {
   type ImpactInputOverrides,
   type VolcanoInputOverrides,
   type SimulationStatus,
+  type TerrainLoaders,
   type TransitionPhase,
   type ViewMode,
 } from './useAppStore.js';

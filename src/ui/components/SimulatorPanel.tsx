@@ -37,6 +37,7 @@ import {
 } from '../utils/numberFormat.js';
 import { CascadeTimeline } from './CascadeTimeline.js';
 import { CitationTooltip } from './CitationTooltip.js';
+import { CitySearch } from './CitySearch.js';
 import { EarthquakeCustomInputs } from './EarthquakeCustomInputs.js';
 import { ExplosionCustomInputs } from './ExplosionCustomInputs.js';
 import { ImpactCustomInputs } from './ImpactCustomInputs.js';
@@ -287,6 +288,47 @@ function coastalDamageTierKey(runupM: number): string {
   if (runupM <= 6) return 'simulator.tsunamiDamage.tier3';
   if (runupM <= 10) return 'simulator.tsunamiDamage.tier4';
   return 'simulator.tsunamiDamage.tier5';
+}
+
+/**
+ * Wave height with the unit that reads naturally at its size: metres
+ * with a decimal below 10 m, centimetres below a metre. Used for the
+ * Wünnemann 2010 envelope, whose lower bound for a deep-ocean impact
+ * can be a decimetre while the upper bound is tens of metres.
+ */
+function formatWaveHeight(metres: number): string {
+  if (!Number.isFinite(metres) || metres <= 0) return '—';
+  if (metres < 1) return `${(metres * 100).toFixed(0)} cm`;
+  return metres < 10 ? `${metres.toFixed(1)} m` : `${metres.toFixed(0)} m`;
+}
+
+/** "lower – upper" for the published far-field envelope. */
+function formatWaveEnvelope(lower: number, upper: number): string {
+  return `${formatWaveHeight(lower)} – ${formatWaveHeight(upper)}`;
+}
+
+/**
+ * Wünnemann 2010 regime line: the depth-to-impactor ratio h/L and the
+ * attenuation exponents it selects (eqs. 10a / 10b).
+ */
+function formatTsunamiRegime(
+  tsunami: {
+    depthToImpactorRatio: number;
+    rimWaveExponent: number;
+    collapseWaveExponent: number;
+    collapseWaveForms: boolean;
+  },
+  t: (key: string, opts: Record<string, string>) => string
+): string {
+  const ratio =
+    tsunami.depthToImpactorRatio >= 10
+      ? tsunami.depthToImpactorRatio.toFixed(0)
+      : tsunami.depthToImpactorRatio.toFixed(2);
+  const q = tsunami.rimWaveExponent.toFixed(2);
+  const regime = tsunami.collapseWaveForms
+    ? t('simulator.tsunamiRegimeDeep', { q, qc: tsunami.collapseWaveExponent.toFixed(2) })
+    : t('simulator.tsunamiRegimeShallow', { q, qc: '' });
+  return `h/L = ${ratio} · ${regime}`;
 }
 
 // `formatScientific` lives in `../utils/numberFormat.ts` (locale-aware
@@ -590,6 +632,8 @@ export function SimulatorPanel(): JSX.Element {
         {eventType === 'explosion' && <ExplosionCustomInputs />}
         {eventType === 'earthquake' && <EarthquakeCustomInputs />}
         {eventType === 'volcano' && <VolcanoCustomInputs />}
+
+        <CitySearch />
 
         <div className={styles.status} data-state={statusKey} role="status" aria-live="polite">
           {isRunning
@@ -953,6 +997,36 @@ export function SimulatorPanel(): JSX.Element {
                         meters={result.data.tsunami.amplitudeAt5000kmWunnemann}
                         field="tsunamiWunnemannFarField"
                       />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.tsunamiRimWaveSource')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
+                      {formatKilometres(result.data.tsunami.rimWaveSourceAmplitude)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.tsunamiRegime')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
+                      {formatTsunamiRegime(result.data.tsunami, t)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.tsunamiAt1000kmRange')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.tsunamiWunnemannBounds')}>
+                      {formatWaveEnvelope(
+                        result.data.tsunami.amplitudeAt1000kmLower,
+                        result.data.tsunami.amplitudeAt1000kmUpper
+                      )}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.tsunamiAt5000kmRange')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.tsunamiWunnemannBounds')}>
+                      {formatWaveEnvelope(
+                        result.data.tsunami.amplitudeAt5000kmLower,
+                        result.data.tsunami.amplitudeAt5000kmUpper
+                      )}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.runupAt1000km')}</dt>

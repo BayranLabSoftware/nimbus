@@ -26,11 +26,14 @@ Mw 9, between an inland impact and one in the open ocean.
   Krakatau 1883, Anak Krakatau 2018, Mount St Helens, Tambora,
   Pinatubo, Storegga, Lituya Bay, and more.
 - Bathymetric tsunami propagation with Fast-Marching arrival isochrones
-  and a Green's-law amplitude heatmap on the same grid.
+  and a Green's-law amplitude heatmap on the same grid; impact sources
+  follow the Wünnemann, Collins & Weiss (2010) rim-wave far field.
 - Population-exposure overlay (WorldPop COG via geotiff.js, range
   requests, no backend).
 - Monte-Carlo P10/P90 confidence rings around the nominal damage circles.
-- Cesium globe with damage rings drawn at true geographic scale.
+- Cesium globe with damage zones drawn at true geographic scale, each
+  contour captioned on the map, and ≈ 4 000 Natural Earth cities to
+  pick an epicentre from (click a name, or search it).
 - WCAG 2.1 AA, full keyboard navigation, English + Italian.
 - Every scenario state is in the URL — share a link, get the same sim.
 

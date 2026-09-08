@@ -7,6 +7,33 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Cities on the globe.** Natural Earth 1:10m populated places
+  (public domain, ≈ 4 000 places) drawn as terrain-clamped dots and
+  names, densified by Natural Earth's own label zoom tiers, in the UI
+  language (Roma / Rome). Click a name to make it the epicentre; a
+  "Go to a city" search in the simulator panel flies the camera
+  there. Toggle in the app bar, remembered per browser.
+- **Wünnemann, Collins & Weiss (2010) impact-tsunami far field.** The
+  rim wave (eq. 9a/10a) replaces the earlier ad-hoc damping fit as
+  the best estimate — `r^−0.5` on a shallow shelf, `r^−1.2` in the
+  deep ocean — and drives the run-up chain, the legend and the
+  bathymetric propagation on the globe. The published upper/lower
+  envelope (eqs. 7–8, 9b/10b, the same range the Earth Impact
+  Effects Program prints) is reported alongside, with the h/L regime.
+- **Damage contours drawn as zones with captions.** Each threshold
+  paints only its annulus, gets a crisp clamped contour with a dark
+  under-line, a rim caption (`5 psi · 1,7 km`) and a dashed 1σ line;
+  the first camera framing now includes the outermost contour.
+
+### Fixed
+
+- **Ocean impacts showed tsunami numbers but no tsunami on the map.**
+  `evaluate()` now waits for the terrain tile under the pick and for
+  the planetary bathymetric mosaic (bounded at 8 s) before
+  simulating, and a mosaic that lands after Launch completes the
+  tsunami layer of the result already on screen instead of waiting
+  for the next Launch.
+
 - **Submarine landslide event type.** Watts (2000) flank-collapse and
   submarine-landslide tsunamigenesis with archetype scenarios for
   Storegga (~8200 BP), Anak Krakatau 2018, Lituya Bay 1958. Wired

@@ -20,6 +20,8 @@ import styles from './AppBar.module.css';
 export function AppBar(): JSX.Element {
   const { t } = useTranslation();
   const eventType = useAppStore((s) => s.eventType);
+  const showCityLabels = useAppStore((s) => s.showCityLabels);
+  const toggleCityLabels = useAppStore((s) => s.toggleCityLabels);
 
   return (
     <header className={styles.bar} aria-label={t('appBar.label')}>
@@ -31,6 +33,16 @@ export function AppBar(): JSX.Element {
       <span className={styles.spacer} />
       <ViewSwitch />
       <div className={styles.utilities}>
+        <button
+          type="button"
+          className={styles.cityToggle}
+          aria-pressed={showCityLabels}
+          aria-label={showCityLabels ? t('appBar.citiesHide') : t('appBar.citiesShow')}
+          title={showCityLabels ? t('appBar.citiesHide') : t('appBar.citiesShow')}
+          onClick={toggleCityLabels}
+        >
+          {t('appBar.cities')}
+        </button>
         <AboutDialog />
         <GlossaryDialog />
         <LanguageSwitch />

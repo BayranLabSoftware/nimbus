@@ -213,6 +213,11 @@ export interface RingAnimationSpec {
    *  over-estimate for an elongated ring (the front DOES reach the
    *  longer axis last in the cinematic compression we use). */
   kind: RingKind;
+  /** Invoked exactly once when the ring reaches its final radius —
+   *  the moment the renderer stamps the crisp contour and the label
+   *  on it. Also fired on the snap-to-final paths (no rAF, degenerate
+   *  radii) so callers can rely on it. */
+  onComplete?: () => void;
 }
 
 /**
@@ -393,6 +398,7 @@ export function animateRingsImperatively(specs: RingAnimationSpec[]): () => void
       const major = clampToGreatCircle(spec.finalSemiMajor) as number;
       const minor = clampToGreatCircle(spec.finalSemiMinor ?? spec.finalSemiMajor) as number;
       writeEllipseAxes(spec.entity, major, minor);
+      spec.onComplete?.();
     }
     return (): void => {
       /* no-op */
@@ -406,13 +412,17 @@ export function animateRingsImperatively(specs: RingAnimationSpec[]): () => void
       entity: spec.entity,
       finalMajor: clampToGreatCircle(spec.finalSemiMajor),
       finalMinor: clampToGreatCircle(spec.finalSemiMinor ?? spec.finalSemiMajor),
+      onComplete: spec.onComplete,
     }))
     .sort((a, b) => a.finalMajor - b.finalMajor);
 
   const maxNominalRadius = resolved.reduce((m, r) => Math.max(m, r.finalMajor), 0);
   if (maxNominalRadius <= 0) {
     // Degenerate: every ring is zero. Snap and exit.
-    for (const r of resolved) writeEllipseAxes(r.entity, 0, 0);
+    for (const r of resolved) {
+      writeEllipseAxes(r.entity, 0, 0);
+      r.onComplete?.();
+    }
     return (): void => {
       /* no-op */
     };
@@ -428,7 +438,12 @@ export function animateRingsImperatively(specs: RingAnimationSpec[]): () => void
   // Zip the pure-data schedule back together with each ring's Cesium
   // entity. `computeCascadeSchedule` is intentionally Cesium-free so
   // it can be unit-tested in Node; the entity binding lives here.
-  const schedule = baseSchedule.map((entry, i) => ({ ...entry, entity: resolved[i]?.entity }));
+  const schedule = baseSchedule.map((entry, i) => ({
+    ...entry,
+    entity: resolved[i]?.entity,
+    onComplete: resolved[i]?.onComplete,
+    completed: false,
+  }));
 
   const t0 = performance.now();
   let cancelled = false;
@@ -451,6 +466,12 @@ export function animateRingsImperatively(specs: RingAnimationSpec[]): () => void
       if (elapsed >= s.delayMs + s.growthMs) {
         // Window fully elapsed — ring locked at its final radius.
         currentMajor = s.finalMajor;
+        if (!s.completed) {
+          s.completed = true;
+          writeEllipseAxes(s.entity, s.finalMajor, s.finalMinor);
+          s.onComplete?.();
+          continue;
+        }
       } else if (elapsed <= s.delayMs) {
         // Wavefront has not reached this ring yet — invisible.
         currentMajor = 0;

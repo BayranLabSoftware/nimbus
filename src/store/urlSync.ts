@@ -6,8 +6,11 @@ import {
   projectSyncableState,
 } from './urlState.js';
 import { URL_KEYS } from './urlState.js';
-import { fetchTerrainGridForLocation } from '../scene/terrainSampling.js';
-import { useAppStore, type AppStore } from './useAppStore.js';
+import {
+  fetchGlobalBathymetricMosaic,
+  fetchTerrainGridForLocation,
+} from '../scene/terrainSampling.js';
+import { configureTerrainLoaders, useAppStore, type AppStore } from './useAppStore.js';
 
 /**
  * Hydrate the app store from a URL (full or search-fragment) by
@@ -91,6 +94,16 @@ export function writeStoreToHistory(store: AppStore, win: Window = window): void
 export function useUrlStateSync(): void {
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    // Every Launch from now on waits for the terrain under the pick
+    // and for the planetary bathymetry before simulating (see
+    // `ensureTerrainForEvaluate` in the store). Registered here, in
+    // the one hook the app shell always mounts, so unit tests that
+    // drive the store directly never reach the network.
+    configureTerrainLoaders({
+      local: fetchTerrainGridForLocation,
+      global: fetchGlobalBathymetricMosaic,
+    });
 
     // Hydrate synchronously BEFORE subscribing, so the subscribe
     // callback never sees a partially-applied intermediate state and

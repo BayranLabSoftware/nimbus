@@ -206,8 +206,14 @@
     "tsunamiCavity": "Water-cavity radius",
     "tsunamiAt1000km": "Wave at 1 000 km (Ward)",
     "tsunamiAt5000km": "Wave at 5 000 km (Ward)",
-    "tsunamiAt1000kmWunnemann": "Wave at 1 000 km (Wünnemann)",
-    "tsunamiAt5000kmWunnemann": "Wave at 5 000 km (Wünnemann)",
+    "tsunamiAt1000kmWunnemann": "Wave at 1 000 km (Wünnemann 2010 rim wave)",
+    "tsunamiAt1000kmRange": "Wave at 1 000 km — published envelope",
+    "tsunamiAt5000kmRange": "Wave at 5 000 km — published envelope",
+    "tsunamiRimWaveSource": "Wave height at the cavity rim",
+    "tsunamiRegime": "Wave regime (h/L)",
+    "tsunamiRegimeShallow": "shallow water — rim wave only, decays as r^−{{q}}",
+    "tsunamiRegimeDeep": "deep water — rim wave r^−{{q}} + collapse wave r^−{{qc}}",
+    "tsunamiAt5000kmWunnemann": "Wave at 5 000 km (Wünnemann 2010 rim wave)",
     "runupAt1000km": "Coastal run-up @ 1 000 km (Synolakis)",
     "tsunamiAt5000kmDispersed": "Wave at 5 000 km (dispersed)",
     "tsunamiArrival": "Arrival at 1 000 km",
@@ -353,6 +359,12 @@
       "charLength": "Characteristic length (V^⅓)",
       "tsunamiAmp": "Tsunami source amplitude",
       "tsunamiTravel": "Tsunami travel to 100 km"
+    },
+    "citySearch": {
+      "label": "Go to a city",
+      "placeholder": "Search a city… (e.g. Naples)",
+      "empty": "No city found",
+      "go": "Go"
     }
   },
   "cascade": {
@@ -657,7 +669,7 @@
       "uncertaintyNote": "Each radius is a sharp line on the map but a band in reality: published 1σ scatter is ±15–30 % for blast and seismic rings, factor-2 for plumes and far-field tsunami. See the methodology page for the per-quantity envelope.",
       "tsunamiStatus": {
         "globalActive": "Tsunami map: global + local layer active — trans-oceanic propagation rendered.",
-        "localOnly": "Tsunami map: local layer only (~150 km) — global mosaic computation failed; check console.",
+        "localOnly": "Tsunami map: local layer only (~150 km) — the planetary mosaic was not ready for this run; it completes as soon as it lands, otherwise press Launch simulation again.",
         "globalLoading": "Tsunami map: local layer only — global mosaic still loading; press Launch again in a moment."
       }
     },
@@ -791,7 +803,30 @@
         "minutes": "{{value}} min",
         "hours": "{{value}} h",
         "days": "{{value}} d"
+      },
+      "city": {
+        "populationLine": "{{value}} people (metro area)",
+        "capital": "Capital city",
+        "hint": "Click to use this city as the epicentre."
       }
+    },
+    "ringShort": {
+      "craterRim": "Crater",
+      "thirdDegreeBurn": "3rd-degree burns",
+      "secondDegreeBurn": "2nd-degree burns",
+      "overpressure5psi": "5 psi",
+      "overpressure1psi": "1 psi",
+      "lightDamage": "0.5 psi",
+      "radiationLD50": "Radiation LD₅₀",
+      "empAffected": "EMP",
+      "mmi7": "MMI VII",
+      "mmi8": "MMI VIII",
+      "mmi9": "MMI IX",
+      "tsunamiCavity": "Cavity",
+      "pyroclasticRunout": "Pyroclastic flow",
+      "lateralBlast": "Lateral blast",
+      "ashfallPlume": "Ash 1 mm",
+      "ejectaBlanket": "Ejecta"
     }
   },
   "report": {
@@ -1047,7 +1082,8 @@
     "seismicMagnitudeTW": "Modern impact-seismicity estimator from Teanby & Wookey (2011) EPSL 303: M₀ = k·E with seismic efficiency k ≈ 10⁻⁴, then Mw via Hanks–Kanamori (1979). Runs 2–3 Mw units below Schultz-Gault — a more defensible upper bound.",
     "tsunamiCavity": "Water-column cavity radius R_C = (3·E / (2π·ρ_w·g))^(1/4) from the Ward & Asphaug (2000) energy-partitioning form.",
     "tsunamiFarField": "Far-field amplitude A(r) = A₀·R_C/r (Ward & Asphaug 2000) — 1/r geometric decay of a shallow-water gravity wave.",
-    "tsunamiWunnemann": "Hydrocode-corrected far field (Wünnemann, Weiss & Hofmann 2007, M&PS 42; Melosh 2003). Short-wavelength impact waves dissipate faster than classical tsunamis, lowering Ward–Asphaug amplitudes by 4–10× at continent-crossing range.",
+    "tsunamiWunnemann": "Rim wave of Wünnemann, Collins & Weiss 2010 (Rev. Geophys. 48, eq. 9a/10a): A(r) = min(0.14 R_w, h)·(R_w/r)^q_r with q_r = min(1.2, 0.5 + 2e^(−1.75 L/h)). A shallow-water impact decays as r^−0.5 (geometric spreading), a deep-ocean one as r^−1.2 — the best estimate the simulator uses for run-up and for the bathymetric propagation on the globe.",
+    "tsunamiWunnemannBounds": "Published envelope of Wünnemann, Collins & Weiss 2010 (eqs. 7–8): upper bound min(0.28 R_w, h)·R_w/r; lower bound the smaller of the rim wave and the collapse wave 0.06·min(R_w/3, h)·(5R_w/r)^q_c, the latter only for h/L ≥ 2. The same range the Earth Impact Effects Program reports.",
     "synolakisRunup": "Coastal run-up on a 1:100 plane beach with 10 m offshore depth (Synolakis 1987, JFM 185 523–545). R = 2.831·H·√(cot β)·(H/d)^(1/4). Illustrative inundation height — real coastal run-up depends on bathymetry, harbour geometry, and breaking regime.",
     "tsunamiDispersion": "Frequency-dependent dispersion correction to the far-field amplitude (Heidarzadeh & Satake 2015 GJI 202 / JGR Oceans 120). Exponential decay with ~2 500 km scale length beyond the Wünnemann/Ward 1/r envelope — matches DART-buoy records of Sumatra 2004 and Tōhoku 2011.",
     "seismicMoment": "Seismic moment M₀ = 10^(1.5·Mw + 9.1) N·m — Hanks & Kanamori (1979) SI form of the moment-magnitude scale.",
@@ -1079,7 +1115,10 @@
     "viewGlobe": "Globe",
     "viewImpact": "Close-up",
     "viewSwitchLabel": "Viewpoint",
-    "viewImpactUnavailable": "The close-up view is available for impacts and explosions"
+    "viewImpactUnavailable": "The close-up view is available for impacts and explosions",
+    "cities": "Cities",
+    "citiesShow": "Show city names on the globe",
+    "citiesHide": "Hide city names on the globe"
   },
   "impactView": {
     "title": "Close-up",

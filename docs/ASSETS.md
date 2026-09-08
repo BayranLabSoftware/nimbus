@@ -57,6 +57,21 @@ post-v1.0 work:
 | ------------ | ------- | ------ | ------- | ---------- | ----- |
 | _(none yet)_ |         |        |         |            |       |
 
+### Data
+
+| File                      | Purpose                                     | Author        | Licence       | Source URL                                                                                     | Added      |
+| ------------------------- | ------------------------------------------- | ------------- | ------------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `public/data/cities.json` | City dots + names on the globe, city search | Natural Earth | Public domain | https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-populated-places/ (v5.1.x) | 2026-09-08 |
+
+Derived from the Natural Earth 1:10m Populated Places shapefile by
+`scripts/build-cities.ts` (`pnpm cities:build`): every place above
+100 000 inhabitants, every national capital, and the regional
+reference points Natural Earth labels at zoom ≤ 6, with the English
+and Italian name columns, position, population and Natural Earth's own
+label zoom tier. Served as a static asset (≈ 175 KB, ≈ 60 KB gzipped),
+not bundled. Natural Earth requires no attribution; the credit here is
+a courtesy.
+
 ### Icons & SVGs
 
 | File                 | Purpose      | Author  | Licence | Source URL | Added      |
