@@ -27,7 +27,7 @@ export function AppBar(): JSX.Element {
     <header className={styles.bar} aria-label={t('appBar.label')}>
       <span className={styles.wordmark}>
         <i className={styles.dot} aria-hidden="true" />
-        Nimbus
+        Bayran Nimbus
       </span>
       <span className={styles.crumb}>{t(`simulator.eventTypes.${eventType}`)}</span>
       <span className={styles.spacer} />

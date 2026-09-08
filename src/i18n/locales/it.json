@@ -6,7 +6,7 @@
   },
   "landing": {
     "skipLink": "Vai al contenuto principale",
-    "projectName": "Nimbus",
+    "projectName": "Bayran Nimbus",
     "tagline": "Simula l'impatto di eventi catastrofici su un globo terrestre 3D interattivo.",
     "description": "Un simulatore scientifico open source di impatti di asteroidi, esplosioni, terremoti, eruzioni vulcaniche e tsunami — formule rigorose, scene comparative cinematografiche, pensato per i curiosi di scienza.",
     "comingSoon": "In arrivo",
@@ -839,7 +839,7 @@
     "equationsTitle": "Equazioni attivate da questa simulazione",
     "equationsBody": "L'elenco seguente è filtrato sulle formule effettivamente esercitate da questo scenario — un airburst cita Chyba & Popova, un megathrust cita Strasser e la catena tsunami, una detonazione di superficie cita Nordyke.",
     "bibliographyTitle": "Bibliografia",
-    "footer": "Generato da Nimbus — Nuclear & Impact Modeling & Blast Understanding System · Formule peer-reviewed · Open source con licenza Apache 2.0",
+    "footer": "Generato da Bayran Nimbus — Nuclear & Impact Modeling & Blast Understanding System · Formule peer-reviewed · Open source con licenza Apache 2.0",
     "meta": {
       "event": "Evento",
       "location": "Località",
@@ -848,7 +848,7 @@
   },
   "about": {
     "trigger": "Informazioni",
-    "title": "Nimbus — Nuclear & Impact Modeling & Blast Understanding System",
+    "title": "Bayran Nimbus — Nuclear & Impact Modeling & Blast Understanding System",
     "subtitle": "Open source · Formule peer-reviewed",
     "body": "Ogni numero a schermo viene da una formula pubblicata — niente enfasi simulata, niente arrotondamenti da spettacolo. Scegli un evento, un punto sul globo, e guarda cratere, onda d'urto, impronta termica, sisma e tsunami renderizzati alla scala geografica reale.",
     "sources": "Fonti scientifiche",
