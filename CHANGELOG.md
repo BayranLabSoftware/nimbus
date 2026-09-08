@@ -7,6 +7,14 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Population at 2.5′ with a land fraction.** Thirty 60° × 30° tiles
+  of the GHS-POP 2020 grid at 2.5′ (≈ 4.6 km, 5 MB in all, fetched on
+  demand) serve rings up to 1 500 km and the coast; the 0.125° planet
+  serves the rest. Every cell now carries its land fraction, so a
+  coastal cell's people are spread over its land, not over the sea it
+  also covers. The provisional figure the counter starts from comes
+  from the tiles, within a factor of two of WorldPop over Naples where
+  the planet raster was a factor of four.
 - **Burns, mass fire and later deaths.** The blast toll counts three
   more hazards, each acting in sequence on the people the earlier
   ones left alive: third-degree burns on the fraction in sight of the
@@ -69,10 +77,10 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   Natural Earth names are part of the map now, and the stale
   `nimbus.showCityLabels` preference is removed from the browser on
   start-up (the privacy notice lists one preference, the language).
-- **Small rings on the coarse raster.** A circle smaller than a 0.125°
-  cell is the cell density times the circle area, and edge cells
-  count by their sub-sampled share, instead of "no cell centre inside,
-  nobody".
+- **Small rings on the rasters.** A circle smaller than a cell is the
+  cell's land density times the circle area, and edge cells count by
+  their sub-sampled share — for polygons too — instead of "no cell
+  centre inside, nobody".
 
 ### Fixed
 

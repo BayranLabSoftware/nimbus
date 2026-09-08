@@ -1323,7 +1323,8 @@ function casualtyPlanForResult(result: ActiveResult, location: Coordinates): Cas
 const METHOD_RANK: Record<PopulationLookupMethod, number> = {
   cog: 0,
   'worldpop-api': 1,
-  'coarse-raster': 2,
+  'fine-raster': 2,
+  'coarse-raster': 3,
 };
 
 /** The estimate as a sweep: the arrival function of the hazard front

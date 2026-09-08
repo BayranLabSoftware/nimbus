@@ -59,17 +59,23 @@ post-v1.0 work:
 
 ### Data
 
-| File                                         | Purpose                                                           | Author                                     | Licence       | Source URL                                                                                     | Added      |
-| -------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------ | ------------- | ---------------------------------------------------------------------------------------------- | ---------- |
-| `public/data/cities.json`                    | City dots + names on the globe, city search                       | Natural Earth                              | Public domain | https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-populated-places/ (v5.1.x) | 2026-09-08 |
-| `public/data/population-0p125.png` + `.json` | Population under planetary-scale damage rings (casualty estimate) | JRC GHSL — GHS-POP R2023A (Schiavina 2023) | CC-BY 4.0     | https://human-settlement.emergency.copernicus.eu/download.php?ds=pop                           | 2026-09-08 |
+| File                                                                    | Purpose                                                               | Author                                     | Licence       | Source URL                                                                                     | Added      |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------ | ------------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `public/data/cities.json`                                               | City dots + names on the globe, city search                           | Natural Earth                              | Public domain | https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-populated-places/ (v5.1.x) | 2026-09-08 |
+| `public/data/population-0p125.png` + `population-2p5/*.png` (+ `.json`) | Population under damage rings and along the coast (casualty estimate) | JRC GHSL — GHS-POP R2023A (Schiavina 2023) | CC-BY 4.0     | https://human-settlement.emergency.copernicus.eu/download.php?ds=pop                           | 2026-09-08 |
 
-`population-0p125.png` is the JRC GHS-POP 2020 30 arc-second global
-grid (GHSL R2023A) summed into 0.125° (≈ 14 km) cells by
-`scripts/build-population.ts` (`pnpm population:build <tif> [label]
-[url]`; the WorldPop 2020 1 km mosaic is the alternative input),
-stored as an 8-bit log-scale greyscale PNG (≈ 6.8 % quantisation
-step, decoded through a 2D canvas). Attribution required (CC-BY 4.0):
+Both rasters are the JRC GHS-POP 2020 30 arc-second global grid
+(GHSL R2023A) summed by `scripts/build-population.ts`
+(`pnpm population:build <tif> [label] [url]`; the WorldPop 2020 1 km
+mosaic is the alternative input): `population-0p125.png` is the
+planet at 0.125° (≈ 14 km, 848 KB) for planetary rings, and
+`population-2p5/<col>_<row>.png` are thirty 60° × 30° tiles at 2.5′
+(≈ 4.6 km, 5.1 MB in all, fetched on demand, at most eight per query)
+for rings up to 1 500 km and for the coast; `index.json` lists the
+tiles that hold anyone. They are 8-bit RGB PNGs decoded through a 2D
+canvas: R the cell population on a log scale (≈ 6.8 % quantisation
+step), G the cell's land fraction, so coastal cells spread their
+people over land rather than sea. Attribution required (CC-BY 4.0):
 "Schiavina M., Freire S., MacManus K. (2023): GHS-POP R2023A, European
 Commission, Joint Research Centre (JRC)"; the casualty panel prints
 the source line of whichever backend answered. The WorldPop

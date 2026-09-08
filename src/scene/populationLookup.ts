@@ -80,7 +80,7 @@ const WORLDPOP_CONCURRENCY = 4;
 const COARSE_RASTER_META = 'data/population-0p125.json';
 const COARSE_RASTER_IMAGE = 'data/population-0p125.png';
 
-export type PopulationLookupMethod = 'cog' | 'worldpop-api' | 'coarse-raster';
+export type PopulationLookupMethod = 'cog' | 'worldpop-api' | 'fine-raster' | 'coarse-raster';
 
 /** A closed ring of (lat, lon) vertices — the rupture stadium of an
  *  extended earthquake source. When given, it replaces the circle. */
@@ -423,7 +423,7 @@ function populationFromApi(key: string, ring: [number, number][]): Promise<numbe
 // Backend 3 — coarse WorldPop raster shipped with the site
 // ---------------------------------------------------------------------
 
-interface CoarseRasterMeta {
+interface RasterMeta {
   cellDeg: number;
   nLon: number;
   nLat: number;
@@ -433,19 +433,103 @@ interface CoarseRasterMeta {
   maxLon: number;
   pMax: number;
   source: string;
+  /** Present from the second raster build: R is population, G land. */
+  channels?: { population: string; landFraction: string };
 }
 
 interface CoarseRaster {
-  meta: CoarseRasterMeta;
-  /** 8-bit log-scale values, row-major north to south. */
+  meta: RasterMeta;
+  /** 8-bit log-scale population, row-major north to south. */
   values: Uint8Array;
+  /** Land fraction of each cell, 0–255; absent for the first build,
+   *  whose cells are taken as all land. */
+  land?: Uint8Array;
+}
+
+/** The index of the 2.5′ tiles: `population-2p5/<col>_<row>.png`. */
+interface FineIndex {
+  source: string;
+  cellDeg: number;
+  tileWidthDeg: number;
+  tileHeightDeg: number;
+  tileCols: number;
+  tileRows: number;
+  tileWidthPx: number;
+  tileHeightPx: number;
+  pMax: number;
+  /** Names of the tiles that hold at least one person. */
+  tiles: string[];
+}
+
+interface FineTile {
+  values: Uint8Array;
+  land: Uint8Array;
+}
+
+/**
+ * What the summations read: a global grid of cells, each with a
+ * population (people) and a land fraction (0–1). The coarse raster
+ * and the fine tiles both present themselves this way, so one piece
+ * of geometry serves both.
+ */
+interface GridView {
+  cellDeg: number;
+  nLon: number;
+  nLat: number;
+  minLat: number;
+  maxLat: number;
+  minLon: number;
+  maxLon: number;
+  /** People and land fraction of the cell at (row, col); col already
+   *  wrapped to [0, nLon). */
+  cellAt(row: number, col: number): { people: number; landFraction: number };
 }
 
 let coarseRasterPromise: Promise<CoarseRaster | null> | null = null;
+let fineIndexPromise: Promise<FineIndex | null> | null = null;
+const fineTiles = new Map<string, Promise<FineTile | null>>();
+const FINE_TILE_DIR = 'data/population-2p5';
+/** Fine tiles serve rings up to this radius; beyond it the coarse
+ *  planet does, one file instead of a dozen. */
+const FINE_MAX_RADIUS_M = 1_500_000;
+/** … and polygons whose bounding box spans at most this many degrees. */
+const FINE_MAX_SPAN_DEG = 40;
+/** The most tiles one query may pull. */
+const FINE_MAX_TILES = 8;
 
 function assetUrl(path: string): string {
   const base = import.meta.env.BASE_URL;
   return `${base.endsWith('/') ? base : `${base}/`}${path}`;
+}
+
+/** Decode a data PNG through a 2D canvas into its R and G planes. */
+async function decodePngPlanes(
+  blob: Blob,
+  width: number,
+  height: number
+): Promise<{ red: Uint8Array; green: Uint8Array }> {
+  const bitmap = await createImageBitmap(blob);
+  try {
+    if (bitmap.width !== width || bitmap.height !== height) {
+      throw new Error(
+        `unexpected size ${bitmap.width.toString()}×${bitmap.height.toString()}, wanted ${width.toString()}×${height.toString()}`
+      );
+    }
+    const canvas = new OffscreenCanvas(width, height);
+    const ctx = canvas.getContext('2d');
+    if (ctx === null) throw new Error('2D context unavailable');
+    ctx.drawImage(bitmap, 0, 0);
+    const pixels = ctx.getImageData(0, 0, width, height).data;
+    const red = new Uint8Array(width * height);
+    const green = new Uint8Array(width * height);
+    for (let i = 0; i < red.length; i++) {
+      red[i] = pixels[i * 4] ?? 0;
+      green[i] = pixels[i * 4 + 1] ?? 0;
+    }
+    return { red, green };
+  } finally {
+    bitmap.close();
+  }
 }
 
 function loadCoarseRaster(): Promise<CoarseRaster | null> {
@@ -454,22 +538,17 @@ function loadCoarseRaster(): Promise<CoarseRaster | null> {
     try {
       const metaResponse = await fetch(assetUrl(COARSE_RASTER_META));
       if (!metaResponse.ok) throw new Error(`meta HTTP ${metaResponse.status.toString()}`);
-      const meta = (await metaResponse.json()) as CoarseRasterMeta;
+      const meta = (await metaResponse.json()) as RasterMeta;
       const imageResponse = await fetch(assetUrl(COARSE_RASTER_IMAGE));
       if (!imageResponse.ok) throw new Error(`image HTTP ${imageResponse.status.toString()}`);
-      const bitmap = await createImageBitmap(await imageResponse.blob());
-      try {
-        const canvas = new OffscreenCanvas(meta.nLon, meta.nLat);
-        const ctx = canvas.getContext('2d');
-        if (ctx === null) throw new Error('2D context unavailable');
-        ctx.drawImage(bitmap, 0, 0);
-        const pixels = ctx.getImageData(0, 0, meta.nLon, meta.nLat).data;
-        const values = new Uint8Array(meta.nLon * meta.nLat);
-        for (let i = 0; i < values.length; i++) values[i] = pixels[i * 4] ?? 0;
-        return { meta, values };
-      } finally {
-        bitmap.close();
-      }
+      const { red, green } = await decodePngPlanes(
+        await imageResponse.blob(),
+        meta.nLon,
+        meta.nLat
+      );
+      return meta.channels === undefined
+        ? { meta, values: red }
+        : { meta, values: red, land: green };
     } catch (err) {
       console.warn('[populationLookup] coarse raster unavailable:', err);
       coarseRasterPromise = null;
@@ -479,64 +558,171 @@ function loadCoarseRaster(): Promise<CoarseRaster | null> {
   return coarseRasterPromise;
 }
 
+function loadFineIndex(): Promise<FineIndex | null> {
+  if (fineIndexPromise !== null) return fineIndexPromise;
+  fineIndexPromise = (async (): Promise<FineIndex | null> => {
+    try {
+      const response = await fetch(assetUrl(`${FINE_TILE_DIR}/index.json`));
+      if (!response.ok) throw new Error(`index HTTP ${response.status.toString()}`);
+      return (await response.json()) as FineIndex;
+    } catch (err) {
+      console.warn('[populationLookup] fine tiles unavailable:', err);
+      fineIndexPromise = null;
+      return null;
+    }
+  })();
+  return fineIndexPromise;
+}
+
+function loadFineTile(index: FineIndex, name: string): Promise<FineTile | null> {
+  const cached = fineTiles.get(name);
+  if (cached !== undefined) return cached;
+  const promise = (async (): Promise<FineTile | null> => {
+    try {
+      const response = await fetch(assetUrl(`${FINE_TILE_DIR}/${name}.png`));
+      if (!response.ok) throw new Error(`tile ${name} HTTP ${response.status.toString()}`);
+      const { red, green } = await decodePngPlanes(
+        await response.blob(),
+        index.tileWidthPx,
+        index.tileHeightPx
+      );
+      return { values: red, land: green };
+    } catch (err) {
+      console.warn('[populationLookup] fine tile failed:', err);
+      fineTiles.delete(name);
+      return null;
+    }
+  })();
+  fineTiles.set(name, promise);
+  return promise;
+}
+
+/** Decode an 8-bit log-scale cell value back to people. */
 function decodeCell(v: number, pMax: number): number {
   if (v <= 0) return 0;
   return Math.exp((v * Math.log(1 + pMax)) / 255) - 1;
+}
+
+function coarseView(raster: CoarseRaster): GridView {
+  const { meta, values, land } = raster;
+  return {
+    cellDeg: meta.cellDeg,
+    nLon: meta.nLon,
+    nLat: meta.nLat,
+    minLat: meta.minLat,
+    maxLat: meta.maxLat,
+    minLon: meta.minLon,
+    maxLon: meta.maxLon,
+    cellAt(row, col) {
+      const i = row * meta.nLon + col;
+      return {
+        people: decodeCell(values[i] ?? 0, meta.pMax),
+        landFraction: land === undefined ? 1 : (land[i] ?? 0) / 255,
+      };
+    },
+  };
+}
+
+/** Names of the tiles a bounding box touches, wrapping across the
+ *  antimeridian; only those the index lists (the others hold nobody). */
+function tilesForBbox(
+  index: FineIndex,
+  bbox: { minLat: number; maxLat: number; minLon: number; maxLon: number }
+): string[] {
+  const present = new Set(index.tiles);
+  const row0 = Math.max(0, Math.floor((90 - bbox.maxLat) / index.tileHeightDeg));
+  const row1 = Math.min(index.tileRows - 1, Math.floor((90 - bbox.minLat) / index.tileHeightDeg));
+  const col0 = Math.floor((bbox.minLon + 180) / index.tileWidthDeg);
+  const col1 = Math.floor((bbox.maxLon + 180) / index.tileWidthDeg);
+  const names: string[] = [];
+  for (let r = row0; r <= row1; r++) {
+    for (let c = col0; c <= Math.min(col1, col0 + index.tileCols - 1); c++) {
+      const wrapped = ((c % index.tileCols) + index.tileCols) % index.tileCols;
+      const name = `${wrapped.toString()}_${r.toString()}`;
+      if (present.has(name) && !names.includes(name)) names.push(name);
+    }
+  }
+  return names;
+}
+
+function fineView(index: FineIndex, tiles: ReadonlyMap<string, FineTile>): GridView {
+  const nLon = Math.round(360 / index.cellDeg);
+  const nLat = Math.round(180 / index.cellDeg);
+  return {
+    cellDeg: index.cellDeg,
+    nLon,
+    nLat,
+    minLat: -90,
+    maxLat: 90,
+    minLon: -180,
+    maxLon: 180,
+    cellAt(row, col) {
+      const tile = tiles.get(
+        `${Math.floor(col / index.tileWidthPx).toString()}_${Math.floor(row / index.tileHeightPx).toString()}`
+      );
+      if (tile === undefined) return { people: 0, landFraction: 1 };
+      const i = (row % index.tileHeightPx) * index.tileWidthPx + (col % index.tileWidthPx);
+      return {
+        people: decodeCell(tile.values[i] ?? 0, index.pMax),
+        landFraction: (tile.land[i] ?? 0) / 255,
+      };
+    },
+  };
 }
 
 /** Sub-samples per axis for a cell the circle's edge crosses. */
 const EDGE_SUBSAMPLES = 4;
 
 /**
- * People inside a circle on the coarse grid. A cell wholly inside
- * counts in full, one wholly outside not at all, and a cell the edge
- * crosses by the fraction of a 4 × 4 sub-grid that falls inside — the
- * people of a 0.125° cell are assumed spread evenly across it. A
- * circle smaller than a cell (a city-scale ring, ≈ 14 km at the
- * equator) is the containing cell's density times the circle's area,
- * so the provisional figure is an honest fraction rather than zero or
- * a whole cell.
+ * People inside a circle on a grid. A cell wholly inside counts in
+ * full, one wholly outside not at all, and a cell the edge crosses by
+ * the fraction of a 4 × 4 sub-grid that falls inside — the people of
+ * a cell are assumed spread evenly across its land. A circle smaller
+ * than a cell is the containing cell's land density times the
+ * circle's area: a coastal cell's people live on its land, not on
+ * the sea it also covers, so the share is capped at the whole cell.
  */
-function sumCoarseRaster(raster: CoarseRaster, lat: number, lon: number, radiusM: number): number {
-  const { meta, values } = raster;
-  const cellLatM = (meta.cellDeg * Math.PI * EARTH_RADIUS_M) / 180;
+function sumGridCircle(view: GridView, lat: number, lon: number, radiusM: number): number {
+  const cellLatM = (view.cellDeg * Math.PI * EARTH_RADIUS_M) / 180;
   const cellLonM = cellLatM * Math.max(Math.cos((lat * Math.PI) / 180), 1e-6);
-  const cellAt = (r: number, c: number): number =>
-    decodeCell(values[r * meta.nLon + (((c % meta.nLon) + meta.nLon) % meta.nLon)] ?? 0, meta.pMax);
+  const wrap = (c: number): number => ((c % view.nLon) + view.nLon) % view.nLon;
   if (2 * radiusM < Math.min(cellLatM, cellLonM)) {
     const row = Math.min(
-      meta.nLat - 1,
-      Math.max(0, Math.floor((meta.maxLat - lat) / meta.cellDeg))
+      view.nLat - 1,
+      Math.max(0, Math.floor((view.maxLat - lat) / view.cellDeg))
     );
-    const col = Math.floor((lon - meta.minLon) / meta.cellDeg);
-    const share = Math.min(1, (Math.PI * radiusM * radiusM) / (cellLatM * cellLonM));
-    return cellAt(row, col) * share;
+    const col = wrap(Math.floor((lon - view.minLon) / view.cellDeg));
+    const cell = view.cellAt(row, col);
+    const landArea = cellLatM * cellLonM * Math.max(cell.landFraction, 1 / 255);
+    return cell.people * Math.min(1, (Math.PI * radiusM * radiusM) / landArea);
   }
   if (radiusM >= HALF_CIRCUMFERENCE_M) {
     // The whole planet: every cell, no geometry.
     let everyone = 0;
-    for (const v of values) everyone += decodeCell(v, meta.pMax);
+    for (let r = 0; r < view.nLat; r++) {
+      for (let c = 0; c < view.nLon; c++) everyone += view.cellAt(r, c).people;
+    }
     return everyone;
   }
   const bbox = circleBoundingBox(lat, lon, radiusM);
-  const row0 = Math.max(0, Math.floor((meta.maxLat - bbox.maxLat) / meta.cellDeg));
-  const row1 = Math.min(meta.nLat - 1, Math.ceil((meta.maxLat - bbox.minLat) / meta.cellDeg));
+  const row0 = Math.max(0, Math.floor((view.maxLat - bbox.maxLat) / view.cellDeg));
+  const row1 = Math.min(view.nLat - 1, Math.ceil((view.maxLat - bbox.minLat) / view.cellDeg));
   const colSpan = Math.min(
-    meta.nLon - 1,
-    Math.ceil((bbox.maxLon - bbox.minLon) / meta.cellDeg) + 1
+    view.nLon - 1,
+    Math.ceil((bbox.maxLon - bbox.minLon) / view.cellDeg) + 1
   );
-  const colStart = Math.floor((bbox.minLon - meta.minLon) / meta.cellDeg);
+  const colStart = Math.floor((bbox.minLon - view.minLon) / view.cellDeg);
   const halfDiagonal = 0.5 * Math.hypot(cellLatM, cellLonM);
   let sum = 0;
   for (let r = row0; r <= row1; r++) {
-    const cellLat = meta.maxLat - (r + 0.5) * meta.cellDeg;
+    const cellLat = view.maxLat - (r + 0.5) * view.cellDeg;
     for (let k = 0; k <= colSpan; k++) {
       // Wrap columns across the antimeridian.
-      const c = (((colStart + k) % meta.nLon) + meta.nLon) % meta.nLon;
-      const cellLon = meta.minLon + (c + 0.5) * meta.cellDeg;
+      const c = wrap(colStart + k);
+      const cellLon = view.minLon + (c + 0.5) * view.cellDeg;
       const d = greatCircleM(lat, lon, cellLat, cellLon);
       if (d - halfDiagonal > radiusM) continue;
-      const people = cellAt(r, c);
+      const { people } = view.cellAt(r, c);
       if (people === 0) continue;
       if (d + halfDiagonal <= radiusM) {
         sum += people;
@@ -544,9 +730,9 @@ function sumCoarseRaster(raster: CoarseRaster, lat: number, lon: number, radiusM
       }
       let inside = 0;
       for (let a = 0; a < EDGE_SUBSAMPLES; a++) {
-        const sLat = cellLat + ((a + 0.5) / EDGE_SUBSAMPLES - 0.5) * meta.cellDeg;
+        const sLat = cellLat + ((a + 0.5) / EDGE_SUBSAMPLES - 0.5) * view.cellDeg;
         for (let b = 0; b < EDGE_SUBSAMPLES; b++) {
-          const sLon = cellLon + ((b + 0.5) / EDGE_SUBSAMPLES - 0.5) * meta.cellDeg;
+          const sLon = cellLon + ((b + 0.5) / EDGE_SUBSAMPLES - 0.5) * view.cellDeg;
           if (greatCircleM(lat, lon, sLat, sLon) <= radiusM) inside += 1;
         }
       }
@@ -556,23 +742,78 @@ function sumCoarseRaster(raster: CoarseRaster, lat: number, lon: number, radiusM
   return sum;
 }
 
-function sumCoarseRasterRing(raster: CoarseRaster, ring: readonly [number, number][]): number {
-  const { meta, values } = raster;
+/** People inside a polygon on a grid: cells by their centre, edge
+ *  cells by the sub-sampled share inside the ring. */
+function sumGridRing(view: GridView, ring: readonly [number, number][]): number {
   const bbox = ringBoundingBox(ring);
-  const row0 = Math.max(0, Math.floor((meta.maxLat - bbox.maxLat) / meta.cellDeg));
-  const row1 = Math.min(meta.nLat - 1, Math.ceil((meta.maxLat - bbox.minLat) / meta.cellDeg));
-  const col0 = Math.max(0, Math.floor((bbox.minLon - meta.minLon) / meta.cellDeg));
-  const col1 = Math.min(meta.nLon - 1, Math.ceil((bbox.maxLon - meta.minLon) / meta.cellDeg));
+  const row0 = Math.max(0, Math.floor((view.maxLat - bbox.maxLat) / view.cellDeg));
+  const row1 = Math.min(view.nLat - 1, Math.ceil((view.maxLat - bbox.minLat) / view.cellDeg));
+  const col0 = Math.max(0, Math.floor((bbox.minLon - view.minLon) / view.cellDeg));
+  const col1 = Math.min(view.nLon - 1, Math.ceil((bbox.maxLon - view.minLon) / view.cellDeg));
   let sum = 0;
   for (let r = row0; r <= row1; r++) {
-    const cellLat = meta.maxLat - (r + 0.5) * meta.cellDeg;
+    const cellLat = view.maxLat - (r + 0.5) * view.cellDeg;
     for (let c = col0; c <= col1; c++) {
-      const cellLon = meta.minLon + (c + 0.5) * meta.cellDeg;
-      if (!pointInRing(cellLon, cellLat, ring)) continue;
-      sum += decodeCell(values[r * meta.nLon + c] ?? 0, meta.pMax);
+      const cellLon = view.minLon + (c + 0.5) * view.cellDeg;
+      const { people } = view.cellAt(r, c);
+      if (people === 0) continue;
+      let inside = 0;
+      for (let a = 0; a < EDGE_SUBSAMPLES; a++) {
+        const sLat = cellLat + ((a + 0.5) / EDGE_SUBSAMPLES - 0.5) * view.cellDeg;
+        for (let b = 0; b < EDGE_SUBSAMPLES; b++) {
+          const sLon = cellLon + ((b + 0.5) / EDGE_SUBSAMPLES - 0.5) * view.cellDeg;
+          if (pointInRing(sLon, sLat, ring)) inside += 1;
+        }
+      }
+      if (inside === 0) continue;
+      sum += (people * inside) / (EDGE_SUBSAMPLES * EDGE_SUBSAMPLES);
     }
   }
   return sum;
+}
+
+/** The coarse planet summations, kept under their old names. */
+function sumCoarseRaster(raster: CoarseRaster, lat: number, lon: number, radiusM: number): number {
+  return sumGridCircle(coarseView(raster), lat, lon, radiusM);
+}
+function sumCoarseRasterRing(raster: CoarseRaster, ring: readonly [number, number][]): number {
+  return sumGridRing(coarseView(raster), ring);
+}
+
+/**
+ * People inside a circle or a polygon on the 2.5′ tiles, or null when
+ * the footprint is too large for them, the index is missing, or a
+ * tile the index lists cannot be loaded — the coarse planet answers
+ * then.
+ */
+async function sumFineRaster(
+  lat: number,
+  lon: number,
+  radiusM: number,
+  ring: readonly [number, number][] | null,
+  bbox: { minLat: number; maxLat: number; minLon: number; maxLon: number }
+): Promise<{ exposed: number; source: string } | null> {
+  if (ring === null && radiusM > FINE_MAX_RADIUS_M) return null;
+  if (
+    ring !== null &&
+    Math.max(bbox.maxLat - bbox.minLat, bbox.maxLon - bbox.minLon) > FINE_MAX_SPAN_DEG
+  ) {
+    return null;
+  }
+  const index = await loadFineIndex();
+  if (index === null) return null;
+  const names = tilesForBbox(index, bbox);
+  if (names.length > FINE_MAX_TILES) return null;
+  const loaded = await Promise.all(names.map((name) => loadFineTile(index, name)));
+  const tiles = new Map<string, FineTile>();
+  for (let i = 0; i < names.length; i++) {
+    const tile = loaded[i];
+    if (tile === null || tile === undefined) return null;
+    tiles.set(names[i] ?? '', tile);
+  }
+  const view = fineView(index, tiles);
+  const exposed = ring !== null ? sumGridRing(view, ring) : sumGridCircle(view, lat, lon, radiusM);
+  return { exposed, source: index.source };
 }
 
 // ---------------------------------------------------------------------
@@ -632,6 +873,16 @@ export async function populationInRadius(
     }
   }
 
+  const fine = await sumFineRaster(lat, lon, radiusM, ring, bbox);
+  if (fine !== null) {
+    return {
+      exposed: Math.round(fine.exposed),
+      source: fine.source,
+      method: 'fine-raster',
+      radiusM,
+      bbox,
+    };
+  }
   const raster = await loadCoarseRaster();
   if (raster === null) return null;
   const exposed =
@@ -653,10 +904,17 @@ export function _resetPopulationLookupCache(): void {
   apiCache.clear();
   apiFailureCount = 0;
   coarseRasterPromise = null;
+  fineIndexPromise = null;
+  fineTiles.clear();
 }
 
 /** Exposed for unit tests of the geometry helpers. */
 export const _internals = {
+  sumGridCircle,
+  sumGridRing,
+  tilesForBbox,
+  coarseView,
+  fineView,
   circleAreaKm2,
   circleGeoJson,
   greatCircleM,

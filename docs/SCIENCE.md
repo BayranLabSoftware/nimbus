@@ -284,6 +284,24 @@ split wherever a thermal or fire radius falls, and beyond the 1 psi
 ring the burns alone reach out — for a Chicxulub the third-degree
 radius is the whole planet.
 
+### Population under the rings (Phase 24)
+
+Two rasters ship with the site, both built by `scripts/build-population.ts`
+from the JRC GHS-POP 2020 30″ grid: the planet at 0.125° for planetary
+rings, and thirty 60° × 30° tiles at 2.5′ (≈ 4.6 km at the equator,
+fetched on demand, at most eight per query) for rings up to 1 500 km
+and for the coast. Each cell carries its population on a log scale
+and its land fraction — the share of its 30″ source cells that are
+not sea — so a coastal cell's people are spread over its land rather
+than over the water it also covers: a city-scale ring inside one
+cell is the cell's land density times the ring's area, capped at the
+whole cell; a cell the ring's edge crosses counts by a 4 × 4
+sub-sample. The WorldPop zonal-statistics API, at 100 m, remains the
+fine source for city-scale rings; the tiles give the provisional
+figure and the fallback. Against the API over Naples the 2.5′ tiles
+land within a factor of two where the 0.125° planet was a factor of
+four.
+
 ### When the deaths happen (Phase 24)
 
 The bar of the globe view shows the toll rising as the event unfolds.
@@ -312,9 +330,10 @@ budget, with the physical time log-compressed into it so the first
 seconds are legible for a city and the hours of a planetary blast do
 not fill the screen. The physical elapsed time is printed beside the
 figure, which is shown to two significant figures with its low–high
-band. The figure starts from the shipped 0.125° raster (answered in
-milliseconds, sub-cell circles counted by area share) and glides to
-the WorldPop figure when that lands.
+band. The figure starts from the shipped rasters — 2.5′ tiles (≈ 4.6 km)
+for rings up to 1 500 km and the coast, the 0.125° planet beyond —
+answered in milliseconds, and glides to the WorldPop figure when
+that lands.
 
 ## Trans-oceanic tsunami propagation (Phase 11)
 

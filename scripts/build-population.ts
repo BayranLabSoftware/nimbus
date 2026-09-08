@@ -1,45 +1,61 @@
 import { deflateSync } from 'node:zlib';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fromFile } from 'geotiff';
 
 /**
- * Build the coarse global population raster the casualty model uses
- * for rings the WorldPop API refuses (its zonal-statistics service
- * caps a request at 100 000 km², i.e. a circle of ≈ 178 km).
+ * Build the population rasters the casualty model reads when the
+ * WorldPop API cannot answer — rings above its 100 000 km² cap, and
+ * the provisional figure shown while it works.
  *
- * Input: the WorldPop 2020 "Global 1 km Aggregated" GeoTIFF
- * (https://data.worldpop.org/GIS/Population/Global_2000_2020/2020/0_Mosaicked/ppp_2020_1km_Aggregated.tif,
- * ≈ 870 MB, CC-BY 4.0, Tatem 2017). Read in row windows and summed
- * into 0.125° cells (≈ 14 km at the equator, 2 880 × 1 440 cells).
+ * Input: a global population-count GeoTIFF in EPSG:4326 — the JRC
+ * GHS-POP 2020 30 arc-second grid (GHSL R2023A, CC-BY 4.0), or the
+ * WorldPop 2020 1 km aggregate (Tatem 2017), whose per-cell counts have
+ * the same semantics. Sea and no-data cells are the GeoTIFF's nodata.
  *
- * Output: `public/data/population-0p125.png` — an 8-bit greyscale
- * PNG whose pixel value encodes the cell population on a log scale,
- *   v = round(255 · ln(1 + P) / ln(1 + P_MAX)),  P_MAX = 2 × 10⁷,
- * so a 14 km cell holding twenty million people (the densest on
- * Earth) saturates at 255 and one person is v ≈ 10. The quantisation
- * step is ≈ 6.8 % of the value, well below the WorldPop cell scatter,
- * and a PNG decodes in every browser through a 2D canvas — no raster
- * library shipped. The sidecar `population-0p125.json` records the
- * grid geometry, the encoding and the source.
+ * Two outputs, both 8-bit RGB PNGs a browser decodes through a 2D
+ * canvas (no raster library shipped; RGB rather than grey + alpha
+ * because a canvas premultiplies alpha and would corrupt the data):
+ *
+ *   R  population of the cell on a log scale,
+ *        v = round(255 · ln(1 + P) / ln(1 + P_MAX)),  P_MAX = 2 × 10⁷,
+ *      so a cell holding twenty million people saturates at 255 and
+ *      one person is v ≈ 10; the quantisation step is ≈ 6.8 % of the
+ *      value, well below the source's cell scatter;
+ *   G  land fraction of the cell, 0–255, the share of its source
+ *      cells that are not nodata — so a coastal cell's people are
+ *      spread over its land, not over the sea it also covers;
+ *   B  unused.
+ *
+ * 1. `public/data/population-0p125.png` — the whole planet at 0.125°
+ *    (≈ 14 km, 2 880 × 1 440), for planetary rings.
+ * 2. `public/data/population-2p5/<col>_<row>.png` — 60° × 30° tiles at
+ *    2.5′ (≈ 4.6 km, 1 440 × 720 each), for city-scale rings and the
+ *    coast; tiles without a single person are not written and the
+ *    index lists the ones that exist.
  *
  * Usage: pnpm population:build <path/to/grid.tif> [source label] [source url]
- * The input may be any global population-count GeoTIFF in EPSG:4326
- * (WorldPop 2020 1 km aggregated, or the JRC GHS-POP 2020 30 arc-second
- * grid — GHSL R2023A, also CC-BY 4.0 — whose per-cell counts have the
- * same semantics). The label and URL are written to the sidecar so the
- * UI credits the right dataset. Re-run only when upgrading the source
- * release; the output is committed.
+ * Re-run only when upgrading the source release; the output is committed.
  */
 
-const CELL_DEG = 0.125;
-const N_LON = Math.round(360 / CELL_DEG);
-const N_LAT = Math.round(180 / CELL_DEG);
+const FINE_CELL_DEG = 1 / 24; // 2.5 arc-minutes
+const FINE_N_LON = Math.round(360 / FINE_CELL_DEG);
+const FINE_N_LAT = Math.round(180 / FINE_CELL_DEG);
+const COARSE_PER_FINE = 3; // 0.125° = 3 × 2.5′
+const COARSE_CELL_DEG = FINE_CELL_DEG * COARSE_PER_FINE;
+const COARSE_N_LON = FINE_N_LON / COARSE_PER_FINE;
+const COARSE_N_LAT = FINE_N_LAT / COARSE_PER_FINE;
+const TILE_WIDTH_DEG = 60;
+const TILE_HEIGHT_DEG = 30;
+const TILE_COLS = 360 / TILE_WIDTH_DEG;
+const TILE_ROWS = 180 / TILE_HEIGHT_DEG;
+const TILE_W = Math.round(TILE_WIDTH_DEG / FINE_CELL_DEG);
+const TILE_H = Math.round(TILE_HEIGHT_DEG / FINE_CELL_DEG);
 const P_MAX = 2e7;
-const ROWS_PER_WINDOW = 512;
+const ROWS_PER_WINDOW = 480;
 
-// ---- minimal PNG writer (greyscale 8-bit) ----------------------------
+// ---- minimal PNG writer (RGB 8-bit) -----------------------------------
 
 const CRC_TABLE = (() => {
   const table = new Uint32Array(256);
@@ -67,18 +83,31 @@ function chunk(type: string, data: Uint8Array): Uint8Array {
   return out;
 }
 
-function encodeGreyPng(width: number, height: number, pixels: Uint8Array): Uint8Array {
-  const raw = new Uint8Array((width + 1) * height);
+/** Encode an RGB image whose channels are given as separate planes. */
+function encodeRgbPng(
+  width: number,
+  height: number,
+  red: Uint8Array,
+  green: Uint8Array
+): Uint8Array {
+  const stride = width * 3 + 1;
+  const raw = new Uint8Array(stride * height);
   for (let y = 0; y < height; y++) {
-    raw[y * (width + 1)] = 0; // filter: none
-    raw.set(pixels.subarray(y * width, (y + 1) * width), y * (width + 1) + 1);
+    raw[y * stride] = 0; // filter: none
+    for (let x = 0; x < width; x++) {
+      const src = y * width + x;
+      const dst = y * stride + 1 + x * 3;
+      raw[dst] = red[src] ?? 0;
+      raw[dst + 1] = green[src] ?? 0;
+      raw[dst + 2] = 0;
+    }
   }
   const ihdr = new Uint8Array(13);
   const v = new DataView(ihdr.buffer);
   v.setUint32(0, width);
   v.setUint32(4, height);
   ihdr[8] = 8; // bit depth
-  ihdr[9] = 0; // greyscale
+  ihdr[9] = 2; // RGB
   const signature = Uint8Array.from([137, 80, 78, 71, 13, 10, 26, 10]);
   const parts = [
     signature,
@@ -96,6 +125,9 @@ function encodeGreyPng(width: number, height: number, pixels: Uint8Array): Uint8
   return png;
 }
 
+const encodePopulation = (p: number): number =>
+  Math.min(255, Math.round((255 * Math.log(1 + p)) / Math.log(1 + P_MAX)));
+
 // ---- aggregation --------------------------------------------------------
 
 async function main(): Promise<void> {
@@ -104,11 +136,9 @@ async function main(): Promise<void> {
     console.error('usage: pnpm population:build <grid.tif> [source label] [source url]');
     process.exit(2);
   }
-  const sourceLabel =
-    process.argv[3] ?? 'WorldPop 2020 Global 1 km Aggregated (Tatem 2017), CC-BY 4.0';
+  const sourceLabel = process.argv[3] ?? 'GHS-POP 2020 30 arc-second (GHSL R2023A, JRC), CC-BY 4.0';
   const sourceUrl =
-    process.argv[4] ??
-    'https://data.worldpop.org/GIS/Population/Global_2000_2020/2020/0_Mosaicked/ppp_2020_1km_Aggregated.tif';
+    process.argv[4] ?? 'https://human-settlement.emergency.copernicus.eu/download.php?ds=pop';
   const tiff = await fromFile(source);
   const image = await tiff.getImage();
   const width = image.getWidth();
@@ -120,7 +150,10 @@ async function main(): Promise<void> {
     `source ${width.toString()}×${height.toString()} px, origin (${originX.toString()}, ${originY.toString()}), res (${resX.toString()}, ${resY.toString()}), nodata ${String(noData)}`
   );
 
-  const cells = new Float64Array(N_LON * N_LAT);
+  // Fine grid accumulators: people, land source cells, all source cells.
+  const people = new Float64Array(FINE_N_LON * FINE_N_LAT);
+  const landCells = new Uint16Array(FINE_N_LON * FINE_N_LAT);
+  const allCells = new Uint16Array(FINE_N_LON * FINE_N_LAT);
   let total = 0;
   for (let y0 = 0; y0 < height; y0 += ROWS_PER_WINDOW) {
     const y1 = Math.min(height, y0 + ROWS_PER_WINDOW);
@@ -128,16 +161,19 @@ async function main(): Promise<void> {
     const band = (Array.isArray(rasters) ? rasters[0] : rasters) as ArrayLike<number>;
     for (let y = y0; y < y1; y++) {
       const lat = originY + (y + 0.5) * resY;
-      const row = Math.min(N_LAT - 1, Math.max(0, Math.floor((90 - lat) / CELL_DEG)));
+      const row = Math.min(FINE_N_LAT - 1, Math.max(0, Math.floor((90 - lat) / FINE_CELL_DEG)));
       const base = (y - y0) * width;
       for (let x = 0; x < width; x++) {
-        const value = band[base + x];
-        if (value === undefined || !Number.isFinite(value) || value <= 0) continue;
-        if (noData !== null && value === noData) continue;
         const lon = originX + (x + 0.5) * resX;
-        const col = Math.min(N_LON - 1, Math.max(0, Math.floor((lon + 180) / CELL_DEG)));
-        const idx = row * N_LON + col;
-        cells[idx] = (cells[idx] ?? 0) + value;
+        const col = Math.min(FINE_N_LON - 1, Math.max(0, Math.floor((lon + 180) / FINE_CELL_DEG)));
+        const idx = row * FINE_N_LON + col;
+        allCells[idx] = (allCells[idx] ?? 0) + 1;
+        const value = band[base + x];
+        if (value === undefined || !Number.isFinite(value)) continue;
+        if (noData !== null && value === noData) continue;
+        landCells[idx] = (landCells[idx] ?? 0) + 1;
+        if (value <= 0) continue;
+        people[idx] = (people[idx] ?? 0) + value;
         total += value;
       }
     }
@@ -146,36 +182,70 @@ async function main(): Promise<void> {
     );
   }
 
-  const pixels = new Uint8Array(N_LON * N_LAT);
-  const scale = 255 / Math.log(1 + P_MAX);
-  let maxCell = 0;
-  for (let i = 0; i < cells.length; i++) {
-    const p = cells[i] ?? 0;
-    if (p > maxCell) maxCell = p;
-    pixels[i] = Math.min(255, Math.round(Math.log(1 + p) * scale));
-  }
-
   const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
   const outDir = join(repoRoot, 'public', 'data');
   mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, 'population-0p125.png'), encodeGreyPng(N_LON, N_LAT, pixels));
+
+  // ---- fine tiles ----
+  const tileDir = join(outDir, 'population-2p5');
+  rmSync(tileDir, { recursive: true, force: true });
+  mkdirSync(tileDir, { recursive: true });
+  const tiles: string[] = [];
+  let maxFineCell = 0;
+  let tileBytes = 0;
+  for (let tr = 0; tr < TILE_ROWS; tr++) {
+    for (let tc = 0; tc < TILE_COLS; tc++) {
+      const red = new Uint8Array(TILE_W * TILE_H);
+      const green = new Uint8Array(TILE_W * TILE_H);
+      let tilePeople = 0;
+      for (let y = 0; y < TILE_H; y++) {
+        const row = tr * TILE_H + y;
+        for (let x = 0; x < TILE_W; x++) {
+          const col = tc * TILE_W + x;
+          const idx = row * FINE_N_LON + col;
+          const p = people[idx] ?? 0;
+          const all = allCells[idx] ?? 0;
+          const land = landCells[idx] ?? 0;
+          if (p > maxFineCell) maxFineCell = p;
+          tilePeople += p;
+          red[y * TILE_W + x] = encodePopulation(p);
+          green[y * TILE_W + x] = all > 0 ? Math.round((255 * land) / all) : 0;
+        }
+      }
+      if (tilePeople < 1) continue;
+      const name = `${tc.toString()}_${tr.toString()}`;
+      const png = encodeRgbPng(TILE_W, TILE_H, red, green);
+      writeFileSync(join(tileDir, `${name}.png`), png);
+      tileBytes += png.length;
+      tiles.push(name);
+      console.error(
+        `tile ${name}: ${Math.round(tilePeople).toLocaleString('en-US')} people, ${Math.round(png.length / 1024).toString()} KB`
+      );
+    }
+  }
   writeFileSync(
-    join(outDir, 'population-0p125.json'),
+    join(tileDir, 'index.json'),
     `${JSON.stringify(
       {
         source: sourceLabel,
         url: sourceUrl,
-        cellDeg: CELL_DEG,
-        nLon: N_LON,
-        nLat: N_LAT,
+        cellDeg: FINE_CELL_DEG,
+        tileWidthDeg: TILE_WIDTH_DEG,
+        tileHeightDeg: TILE_HEIGHT_DEG,
+        tileCols: TILE_COLS,
+        tileRows: TILE_ROWS,
+        tileWidthPx: TILE_W,
+        tileHeightPx: TILE_H,
         minLat: -90,
         maxLat: 90,
         minLon: -180,
         maxLon: 180,
+        channels: { population: 'R', landFraction: 'G' },
         encoding: 'v = round(255 · ln(1 + P) / ln(1 + pMax)); P = exp(v · ln(1 + pMax) / 255) − 1',
         pMax: P_MAX,
+        tiles,
         totalPopulation: Math.round(total),
-        maxCellPopulation: Math.round(maxCell),
+        maxCellPopulation: Math.round(maxFineCell),
         builtAt: new Date().toISOString(),
       },
       null,
@@ -183,7 +253,61 @@ async function main(): Promise<void> {
     )}\n`
   );
   console.error(
-    `wrote ${N_LON.toString()}×${N_LAT.toString()} cells, total ${Math.round(total).toLocaleString('en-US')} people, densest cell ${Math.round(maxCell).toLocaleString('en-US')}`
+    `wrote ${tiles.length.toString()} tiles, ${Math.round(tileBytes / 1024 / 1024).toString()} MB, densest 2.5′ cell ${Math.round(maxFineCell).toLocaleString('en-US')}`
+  );
+
+  // ---- coarse planet ----
+  const coarseRed = new Uint8Array(COARSE_N_LON * COARSE_N_LAT);
+  const coarseGreen = new Uint8Array(COARSE_N_LON * COARSE_N_LAT);
+  let maxCoarseCell = 0;
+  for (let r = 0; r < COARSE_N_LAT; r++) {
+    for (let c = 0; c < COARSE_N_LON; c++) {
+      let p = 0;
+      let land = 0;
+      let all = 0;
+      for (let dy = 0; dy < COARSE_PER_FINE; dy++) {
+        for (let dx = 0; dx < COARSE_PER_FINE; dx++) {
+          const idx = (r * COARSE_PER_FINE + dy) * FINE_N_LON + c * COARSE_PER_FINE + dx;
+          p += people[idx] ?? 0;
+          land += landCells[idx] ?? 0;
+          all += allCells[idx] ?? 0;
+        }
+      }
+      if (p > maxCoarseCell) maxCoarseCell = p;
+      coarseRed[r * COARSE_N_LON + c] = encodePopulation(p);
+      coarseGreen[r * COARSE_N_LON + c] = all > 0 ? Math.round((255 * land) / all) : 0;
+    }
+  }
+  writeFileSync(
+    join(outDir, 'population-0p125.png'),
+    encodeRgbPng(COARSE_N_LON, COARSE_N_LAT, coarseRed, coarseGreen)
+  );
+  writeFileSync(
+    join(outDir, 'population-0p125.json'),
+    `${JSON.stringify(
+      {
+        source: sourceLabel,
+        url: sourceUrl,
+        cellDeg: COARSE_CELL_DEG,
+        nLon: COARSE_N_LON,
+        nLat: COARSE_N_LAT,
+        minLat: -90,
+        maxLat: 90,
+        minLon: -180,
+        maxLon: 180,
+        channels: { population: 'R', landFraction: 'G' },
+        encoding: 'v = round(255 · ln(1 + P) / ln(1 + pMax)); P = exp(v · ln(1 + pMax) / 255) − 1',
+        pMax: P_MAX,
+        totalPopulation: Math.round(total),
+        maxCellPopulation: Math.round(maxCoarseCell),
+        builtAt: new Date().toISOString(),
+      },
+      null,
+      2
+    )}\n`
+  );
+  console.error(
+    `wrote ${COARSE_N_LON.toString()}×${COARSE_N_LAT.toString()} planet, total ${Math.round(total).toLocaleString('en-US')} people, densest 0.125° cell ${Math.round(maxCoarseCell).toLocaleString('en-US')}`
   );
 }
 

@@ -1284,10 +1284,11 @@
     "method": {
       "cog": "popolazione da raster COG configurato",
       "worldpop-api": "popolazione: WorldPop 2020 (API di statistica zonale)",
-      "coarse-raster": "popolazione: {{source}}"
+      "coarse-raster": "popolazione: {{source}}",
+      "fine-raster": "popolazione: {{source}}, tasselli da 2,5′"
     },
     "disclaimer": "Ordine di grandezza, non conteggio: nessuna evacuazione, nessun preavviso, nessuna cura. Esclusi tsunami, fallout, radiazione iniziale, carestia e malattie. La dispersione pubblicata di ogni funzione di vulnerabilità è un fattore 2–5.",
-    "provisional": "Cifra provvisoria dal raster a 14 km: WorldPop sta contando le fasce e la sostituirà.",
+    "provisional": "Cifra provvisoria dai tasselli a 4,6 km: WorldPop sta contando le fasce e la sostituirà.",
     "promptDeaths": "di cui immediati",
     "delayedDeaths": "di cui differiti, entro settimane (min – max)",
     "hazard": {

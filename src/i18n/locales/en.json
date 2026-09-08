@@ -1197,10 +1197,11 @@
     "method": {
       "cog": "population from the configured COG raster",
       "worldpop-api": "population: WorldPop 2020 (zonal-statistics API)",
-      "coarse-raster": "population: {{source}}"
+      "coarse-raster": "population: {{source}}",
+      "fine-raster": "population: {{source}}, 2.5′ tiles"
     },
     "disclaimer": "An order of magnitude, not a count: no evacuation, no warning, no care. Tsunami, fallout, initial radiation, famine and disease excluded. The published scatter of every vulnerability function is a factor 2–5.",
-    "provisional": "Provisional figure from the 14 km raster: WorldPop is counting the bands and will replace it.",
+    "provisional": "Provisional figure from the 4.6 km tiles: WorldPop is counting the bands and will replace it.",
     "promptDeaths": "of which prompt",
     "delayedDeaths": "of which within weeks (min – max)",
     "hazard": {

@@ -156,3 +156,88 @@ describe('populationLookup sub-cell circles', () => {
     expect(people).toBeLessThan(5.7 * 1_000 * 1.1);
   });
 });
+
+describe('populationLookup grid views — land fraction and fine tiles', () => {
+  const { sumGridCircle, tilesForBbox, fineView, coarseView } = _internals;
+  const meta = {
+    cellDeg: 1,
+    nLon: 360,
+    nLat: 180,
+    minLat: -90,
+    maxLat: 90,
+    minLon: -180,
+    maxLon: 180,
+    pMax: 2e7,
+    source: 'test',
+  };
+  const thousand = Math.round((255 * Math.log(1_001)) / Math.log(1 + meta.pMax));
+
+  it('a coastal cell spreads its people over its land, not over the sea it also covers', () => {
+    const values = new Uint8Array(360 * 180).fill(thousand);
+    const allLand = coarseView({ meta, values });
+    const halfSea = coarseView({ meta, values, land: new Uint8Array(360 * 180).fill(128) });
+    const ring = 1_600;
+    const onLand = sumGridCircle(allLand, 0.5, 0.5, ring);
+    const onCoast = sumGridCircle(halfSea, 0.5, 0.5, ring);
+    expect(onCoast / onLand).toBeGreaterThan(1.9);
+    expect(onCoast / onLand).toBeLessThan(2.1);
+    // The share never exceeds the whole cell.
+    const tiny = coarseView({ meta, values, land: new Uint8Array(360 * 180).fill(1) });
+    expect(sumGridCircle(tiny, 0.5, 0.5, 50_000)).toBeLessThanOrEqual(1_000 * 1.07); // one cell, log-quantised
+  });
+
+  const index = {
+    source: 'fine test',
+    cellDeg: 1 / 24,
+    tileWidthDeg: 60,
+    tileHeightDeg: 30,
+    tileCols: 6,
+    tileRows: 6,
+    tileWidthPx: 1440,
+    tileHeightPx: 720,
+    pMax: 2e7,
+    tiles: ['3_1', '3_2', '3_3', '0_1', '5_1'],
+  };
+
+  it('picks the tiles a bounding box touches and wraps across the antimeridian', () => {
+    // Naples: lon 14 → col 3, lat 40.8 → row 1.
+    expect(tilesForBbox(index, { minLat: 40, maxLat: 41.5, minLon: 13, maxLon: 15 })).toEqual([
+      '3_1',
+    ]);
+    // Straddling the equator: rows 2 (30…0) and 3 (0…−30).
+    expect(tilesForBbox(index, { minLat: -2, maxLat: 2, minLon: 10, maxLon: 12 })).toEqual([
+      '3_2',
+      '3_3',
+    ]);
+    // Across the antimeridian: columns 5 and 0, only the listed ones.
+    expect(tilesForBbox(index, { minLat: 40, maxLat: 45, minLon: 178, maxLon: 182 })).toEqual([
+      '5_1',
+      '0_1',
+    ]);
+    // A tile the index does not list holds nobody and is not asked for.
+    expect(tilesForBbox(index, { minLat: -80, maxLat: -75, minLon: 10, maxLon: 12 })).toEqual([]);
+  });
+
+  it('a fine view reads the right tile cell and counts a ring by area', () => {
+    // One tile, uniform 100 people per 2.5′ cell on land.
+    const hundred = Math.round((255 * Math.log(101)) / Math.log(1 + index.pMax));
+    const tile = {
+      values: new Uint8Array(1440 * 720).fill(hundred),
+      land: new Uint8Array(1440 * 720).fill(255),
+    };
+    const view = fineView(index, new Map([['3_1', tile]]));
+    // Naples (40.85 N, 14.27 E): row from the top, col from −180.
+    const row = Math.floor((90 - 40.85) / index.cellDeg);
+    const col = Math.floor((14.27 + 180) / index.cellDeg);
+    expect(view.cellAt(row, col).people).toBeGreaterThan(95);
+    expect(view.cellAt(row, col).people).toBeLessThan(105);
+    // A cell in a tile that is not loaded holds nobody.
+    expect(view.cellAt(row + 720, col).people).toBe(0);
+    // 50 km ring: π · 50² km² / (4.63 × 3.5 km² per cell at 41 N) cells × 100.
+    const cellKm2 = (111.2 / 24) * ((111.2 / 24) * Math.cos((40.85 * Math.PI) / 180));
+    const expected = (100 * Math.PI * 50 ** 2) / cellKm2;
+    const counted = sumGridCircle(view, 40.85, 14.27, 50_000);
+    expect(counted).toBeGreaterThan(expected * 0.95);
+    expect(counted).toBeLessThan(expected * 1.05);
+  });
+});
