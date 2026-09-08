@@ -24,6 +24,8 @@ import { buildRuptureStadiumLatLon } from '../scene/stadiumPolygon.js';
 import {
   blastCasualtyPlan,
   estimateCasualties,
+  impactFireballRadius,
+  nuclearFireballRadius,
   pyroclasticCasualtyPlan,
   shakingCasualtyPlan,
   type CasualtyEstimate,
@@ -1334,6 +1336,10 @@ function casualtyPlanForResult(result: ActiveResult, location: Coordinates): Cas
         thirdDegreeBurnRadius: result.data.damage.thirdDegreeBurn,
         secondDegreeBurnRadius: result.data.damage.secondDegreeBurn,
         firestormRadius: result.data.firestorm.sustainRadius,
+        // The fluence radii of an impact this size run around the
+        // planet; the fireball does not. Past its horizon the flash
+        // never arrives, whatever the fluence would have been.
+        fireballRadius: impactFireballRadius(result.data.impactor.kineticEnergy),
       });
     case 'explosion':
       return blastCasualtyPlan({
@@ -1343,6 +1349,7 @@ function casualtyPlanForResult(result: ActiveResult, location: Coordinates): Cas
         thirdDegreeBurnRadius: result.data.thermal.thirdDegreeBurnRadius,
         secondDegreeBurnRadius: result.data.thermal.secondDegreeBurnRadius,
         firestormRadius: result.data.firestorm.sustainRadius,
+        fireballRadius: nuclearFireballRadius(result.data.yield.joules),
       });
     case 'earthquake': {
       const plan = shakingCasualtyPlan({

@@ -100,6 +100,10 @@ used.
   prediction._ Proceedings of the 15th Coastal Engineering Conference,
   ASCE, 1006–1024. — Inundation distance from run-up and ground
   roughness; the form Hills & Mader (1997) applied to impact tsunamis.
+- **Goldin, T. J., & Melosh, H. J. (2009).** _Self-shielding of thermal
+  radiation by Chicxulub impact ejecta: Firestorm or fizzle?_ Geology
+  37 (12), 1135–1138. — Why a global re-entry firestorm is not a
+  certainty, and why its toll is not counted here.
 - **Koshimura, S., Oie, T., Yanagisawa, H., & Imamura, F. (2009).**
   _Developing fragility functions for tsunami damage estimation using
   numerical model and post-tsunami data from Banda Aceh, Indonesia._
@@ -230,6 +234,7 @@ Carlo wrappers for sampled inputs).
 | Shaking casualties         | casualties.ts                       | ν(S) = Φ(ln(S/θ)/β), θ = 13.5, β = 0.22 (band 14.5/0.12 – 11.5/0.30)                                                                                                                             | Jaiswal & Wald 2010 (PAGER)                                    | 3 orders    |
 | Pyroclastic casualties     | casualties.ts                       | 0.9 · pop(runout) + 0.9 · sector/360 · pop(blast annulus)                                                                                                                                        | Auker et al. 2013                                              | 50–100 %    |
 | Burn casualties            | casualties.ts                       | exposed 25 % (10–50) × mortality 50 % (30–80) inside the 3rd-degree radius, on the blast survivors                                                                                               | Glasstone & Dolan 1977 ch. XII                                 | ×2–3        |
+| Thermal horizon            | casualties.ts                       | d = R⊕ · arccos(R⊕ / (R⊕ + R_f)); R_f = 0.002 · E^(1/3) impact, 55 · W^0.4 nuclear                                                                                                               | Collins et al. 2005; Glasstone & Dolan 1977 §2.120             | geometry    |
 | Mass-fire casualties       | casualties.ts                       | 30 % (10–80) of the survivors inside the firestorm sustain radius                                                                                                                                | Glasstone & Dolan 1977 ch. VII; Postol 1986                    | ×3          |
 | Later deaths               | casualties.ts                       | 30 % (10–60) of the prompt injured, first day to first month                                                                                                                                     | OTA 1979 ch. II                                                | ×2–3        |
 | Tsunami casualties         | tsunamiCasualties.ts                | H = √(A · min(R, A)); X = 0.06 · H^(4/3) / n², n = 0.03 (≤ 10 km); people = land density × X × coast; ν(h) = Φ(ln(h/θ)/β), h = H/2, θ = 8 m unwarned → 16 m warned by arrival, 4 m high, β = 0.8 | Koshimura et al. 2009; Jonkman et al. 2008                     | ×3          |
@@ -304,6 +309,35 @@ apart from the prompt toll and dated in the sweep. The OTA annuli are
 split wherever a thermal or fire radius falls, and beyond the 1 psi
 ring the burns alone reach out — for a Chicxulub the third-degree
 radius is the whole planet.
+
+The flash stops at the horizon. A fluence radius answers "how much
+heat would arrive with nothing in the way", and for an impact-scale
+fireball it runs right around the planet: the 15 km stone that makes
+a 165 km crater has a third-degree radius of 27 000 km on a globe
+whose half-circumference is 20 015. Thermal radiation travels in
+straight lines, so the burns and the mass fire are cut at the range
+where the fireball sets below the curve of the Earth,
+d = R⊕ · arccos(R⊕ / (R⊕ + R_f)) — the same cut the Earth Impact
+Effects Program makes (Collins et al. 2005). The fireball radius is
+0.002 · E^(1/3) for an impact (Collins eq. 12) and 55 · W^0.4 metres
+for a nuclear burst (Glasstone & Dolan §2.120): a 200 km fireball is
+seen to 1 590 km, Hiroshima's to 46 km and a 50 Mt burst's to 230 km,
+so the cut bites only at impact scale and no nuclear scenario moves.
+Dropping a Chicxulub-class body on Rome went from 4.2 billion dead to
+1.0 billion, and the 3.2 billion that left were people on the far
+side of the planet dying of a flash they could not see.
+
+Heat does reach them, and the cascade says so at +30 minutes: rock
+thrown out on ballistic arcs re-enters everywhere at once and the
+upper atmosphere passes 1 500 K (Toon et al. 1997; Goldin & Melosh
+2009). That is a diffuse infrared bath over minutes, not a flash, and
+survival under it turns on shelter rather than on line of sight — a
+different hazard needing a different vulnerability function. This
+model does not convert it into deaths, and Goldin & Melosh are the
+reason for the restraint: they argue the ejecta shield their own
+radiation enough to make the global firestorm a fizzle rather than a
+certainty. Counting it with the fireball's mortality would be a
+number with the wrong physics behind it.
 
 ### Population under the rings (Phase 24)
 

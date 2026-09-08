@@ -1,6 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const PORT = 5173;
+// Vite's default, overridable through the environment. `webServer`
+// below reuses whatever already answers on this port, which is a
+// convenience until a second checkout of this project is running its
+// own dev server there: the suite then tests that tree instead of
+// this one, and reports failures for code you do not have. Set
+// NIMBUS_E2E_PORT to a free port to be certain you are testing
+// yourself.
+const PORT = Number(process.env.NIMBUS_E2E_PORT ?? 5173);
 const baseURL = `http://localhost:${String(PORT)}`;
 
 const isCI = Boolean(process.env.CI);
@@ -72,7 +79,10 @@ export default defineConfig({
     { name: 'mobile-safari', use: { ...devices['iPhone 14'] } },
   ],
   webServer: {
-    command: 'pnpm dev',
+    // Vite is told the port too, so an overridden NIMBUS_E2E_PORT
+    // actually starts a server there rather than waiting for one that
+    // never comes.
+    command: `pnpm exec vite --port ${String(PORT)} --strictPort`,
     url: baseURL,
     reuseExistingServer: !isCI,
     timeout: 120_000,

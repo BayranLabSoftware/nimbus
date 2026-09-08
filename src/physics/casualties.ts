@@ -1,6 +1,7 @@
 import { distanceForOverpressure } from './events/impact/damageRings.js';
 import type { Joules, Meters } from './units.js';
-import { Pa } from './units.js';
+import { EARTH_RADIUS, TNT_SPECIFIC_ENERGY } from './constants.js';
+import { m, Pa } from './units.js';
 
 /**
  * Casualty estimates — people, not just exposure.
@@ -187,6 +188,59 @@ export const OTA_BLAST_BANDS = [
  *  (Glasstone & Dolan 1977 ch. XII). */
 const BLAST_BAND_FACTOR = 2;
 
+/**
+ * Radius of the luminous fireball of a cosmic impact (m) for its
+ * kinetic energy: R_f = 0.002 · E^(1/3), Collins, Melosh & Marcus
+ * (2005) eq. 12 — the scaling the Earth Impact Effects Program uses.
+ * A 15 km stone at 20 km/s makes one about 200 km across.
+ */
+export function impactFireballRadius(energy: Joules): Meters {
+  const e = energy as number;
+  return m(e > 0 ? 0.002 * e ** (1 / 3) : 0);
+}
+
+/**
+ * Radius of the luminous fireball of a nuclear burst (m) for its
+ * yield: R_f ≈ 55 · W^0.4 with W in kilotonnes, the maximum-brilliance
+ * size of Glasstone & Dolan (1977) §2.120 fig. 2.120. A 15 kt burst
+ * makes one 160 m across; even a 50 Mt one stays inside 5 km.
+ */
+export function nuclearFireballRadius(yieldEnergy: Joules): Meters {
+  const kt = (yieldEnergy as number) / (TNT_SPECIFIC_ENERGY * 1e6);
+  return m(kt > 0 ? 55 * kt ** 0.4 : 0);
+}
+
+/**
+ * Ground range (m) beyond which the fireball has set below the
+ * horizon, and its light no longer reaches anyone.
+ *
+ *     d = R⊕ · arccos( R⊕ / (R⊕ + R_f) )
+ *
+ * Thermal radiation travels in straight lines. The Earth Impact
+ * Effects Program (Collins et al. 2005) makes the same cut: past this
+ * range the fireball is under the curve of the Earth and the direct
+ * flash — the burns, the ignition of a mass fire — cannot arrive.
+ * A 200 km fireball, the one a Chicxulub-class impact raises, is
+ * visible to about 1 600 km; a nuclear fireball to a few tens.
+ *
+ * The heat that does reach the far side of the planet after an impact
+ * this size comes from rock thrown out on ballistic arcs and
+ * re-entering everywhere at once — a diffuse infrared bath over
+ * minutes, described in the event's cascade and cited there, whose
+ * lethality depends on shelter rather than on line of sight. It is
+ * not the same hazard as a fireball's flash and this model does not
+ * count deaths from it: Goldin & Melosh (2009) argue the ejecta
+ * shield their own radiation enough to make the global firestorm a
+ * fizzle rather than a certainty, and a toll built on the fireball's
+ * mortality would be a number with the wrong physics behind it.
+ */
+export function thermalHorizonRadius(fireballRadius: Meters): number {
+  const rf = fireballRadius as number;
+  if (!Number.isFinite(rf) || rf <= 0) return Number.POSITIVE_INFINITY;
+  const re = EARTH_RADIUS as number;
+  return re * Math.acos(Math.min(1, re / (re + rf)));
+}
+
 /** Fraction of the people with a line of sight to the fireball —
  *  outdoors or at a window — who receive the full thermal pulse. An
  *  urban population indoors is mostly shielded (Glasstone & Dolan
@@ -225,6 +279,11 @@ export interface BlastCasualtyInput {
   /** Radius inside which the fluence sustains a firestorm (m); omit
    *  or pass 0 for no mass fire. */
   firestormRadius?: Meters;
+  /** Luminous fireball radius (m). When given, the burn and mass-fire
+   *  radii are cut at the range where the fireball sets below the
+   *  horizon: past it the flash never arrives. See
+   *  {@link thermalHorizonRadius}. */
+  fireballRadius?: Meters;
 }
 
 /**
@@ -268,9 +327,18 @@ export function blastCasualtyPlan(input: BlastCasualtyInput): CasualtyPlan | nul
   const r12 = r5 * overpressureRadiusRatio(input.blastEnergy, 12, 5);
   const r2 = r1 * overpressureRadiusRatio(input.blastEnergy, 2, 1);
   const psiEdges = [0, Math.min(r12, r5), r5, Math.max(r5, Math.min(r2, r1)), r1];
-  const burn3 = positiveRadius(input.thirdDegreeBurnRadius);
-  const burn2 = Math.max(burn3, positiveRadius(input.secondDegreeBurnRadius));
-  const fire = positiveRadius(input.firestormRadius);
+  // Line of sight first: a fluence radius says how much heat would
+  // arrive with nothing in the way, and for an impact-scale fireball
+  // it runs right around the planet. The horizon is what actually
+  // limits it.
+  const horizon =
+    input.fireballRadius === undefined
+      ? Number.POSITIVE_INFINITY
+      : thermalHorizonRadius(input.fireballRadius);
+  const seen = (radius: Meters | undefined): number => Math.min(positiveRadius(radius), horizon);
+  const burn3 = seen(input.thirdDegreeBurnRadius);
+  const burn2 = Math.max(burn3, seen(input.secondDegreeBurnRadius));
+  const fire = seen(input.firestormRadius);
 
   const edges = [...new Set([...psiEdges, burn3, burn2, fire].filter((r) => r >= 0))].sort(
     (a, b) => a - b

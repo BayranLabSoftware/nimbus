@@ -98,6 +98,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The flash stops at the horizon.** A Chicxulub-class fireball has a
+  third-degree burn radius of 27 000 km on a planet 20 015 km across,
+  and the toll was applying Glasstone's fireball mortality to all of
+  it — 1.9 billion people at the antipode dying of a flash they could
+  not see. Burns and mass fire are now cut where the fireball sets
+  below the curve of the Earth, the cut the Earth Impact Effects
+  Program makes: 1 590 km for a 200 km fireball, 46 km for Hiroshima's
+  and 230 km for a 50 Mt burst, so no nuclear scenario moves. A 15 km
+  impactor on Rome goes from 4.2 billion dead to 1.0 billion. The heat
+  that does reach the far side comes from re-entering ejecta, which
+  the cascade describes and the toll still does not count — Goldin &
+  Melosh 2009 on why that firestorm may fizzle.
+
 - **The veil and the caption beside it.** The store handed the tsunami
   amplitude field a quarter of the rupture length where the seismic
   module spreads from a half, so the wave drawn on the globe stood a

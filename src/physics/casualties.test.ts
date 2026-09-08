@@ -1,18 +1,22 @@
 import { describe, expect, it } from 'vitest';
 import {
-  DELAYED_DEATH_FRACTION,
-  FIRESTORM_MORTALITY,
-  PAGER_VULNERABILITY,
-  THERMAL_EXPOSED_FRACTION,
-  THIRD_DEGREE_MORTALITY,
   blastCasualtyPlan,
   combineMortality,
+  DELAYED_DEATH_FRACTION,
   estimateCasualties,
+  FIRESTORM_MORTALITY,
+  impactFireballRadius,
   normalCdf,
+  nuclearFireballRadius,
+  PAGER_VULNERABILITY,
   pagerFatalityRate,
   pyroclasticCasualtyPlan,
   shakingCasualtyPlan,
+  THERMAL_EXPOSED_FRACTION,
+  thermalHorizonRadius,
+  THIRD_DEGREE_MORTALITY,
   WHOLE_PLANET_RADIUS_M,
+  type CasualtyPlan,
 } from './casualties.js';
 import { J, m as meters } from './units.js';
 
@@ -279,5 +283,83 @@ describe('blastCasualtyPlan — burns, mass fire, later deaths', () => {
     expect(est.deaths).toBe(est.promptDeaths + est.delayedDeaths);
     // Nobody dies twice: prompt deaths never exceed the population of a band.
     for (const band of est.bands) expect(band.promptDeaths).toBeLessThanOrEqual(band.population);
+  });
+});
+
+describe('the fireball sets: burns stop at the horizon', () => {
+  const CHICXULUB_CLASS = J(1.06e24); // a 15 km stone at 20 km/s
+
+  it('a fireball two hundred kilometres across is seen to about sixteen hundred', () => {
+    const rf = impactFireballRadius(CHICXULUB_CLASS) as number;
+    expect(rf).toBeGreaterThan(190_000);
+    expect(rf).toBeLessThan(215_000);
+    const horizon = thermalHorizonRadius(meters(rf));
+    expect(horizon).toBeGreaterThan(1_500_000);
+    expect(horizon).toBeLessThan(1_700_000);
+    // Nothing to see, nothing to cut.
+    expect(thermalHorizonRadius(meters(0))).toBe(Number.POSITIVE_INFINITY);
+  });
+
+  it('a nuclear fireball sets far beyond anything it can burn, so nothing is cut', () => {
+    const hiroshima = nuclearFireballRadius(J(15 * 4.184e12)) as number;
+    expect(hiroshima).toBeGreaterThan(120);
+    expect(hiroshima).toBeLessThan(220);
+    expect(thermalHorizonRadius(meters(hiroshima))).toBeGreaterThan(40_000);
+    // Tsar Bomba: 50 Mt, a 4 km fireball seen to a couple of hundred km,
+    // still past its ~100 km third-degree radius.
+    const tsar = nuclearFireballRadius(J(5e4 * 4.184e12)) as number;
+    expect(thermalHorizonRadius(meters(tsar))).toBeGreaterThan(200_000);
+  });
+
+  it('an impact-scale plan loses its antipodal burns and keeps the near ones', () => {
+    const shared = {
+      blastEnergy: J(CHICXULUB_CLASS * 0.5),
+      overpressure5psiRadius: meters(2_298_500),
+      overpressure1psiRadius: meters(6_754_800),
+      thirdDegreeBurnRadius: meters(27_488_100),
+      secondDegreeBurnRadius: meters(34_801_200),
+      firestormRadius: meters(31_756_400),
+    };
+    const unbounded = blastCasualtyPlan(shared);
+    const bounded = blastCasualtyPlan({
+      ...shared,
+      fireballRadius: impactFireballRadius(CHICXULUB_CLASS),
+    });
+    if (unbounded === null || bounded === null) throw new Error('plan');
+    const horizon = thermalHorizonRadius(impactFireballRadius(CHICXULUB_CLASS));
+
+    // Without the horizon the burns reach the whole planet: the
+    // outermost band lies past the 1 psi ring and still kills.
+    const farUnbounded = unbounded.bands[unbounded.bands.length - 1];
+    if (farUnbounded === undefined) throw new Error('band');
+    expect(farUnbounded.innerRadiusM).toBeGreaterThan(6_000_000);
+    expect(farUnbounded.mortality).toBeGreaterThan(0.3);
+
+    // With it, no band beyond the horizon carries heat at all, and the
+    // plan stops where the blast does.
+    for (const band of bounded.bands) {
+      const heat = (band.components ?? []).filter(
+        (c) => c.hazard === 'thermal' || c.hazard === 'firestorm'
+      );
+      if (0.5 * (band.innerRadiusM + band.outerRadiusM) > horizon) {
+        expect(heat).toHaveLength(0);
+      }
+    }
+    const farBounded = bounded.bands[bounded.bands.length - 1];
+    if (farBounded === undefined) throw new Error('band');
+    expect(farBounded.outerRadiusM).toBeCloseTo(6_754_800, 0);
+
+    // Close in, the flash still arrives and still kills.
+    const near = bounded.bands[0];
+    if (near === undefined) throw new Error('band');
+    expect((near.components ?? []).some((c) => c.hazard === 'thermal')).toBe(true);
+
+    // And the toll falls by the antipodal bands, not by a rounding.
+    const uniform = (plan: CasualtyPlan): number =>
+      estimateCasualties(
+        plan,
+        plan.bands.map((b) => 20 * Math.PI * (b.outerRadiusM / 1_000) ** 2)
+      ).deaths;
+    expect(uniform(bounded)).toBeLessThan(0.4 * uniform(unbounded));
   });
 });

@@ -162,3 +162,71 @@ v1.0.0` runs the full pipeline. The blockers are all human work
 announcement polish, scientific sign-off) and live in
 [docs/RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md). The OG-image worker
 is deferred.
+
+---
+
+## M8 — The toll, and what it still gets wrong _(open)_
+
+The casualty model landed on 8 September 2026: blast, burns, mass
+fire, later deaths, shaking, pyroclastic currents and the coastal toll
+of the wave, swept in time by a counter in the bar. What follows is
+what it does not yet do, worst first. Each item names the number it
+would move.
+
+### P1 — The freeze has a mitigation, not a diagnosis
+
+Andrea reports the page freezing occasionally: the panel keeps
+answering, the globe stops, only a reload clears it. One cause with
+that exact signature was found and closed — Cesium raises
+`renderError` and sets `useDefaultRenderLoop` to false, and nothing
+was listening, so nothing brought the loop back. `Globe.tsx` now
+restarts it up to five times with the reason on the console, and the
+close-up view is off, which removes a second WebGL context from the
+page.
+
+**That is a fix for _a_ cause, not proof it was _the_ cause.** Nobody
+has yet seen the console at the moment of a freeze. Before this is
+called done:
+
+- Ship the console message somewhere Andrea can read it after the
+  fact — the reason, the count, the scenario — rather than asking him
+  to have devtools open when it happens.
+- Watch for the other candidates the render loop cannot report: the
+  1.5–2.2 s long tasks measured during a Chicxulub evaluate, memory
+  growth across repeated simulations, and the tile-batch pauses on a
+  cold cache.
+- Reproduce it once. Until then the fix stands on a signature match.
+
+### P2 — The two amplitude laws
+
+The globe's veil spreads geometrically; a compact source's published
+far-field row carries dispersion. Both are right where they are used
+and neither survives in the other's territory, which is why forcing
+them together was measured and reverted. The real fix is dispersion
+inside the amplitude field with a scale length set by the source's
+wavelength rather than the fixed 2 500 km calibrated for megathrusts.
+Would move: Anak Krakatau's coastal toll, 8 700 against a recorded 437.
+
+### P3 — Caps the scalar path does not have
+
+The field clamps run-up at four times the arriving amplitude and the
+rim wave at the water depth; the scalar path clamps neither. A
+Chicxulub on Rome prints a source amplitude of 1 362 m in 200 m of
+water, and a coastal run-up of 495 m from a 40 m wave. Would move: two
+rows in every report of an impact into shallow water.
+
+### P4 — What the report says versus what the globe says
+
+A radius larger than the planet prints as a raw number in the outputs
+table where the globe's legend tags it GLOBAL, and "water depth at
+impact: 200 m" reads, for a city 27 km inland, as though Rome were
+submerged — it is the clamp on the tsunami basin depth, and the label
+does not say so.
+
+### P5 — Hazards still outside the count
+
+Fallout, initial radiation, famine and disease are excluded and
+declared. So is the climate collapse, which for a Chicxulub-class
+impact is the mechanism that kills most of the survivors: the report
+prints an EXTINCTION climate tier beside a toll that does not include
+a single death from it.

@@ -1322,6 +1322,15 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         citation: glasstoneDolan1977,
       },
       {
+        id: 'casualties-horizon',
+        name: 'The flash stops at the horizon',
+        formula:
+          'd = R⊕ · arccos(R⊕ / (R⊕ + R_f)); R_f = 0.002 · E^(1/3) (impact), 55 · W^0.4 m (nuclear)',
+        description:
+          "A fluence radius says how much heat would arrive with nothing in the way, and for an impact-scale fireball it runs around the planet — a 15 km stone has a third-degree radius of 27 000 km on a globe 20 015 km across. Thermal radiation travels in straight lines, so burns and mass fire are cut where the fireball sets below the curve of the Earth, the cut the Earth Impact Effects Program makes. A 200 km fireball is seen to 1 590 km; Hiroshima's to 46 km, so no nuclear scenario is touched. Heat does reach the far side, from rock re-entering everywhere at once (the cascade says so at +30 min), but that is a diffuse bath where shelter decides and not a flash where sightlines do: it is described, drawn, and deliberately not converted into deaths — Goldin & Melosh 2009 argue the ejecta shield their own radiation enough that the global firestorm may fizzle.",
+        citation: collins2005,
+      },
+      {
         id: 'casualties-firestorm',
         name: 'Mass fire',
         formula:
