@@ -1,10 +1,13 @@
 import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppStore } from '../../store/index.js';
+import { CLOSE_UP_VIEW_ENABLED, useAppStore } from '../../store/index.js';
 import styles from './ViewSwitch.module.css';
 
 /**
  * Globe ↔ close-up toggle.
+ *
+ * Hidden entirely while {@link CLOSE_UP_VIEW_ENABLED} is off, so the
+ * bar carries no control that leads to a view nobody wants running.
  *
  * Only rendered once a simulation exists that HAS a close-up: an
  * earthquake or a volcano has nothing to look at from ground level,
@@ -18,6 +21,7 @@ export function ViewSwitch(): JSX.Element | null {
   const result = useAppStore((s) => s.result);
   const transitionTo = useAppStore((s) => s.transitionTo);
 
+  if (!CLOSE_UP_VIEW_ENABLED) return null;
   const hasCloseUp = result?.type === 'impact' || result?.type === 'explosion';
   if (!hasCloseUp) return null;
   if (mode !== 'globe' && mode !== 'impact') return null;

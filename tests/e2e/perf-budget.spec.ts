@@ -41,9 +41,16 @@ test.describe('performance budget', () => {
   // the functional specs, developers keep the freeze detector.
   test.skip(!!process.env.CI, 'perf budget needs a real GPU — run locally');
 
+  // The spec waits 8 s for Cesium to settle and then samples 30 frames
+  // at the 4-5 FPS SwiftShader manages — fifteen seconds of deliberate
+  // waiting before anything is measured, inside Playwright's 30 s
+  // default. Run alone it fits; run beside the rest of the suite on a
+  // shared machine it does not, and the guard that exists to catch
+  // freezes was itself failing for want of time.
   test('Cesium globe never freezes for ≥5 s after a Chicxulub-class simulation', async ({
     page,
   }) => {
+    test.setTimeout(90_000);
     // Reduce-motion so the lazy crossfade between landing and globe
     // collapses; we want to measure render-loop FPS, not transition.
     await page.emulateMedia({ reducedMotion: 'reduce' });

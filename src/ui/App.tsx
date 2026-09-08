@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, type JSX } from 'react';
-import { useAppStore, useUrlStateSync } from '../store/index.js';
+import { CLOSE_UP_VIEW_ENABLED, useAppStore, useUrlStateSync } from '../store/index.js';
 import { TransitionOverlay } from './components/TransitionOverlay.js';
 import { LandingPage } from './pages/LandingPage.js';
 import { MethodologyPage } from './pages/MethodologyPage.js';
@@ -36,7 +36,7 @@ function CurrentView(): JSX.Element {
     );
   }
 
-  if (mode === 'impact') {
+  if (mode === 'impact' && CLOSE_UP_VIEW_ENABLED) {
     return (
       <Suspense fallback={null}>
         <ImpactView />

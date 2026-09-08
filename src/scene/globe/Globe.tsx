@@ -490,6 +490,12 @@ function ringCaption(kind: RingTooltipKind, radiusM: number, language: string): 
   return `${name} · ${formatRingRadius(radiusM, language)}`;
 }
 
+/** How many times a render error may take the loop down before the
+ *  globe stops trying to bring it back. A transient bad frame is
+ *  worth a restart; a driver that cannot compile a shader is not
+ *  worth an infinite one. */
+const MAX_RENDER_ERROR_RESTARTS = 5;
+
 export function Globe(): JSX.Element {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewerRef = useRef<Viewer | null>(null);
@@ -1025,6 +1031,43 @@ export function Globe(): JSX.Element {
       canvasEl.addEventListener('webglcontextlost', onContextLost, false);
       canvasEl.addEventListener('webglcontextrestored', onContextRestored, false);
 
+      // Render-error survival -----------------------------------------
+      // Context loss is the failure with a name; this is the one
+      // without. When anything throws inside Cesium's render — a
+      // shader that will not compile on this driver, a primitive with
+      // a degenerate geometry, an out-of-memory on a tile upload —
+      // Cesium raises `renderError` and sets `useDefaultRenderLoop`
+      // to false. The page stays alive, the panel still answers, and
+      // the globe never draws another frame: the freeze that only a
+      // reload clears. Nobody was listening, so nobody restarted it.
+      //
+      // A restart is worth trying: most of these are transient, a
+      // single bad frame during a tile batch. A permanent one would
+      // spin, so the loop is restarted a few times and then left
+      // down, with the reason on the console rather than a silent
+      // black globe.
+      let renderErrorCount = 0;
+      const removeRenderErrorListener = viewer.scene.renderError.addEventListener(
+        (_scene: unknown, error: unknown) => {
+          renderErrorCount += 1;
+          const v = viewerRef.current;
+          if (v === null || v.isDestroyed()) return;
+          if (renderErrorCount > MAX_RENDER_ERROR_RESTARTS) {
+            console.error(
+              `[Globe] render error ${renderErrorCount.toString()}; giving up on restarting the loop.`,
+              error
+            );
+            return;
+          }
+          console.warn(
+            `[Globe] render error ${renderErrorCount.toString()}; restarting the render loop.`,
+            error
+          );
+          v.useDefaultRenderLoop = true;
+          v.scene.requestRender();
+        }
+      );
+
       // Cesium's MOUSE_MOVE only fires while the cursor is over the
       // canvas. When the cursor crosses into an overlay (the
       // SimulatorPanel, the ring legend, a Radix dialog) no leave
@@ -1065,6 +1108,7 @@ export function Globe(): JSX.Element {
       ).__visTeardown = (): void => {
         canvasEl.removeEventListener('webglcontextlost', onContextLost, false);
         canvasEl.removeEventListener('webglcontextrestored', onContextRestored, false);
+        removeRenderErrorListener();
         canvasEl.removeEventListener('mouseleave', onCanvasLeave, false);
         resizeObserver?.disconnect();
         i18next.off('languageChanged', cityLanguageListener);

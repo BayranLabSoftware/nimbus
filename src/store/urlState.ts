@@ -5,6 +5,7 @@ import { VOLCANO_PRESETS } from '../physics/events/volcano/index.js';
 import { IMPACT_PRESETS } from '../physics/simulate.js';
 import { deg, degreesToRadians, kgPerM3, m, mps, radiansToDegrees } from '../physics/units.js';
 import type { AppStore, EventType, ViewMode } from './useAppStore.js';
+import { CLOSE_UP_VIEW_ENABLED } from './useAppStore.js';
 
 /**
  * Schema version. Bump when the URL keys or semantics change; older
@@ -206,7 +207,12 @@ export function decodeSearchParamsToIntent(search: URLSearchParams): DecodedStat
       : null;
 
   const rawMode = search.get(URL_KEYS.mode);
-  const mode = isViewMode(rawMode) ? rawMode : null;
+  // A link shared while the close-up existed must not reopen it once
+  // the view is off; it lands on the globe, which is where the
+  // simulation lives anyway.
+  const decodedMode = isViewMode(rawMode) ? rawMode : null;
+  const mode =
+    decodedMode === 'impact' && !CLOSE_UP_VIEW_ENABLED ? ('globe' as ViewMode) : decodedMode;
 
   const rawTime = numberParam(search, URL_KEYS.simTime);
   const simTime = rawTime !== null && rawTime >= 0 && rawTime < 1e7 ? rawTime : null;

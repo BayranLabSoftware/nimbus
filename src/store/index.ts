@@ -1,5 +1,6 @@
 export {
   TRANSITION_HALF_MS,
+  CLOSE_UP_VIEW_ENABLED,
   configurePopulationDensity,
   configurePopulationLookup,
   configureTerrainLoaders,

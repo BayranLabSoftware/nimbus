@@ -105,6 +105,19 @@ export interface Coordinates {
  *  ground level instead of from orbit. It is only meaningful for the
  *  event families that produce a fireball and a crater. */
 export type ViewMode = 'landing' | 'globe' | 'impact' | 'methodology' | 'report';
+
+/**
+ * Whether the ground-level close-up is offered at all.
+ *
+ * Off for now, at Andrea's request: the globe is the simulator, and
+ * the close-up was a second WebGL scene with its own renderer, its
+ * own clock and its own animation loop running beside it. Turning it
+ * off here hides the view switch, refuses `m=impact` from a shared
+ * link, and leaves the whole ImpactView chunk unimported — nothing of
+ * it is mounted, fetched or ticked. Flip this to true to bring it
+ * back; the view itself is untouched.
+ */
+export const CLOSE_UP_VIEW_ENABLED = false as boolean;
 export type SimulationStatus = 'idle' | 'running' | 'error';
 export type MonteCarloStatus = 'idle' | 'running' | 'error';
 export type TransitionPhase = 'idle' | 'fading-out' | 'fading-in';

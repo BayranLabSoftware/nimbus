@@ -9,7 +9,7 @@ import {
   URL_KEYS,
   URL_STATE_VERSION,
 } from './urlState.js';
-import { resetAppStore, useAppStore } from './useAppStore.js';
+import { CLOSE_UP_VIEW_ENABLED, resetAppStore, useAppStore } from './useAppStore.js';
 
 beforeEach(() => {
   resetAppStore();
@@ -188,11 +188,14 @@ describe('knownUrlKeys', () => {
 });
 
 describe('impact close-up mode in the URL', () => {
-  it('is accepted so a close-up link survives a reload', () => {
+  it('lands on the globe while the close-up is off, so an old link still opens', () => {
     const intent = decodeSearchParamsToIntent(
       new URLSearchParams('t=explosion&p=HIROSHIMA_1945&lat=27.89&lon=-81.59&m=impact')
     );
-    expect(intent.mode).toBe('impact');
+    expect(intent.mode).toBe(CLOSE_UP_VIEW_ENABLED ? 'impact' : 'globe');
+    // Whatever the flag says, the rest of the link survives intact.
+    expect(intent.preset).toBe('HIROSHIMA_1945');
+    expect(intent.location?.latitude).toBeCloseTo(27.89, 6);
   });
 
   it('round-trips through encode → decode', () => {
@@ -201,7 +204,9 @@ describe('impact close-up mode in the URL', () => {
       mode: 'impact',
     });
     expect(params.get(URL_KEYS.mode)).toBe('impact');
-    expect(decodeSearchParamsToIntent(params).mode).toBe('impact');
+    expect(decodeSearchParamsToIntent(params).mode).toBe(
+      CLOSE_UP_VIEW_ENABLED ? 'impact' : 'globe'
+    );
   });
 
   it('still rejects a mode that does not exist', () => {
