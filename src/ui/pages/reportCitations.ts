@@ -84,6 +84,14 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
   }
 
   if (result.tsunami) {
+    if (result.tsunami.seaCoupling.mechanism !== 'water') {
+      triggers.push(
+        cite(
+          'mcgetchin1973',
+          'Ejecta fraction beyond the shoreline — sea coupling of an inland impact.'
+        )
+      );
+    }
     triggers.push(cite('ward2000', 'Water-column cavity and 1/r reference envelope.'));
     triggers.push(
       cite('wunnemann2010', 'Rim-wave far field (eq. 9a) and published envelope (eqs. 7–8).')
@@ -93,6 +101,9 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
     triggers.push(
       cite('heidarzadehSatake2015', 'Far-field dispersion multiplier (DART-calibrated).')
     );
+  }
+  if ((result.damage.overpressure5psi as number) > 0) {
+    triggers.push(cite('ota1979', 'Blast mortality by overpressure band (casualty estimate).'));
   }
 
   return dedupe(triggers);
@@ -116,6 +127,10 @@ export function collectExplosionCitations(result: ExplosionScenarioResult): Trig
 
   if (result.emp.regime !== 'NEGLIGIBLE') {
     triggers.push(cite('longmire1978', 'Compton-current EMP model (source-region / HEMP).'));
+  }
+
+  if ((result.blast.overpressure5psiRadiusHob as number) > 0) {
+    triggers.push(cite('ota1979', 'Blast mortality by overpressure band (casualty estimate).'));
   }
 
   return dedupe(triggers);
@@ -150,6 +165,15 @@ export function collectEarthquakeCitations(result: EarthquakeScenarioResult): Tr
     triggers.push(cite('ward2000', 'Cylindrical wave spreading from the rupture source.'));
   }
 
+  if ((result.shaking.mmi7Radius as number) > 0) {
+    triggers.push(
+      cite(
+        'jaiswalWald2010',
+        'PAGER log-normal fatality rate by shaking intensity (casualty estimate).'
+      )
+    );
+  }
+
   return dedupe(triggers);
 }
 
@@ -178,6 +202,12 @@ export function collectVolcanoCitations(result: VolcanoScenarioResult): Triggere
     );
     triggers.push(
       cite('ganser1993', 'Terminal velocity of grain classes (Stokes → Newton regime).')
+    );
+  }
+
+  if ((result.pyroclasticRunout as number) > 0) {
+    triggers.push(
+      cite('auker2013', 'Mortality inside pyroclastic density currents (casualty estimate).')
     );
   }
 

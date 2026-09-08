@@ -59,9 +59,22 @@ post-v1.0 work:
 
 ### Data
 
-| File                      | Purpose                                     | Author        | Licence       | Source URL                                                                                     | Added      |
-| ------------------------- | ------------------------------------------- | ------------- | ------------- | ---------------------------------------------------------------------------------------------- | ---------- |
-| `public/data/cities.json` | City dots + names on the globe, city search | Natural Earth | Public domain | https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-populated-places/ (v5.1.x) | 2026-09-08 |
+| File                                         | Purpose                                                           | Author                                     | Licence       | Source URL                                                                                     | Added      |
+| -------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------ | ------------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `public/data/cities.json`                    | City dots + names on the globe, city search                       | Natural Earth                              | Public domain | https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-populated-places/ (v5.1.x) | 2026-09-08 |
+| `public/data/population-0p125.png` + `.json` | Population under planetary-scale damage rings (casualty estimate) | JRC GHSL — GHS-POP R2023A (Schiavina 2023) | CC-BY 4.0     | https://human-settlement.emergency.copernicus.eu/download.php?ds=pop                           | 2026-09-08 |
+
+`population-0p125.png` is the JRC GHS-POP 2020 30 arc-second global
+grid (GHSL R2023A) summed into 0.125° (≈ 14 km) cells by
+`scripts/build-population.ts` (`pnpm population:build <tif> [label]
+[url]`; the WorldPop 2020 1 km mosaic is the alternative input),
+stored as an 8-bit log-scale greyscale PNG (≈ 6.8 % quantisation
+step, decoded through a 2D canvas). Attribution required (CC-BY 4.0):
+"Schiavina M., Freire S., MacManus K. (2023): GHS-POP R2023A, European
+Commission, Joint Research Centre (JRC)"; the casualty panel prints
+the source line of whichever backend answered. The WorldPop
+zonal-statistics API credit is "WorldPop (www.worldpop.org — School of
+Geography and Environmental Science, University of Southampton)".
 
 Derived from the Natural Earth 1:10m Populated Places shapefile by
 `scripts/build-cities.ts` (`pnpm cities:build`): every place above
@@ -80,11 +93,12 @@ a courtesy.
 
 ### Network services
 
-| Service                   | Purpose                      | Licence / terms                         | Source URL                                                                | Added      |
-| ------------------------- | ---------------------------- | --------------------------------------- | ------------------------------------------------------------------------- | ---------- |
-| Esri World Imagery raster | Globe basemap in `Globe.tsx` | Free with attribution (Esri tile terms) | https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9 | 2026-08-27 |
-| AWS Terrain Tiles         | Bathymetry / DEM samples     | CC0                                     | https://registry.opendata.aws/terrain-tiles/                              | 2026-04-23 |
-| WorldPop 2020 1 km mosaic | Population exposure (COG)    | CC-BY-4.0 (academic, attribution req'd) | https://www.worldpop.org/                                                 | 2026-04-23 |
+| Service                       | Purpose                                                                | Licence / terms                         | Source URL                                                                | Added      |
+| ----------------------------- | ---------------------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------- | ---------- |
+| Esri World Imagery raster     | Globe basemap in `Globe.tsx`                                           | Free with attribution (Esri tile terms) | https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9 | 2026-08-27 |
+| AWS Terrain Tiles             | Bathymetry / DEM samples                                               | CC0                                     | https://registry.opendata.aws/terrain-tiles/                              | 2026-04-23 |
+| WorldPop 2020 1 km mosaic     | Population exposure (optional operator COG, `VITE_POPULATION_COG_URL`) | CC-BY-4.0 (attribution req'd)           | https://www.worldpop.org/                                                 | 2026-04-23 |
+| WorldPop zonal-statistics API | Population inside every damage band ≤ 100 000 km² (casualty estimate)  | CC-BY-4.0, free, no key, CORS `*`       | https://api.worldpop.org/v1/services/stats                                | 2026-09-08 |
 
 World Imagery compliance:
 

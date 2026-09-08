@@ -101,6 +101,30 @@ const wunnemann2010: Citation = {
   doi: '10.1029/2009RG000308',
 };
 
+const ota1979: Citation = {
+  authors: 'U.S. Congress, Office of Technology Assessment',
+  year: 1979,
+  title: 'The Effects of Nuclear War',
+  venue: 'OTA-NS-89, Washington, DC: U.S. Government Printing Office — ch. II, table 2',
+  doi: '',
+};
+
+const jaiswalWald2010: Citation = {
+  authors: 'Jaiswal, K. & Wald, D. J.',
+  year: 2010,
+  title: 'An empirical model for global earthquake fatality estimation',
+  venue: 'Earthquake Spectra 26 (4), 1017–1037',
+  doi: '10.1193/1.3480331',
+};
+
+const auker2013: Citation = {
+  authors: 'Auker, M. R., Sparks, R. S. J., Siebert, L., Crosweller, H. S. & Ewert, J.',
+  year: 2013,
+  title: 'A statistical analysis of the global historical volcanic fatalities record',
+  venue: 'Journal of Applied Volcanology 2, 2',
+  doi: '10.1186/2191-5040-2-2',
+};
+
 const toon1997: Citation = {
   authors: 'Toon, O. B., Zahnle, K., Morrison, D., Turco, R. P. & Covey, C.',
   year: 1997,
@@ -666,6 +690,15 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         citation: wunnemann2010,
       },
       {
+        id: 'impact-sea-coupling',
+        name: 'Inland impact: how the sea is reached',
+        formula:
+          'reach = max(R_rim, R_w, r_ejecta(1 m)) ;  f_sea = 1 for d ≤ max(R_rim, R_w), R_rim / d beyond ;  E_cavity = E · gf · f_water · f_sea',
+        description:
+          'An impact on land near a coast reaches the sea with its crater when the rim crosses the shoreline, or with the ejecta curtain falling into the water beyond it. The ejecta mass landing beyond a distance d follows McGetchin, Settle & Head 1973 (thickness ∝ (r/R)⁻³, so the fraction beyond d is R/d): that fraction scales the energy the water cavity forms with, continuously across the shoreline. Beyond the 1 m isopach the sea is not moved and no tsunami is emitted. The propagation then starts from the nearest deep-enough water in every compass sector within that reach — for an impact in Florida, the Gulf and the Atlantic at once.',
+        citation: mcgetchin1973,
+      },
+      {
         id: 'penetration-bonus',
         name: 'Pancake penetration bonus',
         formula: 'penetrationBonus = max(0, 1.2 · ln(D / 10 m) · H_scale)',
@@ -1212,25 +1245,50 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
   },
   {
     id: 'population',
-    title: 'Population exposure',
+    title: 'Population exposure and casualties',
     blurb:
-      'Cross-event overlay: how many people sit inside the headline damage circle of any scenario? Backed by client-side Cloud-Optimised GeoTIFF lookups against WorldPop or JRC GHSL — no shipped raster. The figure is exposure, not casualties.',
+      'Cross-event overlay: how many people sit inside each damage band, and how many of them the published vulnerability functions say would die. Population from WorldPop 2020 (zonal-statistics API) with a shipped 14 km GHS-POP aggregate for planetary rings; mortality from OTA 1979 for blast, USGS PAGER for shaking and Auker 2013 for pyroclastic flows, always with a low–high band.',
     entries: [
       {
         id: 'population-exposure-overlay',
         name: 'Population exposed inside damage radius',
         formula: 'exposed = Σ population(x, y) · 𝟙[(x − x_0)² + (y − y_0)² ≤ r²]',
         description:
-          'Sum of population-grid cells inside the headline damage circle. The browser fetches a Cloud-Optimised GeoTIFF via HTTP Range requests so only the bytes covering the damage bounding box come over the wire — no full raster ever ships. Currently backed by the WorldPop 2020 1 km mosaic (Tatem 2017); the JRC GHSL R2023A grid (Schiavina 2023) is the recommended CORS-enabled alternative when configured via `VITE_POPULATION_COG_URL`.',
+          'Sum of the WorldPop 2020 population inside a circle. The browser asks the WorldPop zonal-statistics API (api.worldpop.org, free, no key, CORS-enabled) for every ring up to its 100 000 km² allowance — a circle of ≈ 178 km — and sums a shipped 0.125° (≈ 14 km) aggregate of the JRC GHS-POP 2020 grid (Schiavina 2023) for larger rings and when the API is unreachable. An operator may point `VITE_POPULATION_COG_URL` at a CORS-enabled Cloud-Optimised GeoTIFF (WorldPop or JRC GHSL R2023A, Schiavina 2023) for 1 km resolution on every ring. Cell centres decide membership; rim cells are the ±few-percent noise floor.',
         citation: tatem2017,
       },
       {
-        id: 'population-vulnerability-disclaimer',
-        name: 'Exposure ≠ casualties',
-        formula: '(intentionally not implemented)',
+        id: 'casualties-blast',
+        name: 'Blast casualties (impacts, explosions)',
+        formula:
+          'deaths = Σ_band pop(band) · m(band) ;  m = 98 % (≥ 12 psi), 50 % (5–12), 5 % (2–5), 0 % (1–2) ;  injured: 2 / 40 / 45 / 25 %',
         description:
-          'The simulator deliberately stops at the population-exposure figure and does NOT convert it to a casualty count. Doing so would need a per-hazard vulnerability function — Glasstone & Dolan §12 lethality bands for blast, Wald & Quitoriano (1999) PAGER fragility curves for shaking — each with documented ±factor-2 scatter at the relevant magnitudes. Exposing a precise fatality figure built on top of those scatters would be the "neal.fun rainbow numbers" effect we explicitly want to avoid; the UI labels every population row as "esposti / exposed" so a reader knows the figure is the population sum, not the death toll.',
-        citation: schiavina2023,
+          "Office of Technology Assessment 1979, The Effects of Nuclear War, ch. II table 2 — the Hiroshima/Nagasaki-derived mortality by peak overpressure. Prompt blast, thermal and collapse together, nobody evacuated. The 12 and 2 psi radii are derived from the drawn 5 and 1 psi contours with the Kinney–Graham curve ratio at the event's yield. Band = the factor-2 scatter between studies of the two cities (Glasstone & Dolan 1977 ch. XII).",
+        citation: ota1979,
+      },
+      {
+        id: 'casualties-shaking',
+        name: 'Shaking casualties (earthquakes)',
+        formula: 'ν(S) = Φ(ln(S / θ) / β) ;  deaths = Σ_band pop(band) · ν(S_mid)',
+        description:
+          'The USGS PAGER empirical fatality model: a log-normal fatality rate in shaking intensity, fitted per country on 1973–2007 events. The simulator is not a country: the central estimate uses an average-stock pair (θ = 13.5, β = 0.22) and the band spans the published national fits, from earthquake-engineered stocks (θ ≈ 14.5, β = 0.12 — a few deaths per million at MMI VIII, Japan, the United States) to unreinforced masonry (θ ≈ 11.5, β = 0.30 — tens of per cent at IX, Iran, Haiti): three orders of magnitude, which is what not knowing the houses under the ring costs. Applied to the MMI ≥ IX, VIII and VII annuli at their mid-band intensity.',
+        citation: jaiswalWald2010,
+      },
+      {
+        id: 'casualties-pyroclastic',
+        name: 'Pyroclastic casualties (volcanoes)',
+        formula: 'deaths = 0.9 · pop(runout) + 0.9 · (sector / 360°) · pop(lateral-blast annulus)',
+        description:
+          'Pyroclastic density currents are the deadliest volcanic hazard in the historical record and people caught inside one almost never survive (Saint-Pierre 1902, Merapi 2010). Mortality inside the runout without evacuation is taken as 90 % (band 50–100 %); a lateral blast counts the same inside its sector. Ashfall at the 1 mm isopach kills nobody; lahars and tsunamis are not converted.',
+        citation: auker2013,
+      },
+      {
+        id: 'casualties-honesty',
+        name: 'What the death toll is not',
+        formula: 'order of magnitude, low–high band, sources on the label',
+        description:
+          'Every figure is prompt effects only — no evacuation, no warning, no fallout, no later fires, famine or disease, and no tsunami toll (counting people in a run-up field needs a coastal DEM and an inundation model the simulator does not have). Numbers are printed to two significant figures with their band, next to the vulnerability function and the population source that produced them.',
+        citation: ota1979,
       },
     ],
   },
@@ -1306,6 +1364,9 @@ export const CITATIONS = {
   ward2000,
   wunnemann2007,
   wunnemann2010,
+  ota1979,
+  jaiswalWald2010,
+  auker2013,
   toon1997,
   prinn1987,
   brittConsolmagno2003,

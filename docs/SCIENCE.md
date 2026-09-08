@@ -70,6 +70,36 @@ used.
   of oceanic impact-induced large water waves — re-evaluation of the
   tsunami hazard._ Meteoritics & Planetary Science 42, 1893–1903. The
   hydrocode runs behind the 2010 attenuation exponents.
+- **McGetchin, T. R., Settle, M., & Head, J. W. (1973).** _Radial
+  thickness variation in impact crater ejecta._ EPSL 20, 226–236.
+  Ejecta thickness ∝ (r/R)⁻³ — the fraction of ejecta falling beyond a
+  shoreline, which scales the sea coupling of an inland impact.
+
+### Casualties
+
+- **U.S. Congress, Office of Technology Assessment (1979).** _The
+  Effects of Nuclear War._ OTA-NS-89. Ch. II, table 2: mortality and
+  injury by peak overpressure (98 % at ≥ 12 psi, 50 % at 5 psi, 5 % at
+  2 psi), derived from Hiroshima and Nagasaki. Used for impacts and
+  explosions.
+- **Jaiswal, K., & Wald, D. J. (2010).** _An empirical model for global
+  earthquake fatality estimation._ Earthquake Spectra 26(4),
+  1017–1037. DOI:
+  [10.1193/1.3480331](https://doi.org/10.1193/1.3480331). The USGS
+  PAGER log-normal fatality rate ν(S) = Φ(ln(S/θ)/β).
+- **Auker, M. R., Sparks, R. S. J., Siebert, L., Crosweller, H. S., &
+  Ewert, J. (2013).** _A statistical analysis of the global historical
+  volcanic fatalities record._ J. Applied Volcanology 2, 2. DOI:
+  [10.1186/2191-5040-2-2](https://doi.org/10.1186/2191-5040-2-2).
+  Pyroclastic density currents as the deadliest volcanic hazard.
+- **Tatem, A. J. (2017).** _WorldPop, open data for spatial
+  demography._ Scientific Data 4, 170004. The population under every
+  band up to 100 000 km² (zonal-statistics API).
+- **Schiavina, M., Freire, S., & MacManus, K. (2023).** _GHS-POP
+  R2023A — GHS population grid multitemporal (1975–2030)._ European
+  Commission, JRC. DOI:
+  [10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE](https://doi.org/10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE).
+  The shipped 0.125° aggregate under planetary-scale rings.
 - **Watts, P. (2000).** _Tsunami Features of Solid Block Underwater
   Landslides._ J. Waterway Port Coastal Ocean Eng. 126(3), 144–152.
   Submarine-landslide source.
@@ -145,36 +175,41 @@ equation, the citation, and the declared 1σ scatter (used both by
 {@link src/physics/confidence.ts} for static bands and by the Monte
 Carlo wrappers for sampled inputs).
 
-| UI quantity               | File                                | Formula                                                                                     | Source                                     | 1σ        |
-| ------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------ | --------- |
-| Impactor kinetic energy   | events/impact/kinetic.ts            | E = ½ m v²                                                                                  | Newtonian                                  | inputs    |
-| Transient crater Ø        | events/impact/crater.ts             | D_tc = 1.161 (ρi/ρt)^⅓ L^0.78 v^0.44 g^-0.22 sinθ^⅓                                         | Collins et al. 2005, Eq. 21                | ±10%      |
-| Final crater Ø (simple)   | events/impact/crater.ts             | D = 1.25 D_tc                                                                               | Collins et al. 2005, Eq. 22                | ±5%       |
-| Final crater Ø (complex)  | events/impact/crater.ts             | D = 1.17 D_tc^1.13 D_c^-0.13                                                                | Collins et al. 2005, Eq. 27                | ±10%      |
-| Crater depth (simple)     | events/impact/crater.ts             | d = 0.196 D                                                                                 | Pike 1980, Table III                       | ±30%      |
-| Crater depth (complex)    | events/impact/crater.ts             | d = 1.044 D^0.301                                                                           | Pike 1980, Table III                       | ±30%      |
-| Seismic Mw from impact    | events/impact/seismic.ts            | Mw ≈ 0.67 log₁₀ E - 5.87                                                                    | Schultz & Gault 1975                       | ±0.3 Mw   |
-| Seismic moment Mw → M₀    | events/earthquake/seismicMoment.ts  | M₀ = 10^(1.5 Mw + 9.1) N·m                                                                  | Hanks & Kanamori 1979                      | ±0.1 Mw   |
-| MMI from PGA              | events/earthquake/intensity.ts      | MMI = piecewise a + b·log₁₀(PGA)                                                            | Worden et al. 2012                         | ±0.5 MMI  |
-| Rupture area from Mw      | events/earthquake/rupture.ts        | A = 10^(Mw - 4.0)                                                                           | Wells & Coppersmith 1994                   | ±0.3 dec  |
-| Aftershock rate (Omori)   | events/earthquake/aftershocks.ts    | n(t) = K (t + c)^-p                                                                         | Reasenberg & Jones 1989                    | ±factor 2 |
-| Plume height              | events/volcano/plumeHeight.ts       | H = 2.0 V̇^0.241                                                                             | Mastin et al. 2009                         | ±50%      |
-| VEI ↔ ejecta volume       | events/volcano/vei.ts               | VEI = log₁₀(V) - 4 (V in m³)                                                                | Newhall & Self 1982                        | discrete  |
-| Ashfall isopach           | events/volcano/ashfall.ts           | Suzuki 1983 column + Ganser 1993 fallout                                                    | Bonadonna & Phillips 2003                  | ±factor 2 |
-| Pyroclastic runout        | events/volcano/pyroclasticRunout.ts | L = 10 · V_km³^(1/3) (H/L ≈ 0.1)                                                            | Sheridan 1979 / Hayashi & Self 92          | ±70%      |
-| Lateral-blast wedge       | events/volcano/extendedEffects.ts   | Glicken 1996 directed-blast                                                                 | Glicken 1996                               | ±50%      |
-| Overpressure ring         | events/explosion/overpressure.ts    | P = f(W, R/W^⅓) Sadovsky                                                                    | Glasstone & Dolan 1977                     | ±15%      |
-| Thermal fluence           | events/explosion/thermal.ts         | Q = η Y / (4π R²) τ_atm                                                                     | Glasstone & Dolan 1977                     | ±25%      |
-| Firestorm ignition radius | events/explosion/firestorm.ts       | R s.t. Q(R) = 4.19e5 J/m²                                                                   | Glasstone & Dolan §7.40                    | ±30%      |
-| Tsunami cavity radius     | events/tsunami/impact.ts            | R_C = (3 E / 2π ρ g)^¼                                                                      | Ward & Asphaug 2000, Eq. 3                 | ±30%      |
-| Tsunami far-field (Ward)  | events/tsunami/impact.ts            | A(r) = A₀ R_C / r                                                                           | Ward & Asphaug 2000 §4                     | reference |
-| Tsunami far-field (best)  | events/tsunami/wunnemann.ts         | A_r = min(0.14 R_w, h)(R_w/r)^q_r, q_r = min(1.2, 0.5+2e^(−1.75L/h))                        | Wünnemann, Collins & Weiss 2010 eq. 9a/10a | ±factor 3 |
-| Tsunami far-field bounds  | events/tsunami/wunnemann.ts         | A_up = min(0.28 R_w, h) R_w/r ; A_low = min{A_r, A_c}, A_c = 0.06 min(R_w/3, h)(5R_w/r)^q_c | Wünnemann et al. 2010 eq. 7–8, 9b/10b      | envelope  |
-| Tsunami arrival time      | tsunami/fastMarching.ts             | eikonal `\|∇T\|² = 1/c²`, c = √(gh)                                                         | Sethian 1996                               | ±15%      |
-| Tsunami shoaling          | events/tsunami/propagation.ts       | A_s = A_d (h_d / h_s)^¼                                                                     | Green 1838                                 | ±25%      |
-| Tsunami runup             | events/tsunami/extendedEffects.ts   | R = 2.831 d √(cot β) (H/d)^(5/4)                                                            | Synolakis 1987                             | ±30%      |
-| Submarine landslide tsun. | events/volcano/tsunami.ts           | η₀ = K·(γ/γ_ref)·V^(1/3)·sinθ, γ = ρ_s/ρ_w − 1                                              | Watts 2000 (inspired)                      | ±factor 2 |
-| Atmospheric profile       | atmosphere/ussa1976.ts              | U.S. Standard Atmosphere 1976                                                               | NOAA-S/T 76-1562                           | ±5%       |
+| UI quantity                | File                                | Formula                                                                                     | Source                                     | 1σ        |
+| -------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------ | --------- |
+| Impactor kinetic energy    | events/impact/kinetic.ts            | E = ½ m v²                                                                                  | Newtonian                                  | inputs    |
+| Transient crater Ø         | events/impact/crater.ts             | D_tc = 1.161 (ρi/ρt)^⅓ L^0.78 v^0.44 g^-0.22 sinθ^⅓                                         | Collins et al. 2005, Eq. 21                | ±10%      |
+| Final crater Ø (simple)    | events/impact/crater.ts             | D = 1.25 D_tc                                                                               | Collins et al. 2005, Eq. 22                | ±5%       |
+| Final crater Ø (complex)   | events/impact/crater.ts             | D = 1.17 D_tc^1.13 D_c^-0.13                                                                | Collins et al. 2005, Eq. 27                | ±10%      |
+| Crater depth (simple)      | events/impact/crater.ts             | d = 0.196 D                                                                                 | Pike 1980, Table III                       | ±30%      |
+| Crater depth (complex)     | events/impact/crater.ts             | d = 1.044 D^0.301                                                                           | Pike 1980, Table III                       | ±30%      |
+| Seismic Mw from impact     | events/impact/seismic.ts            | Mw ≈ 0.67 log₁₀ E - 5.87                                                                    | Schultz & Gault 1975                       | ±0.3 Mw   |
+| Seismic moment Mw → M₀     | events/earthquake/seismicMoment.ts  | M₀ = 10^(1.5 Mw + 9.1) N·m                                                                  | Hanks & Kanamori 1979                      | ±0.1 Mw   |
+| MMI from PGA               | events/earthquake/intensity.ts      | MMI = piecewise a + b·log₁₀(PGA)                                                            | Worden et al. 2012                         | ±0.5 MMI  |
+| Rupture area from Mw       | events/earthquake/rupture.ts        | A = 10^(Mw - 4.0)                                                                           | Wells & Coppersmith 1994                   | ±0.3 dec  |
+| Aftershock rate (Omori)    | events/earthquake/aftershocks.ts    | n(t) = K (t + c)^-p                                                                         | Reasenberg & Jones 1989                    | ±factor 2 |
+| Plume height               | events/volcano/plumeHeight.ts       | H = 2.0 V̇^0.241                                                                             | Mastin et al. 2009                         | ±50%      |
+| VEI ↔ ejecta volume        | events/volcano/vei.ts               | VEI = log₁₀(V) - 4 (V in m³)                                                                | Newhall & Self 1982                        | discrete  |
+| Ashfall isopach            | events/volcano/ashfall.ts           | Suzuki 1983 column + Ganser 1993 fallout                                                    | Bonadonna & Phillips 2003                  | ±factor 2 |
+| Pyroclastic runout         | events/volcano/pyroclasticRunout.ts | L = 10 · V_km³^(1/3) (H/L ≈ 0.1)                                                            | Sheridan 1979 / Hayashi & Self 92          | ±70%      |
+| Lateral-blast wedge        | events/volcano/extendedEffects.ts   | Glicken 1996 directed-blast                                                                 | Glicken 1996                               | ±50%      |
+| Overpressure ring          | events/explosion/overpressure.ts    | P = f(W, R/W^⅓) Sadovsky                                                                    | Glasstone & Dolan 1977                     | ±15%      |
+| Thermal fluence            | events/explosion/thermal.ts         | Q = η Y / (4π R²) τ_atm                                                                     | Glasstone & Dolan 1977                     | ±25%      |
+| Firestorm ignition radius  | events/explosion/firestorm.ts       | R s.t. Q(R) = 4.19e5 J/m²                                                                   | Glasstone & Dolan §7.40                    | ±30%      |
+| Tsunami cavity radius      | events/tsunami/impact.ts            | R_C = (3 E / 2π ρ g)^¼                                                                      | Ward & Asphaug 2000, Eq. 3                 | ±30%      |
+| Tsunami far-field (Ward)   | events/tsunami/impact.ts            | A(r) = A₀ R_C / r                                                                           | Ward & Asphaug 2000 §4                     | reference |
+| Tsunami far-field (best)   | events/tsunami/wunnemann.ts         | A_r = min(0.14 R_w, h)(R_w/r)^q_r, q_r = min(1.2, 0.5+2e^(−1.75L/h))                        | Wünnemann, Collins & Weiss 2010 eq. 9a/10a | ±factor 3 |
+| Tsunami far-field bounds   | events/tsunami/wunnemann.ts         | A_up = min(0.28 R_w, h) R_w/r ; A_low = min{A_r, A_c}, A_c = 0.06 min(R_w/3, h)(5R_w/r)^q_c | Wünnemann et al. 2010 eq. 7–8, 9b/10b      | envelope  |
+| Inland-impact sea coupling | simulate.ts (tsunami block)         | reach = max(R_rim, R_w, r_ejecta 1 m); f_sea = min(1, max(R_rim, R_w)/d)                    | McGetchin et al. 1973 (r⁻³ ejecta)         | ±factor 2 |
+| Tsunami propagation seeds  | tsunami/sourcePlacement.ts          | nearest water ≥ 10 m, body ≥ 24 cells, per compass sector, planetary mask                   | —                                          | geometric |
+| Blast casualties           | casualties.ts                       | Σ pop(band) · m ; m = 98/50/5/0 % at ≥12/5/2/1 psi                                          | OTA 1979 table 2                           | ±factor 2 |
+| Shaking casualties         | casualties.ts                       | ν(S) = Φ(ln(S/θ)/β), θ = 13.5, β = 0.22 (band 14.5/0.12 – 11.5/0.30)                        | Jaiswal & Wald 2010 (PAGER)                | 3 orders  |
+| Pyroclastic casualties     | casualties.ts                       | 0.9 · pop(runout) + 0.9 · sector/360 · pop(blast annulus)                                   | Auker et al. 2013                          | 50–100 %  |
+| Tsunami arrival time       | tsunami/fastMarching.ts             | eikonal `\|∇T\|² = 1/c²`, c = √(gh)                                                         | Sethian 1996                               | ±15%      |
+| Tsunami shoaling           | events/tsunami/propagation.ts       | A_s = A_d (h_d / h_s)^¼                                                                     | Green 1838                                 | ±25%      |
+| Tsunami runup              | events/tsunami/extendedEffects.ts   | R = 2.831 d √(cot β) (H/d)^(5/4)                                                            | Synolakis 1987                             | ±30%      |
+| Submarine landslide tsun.  | events/volcano/tsunami.ts           | η₀ = K·(γ/γ_ref)·V^(1/3)·sinθ, γ = ρ_s/ρ_w − 1                                              | Watts 2000 (inspired)                      | ±factor 2 |
+| Atmospheric profile        | atmosphere/ussa1976.ts              | U.S. Standard Atmosphere 1976                                                               | NOAA-S/T 76-1562                           | ±5%       |
 
 **How to read the σ column.** Where σ is given as a percent it is the
 half-range of a symmetric 1σ Gaussian (or log-Gaussian) on the value;
@@ -182,6 +217,39 @@ half-range of a symmetric 1σ Gaussian (or log-Gaussian) on the value;
 σ_log = ln N). The σ column is the **published** scatter — propagation
 through the cascade is in `src/physics/uq/` (see Phase 3 of the
 [scientific-defensibility roadmap](./ROADMAP.md)).
+
+## Casualties (Phase 23)
+
+The population-exposure figure of earlier phases is now converted to
+an estimated death toll, per hazard family, with a low–high band and
+the assumptions printed on the label (prompt effects only, nobody
+evacuated, no tsunami / fallout / famine / disease):
+
+- **Population** — WorldPop 2020 through the zonal-statistics API
+  (`api.worldpop.org/v1/services/stats`, free, CORS-enabled, ≈ 15–45 s
+  per polygon, 100 000 km² per request) for rings up to ≈ 178 km, and
+  a shipped 0.125° aggregate of the JRC GHS-POP 2020 30″ grid
+  (`public/data/population-0p125.png`, built by
+  `scripts/build-population.ts`; the WorldPop 1 km mosaic is the
+  alternative input) for larger rings or when the API is unreachable.
+  `src/scene/populationLookup.ts`.
+- **Blast** (impacts, explosions) — OTA 1979 mortality by overpressure
+  band; the 12 and 2 psi radii derive from the drawn 5 / 1 psi contours
+  through the Kinney–Graham curve ratio at the event's yield.
+- **Shaking** (earthquakes) — PAGER log-normal rate at the mid-band
+  intensity of the MMI ≥ IX, VIII and VII annuli; central parameters
+  are an average building stock (θ = 13.5, β = 0.22), the band spans
+  the published national fits from earthquake-engineered (θ = 14.5,
+  β = 0.12) to unreinforced masonry (θ = 11.5, β = 0.30) — three
+  orders of magnitude, printed as such.
+- **Pyroclastic** (volcanoes) — 90 % inside the runout, the lateral
+  blast weighted by its sector.
+- **Tsunami, landslide** — not converted; the map shows where the wave
+  lands.
+
+`src/physics/casualties.ts` is pure and tested; the store fetches the
+cumulative population inside every band's outer radius and evaluates
+the plan (`runCasualtyLookup` in `src/store/useAppStore.ts`).
 
 ## Trans-oceanic tsunami propagation (Phase 11)
 
@@ -201,6 +269,18 @@ Fast-Marching eikonal solver, Green's-law shoaling and iso-amplitude
 extraction on **both** grids, returning a `result` object with both a
 local layer (existing Phase 7 behaviour) and an optional `result.global`
 layer (Phase 11 addition).
+
+**Where the wave starts (Phase 23).** The propagation seeds are found
+by `src/physics/tsunami/sourcePlacement.ts`: the nearest water at
+least 10 m deep (the solver's floor) belonging to a body of at least
+24 cells, in each of eight compass sectors within the event's reach,
+on the planetary mosaic at its own resolution and on the local tile
+vetted by the mosaic (a lake the tile shows as water is land on the
+mosaic). All seeds start at t = 0 and the arrival field is their
+minimum, so an impact in Florida raises the Gulf and the Atlantic in
+the same run. Earlier revisions moved an inland source to the nearest
+cell below −1 m — a lake or a 7 m bay from which the solver could not
+march — and the globe stayed mute while the legend listed a tsunami.
 
 **When the global layer activates:**
 

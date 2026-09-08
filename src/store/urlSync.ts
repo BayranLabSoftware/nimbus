@@ -10,7 +10,13 @@ import {
   fetchGlobalBathymetricMosaic,
   fetchTerrainGridForLocation,
 } from '../scene/terrainSampling.js';
-import { configureTerrainLoaders, useAppStore, type AppStore } from './useAppStore.js';
+import { populationInRadius } from '../scene/populationLookup.js';
+import {
+  configurePopulationLookup,
+  configureTerrainLoaders,
+  useAppStore,
+  type AppStore,
+} from './useAppStore.js';
 
 /**
  * Hydrate the app store from a URL (full or search-fragment) by
@@ -104,6 +110,9 @@ export function useUrlStateSync(): void {
       local: fetchTerrainGridForLocation,
       global: fetchGlobalBathymetricMosaic,
     });
+    // Same contract for the population backend behind the casualty
+    // estimate: registered here, never reached from unit tests.
+    configurePopulationLookup(populationInRadius);
 
     // Hydrate synchronously BEFORE subscribing, so the subscribe
     // callback never sees a partially-applied intermediate state and

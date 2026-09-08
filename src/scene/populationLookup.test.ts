@@ -1,0 +1,123 @@
+import { describe, expect, it } from 'vitest';
+import { _internals } from './populationLookup.js';
+
+const { circleAreaKm2, circleGeoJson, greatCircleM, decodeCell, sumCoarseRaster } = _internals;
+
+describe('populationLookup geometry', () => {
+  it('a 178 km circle is just under the WorldPop 100 000 km² allowance', () => {
+    expect(circleAreaKm2(178_000)).toBeLessThan(100_000);
+    expect(circleAreaKm2(180_000)).toBeGreaterThan(100_000);
+  });
+
+  it('the polygon has 49 vertices (closed ring) inside the map', () => {
+    const gj = circleGeoJson(25.77, -80.19, 50_000) as {
+      features: { geometry: { coordinates: [number, number][][] } }[];
+    };
+    const ring = gj.features[0]?.geometry.coordinates[0] ?? [];
+    expect(ring).toHaveLength(49);
+    expect(ring[0]).toEqual(ring[48]);
+    for (const [lon, lat] of ring) {
+      expect(Math.abs(lon)).toBeLessThanOrEqual(180);
+      expect(Math.abs(lat)).toBeLessThanOrEqual(90);
+    }
+  });
+
+  it('haversine: Rome–Naples ≈ 188 km', () => {
+    expect(greatCircleM(41.9, 12.5, 40.85, 14.27)).toBeGreaterThan(180_000);
+    expect(greatCircleM(41.9, 12.5, 40.85, 14.27)).toBeLessThan(195_000);
+  });
+
+  it('the log-scale cell encoding round-trips within its 7 % quantisation', () => {
+    const pMax = 2e7;
+    for (const p of [0, 1, 100, 12_345, 1_000_000, 2e7]) {
+      const v = Math.min(255, Math.round((255 * Math.log(1 + p)) / Math.log(1 + pMax)));
+      const back = decodeCell(v, pMax);
+      if (p === 0) expect(back).toBe(0);
+      else expect(Math.abs(back - p) / p).toBeLessThan(0.07);
+    }
+  });
+
+  it('sums coarse cells inside the circle and wraps across the antimeridian', () => {
+    // 1° cells, 360 × 180, one person per cell encoded on the log scale.
+    const meta = {
+      cellDeg: 1,
+      nLon: 360,
+      nLat: 180,
+      minLat: -90,
+      maxLat: 90,
+      minLon: -180,
+      maxLon: 180,
+      pMax: 2e7,
+      source: 'test',
+    };
+    const one = Math.round((255 * Math.log(2)) / Math.log(1 + meta.pMax));
+    const values = new Uint8Array(360 * 180).fill(one);
+    const raster = { meta, values };
+    // 250 km circle on the equator ≈ 20 cells of 111 km × 111 km.
+    const equator = sumCoarseRaster(raster, 0, 0, 250_000);
+    expect(equator).toBeGreaterThan(10);
+    expect(equator).toBeLessThan(30);
+    // The same circle straddling the antimeridian must count the same cells.
+    const dateline = sumCoarseRaster(raster, 0, 179.9, 250_000);
+    expect(Math.abs(dateline - equator)).toBeLessThanOrEqual(2);
+  });
+});
+
+describe('populationLookup polygons', () => {
+  const { ringAreaKm2, pointInRing, sumCoarseRasterRing } = _internals;
+
+  it('shoelace area of a 1° × 1° square at the equator ≈ 12 400 km²', () => {
+    const ring: [number, number][] = [
+      [0, 0],
+      [1, 0],
+      [1, 1],
+      [0, 1],
+      [0, 0],
+    ];
+    expect(ringAreaKm2(ring)).toBeGreaterThan(12_000);
+    expect(ringAreaKm2(ring)).toBeLessThan(12_800);
+  });
+
+  it('ray casting: inside / outside / on the far side', () => {
+    const ring: [number, number][] = [
+      [10, 40],
+      [12, 40],
+      [12, 42],
+      [10, 42],
+      [10, 40],
+    ];
+    expect(pointInRing(11, 41, ring)).toBe(true);
+    expect(pointInRing(13, 41, ring)).toBe(false);
+    expect(pointInRing(11, 43, ring)).toBe(false);
+  });
+
+  it('a stadium along the coast counts the coastal cells a circle at sea misses', () => {
+    // 1° cells; people only on the "coast" column lon ∈ [0, 1).
+    const meta = {
+      cellDeg: 1,
+      nLon: 360,
+      nLat: 180,
+      minLat: -90,
+      maxLat: 90,
+      minLon: -180,
+      maxLon: 180,
+      pMax: 2e7,
+      source: 'test',
+    };
+    const values = new Uint8Array(360 * 180);
+    const thousand = Math.round((255 * Math.log(1_001)) / Math.log(1 + meta.pMax));
+    for (let r = 0; r < 180; r++) values[r * 360 + 180] = thousand; // lon 0…1
+    const raster = { meta, values };
+    // A 2°-wide strip along the coast from lat 0 to 5.
+    const strip: [number, number][] = [
+      [-0.5, 0],
+      [1.5, 0],
+      [1.5, 5],
+      [-0.5, 5],
+      [-0.5, 0],
+    ];
+    const counted = sumCoarseRasterRing(raster, strip);
+    expect(counted).toBeGreaterThan(4 * 900);
+    expect(counted).toBeLessThan(6 * 1_100);
+  });
+});

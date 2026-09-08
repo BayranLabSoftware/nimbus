@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import {
   findNearbyOceanDepth,
-  findNearestWaterPoint,
   OCEAN_FLOOR_M,
   sampleElevation,
   sampleSlope,
@@ -14,7 +13,21 @@ import {
 } from '../physics/tsunami/index.js';
 import { distanceForOverpressure } from '../physics/events/impact/index.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
-import { populationInRadius, type PopulationLookupResult } from '../scene/populationLookup.js';
+import type {
+  PopulationLookupMethod,
+  PopulationLookupResult,
+  PopulationPolygon,
+} from '../scene/populationLookup.js';
+import { buildRuptureStadiumLatLon } from '../scene/stadiumPolygon.js';
+import {
+  blastCasualtyPlan,
+  estimateCasualties,
+  pyroclasticCasualtyPlan,
+  shakingCasualtyPlan,
+  type CasualtyEstimate,
+  type CasualtyPlan,
+} from '../physics/casualties.js';
+import { findPropagationSeeds, type PropagationSeed } from '../physics/tsunami/index.js';
 import { wrap, type Remote } from 'comlink';
 import {
   type EarthquakeMonteCarloMetrics,
@@ -334,6 +347,15 @@ export type ActiveMonteCarlo =
 
 export type ActiveLandslidePreset = LandslidePresetId | 'CUSTOM';
 
+export type CasualtyStatus = 'idle' | 'fetching' | 'error' | 'unsupported';
+
+export interface CasualtyResult extends CasualtyEstimate {
+  /** Human-readable population source. */
+  source: string;
+  /** Coarsest backend that contributed a band. */
+  method: PopulationLookupMethod;
+}
+
 export interface AppStore {
   // --- Event selection -------------------------------------------------
   eventType: EventType;
@@ -393,6 +415,13 @@ export interface AppStore {
   /** Status of the population fetch — drives a tiny spinner in the
    *  result panel. 'idle' both before any run and after success. */
   populationStatus: 'idle' | 'fetching' | 'error';
+  /** Estimated dead and injured — WorldPop counts inside each hazard
+   *  band times a published vulnerability function (OTA 1979 blast,
+   *  PAGER shaking, Auker 2013 pyroclastic). See src/physics/casualties.ts.
+   *  Null while pending, when unavailable, or for event families the
+   *  model does not cover (`casualtyStatus` says which). */
+  casualties: CasualtyResult | null;
+  casualtyStatus: CasualtyStatus;
   /** Optional Monte-Carlo P10/P50/P90 summary. Populated only when
    *  the user explicitly triggers `evaluateMonteCarlo` — the default
    *  single-shot `evaluate` leaves this as `null`. */
@@ -549,6 +578,8 @@ type InitialSlice = Pick<
   | 'bathymetricTsunami'
   | 'populationExposure'
   | 'populationStatus'
+  | 'casualties'
+  | 'casualtyStatus'
   | 'monteCarlo'
   | 'monteCarloStatus'
   | 'deepDive'
@@ -629,6 +660,8 @@ function initialState(): InitialSlice {
     bathymetricTsunami: null,
     populationExposure: null,
     populationStatus: 'idle',
+    casualties: null,
+    casualtyStatus: 'idle',
     monteCarlo: null,
     monteCarloStatus: 'idle',
     deepDive: null,
@@ -730,14 +763,6 @@ const COASTAL_OCEAN_SEARCH_RADIUS_M = 5_000;
  * dentro quell'anello, l'onda parte. Sotto i 5 km resta il valore
  * storico, così i casi costieri già tarati non cambiano.
  */
-/** Energia dell'evento in joule, qualunque sia il tipo: serve a
- *  decidere fin dove il mare viene ancora sollevato. */
-function energiaEventoJoule(result: ActiveResult): number {
-  if (result.type === 'impact') return result.data.impactor.kineticEnergy;
-  if (result.type === 'explosion') return result.data.yield.joules;
-  return 0;
-}
-
 function coastalSearchRadiusForYield(yieldJoules: number): number {
   if (!Number.isFinite(yieldJoules) || yieldJoules <= 0) {
     return COASTAL_OCEAN_SEARCH_RADIUS_M;
@@ -752,58 +777,101 @@ function coastalSearchRadiusForYield(yieldJoules: number): number {
 
 export function gateImpactByTerrain(
   data: ImpactScenarioResult,
-  isOpenWater: boolean,
-  isCoastalSynth: boolean,
-  /** Distanza REALE della riva più vicina (m). L'onda è credibile se
-   *  la cavità arriva fino all'acqua: confrontarla col raggio di
-   *  RICERCA (che può valere centinaia di km) chiedeva l'impossibile e
-   *  scartava anche gli tsunami veri — è il difetto che ha lasciato
-   *  senza onda un impatto da 295 Gt sulla costa della Florida. */
-  shoreDistanceM: number = COASTAL_OCEAN_SEARCH_RADIUS_M
+  isOpenWater: boolean
 ): ImpactScenarioResult {
-  let gated: ImpactScenarioResult = data;
-  if (isOpenWater) {
-    gated = {
-      ...gated,
-      firestorm: {
-        ...gated.firestorm,
-        ignitionRadius: m(0),
-        sustainRadius: m(0),
-        ignitionArea: sqm(0),
-      },
-      seismic: {
-        ...gated.seismic,
-        liquefactionRadius: m(0),
-      },
-    };
+  // The coastal credibility rule lives in the physics now: the store
+  // hands `shoreDistance` to simulateImpact and the tsunami block is
+  // emitted only when crater, cavity or the 1 m ejecta isopach reach
+  // the sea (see the sea-coupling block there). This gate only zeroes
+  // the terrestrial-only effects of an open-water strike.
+  if (!isOpenWater) return data;
+  return {
+    ...data,
+    firestorm: {
+      ...data.firestorm,
+      ignitionRadius: m(0),
+      sustainRadius: m(0),
+      ignitionArea: sqm(0),
+    },
+    seismic: {
+      ...data.seismic,
+      liquefactionRadius: m(0),
+    },
+  };
+}
+
+/**
+ * Dove comincia il mare per un impatto sulla terraferma.
+ *
+ * I semi di propagazione (`findPropagationSeeds`) rispondono alla
+ * domanda giusta: acqua abbastanza profonda da farci correre l'onda e
+ * abbastanza estesa da essere un bacino — non il lago di Winter Haven,
+ * non il St Johns, non una baia di sette metri. Cercati sul mosaico
+ * planetario (che decide cos'è mare) e sulla tessera locale vagliata
+ * dal mosaico; il più vicino dà la distanza dalla riva che la fisica
+ * usa per decidere se e quanto l'evento arriva al mare. La profondità
+ * del bacino è la mediana del mare intorno, non quella della cella di
+ * riva.
+ */
+const IMPACT_SEA_SEARCH_M = 2_500_000;
+
+function nearestSeaForImpact(
+  local: ElevationGrid,
+  global: ElevationGrid | null,
+  location: Coordinates
+): { distanceM: number; basinDepthM: number } | null {
+  // Shoreline, not solver floor: for the coupling question any
+  // sea-connected water counts — a bay a few metres deep is where the
+  // crater rim meets the sea — so the search runs at 1 m with a body
+  // large enough to exclude ponds and rivers (≈ 75 km² on the tile),
+  // and lets the planetary mask vouch through its neighbouring cells
+  // (a bay's own 40 km cell averages to land).
+  const shoreline = {
+    maxRadiusM: IMPACT_SEA_SEARCH_M,
+    minDepthM: 1,
+    minBodyCells: 200,
+    seaMaskNeighbourhoodCells: 1,
+  };
+  const seeds: PropagationSeed[] = [
+    ...findPropagationSeeds(local, location.latitude, location.longitude, {
+      ...shoreline,
+      ...(global !== null && { seaMask: global }),
+    }),
+    ...(global !== null
+      ? findPropagationSeeds(global, location.latitude, location.longitude, {
+          maxRadiusM: IMPACT_SEA_SEARCH_M,
+          minDepthM: 1,
+        })
+      : []),
+  ].sort((a, b) => a.distanceM - b.distanceM);
+  const nearest = seeds[0];
+  if (nearest === undefined) return null;
+  const depthGrid = global ?? local;
+  const basin =
+    findNearbyOceanDepth(
+      depthGrid,
+      location.latitude,
+      location.longitude,
+      Math.max(50_000, nearest.distanceM * 2)
+    ) ?? nearest.depthM;
+  return { distanceM: nearest.distanceM, basinDepthM: basin };
+}
+
+/**
+ * Fin dove cercare i semi di propagazione per un risultato. Per un
+ * impatto è la portata che la fisica ha già calcolato (cratere, cavità
+ * o isopaca di 1 m degli ejecta); per un'esplosione il raggio dei
+ * 5 psi; per gli altri eventi, che nascono in mare, basta il vicinato.
+ */
+function propagationReachFor(result: ActiveResult): number {
+  if (result.type === 'impact' && result.data.tsunami !== undefined) {
+    return Math.min(IMPACT_SEA_SEARCH_M, Math.max(5_000, result.data.tsunami.seaCoupling.reach));
   }
-  // Coastal-synth tsunami credibility check. The store synthesises a
-  // ~200 m water depth when the click is on land within 5 km of the
-  // sea, which handles Chicxulub-class events (cavity ~150 km easily
-  // engulfs the surrounding shelf). For small impactors the cavity
-  // is far smaller than that 5 km gap and the bubble never reaches
-  // the water — Tunguska on Sicily produces a ~1 km cavity that
-  // wouldn't generate a wave. Keep the synthesised result only when
-  // the cavity actually couples to the basin.
-  if (isCoastalSynth && gated.tsunami !== undefined) {
-    // Che cosa deve arrivare all'acqua. La cavità è la bolla che
-    // l'impatto scaverebbe SE cadesse in mare; a terra, ciò che
-    // raggiunge davvero la riva è il CRATERE. Pesare solo la cavità
-    // scartava casi limite reali: 295 Gt sulla costa della Florida
-    // danno una cavità di 9 km contro una riva a 10 — respinto —
-    // mentre il cratere ha raggio 11,6 km e la costa se la mangia.
-    const cavity = gated.tsunami.cavityRadius as number;
-    const craterRim = gated.damage.craterRim as number;
-    const portata = Math.max(
-      Number.isFinite(cavity) ? cavity : 0,
-      Number.isFinite(craterRim) ? craterRim : 0
-    );
-    if (portata <= 0 || portata < shoreDistanceM) {
-      const { tsunami: _dropped, ...rest } = gated;
-      gated = rest;
-    }
+  if (result.type === 'explosion') {
+    return coastalSearchRadiusForYield(result.data.yield.joules);
   }
-  return gated;
+  const meta = extractTsunamiMeta(result);
+  return Math.max(50_000, meta !== null ? meta.sourceCavityRadiusM * 3 : 0);
 }
 
 /**
@@ -965,6 +1033,23 @@ export function configureTerrainLoaders(loaders: TerrainLoaders | null): void {
   terrainLoaders = loaders;
 }
 
+/** Population-inside-a-circle backend the casualty estimate runs on
+ *  (WorldPop API / coarse raster, see src/scene/populationLookup.ts).
+ *  Registered by the app shell like the terrain loaders; unit tests
+ *  leave it unset and the estimate simply stays idle. */
+export type PopulationLookup = (
+  latitude: number,
+  longitude: number,
+  radiusM: number,
+  polygon?: PopulationPolygon
+) => Promise<PopulationLookupResult | null>;
+
+let populationLookup: PopulationLookup | null = null;
+
+export function configurePopulationLookup(lookup: PopulationLookup | null): void {
+  populationLookup = lookup;
+}
+
 /** How long a Launch waits for the planetary mosaic before going
  *  ahead with the local tile only. Generous for a slow connection,
  *  short enough that a stalled fetch never holds the button hostage;
@@ -1075,32 +1160,53 @@ async function computeBathymetricLayerForResult(
     // forwarding it lets the Globe render the wave-height
     // heatmap on top of the arrival contours.
     const tsunamiMeta = extractTsunamiMeta(result);
-    // Dove nasce l'onda. Se il punto colpito è terraferma —
-    // un'esplosione o un impatto nell'entroterra che comunque
-    // solleva il mare vicino — la propagazione NON può partire da
-    // lì: il campo dei tempi d'arrivo è definito solo sull'acqua e
-    // uscirebbe vuoto, lasciando una mappa muta con la sola
-    // cavità disegnata. La sorgente si sposta quindi sul punto di
-    // mare più vicino, che è il luogo fisico in cui l'energia
-    // entra nell'oceano.
-    const sorgente = (() => {
-      const clic = { lat: ctx.location.latitude, lon: ctx.location.longitude };
-      const z = gridCoversLocation(ctx.elevationGrid, ctx.location)
-        ? sampleElevation(ctx.elevationGrid, clic.lat, clic.lon)
-        : undefined;
-      if (z === undefined || z < OCEAN_FLOOR_M) return clic;
-      const raggio = coastalSearchRadiusForYield(energiaEventoJoule(result));
-      const mare =
-        findNearestWaterPoint(ctx.elevationGrid, clic.lat, clic.lon, raggio) ??
-        (ctx.globalBathymetricGrid !== null
-          ? findNearestWaterPoint(ctx.globalBathymetricGrid, clic.lat, clic.lon, raggio)
-          : null);
-      return mare === null ? clic : { lat: mare.latitude, lon: mare.longitude };
-    })();
+    // Dove nasce l'onda. Se il punto colpito è terraferma la
+    // propagazione non può partire da lì: il campo dei tempi d'arrivo
+    // è definito solo sull'acqua. I semi sono il punto di mare
+    // percorribile più vicino in ogni settore di bussola entro la
+    // portata dell'evento — per la Florida il Golfo E l'Atlantico —
+    // cercati sul mosaico planetario alla sua risoluzione e sulla
+    // tessera locale vagliata dal mosaico (un lago che la tessera
+    // mostra come acqua non lo è). Tutti partono a t = 0.
+    const reachM = propagationReachFor(result);
+    const globalSeeds: PropagationSeed[] =
+      ctx.globalBathymetricGrid !== null
+        ? findPropagationSeeds(
+            ctx.globalBathymetricGrid,
+            ctx.location.latitude,
+            ctx.location.longitude,
+            { maxRadiusM: reachM }
+          )
+        : [];
+    const localSeeds: PropagationSeed[] = findPropagationSeeds(
+      ctx.elevationGrid,
+      ctx.location.latitude,
+      ctx.location.longitude,
+      {
+        maxRadiusM: reachM,
+        ...(ctx.globalBathymetricGrid !== null && { seaMask: ctx.globalBathymetricGrid }),
+      }
+    );
+    const primary = localSeeds[0] ?? globalSeeds[0];
+    if (primary === undefined) {
+      if (import.meta.env.DEV) {
+        console.info(
+          `[store] bathymetric tsunami: no propagable sea within ${(reachM / 1_000).toFixed(0)} km — layer skipped`
+        );
+      }
+      return null;
+    }
+    if (import.meta.env.DEV) {
+      console.info(
+        `[store] tsunami seeds: ${localSeeds.length.toString()} local, ${globalSeeds.length.toString()} global (reach ${(reachM / 1_000).toFixed(0)} km, nearest ${(primary.distanceM / 1_000).toFixed(0)} km)`
+      );
+    }
     bathymetricTsunami = await sim.computeBathymetricTsunami({
       grid: ctx.elevationGrid,
-      sourceLatitude: sorgente.lat,
-      sourceLongitude: sorgente.lon,
+      sourceLatitude: primary.latitude,
+      sourceLongitude: primary.longitude,
+      seeds: localSeeds,
+      globalSeeds,
       ...(tsunamiMeta !== null && {
         sourceAmplitudeM: tsunamiMeta.sourceAmplitudeM,
         sourceCavityRadiusM: tsunamiMeta.sourceCavityRadiusM,
@@ -1134,6 +1240,154 @@ async function computeBathymetricLayerForResult(
     );
   }
   return bathymetricTsunami;
+}
+
+/**
+ * Which casualty model applies to a result, and its bands. Impacts and
+ * explosions: OTA 1979 blast bands anchored on the drawn 5 / 1 psi
+ * contours (HOB-corrected for explosions). Earthquakes: PAGER shaking
+ * bands on the MMI VII / VIII / IX radii (point-source circles even for
+ * extended ruptures — the stadium footprint is inside the VII circle).
+ * Volcanoes: the pyroclastic runout and the lateral-blast sector.
+ * Landslides: nothing — their only hazard is the tsunami, which the
+ * model does not convert.
+ */
+function casualtyPlanForResult(result: ActiveResult, location: Coordinates): CasualtyPlan | null {
+  switch (result.type) {
+    case 'impact':
+      return blastCasualtyPlan({
+        blastEnergy: result.data.impactor.kineticEnergy,
+        overpressure5psiRadius: result.data.damage.overpressure5psi,
+        overpressure1psiRadius: result.data.damage.overpressure1psi,
+      });
+    case 'explosion':
+      return blastCasualtyPlan({
+        blastEnergy: result.data.yield.joules,
+        overpressure5psiRadius: result.data.blast.overpressure5psiRadiusHob,
+        overpressure1psiRadius: result.data.blast.overpressure1psiRadiusHob,
+      });
+    case 'earthquake': {
+      const plan = shakingCasualtyPlan({
+        mmi7Radius: result.data.shaking.mmi7Radius,
+        mmi8Radius: result.data.shaking.mmi8Radius,
+        mmi9Radius: result.data.shaking.mmi9Radius,
+      });
+      // Extended source: the MMI contours are the rupture stadium the
+      // globe draws, not circles round the epicentre — an offshore
+      // megathrust's VIII band runs 500 km along the coast while a
+      // circle of the same radius sits at sea and counts nobody.
+      if (plan !== null && result.data.isExtendedSource) {
+        const halfL = (result.data.ruptureLength as number) / 2;
+        const halfW = (result.data.ruptureWidth as number) / 2;
+        const strike = result.data.inputs.strikeAzimuthDeg ?? 0;
+        for (const band of plan.bands) {
+          band.polygon = buildRuptureStadiumLatLon({
+            centerLatDeg: location.latitude,
+            centerLonDeg: location.longitude,
+            strikeAzimuthDeg: strike,
+            halfLengthAlongStrikeM: halfL,
+            halfWidthAcrossStrikeM: halfW,
+            contourRadiusM: band.outerRadiusM,
+          });
+        }
+      }
+      return plan;
+    }
+    case 'volcano':
+      return pyroclasticCasualtyPlan({
+        pyroclasticRunout: result.data.pyroclasticRunout,
+        ...(result.data.lateralBlast !== undefined && {
+          lateralBlastRunout: result.data.lateralBlast.runout,
+          lateralBlastSectorDeg: result.data.lateralBlast.sectorAngleDeg,
+        }),
+      });
+    case 'landslide':
+      return null;
+  }
+}
+
+const METHOD_RANK: Record<PopulationLookupMethod, number> = {
+  cog: 0,
+  'worldpop-api': 1,
+  'coarse-raster': 2,
+};
+
+/**
+ * Fetch the population inside every band (and the headline exposure
+ * ring), then turn the plan into an estimate. Every radius is queried
+ * once; the population backend caches and throttles. Stale guard: a
+ * newer result in the store means this run's numbers are dropped.
+ */
+async function runCasualtyLookup(
+  result: ActiveResult,
+  plan: CasualtyPlan | null,
+  headline: { radiusM: number; label: string } | null,
+  location: Coordinates,
+  get: () => AppStore,
+  set: (partial: Partial<AppStore>) => void
+): Promise<void> {
+  const lookup = populationLookup;
+  if (lookup === null) {
+    set({ populationStatus: 'idle', casualtyStatus: 'idle' });
+    return;
+  }
+  // One query per distinct footprint: bands keyed by radius plus
+  // polygon, the headline ring by radius alone (it is a circle even
+  // when the bands are stadiums).
+  const queryKey = (radiusM: number, polygon?: PopulationPolygon): string =>
+    polygon === undefined
+      ? `r:${radiusM.toString()}`
+      : `p:${radiusM.toString()}:${polygon.length.toString()}`;
+  const queries = new Map<string, { radiusM: number; polygon?: PopulationPolygon }>();
+  if (plan !== null) {
+    for (const band of plan.bands) {
+      queries.set(queryKey(band.outerRadiusM, band.polygon), {
+        radiusM: band.outerRadiusM,
+        ...(band.polygon !== undefined && { polygon: band.polygon }),
+      });
+    }
+  }
+  if (headline !== null) {
+    queries.set(queryKey(headline.radiusM), { radiusM: headline.radiusM });
+  }
+  const lookups = new Map<string, PopulationLookupResult | null>();
+  try {
+    await Promise.all(
+      [...queries].map(async ([key, q]) => {
+        lookups.set(key, await lookup(location.latitude, location.longitude, q.radiusM, q.polygon));
+      })
+    );
+  } catch (err) {
+    console.warn('[populationLookup] dispatch failed:', err);
+  }
+  if (get().result !== result) return; // superseded by a newer evaluate
+
+  if (headline !== null) {
+    const hit = lookups.get(queryKey(headline.radiusM)) ?? null;
+    set(
+      hit === null
+        ? { populationExposure: null, populationStatus: 'error' }
+        : { populationExposure: { ...hit, ringLabel: headline.label }, populationStatus: 'idle' }
+    );
+  }
+  if (plan === null) return;
+  const cumulative: number[] = [];
+  let method: PopulationLookupMethod = 'cog';
+  let source = '';
+  for (const band of plan.bands) {
+    const hit = lookups.get(queryKey(band.outerRadiusM, band.polygon)) ?? null;
+    if (hit === null) {
+      set({ casualties: null, casualtyStatus: 'error' });
+      return;
+    }
+    cumulative.push(hit.exposed);
+    if (METHOD_RANK[hit.method] > METHOD_RANK[method]) method = hit.method;
+    source = hit.source;
+  }
+  set({
+    casualties: { ...estimateCasualties(plan, cumulative), source, method },
+    casualtyStatus: 'idle',
+  });
 }
 
 /** Pick the most representative damage radius for the population
@@ -1225,6 +1479,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
       bathymetricTsunami: null,
       populationExposure: null,
       populationStatus: 'idle',
+      casualties: null,
+      casualtyStatus: 'idle',
       monteCarlo: null,
       monteCarloStatus: 'idle',
       status: 'idle',
@@ -1278,6 +1534,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
         deepDive: null,
@@ -1299,6 +1557,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
         deepDive: null,
@@ -1320,6 +1580,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
         deepDive: null,
@@ -1341,6 +1603,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
         deepDive: null,
@@ -1362,6 +1626,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
         deepDive: null,
@@ -1411,6 +1677,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
         deepDive: null,
@@ -1446,6 +1714,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
         deepDive: null,
@@ -1481,6 +1751,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
         deepDive: null,
@@ -1518,6 +1790,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
         deepDive: null,
@@ -1552,6 +1826,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
         deepDive: null,
@@ -1692,26 +1968,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
               )
             : undefined;
         const impactClickIsOpenWater = impactClickZ !== undefined && impactClickZ < OCEAN_FLOOR_M;
-        // Coastal-synthesis flag — true when the click cell itself is
-        // land but we faked a water depth from a nearby ocean cell.
-        // Used downstream by gateImpactByTerrain to decide whether the
-        // computed cavity is large enough for a tsunami to be physically
-        // credible (small impactors don't reach the sea even when it's
-        // 5 km away; Chicxulub-class events do).
-        let impactClickIsCoastalSynth = false;
-        /** Distanza dalla riva più vicina (m). Infinito se non c'è
-         *  acqua entro il raggio in cui l'evento la potrebbe muovere. */
-        let impactShoreDistanceM = Number.POSITIVE_INFINITY;
-        // Stessa regola dell'esplosione: quanto lontano l'impatto
-        // solleva ancora il mare. L'energia cinetica si ricava dagli
-        // ingressi (massa dalla densità e dal diametro), perché qui la
-        // simulazione non è ancora stata eseguita.
-        const impattoRaggio = (impactInput.impactorDiameter as number) / 2;
-        const impattoMassa =
-          (4 / 3) * Math.PI * impattoRaggio ** 3 * (impactInput.impactorDensity as number);
-        const impactSearchRadiusM = coastalSearchRadiusForYield(
-          0.5 * impattoMassa * (impactInput.impactVelocity as number) ** 2
-        );
         if (
           impactInput.waterDepth === undefined &&
           impactClickZ !== undefined &&
@@ -1721,54 +1977,23 @@ export const useAppStore = create<AppStore>((set, get) => ({
           if (impactClickIsOpenWater) {
             impactInput = { ...impactInput, waterDepth: m(-impactClickZ) };
           } else {
-            // Coastal land: search a 5 km lattice for ocean. If found,
-            // synthesise a 200 m basin depth so the simulator's
-            // tsunami branch fires and writes a cavity radius. The
-            // post-process gate in gateImpactByTerrain then drops the
-            // tsunami when the cavity is too small to reach the
-            // surrounding water — preserves realism for a Tunguska on
-            // Sicily while letting a Chicxulub-class event on the
-            // Yucatán shore still produce its mega-tsunami.
-            const coastalDepth =
-              findNearbyOceanDepth(
-                state.elevationGrid,
-                state.location.latitude,
-                state.location.longitude,
-                impactSearchRadiusM
-              ) ??
-              (state.globalBathymetricGrid !== null
-                ? findNearbyOceanDepth(
-                    state.globalBathymetricGrid,
-                    state.location.latitude,
-                    state.location.longitude,
-                    impactSearchRadiusM
-                  )
-                : null);
-
-            // Quanto dista davvero la riva: è il numero contro cui va
-            // pesata la credibilità dell'onda. Confrontare la cavità
-            // col RAGGIO DI RICERCA (fino a centinaia di km) chiedeva
-            // l'impossibile e scartava anche gli tsunami veri.
-            const acqua =
-              findNearestWaterPoint(
-                state.elevationGrid,
-                state.location.latitude,
-                state.location.longitude,
-                impactSearchRadiusM
-              ) ??
-              (state.globalBathymetricGrid !== null
-                ? findNearestWaterPoint(
-                    state.globalBathymetricGrid,
-                    state.location.latitude,
-                    state.location.longitude,
-                    impactSearchRadiusM
-                  )
-                : null);
-            impactShoreDistanceM = acqua === null ? Number.POSITIVE_INFINITY : acqua.distanceM;
-            if (coastalDepth !== null) {
-              const cappedDepth = Math.min(coastalDepth, 200);
-              impactInput = { ...impactInput, waterDepth: m(cappedDepth) };
-              impactClickIsCoastalSynth = true;
+            // Impatto sulla terraferma. Il mare più vicino che un'onda può
+            // attraversare (non un lago, non un fiume) dà la distanza dalla
+            // riva; la fisica decide se cratere, cavità o coltre di ejecta
+            // lo raggiungono e quanta energia entra in acqua. La profondità
+            // sintetica resta tappata a 200 m: è la piattaforma su cui la
+            // cavità si forma, non l'abisso oltre.
+            const sea = nearestSeaForImpact(
+              state.elevationGrid,
+              state.globalBathymetricGrid,
+              state.location
+            );
+            if (sea !== null) {
+              impactInput = {
+                ...impactInput,
+                waterDepth: m(Math.min(sea.basinDepthM, 200)),
+                shoreDistance: m(sea.distanceM),
+              };
             }
           }
         }
@@ -1787,12 +2012,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
         const impactData = await sim.simulateImpact(impactInput);
         result = {
           type: 'impact',
-          data: gateImpactByTerrain(
-            impactData,
-            impactClickIsOpenWater,
-            impactClickIsCoastalSynth,
-            impactShoreDistanceM
-          ),
+          data: gateImpactByTerrain(impactData, impactClickIsOpenWater),
         };
       } else if (state.eventType === 'explosion') {
         // Auto-derive waterDepth from bathymetry (same pattern as
@@ -1966,39 +2186,30 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami,
         populationExposure: null,
         populationStatus: 'fetching',
+        casualties: null,
+        casualtyStatus: 'idle',
         status: 'idle',
         lastEvaluatedAt: Date.now(),
         lastEvaluatedAtLocation: state.location,
       });
 
-      // Kick off the COG-backed population lookup as fire-and-forget.
-      // The deterministic physics result is already in the store —
-      // population is a downstream enrichment that the UI shows when
-      // (and if) it lands. A failure inside populationInRadius writes
-      // null + 'error' status; we never block the simulator on it.
+      // Casualties + exposure, fire-and-forget. The physics result is
+      // already in the store; WorldPop takes 15–45 s per band and the
+      // UI shows the estimate when (and if) it lands. A failure writes
+      // 'error'; nothing here ever blocks the simulator.
+      const plan = state.location !== null ? casualtyPlanForResult(result, state.location) : null;
       const headline = headlineRingForResult(result);
-      if (state.location !== null && headline !== null) {
-        const target = headline;
-        const targetLocation = state.location;
-        void populationInRadius(targetLocation.latitude, targetLocation.longitude, target.radiusM)
-          .then((res) => {
-            const current = get();
-            if (current.result !== result) return; // stale — superseded by a newer evaluate
-            if (res === null) {
-              set({ populationExposure: null, populationStatus: 'error' });
-              return;
-            }
-            set({
-              populationExposure: { ...res, ringLabel: target.label },
-              populationStatus: 'idle',
-            });
-          })
-          .catch((err: unknown) => {
-            console.warn('[populationLookup] dispatch failed:', err);
-            set({ populationExposure: null, populationStatus: 'error' });
-          });
+      if (state.location === null || (plan === null && headline === null)) {
+        set({
+          populationStatus: 'idle',
+          casualtyStatus: plan === null ? 'unsupported' : 'idle',
+        });
       } else {
-        set({ populationStatus: 'idle' });
+        set({
+          populationStatus: headline !== null ? 'fetching' : 'idle',
+          casualtyStatus: plan === null ? 'unsupported' : 'fetching',
+        });
+        void runCasualtyLookup(result, plan, headline, state.location, get, set);
       }
     } catch (err) {
       // Same cancellation guard as the success path: if a newer
@@ -2013,6 +2224,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         bathymetricTsunami: null,
         populationExposure: null,
         populationStatus: 'idle',
+        casualties: null,
+        casualtyStatus: 'idle',
         monteCarlo: null,
       });
     }

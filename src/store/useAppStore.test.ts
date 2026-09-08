@@ -5,6 +5,7 @@ import { IMPACT_PRESETS } from '../physics/simulate.js';
 import { makeElevationGrid, type ElevationGrid } from '../physics/elevation/index.js';
 import {
   TRANSITION_HALF_MS,
+  configurePopulationLookup,
   configureTerrainLoaders,
   resetAppStore,
   useAppStore,
@@ -296,4 +297,66 @@ describe('useAppStore — terrain before physics', () => {
     // Same physics result — only the propagation layer was completed.
     expect(useAppStore.getState().result).toBe(result);
   }, 30_000);
+});
+
+describe('useAppStore — casualty estimate', () => {
+  afterEach(() => {
+    configurePopulationLookup(null);
+  });
+
+  it('stays idle when no population backend is registered (unit tests, offline builds)', async () => {
+    useAppStore.getState().selectPreset('HIROSHIMA_1945');
+    useAppStore.getState().setLocation({ latitude: 40.85, longitude: 14.27 });
+    await useAppStore.getState().evaluate();
+    await vi.waitFor(() => {
+      expect(useAppStore.getState().casualtyStatus).toBe('idle');
+    });
+    expect(useAppStore.getState().casualties).toBeNull();
+  });
+
+  it('turns the population inside each blast band into deaths, injured and exposure', async () => {
+    // A uniform city of 5 000 people per km²: population ∝ area.
+    configurePopulationLookup((lat, lon, radiusM) =>
+      Promise.resolve({
+        exposed: Math.round(5_000 * Math.PI * (radiusM / 1_000) ** 2),
+        source: 'test',
+        method: 'worldpop-api' as const,
+        radiusM,
+        bbox: { minLat: lat, maxLat: lat, minLon: lon, maxLon: lon },
+      })
+    );
+    useAppStore.getState().selectPreset('HIROSHIMA_1945');
+    useAppStore.getState().setLocation({ latitude: 40.85, longitude: 14.27 });
+    await useAppStore.getState().evaluate();
+    await vi.waitFor(
+      () => {
+        expect(useAppStore.getState().casualties).not.toBeNull();
+      },
+      { timeout: 10_000 }
+    );
+    const c = useAppStore.getState().casualties;
+    if (c === null) throw new Error('casualties');
+    expect(c.model).toBe('blast');
+    expect(c.bands).toHaveLength(4);
+    expect(c.deaths).toBeGreaterThan(0);
+    expect(c.deathsLow).toBeLessThan(c.deaths);
+    expect(c.deathsHigh).toBeGreaterThan(c.deaths);
+    expect(c.injured).toBeGreaterThan(0);
+    // Exposure = everyone inside the 1 psi ring, and the population
+    // exposure row reports the 5 psi ring from the same lookups.
+    const r1 = c.bands[3]?.outerRadiusM ?? 0;
+    expect(c.exposed).toBe(Math.round(5_000 * Math.PI * (r1 / 1_000) ** 2));
+    expect(useAppStore.getState().populationExposure?.ringLabel).toBe(
+      'population.ring.overpressure5psi'
+    );
+    expect(useAppStore.getState().casualtyStatus).toBe('idle');
+  });
+
+  it('reports unsupported for a landslide, whose only hazard is the tsunami', async () => {
+    configurePopulationLookup(() => Promise.resolve(null));
+    useAppStore.getState().selectEventType('landslide');
+    useAppStore.getState().setLocation({ latitude: 63, longitude: 4 });
+    await useAppStore.getState().evaluate();
+    expect(useAppStore.getState().casualtyStatus).toBe('unsupported');
+  });
 });

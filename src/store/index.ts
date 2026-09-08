@@ -1,5 +1,6 @@
 export {
   TRANSITION_HALF_MS,
+  configurePopulationLookup,
   configureTerrainLoaders,
   resetAppStore,
   useAppStore,
@@ -13,6 +14,8 @@ export {
   type AnyPresetId,
   type AppStore,
   type CameraRequest,
+  type CasualtyResult,
+  type CasualtyStatus,
   type Coordinates,
   type EventType,
   type MonteCarloStatus,
@@ -20,6 +23,7 @@ export {
   type ExplosionInputOverrides,
   type ImpactInputOverrides,
   type VolcanoInputOverrides,
+  type PopulationLookup,
   type SimulationStatus,
   type TerrainLoaders,
   type TransitionPhase,

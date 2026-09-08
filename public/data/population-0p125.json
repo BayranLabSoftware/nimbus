@@ -1,0 +1,16 @@
+{
+  "source": "GHS-POP 2020 30 arc-second (GHSL R2023A, JRC), aggregated to 0.125°, CC-BY 4.0",
+  "url": "https://human-settlement.emergency.copernicus.eu/download.php?ds=pop",
+  "cellDeg": 0.125,
+  "nLon": 2880,
+  "nLat": 1440,
+  "minLat": -90,
+  "maxLat": 90,
+  "minLon": -180,
+  "maxLon": 180,
+  "encoding": "v = round(255 · ln(1 + P) / ln(1 + pMax)); P = exp(v · ln(1 + pMax) / 255) − 1",
+  "pMax": 20000000,
+  "totalPopulation": 7840952947,
+  "maxCellPopulation": 7412488,
+  "builtAt": "2026-09-08T14:56:52.274Z"
+}

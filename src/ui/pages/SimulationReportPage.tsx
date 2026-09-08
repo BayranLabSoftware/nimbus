@@ -16,6 +16,7 @@ import type { ImpactScenarioResult } from '../../physics/simulate.js';
 import { joulesToMegatons, radiansToDegrees } from '../../physics/units.js';
 import { useAppStore, type ActiveResult } from '../../store/index.js';
 import { CascadeTimeline } from '../components/CascadeTimeline.js';
+import { CasualtiesPanel } from '../components/CasualtiesPanel.js';
 import { METHODOLOGY_SECTIONS } from './methodologyContent.js';
 import {
   collectReportCitations,
@@ -155,6 +156,10 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
       {
         label: 'Tsunami A @ 1 000 km (Wünnemann 2010 envelope)',
         value: `${(r.tsunami.amplitudeAt1000kmLower as number).toFixed(2)} – ${(r.tsunami.amplitudeAt1000kmUpper as number).toFixed(2)} m`,
+      },
+      {
+        label: 'Sea coupling',
+        value: `${r.tsunami.seaCoupling.mechanism} · shore ${fmtKm(r.tsunami.seaCoupling.shoreDistance)} · ${(r.tsunami.seaCoupling.fraction * 100).toFixed(0)} % of the water-coupled energy`,
       },
       {
         label: 'Rim-wave height at cavity rim',
@@ -568,8 +573,8 @@ export function SimulationReportPage(): JSX.Element {
   const { t } = useTranslation();
   const result = useAppStore((s) => s.result);
   const bathymetricTsunami = useAppStore((s) => s.bathymetricTsunami);
-  const populationExposure = useAppStore((s) => s.populationExposure);
-  const populationStatus = useAppStore((s) => s.populationStatus);
+  const casualties = useAppStore((s) => s.casualties);
+  const casualtyStatus = useAppStore((s) => s.casualtyStatus);
   const lastEvaluatedAt = useAppStore((s) => s.lastEvaluatedAt);
   const location = useAppStore((s) => s.location);
   const setMode = useAppStore((s) => s.setMode);
@@ -681,30 +686,9 @@ export function SimulationReportPage(): JSX.Element {
           </dl>
         </section>
 
-        {(populationExposure !== null || populationStatus !== 'idle') && (
+        {(casualties !== null || casualtyStatus !== 'idle') && (
           <section className={styles.section}>
-            <h2>{t('population.label')}</h2>
-            {populationStatus === 'fetching' && (
-              <p className={styles.sectionIntro}>{t('population.loading')}</p>
-            )}
-            {populationStatus === 'error' && populationExposure === null && (
-              <p className={styles.sectionIntro}>{t('population.unavailable')}</p>
-            )}
-            {populationExposure !== null && (
-              <>
-                <dl className={styles.fields}>
-                  <div className={styles.fieldRow}>
-                    <dt>{t(populationExposure.ringLabel)}</dt>
-                    <dd>{populationExposure.exposed.toLocaleString()}</dd>
-                  </div>
-                  <div className={styles.fieldRow}>
-                    <dt>{t('report.meta.location')}</dt>
-                    <dd>r = {fmtKm(populationExposure.radiusM)}</dd>
-                  </div>
-                </dl>
-                <p className={styles.sectionIntro}>{t('population.disclaimer')}</p>
-              </>
-            )}
+            <CasualtiesPanel casualties={casualties} status={casualtyStatus} compact={false} />
           </section>
         )}
 

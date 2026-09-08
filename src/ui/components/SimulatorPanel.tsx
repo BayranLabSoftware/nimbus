@@ -37,6 +37,7 @@ import {
 } from '../utils/numberFormat.js';
 import { CascadeTimeline } from './CascadeTimeline.js';
 import { CitationTooltip } from './CitationTooltip.js';
+import { CasualtiesPanel } from './CasualtiesPanel.js';
 import { CitySearch } from './CitySearch.js';
 import { EarthquakeCustomInputs } from './EarthquakeCustomInputs.js';
 import { ExplosionCustomInputs } from './ExplosionCustomInputs.js';
@@ -435,8 +436,8 @@ export function SimulatorPanel(): JSX.Element {
   const deepDiveStatus = useAppStore((s) => s.deepDiveStatus);
   const deepDiveError = useAppStore((s) => s.deepDiveError);
   const simulationStatus = useAppStore((s) => s.status);
-  const populationExposure = useAppStore((s) => s.populationExposure);
-  const populationStatus = useAppStore((s) => s.populationStatus);
+  const casualties = useAppStore((s) => s.casualties);
+  const casualtyStatus = useAppStore((s) => s.casualtyStatus);
 
   const handleEventTypeChange = (event: ChangeEvent<HTMLInputElement>): void => {
     selectEventType(event.target.value as EventType);
@@ -997,6 +998,15 @@ export function SimulatorPanel(): JSX.Element {
                         meters={result.data.tsunami.amplitudeAt5000kmWunnemann}
                         field="tsunamiWunnemannFarField"
                       />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.tsunamiSeaCoupling')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.seaCoupling')}>
+                      {t(`simulator.seaCoupling.${result.data.tsunami.seaCoupling.mechanism}`, {
+                        distance: formatKilometres(result.data.tsunami.seaCoupling.shoreDistance),
+                        fraction: (result.data.tsunami.seaCoupling.fraction * 100).toFixed(0),
+                      })}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.tsunamiRimWaveSource')}</dt>
@@ -1591,11 +1601,8 @@ export function SimulatorPanel(): JSX.Element {
           </>
         )}
 
-        {result !== null && (populationExposure !== null || populationStatus !== 'idle') && (
-          <PopulationExposurePanel
-            populationExposure={populationExposure}
-            populationStatus={populationStatus}
-          />
+        {result !== null && (casualties !== null || casualtyStatus !== 'idle') && (
+          <CasualtiesPanel casualties={casualties} status={casualtyStatus} />
         )}
 
         {monteCarlo !== null && <MonteCarloPanel mc={monteCarlo} />}
@@ -1603,55 +1610,6 @@ export function SimulatorPanel(): JSX.Element {
         {deepDive !== null && <DeepDivePanel dd={deepDive} />}
       </div>
     </aside>
-  );
-}
-
-/**
- * Population-exposure summary block — surfaces the WorldPop COG
- * lookup result (or its loading / unavailable status) right next to
- * the damage rings, so the user reads "≥ 5 psi: 1.2 M people" inline
- * with the simulation rather than having to navigate to the dedicated
- * report page.
- *
- * "Exposed" is deliberately not "casualties": the figure is the sum
- * of population inside the headline damage circle, not the projected
- * fatality count. Converting exposure to fatalities needs a
- * vulnerability function (Glasstone §12 for blast, Wald & Quitoriano
- * 1999 for shaking) which is out of scope for this layer — the
- * disclaimer is rendered alongside the number to keep the framing
- * honest.
- */
-function PopulationExposurePanel({
-  populationExposure,
-  populationStatus,
-}: {
-  populationExposure: { exposed: number; ringLabel: string; radiusM: number } | null;
-  populationStatus: 'idle' | 'fetching' | 'error';
-}): JSX.Element {
-  const { t } = useTranslation();
-  return (
-    <section className={styles.result} aria-label={t('population.label')}>
-      <h3 className={styles.resultLabel} style={{ marginTop: 0 }}>
-        {t('population.label')}
-      </h3>
-      {populationStatus === 'fetching' && <p>{t('population.loading')}</p>}
-      {populationStatus === 'error' && populationExposure === null && (
-        <p>{t('population.unavailable')}</p>
-      )}
-      {populationExposure !== null && (
-        <>
-          <dl className={styles.result}>
-            <dt className={styles.resultLabel}>{t(populationExposure.ringLabel)}</dt>
-            <dd className={styles.resultValue}>
-              <strong>{populationExposure.exposed.toLocaleString()}</strong>
-            </dd>
-            <dt className={styles.resultLabel}>{t('population.radius')}</dt>
-            <dd className={styles.resultValue}>{formatKilometres(populationExposure.radiusM)}</dd>
-          </dl>
-          <p className={styles.mcFooter}>{t('population.disclaimer')}</p>
-        </>
-      )}
-    </section>
   );
 }
 

@@ -7,6 +7,23 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Estimated casualties.** WorldPop 2020 population inside every
+  hazard band (zonal-statistics API up to 100 000 km², a shipped
+  0.125° GHS-POP aggregate beyond) times published vulnerability
+  functions:
+  OTA 1979 mortality by overpressure for impacts and explosions, the
+  USGS PAGER log-normal rate for earthquakes, Auker 2013 for
+  pyroclastic flows. Central figure with a low–high band, per-band
+  breakdown in the report, assumptions on the label. Tsunami and
+  landslide tolls are not converted.
+- **Inland impacts reach the sea.** The physics now takes the
+  shoreline distance: the sea is within reach of crater, water cavity
+  or the 1 m ejecta isopach, and the energy entering it is scaled by
+  the McGetchin ejecta fraction beyond the shore. Propagation starts
+  from the nearest deep-enough water in every compass sector — the
+  Gulf and the Atlantic at once for a Chicxulub in Florida — with a
+  multi-seed fast-marching solver, and lakes, rivers and shallow bays
+  are no longer mistaken for the sea (they left the globe mute).
 - **Cities on the globe.** Natural Earth 1:10m populated places
   (public domain, ≈ 4 000 places) drawn as terrain-clamped dots and
   names, densified by Natural Earth's own label zoom tiers, in the UI

@@ -24,14 +24,14 @@ const CHICXULUB_OCEAN = simulateImpact(IMPACT_PRESETS.CHICXULUB_OCEAN.input);
 
 describe('gateImpactByTerrain', () => {
   it('hands back the original result when the click is on land and tsunami is absent', () => {
-    const out = gateImpactByTerrain(CHICXULUB_LAND, false, false);
+    const out = gateImpactByTerrain(CHICXULUB_LAND, false);
     expect(out).toBe(CHICXULUB_LAND);
   });
 
   it('zeroes firestorm + liquefaction when the click is in open water', () => {
     expect(CHICXULUB_OCEAN.firestorm.ignitionRadius as number).toBeGreaterThan(0);
     expect(CHICXULUB_OCEAN.seismic.liquefactionRadius as number).toBeGreaterThan(0);
-    const out = gateImpactByTerrain(CHICXULUB_OCEAN, true, false);
+    const out = gateImpactByTerrain(CHICXULUB_OCEAN, true);
     expect(out.firestorm.ignitionRadius as number).toBe(0);
     expect(out.firestorm.sustainRadius as number).toBe(0);
     expect(out.firestorm.ignitionArea as number).toBe(0);
@@ -39,58 +39,106 @@ describe('gateImpactByTerrain', () => {
   });
 
   it('preserves crater + tsunami output for an oceanic impact', () => {
-    const out = gateImpactByTerrain(CHICXULUB_OCEAN, true, false);
+    const out = gateImpactByTerrain(CHICXULUB_OCEAN, true);
     expect(out.crater.finalDiameter as number).toBeGreaterThan(0);
     expect(out.tsunami).not.toBeNull();
     expect(out.tsunami).toEqual(CHICXULUB_OCEAN.tsunami);
   });
 
-  it('keeps the tsunami on a Chicxulub-class coastal-synth click (cavity engulfs the basin)', () => {
-    // Build a Chicxulub-class result with the synthetic 200 m basin
-    // depth the store would use for a coastal click. The cavity is on
-    // the order of 150 km — well past the 5 km credibility threshold.
+  // The coastal credibility rule moved into the physics: the sea is
+  // within reach of an impact on land when the crater rim, the water
+  // cavity or the 1 m ejecta isopach crosses the shoreline, and the
+  // energy entering the water is scaled by the ejecta fraction that
+  // lands beyond it (McGetchin 1973). The store now only hands the
+  // shoreline distance over; the gate here just leaves land results
+  // alone.
+  it('leaves a coastal-synth result untouched — the physics already decided', () => {
     const synth = simulateImpact({
       ...IMPACT_PRESETS.CHICXULUB.input,
       waterDepth: m(200),
+      shoreDistance: m(85_000),
     });
     expect(synth.tsunami).toBeDefined();
-    const out = gateImpactByTerrain(synth, false, true);
-    expect(out.tsunami).toBeDefined();
-    expect(out.tsunami?.cavityRadius as number | undefined).toBeGreaterThan(5_000);
+    expect(gateImpactByTerrain(synth, false)).toBe(synth);
+  });
+});
+
+describe('impact sea coupling (shoreDistance)', () => {
+  it('Chicxulub 70 km inland (Winter Haven → Tampa Bay): the 82 km crater rim reaches the sea, full coupling', () => {
+    const r = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(200),
+      shoreDistance: m(70_000),
+    });
+    expect(r.tsunami).toBeDefined();
+    expect(r.tsunami?.seaCoupling.mechanism).toBe('crater');
+    expect(r.tsunami?.seaCoupling.fraction).toBe(1);
   });
 
-  it('drops the tsunami on a Tunguska-class coastal-synth click (cavity never reaches the sea)', () => {
-    const synth = simulateImpact({
+  it('Chicxulub 85 km inland: just past the rim, the ejecta couple ≈ 97 % of the energy', () => {
+    const r = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(200),
+      shoreDistance: m(85_000),
+    });
+    expect(r.tsunami?.seaCoupling.mechanism).toBe('ejecta');
+    expect(r.tsunami?.seaCoupling.fraction).toBeGreaterThan(0.9);
+    expect(r.tsunami?.seaCoupling.fraction).toBeLessThan(1);
+  });
+
+  it('Chicxulub 1 000 km inland (Kansas): the ejecta still reach the Gulf, coupling ≈ R/d', () => {
+    const coast = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(200),
+      shoreDistance: m(0),
+    });
+    const kansas = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(200),
+      shoreDistance: m(1_000_000),
+    });
+    expect(kansas.tsunami).toBeDefined();
+    expect(kansas.tsunami?.seaCoupling.mechanism).toBe('ejecta');
+    const f = kansas.tsunami?.seaCoupling.fraction ?? 0;
+    expect(f).toBeGreaterThan(0.03);
+    expect(f).toBeLessThan(0.2);
+    // Less energy in the water → smaller cavity, but a fourth root away.
+    const cavityCoast = coast.tsunami?.cavityRadius as number;
+    const cavityKansas = kansas.tsunami?.cavityRadius as number;
+    expect(cavityKansas).toBeLessThan(cavityCoast);
+    expect(cavityKansas / cavityCoast).toBeCloseTo(f ** 0.25, 2);
+  });
+
+  it('beyond the 1 m ejecta isopach the sea is not moved: no tsunami block', () => {
+    const r = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(200),
+      shoreDistance: m(20_000_000),
+    });
+    expect(r.tsunami).toBeUndefined();
+  });
+
+  it('Tunguska-class on Sicily: no crater, no ejecta, no tsunami 5 km from the coast', () => {
+    const r = simulateImpact({
       ...IMPACT_PRESETS.TUNGUSKA.input,
       waterDepth: m(200),
+      shoreDistance: m(5_000),
     });
-    // The simulator may or may not emit a tiny cavity here — the
-    // gate just has to drop it in either case for the coastal-synth
-    // flag.
-    const out = gateImpactByTerrain(synth, false, true);
-    expect(out.tsunami).toBeUndefined();
+    expect(r.tsunami).toBeUndefined();
   });
 
-  // Regressione: il report di un impatto da 295 Gt sulla costa della
-  // Florida usciva SENZA tsunami. La cavità (9 km) restava sotto la
-  // riva (10 km) e il controllo scartava l'onda — ma il cratere ha
-  // raggio 11,6 km e la costa la inghiotte. Da qui la portata
-  // dell'evento è il massimo fra cavità e cratere.
-  it("tiene l'onda quando è il CRATERE ad arrivare al mare, non la cavità", () => {
-    const boltysh = simulateImpact({
-      ...IMPACT_PRESETS.BOLTYSH.input,
-      waterDepth: m(200),
-    });
-    expect(boltysh.tsunami).toBeDefined();
-    const cavita = boltysh.tsunami?.cavityRadius as number;
-    const cratere = boltysh.damage.craterRim as number;
-    // La condizione che rende significativo il test: senza il cratere
-    // il controllo boccerebbe l'onda.
-    expect(cratere).toBeGreaterThan(cavita);
-    const riva = (cavita + cratere) / 2; // riva fra le due portate
-    expect(gateImpactByTerrain(boltysh, false, true, riva).tsunami).toBeDefined();
-    // E oltre la portata del cratere l'onda deve sparire davvero.
-    expect(gateImpactByTerrain(boltysh, false, true, cratere * 3).tsunami).toBeUndefined();
+  it('coupling fraction never grows with distance', () => {
+    let last = 2;
+    for (const d of [0, 10_000, 50_000, 100_000, 300_000, 1_000_000, 1_500_000]) {
+      const r = simulateImpact({
+        ...IMPACT_PRESETS.CHICXULUB.input,
+        waterDepth: m(200),
+        shoreDistance: m(d),
+      });
+      const f = r.tsunami?.seaCoupling.fraction ?? 0;
+      expect(f).toBeLessThanOrEqual(last + 1e-12);
+      last = f;
+    }
   });
 });
 

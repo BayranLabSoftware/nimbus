@@ -28,8 +28,9 @@ Mw 9, between an inland impact and one in the open ocean.
 - Bathymetric tsunami propagation with Fast-Marching arrival isochrones
   and a Green's-law amplitude heatmap on the same grid; impact sources
   follow the Wünnemann, Collins & Weiss (2010) rim-wave far field.
-- Population-exposure overlay (WorldPop COG via geotiff.js, range
-  requests, no backend).
+- Estimated casualties per hazard band — WorldPop 2020 population
+  (zonal-statistics API, no key) times OTA 1979 blast, USGS PAGER
+  shaking and Auker 2013 pyroclastic mortality, with a low–high band.
 - Monte-Carlo P10/P90 confidence rings around the nominal damage circles.
 - Cesium globe with damage zones drawn at true geographic scale, each
   contour captioned on the map, and ≈ 4 000 Natural Earth cities to
