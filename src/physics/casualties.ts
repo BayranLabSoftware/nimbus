@@ -27,11 +27,36 @@ import { Pa } from './units.js';
  *     5–12 psi  50 % dead, 40 % injured
  *     2–5 psi    5 % dead, 45 % injured
  *     1–2 psi    0 % dead, 25 % injured
- *   The bands are prompt blast + thermal + collapse together (that is
- *   how the two cities were counted). The 12 and 2 psi radii are not
- *   drawn on the globe; they are derived from the drawn 5 and 1 psi
- *   contours with the Kinney–Graham curve ratio at the event's yield,
- *   so the bands stay consistent with what the map shows.
+ *   The bands are the prompt blast + collapse count of the two cities.
+ *   The 12 and 2 psi radii are not drawn on the globe; they are
+ *   derived from the drawn 5 and 1 psi contours with the Kinney–Graham
+ *   curve ratio at the event's yield, so the bands stay consistent
+ *   with what the map shows.
+ *
+ *   BURNS — Glasstone & Dolan (1977), *The Effects of Nuclear Weapons*,
+ *   ch. XII: third-degree burns over a large part of the body are
+ *   fatal without prompt care, and only the people with a line of
+ *   sight to the fireball — outdoors, at a window — receive them; an
+ *   urban population indoors is mostly shielded. Inside the drawn
+ *   third-degree radius the exposed fraction times the burn mortality
+ *   is applied to the people the blast left alive; inside the
+ *   second-degree radius the exposed survivors count as injured.
+ *
+ *   MASS FIRE — where the thermal fluence sustains a firestorm
+ *   (Glasstone & Dolan ch. VII: Hiroshima's began twenty minutes after
+ *   the burst), the survivors inside it face the Hamburg and Dresden
+ *   record at the low end and the near-total mortality Postol (1986)
+ *   argued for a nuclear superfire at the high end.
+ *
+ *   LATER DEATHS — OTA 1979 counts the injured but expects most of the
+ *   seriously injured to die for lack of care: two thousand burn beds
+ *   in the whole country against hundreds of thousands of burn
+ *   casualties. A share of the prompt injured dies within the first
+ *   weeks; it is counted, dated and shown apart from the prompt toll.
+ *
+ *   The hazards of one annulus act in sequence on the people the
+ *   previous ones left alive, so nobody dies twice: the combined
+ *   mortality is 1 − Π(1 − m).
  *
  *   SHAKING (earthquakes) — Jaiswal & Wald (2010), *An empirical model
  *   for global earthquake fatality estimation*, Earthquake Spectra
@@ -63,11 +88,53 @@ import { Pa } from './units.js';
 /** One annulus of the casualty model. `outerRadiusM` is what the
  *  caller queries the population for; the population INSIDE the band
  *  is the difference of successive cumulative counts. */
+/** A hazard acting inside an annulus. */
+export type CasualtyHazard =
+  | 'blast'
+  | 'thermal'
+  | 'firestorm'
+  | 'delayed'
+  | 'shaking'
+  | 'pyroclastic'
+  | 'lateralBlast';
+
+/** A low / central / high triple for a vulnerability parameter. */
+export interface Triple {
+  low: number;
+  mid: number;
+  high: number;
+}
+
+/** One hazard of a band, acting on the people the earlier ones left
+ *  alive. */
+export interface HazardComponent {
+  hazard: CasualtyHazard;
+  /** Mortality among the survivors of the earlier components (0–1). */
+  mortality: number;
+  mortalityLow: number;
+  mortalityHigh: number;
+  /** Prompt-injury rate as a fraction of the band population (OTA's
+   *  convention: deaths + injured ≤ 100 % of the band). */
+  injuryRate?: number;
+  /** Prompt-injury rate as a fraction of the survivors not yet
+   *  injured (the burns convention). */
+  survivorInjuryRate?: number;
+}
+
 export interface CasualtyBand {
-  /** Stable key — also the i18n suffix (`casualties.band.<key>`). */
+  /** Stable, unique key. For single-hazard models it is also the
+   *  i18n suffix (`casualties.band.<key>`). */
   key: string;
   innerRadiusM: number;
   outerRadiusM: number;
+  /** OTA overpressure class of the annulus, for the label. */
+  psiBand?: 'blast12psi' | 'blast5psi' | 'blast2psi' | 'blast1psi';
+  /** The hazards acting here, in the order they act. Absent for the
+   *  single-hazard models, whose `mortality` is the whole story. */
+  components?: HazardComponent[];
+  /** Share of the prompt injured who die within weeks for lack of
+   *  care, with its band. */
+  delayedFraction?: Triple;
   /** Optional footprint replacing the circle of `outerRadiusM` — the
    *  rupture stadium of an extended earthquake source, whose MMI
    *  contours hug a 500 km fault rather than a point. Cumulative
@@ -90,6 +157,15 @@ export interface CasualtyPlan {
   bands: CasualtyBand[];
 }
 
+/** Combine mortalities acting in sequence on the survivors of one
+ *  another: 1 − Π(1 − m). */
+export function combineMortality(rates: readonly number[]): number {
+  if (rates.length === 1) return Math.min(1, Math.max(0, rates[0] ?? 0));
+  let alive = 1;
+  for (const m of rates) alive *= 1 - Math.min(1, Math.max(0, m));
+  return 1 - alive;
+}
+
 // ---------------------------------------------------------------------
 // Blast — OTA 1979
 // ---------------------------------------------------------------------
@@ -109,6 +185,28 @@ export const OTA_BLAST_BANDS = [
  *  (Glasstone & Dolan 1977 ch. XII). */
 const BLAST_BAND_FACTOR = 2;
 
+/** Fraction of the people with a line of sight to the fireball —
+ *  outdoors or at a window — who receive the full thermal pulse. An
+ *  urban population indoors is mostly shielded (Glasstone & Dolan
+ *  1977 §12.68 on Hiroshima's exposed morning crowd). */
+export const THERMAL_EXPOSED_FRACTION: Triple = { low: 0.1, mid: 0.25, high: 0.5 };
+
+/** Mortality of the exposed inside the third-degree radius without
+ *  prompt care (Glasstone & Dolan 1977 §12.51–12.68: extensive
+ *  full-thickness burns are fatal untreated). */
+export const THIRD_DEGREE_MORTALITY: Triple = { low: 0.3, mid: 0.5, high: 0.8 };
+
+/** Mortality of the blast and burn survivors inside a sustained mass
+ *  fire: the Hamburg 1943 and Dresden 1945 record at the low end,
+ *  Hiroshima in the middle, the near-total mortality of a nuclear
+ *  superfire (Postol 1986) at the high end. */
+export const FIRESTORM_MORTALITY: Triple = { low: 0.1, mid: 0.3, high: 0.8 };
+
+/** Share of the prompt injured who die within the first weeks for
+ *  lack of care (OTA 1979 ch. II: the seriously injured, the burn
+ *  cases above all, outnumber the beds by orders of magnitude). */
+export const DELAYED_DEATH_FRACTION: Triple = { low: 0.1, mid: 0.3, high: 0.6 };
+
 export interface BlastCasualtyInput {
   /** Energy driving the air blast (J): explosion yield, or the
    *  impact's blast-coupled kinetic energy. Used only for the
@@ -118,6 +216,13 @@ export interface BlastCasualtyInput {
   overpressure5psiRadius: Meters;
   /** 1 psi radius as drawn on the globe (m). */
   overpressure1psiRadius: Meters;
+  /** Third-degree burn radius as drawn (m); omit for no burns. */
+  thirdDegreeBurnRadius?: Meters;
+  /** Second-degree burn radius as drawn (m); omit for no burn injuries. */
+  secondDegreeBurnRadius?: Meters;
+  /** Radius inside which the fluence sustains a firestorm (m); omit
+   *  or pass 0 for no mass fire. */
+  firestormRadius?: Meters;
 }
 
 /**
@@ -136,24 +241,109 @@ function overpressureRadiusRatio(energy: Joules, psi: number, refPsi: number): n
   return (psi / refPsi) ** (-1 / 1.3);
 }
 
-/** Blast casualty plan: four OTA bands anchored on the drawn rings. */
+/** Half the circumference of the Earth (m): a ring of this radius is
+ *  the whole planet, and no band needs to reach farther. */
+export const WHOLE_PLANET_RADIUS_M = Math.PI * 6_371_000;
+
+function positiveRadius(value: Meters | undefined): number {
+  const r = value as number | undefined;
+  return r !== undefined && Number.isFinite(r) && r > 0 ? Math.min(r, WHOLE_PLANET_RADIUS_M) : 0;
+}
+
+/**
+ * Blast casualty plan: the four OTA overpressure bands anchored on the
+ * drawn rings, split further wherever the third-degree, second-degree
+ * and firestorm radii fall, so every annulus carries exactly the
+ * hazards that reach it. Beyond the 1 psi ring only the burns remain.
+ * Each annulus applies its hazards in sequence — blast, burns, fire —
+ * to the people the previous ones left alive, and dates a share of
+ * its injured as later deaths.
+ */
 export function blastCasualtyPlan(input: BlastCasualtyInput): CasualtyPlan | null {
-  const r5 = input.overpressure5psiRadius as number;
-  const r1 = input.overpressure1psiRadius as number;
-  if (!Number.isFinite(r5) || !Number.isFinite(r1) || r5 <= 0 || r1 <= r5) return null;
+  const r5 = positiveRadius(input.overpressure5psiRadius);
+  const r1 = positiveRadius(input.overpressure1psiRadius);
+  if (r5 <= 0 || r1 <= r5) return null;
   const r12 = r5 * overpressureRadiusRatio(input.blastEnergy, 12, 5);
   const r2 = r1 * overpressureRadiusRatio(input.blastEnergy, 2, 1);
-  const edges = [0, Math.min(r12, r5), r5, Math.max(r5, Math.min(r2, r1)), r1];
-  const bands: CasualtyBand[] = OTA_BLAST_BANDS.map((b, i) => ({
-    key: b.key,
-    innerRadiusM: edges[i] ?? 0,
-    outerRadiusM: edges[i + 1] ?? 0,
-    mortality: b.mortality,
-    mortalityLow: b.mortality / BLAST_BAND_FACTOR,
-    mortalityHigh: Math.min(1, b.mortality * BLAST_BAND_FACTOR),
-    injuryRate: b.injury,
-  }));
-  return { model: 'blast', bands };
+  const psiEdges = [0, Math.min(r12, r5), r5, Math.max(r5, Math.min(r2, r1)), r1];
+  const burn3 = positiveRadius(input.thirdDegreeBurnRadius);
+  const burn2 = Math.max(burn3, positiveRadius(input.secondDegreeBurnRadius));
+  const fire = positiveRadius(input.firestormRadius);
+
+  const edges = [...new Set([...psiEdges, burn3, burn2, fire].filter((r) => r >= 0))].sort(
+    (a, b) => a - b
+  );
+  const psiClassAt = (r: number): number => {
+    // Index into OTA_BLAST_BANDS of the annulus containing radius r,
+    // or -1 beyond the 1 psi ring.
+    for (let i = 0; i < OTA_BLAST_BANDS.length; i++) {
+      const lo = psiEdges[i] ?? 0;
+      const hi = psiEdges[i + 1] ?? 0;
+      if (r >= lo && r < hi) return i;
+    }
+    return -1;
+  };
+
+  const bands: CasualtyBand[] = [];
+  for (let i = 0; i + 1 < edges.length; i++) {
+    const inner = edges[i] ?? 0;
+    const outer = edges[i + 1] ?? 0;
+    if (!(outer > inner)) continue;
+    const mid = 0.5 * (inner + outer);
+    const components: HazardComponent[] = [];
+    const psi = psiClassAt(mid);
+    const ota = psi >= 0 ? OTA_BLAST_BANDS[psi] : undefined;
+    if (ota !== undefined) {
+      components.push({
+        hazard: 'blast',
+        mortality: ota.mortality,
+        mortalityLow: ota.mortality / BLAST_BAND_FACTOR,
+        mortalityHigh: Math.min(1, ota.mortality * BLAST_BAND_FACTOR),
+        injuryRate: ota.injury,
+      });
+    }
+    if (mid < burn3) {
+      components.push({
+        hazard: 'thermal',
+        mortality: THERMAL_EXPOSED_FRACTION.mid * THIRD_DEGREE_MORTALITY.mid,
+        mortalityLow: THERMAL_EXPOSED_FRACTION.low * THIRD_DEGREE_MORTALITY.low,
+        mortalityHigh: THERMAL_EXPOSED_FRACTION.high * THIRD_DEGREE_MORTALITY.high,
+        // The exposed who survive their burns are injured.
+        survivorInjuryRate: THERMAL_EXPOSED_FRACTION.mid,
+      });
+    } else if (mid < burn2) {
+      components.push({
+        hazard: 'thermal',
+        mortality: 0,
+        mortalityLow: 0,
+        mortalityHigh: 0,
+        survivorInjuryRate: THERMAL_EXPOSED_FRACTION.mid,
+      });
+    }
+    if (mid < fire) {
+      components.push({
+        hazard: 'firestorm',
+        mortality: FIRESTORM_MORTALITY.mid,
+        mortalityLow: FIRESTORM_MORTALITY.low,
+        mortalityHigh: FIRESTORM_MORTALITY.high,
+      });
+    }
+    if (components.length === 0) continue;
+    const injuryRate = components.reduce((acc, c) => acc + (c.injuryRate ?? 0), 0);
+    bands.push({
+      key: `b${bands.length.toString()}`,
+      innerRadiusM: inner,
+      outerRadiusM: outer,
+      ...(ota !== undefined && { psiBand: ota.key }),
+      components,
+      mortality: combineMortality(components.map((c) => c.mortality)),
+      mortalityLow: combineMortality(components.map((c) => c.mortalityLow)),
+      mortalityHigh: combineMortality(components.map((c) => c.mortalityHigh)),
+      ...(injuryRate > 0 && { injuryRate }),
+      delayedFraction: DELAYED_DEATH_FRACTION,
+    });
+  }
+  return bands.length > 0 ? { model: 'blast', bands } : null;
 }
 
 // ---------------------------------------------------------------------
@@ -284,36 +474,71 @@ export function pyroclasticCasualtyPlan(input: PyroclasticCasualtyInput): Casual
 // Evaluation
 // ---------------------------------------------------------------------
 
+export interface HazardDeaths {
+  hazard: CasualtyHazard;
+  deaths: number;
+  deathsLow: number;
+  deathsHigh: number;
+}
+
 export interface BandEstimate {
   key: string;
   innerRadiusM: number;
   outerRadiusM: number;
+  /** OTA overpressure class, when the band has one. */
+  psiBand?: 'blast12psi' | 'blast5psi' | 'blast2psi' | 'blast1psi';
+  /** The hazards acting in the band, in order. */
+  hazards: CasualtyHazard[];
   /** People inside the annulus. */
   population: number;
+  /** Combined prompt mortality (0–1). */
   mortality: number;
+  /** Prompt plus later deaths. */
   deaths: number;
   deathsLow: number;
   deathsHigh: number;
+  promptDeaths: number;
+  delayedDeaths: number;
+  /** Prompt injuries. */
   injured: number;
+  /** Deaths by hazard, later deaths under 'delayed'. */
+  byHazard: HazardDeaths[];
 }
 
 export interface CasualtyEstimate {
   model: CasualtyPlan['model'];
   /** People inside the outermost band. */
   exposed: number;
+  /** Prompt plus later deaths — the headline. */
   deaths: number;
   deathsLow: number;
   deathsHigh: number;
-  /** Prompt injuries (blast model only; 0 otherwise). */
+  /** Deaths within the event itself. */
+  promptDeaths: number;
+  /** Deaths within the first weeks, among the injured, for lack of care. */
+  delayedDeaths: number;
+  delayedDeathsLow: number;
+  delayedDeathsHigh: number;
+  /** Prompt injuries (0 for the models without an injury rate). */
   injured: number;
   bands: BandEstimate[];
+}
+
+/** The single-hazard models carry their hazard in the model or the key. */
+function hazardOf(plan: CasualtyPlan, band: CasualtyBand): CasualtyHazard {
+  if (plan.model === 'shaking') return 'shaking';
+  if (plan.model === 'pyroclastic')
+    return band.key === 'lateralBlast' ? 'lateralBlast' : 'pyroclastic';
+  return 'blast';
 }
 
 /**
  * Turn a plan plus the CUMULATIVE population inside each band's outer
  * radius (same order as `plan.bands`) into an estimate. Cumulative
  * counts are what a circle query returns; the annulus population is
- * the difference, clamped at zero against raster noise.
+ * the difference, clamped at zero against raster noise. A band's
+ * hazards act in sequence on the people the earlier ones left alive;
+ * a share of the injured is dated as later deaths.
  */
 export function estimateCasualties(
   plan: CasualtyPlan,
@@ -321,41 +546,106 @@ export function estimateCasualties(
 ): CasualtyEstimate {
   const bands: BandEstimate[] = [];
   let previous = 0;
-  let deaths = 0;
-  let deathsLow = 0;
-  let deathsHigh = 0;
-  let injured = 0;
+  const totals = {
+    deaths: 0,
+    deathsLow: 0,
+    deathsHigh: 0,
+    promptDeaths: 0,
+    delayedDeaths: 0,
+    delayedDeathsLow: 0,
+    delayedDeathsHigh: 0,
+    injured: 0,
+  };
   plan.bands.forEach((band, i) => {
     const cumulative = Math.max(previous, cumulativePopulation[i] ?? previous);
     const population = Math.max(0, cumulative - previous);
     previous = cumulative;
-    const d = population * band.mortality;
-    const dl = population * band.mortalityLow;
-    const dh = population * band.mortalityHigh;
-    const inj = population * (band.injuryRate ?? 0);
-    deaths += d;
-    deathsLow += dl;
-    deathsHigh += dh;
-    injured += inj;
+
+    const components: HazardComponent[] = band.components ?? [
+      {
+        hazard: hazardOf(plan, band),
+        mortality: band.mortality,
+        mortalityLow: band.mortalityLow,
+        mortalityHigh: band.mortalityHigh,
+        ...(band.injuryRate !== undefined && { injuryRate: band.injuryRate }),
+      },
+    ];
+    const byHazard: HazardDeaths[] = [];
+    let alive = population;
+    let aliveLow = population;
+    let aliveHigh = population;
+    let injured = 0;
+    for (const c of components) {
+      const d = alive * c.mortality;
+      const dl = aliveLow * c.mortalityLow;
+      const dh = aliveHigh * c.mortalityHigh;
+      alive -= d;
+      aliveLow -= dl;
+      aliveHigh -= dh;
+      injured += population * (c.injuryRate ?? 0);
+      if (c.survivorInjuryRate !== undefined) {
+        injured += Math.max(0, alive - injured) * c.survivorInjuryRate;
+      }
+      byHazard.push({ hazard: c.hazard, deaths: d, deathsLow: dl, deathsHigh: dh });
+    }
+    injured = Math.min(injured, Math.max(0, alive));
+    const promptDeaths = population - alive;
+    const promptLow = population - aliveLow;
+    const promptHigh = population - aliveHigh;
+    const delayed = band.delayedFraction;
+    const delayedDeaths = delayed === undefined ? 0 : injured * delayed.mid;
+    const delayedLow = delayed === undefined ? 0 : injured * delayed.low;
+    const delayedHigh = delayed === undefined ? 0 : injured * delayed.high;
+    if (delayed !== undefined && injured > 0) {
+      byHazard.push({
+        hazard: 'delayed',
+        deaths: delayedDeaths,
+        deathsLow: delayedLow,
+        deathsHigh: delayedHigh,
+      });
+    }
+
+    totals.promptDeaths += promptDeaths;
+    totals.delayedDeaths += delayedDeaths;
+    totals.delayedDeathsLow += delayedLow;
+    totals.delayedDeathsHigh += delayedHigh;
+    totals.deaths += promptDeaths + delayedDeaths;
+    totals.deathsLow += promptLow + delayedLow;
+    totals.deathsHigh += promptHigh + delayedHigh;
+    totals.injured += injured;
     bands.push({
       key: band.key,
       innerRadiusM: band.innerRadiusM,
       outerRadiusM: band.outerRadiusM,
+      ...(band.psiBand !== undefined && { psiBand: band.psiBand }),
+      hazards: byHazard.map((h) => h.hazard),
       population: Math.round(population),
-      mortality: band.mortality,
-      deaths: Math.round(d),
-      deathsLow: Math.round(dl),
-      deathsHigh: Math.round(dh),
-      injured: Math.round(inj),
+      mortality: population > 0 ? promptDeaths / population : band.mortality,
+      deaths: Math.round(promptDeaths + delayedDeaths),
+      deathsLow: Math.round(promptLow + delayedLow),
+      deathsHigh: Math.round(promptHigh + delayedHigh),
+      promptDeaths: Math.round(promptDeaths),
+      delayedDeaths: Math.round(delayedDeaths),
+      injured: Math.round(injured),
+      byHazard: byHazard.map((h) => ({
+        hazard: h.hazard,
+        deaths: Math.round(h.deaths),
+        deathsLow: Math.round(h.deathsLow),
+        deathsHigh: Math.round(h.deathsHigh),
+      })),
     });
   });
   return {
     model: plan.model,
     exposed: Math.round(previous),
-    deaths: Math.round(deaths),
-    deathsLow: Math.round(deathsLow),
-    deathsHigh: Math.round(deathsHigh),
-    injured: Math.round(injured),
+    deaths: Math.round(totals.deaths),
+    deathsLow: Math.round(totals.deathsLow),
+    deathsHigh: Math.round(totals.deathsHigh),
+    promptDeaths: Math.round(totals.promptDeaths),
+    delayedDeaths: Math.round(totals.delayedDeaths),
+    delayedDeathsLow: Math.round(totals.delayedDeathsLow),
+    delayedDeathsHigh: Math.round(totals.delayedDeathsHigh),
+    injured: Math.round(totals.injured),
     bands,
   };
 }

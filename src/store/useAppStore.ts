@@ -1267,12 +1267,18 @@ function casualtyPlanForResult(result: ActiveResult, location: Coordinates): Cas
         blastEnergy: result.data.impactor.kineticEnergy,
         overpressure5psiRadius: result.data.damage.overpressure5psi,
         overpressure1psiRadius: result.data.damage.overpressure1psi,
+        thirdDegreeBurnRadius: result.data.damage.thirdDegreeBurn,
+        secondDegreeBurnRadius: result.data.damage.secondDegreeBurn,
+        firestormRadius: result.data.firestorm.sustainRadius,
       });
     case 'explosion':
       return blastCasualtyPlan({
         blastEnergy: result.data.yield.joules,
         overpressure5psiRadius: result.data.blast.overpressure5psiRadiusHob,
         overpressure1psiRadius: result.data.blast.overpressure1psiRadiusHob,
+        thirdDegreeBurnRadius: result.data.thermal.thirdDegreeBurnRadius,
+        secondDegreeBurnRadius: result.data.thermal.secondDegreeBurnRadius,
+        firestormRadius: result.data.firestorm.sustainRadius,
       });
     case 'earthquake': {
       const plan = shakingCasualtyPlan({

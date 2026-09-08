@@ -212,6 +212,9 @@ Carlo wrappers for sampled inputs).
 | Blast casualties           | casualties.ts                       | Σ pop(band) · m ; m = 98/50/5/0 % at ≥12/5/2/1 psi                                                                   | OTA 1979 table 2                                               | ±factor 2   |
 | Shaking casualties         | casualties.ts                       | ν(S) = Φ(ln(S/θ)/β), θ = 13.5, β = 0.22 (band 14.5/0.12 – 11.5/0.30)                                                 | Jaiswal & Wald 2010 (PAGER)                                    | 3 orders    |
 | Pyroclastic casualties     | casualties.ts                       | 0.9 · pop(runout) + 0.9 · sector/360 · pop(blast annulus)                                                            | Auker et al. 2013                                              | 50–100 %    |
+| Burn casualties            | casualties.ts                       | exposed 25 % (10–50) × mortality 50 % (30–80) inside the 3rd-degree radius, on the blast survivors                   | Glasstone & Dolan 1977 ch. XII                                 | ×2–3        |
+| Mass-fire casualties       | casualties.ts                       | 30 % (10–80) of the survivors inside the firestorm sustain radius                                                    | Glasstone & Dolan 1977 ch. VII; Postol 1986                    | ×3          |
+| Later deaths               | casualties.ts                       | 30 % (10–60) of the prompt injured, first day to first month                                                         | OTA 1979 ch. II                                                | ×2–3        |
 | Casualty sweep             | casualtyTimeline.ts                 | deaths(t) = Σ deaths(band) · swept-area fraction at t; t(r) from the shock integral, r/3.5 km/s, r/30 m/s, r/400 m/s | Kinney & Graham 1985; Dziewonski & Anderson 1981; Kieffer 1981 | timing only |
 | Tsunami arrival time       | tsunami/fastMarching.ts             | eikonal `\|∇T\|² = 1/c²`, c = √(gh)                                                                                  | Sethian 1996                                                   | ±15%        |
 | Tsunami shoaling           | events/tsunami/propagation.ts       | A_s = A_d (h_d / h_s)^¼                                                                                              | Green 1838                                                     | ±25%        |
@@ -259,6 +262,28 @@ evacuated, no tsunami / fallout / famine / disease):
 cumulative population inside every band's outer radius and evaluates
 the plan (`runCasualtyLookup` in `src/store/useAppStore.ts`).
 
+### Burns, mass fire and later deaths (Phase 24)
+
+The blast bands of OTA 1979 are the prompt blast and collapse count
+of Hiroshima and Nagasaki. Three more hazards are now counted, each
+acting in sequence on the people the earlier ones left alive, so the
+combined mortality of an annulus is 1 − Π(1 − m) and nobody dies
+twice. Burns: inside the drawn third-degree radius, the fraction of
+people in sight of the fireball — outdoors, at a window — times the
+mortality of extensive untreated full-thickness burns (Glasstone &
+Dolan 1977 ch. XII); inside the second-degree radius the exposed
+survivors count as injured. Mass fire: where the fluence sustains a
+firestorm, a share of the survivors dies, the Hamburg and Dresden
+record at the low end and Postol's near-total superfire mortality at
+the high end. Later deaths: OTA 1979 counts the injured and expects
+most of the seriously injured to die for lack of care, two thousand
+burn beds against hundreds of thousands of burn cases; a share of
+the prompt injured is counted as dying within the first month, shown
+apart from the prompt toll and dated in the sweep. The OTA annuli are
+split wherever a thermal or fire radius falls, and beyond the 1 psi
+ring the burns alone reach out — for a Chicxulub the third-degree
+radius is the whole planet.
+
 ### When the deaths happen (Phase 24)
 
 The bar of the globe view shows the toll rising as the event unfolds.
@@ -275,8 +300,12 @@ area the front has swept. The one assumption is that people are
 spread uniformly within a band, which is the assumption the estimate
 already makes when it applies one mortality to the whole annulus. A
 15 kt front is done in about fifteen seconds; a Chicxulub 2 psi ring
-at 2 000 km takes two hours; the tsunami, hours later, is not in the
-count and the label says so.
+at 2 000 km takes two hours. The burns are counted within the thermal
+pulse (Glasstone & Dolan §7.86: 10 t_max, t_max ≈ 0.0417 W^0.44 s), the
+mass fire from twenty minutes to six hours after the burst (the
+Hiroshima fire storm, §7.71), the later deaths from the first day to
+the first month; the tsunami, hours later, is not in the count and
+the label says so.
 
 The clock on screen is a UI clock: five seconds, the cascade panel's
 budget, with the physical time log-compressed into it so the first

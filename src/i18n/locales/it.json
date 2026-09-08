@@ -1215,7 +1215,7 @@
     "casualtiesPending": "stima in corso…",
     "casualtiesBand": "{{low}} – {{high}}",
     "casualtiesProvisional": "provvisoria",
-    "casualtiesTitle": "Morti stimati mentre gli effetti immediati si propagano: il numero sale con il fronte d'urto, lo scuotimento o il flusso piroclastico e si ferma quando il fronte ha attraversato l'ultima fascia. Ordine di grandezza, tsunami escluso: i dettagli sono nel pannello.",
+    "casualtiesTitle": "Morti stimati mentre l'evento si svolge: il numero sale con il fronte d'urto, le ustioni, la tempesta di fuoco e, nelle settimane, i feriti senza cure; per sismi e vulcani con lo scuotimento o il flusso. Ordine di grandezza, tsunami escluso: i dettagli sono nel pannello.",
     "casualtiesFinal": "Morti stimati: {{deaths}}, da {{low}} a {{high}}, a {{time}} dall'evento."
   },
   "impactView": {
@@ -1261,7 +1261,8 @@
       "radius": "Raggio",
       "population": "Popolazione",
       "mortality": "Mortalità",
-      "deaths": "Morti"
+      "deaths": "Morti",
+      "hazards": "Cause"
     },
     "band": {
       "blast12psi": "≥ 12 psi",
@@ -1272,10 +1273,11 @@
       "mmi8": "MMI VIII",
       "mmi7": "MMI VII",
       "pyroclastic": "Flusso piroclastico",
-      "lateralBlast": "Esplosione laterale"
+      "lateralBlast": "Esplosione laterale",
+      "thermalOnly": "Solo ustioni"
     },
     "model": {
-      "blast": "Mortalità per sovrapressione: OTA 1979, The Effects of Nuclear War, tab. 2 (98 % a ≥ 12 psi, 50 % a 5 psi, 5 % a 2 psi)",
+      "blast": "Crolli e onda d'urto: OTA 1979, The Effects of Nuclear War, tab. 2 (98 % a ≥ 12 psi, 50 % a 5 psi, 5 % a 2 psi). Ustioni: Glasstone & Dolan 1977, cap. XII, sul 25 % esposto alla vista della palla di fuoco (10–50 %), mortalità 50 % (30–80 %) dentro il raggio di terzo grado. Tempesta di fuoco: 30 % dei sopravvissuti (10–80 %, Amburgo e Dresda in basso, il superfuoco di Postol 1986 in alto). Morti differiti: 30 % dei feriti entro settimane senza cure (10–60 %, OTA 1979). In ogni fascia i pericoli agiscono in sequenza sui sopravvissuti, nessuno muore due volte",
       "shaking": "Tasso di mortalità PAGER ν(S) = Φ(ln(S/θ)/β), Jaiswal & Wald 2010. Valore centrale per un patrimonio edilizio medio (θ = 13,5, β = 0,22); il minimo è un patrimonio antisismico (Giappone, Stati Uniti), il massimo muratura non armata (Iran, Haiti): tre ordini di grandezza, perché il simulatore non conosce le case sotto l'anello",
       "pyroclastic": "90 % dentro il flusso piroclastico senza evacuazione, Auker et al. 2013"
     },
@@ -1284,7 +1286,18 @@
       "worldpop-api": "popolazione: WorldPop 2020 (API di statistica zonale)",
       "coarse-raster": "popolazione: {{source}}"
     },
-    "disclaimer": "Ordine di grandezza, non conteggio: effetti immediati, nessuna evacuazione, nessun preavviso. Esclusi tsunami, fallout, incendi successivi, carestia e malattie. La dispersione pubblicata di ogni funzione di vulnerabilità è un fattore 2–5.",
-    "provisional": "Cifra provvisoria dal raster a 14 km: WorldPop sta contando le fasce e la sostituirà."
+    "disclaimer": "Ordine di grandezza, non conteggio: nessuna evacuazione, nessun preavviso, nessuna cura. Esclusi tsunami, fallout, radiazione iniziale, carestia e malattie. La dispersione pubblicata di ogni funzione di vulnerabilità è un fattore 2–5.",
+    "provisional": "Cifra provvisoria dal raster a 14 km: WorldPop sta contando le fasce e la sostituirà.",
+    "promptDeaths": "di cui immediati",
+    "delayedDeaths": "di cui differiti, entro settimane (min – max)",
+    "hazard": {
+      "blast": "crollo e onda d'urto",
+      "thermal": "ustioni",
+      "firestorm": "tempesta di fuoco",
+      "delayed": "morti differiti",
+      "shaking": "scuotimento",
+      "pyroclastic": "flusso piroclastico",
+      "lateralBlast": "esplosione laterale"
+    }
   }
 }

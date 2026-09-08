@@ -1,12 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import {
+  DELAYED_DEATH_FRACTION,
+  FIRESTORM_MORTALITY,
   PAGER_VULNERABILITY,
+  THERMAL_EXPOSED_FRACTION,
+  THIRD_DEGREE_MORTALITY,
   blastCasualtyPlan,
+  combineMortality,
   estimateCasualties,
   normalCdf,
   pagerFatalityRate,
   pyroclasticCasualtyPlan,
   shakingCasualtyPlan,
+  WHOLE_PLANET_RADIUS_M,
 } from './casualties.js';
 import { J, m as meters } from './units.js';
 
@@ -31,12 +37,13 @@ describe('blastCasualtyPlan (OTA 1979)', () => {
     expect(plan).not.toBeNull();
     if (plan === null) return;
     expect(plan.model).toBe('blast');
-    expect(plan.bands.map((b) => b.key)).toEqual([
+    expect(plan.bands.map((b) => b.psiBand)).toEqual([
       'blast12psi',
       'blast5psi',
       'blast2psi',
       'blast1psi',
     ]);
+    expect(new Set(plan.bands.map((b) => b.key)).size).toBe(4);
     for (let i = 1; i < plan.bands.length; i++) {
       expect(plan.bands[i]?.innerRadiusM).toBe(plan.bands[i - 1]?.outerRadiusM);
     }
@@ -139,12 +146,16 @@ describe('estimateCasualties', () => {
     const est = estimateCasualties(plan, [10_000, 50_000, 150_000, 400_000]);
     expect(est.exposed).toBe(400_000);
     // 10 000·0.98 + 40 000·0.5 + 100 000·0.05 + 250 000·0
-    expect(est.deaths).toBe(9_800 + 20_000 + 5_000);
+    expect(est.promptDeaths).toBe(9_800 + 20_000 + 5_000);
     // 10 000·0.02 + 40 000·0.4 + 100 000·0.45 + 250 000·0.25
     expect(est.injured).toBe(200 + 16_000 + 45_000 + 62_500);
+    // Later deaths: the central share of the injured, dated in the sweep.
+    expect(est.delayedDeaths).toBe(Math.round(est.injured * DELAYED_DEATH_FRACTION.mid));
+    expect(est.deaths).toBe(est.promptDeaths + est.delayedDeaths);
     expect(est.deathsLow).toBeLessThan(est.deaths);
     expect(est.deathsHigh).toBeGreaterThan(est.deaths);
     expect(est.bands[1]?.population).toBe(40_000);
+    expect(est.bands[1]?.hazards).toEqual(['blast', 'delayed']);
   });
 
   it('clamps non-monotonic cumulative counts instead of producing negative people', () => {
@@ -158,5 +169,115 @@ describe('estimateCasualties', () => {
     expect(est.bands[1]?.population).toBe(0);
     expect(est.exposed).toBe(5_000);
     expect(est.deaths).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe('blastCasualtyPlan — burns, mass fire, later deaths', () => {
+  const plan = blastCasualtyPlan({
+    blastEnergy: J(15 * 4.184e12),
+    overpressure5psiRadius: meters(1_700),
+    overpressure1psiRadius: meters(5_000),
+    thirdDegreeBurnRadius: meters(2_500),
+    secondDegreeBurnRadius: meters(3_400),
+    firestormRadius: meters(1_900),
+  });
+
+  it('splits the OTA annuli wherever a thermal or fire radius falls, and stays contiguous', () => {
+    if (plan === null) throw new Error('plan');
+    const edges = plan.bands.map((b) => b.outerRadiusM);
+    expect(edges).toContain(1_900);
+    expect(edges).toContain(2_500);
+    expect(edges).toContain(3_400);
+    expect(edges).toContain(5_000);
+    for (let i = 1; i < plan.bands.length; i++) {
+      expect(plan.bands[i]?.innerRadiusM).toBe(plan.bands[i - 1]?.outerRadiusM);
+    }
+    expect(plan.bands[0]?.innerRadiusM).toBe(0);
+  });
+
+  it('every annulus carries exactly the hazards that reach it', () => {
+    if (plan === null) throw new Error('plan');
+    const hazardsAt = (r: number): string[] =>
+      plan.bands
+        .find((b) => r >= b.innerRadiusM && r < b.outerRadiusM)
+        ?.components?.map((c) => c.hazard) ?? [];
+    expect(hazardsAt(500)).toEqual(['blast', 'thermal', 'firestorm']);
+    expect(hazardsAt(1_800)).toEqual(['blast', 'thermal', 'firestorm']);
+    expect(hazardsAt(2_000)).toEqual(['blast', 'thermal']);
+    expect(hazardsAt(3_000)).toEqual(['blast', 'thermal']);
+    expect(hazardsAt(4_000)).toEqual(['blast']);
+    // Beyond the second-degree radius only the blast remains; beyond
+    // 1 psi nothing — so the plan ends at the 1 psi ring here.
+    expect(Math.max(...plan.bands.map((b) => b.outerRadiusM))).toBe(5_000);
+  });
+
+  it('combines the hazards of an annulus as sequential risks, never above 100 %', () => {
+    if (plan === null) throw new Error('plan');
+    const inner = plan.bands[0];
+    if (inner === undefined) throw new Error('band');
+    const expected = combineMortality([
+      0.98,
+      THERMAL_EXPOSED_FRACTION.mid * THIRD_DEGREE_MORTALITY.mid,
+      FIRESTORM_MORTALITY.mid,
+    ]);
+    expect(inner.mortality).toBeCloseTo(expected, 12);
+    expect(inner.mortality).toBeGreaterThan(0.98);
+    expect(inner.mortalityHigh).toBeLessThanOrEqual(1);
+    expect(combineMortality([0.5, 0.5])).toBeCloseTo(0.75, 12);
+    expect(combineMortality([1, 0.3])).toBe(1);
+  });
+
+  it('a thermal radius past the antipode is the whole planet, not an error', () => {
+    const planet = blastCasualtyPlan({
+      blastEnergy: J(1e23),
+      overpressure5psiRadius: meters(2_300_000),
+      overpressure1psiRadius: meters(6_750_000),
+      thirdDegreeBurnRadius: meters(50_000_000),
+      secondDegreeBurnRadius: meters(80_000_000),
+    });
+    if (planet === null) throw new Error('plan');
+    const outermost = Math.max(...planet.bands.map((b) => b.outerRadiusM));
+    expect(outermost).toBeCloseTo(WHOLE_PLANET_RADIUS_M, 3);
+    expect(outermost).toBeLessThan(20_100_000);
+  });
+
+  it('beyond the 1 psi ring the burns alone reach out, when the thermal radius is larger', () => {
+    const wide = blastCasualtyPlan({
+      blastEnergy: J(1e6 * 4.184e12), // a megatonne
+      overpressure5psiRadius: meters(6_000),
+      overpressure1psiRadius: meters(14_000),
+      thirdDegreeBurnRadius: meters(12_000),
+      secondDegreeBurnRadius: meters(18_000),
+    });
+    if (wide === null) throw new Error('plan');
+    const outermost = wide.bands[wide.bands.length - 1];
+    if (outermost === undefined) throw new Error('band');
+    expect(outermost.outerRadiusM).toBe(18_000);
+    expect(outermost.innerRadiusM).toBe(14_000);
+    expect(outermost.components?.map((c) => c.hazard)).toEqual(['thermal']);
+    expect(outermost.mortality).toBe(0); // second-degree burns injure, they do not kill
+    expect(outermost.psiBand).toBeUndefined();
+  });
+
+  it('burns kill the exposed survivors of the blast and injure the rest of the exposed', () => {
+    if (plan === null) throw new Error('plan');
+    const est = estimateCasualties(
+      plan,
+      plan.bands.map((b) => 5_000 * Math.PI * (b.outerRadiusM / 1_000) ** 2)
+    );
+    const thermal = est.bands.flatMap((b) => b.byHazard.filter((h) => h.hazard === 'thermal'));
+    const thermalDeaths = thermal.reduce((a, h) => a + h.deaths, 0);
+    expect(thermalDeaths).toBeGreaterThan(0);
+    // Between 2.5 and 3.4 km the burns are second-degree: injuries only.
+    const secondDegree = est.bands.find((b) => b.innerRadiusM === 2_500);
+    if (secondDegree === undefined) throw new Error('band');
+    expect(secondDegree.byHazard.find((h) => h.hazard === 'thermal')?.deaths).toBe(0);
+    expect(secondDegree.injured).toBeGreaterThan(
+      secondDegree.population * 0.45 // the OTA 2–5 psi injury rate alone
+    );
+    expect(est.delayedDeaths).toBeGreaterThan(0);
+    expect(est.deaths).toBe(est.promptDeaths + est.delayedDeaths);
+    // Nobody dies twice: prompt deaths never exceed the population of a band.
+    for (const band of est.bands) expect(band.promptDeaths).toBeLessThanOrEqual(band.population);
   });
 });

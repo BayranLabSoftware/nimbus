@@ -156,6 +156,12 @@ const glasstoneDolan1977: Citation = {
   venue: 'U.S. Department of Defense / Department of Energy',
 };
 
+const postol1986: Citation = {
+  authors: 'Postol, T. A.',
+  year: 1986,
+  title: 'Possible fatalities from superfires following nuclear attacks in or near urban areas',
+  venue: 'The Medical Implications of Nuclear War, National Academy Press, pp. 15–72',
+};
 const kinneyGraham1985: Citation = {
   authors: 'Kinney, G. F. & Graham, K. J.',
   year: 1985,
@@ -1287,7 +1293,33 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'What the death toll is not',
         formula: 'order of magnitude, low–high band, sources on the label',
         description:
-          'Every figure is prompt effects only — no evacuation, no warning, no fallout, no later fires, famine or disease, and no tsunami toll (counting people in a run-up field needs a coastal DEM and an inundation model the simulator does not have). Numbers are printed to two significant figures with their band, next to the vulnerability function and the population source that produced them.',
+          'Every figure assumes no evacuation, no warning and no care, and leaves out fallout, initial radiation, famine, disease and the tsunami toll (counting people in a run-up field needs a coastal DEM and an inundation model the simulator does not have). Numbers are printed to two significant figures with their band, next to the vulnerability function and the population source that produced them.',
+        citation: ota1979,
+      },
+      {
+        id: 'casualties-burns',
+        name: 'Burns',
+        formula:
+          'm = exposed × mortality = 0.25 (0.1–0.5) × 0.5 (0.3–0.8) inside the third-degree radius, on the blast survivors',
+        description:
+          'Only the people in sight of the fireball receive the pulse — outdoors, at a window; an urban population indoors is mostly shielded — and extensive third-degree burns are fatal without prompt care (Glasstone & Dolan ch. XII). Inside the second-degree radius the exposed survivors count as injured. The hazards of an annulus act in sequence on the survivors of the earlier ones, so the combined mortality is 1 − Π(1 − m) and nobody dies twice.',
+        citation: glasstoneDolan1977,
+      },
+      {
+        id: 'casualties-firestorm',
+        name: 'Mass fire',
+        formula:
+          'm = 0.3 (0.1–0.8) of the survivors inside the firestorm sustain radius, from +20 min to +6 h',
+        description:
+          'Where the thermal fluence can sustain a firestorm, a share of the blast and burn survivors dies in it: the Hamburg 1943 and Dresden 1945 record at the low end, Hiroshima in the middle, the near-total mortality Postol argued for a nuclear superfire at the high end. The Hiroshima fire storm began about twenty minutes after the burst and subsided after some six hours (Glasstone & Dolan ch. VII); the sweep dates the fire deaths in that window.',
+        citation: postol1986,
+      },
+      {
+        id: 'casualties-delayed',
+        name: 'Later deaths',
+        formula: 'delayed = 0.3 (0.1–0.6) × prompt injured, first day to first month',
+        description:
+          'OTA 1979 counts the injured and expects most of the seriously injured to die for lack of care — two thousand burn beds in the whole country against hundreds of thousands of burn casualties. A share of the prompt injured is counted as dying within the first month, shown apart from the prompt toll in the panel and dated in the sweep so the counter keeps rising for weeks.',
         citation: ota1979,
       },
       {
@@ -1380,6 +1412,7 @@ export const CITATIONS = {
   prinn1987,
   brittConsolmagno2003,
   glasstoneDolan1977,
+  postol1986,
   kinneyGraham1985,
   nordyke1977,
   needham2018,

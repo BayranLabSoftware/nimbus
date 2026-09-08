@@ -1,4 +1,5 @@
-import type { CasualtyEstimate } from './casualties.js';
+import type { CasualtyEstimate, CasualtyHazard } from './casualties.js';
+import { TNT_SPECIFIC_ENERGY } from './constants.js';
 import { buildShockArrival, shockArrivalAt } from './effects/blastWave.js';
 import type { Joules } from './units.js';
 import { m } from './units.js';
@@ -10,24 +11,33 @@ import { m } from './units.js';
  * band times a mortality. The globe, though, shows the event
  * unfolding, and a total that appears all at once hides the one fact
  * worth learning — that prompt effects kill at the speed of the
- * hazard front, within seconds to minutes, while the tsunami hours
- * later is not in the count at all.
+ * hazard front, within seconds to minutes; that a mass fire takes
+ * its toll in the hours after; that the injured keep dying for
+ * weeks; and that the tsunami hours later is not in the count at all.
  *
- * This module turns the estimate into a sweep. A front crosses each
- * band; its arrival time at radius r comes from the physics of the
- * hazard — the Kinney–Graham shock front for blast, the crustal shear
- * wave for shaking, the observed front speeds of pyroclastic currents
- * and lateral blasts — and the band's deaths accrue in proportion to
- * the annulus area the front has swept. The single assumption is that
- * people are spread uniformly within a band: the same assumption the
- * estimate itself makes when it applies one mortality to the whole
- * annulus. Time zero is the impact, the detonation, the rupture, the
- * collapse of the column.
+ * This module turns the estimate into a sweep. Every hazard of every
+ * band becomes a sweep band with its own timing:
+ *
+ *   blast        the Kinney–Graham shock front crossing the annulus,
+ *                deaths accruing with the area swept;
+ *   shaking      the crustal shear wave, the same way;
+ *   pyroclastic  the current's front, the lateral blast's front;
+ *   thermal      the thermal pulse — everyone in the annulus at once,
+ *                over the pulse duration (Glasstone & Dolan 1977
+ *                §7.86: t_max ≈ 0.0417 W^0.44 s, W in kt, the pulse
+ *                essentially over by 10 t_max);
+ *   firestorm    the mass fire, from twenty minutes after the burst
+ *                to about six hours (Glasstone & Dolan §7.71, the
+ *                Hiroshima fire storm);
+ *   delayed      the untreated injured, from the first day to the
+ *                first month.
+ *
+ * The one assumption of the radial sweeps is that people are spread
+ * uniformly within a band: the same assumption the estimate itself
+ * makes when it applies one mortality to the whole annulus. Time zero
+ * is the impact, the detonation, the rupture, the collapse of the
+ * column.
  */
-
-/** Arrival time (s) of the hazard front at ground range `radiusM` for
- *  the band `bandKey`. Monotonic in the radius. */
-export type ArrivalFunction = (radiusM: number, bandKey: string) => number;
 
 /** Crustal shear-wave speed (m/s). PREM puts Vs between 3.2 km/s in the
  *  upper crust and 3.9 km/s in the lower crust (Dziewonski & Anderson
@@ -43,52 +53,104 @@ export const PYROCLASTIC_FRONT_SPEED = 30;
  *  stamps its onset at 400 m/s and this sweep uses the same figure. */
 export const LATERAL_BLAST_FRONT_SPEED = 400;
 
+/** Mass fire: onset and end after the burst (s). */
+export const FIRESTORM_ONSET_S = 20 * 60;
+export const FIRESTORM_END_S = 6 * 3_600;
+
+/** Later deaths among the injured: first day to first month (s). */
+export const DELAYED_ONSET_S = 86_400;
+export const DELAYED_END_S = 30 * 86_400;
+
+/** Duration of the thermal pulse (s) for a yield in joules: ten times
+ *  the time of the second radiant maximum, t_max ≈ 0.0417 W^0.44 s
+ *  with W in kilotonnes (Glasstone & Dolan 1977 §7.86). A 15 kt burst
+ *  is over in about a second and a half; a Chicxulub-class fireball
+ *  glows for hours. */
+export function thermalPulseDuration(yieldJ: number): number {
+  const kt = yieldJ / (TNT_SPECIFIC_ENERGY * 1e6);
+  if (!(kt > 0)) return 1;
+  return 10 * 0.0417 * kt ** 0.44;
+}
+
+/** What an arrival function is told about the band it is timing. */
+export interface SweepBandRef {
+  key: string;
+  hazard: CasualtyHazard;
+  innerRadiusM: number;
+  outerRadiusM: number;
+}
+
+/** Arrival time (s) of the hazard at ground range `radiusM` inside the
+ *  band `band`. Monotonic in the radius within a band. */
+export type ArrivalFunction = (radiusM: number, band: SweepBandRef) => number;
+
 export interface ArrivalInput {
   model: CasualtyEstimate['model'];
-  /** Energy driving the air shock (J) — blast model only. For an
-   *  impact this is the kinetic energy times `IMPACT_BLAST_COUPLING`,
-   *  as the rings use; for an explosion the yield. */
+  /** Energy driving the air shock and the thermal pulse (J) — blast
+   *  model only. For an impact this is the kinetic energy times
+   *  `IMPACT_BLAST_COUPLING`, as the rings use; for an explosion the
+   *  yield. */
   blastEnergy?: Joules;
   /** Outermost radius the front must reach (m). */
   maxRadiusM: number;
 }
 
-/** The arrival function for a casualty model. */
-export function arrivalFunctionFor(input: ArrivalInput): ArrivalFunction {
-  switch (input.model) {
-    case 'blast': {
-      const energy = input.blastEnergy;
-      if (energy === undefined || !((energy as number) > 0) || !(input.maxRadiusM > 0)) {
-        return () => 0;
-      }
-      // Start well inside the fireball: the front is hypersonic there
-      // and the seconds it spends below `start` are negligible.
-      const start = Math.max(1, input.maxRadiusM * 1e-4);
-      const arrival = buildShockArrival(energy, m(start), m(input.maxRadiusM));
-      return (radiusM) => shockArrivalAt(arrival, m(radiusM));
-    }
-    case 'shaking':
-      return (radiusM) => radiusM / SHEAR_WAVE_SPEED;
-    case 'pyroclastic':
-      return (radiusM, bandKey) =>
-        radiusM /
-        (bandKey === 'lateralBlast' ? LATERAL_BLAST_FRONT_SPEED : PYROCLASTIC_FRONT_SPEED);
-  }
+/** A ramp in time across an annulus: the hazard reaches the whole
+ *  band at once, so its deaths accrue linearly between `startS` and
+ *  `endS`. Expressed as an arrival radius-by-radius so the same sweep
+ *  machinery (area swept ⇒ deaths) applies: linear in r². */
+function rampArrival(startS: number, endS: number): ArrivalFunction {
+  return (radiusM, band) => {
+    const a0 = band.innerRadiusM * band.innerRadiusM;
+    const a1 = band.outerRadiusM * band.outerRadiusM;
+    if (!(a1 > a0)) return endS;
+    const f = Math.min(1, Math.max(0, (radiusM * radiusM - a0) / (a1 - a0)));
+    return startS + (endS - startS) * f;
+  };
 }
 
-export interface SweepBand {
-  key: string;
-  innerRadiusM: number;
-  outerRadiusM: number;
+/** The arrival function for a casualty model, hazard by hazard. */
+export function arrivalFunctionFor(input: ArrivalInput): ArrivalFunction {
+  const energy = input.blastEnergy;
+  const shock =
+    energy !== undefined && energy > 0 && input.maxRadiusM > 0
+      ? // Start well inside the fireball: the front is hypersonic there
+        // and the seconds it spends below `start` are negligible.
+        buildShockArrival(energy, m(Math.max(1, input.maxRadiusM * 1e-4)), m(input.maxRadiusM))
+      : null;
+  const thermal = rampArrival(0, thermalPulseDuration(energy ?? 0));
+  const firestorm = rampArrival(FIRESTORM_ONSET_S, FIRESTORM_END_S);
+  const delayed = rampArrival(DELAYED_ONSET_S, DELAYED_END_S);
+  return (radiusM, band) => {
+    switch (band.hazard) {
+      case 'blast':
+        return shock === null ? 0 : shockArrivalAt(shock, m(radiusM));
+      case 'thermal':
+        return thermal(radiusM, band);
+      case 'firestorm':
+        return firestorm(radiusM, band);
+      case 'delayed':
+        return delayed(radiusM, band);
+      case 'shaking':
+        return radiusM / SHEAR_WAVE_SPEED;
+      case 'pyroclastic':
+        return radiusM / PYROCLASTIC_FRONT_SPEED;
+      case 'lateralBlast':
+        return radiusM / LATERAL_BLAST_FRONT_SPEED;
+    }
+  };
+}
+
+export interface SweepBand extends SweepBandRef {
   deaths: number;
   deathsLow: number;
   deathsHigh: number;
   injured: number;
-  /** Front arrival at the inner edge (s). */
+  /** Hazard arrival at the inner edge (s). */
   startS: number;
-  /** Front arrival at the outer edge (s). */
+  /** Hazard arrival at the outer edge (s). */
   endS: number;
-  /** Sampled front: radius (m) and arrival (s), both non-decreasing. */
+  /** Sampled arrival: radius (m) and time (s), both non-decreasing. */
   radii: Float64Array;
   times: Float64Array;
 }
@@ -98,9 +160,11 @@ export interface CasualtyTimeline {
   bands: SweepBand[];
   /** When the last band is fully swept (s). */
   endS: number;
-  /** When the last death occurs (s): the end of the outermost band
-   *  with a non-zero mortality. */
+  /** When the last death occurs (s): the end of the last band with
+   *  deaths — a month out when later deaths are counted. */
   deathsEndS: number;
+  /** When the last prompt death occurs (s). */
+  promptDeathsEndS: number;
   deaths: number;
   deathsLow: number;
   deathsHigh: number;
@@ -116,10 +180,12 @@ export interface CasualtySample {
 }
 
 /**
- * Build the sweep. Each band is sampled at `samplesPerBand` radii
- * between its edges; the arrival function is evaluated at each and
- * forced non-decreasing, so a numerical wobble in the shock integral
- * can never make the front go backwards.
+ * Build the sweep. Every hazard of every band becomes a sweep band,
+ * sampled at `samplesPerBand` radii between its edges; the arrival
+ * function is evaluated at each and forced non-decreasing, so a
+ * numerical wobble in the shock integral can never make the front
+ * go backwards. The band's prompt injuries ride with its first
+ * hazard.
  */
 export function buildCasualtyTimeline(
   estimate: CasualtyEstimate,
@@ -129,38 +195,60 @@ export function buildCasualtyTimeline(
   const n = Math.max(2, Math.floor(samplesPerBand));
   let endS = 0;
   let deathsEndS = 0;
-  const bands: SweepBand[] = estimate.bands.map((band) => {
-    const radii = new Float64Array(n);
-    const times = new Float64Array(n);
+  let promptDeathsEndS = 0;
+  const bands: SweepBand[] = [];
+  for (const band of estimate.bands) {
     const inner = Math.max(0, band.innerRadiusM);
     const outer = Math.max(inner, band.outerRadiusM);
-    let previous = 0;
-    for (let i = 0; i < n; i++) {
-      const r = inner + ((outer - inner) * i) / (n - 1);
-      const raw = arrivalAt(r, band.key);
-      const t = Math.max(previous, Number.isFinite(raw) ? Math.max(0, raw) : previous);
-      radii[i] = r;
-      times[i] = t;
-      previous = t;
-    }
-    const startS = times[0] ?? 0;
-    const bandEndS = times[n - 1] ?? startS;
-    endS = Math.max(endS, bandEndS);
-    if (band.deaths > 0 || band.mortality > 0) deathsEndS = Math.max(deathsEndS, bandEndS);
-    return {
-      key: band.key,
-      innerRadiusM: inner,
-      outerRadiusM: outer,
-      deaths: band.deaths,
-      deathsLow: band.deathsLow,
-      deathsHigh: band.deathsHigh,
-      injured: band.injured,
-      startS,
-      endS: bandEndS,
-      radii,
-      times,
-    };
-  });
+    const parts =
+      band.byHazard.length > 0
+        ? band.byHazard
+        : [
+            {
+              hazard: 'blast' as const,
+              deaths: band.deaths,
+              deathsLow: band.deathsLow,
+              deathsHigh: band.deathsHigh,
+            },
+          ];
+    parts.forEach((part, index) => {
+      const ref: SweepBandRef = {
+        key: `${band.key}:${part.hazard}`,
+        hazard: part.hazard,
+        innerRadiusM: inner,
+        outerRadiusM: outer,
+      };
+      const radii = new Float64Array(n);
+      const times = new Float64Array(n);
+      let previous = 0;
+      for (let i = 0; i < n; i++) {
+        const r = inner + ((outer - inner) * i) / (n - 1);
+        const raw = arrivalAt(r, ref);
+        const t = Math.max(previous, Number.isFinite(raw) ? Math.max(0, raw) : previous);
+        radii[i] = r;
+        times[i] = t;
+        previous = t;
+      }
+      const startS = times[0] ?? 0;
+      const bandEndS = times[n - 1] ?? startS;
+      endS = Math.max(endS, bandEndS);
+      if (part.deaths > 0) {
+        deathsEndS = Math.max(deathsEndS, bandEndS);
+        if (part.hazard !== 'delayed') promptDeathsEndS = Math.max(promptDeathsEndS, bandEndS);
+      }
+      bands.push({
+        ...ref,
+        deaths: part.deaths,
+        deathsLow: part.deathsLow,
+        deathsHigh: part.deathsHigh,
+        injured: index === 0 ? band.injured : 0,
+        startS,
+        endS: bandEndS,
+        radii,
+        times,
+      });
+    });
+  }
   // Totals are the sum of the bands, so the sweep lands exactly on
   // them; the estimate rounds each band and its totals separately and
   // can differ from this sum by a person per band.
@@ -171,6 +259,7 @@ export function buildCasualtyTimeline(
     bands,
     endS,
     deathsEndS,
+    promptDeathsEndS,
     deaths: total((b) => b.deaths),
     deathsLow: total((b) => b.deathsLow),
     deathsHigh: total((b) => b.deathsHigh),
@@ -201,7 +290,7 @@ function frontRadiusAt(band: SweepBand, timeS: number): number {
   return span > 0 ? r0 + ((r1 - r0) * (timeS - t0)) / span : r1;
 }
 
-/** Fraction of the band's annulus area the front has swept at `timeS`. */
+/** Fraction of the band's annulus area the hazard has swept at `timeS`. */
 export function sweptFraction(band: SweepBand, timeS: number): number {
   if (timeS >= band.endS) return 1;
   if (timeS <= band.startS) return 0;
@@ -213,7 +302,7 @@ export function sweptFraction(band: SweepBand, timeS: number): number {
 }
 
 /** The toll so far at `timeS` seconds after time zero. Non-decreasing
- *  in time; equals the estimate's totals from `timeline.endS` on. */
+ *  in time; equals the timeline's totals from `timeline.endS` on. */
 export function casualtiesAtTime(timeline: CasualtyTimeline, timeS: number): CasualtySample {
   let deaths = 0;
   let deathsLow = 0;

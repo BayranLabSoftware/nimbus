@@ -71,6 +71,16 @@ export function CasualtiesPanel({
             </dd>
             {casualties.model === 'blast' && (
               <>
+                <dt className={styles.resultLabel}>{t('casualties.promptDeaths')}</dt>
+                <dd className={styles.resultValue}>{people(casualties.promptDeaths)}</dd>
+                <dt className={styles.resultLabel}>{t('casualties.delayedDeaths')}</dt>
+                <dd className={styles.resultValue}>
+                  {people(casualties.delayedDeaths)}
+                  <span style={{ opacity: 0.75 }}>
+                    {' '}
+                    ({people(casualties.delayedDeathsLow)} – {people(casualties.delayedDeathsHigh)})
+                  </span>
+                </dd>
                 <dt className={styles.resultLabel}>{t('casualties.injured')}</dt>
                 <dd className={styles.resultValue}>{people(casualties.injured)}</dd>
               </>
@@ -87,12 +97,17 @@ export function CasualtiesPanel({
                   <th>{t('casualties.table.population')}</th>
                   <th>{t('casualties.table.mortality')}</th>
                   <th>{t('casualties.table.deaths')}</th>
+                  <th>{t('casualties.table.hazards')}</th>
                 </tr>
               </thead>
               <tbody>
                 {casualties.bands.map((band) => (
                   <tr key={band.key}>
-                    <td>{t(`casualties.band.${band.key}`)}</td>
+                    <td>
+                      {t(
+                        `casualties.band.${band.psiBand ?? (band.hazards.includes('thermal') && casualties.model === 'blast' ? 'thermalOnly' : band.key)}`
+                      )}
+                    </td>
                     <td>
                       {formatWithUnitTiers(band.innerRadiusM, TIERS_RANGE)} –{' '}
                       {formatWithUnitTiers(band.outerRadiusM, TIERS_RANGE)}
@@ -103,6 +118,7 @@ export function CasualtiesPanel({
                       %
                     </td>
                     <td>{people(band.deaths)}</td>
+                    <td>{band.hazards.map((h) => t(`casualties.hazard.${h}`)).join(' · ')}</td>
                   </tr>
                 ))}
               </tbody>

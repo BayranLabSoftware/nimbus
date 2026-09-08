@@ -56,7 +56,10 @@ const EARTH_RADIUS_M = 6_371_000;
 /** Hard cap on the geographic radius any backend is asked for. Beyond
  *  a hemisphere the question "people inside the circle" stops meaning
  *  anything a damage threshold could imply. */
-const MAX_QUERY_RADIUS_M = 10_000_000;
+/** Half the circumference of the Earth: a circle of this radius is
+ *  the whole planet, which a global thermal pulse can reach. */
+const HALF_CIRCUMFERENCE_M = Math.PI * EARTH_RADIUS_M;
+const MAX_QUERY_RADIUS_M = HALF_CIRCUMFERENCE_M * 1.01;
 
 /** WorldPop's zonal-statistics allowance is 100 000 km²; stay under it
  *  with a margin for the polygon's own discretisation. */
@@ -509,10 +512,19 @@ function sumCoarseRaster(raster: CoarseRaster, lat: number, lon: number, radiusM
     const share = Math.min(1, (Math.PI * radiusM * radiusM) / (cellLatM * cellLonM));
     return cellAt(row, col) * share;
   }
+  if (radiusM >= HALF_CIRCUMFERENCE_M) {
+    // The whole planet: every cell, no geometry.
+    let everyone = 0;
+    for (const v of values) everyone += decodeCell(v, meta.pMax);
+    return everyone;
+  }
   const bbox = circleBoundingBox(lat, lon, radiusM);
   const row0 = Math.max(0, Math.floor((meta.maxLat - bbox.maxLat) / meta.cellDeg));
   const row1 = Math.min(meta.nLat - 1, Math.ceil((meta.maxLat - bbox.minLat) / meta.cellDeg));
-  const colSpan = Math.ceil((bbox.maxLon - bbox.minLon) / meta.cellDeg) + 1;
+  const colSpan = Math.min(
+    meta.nLon - 1,
+    Math.ceil((bbox.maxLon - bbox.minLon) / meta.cellDeg) + 1
+  );
   const colStart = Math.floor((bbox.minLon - meta.minLon) / meta.cellDeg);
   const halfDiagonal = 0.5 * Math.hypot(cellLatM, cellLonM);
   let sum = 0;

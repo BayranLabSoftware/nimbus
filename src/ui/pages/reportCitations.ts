@@ -105,6 +105,19 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
   if ((result.damage.overpressure5psi as number) > 0) {
     triggers.push(cite('ota1979', 'Blast mortality by overpressure band (casualty estimate).'));
   }
+  if ((result.damage.thirdDegreeBurn as number) > 0) {
+    triggers.push(
+      cite(
+        'glasstoneDolan1977',
+        'Burn mortality on the fraction in sight of the fireball (casualty estimate).'
+      )
+    );
+  }
+  if ((result.firestorm.sustainRadius as number) > 0) {
+    triggers.push(
+      cite('postol1986', 'Mass-fire mortality among the survivors (casualty estimate).')
+    );
+  }
 
   return dedupe(triggers);
 }
@@ -131,6 +144,19 @@ export function collectExplosionCitations(result: ExplosionScenarioResult): Trig
 
   if ((result.blast.overpressure5psiRadiusHob as number) > 0) {
     triggers.push(cite('ota1979', 'Blast mortality by overpressure band (casualty estimate).'));
+  }
+  if ((result.thermal.thirdDegreeBurnRadius as number) > 0) {
+    triggers.push(
+      cite(
+        'glasstoneDolan1977',
+        'Burn mortality on the fraction in sight of the fireball (casualty estimate).'
+      )
+    );
+  }
+  if ((result.firestorm.sustainRadius as number) > 0) {
+    triggers.push(
+      cite('postol1986', 'Mass-fire mortality among the survivors (casualty estimate).')
+    );
   }
 
   return dedupe(triggers);

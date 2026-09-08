@@ -7,6 +7,18 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Burns, mass fire and later deaths.** The blast toll counts three
+  more hazards, each acting in sequence on the people the earlier
+  ones left alive: third-degree burns on the fraction in sight of the
+  fireball (Glasstone & Dolan 1977), a share of the survivors inside
+  a sustained firestorm (Hamburg and Dresden at the low end, Postol's
+  superfire at the high end), and the injured who die within the
+  first month for lack of care (OTA 1979). The panel shows prompt and
+  later deaths apart, the band table names the causes of every
+  annulus, and the counter dates them: burns within the thermal
+  pulse, the fire from twenty minutes to six hours, the later deaths
+  over the month. Rings can now cover the whole planet, as a
+  Chicxulub's third-degree radius does.
 - **The toll as the event unfolds.** The bar of the globe view counts
   the estimated deaths while the hazard front sweeps the bands — the
   Kinney–Graham shock front for blast, the crustal shear wave for

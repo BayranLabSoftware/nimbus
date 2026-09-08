@@ -337,15 +337,19 @@ describe('useAppStore — casualty estimate', () => {
     const c = useAppStore.getState().casualties;
     if (c === null) throw new Error('casualties');
     expect(c.model).toBe('blast');
-    expect(c.bands).toHaveLength(4);
+    // Four OTA annuli, split further by the burn and firestorm radii.
+    expect(c.bands.length).toBeGreaterThanOrEqual(4);
+    expect(c.bands.some((b) => b.hazards.includes('thermal'))).toBe(true);
+    expect(c.delayedDeaths).toBeGreaterThan(0);
+    expect(c.deaths).toBe(c.promptDeaths + c.delayedDeaths);
     expect(c.deaths).toBeGreaterThan(0);
     expect(c.deathsLow).toBeLessThan(c.deaths);
     expect(c.deathsHigh).toBeGreaterThan(c.deaths);
     expect(c.injured).toBeGreaterThan(0);
     // Exposure = everyone inside the 1 psi ring, and the population
     // exposure row reports the 5 psi ring from the same lookups.
-    const r1 = c.bands[3]?.outerRadiusM ?? 0;
-    expect(c.exposed).toBe(Math.round(5_000 * Math.PI * (r1 / 1_000) ** 2));
+    const outermost = Math.max(...c.bands.map((b) => b.outerRadiusM));
+    expect(c.exposed).toBe(Math.round(5_000 * Math.PI * (outermost / 1_000) ** 2));
     expect(useAppStore.getState().populationExposure?.ringLabel).toBe(
       'population.ring.overpressure5psi'
     );
@@ -357,8 +361,10 @@ describe('useAppStore — casualty estimate', () => {
     const timeline = useAppStore.getState().casualtyTimeline;
     if (timeline === null) throw new Error('timeline');
     expect(timeline.model).toBe('blast');
-    expect(timeline.deathsEndS).toBeGreaterThan(1);
-    expect(timeline.endS).toBeGreaterThan(timeline.deathsEndS);
+    expect(timeline.promptDeathsEndS).toBeGreaterThan(1);
+    // The later deaths run to a month; the sweep ends with them.
+    expect(timeline.deathsEndS).toBeGreaterThan(timeline.promptDeathsEndS);
+    expect(timeline.endS).toBeGreaterThanOrEqual(timeline.deathsEndS);
     expect(timeline.deaths).toBeGreaterThan(0);
     expect(useAppStore.getState().casualtyClockStartedAt).not.toBeNull();
   });
