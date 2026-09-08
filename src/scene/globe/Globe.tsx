@@ -231,18 +231,30 @@ const MARKER_HALO_ID = 'impact-marker-halo';
 const MARKER_COLOR = Color.fromCssColorString('#FCD34D');
 const WAVEFRONT_INDICATOR_ID = 'cascade-wavefront-indicator';
 /**
- * Opacità della campitura di zona in funzione del raggio. Le zone
- * sono corone che non si sovrappongono (vedi radialDamageMaterial),
- * quindi la campitura non si somma più e può restare accesa a ogni
- * scala; alle dimensioni planetarie (l'impulso termico di Chicxulub
- * arriva all'antipode) si dimezza, così il velo tsunami e le coste
- * restano leggibili sotto una zona da milioni di km².
+ * Opacità della campitura di zona in funzione del raggio.
+ *
+ * La campitura serve alla scala in cui l'area colpita è un luogo — una
+ * città, una regione. Oltre, copre e basta: per un impatto di classe
+ * Chicxulub la coltre di ejecta e le zone di ustione avvolgono il
+ * pianeta, e anche a corone non sovrapposte tre veli planetari sommati
+ * seppellivano lo tsunami che l'oceano stava raccontando (misurato su
+ * Miami: Atlantico color ejecta, cresta e velatura invisibili). Quindi
+ * la campitura è piena fino a 150 km, sfuma e a 1 000 km non c'è più;
+ * quando in scena c'è un'onda planetaria il mare è dell'onda e il
+ * velo delle zone sparisce già a 350 km. Restano contorno e didascalia,
+ * che a scala continentale dicono già tutto.
  */
-const PLANETARY_ZONE_RADIUS_M = 3_000_000;
+const ZONE_FILL_FULL_M = 150_000;
+const ZONE_FILL_GONE_M = 1_000_000;
+const ZONE_FILL_GONE_WITH_WAVE_M = 350_000;
 
-function zoneFillAlpha(radiusM: number, base: number): number {
+function zoneFillAlpha(radiusM: number, base: number, waveOnStage: boolean): number {
   if (!Number.isFinite(radiusM) || radiusM <= 0) return base;
-  return radiusM > PLANETARY_ZONE_RADIUS_M ? base * 0.55 : base;
+  const gone = waveOnStage ? ZONE_FILL_GONE_WITH_WAVE_M : ZONE_FILL_GONE_M;
+  if (radiusM <= ZONE_FILL_FULL_M) return base;
+  if (radiusM >= gone) return 0;
+  const t = (radiusM - ZONE_FILL_FULL_M) / (gone - ZONE_FILL_FULL_M);
+  return base * (1 - t * t * (3 - 2 * t));
 }
 
 /**
@@ -1377,6 +1389,12 @@ export function Globe(): JSX.Element {
       };
     };
 
+    /** Un'onda planetaria in scena: il mare è suo, le zone di danno
+     *  cedono la campitura oltre la scala regionale (vedi zoneFillAlpha). */
+    const waveOnStage =
+      bathymetricTsunami?.global?.amplitude !== undefined &&
+      bathymetricTsunami.global.amplitude.maxAmplitude >= 1;
+
     /**
      * One damage contour, drawn as a ZONE — the annulus between the
      * previous threshold and this one — plus, once its radius is
@@ -1493,7 +1511,9 @@ export function Globe(): JSX.Element {
             if (typeof current !== 'number' || current <= 0) return 0;
             return spec.innerSemiMajorM / current;
           }),
-          fill: true,
+          // Nessuna campitura a scala planetaria: la geometria non
+          // viene nemmeno costruita, restano contorno e didascalia.
+          fill: spec.fillAlpha > 0,
           outline: false,
           height: 0,
           heightReference: HeightReference.CLAMP_TO_GROUND,
@@ -1872,7 +1892,7 @@ export function Globe(): JSX.Element {
           // a different physical quantity.
           radiusM: radius,
           geom: { ...geom, latDeg: ringAnchor.latitude, lonDeg: ringAnchor.longitude },
-          fillAlpha: zoneFillAlpha(radius, key === 'craterRim' ? 0.3 : 0.2),
+          fillAlpha: zoneFillAlpha(radius, key === 'craterRim' ? 0.3 : 0.2, waveOnStage),
           sigmaKey: key,
           animate: true,
           label: true,
@@ -1939,7 +1959,7 @@ export function Globe(): JSX.Element {
             lonDeg: blanketLon,
           },
           innerSemiMajorM: radii.craterRim,
-          fillAlpha: zoneFillAlpha(blanketRadius, 0.16),
+          fillAlpha: zoneFillAlpha(blanketRadius, 0.16, waveOnStage),
           sigmaKey: 'ejectaBlanket',
           labelBearingDeg: 135,
           animate: true,
@@ -2202,7 +2222,7 @@ export function Globe(): JSX.Element {
             color,
             radiusM: radius,
             geom: circularGeom(radius),
-            fillAlpha: zoneFillAlpha(radius, fillAlpha * 0.26),
+            fillAlpha: zoneFillAlpha(radius, fillAlpha * 0.26, waveOnStage),
             sigmaKey: mmiKindFor[id],
             animate: true,
             label: true,
@@ -2372,7 +2392,8 @@ export function Globe(): JSX.Element {
           geom: { ...geom, latDeg: ringAnchor.latitude, lonDeg: ringAnchor.longitude },
           fillAlpha: zoneFillAlpha(
             radius,
-            explosionFillAlpha * (id === 'explosion-crater' ? 0.36 : 0.24)
+            explosionFillAlpha * (id === 'explosion-crater' ? 0.36 : 0.24),
+            waveOnStage
           ),
           sigmaKey: tooltipKind,
           animate: true,
@@ -2452,7 +2473,7 @@ export function Globe(): JSX.Element {
         radiusM: pyroRadius,
         geom: circularGeom(pyroRadius),
         innerSemiMajorM: 0,
-        fillAlpha: zoneFillAlpha(pyroRadius, 0.24),
+        fillAlpha: zoneFillAlpha(pyroRadius, 0.24, waveOnStage),
         sigmaKey: 'pyroclasticRunout',
         labelBearingDeg: 45,
         animate: true,
@@ -2506,7 +2527,7 @@ export function Globe(): JSX.Element {
           lonDeg: blastLon,
         },
         innerSemiMajorM: 0,
-        fillAlpha: zoneFillAlpha(runout, 0.22),
+        fillAlpha: zoneFillAlpha(runout, 0.22, waveOnStage),
         sigmaKey: 'lateralBlast',
         // Caption downrange, where the wedge points.
         labelBearingDeg: lateralBlast.directionDeg,
@@ -2564,7 +2585,7 @@ export function Globe(): JSX.Element {
           lonDeg: plumeLon,
         },
         innerSemiMajorM: 0,
-        fillAlpha: zoneFillAlpha(downwind, 0.14),
+        fillAlpha: zoneFillAlpha(downwind, 0.14, waveOnStage),
         // Caption downwind, where the ash goes.
         labelBearingDeg: ashfall.windDirectionDegrees,
         animate: false,
