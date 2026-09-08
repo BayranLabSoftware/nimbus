@@ -31,6 +31,8 @@ Mw 9, between an inland impact and one in the open ocean.
 - Estimated casualties per hazard band — WorldPop 2020 population
   (zonal-statistics API, no key) times OTA 1979 blast, USGS PAGER
   shaking and Auker 2013 pyroclastic mortality, with a low–high band.
+  The bar of the globe view counts the toll as the hazard front sweeps
+  the bands, with the low–high band and the physical clock beside it.
 - Monte-Carlo P10/P90 confidence rings around the nominal damage circles.
 - Cesium globe with damage zones drawn at true geographic scale, each
   contour captioned on the map, and ≈ 4 000 Natural Earth cities to

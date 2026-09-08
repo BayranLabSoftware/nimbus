@@ -151,3 +151,15 @@ export function formatWithUnitTiers(value: number, tiers: readonly UnitTier[]): 
   if (!last) return NON_FINITE_PLACEHOLDER;
   return `${formatDecimal(value / last.scale, last.digits)} ${last.label}`;
 }
+
+/**
+ * People, to two significant figures: a death toll is an order of
+ * magnitude, and "97 000" says that where "96 812" would pretend to a
+ * count. Below a hundred the integer is shown as it is.
+ */
+export function formatPeople(n: number, locale: string): string {
+  if (!Number.isFinite(n) || n < 0) return NON_FINITE_PLACEHOLDER;
+  if (n < 100) return Math.round(n).toLocaleString(locale);
+  const magnitude = 10 ** (Math.floor(Math.log10(n)) - 1);
+  return (Math.round(n / magnitude) * magnitude).toLocaleString(locale);
+}

@@ -1211,9 +1211,12 @@
     "viewImpact": "Ravvicinata",
     "viewSwitchLabel": "Punto di vista",
     "viewImpactUnavailable": "La vista ravvicinata è disponibile per impatti ed esplosioni",
-    "cities": "Città",
-    "citiesShow": "Mostra i nomi delle città sul globo",
-    "citiesHide": "Nascondi i nomi delle città sul globo"
+    "casualties": "Vittime",
+    "casualtiesPending": "stima in corso…",
+    "casualtiesBand": "{{low}} – {{high}}",
+    "casualtiesProvisional": "provvisoria",
+    "casualtiesTitle": "Morti stimati mentre gli effetti immediati si propagano: il numero sale con il fronte d'urto, lo scuotimento o il flusso piroclastico e si ferma quando il fronte ha attraversato l'ultima fascia. Ordine di grandezza, tsunami escluso: i dettagli sono nel pannello.",
+    "casualtiesFinal": "Morti stimati: {{deaths}}, da {{low}} a {{high}}, a {{time}} dall'evento."
   },
   "impactView": {
     "title": "Vista ravvicinata",
@@ -1281,6 +1284,7 @@
       "worldpop-api": "popolazione: WorldPop 2020 (API di statistica zonale)",
       "coarse-raster": "popolazione: {{source}}"
     },
-    "disclaimer": "Ordine di grandezza, non conteggio: effetti immediati, nessuna evacuazione, nessun preavviso. Esclusi tsunami, fallout, incendi successivi, carestia e malattie. La dispersione pubblicata di ogni funzione di vulnerabilità è un fattore 2–5."
+    "disclaimer": "Ordine di grandezza, non conteggio: effetti immediati, nessuna evacuazione, nessun preavviso. Esclusi tsunami, fallout, incendi successivi, carestia e malattie. La dispersione pubblicata di ogni funzione di vulnerabilità è un fattore 2–5.",
+    "provisional": "Cifra provvisoria dal raster a 14 km: WorldPop sta contando le fasce e la sostituirà."
   }
 }

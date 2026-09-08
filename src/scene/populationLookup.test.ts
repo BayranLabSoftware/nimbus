@@ -121,3 +121,38 @@ describe('populationLookup polygons', () => {
     expect(counted).toBeLessThan(6 * 1_100);
   });
 });
+
+describe('populationLookup sub-cell circles', () => {
+  const { sumCoarseRaster } = _internals;
+  const meta = {
+    cellDeg: 1,
+    nLon: 360,
+    nLat: 180,
+    minLat: -90,
+    maxLat: 90,
+    minLon: -180,
+    maxLon: 180,
+    pMax: 2e7,
+    source: 'test',
+  };
+  const thousand = Math.round((255 * Math.log(1_001)) / Math.log(1 + meta.pMax));
+
+  it('a city-scale ring inside one cell is the cell density times the ring area', () => {
+    const values = new Uint8Array(360 * 180).fill(thousand);
+    const raster = { meta, values };
+    // 1.6 km ring in a 111 km cell of 1 000 people: ≈ 0.065 % of the cell.
+    const people = sumCoarseRaster(raster, 0.5, 0.5, 1_600);
+    const expected = (1_000 * Math.PI * 1.6 ** 2) / 111.2 ** 2;
+    expect(people).toBeGreaterThan(expected * 0.85);
+    expect(people).toBeLessThan(expected * 1.15);
+  });
+
+  it('a ring a few cells wide follows the area, with edge cells counted by their share', () => {
+    const values = new Uint8Array(360 * 180).fill(thousand);
+    const raster = { meta, values };
+    // 150 km ring on the equator: π · 150² / 111.2² ≈ 5.7 cells.
+    const people = sumCoarseRaster(raster, 0, 0, 150_000);
+    expect(people).toBeGreaterThan(5.7 * 1_000 * 0.9);
+    expect(people).toBeLessThan(5.7 * 1_000 * 1.1);
+  });
+});

@@ -349,7 +349,61 @@ describe('useAppStore — casualty estimate', () => {
     expect(useAppStore.getState().populationExposure?.ringLabel).toBe(
       'population.ring.overpressure5psi'
     );
-    expect(useAppStore.getState().casualtyStatus).toBe('idle');
+    await vi.waitFor(() => {
+      expect(useAppStore.getState().casualtyStatus).toBe('idle');
+    });
+    expect(useAppStore.getState().casualties?.provisional).toBe(false);
+    // The estimate comes with its sweep and the bar's clock started.
+    const timeline = useAppStore.getState().casualtyTimeline;
+    if (timeline === null) throw new Error('timeline');
+    expect(timeline.model).toBe('blast');
+    expect(timeline.deathsEndS).toBeGreaterThan(1);
+    expect(timeline.endS).toBeGreaterThan(timeline.deathsEndS);
+    expect(timeline.deaths).toBeGreaterThan(0);
+    expect(useAppStore.getState().casualtyClockStartedAt).not.toBeNull();
+  });
+
+  it('asks the coarse raster first for a provisional figure, then the fine backends', async () => {
+    const calls: (boolean | undefined)[] = [];
+    configurePopulationLookup((lat, lon, radiusM, _polygon, options) => {
+      calls.push(options?.fast);
+      // The raster sees 80 % of what WorldPop will count.
+      const scale = options?.fast === true ? 0.8 : 1;
+      return Promise.resolve({
+        exposed: Math.round(scale * 5_000 * Math.PI * (radiusM / 1_000) ** 2),
+        source: options?.fast === true ? 'raster' : 'api',
+        method: options?.fast === true ? ('coarse-raster' as const) : ('worldpop-api' as const),
+        radiusM,
+        bbox: { minLat: lat, maxLat: lat, minLon: lon, maxLon: lon },
+      });
+    });
+    useAppStore.getState().selectPreset('HIROSHIMA_1945');
+    useAppStore.getState().setLocation({ latitude: 40.85, longitude: 14.27 });
+    await useAppStore.getState().evaluate();
+    await vi.waitFor(
+      () => {
+        expect(useAppStore.getState().casualtyStatus).toBe('idle');
+        expect(useAppStore.getState().casualties?.provisional).toBe(false);
+      },
+      { timeout: 10_000 }
+    );
+    // Every footprint was asked twice: the fast pass first, then the fine one.
+    const fastCalls = calls.filter((c) => c === true).length;
+    const fineCalls = calls.filter((c) => c !== true).length;
+    expect(fastCalls).toBeGreaterThan(0);
+    expect(fineCalls).toBe(fastCalls);
+    expect(calls.indexOf(true)).toBeLessThan(calls.findIndex((c) => c !== true));
+    const c = useAppStore.getState().casualties;
+    if (c === null) throw new Error('casualties');
+    expect(c.method).toBe('worldpop-api');
+    expect(c.source).toBe('api');
+    // The clock started with the provisional figure and was not restarted.
+    const started = useAppStore.getState().casualtyClockStartedAt;
+    expect(started).not.toBeNull();
+    // Changing the scenario drops the sweep and the clock with the result.
+    useAppStore.getState().selectEventType('earthquake');
+    expect(useAppStore.getState().casualtyTimeline).toBeNull();
+    expect(useAppStore.getState().casualtyClockStartedAt).toBeNull();
   });
 
   it('reports unsupported for a landslide, whose only hazard is the tsunami', async () => {

@@ -17,6 +17,7 @@ import type {
   PopulationLookupMethod,
   PopulationLookupResult,
   PopulationPolygon,
+  PopulationLookupOptions,
 } from '../scene/populationLookup.js';
 import { buildRuptureStadiumLatLon } from '../scene/stadiumPolygon.js';
 import {
@@ -75,6 +76,9 @@ import {
   type ImpactScenarioResult,
 } from '../physics/simulate.js';
 import { deg, degreesToRadians, J, kgPerM3, m, mps, Pa, sqm } from '../physics/units.js';
+import { IMPACT_BLAST_COUPLING } from '../physics/constants.js';
+import { arrivalFunctionFor, buildCasualtyTimeline } from '../physics/casualtyTimeline.js';
+import type { CasualtyTimeline } from '../physics/casualtyTimeline.js';
 
 /** Top-level event categories the simulator supports. */
 export type EventType = 'impact' | 'explosion' | 'earthquake' | 'volcano' | 'landslide';
@@ -354,6 +358,10 @@ export interface CasualtyResult extends CasualtyEstimate {
   source: string;
   /** Coarsest backend that contributed a band. */
   method: PopulationLookupMethod;
+  /** True while the figure comes from the shipped 0.125° raster alone,
+   *  answered in milliseconds so the bar can start counting; the fine
+   *  backends replace it when they land. */
+  provisional: boolean;
 }
 
 export interface AppStore {
@@ -387,11 +395,6 @@ export interface AppStore {
    *  preset, location, or evaluate so a stale "I hid the 5 m wave-front"
    *  doesn't persist into the next scenario. */
   hiddenRingKeys: ReadonlySet<string>;
-  /** Whether the Natural Earth city index (dots + names) is drawn on
-   *  the globe. Remembered in localStorage: someone who turns the
-   *  names off for a clean screenshot shouldn't have to do it again
-   *  on every visit. */
-  showCityLabels: boolean;
   /** Camera flight asked for by the UI — the city search in the
    *  simulator panel. The globe consumes it by `seq`; the store never
    *  moves the camera itself. */
@@ -422,6 +425,13 @@ export interface AppStore {
    *  model does not cover (`casualtyStatus` says which). */
   casualties: CasualtyResult | null;
   casualtyStatus: CasualtyStatus;
+  /** The estimate as a sweep in time — when the hazard front reaches
+   *  each band — rebuilt with every estimate. */
+  casualtyTimeline: CasualtyTimeline | null;
+  /** `performance.now()` when the first estimate for the current
+   *  result landed: the bar's counter starts its clock there and keeps
+   *  it when the provisional figure is refined. */
+  casualtyClockStartedAt: number | null;
   /** Optional Monte-Carlo P10/P50/P90 summary. Populated only when
    *  the user explicitly triggers `evaluateMonteCarlo` — the default
    *  single-shot `evaluate` leaves this as `null`. */
@@ -505,8 +515,6 @@ export interface AppStore {
   /** Reset every legend toggle so all rings render again. Wired to a
    *  "show all" button in the legend header. */
   showAllRings: () => void;
-  /** Flip the city dots + names on the globe. */
-  toggleCityLabels: () => void;
   /** Ask the globe to fly the camera over `target`, framing `rangeM`
    *  metres around it. Idempotent per call: every request gets a new
    *  sequence number so the same city can be flown to twice. */
@@ -572,7 +580,6 @@ type InitialSlice = Pick<
   | 'location'
   | 'selectedAftershockIndex'
   | 'hiddenRingKeys'
-  | 'showCityLabels'
   | 'cameraRequest'
   | 'result'
   | 'bathymetricTsunami'
@@ -580,6 +587,8 @@ type InitialSlice = Pick<
   | 'populationStatus'
   | 'casualties'
   | 'casualtyStatus'
+  | 'casualtyTimeline'
+  | 'casualtyClockStartedAt'
   | 'monteCarlo'
   | 'monteCarloStatus'
   | 'deepDive'
@@ -596,26 +605,23 @@ type InitialSlice = Pick<
   | 'transitionPhase'
 >;
 
-/** localStorage key for the city-labels preference. */
+/**
+ * City names are always drawn now. Earlier builds let a visitor hide
+ * them and remembered the choice under this key; the privacy notice
+ * promises the app keeps a single preference (the language), so the
+ * stale key is removed on start-up rather than left behind.
+ */
 const CITY_LABELS_PREF_KEY = 'nimbus.showCityLabels';
 
-function readCityLabelsPreference(): boolean {
-  try {
-    if (typeof localStorage === 'undefined') return true;
-    return localStorage.getItem(CITY_LABELS_PREF_KEY) !== 'off';
-  } catch {
-    return true;
-  }
-}
-
-function writeCityLabelsPreference(show: boolean): void {
+function forgetCityLabelsPreference(): void {
   try {
     if (typeof localStorage === 'undefined') return;
-    localStorage.setItem(CITY_LABELS_PREF_KEY, show ? 'on' : 'off');
+    localStorage.removeItem(CITY_LABELS_PREF_KEY);
   } catch {
-    // Private mode / quota: the toggle still works for the session.
+    // Private mode / blocked storage: nothing to forget.
   }
 }
+forgetCityLabelsPreference();
 
 export interface CameraRequest {
   latitude: number;
@@ -654,13 +660,14 @@ function initialState(): InitialSlice {
     location: null,
     selectedAftershockIndex: null,
     hiddenRingKeys: new Set<string>(),
-    showCityLabels: readCityLabelsPreference(),
     cameraRequest: null,
     result: null,
     bathymetricTsunami: null,
     populationExposure: null,
     populationStatus: 'idle',
     casualties: null,
+    casualtyTimeline: null,
+    casualtyClockStartedAt: null,
     casualtyStatus: 'idle',
     monteCarlo: null,
     monteCarloStatus: 'idle',
@@ -1041,7 +1048,8 @@ export type PopulationLookup = (
   latitude: number,
   longitude: number,
   radiusM: number,
-  polygon?: PopulationPolygon
+  polygon?: PopulationPolygon,
+  options?: PopulationLookupOptions
 ) => Promise<PopulationLookupResult | null>;
 
 let populationLookup: PopulationLookup | null = null;
@@ -1312,11 +1320,37 @@ const METHOD_RANK: Record<PopulationLookupMethod, number> = {
   'coarse-raster': 2,
 };
 
+/** The estimate as a sweep: the arrival function of the hazard front
+ *  for this event family, applied to the bands the estimate has. */
+function casualtyTimelineFor(result: ActiveResult, estimate: CasualtyEstimate): CasualtyTimeline {
+  const maxRadiusM = estimate.bands.reduce((mx, b) => Math.max(mx, b.outerRadiusM), 0);
+  // The air shock of an impact carries `IMPACT_BLAST_COUPLING` of the
+  // kinetic energy — the same energy the rings are drawn with.
+  const blastEnergy =
+    result.type === 'impact'
+      ? J((result.data.impactor.kineticEnergy as number) * IMPACT_BLAST_COUPLING)
+      : result.type === 'explosion'
+        ? result.data.yield.joules
+        : undefined;
+  return buildCasualtyTimeline(
+    estimate,
+    arrivalFunctionFor({
+      model: estimate.model,
+      maxRadiusM,
+      ...(blastEnergy !== undefined && { blastEnergy }),
+    })
+  );
+}
+
 /**
  * Fetch the population inside every band (and the headline exposure
- * ring), then turn the plan into an estimate. Every radius is queried
- * once; the population backend caches and throttles. Stale guard: a
- * newer result in the store means this run's numbers are dropped.
+ * ring), then turn the plan into an estimate. Two passes: the shipped
+ * coarse raster first, which answers in milliseconds and gives the bar
+ * a provisional figure to start counting from; then the fine backends
+ * (COG, WorldPop API — 15–45 s a band), which replace it. Every radius
+ * is queried once per pass; the population backend caches and
+ * throttles. Stale guard: a newer result in the store means this run's
+ * numbers are dropped.
  */
 async function runCasualtyLookup(
   result: ActiveResult,
@@ -1350,44 +1384,78 @@ async function runCasualtyLookup(
   if (headline !== null) {
     queries.set(queryKey(headline.radiusM), { radiusM: headline.radiusM });
   }
-  const lookups = new Map<string, PopulationLookupResult | null>();
-  try {
-    await Promise.all(
-      [...queries].map(async ([key, q]) => {
-        lookups.set(key, await lookup(location.latitude, location.longitude, q.radiusM, q.polygon));
-      })
-    );
-  } catch (err) {
-    console.warn('[populationLookup] dispatch failed:', err);
-  }
-  if (get().result !== result) return; // superseded by a newer evaluate
 
-  if (headline !== null) {
-    const hit = lookups.get(queryKey(headline.radiusM)) ?? null;
-    set(
-      hit === null
-        ? { populationExposure: null, populationStatus: 'error' }
-        : { populationExposure: { ...hit, ringLabel: headline.label }, populationStatus: 'idle' }
-    );
-  }
-  if (plan === null) return;
-  const cumulative: number[] = [];
-  let method: PopulationLookupMethod = 'cog';
-  let source = '';
-  for (const band of plan.bands) {
-    const hit = lookups.get(queryKey(band.outerRadiusM, band.polygon)) ?? null;
-    if (hit === null) {
-      set({ casualties: null, casualtyStatus: 'error' });
-      return;
+  const collect = async (
+    options: PopulationLookupOptions
+  ): Promise<Map<string, PopulationLookupResult | null>> => {
+    const lookups = new Map<string, PopulationLookupResult | null>();
+    try {
+      await Promise.all(
+        [...queries].map(async ([key, q]) => {
+          lookups.set(
+            key,
+            await lookup(location.latitude, location.longitude, q.radiusM, q.polygon, options)
+          );
+        })
+      );
+    } catch (err) {
+      console.warn('[populationLookup] dispatch failed:', err);
     }
-    cumulative.push(hit.exposed);
-    if (METHOD_RANK[hit.method] > METHOD_RANK[method]) method = hit.method;
-    source = hit.source;
-  }
-  set({
-    casualties: { ...estimateCasualties(plan, cumulative), source, method },
-    casualtyStatus: 'idle',
-  });
+    return lookups;
+  };
+
+  const publish = (
+    lookups: Map<string, PopulationLookupResult | null>,
+    provisional: boolean
+  ): void => {
+    if (headline !== null) {
+      const hit = lookups.get(queryKey(headline.radiusM)) ?? null;
+      if (hit !== null) {
+        set({
+          populationExposure: { ...hit, ringLabel: headline.label },
+          populationStatus: 'idle',
+        });
+      } else if (!provisional) {
+        set({ populationExposure: null, populationStatus: 'error' });
+      }
+    }
+    if (plan === null) return;
+    const cumulative: number[] = [];
+    let method: PopulationLookupMethod = 'cog';
+    let source = '';
+    for (const band of plan.bands) {
+      const hit = lookups.get(queryKey(band.outerRadiusM, band.polygon)) ?? null;
+      if (hit === null) {
+        // A failed fine pass keeps the provisional figure, if any,
+        // rather than replacing a number with nothing.
+        if (!provisional) {
+          set(
+            get().casualties === null
+              ? { casualties: null, casualtyStatus: 'error' }
+              : { casualtyStatus: 'idle' }
+          );
+        }
+        return;
+      }
+      cumulative.push(hit.exposed);
+      if (METHOD_RANK[hit.method] > METHOD_RANK[method]) method = hit.method;
+      source = hit.source;
+    }
+    const estimate = estimateCasualties(plan, cumulative);
+    set({
+      casualties: { ...estimate, source, method, provisional },
+      casualtyTimeline: casualtyTimelineFor(result, estimate),
+      casualtyClockStartedAt: get().casualtyClockStartedAt ?? performance.now(),
+      casualtyStatus: provisional ? 'fetching' : 'idle',
+    });
+  };
+
+  const fast = await collect({ fast: true });
+  if (get().result !== result) return; // superseded by a newer evaluate
+  publish(fast, true);
+  const fine = await collect({});
+  if (get().result !== result) return;
+  publish(fine, false);
 }
 
 /** Pick the most representative damage radius for the population
@@ -1480,6 +1548,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
       populationExposure: null,
       populationStatus: 'idle',
       casualties: null,
+      casualtyTimeline: null,
+      casualtyClockStartedAt: null,
       casualtyStatus: 'idle',
       monteCarlo: null,
       monteCarloStatus: 'idle',
@@ -1501,12 +1571,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
 
   showAllRings: () => {
     set({ hiddenRingKeys: new Set<string>() });
-  },
-
-  toggleCityLabels: () => {
-    const next = !get().showCityLabels;
-    writeCityLabelsPreference(next);
-    set({ showCityLabels: next });
   },
 
   requestCameraFlight: (target, rangeM) => {
@@ -1535,6 +1599,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
@@ -1558,6 +1624,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
@@ -1581,6 +1649,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
@@ -1604,6 +1674,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
@@ -1627,6 +1699,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
@@ -1678,6 +1752,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
@@ -1715,6 +1791,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
@@ -1752,6 +1830,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
@@ -1791,6 +1871,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
@@ -1827,6 +1909,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
         monteCarloStatus: 'idle',
@@ -2187,6 +2271,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'fetching',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         status: 'idle',
         lastEvaluatedAt: Date.now(),
@@ -2225,6 +2311,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
         populationExposure: null,
         populationStatus: 'idle',
         casualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
         casualtyStatus: 'idle',
         monteCarlo: null,
       });

@@ -533,7 +533,6 @@ export function Globe(): JSX.Element {
   const setElevationGrid = useAppStore((s) => s.setElevationGrid);
   const setGlobalBathymetricGrid = useAppStore((s) => s.setGlobalBathymetricGrid);
   const hiddenRingKeys = useAppStore((s) => s.hiddenRingKeys);
-  const showCityLabels = useAppStore((s) => s.showCityLabels);
   const cameraRequest = useAppStore((s) => s.cameraRequest);
   /** Dots + names of the Natural Earth city index, once loaded. */
   const cityLayerRef = useRef<CityLayerHandle | null>(null);
@@ -989,7 +988,7 @@ export function Globe(): JSX.Element {
           language: i18next.language,
           lite: softwareRenderer,
         });
-        layer.setVisible(useAppStore.getState().showCityLabels);
+        layer.setVisible(true);
         cityLayerRef.current = layer;
         if (import.meta.env.DEV) {
           console.info(`[Globe] city labels: ${layer.count.toString()} placed`);
@@ -1095,11 +1094,6 @@ export function Globe(): JSX.Element {
       viewerRef.current = null;
     };
   }, [setLocation, selectAftershock]);
-
-  // City names follow the AppBar toggle.
-  useEffect(() => {
-    cityLayerRef.current?.setVisible(showCityLabels);
-  }, [showCityLabels]);
 
   // Camera flights asked for by the UI (the city search): a top-down
   // framing of the requested radius, or an instant cut under

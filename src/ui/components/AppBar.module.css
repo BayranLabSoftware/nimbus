@@ -58,40 +58,6 @@
   gap: 8px;
 }
 
-/* City-names toggle: the same quiet mono chip as the dialog triggers,
- * lit in the accent when the layer is on. */
-.cityToggle {
-  padding: 7px 12px;
-  font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.55);
-  border: 1px solid transparent;
-  border-radius: var(--radius-s);
-  cursor: pointer;
-  transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease;
-}
-
-.cityToggle:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: var(--glass-border);
-}
-
-.cityToggle[aria-pressed='true'] {
-  color: var(--accent);
-  border-color: rgba(232, 163, 61, 0.35);
-}
-
-.cityToggle:focus-visible {
-  outline: 2px solid #fbbf24;
-  outline-offset: 2px;
-}
-
 @media (max-width: 640px) {
   .crumb {
     display: none;

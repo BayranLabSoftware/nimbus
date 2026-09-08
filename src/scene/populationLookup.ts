@@ -481,13 +481,40 @@ function decodeCell(v: number, pMax: number): number {
   return Math.exp((v * Math.log(1 + pMax)) / 255) - 1;
 }
 
+/** Sub-samples per axis for a cell the circle's edge crosses. */
+const EDGE_SUBSAMPLES = 4;
+
+/**
+ * People inside a circle on the coarse grid. A cell wholly inside
+ * counts in full, one wholly outside not at all, and a cell the edge
+ * crosses by the fraction of a 4 × 4 sub-grid that falls inside — the
+ * people of a 0.125° cell are assumed spread evenly across it. A
+ * circle smaller than a cell (a city-scale ring, ≈ 14 km at the
+ * equator) is the containing cell's density times the circle's area,
+ * so the provisional figure is an honest fraction rather than zero or
+ * a whole cell.
+ */
 function sumCoarseRaster(raster: CoarseRaster, lat: number, lon: number, radiusM: number): number {
   const { meta, values } = raster;
+  const cellLatM = (meta.cellDeg * Math.PI * EARTH_RADIUS_M) / 180;
+  const cellLonM = cellLatM * Math.max(Math.cos((lat * Math.PI) / 180), 1e-6);
+  const cellAt = (r: number, c: number): number =>
+    decodeCell(values[r * meta.nLon + (((c % meta.nLon) + meta.nLon) % meta.nLon)] ?? 0, meta.pMax);
+  if (2 * radiusM < Math.min(cellLatM, cellLonM)) {
+    const row = Math.min(
+      meta.nLat - 1,
+      Math.max(0, Math.floor((meta.maxLat - lat) / meta.cellDeg))
+    );
+    const col = Math.floor((lon - meta.minLon) / meta.cellDeg);
+    const share = Math.min(1, (Math.PI * radiusM * radiusM) / (cellLatM * cellLonM));
+    return cellAt(row, col) * share;
+  }
   const bbox = circleBoundingBox(lat, lon, radiusM);
   const row0 = Math.max(0, Math.floor((meta.maxLat - bbox.maxLat) / meta.cellDeg));
   const row1 = Math.min(meta.nLat - 1, Math.ceil((meta.maxLat - bbox.minLat) / meta.cellDeg));
   const colSpan = Math.ceil((bbox.maxLon - bbox.minLon) / meta.cellDeg) + 1;
   const colStart = Math.floor((bbox.minLon - meta.minLon) / meta.cellDeg);
+  const halfDiagonal = 0.5 * Math.hypot(cellLatM, cellLonM);
   let sum = 0;
   for (let r = row0; r <= row1; r++) {
     const cellLat = meta.maxLat - (r + 0.5) * meta.cellDeg;
@@ -495,8 +522,23 @@ function sumCoarseRaster(raster: CoarseRaster, lat: number, lon: number, radiusM
       // Wrap columns across the antimeridian.
       const c = (((colStart + k) % meta.nLon) + meta.nLon) % meta.nLon;
       const cellLon = meta.minLon + (c + 0.5) * meta.cellDeg;
-      if (greatCircleM(lat, lon, cellLat, cellLon) > radiusM) continue;
-      sum += decodeCell(values[r * meta.nLon + c] ?? 0, meta.pMax);
+      const d = greatCircleM(lat, lon, cellLat, cellLon);
+      if (d - halfDiagonal > radiusM) continue;
+      const people = cellAt(r, c);
+      if (people === 0) continue;
+      if (d + halfDiagonal <= radiusM) {
+        sum += people;
+        continue;
+      }
+      let inside = 0;
+      for (let a = 0; a < EDGE_SUBSAMPLES; a++) {
+        const sLat = cellLat + ((a + 0.5) / EDGE_SUBSAMPLES - 0.5) * meta.cellDeg;
+        for (let b = 0; b < EDGE_SUBSAMPLES; b++) {
+          const sLon = cellLon + ((b + 0.5) / EDGE_SUBSAMPLES - 0.5) * meta.cellDeg;
+          if (greatCircleM(lat, lon, sLat, sLon) <= radiusM) inside += 1;
+        }
+      }
+      sum += (people * inside) / (EDGE_SUBSAMPLES * EDGE_SUBSAMPLES);
     }
   }
   return sum;
@@ -531,25 +573,34 @@ function sumCoarseRasterRing(raster: CoarseRaster, ring: readonly [number, numbe
  * asset missing); the store renders that as "—" and the simulation is
  * untouched.
  */
+export interface PopulationLookupOptions {
+  /** Coarse raster only: an answer in milliseconds from the shipped
+   *  0.125° grid, for a provisional figure the UI can show while the
+   *  fine backends (COG, WorldPop API) take their 15–45 s. */
+  fast?: boolean;
+}
+
 export async function populationInRadius(
   lat: number,
   lon: number,
   radiusM: number,
-  polygon?: PopulationPolygon
+  polygon?: PopulationPolygon,
+  options?: PopulationLookupOptions
 ): Promise<PopulationLookupResult | null> {
   if (!Number.isFinite(lat) || !Number.isFinite(lon) || !Number.isFinite(radiusM)) return null;
   if (radiusM <= 0 || radiusM > MAX_QUERY_RADIUS_M) return null;
   const ring = polygon !== undefined && polygon.length >= 3 ? polygonRing(polygon) : null;
   const bbox = ring !== null ? ringBoundingBox(ring) : circleBoundingBox(lat, lon, radiusM);
+  const fast = options?.fast === true;
 
   const cogUrl = resolveCogUrl();
-  if (cogUrl !== null && ring === null) {
+  if (cogUrl !== null && ring === null && !fast) {
     const fromCog = await populationFromCog(cogUrl, lat, lon, radiusM);
     if (fromCog !== null) return fromCog;
   }
 
   const areaKm2 = ring !== null ? ringAreaKm2(ring) : circleAreaKm2(radiusM);
-  if (areaKm2 <= WORLDPOP_API_MAX_AREA_KM2 && apiFailureCount < 2) {
+  if (!fast && areaKm2 <= WORLDPOP_API_MAX_AREA_KM2 && apiFailureCount < 2) {
     try {
       const key =
         ring !== null

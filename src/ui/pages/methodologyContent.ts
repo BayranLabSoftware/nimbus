@@ -1290,6 +1290,15 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
           'Every figure is prompt effects only — no evacuation, no warning, no fallout, no later fires, famine or disease, and no tsunami toll (counting people in a run-up field needs a coastal DEM and an inundation model the simulator does not have). Numbers are printed to two significant figures with their band, next to the vulnerability function and the population source that produced them.',
         citation: ota1979,
       },
+      {
+        id: 'casualties-sweep',
+        name: 'When the deaths happen',
+        formula:
+          'deaths(t) = Σ deaths(band) · swept-area fraction at t; t(r) = shock integral | r / 3.5 km/s | r / 30 m/s | r / 400 m/s',
+        description:
+          'The counter in the bar sweeps the estimate with the hazard front: the Kinney–Graham shock integral for blast (the same energy the rings use), the crustal shear wave for shaking (PREM 3.2–3.9 km/s), 30 m/s for a pyroclastic current and 400 m/s for a lateral blast (Mt St Helens: 27 km in a minute). Deaths in a band accrue with the annulus area the front has swept, people being assumed evenly spread within the band as the estimate itself assumes. The animation compresses the physical time into five seconds on a log scale and prints the real elapsed time beside the figure; the first number comes from the shipped 0.125° raster and glides to the WorldPop figure when that lands.',
+        citation: kinneyGraham1985,
+      },
     ],
   },
   {

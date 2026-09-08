@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { CasualtyEstimate } from '../../physics/casualties.js';
 import type { PopulationLookupMethod } from '../../scene/populationLookup.js';
 import type { CasualtyStatus } from '../../store/index.js';
-import { formatWithUnitTiers, type UnitTier } from '../utils/numberFormat.js';
+import { formatPeople, formatWithUnitTiers, type UnitTier } from '../utils/numberFormat.js';
 import styles from './SimulatorPanel.module.css';
 
 const TIERS_RANGE: readonly UnitTier[] = [
@@ -13,15 +13,10 @@ const TIERS_RANGE: readonly UnitTier[] = [
 
 /** People, rounded to the precision the model deserves: two
  *  significant figures — "≈ 66 000", never "65 812". */
-function formatPeople(n: number, locale: string): string {
-  if (!Number.isFinite(n) || n < 0) return '—';
-  if (n < 100) return Math.round(n).toLocaleString(locale);
-  const magnitude = 10 ** (Math.floor(Math.log10(n)) - 1);
-  return (Math.round(n / magnitude) * magnitude).toLocaleString(locale);
-}
-
 export interface CasualtiesPanelProps {
-  casualties: (CasualtyEstimate & { source: string; method: PopulationLookupMethod }) | null;
+  casualties:
+    | (CasualtyEstimate & { source: string; method: PopulationLookupMethod; provisional?: boolean })
+    | null;
   status: CasualtyStatus;
   /** Compact layout for the side panel; the report shows every band. */
   compact?: boolean;
@@ -51,7 +46,8 @@ export function CasualtiesPanel({
       <h3 className={styles.resultLabel} style={{ marginTop: 0 }}>
         {t('casualties.label')}
       </h3>
-      {status === 'fetching' && <p>{t('casualties.loading')}</p>}
+      {status === 'fetching' && casualties === null && <p>{t('casualties.loading')}</p>}
+      {casualties?.provisional === true && <p>{t('casualties.provisional')}</p>}
       {status === 'error' && casualties === null && <p>{t('casualties.unavailable')}</p>}
       {status === 'unsupported' && casualties === null && <p>{t('casualties.unsupported')}</p>}
       {casualties !== null && (

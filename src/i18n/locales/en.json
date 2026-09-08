@@ -1124,9 +1124,12 @@
     "viewImpact": "Close-up",
     "viewSwitchLabel": "Viewpoint",
     "viewImpactUnavailable": "The close-up view is available for impacts and explosions",
-    "cities": "Cities",
-    "citiesShow": "Show city names on the globe",
-    "citiesHide": "Hide city names on the globe"
+    "casualties": "Deaths",
+    "casualtiesPending": "estimating…",
+    "casualtiesBand": "{{low}} – {{high}}",
+    "casualtiesProvisional": "provisional",
+    "casualtiesTitle": "Estimated deaths as the prompt effects spread: the figure rises with the shock front, the shaking or the pyroclastic current and stops once the front has crossed the last band. An order of magnitude, tsunami excluded: the details are in the panel.",
+    "casualtiesFinal": "Estimated deaths: {{deaths}}, from {{low}} to {{high}}, {{time}} after the event."
   },
   "impactView": {
     "title": "Close-up",
@@ -1194,6 +1197,7 @@
       "worldpop-api": "population: WorldPop 2020 (zonal-statistics API)",
       "coarse-raster": "population: {{source}}"
     },
-    "disclaimer": "An order of magnitude, not a count: prompt effects, no evacuation, no warning. Excludes tsunami, fallout, later fires, famine and disease. The published scatter of every vulnerability function is a factor 2–5."
+    "disclaimer": "An order of magnitude, not a count: prompt effects, no evacuation, no warning. Excludes tsunami, fallout, later fires, famine and disease. The published scatter of every vulnerability function is a factor 2–5.",
+    "provisional": "Provisional figure from the 14 km raster: WorldPop is counting the bands and will replace it."
   }
 }

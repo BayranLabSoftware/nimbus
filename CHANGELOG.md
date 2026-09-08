@@ -7,6 +7,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The toll as the event unfolds.** The bar of the globe view counts
+  the estimated deaths while the hazard front sweeps the bands — the
+  Kinney–Graham shock front for blast, the crustal shear wave for
+  shaking, the observed front speeds of pyroclastic currents and
+  lateral blasts — with the low–high band and the physical elapsed
+  time beside the figure. A provisional figure from the shipped
+  raster appears within milliseconds and glides to the WorldPop figure
+  when that lands. Tsunami deaths are still not counted, and the label
+  says so.
 - **Estimated casualties.** WorldPop 2020 population inside every
   hazard band (zonal-statistics API up to 100 000 km², a shipped
   0.125° GHS-POP aggregate beyond) times published vulnerability
@@ -41,6 +50,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   paints only its annulus, gets a crisp clamped contour with a dark
   under-line, a rim caption (`5 psi · 1,7 km`) and a dashed 1σ line;
   the first camera framing now includes the outermost contour.
+
+### Changed
+
+- **City names always on.** The "Cities" toggle left the bar; the
+  Natural Earth names are part of the map now, and the stale
+  `nimbus.showCityLabels` preference is removed from the browser on
+  start-up (the privacy notice lists one preference, the language).
+- **Small rings on the coarse raster.** A circle smaller than a 0.125°
+  cell is the cell density times the circle area, and edge cells
+  count by their sub-sampled share, instead of "no cell centre inside,
+  nobody".
 
 ### Fixed
 
