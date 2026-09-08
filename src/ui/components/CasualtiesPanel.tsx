@@ -91,8 +91,6 @@ export function CasualtiesPanel({
                     ({people(casualties.delayedDeathsLow)} – {people(casualties.delayedDeathsHigh)})
                   </span>
                 </dd>
-                <dt className={styles.resultLabel}>{t('casualties.injured')}</dt>
-                <dd className={styles.resultValue}>{people(casualties.injured)}</dd>
               </>
             )}
             {(casualties.tsunamiDeaths ?? 0) > 0 && (
@@ -106,6 +104,12 @@ export function CasualtiesPanel({
                     {people(casualties.tsunamiDeathsHigh ?? 0)})
                   </span>
                 </dd>
+              </>
+            )}
+            {casualties.model === 'blast' && (
+              <>
+                <dt className={styles.resultLabel}>{t('casualties.injured')}</dt>
+                <dd className={styles.resultValue}>{people(casualties.injured)}</dd>
               </>
             )}
             <dt className={styles.resultLabel}>{t('casualties.exposed')}</dt>

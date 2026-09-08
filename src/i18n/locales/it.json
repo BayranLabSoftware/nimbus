@@ -1254,8 +1254,8 @@
     "unavailable": "Stima non disponibile: né l'API WorldPop né il raster di riserva hanno risposto.",
     "unsupported": "Nessuna stima per questo evento: il modello copre onda d'urto, scuotimento, flussi piroclastici e la costa raggiunta dall'onda; il conteggio dello tsunami compare quando la mappa d'onda tocca una costa.",
     "deaths": "Morti stimati (min – max)",
-    "injured": "Feriti stimati (effetti immediati)",
-    "exposed": "Popolazione dentro la fascia più esterna",
+    "injured": "Feriti (immediati)",
+    "exposed": "Popolazione esposta",
     "table": {
       "band": "Fascia",
       "radius": "Raggio",
@@ -1292,7 +1292,7 @@
     "disclaimer": "Ordine di grandezza, non conteggio: nessuna cura, e nessun preavviso dove l'onda arriva entro mezz'ora. Lo tsunami è contato dove la mappa d'onda tocca la costa, con la striscia inondata stimata dal run-up. Esclusi fallout, radiazione iniziale, carestia e malattie. La dispersione pubblicata di ogni funzione di vulnerabilità è un fattore 2–5.",
     "provisional": "Cifra provvisoria dai tasselli a 4,6 km: WorldPop sta contando le fasce e la sostituirà.",
     "promptDeaths": "di cui immediati",
-    "delayedDeaths": "di cui differiti, entro settimane (min – max)",
+    "delayedDeaths": "di cui entro settimane",
     "hazard": {
       "blast": "crollo e onda d'urto",
       "thermal": "ustioni",
@@ -1303,6 +1303,6 @@
       "lateralBlast": "esplosione laterale",
       "tsunami": "tsunami"
     },
-    "tsunamiDeaths": "di cui tsunami, all'arrivo dell'onda (min – max)"
+    "tsunamiDeaths": "di cui dall'onda"
   }
 }

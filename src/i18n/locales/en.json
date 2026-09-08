@@ -1167,8 +1167,8 @@
     "unavailable": "Estimate unavailable: neither the WorldPop API nor the fallback raster answered.",
     "unsupported": "No estimate for this event: the model covers blast, shaking, pyroclastic currents and the coast the wave reaches; the tsunami count appears when the wave map touches a coast.",
     "deaths": "Estimated deaths (low – high)",
-    "injured": "Estimated injured (prompt effects)",
-    "exposed": "Population inside the outermost band",
+    "injured": "Injured (prompt)",
+    "exposed": "Population exposed",
     "table": {
       "band": "Band",
       "radius": "Radius",
@@ -1205,7 +1205,7 @@
     "disclaimer": "An order of magnitude, not a count: no care, and no warning where the wave arrives within half an hour. The tsunami is counted where the wave map touches the coast, with the flooded strip estimated from the run-up. Fallout, initial radiation, famine and disease excluded. The published scatter of every vulnerability function is a factor 2–5.",
     "provisional": "Provisional figure from the 4.6 km tiles: WorldPop is counting the bands and will replace it.",
     "promptDeaths": "of which prompt",
-    "delayedDeaths": "of which within weeks (min – max)",
+    "delayedDeaths": "of which within weeks",
     "hazard": {
       "blast": "collapse and blast",
       "thermal": "burns",
@@ -1216,6 +1216,6 @@
       "lateralBlast": "lateral blast",
       "tsunami": "tsunami"
     },
-    "tsunamiDeaths": "of which tsunami, as the wave lands (min – max)"
+    "tsunamiDeaths": "of which from the wave"
   }
 }
