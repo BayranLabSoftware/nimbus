@@ -42,14 +42,22 @@ export function CasualtiesPanel({
   const people = (n: number): string => formatPeople(n, locale);
 
   return (
-    <section className={styles.result} aria-label={t('casualties.label')} data-testid="casualties">
-      <h3 className={styles.resultLabel} style={{ marginTop: 0 }}>
-        {t('casualties.label')}
-      </h3>
-      {status === 'fetching' && casualties === null && <p>{t('casualties.loading')}</p>}
-      {casualties?.provisional === true && <p>{t('casualties.provisional')}</p>}
-      {status === 'error' && casualties === null && <p>{t('casualties.unavailable')}</p>}
-      {status === 'unsupported' && casualties === null && <p>{t('casualties.unsupported')}</p>}
+    // A plain block: the two-column grid belongs to the <dl> below, not
+    // to the section — nested in it, every note fell into a 60 px cell.
+    <section aria-label={t('casualties.label')} data-testid="casualties">
+      <h3 className={styles.sectionHeading}>{t('casualties.label')}</h3>
+      {status === 'fetching' && casualties === null && (
+        <p className={styles.presetNote}>{t('casualties.loading')}</p>
+      )}
+      {casualties?.provisional === true && (
+        <p className={styles.presetNote}>{t('casualties.provisional')}</p>
+      )}
+      {status === 'error' && casualties === null && (
+        <p className={styles.presetNote}>{t('casualties.unavailable')}</p>
+      )}
+      {status === 'unsupported' && casualties === null && (
+        <p className={styles.presetNote}>{t('casualties.unsupported')}</p>
+      )}
       {casualties !== null && (
         <>
           <dl className={styles.result}>
