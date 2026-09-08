@@ -128,13 +128,33 @@ export function meanFlowDepth(shoreHeightM: number): number {
   return 0.5 * Math.max(0, shoreHeightM);
 }
 
-/** The water height at the shore (m): the geometric mean of the
- *  shoaled amplitude arriving at the coast and the plane-beach run-up
- *  it makes. Without an amplitude, half the run-up. */
+/**
+ * How much run-up the casualty model believes, as a multiple of the
+ * amplitude that arrived.
+ *
+ * `runupField.ts` clamps the Synolakis run-up at four times the
+ * amplitude, the McCowan 1894 breaking ceiling. Measured across the
+ * scenarios, that clamp binds on 84 to 95 per cent of the coastal
+ * cells: on those the run-up is not a computed height, it is the
+ * ceiling, and reading it as one would let the ceiling set the flood.
+ * A wave arriving at A metres is trusted to stand A metres at the
+ * shore; where the solver returns less than that, it is Synolakis
+ * speaking rather than the clamp, and the smaller number is used.
+ */
+export const RUNUP_TRUST_FACTOR = 1;
+
+/**
+ * The water height at the shore (m): the geometric mean of the
+ * amplitude arriving at the coast and the run-up the beach makes of
+ * it, with the run-up trusted only up to `RUNUP_TRUST_FACTOR` times
+ * the amplitude. Without an amplitude — an older field — half the
+ * run-up, as before.
+ */
 export function shoreHeight(runupM: number, amplitudeM: number | undefined): number {
   if (!(runupM > 0)) return 0;
   if (amplitudeM === undefined || !(amplitudeM > 0)) return 0.5 * runupM;
-  return Math.sqrt(Math.min(amplitudeM, runupM) * runupM);
+  const trusted = Math.min(runupM, RUNUP_TRUST_FACTOR * amplitudeM);
+  return Math.sqrt(trusted * amplitudeM);
 }
 
 export interface TsunamiCoastCell extends RunupCell {

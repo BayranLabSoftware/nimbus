@@ -10,14 +10,18 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 - **The coastal toll of the wave.** The tsunami is counted wherever
   the wave map touches a coast: every run-up cell of the local grid
   and of the planet beyond it carries its beach slope, its length of
-  coast and the wave's arrival time; the strip the water crosses is the
-  Bretschneider & Wybro inundation distance (10 km at most), the people in it come from the
+  coast and the wave's arrival time; the water at the shore is the arriving
+  amplitude where the breaking clamp saturates (it does on 84 to 95
+  per cent of cells, so a saturated run-up is a ceiling and not a
+  measurement), the strip it crosses is the Bretschneider & Wybro
+  inundation distance (10 km at most), the people in it come from the
   coastal land density of the 2.5′ tiles, and the share that dies
   follows the mean flow depth through the log-normal form of
   Koshimura 2009 and Jonkman 2008, with no warning. The toll is
   binned by arrival and the counter rises as the wave lands, hours
   after the impact for a far coast; the panel shows it apart, and a
   submarine landslide gets its first death toll.
+  Tōhoku 2011 reads 13 000 dead against the 18 500 the wave took.
 - **Population at 2.5′ with a land fraction.** Thirty 60° × 30° tiles
   of the GHS-POP 2020 grid at 2.5′ (≈ 4.6 km, 5 MB in all, fetched on
   demand) serve rings up to 1 500 km and the coast; the 0.125° planet

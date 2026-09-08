@@ -59,10 +59,13 @@ describe('inundationDistance', () => {
     expect(inundationDistance(60)).toBe(MAX_INUNDATION_M);
     expect(inundationDistance(0)).toBe(0);
     expect(meanFlowDepth(6)).toBe(3);
-    // Tōhoku: 5 m arriving, 19 m run-up → 9.7 m at the shore, a 1.3 km strip.
-    expect(shoreHeight(19, 5)).toBeCloseTo(Math.sqrt(95), 9);
-    expect(inundationDistance(shoreHeight(19, 5))).toBeGreaterThan(1_200);
-    expect(inundationDistance(shoreHeight(19, 5))).toBeLessThan(1_500);
+    // The run-up is trusted only up to the amplitude that arrived: a
+    // 5 m wave whose run-up came back at the 4x clamp stands 5 m at
+    // the shore, not 9.7 m, and floods 570 m rather than 1.4 km.
+    expect(shoreHeight(19, 5)).toBe(5);
+    expect(shoreHeight(20, 5)).toBe(5);
+    // Below the clamp the solver is speaking, and the smaller number wins.
+    expect(shoreHeight(3, 5)).toBeCloseTo(Math.sqrt(15), 9);
     expect(shoreHeight(6, undefined)).toBe(3);
   });
 });
@@ -89,12 +92,13 @@ function coast(
 
 describe('estimateTsunamiCasualties', () => {
   it('counts the people in the inundation strips and the share the depth kills', () => {
-    // 50 cells × 1 km of coast, 5 m run-up from 1.25 m offshore: the
-    // water at the shore is √(1.25 · 5) = 2.5 m, Bretschneider–Wybro strips.
+    // 50 cells × 1 km of coast, Bretschneider–Wybro strips.
     const cells = coast(50, 5, 2_000);
     const est = estimateTsunamiCasualties(cells);
+    // 5 m run-up from 1.25 m offshore: the run-up is above the trusted
+    // ceiling, so the water stands as high as the wave that arrived.
     const height = shoreHeight(5, 1.25);
-    expect(height).toBeCloseTo(2.5, 9);
+    expect(height).toBeCloseTo(1.25, 9);
     const stripKm2 = (1_000 * inundationDistance(height)) / 1e6;
     expect(est.exposed).toBe(Math.round(50 * stripKm2 * 2_000));
     const expectedDeaths = cells.reduce(
@@ -129,7 +133,7 @@ describe('estimateTsunamiCasualties', () => {
   });
 
   it('a wet beach kills nobody, and an empty coast is an empty toll', () => {
-    expect(estimateTsunamiCasualties(coast(20, 1.5, 5_000)).deaths).toBe(0); // √(0.375 · 1.5) < 1 m
+    expect(estimateTsunamiCasualties(coast(20, 1.5, 5_000)).deaths).toBe(0); // 0.375 m at the shore
     expect(estimateTsunamiCasualties(coast(20, 5, 0)).exposed).toBe(0);
     expect(estimateTsunamiCasualties([]).bands).toEqual([]);
   });
@@ -191,5 +195,36 @@ describe('mergeTsunamiCasualties', () => {
     const beforeWave = casualtiesAtTime(timeline, 2_000).deaths;
     const afterWave = casualtiesAtTime(timeline, tsunami.lastArrivalS + 601).deaths;
     expect(afterWave - beforeWave).toBeGreaterThanOrEqual(tsunami.deaths - tsunami.bands.length);
+  });
+});
+
+describe('shoreHeight — the clamp is a ceiling, not a measurement', () => {
+  it('a saturated run-up never lifts the water above the wave that arrived', () => {
+    // runupField clamps at 4x the amplitude; measured, that clamp binds
+    // on 84-95 % of coastal cells, so a saturated run-up carries no
+    // information and must not amplify the flood.
+    for (const a of [0.5, 1.4, 5, 13.8, 60]) {
+      expect(shoreHeight(4 * a, a)).toBeCloseTo(a, 9);
+      expect(shoreHeight(10 * a, a)).toBeCloseTo(a, 9);
+    }
+  });
+
+  it('is monotonic in both the run-up and the amplitude, and never above either', () => {
+    let previous = 0;
+    for (let r = 0.5; r <= 40; r += 0.5) {
+      const h = shoreHeight(r, 5);
+      expect(h).toBeGreaterThanOrEqual(previous - 1e-12);
+      expect(h).toBeLessThanOrEqual(Math.max(r, 5) + 1e-12);
+      previous = h;
+    }
+    expect(shoreHeight(10, 2)).toBeLessThan(shoreHeight(10, 4));
+  });
+
+  it('Anak Krakatau 2018: a 13.8 m wave stands 13.8 m, not the 55 m of the clamp', () => {
+    expect(shoreHeight(55.4, 13.8)).toBeCloseTo(13.8, 9);
+    // …and floods 2.2 km rather than the capped ten.
+    expect(inundationDistance(shoreHeight(55.4, 13.8))).toBeGreaterThan(1_500);
+    expect(inundationDistance(shoreHeight(55.4, 13.8))).toBeLessThan(3_000);
+    expect(inundationDistance(55.4)).toBe(MAX_INUNDATION_M);
   });
 });
