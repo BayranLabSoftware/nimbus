@@ -111,6 +111,16 @@ export interface ImpactScenarioInput {
    *  impacts (Schultz & Anderson 1996). Defaults to 90° (east-bound)
    *  when omitted. Has no effect on circular damage rings. */
   impactAzimuthDeg?: number;
+  /** Ground distance (m) from ground zero to the nearest sea, for an
+   *  impact on land near a coast. `undefined` or 0 means the impactor
+   *  hits water (`waterDepth` is then the depth under it). When set,
+   *  the tsunami branch decides whether the sea is within the event's
+   *  reach at all (crater, water cavity or the 1 m ejecta isopach) and
+   *  scales the energy that enters the water by the fraction of ejecta
+   *  landing beyond the shoreline — see the sea-coupling block in
+   *  {@link simulateImpact}. The store derives it from the planetary
+   *  bathymetry; the CLI accepts `--shore-distance`. */
+  shoreDistance?: Meters;
   /** Beach slope (rad) to use for the Synolakis (1987) coastal run-up
    *  inside the tsunami branch. When omitted the simulator falls back
    *  to the textbook 1:100 plane beach (`atan(0.01) ≈ 0.573°`). The
@@ -237,6 +247,32 @@ export interface ImpactTsunamiResult {
    *  Green's-law amplitude before Synolakis. Caller can flip to the
    *  raw Green prediction by setting α = 0. */
   nonLinearShoalingAlpha: number;
+  /** How the event reached the sea — see {@link ImpactSeaCoupling}. */
+  seaCoupling: ImpactSeaCoupling;
+}
+
+/**
+ * How an impact's energy got into the water. For a strike in the sea
+ * the answer is trivial (`water`, fraction 1). For a strike on land
+ * the sea is reached by the crater itself when the rim crosses the
+ * shoreline (`crater`, fraction 1), or by the ejecta curtain falling
+ * into the water beyond it (`ejecta`): the mass of ejecta landing
+ * beyond a distance d from ground zero follows McGetchin, Settle &
+ * Head (1973) — thickness ∝ (r/R)⁻³, so the fraction beyond d is
+ * R/d for d > R — and that fraction scales the energy the water
+ * cavity is built from. Continuous at the shoreline, and it goes to
+ * zero only where the 1 m isopach ends, beyond which the tsunami
+ * branch is not emitted at all.
+ */
+export interface ImpactSeaCoupling {
+  mechanism: 'water' | 'crater' | 'ejecta';
+  /** Distance from ground zero to the shoreline used (m); 0 in water. */
+  shoreDistance: Meters;
+  /** Fraction of the water-coupled energy that actually enters the sea. */
+  fraction: number;
+  /** Reach of the mechanisms that can still move the sea (m): the
+   *  largest of crater rim, water cavity and the 1 m ejecta isopach. */
+  reach: Meters;
 }
 
 /**
@@ -635,7 +671,36 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // is out of scope for Layer 2.
   const regime = entry.regime;
   const reachesSurface = regime === 'INTACT' || (regime === 'PARTIAL_AIRBURST' && gf >= 0.5);
-  if (waterDepth > 0 && reachesSurface) {
+  // Sea coupling for an impact on land near a coast. The store hands
+  // over the shoreline distance; the physics decides whether the sea
+  // is within reach and how much energy enters it. Reach = the
+  // largest of crater rim, water cavity (as it would be with the full
+  // coupling) and the 1 m ejecta isopach; beyond it the sea is not
+  // moved and no tsunami block is emitted. Inside it, the energy the
+  // cavity is built from is scaled by the McGetchin ejecta fraction
+  // falling beyond the shoreline — 1 while the crater rim (or the
+  // cavity) reaches the water, R/d beyond.
+  const shoreDistanceM =
+    input.shoreDistance !== undefined &&
+    Number.isFinite(input.shoreDistance) &&
+    (input.shoreDistance as number) > 0
+      ? (input.shoreDistance as number)
+      : 0;
+  const fullCouplingKe = J((ke as number) * gf * fWater);
+  const cavityAtFullCoupling = impactCavityRadius({ kineticEnergy: fullCouplingKe }) as number;
+  const innerReach = Math.max(craterRimRadius, cavityAtFullCoupling);
+  const ejectaReach = ejecta.blanketEdge1m as number;
+  const seaReach = Math.max(innerReach, ejectaReach);
+  const seaWithinReach = shoreDistanceM <= seaReach;
+  const seaCouplingFraction =
+    shoreDistanceM <= innerReach ? 1 : Math.min(1, innerReach / shoreDistanceM);
+  const seaCoupling: ImpactSeaCoupling = {
+    mechanism: shoreDistanceM <= 0 ? 'water' : shoreDistanceM <= innerReach ? 'crater' : 'ejecta',
+    shoreDistance: m(shoreDistanceM),
+    fraction: seaWithinReach ? seaCouplingFraction : 0,
+    reach: m(seaReach),
+  };
+  if (waterDepth > 0 && reachesSurface && seaWithinReach) {
     const meanOceanDepth = input.meanOceanDepth ?? m(DEFAULT_MEAN_OCEAN_DEPTH);
     // Phase-18: route only the water-coupled fraction of the post-
     // atmospheric KE into the Ward-Asphaug cavity. For a Chicxulub
@@ -644,8 +709,10 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     // dominant. For a 1 km asteroid in 4 km open ocean it is ~99 %,
     // so almost all the energy goes into the tsunami source while
     // the seafloor crater is suppressed by the f_seafloor factor
-    // applied above to `craterScale`.
-    const surfaceCoupledKe = J((ke as number) * gf * fWater);
+    // applied above to `craterScale`. The sea-coupling fraction
+    // (above) then discounts an inland strike by the ejecta that
+    // never reaches the water.
+    const surfaceCoupledKe = J((fullCouplingKe as number) * seaCouplingFraction);
     const cavityRadius = impactCavityRadius({ kineticEnergy: surfaceCoupledKe });
     const sourceAmplitude = impactSourceAmplitude(cavityRadius);
     const amp1000 = impactAmplitudeAtDistance({
@@ -791,6 +858,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       manningNPropagation: MANNING_OPEN_OCEAN,
       manningNRunup: MANNING_SAND_BEACH,
       nonLinearShoalingAlpha: 0.3,
+      seaCoupling,
     };
   }
 

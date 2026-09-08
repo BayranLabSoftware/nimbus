@@ -2,7 +2,14 @@ export {
   computeTsunamiArrivalField,
   type FastMarchingInput,
   type FastMarchingResult,
+  type FastMarchingSeed,
 } from './fastMarching.js';
+export {
+  findPropagationSeeds,
+  waterBodyReaches,
+  type PropagationSeed,
+  type SeedSearchOptions,
+} from './sourcePlacement.js';
 export {
   extractIsochrones,
   type IsochroneBand,

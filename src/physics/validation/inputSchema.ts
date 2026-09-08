@@ -874,6 +874,7 @@ interface ImpactRawInput {
   impactAzimuthDeg?: unknown;
   surfaceGravity?: unknown;
   waterDepth?: unknown;
+  shoreDistance?: unknown;
   impactorStrength?: unknown;
 }
 
@@ -1032,6 +1033,27 @@ export function validateImpactInput(raw: ImpactRawInput): ValidationResult<Impac
       return invalid(errors);
     }
     out.waterDepth = m(raw.waterDepth);
+  }
+
+  if (raw.shoreDistance !== undefined) {
+    if (!isFiniteNumber(raw.shoreDistance) || raw.shoreDistance < 0) {
+      errors.push({
+        field: 'shoreDistance',
+        code: isFiniteNumber(raw.shoreDistance) ? 'NEGATIVE_FORBIDDEN' : 'NOT_FINITE',
+        message: 'shoreDistance (m) must be finite and non-negative',
+        rawValue: raw.shoreDistance,
+      });
+      return invalid(errors);
+    }
+    if (raw.shoreDistance > 5_000_000) {
+      warnings.push({
+        field: 'shoreDistance',
+        code: 'PHYS_SUSPICIOUS_HIGH',
+        message: `shoreDistance ${(raw.shoreDistance / 1_000).toString()} km is farther from the sea than any point on Earth (~2 650 km)`,
+        rawValue: raw.shoreDistance,
+      });
+    }
+    out.shoreDistance = m(raw.shoreDistance);
   }
 
   if (raw.impactorStrength !== undefined) {

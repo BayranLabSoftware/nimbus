@@ -42,7 +42,10 @@ Impact options (used when --event = impact):
   --angle <deg>       Impact angle from horizontal (degrees).
   --target <kg/m3>    Target-ground density (kg/m³).
   --gravity <m/s2>    Surface gravity (m/s²).
-  --water-depth <m>   > 0 triggers the Ward & Asphaug tsunami cascade.
+  --water-depth <m>   > 0 triggers the impact-tsunami cascade.
+  --shore-distance <m> Distance to the sea for an impact on land (with
+                      --water-depth = the depth of that sea); scales the
+                      sea coupling by the ejecta fraction beyond the shore.
   --ocean-depth <m>   Mean basin depth (m) for tsunami travel time.
 
 Explosion options (used when --event = explosion):
@@ -84,6 +87,7 @@ interface ParsedArgs {
   target?: number;
   gravity?: number;
   waterDepth?: number;
+  shoreDistance?: number;
   oceanDepth?: number;
   magnitude?: number;
   depth?: number;
@@ -108,6 +112,7 @@ function parseCli(argv: string[]): ParsedArgs {
       target: { type: 'string' },
       gravity: { type: 'string' },
       'water-depth': { type: 'string' },
+      'shore-distance': { type: 'string' },
       'ocean-depth': { type: 'string' },
       magnitude: { type: 'string' },
       depth: { type: 'string' },
@@ -160,6 +165,8 @@ function parseCli(argv: string[]): ParsedArgs {
   if (g !== undefined) parsed.gravity = g;
   const wd = toNumber(values['water-depth'], 'water-depth');
   if (wd !== undefined) parsed.waterDepth = wd;
+  const sd = toNumber(values['shore-distance'], 'shore-distance');
+  if (sd !== undefined) parsed.shoreDistance = sd;
   const od = toNumber(values['ocean-depth'], 'ocean-depth');
   if (od !== undefined) parsed.oceanDepth = od;
   const mag = toNumber(values.magnitude, 'magnitude');
@@ -244,6 +251,9 @@ function buildImpactInput(args: ParsedArgs): ImpactScenarioInput {
     input.waterDepth = meters(args.waterDepth);
   } else if (base.waterDepth !== undefined) {
     input.waterDepth = base.waterDepth;
+  }
+  if (args.shoreDistance !== undefined) {
+    input.shoreDistance = meters(args.shoreDistance);
   }
   if (args.oceanDepth !== undefined) {
     input.meanOceanDepth = meters(args.oceanDepth);

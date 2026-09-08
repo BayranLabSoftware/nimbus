@@ -46,6 +46,11 @@ const KNOWN = 2;
 /** Earth mean radius (m), matching src/physics/earthScale.ts. */
 const EARTH_RADIUS_M = 6_371_000;
 
+export interface FastMarchingSeed {
+  latitude: number;
+  longitude: number;
+}
+
 export interface FastMarchingInput {
   /** Bathymetric grid: negative elevation = ocean (depth = −elev), non-negative = land. */
   grid: ElevationGrid;
@@ -53,6 +58,13 @@ export interface FastMarchingInput {
   sourceLatitude: number;
   /** Source longitude (°, WGS84). Must lie inside the grid bounds. */
   sourceLongitude: number;
+  /** Optional multi-seed form. When present it REPLACES the single
+   *  source above: every seed starts at t = 0 and the arrival field is
+   *  the minimum over seeds — the right answer for a disturbance that
+   *  enters several basins at once (an inland impact whose ejecta
+   *  falls into the Gulf and the Atlantic in the same minute). An
+   *  empty array yields an all-∞ field (nothing propagates). */
+  sources?: readonly FastMarchingSeed[];
   /** Minimum ocean depth (m) to treat as water. Defaults to 10 m —
    *  the simulator refuses to propagate through the near-shore where
    *  the shallow-water approximation breaks down anyway. */
@@ -269,22 +281,29 @@ export function computeTsunamiArrivalField(input: FastMarchingInput): FastMarchi
     dxMetersPerRow[i] = dLonDeg * metersPerDeg * Math.max(Math.cos((lat * Math.PI) / 180), 1e-6);
   }
 
-  // Convert source lat/lon to grid indices (clamped, nearest cell).
-  const sourceI = Math.max(
-    0,
-    Math.min(nLat - 1, Math.round(((maxLat - sourceLatitude) / (maxLat - minLat)) * (nLat - 1)))
-  );
-  const sourceJ = Math.max(
-    0,
-    Math.min(nLon - 1, Math.round(((sourceLongitude - minLon) / (maxLon - minLon)) * (nLon - 1)))
-  );
-  const sourceIdx = sourceI * nLon + sourceJ;
-
-  // Source cell is KNOWN @ time 0 regardless of its elevation — the
-  // tsunami starts there. If the source is on dry land the wave can
-  // still radiate into the adjacent ocean cells.
-  arrivalTimes[sourceIdx] = 0;
-  state[sourceIdx] = KNOWN;
+  // Convert every seed lat/lon to grid indices (clamped, nearest cell).
+  const seeds: readonly FastMarchingSeed[] = input.sources ?? [
+    { latitude: sourceLatitude, longitude: sourceLongitude },
+  ];
+  const seedCells: { i: number; j: number }[] = [];
+  for (const seed of seeds) {
+    const i = Math.max(
+      0,
+      Math.min(nLat - 1, Math.round(((maxLat - seed.latitude) / (maxLat - minLat)) * (nLat - 1)))
+    );
+    const j = Math.max(
+      0,
+      Math.min(nLon - 1, Math.round(((seed.longitude - minLon) / (maxLon - minLon)) * (nLon - 1)))
+    );
+    const idx = i * nLon + j;
+    if (state[idx] === KNOWN) continue; // duplicate seed cell
+    // Seed cells are KNOWN @ time 0 regardless of their elevation —
+    // the tsunami starts there. If a seed is on dry land the wave can
+    // still radiate into the adjacent ocean cells.
+    arrivalTimes[idx] = 0;
+    state[idx] = KNOWN;
+    seedCells.push({ i, j });
+  }
 
   const heap = new TimeHeap(nCells, arrivalTimes);
 
@@ -331,13 +350,15 @@ export function computeTsunamiArrivalField(input: FastMarchingInput): FastMarchi
     }
   };
 
-  // Seed the heap with the source's neighbours.
-  visit(sourceI - 1, sourceJ);
-  visit(sourceI + 1, sourceJ);
-  visit(sourceI, sourceJ - 1);
-  visit(sourceI, sourceJ + 1);
+  // Seed the heap with every seed's neighbours.
+  for (const { i, j } of seedCells) {
+    visit(i - 1, j);
+    visit(i + 1, j);
+    visit(i, j - 1);
+    visit(i, j + 1);
+  }
 
-  let reachableCount = 1; // the source itself
+  let reachableCount = seedCells.length; // the seeds themselves
   while (heap.size > 0) {
     const idx = heap.popMin();
     if (state[idx] === KNOWN) continue;

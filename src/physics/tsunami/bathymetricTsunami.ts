@@ -1,7 +1,11 @@
 import type { ElevationGrid } from '../elevation/index.js';
 import { computeAmplitudeField, type AmplitudeField } from './amplitudeField.js';
 import { coastalBeachSlope } from './coastalSlope.js';
-import { computeTsunamiArrivalField, type FastMarchingResult } from './fastMarching.js';
+import {
+  computeTsunamiArrivalField,
+  type FastMarchingResult,
+  type FastMarchingSeed,
+} from './fastMarching.js';
 import { extractIsochrones, type IsochroneBand } from './isochrones.js';
 import { computeRunupField, type RunupField } from './runupField.js';
 
@@ -42,6 +46,15 @@ export interface BathymetricTsunamiInput {
   grid: ElevationGrid;
   sourceLatitude: number;
   sourceLongitude: number;
+  /** Propagation seeds for the LOCAL grid. When present they replace
+   *  the single source above (all at t = 0); an empty array means the
+   *  local tile has no usable water and its field stays empty. See
+   *  `sourcePlacement.ts`. */
+  seeds?: readonly FastMarchingSeed[];
+  /** Propagation seeds for the GLOBAL grid, found on that grid's own
+   *  resolution — a point that is water on the 600 m tile can be land
+   *  on the 40 km mosaic. Same replacement semantics as `seeds`. */
+  globalSeeds?: readonly FastMarchingSeed[];
   /** Isochrone thresholds (hours). Defaults to 1/2/4/8 h. */
   isochroneHours?: readonly number[];
   /** Optional source-amplitude metadata. When supplied, the result
@@ -79,9 +92,12 @@ export interface BathymetricTsunamiResult {
   field: FastMarchingResult;
   /** Marching-squares isochrone polylines for each threshold. */
   isochrones: IsochroneBand[];
-  /** Echo of the source coordinates used. */
+  /** Echo of the source coordinates used (the primary seed). */
   sourceLatitude: number;
   sourceLongitude: number;
+  /** Every seed the local / global fields started from. */
+  seeds: readonly FastMarchingSeed[];
+  globalSeeds: readonly FastMarchingSeed[];
   /** Optional Green-law + 1/√r amplitude field on the local grid.
    *  Present only when the caller passed sourceAmplitudeM and
    *  sourceCavityRadiusM. */
@@ -102,11 +118,19 @@ export function computeBathymetricTsunami(
   const hours = input.isochroneHours ?? DEFAULT_ISOCHRONE_HOURS;
   const thresholds = hours.map((h) => h * 3_600);
 
+  const seeds: readonly FastMarchingSeed[] = input.seeds ?? [
+    { latitude: input.sourceLatitude, longitude: input.sourceLongitude },
+  ];
+  const globalSeeds: readonly FastMarchingSeed[] = input.globalSeeds ?? [
+    { latitude: input.sourceLatitude, longitude: input.sourceLongitude },
+  ];
+
   // ---- Local high-res layer (always computed) -------------------
   const field = computeTsunamiArrivalField({
     grid: input.grid,
     sourceLatitude: input.sourceLatitude,
     sourceLongitude: input.sourceLongitude,
+    sources: seeds,
   });
   const isochrones = extractIsochrones({
     field,
@@ -121,6 +145,8 @@ export function computeBathymetricTsunami(
     isochrones,
     sourceLatitude: input.sourceLatitude,
     sourceLongitude: input.sourceLongitude,
+    seeds,
+    globalSeeds,
   };
   const hasSourceMeta =
     input.sourceAmplitudeM !== undefined &&
@@ -152,6 +178,7 @@ export function computeBathymetricTsunami(
       grid: input.globalGrid,
       sourceLatitude: input.sourceLatitude,
       sourceLongitude: input.sourceLongitude,
+      sources: globalSeeds,
     });
     // Long isochrone thresholds for trans-oceanic propagation —
     // 4/8/12/24 h instead of the local 1/2/4/8 h cadence so the
