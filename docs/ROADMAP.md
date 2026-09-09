@@ -318,11 +318,48 @@ than assumed: without the two brackets Pinatubo's high end moved by a
 factor of 2.7 — a band about the interpolation and not about the
 eruption — and with them the worst row left is 1.37×.
 
-Still to do: the wave. The coastal toll's pair is still the range of
-the vulnerability parameters, and the panel says so on any scenario
-where the wave reaches a coast.
+Still to do: the wave — and it waits on move 3 rather than on effort.
+The coastal toll's pair is still the range of the vulnerability
+parameters, and the panel says so on any scenario where the wave
+reaches a coast. Making it predictive needs one number this project
+does not yet have: the scatter of the amplitude arriving at a coast.
+There are seven wave anchors, their observations are themselves
+ranges, and the two laws in the code disagree with each other by a
+factor of seven at DART 21413 — so any sigma picked today would be a
+guess dressed as a measurement, and a narrow band on the least
+settled part of the model is worse than an honest wide one. Move 3
+settles which law is the law; the band follows it.
 
 ### 3. One law per quantity
+
+**Measured first, on 9 September: the fault has two widths.**
+`simulateEarthquake` publishes W from the Strasser 2010 megathrust
+regression — 205 km for Tōhoku, 200 for Sumatra — and everything that
+draws the event uses it: the rupture stadium, the casualty polygons,
+the veil's source radius. The tsunami module inside it ignores that
+and re-derives W as L / aspect, with aspect a constant per fault type:
+281 km for Tōhoku and **520 km for Sumatra**, wider than the whole
+forearc. So the veil already spreads from one width and disperses and
+beams on twice another, and the mean slip that feeds every wave in the
+model is computed on the wrong area.
+
+Passing the published width in is one line, and it was tried and
+measured. Four rows move, all of them the same quantity: Tōhoku's mean
+slip goes 9.5 m to 13.0 m against a gate of 7–12 (G-TOH-DART, B-006,
+the replay fixture, the historical cross-bridge). 13.0 is what
+M₀/(μLW) gives with μ = 30 GPa and Strasser's own L and W, and the
+often-quoted 10 m corresponds to a larger assumed rupture area — so
+the number is defensible and the gate was fitted around the
+inconsistency.
+
+What stops it being a one-line fix is what sits downstream: the source
+amplitude goes 3.99 m to 5.46 m and the 1 000 km row 2.36 to 3.24,
+because the coupling efficiency and the dip-dependent uplift factor
+were both calibrated against Tōhoku's DART record **with the wrong
+width absorbed into them**. Sumatra gains a factor 2.6 the same way,
+which is interesting given its coastal toll is 87× under. Untangling
+that means re-deriving the coupling with DART 21413 as the target, and
+it is the first job of this move rather than a change made in passing.
 
 The veil on the globe reads 0.28 m at DART 21413 and the report prints
 1.93 m for the same wave. A reviewer sees that in thirty seconds and
