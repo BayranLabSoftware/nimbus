@@ -468,6 +468,35 @@ here in either direction instead of hiding inside a toll. A
 laboratory-level model has nothing in the invented list. Today it has
 four, and that count is pinned too.
 
+### Two ways to measure the same shaking (Phase 38b)
+
+Building the footprint anchor turned up something worth its own note:
+this repository already had a ShakeMap test. `shakemap.test.ts` pins
+the MMI VII _ring radius_ against macroseismic surveys — Northridge at
+25 km from Wald 1999, L'Aquila at 15 km from Galli & Camassi's INGV
+survey — and it has been passing.
+
+The new anchor reads the instrumental coverage grid instead, and for
+Northridge the two agree: 30 km equivalent against 25. For L'Aquila
+they do not. The grid gives 4.4 km equivalent where the survey gives
+15 — a factor of 3.4 on the same earthquake.
+
+That is not a bug in either. A macroseismic survey asks people what
+happened to their buildings; an instrumental grid converts recorded
+ground motion through a GMICE, and the intensity module already warns
+that the Worden 2012 relation is California-calibrated and
+mis-predicts European intensity, which is why `mmiFromPgaEuropean`
+exists beside it. The two are measuring different things, and in Italy
+they diverge threefold.
+
+It matters because the toll follows what the buildings experienced,
+not what the accelerometers recorded — so a change to the contours has
+to say which of the two it is aiming at. The obvious modernisation,
+drawing the contours with NGA-West2 instead of Joyner–Boore 1981,
+turns out to under-predict _both_: Northridge's ring goes to 9.9 km
+against 25 and 30. It was tried, measured and reverted, and the reason
+is in the roadmap rather than in a commit nobody will find.
+
 ### Which country's buildings (Phase 37)
 
 The shaking model had no country. It ran ν(S) = Φ(ln(S/θ)/β) with one

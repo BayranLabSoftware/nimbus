@@ -853,13 +853,6 @@ place rather than spread along a shore.
 
 ### P0 — The MMI footprint is wrong at both ends _(open, measured 9 September)_
 
-With the PAGER country curves in place, Tōhoku's headline reads
-200 000 dead where about 1 800 died of the shaking. Japan's curve is
-not the problem: θ = 11.9, fitted on 5 502 of its own dead, and at
-MMI IX it kills 1.4 % of those it reaches. To produce 200 000 that
-band has to hold twelve million people, and the MMI IX contour of the
-2011 event was a narrow coastal strip.
-
 **Measured against ShakeMap, and it is worse and more specific than
 "too large".** The model paints 180 747 km² at MMI IX where the 2011
 event reached 8.18 anywhere; Gorkha, L'Aquila and Amatrice are also
@@ -869,12 +862,44 @@ wildly too generous for the small Italian events (8.9× and 18.2×).
 
 One point-source attenuation curve inflated into a rupture stadium
 cannot be right at both ends of the magnitude range, and this is what
-that looks like. Where to look: the attenuation's magnitude scaling,
-and whether the stadium should be the rupture rectangle at all for an
-intensity the rupture's own slip distribution never produced.
+that looks like.
 
-Would move: the headline number of every large earthquake, which is
-what a visitor reads first.
+**The obvious fix was tried and reverted.** The contours come from
+Joyner–Boore 1981 while the reported accelerations come from
+NGA-West2, which is two attenuation laws in one module and looks like
+exactly the kind of thing this project has spent a day removing.
+Drawing the contours with NGA-West2 instead does empty the invented
+list — every one of the four bands goes — and halves the Italian
+excess. It also:
+
+- takes Northridge's MMI VII ring to 9.9 km, where the ShakeMap grid
+  puts 30 km equivalent and Wald's macroseismic survey 25;
+- gives up Kokoxili's real MMI IX band;
+- breaks the Amatrice toll gate, a replay fixture and a smoke test;
+- and relies on a site term that the code's own comment calls "a
+  Nimbus-chosen power-law SURROGATE, NOT the published BSSA14 site
+  term".
+
+So the modern law as implemented under-predicts _both_ intensity
+sources, and swapping it in trades one class of error for another.
+The site term has to be the published one before that swap means
+anything.
+
+**And the two sources do not agree with each other.** This was found
+while building the footprint anchor and is worth its own line. There
+was already a ShakeMap test in the repo — `shakemap.test.ts`, on the
+MMI VII _ring radius_ — anchored on macroseismic surveys: Northridge
+25 km (Wald 1999), L'Aquila 15 km (Galli & Camassi, INGV). The
+instrumental ShakeMap coverage grid gives 30 km equivalent for
+Northridge, which agrees, and **4.4 km for L'Aquila, which does not**
+— a factor of 3.4.
+
+That is the Worden-versus-Faenza problem the intensity module already
+documents: a California-calibrated GMICE mis-predicts European
+intensity, and the felt-report survey and the instrumental grid are
+measuring different things there. The toll correlates with what the
+buildings experienced, which is the macroseismic one. Any change to
+the contours has to say which of the two it is aiming at.
 
 ### P1 — A national curve under-predicts a village _(open, 9 September)_
 

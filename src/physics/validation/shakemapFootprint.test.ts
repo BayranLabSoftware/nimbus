@@ -131,13 +131,21 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
 
   it('four events are shaken at an intensity they never reached', () => {
     // The sharpest thing this anchor says, and the one that explains
-    // Tōhoku's headline: the model paints 180 000 km² of Japan at MMI
+    // Tōhoku's headline: the model paints 180 747 km² of Japan at MMI
     // IX, and the 2011 ShakeMap's maximum anywhere was 8.18. That
     // band is where 200 000 of the model's dead come from, against a
     // record of 18 500.
     //
     // A laboratory-level model has nothing in this list. Today it has
     // four, and the count is pinned so it can only go down.
+    //
+    // Drawing the contours with NGA-West2 instead of Joyner–Boore
+    // empties this list, and was tried and reverted on 9 September:
+    // it also takes Northridge's MMI VII ring to 9.9 km where both
+    // the ShakeMap grid (30 km equivalent) and Wald's macroseismic
+    // survey (25 km) put it, breaks the Amatrice toll gate, and its
+    // site term is a power-law surrogate rather than the published
+    // BSSA14 one. See docs/ROADMAP.md.
     const invented: string[] = [];
     for (const f of SHAKEMAP_FOOTPRINTS) {
       for (const thr of [7, 8, 9] as const) {
