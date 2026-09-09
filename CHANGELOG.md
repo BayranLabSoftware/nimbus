@@ -7,6 +7,18 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A median held to what a median can be held to.** The footprint
+  anchor's per-event ratios were read as a defect — "wrong at both
+  ends of the magnitude range" — and that was a category error. The
+  model predicts median ground motion and a ShakeMap records one
+  realisation of it; the published σ_lnY of 0.5 over an R^(−0.71)
+  decay makes one sigma a factor of two in radius and four in area.
+  Across all eleven bands the model is centred at 1.18 and scatters at
+  σ_ln 0.71 against the 0.70 the published sigma implies, and that is
+  now what the suite asserts, with the per-event numbers kept as pins
+  beside it. What survives as a real defect is a band that did not
+  happen: Tōhoku's MMI IX and three others.
+
 - **The NGA-West2 site term is the published one.** It was a
   power-law surrogate `(Vs30/760)^(−0.4)`, and the code said so; it is
   now Boore et al.'s F_lin + F_nl with the coefficients read off the

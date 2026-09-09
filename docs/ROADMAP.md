@@ -851,7 +851,7 @@ the people inside the inundation polygon would be the honest version.
 Would move: Sumatra 2004, and every event whose dead are in one dense
 place rather than spread along a shore.
 
-### P0 — The MMI footprint is wrong at both ends _(open, measured 9 September)_
+### P1 — The MMI footprint: two real defects, and one that was not _(open, measured 9 September)_
 
 **Measured against ShakeMap, and it is worse and more specific than
 "too large".** The model paints 180 747 km² at MMI IX where the 2011
@@ -900,6 +900,25 @@ intensity, and the felt-report survey and the instrumental grid are
 measuring different things there. The toll correlates with what the
 buildings experienced, which is the macroseismic one. Any change to
 the contours has to say which of the two it is aiming at.
+
+### P0 — The intensity contours ignore the ground they stand on _(open, 9 September)_
+
+`vs30` is an input a scenario can set. It reaches the reported
+accelerations through the NGA-West2 path. The MMI contours ignore it
+completely: they go through `distanceForPga`, which is Joyner–Boore
+1981 and takes a magnitude and nothing else. Measured — a Northridge
+run at Vs30 760, 500, 400, 300 and 250 gives the same 17.0 km MMI VII
+ring every time.
+
+A simulation on soft soil draws the same rings as one on rock, and
+soft soil is worth a factor of two in radius. This is not a modelling
+choice; it is an input accepted and dropped.
+
+The fix is the contour swap that P1 below describes, which is blocked
+on nothing now that the site term is the published one — except that
+it takes Northridge's ring from 17 km to 10 on rock and 16 on soft
+soil, and breaks the Amatrice toll gate, a replay fixture and a smoke
+test on the way. The measurements are in P1.
 
 ### P1 — A national curve under-predicts a village _(open, 9 September)_
 

@@ -468,6 +468,54 @@ here in either direction instead of hiding inside a toll. A
 laboratory-level model has nothing in the invented list. Today it has
 four, and that count is pinned too.
 
+### A median against one realisation (Phase 40)
+
+A correction to the previous two sections, and to what was said in
+conversation off the back of them.
+
+The footprint anchor read Amatrice's MMI VII area at eighteen times
+the ShakeMap's and Northridge's at a third of it, and that was called
+"wrong at both ends" — the signature of one attenuation curve that
+cannot fit the whole magnitude range. It is not, or at least the
+evidence does not say so.
+
+**The model predicts the median ground motion; a ShakeMap records one
+realisation of it.** The published aleatory scatter of PGA is
+σ_lnY ≈ 0.5, the module's own documentation says so, and PGA falls as
+about R^(−0.71) at these ranges — so one sigma of ground motion is a
+factor of two in radius and four in area before anything is wrong at
+all. Comparing a median to a single draw event by event and calling
+the difference a defect is a category error, and it was mine.
+
+What a median model can honestly be held to is being centred, and
+scattering no more than the ground does. Measured across all eleven
+bands that exist:
+
+|                                                   | model    |
+| ------------------------------------------------- | -------- |
+| geometric mean radius ratio                       | **1.18** |
+| σ_ln of the ratio                                 | **0.71** |
+| σ_ln implied by the published ground-motion sigma | 0.70     |
+
+Eighteen per cent high on average, and scattering exactly as much as
+ground motion scatters. That is a model behaving like a median, and it
+is now the assertion the suite makes, with the per-event numbers kept
+as pins beside it rather than as verdicts.
+
+**What survives as a defect.** A band that did not happen. Tōhoku's
+180 747 km² at MMI IX, on an event whose recorded maximum anywhere was
+8.18, is not a high draw of anything — no amount of aleatory scatter
+puts an intensity on the map that the earthquake never produced. The
+same for Gorkha at MMI IX and the two Italian events at MMI VIII.
+Those four are the list, and the list is pinned.
+
+**And one plain bug found on the way.** `vs30` is an input a scenario
+can set, it reaches the reported accelerations, and the intensity
+contours ignore it completely — they run through the Joyner–Boore
+path, which takes a magnitude and nothing else. A simulation on soft
+soil draws the same rings as one on rock. That is not a modelling
+choice, it is an input being accepted and dropped, and it is filed.
+
 ### The site term, as published (Phase 39)
 
 The roadmap said the NGA-West2 site term had to be the real one before

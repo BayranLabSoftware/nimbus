@@ -129,6 +129,44 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
     }
   });
 
+  it('is unbiased across the events, with the scatter ground motion has', () => {
+    // The correction that matters to reading every row above.
+    //
+    // The model predicts the MEDIAN ground motion; a ShakeMap records
+    // one realisation of it. Comparing the two event by event and
+    // calling a factor of two or three a defect is a category error:
+    // the published aleatory scatter of PGA is σ_lnY ≈ 0.5, and PGA
+    // falls as about R^(−0.71) at these ranges, so one sigma of
+    // ground motion is a factor of two in radius and four in area
+    // before anything is wrong at all.
+    //
+    // What a median model can honestly be held to is being centred,
+    // and to scattering no more than the ground does. It is: the
+    // geometric mean radius ratio across every band that exists is
+    // 1.18, and the spread is σ_ln = 0.71 against the 0.70 the
+    // published ground-motion sigma implies.
+    const logs: number[] = [];
+    for (const f of SHAKEMAP_FOOTPRINTS) {
+      for (const thr of [7, 8, 9] as const) {
+        const observed = f.areaKm2[thr];
+        const model = modelAreaKm2(f, thr);
+        if (observed <= 0 || model <= 0) continue;
+        // Areas to equivalent radii: the scatter is a property of the
+        // ground motion, which lives in distance rather than in area.
+        logs.push(0.5 * Math.log(model / observed));
+      }
+    }
+    expect(logs.length).toBeGreaterThanOrEqual(10);
+    const mean = logs.reduce((a, b) => a + b, 0) / logs.length;
+    const sd = Math.sqrt(logs.reduce((a, b) => a + (b - mean) ** 2, 0) / logs.length);
+    // Centred to within a third, which is well inside one sigma.
+    expect(Math.exp(mean), 'geometric mean radius ratio').toBeGreaterThan(0.75);
+    expect(Math.exp(mean), 'geometric mean radius ratio').toBeLessThan(1.5);
+    // And scattering like ground motion rather than like a bug: the
+    // NGA-West2 total sigma of 0.5 in ln PGA over a R^(−0.71) decay.
+    expect(sd, 'σ_ln of the radius ratio').toBeLessThan(0.5 / 0.71 + 0.25);
+  });
+
   it('four events are shaken at an intensity they never reached', () => {
     // The sharpest thing this anchor says, and the one that explains
     // Tōhoku's headline: the model paints 180 747 km² of Japan at MMI
