@@ -31,14 +31,14 @@ test.describe('landing page', () => {
     // Start in English. The tagline carries the language now that the
     // "Coming soon" eyebrow is gone.
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await expect(page.getByText('Simulate catastrophic events')).toBeVisible();
+    await expect(page.getByText('Catastrophic events simulated')).toBeVisible();
 
     // Button is labelled for screen readers regardless of language.
     const button = page.getByRole('button', { name: /Switch language|Cambia lingua/ });
     await button.click();
 
     await expect(page.locator('html')).toHaveAttribute('lang', 'it');
-    await expect(page.getByText("Simula l'impatto di eventi catastrofici")).toBeVisible();
+    await expect(page.getByText('Eventi catastrofici simulati')).toBeVisible();
 
     // Flip back.
     await button.click();
@@ -48,6 +48,9 @@ test.describe('landing page', () => {
   test('has a single H1 and a features section heading', async ({ page }) => {
     await page.goto('/?lng=en');
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
-    await expect(page.getByRole('heading', { level: 2, name: "What's coming" })).toBeVisible();
+    // The features heading. It said "What's coming" while all five of
+    // those things were already shipped; the copy pass of 9 September
+    // renamed it and this suite is what noticed.
+    await expect(page.getByRole('heading', { level: 2, name: 'What it does' })).toBeVisible();
   });
 });
