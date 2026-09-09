@@ -2331,33 +2331,24 @@ export const useAppStore = create<AppStore>((set, get) => ({
             if (explosionClickIsOpenWater) {
               explosionInput = { ...explosionInput, waterDepth: m(-z) };
             } else {
-              // Cella di terra: si cerca il mare fin dove l'onda d'urto
-              // lo solleverebbe ancora (raggio dei 5 psi), non entro un
-              // raggio fisso. Con una testata enorme nell'entroterra
-              // della Florida il mare è a decine di chilometri: col
-              // vecchio limite di 5 km non veniva mai trovato e lo
-              // tsunami spariva senza dirlo a nessuno.
-              const raggio = coastalSearchRadiusForYield(explosionInput.yieldMegatons * 4.184e15);
-              // La tessera locale copre ~150 km: oltre, si interroga il
-              // mosaico batimetrico planetario, se già caricato.
-              const coastalDepth =
-                findNearbyOceanDepth(
-                  state.elevationGrid,
-                  state.location.latitude,
-                  state.location.longitude,
-                  raggio
-                ) ??
-                (state.globalBathymetricGrid !== null
-                  ? findNearbyOceanDepth(
-                      state.globalBathymetricGrid,
-                      state.location.latitude,
-                      state.location.longitude,
-                      raggio
-                    )
-                  : null);
-              if (coastalDepth !== null) {
-                const cappedDepth = Math.min(coastalDepth, 200);
-                explosionInput = { ...explosionInput, waterDepth: m(cappedDepth) };
+              // Cella di terra. La stessa ricerca del mare che usano
+              // gli impatti, e per la stessa ragione: quel che serve
+              // non è solo "c'è acqua da qualche parte", ma quanto
+              // lontana, perché una detonazione accanto al mare non è
+              // una detonazione dentro il mare e la legge di
+              // accoppiamento condivisa ha bisogno della distanza per
+              // dirlo.
+              const sea = nearestSeaForImpact(
+                state.elevationGrid,
+                state.globalBathymetricGrid,
+                state.location
+              );
+              if (sea !== null) {
+                explosionInput = {
+                  ...explosionInput,
+                  waterDepth: m(Math.min(sea.basinDepthM, 200)),
+                  shoreDistance: m(sea.distanceM),
+                };
               }
             }
           }

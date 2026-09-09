@@ -265,35 +265,62 @@ what they do not know, are the same piece of work.
 
 ### P0 — A half-kilotonne explosion drowns 77 000 people
 
-Found on the live site within a minute of deploying the band fixes,
-and the calibration net could not have caught it: the harness has no
-bathymetry, so it has no wave, and this is entirely a wave.
+Beirut 2020 on the globe reads 77 000 coastal dead from a detonation
+whose real wave was about a metre inside the harbour. Two things were
+missing and one was mis-scoped; the first two are fixed and the third
+needs a decision.
 
-Beirut 2020 on the globe reads 77 000 dead, all of them coastal, from
-a 0.5 kt detonation on a quay whose real wave was about a metre inside
-the harbour and drowned nobody. The amplitude field puts 3.05 m at the
-median coastal cell and 78 m at the ninety-ninth, with run-ups of 12 m
-along the Lebanese coast six minutes out.
+**Missing, now fixed: explosions had no sea coupling.** For an impact
+the physics works out what fraction of the energy reaches the water —
+the crater rim, the cavity, the ejecta beyond the shore. A surface
+burst was handed its whole yield as a water source no matter how far
+away the sea was. That law now lives in one place,
+`src/physics/effects/seaCoupling.ts`, and both events call it: one
+law, two callers, and the McGetchin r⁻³ blanket term it rests on was
+always an explosion-crater law as much as an impact one. An event with
+no ejecta model passes no ejecta reach and the law stops at the
+crater, without needing to know it has been simplified.
 
-Two candidates, and they are not exclusive:
+**Missing, now fixed: the store never told the explosion how far the
+sea was.** It searched for water, found a depth, and passed only the
+depth. Both event types now use the same search and both carry the
+distance.
 
-- **The explosion tsunami source is too strong for a small charge.**
-  The same shape of error as Anak Krakatau: a compact source whose
-  near field the propagation law overstates.
-- **An explosion has no sea coupling.** For an impact the physics
-  works out what fraction of the energy reaches the water — the crater
-  rim, the cavity, the ejecta beyond the shore. A surface burst on a
-  quay is handed its whole yield as a water source, when almost all of
-  it went into the air.
+**Mis-scoped, and this is the one that still reads 77 000.** The
+coupling constant is eight per cent, and its own comment says it is
+"tuned so that 1 Mt at optimum depth reproduces Glasstone Table
+6.50's ≈ 180 m source amplitude". Scale that anchor down as E^(1/4)
+and a 0.5 kt charge gives 26.9 m; the model produces 26.1 m, so it is
+doing exactly what it was built to do. But optimum depth for half a
+kilotonne is 3.2 m under the surface, and the Beirut charge sat at
+zero on a quay. The eight per cent belongs to a submerged burst and
+is being spent on one that was not.
 
-The second is the more likely and the more embarrassing: the coupling
-machinery exists and was built carefully, and explosions never got it.
+The file already knows this. Twenty lines above the branch it says
+underwater bursts "are out of scope for this branch — the simulator
+does not currently model the depth-of-burst pressure-amplification
+regime (z/W^(1/3) ≈ −4 m/kt¹ᐟ³ optimum, Glasstone §6.40)". The
+airburst end of that curve is modelled and gives zero above 30 m. The
+optimum-depth end is modelled and gives eight per cent. Everything
+between them — which is where every shipped preset actually sits — is
+not, and takes the optimum-depth value by default.
 
-Worth noting what this says about the net: it gates what it can reach,
-and the first thing outside its reach was wrong by a factor of three
-hundred. Extending the harness to the coastal toll needs bathymetry in
-a test, which is the same async ETOPO fetch the validation report
-already lists as a gap.
+Three ways out, and none should be taken quietly:
+
+1. **Model the venting.** At the surface the fireball opens to the
+   atmosphere and most of the energy leaves; that is why an airburst
+   couples nothing. Putting a curve between the two anchors is the
+   real fix and needs a source for its shape, not a guess.
+2. **Gate to submerged bursts**, which is what the scope comment
+   already claims. Honest, and it silently drops the waves Castle
+   Bravo and Ivy Mike really did make from surface bursts on shallow
+   reefs.
+3. **Say it on the label.** Keep the number, mark the surface-burst
+   wave as an unmodelled regime wherever it is shown.
+
+Until one is chosen the shipped Beirut, and any surface burst near
+water, overstates its wave by roughly the ratio between an optimum
+submerged burst and a vented surface one.
 
 ### P1 — The freeze has a mitigation, not a diagnosis
 

@@ -12,10 +12,11 @@ import { hobBlastFactor, hobRegime, scaledHeightOfBurst, type HobRegime } from '
 import { peakOverpressure } from './overpressure.js';
 import { peakWindAtRange } from './peakWind.js';
 import { initialRadiationRadii, type RadiationDoseResult } from './radiation.js';
+import { computeSeaCoupling, type SeaCoupling } from '../../effects/seaCoupling.js';
 import { firstDegreeBurnRadius, secondDegreeBurnRadius, thirdDegreeBurnRadius } from './thermal.js';
 import { explosionTsunami, type ExplosionTsunamiResult } from './underwaterBurst.js';
 import type { Joules, Meters, MetersPerSecond, Pascals, SquareMeters } from '../../units.js';
-import { Mt, m, mps, megatonsToJoules, Pa, sqm } from '../../units.js';
+import { J, Mt, Pa, m, megatonsToJoules, mps, sqm } from '../../units.js';
 
 /**
  * Ground-type preset used to drive the nuclear-crater coefficient.
@@ -44,6 +45,11 @@ export interface ExplosionScenarioInput {
   /** Nuclear unless said otherwise — the shipped conventional
    *  disasters (Beirut, Halifax, Texas City) say otherwise. */
   chargeType?: ExplosionChargeType;
+  /** Distance from the burst point to the nearest usable sea (m).
+   *  Zero or omitted means the burst is over the water. A surface
+   *  burst beside the sea is not a burst in it, and this is what
+   *  tells the two apart — see {@link computeSeaCoupling}. */
+  shoreDistance?: Meters;
   /** Nuclear-crater ground preset. Defaults to 'FIRM_GROUND'. */
   groundType?: ExplosionGroundType;
   /** Height of burst above the target surface (m). 0 = contact surface
@@ -156,6 +162,9 @@ export interface ExplosionScenarioResult {
      *  burst on the chosen ground type (m). */
     apparentDiameter: Meters;
   };
+  /** How the burst reached the sea, when it was near one. Absent when
+   *  no water was in range at all. */
+  seaCoupling?: SeaCoupling;
   /** Initial-radiation lethal-dose radii (Glasstone §8 / UNSCEAR 2000). */
   radiation: RadiationDoseResult;
   /** Electromagnetic-pulse footprint (Glasstone §11 / IEC 61000-2-9). */
@@ -385,16 +394,28 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
     hobMeters >= 0 &&
     hobMeters <= CONTACT_WATER_BURST_MAX_HOB_M;
   if (isContactBurst) {
+    // How much of this reaches the water at all. The same law the
+    // impacts use, asked the same question: the crater is the hole
+    // being dug, and if the shoreline is inside it the water is part
+    // of the excavation. A burst on a quay two hundred metres from a
+    // crater fifty metres across lifts the sea by whatever it throws
+    // that far, which for a charge with no ejecta model is nothing.
+    const seaCoupling = computeSeaCoupling({
+      shoreDistanceM: (input.shoreDistance as number | undefined) ?? 0,
+      craterRimRadiusM: (result.crater.apparentDiameter as number) / 2,
+      cavityAtFullCouplingM: 0,
+    });
+    result.seaCoupling = seaCoupling;
     const tsunami = explosionTsunami({
-      yieldEnergy: yieldJoules,
+      yieldEnergy: J((yieldJoules as number) * seaCoupling.fraction),
       waterDepth: m(waterDepth),
       ...(input.meanOceanDepth !== undefined && { meanOceanDepth: input.meanOceanDepth }),
       ...(input.coastalBeachSlopeRad !== undefined && {
         coastalBeachSlopeRad: input.coastalBeachSlopeRad,
       }),
     });
-    if (tsunami !== null) result.tsunami = tsunami;
-    result.isContactWaterBurst = true;
+    if (tsunami !== null && seaCoupling.fraction > 0) result.tsunami = tsunami;
+    result.isContactWaterBurst = seaCoupling.fraction > 0;
   }
 
   return result;

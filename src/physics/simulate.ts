@@ -1,3 +1,4 @@
+import { computeSeaCoupling, type SeaCoupling } from './effects/seaCoupling.js';
 import {
   CHONDRITIC_DENSITY,
   CRUSTAL_ROCK_DENSITY,
@@ -264,16 +265,9 @@ export interface ImpactTsunamiResult {
  * zero only where the 1 m isopach ends, beyond which the tsunami
  * branch is not emitted at all.
  */
-export interface ImpactSeaCoupling {
-  mechanism: 'water' | 'crater' | 'ejecta';
-  /** Distance from ground zero to the shoreline used (m); 0 in water. */
-  shoreDistance: Meters;
-  /** Fraction of the water-coupled energy that actually enters the sea. */
-  fraction: number;
-  /** Reach of the mechanisms that can still move the sea (m): the
-   *  largest of crater rim, water cavity and the 1 m ejecta isopach. */
-  reach: Meters;
-}
+/** The shared sea-coupling law, under the name the impact result
+ *  has always used. See {@link computeSeaCoupling}. */
+export type ImpactSeaCoupling = SeaCoupling;
 
 /**
  * Shape of a complete scenario result. Deterministic: identical inputs
@@ -687,19 +681,14 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       ? (input.shoreDistance as number)
       : 0;
   const fullCouplingKe = J((ke as number) * gf * fWater);
-  const cavityAtFullCoupling = impactCavityRadius({ kineticEnergy: fullCouplingKe }) as number;
-  const innerReach = Math.max(craterRimRadius, cavityAtFullCoupling);
-  const ejectaReach = ejecta.blanketEdge1m as number;
-  const seaReach = Math.max(innerReach, ejectaReach);
-  const seaWithinReach = shoreDistanceM <= seaReach;
-  const seaCouplingFraction =
-    shoreDistanceM <= innerReach ? 1 : Math.min(1, innerReach / shoreDistanceM);
-  const seaCoupling: ImpactSeaCoupling = {
-    mechanism: shoreDistanceM <= 0 ? 'water' : shoreDistanceM <= innerReach ? 'crater' : 'ejecta',
-    shoreDistance: m(shoreDistanceM),
-    fraction: seaWithinReach ? seaCouplingFraction : 0,
-    reach: m(seaReach),
-  };
+  const seaCoupling = computeSeaCoupling({
+    shoreDistanceM,
+    craterRimRadiusM: craterRimRadius,
+    cavityAtFullCouplingM: impactCavityRadius({ kineticEnergy: fullCouplingKe }),
+    ejectaReachM: ejecta.blanketEdge1m,
+  });
+  const seaWithinReach = seaCoupling.fraction > 0 || shoreDistanceM <= 0;
+  const seaCouplingFraction = seaCoupling.fraction;
   if (waterDepth > 0 && reachesSurface && seaWithinReach) {
     const meanOceanDepth = input.meanOceanDepth ?? m(DEFAULT_MEAN_OCEAN_DEPTH);
     // Phase-18: route only the water-coupled fraction of the post-
