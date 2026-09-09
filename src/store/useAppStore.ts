@@ -12,7 +12,12 @@ import {
   type BathymetricTsunamiResult,
 } from '../physics/tsunami/index.js';
 import { distanceForOverpressure } from '../physics/events/impact/index.js';
+import {
+  megathrustRuptureLength,
+  surfaceRuptureLength,
+} from '../physics/events/earthquake/ruptureLength.js';
 import { destination } from '../physics/tsunami/ruptureGeometry.js';
+import type { TerrainSourceSpan } from '../scene/terrainSampling.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
 import type {
   PopulationLookupMethod,
@@ -1555,6 +1560,34 @@ const EMPTY_TSUNAMI: TsunamiCasualtyEstimate = {
   cellCount: 0,
 };
 const TSUNAMI_TOLL_SOURCE = 'GHS-POP 2020 (JRC), coastal land density';
+
+/**
+ * The span of terrain a scenario needs before it has been simulated.
+ *
+ * The elevation grid is fetched when the pick moves, which is before
+ * any result exists, so this reads the rupture straight off the
+ * inputs: the same length the simulator will derive from the
+ * magnitude, and the strike the preset carries. A rupture long enough
+ * to leave the ordinary block behind gets a strip of tiles along the
+ * fault instead of a square around one end of it; everything else
+ * gets what it always got.
+ */
+export function terrainSpanForState(state: AppStore): TerrainSourceSpan | undefined {
+  if (state.eventType !== 'earthquake') return undefined;
+  const input = state.earthquake.input;
+  const strikeDeg = input.strikeAzimuthDeg;
+  if (strikeDeg === undefined || !Number.isFinite(strikeDeg)) return undefined;
+  const lengthM =
+    (input.ruptureLengthOverride as number | undefined) ??
+    (input.subductionInterface === true
+      ? megathrustRuptureLength(input.magnitude)
+      : surfaceRuptureLength({
+          magnitude: input.magnitude,
+          faultType: input.faultType ?? 'all',
+        }));
+  if (!Number.isFinite(lengthM) || lengthM <= 0) return undefined;
+  return { strikeDeg, lengthM };
+}
 
 /**
  * How long after the source a tsunami warning reaches the coast.

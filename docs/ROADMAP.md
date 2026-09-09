@@ -705,7 +705,7 @@ better rule, kept — and it moved almost nothing. What holds Aceh's
 toll down is the extent of the fine _bathymetric_ coverage, not the
 population raster. See P0 below.
 
-### P0 — The fine coastal grid covers one tile block _(open, 9 September)_
+### P0 — The fine coastal grid covers one tile block _(closed, 9 September)_
 
 With the bearing, the distance and the amplitude all corrected, Banda
 Aceh now reads 4.92 m of wave and 19.7 m of run-up, both right against
@@ -722,10 +722,41 @@ inundation strip on an indented coast is counted once for thirty.
 Would move: Sumatra 2004, the worst row left in the calibration net,
 and the far half of every large event's coast.
 
-Where to look: the local grid should follow the source's reach rather
-than the click — for a 1 300 km rupture, a block along the fault
-rather than a square around one end of it. The tiles are 90–120 KB
-each and the fetch is already batched.
+**Closed, and it bought less than it promised.** The grid is now a
+strip along the fault, at most forty tiles, on a fixed sample budget
+so the fast-marching pass costs what it did. Sumatra's block goes from
+470 km at 0.9 km a sample to 780 × 1 090 km at 1.8 — four times the
+area, same 63 seconds end to end — and its coastal toll from 1 600
+drowned to 2 600. A factor of 1.6 where the coverage argument implied
+an order of magnitude. Tōhoku drifts 22 000 → 24 000, from 1.32× of
+its record to 1.44×.
+
+### P0 — Sumatra is 87× under and nothing general explains it _(open, 9 September)_
+
+Everything raised against that row today has been fixed and measured.
+Its wave is right — Banda Aceh reads 4.92 m of amplitude and 19.7 m of
+run-up against a record of fifteen to thirty. Its warning is right:
+the 2004 Indian Ocean had none. Its beam, its distance and its
+spreading radius are all taken from the fault. Its coast is four times
+better covered. And Tōhoku, running the same physics end to end, sits
+at 1.44× of its own record.
+
+So what is left is specific to the event, not general to the model,
+and there is exactly one measurement pointing anywhere: the density at
+the cells. Aceh's coastal cells read 18 to 830 people per km² where
+the raster holds 1 647 for Banda Aceh, and Sendai's cells read 4 738.
+A city ten kilometres across on a 4.6 km raster is two or three cells,
+and which of them a coastal point lands on is close to chance —
+whereas Sendai's plain is dense for tens of kilometres and cannot be
+missed.
+
+Where to look: what a coastal cell should carry is the population of
+the strip the wave floods, and sampling the nearest land cell is a
+poor estimator of that when the population is concentrated. Summing
+the people inside the inundation polygon would be the honest version.
+
+Would move: Sumatra 2004, and every event whose dead are in one dense
+place rather than spread along a shore.
 
 ### P3 — Caps the scalar path does not have
 

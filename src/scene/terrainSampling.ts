@@ -21,6 +21,7 @@
  */
 
 import { makeElevationGrid, type ElevationGrid } from '../physics/elevation/index.js';
+import { destination } from '../physics/tsunami/ruptureGeometry.js';
 
 const TERRAIN_TILE_URL = 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
 const TILE_ZOOM = 8;
@@ -176,6 +177,19 @@ function landFraction(grid: ElevationGrid): number {
  *  reason for going and getting the neighbours. */
 const BLOCK_SAMPLES = 512;
 
+/** The total a resampled block may spend, whatever its shape. Held
+ *  fixed so the fast-marching pass over this grid costs the same for
+ *  a crater and for a fifteen-hundred-kilometre rupture; what changes
+ *  is how the budget is split between rows and columns, and with it
+ *  the metres per sample. */
+const BLOCK_SAMPLE_BUDGET = BLOCK_SAMPLES * BLOCK_SAMPLES;
+
+/** Tiles a block may fetch. Nine is the old square; a long rupture
+ *  wants a strip, and forty at ninety to a hundred and twenty
+ *  kilobytes apiece is about four megabytes — the same order as the
+ *  fine population tiles, and only for the events that need it. */
+const MAX_BLOCK_TILES = 40;
+
 /**
  * Nine tiles around (x, y), resampled onto one uniform lat/lon grid.
  *
@@ -184,14 +198,18 @@ const BLOCK_SAMPLES = 512;
  * an `ElevationGrid`, which is uniform by construction. Each output
  * sample is taken from whichever tile covers its coordinates.
  */
-async function fetchTileBlock(x: number, y: number): Promise<ElevationGrid> {
+async function fetchTileRange(
+  x0: number,
+  x1: number,
+  y0: number,
+  y1: number
+): Promise<ElevationGrid> {
   const coords: { x: number; y: number }[] = [];
   const span = 1 << TILE_ZOOM;
-  for (let dy = -1; dy <= 1; dy++) {
-    for (let dx = -1; dx <= 1; dx++) {
-      const ty = y + dy;
-      if (ty < 0 || ty >= span) continue;
-      coords.push({ x: (((x + dx) % span) + span) % span, y: ty });
+  for (let ty = y0; ty <= y1; ty++) {
+    if (ty < 0 || ty >= span) continue;
+    for (let tx = x0; tx <= x1; tx++) {
+      coords.push({ x: ((tx % span) + span) % span, y: ty });
     }
   }
   const tiles = await Promise.all(coords.map((c) => fetchTile(c.x, c.y)));
@@ -200,12 +218,24 @@ async function fetchTileBlock(x: number, y: number): Promise<ElevationGrid> {
   const minLon = Math.min(...tiles.map((t) => t.minLon));
   const maxLon = Math.max(...tiles.map((t) => t.maxLon));
 
-  const samples = new Float32Array(BLOCK_SAMPLES * BLOCK_SAMPLES);
-  const dLat = (maxLat - minLat) / (BLOCK_SAMPLES - 1);
-  const dLon = (maxLon - minLon) / (BLOCK_SAMPLES - 1);
-  for (let i = 0; i < BLOCK_SAMPLES; i++) {
+  // The sample budget is fixed, and the block's own shape spends it.
+  // A square block gets the 512 × 512 it always had; a rupture's long
+  // thin block gets more rows than columns for the same total, so the
+  // fast-marching pass that runs on this grid costs what it always
+  // did however far the fault reaches.
+  const latM = (maxLat - minLat) * 111_320;
+  const midLat = ((maxLat + minLat) / 2) * (Math.PI / 180);
+  const lonM = (maxLon - minLon) * 111_320 * Math.max(Math.cos(midLat), 0.05);
+  const ratio = Math.sqrt(Math.max(latM, 1) / Math.max(lonM, 1));
+  const nLat = Math.round(Math.min(2048, Math.max(64, Math.sqrt(BLOCK_SAMPLE_BUDGET) * ratio)));
+  const nLon = Math.round(Math.min(2048, Math.max(64, BLOCK_SAMPLE_BUDGET / nLat)));
+
+  const samples = new Float32Array(nLat * nLon);
+  const dLat = (maxLat - minLat) / Math.max(1, nLat - 1);
+  const dLon = (maxLon - minLon) / Math.max(1, nLon - 1);
+  for (let i = 0; i < nLat; i++) {
     const lat = maxLat - i * dLat;
-    for (let j = 0; j < BLOCK_SAMPLES; j++) {
+    for (let j = 0; j < nLon; j++) {
       const lon = minLon + j * dLon;
       let value = 0;
       for (const tile of tiles) {
@@ -219,18 +249,10 @@ async function fetchTileBlock(x: number, y: number): Promise<ElevationGrid> {
         value = tile.samples[ti * tile.nLon + tj] ?? 0;
         break;
       }
-      samples[i * BLOCK_SAMPLES + j] = value;
+      samples[i * nLon + j] = value;
     }
   }
-  return makeElevationGrid({
-    minLat,
-    maxLat,
-    minLon,
-    maxLon,
-    nLat: BLOCK_SAMPLES,
-    nLon: BLOCK_SAMPLES,
-    samples,
-  });
+  return makeElevationGrid({ minLat, maxLat, minLon, maxLon, nLat, nLon, samples });
 }
 
 /**
@@ -249,15 +271,75 @@ async function fetchTileBlock(x: number, y: number): Promise<ElevationGrid> {
  * event asked: if there is no land in it, fetch the ring around it
  * and resample the nine together. For a pick on land nothing changes
  * and nothing extra is fetched.
+ *
+ * And when the source is a rupture, the block follows the fault
+ * rather than the pick. A square around one end of a thirteen-hundred
+ * kilometre megathrust resolved seventy-four kilometres of the coast
+ * that drowned in 2004 and left the other nine hundred to the
+ * planetary mosaic at thirty kilometres a sample. A strip along the
+ * fault reaches all of it, for a fetch that grows with the fault and
+ * a grid that does not: the sample budget is fixed, so a long thin
+ * block spends it on rows instead of columns and the fast-marching
+ * pass costs what it always did.
  */
+export interface TerrainSourceSpan {
+  /** Strike of the rupture (° from north). */
+  strikeDeg: number;
+  /** Length along strike (m), centred on the pick. */
+  lengthM: number;
+}
+
 export async function fetchTerrainGridForLocation(
   latitude: number,
-  longitude: number
+  longitude: number,
+  span?: TerrainSourceSpan
 ): Promise<ElevationGrid> {
   const { x, y } = lonLatToTile(latitude, longitude, TILE_ZOOM);
+  const range = span === undefined ? null : tileRangeForSpan(latitude, longitude, span);
+  if (range !== null) return fetchTileRange(range.x0, range.x1, range.y0, range.y1);
   const centre = await fetchTile(x, y);
   if (landFraction(centre) >= MIN_TILE_LAND_FRACTION) return centre;
-  return fetchTileBlock(x, y);
+  return fetchTileRange(x - 1, x + 1, y - 1, y + 1);
+}
+
+/**
+ * The tiles a rupture needs: the ones its two ends fall in, everything
+ * between, and a ring around the lot so the coast on either side is in
+ * the grid too. Null when the rupture is short enough that the square
+ * block already covers it, which keeps every small event on the path
+ * it had before.
+ */
+function tileRangeForSpan(
+  latitude: number,
+  longitude: number,
+  span: TerrainSourceSpan
+): { x0: number; x1: number; y0: number; y1: number } | null {
+  if (!Number.isFinite(span.strikeDeg) || !(span.lengthM > 0)) return null;
+  const half = span.lengthM / 2;
+  const a = destination(latitude, longitude, span.strikeDeg, half);
+  const b = destination(latitude, longitude, span.strikeDeg, -half);
+  const ta = lonLatToTile(a.latitude, a.longitude, TILE_ZOOM);
+  const tb = lonLatToTile(b.latitude, b.longitude, TILE_ZOOM);
+  let x0 = Math.min(ta.x, tb.x) - 1;
+  let x1 = Math.max(ta.x, tb.x) + 1;
+  let y0 = Math.min(ta.y, tb.y) - 1;
+  let y1 = Math.max(ta.y, tb.y) + 1;
+  // A rupture that fits inside the ordinary block asks for nothing
+  // special.
+  if (x1 - x0 <= 2 && y1 - y0 <= 2) return null;
+  // Bounded: trim the long axis first, from both ends, so the fault
+  // stays centred on the pick.
+  while ((x1 - x0 + 1) * (y1 - y0 + 1) > MAX_BLOCK_TILES) {
+    if (x1 - x0 >= y1 - y0) {
+      x0 += 1;
+      x1 -= 1;
+    } else {
+      y0 += 1;
+      y1 -= 1;
+    }
+    if (x1 <= x0 || y1 <= y0) return null;
+  }
+  return { x0, x1, y0, y1 };
 }
 
 /**

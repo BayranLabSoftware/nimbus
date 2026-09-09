@@ -7,6 +7,20 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The local terrain grid follows the fault.** It was a square around
+  the pick, which for a 1 300 km rupture resolved 74 km of the coast
+  that drowned in 2004 and left the rest to the planetary mosaic at
+  thirty kilometres a sample. It is now a strip of tiles along the
+  fault — at most forty, trimmed from both ends so the fault stays
+  centred — on a fixed sample budget, so a long thin block spends its
+  512 × 512 on rows instead of columns and the fast-marching pass
+  costs what it always did. Sumatra's block goes from 470 km at 0.9 km
+  a sample to 780 × 1 090 km at 1.8, four times the area for the same
+  63 seconds end to end, and its coastal toll from 1 600 drowned to
+  2 600. A factor of 1.6 where the coverage argument implied an order
+  of magnitude; Tōhoku drifts 22 000 → 24 000, from 1.32× of its
+  record to 1.44×.
+
 - **A rupture starts its wave along its whole length.** The bearing
   came from the fault two changes ago and the distance did not: the
   arrival field was seeded at one point, so Banda Aceh — 250 km up the

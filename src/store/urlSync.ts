@@ -15,8 +15,9 @@ import {
   configurePopulationDensity,
   configurePopulationLookup,
   configureTerrainLoaders,
-  useAppStore,
+  terrainSpanForState,
   type AppStore,
+  useAppStore,
 } from './useAppStore.js';
 
 /**
@@ -54,7 +55,8 @@ export async function maybeAutoEvaluate(store: AppStore): Promise<void> {
     try {
       const grid = await fetchTerrainGridForLocation(
         store.location.latitude,
-        store.location.longitude
+        store.location.longitude,
+        terrainSpanForState(store)
       );
       useAppStore.getState().setElevationGrid(grid);
     } catch {

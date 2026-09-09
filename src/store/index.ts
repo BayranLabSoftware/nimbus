@@ -5,6 +5,7 @@ export {
   configurePopulationLookup,
   configureTerrainLoaders,
   resetAppStore,
+  terrainSpanForState,
   useAppStore,
   type ActiveEarthquakePreset,
   type ActiveExplosionPreset,

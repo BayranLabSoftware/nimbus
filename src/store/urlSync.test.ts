@@ -95,7 +95,9 @@ describe('maybeAutoEvaluate', () => {
     useAppStore.getState().setLocation({ latitude: 25.4102, longitude: -81.0466 });
     useAppStore.getState().setMode('report');
     await maybeAutoEvaluate(useAppStore.getState());
-    expect(finto).toHaveBeenCalledWith(25.4102, -81.0466);
+    // The span is undefined for anything but an oriented rupture; the
+    // point of this row is that the tile is asked for before the sim.
+    expect(finto).toHaveBeenCalledWith(25.4102, -81.0466, undefined);
     // E la simulazione gira comunque quando la rete non risponde.
     expect(useAppStore.getState().result).not.toBeNull();
   });

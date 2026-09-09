@@ -34,6 +34,7 @@ import { ISOTROPIC_RING, type RingAsymmetry } from '../../physics/effects/asymme
 import { aftershockShakingFootprint } from '../../physics/events/earthquake/aftershocks.js';
 import type { ImpactDamageRadii } from '../../physics/events/impact/damageRings.js';
 import {
+  terrainSpanForState,
   useAppStore,
   type ActiveMonteCarlo,
   type ActiveResult,
@@ -572,7 +573,11 @@ export function Globe(): JSX.Element {
     if (location === null) return;
     let cancelled = false;
     terrainPulsingRef.current = true;
-    fetchTerrainGridForLocation(location.latitude, location.longitude)
+    fetchTerrainGridForLocation(
+      location.latitude,
+      location.longitude,
+      terrainSpanForState(useAppStore.getState())
+    )
       .then((grid) => {
         if (!cancelled) setElevationGrid(grid);
       })

@@ -414,6 +414,54 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### The local grid follows the fault (Phase 36)
+
+The fine terrain grid was a square around the pick — one zoom-8 tile,
+or nine when the tile held too little land. For a crater that is the
+right shape. For a thirteen-hundred-kilometre rupture it resolved
+74 km of the coast that drowned in 2004 and left the other nine
+hundred to the planetary mosaic at thirty kilometres a sample.
+
+It is now a strip of tiles along the fault, bounded two ways. At most
+forty tiles, trimmed from both ends so the fault stays centred — about
+four megabytes at ninety to a hundred and twenty kilobytes apiece, and
+only for the events that need it. And a **fixed sample budget**: the
+block spends the same 512 × 512 samples whatever its shape, so a long
+thin block gets more rows than columns and the fast-marching pass that
+runs on it costs what it always did. Sumatra's block comes out five
+tiles by seven — 780 by 1 090 km at 1.8 km a sample, against 470 km at
+0.9 before. Four times the area, the same wall clock: 63 seconds
+end to end, measured, unchanged.
+
+| coastal toll  | before | after     | recorded  |
+| ------------- | ------ | --------- | --------- |
+| Sumatra 2004  | 1 600  | **2 600** | ≈ 227 000 |
+| Tōhoku 2011   | 22 000 | 24 000    | ≈ 16 700  |
+| Krakatau 1883 | 26 000 | 26 000    | ≈ 36 400  |
+
+A modest gain, and worth saying so plainly: quadrupling the fine
+coverage bought Sumatra a factor of 1.6, not the order of magnitude
+the coverage argument implied. Tōhoku drifts from 1.32× of its record
+to 1.44×.
+
+**What that leaves.** Sumatra is 87× under, and it is no longer
+explained by any of the things that have been fixed for it today. Its
+wave is right: Banda Aceh reads 4.92 m of amplitude and 19.7 m of
+run-up against a record of fifteen to thirty. Its warning is right:
+the 2004 Indian Ocean had none and the model now knows it. Its beam,
+its distance and its spreading radius are all measured from the fault.
+Its coast is four times better covered. And Tōhoku, with the same
+physics end to end, sits at 1.44×.
+
+So whatever is left is specific to that event rather than general to
+the model, and the one measurement pointing anywhere is the density at
+the cells themselves: Aceh's coastal cells read 18 to 830 people per
+km² where the raster holds 1 647 for Banda Aceh and Sendai's cells
+read 4 738. A city ten kilometres across on a 4.6 km raster is two or
+three cells, and which of them a coastal point finds is close to
+chance. That is where the next look goes, and it starts from a
+measurement rather than from a story.
+
 ### A rupture starts its wave along its whole length (Phase 35)
 
 The bearing came from the fault two phases ago and the distance did
