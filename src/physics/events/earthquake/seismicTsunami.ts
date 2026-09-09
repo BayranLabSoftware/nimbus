@@ -1,5 +1,6 @@
 import { CRUSTAL_RIGIDITY, STANDARD_GRAVITY } from '../../constants.js';
-import { dispersionAmplitudeFactor, synolakisRunup } from '../tsunami/extendedEffects.js';
+import { synolakisRunup } from '../tsunami/extendedEffects.js';
+import { dispersionFactor } from '../../tsunami/dispersion.js';
 import { shallowWaterWaveSpeed, tsunamiTravelTime } from '../tsunami/propagation.js';
 import type { Meters, MetersPerSecond, Seconds } from '../../units.js';
 import { m, s } from '../../units.js';
@@ -277,7 +278,16 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
   const amp = (range: number): number => A0 * Math.sqrt(R0 / Math.max(range, R0));
   const amp1000 = amp(1_000_000);
   const amp5000 = amp(5_000_000);
-  const amp5000Disp = amp5000 * dispersionAmplitudeFactor(m(5_000_000));
+  const basinDepth = (input.basinDepth ?? m(DEFAULT_BASIN_DEPTH)) as number;
+  // Dominant source wavelength ≈ 2 · L, the line source's first
+  // Fourier mode (Satake 2013 BSSA 103 (2B): 1473–1492). For a
+  // seven-hundred-kilometre rupture that is 1 400 km of wave over
+  // four kilometres of ocean, and such a wave does not disperse: the
+  // parameter comes out near zero and the factor near one, at DART
+  // range and across an ocean alike.
+  const disperse = (range: number): number =>
+    dispersionFactor({ rangeM: range, depthM: basinDepth, wavelengthM: 2 * L });
+  const amp5000Disp = amp5000 * disperse(5_000_000);
   // Phase-20: also surface the dispersion-corrected amplitude at
   // 1 000 km. Pre-Phase-20 only the 5 000 km value applied the
   // Heidarzadeh & Satake 2015 frequency-dependent decay; the 1 000 km
@@ -290,7 +300,7 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
   // cannot capture their slip-heterogeneity-driven spectral spread —
   // that is a known Tier 1 limitation, addressed in the planned
   // Tier 2 Saint-Venant 1D Web Worker.
-  const amp1000Disp = amp1000 * dispersionAmplitudeFactor(m(1_000_000));
+  const amp1000Disp = amp1000 * disperse(1_000_000);
   // Beach slope: caller-supplied DEM value when in [1:1000, 1:3]
   // envelope, otherwise the canonical 1:100 reference (Synolakis 1987).
   const SLOPE_LOWER = Math.atan(1 / 1000);
@@ -303,7 +313,7 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
     supplied <= SLOPE_UPPER;
   const beachSlopeRad = slopeFromDEM ? supplied : REFERENCE_RUNUP_SLOPE;
   const runup = synolakisRunup(m(amp1000), beachSlopeRad, m(REFERENCE_OFFSHORE_DEPTH));
-  const basin = input.basinDepth ?? m(DEFAULT_BASIN_DEPTH);
+  const basin = m(basinDepth);
   const travel = tsunamiTravelTime(m(1_000_000), basin);
   const celerity = shallowWaterWaveSpeed(basin);
   // Dominant source wavelength ≈ 2 · L (the line source's first

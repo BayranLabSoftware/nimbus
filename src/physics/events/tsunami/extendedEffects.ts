@@ -1,6 +1,7 @@
 import { SEAWATER_DENSITY, STANDARD_GRAVITY } from '../../constants.js';
 import type { Meters } from '../../units.js';
 import { m } from '../../units.js';
+import { dispersionFactor } from '../../tsunami/dispersion.js';
 
 /**
  * Extended tsunami estimators beyond the Ward & Asphaug impact source:
@@ -80,39 +81,6 @@ export function submarineLandslideAmplitude(slideVolumeM3: number, slopeRad: num
   return m(A0);
 }
 
-/**
- * Dispersion-induced amplitude correction for a far-field tsunami.
- *
- * This is a HEURISTIC exponential envelope, `exp(−r / 2500 km)`, NOT a
- * transcription of a published equation. Frequency dispersion gradually
- * stretches the leading tsunami wave train and lowers its peak with
- * propagation distance; the 2 500 km scale length is calibrated so the
- * envelope eats ≈ 50 % at 5 000 km and ≈ 80 % at 10 000 km, the rough
- * far-field amplitude/phase reductions documented for trans-oceanic
- * events. (The classic dispersion theory is Kajiura 1963; the modern
- * trans-Pacific reduction for the 2011 Tōhoku event is quantified by
- * Watada et al. 2014.) Use for order-of-magnitude far-field display.
- *
- *   References:
- *     Kajiura, K. (1963). "The leading wave of a tsunami." Bull.
- *      Earthquake Res. Inst. 41: 535–571.
- *     Watada, S., Kusumoto, S. & Satake, K. (2014). "Simulating
- *      tsunami waveforms using ... dispersion, elastic loading, and
- *      gravitational potential." JGR Solid Earth 119 (5): 4287–4310.
- *      DOI: 10.1002/2013JB010841.
- *
- * Returns a factor ≤ 1 that scales the Ward–Asphaug / seismic-tsunami
- * amplitude at distance r.
- */
-export function dispersionAmplitudeFactor(distance: Meters): number {
-  const r = distance as number;
-  if (!Number.isFinite(r) || r <= 0) return 1;
-  // Exponential decay with a 2 500 km scale length; accumulated
-  // dispersion eats ~50 % of the envelope at 5 000 km, ~80 % at
-  // 10 000 km — matching the DART-buoy record.
-  return Math.exp(-r / 2_500_000);
-}
-
 /** Reference value: the peak open-ocean amplitude that the Ward &
  *  Asphaug 1/r formula would predict for the 2011 Tōhoku tsunami at
  *  DART buoy 21413 (1 500 km offshore). Used by tests as a cross-check
@@ -124,9 +92,13 @@ export function tohoku2011DARTReference(): Meters {
   const sourceRange = 100_000; // m
   const dartRange = 1_500_000; // m (DART 21413)
   const geom = (sourceAmplitude * sourceRange) / dartRange;
-  // Dispersion-corrected far-field amplitude, water-density scaling
-  // cancels at this resolution.
+  // Dispersion on this event's own wavelength and depth rather than a
+  // fixed scale length: 1 400 km of wave over 4 km of ocean barely
+  // disperses at all over fifteen hundred kilometres, so this is very
+  // nearly the bare 1/r figure. The heuristic it replaces cut the
+  // amplitude almost in half here, which flattered this row and hid
+  // the fact that the divergence is in the spreading law.
   void SEAWATER_DENSITY;
   void STANDARD_GRAVITY;
-  return m(geom * dispersionAmplitudeFactor(m(dartRange)));
+  return m(geom * dispersionFactor({ rangeM: dartRange, depthM: 4000, wavelengthM: 2 * 700_000 }));
 }

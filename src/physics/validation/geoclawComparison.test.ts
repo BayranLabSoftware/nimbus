@@ -3,10 +3,11 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { CRUSTAL_RIGIDITY, SEAWATER_DENSITY, STANDARD_GRAVITY } from '../constants.js';
 import { seismicMomentFromMagnitude } from '../events/earthquake/seismicMoment.js';
-import { dispersionAmplitudeFactor } from '../events/tsunami/extendedEffects.js';
+import { directivityFactor } from '../tsunami/directivity.js';
+import { dispersionFactor } from '../tsunami/dispersion.js';
 import { impactCavityRadius, impactSourceAmplitude } from '../events/tsunami/impact.js';
 import { simulateSaintVenant1D } from '../tsunami/saintVenant1D.js';
-import { J, m } from '../units.js';
+import { J } from '../units.js';
 
 /**
  * Tier 3 — GeoClaw fixture comparison.
@@ -50,6 +51,9 @@ interface GeoclawProbe {
   distanceFromEpicentreM: number;
   peakAmplitudeM: number;
   peakTimeSeconds?: number;
+  /** Probe position, used to work out its bearing from the source. */
+  lat?: number;
+  lon?: number;
 }
 
 interface SeismicMegathrustInput {
@@ -57,6 +61,10 @@ interface SeismicMegathrustInput {
   magnitude: number;
   ruptureLengthM: number;
   basinDepthM?: number;
+  centroidLat?: number;
+  centroidLon?: number;
+  /** GeoClaw's `sub.strike`, which its driver defaults to 0 — north. */
+  strikeDeg?: number;
 }
 
 interface VolcanicCollapseInput {
@@ -129,6 +137,18 @@ function loadFixtures(): GeoclawFixture[] {
     fixtures.push(JSON.parse(raw) as GeoclawFixture);
   }
   return fixtures;
+}
+
+/** Initial great-circle bearing from one point to another, degrees
+ *  clockwise from north. */
+function bearingBetween(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const toRad = Math.PI / 180;
+  const dLon = (lon2 - lon1) * toRad;
+  const y = Math.sin(dLon) * Math.cos(lat2 * toRad);
+  const x =
+    Math.cos(lat1 * toRad) * Math.sin(lat2 * toRad) -
+    Math.sin(lat1 * toRad) * Math.cos(lat2 * toRad) * Math.cos(dLon);
+  return (Math.atan2(y, x) / toRad + 360) % 360;
 }
 
 function relativeError(predicted: number, geoclaw: number): number {
@@ -253,8 +273,37 @@ describe('Tier 3 — GeoClaw fixture comparison', () => {
           expect.fail('Saint-Venant solver returned no probe record');
           return;
         }
+        // λ = 4σ: the full width of a Gaussian hump is about 4σ, and
+        // a single hump's dominant wavelength is twice its width.
+        const wavelengthM = 4 * sigmaM;
+        // A like-for-like comparison has to carry the beam. GeoClaw
+        // lays the rupture out with `sub.strike = strikeDeg ?? 0`, so
+        // strike is due north, and every probe in these fixtures is
+        // due north of the centroid — the end-fire direction, where a
+        // 2D solver radiates weakest. The 1D-radial path is isotropic
+        // and would be compared against the null without this.
+        const src = fx.input;
+        const beam =
+          src.type === 'seismic-megathrust' &&
+          src.centroidLat !== undefined &&
+          src.centroidLon !== undefined &&
+          probe.lat !== undefined &&
+          probe.lon !== undefined
+            ? directivityFactor({
+                bearingDeg: bearingBetween(src.centroidLat, src.centroidLon, probe.lat, probe.lon),
+                strikeDeg: src.strikeDeg ?? 0,
+                ruptureLengthM: src.ruptureLengthM,
+                wavelengthM,
+              })
+            : 1;
         const ampAtProbe =
-          probeRec.peakAbsAmplitudeM * dispersionAmplitudeFactor(m(probe.distanceFromEpicentreM));
+          probeRec.peakAbsAmplitudeM *
+          dispersionFactor({
+            rangeM: probe.distanceFromEpicentreM,
+            depthM: basinDepthM,
+            wavelengthM,
+          }) *
+          beam;
         if (!Number.isFinite(ampAtProbe) || ampAtProbe < 0) {
           expect.fail(`Nimbus produced invalid amplitude ${ampAtProbe.toString()} at probe`);
           return;

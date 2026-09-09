@@ -414,6 +414,66 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### One dispersion law, and what removing the other one showed (Phase 27)
+
+Two laws were shipped at once. The wave field on the globe carried
+Kajiura's parameter — D = (4π²/6)·r·h²/λ³, decay (1+D)^(−½) — and
+everything else carried a fixed exponential, exp(−r / 2 500 km),
+printed in the report under a citation to Heidarzadeh & Satake 2015.
+The code's own comment said what the citation did not: "a HEURISTIC
+exponential envelope, NOT a transcription of a published equation".
+
+The two disagree by a factor of seven at five thousand kilometres, so
+the same wave had two amplitudes depending on which surface the reader
+was looking at. Measured side by side the reason is plain:
+
+|                                        | exponential | Kajiura |
+| -------------------------------------- | ----------- | ------- |
+| Tōhoku at DART, λ = 1 400 km, h = 4 km | 0.55        | 0.999   |
+| Tōhoku at 5 000 km                     | 0.14        | 0.996   |
+| impact wave, λ = 18 km, at 1 000 km    | 0.67        | 0.24    |
+| Baker at 5.5 km, λ = 200 m, h = 60 m   | 0.998       | 0.24    |
+
+The exponential is the same curve for every event, because r is all it
+knows. It invents dispersion where there is none — a rupture seven
+hundred kilometres long makes a wave that crosses an ocean with its
+shape intact — and misses it where it is overwhelming, which is every
+short source: an impact cavity, a flank collapse, a depth charge.
+Kajiura's parameter has h and λ in it, which are the two things
+dispersion actually depends on. One of these can be a law and the
+other cannot, so the heuristic is gone and the derived law is now the
+only one in the codebase.
+
+**What that exposed.** Six benchmark rows went red, all megathrusts,
+all in the same direction: the model over-predicted the far field by
+a factor of three to four. The exponential had been supplying almost
+exactly that, under the wrong name.
+
+Four of the six were an unfair comparison rather than a defect.
+GeoClaw's driver lays a rupture out with `sub.strike = 0` — due north
+— and every probe in those fixtures is due north of the centroid, so
+they sit in the end-fire null of a source the 1D-radial path models as
+isotropic. Giving the comparison the same directivity the wave field
+already carries — the |sinc| line-source array factor — makes it
+like-for-like, and all four pass without a tolerance being touched.
+
+The other two are real, and they are now declared rather than
+absorbed. The cylindrical law reads 1.65× the recorded amplitude at
+DART 21413 and 1.80× at Cocos Island: the same direction, the same
+size, a systematic. Both rows now pin that residual as a band so it
+cannot drift unwatched, with the reason written beside them. Making a
+number look worse while making the model more correct is the trade a
+laboratory takes, and the alternative was keeping a fudge factor that
+half-cancelled a spreading error by coincidence.
+
+**What closes it.** A megathrust's dominant wavelength: 2·L along
+strike, cited to Satake 2013, or 2·W across it, which is where the
+energy that reaches a broadside buoy actually goes. The two differ by
+a factor of forty in the dispersion parameter and they set the beam
+width as well. That is the next piece, and it is a question about the
+source rather than about the propagation — which is exactly where the
+evidence now points, and could not while the exponential was there.
+
 ### Saying where the measurements stop (Phase 26)
 
 The sweep of the previous section shows the laws hold outside the

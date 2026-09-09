@@ -22,11 +22,45 @@ describe('seismicTsunamiFromMegathrust', () => {
     expect(ratio).toBeCloseTo(Math.sqrt(5), 2);
   });
 
-  it('applies Heidarzadeh-Satake dispersion at 5 000 km (fraction ≤ 0.2)', () => {
+  it('a megathrust crosses an ocean without dispersing', () => {
+    // Kajiura's parameter, not a scale length: a rupture 700 km long
+    // radiates a wave 1 400 km long, and over 4 km of ocean such a
+    // wave keeps its shape for five thousand kilometres. The fixed
+    // exponential this replaced took 86 % of it, which is what a
+    // one-size decay does to the one source that does not disperse.
     const r = seismicTsunamiFromMegathrust({ magnitude: 9.1, ruptureLength: m(700_000) });
     const ratio = (r.amplitudeAt5000kmDispersed as number) / (r.amplitudeAt5000km as number);
-    expect(ratio).toBeGreaterThan(0.1);
-    expect(ratio).toBeLessThan(0.2);
+    expect(ratio).toBeGreaterThan(0.99);
+    expect(ratio).toBeLessThanOrEqual(1);
+  });
+
+  it('a shallow basin disperses the same rupture, because depth is in the law', () => {
+    const deep = seismicTsunamiFromMegathrust({
+      magnitude: 7.5,
+      ruptureLength: m(60_000),
+      basinDepth: m(4_000),
+    });
+    const shallow = seismicTsunamiFromMegathrust({
+      magnitude: 7.5,
+      ruptureLength: m(60_000),
+      basinDepth: m(1_000),
+    });
+    const ratio = (t: typeof deep): number =>
+      (t.amplitudeAt5000kmDispersed as number) / (t.amplitudeAt5000km as number);
+    // A short rupture makes a short wave, and a short wave disperses:
+    // the deep basin takes more of it than the shallow one, because
+    // the parameter goes as h². No threshold here — the comparison is
+    // the property, and a threshold would only pin today's numbers.
+    expect(ratio(deep)).toBeLessThan(ratio(shallow));
+
+    // And a short rupture disperses where a long one does not, which
+    // is the whole reason one scale length could not serve both.
+    const long = seismicTsunamiFromMegathrust({
+      magnitude: 9.1,
+      ruptureLength: m(700_000),
+      basinDepth: m(4_000),
+    });
+    expect(ratio(deep)).toBeLessThan(ratio(long));
   });
 
   it('Synolakis runup at 1 000 km is an order of magnitude larger than the open-ocean amplitude', () => {

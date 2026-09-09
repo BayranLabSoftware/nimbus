@@ -46,7 +46,8 @@ import { liquefactionRadius } from './events/earthquake/liquefaction.js';
 import { impactDamageRadii, type ImpactDamageRadii } from './events/impact/damageRings.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
 import { seismicMagnitude, seismicMagnitudeTeanbyWookey } from './events/impact/seismic.js';
-import { dispersionAmplitudeFactor, synolakisRunup } from './events/tsunami/extendedEffects.js';
+import { synolakisRunup } from './events/tsunami/extendedEffects.js';
+import { dispersionFactor } from './tsunami/dispersion.js';
 import {
   MANNING_OPEN_OCEAN,
   MANNING_SAND_BEACH,
@@ -186,8 +187,8 @@ export interface ImpactTsunamiResult {
    *  Manning propagation damping) as the incident wave. Illustrative
    *  coastal-inundation estimate. */
   runupAt1000km: Meters;
-  /** Heidarzadeh & Satake (2015) dispersion-corrected amplitude at
-   *  5 000 km from the source. */
+  /** Kajiura (1963) dispersion-corrected amplitude at 5 000 km from
+   *  the source, on this scenario's own wavelength and basin depth. */
   amplitudeAt5000kmDispersed: Meters;
   /** Open-ocean phase speed `c = √(g·h)` of a long gravity wave on the
    *  basin (Lamb 1932 §170). At 4 km mean depth this is ≈ 198 m/s
@@ -801,11 +802,21 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       beachSlopeRad,
       offshoreDepthM: m(10),
     });
-    const amp5000Dispersed = m(
-      (amp5000Friction as number) * dispersionAmplitudeFactor(m(5_000_000))
-    );
     const celerity = shallowWaterWaveSpeed(meanOceanDepth);
     const wavelength = m(2 * (cavityRadius as number));
+    // An impact wave is short — a cavity nine kilometres across makes
+    // an eighteen-kilometre wave — so it disperses hard, and by a
+    // thousand kilometres three quarters of its height is gone. The
+    // same law leaves a megathrust untouched, which is why it has to
+    // be this one and not a fixed scale length.
+    const amp5000Dispersed = m(
+      (amp5000Friction as number) *
+        dispersionFactor({
+          rangeM: 5_000_000,
+          depthM: meanOceanDepth,
+          wavelengthM: wavelength,
+        })
+    );
     const period = (wavelength / Math.max(celerity, 1e-6)) as Seconds;
     // Inundation distance ≈ runup × cot(slope). On a 1:100 beach
     // cot(slope) = 100, so inundation ≈ 100 × runup. On a real DEM

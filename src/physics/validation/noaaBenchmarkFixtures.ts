@@ -56,6 +56,29 @@ export const NOAA_PIN_TOLERANCE = 0.2;
  *  the honest pin width — tighter would over-fit the central pick. */
 export const NOAA_SEISMIC_PIN_TOLERANCE = 0.25;
 
+/**
+ * The far-field megathrust residual, declared rather than absorbed.
+ *
+ * The cylindrical 1D-radial law over-predicts the deep-water
+ * amplitude of a megathrust at buoy range: 1.65× at DART 21413 and
+ * 1.80× at Cocos Island, both in the same direction and of the same
+ * size. Until 9 September 2026 the two rows read as matches, because
+ * a fixed exponential exp(−r / 2 500 km) was applied to them under
+ * the name of frequency dispersion. It is not dispersion — Kajiura's
+ * parameter for a wave 1 400 km long over 4 km of ocean is near zero,
+ * and the correct factor at these ranges is 0.999. What that
+ * exponential supplied was the strength a real source loses to
+ * directivity and to the finite geometry of a rupture, which a
+ * radially symmetric model does not have.
+ *
+ * These bounds pin the residual so it cannot drift unwatched, and
+ * they are deliberately not a pass mark. What closes them is the
+ * source-wavelength question in the roadmap: whether a megathrust
+ * radiates on 2·L or on 2·W decides both the dispersion and the beam,
+ * and the two answers differ by a factor of forty in the parameter.
+ */
+export const MEGATHRUST_FAR_FIELD_RESIDUAL = { low: 1.3, high: 2.2 } as const;
+
 export interface NoaaBenchmarkSynolakisCase {
   /** Incident wave height H over depth d (dimensionless). */
   HOverD: number;

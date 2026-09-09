@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { seismicTsunamiFromMegathrust } from '../events/earthquake/seismicTsunami.js';
-import { dispersionAmplitudeFactor, synolakisRunup } from '../events/tsunami/extendedEffects.js';
+import { synolakisRunup } from '../events/tsunami/extendedEffects.js';
+import { dispersionFactor } from '../tsunami/dispersion.js';
 import { simulateSaintVenant1D } from '../tsunami/saintVenant1D.js';
 import { m } from '../units.js';
 import {
+  MEGATHRUST_FAR_FIELD_RESIDUAL,
   NOAA_PIN_TOLERANCE,
-  NOAA_SEISMIC_PIN_TOLERANCE,
   SUMATRA_2004_COCOS_REFERENCE,
   SYNOLAKIS_1987_CASES,
   TOHOKU_2011_DART_REFERENCE,
@@ -76,9 +77,7 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
     expect(r.meanSlip as number).toBeLessThan(25);
   });
 
-  it(`TIER 2 (Phase-21c) — Saint-Venant 1D-radial DART 21413 amplitude at 1 500 km within ±${(
-    NOAA_SEISMIC_PIN_TOLERANCE * 100
-  ).toFixed(0)} %`, () => {
+  it('TIER 2 — Saint-Venant 1D-radial DART 21413 sits at the declared far-field residual', () => {
     // Tōhoku 2011 routed through the Phase-21c Saint-Venant 1D-radial
     // pipeline (Closes the Tier-2 todo opened by Phase-20).
     //
@@ -96,13 +95,20 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
     // Imamura 1995). Run for 9000 s (2.5 h, the wave at √(g·4000) =
     // 198 m/s reaches DART 21413 at 1500 km in ≈ 7600 s).
     //
-    // Post-processing: apply the Heidarzadeh & Satake 2015
-    // frequency-dependent dispersion factor at the buoy distance.
-    // The Saint-Venant solver does NOT model dispersion (it solves
-    // the non-dispersive shallow-water equations); HF spectral
-    // components disperse out of the wave train at observation
-    // distance, which the Heidarzadeh-Satake decay captures
-    // empirically.
+    // Post-processing: the Saint-Venant solver does NOT model
+    // dispersion — it solves the non-dispersive shallow-water
+    // equations — so the Kajiura (1963) factor is applied at the buoy
+    // distance on this source's own wavelength and depth.
+    //
+    // For a megathrust that factor is very nearly one: a Gaussian of
+    // σ = 350 km is a wave 1 400 km long crossing 4 km of ocean, and
+    // such a wave does not disperse in fifteen hundred kilometres.
+    // This row used to carry a fixed exponential instead, which cut
+    // the amplitude almost in half here and closed a gap that
+    // dispersion does not explain. What the gap actually is — a
+    // single Gaussian standing in for Tōhoku's very heterogeneous
+    // slip, and radial spreading standing in for a line source — is
+    // now visible rather than absorbed.
     const N = 400;
     const dx = 10_000;
     const peakUpliftM = 4;
@@ -136,30 +142,33 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
     }
     const solverPeakM = probe.peakAbsAmplitudeM;
     const dispersedPeakM =
-      solverPeakM * dispersionAmplitudeFactor(m(TOHOKU_2011_DART_REFERENCE.distanceM));
-    const err = relativeError(dispersedPeakM, TOHOKU_2011_DART_REFERENCE.observedAmplitudeM);
+      solverPeakM *
+      dispersionFactor({
+        rangeM: TOHOKU_2011_DART_REFERENCE.distanceM,
+        depthM: 4_000,
+        wavelengthM: 4 * sigmaCells * dx,
+      });
+    const ratio = dispersedPeakM / TOHOKU_2011_DART_REFERENCE.observedAmplitudeM;
     expect(
-      err,
-      `predicted ${dispersedPeakM.toFixed(3)} m (solver ${solverPeakM.toFixed(3)} m × dispersion ${(
-        dispersedPeakM / solverPeakM
-      ).toFixed(
-        3
-      )}), observed ${TOHOKU_2011_DART_REFERENCE.observedAmplitudeM.toString()} m (${TOHOKU_2011_DART_REFERENCE.source}); error = ${(err * 100).toFixed(1)} %`
-    ).toBeLessThan(NOAA_SEISMIC_PIN_TOLERANCE);
+      ratio,
+      `predicted ${dispersedPeakM.toFixed(3)} m vs ${TOHOKU_2011_DART_REFERENCE.observedAmplitudeM.toString()} m recorded — ratio ${ratio.toFixed(2)}, the declared far-field megathrust residual`
+    ).toBeGreaterThan(MEGATHRUST_FAR_FIELD_RESIDUAL.low);
+    expect(ratio).toBeLessThan(MEGATHRUST_FAR_FIELD_RESIDUAL.high);
   });
 });
 
 describe('Sumatra-Andaman 2004 megathrust — Cocos Island reference (Bernard et al. 2006)', () => {
-  it(`seismic-tsunami amplitude at 1 700 km matches the deep-water reference within ±${(
-    NOAA_SEISMIC_PIN_TOLERANCE * 100
-  ).toFixed(0)} %`, () => {
+  it('seismic-tsunami amplitude at 1 700 km sits at the declared far-field residual', () => {
     // Sumatra-Andaman 2004: Mw 9.1, very long rupture ≈ 1 300 km
     // (Bilham 2005, Lay et al. 2005). Subduction interface — Sunda
     // megathrust. Cocos Island is ≈ 1 700 km from rupture centroid.
-    // The cylindrical 1D model captures long-rupture events well
-    // because the slip distribution is more uniform than Tōhoku's;
-    // dispersion-corrected amplitude lands within ±20 % of Bernard
-    // 2006 deep-water reference.
+    //
+    // This row read as a ±20 % match until the fixed exponential was
+    // removed from the propagation. It is now 1.8× the Bernard 2006
+    // deep-water reference, the same direction and the same size as
+    // the DART residual above, which is what a systematic looks like:
+    // an isotropic cylindrical law against a source that radiates
+    // perpendicular to strike. See MEGATHRUST_FAR_FIELD_RESIDUAL.
     const r = seismicTsunamiFromMegathrust({
       magnitude: SUMATRA_2004_COCOS_REFERENCE.magnitude,
       ruptureLength: m(1_300_000),
@@ -171,10 +180,11 @@ describe('Sumatra-Andaman 2004 megathrust — Cocos Island reference (Bernard et
     const ampAt1000Disp = r.amplitudeAt1000kmDispersed as number;
     const ampAtCocos =
       ampAt1000Disp * Math.sqrt(1_000_000 / SUMATRA_2004_COCOS_REFERENCE.distanceM);
-    const err = relativeError(ampAtCocos, SUMATRA_2004_COCOS_REFERENCE.observedAmplitudeM);
+    const ratio = ampAtCocos / SUMATRA_2004_COCOS_REFERENCE.observedAmplitudeM;
     expect(
-      err,
-      `predicted ${ampAtCocos.toFixed(3)} m, observed ${SUMATRA_2004_COCOS_REFERENCE.observedAmplitudeM.toString()} m (${SUMATRA_2004_COCOS_REFERENCE.source}); error = ${(err * 100).toFixed(1)} %`
-    ).toBeLessThan(NOAA_SEISMIC_PIN_TOLERANCE);
+      ratio,
+      `predicted ${ampAtCocos.toFixed(3)} m vs ${SUMATRA_2004_COCOS_REFERENCE.observedAmplitudeM.toString()} m observed (${SUMATRA_2004_COCOS_REFERENCE.source}) — ratio ${ratio.toFixed(2)}`
+    ).toBeGreaterThan(MEGATHRUST_FAR_FIELD_RESIDUAL.low);
+    expect(ratio).toBeLessThan(MEGATHRUST_FAR_FIELD_RESIDUAL.high);
   });
 });

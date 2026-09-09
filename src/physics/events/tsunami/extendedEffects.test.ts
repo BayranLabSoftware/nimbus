@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { m } from '../../units.js';
 import {
-  dispersionAmplitudeFactor,
   submarineLandslideAmplitude,
   synolakisRunup,
   tohoku2011DARTReference,
@@ -47,26 +46,17 @@ describe('submarineLandslideAmplitude (Watts 2000)', () => {
   });
 });
 
-describe('dispersionAmplitudeFactor (Heidarzadeh & Satake 2015)', () => {
-  it('equals 1 at r=0 and decays monotonically', () => {
-    expect(dispersionAmplitudeFactor(m(0))).toBe(1);
-    const a = dispersionAmplitudeFactor(m(1_000_000));
-    const b = dispersionAmplitudeFactor(m(5_000_000));
-    expect(b).toBeLessThan(a);
-  });
-
-  it('~50 % loss at 5 000 km (2 500 km scale length)', () => {
-    const f = dispersionAmplitudeFactor(m(5_000_000));
-    expect(f).toBeGreaterThan(0.1);
-    expect(f).toBeLessThan(0.2);
-  });
-});
-
 describe('tohoku2011DARTReference', () => {
-  it('matches the ~30 cm peak recorded at DART 21413 within a factor of 2', () => {
+  it('brackets the ~30 cm peak recorded at DART 21413', () => {
     const A = tohoku2011DARTReference() as number;
-    // Observed peak ~0.30 m. Our simplified formula gives ~0.07 m;
-    // wide bracket documents the model's limitation.
+    // Observed peak ~0.30 m. This 1/r reference lands at ~0.13 m, and
+    // the cylindrical law in the seismic module lands well above the
+    // record: the two bracket it from opposite sides, and closing
+    // that gap is a question about the source rather than about the
+    // propagation. Under the old exponential heuristic this row read
+    // ~0.07 m, so the migration to Kajiura's parameter halved the
+    // residual here while making the divergence visible where it
+    // belongs. The bracket documents the limitation.
     expect(A).toBeGreaterThan(0.05);
     expect(A).toBeLessThan(1.0);
   });

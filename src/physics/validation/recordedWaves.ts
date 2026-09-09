@@ -1,7 +1,6 @@
 import { simulateExplosion } from '../events/explosion/simulate.js';
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/simulate.js';
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/simulate.js';
-import { dispersionAmplitudeFactor } from '../events/tsunami/extendedEffects.js';
 import { m } from '../units.js';
 import { dispersionDecay, dispersionParameter } from '../tsunami/dispersion.js';
 
@@ -133,7 +132,16 @@ export const RECORDED_WAVES: RecordedWave[] = [
       // A line source spreads cylindrically, and at this range the
       // published row carries the Kajiura/Watada dispersion too.
       const geometric = a0 * Math.sqrt(r0 / 1_500_000);
-      return geometric * dispersionAmplitudeFactor(m(1_500_000));
+      return (
+        geometric *
+        dispersionDecay(
+          dispersionParameter({
+            rangeM: 1_500_000,
+            depthM: 4000,
+            wavelengthM: r.tsunami.sourceWavelength || 2 * (r.ruptureLength as number),
+          })
+        )
+      );
     },
     gated: false,
     caveat:

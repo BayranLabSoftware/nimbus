@@ -104,3 +104,16 @@ export function dispersionDecay(parameter: number): number {
   const factor = (1 + parameter) ** -DISPERSION_DECAY_EXPONENT;
   return Number.isFinite(factor) ? Math.min(1, Math.max(0, factor)) : 0;
 }
+
+/**
+ * The whole law in one call: how much of its height a wave of this
+ * length keeps after crossing this distance in this depth.
+ *
+ * Every path in the simulator goes through here — the veil on the
+ * globe, the published far-field rows of a report, the seismic
+ * tsunami, the calibration net — so that one wave never has two
+ * amplitudes depending on which surface the reader is looking at.
+ */
+export function dispersionFactor(input: DispersionInput): number {
+  return dispersionDecay(dispersionParameter(input));
+}
