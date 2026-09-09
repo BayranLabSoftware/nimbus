@@ -1,4 +1,5 @@
 import { CRUSTAL_RIGIDITY, STANDARD_GRAVITY } from '../../constants.js';
+import { directivityFactor, directivityTrusted } from '../../tsunami/directivity.js';
 import { synolakisRunup } from '../tsunami/extendedEffects.js';
 import { dispersionFactor } from '../../tsunami/dispersion.js';
 import { shallowWaterWaveSpeed, tsunamiTravelTime } from '../tsunami/propagation.js';
@@ -178,6 +179,22 @@ export interface SeismicTsunamiResult {
    *  benchmark suite against DART / Cocos Island records — Sumatra-
    *  Andaman 2004 matches within ±20 %. */
   amplitudeAt1000kmDispersed: Meters;
+  /** The array factor toward `receiverBearingDeg`: 1 across the fault
+   *  and less off its ends, 1 throughout when no receiver was named
+   *  or the source has no orientation. */
+  beamFactor: number;
+  /** False when the receiver lies past the first null of the array
+   *  pattern, where a coherent line source has a zero and a real
+   *  rupture does not. The beam is then left at 1 and the far-field
+   *  rows are the peak: an unbeamed number with a reason, rather than
+   *  a beamed one from outside the model's range. */
+  beamTrusted: boolean;
+  /** The dispersed far-field amplitudes toward that receiver. Where
+   *  the rows above are the peak — the amplitude across the fault,
+   *  which is not a direction anyone in particular is standing in —
+   *  these are the amplitude somewhere. */
+  amplitudeAt1000kmToward: Meters;
+  amplitudeAt5000kmToward: Meters;
   /** Synolakis 1:100 plane-beach run-up for the 1 000 km amplitude. */
   runupAt1000km: Meters;
   /** Lamb 1932 shallow-water travel time to 1 000 km (s). */
@@ -231,6 +248,13 @@ export interface SeismicTsunamiInput {
    *  treats the event as `'all'` (continental reverse) — same as
    *  `simulateEarthquake`. */
   faultType?: FaultType;
+  /** Strike of the rupture (° from north). With `receiverBearingDeg`
+   *  it beams the far field toward a named point; on its own it does
+   *  nothing, because a direction needs two of them. */
+  strikeDeg?: number;
+  /** Bearing from the source to the place the far-field amplitude is
+   *  wanted (° from north). */
+  receiverBearingDeg?: number;
   /** When true the rupture is on a subduction-zone megathrust:
    *  shallow-dipping interface, wide rupture (L/W ≈ 2), high
    *  uplift coefficient (0.6). Tōhoku-class events. */
@@ -249,6 +273,10 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
       amplitudeAt5000km: m(0),
       amplitudeAt5000kmDispersed: m(0),
       amplitudeAt1000kmDispersed: m(0),
+      beamFactor: 1,
+      beamTrusted: true,
+      amplitudeAt1000kmToward: m(0),
+      amplitudeAt5000kmToward: m(0),
       runupAt1000km: m(0),
       travelTimeTo1000km: 0 as Seconds,
       deepWaterCelerity: 0 as MetersPerSecond,
@@ -299,6 +327,24 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
   // that is a known Tier 1 limitation, addressed in the planned
   // Tier 2 Saint-Venant 1D Web Worker.
   const amp1000Disp = amp1000 * disperse(1_000_000);
+  // The beam. Everything above is the amplitude across the fault,
+  // where the wave is strongest; a place that is not across the fault
+  // gets less, and until now the scalar rows said otherwise. Naming
+  // no receiver leaves the factor at one and the rows at their peak.
+  const beam = {
+    bearingDeg: input.receiverBearingDeg ?? Number.NaN,
+    strikeDeg: input.strikeDeg,
+    ruptureLengthM: L,
+    wavelengthM: 2 * W,
+  };
+  // Past the first null the pattern stops describing a real rupture,
+  // so the beam is not applied there and the row says as much rather
+  // than reporting a number from outside the model's range. Cocos
+  // Island in 2004 is that case: the pattern says three per cent of
+  // the peak and the tide gauge recorded twenty times that.
+  const beamTrusted = input.receiverBearingDeg === undefined || directivityTrusted(beam);
+  const beamFactor =
+    input.receiverBearingDeg === undefined || !beamTrusted ? 1 : directivityFactor(beam);
   // Beach slope: caller-supplied DEM value when in [1:1000, 1:3]
   // envelope, otherwise the canonical 1:100 reference (Synolakis 1987).
   const SLOPE_LOWER = Math.atan(1 / 1000);
@@ -354,6 +400,10 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
     amplitudeAt5000km: m(amp5000),
     amplitudeAt5000kmDispersed: m(amp5000Disp),
     amplitudeAt1000kmDispersed: m(amp1000Disp),
+    beamFactor,
+    beamTrusted,
+    amplitudeAt1000kmToward: m(amp1000Disp * beamFactor),
+    amplitudeAt5000kmToward: m(amp5000Disp * beamFactor),
     runupAt1000km: runup,
     travelTimeTo1000km: travel,
     deepWaterCelerity: celerity,

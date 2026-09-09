@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { seismicTsunamiFromMegathrust } from '../events/earthquake/seismicTsunami.js';
 import { synolakisRunup } from '../events/tsunami/extendedEffects.js';
+import { directivityFactor, directivityTrusted } from '../tsunami/directivity.js';
 import { dispersionFactor } from '../tsunami/dispersion.js';
 import { simulateSaintVenant1D } from '../tsunami/saintVenant1D.js';
 import { m } from '../units.js';
 import {
+  BEAMED_MAIN_LOBE_RESIDUAL,
   MEGATHRUST_FAR_FIELD_RESIDUAL,
   NOAA_PIN_TOLERANCE,
   SUMATRA_2004_COCOS_REFERENCE,
@@ -72,12 +74,16 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
       magnitude: 9.1,
       ruptureLength: m(700_000),
       subductionInterface: true,
+      strikeDeg: 330,
+      receiverBearingDeg: 176.4,
     });
+    expect(r.beamTrusted, 'Cocos Island is past the first null').toBe(false);
+    expect(r.beamFactor, 'and so the beam is not applied').toBe(1);
     expect(r.meanSlip as number).toBeGreaterThan(5);
     expect(r.meanSlip as number).toBeLessThan(25);
   });
 
-  it('TIER 2 — Saint-Venant 1D-radial DART 21413 sits at the declared far-field residual', () => {
+  it('TIER 2 — Saint-Venant 1D-radial DART 21413, beamed, matches the record', () => {
     // Tōhoku 2011 routed through the Phase-21c Saint-Venant 1D-radial
     // pipeline (Closes the Tier-2 todo opened by Phase-20).
     //
@@ -141,19 +147,35 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
       return;
     }
     const solverPeakM = probe.peakAbsAmplitudeM;
+    // Twice the down-dip width, the wavelength the recorded period
+    // says a megathrust radiates on: L = 700 km at the L/W = 2.5 of a
+    // subduction interface gives W = 280 km and λ = 560 km. One
+    // number for the dispersion and for the beam below, because there
+    // is only one radiated wave.
+    const ruptureLengthM = 700_000;
+    const wavelengthM = (2 * ruptureLengthM) / 2.5;
     const dispersedPeakM =
       solverPeakM *
       dispersionFactor({
         rangeM: TOHOKU_2011_DART_REFERENCE.distanceM,
         depthM: 4_000,
-        wavelengthM: 4 * sigmaCells * dx,
+        wavelengthM,
       });
-    const ratio = dispersedPeakM / TOHOKU_2011_DART_REFERENCE.observedAmplitudeM;
+    // DART 21413 lies at bearing 131° from the epicentre and the
+    // Japan Trench strikes 200°, so the buoy is 21° off the seaward
+    // perpendicular — inside the main lobe, where the array factor is
+    // the answer. Before it was applied this row read 1.65× the
+    // record; the solver is radially symmetric and put the strongest
+    // wave the fault can make in every direction at once.
+    const beam = { bearingDeg: 131.3, strikeDeg: 200, ruptureLengthM, wavelengthM };
+    expect(directivityTrusted(beam), 'DART 21413 is inside the main lobe').toBe(true);
+    const beamedPeakM = dispersedPeakM * directivityFactor(beam);
+    const ratio = beamedPeakM / TOHOKU_2011_DART_REFERENCE.observedAmplitudeM;
     expect(
       ratio,
-      `predicted ${dispersedPeakM.toFixed(3)} m vs ${TOHOKU_2011_DART_REFERENCE.observedAmplitudeM.toString()} m recorded — ratio ${ratio.toFixed(2)}, the declared far-field megathrust residual`
-    ).toBeGreaterThan(MEGATHRUST_FAR_FIELD_RESIDUAL.low);
-    expect(ratio).toBeLessThan(MEGATHRUST_FAR_FIELD_RESIDUAL.high);
+      `predicted ${beamedPeakM.toFixed(3)} m (isotropic ${dispersedPeakM.toFixed(3)} m × beam ${directivityFactor(beam).toFixed(3)}) vs ${TOHOKU_2011_DART_REFERENCE.observedAmplitudeM.toString()} m recorded — ratio ${ratio.toFixed(2)}`
+    ).toBeGreaterThan(BEAMED_MAIN_LOBE_RESIDUAL.low);
+    expect(ratio).toBeLessThan(BEAMED_MAIN_LOBE_RESIDUAL.high);
   });
 });
 
@@ -163,12 +185,17 @@ describe('Sumatra-Andaman 2004 megathrust — Cocos Island reference (Bernard et
     // (Bilham 2005, Lay et al. 2005). Subduction interface — Sunda
     // megathrust. Cocos Island is ≈ 1 700 km from rupture centroid.
     //
-    // This row read as a ±20 % match until the fixed exponential was
-    // removed from the propagation. It is now 1.8× the Bernard 2006
-    // deep-water reference, the same direction and the same size as
-    // the DART residual above, which is what a systematic looks like:
-    // an isotropic cylindrical law against a source that radiates
-    // perpendicular to strike. See MEGATHRUST_FAR_FIELD_RESIDUAL.
+    // Cocos Island lies at bearing 176° from the centroid of a
+    // rupture striking 330°, which puts it 154° off the perpendicular
+    // and well past the first null of an array three and a quarter
+    // wavelengths long. The pattern says three per cent of the peak
+    // there; the tide gauge recorded twenty times that. So the beam
+    // is declined here and the row stays isotropic, at 1.8× the
+    // Bernard 2006 deep-water reference — an unbeamed number with a
+    // reason rather than a beamed one from outside the model's range.
+    // See MEGATHRUST_FAR_FIELD_RESIDUAL, and the roadmap entry on the
+    // slip correlation length that would extend the pattern past its
+    // null.
     const r = seismicTsunamiFromMegathrust({
       magnitude: SUMATRA_2004_COCOS_REFERENCE.magnitude,
       ruptureLength: m(1_300_000),

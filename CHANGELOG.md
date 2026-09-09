@@ -7,6 +7,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The beam reaches the report's numbers.** The wave field on the
+  globe beamed and the scalar rows did not, so "the amplitude at
+  1 000 km" was the peak quoted as though it were everywhere. The
+  seismic tsunami now takes a strike and a receiver bearing. At DART
+  21413, 21° off the perpendicular and inside the main lobe, the model
+  goes from 1.65× the recorded peak to 1.14×. At Cocos Island, past
+  the first null, the pattern says 3 % of the peak where the gauge
+  recorded twenty times that — so the beam is declined there and the
+  row stays isotropic with the reason attached, rather than reporting
+  a number from outside the model's range. What would extend the
+  pattern past its null is the slip correlation length, which is now
+  a roadmap entry rather than an invented constant.
+
 - **One source wavelength for a megathrust, and the buoys chose it.**
   The codebase carried three: 2·L in the report, L in the wave field,
   and whichever reached the dispersion and the beam. At 4 km of ocean

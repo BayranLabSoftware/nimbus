@@ -79,6 +79,19 @@ export const NOAA_SEISMIC_PIN_TOLERANCE = 0.25;
  */
 export const MEGATHRUST_FAR_FIELD_RESIDUAL = { low: 1.3, high: 2.2 } as const;
 
+/**
+ * What is left at a buoy inside the main lobe, once the beam is
+ * applied: the model reads 1.14× the peak recorded at DART 21413,
+ * where the isotropic law read 1.65×.
+ *
+ * This is a match rather than a residual, and the band is wide enough
+ * to be one: a far-field tsunami amplitude reproduced to within about
+ * fifteen per cent of a buoy record is at the limit of what the
+ * inter-model spread of MOST, GeoClaw and COMCOT allows anyone to
+ * claim (Synolakis et al. 2008 §6 puts that spread at ±25–50 %).
+ */
+export const BEAMED_MAIN_LOBE_RESIDUAL = { low: 0.75, high: 1.5 } as const;
+
 export interface NoaaBenchmarkSynolakisCase {
   /** Incident wave height H over depth d (dimensionless). */
   HOverD: number;

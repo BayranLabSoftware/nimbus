@@ -414,6 +414,58 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### The beam reaches the numbers, and stops where it should (Phase 29)
+
+The wave field on the globe beamed; the numbers in the report did not.
+`seismicTsunamiFromMegathrust` published "the amplitude at 1 000 km"
+with no direction attached, which for a source that radiates several
+times more strongly across itself than along itself is not a
+well-defined quantity — it is the peak, quoted as though it were
+everywhere.
+
+The scalar path now takes an optional strike and a receiver bearing
+and reports what reaches that bearing. Applied to the two far-field
+records, it does two different things, and the difference is the
+result worth keeping.
+
+**DART 21413** lies at bearing 131° from the Tōhoku epicentre and the
+Japan Trench strikes 200°, so the buoy is 21° off the seaward
+perpendicular: inside the main lobe. The array factor there is 0.69,
+and the modelled amplitude goes from 1.65× the recorded peak to
+**1.14×**. That is a match, at the limit of what anyone can claim —
+Synolakis et al. 2008 §6 puts the spread between MOST, GeoClaw and
+COMCOT on the same benchmark at ±25–50 %.
+
+**Cocos Island** lies at bearing 176° from the centroid of a rupture
+striking 330°, which is 154° off the perpendicular and well past the
+first null of an array three and a quarter wavelengths long. The
+pattern says three per cent of the peak there. The tide gauge recorded
+twenty times that.
+
+So the pattern is right in its main lobe and wrong past its first
+null, and the reason is not subtle: a coherent line source has zeros
+and a fault does not. The array factor assumes the whole rupture
+radiates one wavelength in step, and a fault that took ten minutes to
+tear thirteen hundred kilometres through patchy slip does neither.
+Its nulls are filled in by everything that makes it a rupture rather
+than an antenna.
+
+What would fill them in the model is the slip correlation length — how
+far along a rupture the seafloor really does move together — and this
+project has no measurement of one. So `directivityTrusted` says which
+side of the first null a bearing falls on, and the scalar path applies
+the beam inside the main lobe and declines to outside it, leaving the
+row at its peak with the reason attached. Cocos stays a declared
+residual at 1.80×: an unbeamed number with an explanation, rather than
+a beamed one from outside the model's range.
+
+A first draft did fill the null, with an incoherent floor of √(λ/L)
+derived from N = L/λ pieces adding as √N. It put Cocos at 1.00× and
+DART at 1.47×, which looks better than what shipped and is worse
+science: the count of pieces is not L/λ but L over the slip
+correlation length, and choosing λ for it was choosing a parameter to
+make two numbers come out. The floor is not in the code.
+
 ### What a megathrust radiates on (Phase 28)
 
 The previous section left one question, and the codebase turned out to

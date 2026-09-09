@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { directivityFactor } from './directivity.js';
+import { directivityFactor, directivityTrusted } from './directivity.js';
 
 /**
  * Written before the module, and pinning only what a line source has
@@ -15,7 +15,14 @@ import { directivityFactor } from './directivity.js';
  */
 
 const strike = 200; // Japan Trench, NNE–SSW
-const rupture = { strikeDeg: strike, ruptureLengthM: 700_000, wavelengthM: 200_000 };
+// Tōhoku's own numbers: 700 km of rupture radiating on twice its
+// down-dip width, which is what the recorded period says a megathrust
+// radiates on. Only 1.25 wavelengths of array, so its beam is real
+// but gentle — the sharp ones belong to the very long ruptures.
+const rupture = { strikeDeg: strike, ruptureLengthM: 700_000, wavelengthM: 560_000 };
+// Sumatra–Andaman: 1 300 km on a 400 km wave, three and a quarter
+// wavelengths of array and a beam to match.
+const longRupture = { strikeDeg: 330, ruptureLengthM: 1_300_000, wavelengthM: 400_000 };
 
 describe('directivityFactor', () => {
   it('is at its strongest square across the fault, on both sides', () => {
@@ -25,10 +32,38 @@ describe('directivityFactor', () => {
     expect(west).toBeCloseTo(1, 9);
   });
 
-  it('is weak off the end of the rupture, where the fault points', () => {
+  it('is weaker off the end of the rupture, where the fault points', () => {
     const alongStrike = directivityFactor({ ...rupture, bearingDeg: strike });
-    expect(alongStrike).toBeLessThan(0.2);
-    expect(alongStrike).toBeGreaterThanOrEqual(0);
+    const broadside = directivityFactor({ ...rupture, bearingDeg: (strike + 90) % 360 });
+    expect(alongStrike).toBeLessThan(broadside);
+    expect(alongStrike).toBeGreaterThan(0);
+  });
+
+  it('a longer array beams harder off its own end', () => {
+    const short = directivityFactor({ ...rupture, bearingDeg: strike });
+    const long = directivityFactor({ ...longRupture, bearingDeg: 330 });
+    expect(long).toBeLessThan(short);
+  });
+
+  it('says where it can be believed and where it cannot', () => {
+    // Inside the main lobe the array factor is the answer. Past the
+    // first null a real rupture's incoherence fills in what a
+    // coherent line source zeroes out, and two records say so: DART
+    // 21413 is inside Tōhoku's main lobe and the pattern takes the
+    // model from 1.65× the record to 1.14×, while Cocos Island is
+    // past the first null of the 2004 rupture, where the pattern says
+    // 3 % of the peak and the tide gauge recorded twenty times that.
+    expect(directivityTrusted({ ...rupture, bearingDeg: (strike + 90) % 360 })).toBe(true);
+    expect(directivityTrusted({ ...rupture, bearingDeg: 131 })).toBe(true);
+    // Cocos lies at bearing 176 from the 2004 centroid, 154° off the
+    // perpendicular to a strike of 330 — well past the null of an
+    // array three and a quarter wavelengths long.
+    expect(directivityTrusted({ ...longRupture, bearingDeg: 176 })).toBe(false);
+  });
+
+  it('a source with no orientation has no null to be past', () => {
+    expect(directivityTrusted({ ...rupture, strikeDeg: undefined, bearingDeg: 10 })).toBe(true);
+    expect(directivityTrusted({ ...rupture, ruptureLengthM: 0, bearingDeg: 10 })).toBe(true);
   });
 
   it('narrows as the rupture lengthens, for the same wave', () => {
@@ -79,7 +114,7 @@ describe('directivityFactor', () => {
     // seaward perpendicular; the Sanriku coast is on the landward one.
     const buoy = directivityFactor({ ...rupture, bearingDeg: 131 });
     const coast = directivityFactor({ ...rupture, bearingDeg: 290 });
-    expect(buoy).toBeLessThan(0.5);
+    expect(buoy).toBeLessThan(0.8);
     expect(coast).toBeGreaterThan(0.9);
   });
 });

@@ -503,7 +503,7 @@ coastal toll of Tōhoku moved 5 600 → 3 800 drowned and Sumatra's
 130 → 100, both already far under their records for reasons written
 up elsewhere in this milestone.
 
-### P1 — The scalar path has no directivity _(open, 9 September)_
+### P1 — The scalar path has no directivity _(closed, 9 September)_
 
 The wave field on the globe beams; the numbers in the report do not.
 `seismicTsunamiFromMegathrust` publishes "the amplitude at 1 000 km"
@@ -517,10 +517,40 @@ ruptures, both compared against a law that radiates evenly. A hand
 check with the beam the field already carries puts DART at 1.05× of
 the record.
 
-Would move: the far-field rows of every earthquake report, and the two
-pinned residuals in `noaaBenchmarkFixtures.ts`. Needs a receiver
-bearing on the seismic-tsunami API, which is also what would let the
-report say "toward this coast" instead of "at this range".
+**Closed, and it split the two residuals apart.** The scalar path now
+takes a strike and a receiver bearing. DART 21413 sits inside the main
+lobe of the Tōhoku rupture: the beam is 0.69 there and the model goes
+from 1.65× the record to **1.14×**, which is a match. Cocos Island
+sits past the first null of the 2004 rupture, where the pattern says
+3 % of the peak and the gauge recorded twenty times that — so the beam
+is declined there and the row stays isotropic at 1.80×, an unbeamed
+number with a reason rather than a beamed one from outside the
+model's range.
+
+### P2 — The slip correlation length _(open, 9 September)_
+
+What is left of the far-field residual, and the last thing between the
+model and the record at Cocos Island.
+
+The array factor has zeros; a fault does not. The pattern assumes a
+rupture radiates one wavelength in step along its whole length, and a
+real one breaks into patches that stop agreeing with each other. How
+far along a rupture the seafloor really does move together — the slip
+correlation length ℓ — is what fills the nulls: N = L/ℓ incoherent
+pieces add as √N in amplitude where N coherent ones add as N, so the
+pattern cannot fall below about √(ℓ/L) of its peak.
+
+A draft used ℓ = λ, which put Cocos at 1.00× and DART at 1.47×. It was
+rejected: the count of pieces is not set by the wavelength, and
+choosing it to make two numbers come out is fitting, not deriving.
+Finite-fault inversions publish slip distributions from which ℓ can be
+measured — Satake 2013 for Tōhoku, Lay 2005 for Sumatra — and that
+would be a measurement rather than a choice.
+
+Would move: Cocos Island from 1.80× toward the record, every
+along-strike coast in the wave field on the globe, and with it the
+coastal toll of Sumatra 2004, which is the worst row in the whole
+calibration net at 130 dead against 227 898.
 
 ### P3 — Caps the scalar path does not have
 
