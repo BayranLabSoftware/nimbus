@@ -414,6 +414,76 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### Which country's buildings (Phase 37)
+
+The shaking model had no country. It ran ν(S) = Φ(ln(S/θ)/β) with one
+pair for the whole planet — θ = 13.5, β = 0.22, chosen to look like
+the published spread — and read **Northridge 1994 at 12 546 dead
+against 57**. That was the largest error left anywhere in the
+simulator, and it drove the number a visitor reads first for every
+earthquake.
+
+Jaiswal & Wald (2010) fit that curve per country, by hindcasting the
+deaths of every fatal earthquake since 1973. The paper's table is
+behind a paywall; the fitted parameters are not, because the PAGER
+implementation is USGS work in the public domain and ships them as
+data. `pnpm pager:build` reads them from `losspager/data/fatality.xml`
+and writes `src/physics/pagerCountries.ts`: **252 countries**, of which
+28 have enough fatal earthquakes for a fit of their own and 224 borrow
+their region's, which the table records.
+
+The spread is the point. At MMI VII–VIII the United States (θ = 46.2)
+loses about fourteen people per million exposed; Iran (θ = 9.3) loses
+one and a half per cent. A thousandfold, from the same shaking,
+because of what the buildings are made of.
+
+**The 220× was two errors multiplied.** Having no country costs a
+factor of forty in the United States. And the pair standing in for the
+world was not the world's median: θ = 13.5 is six times deadlier at
+MMI VII–VIII than the median of the 252 fitted countries, which is
+θ = 14.57. Forty times six is two hundred and forty, and Northridge
+read 220.
+
+**Which country a point is in.** This project ships no country
+polygons; it ships four thousand populated places for the globe's
+labels, and Natural Earth gives each an ISO code that the index was
+throwing away. It now keeps it, and the nearest coded place answers
+the question. That is a guess — near a border, well offshore, or in
+the empty middle of a continent it can pick the wrong side — so the
+uncertainty band stays the whole table's range, the best-engineered
+stock (θ = 46.2) to the worst (θ = 8.3), rather than narrowing to the
+country's own fit. A band that narrowed would be claiming to know
+which country the shaking is standing in, and we are guessing.
+
+**What it did.**
+
+| calibration net | before        | after           | recorded |
+| --------------- | ------------- | --------------- | -------- |
+| Northridge 1994 | 12 546 (220×) | **38 (0.67×)**  | 57       |
+| L'Aquila 2009   | 683 (2.21×)   | **227 (0.73×)** | 309      |
+| Amatrice 2016   | 24 (0.08×)    | 6 (0.02×)       | 299      |
+| Gorkha 2015     | 2 427 (0.27×) | 580 (0.06×)     | 8 964    |
+
+And live, where a visitor sees it: Northridge went from about 12 500
+dead to **40** against 57, L'Aquila to 130 against 309, and Tōhoku's
+headline from 980 000 to 200 000 against 18 500.
+
+Two of the four moved the wrong way, and honestly: Italy's national
+curve and Nepal's regional one are both gentler than the pair they
+replaced, so two rows that were already under went further under.
+Both are small dense historic settlements — Amatrice's medieval
+masonry, Gorkha's Kathmandu valley brick — where a national fit made
+mostly on larger, broader events under-predicts. That is a real
+limitation of a country-level model and it is not fixed by pretending
+the old number was better.
+
+**What is still wrong.** Tōhoku's headline is 200 000 where about
+1 800 died of the shaking and the rest drowned. Japan's curve is right
+(θ = 11.9, fitted on 5 502 of its own dead); what is too big is the
+MMI IX footprint, which would need twelve million people inside it to
+produce that number. The vulnerability is now the table's; the
+intensity field is the next thing to look at.
+
 ### The local grid follows the fault (Phase 36)
 
 The fine terrain grid was a square around the pick — one zoom-8 tile,

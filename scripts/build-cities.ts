@@ -32,6 +32,15 @@ import { fileURLToPath } from 'node:url';
  *                the label first appears without colliding. Drives the
  *                per-label distance display condition on the globe.
  *     capital  — 1 for a national capital (ADM0CAP), else 0
+ *     cc       — ISO 3166-1 alpha-2 country code (Natural Earth
+ *                ISO_A2, falling back to ADM0_A3's own two-letter
+ *                sibling where the dataset leaves it as "-99"), or ""
+ *                when Natural Earth has none. It is here because the
+ *                shaking casualty model needs a country: the PAGER
+ *                fatality parameters differ by three orders of
+ *                magnitude between building stocks, and the nearest
+ *                city is the cheapest thing this project already
+ *                ships that knows where a place is.
  */
 
 const SOURCE_URL =
@@ -54,6 +63,9 @@ interface NeProperties {
   POP_MAX?: number;
   MIN_ZOOM?: number;
   ADM0CAP?: number;
+  ISO_A2?: string;
+  ADM0_A3?: string;
+  SOV_A3?: string;
 }
 
 interface NeFeature {
@@ -73,6 +85,7 @@ export type CityRow = [
   popMax: number,
   minZoom: number,
   capital: 0 | 1,
+  cc: string,
 ];
 
 /** Pure transform, exported for the unit test. */
@@ -95,6 +108,8 @@ export function selectCityRows(collection: NeCollection): CityRow[] {
     const pop = Math.max(0, Math.round(p.POP_MAX ?? 0));
     const minZoom = p.MIN_ZOOM ?? 10;
     const capital = p.ADM0CAP === 1 ? 1 : 0;
+    const iso = (p.ISO_A2 ?? '').trim().toUpperCase();
+    const cc = /^[A-Z]{2}$/.test(iso) ? iso : '';
     if (pop < MIN_POPULATION && capital === 0 && minZoom > COARSE_ZOOM_KEEP) continue;
     const nameItRaw = (p.NAME_IT ?? '').trim();
     const nameIt = nameItRaw.length > 0 && nameItRaw !== nameEn ? nameItRaw : '';
@@ -106,6 +121,7 @@ export function selectCityRows(collection: NeCollection): CityRow[] {
       pop,
       Number(minZoom.toFixed(1)),
       capital,
+      cc,
     ]);
   }
   // Largest first: the reader can bail out early when it only wants
@@ -135,7 +151,7 @@ async function main(): Promise<void> {
   const payload = {
     source: 'Natural Earth 1:10m Populated Places (public domain)',
     url: 'https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-populated-places/',
-    columns: ['nameEn', 'nameIt', 'lat', 'lon', 'popMax', 'minZoom', 'capital'],
+    columns: ['nameEn', 'nameIt', 'lat', 'lon', 'popMax', 'minZoom', 'capital', 'cc'],
     rows,
   };
   // One row per line keeps the committed diff reviewable while the

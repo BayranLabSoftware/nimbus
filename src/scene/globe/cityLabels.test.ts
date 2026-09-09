@@ -17,6 +17,7 @@ const CITIES: CityRecord[] = [
     popMax: 3_339_000,
     minZoom: 2.7,
     capital: true,
+    cc: 'IT',
   },
   {
     nameEn: 'Naples',
@@ -26,6 +27,7 @@ const CITIES: CityRecord[] = [
     popMax: 2_250_000,
     minZoom: 4.7,
     capital: false,
+    cc: 'IT',
   },
   {
     nameEn: 'Nairobi',
@@ -35,6 +37,7 @@ const CITIES: CityRecord[] = [
     popMax: 3_010_000,
     minZoom: 3,
     capital: true,
+    cc: 'IT',
   },
   {
     nameEn: 'São Paulo',
@@ -44,6 +47,7 @@ const CITIES: CityRecord[] = [
     popMax: 18_845_000,
     minZoom: 3,
     capital: false,
+    cc: 'IT',
   },
 ];
 

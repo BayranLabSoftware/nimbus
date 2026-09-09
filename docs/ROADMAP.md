@@ -758,6 +758,40 @@ the people inside the inundation polygon would be the honest version.
 Would move: Sumatra 2004, and every event whose dead are in one dense
 place rather than spread along a shore.
 
+### P0 — The MMI IX footprint is too large _(open, 9 September)_
+
+With the PAGER country curves in place, Tōhoku's headline reads
+200 000 dead where about 1 800 died of the shaking. Japan's curve is
+not the problem: θ = 11.9, fitted on 5 502 of its own dead, and at
+MMI IX it kills 1.4 % of those it reaches. To produce 200 000 that
+band has to hold twelve million people, and the MMI IX contour of the
+2011 event was a narrow coastal strip.
+
+So the vulnerability is now the table's and the intensity field is
+what is left. Where to look: the MMI contours come from a
+point-source attenuation inflated into a rupture stadium, and a
+megathrust whose slip is concentrated does not shake its whole
+rectangle at MMI IX.
+
+Would move: the headline number of every large earthquake, which is
+what a visitor reads first.
+
+### P1 — A national curve under-predicts a village _(open, 9 September)_
+
+Amatrice 2016 reads 6 dead against 299 and Gorkha 2015 reads 580
+against 8 964, both worse than before the country curves went in,
+because Italy's and Nepal's fits are gentler than the global pair they
+replaced. Both events killed in small dense historic settlements —
+medieval masonry, valley brick — where a national fit made mostly on
+larger and broader events under-predicts.
+
+This is a real limit of a country-level model rather than a defect in
+the table, and the honest options are a building-stock modifier
+(WHE-PAGER inventories, which PAGER itself carries for the
+semi-empirical model) or leaving it declared.
+
+Would move: the two smallest, deadliest rows in the net.
+
 ### P3 — Caps the scalar path does not have
 
 The field clamps run-up at four times the arriving amplitude and the

@@ -1,3 +1,4 @@
+import { nearestCountry } from '../../physics/countryLookup.js';
 import {
   BillboardCollection,
   Cartesian2,
@@ -55,6 +56,13 @@ export interface CityRecord {
   popMax: number;
   /** Natural Earth MIN_ZOOM (web-map zoom level, may be fractional). */
   minZoom: number;
+  /** ISO 3166-1 alpha-2 country code, or "" where Natural Earth has
+   *  none (Kosovo, Somaliland). The shaking casualty model reads it
+   *  through `nearestCountry`: the PAGER fatality curves differ by
+   *  three orders of magnitude between building stocks, and this
+   *  index is the only thing the project ships that knows which
+   *  country a place is in. */
+  cc: string;
   capital: boolean;
 }
 
@@ -79,6 +87,7 @@ type CityRow = [
   popMax: number,
   minZoom: number,
   capital: number,
+  cc?: string,
 ];
 
 interface CityIndexFile {
@@ -89,12 +98,16 @@ interface CityIndexFile {
 const CITY_INDEX_PATH = 'data/cities.json';
 
 let cityIndexPromise: Promise<CityRecord[]> | null = null;
+/** The parsed index, once it has landed. Read synchronously by the
+ *  casualty path, which needs a country before it can pick a fatality
+ *  curve and cannot await inside the evaluate call. */
+let cityIndexCache: CityRecord[] = [];
 
 function parseCityRows(rows: readonly CityRow[]): CityRecord[] {
   const out: CityRecord[] = [];
   for (const row of rows) {
     if (!Array.isArray(row)) continue;
-    const [nameEn, nameIt, lat, lon, popMax, minZoom, capital] = row;
+    const [nameEn, nameIt, lat, lon, popMax, minZoom, capital, cc] = row;
     if (typeof nameEn !== 'string' || !Number.isFinite(lat) || !Number.isFinite(lon)) continue;
     out.push({
       nameEn,
@@ -104,6 +117,7 @@ function parseCityRows(rows: readonly CityRow[]): CityRecord[] {
       popMax: Number.isFinite(popMax) ? popMax : 0,
       minZoom: Number.isFinite(minZoom) ? minZoom : 10,
       capital: capital === 1,
+      cc: typeof cc === 'string' && cc.length === 2 ? cc : '',
     });
   }
   return out;
@@ -124,7 +138,8 @@ export function loadCityIndex(baseUrl: string = import.meta.env.BASE_URL): Promi
         throw new Error(`city index fetch failed: ${response.status.toString()}`);
       }
       const file = (await response.json()) as CityIndexFile;
-      return parseCityRows(file.rows);
+      cityIndexCache = parseCityRows(file.rows);
+      return cityIndexCache;
     })
     .catch((err: unknown) => {
       console.warn('[cityLabels] city index unavailable:', err);
@@ -339,4 +354,24 @@ function normaliseForSearch(text: string): string {
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .trim();
+}
+
+/**
+ * The country of the nearest city to a point, from the index if it
+ * has loaded, or null if it has not.
+ *
+ * Synchronous on purpose. The casualty path picks a PAGER fatality
+ * curve while building its plan and cannot await there; the globe
+ * fetches this index when it mounts, which is long before anyone can
+ * pick a location on it, so in practice it is warm. When it is not,
+ * the model falls back to the median of the world's countries and
+ * says so.
+ */
+export function countryAtCached(lat: number, lon: number): string | null {
+  return nearestCountry(cityIndexCache, lat, lon)?.cc ?? null;
+}
+
+/** Warm the index without waiting for it. */
+export function warmCityIndex(): void {
+  void loadCityIndex();
 }

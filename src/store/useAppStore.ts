@@ -1,3 +1,5 @@
+import { countryAtCached } from '../scene/globe/cityLabels.js';
+import { pagerVulnerabilityFor } from '../physics/pagerVulnerability.js';
 import { create } from 'zustand';
 import {
   findNearbyOceanDepth,
@@ -1417,6 +1419,23 @@ async function computeBathymetricLayerForResult(
  * Landslides: nothing — their only hazard is the tsunami, which the
  * model does not convert.
  */
+/**
+ * Which country a point is in, for the PAGER fatality curve.
+ *
+ * Injectable for the same reason the population lookup is: the
+ * browser reads the city index it has fetched, and the calibration
+ * net reads the same file off disk. Without that the harness would
+ * fall back to the median building stock on every historical row and
+ * measure something the application does not do.
+ */
+export type CountryLookup = (latitude: number, longitude: number) => string | null;
+
+let countryLookup: CountryLookup = countryAtCached;
+
+export function configureCountryLookup(lookup: CountryLookup | null): void {
+  countryLookup = lookup ?? countryAtCached;
+}
+
 /** Exported for the calibration harness, which must measure the plan
  *  the application builds rather than a copy of it. */
 export function casualtyPlanForResult(
@@ -1451,11 +1470,19 @@ export function casualtyPlanForResult(
         }),
       });
     case 'earthquake': {
-      const plan = shakingCasualtyPlan({
-        mmi7Radius: result.data.shaking.mmi7Radius,
-        mmi8Radius: result.data.shaking.mmi8Radius,
-        mmi9Radius: result.data.shaking.mmi9Radius,
-      });
+      // Which country's buildings. PAGER's fitted fatality curves run
+      // from θ = 8.3 to θ = 46.2 — three orders of magnitude in deaths
+      // at the same shaking — so this is the single largest thing the
+      // shaking model can get right or wrong, and it used to use one
+      // median pair everywhere.
+      const plan = shakingCasualtyPlan(
+        {
+          mmi7Radius: result.data.shaking.mmi7Radius,
+          mmi8Radius: result.data.shaking.mmi8Radius,
+          mmi9Radius: result.data.shaking.mmi9Radius,
+        },
+        pagerVulnerabilityFor(countryLookup(location.latitude, location.longitude))
+      );
       // Extended source: the MMI contours are the rupture stadium the
       // globe draws, not circles round the epicentre — an offshore
       // megathrust's VIII band runs 500 km along the coast while a

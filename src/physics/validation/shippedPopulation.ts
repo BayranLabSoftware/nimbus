@@ -1,3 +1,4 @@
+import { nearestCountry, type CountryPoint } from '../countryLookup.js';
 import { readFileSync, existsSync } from 'node:fs';
 import { inflateSync } from 'node:zlib';
 import { dirname, join, resolve } from 'node:path';
@@ -290,4 +291,33 @@ export function shippedPlanetTotal(): { decoded: number; sidecar: number } {
     }
   ).totalPopulation;
   return { decoded: total, sidecar };
+}
+
+/**
+ * The country of the nearest city to a point, read from the same
+ * `public/data/cities.json` the globe fetches.
+ *
+ * The calibration net runs in node with no network, and without this
+ * every historical row would fall back to the median building stock —
+ * which is what the model did until 9 September 2026, and what made
+ * Northridge read 12 546 dead against 57. The harness has to see the
+ * same country the browser sees or it is not measuring the model.
+ */
+let cityRows: CountryPoint[] | null = null;
+
+export function shippedCountryAt(latitude: number, longitude: number): string | null {
+  if (cityRows === null) {
+    const path = join(DATA_DIR, 'cities.json');
+    if (!existsSync(path)) {
+      cityRows = [];
+    } else {
+      const file = JSON.parse(readFileSync(path, 'utf8')) as {
+        rows: [string, string, number, number, number, number, number, string?][];
+      };
+      cityRows = file.rows
+        .filter((r) => typeof r[7] === 'string' && r[7].length === 2)
+        .map((r) => ({ lat: r[2], lon: r[3], cc: r[7] ?? '' }));
+    }
+  }
+  return nearestCountry(cityRows, latitude, longitude)?.cc ?? null;
 }

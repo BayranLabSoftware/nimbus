@@ -1,10 +1,10 @@
 import type { ActiveResult } from '../../store/useAppStore.js';
-import { casualtyPlanForResult } from '../../store/useAppStore.js';
+import { casualtyPlanForResult, configureCountryLookup } from '../../store/useAppStore.js';
 import { estimateCasualties, type CasualtyEstimate } from '../casualties.js';
 import { EXPLOSION_PRESETS, simulateExplosion } from '../events/explosion/simulate.js';
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
 import { VOLCANO_PRESETS, simulateVolcano } from '../events/volcano/simulate.js';
-import { shippedPopulationInRadius } from './shippedPopulation.js';
+import { shippedCountryAt, shippedPopulationInRadius } from './shippedPopulation.js';
 
 /**
  * Events with a recorded death toll, and where the simulator lands.
@@ -204,6 +204,8 @@ export interface TollComparison {
  * feed it the shipped rasters, and compare the band with the record.
  */
 export function compareWithRecord(event: RecordedEvent): TollComparison {
+  // The same country the browser would see, read off the same file.
+  configureCountryLookup(shippedCountryAt);
   const result = event.run();
   const location = { latitude: event.latitude, longitude: event.longitude };
   const plan = casualtyPlanForResult(result, location);

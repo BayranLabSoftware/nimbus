@@ -7,6 +7,24 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **Which country's buildings.** The shaking model ran one fatality
+  curve for the whole planet — θ = 13.5, β = 0.22 — and read Northridge
+  1994 at 12 546 dead against 57, the largest error left in the
+  simulator and the one driving the number a visitor reads first for
+  every earthquake. Jaiswal & Wald's per-country fits are behind a
+  paywall but the fitted parameters are not: PAGER is USGS work in the
+  public domain, and `pnpm pager:build` now generates the 252-country
+  table from its own `fatality.xml`. The country comes from the
+  nearest coded place in the city index, which Natural Earth gave an
+  ISO code all along and the index was discarding. The 220× turns out
+  to be two errors multiplied — no country costs forty in the United
+  States, and 13.5 was itself six times deadlier than the table's real
+  median of 14.57. Northridge now reads **38 against 57** in the net
+  and 40 live, L'Aquila 227 against 309, and Tōhoku's headline falls
+  from 980 000 to 200 000. Two rows moved the wrong way and are
+  declared: Amatrice and Gorkha killed in small dense historic
+  settlements that a national fit under-predicts.
+
 - **The local terrain grid follows the fault.** It was a square around
   the pick, which for a 1 300 km rupture resolved 74 km of the coast
   that drowned in 2004 and left the rest to the planetary mosaic at

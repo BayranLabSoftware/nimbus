@@ -1,3 +1,9 @@
+import {
+  PAGER_BEST_STOCK,
+  PAGER_GLOBAL_MEDIAN,
+  PAGER_WORST_STOCK,
+  type PagerParameters,
+} from './pagerVulnerability.js';
 import { distanceForOverpressure } from './events/impact/damageRings.js';
 import type { Joules, Meters } from './units.js';
 import { EARTH_RADIUS, TNT_SPECIFIC_ENERGY } from './constants.js';
@@ -502,28 +508,25 @@ export function normalCdf(x: number): number {
   return x >= 0 ? upper : 1 - upper;
 }
 
-export interface PagerParameters {
-  /** θ — intensity at which half the exposed population dies. */
-  theta: number;
-  /** β — log-normal width. */
-  beta: number;
-}
-
 /**
- * Generic PAGER parameter sets. The published national fits (Jaiswal
- * & Wald 2010, table 2) span three orders of magnitude in fatality
- * rate at a given intensity: θ ≈ 14–15 with a narrow β for the best
- * engineered stocks (Japan, the United States, New Zealand — a few
- * deaths per million at MMI VIII), θ ≈ 10–11.5 with a wide β for
- * unreinforced masonry (Iran, Pakistan, Haiti — tens of per cent at
- * MMI IX). The simulator is not a country, so the central estimate
- * is an average building stock and the band deliberately spans the
- * two extremes rather than pretending to a factor of two.
+ * The default when no country is known: the median of the 252 fitted
+ * countries in the middle, the best and worst building stocks in the
+ * table as the band.
+ *
+ * It used to be three numbers chosen to look like the published
+ * spread — θ 14.5 / 13.5 / 11.5 — and the middle one read Northridge
+ * 1994 at 12 546 dead against 57. That factor of 220 was two errors
+ * multiplied: 13.5 was six times deadlier at MMI VII–VIII than the
+ * table's real median, and having no country at all costs another
+ * forty in the United States, whose fitted curve is θ = 46.2. Both
+ * are now taken from PAGER's own table rather than approximated. See
+ * `pagerVulnerability.ts`; these three are what is left for a place
+ * the city index cannot name.
  */
 export const PAGER_VULNERABILITY = {
-  low: { theta: 14.5, beta: 0.12 },
-  mid: { theta: 13.5, beta: 0.22 },
-  high: { theta: 11.5, beta: 0.3 },
+  low: PAGER_BEST_STOCK,
+  mid: PAGER_GLOBAL_MEDIAN,
+  high: PAGER_WORST_STOCK,
 } as const satisfies Record<'low' | 'mid' | 'high', PagerParameters>;
 
 /** ν(S) = Φ(ln(S/θ)/β) — fatality rate at shaking intensity S. */
@@ -540,7 +543,14 @@ export interface ShakingCasualtyInput {
 
 /** Shaking casualty plan: the ≥ IX, VIII–IX and VII–VIII annuli at
  *  their mid-band intensity (9.5, 8.5, 7.5). */
-export function shakingCasualtyPlan(input: ShakingCasualtyInput): CasualtyPlan | null {
+export function shakingCasualtyPlan(
+  input: ShakingCasualtyInput,
+  vulnerability: {
+    low: PagerParameters;
+    mid: PagerParameters;
+    high: PagerParameters;
+  } = PAGER_VULNERABILITY
+): CasualtyPlan | null {
   const r7 = input.mmi7Radius as number;
   const r8 = input.mmi8Radius as number;
   const r9 = input.mmi9Radius as number;
@@ -557,9 +567,9 @@ export function shakingCasualtyPlan(input: ShakingCasualtyInput): CasualtyPlan |
       key: r.key,
       innerRadiusM: r.inner,
       outerRadiusM: r.outer,
-      mortality: pagerFatalityRate(r.mmi, PAGER_VULNERABILITY.mid),
-      mortalityLow: pagerFatalityRate(r.mmi, PAGER_VULNERABILITY.low),
-      mortalityHigh: pagerFatalityRate(r.mmi, PAGER_VULNERABILITY.high),
+      mortality: pagerFatalityRate(r.mmi, vulnerability.mid),
+      mortalityLow: pagerFatalityRate(r.mmi, vulnerability.low),
+      mortalityHigh: pagerFatalityRate(r.mmi, vulnerability.high),
     }));
   if (bands.length === 0) return null;
   return { model: 'shaking', bands };
