@@ -217,6 +217,52 @@ of the wave, swept in time by a counter in the bar. What follows is
 what it does not yet do, worst first. Each item names the number it
 would move.
 
+### P0 — What the calibration net found on its first run _(9 September)_
+
+`src/physics/validation/recordedTolls.test.ts` runs the casualty model
+against every event this repository ships as a preset that also has a
+counted death toll, feeds it the shipped population rasters, and asks
+one question: does the model's own low–high band contain the number
+that was counted? Five rows gate the suite; six are reported with a
+reason they cannot.
+
+The first run passed the gate and found three things it could not
+gate, which is what the net is for.
+
+**Beirut 2020 — a real defect, fifty times high.** Nobody was warned
+and nobody evacuated, so none of the usual excuses apply: 218 died and
+the model says 10 906, with a band from 4 645 that never reaches the
+record. The blast bands are OTA 1979, and OTA read them off Hiroshima
+and Nagasaki — a nuclear flash through light-timber cities, half the
+people dead at five psi. Beirut was a chemical detonation at ground
+level in reinforced concrete, no fireball to speak of, much of the
+blast vented over the harbour, and the severe zone lost of the order
+of one per cent. OTA does not transfer to a conventional explosion,
+and until something else covers that case the shipped Beirut, Halifax
+and Texas City presets read one to two orders of magnitude high.
+
+**Pinatubo and Mount St Helens — the model working as advertised, and
+that is the problem.** 97× and 4.7× the record, and both were
+evacuated: Pinatubo's evacuation of sixty thousand people is one of
+volcanology's great successes and is thought to have saved five to
+twenty thousand lives. The label says no evacuation, so the overshoot
+is the assumption speaking. But volcanoes almost always give days of
+warning, and a hazard family whose central case is "nobody left" will
+be wrong on nearly every real eruption. The tsunami model already
+learned this and made its thresholds depend on the warning time; the
+volcanic one has not.
+
+**And the shape of the bands is upside down.** The earthquake rows
+pass with bands spanning up to five orders of magnitude — a band that
+wide contains almost anything, and Northridge "passes" at 220× the
+record. The blast and volcano rows carry bands a third of an order
+wide, and two of the three miss. The model is vague where it could be
+specific — PAGER's spread is the unknown building stock, and the
+simulator does know which country it is looking at — and confident
+where it is wrong. Narrowing the shaking band with regional
+vulnerability, and widening the blast and pyroclastic bands to admit
+what they do not know, are the same piece of work.
+
 ### P1 — The freeze has a mitigation, not a diagnosis
 
 Andrea reports the page freezing occasionally: the panel keeps

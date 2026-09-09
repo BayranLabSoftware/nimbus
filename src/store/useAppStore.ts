@@ -1326,7 +1326,12 @@ async function computeBathymetricLayerForResult(
  * Landslides: nothing — their only hazard is the tsunami, which the
  * model does not convert.
  */
-function casualtyPlanForResult(result: ActiveResult, location: Coordinates): CasualtyPlan | null {
+/** Exported for the calibration harness, which must measure the plan
+ *  the application builds rather than a copy of it. */
+export function casualtyPlanForResult(
+  result: ActiveResult,
+  location: Coordinates
+): CasualtyPlan | null {
   switch (result.type) {
     case 'impact':
       return blastCasualtyPlan({
