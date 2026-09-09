@@ -1065,7 +1065,21 @@ export function extractTsunamiMeta(result: ActiveResult): {
     // megathrust subduction zones.
     return {
       sourceAmplitudeM: t.initialAmplitude,
-      sourceCavityRadiusM: Math.max((result.data.ruptureLength as number) / 2, 10_000),
+      // Half the down-dip width, not half the along-strike length.
+      //
+      // This radius does two jobs: it is where the field stops
+      // holding the source amplitude flat, and it is the source scale
+      // in the energy normalisation of the spreading law. Both are
+      // questions about how big the source looks to a wave leaving
+      // it, and a wave leaving a megathrust leaves it broadside — so
+      // what it sees is the across-strike profile, the same argument
+      // that settled the wavelength.
+      //
+      // Along-strike half-length put Tōhoku's full 3.99 m over a disc
+      // 351 km across, which is every coast in Japan, and read 0.563 m
+      // at DART 21413 against the 0.30 recorded. Across-strike
+      // half-width reads 0.280 m there.
+      sourceCavityRadiusM: Math.max((result.data.ruptureWidth as number) / 2, 10_000),
       sourceDepthM: 4_000,
       // Seven hundred kilometres of seafloor rising together radiate
       // across the trench, not in a circle. The amplitude above is

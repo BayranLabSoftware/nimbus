@@ -236,6 +236,19 @@ export interface SeismicTsunamiInput {
   magnitude: number;
   /** Surface rupture length (m). */
   ruptureLength: Meters;
+  /** Down-dip rupture width (m). Defaults to the length over the
+   *  fault-style aspect ratio, which is a median and not always the
+   *  event: the Sunda megathrust of 2004 tore 1 300 km along strike
+   *  and about 200 down dip, where the megathrust aspect ratio of 2.5
+   *  would give 520.
+   *
+   *  Nothing passes it yet. `simulateEarthquake` holds a width from
+   *  Strasser 2010 that differs from the aspect-ratio one, and handing
+   *  it over moves the source wavelength, the beam and the slip at
+   *  once — enough to break the G-TOH-DART golden case, the Tōhoku
+   *  replay fixture and the B-006 registry entry, all of which were
+   *  anchored around the aspect-ratio value. The roadmap has it. */
+  ruptureWidth?: Meters;
   /** Mean basin depth (m) — defaults to 4 000 m. */
   basinDepth?: Meters;
   /** Beach slope (rad) for the Synolakis run-up. Defaults to
@@ -291,7 +304,10 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
   const M0 = seismicMomentFromMagnitude(Mw) as number;
   const aspect = ruptureAspectRatio(input);
   const upliftFactor = dipDependentUpliftFactor(input);
-  const W = L / aspect;
+  const W =
+    input.ruptureWidth !== undefined && (input.ruptureWidth as number) > 0
+      ? (input.ruptureWidth as number)
+      : L / aspect;
   const A = L * W;
   const meanSlip = M0 / (CRUSTAL_RIGIDITY * A);
   const seafloorUplift = upliftFactor * meanSlip;
@@ -302,6 +318,15 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
   const A0 = WAVE_COUPLING_EFFICIENCY * seafloorUplift;
 
   // Cylindrical spreading from a line source of half-length L/2.
+  //
+  // The wave field on the globe spreads from half the down-dip width
+  // instead, and carries an energy normalisation this row does not —
+  // see `fieldScalarAgreement.test.ts`, which measures the gap. Moving
+  // this row onto the field's law is the right end state and it is not
+  // a one-line change: six anchored rows were fitted around this one,
+  // among them the G-TOH-DART golden case, the Tōhoku replay fixture
+  // and the B-006 registry entry. Recorded in the roadmap rather than
+  // done in passing.
   const R0 = L / 2;
   const amp = (range: number): number => A0 * Math.sqrt(R0 / Math.max(range, R0));
   const amp1000 = amp(1_000_000);

@@ -414,6 +414,54 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### The disc the source sits in (Phase 34)
+
+`r = max(c·T, R₀)` holds the full source amplitude everywhere inside
+R₀, and R₀ was half the rupture _length_: for Tōhoku a disc 351 km
+across at 3.99 m, which is every coast in Japan. R₀ is also the source
+scale in the energy normalisation of the spreading law, so the same
+number sets how much wave reaches an ocean away.
+
+It should be half the down-dip _width_ — the same argument that
+settled the source wavelength and the beam. What a wave leaving the
+fault broadside sees is the across-strike profile, and how big the
+source looks to that wave is how wide the fault is, not how long.
+
+The check is DART 21413, which isolates this parameter and nothing
+else:
+
+| source radius              | amplitude at DART | recorded |
+| -------------------------- | ----------------- | -------- |
+| half the length, 351 km    | 0.563 m           | 0.30 m   |
+| **half the width, 103 km** | **0.280 m**       | 0.30 m   |
+
+1.88× against 0.93×. It also makes true a sentence written in the
+previous phase that was not: the corrected far field really does land
+on the buoy now.
+
+**And it takes the tolls down.** Every one of them, because every one
+was standing on a far field that was nearly twice too strong:
+
+| coastal toll  | before | after     | recorded  |
+| ------------- | ------ | --------- | --------- |
+| Tōhoku 2011   | 63 000 | **9 400** | ≈ 16 700  |
+| Krakatau 1883 | 24 000 | 24 000    | ≈ 36 400  |
+| Sumatra 2004  | 6 700  | 320       | ≈ 227 000 |
+
+Tōhoku's residual halves in log terms, from 3.8× over to 0.56× under.
+Krakatau does not move, because a caldera's source radius is the
+caldera and always was. Sumatra collapses, and the reason is specific
+rather than mysterious: its dead are in Banda Aceh, 250 km from a
+fault 200 km wide, and that coast used to sit inside the saturation
+disc at the full source amplitude. It no longer does, which is
+correct, and what is left of Aceh's toll is then held down by the
+density lookup that does not reach it — the thing measured in Phase 33
+and already filed.
+
+This is the third correction today that made a number worse while
+making the model right, and each time the compensation it removed has
+been named. That is the trade this project takes.
+
 ### A rupture is a line (Phase 33)
 
 Every bearing the wave field asked for was measured from one point,
@@ -486,8 +534,13 @@ The bare law omits the 4√π and over-states by its square root — 2.66.
 The constant is the algebra of a Gaussian ring, and the check is that
 it reproduces the Saint-Venant solver of the NOAA benchmark to three
 per cent: that solver on its own Gaussian gives 0.494 m at DART, this
-gives 0.508. On the model's own source it lands at **0.27 m against
-the 0.30 recorded**.
+gives 0.508.
+
+(That paragraph first claimed the model's own source landed at 0.27 m
+against the 0.30 recorded. It did not: the arithmetic behind the claim
+used half the fault's _width_ as the source radius where the code used
+half its _length_, and the shipped law read 0.563 m — 1.88× the
+record. Phase 34 makes the code do what the paragraph said.)
 
 **The shore height was too weak.** The field stops at fifty metres of
 water, because the shallow-water equations it is built on give out

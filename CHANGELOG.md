@@ -7,6 +7,20 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The disc the source sits in.** The field held the full source
+  amplitude everywhere inside R₀ = half the rupture length — for
+  Tōhoku a disc 351 km across at 3.99 m, which is every coast in Japan
+  — and used the same number as the source scale in the spreading
+  law's energy normalisation. It should be half the down-dip width,
+  the same argument that settled the wavelength and the beam. DART
+  21413 isolates it: 0.563 m against the 0.30 recorded with half the
+  length, **0.280 m with half the width**. Every coastal toll comes
+  down with it, because every one was standing on a far field nearly
+  twice too strong: Tōhoku 63 000 → 9 400 drowned against about
+  16 700, Krakatau unmoved at 24 000, Sumatra 6 700 → 320 — its dead
+  are 250 km from a fault 200 km wide and used to sit inside the
+  saturation disc at full amplitude.
+
 - **A rupture is a line.** Every bearing the wave field asked for was
   measured from the epicentre, which for a 1 300 km fault puts Banda
   Aceh — 250 km up the line and square across the strike — almost
@@ -27,7 +41,9 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   Tokyo Bay, Mumbai and Rio de Janeiro. Energy fixes it with no fitted
   constant: a ring of circumference 2πr and width √π·a gives
   A(r) = A₀√(a/(4√π·r)), which reproduces the NOAA Saint-Venant solver
-  to three per cent and lands at 0.27 m against the 0.30 recorded.
+  to three per cent. (This entry first claimed the model's own source
+  landed at 0.27 m against the 0.30 recorded; it read 0.563 m, and the
+  next entry is what makes the claim true.)
   Meanwhile the shore height was the offshore amplitude itself, so the
   fifty metres of water between where the field stops and where the
   wave breaks were dropped; Green's law and McCowan's breaking index

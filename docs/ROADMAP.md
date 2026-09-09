@@ -631,7 +631,7 @@ against about 16 700 — 3.8× over, where it had been 1.02×. Nothing
 about the model got worse: a compensating pair came apart, and what
 was being compensated for is P0 below.
 
-### P0 — The source saturates over a disc the size of the fault _(open, 9 September)_
+### P0 — The source saturates over a disc the size of the fault _(closed, 9 September)_
 
 `r = max(c·T, R₀)` with `R₀ = L/2`, so the field holds the full source
 amplitude everywhere inside half a rupture length: for Tōhoku a disc
@@ -653,8 +653,36 @@ want more, which is a statement about the _shape_ of the decay rather
 than its scale, and it should be measured against both records at once
 rather than tuned against either.
 
-Would move: every coastal toll of every megathrust, in both
-directions.
+**Closed.** R₀ is now half the down-dip width. DART 21413 isolates
+the parameter and settles it: 0.563 m against the 0.30 recorded with
+half the length, 0.280 m with half the width. Tōhoku's coastal toll
+goes 63 000 → 9 400 drowned against about 16 700, Krakatau does not
+move, and Sumatra goes 6 700 → 320 because Banda Aceh used to sit
+inside the saturation disc at full source amplitude and no longer
+does. What holds Aceh down now is the density lookup below.
+
+### P1 — The published far-field rows are behind the veil _(open, 9 September)_
+
+`fieldScalarAgreement.test.ts` used to reimplement the field's
+spreading law rather than call it, so it went on asserting agreement
+after the field gained its energy normalisation and stopped computing
+what the test computed. It now calls `spreadingFactor`, and the
+divergence it was blind to is measured: the veil stands at a fifth of
+the megathrust row, and at 1/2.66 of every compact-source row.
+
+The veil is the one that is right. DART 21413 reads 0.280 m from the
+veil's law and 0.563 m from the row's, against 0.30 recorded.
+
+Moving the rows onto the veil's law is not a one-line change: six
+anchored rows were fitted around the present one — the G-TOH-DART
+golden case, the Tōhoku replay fixture, the B-006 registry entry, the
+Cocos Island NOAA pin and two module tests. Passing
+`seismicTsunamiFromMegathrust` the Strasser width the simulator
+already holds moves it further still, because that width differs from
+the aspect-ratio one the module assumes.
+
+Would move: the far-field amplitude row of every earthquake report,
+and the six rows above with it.
 
 ### P1 — The density lookup runs out of fine tiles _(open, 9 September)_
 
