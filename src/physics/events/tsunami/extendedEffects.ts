@@ -83,8 +83,13 @@ export function submarineLandslideAmplitude(slideVolumeM3: number, slopeRad: num
 
 /** Reference value: the peak open-ocean amplitude that the Ward &
  *  Asphaug 1/r formula would predict for the 2011 Tōhoku tsunami at
- *  DART buoy 21413 (1 500 km offshore). Used by tests as a cross-check
- *  against the recorded ~30 cm peak. */
+ *  DART buoy 21413 (1 500 km offshore).
+ *
+ *  A cross-check and nothing else — no product path reads it. It is
+ *  an independent published formula fed an independent published
+ *  source amplitude, which is what makes it worth keeping: the
+ *  simulator's own chain is now one law end to end, and a law with
+ *  nothing to disagree with is a law nobody is checking. */
 export function tohoku2011DARTReference(): Meters {
   // Source amplitude from Satake et al. 2013 inversion: A0 ≈ 2 m at
   // the rupture edge (≈100 km from source), propagated at 1/r.
@@ -93,12 +98,14 @@ export function tohoku2011DARTReference(): Meters {
   const dartRange = 1_500_000; // m (DART 21413)
   const geom = (sourceAmplitude * sourceRange) / dartRange;
   // Dispersion on this event's own wavelength and depth rather than a
-  // fixed scale length: 1 400 km of wave over 4 km of ocean barely
-  // disperses at all over fifteen hundred kilometres, so this is very
-  // nearly the bare 1/r figure. The heuristic it replaces cut the
-  // amplitude almost in half here, which flattered this row and hid
-  // the fact that the divergence is in the spreading law.
+  // fixed scale length. Twice the down-dip width — 205 km from the
+  // Strasser regression, so 410 km — because that is the wavelength
+  // the recorded period says a megathrust radiates on, and it is the
+  // one the rest of the simulator uses. Over 4 km of ocean such a
+  // wave keeps its shape for fifteen hundred kilometres, so this is
+  // very nearly the bare 1/r figure either way; the point is that
+  // there is no second answer to the question anywhere.
   void SEAWATER_DENSITY;
   void STANDARD_GRAVITY;
-  return m(geom * dispersionFactor({ rangeM: dartRange, depthM: 4000, wavelengthM: 2 * 700_000 }));
+  return m(geom * dispersionFactor({ rangeM: dartRange, depthM: 4000, wavelengthM: 2 * 205_000 }));
 }

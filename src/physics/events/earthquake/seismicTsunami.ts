@@ -2,6 +2,7 @@ import { CRUSTAL_RIGIDITY, STANDARD_GRAVITY } from '../../constants.js';
 import { directivityFactor, directivityIsCoherent } from '../../tsunami/directivity.js';
 import { synolakisRunup } from '../tsunami/extendedEffects.js';
 import { dispersionFactor } from '../../tsunami/dispersion.js';
+import { megathrustSourceRadius, spreadingFactor } from '../../tsunami/spreading.js';
 import { shallowWaterWaveSpeed, tsunamiTravelTime } from '../tsunami/propagation.js';
 import type { Meters, MetersPerSecond, Seconds } from '../../units.js';
 import { m, s } from '../../units.js';
@@ -52,9 +53,7 @@ import { seismicMomentFromMagnitude } from './seismicMoment.js';
  *     Strasser median under-counts width-saturation by ~25 %, which
  *     systematically pushes the M₀-derived mean slip ~30 % low for
  *     the Mw 8.5+ band where the rupture saturates the seismogenic
- *     width. We adopt 2.5 as the Hayes-derived calibration; the
- *     Sumatra preset overrides W explicitly via `ruptureWidthOverride`
- *     since its 200 km width is geometrically constrained.
+ *     width. We adopt 2.5 as the Hayes-derived calibration.
  *   - Continental reverse / generic ('all'): L/W ≈ 3 (Wells &
  *     Coppersmith 1994 BSSA 84: 974, Table 2A).
  *   - Continental normal (L'Aquila 2009 ≈ 18×12 km, Amatrice 2016
@@ -63,25 +62,29 @@ import { seismicMomentFromMagnitude } from './seismicMoment.js';
  *   - Strike-slip (Kunlun 2001 ≈ 400×60 km, San Andreas-class):
  *     L/W ≈ 5 (Wells & Coppersmith 1994 strike-slip subset).
  *
- * KNOWN INTERNAL INCONSISTENCY (documented, not a bug). The tsunami
- * source here derives W = L / 2.5 for the slip estimate, whereas
- * `simulate.ts` reports the rupture rectangle's W from the INDEPENDENT
- * Strasser (2010) width regression (which implies L/W ≈ 3.4 at Mw 9.1).
- * So the same megathrust can show two slightly different widths (~25 %)
- * in one result object — both within the W&C/Strasser scatter. They are
- * kept separate on purpose: the rendered rupture rectangle uses the
- * direct width regression, while the tsunami slip uses the Hayes-2017-
- * calibrated aspect that reproduces DART amplitudes.
+ * THIS IS NOW A FALLBACK. Until 9 September 2026 it was not: the
+ * tsunami source derived its own W = L / aspect while `simulate.ts`
+ * published the rupture rectangle's W from the independent Strasser
+ * (2010) width regression, and the same megathrust carried two widths
+ * in one result object. The note here called that a known
+ * inconsistency of about 25 % and said both were within the
+ * regressions' scatter. For Tōhoku it was 37 %; for Sumatra, whose
+ * length is overridden to the observed 1 300 km, the aspect ratio
+ * turned that into a width of 520 km — wider than the whole forearc,
+ * and a mean slip of 2.8 m against inversions of five to ten.
  *
- * CAVEAT ON SLIP MAGNITUDE. Because the W&C/Strasser AREA regressions
- * saturate above ~Mw 8, the M₀-derived mean slip at Mw 9+ comes out on
- * the HIGH side (≈ 20 m for Tōhoku vs an observed average ≈ 10 m). The
- * final seafloor uplift still lands in-band because the shallow-dip
- * sin(δ) projection ({@link dipDependentUpliftFactor}) and the coupling
- * factor ({@link WAVE_COUPLING_EFFICIENCY}) are calibrated against the
- * Tōhoku DART + Sumatra anchors. That is calibration to a few targets,
- * NOT independent validation — treat the far-field amplitude as
- * order-of-magnitude.
+ * The caller now supplies the width it publishes, and the result
+ * echoes it back in {@link SeismicTsunamiResult.ruptureWidth}. This
+ * function answers only for a caller that supplies none.
+ *
+ * CAVEAT ON SLIP MAGNITUDE, restated. Mean slip is M₀ / (μ·L·W) and
+ * therefore a statement about the rupture area and nothing else. On
+ * the Strasser regressions Tōhoku comes out at 13.0 m where the
+ * inversions average about 10: the regression area is smaller than
+ * the inverted one, and the difference is left standing rather than
+ * absorbed into a coupling factor. What is checked against the record
+ * is the wave, not the slip — at DART 21413, inside the main lobe,
+ * the model reads 0.27 m against the 0.30 recorded.
  */
 function ruptureAspectRatio(input: SeismicTsunamiInput): number {
   if (input.subductionInterface) return 2.5;
@@ -212,6 +215,16 @@ export interface SeismicTsunamiResult {
    *  spacing between successive wave crests, not the peak-to-trough
    *  amplitude. */
   sourceWavelength: Meters;
+  /** The down-dip width this wave was built on (m).
+   *
+   *  Published because it used to be a second, private one. The
+   *  rupture rectangle the globe draws takes W from the Strasser 2010
+   *  regression; this module derived its own as L / aspect and the
+   *  two disagreed by 37 % for Tōhoku and by a factor of 2.6 for
+   *  Sumatra, whose length is overridden to the observed 1 300 km.
+   *  The caller now supplies it and the result says which one it
+   *  got, so a divergence cannot hide inside one object again. */
+  ruptureWidth: Meters;
   /** Dominant wave period at the source (s). T = λ / c, with λ the
    *  source wavelength above and c the deep-water celerity. For
    *  Tōhoku 2011 this lands at ≈ 7 000 s ≈ 2 h, consistent with the
@@ -294,6 +307,7 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
       travelTimeTo1000km: 0 as Seconds,
       deepWaterCelerity: 0 as MetersPerSecond,
       sourceWavelength: m(0),
+      ruptureWidth: m(0),
       dominantPeriod: 0 as Seconds,
       inundationDistanceAt1000km: m(0),
       beachSlopeRadUsed: REFERENCE_RUNUP_SLOPE,
@@ -317,18 +331,24 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
   // near-source amplitudes by ≈ 30 %.
   const A0 = WAVE_COUPLING_EFFICIENCY * seafloorUplift;
 
-  // Cylindrical spreading from a line source of half-length L/2.
+  // Spreading, on the law the globe's veil uses — one law, in
+  // `tsunami/spreading.ts`.
   //
-  // The wave field on the globe spreads from half the down-dip width
-  // instead, and carries an energy normalisation this row does not —
-  // see `fieldScalarAgreement.test.ts`, which measures the gap. Moving
-  // this row onto the field's law is the right end state and it is not
-  // a one-line change: six anchored rows were fitted around this one,
-  // among them the G-TOH-DART golden case, the Tōhoku replay fixture
-  // and the B-006 registry entry. Recorded in the roadmap rather than
-  // done in passing.
-  const R0 = L / 2;
-  const amp = (range: number): number => A0 * Math.sqrt(R0 / Math.max(range, R0));
+  // Two things changed here on 9 September 2026 and both were the row
+  // catching up with the field. The source radius is half the down-dip
+  // width, not half the along-strike length: a wave leaving a long
+  // fault leaves it broadside and sees the across-strike profile, the
+  // same argument that settles the wavelength at 2·W below. And the
+  // decay carries the energy normalisation of a ring, √(4√π) ≈ 2.66,
+  // which this row did not have.
+  //
+  // The record settles it. At DART 21413, 1 500 km out and inside the
+  // main lobe, this row read 1.93 m against the 0.30 m recorded; with
+  // the field's law and the beam it reads 0.27. The gap between the
+  // veil and the number printed beside it is closed, and what closed
+  // it is an observation rather than a preference.
+  const R0 = megathrustSourceRadius(W);
+  const amp = (range: number): number => A0 * spreadingFactor(R0, range, 0.5, true);
   const amp1000 = amp(1_000_000);
   const amp5000 = amp(5_000_000);
   const basinDepth = (input.basinDepth ?? m(DEFAULT_BASIN_DEPTH)) as number;
@@ -430,6 +450,7 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
     travelTimeTo1000km: travel,
     deepWaterCelerity: celerity,
     sourceWavelength: wavelength,
+    ruptureWidth: m(W),
     dominantPeriod: period,
     inundationDistanceAt1000km: inundation,
     beachSlopeRadUsed: beachSlopeRad,

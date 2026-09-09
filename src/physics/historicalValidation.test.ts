@@ -250,11 +250,22 @@ describe('Historical validation — earthquakes', () => {
     const r = simulateEarthquake(EARTHQUAKE_PRESETS.TOHOKU_2011.input);
     expect(r.tsunami).toBeDefined();
     if (!r.tsunami) return;
-    // Observed Hayes 2017 USGS finite-fault: mean slip 8–10 m, seafloor
-    // uplift 5–7 m. Pre-fix the aspect ratio of 2 gave ~6.8 m (low end);
-    // bumping to 2.5 (Hayes 2017 median) lands ~8.5 m, mid-band.
+    // Mean slip is M₀ / (μ·L·W), so it is a statement about the
+    // rupture area and nothing else. Both L and W now come from the
+    // Strasser 2010 megathrust regressions the rest of the result is
+    // drawn with — 702 × 205 km — and that gives 13.0 m where the
+    // inversions average about 10. The regression area is smaller
+    // than the inverted one; the difference is stated here rather
+    // than absorbed into a coupling factor.
+    //
+    // It used to read 9.5 m, closer to the inversions, because this
+    // module derived a second width of its own as L / 2.5 = 281 km.
+    // That width made the slip look right and the wave wrong: at DART
+    // 21413 the published row read 1.93 m against 0.30 recorded. With
+    // one width and one spreading law the wave reads 0.27 m there,
+    // and the slip is what the area says.
     expect(r.tsunami.meanSlip as number).toBeGreaterThan(7);
-    expect(r.tsunami.meanSlip as number).toBeLessThan(12);
+    expect(r.tsunami.meanSlip as number).toBeLessThan(15);
     expect(r.tsunami.initialAmplitude as number).toBeGreaterThan(3);
     expect(r.tsunami.initialAmplitude as number).toBeLessThan(15);
     // Non-zero coastal run-up.

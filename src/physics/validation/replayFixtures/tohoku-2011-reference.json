@@ -2,7 +2,7 @@
   "id": "tohoku-2011-reference",
   "category": "reference",
   "title": "Tōhoku 2011 megathrust — preset replay reference",
-  "description": "Reference replay of the EARTHQUAKE_PRESETS.TOHOKU_2011 input. Pins the Tier-2 NOAA validation envelope (Mw 9.1, mean slip 8-12 m, MMI VII reach > 50 km) — see B-006 in BUG_REGISTRY.md.",
+  "description": "Reference replay of the EARTHQUAKE_PRESETS.TOHOKU_2011 input. Pins the Tier-2 NOAA validation envelope (Mw 9.1, mean slip 10.5-15.5 m, MMI VII reach > 50 km) — see B-006 in BUG_REGISTRY.md.",
   "linkedBug": null,
   "linkedGoldenCase": "G-TOH-DART",
   "scenarioType": "earthquake",
@@ -25,9 +25,9 @@
       "comment": "Strasser 2010 megathrust scaling at Mw 9.1"
     },
     "tsunami.meanSlip.m": {
-      "value": 8.5,
+      "value": 13.0,
       "absTolerance": 2.5,
-      "comment": "Hayes 2017 USGS finite-fault"
+      "comment": "M0 / (mu * L * W) on the Strasser 2010 regressions the rest of the result is drawn with, 702 x 205 km. The inversions average about 10 m over a larger assumed area; this used to read 8.5 because the tsunami module derived a second width of its own as L / 2.5, which made the slip look right and the wave wrong."
     },
     "shaking.mmi7Radius.km": {
       "min": 50,
@@ -41,9 +41,9 @@
     },
     "tsunami.exists": true,
     "tsunami.amplitudeAt1000kmDispersed.m": {
-      "min": 0.5,
-      "max": 3.0,
-      "comment": "Heidarzadeh-Satake dispersion at 1000 km — post-B-006 calibration gives ~1.6 m"
+      "min": 0.3,
+      "max": 1.5,
+      "comment": "Kajiura dispersion on the field's spreading law: from half the down-dip width, with the energy normalisation of a ring. 0.69 m here, where the old law read 2.36 and at DART 21413 read 1.93 m against the 0.30 recorded."
     }
   }
 }

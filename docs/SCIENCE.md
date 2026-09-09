@@ -381,6 +381,72 @@ compares. Without the two bracketing footprints Pinatubo's high end
 moved by a factor of 2.7 — a band about the interpolation and not
 about the eruption; with them the worst comparable row is 1.37×.
 
+### One law for the wave's decay (9 September 2026)
+
+`src/physics/tsunami/spreading.ts`. There is one question — what is
+left of the wave at range r — and the simulator answered it in four
+places: the veil on the globe, the far-field row each event module
+publishes, the row the calibration harness compared against the
+record, and a 1/r cross-check in the extended-effects module. A
+reviewer who sees two numbers for one wave stops trusting the rest.
+
+Underneath the four was a second duplication. `simulateEarthquake`
+publishes the down-dip width W from the Strasser 2010 regression and
+draws the rupture rectangle, the casualty polygons and the veil's
+source radius with it; the tsunami module derived its own as
+L / aspect and the two disagreed by 37 % for Tōhoku. For Sumatra it
+was worse than a disagreement: the preset overrides the length to the
+observed 1 300 km **and the width to the geometrically constrained
+200 km**, and the wave never heard the second override — it read
+L / 2.5 = 520 km, wider than the whole forearc, and a mean slip of
+2.8 m against inversions of five to ten. The caller now supplies the
+width and `SeismicTsunamiResult.ruptureWidth` echoes it back, so a
+divergence cannot hide inside one result object again.
+
+The law itself is the energy of a ring, A(r) = A₀·√(a / (4√π·r)),
+from a source radius a = W/2 — half the **down-dip width**, because a
+wave leaving a long fault leaves it broadside and sees the
+across-strike profile. That is the same argument that settles the
+wavelength at 2·W, which the recorded period at DART 21413 (30–40 min)
+settled first.
+
+What the record says about it, at DART 21413, 1 500 km out and inside
+the main lobe:
+
+|                                  | before                      | after          | recorded |
+| -------------------------------- | --------------------------- | -------------- | -------- |
+| published row                    | 1.93 m (4.5× with the beam) | 0.27 m (0.90×) | 0.30 m   |
+| Tier-2 Saint-Venant, independent | 1.14×                       | 0.79×          | 0.30 m   |
+
+Two routes that share nothing — a closed-form chain and a
+shallow-water solver on a Gaussian of its own — now land within twelve
+per cent of each other and both inside the buoy's band. Before, they
+read 4.5× and 1.14× and the disagreement between them was the thing
+nobody could explain.
+
+What it costs, stated rather than absorbed. **Cocos Island**, past the
+first null of the 2004 rupture and standing on the incoherent floor,
+goes from 0.83× the gauge to 0.33×: the old agreement was a source
+2.5× too small given back by a decay 6× too generous. Even with no
+beam at all the model would read 0.71× there, so a third of the
+shortfall is the radiation pattern and two thirds is the source.
+**Tōhoku's mean slip** goes from 9.5 m to 13.0 m where the inversions
+average about 10 — M₀/(μ·L·W) with μ = 30 GPa over the Strasser area,
+which is smaller than the inverted one. That same factor of 1.37 makes
+the near field louder, and the coastal toll with it.
+
+And what it gains, live, on the two coasts with a counted toll:
+
+| coast                | before | after  | recorded        |
+| -------------------- | ------ | ------ | --------------- |
+| Sumatra–Andaman 2004 | 2 600  | 25 700 | 227 900         |
+| Tōhoku 2011          | 24 000 | 49 100 | ~16 700 drowned |
+
+Sumatra moves from eighty-seven times under to nine; Tōhoku from
+1.4 times over to 2.9. The remaining thread is the same 1.37: the
+slip, and therefore the rigidity or the area it is divided by. It is
+in the roadmap and it is not fitted in the meantime.
+
 ### Burns, mass fire and later deaths (Phase 24)
 
 The blast bands of OTA 1979 are the prompt blast and collapse count

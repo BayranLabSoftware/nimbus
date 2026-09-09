@@ -2,7 +2,9 @@ import { simulateExplosion } from '../events/explosion/simulate.js';
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/simulate.js';
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/simulate.js';
 import { m } from '../units.js';
-import { dispersionDecay, dispersionParameter } from '../tsunami/dispersion.js';
+import { dispersionFactor } from '../tsunami/dispersion.js';
+import { directivityFactor } from '../tsunami/directivity.js';
+import { megathrustSourceRadius, spreadingFactor } from '../tsunami/spreading.js';
 
 /**
  * Waves that were measured, and where the simulator puts them.
@@ -55,9 +57,7 @@ function spreadFrom(
 ): number {
   const r = Math.max(rangeM, cavityRadiusM);
   const geometric = sourceAmplitudeM * Math.sqrt(cavityRadiusM / r);
-  const dispersion = dispersionDecay(
-    dispersionParameter({ rangeM: r, depthM, wavelengthM: 2 * cavityRadiusM })
-  );
+  const dispersion = dispersionFactor({ rangeM: r, depthM, wavelengthM: 2 * cavityRadiusM });
   return geometric * dispersion;
 }
 
@@ -123,29 +123,35 @@ export const RECORDED_WAVES: RecordedWave[] = [
     name: 'Tōhoku 2011 at DART 21413',
     observed: { low: 0.2, high: 0.5, atRangeM: 1_500_000 },
     source:
-      'DART buoy 21413, 1 500 km offshore, recorded a peak of about 30 cm; the reference is already in extendedEffects.ts',
+      'DART buoy 21413, 1 500 km offshore, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)',
     model: () => {
       const r = simulateEarthquake(EARTHQUAKE_PRESETS.TOHOKU_2011.input);
       if (r.tsunami === undefined) return 0;
-      const a0 = r.tsunami.initialAmplitude as number;
-      const r0 = Math.max((r.ruptureLength as number) / 2, 10_000);
-      // A line source spreads cylindrically, and at this range the
-      // published row carries the Kajiura/Watada dispersion too.
-      const geometric = a0 * Math.sqrt(r0 / 1_500_000);
+      // The three shared laws, called rather than re-derived. This
+      // row used to reimplement the spreading inline — a fifth copy
+      // of one question — and so went on agreeing with a published
+      // row that was wrong, which is the one thing an anchor must
+      // never do.
+      const rangeM = 1_500_000;
+      const wavelengthM = r.tsunami.sourceWavelength as number;
       return (
-        geometric *
-        dispersionDecay(
-          dispersionParameter({
-            rangeM: 1_500_000,
-            depthM: 4000,
-            wavelengthM: r.tsunami.sourceWavelength || 2 * (r.ruptureLength as number),
-          })
-        )
+        (r.tsunami.initialAmplitude as number) *
+        spreadingFactor(megathrustSourceRadius(r.tsunami.ruptureWidth), rangeM, 0.5, true) *
+        dispersionFactor({ rangeM, depthM: 4_000, wavelengthM }) *
+        directivityFactor({
+          // The buoy lies at bearing 131° from the epicentre and the
+          // Japan Trench strikes 200°: 21° off the seaward
+          // perpendicular, inside the main lobe.
+          bearingDeg: 131,
+          strikeDeg: r.inputs.strikeAzimuthDeg ?? 200,
+          ruptureLengthM: r.ruptureLength,
+          wavelengthM,
+        })
       );
     },
-    gated: false,
+    gated: true,
     caveat:
-      'Ungated because what it measures is a divergence already known and deliberately left open, and it puts a number on it. This project has two far-field laws for the same wave and they bracket the buoy from opposite sides: the seismic module spreads cylindrically from half the rupture and lands at 1.06 m, three and a half times the 30 cm recorded, while tohoku2011DARTReference in extendedEffects.ts spreads as 1/r from a 2 m source and lands at about 7 cm, four times under. The recorded value sits between them. Closing that gap is the dispersion-in-the-field work in the roadmap, and neither law should be bent to pass a test in the meantime.',
+      'Gated since 9 September 2026, and it used to be the row that measured a divergence rather than a model. This project had four far-field laws for one wave and they bracketed the buoy from opposite sides: the seismic module spread cylindrically from half the rupture length and landed at 1.93 m, six times the 30 cm recorded, while tohoku2011DARTReference spreads as 1/r from a 2 m source and lands at 0.13 m. The product path is now one law, in tsunami/spreading.ts — from half the down-dip width, with the energy normalisation of a ring — and the row reads 0.27 m against the 0.30 recorded, inside the observed band.',
   },
   {
     name: 'Storegga 8200 BP on the Norwegian coast',

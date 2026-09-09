@@ -91,11 +91,16 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // Pre-fix: Tōhoku slip 6.78 m vs Hayes 2017 8-10 m.
     // Fix: aspect 2 → 2.5 + WAVE_COUPLING 0.9 → 0.7.
     // Commit: 467f74a
+    //
+    // The aspect ratio itself is gone from this path since
+    // 9 September 2026: the caller supplies the same width the rest
+    // of the result is drawn with, and the band moved with it. See
+    // the note in historicalValidation.test.ts.
     const r = simulateEarthquake(EARTHQUAKE_PRESETS.TOHOKU_2011.input);
     expect(r.tsunami).toBeDefined();
     if (!r.tsunami) return;
     expect(r.tsunami.meanSlip as number).toBeGreaterThan(7);
-    expect(r.tsunami.meanSlip as number).toBeLessThan(12);
+    expect(r.tsunami.meanSlip as number).toBeLessThan(15);
   });
 
   it('B-007 Chicxulub Teanby-Wookey is headline (UI ordering)', () => {

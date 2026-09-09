@@ -330,7 +330,29 @@ guess dressed as a measurement, and a narrow band on the least
 settled part of the model is worse than an honest wide one. Move 3
 settles which law is the law; the band follows it.
 
-### 3. One law per quantity
+### 3. One law per quantity _(the wave's decay done, 9 September)_
+
+**Done: the amplitude at range.** One law, in
+`src/physics/tsunami/spreading.ts`, and one width under it. The four
+answers are one; the veil and the row beside it now agree exactly and
+a test says so. At DART 21413 the published row went from 1.93 m —
+4.5× the 0.30 recorded once beamed — to 0.27 m, and the Tier-2
+Saint-Venant solver, which shares nothing with that chain, reads
+0.79× against the same buoy. Sumatra's coastal toll went from 2 600
+to 25 700 against 227 900, because its preset had been overriding the
+width to the observed 200 km for weeks and the wave had never heard
+it. Full account in [SCIENCE.md](./SCIENCE.md), "One law for the
+wave's decay".
+
+**What it exposed, and what is next.** Tōhoku's mean slip is now
+13.0 m where the inversions average about 10, and that same factor of
+1.37 takes its coastal toll from 1.4× the record to 2.9×. Mean slip is
+M₀/(μ·L·W) and nothing else, so the next question is which of the
+three is wrong: the rigidity (30 GPa here, where a whole-seismogenic-
+zone value is nearer 40), or the Strasser area, which is smaller than
+the inverted one. Fixing it moves the near field by 1.37 and the far
+field by the same, and DART is already at 0.90× — so it cannot be
+fixed by the far field alone, and it will not be fitted.
 
 **Measured first, on 9 September: the fault has two widths.**
 `simulateEarthquake` publishes W from the Strasser 2010 megathrust

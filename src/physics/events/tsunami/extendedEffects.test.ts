@@ -49,14 +49,17 @@ describe('submarineLandslideAmplitude (Watts 2000)', () => {
 describe('tohoku2011DARTReference', () => {
   it('brackets the ~30 cm peak recorded at DART 21413', () => {
     const A = tohoku2011DARTReference() as number;
-    // Observed peak ~0.30 m. This 1/r reference lands at ~0.13 m, and
-    // the cylindrical law in the seismic module lands well above the
-    // record: the two bracket it from opposite sides, and closing
-    // that gap is a question about the source rather than about the
-    // propagation. Under the old exponential heuristic this row read
-    // ~0.07 m, so the migration to Kajiura's parameter halved the
-    // residual here while making the divergence visible where it
-    // belongs. The bracket documents the limitation.
+    // Observed peak ~0.30 m. This 1/r reference lands at ~0.13 m —
+    // under the record by a factor of two, which is what 1/r does to
+    // a wave that spreads over a ring.
+    //
+    // It used to be one half of a bracket: the simulator's own
+    // cylindrical law landed at 1.93 m, six times over, and the
+    // record sat between them. Since 9 September 2026 the simulator
+    // has one law and reads 0.27 m here, so this is no longer a
+    // bracket but an independent estimate from a different formula
+    // and a different source amplitude, kept because a law with
+    // nothing to disagree with is a law nobody is checking.
     expect(A).toBeGreaterThan(0.05);
     expect(A).toBeLessThan(1.0);
   });

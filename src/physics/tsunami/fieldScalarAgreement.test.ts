@@ -30,12 +30,15 @@ import { spreadingFactor } from './amplitudeField.js';
  *     hundred people, and the coastal toll would read one.
  *
  * So this suite pins two different things. For a megathrust, whose
- * published row is geometric too, veil and row must agree — and the
- * store used to hand the field a quarter of the rupture length where
- * the seismic module spreads from a half, leaving the veil a factor
- * √2 quieter than the number beside it. For a compact source, the
- * divergence is pinned with its size, so it stays visible and nobody
- * closes it by accident.
+ * published row is geometric too, veil and row must agree — and since
+ * 9 September 2026 they agree exactly, because both call
+ * `spreading.ts` and the module publishes the one width they stand
+ * on. For a compact source, the divergence is pinned with its size,
+ * so it stays visible and nobody closes it by accident: unifying
+ * those exponents was tried on 8 September and put the Sunda Strait
+ * under half a metre of water where the 2018 survey found metres, and
+ * the coastal toll read one against four hundred and thirty-seven
+ * counted.
  */
 
 /**
@@ -139,30 +142,31 @@ describe('the amplitude veil agrees with the published far-field row', () => {
     expect(veil / published).toBeCloseTo(geometricGap(data.tsunami.cavityRadius), 1);
   });
 
-  it('a megathrust — the veil is quieter than its row, and by how much', () => {
-    // These two used to agree, and the agreement was worth pinning:
-    // both spread geometrically, so a divergence would have been a
-    // bug. They no longer do, for two reasons that are both the
-    // veil being right and the row being behind.
+  it('a megathrust — the veil and its row are now the same number', () => {
+    // These two used to agree, then they did not, and now they do
+    // again for a better reason than the first time.
     //
-    // The veil carries the energy normalisation, √(4√π) ≈ 2.66, and
-    // it spreads from half the fault's down-dip width where the row
-    // spreads from half its along-strike length — 103 km against 351
-    // for Tōhoku, another 1.8. Together the veil stands at about a
-    // fifth of the row.
+    // They diverged because the veil had two corrections the row did
+    // not: it spread from half the fault's down-dip width where the
+    // row spread from half its along-strike length — 103 km against
+    // 351 for Tōhoku — and it carried the energy normalisation of a
+    // ring, √(4√π) ≈ 2.66. Together the veil stood at about a fifth
+    // of the row, and the gap was pinned here as a known divergence
+    // rather than closed, because six anchored rows had been fitted
+    // around the row.
     //
-    // The check on which of the two is right is DART 21413: the veil
-    // reads 0.280 m there against the 0.30 recorded, the row 0.563.
-    // Moving the row onto the veil's law is the right end state and
-    // is not a one-line change — six anchored rows were fitted around
-    // it, among them the G-TOH-DART golden case, the Tōhoku replay
-    // fixture and the B-006 registry entry.
+    // What settled it is DART 21413, 1 500 km out and inside the main
+    // lobe: the row read 1.93 m against the 0.30 m recorded and the
+    // veil's law reads 0.27. The row moved. Both now call
+    // `spreading.ts`, so this can only be one number.
     const data = simulateEarthquake(EARTHQUAKE_PRESETS.TOHOKU_2011.input);
     expect(data.tsunami).toBeDefined();
     if (data.tsunami === undefined) return;
     const published = data.tsunami.amplitudeAt1000km as number;
     const veil = veilAmplitudeAt({ type: 'earthquake', data }, AT_1000_KM);
-    expect(veil / published).toBeGreaterThan(0.18);
-    expect(veil / published).toBeLessThan(0.25);
+    expect(veil / published).toBeCloseTo(1, 6);
+    // And the width they stand on is one width, published by the
+    // module so it cannot quietly become two again.
+    expect(data.tsunami.ruptureWidth as number).toBe(data.ruptureWidth);
   });
 });

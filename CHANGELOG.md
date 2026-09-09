@@ -7,6 +7,36 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Changed
 
+- **One law for the wave's decay, and one width under it.** The
+  amplitude at range was computed in four places with four answers —
+  the veil on the globe, the far-field row each module publishes, the
+  row the calibration harness compared against the record, and a 1/r
+  cross-check. It now lives in `src/physics/tsunami/spreading.ts` and
+  every caller reads it. Underneath was a second duplication:
+  `simulateEarthquake` publishes the down-dip width from the Strasser
+  2010 regression and draws everything with it, while the tsunami
+  module derived its own as L / aspect. For Sumatra that meant the
+  preset's own `ruptureWidthOverride` of 200 km — the geometrically
+  constrained value — was ignored in favour of 520 km, wider than the
+  whole forearc, and a mean slip of 2.8 m against inversions of five
+  to ten. The caller supplies the width now and the result echoes it
+  back, so the two cannot drift apart inside one object again.
+
+  At DART 21413 the published row went from 1.93 m to 0.27 m against
+  the 0.30 m recorded — 4.5× to 0.90× once beamed — and the Tier-2
+  Saint-Venant solver, which shares nothing with that chain, reads
+  0.79× against the same buoy. Live, Sumatra's coastal toll went from
+  2 600 to 25 700 against the 227 900 counted.
+
+  Declared rather than absorbed: Cocos Island, past the first null,
+  goes from 0.83× the gauge to 0.33× — the old agreement was a source
+  2.5× too small given back by a decay 6× too generous. And Tōhoku's
+  mean slip is now 13.0 m where inversions average 10, which takes its
+  coastal toll from 1.4× the record to 2.9×. That factor of 1.37 is
+  M₀/(μ·L·W), and which of the three is wrong is the next question
+  rather than something to fit.
+
+
 - **The pair beside the death toll is a predictive interval.** In the
   product, and now for every event the simulator can resample, the low
   and high figures are the 5th and 95th percentile of 200 realisations

@@ -50,8 +50,18 @@ export const GOLDEN_DATASET: readonly GoldenCase[] = [
       warningCount: 0,
     },
     expectedOutputs: {
-      'tsunami.meanSlip.m': { min: 7, max: 12 },
-      'tsunami.amplitudeAt1000kmDispersed.m': { min: 0.5, max: 3.0 },
+      // Mean slip is M₀ / (μ·L·W) and nothing else. Since 9 September
+      // 2026 both L and W are the Strasser 2010 regressions the rest
+      // of the result is drawn with — 702 × 205 km — which gives
+      // 13.0 m where the inversions average about 10; the regression
+      // area is smaller than the inverted one.
+      'tsunami.meanSlip.m': { min: 7, max: 15 },
+      // And the amplitude row now spreads on the field's law, from
+      // half the down-dip width and with the energy normalisation of
+      // a ring. At DART 21413 that takes it from 1.93 m against the
+      // 0.30 recorded to 0.27; at a thousand kilometres it is 0.69 m
+      // where it was 2.36.
+      'tsunami.amplitudeAt1000kmDispersed.m': { min: 0.3, max: 1.5 },
     },
   },
   {

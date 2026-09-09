@@ -92,6 +92,31 @@ export const MEGATHRUST_FAR_FIELD_RESIDUAL = { low: 1.3, high: 2.2 } as const;
  */
 export const BEAMED_MAIN_LOBE_RESIDUAL = { low: 0.75, high: 1.5 } as const;
 
+/**
+ * What is left at a gauge PAST the first null, once the beam is
+ * applied: the model reads 0.33× the 40 cm recorded at Cocos Island.
+ *
+ * A residual, declared, and not a pass mark — the same standing the
+ * far-field row above has.
+ *
+ * It used to read 0.83×, and that was two errors cancelling. This
+ * module derived its own down-dip width as L / 2.5, which for a
+ * rupture overridden to Sumatra's observed 1 300 km gave 520 km —
+ * wider than the whole forearc — and a mean slip of 2.8 m against
+ * inversions of five to ten. The spreading law then gave that too
+ * small a source back with too generous a decay. With one width
+ * (Strasser's 200 km, slip 7.0 m) and one spreading law, the
+ * compensation is gone and what is left is visible: even with no beam
+ * at all the model would read 0.71× at this range, so a third of the
+ * shortfall is the radiation pattern and two thirds is the source.
+ *
+ * The main-lobe row moved the other way in the same change — DART
+ * 21413 from 4.5× the record to 0.90× — which is the trade this
+ * declares: the measurement where the pattern is a prediction is now
+ * right, and the one past its null is short by three.
+ */
+export const BEAMED_PAST_NULL_RESIDUAL = { low: 0.2, high: 0.6 } as const;
+
 export interface NoaaBenchmarkSynolakisCase {
   /** Incident wave height H over depth d (dimensionless). */
   HOverD: number;
@@ -147,6 +172,11 @@ export const SYNOLAKIS_1987_CASES: NoaaBenchmarkSynolakisCase[] = [
 ];
 
 export interface NoaaTohokuDARTReference {
+  /** Moment magnitude of the event the buoy recorded. The source
+   *  scale — and therefore the wavelength the dispersion and the beam
+   *  both read — is derived from it, so the reference carries it
+   *  rather than the test hard-coding a number beside it. */
+  magnitude: number;
   /** DART buoy ID (used in the Satake 2013 inversion). */
   dartId: string;
   /** Distance from rupture centroid to buoy (m). */
@@ -159,6 +189,7 @@ export interface NoaaTohokuDARTReference {
 }
 
 export const TOHOKU_2011_DART_REFERENCE: NoaaTohokuDARTReference = {
+  magnitude: 9.1,
   dartId: '21413',
   distanceM: 1_500_000,
   observedAmplitudeM: 0.3,

@@ -354,6 +354,13 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
     result.tsunami = seismicTsunamiFromMegathrust({
       magnitude: input.magnitude,
       ruptureLength,
+      // The width this result publishes, not a second one derived
+      // from an aspect ratio inside the tsunami module. Both existed
+      // until 9 September 2026 and the gap was 37 % for Tōhoku and a
+      // factor 2.6 for Sumatra, whose length is overridden to the
+      // observed 1 300 km and whose width was then read as L / 2.5 =
+      // 520 km — wider than the whole forearc.
+      ruptureWidth,
       faultType,
       ...(input.subductionInterface !== undefined && {
         subductionInterface: input.subductionInterface,

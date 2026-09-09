@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { m } from '../../units.js';
 import { seismicTsunamiFromMegathrust } from './seismicTsunami.js';
+import { megathrustSourceRadius, spreadingFactor } from '../../tsunami/spreading.js';
 
 describe('seismicTsunamiFromMegathrust', () => {
   it('Tōhoku 2011 Mw 9.1, 700 km rupture → initial amplitude 4–10 m', () => {
@@ -15,11 +16,25 @@ describe('seismicTsunamiFromMegathrust', () => {
     expect(r.seafloorUplift as number).toBeCloseTo((r.meanSlip as number) / 2, 4);
   });
 
-  it('decays with cylindrical 1/√r spreading', () => {
+  it('decays as 1/√r far away, and not quite yet at a thousand kilometres', () => {
     const r = seismicTsunamiFromMegathrust({ magnitude: 9.1, ruptureLength: m(700_000) });
-    const ratio = (r.amplitudeAt1000km as number) / (r.amplitudeAt5000km as number);
-    // 5× the range ⇒ √5 ≈ 2.236× the amplitude drop.
-    expect(ratio).toBeCloseTo(Math.sqrt(5), 2);
+    // Five times the range takes √5 ≈ 2.236 off the amplitude once
+    // the source is small compared with the distance. At 1 000 km it
+    // is not yet: the ring still remembers its own radius, and the
+    // drop is a few per cent steeper than the asymptote. Reading the
+    // same ratio between 5 000 and 25 000 km recovers it.
+    const near = (r.amplitudeAt1000km as number) / (r.amplitudeAt5000km as number);
+    expect(near).toBeGreaterThan(Math.sqrt(5));
+    expect(near).toBeLessThan(Math.sqrt(5) * 1.1);
+    const far =
+      spreadingFactor(megathrustSourceRadius(r.ruptureWidth), 5_000_000, 0.5, true) /
+      spreadingFactor(megathrustSourceRadius(r.ruptureWidth), 25_000_000, 0.5, true);
+    // Closer to the asymptote further out, and always approached
+    // from above: the offset can only make the near field decay
+    // faster than 1/√r, never slower.
+    expect(far).toBeGreaterThan(Math.sqrt(5));
+    expect(far - Math.sqrt(5)).toBeLessThan(near - Math.sqrt(5));
+    expect(far).toBeCloseTo(Math.sqrt(5), 1);
   });
 
   it('a megathrust crosses an ocean without dispersing', () => {

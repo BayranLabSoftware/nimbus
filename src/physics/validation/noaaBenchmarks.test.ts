@@ -5,8 +5,10 @@ import { directivityFactor, directivityIsCoherent } from '../tsunami/directivity
 import { dispersionFactor } from '../tsunami/dispersion.js';
 import { simulateSaintVenant1D } from '../tsunami/saintVenant1D.js';
 import { m } from '../units.js';
+import { megathrustRuptureWidth } from '../events/earthquake/ruptureLength.js';
 import {
   BEAMED_MAIN_LOBE_RESIDUAL,
+  BEAMED_PAST_NULL_RESIDUAL,
   NOAA_PIN_TOLERANCE,
   SUMATRA_2004_COCOS_REFERENCE,
   SYNOLAKIS_1987_CASES,
@@ -143,12 +145,14 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
     }
     const solverPeakM = probe.peakAbsAmplitudeM;
     // Twice the down-dip width, the wavelength the recorded period
-    // says a megathrust radiates on: L = 700 km at the L/W = 2.5 of a
-    // subduction interface gives W = 280 km and λ = 560 km. One
-    // number for the dispersion and for the beam below, because there
-    // is only one radiated wave.
+    // says a megathrust radiates on. The width is the Strasser 2010
+    // regression — the one the rest of the simulator draws with —
+    // rather than L / 2.5: 205 km, so λ = 410 km. One number for the
+    // dispersion and for the beam below, because there is only one
+    // radiated wave, and one source for that number, because there
+    // was briefly more than one.
     const ruptureLengthM = 700_000;
-    const wavelengthM = (2 * ruptureLengthM) / 2.5;
+    const wavelengthM = 2 * megathrustRuptureWidth(TOHOKU_2011_DART_REFERENCE.magnitude);
     const dispersedPeakM =
       solverPeakM *
       dispersionFactor({
@@ -159,9 +163,18 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
     // DART 21413 lies at bearing 131° from the epicentre and the
     // Japan Trench strikes 200°, so the buoy is 21° off the seaward
     // perpendicular — inside the main lobe, where the array factor is
-    // the answer. Before it was applied this row read 1.65× the
-    // record; the solver is radially symmetric and put the strongest
-    // wave the fault can make in every direction at once.
+    // the answer. Without it this row reads 1.65× the record; the
+    // solver is radially symmetric and puts the strongest wave the
+    // fault can make in every direction at once. With it, 0.79×.
+    //
+    // Worth saying what that is a check on. This route shares nothing
+    // with the closed-form chain: a shallow-water solver on a Gaussian
+    // of its own, against the same buoy. It reads 0.79× where the
+    // chain reads 0.90×, so two independent routes land within twelve
+    // per cent of each other and both inside the record's band. Until
+    // 9 September 2026 the chain read 4.5× and this row read 1.14×,
+    // and the disagreement between them was the thing nobody could
+    // explain.
     const beam = { bearingDeg: 131.3, strikeDeg: 200, ruptureLengthM, wavelengthM };
     expect(directivityIsCoherent(beam), 'DART 21413 is inside the main lobe').toBe(true);
     const beamedPeakM = dispersedPeakM * directivityFactor(beam);
@@ -194,6 +207,13 @@ describe('Sumatra-Andaman 2004 megathrust — Cocos Island reference (Bernard et
     const r = seismicTsunamiFromMegathrust({
       magnitude: SUMATRA_2004_COCOS_REFERENCE.magnitude,
       ruptureLength: m(1_300_000),
+      // The width the application supplies: the Strasser 2010
+      // regression, the same one the rupture rectangle is drawn with.
+      // Left out, this module falls back to L / 2.5 — 520 km for a
+      // rupture overridden to the observed 1 300 km, wider than the
+      // whole forearc, and a mean slip of 2.8 m against inversions of
+      // five to ten.
+      ruptureWidth: megathrustRuptureWidth(SUMATRA_2004_COCOS_REFERENCE.magnitude),
       basinDepth: m(4_000),
       subductionInterface: true,
       // The Sunda megathrust strikes 330°; Cocos Island lies at
@@ -212,7 +232,7 @@ describe('Sumatra-Andaman 2004 megathrust — Cocos Island reference (Bernard et
     expect(
       ratio,
       `predicted ${ampAtCocos.toFixed(3)} m vs ${SUMATRA_2004_COCOS_REFERENCE.observedAmplitudeM.toString()} m observed (${SUMATRA_2004_COCOS_REFERENCE.source}) — ratio ${ratio.toFixed(2)}`
-    ).toBeGreaterThan(BEAMED_MAIN_LOBE_RESIDUAL.low);
-    expect(ratio).toBeLessThan(BEAMED_MAIN_LOBE_RESIDUAL.high);
+    ).toBeGreaterThan(BEAMED_PAST_NULL_RESIDUAL.low);
+    expect(ratio).toBeLessThan(BEAMED_PAST_NULL_RESIDUAL.high);
   });
 });
