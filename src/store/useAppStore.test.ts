@@ -370,6 +370,61 @@ describe('useAppStore — casualty estimate', () => {
     expect(useAppStore.getState().casualtyClockStartedAt).not.toBeNull();
   });
 
+  it('prints a predictive band, not the width of the vulnerability table', async () => {
+    const radii: number[] = [];
+    configurePopulationLookup((lat, lon, radiusM) => {
+      radii.push(radiusM);
+      return Promise.resolve({
+        exposed: Math.round(5_000 * Math.PI * (radiusM / 1_000) ** 2),
+        source: 'test',
+        method: 'worldpop-api' as const,
+        radiusM,
+        bbox: { minLat: lat, maxLat: lat, minLon: lon, maxLon: lon },
+      });
+    });
+    useAppStore.getState().selectPreset('HIROSHIMA_1945');
+    useAppStore.getState().setLocation({ latitude: 40.85, longitude: 14.27 });
+    await useAppStore.getState().evaluate();
+    await vi.waitFor(
+      () => {
+        expect(useAppStore.getState().casualtyStatus).toBe('idle');
+        expect(useAppStore.getState().casualties?.provisional).toBe(false);
+      },
+      { timeout: 10_000 }
+    );
+    const c = useAppStore.getState().casualties;
+    if (c === null) throw new Error('casualties');
+
+    // The pair beside the headline is the fifth and ninety-fifth
+    // percentile of the toll under the published yield and burst-
+    // height scatter. Against a device whose yield is known to ten
+    // per cent that is a tight claim — where the vulnerability
+    // table's gentlest and harshest settings spanned a factor of four.
+    expect(c.deathsHigh / Math.max(c.deathsLow, 1)).toBeLessThan(2);
+
+    // ...and it says so, because a range of parameters and a
+    // predictive interval look identical in a pair of brackets.
+    expect(c.predictiveBand).toBe(true);
+
+    // Each end is one realisation taken whole, so the rows total to
+    // it. A column of per-band percentiles would not.
+    const bands = c.bands;
+    const sum = (f: (b: (typeof bands)[number]) => number): number =>
+      bands.reduce((acc, b) => acc + f(b), 0);
+    expect(sum((b) => b.deathsLow)).toBeCloseTo(c.deathsLow, -1);
+    expect(sum((b) => b.deathsHigh)).toBeCloseTo(c.deathsHigh, -1);
+
+    // What the band costs: two footprints beyond the plan's own
+    // rings, bracketing the radii the draws reach so that nothing
+    // outside the measured range is ever read off the curve. Plus the
+    // headline ring, when it is not already one of them.
+    const distinct = new Set(radii.map((r) => Math.round(r)));
+    expect(distinct.size).toBeGreaterThanOrEqual(c.bands.length + 2);
+    expect(distinct.size).toBeLessThanOrEqual(c.bands.length + 3);
+    expect(Math.min(...distinct)).toBeLessThan(Math.min(...c.bands.map((b) => b.outerRadiusM)));
+    expect(Math.max(...distinct)).toBeGreaterThan(Math.max(...c.bands.map((b) => b.outerRadiusM)));
+  });
+
   it('asks the coarse raster first for a provisional figure, then the fine backends', async () => {
     const calls: (boolean | undefined)[] = [];
     configurePopulationLookup((lat, lon, radiusM, _polygon, options) => {

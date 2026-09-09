@@ -47,7 +47,9 @@ export interface ExplosionMonteCarloMetrics extends Record<string, number> {
   ld50Radius: number;
 }
 
-function explosionSampler(nominal: ExplosionScenarioInput): (rng: Rng) => ExplosionScenarioInput {
+export function explosionSampler(
+  nominal: ExplosionScenarioInput
+): (rng: Rng) => ExplosionScenarioInput {
   return (rng: Rng): ExplosionScenarioInput => {
     const yieldMt = Math.max(
       sampleLognormal(rng, nominal.yieldMegatons, EXPLOSION_INPUT_SIGMA.yield.sigma),
@@ -56,12 +58,11 @@ function explosionSampler(nominal: ExplosionScenarioInput): (rng: Rng) => Explos
     const hobNominal = nominal.heightOfBurst === undefined ? 0 : (nominal.heightOfBurst as number);
     const hobSigma = Math.max(EXPLOSION_INPUT_SIGMA.heightOfBurst.sigma, 0.05 * hobNominal);
     const hob = Math.max(sampleNormal(rng, hobNominal, hobSigma), 0);
-    const out: ExplosionScenarioInput = {
-      yieldMegatons: yieldMt,
-      heightOfBurst: m(hob),
-    };
-    if (nominal.groundType !== undefined) out.groundType = nominal.groundType;
-    return out;
+    // Everything the caller set that is not sampled stays set: a
+    // conventional charge stays conventional, a burst beside the sea
+    // keeps its shore. Rebuilding the input from scratch used to drop
+    // those, so the Monte-Carlo of Beirut ran a nuclear device.
+    return { ...nominal, yieldMegatons: yieldMt, heightOfBurst: m(hob) };
   };
 }
 

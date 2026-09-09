@@ -232,7 +232,7 @@ Carlo wrappers for sampled inputs).
 | Tsunami propagation seeds     | tsunami/sourcePlacement.ts          | nearest water ≥ 10 m, body ≥ 24 cells, per compass sector, planetary mask                                                                                                                        | —                                                                | geometric   |
 | Conventional blast casualties | casualties.ts                       | 20/3/0.5/0.05 % at ≥12/5/2/1 psi, no flash, no mass fire, later deaths 2 % of the injured                                                                                                        | Glasstone & Dolan 1977 §12.44 (direct-blast lethality)           | ×3          |
 | Blast casualties              | casualties.ts                       | Σ pop(band) · m ; m = 98/50/5/0 % at ≥12/5/2/1 psi                                                                                                                                               | OTA 1979 table 2                                                 | ±factor 2   |
-| Shaking casualties            | casualties.ts                       | ν(S) = Φ(ln(S/θ)/β), θ = 13.5, β = 0.22 (band 14.5/0.12 – 11.5/0.30)                                                                                                                             | Jaiswal & Wald 2010 (PAGER)                                      | 3 orders    |
+| Shaking casualties            | casualties.ts                       | ν(S) = Φ(ln(S/θ)/β), θ and β from the country's PAGER fit (252 of them; median 14.57 / 0.205)                                                                                                    | Jaiswal & Wald 2010 (PAGER)                                      | 5–95 % band |
 | Pyroclastic casualties        | casualties.ts                       | 0.9 · pop(runout) + 0.9 · sector/360 · pop(blast annulus)                                                                                                                                        | Auker et al. 2013                                                | 50–100 %    |
 | Burn casualties               | casualties.ts                       | exposed 25 % (10–50) × mortality 50 % (30–80) inside the 3rd-degree radius, on the blast survivors                                                                                               | Glasstone & Dolan 1977 ch. XII                                   | ×2–3        |
 | Thermal horizon               | casualties.ts                       | d = R⊕ · arccos(R⊕ / (R⊕ + R_f)); R_f = 0.002 · E^(1/3) impact, 55 · W^0.4 nuclear                                                                                                               | Collins et al. 2005; Glasstone & Dolan 1977 §2.120               | geometry    |
@@ -258,8 +258,8 @@ through the cascade is in `src/physics/uq/` (see Phase 3 of the
 ## Casualties (Phase 23)
 
 The population-exposure figure of earlier phases is now converted to
-an estimated death toll, per hazard family, with a low–high band and
-the assumptions printed on the label (prompt effects only, nobody
+an estimated death toll, per hazard family, with a 5–95 % predictive
+band and the assumptions printed on the label (prompt effects only, nobody
 evacuated, no tsunami / fallout / famine / disease):
 
 - **Population** — WorldPop 2020 through the zonal-statistics API
@@ -274,11 +274,13 @@ evacuated, no tsunami / fallout / famine / disease):
   band; the 12 and 2 psi radii derive from the drawn 5 / 1 psi contours
   through the Kinney–Graham curve ratio at the event's yield.
 - **Shaking** (earthquakes) — PAGER log-normal rate at the mid-band
-  intensity of the MMI ≥ IX, VIII and VII annuli; central parameters
-  are an average building stock (θ = 13.5, β = 0.22), the band spans
-  the published national fits from earthquake-engineered (θ = 14.5,
-  β = 0.12) to unreinforced masonry (θ = 11.5, β = 0.30) — three
-  orders of magnitude, printed as such.
+  intensity of the MMI ≥ IX, VIII and VII annuli, with the country's
+  own fitted θ and β read from Jaiswal & Wald's 252-country table
+  (United States 46.16 / 0.434, Japan 11.86 / 0.101, Iran 9.32 / 0.10;
+  global median 14.57 / 0.205). The per-band low and high are the best
+  and the worst building stock in that same table, three orders of
+  magnitude apart — but that pair is no longer what the panel prints;
+  see "What the pair beside the figure is" below.
 - **Pyroclastic** (volcanoes) — 90 % inside the runout, the lateral
   blast weighted by its sector.
 - **Tsunami** (impacts, earthquakes, landslides, collapses) — counted
@@ -328,22 +330,56 @@ lost about one in a thousand of those at risk. The low end is
 therefore one per cent — the Merapi ratio — and the band is
 asymmetric on purpose, because that is the only honest thing to say
 about a pyroclastic current: if they left, almost nobody; if they did
-not, almost everybody. Mount St Helens now contains its 57. Pinatubo
-still misses, by eight per cent, and the eight per cent is left
-standing: containing it would be the wrong target anyway, since most
-of its 847 died under roofs loaded with wet ash, which this model
-does not simulate.
+not, almost everybody. Neither volcano row contains its record once
+the printed band stops being that parameter range: St Helens reads
+120 – 692 against 57 and Pinatubo 32 123 – 313 870 against 847, and
+both misses are true. Containing them would be the wrong target
+anyway — the model counts a current over people who had gone, and
+most of Pinatubo's 847 died under roofs loaded with wet ash, which it
+does not simulate at all.
 
-**The third is not corrected, and the reason matters.** The
-earthquake rows pass with bands up to five orders of magnitude wide —
-Northridge "passes" at 220× the record — because PAGER's spread is
-the unknown building stock and the model does not look up where it is
-standing. Narrowing it honestly means using Jaiswal & Wald's
-country-specific θ and β, which is a table in their paper and a data
-entry job, not a judgement call to be made from memory. Natural
-Earth's populated places carry an ISO country code that the shipped
-city index does not yet keep, so the lookup is cheap once the table
-exists. Until then the band stays wide, and wide is at least honest.
+**The third was that the band was never the model's uncertainty.**
+The earthquake rows passed with bands up to five orders of magnitude
+wide because the ends were the gentlest and harshest rows of the
+vulnerability table, picked — a range of parameters, not a claim
+about the event. That is now fixed at both ends: the country's own
+PAGER fit is looked up from the 252-country table (the shipped city
+index carries the ISO code), and the printed pair is a predictive
+interval.
+
+### What the pair beside the figure is
+
+`src/physics/uq/tollBand.ts`. The scenario is drawn 200 times from the
+published input scatter of `uq/conventions.ts` — magnitude σ 0.15 Mw,
+depth 20 %, Vs30 30 %, yield σ_log 0.1, height of burst ±50 m, plume
+and ejecta σ_log 0.5 and 0.3 — and, for shaking, dominated by the
+ground-motion residual σ_lnY ≈ 0.5 that separates a median prediction
+from one draw of the earth. Every draw goes through the same plan
+builder the application uses; the fifth and ninety-fifth percentiles
+of the resulting tolls are the band.
+
+Each end is a **whole realisation**, not a percentile taken column by
+column: percentiles do not add up, so a table built per column prints
+rows that refuse to total. A draw's rings rarely line up with the
+median's — at the ninety-fifth percentile of L'Aquila the MMI VIII
+contour runs three times further out — so each ring is spread over the
+median bands it overlaps, in proportion to the people in each overlap.
+Nothing is dropped and the rows total to the figure above them.
+
+Two things are held fixed and are therefore **not** in the band: the
+population, whose census error is its own question, and the
+vulnerability functions themselves, whose published scatter is a
+factor of 2–5. The panel says so.
+
+The population cannot be counted once per draw — a WorldPop band is
+tens of seconds. It is counted once per damage ring plus two
+footprints bracketing the radii the draws reach, and every sampled
+radius is read off that curve at one density per annulus (cumulative
+count linear in r²). What the interpolation costs is measured against
+the raster rather than assumed: `recordedTolls.test.ts` runs both and
+compares. Without the two bracketing footprints Pinatubo's high end
+moved by a factor of 2.7 — a band about the interpolation and not
+about the eruption; with them the worst comparable row is 1.37×.
 
 ### Burns, mass fire and later deaths (Phase 24)
 

@@ -1251,7 +1251,7 @@
     "loading": "Stima in corso: WorldPop calcola la popolazione dentro ogni fascia di danno (15–45 s per fascia)…",
     "unavailable": "Stima non disponibile: né l'API WorldPop né il raster di riserva hanno risposto.",
     "unsupported": "Nessuna stima per questo evento: il modello copre onda d'urto, scuotimento, flussi piroclastici e la costa raggiunta dall'onda; il conteggio dello tsunami compare quando la mappa d'onda tocca una costa.",
-    "deaths": "Morti stimati (min – max)",
+    "deaths": "Morti stimati",
     "injured": "Feriti (immediati)",
     "exposed": "Popolazione esposta",
     "table": {
@@ -1290,7 +1290,7 @@
       "coarse-raster": "popolazione: {{source}}",
       "fine-raster": "popolazione: {{source}}, tasselli da 2,5′"
     },
-    "disclaimer": "Ordine di grandezza, non conteggio: nessuna cura, e nessun preavviso dove l'onda arriva entro mezz'ora. Lo tsunami è contato dove la mappa d'onda tocca la costa, con la striscia inondata stimata dal run-up. Esclusi fallout, radiazione iniziale, carestia e malattie. La dispersione pubblicata di ogni funzione di vulnerabilità è un fattore 2–5.",
+    "disclaimer": "Ordine di grandezza, non conteggio: nessuna cura, e nessun preavviso dove l'onda arriva entro mezz'ora. Lo tsunami è contato dove la mappa d'onda tocca la costa, con la striscia inondata stimata dal run-up. Esclusi fallout, radiazione iniziale, carestia e malattie.",
     "provisional": "Cifra provvisoria dai tasselli a 4,6 km: WorldPop sta contando le fasce e la sostituirà.",
     "promptDeaths": "di cui immediati",
     "delayedDeaths": "di cui entro settimane",
@@ -1323,6 +1323,8 @@
         "plume": "la colonna eruttiva"
       },
       "anchors": "Eventi di questo tipo con {{what}} agli atti: {{list}}."
-    }
+    },
+    "bandNote": "La coppia fra parentesi è la banda 5–95 %: rifacendo lo stesso evento con la dispersione pubblicata dei suoi ingressi, nove volte su dieci il conto cade lì dentro. Non porta l’incertezza della funzione di vulnerabilità, che vale un fattore 2–5, né quella del censimento.",
+    "bandNoteWave": "La riga dell’onda porta ancora l’intervallo dei parametri, non la banda 5–95 %."
   }
 }

@@ -1164,7 +1164,7 @@
     "loading": "Estimating: WorldPop is counting the population inside each damage band (15–45 s per band)…",
     "unavailable": "Estimate unavailable: neither the WorldPop API nor the fallback raster answered.",
     "unsupported": "No estimate for this event: the model covers blast, shaking, pyroclastic currents and the coast the wave reaches; the tsunami count appears when the wave map touches a coast.",
-    "deaths": "Estimated deaths (low – high)",
+    "deaths": "Estimated deaths",
     "injured": "Injured (prompt)",
     "exposed": "Population exposed",
     "table": {
@@ -1203,7 +1203,7 @@
       "coarse-raster": "population: {{source}}",
       "fine-raster": "population: {{source}}, 2.5′ tiles"
     },
-    "disclaimer": "An order of magnitude, not a count: no care, and no warning where the wave arrives within half an hour. The tsunami is counted where the wave map touches the coast, with the flooded strip estimated from the run-up. Fallout, initial radiation, famine and disease excluded. The published scatter of every vulnerability function is a factor 2–5.",
+    "disclaimer": "An order of magnitude, not a count: no care, and no warning where the wave arrives within half an hour. The tsunami is counted where the wave map touches the coast, with the flooded strip estimated from the run-up. Fallout, initial radiation, famine and disease excluded.",
     "provisional": "Provisional figure from the 4.6 km tiles: WorldPop is counting the bands and will replace it.",
     "promptDeaths": "of which prompt",
     "delayedDeaths": "of which within weeks",
@@ -1236,6 +1236,8 @@
         "plume": "the eruption column"
       },
       "anchors": "Events of this kind with {{what}} on record: {{list}}."
-    }
+    },
+    "bandNote": "The pair in brackets is the 5–95 % band: run the same event again with the published scatter on its inputs and nine times in ten the count lands inside it. It does not carry the vulnerability function’s own uncertainty, a factor of 2–5, nor the census’s.",
+    "bandNoteWave": "The wave row still carries the range of parameters rather than the 5–95 % band."
   }
 }

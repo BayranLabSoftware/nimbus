@@ -61,7 +61,7 @@ export interface ImpactMonteCarloMetrics extends Record<string, number> {
   seismicMw: number;
 }
 
-function impactSampler(nominal: ImpactScenarioInput): (rng: Rng) => ImpactScenarioInput {
+export function impactSampler(nominal: ImpactScenarioInput): (rng: Rng) => ImpactScenarioInput {
   return (rng: Rng): ImpactScenarioInput => {
     const diameter = sampleLognormal(
       rng,
@@ -81,20 +81,16 @@ function impactSampler(nominal: ImpactScenarioInput): (rng: Rng) => ImpactScenar
       nominal.impactorDensity,
       IMPACT_INPUT_SIGMA.density.sigma
     );
-    const targetDensity = nominal.targetDensity; // ground-fixed, not sampled
     const angleRad = sampleImpactAngle(rng);
-    const out: ImpactScenarioInput = {
+    // Target density is ground-fixed and not sampled; it and every
+    // other unsampled field ride through untouched.
+    return {
+      ...nominal,
       impactorDiameter: m(diameter),
       impactVelocity: mps(velocity),
       impactorDensity: kgPerM3(impactorDensity),
-      targetDensity,
       impactAngle: angleRad as ImpactScenarioInput['impactAngle'],
     };
-    if (nominal.surfaceGravity !== undefined) out.surfaceGravity = nominal.surfaceGravity;
-    if (nominal.waterDepth !== undefined) out.waterDepth = nominal.waterDepth;
-    if (nominal.meanOceanDepth !== undefined) out.meanOceanDepth = nominal.meanOceanDepth;
-    if (nominal.impactorStrength !== undefined) out.impactorStrength = nominal.impactorStrength;
-    return out;
   };
 }
 

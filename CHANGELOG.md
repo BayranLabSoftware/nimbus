@@ -5,6 +5,55 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## [Unreleased]
 
+### Changed
+
+- **The pair beside the death toll is a predictive interval.** In the
+  product, and now for every event the simulator can resample, the low
+  and high figures are the 5th and 95th percentile of 200 realisations
+  drawn from the published input scatter, not the gentlest and
+  harshest settings of the vulnerability table. Hiroshima on Rome
+  reads 170 000 (150 000 – 190 000) where the old pair spanned a
+  factor of four; L'Aquila reads 270 (24 – 1 700) and the 309 counted
+  is inside it. Each end is a whole realisation rather than a column
+  of separate percentiles, because percentiles do not add up and the
+  rows have to total to the figure above them — matching a draw's
+  rings to the median's by name left the ninety-fifth percentile of
+  L'Aquila with nowhere to put its dead, and the panel said 24 – 1 700
+  while the counter rising along the shaking front ended on 27 – 360.
+  Rings are now spread over the median's by the people in each
+  overlap. The panel says which kind of band it is showing, and what
+  it does not carry: the vulnerability function's own factor of 2–5,
+  and the census.
+
+- **The Monte-Carlo samplers carry the whole scenario.** All four
+  rebuilt their input from scratch and silently dropped every field
+  they do not draw, so a realisation of Beirut ran a nuclear device
+  instead of ammonium nitrate, one of Sumatra ran on the 803 km the
+  regression gives rather than the 1 300 km observed, and one of
+  St Helens lost its lateral blast. Everything unsampled now rides
+  through untouched.
+
+- **Three rows of the toll net read differently for it.** Hiroshima
+  went from 47 924 – 198 927 to 107 004 – 129 200 and still contains
+  its record. Pinatubo went from 916 – 91 641 to 32 123 – 313 870: the
+  old low end missed by eight per cent and read like a model nearly
+  right, where the truth is two orders of magnitude and a mechanism —
+  roofs collapsing under wet ash — that is not modelled at all. Mount
+  St Helens stopped containing its 57: an evacuated eruption fell
+  inside 3 – 295 by accident, and 120 – 692 says plainly that a model
+  counting everyone who was there cannot reach a toll made by everyone
+  having left.
+
+- **What the interpolation costs is measured, not assumed.** The
+  browser cannot count the population once per realisation, so it
+  counts once per ring plus two footprints bracketing the radii the
+  draws reach, and reads every sampled radius off that curve at one
+  density per annulus. `recordedTolls.test.ts` runs both that curve
+  and the exact raster and compares: without the two brackets
+  Pinatubo's high end moved by a factor of 2.7 — a band about the
+  interpolation rather than about the eruption — and with them the
+  worst row left is 1.37×.
+
 ### Fixed
 
 - **A gate that could not fail.** Every gated row of the toll net

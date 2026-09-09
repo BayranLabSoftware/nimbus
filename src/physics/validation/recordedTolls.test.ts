@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { compareWithRecord, RECORDED_EVENTS } from './recordedTolls.js';
+import {
+  compareWithRecord,
+  RECORDED_EVENTS,
+  sampleToll,
+  shippedExposureCurve,
+} from './recordedTolls.js';
+import { populationWithin } from '../uq/tollBand.js';
 import { shippedPlanetTotal } from './shippedPopulation.js';
 
 /**
@@ -79,11 +85,59 @@ describe('a band that could not fail', () => {
   });
 
   it('the band is stable between runs, so a miss is a finding and not a draw', () => {
-    for (const event of RECORDED_EVENTS.filter((e) => e.sample !== undefined).slice(0, 3)) {
+    for (const event of RECORDED_EVENTS.slice(0, 3)) {
       const a = compareWithRecord(event);
       const b = compareWithRecord(event);
       expect(a.low, event.name).toBe(b.low);
       expect(a.high, event.name).toBe(b.high);
+    }
+  });
+});
+
+/**
+ * What the interpolation costs.
+ *
+ * The browser cannot query the population backend once per
+ * realisation — a band is tens of seconds — so it queries it once per
+ * ring and reads every sampled radius off the curve between them,
+ * at constant density across each annulus. This harness has the
+ * raster in memory and can afford the exact query at every radius.
+ *
+ * Running both and comparing is the only way to know that the band a
+ * visitor reads is a statement about the earth rather than about the
+ * interpolation. Three or four measured points is not many, and the
+ * radii a realisation asks for run well outside them.
+ */
+describe('the interpolated band and the measured one', () => {
+  it('agree closely enough that the shipped band is about the event', () => {
+    const lines: string[] = [];
+    const worst: { name: string; lo: number; hi: number }[] = [];
+    for (const event of RECORDED_EVENTS) {
+      const exact = sampleToll(event);
+      const curve = shippedExposureCurve(event);
+      const approx = sampleToll(event, (r) => populationWithin(curve, r));
+      if (exact === null || approx === null) continue;
+      if (exact.high.deaths <= 0) continue;
+      const ratio = (a: number, b: number): number =>
+        Math.max(a, 1) > Math.max(b, 1)
+          ? Math.max(a, 1) / Math.max(b, 1)
+          : Math.max(b, 1) / Math.max(a, 1);
+      const lo = ratio(exact.low.deaths, approx.low.deaths);
+      const hi = ratio(exact.high.deaths, approx.high.deaths);
+      lines.push(
+        `${event.name.padEnd(24)}${exact.high.deaths >= 100 ? ' ' : '*'}measured ${Math.round(exact.low.deaths).toLocaleString('en-US').padStart(9)} – ${Math.round(exact.high.deaths).toLocaleString('en-US').padStart(9)}   interpolated ${Math.round(approx.low.deaths).toLocaleString('en-US').padStart(9)} – ${Math.round(approx.high.deaths).toLocaleString('en-US').padStart(9)}   ${lo.toFixed(2)}× / ${hi.toFixed(2)}×`
+      );
+      // Below a hundred dead the two bands differ by fewer people
+      // than live in one cell of the raster they both read, so the
+      // ratio measures the raster and not the interpolation.
+      // Sumatra's shaking-only row is the case: 43 against 115.
+      const comparable = exact.high.deaths >= 100;
+      if (comparable) worst.push({ name: event.name, lo, hi });
+    }
+    console.log(['', ...lines, '', '* too few dead to compare — see the comment above'].join('\n'));
+    for (const w of worst) {
+      expect(w.lo, `${w.name}: low end`).toBeLessThan(2);
+      expect(w.hi, `${w.name}: high end`).toBeLessThan(2);
     }
   });
 });

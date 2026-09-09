@@ -252,7 +252,7 @@ The other three layers are still unanchored: exposure against census
 totals, the wave on more than one buoy row, and the vulnerability
 table's own scatter.
 
-### 2. The band must be the model's own uncertainty _(done for the toll net, 9 September)_
+### 2. The band must be the model's own uncertainty _(done, 9 September)_
 
 Northridge passes its gate with a band of 38 – 439 744. That span
 comes from no uncertainty at all: it is the two extreme parameter
@@ -278,9 +278,49 @@ misses with the cause filed rather than gates that could not fail. A
 new gate keeps the span under two and a half orders of magnitude so
 the absolution cannot return.
 
-Still to do: the same treatment for the explosion, volcano and wave
-rows, whose bands are still parameter ranges; and the same in the
-product, where the figure a visitor reads still carries the old pair.
+**Then the rest of the net, and the product.** The four Monte-Carlo
+samplers the uncertainty page already used now serve the band as well
+— one law per quantity — and each of them was rebuilding its scenario
+from scratch, silently dropping every input it does not draw: a
+realisation of Beirut ran a nuclear device, one of Sumatra ran on the
+803 km the regression gives rather than the 1 300 km observed. They
+carry the whole scenario now.
+
+Three rows read differently for it. Hiroshima went from 47 924 –
+198 927 to 107 004 – 129 200 and still contains the 105 000 counted —
+a device whose yield is known to ten per cent does not make a factor-
+four band. Pinatubo's went from 916 – 91 641 to 32 123 – 313 870: the
+old low end missed the record by eight per cent and read like a model
+very nearly right, where the truth is two orders of magnitude and a
+mechanism (roofs under wet ash) that is not modelled at all. And
+Mount St Helens stopped containing its record: 3 – 295 was the
+gentlest and harshest pyroclastic mortality in the table, and an
+evacuated eruption fell inside it by accident; 120 – 692 says plainly
+that a model counting everyone who was there cannot reach a toll made
+by everyone having left.
+
+**In the product too.** A visitor reads the same interval: 200 draws
+per scenario, about ten milliseconds of arithmetic, and the two ends
+are whole realisations rather than a column of separate percentiles —
+percentiles do not add up, and the rows have to total to the figure
+above them. Hiroshima on Rome reads 170 000 (150 000 – 190 000) where
+the old pair spanned a factor of four; L'Aquila reads 270 (24 – 1 700),
+and the record of 309 is inside it. The panel says which kind of band
+it is showing and what the band does not carry — the vulnerability
+function's own factor of 2–5, and the census.
+
+The population cannot be counted once per realisation: a WorldPop band
+is tens of seconds. It is counted once per ring, plus two more
+footprints bracketing the radii the draws reach, and every sampled
+radius is read off that curve at one density per annulus. What that
+costs is measured against the raster in `recordedTolls.test.ts` rather
+than assumed: without the two brackets Pinatubo's high end moved by a
+factor of 2.7 — a band about the interpolation and not about the
+eruption — and with them the worst row left is 1.37×.
+
+Still to do: the wave. The coastal toll's pair is still the range of
+the vulnerability parameters, and the panel says so on any scenario
+where the wave reaches a coast.
 
 ### 3. One law per quantity
 

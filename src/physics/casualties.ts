@@ -706,6 +706,12 @@ export interface CasualtyEstimate {
   /** True when the blast bands were the conventional ones rather than
    *  OTA's nuclear pair — the label has to say which. */
   conventional?: boolean;
+  /** True when `deathsLow`/`deathsHigh` are the fifth and ninety-fifth
+   *  percentiles of the toll under the published input scatter, rather
+   *  than the gentlest and harshest settings of the vulnerability
+   *  table. The two mean different things and the panel says which it
+   *  is showing. See `uq/tollBand.ts`. */
+  predictiveBand?: boolean;
   /** The coastal toll of the tsunami, when the wave map reached a
    *  coast; part of `deaths`. */
   tsunamiDeaths?: number;

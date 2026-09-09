@@ -193,6 +193,16 @@ export function CasualtiesPanel({
             <dt className={styles.resultLabel}>{t('casualties.exposed')}</dt>
             <dd className={styles.resultValue}>{people(casualties.exposed)}</dd>
           </dl>
+          {/* What the pair beside the figure is. A band drawn from the
+              published input scatter is a different claim from the
+              gentlest and harshest rows of a vulnerability table, and
+              a reader cannot tell the two apart by looking. */}
+          {casualties.predictiveBand === true && (
+            <p className={styles.mcFooter}>
+              {t('casualties.bandNote')}
+              {(casualties.tsunamiDeaths ?? 0) > 0 && ` ${t('casualties.bandNoteWave')}`}
+            </p>
+          )}
           {!compact && (
             <table className={styles.mcTable}>
               <thead>

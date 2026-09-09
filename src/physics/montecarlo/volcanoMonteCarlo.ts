@@ -42,7 +42,7 @@ export interface VolcanoMonteCarloMetrics extends Record<string, number> {
   ashfallArea: number;
 }
 
-function volcanoSampler(nominal: VolcanoScenarioInput): (rng: Rng) => VolcanoScenarioInput {
+export function volcanoSampler(nominal: VolcanoScenarioInput): (rng: Rng) => VolcanoScenarioInput {
   return (rng: Rng): VolcanoScenarioInput => {
     const vDot = sampleLognormal(
       rng,
@@ -54,7 +54,11 @@ function volcanoSampler(nominal: VolcanoScenarioInput): (rng: Rng) => VolcanoSce
       nominal.totalEjectaVolume,
       VOLCANO_INPUT_SIGMA.totalEjectaVolume.sigma
     );
+    // Unsampled fields ride through: the wind, a lateral blast, a
+    // flank collapse. Rebuilding the input from scratch used to drop
+    // them, so a realisation of St Helens lost its lateral blast.
     const out: VolcanoScenarioInput = {
+      ...nominal,
       volumeEruptionRate: Math.max(vDot, 1),
       totalEjectaVolume: Math.max(totalV, 1),
     };
@@ -65,9 +69,6 @@ function volcanoSampler(nominal: VolcanoScenarioInput): (rng: Rng) => VolcanoSce
         VOLCANO_INPUT_SIGMA.laharVolume.sigma
       );
     }
-    if (nominal.windSpeed !== undefined) out.windSpeed = nominal.windSpeed;
-    if (nominal.windDirectionDegrees !== undefined)
-      out.windDirectionDegrees = nominal.windDirectionDegrees;
     return out;
   };
 }

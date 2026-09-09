@@ -39,6 +39,14 @@ import {
   type CasualtyEstimate,
   type CasualtyPlan,
 } from '../physics/casualties.js';
+import {
+  bandFromPlans,
+  exposureCurve,
+  populationWithin,
+  sampleScenarioPlans,
+  samplingFootprints,
+  withPredictiveBand,
+} from '../physics/uq/tollBand.js';
 import { findPropagationSeeds, type PropagationSeed } from '../physics/tsunami/index.js';
 import { wrap, type Remote } from 'comlink';
 import {
@@ -1690,6 +1698,14 @@ async function runTsunamiCasualties(
   publishCasualties(result, get, set);
 }
 
+/** A seed that is the scenario itself: the same picture draws the
+ *  same two hundred worlds, every time it is drawn. */
+function tollBandSeed(result: ActiveResult, location: Coordinates): string {
+  const where = `${location.latitude.toFixed(4)}:${location.longitude.toFixed(4)}`;
+  if (result.type === 'landslide') return `landslide:${where}`;
+  return `${result.type}:${where}:${JSON.stringify(result.data.inputs)}`;
+}
+
 /**
  * Fetch the population inside every band (and the headline exposure
  * ring), then turn the plan into an estimate. Two passes: the shipped
@@ -1721,17 +1737,39 @@ async function runCasualtyLookup(
       ? `r:${radiusM.toString()}`
       : `p:${radiusM.toString()}:${polygon.length.toString()}`;
   const queries = new Map<string, { radiusM: number; polygon?: PopulationPolygon }>();
+  // Which of those footprints belong to the cumulative-population
+  // curve the band is read off: the plan's own rings and the two that
+  // bracket them, all of one family. The headline ring is a circle
+  // even when the bands are stadiums, so it stays out of the curve.
+  const curveKeys = new Map<string, number>();
+  const forCurve = (radiusM: number, polygon?: PopulationPolygon): void => {
+    const key = queryKey(radiusM, polygon);
+    queries.set(key, { radiusM, ...(polygon !== undefined && { polygon }) });
+    curveKeys.set(key, radiusM);
+  };
   if (plan !== null) {
-    for (const band of plan.bands) {
-      queries.set(queryKey(band.outerRadiusM, band.polygon), {
-        radiusM: band.outerRadiusM,
-        ...(band.polygon !== undefined && { polygon: band.polygon }),
-      });
-    }
+    for (const band of plan.bands) forCurve(band.outerRadiusM, band.polygon);
   }
   if (headline !== null) {
     queries.set(queryKey(headline.radiusM), { radiusM: headline.radiusM });
   }
+
+  // The band's realisations, drawn once and kept: they decide which
+  // two extra footprints have to be counted, and then — once they
+  // have been — what the toll does across all of them. Two more
+  // lookups is what a predictive interval costs; without them the
+  // outer draws read an extrapolation of the last annulus's density
+  // and the band becomes a statement about the interpolation. About
+  // ten milliseconds of arithmetic for the draws themselves.
+  const plans =
+    plan === null
+      ? []
+      : sampleScenarioPlans({
+          result,
+          planFor: (r) => casualtyPlanForResult(r, location),
+          seed: tollBandSeed(result, location),
+        });
+  for (const f of samplingFootprints(plans)) forCurve(f.radiusM, f.polygon);
 
   const collect = async (
     options: PopulationLookupOptions
@@ -1790,8 +1828,23 @@ async function runCasualtyLookup(
       source = hit.source;
     }
     const estimate = estimateCasualties(plan, cumulative);
+    // The pair beside the headline: the fifth and ninety-fifth
+    // percentile realisations, read off the curve these same lookups
+    // just measured. Where there is no sampler for the event type the
+    // model's own low/high pair stands, as it always did.
+    const curve = exposureCurve(
+      [...curveKeys].flatMap(([key, radiusM]) => {
+        const hit = lookups.get(key) ?? null;
+        return hit === null ? [] : [{ radiusM, exposed: hit.exposed }];
+      })
+    );
+    const band = bandFromPlans(plans, (radiusM) => populationWithin(curve, radiusM));
+    const withBand =
+      band === null
+        ? estimate
+        : withPredictiveBand(estimate, band, (radiusM) => populationWithin(curve, radiusM));
     set({
-      casualtiesBase: { ...estimate, source, method, provisional },
+      casualtiesBase: { ...withBand, source, method, provisional },
       casualtyStatus: provisional ? 'fetching' : 'idle',
     });
     publishCasualties(result, get, set);

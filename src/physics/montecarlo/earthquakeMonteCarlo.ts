@@ -54,7 +54,7 @@ export interface EarthquakeMonteCarloMetrics extends Record<string, number> {
   liquefactionRadius: number;
 }
 
-function earthquakeSampler(
+export function earthquakeSampler(
   nominal: EarthquakeScenarioInput
 ): (rng: Rng) => EarthquakeScenarioInput {
   return (rng: Rng): EarthquakeScenarioInput => {
@@ -71,16 +71,13 @@ function earthquakeSampler(
     // GMPE aleatory residual in ln-space: N(0, σ_lnY). Threaded into
     // simulateEarthquake, which scales every PGA by exp(residual).
     const groundMotionResidualLn = sampleNormal(rng, 0, EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma);
-    const out: EarthquakeScenarioInput = {
-      magnitude,
-      depth: m(depth),
-      vs30,
-      groundMotionResidualLn,
-    };
-    if (nominal.faultType !== undefined) out.faultType = nominal.faultType;
-    if (nominal.subductionInterface !== undefined)
-      out.subductionInterface = nominal.subductionInterface;
-    return out;
+    // Everything not sampled stays as the caller set it — the strike
+    // the stadium is drawn around, a documented rupture-length
+    // override, whether the basin had a warning system. Rebuilding
+    // the input from scratch used to drop those, so a realisation of
+    // Sumatra ran on the 803 km the regression gives rather than on
+    // the 1 300 km that was observed.
+    return { ...nominal, magnitude, depth: m(depth), vs30, groundMotionResidualLn };
   };
 }
 

@@ -1410,6 +1410,20 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         citation: melosh1989,
       },
       {
+        id: 'toll-band',
+        name: 'The death toll\u2019s 5\u201395\u2009% band',
+        formula: 'deaths_low = toll(draw at P5),  deaths_high = toll(draw at P95),  N = 200',
+        description:
+          'The pair beside the casualty figure is not the gentlest and harshest settings of the vulnerability table \u2014 that pair spans three to five orders of magnitude and contains almost any number. It is the 5th and 95th percentile of 200 realisations of the same scenario, drawn from the input scatter above and, for shaking, dominated by the ground-motion residual \u03c3_lnY \u2248 0.5 that separates a median prediction from one draw of the earth. Each end is a whole realisation rather than a percentile taken column by column, so the per-band rows total to the figure above them. Two things are held fixed and are therefore not in the band: the population (the census has its own error) and the vulnerability functions themselves (published scatter, a factor of 2\u20135). The population inside every sampled radius is read off a curve measured at each damage ring plus two footprints bracketing the radii the draws reach, at one density per annulus; what that interpolation costs is measured against the raster in the calibration suite and is under 1.4\u00d7 on every comparable row.',
+        citation: {
+          authors: 'Jaiswal, K. & Wald, D.',
+          year: 2010,
+          title:
+            'An empirical model for global earthquake fatality estimation (\u00a75, uncertainty)',
+          venue: 'Earthquake Spectra 26 (4), 1017\u20131037',
+        },
+      },
+      {
         id: 'percentile-band',
         name: 'Unweighted sample percentiles',
         formula: 'P_n = sort(samples)[⌊n · N / 100⌋]',
