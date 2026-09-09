@@ -146,9 +146,28 @@ async function fetchTile(x: number, y: number): Promise<ElevationGrid> {
 }
 
 /** Does this grid contain any land at all? */
-function hasLand(grid: ElevationGrid): boolean {
-  for (const v of grid.samples) if (v > 0) return true;
-  return false;
+/**
+ * Enough land in a tile to resolve the coast the wave will hit.
+ *
+ * A single zoom-8 tile is about 156 km across. A pick offshore can
+ * land in one whose corner clips a coastline and no more, and one
+ * corner of coast is not a coast: the Sumatra 2004 epicentre, which is
+ * 150 km out to sea, produced forty-three coastal cells out of the
+ * fourteen thousand the run-up field ended up with, and every one of
+ * the coasts that drowned in 2004 came off the planetary mosaic
+ * instead. Testing for any land at all let that through, because there
+ * was some.
+ *
+ * A quarter is the line. Below it the tile is mostly water and the
+ * nine-tile block is worth its eight extra fetches; above it there is
+ * a coastline in here to work with.
+ */
+const MIN_TILE_LAND_FRACTION = 0.25;
+
+function landFraction(grid: ElevationGrid): number {
+  let land = 0;
+  for (const v of grid.samples) if (v > 0) land++;
+  return grid.samples.length > 0 ? land / grid.samples.length : 0;
 }
 
 /** Side of the resampled block, in samples. Three zoom-8 tiles span
@@ -218,8 +237,8 @@ async function fetchTileBlock(x: number, y: number): Promise<ElevationGrid> {
  * The terrain under a pick, as a grid the simulator can run on.
  *
  * One tile, when one tile will do — which it does whenever the pick
- * is on or near land, and that is most picks. When the tile is all
- * water it will not do at all: a run-up field needs a coast to run up,
+ * is well inside a coastline, and that is most picks. When the tile is
+ * mostly water it will not do: a run-up field needs a coast to run up,
  * and a tile centred on an offshore epicentre has none. Tōhoku's
  * local tile was 120 km of open Pacific with the Sanriku coast a
  * degree outside it, so the entire Japanese shoreline was left to the
@@ -237,7 +256,7 @@ export async function fetchTerrainGridForLocation(
 ): Promise<ElevationGrid> {
   const { x, y } = lonLatToTile(latitude, longitude, TILE_ZOOM);
   const centre = await fetchTile(x, y);
-  if (hasLand(centre)) return centre;
+  if (landFraction(centre) >= MIN_TILE_LAND_FRACTION) return centre;
   return fetchTileBlock(x, y);
 }
 

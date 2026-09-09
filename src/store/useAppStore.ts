@@ -84,6 +84,7 @@ import { arrivalFunctionFor, buildCasualtyTimeline } from '../physics/casualtyTi
 import type { CasualtyTimeline } from '../physics/casualtyTimeline.js';
 import {
   estimateTsunamiCasualties,
+  WARNING_ISSUE_S,
   mergeTsunamiCasualties,
   type TsunamiCasualtyEstimate,
   type TsunamiCoastCell,
@@ -1499,6 +1500,25 @@ const EMPTY_TSUNAMI: TsunamiCasualtyEstimate = {
 const TSUNAMI_TOLL_SOURCE = 'GHS-POP 2020 (JRC), coastal land density';
 
 /**
+ * How long after the source a tsunami warning reaches the coast.
+ *
+ * Every ocean has a warning system today, so a scenario says nothing
+ * and gets the modern one. What says otherwise is a historical
+ * earthquake that predates its own basin's: the Indian Ocean had none
+ * in 2004 and the Pacific none before 1965, and for those the coast
+ * has no lead time however far away it is. Nothing else carries an
+ * era — an impact or a charge is hypothetical, and hypothetical means
+ * now.
+ */
+function warningIssueForResult(result: ActiveResult): number {
+  if (result.type === 'earthquake') {
+    const declared = result.data.inputs.warningIssueS;
+    if (declared !== undefined && !Number.isNaN(declared)) return declared;
+  }
+  return WARNING_ISSUE_S.modern;
+}
+
+/**
  * The coastal toll: every run-up cell of the wave map — the local
  * grid's, and the planet's beyond it — with its arrival time, the
  * land density around it from the population rasters, the strip the
@@ -1545,7 +1565,11 @@ async function runTsunamiCasualties(
     ...c,
     densityPerKm2: densities[i] ?? 0,
   }));
-  set({ tsunamiCasualties: estimateTsunamiCasualties(coast) });
+  set({
+    tsunamiCasualties: estimateTsunamiCasualties(coast, {
+      warningIssueS: warningIssueForResult(result),
+    }),
+  });
   publishCasualties(result, get, set);
 }
 

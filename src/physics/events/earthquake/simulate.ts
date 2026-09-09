@@ -62,6 +62,15 @@ export interface EarthquakeScenarioInput {
    *  omitted, defaults to 0 (rupture aligned N–S) — fine for the small
    *  point-source events where the stadium degenerates to a circle. */
   strikeAzimuthDeg?: number;
+  /** How long after the source a tsunami warning reaches the coast
+   *  (s), or `Infinity` for a basin with no system at all. Left
+   *  unset, the scenario is a modern one and the warning centres
+   *  bulletin within minutes — which is true today of every ocean,
+   *  and was not true of the Indian Ocean before 2006 or of the
+   *  Pacific before 1965. A preset that predates its own basin's
+   *  system says so here, and the coastal toll then stops assuming a
+   *  warning nobody could have given. */
+  warningIssueS?: number;
   /** Optional override for the surface rupture length L (m). Use when
    *  the empirical Wells-Coppersmith / Strasser-Arango-Bommer fits
    *  underpredict for an outlier event with documented finite-fault
@@ -383,6 +392,12 @@ export const EARTHQUAKE_PRESETS = {
       // covered by `ruptureLengthOverride` here.
       strikeAzimuthDeg: 330,
       ruptureLengthOverride: m(1_300_000),
+      // The Indian Ocean had no warning system in December 2004; it
+      // got one in 2006. Its far coasts had two hours of travel time
+      // and no warning whatsoever, and Sri Lanka and India lost more
+      // than fifty thousand people at distances where the Pacific
+      // would have been emptied twice over.
+      warningIssueS: Number.POSITIVE_INFINITY,
       ruptureWidthOverride: m(200_000),
     } satisfies EarthquakeScenarioInput,
   },
@@ -402,6 +417,8 @@ export const EARTHQUAKE_PRESETS = {
       // Azores–Gibraltar fracture zone strikes ≈ 70° (ENE-WSW;
       // Baptista & Miranda 2009, NHESS 9: 25, Fig. 5).
       strikeAzimuthDeg: 70,
+      // Two centuries before any warning system anywhere.
+      warningIssueS: Number.POSITIVE_INFINITY,
     } satisfies EarthquakeScenarioInput,
   },
   /** Valdivia, Chile — 22 May 1960. The largest earthquake ever
@@ -421,6 +438,9 @@ export const EARTHQUAKE_PRESETS = {
       // Chile Trench strikes ≈ 10° (almost due N–S), 1000 km rupture
       // from Concepción south to the Taitao Peninsula.
       strikeAzimuthDeg: 10,
+      // Five years before the Pacific warning system, which this
+      // earthquake and the 1964 Alaska one are the reason for.
+      warningIssueS: Number.POSITIVE_INFINITY,
     } satisfies EarthquakeScenarioInput,
   },
   /** Great Alaska earthquake, 27 March 1964 — Mw 9.2, Aleutian
@@ -441,6 +461,8 @@ export const EARTHQUAKE_PRESETS = {
       // Aleutian Megathrust strike ≈ 245° (W-SW from Prince William
       // Sound to Kodiak), Plafker 1965 Fig. 2.
       strikeAzimuthDeg: 245,
+      // A year before the Pacific warning system existed.
+      warningIssueS: Number.POSITIVE_INFINITY,
     } satisfies EarthquakeScenarioInput,
   },
   /** L'Aquila, Italy — 6 April 2009. Mw 6.3 normal-fault earthquake

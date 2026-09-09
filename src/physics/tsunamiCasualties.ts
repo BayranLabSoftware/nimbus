@@ -35,16 +35,26 @@ import type { RunupCell } from './tsunami/runupField.js';
  * where the wave took most of the people it reached above five
  * metres.
  *
- * Warning is a matter of time. A coast the wave reaches within half
- * an hour has none — the 2004 Indian Ocean coasts, the Sanriku towns
- * — and gets the no-warning pair; a coast hours away is warned in any
- * modern scenario, the Pacific centres bulletin within minutes of a
- * source and the far coasts empty (Tohoku 2011 killed one person
- * across the Pacific), and from three hours on the central pair is
- * the evacuated one, the low pair a coast that had the whole day. In
- * between the thresholds shift with the logarithm of the arrival
- * time. The high pair, Banda Aceh, holds throughout: the warning that
- * never came.
+ * Warning is a matter of time, but of two times and not one. What a
+ * coast has is the wave's travel time minus however long it takes a
+ * warning to be issued and delivered, and the second of those is a
+ * fact about the basin rather than about the wave. The Pacific
+ * centres bulletin within minutes and Japan's within three, so a
+ * Pacific coast hours from a source is empty when the water arrives:
+ * Tōhoku 2011 killed one person across the whole ocean. The Indian
+ * Ocean in 2004 had no system at all. Its far coasts had two hours of
+ * travel time and no warning whatsoever, and Sri Lanka and India lost
+ * more than fifty thousand people between them at distances where the
+ * Pacific would have been evacuated twice over.
+ *
+ * So the lead time is max(0, arrival − issue), and the vulnerability
+ * follows that rather than the arrival: none within half an hour of
+ * lead, evacuated from three hours of lead on, the thresholds
+ * doubling on a log scale between. A basin with no system has an
+ * infinite issue time, every coast has zero lead however far it is,
+ * and the model stops handing 2004 a warning that did not exist. The
+ * high pair, Banda Aceh, holds throughout: the warning that never
+ * came.
  *
  * The toll is dated: the cells are binned by arrival time, and the
  * sweep raises the counter as the wave lands, hours after the impact
@@ -73,21 +83,44 @@ export function tsunamiFatalityRate(depthM: number, params: TsunamiVulnerability
   return normalCdf(Math.log(depthM / params.theta) / params.beta);
 }
 
-/** Arrival within this (s): no warning reaches the coast. */
+/** Lead time under this (s): no warning is any use to the coast. */
 export const WARNING_ONSET_S = 30 * 60;
-/** Arrival beyond this (s): the coast has been warned and emptied. */
+/** Lead time beyond this (s): the coast has been warned and emptied. */
 export const WARNING_FULL_S = 3 * 3_600;
 
-/** The vulnerability triple for a coast the wave reaches `arrivalS`
- *  after the source: the no-warning pairs within half an hour, the
- *  evacuated pairs from three hours on, the thresholds doubling on a
- *  log scale in between; Banda Aceh as the high pair throughout. */
-export function vulnerabilityAt(arrivalS: number): {
+/**
+ * How long after the source a warning reaches a coast (s).
+ *
+ * `modern` is the operating case: the Pacific centre bulletins within
+ * minutes, Japan's within three, and since 2006 the Indian Ocean has
+ * a system of its own; ten minutes is the round number that covers
+ * them. `none` is a basin without one, and it is not a historical
+ * curiosity — it is the 2004 Indian Ocean, where the difference
+ * between the two is most of the dead.
+ */
+export const WARNING_ISSUE_S = {
+  modern: 10 * 60,
+  none: Number.POSITIVE_INFINITY,
+} as const;
+
+/** The lead time a coast actually has: travel time less the time the
+ *  warning takes to arrive, and never negative. */
+export function warningLeadS(arrivalS: number, issueS: number): number {
+  if (!Number.isFinite(issueS)) return 0;
+  const t = Math.max(0, Number.isFinite(arrivalS) ? arrivalS : 0);
+  return Math.max(0, t - Math.max(0, issueS));
+}
+
+/** The vulnerability triple for a coast with `leadS` of warning: the
+ *  no-warning pairs under half an hour, the evacuated pairs from
+ *  three hours on, the thresholds doubling on a log scale in between;
+ *  Banda Aceh as the high pair throughout. */
+export function vulnerabilityAt(leadS: number): {
   low: TsunamiVulnerability;
   mid: TsunamiVulnerability;
   high: TsunamiVulnerability;
 } {
-  const t = Math.max(0, Number.isFinite(arrivalS) ? arrivalS : 0);
+  const t = Math.max(0, Number.isFinite(leadS) ? leadS : 0);
   const f =
     t <= WARNING_ONSET_S
       ? 0
@@ -184,10 +217,21 @@ const ARRIVAL_BINS = 12;
  * The coastal toll from run-up cells with a coastal density each.
  * Cells without an arrival time are dated at time zero.
  */
+export interface TsunamiCasualtyOptions {
+  /** How long after the source a warning reaches the coast (s).
+   *  Defaults to {@link WARNING_ISSUE_S.modern}; pass
+   *  {@link WARNING_ISSUE_S.none} for a basin that had no system. */
+  warningIssueS?: number;
+  /** How many arrival bins the toll is dated into. */
+  bins?: number;
+}
+
 export function estimateTsunamiCasualties(
   cells: readonly TsunamiCoastCell[],
-  bins = ARRIVAL_BINS
+  options: TsunamiCasualtyOptions = {}
 ): TsunamiCasualtyEstimate {
+  const bins = options.bins ?? ARRIVAL_BINS;
+  const issueS = options.warningIssueS ?? WARNING_ISSUE_S.modern;
   interface CellToll {
     arrivalS: number;
     people: number;
@@ -206,7 +250,7 @@ export function estimateTsunamiCasualties(
     const depth = meanFlowDepth(height);
     const arrival =
       cell.arrivalS !== undefined && Number.isFinite(cell.arrivalS) ? cell.arrivalS : 0;
-    const vulnerability = vulnerabilityAt(arrival);
+    const vulnerability = vulnerabilityAt(warningLeadS(arrival, issueS));
     tolls.push({
       arrivalS: Math.max(0, arrival),
       people,

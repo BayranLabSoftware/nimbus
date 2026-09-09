@@ -10,6 +10,8 @@ import {
   mergeTsunamiCasualties,
   shoreHeight,
   TSUNAMI_VULNERABILITY,
+  WARNING_ISSUE_S,
+  warningLeadS,
   tsunamiFatalityRate,
   vulnerabilityAt,
   WARNING_FULL_S,
@@ -226,5 +228,43 @@ describe('shoreHeight — the clamp is a ceiling, not a measurement', () => {
     expect(inundationDistance(shoreHeight(55.4, 13.8))).toBeGreaterThan(1_500);
     expect(inundationDistance(shoreHeight(55.4, 13.8))).toBeLessThan(3_000);
     expect(inundationDistance(55.4)).toBe(MAX_INUNDATION_M);
+  });
+});
+
+describe('a warning nobody could have given', () => {
+  const cell = {
+    latitude: 6,
+    longitude: 80,
+    runupM: 6,
+    amplitudeM: 6,
+    slopeRad: Math.atan(1 / 100),
+    spacingM: 40_000,
+    densityPerKm2: 500,
+    arrivalS: 2 * 3_600,
+  };
+
+  it('two hours of travel time is two hours of warning, in a basin that has one', () => {
+    const warned = estimateTsunamiCasualties([cell], { warningIssueS: WARNING_ISSUE_S.modern });
+    const unwarned = estimateTsunamiCasualties([cell], { warningIssueS: WARNING_ISSUE_S.none });
+    // Same wave, same people, same coast. The only difference is
+    // whether anyone could tell them it was coming.
+    expect(unwarned.deaths).toBeGreaterThan(warned.deaths);
+    expect(unwarned.exposed).toBeCloseTo(warned.exposed, 6);
+  });
+
+  it('a basin with no system gives no lead however far the coast is', () => {
+    expect(warningLeadS(6 * 3_600, WARNING_ISSUE_S.none)).toBe(0);
+    expect(warningLeadS(6 * 3_600, WARNING_ISSUE_S.modern)).toBeCloseTo(6 * 3_600 - 600, 6);
+  });
+
+  it('the lead is the travel time less the issue, never negative', () => {
+    expect(warningLeadS(300, WARNING_ISSUE_S.modern)).toBe(0);
+    expect(warningLeadS(0, 0)).toBe(0);
+  });
+
+  it('the modern default is what an unstated scenario gets', () => {
+    const stated = estimateTsunamiCasualties([cell], { warningIssueS: WARNING_ISSUE_S.modern });
+    const unstated = estimateTsunamiCasualties([cell]);
+    expect(unstated.deaths).toBeCloseTo(stated.deaths, 6);
   });
 });

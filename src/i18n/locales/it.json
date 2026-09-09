@@ -1305,7 +1305,7 @@
       "tsunami": "tsunami"
     },
     "tsunamiDeaths": "di cui dall'onda",
-    "coarseCoast": "Il conteggio costiero è letto su una griglia d'onda a 40 km: una costa viene campionata ogni quaranta chilometri e ogni campione vale per quaranta. Per un sisma non esiste ancora un campo locale più fine, quindi anche la costa vicina alla rottura è letta a quella risoluzione, e il numero può sbagliare di un ordine di grandezza in entrambi i versi.",
+    "coarseCoast": "Il conteggio costiero è letto su una griglia d'onda: attorno alla sorgente il passo scende sotto il chilometro, sul resto del pianeta sta fra dieci e trenta chilometri, e ogni campione vale per il tratto di costa che rappresenta. Dove il passo è largo una costa frastagliata viene contata meno di quanto sia, e il numero può sbagliare di un ordine di grandezza in entrambi i versi. Il preavviso è quello del bacino: dove un sistema d'allarme non esisteva — l'Oceano Indiano nel 2004, il Pacifico prima del 1965 — nessuna costa ne riceve uno, per quanto lontana sia.",
     "envelope": {
       "measured": "Taratura: {{event}}, la stessa scala, con {{what}} agli atti. Il confronto gira a ogni build.",
       "interpolated": "Taratura: fra {{low}} e {{high}}, entrambi con {{what}} agli atti.",

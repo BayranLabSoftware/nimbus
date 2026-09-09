@@ -1218,7 +1218,7 @@
       "tsunami": "tsunami"
     },
     "tsunamiDeaths": "of which from the wave",
-    "coarseCoast": "The coastal figure is read off a 40 km wave grid: a coastline is sampled every forty kilometres and each sample stands for forty. For an earthquake there is not yet a finer local field, so even the coast near the rupture is read at that resolution, and the number can be an order of magnitude out either way.",
+    "coarseCoast": "The coastal figure is read off a wave grid: under a kilometre per sample around the source, ten to thirty kilometres over the rest of the planet, and each sample stands for the stretch of coast it represents. Where the step is wide an indented coastline is counted for less than it is, and the number can be an order of magnitude out either way. The warning is the basin's: where no system existed — the Indian Ocean in 2004, the Pacific before 1965 — no coast gets one, however far away it is.",
     "envelope": {
       "measured": "Calibration: {{event}}, the same size, with {{what}} on record. The comparison runs on every build.",
       "interpolated": "Calibration: between {{low}} and {{high}}, both with {{what}} on record.",

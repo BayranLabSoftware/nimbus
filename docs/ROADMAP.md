@@ -567,6 +567,26 @@ Tōhoku's coastal toll moved 3 800 → 6 500 drowned against about
 row was never the beam — it is the forty-kilometre coastal grid and
 the warning-time assumption, both open above.
 
+### P1 — Sumatra's far coasts are under-waved _(open, 9 September)_
+
+With the warning fixed and the local grid widened, Sumatra 2004's
+modelled coastal toll is 1 400 drowned against near 227 000. The two
+things it was blamed on have been measured and are not it.
+
+What is left is the wave. The field's mean coastal run-up for that
+event is 2.9 m and its maximum 19.7 m, where the record is 5–10 m
+through Sri Lanka and India and 15–30 m in Aceh. The inundation strip
+goes as H^(4/3), so a factor of three in run-up is a factor of four in
+the strip before the mortality function is even asked, and the
+exposure comes out at 430 000 people for an event that drowned half
+that many.
+
+Would move: the worst row in the calibration net, and every far-coast
+toll of every megathrust. Where to look: the amplitude the field
+carries a thousand kilometres from a line source, which is the same
+cylindrical law the far-field rows use, and the shoaling cap on the
+way in.
+
 ### P3 — Caps the scalar path does not have
 
 The field clamps run-up at four times the arriving amplitude and the

@@ -7,6 +7,24 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A warning nobody could have given.** The coastal toll took the
+  wave's travel time as the warning time, so the 2004 Indian Ocean —
+  which had no warning system at all — was handed a warning at every
+  coast more than half an hour out. The lead time is now
+  max(0, arrival − issue), and the issue time is a property of the
+  basin: ten minutes by default because every ocean has a system
+  today, infinite for the presets that predate their own (Sumatra
+  2004, Lisbon 1755, Valdivia 1960, Alaska 1964). Sumatra's modelled
+  coastal toll went from 120 drowned to 1 500; Tōhoku's did not move,
+  because Tōhoku was warned.
+- **The coast a single tile cannot see.** The local run-up grid was
+  widened to nine tiles only when its own tile held no land at all,
+  and a pick 150 km offshore clips a corner of coastline, which counts
+  as land. Sumatra 2004 came out with 43 local coastal cells out of
+  14 693. The test is now a quarter of the tile: Sumatra's local cells
+  went to 406 and Tōhoku's to 585, and Tōhoku's coastal toll rose from
+  6 500 drowned to 7 100 against about 16 700 recorded.
+
 - **A floor under the directivity beam.** The array factor has zeros
   and a fault does not: it moves together over a correlation length ℓ
   and breaks into N = L/ℓ pieces that add as √N where coherent ones

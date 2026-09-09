@@ -414,6 +414,61 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### A warning nobody could have given (Phase 31)
+
+The coastal toll asked one question about warning and should have
+asked two. It took the wave's travel time as the warning time: a coast
+half an hour out has none, a coast three hours out has been emptied.
+That is right for the Pacific, where the centres bulletin within
+minutes and Japan's within three — Tōhoku 2011 killed one person
+across the whole ocean. It is wrong for the Indian Ocean in December
+2004, which had no system at all. Its far coasts had two hours of
+travel time and no warning whatsoever, and Sri Lanka and India lost
+more than fifty thousand people between them at distances where the
+Pacific would have been evacuated twice over.
+
+So the lead time is what a coast actually has: **max(0, arrival −
+issue)**, and the issue time is a fact about the basin rather than
+about the wave. A scenario says nothing and gets the modern case, ten
+minutes, because every ocean has a system today. A preset that
+predates its own basin's says so — Sumatra 2004, and Lisbon 1755,
+Valdivia 1960 and Alaska 1964, the last two being the earthquakes the
+Pacific system was built after. Their coasts then have no lead however
+far out they are.
+
+It is one law with one input, not a branch on which event is running.
+Sumatra's modelled coastal toll went from 120 drowned to **1 500**, a
+factor of twelve, and Tōhoku's did not move, because Tōhoku was warned.
+
+### The coast a single tile cannot see (Phase 31b)
+
+The run-up field is built on two grids: a local one fetched around the
+pick, under a kilometre per sample, and the planetary mosaic at ten to
+thirty. The local one is a single zoom-8 tile, about 156 km across,
+and it was fetched as a block of nine only when the tile held no land
+at all.
+
+A pick offshore breaks that test without failing it. The Sumatra 2004
+epicentre is 150 km out to sea; its tile clips a corner of coastline,
+which is land, so one tile was judged enough — and the run-up field
+came out with **43 local coastal cells out of 14 693**. Every coast
+that drowned in 2004 came off the planetary mosaic instead.
+
+The test is now a quarter of the tile rather than a single sample of
+it: below that the tile is mostly water and the eight extra fetches
+are worth making. Sumatra's local cells went from 43 to 406 and
+Tōhoku's to 585, and Tōhoku's coastal toll rose from 6 500 drowned to
+7 100 against about 16 700 recorded.
+
+Sumatra's did not move, and that is the useful part of the
+measurement: its dead were hundreds to thousands of kilometres from
+the source, on coasts no local grid will ever reach. What holds that
+row down now is neither the warning nor the grid but the wave itself —
+the field's mean coastal run-up for that event is 2.9 m where the
+2004 record is 5–10 m in Sri Lanka and 15–30 m in Aceh, and the
+inundation strip goes as H^(4/3), so the exposure is short before the
+mortality is even asked. That is the next thing to measure.
+
 ### The floor under the beam (Phase 30)
 
 The array factor has zeros; a fault does not. That was the one thing
