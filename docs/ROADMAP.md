@@ -209,6 +209,89 @@ page and trying to break it. That step is worth planning for.
 
 ---
 
+## M9 — Laboratory level: how the model gets there _(open, 9 September)_
+
+M8 is a list of things that were wrong. This is the shape of the work
+that stops them recurring, written after a day of finding them by
+hand, and the order is the argument.
+
+Where the model stands on the day this was written: eleven
+observational anchors within a factor of 1.5 — Hiroshima at 1.08×,
+Northridge 0.67×, L'Aquila 0.73×, Tōhoku's coast 1.44×, Krakatau
+0.71×, DART 0.93×, and five wave rows inside their bands. Six rows
+still out by four to a hundred: Pinatubo 97×, Amatrice 0.02×, Gorkha
+0.06×, Tōhoku's headline 11×, Sumatra's coast 0.011×, and the report's
+own DART row 5×.
+
+### 1. Verify the layers, not just the toll _(first, because it unblocks the rest)_
+
+A death toll is the product of five models — intensity, exposure,
+vulnerability, geometry, warning — and when it is wrong it does not
+say which. Finding out took most of 9 September, by hand, one
+instrumented run at a time.
+
+Every intermediate quantity has a free public anchor:
+
+| layer              | anchor                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------- |
+| intensity field    | USGS ShakeMap publishes the MMI polygon of every event since 2000, machine-readable, no key |
+| wave amplitude     | DART buoys and tide gauges — used, but on one row                                           |
+| exposed population | GHS-POP against census totals                                                               |
+| vulnerability      | PAGER's 252-country table, now in the model                                                 |
+
+This turns "Tōhoku reads 200 000 against 18 500" from a mystery
+spanning five models into a question with an answer.
+
+### 2. The band must be the model's own uncertainty
+
+Northridge passes its gate with a band of 38 – 439 744. That span
+comes from no uncertainty at all: it is the two extreme parameter
+pairs, chosen. A gate that cannot fail is not a gate, and three of the
+five gated rows pass that way.
+
+The laboratory version propagates the _published_ scatter of each
+input — PAGER's 252 fits carry their own `maxobs`, Koshimura's
+fragility its scatter, GHS-POP its own — through the Monte Carlo this
+project already has, and uses the result as the band. Then "contains
+the record" means something.
+
+### 3. One law per quantity
+
+The veil on the globe reads 0.28 m at DART 21413 and the report prints
+1.93 m for the same wave. A reviewer sees that in thirty seconds and
+stops trusting the rest.
+
+The six anchored rows blocking the unification — G-TOH-DART, the
+Tōhoku replay fixture, the B-006 registry entry, the Cocos NOAA pin
+and two module tests — were fitted around the law that is wrong. They
+need re-anchoring, not protecting.
+
+### 4. The MMI footprint
+
+The 10× on the headline of every earthquake. The contours come from a
+point-source attenuation inflated into a rupture stadium, and a
+megathrust whose slip is concentrated does not shake its whole
+rectangle at MMI IX. After (1) this is a measurement rather than a
+conjecture.
+
+### 5. Widen the anchors where the model is blind
+
+Volcanoes have two toll rows and Pinatubo is 97× out; Merapi 2010,
+Unzen 1991 and Nevado del Ruiz 1985 are all documented. And one thing
+to declare permanently rather than fix: no impact in recorded history
+has killed anyone, so an impact's toll will never be validated. The
+envelope says so already — laboratory level means being right about
+that too.
+
+### What is not on this list, because it exists
+
+Reproducibility (the replay fixtures), provenance in the output (the
+equation cards), an independent implementation to compare against (the
+GeoCLAW fixtures), and a sensitivity analysis (`scripts/sensitivity.ts`,
+which is written but not surfaced). The foundations are there. It is
+the _verification_ that is the weak link, which is why the first two
+entries are about it.
+
 ## M8 — The toll, and what it still gets wrong _(open)_
 
 The casualty model landed on 8 September 2026: blast, burns, mass
