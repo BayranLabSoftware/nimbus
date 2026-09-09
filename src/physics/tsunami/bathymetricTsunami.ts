@@ -77,6 +77,12 @@ export interface BathymetricTsunamiInput {
    *  field; omitted, the source is unoriented. */
   strikeDeg?: number;
   ruptureLengthM?: number;
+  /** Wavelength of the source disturbance (m). Passed rather than
+   *  inferred, so the field disperses and beams on the same number
+   *  the scenario itself reports — for a megathrust that is twice the
+   *  down-dip width, and the field's fallback of twice the cavity
+   *  radius would be the along-strike scale instead. */
+  sourceWavelengthM?: number;
   /** Phase 11 — optional low-resolution global grid (~40 km/pixel,
    *  full planet). When provided alongside `grid`, the orchestrator
    *  emits an additional global FMM + amplitude pair so the renderer
@@ -177,6 +183,9 @@ export function computeBathymetricTsunami(
       }),
       ...(input.strikeDeg !== undefined && { strikeDeg: input.strikeDeg }),
       ...(input.ruptureLengthM !== undefined && { ruptureLengthM: input.ruptureLengthM }),
+      ...(input.sourceWavelengthM !== undefined && {
+        sourceWavelengthM: input.sourceWavelengthM,
+      }),
       sourceLatitude: input.sourceLatitude,
       sourceLongitude: input.sourceLongitude,
     });
@@ -228,6 +237,9 @@ export function computeBathymetricTsunami(
         }),
         ...(input.strikeDeg !== undefined && { strikeDeg: input.strikeDeg }),
         ...(input.ruptureLengthM !== undefined && { ruptureLengthM: input.ruptureLengthM }),
+        ...(input.sourceWavelengthM !== undefined && {
+          sourceWavelengthM: input.sourceWavelengthM,
+        }),
         sourceLatitude: input.sourceLatitude,
         sourceLongitude: input.sourceLongitude,
       });

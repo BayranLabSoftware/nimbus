@@ -414,6 +414,59 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### What a megathrust radiates on (Phase 28)
+
+The previous section left one question, and the codebase turned out to
+be answering it three ways at once. The report printed a source
+wavelength of 2·L, the along-strike length doubled. The wave field on
+the globe fell back on twice its cavity radius, which for a rupture is
+L. The dispersion and the directivity beam both used whichever of
+those reached them. One source, three wavelengths.
+
+The recorded period settles it, and it is not close. At four
+kilometres of ocean the celerity is 198 m/s, so a wavelength implies a
+period directly:
+
+|         | λ          | period     |
+| ------- | ---------- | ---------- |
+| 2·L     | 1 400 km   | 1 h 58     |
+| L       | 700 km     | 59 min     |
+| **2·W** | **470 km** | **39 min** |
+
+The leading wave at DART 21413 had a period of roughly thirty to forty
+minutes (Satake et al. 2013). No buoy recorded a two-hour leading
+wave. The wavelength is 2·W.
+
+The physics agrees with the buoy. A megathrust lifts a long, narrow
+ridge of seafloor — L along strike, W across it — and the wave that
+leaves the fault broadside is shaped by the across-strike profile,
+because that is the direction it is travelling in. Along strike the
+source really is 2·L long, but very little energy goes that way, and
+none of the far-field records this model is checked against sit
+there.
+
+It is now one number computed once and passed to everyone who needs
+it: the dispersion, the beam on the globe, and the period printed in
+the panel. That last one is the check a reader can make for
+themselves.
+
+**What it moved.** The directivity beam, which is the point: the array
+factor goes as L/λ, and with λ tied to L that ratio was frozen at a
+half however long the rupture, so the beam could never sharpen. On
+2·W it is L/2W — the aspect ratio — and a rupture seven times longer
+than its own wave finally beams like one.
+
+The coastal toll of Tōhoku fell from 5 600 drowned to 3 800, and
+Sumatra's from 130 to 100. Both were already far under their records —
+about 16 700 drowned in Tōhoku and near 227 000 in Sumatra — and a
+narrower beam takes a little more off the parts of a coast that are
+not broadside to the rupture. That shortfall has causes of its own,
+written up under M8: a coastal grid sampled every forty kilometres, a
+warning-time assumption that gives 2004 a warning it did not have, and
+a scalar path with no directivity at all. None of them is the source
+wavelength, and none of them is a reason to keep a wavelength the
+buoys contradict.
+
 ### One dispersion law, and what removing the other one showed (Phase 27)
 
 Two laws were shipped at once. The wave field on the globe carried

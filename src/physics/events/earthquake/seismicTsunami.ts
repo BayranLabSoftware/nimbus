@@ -279,14 +279,12 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
   const amp1000 = amp(1_000_000);
   const amp5000 = amp(5_000_000);
   const basinDepth = (input.basinDepth ?? m(DEFAULT_BASIN_DEPTH)) as number;
-  // Dominant source wavelength ≈ 2 · L, the line source's first
-  // Fourier mode (Satake 2013 BSSA 103 (2B): 1473–1492). For a
-  // seven-hundred-kilometre rupture that is 1 400 km of wave over
-  // four kilometres of ocean, and such a wave does not disperse: the
-  // parameter comes out near zero and the factor near one, at DART
-  // range and across an ocean alike.
+  // Twice the down-dip width — see the note on `wavelength` below for
+  // why W and not L. Even at 410 km a wave over four kilometres of
+  // ocean barely disperses, so this factor stays near one at DART
+  // range; it is the directivity that the choice of W changes.
   const disperse = (range: number): number =>
-    dispersionFactor({ rangeM: range, depthM: basinDepth, wavelengthM: 2 * L });
+    dispersionFactor({ rangeM: range, depthM: basinDepth, wavelengthM: 2 * W });
   const amp5000Disp = amp5000 * disperse(5_000_000);
   // Phase-20: also surface the dispersion-corrected amplitude at
   // 1 000 km. Pre-Phase-20 only the 5 000 km value applied the
@@ -316,11 +314,28 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
   const basin = m(basinDepth);
   const travel = tsunamiTravelTime(m(1_000_000), basin);
   const celerity = shallowWaterWaveSpeed(basin);
-  // Dominant source wavelength ≈ 2 · L (the line source's first
-  // Fourier mode). For Tōhoku 2011's 700 km rupture this gives
-  // λ ≈ 1 400 km, matching the dominant component observed on
-  // DART buoys (Satake et al. 2013, BSSA 103 (2B): 1473–1492).
-  const wavelength = m(2 * L);
+  // Dominant source wavelength ≈ 2 · W, twice the down-dip width.
+  //
+  // A megathrust lifts a long, narrow ridge of seafloor: L along
+  // strike, W across it. The wave that leaves the fault broadside —
+  // the one that crosses an ocean and reaches a far coast — is shaped
+  // by the across-strike profile, so its wavelength is set by W and
+  // not by L. Along strike the source does look 2 · L long, but very
+  // little energy goes that way, and none of the far-field records
+  // this model is checked against sit there.
+  //
+  // The recorded period settles it. At 4 km of ocean the celerity is
+  // 198 m/s, so 2 · W = 410 km for Tōhoku gives about 35 minutes,
+  // against the 30–40 minutes of its leading wave at DART 21413
+  // (Satake et al. 2013, BSSA 103 (2B): 1473–1492). Taking 2 · L
+  // instead would give 1 400 km and a period near two hours, which no
+  // buoy recorded.
+  //
+  // This is one number in two places: the same wavelength sets the
+  // dispersion below and the width of the directivity beam on the
+  // globe, because both are questions about the shape of the radiated
+  // wave and there is only one of those.
+  const wavelength = m(2 * W);
   const period = s(wavelength / Math.max(celerity, 1e-6));
 
   void STANDARD_GRAVITY;

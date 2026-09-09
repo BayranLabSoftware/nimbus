@@ -7,6 +7,20 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **One source wavelength for a megathrust, and the buoys chose it.**
+  The codebase carried three: 2·L in the report, L in the wave field,
+  and whichever reached the dispersion and the beam. At 4 km of ocean
+  those imply leading waves of two hours, one hour and thirty-nine
+  minutes; DART 21413 recorded thirty to forty (Satake 2013), so the
+  wavelength is 2·W — twice the down-dip width, which is the profile a
+  wave leaving the fault broadside actually sees. It is now computed
+  once and passed to the dispersion, the directivity and the printed
+  period alike. The beam was the point: the array factor goes as L/λ,
+  frozen at one half while λ was tied to L, and now the aspect ratio,
+  so a long rupture beams like one. Tōhoku's coastal toll moved 5 600
+  → 3 800 drowned and Sumatra's 130 → 100, both already far under
+  their records for causes documented under M8.
+
 - **One dispersion law instead of two.** The globe's wave field
   carried Kajiura's parameter while everything else carried a fixed
   exponential, printed under a citation the code's own comment

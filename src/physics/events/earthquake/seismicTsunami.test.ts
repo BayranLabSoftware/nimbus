@@ -109,17 +109,24 @@ describe('seismicTsunamiFromMegathrust', () => {
     expect(r.deepWaterCelerity as number).toBeLessThan(203);
   });
 
-  it('Tōhoku 2011-like dominant wavelength ≈ 2 × rupture, period in the hours range', () => {
-    // L ≈ 700 km → λ ≈ 1 400 km; T ≈ λ / c with c ≈ 198 m/s gives
-    // T ≈ 7 070 s ≈ 1.96 h — matches the dominant period observed at
-    // DART buoys (Satake et al. 2013 inversion).
+  it('Tōhoku 2011: the dominant period matches the one the buoys recorded', () => {
+    // This is the observation that settles the source wavelength. The
+    // leading wave at DART 21413 had a period of roughly half an hour
+    // to forty minutes (Satake et al. 2013 BSSA 103 (2B): 1473–1492).
+    //
+    // λ = 2·W over 4 km of ocean gives about that. λ = 2·L, which
+    // this model used until 9 September 2026, gives close to two
+    // hours, and no buoy recorded a two-hour leading wave.
     const r = seismicTsunamiFromMegathrust({
       magnitude: 9.1,
       ruptureLength: m(700_000),
     });
-    expect(r.sourceWavelength as number).toBe(1_400_000);
-    expect(r.dominantPeriod as number).toBeGreaterThan(6_500);
-    expect(r.dominantPeriod as number).toBeLessThan(7_500);
+    const minutes = (r.dominantPeriod as number) / 60;
+    expect(minutes).toBeGreaterThan(25);
+    expect(minutes).toBeLessThan(45);
+    // And the wavelength it implies is the across-strike scale of the
+    // rupture, not the along-strike one.
+    expect(r.sourceWavelength as number).toBeLessThan(700_000);
   });
 
   it('honours a caller-supplied beach slope inside the [1:1000, 1:3] envelope', () => {

@@ -464,7 +464,7 @@ population = deaths` on every row; `promptMortality` carries the
   9 September.)_ The heuristic is gone and the derived law is the only
   one left. See P1 below for what removing it showed.
 
-### P1 — The source wavelength of a megathrust _(open, 9 September)_
+### P1 — The source wavelength of a megathrust _(closed, 9 September)_
 
 Unifying the dispersion law (Phase 27 in SCIENCE.md) left one
 question, and it is now the one that matters.
@@ -486,9 +486,41 @@ residuals — 1.65× at DART 21413, 1.80× at Cocos Island. Both are
 buoys off the ends of long ruptures, both over-predicted by an
 isotropic law, and both would move under a beam that knows L/λ.
 
-Would move: the far-field amplitude of every megathrust, the coastal
-toll of Sumatra 2004 (currently 130 against 227 898), and the two
-pinned residuals.
+**Closed by the recorded period.** At 4 km of ocean the celerity is
+198 m/s, so 2·L implies a leading wave of nearly two hours, L implies
+an hour, and 2·W implies thirty-nine minutes. DART 21413 recorded
+thirty to forty (Satake 2013). The wavelength is 2·W, it is now
+computed once and passed to the dispersion, the beam and the printed
+period alike, and the panel's period is a check a reader can make.
+
+The beam was the point: the array factor goes as L/λ, and with λ tied
+to L that ratio was frozen at one half however long the rupture. On
+2·W it is the aspect ratio, and a long rupture beams like one.
+
+It did not close the two far-field residuals, because those are the
+scalar path, which has no directivity at all — see P1 below. The
+coastal toll of Tōhoku moved 5 600 → 3 800 drowned and Sumatra's
+130 → 100, both already far under their records for reasons written
+up elsewhere in this milestone.
+
+### P1 — The scalar path has no directivity _(open, 9 September)_
+
+The wave field on the globe beams; the numbers in the report do not.
+`seismicTsunamiFromMegathrust` publishes "the amplitude at 1 000 km"
+with no direction attached, which for a source that radiates six times
+more strongly across itself than along itself is not a well-defined
+quantity.
+
+This is what is left of the two declared far-field residuals: 1.65× at
+DART 21413 and 1.80× at Cocos Island, both buoys off the ends of long
+ruptures, both compared against a law that radiates evenly. A hand
+check with the beam the field already carries puts DART at 1.05× of
+the record.
+
+Would move: the far-field rows of every earthquake report, and the two
+pinned residuals in `noaaBenchmarkFixtures.ts`. Needs a receiver
+bearing on the seismic-tsunami API, which is also what would let the
+report say "toward this coast" instead of "at this range".
 
 ### P3 — Caps the scalar path does not have
 

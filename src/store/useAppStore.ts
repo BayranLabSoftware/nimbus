@@ -1003,6 +1003,9 @@ export function extractTsunamiMeta(result: ActiveResult): {
    *  radiates evenly. */
   strikeDeg?: number;
   ruptureLengthM?: number;
+  /** Wavelength of the source disturbance (m), so the veil disperses
+   *  and beams on the same number the panel prints beside it. */
+  sourceWavelengthM?: number;
 } | null {
   if (result.type === 'impact' && result.data.tsunami !== undefined) {
     const t = result.data.tsunami;
@@ -1071,6 +1074,11 @@ export function extractTsunamiMeta(result: ActiveResult): {
         strikeDeg: result.data.inputs.strikeAzimuthDeg,
       }),
       ruptureLengthM: result.data.ruptureLength,
+      // Twice the down-dip width, which is what the recorded period
+      // says a megathrust radiates on. Without it the field would
+      // fall back on twice its cavity radius — the along-strike
+      // scale — and beam a rupture on the wrong number.
+      sourceWavelengthM: t.sourceWavelength,
     };
   }
   return null;
@@ -1304,6 +1312,9 @@ async function computeBathymetricLayerForResult(
         ...(tsunamiMeta.strikeDeg !== undefined && { strikeDeg: tsunamiMeta.strikeDeg }),
         ...(tsunamiMeta.ruptureLengthM !== undefined && {
           ruptureLengthM: tsunamiMeta.ruptureLengthM,
+        }),
+        ...(tsunamiMeta.sourceWavelengthM !== undefined && {
+          sourceWavelengthM: tsunamiMeta.sourceWavelengthM,
         }),
       }),
       // Phase 11 — splice in the global low-res mosaic when
