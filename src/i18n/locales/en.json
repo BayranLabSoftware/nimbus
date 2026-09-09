@@ -7,10 +7,10 @@
   "landing": {
     "skipLink": "Skip to main content",
     "projectName": "Bayran Nimbus",
-    "tagline": "Simulate catastrophic events on an interactive 3D globe.",
-    "description": "An open-source scientific simulator of asteroid impacts, explosions, earthquakes, volcanic eruptions, and tsunamis — rigorous formulas, cinematic comparison scenes, curated for the scientifically curious.",
+    "tagline": "Catastrophic events simulated on an interactive 3D globe.",
+    "description": "Open-source scientific simulator of asteroid impacts, explosions, earthquakes, volcanic eruptions and tsunamis. Published formulas, comparison scenes, Italian and English.",
     "features": {
-      "title": "What's coming",
+      "title": "What it does",
       "multiEvent": {
         "name": "Multi-event cascading",
         "detail": "An ocean impact triggers tsunami, shock waves, and thermal pulse — simulated in parallel on the same timeline."
@@ -29,7 +29,7 @@
       },
       "shareable": {
         "name": "Shareable URLs",
-        "detail": "Every simulation serialisable in a URL — copy, share, replay."
+        "detail": "Every simulation fits in a URL: copy it, send it, replay it."
       }
     },
     "cta": {

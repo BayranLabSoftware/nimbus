@@ -7,10 +7,10 @@
   "landing": {
     "skipLink": "Vai al contenuto principale",
     "projectName": "Bayran Nimbus",
-    "tagline": "Simula l'impatto di eventi catastrofici su un globo terrestre 3D interattivo.",
-    "description": "Un simulatore scientifico open source di impatti di asteroidi, esplosioni, terremoti, eruzioni vulcaniche e tsunami — formule rigorose, scene comparative cinematografiche, pensato per i curiosi di scienza.",
+    "tagline": "Eventi catastrofici simulati su un globo terrestre 3D interattivo.",
+    "description": "Simulatore scientifico open source di impatti di asteroidi, esplosioni, terremoti, eruzioni vulcaniche e tsunami. Formule pubblicate, scene comparative, italiano e inglese.",
     "features": {
-      "title": "Cosa sta arrivando",
+      "title": "Cosa fa",
       "multiEvent": {
         "name": "Eventi multipli a cascata",
         "detail": "Un impatto oceanico genera tsunami, onde d'urto e impulso termico — simulati in parallelo sulla stessa timeline."
@@ -29,7 +29,7 @@
       },
       "shareable": {
         "name": "URL condivisibili",
-        "detail": "Ogni simulazione serializzata in URL — copia, condividi, rigioca."
+        "detail": "Ogni simulazione sta dentro un indirizzo web: si copia, si manda, si rigioca."
       }
     },
     "cta": {
