@@ -263,6 +263,38 @@ where it is wrong. Narrowing the shaking band with regional
 vulnerability, and widening the blast and pyroclastic bands to admit
 what they do not know, are the same piece of work.
 
+### P0 — A half-kilotonne explosion drowns 77 000 people
+
+Found on the live site within a minute of deploying the band fixes,
+and the calibration net could not have caught it: the harness has no
+bathymetry, so it has no wave, and this is entirely a wave.
+
+Beirut 2020 on the globe reads 77 000 dead, all of them coastal, from
+a 0.5 kt detonation on a quay whose real wave was about a metre inside
+the harbour and drowned nobody. The amplitude field puts 3.05 m at the
+median coastal cell and 78 m at the ninety-ninth, with run-ups of 12 m
+along the Lebanese coast six minutes out.
+
+Two candidates, and they are not exclusive:
+
+- **The explosion tsunami source is too strong for a small charge.**
+  The same shape of error as Anak Krakatau: a compact source whose
+  near field the propagation law overstates.
+- **An explosion has no sea coupling.** For an impact the physics
+  works out what fraction of the energy reaches the water — the crater
+  rim, the cavity, the ejecta beyond the shore. A surface burst on a
+  quay is handed its whole yield as a water source, when almost all of
+  it went into the air.
+
+The second is the more likely and the more embarrassing: the coupling
+machinery exists and was built carefully, and explosions never got it.
+
+Worth noting what this says about the net: it gates what it can reach,
+and the first thing outside its reach was wrong by a factor of three
+hundred. Extending the harness to the coastal toll needs bathymetry in
+a test, which is the same async ETOPO fetch the validation report
+already lists as a gap.
+
 ### P1 — The freeze has a mitigation, not a diagnosis
 
 Andrea reports the page freezing occasionally: the panel keeps
