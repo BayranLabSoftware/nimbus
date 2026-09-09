@@ -413,6 +413,37 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### Waves that were measured (Phase 25)
+
+The casualty harness measures what the model does to people; a second
+one measures what it does to water, and it exists because the first
+thing outside the casualty harness's reach was wrong by a factor of
+three hundred and stayed wrong until it was live. Waves are the easier
+half to check: a death toll depends on who happened to live there,
+while a wave height was written down by people with instruments, and
+the same charge in the same water makes the same wave whoever is
+watching.
+
+Four rows gate. Crossroads Baker 1946 is the one that matters — a
+known yield at a known depth in a lagoon of known depth, the
+best-instrumented explosion wave there will ever be — and the model
+puts 30.7 m at 300 m from surface zero against the ~30 m recorded.
+Castle Bravo and Ivy Mike, six hundred times Baker's energy but fired
+at the surface, produce nothing, which is what the record says of
+them; so does Beirut, whose harbour wave this harness was built after.
+Storegga's inferred metre-scale open-ocean wave lands at 0.60 m inside
+the 0.3–3 m the deposits imply.
+
+Two rows are reported and cannot gate, and both measure the same
+thing: the veil spreads geometrically and carries no dispersion, so it
+runs high in the far field. Baker is dead on at 300 m and four times
+high at 5.5 km. Tōhoku is 1.06 m at DART buoy 21413 against about
+30 cm recorded — while this project's own alternative formula for the
+same buoy gives 7 cm, four times under. The measurement sits between
+two of our own laws, which is the clearest statement yet of why they
+need joining, and neither should be bent to pass a test in the
+meantime.
+
 ### Where a burst has to be to make a wave (Phase 25)
 
 An explosion's coupling to water was a single number, eight per cent,

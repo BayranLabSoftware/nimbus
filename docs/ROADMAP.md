@@ -342,6 +342,16 @@ inside the amplitude field with a scale length set by the source's
 wavelength rather than the fixed 2 500 km calibrated for megathrusts.
 Would move: Anak Krakatau's coastal toll, 8 700 against a recorded 437.
 
+The wave harness now puts a number on it. Tōhoku 2011 was recorded at
+about 30 cm on DART buoy 21413, 1 500 km offshore, and this project
+has two laws that reach it from opposite sides: the seismic module
+spreads cylindrically from half the rupture and gives 1.06 m, three
+and a half times the record, while `tohoku2011DARTReference` spreads
+as 1/r from a 2 m source and gives about 7 cm, four times under. The
+measurement sits between them. Crossroads Baker says the same thing
+in miniature — dead on at 300 m, four times high at 5.5 km — because
+the veil carries geometry and no dispersion.
+
 ### P3 — Caps the scalar path does not have
 
 The field clamps run-up at four times the arriving amplitude and the

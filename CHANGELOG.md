@@ -7,6 +7,16 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Waves that were measured.** A second calibration harness, beside
+  the death-toll one, checks what the model does to water: Crossroads
+  Baker's near-field wave (30.7 m modelled against ~30 m recorded),
+  the surface bursts that made no wave at all, Beirut's harbour, and
+  Storegga's inferred open-ocean amplitude. Two rows are reported
+  rather than gated and both measure the same known divergence — the
+  veil spreads geometrically and carries no dispersion, so Baker is
+  dead on at 300 m and four times high at 5.5 km, and Tōhoku at DART
+  21413 sits between two of this project's own far-field laws.
+
 - **The coastal toll of the wave.** The tsunami is counted wherever
   the wave map touches a coast: every run-up cell of the local grid
   and of the planet beyond it carries its beach slope, its length of
