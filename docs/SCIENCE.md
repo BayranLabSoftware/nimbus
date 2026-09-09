@@ -414,6 +414,27 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### A grid that contains a coast (Phase 25)
+
+The terrain under a pick is one web-mercator tile, 1.4° of it, about
+six hundred metres a sample. That is the right thing to fetch for
+nearly every pick, and quite useless for one kind: a tile centred on
+an offshore epicentre is all water, and a run-up field needs a coast
+to run up. Tōhoku's local tile was 120 km of open Pacific with the
+Sanriku shoreline a degree outside it, so the whole Japanese coast was
+left to the planetary mosaic at forty kilometres a cell while a
+six-hundred-metre grid sat empty beside it.
+
+The rule is now about what the grid is for rather than about which
+event asked for it: if there is no land in it at all, the ring around
+it is fetched and the nine tiles resampled onto one uniform grid.
+A pick on land fetches nothing extra, which is most picks. Tōhoku's
+grid became 3.3° by 4.2° with seventeen per cent land and 585 coastal
+cells where it had none, and its coastal toll went from 1 100 against
+18 500 recorded to 5 710 — inside the band at last, with the modelled
+exposure of 554 000 against the 600 000 who lived in the 561 km²
+Japan actually lost.
+
 ### A rupture radiates across itself (Phase 25)
 
 Seven hundred kilometres of seafloor rising together do not push the

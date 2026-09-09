@@ -108,18 +108,8 @@ async function decodeTerrariumTile(url: string): Promise<Float32Array> {
   }
 }
 
-/**
- * Fetch + decode the terrarium tile containing (lat, lon) and return
- * an ElevationGrid ready to feed the store's `setElevationGrid`.
- * Results are LRU-cached so repeated clicks in the same region don't
- * refetch; the Wald & Allen Vs30 lookup sees <10 ms latency after
- * the first hit.
- */
-export async function fetchTerrainGridForLocation(
-  latitude: number,
-  longitude: number
-): Promise<ElevationGrid> {
-  const { x, y } = lonLatToTile(latitude, longitude, TILE_ZOOM);
+/** Fetch and decode one terrarium tile as a grid of its own. */
+async function fetchTile(x: number, y: number): Promise<ElevationGrid> {
   const key = `${TILE_ZOOM.toString()}/${x.toString()}/${y.toString()}`;
   const cached = lookupCache(key);
   if (cached !== null) return cached;
@@ -153,6 +143,102 @@ export async function fetchTerrainGridForLocation(
   } finally {
     inflight.delete(key);
   }
+}
+
+/** Does this grid contain any land at all? */
+function hasLand(grid: ElevationGrid): boolean {
+  for (const v of grid.samples) if (v > 0) return true;
+  return false;
+}
+
+/** Side of the resampled block, in samples. Three zoom-8 tiles span
+ *  about 4.2°, so this keeps a little under a kilometre per sample —
+ *  forty times finer than the planetary mosaic, which is the whole
+ *  reason for going and getting the neighbours. */
+const BLOCK_SAMPLES = 512;
+
+/**
+ * Nine tiles around (x, y), resampled onto one uniform lat/lon grid.
+ *
+ * Web-mercator tiles are equal in mercator height and therefore
+ * unequal in degrees, so they cannot simply be laid side by side into
+ * an `ElevationGrid`, which is uniform by construction. Each output
+ * sample is taken from whichever tile covers its coordinates.
+ */
+async function fetchTileBlock(x: number, y: number): Promise<ElevationGrid> {
+  const coords: { x: number; y: number }[] = [];
+  const span = 1 << TILE_ZOOM;
+  for (let dy = -1; dy <= 1; dy++) {
+    for (let dx = -1; dx <= 1; dx++) {
+      const ty = y + dy;
+      if (ty < 0 || ty >= span) continue;
+      coords.push({ x: (((x + dx) % span) + span) % span, y: ty });
+    }
+  }
+  const tiles = await Promise.all(coords.map((c) => fetchTile(c.x, c.y)));
+  const minLat = Math.min(...tiles.map((t) => t.minLat));
+  const maxLat = Math.max(...tiles.map((t) => t.maxLat));
+  const minLon = Math.min(...tiles.map((t) => t.minLon));
+  const maxLon = Math.max(...tiles.map((t) => t.maxLon));
+
+  const samples = new Float32Array(BLOCK_SAMPLES * BLOCK_SAMPLES);
+  const dLat = (maxLat - minLat) / (BLOCK_SAMPLES - 1);
+  const dLon = (maxLon - minLon) / (BLOCK_SAMPLES - 1);
+  for (let i = 0; i < BLOCK_SAMPLES; i++) {
+    const lat = maxLat - i * dLat;
+    for (let j = 0; j < BLOCK_SAMPLES; j++) {
+      const lon = minLon + j * dLon;
+      let value = 0;
+      for (const tile of tiles) {
+        if (lat < tile.minLat || lat > tile.maxLat || lon < tile.minLon || lon > tile.maxLon) {
+          continue;
+        }
+        const tLat = (tile.maxLat - tile.minLat) / (tile.nLat - 1);
+        const tLon = (tile.maxLon - tile.minLon) / (tile.nLon - 1);
+        const ti = Math.min(tile.nLat - 1, Math.max(0, Math.round((tile.maxLat - lat) / tLat)));
+        const tj = Math.min(tile.nLon - 1, Math.max(0, Math.round((lon - tile.minLon) / tLon)));
+        value = tile.samples[ti * tile.nLon + tj] ?? 0;
+        break;
+      }
+      samples[i * BLOCK_SAMPLES + j] = value;
+    }
+  }
+  return makeElevationGrid({
+    minLat,
+    maxLat,
+    minLon,
+    maxLon,
+    nLat: BLOCK_SAMPLES,
+    nLon: BLOCK_SAMPLES,
+    samples,
+  });
+}
+
+/**
+ * The terrain under a pick, as a grid the simulator can run on.
+ *
+ * One tile, when one tile will do — which it does whenever the pick
+ * is on or near land, and that is most picks. When the tile is all
+ * water it will not do at all: a run-up field needs a coast to run up,
+ * and a tile centred on an offshore epicentre has none. Tōhoku's
+ * local tile was 120 km of open Pacific with the Sanriku coast a
+ * degree outside it, so the entire Japanese shoreline was left to the
+ * planetary mosaic at forty kilometres a cell while a one-kilometre
+ * grid sat empty beside it.
+ *
+ * So the rule is about what the grid is for rather than about which
+ * event asked: if there is no land in it, fetch the ring around it
+ * and resample the nine together. For a pick on land nothing changes
+ * and nothing extra is fetched.
+ */
+export async function fetchTerrainGridForLocation(
+  latitude: number,
+  longitude: number
+): Promise<ElevationGrid> {
+  const { x, y } = lonLatToTile(latitude, longitude, TILE_ZOOM);
+  const centre = await fetchTile(x, y);
+  if (hasLand(centre)) return centre;
+  return fetchTileBlock(x, y);
 }
 
 /**

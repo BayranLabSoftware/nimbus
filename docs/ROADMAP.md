@@ -308,28 +308,40 @@ remembered for craters and fallout and not for any wave, and the model
 now agrees with both. Beirut reads 900 against 218 counted, its wave
 gone entirely, from 77 000.
 
-### P0 — The coastal toll is read off a forty-kilometre grid
+### P0 — Two events the coastal toll still cannot reach
 
-Tōhoku's coastal toll reads 1 100 against the 18 500 recorded. Before
-the radiation beam went in it read 48 600, and the closer figure was
-the sum of two errors of opposite sign: an overstated far field
-drowning the Pacific while Japan, sampled with a window smaller than
-its own grid cell, contributed nobody at all. Both of those are fixed.
-What is left is one cause with one remedy.
+The forty-kilometre grid is fixed. A local tile that contains no land
+now fetches the ring around it and resamples the nine together, which
+is a rule about what a grid is for — a run-up field needs a coast to
+run up — and not about which event asked. Tōhoku's local tile was 120
+km of open Pacific with Sanriku a degree outside it; it is now 3.3° by
+4.2° with seventeen per cent land and 585 coastal cells where there
+were none, and the toll went from 1 100 against 18 500 recorded to
+5 710, with the record inside the band and the modelled exposure
+(554 000) close to the 600 000 who lived in the zone Japan actually
+lost. A pick on land fetches nothing extra.
 
-For a megathrust the **local** amplitude field is never produced, so
-every coastal cell — including the ones twenty kilometres from the
-rupture — is taken off the planetary grid at forty kilometres. A
-coastline is sampled every forty kilometres, each sample stands for
-forty kilometres of coast, and the strip it floods is drawn from a
-run-up computed on cells that coarse. The 561 km² Japan actually lost
-cannot be resolved by that, in either direction.
+Two things are still out of reach, and both are worth naming because
+neither is a resolution problem.
 
-The fix is to produce the local run-up field for a seismic source the
-way it is produced for an impact, which puts the near coast on a
-kilometre grid instead of a forty-kilometre one. Until then the panel
-should say that the coastal figure is read at that resolution, and
-the calibration net prints the seventeen-fold shortfall on every run.
+**Sumatra–Andaman 2004 reads 130 against 227 898.** Two causes, and
+the first is ours. The tsunami vulnerability makes its thresholds
+depend on arrival time — a coast three hours away has been warned and
+emptied, which is true of any modern Pacific scenario and was the
+exact opposite of the Indian Ocean in 2004, where there was no warning
+system at all and that is why a quarter of a million people died. The
+model gives the warned pair to precisely the coasts that had no
+warning. It is the same shape as the volcanic evacuation problem: an
+assumption that is right for the future and wrong for the record.
+
+**And the beam may be too narrow for a very long rupture.** The array
+factor of Ben-Menahem & Rosenman treats the rupture as a coherent
+line, which is fair for seven hundred kilometres and questionable for
+Sumatra's thirteen hundred: that rupture took ten minutes to
+propagate at two kilometres a second, so the far end was still
+breaking when the near end's wave was well away. The coherent
+radiating length is shorter than the geometric one, and the model
+does not know it.
 
 ### P1 — The freeze has a mitigation, not a diagnosis
 

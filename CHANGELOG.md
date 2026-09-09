@@ -108,6 +108,16 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A local grid that contains a coast.** The terrain under a pick is
+  one tile, and a tile centred on an offshore epicentre is all water —
+  so a run-up field had no coast to run up and the whole shoreline was
+  left to the planetary mosaic at forty kilometres a cell. When the
+  tile holds no land the ring around it is now fetched and the nine
+  resampled together; a pick on land fetches nothing extra. Tōhoku
+  gains 585 coastal cells where it had none and its coastal toll goes
+  from 1 100 against 18 500 recorded to 5 710, with the record inside
+  the band.
+
 - **A rupture radiates across itself.** Megathrusts were radiating
   evenly, at the amplitude of the peak, which puts the strongest wave
   a fault can make in every direction at once. They now carry the
