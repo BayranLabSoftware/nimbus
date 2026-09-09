@@ -332,36 +332,34 @@ called done:
   cold cache.
 - Reproduce it once. Until then the fix stands on a signature match.
 
-### P2 — The two amplitude laws
+### P2 — The two amplitude laws _(mostly closed)_
 
-The globe's veil spreads geometrically; a compact source's published
-far-field row carries dispersion. Both are right where they are used
-and neither survives in the other's territory, which is why forcing
-them together was measured and reverted. The real fix is dispersion
-inside the amplitude field with a scale length set by the source's
-wavelength rather than the fixed 2 500 km calibrated for megathrusts.
-Would move: Anak Krakatau's coastal toll, 8 700 against a recorded 437.
+**They were never two laws.** The veil spreads as 1/√r and the
+published far-field row of a compact source decays as 1/r, and
+reconciling them was written up here as work to be done. It turned
+out to be a misreading. On a water surface, energy over a growing
+circumference gives 1/√r for any source at all — that is the geometry
+and it is what the veil computes. A dispersing wave loses height a
+second time because its energy also spreads along a train that
+lengthens as it travels, and in the fully dispersive limit that second
+spreading is itself r^(−1/2). The two together are r^(−1): the 1/r
+`propagation.ts` has cited from Lamb since it was written. The
+dispersion parameter is what carries a wave from one end to the other,
+and with it in the field the exponent is a half because it must be
+rather than because it was fitted.
 
-The wave harness now puts a number on it. Tōhoku 2011 was recorded at
-about 30 cm on DART buoy 21413, 1 500 km offshore, and this project
-has two laws that reach it from opposite sides: the seismic module
-spreads cylindrically from half the rupture and gives 1.06 m, three
-and a half times the record, while `tohoku2011DARTReference` spreads
-as 1/r from a 2 m source and gives about 7 cm, four times under. The
-measurement sits between them. Crossroads Baker says the same thing
-in miniature — dead on at 300 m, four times high at 5.5 km — because
-the veil carries geometry and no dispersion.
+Crossroads Baker, the only event measured at two ranges, agrees:
+23.4 m where thirty were seen at three hundred metres, and 1.90 m
+where 1.8 were seen at five and a half kilometres. Both rows gate.
 
-Half of this is now done: the veil carries dispersion, with the source
-wavelength rather than a fixed scale length, and it is calibrated on
-Baker's two measured ranges. What remains is the other half, and the
-harness names it. Tōhoku at DART is still 1.06 m against 30 cm and
-dispersion cannot touch it — its wave is too long — so the error is in
-the spreading, not the damping: a finite source spreads cylindrically
-only while you are inside its own size and as 1/r beyond it, and every
-propagation law here uses one exponent for ever. Krakatau's coastal
-toll fell from 20× the record to 7× and the same argument explains the
-rest of it.
+**What is left is not propagation.** Tōhoku at DART is still 1.06 m
+against 30 cm and nothing here can touch it: its wave is too long to
+disperse, so the geometry is cylindrical and correct, and the residual
+lives in the source — either the 4 m initial amplitude or the fact
+that a rupture radiates across its strike rather than evenly, and DART
+21413 is not on the peak axis. Krakatau's coastal toll came from 20×
+the record to 5× by the same change and the same argument covers what
+is left of it. Both are source questions now, not propagation ones.
 
 ### P3 — Caps the scalar path does not have
 

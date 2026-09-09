@@ -239,7 +239,7 @@ Carlo wrappers for sampled inputs).
 | Mass-fire casualties          | casualties.ts                       | 30 % (10–80) of the survivors inside the firestorm sustain radius                                                                                                                                | Glasstone & Dolan 1977 ch. VII; Postol 1986                      | ×3          |
 | Later deaths                  | casualties.ts                       | 30 % (10–60) of the prompt injured, first day to first month                                                                                                                                     | OTA 1979 ch. II                                                  | ×2–3        |
 | Explosion wave coupling       | events/explosion/underwaterBurst.ts | η(z/W^(1/3)) log-normal peaked at 4 m·kt^(−1/3), × 8 % at the peak                                                                                                                               | Glasstone & Dolan 1977 §6.40; Le Méhauté & Wang 1996             | ±50 %       |
-| Dispersion in the veil        | tsunami/dispersion.ts               | D = (4π²/6)·r·h²/λ³; A ×= (1 + D)^(−1/3)                                                                                                                                                         | Kajiura 1963; Watada et al. 2014; calibrated on Crossroads Baker | ×2          |
+| Dispersion in the veil        | tsunami/dispersion.ts               | D = (4π²/6)·r·h²/λ³; A ×= (1 + D)^(−1/2), so 1/√r near and 1/r far                                                                                                                               | Kajiura 1963; Watada et al. 2014; calibrated on Crossroads Baker | ×2          |
 | Tsunami casualties            | tsunamiCasualties.ts                | H = √(A · min(R, A)); X = 0.06 · H^(4/3) / n², n = 0.03 (≤ 10 km); people = land density × X × coast; ν(h) = Φ(ln(h/θ)/β), h = H/2, θ = 8 m unwarned → 16 m warned by arrival, 4 m high, β = 0.8 | Koshimura et al. 2009; Jonkman et al. 2008                       | ×3          |
 | Casualty sweep                | casualtyTimeline.ts                 | deaths(t) = Σ deaths(band) · swept-area fraction at t; t(r) from the shock integral, r/3.5 km/s, r/30 m/s, r/400 m/s                                                                             | Kinney & Graham 1985; Dziewonski & Anderson 1981; Kieffer 1981   | timing only |
 | Tsunami arrival time          | tsunami/fastMarching.ts             | eikonal `\|∇T\|² = 1/c²`, c = √(gh)                                                                                                                                                              | Sethian 1996                                                     | ±15%        |
@@ -434,15 +434,22 @@ within a few hundred kilometres. One number could not describe both.
 D = (4π²/6)·r·h²/λ³, which is the algebra of the first correction to
 the shallow-water phase speed rather than a fit, and the veil applies
 (1 + D)^(−1/3) to every cell using the source's own wavelength and
-the local depth. The exponent is the project's composition and is
-calibrated on the only event anyone has measured with the same wave
-written down at two ranges: Crossroads Baker, about thirty metres at
-three hundred and about 1.8 at five and a half kilometres, where one
-exponent puts the model at 25.6 and 2.95. An exponential in the same
-parameter takes that second point to nothing.
+the local depth. The exponent is a half, and it is derived rather
+than chosen. This project always had two far-field laws and treated
+them as a choice — the veil spreading as 1/√r, a compact source's
+published row decaying as 1/r — but they are the same law at its two
+ends. Geometry gives 1/√r for any source on a water surface. A
+dispersing wave loses height a second time because its energy spreads
+along a train that lengthens as it goes, and in the fully dispersive
+limit that is another r^(−1/2); together they are the r^(−1) that
+`propagation.ts` has cited from Lamb since it was written. Crossroads
+Baker, the only event measured at two ranges, agrees: 23.4 m where
+thirty were seen at three hundred metres and 1.90 m where 1.8 were
+seen at five and a half kilometres. An exponential in the same
+parameter, tried first, takes that second point to nothing.
 
 What it changed is as telling as what it did not. Anak Krakatau's
-coastal toll fell from 8 700 against 437 recorded to 3 100, because a
+coastal toll fell from 8 700 against 437 recorded to 2 200, because a
 flank collapse makes exactly the short wave dispersion eats. Tōhoku
 did not move at all — its wave is too long to disperse over 1 500 km
 and the model now says so rather than being made to. Chicxulub barely

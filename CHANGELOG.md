@@ -115,10 +115,13 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   the Kajiura parameter itself, D = (4π²/6)·r·h²/λ³, with the source's
   own wavelength — so a rupture seven hundred kilometres long crosses
   an ocean untouched while a flank collapse's kilometre-long wave
-  spreads into its train within a few hundred kilometres. The decay
-  exponent is calibrated on Crossroads Baker, the only event measured
-  at two ranges. Anak Krakatau's coastal toll falls from 8 700 against
-  437 recorded to 3 100; Tōhoku does not move, correctly; and a 50 Mt
+  spreads into its train within a few hundred kilometres. The decay exponent is a half
+  and is derived rather than fitted: geometry gives 1/√r on a water
+  surface, a dispersing train costs another r^(−1/2), and together
+  they are the 1/r this project's far-field rows have always used —
+  so the two laws it had were one law at its two ends. Crossroads
+  Baker, the only event measured at two ranges, lands inside both. Anak Krakatau's coastal toll falls from 8 700 against
+  437 recorded to 2 200; Tōhoku does not move, correctly; and a 50 Mt
   device at its optimum depth now delivers fifteen centimetres three
   thousand kilometres away instead of a wave, which is what the
   tsunami-bomb programmes concluded.

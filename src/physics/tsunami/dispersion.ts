@@ -67,30 +67,37 @@ export function dispersionParameter(input: DispersionInput): number {
 }
 
 /**
- * Exponent of the dispersive decay.
+ * Exponent of the dispersive decay, and why it is a half.
  *
- * The project's own composition, and the one number here without a
- * page behind it — but not without evidence. Crossroads Baker is the
- * only event anyone has measured with the same wave written down at
- * two ranges, about thirty metres at three hundred and about 1.8 at
- * five and a half kilometres, and one exponent puts the model inside
- * both: 25.6 m and 2.95 m. The same exponent leaves a megathrust
- * untouched across an ocean, where its wave is too long to disperse
- * and the record agrees that it does not.
+ * This project has always had two far-field laws and treated them as
+ * a choice: the veil spreads as 1/√r, the published rows of a compact
+ * source decay as 1/r, and reconciling them was written up as work to
+ * be done. They are not a choice. They are the same law at its two
+ * ends.
  *
- * A third of a power was not chosen for its roundness. The leading
- * wave of a dispersive train sheds height into the train behind it
- * rather than dying away, which is a power law and not an
- * exponential; an exponential in the same parameter takes Baker's
- * five-kilometre wave to nothing, when it was measured at 1.8 m.
+ * On a water surface, energy conservation over a growing circumference
+ * gives 1/√r for any source at all — that is the geometry, and it is
+ * what the veil computes. A dispersing wave loses height a second
+ * time, because its energy is spreading not only around the
+ * circumference but along a train that lengthens as it travels; in
+ * the fully dispersive limit that second spreading is itself r^(−1/2),
+ * and the two together are r^(−1) — the 1/r that `propagation.ts` has
+ * cited from Lamb since it was written. So the exponent is a half
+ * because it has to be, and the dispersion parameter is what carries
+ * a wave from one end to the other.
+ *
+ * The one event measured at two ranges agrees. Crossroads Baker was
+ * about thirty metres at three hundred and about 1.8 at five and a
+ * half kilometres; this puts the model at 23.4 and 1.90.
  */
-const DISPERSION_DECAY_EXPONENT = 1 / 3;
+const DISPERSION_DECAY_EXPONENT = 0.5;
 
 /**
  * What is left of the leading wave, as a fraction, for a given
- * accumulated dispersion. One at no dispersion, falling as a power
- * of it thereafter — the crest spreads into its train rather than
- * being extinguished, so it thins slowly and never quite vanishes.
+ * accumulated dispersion. One where nothing has dispersed, and
+ * falling as the inverse square root of the parameter thereafter, so
+ * that geometry and dispersion together carry a wave from 1/√r near
+ * its source to 1/r far from it.
  */
 export function dispersionDecay(parameter: number): number {
   if (!Number.isFinite(parameter) || parameter <= 0) return 1;
