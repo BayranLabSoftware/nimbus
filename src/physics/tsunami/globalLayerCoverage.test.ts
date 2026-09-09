@@ -45,6 +45,21 @@ function flatOcean(N: number, span: number, depth: number) {
   });
 }
 
+/** Amplitude on the global layer at a given longitude on the equator,
+ *  the same cell `assertGlobalLayer` reads. */
+function amplitudeAtDegrees(
+  result: ReturnType<typeof computeBathymetricTsunami>,
+  degrees: number
+): number {
+  const a = result.global?.amplitude;
+  if (a === undefined) return 0;
+  const dLat = (50 - -50) / (a.nLat - 1);
+  const dLon = (50 - -50) / (a.nLon - 1);
+  const i = Math.round((50 - 0) / dLat);
+  const j = Math.round((degrees - -50) / dLon);
+  return a.amplitudes[i * a.nLon + j] ?? 0;
+}
+
 function assertGlobalLayer(
   result: ReturnType<typeof computeBathymetricTsunami>,
   ctx: string
@@ -109,7 +124,25 @@ describe('Phase 11/12 — global tsunami layer activates for every tsunami sourc
       sourceCavityRadiusM: r.tsunami.cavityRadius,
       sourceDepthM: 2_000,
     });
-    assertGlobalLayer(bt, 'explosion (Tsar Bomba contact-water)');
+    // The layer is built and reaches the far side, but what arrives
+    // there is nothing, and that is the point. An explosion makes a
+    // short wave — twice the cavity radius, a kilometre or two — and
+    // a short wave spreads into its train within a few hundred
+    // kilometres. It is the reason the tsunami bomb was investigated
+    // in the 1940s and abandoned: you cannot cross an ocean with one.
+    // Before the veil carried dispersion it said you could.
+    expect(bt.global).toBeDefined();
+    expect(bt.global?.amplitude).toBeDefined();
+    const far = bt.global?.amplitude;
+    if (far !== undefined) {
+      expect(far.maxAmplitude).toBeGreaterThan(0);
+      // Fifteen centimetres from fifty megatonnes at three thousand
+      // kilometres: measurable, harmless, and the answer the tsunami
+      // bomb programme arrived at. What matters is that it is not a
+      // wave any more, not that it is exactly zero.
+      const at30deg = amplitudeAtDegrees(bt, 30);
+      expect(at30deg).toBeLessThan(0.5);
+    }
   });
 
   it('EARTHQUAKE preset (Tōhoku 2011 megathrust) → global layer present', () => {

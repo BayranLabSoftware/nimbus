@@ -36,6 +36,10 @@ describe('computeAmplitudeField', () => {
       grid,
       sourceAmplitudeM: 30,
       sourceCavityRadiusM: 50_000,
+      // Geometry is what this test is about, so the source is given a
+      // wavelength long enough that dispersion has nothing to say —
+      // otherwise the two effects are measured as one.
+      sourceWavelengthM: 2_000_000,
       sourceDepthM: 4_000,
     });
     // The source cell's amplitude should be very close to the source
@@ -73,6 +77,10 @@ describe('computeAmplitudeField', () => {
       grid,
       sourceAmplitudeM: 30,
       sourceCavityRadiusM: 10_000,
+      // Geometry is what this test is about, so the source is given a
+      // wavelength long enough that dispersion has nothing to say —
+      // otherwise the two effects are measured as one.
+      sourceWavelengthM: 2_000_000,
       sourceDepthM: 4_000,
     });
     // Sample the eastern equator at +1° (~111 km) and +2° (~222 km).
@@ -127,6 +135,10 @@ describe('computeAmplitudeField', () => {
       grid,
       sourceAmplitudeM: 1,
       sourceCavityRadiusM: 5_000,
+      // Geometry is what this test is about, so the source is given a
+      // wavelength long enough that dispersion has nothing to say —
+      // otherwise the two effects are measured as one.
+      sourceWavelengthM: 2_000_000,
       sourceDepthM: 7_000,
     });
     // No shelf cell should carry an amplitude > 4 m (the cap). The
@@ -170,6 +182,10 @@ describe('computeAmplitudeField', () => {
       grid,
       sourceAmplitudeM: 5,
       sourceCavityRadiusM: 5_000,
+      // Geometry is what this test is about, so the source is given a
+      // wavelength long enough that dispersion has nothing to say —
+      // otherwise the two effects are measured as one.
+      sourceWavelengthM: 2_000_000,
       sourceDepthM: 4_000,
     });
     // Sample symmetric cells: same row, +1°/-1° from source.
@@ -214,6 +230,10 @@ describe('computeAmplitudeField — spreadingExponent', () => {
       grid,
       sourceAmplitudeM: 30,
       sourceCavityRadiusM: 10_000,
+      // Geometry is what this test is about, so the source is given a
+      // wavelength long enough that dispersion has nothing to say —
+      // otherwise the two effects are measured as one.
+      sourceWavelengthM: 2_000_000,
       sourceDepthM: 4_000,
     };
     const cylindrical = computeAmplitudeField(base);
@@ -240,6 +260,10 @@ describe('computeAmplitudeField — spreadingExponent', () => {
       grid,
       sourceAmplitudeM: 30,
       sourceCavityRadiusM: 10_000,
+      // Geometry is what this test is about, so the source is given a
+      // wavelength long enough that dispersion has nothing to say —
+      // otherwise the two effects are measured as one.
+      sourceWavelengthM: 2_000_000,
       spreadingExponent: Number.NaN,
     });
     expect(field.maxAmplitude).toBeLessThanOrEqual(30 * 4);

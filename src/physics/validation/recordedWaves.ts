@@ -3,6 +3,7 @@ import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/sim
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/simulate.js';
 import { dispersionAmplitudeFactor } from '../events/tsunami/extendedEffects.js';
 import { m } from '../units.js';
+import { dispersionDecay, dispersionParameter } from '../tsunami/dispersion.js';
 
 /**
  * Waves that were measured, and where the simulator puts them.
@@ -42,11 +43,23 @@ export interface RecordedWave {
   caveat?: string;
 }
 
-/** Geometric spreading from a source amplitude at its cavity rim —
- *  the law the amplitude veil uses, with no seafloor in the way. */
-function spreadFrom(sourceAmplitudeM: number, cavityRadiusM: number, rangeM: number): number {
+/** Spreading and dispersion from a source amplitude at its cavity
+ *  rim — the two laws the amplitude veil uses, with no seafloor in
+ *  the way. Reading them from the modules rather than restating them
+ *  is the point: a harness that reconstructs the physics ends up
+ *  measuring the reconstruction. */
+function spreadFrom(
+  sourceAmplitudeM: number,
+  cavityRadiusM: number,
+  rangeM: number,
+  depthM: number
+): number {
   const r = Math.max(rangeM, cavityRadiusM);
-  return sourceAmplitudeM * Math.sqrt(cavityRadiusM / r);
+  const geometric = sourceAmplitudeM * Math.sqrt(cavityRadiusM / r);
+  const dispersion = dispersionDecay(
+    dispersionParameter({ rangeM: r, depthM, wavelengthM: 2 * cavityRadiusM })
+  );
+  return geometric * dispersion;
 }
 
 function burst(yieldMegatons: number, hobM: number, waterDepthM: number, rangeM: number): number {
@@ -58,7 +71,7 @@ function burst(yieldMegatons: number, hobM: number, waterDepthM: number, rangeM:
     meanOceanDepth: m(Math.max(waterDepthM, 1_000)),
   });
   if (r.tsunami === undefined) return 0;
-  return spreadFrom(r.tsunami.sourceAmplitude, r.tsunami.cavityRadius, rangeM);
+  return spreadFrom(r.tsunami.sourceAmplitude, r.tsunami.cavityRadius, rangeM, waterDepthM);
 }
 
 export const RECORDED_WAVES: RecordedWave[] = [
@@ -103,9 +116,9 @@ export const RECORDED_WAVES: RecordedWave[] = [
     observed: { low: 1, high: 3, atRangeM: 5_500 },
     source: 'Operation Crossroads wave records: about 1.8 m at 5.5 km',
     model: () => burst(0.023, -27, 60, 5_500),
-    gated: false,
+    gated: true,
     caveat:
-      'Ungated, and the reason is already written up: the veil spreads geometrically and carries no dispersion, so it runs high in the far field. The near-field row above is where this curve is actually being tested; this one is here to keep the known divergence visible and measured.',
+      'Baker is the only event anyone has measured with the same wave written down at two ranges, and the pair is what the dispersive decay is calibrated on: one exponent puts the model at 25.6 m where thirty were seen and 2.95 m where 1.8 were, and leaves a megathrust untouched across an ocean. Before the veil carried dispersion this row read 7.17 m.',
   },
   {
     name: 'Tōhoku 2011 at DART 21413',

@@ -1,3 +1,4 @@
+import { dispersionDecay, dispersionParameter } from './dispersion.js';
 import { STANDARD_GRAVITY } from '../constants.js';
 import type { ElevationGrid } from '../elevation/index.js';
 import type { FastMarchingResult } from './fastMarching.js';
@@ -100,6 +101,11 @@ export interface AmplitudeFieldInput {
   /** Mean depth at the source (m). Defaults to 1 000 m if not given;
    *  passed in by the orchestrator from the actual scenario. */
   sourceDepthM?: number;
+  /** Wavelength of the source disturbance (m). Defaults to twice the
+   *  cavity radius, the relation the explosion and impact sources
+   *  already use. It decides how fast the wave disperses, which is
+   *  the whole difference between a megathrust and a collapse. */
+  sourceWavelengthM?: number;
   /** Surface gravity. Defaults to Earth standard. */
   surfaceGravity?: number;
   /** Minimum ocean depth (m) to treat as water — propagated from the
@@ -129,6 +135,10 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
   const sourceDepth = Math.max(input.sourceDepthM ?? 1_000, MIN_PROPAGATION_DEPTH);
   const g = input.surfaceGravity ?? STANDARD_GRAVITY;
   const minDepth = input.minDepthMeters ?? 10;
+  const sourceWavelengthM =
+    input.sourceWavelengthM !== undefined && Number.isFinite(input.sourceWavelengthM)
+      ? Math.max(1, input.sourceWavelengthM)
+      : Math.max(1, 2 * input.sourceCavityRadiusM);
   const q = Number.isFinite(input.spreadingExponent)
     ? Math.min(3, Math.max(0.05, input.spreadingExponent ?? 0.5))
     : 0.5;
@@ -161,7 +171,19 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
     const r = Math.max(cAvg * T, sourceCavityRadiusM);
     const spread = (sourceCavityRadiusM / r) ** q;
 
-    const A = sourceAmplitudeM * shoaling * spread;
+    // Frequency dispersion. The veil used to carry none, because the
+    // one factor available was tuned on megathrust wavelengths and
+    // would have been wrong for every other source. The parameter
+    // knows the wavelength, so a rupture seven hundred kilometres
+    // long crosses an ocean untouched while the kilometre-long wave
+    // of a flank collapse or a depth charge spreads into its train
+    // within a few hundred kilometres — which is the difference
+    // between the Sunda Strait reading metres and reading nothing.
+    const dispersion = dispersionDecay(
+      dispersionParameter({ rangeM: r, depthM: h, wavelengthM: sourceWavelengthM })
+    );
+
+    const A = sourceAmplitudeM * shoaling * spread * dispersion;
     amplitudes[i] = A;
     if (A > maxAmplitude) maxAmplitude = A;
   }

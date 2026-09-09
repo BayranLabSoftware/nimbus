@@ -108,6 +108,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The veil learns which waves disperse.** The amplitude field
+  carried no frequency dispersion at all, because the one factor
+  available was a fixed 2 500 km scale length calibrated on megathrust
+  waves and would have been wrong for everything else. It now carries
+  the Kajiura parameter itself, D = (4π²/6)·r·h²/λ³, with the source's
+  own wavelength — so a rupture seven hundred kilometres long crosses
+  an ocean untouched while a flank collapse's kilometre-long wave
+  spreads into its train within a few hundred kilometres. The decay
+  exponent is calibrated on Crossroads Baker, the only event measured
+  at two ranges. Anak Krakatau's coastal toll falls from 8 700 against
+  437 recorded to 3 100; Tōhoku does not move, correctly; and a 50 Mt
+  device at its optimum depth now delivers fifteen centimetres three
+  thousand kilometres away instead of a wave, which is what the
+  tsunami-bomb programmes concluded.
+
 - **Where a burst has to be to make a wave.** An explosion's coupling
   to water was one number — the value for a charge at the optimum
   depth — spent on every burst wherever it sat, and a half-kilotonne

@@ -352,6 +352,17 @@ measurement sits between them. Crossroads Baker says the same thing
 in miniature — dead on at 300 m, four times high at 5.5 km — because
 the veil carries geometry and no dispersion.
 
+Half of this is now done: the veil carries dispersion, with the source
+wavelength rather than a fixed scale length, and it is calibrated on
+Baker's two measured ranges. What remains is the other half, and the
+harness names it. Tōhoku at DART is still 1.06 m against 30 cm and
+dispersion cannot touch it — its wave is too long — so the error is in
+the spreading, not the damping: a finite source spreads cylindrically
+only while you are inside its own size and as 1/r beyond it, and every
+propagation law here uses one exponent for ever. Krakatau's coastal
+toll fell from 20× the record to 7× and the same argument explains the
+rest of it.
+
 ### P3 — Caps the scalar path does not have
 
 The field clamps run-up at four times the arriving amplitude and the
