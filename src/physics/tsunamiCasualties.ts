@@ -275,6 +275,9 @@ export function estimateTsunamiCasualties(
       window: { startS, endS },
       population: Math.round(b.people),
       mortality: b.people > 0 ? b.d / b.people : 0,
+      // The wave has no later deaths of its own in this model, so the
+      // two are the same number here.
+      promptMortality: b.people > 0 ? b.d / b.people : 0,
       deaths: Math.round(b.d),
       deathsLow: Math.round(b.dl),
       deathsHigh: Math.round(b.dh),

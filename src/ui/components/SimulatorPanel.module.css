@@ -690,3 +690,13 @@ select.paramInput {
   border-left-color: var(--accent, #e8a33d);
   color: rgba(255, 255, 255, 0.78);
 }
+
+/* The totals line of the casualty table, so a reader can add the
+   column up and find the headline at the bottom of it. */
+.mcTable tfoot td {
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  border-bottom: none;
+  padding-top: 6px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}

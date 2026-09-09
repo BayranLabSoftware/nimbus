@@ -1173,7 +1173,8 @@
       "population": "Population",
       "mortality": "Mortality",
       "deaths": "Deaths",
-      "hazards": "Causes"
+      "hazards": "Causes",
+      "total": "Total"
     },
     "band": {
       "blast12psi": "≥ 12 psi",

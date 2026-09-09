@@ -224,6 +224,26 @@ export function CasualtiesPanel({
                   </tr>
                 ))}
               </tbody>
+              {/* The column adds up, and now says so. Each figure is
+                  rounded to two significant figures on its own, so the
+                  printed rows can miss the printed total by a little;
+                  the underlying numbers reconcile exactly. */}
+              <tfoot>
+                <tr>
+                  <td colSpan={2}>{t('casualties.table.total')}</td>
+                  <td>{people(casualties.exposed)}</td>
+                  <td>
+                    {casualties.exposed > 0
+                      ? ((casualties.deaths / casualties.exposed) * 100).toLocaleString(locale, {
+                          maximumFractionDigits: 1,
+                        })
+                      : '0'}{' '}
+                    %
+                  </td>
+                  <td>{people(casualties.deaths)}</td>
+                  <td />
+                </tr>
+              </tfoot>
             </table>
           )}
           {(casualties.tsunamiDeaths ?? 0) > 0 && (

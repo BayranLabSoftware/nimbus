@@ -659,8 +659,12 @@ export interface BandEstimate {
   window?: { startS: number; endS: number };
   /** People inside the annulus. */
   population: number;
-  /** Combined prompt mortality (0–1). */
+  /** Share of them who die of the event, prompt and delayed together
+   *  (0–1), so that `mortality × population = deaths` and a reader can
+   *  reconcile the row. */
   mortality: number;
+  /** The immediate share alone (0–1), for callers that want it. */
+  promptMortality: number;
   /** Prompt plus later deaths. */
   deaths: number;
   deathsLow: number;
@@ -797,7 +801,18 @@ export function estimateCasualties(
       ...(band.psiBand !== undefined && { psiBand: band.psiBand }),
       hazards: byHazard.map((h) => h.hazard),
       population: Math.round(population),
-      mortality: population > 0 ? promptDeaths / population : band.mortality,
+      // The share of the people in this annulus who die of it — all
+      // of them, not only the ones killed in the first minutes.
+      //
+      // This used to be prompt deaths over population while `deaths`
+      // carried prompt plus delayed, so the two columns could not be
+      // reconciled by anyone reading the table: the outermost ring of
+      // a large impact printed "0 % mortality, 2 000 000 dead", both
+      // numbers right and the pair impossible. Mortality is now the
+      // total, and `promptMortality` carries the immediate share for
+      // callers that want the split.
+      mortality: population > 0 ? (promptDeaths + delayedDeaths) / population : band.mortality,
+      promptMortality: population > 0 ? promptDeaths / population : band.mortality,
       deaths: Math.round(promptDeaths + delayedDeaths),
       deathsLow: Math.round(promptLow + delayedLow),
       deathsHigh: Math.round(promptHigh + delayedHigh),

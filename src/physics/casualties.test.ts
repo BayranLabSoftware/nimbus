@@ -363,3 +363,73 @@ describe('the fireball sets: burns stop at the horizon', () => {
     expect(uniform(bounded)).toBeLessThan(0.4 * uniform(unbounded));
   });
 });
+
+/**
+ * A reader must be able to add the column up.
+ *
+ * The table prints a population, a mortality and a death count per
+ * ring, and a total underneath. Until 9 September 2026 the mortality
+ * was prompt deaths over population while the count was prompt plus
+ * delayed, so the row could not be reconciled: the outermost ring of
+ * a large impact read "0 % mortality, 2 000 000 dead", each number
+ * right and the pair impossible. These pin both readings — that a row
+ * multiplies out, and that the rows add up to the headline.
+ */
+describe('the rings reconcile with the total', () => {
+  const scenarios: { label: string; plan: CasualtyPlan | null; pop: number[] }[] = [
+    {
+      label: 'Hiroshima-scale airburst',
+      plan: blastCasualtyPlan({
+        blastEnergy: J(15 * 4.184e12),
+        overpressure5psiRadius: meters(1_700),
+        overpressure1psiRadius: meters(5_000),
+        thirdDegreeBurnRadius: meters(3_000),
+        secondDegreeBurnRadius: meters(4_000),
+        firestormRadius: meters(4_500),
+        fireballRadius: meters(200),
+      }),
+      pop: [50_000, 200_000, 600_000, 1_200_000, 2_000_000, 3_000_000, 4_000_000],
+    },
+    {
+      label: 'a megatonne over a city',
+      plan: blastCasualtyPlan({
+        blastEnergy: J(1e6 * 4.184e12),
+        overpressure5psiRadius: meters(9_000),
+        overpressure1psiRadius: meters(25_000),
+        thirdDegreeBurnRadius: meters(20_000),
+        secondDegreeBurnRadius: meters(35_000),
+        firestormRadius: meters(60_000),
+        fireballRadius: meters(2_000),
+      }),
+      pop: [10_000, 80_000, 300_000, 900_000, 2_000_000, 5_000_000, 9_000_000, 14_000_000],
+    },
+  ];
+
+  for (const { label, plan, pop } of scenarios) {
+    it(`${label}: every ring multiplies out`, () => {
+      expect(plan).not.toBeNull();
+      if (plan === null) return;
+      const est = estimateCasualties(plan, pop.slice(0, plan.bands.length));
+      for (const band of est.bands) {
+        if (band.population === 0) continue;
+        const implied = band.mortality * band.population;
+        // Within a person of the printed count: the only difference
+        // is the rounding of the count itself.
+        expect(Math.abs(implied - band.deaths), `${label} / ${band.key}`).toBeLessThan(1.5);
+        expect(band.promptMortality).toBeLessThanOrEqual(band.mortality + 1e-9);
+      }
+    });
+
+    it(`${label}: the rings add up to the headline`, () => {
+      expect(plan).not.toBeNull();
+      if (plan === null) return;
+      const est = estimateCasualties(plan, pop.slice(0, plan.bands.length));
+      const summed = est.bands.reduce((acc, b) => acc + b.deaths, 0);
+      // Each band rounds to a whole person, so the sum can differ from
+      // the separately rounded headline by at most one per band.
+      expect(Math.abs(summed - est.deaths)).toBeLessThanOrEqual(est.bands.length);
+      const people = est.bands.reduce((acc, b) => acc + b.population, 0);
+      expect(Math.abs(people - est.exposed)).toBeLessThanOrEqual(est.bands.length);
+    });
+  }
+});

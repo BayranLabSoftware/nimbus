@@ -453,18 +453,42 @@ Three defects were fixed on the spot:
 
 Two left open, both needing a decision rather than a fix:
 
-- **The mortality column does not multiply out.** The table prints
-  `mortality = promptDeaths / population` beside `deaths = prompt +
-delayed`. On the impact's outermost ring that reads "0 % mortality,
-  2 000 000 dead" — both numbers correct, the pair impossible. Either
-  the column becomes total mortality or its header says "immediate".
-- **Two dispersion laws are shipped at once.** The scalar path — the
-  report's amplitudes, the earthquake tsunami, the DART reference —
-  still uses Heidarzadeh's exponential exp(−r/2 500 km); the wave
-  field on the globe uses the derived Kajiura (1+D)^(−½). At 5 000 km
-  they differ by a factor near seven, so the same wave has two
-  amplitudes depending on which surface the reader is looking at. P2
-  called this mostly closed; the scalar path never migrated.
+- **The mortality column does not multiply out.** _(closed,
+  9 September.)_ It is now total mortality, so `mortality ×
+population = deaths` on every row; `promptMortality` carries the
+  immediate share for callers that want the split, and the report
+  table gained a totals line so a reader can add the column up and
+  find the headline at the bottom of it. Two property tests pin both
+  readings.
+- **Two dispersion laws are shipped at once.** _(closed,
+  9 September.)_ The heuristic is gone and the derived law is the only
+  one left. See P1 below for what removing it showed.
+
+### P1 — The source wavelength of a megathrust _(open, 9 September)_
+
+Unifying the dispersion law (Phase 27 in SCIENCE.md) left one
+question, and it is now the one that matters.
+
+The seismic module takes the dominant source wavelength as 2·L, the
+line source's first Fourier mode, cited to Satake 2013 — 1 400 km for
+Tōhoku. Across strike the uplift is a hump of width W, so a wave
+leaving the rupture broadside is nearer 2·W, about 400 km. The two
+differ by a factor of forty in Kajiura's parameter, and they set the
+directivity beam as well, since the array factor goes as L/λ.
+
+With 2·L a megathrust is acoustically compact by construction: L/λ is
+always ½, so the beam is always 0.64 along strike and 1 broadside, a
+fixed 1.57 whatever the rupture. That cannot be right for a rupture
+seven times longer than its own wave.
+
+This is what stands between the model and the two declared far-field
+residuals — 1.65× at DART 21413, 1.80× at Cocos Island. Both are
+buoys off the ends of long ruptures, both over-predicted by an
+isotropic law, and both would move under a beam that knows L/λ.
+
+Would move: the far-field amplitude of every megathrust, the coastal
+toll of Sumatra 2004 (currently 130 against 227 898), and the two
+pinned residuals.
 
 ### P3 — Caps the scalar path does not have
 

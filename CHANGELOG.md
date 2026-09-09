@@ -7,6 +7,27 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **One dispersion law instead of two.** The globe's wave field
+  carried Kajiura's parameter while everything else carried a fixed
+  exponential, printed under a citation the code's own comment
+  disclaimed, and the two disagreed by a factor of seven at 5 000 km.
+  The heuristic is gone. It invented dispersion where there is none —
+  a 700 km rupture crosses an ocean with its shape intact — and missed
+  it where it dominates, which is every short source. Removing it
+  showed that what it had been supplying was directivity: four GeoClaw
+  megathrust rows are probes sitting in the end-fire null of a source
+  the 1D path models as isotropic, and giving the comparison the same
+  beam the wave field already carries makes them pass with no
+  tolerance touched. The two remaining residuals — 1.65× at DART
+  21413, 1.80× at Cocos Island — are now declared and pinned rather
+  than absorbed.
+- **The casualty rings reconcile with the total.** The per-band
+  mortality was prompt deaths over population while the death count
+  was prompt plus delayed, so a row could not be added up: the
+  outermost ring of a large impact printed "0 % mortality, 2 000 000
+  dead". Mortality is now the total share, `promptMortality` carries
+  the immediate one, and the report table gained a totals line.
+
 - **A casualty band with no name.** Past the second-degree burn radius
   there is an annulus where the column still ignites and nothing else
   reaches; no rule labelled it, so the report printed the raw i18n key
