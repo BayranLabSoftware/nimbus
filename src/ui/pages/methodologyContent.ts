@@ -847,17 +847,19 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'underwater-burst-tsunami',
         name: 'Underwater / contact-water tsunami source',
-        formula: 'E_eff = 0.08 · E_yield ;  R_C = (3·E_eff / (2π · ρ_w · g))^(1/4);  η_0 = R_C / 2',
+        formula:
+          'E_eff = 0.08 · ε(z/W^⅓) · E_yield ;  ε = log-normal peaked at z = 4 m·kt^(−⅓), width 0.6 ;  R_C = (3·E_eff / (2π · ρ_w · g))^(1/4);  η_0 = R_C / 2',
         description:
-          'The Ward & Asphaug (2000) cavity-radius formula extended to chemical / nuclear underwater bursts via the Le Méhauté & Wang (1996) mechanical-coupling fraction (5–15 % of yield ends up as bulk water displacement; we use 0.08, calibrated against Glasstone Table 6.50 ≈ 180 m source amplitude for 1 Mt at optimum depth). Activates only when `regime === SURFACE` and `waterDepth > 0`.',
+          'The Ward & Asphaug (2000) cavity-radius formula extended to chemical / nuclear underwater bursts via the Le Méhauté & Wang (1996) mechanical-coupling fraction (5–15 % of yield ends up as bulk water displacement; we use 0.08 as the peak, calibrated against Glasstone Table 6.50 ≈ 180 m source amplitude for 1 Mt at optimum depth). The peak is reached only at the optimum scaled depth of burst: Glasstone §6.40 puts it near 4 m·kt^(−⅓) below the surface, and ε falls away log-normally on either side, to nothing for a charge fired in the air. That factor, not the water depth, is what decides whether a wave exists — Crossroads Baker made thirty metres from 23 kt at 27 m down, and Castle Bravo made none from 15 Mt on the reef.',
         citation: leMehauteWang1996,
       },
       {
         id: 'contact-water-burst-flag',
         name: 'Contact-water burst flag (atmospheric ring dimming)',
-        formula: 'isContactWaterBurst = (regime === SURFACE) AND (waterDepth > 0)',
+        formula:
+          'isContactWaterBurst = (a tsunami source exists) = ε(z/W^⅓) > 0 AND waterDepth > 0',
         description:
-          'Glasstone & Dolan §6 documents that mechanical coupling into the atmosphere drops to ≈ 5–15 % when a SURFACE burst sits directly on a water column. The on-globe overpressure / thermal / crater rings are dimmed (alpha 0.85 → 0.4) so the eye reads the tsunami branch as the dominant story; the published radii are emitted unchanged so callers that need the land-equivalent reference can still read them.',
+          'The flag follows the wave rather than the regime: a burst is a contact-water burst when it actually couples into the water, which the depth-of-burst efficiency decides and a SURFACE classification does not. A 500 Mt device 580 m above 200 m of sea is SURFACE by scaled height and still makes no wave. Glasstone & Dolan §6 documents that mechanical coupling into the atmosphere drops to ≈ 5–15 % when a SURFACE burst sits directly on a water column. The on-globe overpressure / thermal / crater rings are dimmed (alpha 0.85 → 0.4) so the eye reads the tsunami branch as the dominant story; the published radii are emitted unchanged so callers that need the land-equivalent reference can still read them.',
         citation: glasstoneDolan1977,
       },
       {

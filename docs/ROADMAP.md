@@ -424,6 +424,48 @@ plume, each of which has its own set of anchors and its own gaps
 (no volcanic wave is checked against a measurement, not even
 Krakatau's, which drowned 36 000 people).
 
+### P0 — What two random simulations found _(9 September)_
+
+Andrea ran a Boltysh-class impact and a custom 500 Mt burst, both on
+Palermo, and exported the reports. The model reproduces both PDFs
+exactly, so what follows is the model, not the export.
+
+Three defects were fixed on the spot:
+
+- **A band with no name.** Past the second-degree burn radius there is
+  an annulus where the column still ignites but nothing else reaches,
+  and no rule gave it a label — the report printed the raw i18n key
+  `casualties.band.b6`. It is not a corner: for the 500 Mt burst that
+  annulus runs from 177 km to the fireball horizon at 365 km and holds
+  4.6 M of the 6.9 M dead, and the bug fires at every yield from a
+  megatonne up. A sweep now asserts every band a scenario can produce
+  has a name in both languages.
+- **The envelope overstated its own distance.** 500 Mt is 3.3 × 10⁴
+  times Hiroshima; rounding the exponent printed "10⁵ times past".
+- **Two equation cards describing a model the code had left.** The
+  contact-water-burst card printed `regime === SURFACE AND waterDepth
+  > 0`on a page whose own output was`false` with a SURFACE regime and
+  > 200 m of water, and the underwater-burst card omitted the
+  > depth-of-burst efficiency entirely — the factor that actually
+  > decided there was no wave. For a report whose claim is
+  > "peer-reviewed formulas", this is the defect a professor finds
+  > first.
+
+Two left open, both needing a decision rather than a fix:
+
+- **The mortality column does not multiply out.** The table prints
+  `mortality = promptDeaths / population` beside `deaths = prompt +
+delayed`. On the impact's outermost ring that reads "0 % mortality,
+  2 000 000 dead" — both numbers correct, the pair impossible. Either
+  the column becomes total mortality or its header says "immediate".
+- **Two dispersion laws are shipped at once.** The scalar path — the
+  report's amplitudes, the earthquake tsunami, the DART reference —
+  still uses Heidarzadeh's exponential exp(−r/2 500 km); the wave
+  field on the globe uses the derived Kajiura (1+D)^(−½). At 5 000 km
+  they differ by a factor near seven, so the same wave has two
+  amplitudes depending on which surface the reader is looking at. P2
+  called this mostly closed; the scalar path never migrated.
+
 ### P3 — Caps the scalar path does not have
 
 The field clamps run-up at four times the arriving amplitude and the
@@ -431,6 +473,15 @@ rim wave at the water depth; the scalar path clamps neither. A
 Chicxulub on Rome prints a source amplitude of 1 362 m in 200 m of
 water, and a coastal run-up of 495 m from a 40 m wave. Would move: two
 rows in every report of an impact into shallow water.
+
+The Boltysh run on Palermo puts a cost on it. Source amplitude
+1 132 m in 200 m of sea, a coastal run-up of 246 m at 1 000 km, and
+an inundation strip 31 km inland — the largest run-up ever recorded is
+Lituya Bay's 524 m, and that was a rockfall splash inside a confined
+fjord, not an open coast a thousand kilometres from its source. The
+first coastal bands then die at 100 %. That chain carries 8.1 M of the
+33 M dead in that report, so this is not two cosmetic rows: it is a
+quarter of the toll.
 
 ### P4 — What the report says versus what the globe says
 

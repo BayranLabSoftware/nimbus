@@ -201,9 +201,15 @@ describe('formatFactor', () => {
     expect(formatFactor(1543, 'en-US')).toBe('1,500');
   });
 
-  it('drops to a power of ten once the digits stop meaning anything', () => {
-    expect(formatFactor(1e8, 'en-US')).toBe('10⁸');
-    expect(formatFactor(7.8e14, 'en-US')).toBe('10¹⁵');
+  it('drops to a mantissa and an exponent past ten thousand', () => {
+    expect(formatFactor(1e8, 'en-US')).toBe('1.0 × 10⁸');
+    expect(formatFactor(7.8e14, 'en-US')).toBe('7.8 × 10¹⁴');
+  });
+
+  it('never rounds the exponent itself — that would overstate threefold', () => {
+    // 500 Mt against Hiroshima's 15 kt. Rounding log₁₀(33 333) to 5
+    // printed "10⁵ times past", three times the true distance.
+    expect(formatFactor(33_333, 'en-US')).toBe('3.3 × 10⁴');
   });
 
   it('refuses anything that is not a multiple of at least one', () => {

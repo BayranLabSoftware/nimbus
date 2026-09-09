@@ -5,6 +5,28 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## [Unreleased]
 
+### Fixed
+
+- **A casualty band with no name.** Past the second-degree burn radius
+  there is an annulus where the column still ignites and nothing else
+  reaches; no rule labelled it, so the report printed the raw i18n key
+  `casualties.band.b6`. For a 500 Mt burst that annulus runs from
+  177 km to the fireball horizon at 365 km and holds two thirds of the
+  dead, and the bug fired at every yield from a megatonne up. A sweep
+  now asserts every band a scenario can produce has a name in both
+  languages.
+- **The calibration envelope overstated its own distance.** 500 Mt is
+  3.3 × 10⁴ times Hiroshima; rounding the exponent printed "10⁵ times
+  past" — a threefold exaggeration of how far outside the record a
+  scenario sits.
+- **Two equation cards describing a model the code had left behind.**
+  The contact-water-burst card printed `regime === SURFACE AND
+  waterDepth > 0` on a report whose own output was `false` with a
+  SURFACE regime and 200 m of water, and the underwater-burst card
+  omitted the depth-of-burst efficiency — the factor that actually
+  decides whether a wave exists at all.
+
+
 ### Added
 
 - **The model says where it has been measured.** The casualty panel

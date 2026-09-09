@@ -1273,7 +1273,8 @@
       "pyroclastic": "Flusso piroclastico",
       "lateralBlast": "Esplosione laterale",
       "thermalOnly": "Solo ustioni",
-      "tsunami": "Costa raggiunta dall'onda"
+      "tsunami": "Costa raggiunta dall'onda",
+      "firestormOnly": "Solo tempesta di fuoco"
     },
     "model": {
       "blast": "Crolli e onda d'urto: OTA 1979, The Effects of Nuclear War, tab. 2 (98 % a ≥ 12 psi, 50 % a 5 psi, 5 % a 2 psi). Ustioni: Glasstone & Dolan 1977, cap. XII, sul 25 % esposto alla vista della palla di fuoco (10–50 %), mortalità 50 % (30–80 %) dentro il raggio di terzo grado. Tempesta di fuoco: 30 % dei sopravvissuti (10–80 %, Amburgo e Dresda in basso, il superfuoco di Postol 1986 in alto). Morti differiti: 30 % dei feriti entro settimane senza cure (10–60 %, OTA 1979). In ogni fascia i pericoli agiscono in sequenza sui sopravvissuti, nessuno muore due volte",

@@ -1,12 +1,13 @@
 import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { BandEstimate, CasualtyEstimate } from '../../physics/casualties.js';
+import type { CasualtyEstimate } from '../../physics/casualties.js';
 import {
   anchorsFor,
   type CalibrationEnvelope,
 } from '../../physics/validation/calibrationEnvelope.js';
 import type { PopulationLookupMethod } from '../../scene/populationLookup.js';
 import type { CasualtyStatus } from '../../store/index.js';
+import { bandLabelKey } from './casualtyBandLabel.js';
 import { cx } from '../utils/cx.js';
 import {
   formatFactor,
@@ -24,14 +25,6 @@ const TIERS_RANGE: readonly UnitTier[] = [
 
 /** People, rounded to the precision the model deserves: two
  *  significant figures — "≈ 66 000", never "65 812". */
-/** The i18n suffix of a band's label: its OTA class, the coast the
- *  wave reached, a burns-only annulus, or the single-hazard key. */
-function bandLabelKey(band: BandEstimate, model: CasualtyEstimate['model']): string {
-  if (band.hazards[0] === 'tsunami') return 'tsunami';
-  if (band.psiBand !== undefined) return band.psiBand;
-  if (model === 'blast' && band.hazards.includes('thermal')) return 'thermalOnly';
-  return band.key;
-}
 
 /**
  * Where this scenario sits against the events the world has already

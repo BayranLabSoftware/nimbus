@@ -90,7 +90,7 @@ export function formatScientific(n: number, digits = 2): string {
 
 /**
  * A multiple, written so a reader can hold it: "1.4", "20", "1 500",
- * and then "10⁸" once the digits have stopped carrying meaning.
+ * and then "3.3 × 10⁴" once the digits have stopped carrying meaning.
  *
  * Used for how far a scenario sits past the largest event anyone has
  * ever measured, where the exponent is the whole message and the
@@ -105,7 +105,11 @@ export function formatFactor(n: number, locale: string): string {
     const magnitude = 10 ** (Math.floor(Math.log10(n)) - 1);
     return (Math.round(n / magnitude) * magnitude).toLocaleString(locale);
   }
-  return `10${toSuperscript(Math.round(Math.log10(n)))}`;
+  // A mantissa and the exponent, never the exponent alone: rounding
+  // log₁₀(33 333) to 5 turns a factor of thirty thousand into one of a
+  // hundred thousand, a threefold overstatement of how far outside the
+  // record a scenario sits.
+  return formatScientific(n, 1);
 }
 
 const SUPERSCRIPT_DIGITS: Record<string, string> = {
