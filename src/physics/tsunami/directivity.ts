@@ -26,25 +26,47 @@
  * the factor is 1 everywhere, which is the right answer for a small
  * earthquake and the reason nothing needs a special case for one.
  *
- * Where this can be believed, and where it cannot. A coherent line
- * source has zeros; a fault does not. The pattern assumes the whole
- * rupture radiates one wavelength in step, and a fault that took ten
- * minutes to tear thirteen hundred kilometres through patchy slip
- * does neither — its nulls are filled in by everything that makes it
- * a real rupture rather than an antenna. Two records say so from
- * opposite sides. DART 21413 lies inside the main lobe of the Tōhoku
- * rupture, and applying this pattern takes the modelled amplitude
+ * A coherent line source has zeros; a fault does not, and two records
+ * say so from opposite sides. DART 21413 lies inside the main lobe of
+ * the Tōhoku rupture, and the pattern takes the modelled amplitude
  * there from 1.65× the recorded peak to 1.14×. Cocos Island lies past
  * the first null of the 2004 rupture, where the pattern says three
- * per cent of the peak, and the tide gauge recorded a wave twenty
- * times larger than that.
+ * per cent of the peak, and the tide gauge recorded twenty times
+ * that.
  *
- * So `directivityTrusted` says which side of the first null a bearing
- * falls on, and callers that need an estimate rather than a shape use
- * the pattern inside the main lobe and decline to use it outside.
- * What would extend it past the null is the slip correlation length —
- * how far along a rupture the seafloor really does move in step —
- * which this project has no measurement of and will not invent.
+ * The nulls are filled in by everything that makes a rupture a
+ * rupture rather than an antenna. The pattern assumes the whole fault
+ * radiates one wavelength in step, and a fault that took ten minutes
+ * to tear thirteen hundred kilometres through patchy slip does not.
+ * It moves together over a correlation length ℓ and breaks into
+ * N = L/ℓ pieces that do not agree with each other, and N incoherent
+ * sources add as √N in amplitude where N coherent ones add as N. So
+ * the radiation cannot fall below √(ℓ/L) of its own peak, and the
+ * floor is one number for every rupture rather than one per event:
+ * Mai & Beroza (2002) found the correlation length scales with the
+ * fault's own dimensions, so ℓ/L does not depend on magnitude.
+ *
+ * What sets it is a measurement. Melgar & Hayes (2019), as reported
+ * by Sepúlveda et al. (2020), put the along-strike correlation length
+ * of a magnitude 9 rupture near 150 km, against the seven hundred
+ * kilometres such a rupture runs — a fifth of its length. The floor is
+ * the root of that, near 0.46, and it is the only number in this file.
+ * It is not fitted to the two records; it is measured elsewhere and
+ * happens to reproduce them, which is the difference worth insisting
+ * on. With it, Cocos reads 0.83× of the tide-gauge record where the
+ * bare pattern read 0.06×, and DART is untouched at 1.14× because a
+ * main lobe is above the floor by definition.
+ *
+ * References for the floor:
+ *   Mai, P. M. & Beroza, G. C. (2002). "A spatial random field model
+ *     to characterize complexity in earthquake slip." J. Geophys.
+ *     Res. 107 (B11), 2308. DOI: 10.1029/2001JB000588.
+ *   Melgar, D. & Hayes, G. P. (2019). "The correlation lengths and
+ *     hypocentral positions of great earthquakes." Bull. Seismol.
+ *     Soc. Am. 109 (6), 2582–2593.
+ *   Sepúlveda, I. et al. (2020). "Effects of earthquake spatial slip
+ *     correlation on variability of tsunami potential energy and
+ *     intensities." Sci. Rep. 10, 8296.
  *
  * The peak is left where it is rather than being renormalised upward.
  * The amplitude this multiplies is derived from the peak seafloor
@@ -57,6 +79,25 @@
  *     tsunami waves from submarine earthquakes." J. Geophys. Res.
  *     77 (17), 3097–3128.
  */
+
+/**
+ * The along-strike slip correlation length as a fraction of the
+ * rupture length: how much of a fault moves in step with itself.
+ *
+ * One number for every megathrust, because Mai & Beroza (2002) found
+ * the correlation length scales with the fault dimension rather than
+ * with magnitude independently. Anchored on Melgar & Hayes (2019),
+ * whose along-strike correlation length for a magnitude 9 rupture is
+ * about 150 km where such a rupture is about 700 km long.
+ */
+export const SLIP_CORRELATION_FRACTION = 150 / 700;
+
+/**
+ * The level a rupture's radiation cannot fall below, whatever the
+ * array factor says: N = L/ℓ incoherent pieces add as √N where N
+ * coherent ones add as N, so the pattern floors at √(ℓ/L) ≈ 0.46.
+ */
+export const INCOHERENT_FLOOR = Math.sqrt(SLIP_CORRELATION_FRACTION);
 
 export interface DirectivityInput {
   /** Bearing from the source to the point being asked about (° from
@@ -79,8 +120,12 @@ export interface DirectivityInput {
 export function directivityFactor(input: DirectivityInput): number {
   const u = arrayArgument(input);
   if (u === null || u < 1e-9) return 1;
-  const factor = Math.abs(Math.sin(u) / u);
-  return Number.isFinite(factor) ? Math.min(1, Math.max(0, factor)) : 1;
+  const coherent = Math.abs(Math.sin(u) / u);
+  if (!Number.isFinite(coherent)) return 1;
+  // The larger of what the fault radiates in step and what its pieces
+  // radiate out of step. Across the fault the first is 1 and wins; off
+  // its ends the first goes to zero and the second is what is left.
+  return Math.min(1, Math.max(0, Math.max(coherent, INCOHERENT_FLOOR)));
 }
 
 /**
@@ -100,14 +145,17 @@ function arrayArgument(input: DirectivityInput): number | null {
 }
 
 /**
- * Whether the pattern can be believed at this bearing: true inside
- * the main lobe, false past the first null, where a real rupture's
- * incoherence fills in what a coherent line source zeroes out.
+ * Whether the value at this bearing comes from the fault moving in
+ * step — the array factor's main lobe — or from the incoherent floor
+ * beneath it. Both are believable; they are believable for different
+ * reasons, and a caller reporting a far-field amplitude may want to
+ * say which.
  *
- * A source with no orientation, or one shorter than its own wave, has
- * no null to be past and is trusted everywhere.
+ * A source with no orientation, or one shorter than its own wave, is
+ * coherent everywhere because it has no null to be past.
  */
-export function directivityTrusted(input: DirectivityInput): boolean {
+export function directivityIsCoherent(input: DirectivityInput): boolean {
   const u = arrayArgument(input);
-  return u === null || u <= Math.PI;
+  if (u === null) return true;
+  return Math.abs(Math.sin(u) / u) >= INCOHERENT_FLOOR;
 }

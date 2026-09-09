@@ -527,7 +527,7 @@ is declined there and the row stays isotropic at 1.80×, an unbeamed
 number with a reason rather than a beamed one from outside the
 model's range.
 
-### P2 — The slip correlation length _(open, 9 September)_
+### P2 — The slip correlation length _(closed, 9 September)_
 
 What is left of the far-field residual, and the last thing between the
 model and the record at Cocos Island.
@@ -547,10 +547,25 @@ Finite-fault inversions publish slip distributions from which ℓ can be
 measured — Satake 2013 for Tōhoku, Lay 2005 for Sumatra — and that
 would be a measurement rather than a choice.
 
-Would move: Cocos Island from 1.80× toward the record, every
-along-strike coast in the wave field on the globe, and with it the
-coastal toll of Sumatra 2004, which is the worst row in the whole
-calibration net at 130 dead against 227 898.
+**Closed by a published measurement.** Melgar & Hayes (2019), via
+Sepúlveda et al. (2020), put the along-strike correlation length of a
+magnitude 9 rupture near 150 km on a rupture of about 700 km — a fifth
+of its length — and Mai & Beroza (2002) found that length scales with
+the fault, so ℓ/L is one number for every megathrust. The floor is
+√(ℓ/L) ≈ 0.46.
+
+Cocos Island went from 0.06× of the gauge under the bare pattern to
+**0.83×**; DART is untouched at 1.14×, a main lobe being above the
+floor by definition. Both records now sit inside the ±25–50 % spread
+Synolakis 2008 gives between MOST, GeoClaw and COMCOT.
+
+The draft that used ℓ = λ was rejected: it read better (Cocos 1.00×)
+and was a fitted parameter wearing a derivation.
+
+Tōhoku's coastal toll moved 3 800 → 6 500 drowned against about
+16 700. Sumatra's moved only 100 → 120 against near 227 000, so that
+row was never the beam — it is the forty-kilometre coastal grid and
+the warning-time assumption, both open above.
 
 ### P3 — Caps the scalar path does not have
 

@@ -7,6 +7,18 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A floor under the directivity beam.** The array factor has zeros
+  and a fault does not: it moves together over a correlation length ℓ
+  and breaks into N = L/ℓ pieces that add as √N where coherent ones
+  add as N, so its radiation cannot fall below √(ℓ/L) of the peak. One
+  number for every megathrust — Mai & Beroza (2002) found the
+  correlation length scales with the fault — anchored on Melgar &
+  Hayes (2019) at 150 km for a 700 km rupture, giving 0.46. Cocos
+  Island goes from 0.06× the tide-gauge record to 0.83×, DART 21413 is
+  untouched at 1.14×, and on the globe the beam stops nulling the
+  coasts that lie along a rupture: Tōhoku's coastal toll 3 800 → 6 500
+  drowned against about 16 700 recorded.
+
 - **The beam reaches the report's numbers.** The wave field on the
   globe beamed and the scalar rows did not, so "the amplitude at
   1 000 km" was the peak quoted as though it were everywhere. The

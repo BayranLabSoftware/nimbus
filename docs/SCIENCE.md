@@ -414,6 +414,57 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### The floor under the beam (Phase 30)
+
+The array factor has zeros; a fault does not. That was the one thing
+left between the model and the record at Cocos Island, where the
+pattern said three per cent of the peak and the tide gauge recorded
+twenty times that.
+
+A fault moves together over a correlation length ℓ and breaks into
+N = L/ℓ pieces that stop agreeing with each other, and N incoherent
+sources add as √N in amplitude where N coherent ones add as N. So the
+radiation cannot fall below **√(ℓ/L)** of its own peak, whatever the
+array factor says. The floor is one number for every rupture rather
+than one per event, because Mai & Beroza (2002) found the correlation
+length scales with the fault's own dimensions — so ℓ/L does not depend
+on magnitude.
+
+What sets it is a measurement made elsewhere. Melgar & Hayes (2019),
+as reported by Sepúlveda et al. (2020), put the along-strike
+correlation length of a magnitude 9 rupture near 150 km, against the
+seven hundred kilometres such a rupture runs: a fifth of its length.
+√(1/5) ≈ 0.46, and that is the only number in the file.
+
+It is not fitted to the two records. It is measured somewhere else and
+happens to reproduce them, which is the whole difference:
+
+|                              | isotropic | beam alone | beam with floor | recorded |
+| ---------------------------- | --------- | ---------- | --------------- | -------- |
+| DART 21413, in the main lobe | 1.65×     | **1.14×**  | 1.14×           | 0.30 m   |
+| Cocos Island, past the null  | 1.80×     | 0.06×      | **0.83×**       | 0.40 m   |
+
+DART is untouched, because a main lobe is above the floor by
+definition. Cocos goes from a factor of eighteen under to within
+seventeen per cent, and both records now sit inside the ±25–50 % that
+Synolakis et al. 2008 give as the spread between MOST, GeoClaw and
+COMCOT on the same benchmark.
+
+**A draft that was rejected.** The first version of this floor used
+ℓ = λ, the wavelength, which put Cocos at 1.00× and DART at 1.47×.
+Better-looking and worse science: the count of pieces a fault breaks
+into is not set by the wavelength of the wave it radiates, and picking
+λ for it was picking a parameter to make two numbers come out. The
+published correlation length was worth the search.
+
+**On the globe.** The floor stops the beam nulling the coasts that lie
+along a rupture, which is where most of the dead of a megathrust
+actually are. Tōhoku's coastal toll went from 3 800 drowned to 6 500,
+against about 16 700 recorded. Sumatra's moved 100 → 120 against near
+227 000, so its shortfall was never the beam: it is the forty-kilometre
+coastal grid and a warning-time assumption that hands 2004 a warning it
+did not have, both written up under M8.
+
 ### The beam reaches the numbers, and stops where it should (Phase 29)
 
 The wave field on the globe beamed; the numbers in the report did not.

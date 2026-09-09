@@ -1,5 +1,5 @@
 import { CRUSTAL_RIGIDITY, STANDARD_GRAVITY } from '../../constants.js';
-import { directivityFactor, directivityTrusted } from '../../tsunami/directivity.js';
+import { directivityFactor, directivityIsCoherent } from '../../tsunami/directivity.js';
 import { synolakisRunup } from '../tsunami/extendedEffects.js';
 import { dispersionFactor } from '../../tsunami/dispersion.js';
 import { shallowWaterWaveSpeed, tsunamiTravelTime } from '../tsunami/propagation.js';
@@ -183,12 +183,12 @@ export interface SeismicTsunamiResult {
    *  and less off its ends, 1 throughout when no receiver was named
    *  or the source has no orientation. */
   beamFactor: number;
-  /** False when the receiver lies past the first null of the array
-   *  pattern, where a coherent line source has a zero and a real
-   *  rupture does not. The beam is then left at 1 and the far-field
-   *  rows are the peak: an unbeamed number with a reason, rather than
-   *  a beamed one from outside the model's range. */
-  beamTrusted: boolean;
+  /** True when the beam toward the receiver is the fault radiating in
+   *  step — the array factor's main lobe — and false when it is the
+   *  incoherent floor beneath it, which is what a rupture's pieces
+   *  radiate once they stop agreeing with each other. Both are the
+   *  model; they are the model for different reasons. */
+  beamCoherent: boolean;
   /** The dispersed far-field amplitudes toward that receiver. Where
    *  the rows above are the peak — the amplitude across the fault,
    *  which is not a direction anyone in particular is standing in —
@@ -274,7 +274,7 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
       amplitudeAt5000kmDispersed: m(0),
       amplitudeAt1000kmDispersed: m(0),
       beamFactor: 1,
-      beamTrusted: true,
+      beamCoherent: true,
       amplitudeAt1000kmToward: m(0),
       amplitudeAt5000kmToward: m(0),
       runupAt1000km: m(0),
@@ -337,14 +337,11 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
     ruptureLengthM: L,
     wavelengthM: 2 * W,
   };
-  // Past the first null the pattern stops describing a real rupture,
-  // so the beam is not applied there and the row says as much rather
-  // than reporting a number from outside the model's range. Cocos
-  // Island in 2004 is that case: the pattern says three per cent of
-  // the peak and the tide gauge recorded twenty times that.
-  const beamTrusted = input.receiverBearingDeg === undefined || directivityTrusted(beam);
-  const beamFactor =
-    input.receiverBearingDeg === undefined || !beamTrusted ? 1 : directivityFactor(beam);
+  // Off the ends of the fault the array factor goes to zero and the
+  // incoherent floor is what is left; `beamCoherent` says which of
+  // the two the row is standing on.
+  const beamCoherent = input.receiverBearingDeg === undefined || directivityIsCoherent(beam);
+  const beamFactor = input.receiverBearingDeg === undefined ? 1 : directivityFactor(beam);
   // Beach slope: caller-supplied DEM value when in [1:1000, 1:3]
   // envelope, otherwise the canonical 1:100 reference (Synolakis 1987).
   const SLOPE_LOWER = Math.atan(1 / 1000);
@@ -401,7 +398,7 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
     amplitudeAt5000kmDispersed: m(amp5000Disp),
     amplitudeAt1000kmDispersed: m(amp1000Disp),
     beamFactor,
-    beamTrusted,
+    beamCoherent,
     amplitudeAt1000kmToward: m(amp1000Disp * beamFactor),
     amplitudeAt5000kmToward: m(amp5000Disp * beamFactor),
     runupAt1000km: runup,

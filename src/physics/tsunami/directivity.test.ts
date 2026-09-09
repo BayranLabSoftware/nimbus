@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { directivityFactor, directivityTrusted } from './directivity.js';
+import { directivityFactor, directivityIsCoherent, INCOHERENT_FLOOR } from './directivity.js';
 
 /**
  * Written before the module, and pinning only what a line source has
@@ -39,13 +39,36 @@ describe('directivityFactor', () => {
     expect(alongStrike).toBeGreaterThan(0);
   });
 
-  it('a longer array beams harder off its own end', () => {
-    const short = directivityFactor({ ...rupture, bearingDeg: strike });
-    const long = directivityFactor({ ...longRupture, bearingDeg: 330 });
+  it('a longer array reaches the floor sooner, off a smaller angle', () => {
+    // Twenty degrees off broadside. The short array is still radiating
+    // in step there; the long one has already dropped through its
+    // first null onto the floor.
+    const short = directivityFactor({ ...rupture, bearingDeg: (strike + 70) % 360 });
+    const long = directivityFactor({ ...longRupture, bearingDeg: (330 + 70) % 360 });
     expect(long).toBeLessThan(short);
+    expect(directivityIsCoherent({ ...rupture, bearingDeg: (strike + 70) % 360 })).toBe(true);
+    expect(directivityIsCoherent({ ...longRupture, bearingDeg: (330 + 70) % 360 })).toBe(false);
   });
 
-  it('says where it can be believed and where it cannot', () => {
+  it('never falls below what the pieces of a rupture radiate on their own', () => {
+    // A coherent line source has zeros and a fault does not: it moves
+    // together over a correlation length ℓ and breaks into N = L/ℓ
+    // pieces, and N incoherent sources add as √N where N coherent
+    // ones add as N. The floor is √(ℓ/L), one number for every
+    // rupture because the correlation length scales with the fault
+    // (Mai & Beroza 2002), anchored on Melgar & Hayes (2019): 150 km
+    // of correlation on a 700 km rupture.
+    for (const r of [rupture, longRupture]) {
+      for (let b = 0; b < 360; b += 3) {
+        expect(
+          directivityFactor({ ...r, bearingDeg: b }),
+          `${r.ruptureLengthM.toString()} m at ${b.toString()}°`
+        ).toBeGreaterThanOrEqual(INCOHERENT_FLOOR - 1e-12);
+      }
+    }
+  });
+
+  it('says whether the fault is moving in step or its pieces are', () => {
     // Inside the main lobe the array factor is the answer. Past the
     // first null a real rupture's incoherence fills in what a
     // coherent line source zeroes out, and two records say so: DART
@@ -53,17 +76,17 @@ describe('directivityFactor', () => {
     // model from 1.65× the record to 1.14×, while Cocos Island is
     // past the first null of the 2004 rupture, where the pattern says
     // 3 % of the peak and the tide gauge recorded twenty times that.
-    expect(directivityTrusted({ ...rupture, bearingDeg: (strike + 90) % 360 })).toBe(true);
-    expect(directivityTrusted({ ...rupture, bearingDeg: 131 })).toBe(true);
+    expect(directivityIsCoherent({ ...rupture, bearingDeg: (strike + 90) % 360 })).toBe(true);
+    expect(directivityIsCoherent({ ...rupture, bearingDeg: 131 })).toBe(true);
     // Cocos lies at bearing 176 from the 2004 centroid, 154° off the
     // perpendicular to a strike of 330 — well past the null of an
     // array three and a quarter wavelengths long.
-    expect(directivityTrusted({ ...longRupture, bearingDeg: 176 })).toBe(false);
+    expect(directivityIsCoherent({ ...longRupture, bearingDeg: 176 })).toBe(false);
   });
 
   it('a source with no orientation has no null to be past', () => {
-    expect(directivityTrusted({ ...rupture, strikeDeg: undefined, bearingDeg: 10 })).toBe(true);
-    expect(directivityTrusted({ ...rupture, ruptureLengthM: 0, bearingDeg: 10 })).toBe(true);
+    expect(directivityIsCoherent({ ...rupture, strikeDeg: undefined, bearingDeg: 10 })).toBe(true);
+    expect(directivityIsCoherent({ ...rupture, ruptureLengthM: 0, bearingDeg: 10 })).toBe(true);
   });
 
   it('narrows as the rupture lengthens, for the same wave', () => {

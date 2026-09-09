@@ -1,13 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { seismicTsunamiFromMegathrust } from '../events/earthquake/seismicTsunami.js';
 import { synolakisRunup } from '../events/tsunami/extendedEffects.js';
-import { directivityFactor, directivityTrusted } from '../tsunami/directivity.js';
+import { directivityFactor, directivityIsCoherent } from '../tsunami/directivity.js';
 import { dispersionFactor } from '../tsunami/dispersion.js';
 import { simulateSaintVenant1D } from '../tsunami/saintVenant1D.js';
 import { m } from '../units.js';
 import {
   BEAMED_MAIN_LOBE_RESIDUAL,
-  MEGATHRUST_FAR_FIELD_RESIDUAL,
   NOAA_PIN_TOLERANCE,
   SUMATRA_2004_COCOS_REFERENCE,
   SYNOLAKIS_1987_CASES,
@@ -74,11 +73,7 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
       magnitude: 9.1,
       ruptureLength: m(700_000),
       subductionInterface: true,
-      strikeDeg: 330,
-      receiverBearingDeg: 176.4,
     });
-    expect(r.beamTrusted, 'Cocos Island is past the first null').toBe(false);
-    expect(r.beamFactor, 'and so the beam is not applied').toBe(1);
     expect(r.meanSlip as number).toBeGreaterThan(5);
     expect(r.meanSlip as number).toBeLessThan(25);
   });
@@ -168,7 +163,7 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
     // record; the solver is radially symmetric and put the strongest
     // wave the fault can make in every direction at once.
     const beam = { bearingDeg: 131.3, strikeDeg: 200, ruptureLengthM, wavelengthM };
-    expect(directivityTrusted(beam), 'DART 21413 is inside the main lobe').toBe(true);
+    expect(directivityIsCoherent(beam), 'DART 21413 is inside the main lobe').toBe(true);
     const beamedPeakM = dispersedPeakM * directivityFactor(beam);
     const ratio = beamedPeakM / TOHOKU_2011_DART_REFERENCE.observedAmplitudeM;
     expect(
@@ -180,7 +175,7 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
 });
 
 describe('Sumatra-Andaman 2004 megathrust — Cocos Island reference (Bernard et al. 2006)', () => {
-  it('seismic-tsunami amplitude at 1 700 km sits at the declared far-field residual', () => {
+  it('seismic-tsunami amplitude toward Cocos Island matches the gauge', () => {
     // Sumatra-Andaman 2004: Mw 9.1, very long rupture ≈ 1 300 km
     // (Bilham 2005, Lay et al. 2005). Subduction interface — Sunda
     // megathrust. Cocos Island is ≈ 1 700 km from rupture centroid.
@@ -201,17 +196,23 @@ describe('Sumatra-Andaman 2004 megathrust — Cocos Island reference (Bernard et
       ruptureLength: m(1_300_000),
       basinDepth: m(4_000),
       subductionInterface: true,
+      // The Sunda megathrust strikes 330°; Cocos Island lies at
+      // bearing 176° from the centroid, 154° off the perpendicular.
+      strikeDeg: 330,
+      receiverBearingDeg: 176.4,
     });
-    // Use the dispersion-corrected amplitude (Phase-20). Scale by
-    // cylindrical √(R₀/r) from 1 000 km to the buoy distance.
-    const ampAt1000Disp = r.amplitudeAt1000kmDispersed as number;
+    expect(r.beamCoherent, 'Cocos is past the first null, on the incoherent floor').toBe(false);
+    // Use the dispersion-corrected amplitude toward the island, not
+    // the peak across the fault. Scale by cylindrical √(R₀/r) from
+    // 1 000 km to the buoy distance.
+    const ampAt1000Disp = r.amplitudeAt1000kmToward as number;
     const ampAtCocos =
       ampAt1000Disp * Math.sqrt(1_000_000 / SUMATRA_2004_COCOS_REFERENCE.distanceM);
     const ratio = ampAtCocos / SUMATRA_2004_COCOS_REFERENCE.observedAmplitudeM;
     expect(
       ratio,
       `predicted ${ampAtCocos.toFixed(3)} m vs ${SUMATRA_2004_COCOS_REFERENCE.observedAmplitudeM.toString()} m observed (${SUMATRA_2004_COCOS_REFERENCE.source}) — ratio ${ratio.toFixed(2)}`
-    ).toBeGreaterThan(MEGATHRUST_FAR_FIELD_RESIDUAL.low);
-    expect(ratio).toBeLessThan(MEGATHRUST_FAR_FIELD_RESIDUAL.high);
+    ).toBeGreaterThan(BEAMED_MAIN_LOBE_RESIDUAL.low);
+    expect(ratio).toBeLessThan(BEAMED_MAIN_LOBE_RESIDUAL.high);
   });
 });
