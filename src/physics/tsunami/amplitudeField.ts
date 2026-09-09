@@ -1,4 +1,5 @@
 import { dispersionDecay, dispersionParameter } from './dispersion.js';
+import { directivityFactor } from './directivity.js';
 import { STANDARD_GRAVITY } from '../constants.js';
 import type { ElevationGrid } from '../elevation/index.js';
 import type { FastMarchingResult } from './fastMarching.js';
@@ -87,6 +88,17 @@ const MIN_PROPAGATION_DEPTH = 50;
  *  in the regime where the formula holds. */
 const SHOALING_CAP = 4;
 
+/** Initial bearing from one point to another (° from north). */
+function bearingTo(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const rad = Math.PI / 180;
+  const p1 = lat1 * rad;
+  const p2 = lat2 * rad;
+  const dl = (lon2 - lon1) * rad;
+  const y = Math.sin(dl) * Math.cos(p2);
+  const x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl);
+  return (((Math.atan2(y, x) / rad) % 360) + 360) % 360;
+}
+
 export interface AmplitudeFieldInput {
   /** Pre-computed FMM arrival-time field. */
   arrivalField: FastMarchingResult;
@@ -106,6 +118,16 @@ export interface AmplitudeFieldInput {
    *  already use. It decides how fast the wave disperses, which is
    *  the whole difference between a megathrust and a collapse. */
   sourceWavelengthM?: number;
+  /** Strike of an elongated source (° from north) and its length
+   *  along strike (m). Given together they beam the wave across the
+   *  fault instead of radiating it in a circle; omitted, the source
+   *  is unoriented and radiates evenly, which is the right answer for
+   *  a crater or a collapse. */
+  strikeDeg?: number;
+  ruptureLengthM?: number;
+  /** Where the source is, needed only to take bearings for the beam. */
+  sourceLatitude?: number;
+  sourceLongitude?: number;
   /** Surface gravity. Defaults to Earth standard. */
   surfaceGravity?: number;
   /** Minimum ocean depth (m) to treat as water — propagated from the
@@ -135,6 +157,15 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
   const sourceDepth = Math.max(input.sourceDepthM ?? 1_000, MIN_PROPAGATION_DEPTH);
   const g = input.surfaceGravity ?? STANDARD_GRAVITY;
   const minDepth = input.minDepthMeters ?? 10;
+  const strikeDeg = input.strikeDeg;
+  const ruptureLengthM =
+    input.ruptureLengthM !== undefined && Number.isFinite(input.ruptureLengthM)
+      ? Math.max(0, input.ruptureLengthM)
+      : 0;
+  const srcLat = input.sourceLatitude ?? 0;
+  const srcLon = input.sourceLongitude ?? 0;
+  const dLatDeg = (input.grid.maxLat - input.grid.minLat) / Math.max(input.grid.nLat - 1, 1);
+  const dLonDeg = (input.grid.maxLon - input.grid.minLon) / Math.max(input.grid.nLon - 1, 1);
   const sourceWavelengthM =
     input.sourceWavelengthM !== undefined && Number.isFinite(input.sourceWavelengthM)
       ? Math.max(1, input.sourceWavelengthM)
@@ -183,7 +214,23 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
       dispersionParameter({ rangeM: r, depthM: h, wavelengthM: sourceWavelengthM })
     );
 
-    const A = sourceAmplitudeM * shoaling * spread * dispersion;
+    // Directivity. An unoriented source leaves this at one, so a
+    // crater or a collapse is unaffected and needs no special case.
+    let beam = 1;
+    if (strikeDeg !== undefined && ruptureLengthM > 0) {
+      const row = Math.floor(i / arrivalField.nLon);
+      const col = i % arrivalField.nLon;
+      const cellLat = grid.maxLat - row * dLatDeg;
+      const cellLon = grid.minLon + col * dLonDeg;
+      beam = directivityFactor({
+        bearingDeg: bearingTo(srcLat, srcLon, cellLat, cellLon),
+        strikeDeg,
+        ruptureLengthM,
+        wavelengthM: sourceWavelengthM,
+      });
+    }
+
+    const A = sourceAmplitudeM * shoaling * spread * dispersion * beam;
     amplitudes[i] = A;
     if (A > maxAmplitude) maxAmplitude = A;
   }

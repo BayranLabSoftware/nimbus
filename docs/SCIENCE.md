@@ -414,6 +414,46 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### A rupture radiates across itself (Phase 25)
+
+Seven hundred kilometres of seafloor rising together do not push the
+ocean outward in a circle. They push it across the fault, in a beam,
+and the longer the rupture the narrower the beam — which is why
+Tōhoku flooded Sanriku and then crossed the whole Pacific to break
+boats in Chile while the Sea of Okhotsk, a few hundred kilometres off
+the northern end of the same rupture, was comparatively spared.
+Ben-Menahem & Rosenman (1972) wrote the pattern down for tsunamis: it
+is the array factor of a line of sources, f(θ) = |sinc(πL sinθ/λ)|
+with θ measured from the perpendicular to the strike.
+
+The simulator radiated its megathrusts evenly until now, at the
+amplitude of the peak, which puts the strongest wave a fault can make
+in every direction at once and quietly manufactures energy. The peak
+is left where it is rather than renormalised upward: the amplitude it
+multiplies comes from the peak seafloor uplift, so it already belongs
+on that axis, and the correction is to take it away from the other
+directions. A source with no orientation — a crater, a collapse, a
+burst — has no beam and the factor is one everywhere, so nothing else
+needed a special case.
+
+The near field validates it about as well as this project has managed
+anywhere: the maximum run-up modelled on the Sanriku coast is 47.7 m
+against the 40.5 m surveyed at Miyako, the highest measured in 2011.
+
+And it exposed two things that the overstated far field had been
+hiding. A coastal density read with a fourteen-kilometre window on
+the 2.5′ tiles sees nothing but water when the point it is given came
+off a forty-kilometre tsunami grid and sits that far offshore; the
+window now follows the caller's own spacing, and until it did, Japan
+contributed nobody to its own tsunami while Chile and Hawaii carried
+the toll. What remains is coarser still: for a megathrust the local
+amplitude field is not produced at all, so even the coast twenty
+kilometres from the rupture is sampled on the planetary grid at forty.
+Tōhoku's coastal toll reads 1 100 against 18 500 recorded — seventeen
+times under, where before the beam it was 2.6 times over. The closer
+number was the sum of two errors of opposite sign, and this one has a
+single cause with a known remedy.
+
 ### The veil learns which waves disperse (Phase 25)
 
 A tsunami keeps its shape only while its wavelength dwarfs the water

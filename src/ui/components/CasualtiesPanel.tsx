@@ -148,6 +148,9 @@ export function CasualtiesPanel({
               </tbody>
             </table>
           )}
+          {(casualties.tsunamiDeaths ?? 0) > 0 && (
+            <p className={styles.mcFooter}>{t('casualties.coarseCoast')}</p>
+          )}
           <p className={styles.mcFooter}>
             {t(
               `casualties.model.${casualties.model === 'blast' && casualties.conventional === true ? 'blastChemical' : casualties.model}`

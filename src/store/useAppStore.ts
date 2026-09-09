@@ -998,6 +998,11 @@ export function extractTsunamiMeta(result: ActiveResult): {
    *  so the veil on the globe and the number printed under it agree.
    *  Pinned by `fieldScalarAgreement.test.ts`. */
   spreadingExponent?: number;
+  /** An elongated source beams across itself. Only a rupture has an
+   *  orientation; a crater or a collapse leaves these undefined and
+   *  radiates evenly. */
+  strikeDeg?: number;
+  ruptureLengthM?: number;
 } | null {
   if (result.type === 'impact' && result.data.tsunami !== undefined) {
     const t = result.data.tsunami;
@@ -1058,6 +1063,14 @@ export function extractTsunamiMeta(result: ActiveResult): {
       sourceAmplitudeM: t.initialAmplitude,
       sourceCavityRadiusM: Math.max((result.data.ruptureLength as number) / 2, 10_000),
       sourceDepthM: 4_000,
+      // Seven hundred kilometres of seafloor rising together radiate
+      // across the trench, not in a circle. The amplitude above is
+      // the peak, so it belongs on that axis and the pattern takes it
+      // away from everywhere else.
+      ...(result.data.inputs.strikeAzimuthDeg !== undefined && {
+        strikeDeg: result.data.inputs.strikeAzimuthDeg,
+      }),
+      ruptureLengthM: result.data.ruptureLength,
     };
   }
   return null;
@@ -1288,6 +1301,10 @@ async function computeBathymetricLayerForResult(
         ...(tsunamiMeta.spreadingExponent !== undefined && {
           spreadingExponent: tsunamiMeta.spreadingExponent,
         }),
+        ...(tsunamiMeta.strikeDeg !== undefined && { strikeDeg: tsunamiMeta.strikeDeg }),
+        ...(tsunamiMeta.ruptureLengthM !== undefined && {
+          ruptureLengthM: tsunamiMeta.ruptureLengthM,
+        }),
       }),
       // Phase 11 — splice in the global low-res mosaic when
       // available so the orchestrator emits trans-oceanic
@@ -1487,11 +1504,18 @@ async function runTsunamiCasualties(
   const layer = get().bathymetricTsunami;
   if (lookup === null || layer === null) return;
   const local = get().elevationGrid;
-  const cells: RunupCell[] = [...(layer.runup?.cells ?? [])];
+  const localCells = layer.runup?.cells ?? [];
+  const cells: RunupCell[] = [...localCells];
   for (const cell of layer.global?.runup?.cells ?? []) {
-    // The planet's coasts beyond the local grid; inside it the local
-    // cells already count, at a finer spacing.
-    if (local !== null && gridCoversLocation(local, cell)) continue;
+    // The planet's coasts beyond the local grid. Inside it the local
+    // cells already count, at a finer spacing — but only if there are
+    // any: the local layer has no run-up field unless an amplitude
+    // field was produced for it, and dropping the global cells anyway
+    // deleted the coast nearest the source. That went unseen while
+    // the far field was overstated and the toll came from the rest of
+    // the ocean; the moment the far field was corrected, Tōhoku's
+    // toll fell to three hundred because Japan was not in it.
+    if (localCells.length > 0 && local !== null && gridCoversLocation(local, cell)) continue;
     cells.push(cell);
   }
   if (cells.length === 0) {
@@ -1499,7 +1523,10 @@ async function runTsunamiCasualties(
     return;
   }
   const densities = await lookup(
-    cells.map((c) => ({ latitude: c.latitude, longitude: c.longitude }))
+    // The spacing goes with the point: these cells come off a grid
+    // whose cells can be forty kilometres wide, and a density read
+    // with a smaller window than that sees only the sea.
+    cells.map((c) => ({ latitude: c.latitude, longitude: c.longitude, spacingM: c.spacingM }))
   );
   if (get().result !== result || get().bathymetricTsunami !== layer) return;
   if (densities === null) return;

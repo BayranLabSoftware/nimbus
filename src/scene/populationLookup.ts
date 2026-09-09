@@ -902,21 +902,34 @@ const FINE_MAX_TILES_DENSITY = 12;
 
 /**
  * Land population density (people per km² of land) around a point,
- * from a grid view: the 3 × 3 cells around it, people over land
+ * from a grid view: the cells within `radiusM`, people over land
  * area, so a coastal cell whose neighbour is all sea does not drag
  * the density down and one that is all city does not inflate it.
+ *
+ * The radius matters more than it looks. These points are coastal
+ * cells taken off a tsunami grid, and that grid's cells can be forty
+ * kilometres wide, which puts the "coastal" point that far out to
+ * sea. Sampled with a fixed three-by-three window on the 2.5′ tiles —
+ * fourteen kilometres across — such a point sees nothing but water
+ * and reports no one living there. It cost Tōhoku its entire
+ * Japanese coast: the far Pacific fell back to the coarse planet,
+ * whose window is forty-two kilometres and does reach land, so the
+ * toll came from Chile and Hawaii while Sanriku read zero.
  */
-function landDensityAt(view: GridView, lat: number, lon: number): number {
+function landDensityAt(view: GridView, lat: number, lon: number, radiusM = 0): number {
   const row = Math.min(view.nLat - 1, Math.max(0, Math.floor((view.maxLat - lat) / view.cellDeg)));
   const col = Math.floor((lon - view.minLon) / view.cellDeg);
   const cellLatKm = (view.cellDeg * Math.PI * EARTH_RADIUS_M) / 180 / 1_000;
   const cellLonKm = cellLatKm * Math.max(Math.cos((lat * Math.PI) / 180), 1e-6);
+  // At least one cell each way, more when the caller's own grid is
+  // coarser than this one.
+  const reach = Math.max(1, Math.ceil(radiusM / 1_000 / Math.min(cellLatKm, cellLonKm)));
   let people = 0;
   let landKm2 = 0;
-  for (let dr = -1; dr <= 1; dr++) {
+  for (let dr = -reach; dr <= reach; dr++) {
     const r = row + dr;
     if (r < 0 || r >= view.nLat) continue;
-    for (let dc = -1; dc <= 1; dc++) {
+    for (let dc = -reach; dc <= reach; dc++) {
       const c = (((col + dc) % view.nLon) + view.nLon) % view.nLon;
       const cell = view.cellAt(r, c);
       if (cell.landFraction <= 0 && cell.people <= 0) continue;
@@ -940,7 +953,7 @@ export interface PopulationDensityOptions {
  * planet for the rest. Null when neither raster is available.
  */
 export async function populationDensityAt(
-  points: readonly { latitude: number; longitude: number }[],
+  points: readonly { latitude: number; longitude: number; spacingM?: number }[],
   options?: PopulationDensityOptions
 ): Promise<Float32Array | null> {
   const out = new Float32Array(points.length);
@@ -983,7 +996,7 @@ export async function populationDensityAt(
       );
       const name = `${col.toString()}_${row.toString()}`;
       if (tiles.has(name)) {
-        density = landDensityAt(fine, p.latitude, p.longitude);
+        density = landDensityAt(fine, p.latitude, p.longitude, p.spacingM ?? 0);
         out[i] = density;
         return;
       }
@@ -992,7 +1005,8 @@ export async function populationDensityAt(
         return;
       }
     }
-    out[i] = planet !== null ? landDensityAt(planet, p.latitude, p.longitude) : density;
+    out[i] =
+      planet !== null ? landDensityAt(planet, p.latitude, p.longitude, p.spacingM ?? 0) : density;
   });
   return out;
 }

@@ -72,6 +72,11 @@ export interface BathymetricTsunamiInput {
    *  (cylindrical) when omitted; impact sources pass the Wünnemann
    *  2010 rim-wave exponent. See `amplitudeField.ts`. */
   spreadingExponent?: number;
+  /** An elongated source beams its wave across itself instead of
+   *  radiating in a circle. Passed straight through to the amplitude
+   *  field; omitted, the source is unoriented. */
+  strikeDeg?: number;
+  ruptureLengthM?: number;
   /** Phase 11 — optional low-resolution global grid (~40 km/pixel,
    *  full planet). When provided alongside `grid`, the orchestrator
    *  emits an additional global FMM + amplitude pair so the renderer
@@ -170,6 +175,10 @@ export function computeBathymetricTsunami(
       ...(input.spreadingExponent !== undefined && {
         spreadingExponent: input.spreadingExponent,
       }),
+      ...(input.strikeDeg !== undefined && { strikeDeg: input.strikeDeg }),
+      ...(input.ruptureLengthM !== undefined && { ruptureLengthM: input.ruptureLengthM }),
+      sourceLatitude: input.sourceLatitude,
+      sourceLongitude: input.sourceLongitude,
     });
     result.amplitude = amplitude;
     result.runup = computeRunupField({
@@ -217,6 +226,10 @@ export function computeBathymetricTsunami(
         ...(input.spreadingExponent !== undefined && {
           spreadingExponent: input.spreadingExponent,
         }),
+        ...(input.strikeDeg !== undefined && { strikeDeg: input.strikeDeg }),
+        ...(input.ruptureLengthM !== undefined && { ruptureLengthM: input.ruptureLengthM }),
+        sourceLatitude: input.sourceLatitude,
+        sourceLongitude: input.sourceLongitude,
       });
     }
     if (globalLayer.amplitude !== undefined) {

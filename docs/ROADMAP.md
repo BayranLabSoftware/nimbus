@@ -308,6 +308,29 @@ remembered for craters and fallout and not for any wave, and the model
 now agrees with both. Beirut reads 900 against 218 counted, its wave
 gone entirely, from 77 000.
 
+### P0 — The coastal toll is read off a forty-kilometre grid
+
+Tōhoku's coastal toll reads 1 100 against the 18 500 recorded. Before
+the radiation beam went in it read 48 600, and the closer figure was
+the sum of two errors of opposite sign: an overstated far field
+drowning the Pacific while Japan, sampled with a window smaller than
+its own grid cell, contributed nobody at all. Both of those are fixed.
+What is left is one cause with one remedy.
+
+For a megathrust the **local** amplitude field is never produced, so
+every coastal cell — including the ones twenty kilometres from the
+rupture — is taken off the planetary grid at forty kilometres. A
+coastline is sampled every forty kilometres, each sample stands for
+forty kilometres of coast, and the strip it floods is drawn from a
+run-up computed on cells that coarse. The 561 km² Japan actually lost
+cannot be resolved by that, in either direction.
+
+The fix is to produce the local run-up field for a seismic source the
+way it is produced for an impact, which puts the near coast on a
+kilometre grid instead of a forty-kilometre one. Until then the panel
+should say that the coastal figure is read at that resolution, and
+the calibration net prints the seventeen-fold shortfall on every run.
+
 ### P1 — The freeze has a mitigation, not a diagnosis
 
 Andrea reports the page freezing occasionally: the panel keeps

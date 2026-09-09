@@ -1302,6 +1302,7 @@
       "lateralBlast": "esplosione laterale",
       "tsunami": "tsunami"
     },
-    "tsunamiDeaths": "di cui dall'onda"
+    "tsunamiDeaths": "di cui dall'onda",
+    "coarseCoast": "Il conteggio costiero è letto su una griglia d'onda a 40 km: una costa viene campionata ogni quaranta chilometri e ogni campione vale per quaranta. Per un sisma non esiste ancora un campo locale più fine, quindi anche la costa vicina alla rottura è letta a quella risoluzione, e il numero può sbagliare di un ordine di grandezza in entrambi i versi."
   }
 }

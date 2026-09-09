@@ -108,6 +108,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A rupture radiates across itself.** Megathrusts were radiating
+  evenly, at the amplitude of the peak, which puts the strongest wave
+  a fault can make in every direction at once. They now carry the
+  line-source beam of Ben-Menahem & Rosenman 1972, across the strike
+  and not along it. The modelled maximum run-up on the Sanriku coast
+  is 47.7 m against the 40.5 m surveyed at Miyako in 2011. Sources
+  without an orientation are untouched.
+- **A coastal density that could see the coast.** The population
+  density around a run-up cell was read with a fixed three-cell
+  window — fourteen kilometres on the 2.5′ tiles — while the cells
+  themselves come off a forty-kilometre tsunami grid and can sit that
+  far offshore. It read water and reported nobody, so Japan
+  contributed no one to its own tsunami and the toll came from Chile
+  and Hawaii. The window now follows the caller's grid spacing.
+
 - **The veil learns which waves disperse.** The amplitude field
   carried no frequency dispersion at all, because the one factor
   available was a fixed 2 500 km scale length calibrated on megathrust
