@@ -154,3 +154,23 @@ describe('simulateEarthquake', () => {
     }
   });
 });
+
+describe('the ground the rings stand on', () => {
+  it('softer ground widens the MMI contours, and very soft ground saturates', () => {
+    // `vs30` used to be accepted, fed to the reported accelerations,
+    // and dropped before the rings were drawn: every one of these
+    // gave the same 17.0 km.
+    const ring = (vs30: number): number =>
+      (simulateEarthquake({ magnitude: 6.7, depth: m(19_000), faultType: 'reverse', vs30 }).shaking
+        .mmi7Radius as number) / 1000;
+    const rock = ring(760);
+    expect(ring(500)).toBeGreaterThan(rock);
+    expect(ring(400)).toBeGreaterThan(ring(500));
+    // And then it stops, because the published site term saturates:
+    // soil that is already shaking hard stops behaving elastically,
+    // which a power law could not have said.
+    expect(ring(250)).toBeLessThan(ring(300));
+    // Rock is unchanged, which is every preset in the calibration net.
+    expect(rock).toBeCloseTo(17.0, 0);
+  });
+});

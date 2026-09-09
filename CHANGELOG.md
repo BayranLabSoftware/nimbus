@@ -7,6 +7,16 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The intensity contours honour the ground they stand on.** `vs30`
+  was accepted, fed to the reported accelerations, and dropped before
+  the rings were drawn — a Northridge run at Vs30 760, 500, 400, 300
+  and 250 gave the same 17.0 km MMI VII ring every time. A contour is
+  now the range at which the site-amplified median reaches the
+  threshold: 17.0 km on rock, 21.6 at Vs30 400, and back to 21.0 at
+  250 as the published site term's non-linear half saturates. At the
+  rock reference the factor is one by construction, so nothing in the
+  calibration net moves.
+
 - **A median held to what a median can be held to.** The footprint
   anchor's per-event ratios were read as a defect — "wrong at both
   ends of the magnitude range" — and that was a category error. The

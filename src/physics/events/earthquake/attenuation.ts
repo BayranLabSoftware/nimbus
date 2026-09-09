@@ -153,6 +153,36 @@ export interface NGAInput extends PeakGroundAccelerationInput {
 }
 
 /**
+ * Ground range at which the NGA-West2 median PGA falls to `target`.
+ *
+ * The same bisection as {@link distanceForPga}, on the modern law.
+ * The MMI contours are drawn with this so that the ground a scenario
+ * names, and the fault type it has, reach the rings — Joyner–Boore
+ * 1981 takes a magnitude and nothing else, and dropped both.
+ *
+ * Returns {@link m}(0) when even the saturated near-source value never
+ * reaches `target`: that intensity does not occur for this event,
+ * which is a thing the 1981 law could not say and needed to.
+ */
+export function distanceForPgaNGAWest2(
+  input: Omit<NGAInput, 'distance'>,
+  target: MetersPerSecondSquared
+): Meters {
+  const targetAccel = target as number;
+  const at = (rangeM: number): number =>
+    peakGroundAccelerationNGAWest2({ ...input, distance: m(rangeM) });
+  if (at(0) < targetAccel) return m(0);
+  let lo = 0;
+  let hi = 1e7;
+  for (let i = 0; i < 60; i++) {
+    const mid = 0.5 * (lo + hi);
+    if (at(mid) > targetAccel) lo = mid;
+    else hi = mid;
+  }
+  return m(0.5 * (lo + hi));
+}
+
+/**
  * Site coefficients for PGA, Boore et al. (2014) Table 3 — the
  * published values, taken from the model's own coefficient table.
  */

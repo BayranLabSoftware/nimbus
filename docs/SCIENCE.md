@@ -468,6 +468,50 @@ here in either direction instead of hiding inside a toll. A
 laboratory-level model has nothing in the invented list. Today it has
 four, and that count is pinned too.
 
+### The ground the rings stand on (Phase 41)
+
+`vs30` was an input a scenario could set. It reached the reported
+accelerations. It never reached the rings: the MMI contours go through
+Joyner–Boore 1981, which takes a magnitude and nothing else. Measured,
+a Northridge run at Vs30 760, 500, 400, 300 and 250 gave the same
+17.0 km MMI VII ring every time, where soft ground is worth a factor
+of two in radius. An input accepted and dropped.
+
+A contour is now the range at which the **site-amplified** median
+reaches the threshold, using the published BSSA14 site term from the
+previous phase:
+
+| Vs30       | MMI VII ring | area    |
+| ---------- | ------------ | ------- |
+| 760 (rock) | 17.0 km      | 913 km² |
+| 500        | 20.6 km      | 1 329   |
+| 400        | 21.6 km      | 1 467   |
+| 300        | 21.7 km      | 1 477   |
+| 250        | **21.0 km**  | 1 389   |
+
+The turn at the bottom is the non-linear half doing its work: soil
+that is already shaking hard stops behaving elastically, so the very
+softest ground amplifies _less_. A power law could not have said that,
+and the previous surrogate did not.
+
+The assumption is stated in the code because it is one: the 1981
+median is taken to stand for the reference-rock site the site term is
+written against, and it is not exactly that — JB81 was fitted across a
+mix of sites with no site term of its own. At Vs30 = 760 the factor is
+one by construction, so every preset in the calibration net is
+untouched and all 1 590 tests stay green.
+
+**And the obvious alternative was tried, measured and rejected.**
+Drawing the contours with NGA-West2 outright is one law instead of
+two, honours the ground natively, and empties the invented-band list
+entirely. It also takes Northridge's toll from 38 dead against 57 to
+13, L'Aquila's from 227 against 309 to 40, Gorkha's from 580 to 62,
+and pushes Amatrice out of its gate. The footprint bias goes from
+1.18 to 0.69 and the scatter from σ_ln 0.71 to 0.86 — still not
+distinguishable from unbiased at n = 11, but worse on every point
+estimate. It wins on one criterion and loses on the others, so it is
+not in the code and the numbers are in the roadmap.
+
 ### A median against one realisation (Phase 40)
 
 A correction to the previous two sections, and to what was said in

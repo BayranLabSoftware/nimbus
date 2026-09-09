@@ -1,9 +1,11 @@
+import { STANDARD_GRAVITY } from '../../constants.js';
 import { nehrpClassFromVs30, type NEHRPClass } from '../../elevation/index.js';
 import type { Meters, MetersPerSecondSquared, NewtonMeters } from '../../units.js';
 import { m, mps2 } from '../../units.js';
 import { generateAftershockSequence, type AftershockSequenceResult } from './aftershocks.js';
 import {
   distanceForPga,
+  vs30SiteFactor,
   peakGroundAcceleration,
   peakGroundAccelerationNGAWest2,
   type NGAFaultType,
@@ -262,9 +264,44 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
     })
   );
 
-  const mmi7Radius = distanceForPga(input.magnitude, target(pgaFromMercalliIntensity(7)));
-  const mmi8Radius = distanceForPga(input.magnitude, target(pgaFromMercalliIntensity(8)));
-  const mmi9Radius = distanceForPga(input.magnitude, target(pgaFromMercalliIntensity(9)));
+  // The contours: Joyner–Boore 1981 for the shape, and the published
+  // BSSA14 site term for the ground it stands on.
+  //
+  // `vs30` was an input the simulator accepted, fed to the reported
+  // accelerations, and dropped on the floor before the rings were
+  // drawn — Joyner–Boore takes a magnitude and nothing else, so a
+  // Northridge run at Vs30 760, 500, 400, 300 and 250 gave the same
+  // 17.0 km MMI VII ring every time, where soft ground is worth a
+  // factor of two in radius. A contour is now the range at which the
+  // *site-amplified* median reaches the threshold, which is the same
+  // thing as asking for a lower median on softer ground.
+  //
+  // The assumption, stated because it is one: the 1981 median is
+  // taken to stand for the reference-rock site the site term is
+  // written against. It is not exactly that — JB81 was fitted across
+  // a mix of sites with no site term of its own — so this is a
+  // correction relative to whatever that mix was. At Vs30 = 760 the
+  // factor is one by construction and nothing moves, which is every
+  // preset in the calibration net.
+  //
+  // Drawing the contours with NGA-West2 outright was tried and
+  // measured on 9 September and is not this: it takes Northridge's
+  // toll from 38 dead against 57 to 13, L'Aquila's from 227 against
+  // 309 to 40, and pushes Amatrice out of its gate. See
+  // docs/ROADMAP.md.
+  const siteGain = vs30SiteFactor(
+    vs30,
+    (peakGroundAcceleration({ magnitude: input.magnitude, distance: m(10_000) }) as number) /
+      STANDARD_GRAVITY
+  );
+  const contourAt = (mmi: number): Meters =>
+    distanceForPga(
+      input.magnitude,
+      mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
+    );
+  const mmi7Radius = contourAt(7);
+  const mmi8Radius = contourAt(8);
+  const mmi9Radius = contourAt(9);
 
   const waterDepthM = (input.waterDepth as number | undefined) ?? 0;
   const isSubmarine = Number.isFinite(waterDepthM) && waterDepthM > 0;

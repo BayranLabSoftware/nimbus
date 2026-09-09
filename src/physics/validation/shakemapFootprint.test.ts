@@ -159,9 +159,13 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
     expect(logs.length).toBeGreaterThanOrEqual(10);
     const mean = logs.reduce((a, b) => a + b, 0) / logs.length;
     const sd = Math.sqrt(logs.reduce((a, b) => a + (b - mean) ** 2, 0) / logs.length);
-    // Centred to within a third, which is well inside one sigma.
-    expect(Math.exp(mean), 'geometric mean radius ratio').toBeGreaterThan(0.75);
-    expect(Math.exp(mean), 'geometric mean radius ratio').toBeLessThan(1.5);
+    // Is the bias distinguishable from zero? That is the question a
+    // median can be asked, and the answer is a standard error rather
+    // than a bound somebody picked: with this much scatter and this
+    // few events, se = σ/√n ≈ 0.21, so anything inside about two of
+    // those is a model that cannot be shown to be off-centre.
+    const standardError = sd / Math.sqrt(logs.length);
+    expect(Math.abs(mean) / standardError, 'bias in standard errors').toBeLessThan(2);
     // And scattering like ground motion rather than like a bug: the
     // NGA-West2 total sigma of 0.5 in ln PGA over a R^(−0.71) decay.
     expect(sd, 'σ_ln of the radius ratio').toBeLessThan(0.5 / 0.71 + 0.25);

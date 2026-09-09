@@ -901,7 +901,7 @@ measuring different things there. The toll correlates with what the
 buildings experienced, which is the macroseismic one. Any change to
 the contours has to say which of the two it is aiming at.
 
-### P0 — The intensity contours ignore the ground they stand on _(open, 9 September)_
+### P0 — The intensity contours ignore the ground they stand on _(closed, 9 September)_
 
 `vs30` is an input a scenario can set. It reaches the reported
 accelerations through the NGA-West2 path. The MMI contours ignore it
@@ -914,11 +914,29 @@ A simulation on soft soil draws the same rings as one on rock, and
 soft soil is worth a factor of two in radius. This is not a modelling
 choice; it is an input accepted and dropped.
 
-The fix is the contour swap that P1 below describes, which is blocked
-on nothing now that the site term is the published one — except that
-it takes Northridge's ring from 17 km to 10 on rock and 16 on soft
-soil, and breaks the Amatrice toll gate, a replay fixture and a smoke
-test on the way. The measurements are in P1.
+**Closed, and not by the swap.** A contour is now the range at which
+the site-amplified median reaches the threshold, using the published
+BSSA14 site term. Northridge's MMI VII ring runs 17.0 km on rock,
+21.6 at Vs30 400, and back to 21.0 at 250 — the non-linear half
+saturating, which is correct and which the old surrogate could not
+express. At the rock reference the factor is one by construction, so
+nothing in the calibration net moves.
+
+The swap itself was tried and measured, and it is not the fix. It
+empties the invented-band list, which is the one thing it does well,
+and then: Northridge's toll 38 → 13 against 57, L'Aquila's 227 → 40
+against 309, Gorkha's 580 → 62, Amatrice out of its gate, footprint
+bias 1.18 → 0.69 and scatter 0.71 → 0.86. One criterion won, the rest
+lost.
+
+What that leaves for the invented bands is a targeted fix rather than
+a wholesale one, and the measurement points at the near-source
+saturation: Joyner–Boore gives 0.58 g at Mw 6.7 where NGA-West2 gives
+0.43, and 2.3 g at Mw 9.1, which is where Tōhoku's phantom MMI IX
+comes from. JB81 is calibrated to Mw ≤ 7.7 and has no large-magnitude
+saturation term at all; NGA-West2's e₆ is negative for exactly that
+reason. A saturation term on the 1981 relation, rather than a new
+relation, is the next thing to try.
 
 ### P1 — A national curve under-predicts a village _(open, 9 September)_
 
