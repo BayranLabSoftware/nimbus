@@ -94,8 +94,16 @@ describe('the amplitude veil agrees with the published far-field row', () => {
   it('an underwater burst spreads geometrically too', () => {
     const base = Object.values(EXPLOSION_PRESETS)[0];
     if (base === undefined) throw new Error('no explosion preset');
-    // No shipped preset detonates in the sea: put one on a 1 km shelf.
-    const data = simulateExplosion({ ...base.input, heightOfBurst: m(0), waterDepth: m(1_000) });
+    // No shipped preset detonates in the sea: put one on a 1 km shelf,
+    // at the depth where a burst actually makes a wave — the
+    // depth-of-burst curve gives a charge resting on the surface
+    // almost nothing, which is the point of it.
+    const kt = base.input.yieldMegatons * 1_000;
+    const data = simulateExplosion({
+      ...base.input,
+      heightOfBurst: m(-4 * Math.cbrt(kt)),
+      waterDepth: m(1_000),
+    });
     expect(data.tsunami).toBeDefined();
     if (data.tsunami === undefined) return;
     const published = data.tsunami.amplitudeAt1000km as number;

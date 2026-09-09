@@ -238,6 +238,7 @@ Carlo wrappers for sampled inputs).
 | Thermal horizon               | casualties.ts                       | d = R⊕ · arccos(R⊕ / (R⊕ + R_f)); R_f = 0.002 · E^(1/3) impact, 55 · W^0.4 nuclear                                                                                                               | Collins et al. 2005; Glasstone & Dolan 1977 §2.120             | geometry    |
 | Mass-fire casualties          | casualties.ts                       | 30 % (10–80) of the survivors inside the firestorm sustain radius                                                                                                                                | Glasstone & Dolan 1977 ch. VII; Postol 1986                    | ×3          |
 | Later deaths                  | casualties.ts                       | 30 % (10–60) of the prompt injured, first day to first month                                                                                                                                     | OTA 1979 ch. II                                                | ×2–3        |
+| Explosion wave coupling       | events/explosion/underwaterBurst.ts | η(z/W^(1/3)) log-normal peaked at 4 m·kt^(−1/3), × 8 % at the peak                                                                                                                               | Glasstone & Dolan 1977 §6.40; Le Méhauté & Wang 1996           | ±50 %       |
 | Tsunami casualties            | tsunamiCasualties.ts                | H = √(A · min(R, A)); X = 0.06 · H^(4/3) / n², n = 0.03 (≤ 10 km); people = land density × X × coast; ν(h) = Φ(ln(h/θ)/β), h = H/2, θ = 8 m unwarned → 16 m warned by arrival, 4 m high, β = 0.8 | Koshimura et al. 2009; Jonkman et al. 2008                     | ×3          |
 | Casualty sweep                | casualtyTimeline.ts                 | deaths(t) = Σ deaths(band) · swept-area fraction at t; t(r) from the shock integral, r/3.5 km/s, r/30 m/s, r/400 m/s                                                                             | Kinney & Graham 1985; Dziewonski & Anderson 1981; Kieffer 1981 | timing only |
 | Tsunami arrival time          | tsunami/fastMarching.ts             | eikonal `\|∇T\|² = 1/c²`, c = √(gh)                                                                                                                                                              | Sethian 1996                                                   | ±15%        |
@@ -411,6 +412,39 @@ fine source for city-scale rings; the tiles give the provisional
 figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
+
+### Where a burst has to be to make a wave (Phase 25)
+
+An explosion's coupling to water was a single number, eight per cent,
+tuned so that a megatonne at the optimum depth reproduces Glasstone's
+180 m source amplitude. It was spent on every burst regardless of where
+the charge was: a half-kilotonne detonation resting on the Beirut quay
+drew the same eight per cent as one hung three metres under the
+surface, and the resulting wave drowned seventy-seven thousand people
+in a city where the real wave was about a metre inside the harbour and
+drowned nobody.
+
+`waveCouplingEfficiency` is the curve that was always missing. It is a
+log-normal in the scaled depth z/W^(1/3), peaking at the 4 m·kt^(−1/3)
+this module cited from Glasstone §6.40 long before the curve existed,
+and each side of the peak has a mechanism rather than a fit: too
+shallow and the gas globe reaches the surface before it has finished
+pushing, opening to the atmosphere so the energy leaves as air shock
+and spray; too deep and the bubble oscillates and decays without ever
+breaking through. Only the width in log-space is the project's own
+composition, and it carries the ±50 % the module predicted years ago
+when it declined to fit the curve at all.
+
+It replaced a threshold rather than joining one. The branch used to
+fire for a surface burst between zero and thirty metres of height and
+refuse everything else, and underwater bursts were declared out of
+scope precisely because there was no way to grade them. There is now,
+so the branch opens wherever there is water to lift and the curve says
+how much — which also means a genuinely submerged burst is modelled for
+the first time. Crossroads Baker, twenty-seven metres down, is the
+famous explosion-generated wave and the curve gives it one; Castle
+Bravo on its reef and Ivy Mike on its islet are remembered for their
+craters and their fallout and not for any wave, and the curve agrees.
 
 ### The coastal toll of the wave (Phase 24)
 

@@ -263,64 +263,50 @@ where it is wrong. Narrowing the shaking band with regional
 vulnerability, and widening the blast and pyroclastic bands to admit
 what they do not know, are the same piece of work.
 
-### P0 — A half-kilotonne explosion drowns 77 000 people
+### P0 — A half-kilotonne explosion drowned 77 000 people _(closed)_
 
-Beirut 2020 on the globe reads 77 000 coastal dead from a detonation
-whose real wave was about a metre inside the harbour. Two things were
-missing and one was mis-scoped; the first two are fixed and the third
-needs a decision.
+Beirut 2020 read 77 000 coastal dead from a detonation whose real wave
+was about a metre inside the harbour. Three faults wearing one number,
+all three now fixed.
 
-**Missing, now fixed: explosions had no sea coupling.** For an impact
-the physics works out what fraction of the energy reaches the water —
-the crater rim, the cavity, the ejecta beyond the shore. A surface
-burst was handed its whole yield as a water source no matter how far
-away the sea was. That law now lives in one place,
-`src/physics/effects/seaCoupling.ts`, and both events call it: one
-law, two callers, and the McGetchin r⁻³ blanket term it rests on was
-always an explosion-crater law as much as an impact one. An event with
-no ejecta model passes no ejecta reach and the law stops at the
-crater, without needing to know it has been simplified.
+**Explosions had no sea coupling.** The law impacts had used for a day
+— crater rim, water cavity, ejecta beyond the shore — moved into
+`effects/seaCoupling.ts` and both events call it. McGetchin's r⁻³
+blanket was measured on explosion craters as much as impact ones, so
+it was never an impact law; and an event with no ejecta model passes
+no ejecta reach and stops at its crater without being told it has been
+simplified.
 
-**Missing, now fixed: the store never told the explosion how far the
-sea was.** It searched for water, found a depth, and passed only the
-depth. Both event types now use the same search and both carry the
-distance.
+**The store never told the explosion how far the sea was.** It
+searched, found a depth, and dropped the distance. Both event types
+now use the same search and carry both numbers.
 
-**Mis-scoped, and this is the one that still reads 77 000.** The
-coupling constant is eight per cent, and its own comment says it is
-"tuned so that 1 Mt at optimum depth reproduces Glasstone Table
-6.50's ≈ 180 m source amplitude". Scale that anchor down as E^(1/4)
-and a 0.5 kt charge gives 26.9 m; the model produces 26.1 m, so it is
-doing exactly what it was built to do. But optimum depth for half a
-kilotonne is 3.2 m under the surface, and the Beirut charge sat at
-zero on a quay. The eight per cent belongs to a submerged burst and
-is being spent on one that was not.
+**And the coupling constant was the optimum-depth value spent on
+bursts that were nowhere near it.** Eight per cent is tuned, as its
+own comment says, so that 1 Mt at optimum depth reproduces Glasstone's
+180 m; optimum for half a kilotonne is 3.2 m under the surface and the
+Beirut charge sat at zero on a quay. There is now a curve:
+`waveCouplingEfficiency` is a log-normal in the scaled depth
+z/W^(1/3), peaking at the 4 m·kt^(−1/3) this file has cited from
+Glasstone §6.40 since it was written, falling to nothing at the
+surface where the gas globe vents to the air and falling again in
+deep water where the bubble never breaks through. Each side has a
+mechanism; only the width is the project's own composition, and it is
+labelled as such.
 
-The file already knows this. Twenty lines above the branch it says
-underwater bursts "are out of scope for this branch — the simulator
-does not currently model the depth-of-burst pressure-amplification
-regime (z/W^(1/3) ≈ −4 m/kt¹ᐟ³ optimum, Glasstone §6.40)". The
-airburst end of that curve is modelled and gives zero above 30 m. The
-optimum-depth end is modelled and gives eight per cent. Everything
-between them — which is where every shipped preset actually sits — is
-not, and takes the optimum-depth value by default.
+The curve replaced a threshold rather than joining it. The old gate
+fired for any surface burst between zero and thirty metres of height
+and refused everything else, which is why underwater bursts were "out
+of scope": there was no way to say how well one coupled. Now there is,
+so the branch opens wherever there is water and the curve decides —
+and a genuinely submerged burst can be modelled for the first time.
 
-Three ways out, and none should be taken quietly:
-
-1. **Model the venting.** At the surface the fireball opens to the
-   atmosphere and most of the energy leaves; that is why an airburst
-   couples nothing. Putting a curve between the two anchors is the
-   real fix and needs a source for its shape, not a guess.
-2. **Gate to submerged bursts**, which is what the scope comment
-   already claims. Honest, and it silently drops the waves Castle
-   Bravo and Ivy Mike really did make from surface bursts on shallow
-   reefs.
-3. **Say it on the label.** Keep the number, mark the surface-burst
-   wave as an unmodelled regime wherever it is shown.
-
-Until one is chosen the shipped Beirut, and any surface burst near
-water, overstates its wave by roughly the ratio between an optimum
-submerged burst and a vented surface one.
+The record checks out at the one place it is loud. Crossroads Baker,
+hung twenty-seven metres down, made the famous explosion-generated
+wave; Castle Bravo on its reef and Ivy Mike on its islet are
+remembered for craters and fallout and not for any wave, and the model
+now agrees with both. Beirut reads 900 against 218 counted, its wave
+gone entirely, from 77 000.
 
 ### P1 — The freeze has a mitigation, not a diagnosis
 

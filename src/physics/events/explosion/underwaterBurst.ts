@@ -1,4 +1,4 @@
-import { SEAWATER_DENSITY, STANDARD_GRAVITY } from '../../constants.js';
+import { SEAWATER_DENSITY, STANDARD_GRAVITY, TNT_SPECIFIC_ENERGY } from '../../constants.js';
 import { synolakisRunup } from '../tsunami/extendedEffects.js';
 import type { Joules, Meters, MetersPerSecond, Seconds } from '../../units.js';
 import { J, m } from '../../units.js';
@@ -41,14 +41,75 @@ import { shallowWaterWaveSpeed, tsunamiTravelTime } from '../tsunami/propagation
  *     (re-used here with a coupling correction).
  */
 
-/** Mechanical coupling fraction for shallow underwater bursts. Tuned
- *  so that 1 Mt at optimum depth reproduces Glasstone Table 6.50's
- *  ≈ 180 m source amplitude. */
+/** Mechanical coupling fraction at the optimum depth. Tuned so that
+ *  1 Mt at that depth reproduces Glasstone Table 6.50's ≈ 180 m
+ *  source amplitude; the sources put the shallow-underwater range at
+ *  5–15 %, and this is the middle of it. */
 export const EXPLOSION_WATER_COUPLING = 0.08;
+
+/** Scaled depth at which wave-making peaks, in metres per cube root
+ *  of a kilotonne. Glasstone & Dolan §6.40; the figure this module
+ *  has cited since it was written. */
+export const OPTIMUM_SCALED_DEPTH = 4;
+
+/**
+ * Width of the efficiency curve in log-space around that optimum.
+ *
+ * This is the project's own composition and the one number here with
+ * no page behind it. The shape is not arbitrary — an efficiency with
+ * a single optimum and a fall-off on both sides is log-normal in the
+ * scaled depth, and both fall-offs have a mechanism — but the width
+ * is chosen, and it is chosen so the curve spans the "shallow
+ * underwater" band the sources describe rather than collapsing onto
+ * a single depth. Expect the ±50 % scatter this file predicted when
+ * it declined to fit the curve at all.
+ */
+export const COUPLING_LOG_WIDTH = 0.6;
+
+/**
+ * How much of a burst's energy goes into making waves, as a fraction
+ * of what an optimally placed one would manage.
+ *
+ * `scaledDepth` is z/W^(1/3) in m·kt^(−1/3), positive downward. The
+ * curve is a log-normal peaked at {@link OPTIMUM_SCALED_DEPTH}, and
+ * each side of the peak has its own reason:
+ *
+ *   Too shallow — the gas globe reaches the surface before it has
+ *   finished pushing, opens to the atmosphere, and the energy that
+ *   would have lifted water leaves as air shock and spray. At the
+ *   surface itself there is nothing left to lift with, which is the
+ *   same reason this module has always given an airburst nothing:
+ *   the venting is total either way, and the curve simply arrives at
+ *   that answer continuously instead of by a gate.
+ *
+ *   Too deep — the bubble oscillates and decays without ever
+ *   breaking through, and the surface barely knows it happened.
+ *
+ * The record agrees with the shape at the one place it is loud: the
+ * famous explosion-generated wave, Crossroads Baker in 1946, came
+ * from a charge suspended twenty-seven metres down, while the surface
+ * bursts of the same era — Bravo on its reef, Mike on its islet —
+ * are remembered for their fireballs and their craters and not for
+ * any wave at all.
+ */
+export function waveCouplingEfficiency(scaledDepth: number): number {
+  if (!Number.isFinite(scaledDepth) || scaledDepth <= 0) return 0;
+  const ratio = scaledDepth / OPTIMUM_SCALED_DEPTH;
+  const exponent = Math.log(ratio) ** 2 / (2 * COUPLING_LOG_WIDTH * COUPLING_LOG_WIDTH);
+  const efficiency = Math.exp(-exponent);
+  return Number.isFinite(efficiency) ? Math.min(1, Math.max(0, efficiency)) : 0;
+}
 
 export interface ExplosionTsunamiInput {
   /** Total explosion yield (J). */
   yieldEnergy: Joules;
+  /** Depth of the burst point below the water surface (m), positive
+   *  downward. Zero for a burst sitting on the surface and negative
+   *  for one in the air; both couple next to nothing, and the curve
+   *  in {@link waveCouplingEfficiency} says so continuously rather
+   *  than by a threshold. Omitted means the optimum depth, which is
+   *  what this module assumed before the curve existed. */
+  burstDepth?: Meters;
   /** Water depth at the burst site (m). Must be > 0 for a wave to
    *  form; the caller decides the threshold. */
   waterDepth: Meters;
@@ -118,7 +179,17 @@ export function explosionTsunami(input: ExplosionTsunamiInput): ExplosionTsunami
   if (!Number.isFinite(depth) || depth <= 0) return null;
 
   const meanOceanDepth = input.meanOceanDepth ?? m(4_000);
-  const effectiveEnergy = J(yieldJ * EXPLOSION_WATER_COUPLING);
+  // How well this burst is placed for making waves. A charge hung at
+  // the optimum depth couples the full eight per cent; one resting on
+  // the surface vents almost all of it to the air.
+  const kilotons = yieldJ / (TNT_SPECIFIC_ENERGY * 1e6);
+  const scaledDepth =
+    input.burstDepth === undefined
+      ? OPTIMUM_SCALED_DEPTH
+      : (input.burstDepth as number) / Math.max(Math.cbrt(kilotons), 1e-9);
+  const efficiency = waveCouplingEfficiency(scaledDepth);
+  if (efficiency <= 0) return null;
+  const effectiveEnergy = J(yieldJ * EXPLOSION_WATER_COUPLING * efficiency);
   const cavityRadius = impactCavityRadius({
     kineticEnergy: effectiveEnergy,
     waterDensity: SEAWATER_DENSITY,

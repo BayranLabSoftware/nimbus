@@ -86,12 +86,16 @@ describe('Phase 11/12 — global tsunami layer activates for every tsunami sourc
     assertGlobalLayer(bt, 'impact (Chicxulub Ocean)');
   });
 
-  it('EXPLOSION custom contact-water (Tsar Bomba in Mediterranean) → global layer present', () => {
-    // User scenario from the bug report: Tsar Bomba 50 Mt as a
-    // surface burst on Mediterranean-class water.
+  it('EXPLOSION custom submerged burst (Tsar Bomba in the Mediterranean) → global layer present', () => {
+    // User scenario from the bug report: Tsar Bomba 50 Mt in
+    // Mediterranean-class water. It used to be written as a surface
+    // burst, which the depth-of-burst curve now correctly gives
+    // almost no wave; what this test is about is the global layer
+    // reaching the whole basin, so the device goes where it would
+    // actually make one — 4 · 50 000^(1/3) ≈ 148 m down.
     const r = simulateExplosion({
       yieldMegatons: 50,
-      heightOfBurst: m(0),
+      heightOfBurst: m(-148),
       waterDepth: m(2_000),
     });
     expect(r.tsunami).toBeDefined();

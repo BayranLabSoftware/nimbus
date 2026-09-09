@@ -98,6 +98,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **Where a burst has to be to make a wave.** An explosion's coupling
+  to water was one number — the value for a charge at the optimum
+  depth — spent on every burst wherever it sat, and a half-kilotonne
+  detonation on the Beirut quay came out drowning 77 000 people in a
+  harbour whose real wave was about a metre. There is now a
+  depth-of-burst curve: peaked at the scaled depth Glasstone gives,
+  falling to nothing at the surface where the gas globe vents to the
+  air and again in deep water where the bubble never breaks through.
+  It replaced the old height threshold rather than joining it, so a
+  genuinely submerged burst is modelled for the first time — Crossroads
+  Baker gets its wave, Castle Bravo and Ivy Mike get the craters they
+  are actually remembered for, and Beirut reads 900 against 218
+  counted. Explosions also gained the sea-coupling law impacts already
+  had, which now lives in one place and serves both.
+
 - **A conventional explosion is not a small nuclear one.** OTA's
   casualty bands come from Hiroshima and Nagasaki, and applying them
   to ammonium nitrate in the port of Beirut killed fifty times the 218

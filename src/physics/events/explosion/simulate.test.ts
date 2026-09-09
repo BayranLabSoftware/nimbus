@@ -68,7 +68,10 @@ describe('simulateExplosion — composition', () => {
     const r = simulateExplosion({
       yieldMegatons: 1,
       groundType: 'WET_SOIL',
-      heightOfBurst: m(0),
+      // Actually under the water, which this used to say and not do:
+      // a megatonne is a thousand kilotonnes, so its optimum sits at
+      // 4 · 1000^(1/3) = 40 m down.
+      heightOfBurst: m(-40),
       waterDepth: m(50),
       meanOceanDepth: m(4_000),
     });
@@ -96,7 +99,9 @@ describe('simulateExplosion — composition', () => {
     const r = simulateExplosion({
       yieldMegatons: 1,
       groundType: 'WET_SOIL',
-      heightOfBurst: m(0),
+      // Glasstone's 180 m is for a burst at the optimum depth, which
+      // this test always said and never set: 4 · 1000^(1/3) = 40 m.
+      heightOfBurst: m(-40),
       waterDepth: m(50),
     });
     expect(r.tsunami).toBeDefined();
@@ -147,15 +152,36 @@ describe('simulateExplosion — composition', () => {
     expect(r.isContactWaterBurst).toBe(false);
   });
 
-  it('contact-water burst at HOB = 30 m still fires (boundary case)', () => {
+  it('a burst resting on the water makes almost no wave, because the globe vents', () => {
+    // This used to fire at full coupling and was how a half-kilotonne
+    // charge on the Beirut quay came to drown seventy-seven thousand
+    // people. The efficiency curve gives a charge at zero depth
+    // essentially nothing, continuously rather than by a gate.
     const r = simulateExplosion({
       yieldMegatons: 1,
       groundType: 'WET_SOIL',
-      heightOfBurst: m(30),
+      heightOfBurst: m(0),
       waterDepth: m(50),
     });
-    expect(r.tsunami).toBeDefined();
-    expect(r.isContactWaterBurst).toBe(true);
+    expect(r.tsunami).toBeUndefined();
+    expect(r.isContactWaterBurst).toBe(false);
+  });
+
+  it('the deeper the charge, up to the optimum, the bigger the wave', () => {
+    const amplitudeAt = (hobM: number): number => {
+      const r = simulateExplosion({
+        yieldMegatons: 1,
+        groundType: 'WET_SOIL',
+        heightOfBurst: m(hobM),
+        waterDepth: m(50),
+        meanOceanDepth: m(4_000),
+      });
+      return r.tsunami === undefined ? 0 : r.tsunami.sourceAmplitude;
+    };
+    // 1 Mt: optimum at 40 m down, so 10 → 40 climbs and 40 → 160 falls.
+    expect(amplitudeAt(-10)).toBeLessThan(amplitudeAt(-40));
+    expect(amplitudeAt(-160)).toBeLessThan(amplitudeAt(-40));
+    expect(amplitudeAt(0)).toBeLessThan(amplitudeAt(-10));
   });
 
   it('contact-water burst at HOB = 31 m does NOT fire (just above gate)', () => {
@@ -169,15 +195,27 @@ describe('simulateExplosion — composition', () => {
     expect(r.isContactWaterBurst).toBe(false);
   });
 
-  it('flags a SURFACE burst on water as a contact-water burst', () => {
-    const r = simulateExplosion({
+  it('flags a burst that put energy into the water, and only that', () => {
+    const submerged = simulateExplosion({
+      yieldMegatons: 1,
+      groundType: 'WET_SOIL',
+      heightOfBurst: m(-40),
+      waterDepth: m(50),
+    });
+    expect(submerged.isContactWaterBurst).toBe(true);
+    expect(submerged.tsunami).toBeDefined();
+
+    // Sitting on the surface is not being in the water: the globe
+    // vents, and the flag follows the source rather than the sea
+    // happening to be nearby.
+    const onTheSurface = simulateExplosion({
       yieldMegatons: 1,
       groundType: 'WET_SOIL',
       heightOfBurst: m(0),
       waterDepth: m(50),
     });
-    expect(r.isContactWaterBurst).toBe(true);
-    expect(r.tsunami).toBeDefined();
+    expect(onTheSurface.isContactWaterBurst).toBe(false);
+    expect(onTheSurface.tsunami).toBeUndefined();
   });
 
   it('continental land bursts are not flagged as contact-water', () => {

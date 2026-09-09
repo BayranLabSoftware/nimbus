@@ -388,11 +388,16 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   // Glasstone §6.40); when added they will route through a separate
   // {@link underwaterBurst} branch with its own coupling profile.
   const waterDepth = (input.waterDepth as number | undefined) ?? 0;
-  const isContactBurst =
-    waterDepth > 0 &&
-    regime === 'SURFACE' &&
-    hobMeters >= 0 &&
-    hobMeters <= CONTACT_WATER_BURST_MAX_HOB_M;
+  // The gate used to be a threshold — surface regime, height of burst
+  // between zero and thirty metres — because there was no way to say
+  // how well a burst at a given height or depth couples to water. Now
+  // there is: `waveCouplingEfficiency` returns nothing for a charge in
+  // the air, little for one resting on the surface, and its peak for
+  // one hung at the depth the literature calls optimum. So the branch
+  // opens wherever there is water to lift and the curve decides how
+  // much, which also lets a genuinely submerged burst be modelled for
+  // the first time.
+  const isContactBurst = waterDepth > 0;
   if (isContactBurst) {
     // How much of this reaches the water at all. The same law the
     // impacts use, asked the same question: the crater is the hole
@@ -409,13 +414,19 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
     const tsunami = explosionTsunami({
       yieldEnergy: J((yieldJoules as number) * seaCoupling.fraction),
       waterDepth: m(waterDepth),
+      // A burst above the water is at negative depth; one on it is at
+      // zero. Neither makes much of a wave, and the curve says so.
+      burstDepth: m(-hobMeters),
       ...(input.meanOceanDepth !== undefined && { meanOceanDepth: input.meanOceanDepth }),
       ...(input.coastalBeachSlopeRad !== undefined && {
         coastalBeachSlopeRad: input.coastalBeachSlopeRad,
       }),
     });
-    if (tsunami !== null && seaCoupling.fraction > 0) result.tsunami = tsunami;
-    result.isContactWaterBurst = seaCoupling.fraction > 0;
+    // The flag means "this burst put energy into the water", so it
+    // follows whether a source actually came out — not whether there
+    // happened to be a sea nearby.
+    if (tsunami !== null) result.tsunami = tsunami;
+    result.isContactWaterBurst = tsunami !== null;
   }
 
   return result;

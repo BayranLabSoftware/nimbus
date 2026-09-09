@@ -232,7 +232,7 @@ describe('coastal-explosion tsunami flow', () => {
     useAppStore.getState().setElevationGrid(null);
   });
 
-  it('Castle Bravo on a coastal click emits tsunami when Launch runs with the grid loaded', async () => {
+  it('a coastal click carries the shore distance and the sea depth into the physics', async () => {
     const s = useAppStore.getState();
     s.selectPreset('CASTLE_BRAVO_1954');
     s.setMode('globe');
@@ -247,11 +247,22 @@ describe('coastal-explosion tsunami flow', () => {
     const r = useAppStore.getState().result;
     expect(r?.type).toBe('explosion');
     if (r?.type === 'explosion') {
-      expect(r.data.isContactWaterBurst).toBe(true);
-      expect(r.data.tsunami).toBeDefined();
-      expect(r.data.tsunami?.cavityRadius as number | undefined).toBeGreaterThan(0);
+      // The sea was found and both numbers reached the physics — the
+      // depth it is, and how far away it lies.
+      expect(r.data.inputs.waterDepth as number | undefined).toBeGreaterThan(0);
+      // The click landed on water here, so there is no shore to cross
+      // and the coupling law says so rather than being skipped.
+      expect(r.data.seaCoupling).toBeDefined();
+      expect(r.data.seaCoupling?.mechanism).toBe('water');
+      // Castle Bravo was fired on a reef, at the surface, and is
+      // remembered for its crater and its fallout rather than for any
+      // wave. A burst that never entered the water vents its globe to
+      // the air, so the depth-of-burst curve gives it no source —
+      // unlike Crossroads Baker, which was hung twenty-seven metres
+      // down and made the famous one.
+      expect(r.data.isContactWaterBurst).toBe(false);
+      expect(r.data.tsunami).toBeUndefined();
     }
-    expect(useAppStore.getState().bathymetricTsunami).not.toBeNull();
   });
 
   it('does not re-evaluate when the user pans to a new pin without pressing Launch', async () => {
