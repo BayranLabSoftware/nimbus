@@ -414,6 +414,41 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### Eleven events pin eleven points (Phase 25)
+
+The calibration net measures the model where the world has already
+run the experiment, and that is eleven places. A visitor with the
+custom fields open covers the whole space, and almost none of what
+they can ask for has ever happened: a two-hundred-kilotonne charge a
+kilometre under the Adriatic, a thirty-kilometre stone at eleven
+kilometres a second, a magnitude nine and a half under Lisbon.
+Nothing can check whether those answers are right, because nobody has
+measured them.
+
+What can be checked is that the laws still behave like laws out
+there. `customScenarios.test.ts` sweeps the whole range — yields from
+a tonne to a gigatonne, bursts from thirty kilometres up to five
+kilometres down, impactors from a metre to a hundred, magnitudes four
+to ten, water from dry land to the Challenger Deep — and asks four
+things of every result: that every number in it is finite, that the
+laws are monotone where physics says they must be, that they are
+continuous across the boundaries the code draws for its own
+convenience, and that nothing leaves the range physics allows. A model
+that passes all four can still be wrong. One that fails any of them is
+broken, and only a sweep would ever find out, because a preset never
+goes there.
+
+The sweep found the model sound on all four, and found one thing
+worth recording about how to write such a test: the first version
+asked that the wave not jump as a charge crosses the water surface,
+with an arbitrary tolerance, and it failed. The curve is continuous —
+zero at the surface, three centimetres a decimetre under, two and a
+half metres half a metre under — it is simply steep, because half a
+metre of water over a fireball is the difference between coupling and
+venting. The property worth asserting was continuity, that the gap
+across the surface closes as the interval does, which a threshold's
+would not.
+
 ### A grid that contains a coast (Phase 25)
 
 The terrain under a pick is one web-mercator tile, 1.4° of it, about

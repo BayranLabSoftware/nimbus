@@ -7,6 +7,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **A sweep for the scenarios nobody has run.** The calibration net
+  measures eleven events the world has already performed; a visitor
+  with the custom fields open covers the whole space. A property sweep
+  now runs the laws across it — a tonne to a gigatonne, thirty
+  kilometres up to five down, a metre to a hundred kilometres of
+  impactor, magnitude four to ten, dry land to the Challenger Deep —
+  and asks that every number be finite, that the laws stay monotone
+  where physics demands, that they stay continuous across the
+  boundaries the code draws for itself, and that nothing leaves the
+  physically possible. All four hold.
+
 - **Waves that were measured.** A second calibration harness, beside
   the death-toll one, checks what the model does to water: Crossroads
   Baker's near-field wave (30.7 m modelled against ~30 m recorded),
