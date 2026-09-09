@@ -414,6 +414,60 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### The first layer, on its own (Phase 38)
+
+A death toll is the product of five models — intensity, exposure,
+vulnerability, geometry, warning — and when it is wrong it does not
+say which. Finding out which took most of 9 September, by hand, one
+instrumented run at a time. So the first thing M9 asks for is an
+anchor on each layer separately, and the intensity field has the best
+one there is: the USGS ShakeMap, published for every event since 2000
+and for the significant ones before, machine-readable and without a
+key.
+
+`pnpm shakemap:build` fetches the MMI coverage grid of six anchored
+earthquakes and stores the **ground area above each threshold**. Area
+and not a contour, because the model draws a circle for a small
+rupture and a stadium around a long one where the earth draws whatever
+the geology says; what the two can honestly be compared on is how much
+ground shook that hard.
+
+The first run:
+
+| event           | MMI ≥ VII | MMI ≥ VIII | MMI ≥ IX   |
+| --------------- | --------- | ---------- | ---------- |
+| Northridge 1994 | 0.32×     | 0.21×      | —          |
+| L'Aquila 2009   | **8.9×**  | _invented_ | —          |
+| Amatrice 2016   | **18.2×** | _invented_ | —          |
+| Gorkha 2015     | 0.42×     | 2.77×      | _invented_ |
+| Tōhoku 2011     | 1.30×     | 3.12×      | _invented_ |
+| Kokoxili 2001   | 0.36×     | 0.48×      | 3.97×      |
+
+"Invented" means the model shakes ground at an intensity the event
+never reached anywhere. **Tōhoku's model paints 180 747 km² of Japan
+at MMI IX; the 2011 ShakeMap's maximum was 8.18.** That band is where
+the model's 200 000 dead come from, against a record of 18 500 — the
+headline error of Phase 37, now located rather than suspected.
+
+And the footprint is not uniformly wrong, which is the part that only
+a per-layer anchor could have said. It is too generous for a
+megathrust and far too generous for a small crustal event — Amatrice
+eighteen times over in area — and too mean for Northridge and
+Kokoxili. That is the signature of one point-source attenuation curve
+inflated into a rupture stadium: it cannot be right at both ends of
+the magnitude range at once.
+
+It also explains a thing that looked like luck. Amatrice's toll came
+out 0.02× of its record while its footprint is 18× too wide: two
+errors pulling opposite ways, and neither visible while only the toll
+was checked.
+
+The residuals are pinned rather than tolerated — the ratios above are
+in the test, to a tenth, so any change to the intensity field shows up
+here in either direction instead of hiding inside a toll. A
+laboratory-level model has nothing in the invented list. Today it has
+four, and that count is pinned too.
+
 ### Which country's buildings (Phase 37)
 
 The shaking model had no country. It ran ν(S) = Φ(ln(S/θ)/β) with one

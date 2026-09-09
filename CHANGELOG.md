@@ -205,6 +205,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The shaking footprint is anchored on the ShakeMap that recorded
+  it.** A death toll is five models multiplied and a wrong toll does
+  not say which one; `pnpm shakemap:build` now stores the ground area
+  above MMI VII, VIII and IX for six events from the USGS ShakeMap
+  product, and a test compares the model's footprint against it. The
+  first run located the headline error of the previous change in one
+  shot: the model paints **180 747 km² of Japan at MMI IX** where the
+  2011 ShakeMap's maximum anywhere was 8.18, which is where its
+  200 000 dead come from against a record of 18 500. Four events are
+  shaken at intensities they never reached, and the footprint is too
+  generous for small crustal events (Amatrice 18× in area) while too
+  mean for Northridge and Kokoxili — the signature of one point-source
+  attenuation inflated into a rupture stadium. The residuals are
+  pinned rather than tolerated.
+
 - **The model says where it has been measured.** The casualty panel
   now names the nearest event with a death toll on record and how this
   scenario stands against it — beside it, between two of them, or past

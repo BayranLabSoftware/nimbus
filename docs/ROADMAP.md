@@ -223,7 +223,7 @@ still out by four to a hundred: Pinatubo 97×, Amatrice 0.02×, Gorkha
 0.06×, Tōhoku's headline 11×, Sumatra's coast 0.011×, and the report's
 own DART row 5×.
 
-### 1. Verify the layers, not just the toll _(first, because it unblocks the rest)_
+### 1. Verify the layers, not just the toll _(intensity done, 9 September)_
 
 A death toll is the product of five models — intensity, exposure,
 vulnerability, geometry, warning — and when it is wrong it does not
@@ -239,8 +239,18 @@ Every intermediate quantity has a free public anchor:
 | exposed population | GHS-POP against census totals                                                               |
 | vulnerability      | PAGER's 252-country table, now in the model                                                 |
 
-This turns "Tōhoku reads 200 000 against 18 500" from a mystery
-spanning five models into a question with an answer.
+**The intensity layer is anchored.** `pnpm shakemap:build` stores the
+ground area above MMI VII, VIII and IX for six events, and the first
+run answered the question in one shot: the model paints 180 747 km² of
+Japan at MMI IX and the 2011 ShakeMap's maximum was 8.18. Four events
+are shaken at intensities they never reached; Amatrice's footprint is
+eighteen times too wide in area while its toll is fifty times too low.
+All of it invisible while only the toll was checked. The residuals are
+pinned in `shakemapFootprint.test.ts`.
+
+The other three layers are still unanchored: exposure against census
+totals, the wave on more than one buoy row, and the vulnerability
+table's own scatter.
 
 ### 2. The band must be the model's own uncertainty
 
@@ -841,7 +851,7 @@ the people inside the inundation polygon would be the honest version.
 Would move: Sumatra 2004, and every event whose dead are in one dense
 place rather than spread along a shore.
 
-### P0 — The MMI IX footprint is too large _(open, 9 September)_
+### P0 — The MMI footprint is wrong at both ends _(open, measured 9 September)_
 
 With the PAGER country curves in place, Tōhoku's headline reads
 200 000 dead where about 1 800 died of the shaking. Japan's curve is
@@ -850,11 +860,18 @@ MMI IX it kills 1.4 % of those it reaches. To produce 200 000 that
 band has to hold twelve million people, and the MMI IX contour of the
 2011 event was a narrow coastal strip.
 
-So the vulnerability is now the table's and the intensity field is
-what is left. Where to look: the MMI contours come from a
-point-source attenuation inflated into a rupture stadium, and a
-megathrust whose slip is concentrated does not shake its whole
-rectangle at MMI IX.
+**Measured against ShakeMap, and it is worse and more specific than
+"too large".** The model paints 180 747 km² at MMI IX where the 2011
+event reached 8.18 anywhere; Gorkha, L'Aquila and Amatrice are also
+shaken at intensities they never reached. But it is too _mean_ for
+Northridge (0.32× the area at MMI VII) and Kokoxili (0.36×), and
+wildly too generous for the small Italian events (8.9× and 18.2×).
+
+One point-source attenuation curve inflated into a rupture stadium
+cannot be right at both ends of the magnitude range, and this is what
+that looks like. Where to look: the attenuation's magnitude scaling,
+and whether the stadium should be the rupture rectangle at all for an
+intensity the rupture's own slip distribution never produced.
 
 Would move: the headline number of every large earthquake, which is
 what a visitor reads first.

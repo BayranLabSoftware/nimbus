@@ -37,7 +37,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare": "husky",
-    "pager:build": "tsx scripts/build-pager-fatality.ts"
+    "pager:build": "tsx scripts/build-pager-fatality.ts",
+    "shakemap:build": "tsx scripts/build-shakemap-fixtures.ts"
   },
   "dependencies": {
     "@fontsource/inter": "^5.1.0",
