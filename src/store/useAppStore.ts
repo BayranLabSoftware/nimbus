@@ -1355,6 +1355,9 @@ export function casualtyPlanForResult(
         secondDegreeBurnRadius: result.data.thermal.secondDegreeBurnRadius,
         firestormRadius: result.data.firestorm.sustainRadius,
         fireballRadius: nuclearFireballRadius(result.data.yield.joules),
+        ...(result.data.inputs.chargeType !== undefined && {
+          chargeType: result.data.inputs.chargeType,
+        }),
       });
     case 'earthquake': {
       const plan = shakingCasualtyPlan({

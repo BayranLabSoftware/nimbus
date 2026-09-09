@@ -98,6 +98,22 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A conventional explosion is not a small nuclear one.** OTA's
+  casualty bands come from Hiroshima and Nagasaki, and applying them
+  to ammonium nitrate in the port of Beirut killed fifty times the 218
+  who died. Explosions now carry a charge type: a chemical one gets
+  bands built on direct-blast lethality and building collapse rather
+  than on a nuclear flash, no thermal or mass-fire term at all, and
+  later deaths at two per cent of the injured instead of the thirty
+  that belongs to a country with no hospitals left. Beirut, Halifax
+  and Texas City move from one to two orders of magnitude high to
+  about four times.
+- **A pyroclastic band that admits an evacuation.** Its low end was
+  fifty per cent, which is a gentler current; it is now one per cent,
+  which is an empty one — the Merapi 2010 ratio. Mount St Helens, a
+  mountain closed for two months before it erupted, is inside the band
+  again.
+
 - **The flash stops at the horizon.** A Chicxulub-class fireball has a
   third-degree burn radius of 27 000 km on a planet 20 015 km across,
   and the toll was applying Glasstone's fireball mortality to all of

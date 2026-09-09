@@ -149,8 +149,10 @@ export function CasualtiesPanel({
             </table>
           )}
           <p className={styles.mcFooter}>
-            {t(`casualties.model.${casualties.model}`)} ·{' '}
-            {t(`casualties.method.${casualties.method}`, { source: casualties.source })}
+            {t(
+              `casualties.model.${casualties.model === 'blast' && casualties.conventional === true ? 'blastChemical' : casualties.model}`
+            )}{' '}
+            · {t(`casualties.method.${casualties.method}`, { source: casualties.source })}
           </p>
           <p className={styles.mcFooter}>{t('casualties.disclaimer')}</p>
         </>

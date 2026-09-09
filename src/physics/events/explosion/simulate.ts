@@ -23,10 +23,27 @@ import { Mt, m, mps, megatonsToJoules, Pa, sqm } from '../../units.js';
  */
 export type ExplosionGroundType = keyof typeof NUCLEAR_CRATER_COEFFICIENT;
 
+/**
+ * What made the blast. A nuclear device and a warehouse of ammonium
+ * nitrate can release the same energy and kill very different numbers
+ * of people: the nuclear one adds a thermal flash that burns and sets
+ * fire to what the shock has already broken, and the casualty bands
+ * of OTA 1979 were read off two cities where that is exactly what
+ * happened. A chemical detonation has no such flash, so the deaths
+ * come from the shock and from what it brings down.
+ *
+ * Only the casualty model reads this; the rings, the crater and the
+ * shock front depend on the energy alone.
+ */
+export type ExplosionChargeType = 'nuclear' | 'chemical';
+
 export interface ExplosionScenarioInput {
   /** TNT-equivalent yield (megatons). Callers holding kilotons should
    *  pass e.g. 0.015 for a 15 kt Hiroshima-class device. */
   yieldMegatons: number;
+  /** Nuclear unless said otherwise — the shipped conventional
+   *  disasters (Beirut, Halifax, Texas City) say otherwise. */
+  chargeType?: ExplosionChargeType;
   /** Nuclear-crater ground preset. Defaults to 'FIRM_GROUND'. */
   groundType?: ExplosionGroundType;
   /** Height of burst above the target surface (m). 0 = contact surface
@@ -476,6 +493,7 @@ export const EXPLOSION_PRESETS = {
       yieldMegatons: 0.0005,
       groundType: 'WET_SOIL',
       heightOfBurst: m(0),
+      chargeType: 'chemical',
     } satisfies ExplosionScenarioInput,
   },
   /** Ivy Mike, Enewetak Atoll, 1 November 1952 — first full-scale
@@ -510,6 +528,7 @@ export const EXPLOSION_PRESETS = {
       yieldMegatons: 0.0029,
       groundType: 'WET_SOIL',
       heightOfBurst: m(0),
+      chargeType: 'chemical',
     } satisfies ExplosionScenarioInput,
   },
   /** Texas City disaster, 16 April 1947 — French freighter SS Grand-
@@ -526,6 +545,7 @@ export const EXPLOSION_PRESETS = {
       yieldMegatons: 0.0027,
       groundType: 'WET_SOIL',
       heightOfBurst: m(0),
+      chargeType: 'chemical',
     } satisfies ExplosionScenarioInput,
   },
 } as const;

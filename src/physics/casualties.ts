@@ -156,6 +156,9 @@ export interface CasualtyPlan {
   /** 'blast' | 'shaking' | 'pyroclastic' — which source the bands come
    *  from; an estimate made of the coastal toll alone is 'tsunami'. */
   model: 'blast' | 'shaking' | 'pyroclastic' | 'tsunami';
+  /** Blast plans only: the bands were the conventional ones, not
+   *  OTA's nuclear pair. */
+  conventional?: boolean;
   /** Annuli, inner to outer, contiguous. */
   bands: CasualtyBand[];
 }
@@ -187,6 +190,57 @@ export const OTA_BLAST_BANDS = [
  *  given overpressure spans roughly a factor 2 between studies
  *  (Glasstone & Dolan 1977 ch. XII). */
 const BLAST_BAND_FACTOR = 2;
+
+/**
+ * Mortality by overpressure for a CONVENTIONAL detonation.
+ *
+ * OTA's bands are Hiroshima and Nagasaki: a nuclear flash through
+ * cities of light timber, where the shock broke the houses and the
+ * flash then burned them, and half the people at five psi died. None
+ * of that describes a warehouse of ammonium nitrate going off in a
+ * city of reinforced concrete, and using OTA there put Beirut 2020 at
+ * fifty times the 218 who were killed.
+ *
+ * What is left when the flash is taken away is the shock itself and
+ * what it brings down, and the two have very different thresholds.
+ * Direct overpressure barely touches a person below the pressures
+ * that damage lungs — Glasstone & Dolan 1977 §12.44 put the threshold
+ * of lung injury near 8-12 psi, the threshold of lethality near
+ * 20-30 psi and fifty per cent near 30-50 psi — so at the five psi
+ * where OTA kills half the population, the blast wave alone kills
+ * almost nobody. The dead are under the buildings: collapse and
+ * flying debris, with the share of occupants who die in a collapsed
+ * structure running in the tens of per cent and the share of
+ * buildings that collapse falling steeply with distance.
+ *
+ * These rates carry the two mechanisms together and are the widest in
+ * this module for the reason that the record behind them is thin:
+ * a factor of three either way, against OTA's factor of two.
+ */
+export const CONVENTIONAL_BLAST_BANDS = [
+  { key: 'blast12psi', minPsi: 12, mortality: 0.2, injury: 0.4 },
+  { key: 'blast5psi', minPsi: 5, mortality: 0.03, injury: 0.45 },
+  { key: 'blast2psi', minPsi: 2, mortality: 0.005, injury: 0.35 },
+  { key: 'blast1psi', minPsi: 1, mortality: 0.0005, injury: 0.2 },
+] as const;
+
+/** The conventional rates are a composition, not a fit: three either
+ *  way, wider than OTA's two. */
+const CONVENTIONAL_BAND_FACTOR = 3;
+
+/**
+ * Later deaths after a conventional explosion.
+ *
+ * OTA's thirty per cent of the injured is not a fact about wounds, it
+ * is a fact about a country under nuclear attack: two thousand burn
+ * beds against hundreds of thousands of casualties, and no hospital
+ * left standing to take them. A warehouse detonating in a port leaves
+ * the city's medicine intact and brings the world's in behind it, so
+ * what remains is the share of the seriously injured who die despite
+ * treatment — a few per cent, and the band spans an order of
+ * magnitude because that share depends entirely on where it happens.
+ */
+export const CONVENTIONAL_DELAYED_FRACTION: Triple = { low: 0.005, mid: 0.02, high: 0.06 };
 
 /**
  * Radius of the luminous fireball of a cosmic impact (m) for its
@@ -284,6 +338,10 @@ export interface BlastCasualtyInput {
    *  horizon: past it the flash never arrives. See
    *  {@link thermalHorizonRadius}. */
   fireballRadius?: Meters;
+  /** 'chemical' swaps OTA's nuclear bands for
+   *  {@link CONVENTIONAL_BLAST_BANDS}. Defaults to nuclear, which is
+   *  what an impact's air shock resembles. */
+  chargeType?: 'nuclear' | 'chemical';
 }
 
 /**
@@ -362,17 +420,28 @@ export function blastCasualtyPlan(input: BlastCasualtyInput): CasualtyPlan | nul
     const mid = 0.5 * (inner + outer);
     const components: HazardComponent[] = [];
     const psi = psiClassAt(mid);
-    const ota = psi >= 0 ? OTA_BLAST_BANDS[psi] : undefined;
+    const chemical = input.chargeType === 'chemical';
+    const table = chemical ? CONVENTIONAL_BLAST_BANDS : OTA_BLAST_BANDS;
+    const factor = chemical ? CONVENTIONAL_BAND_FACTOR : BLAST_BAND_FACTOR;
+    const ota = psi >= 0 ? table[psi] : undefined;
     if (ota !== undefined) {
       components.push({
         hazard: 'blast',
         mortality: ota.mortality,
-        mortalityLow: ota.mortality / BLAST_BAND_FACTOR,
-        mortalityHigh: Math.min(1, ota.mortality * BLAST_BAND_FACTOR),
+        mortalityLow: ota.mortality / factor,
+        mortalityHigh: Math.min(1, ota.mortality * factor),
         injuryRate: ota.injury,
       });
     }
-    if (mid < burn3) {
+    // A chemical detonation has no thermal pulse worth the name: a
+    // nuclear burst radiates about a third of its energy, an
+    // explosive a few per cent of it, and for milliseconds rather
+    // than seconds. No flash, no burns, and nothing to start a mass
+    // fire from the air. Applying the nuclear thermal model to the
+    // Beirut port was most of a factor of forty.
+    if (chemical) {
+      // nothing radiative
+    } else if (mid < burn3) {
       components.push({
         hazard: 'thermal',
         mortality: THERMAL_EXPOSED_FRACTION.mid * THIRD_DEGREE_MORTALITY.mid,
@@ -390,7 +459,7 @@ export function blastCasualtyPlan(input: BlastCasualtyInput): CasualtyPlan | nul
         survivorInjuryRate: THERMAL_EXPOSED_FRACTION.mid,
       });
     }
-    if (mid < fire) {
+    if (!chemical && mid < fire) {
       components.push({
         hazard: 'firestorm',
         mortality: FIRESTORM_MORTALITY.mid,
@@ -410,10 +479,12 @@ export function blastCasualtyPlan(input: BlastCasualtyInput): CasualtyPlan | nul
       mortalityLow: combineMortality(components.map((c) => c.mortalityLow)),
       mortalityHigh: combineMortality(components.map((c) => c.mortalityHigh)),
       ...(injuryRate > 0 && { injuryRate }),
-      delayedFraction: DELAYED_DEATH_FRACTION,
+      delayedFraction: chemical ? CONVENTIONAL_DELAYED_FRACTION : DELAYED_DEATH_FRACTION,
     });
   }
-  return bands.length > 0 ? { model: 'blast', bands } : null;
+  return bands.length > 0
+    ? { model: 'blast', bands, conventional: input.chargeType === 'chemical' }
+    : null;
 }
 
 // ---------------------------------------------------------------------
@@ -501,6 +572,29 @@ export function shakingCasualtyPlan(input: ShakingCasualtyInput): CasualtyPlan |
 /** Mortality inside a pyroclastic density current without evacuation. */
 export const PYROCLASTIC_MORTALITY = 0.9;
 
+/**
+ * The low end of a pyroclastic band is not a gentler current. It is
+ * an empty one.
+ *
+ * People caught inside a density current almost never survive, which
+ * is why the central figure is Auker's ninety per cent. But a volcano
+ * gives days of warning where an impact gives none, and a modern
+ * eruption is usually evacuated: Pinatubo moved sixty thousand people
+ * out before the climax and lost nobody to the currents, Merapi 2010
+ * evacuated three hundred and fifty thousand and lost 353 — about one
+ * in a thousand of those at risk, the ones who would not leave or who
+ * went back. Unzen 1991 killed forty-three, most of them journalists
+ * and scientists who had stayed to watch.
+ *
+ * So the band is asymmetric on purpose, and it says the only thing
+ * worth saying about a pyroclastic current: if they left, almost
+ * nobody; if they did not, almost everybody. One per cent is the
+ * Merapi ratio rounded up, and the simulator cannot know which of the
+ * two worlds it is in, because it does not know whether anyone told
+ * them to go.
+ */
+export const PYROCLASTIC_MORTALITY_EVACUATED = 0.01;
+
 export interface PyroclasticCasualtyInput {
   pyroclasticRunout: Meters;
   /** Lateral-blast runout (m) and sector width (°), when the eruption
@@ -519,7 +613,7 @@ export function pyroclasticCasualtyPlan(input: PyroclasticCasualtyInput): Casual
       innerRadiusM: 0,
       outerRadiusM: runout,
       mortality: PYROCLASTIC_MORTALITY,
-      mortalityLow: 0.5,
+      mortalityLow: PYROCLASTIC_MORTALITY_EVACUATED,
       mortalityHigh: 1,
     });
   }
@@ -532,7 +626,7 @@ export function pyroclasticCasualtyPlan(input: PyroclasticCasualtyInput): Casual
       innerRadiusM: Math.max(0, runout),
       outerRadiusM: blast,
       mortality: PYROCLASTIC_MORTALITY * weight,
-      mortalityLow: 0.5 * weight,
+      mortalityLow: PYROCLASTIC_MORTALITY_EVACUATED * weight,
       mortalityHigh: weight,
     });
   }
@@ -595,6 +689,9 @@ export interface CasualtyEstimate {
   delayedDeathsHigh: number;
   /** Prompt injuries (0 for the models without an injury rate). */
   injured: number;
+  /** True when the blast bands were the conventional ones rather than
+   *  OTA's nuclear pair — the label has to say which. */
+  conventional?: boolean;
   /** The coastal toll of the tsunami, when the wave map reached a
    *  coast; part of `deaths`. */
   tsunamiDeaths?: number;
@@ -717,6 +814,7 @@ export function estimateCasualties(
   });
   return {
     model: plan.model,
+    ...(plan.conventional === true && { conventional: true }),
     exposed: Math.round(previous),
     deaths: Math.round(totals.deaths),
     deathsLow: Math.round(totals.deathsLow),

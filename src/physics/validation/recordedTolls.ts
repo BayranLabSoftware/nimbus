@@ -123,7 +123,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     run: blast('BEIRUT_2020'),
     gated: false,
     caveat:
-      'KNOWN DEFECT, and the sharpest thing this harness has found. Nobody was warned and nobody was evacuated, so none of the volcano excuses apply: the model simply kills fifty times too many people. The blast bands are OTA 1979, and OTA read them off Hiroshima and Nagasaki — a nuclear flash that set light-timber cities alight, with mortality of half the people at five psi. Beirut was a chemical detonation at ground level in a city of reinforced concrete, with no fireball worth the name and much of the blast vented over the harbour; the severe-damage zone lost on the order of one per cent of the people in it, not half. OTA does not transfer to a conventional explosion, and until it is replaced for that case the shipped Beirut, Halifax and Texas City presets read high by one to two orders of magnitude.',
+      "Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x, with a band from 280 that still misses the 218 counted. What is left is not the casualty model but the raster underneath it: at 240 m the ring is twenty times smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.",
   },
   {
     name: 'Mount St Helens 1980',
@@ -134,7 +134,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     run: volcano('MT_ST_HELENS_1980'),
     gated: false,
     caveat:
-      'Ungated, and the reason is the model working as advertised. The mountain had been closed for two months and the red zone evacuated; the 57 who died had mostly refused to leave or were outside the zone the blast then overran. The label says no evacuation, so overshooting a evacuated eruption is the assumption speaking, not an error. Measured at 4.7x the record.',
+      'The mountain had been closed for two months and the red zone evacuated; the 57 who died had mostly refused to leave or were outside the zone the blast then overran. The central figure still assumes nobody was warned and sits at 4.7x the record, but the band now reaches down to an evacuated eruption and contains it. Ungated because a preset cannot know whether an evacuation happened.',
   },
   {
     name: 'Pinatubo 1991',
@@ -146,7 +146,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     run: volcano('PINATUBO_1991'),
     gated: false,
     caveat:
-      'Ungated for two reasons that both point the same way. Sixty thousand people were evacuated before the climax — the evacuation is one of the great successes of volcanology and is thought to have saved five to twenty thousand lives — and most of those who still died were killed by roofs collapsing under ash wetted by Typhoon Yunya, which this model does not simulate at all. It counts the pyroclastic current, at ninety per cent, over people who were not there. Measured at 97x the record.',
+      'The band was widened to admit an evacuated eruption and now reaches 916, which still misses the 847 counted — by eight per cent, and the eight per cent is left standing rather than shaved away. Containing it would in any case be the wrong target: sixty thousand people were evacuated before the climax, and most of those who still died were killed by roofs collapsing under ash wetted by Typhoon Yunya, a mechanism this model does not simulate at all. It counts the current, over people who had gone.',
   },
   {
     name: 'Hiroshima 1945',
