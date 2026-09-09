@@ -1,4 +1,5 @@
 import { dispersionDecay, dispersionParameter } from './dispersion.js';
+import { bearingFromRupture } from './ruptureGeometry.js';
 import { directivityFactor } from './directivity.js';
 import { STANDARD_GRAVITY } from '../constants.js';
 import type { ElevationGrid } from '../elevation/index.js';
@@ -87,17 +88,6 @@ const MIN_PROPAGATION_DEPTH = 50;
  *  while leaving the per-cell value still proportional to (h₀/h)^(1/4)
  *  in the regime where the formula holds. */
 const SHOALING_CAP = 4;
-
-/** Initial bearing from one point to another (° from north). */
-function bearingTo(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const rad = Math.PI / 180;
-  const p1 = lat1 * rad;
-  const p2 = lat2 * rad;
-  const dl = (lon2 - lon1) * rad;
-  const y = Math.sin(dl) * Math.cos(p2);
-  const x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl);
-  return (((Math.atan2(y, x) / rad) % 360) + 360) % 360;
-}
 
 export interface AmplitudeFieldInput {
   /** Pre-computed FMM arrival-time field. */
@@ -271,8 +261,16 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
       const col = i % arrivalField.nLon;
       const cellLat = grid.maxLat - row * dLatDeg;
       const cellLon = grid.minLon + col * dLonDeg;
+      // From the nearest point of the fault, not from its centre: a
+      // cell abreast of a long rupture is square across the strike
+      // and takes the full beam, where measured from the epicentre it
+      // would look as if it lay off the end.
       beam = directivityFactor({
-        bearingDeg: bearingTo(srcLat, srcLon, cellLat, cellLon),
+        bearingDeg: bearingFromRupture(
+          { latitude: srcLat, longitude: srcLon, strikeDeg, lengthM: ruptureLengthM },
+          cellLat,
+          cellLon
+        ),
         strikeDeg,
         ruptureLengthM,
         wavelengthM: sourceWavelengthM,

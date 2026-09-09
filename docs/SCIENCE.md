@@ -414,6 +414,54 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### A rupture is a line (Phase 33)
+
+Every bearing the wave field asked for was measured from one point,
+the epicentre. For a short rupture that is fine, because a short
+rupture is very nearly a point. For a long one it is wrong where it
+matters most.
+
+The 2004 Sumatra–Andaman rupture ran 1 300 km north and most of its
+dead were in Banda Aceh, 250 km up that line. Aceh is not off the end
+of that fault; it is beside the middle of it, square across the
+strike, where a megathrust radiates hardest. Measured from the
+epicentre it came out lying almost straight along the strike instead —
+the cosine of its angle off the strike reads 0.96 from the centre and
+under 0.35 from the fault — and the beam handed it the incoherent
+floor that belongs off a fault's end, 0.46 where the answer is 1.
+
+So the bearing is taken from the nearest point of the rupture. A cell
+abreast of the fault gets a perpendicular and the full beam; a cell
+off one end gets the end, and the bearing from there runs along the
+strike as it should. The two agree wherever the rupture is short
+compared with the distance, which is every scenario that was right
+before. The rupture is centred on the source point, because which way
+a rupture propagated is not something a scenario knows.
+
+**What it did, and what it cost.** Sumatra's coastal toll went from
+2 100 drowned to **6 700**, three times better and still thirty-four
+times under its record. Tōhoku's went from 17 000 to **63 000** — from
+1.02× of its record to 3.8× over.
+
+That second number is the point of writing the first one down in
+advance. The roadmap said, before this was measured, that Tōhoku's
+match was "a right total made of wrong places, a coincidence waiting
+to be found out". It has been found out. Correcting the geometry took
+the compensation away and left what it was compensating for, which is
+now visible: the field holds the full source amplitude out to R₀ = L/2
+— a 351 km disc at 3.99 m for Tōhoku — so every Japanese coast, all of
+them within 200 km, sits at the peak. The saturation radius should be
+the fault's across-strike half-width, the same argument that fixed the
+wavelength, and that is the next entry.
+
+**And Banda Aceh is in the model.** It was worth checking rather than
+assuming: 360 coastal cells sit in the northern Sumatra box and the
+ones at Banda Aceh carry a run-up of 19.7 m, against a record of 15 to 30. The wave is there and it is the right size. What is not there is
+the people: the density lookup gives the twelve fine tiles holding the
+most points to the 2.5′ raster and everything else to the 0.125°
+planet, and for a fifteen-thousand-cell field spread over an ocean,
+Aceh is not reliably among the twelve.
+
 ### The amplitude a thousand kilometres out, and the last fifty metres (Phase 32)
 
 Two errors sat on top of each other, pulling in opposite directions,

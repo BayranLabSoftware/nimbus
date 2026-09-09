@@ -587,7 +587,7 @@ carries a thousand kilometres from a line source, which is the same
 cylindrical law the far-field rows use, and the shoaling cap on the
 way in.
 
-### P0 — The source is a point, and a rupture is a line _(open, 9 September)_
+### P0 — The source is a point, and a rupture is a line _(closed, 9 September)_
 
 Sumatra 2004's coastal toll is 2 100 drowned against near 227 000,
 after the amplitude and the shore height were both corrected and both
@@ -606,11 +606,15 @@ Would move: Sumatra 2004, the worst row in the calibration net; every
 long-rupture event where the coast runs alongside the fault; and the
 Tōhoku geography below.
 
-Where to look: the distance and bearing to a cell should be to the
-nearest point of the rupture segment, not to its epicentre, and the
-arrival field should be seeded along the whole line.
+**Closed for the bearing.** It now comes from the nearest point of
+the rupture. Aceh's cosine off the strike goes from 0.96 to under
+0.35 — from the incoherent floor to the full beam — and Sumatra's
+coastal toll from 2 100 drowned to 6 700. The distance is still
+measured from the epicentre through the arrival field; seeding the FMM
+along the whole line is what remains, and it matters less, because
+inside R₀ the amplitude saturates anyway. Which is P0 below.
 
-### P1 — Tōhoku's total is right and its geography is not _(open, 9 September)_
+### P1 — Tōhoku's total is right and its geography is not _(closed by being wrong, 9 September)_
 
 The coastal toll now reads 17 000 drowned against about 16 700, which
 is as close as any row in this project has come. The largest single
@@ -621,8 +625,52 @@ being right the moment anything else changes. What it most likely
 means is the same point-source geometry as P0 — a rupture 700 km long
 seen from one point puts too much wave south of where it belongs.
 
-Would move: nothing on the headline, and everything about whether the
-headline can be trusted.
+**It was a coincidence, and it is gone.** With the bearing taken from
+the fault instead of the epicentre, Tōhoku reads 63 000 drowned
+against about 16 700 — 3.8× over, where it had been 1.02×. Nothing
+about the model got worse: a compensating pair came apart, and what
+was being compensated for is P0 below.
+
+### P0 — The source saturates over a disc the size of the fault _(open, 9 September)_
+
+`r = max(c·T, R₀)` with `R₀ = L/2`, so the field holds the full source
+amplitude everywhere inside half a rupture length: for Tōhoku a disc
+351 km across at 3.99 m, which is every coast in Japan. That is why
+the toll reads 63 000 against 16 700 once the beam stopped
+under-counting them.
+
+The saturation radius should be the fault's across-strike half-width,
+W/2 — about 102 km for Tōhoku. It is the same argument that fixed the
+source wavelength: what a wave leaving the fault broadside sees is the
+across-strike profile, not the along-strike length. A first estimate
+puts Sanriku's amplitude down 2.8× and Tokyo Bay's down 3.3×, which
+would bring the headline back without restoring the compensation,
+because the beam is now right.
+
+The catch is that the same change takes Sri Lanka down 3× as well, and
+Sumatra is already 34× under. Near coasts want less and far coasts
+want more, which is a statement about the _shape_ of the decay rather
+than its scale, and it should be measured against both records at once
+rather than tuned against either.
+
+Would move: every coastal toll of every megathrust, in both
+directions.
+
+### P1 — The density lookup runs out of fine tiles _(open, 9 September)_
+
+`populationDensityAt` gives the 2.5′ raster to the twelve tiles
+holding the most coastal points and the 0.125° planet to the rest. A
+tsunami field has fifteen thousand cells spread over an ocean, so
+twelve tiles is a small fraction of it, and which coasts get the fine
+raster depends on where the cells happen to cluster.
+
+Banda Aceh is the case that shows it: 360 cells sit in the northern
+Sumatra box with a run-up of 19.7 m against a record of 15 to 30, so
+the wave is there and it is the right size. The 170 000 people who
+drowned around it are not.
+
+Would move: Sumatra 2004 above all, and any event whose dead are
+concentrated somewhere the twelve tiles miss.
 
 ### P3 — Caps the scalar path does not have
 

@@ -7,6 +7,18 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A rupture is a line.** Every bearing the wave field asked for was
+  measured from the epicentre, which for a 1 300 km fault puts Banda
+  Aceh — 250 km up the line and square across the strike — almost
+  straight along it, and hands it the incoherent floor of the beam
+  where the answer is 1. The bearing now comes from the nearest point
+  of the rupture: Aceh's cosine off the strike falls from 0.96 to
+  under 0.35, and Sumatra's coastal toll goes from 2 100 drowned to
+  6 700. Tōhoku's goes from 17 000 to 63 000, from 1.02× of its record
+  to 3.8× over — the compensating pair the roadmap had already called
+  a coincidence has come apart, and what it was hiding is now a
+  roadmap entry of its own.
+
 - **The amplitude a thousand kilometres out, and the last fifty metres
   of water.** Two errors on top of each other. The spreading law held
   the amplitude at the source value out to R₀ and decayed from there,
