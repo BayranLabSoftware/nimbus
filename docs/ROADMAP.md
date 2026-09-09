@@ -344,15 +344,99 @@ width to the observed 200 km for weeks and the wave had never heard
 it. Full account in [SCIENCE.md](./SCIENCE.md), "One law for the
 wave's decay".
 
-**What it exposed, and what is next.** Tōhoku's mean slip is now
-13.0 m where the inversions average about 10, and that same factor of
-1.37 takes its coastal toll from 1.4× the record to 2.9×. Mean slip is
-M₀/(μ·L·W) and nothing else, so the next question is which of the
-three is wrong: the rigidity (30 GPa here, where a whole-seismogenic-
-zone value is nearer 40), or the Strasser area, which is smaller than
-the inverted one. Fixing it moves the near field by 1.37 and the far
-field by the same, and DART is already at 0.90× — so it cannot be
-fixed by the far field alone, and it will not be fitted.
+**What it exposed.** Tōhoku's mean slip is now 13.0 m where the
+inversions average about 10, and that same factor of 1.37 takes its
+coastal toll from 1.4× the record to 2.9×. Mean slip is M₀/(μ·L·W) and
+nothing else, so the obvious suspect was the rigidity — 30 GPa here,
+where a whole-seismogenic-zone value is nearer 40, and 40 would give
+9.8 m exactly.
+
+**It is not the rigidity, and that was worth measuring rather than
+assuming.** μ scales every wave by the same factor, and the rows
+disagree about which way they need to move. At 40 GPa: DART 21413 goes
+from 0.90× the record to 0.67×, Tōhoku's coast from 2.9× to about
+1.5×, and Sumatra's from nine times under to about seventeen. The
+log-RMS across the three gets worse, not better. No single scale
+factor fixes them, so the residual is not a scale error.
+
+### 3b. What the wave does at the coast, layer by layer
+
+The toll was the only thing being checked, and it hid two different
+faults behind one ratio. Measured live on 9 September, from the
+run-up field the coastal toll actually reads:
+
+| coast                         | model, median shore height | surveyed          | model toll   | counted  |
+| ----------------------------- | -------------------------- | ----------------- | ------------ | -------- |
+| Sanriku (Tōhoku, 100–200 km)  | 9.5 m                      | 8–15 m            | 48 500       | ~16 700  |
+| Aceh (Sumatra, 100–300 km)    | 4.4 m                      | 5–15 m flow depth | 24 100       | ~130 000 |
+| Thailand (~600 km)            | 1.45 m                     | 5–10 m run-up     | —            | ~8 200   |
+| Sri Lanka / India (~1 600 km) | 0.72 / 0.76 m              | 3–10 m run-up     | 314 together | ~52 000  |
+
+Two findings, and they are not the same finding.
+
+**Tōhoku's wave is right and its toll is not.** The shore heights on
+the Sanriku coast sit inside the surveyed band, and the toll is still
+2.9× the record. What is left over is the assumption the model states
+on its own label: nobody evacuated. Japan did, imperfectly, and the
+difference is about a factor of three. That belongs to the casualty
+model, not the wave.
+
+**Sumatra's wave is too small, and increasingly so with range.** A
+factor of two to three at Aceh, five at Thailand, five to ten at Sri
+Lanka and India. In the open ocean the same: Jason-1 crossed the Bay
+of Bengal two hours after the rupture and measured 0.6–0.8 m at about
+1 600 km, where the model has 0.19 m. Tōhoku at the same range is
+right. The mortality function is steep in flow depth, so 0.72 m
+instead of six kills 314 people out of the 176 857 the model itself
+puts inside the strip — which is the whole of the far-field deficit.
+
+**The hypothesis the numbers point at: the far-field law has no
+rupture length in it.** The spreading law treats every source as a
+ring of radius W/2, and 702 km of fault and 1 300 km of fault radiate
+the same wave at the same range. A line source does not: broadside,
+its far-field amplitude carries L. The missing factor for Sumatra,
+measured against Jason-1 and with the beam removed, is about 1.7–1.8 —
+and L_Sumatra / L_Tōhoku is 1.85. That is a coincidence worth chasing,
+and the shape it wants is one law that reduces to the ring when
+L → W, so compact sources keep the law they already have.
+
+It is not written tonight. The constant has to come out of the energy
+of a line rather than out of Tōhoku, and seven wave anchors have to be
+re-read afterwards. Written down with its numbers so the next pass
+starts from a measurement.
+
+**How to re-measure it.** The run-up field needs bathymetry, so no
+offline test can reach it and the numbers above come from the browser.
+Run a preset, wait for the cascade, and paste this into the console of
+the dev server:
+
+```js
+const { useAppStore } = await import('/src/store/index.ts');
+const bt = useAppStore.getState().bathymetricTsunami;
+const cells = [...bt.runup.cells, ...(bt.global?.runup?.cells ?? [])];
+// The height the casualty model reads: Green's law shoaling capped by
+// the McCowan breaking index, RUNUP_EVALUATION_DEPTH_M = 10 m.
+const shore = (c) => Math.min(c.runupM, (10 * 0.78) ** 0.2 * c.amplitudeM ** 0.8);
+const box = (a, b, c2, d) =>
+  cells.filter((c) => c.latitude > a && c.latitude < b && c.longitude > c2 && c.longitude < d);
+const stat = (arr) => {
+  const v = arr.map(shore).sort((x, y) => y - x);
+  return v.length
+    ? { n: v.length, max: +v[0].toFixed(2), p50: +v[v.length >> 1].toFixed(2) }
+    : { n: 0 };
+};
+({
+  sanriku: stat(box(36, 41, 140.5, 142.6)),
+  aceh: stat(box(3, 6.5, 94.5, 96.5)),
+  thailand: stat(box(6.5, 9.5, 97.5, 99)),
+  sriLanka: stat(box(5.8, 10, 79.4, 82)),
+  indiaEast: stat(box(8, 14, 79.5, 81.5)),
+});
+```
+
+The toll's own split by arrival time is `useAppStore.getState()
+.tsunamiCasualties.bands`, whose windows are minutes: everything past
+about ninety is a far coast.
 
 **Measured first, on 9 September: the fault has two widths.**
 `simulateEarthquake` publishes W from the Strasser 2010 megathrust

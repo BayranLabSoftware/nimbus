@@ -5,6 +5,34 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## [Unreleased]
 
+### Measured
+
+- **The wave at the coast, layer by layer.** The coastal toll was the
+  only thing being checked and it hid two different faults behind one
+  ratio. Read off the run-up field the toll itself uses: on the
+  Sanriku coast the model's median shore height is 9.5 m against a
+  surveyed 8–15, and the toll is still 2.9× the record — the wave is
+  right and what is left over is the label's own assumption that
+  nobody evacuated. On Sumatra's coasts the wave is too small and
+  increasingly so with range: 4.4 m at Aceh against a surveyed flow
+  depth of 5–15, 1.45 m in Thailand against a 5–10 m run-up, 0.72 m in
+  Sri Lanka against 3–10. In the open ocean the same — Jason-1
+  measured 0.6–0.8 m across the Bay of Bengal two hours in, where the
+  model has 0.19 — while Tōhoku at the same range is right. Of the
+  176 857 people the model puts inside the far-field strip it kills
+  314, which is the whole of the deficit.
+
+  The rigidity was the obvious suspect for the 1.37 left by the width
+  fix and it is not the answer: μ scales every wave alike, and at
+  40 GPa DART goes from 0.90× to 0.67×, Tōhoku's coast from 2.9× to
+  1.5× and Sumatra's from nine times under to seventeen. The rows
+  disagree about which way to move, so the residual is not a scale
+  error. What the numbers point at instead is a far-field law with no
+  rupture length in it — 702 km of fault and 1 300 km radiate the same
+  wave at the same range — and the factor Sumatra is missing, 1.7–1.8,
+  is L_Sumatra / L_Tōhoku. In the roadmap with the console snippet
+  that reproduces every number above.
+
 ### Changed
 
 - **One law for the wave's decay, and one width under it.** The
