@@ -567,7 +567,7 @@ Tōhoku's coastal toll moved 3 800 → 6 500 drowned against about
 row was never the beam — it is the forty-kilometre coastal grid and
 the warning-time assumption, both open above.
 
-### P1 — Sumatra's far coasts are under-waved _(open, 9 September)_
+### P1 — Sumatra's far coasts are under-waved _(closed; see P0 below, 9 September)_
 
 With the warning fixed and the local grid widened, Sumatra 2004's
 modelled coastal toll is 1 400 drowned against near 227 000. The two
@@ -586,6 +586,43 @@ toll of every megathrust. Where to look: the amplitude the field
 carries a thousand kilometres from a line source, which is the same
 cylindrical law the far-field rows use, and the shoaling cap on the
 way in.
+
+### P0 — The source is a point, and a rupture is a line _(open, 9 September)_
+
+Sumatra 2004's coastal toll is 2 100 drowned against near 227 000,
+after the amplitude and the shore height were both corrected and both
+Tōhoku and Krakatau came onto their records. It is now the only
+tsunami row badly out, and the reason is geometric.
+
+The 2004 rupture ran 1 300 km north from its epicentre. Most of its
+dead were in Banda Aceh, at the northern end. The model puts the
+source at a single point — the epicentre, the southern end — and
+measures every bearing and every distance from there, so Aceh comes
+out as lying off the end of the fault and is handed the incoherent
+floor of the beam, 0.46, when it is in fact beside the middle of the
+rupture and squarely broadside to it.
+
+Would move: Sumatra 2004, the worst row in the calibration net; every
+long-rupture event where the coast runs alongside the fault; and the
+Tōhoku geography below.
+
+Where to look: the distance and bearing to a cell should be to the
+nearest point of the rupture segment, not to its epicentre, and the
+arrival field should be seeded along the whole line.
+
+### P1 — Tōhoku's total is right and its geography is not _(open, 9 September)_
+
+The coastal toll now reads 17 000 drowned against about 16 700, which
+is as close as any row in this project has come. The largest single
+contributor to it is Tokyo Bay, where Sanriku should be.
+
+A right total made of wrong places is a coincidence, and it will stop
+being right the moment anything else changes. What it most likely
+means is the same point-source geometry as P0 — a rupture 700 km long
+seen from one point puts too much wave south of where it belongs.
+
+Would move: nothing on the headline, and everything about whether the
+headline can be trusted.
 
 ### P3 — Caps the scalar path does not have
 

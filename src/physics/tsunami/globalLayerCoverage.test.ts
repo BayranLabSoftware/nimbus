@@ -78,7 +78,13 @@ function assertGlobalLayer(
   const farI = Math.round((50 - 0) / dLat); // equator
   const farJ = Math.round((30 - -50) / dLon); // 30°E
   const ampFar = a.amplitudes[farI * a.nLon + farJ] ?? 0;
-  expect(ampFar, `${ctx}: amplitude at 30° from source should be > 1 m`).toBeGreaterThan(1);
+  // Three thousand kilometres out. The threshold used to be a metre,
+  // which the spreading law could only clear because it was not
+  // normalised: Tōhoku's open-ocean amplitude across the Pacific was
+  // decimetres, and a metre there was the same over-statement that
+  // put Rio de Janeiro among the coasts a Sumatran earthquake drowns.
+  // What this row is for is that the layer exists and carries a wave.
+  expect(ampFar, `${ctx}: amplitude at 30° from source should be > 10 cm`).toBeGreaterThan(0.1);
 }
 
 describe('Phase 11/12 — global tsunami layer activates for every tsunami source', () => {

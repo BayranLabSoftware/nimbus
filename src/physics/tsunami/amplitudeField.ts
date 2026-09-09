@@ -152,6 +152,50 @@ export interface AmplitudeField {
   maxAmplitude: number;
 }
 
+/**
+ * How much of its peak an outgoing wave keeps at range r.
+ *
+ * `(R₀ / r)^q` is the shape, and until 9 September 2026 it was also
+ * the whole law: amplitude held at the source value out to R₀ and
+ * decaying from there. That over-states the far field badly, because
+ * a hump does not travel as a coherent ring of its own peak height —
+ * it spreads, and the leading crest carries only part of what it
+ * started with. For Tōhoku the law read 1.34 m at DART 21413 where
+ * 30 cm was recorded, and the whole planet's coasts came out at a
+ * metre or two, so the toll of a Sumatran earthquake was dominated by
+ * Tokyo Bay, Mumbai and Rio de Janeiro.
+ *
+ * Energy fixes the normalisation without a fitted constant. A hump of
+ * peak A₀ and radius a holds ½ρg·A₀²·πa² of potential energy; half of
+ * it goes outward, and at range r it occupies a ring of circumference
+ * 2πr whose effective width is √π·a. Equating the two,
+ *
+ *     A(r) = A₀ · √( a / (4√π · r) )     for r ≫ a
+ *
+ * and the form below reduces to that far away while staying at A₀ at
+ * the edge of the source, where it belongs. It reproduces the Saint-Venant solver of the NOAA
+ * benchmark to three per cent — that solver run on its own Gaussian
+ * gives 0.494 m at DART where this gives 0.508 — and it takes the
+ * field itself to 0.27 m against the 0.30 recorded.
+ *
+ * The constant is 4√π, the algebra of a Gaussian ring rather than a
+ * number chosen to make a row pass.
+ */
+const SPREAD_NORMALISATION = 4 * Math.sqrt(Math.PI);
+
+export function spreadingFactor(
+  sourceRadiusM: number,
+  rangeM: number,
+  q: number,
+  normalise: boolean
+): number {
+  const a = Math.max(sourceRadiusM, 1e-9);
+  const r = Math.max(rangeM, a);
+  if (!normalise) return (a / r) ** q;
+  // One at the edge of the source, √(a / (4√π·r)) far from it.
+  return (a / (a + SPREAD_NORMALISATION * (r - a))) ** q;
+}
+
 export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeField {
   const { arrivalField, grid, sourceAmplitudeM, sourceCavityRadiusM } = input;
   const sourceDepth = Math.max(input.sourceDepthM ?? 1_000, MIN_PROPAGATION_DEPTH);
@@ -170,6 +214,11 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
     input.sourceWavelengthM !== undefined && Number.isFinite(input.sourceWavelengthM)
       ? Math.max(1, input.sourceWavelengthM)
       : Math.max(1, 2 * input.sourceCavityRadiusM);
+  // A caller that supplies its own exponent brought its own published
+  // far field with it — the Wünnemann rim wave — and that fit already
+  // carries its own normalisation. Only the default cylindrical case
+  // is normalised here.
+  const normaliseSpread = input.spreadingExponent === undefined;
   const q = Number.isFinite(input.spreadingExponent)
     ? Math.min(3, Math.max(0.05, input.spreadingExponent ?? 0.5))
     : 0.5;
@@ -200,7 +249,7 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
     // far away (limit cases of a constant-depth ocean).
     const cAvg = Math.sqrt(c0 * cLocal);
     const r = Math.max(cAvg * T, sourceCavityRadiusM);
-    const spread = (sourceCavityRadiusM / r) ** q;
+    const spread = spreadingFactor(sourceCavityRadiusM, r, q, normaliseSpread);
 
     // Frequency dispersion. The veil used to carry none, because the
     // one factor available was tuned on megathrust wavelengths and

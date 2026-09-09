@@ -53,6 +53,13 @@ const MAX_BEACH_SLOPE_RAD = Math.atan(1 / 2);
  *  amplitude. Mirror of `SHOALING_CAP` in amplitudeField.ts. */
 const RUNUP_CAP_FACTOR = 4;
 
+/** Depth (m) at which the field stops and hands the wave over: the
+ *  shallow-water equations it is built on give out below this, and
+ *  the water still has fifty metres of climbing to do. What it does
+ *  in those last fifty metres is `shoreHeight` in
+ *  `tsunamiCasualties.ts`. */
+export const RUNUP_EVALUATION_DEPTH_M = 50;
+
 export interface RunupFieldInput {
   /** FMM-shoaled amplitude field on the same grid as `grid`. */
   amplitudeField: AmplitudeField;
@@ -170,7 +177,7 @@ function isCoastal(grid: ElevationGrid, i: number, j: number): boolean {
 export function computeRunupField(input: RunupFieldInput): RunupField {
   const { amplitudeField, grid } = input;
   const { nLat, nLon, amplitudes } = amplitudeField;
-  const minDepth = input.minOffshoreDepthM ?? 50;
+  const minDepth = input.minOffshoreDepthM ?? RUNUP_EVALUATION_DEPTH_M;
   const dLatDeg = (grid.maxLat - grid.minLat) / (nLat - 1);
   const dLonDeg = (grid.maxLon - grid.minLon) / (nLon - 1);
   const metersPerDegLat = 111_194.93;

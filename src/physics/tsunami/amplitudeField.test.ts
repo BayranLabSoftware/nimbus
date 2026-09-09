@@ -222,7 +222,7 @@ describe('computeAmplitudeField — spreadingExponent', () => {
     });
   }
 
-  it('an exponent of 1 decays twice as fast (in log space) as the cylindrical default', () => {
+  it('an exponent of 1 decays twice as fast (in log space) as one of 0.5', () => {
     const grid = wideFlatGrid();
     const arrival = computeTsunamiArrivalField({ grid, sourceLatitude: 0, sourceLongitude: 0 });
     const base = {
@@ -236,7 +236,11 @@ describe('computeAmplitudeField — spreadingExponent', () => {
       sourceWavelengthM: 2_000_000,
       sourceDepthM: 4_000,
     };
-    const cylindrical = computeAmplitudeField(base);
+    // Both exponents given explicitly: a caller that supplies one
+    // brings its own published far field and is not re-normalised, so
+    // this compares the shape and nothing else. The default case is
+    // energy-normalised and is measured by the test below it.
+    const cylindrical = computeAmplitudeField({ ...base, spreadingExponent: 0.5 });
     const steep = computeAmplitudeField({ ...base, spreadingExponent: 1 });
     const midRow = Math.floor(cylindrical.nLat / 2);
     const midCol = Math.floor(cylindrical.nLon / 2);
@@ -250,6 +254,42 @@ describe('computeAmplitudeField — spreadingExponent', () => {
     // (R₀/r)^1 = ((R₀/r)^0.5)² ⇒ A_steep / A₀ = (A_cyl / A₀)²
     expect(b / 30).toBeCloseTo((a / 30) ** 2, 3);
     expect(b).toBeLessThan(a);
+  });
+
+  it('the default case carries the energy normalisation the record needs', () => {
+    // A hump of peak A₀ and radius a holds ½ρg·A₀²·πa²; half goes
+    // outward and at range r occupies a ring of circumference 2πr and
+    // effective width √π·a, so A(r) = A₀·√(a / (4√π·r)) far away. The
+    // bare power law omits the 4√π and over-states the far field by
+    // its square root — a factor of 2.7, which is what put Rio de
+    // Janeiro among the coasts a Sumatran earthquake drowns.
+    const grid = wideFlatGrid();
+    const arrival = computeTsunamiArrivalField({ grid, sourceLatitude: 0, sourceLongitude: 0 });
+    const base = {
+      arrivalField: arrival,
+      grid,
+      sourceAmplitudeM: 30,
+      sourceCavityRadiusM: 10_000,
+      sourceWavelengthM: 2_000_000,
+      sourceDepthM: 4_000,
+    };
+    const normalised = computeAmplitudeField(base);
+    const bare = computeAmplitudeField({ ...base, spreadingExponent: 0.5 });
+    const midRow = Math.floor(normalised.nLat / 2);
+    const midCol = Math.floor(normalised.nLon / 2);
+    const cellsPerDeg = (normalised.nLon - 1) / 8;
+    const idx = midRow * normalised.nLon + midCol + Math.round(2 * cellsPerDeg);
+    const n = normalised.amplitudes[idx];
+    const b = bare.amplitudes[idx];
+    expect(n).toBeDefined();
+    expect(b).toBeDefined();
+    if (n === undefined || b === undefined) return;
+    // Far from a 10 km source the ratio tends to √(4√π) ≈ 2.66; this
+    // probe is at a couple of hundred kilometres, close enough that
+    // the source's own radius still shows in the third digit.
+    const asymptote = Math.sqrt(4 * Math.sqrt(Math.PI));
+    expect(b / n).toBeGreaterThan(asymptote * 0.95);
+    expect(b / n).toBeLessThanOrEqual(asymptote);
   });
 
   it('clamps absurd exponents instead of producing NaN or growth', () => {

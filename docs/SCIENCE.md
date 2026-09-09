@@ -414,6 +414,83 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### The amplitude a thousand kilometres out, and the last fifty metres (Phase 32)
+
+Two errors sat on top of each other, pulling in opposite directions,
+and neither could be seen while the other was there.
+
+**The far field was too strong.** `A = A₀·(R₀/r)^q` held the amplitude
+at the source value out to R₀ and decayed from there. For Tōhoku that
+reads **1.34 m at DART 21413 where 30 cm was recorded** — four and a
+half times over — and it made the whole planet's coasts a metre or
+two. Measured, the coastal exposure of the _Sumatra 2004_ tsunami was
+dominated by Tokyo Bay, Mumbai, Manila and Rio de Janeiro. The event
+had no geography left in it.
+
+Energy fixes the normalisation with no fitted constant. A hump of peak
+A₀ and radius a holds ½ρg·A₀²·πa²; half goes outward, and at range r
+it occupies a ring of circumference 2πr whose effective width is √π·a.
+Equating them,
+
+    A(r) = A₀ · √( a / (4√π · r) )     for r ≫ a
+
+The bare law omits the 4√π and over-states by its square root — 2.66.
+The constant is the algebra of a Gaussian ring, and the check is that
+it reproduces the Saint-Venant solver of the NOAA benchmark to three
+per cent: that solver on its own Gaussian gives 0.494 m at DART, this
+gives 0.508. On the model's own source it lands at **0.27 m against
+the 0.30 recorded**.
+
+**The shore height was too weak.** The field stops at fifty metres of
+water, because the shallow-water equations it is built on give out
+below that. The casualty model then took the shore height as the
+amplitude itself, hedged against the Synolakis run-up through a trust
+factor of one — and since a run-up is almost always larger than the
+wave that made it, the hedge chose the amplitude every time. The last
+fifty metres of water were simply dropped.
+
+Green's law carries the wave the rest of the way, A ∝ h^(−¼), and
+McCowan says how far the rest of the way is: it breaks when its height
+reaches 0.78 of the depth. Solving the two together removes the depth:
+
+    H = (d·γ)^(1/5) · A^(4/5)   ≈ 2.1 · A^(4/5)
+
+A wave arriving at three metres stands at five and a half; one
+arriving at one metre stands at two. Both numbers were already in the
+model — d is the field's own floor and γ its own shoaling cap — so
+there is nothing fitted here either. The run-up is still the ceiling,
+because a cliff makes little of a big wave and there Synolakis is the
+one that knows about the beach.
+
+**What the pair does.** Measured live, on the coasts as they are:
+
+| coastal toll  | before | after      | recorded  |
+| ------------- | ------ | ---------- | --------- |
+| Tōhoku 2011   | 5 400  | **17 000** | ≈ 16 700  |
+| Krakatau 1883 | —      | **24 000** | ≈ 36 400  |
+| Sumatra 2004  | 100    | 2 100      | ≈ 227 000 |
+
+Tōhoku is at 1.02× of its record and Krakatau at 0.66×, and those are
+the first coastal tolls this project has been able to say that about.
+Neither number was fitted: the corrections are a ring's energy and two
+constants the model already had.
+
+**What it does not fix, and what that now points at.** Two things.
+
+The first is honesty about Tōhoku: the total is right and the
+geography inside it is not. Tokyo Bay is the largest single
+contributor where Sanriku should be. A right total made of wrong
+places is a coincidence waiting to be found out, and it is written
+into the roadmap as such.
+
+The second is Sumatra, still a hundred times under. Its dead were in
+Banda Aceh, at the _northern end_ of a 1 300 km rupture whose southern
+end is where this model puts the source. Aceh is not off the end of
+that rupture — it is beside the middle of it — but a point source with
+a beam measures the bearing from one place and hands Aceh the
+incoherent floor, 0.46, that belongs off a fault's end. The source has
+to become a line before that row can move, and that is the next thing.
+
 ### A warning nobody could have given (Phase 31)
 
 The coastal toll asked one question about warning and should have

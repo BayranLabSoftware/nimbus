@@ -61,13 +61,15 @@ describe('inundationDistance', () => {
     expect(inundationDistance(60)).toBe(MAX_INUNDATION_M);
     expect(inundationDistance(0)).toBe(0);
     expect(meanFlowDepth(6)).toBe(3);
-    // The run-up is trusted only up to the amplitude that arrived: a
-    // 5 m wave whose run-up came back at the 4x clamp stands 5 m at
-    // the shore, not 9.7 m, and floods 570 m rather than 1.4 km.
-    expect(shoreHeight(19, 5)).toBe(5);
-    expect(shoreHeight(20, 5)).toBe(5);
-    // Below the clamp the solver is speaking, and the smaller number wins.
-    expect(shoreHeight(3, 5)).toBeCloseTo(Math.sqrt(15), 9);
+    // A 5 m wave at the fifty-metre contour stands 7.5 m at the shore
+    // once Green's law has carried it the rest of the way, whatever
+    // the clamped run-up says — and the clamp is what a run-up of 19
+    // or 20 m on a 5 m wave is.
+    expect(shoreHeight(19, 5)).toBeCloseTo(7.54, 2);
+    expect(shoreHeight(20, 5)).toBeCloseTo(7.54, 2);
+    // Below what Green's law would give, the beach is speaking, and
+    // the smaller number wins.
+    expect(shoreHeight(3, 5)).toBe(3);
     expect(shoreHeight(6, undefined)).toBe(3);
   });
 });
@@ -97,10 +99,11 @@ describe('estimateTsunamiCasualties', () => {
     // 50 cells × 1 km of coast, Bretschneider–Wybro strips.
     const cells = coast(50, 5, 2_000);
     const est = estimateTsunamiCasualties(cells);
-    // 5 m run-up from 1.25 m offshore: the run-up is above the trusted
-    // ceiling, so the water stands as high as the wave that arrived.
+    // 5 m run-up from 1.25 m offshore: Green's law and McCowan carry
+    // the wave from the fifty-metre contour to 2.5 m at the shore,
+    // under the 5 m the beach could have made of it.
     const height = shoreHeight(5, 1.25);
-    expect(height).toBeCloseTo(1.25, 9);
+    expect(height).toBeCloseTo(2.487, 3);
     const stripKm2 = (1_000 * inundationDistance(height)) / 1e6;
     expect(est.exposed).toBe(Math.round(50 * stripKm2 * 2_000));
     const expectedDeaths = cells.reduce(
@@ -200,15 +203,26 @@ describe('mergeTsunamiCasualties', () => {
   });
 });
 
-describe('shoreHeight — the clamp is a ceiling, not a measurement', () => {
-  it('a saturated run-up never lifts the water above the wave that arrived', () => {
-    // runupField clamps at 4x the amplitude; measured, that clamp binds
-    // on 84-95 % of coastal cells, so a saturated run-up carries no
-    // information and must not amplify the flood.
+describe('shoreHeight — the last fifty metres of water', () => {
+  it('carries the wave from where the field stops to where it breaks', () => {
+    // The field stops at fifty metres of depth. Green's law takes the
+    // wave from there, A ∝ h^(−¼), and McCowan says it breaks at 0.78
+    // of the depth; together those give H = (d·γ)^(1/5)·A^(4/5), about
+    // 2.1·A^(4/5). Nothing fitted: both numbers are the field's own.
+    const expected = (a: number): number => (50 * 0.78) ** 0.2 * a ** 0.8;
     for (const a of [0.5, 1.4, 5, 13.8, 60]) {
-      expect(shoreHeight(4 * a, a)).toBeCloseTo(a, 9);
-      expect(shoreHeight(10 * a, a)).toBeCloseTo(a, 9);
+      expect(shoreHeight(1000, a)).toBeCloseTo(expected(a), 9);
     }
+    // A wave arriving at three metres stands at five and a half.
+    expect(shoreHeight(1000, 3)).toBeGreaterThan(5);
+    expect(shoreHeight(1000, 3)).toBeLessThan(6);
+  });
+
+  it('the run-up is still the ceiling, because a cliff makes little of a wave', () => {
+    // Where Synolakis returns less than Green's law does, Synolakis is
+    // the one that knows about the beach.
+    expect(shoreHeight(1.2, 5)).toBe(1.2);
+    expect(shoreHeight(0.4, 20)).toBe(0.4);
   });
 
   it('is monotonic in both the run-up and the amplitude, and never above either', () => {
@@ -222,11 +236,14 @@ describe('shoreHeight — the clamp is a ceiling, not a measurement', () => {
     expect(shoreHeight(10, 2)).toBeLessThan(shoreHeight(10, 4));
   });
 
-  it('Anak Krakatau 2018: a 13.8 m wave stands 13.8 m, not the 55 m of the clamp', () => {
-    expect(shoreHeight(55.4, 13.8)).toBeCloseTo(13.8, 9);
-    // …and floods 2.2 km rather than the capped ten.
-    expect(inundationDistance(shoreHeight(55.4, 13.8))).toBeGreaterThan(1_500);
-    expect(inundationDistance(shoreHeight(55.4, 13.8))).toBeLessThan(3_000);
+  it('Anak Krakatau 2018: a 13.8 m wave stands 17 m, not the 55 m of the clamp', () => {
+    // Thirteen metres of wave at the fifty-metre contour is already
+    // most of the way to breaking; it stands seventeen at the shore
+    // and floods three kilometres. The clamp, read as a height, would
+    // have said fifty-five metres and flooded the capped ten.
+    expect(shoreHeight(55.4, 13.8)).toBeCloseTo(16.99, 1);
+    expect(inundationDistance(shoreHeight(55.4, 13.8))).toBeGreaterThan(2_000);
+    expect(inundationDistance(shoreHeight(55.4, 13.8))).toBeLessThan(4_000);
     expect(inundationDistance(55.4)).toBe(MAX_INUNDATION_M);
   });
 });

@@ -7,6 +7,25 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The amplitude a thousand kilometres out, and the last fifty metres
+  of water.** Two errors on top of each other. The spreading law held
+  the amplitude at the source value out to R₀ and decayed from there,
+  which read 1.34 m at DART 21413 where 30 cm was recorded and made
+  the coastal exposure of the *Sumatra* tsunami come out dominated by
+  Tokyo Bay, Mumbai and Rio de Janeiro. Energy fixes it with no fitted
+  constant: a ring of circumference 2πr and width √π·a gives
+  A(r) = A₀√(a/(4√π·r)), which reproduces the NOAA Saint-Venant solver
+  to three per cent and lands at 0.27 m against the 0.30 recorded.
+  Meanwhile the shore height was the offshore amplitude itself, so the
+  fifty metres of water between where the field stops and where the
+  wave breaks were dropped; Green's law and McCowan's breaking index
+  give H = (d·γ)^(1/5)·A^(4/5) ≈ 2.1·A^(4/5), both constants already
+  in the model. Together: Tōhoku's coastal toll 5 400 → **17 000
+  drowned against about 16 700 recorded**, and Krakatau 1883 at 24 000
+  against 36 400. Sumatra remains 2 100 against 227 000, and the
+  reason is now identified — its rupture is 1 300 km long and the
+  model treats it as a point at the southern end.
+
 - **A warning nobody could have given.** The coastal toll took the
   wave's travel time as the warning time, so the 2004 Indian Ocean —
   which had no warning system at all — was handed a warning at every

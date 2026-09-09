@@ -1,5 +1,6 @@
 import type { BandEstimate, CasualtyEstimate } from './casualties.js';
 import { normalCdf } from './casualties.js';
+import { RUNUP_EVALUATION_DEPTH_M } from './tsunami/runupField.js';
 import type { RunupCell } from './tsunami/runupField.js';
 
 /**
@@ -162,32 +163,47 @@ export function meanFlowDepth(shoreHeightM: number): number {
 }
 
 /**
- * How much run-up the casualty model believes, as a multiple of the
- * amplitude that arrived.
- *
- * `runupField.ts` clamps the Synolakis run-up at four times the
- * amplitude, the McCowan 1894 breaking ceiling. Measured across the
- * scenarios, that clamp binds on 84 to 95 per cent of the coastal
- * cells: on those the run-up is not a computed height, it is the
- * ceiling, and reading it as one would let the ceiling set the flood.
- * A wave arriving at A metres is trusted to stand A metres at the
- * shore; where the solver returns less than that, it is Synolakis
- * speaking rather than the clamp, and the smaller number is used.
+ * McCowan's (1894) breaking index: a solitary wave breaks once its
+ * height reaches this fraction of the water depth. Already the
+ * ceiling on the shoaling in `amplitudeField.ts`; here it is what
+ * says how deep the water is when the wave arrives at the shore.
  */
-export const RUNUP_TRUST_FACTOR = 1;
+export const BREAKING_INDEX = 0.78;
 
 /**
- * The water height at the shore (m): the geometric mean of the
- * amplitude arriving at the coast and the run-up the beach makes of
- * it, with the run-up trusted only up to `RUNUP_TRUST_FACTOR` times
- * the amplitude. Without an amplitude — an older field — half the
- * run-up, as before.
+ * The water height at the shore (m), from the amplitude the wave
+ * field reports and the run-up the beach makes of it.
+ *
+ * The field stops at fifty metres of water, because the shallow-water
+ * equations it is built on give out below that. The wave does not
+ * stop there. Green's law carries it the rest of the way, A ∝ h^(−¼),
+ * and McCowan says how far the rest of the way is: the wave breaks
+ * when its height reaches 0.78 of the depth. Solving the two together
+ * removes the depth and leaves
+ *
+ *     H = (d·γ)^(1/5) · A^(4/5)
+ *
+ * with d the fifty metres the field stopped at and γ the breaking
+ * index — about 2.1·A^(4/5), so a wave arriving at three metres
+ * stands at five and a half, and one arriving at one metre stands at
+ * two. There is no free parameter in it: both numbers are already in
+ * the model, one as the field's floor and one as its shoaling cap.
+ *
+ * Until 9 September 2026 this was the amplitude itself, hedged
+ * against the run-up through a trust factor of one — and since the
+ * run-up is almost always larger, the hedge chose the amplitude every
+ * time and the last fifty metres of water were dropped.
+ *
+ * The run-up is still the ceiling. A cliff coast makes little of a
+ * big wave, and where Synolakis returns less than Green's law does,
+ * Synolakis is the one that knows about the beach.
  */
 export function shoreHeight(runupM: number, amplitudeM: number | undefined): number {
   if (!(runupM > 0)) return 0;
   if (amplitudeM === undefined || !(amplitudeM > 0)) return 0.5 * runupM;
-  const trusted = Math.min(runupM, RUNUP_TRUST_FACTOR * amplitudeM);
-  return Math.sqrt(trusted * amplitudeM);
+  const shoaled =
+    (RUNUP_EVALUATION_DEPTH_M * BREAKING_INDEX) ** 0.2 * Math.max(amplitudeM, 0) ** 0.8;
+  return Math.min(runupM, shoaled);
 }
 
 export interface TsunamiCoastCell extends RunupCell {

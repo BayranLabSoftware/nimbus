@@ -59,7 +59,11 @@ function buildField(
   return computeAmplitudeField({
     arrivalField,
     grid,
-    sourceAmplitudeM: 50,
+    // 150 m rather than 50: the spreading law now carries its energy
+    // normalisation, which costs √(4√π) ≈ 2.7 in the far field, and
+    // these fixed thresholds have to keep straddling the field for
+    // the contour geometry to be what is measured here.
+    sourceAmplitudeM: 150,
     sourceCavityRadiusM: 100_000,
     sourceDepthM: 4_000,
   });
@@ -132,7 +136,11 @@ describe('extractAmplitudeContours — no-land contract', () => {
   const ampField = computeAmplitudeField({
     arrivalField,
     grid,
-    sourceAmplitudeM: 50,
+    // 150 m rather than 50: the spreading law now carries its energy
+    // normalisation, which costs √(4√π) ≈ 2.7 in the far field, and
+    // these fixed thresholds have to keep straddling the field for
+    // the contour geometry to be what is measured here.
+    sourceAmplitudeM: 150,
     sourceCavityRadiusM: 100_000,
     sourceDepthM: 4_000,
   });
@@ -195,7 +203,11 @@ describe('extractAmplitudeContours — disconnected basins', () => {
   const ampField = computeAmplitudeField({
     arrivalField,
     grid,
-    sourceAmplitudeM: 50,
+    // 150 m rather than 50: the spreading law now carries its energy
+    // normalisation, which costs √(4√π) ≈ 2.7 in the far field, and
+    // these fixed thresholds have to keep straddling the field for
+    // the contour geometry to be what is measured here.
+    sourceAmplitudeM: 150,
     sourceCavityRadiusM: 100_000,
     sourceDepthM: 4_000,
   });
