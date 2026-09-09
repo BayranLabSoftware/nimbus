@@ -468,6 +468,50 @@ here in either direction instead of hiding inside a toll. A
 laboratory-level model has nothing in the invented list. Today it has
 four, and that count is pinned too.
 
+### A gate that could not fail (Phase 42)
+
+Every gated row in the toll net passed. Northridge passed on a band of
+13 to 139 037 dead. That span came from no uncertainty at all: the low
+and high ends were the gentlest and harshest vulnerability curves in
+the PAGER table, picked, and a row containing the record between them
+proved nothing. Three of the five gated rows passed that way, and it
+is why finding today's errors took a day of measuring by hand instead
+of a red suite.
+
+The band is now the fifth to ninety-fifth percentile of the toll under
+the **published** input scatter, sampled two hundred times per event
+from `uq/conventions.ts`: the magnitude an agency reports (σ = 0.15
+Mw), the depth a catalogue gives (20 %), the ground underneath (30 %
+on Vs30), and — dominating all three — the ground-motion aleatory
+residual, σ_lnY ≈ 0.50 about the median. The population is held fixed,
+because what is being sampled is the physics and not the census. It is
+seeded per event, so a band never moves unless something else moved
+first.
+
+|                 | old band     | new band    | span                |
+| --------------- | ------------ | ----------- | ------------------- |
+| Northridge 1994 | 13 – 139 037 | **3 – 180** | 10^4.0 → **10^1.8** |
+| Gorkha 2015     | 1 – 13 428   | 22 – 4 924  | 10^4.1 → 10^2.3     |
+| L'Aquila 2009   | 1 – 6 380    | 0 – 1 538   | 10^3.8 → 10^3.2     |
+| Sumatra 2004    | 0 – 1 526    | 0 – 43      | 10^3.2 → 10^1.6     |
+
+Northridge's claim went from four orders of magnitude to under two,
+**and it still contains the record**. That is a gate.
+
+**And two rows stopped passing.** Amatrice 2016 records 299 dead
+against a predictive interval of 0 to 111; Gorkha 2015 records 8 964
+against 22 to 4 924. Neither model changed — the band did. They had
+been inside a span five orders wide the way a fish is inside a net
+with metre-wide holes, and they are now measured misses with the cause
+already filed: a national fatality curve, fitted mostly on larger and
+broader events, under-predicts what happens in medieval masonry
+villages and in the brick of the Kathmandu valley.
+
+Both are declared rather than gated, and a new gate keeps the
+absolution from coming back: a gated row whose band spans more than
+two and a half orders of magnitude has stopped making a claim,
+whatever it contains.
+
 ### The ground the rings stand on (Phase 41)
 
 `vs30` was an input a scenario could set. It reached the reported

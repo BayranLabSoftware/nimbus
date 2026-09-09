@@ -53,3 +53,37 @@ describe('the toll against events that were counted', () => {
     });
   }
 });
+
+/**
+ * A gate that cannot fail is not a gate.
+ *
+ * Every gated row used to pass on a band three to five orders of
+ * magnitude wide — Northridge on 13 to 139 037 dead — because the
+ * low and high ends were the gentlest and harshest vulnerability
+ * curves in the table rather than an interval the model predicts.
+ * Containing the record proved nothing.
+ *
+ * The band is now the fifth to ninety-fifth percentile of the toll
+ * under the published input scatter, and this keeps it that way: a
+ * row that widens back past a couple of orders of magnitude has
+ * stopped making a claim, whatever it contains.
+ */
+describe('a band that could not fail', () => {
+  it('every gated row makes a claim narrow enough to be wrong', () => {
+    for (const event of RECORDED_EVENTS.filter((e) => e.gated)) {
+      const c = compareWithRecord(event);
+      if (c.high <= 0) continue; // a row whose model and record are both zero
+      const span = Math.log10(Math.max(c.high, 1) / Math.max(c.low, 1));
+      expect(span, `${event.name}: band spans 10^${span.toFixed(1)}`).toBeLessThan(3.5);
+    }
+  });
+
+  it('the band is stable between runs, so a miss is a finding and not a draw', () => {
+    for (const event of RECORDED_EVENTS.filter((e) => e.sample !== undefined).slice(0, 3)) {
+      const a = compareWithRecord(event);
+      const b = compareWithRecord(event);
+      expect(a.low, event.name).toBe(b.low);
+      expect(a.high, event.name).toBe(b.high);
+    }
+  });
+});

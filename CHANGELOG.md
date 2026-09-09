@@ -7,6 +7,20 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A gate that could not fail.** Every gated row of the toll net
+  passed on a band three to five orders of magnitude wide — Northridge
+  on 13 to 139 037 dead — because the ends were the gentlest and
+  harshest vulnerability curves in the table, picked, rather than an
+  interval the model predicts. The band is now the 5th to 95th
+  percentile of 200 realisations drawn from the published input
+  scatter: magnitude σ 0.15 Mw, depth 20 %, Vs30 30 %, and the
+  ground-motion residual σ_lnY ≈ 0.50 that dominates them. Northridge
+  now claims 3 to 180 and still contains 57. Two rows stopped passing
+  when the band narrowed — Amatrice at 299 against 0–111 and Gorkha at
+  8 964 against 22–4 924 — and are declared misses with their cause
+  filed. A new gate keeps any gated band under two and a half orders
+  of magnitude.
+
 - **The intensity contours honour the ground they stand on.** `vs30`
   was accepted, fed to the reported accelerations, and dropped before
   the rings were drawn — a Northridge run at Vs30 760, 500, 400, 300

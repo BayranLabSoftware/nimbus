@@ -1,8 +1,15 @@
+import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
+import { mulberry32, sampleNormal, type Rng } from '../montecarlo/sampling.js';
+import { m } from '../units.js';
 import type { ActiveResult } from '../../store/useAppStore.js';
 import { casualtyPlanForResult, configureCountryLookup } from '../../store/useAppStore.js';
 import { estimateCasualties, type CasualtyEstimate } from '../casualties.js';
 import { EXPLOSION_PRESETS, simulateExplosion } from '../events/explosion/simulate.js';
-import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
+import {
+  EARTHQUAKE_PRESETS,
+  simulateEarthquake,
+  type EarthquakeScenarioInput,
+} from '../events/earthquake/simulate.js';
 import { VOLCANO_PRESETS, simulateVolcano } from '../events/volcano/simulate.js';
 import { shippedCountryAt, shippedPopulationInRadius } from './shippedPopulation.js';
 
@@ -48,6 +55,12 @@ export interface RecordedEvent {
   source: string;
   /** Build the simulator result for this event. */
   run: () => ActiveResult;
+  /** Build one Monte-Carlo realisation of it, given the published
+   *  input scatter. Present only for events whose module accepts the
+   *  perturbations; without it the band falls back to the model's own
+   *  low/high pair, which is a range of parameters rather than a
+   *  predictive interval. */
+  sample?: (rng: Rng) => ActiveResult;
   /** Whether the row is allowed to fail the suite. Rows that are not
    *  gated are still measured and printed — they carry a reason. */
   gated: boolean;
@@ -58,6 +71,46 @@ export interface RecordedEvent {
 const quake = (preset: keyof typeof EARTHQUAKE_PRESETS): (() => ActiveResult) => {
   return () => ({ type: 'earthquake', data: simulateEarthquake(EARTHQUAKE_PRESETS[preset].input) });
 };
+
+/**
+ * One realisation of an earthquake, drawn from the published input
+ * scatter in `uq/conventions.ts`: the magnitude an agency reports
+ * (σ = 0.15 Mw), the depth a catalogue gives (20 %), the ground it
+ * stands on (30 % on Vs30), and — dominating all three — the
+ * ground-motion aleatory residual, σ_lnY ≈ 0.50 about the median.
+ *
+ * That last one is what makes a band mean something. The model
+ * predicts a median and the earth draws once; a predictive interval
+ * has to carry the draw, not just the inputs.
+ */
+const quakeSample =
+  (preset: keyof typeof EARTHQUAKE_PRESETS) =>
+  (rng: Rng): ActiveResult => {
+    const base: EarthquakeScenarioInput = EARTHQUAKE_PRESETS[preset].input;
+    const depthM = (base.depth as number | undefined) ?? 15_000;
+    return {
+      type: 'earthquake',
+      data: simulateEarthquake({
+        ...base,
+        magnitude: Math.max(
+          1,
+          sampleNormal(rng, base.magnitude, EARTHQUAKE_INPUT_SIGMA.magnitude.sigma)
+        ),
+        depth: m(
+          Math.max(2_000, sampleNormal(rng, depthM, EARTHQUAKE_INPUT_SIGMA.depth.sigma * depthM))
+        ),
+        vs30: Math.max(
+          120,
+          sampleNormal(
+            rng,
+            base.vs30 ?? 760,
+            EARTHQUAKE_INPUT_SIGMA.vs30.sigma * (base.vs30 ?? 760)
+          )
+        ),
+        groundMotionResidualLn: sampleNormal(rng, 0, EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma),
+      }),
+    };
+  };
 const blast = (preset: keyof typeof EXPLOSION_PRESETS): (() => ActiveResult) => {
   return () => ({ type: 'explosion', data: simulateExplosion(EXPLOSION_PRESETS[preset].input) });
 };
@@ -74,6 +127,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     source:
       'USGS: Mw 7.8, 400 km surface rupture across uninhabited Tibetan plateau; no deaths reported',
     run: quake('KUNLUN_2001'),
+    sample: quakeSample('KUNLUN_2001'),
     gated: true,
     caveat:
       'The zero. A model that cannot produce it has learned to kill people who are not there.',
@@ -85,6 +139,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 57,
     source: 'USGS / California OES: 57 deaths, Mw 6.7 blind thrust under the San Fernando Valley',
     run: quake('NORTHRIDGE_1994'),
+    sample: quakeSample('NORTHRIDGE_1994'),
     gated: true,
   },
   {
@@ -94,6 +149,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 309,
     source: 'Italian Civil Protection: 309 deaths, Mw 6.3',
     run: quake('L_AQUILA_2009'),
+    sample: quakeSample('L_AQUILA_2009'),
     gated: true,
   },
   {
@@ -103,7 +159,10 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 299,
     source: 'Italian Civil Protection: 299 deaths, Mw 6.2',
     run: quake('AMATRICE_2016'),
-    gated: true,
+    sample: quakeSample('AMATRICE_2016'),
+    gated: false,
+    caveat:
+      'Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter is 0 to 111 and the record is outside it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village".',
   },
   {
     name: 'Gorkha (Nepal) 2015',
@@ -112,7 +171,10 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 8964,
     source: 'Government of Nepal: 8 964 deaths, Mw 7.8',
     run: quake('NEPAL_2015'),
-    gated: true,
+    sample: quakeSample('NEPAL_2015'),
+    gated: false,
+    caveat:
+      "Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428 and the predictive interval is 22 to 4 924, which does not contain 8 964. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. The band is now narrow enough for the miss to be a statement.",
   },
   {
     name: 'Beirut 2020',
@@ -169,6 +231,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 18_500,
     source: 'Japanese National Police Agency: 15 900 dead and 2 500 missing',
     run: quake('TOHOKU_2011'),
+    sample: quakeSample('TOHOKU_2011'),
     gated: false,
     caveat:
       'Over 90 % of the dead drowned. This harness has no bathymetry and therefore no wave, so the number here is the shaking alone and is expected to be far below the record.',
@@ -180,6 +243,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 227_898,
     source: 'UN Office of the Special Envoy for Tsunami Recovery',
     run: quake('SUMATRA_2004'),
+    sample: quakeSample('SUMATRA_2004'),
     gated: false,
     caveat: 'Drowning again, and again without a wave here. Reported for the shaking only.',
   },
@@ -203,6 +267,46 @@ export interface TollComparison {
  * Run one event through the same plan builder the application uses,
  * feed it the shipped rasters, and compare the band with the record.
  */
+/** How many realisations a band is drawn from. Enough that the 5th
+ *  and 95th percentiles are stable to the digit the log prints, and
+ *  few enough that the suite stays fast. */
+const BAND_SAMPLES = 200;
+
+/**
+ * The fifth and ninety-fifth percentiles of the toll under the
+ * published input scatter, with the population held fixed — the
+ * raster is the same in every realisation, so what is sampled is the
+ * physics and not the census.
+ *
+ * Seeded per event, so a band never moves between runs of the suite
+ * without something else having moved first.
+ */
+function sampleToll(
+  event: RecordedEvent,
+  sample: (rng: Rng) => ActiveResult
+): { low: number; high: number } | null {
+  const rng = mulberry32(`${event.name}:${event.recordedDeaths.toString()}`);
+  const location = { latitude: event.latitude, longitude: event.longitude };
+  const tolls: number[] = [];
+  for (let i = 0; i < BAND_SAMPLES; i++) {
+    const plan = casualtyPlanForResult(sample(rng), location);
+    if (plan === null) {
+      tolls.push(0);
+      continue;
+    }
+    const cumulative = plan.bands.map(
+      (band) =>
+        shippedPopulationInRadius(event.latitude, event.longitude, band.outerRadiusM).exposed
+    );
+    tolls.push(estimateCasualties(plan, cumulative).deaths);
+  }
+  if (tolls.length === 0) return null;
+  tolls.sort((a, b) => a - b);
+  const at = (q: number): number =>
+    tolls[Math.min(tolls.length - 1, Math.max(0, Math.round(q * (tolls.length - 1))))] ?? 0;
+  return { low: at(0.05), high: at(0.95) };
+}
+
 export function compareWithRecord(event: RecordedEvent): TollComparison {
   // The same country the browser would see, read off the same file.
   configureCountryLookup(shippedCountryAt);
@@ -224,8 +328,24 @@ export function compareWithRecord(event: RecordedEvent): TollComparison {
     (band) => shippedPopulationInRadius(event.latitude, event.longitude, band.outerRadiusM).exposed
   );
   const estimate = estimateCasualties(plan, cumulative);
-  const low = estimate.deathsLow;
-  const high = estimate.deathsHigh;
+
+  // The band: a predictive interval where there is one to build, and
+  // the model's own low/high pair where there is not.
+  //
+  // That pair is a range of *parameters* — the gentlest and harshest
+  // vulnerability curves in the table — and it spans three to five
+  // orders of magnitude, so a row containing the record proves almost
+  // nothing. Northridge used to pass its gate with 13 to 139 037.
+  //
+  // What a band should be is the spread the published input scatter
+  // actually produces: the magnitude an agency reports, the depth a
+  // catalogue gives, the ground underneath, and above all the
+  // ground-motion residual of σ_lnY ≈ 0.50 about the median. Sampled,
+  // the fifth and ninety-fifth percentiles are a claim that can be
+  // wrong.
+  const sampled = event.sample === undefined ? null : sampleToll(event, event.sample);
+  const low = sampled?.low ?? estimate.deathsLow;
+  const high = sampled?.high ?? estimate.deathsHigh;
   const record = event.recordedDeaths;
   const recordLow = event.recordedDeathsLow ?? record;
   const recordHigh = event.recordedDeathsHigh ?? record;

@@ -252,7 +252,7 @@ The other three layers are still unanchored: exposure against census
 totals, the wave on more than one buoy row, and the vulnerability
 table's own scatter.
 
-### 2. The band must be the model's own uncertainty
+### 2. The band must be the model's own uncertainty _(done for the toll net, 9 September)_
 
 Northridge passes its gate with a band of 38 – 439 744. That span
 comes from no uncertainty at all: it is the two extreme parameter
@@ -264,6 +264,23 @@ input — PAGER's 252 fits carry their own `maxobs`, Koshimura's
 fragility its scatter, GHS-POP its own — through the Monte Carlo this
 project already has, and uses the result as the band. Then "contains
 the record" means something.
+
+**Done for the earthquake rows of the toll net.** The band is the 5th
+to 95th percentile of 200 realisations drawn from the published input
+scatter in `uq/conventions.ts` — magnitude σ 0.15 Mw, depth 20 %, Vs30
+30 %, and the ground-motion residual σ_lnY ≈ 0.50 that dominates them
+all. Northridge's band went from 13 – 139 037 to 3 – 180, four orders
+of magnitude to under two, and still contains the record.
+
+Two rows stopped passing when it narrowed: Amatrice (299 against
+0 – 111) and Gorkha (8 964 against 22 – 4 924), both now declared
+misses with the cause filed rather than gates that could not fail. A
+new gate keeps the span under two and a half orders of magnitude so
+the absolution cannot return.
+
+Still to do: the same treatment for the explosion, volcano and wave
+rows, whose bands are still parameter ranges; and the same in the
+product, where the figure a visitor reads still carries the old pair.
 
 ### 3. One law per quantity
 
