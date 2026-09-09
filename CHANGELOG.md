@@ -7,6 +7,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The NGA-West2 site term is the published one.** It was a
+  power-law surrogate `(Vs30/760)^(−0.4)`, and the code said so; it is
+  now Boore et al.'s F_lin + F_nl with the coefficients read off the
+  model's own PGA row. The non-linear half is what a power law cannot
+  carry: soft ground amplifies a gentle wave 1.71× at Vs30 = 300 and
+  saturates to 1.18× at half a g, where the surrogate gave a flat
+  1.45× whatever the ground was doing. Nothing moves for the presets,
+  which all sit at the rock reference where the term is zero by
+  construction — what changes is a custom scenario that names its
+  ground. The path function also gained its R_ref term.
+
 - **Which country's buildings.** The shaking model ran one fatality
   curve for the whole planet — θ = 13.5, β = 0.22 — and read Northridge
   1994 at 12 546 dead against 57, the largest error left in the

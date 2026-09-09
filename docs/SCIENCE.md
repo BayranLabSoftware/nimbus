@@ -468,6 +468,41 @@ here in either direction instead of hiding inside a toll. A
 laboratory-level model has nothing in the invented list. Today it has
 four, and that count is pinned too.
 
+### The site term, as published (Phase 39)
+
+The roadmap said the NGA-West2 site term had to be the real one before
+swapping the intensity contours onto that law could mean anything.
+The code had said so itself for longer: _"this is a Nimbus-chosen
+power-law SURROGATE `(vs30/760)^(−0.4)`, NOT the published BSSA14 site
+term"_.
+
+The published one is a pair. The linear half is a slope in ln(Vs30),
+clamped above 1 500 m/s. The non-linear half is the physics a power
+law cannot carry:
+
+    F_lin = c · ln(min(Vs30, Vc) / V_ref)
+    F_nl  = f₁ + f₂ · ln((PGA_r + f₃) / f₃)
+    f₂    = f₄ · [exp(f₅·(min(Vs30, 760) − 360)) − exp(f₅·400)]
+
+with PGA_r the acceleration the same event would produce on reference
+rock. Soft ground amplifies a gentle wave and **saturates under a
+violent one**, because the soil stops behaving elastically. At
+Vs30 = 300 the published term gives 1.71× under weak shaking and 1.18×
+at half a g, where the surrogate gave a flat 1.45× whatever the ground
+was doing.
+
+The coefficients are the model's own — c = −0.6, Vc = 1500,
+V_ref = 760, f₁ = 0, f₃ = 0.1, f₄ = −0.15, f₅ = −0.00701 — read from
+the PGA row of the published table rather than recalled, and the event
+and path coefficients already in this module turned out to match that
+same row exactly. The path function also gained its R_ref term, worth
+0.8 % and free.
+
+**It changes nothing today, and that is the point.** Every preset
+leaves Vs30 at the rock reference, where the term is zero by
+construction; what it changes is a custom scenario that names its
+ground, and the precondition for looking at the contours again.
+
 ### Two ways to measure the same shaking (Phase 38b)
 
 Building the footprint anchor turned up something worth its own note:

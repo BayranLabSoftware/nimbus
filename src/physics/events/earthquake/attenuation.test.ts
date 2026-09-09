@@ -168,19 +168,42 @@ describe('peakGroundAccelerationNGAWest2 (Boore 2014 BSSA14)', () => {
   });
 });
 
-describe('vs30SiteFactor (Boore 2014 simplified)', () => {
-  it('equals 1 at the 760 m/s rock reference', () => {
-    expect(vs30SiteFactor(760)).toBeCloseTo(1, 6);
+describe('vs30SiteFactor (Boore et al. 2014, published site term)', () => {
+  it('equals 1 at the 760 m/s rock reference, at any shaking', () => {
+    for (const pga of [0, 0.05, 0.3, 1]) expect(vs30SiteFactor(760, pga)).toBeCloseTo(1, 6);
   });
 
-  it('soft soil (Vs30 = 300) amplifies PGA ~1.45×', () => {
-    const f = vs30SiteFactor(300);
-    expect(f).toBeGreaterThan(1.3);
-    expect(f).toBeLessThan(1.6);
+  it('soft soil amplifies a gentle wave by 1.7×', () => {
+    const f = vs30SiteFactor(300, 0);
+    expect(f).toBeGreaterThan(1.65);
+    expect(f).toBeLessThan(1.75);
   });
 
-  it('very hard rock (Vs30 = 1500) de-amplifies PGA', () => {
-    expect(vs30SiteFactor(1_500)).toBeLessThan(1);
+  it('and saturates under a violent one, which a power law cannot do', () => {
+    // The non-linear half: soil stops behaving elastically when the
+    // rock beneath it is already shaking hard, so the amplification
+    // falls away. The surrogate this replaced gave a flat 1.45×
+    // whatever the ground was doing.
+    const gentle = vs30SiteFactor(300, 0.01);
+    const violent = vs30SiteFactor(300, 0.5);
+    expect(violent).toBeLessThan(gentle);
+    expect(violent).toBeGreaterThan(1.1);
+    expect(violent).toBeLessThan(1.25);
+  });
+
+  it('is monotone in the shaking it saturates under', () => {
+    let previous = Infinity;
+    for (let pga = 0; pga <= 2; pga += 0.05) {
+      const f = vs30SiteFactor(300, pga);
+      expect(f).toBeLessThanOrEqual(previous + 1e-12);
+      previous = f;
+    }
+  });
+
+  it('very hard rock de-amplifies, and stops steepening past Vc = 1500', () => {
+    expect(vs30SiteFactor(1_500, 0)).toBeLessThan(1);
+    // The linear term is clamped at Vc, so harder ground buys nothing.
+    expect(vs30SiteFactor(3_000, 0)).toBeCloseTo(vs30SiteFactor(1_500, 0), 9);
   });
 
   it('ignores non-finite / non-positive Vs30 (returns 1)', () => {

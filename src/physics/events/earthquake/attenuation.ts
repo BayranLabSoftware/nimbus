@@ -127,6 +127,8 @@ const BSSA14_MH = 5.5;
 const BSSA14_MREF = 4.5;
 /** BSSA14 near-source saturation depth (km). */
 const BSSA14_H = 4.5;
+/** Reference distance (km) of the published path function. */
+const BSSA14_RREF = 1;
 /** BSSA14 PGA coefficients (Table 2, Vs30=760, unspecified fault). */
 const BSSA14_PGA = {
   e0: 0.4473,
@@ -150,20 +152,52 @@ export interface NGAInput extends PeakGroundAccelerationInput {
   vs30?: number;
 }
 
-/** Site-response amplification factor for arbitrary Vs30 against the
- *  Boore 2014 rock reference (760 m/s).
+/**
+ * Site coefficients for PGA, Boore et al. (2014) Table 3 — the
+ * published values, taken from the model's own coefficient table.
+ */
+const BSSA14_SITE = {
+  /** Slope of the linear term in ln(Vs30 / V_ref). */
+  c: -0.6,
+  /** Above this Vs30 the linear term stops steepening (m/s). */
+  vc: 1500,
+  /** Reference site velocity (m/s). */
+  vref: 760,
+  f1: 0,
+  f3: 0.1,
+  f4: -0.15,
+  f5: -0.00701,
+} as const;
+
+/**
+ * Site-response amplification against the Boore 2014 rock reference,
+ * as published: a linear term in ln(Vs30) plus a non-linear one that
+ * depends on how hard the rock underneath is already shaking.
  *
- *  NOTE: this is a Nimbus-chosen power-law SURROGATE
- *  `(vs30/760)^(-0.4)`, NOT the published BSSA14 site term. The real
- *  BSSA14 F_S is a linear + nonlinear pair (F_lin with slope c = −0.6
- *  below V_lin, plus an amplitude-dependent F_nl soil de-amplification
- *  under strong shaking). The −0.4 exponent gives the right ballpark
- *  (Vs30 300 → ≈1.45×) for the popular-science display but omits the
- *  nonlinear soft-soil saturation at high PGA, so it can over-amplify
- *  near-source soft-soil motion. Treat as order-of-magnitude. */
-export function vs30SiteFactor(vs30: number): number {
+ *     F_lin = c · ln(min(Vs30, Vc) / V_ref)
+ *     F_nl  = f₁ + f₂ · ln((PGA_r + f₃) / f₃)
+ *     f₂    = f₄ · [exp(f₅·(min(Vs30, 760) − 360)) − exp(f₅·400)]
+ *
+ * with PGA_r the median acceleration this event would produce on the
+ * reference rock. The non-linear half is the physics that a power law
+ * cannot carry: soft ground amplifies a gentle wave and *saturates*
+ * under a violent one, because the soil stops behaving elastically.
+ * At Vs30 = 300 the published term amplifies 1.71× under weak shaking
+ * and 1.18× at half a g, where the surrogate this replaces —
+ * `(Vs30/760)^(−0.4)`, and the code said so — gave a flat 1.45×
+ * whatever the ground was doing.
+ *
+ * Zero at the reference velocity by construction, so a scenario that
+ * names no site is unaffected.
+ */
+export function vs30SiteFactor(vs30: number, referencePgaG = 0): number {
   if (!Number.isFinite(vs30) || vs30 <= 0) return 1;
-  return Math.exp(-0.4 * Math.log(vs30 / 760));
+  const { c, vc, vref, f1, f3, f4, f5 } = BSSA14_SITE;
+  const fLin = c * Math.log(Math.min(vs30, vc) / vref);
+  const f2 = f4 * (Math.exp(f5 * (Math.min(vs30, 760) - 360)) - Math.exp(f5 * (760 - 360)));
+  const pgaR = Math.max(0, Number.isFinite(referencePgaG) ? referencePgaG : 0);
+  const fNl = f1 + f2 * Math.log((pgaR + f3) / f3);
+  return Math.exp(fLin + fNl);
 }
 
 export function peakGroundAccelerationNGAWest2(input: NGAInput): MetersPerSecondSquared {
@@ -179,13 +213,19 @@ export function peakGroundAccelerationNGAWest2(input: NGAInput): MetersPerSecond
   const dM = M - BSSA14_MH;
   const F_E = M <= BSSA14_MH ? e + e4 * dM + e5 * dM * dM : e + e6 * dM;
 
-  // Path function (R_JB with near-source saturation)
+  // Path function (R_JB with near-source saturation). R_ref is 1 km
+  // in the published form, which the logarithm swallows and the
+  // linear term does not — worth the 0.8 % rather than not.
   const Rprime = Math.sqrt(R * R + BSSA14_H * BSSA14_H);
-  const F_P = (c1 + c2 * (M - BSSA14_MREF)) * Math.log(Rprime) + c3 * Rprime;
+  const F_P =
+    (c1 + c2 * (M - BSSA14_MREF)) * Math.log(Rprime / BSSA14_RREF) + c3 * (Rprime - BSSA14_RREF);
 
-  // Site function (Vs30) — exponent of ln ratio
-  const F_S = Math.log(vs30SiteFactor(input.vs30 ?? 760));
+  // Site function: the non-linear half needs the acceleration this
+  // event would produce on reference rock, so the rock value is
+  // computed first and then amplified.
+  const lnRockG = F_E + F_P;
+  const F_S = Math.log(vs30SiteFactor(input.vs30 ?? BSSA14_SITE.vref, Math.exp(lnRockG)));
 
-  const lnPGAg = F_E + F_P + F_S;
+  const lnPGAg = lnRockG + F_S;
   return mps2(Math.exp(lnPGAg) * STANDARD_GRAVITY);
 }
