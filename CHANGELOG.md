@@ -7,6 +7,25 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A rupture starts its wave along its whole length.** The bearing
+  came from the fault two changes ago and the distance did not: the
+  arrival field was seeded at one point, so Banda Aceh — 250 km up the
+  2004 rupture, on top of the part of the fault that lifted it — was
+  given the amplitude of a coast 250 km from a source, 1.43 m against
+  a run-up record of fifteen to thirty metres. The seeds now run along
+  the fault every fifty kilometres and the field's distance is to the
+  nearest part of the rupture: Aceh reads 4.92 m and 19.7 m of run-up.
+  Tōhoku's coastal toll goes 9 400 → **22 000 drowned against about
+  16 700**, from 0.56× to 1.32× and this time from the right geography;
+  Sumatra 320 → 1 600, five times better and still far under, with the
+  cause now located in the extent of the fine coastal grid.
+- **The density lookup searches for land instead of averaging over
+  province.** Its window grew with the caller's grid spacing, so a
+  coastal point could divide a coast's people by a forty-kilometre
+  square behind them; it now grows ring by ring and stops at the
+  nearest land. Measured, it moved almost nothing — the raster's
+  numbers were never the problem — but it is the right rule.
+
 - **The disc the source sits in.** The field held the full source
   amplitude everywhere inside R₀ = half the rupture length — for
   Tōhoku a disc 351 km across at 3.99 m, which is every coast in Japan

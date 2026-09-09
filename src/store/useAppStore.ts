@@ -12,6 +12,7 @@ import {
   type BathymetricTsunamiResult,
 } from '../physics/tsunami/index.js';
 import { distanceForOverpressure } from '../physics/events/impact/index.js';
+import { destination } from '../physics/tsunami/ruptureGeometry.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
 import type {
   PopulationLookupMethod,
@@ -1246,6 +1247,38 @@ interface BathymetricContext {
 }
 
 /**
+ * Where along the source the wave starts.
+ *
+ * One point for anything compact — a crater, a caldera, a charge.
+ * For a rupture, points every fifty kilometres along its length, so
+ * the arrival field measures travel time from the nearest part of the
+ * fault rather than from one end of it. Fifty kilometres is finer
+ * than any grid this field runs on, and the count is capped so a
+ * fifteen-hundred-kilometre megathrust costs a bounded number of seed
+ * searches.
+ */
+const RUPTURE_SEED_SPACING_M = 50_000;
+const MAX_RUPTURE_SEEDS = 31;
+
+function ruptureOrigins(
+  location: Coordinates,
+  meta: ReturnType<typeof extractTsunamiMeta>
+): { latitude: number; longitude: number }[] {
+  const centre = { latitude: location.latitude, longitude: location.longitude };
+  const strikeDeg = meta?.strikeDeg;
+  const lengthM = meta?.ruptureLengthM ?? 0;
+  if (strikeDeg === undefined || !(lengthM > RUPTURE_SEED_SPACING_M)) return [centre];
+  const steps = Math.min(MAX_RUPTURE_SEEDS, Math.round(lengthM / RUPTURE_SEED_SPACING_M) | 1);
+  const half = lengthM / 2;
+  const out: { latitude: number; longitude: number }[] = [];
+  for (let i = 0; i < steps; i++) {
+    const t = -half + (lengthM * i) / (steps - 1);
+    out.push(destination(centre.latitude, centre.longitude, strikeDeg, t));
+  }
+  return out;
+}
+
+/**
  * Bathymetric-tsunami layer (FMM arrival field, amplitude veil,
  * run-up) for a result. Shared by `evaluate()` and by the late-mosaic
  * completion in `setGlobalBathymetricGrid`, so both paths seed the
@@ -1279,24 +1312,34 @@ async function computeBathymetricLayerForResult(
     // tessera locale vagliata dal mosaico (un lago che la tessera
     // mostra come acqua non lo è). Tutti partono a t = 0.
     const reachM = propagationReachFor(result);
-    const globalSeeds: PropagationSeed[] =
-      ctx.globalBathymetricGrid !== null
-        ? findPropagationSeeds(
-            ctx.globalBathymetricGrid,
-            ctx.location.latitude,
-            ctx.location.longitude,
-            { maxRadiusM: reachM }
-          )
-        : [];
-    const localSeeds: PropagationSeed[] = findPropagationSeeds(
-      ctx.elevationGrid,
-      ctx.location.latitude,
-      ctx.location.longitude,
-      {
-        maxRadiusM: reachM,
-        ...(ctx.globalBathymetricGrid !== null && { seaMask: ctx.globalBathymetricGrid }),
+    // A rupture starts its wave along its whole length, not at one end
+    // of it. Seeding only the epicentre made the arrival field measure
+    // travel time from that point, so Banda Aceh — 250 km up a fault
+    // it sits beside — was given the amplitude of a coast 250 km away
+    // instead of one right on top of the source: 1.43 m where the
+    // 2004 wave ran up fifteen to thirty metres. The seeds now run
+    // along the fault, and the field's distance to a cell becomes the
+    // distance to the nearest part of the rupture.
+    const origins = ruptureOrigins(ctx.location, tsunamiMeta);
+    const seedsAlong = (grid: ElevationGrid, mask: ElevationGrid | null): PropagationSeed[] => {
+      const seen = new Set<string>();
+      const all: PropagationSeed[] = [];
+      for (const o of origins) {
+        for (const seed of findPropagationSeeds(grid, o.latitude, o.longitude, {
+          maxRadiusM: reachM,
+          ...(mask !== null && { seaMask: mask }),
+        })) {
+          const key = `${seed.latitude.toFixed(3)},${seed.longitude.toFixed(3)}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          all.push(seed);
+        }
       }
-    );
+      return all;
+    };
+    const globalSeeds: PropagationSeed[] =
+      ctx.globalBathymetricGrid !== null ? seedsAlong(ctx.globalBathymetricGrid, null) : [];
+    const localSeeds: PropagationSeed[] = seedsAlong(ctx.elevationGrid, ctx.globalBathymetricGrid);
     const primary = localSeeds[0] ?? globalSeeds[0];
     if (primary === undefined) {
       if (import.meta.env.DEV) {

@@ -414,6 +414,49 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### A rupture starts its wave along its whole length (Phase 35)
+
+The bearing came from the fault two phases ago and the distance did
+not: the arrival field was still seeded at one point, so travel time —
+and through it the amplitude — was measured from the epicentre.
+
+Banda Aceh is the case. It sits 250 km up the 2004 rupture, on top of
+the part of the fault that lifted it, and the model gave it the
+amplitude of a coast 250 km from a source: **1.43 m**, against a 2004
+run-up of fifteen to thirty metres. The seeds now run along the fault
+every fifty kilometres, and the field's distance to a cell is the
+distance to the nearest part of the rupture. Aceh reads **4.92 m**,
+saturated at the source amplitude as a coast on top of a megathrust
+should be, and its run-up 19.7 m against that record.
+
+| coastal toll  | before | after      | recorded  |
+| ------------- | ------ | ---------- | --------- |
+| Tōhoku 2011   | 9 400  | **22 000** | ≈ 16 700  |
+| Krakatau 1883 | 24 000 | 26 000     | ≈ 36 400  |
+| Sumatra 2004  | 320    | 1 600      | ≈ 227 000 |
+
+Tōhoku goes from 0.56× of its record to 1.32×, halving the residual
+again, and this time from the right geography rather than in spite of
+it. Sumatra improves fivefold and is still 140× under.
+
+**Where Sumatra's shortfall is now.** Not the wave: Aceh's amplitude
+and run-up are both right. The exposure. The local grid resolves
+74 km of the Aceh coast at one kilometre a cell, and the coastline
+that drowned runs the better part of a thousand. Everything beyond one
+tile block of the click falls back to the planetary mosaic at thirty
+kilometres a sample. It is the extent of the fine coverage, and it is
+the last thing standing between that row and its record.
+
+**One thing that did not work, recorded because it was measured.** The
+density lookup grew its search ring by ring to the nearest land
+instead of averaging over the whole radius, on the theory that a
+forty-kilometre window was dividing a coast's people by a square of
+province behind them. It is the better rule and it moved almost
+nothing — Krakatau 24 000 to 26 000, the rest inside the noise. The
+raster's own numbers were never the problem: Banda Aceh reads 1 647
+people per km² of land in it, Galle 1 482, Sendai 4 738. The rule
+stays because it is right; the hypothesis it was built on was wrong.
+
 ### The disc the source sits in (Phase 34)
 
 `r = max(c·T, R₀)` holds the full source amplitude everywhere inside

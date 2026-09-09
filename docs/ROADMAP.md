@@ -684,7 +684,7 @@ the aspect-ratio one the module assumes.
 Would move: the far-field amplitude row of every earthquake report,
 and the six rows above with it.
 
-### P1 — The density lookup runs out of fine tiles _(open, 9 September)_
+### P1 — The density lookup runs out of fine tiles _(closed; not the cause, 9 September)_
 
 `populationDensityAt` gives the 2.5′ raster to the twelve tiles
 holding the most coastal points and the 0.125° planet to the rest. A
@@ -697,8 +697,35 @@ Sumatra box with a run-up of 19.7 m against a record of 15 to 30, so
 the wave is there and it is the right size. The 170 000 people who
 drowned around it are not.
 
-Would move: Sumatra 2004 above all, and any event whose dead are
-concentrated somewhere the twelve tiles miss.
+**Measured, and it was not the cause.** The shipped raster has the
+right numbers: Banda Aceh reads 1 647 people per km² of land, Galle
+1 482, Sendai 4 738. The lookup's search now grows ring by ring to
+the nearest land rather than averaging over the whole radius — a
+better rule, kept — and it moved almost nothing. What holds Aceh's
+toll down is the extent of the fine _bathymetric_ coverage, not the
+population raster. See P0 below.
+
+### P0 — The fine coastal grid covers one tile block _(open, 9 September)_
+
+With the bearing, the distance and the amplitude all corrected, Banda
+Aceh now reads 4.92 m of wave and 19.7 m of run-up, both right against
+the 2004 record. Sumatra's coastal toll is still 1 600 drowned against
+near 227 000, and what is left is exposure.
+
+The local run-up grid is one zoom-8 tile block around the click —
+about 470 km — and it resolves 74 km of the Aceh coastline at a
+kilometre a cell. The coast that drowned runs the better part of a
+thousand kilometres. Everything past the block falls back to the
+planetary mosaic at thirty kilometres a sample, where a 1 km-wide
+inundation strip on an indented coast is counted once for thirty.
+
+Would move: Sumatra 2004, the worst row left in the calibration net,
+and the far half of every large event's coast.
+
+Where to look: the local grid should follow the source's reach rather
+than the click — for a 1 300 km rupture, a block along the fault
+rather than a square around one end of it. The tiles are 90–120 KB
+each and the fetch is already batched.
 
 ### P3 — Caps the scalar path does not have
 
