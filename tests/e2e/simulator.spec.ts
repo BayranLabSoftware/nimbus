@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 
 /**
  * Simulator-flow smoke tests. Every test runs with
@@ -149,6 +149,10 @@ test.describe('simulator flow', () => {
   });
 
   test('event-type selector swaps the preset list across all five categories', async ({ page }) => {
+    // Five event switches and five full option-list comparisons: about
+    // 16 s alone and no headroom at all inside the 30 s default, so it
+    // times out whenever the machine is busy with other workers.
+    test.setTimeout(90_000);
     await page.goto('/?lng=en');
     await page.getByRole('button', { name: 'Try the simulator →' }).click();
     await expandSimulatorPanelIfCollapsed(page);
@@ -306,5 +310,54 @@ test.describe('simulator flow', () => {
       expect(clipboard).toContain('t=volcano');
       expect(clipboard).toContain('p=KRAKATAU_1883');
     }
+  });
+});
+
+/**
+ * The calibration envelope: where the model has been measured, and
+ * where it has not. The estimate is the same either way — these
+ * assertions are about what the page says it knows, which is the
+ * part a reader needs in order to weigh the number.
+ */
+test.describe('calibration envelope', () => {
+  // The note lives under the casualty figure, and that figure waits on
+  // a population lookup: a shipped-raster fetch at best, a WorldPop
+  // round trip at worst. Well past Playwright's 30 s default.
+  test.setTimeout(120_000);
+
+  /** Run a scenario and return its envelope note, once it exists. */
+  async function envelopeNoteFor(page: Page, query: string): Promise<Locator> {
+    await page.goto(`/?lng=en&m=globe&${query}`);
+    await expandSimulatorPanelIfCollapsed(page);
+    const launch = page.getByRole('button', { name: 'Launch simulation' });
+    await expect(launch).toBeEnabled();
+    await launch.click();
+    const note = page.getByTestId('calibration-envelope');
+    await expect(note).toBeAttached({ timeout: 90_000 });
+    return note;
+  }
+
+  test('an impact says outright that no death toll has ever been recorded', async ({ page }) => {
+    const note = await envelopeNoteFor(page, 't=impact&p=CHICXULUB&lat=41.9028&lon=12.4964');
+    await expect(note).toHaveAttribute('data-standing', 'unmeasured');
+    await expect(note).toContainText('No impact in recorded history left a death toll');
+  });
+
+  test('Hiroshima names itself as the measured event of its size', async ({ page }) => {
+    const note = await envelopeNoteFor(
+      page,
+      't=explosion&p=HIROSHIMA_1945&lat=34.3955&lon=132.4553'
+    );
+    await expect(note).toHaveAttribute('data-standing', 'measured');
+    await expect(note).toContainText('Hiroshima 1945');
+    await expect(note).toContainText('the death toll on record');
+  });
+
+  test('a fifty-megatonne charge says how far past the record it is', async ({ page }) => {
+    const note = await envelopeNoteFor(page, 't=explosion&p=TSAR_BOMBA_1961&lat=45.4642&lon=9.19');
+    await expect(note).toHaveAttribute('data-standing', 'extrapolated');
+    // Tsar Bomba is beside a measured wave and three thousand times
+    // past a measured toll; the panel shows a toll, so it says so.
+    await expect(note).toContainText('past Hiroshima 1945');
   });
 });

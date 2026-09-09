@@ -88,6 +88,26 @@ export function formatScientific(n: number, digits = 2): string {
   return `${formatDecimal(mantissa, digits)} × 10${toSuperscript(exp)}`;
 }
 
+/**
+ * A multiple, written so a reader can hold it: "1.4", "20", "1 500",
+ * and then "10⁸" once the digits have stopped carrying meaning.
+ *
+ * Used for how far a scenario sits past the largest event anyone has
+ * ever measured, where the exponent is the whole message and the
+ * mantissa is noise.
+ */
+export function formatFactor(n: number, locale: string): string {
+  if (!Number.isFinite(n) || n < 1) return NON_FINITE_PLACEHOLDER;
+  // A whole 7 rather than "7.0"; a 1.4 keeps its decimal because at
+  // this end of the scale it is the whole difference.
+  if (n < 10) return n.toLocaleString(locale, { maximumFractionDigits: 1 });
+  if (n < 10_000) {
+    const magnitude = 10 ** (Math.floor(Math.log10(n)) - 1);
+    return (Math.round(n / magnitude) * magnitude).toLocaleString(locale);
+  }
+  return `10${toSuperscript(Math.round(Math.log10(n)))}`;
+}
+
 const SUPERSCRIPT_DIGITS: Record<string, string> = {
   '0': '⁰',
   '1': '¹',

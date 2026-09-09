@@ -1303,6 +1303,24 @@
       "tsunami": "tsunami"
     },
     "tsunamiDeaths": "di cui dall'onda",
-    "coarseCoast": "Il conteggio costiero è letto su una griglia d'onda a 40 km: una costa viene campionata ogni quaranta chilometri e ogni campione vale per quaranta. Per un sisma non esiste ancora un campo locale più fine, quindi anche la costa vicina alla rottura è letta a quella risoluzione, e il numero può sbagliare di un ordine di grandezza in entrambi i versi."
+    "coarseCoast": "Il conteggio costiero è letto su una griglia d'onda a 40 km: una costa viene campionata ogni quaranta chilometri e ogni campione vale per quaranta. Per un sisma non esiste ancora un campo locale più fine, quindi anche la costa vicina alla rottura è letta a quella risoluzione, e il numero può sbagliare di un ordine di grandezza in entrambi i versi.",
+    "envelope": {
+      "measured": "Taratura: {{event}}, la stessa scala, con {{what}} agli atti. Il confronto gira a ogni build.",
+      "interpolated": "Taratura: fra {{low}} e {{high}}, entrambi con {{what}} agli atti.",
+      "above": "Taratura: {{times}} volte oltre {{event}}, il più grande evento di questo tipo con {{what}} agli atti. Le leggi arrivano fin qui; una misura con cui confrontarle no.",
+      "below": "Taratura: {{times}} volte sotto {{event}}, il più piccolo evento di questo tipo con {{what}} agli atti. Le leggi arrivano fin qui; una misura con cui confrontarle no.",
+      "unmeasured": {
+        "impact": "Taratura: nessuna. Nessun impatto nella storia ha lasciato un bilancio di vittime da confrontare, a nessuna scala: questo conteggio esce dalle leggi e da nient'altro.",
+        "landslide": "Taratura: nessuna. Nessuna frana nella rete ha un bilancio di vittime agli atti: questo conteggio esce dalle leggi e da nient'altro."
+      },
+      "what": {
+        "toll": "il bilancio delle vittime",
+        "wave": "l'onda",
+        "crater": "il cratere",
+        "blast": "il raggio dell'onda d'urto",
+        "plume": "la colonna eruttiva"
+      },
+      "anchors": "Eventi di questo tipo con {{what}} agli atti: {{list}}."
+    }
   }
 }

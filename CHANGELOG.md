@@ -7,6 +7,18 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The model says where it has been measured.** The casualty panel
+  now names the nearest event with a death toll on record and how this
+  scenario stands against it — beside it, between two of them, or past
+  the largest and by what factor. Per quantity, not per family: a
+  fifty-megatonne charge sits beside Tsar Bomba for the wave and three
+  thousand times past Hiroshima for the dead, and the panel shows the
+  dead. Where nothing has ever been recorded it says so outright — no
+  impact in history left a death toll, and no landslide in the net has
+  one, so those counts come from the laws and nothing else. No
+  computed number changes; the calibration net's twenty-one measured
+  events simply stop being invisible.
+
 - **A sweep for the scenarios nobody has run.** The calibration net
   measures eleven events the world has already performed; a visitor
   with the custom fields open covers the whole space. A property sweep

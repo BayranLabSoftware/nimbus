@@ -669,3 +669,24 @@ select.paramInput {
   margin: 6px 0 0 0;
   font-style: italic;
 }
+
+/* Where the model has been measured, and where it has not.
+   Louder than a footnote and quieter than a warning: the estimate
+   keeps the size it had, and this rides beside it. A banner on nine
+   scenarios out of ten would become noise, and noise reads as a model
+   that does not know what it is saying. */
+.envelopeNote {
+  font-size: 10px;
+  line-height: 1.45;
+  margin: 8px 0 0 0;
+  padding-left: 8px;
+  border-left: 2px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* Outside the measured range, or counting something no record checks.
+   The accent, not a red — the number is not wrong, it is unverified. */
+.envelopeNoteOutside {
+  border-left-color: var(--accent, #e8a33d);
+  color: rgba(255, 255, 255, 0.78);
+}

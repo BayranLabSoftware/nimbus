@@ -38,6 +38,7 @@ import {
 import { CascadeTimeline } from './CascadeTimeline.js';
 import { CitationTooltip } from './CitationTooltip.js';
 import { CasualtiesPanel } from './CasualtiesPanel.js';
+import { envelopeOf } from '../../physics/validation/calibrationEnvelope.js';
 import { CitySearch } from './CitySearch.js';
 import { EarthquakeCustomInputs } from './EarthquakeCustomInputs.js';
 import { ExplosionCustomInputs } from './ExplosionCustomInputs.js';
@@ -1602,7 +1603,11 @@ export function SimulatorPanel(): JSX.Element {
         )}
 
         {result !== null && (casualties !== null || casualtyStatus !== 'idle') && (
-          <CasualtiesPanel casualties={casualties} status={casualtyStatus} />
+          <CasualtiesPanel
+            casualties={casualties}
+            status={casualtyStatus}
+            envelope={envelopeOf(result, 'toll')}
+          />
         )}
 
         {monteCarlo !== null && <MonteCarloPanel mc={monteCarlo} />}

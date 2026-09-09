@@ -396,6 +396,34 @@ that a rupture radiates across its strike rather than evenly, and DART
 the record to 5× by the same change and the same argument covers what
 is left of it. Both are source questions now, not propagation ones.
 
+### P1 — The envelope is declared _(closed, 9 September)_
+
+The property sweep showed the laws do not break outside the
+calibration net. It did not make the page say where that outside
+begins. A custom magnitude 9.5 under Lisbon came out with the same
+confident face as Hiroshima, and a reader had no way to tell them
+apart.
+
+The casualty panel now carries one line: which measured event is
+nearest in size, whether the scenario is beside it, between two of
+them, or past the largest, and by how much. It is per quantity rather
+than per family, because the answer differs — a fifty-megatonne charge
+sits beside Tsar Bomba if the question is the wave and three thousand
+times past Hiroshima if the question is the dead, and the panel shows
+the dead. Where nothing has ever been recorded it says so outright: no
+impact in history left a death toll, and no landslide in the net has
+one, so those counts come from the laws and from nothing else.
+
+Nothing it does changes a computed number. What it changes is that
+the calibration net — twenty-one measured events, the most credible
+thing this project has and until now visible only to whoever read the
+test output — is finally something a reader can see.
+
+Left open by it: the same treatment for the wave, the crater and the
+plume, each of which has its own set of anchors and its own gaps
+(no volcanic wave is checked against a measurement, not even
+Krakatau's, which drowned 36 000 people).
+
 ### P3 — Caps the scalar path does not have
 
 The field clamps run-up at four times the arriving amplitude and the

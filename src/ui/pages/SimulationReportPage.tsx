@@ -17,6 +17,7 @@ import { joulesToMegatons, radiansToDegrees } from '../../physics/units.js';
 import { useAppStore, type ActiveResult } from '../../store/index.js';
 import { CascadeTimeline } from '../components/CascadeTimeline.js';
 import { CasualtiesPanel } from '../components/CasualtiesPanel.js';
+import { envelopeOf } from '../../physics/validation/calibrationEnvelope.js';
 import { METHODOLOGY_SECTIONS } from './methodologyContent.js';
 import {
   collectReportCitations,
@@ -688,7 +689,12 @@ export function SimulationReportPage(): JSX.Element {
 
         {(casualties !== null || casualtyStatus !== 'idle') && (
           <section className={styles.section}>
-            <CasualtiesPanel casualties={casualties} status={casualtyStatus} compact={false} />
+            <CasualtiesPanel
+              casualties={casualties}
+              status={casualtyStatus}
+              compact={false}
+              envelope={envelopeOf(result, 'toll')}
+            />
           </section>
         )}
 

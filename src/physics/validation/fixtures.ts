@@ -232,6 +232,7 @@ export const PLUME_HEIGHT_OBSERVATIONS: readonly PlumeHeightObservation[] = [
  */
 
 export const TUNGUSKA_ENERGY_OBSERVATION = {
+  event: 'Tunguska 1908',
   yieldMtLow: 3,
   yieldMtHigh: 30,
   source: 'Boslough & Crawford 2008 IJIE 35 + Chyba et al. 1993 Nature 361',

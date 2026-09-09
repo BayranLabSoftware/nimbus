@@ -414,6 +414,45 @@ figure and the fallback. Against the API over Naples the 2.5′ tiles
 land within a factor of two where the 0.125° planet was a factor of
 four.
 
+### Saying where the measurements stop (Phase 26)
+
+The sweep of the previous section shows the laws hold outside the
+calibration net. It does not make the page say where the outside
+begins, and until it does a reader has no way to tell a scenario the
+model has been checked against from one nobody has ever measured.
+Both arrive in the same typeface.
+
+So the casualty panel carries a line naming the nearest measured
+event and how the scenario stands against it: beside it, between two
+of them, or past the largest and by what factor. The factor is always
+an energy ratio, whatever the family's own axis is — magnitude
+converts at 1.5 units of Mw per decade of moment (Hanks & Kanamori
+1979), erupted volume and yield are decades of themselves — so "ten
+times past" means the same thing to a reader whichever event they are
+looking at.
+
+The placement is per quantity, not per family, and that is the part
+worth arguing for. A fifty-megatonne charge is beside a measured event
+if the question is the wave: Tsar Bomba was fired over water and made
+none, and the model has to reproduce that. Ask instead about the dead
+and the nearest event with a toll on record is Hiroshima, three
+thousand times smaller. One event, two honest answers, and the panel
+that shows a death toll owes the reader the second one.
+
+Where the record is empty the line says so rather than reaching for
+the nearest thing of any kind. No impact in recorded history has left
+a death toll — Tunguska flattened an empty forest and Chelyabinsk
+broke windows — so an impact's casualty figure is checked against
+nothing at any scale, and it says that in place of naming a nearest
+event. The same holds for landslides. Chicxulub is the sharpest case:
+its crater is measured, and the model is held to it on every build, so
+a reader could reasonably assume the rest of the row is measured too.
+It is not, and now the page is the one that points that out.
+
+None of this changes a number. It changes what is claimed about one,
+which is a different thing and the one that decides how much weight a
+reader should put on it.
+
 ### Eleven events pin eleven points (Phase 25)
 
 The calibration net measures the model where the world has already

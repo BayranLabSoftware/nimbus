@@ -1,9 +1,19 @@
 import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { BandEstimate, CasualtyEstimate } from '../../physics/casualties.js';
+import {
+  anchorsFor,
+  type CalibrationEnvelope,
+} from '../../physics/validation/calibrationEnvelope.js';
 import type { PopulationLookupMethod } from '../../scene/populationLookup.js';
 import type { CasualtyStatus } from '../../store/index.js';
-import { formatPeople, formatWithUnitTiers, type UnitTier } from '../utils/numberFormat.js';
+import { cx } from '../utils/cx.js';
+import {
+  formatFactor,
+  formatPeople,
+  formatWithUnitTiers,
+  type UnitTier,
+} from '../utils/numberFormat.js';
 import { formatElapsed } from '../utils/timeFormat.js';
 import styles from './SimulatorPanel.module.css';
 
@@ -23,6 +33,78 @@ function bandLabelKey(band: BandEstimate, model: CasualtyEstimate['model']): str
   return band.key;
 }
 
+/**
+ * Where this scenario sits against the events the world has already
+ * performed — for the death toll specifically, which is what this
+ * panel shows. The distinction matters: a fifty-megatonne charge is
+ * beside Tsar Bomba if you are asking about the wave and three
+ * thousand times past Hiroshima if you are asking about the dead.
+ *
+ * The estimate itself is unchanged either way. This says what is
+ * known about it, which is a different thing and the one a reader
+ * needs in order to decide how much weight to put on the number.
+ */
+function EnvelopeNote({
+  envelope,
+  compact,
+}: {
+  envelope: CalibrationEnvelope;
+  compact: boolean;
+}): JSX.Element | null {
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language.toLowerCase().startsWith('it') ? 'it-IT' : 'en-US';
+  const what = t(`casualties.envelope.what.${envelope.quantity ?? 'toll'}`);
+
+  // Nothing of this kind has ever been recorded for this family of
+  // event. A family with no sentence written for it says nothing at
+  // all rather than printing a missing key.
+  if (envelope.standing === 'unmeasured' || envelope.nearest === null || envelope.span === null) {
+    const none = t(`casualties.envelope.unmeasured.${envelope.eventType}`, { defaultValue: '' });
+    if (none === '') return null;
+    return (
+      <p
+        className={cx(styles.envelopeNote, styles.envelopeNoteOutside)}
+        data-testid="calibration-envelope"
+        data-standing="unmeasured"
+      >
+        {none}
+      </p>
+    );
+  }
+
+  const outside = envelope.value > envelope.span.high.value ? 'above' : 'below';
+  const key = envelope.standing === 'extrapolated' ? outside : envelope.standing;
+  const anchors = anchorsFor(envelope.eventType, envelope.quantity ?? undefined);
+
+  return (
+    <p
+      className={cx(
+        styles.envelopeNote,
+        envelope.standing === 'extrapolated' && styles.envelopeNoteOutside
+      )}
+      data-testid="calibration-envelope"
+      data-standing={envelope.standing}
+    >
+      {t(`casualties.envelope.${key}`, {
+        event: envelope.nearest.name,
+        low: envelope.span.low.name,
+        high: envelope.span.high.name,
+        times: formatFactor(envelope.beyond, locale),
+        what,
+      })}
+      {!compact && (
+        <>
+          {' '}
+          {t('casualties.envelope.anchors', {
+            what,
+            list: anchors.map((a) => a.name).join(' · '),
+          })}
+        </>
+      )}
+    </p>
+  );
+}
+
 export interface CasualtiesPanelProps {
   casualties:
     | (CasualtyEstimate & { source: string; method: PopulationLookupMethod; provisional?: boolean })
@@ -30,6 +112,8 @@ export interface CasualtiesPanelProps {
   status: CasualtyStatus;
   /** Compact layout for the side panel; the report shows every band. */
   compact?: boolean;
+  /** Where this scenario sits against the measured record. */
+  envelope?: CalibrationEnvelope | null;
 }
 
 /**
@@ -46,6 +130,7 @@ export function CasualtiesPanel({
   casualties,
   status,
   compact = true,
+  envelope = null,
 }: CasualtiesPanelProps): JSX.Element {
   const { t, i18n } = useTranslation();
   const locale = i18n.language.toLowerCase().startsWith('it') ? 'it-IT' : 'en-US';
@@ -158,6 +243,7 @@ export function CasualtiesPanel({
             · {t(`casualties.method.${casualties.method}`, { source: casualties.source })}
           </p>
           <p className={styles.mcFooter}>{t('casualties.disclaimer')}</p>
+          {envelope !== null && <EnvelopeNote envelope={envelope} compact={compact} />}
         </>
       )}
     </section>

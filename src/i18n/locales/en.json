@@ -1216,6 +1216,24 @@
       "tsunami": "tsunami"
     },
     "tsunamiDeaths": "of which from the wave",
-    "coarseCoast": "The coastal figure is read off a 40 km wave grid: a coastline is sampled every forty kilometres and each sample stands for forty. For an earthquake there is not yet a finer local field, so even the coast near the rupture is read at that resolution, and the number can be an order of magnitude out either way."
+    "coarseCoast": "The coastal figure is read off a 40 km wave grid: a coastline is sampled every forty kilometres and each sample stands for forty. For an earthquake there is not yet a finer local field, so even the coast near the rupture is read at that resolution, and the number can be an order of magnitude out either way.",
+    "envelope": {
+      "measured": "Calibration: {{event}}, the same size, with {{what}} on record. The comparison runs on every build.",
+      "interpolated": "Calibration: between {{low}} and {{high}}, both with {{what}} on record.",
+      "above": "Calibration: {{times}}× past {{event}}, the largest event of this kind with {{what}} on record. The laws reach out here; a measurement to check them against does not.",
+      "below": "Calibration: {{times}}× below {{event}}, the smallest event of this kind with {{what}} on record. The laws reach out here; a measurement to check them against does not.",
+      "unmeasured": {
+        "impact": "Calibration: none. No impact in recorded history left a death toll to compare against, at any size: this count comes from the laws and from nothing else.",
+        "landslide": "Calibration: none. No landslide in the net has a death toll on record: this count comes from the laws and from nothing else."
+      },
+      "what": {
+        "toll": "the death toll",
+        "wave": "the wave",
+        "crater": "the crater",
+        "blast": "the blast radius",
+        "plume": "the eruption column"
+      },
+      "anchors": "Events of this kind with {{what}} on record: {{list}}."
+    }
   }
 }

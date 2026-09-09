@@ -18,6 +18,7 @@ import i18n from '../../i18n/index.js';
 import {
   NON_FINITE_PLACEHOLDER,
   formatDecimal,
+  formatFactor,
   formatInteger,
   formatScientific,
   formatWithUnitTiers,
@@ -185,5 +186,28 @@ describe('rounding-crossing — the specific audit case', () => {
     expect(formatWithUnitTiers(999.5, TIERS_METERS)).toBe('1.0 km');
     expect(formatWithUnitTiers(999.95, TIERS_METERS)).toBe('1.0 km');
     expect(formatWithUnitTiers(1000, TIERS_METERS)).toBe('1.0 km');
+  });
+});
+
+describe('formatFactor', () => {
+  it('keeps a decimal while the number is small enough to read', () => {
+    expect(formatFactor(1.4, 'en-US')).toBe('1.4');
+    expect(formatFactor(9.6, 'en-US')).toBe('9.6');
+    expect(formatFactor(7, 'en-US')).toBe('7');
+  });
+
+  it('rounds to two significant figures through the thousands', () => {
+    expect(formatFactor(20, 'en-US')).toBe('20');
+    expect(formatFactor(1543, 'en-US')).toBe('1,500');
+  });
+
+  it('drops to a power of ten once the digits stop meaning anything', () => {
+    expect(formatFactor(1e8, 'en-US')).toBe('10⁸');
+    expect(formatFactor(7.8e14, 'en-US')).toBe('10¹⁵');
+  });
+
+  it('refuses anything that is not a multiple of at least one', () => {
+    expect(formatFactor(0.5, 'en-US')).toBe(NON_FINITE_PLACEHOLDER);
+    expect(formatFactor(Number.NaN, 'en-US')).toBe(NON_FINITE_PLACEHOLDER);
   });
 });
