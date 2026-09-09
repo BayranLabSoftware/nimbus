@@ -1729,6 +1729,14 @@ async function runCasualtyLookup(
     set({ populationStatus: 'idle', casualtyStatus: 'idle' });
     return;
   }
+  // Let the browser paint the result before any of this runs. The
+  // band's two hundred draws are about ten milliseconds of arithmetic,
+  // but they would land in the same tick as the cascade that has just
+  // finished, on a thread the globe is already mid-frame on. A
+  // macrotask costs nothing and keeps the first frame after Launch
+  // free of work nobody is waiting on yet.
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  if (get().result !== result) return;
   // One query per distinct footprint: bands keyed by radius plus
   // polygon, the headline ring by radius alone (it is a circle even
   // when the bands are stadiums).

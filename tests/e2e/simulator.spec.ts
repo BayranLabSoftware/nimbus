@@ -331,7 +331,15 @@ test.describe('calibration envelope', () => {
     await expandSimulatorPanelIfCollapsed(page);
     const launch = page.getByRole('button', { name: 'Launch simulation' });
     await expect(launch).toBeEnabled();
-    await launch.click();
+    // The click is not an ordinary click: it runs the whole cascade
+    // on the page's own thread, and for Chicxulub that includes a
+    // planetary bathymetric tsunami. Playwright waits for the page to
+    // settle afterwards, which on a two-core runner takes longer than
+    // the twenty seconds CI allows an action — the log reads "click
+    // action done / waiting for scheduled navigations to finish" and
+    // then times out on a click that worked. This suite already gives
+    // the test two minutes; the click gets a share of it.
+    await launch.click({ timeout: 60_000 });
     const note = page.getByTestId('calibration-envelope');
     await expect(note).toBeAttached({ timeout: 90_000 });
     return note;
