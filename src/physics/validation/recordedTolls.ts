@@ -1,5 +1,6 @@
 import {
   exposureCurve,
+  populationWithin,
   sampledTollBand,
   sampleScenarioPlans,
   samplingFootprints,
@@ -136,7 +137,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     run: blast('BEIRUT_2020'),
     gated: false,
     caveat:
-      "Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. The band under it is now a predictive interval rather than a range of parameters — the ten per cent a charge's yield actually varies by — and it runs 817 to 1 533, nowhere near the 218 counted. That is the right shape for this row, because what is left is not scatter in the charge and not the casualty model: it is the raster underneath. at 240 m the ring is twenty times smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.",
+      "Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. The band under it is now a predictive interval rather than a range of parameters — the ten per cent a charge's yield actually varies by — and it runs 817 to 1 533, nowhere near the 218 counted. That is the right shape for this row, because what is left is neither scatter in the charge nor the casualty model but the raster underneath: at 240 m the ring is twenty times smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.",
   },
   {
     name: 'Mount St Helens 1980',
@@ -274,6 +275,54 @@ export function shippedExposureCurve(event: RecordedEvent): ExposurePoint[] {
       exposed: shippedPopulationInRadius(event.latitude, event.longitude, radiusM).exposed,
     }))
   );
+}
+
+/** Below this many dead at the band's high end, the measured and the
+ *  interpolated bands differ by fewer people than live in one cell of
+ *  the raster both read — so their ratio measures the raster, not the
+ *  interpolation. Sumatra's shaking-only row is the case: 43 against
+ *  115. */
+export const INTERPOLATION_COMPARABLE_DEATHS = 100;
+
+export interface InterpolationCost {
+  event: RecordedEvent;
+  /** The band with the raster queried at every sampled radius. */
+  measured: { low: number; high: number };
+  /** The band the browser builds: a curve from its few lookups. */
+  interpolated: { low: number; high: number };
+  /** How far apart the two ends are, as factors ≥ 1. */
+  lowFactor: number;
+  highFactor: number;
+  /** False when too few dead for the ratio to mean anything. */
+  comparable: boolean;
+}
+
+/**
+ * What the product's interpolation costs on one event: the band with
+ * the population measured at every radius a realisation asks for,
+ * against the band read off the curve the browser can afford.
+ *
+ * One computation for the test that gates it and the report that
+ * publishes it.
+ */
+export function interpolationCost(event: RecordedEvent): InterpolationCost | null {
+  const exact = sampleToll(event);
+  const curve = shippedExposureCurve(event);
+  const approx = sampleToll(event, (r) => populationWithin(curve, r));
+  if (exact === null || approx === null || exact.high.deaths <= 0) return null;
+  const factor = (a: number, b: number): number => {
+    const x = Math.max(a, 1);
+    const y = Math.max(b, 1);
+    return x > y ? x / y : y / x;
+  };
+  return {
+    event,
+    measured: { low: exact.low.deaths, high: exact.high.deaths },
+    interpolated: { low: approx.low.deaths, high: approx.high.deaths },
+    lowFactor: factor(exact.low.deaths, approx.low.deaths),
+    highFactor: factor(exact.high.deaths, approx.high.deaths),
+    comparable: exact.high.deaths >= INTERPOLATION_COMPARABLE_DEATHS,
+  };
 }
 
 export function compareWithRecord(event: RecordedEvent): TollComparison {

@@ -67,6 +67,30 @@ describe('the envelope stays in step with the calibration net', () => {
     }
   });
 
+  it('says which of its quantities fail the build, and agrees with the nets that decide', () => {
+    // An anchor's gate is per quantity, and for the two nets that carry
+    // an explicit flag the flag is the truth. The first regenerated
+    // validation report found seven anchors wrong at once while the
+    // gate was one boolean per event; this is what keeps it from
+    // drifting again.
+    for (const anchor of CALIBRATION_ANCHORS) {
+      for (const q of anchor.gated) {
+        expect(anchor.quantities, `${anchor.name}: gates ${q} it does not measure`).toContain(q);
+      }
+      if (anchor.quantities.includes('toll')) {
+        const row = RECORDED_EVENTS.find((e) => e.name.includes(anchor.name));
+        expect(row, `${anchor.name}: toll row`).toBeDefined();
+        expect(anchor.gated.includes('toll'), `${anchor.name}: toll gate`).toBe(row?.gated);
+      }
+      const waves = RECORDED_WAVES.filter((w) => w.name.includes(anchor.name));
+      if (anchor.quantities.includes('wave') && waves.length > 0) {
+        expect(anchor.gated.includes('wave'), `${anchor.name}: wave gate`).toBe(
+          waves.every((w) => w.gated)
+        );
+      }
+    }
+  });
+
   it("Tunguska's anchor sits inside the energy the forest allows", () => {
     const tunguska = CALIBRATION_ANCHORS.find((a) => a.name === 'Tunguska 1908');
     expect(tunguska).toBeDefined();

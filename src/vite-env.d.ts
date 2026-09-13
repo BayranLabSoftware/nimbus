@@ -15,3 +15,9 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+/** Build-time constants injected by `vite.config.ts`. Undefined under
+ *  Vitest, which does not read that config — read them through
+ *  `src/buildInfo.ts`, never directly. */
+declare const __NIMBUS_COMMIT__: string | null | undefined;
+declare const __NIMBUS_COMMIT_DIRTY__: boolean | undefined;

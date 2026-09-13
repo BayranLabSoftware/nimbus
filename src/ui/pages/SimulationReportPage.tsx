@@ -24,6 +24,7 @@ import {
   formatCitationLine,
   type TriggeredCitation,
 } from './reportCitations.js';
+import { BUILD_INFO, commitUrl, shortCommit, validationReportUrl } from '../../buildInfo.js';
 import styles from './SimulationReportPage.module.css';
 
 function fmtKm(meters: number): string {
@@ -660,6 +661,20 @@ export function SimulationReportPage(): JSX.Element {
                 </dd>
               </>
             )}
+            {/* Which model printed this page. A figure a laboratory can
+                trust has to be traceable to the code that produced it,
+                and this is where a figure leaves the application. */}
+            <dt>{t('report.meta.model')}</dt>
+            <dd data-testid="report-model">
+              {BUILD_INFO.commit === null ? (
+                t('report.meta.modelUnknown')
+              ) : (
+                <>
+                  <a href={commitUrl(BUILD_INFO.commit)}>{shortCommit(BUILD_INFO.commit)}</a>
+                  {BUILD_INFO.dirty && ` (${t('report.meta.modelDirty')})`}
+                </>
+              )}
+            </dd>
           </dl>
         </header>
 
@@ -742,6 +757,23 @@ export function SimulationReportPage(): JSX.Element {
 
         <footer className={styles.footer}>
           <p>{t('report.footer')}</p>
+          {/* The validation report committed beside this exact model. CI
+              keeps it byte-for-byte in step with the code, so the copy at
+              this commit describes the model that printed this page. The
+              address is printed as text as well as linked: a report is
+              read on paper too. */}
+          <p data-testid="report-validation">
+            {BUILD_INFO.commit !== null && !BUILD_INFO.dirty ? (
+              <>
+                {t('report.validationReport')}{' '}
+                <a href={validationReportUrl(BUILD_INFO.commit)}>
+                  {validationReportUrl(BUILD_INFO.commit)}
+                </a>
+              </>
+            ) : (
+              t('report.validationUnavailable')
+            )}
+          </p>
         </footer>
       </main>
     </div>

@@ -1,11 +1,421 @@
 {
-  "generatedAt": "2026-04-30T12:18:07.800Z",
   "mode": "strict",
   "gate": {
     "decision": "pass",
     "exitCode": 0,
     "blocking": [],
     "warnings": []
+  },
+  "calibration": {
+    "tolls": [
+      {
+        "event": "Kokoxili (Kunlun) 2001",
+        "recorded": 0,
+        "recordedLow": 0,
+        "recordedHigh": 0,
+        "model": 0,
+        "bandLow": 0,
+        "bandHigh": 0,
+        "ratio": 1,
+        "contains": true,
+        "gated": true
+      },
+      {
+        "event": "Northridge 1994",
+        "recorded": 57,
+        "recordedLow": 57,
+        "recordedHigh": 57,
+        "model": 38,
+        "bandLow": 5,
+        "bandHigh": 180,
+        "ratio": 0.667,
+        "contains": true,
+        "gated": true
+      },
+      {
+        "event": "L'Aquila 2009",
+        "recorded": 309,
+        "recordedLow": 309,
+        "recordedHigh": 309,
+        "model": 227,
+        "bandLow": 37,
+        "bandHigh": 1542,
+        "ratio": 0.735,
+        "contains": true,
+        "gated": true
+      },
+      {
+        "event": "Amatrice 2016",
+        "recorded": 299,
+        "recordedLow": 299,
+        "recordedHigh": 299,
+        "model": 6,
+        "bandLow": 0,
+        "bandHigh": 114,
+        "ratio": 0.02,
+        "contains": false,
+        "gated": false
+      },
+      {
+        "event": "Gorkha (Nepal) 2015",
+        "recorded": 8964,
+        "recordedLow": 8964,
+        "recordedHigh": 8964,
+        "model": 580,
+        "bandLow": 22,
+        "bandHigh": 4924,
+        "ratio": 0.065,
+        "contains": false,
+        "gated": false
+      },
+      {
+        "event": "Beirut 2020",
+        "recorded": 218,
+        "recordedLow": 218,
+        "recordedHigh": 218,
+        "model": 902,
+        "bandLow": 817,
+        "bandHigh": 1533,
+        "ratio": 4.138,
+        "contains": false,
+        "gated": false
+      },
+      {
+        "event": "Mount St Helens 1980",
+        "recorded": 57,
+        "recordedLow": 57,
+        "recordedHigh": 57,
+        "model": 265,
+        "bandLow": 120,
+        "bandHigh": 692,
+        "ratio": 4.649,
+        "contains": false,
+        "gated": false
+      },
+      {
+        "event": "Pinatubo 1991",
+        "recorded": 847,
+        "recordedLow": 847,
+        "recordedHigh": 847,
+        "model": 82477,
+        "bandLow": 32123,
+        "bandHigh": 313870,
+        "ratio": 97.375,
+        "contains": false,
+        "gated": false
+      },
+      {
+        "event": "Hiroshima 1945",
+        "recorded": 105000,
+        "recordedLow": 70000,
+        "recordedHigh": 140000,
+        "model": 113594,
+        "bandLow": 107004,
+        "bandHigh": 129200,
+        "ratio": 1.082,
+        "contains": true,
+        "gated": false
+      },
+      {
+        "event": "Tōhoku 2011",
+        "recorded": 18500,
+        "recordedLow": 18500,
+        "recordedHigh": 18500,
+        "model": 0,
+        "bandLow": 0,
+        "bandHigh": 0,
+        "ratio": 0,
+        "contains": false,
+        "gated": false
+      },
+      {
+        "event": "Sumatra–Andaman 2004",
+        "recorded": 227898,
+        "recordedLow": 227898,
+        "recordedHigh": 227898,
+        "model": 1,
+        "bandLow": 0,
+        "bandHigh": 43,
+        "ratio": 0,
+        "contains": false,
+        "gated": false
+      }
+    ],
+    "waves": [
+      {
+        "record": "Crossroads Baker 1946, near field",
+        "rangeM": 300,
+        "observedLowM": 20,
+        "observedHighM": 45,
+        "modelM": 23.345,
+        "contains": true,
+        "globeM": 10.52,
+        "globeContains": false,
+        "gated": true
+      },
+      {
+        "record": "Castle Bravo 1954",
+        "rangeM": 300,
+        "observedLowM": 0,
+        "observedHighM": 0,
+        "modelM": 0,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true
+      },
+      {
+        "record": "Ivy Mike 1952",
+        "rangeM": 300,
+        "observedLowM": 0,
+        "observedHighM": 0,
+        "modelM": 0,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true
+      },
+      {
+        "record": "Beirut 2020",
+        "rangeM": 300,
+        "observedLowM": 0,
+        "observedHighM": 2,
+        "modelM": 0,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true
+      },
+      {
+        "record": "Crossroads Baker 1946, five kilometres out",
+        "rangeM": 5500,
+        "observedLowM": 1,
+        "observedHighM": 3,
+        "modelM": 1.89,
+        "contains": true,
+        "globeM": 0.716,
+        "globeContains": false,
+        "gated": true
+      },
+      {
+        "record": "Tōhoku 2011 at DART 21413",
+        "rangeM": 1500000,
+        "observedLowM": 0.2,
+        "observedHighM": 0.5,
+        "modelM": 0.269,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true
+      },
+      {
+        "record": "Storegga 8200 BP on the Norwegian coast",
+        "rangeM": 1000000,
+        "observedLowM": 0.3,
+        "observedHighM": 3,
+        "modelM": 0.604,
+        "contains": true,
+        "globeM": 0.763,
+        "globeContains": true,
+        "gated": true
+      }
+    ],
+    "footprint": {
+      "rows": [
+        {
+          "event": "Northridge 1994",
+          "mmi": 7,
+          "shakemapKm2": 2824,
+          "modelKm2": 913
+        },
+        {
+          "event": "Northridge 1994",
+          "mmi": 8,
+          "shakemapKm2": 823,
+          "modelKm2": 175
+        },
+        {
+          "event": "Northridge 1994",
+          "mmi": 9,
+          "shakemapKm2": 0,
+          "modelKm2": 0
+        },
+        {
+          "event": "L'Aquila 2009",
+          "mmi": 7,
+          "shakemapKm2": 61,
+          "modelKm2": 544
+        },
+        {
+          "event": "L'Aquila 2009",
+          "mmi": 8,
+          "shakemapKm2": 0,
+          "modelKm2": 54
+        },
+        {
+          "event": "L'Aquila 2009",
+          "mmi": 9,
+          "shakemapKm2": 0,
+          "modelKm2": 0
+        },
+        {
+          "event": "Amatrice 2016",
+          "mmi": 7,
+          "shakemapKm2": 26,
+          "modelKm2": 473
+        },
+        {
+          "event": "Amatrice 2016",
+          "mmi": 8,
+          "shakemapKm2": 0,
+          "modelKm2": 31
+        },
+        {
+          "event": "Amatrice 2016",
+          "mmi": 9,
+          "shakemapKm2": 0,
+          "modelKm2": 0
+        },
+        {
+          "event": "Gorkha 2015",
+          "mmi": 7,
+          "shakemapKm2": 40767,
+          "modelKm2": 16989
+        },
+        {
+          "event": "Gorkha 2015",
+          "mmi": 8,
+          "shakemapKm2": 3799,
+          "modelKm2": 10542
+        },
+        {
+          "event": "Gorkha 2015",
+          "mmi": 9,
+          "shakemapKm2": 0,
+          "modelKm2": 6868
+        },
+        {
+          "event": "Tōhoku 2011",
+          "mmi": 7,
+          "shakemapKm2": 199742,
+          "modelKm2": 259291
+        },
+        {
+          "event": "Tōhoku 2011",
+          "mmi": 8,
+          "shakemapKm2": 67625,
+          "modelKm2": 211213
+        },
+        {
+          "event": "Tōhoku 2011",
+          "mmi": 9,
+          "shakemapKm2": 0,
+          "modelKm2": 180747
+        },
+        {
+          "event": "Kokoxili 2001",
+          "mmi": 7,
+          "shakemapKm2": 51427,
+          "modelKm2": 18616
+        },
+        {
+          "event": "Kokoxili 2001",
+          "mmi": 8,
+          "shakemapKm2": 23334,
+          "modelKm2": 11126
+        },
+        {
+          "event": "Kokoxili 2001",
+          "mmi": 9,
+          "shakemapKm2": 1700,
+          "modelKm2": 6741
+        }
+      ],
+      "geometricMeanRadiusRatio": 1.177,
+      "biasInStandardErrors": 0.756,
+      "sdLn": 0.713,
+      "inventedBands": [
+        "L'Aquila 2009 MMI≥8",
+        "Amatrice 2016 MMI≥8",
+        "Gorkha 2015 MMI≥9",
+        "Tōhoku 2011 MMI≥9"
+      ]
+    },
+    "interpolation": [
+      {
+        "event": "Northridge 1994",
+        "measuredLow": 5,
+        "measuredHigh": 180,
+        "interpolatedLow": 4,
+        "interpolatedHigh": 176,
+        "comparable": true
+      },
+      {
+        "event": "L'Aquila 2009",
+        "measuredLow": 37,
+        "measuredHigh": 1542,
+        "interpolatedLow": 30,
+        "interpolatedHigh": 1341,
+        "comparable": true
+      },
+      {
+        "event": "Amatrice 2016",
+        "measuredLow": 0,
+        "measuredHigh": 114,
+        "interpolatedLow": 1,
+        "interpolatedHigh": 121,
+        "comparable": true
+      },
+      {
+        "event": "Gorkha (Nepal) 2015",
+        "measuredLow": 22,
+        "measuredHigh": 4924,
+        "interpolatedLow": 26,
+        "interpolatedHigh": 4871,
+        "comparable": true
+      },
+      {
+        "event": "Beirut 2020",
+        "measuredLow": 817,
+        "measuredHigh": 1533,
+        "interpolatedLow": 817,
+        "interpolatedHigh": 1533,
+        "comparable": true
+      },
+      {
+        "event": "Mount St Helens 1980",
+        "measuredLow": 120,
+        "measuredHigh": 692,
+        "interpolatedLow": 164,
+        "interpolatedHigh": 708,
+        "comparable": true
+      },
+      {
+        "event": "Pinatubo 1991",
+        "measuredLow": 32123,
+        "measuredHigh": 313870,
+        "interpolatedLow": 32123,
+        "interpolatedHigh": 313870,
+        "comparable": true
+      },
+      {
+        "event": "Hiroshima 1945",
+        "measuredLow": 107004,
+        "measuredHigh": 129200,
+        "interpolatedLow": 102027,
+        "interpolatedHigh": 127121,
+        "comparable": true
+      },
+      {
+        "event": "Sumatra–Andaman 2004",
+        "measuredLow": 0,
+        "measuredHigh": 43,
+        "interpolatedLow": 0,
+        "interpolatedHigh": 115,
+        "comparable": false
+      }
+    ],
+    "anchors": 21
   },
   "replay": {
     "total": 3,
@@ -17,8 +427,8 @@
       "regression": 1
     },
     "byStatus": {
-      "invalid": 1,
-      "accepted": 2
+      "accepted": 2,
+      "invalid": 1
     },
     "topErrorCodes": [
       {
@@ -34,11 +444,11 @@
     "passed": 12,
     "failed": 0,
     "byCategory": {
-      "reference": 6,
-      "regression": 2,
+      "custom-user": 1,
       "edge": 2,
       "physical-sanity": 1,
-      "custom-user": 1
+      "reference": 6,
+      "regression": 2
     },
     "byStatus": {
       "accepted": 9,

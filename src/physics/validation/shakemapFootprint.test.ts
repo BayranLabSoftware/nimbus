@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
-import { SHAKEMAP_FOOTPRINTS, type ShakemapFootprint } from './shakemapFixtures.js';
+import { EARTHQUAKE_PRESETS } from '../events/earthquake/simulate.js';
+import { SHAKEMAP_FOOTPRINTS } from './shakemapFixtures.js';
+// The computation lives beside the fixtures so that this suite and the
+// validation report read the same one.
+import { modelAreaKm2 } from './shakemapFootprint.js';
 
 /**
  * The first layer, on its own.
@@ -32,27 +35,6 @@ import { SHAKEMAP_FOOTPRINTS, type ShakemapFootprint } from './shakemapFixtures.
  * single point-source attenuation inflated into a rupture stadium
  * would do.
  */
-
-/** Model footprint (km²) at or above a threshold. */
-function modelAreaKm2(footprint: ShakemapFootprint, threshold: 7 | 8 | 9): number {
-  const preset = EARTHQUAKE_PRESETS[footprint.preset as keyof typeof EARTHQUAKE_PRESETS];
-  const r = simulateEarthquake(preset.input);
-  const radiusM =
-    threshold === 7
-      ? (r.shaking.mmi7Radius as number)
-      : threshold === 8
-        ? (r.shaking.mmi8Radius as number)
-        : (r.shaking.mmi9Radius as number);
-  if (!(radiusM > 0)) return 0;
-  const radiusKm = radiusM / 1000;
-  if (!r.isExtendedSource) return Math.PI * radiusKm * radiusKm;
-  // An extended source is a stadium: the rupture rectangle grown by
-  // the radius on every side, which is the shape the globe draws and
-  // the casualty bands count inside.
-  const lKm = (r.ruptureLength as number) / 1000;
-  const wKm = (r.ruptureWidth as number) / 1000;
-  return lKm * wKm + 2 * radiusKm * (lKm + wKm) + Math.PI * radiusKm * radiusKm;
-}
 
 describe('the shaking footprint against the ShakeMap that recorded it', () => {
   it('has a fixture for every earthquake the toll net gates on', () => {

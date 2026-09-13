@@ -5,10 +5,9 @@ import { useAppStore } from '../../store/index.js';
 import { cx } from '../utils/cx';
 import { useReducedMotion } from '../utils/useReducedMotion';
 import styles from './LandingPage.module.css';
+import { REPOSITORY_URL } from '../../buildInfo.js';
 
 const FEATURE_KEYS = ['multiEvent', 'realScience', 'globe', 'accessible', 'shareable'] as const;
-
-const REPO_URL = 'https://github.com/anred88-stack/Nimbus';
 
 export function LandingPage() {
   const { t } = useTranslation();
@@ -100,7 +99,7 @@ export function LandingPage() {
         <div className={styles.footerRow}>
           <span>© 2026 {t('landing.projectName')}</span>
           <span aria-hidden="true">·</span>
-          <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+          <a href={REPOSITORY_URL} target="_blank" rel="noopener noreferrer">
             {t('footer.github')}
           </a>
           <span aria-hidden="true">·</span>

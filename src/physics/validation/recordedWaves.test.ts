@@ -31,6 +31,25 @@ describe('waves that were measured', () => {
     expect(rows).toHaveLength(RECORDED_WAVES.length);
   });
 
+  it('pins which records the globe misses where it draws a different law', () => {
+    // The harness figure and the figure on the globe are not always
+    // the same number. For an underwater burst the veil spreads with
+    // the energy normalisation of a ring and the harness does not, and
+    // at Crossroads Baker that is the difference between inside both
+    // records and outside both. Pinned, like the MMI bands the model
+    // invents: a list that can only be driven to empty, and that fails
+    // the moment it changes in either direction, so whoever decides
+    // which law is right has to say so here.
+    const globeMisses = rows
+      .filter((r) => r.globeContains === false)
+      .map((r) => `${r.wave.name}: globe ${r.globe?.toFixed(2) ?? '—'} m`);
+    console.log(['', 'globe draws, where different:', ...globeMisses].join('\n'));
+    expect(rows.filter((r) => r.globeContains === false).map((r) => r.wave.name)).toEqual([
+      'Crossroads Baker 1946, near field',
+      'Crossroads Baker 1946, five kilometres out',
+    ]);
+  });
+
   for (const wave of RECORDED_WAVES.filter((w) => w.gated)) {
     const obs =
       wave.observed.low === 0 && wave.observed.high === 0

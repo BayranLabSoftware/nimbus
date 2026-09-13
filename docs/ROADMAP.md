@@ -359,6 +359,22 @@ from 0.90× the record to 0.67×, Tōhoku's coast from 2.9× to about
 log-RMS across the three gets worse, not better. No single scale
 factor fixes them, so the residual is not a scale error.
 
+**Open: the Crossroads Baker anchors check a law the globe does not
+draw** _(found 14 September by the first regenerated validation
+report)_. The wave harness spreads an underwater burst as A₀·√(R₀/r),
+and its comment said that was the veil's law. It stopped being the
+veil's law on 9 September, when the veil gained the energy
+normalisation of a ring for every source without an exponent of its
+own. At Baker the harness reads 23.3 m at 300 m and 1.89 m at 5.5 km,
+inside both records; the veil draws 10.5 m and 0.72 m, outside both.
+So two gated anchors have been gating a number the product does not
+show. The report now prints both columns, and `recordedWaves.test.ts`
+pins the globe's misses so the list cannot change without a decision.
+The decision is which law is right for a compact source near the
+burst — and it cannot be made on Baker alone, because the same
+normalisation is what the coastal toll of a flank collapse like Anak
+Krakatau reads.
+
 ### 3b. What the wave does at the coast, layer by layer
 
 The toll was the only thing being checked, and it hid two different
@@ -498,7 +514,13 @@ that too.
 Reproducibility (the replay fixtures), provenance in the output (the
 equation cards), an independent implementation to compare against (the
 GeoCLAW fixtures), and a sensitivity analysis (`scripts/sensitivity.ts`,
-which is written but not surfaced). The foundations are there. It is
+which is written but not surfaced). And since 14 September a
+validation report that cannot go stale: `docs/VALIDATION_REPORT.md`
+carries the whole calibration net, CI refuses a push whose committed
+copy differs from what the code generates, and every printed
+simulation report names its commit and links to the report at that
+commit. It had sat at 30 April for four months while CI regenerated a
+throwaway copy on every push. The foundations are there. It is
 the _verification_ that is the weak link, which is why the first two
 entries are about it.
 
@@ -954,7 +976,17 @@ move, and Sumatra goes 6 700 → 320 because Banda Aceh used to sit
 inside the saturation disc at full source amplitude and no longer
 does. What holds Aceh down now is the density lookup below.
 
-### P1 — The published far-field rows are behind the veil _(open, 9 September)_
+### P1 — The published far-field rows are behind the veil _(megathrust closed 9 September; compact sources diverge by design)_
+
+**Closed for the megathrust** by `95e2104`: the row and the veil now
+call one spreading law in `tsunami/spreading.ts` on one width, and
+agree exactly. DART 21413 reads 0.27 m against 0.30 recorded. For the
+compact sources — a burst, a caldera collapse, a landslide — the
+published row keeps Lamb's 1/r and the veil keeps geometric spreading,
+on purpose: unifying them was tried on 8 September and put the Sunda
+Strait under half a metre of water. That divergence is pinned with its
+size in `fieldScalarAgreement.test.ts`. The history below is kept as
+it was written.
 
 `fieldScalarAgreement.test.ts` used to reimplement the field's
 spreading law rather than call it, so it went on asserting agreement
@@ -1024,7 +1056,18 @@ drowned to 2 600. A factor of 1.6 where the coverage argument implied
 an order of magnitude. Tōhoku drifts 22 000 → 24 000, from 1.32× of
 its record to 1.44×.
 
-### P0 — Sumatra is 87× under and nothing general explains it _(open, 9 September)_
+### P0 — Sumatra is 87× under and nothing general explains it _(explained 10 September; see M9 move 3b)_
+
+**Explained, and smaller.** Two things happened after this was
+written. The width fix (`95e2104`) found that the wave had never heard
+Sumatra's own 200 km width override, and took the coastal toll from
+2 600 to 25 700 — nine times under rather than eighty-seven. Then the
+coast was measured layer by layer (M9, move 3b): the near field is two
+to three times under-waved and the far field five to ten, because the
+far-field law has no rupture length in it. Of the 176 857 people the
+model puts inside the far strip it kills 314, which is the whole of
+the remaining deficit. The density-at-the-cells thread below was the
+near-field half of the question and is kept as it was written.
 
 Everything raised against that row today has been fixed and measured.
 Its wave is right — Banda Aceh reads 4.92 m of amplitude and 19.7 m of

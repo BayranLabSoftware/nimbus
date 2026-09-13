@@ -5,6 +5,51 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## [Unreleased]
 
+### Fixed
+
+- **The validation report can no longer go stale.** `docs/VALIDATION_REPORT.md`
+  had sat at 30 April for four months while CI regenerated a throwaway
+  copy on every push, so by September the document meant to prove the
+  model described one that no longer existed — it still listed a
+  flank-collapse input the validator had long since learned to check
+  as untrusted. It is now generated deterministically, with no
+  timestamp and every figure at the precision it is quoted, and CI
+  fails the build when the committed copy differs from what the code
+  produces. It also carries what it never had: the whole calibration
+  net — death tolls against counted events with their predictive
+  bands and the cause of every miss, waves against records, the
+  shaking footprint against USGS ShakeMap, what the product's
+  population interpolation costs, and the per-quantity standing of all
+  twenty-one anchors.
+
+- **Every printed simulation report names the model that produced it.**
+  The report page stamps the commit it was built from and links to the
+  validation report at that commit — which, with the gate above, is
+  exactly the model that printed the page. A build from a working tree
+  with uncommitted changes says so and names no validation report,
+  because a precise-looking commit on code it does not run would be a
+  lie.
+
+- **The calibration envelope's gates were wrong for seven anchors.**
+  The flag was one boolean per event, and one event can be both: Beirut
+  and Tōhoku gate their wave and declare their toll, Hiroshima gates
+  its blast radius, St Helens and Pinatubo their plume. Amatrice and
+  Gorkha were still marked gated a week after the toll net ungated
+  them. The gate is now per quantity, and a test holds it to the nets
+  that decide.
+
+- **Two anchors gated a wave the globe does not draw.** The Crossroads
+  Baker rows spread an underwater burst without the energy
+  normalisation the globe's veil has applied since 9 September, and
+  read 23.3 m and 1.89 m, inside both records, where the veil draws
+  10.5 m and 0.72 m, outside both. Not resolved — which law is right
+  for a compact source is a physics decision — but no longer hidden:
+  the report prints both figures and a test pins the misses.
+
+- **The landing page's source-code link pointed at a repository that
+  returns 404.** It and the report now share one address, the
+  repository the code is actually pushed to.
+
 ### Measured
 
 - **The wave at the coast, layer by layer.** The coastal toll was the

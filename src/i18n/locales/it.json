@@ -848,8 +848,13 @@
     "meta": {
       "event": "Evento",
       "location": "Località",
-      "generated": "Generato"
-    }
+      "generated": "Generato",
+      "model": "Modello",
+      "modelDirty": "con modifiche non committate",
+      "modelUnknown": "non tracciabile a un commit"
+    },
+    "validationReport": "Rapporto di validazione di questo modello, con ogni cifra confrontata con gli eventi registrati:",
+    "validationUnavailable": "Questa stampa non viene da un modello committato, quindi non c'è un rapporto di validazione che la descriva."
   },
   "about": {
     "trigger": "Informazioni",

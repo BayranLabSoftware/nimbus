@@ -81,14 +81,22 @@ export interface CalibrationAnchor {
   /** What was recorded about it. */
   readonly quantities: readonly CalibrationQuantity[];
   /**
-   * True when a test fails the build if the model drifts away from
-   * this row; false when the row is measured and printed with a
-   * written reason but not enforced. Hiroshima is the clearest of the
-   * second kind: the raster counts the 1.2 million living there now,
-   * not the 350 000 of 1945, so the model must overshoot and the gate
-   * would be dishonest.
+   * The quantities for which a test fails the build if the model
+   * drifts away from this row. The rest of `quantities` are measured
+   * and printed with a written reason, but not enforced.
+   *
+   * Per quantity, because one event can be both. Hiroshima's 5 psi
+   * radius is a golden case and fails the build; its death toll is
+   * declared, because the raster counts the 1.2 million living there
+   * now and not the 350 000 of 1945, so the model must overshoot and
+   * a gate would be dishonest. This used to be a single boolean per
+   * event, and on 14 September 2026 the first regenerated validation
+   * report showed it wrong for seven of the twenty-one anchors at
+   * once — two rows ungated in the toll net still marked gated, and
+   * five gated waves, plumes and blast radii marked declared because
+   * the same event's toll was.
    */
-  readonly gated: boolean;
+  readonly gated: readonly CalibrationQuantity[];
   /** Where the number comes from. */
   readonly source: string;
 }
@@ -113,7 +121,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'impact',
     value: Math.sqrt(3 * 30) * MEGATON_J,
     quantities: ['blast'],
-    gated: true,
+    gated: ['blast'],
     source: 'Boslough & Crawford 2008; Chyba 1993 — 3–30 Mt from the flattened forest',
   },
   {
@@ -121,7 +129,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'impact',
     value: 10 * MEGATON_J,
     quantities: ['crater'],
-    gated: true,
+    gated: ['crater'],
     source: 'Kring 2007 — a 1.2 km crater from a 50 m iron at 12.8 km/s',
   },
   {
@@ -129,7 +137,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'impact',
     value: 7.8e23,
     quantities: ['crater'],
-    gated: true,
+    gated: ['crater'],
     source: 'Hildebrand 1991, Morgan 2016 — a final crater of about 180 km',
   },
 
@@ -140,7 +148,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'explosion',
     value: 0.5 * KILOTON_J,
     quantities: ['toll', 'wave'],
-    gated: false,
+    gated: ['wave'],
     source: '218 dead; a harbour wave of the order of a metre that drowned nobody',
   },
   {
@@ -148,7 +156,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'explosion',
     value: 15 * KILOTON_J,
     quantities: ['toll', 'blast'],
-    gated: false,
+    gated: ['blast'],
     source: 'Manhattan Engineer District 1946; Glasstone & Dolan Fig. 3.74a for 5 psi at 1.7 km',
   },
   {
@@ -156,7 +164,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'explosion',
     value: 23 * KILOTON_J,
     quantities: ['wave'],
-    gated: true,
+    gated: ['wave'],
     source: 'Operation Crossroads: about 30 m at 300 m and 1.8 m at 5.5 km, from 27 m down',
   },
   {
@@ -164,7 +172,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'explosion',
     value: 10.4 * MEGATON_J,
     quantities: ['wave'],
-    gated: true,
+    gated: ['wave'],
     source: 'Fired on an islet it vapourised; no recorded wave',
   },
   {
@@ -172,7 +180,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'explosion',
     value: 15 * MEGATON_J,
     quantities: ['wave'],
-    gated: true,
+    gated: ['wave'],
     source: 'Fired on the Bikini reef; remembered for its crater and its fallout, not a wave',
   },
   {
@@ -180,7 +188,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'explosion',
     value: 50 * MEGATON_J,
     quantities: ['wave'],
-    gated: true,
+    gated: ['wave'],
     source: 'The largest device ever fired, 1961, 4 km up over water; no wave',
   },
 
@@ -191,7 +199,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'earthquake',
     value: 6.2,
     quantities: ['toll'],
-    gated: true,
+    gated: [],
     source: '299 dead',
   },
   {
@@ -199,7 +207,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'earthquake',
     value: 6.3,
     quantities: ['toll'],
-    gated: true,
+    gated: ['toll'],
     source: '309 dead',
   },
   {
@@ -207,7 +215,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'earthquake',
     value: 6.7,
     quantities: ['toll'],
-    gated: true,
+    gated: ['toll'],
     source: '57 dead',
   },
   {
@@ -215,7 +223,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'earthquake',
     value: 7.8,
     quantities: ['toll'],
-    gated: true,
+    gated: ['toll'],
     source: 'A 400 km rupture across empty Tibetan plateau; nobody died',
   },
   {
@@ -223,7 +231,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'earthquake',
     value: 7.8,
     quantities: ['toll'],
-    gated: true,
+    gated: [],
     source: '8 964 dead',
   },
   {
@@ -231,7 +239,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'earthquake',
     value: 9.1,
     quantities: ['toll', 'wave'],
-    gated: false,
+    gated: ['wave'],
     source: '18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 500 km out',
   },
   {
@@ -239,7 +247,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'earthquake',
     value: 9.2,
     quantities: ['toll'],
-    gated: false,
+    gated: [],
     source: '227 898 dead, almost all of them drowned',
   },
 
@@ -250,7 +258,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'volcano',
     value: 1.2e9,
     quantities: ['toll', 'plume'],
-    gated: false,
+    gated: ['plume'],
     source: '57 dead inside a mountain closed for two months; a 24 km column',
   },
   {
@@ -258,7 +266,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'volcano',
     value: 1e10,
     quantities: ['toll', 'plume'],
-    gated: false,
+    gated: ['plume'],
     source: '847 dead after an evacuation that worked; a 35 km column',
   },
   {
@@ -266,7 +274,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'volcano',
     value: 2e10,
     quantities: ['plume'],
-    gated: true,
+    gated: ['plume'],
     source: 'Self & Rampino 1981 — a 40 km column; its wave is not checked here',
   },
 
@@ -276,7 +284,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'landslide',
     value: 2.7e8,
     quantities: ['wave'],
-    gated: true,
+    gated: ['wave'],
     source: 'Genevois 2005 — the reservoir wave that overtopped the dam by 245 m',
   },
   {
@@ -284,7 +292,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'landslide',
     value: 3e12,
     quantities: ['wave'],
-    gated: true,
+    gated: ['wave'],
     source: 'Bondevik 2005 — 10–25 m of run-up read from the Norwegian deposits',
   },
 ];

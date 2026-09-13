@@ -4,6 +4,7 @@ import cesium from 'vite-plugin-cesium';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import { existsSync, renameSync, rmdirSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import type { Plugin } from 'vite';
 
 const rootDir = dirname(fileURLToPath(import.meta.url));
@@ -54,6 +55,34 @@ function relocateCesiumForSubPath(): Plugin {
   };
 }
 
+/**
+ * The commit a build is made from, so every simulation report the
+ * application prints can say which model produced it and link to the
+ * validation report committed beside that model.
+ *
+ * CI hands over the exact SHA; anywhere else git is asked. A working
+ * tree with uncommitted changes to tracked files is marked, because
+ * a report stamped with a commit whose code it does not run would be
+ * a precise-looking lie. The file mode bit is ignored — a checkout
+ * that only flipped an executable flag runs the same model.
+ */
+function buildCommit(): { sha: string | null; dirty: boolean } {
+  const git = (args: string): string =>
+    execSync(`git ${args}`, { cwd: rootDir, stdio: ['ignore', 'pipe', 'ignore'] })
+      .toString()
+      .trim();
+  try {
+    const sha = process.env.GITHUB_SHA ?? git('rev-parse HEAD');
+    const dirty = git('-c core.fileMode=false status --porcelain --untracked-files=no') !== '';
+    return { sha: sha === '' ? null : sha, dirty };
+  } catch {
+    // No git and no CI: a tarball build. Say so rather than guess.
+    return { sha: null, dirty: false };
+  }
+}
+
+const commit = buildCommit();
+
 export default defineConfig({
   // GitHub Pages serves a project site from a sub-path
   // (/<repo>/), so the built asset URLs have to carry it. The
@@ -61,6 +90,10 @@ export default defineConfig({
   // Pages on a root domain — the default '/' is correct and nothing
   // downstream has to know this variable exists.
   base: basePath,
+  define: {
+    __NIMBUS_COMMIT__: JSON.stringify(commit.sha),
+    __NIMBUS_COMMIT_DIRTY__: JSON.stringify(commit.dirty),
+  },
   plugins: [react(), cesium(), relocateCesiumForSubPath()],
   resolve: {
     alias: {

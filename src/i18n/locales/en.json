@@ -848,8 +848,13 @@
     "meta": {
       "event": "Event",
       "location": "Location",
-      "generated": "Generated"
-    }
+      "generated": "Generated",
+      "model": "Model",
+      "modelDirty": "with uncommitted changes",
+      "modelUnknown": "not traceable to a commit"
+    },
+    "validationReport": "Validation report for this model, with every figure checked against recorded events:",
+    "validationUnavailable": "This print does not come from a committed model, so there is no validation report that describes it."
   },
   "about": {
     "trigger": "About",

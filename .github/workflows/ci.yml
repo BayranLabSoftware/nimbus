@@ -59,6 +59,23 @@ jobs:
         # step is the cumulative regression gate.
         run: pnpm validation-report -- --mode=strict
 
+      - name: Validation report is current
+        # The step above rewrites docs/VALIDATION_REPORT.* from the code
+        # in this commit. If that changed a byte, the committed report
+        # describes a model that no longer exists — and every simulation
+        # report the application prints links to the committed copy for
+        # the commit that built it.
+        #
+        # This is the step that was missing: the gate above has run on
+        # every push since April, and the report in the repository sat
+        # frozen at 30 April 2026 for four months, because the
+        # regenerated copy only ever went into a throwaway artifact.
+        run: |
+          if ! git diff --exit-code -- docs/VALIDATION_REPORT.md docs/VALIDATION_REPORT.json; then
+            echo "::error file=docs/VALIDATION_REPORT.md::The committed validation report does not match the model in this commit. Run 'pnpm validation-report' and commit docs/VALIDATION_REPORT.md and docs/VALIDATION_REPORT.json."
+            exit 1
+          fi
+
       - name: Upload validation report
         if: always()
         uses: actions/upload-artifact@v4

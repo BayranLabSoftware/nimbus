@@ -5,6 +5,7 @@ import { m } from '../units.js';
 import { dispersionFactor } from '../tsunami/dispersion.js';
 import { directivityFactor } from '../tsunami/directivity.js';
 import { megathrustSourceRadius, spreadingFactor } from '../tsunami/spreading.js';
+import { extractTsunamiMeta, type ActiveResult } from '../../store/useAppStore.js';
 
 /**
  * Waves that were measured, and where the simulator puts them.
@@ -26,8 +27,20 @@ import { megathrustSourceRadius, spreadingFactor } from '../tsunami/spreading.js
  * What this can and cannot reach, said here rather than discovered
  * later: there is no bathymetry in a test, so nothing here propagates
  * over real seafloor. Every model figure is the source amplitude and
- * its geometric spreading, A₀·√(R₀/r), which is the law the globe's
- * veil uses. The dispersion that the published far-field rows carry
+ * its geometric spreading, A₀·√(R₀/r).
+ *
+ * For an underwater burst that is **not** the law the globe's veil
+ * draws, and this comment used to say it was. Since 9 September 2026
+ * the veil spreads a compact source with the energy normalisation of
+ * a ring, and at Crossroads Baker that halves the wave: the rows below
+ * read 23.3 m and 1.89 m, inside both records, while the veil draws
+ * 10.5 m and 0.72 m, outside both. The first regenerated validation
+ * report is what found it. So burst rows carry `globe` as well as
+ * `model`, the report prints both, and `recordedWaves.test.ts` pins
+ * which records the globe misses until someone decides which law is
+ * right.
+ *
+ * The dispersion that the published far-field rows carry
  * is applied where a row is being compared with a far-field
  * measurement, and named where it is.
  */
@@ -39,6 +52,10 @@ export interface RecordedWave {
   source: string;
   /** What the model says at that range, in metres. */
   model: () => number;
+  /** What the globe's amplitude veil draws at the same range, where
+   *  it is computed by a different law from `model`. Absent where the
+   *  two are the same number. */
+  globe?: () => number;
   /** Whether a miss fails the suite. */
   gated: boolean;
   caveat?: string;
@@ -61,6 +78,47 @@ function spreadFrom(
   return geometric * dispersion;
 }
 
+/**
+ * What the amplitude veil on the globe draws for a result at a range:
+ * the spreading rule the store hands the field for this source —
+ * normalised whenever the source carries no exponent of its own — and
+ * the dispersion on the source's wavelength, or twice its cavity where
+ * it names none, which is the field's own fallback.
+ */
+function globeVeilAt(result: ActiveResult, rangeM: number, depthM?: number): number {
+  const meta = extractTsunamiMeta(result);
+  if (meta === null) return 0;
+  const r = Math.max(rangeM, meta.sourceCavityRadiusM);
+  const spread = spreadingFactor(
+    meta.sourceCavityRadiusM,
+    r,
+    meta.spreadingExponent ?? 0.5,
+    meta.spreadingExponent === undefined
+  );
+  const dispersion = dispersionFactor({
+    rangeM: r,
+    depthM: depthM ?? meta.sourceDepthM,
+    wavelengthM: meta.sourceWavelengthM ?? 2 * meta.sourceCavityRadiusM,
+  });
+  return meta.sourceAmplitudeM * spread * dispersion;
+}
+
+function burstOnGlobe(
+  yieldMegatons: number,
+  hobM: number,
+  waterDepthM: number,
+  rangeM: number
+): number {
+  const data = simulateExplosion({
+    yieldMegatons,
+    groundType: 'WET_SOIL',
+    heightOfBurst: m(hobM),
+    waterDepth: m(waterDepthM),
+    meanOceanDepth: m(Math.max(waterDepthM, 1_000)),
+  });
+  return globeVeilAt({ type: 'explosion', data }, rangeM, waterDepthM);
+}
+
 function burst(yieldMegatons: number, hobM: number, waterDepthM: number, rangeM: number): number {
   const r = simulateExplosion({
     yieldMegatons,
@@ -80,6 +138,7 @@ export const RECORDED_WAVES: RecordedWave[] = [
     source:
       'Glasstone & Dolan 1977 §6.55 and the Operation Crossroads reports: 23 kt suspended 27 m below the surface of Bikini lagoon, first wave about 30 m high at 300 m from surface zero',
     model: () => burst(0.023, -27, 60, 300),
+    globe: () => burstOnGlobe(0.023, -27, 60, 300),
     gated: true,
     caveat:
       'The one loud data point in the whole of explosion-generated wave physics: a known yield, at a known depth, in a lagoon of known depth, with the wave measured at known ranges. If the depth-of-burst curve is wrong anywhere, it is wrong here first.',
@@ -115,6 +174,7 @@ export const RECORDED_WAVES: RecordedWave[] = [
     observed: { low: 1, high: 3, atRangeM: 5_500 },
     source: 'Operation Crossroads wave records: about 1.8 m at 5.5 km',
     model: () => burst(0.023, -27, 60, 5_500),
+    globe: () => burstOnGlobe(0.023, -27, 60, 5_500),
     gated: true,
     caveat:
       'Baker is the only event anyone has measured with the same wave written down at two ranges, and the pair is what the dispersive decay is calibrated on: one exponent puts the model at 25.6 m where thirty were seen and 2.95 m where 1.8 were, and leaves a megathrust untouched across an ocean. Before the veil carried dispersion this row read 7.17 m.',
@@ -163,6 +223,14 @@ export const RECORDED_WAVES: RecordedWave[] = [
       if (r.tsunami === null) return 0;
       return r.tsunami.amplitudeAt1000km;
     },
+    // The published row follows Lamb's 1/r; the veil spreads the same
+    // slide geometrically, and stands above it at this range by the
+    // gap `fieldScalarAgreement.test.ts` pins. Different laws on purpose
+    // — see that file — and so a different number on the globe.
+    globe: () => {
+      const data = simulateLandslide(LANDSLIDE_PRESETS.STOREGGA_8200_BP.input);
+      return globeVeilAt({ type: 'landslide', data }, 1_000_000);
+    },
     gated: true,
     caveat:
       'Open-ocean amplitude inferred from run-up rather than measured, so the band is wide; it is here because it is the only prehistoric event with deposits good enough to argue from.',
@@ -173,13 +241,22 @@ export interface WaveComparison {
   wave: RecordedWave;
   model: number;
   contains: boolean;
+  /** What the globe draws, where that is a different number. */
+  globe: number | null;
+  /** Whether the globe's number is inside the record; null where the
+   *  globe draws the same number as `model`. */
+  globeContains: boolean | null;
 }
 
 export function compareWave(wave: RecordedWave): WaveComparison {
   const model = wave.model();
+  const inside = (v: number): boolean => v >= wave.observed.low && v <= wave.observed.high;
+  const globe = wave.globe === undefined ? null : wave.globe();
   return {
     wave,
     model,
-    contains: model >= wave.observed.low && model <= wave.observed.high,
+    contains: inside(model),
+    globe,
+    globeContains: globe === null ? null : inside(globe),
   };
 }
