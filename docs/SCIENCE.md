@@ -259,8 +259,9 @@ through the cascade is in `src/physics/uq/` (see Phase 3 of the
 
 The population-exposure figure of earlier phases is now converted to
 an estimated death toll, per hazard family, with a 5–95 % predictive
-band and the assumptions printed on the label (prompt effects only, nobody
-evacuated, no tsunami / fallout / famine / disease):
+band and the assumptions printed on the label (prompt effects only; nobody
+evacuated unless the scenario says which zone was cleared; no fallout,
+famine or disease):
 
 - **Population** — WorldPop 2020 through the zonal-statistics API
   (`api.worldpop.org/v1/services/stats`, free, CORS-enabled, ≈ 15–45 s
@@ -320,23 +321,40 @@ and what remains is the raster rather than the model — at 240 m the
 ring is twenty times smaller than a population cell, so a port basin
 gets the city's average density.
 
-**The low end of a pyroclastic band is an empty current, not a gentle
-one.** People caught inside one almost never survive, which is why
-the central figure stays at Auker's ninety per cent. But a volcano
-gives days of warning where an impact gives none: Pinatubo moved
-sixty thousand people out before the climax and lost nobody to the
-currents, Merapi 2010 evacuated three hundred and fifty thousand and
-lost about one in a thousand of those at risk. The low end is
-therefore one per cent — the Merapi ratio — and the band is
-asymmetric on purpose, because that is the only honest thing to say
-about a pyroclastic current: if they left, almost nobody; if they did
-not, almost everybody. Neither volcano row contains its record once
-the printed band stops being that parameter range: St Helens reads
-120 – 692 against 57 and Pinatubo 32 123 – 313 870 against 847, and
-both misses are true. Containing them would be the wrong target
-anyway — the model counts a current over people who had gone, and
-most of Pinatubo's 847 died under roofs loaded with wet ash, which it
-does not simulate at all.
+**Whether anyone was told to leave is a scenario fact, and now an
+input.** People caught inside a pyroclastic current almost never
+survive, which is why the central mortality stays at Auker's ninety
+per cent for anyone it reaches where they live. But a volcano gives
+days of warning where an impact gives none, and the toll turns far
+more on whether a zone was cleared than on anything the volcano does.
+Until 14 September the simulator could not know which world it was
+in, and hid the choice in an asymmetric band.
+
+`VolcanoScenarioInput.evacuationRadiusM` is the radius of the zone
+cleared before the eruption. Inside it the mortality is the one
+measured at Merapi in 2010 — 367 dead among 410 388 displaced from
+zones widened from 10 to 20 km as the eruption grew (BNPB, in Surono
+et al. 2012) — about a thousandth, not the one per cent the band used
+to call "the Merapi ratio", which was that ratio rounded up ten-fold.
+Beyond the radius, everyone a current reaches is someone nobody told
+to leave. It is a radius and not a switch because of Mount St Helens:
+the closed zones reached about eight kilometres and the lateral blast
+went nearly four times further, and only three of the fifty-seven dead
+were inside the red zone.
+
+Measured on the two volcano rows. **Pinatubo** carries the 40 km zone
+PHIVOLCS had declared by the climax, and reads 82 dead where it read
+82 477 — under the 847 counted, and for the right reason: most of
+Pinatubo's dead were killed by roofs collapsing under typhoon-soaked
+ash and by disease in the camps, neither of which the model simulates.
+With the rounded one per cent it would have landed within ten per cent
+of the record, for dead it does not contain; that is why the measured
+ratio is the centre. **Mount St Helens** does not move at all, and
+that is also right: 264 of its 265 modelled dead are in the blast
+sector beyond the closed zones. What remains there is occupancy — a
+map of where people live, putting 586 residents in logging land the
+blast reached at 08:32 on a Sunday. Custom eruptions start from no
+evacuation and say so; the panel asks for the radius.
 
 **The third was that the band was never the model's uncertainty.**
 The earthquake rows passed with bands up to five orders of magnitude

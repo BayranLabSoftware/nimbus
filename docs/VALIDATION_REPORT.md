@@ -50,8 +50,8 @@ with its reason, and the reason is below.
 | Amatrice 2016 | 299 | 6 | 0 – 114 | 10^2.1 | 0.02× | **misses** | buildingStock | declared |
 | Gorkha (Nepal) 2015 | 8,964 | 580 | 22 – 4,924 | 10^2.3 | 0.06× | **misses** | buildingStock | declared |
 | Beirut 2020 | 218 | 902 | 817 – 1,533 | 10^0.3 | 4.14× | **misses** | populationRaster | declared |
-| Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | evacuation | declared |
-| Pinatubo 1991 | 847 | 82,477 | 32,123 – 313,870 | 10^1.0 | 97.38× | **misses** | evacuation | declared |
+| Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | occupancy | declared |
+| Pinatubo 1991 | 847 | 82 | 32 – 312 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared |
 | Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | populationChanged | declared |
 | Tōhoku 2011 | 18,500 | 0 | 0 – 0 | — | 0.00× | **misses** | drownedOffline | declared |
 | Sumatra–Andaman 2004 | 227,898 | 1 | 0 – 43 | 10^1.6 | 0.00× | **misses** | drownedOffline | declared |
@@ -64,9 +64,9 @@ with its reason, and the reason is below.
 
 **Beirut 2020.** Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. The band under it is now a predictive interval rather than a range of parameters — the ten per cent a charge's yield actually varies by — and it runs 817 to 1 533, nowhere near the 218 counted. That is the right shape for this row, because what is left is neither scatter in the charge nor the casualty model but the raster underneath: at 240 m the ring is twenty times smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.
 
-**Mount St Helens 1980.** The mountain had been closed for two months and the red zone evacuated; the 57 who died had mostly refused to leave or were outside the zone the blast then overran. The central figure assumes nobody was warned and sits at 4.7x the record. Until 9 September this row was recorded as containing the count: its band was the gentlest and harshest pyroclastic mortality in the vulnerability table, 3 to 295, and an evacuated eruption fell inside it by accident. The predictive interval drawn from the scatter of the eruption itself is 120 to 692, and 57 falls outside it — which is the true statement. A model that counts everyone who was there cannot reach a toll made by everyone having left. Ungated because a preset cannot know whether an evacuation happened.
+**Mount St Helens 1980.** Not evacuation, and that took a measurement to see. This row was filed under it until 14 September, when the preset learned what zone had been cleared and the toll did not move: 264 of the model's 265 dead are in the lateral-blast sector between 11 and 27 km, and the closed zones reached about eight. The record agrees — only three of the 57 were inside the red zone, the blast going nearly four times further than anyone had closed. So the model is right to count that sector as unwarned. What it cannot know is who was in it: the population map puts 586 residents there, and the blast came at 08:32 on a Sunday, into logging land whose crews were not working. The predictive interval is 120 to 692 against 57.
 
-**Pinatubo 1991.** The predictive interval is 32 000 to 314 000 and misses the 847 counted by two orders of magnitude. The old band reached down to 916 and missed by eight per cent, which read like a model very nearly right; it was the gentlest setting of the vulnerability table, not a claim about this eruption. Containing it would in any case be the wrong target: sixty thousand people were evacuated before the climax, and most of those who still died were killed by roofs collapsing under ash wetted by Typhoon Yunya, a mechanism this model does not simulate at all. It counts the current, over people who had gone.
+**Pinatubo 1991.** The model now knows the zone was cleared — PHIVOLCS widened it to 40 km before the climax — and reads 82 dead where it read 82 477: the currents' mortality in a cleared zone, measured at Merapi in 2010, over the 91 641 people the map puts inside their reach. It misses the 847 counted from below, and should: most of Pinatubo's dead were killed by roofs collapsing under ash wetted by Typhoon Yunya, and by disease in the evacuation camps, neither of which this model simulates. Rounding the Merapi ratio up to one per cent, as the band's high end does, would land the toll within ten per cent of the record — for the wrong dead.
 
 **Tōhoku 2011.** Over 90 % of the dead drowned. This harness has no bathymetry and therefore no wave, so the number here is the shaking alone and is expected to be far below the record.
 
@@ -96,7 +96,7 @@ rather than about the interpolation.
 | Gorkha (Nepal) 2015 | 22 – 4,924 | 26 – 4,871 | 1.18× / 1.01× | yes |
 | Beirut 2020 | 817 – 1,533 | 817 – 1,533 | 1.00× / 1.00× | yes |
 | Mount St Helens 1980 | 120 – 692 | 164 – 708 | 1.37× / 1.02× | yes |
-| Pinatubo 1991 | 32,123 – 313,870 | 32,123 – 313,870 | 1.00× / 1.00× | yes |
+| Pinatubo 1991 | 32 – 312 | 32 – 312 | 1.00× / 1.00× | yes |
 | Hiroshima 1945 | 107,004 – 129,200 | 102,027 – 127,121 | 1.05× / 1.02× | yes |
 | Sumatra–Andaman 2004 | 0 – 43 | 0 – 115 | 1.00× / 2.67× | too few dead |
 
@@ -318,7 +318,7 @@ What the model is known not to do, stated so nobody has to discover it. The
 misses above carry their own causes; these are the gaps that no single row
 shows.
 
-- **Evacuation is not modelled.** The toll counts everyone inside the footprint. It is the largest single cause among the misses above — Tōhoku's coast, Mount St Helens and Pinatubo all over-predict because people had left — and on Tōhoku the wave itself is right: the model's median shore height on the Sanriku coast is 9.5 m against a surveyed 8–15 (docs/ROADMAP.md, move 3b).
+- **A warned coast evacuates on a timer, not on the shaking.** Volcanic scenarios carry the zone that was cleared before the eruption, and inside it the mortality measured at Merapi in 2010. Tsunamis do not yet: a warning with under half an hour of lead has no effect, and on Tōhoku's coast — where the wave itself is right, a median shore height of 9.5 m against a surveyed 8–15, and 57 % of surveyed evacuees left immediately after the shaking — the coastal toll is about three times the record for it (docs/ROADMAP.md, move 3b).
 - **The far-field wave law has no rupture length in it.** Every source spreads as a ring of half its down-dip width, so 702 km of fault and 1 300 km radiate the same wave at the same range. Sumatra's far coasts are five to ten times under-waved as a result (docs/ROADMAP.md, move 3b).
 - **The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.
 - **No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.

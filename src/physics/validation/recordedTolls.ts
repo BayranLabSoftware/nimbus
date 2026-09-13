@@ -88,7 +88,12 @@ export type TollCause =
    *  wave needs: the row is the shaking alone. */
   | 'drownedOffline'
   /** The raster counts who lives there now, not who lived there then. */
-  | 'populationChanged';
+  | 'populationChanged'
+  /** The map counts where people live, not who was in the footprint at
+   *  the hour it struck. */
+  | 'occupancy'
+  /** The dead were killed by something the model does not simulate. */
+  | 'mechanismNotModelled';
 
 export const TOLL_CAUSES: readonly TollCause[] = [
   'evacuation',
@@ -96,6 +101,8 @@ export const TOLL_CAUSES: readonly TollCause[] = [
   'populationRaster',
   'drownedOffline',
   'populationChanged',
+  'occupancy',
+  'mechanismNotModelled',
 ];
 
 const quake = (preset: keyof typeof EARTHQUAKE_PRESETS): (() => ActiveResult) => {
@@ -181,12 +188,13 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     latitude: 46.1912,
     longitude: -122.1944,
     recordedDeaths: 57,
-    source: 'USGS: 57 deaths, lateral blast across largely evacuated terrain',
+    source:
+      'USGS: 57 deaths; only three were inside the red zone, most in areas that had been considered safe',
     run: volcano('MT_ST_HELENS_1980'),
-    cause: 'evacuation',
+    cause: 'occupancy',
     gated: false,
     caveat:
-      'The mountain had been closed for two months and the red zone evacuated; the 57 who died had mostly refused to leave or were outside the zone the blast then overran. The central figure assumes nobody was warned and sits at 4.7x the record. Until 9 September this row was recorded as containing the count: its band was the gentlest and harshest pyroclastic mortality in the vulnerability table, 3 to 295, and an evacuated eruption fell inside it by accident. The predictive interval drawn from the scatter of the eruption itself is 120 to 692, and 57 falls outside it — which is the true statement. A model that counts everyone who was there cannot reach a toll made by everyone having left. Ungated because a preset cannot know whether an evacuation happened.',
+      "Not evacuation, and that took a measurement to see. This row was filed under it until 14 September, when the preset learned what zone had been cleared and the toll did not move: 264 of the model's 265 dead are in the lateral-blast sector between 11 and 27 km, and the closed zones reached about eight. The record agrees — only three of the 57 were inside the red zone, the blast going nearly four times further than anyone had closed. So the model is right to count that sector as unwarned. What it cannot know is who was in it: the population map puts 586 residents there, and the blast came at 08:32 on a Sunday, into logging land whose crews were not working. The predictive interval is 120 to 692 against 57.",
   },
   {
     name: 'Pinatubo 1991',
@@ -196,10 +204,10 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     source:
       'USGS/PHIVOLCS: ~847 deaths, most from roofs collapsing under wet ash during Typhoon Yunya',
     run: volcano('PINATUBO_1991'),
-    cause: 'evacuation',
+    cause: 'mechanismNotModelled',
     gated: false,
     caveat:
-      'The predictive interval is 32 000 to 314 000 and misses the 847 counted by two orders of magnitude. The old band reached down to 916 and missed by eight per cent, which read like a model very nearly right; it was the gentlest setting of the vulnerability table, not a claim about this eruption. Containing it would in any case be the wrong target: sixty thousand people were evacuated before the climax, and most of those who still died were killed by roofs collapsing under ash wetted by Typhoon Yunya, a mechanism this model does not simulate at all. It counts the current, over people who had gone.',
+      "The model now knows the zone was cleared — PHIVOLCS widened it to 40 km before the climax — and reads 82 dead where it read 82 477: the currents' mortality in a cleared zone, measured at Merapi in 2010, over the 91 641 people the map puts inside their reach. It misses the 847 counted from below, and should: most of Pinatubo's dead were killed by roofs collapsing under ash wetted by Typhoon Yunya, and by disease in the evacuation camps, neither of which this model simulates. Rounding the Merapi ratio up to one per cent, as the band's high end does, would land the toll within ten per cent of the record — for the wrong dead.",
   },
   {
     name: 'Hiroshima 1945',

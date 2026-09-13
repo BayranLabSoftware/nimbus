@@ -605,6 +605,24 @@ export const PYROCLASTIC_MORTALITY = 0.9;
  */
 export const PYROCLASTIC_MORTALITY_EVACUATED = 0.01;
 
+/**
+ * Mortality inside a zone that was ordered cleared, as measured rather
+ * than rounded: Merapi 2010, 367 dead among 410 388 people displaced
+ * from zones widened from 10 to 20 km as the eruption grew (BNPB, in
+ * Surono et al. 2012, J. Volcanol. Geotherm. Res. 241–242: 121–135).
+ * The dead are the ones who would not leave, who went back, or who
+ * were caught when a current outran the zone of the day.
+ *
+ * Not the one per cent above. That figure is the Merapi ratio rounded
+ * up ten-fold to make a conservative band end, and used as the central
+ * value of an evacuated scenario it would land Pinatubo within a few
+ * per cent of its record — by rounding, and for dead the model does not
+ * even simulate, since most of Pinatubo's were killed by roofs
+ * collapsing under wet ash. The one per cent stays as the high end of
+ * an evacuated zone; the measured ratio is the centre.
+ */
+export const PYROCLASTIC_MORTALITY_IN_CLEARED_ZONE = 367 / 410_388;
+
 export interface PyroclasticCasualtyInput {
   pyroclasticRunout: Meters;
   /** Lateral-blast runout (m) and sector width (°), when the eruption
@@ -612,33 +630,61 @@ export interface PyroclasticCasualtyInput {
    *  disc is weighted by sector/360. */
   lateralBlastRunout?: Meters;
   lateralBlastSectorDeg?: number;
+  /** Radius (m) of the zone cleared before the eruption. Inside it the
+   *  measured mortality of a cleared zone applies; beyond it, everyone
+   *  a current reaches is someone nobody told to leave. */
+  evacuationRadiusM?: number;
 }
 
 export function pyroclasticCasualtyPlan(input: PyroclasticCasualtyInput): CasualtyPlan | null {
   const runout = input.pyroclasticRunout as number;
+  const cleared =
+    input.evacuationRadiusM !== undefined && Number.isFinite(input.evacuationRadiusM)
+      ? Math.max(0, input.evacuationRadiusM)
+      : 0;
   const bands: CasualtyBand[] = [];
-  if (Number.isFinite(runout) && runout > 0) {
-    bands.push({
-      key: 'pyroclastic',
-      innerRadiusM: 0,
-      outerRadiusM: runout,
-      mortality: PYROCLASTIC_MORTALITY,
-      mortalityLow: PYROCLASTIC_MORTALITY_EVACUATED,
-      mortalityHigh: 1,
-    });
-  }
+
+  /**
+   * One hazard's annulus, cut where the cleared zone ends. The same
+   * current kills at the same rate on both sides of that line; what
+   * differs is who is still there. Mount St Helens is why the cut is
+   * a radius and not a switch: the closed zones reached about eight
+   * kilometres, the lateral blast went four times further, and only
+   * three of the fifty-seven dead were inside the red zone.
+   */
+  const push = (key: string, inner: number, outer: number, weight: number): void => {
+    if (!(outer > inner)) return;
+    const split = Math.min(Math.max(cleared, inner), outer);
+    if (split > inner) {
+      bands.push({
+        key: `${key}Evacuated`,
+        innerRadiusM: inner,
+        outerRadiusM: split,
+        mortality: PYROCLASTIC_MORTALITY_IN_CLEARED_ZONE * weight,
+        // Pinatubo lost nobody to the currents among the people who
+        // had left; the high end is the ten-fold rounding above.
+        mortalityLow: 0,
+        mortalityHigh: PYROCLASTIC_MORTALITY_EVACUATED * weight,
+      });
+    }
+    if (outer > split) {
+      bands.push({
+        key,
+        innerRadiusM: split,
+        outerRadiusM: outer,
+        mortality: PYROCLASTIC_MORTALITY * weight,
+        mortalityLow: PYROCLASTIC_MORTALITY_EVACUATED * weight,
+        mortalityHigh: weight,
+      });
+    }
+  };
+
+  if (Number.isFinite(runout) && runout > 0) push('pyroclastic', 0, runout, 1);
   const blast = input.lateralBlastRunout as number | undefined;
   const sector = input.lateralBlastSectorDeg ?? 0;
   if (blast !== undefined && Number.isFinite(blast) && blast > Math.max(0, runout) && sector > 0) {
     const weight = Math.min(1, Math.max(0, sector / 360));
-    bands.push({
-      key: 'lateralBlast',
-      innerRadiusM: Math.max(0, runout),
-      outerRadiusM: blast,
-      mortality: PYROCLASTIC_MORTALITY * weight,
-      mortalityLow: PYROCLASTIC_MORTALITY_EVACUATED * weight,
-      mortalityHigh: weight,
-    });
+    push('lateralBlast', Math.max(0, runout), blast, weight);
   }
   if (bands.length === 0) return null;
   return { model: 'pyroclastic', bands };

@@ -100,6 +100,8 @@ const CAUSES = [
   'populationRaster',
   'drownedOffline',
   'populationChanged',
+  'occupancy',
+  'mechanismNotModelled',
 ] as const;
 type Cause = (typeof CAUSES)[number];
 const isCause = (c: string | null): c is Cause =>

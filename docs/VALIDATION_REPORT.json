@@ -103,21 +103,21 @@
         "ratio": 4.649,
         "contains": false,
         "gated": false,
-        "cause": "evacuation",
-        "source": "USGS: 57 deaths, lateral blast across largely evacuated terrain"
+        "cause": "occupancy",
+        "source": "USGS: 57 deaths; only three were inside the red zone, most in areas that had been considered safe"
       },
       {
         "event": "Pinatubo 1991",
         "recorded": 847,
         "recordedLow": 847,
         "recordedHigh": 847,
-        "model": 82477,
-        "bandLow": 32123,
-        "bandHigh": 313870,
-        "ratio": 97.375,
+        "model": 82,
+        "bandLow": 32,
+        "bandHigh": 312,
+        "ratio": 0.097,
         "contains": false,
         "gated": false,
-        "cause": "evacuation",
+        "cause": "mechanismNotModelled",
         "source": "USGS/PHIVOLCS: ~847 deaths, most from roofs collapsing under wet ash during Typhoon Yunya"
       },
       {
@@ -421,10 +421,10 @@
       },
       {
         "event": "Pinatubo 1991",
-        "measuredLow": 32123,
-        "measuredHigh": 313870,
-        "interpolatedLow": 32123,
-        "interpolatedHigh": 313870,
+        "measuredLow": 32,
+        "measuredHigh": 312,
+        "interpolatedLow": 32,
+        "interpolatedHigh": 312,
         "comparable": true
       },
       {

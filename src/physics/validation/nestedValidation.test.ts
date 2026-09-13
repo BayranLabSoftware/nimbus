@@ -251,3 +251,26 @@ describe('Nested validation — both nested objects together', () => {
     expect(v.result.input?.flankCollapse?.volumeM3).toBe(2.5e10);
   });
 });
+
+describe('the cleared zone of a volcano', () => {
+  it('is kept when it is a distance, and refused when it is not', () => {
+    const ok = validateVolcanoInput({
+      volumeEruptionRate: 2e5,
+      totalEjectaVolume: 1e10,
+      evacuationRadiusM: 40_000,
+    });
+    expect(ok.status).toBe('accepted');
+    // Kept rather than dropped: the validator builds its output field by
+    // field, and a field it did not know would vanish the moment a
+    // reader edited anything else on the Pinatubo preset.
+    expect(ok.input?.evacuationRadiusM).toBe(40_000);
+    for (const bad of [-1, Number.NaN, Number.POSITIVE_INFINITY]) {
+      const r = validateVolcanoInput({
+        volumeEruptionRate: 2e5,
+        totalEjectaVolume: 1e10,
+        evacuationRadiusM: bad,
+      });
+      expect(r.status, String(bad)).toBe('invalid');
+    }
+  });
+});

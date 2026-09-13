@@ -7,6 +7,24 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **A volcano knows which zone was cleared.** `evacuationRadiusM` is the
+  zone ordered cleared before the eruption, set by the reader in the
+  panel and by the record in historical presets. Inside it the model
+  uses the mortality measured at Merapi in 2010 — 367 dead among
+  410 388 displaced — and beyond it everyone a current reaches counts
+  as unwarned. A radius rather than a switch: at Mount St Helens the
+  closed zones reached about eight kilometres, the blast nearly four
+  times that, and only three of the fifty-seven dead were inside the
+  red zone. Pinatubo (40 km, PHIVOLCS) goes from 82 477 modelled dead
+  to 82 against 847 counted — now under, because most of its dead were
+  killed by ash-loaded roofs and disease in the camps, which the model
+  does not simulate. St Helens does not move: its modelled dead are
+  beyond the zone, and its cause is now recorded as occupancy rather
+  than evacuation, which was wrong. The band's old "Merapi ratio" of
+  one per cent was the real ratio rounded up ten-fold; it stays a high
+  end and is no longer anyone's centre.
+
+
 - **A public validation page** (`?m=validation`, one click from the
   landing page and from the methodology page). The model against real
   events, with the misses shown as prominently as the matches: every

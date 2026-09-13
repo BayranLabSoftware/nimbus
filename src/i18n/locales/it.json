@@ -351,7 +351,9 @@
       "windAdvectedLabel": "Ricaduta avvezionata dal vento",
       "ashfallDownwindRange": "Isopaca 1 mm — estensione sottovento",
       "ashfallCrosswindHalfWidth": "Isopaca 1 mm — semi-larghezza trasversale",
-      "ashfallWindAdvectedArea": "Area isopaca 1 mm (orientata col vento)"
+      "ashfallWindAdvectedArea": "Area isopaca 1 mm (orientata col vento)",
+      "evacuationRadiusInput": "Zona evacuata prima dell'eruzione (raggio in km)",
+      "evacuationRadiusHelp": "0 = nessuno è stato avvisato. Dentro la zona il modello usa la mortalità misurata al Merapi nel 2010 (367 morti su 410 388 evacuati); oltre, tutti quelli che una corrente raggiunge."
     },
     "landslide": {
       "summaryHeading": "Frana sottomarina · volume, geometria, sorgente tsunami",
@@ -1282,12 +1284,14 @@
       "lateralBlast": "Esplosione laterale",
       "thermalOnly": "Solo ustioni",
       "tsunami": "Costa raggiunta dall'onda",
-      "firestormOnly": "Solo tempesta di fuoco"
+      "firestormOnly": "Solo tempesta di fuoco",
+      "pyroclasticEvacuated": "Flusso piroclastico — zona sgomberata",
+      "lateralBlastEvacuated": "Esplosione laterale — zona sgomberata"
     },
     "model": {
       "blast": "Crolli e onda d'urto: OTA 1979, The Effects of Nuclear War, tab. 2 (98 % a ≥ 12 psi, 50 % a 5 psi, 5 % a 2 psi). Ustioni: Glasstone & Dolan 1977, cap. XII, sul 25 % esposto alla vista della palla di fuoco (10–50 %), mortalità 50 % (30–80 %) dentro il raggio di terzo grado. Tempesta di fuoco: 30 % dei sopravvissuti (10–80 %, Amburgo e Dresda in basso, il superfuoco di Postol 1986 in alto). Morti differiti: 30 % dei feriti entro settimane senza cure (10–60 %, OTA 1979). In ogni fascia i pericoli agiscono in sequenza sui sopravvissuti, nessuno muore due volte",
       "shaking": "Tasso di mortalità PAGER ν(S) = Φ(ln(S/θ)/β), Jaiswal & Wald 2010. Valore centrale per un patrimonio edilizio medio (θ = 13,5, β = 0,22); il minimo è un patrimonio antisismico (Giappone, Stati Uniti), il massimo muratura non armata (Iran, Haiti): tre ordini di grandezza, perché il simulatore non conosce le case sotto l'anello",
-      "pyroclastic": "90 % dentro il flusso piroclastico senza evacuazione, Auker et al. 2013; il minimo è l'1 %, cioè un'eruzione evacuata — al Pinatubo 1991 sessantamila persone uscirono prima del culmine e al Merapi 2010 morì circa uno su mille degli esposti, quelli che non se ne andarono o tornarono indietro",
+      "pyroclastic": "90 % dentro il flusso piroclastico per chi non è stato avvisato (Auker et al. 2013); dentro la zona sgomberata prima dell'eruzione, la mortalità misurata al Merapi nel 2010: 367 morti su 410 388 evacuati (Surono et al. 2012). Il raggio della zona è un dato dello scenario: senza, nessuno se n'è andato",
       "tsunami": "Tsunami: per ogni cella costiera raggiunta dall'onda l'altezza dell'acqua a riva è H = √(A · min(R, A)): il run-up di Synolakis è creduto solo fino all'ampiezza che arriva, perché il tetto di frangimento di McCowan (4 × A) satura sull'84–95 % delle celle e lì il run-up è il tetto, non una misura; la striscia inondata è la distanza di Bretschneider & Wybro 1976, X = 0,06 · H^(4/3) / n² con n = 0,03 (1,3 km per 9 m, la media del Tōhoku 2011; max 10 km); la popolazione è la densità di terra dai tasselli GHS-POP; la mortalità è log-normale nella profondità media H/2 (θ = 8 m, β = 0,8 per una costa raggiunta entro mezz'ora, senza preavviso; 16 m da tre ore in poi, quando la costa è stata avvisata ed evacuata come al Tōhoku 2011, con transizione logaritmica; 4 m come a Banda Aceh 2004 all'estremo alto, sempre), forma di Koshimura et al. 2009 e Jonkman et al. 2008",
       "blastChemical": "Detonazione convenzionale: sotto i 12 psi l'onda d'urto diretta non uccide quasi nessuno (Glasstone & Dolan 1977, §12.44: soglia di danno polmonare 8–12 psi, letalità 50 % a 30–50 psi), quindi i morti sono sotto gli edifici — 20 % a ≥ 12 psi, 3 % a 5 psi, 0,5 % a 2 psi, banda di un fattore 3 perché il registro è sottile. Niente lampo termico né tempesta di fuoco: un esplosivo chimico irradia una frazione per cento dell'energia, un ordigno nucleare un terzo. Morti differiti 2 % dei feriti (0,5–6 %): gli ospedali restano in piedi, a differenza del paese sotto attacco di OTA"
     },
@@ -1402,6 +1406,14 @@
       "populationChanged": {
         "label": "La mappa conta chi ci vive oggi",
         "body": "Hiroshima aveva circa 350 000 abitanti nel 1945 e circa 1,2 milioni oggi. La mappa di popolazione è del 2020, quindi il modello deve sbagliare per eccesso — ed è per questo che la riga è mostrata ma non è vincolante, anche se cade dentro il dato."
+      },
+      "occupancy": {
+        "label": "La mappa conta i residenti, non chi c'era a quell'ora",
+        "body": "Il Mount St Helens eruttò alle 8:32 di una domenica. Le zone chiuse arrivavano a circa otto chilometri e il blast laterale andò quasi quattro volte più lontano, quindi il modello fa bene a considerare il settore del blast come non avvisato — solo tre dei 57 morti erano nella zona rossa. Ma riempie quel settore con una mappa di dove la gente abita, che ci mette 586 residenti, e il blast arrivò in una zona di taglio del legname le cui squadre quel giorno non lavoravano."
+      },
+      "mechanismNotModelled": {
+        "label": "Sono morti di qualcosa che il modello non simula",
+        "body": "Al Pinatubo la zona di pericolo era stata allargata a 40 km e circa sessantamila persone se n'erano andate, quindi il modello ora conta le correnti su una zona sgomberata e trova qualche decina di morti. La maggior parte degli 847 morti la uccisero i tetti crollati sotto la cenere inzuppata da un tifone e le malattie nei campi di evacuazione — due meccanismi che questo modello non contiene. Sbaglia per difetto, ed è per questo."
       }
     },
     "waves": {
@@ -1443,8 +1455,8 @@
       "title": "Cosa il modello non fa",
       "body": "Scritto qui perché nessuno debba scoprirlo da solo.",
       "evacuation": {
-        "item": "Nessuno viene evacuato",
-        "note": "Il bilancio conta tutti quelli dentro l'impronta. È la causa più grande fra gli scarti, e va sempre nella stessa direzione."
+        "item": "Una costa avvisata evacua a tempo, non allo scuotimento",
+        "note": "Gli scenari vulcanici ora portano la zona che è stata sgomberata. Per gli tsunami il modello non dà ancora alcun effetto a un preavviso sotto la mezz'ora — e sulla costa del Tōhoku, dove la maggior parte della gente se n'è andata pochi minuti dopo la scossa, questo conta circa tre volte i morti. I dati pubblicati sulla risposta all'evacuazione che servono per sostituire il timer sono nella roadmap."
       },
       "farField": {
         "item": "Le coste lontane ricevono un'onda troppo piccola dalle rotture molto lunghe",

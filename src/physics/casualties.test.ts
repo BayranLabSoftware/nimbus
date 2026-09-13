@@ -11,6 +11,7 @@ import {
   PAGER_VULNERABILITY,
   pagerFatalityRate,
   pyroclasticCasualtyPlan,
+  PYROCLASTIC_MORTALITY_IN_CLEARED_ZONE,
   shakingCasualtyPlan,
   THERMAL_EXPOSED_FRACTION,
   thermalHorizonRadius,
@@ -117,6 +118,59 @@ describe('shakingCasualtyPlan', () => {
       mmi9Radius: meters(0),
     });
     expect(plan?.bands.map((b) => b.key)).toEqual(['mmi8', 'mmi7']);
+  });
+});
+
+describe('pyroclasticCasualtyPlan — who had been told to leave', () => {
+  it('a cleared zone takes the mortality measured at Merapi, not the one of a current nobody fled', () => {
+    const open = pyroclasticCasualtyPlan({ pyroclasticRunout: meters(20_000) });
+    const cleared = pyroclasticCasualtyPlan({
+      pyroclasticRunout: meters(20_000),
+      evacuationRadiusM: 40_000,
+    });
+    expect(open?.bands.map((b) => b.key)).toEqual(['pyroclastic']);
+    expect(cleared?.bands.map((b) => b.key)).toEqual(['pyroclasticEvacuated']);
+    expect(cleared?.bands[0]?.mortality).toBeCloseTo(PYROCLASTIC_MORTALITY_IN_CLEARED_ZONE, 12);
+    // Merapi 2010: 367 dead among 410 388 displaced — about a thousandth,
+    // and three orders of magnitude below a current that reached people
+    // where they lived.
+    expect(PYROCLASTIC_MORTALITY_IN_CLEARED_ZONE).toBeGreaterThan(0.0008);
+    expect(PYROCLASTIC_MORTALITY_IN_CLEARED_ZONE).toBeLessThan(0.001);
+    expect((open?.bands[0]?.mortality ?? 0) / (cleared?.bands[0]?.mortality ?? 1)).toBeGreaterThan(
+      900
+    );
+  });
+
+  it('cuts a band where the cleared zone ends, because the current does not', () => {
+    // Mount St Helens: the closed zones reached about eight kilometres
+    // and the lateral blast went four times further. The current kills
+    // at the same rate on both sides of the line; what differs is who
+    // is still there.
+    const plan = pyroclasticCasualtyPlan({
+      pyroclasticRunout: meters(10_000),
+      lateralBlastRunout: meters(27_000),
+      lateralBlastSectorDeg: 180,
+      evacuationRadiusM: 8_000,
+    });
+    expect(plan?.bands.map((b) => [b.key, b.innerRadiusM, b.outerRadiusM])).toEqual([
+      ['pyroclasticEvacuated', 0, 8_000],
+      ['pyroclastic', 8_000, 10_000],
+      ['lateralBlast', 10_000, 27_000],
+    ]);
+    // Contiguous, so the cumulative-population arithmetic still holds.
+    const bands = plan?.bands ?? [];
+    for (let i = 1; i < bands.length; i++) {
+      expect(bands[i]?.innerRadiusM).toBe(bands[i - 1]?.outerRadiusM);
+    }
+  });
+
+  it('a zone of zero, or none at all, is nobody told to leave', () => {
+    const none = pyroclasticCasualtyPlan({ pyroclasticRunout: meters(5_000) });
+    const zero = pyroclasticCasualtyPlan({
+      pyroclasticRunout: meters(5_000),
+      evacuationRadiusM: 0,
+    });
+    expect(zero).toEqual(none);
   });
 });
 

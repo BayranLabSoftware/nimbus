@@ -492,6 +492,39 @@ Tōhoku replay fixture, the B-006 registry entry, the Cocos NOAA pin
 and two module tests — were fitted around the law that is wrong. They
 need re-anchoring, not protecting.
 
+### 3c. Who was told to leave _(volcanoes done 14 September; tsunami coasts open)_
+
+**Volcanoes: done.** `VolcanoScenarioInput.evacuationRadiusM` is the
+zone cleared before the eruption. Inside it the mortality is the one
+measured at Merapi in 2010 — 367 dead among 410 388 displaced (BNPB,
+in Surono et al. 2012) — and beyond it everyone a current reaches is
+unwarned. A radius and not a switch, because at Mount St Helens the
+closed zones reached about eight kilometres, the blast went nearly
+four times further, and only three of the fifty-seven dead were inside
+the red zone. Pinatubo carries PHIVOLCS's 40 km and moves from 82 477
+modelled dead to 82 against 847 counted — under, because most of those
+847 died under ash-loaded roofs and of disease in the camps, which the
+model does not simulate. St Helens does not move, and should not: its
+modelled dead are beyond the zone. The band's old "Merapi ratio" of one
+per cent was that ratio rounded up ten-fold; as the centre of a cleared
+zone it would have landed Pinatubo on its record by rounding.
+
+**Tsunami coasts: open, with what the replacement needs.** A warning
+does nothing in this model under half an hour of lead
+(`WARNING_ONSET_S`), and Tōhoku's coast had twenty to forty minutes.
+The record says a prepared coast uses them: in the joint JMA / FDMA /
+Cabinet Office survey of 870 evacuees in Iwate, Miyagi and Fukushima
+(July 2011), 57 % left immediately after the earthquake and 37 % later,
+the strong shaking itself the most common trigger; Yun & Hamada (2015,
+Earthquake Spectra 31 (3)) find evacuation efficiency dominates the
+fatality ratios once height and arrival time are accounted for. That is
+the whole of Tōhoku's 2.9× (move 3b). What must not happen is the
+shortcut: the model's "evacuated coast" vulnerability pair was itself
+read off Tōhoku's death ratios, so handing it to Tōhoku would check the
+model against its own input. The replacement is a published
+departure-time and travel-to-safety distribution, anchored on a coast
+other than the one it came from.
+
 ### 4. The MMI footprint
 
 The 10× on the headline of every earthquake. The contours come from a

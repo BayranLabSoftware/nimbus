@@ -43,6 +43,19 @@ export interface VolcanoScenarioInput {
     /** Opening angle of the affected sector (°). Defaults to 180. */
     sectorAngleDeg?: number;
   };
+  /**
+   * Radius (m) of the danger zone cleared before the eruption, measured
+   * from the vent. Omitted — or zero — means nobody was told to leave,
+   * which is the worst case and the one every custom scenario starts
+   * from until the reader says otherwise.
+   *
+   * It is a fact about the authorities, not about the volcano, and it
+   * decides the death toll more than anything the volcano does: a
+   * pyroclastic current kills almost everyone it reaches and almost
+   * nobody who has left. Historical presets carry the zone the record
+   * says was cleared. See `pyroclasticCasualtyPlan`.
+   */
+  evacuationRadiusM?: Meters;
   /** Optional flank- or caldera-collapse tsunami source. When present
    *  the result exposes a Watts-class wave amplitude derived from the
    *  collapsed-block volume and the failure-plane slope angle. */
@@ -296,6 +309,11 @@ export const VOLCANO_PRESETS = {
       volumeEruptionRate: 2e5,
       totalEjectaVolume: 1e10,
       laharVolume: 5e8,
+      // PHIVOLCS widened the danger zone from 10 to 20, 30 and finally
+      // 40 km before the climactic eruption of 15 June, and some sixty
+      // thousand people had left it (Newhall & Punongbayan 1996;
+      // Pierson et al. 2021, Front. Earth Sci. 9: 743477).
+      evacuationRadiusM: m(40_000),
     } satisfies VolcanoScenarioInput,
   },
   /** 24 August 79 CE Vesuvius, Campania — VEI 5, ≈ 4 km³ bulk DRE.

@@ -300,6 +300,17 @@ describe('useAppStore — terrain before physics', () => {
   }, 30_000);
 });
 
+describe('useAppStore — a volcano knows which zone was cleared', () => {
+  it("keeps the preset's cleared zone when the reader edits another field", () => {
+    useAppStore.getState().selectPreset('PINATUBO_1991');
+    expect(useAppStore.getState().volcano.input.evacuationRadiusM).toBe(40_000);
+    useAppStore.getState().setVolcanoInput({ windSpeed: 5 });
+    expect(useAppStore.getState().volcano.input.evacuationRadiusM).toBe(40_000);
+    useAppStore.getState().setVolcanoInput({ evacuationRadiusM: 0 });
+    expect(useAppStore.getState().volcano.input.evacuationRadiusM).toBe(0);
+  });
+});
+
 describe('useAppStore — casualty estimate', () => {
   afterEach(() => {
     configurePopulationLookup(null);

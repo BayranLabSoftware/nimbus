@@ -438,6 +438,7 @@ interface VolcanoRawInput {
   laharVolume?: unknown;
   windSpeed?: unknown;
   windDirectionDegrees?: unknown;
+  evacuationRadiusM?: unknown;
   flankCollapse?: unknown;
   lateralBlast?: unknown;
 }
@@ -702,6 +703,19 @@ export function validateVolcanoInput(raw: VolcanoRawInput): ValidationResult<Vol
       'windDirectionDegrees',
       warnings
     );
+  }
+
+  if (raw.evacuationRadiusM !== undefined) {
+    if (!isFiniteNumber(raw.evacuationRadiusM) || raw.evacuationRadiusM < 0) {
+      errors.push({
+        field: 'evacuationRadiusM',
+        code: isFiniteNumber(raw.evacuationRadiusM) ? 'NEGATIVE_FORBIDDEN' : 'NOT_FINITE',
+        message: 'evacuationRadiusM (m) must be finite >= 0',
+        rawValue: raw.evacuationRadiusM,
+      });
+      return invalid(errors);
+    }
+    out.evacuationRadiusM = m(raw.evacuationRadiusM);
   }
 
   // Nested validation — closes L7 in CONSOLIDATION_AUDIT.md.

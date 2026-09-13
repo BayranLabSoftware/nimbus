@@ -613,7 +613,7 @@ misses above carry their own causes; these are the gaps that no single row
 shows.
 
 ${bullet([
-  "**Evacuation is not modelled.** The toll counts everyone inside the footprint. It is the largest single cause among the misses above — Tōhoku's coast, Mount St Helens and Pinatubo all over-predict because people had left — and on Tōhoku the wave itself is right: the model's median shore height on the Sanriku coast is 9.5 m against a surveyed 8–15 (docs/ROADMAP.md, move 3b).",
+  "**A warned coast evacuates on a timer, not on the shaking.** Volcanic scenarios carry the zone that was cleared before the eruption, and inside it the mortality measured at Merapi in 2010. Tsunamis do not yet: a warning with under half an hour of lead has no effect, and on Tōhoku's coast — where the wave itself is right, a median shore height of 9.5 m against a surveyed 8–15, and 57 % of surveyed evacuees left immediately after the shaking — the coastal toll is about three times the record for it (docs/ROADMAP.md, move 3b).",
   "**The far-field wave law has no rupture length in it.** Every source spreads as a ring of half its down-dip width, so 702 km of fault and 1 300 km radiate the same wave at the same range. Sumatra's far coasts are five to ten times under-waved as a result (docs/ROADMAP.md, move 3b).",
   '**The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.',
   "**No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.",

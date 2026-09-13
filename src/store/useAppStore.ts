@@ -330,6 +330,8 @@ export interface VolcanoInputOverrides {
   /** Optional wind direction (° clockwise from North) — orients the
    *  ashfall footprint on the globe. */
   windDirectionDegrees?: number;
+  /** Radius (m) of the zone cleared before the eruption; 0 for none. */
+  evacuationRadiusM?: number;
 }
 
 /** Any preset id across event types. Used by the polymorphic
@@ -1519,6 +1521,9 @@ export function casualtyPlanForResult(
           lateralBlastRunout: result.data.lateralBlast.runout,
           lateralBlastSectorDeg: result.data.lateralBlast.sectorAngleDeg,
         }),
+        ...(result.data.inputs.evacuationRadiusM !== undefined && {
+          evacuationRadiusM: result.data.inputs.evacuationRadiusM,
+        }),
       });
     case 'landslide':
       return null;
@@ -2283,6 +2288,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
       if (overrides.windSpeed !== undefined) merged.windSpeed = overrides.windSpeed;
       if (overrides.windDirectionDegrees !== undefined)
         merged.windDirectionDegrees = overrides.windDirectionDegrees;
+      if (overrides.evacuationRadiusM !== undefined)
+        merged.evacuationRadiusM = m(overrides.evacuationRadiusM);
 
       const classification = classifyStoreInput('volcano', merged);
       if (!classification.ok) return state;

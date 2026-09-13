@@ -31,6 +31,7 @@ export function VolcanoCustomInputs(): JSX.Element {
   const vdotIssues = useFieldIssues('volcano', 'volumeEruptionRate');
   const volIssues = useFieldIssues('volcano', 'totalEjectaVolume');
   const laharIssues = useFieldIssues('volcano', 'laharVolume');
+  const evacIssues = useFieldIssues('volcano', 'evacuationRadiusM');
   const windDirIssues = useFieldIssues('volcano', 'windDirectionDegrees');
 
   const vdot = splitScientific(input.volumeEruptionRate);
@@ -57,6 +58,12 @@ export function VolcanoCustomInputs(): JSX.Element {
   };
   const updateVolExp = (e: ChangeEvent<HTMLSelectElement>): void => {
     setVolcanoInput({ totalEjectaVolume: vol.mantissa * 10 ** parseInt(e.target.value, 10) });
+  };
+  // Kilometres on screen, metres in the model; empty or zero is a
+  // scenario in which nobody was told to leave.
+  const updateEvacuation = (e: ChangeEvent<HTMLInputElement>): void => {
+    const km = e.target.value === '' ? 0 : parseFloat(e.target.value);
+    if (Number.isFinite(km) && km >= 0) setVolcanoInput({ evacuationRadiusM: km * 1_000 });
   };
   const updateWindSpeed = (e: ChangeEvent<HTMLInputElement>): void => {
     const v = parseFloat(e.target.value);
@@ -185,6 +192,34 @@ export function VolcanoCustomInputs(): JSX.Element {
             isError={laharIssues.hasError}
           />
         </span>
+      </div>
+
+      <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
+        <label className={styles.paramLabel} htmlFor="volcano-evacuation">
+          {t('simulator.volcano.evacuationRadiusInput')}
+        </label>
+        <input
+          id="volcano-evacuation"
+          className={styles.paramInput}
+          type="number"
+          inputMode="decimal"
+          min={0}
+          max={200}
+          step={1}
+          value={((input.evacuationRadiusM as number | undefined) ?? 0) / 1_000}
+          onChange={updateEvacuation}
+          aria-invalid={evacIssues.hasError || undefined}
+          aria-describedby="volcano-evacuation-help"
+        />
+        <span id="volcano-evacuation-help" className={styles.presetNote}>
+          {t('simulator.volcano.evacuationRadiusHelp')}
+        </span>
+        <FieldFeedback
+          field="evacuationRadiusM"
+          message={evacIssues.topMessage}
+          code={evacIssues.topCode}
+          isError={evacIssues.hasError}
+        />
       </div>
 
       <div className={styles.paramField}>
