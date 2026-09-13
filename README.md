@@ -31,15 +31,40 @@ Mw 9, between an inland impact and one in the open ocean.
 - Estimated casualties per hazard band — WorldPop 2020 population
   (zonal-statistics API, no key) times OTA 1979 blast, USGS PAGER
   shaking, Auker 2013 pyroclastic mortality, burns, mass fire, later
-  deaths and the coastal toll of the wave, with a low–high band.
-  The bar of the globe view counts the toll as the hazard front sweeps
-  the bands, with the low–high band and the physical clock beside it.
+  deaths and the coastal toll of the wave. Every toll carries a 9-in-10
+  predictive band drawn from the published scatter of its inputs, not
+  a range of vulnerability parameters. The bar of the globe view counts
+  the toll as the hazard front sweeps the bands, with the band and the
+  physical clock beside it.
 - Monte-Carlo P10/P90 confidence rings around the nominal damage circles.
 - Cesium globe with damage zones drawn at true geographic scale, each
   contour captioned on the map, and ≈ 4 000 Natural Earth cities to
   pick an epicentre from (click a name, or search it).
 - WCAG 2.1 AA, full keyboard navigation, English + Italian.
 - Every scenario state is in the URL — share a link, get the same sim.
+
+## How it is checked
+
+The model is run against events the world has already lived through and
+somebody measured — death tolls, buoy and survey wave heights, USGS
+ShakeMap intensity footprints — and the misses are published as
+prominently as the matches, each with its named cause.
+
+- **[Validation page](https://bayranlabsoftware.github.io/nimbus/?m=validation)**
+  — the model against real events, in Italian and English.
+- **[docs/VALIDATION_REPORT.md](docs/VALIDATION_REPORT.md)** — the full
+  report, with a machine-readable copy in `VALIDATION_REPORT.json`.
+
+The report is generated from the code, and CI fails any push whose
+committed report differs from what that code produces, so the copy at
+any commit describes the model at that commit. Every simulation report
+the application prints names its commit and links to that copy.
+
+## How to cite
+
+Citation metadata is in [CITATION.cff](CITATION.cff); GitHub's "Cite this
+repository" button reads it. Cite the commit printed on the simulation
+report you are quoting, or the release that contains it.
 
 ## Running it
 
@@ -96,7 +121,8 @@ from the command line as the browser worker. Full discussion in
 ## Documentation
 
 - [docs/SCIENCE.md](docs/SCIENCE.md) — bibliography, formula rules, master quantity table.
-- [docs/VALIDATION.md](docs/VALIDATION.md) — predicted-vs-observed regression suite (tsunami, MMI, plume, Tunguska).
+- [docs/VALIDATION_REPORT.md](docs/VALIDATION_REPORT.md) — the model against recorded events, generated from the code and kept current by CI.
+- [docs/VALIDATION.md](docs/VALIDATION.md) — how the predicted-vs-observed suites are organised.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — the four-layer structure and why.
 - [docs/ART_DIRECTION.md](docs/ART_DIRECTION.md) — visual language, palette, asset policy.
 - [docs/ROADMAP.md](docs/ROADMAP.md) — milestones and what's left for v1.0.
@@ -106,9 +132,10 @@ from the command line as the browser worker. Full discussion in
 ## Reproducing the science
 
 ```bash
-pnpm test                     # 697 unit + integration tests including the validation suite
-pnpm test src/physics/validation  # 13 predicted-vs-observed checks against published events
-pnpm sensitivity --pretty     # OAT sensitivity report for every preset
+pnpm test                         # the unit + integration suite, validation included
+pnpm test src/physics/validation  # the calibration net: tolls, waves, footprints, anchors
+pnpm validation-report            # regenerate docs/VALIDATION_REPORT.md from the code
+pnpm sensitivity --pretty         # OAT sensitivity report for every preset
 ```
 
 Every assertion runs offline against committed fixtures in

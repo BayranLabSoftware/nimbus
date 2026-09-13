@@ -7,6 +7,20 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Nimbus can be cited.** `CITATION.cff` carries the citation metadata
+  GitHub's "Cite this repository" button and Zenodo both read, and asks
+  for the commit printed on the simulation report being quoted. No
+  version or DOI yet: those arrive with the signed v1.0.0 tag and the
+  Zenodo integration, which only the maintainer can switch on. A
+  release-notes draft for 1.0 says what the release promises and what
+  it does not do, and the release checklist now names the steps only
+  the maintainer can take — and stops pointing at a repository, a
+  remote and a hosting provider the project does not use.
+
+- **The README says how the model is checked**, links the validation
+  page and report, and stops quoting a test count from months ago.
+
+
 - **A volcano knows which zone was cleared.** `evacuationRadiusM` is the
   zone ordered cleared before the eruption, set by the reader in the
   panel and by the record in historical presets. Inside it the model

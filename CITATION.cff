@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: >-
+  If you use Nimbus in research, teaching or reporting, please cite it as
+  below. Every simulation report the application prints names the commit
+  that produced it and links to the validation report for that commit;
+  cite that commit, or the release that contains it.
+type: software
+title: 'Nimbus — Nuclear & Impact Modeling & Blast Understanding System'
+abstract: >-
+  A browser-based simulator of asteroid impacts, nuclear and conventional
+  explosions, earthquakes, volcanic eruptions, submarine landslides and the
+  tsunamis they cause, with estimated casualties. Every quantity is traced
+  to a published source; every death toll carries a 5–95 % predictive band
+  drawn from the published scatter of its inputs; and the model is checked
+  against recorded events — death tolls, buoy and survey wave heights, USGS
+  ShakeMap footprints — in a validation report that continuous integration
+  regenerates from the code and refuses to let drift from it.
+authors:
+  - given-names: Andrea
+    family-names: Rossi
+  - name: Nimbus contributors
+repository-code: 'https://github.com/BayranLabSoftware/nimbus'
+url: 'https://bayranlabsoftware.github.io/nimbus/'
+license: Apache-2.0
+keywords:
+  - natural hazards
+  - tsunami
+  - earthquake
+  - asteroid impact
+  - nuclear explosion effects
+  - volcanic hazard
+  - casualty estimation
+  - uncertainty quantification
+  - model validation
+  - science communication
