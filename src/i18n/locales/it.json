@@ -1460,7 +1460,7 @@
       },
       "farField": {
         "item": "Le coste lontane ricevono un'onda troppo piccola dalle rotture molto lunghe",
-        "note": "La legge dell'onda non usa ancora la lunghezza della faglia, quindi 700 km e 1 300 km di rottura irradiano la stessa onda. Le coste lontane di Sumatra ricevono un'onda da cinque a dieci volte troppo piccola."
+        "note": "Le coste lontane di Sumatra ricevono un'onda da cinque a dieci volte troppo piccola, e la causa non è assodata. La legge dell'onda non usa la lunghezza della faglia — ma una correzione ingenua sulla lunghezza porterebbe l'unica boa lontana che il modello azzecca, al largo del Giappone, da giusta a tre volte troppo alta. Prima viene la derivazione."
       },
       "coastalOffline": {
         "item": "Il bilancio costiero non è in queste tabelle",

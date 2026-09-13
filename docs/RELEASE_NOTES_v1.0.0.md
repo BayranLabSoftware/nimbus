@@ -38,9 +38,8 @@ the same list, kept current by the same generator.
 
 - A warned tsunami coast evacuates on a timer, not on the shaking, so
   a prepared coast like Tōhoku's is over-counted about three times.
-- The far-field wave law does not yet use the length of the rupture:
-  distant coasts of very long ruptures, like Sumatra 2004's, get too
-  small a wave.
+- Distant coasts of very long ruptures, like Sumatra 2004's, get too
+  small a wave, and the cause is not yet settled.
 - The shaking model paints four intensity bands the recorded
   earthquakes never reached.
 - No asteroid impact in recorded history has a death toll, so an impact

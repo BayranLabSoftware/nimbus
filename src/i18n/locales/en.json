@@ -1373,7 +1373,7 @@
       },
       "farField": {
         "item": "Distant coasts get too small a wave from very long ruptures",
-        "note": "The wave law does not yet use the length of the fault, so 700 km and 1 300 km of rupture radiate the same wave. Sumatra's far coasts are five to ten times under-waved."
+        "note": "Sumatra's far coasts get a wave five to ten times too small, and the cause is not settled. The wave law does not use the length of the fault — but a naive length correction would take the one far-field buoy the model matches, off Japan, from right to three times too high. The derivation comes first."
       },
       "coastalOffline": {
         "item": "The coastal toll is not in these tables",
