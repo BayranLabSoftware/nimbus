@@ -76,60 +76,17 @@ function formatRange(radiusM: number): string {
   return formatWithUnitTiers(clamped, TIERS_RANGE);
 }
 
-/**
- * Add the three concentric tsunami wave-front rows (5 m / 1 m / 0.3 m
- * open-ocean amplitude thresholds) to the legend, computing each radius
- * from the SAME closed-form law the Globe layer uses to paint the rings.
- *
- *   - Cavity-collapse for explosion, volcano-collapse and submarine-
- *     landslide sources (Ward & Asphaug 2000, q = 1), and the
- *     Wünnemann, Collins & Weiss (2010) rim wave for impact sources
- *     (q = q_r, 0.5 on a shelf → 1.2 in the deep ocean):
- *         A(r) = A₀ · (R_C / r)^q      ⇒  r = R_C · (A₀ / A_target)^(1/q)
- *   - Cylindrical line-source (Hanks-Kanamori → Okada → 1/√r) for
- *     megathrust earthquakes:
- *         A(r) = A₀ · √(R₀ / r)        ⇒  r = R₀ · (A₀ / A_target)²
- *
- * Skip a tier when the source amplitude is already below it (the wave
- * never reaches that intensity anywhere) — matches the Globe-layer
- * skip rule so the legend and the painted rings stay in lock-step.
+/*
+ * No tsunami wave-front rows. The legend used to list three — where the
+ * open-ocean amplitude falls to 5 m, 1 m and 0.3 m — "from the same law
+ * the globe paints the rings with". The globe stopped painting them in
+ * Phase 16, when the wave became a heatmap and comet glyphs read off
+ * the propagated field, and the rows stayed: toggling them hid nothing,
+ * and their radii came from laws the field no longer uses (a megathrust
+ * spread from half its length, a burst from Ward's uncapped source).
+ * A legend row is a promise that something is drawn. The cavity ring,
+ * which is drawn, stays.
  */
-function pushTsunamiWaveFronts(
-  out: LegendRow[],
-  source:
-    | { mode: 'cavity'; sourceAmplitude: number; cavityRadius: number; exponent?: number }
-    | { mode: 'cylindrical'; sourceAmplitude: number; halfLength: number },
-  t: (key: string) => string
-): void {
-  const tiers = [
-    { key: 'tsunamiWaveFront5m' as const, amplitude: 5 },
-    { key: 'tsunamiWaveFront1m' as const, amplitude: 1 },
-    { key: 'tsunamiWaveFront03m' as const, amplitude: 0.3 },
-  ];
-  for (const tier of tiers) {
-    if (source.sourceAmplitude <= 0) continue;
-    if (source.sourceAmplitude < tier.amplitude) continue;
-    let radius: number;
-    if (source.mode === 'cavity') {
-      if (source.cavityRadius <= 0) continue;
-      const q = source.exponent ?? 1;
-      radius = source.cavityRadius * (source.sourceAmplitude / tier.amplitude) ** (1 / q);
-    } else {
-      if (source.halfLength <= 0) continue;
-      const ratio = source.sourceAmplitude / tier.amplitude;
-      radius = source.halfLength * ratio * ratio;
-    }
-    const clamped = clampToGreatCircle(radius) as number;
-    if (!Number.isFinite(clamped) || clamped <= 0) continue;
-    out.push({
-      key: tier.key,
-      label: t(`globe.ringLabel.${tier.key}`),
-      color: SWATCH[tier.key] ?? '#ffffff',
-      radiusLabel: formatRange(clamped),
-      global: isGlobalReach(clamped),
-    });
-  }
-}
 
 /**
  * Build the active-ring list for whichever scenario is currently in
@@ -178,17 +135,6 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
       push('ejectaBlanket', result.data.ejecta.blanketEdge1mm);
       if (result.data.tsunami) {
         push('tsunamiCavity', result.data.tsunami.cavityRadius);
-        // Same law as the veil on the globe: Wünnemann 2010 rim wave.
-        pushTsunamiWaveFronts(
-          out,
-          {
-            mode: 'cavity',
-            sourceAmplitude: result.data.tsunami.rimWaveSourceAmplitude,
-            cavityRadius: result.data.tsunami.cavityRadius,
-            exponent: result.data.tsunami.rimWaveExponent,
-          },
-          t
-        );
       }
       pushFront('shockFront');
       break;
@@ -214,15 +160,6 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
       }
       if (result.data.tsunami) {
         push('tsunamiCavity', result.data.tsunami.cavityRadius);
-        pushTsunamiWaveFronts(
-          out,
-          {
-            mode: 'cavity',
-            sourceAmplitude: result.data.tsunami.sourceAmplitude,
-            cavityRadius: result.data.tsunami.cavityRadius,
-          },
-          t
-        );
       }
       pushFront('shockFront');
       break;
@@ -232,22 +169,6 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
       push('mmi9', s.mmi9Radius);
       push('mmi8', s.mmi8Radius);
       push('mmi7', s.mmi7Radius);
-      // Submarine megathrust: surface the same three wave-front rings
-      // the Globe paints (5 m / 1 m / 0.3 m source-amplitude thresholds)
-      // computed from the cylindrical-line-source law. Replaces the
-      // legacy synthetic `tsunamiCavity = ruptureLength / 4` row, which
-      // did not correspond to anything actually rendered on the globe.
-      if (result.data.tsunami) {
-        pushTsunamiWaveFronts(
-          out,
-          {
-            mode: 'cylindrical',
-            sourceAmplitude: result.data.tsunami.initialAmplitude,
-            halfLength: (result.data.ruptureLength as number) / 2,
-          },
-          t
-        );
-      }
       pushFront('seismicFront');
       break;
     }
@@ -258,30 +179,12 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
         push('ashfallPlume', result.data.windAdvectedAshfall.downwindRange);
       if (result.data.tsunami) {
         push('tsunamiCavity', result.data.tsunami.cavityRadius);
-        pushTsunamiWaveFronts(
-          out,
-          {
-            mode: 'cavity',
-            sourceAmplitude: result.data.tsunami.sourceAmplitude,
-            cavityRadius: result.data.tsunami.cavityRadius,
-          },
-          t
-        );
       }
       break;
     }
     case 'landslide': {
       if (result.data.tsunami !== null) {
         push('tsunamiCavity', result.data.tsunami.cavityRadius);
-        pushTsunamiWaveFronts(
-          out,
-          {
-            mode: 'cavity',
-            sourceAmplitude: result.data.tsunami.sourceAmplitude,
-            cavityRadius: result.data.tsunami.cavityRadius,
-          },
-          t
-        );
       }
       break;
     }

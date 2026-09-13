@@ -143,8 +143,18 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
   if (r.tsunami) {
     outputs.push(
       { label: 'Tsunami cavity radius', value: fmtKm(r.tsunami.cavityRadius) },
+      // The wave the model propagates: Wünnemann's rim wave, which
+      // cannot stand taller than the water it stands in. It used to be
+      // printed below the one that follows, under a bare "source
+      // amplitude" label given to Ward & Asphaug's figure — which has no
+      // depth in it, and read 1 362 m in 200 m of sea for a Chicxulub on
+      // Rome. Ward stays, as the historical reference it is, and says so.
       {
-        label: 'Tsunami source amplitude',
+        label: 'Tsunami source amplitude (Wünnemann 2010 rim wave, ≤ water depth)',
+        value: `${(r.tsunami.rimWaveSourceAmplitude as number).toFixed(1)} m`,
+      },
+      {
+        label: 'Ward & Asphaug 2000 source amplitude (reference; no depth limit)',
         value: `${(r.tsunami.sourceAmplitude as number).toFixed(1)} m`,
       },
       {
@@ -162,10 +172,6 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
       {
         label: 'Sea coupling',
         value: `${r.tsunami.seaCoupling.mechanism} · shore ${fmtKm(r.tsunami.seaCoupling.shoreDistance)} · ${(r.tsunami.seaCoupling.fraction * 100).toFixed(0)} % of the water-coupled energy`,
-      },
-      {
-        label: 'Rim-wave height at cavity rim',
-        value: `${(r.tsunami.rimWaveSourceAmplitude as number).toFixed(1)} m`,
       },
       {
         label: 'Wave regime h/L · rim-wave exponent q_r',

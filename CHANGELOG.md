@@ -5,7 +5,33 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## [Unreleased]
 
-### Added
+### Fixed
+
+- **The report's "tsunami source amplitude" was a number the model does
+  not propagate.** It sat on Ward & Asphaug's figure, which has no water
+  depth in it and read 1 362 m in 200 m of sea for a Chicxulub on Rome.
+  The label now carries the Wünnemann rim wave, capped at the water
+  depth — the wave every downstream consumer uses — and Ward is printed
+  beside it as the reference it is.
+
+- **The legend listed three tsunami rings the globe does not draw.** The
+  5 m / 1 m / 0.3 m wave fronts were retired from the globe in Phase 16
+  and stayed in the legend, where toggling them hid nothing and their
+  radii came from laws the field no longer uses. Gone; the cavity ring,
+  which is drawn, stays.
+
+### Measured
+
+- **The scalar path's run-up is not missing the field's caps.** The
+  field caps run-up at four times an amplitude that is itself shoaled up
+  to four times, and lands on the same sixteen-fold as the scalar path —
+  so the fix the roadmap described would have changed nothing. What is
+  wrong is Synolakis' non-breaking law used on breaking waves, and it
+  does not touch the toll, which reads the Green–McCowan shore height.
+  Recorded, with the line-source hypothesis checked from first
+  principles (in its naive form it would take DART from 0.90× to about
+  3×) and what the MMI saturation fix needs.
+
 
 - **Nimbus can be cited.** `CITATION.cff` carries the citation metadata
   GitHub's "Cite this repository" button and Zenodo both read, and asks

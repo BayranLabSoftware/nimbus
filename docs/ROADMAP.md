@@ -525,7 +525,38 @@ model against its own input. The replacement is a published
 departure-time and travel-to-safety distribution, anchored on a coast
 other than the one it came from.
 
-### 4. The MMI footprint
+### 3d. The line-source hypothesis, checked from first principles _(14 September: not in its naive form)_
+
+Move 3b measured Sumatra's far field missing a factor of 1.7–1.8 and
+noted that L_Sumatra / L_Tōhoku is 1.85. Before writing a line-source
+law, the energy argument was checked, and in its naive form it refutes
+itself. A source L long and W wide holds L·W of uplift against the
+ring's π(W/2)², and radiates it into two main lobes about 2λ/L wide
+rather than all the way round; with λ = 2W the two factors multiply to
+(L/W)² in intensity, **L/W in amplitude — about 3.4 for Tōhoku**. That
+would take DART 21413 from 0.90× the record to about 3×, where two
+independent routes currently agree within twelve per cent.
+
+So one of three things is true: the naive argument is wrong (a real
+rupture's slip is not uniform, and its uplift is not the mean), the
+DART agreement is a compensation, or Sumatra's shortfall is not
+geometry at all. The next step is a derivation with a Gaussian source
+of the rupture's own aspect and the dispersion-free Green's function,
+checked on DART before Sumatra — not a ratio that happens to match one
+event.
+
+### 4. The MMI footprint _(open; what the fix needs, 14 September)_
+
+The four invented bands come from Joyner–Boore 1981 at magnitudes it
+was never fitted for: its data stop around Mw 7.7, and at Mw 9.1 it
+paints 180 747 km² of Japan at MMI IX where the ShakeMap maximum was
+8.18. Drawing the contours with NGA-West2 was tried on 9 September and
+reverted, because it is a crustal model and three toll rows had been
+leaning on the old footprint. What a megathrust needs is a ground-motion
+model fitted to subduction-interface events up to Mw 9 — the kind USGS
+itself uses for them — implemented from its published coefficient
+tables and checked on this same ShakeMap anchor before any toll row is
+re-read. Not from memory, and not overnight.
 
 The 10× on the headline of every earthquake. The contours come from a
 point-source attenuation inflated into a rupture stadium, and a
@@ -1234,7 +1265,33 @@ semi-empirical model) or leaving it declared.
 
 Would move: the two smallest, deadliest rows in the net.
 
-### P3 — Caps the scalar path does not have
+### P3 — Caps the scalar path does not have _(premise corrected 14 September; display fixed, run-up law open)_
+
+**Measured, and the remedy as written would have changed nothing.**
+The field does cap run-up at four times the arriving amplitude — but
+the arriving amplitude there is already shoaled, up to four times the
+open-ocean wave, so the field allows about sixteen times the open-ocean
+height. The scalar path lands on the same factor: Boltysh in 200 m of
+sea, 19.1 m at 1 000 km, 312 m of run-up, 16×. Giving the scalar path
+the field's caps would move no number.
+
+What is actually wrong is upstream of any cap: Synolakis' run-up law is
+for waves that do not break, and a 12 m wave in 10 m of water on a
+1:100 beach is hundreds of times past that. Two corrections to the
+entry below, from the same measurement. **The toll is not affected** —
+the coastal toll reads the shore height from Green's law and McCowan's
+breaking index, never this run-up, so "a quarter of the toll" is stale
+from before that change. **The report was wrong where it said "source
+amplitude"**: that label sat on Ward & Asphaug's figure, which has no
+depth in it and read 1 362 m in 200 m of sea; the model propagates the
+Wünnemann rim wave, capped at the water depth. Fixed on 14 September —
+the report prints the rim wave under that label and Ward as the
+reference it is — and the legend stopped listing three tsunami
+wave-front rings the globe had not drawn since Phase 16.
+
+Still open: the displayed "run-up at 1 000 km" needs a published
+breaking-wave run-up law, not an invented ceiling. The history below is
+kept as written.
 
 The field clamps run-up at four times the arriving amplitude and the
 rim wave at the water depth; the scalar path clamps neither. A
