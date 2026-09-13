@@ -56,6 +56,21 @@ export function MethodologyPage(): JSX.Element {
       <section className={styles.section}>
         <h2>{t('methodology.validationTitle')}</h2>
         <p className={styles.prose}>{t('methodology.validationBody')}</p>
+        {/* This list is the presets, and it used to be headed as though it
+            were the validation — fifteen events "re-simulated on every
+            commit", over a list of thirty. What is actually checked, with
+            its misses, is its own page now. */}
+        <p className={styles.prose}>
+          <button
+            type="button"
+            className={styles.back}
+            onClick={() => {
+              setMode('validation');
+            }}
+          >
+            {t('methodology.toValidation')}
+          </button>
+        </p>
         <ul className={styles.validationList}>
           {VALIDATION_ROSTER.map((v) => {
             const label =

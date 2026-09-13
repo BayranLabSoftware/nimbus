@@ -25,6 +25,15 @@ const ImpactView = lazy(() =>
   import('./pages/ImpactView.js').then((mod) => ({ default: mod.ImpactView }))
 );
 
+/**
+ * The validation page carries the whole calibration net as data, so it
+ * is its own chunk: a visitor who never asks how the model is checked
+ * does not download the answer.
+ */
+const ValidationPage = lazy(() =>
+  import('./pages/ValidationPage.js').then((mod) => ({ default: mod.ValidationPage }))
+);
+
 function CurrentView(): JSX.Element {
   const mode = useAppStore((s) => s.mode);
 
@@ -50,6 +59,14 @@ function CurrentView(): JSX.Element {
 
   if (mode === 'report') {
     return <SimulationReportPage />;
+  }
+
+  if (mode === 'validation') {
+    return (
+      <Suspense fallback={null}>
+        <ValidationPage />
+      </Suspense>
+    );
   }
 
   return <LandingPage />;

@@ -35,7 +35,8 @@
     "cta": {
       "science": "Read the science",
       "methodology": "Methodology & citations",
-      "enterSimulator": "Try the simulator →"
+      "enterSimulator": "Try the simulator →",
+      "validation": "How the model is checked"
     },
     "scaleBar": {
       "label": "Scale reference"
@@ -573,8 +574,8 @@
     "subtitle": "Every formula the Nimbus engine evaluates, with its peer-reviewed source and the equation-level DOI. Grouped by event type and paired at the bottom with the roster of historically validated events.",
     "overviewTitle": "Overview",
     "overviewBody": "Nimbus is a headless TypeScript physics engine (Layer 2) wrapped by a Cesium globe (Layer 3) and a React UI (Layer 4). Layer 2 has zero runtime dependencies on React / Three / Cesium — the ESLint configuration blocks such imports so the physics stays testable from a Node CLI. Each formula below lives in its own file under src/physics/ with a JSDoc block that names the citation and the specific equation number used. Tolerances in the test suite honour the scatter published in the original papers — ±30 % for thermal-fluence thresholds, ±50 % for volcanic plume heights, ±factor-2 for ejecta and lahar runouts.",
-    "validationTitle": "Historical validation roster",
-    "validationBody": "Fifteen of the best-instrumented events in the historical record are re-simulated by the test suite on every commit. When a physics refactor drifts the output outside the published tolerance, the integration test fails first.",
+    "validationTitle": "Historical scenarios in the simulator",
+    "validationBody": "These are the historical events the simulator offers as presets. Being a preset is not the same as being checked: the events the model is actually measured against, one by one and with its misses, are on the validation page.",
     "uncertainty": {
       "title": "Uncertainty quantification",
       "body": "Every uncertain input has a documented σ in src/physics/uq/conventions.ts, every output has a documented σ in src/physics/confidence.ts, and the Monte-Carlo engine samples 200 realisations to draw P10/P90 bands on the headline metrics. The methodology is documented under docs/SCIENCE.md and the script `pnpm sensitivity` produces an OAT (one-at-a-time) sensitivity report for every preset.",
@@ -623,7 +624,8 @@
         "note": "Long-term cascade stages (impact winter, ocean acidification, plankton collapse) report literature-derived order-of-magnitude estimates rather than full coupled atmosphere-ocean simulations. Treat the long-term tail as descriptive, not predictive."
       }
     },
-    "footer": "Open-source under Apache 2.0. Corrections and additional citations are welcome via GitHub pull requests."
+    "footer": "Open-source under Apache 2.0. Corrections and additional citations are welcome via GitHub pull requests.",
+    "toValidation": "See how the model is checked →"
   },
   "population": {
     "label": "Estimated population exposed",
@@ -1244,5 +1246,137 @@
     },
     "bandNote": "The pair in brackets is the 5–95 % band: run the same event again with the published scatter on its inputs and nine times in ten the count lands inside it. It does not carry the vulnerability function’s own uncertainty, a factor of 2–5, nor the census’s.",
     "bandNoteWave": "The wave row still carries the range of parameters rather than the 5–95 % band."
+  },
+  "validation": {
+    "back": "Back to home",
+    "title": "Validation: the model against real events",
+    "subtitle": "Every event the world has already lived through and someone measured, put through the same simulator you use. Where the model lands inside the record and — shown just as prominently — where it does not, and why.",
+    "provenance": "Generated from the code in commit {{commit}}. The build fails if this page and the code drift apart.",
+    "provenanceDirty": "Development build from commit {{commit}} with uncommitted changes: these figures may not match any published model.",
+    "provenanceUnknown": "This build cannot tell which commit it came from.",
+    "fullReport": "Full report for this model",
+    "summaryLabel": "Summary",
+    "summary": {
+      "tolls": "counted death tolls inside the model's band",
+      "tollsGated": "{{pass}} of {{total}} gated rows pass",
+      "waves": "measured waves inside the model's figure",
+      "wavesGlobe": "but the globe draws {{count}} of them differently, and misses",
+      "footprint": "shaking footprint against USGS ShakeMap, centred in radius",
+      "footprintScatter": "scatter {{sd}}, against {{expected}} expected from ground motion",
+      "invented": "intensity bands the model paints where the earthquake never reached them"
+    },
+    "tolls": {
+      "title": "Death tolls against events that were counted",
+      "body": "Each event is run through the same casualty model the simulator uses, on the population maps it ships. The band is where nine in ten of 200 plausible versions of the event land — a claim that can be wrong. A gated row stops a release if its band ever stops containing the record; the others are measured and shown with their cause."
+    },
+    "table": {
+      "event": "Event",
+      "recorded": "Recorded",
+      "model": "Model",
+      "band": "Band (9 in 10)",
+      "ratio": "Model / record",
+      "verdict": "Verdict",
+      "cause": "Cause",
+      "record": "Measurement",
+      "range": "Distance",
+      "observed": "Observed",
+      "globe": "On the globe",
+      "threshold": "Intensity",
+      "shakemap": "ShakeMap",
+      "bothZero": "both zero"
+    },
+    "verdict": {
+      "inside": "inside",
+      "misses": "misses"
+    },
+    "standing": {
+      "gated": "gated",
+      "declared": "declared"
+    },
+    "causesTitle": "Why a row misses",
+    "causesBody": "No miss is left without a named cause — the software refuses to build otherwise. These are the causes, each once, with the events it explains.",
+    "causes": {
+      "evacuation": {
+        "label": "People had left",
+        "body": "The model counts everyone who lived inside the footprint. At Mount St Helens the mountain had been closed for two months; at Pinatubo sixty thousand people were evacuated before the climax. A model that counts everyone who lived there cannot reach a toll made by everyone having left — and this error only ever runs high, never low."
+      },
+      "buildingStock": {
+        "label": "The buildings were not the national average",
+        "body": "Deaths from shaking use the fatality curve USGS PAGER fitted for each country. Amatrice killed 299 in medieval stone villages that fare far worse than Italy's average building; Gorkha killed in the brick of the Kathmandu valley, and Nepal borrows its region's curve. A national curve under-predicts a village."
+      },
+      "populationRaster": {
+        "label": "The population map is coarser than the blast",
+        "body": "At Beirut the most lethal ring is 240 m across — twenty times smaller than a cell of the population map the tests can read. The model spreads the city's average density over a port basin where nobody lives. The finer map the live site uses would see the difference; no offline test can reach it."
+      },
+      "drownedOffline": {
+        "label": "They drowned, and the tests have no sea floor",
+        "body": "More than nine in ten of Tōhoku's and Sumatra's dead were killed by the tsunami. The wave needs real sea-floor data, which only the live site downloads, so these rows count the shaking alone and sit far below the record by construction. The coastal toll is measured separately, in the browser, and documented in the roadmap."
+      },
+      "populationChanged": {
+        "label": "The map counts who lives there now",
+        "body": "Hiroshima held about 350 000 people in 1945 and about 1.2 million today. The population map is from 2020, so the model must overshoot — which is why this row is shown but does not gate, even though it lands inside the record."
+      }
+    },
+    "waves": {
+      "title": "Waves against measurements",
+      "body": "Wave heights written down by instruments and surveys: a buoy in the Pacific, gauges in a lagoon, deposits on a coast. Model is the figure the tests check; On the globe is what the wave map on the globe draws at the same place, shown wherever the two are computed differently — because a check on a number the globe does not show would be a check on nothing.",
+      "noWave": "no wave",
+      "globeSame": "same",
+      "globeNote": "Where the globe misses a measurement the tests contain: {{list}}. For an underwater burst the wave map spreads the wave with an energy correction the test does not apply. Which of the two is right for a source this small is an open question; until it is decided, both figures stay on this page."
+    },
+    "footprint": {
+      "title": "Shaking footprint against USGS ShakeMap",
+      "body": "How much ground the model shakes at intensity VII, VIII and IX, against the area the US Geological Survey mapped after each earthquake. The model predicts the typical shaking; a real earthquake is one draw of it, and one standard deviation of ground motion already means twice the radius. So the fair test is not each row but the whole: is the model centred, and does it scatter no more than the ground does?",
+      "neither": "neither reaches it",
+      "fromNothing": "from nothing",
+      "bias": "Centred at {{ratio}} in radius — {{se}} standard errors from exactly centred, so the model cannot be shown to be off-centre. Scatter {{sd}}, against the {{expected}} that published ground-motion scatter implies.",
+      "biasOff": "Centred at {{ratio}} in radius — {{se}} standard errors from exactly centred: the model is off-centre. Scatter {{sd}}, against the {{expected}} that published ground-motion scatter implies.",
+      "invented": "Painted at an intensity the earthquake never reached: {{list}}. A laboratory-level model has none; this list can only get shorter."
+    },
+    "interpolation": {
+      "title": "How much the population shortcut costs",
+      "body": "The live site cannot count the population two hundred times per scenario, so it counts it at a handful of rings and reads the rest off the curve between them. The tests can afford the exact count at every radius. Comparing the two is how we know the band on the site is about the event and not about the shortcut.",
+      "measured": "Exact count",
+      "interpolated": "Site's shortcut",
+      "tooFew": "too few dead to compare",
+      "worst": "Worst comparable end: {{factor}}×, against a limit of 2×."
+    },
+    "anchors": {
+      "title": "Where the model has been measured",
+      "body": "Every event the model is checked against, by family, and what was measured about it. Gated quantities stop a release if the model drifts; declared ones are measured and shown with a reason. When you run a scenario, the simulator tells you how far it sits from the nearest of these."
+    },
+    "quantity": {
+      "toll": "death toll",
+      "wave": "wave",
+      "crater": "crater",
+      "blast": "blast radius",
+      "plume": "eruption column"
+    },
+    "gaps": {
+      "title": "What the model does not do",
+      "body": "Stated here so nobody has to discover it.",
+      "evacuation": {
+        "item": "Nobody is evacuated",
+        "note": "The toll counts everyone inside the footprint. It is the largest single cause among the misses, and always in the same direction."
+      },
+      "farField": {
+        "item": "Distant coasts get too small a wave from very long ruptures",
+        "note": "The wave law does not yet use the length of the fault, so 700 km and 1 300 km of rupture radiate the same wave. Sumatra's far coasts are five to ten times under-waved."
+      },
+      "coastalOffline": {
+        "item": "The coastal toll is not in these tables",
+        "note": "It needs real sea-floor data that only the live site downloads; it is measured in the browser and documented in the roadmap."
+      },
+      "impactToll": {
+        "item": "No impact toll can ever be checked",
+        "note": "No asteroid impact in recorded history has killed anyone who was counted. The simulator says so beside every impact toll."
+      },
+      "outsideCount": {
+        "item": "Some causes of death are not counted",
+        "note": "Fallout, initial radiation, famine, disease and climate. For an impact the size of the one that ended the dinosaurs, the climate is what kills most survivors."
+      }
+    },
+    "footer": "Every figure here comes from docs/VALIDATION_REPORT.json, which the software regenerates and checks at every commit.",
+    "toMethodology": "Methodology & citations"
   }
 }

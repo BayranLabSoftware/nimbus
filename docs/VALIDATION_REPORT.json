@@ -18,7 +18,9 @@
         "bandHigh": 0,
         "ratio": 1,
         "contains": true,
-        "gated": true
+        "gated": true,
+        "cause": null,
+        "source": "USGS: Mw 7.8, 400 km surface rupture across uninhabited Tibetan plateau; no deaths reported"
       },
       {
         "event": "Northridge 1994",
@@ -30,7 +32,9 @@
         "bandHigh": 180,
         "ratio": 0.667,
         "contains": true,
-        "gated": true
+        "gated": true,
+        "cause": null,
+        "source": "USGS / California OES: 57 deaths, Mw 6.7 blind thrust under the San Fernando Valley"
       },
       {
         "event": "L'Aquila 2009",
@@ -42,7 +46,9 @@
         "bandHigh": 1542,
         "ratio": 0.735,
         "contains": true,
-        "gated": true
+        "gated": true,
+        "cause": null,
+        "source": "Italian Civil Protection: 309 deaths, Mw 6.3"
       },
       {
         "event": "Amatrice 2016",
@@ -54,7 +60,9 @@
         "bandHigh": 114,
         "ratio": 0.02,
         "contains": false,
-        "gated": false
+        "gated": false,
+        "cause": "buildingStock",
+        "source": "Italian Civil Protection: 299 deaths, Mw 6.2"
       },
       {
         "event": "Gorkha (Nepal) 2015",
@@ -66,7 +74,9 @@
         "bandHigh": 4924,
         "ratio": 0.065,
         "contains": false,
-        "gated": false
+        "gated": false,
+        "cause": "buildingStock",
+        "source": "Government of Nepal: 8 964 deaths, Mw 7.8"
       },
       {
         "event": "Beirut 2020",
@@ -78,7 +88,9 @@
         "bandHigh": 1533,
         "ratio": 4.138,
         "contains": false,
-        "gated": false
+        "gated": false,
+        "cause": "populationRaster",
+        "source": "Lebanese Ministry of Health: 218 deaths, ~2.75 kt ammonium nitrate detonation"
       },
       {
         "event": "Mount St Helens 1980",
@@ -90,7 +102,9 @@
         "bandHigh": 692,
         "ratio": 4.649,
         "contains": false,
-        "gated": false
+        "gated": false,
+        "cause": "evacuation",
+        "source": "USGS: 57 deaths, lateral blast across largely evacuated terrain"
       },
       {
         "event": "Pinatubo 1991",
@@ -102,7 +116,9 @@
         "bandHigh": 313870,
         "ratio": 97.375,
         "contains": false,
-        "gated": false
+        "gated": false,
+        "cause": "evacuation",
+        "source": "USGS/PHIVOLCS: ~847 deaths, most from roofs collapsing under wet ash during Typhoon Yunya"
       },
       {
         "event": "Hiroshima 1945",
@@ -114,7 +130,9 @@
         "bandHigh": 129200,
         "ratio": 1.082,
         "contains": true,
-        "gated": false
+        "gated": false,
+        "cause": "populationChanged",
+        "source": "Manhattan Engineer District 1946 and later Japanese surveys; the range is the historical dispute"
       },
       {
         "event": "Tōhoku 2011",
@@ -126,7 +144,9 @@
         "bandHigh": 0,
         "ratio": 0,
         "contains": false,
-        "gated": false
+        "gated": false,
+        "cause": "drownedOffline",
+        "source": "Japanese National Police Agency: 15 900 dead and 2 500 missing"
       },
       {
         "event": "Sumatra–Andaman 2004",
@@ -138,7 +158,9 @@
         "bandHigh": 43,
         "ratio": 0,
         "contains": false,
-        "gated": false
+        "gated": false,
+        "cause": "drownedOffline",
+        "source": "UN Office of the Special Envoy for Tsunami Recovery"
       }
     ],
     "waves": [
@@ -151,7 +173,8 @@
         "contains": true,
         "globeM": 10.52,
         "globeContains": false,
-        "gated": true
+        "gated": true,
+        "source": "Glasstone & Dolan 1977 §6.55 and the Operation Crossroads reports: 23 kt suspended 27 m below the surface of Bikini lagoon, first wave about 30 m high at 300 m from surface zero"
       },
       {
         "record": "Castle Bravo 1954",
@@ -162,7 +185,8 @@
         "contains": true,
         "globeM": null,
         "globeContains": null,
-        "gated": true
+        "gated": true,
+        "source": "15 Mt fired at the surface on the Bikini reef; remembered for its crater and its fallout, not for a wave"
       },
       {
         "record": "Ivy Mike 1952",
@@ -173,7 +197,8 @@
         "contains": true,
         "globeM": null,
         "globeContains": null,
-        "gated": true
+        "gated": true,
+        "source": "10.4 Mt fired on the islet of Elugelab, which it vapourised; no recorded wave"
       },
       {
         "record": "Beirut 2020",
@@ -184,7 +209,8 @@
         "contains": true,
         "globeM": null,
         "globeContains": null,
-        "gated": true
+        "gated": true,
+        "source": "≈ 0.5 kt TNT-equivalent on a portside quay; the harbour wave was of the order of a metre and drowned nobody"
       },
       {
         "record": "Crossroads Baker 1946, five kilometres out",
@@ -195,7 +221,8 @@
         "contains": true,
         "globeM": 0.716,
         "globeContains": false,
-        "gated": true
+        "gated": true,
+        "source": "Operation Crossroads wave records: about 1.8 m at 5.5 km"
       },
       {
         "record": "Tōhoku 2011 at DART 21413",
@@ -206,7 +233,8 @@
         "contains": true,
         "globeM": null,
         "globeContains": null,
-        "gated": true
+        "gated": true,
+        "source": "DART buoy 21413, 1 500 km offshore, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)"
       },
       {
         "record": "Storegga 8200 BP on the Norwegian coast",
@@ -217,7 +245,8 @@
         "contains": true,
         "globeM": 0.763,
         "globeContains": true,
-        "gated": true
+        "gated": true,
+        "source": "Bondevik et al. 2005 read 10–25 m of run-up from the Norwegian deposits, implying a metre-scale open-ocean wave at a thousand kilometres"
       }
     ],
     "footprint": {
@@ -415,7 +444,238 @@
         "comparable": false
       }
     ],
-    "anchors": 21
+    "anchors": [
+      {
+        "name": "Tunguska 1908",
+        "eventType": "impact",
+        "quantities": [
+          "blast"
+        ],
+        "gated": [
+          "blast"
+        ],
+        "source": "Boslough & Crawford 2008; Chyba 1993 — 3–30 Mt from the flattened forest"
+      },
+      {
+        "name": "Meteor Crater",
+        "eventType": "impact",
+        "quantities": [
+          "crater"
+        ],
+        "gated": [
+          "crater"
+        ],
+        "source": "Kring 2007 — a 1.2 km crater from a 50 m iron at 12.8 km/s"
+      },
+      {
+        "name": "Chicxulub",
+        "eventType": "impact",
+        "quantities": [
+          "crater"
+        ],
+        "gated": [
+          "crater"
+        ],
+        "source": "Hildebrand 1991, Morgan 2016 — a final crater of about 180 km"
+      },
+      {
+        "name": "Beirut 2020",
+        "eventType": "explosion",
+        "quantities": [
+          "toll",
+          "wave"
+        ],
+        "gated": [
+          "wave"
+        ],
+        "source": "218 dead; a harbour wave of the order of a metre that drowned nobody"
+      },
+      {
+        "name": "Hiroshima 1945",
+        "eventType": "explosion",
+        "quantities": [
+          "toll",
+          "blast"
+        ],
+        "gated": [
+          "blast"
+        ],
+        "source": "Manhattan Engineer District 1946; Glasstone & Dolan Fig. 3.74a for 5 psi at 1.7 km"
+      },
+      {
+        "name": "Crossroads Baker 1946",
+        "eventType": "explosion",
+        "quantities": [
+          "wave"
+        ],
+        "gated": [
+          "wave"
+        ],
+        "source": "Operation Crossroads: about 30 m at 300 m and 1.8 m at 5.5 km, from 27 m down"
+      },
+      {
+        "name": "Ivy Mike 1952",
+        "eventType": "explosion",
+        "quantities": [
+          "wave"
+        ],
+        "gated": [
+          "wave"
+        ],
+        "source": "Fired on an islet it vapourised; no recorded wave"
+      },
+      {
+        "name": "Castle Bravo 1954",
+        "eventType": "explosion",
+        "quantities": [
+          "wave"
+        ],
+        "gated": [
+          "wave"
+        ],
+        "source": "Fired on the Bikini reef; remembered for its crater and its fallout, not a wave"
+      },
+      {
+        "name": "Tsar Bomba",
+        "eventType": "explosion",
+        "quantities": [
+          "wave"
+        ],
+        "gated": [
+          "wave"
+        ],
+        "source": "The largest device ever fired, 1961, 4 km up over water; no wave"
+      },
+      {
+        "name": "Amatrice 2016",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [],
+        "source": "299 dead"
+      },
+      {
+        "name": "L'Aquila 2009",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [
+          "toll"
+        ],
+        "source": "309 dead"
+      },
+      {
+        "name": "Northridge 1994",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [
+          "toll"
+        ],
+        "source": "57 dead"
+      },
+      {
+        "name": "Kokoxili (Kunlun) 2001",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [
+          "toll"
+        ],
+        "source": "A 400 km rupture across empty Tibetan plateau; nobody died"
+      },
+      {
+        "name": "Gorkha (Nepal) 2015",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [],
+        "source": "8 964 dead"
+      },
+      {
+        "name": "Tōhoku 2011",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll",
+          "wave"
+        ],
+        "gated": [
+          "wave"
+        ],
+        "source": "18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 500 km out"
+      },
+      {
+        "name": "Sumatra–Andaman 2004",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [],
+        "source": "227 898 dead, almost all of them drowned"
+      },
+      {
+        "name": "Mount St Helens 1980",
+        "eventType": "volcano",
+        "quantities": [
+          "toll",
+          "plume"
+        ],
+        "gated": [
+          "plume"
+        ],
+        "source": "57 dead inside a mountain closed for two months; a 24 km column"
+      },
+      {
+        "name": "Pinatubo 1991",
+        "eventType": "volcano",
+        "quantities": [
+          "toll",
+          "plume"
+        ],
+        "gated": [
+          "plume"
+        ],
+        "source": "847 dead after an evacuation that worked; a 35 km column"
+      },
+      {
+        "name": "Krakatau 1883",
+        "eventType": "volcano",
+        "quantities": [
+          "plume"
+        ],
+        "gated": [
+          "plume"
+        ],
+        "source": "Self & Rampino 1981 — a 40 km column; its wave is not checked here"
+      },
+      {
+        "name": "Vaiont 1963",
+        "eventType": "landslide",
+        "quantities": [
+          "wave"
+        ],
+        "gated": [
+          "wave"
+        ],
+        "source": "Genevois 2005 — the reservoir wave that overtopped the dam by 245 m"
+      },
+      {
+        "name": "Storegga 8200 BP",
+        "eventType": "landslide",
+        "quantities": [
+          "wave"
+        ],
+        "gated": [
+          "wave"
+        ],
+        "source": "Bondevik 2005 — 10–25 m of run-up read from the Norwegian deposits"
+      }
+    ]
   },
   "replay": {
     "total": 3,

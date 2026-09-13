@@ -520,7 +520,11 @@ carries the whole calibration net, CI refuses a push whose committed
 copy differs from what the code generates, and every printed
 simulation report names its commit and links to the report at that
 commit. It had sat at 30 April for four months while CI regenerated a
-throwaway copy on every push. The foundations are there. It is
+throwaway copy on every push. And a public validation page that
+reads that report, misses and causes included — the step the goal
+section above calls "a laboratory trusts what other laboratories have
+checked" made visible to anyone, before any outside reader has sat
+down with it. The foundations are there. It is
 the _verification_ that is the weak link, which is why the first two
 entries are about it.
 

@@ -62,7 +62,41 @@ export interface RecordedEvent {
   gated: boolean;
   /** Why a row is not gated, or what to know about one that is. */
   caveat?: string;
+  /**
+   * What a row's distance from its record is made of, as one of a
+   * short list of named causes. The caveat says it in full, in the
+   * register a reviewer reads; the cause is what the public
+   * validation page groups the rows by and explains in two languages.
+   * A row whose band misses its record must carry one — a miss with
+   * no named cause is a miss nobody has understood, and
+   * `recordedTolls.test.ts` refuses it.
+   */
+  cause?: TollCause;
 }
+
+/** The named causes a toll row can stand at its distance for. */
+export type TollCause =
+  /** People had left before it arrived, and the model counts everyone
+   *  who lived there. */
+  | 'evacuation'
+  /** A national fatality curve applied to a building stock that is
+   *  not the nation's average — village masonry, valley brick. */
+  | 'buildingStock'
+  /** The population raster is coarser than the footprint. */
+  | 'populationRaster'
+  /** The dead drowned, and no offline test has the bathymetry the
+   *  wave needs: the row is the shaking alone. */
+  | 'drownedOffline'
+  /** The raster counts who lives there now, not who lived there then. */
+  | 'populationChanged';
+
+export const TOLL_CAUSES: readonly TollCause[] = [
+  'evacuation',
+  'buildingStock',
+  'populationRaster',
+  'drownedOffline',
+  'populationChanged',
+];
 
 const quake = (preset: keyof typeof EARTHQUAKE_PRESETS): (() => ActiveResult) => {
   return () => ({ type: 'earthquake', data: simulateEarthquake(EARTHQUAKE_PRESETS[preset].input) });
@@ -113,6 +147,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 299,
     source: 'Italian Civil Protection: 299 deaths, Mw 6.2',
     run: quake('AMATRICE_2016'),
+    cause: 'buildingStock',
     gated: false,
     caveat:
       'Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter is 0 to 114 and the record is outside it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village".',
@@ -124,6 +159,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 8964,
     source: 'Government of Nepal: 8 964 deaths, Mw 7.8',
     run: quake('NEPAL_2015'),
+    cause: 'buildingStock',
     gated: false,
     caveat:
       "Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428 and the predictive interval is 22 to 4 924, which does not contain 8 964. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. The band is now narrow enough for the miss to be a statement.",
@@ -135,6 +171,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 218,
     source: 'Lebanese Ministry of Health: 218 deaths, ~2.75 kt ammonium nitrate detonation',
     run: blast('BEIRUT_2020'),
+    cause: 'populationRaster',
     gated: false,
     caveat:
       "Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. The band under it is now a predictive interval rather than a range of parameters — the ten per cent a charge's yield actually varies by — and it runs 817 to 1 533, nowhere near the 218 counted. That is the right shape for this row, because what is left is neither scatter in the charge nor the casualty model but the raster underneath: at 240 m the ring is twenty times smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.",
@@ -146,6 +183,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 57,
     source: 'USGS: 57 deaths, lateral blast across largely evacuated terrain',
     run: volcano('MT_ST_HELENS_1980'),
+    cause: 'evacuation',
     gated: false,
     caveat:
       'The mountain had been closed for two months and the red zone evacuated; the 57 who died had mostly refused to leave or were outside the zone the blast then overran. The central figure assumes nobody was warned and sits at 4.7x the record. Until 9 September this row was recorded as containing the count: its band was the gentlest and harshest pyroclastic mortality in the vulnerability table, 3 to 295, and an evacuated eruption fell inside it by accident. The predictive interval drawn from the scatter of the eruption itself is 120 to 692, and 57 falls outside it — which is the true statement. A model that counts everyone who was there cannot reach a toll made by everyone having left. Ungated because a preset cannot know whether an evacuation happened.',
@@ -158,6 +196,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     source:
       'USGS/PHIVOLCS: ~847 deaths, most from roofs collapsing under wet ash during Typhoon Yunya',
     run: volcano('PINATUBO_1991'),
+    cause: 'evacuation',
     gated: false,
     caveat:
       'The predictive interval is 32 000 to 314 000 and misses the 847 counted by two orders of magnitude. The old band reached down to 916 and missed by eight per cent, which read like a model very nearly right; it was the gentlest setting of the vulnerability table, not a claim about this eruption. Containing it would in any case be the wrong target: sixty thousand people were evacuated before the climax, and most of those who still died were killed by roofs collapsing under ash wetted by Typhoon Yunya, a mechanism this model does not simulate at all. It counts the current, over people who had gone.',
@@ -172,6 +211,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     source:
       'Manhattan Engineer District 1946 and later Japanese surveys; the range is the historical dispute',
     run: blast('HIROSHIMA_1945'),
+    cause: 'populationChanged',
     gated: false,
     caveat:
       'Hiroshima held about 350 000 people in 1945 and about 1.2 million today; the raster counts the living, so the model must overshoot by roughly that ratio.',
@@ -183,6 +223,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 18_500,
     source: 'Japanese National Police Agency: 15 900 dead and 2 500 missing',
     run: quake('TOHOKU_2011'),
+    cause: 'drownedOffline',
     gated: false,
     caveat:
       'Over 90 % of the dead drowned. This harness has no bathymetry and therefore no wave, so the number here is the shaking alone and is expected to be far below the record.',
@@ -194,6 +235,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 227_898,
     source: 'UN Office of the Special Envoy for Tsunami Recovery',
     run: quake('SUMATRA_2004'),
+    cause: 'drownedOffline',
     gated: false,
     caveat: 'Drowning again, and again without a wave here. Reported for the shaking only.',
   },

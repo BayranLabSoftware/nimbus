@@ -123,7 +123,7 @@ export interface Coordinates {
 /** `impact` is the close-up renderer: the same simulation seen from
  *  ground level instead of from orbit. It is only meaningful for the
  *  event families that produce a fireball and a crater. */
-export type ViewMode = 'landing' | 'globe' | 'impact' | 'methodology' | 'report';
+export type ViewMode = 'landing' | 'globe' | 'impact' | 'methodology' | 'report' | 'validation';
 
 /**
  * Whether the ground-level close-up is offered at all.

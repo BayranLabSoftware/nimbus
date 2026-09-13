@@ -42,19 +42,19 @@ the vulnerability table. A **gated** row fails the build when its band
 stops containing the record; a **declared** row is measured and printed
 with its reason, and the reason is below.
 
-| Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Standing |
-|-------|---------:|------:|--------------:|-----:|---------------:|---------|----------|
-| Kokoxili (Kunlun) 2001 | 0 | 0 | 0 – 0 | — | both zero | contains | gated |
-| Northridge 1994 | 57 | 38 | 5 – 180 | 10^1.6 | 0.67× | contains | gated |
-| L'Aquila 2009 | 309 | 227 | 37 – 1,542 | 10^1.6 | 0.73× | contains | gated |
-| Amatrice 2016 | 299 | 6 | 0 – 114 | 10^2.1 | 0.02× | **misses** | declared |
-| Gorkha (Nepal) 2015 | 8,964 | 580 | 22 – 4,924 | 10^2.3 | 0.06× | **misses** | declared |
-| Beirut 2020 | 218 | 902 | 817 – 1,533 | 10^0.3 | 4.14× | **misses** | declared |
-| Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | declared |
-| Pinatubo 1991 | 847 | 82,477 | 32,123 – 313,870 | 10^1.0 | 97.38× | **misses** | declared |
-| Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | declared |
-| Tōhoku 2011 | 18,500 | 0 | 0 – 0 | — | 0.00× | **misses** | declared |
-| Sumatra–Andaman 2004 | 227,898 | 1 | 0 – 43 | 10^1.6 | 0.00× | **misses** | declared |
+| Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Cause | Standing |
+|-------|---------:|------:|--------------:|-----:|---------------:|---------|-------|----------|
+| Kokoxili (Kunlun) 2001 | 0 | 0 | 0 – 0 | — | both zero | contains | — | gated |
+| Northridge 1994 | 57 | 38 | 5 – 180 | 10^1.6 | 0.67× | contains | — | gated |
+| L'Aquila 2009 | 309 | 227 | 37 – 1,542 | 10^1.6 | 0.73× | contains | — | gated |
+| Amatrice 2016 | 299 | 6 | 0 – 114 | 10^2.1 | 0.02× | **misses** | buildingStock | declared |
+| Gorkha (Nepal) 2015 | 8,964 | 580 | 22 – 4,924 | 10^2.3 | 0.06× | **misses** | buildingStock | declared |
+| Beirut 2020 | 218 | 902 | 817 – 1,533 | 10^0.3 | 4.14× | **misses** | populationRaster | declared |
+| Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | evacuation | declared |
+| Pinatubo 1991 | 847 | 82,477 | 32,123 – 313,870 | 10^1.0 | 97.38× | **misses** | evacuation | declared |
+| Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | populationChanged | declared |
+| Tōhoku 2011 | 18,500 | 0 | 0 – 0 | — | 0.00× | **misses** | drownedOffline | declared |
+| Sumatra–Andaman 2004 | 227,898 | 1 | 0 – 43 | 10^1.6 | 0.00× | **misses** | drownedOffline | declared |
 
 #### Where the band misses, and why
 

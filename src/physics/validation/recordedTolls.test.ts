@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { compareWithRecord, interpolationCost, RECORDED_EVENTS } from './recordedTolls.js';
+import {
+  compareWithRecord,
+  interpolationCost,
+  RECORDED_EVENTS,
+  TOLL_CAUSES,
+} from './recordedTolls.js';
 import { shippedPlanetTotal } from './shippedPopulation.js';
 
 /**
@@ -102,6 +107,26 @@ describe('a band that could not fail', () => {
  * interpolation. Three or four measured points is not many, and the
  * radii a realisation asks for run well outside them.
  */
+describe('every miss has a named cause', () => {
+  it('no row misses its record without saying why', () => {
+    // A miss with no named cause is a miss nobody has understood. The
+    // public validation page groups the rows by these causes and
+    // explains each in two languages, so a row that misses and names
+    // none would have nothing to stand beside on that page either.
+    for (const row of RECORDED_EVENTS.map(compareWithRecord)) {
+      if (row.contains) continue;
+      expect(row.event.cause, `${row.event.name} misses and names no cause`).toBeDefined();
+    }
+  });
+
+  it('names only causes the page knows how to explain', () => {
+    for (const event of RECORDED_EVENTS) {
+      if (event.cause === undefined) continue;
+      expect(TOLL_CAUSES, event.name).toContain(event.cause);
+    }
+  });
+});
+
 describe('the interpolated band and the measured one', () => {
   it('agree closely enough that the shipped band is about the event', () => {
     const fmt = (n: number): string => Math.round(n).toLocaleString('en-US').padStart(9);

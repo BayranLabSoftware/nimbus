@@ -66,7 +66,8 @@ function isViewMode(value: string | null): value is ViewMode {
     value === 'globe' ||
     value === 'impact' ||
     value === 'methodology' ||
-    value === 'report'
+    value === 'report' ||
+    value === 'validation'
   );
 }
 

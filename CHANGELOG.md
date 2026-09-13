@@ -5,7 +5,37 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## [Unreleased]
 
+### Added
+
+- **A public validation page** (`?m=validation`, one click from the
+  landing page and from the methodology page). The model against real
+  events, with the misses shown as prominently as the matches: every
+  counted death toll with its 9-in-10 band and verdict, every measured
+  wave with what the globe itself draws beside it, the shaking
+  footprint against USGS ShakeMap with its bias and scatter, what the
+  site's population shortcut costs, the per-quantity standing of every
+  anchor, and what the model does not do. Every figure is read from
+  `docs/VALIDATION_REPORT.json`, which CI keeps byte-for-byte in step
+  with the code, so the page cannot go stale any more than the report
+  can; the page names the commit it was built from and links to the
+  full report at that commit. Its own chunk, so a visitor who never
+  asks how the model is checked does not download the answer; WCAG 2.1
+  AA, tables keyboard-scrollable on a phone.
+
+- **Every miss has a named cause.** A toll row now carries one of five
+  causes — people had left, the buildings were not the national
+  average, the population map is coarser than the blast, they drowned
+  and the tests have no sea floor, the map counts who lives there now —
+  and a test refuses a row that misses its record without one. The
+  page explains each cause once, in both languages.
+
 ### Fixed
+
+- **The methodology page called the preset list a validation.** It said
+  fifteen events were re-simulated on every commit, over a list of
+  thirty that were in fact the simulator's presets. It now calls them
+  what they are and points to the page where the checking is.
+
 
 - **The validation report can no longer go stale.** `docs/VALIDATION_REPORT.md`
   had sat at 30 April for four months while CI regenerated a throwaway

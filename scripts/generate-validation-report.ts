@@ -288,7 +288,7 @@ function tollRatio(t: TollComparison): string {
 function tollSection(net: CalibrationNet): string {
   const rows = net.tolls.map(
     (t) =>
-      `| ${t.event.name} | ${recordedLabel(t)} | ${grouped(t.deaths)} | ${grouped(t.low)} – ${grouped(t.high)} | ${bandSpan(t.low, t.high)} | ${tollRatio(t)} | ${t.contains ? 'contains' : '**misses**'} | ${t.event.gated ? 'gated' : 'declared'} |`
+      `| ${t.event.name} | ${recordedLabel(t)} | ${grouped(t.deaths)} | ${grouped(t.low)} – ${grouped(t.high)} | ${bandSpan(t.low, t.high)} | ${tollRatio(t)} | ${t.contains ? 'contains' : '**misses**'} | ${t.event.cause ?? '—'} | ${t.event.gated ? 'gated' : 'declared'} |`
   );
   const misses = net.tolls.filter((t) => !t.contains && t.event.caveat !== undefined);
   const notes = net.tolls.filter((t) => t.contains && t.event.caveat !== undefined);
@@ -301,8 +301,8 @@ function tollSection(net: CalibrationNet): string {
     'stops containing the record; a **declared** row is measured and printed',
     'with its reason, and the reason is below.',
     '',
-    '| Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Standing |',
-    '|-------|---------:|------:|--------------:|-----:|---------------:|---------|----------|',
+    '| Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Cause | Standing |',
+    '|-------|---------:|------:|--------------:|-----:|---------------:|---------|-------|----------|',
     ...rows,
     '',
     '#### Where the band misses, and why',
@@ -669,6 +669,8 @@ otherwise.
         ratio: fixed(t.ratio, 3),
         contains: t.contains,
         gated: t.event.gated,
+        cause: t.event.cause ?? null,
+        source: t.event.source,
       })),
       waves: net.waves.map((w) => ({
         record: w.wave.name,
@@ -680,6 +682,7 @@ otherwise.
         globeM: w.globe === null ? null : fixed(w.globe, 3),
         globeContains: w.globeContains,
         gated: w.wave.gated,
+        source: w.wave.source,
       })),
       footprint: {
         rows: net.footprint.map((r) => ({
@@ -701,7 +704,13 @@ otherwise.
         interpolatedHigh: Math.round(c.interpolated.high),
         comparable: c.comparable,
       })),
-      anchors: CALIBRATION_ANCHORS.length,
+      anchors: CALIBRATION_ANCHORS.map((a) => ({
+        name: a.name,
+        eventType: a.eventType,
+        quantities: a.quantities,
+        gated: a.gated,
+        source: a.source,
+      })),
     },
     replay: {
       total: replayAgg.total,

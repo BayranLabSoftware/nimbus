@@ -35,7 +35,8 @@
     "cta": {
       "science": "Leggi la scienza",
       "methodology": "Metodologia & fonti",
-      "enterSimulator": "Prova il simulatore →"
+      "enterSimulator": "Prova il simulatore →",
+      "validation": "Come viene verificato"
     },
     "scaleBar": {
       "label": "Riferimento di scala"
@@ -573,8 +574,8 @@
     "subtitle": "Ogni formula che il motore Nimbus valuta, con la sua fonte peer-reviewed e il DOI a livello di equazione. Organizzato per tipo di evento, con in fondo l'elenco degli eventi storici usati per la validazione.",
     "overviewTitle": "Panoramica",
     "overviewBody": "Nimbus è un motore fisico TypeScript headless (Layer 2) avvolto da un globo Cesium (Layer 3) e da un'interfaccia React (Layer 4). Il Layer 2 non ha dipendenze runtime su React / Three / Cesium — la configurazione ESLint blocca tali import in modo che la fisica resti testabile da una CLI Node. Ogni formula qui elencata vive in un file sotto src/physics/ con un blocco JSDoc che cita l'articolo e il numero di equazione usato. Le tolleranze della test suite rispettano lo scatter pubblicato negli articoli originali — ±30 % per le soglie di fluenza termica, ±50 % per l'altezza dei pennacchi vulcanici, ±fattore-2 per runout di ejecta e lahar.",
-    "validationTitle": "Validazione storica",
-    "validationBody": "Quindici degli eventi meglio strumentati nel record storico vengono ri-simulati dalla test suite a ogni commit. Se un refactor fisico sposta l'output fuori dalla tolleranza pubblicata, il test di integrazione fallisce per primo.",
+    "validationTitle": "Scenari storici nel simulatore",
+    "validationBody": "Questi sono gli eventi storici che il simulatore offre come preset. Essere un preset non vuol dire essere verificati: gli eventi contro cui il modello è misurato davvero, uno per uno e con gli scarti, stanno nella pagina di validazione.",
     "uncertainty": {
       "title": "Quantificazione dell'incertezza",
       "body": "Ogni input incerto ha un σ documentato in src/physics/uq/conventions.ts, ogni output ha un σ documentato in src/physics/confidence.ts e il motore Monte Carlo campiona 200 realizzazioni per disegnare bande P10/P90 sulle metriche principali. La metodologia è documentata sotto docs/SCIENCE.md e lo script `pnpm sensitivity` produce un'analisi di sensitività OAT (one-at-a-time) per ogni preset.",
@@ -623,7 +624,8 @@
         "note": "Gli stage di cascata a lungo termine (inverno da impatto, acidificazione oceanica, collasso plancton) riportano stime in ordini di grandezza derivate dalla letteratura piuttosto che simulazioni accoppiate atmosfera-oceano. Considera la coda lungo termine descrittiva, non predittiva."
       }
     },
-    "footer": "Open source con licenza Apache 2.0. Correzioni e citazioni aggiuntive sono benvenute tramite pull request GitHub."
+    "footer": "Open source con licenza Apache 2.0. Correzioni e citazioni aggiuntive sono benvenute tramite pull request GitHub.",
+    "toValidation": "Guarda come viene verificato il modello →"
   },
   "population": {
     "label": "Popolazione esposta stimata",
@@ -1331,5 +1333,137 @@
     },
     "bandNote": "La coppia fra parentesi è la banda 5–95 %: rifacendo lo stesso evento con la dispersione pubblicata dei suoi ingressi, nove volte su dieci il conto cade lì dentro. Non porta l’incertezza della funzione di vulnerabilità, che vale un fattore 2–5, né quella del censimento.",
     "bandNoteWave": "La riga dell’onda porta ancora l’intervallo dei parametri, non la banda 5–95 %."
+  },
+  "validation": {
+    "back": "Torna alla home",
+    "title": "Validazione: il modello contro gli eventi reali",
+    "subtitle": "Ogni evento che il mondo ha già vissuto e che qualcuno ha misurato, ripassato nello stesso simulatore che usi tu. Dove il modello cade dentro il dato registrato e — con la stessa evidenza — dove no, e perché.",
+    "provenance": "Generata dal codice del commit {{commit}}. Il build fallisce se questa pagina e il codice si separano.",
+    "provenanceDirty": "Build di sviluppo dal commit {{commit}} con modifiche non committate: queste cifre possono non corrispondere a nessun modello pubblicato.",
+    "provenanceUnknown": "Questa build non sa da quale commit viene.",
+    "fullReport": "Rapporto completo di questo modello",
+    "summaryLabel": "Sintesi",
+    "summary": {
+      "tolls": "bilanci di vittime contati che cadono dentro la banda del modello",
+      "tollsGated": "{{pass}} su {{total}} righe vincolanti passano",
+      "waves": "onde misurate che cadono dentro la cifra del modello",
+      "wavesGlobe": "ma il globo ne disegna {{count}} in un altro modo, e sbaglia",
+      "footprint": "impronta dello scuotimento contro USGS ShakeMap, centrata in raggio",
+      "footprintScatter": "dispersione {{sd}}, contro {{expected}} attesa dal moto del suolo",
+      "invented": "fasce di intensità che il modello dipinge dove il terremoto non è mai arrivato"
+    },
+    "tolls": {
+      "title": "Vittime contro eventi contati",
+      "body": "Ogni evento passa nello stesso modello di vittime che usa il simulatore, sulle mappe di popolazione che distribuisce. La banda è dove cadono nove versioni plausibili su dieci, fra 200 dello stesso evento — un'affermazione che può essere sbagliata. Una riga vincolante blocca un rilascio se la sua banda smette di contenere il dato registrato; le altre sono misurate e mostrate con la loro causa."
+    },
+    "table": {
+      "event": "Evento",
+      "recorded": "Registrati",
+      "model": "Modello",
+      "band": "Banda (9 su 10)",
+      "ratio": "Modello / dato",
+      "verdict": "Esito",
+      "cause": "Causa",
+      "record": "Misura",
+      "range": "Distanza",
+      "observed": "Osservato",
+      "globe": "Sul globo",
+      "threshold": "Intensità",
+      "shakemap": "ShakeMap",
+      "bothZero": "entrambi zero"
+    },
+    "verdict": {
+      "inside": "dentro",
+      "misses": "fuori"
+    },
+    "standing": {
+      "gated": "vincolante",
+      "declared": "dichiarata"
+    },
+    "causesTitle": "Perché una riga manca il dato",
+    "causesBody": "Nessuno scarto resta senza una causa con un nome: il software non si compila altrimenti. Eccole, ognuna una volta sola, con gli eventi che spiega.",
+    "causes": {
+      "evacuation": {
+        "label": "La gente se n'era andata",
+        "body": "Il modello conta tutti quelli che abitavano dentro l'impronta. Al Mount St Helens la montagna era chiusa da due mesi; al Pinatubo sessantamila persone erano state evacuate prima del culmine. Un modello che conta tutti quelli che ci abitavano non può arrivare a un bilancio fatto da tutti quelli che se n'erano andati — e questo errore va sempre per eccesso, mai per difetto."
+      },
+      "buildingStock": {
+        "label": "Gli edifici non erano la media del Paese",
+        "body": "Le vittime da scuotimento usano la curva di mortalità che USGS PAGER ha stimato per ogni Paese. Amatrice ha ucciso 299 persone in borghi medievali di pietra, che reggono molto peggio dell'edificio medio italiano; Gorkha ha ucciso nei mattoni della valle di Kathmandu, e il Nepal usa la curva della sua regione. Una curva nazionale sottostima un paese."
+      },
+      "populationRaster": {
+        "label": "La mappa della popolazione è più grossolana dell'esplosione",
+        "body": "A Beirut l'anello più letale è largo 240 m — venti volte meno di una cella della mappa di popolazione che i test possono leggere. Il modello spalma la densità media della città su un bacino portuale dove non abita nessuno. La mappa più fine che usa il sito vedrebbe la differenza; nessun test offline ci arriva."
+      },
+      "drownedOffline": {
+        "label": "Sono annegati, e i test non hanno il fondale",
+        "body": "Più di nove vittime su dieci del Tōhoku e di Sumatra le ha uccise lo tsunami. L'onda ha bisogno dei dati veri del fondale marino, che scarica solo il sito, quindi queste righe contano solo lo scuotimento e stanno molto sotto il dato per costruzione. Il bilancio costiero si misura a parte, nel browser, ed è documentato nella roadmap."
+      },
+      "populationChanged": {
+        "label": "La mappa conta chi ci vive oggi",
+        "body": "Hiroshima aveva circa 350 000 abitanti nel 1945 e circa 1,2 milioni oggi. La mappa di popolazione è del 2020, quindi il modello deve sbagliare per eccesso — ed è per questo che la riga è mostrata ma non è vincolante, anche se cade dentro il dato."
+      }
+    },
+    "waves": {
+      "title": "Onde contro le misure",
+      "body": "Altezze d'onda annotate da strumenti e rilievi: una boa nel Pacifico, misure in una laguna, depositi su una costa. Modello è la cifra che i test controllano; Sul globo è ciò che la mappa delle onde disegna nello stesso punto, mostrato ovunque le due cifre si calcolano in modo diverso — perché un controllo su un numero che il globo non mostra sarebbe un controllo sul nulla.",
+      "noWave": "nessuna onda",
+      "globeSame": "uguale",
+      "globeNote": "Dove il globo manca una misura che i test contengono: {{list}}. Per un'esplosione subacquea la mappa delle onde distribuisce l'onda con una correzione d'energia che il test non applica. Quale delle due sia giusta per una sorgente così piccola è una questione aperta; finché non è decisa, entrambe le cifre restano su questa pagina."
+    },
+    "footprint": {
+      "title": "Impronta dello scuotimento contro USGS ShakeMap",
+      "body": "Quanta superficie il modello scuote a intensità VII, VIII e IX, contro l'area che lo US Geological Survey ha mappato dopo ogni terremoto. Il modello predice lo scuotimento tipico; un terremoto vero ne è un'estrazione, e una sola deviazione standard del moto del suolo vale già il doppio del raggio. Quindi la prova onesta non è la singola riga ma l'insieme: il modello è centrato, e si disperde non più di quanto faccia il suolo?",
+      "neither": "nessuno dei due",
+      "fromNothing": "dal nulla",
+      "bias": "Centrato a {{ratio}} in raggio — a {{se}} errori standard dal centro esatto, quindi non si può dire che il modello sia sbilanciato. Dispersione {{sd}}, contro la {{expected}} che implica la dispersione pubblicata del moto del suolo.",
+      "biasOff": "Centrato a {{ratio}} in raggio — a {{se}} errori standard dal centro esatto: il modello è sbilanciato. Dispersione {{sd}}, contro la {{expected}} che implica la dispersione pubblicata del moto del suolo.",
+      "invented": "Dipinte a un'intensità che il terremoto non ha mai raggiunto: {{list}}. Un modello da laboratorio non ne ha nessuna; questa lista può solo accorciarsi."
+    },
+    "interpolation": {
+      "title": "Quanto costa la scorciatoia sulla popolazione",
+      "body": "Il sito non può contare la popolazione duecento volte per scenario, quindi la conta su pochi anelli e legge il resto sulla curva fra loro. I test possono permettersi il conteggio esatto a ogni raggio. Confrontare i due è il modo per sapere che la banda sul sito parla dell'evento e non della scorciatoia.",
+      "measured": "Conteggio esatto",
+      "interpolated": "Scorciatoia del sito",
+      "tooFew": "troppo poche vittime per confrontare",
+      "worst": "Estremo peggiore confrontabile: {{factor}}×, contro un limite di 2×."
+    },
+    "anchors": {
+      "title": "Dove il modello è stato misurato",
+      "body": "Ogni evento contro cui il modello è controllato, per famiglia, e cosa ne è stato misurato. Le grandezze vincolanti bloccano un rilascio se il modello si sposta; quelle dichiarate sono misurate e mostrate con un motivo. Quando lanci uno scenario, il simulatore ti dice quanto dista dal più vicino di questi."
+    },
+    "quantity": {
+      "toll": "vittime",
+      "wave": "onda",
+      "crater": "cratere",
+      "blast": "raggio dell'onda d'urto",
+      "plume": "colonna eruttiva"
+    },
+    "gaps": {
+      "title": "Cosa il modello non fa",
+      "body": "Scritto qui perché nessuno debba scoprirlo da solo.",
+      "evacuation": {
+        "item": "Nessuno viene evacuato",
+        "note": "Il bilancio conta tutti quelli dentro l'impronta. È la causa più grande fra gli scarti, e va sempre nella stessa direzione."
+      },
+      "farField": {
+        "item": "Le coste lontane ricevono un'onda troppo piccola dalle rotture molto lunghe",
+        "note": "La legge dell'onda non usa ancora la lunghezza della faglia, quindi 700 km e 1 300 km di rottura irradiano la stessa onda. Le coste lontane di Sumatra ricevono un'onda da cinque a dieci volte troppo piccola."
+      },
+      "coastalOffline": {
+        "item": "Il bilancio costiero non è in queste tabelle",
+        "note": "Ha bisogno dei dati veri del fondale, che scarica solo il sito; si misura nel browser ed è documentato nella roadmap."
+      },
+      "impactToll": {
+        "item": "Nessun bilancio d'impatto potrà mai essere verificato",
+        "note": "Nessun impatto d'asteroide nella storia registrata ha ucciso qualcuno che sia stato contato. Il simulatore lo dice accanto a ogni bilancio d'impatto."
+      },
+      "outsideCount": {
+        "item": "Alcune cause di morte non sono contate",
+        "note": "Fallout, radiazione iniziale, carestia, malattie e clima. Per un impatto come quello che ha estinto i dinosauri, il clima è ciò che uccide la maggior parte dei sopravvissuti."
+      }
+    },
+    "footer": "Ogni cifra di questa pagina viene da docs/VALIDATION_REPORT.json, che il software rigenera e verifica a ogni commit.",
+    "toMethodology": "Metodologia & fonti"
   }
 }

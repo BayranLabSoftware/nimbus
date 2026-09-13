@@ -74,6 +74,15 @@ export function LandingPage() {
             <button type="button" className={styles.cta} onClick={handleMethodology}>
               {t('landing.cta.methodology')}
             </button>
+            <button
+              type="button"
+              className={styles.cta}
+              onClick={() => {
+                setMode('validation');
+              }}
+            >
+              {t('landing.cta.validation')}
+            </button>
           </div>
         </section>
 
