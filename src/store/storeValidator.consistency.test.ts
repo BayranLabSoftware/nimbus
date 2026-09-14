@@ -87,6 +87,22 @@ describe('Store-setter ↔ schema-validator consistency', () => {
     expect(useAppStore.getState().explosion.input.windSpeed as number | undefined).toBe(20);
   });
 
+  it('a custom edit keeps a historical basin with no warning system, and the ocean an impact crosses', () => {
+    // Two more fields the validators did not copy until 14 September
+    // 2026. Editing the magnitude of Sumatra 2004 gave its coasts a
+    // warning nobody could have issued; editing the ocean Chicxulub
+    // put it back on the default basin.
+    useAppStore.getState().selectPreset('SUMATRA_2004');
+    useAppStore.getState().setEarthquakeInput({ magnitude: 9.1 });
+    expect(useAppStore.getState().earthquake.input.warningIssueS).toBe(Number.POSITIVE_INFINITY);
+
+    useAppStore.getState().selectPreset('CHICXULUB_OCEAN');
+    const basin = useAppStore.getState().impact.input.meanOceanDepth;
+    expect(basin).toBeDefined();
+    useAppStore.getState().setImpactInput({ impactVelocity: 18_000 });
+    expect(useAppStore.getState().impact.input.meanOceanDepth).toBe(basin);
+  });
+
   it('INVALID input (zero yield): state is unchanged', () => {
     const before = useAppStore.getState().explosion.input;
     useAppStore.getState().setExplosionInput({ yieldMegatons: 0 });

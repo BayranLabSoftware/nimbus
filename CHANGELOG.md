@@ -11,8 +11,22 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   of burst, ground type, wind and charge type travel in short keys
   (`y`, `h` — negative for a depth under the water — `gt`, `ws`, `wdir`,
   `ct`), and opening the link rebuilds the same input the sender had,
-  down to the seed of its predictive band. Custom earthquakes, volcanoes
-  and landslides are still not in the link.
+  down to the seed of its predictive band.
+
+- **So can a custom earthquake, volcano or landslide.** Every field the
+  stored input carries goes into the link — for an earthquake the
+  magnitude, depth, fault type, Vs30, the subduction flag, the strike,
+  the rupture overrides and `wi=none` for a basin with no warning
+  system; for a volcano the eruption rate and volume, lahar, wind, the
+  cleared zone, and a flank collapse or lateral blast when there is one;
+  for a landslide the volume, slope, basin depth, footprint, confined
+  basin and regime. The link restores the input wholesale through the
+  validator, so the recipient gets the identical object rather than its
+  own defaults with the link's values laid over them. A test sends every
+  preset of the four kinds through an edit and a link and requires that
+  object back; it caught the first draft refusing the dry-land basin of
+  Elm 1881, 0 m deep. The panel has no custom landslide fields, so a
+  custom landslide arrives only by link.
 
 - **An explosion can be placed under the water.** The panel offers "in
   the air or on the surface" or "under the water" with a depth, and the
@@ -56,6 +70,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   reaches the page through the depth of burst below.
 
 ### Fixed
+
+- **Anak Krakatau 2018 could not be picked as a landslide.** The
+  eruption and the flank collapse it shed share one preset id, and
+  picking it on the landslide tab, or opening its link, switched to the
+  volcano. On the landslide tab it now means the landslide.
+
+- **Two more fields the validators threw away.** Editing anything on
+  Sumatra 2004, Lisbon 1755, Valdivia 1960 or Alaska 1964 dropped
+  `warningIssueS`, so their coasts were given a tsunami warning nobody
+  could have issued and their coastal toll changed; editing the ocean
+  Chicxulub dropped its basin depth. Both are validated and kept now.
 
 - **Wind and charge type were thrown away by the explosion validator.**
   It copied only six fields into its output and the store keeps the

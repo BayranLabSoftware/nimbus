@@ -438,15 +438,30 @@ same day, except where marked)_:
   or depth, ground, wind, charge type — went into the shareable link the
   same night (`y`, `h`, `gt`, `ws`, `wdir`, `ct`), and a recipient's store
   rebuilds the identical input object, which is what seeds the
-  predictive band. **Still open:** custom earthquakes, volcanoes and
-  landslides are not in the link; only impacts and explosions are.
+  predictive band. Custom earthquakes, volcanoes and landslides followed
+  the same night: every field of the stored input in the link, restored
+  wholesale through the validator (`restoreCustomInput`), so a recipient
+  gets the identical object rather than defaults with values laid over
+  them. `urlState.test.ts` sends every preset of the four kinds through
+  an edit and a link and requires the identical object back. That sweep
+  found two things: the decoder was stricter than the validator (Elm
+  1881's 0 m basin was refused), and the landslide Anak Krakatau 2018
+  could not be reached at all — it shares its id with the eruption, and
+  `selectPreset` always chose the volcano, from the panel and from a
+  link. Both fixed. **Still open:** the panel has no custom landslide
+  fields, so a custom landslide can only arrive by link.
 - **Found on the way, and fixed: the explosion validator threw fields
   away.** It copied six fields into its output and the store keeps the
   output, so the panel's wind never reached the thermal ring — the
   slider sprang back — and editing anything on Beirut, Halifax or Texas
   City dropped `chargeType` and turned a chemical blast nuclear, flash
   and fires included. It now validates and keeps the charge type, the
-  distance to the shore and the wind.
+  distance to the shore and the wind. The same sweep of every preset
+  through its validator found two more: the earthquake validator dropped
+  `warningIssueS`, so editing Sumatra 2004, Lisbon, Valdivia or Alaska
+  gave their coasts a warning nobody could have issued, and the impact
+  validator dropped the ocean Chicxulub's basin depth. Both are kept now,
+  and no preset loses a field any more.
 - **The globe started a burst's wave from the 4 km default basin depth,
   not the water it was fired in.** **Closed for explosions**, which now
   hand the veil the depth at the burst. **Open for impacts**, which still

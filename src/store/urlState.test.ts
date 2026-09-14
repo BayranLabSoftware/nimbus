@@ -1,4 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest';
+import { EARTHQUAKE_PRESETS } from '../physics/events/earthquake/index.js';
+import { EXPLOSION_PRESETS } from '../physics/events/explosion/index.js';
+import { LANDSLIDE_PRESETS } from '../physics/events/landslide/index.js';
+import { VOLCANO_PRESETS } from '../physics/events/volcano/index.js';
 import {
   applyIntentToStore,
   decodeSearchParamsToIntent,
@@ -9,6 +13,7 @@ import {
   URL_KEYS,
   URL_STATE_VERSION,
 } from './urlState.js';
+import type { AppStore } from './useAppStore.js';
 import { CLOSE_UP_VIEW_ENABLED, resetAppStore, useAppStore } from './useAppStore.js';
 
 beforeEach(() => {
@@ -135,7 +140,7 @@ describe('applyIntentToStore', () => {
         mode: 'globe',
         simTime: null,
         impactCustomInput: null,
-        explosionCustomInput: null,
+        customInput: null,
       },
       useAppStore.getState()
     );
@@ -155,7 +160,7 @@ describe('applyIntentToStore', () => {
         mode: null,
         simTime: null,
         impactCustomInput: { impactorDiameter: 250 },
-        explosionCustomInput: null,
+        customInput: null,
       },
       useAppStore.getState()
     );
@@ -216,22 +221,25 @@ describe('custom explosion inputs in the URL', () => {
       new URLSearchParams('t=explosion&p=CUSTOM&y=0.02&h=-27&gt=WET_SOIL&ws=5&wdir=90&ct=chemical')
     );
     expect(intent.preset).toBe('CUSTOM');
-    expect(intent.explosionCustomInput).toEqual({
-      yieldMegatons: 0.02,
-      heightOfBurst: -27,
-      groundType: 'WET_SOIL',
-      windSpeed: 5,
-      windDirectionDeg: 90,
-      chargeType: 'chemical',
+    expect(intent.customInput).toEqual({
+      type: 'explosion',
+      raw: {
+        yieldMegatons: 0.02,
+        heightOfBurst: -27,
+        groundType: 'WET_SOIL',
+        windSpeed: 5,
+        windDirectionDeg: 90,
+        chargeType: 'chemical',
+      },
     });
     const nonsense = decodeSearchParamsToIntent(
       new URLSearchParams('t=explosion&p=CUSTOM&y=-1&h=-20000&gt=MUD&ws=-3&ct=antimatter')
     );
-    expect(nonsense.explosionCustomInput).toBeNull();
+    expect(nonsense.customInput).toBeNull();
     // A named preset keeps its own inputs, whatever the link adds.
     expect(
       decodeSearchParamsToIntent(new URLSearchParams('t=explosion&p=HIROSHIMA_1945&y=50'))
-        .explosionCustomInput
+        .customInput
     ).toBeNull();
   });
 
@@ -290,5 +298,160 @@ describe('impact close-up mode in the URL', () => {
 
   it('still rejects a mode that does not exist', () => {
     expect(decodeSearchParamsToIntent(new URLSearchParams('m=nonsense')).mode).toBeNull();
+  });
+});
+
+describe('custom earthquakes, volcanoes and landslides in the URL', () => {
+  /** Edit a preset in the panel's way, share it, open the link in a
+   *  fresh store, and require the identical input object back. */
+  const roundTrip = (edit: () => void, read: () => unknown): { sent: string; received: string } => {
+    edit();
+    const sent = JSON.stringify(read());
+    const p = encodeStateToSearchParams(projectSyncableState(useAppStore.getState()));
+    resetAppStore();
+    applyIntentToStore(decodeSearchParamsToIntent(p), useAppStore.getState());
+    return { sent, received: JSON.stringify(read()) };
+  };
+
+  it('an earthquake keeps its rupture, its strike and a basin with no warning system', () => {
+    const { sent, received } = roundTrip(
+      () => {
+        useAppStore.getState().selectPreset('SUMATRA_2004');
+        useAppStore.getState().setEarthquakeInput({ magnitude: 9.0, depth: 25_000 });
+      },
+      () => useAppStore.getState().earthquake.input
+    );
+    const input = JSON.parse(sent) as Record<string, unknown>;
+    // Infinity serialises as null; what matters is that it came back.
+    expect(input.ruptureLengthOverride).toBe(1_300_000);
+    expect(useAppStore.getState().earthquake.input.warningIssueS).toBe(Number.POSITIVE_INFINITY);
+    expect(useAppStore.getState().earthquake.preset).toBe('CUSTOM');
+    expect(received).toBe(sent);
+  });
+
+  it('a volcano keeps its flank collapse, its lateral blast, its wind and its cleared zone', () => {
+    const krakatau = roundTrip(
+      () => {
+        useAppStore.getState().selectPreset('KRAKATAU_1883');
+        useAppStore.getState().setVolcanoInput({ windSpeed: 25, windDirectionDegrees: 300 });
+      },
+      () => useAppStore.getState().volcano.input
+    );
+    expect(krakatau.received).toBe(krakatau.sent);
+    expect(useAppStore.getState().volcano.input.flankCollapse).toBeDefined();
+
+    resetAppStore();
+    const stHelens = roundTrip(
+      () => {
+        useAppStore.getState().selectPreset('MT_ST_HELENS_1980');
+        useAppStore.getState().setVolcanoInput({ evacuationRadiusM: 12_000 });
+      },
+      () => useAppStore.getState().volcano.input
+    );
+    expect(stHelens.received).toBe(stHelens.sent);
+    expect(useAppStore.getState().volcano.input.lateralBlast).toBeDefined();
+  });
+
+  it('a landslide keeps its confined basin and its regime', () => {
+    const { sent, received } = roundTrip(
+      () => {
+        useAppStore.getState().selectPreset('VAIONT_1963');
+        useAppStore.getState().setLandslideInput({ volumeM3: 3e8 });
+      },
+      () => useAppStore.getState().landslide.input
+    );
+    expect(JSON.parse(sent)).toMatchObject({ confinedBasinArea: 3e6, regime: 'subaerial' });
+    expect(received).toBe(sent);
+  });
+
+  it('reads a hand-written link, and a link it cannot use leaves the preset alone', () => {
+    const intent = decodeSearchParamsToIntent(
+      new URLSearchParams('t=earthquake&p=CUSTOM&mw=7.1&dep=12000&ft=reverse&si=0&wi=none')
+    );
+    expect(intent.customInput).toEqual({
+      type: 'earthquake',
+      raw: {
+        magnitude: 7.1,
+        depth: 12_000,
+        faultType: 'reverse',
+        subductionInterface: false,
+        warningIssueS: Number.POSITIVE_INFINITY,
+      },
+    });
+    // A magnitude below zero is dropped, and without one the store has
+    // nothing valid to restore: the earthquake keeps its preset.
+    applyIntentToStore(
+      decodeSearchParamsToIntent(new URLSearchParams('t=earthquake&p=CUSTOM&mw=-2')),
+      useAppStore.getState()
+    );
+    expect(useAppStore.getState().earthquake.preset).not.toBe('CUSTOM');
+  });
+});
+
+describe('every preset, edited in the panel and shared', () => {
+  // A basin with no warning system holds Infinity, which JSON would
+  // write as null and so hide a link that lost it.
+  const serialise = (v: unknown): string =>
+    JSON.stringify(v, (_key, x: unknown) => (x === Number.POSITIVE_INFINITY ? 'Infinity' : x));
+  const fieldPaths = (v: unknown, prefix = ''): string[] =>
+    typeof v === 'object' && v !== null
+      ? Object.entries(v).flatMap(([k, x]) => fieldPaths(x, `${prefix}${k}.`))
+      : [prefix.slice(0, -1)];
+  const store = (): AppStore => useAppStore.getState();
+
+  const cases = [
+    ...Object.entries(EXPLOSION_PRESETS).map(([id, p]) => ({
+      type: 'explosion' as const,
+      id,
+      preset: p.input,
+      edit: () => store().setExplosionInput({}),
+    })),
+    ...Object.entries(EARTHQUAKE_PRESETS).map(([id, p]) => ({
+      type: 'earthquake' as const,
+      id,
+      preset: p.input,
+      edit: () => store().setEarthquakeInput({}),
+    })),
+    ...Object.entries(VOLCANO_PRESETS).map(([id, p]) => ({
+      type: 'volcano' as const,
+      id,
+      preset: p.input,
+      edit: () => store().setVolcanoInput({}),
+    })),
+    ...Object.entries(LANDSLIDE_PRESETS).map(([id, p]) => ({
+      type: 'landslide' as const,
+      id,
+      preset: p.input,
+      edit: () => store().setLandslideInput({}),
+    })),
+  ];
+
+  it.each(cases)('$type $id keeps every field it carried, and its link rebuilds it', (c) => {
+    // The panel's way: the tab first, then the preset from its list.
+    store().selectEventType(c.type);
+    store().selectPreset(c.id as Parameters<AppStore['selectPreset']>[0]);
+    expect(store().eventType).toBe(c.type);
+    c.edit();
+    expect(store()[c.type].preset).toBe('CUSTOM');
+    const sent = store()[c.type].input;
+    // The validator is what the store keeps: a field it does not copy
+    // is gone at the first edit, silently.
+    expect(fieldPaths(sent)).toEqual(expect.arrayContaining(fieldPaths(c.preset)));
+
+    const params = encodeStateToSearchParams(projectSyncableState(store()));
+    resetAppStore();
+    applyIntentToStore(decodeSearchParamsToIntent(params), store());
+    expect(store().eventType).toBe(c.type);
+    expect(serialise(store()[c.type].input)).toBe(serialise(sent));
+  });
+
+  it('a named landslide preset that shares its id with a volcano opens as the landslide', () => {
+    store().selectEventType('landslide');
+    store().selectPreset('ANAK_KRAKATAU_2018');
+    const params = encodeStateToSearchParams(projectSyncableState(store()));
+    resetAppStore();
+    applyIntentToStore(decodeSearchParamsToIntent(params), store());
+    expect(store().eventType).toBe('landslide');
+    expect(store().landslide.preset).toBe('ANAK_KRAKATAU_2018');
   });
 });

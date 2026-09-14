@@ -551,6 +551,15 @@ export interface AppStore {
   setVolcanoInput: (overrides: VolcanoInputOverrides) => void;
   /** Landslide-input overrides. Marks the landslide preset as CUSTOM. */
   setLandslideInput: (overrides: LandslideInputOverrides) => void;
+  /** Replace one scenario's input wholesale with a raw object, validated
+   *  like any edit, and mark it CUSTOM: how a shared link rebuilds
+   *  exactly what its sender had, down to the object that seeds the
+   *  predictive band. An invalid object changes nothing. Impacts keep
+   *  `setImpactInput`, which converts the link's degrees. */
+  restoreCustomInput: (
+    type: 'explosion' | 'earthquake' | 'volcano' | 'landslide',
+    raw: Record<string, unknown>
+  ) => void;
   setLocation: (coords: Coordinates) => void;
   clearLocation: () => void;
   /** Pin a specific aftershock for click-through detail. The globe
@@ -2111,7 +2120,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
       });
       return;
     }
-    if (isVolcanoPresetId(id)) {
+    // Anak Krakatau 2018 is both an eruption and the flank collapse it
+    // shed, under one id. On the landslide tab it means the landslide:
+    // until 14 September 2026 picking it there, or opening its link,
+    // switched to the volcano.
+    if (isVolcanoPresetId(id) && !(isLandslidePresetId(id) && get().eventType === 'landslide')) {
       set({
         eventType: 'volcano',
         volcano: { preset: id, input: VOLCANO_PRESETS[id].input },
@@ -2346,6 +2359,71 @@ export const useAppStore = create<AppStore>((set, get) => ({
         lastEvaluatedAt: null,
         lastEvaluatedAtLocation: null,
       };
+    });
+  },
+
+  restoreCustomInput: (type, raw) => {
+    set((state) => {
+      const cleared: Partial<AppStore> = {
+        selectedAftershockIndex: null,
+        result: null,
+        bathymetricTsunami: null,
+        populationExposure: null,
+        populationStatus: 'idle',
+        casualties: null,
+        casualtiesBase: null,
+        tsunamiCasualties: null,
+        casualtyTimeline: null,
+        casualtyClockStartedAt: null,
+        casualtyStatus: 'idle',
+        monteCarlo: null,
+        monteCarloStatus: 'idle',
+        deepDive: null,
+        deepDiveStatus: 'idle',
+        deepDiveError: null,
+        status: 'idle',
+        error: null,
+        lastEvaluatedAt: null,
+        lastEvaluatedAtLocation: null,
+      };
+      switch (type) {
+        case 'explosion': {
+          const c = classifyStoreInput('explosion', raw as unknown as ExplosionScenarioInput);
+          if (!c.ok) return state;
+          return {
+            ...cleared,
+            eventType: 'explosion',
+            explosion: { preset: 'CUSTOM', input: c.classified },
+          };
+        }
+        case 'earthquake': {
+          const c = classifyStoreInput('earthquake', raw as unknown as EarthquakeScenarioInput);
+          if (!c.ok) return state;
+          return {
+            ...cleared,
+            eventType: 'earthquake',
+            earthquake: { preset: 'CUSTOM', input: c.classified },
+          };
+        }
+        case 'volcano': {
+          const c = classifyStoreInput('volcano', raw as unknown as VolcanoScenarioInput);
+          if (!c.ok) return state;
+          return {
+            ...cleared,
+            eventType: 'volcano',
+            volcano: { preset: 'CUSTOM', input: c.classified },
+          };
+        }
+        case 'landslide': {
+          const c = classifyStoreInput('landslide', raw as unknown as LandslideScenarioInput);
+          if (!c.ok) return state;
+          return {
+            ...cleared,
+            eventType: 'landslide',
+            landslide: { preset: 'CUSTOM', input: c.classified },
+          };
+        }
+      }
     });
   },
 

@@ -279,6 +279,39 @@ test.describe('simulator flow', () => {
     await expect.poll(() => new URL(page.url()).searchParams.get('y')).toBe('2.5');
   });
 
+  test('a shared link rebuilds a custom earthquake and a custom volcano', async ({ page }) => {
+    await page.goto('/?lng=en&t=earthquake&p=CUSTOM&mw=7.1&dep=12000&ft=reverse&m=globe');
+    await expandSimulatorPanelIfCollapsed(page);
+    await expect(page.getByRole('radio', { name: 'Earthquake' })).toBeChecked();
+    await expect(page.getByLabel('Magnitude (Mw)')).toHaveValue('7.1');
+    await expect(page.getByLabel('Depth (km)')).toHaveValue('12');
+
+    await page.goto('/?lng=en&t=volcano&p=CUSTOM&ver=100000&vol=10000000000&ev=12000&m=globe');
+    await expandSimulatorPanelIfCollapsed(page);
+    await expect(page.getByRole('radio', { name: 'Volcanic eruption' })).toBeChecked();
+    await expect(page.getByLabel('Zone evacuated before the eruption (km radius)')).toHaveValue(
+      '12'
+    );
+    await expect.poll(() => new URL(page.url()).searchParams.get('ev')).toBe('12000');
+  });
+
+  test('Anak Krakatau 2018 picked on the landslide tab stays a landslide, and so does its link', async ({
+    page,
+  }) => {
+    await page.goto('/?lng=en');
+    await page.getByRole('button', { name: 'Try the simulator →' }).click();
+    await expandSimulatorPanelIfCollapsed(page);
+    await page.getByRole('radio', { name: 'Submarine landslide' }).check();
+    await page.getByLabel('Preset').selectOption('ANAK_KRAKATAU_2018');
+    await expect(page.getByRole('radio', { name: 'Submarine landslide' })).toBeChecked();
+    await expect.poll(() => new URL(page.url()).searchParams.get('t')).toBe('landslide');
+
+    await page.goto('/?lng=en&t=landslide&p=ANAK_KRAKATAU_2018&m=globe');
+    await expandSimulatorPanelIfCollapsed(page);
+    await expect(page.getByRole('radio', { name: 'Submarine landslide' })).toBeChecked();
+    await expect(page.getByLabel('Preset')).toHaveValue('ANAK_KRAKATAU_2018');
+  });
+
   test('ring legend mounts in globe mode with the empty-state copy', async ({ page }) => {
     await page.goto('/?lng=en&t=impact&p=CHICXULUB&m=globe');
 

@@ -35,21 +35,64 @@ export const URL_KEYS = {
   gravity: 'g',
   waterDepth: 'wd',
   meanOceanDepth: 'od',
-  // explosion CUSTOM overrides
+  // explosion CUSTOM inputs
   yieldMegatons: 'y',
   // Signed: a negative height is a depth below the water surface.
   heightOfBurst: 'h',
   groundType: 'gt',
+  // Wind: the explosion's thermal drift and the volcano's ash plume.
   windSpeed: 'ws',
   windDirectionDeg: 'wdir',
   chargeType: 'ct',
+  // earthquake CUSTOM inputs
+  magnitude: 'mw',
+  depth: 'dep',
+  faultType: 'ft',
+  vs30: 'vs30',
+  subductionInterface: 'si',
+  strikeAzimuthDeg: 'st',
+  ruptureLengthOverride: 'rl',
+  ruptureWidthOverride: 'rw',
+  // Seconds, or `none` for a basin with no warning system.
+  warningIssueS: 'wi',
+  // volcano CUSTOM inputs
+  volumeEruptionRate: 'ver',
+  totalEjectaVolume: 'vol',
+  laharVolume: 'lah',
+  evacuationRadiusM: 'ev',
+  flankVolumeM3: 'fcv',
+  flankSlopeDeg: 'fcs',
+  flankMeanOceanDepth: 'fco',
+  flankSourceWaterDepth: 'fcw',
+  lateralBlastDirectionDeg: 'lbd',
+  lateralBlastSectorDeg: 'lbs',
+  // landslide CUSTOM inputs (the basin depth reuses `od`)
+  slideVolumeM3: 'lv',
+  slideSlopeDeg: 'sl',
+  slideFootprintArea: 'fa',
+  confinedBasinArea: 'ba',
+  confinementDynamicFactor: 'bf',
+  slideRegime: 'rg',
 } as const;
 
+/** Scenario types whose custom inputs a link restores wholesale. */
+export type RestorableScenario = 'explosion' | 'earthquake' | 'volcano' | 'landslide';
+
 const EXPLOSION_GROUND_TYPES = ['HARD_ROCK', 'FIRM_GROUND', 'DRY_SOIL', 'WET_SOIL'] as const;
-type ExplosionGroundTypeParam = (typeof EXPLOSION_GROUND_TYPES)[number];
+const FAULT_TYPES = ['strike-slip', 'reverse', 'normal', 'all'] as const;
+const SLIDE_REGIMES = ['submarine', 'subaerial'] as const;
 
 /** The deepest a burst can be placed: the schema refuses more. */
 const MAX_BURST_DEPTH_M = 11_000;
+
+/**
+ * A number as the shortest string that reads back to the same double.
+ * A custom scenario is rebuilt from the link bit for bit, because the
+ * object it rebuilds is what seeds the predictive band.
+ */
+function exact(n: number): string {
+  return String(n);
+}
 
 type SyncableState = Pick<
   AppStore,
@@ -100,11 +143,81 @@ function trim(n: number, digits: number): string {
   return Number(n.toFixed(digits)).toString();
 }
 
+/*
+ * Custom inputs, one encoder per scenario. Each writes every field the
+ * stored input carries and nothing it does not: the stored input is the
+ * validator's output, so a recipient who validates the same fields gets
+ * the same object back.
+ */
+
+function setNumber(params: URLSearchParams, key: string, value: number | undefined): void {
+  if (value !== undefined) params.set(key, exact(value));
+}
+
+function encodeExplosion(params: URLSearchParams, input: AppStore['explosion']['input']): void {
+  setNumber(params, URL_KEYS.yieldMegatons, input.yieldMegatons);
+  setNumber(params, URL_KEYS.heightOfBurst, input.heightOfBurst);
+  if (input.groundType !== undefined) params.set(URL_KEYS.groundType, input.groundType);
+  setNumber(params, URL_KEYS.windSpeed, input.windSpeed);
+  setNumber(params, URL_KEYS.windDirectionDeg, input.windDirectionDeg);
+  if (input.chargeType !== undefined) params.set(URL_KEYS.chargeType, input.chargeType);
+  setNumber(params, URL_KEYS.waterDepth, input.waterDepth);
+  setNumber(params, URL_KEYS.meanOceanDepth, input.meanOceanDepth);
+}
+
+function encodeEarthquake(params: URLSearchParams, input: AppStore['earthquake']['input']): void {
+  setNumber(params, URL_KEYS.magnitude, input.magnitude);
+  setNumber(params, URL_KEYS.depth, input.depth);
+  if (input.faultType !== undefined) params.set(URL_KEYS.faultType, input.faultType);
+  setNumber(params, URL_KEYS.vs30, input.vs30);
+  if (input.subductionInterface !== undefined) {
+    params.set(URL_KEYS.subductionInterface, input.subductionInterface ? '1' : '0');
+  }
+  setNumber(params, URL_KEYS.strikeAzimuthDeg, input.strikeAzimuthDeg);
+  setNumber(params, URL_KEYS.ruptureLengthOverride, input.ruptureLengthOverride);
+  setNumber(params, URL_KEYS.ruptureWidthOverride, input.ruptureWidthOverride);
+  if (input.warningIssueS !== undefined) {
+    params.set(
+      URL_KEYS.warningIssueS,
+      input.warningIssueS === Number.POSITIVE_INFINITY ? 'none' : exact(input.warningIssueS)
+    );
+  }
+}
+
+function encodeVolcano(params: URLSearchParams, input: AppStore['volcano']['input']): void {
+  setNumber(params, URL_KEYS.volumeEruptionRate, input.volumeEruptionRate);
+  setNumber(params, URL_KEYS.totalEjectaVolume, input.totalEjectaVolume);
+  setNumber(params, URL_KEYS.laharVolume, input.laharVolume);
+  setNumber(params, URL_KEYS.windSpeed, input.windSpeed);
+  setNumber(params, URL_KEYS.windDirectionDeg, input.windDirectionDegrees);
+  setNumber(params, URL_KEYS.evacuationRadiusM, input.evacuationRadiusM);
+  if (input.flankCollapse !== undefined) {
+    setNumber(params, URL_KEYS.flankVolumeM3, input.flankCollapse.volumeM3);
+    setNumber(params, URL_KEYS.flankSlopeDeg, input.flankCollapse.slopeAngleDeg);
+    setNumber(params, URL_KEYS.flankMeanOceanDepth, input.flankCollapse.meanOceanDepth);
+    setNumber(params, URL_KEYS.flankSourceWaterDepth, input.flankCollapse.sourceWaterDepth);
+  }
+  if (input.lateralBlast !== undefined) {
+    setNumber(params, URL_KEYS.lateralBlastDirectionDeg, input.lateralBlast.directionDeg);
+    setNumber(params, URL_KEYS.lateralBlastSectorDeg, input.lateralBlast.sectorAngleDeg);
+  }
+}
+
+function encodeLandslide(params: URLSearchParams, input: AppStore['landslide']['input']): void {
+  setNumber(params, URL_KEYS.slideVolumeM3, input.volumeM3);
+  setNumber(params, URL_KEYS.slideSlopeDeg, input.slopeAngleDeg);
+  setNumber(params, URL_KEYS.meanOceanDepth, input.meanOceanDepth);
+  setNumber(params, URL_KEYS.slideFootprintArea, input.slideFootprintArea);
+  setNumber(params, URL_KEYS.confinedBasinArea, input.confinedBasinArea);
+  setNumber(params, URL_KEYS.confinementDynamicFactor, input.confinementDynamicFactor);
+  if (input.regime !== undefined) params.set(URL_KEYS.slideRegime, input.regime);
+}
+
 /**
  * Serialise the shareable slice of the app state into URL search
- * params. Location, non-landing view mode, and CUSTOM impact and
- * explosion inputs are only included when they differ from defaults,
- * so the baseline "land on the page and pick a preset" URL stays short.
+ * params. Location, non-landing view mode, and the inputs of a CUSTOM
+ * scenario are only included when they differ from defaults, so the
+ * baseline "land on the page and pick a preset" URL stays short.
  */
 export function encodeStateToSearchParams(state: SyncableState): URLSearchParams {
   const params = new URLSearchParams();
@@ -132,29 +245,16 @@ export function encodeStateToSearchParams(state: SyncableState): URLSearchParams
     }
   } else if (state.eventType === 'explosion') {
     params.set(URL_KEYS.preset, state.explosion.preset);
-    if (state.explosion.preset === 'CUSTOM') {
-      // Every field the panel can change, and the charge type a custom
-      // burst keeps from its preset. Only what the input carries: a
-      // recipient's store then rebuilds the same object, down to the
-      // seed of its predictive band.
-      const input = state.explosion.input;
-      params.set(URL_KEYS.yieldMegatons, trim(input.yieldMegatons, 7));
-      if (input.heightOfBurst !== undefined) {
-        params.set(URL_KEYS.heightOfBurst, trim(input.heightOfBurst, 1));
-      }
-      if (input.groundType !== undefined) params.set(URL_KEYS.groundType, input.groundType);
-      if (input.windSpeed !== undefined) params.set(URL_KEYS.windSpeed, trim(input.windSpeed, 1));
-      if (input.windDirectionDeg !== undefined) {
-        params.set(URL_KEYS.windDirectionDeg, trim(input.windDirectionDeg, 1));
-      }
-      if (input.chargeType !== undefined) params.set(URL_KEYS.chargeType, input.chargeType);
-    }
+    if (state.explosion.preset === 'CUSTOM') encodeExplosion(params, state.explosion.input);
   } else if (state.eventType === 'earthquake') {
     params.set(URL_KEYS.preset, state.earthquake.preset);
+    if (state.earthquake.preset === 'CUSTOM') encodeEarthquake(params, state.earthquake.input);
   } else if (state.eventType === 'volcano') {
     params.set(URL_KEYS.preset, state.volcano.preset);
+    if (state.volcano.preset === 'CUSTOM') encodeVolcano(params, state.volcano.input);
   } else {
     params.set(URL_KEYS.preset, state.landslide.preset);
+    if (state.landslide.preset === 'CUSTOM') encodeLandslide(params, state.landslide.input);
   }
 
   if (state.location) {
@@ -200,16 +300,10 @@ export interface DecodedStateIntent {
     waterDepth?: number;
     meanOceanDepth?: number;
   } | null;
-  /** Only filled when the explosion preset is 'CUSTOM' and at least one
-   *  override parsed. */
-  explosionCustomInput: {
-    yieldMegatons?: number;
-    heightOfBurst?: number;
-    groundType?: ExplosionGroundTypeParam;
-    windSpeed?: number;
-    windDirectionDeg?: number;
-    chargeType?: 'nuclear' | 'chemical';
-  } | null;
+  /** An explosion, earthquake, volcano or landslide link whose preset
+   *  is 'CUSTOM': the input fields it carried, each checked against its
+   *  domain. The store validates them as a whole when it restores them. */
+  customInput: { type: RestorableScenario; raw: Record<string, unknown> } | null;
 }
 
 function looksLikeCustomPreset(preset: string): boolean {
@@ -219,9 +313,93 @@ function looksLikeCustomPreset(preset: string): boolean {
 function presetBelongsTo(preset: string, table: EventType): boolean {
   if (table === 'impact') return preset in IMPACT_PRESETS || looksLikeCustomPreset(preset);
   if (table === 'explosion') return preset in EXPLOSION_PRESETS || looksLikeCustomPreset(preset);
-  if (table === 'earthquake') return preset in EARTHQUAKE_PRESETS;
-  if (table === 'volcano') return preset in VOLCANO_PRESETS;
-  return preset in LANDSLIDE_PRESETS;
+  if (table === 'earthquake') return preset in EARTHQUAKE_PRESETS || looksLikeCustomPreset(preset);
+  if (table === 'volcano') return preset in VOLCANO_PRESETS || looksLikeCustomPreset(preset);
+  return preset in LANDSLIDE_PRESETS || looksLikeCustomPreset(preset);
+}
+
+/** Fields a link carried for one custom scenario, each dropped when it
+ *  is outside the domain its schema allows. Null when none parsed. */
+function decodeCustomInput(
+  type: RestorableScenario,
+  search: URLSearchParams
+): DecodedStateIntent['customInput'] {
+  const raw: Record<string, unknown> = {};
+  const number = (field: string, key: string, ok: (v: number) => boolean): void => {
+    const v = numberParam(search, key);
+    if (v !== null && ok(v)) raw[field] = v;
+  };
+  const oneOf = (field: string, key: string, allowed: readonly string[]): void => {
+    const v = search.get(key);
+    const match = allowed.find((a) => a === v);
+    if (match !== undefined) raw[field] = match;
+  };
+  // Never stricter than the validator: Elm 1881 fell on dry land, and
+  // a link that refused its zero-depth basin rebuilt a different slide.
+  const any = (): boolean => true;
+  const positive = (v: number): boolean => v > 0;
+  const nonNegative = (v: number): boolean => v >= 0;
+  const slope = (v: number): boolean => v > 0 && v < 90;
+
+  if (type === 'explosion') {
+    number('yieldMegatons', URL_KEYS.yieldMegatons, positive);
+    number('heightOfBurst', URL_KEYS.heightOfBurst, (v) => v >= -MAX_BURST_DEPTH_M);
+    oneOf('groundType', URL_KEYS.groundType, EXPLOSION_GROUND_TYPES);
+    number('windSpeed', URL_KEYS.windSpeed, nonNegative);
+    number('windDirectionDeg', URL_KEYS.windDirectionDeg, any);
+    oneOf('chargeType', URL_KEYS.chargeType, ['nuclear', 'chemical'] as const);
+    number('waterDepth', URL_KEYS.waterDepth, nonNegative);
+    number('meanOceanDepth', URL_KEYS.meanOceanDepth, positive);
+  } else if (type === 'earthquake') {
+    number('magnitude', URL_KEYS.magnitude, positive);
+    number('depth', URL_KEYS.depth, nonNegative);
+    oneOf('faultType', URL_KEYS.faultType, FAULT_TYPES);
+    number('vs30', URL_KEYS.vs30, positive);
+    const si = search.get(URL_KEYS.subductionInterface);
+    if (si === '1' || si === '0') raw.subductionInterface = si === '1';
+    number('strikeAzimuthDeg', URL_KEYS.strikeAzimuthDeg, any);
+    number('ruptureLengthOverride', URL_KEYS.ruptureLengthOverride, positive);
+    number('ruptureWidthOverride', URL_KEYS.ruptureWidthOverride, positive);
+    if (search.get(URL_KEYS.warningIssueS) === 'none') {
+      raw.warningIssueS = Number.POSITIVE_INFINITY;
+    } else {
+      number('warningIssueS', URL_KEYS.warningIssueS, nonNegative);
+    }
+  } else if (type === 'volcano') {
+    number('volumeEruptionRate', URL_KEYS.volumeEruptionRate, positive);
+    number('totalEjectaVolume', URL_KEYS.totalEjectaVolume, positive);
+    number('laharVolume', URL_KEYS.laharVolume, nonNegative);
+    number('windSpeed', URL_KEYS.windSpeed, nonNegative);
+    number('windDirectionDegrees', URL_KEYS.windDirectionDeg, any);
+    number('evacuationRadiusM', URL_KEYS.evacuationRadiusM, nonNegative);
+    const flankVolume = numberParam(search, URL_KEYS.flankVolumeM3);
+    if (flankVolume !== null && flankVolume > 0) {
+      const flank: Record<string, number> = { volumeM3: flankVolume };
+      const flankSlope = numberParam(search, URL_KEYS.flankSlopeDeg);
+      if (flankSlope !== null && slope(flankSlope)) flank.slopeAngleDeg = flankSlope;
+      const basin = numberParam(search, URL_KEYS.flankMeanOceanDepth);
+      if (basin !== null && basin >= 0) flank.meanOceanDepth = basin;
+      const source = numberParam(search, URL_KEYS.flankSourceWaterDepth);
+      if (source !== null && source >= 0) flank.sourceWaterDepth = source;
+      raw.flankCollapse = flank;
+    }
+    const blastDirection = numberParam(search, URL_KEYS.lateralBlastDirectionDeg);
+    if (blastDirection !== null) {
+      const blast: Record<string, number> = { directionDeg: blastDirection };
+      const sector = numberParam(search, URL_KEYS.lateralBlastSectorDeg);
+      if (sector !== null && sector > 0 && sector <= 360) blast.sectorAngleDeg = sector;
+      raw.lateralBlast = blast;
+    }
+  } else {
+    number('volumeM3', URL_KEYS.slideVolumeM3, positive);
+    number('slopeAngleDeg', URL_KEYS.slideSlopeDeg, slope);
+    number('meanOceanDepth', URL_KEYS.meanOceanDepth, nonNegative);
+    number('slideFootprintArea', URL_KEYS.slideFootprintArea, positive);
+    number('confinedBasinArea', URL_KEYS.confinedBasinArea, positive);
+    number('confinementDynamicFactor', URL_KEYS.confinementDynamicFactor, positive);
+    oneOf('regime', URL_KEYS.slideRegime, SLIDE_REGIMES);
+  }
+  return Object.keys(raw).length > 0 ? { type, raw } : null;
 }
 
 /**
@@ -281,26 +459,12 @@ export function decodeSearchParamsToIntent(search: URLSearchParams): DecodedStat
     impactCustomInput = Object.keys(custom).length > 0 ? custom : null;
   }
 
-  let explosionCustomInput: DecodedStateIntent['explosionCustomInput'] = null;
-  if (eventType === 'explosion' && preset === 'CUSTOM') {
-    const custom: NonNullable<DecodedStateIntent['explosionCustomInput']> = {};
-    const y = numberParam(search, URL_KEYS.yieldMegatons);
-    if (y !== null && y > 0) custom.yieldMegatons = y;
-    const h = numberParam(search, URL_KEYS.heightOfBurst);
-    if (h !== null && h >= -MAX_BURST_DEPTH_M) custom.heightOfBurst = h;
-    const gt = search.get(URL_KEYS.groundType);
-    const ground = EXPLOSION_GROUND_TYPES.find((g) => g === gt);
-    if (ground !== undefined) custom.groundType = ground;
-    const ws = numberParam(search, URL_KEYS.windSpeed);
-    if (ws !== null && ws >= 0) custom.windSpeed = ws;
-    const wdir = numberParam(search, URL_KEYS.windDirectionDeg);
-    if (wdir !== null) custom.windDirectionDeg = wdir;
-    const ct = search.get(URL_KEYS.chargeType);
-    if (ct === 'nuclear' || ct === 'chemical') custom.chargeType = ct;
-    explosionCustomInput = Object.keys(custom).length > 0 ? custom : null;
-  }
+  const customInput: DecodedStateIntent['customInput'] =
+    eventType !== null && eventType !== 'impact' && preset === 'CUSTOM'
+      ? decodeCustomInput(eventType, search)
+      : null;
 
-  return { eventType, preset, location, mode, simTime, impactCustomInput, explosionCustomInput };
+  return { eventType, preset, location, mode, simTime, impactCustomInput, customInput };
 }
 
 /**
@@ -320,7 +484,7 @@ export function decodeUrl(url: string, base = 'http://localhost/'): DecodedState
       mode: null,
       simTime: null,
       impactCustomInput: null,
-      explosionCustomInput: null,
+      customInput: null,
     };
   }
 }
@@ -343,8 +507,8 @@ export function applyIntentToStore(intent: DecodedStateIntent, store: AppStore):
     store.setImpactInput(intent.impactCustomInput);
   }
 
-  if (intent.explosionCustomInput !== null) {
-    store.setExplosionInput(intent.explosionCustomInput);
+  if (intent.customInput !== null) {
+    store.restoreCustomInput(intent.customInput.type, intent.customInput.raw);
   }
 
   if (intent.location !== null) {

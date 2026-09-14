@@ -128,6 +128,7 @@ interface EarthquakeRawInput {
   strikeAzimuthDeg?: unknown;
   ruptureLengthOverride?: unknown;
   ruptureWidthOverride?: unknown;
+  warningIssueS?: unknown;
 }
 
 const VALID_FAULT_TYPES: readonly FaultType[] = [
@@ -279,6 +280,26 @@ export function validateEarthquakeInput(
       return invalid(errors);
     }
     out.ruptureWidthOverride = m(raw.ruptureWidthOverride);
+  }
+
+  // A preset that predates its basin's warning system says so, and the
+  // coastal toll reads it. Until 14 September 2026 this validator did
+  // not copy it, so editing anything on Sumatra 2004, Lisbon, Valdivia
+  // or Alaska gave their coasts a warning nobody could have issued.
+  if (raw.warningIssueS !== undefined) {
+    const w = raw.warningIssueS;
+    const isNoSystem = w === Number.POSITIVE_INFINITY;
+    if (!isNoSystem && (!isFiniteNumber(w) || w < 0)) {
+      errors.push({
+        field: 'warningIssueS',
+        code: isFiniteNumber(w) ? 'NEGATIVE_FORBIDDEN' : 'NOT_FINITE',
+        message:
+          'warningIssueS (s) must be non-negative, or Infinity for a basin with no warning system',
+        rawValue: w,
+      });
+      return invalid(errors);
+    }
+    out.warningIssueS = w;
   }
 
   return withWarnings(out, warnings);
@@ -973,6 +994,7 @@ interface ImpactRawInput {
   impactAzimuthDeg?: unknown;
   surfaceGravity?: unknown;
   waterDepth?: unknown;
+  meanOceanDepth?: unknown;
   shoreDistance?: unknown;
   impactorStrength?: unknown;
 }
@@ -1132,6 +1154,22 @@ export function validateImpactInput(raw: ImpactRawInput): ValidationResult<Impac
       return invalid(errors);
     }
     out.waterDepth = m(raw.waterDepth);
+  }
+
+  // The basin depth the wave crosses. Not copied until 14 September
+  // 2026, so a custom edit of the ocean Chicxulub fell back to the
+  // default basin.
+  if (raw.meanOceanDepth !== undefined) {
+    if (!isFiniteNumber(raw.meanOceanDepth) || raw.meanOceanDepth <= 0) {
+      errors.push({
+        field: 'meanOceanDepth',
+        code: isFiniteNumber(raw.meanOceanDepth) ? 'ZERO_FORBIDDEN' : 'NOT_FINITE',
+        message: 'meanOceanDepth (m) must be finite > 0',
+        rawValue: raw.meanOceanDepth,
+      });
+      return invalid(errors);
+    }
+    out.meanOceanDepth = m(raw.meanOceanDepth);
   }
 
   if (raw.shoreDistance !== undefined) {
