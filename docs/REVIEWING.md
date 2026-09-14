@@ -35,8 +35,8 @@ printed simulation report name the commit they come from.
 
 **An hour.** Open the
 [validation page](https://bayranlabsoftware.github.io/nimbus/?lng=en&m=validation),
-then [VALIDATION_REPORT.md](VALIDATION_REPORT.md): its summary, "Which
-checks are validation" and "Declared gaps". Then read the methodology
+then [VALIDATION_REPORT.md](VALIDATION_REPORT.md): its summary, the
+scorecard, "Which checks are validation" and "Declared gaps". Then read the methodology
 cards for the domain you know best. Two questions are enough: is a
 declared gap wrong, or is one missing? And which row that contains its
 record convinces you least, and why?
@@ -72,6 +72,7 @@ pnpm simulate --help      # every event, preset and override
 | waves against the record                  | `src/physics/validation/recordedWaves.ts`                                   |
 | the shaken area against USGS ShakeMap     | `src/physics/validation/shakemapFootprint.ts`                               |
 | the scatter behind the bands              | `src/physics/uq/conventions.ts` and `src/physics/uq/tollBand.ts`            |
+| how accuracy and precision are scored     | `src/physics/validation/scorecard.ts`                                       |
 | defects found, fixed and pinned by a test | [BUG_REGISTRY.md](BUG_REGISTRY.md)                                          |
 | why a choice was made, and what it cost   | the dated sections of [SCIENCE.md](SCIENCE.md) and [ROADMAP.md](ROADMAP.md) |
 

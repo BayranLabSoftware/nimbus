@@ -76,6 +76,21 @@ describe('the validation page has words for everything its data can say', () => 
       'verdict.misses',
       'standing.gated',
       'standing.declared',
+      'scorecard.title',
+      'scorecard.body',
+      'scorecard.note',
+      'scorecard.scored',
+      'scorecard.insideOf',
+      'scorecard.acceptedOf',
+      'scorecard.table.events',
+      'scorecard.table.rows',
+      'scorecard.table.bias',
+      'scorecard.table.scatter',
+      'scorecard.table.inside',
+      'scorecard.table.band',
+      'scorecard.quantity.toll',
+      'scorecard.quantity.wave',
+      'scorecard.quantity.plume',
     ]) {
       expectText(`validation.${key}`);
     }

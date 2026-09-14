@@ -1309,6 +1309,27 @@
       "heldOutNote": "tolls {{tollsInside}} of {{tolls}} · waves {{wavesInside}} of {{waves}}; the other rows are fits or shared sources",
       "heldOutZeros": "every one of them a record of nothing — no dead, or no wave"
     },
+    "scorecard": {
+      "title": "Scorecard: how accurate, and how precise",
+      "body": "Scored only on the checks nothing in the model was set on. Bias is the model over the record on average — 1.00× is unbiased, 0.10× ten times too low — and scatter how far single events stray from that average, in natural-log units. For death tolls, inside is the claim of the 9-in-10 band, which should hold about nine records in ten while being as narrow as it can; band is how wide it is, in orders of magnitude. For waves and eruption columns, inside only means accepted. Each family is scored as a whole and by size, because a scenario you build asks how good the model is near its own inputs.",
+      "quantity": {
+        "toll": "Death tolls",
+        "wave": "Waves",
+        "plume": "Eruption columns"
+      },
+      "table": {
+        "events": "Events",
+        "rows": "Held-out checks",
+        "bias": "Bias",
+        "scatter": "Scatter",
+        "inside": "Inside",
+        "band": "Band"
+      },
+      "scored": "{{rows}} · scored: {{scored}}",
+      "insideOf": "{{inside}} of {{rows}}",
+      "acceptedOf": "{{inside}} of {{rows}} accepted",
+      "note": "Bias and scatter need two checks where both the model and the record are above zero, and mean little below five. Zeros are counted apart in the full report, which also scores every check, fitted ones included."
+    },
     "tolls": {
       "title": "Death tolls against events that were counted",
       "body": "Each event is run through the same casualty model the simulator uses, on the population maps it ships. The band is where nine in ten of 200 plausible versions of the event land — a claim that can be wrong. A gated row stops a release if its band ever stops containing the record; the others are measured and shown with their cause."

@@ -338,6 +338,29 @@ channelled footprint — and, for the whole programme, a held-out set
 chosen by rule rather than by list: IVESPA alone has 37 eruptions since
 2009 with independently estimated rates and heights.
 
+### 0c. A scorecard for accuracy and precision _(first version 14 September)_
+
+What "gold standard" means for this project, as Andrea put it: not
+out-doing the specialists, but being the model others cite because its
+numbers are accurate and precise — for the historical events and for the
+scenarios people build. `validation/scorecard.ts` measures both on the
+held-out rows, per quantity, per family and per size band: bias as the
+geometric mean of model over record, scatter as σ of its log, zeros
+counted apart, the share of records inside a death toll's 5–95 % band
+against the nine in ten it claims, and the band's width. The report prints
+it at every commit and the validation page shows the held-out half
+(SCIENCE.md, "The scorecard").
+
+The first reading is the to-do list: eruption columns 0.91× with a
+scatter of 0.07; earthquake death tolls 0.11× with a scatter of 2.01,
+4 of 8 records inside a band two orders of magnitude wide; every cell on
+too few rows. Next, in order: held-out sets chosen by rule rather than by
+list (IVESPA's 37 eruptions since 2009 for columns; every shallow
+crustal earthquake since 2008 with a toll in NCEI), grid verification of
+each module against its reference implementation across the inputs a
+custom scenario can set, and a casualty model narrow enough to be both
+calibrated and sharp.
+
 ### 0b. Every source read against its record _(done 14 September; Vaiont and explosions re-tuned, the other gaps open and declared)_
 
 A reviewer checks citations before physics, and until 14 September

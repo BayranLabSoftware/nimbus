@@ -557,6 +557,652 @@
         "source": "DART 32402 (SHOA; 26.743 °S, 73.983 °W, 4 070 m of water, NOAA NDBC), 582 km from the USGS epicentre: a zero-to-crest maximum of 10.9 cm (Heidarzadeh et al. 2016, Geophys. Res. Lett. 43: 643) and 11 cm on the first crest (Tang et al. 2016, Pure Appl. Geophys. 173: 369); USGS us20003k7a, Mww 8.3"
       }
     ],
+    "scorecard": [
+      {
+        "quantity": "toll",
+        "family": "earthquake",
+        "sizeBand": null,
+        "predictive": true,
+        "heldOut": {
+          "rows": 8,
+          "scored": 4,
+          "bias": 0.107,
+          "scatterLn": 2.014,
+          "inside": 4,
+          "bothZero": 1,
+          "falseAlarms": 1,
+          "missedToZero": 2,
+          "medianBandDecades": 2.34
+        },
+        "all": {
+          "rows": 12,
+          "scored": 8,
+          "bias": 0.0394,
+          "scatterLn": 3.875,
+          "inside": 7,
+          "bothZero": 1,
+          "falseAlarms": 1,
+          "missedToZero": 2,
+          "medianBandDecades": 2.69
+        }
+      },
+      {
+        "quantity": "toll",
+        "family": "earthquake",
+        "sizeBand": "Mw < 6.5",
+        "predictive": true,
+        "heldOut": {
+          "rows": 3,
+          "scored": 2,
+          "bias": 0.0412,
+          "scatterLn": 2.031,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 1,
+          "missedToZero": 0,
+          "medianBandDecades": 3.15
+        },
+        "all": {
+          "rows": 5,
+          "scored": 4,
+          "bias": 0.0707,
+          "scatterLn": 1.994,
+          "inside": 3,
+          "bothZero": 0,
+          "falseAlarms": 1,
+          "missedToZero": 0,
+          "medianBandDecades": 3.15
+        }
+      },
+      {
+        "quantity": "toll",
+        "family": "earthquake",
+        "sizeBand": "Mw 6.5–7.5",
+        "predictive": true,
+        "heldOut": {
+          "rows": 1,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 4.8
+        },
+        "all": {
+          "rows": 2,
+          "scored": 2,
+          "bias": 0.9,
+          "scatterLn": 0.301,
+          "inside": 2,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 3.75
+        }
+      },
+      {
+        "quantity": "toll",
+        "family": "earthquake",
+        "sizeBand": "Mw ≥ 7.5",
+        "predictive": true,
+        "heldOut": {
+          "rows": 4,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 2,
+          "bothZero": 1,
+          "falseAlarms": 0,
+          "missedToZero": 2,
+          "medianBandDecades": 0.35
+        },
+        "all": {
+          "rows": 5,
+          "scored": 2,
+          "bias": 0.000533,
+          "scatterLn": 4.799,
+          "inside": 2,
+          "bothZero": 1,
+          "falseAlarms": 0,
+          "missedToZero": 2,
+          "medianBandDecades": 0.7
+        }
+      },
+      {
+        "quantity": "toll",
+        "family": "explosion",
+        "sizeBand": null,
+        "predictive": true,
+        "heldOut": {
+          "rows": 0,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 2,
+          "scored": 2,
+          "bias": 2.67,
+          "scatterLn": 0.902,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 0.08
+        }
+      },
+      {
+        "quantity": "toll",
+        "family": "explosion",
+        "sizeBand": "< 1 kt",
+        "predictive": true,
+        "heldOut": {
+          "rows": 0,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 1,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 0.09
+        }
+      },
+      {
+        "quantity": "toll",
+        "family": "explosion",
+        "sizeBand": "1 kt – 1 Mt",
+        "predictive": true,
+        "heldOut": {
+          "rows": 0,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 1,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 0.08
+        }
+      },
+      {
+        "quantity": "toll",
+        "family": "volcano",
+        "sizeBand": null,
+        "predictive": true,
+        "heldOut": {
+          "rows": 3,
+          "scored": 3,
+          "bias": 0.214,
+          "scatterLn": 0.616,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 0.99
+        },
+        "all": {
+          "rows": 4,
+          "scored": 4,
+          "bias": 0.462,
+          "scatterLn": 1.436,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 0.87
+        }
+      },
+      {
+        "quantity": "toll",
+        "family": "volcano",
+        "sizeBand": "< 10⁸ m³",
+        "predictive": true,
+        "heldOut": {
+          "rows": 2,
+          "scored": 2,
+          "bias": 0.318,
+          "scatterLn": 0.313,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 0.79
+        },
+        "all": {
+          "rows": 2,
+          "scored": 2,
+          "bias": 0.318,
+          "scatterLn": 0.313,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 0.79
+        }
+      },
+      {
+        "quantity": "toll",
+        "family": "volcano",
+        "sizeBand": "10⁸ – 10¹⁰ m³",
+        "predictive": true,
+        "heldOut": {
+          "rows": 0,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 1,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 0.76
+        }
+      },
+      {
+        "quantity": "toll",
+        "family": "volcano",
+        "sizeBand": "≥ 10¹⁰ m³",
+        "predictive": true,
+        "heldOut": {
+          "rows": 1,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 0.99
+        },
+        "all": {
+          "rows": 1,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": 0.99
+        }
+      },
+      {
+        "quantity": "wave",
+        "family": "earthquake",
+        "sizeBand": null,
+        "predictive": false,
+        "heldOut": {
+          "rows": 1,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 2,
+          "scored": 2,
+          "bias": 0.954,
+          "scatterLn": 0.014,
+          "inside": 2,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "wave",
+        "family": "earthquake",
+        "sizeBand": "Mw ≥ 7.5",
+        "predictive": false,
+        "heldOut": {
+          "rows": 1,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 2,
+          "scored": 2,
+          "bias": 0.954,
+          "scatterLn": 0.014,
+          "inside": 2,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "wave",
+        "family": "explosion",
+        "sizeBand": null,
+        "predictive": false,
+        "heldOut": {
+          "rows": 3,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 3,
+          "bothZero": 2,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 12,
+          "scored": 9,
+          "bias": 0.657,
+          "scatterLn": 0.139,
+          "inside": 7,
+          "bothZero": 2,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "wave",
+        "family": "explosion",
+        "sizeBand": "< 1 kt",
+        "predictive": false,
+        "heldOut": {
+          "rows": 1,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 1,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "wave",
+        "family": "explosion",
+        "sizeBand": "1 kt – 1 Mt",
+        "predictive": false,
+        "heldOut": {
+          "rows": 0,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 9,
+          "scored": 9,
+          "bias": 0.657,
+          "scatterLn": 0.139,
+          "inside": 4,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "wave",
+        "family": "explosion",
+        "sizeBand": "≥ 1 Mt",
+        "predictive": false,
+        "heldOut": {
+          "rows": 2,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 2,
+          "bothZero": 2,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 2,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 2,
+          "bothZero": 2,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "wave",
+        "family": "landslide",
+        "sizeBand": null,
+        "predictive": false,
+        "heldOut": {
+          "rows": 0,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 2,
+          "scored": 2,
+          "bias": 0.847,
+          "scatterLn": 0.286,
+          "inside": 2,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "wave",
+        "family": "landslide",
+        "sizeBand": "< 10⁹ m³",
+        "predictive": false,
+        "heldOut": {
+          "rows": 0,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 1,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "wave",
+        "family": "landslide",
+        "sizeBand": "≥ 10⁹ m³",
+        "predictive": false,
+        "heldOut": {
+          "rows": 0,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 1,
+          "scored": 1,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 1,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "plume",
+        "family": "volcano",
+        "sizeBand": null,
+        "predictive": false,
+        "heldOut": {
+          "rows": 3,
+          "scored": 3,
+          "bias": 0.906,
+          "scatterLn": 0.067,
+          "inside": 3,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 6,
+          "scored": 6,
+          "bias": 0.999,
+          "scatterLn": 0.115,
+          "inside": 6,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "plume",
+        "family": "volcano",
+        "sizeBand": "10⁸ – 10¹⁰ m³",
+        "predictive": false,
+        "heldOut": {
+          "rows": 3,
+          "scored": 3,
+          "bias": 0.906,
+          "scatterLn": 0.067,
+          "inside": 3,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 4,
+          "scored": 4,
+          "bias": 0.948,
+          "scatterLn": 0.097,
+          "inside": 4,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      },
+      {
+        "quantity": "plume",
+        "family": "volcano",
+        "sizeBand": "≥ 10¹⁰ m³",
+        "predictive": false,
+        "heldOut": {
+          "rows": 0,
+          "scored": 0,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 0,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        },
+        "all": {
+          "rows": 2,
+          "scored": 2,
+          "bias": 1.11,
+          "scatterLn": 0.063,
+          "inside": 2,
+          "bothZero": 0,
+          "falseAlarms": 0,
+          "missedToZero": 0,
+          "medianBandDecades": null
+        }
+      }
+    ],
     "footprint": {
       "rows": [
         {

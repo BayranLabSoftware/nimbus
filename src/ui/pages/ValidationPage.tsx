@@ -80,8 +80,32 @@ interface AnchorRow {
   source: string;
 }
 
+interface ScoreFigures {
+  rows: number;
+  scored: number;
+  bias: number | null;
+  scatterLn: number | null;
+  inside: number;
+  bothZero: number;
+  falseAlarms: number;
+  missedToZero: number;
+  medianBandDecades: number | null;
+}
+
+interface ScoreCellRow {
+  quantity: string;
+  family: string;
+  sizeBand: string | null;
+  predictive: boolean;
+  heldOut: ScoreFigures;
+  all: ScoreFigures;
+}
+
+const SCORED_QUANTITIES = ['toll', 'wave', 'plume'] as const;
+
 interface ValidationReportData {
   calibration: {
+    scorecard: ScoreCellRow[];
     tolls: TollRow[];
     waves: WaveRow[];
     footprint: {
@@ -282,6 +306,89 @@ export function ValidationPage(): JSX.Element {
             <span className={styles.tileLabel}>{t('validation.summary.invented')}</span>
           </li>
         </ul>
+      </section>
+
+      <section className={styles.section} data-testid="validation-scorecard">
+        <h2>{t('validation.scorecard.title')}</h2>
+        <p className={styles.prose}>{t('validation.scorecard.body')}</p>
+        {SCORED_QUANTITIES.map((q) => {
+          const cells = DATA.calibration.scorecard.filter(
+            (c) => c.quantity === q && c.heldOut.rows > 0
+          );
+          if (cells.length === 0) return null;
+          return (
+            <TableRegion key={q} label={t(`validation.scorecard.quantity.${q}`)}>
+              <table className={styles.table}>
+                <caption>{t(`validation.scorecard.quantity.${q}`)}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">{t('validation.scorecard.table.events')}</th>
+                    <th scope="col" className={styles.num}>
+                      {t('validation.scorecard.table.rows')}
+                    </th>
+                    <th scope="col" className={styles.num}>
+                      {t('validation.scorecard.table.bias')}
+                    </th>
+                    <th scope="col" className={styles.num}>
+                      {t('validation.scorecard.table.scatter')}
+                    </th>
+                    <th scope="col" className={styles.num}>
+                      {t('validation.scorecard.table.inside')}
+                    </th>
+                    <th scope="col" className={styles.num}>
+                      {t('validation.scorecard.table.band')}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cells.map((c) => (
+                    <tr key={`${c.family}:${c.sizeBand ?? 'all'}`}>
+                      <th scope="row">
+                        {c.sizeBand === null
+                          ? t(`simulator.eventTypes.${c.family}`)
+                          : `· ${c.sizeBand}`}
+                      </th>
+                      <td className={styles.num}>
+                        {t('validation.scorecard.scored', {
+                          rows: c.heldOut.rows,
+                          scored: c.heldOut.scored,
+                        })}
+                      </td>
+                      <td className={styles.num}>
+                        {c.heldOut.bias === null
+                          ? '—'
+                          : `${
+                              c.heldOut.bias >= 0.1
+                                ? dec(c.heldOut.bias, 2)
+                                : c.heldOut.bias.toLocaleString(locale, {
+                                    maximumSignificantDigits: 2,
+                                  })
+                            }×`}
+                      </td>
+                      <td className={styles.num}>
+                        {c.heldOut.scatterLn === null ? '—' : dec(c.heldOut.scatterLn, 2)}
+                      </td>
+                      <td className={styles.num}>
+                        {t(
+                          c.predictive
+                            ? 'validation.scorecard.insideOf'
+                            : 'validation.scorecard.acceptedOf',
+                          { inside: c.heldOut.inside, rows: c.heldOut.rows }
+                        )}
+                      </td>
+                      <td className={styles.num}>
+                        {c.heldOut.medianBandDecades === null
+                          ? '—'
+                          : `10^${dec(c.heldOut.medianBandDecades, 1)}`}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </TableRegion>
+          );
+        })}
+        <p className={styles.note}>{t('validation.scorecard.note')}</p>
       </section>
 
       <section className={styles.section}>

@@ -851,6 +851,49 @@ net has no runout quantity. And the list itself was the weak part of the
 protocol: IVESPA alone holds 37 eruptions since 2009, so the next set can
 be chosen by a rule rather than by hand.
 
+### The scorecard (14 September 2026)
+
+"Gold standard" here means a model other people can cite because its
+numbers are accurate and precise, and both words can be measured.
+`validation/scorecard.ts` measures them on every row of the calibration
+net, scores the held-out rows apart from the fitted ones, and splits each
+event family by size — magnitude, energy, volume — because someone who
+builds a scenario of their own asks how good the model is near their
+inputs, not on average. The report prints the whole table at every
+commit; the validation page shows the held-out half.
+
+- **Bias:** the geometric mean of model over record, over the rows where
+  both are above zero; 1.00× is unbiased.
+- **Scatter:** the standard deviation of ln(model / record) over the same
+  rows. Both need two such rows and mean little below five.
+- **Zeros**, which a ratio cannot hold, are counted apart: both zero, a
+  record of nothing where the model says something, a record the model
+  sends to zero.
+- **Inside:** for a death toll, the claim of the 5–95 % band, which
+  should hold about nine records in ten while being as narrow as it can
+  — calibration subject to sharpness, as Gneiting, Balabdaoui & Raftery
+  (2007) put it for probabilistic forecasts. For waves and eruption
+  columns the rows carry no predictive band, and inside is an acceptance.
+- **Band:** the median width of the death toll's band, in orders of
+  magnitude.
+
+The first reading, held out only:
+
+| quantity, family         | held out (scored) | bias  | scatter σ_ln | inside                  | band   |
+| ------------------------ | ----------------- | ----- | ------------ | ----------------------- | ------ |
+| death tolls, earthquakes | 8 (4)             | 0.11× | 2.01         | 4 of 8, against 9 in 10 | 10^2.3 |
+| death tolls, volcanoes   | 3 (3)             | 0.21× | 0.62         | 1 of 3                  | 10^1.0 |
+| waves, earthquakes       | 1 (1)             | —     | —            | 1 of 1 accepted         | —      |
+| eruption columns         | 3 (3)             | 0.91× | 0.07         | 3 of 3 accepted         | —      |
+
+Read plainly: the column relation is accurate and precise on what it has
+not seen; the death tolls are biased low by about an order of magnitude
+with a scatter of a factor of seven either way, and their band holds half
+the records where it promises nine in ten, while already being two orders
+of magnitude wide. Every cell is scored on too few rows, and the table
+says so. That is the programme in one line: more held-out rows, chosen
+by rule, and a casualty model whose band can be both honest and narrow.
+
 ### Burns, mass fire and later deaths (Phase 24)
 
 The blast bands of OTA 1979 are the prompt blast and collapse count

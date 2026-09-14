@@ -1396,6 +1396,27 @@
       "heldOutNote": "vittime {{tollsInside}} su {{tolls}} · onde {{wavesInside}} su {{waves}}; le altre righe sono tarature o fonti in comune",
       "heldOutZeros": "tutti dati di nulla: nessun morto, o nessuna onda"
     },
+    "scorecard": {
+      "title": "Scheda di punteggio: quanto è accurato, e quanto è preciso",
+      "body": "Calcolata solo sui controlli su cui nulla del modello è stato tarato. Lo scarto è in media il modello diviso il dato — 1,00× vuol dire nessuno scarto, 0,10× dieci volte troppo basso — e la dispersione quanto i singoli eventi si allontanano da quella media, in unità di logaritmo naturale. Per le vittime, dentro è la promessa della banda dei 9 casi su 10, che dovrebbe contenere circa nove dati su dieci restando la più stretta possibile; la banda è quanto è larga, in ordini di grandezza. Per le onde e le colonne eruttive dentro vuol dire solo accettato. Ogni famiglia è valutata nell'insieme e per dimensione, perché uno scenario costruito da te chiede quanto è buono il modello vicino ai suoi input.",
+      "quantity": {
+        "toll": "Vittime",
+        "wave": "Onde",
+        "plume": "Colonne eruttive"
+      },
+      "table": {
+        "events": "Eventi",
+        "rows": "Controlli tenuti fuori",
+        "bias": "Scarto",
+        "scatter": "Dispersione",
+        "inside": "Dentro",
+        "band": "Banda"
+      },
+      "scored": "{{rows}} · valutabili: {{scored}}",
+      "insideOf": "{{inside}} su {{rows}}",
+      "acceptedOf": "{{inside}} su {{rows}} accettati",
+      "note": "Scarto e dispersione richiedono due controlli con modello e dato entrambi sopra zero, e sotto cinque dicono poco. Gli zeri sono contati a parte nel report completo, che valuta anche tutti i controlli, compresi quelli tarati."
+    },
     "tolls": {
       "title": "Vittime contro eventi contati",
       "body": "Ogni evento passa nello stesso modello di vittime che usa il simulatore, sulle mappe di popolazione che distribuisce. La banda è dove cadono nove versioni plausibili su dieci, fra 200 dello stesso evento — un'affermazione che può essere sbagliata. Una riga vincolante blocca un rilascio se la sua banda smette di contenere il dato registrato; le altre sono misurate e mostrate con la loro causa."

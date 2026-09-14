@@ -19,6 +19,61 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 - **Held out** — the rows nothing in the model was set on: death tolls 5 of 11 inside the band, waves 4 of 4, eruption columns 3 of 3. 3 of the 12 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
 
+## Scorecard
+
+How accurate and how precise the model is, scored on the rows nothing in the
+model was set on and, for comparison, on every row. **Bias** is the geometric
+mean of model over record (1.00× is unbiased) and **scatter** the standard
+deviation of ln(model / record), both over the rows where record and model
+are above zero — at least two of them, and read as indicative below five.
+Zeros are counted apart: both zero / a record of nothing where the model
+says something / a record where the model says nothing. For death tolls
+**inside** is the claim of the 5–95 % band, which should hold about nine
+records in ten while being as narrow as it can — calibration and sharpness,
+in Gneiting, Balabdaoui & Raftery (2007); for waves and columns it is an
+acceptance, not a probability. **Band** is the median width of the death
+toll's band. Each family is scored as a whole and by size — magnitude,
+energy, volume — because a custom scenario asks how good the model is near
+its own inputs.
+
+#### Death tolls
+
+| Family | Size | Held-out rows | Scored | Bias | Scatter σ_ln | Inside | Zeros | Band | All rows | Scored | Bias | Scatter σ_ln | Inside | Zeros | Band |
+|--------|------|--------------:|-------:|-----:|-------------:|--------|-------|-----:|---------:|-------:|-----:|-------------:|--------|-------|-----:|
+| **earthquake** | all sizes | 8 | 4 | 0.11× | 2.01 | 4 of 8 | 1 / 1 / 2 | 10^2.3 | 12 | 8 | 0.039× | 3.88 | 7 of 12 | 1 / 1 / 2 | 10^2.7 |
+|  | Mw < 6.5 | 3 | 2 | 0.041× | 2.03 | 1 of 3 | 0 / 1 / 0 | 10^3.2 | 5 | 4 | 0.071× | 1.99 | 3 of 5 | 0 / 1 / 0 | 10^3.2 |
+|  | Mw 6.5–7.5 | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^4.8 | 2 | 2 | 0.90× | 0.30 | 2 of 2 | 0 / 0 / 0 | 10^3.8 |
+|  | Mw ≥ 7.5 | 4 | 1 | — | — | 2 of 4 | 1 / 0 / 2 | 10^0.4 | 5 | 2 | 0.00053× | 4.80 | 2 of 5 | 1 / 0 / 2 | 10^0.7 |
+| **explosion** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 2.67× | 0.90 | 1 of 2 | 0 / 0 / 0 | 10^0.1 |
+|  | < 1 kt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^0.1 |
+|  | 1 kt – 1 Mt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^0.1 |
+| **volcano** | all sizes | 3 | 3 | 0.21× | 0.62 | 1 of 3 | 0 / 0 / 0 | 10^1.0 | 4 | 4 | 0.46× | 1.44 | 1 of 4 | 0 / 0 / 0 | 10^0.9 |
+|  | < 10⁸ m³ | 2 | 2 | 0.32× | 0.31 | 1 of 2 | 0 / 0 / 0 | 10^0.8 | 2 | 2 | 0.32× | 0.31 | 1 of 2 | 0 / 0 / 0 | 10^0.8 |
+|  | 10⁸ – 10¹⁰ m³ | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^0.8 |
+|  | ≥ 10¹⁰ m³ | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^1.0 | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^1.0 |
+
+#### Waves
+
+| Family | Size | Held-out rows | Scored | Bias | Scatter σ_ln | Inside | Zeros | Band | All rows | Scored | Bias | Scatter σ_ln | Inside | Zeros | Band |
+|--------|------|--------------:|-------:|-----:|-------------:|--------|-------|-----:|---------:|-------:|-----:|-------------:|--------|-------|-----:|
+| **earthquake** | all sizes | 1 | 1 | — | — | 1 of 1 accepted | 0 / 0 / 0 | — | 2 | 2 | 0.95× | 0.01 | 2 of 2 accepted | 0 / 0 / 0 | — |
+|  | Mw ≥ 7.5 | 1 | 1 | — | — | 1 of 1 accepted | 0 / 0 / 0 | — | 2 | 2 | 0.95× | 0.01 | 2 of 2 accepted | 0 / 0 / 0 | — |
+| **explosion** | all sizes | 3 | 0 | — | — | 3 of 3 accepted | 2 / 0 / 0 | — | 12 | 9 | 0.66× | 0.14 | 7 of 12 accepted | 2 / 0 / 0 | — |
+|  | < 1 kt | 1 | 0 | — | — | 1 of 1 accepted | 0 / 0 / 0 | — | 1 | 0 | — | — | 1 of 1 accepted | 0 / 0 / 0 | — |
+|  | 1 kt – 1 Mt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 9 | 9 | 0.66× | 0.14 | 4 of 9 accepted | 0 / 0 / 0 | — |
+|  | ≥ 1 Mt | 2 | 0 | — | — | 2 of 2 accepted | 2 / 0 / 0 | — | 2 | 0 | — | — | 2 of 2 accepted | 2 / 0 / 0 | — |
+| **landslide** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 0.85× | 0.29 | 2 of 2 accepted | 0 / 0 / 0 | — |
+|  | < 10⁹ m³ | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 accepted | 0 / 0 / 0 | — |
+|  | ≥ 10⁹ m³ | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 accepted | 0 / 0 / 0 | — |
+
+#### Eruption columns
+
+| Family | Size | Held-out rows | Scored | Bias | Scatter σ_ln | Inside | Zeros | Band | All rows | Scored | Bias | Scatter σ_ln | Inside | Zeros | Band |
+|--------|------|--------------:|-------:|-----:|-------------:|--------|-------|-----:|---------:|-------:|-----:|-------------:|--------|-------|-----:|
+| **volcano** | all sizes | 3 | 3 | 0.91× | 0.07 | 3 of 3 accepted | 0 / 0 / 0 | — | 6 | 6 | 1.00× | 0.11 | 6 of 6 accepted | 0 / 0 / 0 | — |
+|  | 10⁸ – 10¹⁰ m³ | 3 | 3 | 0.91× | 0.07 | 3 of 3 accepted | 0 / 0 / 0 | — | 4 | 4 | 0.95× | 0.10 | 4 of 4 accepted | 0 / 0 / 0 | — |
+|  | ≥ 10¹⁰ m³ | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 1.11× | 0.06 | 2 of 2 accepted | 0 / 0 / 0 | — |
+
 ## Release gate
 
 | Mode | Decision | Exit code |

@@ -35,6 +35,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   entered the water. The report and the public validation page both say
   so, computed from the rows rather than written in.
 
+- **A scorecard for accuracy and precision.** The validation report
+  and the public validation page now score the model per quantity (death
+  tolls, waves, eruption columns), per event family and per size band
+  (magnitude, energy, volume), on the held-out checks apart from the
+  fitted ones: bias as the geometric mean of model over record, scatter
+  as the standard deviation of its natural log, zeros counted apart, the
+  share of records inside the death toll's 5–95 % band against the nine
+  in ten it claims, and that band's median width. First reading, held out:
+  eruption columns 0.91× with a scatter of 0.07, three of three accepted;
+  earthquake death tolls 0.11× with a scatter of 2.01, four of eight
+  records inside a band a hundred times wide. Every cell stands on few
+  rows and the note under the table says so. The plume comparison moves to
+  a shared module so the suite, the report and the scorecard read one
+  computation.
+
 - **The second held-out group, run once.** Written down and pushed before
   the model was run on it (`validation/heldOutEvents.ts`, rules 7 to 10):
   Illapel 2015 at DART 32402, the eruption columns of Grímsvötn 2011 and

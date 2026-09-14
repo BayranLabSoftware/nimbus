@@ -57,11 +57,16 @@ import {
   type FootprintRow,
 } from '../src/physics/validation/shakemapFootprint.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../src/physics/uq/conventions.js';
-import { plumeHeight } from '../src/physics/events/volcano/plumeHeight.js';
+import { PLUME_HEIGHT_OBSERVATIONS } from '../src/physics/validation/fixtures.js';
+import { comparePlume, type PlumeComparison } from '../src/physics/validation/plumeComparison.js';
 import {
-  PLUME_HEIGHT_OBSERVATIONS,
-  type PlumeHeightObservation,
-} from '../src/physics/validation/fixtures.js';
+  PREDICTIVE_BAND,
+  scorecard,
+  type ScoreCell,
+  type ScoreRowInput,
+  type ScoreStats,
+  type ScoredQuantity,
+} from '../src/physics/validation/scorecard.js';
 import {
   CALIBRATION_ANCHORS,
   CALIBRATION_ROLES,
@@ -276,6 +281,18 @@ const ROLE_LABEL: Readonly<Record<CalibrationRole, string>> = {
  * the rule `calibrationEnvelope.test.ts` holds every row to — and a row
  * without one stops the report rather than printing a blank.
  */
+/** The anchor a row of the net belongs to, for its family and size. */
+function anchorOf(
+  rowName: string,
+  quantity: CalibrationQuantity
+): (typeof CALIBRATION_ANCHORS)[number] {
+  const anchor = CALIBRATION_ANCHORS.find(
+    (a) => rowName.includes(a.name) && a.quantities.includes(quantity)
+  );
+  if (anchor === undefined) throw new Error(`No anchor for "${rowName}" (${quantity})`);
+  return anchor;
+}
+
 function useOf(rowName: string, quantity: CalibrationQuantity): CalibrationUse {
   const anchor = CALIBRATION_ANCHORS.find(
     (a) => rowName.includes(a.name) && a.quantities.includes(quantity)
@@ -285,28 +302,6 @@ function useOf(rowName: string, quantity: CalibrationQuantity): CalibrationUse {
     throw new Error(`No calibration role for "${rowName}" (${quantity})`);
   }
   return use;
-}
-
-interface PlumeComparison {
-  observation: PlumeHeightObservation;
-  /** Mastin et al. 2009 at the observation's eruption rate, km above
-   *  the vent. */
-  modelKm: number;
-  /** The rule plumeHeight.test.ts gates by: inside the observation's
-   *  own uncertainty plus half the predicted height, the scatter of
-   *  the fit. */
-  contains: boolean;
-}
-
-function comparePlume(observation: PlumeHeightObservation): PlumeComparison {
-  const modelKm =
-    (plumeHeight({ volumeEruptionRate: observation.volumeEruptionRate }) as number) / 1_000;
-  const tolerance = observation.toleranceKm + 0.5 * modelKm;
-  return {
-    observation,
-    modelKm,
-    contains: Math.abs(modelKm - observation.observedPlumeHeightKm) < tolerance,
-  };
 }
 
 interface CalibrationNet {
@@ -403,6 +398,125 @@ function interpolationSection(net: CalibrationNet): string {
     '',
     `Worst comparable end: **${worst.toFixed(2)}×**, against a gate of 2×.`,
   ].join('\n');
+}
+
+/** Every row of the net the scorecard can score, as it scores them. */
+function scoreInputs(net: CalibrationNet): ScoreRowInput[] {
+  const input = (
+    name: string,
+    quantity: ScoredQuantity,
+    fields: Pick<ScoreRowInput, 'record' | 'model' | 'inside' | 'bandDecades'>
+  ): ScoreRowInput => {
+    const anchor = anchorOf(name, quantity);
+    const role = anchor.use[quantity]?.role;
+    if (role === undefined) throw new Error(`No calibration role for "${name}" (${quantity})`);
+    return {
+      name,
+      quantity,
+      family: anchor.eventType,
+      size: anchor.value,
+      role,
+      ...fields,
+    };
+  };
+  return [
+    ...net.tolls.map((t) =>
+      input(t.event.name, 'toll', {
+        record: t.event.recordedDeaths,
+        model: t.deaths,
+        inside: t.contains,
+        bandDecades: Math.log10(Math.max(t.high, 1) / Math.max(t.low, 1)),
+      })
+    ),
+    // A wave's record is a range; its geometric centre stands for it,
+    // and a range that starts at zero has no centre to stand.
+    ...net.waves.map((w) => {
+      const { low, high } = w.wave.observed;
+      return input(w.wave.name, 'wave', {
+        record: high <= 0 ? 0 : low > 0 ? Math.sqrt(low * high) : null,
+        model: w.model,
+        inside: w.contains,
+        bandDecades: null,
+      });
+    }),
+    ...net.plumes.map((c) =>
+      input(c.observation.event, 'plume', {
+        record: c.observation.observedPlumeHeightKm,
+        model: c.modelKm,
+        inside: c.contains,
+        bandDecades: null,
+      })
+    ),
+  ];
+}
+
+const QUANTITY_LABEL: Readonly<Record<ScoredQuantity, string>> = {
+  toll: 'Death tolls',
+  wave: 'Waves',
+  plume: 'Eruption columns',
+};
+
+function scoreFigures(s: ScoreStats, predictive: boolean): string[] {
+  const inside =
+    s.rows === 0
+      ? '—'
+      : `${s.inside.toString()} of ${s.rows.toString()}${predictive ? '' : ' accepted'}`;
+  return [
+    s.rows.toString(),
+    s.scored.toString(),
+    // Two significant figures below a tenth: a bias of 0.0019× is not 0.00×.
+    s.bias === null ? '—' : `${s.bias >= 0.1 ? s.bias.toFixed(2) : s.bias.toPrecision(2)}×`,
+    s.scatterLn === null ? '—' : s.scatterLn.toFixed(2),
+    inside,
+    `${s.bothZero.toString()} / ${s.falseAlarms.toString()} / ${s.missedToZero.toString()}`,
+    // Rounded from the two decimals the JSON keeps, so the page and the
+    // report print the same figure.
+    s.medianBandDecades === null
+      ? '—'
+      : `10^${(Math.round(fixed(s.medianBandDecades, 2) * 10) / 10).toFixed(1)}`,
+  ];
+}
+
+function scorecardSection(cells: readonly ScoreCell[]): string {
+  const lines = [
+    'How accurate and how precise the model is, scored on the rows nothing in the',
+    'model was set on and, for comparison, on every row. **Bias** is the geometric',
+    'mean of model over record (1.00× is unbiased) and **scatter** the standard',
+    'deviation of ln(model / record), both over the rows where record and model',
+    'are above zero — at least two of them, and read as indicative below five.',
+    'Zeros are counted apart: both zero / a record of nothing where the model',
+    'says something / a record where the model says nothing. For death tolls',
+    '**inside** is the claim of the 5–95 % band, which should hold about nine',
+    'records in ten while being as narrow as it can — calibration and sharpness,',
+    'in Gneiting, Balabdaoui & Raftery (2007); for waves and columns it is an',
+    'acceptance, not a probability. **Band** is the median width of the death',
+    "toll's band. Each family is scored as a whole and by size — magnitude,",
+    'energy, volume — because a custom scenario asks how good the model is near',
+    'its own inputs.',
+    '',
+  ];
+  const quantities: ScoredQuantity[] = ['toll', 'wave', 'plume'];
+  for (const q of quantities) {
+    const these = cells.filter((c) => c.quantity === q);
+    if (these.length === 0) continue;
+    lines.push(
+      `#### ${QUANTITY_LABEL[q]}`,
+      '',
+      '| Family | Size | Held-out rows | Scored | Bias | Scatter σ_ln | Inside | Zeros | Band | All rows | Scored | Bias | Scatter σ_ln | Inside | Zeros | Band |',
+      '|--------|------|--------------:|-------:|-----:|-------------:|--------|-------|-----:|---------:|-------:|-----:|-------------:|--------|-------|-----:|'
+    );
+    for (const c of these) {
+      const predictive = PREDICTIVE_BAND[q];
+      lines.push(
+        `| ${c.sizeBand === null ? `**${c.family}**` : ''} | ${c.sizeBand ?? 'all sizes'} | ${[
+          ...scoreFigures(c.heldOut, predictive),
+          ...scoreFigures(c.all, predictive),
+        ].join(' | ')} |`
+      );
+    }
+    lines.push('');
+  }
+  return lines.join('\n');
 }
 
 function plumeSection(net: CalibrationNet): string {
@@ -734,6 +848,7 @@ function main(): void {
   const goldenAgg = aggregateReports(goldenReports, goldenById);
 
   const net = runCalibrationNet();
+  const cells = scorecard(scoreInputs(net));
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -754,6 +869,10 @@ A machine-readable copy of the same data is in \`docs/VALIDATION_REPORT.json\`.
 ## Summary
 
 ${summary(net, replayAgg, goldenAgg)}
+
+## Scorecard
+
+${scorecardSection(cells)}
 
 ## Release gate
 
@@ -918,6 +1037,27 @@ otherwise.
         role: useOf(w.wave.name, 'wave').role,
         source: w.wave.source,
       })),
+      scorecard: cells.map((c) => {
+        const figures = (st: ScoreStats) => ({
+          rows: st.rows,
+          scored: st.scored,
+          bias: st.bias === null ? null : Number(st.bias.toPrecision(3)),
+          scatterLn: st.scatterLn === null ? null : fixed(st.scatterLn, 3),
+          inside: st.inside,
+          bothZero: st.bothZero,
+          falseAlarms: st.falseAlarms,
+          missedToZero: st.missedToZero,
+          medianBandDecades: st.medianBandDecades === null ? null : fixed(st.medianBandDecades, 2),
+        });
+        return {
+          quantity: c.quantity,
+          family: c.family,
+          sizeBand: c.sizeBand,
+          predictive: PREDICTIVE_BAND[c.quantity],
+          heldOut: figures(c.heldOut),
+          all: figures(c.all),
+        };
+      }),
       footprint: {
         rows: net.footprint.map((r) => ({
           event: r.name,
