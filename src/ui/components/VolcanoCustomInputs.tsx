@@ -2,8 +2,9 @@ import type { ChangeEvent, JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
+import { DraftNumberInput } from './DraftNumberInput.js';
 import { FieldFeedback } from './FieldFeedback.js';
-import { splitScientific } from './scientificNotation.js';
+import { fromScientific, isMantissa, scaleTyped, splitScientific } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
 
 /**
@@ -32,40 +33,42 @@ export function VolcanoCustomInputs(): JSX.Element {
   const vdot = splitScientific(input.volumeEruptionRate);
   const vol = splitScientific(input.totalEjectaVolume);
 
-  const updateVdotMantissa = (e: ChangeEvent<HTMLInputElement>): void => {
-    const m = parseFloat(e.target.value);
-    if (Number.isFinite(m) && m > 0) {
-      setVolcanoInput({ volumeEruptionRate: m * 10 ** vdot.exp });
-    }
+  const updateVdotMantissa = (text: string): void => {
+    const m = parseFloat(text);
+    if (isMantissa(m)) setVolcanoInput({ volumeEruptionRate: fromScientific(m, vdot.exp) });
   };
   const updateVdotExp = (e: ChangeEvent<HTMLSelectElement>): void => {
-    setVolcanoInput({ volumeEruptionRate: vdot.mantissa * 10 ** parseInt(e.target.value, 10) });
+    setVolcanoInput({
+      volumeEruptionRate: fromScientific(vdot.mantissa, parseInt(e.target.value, 10)),
+    });
   };
-  const updateVolMantissa = (e: ChangeEvent<HTMLInputElement>): void => {
-    const m = parseFloat(e.target.value);
-    if (Number.isFinite(m) && m > 0) {
-      setVolcanoInput({ totalEjectaVolume: m * 10 ** vol.exp });
-    }
+  const updateVolMantissa = (text: string): void => {
+    const m = parseFloat(text);
+    if (isMantissa(m)) setVolcanoInput({ totalEjectaVolume: fromScientific(m, vol.exp) });
   };
-  const updateLahar = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateLahar = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v) && v >= 0) setVolcanoInput({ laharVolume: v });
   };
   const updateVolExp = (e: ChangeEvent<HTMLSelectElement>): void => {
-    setVolcanoInput({ totalEjectaVolume: vol.mantissa * 10 ** parseInt(e.target.value, 10) });
+    setVolcanoInput({
+      totalEjectaVolume: fromScientific(vol.mantissa, parseInt(e.target.value, 10)),
+    });
   };
   // Kilometres on screen, metres in the model; empty or zero is a
   // scenario in which nobody was told to leave.
-  const updateEvacuation = (e: ChangeEvent<HTMLInputElement>): void => {
-    const km = e.target.value === '' ? 0 : parseFloat(e.target.value);
-    if (Number.isFinite(km) && km >= 0) setVolcanoInput({ evacuationRadiusM: km * 1_000 });
+  const updateEvacuation = (text: string): void => {
+    const km = text === '' ? 0 : parseFloat(text);
+    if (Number.isFinite(km) && km >= 0) {
+      setVolcanoInput({ evacuationRadiusM: scaleTyped(km, 1_000) });
+    }
   };
-  const updateWindSpeed = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateWindSpeed = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v) && v >= 0) setVolcanoInput({ windSpeed: v });
   };
-  const updateWindDirection = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateWindDirection = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v)) setVolcanoInput({ windDirectionDegrees: v });
   };
 
@@ -77,16 +80,15 @@ export function VolcanoCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="volcano-vdot-m">
           {t('simulator.volcano.vdotInput')}
         </label>
-        <input
+        <DraftNumberInput
           id="volcano-vdot-m"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={1}
           max={9.9}
           step={0.1}
           value={vdot.mantissa.toFixed(1)}
-          onChange={updateVdotMantissa}
+          onValueText={updateVdotMantissa}
           aria-invalid={vdotIssues.hasError || undefined}
           aria-describedby={vdotIssues.topMessage ? 'volcano-vdot-feedback' : undefined}
         />
@@ -122,16 +124,15 @@ export function VolcanoCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="volcano-vol-m">
           {t('simulator.volcano.volumeInput')}
         </label>
-        <input
+        <DraftNumberInput
           id="volcano-vol-m"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={1}
           max={9.9}
           step={0.1}
           value={vol.mantissa.toFixed(1)}
-          onChange={updateVolMantissa}
+          onValueText={updateVolMantissa}
           aria-invalid={volIssues.hasError || undefined}
           aria-describedby={volIssues.topMessage ? 'volcano-vol-feedback' : undefined}
         />
@@ -167,15 +168,14 @@ export function VolcanoCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="volcano-lahar">
           {t('simulator.volcano.laharVolumeInput')}
         </label>
-        <input
+        <DraftNumberInput
           id="volcano-lahar"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={0}
           step={1e6}
           value={input.laharVolume ?? 0}
-          onChange={updateLahar}
+          onValueText={updateLahar}
           aria-invalid={laharIssues.hasError || undefined}
           aria-describedby={laharIssues.topMessage ? 'volcano-lahar-feedback' : undefined}
         />
@@ -193,16 +193,15 @@ export function VolcanoCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="volcano-evacuation">
           {t('simulator.volcano.evacuationRadiusInput')}
         </label>
-        <input
+        <DraftNumberInput
           id="volcano-evacuation"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={0}
           max={200}
           step={1}
           value={((input.evacuationRadiusM as number | undefined) ?? 0) / 1_000}
-          onChange={updateEvacuation}
+          onValueText={updateEvacuation}
           aria-invalid={evacIssues.hasError || undefined}
           aria-describedby="volcano-evacuation-help"
         />
@@ -221,16 +220,15 @@ export function VolcanoCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="volcano-wind-speed">
           {t('simulator.volcano.windSpeedInput')}
         </label>
-        <input
+        <DraftNumberInput
           id="volcano-wind-speed"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={0}
           max={60}
           step={1}
           value={input.windSpeed ?? 0}
-          onChange={updateWindSpeed}
+          onValueText={updateWindSpeed}
         />
       </div>
 
@@ -238,16 +236,15 @@ export function VolcanoCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="volcano-wind-dir">
           {t('simulator.volcano.windDirectionInput')}
         </label>
-        <input
+        <DraftNumberInput
           id="volcano-wind-dir"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={0}
           max={359}
           step={1}
           value={input.windDirectionDegrees ?? 90}
-          onChange={updateWindDirection}
+          onValueText={updateWindDirection}
           aria-invalid={windDirIssues.hasError || undefined}
           aria-describedby={windDirIssues.topMessage ? 'volcano-wind-dir-feedback' : undefined}
         />

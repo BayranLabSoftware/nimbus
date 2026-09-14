@@ -312,6 +312,62 @@ test.describe('simulator flow', () => {
     await expect(page.getByLabel('Preset')).toHaveValue('ANAK_KRAKATAU_2018');
   });
 
+  // Typed key by key over the value already in the field, as a person
+  // does. Bound straight to the store, a keystroke the model refused put
+  // the old value back mid-word — "0.07" over Tunguska's 0.06 km stored
+  // 60.7 m — and a number typed in kilometres picked up float noise on
+  // its way to metres. `fill` sets the whole text at once and shows
+  // neither, so these tests type.
+  const TYPED_OVER = [
+    {
+      what: "an impactor's diameter",
+      url: '/?lng=en&t=impact&p=TUNGUSKA&m=globe',
+      label: 'Impactor diameter (km)',
+      text: '0.07',
+      key: 'd',
+      stored: '70',
+    },
+    {
+      what: "an explosion's yield",
+      url: '/?lng=en&t=explosion&p=HIROSHIMA_1945&m=globe',
+      label: 'Yield (Mt TNT)',
+      text: '0.02',
+      key: 'y',
+      stored: '0.02',
+    },
+    {
+      what: "an earthquake's depth",
+      url: '/?lng=en&t=earthquake&p=NORTHRIDGE_1994&m=globe',
+      label: 'Depth (km)',
+      text: '8.05',
+      key: 'dep',
+      stored: '8050',
+    },
+    {
+      what: "an eruption's rate",
+      url: '/?lng=en&t=volcano&p=KRAKATAU_1883&m=globe',
+      label: 'V̇ mantissa (m³/s)',
+      text: '2.5',
+      key: 'ver',
+      stored: '250000',
+    },
+  ];
+  for (const c of TYPED_OVER) {
+    test(`${c.what} typed over the old one is the number typed`, async ({ page }) => {
+      await page.goto(c.url);
+      await expandSimulatorPanelIfCollapsed(page);
+      const field = page.getByLabel(c.label, { exact: true });
+      await field.click();
+      await page.keyboard.press('ControlOrMeta+A');
+      await page.keyboard.type(c.text);
+      await expect(field).toHaveValue(c.text);
+      await expect.poll(() => new URL(page.url()).searchParams.get(c.key)).toBe(c.stored);
+      // And leaving the field shows what was kept, with no noise in it.
+      await field.blur();
+      await expect(field).toHaveValue(c.text);
+    });
+  }
+
   test('a landslide is edited in the panel, confined basin and all', async ({ page }) => {
     await page.goto('/?lng=en&t=landslide&p=VAIONT_1963&m=globe');
     await expandSimulatorPanelIfCollapsed(page);

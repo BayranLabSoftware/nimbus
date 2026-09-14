@@ -4,7 +4,9 @@ import { ASTEROID_TAXONOMY, type AsteroidTaxonomyClass } from '../../physics/con
 import { radiansToDegrees } from '../../physics/units.js';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
+import { DraftNumberInput } from './DraftNumberInput.js';
 import { FieldFeedback } from './FieldFeedback.js';
+import { scaleTyped } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
 
 const TAXONOMY_CLASSES: AsteroidTaxonomyClass[] = [
@@ -47,24 +49,24 @@ export function ImpactCustomInputs(): JSX.Element {
   const angleDeg = Math.round((radiansToDegrees(input.impactAngle) as number) * 100) / 100;
   const azimuthDeg = input.impactAzimuthDeg ?? 90;
 
-  const updateDiameter = (e: ChangeEvent<HTMLInputElement>): void => {
-    const km = parseFloat(e.target.value);
-    if (Number.isFinite(km) && km > 0) setImpactInput({ impactorDiameter: km * 1_000 });
+  const updateDiameter = (text: string): void => {
+    const km = parseFloat(text);
+    if (Number.isFinite(km) && km > 0) setImpactInput({ impactorDiameter: scaleTyped(km, 1_000) });
   };
-  const updateVelocity = (e: ChangeEvent<HTMLInputElement>): void => {
-    const kms = parseFloat(e.target.value);
-    if (Number.isFinite(kms) && kms > 0) setImpactInput({ impactVelocity: kms * 1_000 });
+  const updateVelocity = (text: string): void => {
+    const kms = parseFloat(text);
+    if (Number.isFinite(kms) && kms > 0) setImpactInput({ impactVelocity: scaleTyped(kms, 1_000) });
   };
-  const updateImpactorDensity = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateImpactorDensity = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v) && v > 0) setImpactInput({ impactorDensity: v });
   };
-  const updateTargetDensity = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateTargetDensity = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v) && v > 0) setImpactInput({ targetDensity: v });
   };
-  const updateAngle = (e: ChangeEvent<HTMLInputElement>): void => {
-    const deg = parseFloat(e.target.value);
+  const updateAngle = (text: string): void => {
+    const deg = parseFloat(text);
     if (Number.isFinite(deg) && deg > 0 && deg <= 90) setImpactInput({ impactAngle: deg });
   };
   const updateAzimuth = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -115,16 +117,15 @@ export function ImpactCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="impact-diameter">
           {t('simulator.impact.diameter')}
         </label>
-        <input
+        <DraftNumberInput
           id="impact-diameter"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={0.001}
           max={100_000}
           step={0.1}
           value={diameterKm}
-          onChange={updateDiameter}
+          onValueText={updateDiameter}
           aria-invalid={diameterIssues.hasError || undefined}
           aria-describedby={diameterIssues.topMessage ? 'impact-diameter-feedback' : undefined}
         />
@@ -142,16 +143,15 @@ export function ImpactCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="impact-velocity">
           {t('simulator.impact.velocity')}
         </label>
-        <input
+        <DraftNumberInput
           id="impact-velocity"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={1}
           max={72}
           step={0.5}
           value={velocityKms}
-          onChange={updateVelocity}
+          onValueText={updateVelocity}
           aria-invalid={velocityIssues.hasError || undefined}
           aria-describedby={velocityIssues.topMessage ? 'impact-velocity-feedback' : undefined}
         />
@@ -169,16 +169,15 @@ export function ImpactCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="impact-impactor-density">
           {t('simulator.impact.impactorDensity')}
         </label>
-        <input
+        <DraftNumberInput
           id="impact-impactor-density"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={500}
           max={10_000}
           step={100}
           value={input.impactorDensity}
-          onChange={updateImpactorDensity}
+          onValueText={updateImpactorDensity}
           aria-invalid={impactorDensityIssues.hasError || undefined}
           aria-describedby={
             impactorDensityIssues.topMessage ? 'impact-impactor-density-feedback' : undefined
@@ -198,16 +197,15 @@ export function ImpactCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="impact-target-density">
           {t('simulator.impact.targetDensity')}
         </label>
-        <input
+        <DraftNumberInput
           id="impact-target-density"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={1_000}
           max={5_000}
           step={100}
           value={input.targetDensity}
-          onChange={updateTargetDensity}
+          onValueText={updateTargetDensity}
         />
       </div>
 
@@ -215,16 +213,15 @@ export function ImpactCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="impact-angle">
           {t('simulator.impact.angle')}
         </label>
-        <input
+        <DraftNumberInput
           id="impact-angle"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={5}
           max={90}
           step={5}
           value={angleDeg}
-          onChange={updateAngle}
+          onValueText={updateAngle}
           aria-invalid={angleIssues.hasError || undefined}
           aria-describedby={angleIssues.topMessage ? 'impact-angle-feedback' : undefined}
         />

@@ -454,11 +454,12 @@ same day, except where marked)_:
   retyped — and on the way the landslide validator was found dropping
   the slide density, and the methodology page printing a prefactor of
   0.1 that no product path uses (the model runs 0.4 and 0.005, per
-  regime). **Still open:** the four older custom panels bind their
-  number inputs straight to the store, so a keystroke the model refuses
-  puts the old value back mid-word — on Tunguska, typing 0.06 over the
-  diameter stores 60.6 m. The landslide panel's `DraftNumberInput` is
-  the fix; the other panels do not use it yet.
+  regime). The same day the other four panels moved onto the landslide
+  panel's `DraftNumberInput`: bound straight to the store, a keystroke
+  the model refused had put the old value back mid-word — on Tunguska,
+  typing 0.07 over the diameter stored 60.7 m — and kilometres picked up
+  float noise on their way to metres. Closed, with e2e tests that type
+  key by key.
 - **Found on the way, and fixed: the explosion validator threw fields
   away.** It copied six fields into its output and the store keeps the
   output, so the panel's wind never reached the thermal ring — the

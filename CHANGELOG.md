@@ -84,6 +84,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A number typed over another in a custom panel could be stored as a
+  different number.** Every field was bound straight to the store, and a
+  keystroke the model refused put the old value back mid-word: on
+  Tunguska, "0.07" typed over the diameter stored 60.7 m; on Hiroshima,
+  "0.02" over the yield stored 0.01502 Mt; on Krakatau, "2.5" in the
+  eruption-rate mantissa stayed "2.0" and stored 204 999.99999999997
+  m³/s. Kilometres also picked up float noise on their way to metres:
+  8.05 km of depth became 8 050.000000000001 m, in the link as well.
+  Every number field in the five panels now keeps the typed text while
+  it has focus, and unit conversions are rounded to twelve significant
+  digits. The e2e tests type key by key: `fill` sets the whole text at
+  once and would have shown neither defect.
+
 - **The landslide validator threw the slide density away.** The model
   has read it since the Watts density factor went in, but no edit could
   keep one. It is validated now, and one no denser than seawater is

@@ -4,6 +4,7 @@ import type { ExplosionScenarioInput } from '../../physics/events/explosion/inde
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { cx } from '../utils/cx.js';
+import { DraftNumberInput } from './DraftNumberInput.js';
 import { FieldFeedback } from './FieldFeedback.js';
 import styles from './SimulatorPanel.module.css';
 
@@ -33,15 +34,15 @@ export function ExplosionCustomInputs(): JSX.Element {
   const hobIssues = useFieldIssues('explosion', 'heightOfBurst');
   const groundIssues = useFieldIssues('explosion', 'groundType');
 
-  const updateYield = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateYield = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v) && v > 0) setExplosionInput({ yieldMegatons: v });
   };
   const updateGround = (e: ChangeEvent<HTMLSelectElement>): void => {
     setExplosionInput({ groundType: e.target.value as GroundType });
   };
-  const updateHob = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateHob = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v) && v >= 0) setExplosionInput({ heightOfBurst: v });
   };
   const updatePlacement = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -49,14 +50,14 @@ export function ExplosionCustomInputs(): JSX.Element {
       heightOfBurst: e.target.value === 'underwater' ? -DEFAULT_BURST_DEPTH_M : 0,
     });
   };
-  const updateDepth = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateDepth = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v) && v > 0 && v <= MAX_BURST_DEPTH_M) {
       setExplosionInput({ heightOfBurst: -v });
     }
   };
-  const updateWindSpeed = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateWindSpeed = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v) && v >= 0) setExplosionInput({ windSpeed: v });
   };
   const updateWindDirection = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -79,16 +80,15 @@ export function ExplosionCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="explosion-yield">
           {t('simulator.explosion.yieldInput')}
         </label>
-        <input
+        <DraftNumberInput
           id="explosion-yield"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={0.0001}
           max={10_000}
           step={0.1}
           value={input.yieldMegatons}
-          onChange={updateYield}
+          onValueText={updateYield}
           aria-invalid={yieldIssues.hasError || undefined}
           aria-describedby={yieldIssues.topMessage ? 'explosion-yield-feedback' : undefined}
         />
@@ -161,16 +161,15 @@ export function ExplosionCustomInputs(): JSX.Element {
           <label className={styles.paramLabel} htmlFor="explosion-hob">
             {t('simulator.explosion.hobInput')}
           </label>
-          <input
+          <DraftNumberInput
             id="explosion-hob"
             className={styles.paramInput}
-            type="number"
             inputMode="decimal"
             min={0}
             max={50_000}
             step={100}
             value={hobValue}
-            onChange={updateHob}
+            onValueText={updateHob}
             aria-invalid={hobIssues.hasError || undefined}
             aria-describedby={hobIssues.topMessage ? 'explosion-hob-feedback' : undefined}
           />
@@ -188,16 +187,15 @@ export function ExplosionCustomInputs(): JSX.Element {
           <label className={styles.paramLabel} htmlFor="explosion-depth">
             {t('simulator.explosion.depthInput')}
           </label>
-          <input
+          <DraftNumberInput
             id="explosion-depth"
             className={styles.paramInput}
-            type="number"
             inputMode="decimal"
             min={1}
             max={MAX_BURST_DEPTH_M}
             step={10}
             value={depthValue}
-            onChange={updateDepth}
+            onValueText={updateDepth}
             aria-invalid={hobIssues.hasError || undefined}
             aria-describedby="explosion-depth-help"
           />
@@ -217,16 +215,15 @@ export function ExplosionCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="explosion-wind-speed">
           {t('simulator.explosion.windSpeedInput')}
         </label>
-        <input
+        <DraftNumberInput
           id="explosion-wind-speed"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={0}
           max={120}
           step={1}
           value={windSpeedValue}
-          onChange={updateWindSpeed}
+          onValueText={updateWindSpeed}
         />
       </div>
 

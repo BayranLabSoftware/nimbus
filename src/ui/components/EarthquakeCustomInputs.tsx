@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next';
 import type { FaultType } from '../../physics/events/earthquake/index.js';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
+import { DraftNumberInput } from './DraftNumberInput.js';
 import { FieldFeedback } from './FieldFeedback.js';
+import { scaleTyped } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
 
 const FAULT_TYPES: FaultType[] = ['strike-slip', 'reverse', 'normal', 'all'];
@@ -26,19 +28,19 @@ export function EarthquakeCustomInputs(): JSX.Element {
 
   const depthKm = input.depth === undefined ? '' : (input.depth as number) / 1_000;
 
-  const updateMagnitude = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateMagnitude = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v) && v > 0) setEarthquakeInput({ magnitude: v });
   };
-  const updateDepth = (e: ChangeEvent<HTMLInputElement>): void => {
-    const km = parseFloat(e.target.value);
-    if (Number.isFinite(km) && km >= 0) setEarthquakeInput({ depth: km * 1_000 });
+  const updateDepth = (text: string): void => {
+    const km = parseFloat(text);
+    if (Number.isFinite(km) && km >= 0) setEarthquakeInput({ depth: scaleTyped(km, 1_000) });
   };
   const updateFault = (e: ChangeEvent<HTMLSelectElement>): void => {
     setEarthquakeInput({ faultType: e.target.value as FaultType });
   };
-  const updateVs30 = (e: ChangeEvent<HTMLInputElement>): void => {
-    const v = parseFloat(e.target.value);
+  const updateVs30 = (text: string): void => {
+    const v = parseFloat(text);
     if (Number.isFinite(v) && v > 0) setEarthquakeInput({ vs30: v });
   };
   const toggleMegathrust = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -53,16 +55,15 @@ export function EarthquakeCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="quake-magnitude">
           {t('simulator.earthquake.magnitudeInput')}
         </label>
-        <input
+        <DraftNumberInput
           id="quake-magnitude"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={3}
           max={10}
           step={0.1}
           value={input.magnitude}
-          onChange={updateMagnitude}
+          onValueText={updateMagnitude}
           aria-invalid={magnitudeIssues.hasError || undefined}
           aria-describedby={magnitudeIssues.topMessage ? 'quake-magnitude-feedback' : undefined}
         />
@@ -80,16 +81,15 @@ export function EarthquakeCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="quake-depth">
           {t('simulator.earthquake.depthInput')}
         </label>
-        <input
+        <DraftNumberInput
           id="quake-depth"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={0}
           max={700}
           step={1}
           value={depthKm}
-          onChange={updateDepth}
+          onValueText={updateDepth}
           aria-invalid={depthIssues.hasError || undefined}
           aria-describedby={depthIssues.topMessage ? 'quake-depth-feedback' : undefined}
         />
@@ -135,16 +135,15 @@ export function EarthquakeCustomInputs(): JSX.Element {
         <label className={styles.paramLabel} htmlFor="quake-vs30">
           {t('simulator.earthquake.vs30Input')}
         </label>
-        <input
+        <DraftNumberInput
           id="quake-vs30"
           className={styles.paramInput}
-          type="number"
           inputMode="decimal"
           min={100}
           max={2_000}
           step={10}
           value={input.vs30 ?? 760}
-          onChange={updateVs30}
+          onValueText={updateVs30}
           aria-invalid={vs30Issues.hasError || undefined}
           aria-describedby={vs30Issues.topMessage ? 'quake-vs30-feedback' : undefined}
         />

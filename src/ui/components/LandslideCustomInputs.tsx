@@ -17,7 +17,7 @@ import { cx } from '../utils/cx.js';
 import { formatInteger } from '../utils/numberFormat.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
 import { FieldFeedback } from './FieldFeedback.js';
-import { splitScientific } from './scientificNotation.js';
+import { fromScientific, isMantissa, splitScientific } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
 
 /** From a rockfall of ten thousand cubic metres to Storegga's three
@@ -26,12 +26,6 @@ const VOLUME_EXPONENTS = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 const REGIMES: LandslideRegime[] = ['subaerial', 'submarine'];
 /** Areas are read in km² and kept in m². */
 const M2_PER_KM2 = 1_000_000;
-
-/** A mantissa times a power of ten, without the float noise the
- *  product leaves (2.7 × 10⁹ is not 2 700 000 000.0000005 m³). */
-function fromScientific(mantissa: number, exp: number): number {
-  return Number((mantissa * 10 ** exp).toPrecision(12));
-}
 
 /**
  * Every field the landslide model reads. The empty optional fields are
@@ -65,11 +59,9 @@ export function LandslideCustomInputs(): JSX.Element {
   const basinArea = input.confinedBasinArea as number | undefined;
   const footprintArea = input.slideFootprintArea as number | undefined;
 
-  // A mantissa outside [1, 10) would move the exponent under the
-  // typist's fingers, so it waits until it reads as one.
   const updateVolumeMantissa = (text: string): void => {
     const v = parseFloat(text);
-    if (v >= 1 && v < 10) setLandslideInput({ volumeM3: fromScientific(v, volume.exp) });
+    if (isMantissa(v)) setLandslideInput({ volumeM3: fromScientific(v, volume.exp) });
   };
   const updateVolumeExp = (e: ChangeEvent<HTMLSelectElement>): void => {
     setLandslideInput({
