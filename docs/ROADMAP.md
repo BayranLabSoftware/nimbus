@@ -922,9 +922,16 @@ simulator counts it — on the stadium, which the calibration harness had
 been counting as a circle about the epicentre (B-022) — the 58 held-out
 earthquakes of Mw 7.5 and above in the NCEI set read 13.85× their record:
 Tōhoku's shaking alone 177 033 dead where NCEI gives the earthquake's own
-effects 1 474, Wenchuan 316 273 against 87 652. Whatever replaces the
-contours is checked on that cell, which was scored before the fix was
-designed, and on the ShakeMap anchors, before any toll row is re-read.
+effects 1 474, Wenchuan 316 273 against 87 652. Choosing the replacement
+on that same cell would fit the law to the set that found the fault, so
+rules 17 to 19 (`validation/contourLaws.ts`, written down before any
+candidate ran) choose it on shaking instead: three candidates written
+beforehand — the shipped law, Boore et al. 2014 outright, and Boore et
+al. 2014 from Mw 7.5 only — scored on the area each shakes at MMI VII,
+VIII and IX against the USGS ShakeMap of every earthquake in the rule
+set, by magnitude cell. The tolls then check the winner once, and it is
+adopted only if it is no worse on them and its band still holds eight
+records in ten in every cell.
 
 ### 5. Widen the anchors where the model is blind
 

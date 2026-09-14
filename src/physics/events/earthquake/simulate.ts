@@ -5,6 +5,7 @@ import { m, mps2 } from '../../units.js';
 import { generateAftershockSequence, type AftershockSequenceResult } from './aftershocks.js';
 import {
   distanceForPga,
+  distanceForPgaNGAWest2,
   vs30SiteFactor,
   peakGroundAcceleration,
   peakGroundAccelerationNGAWest2,
@@ -103,7 +104,27 @@ export interface EarthquakeScenarioInput {
    *  ({@link EARTHQUAKE_INPUT_SIGMA.groundMotion}); the deterministic
    *  pipeline leaves it at 0, so the median scenario is unchanged. */
   groundMotionResidualLn?: number;
+  /** Which law draws the intensity rings. Not a setting a scenario
+   *  offers: the candidates of rule 17 in validation/contourLaws.ts,
+   *  compared on USGS ShakeMaps before any of them replaces the
+   *  shipped one. Omitted, the rings are the shipped law's. */
+  contourLaw?: ContourLaw;
 }
+
+/**
+ * The laws the intensity rings can be drawn with (rule 17 of
+ * validation/contourLaws.ts):
+ *
+ *  - `joynerBoore1981`, shipped: Joyner & Boore 1981's median PGA with
+ *    Boore et al. 2014's site term;
+ *  - `boore2014`: Boore et al. 2014's median PGA, with its own
+ *    fault-type and site terms — the law tried on 9 September 2026;
+ *  - `boore2014FromMw7.5`: the first below Mw 7.5 and the second from
+ *    it, the magnitude at which the rings become a rupture stadium.
+ *
+ * All three take a PGA for each intensity from Worden et al. 2012.
+ */
+export type ContourLaw = 'joynerBoore1981' | 'boore2014' | 'boore2014FromMw7.5';
 
 /**
  * Felt-intensity and PGA summary emitted for every earthquake scenario.
@@ -294,11 +315,18 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
     (peakGroundAcceleration({ magnitude: input.magnitude, distance: m(10_000) }) as number) /
       STANDARD_GRAVITY
   );
+  const law = input.contourLaw ?? 'joynerBoore1981';
+  const boore = law === 'boore2014' || (law === 'boore2014FromMw7.5' && input.magnitude >= 7.5);
   const contourAt = (mmi: number): Meters =>
-    distanceForPga(
-      input.magnitude,
-      mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
-    );
+    boore
+      ? distanceForPgaNGAWest2(
+          { magnitude: input.magnitude, faultType: ngaFault, vs30 },
+          target(pgaFromMercalliIntensity(mmi))
+        )
+      : distanceForPga(
+          input.magnitude,
+          mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
+        );
   const mmi7Radius = contourAt(7);
   const mmi8Radius = contourAt(8);
   const mmi9Radius = contourAt(9);

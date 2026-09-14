@@ -18,7 +18,15 @@ export const MMI_THRESHOLDS: readonly MmiThreshold[] = [7, 8, 9];
 /** Model footprint (km²) at or above a threshold. */
 export function modelAreaKm2(footprint: ShakemapFootprint, threshold: MmiThreshold): number {
   const preset = EARTHQUAKE_PRESETS[footprint.preset as keyof typeof EARTHQUAKE_PRESETS];
-  const r = simulateEarthquake(preset.input);
+  return footprintAreaKm2(simulateEarthquake(preset.input), threshold);
+}
+
+/** The ground (km²) a simulated earthquake shakes at or above a
+ *  threshold, in the shape the simulator draws it. */
+export function footprintAreaKm2(
+  r: ReturnType<typeof simulateEarthquake>,
+  threshold: MmiThreshold
+): number {
   const radiusM =
     threshold === 7
       ? (r.shaking.mmi7Radius as number)

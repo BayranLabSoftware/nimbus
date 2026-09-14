@@ -84,7 +84,7 @@ const EVENTS: EventSpec[] = [
 const EARTH_RADIUS_KM = 6371.0088;
 const THRESHOLDS = [7, 8, 9] as const;
 
-interface Coverage {
+export interface Coverage {
   domain: {
     axes: {
       x: { start: number; stop: number; num: number };
@@ -95,7 +95,7 @@ interface Coverage {
 }
 
 /** Ground area (km²) at or above each threshold. */
-function areasAbove(cov: Coverage): Record<number, number> {
+export function areasAbove(cov: Coverage): Record<number, number> {
   const { x, y } = cov.domain.axes;
   const dx = (x.stop - x.start) / (x.num - 1);
   const dy = (y.stop - y.start) / (y.num - 1);
