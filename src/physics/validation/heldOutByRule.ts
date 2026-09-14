@@ -197,7 +197,7 @@ const SITES = new Map(RULE_SITES.map((site) => [site.key, site]));
 
 /** The Vs30 a row stands on: the browser's, under its epicentre, since
  *  rule 22 of siteVs30.ts; rock before. */
-export function ruleSiteVs30(row: RuleEarthquakeRow, rule: SiteRule = 'pick'): number | undefined {
+export function ruleSiteVs30(row: { comcat: string }, rule: SiteRule = 'pick'): number | undefined {
   return siteVs30(rule, SITES.get(row.comcat));
 }
 

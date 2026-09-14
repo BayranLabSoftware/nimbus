@@ -12,10 +12,12 @@ import {
   type NGAFaultType,
 } from './attenuation.js';
 import {
+  MMI_PER_LN_PGA,
   mmiFromPgaEuropean,
   modifiedMercalliIntensity,
   pgaFromMercalliIntensity,
 } from './intensity.js';
+import { epicentralDistanceForIntensityAllen2012 } from './intensityPrediction.js';
 import { liquefactionRadius } from './liquefaction.js';
 import {
   megathrustRuptureLength,
@@ -109,9 +111,10 @@ export interface EarthquakeScenarioInput {
    *  pipeline leaves it at 0, so the median scenario is unchanged. */
   groundMotionResidualLn?: number;
   /** Which law draws the intensity rings. Not a setting a scenario
-   *  offers: the candidates of rule 17 in validation/contourLaws.ts,
-   *  compared on USGS ShakeMaps before any of them replaces the
-   *  shipped one. Omitted, the rings are the shipped law's. */
+   *  offers: the candidates of rule 17 in validation/contourLaws.ts and
+   *  of rule 24 in validation/depthRules.ts, compared on USGS ShakeMaps
+   *  before any of them replaces the shipped one. Omitted, the rings are
+   *  the shipped law's. */
   contourLaw?: ContourLaw;
 }
 
@@ -127,9 +130,34 @@ export interface EarthquakeScenarioInput {
  *  - `boore2014FromMw7.5`: the first below Mw 7.5 and the second from
  *    it, the magnitude at which the rings become a rupture stadium.
  *
- * All three take a PGA for each intensity from Worden et al. 2012.
+ * All three take a PGA for each intensity from Worden et al. 2012. Rule
+ * 24 of validation/depthRules.ts adds two that carry the depth of the
+ * source, written before either was scored:
+ *
+ *  - `allen2012Hypocentral`: Allen, Wald & Worden 2012's intensity
+ *    prediction equation in hypocentral distance, the ring drawn where
+ *    the intensity at the ground falls to the threshold for a source at
+ *    the scenario's depth (15 km when none is set, as the band assumes);
+ *  - `allen2012HypocentralBelowMw7.5`: that below Mw 7.5 and Boore et
+ *    al. 2014 from it, where the rings become a stadium and a hypocentre
+ *    no longer stands for the rupture.
+ *
+ * Those two take the intensity straight from the equation, with no site
+ * term, and read a ground-motion residual drawn in ln PGA as a shift
+ * along Worden et al. 2012's upper slope, 3.70 / ln 10 intensity units a
+ * unit: a σ of 0.60 becomes 0.96, within the 0.82 to 1.19 the equation
+ * gives.
  */
-export type ContourLaw = 'joynerBoore1981' | 'boore2014' | 'boore2014FromMw7.5';
+export type ContourLaw =
+  | 'joynerBoore1981'
+  | 'boore2014'
+  | 'boore2014FromMw7.5'
+  | 'allen2012Hypocentral'
+  | 'allen2012HypocentralBelowMw7.5';
+
+/** The depth a scenario that sets none is drawn at, as the earthquake
+ *  Monte Carlo already assumes. */
+const DEFAULT_HYPOCENTRE_DEPTH_M = 15_000;
 
 /**
  * Felt-intensity and PGA summary emitted for every earthquake scenario.
@@ -328,17 +356,32 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // validation/contourLaws.ts on 370 USGS ShakeMaps and checked on the
   // dead by rule 19.
   const law = input.contourLaw ?? 'boore2014';
-  const boore = law === 'boore2014' || (law === 'boore2014FromMw7.5' && input.magnitude >= 7.5);
+  const allen =
+    law === 'allen2012Hypocentral' ||
+    (law === 'allen2012HypocentralBelowMw7.5' && input.magnitude < 7.5);
+  const boore =
+    !allen &&
+    (law === 'boore2014' ||
+      law === 'allen2012HypocentralBelowMw7.5' ||
+      (law === 'boore2014FromMw7.5' && input.magnitude >= 7.5));
+  const depthKm = ((input.depth as number | undefined) ?? DEFAULT_HYPOCENTRE_DEPTH_M) / 1_000;
   const contourAt = (mmi: number): Meters =>
-    boore
-      ? distanceForPgaNGAWest2(
-          { magnitude: input.magnitude, faultType: ngaFault, vs30 },
-          target(pgaFromMercalliIntensity(mmi))
-        )
-      : distanceForPga(
+    allen
+      ? epicentralDistanceForIntensityAllen2012(
           input.magnitude,
-          mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
-        );
+          depthKm,
+          mmi,
+          Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0
+        )
+      : boore
+        ? distanceForPgaNGAWest2(
+            { magnitude: input.magnitude, faultType: ngaFault, vs30 },
+            target(pgaFromMercalliIntensity(mmi))
+          )
+        : distanceForPga(
+            input.magnitude,
+            mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
+          );
   const mmi7Radius = contourAt(7);
   const mmi8Radius = contourAt(8);
   const mmi9Radius = contourAt(9);

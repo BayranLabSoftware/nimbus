@@ -1,4 +1,5 @@
 import { simulateEarthquake, type ContourLaw } from '../events/earthquake/simulate.js';
+import type { FaultType } from '../events/earthquake/ruptureLength.js';
 import { m } from '../units.js';
 import {
   chooseCandidate,
@@ -7,10 +8,10 @@ import {
   scoreContours,
   type ContourCell,
   type ContourPair,
+  type Rule17Law,
   type ShakemapAreas,
 } from './contourLaws.js';
 import { RULE_EARTHQUAKES } from './heldOutByRule.js';
-import type { RuleEarthquakeRow } from './heldOutByRuleData.js';
 import { footprintAreaKm2, MMI_THRESHOLDS } from './shakemapFootprint.js';
 import { SITE_RULES, siteVs30, type SiteRow, type SiteRule } from './siteVs30.js';
 
@@ -24,17 +25,28 @@ import { SITE_RULES, siteVs30, type SiteRow, type SiteRule } from './siteVs30.js
  * keeps the report honest about it.
  */
 
+/** What a comparison runs an earthquake on: rules 1 to 3's inputs. */
+export interface QuakeInputs {
+  comcat: string;
+  magnitude: number;
+  depthKm: number;
+  faultType: FaultType;
+}
+
 /** The Vs30 a row runs on; nothing, reference rock, unless given. */
-export type RowVs30 = (row: RuleEarthquakeRow) => number | undefined;
+export type RowVs30 = (row: QuakeInputs) => number | undefined;
+
+const RULE_ROWS: readonly QuakeInputs[] = RULE_EARTHQUAKES.map((q) => q.row);
 
 export function contourPairs(
   law: ContourLaw,
   shakemaps: readonly ShakemapAreas[],
-  vs30For?: RowVs30
+  vs30For?: RowVs30,
+  rows: readonly QuakeInputs[] = RULE_ROWS
 ): ContourPair[] {
   const byEvent = new Map(shakemaps.map((s) => [s.comcat, s]));
   const pairs: ContourPair[] = [];
-  for (const { row } of RULE_EARTHQUAKES) {
+  for (const row of rows) {
     const shakemap = byEvent.get(row.comcat);
     if (shakemap === undefined) continue;
     const vs30 = vs30For?.(row);
@@ -58,9 +70,9 @@ export function contourPairs(
 }
 
 export interface ContourComparison {
-  scores: Record<ContourLaw, ContourCell[]>;
-  meanAbsoluteBias: Record<ContourLaw, number>;
-  winner: ContourLaw;
+  scores: Record<Rule17Law, ContourCell[]>;
+  meanAbsoluteBias: Record<Rule17Law, number>;
+  winner: Rule17Law;
   /** Earthquakes compared. */
   events: number;
 }
@@ -72,11 +84,11 @@ function comparedEvents(shakemaps: readonly ShakemapAreas[]): number {
 
 export function compareContourLaws(
   shakemaps: readonly ShakemapAreas[],
-  options: { inPlace: ContourLaw; vs30For?: RowVs30 }
+  options: { inPlace: Rule17Law; vs30For?: RowVs30 }
 ): ContourComparison {
   const scores = Object.fromEntries(
     CONTOUR_LAWS.map((law) => [law, scoreContours(contourPairs(law, shakemaps, options.vs30For))])
-  ) as Record<ContourLaw, ContourCell[]>;
+  ) as Record<Rule17Law, ContourCell[]>;
   return {
     scores,
     ...chooseContourLaw(scores, options.inPlace),
@@ -108,5 +120,33 @@ export function compareSiteRules(
     scores,
     ...chooseCandidate(SITE_RULES, 'pick', scores),
     events: comparedEvents(shakemaps),
+  };
+}
+
+export interface CandidateComparison<T extends ContourLaw> {
+  scores: Record<T, ContourCell[]>;
+  meanAbsoluteBias: Record<T, number>;
+  winner: T;
+  /** Earthquakes compared: the rows with a ShakeMap. */
+  events: number;
+}
+
+/** Rule 24 on any set of rows: each candidate law on its ShakeMaps, on
+ *  the ground `vs30For` gives, chosen as rule 18 chooses. */
+export function compareCandidates<T extends ContourLaw>(
+  laws: readonly T[],
+  inPlace: T,
+  shakemaps: readonly ShakemapAreas[],
+  rows: readonly QuakeInputs[],
+  vs30For: RowVs30
+): CandidateComparison<T> {
+  const scores = Object.fromEntries(
+    laws.map((law) => [law, scoreContours(contourPairs(law, shakemaps, vs30For, rows))])
+  ) as Record<T, ContourCell[]>;
+  const ids = new Set(shakemaps.map((s) => s.comcat));
+  return {
+    scores,
+    ...chooseCandidate(laws, inPlace, scores),
+    events: rows.filter((row) => ids.has(row.comcat)).length,
   };
 }

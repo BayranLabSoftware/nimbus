@@ -997,6 +997,17 @@ is not known. It comes before the relation for long ruptures and trench
 earthquakes, and is chosen the same way, on earthquakes not yet looked
 at.
 
+Written down the same evening, before any of those earthquakes was read:
+rules 23 to 26 in `validation/depthRules.ts`. The set is every M ≥ 6
+earthquake of 2008 to 2025, no deeper than 40 km, that USGS holds a
+ShakeMap for and rule 11 did not take — about 1 170 of them. The
+candidates are Boore et al. 2014 as it stands and Allen, Wald & Worden's
+2012 intensity prediction equation in hypocentral distance, on its own
+and below Mw 7.5 only, the first relation here that reads how deep a
+scenario's source is. The choice is made on the set's ShakeMaps as rule
+18 made it, and checked on rule 11's tolls and on the set's quiet
+earthquakes, which by NCEI's criteria killed fewer than ten.
+
 ### 5. Widen the anchors where the model is blind
 
 Volcanoes have two toll rows and Pinatubo is 97× out; Merapi 2010,

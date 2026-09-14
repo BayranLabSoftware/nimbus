@@ -75,11 +75,14 @@ export const CONTOUR_AREA_FLOOR_KM2 = 10;
 /** How much better a candidate must do to replace the shipped law. */
 export const CONTOUR_LAW_MARGIN = 0.05;
 
-export const CONTOUR_LAWS: readonly ContourLaw[] = [
+/** Rule 17's candidates. */
+export const CONTOUR_LAWS = [
   'joynerBoore1981',
   'boore2014',
   'boore2014FromMw7.5',
-];
+] as const satisfies readonly ContourLaw[];
+
+export type Rule17Law = (typeof CONTOUR_LAWS)[number];
 
 /** Half the log of the floored area ratio: a log radius ratio. Null
  *  when neither side reaches the threshold. */
@@ -169,9 +172,9 @@ export function chooseCandidate<T extends string>(
 /** Rule 18's winner. The law in place was Joyner & Boore 1981 when rule
  *  18 ran, and is Boore et al. 2014 since rule 19 adopted it. */
 export function chooseContourLaw(
-  scores: Readonly<Record<ContourLaw, readonly ContourCell[]>>,
-  inPlace: ContourLaw
-): { winner: ContourLaw; meanAbsoluteBias: Record<ContourLaw, number> } {
+  scores: Readonly<Record<Rule17Law, readonly ContourCell[]>>,
+  inPlace: Rule17Law
+): { winner: Rule17Law; meanAbsoluteBias: Record<Rule17Law, number> } {
   return chooseCandidate(CONTOUR_LAWS, inPlace, scores);
 }
 

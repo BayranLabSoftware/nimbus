@@ -12,6 +12,11 @@ const MIN_PGA_FOR_MMI_CM_S2 = 1;
 /** Worden et al. (2012) piecewise break-point, log₁₀(PGA_cm/s²). */
 const WORDEN_BREAK_LOG_PGA = 1.57;
 
+/** Intensity units per unit of ln PGA on Worden et al. (2012)'s upper
+ *  segment, 3.70 / ln 10: how a ground-motion residual drawn in ln PGA
+ *  moves an intensity field. */
+export const MMI_PER_LN_PGA = 3.7 / Math.LN10;
+
 /**
  * Modified Mercalli Intensity (MMI) from peak ground acceleration via
  * the Worden et al. (2012) ground-motion-to-intensity conversion,

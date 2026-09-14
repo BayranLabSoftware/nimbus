@@ -730,6 +730,8 @@ const CONTOUR_LAW_LABEL: Readonly<Record<ContourLaw, string>> = {
   joynerBoore1981: 'Joyner & Boore 1981',
   boore2014: 'Boore et al. 2014',
   'boore2014FromMw7.5': 'Joyner & Boore below Mw 7.5, Boore et al. from it',
+  allen2012Hypocentral: 'Allen, Wald & Worden 2012, hypocentral',
+  'allen2012HypocentralBelowMw7.5': 'Allen et al. below Mw 7.5, Boore et al. from it',
 };
 
 type TollCells = { group: string; stats: ScoreStats }[];
