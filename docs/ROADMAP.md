@@ -1008,6 +1008,14 @@ scenario's source is. The choice is made on the set's ShakeMaps as rule
 18 made it, and checked on rule 11's tolls and on the set's quiet
 earthquakes, which by NCEI's criteria killed fewer than ten.
 
+Run once: 809 of those earthquakes had a map to score on, and Boore et al.
+2014 kept its place (2.00 against 2.09 and 2.25), so nothing ran on the
+dead. Read afterwards: the score gives no credit for a band rightly left
+blank, and on these mostly quiet maps Boore et al. 2014 paints 1 374 bands
+they do not hold where the hypocentral equation paints 298. The next step is
+that score, written first — hits, misses, false alarms and correct silences
+at each intensity — and tried on earthquakes nobody has read yet.
+
 ### 5. Widen the anchors where the model is blind
 
 Volcanoes have two toll rows and Pinatubo is 97× out; Merapi 2010,

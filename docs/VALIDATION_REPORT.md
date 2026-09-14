@@ -906,6 +906,37 @@ Rock, 760 m/s beats the browser's ground on the ShakeMaps by 0.24; on the tolls 
 
 Boore et al. 2014 is not beaten by 0.05, and stays. Every earthquake this report scores stands on the browser's ground since, the net's and the footprint anchors' included; the tables of rules 17 to 19 above are on rock, as those rules ran (docs/SCIENCE.md, "The ground under the rings").
 
+### Whether the rings carry depth
+
+Boore et al. 2014 draws the rings with no depth of its own. Rules 23 to 26
+(`validation/depthRules.ts`), committed before any earthquake they name was read,
+choose whether the rings carry depth on earthquakes no rule had looked at: every
+M ≥ 6 earthquake of 2008 to 2025, no deeper than 40 km, that USGS holds a ShakeMap
+for and rule 11 did not take (read on 2026-09-14: 1539 listed, 809 with a low-resolution MMI map after rule 11's are taken out, 342 without one and 1 ComCat no longer serves; 805 quiet, the rest in NCEI's database).
+The candidates are scored on their ShakeMaps as rule 18 scores a law, on the ground the
+browser reads; Boore et al. 2014 stays unless beaten by 0.05, and a winner must pass rule 19's
+test on rule 11's tolls and raise no more quiet earthquakes to a median toll of ten.
+
+| Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
+|-----|----:|----:|----:|----:|----:|----:|
+| Boore et al. 2014 (winner) | 3.11× | 2.88× | 44.55× | 2.00 | 1374 | 0 |
+| Allen, Wald & Worden 2012, hypocentral | 3.17× | 3.76× | 71.26× | 2.25 | 298 | 18 |
+| Allen et al. below Mw 7.5, Boore et al. from it | 3.17× | 3.76× | 44.55× | 2.09 | 298 | 18 |
+
+The same candidates on rule 18's 370 ShakeMaps, which decide nothing:
+
+| Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
+|-----|----:|----:|----:|----:|----:|----:|
+| Boore et al. 2014 (winner) | 2.28× | 2.20× | 3.68× | 0.97 | 469 | 5 |
+| Allen, Wald & Worden 2012, hypocentral | 1.71× | 2.75× | 3.95× | 0.97 | 167 | 42 |
+| Allen et al. below Mw 7.5, Boore et al. from it | 1.71× | 2.75× | 3.68× | 0.95 | 178 | 36 |
+
+Boore et al. 2014 is not beaten by 0.05 on the unseen ShakeMaps, and stays; nothing else runs on the dead. A pair of bands that neither side reaches is not scored, so the table's invented and missed columns count what the score does not; what was read in them afterwards is in docs/SCIENCE.md, "Whether the rings carry depth".
+
+| Law | Rule 11's held-out tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Quiet earthquakes with a median toll of ten or more | The set's recorded tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 |
+|-----|-----|-----|-----|----:|-----|-----|-----|
+| Boore et al. 2014 | 1.46× · 122 of 132 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 2.9 % of 805 | 2.02× · 3 of 3 | — · 0 of 0 | — · 0 of 0 |
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the
@@ -1180,7 +1211,7 @@ shows.
 - **The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.
 - **The toll band draws the fatality curve's published scatter, but not the census.** Since 14 September 2026 a shaking realisation scales its mortality by exp(N(0, G)), G being PAGER's `gnormvalue` for the country — the standard deviation of ln(deaths) PAGER's own loss module uses. The population is still held fixed, and so are the blast and pyroclastic rates, which publish no scatter. G was measured on ShakeMap intensities, so it overlaps, by an amount not separated here, with the ground-motion residual drawn beside it. Where the curve is steep or its scatter large the band spans four orders of magnitude or more — Gorkha, Kumamoto, Pohang — which is the width PAGER's own numbers give a single event, and a row inside such a band has passed nothing (`uq/tollBand.ts`).
 - **A great rupture's toll is read off rings drawn for a point.** From Mw 7.5 the intensity rings — Boore et al. 2014's since 14 September 2026 — are a relation for a point, stretched along the rupture as a stadium, and the simulator counts the people inside it; no finite-fault or subduction-interface relation is implemented. Held out by rule, the earthquakes of Mw ≥ 7.5 read 1.94× their record with a scatter of 2.35, and their band holds 32 of 35 records by spanning a median of 10^3.1. On Joyner & Boore 1981's rings the same cell read 13.85×, a figure the calibration harness hid until the same day by counting circles about the epicentre (docs/ROADMAP.md, M9 move 4; docs/BUG_REGISTRY.md, B-022).
-- **The rings paint intensity VII where ShakeMaps record none.** Held out by rule, 190 of the 370 USGS ShakeMaps hold no ground at MMI VII on their low-resolution grid, and Boore et al. 2014's rings draw a VII band about every one of them, on the ground the browser reads under the epicentre and on rock alike. The rings take no account of how deep the source lies, and a ShakeMap's grid does not hold a peak smaller than one of its cells; which of the two, or what else, makes the difference is not established. Where a ShakeMap does reach MMI VII, the ring runs at a median 1.07, 0.66 and 1.01 of its radius below Mw 6.5, between 6.5 and 7.5 and above (0.82, 0.50 and 0.90 on rock). And the ground is one Vs30, read at the epicentre, for the whole footprint, where a ShakeMap reads each cell's own (docs/SCIENCE.md, "The ground under the rings").
+- **The rings paint intensity VII where ShakeMaps record none.** Held out by rule, 190 of the 370 USGS ShakeMaps hold no ground at MMI VII on their low-resolution grid, and Boore et al. 2014's rings draw a VII band about every one of them, on the ground the browser reads under the epicentre and on rock alike. The rings take no account of how deep the source lies, and a ShakeMap's grid does not hold a peak smaller than one of its cells; which of the two, or what else, makes the difference is not established. Where a ShakeMap does reach MMI VII, the ring runs at a median 1.07, 0.66 and 1.01 of its radius below Mw 6.5, between 6.5 and 7.5 and above (0.82, 0.50 and 0.90 on rock). On the 809 earthquakes of rule 23 no rule had read, Boore et al. 2014 paints 1374 bands where their ShakeMaps hold none, and Allen, Wald & Worden's intensity equation, which reads the depth, 298; the score rules 23 to 26 chose with gives no credit for a band rightly left blank, and it kept Boore et al. 2014 (docs/SCIENCE.md, "Whether the rings carry depth"). And the ground is one Vs30, read at the epicentre, for the whole footprint, where a ShakeMap reads each cell's own (docs/SCIENCE.md, "The ground under the rings").
 - **Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).
 - **Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).
 - **Three numbers are not traced to a source read here.** The 30 cm at DART 21413 that the Tōhoku wave row is tuned on is quoted from Satake et al. 2013 without the paper having been read in the source review; the arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005.

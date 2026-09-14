@@ -83,13 +83,36 @@ import {
 } from '../src/physics/validation/heldOutByRule.js';
 import { NCEI_UNMATCHED, RULE_READ_ON } from '../src/physics/validation/heldOutByRuleData.js';
 import {
+  compareCandidates,
   compareContourLaws,
   compareSiteRules,
   contourPairs,
+  type CandidateComparison,
   type ContourComparison,
   type SiteComparison,
 } from '../src/physics/validation/contourComparison.js';
-import { SITE_RULES, type SiteRule } from '../src/physics/validation/siteVs30.js';
+import { SITE_RULES, siteVs30, type SiteRule } from '../src/physics/validation/siteVs30.js';
+import {
+  DEPTH_CANDIDATES,
+  falseAlarmShare,
+  isQuiet,
+  passesOnQuiet,
+  type DepthCandidate,
+  type UnseenEarthquake,
+} from '../src/physics/validation/depthRules.js';
+import {
+  quietMedianTolls,
+  unseenEarthquakeEvent,
+  unseenShakemaps,
+} from '../src/physics/validation/unseenSet.js';
+import {
+  UNSEEN_EARTHQUAKES,
+  UNSEEN_LISTED,
+  UNSEEN_READ_ON,
+  UNSEEN_UNREADABLE,
+  UNSEEN_WITHOUT_COVERAGE,
+} from '../src/physics/validation/unseenSetData.js';
+import { UNSEEN_SITES } from '../src/physics/validation/unseenSiteData.js';
 import { RULE_SITES, SITES_READ_ON } from '../src/physics/validation/siteVs30Data.js';
 import { adoptOnTolls, CONTOUR_LAWS } from '../src/physics/validation/contourLaws.js';
 import { RULE_SHAKEMAPS } from '../src/physics/validation/ruleShakemapData.js';
@@ -976,6 +999,145 @@ function groundSection(run: GroundRun): string {
   ].join('\n');
 }
 
+const UNSEEN_SITE_MAP = new Map(UNSEEN_SITES.map((site) => [site.key, site]));
+const unseenVs30 = (row: { comcat: string }): number | undefined =>
+  siteVs30('pick', UNSEEN_SITE_MAP.get(row.comcat));
+
+interface DepthRun {
+  unseen: CandidateComparison<DepthCandidate>;
+  seen: CandidateComparison<DepthCandidate>;
+  /** Rule 25: rule 11's held-out tolls, for the law in place and a
+   *  winner other than it. */
+  tolls: Partial<Record<DepthCandidate, TollCells>>;
+  /** Rule 25: the share of quiet earthquakes whose median toll is ten or
+   *  more. */
+  quietShare: Partial<Record<DepthCandidate, number>>;
+  /** The set's recorded tolls, which decide nothing. */
+  recorded: Partial<Record<DepthCandidate, TollCells>>;
+  adopted: boolean;
+}
+
+/** The set's recorded (not quiet) earthquakes under one law, scored per
+ *  magnitude cell over the rows with something. */
+function unseenRecordedCells(law: DepthCandidate): TollCells {
+  const rows = UNSEEN_EARTHQUAKES.filter((q) => !isQuiet(q)).map((q: UnseenEarthquake) => {
+    const event = unseenEarthquakeEvent(q, { contourLaw: law, vs30: unseenVs30(q) });
+    const toll = compareWithRecord(event);
+    const score: ScoreRowInput = {
+      name: event.name,
+      quantity: 'toll',
+      family: 'earthquake',
+      size: q.magnitude,
+      role: 'heldOut',
+      record: event.recordedDeaths,
+      model: toll.deaths,
+      inside: toll.contains,
+      bandDecades: Math.log10(Math.max(toll.high, 1) / Math.max(toll.low, 1)),
+      bandHigh: toll.high,
+    };
+    return score;
+  });
+  return SIZE_BANDS.earthquake.map((b) => ({
+    group: b.label,
+    stats: scoreStats(
+      rows.filter((r) => sizeBandOf('earthquake', r.size) === b.label && isInformative(r))
+    ),
+  }));
+}
+
+/** Rules 23 to 26 (depthRules.ts), run on the set stored by rule 23. */
+function runDepth(inPlaceTolls: TollCells): DepthRun {
+  const unseen = compareCandidates(
+    DEPTH_CANDIDATES,
+    'boore2014',
+    unseenShakemaps(UNSEEN_EARTHQUAKES),
+    UNSEEN_EARTHQUAKES,
+    unseenVs30
+  );
+  const seen = compareCandidates(
+    DEPTH_CANDIDATES,
+    'boore2014',
+    RULE_SHAKEMAPS,
+    RULE_EARTHQUAKES.map((q) => q.row),
+    (row) => ruleSiteVs30(row)
+  );
+  const tolls: Partial<Record<DepthCandidate, TollCells>> = { boore2014: inPlaceTolls };
+  const quietShare: Partial<Record<DepthCandidate, number>> = {
+    boore2014: falseAlarmShare(quietMedianTolls(UNSEEN_EARTHQUAKES, 'boore2014', unseenVs30)),
+  };
+  const recorded: Partial<Record<DepthCandidate, TollCells>> = {
+    boore2014: unseenRecordedCells('boore2014'),
+  };
+  let adopted = false;
+  if (unseen.winner !== 'boore2014') {
+    const winner = unseen.winner;
+    tolls[winner] = ruleTollCells(winner, 'pick');
+    quietShare[winner] = falseAlarmShare(quietMedianTolls(UNSEEN_EARTHQUAKES, winner, unseenVs30));
+    recorded[winner] = unseenRecordedCells(winner);
+    adopted =
+      adoptOnTolls(tollTest(inPlaceTolls), tollTest(tolls[winner])) &&
+      passesOnQuiet(quietShare.boore2014 ?? 0, quietShare[winner]);
+  }
+  // The simulator and the harness draw the rings with Boore et al. 2014.
+  // A rule that adopts another law has not been followed by the code yet.
+  if (adopted) {
+    throw new Error(`Rule 25 adopts ${unseen.winner}; the simulator still draws boore2014`);
+  }
+  return { unseen, seen, tolls, quietShare, recorded, adopted };
+}
+
+function depthSection(run: DepthRun): string {
+  const radius = (bias: number | null): string =>
+    bias === null ? '—' : `${Math.exp(bias).toFixed(2)}×`;
+  const bandsHeader = SIZE_BANDS.earthquake.map((b) => b.label).join(' | ');
+  const table = (c: CandidateComparison<DepthCandidate>): string[] => [
+    `| Law | ${bandsHeader} | Mean abs. log bias | Bands invented | Bands missed |`,
+    `|-----|${SIZE_BANDS.earthquake.map(() => '----:').join('|')}|----:|----:|----:|`,
+    ...DEPTH_CANDIDATES.map((law) => {
+      const cells = c.scores[law];
+      return `| ${CONTOUR_LAW_LABEL[law]}${law === c.winner ? ' (winner)' : ''} | ${cells.map((x) => radius(x.bias)).join(' | ')} | ${c.meanAbsoluteBias[law].toFixed(2)} | ${cells.reduce((a, x) => a + x.invented, 0).toString()} | ${cells.reduce((a, x) => a + x.missed, 0).toString()} |`;
+    }),
+  ];
+  const cellsText = (cells: TollCells): string =>
+    cells
+      .map(
+        (c) => `${biasText(c.stats)} · ${c.stats.inside.toString()} of ${c.stats.rows.toString()}`
+      )
+      .join(' | ');
+  const quiet = UNSEEN_EARTHQUAKES.filter(isQuiet).length;
+  const laws = DEPTH_CANDIDATES.filter((law) => run.quietShare[law] !== undefined);
+  const winner = run.unseen.winner;
+  const verdict =
+    winner === 'boore2014'
+      ? 'Boore et al. 2014 is not beaten by 0.05 on the unseen ShakeMaps, and stays; nothing else runs on the dead.'
+      : `${CONTOUR_LAW_LABEL[winner]} beats Boore et al. 2014 on the unseen ShakeMaps by ${(run.unseen.meanAbsoluteBias.boore2014 - run.unseen.meanAbsoluteBias[winner]).toFixed(2)}, and is ${run.adopted ? 'adopted' : 'not adopted'} on the dead.`;
+  return [
+    'Boore et al. 2014 draws the rings with no depth of its own. Rules 23 to 26',
+    '(`validation/depthRules.ts`), committed before any earthquake they name was read,',
+    'choose whether the rings carry depth on earthquakes no rule had looked at: every',
+    'M ≥ 6 earthquake of 2008 to 2025, no deeper than 40 km, that USGS holds a ShakeMap',
+    `for and rule 11 did not take (read on ${UNSEEN_READ_ON}: ${UNSEEN_LISTED.toString()} listed, ${UNSEEN_EARTHQUAKES.length.toString()} with a low-resolution MMI map after rule 11's are taken out, ${UNSEEN_WITHOUT_COVERAGE.length.toString()} without one and ${UNSEEN_UNREADABLE.length.toString()} ComCat no longer serves; ${quiet.toString()} quiet, the rest in NCEI's database).`,
+    'The candidates are scored on their ShakeMaps as rule 18 scores a law, on the ground the',
+    "browser reads; Boore et al. 2014 stays unless beaten by 0.05, and a winner must pass rule 19's",
+    "test on rule 11's tolls and raise no more quiet earthquakes to a median toll of ten.",
+    '',
+    ...table(run.unseen),
+    '',
+    "The same candidates on rule 18's 370 ShakeMaps, which decide nothing:",
+    '',
+    ...table(run.seen),
+    '',
+    `${verdict} A pair of bands that neither side reaches is not scored, so the table's invented and missed columns count what the score does not; what was read in them afterwards is in docs/SCIENCE.md, "Whether the rings carry depth".`,
+    '',
+    `| Law | Rule 11's held-out tolls: ${bandsHeader} | Quiet earthquakes with a median toll of ten or more | The set's recorded tolls: ${bandsHeader} |`,
+    `|-----|${SIZE_BANDS.earthquake.map(() => '-----').join('|')}|----:|${SIZE_BANDS.earthquake.map(() => '-----').join('|')}|`,
+    ...laws.map(
+      (law) =>
+        `| ${CONTOUR_LAW_LABEL[law]} | ${cellsText(run.tolls[law] ?? [])} | ${((run.quietShare[law] ?? 0) * 100).toFixed(1)} % of ${quiet.toString()} | ${cellsText(run.recorded[law] ?? [])} |`
+    ),
+  ].join('\n');
+}
+
 function medianOf(values: readonly number[]): number | null {
   if (values.length === 0) return null;
   const sorted = [...values].sort((a, b) => a - b);
@@ -987,7 +1149,7 @@ function medianOf(values: readonly number[]): number | null {
 
 /** The rings' declared gap, measured at MMI VII on the ShakeMaps of rule
  *  11's set with the harness's law, on its ground and on rock. */
-function ringsGap(): string {
+function ringsGap(depth: DepthRun): string {
   const atVII = (ground: SiteRule) =>
     contourPairs('boore2014', RULE_SHAKEMAPS, (row) => ruleSiteVs30(row, ground)).filter(
       (p) => p.threshold === 7
@@ -1020,7 +1182,11 @@ function ringsGap(): string {
     invented === without.length && inventedOnRock === invented
       ? `draw a VII band about every one of them, on the ground the browser reads under the epicentre and on rock alike`
       : `draw a VII band about ${invented.toString()} of them on the ground the browser reads under the epicentre, ${inventedOnRock.toString()} on rock`;
-  return `**The rings paint intensity VII where ShakeMaps record none.** Held out by rule, ${without.length.toString()} of the ${pick.length.toString()} USGS ShakeMaps hold no ground at MMI VII on their low-resolution grid, and Boore et al. 2014's rings ${drawn}. The rings take no account of how deep the source lies, and a ShakeMap's grid does not hold a peak smaller than one of its cells; which of the two, or what else, makes the difference is not established. Where a ShakeMap does reach MMI VII, the ring runs at a median ${String(small)}, ${String(middle)} and ${String(great)} of its radius below Mw 6.5, between 6.5 and 7.5 and above (${String(smallRock)}, ${String(middleRock)} and ${String(greatRock)} on rock). And the ground is one Vs30, read at the epicentre, for the whole footprint, where a ShakeMap reads each cell's own (docs/SCIENCE.md, "The ground under the rings").`;
+  return `**The rings paint intensity VII where ShakeMaps record none.** Held out by rule, ${without.length.toString()} of the ${pick.length.toString()} USGS ShakeMaps hold no ground at MMI VII on their low-resolution grid, and Boore et al. 2014's rings ${drawn}. The rings take no account of how deep the source lies, and a ShakeMap's grid does not hold a peak smaller than one of its cells; which of the two, or what else, makes the difference is not established. Where a ShakeMap does reach MMI VII, the ring runs at a median ${String(small)}, ${String(middle)} and ${String(great)} of its radius below Mw 6.5, between 6.5 and 7.5 and above (${String(smallRock)}, ${String(middleRock)} and ${String(greatRock)} on rock). On the ${depth.unseen.events.toString()} earthquakes of rule 23 no rule had read, Boore et al. 2014 paints ${unseenInvented(depth, 'boore2014').toString()} bands where their ShakeMaps hold none, and Allen, Wald & Worden's intensity equation, which reads the depth, ${unseenInvented(depth, 'allen2012Hypocentral').toString()}; the score rules 23 to 26 chose with gives no credit for a band rightly left blank, and it kept Boore et al. 2014 (docs/SCIENCE.md, "Whether the rings carry depth"). And the ground is one Vs30, read at the epicentre, for the whole footprint, where a ShakeMap reads each cell's own (docs/SCIENCE.md, "The ground under the rings").`;
+}
+
+function unseenInvented(depth: DepthRun, law: DepthCandidate): number {
+  return depth.unseen.scores[law].reduce((a, c) => a + c.invented, 0);
 }
 
 /** The declared gap the sets held out by rule measure, in their own
@@ -1568,6 +1734,7 @@ function main(): void {
   const eiep = runEiep();
   const contourLaws = runContourLaws();
   const ground = runGround(ruleSets, contourLaws.tolls.boore2014);
+  const depth = runDepth(ground.tolls.pick);
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -1640,6 +1807,10 @@ ${contourLawSection(contourLaws)}
 
 ${groundSection(ground)}
 
+### Whether the rings carry depth
+
+${depthSection(depth)}
+
 ### Which checks are validation
 
 ${rolesSection(net)}
@@ -1685,7 +1856,7 @@ ${bullet([
   '**The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.',
   "**The toll band draws the fatality curve's published scatter, but not the census.** Since 14 September 2026 a shaking realisation scales its mortality by exp(N(0, G)), G being PAGER's `gnormvalue` for the country — the standard deviation of ln(deaths) PAGER's own loss module uses. The population is still held fixed, and so are the blast and pyroclastic rates, which publish no scatter. G was measured on ShakeMap intensities, so it overlaps, by an amount not separated here, with the ground-motion residual drawn beside it. Where the curve is steep or its scatter large the band spans four orders of magnitude or more — Gorkha, Kumamoto, Pohang — which is the width PAGER's own numbers give a single event, and a row inside such a band has passed nothing (`uq/tollBand.ts`).",
   greatRuptureGap(byRule.earthquakes),
-  ringsGap(),
+  ringsGap(depth),
   "**Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).",
   "**Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).",
   "**Three numbers are not traced to a source read here.** The 30 cm at DART 21413 that the Tōhoku wave row is tuned on is quoted from Satake et al. 2013 without the paper having been read in the source review; the arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005.",
@@ -1812,6 +1983,37 @@ otherwise.
             ...scoreJson(c.stats),
           })),
         },
+      },
+      depth: {
+        readOn: UNSEEN_READ_ON,
+        listed: UNSEEN_LISTED,
+        earthquakes: UNSEEN_EARTHQUAKES.length,
+        quiet: UNSEEN_EARTHQUAKES.filter(isQuiet).length,
+        withoutCoverage: UNSEEN_WITHOUT_COVERAGE.length,
+        winner: depth.unseen.winner,
+        adopted: depth.adopted,
+        meanAbsoluteBias: Object.fromEntries(
+          DEPTH_CANDIDATES.map((law) => [law, fixed(depth.unseen.meanAbsoluteBias[law], 3)])
+        ),
+        shakemap: Object.fromEntries(
+          DEPTH_CANDIDATES.map((law) => [
+            law,
+            depth.unseen.scores[law].map((c) => ({
+              sizeBand: c.sizeBand,
+              pairs: c.pairs,
+              bias: c.bias === null ? null : fixed(c.bias, 3),
+              scatter: c.scatter === null ? null : fixed(c.scatter, 3),
+              invented: c.invented,
+              missed: c.missed,
+            })),
+          ])
+        ),
+        quietShare: Object.fromEntries(
+          DEPTH_CANDIDATES.filter((law) => depth.quietShare[law] !== undefined).map((law) => [
+            law,
+            fixed(depth.quietShare[law] ?? 0, 4),
+          ])
+        ),
       },
       ground: {
         sitesReadOn: SITES_READ_ON,

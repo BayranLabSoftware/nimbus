@@ -1023,6 +1023,55 @@ and the winner was rock. It is not adopted, because adopting it now would
 be choosing on the result; a rule that asks for it has to be tried on
 earthquakes these rules have not seen.
 
+### Whether the rings carry depth (14 September 2026)
+
+Boore et al. 2014 draws the rings in the Joyner–Boore distance with a fixed
+4.5 km near-source term and no depth of its own, so the depth a scenario
+sets changes nothing it shakes, and on rule 11's maps the rings paint MMI
+VII about every one of the 190 earthquakes whose ShakeMaps hold none.
+Rules 23 to 26 (`validation/depthRules.ts`) were committed before any
+earthquake they name was read, and the earthquakes before any candidate was
+scored on them. The set is every M ≥ 6 earthquake of 2008 to 2025, no deeper
+than 40 km, that USGS holds a ShakeMap for and rule 11 did not take: 1 539
+listed, 1 152 once rule 11's are taken out, 809 with a low-resolution MMI
+map (342 without one, and one event ComCat no longer serves). 805 of them
+are quiet — no NCEI record within two minutes and 200 km, so fewer than ten
+dead by the database's criteria — and 152 of their maps reach MMI VII, ten
+MMI VIII, none IX. The candidates are the law in place and Allen, Wald &
+Worden's (2012) intensity prediction equation in hypocentral distance, on
+its own and below Mw 7.5 only; its coefficients were read from OpenQuake's
+implementation, not from the paper.
+
+| law                               | Mw < 6.5 | 6.5–7.5 | ≥ 7.5  | mean abs. log bias | bands invented | bands missed |
+| --------------------------------- | -------- | ------- | ------ | ------------------ | -------------- | ------------ |
+| Boore et al. 2014                 | 3.11×    | 2.88×   | 44.55× | 2.00               | 1 374          | 0            |
+| Allen et al. 2012, hypocentral    | 3.17×    | 3.76×   | 71.26× | 2.25               | 298            | 18           |
+| Allen et al. below Mw 7.5, BSSA14 | 3.17×    | 3.76×   | 44.55× | 2.09               | 298            | 18           |
+
+Boore et al. 2014 is not beaten by 0.05, and stays; by rule 25 nothing else
+runs on the dead. On the same earthquakes its central toll reaches ten or more
+for 2.9 % of the quiet ones. On rule 18's 370 maps, which decide nothing, the
+three read 0.97, 0.97 and 0.95.
+
+What the score does not show was read afterwards, and is written here as
+such. Rule 18's score averages the log radius ratio over the pairs where
+either side reaches a band, so a relation that rightly draws nothing earns no
+credit for it, and one that draws a band where the map holds none is only
+counted where it draws. On these quiet earthquakes that is most of the
+difference: Boore et al. 2014 paints 1 374 bands where their maps hold none
+— MMI VII and VIII about nearly every earthquake of Mw 6 — and the
+hypocentral equation, which reads the depth (a median of 16.5 km here), paints
+298 and misses 18 the maps do hold. Where it does draw, it draws wider than
+the maps, and its mean over those few pairs is no smaller. The cell above
+Mw 7.5 holds two bands of one earthquake, the South Sandwich Islands Mw 8.1
+of 2021, whose map peaks at 6.5; averaged as one of three cells, those two
+bands carry most of both laws' mean. None of this is acted on: choosing the
+hypocentral equation now would be choosing it on a result already seen. A
+score that credits a band rightly left blank — hits, misses, false alarms and
+correct silences at each threshold — has to be written before it is tried,
+and tried on earthquakes these rules have not read: the 342 whose maps carry
+no low-resolution coverage, or those after 14 September 2026.
+
 ### Against the program the impact equations came from (14 September 2026)
 
 The impact pipeline cites Collins, Melosh & Marcus (2005), and their

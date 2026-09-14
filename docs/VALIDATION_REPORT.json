@@ -1371,6 +1371,103 @@
         ]
       }
     },
+    "depth": {
+      "readOn": "2026-09-14",
+      "listed": 1539,
+      "earthquakes": 809,
+      "quiet": 805,
+      "withoutCoverage": 342,
+      "winner": "boore2014",
+      "adopted": false,
+      "meanAbsoluteBias": {
+        "boore2014": 1.996,
+        "allen2012Hypocentral": 2.249,
+        "allen2012HypocentralBelowMw7.5": 2.092
+      },
+      "shakemap": {
+        "boore2014": [
+          {
+            "sizeBand": "Mw < 6.5",
+            "pairs": 1186,
+            "bias": 1.134,
+            "scatter": 0.632,
+            "invented": 1090,
+            "missed": 0
+          },
+          {
+            "sizeBand": "Mw 6.5–7.5",
+            "pairs": 348,
+            "bias": 1.058,
+            "scatter": 0.789,
+            "invented": 282,
+            "missed": 0
+          },
+          {
+            "sizeBand": "Mw ≥ 7.5",
+            "pairs": 2,
+            "bias": 3.797,
+            "scatter": 0.169,
+            "invented": 2,
+            "missed": 0
+          }
+        ],
+        "allen2012Hypocentral": [
+          {
+            "sizeBand": "Mw < 6.5",
+            "pairs": 306,
+            "bias": 1.154,
+            "scatter": 0.814,
+            "invented": 210,
+            "missed": 10
+          },
+          {
+            "sizeBand": "Mw 6.5–7.5",
+            "pairs": 152,
+            "bias": 1.326,
+            "scatter": 1.197,
+            "invented": 86,
+            "missed": 8
+          },
+          {
+            "sizeBand": "Mw ≥ 7.5",
+            "pairs": 2,
+            "bias": 4.266,
+            "scatter": 0.366,
+            "invented": 2,
+            "missed": 0
+          }
+        ],
+        "allen2012HypocentralBelowMw7.5": [
+          {
+            "sizeBand": "Mw < 6.5",
+            "pairs": 306,
+            "bias": 1.154,
+            "scatter": 0.814,
+            "invented": 210,
+            "missed": 10
+          },
+          {
+            "sizeBand": "Mw 6.5–7.5",
+            "pairs": 152,
+            "bias": 1.326,
+            "scatter": 1.197,
+            "invented": 86,
+            "missed": 8
+          },
+          {
+            "sizeBand": "Mw ≥ 7.5",
+            "pairs": 2,
+            "bias": 3.797,
+            "scatter": 0.169,
+            "invented": 2,
+            "missed": 0
+          }
+        ]
+      },
+      "quietShare": {
+        "boore2014": 0.0286
+      }
+    },
     "ground": {
       "sitesReadOn": "2026-09-14",
       "standing": "pick",

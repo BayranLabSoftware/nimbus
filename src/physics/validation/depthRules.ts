@@ -73,6 +73,14 @@ import type { FaultType } from '../events/earthquake/ruptureLength.js';
  * a database's criteria, not a count. And the hypocentral equation's
  * coefficients were read from OpenQuake's implementation, not from the
  * paper.
+ *
+ * Run once, on 14 September 2026, and said here rather than folded into
+ * the rules above: 809 earthquakes had a map to score on, and Boore et al.
+ * 2014 kept its place (2.00 against 2.09 and 2.25), so nothing ran on the
+ * dead. What the score leaves out — it gives no credit for a band rightly
+ * left blank, and Boore et al. 2014 paints 1 374 bands those maps do not
+ * hold where the hypocentral equation paints 298 — is in docs/SCIENCE.md,
+ * "Whether the rings carry depth", and is not acted on here.
  */
 
 /** Rule 24's candidates, the law in place first. */

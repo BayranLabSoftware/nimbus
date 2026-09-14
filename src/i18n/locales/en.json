@@ -1478,7 +1478,7 @@
       },
       "inventedShaking": {
         "item": "The rings paint strong shaking where the ShakeMaps record none",
-        "note": "190 of the 370 USGS ShakeMaps the rings were chosen on hold no ground at intensity VII, and the model draws a VII ring about every one of those earthquakes, on any ground. The rings take no account of how deep an earthquake starts, and a ShakeMap's grid misses a peak smaller than one of its cells; which of the two is responsible is not known. The ground is also one value, read under the epicentre, for the whole footprint, where a ShakeMap reads the ground of each place."
+        "note": "190 of the 370 USGS ShakeMaps the rings were chosen on hold no ground at intensity VII, and the model draws a VII ring about every one of those earthquakes, on any ground. The rings take no account of how deep an earthquake starts, and a ShakeMap's grid misses a peak smaller than one of its cells; which of the two is responsible is not known. On 809 earthquakes nobody had looked at, an equation that reads the depth painted 298 such bands where the current rings paint 1 374, but lost on the score chosen in advance, which gives no credit for a band rightly left blank. The ground is also one value, read under the epicentre, for the whole footprint, where a ShakeMap reads the ground of each place."
       },
       "subduction": {
         "item": "Ocean-trench earthquakes are shaken with rules made for earthquakes on land",

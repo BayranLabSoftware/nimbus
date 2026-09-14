@@ -1565,7 +1565,7 @@
       },
       "inventedShaking": {
         "item": "Gli anelli dipingono scuotimento forte dove le ShakeMap non ne registrano",
-        "note": "190 delle 370 ShakeMap dell'USGS su cui sono stati scelti gli anelli non hanno terreno all'intensità VII, e il modello disegna un anello di VII attorno a ognuno di quei terremoti, su qualunque terreno. Gli anelli non tengono conto della profondità a cui comincia un terremoto, e la griglia di una ShakeMap non vede un picco più piccolo di una sua cella; quale delle due cose sia responsabile non si sa. Il terreno, poi, è un valore solo, letto sotto l'epicentro, per tutta l'impronta, mentre una ShakeMap legge il terreno di ogni luogo."
+        "note": "190 delle 370 ShakeMap dell'USGS su cui sono stati scelti gli anelli non hanno terreno all'intensità VII, e il modello disegna un anello di VII attorno a ognuno di quei terremoti, su qualunque terreno. Gli anelli non tengono conto della profondità a cui comincia un terremoto, e la griglia di una ShakeMap non vede un picco più piccolo di una sua cella; quale delle due cose sia responsabile non si sa. Su 809 terremoti che nessuno aveva guardato, un'equazione che legge la profondità ha dipinto 298 di queste fasce dove gli anelli attuali ne dipingono 1 374, ma ha perso con il punteggio scelto in anticipo, che non premia una fascia lasciata giustamente vuota. Il terreno, poi, è un valore solo, letto sotto l'epicentro, per tutta l'impronta, mentre una ShakeMap legge il terreno di ogni luogo."
       },
       "subduction": {
         "item": "I terremoti delle fosse oceaniche scuotono con regole fatte per quelli sulla terraferma",

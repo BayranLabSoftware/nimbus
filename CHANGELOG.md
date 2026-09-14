@@ -206,6 +206,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Changed
 
+- **Whether the intensity rings should carry depth, asked of 809
+  earthquakes nobody had looked at.** Boore et al. 2014, which draws the
+  rings, has no depth, so a scenario's depth moves nothing it shakes. Rules
+  23 to 26 (`validation/depthRules.ts`) were written before any of the
+  earthquakes was read: every M ≥ 6 earthquake of 2008 to 2025 with a USGS
+  ShakeMap that the earlier sets did not hold, and Allen, Wald & Worden's
+  2012 intensity equation in hypocentral distance as the candidate that
+  reads depth. On the score chosen in advance Boore et al. 2014 kept its
+  place, 2.00 against 2.09, and draws the rings still. The report prints
+  what that score leaves out, and it is most of the picture: on these mostly
+  quiet earthquakes Boore et al. 2014 paints 1 374 bands of MMI VII and VIII
+  that their ShakeMaps do not hold, the depth-reading equation 298. Adopting
+  it on that would be choosing on a result already seen; a score that credits
+  a band rightly left blank comes first, tried on earthquakes not yet read.
+
 - **The validation harness stands every earthquake on the ground the
   browser gives it.** With no Vs30 typed in, the browser gives the
   simulator the Vs30 of the terrain's slope under the pick; the harness
