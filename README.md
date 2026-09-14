@@ -11,7 +11,10 @@ Asphaug 2000, Wells & Coppersmith 1994, USGS ShakeMap, and the rest of
 the bibliography in [docs/SCIENCE.md](docs/SCIENCE.md)). Every readout in
 the UI traces back to a citation.
 
-The project is open source under Apache-2.0. It is a popular-science
+The project is free software under the GNU Affero General Public License,
+version 3 or later: anyone may use, study and share it, and anyone who
+distributes a modified version — or runs one as a website — must publish
+its source under the same licence. It is a popular-science
 tool, not an engineering one: the goal is to help non-specialists feel
 the difference between a kiloton and a megaton, between a Mw 6 and a
 Mw 9, between an inland impact and one in the open ocean.
@@ -155,7 +158,10 @@ reports go through [SECURITY.md](SECURITY.md).
 
 ## Licence
 
-Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later). See
+[LICENSE](LICENSE) and [NOTICE](NOTICE). Versions up to commit `13e0e9f`
+(14 September 2026) were published under the Apache License 2.0, and
+copies taken from them keep those terms.
 
 Globe imagery: © OpenStreetMap contributors, ODbL 1.0. Bathymetry: AWS
 Terrain Tiles (CC0). Population: WorldPop (Tatem 2017). Bundled fonts:

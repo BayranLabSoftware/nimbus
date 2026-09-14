@@ -37,9 +37,9 @@ through it together.
 ## Adding assets
 
 We accept **CC0** assets. We accept **CC-BY-4.0** only when no CC0
-equivalent exists. We don't accept CC-BY-NC (blocks commercial use),
-CC-BY-SA (incompatible with Apache 2.0), or anything with unclear
-provenance.
+equivalent exists. We don't accept CC-BY-NC (it forbids the use the
+AGPL allows), CC-BY-SA (so that no asset carries share-alike terms of
+its own beside the code's), or anything with unclear provenance.
 
 For each asset PR:
 

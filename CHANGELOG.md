@@ -5,6 +5,18 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## [Unreleased]
 
+### Licence
+
+- **Nimbus is now free software under the GNU Affero General Public
+  License, version 3 or later (AGPL-3.0-or-later).** Anyone may use,
+  study and share it; anyone who distributes a modified version, or runs
+  one as a website, must publish its source under the same licence.
+  Versions up to commit `13e0e9f` (14 September 2026) were released under
+  the Apache License 2.0, and copies taken from them keep those terms.
+  The footers of the landing page, the methodology page and the printed
+  report say so, and the report no longer calls every formula
+  "peer-reviewed": each is cited to its source.
+
 ### Added
 
 - **The validation report says which checks are validation.** Every

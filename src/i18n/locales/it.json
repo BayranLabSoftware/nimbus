@@ -44,7 +44,7 @@
   },
   "footer": {
     "github": "GitHub",
-    "license": "Apache 2.0",
+    "license": "AGPL-3.0-or-later",
     "privacy": "Privacy",
     "madeIn": "Fatto in Italia",
     "credits": "Ispirato da MetaBallStudios · Asset da Poly Haven e Sketchfab CC0 · Scienza da letteratura peer-reviewed"
@@ -660,7 +660,7 @@
         "note": "Gli stage di cascata a lungo termine (inverno da impatto, acidificazione oceanica, collasso plancton) riportano stime in ordini di grandezza derivate dalla letteratura piuttosto che simulazioni accoppiate atmosfera-oceano. Considera la coda lungo termine descrittiva, non predittiva."
       }
     },
-    "footer": "Open source con licenza Apache 2.0. Correzioni e citazioni aggiuntive sono benvenute tramite pull request GitHub.",
+    "footer": "Software libero con licenza AGPL-3.0-or-later. Correzioni e citazioni aggiuntive sono benvenute tramite pull request GitHub.",
     "toValidation": "Guarda come viene verificato il modello →"
   },
   "population": {
@@ -882,7 +882,7 @@
     "equationsTitle": "Equazioni attivate da questa simulazione",
     "equationsBody": "L'elenco seguente è filtrato sulle formule effettivamente esercitate da questo scenario — un airburst cita Chyba & Popova, un megathrust cita Strasser e la catena tsunami, una detonazione di superficie cita Nordyke.",
     "bibliographyTitle": "Bibliografia",
-    "footer": "Generato da Bayran Nimbus — Nuclear & Impact Modeling & Blast Understanding System · Formule peer-reviewed · Open source con licenza Apache 2.0",
+    "footer": "Generato da Bayran Nimbus — Nuclear & Impact Modeling & Blast Understanding System · Ogni formula con la sua fonte · Software libero con licenza AGPL-3.0-or-later",
     "meta": {
       "event": "Evento",
       "location": "Località",
