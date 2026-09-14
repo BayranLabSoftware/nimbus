@@ -35,8 +35,8 @@ export interface PeakGroundAccelerationInput {
  * acceleration at a 1-σ confidence level. The popular-science display
  * shows the central value; the earthquake Monte-Carlo path
  * (`montecarlo/earthquakeMonteCarlo.ts`) folds in a representative
- * ground-motion aleatory residual (σ_lnY ≈ 0.50, the NGA-West2 total;
- * {@link EARTHQUAKE_INPUT_SIGMA.groundMotion}) as a multiplicative
+ * ground-motion aleatory residual (σ_lnY ≈ 0.60, the Boore et al. 2014
+ * total at M ≥ 5.5; {@link EARTHQUAKE_INPUT_SIGMA.groundMotion}) as a multiplicative
  * exp(N(0, σ)) factor on the PGA, on top of the input (Mw, depth, Vs30)
  * spread — so the P10/P90 bands reflect the dominant regression scatter,
  * not just the input contribution. Outside the calibration window
@@ -112,13 +112,15 @@ export function distanceForPga(magnitude: number, target: MetersPerSecondSquared
  * Zhao et al. (2006) / Abrahamson et al. (2016) BC-Hydro families; we
  * still surface the BSSA14 number as the best available upper bound.
  *
- * **Uncertainty (published).** Boore et al. (2014) Table 11 reports
- * total standard deviation σ_lnY ≈ 0.502 for PGA at the rock
- * reference (Vs30 = 760 m/s) — i.e. ±factor 1.65 in PGA at 1-σ. The
- * inter-event component τ ≈ 0.397 and the intra-event component
- * φ ≈ 0.308 combine in quadrature; either alone bounds the
- * site-specific scatter for a known event. Outside the validity
- * window σ_lnY widens by ~30 %.
+ * **Uncertainty (published).** For PGA Boore et al. (2014) give a
+ * between-event τ of 0.398 at M ≤ 4.5 falling to 0.348 at M ≥ 5.5, and
+ * a within-event φ of 0.695 falling to 0.495, linear in magnitude in
+ * between; φ then grows by up to 0.10 from R_JB = 110 to 270 km and
+ * shrinks by up to 0.07 from Vs30 = 300 to 225 m/s. In quadrature the
+ * total at M ≥ 5.5, near the source and on firm ground, is
+ * σ_lnY ≈ 0.60 — a factor of 1.8 in PGA at one sigma. (Until
+ * 14 September 2026 this comment gave 0.502 from a τ ≈ 0.397 and a
+ * φ ≈ 0.308 that are not in the paper.)
  */
 
 /** BSSA14 hinge magnitude. */

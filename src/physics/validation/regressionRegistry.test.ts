@@ -31,6 +31,7 @@ import { CRUSTAL_ROCK_DENSITY } from '../constants.js';
 import { m } from '../units.js';
 import { validateScenario } from './inputSchema.js';
 import { safeRunEarthquake } from './safeRun.js';
+import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
 
 describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () => {
   it('B-001 Krakatau caldera-collapse near-field amplitude', () => {
@@ -275,6 +276,14 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(thermalPartitionForHeight(580, 15)).toBe(0.35);
   });
 
+  it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
+    // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
+    // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
+    // φ = 0.495.
+    expect(EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma).toBeCloseTo(Math.hypot(0.348, 0.495), 1);
+    expect(EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma).toBeGreaterThan(0.55);
+  });
+
   // Smoke test: verify every preset still renders sensible numbers
   // (catches regressions from any unrelated change to a preset).
   it('all 5 event-type preset-bundles produce non-degenerate output (smoke)', () => {
@@ -300,9 +309,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-019 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
+    // B-001..B-020 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
     // B-007 superseded by B-011).
-    const expectedRows = 19;
-    expect(expectedRows).toBe(19);
+    const expectedRows = 20;
+    expect(expectedRows).toBe(20);
   });
 });

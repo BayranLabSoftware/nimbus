@@ -3,7 +3,7 @@ import { EARTHQUAKE_PRESETS } from '../events/earthquake/simulate.js';
 import { SHAKEMAP_FOOTPRINTS } from './shakemapFixtures.js';
 // The computation lives beside the fixtures so that this suite and the
 // validation report read the same one.
-import { modelAreaKm2 } from './shakemapFootprint.js';
+import { EXPECTED_RADIUS_SCATTER, modelAreaKm2 } from './shakemapFootprint.js';
 
 /**
  * The first layer, on its own.
@@ -117,16 +117,18 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
     // The model predicts the MEDIAN ground motion; a ShakeMap records
     // one realisation of it. Comparing the two event by event and
     // calling a factor of two or three a defect is a category error:
-    // the published aleatory scatter of PGA is σ_lnY ≈ 0.5, and PGA
-    // falls as about R^(−0.71) at these ranges, so one sigma of
-    // ground motion is a factor of two in radius and four in area
-    // before anything is wrong at all.
+    // the published aleatory scatter of PGA is σ_lnY ≈ 0.6 (Boore et
+    // al. 2014, M ≥ 5.5), and PGA falls as about R^(−0.71) at these
+    // ranges, so one sigma of ground motion is a factor of 2.3 in
+    // radius and 5.4 in area before anything is wrong at all.
     //
     // What a median model can honestly be held to is being centred,
     // and to scattering no more than the ground does. It is: the
     // geometric mean radius ratio across every band that exists is
-    // 1.18, and the spread is σ_ln = 0.71 against the 0.70 the
-    // published ground-motion sigma implies.
+    // 1.18, and the spread is σ_ln = 0.71 — under the 0.85 the
+    // published ground-motion sigma implies, and above the 0.49 its
+    // between-event part alone would (EXPECTED_RADIUS_SCATTER says why
+    // the first is a ceiling).
     const logs: number[] = [];
     for (const f of SHAKEMAP_FOOTPRINTS) {
       for (const thr of [7, 8, 9] as const) {
@@ -148,9 +150,11 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
     // those is a model that cannot be shown to be off-centre.
     const standardError = sd / Math.sqrt(logs.length);
     expect(Math.abs(mean) / standardError, 'bias in standard errors').toBeLessThan(2);
-    // And scattering like ground motion rather than like a bug: the
-    // NGA-West2 total sigma of 0.5 in ln PGA over a R^(−0.71) decay.
-    expect(sd, 'σ_ln of the radius ratio').toBeLessThan(0.5 / 0.71 + 0.25);
+    // And scattering like ground motion rather than like a bug: under
+    // the ceiling one sigma of ground motion implies. Until 14 September
+    // this bound was 0.5 / 0.71 + 0.25, on a misquoted sigma with an
+    // allowance on top; the sigma Boore et al. give needs none.
+    expect(sd, 'σ_ln of the radius ratio').toBeLessThan(EXPECTED_RADIUS_SCATTER);
   });
 
   it('four events are shaken at an intensity they never reached', () => {

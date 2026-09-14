@@ -15,7 +15,7 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 
 - **Death tolls:** 4 of 11 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
 - **Waves:** 10 of 15 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 5 misses are declared rows, each with its reason below.
-- **Shaking footprint:** centred at 1.18 in radius (0.76 standard errors), scatter σ_ln 0.71 against 0.70 expected; 4 bands painted at an intensity never reached.
+- **Shaking footprint:** centred at 1.18 in radius (0.76 standard errors), scatter σ_ln 0.71 against a ceiling of 0.85 from ground motion; 4 bands painted at an intensity never reached.
 - **Held out** — the rows nothing in the model was set on: death tolls 1 of 4 inside the band, waves 3 of 3. 3 of the 4 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
 
@@ -47,22 +47,22 @@ model was set on the event, which is under "Which checks are validation".
 | Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Cause | Standing | Role |
 |-------|---------:|------:|--------------:|-----:|---------------:|---------|-------|----------|------|
 | Kokoxili (Kunlun) 2001 | 0 | 0 | 0 – 0 | — | both zero | contains | — | gated | held out |
-| Northridge 1994 | 57 | 38 | 5 – 180 | 10^1.6 | 0.67× | contains | — | gated | tuned on it |
-| L'Aquila 2009 | 309 | 227 | 37 – 1,542 | 10^1.6 | 0.73× | contains | — | gated | tuned on it |
-| Amatrice 2016 | 299 | 6 | 0 – 114 | 10^2.1 | 0.02× | **misses** | buildingStock | declared | tuned on it |
-| Gorkha (Nepal) 2015 | 8,964 | 580 | 22 – 4,924 | 10^2.3 | 0.06× | **misses** | buildingStock | declared | held out |
+| Northridge 1994 | 57 | 38 | 4 – 238 | 10^1.8 | 0.67× | contains | — | gated | tuned on it |
+| L'Aquila 2009 | 309 | 227 | 32 – 1,876 | 10^1.8 | 0.73× | contains | — | gated | tuned on it |
+| Amatrice 2016 | 299 | 6 | 0 – 175 | 10^2.2 | 0.02× | **misses** | buildingStock | declared | tuned on it |
+| Gorkha (Nepal) 2015 | 8,964 | 580 | 13 – 6,942 | 10^2.7 | 0.06× | **misses** | buildingStock | declared | held out |
 | Beirut 2020 | 218 | 1,432 | 1,297 – 2,433 | 10^0.3 | 6.57× | **misses** | populationRaster | declared | tuned on it |
 | Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | occupancy | declared | tuned on it |
 | Pinatubo 1991 | 847 | 82 | 32 – 312 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared | held out |
 | Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | populationChanged | declared | tuned on it |
-| Tōhoku 2011 | 18,500 | 0 | 0 – 0 | — | 0.00× | **misses** | drownedOffline | declared | held out |
-| Sumatra–Andaman 2004 | 227,898 | 1 | 0 – 43 | 10^1.6 | 0.00× | **misses** | drownedOffline | declared | same source |
+| Tōhoku 2011 | 18,500 | 0 | 0 – 1 | 10^0.0 | 0.00× | **misses** | drownedOffline | declared | held out |
+| Sumatra–Andaman 2004 | 227,898 | 1 | 0 – 87 | 10^1.9 | 0.00× | **misses** | drownedOffline | declared | same source |
 
 #### Where the band misses, and why
 
-**Amatrice 2016.** Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter is 0 to 114 and the record is outside it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village".
+**Amatrice 2016.** Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter is 0 to 175 and the record is outside it (it was 0 to 114 until 14 September, when the ground-motion residual went from a misquoted 0.50 to the 0.60 Boore et al. 2014 give; the verdict did not change). Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village".
 
-**Gorkha (Nepal) 2015.** Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428 and the predictive interval is 22 to 4 924, which does not contain 8 964. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. The band is now narrow enough for the miss to be a statement.
+**Gorkha (Nepal) 2015.** Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428 and the predictive interval is 13 to 6 942 (22 to 4 924 before the ground-motion residual was corrected to 0.60 on 14 September), which does not contain 8 964. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. The band is now narrow enough for the miss to be a statement.
 
 **Beirut 2020.** Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. On 14 September 2026 the blast itself was corrected — a charge on the ground reflects its blast and acts like twice its yield in the free-air fit the rings use (Takazawa, Kim & Garcés 2023) — and the rings grew by a quarter, taking the row to 6.6x, 1 297 to 2 433 on a predictive interval that is the ten per cent a charge's yield actually varies by. That is the right shape for this row, because what is left is neither scatter in the charge nor the blast but the raster underneath and the conventional mortality bands, which were composed with this row in view and not refitted after the correction: at a few hundred metres the rings are far smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.
 
@@ -92,15 +92,16 @@ rather than about the interpolation.
 
 | Event | Measured band | Interpolated band | Ends apart (low / high) | Comparable |
 |-------|--------------:|------------------:|------------------------:|------------|
-| Northridge 1994 | 5 – 180 | 4 – 176 | 1.25× / 1.02× | yes |
-| L'Aquila 2009 | 37 – 1,542 | 30 – 1,341 | 1.23× / 1.15× | yes |
-| Amatrice 2016 | 0 – 114 | 1 – 121 | 1.00× / 1.06× | yes |
-| Gorkha (Nepal) 2015 | 22 – 4,924 | 26 – 4,871 | 1.18× / 1.01× | yes |
+| Northridge 1994 | 4 – 238 | 4 – 224 | 1.00× / 1.06× | yes |
+| L'Aquila 2009 | 32 – 1,876 | 28 – 1,699 | 1.14× / 1.10× | yes |
+| Amatrice 2016 | 0 – 175 | 0 – 213 | 1.00× / 1.22× | yes |
+| Gorkha (Nepal) 2015 | 13 – 6,942 | 15 – 7,416 | 1.15× / 1.07× | yes |
 | Beirut 2020 | 1,297 – 2,433 | 1,297 – 2,433 | 1.00× / 1.00× | yes |
 | Mount St Helens 1980 | 120 – 692 | 164 – 708 | 1.37× / 1.02× | yes |
 | Pinatubo 1991 | 32 – 312 | 32 – 312 | 1.00× / 1.00× | yes |
 | Hiroshima 1945 | 107,004 – 129,200 | 102,027 – 127,121 | 1.05× / 1.02× | yes |
-| Sumatra–Andaman 2004 | 0 – 43 | 0 – 115 | 1.00× / 2.67× | too few dead |
+| Tōhoku 2011 | 0 – 1 | 0 – 31 | 1.00× / 31.00× | too few dead |
+| Sumatra–Andaman 2004 | 0 – 87 | 0 – 223 | 1.00× / 2.56× | too few dead |
 
 Worst comparable end: **1.37×**, against a gate of 2×.
 
@@ -198,14 +199,14 @@ geology says.
 | Kokoxili 2001 | MMI ≥ 9 | 1,700 km² | 6,741 km² | 3.97× |
 
 The model predicts the median ground motion and a ShakeMap records one
-realisation of it; one sigma of ground motion (σ_lnY ≈ 0.5 over an
-R^(−0.71) decay) is a factor of two in radius and four in area before
-anything is wrong. What a median can honestly be held to is being centred
-and scattering like the ground:
+realisation of it; one sigma of ground motion (σ_lnY ≈ 0.60, Boore et al. 2014
+at M ≥ 5.5, over an R^(−0.71) decay) is a factor of 2.3 in radius and
+5.4 in area before anything is wrong. What a median can honestly be
+held to is being centred and scattering no more than the ground:
 
 - Bands both reach: **11**
 - Geometric-mean radius ratio: **1.18**, 0.76 standard errors from centred
-- Scatter σ_ln of the radius ratio: **0.71**, against the 0.70 the published ground-motion sigma implies
+- Scatter σ_ln of the radius ratio: **0.71**, against the 0.85 the published ground-motion sigma implies. That is a ceiling, not a match: over an area the within-event part of the scatter partly averages out, and the between-event part alone implies 0.49.
 
 **Bands painted at an intensity the event never reached (4):** L'Aquila 2009 MMI≥8, Amatrice 2016 MMI≥8, Gorkha 2015 MMI≥9, Tōhoku 2011 MMI≥9. A laboratory-level model has none; the count is pinned in `shakemapFootprint.test.ts` so it can only go down.
 

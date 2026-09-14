@@ -32,7 +32,7 @@ import type { ActiveResult } from '../../store/useAppStore.js';
  * range comes from the scatter the literature already publishes — the
  * magnitude an agency reports, the depth a catalogue gives, the yield
  * a device actually delivers — and, for shaking, above all from the
- * ground-motion residual sigma_lnY ~ 0.5, which is the difference
+ * ground-motion residual sigma_lnY ~ 0.6, which is the difference
  * between a median prediction and one draw of the earth.
  *
  * So: draw the scenario a few hundred times from that scatter, run

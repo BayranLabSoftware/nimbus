@@ -19,7 +19,7 @@ import { sampleNormal, type Rng } from './sampling.js';
  *                ±30 % lognormal when the caller supplied one.
  *
  * We ALSO sample the ground-motion aleatory residual — the GMPE's
- * intrinsic σ_lnY ≈ 0.50 scatter about the median (Boore et al. 2014).
+ * intrinsic σ_lnY ≈ 0.60 scatter about the median (Boore et al. 2014).
  * Without it the PGA / MMI / contour-radius bands reflected only the
  * input spread and materially UNDER-stated the true predictive scatter
  * (the regression σ dominates). It is sampled as `N(0, σ_lnY)` in

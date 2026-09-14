@@ -1,4 +1,5 @@
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
+import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
 import { SHAKEMAP_FOOTPRINTS, type ShakemapFootprint } from './shakemapFixtures.js';
 
 /**
@@ -58,6 +59,28 @@ export function compareFootprints(): FootprintRow[] {
   }
   return rows;
 }
+
+/** How fast PGA falls with distance at the ranges these footprints
+ *  span: about R^(−0.71). */
+export const PGA_DISTANCE_EXPONENT = 0.71;
+
+/**
+ * The scatter in ln radius that one sigma of ground motion implies:
+ * σ_lnY over the distance exponent, 0.60 / 0.71 ≈ 0.85.
+ *
+ * A ceiling rather than a target. A footprint is an area, and over an
+ * area the within-event part of the scatter partly averages out,
+ * while the between-event part moves the whole footprint at once.
+ * That part alone implies {@link BETWEEN_EVENT_RADIUS_SCATTER} ≈ 0.49.
+ * A model scattering between the two cannot be told apart from the
+ * ground; one scattering above the ceiling can.
+ */
+export const EXPECTED_RADIUS_SCATTER =
+  EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma / PGA_DISTANCE_EXPONENT;
+
+/** The between-event part alone: τ = 0.348 for PGA at M ≥ 5.5
+ *  (Boore et al. 2014), over the same decay. */
+export const BETWEEN_EVENT_RADIUS_SCATTER = 0.348 / PGA_DISTANCE_EXPONENT;
 
 /**
  * What a median model can honestly be held to across the events: being

@@ -112,6 +112,16 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The scatter of ground motion is the one Boore et al. give.** The
+  toll bands and the earthquake Monte Carlo drew the ground-motion
+  residual at σ_lnY = 0.50, cited to Boore et al. 2014 with a
+  between-event 0.397 and a within-event 0.308 that are not in the
+  paper. Its coefficients for PGA at M ≥ 5.5 are 0.348 and 0.495, a
+  total of 0.60, and that is what is drawn now. The bands widen —
+  Northridge 5–180 to 4–238, Gorkha 22–4 924 to 13–6 942 — and no
+  verdict changes. The footprint check's reference moves from 0.70 to
+  0.85, shown as the ceiling it is beside the 0.49 the between-event
+  part alone implies, and its test loses the 0.25 allowance it carried.
 - **Vaiont's wave is the one its source gives.** The confined-basin
   amplification was 3, tuned so the Vaiont preset reached a 250 m wave
   that Genevois & Ghirotti 2005 do not give — their 250 m is the

@@ -157,7 +157,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     cause: 'buildingStock',
     gated: false,
     caveat:
-      'Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter is 0 to 114 and the record is outside it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village".',
+      'Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter is 0 to 175 and the record is outside it (it was 0 to 114 until 14 September, when the ground-motion residual went from a misquoted 0.50 to the 0.60 Boore et al. 2014 give; the verdict did not change). Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village".',
   },
   {
     name: 'Gorkha (Nepal) 2015',
@@ -169,7 +169,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     cause: 'buildingStock',
     gated: false,
     caveat:
-      "Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428 and the predictive interval is 22 to 4 924, which does not contain 8 964. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. The band is now narrow enough for the miss to be a statement.",
+      "Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428 and the predictive interval is 13 to 6 942 (22 to 4 924 before the ground-motion residual was corrected to 0.60 on 14 September), which does not contain 8 964. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. The band is now narrow enough for the miss to be a statement.",
   },
   {
     name: 'Beirut 2020',
@@ -408,7 +408,7 @@ export function compareWithRecord(event: RecordedEvent): TollComparison {
   // What a band should be is the spread the published input scatter
   // actually produces: the magnitude an agency reports, the depth a
   // catalogue gives, the ground underneath, and above all the
-  // ground-motion residual of σ_lnY ≈ 0.50 about the median. Sampled,
+  // ground-motion residual of σ_lnY ≈ 0.60 about the median. Sampled,
   // the fifth and ninety-fifth percentiles are a claim that can be
   // wrong.
   const sampled = sampleToll(event);

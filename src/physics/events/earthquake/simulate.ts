@@ -99,7 +99,7 @@ export interface EarthquakeScenarioInput {
    *  value, and propagated consistently to the epicentral MMI and to
    *  the MMI-contour / liquefaction radii (which move outward for a
    *  positive residual). This is the hook the Monte-Carlo wrapper uses
-   *  to sample the GMPE's intrinsic σ_lnY ≈ 0.50 scatter
+   *  to sample the GMPE's intrinsic σ_lnY ≈ 0.60 scatter
    *  ({@link EARTHQUAKE_INPUT_SIGMA.groundMotion}); the deterministic
    *  pipeline leaves it at 0, so the median scenario is unchanged. */
   groundMotionResidualLn?: number;

@@ -1390,7 +1390,7 @@
       "waves": "onde misurate che cadono dentro la cifra del modello",
       "wavesGlobe": "ma il globo ne disegna {{count}} fuori",
       "footprint": "impronta dello scuotimento contro USGS ShakeMap, centrata in raggio",
-      "footprintScatter": "dispersione {{sd}}, contro {{expected}} attesa dal moto del suolo",
+      "footprintScatter": "dispersione {{sd}}, contro un tetto di {{expected}} dal moto del suolo",
       "invented": "fasce di intensità che il modello dipinge dove il terremoto non è mai arrivato",
       "heldOut": "controlli tenuti fuori che contengono il dato",
       "heldOutNote": "vittime {{tollsInside}} su {{tolls}} · onde {{wavesInside}} su {{waves}}; le altre righe sono tarature o fonti in comune",
@@ -1466,11 +1466,11 @@
     },
     "footprint": {
       "title": "Impronta dello scuotimento contro USGS ShakeMap",
-      "body": "Quanta superficie il modello scuote a intensità VII, VIII e IX, contro l'area che lo US Geological Survey ha mappato dopo ogni terremoto. Il modello predice lo scuotimento tipico; un terremoto vero ne è un'estrazione, e una sola deviazione standard del moto del suolo vale già il doppio del raggio. Quindi la prova onesta non è la singola riga ma l'insieme: il modello è centrato, e si disperde non più di quanto faccia il suolo?",
+      "body": "Quanta superficie il modello scuote a intensità VII, VIII e IX, contro l'area che lo US Geological Survey ha mappato dopo ogni terremoto. Il modello predice lo scuotimento tipico; un terremoto vero ne è un'estrazione, e una sola deviazione standard del moto del suolo vale già più del doppio del raggio. Quindi la prova onesta non è la singola riga ma l'insieme: il modello è centrato, e si disperde non più di quanto faccia il suolo?",
       "neither": "nessuno dei due",
       "fromNothing": "dal nulla",
-      "bias": "Centrato a {{ratio}} in raggio — a {{se}} errori standard dal centro esatto, quindi non si può dire che il modello sia sbilanciato. Dispersione {{sd}}, contro la {{expected}} che implica la dispersione pubblicata del moto del suolo.",
-      "biasOff": "Centrato a {{ratio}} in raggio — a {{se}} errori standard dal centro esatto: il modello è sbilanciato. Dispersione {{sd}}, contro la {{expected}} che implica la dispersione pubblicata del moto del suolo.",
+      "bias": "Centrato a {{ratio}} in raggio — a {{se}} errori standard dal centro esatto, quindi non si può dire che il modello sia sbilanciato. Dispersione {{sd}}, contro la {{expected}} che implica la dispersione pubblicata del moto del suolo. È un tetto: su un'area parte della dispersione si media, e la parte che sposta un intero terremoto in blocco ne implica {{between}}.",
+      "biasOff": "Centrato a {{ratio}} in raggio — a {{se}} errori standard dal centro esatto: il modello è sbilanciato. Dispersione {{sd}}, contro la {{expected}} che implica la dispersione pubblicata del moto del suolo. È un tetto: su un'area parte della dispersione si media, e la parte che sposta un intero terremoto in blocco ne implica {{between}}.",
       "invented": "Dipinte a un'intensità che il terremoto non ha mai raggiunto: {{list}}. Un modello da laboratorio non ne ha nessuna; questa lista può solo accorciarsi."
     },
     "interpolation": {

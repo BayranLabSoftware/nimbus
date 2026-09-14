@@ -86,6 +86,10 @@ interface ValidationReportData {
       geometricMeanRadiusRatio: number;
       biasInStandardErrors: number;
       sdLn: number;
+      /** The ceiling one sigma of ground motion implies, in radius. */
+      expectedSdLn: number;
+      /** The between-event part of it alone. */
+      betweenEventSdLn: number;
       inventedBands: string[];
     };
     interpolation: InterpolationRow[];
@@ -118,10 +122,6 @@ const isRole = (r: string | undefined): r is Role =>
   r !== undefined && (ROLES as readonly string[]).includes(r);
 
 const FAMILIES = ['impact', 'explosion', 'earthquake', 'volcano', 'landslide'] as const;
-
-/** Published ground-motion scatter, σ_lnY ≈ 0.5 over an R^(−0.71)
- *  decay, expressed as scatter in radius. */
-const EXPECTED_RADIUS_SCATTER = 0.5 / 0.71;
 
 const ROMAN: Readonly<Record<number, string>> = { 7: 'VII', 8: 'VIII', 9: 'IX' };
 
@@ -248,7 +248,7 @@ export function ValidationPage(): JSX.Element {
             <span className={styles.tileNote}>
               {t('validation.summary.footprintScatter', {
                 sd: dec(footprint.sdLn, 2),
-                expected: dec(EXPECTED_RADIUS_SCATTER, 2),
+                expected: dec(footprint.expectedSdLn, 2),
               })}
             </span>
           </li>
@@ -464,7 +464,8 @@ export function ValidationPage(): JSX.Element {
               ratio: dec(footprint.geometricMeanRadiusRatio, 2),
               se: dec(footprint.biasInStandardErrors, 2),
               sd: dec(footprint.sdLn, 2),
-              expected: dec(EXPECTED_RADIUS_SCATTER, 2),
+              expected: dec(footprint.expectedSdLn, 2),
+              between: dec(footprint.betweenEventSdLn, 2),
             }
           )}
         </p>

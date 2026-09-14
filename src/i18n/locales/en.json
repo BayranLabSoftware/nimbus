@@ -1303,7 +1303,7 @@
       "waves": "measured waves inside the model's figure",
       "wavesGlobe": "but the globe draws {{count}} of them outside",
       "footprint": "shaking footprint against USGS ShakeMap, centred in radius",
-      "footprintScatter": "scatter {{sd}}, against {{expected}} expected from ground motion",
+      "footprintScatter": "scatter {{sd}}, against a ceiling of {{expected}} from ground motion",
       "invented": "intensity bands the model paints where the earthquake never reached them",
       "heldOut": "held-out checks inside their record",
       "heldOutNote": "tolls {{tollsInside}} of {{tolls}} · waves {{wavesInside}} of {{waves}}; the other rows are fits or shared sources",
@@ -1379,11 +1379,11 @@
     },
     "footprint": {
       "title": "Shaking footprint against USGS ShakeMap",
-      "body": "How much ground the model shakes at intensity VII, VIII and IX, against the area the US Geological Survey mapped after each earthquake. The model predicts the typical shaking; a real earthquake is one draw of it, and one standard deviation of ground motion already means twice the radius. So the fair test is not each row but the whole: is the model centred, and does it scatter no more than the ground does?",
+      "body": "How much ground the model shakes at intensity VII, VIII and IX, against the area the US Geological Survey mapped after each earthquake. The model predicts the typical shaking; a real earthquake is one draw of it, and one standard deviation of ground motion already means more than twice the radius. So the fair test is not each row but the whole: is the model centred, and does it scatter no more than the ground does?",
       "neither": "neither reaches it",
       "fromNothing": "from nothing",
-      "bias": "Centred at {{ratio}} in radius — {{se}} standard errors from exactly centred, so the model cannot be shown to be off-centre. Scatter {{sd}}, against the {{expected}} that published ground-motion scatter implies.",
-      "biasOff": "Centred at {{ratio}} in radius — {{se}} standard errors from exactly centred: the model is off-centre. Scatter {{sd}}, against the {{expected}} that published ground-motion scatter implies.",
+      "bias": "Centred at {{ratio}} in radius — {{se}} standard errors from exactly centred, so the model cannot be shown to be off-centre. Scatter {{sd}}, against the {{expected}} that published ground-motion scatter implies. That is a ceiling: over an area part of the scatter averages out, and the part that moves a whole earthquake at once implies {{between}}.",
+      "biasOff": "Centred at {{ratio}} in radius — {{se}} standard errors from exactly centred: the model is off-centre. Scatter {{sd}}, against the {{expected}} that published ground-motion scatter implies. That is a ceiling: over an area part of the scatter averages out, and the part that moves a whole earthquake at once implies {{between}}.",
       "invented": "Painted at an intensity the earthquake never reached: {{list}}. A laboratory-level model has none; this list can only get shorter."
     },
     "interpolation": {

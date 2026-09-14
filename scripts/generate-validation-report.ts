@@ -49,11 +49,14 @@ import {
   type WaveComparison,
 } from '../src/physics/validation/recordedWaves.js';
 import {
+  BETWEEN_EVENT_RADIUS_SCATTER,
   compareFootprints,
+  EXPECTED_RADIUS_SCATTER,
   footprintBias,
   inventedBands,
   type FootprintRow,
 } from '../src/physics/validation/shakemapFootprint.js';
+import { EARTHQUAKE_INPUT_SIGMA } from '../src/physics/uq/conventions.js';
 import {
   CALIBRATION_ANCHORS,
   CALIBRATION_ROLES,
@@ -420,6 +423,7 @@ function footprintSection(net: CalibrationNet): string {
   );
   const bias = footprintBias(net.footprint);
   const invented = inventedBands(net.footprint);
+  const oneSigmaInRadius = Math.exp(EXPECTED_RADIUS_SCATTER);
   return [
     'How much ground the model shakes at MMI VII, VIII and IX, against the',
     'area the USGS ShakeMap recorded (`pnpm shakemap:build`). Area, not shape:',
@@ -431,14 +435,14 @@ function footprintSection(net: CalibrationNet): string {
     ...rows,
     '',
     'The model predicts the median ground motion and a ShakeMap records one',
-    'realisation of it; one sigma of ground motion (σ_lnY ≈ 0.5 over an',
-    'R^(−0.71) decay) is a factor of two in radius and four in area before',
-    'anything is wrong. What a median can honestly be held to is being centred',
-    'and scattering like the ground:',
+    `realisation of it; one sigma of ground motion (σ_lnY ≈ ${EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma.toFixed(2)}, Boore et al. 2014`,
+    `at M ≥ 5.5, over an R^(−0.71) decay) is a factor of ${oneSigmaInRadius.toFixed(1)} in radius and`,
+    `${(oneSigmaInRadius ** 2).toFixed(1)} in area before anything is wrong. What a median can honestly be`,
+    'held to is being centred and scattering no more than the ground:',
     '',
     `- Bands both reach: **${bias.bands.toString()}**`,
     `- Geometric-mean radius ratio: **${bias.geometricMeanRadiusRatio.toFixed(2)}**, ${bias.biasInStandardErrors.toFixed(2)} standard errors from centred`,
-    `- Scatter σ_ln of the radius ratio: **${bias.sdLn.toFixed(2)}**, against the 0.70 the published ground-motion sigma implies`,
+    `- Scatter σ_ln of the radius ratio: **${bias.sdLn.toFixed(2)}**, against the ${EXPECTED_RADIUS_SCATTER.toFixed(2)} the published ground-motion sigma implies. That is a ceiling, not a match: over an area the within-event part of the scatter partly averages out, and the between-event part alone implies ${BETWEEN_EVENT_RADIUS_SCATTER.toFixed(2)}.`,
     '',
     invented.length === 0
       ? 'No band is painted at an intensity its event never reached.'
@@ -659,7 +663,7 @@ function summary(net: CalibrationNet, replay: AggregateBucket, golden: Aggregate
   return bullet([
     `**Death tolls:** ${tollContains.length.toString()} of ${net.tolls.length.toString()} events inside the model's band; ${tollGated.filter((t) => t.contains).length.toString()} of ${tollGated.length.toString()} gated rows pass. Every miss carries its cause below.`,
     `**Waves:** ${waveContains.length.toString()} of ${net.waves.length.toString()} records inside the model's figure, which is the figure the globe draws wherever the table prints no second one${net.waves.some((w) => w.globeContains === false) ? `; the globe misses ${net.waves.filter((w) => w.globeContains === false).length.toString()} of the records the model contains` : ''}.${waveMissSummary(net.waves)}`,
-    `**Shaking footprint:** centred at ${bias.geometricMeanRadiusRatio.toFixed(2)} in radius (${bias.biasInStandardErrors.toFixed(2)} standard errors), scatter σ_ln ${bias.sdLn.toFixed(2)} against 0.70 expected; ${invented.length.toString()} bands painted at an intensity never reached.`,
+    `**Shaking footprint:** centred at ${bias.geometricMeanRadiusRatio.toFixed(2)} in radius (${bias.biasInStandardErrors.toFixed(2)} standard errors), scatter σ_ln ${bias.sdLn.toFixed(2)} against a ceiling of ${EXPECTED_RADIUS_SCATTER.toFixed(2)} from ground motion; ${invented.length.toString()} bands painted at an intensity never reached.`,
     `**Held out** — the rows nothing in the model was set on: death tolls ${heldTolls.inside.toString()} of ${heldTolls.total.toString()} inside the band, waves ${heldWaves.inside.toString()} of ${heldWaves.total.toString()}.${zerosNote(held)} The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".`,
     `**Replay fixtures:** ${replay.passed.toString()} of ${replay.total.toString()} pass. **Golden dataset:** ${golden.passed.toString()} of ${golden.total.toString()} pass.`,
   ]);
@@ -847,6 +851,8 @@ otherwise.
         geometricMeanRadiusRatio: fixed(bias.geometricMeanRadiusRatio, 3),
         biasInStandardErrors: fixed(bias.biasInStandardErrors, 3),
         sdLn: fixed(bias.sdLn, 3),
+        expectedSdLn: fixed(EXPECTED_RADIUS_SCATTER, 3),
+        betweenEventSdLn: fixed(BETWEEN_EVENT_RADIUS_SCATTER, 3),
         inventedBands: inventedBands(net.footprint),
       },
       interpolation: net.interpolation.map((c) => ({

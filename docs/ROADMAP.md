@@ -298,6 +298,11 @@ What the reading fixed in the model:
   and Ivy Mike. Beirut's toll, already four times the record, rose to
   6.6× with the larger rings: what remains is the population raster and
   the conventional mortality bands, which were not refitted.
+- **The scatter of ground motion.** σ_lnY was 0.50, cited to Boore et
+  al. 2014 with a τ and a φ the paper does not give; its PGA
+  coefficients give 0.60 at M ≥ 5.5. The toll bands widen and no
+  verdict changes; the footprint check's reference becomes a ceiling of
+  0.85, with the 0.49 of the between-event part beside it.
 
 What it found and did not change — the gaps a paper has to state, and
 the candidates for re-tuning:
@@ -373,8 +378,12 @@ of magnitude to under two, and still contains the record.
 Two rows stopped passing when it narrowed: Amatrice (299 against
 0 – 111) and Gorkha (8 964 against 22 – 4 924), both now declared
 misses with the cause filed rather than gates that could not fail. A
-new gate keeps the span under two and a half orders of magnitude so
+new gate keeps the span under three and a half orders of magnitude so
 the absolution cannot return.
+
+_14 September:_ the 0.50 was misquoted; Boore et al. 2014 give 0.60
+for PGA at M ≥ 5.5, and that is drawn now (move 0b). Northridge's band
+is 4 – 238, Gorkha's 13 – 6 942, and no verdict changed.
 
 **Then the rest of the net, and the product.** The four Monte-Carlo
 samplers the uncertainty page already used now serve the band as well
