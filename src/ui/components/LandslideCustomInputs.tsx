@@ -14,7 +14,7 @@ import {
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { cx } from '../utils/cx.js';
-import { formatInteger } from '../utils/numberFormat.js';
+import { formatDecimal, formatInteger } from '../utils/numberFormat.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
 import { FieldFeedback } from './FieldFeedback.js';
 import { fromScientific, isMantissa, splitScientific } from './typedNumber.js';
@@ -321,7 +321,7 @@ export function LandslideCustomInputs(): JSX.Element {
         <div className={styles.paramField}>
           <label className={styles.paramLabel} htmlFor="landslide-factor">
             {t('simulator.landslide.factorInput', {
-              default: DEFAULT_CONFINEMENT_DYNAMIC_FACTOR,
+              default: formatDecimal(DEFAULT_CONFINEMENT_DYNAMIC_FACTOR, 1),
             })}
           </label>
           <DraftNumberInput

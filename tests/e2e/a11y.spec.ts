@@ -69,7 +69,7 @@ test.describe('accessibility', () => {
     // Vaiont has a confined basin, so the amplification field is there too.
     await page.goto('/?lng=en&t=landslide&p=VAIONT_1963&m=globe');
     await expect(page.getByRole('complementary', { name: 'Simulator controls' })).toBeVisible();
-    await expect(page.getByLabel('Amplification (empty = 3)')).toBeAttached();
+    await expect(page.getByLabel(/^Amplification \(empty = /)).toBeAttached();
     await auditPage(page);
   });
 

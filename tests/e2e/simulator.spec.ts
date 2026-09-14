@@ -391,7 +391,9 @@ test.describe('simulator flow', () => {
 
     await expect(page.getByRole('radio', { name: 'Above the water' })).toBeChecked();
     const basin = page.getByLabel('Confined basin surface (km², optional)');
-    const amplification = page.getByLabel('Amplification (empty = 3)');
+    // The default in the label is a calibration (1.8 since 14 September,
+    // 3 before); the test is about the field, not the number.
+    const amplification = page.getByLabel(/^Amplification \(empty = /);
     await expect(basin).toHaveValue('3');
     await expect(amplification).toHaveValue('');
 
