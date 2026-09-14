@@ -7,6 +7,13 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **A custom explosion can be shared by link.** Yield, height or depth
+  of burst, ground type, wind and charge type travel in short keys
+  (`y`, `h` — negative for a depth under the water — `gt`, `ws`, `wdir`,
+  `ct`), and opening the link rebuilds the same input the sender had,
+  down to the seed of its predictive band. Custom earthquakes, volcanoes
+  and landslides are still not in the link.
+
 - **An explosion can be placed under the water.** The panel offers "in
   the air or on the surface" or "under the water" with a depth, and the
   result says where the burst was. Within the water — over open water,
@@ -49,6 +56,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   reaches the page through the depth of burst below.
 
 ### Fixed
+
+- **Wind and charge type were thrown away by the explosion validator.**
+  It copied only six fields into its output and the store keeps the
+  output, so the wind set in the panel never reached the thermal ring —
+  the direction slider sprang back — and editing anything on Beirut,
+  Halifax or Texas City dropped the charge type, turning a chemical
+  explosion into a nuclear one with a flash and fires. The validator now
+  checks and keeps the charge type, the distance to the shore and the
+  wind.
 
 - **Crossroads Baker was being checked against the wrong quantity, on a
   law the globe does not draw.** The wave harness spread an underwater

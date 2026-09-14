@@ -296,6 +296,10 @@ interface ExplosionRawInput {
   meanOceanDepth?: unknown;
   groundType?: unknown;
   coastalBeachSlopeRad?: unknown;
+  chargeType?: unknown;
+  shoreDistance?: unknown;
+  windSpeed?: unknown;
+  windDirectionDeg?: unknown;
 }
 
 const VALID_GROUND_TYPES = ['DRY_SOIL', 'WET_SOIL', 'FIRM_GROUND', 'HARD_ROCK'] as const;
@@ -441,6 +445,71 @@ export function validateExplosionInput(
       });
     }
     out.coastalBeachSlopeRad = raw.coastalBeachSlopeRad;
+  }
+
+  // The four fields below were not in this validator until 14 September
+  // 2026, and a field the validator does not copy into its output is a
+  // field the store throws away: the panel's wind never reached the
+  // thermal ring, and editing anything on Beirut, Halifax or Texas City
+  // made the charge nuclear.
+  if (raw.chargeType !== undefined) {
+    if (raw.chargeType !== 'nuclear' && raw.chargeType !== 'chemical') {
+      errors.push({
+        field: 'chargeType',
+        code: 'OUT_OF_DOMAIN',
+        message: `chargeType must be nuclear or chemical (got ${JSON.stringify(raw.chargeType)})`,
+        rawValue: raw.chargeType,
+      });
+      return invalid(errors);
+    }
+    out.chargeType = raw.chargeType;
+  }
+
+  if (raw.shoreDistance !== undefined) {
+    if (!isFiniteNumber(raw.shoreDistance) || raw.shoreDistance < 0) {
+      errors.push({
+        field: 'shoreDistance',
+        code: isFiniteNumber(raw.shoreDistance) ? 'NEGATIVE_FORBIDDEN' : 'NOT_FINITE',
+        message: 'shoreDistance (m) must be finite and non-negative',
+        rawValue: raw.shoreDistance,
+      });
+      return invalid(errors);
+    }
+    out.shoreDistance = m(raw.shoreDistance);
+  }
+
+  if (raw.windSpeed !== undefined) {
+    if (!isFiniteNumber(raw.windSpeed) || raw.windSpeed < 0) {
+      errors.push({
+        field: 'windSpeed',
+        code: isFiniteNumber(raw.windSpeed) ? 'NEGATIVE_FORBIDDEN' : 'NOT_FINITE',
+        message: 'windSpeed (m/s) must be finite and non-negative',
+        rawValue: raw.windSpeed,
+      });
+      return invalid(errors);
+    }
+    if (raw.windSpeed > 120) {
+      warnings.push({
+        field: 'windSpeed',
+        code: 'PHYS_SUSPICIOUS_HIGH',
+        message: `windSpeed ${raw.windSpeed.toString()} m/s is above the strongest gust on record (113 m/s)`,
+        rawValue: raw.windSpeed,
+      });
+    }
+    out.windSpeed = mps(raw.windSpeed);
+  }
+
+  if (raw.windDirectionDeg !== undefined) {
+    if (!isFiniteNumber(raw.windDirectionDeg)) {
+      errors.push({
+        field: 'windDirectionDeg',
+        code: 'NOT_FINITE',
+        message: 'windDirectionDeg must be a finite number',
+        rawValue: raw.windDirectionDeg,
+      });
+      return invalid(errors);
+    }
+    out.windDirectionDeg = normalizeAzimuthDeg(raw.windDirectionDeg, 'windDirectionDeg', warnings);
   }
 
   return withWarnings(out, warnings);

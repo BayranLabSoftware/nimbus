@@ -297,6 +297,9 @@ export interface ExplosionInputOverrides {
   windSpeed?: number;
   /** Compass azimuth (° clockwise from N) the wind is blowing TOWARD. */
   windDirectionDeg?: number;
+  /** Nuclear or chemical. Not a panel field: a custom burst keeps its
+   *  preset's, and a shared link carries it. */
+  chargeType?: ExplosionScenarioInput['chargeType'];
 }
 
 /** UI-facing overrides for the earthquake scenario. */
@@ -2227,6 +2230,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       if (overrides.windSpeed !== undefined) merged.windSpeed = mps(overrides.windSpeed);
       if (overrides.windDirectionDeg !== undefined)
         merged.windDirectionDeg = overrides.windDirectionDeg;
+      if (overrides.chargeType !== undefined) merged.chargeType = overrides.chargeType;
 
       const classification = classifyStoreInput('explosion', merged);
       if (!classification.ok) return state;

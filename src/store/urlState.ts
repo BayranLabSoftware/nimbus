@@ -35,7 +35,21 @@ export const URL_KEYS = {
   gravity: 'g',
   waterDepth: 'wd',
   meanOceanDepth: 'od',
+  // explosion CUSTOM overrides
+  yieldMegatons: 'y',
+  // Signed: a negative height is a depth below the water surface.
+  heightOfBurst: 'h',
+  groundType: 'gt',
+  windSpeed: 'ws',
+  windDirectionDeg: 'wdir',
+  chargeType: 'ct',
 } as const;
+
+const EXPLOSION_GROUND_TYPES = ['HARD_ROCK', 'FIRM_GROUND', 'DRY_SOIL', 'WET_SOIL'] as const;
+type ExplosionGroundTypeParam = (typeof EXPLOSION_GROUND_TYPES)[number];
+
+/** The deepest a burst can be placed: the schema refuses more. */
+const MAX_BURST_DEPTH_M = 11_000;
 
 type SyncableState = Pick<
   AppStore,
@@ -88,9 +102,9 @@ function trim(n: number, digits: number): string {
 
 /**
  * Serialise the shareable slice of the app state into URL search
- * params. Location, non-landing view mode, and CUSTOM impact inputs
- * are only included when they differ from defaults, so the baseline
- * "land on the page and pick a preset" URL stays short.
+ * params. Location, non-landing view mode, and CUSTOM impact and
+ * explosion inputs are only included when they differ from defaults,
+ * so the baseline "land on the page and pick a preset" URL stays short.
  */
 export function encodeStateToSearchParams(state: SyncableState): URLSearchParams {
   const params = new URLSearchParams();
@@ -118,6 +132,23 @@ export function encodeStateToSearchParams(state: SyncableState): URLSearchParams
     }
   } else if (state.eventType === 'explosion') {
     params.set(URL_KEYS.preset, state.explosion.preset);
+    if (state.explosion.preset === 'CUSTOM') {
+      // Every field the panel can change, and the charge type a custom
+      // burst keeps from its preset. Only what the input carries: a
+      // recipient's store then rebuilds the same object, down to the
+      // seed of its predictive band.
+      const input = state.explosion.input;
+      params.set(URL_KEYS.yieldMegatons, trim(input.yieldMegatons, 7));
+      if (input.heightOfBurst !== undefined) {
+        params.set(URL_KEYS.heightOfBurst, trim(input.heightOfBurst, 1));
+      }
+      if (input.groundType !== undefined) params.set(URL_KEYS.groundType, input.groundType);
+      if (input.windSpeed !== undefined) params.set(URL_KEYS.windSpeed, trim(input.windSpeed, 1));
+      if (input.windDirectionDeg !== undefined) {
+        params.set(URL_KEYS.windDirectionDeg, trim(input.windDirectionDeg, 1));
+      }
+      if (input.chargeType !== undefined) params.set(URL_KEYS.chargeType, input.chargeType);
+    }
   } else if (state.eventType === 'earthquake') {
     params.set(URL_KEYS.preset, state.earthquake.preset);
   } else if (state.eventType === 'volcano') {
@@ -169,6 +200,16 @@ export interface DecodedStateIntent {
     waterDepth?: number;
     meanOceanDepth?: number;
   } | null;
+  /** Only filled when the explosion preset is 'CUSTOM' and at least one
+   *  override parsed. */
+  explosionCustomInput: {
+    yieldMegatons?: number;
+    heightOfBurst?: number;
+    groundType?: ExplosionGroundTypeParam;
+    windSpeed?: number;
+    windDirectionDeg?: number;
+    chargeType?: 'nuclear' | 'chemical';
+  } | null;
 }
 
 function looksLikeCustomPreset(preset: string): boolean {
@@ -177,7 +218,7 @@ function looksLikeCustomPreset(preset: string): boolean {
 
 function presetBelongsTo(preset: string, table: EventType): boolean {
   if (table === 'impact') return preset in IMPACT_PRESETS || looksLikeCustomPreset(preset);
-  if (table === 'explosion') return preset in EXPLOSION_PRESETS;
+  if (table === 'explosion') return preset in EXPLOSION_PRESETS || looksLikeCustomPreset(preset);
   if (table === 'earthquake') return preset in EARTHQUAKE_PRESETS;
   if (table === 'volcano') return preset in VOLCANO_PRESETS;
   return preset in LANDSLIDE_PRESETS;
@@ -240,7 +281,26 @@ export function decodeSearchParamsToIntent(search: URLSearchParams): DecodedStat
     impactCustomInput = Object.keys(custom).length > 0 ? custom : null;
   }
 
-  return { eventType, preset, location, mode, simTime, impactCustomInput };
+  let explosionCustomInput: DecodedStateIntent['explosionCustomInput'] = null;
+  if (eventType === 'explosion' && preset === 'CUSTOM') {
+    const custom: NonNullable<DecodedStateIntent['explosionCustomInput']> = {};
+    const y = numberParam(search, URL_KEYS.yieldMegatons);
+    if (y !== null && y > 0) custom.yieldMegatons = y;
+    const h = numberParam(search, URL_KEYS.heightOfBurst);
+    if (h !== null && h >= -MAX_BURST_DEPTH_M) custom.heightOfBurst = h;
+    const gt = search.get(URL_KEYS.groundType);
+    const ground = EXPLOSION_GROUND_TYPES.find((g) => g === gt);
+    if (ground !== undefined) custom.groundType = ground;
+    const ws = numberParam(search, URL_KEYS.windSpeed);
+    if (ws !== null && ws >= 0) custom.windSpeed = ws;
+    const wdir = numberParam(search, URL_KEYS.windDirectionDeg);
+    if (wdir !== null) custom.windDirectionDeg = wdir;
+    const ct = search.get(URL_KEYS.chargeType);
+    if (ct === 'nuclear' || ct === 'chemical') custom.chargeType = ct;
+    explosionCustomInput = Object.keys(custom).length > 0 ? custom : null;
+  }
+
+  return { eventType, preset, location, mode, simTime, impactCustomInput, explosionCustomInput };
 }
 
 /**
@@ -260,6 +320,7 @@ export function decodeUrl(url: string, base = 'http://localhost/'): DecodedState
       mode: null,
       simTime: null,
       impactCustomInput: null,
+      explosionCustomInput: null,
     };
   }
 }
@@ -280,6 +341,10 @@ export function applyIntentToStore(intent: DecodedStateIntent, store: AppStore):
 
   if (intent.impactCustomInput !== null) {
     store.setImpactInput(intent.impactCustomInput);
+  }
+
+  if (intent.explosionCustomInput !== null) {
+    store.setExplosionInput(intent.explosionCustomInput);
   }
 
   if (intent.location !== null) {

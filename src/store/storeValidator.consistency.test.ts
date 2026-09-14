@@ -72,6 +72,21 @@ describe('Store-setter ↔ schema-validator consistency', () => {
     expect(after).toEqual(before);
   });
 
+  it('a custom edit keeps what the preset carried and the wind the panel set', () => {
+    // Until 14 September 2026 the explosion validator copied six fields
+    // and the store kept only those: editing Beirut made it nuclear, and
+    // the wind slider sprang back because its value never arrived.
+    useAppStore.getState().selectPreset('BEIRUT_2020');
+    useAppStore.getState().setExplosionInput({ windSpeed: 20, windDirectionDeg: 45 });
+    const stored = useAppStore.getState().explosion.input;
+    expect(stored.chargeType).toBe('chemical');
+    expect(stored.windSpeed as number | undefined).toBe(20);
+    expect(stored.windDirectionDeg).toBe(45);
+    useAppStore.getState().setExplosionInput({ yieldMegatons: 0.001 });
+    expect(useAppStore.getState().explosion.input.chargeType).toBe('chemical');
+    expect(useAppStore.getState().explosion.input.windSpeed as number | undefined).toBe(20);
+  });
+
   it('INVALID input (zero yield): state is unchanged', () => {
     const before = useAppStore.getState().explosion.input;
     useAppStore.getState().setExplosionInput({ yieldMegatons: 0 });
@@ -162,6 +177,19 @@ describe('Store-setter ↔ schema-validator consistency', () => {
       type: 'explosion',
       buildMerged: () => ({ ...useAppStore.getState().explosion.input, yieldMegatons: -1 }),
       expectStateChanged: false,
+    },
+    {
+      label: 'explosion | valid (wind, which the validator used to throw away)',
+      apply: () =>
+        useAppStore.getState().setExplosionInput({ windSpeed: 15, windDirectionDeg: 200 }),
+      read: () => useAppStore.getState().explosion.input,
+      type: 'explosion',
+      buildMerged: () => ({
+        ...useAppStore.getState().explosion.input,
+        windSpeed: 15,
+        windDirectionDeg: 200,
+      }),
+      expectStateChanged: true,
     },
     {
       label: 'explosion | valid (a depth of burst, under the water)',

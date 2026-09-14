@@ -434,9 +434,19 @@ same day, except where marked)_:
   Glasstone's waves, loses its flash, fires and initial radiation
   (§2.64) and its air blast reach shortens by e^(−ρ·λ_d/126) (§6.81,
   §6.53); below the sea floor or under land it is drawn as a surface
-  burst and says it is not modelled. Still open: explosion custom inputs
-  — the depth among them — are not in the shareable URL, as none of
-  them ever were.
+  burst and says it is not modelled. A custom explosion — yield, height
+  or depth, ground, wind, charge type — went into the shareable link the
+  same night (`y`, `h`, `gt`, `ws`, `wdir`, `ct`), and a recipient's store
+  rebuilds the identical input object, which is what seeds the
+  predictive band. **Still open:** custom earthquakes, volcanoes and
+  landslides are not in the link; only impacts and explosions are.
+- **Found on the way, and fixed: the explosion validator threw fields
+  away.** It copied six fields into its output and the store keeps the
+  output, so the panel's wind never reached the thermal ring — the
+  slider sprang back — and editing anything on Beirut, Halifax or Texas
+  City dropped `chargeType` and turned a chemical blast nuclear, flash
+  and fires included. It now validates and keeps the charge type, the
+  distance to the shore and the wind.
 - **The globe started a burst's wave from the 4 km default basin depth,
   not the water it was fired in.** **Closed for explosions**, which now
   hand the veil the depth at the burst. **Open for impacts**, which still

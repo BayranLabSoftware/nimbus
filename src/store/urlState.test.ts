@@ -135,6 +135,7 @@ describe('applyIntentToStore', () => {
         mode: 'globe',
         simTime: null,
         impactCustomInput: null,
+        explosionCustomInput: null,
       },
       useAppStore.getState()
     );
@@ -154,6 +155,7 @@ describe('applyIntentToStore', () => {
         mode: null,
         simTime: null,
         impactCustomInput: { impactorDiameter: 250 },
+        explosionCustomInput: null,
       },
       useAppStore.getState()
     );
@@ -178,6 +180,83 @@ describe('round trip: store → encode → decode → apply', () => {
     expect(s.volcano.preset).toBe('TAMBORA_1815');
     expect(s.location).toEqual({ latitude: -8.25, longitude: 118 });
     expect(s.mode).toBe('globe');
+  });
+});
+
+describe('custom explosion inputs in the URL', () => {
+  it('writes every field a custom burst carries, the depth of burst as a negative height', () => {
+    useAppStore.getState().selectPreset('ONE_MEGATON');
+    useAppStore.getState().setExplosionInput({
+      yieldMegatons: 2.5,
+      heightOfBurst: -40,
+      windSpeed: 12,
+      windDirectionDeg: 270,
+    });
+    const p = encodeStateToSearchParams(projectSyncableState(useAppStore.getState()));
+    expect(p.get(URL_KEYS.eventType)).toBe('explosion');
+    expect(p.get(URL_KEYS.preset)).toBe('CUSTOM');
+    expect(p.get(URL_KEYS.yieldMegatons)).toBe('2.5');
+    expect(p.get(URL_KEYS.heightOfBurst)).toBe('-40');
+    expect(p.get(URL_KEYS.groundType)).toBe('FIRM_GROUND');
+    expect(p.get(URL_KEYS.windSpeed)).toBe('12');
+    expect(p.get(URL_KEYS.windDirectionDeg)).toBe('270');
+    expect(p.get(URL_KEYS.chargeType)).toBeNull();
+  });
+
+  it('writes nothing custom for a named preset', () => {
+    useAppStore.getState().selectPreset('HIROSHIMA_1945');
+    const p = encodeStateToSearchParams(projectSyncableState(useAppStore.getState()));
+    expect(p.get(URL_KEYS.preset)).toBe('HIROSHIMA_1945');
+    expect(p.get(URL_KEYS.yieldMegatons)).toBeNull();
+    expect(p.get(URL_KEYS.heightOfBurst)).toBeNull();
+  });
+
+  it('reads them back, and drops what no burst could be', () => {
+    const intent = decodeSearchParamsToIntent(
+      new URLSearchParams('t=explosion&p=CUSTOM&y=0.02&h=-27&gt=WET_SOIL&ws=5&wdir=90&ct=chemical')
+    );
+    expect(intent.preset).toBe('CUSTOM');
+    expect(intent.explosionCustomInput).toEqual({
+      yieldMegatons: 0.02,
+      heightOfBurst: -27,
+      groundType: 'WET_SOIL',
+      windSpeed: 5,
+      windDirectionDeg: 90,
+      chargeType: 'chemical',
+    });
+    const nonsense = decodeSearchParamsToIntent(
+      new URLSearchParams('t=explosion&p=CUSTOM&y=-1&h=-20000&gt=MUD&ws=-3&ct=antimatter')
+    );
+    expect(nonsense.explosionCustomInput).toBeNull();
+    // A named preset keeps its own inputs, whatever the link adds.
+    expect(
+      decodeSearchParamsToIntent(new URLSearchParams('t=explosion&p=HIROSHIMA_1945&y=50'))
+        .explosionCustomInput
+    ).toBeNull();
+  });
+
+  it('rebuilds the same input object a sender had, charge type and all', () => {
+    // A custom burst derived from Beirut: chemical, placed under the
+    // water, with wind. The recipient's store has to end up with the
+    // identical object, because the predictive band is seeded on it.
+    useAppStore.getState().selectPreset('BEIRUT_2020');
+    useAppStore.getState().setExplosionInput({
+      yieldMegatons: 0.001,
+      heightOfBurst: -5,
+      windSpeed: 8,
+      windDirectionDeg: 45,
+    });
+    const sent = JSON.stringify(useAppStore.getState().explosion.input);
+    expect(JSON.parse(sent)).toMatchObject({ chargeType: 'chemical', windSpeed: 8 });
+
+    const p = encodeStateToSearchParams(projectSyncableState(useAppStore.getState()));
+    resetAppStore();
+    applyIntentToStore(decodeSearchParamsToIntent(p), useAppStore.getState());
+
+    const s = useAppStore.getState();
+    expect(s.eventType).toBe('explosion');
+    expect(s.explosion.preset).toBe('CUSTOM');
+    expect(JSON.stringify(s.explosion.input)).toBe(sent);
   });
 });
 

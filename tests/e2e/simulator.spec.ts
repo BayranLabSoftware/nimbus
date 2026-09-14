@@ -266,6 +266,19 @@ test.describe('simulator flow', () => {
     await expect(page.getByLabel('Preset')).toHaveValue('NORTHRIDGE_1994');
   });
 
+  test('a shared link rebuilds a custom explosion placed under the water', async ({ page }) => {
+    await page.goto('/?lng=en&t=explosion&p=CUSTOM&y=2.5&h=-40&gt=WET_SOIL&m=globe');
+    await expandSimulatorPanelIfCollapsed(page);
+
+    await expect(page.getByRole('radio', { name: 'Nuclear explosion' })).toBeChecked();
+    await expect(page.getByLabel('Yield (Mt TNT)')).toHaveValue('2.5');
+    await expect(page.getByRole('radio', { name: 'Under the water' })).toBeChecked();
+    await expect(page.getByLabel('Depth below the water surface (m)')).toHaveValue('40');
+    // And the link the page writes back carries them.
+    await expect.poll(() => new URL(page.url()).searchParams.get('h')).toBe('-40');
+    await expect.poll(() => new URL(page.url()).searchParams.get('y')).toBe('2.5');
+  });
+
   test('ring legend mounts in globe mode with the empty-state copy', async ({ page }) => {
     await page.goto('/?lng=en&t=impact&p=CHICXULUB&m=globe');
 
