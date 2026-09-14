@@ -1023,6 +1023,35 @@ VIII, run once when eighty have a map — about a year. Every ring law
 committed before then is a candidate, the law in place stays unless beaten by
 a tenth, and a winner still answers to the dead.
 
+### 4b. The planet is a sphere all the way out
+
+Asked on 14 September 2026 whether the simulator treats the Earth as a
+sphere, and checked in the code. Most of it does: rings, legend and tooltips
+stop at the antipode, πR ≈ 20 015 km; people are counted over spherical caps
+by great-circle distance, and a radius of half the circumference counts the
+whole planet; burns and fires stop at the fireball's horizon; ruptures follow
+great circles; the tsunami's travel times run on a grid that narrows with the
+meridians. The Earth is a sphere of 6 371 km rather than the ellipsoid, which
+is half a per cent at most. What is still flat, in the order to mend it:
+
+- **The count of people in a planetary circle (B-026, to fix).** The
+  longitude window of the cap is ρ / cos φ₀, which is too narrow toward the
+  poles and never opens to every longitude when the cap holds a pole.
+  Measured against an exact count on the sphere, the error is under 0.15 % to
+  4 000 km, and a 7 000 km circle about New York leaves out 183 million people
+  (−12.9 %); 7 000 km about Delhi or Beijing and 9 000 km about Cairo lose 2 to
+  3 %. The exact window is Δλ = asin(sin ρ / cos φ₀), and every longitude when
+  the cap passes a pole.
+- **A far wave spreads on a plane.** `tsunami/spreading.ts` spreads the crest
+  over a ring of 2πr where the sphere has 2πR·sin(r/R): half a per cent at
+  1 500 km, a quarter too small at 10 000 km, and no focusing toward the
+  antipode. To change with the DART rows of the calibration net in view.
+- **A blast wave scales on flat ground.** Right to hundreds of kilometres;
+  for a planetary impact the curvature over thousands is not modelled, only
+  the clamp at the antipode.
+- **The ShakeMap areas the harness compares are πr².** Under a tenth of a per
+  cent at the radii involved; stated so nobody has to find it.
+
 ### 5. Widen the anchors where the model is blind
 
 Volcanoes have two toll rows and Pinatubo is 97× out; Merapi 2010,
