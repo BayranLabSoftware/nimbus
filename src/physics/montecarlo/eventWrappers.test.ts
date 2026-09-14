@@ -4,7 +4,8 @@ import { EXPLOSION_PRESETS } from '../events/explosion/index.js';
 import { VOLCANO_PRESETS } from '../events/volcano/index.js';
 import { IMPACT_PRESETS } from '../simulate.js';
 import { runEarthquakeMonteCarlo } from './earthquakeMonteCarlo.js';
-import { runExplosionMonteCarlo } from './explosionMonteCarlo.js';
+import { m } from '../units.js';
+import { explosionSampler, runExplosionMonteCarlo } from './explosionMonteCarlo.js';
 import { runImpactMonteCarlo } from './impactMonteCarlo.js';
 import { mulberry32 } from './sampling.js';
 import { runVolcanoMonteCarlo } from './volcanoMonteCarlo.js';
@@ -60,6 +61,29 @@ describe('runExplosionMonteCarlo — Hiroshima', () => {
     // comfortably above 100 m and below 5 km.
     expect(band.p50).toBeGreaterThan(100);
     expect(band.p50).toBeLessThan(5_000);
+  });
+});
+
+describe('explosionSampler — a burst stays where it was placed', () => {
+  const draws = (heightOfBurst: number): number[] => {
+    const sample = explosionSampler({ yieldMegatons: 1, heightOfBurst: m(heightOfBurst) });
+    const rng = mulberry32(`placement-${heightOfBurst.toString()}`);
+    return Array.from({ length: 500 }, () => sample(rng).heightOfBurst as number);
+  };
+
+  it('keeps a charge under the water at its depth', () => {
+    expect(new Set(draws(-40))).toEqual(new Set([-40]));
+  });
+
+  it('keeps a charge on the surface on the surface', () => {
+    expect(new Set(draws(0))).toEqual(new Set([0]));
+  });
+
+  it('draws the height of an air burst, and puts a draw below the ground on it', () => {
+    const heights = draws(580);
+    expect(new Set(heights).size).toBeGreaterThan(100);
+    expect(Math.min(...heights)).toBeGreaterThanOrEqual(0);
+    expect(draws(20).some((h) => h === 0)).toBe(true);
   });
 });
 

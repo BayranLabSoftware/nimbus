@@ -134,6 +134,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A burst's Monte Carlo keeps it where it was placed.** The explosion
+  sampler drew every height of burst about its nominal value with
+  σ = 50 m and clamped it at zero. A charge 40 m under the sea came out on
+  the surface in about four draws of five and in the air in the rest,
+  never in the water; a charge on the ground went off up to a hundred
+  metres above it. The 50 m is the reconstruction error of Hiroshima's
+  air-burst height, so only an air burst's height is drawn now, and a
+  burst on the surface or under the water keeps its placement. Beirut's
+  toll band narrows from 1 297–2 433 to 1 296–1 586 against 218 recorded,
+  and the uncertainty panel of any underwater burst finally describes an
+  underwater burst (B-021).
 - **The pages no longer claim more than the validation shows.** The
   methodology page described four regression checks that "every commit"
   runs, with tolerances "not curve-fitted": the tsunami arrival-time

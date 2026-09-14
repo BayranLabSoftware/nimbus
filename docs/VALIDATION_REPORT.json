@@ -89,8 +89,8 @@
         "recordedLow": 218,
         "recordedHigh": 218,
         "model": 1432,
-        "bandLow": 1297,
-        "bandHigh": 2433,
+        "bandLow": 1296,
+        "bandHigh": 1586,
         "ratio": 6.569,
         "contains": false,
         "gated": false,
@@ -529,10 +529,10 @@
       },
       {
         "event": "Beirut 2020",
-        "measuredLow": 1297,
-        "measuredHigh": 2433,
-        "interpolatedLow": 1297,
-        "interpolatedHigh": 2433,
+        "measuredLow": 1296,
+        "measuredHigh": 1586,
+        "interpolatedLow": 1296,
+        "interpolatedHigh": 1586,
         "comparable": true
       },
       {

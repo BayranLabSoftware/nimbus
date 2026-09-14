@@ -374,7 +374,7 @@ interval.
 
 `src/physics/uq/tollBand.ts`. The scenario is drawn 200 times from the
 published input scatter of `uq/conventions.ts` — magnitude σ 0.15 Mw,
-depth 20 %, Vs30 30 %, yield σ_log 0.1, height of burst ±50 m, plume
+depth 20 %, Vs30 30 %, yield σ_log 0.1, height of an air burst ±50 m, plume
 and ejecta σ_log 0.5 and 0.3 — and, for shaking, dominated by the
 ground-motion residual σ_lnY ≈ 0.60 that separates a median prediction
 from one draw of the earth (the total Boore et al. 2014 give for PGA at

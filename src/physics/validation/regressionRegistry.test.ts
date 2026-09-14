@@ -32,6 +32,8 @@ import { m } from '../units.js';
 import { validateScenario } from './inputSchema.js';
 import { safeRunEarthquake } from './safeRun.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
+import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
+import { mulberry32 } from '../montecarlo/sampling.js';
 
 describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () => {
   it('B-001 Krakatau caldera-collapse near-field amplitude', () => {
@@ -276,6 +278,17 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(thermalPartitionForHeight(580, 15)).toBe(0.35);
   });
 
+  it('B-021 The Monte Carlo keeps a burst where it was placed', () => {
+    // Pre-fix: every height of burst drawn N(h, 50 m) and clamped at 0,
+    // so a charge 40 m under the sea surfaced or rose into the air in
+    // every draw, and a surface burst went off up to ~100 m up.
+    const rng = mulberry32('B-021');
+    for (const h of [-40, 0]) {
+      const sample = explosionSampler({ yieldMegatons: 1, heightOfBurst: m(h) });
+      for (let i = 0; i < 200; i++) expect(sample(rng).heightOfBurst as number).toBe(h);
+    }
+  });
+
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
     // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
@@ -309,9 +322,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-020 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
+    // B-001..B-021 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
     // B-007 superseded by B-011).
-    const expectedRows = 20;
-    expect(expectedRows).toBe(20);
+    const expectedRows = 21;
+    expect(expectedRows).toBe(21);
   });
 });

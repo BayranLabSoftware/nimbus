@@ -12,13 +12,17 @@ import { sampleLognormal, sampleNormal, type Rng } from './sampling.js';
  *   yieldMegatons   — design-stated yield ±10 % (Cold War weapons
  *                     tests have ~±10 % actual/design spread, e.g.
  *                     Castle Bravo's 15 Mt came from a 6 Mt design).
- *   heightOfBurst   — normal, σ = 50 m or 5 % whichever is larger
- *                     (Hiroshima's HOB was 580 ± 40 m per Penney
- *                     et al. 1970 reconstruction).
+ *   heightOfBurst   — for an air burst only: normal, σ = 50 m or 5 %
+ *                     whichever is larger (Hiroshima's HOB was
+ *                     580 ± 40 m per Penney et al. 1970
+ *                     reconstruction). A draw below the ground is a
+ *                     burst on the surface.
  *
  * Ground type is NOT sampled — it's a site property, not a random
  * variable, and the project's K coefficients carry no stated scatter
- * to sample.
+ * to sample. Nor is the placement of a burst on the surface or under
+ * the water: a charge in a warehouse does not go off 50 m up, and
+ * nothing publishes the scatter of a placed depth.
  */
 
 const DEFAULT_ITERATIONS = 200;
@@ -55,8 +59,22 @@ export function explosionSampler(
       1e-6
     );
     const hobNominal = nominal.heightOfBurst === undefined ? 0 : (nominal.heightOfBurst as number);
-    const hobSigma = Math.max(EXPLOSION_INPUT_SIGMA.heightOfBurst.sigma, 0.05 * hobNominal);
-    const hob = Math.max(sampleNormal(rng, hobNominal, hobSigma), 0);
+    // Only an air burst's height is drawn. Until 14 September 2026 every
+    // burst was, and clamped at zero: a charge 40 m under the sea came
+    // out on the surface in four draws of five and in the air in the
+    // fifth, never in the water, and a charge on a quay went off up to
+    // a hundred metres above it.
+    const hob =
+      hobNominal > 0
+        ? Math.max(
+            sampleNormal(
+              rng,
+              hobNominal,
+              Math.max(EXPLOSION_INPUT_SIGMA.heightOfBurst.sigma, 0.05 * hobNominal)
+            ),
+            0
+          )
+        : hobNominal;
     // Everything the caller set that is not sampled stays set: a
     // conventional charge stays conventional, a burst beside the sea
     // keeps its shore. Rebuilding the input from scratch used to drop
