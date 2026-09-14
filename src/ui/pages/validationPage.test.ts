@@ -78,7 +78,14 @@ describe('the validation page has words for everything its data can say', () => 
     ]) {
       expectText(`validation.${key}`);
     }
-    for (const gap of ['evacuation', 'farField', 'coastalOffline', 'impactToll', 'outsideCount']) {
+    for (const gap of [
+      'evacuation',
+      'farField',
+      'coastalOffline',
+      'impactToll',
+      'surfaceBurst',
+      'outsideCount',
+    ]) {
       expectText(`validation.gaps.${gap}.item`);
       expectText(`validation.gaps.${gap}.note`);
     }

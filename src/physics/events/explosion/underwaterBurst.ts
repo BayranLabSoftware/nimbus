@@ -1,125 +1,160 @@
-import { SEAWATER_DENSITY, STANDARD_GRAVITY, TNT_SPECIFIC_ENERGY } from '../../constants.js';
+import { STANDARD_GRAVITY, TNT_SPECIFIC_ENERGY } from '../../constants.js';
 import { synolakisRunup } from '../tsunami/extendedEffects.js';
+import { propagationSpeed, wavelengthForPeriod } from '../../tsunami/linearWaves.js';
 import type { Joules, Meters, MetersPerSecond, Seconds } from '../../units.js';
-import { J, m } from '../../units.js';
-import {
-  impactAmplitudeAtDistance,
-  impactCavityRadius,
-  impactSourceAmplitude,
-} from '../tsunami/impact.js';
-import { shallowWaterWaveSpeed, tsunamiTravelTime } from '../tsunami/propagation.js';
+import { m } from '../../units.js';
 
 /**
- * Underwater / contact-water nuclear explosion → tsunami source.
+ * The waves of a nuclear burst in water, as Glasstone & Dolan (1977)
+ * give them.
  *
- * The Ward & Asphaug (2000) cavity-radius formula is energy-based and
- * is applied here to the part of a burst's yield that moves water; the
- * rest leaves as compression heating, gas-bubble pulsation and
- * acoustic radiation.
+ * Until 14 September 2026 this module built the wave the way an impact
+ * builds one — a Ward & Asphaug cavity dug by 8 % of the yield, scaled
+ * by a log-normal curve in the depth of burst — and every one of those
+ * numbers was the project's own, credited to a Glasstone table that
+ * does not exist. Against the book's own relation the source was five
+ * to nine times under in deep water at its chosen optimum depth and
+ * next to nothing at any other. It is now the book's relations, and
+ * nothing else where the book has something to say:
  *
- * What the published record supports, and what it does not. Until
- * 14 September 2026 this header said that Le Méhauté & Wang (1996) and
- * Glasstone & Dolan (1977) §6 put that part at 5–15 %, that the 0.08
- * below reproduces "the Glasstone Table 6.50 ≈ 180 m source amplitude
- * for a 1 Mt optimum-depth burst", and that the optimum scaled depth of
- * 4 m·kt^(−1/3) is Glasstone & Dolan §6.40. Read against the 1977 text,
- * none of the Glasstone claims holds. Chapter 6 has three tables —
- * 6.57, 6.108 and 6.113 — and no source amplitude for any yield, and
- * its §6.40 is about tall buildings in Las Vegas swaying to underground
- * tests. What the book does say about the waves of a burst in water:
+ *   - §6.119 — in deep water the train's peak-to-peak height at range R
+ *     is H ≈ 40 500·W^0.54 / R (feet, kilotons), "to an accuracy of
+ *     about 35 percent", for water from 256·W^0.25 ft (the gas bubble's
+ *     maximum diameter, §2.86) to 850·W^0.25 ft deep, and "for any depth
+ *     of burst within the water". The peak wave has a period
+ *     T ≈ 14.1·W^0.144 s and a length L ≈ 1 010·W^0.288 ft — which is
+ *     the deep-water length of a wave of that period, so the two agree.
+ *   - §6.121 — a burst in shallow water, d_w < 100·W^0.25 ft, "such as
+ *     Bikini BAKER, delivers less energy to the water":
+ *     H ≈ 150·d_w·W^0.25 / R.
+ *   - §6.120 — the period stays the same as the train runs into shoal
+ *     water, and the height changes only once the water is shallower
+ *     than about a third of the wavelength.
+ *   - §6.54 — the first wave near the burst is too steep to be sustained
+ *     and breaks.
  *
- *   - §6.54: the energy of the surface waves "has been estimated to be
- *     between 2 and 5 percent of the weapon yield";
- *   - §6.53: the bubble vents to the air during its first expansion
- *     when the scaled depth is under about 35 ft·kt^(−1/3), ≈ 10.7 m;
- *   - §6.119: in deep water the peak-to-peak height of the train is
- *     H ≈ 40 500·W^0.54 / R (feet, kilotons) to about 35 %, "for any
- *     depth of burst within the water", with a peak wave about
- *     L ≈ 1 010·W^0.288 ft long and T ≈ 14.1·W^0.144 s in period;
- *   - §6.121: a shallow burst such as BAKER delivers less,
- *     H ≈ 150·d_w·W^0.25 / R feet;
- *   - Table 6.57: BAKER's wave heights, crest to trough, at seven ranges.
+ * Where the book is silent the model says what it does, rather than
+ * inventing a number:
  *
- * The 5–15 % credited to Le Méhauté & Wang has not been checked against
- * that book. So the 0.08 and the 4 m·kt^(−1/3) are this project's own
- * numbers, and the depth curve is its own shape. BAKER's table is
- * matched (`validation/recordedWaves.ts`); against §6.119 the source is
- * five to nine times under in deep water at its own optimum depth and
- * next to nothing at other depths. Rebuilding it on §6.119–6.121 is
- * open in docs/ROADMAP.md.
+ *   - **Between the two relations** (100–256·W^0.25 ft of water) the
+ *     product H·R is interpolated geometrically from the shallow
+ *     relation at its limit to the deep one at its own.
+ *   - **Near the burst** the relation is not used inside the radius
+ *     where its height would exceed the steepest wave the water can
+ *     hold, H_max = 0.142·L·tanh(2πh/L) (Miche 1944), or inside the gas
+ *     bubble's maximum radius, whichever is larger; the amplitude is
+ *     held there.
+ *   - **A burst on or above the water, or buried in the seabed,** is not
+ *     a burst within the water, and makes no wave here. The book gives
+ *     no relation for it; the surface shots of the 1950s — Bravo on its
+ *     reef, Mike on its islet — are remembered for their craters rather
+ *     than for waves, but neither was fired on open water.
+ *
+ * A height is from crest to trough and the model propagates amplitudes,
+ * so every amplitude below is half the height. The relation is 1/R and
+ * already contains the train's dispersion; the veil is told so, and
+ * spreads and shoals it on the group velocity of the peak period
+ * (`tsunami/linearWaves.ts`) instead of the long-wave speed.
  *
  * References:
  *   Glasstone, S. & Dolan, P. J. (1977). "The Effects of Nuclear
- *     Weapons" (3rd ed.), §6.53–§6.59 and §6.119–§6.121 (surface
- *     waves), Table 6.57.
- *   Le Méhauté, B. & Wang, S. (1996). "Water Waves Generated by
- *     Underwater Explosion." Advanced Series on Ocean Engineering 10.
- *     World Scientific. ISBN 978-981-02-2083-3.
- *   Ward, S. N. & Asphaug, E. (2000). "Asteroid Impact Tsunami:
- *     A Probabilistic Hazard Assessment." Icarus 145(1), Eq. 3
- *     (re-used here with a coupling correction).
+ *     Weapons" (3rd ed.), §2.63–§2.70, §6.54–§6.59 and §6.119–§6.121,
+ *     Table 6.57. U.S. DoD / DoE.
+ *   Miche, R. (1944). "Mouvements ondulatoires de la mer en profondeur
+ *     constante ou décroissante." Annales des Ponts et Chaussées 114,
+ *     25–78.
+ *   Synolakis, C. E. (1987). "The runup of solitary waves." J. Fluid
+ *     Mech. 185, 523–545.
  */
 
-/** Mechanical coupling fraction at the optimum depth. This project's
- *  number: the "Glasstone Table 6.50" it was said to be tuned on does
- *  not exist, and Glasstone & Dolan §6.54 put the energy of the surface
- *  waves at 2–5 % of the yield. */
-export const EXPLOSION_WATER_COUPLING = 0.08;
+const FOOT_M = 0.3048;
 
-/** Scaled depth at which wave-making peaks, in metres per cube root
- *  of a kilotonne. This project's number. It was cited to Glasstone &
- *  Dolan §6.40, which is about buildings in Las Vegas; the 1977 book
- *  gives no optimum depth for waves, puts venting above about
- *  10.7 m·kt^(−1/3) (§6.53), and gives a deep-water height that does
- *  not depend on the depth of burst at all (§6.119). */
-export const OPTIMUM_SCALED_DEPTH = 4;
+/** §6.119: H·R in deep water, in ft², is this times W^0.54. */
+export const GLASSTONE_DEEP_HEIGHT_RANGE = 40_500;
+export const GLASSTONE_DEEP_YIELD_EXPONENT = 0.54;
+/** §6.121: H·R in shallow water, in ft², is this times d_w·W^0.25. */
+export const GLASSTONE_SHALLOW_HEIGHT_RANGE = 150;
+/** §6.119: the deep relation holds from this water depth, in feet per
+ *  W^0.25 — the maximum diameter of the gas bubble (§2.86) … */
+export const DEEP_WATER_FROM_SCALED_DEPTH = 256;
+/** … to this one. */
+export const DEEP_WATER_TO_SCALED_DEPTH = 850;
+/** §6.121: a shallow burst is one in water shallower than this. */
+export const SHALLOW_WATER_BELOW_SCALED_DEPTH = 100;
+/** §6.119: "an accuracy of about 35 percent" for the deep relation. */
+export const GLASSTONE_DEEP_HEIGHT_ACCURACY = 0.35;
+/** §6.119: the peak wave's period is this many seconds times W^0.144. */
+export const GLASSTONE_PEAK_PERIOD_S = 14.1;
+export const GLASSTONE_PEAK_PERIOD_YIELD_EXPONENT = 0.144;
+/** Miche (1944): the steepest a wave in water of depth h can stand is
+ *  H = 0.142·L·tanh(2πh/L) — 1/7 of its length in deep water, and
+ *  about 0.89 of the depth in shallow water. */
+export const MICHE_LIMITING_STEEPNESS = 0.142;
+
+/** Which of Glasstone & Dolan's relations a burst's water puts it in. */
+export type ExplosionWaveRegime = 'deep' | 'shallow' | 'between';
+
+export interface ExplosionWave {
+  regime: ExplosionWaveRegime;
+  /** H·R (m²): the train's height from crest to trough at range R is
+   *  this divided by R. */
+  heightTimesRangeM2: number;
+  /** Whether the water depth lies where the relation used was stated
+   *  to hold. False between the two relations and in water deeper than
+   *  850·W^0.25 ft, where it is extrapolated. */
+  withinStatedRange: boolean;
+  /** Period of the peak wave (s), §6.119. */
+  peakPeriodS: number;
+  /** Maximum radius of the gas bubble (m): half the 256·W^0.25 ft
+   *  §6.119 gives as its diameter. */
+  bubbleRadiusM: number;
+}
 
 /**
- * Width of the efficiency curve in log-space around that optimum.
- *
- * This is the project's own composition, as the two numbers above it
- * turned out to be as well. The shape is not arbitrary — an efficiency with
- * a single optimum and a fall-off on both sides is log-normal in the
- * scaled depth, and both fall-offs have a mechanism — but the width
- * is chosen, and it is chosen so the curve spans the "shallow
- * underwater" band the sources describe rather than collapsing onto
- * a single depth. Expect the ±50 % scatter this file predicted when
- * it declined to fit the curve at all.
+ * Glasstone & Dolan's wave for a burst of this yield in water of this
+ * depth. Null when either is not a positive number.
  */
-export const COUPLING_LOG_WIDTH = 0.6;
+export function explosionWave(yieldKilotons: number, waterDepthM: number): ExplosionWave | null {
+  if (!(yieldKilotons > 0) || !Number.isFinite(yieldKilotons)) return null;
+  if (!(waterDepthM > 0) || !Number.isFinite(waterDepthM)) return null;
+  const w025 = yieldKilotons ** 0.25;
+  const depthFt = waterDepthM / FOOT_M;
+  const scaledDepth = depthFt / w025;
+  const deep = GLASSTONE_DEEP_HEIGHT_RANGE * yieldKilotons ** GLASSTONE_DEEP_YIELD_EXPONENT;
+  const shallow = (dFt: number): number => GLASSTONE_SHALLOW_HEIGHT_RANGE * dFt * w025;
 
-/**
- * How much of a burst's energy goes into making waves, as a fraction
- * of what an optimally placed one would manage.
- *
- * `scaledDepth` is z/W^(1/3) in m·kt^(−1/3), positive downward. The
- * curve is a log-normal peaked at {@link OPTIMUM_SCALED_DEPTH}, and
- * each side of the peak has its own reason:
- *
- *   Too shallow — the gas globe reaches the surface before it has
- *   finished pushing, opens to the atmosphere, and the energy that
- *   would have lifted water leaves as air shock and spray. At the
- *   surface itself there is nothing left to lift with, which is the
- *   same reason this module has always given an airburst nothing:
- *   the venting is total either way, and the curve simply arrives at
- *   that answer continuously instead of by a gate.
- *
- *   Too deep — the bubble oscillates and decays without ever
- *   breaking through, and the surface barely knows it happened.
- *
- * The record agrees with the shape at the one place it is loud: the
- * famous explosion-generated wave, Crossroads Baker in 1946, came
- * from a charge suspended twenty-seven metres down, while the surface
- * bursts of the same era — Bravo on its reef, Mike on its islet —
- * are remembered for their fireballs and their craters and not for
- * any wave at all.
- */
-export function waveCouplingEfficiency(scaledDepth: number): number {
-  if (!Number.isFinite(scaledDepth) || scaledDepth <= 0) return 0;
-  const ratio = scaledDepth / OPTIMUM_SCALED_DEPTH;
-  const exponent = Math.log(ratio) ** 2 / (2 * COUPLING_LOG_WIDTH * COUPLING_LOG_WIDTH);
-  const efficiency = Math.exp(-exponent);
-  return Number.isFinite(efficiency) ? Math.min(1, Math.max(0, efficiency)) : 0;
+  let regime: ExplosionWaveRegime;
+  let heightRangeFt2: number;
+  let withinStatedRange: boolean;
+  if (scaledDepth >= DEEP_WATER_FROM_SCALED_DEPTH) {
+    regime = 'deep';
+    heightRangeFt2 = deep;
+    withinStatedRange = scaledDepth <= DEEP_WATER_TO_SCALED_DEPTH;
+  } else if (scaledDepth <= SHALLOW_WATER_BELOW_SCALED_DEPTH) {
+    regime = 'shallow';
+    heightRangeFt2 = shallow(depthFt);
+    withinStatedRange = true;
+  } else {
+    // The book's two relations stop at 100 and start at 256; between
+    // them the product is carried geometrically from one to the other,
+    // so neither end jumps.
+    regime = 'between';
+    const from = Math.log(shallow(SHALLOW_WATER_BELOW_SCALED_DEPTH * w025));
+    const to = Math.log(deep);
+    const along =
+      Math.log(scaledDepth / SHALLOW_WATER_BELOW_SCALED_DEPTH) /
+      Math.log(DEEP_WATER_FROM_SCALED_DEPTH / SHALLOW_WATER_BELOW_SCALED_DEPTH);
+    heightRangeFt2 = Math.exp(from + (to - from) * along);
+    withinStatedRange = false;
+  }
+
+  return {
+    regime,
+    heightTimesRangeM2: heightRangeFt2 * FOOT_M * FOOT_M,
+    withinStatedRange,
+    peakPeriodS: GLASSTONE_PEAK_PERIOD_S * yieldKilotons ** GLASSTONE_PEAK_PERIOD_YIELD_EXPONENT,
+    bubbleRadiusM: (DEEP_WATER_FROM_SCALED_DEPTH * w025 * FOOT_M) / 2,
+  };
 }
 
 export interface ExplosionTsunamiInput {
@@ -127,16 +162,14 @@ export interface ExplosionTsunamiInput {
   yieldEnergy: Joules;
   /** Depth of the burst point below the water surface (m), positive
    *  downward. Zero for a burst sitting on the surface and negative
-   *  for one in the air; both couple next to nothing, and the curve
-   *  in {@link waveCouplingEfficiency} says so continuously rather
-   *  than by a threshold. Omitted means the optimum depth, which is
-   *  what this module assumed before the curve existed. */
+   *  for one in the air; neither is a burst within the water, and
+   *  neither makes a wave here. Omitted means somewhere within it. */
   burstDepth?: Meters;
   /** Water depth at the burst site (m). Must be > 0 for a wave to
    *  form; the caller decides the threshold. */
   waterDepth: Meters;
-  /** Mean basin depth used for the shallow-water travel-time
-   *  calculation (m). Defaults to the global ocean mean of 4 km. */
+  /** Mean basin depth the wave crosses (m), for its speed and arrival
+   *  times. Defaults to the global ocean mean of 4 km. */
   meanOceanDepth?: Meters;
   /** Beach slope (rad) for the Synolakis run-up. Defaults to
    *  `atan(1/100)` when omitted; the caller (typically the store)
@@ -146,33 +179,44 @@ export interface ExplosionTsunamiInput {
 }
 
 export interface ExplosionTsunamiResult {
-  /** Equivalent Ward-Asphaug cavity radius after the coupling
-   *  correction (m). */
+  /** Which of Glasstone & Dolan's relations the water puts the burst in. */
+  regime: ExplosionWaveRegime;
+  /** Whether the water depth is inside the range the book states for
+   *  that relation. */
+  withinStatedRange: boolean;
+  /** H·R (m²): the height from crest to trough at range R is this over R. */
+  heightTimesRange: number;
+  /** Water depth at the burst (m): where the wave is made, and the
+   *  depth the globe shoals it from. */
+  waterDepth: Meters;
+  /** Radius inside which the relation is not used (m): where its height
+   *  would exceed the steepest wave the water can hold (Miche 1944), or
+   *  the gas bubble's maximum radius, whichever is larger. The globe
+   *  holds the amplitude flat inside it and draws it as the source. */
   cavityRadius: Meters;
-  /** Initial wave amplitude at the cavity rim (m). */
+  /** Amplitude at that radius (m): half the height the relation gives
+   *  there. */
   sourceAmplitude: Meters;
-  /** Far-field amplitude at 100 km from the burst (m). */
+  /** Amplitude at 100 km (m), half the relation's height there, in
+   *  water like the burst's. */
   amplitudeAt100km: Meters;
-  /** Far-field amplitude at 1 000 km from the burst (m). */
+  /** Amplitude at 1 000 km (m) — far beyond any range the relation was
+   *  measured at, and printed as the relation's extrapolation. */
   amplitudeAt1000km: Meters;
-  /** Travel time from the burst to the 100 km contour (s). */
+  /** Travel time to the 100 km contour (s), at the group velocity of
+   *  the peak wave over the basin. */
   travelTimeTo100km: Seconds;
-  /** Travel time from the burst to the 1 000 km contour (s). */
+  /** Travel time to the 1 000 km contour (s), likewise. */
   travelTimeTo1000km: Seconds;
-  /** Coupling fraction applied — echoed for the report tooltip. */
-  couplingFraction: number;
-  /** Echo of the basin depth used for travel-time. */
+  /** Echo of the basin depth used for speed and travel time. */
   meanOceanDepth: Meters;
-  /** Open-ocean phase speed `c = √(g·h)` of a long gravity wave on
-   *  the basin (Lamb 1932 §170). At the default 4 km mean depth
-   *  this is ≈ 198 m/s ≈ 713 km/h. */
+  /** Speed at which the peak wave's energy crosses the basin (m/s):
+   *  its group velocity at the basin depth. For a megatonne over 4 km
+   *  of ocean that is about 30 m/s, where a long wave would make 198. */
   deepWaterCelerity: MetersPerSecond;
-  /** Source-radiated wavelength (m). For an explosion-driven cavity
-   *  collapse the dominant wavelength is set by the cavity diameter
-   *  (≈ 2 × R_C), the same scaling that holds for impact-driven
-   *  cavities under the Ward & Asphaug 2000 framework. */
+  /** Length of the peak wave (m) in the water it was made in. */
   sourceWavelength: Meters;
-  /** Dominant wave period at the source (s). T = λ / c. */
+  /** Period of the peak wave (s), Glasstone & Dolan §6.119. */
   dominantPeriod: Seconds;
   /** Synolakis (1987) run-up on a 1:100 plane beach with 10 m
    *  offshore depth, using the 100 km amplitude as the incident
@@ -190,53 +234,42 @@ export interface ExplosionTsunamiResult {
 }
 
 /**
- * Compute the explosion-driven tsunami source from a yield and water
- * depth. Returns null when the inputs cannot drive a wave (zero or
- * negative yield, zero water depth).
+ * The wave of a burst within the water. Null when there is none: no
+ * yield, no water, or a burst that is not in the water — on it, above
+ * it, or below its floor.
  */
 export function explosionTsunami(input: ExplosionTsunamiInput): ExplosionTsunamiResult | null {
   const yieldJ = input.yieldEnergy as number;
   const depth = input.waterDepth as number;
   if (!Number.isFinite(yieldJ) || yieldJ <= 0) return null;
   if (!Number.isFinite(depth) || depth <= 0) return null;
+  const burstDepth = input.burstDepth === undefined ? depth / 2 : (input.burstDepth as number);
+  if (!Number.isFinite(burstDepth) || burstDepth <= 0 || burstDepth > depth) return null;
 
-  const meanOceanDepth = input.meanOceanDepth ?? m(4_000);
-  // How well this burst is placed for making waves. A charge hung at
-  // the optimum depth couples the full eight per cent; one resting on
-  // the surface vents almost all of it to the air.
   const kilotons = yieldJ / (TNT_SPECIFIC_ENERGY * 1e6);
-  const scaledDepth =
-    input.burstDepth === undefined
-      ? OPTIMUM_SCALED_DEPTH
-      : (input.burstDepth as number) / Math.max(Math.cbrt(kilotons), 1e-9);
-  const efficiency = waveCouplingEfficiency(scaledDepth);
-  if (efficiency <= 0) return null;
-  const effectiveEnergy = J(yieldJ * EXPLOSION_WATER_COUPLING * efficiency);
-  const cavityRadius = impactCavityRadius({
-    kineticEnergy: effectiveEnergy,
-    waterDensity: SEAWATER_DENSITY,
-    surfaceGravity: STANDARD_GRAVITY,
-  });
-  const sourceAmplitude = impactSourceAmplitude(cavityRadius);
-  const amp100 = impactAmplitudeAtDistance({
-    sourceAmplitude,
-    cavityRadius,
-    distance: m(100_000),
-  });
-  const amp1000 = impactAmplitudeAtDistance({
-    sourceAmplitude,
-    cavityRadius,
-    distance: m(1_000_000),
-  });
+  const wave = explosionWave(kilotons, depth);
+  if (wave === null) return null;
+  const meanOceanDepth = input.meanOceanDepth ?? m(4_000);
+  const heightTimesRange = wave.heightTimesRangeM2;
+  const period = wave.peakPeriodS;
 
-  const celerity = shallowWaterWaveSpeed(meanOceanDepth);
-  const wavelength = m(2 * (cavityRadius as number));
-  const period = (wavelength / Math.max(celerity, 1e-6)) as Seconds;
-  // Use the 100 km contour as the runup anchor for explosions —
-  // amplitudes drop off faster than for impacts (smaller cavities),
-  // so the 100 km headline is more pedagogically useful than a
-  // 1 000 km figure that is often sub-cm. Beach slope: caller-
-  // supplied DEM value when in the [1:1000, 1:3] envelope, else
+  // Near the burst the train is not yet a train. Inside the radius at
+  // which the relation's height would be steeper than the water can
+  // hold, or inside the bubble itself, the amplitude is held.
+  const wavelength = wavelengthForPeriod(period, depth, STANDARD_GRAVITY);
+  const steepest =
+    MICHE_LIMITING_STEEPNESS * wavelength * Math.tanh((2 * Math.PI * depth) / wavelength);
+  const cavityRadius = Math.max(wave.bubbleRadiusM, heightTimesRange / steepest);
+  const amplitudeAt = (rangeM: number): number =>
+    heightTimesRange / (2 * Math.max(rangeM, cavityRadius));
+  const amp100 = m(amplitudeAt(100_000));
+  const amp1000 = m(amplitudeAt(1_000_000));
+
+  const celerity = propagationSpeed(meanOceanDepth, period, STANDARD_GRAVITY);
+  // Use the 100 km contour as the runup anchor for explosions — the
+  // wave falls as 1/R, so the 100 km headline is more useful than a
+  // 1 000 km figure that is often a few centimetres. Beach slope:
+  // caller-supplied DEM value when in the [1:1000, 1:3] envelope, else
   // 1:100 reference.
   const FALLBACK_SLOPE_RAD = Math.atan(1 / 100);
   const SLOPE_LOWER = Math.atan(1 / 1000);
@@ -252,17 +285,20 @@ export function explosionTsunami(input: ExplosionTsunamiInput): ExplosionTsunami
   const inundation100 = m((runup100 as number) / Math.tan(beachSlopeRad));
 
   return {
-    cavityRadius,
-    sourceAmplitude,
+    regime: wave.regime,
+    withinStatedRange: wave.withinStatedRange,
+    heightTimesRange,
+    waterDepth: m(depth),
+    cavityRadius: m(cavityRadius),
+    sourceAmplitude: m(amplitudeAt(cavityRadius)),
     amplitudeAt100km: amp100,
     amplitudeAt1000km: amp1000,
-    travelTimeTo100km: tsunamiTravelTime(m(100_000), meanOceanDepth),
-    travelTimeTo1000km: tsunamiTravelTime(m(1_000_000), meanOceanDepth),
-    couplingFraction: EXPLOSION_WATER_COUPLING,
+    travelTimeTo100km: (100_000 / celerity) as Seconds,
+    travelTimeTo1000km: (1_000_000 / celerity) as Seconds,
     meanOceanDepth,
-    deepWaterCelerity: celerity,
-    sourceWavelength: wavelength,
-    dominantPeriod: period,
+    deepWaterCelerity: celerity as MetersPerSecond,
+    sourceWavelength: m(wavelength),
+    dominantPeriod: period as Seconds,
     runupAt100km: runup100,
     inundationDistanceAt100km: inundation100,
     beachSlopeRadUsed: beachSlopeRad,

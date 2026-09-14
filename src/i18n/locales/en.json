@@ -324,12 +324,18 @@
       "windDirectionInput": "Wind direction ({{degrees}}°)",
       "windDirectionAria": "Wind blowing toward {{degrees}}° ({{cardinal}})",
       "tsunamiLabel": "Underwater-burst tsunami",
-      "tsunamiSourceAmplitude": "Source amplitude",
+      "tsunamiSourceAmplitude": "Amplitude at the source radius",
       "tsunamiAt100km": "Wave at 100 km",
       "tsunamiAt1000km": "Wave at 1 000 km",
       "tsunamiArrival100km": "Arrival at 100 km",
       "tsunamiRunup": "Coastal run-up @ 100 km (Synolakis)",
-      "tsunamiInundation": "Inland inundation @ 100 km"
+      "tsunamiInundation": "Inland inundation @ 100 km",
+      "tsunamiRelation": "Wave relation",
+      "tsunamiRelationDeep": "Deep water (Glasstone & Dolan §6.119)",
+      "tsunamiRelationShallow": "Shallow water (Glasstone & Dolan §6.121)",
+      "tsunamiRelationBetween": "Between shallow and deep water (interpolated)",
+      "tsunamiRelationExtrapolated": "outside the depth it was stated for",
+      "tsunamiSourceRadius": "Wave source radius"
     },
     "volcano": {
       "summaryHeading": "Volcanic eruption · VEI, plume, pyroclastic flows",
@@ -484,7 +490,7 @@
       },
       "tsunami": {
         "name": "Underwater-burst tsunami",
-        "desc": "Mechanical coupling of the burst to the water column drives a Glasstone-class wave train across the basin."
+        "desc": "A burst within the water sends out a train of waves whose height falls as one over the distance (Glasstone & Dolan 1977)."
       },
       "nuclearWinter": {
         "name": "Nuclear-winter onset",
@@ -1123,7 +1129,9 @@
     "nuclearCrater": "Apparent surface-burst crater diameter D = K · W_kt^0.3 (Nordyke 1977), with K tied to the ground type — hard rock, firm ground, dry soil, wet coral.",
     "atmosphericEntry": "Fragmentation-onset altitude h_b = H · ln(ρ₀v² / Y), where dynamic pressure first exceeds the impactor's tensile strength Y (Chyba et al. 1993, Nature 361: 40; Collins et al. 2005, M&PS 40, Eq. 9). Burst altitude is set 2 scale heights below h_b, minus a diameter-dependent penetration bonus that lets large bodies sail through the atmosphere intact.",
     "bolideAirburstAmplification": "Closed-form altitude amplification f(h) = (P_0 / P_amb(h))^(1/β) with β = 5/3 (Sachs intermediate-shock exponent). Built from Whitham (1974) §8.2 weak-shock invariance ΔP/P_amb ≈ const through stratified atmosphere, Sachs (1944) blast scaling ΔP ∝ R^(−β), and the U.S. Standard Atmosphere 1976 (NOAA-S/T 76-1562) for actual P(h). Capped at 15× for stratospheric scenarios. Validates within ~1 % on Chelyabinsk 2013 (Brown et al. 2013 Nature 503: 238) and within ~15 % on Tunguska 1908.",
-    "seaCoupling": "An impact on land reaches the sea with the crater, when the rim crosses the coast, or with the ejecta blanket falling beyond the shoreline. The ejecta mass beyond a distance d follows McGetchin, Settle & Head 1973 (thickness ∝ (r/R)⁻³): the fraction beyond the shore is R/d, and it scales the energy the water cavity forms with. Beyond the 1 m isopach the sea is not moved."
+    "seaCoupling": "An impact on land reaches the sea with the crater, when the rim crosses the coast, or with the ejecta blanket falling beyond the shoreline. The ejecta mass beyond a distance d follows McGetchin, Settle & Head 1973 (thickness ∝ (r/R)⁻³): the fraction beyond the shore is R/d, and it scales the energy the water cavity forms with. Beyond the 1 m isopach the sea is not moved.",
+    "explosionWaveHeight": "Height from crest to trough H ≈ 40 500·W^0.54/R feet in deep water (Glasstone & Dolan 1977 §6.119, to about 35 %), or H ≈ 150·d·W^0.25/R in water shallower than 100·W^0.25 ft (§6.121); W in kilotons, d the water depth. The amplitude shown is half the height. The relation already contains the train's dispersion.",
+    "explosionWaveSource": "Inside this radius the height relation is not used: it is where Glasstone & Dolan's height would be steeper than the water can hold, H = 0.142·L·tanh(2πd/L) (Miche 1944), or the gas bubble's maximum radius, 128·W^0.25 ft (§6.119), whichever is larger."
   },
   "appBar": {
     "label": "Application bar",
@@ -1382,6 +1390,10 @@
       "impactToll": {
         "item": "No impact toll can ever be checked",
         "note": "No asteroid impact in recorded history has killed anyone who was counted. The simulator says so beside every impact toll."
+      },
+      "surfaceBurst": {
+        "item": "A burst on the surface of open water makes no wave here.",
+        "note": "Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it, and give nothing for one resting on the surface. So the wave jumps from nothing to the full relation as the charge goes under. Other studies of explosion waves describe surface bursts that do make waves; until a relation is taken from them, the jump stays and is said."
       },
       "outsideCount": {
         "item": "Some causes of death are not counted",

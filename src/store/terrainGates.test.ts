@@ -256,10 +256,10 @@ describe('coastal-explosion tsunami flow', () => {
       expect(r.data.seaCoupling?.mechanism).toBe('water');
       // Castle Bravo was fired on a reef, at the surface, and is
       // remembered for its crater and its fallout rather than for any
-      // wave. A burst that never entered the water vents its globe to
-      // the air, so the depth-of-burst curve gives it no source —
-      // unlike Crossroads Baker, which was hung twenty-seven metres
-      // down and made the famous one.
+      // wave. A burst that never entered the water is not a burst
+      // within it, which is what Glasstone & Dolan's relations are
+      // for, so it gets no source — unlike Crossroads Baker, which was
+      // hung twenty-seven metres down and made the famous one.
       expect(r.data.isContactWaterBurst).toBe(false);
       expect(r.data.tsunami).toBeUndefined();
     }

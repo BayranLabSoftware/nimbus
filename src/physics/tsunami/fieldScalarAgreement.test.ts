@@ -122,7 +122,7 @@ describe('the amplitude veil agrees with the published far-field row', () => {
     expect(veil / published).toBeCloseTo(geometricGap(data.tsunami.cavityRadius), 1);
   });
 
-  it('an underwater burst spreads geometrically too', () => {
+  it("an underwater burst — the veil and its row are one law, Glasstone & Dolan's 1/R", () => {
     const base = Object.values(EXPLOSION_PRESETS)[0];
     if (base === undefined) throw new Error('no explosion preset');
     // No shipped preset detonates in the sea: put one on a 1 km shelf,
@@ -139,7 +139,12 @@ describe('the amplitude veil agrees with the published far-field row', () => {
     if (data.tsunami === undefined) return;
     const published = data.tsunami.amplitudeAt1000km as number;
     const veil = veilAmplitudeAt({ type: 'explosion', data }, AT_1000_KM);
-    expect(veil / published).toBeCloseTo(geometricGap(data.tsunami.cavityRadius), 1);
+    // Until 14 September 2026 the veil spread a burst geometrically and
+    // stood above its dispersed row by the gap the landslide still
+    // has. An explosion's wave was measured, and the measurement is
+    // 1/R with its dispersion inside it, so the veil now takes that
+    // law and the two can only be one number.
+    expect(veil / published).toBeCloseTo(1, 9);
   });
 
   it('a megathrust — the veil and its row are now the same number', () => {

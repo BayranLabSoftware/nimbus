@@ -86,15 +86,13 @@ export function dispersionParameter(input: DispersionInput): number {
  * because it has to be, and the dispersion parameter is what carries
  * a wave from one end to the other.
  *
- * The one explosion wave measured at many ranges agrees with the
- * shape. Glasstone & Dolan tabulate Crossroads Baker's waves from 330
- * to 4 000 yards (Table 6.57); halved to amplitudes, the veil reads
- * between 0.75 and 0.84 of every one of them — a ratio that holds
- * from three hundred metres to nearly four kilometres while the wave
- * falls tenfold. The level is the source's to answer for; the slope
- * is this law's. This comment used to say 23.4 m against thirty and
- * 1.90 against 1.8, which was a different spreading law set against
- * heights measured from crest to trough.
+ * This comment used to cite Crossroads Baker as agreeing — 23.4 m
+ * against thirty and 1.90 against 1.8 — which was a spreading law the
+ * globe does not draw, set against heights measured from crest to
+ * trough. Since 14 September 2026 an explosion's wave does not pass
+ * through this factor at all: Glasstone & Dolan's 1/R was measured on
+ * real trains and carries its dispersion inside it, and the veil is
+ * told so. The exponent rests on the derivation above.
  */
 const DISPERSION_DECAY_EXPONENT = 0.5;
 

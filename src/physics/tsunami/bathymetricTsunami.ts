@@ -83,6 +83,13 @@ export interface BathymetricTsunamiInput {
    *  down-dip width, and the field's fallback of twice the cavity
    *  radius would be the along-strike scale instead. */
   sourceWavelengthM?: number;
+  /** Period of a short source's wave (s) — an explosion's. The fronts
+   *  then move at its group velocity and the veil spreads and shoals
+   *  on the same speeds; see `linearWaves.ts`. */
+  sourcePeriodS?: number;
+  /** The source's far field was measured and already decays with its
+   *  own dispersion; see `amplitudeField.ts`. */
+  farFieldIncludesDispersion?: boolean;
   /** Phase 11 — optional low-resolution global grid (~40 km/pixel,
    *  full planet). When provided alongside `grid`, the orchestrator
    *  emits an additional global FMM + amplitude pair so the renderer
@@ -145,6 +152,7 @@ export function computeBathymetricTsunami(
     sourceLatitude: input.sourceLatitude,
     sourceLongitude: input.sourceLongitude,
     sources: seeds,
+    ...(input.sourcePeriodS !== undefined && { periodS: input.sourcePeriodS }),
   });
   const isochrones = extractIsochrones({
     field,
@@ -186,6 +194,10 @@ export function computeBathymetricTsunami(
       ...(input.sourceWavelengthM !== undefined && {
         sourceWavelengthM: input.sourceWavelengthM,
       }),
+      ...(input.sourcePeriodS !== undefined && { sourcePeriodS: input.sourcePeriodS }),
+      ...(input.farFieldIncludesDispersion !== undefined && {
+        farFieldIncludesDispersion: input.farFieldIncludesDispersion,
+      }),
       sourceLatitude: input.sourceLatitude,
       sourceLongitude: input.sourceLongitude,
     });
@@ -204,6 +216,7 @@ export function computeBathymetricTsunami(
       sourceLatitude: input.sourceLatitude,
       sourceLongitude: input.sourceLongitude,
       sources: globalSeeds,
+      ...(input.sourcePeriodS !== undefined && { periodS: input.sourcePeriodS }),
     });
     // Long isochrone thresholds for trans-oceanic propagation —
     // 4/8/12/24 h instead of the local 1/2/4/8 h cadence so the
@@ -239,6 +252,10 @@ export function computeBathymetricTsunami(
         ...(input.ruptureLengthM !== undefined && { ruptureLengthM: input.ruptureLengthM }),
         ...(input.sourceWavelengthM !== undefined && {
           sourceWavelengthM: input.sourceWavelengthM,
+        }),
+        ...(input.sourcePeriodS !== undefined && { sourcePeriodS: input.sourcePeriodS }),
+        ...(input.farFieldIncludesDispersion !== undefined && {
+          farFieldIncludesDispersion: input.farFieldIncludesDispersion,
         }),
         sourceLatitude: input.sourceLatitude,
         sourceLongitude: input.sourceLongitude,

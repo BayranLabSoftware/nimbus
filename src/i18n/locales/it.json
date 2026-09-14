@@ -324,12 +324,18 @@
       "windDirectionInput": "Direzione del vento ({{degrees}}°)",
       "windDirectionAria": "Vento diretto verso {{degrees}}° ({{cardinal}})",
       "tsunamiLabel": "Tsunami da burst subacqueo",
-      "tsunamiSourceAmplitude": "Ampiezza alla sorgente",
+      "tsunamiSourceAmplitude": "Ampiezza al raggio della sorgente",
       "tsunamiAt100km": "Onda a 100 km",
       "tsunamiAt1000km": "Onda a 1 000 km",
       "tsunamiArrival100km": "Arrivo a 100 km",
       "tsunamiRunup": "Run-up costiero @ 100 km (Synolakis)",
-      "tsunamiInundation": "Inondazione interna @ 100 km"
+      "tsunamiInundation": "Inondazione interna @ 100 km",
+      "tsunamiRelation": "Relazione dell'onda",
+      "tsunamiRelationDeep": "Acque profonde (Glasstone & Dolan §6.119)",
+      "tsunamiRelationShallow": "Acque basse (Glasstone & Dolan §6.121)",
+      "tsunamiRelationBetween": "Tra acque basse e profonde (interpolata)",
+      "tsunamiRelationExtrapolated": "fuori dalla profondità per cui è stata data",
+      "tsunamiSourceRadius": "Raggio della sorgente dell'onda"
     },
     "volcano": {
       "summaryHeading": "Eruzione vulcanica · VEI, pennacchio, flussi piroclastici",
@@ -484,7 +490,7 @@
       },
       "tsunami": {
         "name": "Tsunami da burst subacqueo",
-        "desc": "L'accoppiamento meccanico del burst alla colonna d'acqua genera un treno d'onde Glasstone-class attraverso il bacino."
+        "desc": "Uno scoppio dentro l'acqua genera un treno d'onde la cui altezza cala come l'inverso della distanza (Glasstone & Dolan 1977)."
       },
       "nuclearWinter": {
         "name": "Inizio inverno nucleare",
@@ -1123,7 +1129,9 @@
     "nuclearCrater": "Diametro cratere apparente surface-burst D = K · W_kt^0.3 (Nordyke 1977), con K legato al tipo di suolo — roccia dura, terreno compatto, sabbia, corallo umido.",
     "atmosphericEntry": "Quota di inizio frammentazione h_b = H · ln(ρ₀v² / Y), dove la pressione dinamica supera per la prima volta la resistenza Y del bolide (Chyba et al. 1993, Nature 361: 40; Collins et al. 2005, M&PS 40, Eq. 9). La quota di esplosione è 2 scale di altezza sotto h_b, meno un bonus di penetrazione che cresce con il diametro: per corpi grandi spinge la \"burst altitude\" sotto il livello del suolo, e il bolide attraversa l'atmosfera intatto.",
     "bolideAirburstAmplification": "Fattore di amplificazione altitudine in forma chiusa f(h) = (P_0 / P_amb(h))^(1/β) con β = 5/3 (esponente di Sachs intermediate-shock). Combina l'invarianza weak-shock di Whitham (1974) §8.2 ΔP/P_amb ≈ costante in atmosfera stratificata, lo scaling di Sachs (1944) ΔP ∝ R^(−β), e l'Atmosfera Standard USA 1976 (NOAA-S/T 76-1562) per il P(h) reale. Limite a 15× per scenari stratosferici. Validato entro ~1 % su Chelyabinsk 2013 (Brown et al. 2013 Nature 503: 238) ed entro ~15 % su Tunguska 1908.",
-    "seaCoupling": "Un impatto sulla terraferma arriva al mare col cratere, se il bordo attraversa la costa, o con la coltre di ejecta che cade oltre la riva. La massa di ejecta oltre una distanza d segue McGetchin, Settle & Head 1973 (spessore ∝ (r/R)⁻³): la frazione oltre la riva è R/d, e scala l'energia con cui si forma la cavità d'acqua. Oltre l'isopaca di 1 m il mare non viene mosso."
+    "seaCoupling": "Un impatto sulla terraferma arriva al mare col cratere, se il bordo attraversa la costa, o con la coltre di ejecta che cade oltre la riva. La massa di ejecta oltre una distanza d segue McGetchin, Settle & Head 1973 (spessore ∝ (r/R)⁻³): la frazione oltre la riva è R/d, e scala l'energia con cui si forma la cavità d'acqua. Oltre l'isopaca di 1 m il mare non viene mosso.",
+    "explosionWaveHeight": "Altezza dal cavo alla cresta H ≈ 40 500·W^0,54/R piedi in acque profonde (Glasstone & Dolan 1977 §6.119, entro circa il 35 %), oppure H ≈ 150·d·W^0,25/R in acque meno profonde di 100·W^0,25 piedi (§6.121); W in kilotoni, d la profondità dell'acqua. L'ampiezza mostrata è metà dell'altezza. La relazione contiene già la dispersione del treno d'onde.",
+    "explosionWaveSource": "Dentro questo raggio la relazione dell'altezza non si usa: è dove l'altezza di Glasstone & Dolan sarebbe più ripida di quanto l'acqua possa reggere, H = 0,142·L·tanh(2πd/L) (Miche 1944), oppure il raggio massimo della bolla di gas, 128·W^0,25 piedi (§6.119), il maggiore dei due."
   },
   "presets": {
     "impact": {
@@ -1469,6 +1477,10 @@
       "impactToll": {
         "item": "Nessun bilancio d'impatto potrà mai essere verificato",
         "note": "Nessun impatto d'asteroide nella storia registrata ha ucciso qualcuno che sia stato contato. Il simulatore lo dice accanto a ogni bilancio d'impatto."
+      },
+      "surfaceBurst": {
+        "item": "Un'esplosione sulla superficie del mare aperto qui non fa onda.",
+        "note": "Le relazioni di Glasstone & Dolan valgono per uno scoppio dentro l'acqua, a qualunque profondità, e non dicono nulla per uno appoggiato sulla superficie. Così l'onda salta da zero alla relazione piena appena la carica va sotto. Altri studi sulle onde da esplosione descrivono scoppi in superficie che le onde le fanno; finché non se ne ricava una relazione, il salto resta ed è dichiarato."
       },
       "outsideCount": {
         "item": "Alcune cause di morte non sono contate",

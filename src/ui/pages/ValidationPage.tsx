@@ -504,7 +504,14 @@ export function ValidationPage(): JSX.Element {
         <p className={styles.prose}>{t('validation.gaps.body')}</p>
         <ul className={styles.gaps}>
           {(
-            ['evacuation', 'farField', 'coastalOffline', 'impactToll', 'outsideCount'] as const
+            [
+              'evacuation',
+              'farField',
+              'coastalOffline',
+              'impactToll',
+              'surfaceBurst',
+              'outsideCount',
+            ] as const
           ).map((g) => (
             <li key={g}>
               <strong>{t(`validation.gaps.${g}.item`)}</strong>

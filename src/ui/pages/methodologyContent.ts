@@ -846,29 +846,28 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       },
       {
         id: 'underwater-burst-tsunami',
-        name: 'Underwater / contact-water tsunami source',
+        name: 'Underwater-burst waves (Glasstone & Dolan 1977)',
         formula:
-          'E_eff = 0.08 · ε(z/W^⅓) · E_yield ;  ε = log-normal peaked at z = 4 m·kt^(−⅓), width 0.6 ;  R_C = (3·E_eff / (2π · ρ_w · g))^(1/4);  η_0 = R_C / 2',
+          'H·R ≈ 40 500·W^0.54 ft² (deep, 256–850·W^0.25 ft of water) ;  H·R ≈ 150·d·W^0.25 ft² (shallow, d < 100·W^0.25 ft) ;  T ≈ 14.1·W^0.144 s ;  A = H/2',
         description:
-          'The Ward & Asphaug (2000) cavity-radius formula extended to chemical / nuclear underwater bursts through a mechanical-coupling fraction. The 0.08 at the peak, the optimum scaled depth of 4 m·kt^(−⅓) and the log-normal width are this project\'s own figures: they were once credited to "Glasstone Table 6.50" and "Glasstone §6.40", and the 1977 edition has no such table and no optimum depth for waves. What Glasstone & Dolan do give is that the surface waves carry 2–5 % of the yield (§6.54) and that a burst in deep water makes a wave H ≈ 40 500·W^0.54/R feet high whatever its depth (§6.119) — a relation this source falls five to nine times short of there, while it matches Crossroads Baker\'s measured waves (Table 6.57: 94 ft from crest to trough at 330 yd, from 23 kt at 27 m down). ε falls away log-normally on either side of the peak, to nothing for a charge fired in the air, which is why Castle Bravo on its reef makes no wave from 15 Mt.',
-        citation: leMehauteWang1996,
+          "The height of the wave train from crest to trough falls as one over the range, with the constants Glasstone & Dolan give: in deep water to about 35 % and for any depth of burst within the water (§6.119), and smaller in shallow water, \"such as Bikini BAKER\" (§6.121). The peak wave's period, and from it its length and the speed its energy crosses the basin, follow §6.119 and linear wave theory. Between the two relations the model interpolates geometrically, and says so. Near the burst it holds the amplitude inside the radius where the relation's height would be steeper than the water can hold (Miche 1944) or inside the gas bubble, whichever is larger. A burst on or above the water, or buried in the seabed, is not within the water and makes no wave. This replaced, on 14 September 2026, a Ward & Asphaug cavity scaled by an 8 % coupling and a depth-of-burst curve that were the project's own numbers credited to a Glasstone table that does not exist, and that stood five to nine times under §6.119 in deep water. Against the book's own BAKER table (Table 6.57) the shallow relation reads about seven tenths of the heights out to two kilometres, and less beyond, where the highest wave passes back into the train (§6.56).",
+        citation: glasstoneDolan1977,
       },
       {
         id: 'contact-water-burst-flag',
         name: 'Contact-water burst flag (atmospheric ring dimming)',
-        formula:
-          'isContactWaterBurst = (a tsunami source exists) = ε(z/W^⅓) > 0 AND waterDepth > 0',
+        formula: 'isContactWaterBurst = (a wave exists) = 0 < burst depth ≤ water depth',
         description:
-          'The flag follows the wave rather than the regime: a burst is a contact-water burst when it actually couples into the water, which the depth-of-burst efficiency decides and a SURFACE classification does not. A 500 Mt device 580 m above 200 m of sea is SURFACE by scaled height and still makes no wave. Glasstone & Dolan §6 documents that mechanical coupling into the atmosphere drops to ≈ 5–15 % when a SURFACE burst sits directly on a water column. The on-globe overpressure / thermal / crater rings are dimmed (alpha 0.85 → 0.4) so the eye reads the tsunami branch as the dominant story; the published radii are emitted unchanged so callers that need the land-equivalent reference can still read them.',
+          "The flag follows the wave rather than the regime: a burst is a contact-water burst when it is within the water, which is when Glasstone & Dolan's relations give it a wave, and a SURFACE classification does not decide it. A 500 Mt device 580 m above 200 m of sea is SURFACE by scaled height and still makes no wave. The on-globe overpressure / thermal / crater rings are dimmed (alpha 0.85 → 0.4) so the eye reads the tsunami branch as the dominant story; the published radii are emitted unchanged so callers that need the land-equivalent reference can still read them.",
         citation: glasstoneDolan1977,
       },
       {
         id: 'coastal-explosion-tsunami',
-        name: 'Coastal-explosion tsunami auto-detect',
+        name: 'Coastal-explosion sea search',
         formula:
-          'findNearbyOceanDepth(grid, click, 5 km) → median ocean-cell depth on a 9×9 lattice',
+          'nearestSea(local tile, planetary mosaic, click) → distance to the shore, basin depth (median of the sea around, ≤ 200 m)',
         description:
-          'When a SURFACE burst lands on a positive-elevation coastal cell (Beirut 2020 on Hangar 12, Castle Bravo on the Bikini reef), the simulator searches a 5 km neighbourhood for ocean cells with depth < −10 m and feeds the median depth into the underwater-burst tsunami pipeline (capped at 200 m to bound the synthetic coupling). Without this fall-through the tsunami branch silently dropped for coastal scenarios — the small wave train recorded after Beirut 2020 would have been invisible.',
+          "When a burst lands on a land cell near the coast (Beirut 2020 on Hangar 12, Castle Bravo on the Bikini reef), the simulator finds the nearest sea a wave could cross — not a lake or a river — and passes the burst its distance and depth, so the sea-coupling law can say whether the crater reaches the water. A wave needs more than that: Glasstone & Dolan's relations are for a burst within the water, and a burst on a quay or a reef is not one, so it makes none. The harbour wave of about a metre seen at Beirut is therefore not drawn; its validation row accepts anything from nothing to two metres, because the record is that loose.",
         citation: leMehauteWang1996,
       },
     ],

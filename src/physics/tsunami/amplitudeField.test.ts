@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { makeElevationGrid } from '../elevation/grid.js';
-import { computeAmplitudeField } from './amplitudeField.js';
+import { computeAmplitudeField, veilLaw } from './amplitudeField.js';
 import { computeTsunamiArrivalField } from './fastMarching.js';
 
 /**
@@ -308,5 +308,43 @@ describe('computeAmplitudeField — spreadingExponent', () => {
     });
     expect(field.maxAmplitude).toBeLessThanOrEqual(30 * 4);
     expect(Number.isFinite(field.maxAmplitude)).toBe(true);
+  });
+
+  it('does not disperse a far field that was measured with its dispersion inside it', () => {
+    // An explosion's 1/R is Glasstone & Dolan's, measured on real
+    // trains; putting the dispersion parameter on top of it would
+    // count the train's spreading twice.
+    const source = {
+      sourceAmplitudeM: 20,
+      sourceCavityRadiusM: 100,
+      sourceDepthM: 60,
+      spreadingExponent: 1,
+      sourceWavelengthM: 500,
+    };
+    const measured = veilLaw({ ...source, farFieldIncludesDispersion: true });
+    const derived = veilLaw(source);
+    const t = 3_000 / Math.sqrt(9.80665 * 60);
+    expect(measured(t, 60)).toBeCloseTo((20 * 100) / 3_000, 3);
+    expect(derived(t, 60)).toBeLessThan(measured(t, 60));
+  });
+
+  it('shoals a period-carrying wave by its group velocity, which a long wave reduces to Green', () => {
+    // A 38 s explosion wave running from 4 km of ocean onto 1 km has
+    // barely begun to feel the bottom — its group velocity rises a
+    // little, so it loses a couple of per cent first, the "initial
+    // small decrease" of §6.120 — while a long wave on the same path
+    // grows as (4 000 / 1 000)^(1/4).
+    const base = { sourceAmplitudeM: 1, sourceCavityRadiusM: 1, sourceDepthM: 4_000 };
+    const shortWave = veilLaw({
+      ...base,
+      spreadingExponent: 1,
+      sourcePeriodS: 38,
+      farFieldIncludesDispersion: true,
+    });
+    const longWave = veilLaw({ ...base, spreadingExponent: 1, farFieldIncludesDispersion: true });
+    // At the source radius, so spreading has nothing to say.
+    expect(shortWave(0, 1_000)).toBeGreaterThan(0.97);
+    expect(shortWave(0, 1_000)).toBeLessThan(1);
+    expect(longWave(0, 1_000)).toBeCloseTo((4_000 / 1_000) ** 0.25, 9);
   });
 });

@@ -265,14 +265,28 @@ function explosionFields(r: ExplosionScenarioResult): { inputs: Field[]; outputs
     { label: 'EMP affected radius', value: fmtKm(r.emp.affectedRadius) },
   ];
   if (r.tsunami) {
+    const relation = {
+      deep: 'deep water, §6.119',
+      shallow: 'shallow water, §6.121',
+      between: 'between §6.121 and §6.119, interpolated',
+    }[r.tsunami.regime];
     outputs.push(
       {
-        label: 'Tsunami coupling fraction',
-        value: `${(r.tsunami.couplingFraction * 100).toFixed(1)} %`,
+        label: 'Tsunami relation (Glasstone & Dolan 1977)',
+        value: r.tsunami.withinStatedRange
+          ? relation
+          : `${relation} — outside the water depth it was stated for`,
       },
-      { label: 'Tsunami cavity radius', value: fmtKm(r.tsunami.cavityRadius) },
       {
-        label: 'Tsunami source amplitude',
+        label: 'Tsunami height × range (crest to trough)',
+        value: `${Math.round(r.tsunami.heightTimesRange).toString()} m²`,
+      },
+      {
+        label: 'Tsunami source radius (breaking or gas bubble)',
+        value: fmtKm(r.tsunami.cavityRadius),
+      },
+      {
+        label: 'Tsunami amplitude at the source radius',
         value: `${(r.tsunami.sourceAmplitude as number).toFixed(1)} m`,
       },
       {
@@ -280,8 +294,12 @@ function explosionFields(r: ExplosionScenarioResult): { inputs: Field[]; outputs
         value: `${(r.tsunami.amplitudeAt100km as number).toFixed(2)} m`,
       },
       {
-        label: 'Tsunami A @ 1 000 km',
+        label: 'Tsunami A @ 1 000 km (the relation extrapolated)',
         value: `${(r.tsunami.amplitudeAt1000km as number).toFixed(2)} m`,
+      },
+      {
+        label: 'Tsunami peak wave period',
+        value: `${fmtNumber(r.tsunami.dominantPeriod, 1)} s`,
       },
       { label: 'Tsunami travel to 100 km', value: fmtMin(r.tsunami.travelTimeTo100km) },
       { label: 'Tsunami travel to 1 000 km', value: fmtMin(r.tsunami.travelTimeTo1000km) }

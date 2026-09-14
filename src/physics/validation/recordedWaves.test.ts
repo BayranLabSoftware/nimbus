@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { makeElevationGrid } from '../elevation/grid.js';
 import { computeTsunamiArrivalField } from '../tsunami/fastMarching.js';
-import { computeAmplitudeField, veilLaw } from '../tsunami/amplitudeField.js';
-import { STANDARD_GRAVITY } from '../constants.js';
+import { computeAmplitudeField } from '../tsunami/amplitudeField.js';
 import { extractTsunamiMeta } from '../../store/useAppStore.js';
 import {
   amplitudeFromCrestToTrough,
+  BAKER_ONE_OVER_R_TO_YARDS,
   BAKER_TABLE_6_57,
   burstResult,
   compareWave,
@@ -99,14 +99,17 @@ describe('Crossroads Baker, read as Glasstone & Dolan printed it', () => {
       nLon: N,
       samples,
     });
+    const meta = extractTsunamiMeta(bakerResult());
+    expect(meta).not.toBeNull();
+    if (meta === null) return;
+    // The store hands the solver the burst's period, so the fronts move
+    // at its group velocity; the harness has to ask on the same speeds.
     const arrivalField = computeTsunamiArrivalField({
       grid,
       sourceLatitude: 0,
       sourceLongitude: 0,
+      ...(meta.sourcePeriodS !== undefined && { periodS: meta.sourcePeriodS }),
     });
-    const meta = extractTsunamiMeta(bakerResult());
-    expect(meta).not.toBeNull();
-    if (meta === null) return;
     const field = computeAmplitudeField({ arrivalField, grid, ...meta });
     const metresPerDegree = (Math.PI / 180) * 6_371_000;
     const dLon = (2 * spanDeg) / (N - 1);
@@ -120,25 +123,39 @@ describe('Crossroads Baker, read as Glasstone & Dolan printed it', () => {
     }
   });
 
-  it('is inside every height of Table 6.57, and the law without the energy of a ring is above all of them', () => {
-    // The decision, kept where it can be re-run. A caller that gives
-    // the veil its own exponent gets the bare (R₀/r)^q with no ring
-    // energy, which is the law the harness used to gate Baker on.
-    // Against the heights read as amplitudes, the globe's law sits
-    // near eight tenths of every range and the bare law above the
-    // reference's own 35 % at every one.
-    const meta = extractTsunamiMeta(bakerResult());
-    expect(meta).not.toBeNull();
-    if (meta === null) return;
-    const depth = CROSSROADS_BAKER.lagoonDepthM;
-    const globe = veilLaw(meta);
-    const bare = veilLaw({ ...meta, spreadingExponent: 0.5 });
+  it("reads Glasstone & Dolan's shallow-water relation at every range, with nothing fitted to Baker", () => {
+    // §6.121: H·R = 150·d_w·W^0.25 ft², and the globe draws half of it.
+    const FT = 0.3048;
+    const kilotons = CROSSROADS_BAKER.yieldMegatons * 1_000;
+    const heightTimesRange =
+      150 * (CROSSROADS_BAKER.lagoonDepthM / FT) * kilotons ** 0.25 * FT * FT;
     for (const row of BAKER_TABLE_6_57) {
-      const t = (row.yards * YARD_M) / Math.sqrt(STANDARD_GRAVITY * depth);
-      const band = amplitudeFromCrestToTrough(row.feet);
-      expect(globe(t, depth)).toBeGreaterThan(band.low);
-      expect(globe(t, depth)).toBeLessThan(band.high);
-      expect(bare(t, depth)).toBeGreaterThan(band.high);
+      const rangeM = row.yards * YARD_M;
+      const drawn = globeVeilAt(bakerResult(), rangeM, { depthM: CROSSROADS_BAKER.lagoonDepthM });
+      expect(drawn / (heightTimesRange / (2 * rangeM))).toBeCloseTo(1, 9);
+    }
+  });
+
+  it('gates where its own table falls as 1/R, and says why it stops', () => {
+    const first = BAKER_TABLE_6_57[0];
+    expect(first).toBeDefined();
+    if (first === undefined) return;
+    for (const row of BAKER_TABLE_6_57) {
+      // H·R from the table itself, relative to its first row.
+      const ratio = (row.feet * row.yards) / (first.feet * first.yards);
+      const gated = RECORDED_WAVES.filter((w) => w.observed.atRangeM === row.yards * YARD_M).map(
+        (w) => w.gated
+      );
+      expect(gated).toHaveLength(1);
+      if (row.yards <= BAKER_ONE_OVER_R_TO_YARDS) {
+        // Constant within 3 %: the record is 1/R, and the gate holds.
+        expect(ratio).toBeLessThan(1.035);
+        expect(gated[0]).toBe(true);
+      } else {
+        // 13–17 % higher: the maximum has passed back into the train.
+        expect(ratio).toBeGreaterThan(1.12);
+        expect(gated[0]).toBe(false);
+      }
     }
   });
 

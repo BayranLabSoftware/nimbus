@@ -5,6 +5,36 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## [Unreleased]
 
+### Changed
+
+- **An underwater burst makes the waves Glasstone & Dolan give it.**
+  The source was a Ward & Asphaug cavity scaled by an 8 % coupling and a
+  depth-of-burst curve, all three the project's own, and in deep water
+  it stood five to nine times under the book's relation even at its
+  chosen optimum depth. It is now §6.119–6.121: the train's height from
+  crest to trough is 40 500·W^0.54 / R feet in deep water (to about
+  35 %, for any depth of burst in the water) and 150·d_w·W^0.25 / R in
+  shallow water, the peak wave's period is 14.1·W^0.144 s, and the
+  amplitude is half the height. The model's own choices are said: a
+  geometric bridge between the two relations, the amplitude held inside
+  the Miche breaking radius or the gas bubble, and no wave for a burst
+  not within the water. The period sets the speed, so the arrival-time
+  solver and the globe move, spread and shoal an explosion's wave at its
+  group velocity — 30 m/s for a megatonne over the abyss, not 198 — and
+  the globe no longer disperses a far field that was measured with its
+  dispersion inside it, nor starts it from a 4 km default depth. A
+  megatonne 40 m down in 4 km of ocean now draws 7.8 m at 10 km where
+  the globe drew 0.21 m; a shallow burst draws less than before. Against
+  Crossroads Baker's own table the book's shallow relation reads
+  0.68–0.71 of the heights out to 2 000 yards (gated) and about six
+  tenths beyond, where the maximum passes back into the train
+  (declared). Deep Dive no longer runs on an explosion, whose wave its
+  350 km Gaussian cannot represent. A burst on the surface of open water
+  still makes no wave, and the validation report now declares it. Nothing
+  changes on the page yet: the panel accepts only heights of burst of
+  zero or more, so no burst a reader can set is within the water — a
+  depth-of-burst input is in the roadmap.
+
 ### Fixed
 
 - **Crossroads Baker was being checked against the wrong quantity, on a

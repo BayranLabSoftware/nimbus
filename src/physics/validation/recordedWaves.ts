@@ -1,9 +1,9 @@
 import { simulateExplosion } from '../events/explosion/simulate.js';
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/simulate.js';
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/simulate.js';
-import { STANDARD_GRAVITY } from '../constants.js';
 import { m } from '../units.js';
 import { veilLaw } from '../tsunami/amplitudeField.js';
+import { propagationSpeed } from '../tsunami/linearWaves.js';
 import { extractTsunamiMeta, type ActiveResult } from '../../store/useAppStore.js';
 
 /**
@@ -29,7 +29,8 @@ import { extractTsunamiMeta, type ActiveResult } from '../../store/useAppStore.j
  * question — the veil's law at one cell, `veilLaw` in
  * `tsunami/amplitudeField.ts`, which the field calls at every cell —
  * on a flat sea of the depth the wave was measured in, where the
- * arrival time is the range over the long-wave speed.
+ * arrival time is the range over the speed the arrival-time solver
+ * uses there — the long-wave speed, or an explosion's group velocity.
  *
  * Until 14 September 2026 the burst rows asked a different question,
  * and compared the answer with the wrong quantity. They spread an
@@ -38,10 +39,15 @@ import { extractTsunamiMeta, type ActiveResult } from '../../store/useAppStore.j
  * and 1.89 m at 5.5 km against records of 20–45 m and 1–3 m: inside
  * both, while the globe drew about half. But Glasstone & Dolan
  * tabulate Baker's waves as heights from crest to trough, and the
- * model computes an amplitude, the crest above still water. Read as
- * amplitudes, at every range the table gives, the law the globe draws
- * stands at about eight tenths of the record and the law the harness
- * used stood at about twice. The globe was right; the gate was not.
+ * model computes an amplitude, the crest above still water.
+ *
+ * Later the same day the burst's wave itself became Glasstone &
+ * Dolan's: the shallow-water relation of §6.121 for Baker, with no
+ * constant fitted to Baker. So these rows now check the book against
+ * its own table, and the book is honest about it: the relation is an
+ * approximation that reads about seven tenths of the tabulated heights
+ * out to 2 000 yards — inside its 35 % — and less beyond, where the
+ * table stops falling as 1/R.
  */
 
 export interface RecordedWave {
@@ -125,7 +131,7 @@ export function globeVeilAt(
   const meta = extractTsunamiMeta(result);
   if (meta === null) return 0;
   const depthM = sea.depthM ?? meta.sourceDepthM;
-  const arrivalTimeS = rangeM / Math.sqrt(STANDARD_GRAVITY * depthM);
+  const arrivalTimeS = rangeM / propagationSpeed(depthM, meta.sourcePeriodS);
   return veilLaw(meta)(arrivalTimeS, depthM, sea.bearingDeg);
 }
 
@@ -172,15 +178,29 @@ const grouped = (n: number): string =>
     ? `${Math.floor(n / 1_000).toString()},${(n % 1_000).toString().padStart(3, '0')}`
     : n.toString();
 
+/**
+ * Where Glasstone's 1/R is what the table shows. Out to 2 000 yards
+ * the tabulated H·R holds within 3 % of its first value; from 2 700
+ * yards it is 13–17 % higher, because the highest wave has passed back
+ * into the train that follows the first (§6.56) and falls more slowly
+ * than the train's envelope. A relation that is 1/R is checked where
+ * the record is 1/R, and the rows beyond are printed with the reason.
+ */
+export const BAKER_ONE_OVER_R_TO_YARDS = 2_000;
+
 const BAKER_TABLE_ROWS: RecordedWave[] = BAKER_TABLE_6_57.map((row, index) => ({
   name: `Crossroads Baker 1946, ${grouped(row.yards)} yd`,
   observed: { ...amplitudeFromCrestToTrough(row.feet), atRangeM: row.yards * YARD_M },
   source: `Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): ${row.feet.toString()} ft at ${grouped(row.yards)} yd from surface zero, ${row.seconds.toString()} s after the burst`,
   model: () => bakerOnGlobe(row.yards * YARD_M),
-  gated: true,
+  gated: row.yards <= BAKER_ONE_OVER_R_TO_YARDS,
   ...(index === 0 && {
     caveat:
-      "Every Baker height is printed from crest to trough, and the model computes the crest above still water, so each is halved and held to the reference's own 35 %. Near the burst the first wave was a long solitary wave (§6.55) whose crest stood higher than half its height — the Saratoga row below measures it — so halving flatters the model at the first two ranges; beyond a kilometre the highest wave is one of the train that followed (§6.56), and half is the amplitude. Until 14 September 2026 these rows compared an amplitude with the full height, through a law the globe does not draw, and passed at twice what the globe shows.",
+      'Every Baker height is printed from crest to trough, and the model computes the crest above still water, so each is halved and held to the reference\'s own 35 %. The model is Glasstone & Dolan\'s shallow-water relation (§6.121), H·R = 150·d_w·W^0.25 ft², with nothing fitted to Baker: it reads 0.68–0.71 of the tabulated heights out to 2 000 yards, the approximation the book offers for bursts "such as Bikini BAKER". Until 14 September 2026 these rows compared an amplitude with the full height, through a law the globe did not draw.',
+  }),
+  ...(index === BAKER_TABLE_6_57.findIndex((r) => r.yards > BAKER_ONE_OVER_R_TO_YARDS) && {
+    caveat:
+      'Declared, not gated, from here out. The tabulated H·R stops being constant at 2 700 yards and rises 13–17 %, because the highest wave passes back into the train (§6.56) and falls more slowly than 1/R. A relation that is 1/R cannot follow it, and reads about six tenths of these heights — just outside the 35 %.',
   }),
 }));
 
@@ -199,9 +219,9 @@ export const RECORDED_WAVES: RecordedWave[] = [
     source:
       'Glasstone & Dolan 1977 §6.58: the carrier, anchored almost broadside on with its stern 400 yd from surface zero, rose on the first wave crest until the stern was over 43 ft above its previous position',
     model: () => bakerOnGlobe(400 * YARD_M),
-    gated: true,
+    gated: false,
     caveat:
-      'The one Baker figure that is a crest rather than a height, and a lower bound: the stern rose over 43 ft. The globe reads about seven tenths of it — inside the 35 %, and lower than at any tabulated range, because a steep solitary wave that breaks near its source (§6.54) is more than a linear law of spreading carries. Nothing the toll reads is this close to a burst.',
+      "Declared. The one Baker figure that is a crest rather than a height, and a lower bound: the stern rose over 43 ft on the first wave, a long solitary wave (§6.55) whose crest stands above half its height. Glasstone's relation, halved, reads about two thirds of it. Nothing the toll reads is this close to a burst.",
   },
   {
     name: 'Crossroads Baker 1946, ninth wave at 22,000 ft',
@@ -209,9 +229,9 @@ export const RECORDED_WAVES: RecordedWave[] = [
     source:
       'Glasstone & Dolan 1977 §2.70: at 22,000 ft from surface zero the ninth wave in the series was the highest, with a height of 6 ft',
     model: () => bakerOnGlobe(22_000 * FOOT_M),
-    gated: true,
+    gated: false,
     caveat:
-      "The farthest Baker figure, and the lowest the globe reads against its record: under two thirds of half the height, inside only with the foot the figure was rounded to. Beyond two kilometres the tabulated heights fall more slowly than 1/R, because the highest wave passes back into the train (§6.56) — the ninth one here — while the model's dispersion follows the leading wave.",
+      'Declared. The farthest Baker figure, where the highest wave had passed back to the ninth of the train (§6.56) and the height had fallen far more slowly than 1/R: Glasstone’s relation reads half of it.',
   },
   {
     name: 'Castle Bravo 1954',

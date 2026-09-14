@@ -2402,14 +2402,15 @@ export function Globe(): JSX.Element {
           asymmetry: ISOTROPIC_RING,
         });
       }
-      // Contact-water surface bursts — Glasstone & Dolan §6 — couple
-      // only ≈ 5–15 % of the yield into the atmosphere, so the
-      // overpressure / thermal / crater radii emitted from the
-      // baseline land formulas drastically overstate the airborne
-      // reach. The published radii are still rendered (a follow-up
-      // will scale them with the Glasstone Tab 6.31 coupling factor)
-      // but at reduced opacity so the eye reads the tsunami branch
-      // as the headline. The hover tooltip continues to surface the
+      // A burst within the water spends much of its energy on the
+      // water, so the overpressure / thermal / crater radii emitted
+      // from the baseline land formulas overstate the airborne reach.
+      // Glasstone & Dolan describe the air blast of an underwater
+      // burst (§6.53) but give no factor to scale land radii by — the
+      // "5–15 %" and "Table 6.31" this comment used to cite are not in
+      // the 1977 edition. The published radii are still rendered, at
+      // reduced opacity so the eye reads the tsunami branch as the
+      // headline. The hover tooltip continues to surface the
       // numerical radius for users who want the land-equivalent
       // reference.
       const isContactWaterBurst = result.data.isContactWaterBurst;

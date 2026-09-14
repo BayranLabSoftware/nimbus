@@ -508,6 +508,16 @@ function gate(
 
 // ---------------------------------------------------------------------
 
+/** What the wave misses are, in one sentence, or nothing when there are none. */
+function waveMissSummary(waves: readonly WaveComparison[]): string {
+  const misses = waves.filter((w) => !w.contains);
+  if (misses.length === 0) return '';
+  const declared = misses.filter((w) => !w.wave.gated).length;
+  return declared === misses.length
+    ? ` All ${misses.length.toString()} misses are declared rows, each with its reason below.`
+    : ` ${declared.toString()} of the ${misses.length.toString()} misses are declared rows, each with its reason below.`;
+}
+
 function summary(net: CalibrationNet, replay: AggregateBucket, golden: AggregateBucket): string {
   const tollGated = net.tolls.filter((t) => t.event.gated);
   const tollContains = net.tolls.filter((t) => t.contains);
@@ -516,7 +526,7 @@ function summary(net: CalibrationNet, replay: AggregateBucket, golden: Aggregate
   const invented = inventedBands(net.footprint);
   return bullet([
     `**Death tolls:** ${tollContains.length.toString()} of ${net.tolls.length.toString()} events inside the model's band; ${tollGated.filter((t) => t.contains).length.toString()} of ${tollGated.length.toString()} gated rows pass. Every miss carries its cause below.`,
-    `**Waves:** ${waveContains.length.toString()} of ${net.waves.length.toString()} records inside the model's figure${net.waves.some((w) => w.globeContains === false) ? `, but the globe misses ${net.waves.filter((w) => w.globeContains === false).length.toString()} of them` : ', and what the globe draws is inside every one'}.`,
+    `**Waves:** ${waveContains.length.toString()} of ${net.waves.length.toString()} records inside the model's figure, which is the figure the globe draws wherever the table prints no second one${net.waves.some((w) => w.globeContains === false) ? `; the globe misses ${net.waves.filter((w) => w.globeContains === false).length.toString()} of the records the model contains` : ''}.${waveMissSummary(net.waves)}`,
     `**Shaking footprint:** centred at ${bias.geometricMeanRadiusRatio.toFixed(2)} in radius (${bias.biasInStandardErrors.toFixed(2)} standard errors), scatter σ_ln ${bias.sdLn.toFixed(2)} against 0.70 expected; ${invented.length.toString()} bands painted at an intensity never reached.`,
     `**Replay fixtures:** ${replay.passed.toString()} of ${replay.total.toString()} pass. **Golden dataset:** ${golden.passed.toString()} of ${golden.total.toString()} pass.`,
   ]);
@@ -620,6 +630,7 @@ ${bullet([
   "**Distant coasts of very long ruptures get too small a wave, and the cause is not settled.** Sumatra's far coasts are five to ten times under-waved. The far-field law does not use the rupture length, but a naive line-source correction would take DART 21413 from 0.90× the record to about 3× (docs/ROADMAP.md, moves 3b and 3d).",
   '**The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.',
   "**No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.",
+  "**A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).",
   '**Hazards outside the count:** fallout, initial radiation, famine, disease and climate. For a Chicxulub-class impact the climate is what kills most survivors.',
   '**GeoClaw sub-grid probes** below the AMR base-grid noise floor (< 1 cm) run as `it.skip` in `geoclawComparison.test.ts` — sub-grid sources, not regressions.',
   '**Custom-user GeoClaw fixtures** cover eight parameter-grid samples per source class; more is a fixed compute job (docs/GEOCLAW_SETUP.md).',

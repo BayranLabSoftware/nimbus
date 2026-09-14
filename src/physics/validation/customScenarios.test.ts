@@ -7,7 +7,6 @@ import { simulateImpact } from '../simulate.js';
 import { computeSeaCoupling } from '../effects/seaCoupling.js';
 import { dispersionDecay, dispersionParameter } from '../tsunami/dispersion.js';
 import { directivityFactor } from '../tsunami/directivity.js';
-import { waveCouplingEfficiency } from '../events/explosion/underwaterBurst.js';
 import { blastCasualtyPlan, estimateCasualties, thermalHorizonRadius } from '../casualties.js';
 import { J, kgPerM3, m, mps, rad } from '../units.js';
 
@@ -127,22 +126,38 @@ describe('a law stays a law across the whole range', () => {
     }
   });
 
-  it('the burst curve has one maximum and no cliffs, from the air to the abyss', () => {
-    const values: number[] = [];
-    for (let lambda = -50; lambda <= 200; lambda += 0.25) {
-      const e = waveCouplingEfficiency(lambda);
-      expect(e).toBeGreaterThanOrEqual(0);
-      expect(e).toBeLessThanOrEqual(1);
-      values.push(e);
+  it("a burst's wave, from the air to the abyss: none outside the water, a finite one inside it", () => {
+    for (const yieldMegatons of [0.0005, 0.023, 1, 50]) {
+      let previousAt100km = 0;
+      for (const waterDepth of [5, 61, 800, 4_000]) {
+        const at = (heightOfBurst: number): ReturnType<typeof simulateExplosion>['tsunami'] =>
+          simulateExplosion({
+            yieldMegatons,
+            groundType: 'WET_SOIL',
+            heightOfBurst: m(heightOfBurst),
+            waterDepth: m(waterDepth),
+          }).tsunami;
+        expect(at(10)).toBeUndefined();
+        expect(at(0)).toBeUndefined();
+        expect(at(-(waterDepth + 1))).toBeUndefined();
+        const inside = at(-waterDepth / 2);
+        expect(inside).toBeDefined();
+        if (inside === undefined) continue;
+        for (const value of [
+          inside.amplitudeAt100km,
+          inside.sourceAmplitude,
+          inside.cavityRadius,
+          inside.travelTimeTo100km,
+          inside.dominantPeriod,
+          inside.sourceWavelength,
+        ]) {
+          expect(finite(value)).toBe(true);
+        }
+        // A deeper sea never gives the same charge a smaller wave.
+        expect(inside.amplitudeAt100km as number).toBeGreaterThanOrEqual(previousAt100km);
+        previousAt100km = inside.amplitudeAt100km;
+      }
     }
-    // One rise and one fall: the sign of the difference changes once.
-    let turns = 0;
-    for (let i = 2; i < values.length; i++) {
-      const a = (values[i - 1] ?? 0) - (values[i - 2] ?? 0);
-      const b = (values[i] ?? 0) - (values[i - 1] ?? 0);
-      if (a > 1e-12 && b < -1e-12) turns += 1;
-    }
-    expect(turns).toBeLessThanOrEqual(1);
   });
 
   it('dispersion and directivity stay between nothing and everything', () => {
@@ -206,7 +221,7 @@ describe('a law stays a law across the whole range', () => {
 });
 
 describe('the boundaries the code draws for itself are not cliffs', () => {
-  it('a burst crossing the water surface changes smoothly, not in a step', () => {
+  it('a burst crossing the water surface: nothing above it, one wave anywhere in it', () => {
     const amplitude = (hobM: number): number => {
       const r = simulateExplosion({
         yieldMegatons: 0.02,
@@ -215,24 +230,25 @@ describe('the boundaries the code draws for itself are not cliffs', () => {
         waterDepth: m(60),
         meanOceanDepth: m(1_000),
       });
-      return r.tsunami === undefined ? 0 : r.tsunami.sourceAmplitude;
+      return r.tsunami === undefined ? 0 : r.tsunami.amplitudeAt100km;
     };
-    // The property is continuity, not gentleness. The wave does climb
-    // steeply as the charge goes under — that is the venting regime,
-    // and half a metre of water over a fireball is the difference
-    // between coupling and not — but it must climb, not step. So the
-    // gap across the surface has to close as the interval does, which
-    // a threshold's would not.
-    const gap = (eps: number): number => Math.abs(amplitude(eps) - amplitude(-eps));
-    expect(gap(0.5)).toBeGreaterThan(gap(0.1));
-    expect(gap(0.1)).toBeGreaterThan(gap(0.01));
-    expect(gap(0.001)).toBeLessThan(0.01);
-    // Nothing above the water makes a wave, at any height.
+    // This is the one boundary here that is not continuous, and it is
+    // not the code's: Glasstone & Dolan's relations are for a burst
+    // "within the water", at any depth in it (§6.119), and give
+    // nothing for one on its surface. The model gives that nothing, so
+    // the wave steps where the charge goes under. It used to climb
+    // through a depth-of-burst curve of the project's own. The
+    // explosion-wave literature beyond Glasstone describes surface
+    // bursts that do make waves, so the step is probably too sharp;
+    // until that literature is read and a relation taken from it, the
+    // step is declared in the validation report rather than smoothed
+    // by invention.
     for (const above of [0, 0.5, 1, 30, 5_000]) expect(amplitude(above)).toBe(0);
-    // Below it, deeper is stronger up to the optimum — 4·W^(1/3) is
-    // 11 m for twenty kilotonnes — and weaker past it.
-    expect(amplitude(-2)).toBeLessThan(amplitude(-11));
-    expect(amplitude(-60)).toBeLessThan(amplitude(-11));
+    const under = amplitude(-0.01);
+    expect(under).toBeGreaterThan(0);
+    for (const depth of [0.5, 11, 30, 59]) expect(amplitude(-depth)).toBe(under);
+    // And a charge in the seabed is not in the water either.
+    expect(amplitude(-61)).toBe(0);
   });
 
   it('a volcano and a landslide survive their own extremes', () => {

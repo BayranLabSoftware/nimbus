@@ -1,5 +1,6 @@
 import { STANDARD_GRAVITY } from '../constants.js';
 import type { ElevationGrid } from '../elevation/index.js';
+import { propagationSpeed } from './linearWaves.js';
 
 /**
  * Fast Marching Method (FMM) solver for the shallow-water tsunami
@@ -71,6 +72,11 @@ export interface FastMarchingInput {
   minDepthMeters?: number;
   /** Surface gravity (m/s²). Defaults to Earth standard. */
   surfaceGravity?: number;
+  /** Period of the wave (s), for a source whose wave is short enough
+   *  to feel it: the front then moves at the group velocity of that
+   *  period rather than at the long-wave √(g·h). Omitted — every
+   *  source but an explosion — the long-wave speed, as before. */
+  periodS?: number;
 }
 
 export interface FastMarchingResult {
@@ -263,6 +269,7 @@ export function computeTsunamiArrivalField(input: FastMarchingInput): FastMarchi
   const { grid, sourceLatitude, sourceLongitude } = input;
   const g = input.surfaceGravity ?? STANDARD_GRAVITY;
   const minDepth = input.minDepthMeters ?? 10;
+  const periodS = input.periodS;
   const { nLat, nLon, minLat, maxLat, minLon, maxLon, samples } = grid;
   const nCells = nLat * nLon;
 
@@ -307,13 +314,21 @@ export function computeTsunamiArrivalField(input: FastMarchingInput): FastMarchi
 
   const heap = new TimeHeap(nCells, arrivalTimes);
 
+  // A period-carrying wave solves the dispersion relation for its
+  // speed, which is worth doing once per cell rather than once per
+  // visit.
+  const speedCache = periodS === undefined ? null : new Float32Array(nCells).fill(-1);
+
   /** Speed at (i, j). Returns 0 for dry or too-shallow cells. */
   const speedAt = (i: number, j: number): number => {
     const idx = i * nLon + j;
+    const cached = speedCache?.[idx];
+    if (cached !== undefined && cached >= 0) return cached;
     const elev = samples[idx] ?? 0;
     const depth = -elev;
-    if (depth < minDepth) return 0;
-    return Math.sqrt(g * depth);
+    const speed = depth < minDepth ? 0 : propagationSpeed(depth, periodS, g);
+    if (speedCache !== null) speedCache[idx] = speed;
+    return speed;
   };
 
   /** Insert or update a trial neighbour (i, j) from the set of

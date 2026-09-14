@@ -57,8 +57,8 @@ export interface ExplosionScenarioInput {
    *  HOB correction applied on top of the baseline blast radii. */
   heightOfBurst?: Meters;
   /** Water depth at the burst site (m). 0 or omitted → land/airburst,
-   *  no tsunami cascade. Any positive value triggers the
-   *  Glasstone §6 / Le Méhauté underwater-burst tsunami source. */
+   *  no tsunami cascade. A positive value lets a burst within the water
+   *  make the waves Glasstone & Dolan give (§6.119–6.121). */
   waterDepth?: Meters;
   /** Mean basin depth used for tsunami travel-time (m). Defaults to
    *  4 000 m global-ocean mean. */
@@ -172,8 +172,8 @@ export interface ExplosionScenarioResult {
   /** Underwater / contact-water burst tsunami source. Present only
    *  when the input specifies waterDepth > 0. */
   tsunami?: ExplosionTsunamiResult;
-  /** True when the burst is a SURFACE detonation directly on a water
-   *  column (`waterDepth > 0` AND HOB regime SURFACE). Glasstone &
+  /** True when the burst put its energy into the water: a burst within
+   *  it, which is exactly when {@link tsunami} exists. Glasstone &
    *  Dolan §6 documents that for this geometry the atmospheric
    *  pressure radii are far below the equivalent-yield land surface
    *  burst: water absorbs the bulk of the energy as compression
@@ -186,8 +186,9 @@ export interface ExplosionScenarioResult {
    *  20 km" — a number which is misleadingly large for a contact-
    *  water detonation. The published radii are emitted unchanged so
    *  callers that want the land-equivalent reference can still read
-   *  them; a separate follow-up will introduce a Glasstone Tab 6.31
-   *  coupling-factor scaling of the radii themselves. */
+   *  them. Glasstone & Dolan give no factor to scale them by; the
+   *  "Table 6.31" this comment once promised is not in the 1977
+   *  edition. */
   isContactWaterBurst: boolean;
   /** Per-ring rendering asymmetry. Conventional / nuclear surface
    *  bursts in still air are rotationally symmetric to within a few
@@ -385,17 +386,15 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   //       airburst, including atmospheric-test-era Mt detonations).
   //
   // Underwater bursts (HOB < 0) were out of scope for that gate. They
-  // are modelled now, through the depth-of-burst curve below.
+  // are modelled now, through Glasstone & Dolan's relations below.
   const waterDepth = (input.waterDepth as number | undefined) ?? 0;
   // The gate used to be a threshold — surface regime, height of burst
-  // between zero and thirty metres — because there was no way to say
-  // how well a burst at a given height or depth couples to water. Now
-  // there is: `waveCouplingEfficiency` returns nothing for a charge in
-  // the air, little for one resting on the surface, and its peak for
-  // one hung at the depth the module calls optimum. So the branch
-  // opens wherever there is water to lift and the curve decides how
-  // much, which also lets a genuinely submerged burst be modelled for
-  // the first time.
+  // between zero and thirty metres. Then it was a depth-of-burst curve
+  // of the project's own. Now it is what Glasstone & Dolan say: their
+  // wave relations are for a burst within the water, at any depth in
+  // it (§6.119), so a charge in the air, resting on the surface or
+  // buried in the seabed makes none, and one anywhere in the water
+  // makes the wave its yield and the water's depth give it.
   const isContactBurst = waterDepth > 0;
   if (isContactBurst) {
     // How much of this reaches the water at all. The same law the
@@ -414,7 +413,7 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       yieldEnergy: J((yieldJoules as number) * seaCoupling.fraction),
       waterDepth: m(waterDepth),
       // A burst above the water is at negative depth; one on it is at
-      // zero. Neither makes much of a wave, and the curve says so.
+      // zero. Neither is within the water, and neither makes a wave.
       burstDepth: m(-hobMeters),
       ...(input.meanOceanDepth !== undefined && { meanOceanDepth: input.meanOceanDepth }),
       ...(input.coastalBeachSlopeRad !== undefined && {

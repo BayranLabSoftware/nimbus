@@ -77,16 +77,18 @@ describe('simulateExplosion — composition', () => {
     });
     expect(r.tsunami).toBeDefined();
     if (!r.tsunami) return;
-    // c = √(g · 4 000) ≈ 198 m/s.
-    expect(r.tsunami.deepWaterCelerity as number).toBeGreaterThan(193);
-    expect(r.tsunami.deepWaterCelerity as number).toBeLessThan(203);
-    // Wavelength ≈ 2 × cavity. For a 1 Mt coupled burst the cavity
-    // sits in the few-hundred-metre range so wavelength is sub-km.
-    expect(r.tsunami.sourceWavelength as number).toBeGreaterThan(200);
-    expect(r.tsunami.sourceWavelength as number).toBeLessThan(2_000);
-    // Period = λ / c, sub-10 s for this scale.
-    expect(r.tsunami.dominantPeriod as number).toBeGreaterThan(0);
-    expect(r.tsunami.dominantPeriod as number).toBeLessThan(15);
+    // The peak wave's period is Glasstone & Dolan's 14.1·W^0.144 s:
+    // 38 s for a megatonne.
+    expect(r.tsunami.dominantPeriod as number).toBeCloseTo(14.1 * 1_000 ** 0.144, 6);
+    // Over 4 km of ocean a 38 s wave is a deep-water wave, and its
+    // energy crosses at g·T/(4π) ≈ 30 m/s — not the 198 m/s of a long
+    // wave, which is what this used to report.
+    expect(r.tsunami.deepWaterCelerity as number).toBeGreaterThan(28);
+    expect(r.tsunami.deepWaterCelerity as number).toBeLessThan(32);
+    // In the 50 m it was fired in, the same period is a long wave:
+    // √(g · 50) · 38 s ≈ 840 m.
+    expect(r.tsunami.sourceWavelength as number).toBeGreaterThan(750);
+    expect(r.tsunami.sourceWavelength as number).toBeLessThan(900);
     // Runup is positive and inundation = 100 × runup.
     expect(r.tsunami.runupAt100km as number).toBeGreaterThan(0);
     expect(r.tsunami.inundationDistanceAt100km as number).toBeCloseTo(
@@ -95,26 +97,25 @@ describe('simulateExplosion — composition', () => {
     );
   });
 
-  it('underwater 1 Mt burst at the module optimum keeps the source it has always had', () => {
+  it("a megatonne in 50 m of water makes Glasstone & Dolan's shallow-water wave", () => {
     const r = simulateExplosion({
       yieldMegatons: 1,
       groundType: 'WET_SOIL',
-      // The module's optimum depth for a megatonne: 4 · 1000^(1/3) = 40 m.
       heightOfBurst: m(-40),
       waterDepth: m(50),
     });
     expect(r.tsunami).toBeDefined();
     if (!r.tsunami) return;
-    // Coupling fraction of 0.08 → equivalent KE = 3.34e14 J →
-    // R_C ≈ 350 m, η_0 ≈ 175 m. This envelope is a regression pin on
-    // the module's own source, not a validation: it used to say it
-    // bracketed "Glasstone Table 6.50's ≈ 180 m", a table the 1977
-    // edition does not have, and no source amplitude is published to
-    // bracket. What Glasstone does publish is checked against the wave
-    // itself, in validation/recordedWaves.ts.
-    expect(r.tsunami.sourceAmplitude as number).toBeGreaterThan(100);
-    expect(r.tsunami.sourceAmplitude as number).toBeLessThan(250);
-    expect(r.tsunami.couplingFraction).toBeCloseTo(0.08, 6);
+    // 50 m is 164 ft, far below 100·W^0.25 = 562 ft: §6.121,
+    // H·R = 150·d_w·W^0.25 ft², and the amplitude is half the height.
+    expect(r.tsunami.regime).toBe('shallow');
+    const FT = 0.3048;
+    const heightTimesRange = 150 * (50 / FT) * 1_000 ** 0.25 * FT * FT;
+    expect(r.tsunami.amplitudeAt100km as number).toBeCloseTo(heightTimesRange / 200_000, 9);
+    // The version this replaced dug a 350 m cavity and called its rim
+    // 175 m high, calibrated on "Glasstone Table 6.50", which the 1977
+    // edition does not have. Glasstone's own relation says 6 cm here.
+    expect(r.tsunami.amplitudeAt100km as number).toBeCloseTo(0.064, 3);
   });
 
   it('non-surface burst over water still suppresses the tsunami branch', () => {
@@ -135,8 +136,8 @@ describe('simulateExplosion — composition', () => {
     // m·kt⁻¹ᐟ³, which sits comfortably under the SURFACE regime
     // boundary (50). Without an absolute-HOB gate the cube-root scaling
     // mis-classifies a 500 m airburst over water as a contact-water
-    // burst, then the 8 % Glasstone underwater-coupling fraction
-    // inflates the source amplitude to ~360 m and the bathymetric
+    // burst, then the 8 % underwater-coupling fraction of the source
+    // of the time inflates the source amplitude to ~360 m and the bathymetric
     // pipeline propagates that nonsense across the basin (the user's
     // bug report: 3.5 m wave at trans-Atlantic distance from a
     // Tsar-Bomba airburst in the Gulf of Mexico). No nuclear test in
@@ -154,11 +155,11 @@ describe('simulateExplosion — composition', () => {
     expect(r.isContactWaterBurst).toBe(false);
   });
 
-  it('a burst resting on the water makes almost no wave, because the globe vents', () => {
+  it('a burst resting on the water makes no wave, because it is not within the water', () => {
     // This used to fire at full coupling and was how a half-kilotonne
     // charge on the Beirut quay came to drown seventy-seven thousand
-    // people. The efficiency curve gives a charge at zero depth
-    // essentially nothing, continuously rather than by a gate.
+    // people. Glasstone & Dolan's relations are for a burst within the
+    // water (§6.119); a charge on its surface is not one.
     const r = simulateExplosion({
       yieldMegatons: 1,
       groundType: 'WET_SOIL',
@@ -169,7 +170,7 @@ describe('simulateExplosion — composition', () => {
     expect(r.isContactWaterBurst).toBe(false);
   });
 
-  it('the deeper the charge, up to the optimum, the bigger the wave', () => {
+  it('any depth within the water makes the same wave, and none outside it', () => {
     const amplitudeAt = (hobM: number): number => {
       const r = simulateExplosion({
         yieldMegatons: 1,
@@ -178,12 +179,16 @@ describe('simulateExplosion — composition', () => {
         waterDepth: m(50),
         meanOceanDepth: m(4_000),
       });
-      return r.tsunami === undefined ? 0 : r.tsunami.sourceAmplitude;
+      return r.tsunami === undefined ? 0 : r.tsunami.amplitudeAt100km;
     };
-    // 1 Mt: optimum at 40 m down, so 10 → 40 climbs and 40 → 160 falls.
-    expect(amplitudeAt(-10)).toBeLessThan(amplitudeAt(-40));
-    expect(amplitudeAt(-160)).toBeLessThan(amplitudeAt(-40));
-    expect(amplitudeAt(0)).toBeLessThan(amplitudeAt(-10));
+    // "The relation is valid for any depth of burst within the water"
+    // (§6.119). The curve this replaced peaked at 40 m and fell away on
+    // both sides, a shape of the project's own.
+    expect(amplitudeAt(-10)).toBeGreaterThan(0);
+    expect(amplitudeAt(-10)).toBe(amplitudeAt(-40));
+    expect(amplitudeAt(0)).toBe(0);
+    // 60 m down in 50 m of water is in the seabed, not the water.
+    expect(amplitudeAt(-60)).toBe(0);
   });
 
   it('contact-water burst at HOB = 31 m does NOT fire (just above gate)', () => {

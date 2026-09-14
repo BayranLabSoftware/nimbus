@@ -14,7 +14,7 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 ## Summary
 
 - **Death tolls:** 4 of 11 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
-- **Waves:** 14 of 14 records inside the model's figure, and what the globe draws is inside every one.
+- **Waves:** 9 of 14 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 5 misses are declared rows, each with its reason below.
 - **Shaking footprint:** centred at 1.18 in radius (0.76 standard errors), scatter σ_ln 0.71 against 0.70 expected; 4 bands painted at an intensity never reached.
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
 
@@ -115,26 +115,28 @@ own 35 % accuracy for explosion waves.
 
 | Record | Range | Observed | Model | Verdict | Globe draws | Standing |
 |--------|------:|---------:|------:|---------|------------:|----------|
-| Crossroads Baker 1946, 330 yd | 302 m | 9.26 m – 19.4 m | 11.3 m | contains | same | gated |
-| Crossroads Baker 1946, 660 yd | 604 m | 4.61 m – 9.77 m | 5.96 m | contains | same | gated |
-| Crossroads Baker 1946, 1,330 yd | 1,216 m | 2.33 m – 5.04 m | 3.06 m | contains | same | gated |
-| Crossroads Baker 1946, 2,000 yd | 1,829 m | 1.54 m – 3.39 m | 2.06 m | contains | same | gated |
-| Crossroads Baker 1946, 2,700 yd | 2,469 m | 1.24 m – 2.78 m | 1.54 m | contains | same | gated |
-| Crossroads Baker 1946, 3,300 yd | 3,018 m | 1.04 m – 2.37 m | 1.26 m | contains | same | gated |
-| Crossroads Baker 1946, 4,000 yd | 3,658 m | 0.84 m – 1.95 m | 1.04 m | contains | same | gated |
-| Crossroads Baker 1946, USS Saratoga's stern | 366 m | 8.52 m – 31.9 m | 9.46 m | contains | same | gated |
-| Crossroads Baker 1946, ninth wave at 22,000 ft | 6,706 m | 0.54 m – 1.34 m | 0.57 m | contains | same | gated |
+| Crossroads Baker 1946, 330 yd | 302 m | 9.26 m – 19.4 m | 10.1 m | contains | same | gated |
+| Crossroads Baker 1946, 660 yd | 604 m | 4.61 m – 9.77 m | 5.06 m | contains | same | gated |
+| Crossroads Baker 1946, 1,330 yd | 1,216 m | 2.33 m – 5.04 m | 2.51 m | contains | same | gated |
+| Crossroads Baker 1946, 2,000 yd | 1,829 m | 1.54 m – 3.39 m | 1.67 m | contains | same | gated |
+| Crossroads Baker 1946, 2,700 yd | 2,469 m | 1.24 m – 2.78 m | 1.24 m | **misses** | same | declared |
+| Crossroads Baker 1946, 3,300 yd | 3,018 m | 1.04 m – 2.37 m | 1.01 m | **misses** | same | declared |
+| Crossroads Baker 1946, 4,000 yd | 3,658 m | 0.84 m – 1.95 m | 0.83 m | **misses** | same | declared |
+| Crossroads Baker 1946, USS Saratoga's stern | 366 m | 8.52 m – 31.9 m | 8.34 m | **misses** | same | declared |
+| Crossroads Baker 1946, ninth wave at 22,000 ft | 6,706 m | 0.54 m – 1.34 m | 0.46 m | **misses** | same | declared |
 | Castle Bravo 1954 | 300 m | no wave | 0.00 m | contains | same | gated |
 | Ivy Mike 1952 | 300 m | no wave | 0.00 m | contains | same | gated |
 | Beirut 2020 | 300 m | 0.00 m – 2.00 m | 0.00 m | contains | same | gated |
 | Tōhoku 2011 at DART 21413 | 1,500 km | 0.20 m – 0.50 m | 0.27 m | contains | same | gated |
 | Storegga 8200 BP on the Norwegian coast | 1,000 km | 0.30 m – 3.00 m | 0.60 m | contains | 0.76 m | gated |
 
-**Crossroads Baker 1946, 330 yd.** Every Baker height is printed from crest to trough, and the model computes the crest above still water, so each is halved and held to the reference's own 35 %. Near the burst the first wave was a long solitary wave (§6.55) whose crest stood higher than half its height — the Saratoga row below measures it — so halving flatters the model at the first two ranges; beyond a kilometre the highest wave is one of the train that followed (§6.56), and half is the amplitude. Until 14 September 2026 these rows compared an amplitude with the full height, through a law the globe does not draw, and passed at twice what the globe shows.
+**Crossroads Baker 1946, 330 yd.** Every Baker height is printed from crest to trough, and the model computes the crest above still water, so each is halved and held to the reference's own 35 %. The model is Glasstone & Dolan's shallow-water relation (§6.121), H·R = 150·d_w·W^0.25 ft², with nothing fitted to Baker: it reads 0.68–0.71 of the tabulated heights out to 2 000 yards, the approximation the book offers for bursts "such as Bikini BAKER". Until 14 September 2026 these rows compared an amplitude with the full height, through a law the globe did not draw.
 
-**Crossroads Baker 1946, USS Saratoga's stern.** The one Baker figure that is a crest rather than a height, and a lower bound: the stern rose over 43 ft. The globe reads about seven tenths of it — inside the 35 %, and lower than at any tabulated range, because a steep solitary wave that breaks near its source (§6.54) is more than a linear law of spreading carries. Nothing the toll reads is this close to a burst.
+**Crossroads Baker 1946, 2,700 yd.** Declared, not gated, from here out. The tabulated H·R stops being constant at 2 700 yards and rises 13–17 %, because the highest wave passes back into the train (§6.56) and falls more slowly than 1/R. A relation that is 1/R cannot follow it, and reads about six tenths of these heights — just outside the 35 %.
 
-**Crossroads Baker 1946, ninth wave at 22,000 ft.** The farthest Baker figure, and the lowest the globe reads against its record: under two thirds of half the height, inside only with the foot the figure was rounded to. Beyond two kilometres the tabulated heights fall more slowly than 1/R, because the highest wave passes back into the train (§6.56) — the ninth one here — while the model's dispersion follows the leading wave.
+**Crossroads Baker 1946, USS Saratoga's stern.** Declared. The one Baker figure that is a crest rather than a height, and a lower bound: the stern rose over 43 ft on the first wave, a long solitary wave (§6.55) whose crest stands above half its height. Glasstone's relation, halved, reads about two thirds of it. Nothing the toll reads is this close to a burst.
+
+**Crossroads Baker 1946, ninth wave at 22,000 ft.** Declared. The farthest Baker figure, where the highest wave had passed back to the ninth of the train (§6.56) and the height had fallen far more slowly than 1/R: Glasstone’s relation reads half of it.
 
 **Castle Bravo 1954.** A thousand times the energy of Baker and no wave, because the charge never entered the water. Six hundred times, in fact, and this row is the one that says the curve is about placement and not about size.
 
@@ -339,6 +341,7 @@ shows.
 - **Distant coasts of very long ruptures get too small a wave, and the cause is not settled.** Sumatra's far coasts are five to ten times under-waved. The far-field law does not use the rupture length, but a naive line-source correction would take DART 21413 from 0.90× the record to about 3× (docs/ROADMAP.md, moves 3b and 3d).
 - **The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.
 - **No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.
+- **A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).
 - **Hazards outside the count:** fallout, initial radiation, famine, disease and climate. For a Chicxulub-class impact the climate is what kills most survivors.
 - **GeoClaw sub-grid probes** below the AMR base-grid noise floor (< 1 cm) run as `it.skip` in `geoclawComparison.test.ts` — sub-grid sources, not regressions.
 - **Custom-user GeoClaw fixtures** cover eight parameter-grid samples per source class; more is a fixed compute job (docs/GEOCLAW_SETUP.md).

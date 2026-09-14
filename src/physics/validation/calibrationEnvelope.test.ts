@@ -82,10 +82,14 @@ describe('the envelope stays in step with the calibration net', () => {
         expect(row, `${anchor.name}: toll row`).toBeDefined();
         expect(anchor.gated.includes('toll'), `${anchor.name}: toll gate`).toBe(row?.gated);
       }
+      // An event measured at several ranges gates its wave when any of
+      // them gates: Crossroads Baker is gated where Glasstone's 1/R
+      // holds in its own table and declared where the tabulated
+      // maximum has passed back into the train.
       const waves = RECORDED_WAVES.filter((w) => w.name.includes(anchor.name));
       if (anchor.quantities.includes('wave') && waves.length > 0) {
         expect(anchor.gated.includes('wave'), `${anchor.name}: wave gate`).toBe(
-          waves.every((w) => w.gated)
+          waves.some((w) => w.gated)
         );
       }
     }

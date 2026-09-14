@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { STANDARD_GRAVITY } from '../constants.js';
 import { makeElevationGrid } from '../elevation/index.js';
 import { computeTsunamiArrivalField } from './fastMarching.js';
+import { groupVelocity } from './linearWaves.js';
 
 /** Build a flat-ocean grid at a given uniform depth. */
 function flatOcean(
@@ -46,6 +47,28 @@ describe('computeTsunamiArrivalField — uniform depth', () => {
     // (classic first-order FMM bias). Bracket loosely.
     expect(t / expectedTime).toBeGreaterThan(0.85);
     expect(t / expectedTime).toBeLessThan(1.2);
+  });
+
+  it('moves a period-carrying front at its group velocity', () => {
+    // An explosion's 38 s wave over 4 km of ocean travels at g·T/(4π),
+    // about 30 m/s; the long-wave √(g·h) would be 198.
+    const depth = 4_000;
+    const g = flatOcean(depth);
+    const period = 38;
+    const long = computeTsunamiArrivalField({ grid: g, sourceLatitude: 0, sourceLongitude: 0 });
+    const short = computeTsunamiArrivalField({
+      grid: g,
+      sourceLatitude: 0,
+      sourceLongitude: 0,
+      periodS: period,
+    });
+    const idx = Math.floor(long.nLat / 2) * long.nLon + (Math.floor(long.nLon / 2) + 5);
+    const tLong = long.arrivalTimes[idx] ?? Number.NaN;
+    const tShort = short.arrivalTimes[idx] ?? Number.NaN;
+    expect(tShort / tLong).toBeCloseTo(
+      Math.sqrt(STANDARD_GRAVITY * depth) / groupVelocity(period, depth),
+      6
+    );
   });
 
   it('shallower ocean arrives slower than deeper ocean at the same range', () => {

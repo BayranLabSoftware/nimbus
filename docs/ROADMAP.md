@@ -384,7 +384,9 @@ of the ninth wave; the same law without the ring's energy reads
 between 1.98 and 2.23 of the table, above its tolerance at every
 range. So the globe was right and the gate was wrong, and Anak
 Krakatau does not move: its law is the one that was already on the
-globe.
+globe. (Those figures are the explosion source as it stood that
+morning; by evening the source was Glasstone & Dolan's own relation,
+below, and Baker checks the book rather than a construct.)
 
 The harness no longer reconstructs the veil. `veilLaw` in
 `amplitudeField.ts` is the body of the field's loop, exported; the
@@ -393,47 +395,65 @@ the whole field on a flat lagoon to prove the two agree. The globe's
 misses are pinned empty. Full account in [SCIENCE.md](./SCIENCE.md),
 "Crossroads Baker, read as it was printed".
 
-**What re-reading Glasstone found next to it, and did not change**
-_(open)_:
+**What re-reading Glasstone found next to it** _(found and closed the
+same day, except where marked)_:
 
-- **The explosion source cited pages that do not say what it said**
-  _(citations corrected the same day; the numbers are unchanged)_.
+- **The explosion source cited pages that do not say what it said.**
   `underwaterBurst.ts` calibrated its 8 % coupling on "Glasstone
   Table 6.50 ≈ 180 m source amplitude for 1 Mt" and took its optimum
   depth of 4 m·kt^(−1/3) from "Glasstone & Dolan §6.40", and the
   methodology page repeated both. The 1977 chapter has no Table 6.50, no
   source amplitude for any yield, and its §6.40 is about buildings
-  swaying in Las Vegas. Code, tests, methodology and these documents now
-  call the three numbers the project's own. What the chapter does say:
-  the surface waves carry 2–5 % of the yield (§6.54), and in deep water
-  H ≈ 40 500·W^0.54/R feet "for any depth of burst within the water"
-  (§6.119), with the peak wave's length L ≈ 1 010·W^0.288 ft.
-- **Against that relation the model is five to nine times under in deep
-  water at its own optimum depth, and near zero anywhere else.** At
-  z = 4·W^(1/3) m the ratio of the model's height to Glasstone's is
-  0.20 for 1 kt and 0.11 for 10 Mt, constant with range, so the shape
-  is right and the level is not; most of it is the wavelength, which the
-  model takes as the cavity's diameter (126 m for 1 kt, 1.3 km for
-  10 Mt) where Glasstone's peak wave is 2.4–3.5 times longer, and
-  dispersion goes as λ⁻³. A burst at a quarter of the water depth gets
-  under 4 % of Glasstone's height, because the log-normal depth curve
-  — whose width is the project's own — kills it. Baker lands inside its
-  table because the short wavelength, the normalisation and the curve
-  happen to meet at 90 ft in a 200 ft lagoon.
-- **The globe starts a burst's wave from the 4 km default basin depth,
-  not the water it was fired in.** `extractTsunamiMeta` hands the veil
-  `meanOceanDepth` as the source depth, which the store never sets for
-  an explosion or an impact. In Baker's lagoon Green's law then shoals
-  the wave 2.9× and the apparent path is 2.8× too long, and the two
-  cancel to within 11 %; a shallow source whose wave runs out into deep
-  water gets no such luck.
-
-What would close them: the burst's wave rebuilt on Glasstone & Dolan
-§6.119–6.121 — height, length and period, deep and shallow — so that
-the source cites what it uses, with Baker's table as the check rather
-than the calibration; and the source depth passed as the depth at the
-source for bursts and impacts, measured on real bathymetry before it
-ships.
+  swaying in Las Vegas. The citations were corrected first (`f8fb69c`),
+  and then the source itself was replaced.
+- **Against the book's deep-water relation the source was five to nine
+  times under at its own optimum depth, and near zero anywhere else.**
+  Most of it was the wavelength — the cavity's diameter, 2.4–3.5 times
+  shorter than Glasstone's peak wave — with a depth curve of the
+  project's own. **Closed:** the burst's wave is now Glasstone & Dolan
+  §6.119–6.121 — H·R = 40 500·W^0.54 ft² in deep water, 150·d_w·W^0.25 ft²
+  in shallow, the peak wave's period 14.1·W^0.144 s, amplitude half the
+  height — with the model's own choices said: a geometric bridge between
+  the two relations, the amplitude held inside the Miche breaking radius
+  or the gas bubble, and no wave for a burst not within the water. The
+  period sets the speed: the arrival-time solver and the veil now move,
+  spread and shoal an explosion's wave at the group velocity of its
+  period (`tsunami/linearWaves.ts`), 30 m/s for a megatonne over the
+  abyss where the long-wave speed is 198, and the veil no longer
+  disperses a far field that was measured with its dispersion inside it.
+  A megatonne 40 m down in 4 km of ocean now draws 7.8 m at 10 km where
+  the globe drew 0.21 m. Against Baker's own table the shallow relation,
+  fitted to nothing, reads 0.68–0.71 of the heights out to 2 000 yards
+  (gated) and about six tenths beyond, where the maximum passes back
+  into the train (declared). Deep Dive no longer runs on an explosion.
+  SCIENCE.md, "The burst's wave, as Glasstone & Dolan give it".
+- **Open: the panel has no depth of burst.** `ExplosionCustomInputs`
+  accepts a height of burst of zero or more and `inputSchema.ts` refuses
+  a negative one, so no burst a reader can set is within the water, and
+  none has made a wave on the page since the depth-of-burst curve of
+  Phase 25 — before the rebuild and after it. Offering one is a product
+  decision: an input, its limits (within the water, not below its
+  floor), a URL key, and copy that says what a burst at depth is.
+- **The globe started a burst's wave from the 4 km default basin depth,
+  not the water it was fired in.** **Closed for explosions**, which now
+  hand the veil the depth at the burst. **Open for impacts**, which still
+  hand it `meanOceanDepth`; on a shelf that shoals the rim wave and
+  lengthens its apparent path, and it wants measuring on real bathymetry
+  before it is changed.
+- **Open: a burst on the surface of open water makes no wave.**
+  Glasstone's relations are for a burst within the water and say nothing
+  about one on its surface, so the wave steps from nothing to the full
+  relation as the charge goes under. The wider explosion-wave literature
+  (the "upper critical depth" studies) describes surface bursts that do
+  make waves; a relation should be
+  taken from a source that can be read and cited, not from a summary.
+  Declared in the validation report.
+- **To check: the impact path may disperse its far field twice.** The
+  veil applies Kajiura's dispersion to an impact's Wünnemann rim wave,
+  whose exponent the module describes as already folding in the
+  dispersion of short impact waves. The explosion case was settled by
+  telling the veil so; whether Wünnemann's fit really contains it needs
+  the paper, not the comment.
 
 ### 3b. What the wave does at the coast, layer by layer
 
@@ -829,14 +849,15 @@ dispersion parameter is what carries a wave from one end to the other,
 and with it in the field the exponent is a half because it must be
 rather than because it was fitted.
 
-Crossroads Baker agrees with the shape. This paragraph used to say
-23.4 m where thirty were seen at three hundred metres and 1.90 m where
-1.8 were seen at five and a half kilometres; on 14 September that
-turned out to be a law the globe does not draw, set against heights
-from crest to trough and a second range with no source. Read as
-Glasstone & Dolan print it — seven ranges in Table 6.57, halved to
-amplitudes — the globe's law holds between 0.75 and 0.84 of every one
-while the wave falls tenfold (M9 move 3).
+This paragraph used to say Crossroads Baker agreed: 23.4 m where
+thirty were seen at three hundred metres and 1.90 m where 1.8 were seen
+at five and a half kilometres. On 14 September that turned out to be a
+law the globe does not draw, set against heights from crest to trough
+and a second range with no source, and by the end of that day an
+explosion's wave no longer went through this parameter at all: it is
+Glasstone & Dolan's measured 1/R, which carries its dispersion inside
+it (M9 move 3). Baker therefore says nothing about the dispersion
+exponent any more; what supports it is the derivation above.
 
 **What is left is not propagation.** Tōhoku at DART is still 1.06 m
 against 30 cm and nothing here can touch it: its wave is too long to

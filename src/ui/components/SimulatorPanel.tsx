@@ -704,7 +704,9 @@ export function SimulatorPanel(): JSX.Element {
 
         {/* Phase-21d — Coastal Deep Dive: Tier-2 Saint-Venant 1D-radial
             solver. Available only when the active scenario has a tsunami
-            source amplitude > 0 (impact / earthquake / explosion). */}
+            source amplitude > 0 (impact / earthquake). An explosion's
+            wave is a few hundred metres long and measured, and the
+            solver's 350 km Gaussian with no dispersion cannot carry it. */}
         {(() => {
           const hasTsunamiSource =
             (result?.type === 'impact' &&
@@ -712,10 +714,7 @@ export function SimulatorPanel(): JSX.Element {
               (result.data.tsunami.sourceAmplitude as number) > 0) ||
             (result?.type === 'earthquake' &&
               result.data.tsunami !== undefined &&
-              (result.data.tsunami.initialAmplitude as number) > 0) ||
-            (result?.type === 'explosion' &&
-              result.data.tsunami !== undefined &&
-              (result.data.tsunami.sourceAmplitude as number) > 0);
+              (result.data.tsunami.initialAmplitude as number) > 0);
           if (!hasTsunamiSource) return null;
           return (
             <button
@@ -1241,9 +1240,25 @@ export function SimulatorPanel(): JSX.Element {
               <>
                 <SectionHeading labelKey="simulator.explosion.tsunamiLabel" />
                 <dl className={styles.result} aria-label={t('simulator.explosion.tsunamiLabel')}>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiCavity')}</dt>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.tsunamiRelation')}</dt>
                   <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiCavity')}>
+                    <CitationTooltip citation={t('citations.explosionWaveHeight')}>
+                      {t(
+                        result.data.tsunami.regime === 'deep'
+                          ? 'simulator.explosion.tsunamiRelationDeep'
+                          : result.data.tsunami.regime === 'shallow'
+                            ? 'simulator.explosion.tsunamiRelationShallow'
+                            : 'simulator.explosion.tsunamiRelationBetween'
+                      )}
+                      {!result.data.tsunami.withinStatedRange &&
+                        ` · ${t('simulator.explosion.tsunamiRelationExtrapolated')}`}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.explosion.tsunamiSourceRadius')}
+                  </dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.explosionWaveSource')}>
                       {formatKilometres(result.data.tsunami.cavityRadius)}
                     </CitationTooltip>
                   </dd>
@@ -1255,7 +1270,7 @@ export function SimulatorPanel(): JSX.Element {
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.explosion.tsunamiAt100km')}</dt>
                   <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiFarField')}>
+                    <CitationTooltip citation={t('citations.explosionWaveHeight')}>
                       {formatKilometres(result.data.tsunami.amplitudeAt100km)}
                     </CitationTooltip>
                   </dd>

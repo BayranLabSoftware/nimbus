@@ -1025,6 +1025,11 @@ export function extractTsunamiMeta(result: ActiveResult): {
   /** Wavelength of the source disturbance (m), so the veil disperses
    *  and beams on the same number the panel prints beside it. */
   sourceWavelengthM?: number;
+  /** Period of a wave short enough to feel it (s) — an explosion's.
+   *  Its fronts then move, spread and shoal at its group velocity. */
+  sourcePeriodS?: number;
+  /** The far field was measured and already carries its dispersion. */
+  farFieldIncludesDispersion?: boolean;
 } | null {
   if (result.type === 'impact' && result.data.tsunami !== undefined) {
     const t = result.data.tsunami;
@@ -1040,23 +1045,35 @@ export function extractTsunamiMeta(result: ActiveResult): {
       spreadingExponent: t.rimWaveExponent,
     };
   }
-  // A burst, a caldera collapse and a submarine landslide leave the
-  // field its geometric 0.5: energy spreading over a circumference is
-  // 1/√r whatever made the wave. Their own modules publish the
-  // far-field row along Lamb 1932's 1/r instead, which is geometry
-  // plus the dispersion a short wave suffers over a thousand
-  // kilometres — right there, and fatal in the near field, where it
-  // would put the Sunda Strait coasts under half a metre of water
-  // that drowned four hundred people. The two laws are pinned apart,
-  // with the reason, in fieldScalarAgreement.test.ts.
+  // A burst's wave is Glasstone & Dolan's, and it was measured: the
+  // train's height falls as 1/R with its dispersion already inside
+  // it, so the veil takes that exponent and no dispersion on top, and
+  // the source radius and amplitude the module publishes put it
+  // exactly on the relation beyond the near field. It is made in the
+  // water the burst was fired in — not the 4 km basin default, which
+  // shoaled a lagoon burst threefold — and it is short enough to feel
+  // its period, so the veil spreads and shoals it on its group velocity.
   if (result.type === 'explosion' && result.data.tsunami !== undefined) {
     const t = result.data.tsunami;
     return {
       sourceAmplitudeM: t.sourceAmplitude,
       sourceCavityRadiusM: t.cavityRadius,
-      sourceDepthM: t.meanOceanDepth,
+      sourceDepthM: t.waterDepth,
+      spreadingExponent: 1,
+      sourceWavelengthM: t.sourceWavelength,
+      sourcePeriodS: t.dominantPeriod,
+      farFieldIncludesDispersion: true,
     };
   }
+  // A caldera collapse and a submarine landslide leave the field its
+  // geometric 0.5: energy spreading over a circumference is 1/√r
+  // whatever made the wave. Their own modules publish the far-field
+  // row along Lamb 1932's 1/r instead, which is geometry plus the
+  // dispersion a short wave suffers over a thousand kilometres — right
+  // there, and fatal in the near field, where it would put the Sunda
+  // Strait coasts under half a metre of water that drowned four
+  // hundred people. The two laws are pinned apart, with the reason, in
+  // fieldScalarAgreement.test.ts.
   if (result.type === 'volcano' && result.data.tsunami !== undefined) {
     const t = result.data.tsunami;
     return {
@@ -1390,6 +1407,12 @@ async function computeBathymetricLayerForResult(
         }),
         ...(tsunamiMeta.sourceWavelengthM !== undefined && {
           sourceWavelengthM: tsunamiMeta.sourceWavelengthM,
+        }),
+        ...(tsunamiMeta.sourcePeriodS !== undefined && {
+          sourcePeriodS: tsunamiMeta.sourcePeriodS,
+        }),
+        ...(tsunamiMeta.farFieldIncludesDispersion !== undefined && {
+          farFieldIncludesDispersion: tsunamiMeta.farFieldIncludesDispersion,
         }),
       }),
       // Phase 11 — splice in the global low-res mosaic when
@@ -2827,9 +2850,12 @@ export const useAppStore = create<AppStore>((set, get) => ({
       return;
     }
     // Pull the source amplitude + basin depth from the active result.
-    // Supports impact (Ward-Asphaug cavity), earthquake (megathrust
-    // uplift) and explosion (underwater-burst cavity); volcano +
-    // landslide are out of scope for the seismic radial pipeline.
+    // Supports impact (Ward-Asphaug cavity) and earthquake (megathrust
+    // uplift). Volcano, landslide and explosion are out of scope for
+    // the seismic radial pipeline: it spreads the source amplitude
+    // over a Gaussian 350 km across in a solver with no dispersion,
+    // which for a burst whose wave is a few hundred metres long and
+    // already measured would be a different and much larger event.
     let sourceAmplitudeM = 0;
     let basinDepthM = 4_000;
     if (result.type === 'impact' && result.data.tsunami !== undefined) {
@@ -2838,14 +2864,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
     } else if (result.type === 'earthquake' && result.data.tsunami !== undefined) {
       sourceAmplitudeM = result.data.tsunami.initialAmplitude;
       basinDepthM = 4_000;
-    } else if (result.type === 'explosion' && result.data.tsunami !== undefined) {
-      sourceAmplitudeM = result.data.tsunami.sourceAmplitude;
-      basinDepthM = result.data.tsunami.meanOceanDepth;
     } else {
       set({
         deepDiveStatus: 'error',
         deepDiveError:
-          'Active scenario has no tsunami source — Deep Dive only runs on tsunami-bearing events',
+          'Deep Dive runs on impact and earthquake tsunamis only — the radial solver cannot represent a volcano, landslide or explosion source',
       });
       return;
     }

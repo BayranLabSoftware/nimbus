@@ -238,11 +238,12 @@ Carlo wrappers for sampled inputs).
 | Thermal horizon               | casualties.ts                       | d = R⊕ · arccos(R⊕ / (R⊕ + R_f)); R_f = 0.002 · E^(1/3) impact, 55 · W^0.4 nuclear                                                                                                               | Collins et al. 2005; Glasstone & Dolan 1977 §2.120               | geometry    |
 | Mass-fire casualties          | casualties.ts                       | 30 % (10–80) of the survivors inside the firestorm sustain radius                                                                                                                                | Glasstone & Dolan 1977 ch. VII; Postol 1986                      | ×3          |
 | Later deaths                  | casualties.ts                       | 30 % (10–60) of the prompt injured, first day to first month                                                                                                                                     | OTA 1979 ch. II                                                  | ×2–3        |
-| Explosion wave coupling       | events/explosion/underwaterBurst.ts | η(z/W^(1/3)) log-normal peaked at 4 m·kt^(−1/3), × 8 % at the peak                                                                                                                               | Glasstone & Dolan 1977 §6.40; Le Méhauté & Wang 1996             | ±50 %       |
-| Dispersion in the veil        | tsunami/dispersion.ts               | D = (4π²/6)·r·h²/λ³; A ×= (1 + D)^(−1/2), so 1/√r near and 1/r far                                                                                                                               | Kajiura 1963; Watada et al. 2014; calibrated on Crossroads Baker | ×2          |
+| Explosion waves               | events/explosion/underwaterBurst.ts | H·R = 40 500·W^0.54 ft² in deep water, 150·d_w·W^0.25 ft² in shallow; T = 14.1·W^0.144 s; A = H/2; held inside max(bubble radius, Miche breaking radius)                                         | Glasstone & Dolan 1977 §6.119–6.121; Miche 1944                  | ±35 %       |
+| Dispersion in the veil        | tsunami/dispersion.ts               | D = (4π²/6)·r·h²/λ³; A ×= (1 + D)^(−1/2), so 1/√r near and 1/r far                                                                                                                               | Kajiura 1963; Watada et al. 2014; not on an explosion's 1/R wave | ×2          |
 | Tsunami casualties            | tsunamiCasualties.ts                | H = √(A · min(R, A)); X = 0.06 · H^(4/3) / n², n = 0.03 (≤ 10 km); people = land density × X × coast; ν(h) = Φ(ln(h/θ)/β), h = H/2, θ = 8 m unwarned → 16 m warned by arrival, 4 m high, β = 0.8 | Koshimura et al. 2009; Jonkman et al. 2008                       | ×3          |
 | Casualty sweep                | casualtyTimeline.ts                 | deaths(t) = Σ deaths(band) · swept-area fraction at t; t(r) from the shock integral, r/3.5 km/s, r/30 m/s, r/400 m/s                                                                             | Kinney & Graham 1985; Dziewonski & Anderson 1981; Kieffer 1981   | timing only |
-| Tsunami arrival time          | tsunami/fastMarching.ts             | eikonal `\|∇T\|² = 1/c²`, c = √(gh)                                                                                                                                                              | Sethian 1996                                                     | ±15%        |
+| Tsunami arrival time          | tsunami/fastMarching.ts             | eikonal `\|∇T\|² = 1/c²`, c = √(gh), or the group velocity of an explosion wave's period                                                                                                         | Sethian 1996                                                     | ±15%        |
+| Linear waves of a period      | tsunami/linearWaves.ts              | ω² = g·k·tanh(k·h); c_g = n·ω/k, n = ½(1 + 2kh / sinh 2kh); shoaling A ∝ c_g^(−1/2)                                                                                                              | Lamb 1932 §228–237; Fenton & McKee 1990                          | exact       |
 | Tsunami shoaling              | events/tsunami/propagation.ts       | A_s = A_d (h_d / h_s)^¼                                                                                                                                                                          | Green 1838                                                       | ±25%        |
 | Tsunami runup                 | events/tsunami/extendedEffects.ts   | R = 2.831 d √(cot β) (H/d)^(5/4)                                                                                                                                                                 | Synolakis 1987                                                   | ±30%        |
 | Submarine landslide tsun.     | events/volcano/tsunami.ts           | η₀ = K·(γ/γ_ref)·V^(1/3)·sinθ, γ = ρ_s/ρ_w − 1                                                                                                                                                   | Watts 2000 (inspired)                                            | ±factor 2   |
@@ -520,11 +521,86 @@ flat sea of the measured depth; a test draws the whole field — fast
 marching included — on a flat lagoon and requires the two to agree
 within 3 %.
 
-What re-reading the chapter found beside Baker is not settled here and
-is in the roadmap: the explosion source's calibration cites a table
-the 1977 edition does not have, and against the book's deep-water
-relation the model's burst is five to nine times under even at its own
-optimum depth.
+What re-reading the chapter found beside Baker was settled later the
+same day, in the next section: the explosion source's calibration cited
+a table the 1977 edition does not have, and against the book's
+deep-water relation the burst was five to nine times under even at its
+own optimum depth. The figures in the table above are that source's.
+
+### The burst's wave, as Glasstone & Dolan give it (14 September 2026)
+
+`src/physics/events/explosion/underwaterBurst.ts`. The source that
+passed Baker was a Ward & Asphaug cavity dug by 8 % of the yield and
+scaled by a log-normal depth-of-burst curve, and all three numbers were
+the project's own, two of them credited to Glasstone pages that do not
+say them. It is replaced by what the book gives:
+
+- **Deep water** (§6.119): the train's height from crest to trough is
+  H ≈ 40 500·W^0.54 / R (feet, kilotons), to about 35 %, for water
+  256–850·W^0.25 ft deep — the lower limit is the gas bubble's maximum
+  diameter — and "for any depth of burst within the water".
+- **Shallow water** (§6.121): d_w < 100·W^0.25 ft, "such as Bikini
+  BAKER", H ≈ 150·d_w·W^0.25 / R.
+- **The peak wave** (§6.119): T ≈ 14.1·W^0.144 s, and L ≈ 1 010·W^0.288 ft,
+  which is exactly the deep-water length of a wave of that period.
+
+The model propagates amplitudes, so A = H/2. Three things the book does
+not give are said rather than invented: between 100 and 256·W^0.25 ft of
+water the product H·R is carried geometrically from one relation to the
+other; near the burst the amplitude is held inside the radius where the
+relation's height would be steeper than the water can hold,
+H = 0.142·L·tanh(2πh/L) (Miche 1944), or inside the gas bubble; and a
+burst on or above the water, or in the seabed, is not within the water
+and makes no wave, so the wave steps where the charge goes under — a
+step the validation report declares.
+
+**The period decides the speed, and so the shoaling.** A megatonne's
+peak wave has a 38 s period and is 2.3 km long, so over four kilometres
+of ocean it does not feel the bottom, and its energy travels at the
+group velocity of linear theory, g·T/(4π) ≈ 30 m/s, where every other
+wave in the pipeline travels at √(g·h) = 198 m/s. The arrival-time
+solver takes the period and moves the fronts at that speed; the veil
+reads its path length on the same speed and shoals by conserving energy
+flux, A ∝ c_g^(−1/2) — which for a long wave is Green's law and for this
+one is the "initial small decrease, then increase" of §6.120. The
+relation is 1/R with the train's dispersion already in it, so the veil
+takes exponent one and does not disperse it again, and the wave starts
+from the water the burst was fired in rather than the 4 km default that
+shoaled a lagoon burst threefold. Deep Dive no longer offers itself for
+an explosion: its solver spreads the source over a 350 km Gaussian with
+no dispersion, which for a wave a few hundred metres long is a different
+event.
+
+**Against Baker's own table**, with nothing fitted to Baker, the shallow
+relation reads 0.68–0.71 of the tabulated heights out to 2 000 yards,
+where the table's H·R is constant within 3 % — inside the book's 35 %,
+and gated. From 2 700 yards the table's H·R rises 13–17 % because the
+highest wave passes back into the train (§6.56), and the relation reads
+about six tenths: those rows, the ninth wave at 22 000 ft (half) and the
+Saratoga's crest (two thirds) are declared with their reasons. The
+source this replaced read 0.75–0.84 — nearer, for reasons that were not
+its own.
+
+What it changes, on the same flat seas:
+
+| burst                             | globe at 10 km, before → after | row at 100 km, before → after | speed, before → after |
+| --------------------------------- | ------------------------------ | ----------------------------- | --------------------- |
+| 1 Mt, 40 m down, 4 km of ocean    | 0.21 m → 7.8 m                 | 0.56 m → 0.78 m               | 198 → 30 m/s          |
+| 1 Mt, 1 000 m down, 4 km of ocean | nothing → 7.8 m                | nothing → 0.78 m              | 198 → 30 m/s          |
+| 20 kt, 11 m down, 300 m of shelf  | 0.16 m → 0.95 m                | 0.085 m → 0.095 m             | 198 → 17 m/s          |
+| 100 kt, 30 m down, 91 m of water  | 1.3 m → 0.66 m                 | 0.16 m → 0.066 m              | 198 → 21 m/s          |
+| Crossroads Baker, 61 m lagoon     | 0.39 m → 0.31 m                | 0.054 m → 0.031 m             | 198 → 17 m/s          |
+
+A deep-water burst now makes the wave the book says it makes, where the
+globe used to draw a few centimetres; a shallow one makes a smaller
+wave, as §6.121 says it should.
+
+**None of it reaches a reader of the page yet.** The panel takes a
+height of burst of zero or more and the input schema refuses a negative
+one, so a burst on the page is never within the water and makes no wave
+— before this change and after it. The rebuild lives in the physics, the
+validation harness, the report and the panel rows that will show it; a
+depth of burst in the panel is its own decision, and the roadmap has it.
 
 ### Burns, mass fire and later deaths (Phase 24)
 

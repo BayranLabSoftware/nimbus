@@ -1,4 +1,5 @@
 import { dispersionDecay, dispersionParameter } from './dispersion.js';
+import { propagationSpeed } from './linearWaves.js';
 import { spreadingFactor } from './spreading.js';
 import { bearingFromRupture } from './ruptureGeometry.js';
 import { directivityFactor } from './directivity.js';
@@ -129,6 +130,18 @@ export interface AmplitudeFieldInput {
    *  Wünnemann 2010 rim-wave exponent. Values outside (0, 3] are
    *  clamped. */
   spreadingExponent?: number;
+  /** Period of the wave (s), for a source short enough to feel it — an
+   *  explosion. Its speed is then the group velocity of that period,
+   *  both for the path length read off the arrival time and for the
+   *  shoaling, which conserves the energy flux: A ∝ c_g^(−1/2). For a
+   *  long wave that is exactly Green's law, so omitting the period
+   *  changes nothing for any other source. */
+  sourcePeriodS?: number;
+  /** The far field was measured rather than derived: its decay with
+   *  range already contains the train's dispersion, as Glasstone &
+   *  Dolan's 1/R for explosion waves does, so the dispersion parameter
+   *  is not applied on top of it. */
+  farFieldIncludesDispersion?: boolean;
 }
 
 export interface AmplitudeField {
@@ -160,6 +173,8 @@ export type VeilSource = Pick<
   | 'strikeDeg'
   | 'ruptureLengthM'
   | 'surfaceGravity'
+  | 'sourcePeriodS'
+  | 'farFieldIncludesDispersion'
 >;
 
 /**
@@ -201,17 +216,26 @@ export function veilLaw(source: VeilSource): VeilLaw {
   const q = Number.isFinite(source.spreadingExponent)
     ? Math.min(3, Math.max(0.05, source.spreadingExponent ?? 0.5))
     : 0.5;
-  const c0 = Math.sqrt(g * sourceDepth);
+  const periodS =
+    source.sourcePeriodS !== undefined && source.sourcePeriodS > 0
+      ? source.sourcePeriodS
+      : undefined;
+  const dispersive = source.farFieldIncludesDispersion !== true;
+  const c0 = propagationSpeed(sourceDepth, periodS, g);
 
   return (T, depthM, bearingDeg) => {
     const h = Math.max(depthM, MIN_PROPAGATION_DEPTH);
-    const cLocal = Math.sqrt(g * h);
+    const cLocal = propagationSpeed(h, periodS, g);
 
-    // Green's law shoaling: amplitude grows as (h₀/h)^(1/4).
+    // Shoaling by conservation of energy flux, A ∝ c^(−1/2). For a
+    // long wave c = √(g·h) and this is Green's law, (h₀/h)^(1/4); for
+    // a period-carrying wave c is its group velocity, which barely
+    // changes until the water is shallower than about a third of the
+    // wavelength (Glasstone & Dolan §6.120).
     // Cap at SHOALING_CAP to honour the McCowan 1894 wave-breaking
     // limit — beyond ~4× the linear shallow-water envelope is not
     // physical, the wave breaks and dissipates instead.
-    const shoaling = Math.min((sourceDepth / h) ** 0.25, SHOALING_CAP);
+    const shoaling = Math.min(Math.sqrt(c0 / cLocal), SHOALING_CAP);
 
     // Geometric spreading via the FMM travel time. Use the geometric
     // mean of c₀ and c_local as the path-averaged celerity — a
@@ -229,9 +253,11 @@ export function veilLaw(source: VeilSource): VeilLaw {
     // of a flank collapse or a depth charge spreads into its train
     // within a few hundred kilometres — which is the difference
     // between the Sunda Strait reading metres and reading nothing.
-    const dispersion = dispersionDecay(
-      dispersionParameter({ rangeM: r, depthM: h, wavelengthM: sourceWavelengthM })
-    );
+    const dispersion = dispersive
+      ? dispersionDecay(
+          dispersionParameter({ rangeM: r, depthM: h, wavelengthM: sourceWavelengthM })
+        )
+      : 1;
 
     // Directivity. An unoriented source leaves this at one, so a
     // crater or a collapse is unaffected and needs no special case.
