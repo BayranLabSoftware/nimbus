@@ -71,6 +71,12 @@ describe('every check says whether the model was set on it', () => {
       'Kaikōura 2016 toll',
       'Pohang 2017 toll',
       'Durrës (Albania) 2019 toll',
+      // The second group, written down in f49cc41 before it was run.
+      'Illapel 2015 wave',
+      'Grímsvötn 2011 plume',
+      'Calbuco 2015 plume',
+      'Fuego 2018 toll',
+      'Unzen 1991 toll',
     ]);
   });
 });

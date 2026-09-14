@@ -33,7 +33,7 @@ import type { EarthquakeScenarioResult } from '../events/earthquake/simulate.js'
 import type { ExplosionScenarioResult } from '../events/explosion/simulate.js';
 import type { LandslideScenarioResult } from '../events/landslide/simulate.js';
 import type { VolcanoScenarioResult } from '../events/volcano/simulate.js';
-import { HELD_OUT_EARTHQUAKE_ANCHORS } from './heldOutAnchors.js';
+import { HELD_OUT_EARTHQUAKE_ANCHORS, HELD_OUT_SECOND_GROUP_ANCHORS } from './heldOutAnchors.js';
 
 /** The event families the envelope knows how to place. */
 export type EnvelopeEventType = 'impact' | 'explosion' | 'earthquake' | 'volcano' | 'landslide';
@@ -497,6 +497,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
   // --- Held out of every fit, written down before they were run
   //     (heldOutEvents.ts). -----------------------------------------
   ...HELD_OUT_EARTHQUAKE_ANCHORS,
+  ...HELD_OUT_SECOND_GROUP_ANCHORS,
 ];
 
 /**

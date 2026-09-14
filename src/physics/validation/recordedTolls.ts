@@ -13,7 +13,7 @@ import { estimateCasualties, type CasualtyEstimate } from '../casualties.js';
 import { EXPLOSION_PRESETS, simulateExplosion } from '../events/explosion/simulate.js';
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
 import { VOLCANO_PRESETS, simulateVolcano } from '../events/volcano/simulate.js';
-import { HELD_OUT_EARTHQUAKES } from './heldOutEvents.js';
+import { HELD_OUT_EARTHQUAKES, HELD_OUT_VOLCANO_TOLLS } from './heldOutEvents.js';
 import { shippedCountryAt, shippedPopulationInRadius } from './shippedPopulation.js';
 
 /**
@@ -255,6 +255,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
   // Held out of every fit, and written down before they were run:
   // heldOutEvents.ts has the rules they came in under.
   ...HELD_OUT_EARTHQUAKES,
+  ...HELD_OUT_VOLCANO_TOLLS,
 ];
 
 export interface TollComparison {

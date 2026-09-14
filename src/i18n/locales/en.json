@@ -1363,7 +1363,7 @@
       },
       "occupancy": {
         "label": "The map counts residents, not who was there at that hour",
-        "body": "Mount St Helens erupted at 08:32 on a Sunday. Its closed zones reached about eight kilometres and the lateral blast went nearly four times further, so the model is right to treat the blast sector as unwarned — only three of the 57 dead were inside the red zone. But it fills that sector from a map of where people live, which puts 586 residents in it, and the blast came into logging land whose crews were not working that day."
+        "body": "Mount St Helens erupted at 08:32 on a Sunday. Its closed zones reached about eight kilometres and the lateral blast went nearly four times further, so the model is right to treat the blast sector as unwarned — only three of the 57 dead were inside the red zone. But it fills that sector from a map of where people live, which puts 586 residents in it, and the blast came into logging land whose crews were not working that day. Held out, Unzen 1991 is the same problem the other way round: the 43 killed by its flow were mostly journalists, firefighters and police inside a valley its residents had been advised to leave, and a map of residents has no way to hold them."
       },
       "mechanismNotModelled": {
         "label": "They died of something the model does not simulate",
@@ -1451,7 +1451,7 @@
       },
       "volcanoCalibrations": {
         "item": "The volcanic relations are this project's calibrations",
-        "note": "How far pyroclastic currents run, where ash falls, how far lahars travel and how much an eruption cools the climate are set on reference eruptions that the source review of September 2026 did not go back to check."
+        "note": "How far pyroclastic currents run, where ash falls, how far lahars travel and how much an eruption cools the climate are set on reference eruptions that the source review of September 2026 did not go back to check. A current is drawn as a disc around the vent: at Fuego in 2018 the model's disc reaches 3.7 km while the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because the two errors cancel."
       },
       "impactToll": {
         "item": "No impact toll can ever be checked",

@@ -15,7 +15,9 @@ import { PLUME_HEIGHT_OBSERVATIONS } from './fixtures.js';
  */
 
 describe('Volcano validation — plume height vs published observations', () => {
-  for (const obs of PLUME_HEIGHT_OBSERVATIONS) {
+  // Held-out rows are measured and printed in the validation report
+  // without a gate (heldOutEvents.ts, rule 10).
+  for (const obs of PLUME_HEIGHT_OBSERVATIONS.filter((o) => o.gated !== false)) {
     it(`${obs.event}: Mastin 2009 prediction matches ${obs.observedPlumeHeightKm.toString()} km ±${obs.toleranceKm.toString()} km (${obs.source})`, () => {
       const heightM = plumeHeight({
         volumeEruptionRate: obs.volumeEruptionRate,

@@ -247,6 +247,104 @@
         "cause": null,
         "role": "heldOut",
         "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10461: 51 deaths; USGS us70006d0m, Mww 6.4"
+      },
+      {
+        "event": "Fuego 2018",
+        "recorded": 430,
+        "recordedLow": 201,
+        "recordedHigh": 445,
+        "model": 187,
+        "bandLow": 14,
+        "bandHigh": 304,
+        "ratio": 0.435,
+        "contains": true,
+        "gated": false,
+        "cause": null,
+        "role": "heldOut",
+        "source": "CONRED: 201 dead and 229 missing in the official count (Emisoras Unidas, 3 June 2026); 113 dead (INACIF) and 332 missing (CONRED) on 4 July 2018 (CONRED bulletin 207-2018). Pyroclastic-flow deposits 49 (15.3–84.5) × 10⁶ m³, 11.7 km down the Las Lajas ravine (Ferrés & Escobar Wolf 2018, Table 1); no evacuation zone in force"
+      },
+      {
+        "event": "Unzen 1991",
+        "recorded": 43,
+        "recordedLow": 40,
+        "recordedHigh": 43,
+        "model": 10,
+        "bandLow": 8,
+        "bandHigh": 14,
+        "ratio": 0.233,
+        "contains": false,
+        "gated": false,
+        "cause": "occupancy",
+        "role": "heldOut",
+        "source": "43 dead or missing, 40 and 3, from the 3 June 1991 flow and its surge (Sugimoto & Nagai 2009, doi:10.15017/13523; Cabinet Office 2007 report, p. 210); the flow deposit 0.6 × 10⁶ m³ (Nakada & Fujii 1993, as given by Shimizu 2022, J. Disaster Res. 17: 768); all 43 inside an evacuation advisory drawn by district"
+      }
+    ],
+    "plumes": [
+      {
+        "eruption": "Pinatubo 1991",
+        "volumeEruptionRate": 170000,
+        "observedKm": 35,
+        "toleranceKm": 8,
+        "modelKm": 36.439,
+        "contains": true,
+        "gated": true,
+        "role": "sameSource",
+        "source": "Mastin et al. 2009 Table 1 + Holasek et al. 1996"
+      },
+      {
+        "eruption": "Mount St Helens 1980",
+        "volumeEruptionRate": 50000,
+        "observedKm": 25,
+        "toleranceKm": 5,
+        "modelKm": 27.132,
+        "contains": true,
+        "gated": true,
+        "role": "tuned",
+        "source": "Mastin et al. 2009 Table 1 + Carey & Sigurdsson 1985"
+      },
+      {
+        "eruption": "Krakatau 1883",
+        "volumeEruptionRate": 500000,
+        "observedKm": 40,
+        "toleranceKm": 10,
+        "modelKm": 47.259,
+        "contains": true,
+        "gated": true,
+        "role": "unestablished",
+        "source": "Self & Rampino 1981 reconstruction"
+      },
+      {
+        "eruption": "Grímsvötn 2011",
+        "volumeEruptionRate": 3000,
+        "observedKm": 14.55,
+        "toleranceKm": 4,
+        "modelKm": 13.773,
+        "contains": true,
+        "gated": false,
+        "role": "heldOut",
+        "source": "IVESPA 1.0 (Aubry et al. 2021, J. Volcanol. Geotherm. Res. 417: 107295; data CC0), GRI2011_01: 7.29 × 10¹¹ kg in 27 h, ash plume top 16 ± 4 km a.s.l., vent at 1 450 m"
+      },
+      {
+        "eruption": "Calbuco 2015 (22 April)",
+        "volumeEruptionRate": 7481.5,
+        "observedKm": 17.997,
+        "toleranceKm": 3,
+        "modelKm": 17.166,
+        "contains": true,
+        "gated": false,
+        "role": "heldOut",
+        "source": "IVESPA 1.0 (Aubry et al. 2021, J. Volcanol. Geotherm. Res. 417: 107295; data CC0), CAL2015_01: 1.01 × 10¹¹ kg in 1.5 h, plume top 20 ± 3 km a.s.l.; CAL2015_02: 2.81 × 10¹¹ kg in 6.12 h, plume top 21 ± 3 km; vent at 2 003 m"
+      },
+      {
+        "eruption": "Calbuco 2015 (23 April)",
+        "volumeEruptionRate": 5101.7,
+        "observedKm": 18.997,
+        "toleranceKm": 3,
+        "modelKm": 15.653,
+        "contains": true,
+        "gated": false,
+        "role": "heldOut",
+        "source": "IVESPA 1.0 (Aubry et al. 2021, J. Volcanol. Geotherm. Res. 417: 107295; data CC0), CAL2015_01: 1.01 × 10¹¹ kg in 1.5 h, plume top 20 ± 3 km a.s.l.; CAL2015_02: 2.81 × 10¹¹ kg in 6.12 h, plume top 21 ± 3 km; vent at 2 003 m"
       }
     ],
     "waves": [
@@ -444,6 +542,19 @@
         "gated": true,
         "role": "tuned",
         "source": "Genevois & Ghirotti 2005: the wave crested 140 m above the top of the dam (elsewhere, more than 100 m above the crest); the lake stood 25 m below the crest that night (ASDSO) — 125 to 165 m above the water"
+      },
+      {
+        "record": "Illapel 2015 at DART 32402",
+        "rangeM": 581900,
+        "observedLowM": 0.0545,
+        "observedHighM": 0.22,
+        "modelM": 0.106,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": false,
+        "role": "heldOut",
+        "source": "DART 32402 (SHOA; 26.743 °S, 73.983 °W, 4 070 m of water, NOAA NDBC), 582 km from the USGS epicentre: a zero-to-crest maximum of 10.9 cm (Heidarzadeh et al. 2016, Geophys. Res. Lett. 43: 643) and 11 cm on the first crest (Tang et al. 2016, Pure Appl. Geophys. 173: 369); USGS us20003k7a, Mww 8.3"
       }
     ],
     "footprint": {
@@ -694,6 +805,24 @@
         "interpolatedLow": 1,
         "interpolatedHigh": 647,
         "comparable": true,
+        "lowComparable": false
+      },
+      {
+        "event": "Fuego 2018",
+        "measuredLow": 14,
+        "measuredHigh": 304,
+        "interpolatedLow": 14,
+        "interpolatedHigh": 304,
+        "comparable": true,
+        "lowComparable": false
+      },
+      {
+        "event": "Unzen 1991",
+        "measuredLow": 8,
+        "measuredHigh": 14,
+        "interpolatedLow": 8,
+        "interpolatedHigh": 14,
+        "comparable": false,
         "lowComparable": false
       }
     ],
@@ -1148,6 +1277,81 @@
           }
         },
         "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10461: 51 deaths; USGS us70006d0m, Mww 6.4"
+      },
+      {
+        "name": "Illapel 2015",
+        "eventType": "earthquake",
+        "quantities": [
+          "wave"
+        ],
+        "gated": [],
+        "use": {
+          "wave": {
+            "role": "heldOut",
+            "how": "Chosen in docs/ROADMAP.md (M9, move 0) as a megathrust the coupling was not tuned on, and put in the net under rule 7 of heldOutEvents.ts before the model was run on it: inputs from the USGS ComCat origin and moment tensor, the buoy where NOAA lists it, the record from two published readings, a factor of two either way fixed before the run, no gate, no re-tuning."
+          }
+        },
+        "source": "DART 32402 (SHOA; 26.743 °S, 73.983 °W, 4 070 m of water, NOAA NDBC), 582 km from the USGS epicentre: a zero-to-crest maximum of 10.9 cm (Heidarzadeh et al. 2016, Geophys. Res. Lett. 43: 643) and 11 cm on the first crest (Tang et al. 2016, Pure Appl. Geophys. 173: 369); USGS us20003k7a, Mww 8.3"
+      },
+      {
+        "name": "Grímsvötn 2011",
+        "eventType": "volcano",
+        "quantities": [
+          "plume"
+        ],
+        "gated": [],
+        "use": {
+          "plume": {
+            "role": "heldOut",
+            "how": "After the eruptions Mastin et al. 2009 fitted, and put in the net under rule 8 of heldOutEvents.ts: IVESPA’s independently estimated mass, duration and height for every phase, no gate, no re-tuning. Not blind — the one-line relation was computed on these numbers while the sources were read — and the rule taking every phase whatever it reads is what keeps it a check."
+          }
+        },
+        "source": "IVESPA 1.0 (Aubry et al. 2021, J. Volcanol. Geotherm. Res. 417: 107295; data CC0), GRI2011_01: 7.29 × 10¹¹ kg in 27 h, ash plume top 16 ± 4 km a.s.l., vent at 1 450 m"
+      },
+      {
+        "name": "Calbuco 2015",
+        "eventType": "volcano",
+        "quantities": [
+          "plume"
+        ],
+        "gated": [],
+        "use": {
+          "plume": {
+            "role": "heldOut",
+            "how": "After the eruptions Mastin et al. 2009 fitted, and put in the net under rule 8 of heldOutEvents.ts: IVESPA’s independently estimated mass, duration and height for both phases, no gate, no re-tuning. Not blind — the one-line relation was computed on these numbers while the sources were read — and the rule taking every phase whatever it reads is what keeps it a check."
+          }
+        },
+        "source": "IVESPA 1.0 (Aubry et al. 2021, J. Volcanol. Geotherm. Res. 417: 107295; data CC0), CAL2015_01: 1.01 × 10¹¹ kg in 1.5 h, plume top 20 ± 3 km a.s.l.; CAL2015_02: 2.81 × 10¹¹ kg in 6.12 h, plume top 21 ± 3 km; vent at 2 003 m"
+      },
+      {
+        "name": "Fuego 2018",
+        "eventType": "volcano",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [],
+        "use": {
+          "toll": {
+            "role": "heldOut",
+            "how": "Chosen in docs/ROADMAP.md (M9, move 0) as an eruption no volcanic constant was set on, and put in the net under rule 9 of heldOutEvents.ts before the model was run on it: the deposits’ volume, no evacuation radius because none was in force, the record from the official counts, no gate, no re-tuning."
+          }
+        },
+        "source": "CONRED: 201 dead and 229 missing in the official count (Emisoras Unidas, 3 June 2026); 113 dead (INACIF) and 332 missing (CONRED) on 4 July 2018 (CONRED bulletin 207-2018). Pyroclastic-flow deposits 49 (15.3–84.5) × 10⁶ m³, 11.7 km down the Las Lajas ravine (Ferrés & Escobar Wolf 2018, Table 1); no evacuation zone in force"
+      },
+      {
+        "name": "Unzen 1991",
+        "eventType": "volcano",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [],
+        "use": {
+          "toll": {
+            "role": "heldOut",
+            "how": "Chosen in docs/ROADMAP.md (M9, move 0) as an eruption no volcanic constant was set on, and put in the net under rule 9 of heldOutEvents.ts before the model was run on it: the flow deposit’s volume, no evacuation radius because the advisory was drawn by district, the record from the police count as published, no gate, no re-tuning."
+          }
+        },
+        "source": "43 dead or missing, 40 and 3, from the 3 June 1991 flow and its surge (Sugimoto & Nagai 2009, doi:10.15017/13523; Cabinet Office 2007 report, p. 210); the flow deposit 0.6 × 10⁶ m³ (Nakada & Fujii 1993, as given by Shimizu 2022, J. Disaster Res. 17: 768); all 43 inside an evacuation advisory drawn by district"
       }
     ]
   },

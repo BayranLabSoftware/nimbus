@@ -5,6 +5,7 @@ import { m } from '../units.js';
 import { DART_21413_FROM_TOHOKU_EPICENTRE_M } from './noaaBenchmarkFixtures.js';
 import type { ActiveResult } from '../../store/useAppStore.js';
 import { globeVeilAt } from './globeVeil.js';
+import { HELD_OUT_WAVES } from './heldOutEvents.js';
 
 /**
  * Waves that were measured, and where the simulator puts them.
@@ -296,6 +297,9 @@ export const RECORDED_WAVES: RecordedWave[] = [
     caveat:
       'Tuned on this row: the confined-basin amplification, 1.8, was set so the preset stands 162 m above the lake. Until 14 September 2026 the factor was 3 and the preset stood at its 250 m depth cap, tuned on a "250 m wave" that is, in the source, the thickness of the slide.',
   },
+  // Held out of every fit, and written down before they were run:
+  // heldOutEvents.ts has the rules they came in under.
+  ...HELD_OUT_WAVES,
 ];
 
 export interface WaveComparison {

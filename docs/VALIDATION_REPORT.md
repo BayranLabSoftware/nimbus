@@ -13,10 +13,10 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 
 ## Summary
 
-- **Death tolls:** 8 of 16 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
-- **Waves:** 10 of 15 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 5 misses are declared rows, each with its reason below.
+- **Death tolls:** 9 of 18 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
+- **Waves:** 11 of 16 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 5 misses are declared rows, each with its reason below.
 - **Shaking footprint:** centred at 1.18 in radius (0.76 standard errors), scatter σ_ln 0.71 against a ceiling of 0.85 from ground motion; 4 bands painted at an intensity never reached.
-- **Held out** — the rows nothing in the model was set on: death tolls 4 of 9 inside the band, waves 3 of 3. 3 of the 7 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
+- **Held out** — the rows nothing in the model was set on: death tolls 5 of 11 inside the band, waves 4 of 4, eruption columns 3 of 3. 3 of the 12 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
 
 ## Release gate
@@ -62,6 +62,8 @@ model was set on the event, which is under "Which checks are validation".
 | Kaikōura 2016 | 2 | 0 | 0 – 1 | 10^0.0 | 0.00× | **misses** | belowResolution | declared | held out |
 | Pohang 2017 | 0 | 35 | 1 – 29,628 | 10^4.5 | from nothing | **misses** | buildingStock | declared | held out |
 | Durrës (Albania) 2019 | 51 | 16 | 1 – 1,425 | 10^3.2 | 0.31× | contains | — | declared | held out |
+| Fuego 2018 | 430 (201–445) | 187 | 14 – 304 | 10^1.3 | 0.43× | contains | — | declared | held out |
+| Unzen 1991 | 43 (40–43) | 10 | 8 – 14 | 10^0.2 | 0.23× | **misses** | occupancy | declared | held out |
 
 #### Where the band misses, and why
 
@@ -81,6 +83,8 @@ model was set on the event, which is under "Which checks are validation".
 
 **Pohang 2017.** Held out, and a miss the other way: 35 dead where nobody died, on a band of 1 to 17 877 on the first run and 1 to 29 628 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. South Korea has no fatality curve of its own and borrows its region’s, one of the deadliest in the table (θ = 10.3, β = 0.10): inside the model’s MMI VII ring it kills about one in fifteen hundred of 52 188 people, where the city’s buildings killed none. The same steepness is what makes the band four orders of magnitude wide.
 
+**Unzen 1991.** Held out, and a miss: 10 dead against 40 to 43. Written after the result, as the rules in heldOutEvents.ts require. The model’s current reaches 0.84 km from the summit, where the raster puts 12 residents; the flow ran 3.2 km and its surge about 4, four times as far. And the 43 were mostly not residents: journalists, firefighters and police, with four taxi drivers and three volcanologists, inside a valley its residents had been advised to leave. A map of where people live cannot hold them, and a longer reach alone would not have found them.
+
 #### What to know about the rows that contain their record
 
 **Kokoxili (Kunlun) 2001.** The zero. A model that cannot produce it has learned to kill people who are not there.
@@ -94,6 +98,8 @@ model was set on the event, which is under "Which checks are validation".
 **Kumamoto 2016.** Held out, and inside, on a band that says little: 1 to 12 168 dead on the first run, four orders of magnitude, and 1 to 62 577 with the fatality curve’s own scatter drawn, added the same day, against a record of 49 direct to 273 in all. Written after the result, as the rules in heldOutEvents.ts require. Japan’s own PAGER curve is among the steepest in the table (β = 0.10), so the shift in intensity that one sigma of ground motion makes moves the toll by orders of magnitude. The central estimate, 332, sits between the direct and the total count; the pass is recorded as it came, and it is not evidence of much.
 
 **Durrës (Albania) 2019.** Held out, and inside: 16 dead against 51, on a band of 1 to 510 on the first run and 1 to 1 425 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. Albania borrows its region’s curve (θ = 16.2, β = 0.22). The band spans about three orders of magnitude, which is weak evidence, but it is inside the span the gated rows are held to, so this is the first held-out death toll that is not a zero to land inside a band narrow enough to have been wrong.
+
+**Fuego 2018.** Held out, and inside for the wrong reasons: 187 dead against 201 to 445. Written after the result, as the rules in heldOutEvents.ts require. The model’s current is a disc 3.7 km round the summit, L = 10 · V^⅓ on 49 × 10⁶ m³ with a project mobility, and the raster puts 207 people inside it. The current that killed ran 11.7 km down the Las Lajas ravine; a disc reaching as far would hold about 110 000. A reach three times short and a footprint that is a disc rather than a ravine land near the record by cancelling, and a pass made of them is not evidence.
 
 ### What the product's interpolation costs
 
@@ -121,6 +127,8 @@ rather than about the interpolation.
 | Kumamoto 2016 | 1 – 12,168 | 1 – 11,525 | 1.00× / 1.06× | high end only |
 | Pohang 2017 | 1 – 17,877 | 3 – 12,816 | 3.00× / 1.39× | high end only |
 | Durrës (Albania) 2019 | 1 – 510 | 1 – 647 | 1.00× / 1.27× | high end only |
+| Fuego 2018 | 14 – 304 | 14 – 304 | 1.00× / 1.00× | high end only |
+| Unzen 1991 | 8 – 14 | 8 – 14 | 1.00× / 1.00× | too few dead |
 
 Worst comparable end: **1.39×**, against a gate of 2×.
 
@@ -152,6 +160,7 @@ own 35 % accuracy for explosion waves.
 | Tōhoku 2011 at DART 21413 | 1,242 km | 0.20 m – 0.50 m | 0.30 m | contains | same | gated | tuned on it |
 | Storegga 8200 BP on the Norwegian coast | 1,000 km | 0.30 m – 3.00 m | 0.60 m | contains | 0.76 m | gated | tuned on it |
 | Vaiont 1963 at the dam | 0 m | 125.0 m – 165.0 m | 162.0 m | contains | same | gated | tuned on it |
+| Illapel 2015 at DART 32402 | 582 km | 0.05 m – 0.22 m | 0.11 m | contains | same | declared | held out |
 
 **Crossroads Baker 1946, 330 yd.** Every Baker height is printed from crest to trough, and the model computes the crest above still water, so each is halved and held to the reference's own 35 %. The model is Glasstone & Dolan's shallow-water relation (§6.121), H·R = 150·d_w·W^0.25 ft², with nothing fitted to Baker: it reads 0.68–0.71 of the tabulated heights out to 2 000 yards, the approximation the book offers for bursts "such as Bikini BAKER". Until 14 September 2026 these rows compared an amplitude with the full height, through a law the globe did not draw.
 
@@ -171,6 +180,8 @@ own 35 % accuracy for explosion waves.
 
 **Vaiont 1963 at the dam.** Tuned on this row: the confined-basin amplification, 1.8, was set so the preset stands 162 m above the lake. Until 14 September 2026 the factor was 3 and the preset stood at its 250 m depth cap, tuned on a "250 m wave" that is, in the source, the thickness of the slide.
 
+**Illapel 2015 at DART 32402.** Held out, and inside: 0.106 m against 10.9 to 11 cm, 0.97×. Written after the result, as the rules in heldOutEvents.ts require. The megathrust uplift factor was set on DART 21413 for Tōhoku; this is the first buoy it was not set on, for an earthquake some fifteen times smaller in moment at under half the distance, and it lands on the record. One buoy, near the source; the rows that would show whether it holds across a basin are still to come.
+
 _Sources:_
 
 - Crossroads Baker 1946, 330 yd — Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 94 ft at 330 yd from surface zero, 11 s after the burst
@@ -188,6 +199,23 @@ _Sources:_
 - Tōhoku 2011 at DART 21413 — DART buoy 21413, 1 242 km from the epicentre, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)
 - Storegga 8200 BP on the Norwegian coast — Bondevik et al. 2005 read run-up from tsunami deposits — 10–12 m in western Norway, 3–6 m in northeast Scotland, over 20 m on Shetland; the metre-scale open-ocean wave at a thousand kilometres is this project’s inference from them
 - Vaiont 1963 at the dam — Genevois & Ghirotti 2005: the wave crested 140 m above the top of the dam (elsewhere, more than 100 m above the crest); the lake stood 25 m below the crest that night (ASDSO) — 125 to 165 m above the water
+- Illapel 2015 at DART 32402 — DART 32402 (SHOA; 26.743 °S, 73.983 °W, 4 070 m of water, NOAA NDBC), 582 km from the USGS epicentre: a zero-to-crest maximum of 10.9 cm (Heidarzadeh et al. 2016, Geophys. Res. Lett. 43: 643) and 11 cm on the first crest (Tang et al. 2016, Pure Appl. Geophys. 173: 369); USGS us20003k7a, Mww 8.3
+
+### Eruption columns
+
+The height of the column above the vent against the eruption rate that
+fed it, by Mastin et al. 2009 (H = 2.00 · V̇^0.241, V̇ in m³ of dense rock
+per second). A row is inside when the model lands within the observation's
+own uncertainty plus half its predicted height, the scatter of the fit.
+
+| Eruption | V̇ | Observed above vent | Model | Model / record | Verdict | Standing | Role |
+|----------|---:|--------------------:|------:|---------------:|---------|----------|------|
+| Pinatubo 1991 | 170,000 m³/s | 35.0 ± 8.0 km | 36.4 km | 1.04× | contains | gated | same source |
+| Mount St Helens 1980 | 50,000 m³/s | 25.0 ± 5.0 km | 27.1 km | 1.09× | contains | gated | tuned on it |
+| Krakatau 1883 | 500,000 m³/s | 40.0 ± 10.0 km | 47.3 km | 1.18× | contains | gated | not established |
+| Grímsvötn 2011 | 3,000 m³/s | 14.6 ± 4.0 km | 13.8 km | 0.95× | contains | declared | held out |
+| Calbuco 2015 (22 April) | 7,481 m³/s | 18.0 ± 3.0 km | 17.2 km | 0.95× | contains | declared | held out |
+| Calbuco 2015 (23 April) | 5,102 m³/s | 19.0 ± 3.0 km | 15.7 km | 0.82× | contains | declared | held out |
 
 ### Shaking footprint against USGS ShakeMap
 
@@ -241,7 +269,7 @@ recorded event, carries one of these roles for each quantity it checks:
 - **held out** — none of these, as far as the code and its cited sources show.
 - **not established** — not yet checked; the note says what is open.
 
-Held out, the tables above read: death tolls **4 of 9** inside the band, waves **3 of 3** inside the record. 3 of the 7 held-out rows inside their record are a record of nothing — no dead, or no wave.
+Held out, the tables above read: death tolls **5 of 11** inside the band, waves **4 of 4** inside the record, eruption columns **3 of 3**. 3 of the 12 held-out rows inside their record are a record of nothing — no dead, or no wave.
 
 #### Tuned on it (12)
 
@@ -283,7 +311,7 @@ Held out, the tables above read: death tolls **4 of 9** inside the band, waves *
 
 **Pinatubo 1991, plume.** Mastin et al. 2009 fitted the plume-height relation the model uses on the eruptions in their Table 1, and 15 June 1991 Pinatubo is one of them. Where the preset's eruption rate comes from is not written down.
 
-#### Held out (13)
+#### Held out (18)
 
 **Beirut 2020, wave.** No coefficient decides it. The charge sat on a quay, and the model makes a wave only from a burst within the water, the case Glasstone & Dolan give relations for (§6.119). A zero from a burst on land checks that rule, not a wave law.
 
@@ -311,6 +339,16 @@ Held out, the tables above read: death tolls **4 of 9** inside the band, waves *
 
 **Durrës (Albania) 2019, toll.** Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning.
 
+**Illapel 2015, wave.** Chosen in docs/ROADMAP.md (M9, move 0) as a megathrust the coupling was not tuned on, and put in the net under rule 7 of heldOutEvents.ts before the model was run on it: inputs from the USGS ComCat origin and moment tensor, the buoy where NOAA lists it, the record from two published readings, a factor of two either way fixed before the run, no gate, no re-tuning.
+
+**Grímsvötn 2011, plume.** After the eruptions Mastin et al. 2009 fitted, and put in the net under rule 8 of heldOutEvents.ts: IVESPA’s independently estimated mass, duration and height for every phase, no gate, no re-tuning. Not blind — the one-line relation was computed on these numbers while the sources were read — and the rule taking every phase whatever it reads is what keeps it a check.
+
+**Calbuco 2015, plume.** After the eruptions Mastin et al. 2009 fitted, and put in the net under rule 8 of heldOutEvents.ts: IVESPA’s independently estimated mass, duration and height for both phases, no gate, no re-tuning. Not blind — the one-line relation was computed on these numbers while the sources were read — and the rule taking every phase whatever it reads is what keeps it a check.
+
+**Fuego 2018, toll.** Chosen in docs/ROADMAP.md (M9, move 0) as an eruption no volcanic constant was set on, and put in the net under rule 9 of heldOutEvents.ts before the model was run on it: the deposits’ volume, no evacuation radius because none was in force, the record from the official counts, no gate, no re-tuning.
+
+**Unzen 1991, toll.** Chosen in docs/ROADMAP.md (M9, move 0) as an eruption no volcanic constant was set on, and put in the net under rule 9 of heldOutEvents.ts before the model was run on it: the flow deposit’s volume, no evacuation radius because the advisory was drawn by district, the record from the police count as published, no gate, no re-tuning.
+
 #### Not established (1)
 
 **Krakatau 1883, plume.** Krakatau 1883 is not among the eruptions Mastin et al. 2009 fitted, which would make this row held out. But the preset's eruption rate, 2×10⁵ m³/s, has carried no source since the first commit, so whether it was read back from the 40 km column is not established.
@@ -337,7 +375,7 @@ these, for the quantity the panel is showing.
 - Castle Bravo 1954 — wave (gated, held out) — Fired on the Bikini reef; remembered for its crater and its fallout, not a wave
 - Tsar Bomba — wave (gated, held out) — The largest device ever fired, 1961, 4 km up over water; no wave
 
-**earthquake** (12)
+**earthquake** (13)
 
 - Amatrice 2016 — toll (declared, tuned on it) — 299 dead
 - L'Aquila 2009 — toll (gated, tuned on it) — 309 dead
@@ -351,12 +389,17 @@ these, for the quantity the panel is showing.
 - Kaikōura 2016 — toll (declared, held out) — NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10206: 2 deaths; USGS us1000778i, Mww 7.8
 - Pohang 2017 — toll (declared, held out) — NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10277: no deaths recorded, 90 injured; USGS us2000bnrs, Mww 5.5
 - Durrës (Albania) 2019 — toll (declared, held out) — NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10461: 51 deaths; USGS us70006d0m, Mww 6.4
+- Illapel 2015 — wave (declared, held out) — DART 32402 (SHOA; 26.743 °S, 73.983 °W, 4 070 m of water, NOAA NDBC), 582 km from the USGS epicentre: a zero-to-crest maximum of 10.9 cm (Heidarzadeh et al. 2016, Geophys. Res. Lett. 43: 643) and 11 cm on the first crest (Tang et al. 2016, Pure Appl. Geophys. 173: 369); USGS us20003k7a, Mww 8.3
 
-**volcano** (3)
+**volcano** (7)
 
 - Mount St Helens 1980 — toll (declared, tuned on it), plume (gated, tuned on it) — 57 dead inside a mountain closed for two months; a 24 km column
 - Pinatubo 1991 — toll (declared, held out), plume (gated, same source) — 847 dead after an evacuation that worked; a 35 km column
 - Krakatau 1883 — plume (gated, not established) — Self & Rampino 1981 — a 40 km column; its wave is not checked here
+- Grímsvötn 2011 — plume (declared, held out) — IVESPA 1.0 (Aubry et al. 2021, J. Volcanol. Geotherm. Res. 417: 107295; data CC0), GRI2011_01: 7.29 × 10¹¹ kg in 27 h, ash plume top 16 ± 4 km a.s.l., vent at 1 450 m
+- Calbuco 2015 — plume (declared, held out) — IVESPA 1.0 (Aubry et al. 2021, J. Volcanol. Geotherm. Res. 417: 107295; data CC0), CAL2015_01: 1.01 × 10¹¹ kg in 1.5 h, plume top 20 ± 3 km a.s.l.; CAL2015_02: 2.81 × 10¹¹ kg in 6.12 h, plume top 21 ± 3 km; vent at 2 003 m
+- Fuego 2018 — toll (declared, held out) — CONRED: 201 dead and 229 missing in the official count (Emisoras Unidas, 3 June 2026); 113 dead (INACIF) and 332 missing (CONRED) on 4 July 2018 (CONRED bulletin 207-2018). Pyroclastic-flow deposits 49 (15.3–84.5) × 10⁶ m³, 11.7 km down the Las Lajas ravine (Ferrés & Escobar Wolf 2018, Table 1); no evacuation zone in force
+- Unzen 1991 — toll (declared, held out) — 43 dead or missing, 40 and 3, from the 3 June 1991 flow and its surge (Sugimoto & Nagai 2009, doi:10.15017/13523; Cabinet Office 2007 report, p. 210); the flow deposit 0.6 × 10⁶ m³ (Nakada & Fujii 1993, as given by Shimizu 2022, J. Disaster Res. 17: 768); all 43 inside an evacuation advisory drawn by district
 
 **landslide** (2)
 
@@ -465,7 +508,7 @@ shows.
 - **Parts of the explosion model are the project's, not the book's.** Burn thresholds are fixed fluences of 8, 5 and 2 cal/cm² where Glasstone & Dolan make them grow with yield; the initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).
 - **No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.
 - **A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).
-- **The volcanic relations are the project's calibrations.** The reach of pyroclastic currents, the ashfall, the lahars and the climate response were set on anchors that the source review of 14 September did not recheck (docs/ROADMAP.md, move 0b).
+- **The volcanic relations are the project's calibrations, and a current is a disc.** The reach of pyroclastic currents (L = 10 · V^⅓, a project mobility), the ashfall, the lahars and the climate response were set on anchors that the source review of 14 September did not recheck (docs/ROADMAP.md, move 0b). A current is drawn as a disc about the vent: held out, Fuego 2018's reaches 3.7 km where the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because a reach three times short and a footprint far too wide cancel; Unzen 1991's reaches 0.84 km against a flow of 3.2 km.
 - **Hazards outside the count:** fallout, initial radiation, famine, disease and climate. For a Chicxulub-class impact the climate is what kills most survivors.
 - **GeoClaw sub-grid probes** below the AMR base-grid noise floor (< 1 cm) run as `it.skip` in `geoclawComparison.test.ts` — sub-grid sources, not regressions.
 - **Custom-user GeoClaw fixtures** cover eight parameter-grid samples per source class; more is a fixed compute job (docs/GEOCLAW_SETUP.md).

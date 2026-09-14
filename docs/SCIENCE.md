@@ -797,6 +797,60 @@ fifteen kilometres — the interpolated high end runs about two and a
 half times the exact one, on counts small enough to stay under the
 threshold.
 
+### The second held-out group (14 September 2026)
+
+The rest of the roadmap's list went in under the same protocol: rules
+fixed and pushed (`f49cc41`) before the model was run, no gate, no
+re-tuning, and the cause of a miss written afterwards and marked so.
+Rules 7 to 10 of `validation/heldOutEvents.ts` say what was taken from
+where.
+
+**A buoy.** Illapel 2015 (Mww 8.3, the interface plane of the USGS
+moment tensor, 353/19) at DART 32402, 582 km away over 4 070 m of water.
+Heidarzadeh et al. 2016 read a zero-to-crest maximum of 10.9 cm and Tang
+et al. 2016 11 cm on the first crest; the row accepts a factor of two
+either way, fixed before the run. The model reads 10.6 cm, 0.97×. The
+wave law's megathrust coupling was set on Tōhoku at DART 21413; this is
+an earthquake some fifteen times smaller in moment, at under half the
+distance, on a buoy nothing was set on. One buoy near its source is not a
+basin, but it is the first held-out number that is not zero to land on
+its record with a band that could have missed it.
+
+**Three eruption columns.** Every IVESPA phase of Grímsvötn 2011 and
+Calbuco 2015 (Aubry et al. 2021, which exists to pair independently
+estimated eruption rates with heights): the rate is the erupted mass over
+the phase's duration, the height IVESPA's plume top less the vent. Mastin
+et al.'s relation reads 0.95×, 0.95× and 0.82×, all inside. These are
+not blind — the relation is one line and was computed on these numbers
+while the sources were being read — and taking every phase by database
+ID is what keeps them a check rather than a choice.
+
+**Two volcanic tolls.** Fuego 2018 and Unzen 1991, with the vent where
+the Global Volcanism Program puts it, the bulk volume of the event's
+deposits, no evacuation radius, and the official counts:
+
+| eruption   | recorded  | model | band     | the model's current | the real one                 |
+| ---------- | --------- | ----- | -------- | ------------------- | ---------------------------- |
+| Fuego 2018 | 201 – 445 | 187   | 14 – 304 | a 3.7 km disc       | 11.7 km down one ravine      |
+| Unzen 1991 | 40 – 43   | 10    | 8 – 14   | a 0.84 km disc      | 3.2 km, its surge about 4 km |
+
+Fuego's row is inside and should not be read as a pass. The disc,
+L = 10 · V^⅓ with a mobility of the project's, holds 207 people round
+the summit; a disc as long as the current that killed would hold about
+110 000. A reach three times short and a footprint far too wide land near
+the record by cancelling. Unzen's row misses on both counts at once: a
+reach four times short, and dead who were journalists, firefighters and
+police in a valley its residents had been advised to leave, whom no map
+of residents can hold.
+
+What the group says, taken together: the wave law and the column
+relation hold on their first held-out events, and the pyroclastic model
+does not — it needs a mobility taken from a source and a footprint that
+follows the ground. The lahar of Nevado del Ruiz is not here because the
+net has no runout quantity. And the list itself was the weak part of the
+protocol: IVESPA alone holds 37 eruptions since 2009, so the next set can
+be chosen by a rule rather than by hand.
+
 ### Burns, mass fire and later deaths (Phase 24)
 
 The blast bands of OTA 1979 are the prompt blast and collapse count

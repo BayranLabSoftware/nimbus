@@ -57,6 +57,11 @@ import {
   type FootprintRow,
 } from '../src/physics/validation/shakemapFootprint.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../src/physics/uq/conventions.js';
+import { plumeHeight } from '../src/physics/events/volcano/plumeHeight.js';
+import {
+  PLUME_HEIGHT_OBSERVATIONS,
+  type PlumeHeightObservation,
+} from '../src/physics/validation/fixtures.js';
 import {
   CALIBRATION_ANCHORS,
   CALIBRATION_ROLES,
@@ -282,9 +287,32 @@ function useOf(rowName: string, quantity: CalibrationQuantity): CalibrationUse {
   return use;
 }
 
+interface PlumeComparison {
+  observation: PlumeHeightObservation;
+  /** Mastin et al. 2009 at the observation's eruption rate, km above
+   *  the vent. */
+  modelKm: number;
+  /** The rule plumeHeight.test.ts gates by: inside the observation's
+   *  own uncertainty plus half the predicted height, the scatter of
+   *  the fit. */
+  contains: boolean;
+}
+
+function comparePlume(observation: PlumeHeightObservation): PlumeComparison {
+  const modelKm =
+    (plumeHeight({ volumeEruptionRate: observation.volumeEruptionRate }) as number) / 1_000;
+  const tolerance = observation.toleranceKm + 0.5 * modelKm;
+  return {
+    observation,
+    modelKm,
+    contains: Math.abs(modelKm - observation.observedPlumeHeightKm) < tolerance,
+  };
+}
+
 interface CalibrationNet {
   tolls: TollComparison[];
   waves: WaveComparison[];
+  plumes: PlumeComparison[];
   footprint: FootprintRow[];
   interpolation: InterpolationCost[];
 }
@@ -293,6 +321,7 @@ function runCalibrationNet(): CalibrationNet {
   return {
     tolls: RECORDED_EVENTS.map(compareWithRecord),
     waves: RECORDED_WAVES.map(compareWave),
+    plumes: PLUME_HEIGHT_OBSERVATIONS.map(comparePlume),
     footprint: compareFootprints(),
     interpolation: RECORDED_EVENTS.map(interpolationCost).filter(
       (c): c is InterpolationCost => c !== null
@@ -373,6 +402,24 @@ function interpolationSection(net: CalibrationNet): string {
     ...rows,
     '',
     `Worst comparable end: **${worst.toFixed(2)}×**, against a gate of 2×.`,
+  ].join('\n');
+}
+
+function plumeSection(net: CalibrationNet): string {
+  const rows = net.plumes.map((c) => {
+    const o = c.observation;
+    const role = ROLE_LABEL[useOf(o.event, 'plume').role];
+    return `| ${o.event} | ${grouped(o.volumeEruptionRate)} m³/s | ${o.observedPlumeHeightKm.toFixed(1)} ± ${o.toleranceKm.toFixed(1)} km | ${c.modelKm.toFixed(1)} km | ${(c.modelKm / o.observedPlumeHeightKm).toFixed(2)}× | ${c.contains ? 'contains' : '**misses**'} | ${o.gated === false ? 'declared' : 'gated'} | ${role} |`;
+  });
+  return [
+    'The height of the column above the vent against the eruption rate that',
+    'fed it, by Mastin et al. 2009 (H = 2.00 · V̇^0.241, V̇ in m³ of dense rock',
+    "per second). A row is inside when the model lands within the observation's",
+    'own uncertainty plus half its predicted height, the scatter of the fit.',
+    '',
+    '| Eruption | V̇ | Observed above vent | Model | Model / record | Verdict | Standing | Role |',
+    '|----------|---:|--------------------:|------:|---------------:|---------|----------|------|',
+    ...rows,
   ].join('\n');
 }
 
@@ -481,8 +528,15 @@ interface HeldOut {
   zeros: number;
 }
 
-function heldOutTallies(net: CalibrationNet): { tolls: HeldOut; waves: HeldOut } {
+function heldOutTallies(net: CalibrationNet): { tolls: HeldOut; waves: HeldOut; plumes: HeldOut } {
   return {
+    plumes: heldOutTally(
+      net.plumes,
+      (c) => c.observation.event,
+      'plume',
+      (c) => c.contains,
+      () => false
+    ),
     tolls: heldOutTally(
       net.tolls,
       (t) => t.event.name,
@@ -506,8 +560,8 @@ function heldOutTallies(net: CalibrationNet): { tolls: HeldOut; waves: HeldOut }
  * a rule rather than a number, and a reader deciding whether the model
  * has been validated needs that said beside the count.
  */
-function zerosNote(held: { tolls: HeldOut; waves: HeldOut }): string {
-  const inside = held.tolls.inside + held.waves.inside;
+function zerosNote(held: { tolls: HeldOut; waves: HeldOut; plumes: HeldOut }): string {
+  const inside = held.tolls.inside + held.waves.inside + held.plumes.inside;
   const zeros = held.tolls.zeros + held.waves.zeros;
   if (inside === 0) return '';
   if (zeros === inside) {
@@ -518,7 +572,7 @@ function zerosNote(held: { tolls: HeldOut; waves: HeldOut }): string {
 
 function rolesSection(net: CalibrationNet): string {
   const held = heldOutTallies(net);
-  const { tolls, waves } = held;
+  const { tolls, waves, plumes } = held;
   const checks = CALIBRATION_ANCHORS.flatMap((a) =>
     a.quantities.map((q) => ({ anchor: a, quantity: q, use: useOf(a.name, q) }))
   );
@@ -529,7 +583,7 @@ function rolesSection(net: CalibrationNet): string {
     '',
     bullet(CALIBRATION_ROLES.map((r) => `**${ROLE_LABEL[r]}** — ${ROLE_MEANING[r]}`)),
     '',
-    `Held out, the tables above read: death tolls **${tolls.inside.toString()} of ${tolls.total.toString()}** inside the band, waves **${waves.inside.toString()} of ${waves.total.toString()}** inside the record.${zerosNote(held)}`,
+    `Held out, the tables above read: death tolls **${tolls.inside.toString()} of ${tolls.total.toString()}** inside the band, waves **${waves.inside.toString()} of ${waves.total.toString()}** inside the record, eruption columns **${plumes.inside.toString()} of ${plumes.total.toString()}**.${zerosNote(held)}`,
     '',
   ];
   for (const role of CALIBRATION_ROLES) {
@@ -660,11 +714,12 @@ function summary(net: CalibrationNet, replay: AggregateBucket, golden: Aggregate
   const held = heldOutTallies(net);
   const heldTolls = held.tolls;
   const heldWaves = held.waves;
+  const heldPlumes = held.plumes;
   return bullet([
     `**Death tolls:** ${tollContains.length.toString()} of ${net.tolls.length.toString()} events inside the model's band; ${tollGated.filter((t) => t.contains).length.toString()} of ${tollGated.length.toString()} gated rows pass. Every miss carries its cause below.`,
     `**Waves:** ${waveContains.length.toString()} of ${net.waves.length.toString()} records inside the model's figure, which is the figure the globe draws wherever the table prints no second one${net.waves.some((w) => w.globeContains === false) ? `; the globe misses ${net.waves.filter((w) => w.globeContains === false).length.toString()} of the records the model contains` : ''}.${waveMissSummary(net.waves)}`,
     `**Shaking footprint:** centred at ${bias.geometricMeanRadiusRatio.toFixed(2)} in radius (${bias.biasInStandardErrors.toFixed(2)} standard errors), scatter σ_ln ${bias.sdLn.toFixed(2)} against a ceiling of ${EXPECTED_RADIUS_SCATTER.toFixed(2)} from ground motion; ${invented.length.toString()} bands painted at an intensity never reached.`,
-    `**Held out** — the rows nothing in the model was set on: death tolls ${heldTolls.inside.toString()} of ${heldTolls.total.toString()} inside the band, waves ${heldWaves.inside.toString()} of ${heldWaves.total.toString()}.${zerosNote(held)} The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".`,
+    `**Held out** — the rows nothing in the model was set on: death tolls ${heldTolls.inside.toString()} of ${heldTolls.total.toString()} inside the band, waves ${heldWaves.inside.toString()} of ${heldWaves.total.toString()}, eruption columns ${heldPlumes.inside.toString()} of ${heldPlumes.total.toString()}.${zerosNote(held)} The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".`,
     `**Replay fixtures:** ${replay.passed.toString()} of ${replay.total.toString()} pass. **Golden dataset:** ${golden.passed.toString()} of ${golden.total.toString()} pass.`,
   ]);
 }
@@ -727,6 +782,10 @@ ${interpolationSection(net)}
 
 ${waveSection(net)}
 
+### Eruption columns
+
+${plumeSection(net)}
+
 ### Shaking footprint against USGS ShakeMap
 
 ${footprintSection(net)}
@@ -778,7 +837,7 @@ ${bullet([
   "**Parts of the explosion model are the project's, not the book's.** Burn thresholds are fixed fluences of 8, 5 and 2 cal/cm² where Glasstone & Dolan make them grow with yield; the initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).",
   "**No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.",
   "**A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).",
-  "**The volcanic relations are the project's calibrations.** The reach of pyroclastic currents, the ashfall, the lahars and the climate response were set on anchors that the source review of 14 September did not recheck (docs/ROADMAP.md, move 0b).",
+  "**The volcanic relations are the project's calibrations, and a current is a disc.** The reach of pyroclastic currents (L = 10 · V^⅓, a project mobility), the ashfall, the lahars and the climate response were set on anchors that the source review of 14 September did not recheck (docs/ROADMAP.md, move 0b). A current is drawn as a disc about the vent: held out, Fuego 2018's reaches 3.7 km where the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because a reach three times short and a footprint far too wide cancel; Unzen 1991's reaches 0.84 km against a flow of 3.2 km.",
   '**Hazards outside the count:** fallout, initial radiation, famine, disease and climate. For a Chicxulub-class impact the climate is what kills most survivors.',
   '**GeoClaw sub-grid probes** below the AMR base-grid noise floor (< 1 cm) run as `it.skip` in `geoclawComparison.test.ts` — sub-grid sources, not regressions.',
   '**Custom-user GeoClaw fixtures** cover eight parameter-grid samples per source class; more is a fixed compute job (docs/GEOCLAW_SETUP.md).',
@@ -834,6 +893,17 @@ otherwise.
         cause: t.event.cause ?? null,
         role: useOf(t.event.name, 'toll').role,
         source: t.event.source,
+      })),
+      plumes: net.plumes.map((c) => ({
+        eruption: c.observation.event,
+        volumeEruptionRate: fixed(c.observation.volumeEruptionRate, 1),
+        observedKm: fixed(c.observation.observedPlumeHeightKm, 3),
+        toleranceKm: c.observation.toleranceKm,
+        modelKm: fixed(c.modelKm, 3),
+        contains: c.contains,
+        gated: c.observation.gated !== false,
+        role: useOf(c.observation.event, 'plume').role,
+        source: c.observation.source,
       })),
       waves: net.waves.map((w) => ({
         record: w.wave.name,

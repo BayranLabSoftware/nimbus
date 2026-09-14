@@ -225,7 +225,7 @@ still out by four to a hundred: Pinatubo 97×, Amatrice 0.02×, Gorkha
 0.06×, Tōhoku's headline 11×, Sumatra's coast 0.011×, and the report's
 own DART row 5×.
 
-### 0. Which checks are validation _(labelled 14 September; five held-out earthquakes run the same day, three miss)_
+### 0. Which checks are validation _(labelled 14 September; two held-out groups run the same day)_
 
 A check the model was built to pass says the fit holds, not that the
 model is right, and until 14 September the report did not say which
@@ -308,6 +308,35 @@ a pass to mean anything — which says where the next gain is: a
 fatality model with less scatter, not a wider net. The population is
 still fixed, and G overlaps the ground-motion residual by an amount not
 separated.
+
+**The second group, run once.** The rest of the list went in the same
+day under rules 7 to 10 of `heldOutEvents.ts`, committed and pushed
+(`f49cc41`) before the model was run on it:
+
+| check                      | recorded     | model   | verdict                       |
+| -------------------------- | ------------ | ------- | ----------------------------- |
+| Illapel 2015 at DART 32402 | 10.9 – 11 cm | 10.6 cm | inside, 0.97×                 |
+| Grímsvötn 2011, column     | 14.6 ± 4 km  | 13.8 km | inside, 0.95× (not blind)     |
+| Calbuco 2015, 22 April     | 18.0 ± 3 km  | 17.2 km | inside, 0.95× (not blind)     |
+| Calbuco 2015, 23 April     | 19.0 ± 3 km  | 15.7 km | inside, 0.82× (not blind)     |
+| Fuego 2018, toll           | 201 – 445    | 187     | inside, for the wrong reasons |
+| Unzen 1991, toll           | 40 – 43      | 10      | misses                        |
+
+Illapel is the first held-out check of a number that is not zero to land
+on its record with a band that could have missed it: the wave law's
+coupling was set on Tōhoku's buoy, and on a fifteen-times smaller
+earthquake at half the distance it reads 0.97×. The columns agree with
+Mastin's relation, as they should, but were not blind. The volcanic tolls
+say what the pyroclastic model is: a disc of L = 10 · V^⅓ about the vent.
+Fuego's disc reaches 3.7 km where the current ran 11.7 km down one
+ravine, and its toll lands inside only because a reach three times short
+and a footprint far too wide cancel; Unzen's reaches 0.84 km against a
+flow of 3.2 km, and its dead were not residents. The lahar of Nevado del
+Ruiz stays out until the net has a runout quantity. What the volcanic
+rows point to is a pyroclastic model with a sourced mobility and a
+channelled footprint — and, for the whole programme, a held-out set
+chosen by rule rather than by list: IVESPA alone has 37 eruptions since
+2009 with independently estimated rates and heights.
 
 ### 0b. Every source read against its record _(done 14 September; Vaiont and explosions re-tuned, the other gaps open and declared)_
 

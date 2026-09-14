@@ -224,6 +224,8 @@ export const HELD_OUT_WAVES: readonly RecordedWave[] = [
         { depthM: 4_070, bearingDeg: 337 }
       ),
     gated: false,
+    caveat:
+      'Held out, and inside: 0.106 m against 10.9 to 11 cm, 0.97×. Written after the result, as the rules in heldOutEvents.ts require. The megathrust uplift factor was set on DART 21413 for Tōhoku; this is the first buoy it was not set on, for an earthquake some fifteen times smaller in moment at under half the distance, and it lands on the record. One buoy, near the source; the rows that would show whether it holds across a basin are still to come.',
   },
 ];
 
@@ -270,6 +272,8 @@ export const HELD_OUT_VOLCANO_TOLLS: readonly RecordedEvent[] = [
       totalEjectaVolume: 49e6,
     }),
     gated: false,
+    caveat:
+      'Held out, and inside for the wrong reasons: 187 dead against 201 to 445. Written after the result, as the rules in heldOutEvents.ts require. The model’s current is a disc 3.7 km round the summit, L = 10 · V^⅓ on 49 × 10⁶ m³ with a project mobility, and the raster puts 207 people inside it. The current that killed ran 11.7 km down the Las Lajas ravine; a disc reaching as far would hold about 110 000. A reach three times short and a footprint that is a disc rather than a ravine land near the record by cancelling, and a pass made of them is not evidence.',
   },
   {
     name: 'Unzen 1991',
@@ -284,5 +288,8 @@ export const HELD_OUT_VOLCANO_TOLLS: readonly RecordedEvent[] = [
       totalEjectaVolume: 0.6e6,
     }),
     gated: false,
+    cause: 'occupancy',
+    caveat:
+      'Held out, and a miss: 10 dead against 40 to 43. Written after the result, as the rules in heldOutEvents.ts require. The model’s current reaches 0.84 km from the summit, where the raster puts 12 residents; the flow ran 3.2 km and its surge about 4, four times as far. And the 43 were mostly not residents: journalists, firefighters and police, with four taxi drivers and three volcanologists, inside a valley its residents had been advised to leave. A map of where people live cannot hold them, and a longer reach alone would not have found them.',
   },
 ];

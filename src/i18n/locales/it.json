@@ -1450,7 +1450,7 @@
       },
       "occupancy": {
         "label": "La mappa conta i residenti, non chi c'era a quell'ora",
-        "body": "Il Mount St Helens eruttò alle 8:32 di una domenica. Le zone chiuse arrivavano a circa otto chilometri e il blast laterale andò quasi quattro volte più lontano, quindi il modello fa bene a considerare il settore del blast come non avvisato — solo tre dei 57 morti erano nella zona rossa. Ma riempie quel settore con una mappa di dove la gente abita, che ci mette 586 residenti, e il blast arrivò in una zona di taglio del legname le cui squadre quel giorno non lavoravano."
+        "body": "Il Mount St Helens eruttò alle 8:32 di una domenica. Le zone chiuse arrivavano a circa otto chilometri e il blast laterale andò quasi quattro volte più lontano, quindi il modello fa bene a considerare il settore del blast come non avvisato — solo tre dei 57 morti erano nella zona rossa. Ma riempie quel settore con una mappa di dove la gente abita, che ci mette 586 residenti, e il blast arrivò in una zona di taglio del legname le cui squadre quel giorno non lavoravano. Tenuto fuori, Unzen 1991 è lo stesso problema al contrario: i 43 uccisi dalla sua colata erano per lo più giornalisti, pompieri e poliziotti dentro una valle che i residenti erano stati invitati a lasciare, e una mappa dei residenti non ha modo di contarli."
       },
       "mechanismNotModelled": {
         "label": "Sono morti di qualcosa che il modello non simula",
@@ -1538,7 +1538,7 @@
       },
       "volcanoCalibrations": {
         "item": "Le relazioni dei vulcani sono tarature di questo progetto",
-        "note": "Quanto corrono le colate piroclastiche, dove cade la cenere, fin dove arrivano i lahar e quanto un'eruzione raffredda il clima sono fissati su eruzioni di riferimento che la revisione delle fonti di settembre 2026 non è tornata a controllare."
+        "note": "Quanto corrono le colate piroclastiche, dove cade la cenere, fin dove arrivano i lahar e quanto un'eruzione raffredda il clima sono fissati su eruzioni di riferimento che la revisione delle fonti di settembre 2026 non è tornata a controllare. Una colata è disegnata come un disco attorno alla bocca: al Fuego nel 2018 il disco del modello arriva a 3,7 km mentre la colata che ha ucciso è scesa per 11,7 km in un solo burrone, e il suo bilancio cade dentro il dato solo perché i due errori si compensano."
       },
       "impactToll": {
         "item": "Nessun bilancio d'impatto potrà mai essere verificato",

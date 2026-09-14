@@ -80,17 +80,16 @@ pnpm simulate --help      # every event, preset and override
 Listed so that an hour is not spent finding it again; whether the list
 is complete is itself a question for you.
 
-- **Many checks are fits.** Of the 31 checks in the report, 12 were set
-  on the event they check, 3 share a source with it, 2 read an input back
-  from it, 1 is undetermined and 13 are held out. Five of the held-out
-  ones are earthquakes written down and pushed before the model was run
-  on them (`src/physics/validation/heldOutEvents.ts`): two fall inside
-  their band — Kumamoto 2016 on a band four orders of magnitude wide,
-  Durrës 2019 at 0.31× — and three miss. The other held-out checks that
-  pass are records of nothing, except Gorkha, which has fallen inside
-  since the band began to draw the fatality curve's own scatter, on a
-  band almost five orders of magnitude wide.
-- **Half the death tolls miss.** 8 of 16 fall outside their band, each
+- **Many checks are fits, and the held-out ones are new.** Of the 36
+  checks in the report, 12 were set on the event they check, 3 share a
+  source with it, 2 read an input back from it, 1 is undetermined and 18
+  are held out. Ten of the held-out ones were written down and pushed
+  before the model was run on them (`src/physics/validation/heldOutEvents.ts`,
+  two groups). Of those: five earthquake tolls, two inside on wide bands
+  and three missing; Illapel 2015 at DART 32402 on its record (0.97×);
+  three eruption columns inside, declared not blind; Fuego 2018's toll
+  inside for the wrong reasons; Unzen 1991's missing.
+- **Half the death tolls miss.** 9 of 18 fall outside their band, each
   with its cause beside it. Where an earthquake's band is four or five
   orders of magnitude wide, a record inside it has passed nothing: that
   width is what PAGER's own scatter gives a single event.

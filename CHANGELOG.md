@@ -35,6 +35,22 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   entered the water. The report and the public validation page both say
   so, computed from the rows rather than written in.
 
+- **The second held-out group, run once.** Written down and pushed before
+  the model was run on it (`validation/heldOutEvents.ts`, rules 7 to 10):
+  Illapel 2015 at DART 32402, the eruption columns of Grímsvötn 2011 and
+  both phases of Calbuco 2015 from IVESPA, and the tolls of Fuego 2018 and
+  Unzen 1991. Illapel's buoy reads 10.6 cm against 10.9–11 cm (0.97×), the
+  first held-out non-zero number to land on its record on a band that
+  could have missed it; the three columns fall inside, declared not blind
+  because Mastin's one-line relation was computed on them while the
+  sources were read. Fuego's toll is inside for the wrong reasons — the
+  model's disc reaches 3.7 km where the current ran 11.7 km down one
+  ravine, and the two errors cancel — and Unzen's misses, 10 against 43,
+  on a reach four times short and dead who were not residents. The report
+  gains an eruption-column table, the occupancy cause and the volcanic gap
+  say what the rows showed, and the anchors of held-out rows move to a
+  data-only module the application can import without the rows.
+
 - **An earthquake's death-toll band carries the fatality curve's own
   scatter.** USGS PAGER publishes, for every country, how far one
   earthquake's deaths stray from its fitted curve: the `gnormvalue` in

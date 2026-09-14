@@ -13,6 +13,8 @@
  * fails — pointing the contributor at the mismatched paper.
  */
 
+import { HELD_OUT_PLUMES } from './heldOutEvents.js';
+
 /* ==========================================================================
  * Tsunami arrival times — far-field DART / tide-gauge reconstructions
  * ==========================================================================
@@ -223,7 +225,10 @@ export const PLUME_HEIGHT_OBSERVATIONS: readonly PlumeHeightObservation[] = [
     toleranceKm: 10,
     source: 'Self & Rampino 1981 reconstruction',
   },
-] as const;
+  // Held out of every fit, and written down before they were run:
+  // heldOutEvents.ts has the rules they came in under.
+  ...HELD_OUT_PLUMES,
+];
 
 /* ==========================================================================
  * Tunguska energy budget — Boslough & Crawford 2008
