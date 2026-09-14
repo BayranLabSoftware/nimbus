@@ -119,8 +119,10 @@ async function measureAll(picks: readonly Pick[]): Promise<SiteRow[]> {
   });
 }
 
+/** One site as a line: key, latitude, longitude, tiles, elevation (m),
+ *  slope (rad), Vs30 (m/s). */
 function rowText(r: SiteRow): string {
-  return `  { key: ${JSON.stringify(r.key)}, latitude: ${r.latitude.toString()}, longitude: ${r.longitude.toString()}, tiles: ${r.tiles.toString()}, elevationM: ${r.elevationM.toFixed(1)}, slopeRad: ${r.slopeRad.toPrecision(8)}, vs30: ${r.vs30.toFixed(2)} },`;
+  return `  [${JSON.stringify(r.key)}, ${r.latitude.toString()}, ${r.longitude.toString()}, ${r.tiles.toString()}, ${r.elevationM.toFixed(1)}, ${r.slopeRad.toPrecision(8)}, ${r.vs30.toFixed(2)}],`;
 }
 
 async function main(): Promise<void> {
@@ -155,15 +157,32 @@ import type { SiteRow } from './siteVs30.js';
 
 export const SITES_READ_ON = '${readOn}';
 
-/** Rule 11's rows, keyed by ComCat event. */
-export const RULE_SITES: readonly SiteRow[] = [
-${ruleSites.map(rowText).join('\n')}
-];
+type SiteLine = readonly [string, number, number, number, number, number, number];
 
-/** The net's earthquakes, keyed by the row's name. */
-export const NET_SITES: readonly SiteRow[] = [
+const site = ([key, latitude, longitude, tiles, elevationM, slopeRad, vs30]: SiteLine): SiteRow => ({
+  key,
+  latitude,
+  longitude,
+  tiles,
+  elevationM,
+  slopeRad,
+  vs30,
+});
+
+/** Rule 11's rows, keyed by ComCat event: key, latitude, longitude,
+ *  tiles, elevation (m), slope (rad), Vs30 (m/s). */
+export const RULE_SITES: readonly SiteRow[] = (
+  [
+${ruleSites.map(rowText).join('\n')}
+  ] satisfies SiteLine[]
+).map(site);
+
+/** The net's earthquakes, keyed by the row's name, in the same columns. */
+export const NET_SITES: readonly SiteRow[] = (
+  [
 ${netSites.map(rowText).join('\n')}
-];
+  ] satisfies SiteLine[]
+).map(site);
 `;
   const out = join(ROOT, 'src', 'physics', 'validation', 'siteVs30Data.ts');
   writeFileSync(out, body);

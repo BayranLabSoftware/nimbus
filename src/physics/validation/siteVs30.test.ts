@@ -1,12 +1,17 @@
 import { describe, expect, it } from 'vitest';
+import { waldAllen2007Vs30FromSlope } from '../elevation/index.js';
 import { simulateEarthquake } from '../events/earthquake/simulate.js';
 import { chooseCandidate } from './contourLaws.js';
+import { NCEI_EARTHQUAKE_ROWS } from './heldOutByRuleData.js';
+import { RECORDED_EVENTS } from './recordedTolls.js';
 import { SITE_RULES, siteVs30, type SiteRow } from './siteVs30.js';
+import { NET_SITES, RULE_SITES } from './siteVs30Data.js';
 
 /**
- * Rule 21's candidates give the simulator what they say they give, and
- * the choice between them keeps the rule in place unless beaten by the
- * margin. Nothing here reads a site of rule 20, a ShakeMap or a toll.
+ * Rule 20's sites are the rows they claim to be, rule 21's candidates
+ * give the simulator what they say they give, and the choice between
+ * them keeps the rule in place unless beaten by the margin. Nothing here
+ * scores an earthquake on a ShakeMap or a toll.
  */
 
 const site = (elevationM: number, vs30: number): SiteRow => ({
@@ -55,5 +60,26 @@ describe("rule 21's site rules", () => {
         pickOnLand: cells(0.2),
       }).winner
     ).toBe('pickOnLand');
+  });
+});
+
+describe("rule 20's sites, as stored", () => {
+  it('are one for every row of rule 11 and every earthquake of the net', () => {
+    expect(RULE_SITES.map((r) => r.key)).toEqual(NCEI_EARTHQUAKE_ROWS.map((r) => r.comcat));
+    const net = RECORDED_EVENTS.filter((e) => e.run().type === 'earthquake');
+    expect(NET_SITES.map((r) => r.key)).toEqual(net.map((e) => e.name));
+    for (const [site, event] of NET_SITES.map((r, i) => [r, net[i]] as const)) {
+      expect(site.latitude, site.key).toBe(event?.latitude);
+      expect(site.longitude, site.key).toBe(event?.longitude);
+    }
+  });
+
+  it('carry the Vs30 of their own slope', () => {
+    for (const site of [...RULE_SITES, ...NET_SITES]) {
+      expect(
+        Math.abs(site.vs30 - waldAllen2007Vs30FromSlope(site.slopeRad)),
+        site.key
+      ).toBeLessThan(0.01);
+    }
   });
 });
