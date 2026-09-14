@@ -266,7 +266,10 @@ export const VOLCANO_PRESETS = {
     input: {
       // Phase 10 audit: V_dot=4e3 gave 14.8 km plume vs Carey &
       // Sigurdsson 1985 observed 25 km. Re-tuned to V_dot=4e4 m³/s
-      // for plume H ≈ 24.7 km (Mastin 2009 Table 1 entry).
+      // for plume H ≈ 24.7 km — tuned to that column, not read from
+      // Mastin et al. 2009, whose Table 1 lists 18 May 1980 at 13.5 km
+      // (radar) and 2×10⁷ kg/s. The validation report marks this plume
+      // as tuned for that reason.
       volumeEruptionRate: 4e4,
       totalEjectaVolume: 1.2e9,
       lateralBlast: { directionDeg: 0, sectorAngleDeg: 180 }, // due-N flank
@@ -343,9 +346,11 @@ export const VOLCANO_PRESETS = {
    *  Monti Rossi cinder cone formed near Nicolosi; the Mongibello-
    *  type lava flow reached the city of Catania (≈ 17 km from the
    *  vent) and breached the city walls, destroying ~17 villages and
-   *  rebuilding the Sicilian eastern coastline. Reference: Branca
-   *  et al. (2013) "Mount Etna's 1669 eruption." Bull. Volcanol. 75:
-   *  694. DOI: 10.1007/s00445-012-0694-x. */
+   *  rebuilding the Sicilian eastern coastline. Reference: Branca,
+   *  De Beni & Proietti (2013) "The large and destructive 1669 AD
+   *  eruption at Etna volcano: reconstruction of the lava flow field
+   *  evolution and effusion rate trend." Bull. Volcanol. 75: 694.
+   *  DOI: 10.1007/s00445-013-0694-5. */
   ETNA_1669: {
     name: 'Etna 1669',
     note: '5-month flank eruption that reached Catania — Branca et al. 2013, Bull. Volcanol. 75: 694. Largest historical Etna event.',
@@ -388,8 +393,9 @@ export const VOLCANO_PRESETS = {
     note: 'Subglacial eruption that grounded European aviation — Gudmundsson et al. 2012, Sci. Rep. 2: 572. Showcases the ashfall hazard for aviation.',
     input: {
       // Phase 10 audit: V_dot=5e3 gave plume 15.6 km vs observed
-      // ~8 km (Mastin 2009 Table 1). Lowered to V_dot=300 m³/s for
-      // plume H ≈ 8 km matching observation.
+      // ~8 km. Lowered to V_dot=300 m³/s for plume H ≈ 8 km matching
+      // observation: tuned to the column. (This used to cite Mastin
+      // et al. 2009 Table 1, which predates the 2010 eruption.)
       volumeEruptionRate: 300,
       totalEjectaVolume: 2.7e8,
     } satisfies VolcanoScenarioInput,

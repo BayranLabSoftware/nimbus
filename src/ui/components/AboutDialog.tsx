@@ -9,7 +9,7 @@ const SOURCES = [
   'Schultz & Gault (1975), The Moon 12, "Seismic effects from major basin formations"',
   'Glasstone & Dolan (1977), "The Effects of Nuclear Weapons" (3rd ed.)',
   'Kinney & Graham (1985), "Explosive Shocks in Air" (2nd ed.)',
-  'Nordyke (1977), J. Geophys. Res. 82(30), "Cratering data from desert alluvium"',
+  'Nordyke (1962), J. Geophys. Res. 67(5), "An analysis of cratering data from desert alluvium"',
 ];
 
 /**

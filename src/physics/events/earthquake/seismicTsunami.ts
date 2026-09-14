@@ -30,7 +30,7 @@ import { seismicMomentFromMagnitude } from './seismicMoment.js';
  *
  * Tōhoku 2011 (Mw 9.1, L ≈ 700 km) → A₀ ≈ 6 m, which the cylindrical
  * spread and dispersion reduce to order-of-magnitude correct
- * far-field amplitudes (observed DART ~0.3 m at 1 500 km).
+ * far-field amplitudes (observed DART ~0.3 m at 1 242 km).
  *
  * References:
  *   Hanks, T. C. & Kanamori, H. (1979) JGR 84 — M₀ from Mw.
@@ -255,12 +255,11 @@ export interface SeismicTsunamiInput {
    *  and about 200 down dip, where the megathrust aspect ratio of 2.5
    *  would give 520.
    *
-   *  Nothing passes it yet. `simulateEarthquake` holds a width from
-   *  Strasser 2010 that differs from the aspect-ratio one, and handing
-   *  it over moves the source wavelength, the beam and the slip at
-   *  once — enough to break the G-TOH-DART golden case, the Tōhoku
-   *  replay fixture and the B-006 registry entry, all of which were
-   *  anchored around the aspect-ratio value. The roadmap has it. */
+   *  `simulateEarthquake` passes the width it holds — Strasser 2010's,
+   *  or a preset's override — since 9 September 2026, when the golden
+   *  case, the Tōhoku replay fixture and the B-006 registry entry were
+   *  re-anchored on it. The aspect-ratio default remains for callers
+   *  that give no width. */
   ruptureWidth?: Meters;
   /** Mean basin depth (m) — defaults to 4 000 m. */
   basinDepth?: Meters;
@@ -342,9 +341,10 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
   // decay carries the energy normalisation of a ring, √(4√π) ≈ 2.66,
   // which this row did not have.
   //
-  // The record settles it. At DART 21413, 1 500 km out and inside the
-  // main lobe, this row read 1.93 m against the 0.30 m recorded; with
-  // the field's law and the beam it reads 0.27. The gap between the
+  // The record settles it. At DART 21413, inside the main lobe, this
+  // row read 1.93 m against the 0.30 m recorded; with the field's law
+  // and the beam it reads 0.27 (both at the 1 500 km the rows used
+  // until 14 September 2026; at the buoy's real 1 242 km, 0.29). The gap between the
   // veil and the number printed beside it is closed, and what closed
   // it is an observation rather than a preference.
   const R0 = megathrustSourceRadius(W);

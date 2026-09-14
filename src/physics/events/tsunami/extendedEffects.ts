@@ -83,7 +83,8 @@ export function submarineLandslideAmplitude(slideVolumeM3: number, slopeRad: num
 
 /** Reference value: the peak open-ocean amplitude that the Ward &
  *  Asphaug 1/r formula would predict for the 2011 Tōhoku tsunami at
- *  DART buoy 21413 (1 500 km offshore).
+ *  DART buoy 21413 (1 242 km from the epicentre; 1 500 km until
+ *  14 September 2026, which no source gave).
  *
  *  A cross-check and nothing else — no product path reads it. It is
  *  an independent published formula fed an independent published
@@ -95,7 +96,7 @@ export function tohoku2011DARTReference(): Meters {
   // the rupture edge (≈100 km from source), propagated at 1/r.
   const sourceAmplitude = 2; // m
   const sourceRange = 100_000; // m
-  const dartRange = 1_500_000; // m (DART 21413)
+  const dartRange = 1_242_000; // m (DART 21413, USGS epicentre to NCEI buoy position)
   const geom = (sourceAmplitude * sourceRange) / dartRange;
   // Dispersion on this event's own wavelength and depth rather than a
   // fixed scale length. Twice the down-dip width — 205 km from the

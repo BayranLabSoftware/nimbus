@@ -66,7 +66,7 @@ model was set on the event, which is under "Which checks are validation".
 
 **Beirut 2020.** Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. The band under it is now a predictive interval rather than a range of parameters — the ten per cent a charge's yield actually varies by — and it runs 817 to 1 533, nowhere near the 218 counted. That is the right shape for this row, because what is left is neither scatter in the charge nor the casualty model but the raster underneath: at 240 m the ring is twenty times smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.
 
-**Mount St Helens 1980.** Not evacuation, and that took a measurement to see. This row was filed under it until 14 September, when the preset learned what zone had been cleared and the toll did not move: 264 of the model's 265 dead are in the lateral-blast sector between 11 and 27 km, and the closed zones reached about eight. The record agrees — only three of the 57 were inside the red zone, the blast going nearly four times further than anyone had closed. So the model is right to count that sector as unwarned. What it cannot know is who was in it: the population map puts 586 residents there, and the blast came at 08:32 on a Sunday, into logging land whose crews were not working. The predictive interval is 120 to 692 against 57.
+**Mount St Helens 1980.** Not evacuation, and that took a measurement to see. This row was filed under it until 14 September: 264 of the model's 265 dead are in the lateral-blast sector between 11 and 27 km, and the record agrees that the dead were not in the closed zones — only three of the 57 were inside the Red Zone, most in areas that had been considered safe. So the model is right to count that sector as unwarned, and the preset carries no cleared zone. (Until 14 September this note said the preset had been given one; it never was.) What it cannot know is who was in it: the population map puts 586 residents there, and the blast came at 08:32 on a Sunday, into logging land whose crews were not working. The predictive interval is 120 to 692 against 57.
 
 **Pinatubo 1991.** The model now knows the zone was cleared — PHIVOLCS widened it to 40 km before the climax — and reads 82 dead where it read 82 477: the currents' mortality in a cleared zone, measured at Merapi in 2010, over the 91 641 people the map puts inside their reach. It misses the 847 counted from below, and should: most of Pinatubo's dead were killed by roofs collapsing under ash wetted by Typhoon Yunya, and by disease in the evacuation camps, neither of which this model simulates. Rounding the Merapi ratio up to one per cent, as the band's high end does, would land the toll within ten per cent of the record — for the wrong dead.
 
@@ -129,7 +129,7 @@ own 35 % accuracy for explosion waves.
 | Castle Bravo 1954 | 300 m | no wave | 0.00 m | contains | same | gated | held out |
 | Ivy Mike 1952 | 300 m | no wave | 0.00 m | contains | same | gated | held out |
 | Beirut 2020 | 300 m | 0.00 m – 2.00 m | 0.00 m | contains | same | gated | held out |
-| Tōhoku 2011 at DART 21413 | 1,500 km | 0.20 m – 0.50 m | 0.27 m | contains | same | gated | tuned on it |
+| Tōhoku 2011 at DART 21413 | 1,242 km | 0.20 m – 0.50 m | 0.30 m | contains | same | gated | tuned on it |
 | Storegga 8200 BP on the Norwegian coast | 1,000 km | 0.30 m – 3.00 m | 0.60 m | contains | 0.76 m | gated | tuned on it |
 
 **Crossroads Baker 1946, 330 yd.** Every Baker height is printed from crest to trough, and the model computes the crest above still water, so each is halved and held to the reference's own 35 %. The model is Glasstone & Dolan's shallow-water relation (§6.121), H·R = 150·d_w·W^0.25 ft², with nothing fitted to Baker: it reads 0.68–0.71 of the tabulated heights out to 2 000 yards, the approximation the book offers for bursts "such as Bikini BAKER". Until 14 September 2026 these rows compared an amplitude with the full height, through a law the globe did not draw.
@@ -144,7 +144,7 @@ own 35 % accuracy for explosion waves.
 
 **Beirut 2020.** The row this harness was built for: it read 77 000 dead from this wave.
 
-**Tōhoku 2011 at DART 21413.** Gated since 9 September 2026, and it used to be the row that measured a divergence rather than a model. This project had four far-field laws for one wave and they bracketed the buoy from opposite sides: the seismic module spread cylindrically from half the rupture length and landed at 1.93 m, six times the 30 cm recorded, while tohoku2011DARTReference spreads as 1/r from a 2 m source and lands at 0.13 m. The product path is now one law, in tsunami/spreading.ts — from half the down-dip width, with the energy normalisation of a ring — and the row reads 0.27 m against the 0.30 recorded, inside the observed band.
+**Tōhoku 2011 at DART 21413.** Gated since 9 September 2026, and it used to be the row that measured a divergence rather than a model. This project had four far-field laws for one wave and they bracketed the buoy from opposite sides: the seismic module spread cylindrically from half the rupture length and landed at 1.93 m, six times the 30 cm recorded, while tohoku2011DARTReference spreads as 1/r from a 2 m source and lands at 0.13 m. The product path is now one law, in tsunami/spreading.ts — from half the down-dip width, with the energy normalisation of a ring — and the row reads 0.29 m against the 0.30 recorded, inside the observed band. (0.27 m at the 1 500 km every row used for this buoy until 14 September 2026; it is 1 242 km from the epicentre.)
 
 **Storegga 8200 BP on the Norwegian coast.** Open-ocean amplitude inferred from run-up rather than measured, so the band is wide; it is here because it is the only prehistoric event with deposits good enough to argue from.
 
@@ -162,7 +162,7 @@ _Sources:_
 - Castle Bravo 1954 — 15 Mt fired at the surface on the Bikini reef; remembered for its crater and its fallout, not for a wave
 - Ivy Mike 1952 — 10.4 Mt fired on the islet of Elugelab, which it vapourised; no recorded wave
 - Beirut 2020 — ≈ 0.5 kt TNT-equivalent on a portside quay; the harbour wave was of the order of a metre and drowned nobody
-- Tōhoku 2011 at DART 21413 — DART buoy 21413, 1 500 km offshore, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)
+- Tōhoku 2011 at DART 21413 — DART buoy 21413, 1 242 km from the epicentre, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)
 - Storegga 8200 BP on the Norwegian coast — Bondevik et al. 2005 read 10–25 m of run-up from the Norwegian deposits, implying a metre-scale open-ocean wave at a thousand kilometres
 
 ### Shaking footprint against USGS ShakeMap
@@ -225,7 +225,7 @@ Held out, the tables above read: death tolls **1 of 4** inside the band, waves *
 
 **Beirut 2020, toll.** The conventional-blast mortality bands (CONVENTIONAL_BLAST_BANDS in casualties.ts) were written after OTA's nuclear bands put this row at fifty times the record. They are composed from Glasstone & Dolan's injury thresholds rather than fitted to the 218, but they were made with this row in view.
 
-**Hiroshima 1945, toll.** OTA 1979's mortality bands are Hiroshima's and Nagasaki's own record, and the central mass-fire mortality is set at Hiroshima's (FIRESTORM_MORTALITY in casualties.ts: "Hiroshima in the middle").
+**Hiroshima 1945, toll.** Two things in the toll lean on this event: OTA 1979's blast mortality — the fatality by overpressure OTA calls its own "relatively conservative" assumptions, and Postol 1986 describes as the standard Hiroshima-based rules — and the central mass-fire mortality, set at Hiroshima's (FIRESTORM_MORTALITY in casualties.ts: "Hiroshima in the middle").
 
 **Hiroshima 1945, blast.** The height-of-burst factor was calibrated on this very figure: hobBlastFactor's 1.5 at Hiroshima's scaled height is set so that 5 psi falls at 1.7 km (events/explosion/hob.ts). And the figure is not a measurement in the city but Glasstone & Dolan's Fig. 3.74a read at Hiroshima's yield and height.
 
@@ -310,7 +310,7 @@ these, for the quantity the panel is showing.
 - Northridge 1994 — toll (gated, tuned on it) — 57 dead
 - Kokoxili (Kunlun) 2001 — toll (gated, held out) — A 400 km rupture across empty Tibetan plateau; nobody died
 - Gorkha (Nepal) 2015 — toll (declared, held out) — 8 964 dead
-- Tōhoku 2011 — toll (declared, held out), wave (gated, tuned on it) — 18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 500 km out
+- Tōhoku 2011 — toll (declared, held out), wave (gated, tuned on it) — 18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 242 km out
 - Sumatra–Andaman 2004 — toll (declared, same source) — 227 898 dead, almost all of them drowned
 
 **volcano** (3)

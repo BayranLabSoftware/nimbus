@@ -111,7 +111,7 @@ Two groups:
 
 | Scenario          | Source                              | Reference                           |
 | ----------------- | ----------------------------------- | ----------------------------------- |
-| `tohoku-2011`     | Mw 9.1 megathrust, 700 km rupture   | DART 21413 peak 0.30 m at 1500 km   |
+| `tohoku-2011`     | Mw 9.1 megathrust, 700 km rupture   | DART 21413 peak 0.30 m at 1242 km   |
 | `sumatra-2004`    | Mw 9.1 megathrust, 1300 km rupture  | Cocos Island 0.40 m at 1700 km      |
 | `maule-2010`      | Mw 8.9 megathrust, 450 km rupture   | DART 32412 peak 0.13 m at 2050 km   |
 | `cascadia-m9`     | Modelled Mw 9.0 megathrust scenario | Modelled DART benchmark             |

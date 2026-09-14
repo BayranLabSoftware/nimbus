@@ -112,6 +112,46 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **Sources that were not what they were cited as, found by checking
+  every one.** A new `pnpm audit:sources` resolves every DOI in the
+  repository against Crossref, DataCite and doi.org and compares every
+  citation on the methodology page with its record; it now passes. On
+  its first run it found a Mars-seismology citation with an invented
+  title, venue and DOI (the paper is Teanby & Wookey 2011, _Physics of
+  the Earth and Planetary Interiors_); DOIs for Pike 1980 and ReVelle
+  1976 that belong to other papers; a crater-scaling "Nordyke 1977" that
+  is Nordyke 1962, in the About dialog and the printed reports too; an
+  Etna 1669 reference with a wrong title and DOI; and a dozen citations
+  missing DOIs they have.
+- **Test data with no source behind it.** The Tōhoku and Sumatra
+  tsunami arrival times cited a paper that does not exist, and their
+  station distances were wrong by up to 130 %. The distances are now
+  great circles from USGS epicentres to NOAA station positions; the
+  times have no source, so the tests that read them are skipped until a
+  published table is read. DART 21413, the buoy the Tōhoku wave is
+  checked at, is 1 242 km from the epicentre, not the 1 500 km every
+  row used; the model reads 0.29 m there against the 0.30 recorded.
+- **Aftershocks were drawn six times too few.** Reasenberg & Jones 1989
+  give a daily rate; the code took its amplitude as the whole count. The
+  count is now the rate integrated over the window, and the magnitudes,
+  times and count use their one generic parameter set (b = 0.91,
+  p = 1.08, c = 0.05 d).
+- **Steep ground was not rock.** The slope-to-Vs30 proxy returned 685 m/s
+  for every slope past 0.138, and its table matched neither Wald & Allen
+  2007 nor Allen & Wald 2009. It is now the active-tectonic table USGS
+  uses (its `grad2vs30.c`), read in log–log as that program does. This
+  changes the site term of every earthquake run on the globe, not the
+  validation report's presets.
+- **The earthquake methodology cards say what the code does and what
+  their sources say.** Among eighteen corrections: the uplift factor
+  and the coupling efficiency are simulator calibrations, not published
+  values; the NGA-West2 row is not the displayed estimator; the site term
+  is the published Boore et al. 2014 one, not the power law it replaced;
+  and the tsunami trigger fires on the subduction flag too.
+- **The terrain tiles are not CC0.** They combine public-domain data
+  with sources that require attribution; the README, ASSETS and the code
+  say so and link the list.
+
 - **A shared custom impact was not the impact its sender had.** The link
   carried seven fields and laid them over the recipient's own input, so
   whatever it left out came from the recipient's open preset: an iron

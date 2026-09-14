@@ -11,7 +11,7 @@ import { joulesToMegatons, m } from '../../units.js';
  *                       Murphey & Vortman (1961) "Crater diameter vs.
  *                       yield for rock bursts", SC-4676(RR), Sandia.
  *   FIRM_GROUND  60   — tuff, limestone, dense soil (default).
- *                       Nordyke (1977) desert-alluvium fit, JGR 82(30).
+ *                       Nordyke (1962) desert-alluvium fit, JGR 67(5).
  *   DRY_SOIL     75   — sand, gravel, loose earth. Nordyke (1977).
  *   WET_SOIL     92   — saturated alluvium, coral reef. Nordyke (1977).
  *   CLAY        105   — water-saturated clay / soft muck, from
@@ -56,8 +56,8 @@ export interface NuclearCraterInput {
  *
  * Source: Glasstone & Dolan (1977), "The Effects of Nuclear Weapons"
  * (3rd ed.), U.S. DoD/DoE, §6.70 and Fig. 6.70; scaling form from
- * Nordyke (1977), "An analysis of cratering data from desert alluvium",
- * J. Geophys. Res. 82(30), 4397–4406, DOI: 10.1029/JB082i030p04397.
+ * Nordyke (1962), "An analysis of cratering data from desert alluvium",
+ * J. Geophys. Res. 67(5), 1965–1974, DOI: 10.1029/JZ067i005p01965.
  *
  * Caveats for popular-science display:
  *   - Surface contact burst. Airbursts at practical heights form no

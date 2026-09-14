@@ -179,7 +179,7 @@ export interface NoaaTohokuDARTReference {
   magnitude: number;
   /** DART buoy ID (used in the Satake 2013 inversion). */
   dartId: string;
-  /** Distance from rupture centroid to buoy (m). */
+  /** Great-circle distance from the epicentre to the buoy (m). */
   distanceM: number;
   /** Observed peak amplitude (m). Range from Satake et al. 2013
    *  Fig. 6 — DART traces show 0.25-0.40 m at this buoy depending
@@ -188,10 +188,20 @@ export interface NoaaTohokuDARTReference {
   source: string;
 }
 
+/**
+ * DART 21413 from the Tōhoku epicentre, measured rather than rounded:
+ * the great circle from the USGS epicentre (38.297 °N, 142.373 °E) to
+ * the buoy where NOAA NCEI lists it for the 2011 event (30.528 °N,
+ * 152.123 °E), 1 242 km at a bearing of 131°. Until 14 September 2026
+ * every row that asked about this buoy used 1 500 km, which no source
+ * gave; the GeoClaw fixture for the same event had 1 235 km all along.
+ */
+export const DART_21413_FROM_TOHOKU_EPICENTRE_M = 1_242_000;
+
 export const TOHOKU_2011_DART_REFERENCE: NoaaTohokuDARTReference = {
   magnitude: 9.1,
   dartId: '21413',
-  distanceM: 1_500_000,
+  distanceM: DART_21413_FROM_TOHOKU_EPICENTRE_M,
   observedAmplitudeM: 0.3,
   source: 'Satake et al. 2013 BSSA 103(2B), Fig. 6',
 };

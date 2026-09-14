@@ -265,6 +265,38 @@ in the net:
 
 Each has to go in with its role written before its result is seen.
 
+### 0b. Every source read against its record _(14 September; earthquakes done, the rest in progress)_
+
+A reviewer checks citations before physics, and until 14 September
+nothing here had. Two passes now exist. `pnpm audit:sources` resolves
+every DOI in the repository and compares every methodology citation
+with Crossref — metadata only, rerunnable by anyone, passing. And each
+methodology card was read against its source and against the code, by
+section, with the text of the source quoted for every finding.
+
+What the reading found beyond metadata, and what it cost:
+
+- **Earthquakes (done).** Two code bugs — aftershocks drawn six times too
+  few, steep ground read as soil C — and eighteen cards that said
+  something the code or the source does not.
+- **Impacts (open).** The ejecta blanket is computed on the final rim
+  radius where Collins et al. 2005 use the transient one (2.4× to 11×
+  too thick); the complex-crater depth jumps from 627 m to 1 482 m at
+  3.2 km on a lunar fit; the acid-rain anchor is about 80× what Prinn &
+  Fegley 1987 give; three cards credit Brown et al. 2013 with a figure
+  the paper does not print.
+- **Explosions and casualties (open).** The Kinney–Graham overpressure is
+  a free-air fit used for surface bursts without ground reflection;
+  several Glasstone & Dolan pointers are to sections that say something
+  else; OTA 1979's blast mortality is its figure 1, not table 2, and OTA
+  does not call it Hiroshima's record; the crater K values have no
+  source and Glasstone & Dolan §6.09 implies about half.
+- **Volcanoes and tsunamis (in progress).** The dispersion card credits
+  a paper on Papua New Guinea with a law the code no longer uses.
+- **Test data.** The tsunami arrival-time fixtures had a non-existent
+  source and wrong distances, and are skipped; DART 21413 was placed
+  1 500 km out instead of 1 242.
+
 ### 1. Verify the layers, not just the toll _(intensity done, 9 September)_
 
 A death toll is the product of five models — intensity, exposure,

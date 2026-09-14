@@ -47,7 +47,7 @@
     "license": "AGPL-3.0-or-later",
     "privacy": "Privacy",
     "madeIn": "Made in Italy",
-    "credits": "Inspired by MetaBallStudios · Assets from Poly Haven and Sketchfab CC0 · Science from peer-reviewed literature"
+    "credits": "Inspired by MetaBallStudios · Assets from Poly Haven and Sketchfab CC0 · Science from the published literature, every formula cited"
   },
   "simulator": {
     "panelLabel": "Simulator controls",
@@ -1138,7 +1138,7 @@
     "ruptureLength": "Surface rupture length L = 10^(a + b·Mw) km — Wells & Coppersmith (1994) empirical regression by fault slip regime.",
     "mmi": "Modified Mercalli Intensity from Joyner & Boore (1981) PGA attenuation combined with Worden et al. (2012) piecewise GMICE for California.",
     "ngaWest2": "Modern PGA estimator from Boore, Stewart, Seyhan & Atkinson (2014), Earthquake Spectra 30(3) 1057–1085 — NGA-West2 BSSA14. Replaces the 1981-era Joyner–Boore fit with magnitude-dependent geometric spreading, 4.5 km near-source clamp, fault-type constants, and Vs30 site amplification.",
-    "mmiEurope": "European PGA→MCS conversion from Faenza & Michelini (2010), GJI 180 1117–1133. Italian ShakeMap calibration; prefer this to the Worden (California) fit for events on the Eurasian plate.",
+    "mmiEurope": "European PGA→MCS conversion from Faenza & Michelini (2010), GJI 180, 1138–1152, calibrated on Italian ShakeMap data. Shown beside the Worden (California) value for every event.",
     "strasser": "Megathrust rupture-length scaling from Strasser, Arango & Bommer (2010), SRL 81(6). Fits 95 subduction-interface events; used instead of Wells–Coppersmith for subduction-zone thrusts, where W&C over-predicts at Mw ≥ 8.",
     "liquefaction": "Liquefaction-potential threshold radius on susceptible saturated sandy soil. PGA threshold 0.10 g at Mw 7.5, scaled by Idriss (1999) MSF = (M/7.5)^(−2.56). Reference: Youd & Idriss (2001) ASCE JGGE.",
     "waldAllen": "Site Vs30 derived from the topographic slope at the scenario coordinates (Wald & Allen 2007 Table 1, active-tectonic regions). Rock outcrops → Vs30 ≈ 760 m/s (NEHRP B); alluvial basins → Vs30 ≈ 180 m/s (NEHRP E). Echoes the user override when one was set, otherwise the rock reference.",

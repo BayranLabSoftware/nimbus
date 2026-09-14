@@ -429,13 +429,17 @@ across-strike profile. That is the same argument that settles the
 wavelength at 2·W, which the recorded period at DART 21413 (30–40 min)
 settled first.
 
-What the record says about it, at DART 21413, 1 500 km out and inside
-the main lobe:
+What the record says about it, at DART 21413, inside the main lobe:
 
 |                                  | before                      | after          | recorded |
 | -------------------------------- | --------------------------- | -------------- | -------- |
 | published row                    | 1.93 m (4.5× with the beam) | 0.27 m (0.90×) | 0.30 m   |
 | Tier-2 Saint-Venant, independent | 1.14×                       | 0.79×          | 0.30 m   |
+
+Both columns were measured at 1 500 km, the distance every row used for
+this buoy until 14 September 2026 and one no source gave. DART 21413 is
+1 242 km from the USGS epicentre at the position NOAA NCEI lists for
+it, and there the published row reads 0.29 m.
 
 Two routes that share nothing — a closed-form chain and a
 shallow-water solver on a Gaussian of its own — now land within twelve

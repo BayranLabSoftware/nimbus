@@ -11,7 +11,7 @@ import { distanceForPga } from './attenuation.js';
  *    ASCE Journal of Geotechnical and Geoenvironmental Engineering
  *    127 (4): 297–313. DOI: 10.1061/(ASCE)1090-0241(2001)127:4(297).
  *   Idriss MSF (NCEER lower-bound form), as tabulated in Youd & Idriss
- *    (2001) Eq. 11: MSF = 10^2.24 / M_w^2.56.
+ *    (2001) Eq. 24: MSF = 10^2.24 / M_w^2.56.
  *
  * The engineering procedure is complex (CSR vs. CRR curves, fines
  * content correction, effective-stress reduction with depth). This

@@ -164,6 +164,9 @@ GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later). See
 copies taken from them keep those terms.
 
 Globe imagery: © OpenStreetMap contributors, ODbL 1.0. Bathymetry: AWS
-Terrain Tiles (CC0). Population: WorldPop (Tatem 2017). Bundled fonts:
+Terrain Tiles (Tilezen; public-domain USGS/NOAA data plus sources that
+require attribution — see the
+[Tilezen attribution list](https://github.com/tilezen/joerd/blob/master/docs/attribution.md)).
+Population: WorldPop (Tatem 2017). Bundled fonts:
 Inter and JetBrains Mono via `@fontsource` (OFL 1.1). Full inventory in
 [docs/ASSETS.md](docs/ASSETS.md).

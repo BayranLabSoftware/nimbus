@@ -133,7 +133,7 @@ export function collectExplosionCitations(result: ExplosionScenarioResult): Trig
   if (result.blast.hobRegime === 'SURFACE') {
     // A contact burst excavates a real crater, so the Nordyke /
     // Murphey-Vortman / Young chain is the authority we cite.
-    triggers.push(cite('nordyke1977', 'Surface-burst crater scaling with ground type.'));
+    triggers.push(cite('nordyke1962', 'Surface-burst crater scaling with ground type.'));
   } else {
     // Airburst → no excavation; the HOB factor dominates the blast radii.
     triggers.push(cite('needham2018', 'Height-of-burst correction factor on blast radii.'));

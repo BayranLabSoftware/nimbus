@@ -66,7 +66,12 @@ function compareArrivals(
   };
 }
 
-describe('Tsunami validation — Tōhoku 2011 trans-Pacific DART arrivals', () => {
+// Skipped since 14 September 2026: the arrival times these compare
+// against had a citation that does not exist and distances that were
+// wrong by up to 130 % (see the Sources note in fixtures.ts). A test
+// that passes on numbers nobody can trace validates nothing; these
+// come back when the times are read from a published table.
+describe.skip('Tsunami validation — Tōhoku 2011 trans-Pacific DART arrivals', () => {
   const stat = compareArrivals(TOHOKU_2011_DART);
 
   it('RMSE under 60 minutes across all 4 far-field stations', () => {
@@ -87,7 +92,7 @@ describe('Tsunami validation — Tōhoku 2011 trans-Pacific DART arrivals', () =
   });
 });
 
-describe('Tsunami validation — Sumatra 2004 trans-Indian-Ocean arrivals', () => {
+describe.skip('Tsunami validation — Sumatra 2004 trans-Indian-Ocean arrivals', () => {
   const stat = compareArrivals(SUMATRA_2004_TIDE_GAUGES);
 
   it('RMSE under 50 minutes across the 3 stations', () => {

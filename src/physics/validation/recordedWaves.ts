@@ -2,6 +2,7 @@ import { simulateExplosion } from '../events/explosion/simulate.js';
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/simulate.js';
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/simulate.js';
 import { m } from '../units.js';
+import { DART_21413_FROM_TOHOKU_EPICENTRE_M } from './noaaBenchmarkFixtures.js';
 import { veilLaw } from '../tsunami/amplitudeField.js';
 import { propagationSpeed } from '../tsunami/linearWaves.js';
 import { extractTsunamiMeta, type ActiveResult } from '../../store/useAppStore.js';
@@ -261,13 +262,13 @@ export const RECORDED_WAVES: RecordedWave[] = [
   },
   {
     name: 'Tōhoku 2011 at DART 21413',
-    observed: { low: 0.2, high: 0.5, atRangeM: 1_500_000 },
+    observed: { low: 0.2, high: 0.5, atRangeM: DART_21413_FROM_TOHOKU_EPICENTRE_M },
     source:
-      'DART buoy 21413, 1 500 km offshore, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)',
+      'DART buoy 21413, 1 242 km from the epicentre, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)',
     model: () =>
       globeVeilAt(
         { type: 'earthquake', data: simulateEarthquake(EARTHQUAKE_PRESETS.TOHOKU_2011.input) },
-        1_500_000,
+        DART_21413_FROM_TOHOKU_EPICENTRE_M,
         // The buoy lies at bearing 131° from the epicentre and the
         // Japan Trench strikes 200°: 21° off the seaward
         // perpendicular, inside the main lobe. Four kilometres of
@@ -276,7 +277,7 @@ export const RECORDED_WAVES: RecordedWave[] = [
       ),
     gated: true,
     caveat:
-      'Gated since 9 September 2026, and it used to be the row that measured a divergence rather than a model. This project had four far-field laws for one wave and they bracketed the buoy from opposite sides: the seismic module spread cylindrically from half the rupture length and landed at 1.93 m, six times the 30 cm recorded, while tohoku2011DARTReference spreads as 1/r from a 2 m source and lands at 0.13 m. The product path is now one law, in tsunami/spreading.ts — from half the down-dip width, with the energy normalisation of a ring — and the row reads 0.27 m against the 0.30 recorded, inside the observed band.',
+      'Gated since 9 September 2026, and it used to be the row that measured a divergence rather than a model. This project had four far-field laws for one wave and they bracketed the buoy from opposite sides: the seismic module spread cylindrically from half the rupture length and landed at 1.93 m, six times the 30 cm recorded, while tohoku2011DARTReference spreads as 1/r from a 2 m source and lands at 0.13 m. The product path is now one law, in tsunami/spreading.ts — from half the down-dip width, with the energy normalisation of a ring — and the row reads 0.29 m against the 0.30 recorded, inside the observed band. (0.27 m at the 1 500 km every row used for this buoy until 14 September 2026; it is 1 242 km from the epicentre.)',
   },
   {
     name: 'Storegga 8200 BP on the Norwegian coast',

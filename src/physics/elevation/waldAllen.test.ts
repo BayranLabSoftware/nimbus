@@ -2,49 +2,50 @@ import { describe, expect, it } from 'vitest';
 import { nehrpClassFromVs30, waldAllen2007Vs30FromSlope } from './waldAllen.js';
 
 describe('waldAllen2007Vs30FromSlope', () => {
-  it('rock outcrops (slope ≥ 0.14 m/m) give Vs30 ≥ 685 m/s', () => {
-    // 0.2 m/m slope is about 11°, a steep hillside.
-    const vs30 = waldAllen2007Vs30FromSlope(Math.atan(0.2));
-    expect(vs30).toBeGreaterThanOrEqual(685);
-    expect(vs30).toBeLessThanOrEqual(760);
-  });
+  const at = (gradient: number): number => waldAllen2007Vs30FromSlope(Math.atan(gradient));
 
-  it('soft alluvial basins (slope ≤ 0.007) give Vs30 ≤ 240 m/s', () => {
-    // 0.003 m/m slope — essentially flat.
-    const vs30 = waldAllen2007Vs30FromSlope(Math.atan(0.003));
-    expect(vs30).toBeLessThanOrEqual(240);
-    expect(vs30).toBeGreaterThanOrEqual(100);
-  });
-
-  it('intermediate slope (0.025 m/m) falls in the Vs30 365–425 band', () => {
-    const vs30 = waldAllen2007Vs30FromSlope(Math.atan(0.025));
-    expect(vs30).toBeGreaterThanOrEqual(300);
-    expect(vs30).toBeLessThanOrEqual(500);
-  });
-
-  it('monotonically increasing in slope', () => {
-    const slopes = [0.003, 0.01, 0.02, 0.05, 0.1, 0.25];
-    const vs30s = slopes.map((s) => waldAllen2007Vs30FromSlope(Math.atan(s)));
-    for (let i = 1; i < vs30s.length; i++) {
-      expect(vs30s[i]).toBeGreaterThanOrEqual(vs30s[i - 1]!);
+  it('reads the USGS active-tectonic table exactly at its edges', () => {
+    // grad2vs30.c, earthquake-global_vs30 (Allen & Wald 2009).
+    for (const [gradient, vs30] of [
+      [3.5e-3, 240],
+      [0.01, 300],
+      [0.018, 360],
+      [0.05, 490],
+      [0.1, 620],
+    ] as const) {
+      expect(at(gradient)).toBeCloseTo(vs30, 6);
     }
   });
 
-  it('zero slope is mapped to the softest Vs30 (180 m/s)', () => {
+  it('calls steep ground rock: 760 m/s from a gradient of 0.14 up', () => {
+    // Until 14 September 2026 every slope past 0.138 read 685 m/s: the
+    // last bin interpolated towards the logarithm of infinity.
+    expect(at(0.14)).toBe(760);
+    expect(at(0.3)).toBe(760);
+  });
+
+  it('holds flat ground at 180 m/s below the first edge', () => {
+    expect(at(1e-4)).toBe(180);
     expect(waldAllen2007Vs30FromSlope(0)).toBe(180);
+  });
+
+  it('interpolates in log slope and log Vs30 inside a bin', () => {
+    // Halfway in log slope between 0.018 and 0.05 is the geometric mean
+    // of the Vs30 at the two edges.
+    expect(at(Math.sqrt(0.018 * 0.05))).toBeCloseTo(Math.sqrt(360 * 490), 6);
+  });
+
+  it('increases with slope', () => {
+    const slopes = [1e-4, 1e-3, 0.005, 0.02, 0.07, 0.12, 0.25];
+    const vs30s = slopes.map(at);
+    for (let i = 1; i < vs30s.length; i++) {
+      expect(vs30s[i]).toBeGreaterThanOrEqual(vs30s[i - 1] ?? 0);
+    }
   });
 
   it('handles NaN and negative slopes defensively (defaults to 760)', () => {
     expect(waldAllen2007Vs30FromSlope(Number.NaN)).toBe(760);
     expect(waldAllen2007Vs30FromSlope(-0.1)).toBe(760);
-  });
-
-  it('log-interpolates smoothly within a bin (no step-function jump)', () => {
-    // Two slopes very close together in the same bin (0.07–0.098)
-    // should give two Vs30 values very close together.
-    const v1 = waldAllen2007Vs30FromSlope(Math.atan(0.075));
-    const v2 = waldAllen2007Vs30FromSlope(Math.atan(0.08));
-    expect(Math.abs(v1 - v2)).toBeLessThan(30);
   });
 });
 

@@ -238,7 +238,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     use: {
       toll: {
         role: 'tuned',
-        how: "OTA 1979's mortality bands are Hiroshima's and Nagasaki's own record, and the central mass-fire mortality is set at Hiroshima's (FIRESTORM_MORTALITY in casualties.ts: \"Hiroshima in the middle\").",
+        how: 'Two things in the toll lean on this event: OTA 1979\'s blast mortality — the fatality by overpressure OTA calls its own "relatively conservative" assumptions, and Postol 1986 describes as the standard Hiroshima-based rules — and the central mass-fire mortality, set at Hiroshima\'s (FIRESTORM_MORTALITY in casualties.ts: "Hiroshima in the middle").',
       },
       blast: {
         role: 'tuned',
@@ -382,7 +382,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     value: 9.1,
     quantities: ['toll', 'wave'],
     gated: ['wave'],
-    source: '18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 500 km out',
+    source: '18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 242 km out',
     use: {
       toll: {
         role: 'heldOut',

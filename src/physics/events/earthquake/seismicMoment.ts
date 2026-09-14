@@ -7,8 +7,9 @@ import { Nm } from '../../units.js';
  *
  *     M₀ = 10^(1.5·Mw + 9.1)      (SI units, M₀ in N·m)
  *
- * This is the SI form of the original Hanks–Kanamori relation (which
- * used dyne·cm). Mw is defined so that a unit increase multiplies M₀
+ * The constant 9.1 is the one IASPEI (2013) standardised. Hanks &
+ * Kanamori wrote M = ⅔·log₁₀M₀ − 10.7 with M₀ in dyne·cm, which is
+ * 9.05 in N·m — the same scale within 12 % in moment. Mw is defined so that a unit increase multiplies M₀
  * by ≈31.6× — the "factor-of-32 per magnitude" rule-of-thumb that
  * appears in every seismology primer.
  *

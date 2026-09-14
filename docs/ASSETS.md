@@ -102,7 +102,7 @@ a courtesy.
 | Service                       | Purpose                                                                | Licence / terms                         | Source URL                                                                | Added      |
 | ----------------------------- | ---------------------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------- | ---------- |
 | Esri World Imagery raster     | Globe basemap in `Globe.tsx`                                           | Free with attribution (Esri tile terms) | https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9 | 2026-08-27 |
-| AWS Terrain Tiles             | Bathymetry / DEM samples                                               | CC0                                     | https://registry.opendata.aws/terrain-tiles/                              | 2026-04-23 |
+| AWS Terrain Tiles             | Bathymetry / DEM samples                                               | Mixed: public domain + attribution      | https://registry.opendata.aws/terrain-tiles/                              | 2026-04-23 |
 | WorldPop 2020 1 km mosaic     | Population exposure (optional operator COG, `VITE_POPULATION_COG_URL`) | CC-BY-4.0 (attribution req'd)           | https://www.worldpop.org/                                                 | 2026-04-23 |
 | WorldPop zonal-statistics API | Population inside every damage band ≤ 100 000 km² (casualty estimate)  | CC-BY-4.0, free, no key, CORS `*`       | https://api.worldpop.org/v1/services/stats                                | 2026-09-08 |
 

@@ -333,16 +333,16 @@
       },
       {
         "record": "Tōhoku 2011 at DART 21413",
-        "rangeM": 1500000,
+        "rangeM": 1242000,
         "observedLowM": 0.2,
         "observedHighM": 0.5,
-        "modelM": 0.269,
+        "modelM": 0.297,
         "contains": true,
         "globeM": null,
         "globeContains": null,
         "gated": true,
         "role": "tuned",
-        "source": "DART buoy 21413, 1 500 km offshore, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)"
+        "source": "DART buoy 21413, 1 242 km from the epicentre, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)"
       },
       {
         "record": "Storegga 8200 BP on the Norwegian coast",
@@ -640,7 +640,7 @@
         "use": {
           "toll": {
             "role": "tuned",
-            "how": "OTA 1979's mortality bands are Hiroshima's and Nagasaki's own record, and the central mass-fire mortality is set at Hiroshima's (FIRESTORM_MORTALITY in casualties.ts: \"Hiroshima in the middle\")."
+            "how": "Two things in the toll lean on this event: OTA 1979's blast mortality — the fatality by overpressure OTA calls its own \"relatively conservative\" assumptions, and Postol 1986 describes as the standard Hiroshima-based rules — and the central mass-fire mortality, set at Hiroshima's (FIRESTORM_MORTALITY in casualties.ts: \"Hiroshima in the middle\")."
           },
           "blast": {
             "role": "tuned",
@@ -818,7 +818,7 @@
             "how": "The megathrust uplift factor 0.6 is \"the calibrated all-in factor against Tōhoku DART buoy amplitudes\" (events/earthquake/seismicTsunami.ts), and the far-field source radius — half the down-dip width — was chosen by measuring this buoy against the alternative (tsunami/spreading.ts)."
           }
         },
-        "source": "18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 500 km out"
+        "source": "18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 242 km out"
       },
       {
         "name": "Sumatra–Andaman 2004",

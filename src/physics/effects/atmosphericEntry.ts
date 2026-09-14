@@ -250,7 +250,7 @@ const ZERO_ENTRY_DAMAGE = {
  *   COESA / NOAA / USAF (1976). "U.S. Standard Atmosphere 1976."
  *     NOAA-S/T 76-1562. (See {@link ussaPressure}.)
  *   ReVelle, D. O. (1976). "On meteor-generated infrasound."
- *     JGR 81 (7): 1217–1230. DOI: 10.1029/JB081i007p01217.
+ *     JGR 81 (7): 1217–1230. DOI: 10.1029/JA081i007p01217.
  *   Brown, P. G., Assink, J. D., Astiz, L., et al. (2013). "A 500-
  *     kiloton airburst over Chelyabinsk and an enhanced hazard from
  *     small impactors." Nature 503: 238–241.

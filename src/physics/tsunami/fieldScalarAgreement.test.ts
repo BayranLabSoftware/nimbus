@@ -160,9 +160,9 @@ describe('the amplitude veil agrees with the published far-field row', () => {
     // rather than closed, because six anchored rows had been fitted
     // around the row.
     //
-    // What settled it is DART 21413, 1 500 km out and inside the main
-    // lobe: the row read 1.93 m against the 0.30 m recorded and the
-    // veil's law reads 0.27. The row moved. Both now call
+    // What settled it is DART 21413, inside the main lobe: the row
+    // read 1.93 m against the 0.30 m recorded and the veil's law reads
+    // 0.27 (at the 1 500 km used then; 0.29 at the real 1 242 km). The row moved. Both now call
     // `spreading.ts`, so this can only be one number.
     const data = simulateEarthquake(EARTHQUAKE_PRESETS.TOHOKU_2011.input);
     expect(data.tsunami).toBeDefined();

@@ -96,7 +96,7 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
     // 1D-radial geometry source term, the GeoClaw-equivalent
     // configuration. Manning friction n = 0.025 (open ocean,
     // Imamura 1995). Run for 9000 s (2.5 h, the wave at √(g·4000) =
-    // 198 m/s reaches DART 21413 at 1500 km in ≈ 7600 s).
+    // 198 m/s reaches DART 21413 at 1 242 km in ≈ 6 300 s).
     //
     // Post-processing: the Saint-Venant solver does NOT model
     // dispersion — it solves the non-dispersive shallow-water

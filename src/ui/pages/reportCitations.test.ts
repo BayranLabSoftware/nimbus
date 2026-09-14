@@ -70,13 +70,13 @@ describe('collectExplosionCitations', () => {
     expect(ks).toContain('glasstoneDolan1977');
     expect(ks).toContain('needham2018');
     // Airburst → no surface crater → Nordyke should not appear.
-    expect(ks).not.toContain('nordyke1977');
+    expect(ks).not.toContain('nordyke1962');
   });
 
   it('Castle Bravo (surface burst) cites Nordyke cratering, not Needham HOB', () => {
     const r = simulateExplosion(EXPLOSION_PRESETS.CASTLE_BRAVO_1954.input);
     const ks = keys(collectExplosionCitations(r));
-    expect(ks).toContain('nordyke1977');
+    expect(ks).toContain('nordyke1962');
     expect(ks).not.toContain('needham2018');
     // Surface burst: EMP should be NEGLIGIBLE, so Longmire omitted.
     expect(ks).not.toContain('longmire1978');

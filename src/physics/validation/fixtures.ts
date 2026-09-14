@@ -25,16 +25,27 @@
  * we restrict the fixtures to stations where the linear shallow-water
  * model is the right tool.
  *
- * Sources:
+ * Sources — UNVERIFIED, and the tests that read these are skipped.
  *
- *   - Tōhoku 2011 trans-Pacific arrivals: Rabinovich et al. 2013,
- *     "The 2011 Tōhoku tsunami: a global perspective", Pure & Applied
- *     Geophysics 170, 1003-1018. DOI: 10.1007/s00024-012-0556-7,
- *     Table 1 (selected far-field stations only).
- *   - Sumatra 2004 trans-Indian-Ocean arrivals: Rabinovich & Eblé
- *     2015, "Deep-ocean Measurements of Tsunami Waves",
- *     Pure & Applied Geophysics 172, 3281-3312. DOI: 10.1007/s00024-
- *     015-1058-1, Table 4.
+ * On 14 September 2026 the citation audit found that this block
+ * cited, for Tōhoku, "Rabinovich et al. 2013, 'The 2011 Tōhoku
+ * tsunami: a global perspective', Pure & Applied Geophysics 170,
+ * 1003-1018", with a DOI. No such paper is in Crossref, and the DOI
+ * given belongs to an article on rock physics. For
+ * Sumatra it cited Table 4 of Rabinovich & Eblé 2015, "Deep-ocean
+ * Measurements of Tsunami Waves" (PAGEOPH 172, 3281–3312, DOI
+ * 10.1007/s00024-015-1058-1), a real paper on deep-ocean records
+ * that is not a source of these tide-gauge times. The distances were
+ * wrong as well, by up to 130 %.
+ *
+ * The distances below are now great circles from the USGS epicentres
+ * (Tōhoku 38.297 °N 142.373 °E; Sumatra 3.316 °N 95.854 °E) to the
+ * DART positions NOAA NCEI lists for 2011 and to the tide-gauge towns.
+ * The arrival times are what was there before and have no source.
+ * They have to be read from a published analysis of the records —
+ * Heidarzadeh & Satake 2013, PAGEOPH 170, 1275–1293, DOI
+ * 10.1007/s00024-012-0558-5, works through the DART records of this
+ * tsunami — before these can test anything.
  *
  * The simulator-side comparison uses the analytical shallow-water
  * arrival time — `t = r / sqrt(g · h_mean)` — over a 4 500 m mean
@@ -58,25 +69,25 @@ export interface DartBuoyObservation {
 export const TOHOKU_2011_DART: readonly DartBuoyObservation[] = [
   {
     station: 'DART 21401',
-    distanceFromEpicentreM: 2_300_000,
+    distanceFromEpicentreM: 987_000,
     observedArrivalMin: 175,
     observedArrivalUncertaintyMin: 5,
   },
   {
     station: 'DART 51407 (HI offshore)',
-    distanceFromEpicentreM: 6_400_000,
+    distanceFromEpicentreM: 6_181_000,
     observedArrivalMin: 480,
     observedArrivalUncertaintyMin: 10,
   },
   {
     station: 'DART 46411 (CA offshore)',
-    distanceFromEpicentreM: 8_300_000,
+    distanceFromEpicentreM: 7_481_000,
     observedArrivalMin: 620,
     observedArrivalUncertaintyMin: 12,
   },
   {
     station: 'DART 32412 (Chile)',
-    distanceFromEpicentreM: 16_500_000,
+    distanceFromEpicentreM: 14_800_000,
     observedArrivalMin: 1_240,
     observedArrivalUncertaintyMin: 20,
   },
@@ -85,19 +96,19 @@ export const TOHOKU_2011_DART: readonly DartBuoyObservation[] = [
 export const SUMATRA_2004_TIDE_GAUGES: readonly DartBuoyObservation[] = [
   {
     station: 'Cocos Is.',
-    distanceFromEpicentreM: 1_700_000,
+    distanceFromEpicentreM: 1_720_000,
     observedArrivalMin: 130,
     observedArrivalUncertaintyMin: 8,
   },
   {
     station: 'Salalah',
-    distanceFromEpicentreM: 5_000_000,
+    distanceFromEpicentreM: 4_811_000,
     observedArrivalMin: 380,
     observedArrivalUncertaintyMin: 15,
   },
   {
     station: 'Mombasa',
-    distanceFromEpicentreM: 5_700_000,
+    distanceFromEpicentreM: 6_296_000,
     observedArrivalMin: 430,
     observedArrivalUncertaintyMin: 15,
   },

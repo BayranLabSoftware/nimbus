@@ -87,9 +87,10 @@ import { m, Pa } from './units.js';
  *   evacuation is taken as 90 %; a lateral blast counts the same
  *   inside its sector. Ashfall at the 1 mm isopach kills nobody.
  *
- *   TSUNAMI — not converted. Counting people in a run-up field needs
- *   a coastal DEM and an inundation model; the globe shows where the
- *   wave lands, the label says the toll is not in the number.
+ *   TSUNAMI — not in this plan builder. The drowned are counted in
+ *   `tsunamiCasualties.ts`, from the run-up the wave reaches on each
+ *   stretch of coast, and the store adds them to the toll. That count
+ *   needs the coastal grid, so no offline test reaches it.
  */
 
 /** One annulus of the casualty model. `outerRadiusM` is what the
@@ -591,9 +592,9 @@ export const PYROCLASTIC_MORTALITY = 0.9;
  * gives days of warning where an impact gives none, and a modern
  * eruption is usually evacuated: Pinatubo moved sixty thousand people
  * out before the climax and lost nobody to the currents, Merapi 2010
- * evacuated three hundred and fifty thousand and lost 353 — about one
- * in a thousand of those at risk, the ones who would not leave or who
- * went back. Unzen 1991 killed forty-three, most of them journalists
+ * displaced some four hundred thousand and lost 367 — about one in a
+ * thousand of those at risk, the ones who would not leave or who went
+ * back (BNPB, in Surono et al. 2012; see below). Unzen 1991 killed forty-three, most of them journalists
  * and scientists who had stayed to watch.
  *
  * So the band is asymmetric on purpose, and it says the only thing

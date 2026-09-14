@@ -194,7 +194,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     cause: 'occupancy',
     gated: false,
     caveat:
-      "Not evacuation, and that took a measurement to see. This row was filed under it until 14 September, when the preset learned what zone had been cleared and the toll did not move: 264 of the model's 265 dead are in the lateral-blast sector between 11 and 27 km, and the closed zones reached about eight. The record agrees — only three of the 57 were inside the red zone, the blast going nearly four times further than anyone had closed. So the model is right to count that sector as unwarned. What it cannot know is who was in it: the population map puts 586 residents there, and the blast came at 08:32 on a Sunday, into logging land whose crews were not working. The predictive interval is 120 to 692 against 57.",
+      "Not evacuation, and that took a measurement to see. This row was filed under it until 14 September: 264 of the model's 265 dead are in the lateral-blast sector between 11 and 27 km, and the record agrees that the dead were not in the closed zones — only three of the 57 were inside the Red Zone, most in areas that had been considered safe. So the model is right to count that sector as unwarned, and the preset carries no cleared zone. (Until 14 September this note said the preset had been given one; it never was.) What it cannot know is who was in it: the population map puts 586 residents there, and the blast came at 08:32 on a Sunday, into logging land whose crews were not working. The predictive interval is 120 to 692 against 57.",
   },
   {
     name: 'Pinatubo 1991',

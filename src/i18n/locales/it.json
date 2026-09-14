@@ -47,7 +47,7 @@
     "license": "AGPL-3.0-or-later",
     "privacy": "Privacy",
     "madeIn": "Fatto in Italia",
-    "credits": "Ispirato da MetaBallStudios · Asset da Poly Haven e Sketchfab CC0 · Scienza da letteratura peer-reviewed"
+    "credits": "Ispirato da MetaBallStudios · Asset da Poly Haven e Sketchfab CC0 · Scienza dalla letteratura pubblicata, ogni formula citata"
   },
   "simulator": {
     "panelLabel": "Controlli del simulatore",
@@ -1138,7 +1138,7 @@
     "ruptureLength": "Lunghezza di rottura superficiale L = 10^(a + b·Mw) km — regressione empirica Wells & Coppersmith (1994) per regime di slip.",
     "mmi": "Intensità Mercalli modificata da attenuazione PGA (Joyner & Boore 1981) + GMICE piecewise Worden et al. (2012), calibrata California.",
     "ngaWest2": "Stima moderna del PGA da Boore, Stewart, Seyhan & Atkinson (2014), Earthquake Spectra 30(3) 1057–1085 — NGA-West2 BSSA14. Sostituisce il fit Joyner–Boore del 1981 con geometric spreading magnitudo-dipendente, clamp near-source a 4.5 km, costanti per tipo di faglia e amplificazione Vs30.",
-    "mmiEurope": "Conversione PGA→MCS europea da Faenza & Michelini (2010), GJI 180 1117–1133. Calibrata su ShakeMap italiano; preferibile al fit Worden (California) per eventi sulla placca euroasiatica.",
+    "mmiEurope": "Conversione PGA→MCS europea da Faenza & Michelini (2010), GJI 180, 1138–1152, calibrata sui dati ShakeMap italiani. Mostrata accanto al valore Worden (California) per ogni evento.",
     "strasser": "Scaling di rottura megathrust da Strasser, Arango & Bommer (2010), SRL 81(6). Fit su 95 eventi d'interfaccia di subduzione; usato al posto di Wells–Coppersmith per thrust in zona di subduzione, dove W&C sovrastima a Mw ≥ 8.",
     "liquefaction": "Soglia raggio liquefazione su suolo sabbioso saturo suscettibile. PGA soglia 0.10 g a Mw 7.5, scalata con MSF Idriss (1999) = (M/7.5)^(−2.56). Rif.: Youd & Idriss (2001) ASCE JGGE.",
     "waldAllen": "Vs30 del sito derivato dalla pendenza topografica alle coordinate dello scenario (Wald & Allen 2007 Table 1, regioni tettonicamente attive). Affioramenti rocciosi → Vs30 ≈ 760 m/s (NEHRP B); bacini alluvionali → Vs30 ≈ 180 m/s (NEHRP E). Rispecchia l'override utente se presente, altrimenti il riferimento roccia.",

@@ -212,7 +212,7 @@ const BSSA14_SITE = {
  * reference rock. The non-linear half is the physics that a power law
  * cannot carry: soft ground amplifies a gentle wave and *saturates*
  * under a violent one, because the soil stops behaving elastically.
- * At Vs30 = 300 the published term amplifies 1.71× under weak shaking
+ * At Vs30 = 300 the published term amplifies 1.75× under weak shaking
  * and 1.18× at half a g, where the surrogate this replaces —
  * `(Vs30/760)^(−0.4)`, and the code said so — gave a flat 1.45×
  * whatever the ground was doing.

@@ -82,9 +82,9 @@ export function surfaceRuptureLength(input: SurfaceRuptureLengthInput): Meters {
  *
  * Wells & Coppersmith over-predicts rupture length at Mw ≥ 8 for
  * subduction interface events because their dataset was
- * continental-crust dominated. Strasser 2010 fits 95 interface +
- * intraslab events (Chile 1960, Alaska 1964, Sumatra 2004, Tōhoku
- * 2011), producing saner estimates for megathrusts. Use this helper
+ * continental-crust dominated. Strasser et al. 2010 fit interface and
+ * intraslab events separately (their dataset predates Tōhoku 2011),
+ * producing saner estimates for megathrusts. Use this helper
  * when the event is explicitly a subduction-zone thrust.
  *
  * **Uncertainty (published).** Strasser et al. (2010) Table 2 reports

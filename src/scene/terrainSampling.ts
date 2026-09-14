@@ -2,7 +2,11 @@
  * On-demand terrain sampler that feeds the ElevationGrid pipeline.
  * Replaces the "ship a decimated ETOPO binary at app boot" strategy
  * with per-click fetch of the public AWS Terrain Tiles dataset
- * (terrarium PNG format, global coverage, CC0 licence, no API key).
+ * (terrarium PNG format, global coverage, no API key). The tiles mix
+ * public-domain sources (USGS 3DEP, SRTM, GMTED2010, NOAA ETOPO1) with
+ * ones that require attribution (Copernicus EU-DEM, LINZ, UK LIDAR,
+ * Norway, Austria, Canada, Australia): see
+ * https://github.com/tilezen/joerd/blob/master/docs/attribution.md.
  *
  * The tile at zoom 8 covers ≈ 156 km × 156 km near the equator with
  * 256 × 256 pixels — so slope at the event coordinates is computed

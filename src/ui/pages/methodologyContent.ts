@@ -62,9 +62,9 @@ const popova2013: Citation = {
 const teanby2011: Citation = {
   authors: 'Teanby, N. A. & Wookey, J.',
   year: 2011,
-  title: 'Mars explosion seismology: A comparison of planetary and terrestrial mechanisms',
-  venue: 'Earth and Planetary Science Letters 303 (3–4), 297–307',
-  doi: '10.1016/j.epsl.2011.01.015',
+  title: 'Seismic detection of meteorite impacts on Mars',
+  venue: 'Physics of the Earth and Planetary Interiors 186, 70–80',
+  doi: '10.1016/j.pepi.2011.03.004',
 };
 
 const mcgetchin1973: Citation = {
@@ -106,7 +106,6 @@ const ota1979: Citation = {
   year: 1979,
   title: 'The Effects of Nuclear War',
   venue: 'OTA-NS-89, Washington, DC: U.S. Government Printing Office — ch. II, table 2',
-  doi: '',
 };
 
 const jaiswalWald2010: Citation = {
@@ -154,6 +153,7 @@ const glasstoneDolan1977: Citation = {
   year: 1977,
   title: 'The Effects of Nuclear Weapons (3rd ed.)',
   venue: 'U.S. Department of Defense / Department of Energy',
+  doi: '10.21236/ADA087568',
 };
 
 const koshimura2009: Citation = {
@@ -183,14 +183,15 @@ const kinneyGraham1985: Citation = {
   year: 1985,
   title: 'Explosive Shocks in Air (2nd ed.)',
   venue: 'Springer-Verlag',
+  doi: '10.1007/978-3-642-86682-1',
 };
 
-const nordyke1977: Citation = {
+const nordyke1962: Citation = {
   authors: 'Nordyke, M. D.',
-  year: 1977,
+  year: 1962,
   title: 'An analysis of cratering data from desert alluvium',
-  venue: 'Journal of Geophysical Research 82 (30), 4397–4406',
-  doi: '10.1029/JB082i030p04397',
+  venue: 'Journal of Geophysical Research 67 (5), 1965–1974',
+  doi: '10.1029/JZ067i005p01965',
 };
 
 const needham2018: Citation = {
@@ -205,6 +206,7 @@ const longmire1978: Citation = {
   year: 1978,
   title: 'On the electromagnetic pulse produced by nuclear explosions',
   venue: 'IEEE Transactions on Antennas and Propagation AP-26 (1), 3–13',
+  doi: '10.1109/TAP.1978.1141796',
 };
 
 const hanksKanamori1979: Citation = {
@@ -212,6 +214,7 @@ const hanksKanamori1979: Citation = {
   year: 1979,
   title: 'A moment magnitude scale',
   venue: 'Journal of Geophysical Research 84 (B5), 2348–2350',
+  doi: '10.1029/JB084iB05p02348',
 };
 
 const wellsCoppersmith1994: Citation = {
@@ -220,6 +223,7 @@ const wellsCoppersmith1994: Citation = {
   title:
     'New empirical relationships among magnitude, rupture length, rupture width, rupture area, and surface displacement',
   venue: 'Bulletin of the Seismological Society of America 84 (4), 974–1002',
+  doi: '10.1785/BSSA0840040974',
 };
 
 const strasser2010: Citation = {
@@ -234,8 +238,10 @@ const strasser2010: Citation = {
 const joynerBoore1981: Citation = {
   authors: 'Joyner, W. B. & Boore, D. M.',
   year: 1981,
-  title: 'Peak horizontal acceleration and velocity from strong-motion records',
+  title:
+    'Peak horizontal acceleration and velocity from strong-motion records including records from the 1979 Imperial Valley, California, earthquake',
   venue: 'Bulletin of the Seismological Society of America 71 (6), 2011–2038',
+  doi: '10.1785/BSSA0710062011',
 };
 
 const boore2014: Citation = {
@@ -252,7 +258,7 @@ const faenzaMichelini2010: Citation = {
   year: 2010,
   title:
     'Regression analysis of MCS intensity and ground motion parameters in Italy and its application in ShakeMap',
-  venue: 'Geophysical Journal International 180 (3), 1117–1133',
+  venue: 'Geophysical Journal International 180 (3), 1138–1152',
   doi: '10.1111/j.1365-246X.2009.04467.x',
 };
 
@@ -269,7 +275,7 @@ const youdIdriss2001: Citation = {
   authors: 'Youd, T. L. & Idriss, I. M.',
   year: 2001,
   title:
-    'Liquefaction resistance of soils: Summary report from the 1996 NCEER and 1998 NCEER/NSF workshops',
+    'Liquefaction resistance of soils: Summary report from the 1996 NCEER and 1998 NCEER/NSF workshops on evaluation of liquefaction resistance of soils',
   venue: 'ASCE Journal of Geotechnical and Geoenvironmental Engineering 127 (4), 297–313',
   doi: '10.1061/(ASCE)1090-0241(2001)127:4(297)',
 };
@@ -289,6 +295,7 @@ const newhallSelf1982: Citation = {
   title:
     'The Volcanic Explosivity Index (VEI): An estimate of explosive magnitude for historical volcanism',
   venue: 'Journal of Geophysical Research 87 (C2), 1231–1238',
+  doi: '10.1029/JC087iC02p01231',
 };
 
 const dadeHuppert1998: Citation = {
@@ -344,7 +351,7 @@ const pike1980: Citation = {
   year: 1980,
   title: 'Formation of complex impact craters: Evidence from Mars and other planets',
   venue: 'Icarus 43 (1), 1–19',
-  doi: '10.1016/0019-1035(80)90244-4',
+  doi: '10.1016/0019-1035(80)90083-4',
 };
 
 const suzuki1983: Citation = {
@@ -374,8 +381,7 @@ const ganser1993: Citation = {
 const waldAllen2007: Citation = {
   authors: 'Wald, D. J. & Allen, T. I.',
   year: 2007,
-  title:
-    'Topographic Slope as a Proxy for Seismic Site Conditions (Vs30) and Amplification Around the Globe',
+  title: 'Topographic Slope as a Proxy for Seismic Site Conditions and Amplification',
   venue: 'Bulletin of the Seismological Society of America 97 (5), 1379–1395',
   doi: '10.1785/0120060267',
 };
@@ -407,6 +413,7 @@ const sachs1944: Citation = {
   year: 1944,
   title: 'The dependence of blast on ambient pressure and temperature',
   venue: 'Ballistic Research Laboratories Report 466 (Aberdeen Proving Ground)',
+  doi: '10.21236/ADA800535',
 };
 
 const korobeinikov1991: Citation = {
@@ -437,7 +444,7 @@ const reVelle1976: Citation = {
   year: 1976,
   title: 'On meteor-generated infrasound',
   venue: 'Journal of Geophysical Research 81 (7), 1217–1230',
-  doi: '10.1029/JB081i007p01217',
+  doi: '10.1029/JA081i007p01217',
 };
 
 const reasenbergJones1989: Citation = {
@@ -451,7 +458,7 @@ const reasenbergJones1989: Citation = {
 const bath1965: Citation = {
   authors: 'Båth, M.',
   year: 1965,
-  title: 'Lateral inhomogeneities in the upper mantle',
+  title: 'Lateral inhomogeneities of the upper mantle',
   venue: 'Tectonophysics 2 (6), 483–514',
   doi: '10.1016/0040-1951(65)90003-X',
 };
@@ -466,7 +473,7 @@ const gutenbergRichter1954: Citation = {
 const utsu1961: Citation = {
   authors: 'Utsu, T.',
   year: 1961,
-  title: 'A statistical study of the occurrence of aftershocks',
+  title: 'A statistical study on the occurrence of aftershocks',
   venue: 'Geophysical Magazine 30, 521–605',
 };
 
@@ -475,6 +482,7 @@ const okada1992: Citation = {
   year: 1992,
   title: 'Internal deformation due to shear and tensile faults in a half-space',
   venue: 'Bulletin of the Seismological Society of America 82 (2), 1018–1040',
+  doi: '10.1785/BSSA0820021018',
 };
 
 const lamb1932: Citation = {
@@ -487,8 +495,10 @@ const lamb1932: Citation = {
 const bryant2014: Citation = {
   authors: 'Bryant, E.',
   year: 2014,
-  title: 'Tsunami: The Underrated Hazard (3rd ed., Ch. 3 + Ch. 10 — sources and damage)',
-  venue: 'Springer Praxis Books, ISBN 978-3-319-06133-7',
+  title:
+    'Tsunami: The Underrated Hazard (3rd ed.), ch. 5, "Earthquake-Generated Tsunami", pp. 85–102',
+  venue: 'Springer Praxis Books',
+  doi: '10.1007/978-3-319-06133-7',
 };
 
 const imamura2009: Citation = {
@@ -517,7 +527,8 @@ const leMehauteWang1996: Citation = {
   authors: 'Le Méhauté, B. & Wang, S.',
   year: 1996,
   title: 'Water Waves Generated by Underwater Explosion',
-  venue: 'Advanced Series on Ocean Engineering 10, World Scientific, ISBN 978-981-02-2083-3',
+  venue: 'Advanced Series on Ocean Engineering 10, World Scientific, ISBN 978-981-02-2083-9',
+  doi: '10.1142/2587',
 };
 
 const glicken1996: Citation = {
@@ -525,6 +536,7 @@ const glicken1996: Citation = {
   year: 1996,
   title: 'Rockslide-debris avalanche of May 18, 1980, Mount St. Helens Volcano, Washington',
   venue: 'USGS Open-File Report 96-677',
+  doi: '10.3133/ofr96677',
 };
 
 const grilli2019: Citation = {
@@ -824,8 +836,8 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'D_apparent = K · W_kt^0.3     (K = 40 hard rock, 60 firm, 75 dry, 92 wet, 105 clay)',
         description:
-          'Nordyke 1977 desert-alluvium + Murphey-Vortman 1961 rock + Young 1997 SAND97 clay.',
-        citation: nordyke1977,
+          'Nordyke 1962 desert-alluvium + Murphey-Vortman 1961 rock + Young 1997 SAND97 clay.',
+        citation: nordyke1962,
       },
       {
         id: 'radiation',
@@ -891,7 +903,8 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         id: 'seismic-moment',
         name: 'Seismic moment (Hanks–Kanamori)',
         formula: 'M₀ = 10^(1.5·Mw + 9.1)   N·m',
-        description: 'SI inversion of the moment-magnitude scale.',
+        description:
+          'SI form with the constant IASPEI (2013) standardised, 9.1. Hanks & Kanamori wrote M = ⅔·log₁₀M₀ − 10.7 with M₀ in dyne·cm, which is 9.05 in N·m: the same scale to within 12 % in moment.',
         citation: hanksKanamori1979,
       },
       {
@@ -899,7 +912,8 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Rupture length (continental)',
         formula:
           'log₁₀(L_km) = a + b · Mw      (per fault type, Wells & Coppersmith 1994 Table 2A)',
-        description: 'Empirical fit on 244 continental-crust events with 4.8 ≤ Mw ≤ 8.1.',
+        description:
+          'Wells & Coppersmith 1994 Table 2A surface-rupture-length regressions: 77 shallow continental events of M 5.2–8.1 (43 strike-slip, 19 reverse, 15 normal), from a 244-event database that leaves out subduction earthquakes.',
         citation: wellsCoppersmith1994,
       },
       {
@@ -907,31 +921,32 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Rupture length (subduction interface)',
         formula: 'log₁₀(L_km) = −2.477 + 0.585 · Mw',
         description:
-          'Strasser 2010 fit on 95 interface events; used in preference to Wells-Coppersmith for subduction-zone thrusts (Tōhoku, Sumatra, Cascadia).',
+          'Strasser et al. 2010 interface regression (σ = 0.18 in log₁₀ L), used for subduction-interface events. A preset may carry its observed length instead: Sumatra 2004 uses 1 300 km.',
         citation: strasser2010,
       },
       {
         id: 'pga-jb81',
-        name: 'PGA attenuation (legacy Joyner-Boore)',
+        name: 'PGA attenuation (Joyner–Boore 1981)',
         formula: 'log₁₀(A/g) = −1.02 + 0.249 · Mw − log₁₀(D) − 0.00255·D ;  D = √(R² + 7.3²) km',
         description:
-          '1981-era Western-US fit, retained as a legacy reference in the UI next to the modern NGA-West2 row.',
+          'Joyner & Boore 1981, fitted on western North American records for 5.0 ≤ M ≤ 7.7. Not a legacy row: it is the attenuation behind the MMI VII–IX rings (with the Boore et al. 2014 site term), the epicentral intensity, the liquefaction radius and the aftershock rings. Beyond M 7.7 it is used outside its data.',
         citation: joynerBoore1981,
       },
       {
         id: 'pga-nga',
         name: 'PGA attenuation (NGA-West2, BSSA14)',
-        formula: 'ln(PGA_g) = F_E(M, mech) + F_P(R, M) + F_S(Vs30)',
+        formula: 'ln(PGA_g) = F_E(M, mech) + F_P(R, M) + F_S(Vs30, PGA_rock)',
         description:
-          'Boore 2014 NGA-West2 equation with magnitude-dependent spreading, 4.5 km near-source clamp, fault-type constants, and Vs30 site factor. Default displayed estimator.',
+          'Boore et al. 2014 NGA-West2 equation with magnitude-dependent spreading, the 4.5 km near-source term, fault-type constants and the published site term. Shown as PGA at 20 and 100 km and used for the uncertainty band; the MMI rings use Joyner–Boore 1981.',
         citation: boore2014,
       },
       {
         id: 'vs30',
         name: 'Vs30 site amplification',
-        formula: 'f_S(Vs30) = exp(−0.4 · ln(Vs30 / 760))',
+        formula:
+          'F_S = c·ln(min(Vs30, 1500)/760) + f₂·ln((PGA_r + 0.1)/0.1),  f₂ = −0.15·[e^(−0.00701·(min(Vs30,760)−360)) − e^(−0.00701·400)],  c = −0.6',
         description:
-          'Simplified Boore 2014 site term. Vs30 = 760 m/s rock returns 1.0; Vs30 = 300 m/s soft soil amplifies ~1.45×.',
+          'The Boore et al. 2014 PGA site term as published, linear and non-linear: soft ground amplifies weak shaking and saturates under strong shaking. Vs30 = 760 m/s returns 1.0; Vs30 = 300 m/s amplifies ≈ 1.75× under weak shaking and ≈ 1.18× at 0.5 g on rock.',
         citation: boore2014,
       },
       {
@@ -946,24 +961,25 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'MMI from PGA (Europe / Italy)',
         formula: 'MCS = 1.68 + 2.58 · log₁₀(PGA_cm/s²)',
         description:
-          'Faenza & Michelini 2010 — Italian ShakeMap calibration, preferred on the Eurasian plate.',
+          'Faenza & Michelini 2010 — calibrated on Italian ShakeMap data (a = 1.68, b = 2.58, σ = 0.35). Shown beside the California value for every event.',
         citation: faenzaMichelini2010,
       },
       {
         id: 'liquefaction',
         name: 'Liquefaction-radius threshold',
-        formula: 'PGA_thresh(M) = 0.10 g · (M/7.5)^(−2.56) ;  radius = inverse PGA attenuation',
+        formula:
+          'PGA_thresh(M) = 0.10 g · MSF(M)⁻¹,  MSF = 10^2.24 / M^2.56 ;  radius = inverse PGA attenuation',
         description:
-          'Simplified Youd & Idriss 2001 susceptibility threshold on saturated sandy soil with Idriss 1999 magnitude scaling factor.',
+          "The 0.10 g threshold at Mw 7.5 is a simulator assumption for saturated sandy soil. It is scaled by the magnitude scaling factor Youd & Idriss 2001 give as Idriss's revised lower bound, MSF = 10^2.24/Mw^2.56 (their Eq. 24).",
         citation: youdIdriss2001,
       },
       {
         id: 'wald-allen-vs30',
         name: 'Site Vs30 from topographic slope',
         formula:
-          'slope < 0.007 → Vs30 ≈ 180   ;   0.025 → 365   ;   0.071 → 555   ;   ≥ 0.138 → 760 m/s',
+          'Vs30 = 180 m/s at slope 3×10⁻⁴ ; 240 at 3.5×10⁻³ ; 300 at 0.01 ; 360 at 0.018 ; 490 at 0.05 ; 620 at 0.10 ; 760 at ≥ 0.14  (log–log between edges)',
         description:
-          'Wald & Allen 2007 Table 1 (active-tectonic regions) maps the terrain gradient at a site to a NEHRP Vs30 proxy. Log-interpolated within each bin. Rock outcrops → NEHRP B; alluvial basins → NEHRP D/E. The slope is measured on a 256×256 terrarium PNG tile (AWS public terrain-tiles dataset, CC0, ~0.6 km/pixel at zoom 8) fetched on-demand for each scenario location — so every click on the globe triggers a real DEM lookup, not a shipped asset.',
+          "Wald & Allen 2007 proposed topographic slope as a proxy for Vs30; the active-tectonic table here is the one USGS uses, from Allen & Wald 2009, as coded in USGS's grad2vs30.c, interpolated in log slope and log Vs30 as that program does. Below 3×10⁻⁴ the site is held at 180 m/s, above 0.14 at 760. The slope is measured on the terrain tile under the click (~0.6 km a pixel at zoom 8), fetched for each scenario; the tiles require attribution to their sources. Until 14 September 2026 the table here matched neither paper, and every slope past 0.138 read 685 m/s.",
         citation: waldAllen2007,
       },
       {
@@ -971,32 +987,32 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Båth law — magnitude gap',
         formula: 'M_max_aftershock ≈ M_main − 1.2',
         description:
-          "The largest aftershock is on average 1.2 magnitude units below the mainshock — universal across tectonic regimes. Caps the simulator's Gutenberg-Richter sampler so an Mw 9 megathrust does not produce an Mw 9 aftershock.",
+          "The largest aftershock averages about 1.2 magnitude units below the mainshock whatever the mainshock's size, with a scatter of about half a unit. The simulator uses it as a hard ceiling on the sampled magnitudes.",
         citation: bath1965,
       },
       {
         id: 'aftershock-gutenberg-richter',
         name: 'Magnitude distribution',
-        formula: 'log₁₀ N(M ≥ m) = a − b · m   (b ≈ 1)',
+        formula: 'log₁₀ N(M ≥ m) = a − b · m   (b = 0.91)',
         description:
-          'Power-law magnitude-frequency distribution. Inverse-CDF sampling: m = M_c − log₁₀(U) / b for U ~ Uniform[0, 1], capped at the Båth ceiling.',
+          "Power-law magnitude-frequency distribution, sampled by inverse CDF, m = M_c − log₁₀(U) / b, and capped at the Båth ceiling. The b-value is Reasenberg & Jones's generic 0.91, the same one that sizes the count.",
         citation: gutenbergRichter1954,
       },
       {
         id: 'aftershock-omori-utsu',
         name: 'Omori-Utsu temporal decay',
-        formula: 'n(t) = K / (c + t)^p   (p ≈ 1.1, c ≈ 0.05 d)',
+        formula: 'n(t) ∝ (t + c)^(−p)   (p = 1.08, c = 0.05 d)',
         description:
-          "Aftershock rate decays as a modified-Omori power law. Inverse-CDF sampling across the simulator's 30-day default window concentrates events in the first hours where the dense early cluster is observationally dominant.",
+          "The modified Omori decay. Utsu 1961 found p mostly between 1.1 and 1.4 across 41 sequences; the simulator uses Reasenberg & Jones's generic p = 1.08 and c = 0.05 d so that times and count come from one fitted model. Times are drawn by inverse CDF over the 30-day window.",
         citation: utsu1961,
       },
       {
         id: 'aftershock-reasenberg-jones',
-        name: 'Aftershock catalogue magnitude',
+        name: 'Aftershock count (Reasenberg & Jones)',
         formula:
-          'log₁₀ N_total = a + b · (M_main − M_c)   (a = −1.67, b = 0.91, California-calibrated)',
+          'N = 10^(a + b·(M_main − M_c)) · ∫₀ᵀ (t + c)^(−p) dt   (a = −1.67, b = 0.91, p = 1.08, c = 0.05 d)',
         description:
-          'Sets the total number of aftershocks above the completeness cutoff M_c. The simulator clamps at 500 events for renderer responsiveness on extreme megathrust scenarios.',
+          'Reasenberg & Jones 1989 give the daily rate of aftershocks at or above M; the count over the window is that rate integrated, about 6.4 times the amplitude for 30 days. Until 14 September 2026 the amplitude alone was taken as the count, about six times too few. The simulator stops at 500 events for the renderer.',
         citation: reasenbergJones1989,
       },
       {
@@ -1011,18 +1027,18 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         id: 'seismic-tsunami-source',
         name: 'Fault-style-aware tsunami source',
         formula:
-          'D̄ = M₀ / (μ · L · W),   W = L / aspect(faultType),   uplift = upliftFactor(faultType) · D̄,\nA₀ = η · uplift,   A(r) = A₀ · √(R₀ / r)',
+          'D̄ = M₀ / (μ · L · W),  W from Strasser 2010 / Wells & Coppersmith 1994 (L / aspect if none),  A₀ = η · upliftFactor · D̄,  A(r) = A₀ · √(a / (a + 4√π·(r − a))),  a = max(W/2, 10 km)',
         description:
-          'Hanks-Kanamori 1979 moment combined with fault-style-dependent rupture aspect and dip-dependent uplift, then propagated as a cylindrical line source from a half-length R₀ = L/2. Both the aspect ratio L/W and the uplift factor are now functions of the fault style rather than the legacy single constants (3 and 0.5) — see the next two entries. The wave-coupling efficiency η ≈ 0.7 (Satake 2013 DART-buoy inversion of Tōhoku 2011) accounts for the energy that does not project onto the propagating long wave. Together they bring near-source amplitudes within ≈ 30 % of the observed buoy record across megathrust, continental-thrust, and normal-fault events.',
-        citation: okada1992,
+          'Hanks–Kanamori moment spread over the rupture area for the mean slip, lifted by a fault-style uplift factor and a coupling efficiency (both simulator values — see the next entries), then decayed from half the down-dip width with the energy normalisation of a Gaussian ring. The only buoy it is checked on is DART 21413 for Tōhoku 2011, where the uplift factor was set.',
+        citation: satake2013,
       },
       {
         id: 'rupture-aspect-fault-style',
         name: 'Rupture aspect ratio L/W per fault style',
         formula:
-          'aspect = { 2: subduction interface ; 1.5: continental normal ; 5: strike-slip ; 3: continental reverse / default }',
+          'aspect = { 2.5: subduction interface ; 1.5: continental normal ; 5: strike-slip ; 3: continental reverse / default }  — used only when no width is given',
         description:
-          'Calibrated against published rupture footprints — Tōhoku 2011 (≈ 700×300 km), Sumatra 2004 (≈ 1 600×200 km) and Cascadia models (~1 100×100 km) anchor the L/W ≈ 2 megathrust value (Strasser 2010 SRL 81: 941). Continental-reverse L/W ≈ 3 follows Wells & Coppersmith 1994 Table 2A. Normal-fault events (L′Aquila 2009 ≈ 18×12 km, Amatrice 2016 ≈ 25×17 km) sit at L/W ≈ 1.5. Strike-slip ruptures elongate further, L/W ≈ 5 (Kunlun 2001 ≈ 400×60 km). Replaces the previous single megathrust-style aspect of 3.',
+          "Simulator defaults, not published values, used only when a rupture width is neither regressed nor given. For comparison, Strasser et al. 2010's own interface fits give L/W ≈ 1.1 at Mw 7 and ≈ 3.2 at Mw 9.",
         citation: strasser2010,
       },
       {
@@ -1031,7 +1047,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'upliftFactor = { 0.6: subduction interface ; 0.5: continental reverse / default ; 0.4: continental normal ; 0.05: strike-slip }',
         description:
-          'Ratio of mean seafloor uplift to mean coseismic slip, derived from the Okada 1992 BSSA half-space dislocation projected onto a horizontal sea floor. The shallow-dipping megathrust interface (10–15°) lifts the widest footprint and adds the Tanioka & Satake 1996 horizontal-displacement contribution from sloping bathymetry → 0.6. Mid-dip continental thrusts (~30°) sit at the canonical 0.5; high-dip normal faults (~50°) rotate more slip into horizontal motion → 0.4. Strike-slip events have only residual vertical motion → 0.05 (and the auto-trigger excludes them anyway). Geist & Bilek 2001 motivate the depth-dependent shear-modulus correction implicit in the megathrust value.',
+          'Simulator-chosen ratios of mean sea-floor uplift to mean slip. The megathrust value, 0.6, was tuned against the Tōhoku 2011 record at DART 21413; 0.5, 0.4 and 0.05 are assumed. Tanioka & Satake 1996 show that the horizontal motion of a sloping sea floor adds to the wave, which is the reason a megathrust value above the others is plausible.',
         citation: taniokaSatake1996,
       },
       {
@@ -1039,15 +1055,16 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Uplift → wave-amplitude efficiency',
         formula: 'A₀ = η · uplift,   η ≈ 0.7',
         description:
-          "Empirical efficiency factor for the conversion of seafloor uplift into a long-wavelength gravity-wave amplitude at the source. The textbook approach `A₀ = uplift` implicitly assumes 100 % conversion; in reality only ≈ 70 % of the uplift volume ends up in the propagating long wave — the remainder is dissipated as acoustic waves inside the water column, short-wavelength surface modes that disperse rapidly, and the seafloor's elastic rebound. Satake 2013 BSSA 103: 1473 (Tōhoku 2011 DART-buoy inversion) gives 70 ± 10 % effective coupling. Replaces the previous implicit 100 % assumption.",
+          "η = 0.7 is a simulator calibration against the Tōhoku 2011 and Sumatra records, not a published efficiency. Satake et al. 2013 find that horizontal displacement of the sea-floor slope accounts for 20–40 % of Tōhoku's tsunami amplitudes, a different quantity.",
         citation: satake2013,
       },
       {
         id: 'submarine-tsunami-trigger',
         name: 'Submarine earthquake auto-trigger',
-        formula: 'tsunami fires if waterDepth > 0 AND Mw ≥ 6.5 AND faultType ∈ {reverse, normal}',
+        formula:
+          'tsunami fires if subductionInterface OR (waterDepth > 0 AND Mw ≥ 6.5 AND faultType ∈ {reverse, normal})',
         description:
-          "Bryant 2014 §3.4 dip-slip uplift rule: the seismic tsunami pipeline fires automatically when the earthquake's epicentre lies on the seafloor and the rupture has a vertical-displacement component, regardless of the explicit `subductionInterface` flag. The full fault-style-aware physics (aspect, uplift factor, wave-coupling efficiency) now flows through every submarine event — including custom-parameter scenarios — so a normal fault on the seafloor produces a smaller wave than a megathrust of the same Mw, as observed.",
+          'A simulator rule: an earthquake flagged as a subduction interface always makes a wave, and an unflagged one makes a wave when its epicentre is under water, its magnitude reaches 6.5 and its fault has a dip-slip component. The threshold is not taken from a source. The fault-style factors above apply to every event it lets through.',
         citation: bryant2014,
       },
     ],
@@ -1476,7 +1493,7 @@ export const CITATIONS = {
   koshimura2009,
   jonkman2008,
   kinneyGraham1985,
-  nordyke1977,
+  nordyke1962,
   needham2018,
   longmire1978,
   hanksKanamori1979,
