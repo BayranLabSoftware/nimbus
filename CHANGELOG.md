@@ -57,11 +57,10 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   whole the energy, the craters, the ejecta blanket and the fireball agree
   to the program's rounding, and a test now gates it. Where they part the
   validation report measures and names it: the simulator's tuned entry
-  bursts in the air bodies of 100 m to 1 km that the program brings to the
-  ground with nearly all their energy (a declared gap, and the next
-  change), strength comes in classes rather than from density, the air
-  blast is a different fit, and the online program prints three quarters
-  of the complex-crater depth its own paper gives.
+  burst in the air 21 of the 57 impacts the program brings to the ground
+  (fixed the same day, below), the air blast is a different fit, and the
+  online program prints three quarters of the complex-crater depth its own
+  paper gives.
 
 - **Held-out sets chosen by rule, run once.** Written down and pushed
   before the model saw them (`validation/heldOutByRule.ts`, rules 11 to
@@ -234,6 +233,29 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   reaches the page through the depth of burst below.
 
 ### Fixed
+
+- **An asteroid's passage through the air follows the equations the
+  impact pipeline cites.** The atmospheric entry was a classifier tuned on
+  Chelyabinsk and Tunguska — a burst two scale heights below breakup, less
+  a logarithmic correction for size, and at most three tenths of the
+  energy left for the ground once a body broke (B-023). Against the Earth
+  Impact Effects Program it burst in the air 21 of the 57 impacts the
+  program brings to the ground: a 100 m stony body at 20 km/s dug a 1.6 km
+  crater there and none here, a 300 m body at 50 km/s a 9.6 km crater
+  there and none here. The entry now integrates Collins, Melosh & Marcus
+  2005's pancake equations (Eqs. 8–20, their constants, and their
+  density-derived strength when no class is chosen), and the crater is dug
+  at the speed the body or its swarm strikes the ground. On the 81-impact
+  grid every outcome and every kind of crater agrees, the breakup altitude
+  within 1 %, the burst within 5 %, the craters within 4 %, and a test
+  gates it. Chelyabinsk now bursts at 29.0 km against the 27.0 km Popova
+  et al. measured (22.1 km before), Tunguska at 9.8 km, and Meteor Crater's
+  iron breaks up and strikes as a swarm at 10.9 km/s, digging 1.45 km
+  against the 1.2 km observed (1.55 km before). The panel shows the speed
+  at the end of entry where it showed a tuned "penetration bonus". The
+  altitude factor on an airburst's shock was fitted to the old, lower
+  bursts and has not been refitted: at Chelyabinsk it now carries the
+  0.5 psi ring to 183 km, and the declared gap says so.
 
 - **The validation checks count a great earthquake the way the
   simulator does.** From Mw 7.5 the simulator counts the people inside

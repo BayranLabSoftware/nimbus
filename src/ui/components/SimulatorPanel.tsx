@@ -847,9 +847,9 @@ export function SimulatorPanel(): JSX.Element {
                   {formatKilometres(result.data.entry.breakupAltitude)}
                 </CitationTooltip>
               </dd>
-              <dt className={styles.resultLabel}>{t('simulator.penetrationBonus')}</dt>
+              <dt className={styles.resultLabel}>{t('simulator.endVelocity')}</dt>
               <dd className={styles.resultValue}>
-                {formatKilometres(result.data.entry.penetrationBonus)}
+                {((result.data.entry.endVelocity as number) / 1_000).toFixed(1)} km/s
               </dd>
               <dt className={styles.resultLabel}>{t('simulator.energyFractionToGround')}</dt>
               <dd className={styles.resultValue}>

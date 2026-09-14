@@ -70,23 +70,27 @@ describe('simulateImpact (deterministic Layer-2 evaluator)', () => {
     expect(r.crater.finalDiameter as number).toBeLessThan(500);
   });
 
-  it('Tunguska preset: partial airburst 5–15 km, greatly reduced ground crater', () => {
+  it('Tunguska preset: an airburst 5–15 km up, and no crater', () => {
     const r = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
-    expect(r.entry.regime).toBe('PARTIAL_AIRBURST');
+    expect(r.entry.regime).toBe('COMPLETE_AIRBURST');
     expect(r.entry.burstAltitude).toBeGreaterThan(5_000);
     expect(r.entry.burstAltitude).toBeLessThan(15_000);
-    expect(r.entry.energyFractionToGround).toBeGreaterThan(0);
-    expect(r.entry.energyFractionToGround).toBeLessThan(0.3);
+    expect(r.entry.energyFractionToGround).toBe(0);
+    expect(r.crater.finalDiameter as number).toBe(0);
   });
 
-  it('Meteor Crater and Chicxulub remain INTACT ground impacts', () => {
+  it('Meteor Crater and Chicxulub reach the ground, the iron slowed and Chicxulub barely', () => {
+    // Both break up high (Collins et al. 2005 Eq. 11) and strike the
+    // ground as a swarm (Eq. 20): the 50 m iron at 10.9 km/s of its 12.8,
+    // the 15 km body with all but a thousandth of its energy.
     const mc = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
-    expect(mc.entry.regime).toBe('INTACT');
-    expect(mc.entry.energyFractionToGround).toBe(1);
+    expect(mc.entry.regime).toBe('PARTIAL_AIRBURST');
+    expect(mc.entry.energyFractionToGround).toBeGreaterThan(0.6);
+    expect(mc.entry.energyFractionToGround).toBeLessThan(0.85);
 
     const chx = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
-    expect(chx.entry.regime).toBe('INTACT');
-    expect(chx.entry.energyFractionToGround).toBe(1);
+    expect(chx.entry.regime).not.toBe('COMPLETE_AIRBURST');
+    expect(chx.entry.energyFractionToGround).toBeGreaterThan(0.99);
   });
 });
 
@@ -214,7 +218,7 @@ describe('simulateImpact — land vs. ocean cascade', () => {
       targetDensity: kgPerM3(2700),
       impactAngle: degreesToRadians(deg(18)),
     });
-    expect(oblique.entry.regime).toBe('INTACT');
+    expect(oblique.entry.regime).not.toBe('COMPLETE_AIRBURST');
     expect(oblique.ejecta.asymmetryFactor).toBeGreaterThan(0.55);
     expect(oblique.ejecta.asymmetryFactor).toBeLessThan(0.65);
     expect(oblique.ejecta.downrangeOffset as number).toBeGreaterThan(0);
@@ -242,7 +246,7 @@ describe('simulateImpact — land vs. ocean cascade', () => {
     const land = IMPACT_PRESETS.CHICXULUB.input;
     const ocean = IMPACT_PRESETS.CHICXULUB_OCEAN.input;
     const r = simulateImpact(ocean);
-    expect(r.entry.energyFractionToGround).toBe(1);
+    expect(r.entry.energyFractionToGround).toBeGreaterThan(0.99);
     if (!r.tsunami) {
       expect.fail('expected tsunami for Chicxulub ocean preset');
       return;
@@ -326,15 +330,13 @@ describe('simulateImpact — land vs. ocean cascade', () => {
     expect(r.damage.thirdDegreeBurn).toBe(r.entry.flashBurnRadii.thirdDegree);
   });
 
-  it('damage rings for an INTACT impact match the surface-burst formulas (atmospheric block is zero)', () => {
-    // Chicxulub is the canonical INTACT regime — gf = 1, the
-    // atmospheric airburst radii are zero, and `damage.*` must
-    // come from the surface-burst Kinney-Graham fit applied to
-    // the full kinetic energy. Sanity check: the surface ring
-    // values are positive and exceed the (zero) airburst values.
+  it('damage rings for a body that reaches the ground come from the surface burst', () => {
+    // Chicxulub keeps all but a thousandth of its energy through the
+    // air: the air's share draws smaller rings than the ground's, and
+    // `damage.*` takes the larger.
     const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
-    expect(r.entry.regime).toBe('INTACT');
-    expect(r.entry.shockWaveRadii.fivePsi as number).toBe(0);
+    expect(r.entry.regime).not.toBe('COMPLETE_AIRBURST');
+    expect(r.entry.shockWaveRadii.fivePsi as number).toBeLessThan(r.damage.overpressure5psi);
     expect(r.damage.overpressure5psi as number).toBeGreaterThan(0);
     expect(r.damage.thirdDegreeBurn as number).toBeGreaterThan(0);
   });

@@ -1094,36 +1094,21 @@ Each figure is simulator over program, over the pairs where both answer.
 | Quantity | Pairs | Geometric mean | 10th pct | Median | 90th pct | Range |
 |----------|------:|---------------:|---------:|-------:|---------:|-------|
 | Energy before entry | 81 | 1.00× | 0.98× | 1.00× | 1.03× | 0.98× – 1.03× |
-| Breakup altitude | 81 | 0.90× | 0.85× | 0.87× | 0.90× | 0.60× – 3.00× |
-| Burst altitude (airbursts) | 24 | 1.29× | 0.67× | 1.10× | 2.35× | 0.28× – 22.06× |
-| Air-blast overpressure at the distance | 57 | 1.18× | 0.38× | 1.38× | 2.12× | 0.20× – 7.06× |
-| Fireball radius | 57 | 0.87× | 0.67× | 1.00× | 1.02× | 0.28× – 1.58× |
-| Transient crater diameter | 48 | 0.93× | 0.72× | 1.00× | 1.02× | 0.70× – 1.34× |
-| Final crater diameter | 48 | 0.92× | 0.69× | 1.00× | 1.01× | 0.66× – 1.38× |
-| Final crater depth | 48 | 1.31× | 1.20× | 1.34× | 1.37× | 0.97× – 1.50× |
-| Ejecta blanket edge (1 cm to 100 m) | 237 | 0.91× | 0.64× | 1.00× | 1.00× | 0.62× – 1.50× |
+| Breakup altitude | 81 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.01× |
+| Burst altitude (airbursts) | 24 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.05× |
+| Speed at the ground | 57 | 1.00× | 0.99× | 1.00× | 1.01× | 0.97× – 1.04× |
+| Transient crater diameter | 57 | 1.00× | 0.99× | 1.00× | 1.01× | 0.96× – 1.03× |
+| Final crater diameter | 57 | 1.00× | 0.98× | 1.00× | 1.01× | 0.96× – 1.02× |
+| Final crater depth | 57 | 1.29× | 1.00× | 1.35× | 1.36× | 0.99× – 1.40× |
+| Air-blast overpressure at the distance | 57 | 1.47× | 0.77× | 1.65× | 2.77× | 0.24× – 8.44× |
+| Fireball radius | 57 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.00× |
+| Ejecta blanket edge (1 cm to 100 m) | 277 | 1.00× | 1.00× | 1.00× | 1.00× | 0.99× – 1.00× |
 
-On the impacts both bring to the ground whole, at no less than 95 % of their
-entry speed, the equations are the paper's in both codes, and the figures
-agree to the program's own rounding:
+Outcome, program → simulator: airburst → COMPLETE_AIRBURST: 24; ground → PARTIAL_AIRBURST: 57. Crater, program → simulator: complex → complex: 49; none → none: 24; simple → simple: 8. Until 14 September 2026 the simulator's entry was a classifier tuned on Chelyabinsk and Tunguska, and it burst in the air 21 of the 57 impacts the program brings to the ground (B-023); it now integrates the same pancake equations (Collins et al.'s Eqs. 8–20), and `eiepComparison.test.ts` gates the outcome, the entry, the craters, the ejecta blanket and the fireball to the program's rounding. Two quantities part by design:
 
-| Quantity | Pairs | Geometric mean | 10th pct | Median | 90th pct | Range |
-|----------|------:|---------------:|---------:|-------:|---------:|-------|
-| Energy before entry | 34 | 1.00× | 0.98× | 1.00× | 1.03× | 0.98× – 1.03× |
-| Breakup altitude | 34 | 0.89× | 0.85× | 0.87× | 0.90× | 0.60× – 2.95× |
-| Transient crater diameter | 34 | 1.00× | 0.99× | 1.00× | 1.02× | 0.96× – 1.03× |
-| Final crater diameter | 34 | 1.00× | 0.98× | 1.00× | 1.01× | 0.96× – 1.02× |
-| Final crater depth | 34 | 1.35× | 1.33× | 1.35× | 1.38× | 1.30× – 1.40× |
-| Air-blast overpressure at the distance | 34 | 1.27× | 0.38× | 1.55× | 2.17× | 0.24× – 4.70× |
-| Fireball radius | 34 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.02× |
-| Ejecta blanket edge (1 cm to 100 m) | 170 | 1.00× | 1.00× | 1.00× | 1.00× | 0.99× – 1.02× |
-
-Where they part, it is by what the simulator does instead. Outcome, program → simulator: airburst → COMPLETE_AIRBURST: 19; airburst → PARTIAL_AIRBURST: 5; ground → COMPLETE_AIRBURST: 4; ground → INTACT: 36; ground → PARTIAL_AIRBURST: 17. Crater, program → simulator: complex → complex: 45; complex → none: 3; complex → simple: 1; none → none: 24; simple → none: 6; simple → simple: 2.
-
-- **Atmospheric entry.** The simulator's entry is a classifier tuned on Chelyabinsk and Tunguska — the breakup altitude, a burst two scale heights lower less a logarithmic correction for size, and a share of the energy reaching the ground that is at most 0.3 once a body breaks up — where the program integrates Collins et al.'s pancake equations (their Eqs. 11–20). A body of 100 m to 1 km that the program brings to the ground with nearly all its energy can burst in the air here with none of its crater (declared gap below).
-- **Strength.** The simulator takes a strength class (Popova et al. 2011; 1 MPa unless a class is chosen), the program a strength that grows with density, so an iron impactor typed in by density alone breaks up three times higher here.
 - **Complex crater depth.** The simulator follows Eq. 28 of the paper, d = 0.4 D^0.3; the online program prints about three quarters of that for every complex crater of the grid. Which the authors now intend is a question for them, and the simulator keeps the published relation until it is answered.
-- **Air blast.** The simulator reads Kinney & Graham's free-air fit on the energy that reaches the ground; the program, the air-blast scaling its authors give. The two part from a fifth to seven times across the grid, and neither is a measurement of an impact's blast.
+- **Air blast.** The simulator reads Kinney & Graham's free-air fit on the energy that reaches the ground; the program, the air-blast scaling its authors give. The two part from a quarter to eight times across the grid, and neither is a measurement of an impact's blast.
+- **Strength.** Where a strength class is chosen — every impact preset but Tunguska, and the custom panel's taxonomy — the simulator takes it (Popova et al. 2011); the grid, like the program, takes the strength of Collins et al.'s Eq. 9 from density.
 
 ## Declared gaps
 
@@ -1139,9 +1124,8 @@ shows.
 - **Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings use Joyner & Boore 1981 and the reported accelerations Boore et al. 2014, both for shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI IX band in the footprint table is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).
 - **Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).
 - **Three numbers are not traced to a source read here.** The 30 cm at DART 21413 that the Tōhoku wave row is tuned on is quoted from Satake et al. 2013 without the paper having been read in the source review; the arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005.
-- **An airburst's shock is stretched by a fitted altitude factor that no record validates.** At Chelyabinsk the 0.5 psi ring reaches 96 km, near the 108 km to which Popova et al. 2013 model window damage — but theirs is the reach of 500 Pa, and at 500 Pa the model reaches about 640 km, 92 km without the factor. Tunguska's blast row checks the energy, not the factor (`effects/atmosphericEntry.ts`).
+- **An airburst's shock is stretched by a fitted altitude factor that no record validates.** At Chelyabinsk, which bursts at 29.0 km on Collins et al.'s entry equations, the factor is 13.3 and the 0.5 psi ring reaches 183 km, beyond the 108 km to which Popova et al. 2013 model window damage — and theirs is the reach of 500 Pa, which the amplified model carries about 1 230 km, 92 km without the factor. The factor was fitted when a tuned classifier burst the preset at 22.1 km and has not been refitted. Tunguska's blast row checks the energy, not the factor (`effects/atmosphericEntry.ts`).
 - **Parts of the explosion model are the project's, not the book's.** Burn thresholds are fixed fluences of 8, 5 and 2 cal/cm² where Glasstone & Dolan make them grow with yield; the initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).
-- **An impactor's passage through the air is a tuned classifier, not the pancake equations the impact pipeline cites.** Against the Earth Impact Effects Program on a fixed grid (the section above), bodies of 100 m to 1 km that the program brings to the ground with nearly all their energy burst in the air here, keeping at most three tenths of it and sometimes none of their crater: a 100 m stony body at 20 km/s leaves a 1.6 km crater in the program and none here, a 1 km body at 50 km/s keeps 95 % of its energy there and 30 % here. Where both bring a body down whole, the craters, ejecta and fireball agree to the program's rounding.
 - **No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.
 - **A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).
 - **The volcanic relations are the project's calibrations, and a current is a disc.** The reach of pyroclastic currents (L = 10 · V^⅓, a project mobility), the ashfall, the lahars and the climate response were set on anchors that the source review of 14 September did not recheck (docs/ROADMAP.md, move 0b). A current is drawn as a disc about the vent: held out, Fuego 2018's reaches 3.7 km where the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because a reach three times short and a footprint far too wide cancel; Unzen 1991's reaches 0.84 km against a flow of 3.2 km.

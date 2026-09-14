@@ -14,7 +14,7 @@ const GLOSSARY = {
     'pancakeModel',
     'breakupAltitude',
     'burstAltitude',
-    'penetrationBonus',
+    'endVelocity',
     'energyFractionToGround',
     'atmosphericYield',
     'bolideAirburstAmplification',

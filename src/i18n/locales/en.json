@@ -157,19 +157,19 @@
     "entryLabel": "Atmospheric entry",
     "entryRegime": "Regime",
     "entryRegimes": {
-      "INTACT": "Intact ground impact",
-      "PARTIAL_AIRBURST": "Partial airburst",
-      "COMPLETE_AIRBURST": "Complete airburst"
+      "INTACT": "Reaches the ground whole",
+      "PARTIAL_AIRBURST": "Breaks up, strikes the ground",
+      "COMPLETE_AIRBURST": "Airburst"
     },
     "entryRegimeExplainer": "What this means",
     "entryRegimeExplain": {
-      "INTACT": "The body is too massive to dissolve in atmosphere. Even though fragmentation starts at the breakup altitude, the pancake of fragments has so much momentum that it punches through and slams into the ground intact. All the kinetic energy becomes crater + ejecta + seismic work — Chicxulub class.",
-      "PARTIAL_AIRBURST": "The pancake bursts in the lower atmosphere (5–15 km). Part of the energy disperses as a thermal flash and shock wave; part still excavates a small crater on the ground.",
-      "COMPLETE_AIRBURST": "The pancake disintegrates above 15 km. ≈ 98 % of the kinetic energy is released as a fireball and shock pulse in the air — only ≈ 2 % reaches the ground. Tunguska 1908 and Chelyabinsk 2013 are the canonical examples."
+      "INTACT": "The body is strong enough, for its size and speed, never to break up. It slows by drag and strikes the ground whole, and the energy it still carries goes into the crater, the ejecta and the ground shaking.",
+      "PARTIAL_AIRBURST": "The body breaks up and flattens as it falls, but the spreading swarm reaches the ground before it is seven times its size: it strikes as one crater-forming blow, at the speed the air leaves it, and the air takes the rest of the energy. Every body a kilometre across and more does this, and so did Meteor Crater's iron.",
+      "COMPLETE_AIRBURST": "The body breaks up and its fragments spread to seven times its size before they reach the ground: the energy goes into the air as a fireball and a shock wave, and no crater forms. Tunguska 1908 and Chelyabinsk 2013 are the canonical examples."
     },
     "burstAltitude": "Burst altitude",
     "breakupAltitude": "Fragmentation onset",
-    "penetrationBonus": "Penetration depth bonus",
+    "endVelocity": "Speed at the end of entry",
     "energyFractionToGround": "Energy to ground",
     "atmosphericYield": "Atmospheric yield (TNT-eq.)",
     "entryAmplificationFactor": "Altitude amplification (×)",
@@ -1003,23 +1003,23 @@
       },
       "breakupAltitude": {
         "name": "Breakup altitude (h_b)",
-        "definition": "Altitude at which fragmentation begins: h_b = H · ln(ρ₀ · v² / Y), the leading term of Collins et al.'s breakup altitude. For the Chelyabinsk preset (17 m, 19 km/s, 2 MPa) this is ≈ 43 km; for Chicxulub (15 km) ≈ 50 km. Fragmentation onset alone does NOT mean the body airbursts — see penetration bonus.",
+        "definition": "Altitude at which the ram pressure first exceeds the body's strength and it begins to break up, from Collins et al.'s analytic approximation. For the Chelyabinsk preset (17 m, 19 km/s, 2 MPa, 18°) it is about 41 km. Breaking up does not by itself make an airburst — see burst altitude.",
         "source": "Collins, Melosh & Marcus (2005) Eq. 11"
       },
       "burstAltitude": {
         "name": "Burst altitude",
-        "definition": "Altitude of peak energy deposition: h_burst = h_b − 2·H − penetrationBonus, a Nimbus rule tuned on Tunguska and Chelyabinsk. When this is below the surface (large bodies) the simulator flags the regime as INTACT.",
-        "source": "Nimbus (tuned)"
+        "definition": "Altitude at which the flattening swarm of fragments has spread to seven times the body's size. Above the ground the body airbursts; at or below it the swarm strikes the ground. For the Tunguska preset it is 9.8 km, for Chelyabinsk 29.0 km against the 27.0 km observed.",
+        "source": "Collins, Melosh & Marcus (2005) Eq. 18"
       },
-      "penetrationBonus": {
-        "name": "Penetration bonus",
-        "definition": "Diameter-dependent depth (1.2 · ln(D/10 m) · H) by which a larger body bursts lower. For Chicxulub-class bodies it exceeds the breakup altitude itself, so the body never bursts in the atmosphere. A Nimbus tuning, not a published equation.",
-        "source": "Nimbus (tuned on Tunguska and Chelyabinsk)"
+      "endVelocity": {
+        "name": "Speed at the end of entry",
+        "definition": "The speed the body or its swarm has left when it strikes the ground, or when it bursts: drag on a whole body, then on the spreading pancake. The crater is dug at this speed.",
+        "source": "Collins, Melosh & Marcus (2005) Eqs. 8, 17–20"
       },
       "energyFractionToGround": {
         "name": "Energy fraction to ground (gf)",
-        "definition": "Fraction of the impactor's kinetic energy that reaches the ground as cratering and seismic work: 1 for INTACT (Chicxulub), 0.30 for a burst below 5 km falling to 0.02 at 15 km and above (0.11 for the Tunguska preset, 0.02 for Chelyabinsk). The complement (1 − gf) is released in the atmosphere as flash and shock.",
-        "source": "Nimbus heuristic"
+        "definition": "Fraction of the impactor's kinetic energy that reaches the ground: (v_end / v₀)² for a body or swarm that strikes it — 0.73 for the Meteor Crater preset, 0.999 for Chicxulub — and 0 for an airburst. The complement (1 − gf) goes into the air as flash and shock.",
+        "source": "Collins, Melosh & Marcus (2005)"
       },
       "atmosphericYield": {
         "name": "Atmospheric airburst yield",
@@ -1155,7 +1155,7 @@
     "emp": "Electromagnetic-pulse regime classification. Low-altitude bursts are EMP-negligible at ground level; high-altitude (> 30 km) bursts produce the 50 kV/m waveform of IEC 61000-2-9, which the standard gives without a yield, over the horizon tangent disc. The cube-root fall below 1 Mt is a project assumption. Longmire (1978) IEEE AP-26 explains the pulse.",
     "thermal": "Third-degree-burn radius at 8 cal/cm², a project threshold — Glasstone & Dolan (1977) make the exposure for a burn grow with yield (Fig. 12.65) — with the fluence spread over a sphere (§7.94–7.96), a thermal partition from 0.18 on the ground to 0.35 in the air (§7.101) and a project transmittance e^(−R/L). None for a chemical charge.",
     "nuclearCrater": "Apparent surface-burst crater diameter D = K · W_kt^0.3 (Glasstone & Dolan 1977 §6.09): K = 36.6 m for dry soil and firm ground, the book's 1 kt crater; 92 m for saturated reef, which puts Castle Bravo and Ivy Mike near their mile-wide craters (DTRIAC SR-12-001); hard rock and clay project values.",
-    "atmosphericEntry": "Fragmentation-onset altitude h_b = H · ln(ρ₀v² / Y), where dynamic pressure first exceeds the impactor's strength Y — the leading term of Collins et al. 2005 Eq. 11 (the pancake model is Chyba et al. 1993). Nimbus sets the burst 2 scale heights below h_b, minus a diameter-dependent penetration bonus that lets large bodies reach the ground intact; both steps are tuned on Tunguska and Chelyabinsk.",
+    "atmosphericEntry": "Breakup altitude from Collins et al. 2005 Eq. 11, where the ram pressure first exceeds the impactor's strength; the broken body then spreads as a pancake (Chyba et al. 1993) and airbursts if it reaches seven times its size above the ground (Eq. 18).",
     "bolideAirburstAmplification": "Altitude correction f(h) = (P₀ / P_amb(h))^(1/β), β = 5/3, capped at 15×, applied to the shock radii of an airburst. It supposes the overpressure keeps its ratio to the ambient pressure on the way down (P(h) from the U.S. Standard Atmosphere 1976) and turns the gain into distance with a fitted decay exponent: a Nimbus plausibility argument, not a derivation. Not validated: for the Chelyabinsk preset it puts the 0.5 psi ring at 96 km, but at the 500 Pa that Popova et al. (2013) take for window damage the corrected model reaches ≈ 640 km, against their 108 km.",
     "seaCoupling": "An impact on land reaches the sea with the crater, when the rim crosses the coast, or with the ejecta falling beyond the shoreline. The deposit thins as r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47), so the ejecta mass beyond a distance d falls as 1/d: the fraction beyond the shore, R/d, scales the energy the water cavity forms with — a Nimbus assumption. Beyond the 1 m isopach the sea is not moved.",
     "explosionWaveHeight": "Height from crest to trough H ≈ 40 500·W^0.54/R feet in deep water (Glasstone & Dolan 1977 §6.119, to about 35 %), or H ≈ 150·d·W^0.25/R in water shallower than 100·W^0.25 ft (§6.121); W in kilotons, d the water depth. The amplitude shown is half the height. The relation already contains the train's dispersion.",
@@ -1488,7 +1488,7 @@
       },
       "airburstShock": {
         "item": "How far an airburst's shock reaches has not been validated",
-        "note": "A burst high in the air is given a longer reach by a fitted factor. For Chelyabinsk it draws the light-damage ring at 96 km, close to the 108 km out to which that event's study models broken windows — but for a pressure seven times weaker, which the model carries to about 640 km."
+        "note": "A burst high in the air is given a longer reach by a fitted factor. For Chelyabinsk it draws the light-damage ring at 183 km, beyond the 108 km out to which that event's study models broken windows, and it carries that study's weaker pressure about 1,200 km. The factor was fitted to an older, lower burst and has not been refitted."
       },
       "explosionProject": {
         "item": "Parts of the explosion model are this project's, not the book's",
@@ -1497,10 +1497,6 @@
       "volcanoCalibrations": {
         "item": "The volcanic relations are this project's calibrations",
         "note": "How far pyroclastic currents run, where ash falls, how far lahars travel and how much an eruption cools the climate are set on reference eruptions that the source review of September 2026 did not go back to check. A current is drawn as a disc around the vent: at Fuego in 2018 the model's disc reaches 3.7 km while the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because the two errors cancel."
-      },
-      "impactEntry": {
-        "item": "An impactor's passage through the air is a shortcut, not the equations the impacts cite",
-        "note": "The simulator decides whether an asteroid bursts in the air with a rule tuned on Chelyabinsk and Tunguska, where the Earth Impact Effects Program, written by the authors of the equations it cites, follows the break-up and flattening of the body step by step. Checked against that program across sizes, speeds and angles, bodies from 100 metres to a kilometre that it brings to the ground with nearly all their energy burst in the air here and can leave no crater. Where both bring a body down whole, the craters agree to the program's own rounding."
       },
       "impactToll": {
         "item": "No impact toll can ever be checked",

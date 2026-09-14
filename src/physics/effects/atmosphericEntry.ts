@@ -11,50 +11,69 @@ import {
   secondDegreeBurnRadius,
   thirdDegreeBurnRadius,
 } from '../events/explosion/thermal.js';
-import type { Joules, KilogramPerCubicMeter, Meters, MetersPerSecond, Pascals } from '../units.js';
-import { J, m, Pa } from '../units.js';
+import type {
+  Joules,
+  KilogramPerCubicMeter,
+  Meters,
+  MetersPerSecond,
+  Pascals,
+  Radians,
+} from '../units.js';
+import { J, kgPerM3, m, mps, Pa } from '../units.js';
 
 /**
- * Atmospheric-entry airburst classifier for cosmic impactors, based on
- * the Chyba, Thomas & Zahnle (1993) "pancake" fragmentation model.
+ * Atmospheric entry of a cosmic impactor: Collins, Melosh & Marcus
+ * (2005), "Earth Impact Effects Program", Meteoritics & Planetary
+ * Science 40 (6): 817–840, "Atmospheric entry", Eqs. 5–20, with their
+ * constants — an exponential atmosphere of scale height 8 km and surface
+ * density 1 kg/m³, a drag coefficient of 2 and a pancake factor of 7.
  *
- * References:
- *   Chyba, C. F., Thomas, P. J., & Zahnle, K. J. (1993).
- *   "The 1908 Tunguska explosion: atmospheric disruption of a stony
- *    asteroid." Nature 361 (6407): 40–44. DOI: 10.1038/361040a0.
- *   Collins, G. S., Melosh, H. J., & Marcus, R. A. (2005). "Earth
- *    Impact Effects Program." Meteoritics & Planetary Science 40 (6),
- *    817–840, "Atmospheric entry", Eqs. 5–20.
- *   Popova, O. P., Jenniskens, P., Emel'yanenko, V., et al. (2013).
- *    "Chelyabinsk airburst, damage assessment, meteorite recovery,
- *    and characterization." Science 342 (6162): 1069–1073.
- *    DOI: 10.1126/science.1242642.
+ * The body flies a straight line and slows by drag (Eq. 8) until the
+ * ram pressure exceeds its strength (Eqs. 10–12, their analytic
+ * approximation of the breakup altitude). A body too strong to break
+ * reaches the ground whole. A broken body flattens into a pancake that
+ * spreads until it is seven times its size (Eqs. 15–16): if that happens
+ * above the ground it is an airburst (Eq. 18); otherwise the swarm
+ * strikes the ground at the speed the drag on the spreading pancake
+ * leaves it (Eqs. 17, 19, 20).
  *
- * Physical picture: as the impactor descends, ram pressure q = ρ_air·v²
- * grows exponentially. When q exceeds the object's tensile strength Y
- * it fragments; the fragment cloud ("pancake") continues to
- * decelerate while spreading laterally, and deposits its energy lower
- * down (larger bodies penetrate deeper).
+ * Until 14 September 2026 this was a classifier tuned on Chelyabinsk and
+ * Tunguska — a burst two scale heights below breakup, less a
+ * logarithmic correction for size, and at most three tenths of the
+ * energy left for the ground once a body broke. Against the Earth Impact
+ * Effects Program, run by Collins et al., it burst in the air bodies of
+ * 100 m to 1 km that their equations bring to the ground with nearly all
+ * their energy (validation/eiepComparison.ts). These are their
+ * equations, and the same grid holds them to the program.
  *
- * The implementation is a simplified classifier, not Collins et al.'s
- * pancake integration: the breakup altitude is the leading term of
- * their Eq. 11*, the burst sits two scale heights lower less a
- * diameter-dependent penetration correction, and both the correction
- * and the ground-energy ramp are Nimbus choices tuned against
- * Chelyabinsk 2013 (burst at 27.0 km, Popova et al. 2013) and Tunguska
- * 1908. Collins et al. apply their entry model only to impactors under
- * 1 km across; this classifier runs for every size.
+ * Other references: Chyba, Thomas & Zahnle (1993), Nature 361: 40–44
+ * (the pancake model); Popova et al. (2011), M&PS 46: 1525–1550 (the
+ * strength classes); Popova et al. (2013), Science 342: 1069–1073
+ * (Chelyabinsk).
  */
 
-/** Sea-level atmospheric density (ICAO Standard Atmosphere, ISO 2533). */
-const RHO_0 = 1.225;
-/** Atmospheric scale height (ISA, low-atmosphere fit). */
+/** Surface atmospheric density, as Collins et al. take it (kg/m³). */
+const RHO_0 = 1;
+/** Atmospheric scale height (m). */
 const H_SCALE = 8_000;
-/** Empirical diameter-penetration coefficient — tuned against
- *  Tunguska + Chelyabinsk observations. */
-const PENETRATION_COEFFICIENT = 1.2;
-/** Diameter below which the pancake has no extra penetration. */
-const PENETRATION_REFERENCE_DIAMETER = 10;
+/** Drag coefficient. */
+const DRAG_COEFFICIENT = 2;
+/** Pancake factor: the spread, as a multiple of the body's diameter, at
+ *  which the fragments go their own ways and the airburst is declared. */
+const PANCAKE_FACTOR = 7;
+/** Standard gravity, for the terminal velocity (m/s²). */
+const GRAVITY = 9.81;
+
+/**
+ * Collins et al. 2005 Eq. 9: the yield strength an impactor of this
+ * density is given when no strength class is chosen,
+ * log₁₀ Y = 2.107 + 0.0624 √ρ, fitted from comets to irons between 1000
+ * and 8000 kg/m³.
+ */
+export function collinsStrength(density: KilogramPerCubicMeter): Pascals {
+  const rho = Math.max(density, 0);
+  return Pa(10 ** (2.107 + 0.0624 * Math.sqrt(rho)));
+}
 
 /**
  * Tensile-strength ranges for the main impactor classes. Values from
@@ -76,40 +95,33 @@ export type ImpactorStrengthClass = keyof typeof IMPACTOR_STRENGTH;
 export type EntryRegime = 'INTACT' | 'PARTIAL_AIRBURST' | 'COMPLETE_AIRBURST';
 
 export interface AtmosphericEntryResult {
-  /** Altitude of peak energy deposition (m). 0 for INTACT. */
+  /** Airburst altitude (m), Collins et al. Eq. 18; 0 when the body or
+   *  its swarm reaches the ground. */
   burstAltitude: Meters;
-  /** Fragmentation-onset altitude (m). 0 for INTACT. */
+  /** Breakup altitude (m), Eq. 11; 0 for a body that never breaks. */
   breakupAltitude: Meters;
+  /** INTACT: never breaks. PARTIAL_AIRBURST: breaks, and the swarm
+   *  still strikes the ground. COMPLETE_AIRBURST: the swarm spreads to
+   *  seven times its size above the ground. */
   regime: EntryRegime;
+  /** Speed where entry ends (m/s): at the ground for a body or swarm
+   *  that reaches it (Eqs. 8, 17, 20, never below the terminal velocity
+   *  of a body that stays whole), at the burst altitude for an airburst
+   *  (Eqs. 17, 19). */
+  endVelocity: MetersPerSecond;
   /**
-   * Fraction of the original kinetic energy that reaches the ground
-   * as cratering / seismic work. Complement (1 − this) is deposited
-   * in the atmosphere as thermal + blast.
-   *
-   * NOTE: the ramp that maps burst altitude → ground fraction
-   * (≈ 0.02 for a complete airburst ≥ 15 km, rising to ≈ 0.30 near the
-   * surface) is a Nimbus HEURISTIC, not a Chyba/Collins equation. The
-   * trend is physically correct (higher burst → less ground coupling);
-   * the specific break points / slopes are uncited engineering choices.
+   * Fraction of the kinetic energy at the top of the atmosphere that
+   * reaches the ground: (v_end / v₀)² for a body or swarm that strikes
+   * it, 0 for an airburst, whose fragments Collins et al. leave without
+   * a crater. The complement is deposited in the air.
    */
   energyFractionToGround: number;
-  /** Penetration-depth bonus added to the breakup-to-burst gap by the
-   *  pancake's mass. The CONCEPT — that larger bodies penetrate deeper
-   *  before peak energy deposition — is from Chyba et al. (1993) /
-   *  Collins et al. (2005); the specific functional form
-   *  `1.2 · ln(D/10) · H_scale` and its coefficient are a Nimbus tuning
-   *  calibrated against Tunguska + Chelyabinsk (see
-   *  {@link PENETRATION_COEFFICIENT}), NOT a transcribed equation. For
-   *  very large bodies (D ≫ 10 m) this can exceed the breakup altitude
-   *  itself, so the body never bursts in the atmosphere and the
-   *  simulator flags it `INTACT` even though fragmentation began at high
-   *  altitude. 0 for objects below the 10 m reference diameter. */
-  penetrationBonus: Meters;
   /** Yield deposited in the atmosphere as the entry-phase fireball
-   *  and shock pulse — `(1 − energyFractionToGround) · KE`, expressed
-   *  in TNT-equivalent megatons. 0 for INTACT events (all the kinetic
-   *  energy reaches the ground); 98 % of the kinetic energy for a
-   *  COMPLETE_AIRBURST (gf = 0.02). Drives the entry-damage radii below. */
+   *  and shock pulse, in TNT-equivalent megatons: all the kinetic energy
+   *  for a COMPLETE_AIRBURST, `(1 − energyFractionToGround) · KE` for a
+   *  swarm that still strikes the ground, and none counted for a body
+   *  that stays whole, whose drag is spread along its path. Drives the
+   *  entry-damage radii below. */
   atmosphericYieldMegatons: number;
   /** Thermal-flash burn radii at ground level, from the explosion
    *  module's burn fluences with the impact luminous efficiency. Not
@@ -128,10 +140,11 @@ export interface AtmosphericEntryResult {
   /** Shock-wave overpressure radii at ground level, from the Kinney &
    *  Graham scaling applied to half the airburst yield AND multiplied by
    *  {@link airburstAmplificationFactor} for the burst's altitude. For
-   *  the Chelyabinsk preset the 0.5 psi ring is 96 km, near the 108 km
-   *  to which Popova et al. (2013) model window damage — but at their
-   *  damage threshold, 500 Pa, the amplified model reaches ≈ 640 km: not
-   *  a validation. 0 for INTACT. */
+   *  the Chelyabinsk preset, bursting at 29.0 km, the 0.5 psi ring is
+   *  183 km, beyond the 108 km to which Popova et al. (2013) model
+   *  window damage — and at their damage threshold, 500 Pa, the
+   *  amplified model reaches ≈ 1 230 km: not a validation. 0 for
+   *  INTACT. */
   shockWaveRadii: {
     /** 5 psi (≈ 34.5 kPa, residential collapse). */
     fivePsi: Meters;
@@ -145,18 +158,11 @@ export interface AtmosphericEntryResult {
    *  applied to the SHOCK-WAVE radii only (the argument is about a
    *  blast wave; see {@link bolideAirburstAmplification}).
    *  Thermal-flash radii are NOT amplified by it. 1.0 for surface
-   *  bursts and INTACT events; 2.6 for the Tunguska preset (burst at
-   *  11.8 km), 7.0 for the Chelyabinsk preset (22.1 km). Surfaced in
+   *  bursts and INTACT events; 2.2 for the Tunguska preset (burst at
+   *  9.8 km), 13.3 for the Chelyabinsk preset (29.0 km). Surfaced in
    *  the report panel so the user sees how big the altitude correction
    *  is. */
   airburstAmplificationFactor: number;
-}
-
-/** Return true when the atmosphere lets the object reach the surface
- *  intact (ram pressure never exceeds the impactor's strength). */
-function survivesIntact(velocity: number, strength: number): boolean {
-  const qGround = RHO_0 * velocity * velocity;
-  return qGround < strength;
 }
 
 /**
@@ -203,14 +209,16 @@ const ZERO_ENTRY_DAMAGE = {
  *
  *     f(h_b) = (P_ground / P_amb(h_b))^(1/β),   β = 5/3.
  *
- * What the events say. For the Chelyabinsk preset (burst at 22.1 km)
- * f = 7.0 and the 0.5 psi ring reaches 96 km. Popova et al. (2013,
- * Science 342, 1069–1073) model window damage out to 108 km, but for
- * an overpressure above 500 Pa, which the amplified model reaches
- * ≈ 640 km out (92 km without the factor): the fit to Chelyabinsk
- * compares two different thresholds and does not validate the factor.
- * For the Tunguska preset (11.8 km) f = 2.6 and the 5 psi ring is
- * 19.3 km. Treat the factor as an order-of-magnitude correction.
+ * What the events say. β was fitted when a tuned classifier burst the
+ * Chelyabinsk preset at 22.1 km (f = 7.0, a 0.5 psi ring at 96 km) and
+ * Tunguska at 11.8 km (f = 2.6, a 5 psi ring at 19.3 km). On Collins et
+ * al.'s entry equations, since 14 September 2026, Chelyabinsk bursts at
+ * 29.0 km, where f = 13.3 and the 0.5 psi ring reaches 183 km; Popova et
+ * al. (2013, Science 342, 1069–1073) model window damage out to 108 km,
+ * for an overpressure above 500 Pa that the amplified model carries
+ * ≈ 1 230 km (92 km without the factor). Tunguska bursts at 9.8 km, where
+ * f = 2.2 and the 5 psi ring is 16.7 km. The factor was not refitted:
+ * treat it as an order-of-magnitude correction that no record validates.
  *
  * The formula is capped at 15× to prevent run-away predictions for
  * synthetic stratospheric scenarios (P_amb < 1 Pa at h > 80 km
@@ -337,86 +345,111 @@ function computeEntryDamage(
 const JOULES_PER_MEGATON_TNT = 4.184e15;
 
 /**
- * Decide whether a cosmic impactor airbursts in the atmosphere,
- * reaches the ground intact, or partially detonates. See the module
- * header for references and tuning procedure.
+ * Collins et al. 2005's atmospheric entry for one impactor. `impactAngle`
+ * is from the horizontal, 45° when not given; `impactorStrength` falls
+ * back to {@link collinsStrength} of the density.
  */
 export function atmosphericEntry(
   impactorDiameter: Meters,
   impactVelocity: MetersPerSecond,
-  impactorStrength: Pascals = IMPACTOR_STRENGTH.STONY,
-  _impactorDensity?: KilogramPerCubicMeter,
-  kineticEnergy?: Joules
+  impactorStrength?: Pascals,
+  impactorDensity: KilogramPerCubicMeter = kgPerM3(3_000),
+  kineticEnergy?: Joules,
+  impactAngle: Radians = (Math.PI / 4) as Radians
 ): AtmosphericEntryResult {
-  void _impactorDensity; // reserved for a future density-aware pancake model
-  const v = impactVelocity as number;
-  const D = impactorDiameter as number;
-  const Y = impactorStrength as number;
+  const v0 = impactVelocity as number;
+  const L0 = impactorDiameter as number;
+  const rhoI = impactorDensity as number;
+  const sinTheta = Math.sin(impactAngle);
   const totalKE = (kineticEnergy as number | undefined) ?? 0;
-  const intactYieldMegatons = 0; // INTACT regime deposits nothing in atmosphere
+  const Y = (impactorStrength ?? collinsStrength(impactorDensity)) as number;
 
-  if (!Number.isFinite(v) || !Number.isFinite(D) || !Number.isFinite(Y) || v <= 0 || D <= 0) {
-    return {
-      burstAltitude: m(0),
-      breakupAltitude: m(0),
-      regime: 'INTACT',
-      energyFractionToGround: 1,
-      penetrationBonus: m(0),
-      atmosphericYieldMegatons: intactYieldMegatons,
-      ...ZERO_ENTRY_DAMAGE,
-    };
+  const whole = (endVelocity: number, breakupAltitude = 0): AtmosphericEntryResult => ({
+    burstAltitude: m(0),
+    breakupAltitude: m(breakupAltitude),
+    regime: 'INTACT',
+    endVelocity: mps(endVelocity),
+    energyFractionToGround: v0 > 0 ? Math.min(1, (endVelocity / v0) ** 2) : 1,
+    atmosphericYieldMegatons: 0,
+    ...ZERO_ENTRY_DAMAGE,
+  });
+
+  if (
+    ![v0, L0, rhoI, Y, sinTheta].every(Number.isFinite) ||
+    v0 <= 0 ||
+    L0 <= 0 ||
+    rhoI <= 0 ||
+    sinTheta <= 0
+  ) {
+    return whole(Math.max(v0, 0));
   }
 
-  const penetrationBonus = Math.max(
-    PENETRATION_COEFFICIENT * Math.log(D / PENETRATION_REFERENCE_DIAMETER) * H_SCALE,
+  const density = (z: number): number => RHO_0 * Math.exp(-z / H_SCALE);
+  // Eq. 8: the speed of the body, still whole, at altitude z.
+  const wholeSpeed = (z: number): number =>
+    v0 * Math.exp((-3 * density(z) * DRAG_COEFFICIENT * H_SCALE) / (4 * rhoI * L0 * sinTheta));
+
+  // Eq. 12.
+  const If = (4.07 * DRAG_COEFFICIENT * H_SCALE * Y) / (rhoI * L0 * v0 * v0 * sinTheta);
+  if (If >= 1) {
+    // Never breaks. The speed at the ground, never below the terminal
+    // velocity of the body.
+    const terminal = Math.sqrt((4 * rhoI * L0 * GRAVITY) / (3 * RHO_0 * DRAG_COEFFICIENT));
+    return whole(Math.max(wholeSpeed(0), Math.min(terminal, v0)));
+  }
+
+  // Eq. 11: the breakup altitude.
+  const zStar = Math.max(
+    -H_SCALE * (Math.log(Y / (RHO_0 * v0 * v0)) + 1.308 - 0.314 * If - 1.303 * Math.sqrt(1 - If)),
     0
   );
+  const rhoStar = density(zStar);
+  const vStar = wholeSpeed(zStar);
+  // Eq. 16: the dispersion length; Eq. 18: the airburst altitude.
+  const l = L0 * sinTheta * Math.sqrt(rhoI / (DRAG_COEFFICIENT * rhoStar));
+  const alpha = Math.sqrt(PANCAKE_FACTOR * PANCAKE_FACTOR - 1);
+  const zBurst = zStar - 2 * H_SCALE * Math.log(1 + (l / (2 * H_SCALE)) * alpha);
+  // Eq. 17's coefficient on the integral of e^((z*−z)/H) L(z)².
+  const k = (0.75 * DRAG_COEFFICIENT * rhoStar) / (rhoI * L0 ** 3 * sinTheta);
 
-  if (survivesIntact(v, Y)) {
+  if (zBurst > 0) {
+    // Eq. 19: the integral from the airburst to the breakup.
+    const integral =
+      ((l * L0 * L0) / 24) *
+      alpha *
+      (8 * (3 + alpha * alpha) + 3 * alpha * (l / H_SCALE) * (2 + alpha * alpha));
+    const endVelocity = vStar * Math.exp(-k * integral);
+    const atmosphericYieldJ = totalKE;
     return {
-      burstAltitude: m(0),
-      breakupAltitude: m(0),
-      regime: 'INTACT',
-      energyFractionToGround: 1,
-      penetrationBonus: m(penetrationBonus),
-      atmosphericYieldMegatons: intactYieldMegatons,
-      ...ZERO_ENTRY_DAMAGE,
+      burstAltitude: m(zBurst),
+      breakupAltitude: m(zStar),
+      regime: 'COMPLETE_AIRBURST',
+      endVelocity: mps(endVelocity),
+      energyFractionToGround: 0,
+      atmosphericYieldMegatons: atmosphericYieldJ / JOULES_PER_MEGATON_TNT,
+      ...computeEntryDamage(atmosphericYieldJ, zBurst),
     };
   }
 
-  const qGround = RHO_0 * v * v;
-  const hBreakup = H_SCALE * Math.log(qGround / Y);
-  const hBurst = Math.max(hBreakup - 2 * H_SCALE - penetrationBonus, 0);
-
-  if (hBurst <= 0) {
-    return {
-      burstAltitude: m(0),
-      breakupAltitude: m(hBreakup),
-      regime: 'INTACT',
-      energyFractionToGround: 1,
-      penetrationBonus: m(penetrationBonus),
-      atmosphericYieldMegatons: intactYieldMegatons,
-      ...ZERO_ENTRY_DAMAGE,
-    };
-  }
-
-  const completeRegime = hBurst >= 15_000;
-  const energyFractionToGround = completeRegime
-    ? 0.02
-    : (() => {
-        const ramp = (hBurst - 5_000) / 10_000;
-        const clamped = Math.max(0, Math.min(1, ramp));
-        return 0.3 - 0.28 * clamped;
-      })();
+  // Eq. 20: the integral from the ground to the breakup.
+  const r = l / H_SCALE;
+  const integral =
+    ((H_SCALE ** 3 * L0 * L0) / (3 * l * l)) *
+    (3 * (4 + r * r) * Math.exp(zStar / H_SCALE) +
+      6 * Math.exp((2 * zStar) / H_SCALE) -
+      16 * Math.exp((3 * zStar) / (2 * H_SCALE)) -
+      3 * r * r -
+      2);
+  const endVelocity = vStar * Math.exp(-k * Math.max(integral, 0));
+  const energyFractionToGround = Math.min(1, (endVelocity / v0) ** 2);
   const atmosphericYieldJ = (1 - energyFractionToGround) * totalKE;
-
   return {
-    burstAltitude: m(hBurst),
-    breakupAltitude: m(hBreakup),
-    regime: completeRegime ? 'COMPLETE_AIRBURST' : 'PARTIAL_AIRBURST',
+    burstAltitude: m(0),
+    breakupAltitude: m(zStar),
+    regime: 'PARTIAL_AIRBURST',
+    endVelocity: mps(endVelocity),
     energyFractionToGround,
-    penetrationBonus: m(penetrationBonus),
     atmosphericYieldMegatons: atmosphericYieldJ / JOULES_PER_MEGATON_TNT,
-    ...computeEntryDamage(atmosphericYieldJ, hBurst),
+    ...computeEntryDamage(atmosphericYieldJ, 0),
   };
 }

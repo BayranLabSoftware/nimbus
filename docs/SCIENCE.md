@@ -943,6 +943,35 @@ Elsewhere they part, and each part has a name:
   is a measurement of an impact's blast, and choosing between them wants
   one.
 
+#### Adopted the same day: Collins et al.'s entry
+
+The first of those was an error, not a design (B-023), and the equations
+it should have been are in the paper the pipeline cites. The entry now
+integrates them: the drag on a whole body (Eq. 8), the breakup altitude
+(Eqs. 11–12), the spreading pancake and its airburst altitude (Eqs. 15–18)
+and the speed its swarm strikes the ground at (Eqs. 17, 19, 20), with
+Collins et al.'s constants and, where no strength class is chosen, their
+strength from density (Eq. 9). The crater is dug at that speed. Before a
+line of it went into the simulator the equations were transcribed and run
+on the grid, and they reproduced the program in every outcome; in the
+simulator, every one of the 81 impacts bursts or strikes as the program
+says and digs the same kind of crater, the breakup altitude within 1 %, the
+burst within 5 %, the speed at the ground within 4 % and the craters within
+4 %.
+
+On the two bolides the tuned classifier had been fitted to, nothing was
+refitted: Chelyabinsk's preset (17 m, 19 km/s, 18°, 2 MPa) bursts at
+29.0 km, against the 27.0 km Popova et al. (2013) measured and the 22.1 km
+the classifier gave; Tunguska's, with its strength from density, at
+9.8 km, where Chyba et al. (1993) put the burst at about 8. Meteor Crater's
+iron breaks up at 9.3 km and strikes as a swarm at 10.9 of its 12.8 km/s,
+digging 1.45 km against the 1.2 km observed, closer than the 1.55 km
+before. What moved further from its record is downstream: the altitude
+factor on an airburst's shock was fitted when Chelyabinsk burst at 22 km,
+and at 29 km it carries the 0.5 psi ring to 183 km, against the 96 km it
+drew before and the 108 km to which Popova et al. model window damage. The
+factor is a declared gap and stays unrefitted.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records

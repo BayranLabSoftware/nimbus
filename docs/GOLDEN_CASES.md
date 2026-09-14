@@ -23,7 +23,7 @@ Canonical scenarios used as oracles. Each is reproducible via `pnpm simulate` an
 | **G-NORTHRIDGE-MMI7** | Northridge 1994 MMI VII radius  | 25 km @ depth 18 km, Mw 6.7                  | Wald et al. 1999 EQ Spectra Fig.6  |
 | **G-LAQUILA-MMI7**    | L'Aquila 2009 MMI VII           | 15 km @ depth 9 km, Mw 6.3                   | Galli & Camassi 2009 INGV          |
 | **G-CHICX-CRATER**    | Chicxulub final crater Ø        | 180 km observed                              | Hildebrand 1991, Morgan 2016       |
-| **G-METEOR-CRATER**   | Meteor Crater Ø                 | 1.2 km, intact iron impactor                 | Kring 2007                         |
+| **G-METEOR-CRATER**   | Meteor Crater Ø                 | 1.2 km, iron that breaks up, strikes ground  | Kring 2007                         |
 | **G-TUNGUSKA-YIELD**  | Tunguska reconstructed yield    | 3-30 Mt envelope                             | Boslough 2008 + Chyba 1993         |
 | **G-CHEL-AIRBURST**   | Chelyabinsk 2013 burst altitude | ~27 km observed (model gives ~22, ±factor 2) | Popova 2013 Science 342            |
 | **G-CASTLE-BRAVO**    | Castle Bravo 1954 5 psi         | ~21 km @ 15 Mt surface burst on coral        | Sublette FAQ + Glasstone Fig.3.74a |

@@ -157,19 +157,19 @@
     "entryLabel": "Ingresso atmosferico",
     "entryRegime": "Regime",
     "entryRegimes": {
-      "INTACT": "Impatto intatto al suolo",
-      "PARTIAL_AIRBURST": "Airburst parziale",
-      "COMPLETE_AIRBURST": "Airburst completo"
+      "INTACT": "Arriva a terra intero",
+      "PARTIAL_AIRBURST": "Si frammenta, colpisce il suolo",
+      "COMPLETE_AIRBURST": "Esplosione in aria"
     },
     "entryRegimeExplainer": "Cosa significa",
     "entryRegimeExplain": {
-      "INTACT": "Il bolide è troppo massiccio per dissolversi in atmosfera. Anche se la frammentazione inizia alla quota indicata, la \"pancake\" di frammenti ha così tanto momento da sfondare l'atmosfera intatta. Tutta l'energia cinetica diventa cratere + ejecta + lavoro sismico — classe Chicxulub.",
-      "PARTIAL_AIRBURST": "La pancake esplode nella bassa atmosfera (5–15 km). Parte dell'energia si disperde come lampo termico e onda d'urto; parte scava ancora un piccolo cratere al suolo.",
-      "COMPLETE_AIRBURST": "La pancake si disintegra sopra i 15 km. Circa il 98 % dell'energia cinetica viene rilasciata come palla di fuoco e impulso d'urto in aria — solo il 2 % raggiunge il suolo. Tunguska 1908 e Chelyabinsk 2013 sono i casi canonici."
+      "INTACT": "Il corpo è abbastanza resistente, per la sua dimensione e velocità, da non frammentarsi mai. Rallenta per l'attrito dell'aria e colpisce il suolo intero, e l'energia che ancora porta va nel cratere, negli ejecta e nello scuotimento del terreno.",
+      "PARTIAL_AIRBURST": "Il corpo si frammenta e si schiaccia mentre cade, ma lo sciame che si allarga arriva al suolo prima di essere sette volte più largo: colpisce come un unico colpo che scava un cratere, alla velocità che l'aria gli lascia, e l'aria si prende il resto dell'energia. Lo fa ogni corpo da un chilometro in su, e lo fece il ferro di Meteor Crater.",
+      "COMPLETE_AIRBURST": "Il corpo si frammenta e i frammenti si allargano fino a sette volte la sua dimensione prima di arrivare al suolo: l'energia va nell'aria come palla di fuoco e onda d'urto, e non si forma alcun cratere. Tunguska 1908 e Čeljabinsk 2013 sono i casi canonici."
     },
     "burstAltitude": "Altezza detonazione",
     "breakupAltitude": "Inizio frammentazione",
-    "penetrationBonus": "Profondità di penetrazione",
+    "endVelocity": "Velocità a fine ingresso",
     "energyFractionToGround": "Energia al suolo",
     "atmosphericYield": "Resa in atmosfera (eq. TNT)",
     "entryAmplificationFactor": "Amplificazione altitudine (×)",
@@ -1003,23 +1003,23 @@
       },
       "breakupAltitude": {
         "name": "Quota di frammentazione (h_b)",
-        "definition": "Quota a cui inizia la frammentazione: h_b = H · ln(ρ₀ · v² / Y), il termine principale della quota di rottura di Collins et al. Per il preset di Chelyabinsk (17 m, 19 km/s, 2 MPa) è ≈ 43 km; per Chicxulub (15 km) ≈ 50 km. La sola frammentazione NON significa che il bolide esplode in aria — vedi profondità di penetrazione.",
+        "definition": "Quota a cui la pressione dinamica supera per la prima volta la resistenza del corpo e questo inizia a frammentarsi, secondo l'approssimazione analitica di Collins et al. Per il preset di Čeljabinsk (17 m, 19 km/s, 2 MPa, 18°) è circa 41 km. Frammentarsi non significa di per sé esplodere in aria — vedi quota di esplosione.",
         "source": "Collins, Melosh & Marcus (2005) Eq. 11"
       },
       "burstAltitude": {
         "name": "Quota di esplosione",
-        "definition": "Quota di deposizione di picco dell'energia: h_burst = h_b − 2·H − penetrationBonus, una regola di Nimbus tarata su Tunguska e Chelyabinsk. Quando è sotto il suolo (corpi grandi) il simulatore classifica il regime come INTACT.",
-        "source": "Nimbus (tarata)"
+        "definition": "Quota a cui lo sciame di frammenti che si schiaccia si è allargato fino a sette volte la dimensione del corpo. Sopra il suolo il corpo esplode in aria; al suolo o sotto, lo sciame colpisce il terreno. Per il preset di Tunguska è 9,8 km, per Čeljabinsk 29,0 km contro i 27,0 km osservati.",
+        "source": "Collins, Melosh & Marcus (2005) Eq. 18"
       },
-      "penetrationBonus": {
-        "name": "Profondità di penetrazione",
-        "definition": "Profondità (1,2 · ln(D/10 m) · H), dipendente dal diametro, di cui un corpo più grande esplode più in basso. Per corpi tipo Chicxulub supera la stessa quota di frammentazione, quindi il bolide non esplode mai in atmosfera. Una taratura di Nimbus, non un'equazione pubblicata.",
-        "source": "Nimbus (tarata su Tunguska e Chelyabinsk)"
+      "endVelocity": {
+        "name": "Velocità a fine ingresso",
+        "definition": "La velocità che resta al corpo o al suo sciame quando colpisce il suolo, o quando esplode: l'attrito su un corpo intero, poi sulla pancake che si allarga. Il cratere si scava a questa velocità.",
+        "source": "Collins, Melosh & Marcus (2005) Eq. 8, 17–20"
       },
       "energyFractionToGround": {
         "name": "Energia al suolo (gf)",
-        "definition": "Frazione dell'energia cinetica del bolide che raggiunge il suolo come lavoro di cratere e sismico: 1 per INTACT (Chicxulub), 0,30 per un'esplosione sotto i 5 km che scende a 0,02 da 15 km in su (0,11 per il preset di Tunguska, 0,02 per Chelyabinsk). Il complemento (1 − gf) viene rilasciato in atmosfera come lampo e onda d'urto.",
-        "source": "Euristica di Nimbus"
+        "definition": "Frazione dell'energia cinetica del corpo che raggiunge il suolo: (v_fine / v₀)² per un corpo o uno sciame che lo colpisce — 0,73 per il preset di Meteor Crater, 0,999 per Chicxulub — e 0 per un'esplosione in aria. Il complemento (1 − gf) va nell'aria come lampo e onda d'urto.",
+        "source": "Collins, Melosh & Marcus (2005)"
       },
       "atmosphericYield": {
         "name": "Resa airburst in atmosfera",
@@ -1155,7 +1155,7 @@
     "emp": "Classificazione regime di impulso elettromagnetico. Burst a bassa quota → EMP trascurabile al suolo; burst ad alta quota (> 30 km) → la forma d'onda da 50 kV/m della IEC 61000-2-9, che la norma dà senza una potenza, sul disco tangente all'orizzonte. Il calo con la radice cubica sotto 1 Mt è un'ipotesi del progetto. Longmire (1978) IEEE AP-26 spiega l'impulso.",
     "thermal": "Raggio delle ustioni di 3° grado a 8 cal/cm², una soglia del progetto — Glasstone & Dolan (1977) fanno crescere con la potenza l'esposizione che ustiona (Fig. 12.65) — con la fluenza distribuita su una sfera (§7.94–7.96), una partizione termica da 0,18 al suolo a 0,35 in aria (§7.101) e una trasmittanza del progetto e^(−R/L). Nessuno per una carica chimica.",
     "nuclearCrater": "Diametro del cratere apparente di uno scoppio in superficie D = K · W_kt^0.3 (Glasstone & Dolan 1977 §6.09): K = 36,6 m per terreno secco e compatto, il cratere da 1 kt del libro; 92 m per la barriera corallina satura, che porta Castle Bravo e Ivy Mike vicino ai loro crateri larghi un miglio (DTRIAC SR-12-001); roccia dura e argilla valori del progetto.",
-    "atmosphericEntry": "Quota di inizio frammentazione h_b = H · ln(ρ₀v² / Y), dove la pressione dinamica supera per la prima volta la resistenza Y del bolide: il termine principale dell'Eq. 11 di Collins et al. 2005 (il modello a pancake è di Chyba et al. 1993). Nimbus mette l'esplosione 2 scale di altezza sotto h_b, meno un bonus di penetrazione che cresce con il diametro e porta i corpi grandi al suolo intatti; entrambi i passi sono tarati su Tunguska e Chelyabinsk.",
+    "atmosphericEntry": "Quota di frammentazione dall'Eq. 11 di Collins et al. 2005, dove la pressione dinamica supera per la prima volta la resistenza del corpo; il corpo rotto si allarga poi come una pancake (Chyba et al. 1993) ed esplode in aria se raggiunge sette volte la sua dimensione sopra il suolo (Eq. 18).",
     "bolideAirburstAmplification": "Correzione per la quota f(h) = (P₀ / P_amb(h))^(1/β), β = 5/3, con tetto a 15×, applicata ai raggi d'urto di un airburst. Suppone che la sovrapressione mantenga il suo rapporto con la pressione ambiente scendendo (P(h) dall'Atmosfera Standard USA 1976) e traduce il guadagno in distanza con un esponente di decadimento adattato: un argomento di plausibilità di Nimbus, non una derivazione. Non validata: per il preset di Chelyabinsk porta l'anello di 0,5 psi a 96 km, ma ai 500 Pa che Popova et al. (2013) prendono per i vetri rotti il modello corretto arriva a ≈ 640 km, contro i loro 108 km.",
     "seaCoupling": "Un impatto sulla terraferma arriva al mare col cratere, se il bordo attraversa la costa, o con gli ejecta che cadono oltre la riva. Il deposito si assottiglia come r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47), quindi la massa di ejecta oltre una distanza d cala come 1/d: la frazione oltre la riva, R/d, scala l'energia con cui si forma la cavità d'acqua — un'ipotesi di Nimbus. Oltre l'isopaca di 1 m il mare non viene mosso.",
     "explosionWaveHeight": "Altezza dal cavo alla cresta H ≈ 40 500·W^0,54/R piedi in acque profonde (Glasstone & Dolan 1977 §6.119, entro circa il 35 %), oppure H ≈ 150·d·W^0,25/R in acque meno profonde di 100·W^0,25 piedi (§6.121); W in kilotoni, d la profondità dell'acqua. L'ampiezza mostrata è metà dell'altezza. La relazione contiene già la dispersione del treno d'onde.",
@@ -1575,7 +1575,7 @@
       },
       "airburstShock": {
         "item": "Quanto lontano arriva l'onda d'urto di un airburst non è validato",
-        "note": "A un'esplosione alta nel cielo un fattore tarato dà una portata maggiore. Per Chelyabinsk disegna l'anello dei danni leggeri a 96 km, vicino ai 108 km fino a cui lo studio di quell'evento modella i vetri rotti — ma per una pressione sette volte più debole, che il modello porta a circa 640 km."
+        "note": "A un'esplosione alta nel cielo un fattore tarato dà una portata maggiore. Per Čeljabinsk disegna l'anello dei danni leggeri a 183 km, oltre i 108 km fino a cui lo studio di quell'evento modella i vetri rotti, e porta la pressione più debole di quello studio a circa 1.200 km. Il fattore fu tarato su un'esplosione più bassa e non è stato ritarato."
       },
       "explosionProject": {
         "item": "Parti del modello delle esplosioni sono di questo progetto, non del manuale",
@@ -1584,10 +1584,6 @@
       "volcanoCalibrations": {
         "item": "Le relazioni dei vulcani sono tarature di questo progetto",
         "note": "Quanto corrono le colate piroclastiche, dove cade la cenere, fin dove arrivano i lahar e quanto un'eruzione raffredda il clima sono fissati su eruzioni di riferimento che la revisione delle fonti di settembre 2026 non è tornata a controllare. Una colata è disegnata come un disco attorno alla bocca: al Fuego nel 2018 il disco del modello arriva a 3,7 km mentre la colata che ha ucciso è scesa per 11,7 km in un solo burrone, e il suo bilancio cade dentro il dato solo perché i due errori si compensano."
-      },
-      "impactEntry": {
-        "item": "Il passaggio di un asteroide nell'aria è una scorciatoia, non le equazioni che gli impatti citano",
-        "note": "Il simulatore decide se un asteroide esplode in aria con una regola tarata su Čeljabinsk e Tunguska, mentre l'Earth Impact Effects Program, scritto dagli autori delle equazioni che cita, segue passo passo la frammentazione e lo schiacciamento del corpo. Confrontati con quel programma su dimensioni, velocità e angoli diversi, corpi da 100 metri a un chilometro che lui porta a terra con quasi tutta la loro energia qui esplodono in aria e possono non lasciare cratere. Dove entrambi portano a terra il corpo intero, i crateri coincidono fino agli arrotondamenti del programma."
       },
       "impactToll": {
         "item": "Nessun bilancio d'impatto potrà mai essere verificato",

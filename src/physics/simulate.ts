@@ -410,38 +410,20 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const entry = atmosphericEntry(
     input.impactorDiameter,
     input.impactVelocity,
-    input.impactorStrength ?? IMPACTOR_STRENGTH.STONY,
+    input.impactorStrength,
     input.impactorDensity,
-    ke
+    ke,
+    input.impactAngle
   );
-  // Crater and ejecta scale with the kinetic energy delivered to the
-  // ground, not the pre-entry total. For airbursts the fragments
-  // dump most of their KE as a high-altitude thermal + blast pulse,
-  // which this layer treats by scaling the transient crater by
-  // energyFractionToGround^(1/3.4). That step is Nimbus's, not Collins
-  // et al.'s: their Eq. 21* takes the impactor's diameter and speed
-  // after entry, which the airburst model here does not carry.
-  //
-  // Phase 14 — additional crater-suppression rule: a bolide that
-  // fragments well above its own size scale (Tunguska-class, burst
-  // altitude > 5 × diameter) does NOT leave a coherent ground crater
-  // even though `gf > 0` because of residual blast/thermal coupling.
-  // Boslough & Crawford 2008 (IJIE 35) and the 1908 field record
-  // confirm Tunguska left no measurable crater. The pre-Phase-14
-  // simulator dialed the crater down via the gf^(1/3.4) factor but
-  // still reported a 634 m crater for the 60 m / 11.7 km-burst
-  // Tunguska — the Phase 14 audit flagged this as historical-fidelity
-  // bug HIST.TUNGUSKA. A burst-altitude / diameter ratio > 5 is the
-  // non-arbitrary threshold: it discriminates "high airburst with
-  // residual blast" (no crater) from "low fragmentation with residual
-  // ground impact" (Sikhote-Alin-style crater field, kept on purpose
-  // as a single equivalent crater because Layer 2 doesn't model
-  // strewn fields). Strewn-field fragmentation is documented as a
-  // Layer-2 limitation in docs/Limitations.md.
+  // Crater and ejecta come from the speed the body or its swarm strikes
+  // the ground at, as Collins et al. compute them (their Eq. 21* with
+  // the velocity of Eq. 8, 17 or 20), and an airburst leaves no crater.
+  // Until 14 September 2026 the crater was scaled by the share of the
+  // energy a tuned classifier left for the ground, and a burst more than
+  // five diameters up suppressed it.
   const gf = entry.energyFractionToGround;
-  const burstAltitude = entry.burstAltitude as number;
   const diameterM = input.impactorDiameter as number;
-  const fragmentsTooHigh = burstAltitude > diameterM * 5;
+  const airburst = entry.regime === 'COMPLETE_AIRBURST';
 
   // Phase-18 audit. Before this fix the model passed `ke · gf` to
   // BOTH the seafloor crater pipeline and the Ward-Asphaug cavity
@@ -467,7 +449,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const fSeafloor = oceanPartition.seafloorFraction;
   const fWater = oceanPartition.waterFraction;
 
-  const craterScale = gf > 0 && !fragmentsTooHigh ? Math.pow(gf * fSeafloor, 1 / 3.4) : 0;
+  const seafloorScale = Math.pow(fSeafloor, 1 / 3.4);
 
   // Iron strewn-field branch. Small iron meteorites (D < 20 m) that
   // begin atmospheric breakup but recover to a low-altitude burst
@@ -485,23 +467,31 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // Calibration anchor: Sikhote-Alin 1947 (D = 3 m, ρ = 7800, v = 14.5
   // km/s) → 122 craters over 1.6 km², largest 26 m diameter (Krinov
   // 1966). Single-impactor model gives ~178 m → factor 0.146 ≈ 0.15.
-  // Meteor Crater (D = 50 m) does NOT trigger this branch because the
-  // pancake-penetration term keeps the bulk together → single 1.2 km
-  // crater is correct.
+  // Meteor Crater (D = 50 m) does NOT trigger this branch: its swarm
+  // strikes the ground together (Collins et al. 2005 Eq. 20) and digs
+  // one crater, 1.2 km observed.
   //
   // Custom user inputs benefit automatically: any iron-density (>6000
   // kg/m³) bolide with original diameter < 20 m that fragments will
   // produce the strewn-field largest-crater estimate, not the
   // unphysical single-impactor one.
   const STREWN_FIELD_PRIMARY_CRATER_FACTOR = 0.15;
+  // An iron that breaks up falls as a strewn field whether Collins et
+  // al.'s pancake calls the break an airburst or not: Sikhote-Alin's does
+  // at about 5 km. Its largest crater keeps the calibration above, on
+  // the single-impactor crater at the entry speed.
   const isIronStrewnField =
     (input.impactorDensity as number) >= 6000 &&
     (entry.breakupAltitude as number) > 0 &&
-    diameterM < 20 &&
-    !fragmentsTooHigh;
-  const strewnFieldFactor = isIronStrewnField ? STREWN_FIELD_PRIMARY_CRATER_FACTOR : 1;
-
-  const Dtc = m((transientCraterDiameter(input) as number) * craterScale * strewnFieldFactor);
+    diameterM < 20;
+  const craterVelocity = isIronStrewnField ? input.impactVelocity : entry.endVelocity;
+  const Dtc = m(
+    airburst && !isIronStrewnField
+      ? 0
+      : (transientCraterDiameter({ ...input, impactVelocity: craterVelocity }) as number) *
+          seafloorScale *
+          (isIronStrewnField ? STREWN_FIELD_PRIMARY_CRATER_FACTOR : 1)
+  );
   const Dfr = m(finalCraterDiameter(Dtc));
   const depth = m(craterDepth(Dfr));
   const morphology: 'simple' | 'complex' =
@@ -621,7 +611,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     // behind the acid mostly from the ejecta plume of what reached the
     // ground (see effects/atmosphere.ts).
     stratosphericDust: stratosphericDustMass(
-      J(craterScale > 0 ? (ke as number) * gf * fSeafloor : 0),
+      J((Dtc as number) > 0 ? (ke as number) * gf * fSeafloor : 0),
       input.impactVelocity
     ),
     acidRainMass: shockAcidRainMass(groundCoupledKe),

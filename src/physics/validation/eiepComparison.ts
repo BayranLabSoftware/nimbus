@@ -38,6 +38,7 @@ export type EiepQuantity =
   | 'energy'
   | 'breakupAltitude'
   | 'burstAltitude'
+  | 'groundVelocity'
   | 'transientDiameter'
   | 'finalDiameter'
   | 'finalDepth'
@@ -74,6 +75,7 @@ export function eiepRatios(rows: readonly EiepRow[] = EIEP_REFERENCE): EiepRatio
     pair('breakupAltitude', r.entry.breakupAltitude, row.breakupAltitudeM);
     const airburst = row.burstAltitudeM !== null && row.burstAltitudeM !== undefined;
     if (airburst) pair('burstAltitude', r.entry.burstAltitude, row.burstAltitudeM);
+    if (!airburst) pair('groundVelocity', r.entry.endVelocity / 1_000, row.impactVelocityKmS);
     pair('transientDiameter', r.crater.transientDiameter, row.transientDiameterM);
     pair('finalDiameter', r.crater.finalDiameter, row.finalDiameterM);
     pair('finalDepth', r.crater.depth, row.finalDepthM);

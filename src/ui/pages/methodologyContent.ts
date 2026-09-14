@@ -675,19 +675,19 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       },
       {
         id: 'airburst',
-        name: 'Atmospheric airburst classifier',
+        name: 'Atmospheric entry and airburst',
         formula:
-          'h_breakup = H · ln(ρ₀ · v² / Y) ;  h_burst = h_breakup − 2H − 1.2 · H · ln(D / 10 m)',
+          'I_f = 4.07 C_D H Y / (ρᵢ L₀ v₀² sin θ) ;  z* ≈ −H [ln(Y / ρ₀v₀²) + 1.308 − 0.314 I_f − 1.303 √(1 − I_f)] ;  z_b = z* − 2H ln(1 + (l / 2H) √(f_p² − 1))',
         description:
-          'A simplified pancake classifier (the pancake model is Chyba, Thomas & Zahnle 1993). h_breakup is the leading term of Collins et al. 2005 Eq. 11*, with H = 8 km and ρ₀ = 1.225 kg/m³. The −2H drop to the burst, the penetration term and the fraction of the energy that reaches the ground (gf: 0.30 for a burst below 5 km, falling linearly to 0.02 at 15 km and above, 1 for a body that reaches the ground) are Nimbus heuristics tuned on Tunguska and Chelyabinsk, not published equations. Classifies the impactor as INTACT, PARTIAL_AIRBURST or COMPLETE_AIRBURST; gf scales the crater, the ground-level damage and the seismic magnitude.',
+          "Collins et al. 2005 Eqs. 8–20, with their constants: H = 8 km, ρ₀ = 1 kg/m³, C_D = 2, pancake factor f_p = 7, and, when no strength class is chosen, Y from the impactor's density (their Eq. 9). A body with I_f ≥ 1 never breaks and strikes the ground slowed by drag. A broken body spreads as a pancake (Chyba, Thomas & Zahnle 1993) of dispersion length l = L₀ sin θ √(ρᵢ / C_D ρ(z*)); if it reaches seven times its size above the ground it airbursts at z_b and digs no crater, otherwise the swarm strikes the ground at the speed Eqs. 17 and 20 leave it. The crater is dug at that speed, and the fraction of the energy that reaches the ground is (v_end / v₀)². Against the Earth Impact Effects Program run by Collins et al., on a fixed grid of 81 impacts, the outcome agrees in every case, the breakup altitude within 1 %, the burst altitude within 5 % and the speed at the ground within the program's rounding. Until 14 September 2026 this was a classifier tuned on Tunguska and Chelyabinsk that burst in the air bodies of 100 m to 1 km the equations bring to the ground.",
         citation: collins2005,
       },
       {
         id: 'chelyabinsk-validation',
         name: 'Chelyabinsk 2013 calibration anchor',
-        formula: '17 m, 19 km/s, Y = 2 MPa → burst ≈ 22 km (observed 27.0 km)',
+        formula: '17 m, 19 km/s, 18°, Y = 2 MPa → burst at 29.0 km (observed 27.0 km)',
         description:
-          'One of the two events the penetration term above was tuned on, so not an independent check. Popova et al. 2013 measured an entry at 19.16 ± 0.30 km/s and a burst at 27.0 km, and derived a diameter of 19.8 ± 4.6 m and an energy of 470–590 kt. The preset bursts at 22.1 km, 18 % low, with 0.33 Mt.',
+          'Popova et al. 2013 measured an entry at 19.16 ± 0.30 km/s and a burst at 27.0 km, and derived a diameter of 19.8 ± 4.6 m and an energy of 470–590 kt. On Collins et al.’s equations, which nothing here was tuned on, the preset bursts at 29.0 km, 7 % high, releasing 0.33 Mt; the strength class, S-type at 2 MPa, is the preset’s choice. Until 14 September 2026 the tuned classifier burst it at 22.1 km.',
         citation: popova2013,
       },
       {
@@ -759,19 +759,11 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         citation: mcgetchin1973,
       },
       {
-        id: 'penetration-bonus',
-        name: 'Pancake penetration bonus',
-        formula: 'penetrationBonus = max(0, 1.2 · ln(D / 10 m) · H)',
-        description:
-          'A Nimbus tuning, not a published equation: a body larger than 10 m goes deeper before it bursts. For the Chicxulub preset (D = 15 km) it comes to ≈ 70 km, more than the ≈ 50 km breakup altitude, so the regime is INTACT and all the kinetic energy reaches the ground. Collins et al. (2005) apply their entry model only to impactors under 1 km across.',
-        citation: collins2005,
-      },
-      {
         id: 'atmospheric-yield',
         name: 'Atmospheric airburst yield',
         formula: 'E_atm = (1 − gf) · E_kinetic',
         description:
-          'Energy released in the air as a fireball and shock during entry: none for an INTACT body, 98 % (gf = 0.02) for a COMPLETE_AIRBURST such as the Chelyabinsk preset, 89 % for the Tunguska preset (PARTIAL_AIRBURST, gf = 0.11). gf is the Nimbus heuristic of the airburst classifier. Drives the entry-damage radii below.',
+          'Energy released in the air during entry: none counted for a body that stays whole, all of it for an airburst — the Tunguska preset’s 9.1 Mt and Chelyabinsk’s 0.33 Mt — and the share drag took for a swarm that still strikes the ground, 27 % for the Meteor Crater preset. gf = (v_end / v₀)² from Collins et al.’s entry equations. Drives the entry-damage radii below.',
         citation: collins2005,
       },
       {
@@ -779,7 +771,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Bolide-airburst altitude amplification',
         formula: 'f(h) = (P₀ / P_amb(h))^(1/β),   β = 5/3,   capped at 15×',
         description:
-          'A Nimbus correction for the altitude of an airburst, applied to the shock radii only. It supposes the overpressure keeps its ratio to the ambient pressure on the way down, and turns that gain into distance with ΔP ∝ R^(−β): a plausibility argument, not a derivation, with β = 5/3 fitted so that Chelyabinsk and Tunguska land near their damage. P(h) is the U.S. Standard Atmosphere 1976. Chelyabinsk does not validate it: the factor there is 7.0 and puts the 0.5 psi ring at 96 km, close to the 108 km to which Popova et al. (2013) model window damage — but they take damage to need only ΔP > 500 Pa, which the amplified model reaches 640 km out (92 km without the factor). Treat it as an order-of-magnitude correction.',
+          'A Nimbus correction for the altitude of an airburst, applied to the shock radii only. It supposes the overpressure keeps its ratio to the ambient pressure on the way down, and turns that gain into distance with ΔP ∝ R^(−β): a plausibility argument, not a derivation, with β = 5/3 fitted when a tuned entry burst Chelyabinsk at 22.1 km and Tunguska at 11.8 km. P(h) is the U.S. Standard Atmosphere 1976. On Collins et al.’s entry equations Chelyabinsk bursts at 29.0 km, the factor there is 13.3 and the 0.5 psi ring reaches 183 km, beyond the 108 km to which Popova et al. (2013) model window damage — for an overpressure above 500 Pa, which the amplified model carries about 1 230 km (92 km without the factor). The factor has not been refitted; treat it as an order-of-magnitude correction.',
         citation: popova2013,
       },
       {

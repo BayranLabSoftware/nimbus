@@ -1,56 +1,55 @@
 import { describe, expect, it } from 'vitest';
-import { eiepRatios, simulateEiepRow } from './eiepComparison.js';
+import { eiepRatios, simulateEiepRow, type EiepQuantity } from './eiepComparison.js';
 import { EIEP_REFERENCE } from './eiepReference.js';
 
 /**
  * The impact pipeline against the Earth Impact Effects Program, on the
  * grid scripts/eiep-reference.py fixed.
  *
- * Gated only where the two codes are meant to be the same equations:
- * the energy, and — on impacts both bring to the ground whole, at no
- * less than 95 % of their entry speed — the craters, the ejecta blanket
- * and the fireball. The program prints two or three significant
- * figures, so a few per cent is its rounding. Where the simulator does
- * something else by design (the entry, the strength, the air blast,
- * the complex crater depth) the report measures it and declares it;
- * no test pretends it agrees.
+ * Gated where the two codes are meant to be the same equations — the
+ * energy, the atmospheric entry, the craters, the ejecta blanket and the
+ * fireball — to the program's own rounding: it prints two or three
+ * significant figures, and a burst altitude of a kilometre or two to
+ * the metre but from inputs rounded before it. The complex crater's depth
+ * and the air blast differ by design, and the report says how much.
  */
 
 const ratios = eiepRatios();
+const answered = EIEP_REFERENCE.filter((row) => row.error === null);
 
-const intact = new Set(
-  EIEP_REFERENCE.filter(
-    (row) =>
-      row.error === null &&
-      row.impactVelocityKmS !== null &&
-      row.impactVelocityKmS !== undefined &&
-      row.impactVelocityKmS >= 0.95 * row.velocityKmS &&
-      simulateEiepRow(row).entry.regime === 'INTACT'
-  )
-);
+const TOLERANCE: Readonly<Record<Exclude<EiepQuantity, 'finalDepth' | 'overpressure'>, number>> = {
+  energy: 0.03,
+  breakupAltitude: 0.02,
+  burstAltitude: 0.06,
+  groundVelocity: 0.05,
+  transientDiameter: 0.05,
+  finalDiameter: 0.05,
+  ejectaEdge: 0.02,
+  fireballRadius: 0.02,
+};
 
 describe('the impact pipeline agrees with its reference implementation where it means to', () => {
-  it('computes the energy the program does, to its two figures', () => {
-    const energy = ratios.filter((r) => r.quantity === 'energy');
-    expect(energy.length).toBeGreaterThan(70);
-    for (const r of energy) expect(Math.abs(Math.log(r.model / r.reference))).toBeLessThan(0.03);
-  });
-
-  it('digs the same crater, throws the same blanket and lights the same fireball on a whole body', () => {
-    const same = ratios.filter(
-      (r) =>
-        intact.has(r.row) &&
-        (r.quantity === 'transientDiameter' ||
-          r.quantity === 'finalDiameter' ||
-          r.quantity === 'ejectaEdge' ||
-          r.quantity === 'fireballRadius')
-    );
-    expect(same.length).toBeGreaterThan(200);
-    for (const r of same) {
-      expect(
-        Math.abs(Math.log(r.model / r.reference)),
-        `${r.quantity} ${String(r.detail ?? '')} for ${r.row.diameterM.toString()} m at ${r.row.velocityKmS.toString()} km/s`
-      ).toBeLessThan(0.05);
+  it('bursts in the air exactly the impacts the program bursts, and digs the same kind of crater', () => {
+    for (const row of answered) {
+      const r = simulateEiepRow(row);
+      const label = `${row.diameterM.toString()} m at ${row.velocityKmS.toString()} km/s, ${row.angleDeg.toString()}°, ${row.densityKgM3.toString()} kg/m³`;
+      const programAirburst = row.burstAltitudeM !== null && row.burstAltitudeM !== undefined;
+      expect(r.entry.regime === 'COMPLETE_AIRBURST', label).toBe(programAirburst);
+      const crater = (r.crater.finalDiameter as number) > 0 ? r.crater.morphology : 'none';
+      expect(crater, label).toBe(row.craterType ?? 'none');
     }
   });
+
+  for (const [quantity, tolerance] of Object.entries(TOLERANCE)) {
+    it(`matches the ${quantity} within ${(tolerance * 100).toFixed(0)} %`, () => {
+      const pairs = ratios.filter((r) => r.quantity === quantity);
+      expect(pairs.length).toBeGreaterThan(15);
+      for (const r of pairs) {
+        expect(
+          Math.abs(Math.log(r.model / r.reference)),
+          `${quantity} ${String(r.detail ?? '')} for ${r.row.diameterM.toString()} m at ${r.row.velocityKmS.toString()} km/s, ${r.row.angleDeg.toString()}°`
+        ).toBeLessThan(tolerance);
+      }
+    });
+  }
 });

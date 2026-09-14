@@ -30,22 +30,23 @@ describe('Historical validation — cosmic impacts', () => {
     expect(r.impactor.kineticEnergyMegatons as number).toBeGreaterThan(0.3);
     expect(r.impactor.kineticEnergyMegatons as number).toBeLessThan(0.7);
     expect(r.crater.finalDiameter as number).toBeLessThan(500);
-    // Observed burst altitude ~27 km (Popova 2013 Science 342). Our
-    // simplified Chyba pancake gives ~22 km — within a factor of 2.
-    expect(r.entry.burstAltitude as number).toBeGreaterThan(15_000);
-    expect(r.entry.burstAltitude as number).toBeLessThan(35_000);
+    // Observed burst altitude 27.0 km (Popova 2013 Science 342). Collins
+    // et al.'s pancake, tuned on nothing here, gives 29.0 km.
+    expect(r.entry.burstAltitude as number).toBeGreaterThan(25_000);
+    expect(r.entry.burstAltitude as number).toBeLessThan(32_000);
   });
 
-  it('Tunguska 1908: partial airburst 5–15 km altitude', () => {
+  it('Tunguska 1908: airburst 5–15 km up, no crater', () => {
     const r = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
-    expect(r.entry.regime).toBe('PARTIAL_AIRBURST');
+    expect(r.entry.regime).toBe('COMPLETE_AIRBURST');
+    expect(r.crater.finalDiameter as number).toBe(0);
     expect(r.entry.burstAltitude as number).toBeGreaterThan(5_000);
     expect(r.entry.burstAltitude as number).toBeLessThan(15_000);
   });
 
-  it('Meteor Crater: intact iron impactor, ~1 km crater (observed 1.2 km)', () => {
+  it('Meteor Crater: an iron that breaks up and still strikes the ground, ~1 km crater (observed 1.2 km)', () => {
     const r = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
-    expect(r.entry.regime).toBe('INTACT');
+    expect(r.entry.regime).toBe('PARTIAL_AIRBURST');
     const observed = 1_200;
     expect(Math.abs((r.crater.finalDiameter as number) - observed) / observed).toBeLessThan(0.35);
   });

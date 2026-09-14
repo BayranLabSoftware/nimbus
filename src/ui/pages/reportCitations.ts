@@ -57,8 +57,12 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
   }
 
   if (result.entry.regime !== 'INTACT') {
-    triggers.push(cite('chyba1993', 'Pancake-model airburst classifier.'));
-    triggers.push(cite('popova2013', 'Chelyabinsk 2013 pancake-penetration calibration.'));
+    triggers.push(
+      cite('chyba1993', 'The pancake model of a breaking body (Collins et al. 2005 Eqs. 13–20).')
+    );
+  }
+  if (result.entry.regime === 'COMPLETE_AIRBURST') {
+    triggers.push(cite('popova2013', 'Chelyabinsk 2013, the airburst the entry is checked on.'));
   }
 
   if ((result.ejecta.blanketEdge1m as number) > 0) {

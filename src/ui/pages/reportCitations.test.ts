@@ -44,10 +44,10 @@ describe('collectImpactCitations', () => {
     expect(ks).not.toContain('youdIdriss2001');
   });
 
-  it('Meteor Crater (intact iron, simple crater) does not cite airburst chain', () => {
+  it('Meteor Crater (an iron that breaks up and strikes the ground) cites the pancake, not the airburst', () => {
     const r = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
     const ks = keys(collectImpactCitations(r));
-    expect(ks).not.toContain('chyba1993');
+    expect(ks).toContain('chyba1993');
     expect(ks).not.toContain('popova2013');
     // Simple crater (well below 3.2 km): the complex-crater depth fit of
     // Herrick et al. 1997 should NOT be cited.

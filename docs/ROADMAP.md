@@ -486,15 +486,17 @@ and `scripts/eiep-reference.py` stores its answers on a fixed grid of 83
 impacts on land. Where both codes bring a body to the ground whole, the
 energy, both crater diameters, the ejecta blanket and the fireball agree
 to the program's rounding, and a test gates it. Where they part the
-report measures it: the simulator's atmospheric entry is a classifier
-tuned on two bolides, and it bursts in the air bodies of 100 m to 1 km
-that the program brings down with nearly all their energy, sometimes
-leaving no crater where the program digs one of 1.6 km. That is the next
-impact change: Collins et al.'s own entry equations (their Eqs. 11–20),
-checked on the same grid and then on Chelyabinsk and Tunguska, the two
-events the classifier was tuned on. The complex-crater depth, where the
-online program prints three quarters of the paper's Eq. 28, is a question
-for the authors before it is a change.
+report measured it: the simulator's atmospheric entry was a classifier
+tuned on two bolides, and it burst in the air 21 of the 57 impacts the
+program brings to the ground, among them a 100 m stony body that digs
+1.6 km there. The same day the simulator took Collins et al.'s own entry
+equations (their Eqs. 8–20, B-023): on the grid every outcome and every
+kind of crater now agrees, and on the two bolides the classifier had been
+tuned on Chelyabinsk bursts at 29.0 km against the 27.0 measured and
+Tunguska at 9.8 km. The complex-crater depth, where the online program
+prints three quarters of the paper's Eq. 28, is a question for the authors
+before it is a change, and the air blast is a different fit on both
+sides.
 
 ### 2. The band must be the model's own uncertainty _(done, 9 September)_
 

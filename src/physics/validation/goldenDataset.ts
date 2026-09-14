@@ -140,7 +140,7 @@ export const GOLDEN_DATASET: readonly GoldenCase[] = [
     id: 'G-METEOR-CRATER',
     category: 'reference',
     oracle: 'historical',
-    title: 'Meteor Crater (Barringer) ~1.2 km, intact iron',
+    title: 'Meteor Crater (Barringer) ~1.2 km, an iron that breaks up and strikes the ground',
     description: 'Kring 2007 — D=50 m, ρ=7800, v=12.8 km/s, IMPACTOR_STRENGTH.IRON = 5×10⁷ Pa',
     citation: 'Kring 2007',
     scenarioType: 'impact',
@@ -160,7 +160,7 @@ export const GOLDEN_DATASET: readonly GoldenCase[] = [
     },
     expectedOutputs: {
       'crater.finalDiameter.km': { min: 0.8, max: 1.7 },
-      'entry.regime': { value: 'INTACT' },
+      'entry.regime': { value: 'PARTIAL_AIRBURST' },
     },
   },
   {

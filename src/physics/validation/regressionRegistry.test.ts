@@ -28,7 +28,7 @@ import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/index.
 import { simulateImpact, IMPACT_PRESETS } from '../simulate.js';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
 import { CRUSTAL_ROCK_DENSITY } from '../constants.js';
-import { m } from '../units.js';
+import { deg, degreesToRadians, kgPerM3, m, mps } from '../units.js';
 import { validateScenario } from './inputSchema.js';
 import { safeRunEarthquake } from './safeRun.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
@@ -183,13 +183,14 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // ≈ 2.9 units low, Chicxulub 7.3. Teanby & Wookey 2011 use no such
     // formula. Now M = 0.67·log₁₀(gf·E) − 5.87 (Collins et al. 2005).
     const chicxulub = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
-    const E = chicxulub.impactor.kineticEnergy as number;
+    const E = (chicxulub.impactor.kineticEnergy as number) * chicxulub.entry.energyFractionToGround;
     expect(chicxulub.seismic.magnitude).toBeCloseTo(0.67 * Math.log10(E) - 5.87, 6);
     expect(chicxulub.seismic.magnitude).toBeGreaterThan(10);
-    // An airburst shakes the ground with its ground-coupled share only.
+    // An airburst delivers nothing to the ground, and Collins et al. give
+    // it no seismic effect.
     const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
-    const gfE = (tunguska.impactor.kineticEnergy as number) * tunguska.entry.energyFractionToGround;
-    expect(tunguska.seismic.magnitude).toBeCloseTo(0.67 * Math.log10(gfE) - 5.87, 6);
+    expect(tunguska.entry.energyFractionToGround).toBe(0);
+    expect(tunguska.seismic.magnitude).toBe(0);
   });
 
   it('B-012 Ejecta thickness uses the transient crater diameter', () => {
@@ -217,7 +218,8 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // Table 3 — which is impact frequency. Their prescription (0.1 % of
     // the rock pulverized, ≈ 4 Tg per Mt) gives ≈ 130× less.
     const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
-    const Mt = (r.impactor.kineticEnergy as number) / 4.184e15;
+    // The energy that reaches the ground, all but a thousandth of it.
+    const Mt = ((r.impactor.kineticEnergy as number) * r.entry.energyFractionToGround) / 4.184e15;
     const v = r.inputs.impactVelocity as number;
     expect(r.atmosphere.stratosphericDust as number).toBeCloseTo(
       4e9 * Mt * (25_000 / v) ** 0.33 * 1e-3,
@@ -233,7 +235,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
     const perJoule = ((3e38 / 6.02214076e23) * 0.063013) / 1e23;
     expect(r.atmosphere.acidRainMass as number).toBeCloseTo(
-      perJoule * (r.impactor.kineticEnergy as number),
+      perJoule * (r.impactor.kineticEnergy as number) * r.entry.energyFractionToGround,
       -10
     );
   });
@@ -303,6 +305,23 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // A band of two hundred stadiums: seconds on a CI runner.
   }, 30_000);
 
+  it('B-023 A 100 m stony body at 20 km/s strikes the ground and digs its crater', () => {
+    // Pre-fix: a classifier tuned on Chelyabinsk and Tunguska burst it
+    // at 11.5 km and suppressed the crater. Collins et al. 2005's entry
+    // brings the swarm down at about 7.7 km/s, and the Earth Impact
+    // Effects Program digs a 1.6 km crater.
+    const r = simulateImpact({
+      impactorDiameter: m(100),
+      impactVelocity: mps(20_000),
+      impactorDensity: kgPerM3(3_000),
+      targetDensity: kgPerM3(2_500),
+      impactAngle: degreesToRadians(deg(45)),
+    });
+    expect(r.entry.regime).not.toBe('COMPLETE_AIRBURST');
+    expect(r.crater.finalDiameter as number).toBeGreaterThan(1_400);
+    expect(r.crater.finalDiameter as number).toBeLessThan(1_800);
+  });
+
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
     // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
@@ -336,9 +355,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-022 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
+    // B-001..B-023 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
     // B-007 superseded by B-011).
-    const expectedRows = 22;
-    expect(expectedRows).toBe(22);
+    const expectedRows = 23;
+    expect(expectedRows).toBe(23);
   });
 });
