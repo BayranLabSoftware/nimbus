@@ -19,6 +19,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The intensity rings are checked against their authors' own code.**
+  Boore et al. 2014, which draws the rings, agrees to within 0.0005 % with
+  the values David M. Boore's Fortran program gives at 600 inputs —
+  magnitudes 3 to 8, distances to 100 km, five site velocities, the
+  non-linear site term included — and Allen, Wald & Worden's 2012 intensity
+  equation with an independent implementation at 42. The reference values
+  are OpenQuake's test data (GEM Foundation, AGPL), and the validation
+  report prints the comparison beside the impact pipeline's.
+
 - **The validation report says which checks are validation.** Every
   quantity every recorded event checks now carries a role: _tuned on
   it_ (a coefficient, an input or a modelling choice was made with that

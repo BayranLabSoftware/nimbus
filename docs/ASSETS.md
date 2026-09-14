@@ -169,3 +169,30 @@ curves a location belongs to.
 
 Nothing is fetched at runtime; the fixture is committed because the
 calibration net runs without a network.
+
+## Validation data read by rule
+
+Committed, and read by no simulation a visitor runs; each file names where
+its values come from and, where they change, the day they were read.
+
+- `src/physics/validation/heldOutByRuleData.ts`, `ruleShakemapData.ts`,
+  `unseenSetData.ts`: USGS ComCat and ShakeMap (public domain) and the
+  NOAA NCEI/WDS Global Significant Earthquake Database
+  (doi:10.7289/V5TD9V7K, public domain); IVESPA (Aubry et al. 2021, data
+  CC0) for the eruption columns. Stored: origins, magnitudes, fault types,
+  death tolls and ShakeMap areas above MMI VII, VIII and IX.
+- `src/physics/validation/siteVs30Data.ts`, `unseenSiteData.ts`: slope,
+  elevation and Vs30 read at epicentres on the AWS Terrain Tiles
+  (Terrarium; sources and their attribution in
+  <https://github.com/tilezen/joerd/blob/master/docs/attribution.md>).
+  Stored: three numbers per epicentre, not the tiles.
+- `src/physics/validation/openQuakeReference.ts`: the PGA and MMI columns
+  of five test-data files of the OpenQuake Engine
+  (<https://github.com/gem/oq-engine>, Copyright (C) GEM Foundation, GNU
+  Affero General Public License v3 or later, the licence Nimbus is under),
+  which OpenQuake says were generated from D. M. Boore's Fortran program
+  for Boore et al. 2014 and from an independent Matlab implementation of
+  Allen, Wald & Worden 2012. The file carries the notice.
+- `src/physics/validation/eiepReference.ts`: answers of the Earth Impact
+  Effects Program (Collins, Melosh & Marcus), read from its public web
+  service.

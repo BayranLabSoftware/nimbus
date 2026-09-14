@@ -20,7 +20,9 @@ import { m } from '../../units.js';
  * its coefficients were read from OpenQuake's implementation,
  * `AllenEtAl2012Rhypo` in openquake.hazardlib (GEM Foundation), which
  * cites the paper; the paper itself was not read here, and the
- * validation page says so.
+ * validation page says so. What is coded agrees with the values an
+ * independent Matlab implementation gives, kept in OpenQuake's test data,
+ * to within a millionth (validation/ringVerification.ts).
  *
  * The authors give the hypocentral form for when a rupture's extent is
  * not known, which is a custom scenario's case, and it carries what

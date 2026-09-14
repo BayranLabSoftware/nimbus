@@ -126,6 +126,11 @@ import {
 } from '../src/physics/validation/eiepComparison.js';
 import { EIEP_READ_ON, EIEP_REFERENCE } from '../src/physics/validation/eiepReference.js';
 import {
+  residualAgainstReference,
+  verifyRings,
+  type VerificationRow,
+} from '../src/physics/validation/ringVerification.js';
+import {
   CALIBRATION_ANCHORS,
   CALIBRATION_ROLES,
   type CalibrationQuantity,
@@ -1138,6 +1143,28 @@ function depthSection(run: DepthRun): string {
   ].join('\n');
 }
 
+function ringVerificationSection(rows: readonly VerificationRow[]): string {
+  const residual = residualAgainstReference();
+  return [
+    'The relations that draw the intensity rings, and the one each earthquake is',
+    "tried against, computed at the inputs of their authors' own code. The OpenQuake",
+    "Engine's test data keep the values David M. Boore's Fortran program gives for",
+    'Boore et al. 2014 (July 2014) and those of an independent Matlab implementation',
+    'of Allen, Wald & Worden 2012 (`validation/openQuakeReference.ts`, GEM Foundation,',
+    'AGPL-3.0-or-later). OpenQuake allows the first two per cent and the second a tenth',
+    'of one; the test here allows a hundredth.',
+    '',
+    '| Relation | Quantity | Reference | Rows | Largest difference | Where |',
+    '|----------|----------|-----------|-----:|-------------------:|-------|',
+    ...rows.map(
+      (r) =>
+        `| ${r.relation} | ${r.quantity} | ${r.reference} | ${r.rows.toString()} | ${(r.worstRelative * 100).toFixed(4)} % | ${r.worstAt} |`
+    ),
+    '',
+    `The toll band draws one ground-motion residual for every earthquake, σ = ${residual.convention.toFixed(2)} in ln PGA; the Fortran program gives ${residual.min.toFixed(4)} to ${residual.max.toFixed(4)} over the ${residual.rows.toString()} rows of Mw 5.5 and above, R_JB within 80 km and Vs30 of 300 m/s or more. Smaller earthquakes scatter more, up to ${residual.smallEarthquakeMax.toFixed(4)}, and softer ground less, down to ${residual.softGroundMin.toFixed(4)}, which one number does not follow (\`uq/conventions.ts\`).`,
+  ].join('\n');
+}
+
 function medianOf(values: readonly number[]): number | null {
   if (values.length === 0) return null;
   const sorted = [...values].sort((a, b) => a - b);
@@ -1732,6 +1759,7 @@ function main(): void {
   const ruleSets = runRuleSets();
   const byRule = ruleCells(ruleSets);
   const eiep = runEiep();
+  const ringChecks = verifyRings();
   const contourLaws = runContourLaws();
   const ground = runGround(ruleSets, contourLaws.tolls.boore2014);
   const depth = runDepth(ground.tolls.pick);
@@ -1843,6 +1871,10 @@ ${failureSection(goldenAgg, 'Golden case failures')}
 ### The impact pipeline against the Earth Impact Effects Program
 
 ${eiepSection(eiep)}
+
+### The intensity rings against their authors' code
+
+${ringVerificationSection(ringChecks)}
 
 ## Declared gaps
 
@@ -2170,6 +2202,14 @@ otherwise.
       suspiciousCases: replayAgg.suspiciousCases,
     },
     verification: {
+      rings: ringChecks.map((r) => ({
+        relation: r.relation,
+        quantity: r.quantity,
+        reference: r.reference,
+        rows: r.rows,
+        worstRelative: Number(r.worstRelative.toExponential(3)),
+        worstAt: r.worstAt,
+      })),
       eiep: {
         readOn: EIEP_READ_ON,
         impacts: EIEP_REFERENCE.length,

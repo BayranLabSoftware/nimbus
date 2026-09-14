@@ -1072,6 +1072,24 @@ correct silences at each threshold — has to be written before it is tried,
 and tried on earthquakes these rules have not read: the 342 whose maps carry
 no low-resolution coverage, or those after 14 September 2026.
 
+### The rings against their authors' code (14 September 2026)
+
+A relation can be cited correctly and coded wrongly, and the brackets
+beside Boore et al. 2014 in `attenuation.test.ts` would not see a
+coefficient off by a few per cent. The OpenQuake Engine keeps, as test data,
+the values David M. Boore's Fortran program gives for the relation (July
+2014), and those of an independent Matlab implementation of Allen, Wald &
+Worden's 2012 intensity equation. At the same inputs ours agree to within
+0.0005 % over 450 accelerations with the style of faulting and 150 without —
+magnitudes 3 to 8, Joyner–Boore distances to 100 km, Vs30 from 200 to 760
+m/s, the non-linear site term included — and to within a millionth over the
+intensity equation's 21 medians and 21 standard deviations
+(`validation/ringVerification.ts`). OpenQuake's own tests allow two per cent
+and a tenth of one; ours allow a hundredth. The same tables show what the
+band's one ground-motion residual leaves out: σ is 0.6051 wherever the
+relation is used for the rings' earthquakes of Mw 5.5 and above within 80 km
+on firm ground, but 0.80 at magnitude 3 and 0.55 on ground of 200 m/s.
+
 ### Against the program the impact equations came from (14 September 2026)
 
 The impact pipeline cites Collins, Melosh & Marcus (2005), and their

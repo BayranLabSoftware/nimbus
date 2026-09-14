@@ -1200,6 +1200,25 @@ Outcome, program → simulator: airburst → COMPLETE_AIRBURST: 24; ground → P
 - **Air blast.** The simulator reads Kinney & Graham's free-air fit on the energy that reaches the ground; the program, the air-blast scaling its authors give. The two part from a quarter to eight times across the grid, and neither is a measurement of an impact's blast.
 - **Strength.** Where a strength class is chosen — every impact preset but Tunguska, and the custom panel's taxonomy — the simulator takes it (Popova et al. 2011); the grid, like the program, takes the strength of Collins et al.'s Eq. 9 from density.
 
+### The intensity rings against their authors' code
+
+The relations that draw the intensity rings, and the one each earthquake is
+tried against, computed at the inputs of their authors' own code. The OpenQuake
+Engine's test data keep the values David M. Boore's Fortran program gives for
+Boore et al. 2014 (July 2014) and those of an independent Matlab implementation
+of Allen, Wald & Worden 2012 (`validation/openQuakeReference.ts`, GEM Foundation,
+AGPL-3.0-or-later). OpenQuake allows the first two per cent and the second a tenth
+of one; the test here allows a hundredth.
+
+| Relation | Quantity | Reference | Rows | Largest difference | Where |
+|----------|----------|-----------|-----:|-------------------:|-------|
+| Boore et al. 2014 | median PGA, with style of faulting | D. M. Boore's Fortran program, via OpenQuake's test data | 450 | 0.0005 % | M 3, rake 90°, R_JB 75 km, Vs30 400 m/s |
+| Boore et al. 2014 | median PGA, style of faulting unspecified | D. M. Boore's Fortran program, via OpenQuake's test data | 150 | 0.0005 % | M 3, R_JB 0 km, Vs30 400 m/s |
+| Allen, Wald & Worden 2012, hypocentral | median MMI | An independent Matlab implementation, via OpenQuake's test data | 21 | 0.0000 % | M 5, R_hyp 300 km |
+| Allen, Wald & Worden 2012, hypocentral | total σ of MMI | An independent Matlab implementation, via OpenQuake's test data | 21 | 0.0000 % | M 5, R_hyp 100 km |
+
+The toll band draws one ground-motion residual for every earthquake, σ = 0.60 in ln PGA; the Fortran program gives 0.6051 to 0.6051 over the 108 rows of Mw 5.5 and above, R_JB within 80 km and Vs30 of 300 m/s or more. Smaller earthquakes scatter more, up to 0.8009, and softer ground less, down to 0.5493, which one number does not follow (`uq/conventions.ts`).
+
 ## Declared gaps
 
 What the model is known not to do, stated so nobody has to discover it. The
