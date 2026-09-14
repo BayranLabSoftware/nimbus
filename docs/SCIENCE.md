@@ -1712,6 +1712,14 @@ famous explosion-generated wave and the curve gives it one; Castle
 Bravo on its reef and Ivy Mike on its islet are remembered for their
 craters and their fallout and not for any wave, and the curve agrees.
 
+_(Corrected 14 September 2026: "Glasstone's 180 m source amplitude"
+and "Glasstone §6.40" do not exist in the 1977 edition — chapter 6 has
+no Table 6.50, no source amplitude for any yield, and its §6.40 is
+about buildings in Las Vegas — so the eight per cent, the
+4 m·kt^(−1/3) optimum and the width are all the project's own. What
+the book gives, and how far this source stands from it, is in the
+roadmap under M9 move 3.)_
+
 ### The coastal toll of the wave (Phase 24)
 
 The tsunami was the one hazard the toll left out. It is counted now

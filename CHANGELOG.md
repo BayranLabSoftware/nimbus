@@ -24,6 +24,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   deep-water wave five to nine times under Glasstone's relation — is in
   the roadmap.
 
+- **The explosion wave cited pages that do not say what it said.** The
+  8 % coupling was "calibrated against Glasstone Table 6.50 ≈ 180 m
+  source amplitude for 1 Mt" and the optimum depth of 4 m·kt^(−1/3)
+  came from "Glasstone §6.40", in the code, its tests and the
+  methodology page. The 1977 edition has no Table 6.50 and no source
+  amplitude for any yield, and its §6.40 is about buildings in Las
+  Vegas. All three numbers are now called the project's own, beside
+  what the book does give: 2–5 % of the yield in the surface waves
+  (§6.54), a vent depth (§6.53), and wave-height relations for deep and
+  shallow water (§6.119–6.121). No number changes.
+
 - **The report's "tsunami source amplitude" was a number the model does
   not propagate.** It sat on Ward & Asphaug's figure, which has no water
   depth in it and read 1 362 m in 200 m of sea for a Chicxulub on Rome.

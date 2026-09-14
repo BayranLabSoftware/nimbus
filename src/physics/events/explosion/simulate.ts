@@ -176,9 +176,10 @@ export interface ExplosionScenarioResult {
    *  column (`waterDepth > 0` AND HOB regime SURFACE). Glasstone &
    *  Dolan §6 documents that for this geometry the atmospheric
    *  pressure radii are far below the equivalent-yield land surface
-   *  burst (mechanical coupling efficiency ≈ 5–15 %): water absorbs
-   *  the bulk of the energy as compression heating and gas-bubble
-   *  pulsation, the thermal pulse cannot escape the water column,
+   *  burst: water absorbs the bulk of the energy as compression
+   *  heating and gas-bubble pulsation (only 2–5 % of the yield ends
+   *  up in the surface waves, §6.54), the thermal pulse cannot escape
+   *  the water column,
    *  and there is no crater. The renderer uses this flag to fade the
    *  on-globe overpressure / thermal / crater rings so the eye reads
    *  the tsunami branch as the dominant story rather than "5 psi at
@@ -370,9 +371,10 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   //       point is still 500 m above the water, so the air shock
   //       arrives as a low-amplitude pressure pulse with essentially
   //       zero coupling to the water column. The 8 % coupling
-  //       fraction in {@link explosionTsunami} is the Glasstone Table
-  //       6.50 value for SHALLOW UNDERWATER bursts (z < 0); applying
-  //       it to a 500 m airburst over water inflates the source
+  //       fraction in {@link explosionTsunami} is meant for SHALLOW
+  //       UNDERWATER bursts (z < 0) — a figure of this project's, once
+  //       misattributed to a Glasstone table that does not exist;
+  //       applying it to a 500 m airburst over water inflates the source
   //       amplitude by orders of magnitude, then the bathymetric
   //       pipeline propagates that inflated source across the basin
   //       and produces metres of wave at trans-oceanic distances.
@@ -382,18 +384,15 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   //       has produced a measurable trans-oceanic wave from an
   //       airburst, including atmospheric-test-era Mt detonations).
   //
-  // Underwater bursts (HOB < 0) are out of scope for this branch —
-  // the simulator does not currently model the depth-of-burst
-  // pressure-amplification regime (z/W^(1/3) ≈ -4 m/kt¹ᐟ³ optimum,
-  // Glasstone §6.40); when added they will route through a separate
-  // {@link underwaterBurst} branch with its own coupling profile.
+  // Underwater bursts (HOB < 0) were out of scope for that gate. They
+  // are modelled now, through the depth-of-burst curve below.
   const waterDepth = (input.waterDepth as number | undefined) ?? 0;
   // The gate used to be a threshold — surface regime, height of burst
   // between zero and thirty metres — because there was no way to say
   // how well a burst at a given height or depth couples to water. Now
   // there is: `waveCouplingEfficiency` returns nothing for a charge in
   // the air, little for one resting on the surface, and its peak for
-  // one hung at the depth the literature calls optimum. So the branch
+  // one hung at the depth the module calls optimum. So the branch
   // opens wherever there is water to lift and the curve decides how
   // much, which also lets a genuinely submerged burst be modelled for
   // the first time.

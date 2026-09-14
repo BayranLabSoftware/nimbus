@@ -7,14 +7,16 @@ import { waveCouplingEfficiency, OPTIMUM_SCALED_DEPTH } from './underwaterBurst.
  * None of these assertions needs a number out of a book. They are the
  * shape of the thing: where the maximum is, where it goes to nothing,
  * that it never doubles back, and that a charge sitting on the water
- * couples less than one hung at the depth the literature calls
- * optimum. The one thing they pin hard is the peak, and that is the
- * scaled depth this module has cited from Glasstone §6.40 since long
- * before this test.
+ * couples less than one hung at the depth the module calls optimum.
+ * The one thing they pin hard is the peak, at the module's own
+ * 4 m·kt^(−1/3). Until 14 September 2026 this comment said that depth
+ * came from Glasstone §6.40, which is about buildings in Las Vegas and
+ * gives no optimum depth for waves; so this pins the module, not a
+ * book.
  */
 
 describe('waveCouplingEfficiency', () => {
-  it('peaks at the scaled depth the sources call optimum', () => {
+  it('peaks at the scaled depth the module calls optimum', () => {
     expect(waveCouplingEfficiency(OPTIMUM_SCALED_DEPTH)).toBeCloseTo(1, 9);
     for (const lambda of [0.5, 1, 2, 3, 5, 8, 16, 40]) {
       expect(waveCouplingEfficiency(lambda)).toBeLessThan(1);

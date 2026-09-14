@@ -95,21 +95,23 @@ describe('simulateExplosion — composition', () => {
     );
   });
 
-  it('underwater 1 Mt burst emits a Glasstone-class tsunami source', () => {
+  it('underwater 1 Mt burst at the module optimum keeps the source it has always had', () => {
     const r = simulateExplosion({
       yieldMegatons: 1,
       groundType: 'WET_SOIL',
-      // Glasstone's 180 m is for a burst at the optimum depth, which
-      // this test always said and never set: 4 · 1000^(1/3) = 40 m.
+      // The module's optimum depth for a megatonne: 4 · 1000^(1/3) = 40 m.
       heightOfBurst: m(-40),
       waterDepth: m(50),
     });
     expect(r.tsunami).toBeDefined();
     if (!r.tsunami) return;
     // Coupling fraction of 0.08 → equivalent KE = 3.34e14 J →
-    // R_C ≈ 350 m, η_0 ≈ 175 m. Check the source amplitude is in the
-    // 100–250 m envelope that brackets Glasstone Table 6.50's ≈ 180 m
-    // for an optimum-depth 1 Mt burst.
+    // R_C ≈ 350 m, η_0 ≈ 175 m. This envelope is a regression pin on
+    // the module's own source, not a validation: it used to say it
+    // bracketed "Glasstone Table 6.50's ≈ 180 m", a table the 1977
+    // edition does not have, and no source amplitude is published to
+    // bracket. What Glasstone does publish is checked against the wave
+    // itself, in validation/recordedWaves.ts.
     expect(r.tsunami.sourceAmplitude as number).toBeGreaterThan(100);
     expect(r.tsunami.sourceAmplitude as number).toBeLessThan(250);
     expect(r.tsunami.couplingFraction).toBeCloseTo(0.08, 6);

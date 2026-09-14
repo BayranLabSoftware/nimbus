@@ -396,15 +396,18 @@ misses are pinned empty. Full account in [SCIENCE.md](./SCIENCE.md),
 **What re-reading Glasstone found next to it, and did not change**
 _(open)_:
 
-- **The explosion source cites pages that do not say what it says.**
-  `underwaterBurst.ts` calibrates its 8 % coupling on "Glasstone
-  Table 6.50 ≈ 180 m source amplitude for 1 Mt" and takes its optimum
-  depth of 4 m·kt^(−1/3) from "Glasstone & Dolan §6.40". The 1977
-  chapter has no Table 6.50, no source amplitude for any yield, and its
-  §6.40 is about buildings swaying in Las Vegas. What the chapter does
-  say: the surface waves carry 2–5 % of the yield (§6.54), and in deep
-  water H ≈ 40 500·W^0.54/R feet "for any depth of burst within the
-  water" (§6.119), with the peak wave's length L ≈ 1 010·W^0.288 ft.
+- **The explosion source cited pages that do not say what it said**
+  _(citations corrected the same day; the numbers are unchanged)_.
+  `underwaterBurst.ts` calibrated its 8 % coupling on "Glasstone
+  Table 6.50 ≈ 180 m source amplitude for 1 Mt" and took its optimum
+  depth of 4 m·kt^(−1/3) from "Glasstone & Dolan §6.40", and the
+  methodology page repeated both. The 1977 chapter has no Table 6.50, no
+  source amplitude for any yield, and its §6.40 is about buildings
+  swaying in Las Vegas. Code, tests, methodology and these documents now
+  call the three numbers the project's own. What the chapter does say:
+  the surface waves carry 2–5 % of the yield (§6.54), and in deep water
+  H ≈ 40 500·W^0.54/R feet "for any depth of burst within the water"
+  (§6.119), with the peak wave's length L ≈ 1 010·W^0.288 ft.
 - **Against that relation the model is five to nine times under in deep
   water at its own optimum depth, and near zero anywhere else.** At
   z = 4·W^(1/3) m the ratio of the model's height to Glasstone's is
@@ -732,7 +735,10 @@ Glasstone §6.40 since it was written, falling to nothing at the
 surface where the gas globe vents to the air and falling again in
 deep water where the bubble never breaks through. Each side has a
 mechanism; only the width is the project's own composition, and it is
-labelled as such.
+labelled as such. _(Corrected 14 September 2026: the 180 m and the
+§6.40 were never in Glasstone & Dolan — the 1977 edition has no Table
+6.50 and its §6.40 is about buildings in Las Vegas — so the eight per
+cent and the optimum are the project's own too; see M9 move 3.)_
 
 The curve replaced a threshold rather than joining it. The old gate
 fired for any surface burst between zero and thirty metres of height
