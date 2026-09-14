@@ -252,6 +252,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **An earthquake takes its ground from the terrain under the pick.**
+  With no Vs30 typed in, the simulator reads one off the slope of the
+  terrain tile under the epicentre. A Launch pressed before the new
+  pick's tile arrived read it off the last pick's tile instead, clamped
+  to its edge, where there is no slope: 180 m/s, the softest soil on the
+  table, wherever the pick was — and on soft soil Boore et al. 2014's
+  rings are drawn much wider (B-024). The store now waits for the tile
+  that covers the pick and takes rock until it has it.
+
 - **An asteroid's passage through the air follows the equations the
   impact pipeline cites.** The atmospheric entry was a classifier tuned on
   Chelyabinsk and Tunguska — a burst two scale heights below breakup, less

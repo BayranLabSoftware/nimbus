@@ -2746,12 +2746,17 @@ export const useAppStore = create<AppStore>((set, get) => ({
         };
       } else if (state.eventType === 'earthquake') {
         // Auto-derive Vs30 from the topographic-slope proxy when the
-        // user has not specified one AND an elevation grid is loaded.
+        // user has not specified one AND the elevation grid loaded is
+        // the one under the pick. A Launch that beats the new pick's
+        // tile still holds the last pick's, and the slope read off its
+        // clamped edge is none at all: 180 m/s, soft soil, anywhere on
+        // Earth (B-024). Rock until the right tile is in.
         let earthquakeInput = state.earthquake.input;
         if (
           state.earthquake.input.vs30 === undefined &&
           state.location !== null &&
-          state.elevationGrid !== null
+          state.elevationGrid !== null &&
+          gridCoversLocation(state.elevationGrid, state.location)
         ) {
           const slope = sampleSlope(
             state.elevationGrid,

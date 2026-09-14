@@ -35,6 +35,8 @@ import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
 import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
 import { mulberry32 } from '../montecarlo/sampling.js';
 import { compareWithRecord, RECORDED_EVENTS } from './recordedTolls.js';
+import { makeElevationGrid } from '../elevation/index.js';
+import { resetAppStore, useAppStore } from '../../store/useAppStore.js';
 
 describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () => {
   it('B-001 Krakatau caldera-collapse near-field amplitude', () => {
@@ -322,6 +324,45 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(r.crater.finalDiameter as number).toBeLessThan(1_800);
   });
 
+  it("B-024 A pick takes its Vs30 from the terrain under it, not the last pick's", async () => {
+    // Pre-fix: the store read the slope off whatever terrain it held.
+    // A Launch that beat the new pick's tile took the site from the
+    // last pick's, clamped to its edge, where every neighbour is the
+    // same sample: no slope, and the table's softest soil, 180 m/s.
+    resetAppStore();
+    const store = useAppStore.getState();
+    store.selectPreset('NORTHRIDGE_1994');
+    store.setMode('globe');
+    store.setLocation({ latitude: 34.2, longitude: -118.5 });
+    // A plane rising 52 m a sample to the north, about 3 % over the
+    // 1.7 km between samples: 420 m/s on Wald & Allen's table.
+    const n = 65;
+    const samples = new Float32Array(n * n);
+    for (let i = 0; i < n; i++) samples.fill((n - 1 - i) * 52.1, i * n, (i + 1) * n);
+    useAppStore.getState().setElevationGrid(
+      makeElevationGrid({
+        minLat: 33.7,
+        maxLat: 34.7,
+        minLon: -119,
+        maxLon: -118,
+        nLat: n,
+        nLon: n,
+        samples,
+      })
+    );
+    await useAppStore.getState().evaluate();
+    const under = useAppStore.getState().result;
+    expect(under?.type === 'earthquake' ? under.data.shaking.siteVs30 : 0).toBeCloseTo(420, -1);
+
+    useAppStore.getState().setLocation({ latitude: 0, longitude: 0 });
+    await useAppStore.getState().evaluate();
+    const away = useAppStore.getState().result;
+    if (away?.type !== 'earthquake') throw new Error('not an earthquake');
+    expect(away.data.inputs.vs30).toBeUndefined();
+    expect(away.data.shaking.siteVs30).toBe(760);
+    useAppStore.getState().setElevationGrid(null);
+  });
+
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
     // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
@@ -355,9 +396,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-023 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
+    // B-001..B-024 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
     // B-007 superseded by B-011).
-    const expectedRows = 23;
-    expect(expectedRows).toBe(23);
+    const expectedRows = 24;
+    expect(expectedRows).toBe(24);
   });
 });
