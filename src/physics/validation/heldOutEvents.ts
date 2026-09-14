@@ -1,7 +1,12 @@
+import { DRE_DENSITY } from '../constants.js';
 import { simulateEarthquake, type EarthquakeScenarioInput } from '../events/earthquake/simulate.js';
+import { simulateVolcano, type VolcanoScenarioInput } from '../events/volcano/simulate.js';
 import { m } from '../units.js';
-import type { CalibrationAnchor } from './calibrationEnvelope.js';
+import type { PlumeHeightObservation } from './fixtures.js';
+import { globeVeilAt } from './globeVeil.js';
+import { HELD_OUT_SOURCES } from './heldOutAnchors.js';
 import type { RecordedEvent } from './recordedTolls.js';
+import type { RecordedWave } from './recordedWaves.js';
 
 /**
  * Checks held out of every fit, written down before the model was run
@@ -50,9 +55,54 @@ import type { RecordedEvent } from './recordedTolls.js';
  * This file was committed before any of these events was run through
  * the model; the commit that puts them in the net comes after it, and
  * the order is in the history.
+ *
+ * The second group, written down the same day and under the same
+ * protocol, before any of it was run: the rest of the roadmap's list.
+ *
+ *   7. A wave: Illapel 2015 at DART 32402. Magnitude, depth and
+ *      epicentre as rule 1. The plate interface is the preferred moment
+ *      tensor's shallow nodal plane (strike 353°, dip 19°), so the
+ *      rupture is a subduction interface with that strike. The buoy's
+ *      position and water depth are NOAA NDBC's; range and bearing are
+ *      computed on a sphere of 6 371 km. The record is the zero-to-crest
+ *      maximum, 10.9 cm (Heidarzadeh et al. 2016) and 11 cm on the
+ *      first crest (Tang et al. 2016), and the row accepts a factor of
+ *      two either way, fixed before the run: a law of distance alone,
+ *      with no bathymetry and no slip distribution, cannot claim better
+ *      at a buoy its own papers call near field.
+ *   8. Plumes: every IVESPA phase of Grímsvötn 2011 and Calbuco 2015
+ *      (Aubry et al. 2021, data CC0), chosen by database ID whatever
+ *      they read. The eruption rate is the total erupted mass over the
+ *      phase's duration at the model's 2 500 kg/m³; the height is
+ *      IVESPA's ash-plume-top best estimate less the vent altitude,
+ *      with its uncertainty; a row is inside by the rule the plume rows
+ *      already use. Not blind: Mastin's relation is one line, and its
+ *      value for these inputs was computed while the sources were being
+ *      read, before this file. Taking every phase is what keeps the
+ *      check from being a choice.
+ *   9. Volcanic tolls: Fuego 2018 and Unzen 1991. The vent is the
+ *      Global Volcanism Program's position. The erupted volume is the
+ *      bulk volume the sources give for the deposits of the event:
+ *      Fuego's pyroclastic-flow deposits in every ravine, 49 × 10⁶ m³
+ *      (Ferrés & Escobar Wolf 2018, Table 1; the fall is not measured
+ *      there and is not added), and Unzen's 3 June flow, 0.6 × 10⁶ m³
+ *      (Nakada & Fujii 1993, as given by Shimizu 2022). The eruption
+ *      rate, which does not enter the toll, is Pardini et al. 2019's
+ *      mass rate for Fuego, derived from the plume's height, and the
+ *      mean discharge of Unzen's four years and three months of
+ *      eruption, 2.1 × 10⁸ m³ (Nakada et al. 1999), both as volume at
+ *      2 500 kg/m³. No evacuation radius is set: Fuego had no zone in
+ *      force, and Unzen's advisory was drawn by district, with no radius
+ *      a source gives. The record is dead plus missing in the latest
+ *      official count; the confirmed dead are its low end and the
+ *      highest official count of dead plus missing its high end.
+ *  10. Rules 5 and 6 hold: held out, ungated, no re-tuning, and the
+ *      cause of a miss written after the result and marked so.
+ *
+ * The lahar that reached Armero from Nevado del Ruiz in 1985 was on the
+ * same list and is not here: the net has no quantity for how far a
+ * lahar runs, and adding one is its own change.
  */
-
-const NCEI = 'NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K)';
 
 const quake = (input: EarthquakeScenarioInput): RecordedEvent['run'] => {
   return () => ({ type: 'earthquake', data: simulateEarthquake(input) });
@@ -67,7 +117,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     latitude: -43.583,
     longitude: 172.68,
     recordedDeaths: 185,
-    source: `${NCEI}, event 9779: 185 deaths; USGS usp000huvq, Mww 6.1`,
+    source: HELD_OUT_SOURCES.christchurch,
     run: quake({ magnitude: 6.1, depth: m(5_900), faultType: 'all' }),
     gated: false,
     cause: 'buildingStock',
@@ -83,7 +133,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     recordedDeaths: 273,
     recordedDeathsLow: 49,
     recordedDeathsHigh: 273,
-    source: `${NCEI}, event 10177: 273 deaths, which include the disaster-related; 49 caused directly by building collapse and landslides (Fire and Disaster Management Agency, 1 July 2016, in Goda et al. 2016, Front. Built Environ. 2: 19); USGS us20005iis, Mww 7.0`,
+    source: HELD_OUT_SOURCES.kumamoto,
     run: quake({ magnitude: 7.0, depth: m(10_000), faultType: 'strike-slip' }),
     gated: false,
     caveat:
@@ -97,7 +147,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     latitude: -42.7373,
     longitude: 173.054,
     recordedDeaths: 2,
-    source: `${NCEI}, event 10206: 2 deaths; USGS us1000778i, Mww 7.8`,
+    source: HELD_OUT_SOURCES.kaikoura,
     run: quake({ magnitude: 7.8, depth: m(15_110), faultType: 'reverse' }),
     gated: false,
     cause: 'belowResolution',
@@ -111,7 +161,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     latitude: 36.0735,
     longitude: 129.28,
     recordedDeaths: 0,
-    source: `${NCEI}, event 10277: no deaths recorded, 90 injured; USGS us2000bnrs, Mww 5.5`,
+    source: HELD_OUT_SOURCES.pohang,
     run: quake({ magnitude: 5.5, depth: m(10_000), faultType: 'reverse' }),
     gated: false,
     cause: 'buildingStock',
@@ -125,7 +175,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     latitude: 41.5138,
     longitude: 19.5256,
     recordedDeaths: 51,
-    source: `${NCEI}, event 10461: 51 deaths; USGS us70006d0m, Mww 6.4`,
+    source: HELD_OUT_SOURCES.durres,
     run: quake({ magnitude: 6.4, depth: m(22_000), faultType: 'reverse' }),
     gated: false,
     caveat:
@@ -133,24 +183,106 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
   },
 ];
 
-const HELD_OUT_HOW =
-  "Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning.";
+const HOUR_S = 3_600;
+const YEAR_S = 365.25 * 24 * HOUR_S;
 
-/** Their anchors, with the role each carries and why. */
-export const HELD_OUT_EARTHQUAKE_ANCHORS: readonly CalibrationAnchor[] = [
-  { name: 'Christchurch 2011', value: 6.1 },
-  { name: 'Kumamoto 2016', value: 7.0 },
-  { name: 'Kaikōura 2016', value: 7.8 },
-  { name: 'Pohang 2017', value: 5.5 },
-  { name: 'Durrës (Albania) 2019', value: 6.4 },
-].map(
-  ({ name, value }): CalibrationAnchor => ({
-    name,
-    eventType: 'earthquake',
-    value,
-    quantities: ['toll'],
-    gated: [],
-    source: HELD_OUT_EARTHQUAKES.find((e) => e.name === name)?.source ?? NCEI,
-    use: { toll: { role: 'heldOut', how: HELD_OUT_HOW } },
-  })
-);
+/** A volume rate of dense rock from a mass and the time it took. */
+const rateFromMass = (massKg: number, durationS: number): number =>
+  massKg / durationS / (DRE_DENSITY as number);
+
+const volcano = (input: VolcanoScenarioInput): RecordedEvent['run'] => {
+  return () => ({ type: 'volcano', data: simulateVolcano(input) });
+};
+
+/** Great circle from the USGS epicentre (31.5729 °S, 71.6744 °W) to
+ *  DART 32402 (26.743 °S, 73.983 °W), on a sphere of 6 371 km. */
+export const ILLAPEL_TO_DART_32402_M = 581_900;
+
+export const HELD_OUT_WAVES: readonly RecordedWave[] = [
+  {
+    name: 'Illapel 2015 at DART 32402',
+    observed: { low: 0.109 / 2, high: 0.11 * 2, atRangeM: ILLAPEL_TO_DART_32402_M },
+    source: HELD_OUT_SOURCES.illapel,
+    model: () =>
+      globeVeilAt(
+        {
+          type: 'earthquake',
+          data: simulateEarthquake({
+            // USGS us20003k7a: Mww 8.3, depth 22.44 km. Preferred moment
+            // tensor: 180/71/92 and 353/19/83; the shallow plane is the
+            // interface.
+            magnitude: 8.3,
+            depth: m(22_440),
+            faultType: 'reverse',
+            subductionInterface: true,
+            strikeAzimuthDeg: 353,
+          }),
+        },
+        ILLAPEL_TO_DART_32402_M,
+        // The buoy lies at a bearing of 337° from the epicentre, 16° off
+        // the strike, over 4 070 m of water.
+        { depthM: 4_070, bearingDeg: 337 }
+      ),
+    gated: false,
+  },
+];
+
+export const HELD_OUT_PLUMES: readonly PlumeHeightObservation[] = [
+  {
+    event: 'Grímsvötn 2011',
+    volumeEruptionRate: rateFromMass(7.29e11, 27 * HOUR_S),
+    observedPlumeHeightKm: 16 - 1.45,
+    toleranceKm: 4,
+    source: HELD_OUT_SOURCES.grimsvotn,
+    gated: false,
+  },
+  {
+    event: 'Calbuco 2015 (22 April)',
+    volumeEruptionRate: rateFromMass(1.01e11, 1.5 * HOUR_S),
+    observedPlumeHeightKm: 20 - 2.003,
+    toleranceKm: 3,
+    source: HELD_OUT_SOURCES.calbuco,
+    gated: false,
+  },
+  {
+    event: 'Calbuco 2015 (23 April)',
+    volumeEruptionRate: rateFromMass(2.81e11, 6.12 * HOUR_S),
+    observedPlumeHeightKm: 21 - 2.003,
+    toleranceKm: 3,
+    source: HELD_OUT_SOURCES.calbuco,
+    gated: false,
+  },
+];
+
+export const HELD_OUT_VOLCANO_TOLLS: readonly RecordedEvent[] = [
+  {
+    name: 'Fuego 2018',
+    latitude: 14.4748,
+    longitude: -90.8806,
+    recordedDeaths: 430,
+    recordedDeathsLow: 201,
+    recordedDeathsHigh: 445,
+    source: HELD_OUT_SOURCES.fuego,
+    run: volcano({
+      // Pardini et al. 2019, Table 1: 1.17 × 10⁷ kg/s over the ~2.5 h
+      // climax, from the plume's height.
+      volumeEruptionRate: 1.17e7 / (DRE_DENSITY as number),
+      totalEjectaVolume: 49e6,
+    }),
+    gated: false,
+  },
+  {
+    name: 'Unzen 1991',
+    latitude: 32.761,
+    longitude: 130.299,
+    recordedDeaths: 43,
+    recordedDeathsLow: 40,
+    recordedDeathsHigh: 43,
+    source: HELD_OUT_SOURCES.unzen,
+    run: volcano({
+      volumeEruptionRate: 2.1e8 / (4.25 * YEAR_S),
+      totalEjectaVolume: 0.6e6,
+    }),
+    gated: false,
+  },
+];

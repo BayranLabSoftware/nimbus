@@ -3,9 +3,8 @@ import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/sim
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/simulate.js';
 import { m } from '../units.js';
 import { DART_21413_FROM_TOHOKU_EPICENTRE_M } from './noaaBenchmarkFixtures.js';
-import { veilLaw } from '../tsunami/amplitudeField.js';
-import { propagationSpeed } from '../tsunami/linearWaves.js';
-import { extractTsunamiMeta, type ActiveResult } from '../../store/useAppStore.js';
+import type { ActiveResult } from '../../store/useAppStore.js';
+import { globeVeilAt } from './globeVeil.js';
 
 /**
  * Waves that were measured, and where the simulator puts them.
@@ -117,24 +116,7 @@ export function amplitudeFromCrestToTrough(feet: number): { low: number; high: n
   };
 }
 
-/**
- * What the amplitude veil on the globe draws for a result at a range,
- * on a flat sea: the field's own per-cell law, at the arrival time the
- * fast-marching solver gives on flat water. The depth is the sea the
- * wave was measured in, or the source's own where the row names none.
- * A bearing matters only to an oriented source.
- */
-export function globeVeilAt(
-  result: ActiveResult,
-  rangeM: number,
-  sea: { depthM?: number; bearingDeg?: number } = {}
-): number {
-  const meta = extractTsunamiMeta(result);
-  if (meta === null) return 0;
-  const depthM = sea.depthM ?? meta.sourceDepthM;
-  const arrivalTimeS = rangeM / propagationSpeed(depthM, meta.sourcePeriodS);
-  return veilLaw(meta)(arrivalTimeS, depthM, sea.bearingDeg);
-}
+export { globeVeilAt };
 
 /** A burst as the store simulates one clicked on open water: the depth
  *  under the click, and nothing else about the sea. */

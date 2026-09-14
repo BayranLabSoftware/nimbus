@@ -33,7 +33,7 @@ import type { EarthquakeScenarioResult } from '../events/earthquake/simulate.js'
 import type { ExplosionScenarioResult } from '../events/explosion/simulate.js';
 import type { LandslideScenarioResult } from '../events/landslide/simulate.js';
 import type { VolcanoScenarioResult } from '../events/volcano/simulate.js';
-import { HELD_OUT_EARTHQUAKE_ANCHORS } from './heldOutEvents.js';
+import { HELD_OUT_EARTHQUAKE_ANCHORS } from './heldOutAnchors.js';
 
 /** The event families the envelope knows how to place. */
 export type EnvelopeEventType = 'impact' | 'explosion' | 'earthquake' | 'volcano' | 'landslide';

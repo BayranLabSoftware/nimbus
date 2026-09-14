@@ -190,6 +190,10 @@ export interface PlumeHeightObservation {
   /** ±1σ tolerance on the observed height, km. */
   toleranceKm: number;
   source: string;
+  /** Whether a miss fails the suite (default true). Held-out rows are
+   *  measured and printed without a gate. */
+  gated?: boolean;
+  caveat?: string;
 }
 
 /** Mastin 2009 fits the plume height to V̇ in m³/s of DRE (dense-rock-
