@@ -36,6 +36,10 @@ interface CountryModel {
   beta: number;
   /** Deaths in the largest event the fit was made against. */
   maxobs: number;
+  /** `gnormvalue`: the scatter PAGER's loss module takes as the
+   *  standard deviation of the natural log of the deaths, about the
+   *  expected toll (losspager/utils/probs.py). */
+  g: number;
   /** `InCountry` when the country has enough fatal earthquakes of its
    *  own; `InGroup` when it borrows its neighbours' regional fit. */
   status: string;
@@ -52,12 +56,15 @@ function parse(xml: string): CountryModel[] {
     const beta = Number(get('beta'));
     if (ccode === undefined || !/^[A-Z]{2}$/.test(ccode)) continue;
     if (get('fform') !== 'lognormal') continue;
+    const g = Number(get('gnormvalue'));
     if (!Number.isFinite(theta) || !Number.isFinite(beta) || theta <= 0 || beta <= 0) continue;
+    if (!Number.isFinite(g) || g <= 0) continue;
     out.push({
       ccode,
       theta,
       beta,
       maxobs: Number(get('maxobs') ?? 0),
+      g,
       status: get('status') ?? '',
     });
   }
@@ -80,6 +87,7 @@ async function main(): Promise<void> {
         // committed file is already what Prettier would write.
         `  ${m.ccode}: { theta: ${Number(m.theta.toFixed(4)).toString()}, ` +
         `beta: ${Number(m.beta.toFixed(4)).toString()}, ` +
+        `g: ${Number(m.g.toFixed(4)).toString()}, ` +
         `own: ${(m.status === 'InCountry').toString()} },`
     )
     .join('\n');
@@ -97,6 +105,11 @@ async function main(): Promise<void> {
  * earthquake since 1973. ${models.length.toString()} countries; ${own.toString()} carry their own fit and
  * the rest borrow their region's, which is what \`own\` records.
  *
+ * \`g\` is PAGER's \`gnormvalue\` for the country, which its loss
+ * module uses as the standard deviation of the natural log of the
+ * deaths, centred on the expected toll (calcEmpiricalProbFromRange in
+ * losspager/utils/probs.py): the published scatter of the fit itself.
+ *
  * Reference:
  *   Jaiswal, K. S. & Wald, D. J. (2010). "An Empirical Model for
  *     Global Earthquake Fatality Estimation." Earthquake Spectra
@@ -108,6 +121,9 @@ export interface PagerCountryModel {
   theta: number;
   /** Log-normal width in ln(intensity). */
   beta: number;
+  /** Standard deviation of ln(deaths) about the expected toll — PAGER's
+   *  \`gnormvalue\`, the scatter of the fit itself. */
+  g: number;
   /** True when the country had enough fatal earthquakes for a fit of
    *  its own; false when it takes its region's. */
   own: boolean;

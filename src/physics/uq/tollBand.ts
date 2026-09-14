@@ -5,7 +5,7 @@ import {
   type CasualtyHazard,
 } from '../casualties.js';
 import type { CasualtyBand, CasualtyPlan } from '../casualties.js';
-import { mulberry32, type Rng } from '../montecarlo/sampling.js';
+import { mulberry32, sampleNormal, type Rng } from '../montecarlo/sampling.js';
 import { earthquakeSampler } from '../montecarlo/earthquakeMonteCarlo.js';
 import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
 import { impactSampler } from '../montecarlo/impactMonteCarlo.js';
@@ -38,6 +38,9 @@ import type { ActiveResult } from '../../store/useAppStore.js';
  * So: draw the scenario a few hundred times from that scatter, run
  * each draw through the same plan builder the application uses, and
  * report the fifth and ninety-fifth percentiles.
+ *
+ * For shaking, the fatality curve's own published scatter is drawn as
+ * well — PAGER's G for the country, see {@link withCurveScatter}.
  *
  * Two things are held fixed and neither is sampled here:
  *
@@ -185,17 +188,55 @@ export function sampleScenarioPlans(options: {
    *  between two renders of the same picture. */
   seed: string | number;
   samples?: number;
+  /** Draw the fatality curve's own scatter (default). Off, a band is
+   *  the physics alone — what the interpolation check measures. */
+  curveScatter?: boolean;
 }): CasualtyPlan[] {
   const rng = mulberry32(options.seed);
+  // The curve's scatter has a stream of its own, so the physics of
+  // every realisation is the same whether it is drawn or not.
+  const curveRng = mulberry32(`${String(options.seed)}:curve`);
   const plans: CasualtyPlan[] = [];
   const wanted = options.samples ?? TOLL_BAND_SAMPLES;
   for (let i = 0; i < wanted; i++) {
     const realisation = resampleResult(options.result, rng);
     if (realisation === null) return [];
     const plan = options.planFor(realisation);
-    if (plan !== null) plans.push(plan);
+    if (plan === null) continue;
+    plans.push(options.curveScatter === false ? plan : withCurveScatter(plan, curveRng));
   }
   return plans;
+}
+
+/**
+ * One draw of the fatality curve's own scatter, applied to a plan.
+ *
+ * A fitted curve says what an earthquake of this intensity kills on
+ * average in that country; one earthquake kills more or fewer, and
+ * PAGER publishes by how much: its G, the standard deviation of the
+ * natural log of the deaths about the expected toll, which its own
+ * loss module uses to state the probability of each range of deaths.
+ * Every band of the realisation is scaled by the same draw, because
+ * the scatter is of the event's toll and not of each ring on its own;
+ * a mortality never passes one.
+ *
+ * Until 14 September 2026 the band held the curve fixed, and the five
+ * held-out earthquakes run that day showed what that cost: three of
+ * them missed, and each miss was the curve. Plans without a published
+ * scatter — blast, pyroclastic — draw nothing, so their bands do not
+ * move.
+ */
+function withCurveScatter(plan: CasualtyPlan, rng: Rng): CasualtyPlan {
+  const sigma = plan.lossSigmaLn;
+  if (sigma === undefined || !(sigma > 0)) return plan;
+  const factor = Math.exp(sampleNormal(rng, 0, sigma));
+  return {
+    ...plan,
+    bands: plan.bands.map((band) => ({
+      ...band,
+      mortality: Math.min(1, band.mortality * factor),
+    })),
+  };
 }
 
 /**
@@ -292,6 +333,7 @@ export function sampledTollBand(options: {
   populationAt: (radiusM: number) => number;
   seed: string | number;
   samples?: number;
+  curveScatter?: boolean;
 }): PredictiveBand | null {
   return bandFromPlans(sampleScenarioPlans(options), options.populationAt);
 }

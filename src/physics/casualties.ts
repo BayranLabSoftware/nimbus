@@ -166,6 +166,11 @@ export interface CasualtyPlan {
   /** Blast plans only: the bands were the conventional ones, not
    *  OTA's nuclear pair. */
   conventional?: boolean;
+  /** Shaking plans only: the published scatter of the fatality curve
+   *  itself, as the standard deviation of ln(deaths) about what the
+   *  curve expects (PAGER's G). A predictive band draws it; the
+   *  central estimate does not. */
+  lossSigmaLn?: number;
   /** Annuli, inner to outer, contiguous. */
   bands: CasualtyBand[];
 }
@@ -553,6 +558,7 @@ export function shakingCasualtyPlan(
     low: PagerParameters;
     mid: PagerParameters;
     high: PagerParameters;
+    lossSigmaLn?: number;
   } = PAGER_VULNERABILITY
 ): CasualtyPlan | null {
   const r7 = input.mmi7Radius as number;
@@ -576,7 +582,11 @@ export function shakingCasualtyPlan(
       mortalityHigh: pagerFatalityRate(r.mmi, vulnerability.high),
     }));
   if (bands.length === 0) return null;
-  return { model: 'shaking', bands };
+  return {
+    model: 'shaking',
+    bands,
+    ...(vulnerability.lossSigmaLn !== undefined && { lossSigmaLn: vulnerability.lossSigmaLn }),
+  };
 }
 
 // ---------------------------------------------------------------------

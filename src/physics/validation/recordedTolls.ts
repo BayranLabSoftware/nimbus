@@ -162,7 +162,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     cause: 'buildingStock',
     gated: false,
     caveat:
-      'Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter is 0 to 175 and the record is outside it (it was 0 to 114 until 14 September, when the ground-motion residual went from a misquoted 0.50 to the 0.60 Boore et al. 2014 give; the verdict did not change). Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village".',
+      'Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter was 0 to 114, then 0 to 175 once the ground-motion residual was corrected from a misquoted 0.50 to the 0.60 Boore et al. 2014 give, and the record stayed outside both. On 14 September the band also began to draw the fatality curve’s own scatter, Italy’s G of 1.96, and it is 0 to 490 now: the record is inside, on a central estimate of 6, a fiftieth of it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village".',
   },
   {
     name: 'Gorkha (Nepal) 2015',
@@ -174,7 +174,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     cause: 'buildingStock',
     gated: false,
     caveat:
-      "Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428 and the predictive interval is 13 to 6 942 (22 to 4 924 before the ground-motion residual was corrected to 0.60 on 14 September), which does not contain 8 964. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. The band is now narrow enough for the miss to be a statement.",
+      "Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428, and the predictive interval was 22 to 4 924, then 13 to 6 942 with the ground-motion residual corrected to 0.60, and neither contained 8 964. With the fatality curve's own scatter drawn from 14 September — Nepal's G is 2.5, the widest in PAGER's table — it is 2 to 72 166, which contains the record by spanning almost five orders of magnitude: a statement about how little the curve knows, not a pass. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley.",
   },
   {
     name: 'Beirut 2020',
@@ -295,7 +295,8 @@ export interface TollComparison {
  */
 export function sampleToll(
   event: RecordedEvent,
-  populationAt?: (radiusM: number) => number
+  populationAt?: (radiusM: number) => number,
+  curveScatter = true
 ): PredictiveBand | null {
   const location = { latitude: event.latitude, longitude: event.longitude };
   return sampledTollBand({
@@ -305,6 +306,7 @@ export function sampleToll(
       populationAt ??
       ((radiusM) => shippedPopulationInRadius(event.latitude, event.longitude, radiusM).exposed),
     seed: `${event.name}:${event.recordedDeaths.toString()}`,
+    curveScatter,
   });
 }
 
@@ -370,9 +372,13 @@ export interface InterpolationCost {
  * publishes it.
  */
 export function interpolationCost(event: RecordedEvent): InterpolationCost | null {
-  const exact = sampleToll(event);
+  // On the physics alone. The fatality curve's scatter multiplies a
+  // realisation's exact and interpolated toll by the same factor, so it
+  // says nothing about the interpolation — and drawn, it lifts rows over
+  // the comparable threshold without the population having changed.
+  const exact = sampleToll(event, undefined, false);
   const curve = shippedExposureCurve(event);
-  const approx = sampleToll(event, (r) => populationWithin(curve, r));
+  const approx = sampleToll(event, (r) => populationWithin(curve, r), false);
   if (exact === null || approx === null || exact.high.deaths <= 0) return null;
   const factor = (a: number, b: number): number => {
     const x = Math.max(a, 1);

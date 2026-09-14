@@ -247,6 +247,46 @@ describe('withPredictiveBand', () => {
  * while the counter rising along the shaking front ended on 27 to
  * 360 — two numbers for one claim, in the same view.
  */
+describe("the fatality curve's own scatter", () => {
+  const location = { latitude: 42.3498, longitude: 13.3995 };
+  const quake: ActiveResult = {
+    type: 'earthquake',
+    data: simulateEarthquake(EARTHQUAKE_PRESETS.L_AQUILA_2009.input),
+  };
+  const planFor = (r: ActiveResult): CasualtyPlan | null => casualtyPlanForResult(r, location);
+
+  it('comes with a shaking plan, as the country curve publishes it', () => {
+    configureCountryLookup(() => 'IT');
+    expect(planFor(quake)?.lossSigmaLn).toBeCloseTo(1.9604, 4);
+    // Blast and pyroclastic tables publish none.
+    expect(casualtyPlanForResult(explosion(), location)?.lossSigmaLn).toBeUndefined();
+  });
+
+  it('leaves the physics of every realisation where it was, and widens the band', () => {
+    configureCountryLookup(() => 'IT');
+    const draw = (curveScatter: boolean): CasualtyPlan[] =>
+      sampleScenarioPlans({ result: quake, planFor, seed: 'curve', curveScatter });
+    const withCurve = draw(true);
+    const physicsOnly = draw(false);
+    expect(withCurve.map((p) => p.bands.map((b) => b.outerRadiusM))).toEqual(
+      physicsOnly.map((p) => p.bands.map((b) => b.outerRadiusM))
+    );
+    const population = uniform(200);
+    const span = (plans: CasualtyPlan[]): number => {
+      const band = bandFromPlans(plans, population);
+      return Math.max(band?.high.deaths ?? 0, 1) / Math.max(band?.low.deaths ?? 0, 1);
+    };
+    expect(span(withCurve)).toBeGreaterThan(span(physicsOnly));
+  });
+
+  it('does not touch a blast band', () => {
+    const result = explosion();
+    const plans = (curveScatter: boolean): CasualtyPlan[] =>
+      sampleScenarioPlans({ result, planFor, seed: 'blast', curveScatter });
+    expect(plans(true)).toEqual(plans(false));
+  });
+});
+
 describe('a realisation with more rings than the median', () => {
   it('still totals to the ends of the band', () => {
     configureCountryLookup(() => 'IT');
@@ -268,6 +308,10 @@ describe('a realisation with more rings than the median', () => {
       planFor: quakePlan,
       populationAt: population,
       seed: 'aquila',
+      // The physics alone: with the curve's scatter drawn, the high end
+      // is as often a harsh curve as a larger footprint, and this row
+      // is about the footprint.
+      curveScatter: false,
     });
     expect(band).not.toBeNull();
 

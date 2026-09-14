@@ -35,6 +35,29 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   entered the water. The report and the public validation page both say
   so, computed from the rows rather than written in.
 
+- **An earthquake's death-toll band carries the fatality curve's own
+  scatter.** USGS PAGER publishes, for every country, how far one
+  earthquake's deaths stray from its fitted curve: the `gnormvalue` in
+  `fatality.xml`, which PAGER's loss module uses as the standard
+  deviation of ln(deaths) about the expected toll. The PAGER table is
+  regenerated to carry it (no θ, β or fit status changed), and each
+  shaking realisation of the 5–95 % band now scales its mortality by
+  exp(N(0, G)) — G from 1.0 for New Zealand and the United States to 2.5
+  for Nepal and Iran, the table's median 1.73 where no country is found —
+  on a random stream of its own, so the physics of every realisation is
+  unchanged. Nothing was re-tuned. Northridge's band goes from 4–238 to
+  1–499, L'Aquila's from 32–1 876 to 4–9 480; Amatrice and Gorkha move
+  inside their bands, Gorkha on one almost five orders of magnitude
+  wide; Christchurch, Kaikōura and Pohang still miss. The declared gap,
+  the methodology cards and the casualty panel's note say what the band
+  now holds and what it still does not: the census, the blast and
+  pyroclastic rates, and the overlap between G and the ground-motion
+  residual. The interpolation check is measured on the physics alone.
+  The panel's description of the shaking model still gave the average
+  pair retired on 9 September and called Japan's building stock the
+  earthquake-engineered low end; it now describes the country curve and
+  the band that is actually drawn.
+
 - **Five earthquakes held out of every fit, and run once.** Christchurch
   2011, Kumamoto 2016, Kaikōura 2016, Pohang 2017 and Durrës (Albania)
   2019 are in the calibration net under rules committed and pushed before

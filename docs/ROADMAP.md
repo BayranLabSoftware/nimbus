@@ -290,10 +290,24 @@ nine deaths at Christchurch even with everyone inside the model's MMI VII
 ring shaken at MMI IX, South Korea's kills one in fifteen hundred at
 Pohang, where nobody died — and Japan's own is so steep (β = 0.10) that
 one sigma of ground motion spans four orders of magnitude of deaths. The
-toll band holds the curve fixed (a declared gap), so it cannot say any
-of this. The next step is not to re-tune on these rows but to give the
-band the curve's own uncertainty, and then to run the other lists
+toll band held the curve fixed (a declared gap), so it could not say
+any of this. The next step was not to re-tune on these rows but to give
+the band the curve's own uncertainty, and then to run the other lists
 above under the same rules.
+
+**The curve's scatter, drawn the same day.** Each shaking realisation
+now scales its mortality by exp(N(0, G)), G being the `gnormvalue`
+USGS PAGER publishes for the country and its loss module uses as the
+standard deviation of ln(deaths) (SCIENCE.md, "The curve's own
+scatter"). Nothing was re-tuned. Christchurch, Kaikōura and Pohang
+still miss; Amatrice and Gorkha move inside, Gorkha on a band almost
+five orders of magnitude wide; L'Aquila's gated span is 10^3.4 against
+the gate's 10^3.5. The band is now the width PAGER's own numbers give
+one earthquake, and for steep or uncertain curves that is too wide for
+a pass to mean anything — which says where the next gain is: a
+fatality model with less scatter, not a wider net. The population is
+still fixed, and G overlaps the ground-motion residual by an amount not
+separated.
 
 ### 0b. Every source read against its record _(done 14 September; Vaiont and explosions re-tuned, the other gaps open and declared)_
 

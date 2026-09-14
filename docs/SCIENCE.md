@@ -390,10 +390,12 @@ contour runs three times further out — so each ring is spread over the
 median bands it overlaps, in proportion to the people in each overlap.
 Nothing is dropped and the rows total to the figure above them.
 
-Two things are held fixed and are therefore **not** in the band: the
-population, whose census error is its own question, and the
-vulnerability functions themselves, whose published scatter is a
-factor of 2–5. The panel says so.
+For shaking, the fatality curve's own published scatter is drawn as
+well: each realisation scales its mortality by exp(N(0, G)), G being
+PAGER's `gnormvalue` for the country (see "The curve's own scatter"
+below). Held fixed, and therefore **not** in the band: the population,
+whose census error is its own question, and the blast and pyroclastic
+death rates, which publish no scatter. The panel says so.
 
 The population cannot be counted once per draw — a WorldPop band is
 tens of seconds. It is counted once per damage ring plus two
@@ -738,6 +740,62 @@ measured against 3 interpolated, as if it were a statement about the
 interpolation. The threshold below which the ratio measures the raster
 rather than the interpolation, a hundred dead, now applies to each end
 of a band on its own, as it already applied to the band.
+
+### The curve's own scatter (14 September 2026)
+
+The held-out misses above were the fatality curve, and the band held
+the curve fixed. A fitted curve says what an earthquake of a given
+intensity kills on average in a country; one earthquake kills more or
+fewer, and USGS PAGER publishes by how much. Each country in its
+`fatality.xml` carries a `gnormvalue`, and PAGER's loss module uses it
+as the standard deviation of the natural log of the deaths, centred on
+the expected toll, to state the probability of each range of deaths
+(`calcEmpiricalProbFromRange` in `losspager/utils/probs.py`). The
+table's G runs from 1.0 (New Zealand, the United States) through 1.46
+(Japan) and 1.96 (Italy) to 2.5 (Nepal, Iran); its median is 1.73.
+Regenerating the table to read it changed no θ, β or fit status.
+
+Every shaking realisation now scales its mortality by one draw of
+exp(N(0, G)), from a random stream of its own so that the physics of
+every realisation is the draw it was. Nothing was re-tuned.
+
+| event                 | recorded | band, physics | band, with G | verdict now     |
+| --------------------- | -------- | ------------- | ------------ | --------------- |
+| Northridge 1994       | 57       | 4 – 238       | 1 – 499      | inside (gated)  |
+| L'Aquila 2009         | 309      | 32 – 1 876    | 4 – 9 480    | inside (gated)  |
+| Amatrice 2016         | 299      | 0 – 175       | 0 – 490      | inside, was out |
+| Gorkha 2015           | 8 964    | 13 – 6 942    | 2 – 72 166   | inside, was out |
+| Christchurch 2011     | 185      | 0 – 15        | 0 – 34       | misses          |
+| Kumamoto 2016         | 49 – 273 | 1 – 12 168    | 1 – 62 577   | inside          |
+| Kaikōura 2016         | 2        | 0 – 0         | 0 – 1        | misses          |
+| Pohang 2017           | 0        | 1 – 17 877    | 1 – 29 628   | misses          |
+| Durrës (Albania) 2019 | 51       | 1 – 510       | 1 – 1 425    | inside          |
+
+Two rows move inside, and neither is a success. Gorkha's band spans
+almost five orders of magnitude and contains the record the way the
+table's best-and-worst pair used to; Amatrice's central estimate is
+still a fiftieth of the record. What the band says now is the width
+PAGER's own numbers give a single earthquake, and where the curve is
+steep or its scatter large that width is enormous. Christchurch still
+misses — New Zealand's G is the smallest in the table — and so does
+Pohang, whose band cannot reach zero. L'Aquila's gated span is 10^3.4
+against a gate of 10^3.5.
+
+Two caveats are stated rather than solved. G was measured on ShakeMap
+intensities, which carry part of the ground-motion error the band
+already draws, so the two overlap by an amount not separated here and
+the band may be somewhat wide. And the population is still fixed.
+
+The interpolation check is measured on the physics alone: the curve's
+draw multiplies a realisation's exact and interpolated toll by the same
+factor, so it says nothing about the population curve, and drawn it
+would lift Sumatra's shaking-only row over the comparable threshold
+without the population having changed. That row shows what the check
+cannot catch: where people cluster between two measured rings — along
+Sumatra's coast, between rings measured at sixty and a hundred and
+fifteen kilometres — the interpolated high end runs about two and a
+half times the exact one, on counts small enough to stay under the
+threshold.
 
 ### Burns, mass fire and later deaths (Phase 24)
 

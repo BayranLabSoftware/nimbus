@@ -13,10 +13,10 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 
 ## Summary
 
-- **Death tolls:** 6 of 16 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
+- **Death tolls:** 8 of 16 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
 - **Waves:** 10 of 15 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 5 misses are declared rows, each with its reason below.
 - **Shaking footprint:** centred at 1.18 in radius (0.76 standard errors), scatter σ_ln 0.71 against a ceiling of 0.85 from ground motion; 4 bands painted at an intensity never reached.
-- **Held out** — the rows nothing in the model was set on: death tolls 3 of 9 inside the band, waves 3 of 3. 3 of the 6 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
+- **Held out** — the rows nothing in the model was set on: death tolls 4 of 9 inside the band, waves 3 of 3. 3 of the 7 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
 
 ## Release gate
@@ -47,27 +47,23 @@ model was set on the event, which is under "Which checks are validation".
 | Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Cause | Standing | Role |
 |-------|---------:|------:|--------------:|-----:|---------------:|---------|-------|----------|------|
 | Kokoxili (Kunlun) 2001 | 0 | 0 | 0 – 0 | — | both zero | contains | — | gated | held out |
-| Northridge 1994 | 57 | 38 | 4 – 238 | 10^1.8 | 0.67× | contains | — | gated | tuned on it |
-| L'Aquila 2009 | 309 | 227 | 32 – 1,876 | 10^1.8 | 0.73× | contains | — | gated | tuned on it |
-| Amatrice 2016 | 299 | 6 | 0 – 175 | 10^2.2 | 0.02× | **misses** | buildingStock | declared | tuned on it |
-| Gorkha (Nepal) 2015 | 8,964 | 580 | 13 – 6,942 | 10^2.7 | 0.06× | **misses** | buildingStock | declared | held out |
+| Northridge 1994 | 57 | 38 | 1 – 499 | 10^2.7 | 0.67× | contains | — | gated | tuned on it |
+| L'Aquila 2009 | 309 | 227 | 4 – 9,480 | 10^3.4 | 0.73× | contains | — | gated | tuned on it |
+| Amatrice 2016 | 299 | 6 | 0 – 490 | 10^2.7 | 0.02× | contains | buildingStock | declared | tuned on it |
+| Gorkha (Nepal) 2015 | 8,964 | 580 | 2 – 72,166 | 10^4.6 | 0.06× | contains | buildingStock | declared | held out |
 | Beirut 2020 | 218 | 1,432 | 1,296 – 1,586 | 10^0.1 | 6.57× | **misses** | populationRaster | declared | tuned on it |
 | Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | occupancy | declared | tuned on it |
 | Pinatubo 1991 | 847 | 82 | 32 – 312 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared | held out |
 | Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | populationChanged | declared | tuned on it |
-| Tōhoku 2011 | 18,500 | 0 | 0 – 1 | 10^0.0 | 0.00× | **misses** | drownedOffline | declared | held out |
-| Sumatra–Andaman 2004 | 227,898 | 1 | 0 – 87 | 10^1.9 | 0.00× | **misses** | drownedOffline | declared | same source |
-| Christchurch 2011 | 185 | 1 | 0 – 15 | 10^1.2 | 0.01× | **misses** | buildingStock | declared | held out |
-| Kumamoto 2016 | 273 (49–273) | 332 | 1 – 12,168 | 10^4.1 | 1.22× | contains | — | declared | held out |
-| Kaikōura 2016 | 2 | 0 | 0 – 0 | — | 0.00× | **misses** | belowResolution | declared | held out |
-| Pohang 2017 | 0 | 35 | 1 – 17,877 | 10^4.3 | from nothing | **misses** | buildingStock | declared | held out |
-| Durrës (Albania) 2019 | 51 | 16 | 1 – 510 | 10^2.7 | 0.31× | contains | — | declared | held out |
+| Tōhoku 2011 | 18,500 | 0 | 0 – 5 | 10^0.7 | 0.00× | **misses** | drownedOffline | declared | held out |
+| Sumatra–Andaman 2004 | 227,898 | 1 | 0 – 199 | 10^2.3 | 0.00× | **misses** | drownedOffline | declared | same source |
+| Christchurch 2011 | 185 | 1 | 0 – 34 | 10^1.5 | 0.01× | **misses** | buildingStock | declared | held out |
+| Kumamoto 2016 | 273 (49–273) | 332 | 1 – 62,577 | 10^4.8 | 1.22× | contains | — | declared | held out |
+| Kaikōura 2016 | 2 | 0 | 0 – 1 | 10^0.0 | 0.00× | **misses** | belowResolution | declared | held out |
+| Pohang 2017 | 0 | 35 | 1 – 29,628 | 10^4.5 | from nothing | **misses** | buildingStock | declared | held out |
+| Durrës (Albania) 2019 | 51 | 16 | 1 – 1,425 | 10^3.2 | 0.31× | contains | — | declared | held out |
 
 #### Where the band misses, and why
-
-**Amatrice 2016.** Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter is 0 to 175 and the record is outside it (it was 0 to 114 until 14 September, when the ground-motion residual went from a misquoted 0.50 to the 0.60 Boore et al. 2014 give; the verdict did not change). Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village".
-
-**Gorkha (Nepal) 2015.** Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428 and the predictive interval is 13 to 6 942 (22 to 4 924 before the ground-motion residual was corrected to 0.60 on 14 September), which does not contain 8 964. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. The band is now narrow enough for the miss to be a statement.
 
 **Beirut 2020.** Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. On 14 September 2026 the blast itself was corrected — a charge on the ground reflects its blast and acts like twice its yield in the free-air fit the rings use (Takazawa, Kim & Garcés 2023) — and the rings grew by a quarter, taking the row to 6.6x, 1 296 to 1 586 on a predictive interval that is the ten per cent a charge's yield actually varies by (until later that day the interval also drew the charge up to a hundred metres above the quay, and read 1 297 to 2 433). That is the right shape for this row, because what is left is neither scatter in the charge nor the blast but the raster underneath and the conventional mortality bands, which were composed with this row in view and not refitted after the correction: at a few hundred metres the rings are far smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.
 
@@ -79,21 +75,25 @@ model was set on the event, which is under "Which checks are validation".
 
 **Sumatra–Andaman 2004.** Drowning again, and again without a wave here. Reported for the shaking only.
 
-**Christchurch 2011.** Held out, and a miss: 1 dead against 185, on a band that stops at 15. Written after the result, as the rules in heldOutEvents.ts require. New Zealand has no fatality curve of its own and borrows its region’s (θ = 37.8, β = 0.36): with all 265 529 people inside the model’s MMI VII ring shaken at MMI IX it would read about nine deaths, so the intensity alone cannot account for the miss. The rings are also a median on reference rock, 1.8 km of MMI VIII for an Mw 6.1. The band draws the shaking and holds the curve fixed, which is the declared gap this row makes visible.
+**Christchurch 2011.** Held out, and a miss: 1 dead against 185, on a band that stopped at 15 on the first run and stops at 34 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. New Zealand has no fatality curve of its own and borrows its region’s (θ = 37.8, β = 0.36): with all 265 529 people inside the model’s MMI VII ring shaken at MMI IX it would read about nine deaths, so the intensity alone cannot account for the miss. The rings are also a median on reference rock, 1.8 km of MMI VIII for an Mw 6.1. The band draws the shaking and holds the curve fixed, which is the declared gap this row makes visible.
 
-**Kaikōura 2016.** Held out, and a miss by two: a band of 0 to 0 against 2 dead. Written after the result, as the rules in heldOutEvents.ts require. The rings about the epicentre hold 5 231 people, and the curve New Zealand borrows gives them about one twentieth of a death. A rate over a population cannot resolve a handful of deaths, and no band built from one could contain them.
+**Kaikōura 2016.** Held out, and a miss by two: a band of 0 to 0 on the first run and 0 to 1 with the fatality curve’s own scatter drawn, added the same day, against 2 dead. Written after the result, as the rules in heldOutEvents.ts require. The rings about the epicentre hold 5 231 people, and the curve New Zealand borrows gives them about one twentieth of a death. A rate over a population cannot resolve a handful of deaths, and no band built from one could contain them.
 
-**Pohang 2017.** Held out, and a miss the other way: 35 dead where nobody died, on a band of 1 to 17 877. Written after the result, as the rules in heldOutEvents.ts require. South Korea has no fatality curve of its own and borrows its region’s, one of the deadliest in the table (θ = 10.3, β = 0.10): inside the model’s MMI VII ring it kills about one in fifteen hundred of 52 188 people, where the city’s buildings killed none. The same steepness is what makes the band four orders of magnitude wide.
+**Pohang 2017.** Held out, and a miss the other way: 35 dead where nobody died, on a band of 1 to 17 877 on the first run and 1 to 29 628 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. South Korea has no fatality curve of its own and borrows its region’s, one of the deadliest in the table (θ = 10.3, β = 0.10): inside the model’s MMI VII ring it kills about one in fifteen hundred of 52 188 people, where the city’s buildings killed none. The same steepness is what makes the band four orders of magnitude wide.
 
 #### What to know about the rows that contain their record
 
 **Kokoxili (Kunlun) 2001.** The zero. A model that cannot produce it has learned to kill people who are not there.
 
+**Amatrice 2016.** Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter was 0 to 114, then 0 to 175 once the ground-motion residual was corrected from a misquoted 0.50 to the 0.60 Boore et al. 2014 give, and the record stayed outside both. On 14 September the band also began to draw the fatality curve’s own scatter, Italy’s G of 1.96, and it is 0 to 490 now: the record is inside, on a central estimate of 6, a fiftieth of it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village".
+
+**Gorkha (Nepal) 2015.** Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428, and the predictive interval was 22 to 4 924, then 13 to 6 942 with the ground-motion residual corrected to 0.60, and neither contained 8 964. With the fatality curve's own scatter drawn from 14 September — Nepal's G is 2.5, the widest in PAGER's table — it is 2 to 72 166, which contains the record by spanning almost five orders of magnitude: a statement about how little the curve knows, not a pass. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley.
+
 **Hiroshima 1945.** Hiroshima held about 350 000 people in 1945 and about 1.2 million today; the raster counts the living, so the model must overshoot by roughly that ratio.
 
-**Kumamoto 2016.** Held out, and inside, on a band that says little: 1 to 12 168 dead, four orders of magnitude, against a record of 49 direct to 273 in all. Written after the result, as the rules in heldOutEvents.ts require. Japan’s own PAGER curve is among the steepest in the table (β = 0.10), so the shift in intensity that one sigma of ground motion makes moves the toll by orders of magnitude. The central estimate, 332, sits between the direct and the total count; the pass is recorded as it came, and it is not evidence of much.
+**Kumamoto 2016.** Held out, and inside, on a band that says little: 1 to 12 168 dead on the first run, four orders of magnitude, and 1 to 62 577 with the fatality curve’s own scatter drawn, added the same day, against a record of 49 direct to 273 in all. Written after the result, as the rules in heldOutEvents.ts require. Japan’s own PAGER curve is among the steepest in the table (β = 0.10), so the shift in intensity that one sigma of ground motion makes moves the toll by orders of magnitude. The central estimate, 332, sits between the direct and the total count; the pass is recorded as it came, and it is not evidence of much.
 
-**Durrës (Albania) 2019.** Held out, and inside: 16 dead against 51, on a band of 1 to 510. Written after the result, as the rules in heldOutEvents.ts require. Albania borrows its region’s curve (θ = 16.2, β = 0.22). The band spans nearly three orders of magnitude, which is weak evidence, but it is inside the span the gated rows are held to, so this is the first held-out death toll that is not a zero to land inside a band narrow enough to have been wrong.
+**Durrës (Albania) 2019.** Held out, and inside: 16 dead against 51, on a band of 1 to 510 on the first run and 1 to 1 425 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. Albania borrows its region’s curve (θ = 16.2, β = 0.22). The band spans about three orders of magnitude, which is weak evidence, but it is inside the span the gated rows are held to, so this is the first held-out death toll that is not a zero to land inside a band narrow enough to have been wrong.
 
 ### What the product's interpolation costs
 
@@ -241,7 +241,7 @@ recorded event, carries one of these roles for each quantity it checks:
 - **held out** — none of these, as far as the code and its cited sources show.
 - **not established** — not yet checked; the note says what is open.
 
-Held out, the tables above read: death tolls **3 of 9** inside the band, waves **3 of 3** inside the record. 3 of the 6 held-out rows inside their record are a record of nothing — no dead, or no wave.
+Held out, the tables above read: death tolls **4 of 9** inside the band, waves **3 of 3** inside the record. 3 of the 7 held-out rows inside their record are a record of nothing — no dead, or no wave.
 
 #### Tuned on it (12)
 
@@ -457,7 +457,7 @@ shows.
 - **A warned coast evacuates on a timer, not on the shaking.** Volcanic scenarios carry the zone that was cleared before the eruption, and inside it the mortality measured at Merapi in 2010. Tsunamis do not yet: a warning with under half an hour of lead has no effect, and on Tōhoku's coast — where the wave itself is right, a median shore height of 9.5 m against a surveyed 8–15, and 57 % of surveyed evacuees left immediately after the shaking — the coastal toll is about three times the record for it (docs/ROADMAP.md, move 3b).
 - **Distant coasts of very long ruptures get too small a wave, and the cause is not settled.** Sumatra's far coasts are five to ten times under-waved. The far-field law does not use the rupture length, but a naive line-source correction would take DART 21413 from 0.90× the record to about 3× (docs/ROADMAP.md, moves 3b and 3d).
 - **The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.
-- **The toll band is the scatter of the physics, not of the people or the buildings.** It draws the magnitude, the depth, the ground and the ground-motion residual; the population and the fatality curves are held fixed. A row can miss because its country's curve does not fit its buildings — Amatrice, Gorkha — and the band has no way to widen for it (`uq/tollBand.ts`).
+- **The toll band draws the fatality curve's published scatter, but not the census.** Since 14 September 2026 a shaking realisation scales its mortality by exp(N(0, G)), G being PAGER's `gnormvalue` for the country — the standard deviation of ln(deaths) PAGER's own loss module uses. The population is still held fixed, and so are the blast and pyroclastic rates, which publish no scatter. G was measured on ShakeMap intensities, so it overlaps, by an amount not separated here, with the ground-motion residual drawn beside it. Where the curve is steep or its scatter large the band spans four orders of magnitude or more — Gorkha, Kumamoto, Pohang — which is the width PAGER's own numbers give a single event, and a row inside such a band has passed nothing (`uq/tollBand.ts`).
 - **Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings use Joyner & Boore 1981 and the reported accelerations Boore et al. 2014, both for shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI IX band in the footprint table is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).
 - **Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).
 - **Three numbers are not traced to a source read here.** The 30 cm at DART 21413 that the Tōhoku wave row is tuned on is quoted from Satake et al. 2013 without the paper having been read in the source review; the arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005.
