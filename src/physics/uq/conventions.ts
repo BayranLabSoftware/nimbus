@@ -51,9 +51,10 @@ export const EXPLOSION_INPUT_SIGMA = {
    *  15 Mt from a 6 Mt design is the *outlier*, not the rule;
    *  Sublette FAQ reports σ ≈ 0.1 for production-line devices). */
   yield: { kind: 'lognormal', sigma: 0.1, source: 'Sublette nuclear FAQ' },
-  /** Height of burst — linear absolute σ = 50 m (or 5 % of the
+  /** Height of an air burst — linear absolute σ = 50 m (or 5 % of the
    *  nominal HOB, whichever is larger). Reconstruction error band
-   *  on Hiroshima's 580 m HOB per Penney et al. 1970. */
+   *  on Hiroshima's 580 m HOB per Penney et al. 1970, so the wrapper
+   *  draws it for air bursts only. */
   heightOfBurst: {
     kind: 'linear-absolute',
     sigma: 50,
@@ -85,8 +86,8 @@ export const EARTHQUAKE_INPUT_SIGMA = {
     source: 'USGS COMCAT cross-agency spread',
   },
   /** Hypocentre depth — fraction-relative σ = 20 %. ISC-GEM spread
-   *  for intermediate-depth events (5 km absolute floor enforced by
-   *  the wrapper). */
+   *  for intermediate-depth events (the wrapper takes σ no smaller than
+   *  2 km and keeps every draw deeper than 1 km). */
   depth: { kind: 'linear-fraction', sigma: 0.2, source: 'ISC-GEM hypocentre catalog' },
   /** Vs30 site velocity — fraction-relative σ = 30 %. Wald & Allen
    *  2007 topographic-slope proxy uncertainty (their Fig. 6). */
@@ -113,12 +114,12 @@ export const EARTHQUAKE_INPUT_SIGMA = {
 
 /**
  * Output 1σ scatter — used by `confidence.ts` to draw static error
- * bars next to point estimates. These come from the source paper's
- * own published scatter, NOT from the input-side σ above.
+ * bars next to point estimates. These come from the source's own
+ * published scatter where it has one — the firestorm entries are
+ * project values — and NOT from the input-side σ above.
  *
- * Mirror of `CONFIDENCE_SIGMA` in confidence.ts — kept here so the
- * methodology page can cite both the input-side and output-side σ
- * from a single import.
+ * The source `confidence.ts` derives its bands from — kept here so the
+ * input-side and output-side σ live in one file.
  */
 export const OUTPUT_SIGMA = {
   firestormIgnition: {

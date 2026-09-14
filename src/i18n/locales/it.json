@@ -25,7 +25,7 @@
       },
       "accessible": {
         "name": "Accessibile e multilingua",
-        "detail": "WCAG AA, navigazione da tastiera completa, italiano e inglese dal primo giorno."
+        "detail": "Controlli automatici WCAG 2.1 AA su landing, simulatore e pagina di validazione, pannelli usabili da tastiera, italiano e inglese dal primo giorno."
       },
       "shareable": {
         "name": "URL condivisibili",
@@ -609,20 +609,20 @@
     "title": "Metodologia & fonti scientifiche",
     "subtitle": "Ogni formula che il motore Nimbus valuta, con la fonte da cui viene e il suo DOI quando la fonte ne ha uno. Organizzato per tipo di evento, con in fondo gli scenari storici che il simulatore propone.",
     "overviewTitle": "Panoramica",
-    "overviewBody": "Nimbus è un motore fisico TypeScript headless (Layer 2) avvolto da un globo Cesium (Layer 3) e da un'interfaccia React (Layer 4). Il Layer 2 non ha dipendenze runtime su React / Three / Cesium — la configurazione ESLint blocca tali import in modo che la fisica resti testabile da una CLI Node. Ogni formula qui elencata vive in un file sotto src/physics/ con un blocco JSDoc che cita l'articolo e il numero di equazione usato. Le tolleranze della test suite rispettano lo scatter pubblicato negli articoli originali — ±30 % per le soglie di fluenza termica, ±50 % per l'altezza dei pennacchi vulcanici, ±fattore-2 per runout di ejecta e lahar.",
+    "overviewBody": "Nimbus è un motore fisico TypeScript headless (Layer 2) avvolto da un globo Cesium (Layer 3) e da un'interfaccia React (Layer 4). I moduli di fisica non importano nulla da React, Three o Cesium — ESLint blocca l'import di quei pacchetti — e quindi girano da una riga di comando Node; fa eccezione il banco di validazione, che legge lo store dell'applicazione per controllare lo stesso piano che la pagina disegna. Le formule stanno sotto src/physics/, spesso più d'una per file, ciascuna con un blocco JSDoc che ne nomina la fonte e, quando la fonte la numera, l'equazione; quando una relazione è di questo progetto, il blocco lo dice. Le tolleranze dei test non sono tutte dispersioni pubblicate — alcune sono valori del progetto e altre fissano soltanto un risultato — e il report di validazione dice quali controlli sono stati tarati sul proprio evento.",
     "validationTitle": "Scenari storici nel simulatore",
     "validationBody": "Questi sono gli eventi storici che il simulatore offre come preset. Essere un preset non vuol dire essere verificati: gli eventi contro cui il modello è misurato davvero, uno per uno e con gli scarti, stanno nella pagina di validazione.",
     "uncertainty": {
       "title": "Quantificazione dell'incertezza",
-      "body": "Ogni input incerto ha un σ documentato in src/physics/uq/conventions.ts, ogni output ha un σ documentato in src/physics/confidence.ts e il motore Monte Carlo campiona 200 realizzazioni per disegnare bande P10/P90 sulle metriche principali. La metodologia è documentata sotto docs/SCIENCE.md e lo script `pnpm sensitivity` produce un'analisi di sensitività OAT (one-at-a-time) per ogni preset.",
+      "body": "Gli input incerti di impatti, esplosioni, eruzioni e terremoti hanno un σ in src/physics/uq/conventions.ts, ciascuno con la sua provenienza; le frane non ne hanno ancora, e quindi nemmeno un Monte Carlo. Otto output hanno una dispersione nello stesso file, da cui src/physics/confidence.ts ricava gli intervalli stampati accanto a loro. Il pulsante Monte Carlo estrae 1 000 realizzazioni e riporta P10 e P90; la banda dei morti è un campione a parte di 200, riportato a P5 e P95, che tiene ferme la popolazione e le curve di mortalità (docs/SCIENCE.md). `pnpm sensitivity` stampa un'analisi di sensitività un input alla volta per i preset d'impatto e tre casi di esplosione.",
       "inputItem": "Convenzioni σ degli input",
-      "inputNote": "Ogni wrapper MC importa i parametri di scatter da un dizionario tipato unico che cita l'articolo per il valore di σ. Esempi: diametro impattore σ_log = 0.15 (Mainzer 2019), yield esplosione σ_log = 0.1 (Sublette FAQ), velocità Vs30 σ = 30 % (Wald & Allen 2007).",
+      "inputNote": "I quattro wrapper Monte Carlo importano la dispersione da un unico dizionario tipato, e ogni voce dice da dove viene — un articolo quando c'è, altrimenti un catalogo, una FAQ o un valore del progetto. Esempi: diametro dell'impattore σ_log = 0,15 (Mainzer 2019), yield dell'esplosione σ_log = 0,1 (Sublette FAQ), Vs30 σ = 30 % (Wald & Allen 2007). Due estrazioni restano fuori: l'angolo d'impatto, che segue la distribuzione in sin 2θ, e la profondità del terremoto, il cui σ non scende mai sotto i 2 km.",
       "outputItem": "Scatter 1σ sugli output (bande sui valori puntuali)",
-      "outputNote": "Il dizionario speculare OUTPUT_SIGMA documenta lo scatter pubblicato per grandezza che la UI usa per mostrare barre di confidenza accanto ai raggi. Le bande maggiori: tsunami in campo lontano Wünnemann (fattore-3), altezza pennacchio Mastin (fattore-2), runout piroclastico (±70 %).",
-      "mcItem": "Monte Carlo (N = 200)",
-      "mcNote": "Generatore Mulberry32 con seed in modo che un URL condivisibile riproduca percentili bit-identici. La scelta N=200 è verificata contro un riferimento N=2000: P10/P90 entro il 15 %, mediane entro il 10 %.",
+      "outputNote": "OUTPUT_SIGMA contiene la dispersione di otto output, e il pannello del simulatore la stampa per ciascuno come intervallo con la sua ampiezza. Le più larghe sono lo tsunami in campo lontano di Wünnemann (un fattore 3 in più o in meno), l'area di caduta della cenere e il percorso dei lahar (un fattore 2), l'altezza del pennacchio di Mastin (un fattore 1,6) e il percorso delle colate piroclastiche (±70 %). Il ±30 % della tempesta di fuoco è un valore del progetto, non una dispersione pubblicata, e gli anelli tratteggiati sul globo leggono una tabella propria.",
+      "mcItem": "Monte Carlo (N = 1 000)",
+      "mcNote": "Il pulsante estrae 1 000 realizzazioni da un generatore Mulberry32 con un seme ricavato da tipo di evento, preset e numero di campioni, quindi lo stesso scenario dà gli stessi percentili nello stesso browser. Un link porta gli input ma non il seme né il risultato, e nessun test verifica che due browser diversi coincidano bit per bit. Un test confronta 200 estrazioni con 2 000 per l'impatto di Tunguska: P10 e P90 entro il 15 %, mediane entro il 10 %.",
       "sensitivityItem": "Sensitività locale OAT",
-      "sensitivityNote": "`pnpm sensitivity` perturba ogni input di ±1σ e riporta i coefficienti di elasticità per (input, output). Per Tunguska l'energia è guidata all'80 % dal diametro dell'impattore (E ∝ d³), al 20 % dalla velocità (E ∝ v²) — utile sia come testo esplicativo sia come ausilio alla regressione."
+      "sensitivityNote": "`pnpm sensitivity` sposta ogni input di un σ e stampa di quanto si sposta, in proporzione, ogni output. Per l'energia di Tunguska: 0,49 per il diametro, 0,20 per la velocità e 0,16 per la densità. Nessun test fissa questi numeri: servono da leggere, non a cogliere regressioni."
     },
     "regression": {
       "title": "Suite di regressione predetto-vs-osservato",
@@ -641,7 +641,7 @@
       "body": "Disclosure onesta di cosa il simulatore deliberatamente non cattura. Nessuno di questi è un bug; sono scelte di scope che uno strumento operazionale di hazard reale affronterebbe con un motore differente.",
       "atm": {
         "item": "Circolazione atmosferica 3D",
-        "note": "La dispersione del pennacchio usa un inviluppo analitico 2D Suzuki / Bonadonna, non un modello lagrangiano 3D di particelle. La vera advezione di cenere su più giorni richiede HYSPLIT / FALL3D — fuori scope."
+        "note": "La caduta di cenere usa un inviluppo in forma chiusa — un profilo di rilascio di Suzuki 1983, la sedimentazione di Ganser, un vento costante e una dispersione laterale di questo progetto — non un modello lagrangiano 3D di particelle. La vera advezione della cenere su più giorni richiede HYSPLIT o FALL3D, fuori dagli obiettivi."
       },
       "shore": {
         "item": "Run-up tsunami sulla costa",
@@ -649,11 +649,11 @@
       },
       "fault": {
         "item": "Geometria di rottura della faglia",
-        "note": "Gli output sismici usano una sorgente puntiforme + scaling d'area Wells & Coppersmith 1994. Non risolviamo il campo di dislocazione elastica — output di deformazione Okada 1985, tracce di faglia in superficie e cambiamenti di stress che innescano repliche oltre il fit Reasenberg & Jones 1989 sono fuori scope."
+        "note": "Lunghezza e larghezza della rottura vengono da Wells & Coppersmith 1994 per i terremoti crostali e da Strasser et al. 2010 per le interfacce di subduzione. Gli eventi da Mw 7,5 in su, o di interfaccia, sono disegnati come il rettangolo di rottura allargato su ogni lato di un raggio d'intensità calcolato ancora come distanza da un punto, con una traccia schematica diritta lungo la direzione della faglia. Non risolviamo il campo di dislocazione elastica: niente deformazioni di Okada, niente tracce di faglia mappate, niente variazioni di stress che inneschino repliche oltre la statistica di Reasenberg & Jones 1989."
       },
       "plume": {
         "item": "Morfologia 3D del fungo atomico",
-        "note": "Il fungo atomico 3D nello Stage view segue lo scaling d'altezza Mastin ma forma e texture visive sono pittoriche — una rappresentazione qualitativa, non una simulazione fluida quantitativa. La mappa di ricaduta cenere è l'output rigoroso, non la nuvola."
+        "note": "Il fungo atomico sul globo è un effetto visivo: la sua altezza segue H ≈ 1,7·W^0,42 km, fino a un massimo di 60 km, da Glasstone & Dolan, ma forma e texture sono pittoriche, non una simulazione fluida. La colonna eruttiva di un vulcano segue Mastin et al. 2009, e la sua mappa di caduta della cenere è un inviluppo analitico per la visualizzazione, non un modello di dispersione."
       },
       "cascade": {
         "item": "Cascata climatica oltre il primo anno",

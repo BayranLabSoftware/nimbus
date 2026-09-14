@@ -145,6 +145,20 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   toll band narrows from 1 297–2 433 to 1 296–1 586 against 218 recorded,
   and the uncertainty panel of any underwater burst finally describes an
   underwater burst (B-021).
+- **The methodology page describes the code that exists.** An audit of
+  its overview, uncertainty and limitations sections and of the landing
+  page's features checked 55 claims and found 23 stale or wrong. Among
+  them: the Monte Carlo was said to draw 200 realisations where the
+  button draws 1 000; every input and every output was said to carry a
+  documented σ, where landslides have none and eight outputs do; Tunguska's
+  energy was "80 % driven by the diameter", where the sensitivity script
+  prints 0.49 for the diameter, 0.20 for the velocity and 0.16 for the
+  density; the mushroom cloud was said to follow Mastin's plume scaling,
+  in a "Stage view" that no longer exists; earthquakes were "a point
+  source"; the landing page promised full keyboard navigation, which the
+  globe does not have. Each section now says what the code does. The
+  simulator panel printed a log-normal scatter as a percentage — "±110 %"
+  for a band of three times either way — and now prints the factor.
 - **The pages no longer claim more than the validation shows.** The
   methodology page described four regression checks that "every commit"
   runs, with tolerances "not curve-fitted": the tsunami arrival-time

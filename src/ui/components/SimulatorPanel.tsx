@@ -16,6 +16,7 @@ import {
   buildVolcanoCascade,
 } from '../../physics/cascade.js';
 import { bandFor, type ConfidenceField } from '../../physics/confidence.js';
+import { OUTPUT_SIGMA } from '../../physics/uq/conventions.js';
 import { clampToGreatCircle, isGlobalReach } from '../../physics/earthScale.js';
 import { IMPACT_PRESETS, type ImpactPresetId } from '../../physics/simulate.js';
 import { joulesToMegatons } from '../../physics/units.js';
@@ -187,9 +188,21 @@ function RangeValue({ meters }: { meters: number }): JSX.Element {
 }
 
 /**
+ * The width of a field's band as a reader can take it: a factor for a
+ * log-normal scatter, a percentage for a linear one. A log-normal σ
+ * printed as a percentage read "±110 %" for a band of three times
+ * either way.
+ */
+function spreadLabel(field: ConfidenceField, sigma: number): string {
+  return OUTPUT_SIGMA[field].kind === 'lognormal'
+    ? `×/÷ ${formatDecimal(Math.exp(sigma), 1)}`
+    : `±${Math.round(sigma * 100).toString()} %`;
+}
+
+/**
  * Value + confidence-band renderer for fields whose published 1σ
  * scatter is large. Shows the point estimate in the primary line and
- * the low–high band underneath in muted text, together with the σ%.
+ * the low–high band underneath in muted text, together with its width.
  */
 function RangeValueWithBand({
   meters,
@@ -203,7 +216,7 @@ function RangeValueWithBand({
   const primary = formatRange(meters);
   const lowLabel = formatRange(band.low).label;
   const highLabel = formatRange(band.high).label;
-  const pct = `±${Math.round(band.sigma * 100).toString()} %`;
+  const pct = spreadLabel(field, band.sigma);
   return (
     <>
       {primary.label}
@@ -220,7 +233,7 @@ function RangeValueWithBand({
 
 function AreaWithBand({ m2, field }: { m2: number; field: ConfidenceField }): JSX.Element {
   const band = bandFor(m2, field);
-  const pct = `±${Math.round(band.sigma * 100).toString()} %`;
+  const pct = spreadLabel(field, band.sigma);
   return (
     <>
       {formatArea(m2)}

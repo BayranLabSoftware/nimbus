@@ -25,7 +25,7 @@
       },
       "accessible": {
         "name": "Accessible and multilingual",
-        "detail": "WCAG AA, full keyboard navigation, Italian and English from day one."
+        "detail": "Automated WCAG 2.1 AA checks on the landing, simulator and validation pages, panels usable from the keyboard, Italian and English from day one."
       },
       "shareable": {
         "name": "Shareable URLs",
@@ -609,20 +609,20 @@
     "title": "Methodology & scientific citations",
     "subtitle": "Every formula the Nimbus engine evaluates, with the source it comes from and its DOI where the source has one. Grouped by event type, with the historical scenarios the simulator offers at the bottom.",
     "overviewTitle": "Overview",
-    "overviewBody": "Nimbus is a headless TypeScript physics engine (Layer 2) wrapped by a Cesium globe (Layer 3) and a React UI (Layer 4). Layer 2 has zero runtime dependencies on React / Three / Cesium — the ESLint configuration blocks such imports so the physics stays testable from a Node CLI. Each formula below lives in its own file under src/physics/ with a JSDoc block that names the citation and the specific equation number used. Tolerances in the test suite honour the scatter published in the original papers — ±30 % for thermal-fluence thresholds, ±50 % for volcanic plume heights, ±factor-2 for ejecta and lahar runouts.",
+    "overviewBody": "Nimbus is a headless TypeScript physics engine (Layer 2) wrapped by a Cesium globe (Layer 3) and a React UI (Layer 4). The physics modules import nothing from React, Three or Cesium — ESLint blocks importing those packages there — so they run from a Node command line; the validation harness is the exception, reading the application's store so that it checks the same plan the page draws. The formulas live under src/physics/, often several to a file, each with a JSDoc block naming its source and, where the source numbers it, the equation; where a relation is this project's own, the block says so. The tests' tolerances are not all published scatter — some are project values and some only pin a result — and the validation report says which checks were set on their own event.",
     "validationTitle": "Historical scenarios in the simulator",
     "validationBody": "These are the historical events the simulator offers as presets. Being a preset is not the same as being checked: the events the model is actually measured against, one by one and with its misses, are on the validation page.",
     "uncertainty": {
       "title": "Uncertainty quantification",
-      "body": "Every uncertain input has a documented σ in src/physics/uq/conventions.ts, every output has a documented σ in src/physics/confidence.ts, and the Monte-Carlo engine samples 200 realisations to draw P10/P90 bands on the headline metrics. The methodology is documented under docs/SCIENCE.md and the script `pnpm sensitivity` produces an OAT (one-at-a-time) sensitivity report for every preset.",
+      "body": "The uncertain inputs of impacts, explosions, eruptions and earthquakes carry a σ in src/physics/uq/conventions.ts, each naming where it comes from; landslides have none yet, and so no Monte Carlo. Eight outputs carry a scatter in the same file, from which src/physics/confidence.ts derives the ranges printed beside them. The Monte-Carlo button draws 1 000 realisations and reports P10 and P90; the death toll's band is a separate sample of 200, reported at P5 and P95, that holds the population and the fatality curves fixed (docs/SCIENCE.md). `pnpm sensitivity` prints a one-at-a-time sensitivity report for the impact presets and three explosion cases.",
       "inputItem": "Input σ conventions",
-      "inputNote": "Each MC wrapper imports its scatter parameters from a single typed dictionary that names the source paper for the σ value. Examples: impactor diameter σ_log = 0.15 (Mainzer 2019), explosion yield σ_log = 0.1 (Sublette FAQ), Vs30 site velocity σ = 30 % (Wald & Allen 2007).",
+      "inputNote": "The four Monte-Carlo wrappers import their scatter from one typed dictionary, and every entry names its source — a paper where there is one, otherwise a catalogue, an FAQ or a project value. Examples: impactor diameter σ_log = 0.15 (Mainzer 2019), explosion yield σ_log = 0.1 (Sublette FAQ), Vs30 σ = 30 % (Wald & Allen 2007). Two draws sit outside it: the impact angle, which follows the sin 2θ distribution, and the depth of an earthquake, whose σ is never smaller than 2 km.",
       "outputItem": "Output 1σ scatter (point-estimate bands)",
-      "outputNote": "Mirror dictionary OUTPUT_SIGMA documents the published per-quantity scatter that the UI uses to render confidence bars next to the radius numbers. Largest bands: Wünnemann far-field tsunami (factor-3), Mastin plume height (factor-2), pyroclastic runout (±70 %).",
-      "mcItem": "Monte Carlo (N = 200)",
-      "mcNote": "Mulberry32-seeded so a shareable URL reproduces bit-identical percentiles. The N=200 default is bench-tested against an N=2000 reference: P10/P90 land within 15 %, medians within 10 %.",
+      "outputNote": "OUTPUT_SIGMA holds the scatter of eight outputs, and the simulator panel prints each as a range with its width. The widest are Wünnemann's far-field tsunami (a factor of 3 either way), ashfall area and lahar runout (a factor of 2), Mastin's plume height (a factor of 1.6) and pyroclastic runout (±70 %). The firestorm's ±30 % is a project value, not published scatter, and the dashed rings on the globe read a table of their own.",
+      "mcItem": "Monte Carlo (N = 1 000)",
+      "mcNote": "The button draws 1 000 realisations from a Mulberry32 generator seeded by the event type, the preset and the sample size, so the same scenario gives the same percentiles in the same browser. A link carries the inputs but not the seed or the result, and nothing checks that two browsers agree to the bit. One test compares 200 draws with 2 000 for the Tunguska impact: P10 and P90 within 15 %, medians within 10 %.",
       "sensitivityItem": "OAT local sensitivity",
-      "sensitivityNote": "`pnpm sensitivity` runs each input ±1σ and reports per-(input, output) elasticity coefficients. For Tunguska the energy is 80 % driven by impactor diameter (E ∝ d³), 20 % by velocity (E ∝ v²) — useful both for explanatory text and as a regression aid."
+      "sensitivityNote": "`pnpm sensitivity` moves each input by one σ and prints how far each output moves in proportion. For Tunguska's energy: 0.49 for the diameter, 0.20 for the velocity and 0.16 for the density. Nothing pins these numbers; they are there to be read, not to catch regressions."
     },
     "regression": {
       "title": "Predicted-vs-observed regression suite",
@@ -641,7 +641,7 @@
       "body": "Honest disclosure of what the simulator deliberately does not capture. None of these are bugs; they are scope decisions a real operational hazard tool would address with a different engine.",
       "atm": {
         "item": "3D atmospheric circulation",
-        "note": "Plume dispersion uses a 2D Suzuki / Bonadonna analytical envelope, not a 3D Lagrangian particle model. Real ash advection over multiple days needs HYSPLIT / FALL3D — out of scope here."
+        "note": "Ash fall uses a closed-form envelope — a Suzuki 1983 release profile, Ganser settling, one constant wind and a crosswind spread of this project's — not a 3D Lagrangian particle model. Real ash advection over several days needs HYSPLIT or FALL3D, which are out of scope."
       },
       "shore": {
         "item": "Tsunami runup at the shoreline",
@@ -649,11 +649,11 @@
       },
       "fault": {
         "item": "Fault rupture geometry",
-        "note": "Earthquake outputs use a point source + Wells & Coppersmith 1994 area scaling. We do not solve the elastic dislocation field — Okada 1985 strain output, surface fault traces, and stress changes triggering aftershocks beyond the Reasenberg & Jones 1989 fit are out of scope."
+        "note": "Rupture length and width come from Wells & Coppersmith 1994 for crustal events and Strasser et al. 2010 for subduction interfaces. Events of Mw 7.5 and above, or on an interface, are drawn as the rupture rectangle grown on every side by an intensity radius that is still computed as a distance from a point, with a straight schematic trace along strike. We do not solve the elastic dislocation field: no Okada strain output, no mapped surface traces, and no stress changes triggering aftershocks beyond the Reasenberg & Jones 1989 statistics."
       },
       "plume": {
         "item": "Mushroom-cloud morphology in 3D",
-        "note": "The 3D mushroom cloud rendered in the Stage view follows the Mastin height scaling but its visual shape and texture are pictorial — a qualitative representation, not a quantitative fluid simulation. The ash-fallout map is the rigorous output, not the cloud."
+        "note": "The mushroom cloud on the globe is a visual effect: its height follows H ≈ 1.7·W^0.42 km, capped at 60 km, after Glasstone & Dolan, but its shape and texture are pictorial, not a fluid simulation. A volcano's eruption column follows Mastin et al. 2009, and its ashfall map is an analytical envelope for display, not a dispersion model."
       },
       "cascade": {
         "item": "Climate cascade beyond the first year",

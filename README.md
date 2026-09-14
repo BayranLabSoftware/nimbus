@@ -139,7 +139,7 @@ from the command line as the browser worker. Full discussion in
 pnpm test                         # the unit + integration suite, validation included
 pnpm test src/physics/validation  # the calibration net: tolls, waves, footprints, anchors
 pnpm validation-report            # regenerate docs/VALIDATION_REPORT.md from the code
-pnpm sensitivity --pretty         # OAT sensitivity report for every preset
+pnpm sensitivity --pretty         # one-at-a-time sensitivity: impact presets, three explosion cases
 ```
 
 Every assertion runs offline against committed fixtures in
