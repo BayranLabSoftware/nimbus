@@ -17,7 +17,7 @@
       },
       "realScience": {
         "name": "Formule scientifiche reali",
-        "detail": "Validate contro Collins/Melosh/Marcus 2005, Glasstone & Dolan, Ward & Asphaug, Mastin, USGS ShakeMap."
+        "detail": "Formule citate da Collins et al. 2005, Glasstone & Dolan, Ward & Asphaug e Mastin, confrontate con eventi registrati, errori compresi."
       },
       "globe": {
         "name": "Globo terrestre 3D",
@@ -607,7 +607,7 @@
   "methodology": {
     "back": "Torna alla home",
     "title": "Metodologia & fonti scientifiche",
-    "subtitle": "Ogni formula che il motore Nimbus valuta, con la sua fonte peer-reviewed e il DOI a livello di equazione. Organizzato per tipo di evento, con in fondo l'elenco degli eventi storici usati per la validazione.",
+    "subtitle": "Ogni formula che il motore Nimbus valuta, con la fonte da cui viene e il suo DOI quando la fonte ne ha uno. Organizzato per tipo di evento, con in fondo gli scenari storici che il simulatore propone.",
     "overviewTitle": "Panoramica",
     "overviewBody": "Nimbus è un motore fisico TypeScript headless (Layer 2) avvolto da un globo Cesium (Layer 3) e da un'interfaccia React (Layer 4). Il Layer 2 non ha dipendenze runtime su React / Three / Cesium — la configurazione ESLint blocca tali import in modo che la fisica resti testabile da una CLI Node. Ogni formula qui elencata vive in un file sotto src/physics/ con un blocco JSDoc che cita l'articolo e il numero di equazione usato. Le tolleranze della test suite rispettano lo scatter pubblicato negli articoli originali — ±30 % per le soglie di fluenza termica, ±50 % per l'altezza dei pennacchi vulcanici, ±fattore-2 per runout di ejecta e lahar.",
     "validationTitle": "Scenari storici nel simulatore",
@@ -626,15 +626,15 @@
     },
     "regression": {
       "title": "Suite di regressione predetto-vs-osservato",
-      "body": "Ogni commit ri-esegue quattro test di validazione contro osservazioni pubblicate di eventi storici. Ogni banda di tolleranza deriva dall'inviluppo del modello sottostante in modo che il contratto sia onesto, non un curve-fitting. Tabella completa in docs/VALIDATION.md.",
+      "body": "Ogni commit ri-esegue questi controlli contro osservazioni pubblicate di eventi storici. Servono a cogliere le derive, non a provare il modello: diversi sono stati tarati sugli eventi che controllano, o ne condividono la fonte — la pagina di validazione dice quali, riga per riga, dal report che il software rigenera a ogni commit.",
       "tsunamiItem": "Tempi d'arrivo tsunami",
-      "tsunamiNote": "Tōhoku 2011 trans-pacifico + Sumatra 2004 trans-indiano (DART / mareografi). RMSE sotto 60 min, ogni stazione entro ±20 % del tempo predetto + 3σ di incertezza osservativa.",
+      "tsunamiNote": "Spenti dal 14 settembre 2026. I tempi d'arrivo di Tōhoku 2011 e Sumatra 2004 con cui si confrontavano avevano una citazione inesistente e distanze sbagliate; i controlli tornano quando i tempi saranno letti da una tabella pubblicata.",
       "shakemapItem": "Anelli MMI VII di terremoti",
-      "shakemapNote": "Northridge 1994 + L'Aquila 2009 (rilevamenti macrosismici). Bias aggregato cross-evento sotto ±25 %.",
+      "shakemapNote": "Rilievi macrosismici di Northridge 1994 e L'Aquila 2009: ogni raggio MMI VII entro la dispersione del rilievo più il 30 %, e lo scarto medio fra i due sotto ±25 %. Le aree scosse a MMI VII–IX, contro USGS ShakeMap per sei eventi, sono nella pagina di validazione.",
       "plumeItem": "Altezza pennacchi vulcanici",
-      "plumeNote": "Pinatubo 1991, Mount St Helens 1980, Krakatau 1883. Inviluppo del fit Mastin 2009 più il σ osservativo di ogni evento.",
+      "plumeNote": "Pinatubo 1991, Mount St Helens 1980, Krakatau 1883: ciascuno entro ±1σ dell'osservazione più metà dell'altezza prevista, la dispersione del fit di Mastin 2009. Pinatubo e Mount St Helens sono tra le eruzioni su cui quel fit è stato costruito.",
       "tunguskaItem": "Bilancio energetico Tunguska",
-      "tunguskaNote": "L'energia cinetica del preset deve cadere dentro la finestra di ricostruzione Boslough & Crawford 2008 + Chyba 1993 (3-30 Mt). Cattura derive del preset o modifiche silenziose alla formula."
+      "tunguskaNote": "L'energia del preset deve cadere nei 3–30 Mt che la foresta abbattuta consente (Boslough & Crawford 2008, Chyba et al. 1993). Coglie un preset che deriva; non mette alla prova il modello d'ingresso in atmosfera, due coefficienti del quale sono stati tarati su Tunguska e Chelyabinsk."
     },
     "limitations": {
       "title": "Limiti — cosa Nimbus NON modella",

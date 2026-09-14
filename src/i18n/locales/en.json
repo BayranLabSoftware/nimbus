@@ -17,7 +17,7 @@
       },
       "realScience": {
         "name": "Real scientific formulas",
-        "detail": "Validated against Collins/Melosh/Marcus 2005, Glasstone & Dolan, Ward & Asphaug, Mastin, USGS ShakeMap."
+        "detail": "Cited formulas from Collins et al. 2005, Glasstone & Dolan, Ward & Asphaug and Mastin, checked against recorded events, misses shown."
       },
       "globe": {
         "name": "3D Earth globe",
@@ -607,7 +607,7 @@
   "methodology": {
     "back": "Back to home",
     "title": "Methodology & scientific citations",
-    "subtitle": "Every formula the Nimbus engine evaluates, with its peer-reviewed source and the equation-level DOI. Grouped by event type and paired at the bottom with the roster of historically validated events.",
+    "subtitle": "Every formula the Nimbus engine evaluates, with the source it comes from and its DOI where the source has one. Grouped by event type, with the historical scenarios the simulator offers at the bottom.",
     "overviewTitle": "Overview",
     "overviewBody": "Nimbus is a headless TypeScript physics engine (Layer 2) wrapped by a Cesium globe (Layer 3) and a React UI (Layer 4). Layer 2 has zero runtime dependencies on React / Three / Cesium — the ESLint configuration blocks such imports so the physics stays testable from a Node CLI. Each formula below lives in its own file under src/physics/ with a JSDoc block that names the citation and the specific equation number used. Tolerances in the test suite honour the scatter published in the original papers — ±30 % for thermal-fluence thresholds, ±50 % for volcanic plume heights, ±factor-2 for ejecta and lahar runouts.",
     "validationTitle": "Historical scenarios in the simulator",
@@ -626,15 +626,15 @@
     },
     "regression": {
       "title": "Predicted-vs-observed regression suite",
-      "body": "Every commit re-runs four validation tests against published observations of historical events. Each tolerance band is sourced from the underlying model envelope so the contract is honest, not curve-fitted. Full table in docs/VALIDATION.md.",
+      "body": "Every commit re-runs these checks against published observations of historical events. They catch drift rather than prove the model: several were set on, or share a source with, the events they check — the validation page says which, row by row, from the report the software regenerates at every commit.",
       "tsunamiItem": "Tsunami arrival times",
-      "tsunamiNote": "Trans-Pacific Tōhoku 2011 + trans-Indian Sumatra 2004 DART / tide-gauge arrivals. RMSE under 60 min, every station matched within ±20 % of the predicted travel time + 3σ observation uncertainty.",
+      "tsunamiNote": "Switched off since 14 September 2026. The Tōhoku 2011 and Sumatra 2004 arrival times they compared against had a citation that does not exist and distances that were wrong; the checks return when the times are read from a published table.",
       "shakemapItem": "Earthquake MMI VII rings",
-      "shakemapNote": "Northridge 1994 + L'Aquila 2009 macroseismic surveys. Cross-event aggregate bias under ±25 %.",
+      "shakemapNote": "Northridge 1994 and L'Aquila 2009 macroseismic surveys: each MMI VII radius within the survey's scatter plus 30 %, and the mean bias across the two under ±25 %. The areas shaken at MMI VII–IX, against USGS ShakeMap for six events, are on the validation page.",
       "plumeItem": "Volcanic plume heights",
-      "plumeNote": "Pinatubo 1991, Mount St Helens 1980, Krakatau 1883. Mastin 2009 fit envelope plus the per-event observation σ.",
+      "plumeNote": "Pinatubo 1991, Mount St Helens 1980, Krakatau 1883: each within the observation's ±1σ plus half the predicted height, the scatter of the Mastin 2009 fit. Pinatubo and Mount St Helens are among the eruptions that fit was made on.",
       "tunguskaItem": "Tunguska energy budget",
-      "tunguskaNote": "Preset KE must lie inside Boslough & Crawford 2008 + Chyba 1993 reconstruction window (3-30 Mt). Catches preset drift or silent formula edits."
+      "tunguskaNote": "The preset's energy must lie inside the 3–30 Mt the flattened forest allows (Boslough & Crawford 2008, Chyba et al. 1993). It catches a preset that drifts; it does not test the entry model, two of whose coefficients were set on Tunguska and Chelyabinsk."
     },
     "limitations": {
       "title": "Limitations — what Nimbus does NOT model",

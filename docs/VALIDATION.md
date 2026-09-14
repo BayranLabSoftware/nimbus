@@ -1,5 +1,15 @@
 # Validation report
 
+> **Read [VALIDATION_REPORT.md](./VALIDATION_REPORT.md) first.** This
+> page describes the regression suites as they were organised in the
+> spring of 2026. The report is regenerated at every commit, says for
+> each check whether the model was set on the event it checks, and
+> declares the gaps. Two corrections to what follows, made on 14
+> September 2026: the tsunami arrival-time checks are switched off,
+> because the times they compared against had a citation that does not
+> exist; and "not curve-fitting" no longer holds, since several of these
+> checks were tuned on their own events.
+
 This page summarises the validation suite that compares Nimbus
 simulator predictions against published observations of historical
 events. Every assertion lives in [src/physics/validation/](../src/physics/validation/)
@@ -21,8 +31,10 @@ For each predicted quantity:
    trans-oceanic Lamb 1932 celerity, and so on — each row below cites
    the source for the chosen envelope).
 
-This is honest validation, not curve-fitting: the tolerance bands
-are documented, sourced, and frozen in [fixtures.ts](../src/physics/validation/fixtures.ts).
+The tolerance bands are documented and frozen in
+[fixtures.ts](../src/physics/validation/fixtures.ts). That makes these
+regression checks rather than independent validation: several were set
+on the events they check, and VALIDATION_REPORT.md says which.
 
 ## Tsunami arrival times
 

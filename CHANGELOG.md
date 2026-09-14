@@ -126,6 +126,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The pages no longer claim more than the validation shows.** The
+  methodology page described four regression checks that "every commit"
+  runs, with tolerances "not curve-fitted": the tsunami arrival-time
+  checks have been switched off since their times turned out to carry a
+  citation that does not exist, and several of the others were set on
+  the events they check. Its section now says what each check does and
+  what it cannot prove, and sends the reader to the validation page. The
+  landing page read "Validated against Collins/Melosh/Marcus 2005,
+  Glasstone & Dolan…", which are the sources of the formulas, not
+  validation; and the methodology subtitle called every source
+  peer-reviewed, which Glasstone & Dolan's handbook is not.
+  `docs/VALIDATION.md`, last written in April, now opens by pointing to
+  the report and stating both corrections.
 - **The scatter of ground motion is the one Boore et al. give.** The
   toll bands and the earthquake Monte Carlo drew the ground-motion
   residual at σ_lnY = 0.50, cited to Boore et al. 2014 with a
