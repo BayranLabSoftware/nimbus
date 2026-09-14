@@ -60,13 +60,26 @@ import { EARTHQUAKE_INPUT_SIGMA } from '../src/physics/uq/conventions.js';
 import { PLUME_HEIGHT_OBSERVATIONS } from '../src/physics/validation/fixtures.js';
 import { comparePlume, type PlumeComparison } from '../src/physics/validation/plumeComparison.js';
 import {
+  isInformative,
   PREDICTIVE_BAND,
   scorecard,
+  scoreStats,
+  SIZE_BANDS,
+  sizeBandOf,
   type ScoreCell,
   type ScoreRowInput,
   type ScoreStats,
   type ScoredQuantity,
 } from '../src/physics/validation/scorecard.js';
+import {
+  RULE_EARTHQUAKES,
+  RULE_PLUMES,
+  RULE_SEEN_EARTHQUAKES,
+  RULE_TUNED_EARTHQUAKES,
+  type RuleEarthquake,
+  type RulePlume,
+} from '../src/physics/validation/heldOutByRule.js';
+import { NCEI_UNMATCHED, RULE_READ_ON } from '../src/physics/validation/heldOutByRuleData.js';
 import {
   CALIBRATION_ANCHORS,
   CALIBRATION_ROLES,
@@ -519,6 +532,292 @@ function scorecardSection(cells: readonly ScoreCell[]): string {
   return lines.join('\n');
 }
 
+/** A scorecard statistic as the JSON keeps it. */
+function scoreJson(st: ScoreStats) {
+  return {
+    rows: st.rows,
+    scored: st.scored,
+    bias: st.bias === null ? null : Number(st.bias.toPrecision(3)),
+    // Two decimals, as the report prints it: the page rounding a third
+    // decimal would print a figure the report does not.
+    scatterLn: st.scatterLn === null ? null : fixed(st.scatterLn, 2),
+    inside: st.inside,
+    bothZero: st.bothZero,
+    falseAlarms: st.falseAlarms,
+    missedToZero: st.missedToZero,
+    medianBandDecades: st.medianBandDecades === null ? null : fixed(st.medianBandDecades, 2),
+  };
+}
+
+// ---------------------------------------------------------------------
+// Held out by rule: the sets heldOutByRule.ts chose (rules 11 to 16).
+// ---------------------------------------------------------------------
+
+interface RuleQuakeRun {
+  quake: RuleEarthquake;
+  toll: TollComparison;
+  score: ScoreRowInput;
+}
+
+interface RulePlumeRun {
+  plume: RulePlume;
+  column: PlumeComparison;
+  score: ScoreRowInput;
+}
+
+interface RuleSets {
+  earthquakes: RuleQuakeRun[];
+  plumes: RulePlumeRun[];
+}
+
+function runRuleSets(): RuleSets {
+  return {
+    earthquakes: RULE_EARTHQUAKES.map((quake) => {
+      const toll = compareWithRecord(quake.event);
+      return {
+        quake,
+        toll,
+        score: {
+          name: quake.event.name,
+          quantity: 'toll',
+          family: 'earthquake',
+          size: quake.row.magnitude,
+          role: quake.role,
+          record: quake.event.recordedDeaths,
+          model: toll.deaths,
+          inside: toll.contains,
+          bandDecades: Math.log10(Math.max(toll.high, 1) / Math.max(toll.low, 1)),
+          bandHigh: toll.high,
+        },
+      };
+    }),
+    plumes: RULE_PLUMES.map((plume) => {
+      const column = comparePlume(plume.observation);
+      return {
+        plume,
+        column,
+        score: {
+          name: plume.observation.event,
+          quantity: 'plume',
+          family: 'volcano',
+          size: plume.volumeM3,
+          role: plume.role,
+          record: plume.observation.observedPlumeHeightKm,
+          model: column.modelKm,
+          inside: column.contains,
+          bandDecades: null,
+        },
+      };
+    }),
+  };
+}
+
+interface RuleCell {
+  kind: 'all' | 'size' | 'morphology';
+  /** The size band or the plume morphology; null for the whole set. */
+  group: string | null;
+  all: ScoreStats;
+  /** The rows whose record or band is above zero (`isInformative`). */
+  informative: ScoreStats;
+  /** Those rows, less the ones run in the net before the rule. */
+  unseen: ScoreStats;
+}
+
+function ruleCell<T extends { score: ScoreRowInput }>(
+  kind: RuleCell['kind'],
+  group: string | null,
+  rows: readonly T[],
+  seen: (row: T) => boolean
+): RuleCell {
+  const informative = rows.filter((r) => isInformative(r.score));
+  return {
+    kind,
+    group,
+    all: scoreStats(rows.map((r) => r.score)),
+    informative: scoreStats(informative.map((r) => r.score)),
+    unseen: scoreStats(informative.filter((r) => !seen(r)).map((r) => r.score)),
+  };
+}
+
+const PLUME_MORPHOLOGIES = ['strong', 'weak', 'Unknown'] as const;
+
+const MORPHOLOGY_LABEL: Readonly<Record<(typeof PLUME_MORPHOLOGIES)[number], string>> = {
+  strong: 'strong plumes',
+  weak: 'weak plumes',
+  Unknown: 'morphology not given',
+};
+
+function ruleCells(sets: RuleSets): { earthquakes: RuleCell[]; plumes: RuleCell[] } {
+  const quakes = sets.earthquakes.filter((e) => e.quake.role === 'heldOut');
+  const plumes = sets.plumes.filter((p) => p.plume.role === 'heldOut');
+  const quakeSeen = (e: RuleQuakeRun): boolean => e.quake.seen;
+  const plumeSeen = (p: RulePlumeRun): boolean => p.plume.seen;
+  return {
+    earthquakes: [
+      ruleCell('all', null, quakes, quakeSeen),
+      ...SIZE_BANDS.earthquake.map((b) =>
+        ruleCell(
+          'size',
+          b.label,
+          quakes.filter((e) => sizeBandOf('earthquake', e.score.size) === b.label),
+          quakeSeen
+        )
+      ),
+    ].filter((c) => c.all.rows > 0),
+    plumes: [
+      ruleCell('all', null, plumes, plumeSeen),
+      ...PLUME_MORPHOLOGIES.map((m) =>
+        ruleCell(
+          'morphology',
+          m,
+          plumes.filter((p) => p.plume.row.morphology === m),
+          plumeSeen
+        )
+      ),
+      ...SIZE_BANDS.volcano.map((b) =>
+        ruleCell(
+          'size',
+          b.label,
+          plumes.filter((p) => sizeBandOf('volcano', p.score.size) === b.label),
+          plumeSeen
+        )
+      ),
+    ].filter((c) => c.all.rows > 0),
+  };
+}
+
+function biasText(s: ScoreStats): string {
+  return s.bias === null ? '—' : `${s.bias >= 0.1 ? s.bias.toFixed(2) : s.bias.toPrecision(2)}×`;
+}
+
+function shareText(inside: number, rows: number): string {
+  if (rows === 0) return '—';
+  return `${inside.toString()} of ${rows.toString()} (${Math.round((100 * inside) / rows).toString()} %)`;
+}
+
+function cellText(s: string): string {
+  return s.replace(/\|/g, '\\|');
+}
+
+function ruleRecord(e: RuleQuakeRun): string {
+  const { deaths, missing } = e.quake.row;
+  return missing > 0 ? `${grouped(deaths)} (+${grouped(missing)} missing)` : grouped(deaths);
+}
+
+function byRuleSection(
+  sets: RuleSets,
+  cells: { earthquakes: RuleCell[]; plumes: RuleCell[] }
+): string {
+  const held = sets.earthquakes.filter((e) => e.quake.role === 'heldOut');
+  const tuned = sets.earthquakes.filter((e) => e.quake.role === 'tuned');
+  const quakes = cells.earthquakes.find((c) => c.kind === 'all');
+  const columns = cells.plumes.find((c) => c.kind === 'all');
+  if (quakes === undefined || columns === undefined) throw new Error('A rule set has no rows');
+  const bandText = (s: ScoreStats): string =>
+    s.medianBandDecades === null
+      ? '—'
+      : `10^${(Math.round(fixed(s.medianBandDecades, 2) * 10) / 10).toFixed(1)}`;
+  const scatterText = (s: ScoreStats): string =>
+    s.scatterLn === null ? '—' : s.scatterLn.toFixed(2);
+  const seenNames = Object.values(RULE_SEEN_EARTHQUAKES).join(', ');
+  const unmatched = NCEI_UNMATCHED.length;
+  const outsideQuakes = held
+    .filter((e) => !e.toll.contains)
+    .sort((a, b) => b.quake.row.magnitude - a.quake.row.magnitude);
+  const outsidePlumes = sets.plumes.filter((p) => !p.column.contains);
+  return [
+    'Two sets chosen by a rule rather than from a list, fixed in',
+    '`src/physics/validation/heldOutByRule.ts` (rules 11 to 16) and committed',
+    'before the model was run on any of their rows: every earthquake of the',
+    'NCEI/WDS significant-earthquake database from 2008 to 2025 with magnitude 6',
+    'or more and focal depth 40 km or less, run on its USGS ComCat origin and',
+    `moment tensor, and every IVESPA eruption phase from 2009 on. Read on ${RULE_READ_ON}.`,
+    'Nothing here is gated and nothing was re-tuned on it; docs/SCIENCE.md, "Held',
+    'out by rule", reads what the first run found.',
+    '',
+    '#### Earthquake death tolls',
+    '',
+    `${held.length.toString()} rows held out. ${unmatched.toString()} ${unmatched === 1 ? 'record has' : 'records have'} no ComCat event and ${unmatched === 1 ? 'is' : 'are'} left out, and the ${tuned.length.toString()} events the shaking contours were chosen with in view are scored apart, below. **With something** are the rows whose record or band is above zero: the other ${(quakes.all.rows - quakes.informative.rows).toString()} are a band of nothing about a record of nothing, inside by construction, so the share inside is read over the rows with something. Bias and scatter are over the rows where record and model are both above zero; zeros are both zero / a record of nothing where the model says something / a record the model makes nothing of; the band is the median width of the 5–95 % band over the rows with something.`,
+    '',
+    '| Size | Rows | With something | Scored | Bias | Scatter σ_ln | Inside, with something | Inside, all rows | Zeros | Band |',
+    '|------|-----:|---------------:|-------:|-----:|-------------:|------------------------|------------------|-------|-----:|',
+    ...cells.earthquakes.map(
+      (c) =>
+        `| ${c.group ?? '**all sizes**'} | ${c.all.rows.toString()} | ${c.informative.rows.toString()} | ${c.all.scored.toString()} | ${biasText(c.all)} | ${scatterText(c.all)} | ${shareText(c.informative.inside, c.informative.rows)} | ${shareText(c.all.inside, c.all.rows)} | ${c.all.bothZero.toString()} / ${c.all.falseAlarms.toString()} / ${c.all.missedToZero.toString()} | ${bandText(c.informative)} |`
+    ),
+    '',
+    `Without the rows run in the net before the rule (${seenNames}): bias ${biasText(quakes.unseen)}, scatter ${scatterText(quakes.unseen)}, inside ${shareText(quakes.unseen.inside, quakes.unseen.rows)} of the rows with something.`,
+    '',
+    `Tuned, and scored apart: ${tuned
+      .map(
+        (e) =>
+          `${RULE_TUNED_EARTHQUAKES[e.quake.row.comcat] ?? e.quake.event.name}, ${grouped(e.toll.deaths)} dead against ${ruleRecord(e)} on a band of ${grouped(e.toll.low)} to ${grouped(e.toll.high)}`
+      )
+      .join('; ')}.`,
+    '',
+    '#### Eruption columns',
+    '',
+    `${sets.plumes.length.toString()} phases, every one held out. A row is accepted by the rule the net's column rows use; the three phases of Grímsvötn 2011 and Calbuco 2015 were in the net before the rule.`,
+    '',
+    '| Phases | Rows | Bias | Scatter σ_ln | Accepted |',
+    '|--------|-----:|-----:|-------------:|----------|',
+    ...cells.plumes.map((c) => {
+      const label =
+        c.kind === 'all'
+          ? '**all phases**'
+          : c.kind === 'morphology'
+            ? MORPHOLOGY_LABEL[c.group as (typeof PLUME_MORPHOLOGIES)[number]]
+            : c.group;
+      return `| ${label ?? ''} | ${c.all.rows.toString()} | ${biasText(c.all)} | ${scatterText(c.all)} | ${shareText(c.all.inside, c.all.rows)} |`;
+    }),
+    '',
+    `Without the phases in the net before the rule: bias ${biasText(columns.unseen)}, scatter ${scatterText(columns.unseen)}, accepted ${shareText(columns.unseen.inside, columns.unseen.rows)}.`,
+    '',
+    '#### Outside',
+    '',
+    '| Row | Size | Record | Model | Band or tolerance | Seen before |',
+    '|-----|-----:|-------:|------:|-------------------|-------------|',
+    ...outsideQuakes.map(
+      (e) =>
+        `| ${cellText(e.quake.event.name)} | Mw ${e.quake.row.magnitude.toFixed(1)} | ${ruleRecord(e)} | ${grouped(e.toll.deaths)} | ${grouped(e.toll.low)} to ${grouped(e.toll.high)} | ${e.quake.seen ? 'yes' : ''} |`
+    ),
+    ...outsidePlumes.map(
+      (p) =>
+        `| ${cellText(p.plume.observation.event)} | ${grouped(p.plume.observation.volumeEruptionRate)} m³/s | ${p.plume.observation.observedPlumeHeightKm.toFixed(1)} km | ${p.column.modelKm.toFixed(1)} km | ± ${(p.plume.observation.toleranceKm + 0.5 * p.column.modelKm).toFixed(1)} km | ${p.plume.seen ? 'yes' : ''} |`
+    ),
+    '',
+    '<details>',
+    `<summary>Every earthquake row (${sets.earthquakes.length.toString()})</summary>`,
+    '',
+    '| Origin (UTC) and place | Mw | Depth | Fault | Record | Model | Band | Inside | Role |',
+    '|------------------------|---:|------:|-------|-------:|------:|------|--------|------|',
+    ...sets.earthquakes.map(
+      (e) =>
+        `| ${cellText(e.quake.event.name)} | ${e.quake.row.magnitude.toFixed(1)} | ${e.quake.row.depthKm.toFixed(1)} km | ${e.quake.row.faultType} | ${ruleRecord(e)} | ${grouped(e.toll.deaths)} | ${grouped(e.toll.low)} to ${grouped(e.toll.high)} | ${e.toll.contains ? 'yes' : '**no**'} | ${e.quake.role === 'tuned' ? 'tuned' : e.quake.seen ? 'held out, seen' : 'held out'} |`
+    ),
+    '',
+    '</details>',
+    '',
+    '<details>',
+    `<summary>Every eruption column (${sets.plumes.length.toString()})</summary>`,
+    '',
+    '| Phase | Morphology | V̇ | Observed above vent | Model | Accepted |',
+    '|-------|------------|---:|--------------------:|------:|----------|',
+    ...sets.plumes.map(
+      (p) =>
+        `| ${cellText(p.plume.observation.event)} | ${p.plume.row.morphology} | ${grouped(p.plume.observation.volumeEruptionRate)} m³/s | ${p.plume.observation.observedPlumeHeightKm.toFixed(1)} ± ${p.plume.observation.toleranceKm.toFixed(1)} km | ${p.column.modelKm.toFixed(1)} km | ${p.column.contains ? 'yes' : '**no**'} |`
+    ),
+    '',
+    '</details>',
+    '',
+    ...(unmatched === 0
+      ? []
+      : [
+          `Left out without a ComCat event: ${NCEI_UNMATCHED.map((u) => `NCEI ${u.ncei.toString()}, ${u.date}, ${u.place} (${grouped(u.deaths)} dead)`).join('; ')}.`,
+        ]),
+  ].join('\n');
+}
+
 function plumeSection(net: CalibrationNet): string {
   const rows = net.plumes.map((c) => {
     const o = c.observation;
@@ -849,6 +1148,8 @@ function main(): void {
 
   const net = runCalibrationNet();
   const cells = scorecard(scoreInputs(net));
+  const ruleSets = runRuleSets();
+  const byRule = ruleCells(ruleSets);
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -873,6 +1174,10 @@ ${summary(net, replayAgg, goldenAgg)}
 ## Scorecard
 
 ${scorecardSection(cells)}
+
+## Held out by rule
+
+${byRuleSection(ruleSets, byRule)}
 
 ## Release gate
 
@@ -1037,27 +1342,76 @@ otherwise.
         role: useOf(w.wave.name, 'wave').role,
         source: w.wave.source,
       })),
-      scorecard: cells.map((c) => {
-        const figures = (st: ScoreStats) => ({
-          rows: st.rows,
-          scored: st.scored,
-          bias: st.bias === null ? null : Number(st.bias.toPrecision(3)),
-          scatterLn: st.scatterLn === null ? null : fixed(st.scatterLn, 3),
-          inside: st.inside,
-          bothZero: st.bothZero,
-          falseAlarms: st.falseAlarms,
-          missedToZero: st.missedToZero,
-          medianBandDecades: st.medianBandDecades === null ? null : fixed(st.medianBandDecades, 2),
-        });
-        return {
-          quantity: c.quantity,
-          family: c.family,
-          sizeBand: c.sizeBand,
-          predictive: PREDICTIVE_BAND[c.quantity],
-          heldOut: figures(c.heldOut),
-          all: figures(c.all),
-        };
-      }),
+      scorecard: cells.map((c) => ({
+        quantity: c.quantity,
+        family: c.family,
+        sizeBand: c.sizeBand,
+        predictive: PREDICTIVE_BAND[c.quantity],
+        heldOut: scoreJson(c.heldOut),
+        all: scoreJson(c.all),
+      })),
+      // The per-row tables are in the Markdown copy; the page reads the
+      // cells, and the rows that miss.
+      byRule: {
+        readOn: RULE_READ_ON,
+        earthquakes: {
+          rows: ruleSets.earthquakes.length,
+          heldOut: ruleSets.earthquakes.filter((e) => e.quake.role === 'heldOut').length,
+          seen: ruleSets.earthquakes.filter((e) => e.quake.seen).length,
+          unmatched: NCEI_UNMATCHED.length,
+          cells: byRule.earthquakes.map((c) => ({
+            kind: c.kind,
+            group: c.group,
+            all: scoreJson(c.all),
+            informative: scoreJson(c.informative),
+            unseen: scoreJson(c.unseen),
+          })),
+          outside: ruleSets.earthquakes
+            .filter((e) => e.quake.role === 'heldOut' && !e.toll.contains)
+            .map((e) => ({
+              event: e.quake.event.name,
+              comcat: e.quake.row.comcat,
+              magnitude: e.quake.row.magnitude,
+              recorded: e.quake.row.deaths,
+              missing: e.quake.row.missing,
+              model: Math.round(e.toll.deaths),
+              bandLow: Math.round(e.toll.low),
+              bandHigh: Math.round(e.toll.high),
+              seen: e.quake.seen,
+            })),
+          tuned: ruleSets.earthquakes
+            .filter((e) => e.quake.role === 'tuned')
+            .map((e) => ({
+              event: e.quake.event.name,
+              recorded: e.quake.row.deaths,
+              model: Math.round(e.toll.deaths),
+              bandLow: Math.round(e.toll.low),
+              bandHigh: Math.round(e.toll.high),
+              contains: e.toll.contains,
+            })),
+        },
+        plumes: {
+          rows: ruleSets.plumes.length,
+          seen: ruleSets.plumes.filter((p) => p.plume.seen).length,
+          cells: byRule.plumes.map((c) => ({
+            kind: c.kind,
+            group: c.group,
+            all: scoreJson(c.all),
+            unseen: scoreJson(c.unseen),
+          })),
+          outside: ruleSets.plumes
+            .filter((p) => !p.column.contains)
+            .map((p) => ({
+              eruption: p.plume.observation.event,
+              morphology: p.plume.row.morphology,
+              volumeEruptionRate: fixed(p.plume.observation.volumeEruptionRate, 1),
+              observedKm: fixed(p.plume.observation.observedPlumeHeightKm, 3),
+              toleranceKm: p.plume.observation.toleranceKm,
+              modelKm: fixed(p.column.modelKm, 3),
+              seen: p.plume.seen,
+            })),
+        },
+      },
       footprint: {
         rows: net.footprint.map((r) => ({
           event: r.name,

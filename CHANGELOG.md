@@ -50,6 +50,22 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   a shared module so the suite, the report and the scorecard read one
   computation.
 
+- **Held-out sets chosen by rule, run once.** Written down and pushed
+  before the model saw them (`validation/heldOutByRule.ts`, rules 11 to
+  16; `scripts/held-out-by-rule.py` reads the sources): every earthquake
+  in NOAA NCEI's significant-earthquake database from 2008 to 2025 with
+  magnitude 6 or more and depth to 40 km, run on its USGS ComCat origin
+  and moment tensor, and every IVESPA eruption phase from 2009 on. Over
+  406 held-out earthquakes the death toll's band holds 249 of the 276
+  records where there is something to hold (90 %, against the nine in
+  ten it claims) with the central figure at 1.17× the record and a
+  scatter of 2.23 — calibrated, and two and a half orders of magnitude
+  wide; above Mw 7.5 it reads 0.41× and holds 20 of 29. The 37 columns
+  read 0.95× with a scatter of 0.44, 35 accepted. The report prints both
+  sets with every row and every miss, and the validation page shows
+  their cells; the scorecard's rows can now say whether a record of
+  nothing and a band of nothing is a check at all (`isInformative`).
+
 - **The second held-out group, run once.** Written down and pushed before
   the model was run on it (`validation/heldOutEvents.ts`, rules 7 to 10):
   Illapel 2015 at DART 32402, the eruption columns of Grímsvötn 2011 and

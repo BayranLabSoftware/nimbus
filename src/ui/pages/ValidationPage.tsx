@@ -103,9 +103,28 @@ interface ScoreCellRow {
 
 const SCORED_QUANTITIES = ['toll', 'wave', 'plume'] as const;
 
+/** A cell of a set held out by rule (heldOutByRule.ts): the set as a
+ *  whole, a size band, or a plume morphology. */
+interface RuleCellRow {
+  kind: string;
+  group: string | null;
+  all: ScoreFigures;
+  /** The rows whose record or band is above zero. */
+  informative?: ScoreFigures;
+  /** Those rows, less the ones checked in the net before the rule. */
+  unseen: ScoreFigures;
+}
+
+interface ByRuleData {
+  readOn: string;
+  earthquakes: { heldOut: number; seen: number; cells: RuleCellRow[] };
+  plumes: { rows: number; cells: RuleCellRow[] };
+}
+
 interface ValidationReportData {
   calibration: {
     scorecard: ScoreCellRow[];
+    byRule: ByRuleData;
     tolls: TollRow[];
     waves: WaveRow[];
     footprint: {
@@ -164,7 +183,12 @@ export function ValidationPage(): JSX.Element {
   const metres = (v: number): string => `${dec(v, v >= 10 ? 1 : 2)} m`;
   const distance = (m: number): string => (m >= 10_000 ? `${int(m / 1000)} km` : `${int(m)} m`);
 
-  const { tolls, waves, footprint, interpolation, anchors } = DATA.calibration;
+  const { tolls, waves, footprint, interpolation, anchors, byRule } = DATA.calibration;
+  const quakesByRule = byRule.earthquakes.cells.find((c) => c.group === null);
+  const biasText = (bias: number | null): string =>
+    bias === null
+      ? '—'
+      : `${bias >= 0.1 ? dec(bias, 2) : bias.toLocaleString(locale, { maximumSignificantDigits: 2 })}×`;
 
   const tollsInside = tolls.filter((r) => r.contains).length;
   const gated = tolls.filter((r) => r.gated);
@@ -389,6 +413,129 @@ export function ValidationPage(): JSX.Element {
           );
         })}
         <p className={styles.note}>{t('validation.scorecard.note')}</p>
+      </section>
+
+      <section className={styles.section} data-testid="validation-by-rule">
+        <h2>{t('validation.byRule.title')}</h2>
+        <p className={styles.prose}>
+          {t('validation.byRule.body', {
+            earthquakes: int(byRule.earthquakes.heldOut),
+            plumes: int(byRule.plumes.rows),
+          })}
+        </p>
+        <TableRegion label={t('validation.byRule.earthquakes')}>
+          <table className={styles.table}>
+            <caption>{t('validation.byRule.earthquakes')}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{t('validation.scorecard.table.events')}</th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.scorecard.table.rows')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.scorecard.table.bias')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.scorecard.table.scatter')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.byRule.table.inside')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.scorecard.table.band')}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {byRule.earthquakes.cells.map((c) => {
+                const held = c.informative ?? c.all;
+                return (
+                  <tr key={c.group ?? 'all'}>
+                    <th scope="row">
+                      {c.group === null ? t('simulator.eventTypes.earthquake') : `· ${c.group}`}
+                    </th>
+                    <td className={styles.num}>
+                      {t('validation.scorecard.scored', { rows: c.all.rows, scored: c.all.scored })}
+                    </td>
+                    <td className={styles.num}>{biasText(c.all.bias)}</td>
+                    <td className={styles.num}>
+                      {c.all.scatterLn === null ? '—' : dec(c.all.scatterLn, 2)}
+                    </td>
+                    <td className={styles.num}>
+                      {t('validation.byRule.insideShare', {
+                        inside: held.inside,
+                        rows: held.rows,
+                        percent: held.rows === 0 ? 0 : Math.round((100 * held.inside) / held.rows),
+                      })}
+                    </td>
+                    <td className={styles.num}>
+                      {held.medianBandDecades === null
+                        ? '—'
+                        : `10^${dec(held.medianBandDecades, 1)}`}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </TableRegion>
+        <TableRegion label={t('validation.byRule.plumes')}>
+          <table className={styles.table}>
+            <caption>{t('validation.byRule.plumes')}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{t('validation.scorecard.table.events')}</th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.scorecard.table.rows')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.scorecard.table.bias')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.scorecard.table.scatter')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.scorecard.table.inside')}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {byRule.plumes.cells.map((c) => (
+                <tr key={`${c.kind}:${c.group ?? 'all'}`}>
+                  <th scope="row">
+                    {c.group === null
+                      ? t('validation.scorecard.quantity.plume')
+                      : c.kind === 'morphology'
+                        ? `· ${t(`validation.byRule.morphology.${c.group}`)}`
+                        : `· ${c.group}`}
+                  </th>
+                  <td className={styles.num}>{int(c.all.rows)}</td>
+                  <td className={styles.num}>{biasText(c.all.bias)}</td>
+                  <td className={styles.num}>
+                    {c.all.scatterLn === null ? '—' : dec(c.all.scatterLn, 2)}
+                  </td>
+                  <td className={styles.num}>
+                    {t('validation.scorecard.acceptedOf', {
+                      inside: c.all.inside,
+                      rows: c.all.rows,
+                    })}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </TableRegion>
+        {quakesByRule !== undefined && (
+          <p className={styles.note}>
+            {t('validation.byRule.note', {
+              zeros: int(quakesByRule.all.rows - (quakesByRule.informative?.rows ?? 0)),
+              seen: int(byRule.earthquakes.seen),
+              bias: biasText(quakesByRule.unseen.bias),
+              inside: quakesByRule.unseen.inside,
+              rows: quakesByRule.unseen.rows,
+            })}
+          </p>
+        )}
       </section>
 
       <section className={styles.section}>

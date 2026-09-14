@@ -36,7 +36,7 @@ printed simulation report name the commit they come from.
 **An hour.** Open the
 [validation page](https://bayranlabsoftware.github.io/nimbus/?lng=en&m=validation),
 then [VALIDATION_REPORT.md](VALIDATION_REPORT.md): its summary, the
-scorecard, "Which checks are validation" and "Declared gaps". Then read the methodology
+scorecard, "Held out by rule", "Which checks are validation" and "Declared gaps". Then read the methodology
 cards for the domain you know best. Two questions are enough: is a
 declared gap wrong, or is one missing? And which row that contains its
 record convinces you least, and why?
@@ -73,6 +73,7 @@ pnpm simulate --help      # every event, preset and override
 | the shaken area against USGS ShakeMap     | `src/physics/validation/shakemapFootprint.ts`                               |
 | the scatter behind the bands              | `src/physics/uq/conventions.ts` and `src/physics/uq/tollBand.ts`            |
 | how accuracy and precision are scored     | `src/physics/validation/scorecard.ts`                                       |
+| the held-out sets chosen by rule          | `src/physics/validation/heldOutByRule.ts`, `scripts/held-out-by-rule.py`    |
 | defects found, fixed and pinned by a test | [BUG_REGISTRY.md](BUG_REGISTRY.md)                                          |
 | why a choice was made, and what it cost   | the dated sections of [SCIENCE.md](SCIENCE.md) and [ROADMAP.md](ROADMAP.md) |
 
@@ -90,6 +91,14 @@ is complete is itself a question for you.
   and three missing; Illapel 2015 at DART 32402 on its record (0.97×);
   three eruption columns inside, declared not blind; Fuego 2018's toll
   inside for the wrong reasons; Unzen 1991's missing.
+- **Held out by rule, the earthquake tolls are calibrated and wide.** Two
+  sets were chosen by rule and pushed before they were run
+  (`src/physics/validation/heldOutByRule.ts`): 406 held-out NCEI
+  earthquakes, whose band holds 249 of the 276 records where there is
+  something to hold, at 1.17× and a scatter of 2.23, but 20 of 29 above
+  Mw 7.5; and 37 IVESPA columns, 0.95× and 35 accepted. The eight rows
+  named by hand read 0.11×; the rule says that was the sample. Whether
+  rules 11 to 16 leave room for a choice is a question for you.
 - **Half the death tolls miss.** 9 of 18 fall outside their band, each
   with its cause beside it. Where an earthquake's band is four or five
   orders of magnitude wide, a record inside it has passed nothing: that

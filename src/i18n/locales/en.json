@@ -1330,6 +1330,22 @@
       "acceptedOf": "{{inside}} of {{rows}} accepted",
       "note": "Bias and scatter need two checks where both the model and the record are above zero, and mean little below five. Zeros are counted apart in the full report, which also scores every check, fitted ones included."
     },
+    "byRule": {
+      "title": "Held out by rule: every event a database holds",
+      "body": "A handful of held-out checks can be a lucky handful, and a list is only as fair as whoever wrote it. So two sets were chosen by a rule and committed before the model saw any of them: every earthquake of magnitude 6 or more and up to 40 km deep in NOAA's significant-earthquake database from 2008 to 2025 — {{earthquakes}} of them — and every eruption phase since 2009 in the IVESPA database — {{plumes}}. Nothing was tuned on them, and nothing is left out of the full report: every row, and every miss.",
+      "earthquakes": "Earthquake death tolls, held out by rule",
+      "plumes": "Eruption columns, held out by rule",
+      "table": {
+        "inside": "Inside, where there is something to hold"
+      },
+      "insideShare": "{{inside}} of {{rows}} · {{percent}} %",
+      "morphology": {
+        "strong": "strong plumes",
+        "weak": "weak plumes",
+        "Unknown": "morphology not given"
+      },
+      "note": "Inside counts only the events where the record or the band is above zero: {{zeros}} earthquakes killed nobody where the model's band also said nobody, which is inside by construction and would flatter the count. Without the {{seen}} earthquakes already checked above: bias {{bias}}, inside {{inside}} of {{rows}}. The database admits the earthquakes that did damage, so the quiet ones, where a false alarm would show, are few."
+    },
     "tolls": {
       "title": "Death tolls against events that were counted",
       "body": "Each event is run through the same casualty model the simulator uses, on the population maps it ships. The band is where nine in ten of 200 plausible versions of the event land — a claim that can be wrong. A gated row stops a release if its band ever stops containing the record; the others are measured and shown with their cause."

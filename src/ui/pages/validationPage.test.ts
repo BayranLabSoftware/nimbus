@@ -91,8 +91,18 @@ describe('the validation page has words for everything its data can say', () => 
       'scorecard.quantity.toll',
       'scorecard.quantity.wave',
       'scorecard.quantity.plume',
+      'byRule.title',
+      'byRule.body',
+      'byRule.earthquakes',
+      'byRule.plumes',
+      'byRule.table.inside',
+      'byRule.insideShare',
+      'byRule.note',
     ]) {
       expectText(`validation.${key}`);
+    }
+    for (const c of report.calibration.byRule.plumes.cells) {
+      if (c.kind === 'morphology') expectText(`validation.byRule.morphology.${String(c.group)}`);
     }
     for (const gap of VALIDATION_GAPS) {
       expectText(`validation.gaps.${gap}.item`);

@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { scorecard, scoreStats, sizeBandOf, type ScoreRowInput } from './scorecard.js';
+import {
+  isInformative,
+  scorecard,
+  scoreStats,
+  sizeBandOf,
+  type ScoreRowInput,
+} from './scorecard.js';
 
 const row = (over: Partial<ScoreRowInput>): ScoreRowInput => ({
   name: 'row',
@@ -43,6 +49,15 @@ describe('the scorecard scores a ratio, and counts what a ratio cannot hold', ()
     expect(s.falseAlarms).toBe(1);
     expect(s.missedToZero).toBe(1);
     expect(s.inside).toBe(3);
+  });
+
+  it('counts a band of nothing about a record of nothing as uninformative', () => {
+    expect(isInformative(row({ record: 0, model: 0, bandHigh: 0 }))).toBe(false);
+    expect(isInformative(row({ record: 0, model: 0, bandHigh: 3 }))).toBe(true);
+    expect(isInformative(row({ record: 2, model: 0, bandHigh: 0 }))).toBe(true);
+    // Without a band, the model stands for it.
+    expect(isInformative(row({ record: null, model: 0.4, bandDecades: null }))).toBe(true);
+    expect(isInformative(row({ record: 0, model: 0, bandDecades: null }))).toBe(false);
   });
 
   it('reads the median band width only where rows have a band', () => {

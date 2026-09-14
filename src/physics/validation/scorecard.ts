@@ -45,6 +45,18 @@ export interface ScoreRowInput {
   /** Width of the model's predictive band in decades, where the row has
    *  one. */
   bandDecades: number | null;
+  /** The band's high end, where the row has a band. */
+  bandHigh?: number;
+}
+
+/**
+ * Whether a row can earn its "inside": its record, or the high end of
+ * its band — its model, where it has none — is above zero. A band of
+ * nothing about a record of nothing is inside by construction, and a
+ * set with many such rows would read as calibrated for it.
+ */
+export function isInformative(row: ScoreRowInput): boolean {
+  return (row.record ?? 0) > 0 || (row.bandHigh ?? row.model) > 0;
 }
 
 export interface ScoreStats {

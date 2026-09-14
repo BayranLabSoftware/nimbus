@@ -894,6 +894,92 @@ of magnitude wide. Every cell is scored on too few rows, and the table
 says so. That is the programme in one line: more held-out rows, chosen
 by rule, and a casualty model whose band can be both honest and narrow.
 
+### Held out by rule (14 September 2026)
+
+Eight held-out earthquakes cannot say whether a band holds nine records
+in ten, and a list is only as fair as whoever wrote it. So the next
+held-out sets were chosen by rules, written down and pushed
+(`validation/heldOutByRule.ts`, rules 11 to 16, commit `3726ade`) before
+the model was run on any of their rows:
+
+- every earthquake in NOAA NCEI's significant-earthquake database from
+  2008 to 2025 with magnitude 6 or more and focal depth 40 km or less:
+  409 records, 408 matched to their USGS ComCat origin and moment tensor
+  and run exactly as the first held-out rows were, against the deaths
+  the database gives the earthquake itself;
+- every IVESPA eruption phase from 2009 on, 37 of 134, after the
+  eruptions Mastin et al. 2009 fitted their relation on.
+
+`scripts/held-out-by-rule.py` reads the sources and writes the rows, and
+the validation report scores them at every commit. The first run,
+earthquakes held out (L'Aquila 2009 and Amatrice 2016 are tuned, and
+scored apart):
+
+| magnitude  | rows | with something | scored | bias  | scatter σ_ln | inside, with something | band   |
+| ---------- | ---- | -------------- | ------ | ----- | ------------ | ---------------------- | ------ |
+| all        | 406  | 276            | 138    | 1.17× | 2.23         | 249 of 276 (90 %)      | 10^2.6 |
+| Mw < 6.5   | 152  | 134            | 69     | 1.69× | 2.14         | 123 of 134 (92 %)      | 10^2.8 |
+| Mw 6.5–7.5 | 196  | 113            | 54     | 0.98× | 2.20         | 106 of 113 (94 %)      | 10^2.6 |
+| Mw ≥ 7.5   | 58   | 29             | 15     | 0.41× | 2.34         | 20 of 29 (69 %)        | 10^2.7 |
+
+"With something" leaves out the 130 rows where both the record and the
+band are zero, which are inside by construction; counted with them, the
+band holds 379 of 406. Without the six events run in the net before the
+rule, the bias is 1.26× and the band holds 246 of 270. The eruption
+columns: 0.95× with a scatter of 0.44, 35 of 37 accepted — strong
+plumes 1.03× (σ 0.16, six phases), weak ones 0.98× (0.53, eleven), those
+IVESPA gives no morphology 0.91× (0.44, twenty); without the three phases
+seen before, 0.95× and 32 of 34.
+
+Read plainly, it corrects the scorecard's first reading. Over four
+hundred earthquakes nobody picked, the death toll's band keeps its
+promise — nine records in ten where it claims nine — and the central
+figure is within a factor of 1.2 of the records on average. The 0.11×
+of eight rows named by hand was the sample, famous disasters among
+them, and not the model. What the rule confirms is the other half: a
+single event strays by a factor of nine either way (σ_ln 2.23), and the
+band keeps its promise by being two and a half orders of magnitude wide.
+The model is calibrated and it is not sharp. Nor is it calibrated
+everywhere: above Mw 7.5 it reads 0.41× and holds 20 records of 29.
+
+What the 27 earthquake rows outside their band have in common, written
+after the result, as rule 16 requires:
+
+- **Thirteen are a handful of deaths the model makes nothing of:** one
+  to ten dead against a band of zero, or zero to one — Sumatra's Mw 8.6
+  of 2012 with ten, Iquique 2014 with seven, and moderate events killing
+  one or two. A rate over a population cannot resolve them.
+- **Four are great ruptures read as circles about the epicentre.** The
+  rules give no rupture extent, and the offline harness counts people in
+  circles: Tōhoku's shaking, 1 474 dead against a band of 0 to 1 about
+  an epicentre at sea; Wenchuan 2008, 87 652 against 2 to 79 838;
+  Kahramanmaraş 2023, 56 697 against 9 to 44 812; Palu 2018, 4 340 dead
+  and 667 missing against 1 to 3 752. This is the Mw ≥ 7.5 cell.
+- **Two are doublets whose dead the database gives to one record.** The
+  Mw 7.5 nine hours after Kahramanmaraş reads 382 against none, and the
+  second Mw 6.4 at Ziarat in 2008, twelve hours after the first, 323
+  against none, while the first holds the 215. The model's figure for
+  each shock stands on its own; the record's does not.
+- **Five read high where nobody, or two, died:** Baja California 2010,
+  Michoacán 2013, Tecpan 2014, Ilam 2014 and Assam 2021 — the direction
+  of Pohang's miss in the net, with its cause not established here.
+- **Three are missed by the band's upper end:** Christchurch 2011, 185
+  against 0 to 29; Myanmar 2011, near Tachileik, 104 against 0 to 83;
+  Nura 2008 in Kyrgyzstan, 74 against 0 to 6.
+
+Two columns are outside: Merapi on 4 November 2010, 14.0 km above the
+vent against 5.5, and Cotopaxi's first phase in 2015, 6.5 against 2.1.
+Both are long phases, 36 and 14 hours, and the rate is their mass
+averaged over that time, while the height is the highest the column
+reached.
+
+NCEI admits an earthquake for its damage, ten deaths, magnitude 7.5,
+intensity X or a tsunami, so the set leans towards the damaging and the
+40 false alarms it counts are a floor. What it points at next: a casualty
+band that is sharp as well as calibrated, the extent of great ruptures in
+the offline harness, and a set of quiet earthquakes to count false alarms
+on.
+
 ### Burns, mass fire and later deaths (Phase 24)
 
 The blast bands of OTA 1979 are the prompt blast and collapse count

@@ -1417,6 +1417,22 @@
       "acceptedOf": "{{inside}} su {{rows}} accettati",
       "note": "Scarto e dispersione richiedono due controlli con modello e dato entrambi sopra zero, e sotto cinque dicono poco. Gli zeri sono contati a parte nel report completo, che valuta anche tutti i controlli, compresi quelli tarati."
     },
+    "byRule": {
+      "title": "Tenuti fuori per regola: ogni evento di un database",
+      "body": "Pochi controlli tenuti fuori possono essere pochi e fortunati, e una lista è imparziale quanto chi l'ha scritta. Così due insiemi sono stati scelti con una regola e registrati prima che il modello ne vedesse uno solo: ogni terremoto di magnitudo 6 o più, profondo fino a 40 km, nel database dei terremoti significativi della NOAA dal 2008 al 2025 — {{earthquakes}} — e ogni fase eruttiva dal 2009 nel database IVESPA — {{plumes}}. Niente è stato tarato su di loro, e il report completo li riporta tutti: ogni riga, compresi i casi mancati.",
+      "earthquakes": "Vittime dei terremoti, tenuti fuori per regola",
+      "plumes": "Colonne eruttive, tenute fuori per regola",
+      "table": {
+        "inside": "Dentro, dove c'è qualcosa da contenere"
+      },
+      "insideShare": "{{inside}} su {{rows}} · {{percent}} %",
+      "morphology": {
+        "strong": "colonne forti",
+        "weak": "colonne deboli",
+        "Unknown": "morfologia non indicata"
+      },
+      "note": "Dentro conta solo gli eventi in cui il dato o la banda sono sopra zero: {{zeros}} terremoti non hanno ucciso nessuno dove anche la banda del modello diceva nessuno, un «dentro» per costruzione che gonfierebbe il conto. Senza i {{seen}} terremoti già controllati sopra: scarto {{bias}}, dentro {{inside}} su {{rows}}. Il database accoglie i terremoti che hanno fatto danni, quindi quelli tranquilli, dove si vedrebbe un falso allarme, sono pochi."
+    },
     "tolls": {
       "title": "Vittime contro eventi contati",
       "body": "Ogni evento passa nello stesso modello di vittime che usa il simulatore, sulle mappe di popolazione che distribuisce. La banda è dove cadono nove versioni plausibili su dieci, fra 200 dello stesso evento — un'affermazione che può essere sbagliata. Una riga vincolante blocca un rilascio se la sua banda smette di contenere il dato registrato; le altre sono misurate e mostrate con la loro causa."

@@ -338,7 +338,7 @@ channelled footprint — and, for the whole programme, a held-out set
 chosen by rule rather than by list: IVESPA alone has 37 eruptions since
 2009 with independently estimated rates and heights.
 
-### 0c. A scorecard for accuracy and precision _(first version 14 September)_
+### 0c. A scorecard for accuracy and precision _(first version 14 September; the sets held out by rule run the same day)_
 
 What "gold standard" means for this project, as Andrea put it: not
 out-doing the specialists, but being the model others cite because its
@@ -360,6 +360,23 @@ crustal earthquake since 2008 with a toll in NCEI), grid verification of
 each module against its reference implementation across the inputs a
 custom scenario can set, and a casualty model narrow enough to be both
 calibrated and sharp.
+
+The sets chosen by rule were written down (`validation/heldOutByRule.ts`,
+commit `3726ade`) and run once the same day, and they read differently
+from the eight rows named by hand (SCIENCE.md, "Held out by rule"). Over
+406 held-out earthquakes — every NCEI significant earthquake of 2008–2025
+with magnitude 6 or more and depth to 40 km — the death toll's band holds
+249 records of the 276 where there is something to hold, 90 % against the
+nine in ten it claims, and the central figure reads 1.17× the record with
+a scatter of 2.23: calibrated, and two and a half orders of magnitude
+wide. Above Mw 7.5 it reads 0.41× and holds 20 of 29, the great ruptures
+the offline harness counts in circles. The 37 IVESPA columns since 2009
+read 0.95× with a scatter of 0.44, 35 accepted. The list after the
+scorecard, then, in order: a casualty band that is sharp as well as
+calibrated; the rupture's extent in the offline harness, so the Mw ≥ 7.5
+cell measures the model rather than the circle; a set of quiet
+earthquakes to count false alarms on; and grid verification against the
+reference implementations.
 
 ### 0b. Every source read against its record _(done 14 September; Vaiont and explosions re-tuned, the other gaps open and declared)_
 

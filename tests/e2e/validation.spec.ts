@@ -36,6 +36,12 @@ test.describe('validation page', () => {
       page.getByRole('heading', { level: 2, name: 'Which checks are validation' })
     ).toBeVisible();
     await expect(page.getByTestId('validation-roles').getByText('tuned on it')).toBeVisible();
+
+    // The sets chosen by rule: a row per cell, earthquakes then columns.
+    const { byRule } = report.calibration;
+    await expect(page.getByTestId('validation-by-rule').locator('tbody tr')).toHaveCount(
+      byRule.earthquakes.cells.length + byRule.plumes.cells.length
+    );
   });
 
   test('is one click from the landing page', async ({ page }) => {
