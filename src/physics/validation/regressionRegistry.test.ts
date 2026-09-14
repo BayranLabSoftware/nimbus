@@ -37,6 +37,11 @@ import { mulberry32 } from '../montecarlo/sampling.js';
 import { compareWithRecord, RECORDED_EVENTS } from './recordedTolls.js';
 import { makeElevationGrid } from '../elevation/index.js';
 import { resetAppStore, useAppStore } from '../../store/useAppStore.js';
+import {
+  fetchTerrainGridForLocation,
+  TERRAIN_TILE_ZOOM,
+  tileBounds,
+} from '../../scene/terrainSampling.js';
 
 describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () => {
   it('B-001 Krakatau caldera-collapse near-field amplitude', () => {
@@ -363,6 +368,34 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     useAppStore.getState().setElevationGrid(null);
   });
 
+  it('B-025 A terrain block stops at the antimeridian', async () => {
+    // Pre-fix: tile columns past the antimeridian wrapped to the far
+    // side, so a block off Gisborne ran from −180° to 180°, and a strip
+    // along a fault that crossed it went the long way round the planet
+    // and was trimmed to forty tiles with the pick outside them.
+    const sea = (x: number, y: number) =>
+      Promise.resolve(
+        makeElevationGrid({
+          ...tileBounds(x, y, TERRAIN_TILE_ZOOM),
+          nLat: 256,
+          nLon: 256,
+          samples: new Float32Array(256 * 256).fill(-2_000),
+        })
+      );
+    const block = await fetchTerrainGridForLocation(-38.6, 179.5, undefined, sea);
+    expect(block.minLon).toBeGreaterThan(170);
+    expect(block.maxLon).toBeLessThanOrEqual(180);
+    const strip = await fetchTerrainGridForLocation(
+      51.5,
+      179.5,
+      { strikeDeg: 90, lengthM: 800_000 },
+      sea
+    );
+    expect(strip.minLon).toBeLessThan(179.5);
+    expect(strip.maxLon).toBeGreaterThanOrEqual(179.5);
+    expect(strip.maxLon - strip.minLon).toBeLessThan(20);
+  });
+
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
     // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
@@ -396,9 +429,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-024 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
+    // B-001..B-025 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
     // B-007 superseded by B-011).
-    const expectedRows = 24;
-    expect(expectedRows).toBe(24);
+    const expectedRows = 25;
+    expect(expectedRows).toBe(25);
   });
 });

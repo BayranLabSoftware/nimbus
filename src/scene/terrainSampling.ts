@@ -27,13 +27,14 @@
 import { makeElevationGrid, type ElevationGrid } from '../physics/elevation/index.js';
 import { destination } from '../physics/tsunami/ruptureGeometry.js';
 
-const TERRAIN_TILE_URL = 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
-const TILE_ZOOM = 8;
+export const TERRAIN_TILE_URL =
+  'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
+export const TERRAIN_TILE_ZOOM = 8;
 const TILE_PIXELS = 256;
 const MAX_CACHE = 16;
 
 /** (lat, lon) → tile (x, y) at a given OSM zoom level. */
-function lonLatToTile(lat: number, lon: number, z: number): { x: number; y: number } {
+export function lonLatToTile(lat: number, lon: number, z: number): { x: number; y: number } {
   const n = 2 ** z;
   const x = Math.floor(((lon + 180) / 360) * n);
   const latRad = (lat * Math.PI) / 180;
@@ -42,7 +43,7 @@ function lonLatToTile(lat: number, lon: number, z: number): { x: number; y: numb
 }
 
 /** Tile (x, y) → geographic bounds at a given zoom. */
-function tileBounds(
+export function tileBounds(
   x: number,
   y: number,
   z: number
@@ -82,6 +83,11 @@ function pushCache(key: string, grid: ElevationGrid): void {
   if (cache.length > MAX_CACHE) cache.pop();
 }
 
+/** A terrarium pixel's elevation, m. */
+export function terrariumElevation(r: number, g: number, b: number): number {
+  return r * 256 + g + b / 256 - 32_768;
+}
+
 /**
  * Decode a 256 × 256 terrarium PNG into a Float32Array of elevations.
  * Uses the browser ImageBitmap + OffscreenCanvas path — no need to
@@ -105,7 +111,7 @@ async function decodeTerrariumTile(url: string): Promise<Float32Array> {
       const r = img.data[i * 4] ?? 0;
       const g = img.data[i * 4 + 1] ?? 0;
       const b = img.data[i * 4 + 2] ?? 0;
-      samples[i] = r * 256 + g + b / 256 - 32_768;
+      samples[i] = terrariumElevation(r, g, b);
     }
     return samples;
   } finally {
@@ -113,21 +119,29 @@ async function decodeTerrariumTile(url: string): Promise<Float32Array> {
   }
 }
 
+/**
+ * Where a grid's tiles come from. The browser fetches and decodes them
+ * (`fetchTile`); the validation harness hands in a loader that reads
+ * them in Node, so the tiles it measures a site on are chosen and
+ * resampled by this module and not by a copy of it.
+ */
+export type TerrainTileLoader = (x: number, y: number) => Promise<ElevationGrid>;
+
 /** Fetch and decode one terrarium tile as a grid of its own. */
 async function fetchTile(x: number, y: number): Promise<ElevationGrid> {
-  const key = `${TILE_ZOOM.toString()}/${x.toString()}/${y.toString()}`;
+  const key = `${TERRAIN_TILE_ZOOM.toString()}/${x.toString()}/${y.toString()}`;
   const cached = lookupCache(key);
   if (cached !== null) return cached;
   const pending = inflight.get(key);
   if (pending !== undefined) return pending;
 
-  const url = TERRAIN_TILE_URL.replace('{z}', TILE_ZOOM.toString())
+  const url = TERRAIN_TILE_URL.replace('{z}', TERRAIN_TILE_ZOOM.toString())
     .replace('{x}', x.toString())
     .replace('{y}', y.toString());
 
   const request = (async (): Promise<ElevationGrid> => {
     const samples = await decodeTerrariumTile(url);
-    const bounds = tileBounds(x, y, TILE_ZOOM);
+    const bounds = tileBounds(x, y, TERRAIN_TILE_ZOOM);
     // The terrarium PNG is north-to-south row-major, same convention
     // as ElevationGrid — no transpose needed.
     const grid = makeElevationGrid({
@@ -206,17 +220,24 @@ async function fetchTileRange(
   x0: number,
   x1: number,
   y0: number,
-  y1: number
+  y1: number,
+  loadTile: TerrainTileLoader
 ): Promise<ElevationGrid> {
   const coords: { x: number; y: number }[] = [];
-  const span = 1 << TILE_ZOOM;
+  const span = 1 << TERRAIN_TILE_ZOOM;
   for (let ty = y0; ty <= y1; ty++) {
     if (ty < 0 || ty >= span) continue;
     for (let tx = x0; tx <= x1; tx++) {
-      coords.push({ x: ((tx % span) + span) % span, y: ty });
+      // The block stops at the antimeridian, as it stops at the poles.
+      // Wrapped, a tile past it came back with longitudes on the far
+      // side of the planet and the block's bounds ran from −180° to
+      // 180°: one grid around the whole Earth at twenty kilometres a
+      // column for a pick off Gisborne or in the Rat Islands (B-025).
+      if (tx < 0 || tx >= span) continue;
+      coords.push({ x: tx, y: ty });
     }
   }
-  const tiles = await Promise.all(coords.map((c) => fetchTile(c.x, c.y)));
+  const tiles = await Promise.all(coords.map((c) => loadTile(c.x, c.y)));
   const minLat = Math.min(...tiles.map((t) => t.minLat));
   const maxLat = Math.max(...tiles.map((t) => t.maxLat));
   const minLon = Math.min(...tiles.map((t) => t.minLon));
@@ -296,14 +317,15 @@ export interface TerrainSourceSpan {
 export async function fetchTerrainGridForLocation(
   latitude: number,
   longitude: number,
-  span?: TerrainSourceSpan
+  span?: TerrainSourceSpan,
+  loadTile: TerrainTileLoader = fetchTile
 ): Promise<ElevationGrid> {
-  const { x, y } = lonLatToTile(latitude, longitude, TILE_ZOOM);
+  const { x, y } = lonLatToTile(latitude, longitude, TERRAIN_TILE_ZOOM);
   const range = span === undefined ? null : tileRangeForSpan(latitude, longitude, span);
-  if (range !== null) return fetchTileRange(range.x0, range.x1, range.y0, range.y1);
-  const centre = await fetchTile(x, y);
+  if (range !== null) return fetchTileRange(range.x0, range.x1, range.y0, range.y1, loadTile);
+  const centre = await loadTile(x, y);
   if (landFraction(centre) >= MIN_TILE_LAND_FRACTION) return centre;
-  return fetchTileRange(x - 1, x + 1, y - 1, y + 1);
+  return fetchTileRange(x - 1, x + 1, y - 1, y + 1, loadTile);
 }
 
 /**
@@ -322,10 +344,19 @@ function tileRangeForSpan(
   const half = span.lengthM / 2;
   const a = destination(latitude, longitude, span.strikeDeg, half);
   const b = destination(latitude, longitude, span.strikeDeg, -half);
-  const ta = lonLatToTile(a.latitude, a.longitude, TILE_ZOOM);
-  const tb = lonLatToTile(b.latitude, b.longitude, TILE_ZOOM);
-  let x0 = Math.min(ta.x, tb.x) - 1;
-  let x1 = Math.max(ta.x, tb.x) + 1;
+  const ta = lonLatToTile(a.latitude, a.longitude, TERRAIN_TILE_ZOOM);
+  const tb = lonLatToTile(b.latitude, b.longitude, TERRAIN_TILE_ZOOM);
+  // Columns counted from the pick's side of the antimeridian. An end
+  // past it wraps to the far column, and the range from there back to
+  // the pick went the long way round the planet, trimmed to forty tiles
+  // somewhere in the middle of it with the pick outside (B-025).
+  // `fetchTileRange` drops the columns past the edge.
+  const columns = 1 << TERRAIN_TILE_ZOOM;
+  const pick = lonLatToTile(latitude, longitude, TERRAIN_TILE_ZOOM);
+  const unwrap = (tx: number): number =>
+    tx - pick.x > columns / 2 ? tx - columns : pick.x - tx > columns / 2 ? tx + columns : tx;
+  let x0 = Math.min(unwrap(ta.x), unwrap(tb.x)) - 1;
+  let x1 = Math.max(unwrap(ta.x), unwrap(tb.x)) + 1;
   let y0 = Math.min(ta.y, tb.y) - 1;
   let y1 = Math.max(ta.y, tb.y) + 1;
   // A rupture that fits inside the ordinary block asks for nothing

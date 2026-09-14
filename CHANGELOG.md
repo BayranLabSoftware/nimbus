@@ -252,6 +252,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The terrain under a pick near the antimeridian is the terrain under
+  it.** Where the tile under a pick is mostly sea, the globe fetches the
+  eight around it; next to the 180th meridian the ones past it came back
+  with longitudes on the far side of the planet, and the grid they were
+  resampled into ran from −180° to 180°: one grid round the whole Earth,
+  twenty kilometres a column, for a pick off Gisborne or in the Rat
+  Islands. A rupture strip that crossed the meridian went the long way
+  round and ended up in the middle of the planet, with the pick outside
+  it (B-025). Blocks and strips now stop at the meridian, as they stop at
+  the poles.
+
 - **An earthquake takes its ground from the terrain under the pick.**
   With no Vs30 typed in, the simulator reads one off the slope of the
   terrain tile under the epicentre. A Launch pressed before the new
