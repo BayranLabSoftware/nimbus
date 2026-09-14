@@ -146,21 +146,33 @@ export function meanAbsoluteBias(cells: readonly { bias: number | null }[]): num
     : biases.reduce((a, b) => a + Math.abs(b), 0) / biases.length;
 }
 
-/** Rule 18's winner. */
-export function chooseContourLaw(scores: Readonly<Record<ContourLaw, readonly ContourCell[]>>): {
-  winner: ContourLaw;
-  meanAbsoluteBias: Record<ContourLaw, number>;
-} {
+/** Rule 18's choice among any candidates: the one with the smallest
+ *  mean absolute bias, if it beats the one in place by the margin, and
+ *  the one in place otherwise. Rules 21 and 22 of siteVs30.ts choose
+ *  with it too. */
+export function chooseCandidate<T extends string>(
+  candidates: readonly T[],
+  inPlace: T,
+  scores: Readonly<Record<T, readonly { bias: number | null }[]>>
+): { winner: T; meanAbsoluteBias: Record<T, number> } {
   const measured = Object.fromEntries(
-    CONTOUR_LAWS.map((law) => [law, meanAbsoluteBias(scores[law])])
-  ) as Record<ContourLaw, number>;
-  const shipped: ContourLaw = 'joynerBoore1981';
-  let best: ContourLaw = shipped;
-  for (const law of CONTOUR_LAWS) {
-    if (measured[law] < measured[best]) best = law;
+    candidates.map((c) => [c, meanAbsoluteBias(scores[c])])
+  ) as Record<T, number>;
+  let best = inPlace;
+  for (const c of candidates) {
+    if (measured[c] < measured[best]) best = c;
   }
-  const winner = measured[shipped] - measured[best] >= CONTOUR_LAW_MARGIN ? best : shipped;
+  const winner = measured[inPlace] - measured[best] >= CONTOUR_LAW_MARGIN ? best : inPlace;
   return { winner, meanAbsoluteBias: measured };
+}
+
+/** Rule 18's winner. The law in place was Joyner & Boore 1981 when rule
+ *  18 ran, and is Boore et al. 2014 since rule 19 adopted it. */
+export function chooseContourLaw(
+  scores: Readonly<Record<ContourLaw, readonly ContourCell[]>>,
+  inPlace: ContourLaw
+): { winner: ContourLaw; meanAbsoluteBias: Record<ContourLaw, number> } {
+  return chooseCandidate(CONTOUR_LAWS, inPlace, scores);
 }
 
 /** Rule 19's test of a winner on the tolls: per magnitude cell, the

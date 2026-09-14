@@ -969,6 +969,20 @@ and every preset stands on reference rock, and ShakeMaps count softer
 ground), and a relation for long ruptures and trench earthquakes above
 Mw 7.5. Both are chosen the way this one was.
 
+The first is written down, before any row ran on it: rules 20 to 22 in
+`validation/siteVs30.ts`. Reading the code for it showed that the harness
+and the browser never stood on the same ground. With no Vs30 typed in,
+the store gives the simulator the Vs30 of the slope under the pick; the
+harness ran every earthquake on rock. So the harness takes the ground as
+the browser takes it, read on the same tiles by the same code; the
+ground rule is chosen on the same ShakeMaps among three written
+beforehand — the browser's slope, rock, and the slope on land with rock
+under the sea; and the law is chosen once more on whichever ground
+stands. Two defects of the browser turned up on the way and are fixed: a
+Launch that beat the new pick's tile read its Vs30 off the last pick's
+(B-024), and a block of tiles next to the antimeridian ran round the
+planet (B-025).
+
 ### 5. Widen the anchors where the model is blind
 
 Volcanoes have two toll rows and Pinatubo is 97× out; Merapi 2010,

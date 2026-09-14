@@ -730,7 +730,7 @@ const CONTOUR_LAW_LABEL: Readonly<Record<ContourLaw, string>> = {
  *  run on it, scored per magnitude cell over the rows with something. */
 function ruleTollCells(law: ContourLaw): { group: string; stats: ScoreStats }[] {
   const rows = RULE_EARTHQUAKES.filter((q) => q.role === 'heldOut').map((q) => {
-    const toll = compareWithRecord(ruleEarthquakeEvent(q.row, law));
+    const toll = compareWithRecord(ruleEarthquakeEvent(q.row, { contourLaw: law }));
     const score: ScoreRowInput = {
       name: q.event.name,
       quantity: 'toll',
@@ -760,7 +760,7 @@ interface ContourLawRun {
 }
 
 function runContourLaws(sets: RuleSets): ContourLawRun {
-  const comparison = compareContourLaws(RULE_SHAKEMAPS);
+  const comparison = compareContourLaws(RULE_SHAKEMAPS, { inPlace: 'joynerBoore1981' });
   // The adopted law is the simulator's default, which the sets held out
   // by rule have just been run on; only the law used before is run again.
   const adopted = SIZE_BANDS.earthquake.map((b) => ({

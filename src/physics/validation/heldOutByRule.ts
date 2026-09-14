@@ -143,11 +143,14 @@ const HOUR_S = 3_600;
 const NCEI = 'NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K)';
 
 /** A row as the net's toll harness runs it; `contourLaw` for rule 19,
- *  which runs the candidates on the same rows. */
+ *  which runs the candidates on the same rows, and `vs30` for rules 21
+ *  and 22 of siteVs30.ts, which run them on the ground each site rule
+ *  gives. */
 export function ruleEarthquakeEvent(
   row: RuleEarthquakeRow,
-  contourLaw?: ContourLaw
+  options: { contourLaw?: ContourLaw; vs30?: number } = {}
 ): RecordedEvent {
+  const { contourLaw, vs30 } = options;
   return {
     // ComCat's time to the minute: the database lists some places twice
     // on one day, a foreshock and its mainshock.
@@ -164,6 +167,7 @@ export function ruleEarthquakeEvent(
         depth: m(row.depthKm * 1_000),
         faultType: row.faultType,
         ...(contourLaw === undefined ? {} : { contourLaw }),
+        ...(vs30 === undefined ? {} : { vs30 }),
       }),
     }),
     gated: false,

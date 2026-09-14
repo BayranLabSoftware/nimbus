@@ -90,18 +90,31 @@ describe('rule 18: a score on shaking', () => {
         missed: 0,
       }));
     expect(
-      chooseContourLaw({
-        joynerBoore1981: cells(0.3),
-        boore2014: cells(0.27),
-        'boore2014FromMw7.5': cells(0.29),
-      }).winner
+      chooseContourLaw(
+        {
+          joynerBoore1981: cells(0.3),
+          boore2014: cells(0.27),
+          'boore2014FromMw7.5': cells(0.29),
+        },
+        'joynerBoore1981'
+      ).winner
     ).toBe('joynerBoore1981');
     expect(
-      chooseContourLaw({
-        joynerBoore1981: cells(0.3),
-        boore2014: cells(-0.1),
-        'boore2014FromMw7.5': cells(0.2),
-      }).winner
+      chooseContourLaw(
+        {
+          joynerBoore1981: cells(0.3),
+          boore2014: cells(-0.1),
+          'boore2014FromMw7.5': cells(0.2),
+        },
+        'joynerBoore1981'
+      ).winner
+    ).toBe('boore2014');
+    // And the other way round, once the law in place is the winner.
+    expect(
+      chooseContourLaw(
+        { joynerBoore1981: cells(0.27), boore2014: cells(0.3), 'boore2014FromMw7.5': cells(0.29) },
+        'boore2014'
+      ).winner
     ).toBe('boore2014');
   });
 });

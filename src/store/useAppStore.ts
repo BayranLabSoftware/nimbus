@@ -1653,7 +1653,14 @@ const TSUNAMI_TOLL_SOURCE = 'GHS-POP 2020 (JRC), coastal land density';
  */
 export function terrainSpanForState(state: AppStore): TerrainSourceSpan | undefined {
   if (state.eventType !== 'earthquake') return undefined;
-  const input = state.earthquake.input;
+  return terrainSpanForEarthquake(state.earthquake.input);
+}
+
+/** The span of `terrainSpanForState` for one earthquake's inputs, which
+ *  the validation harness reads its sites with. */
+export function terrainSpanForEarthquake(
+  input: EarthquakeScenarioInput
+): TerrainSourceSpan | undefined {
   const strikeDeg = input.strikeAzimuthDeg;
   if (strikeDeg === undefined || !Number.isFinite(strikeDeg)) return undefined;
   const lengthM =
