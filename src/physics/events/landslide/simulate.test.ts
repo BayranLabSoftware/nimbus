@@ -9,12 +9,14 @@ describe('simulateLandslide', () => {
     expect(a).toEqual(b);
   });
 
-  it('Storegga preset matches the Bondevik 2005 5-15 m source amplitude band', () => {
-    // Submarine regime → K_submarine = 0.005 (re-calibrated against
-    // Bondevik et al. 2005, Norwegian coast runup 10-25 m → source
-    // amp 5-10 m). The previous test pinned the unphysical 126 m
-    // produced by the rigid-block K=0.10 prefactor — fixed by the
-    // regime-dependent prefactor.
+  it('Storegga preset keeps the 2-15 m source amplitude its prefactor was set on', () => {
+    // Submarine regime → K_submarine = 0.005, set on a 5-10 m source
+    // amplitude that was credited to Bondevik et al. 2005. The paper
+    // reads run-up from deposits (10-12 m in western Norway) and gives
+    // no source amplitude, so this pins a calibration, not a record —
+    // a declared gap of the validation report. The previous test
+    // pinned the unphysical 126 m produced by the rigid-block K = 0.10
+    // prefactor.
     const r = simulateLandslide(LANDSLIDE_PRESETS.STOREGGA_8200_BP.input);
     expect(r.tsunami).not.toBeNull();
     if (r.tsunami === null) return;
@@ -22,7 +24,9 @@ describe('simulateLandslide', () => {
     expect(r.tsunami.sourceAmplitude as number).toBeLessThan(15);
   });
 
-  it('Storegga preset reaches Bondevik 2005 trans-Atlantic amplitudes via slide-footprint cavity', () => {
+  it('Storegga preset reaches metre-scale amplitudes at 1 000 km via the slide-footprint cavity', () => {
+    // The metre-scale band is this project's inference from the run-up
+    // Bondevik et al. 2005 read from deposits, not a figure they give.
     // The 1/r far-field decay needs the actual slide-footprint radius
     // (≈ 96 km from the 290 × 100 km Bondevik 2005 Fig. 1 outline),
     // NOT the V^(1/3) generic estimate (≈ 14 km). Pre-fix the cavity

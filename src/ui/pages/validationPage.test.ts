@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import en from '../../i18n/locales/en.json';
 import it_ from '../../i18n/locales/it.json';
 import report from '../../../docs/VALIDATION_REPORT.json';
+import { VALIDATION_GAPS } from './validationGaps.js';
 
 /**
  * The validation page reads its figures from the generated report and
@@ -78,14 +79,7 @@ describe('the validation page has words for everything its data can say', () => 
     ]) {
       expectText(`validation.${key}`);
     }
-    for (const gap of [
-      'evacuation',
-      'farField',
-      'coastalOffline',
-      'impactToll',
-      'surfaceBurst',
-      'outsideCount',
-    ]) {
+    for (const gap of VALIDATION_GAPS) {
       expectText(`validation.gaps.${gap}.item`);
       expectText(`validation.gaps.${gap}.note`);
     }

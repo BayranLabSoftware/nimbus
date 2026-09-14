@@ -1507,6 +1507,34 @@
         "item": "Il bilancio costiero non è in queste tabelle",
         "note": "Ha bisogno dei dati veri del fondale, che scarica solo il sito; si misura nel browser ed è documentato nella roadmap."
       },
+      "bandPhysicsOnly": {
+        "item": "La banda lascia fuori le persone e gli edifici",
+        "note": "La banda dei nove casi su dieci ridisegna il terremoto — magnitudo, profondità, terreno, quanto forte scuote il suolo — ma tiene ferme la mappa della popolazione e la curva di mortalità di ogni Paese. Quando gli edifici di un paese sono molto più fragili della media nazionale, come ad Amatrice e in Nepal, il dato cade fuori e la banda non può allargarsi per avvisarlo."
+      },
+      "subduction": {
+        "item": "I terremoti delle fosse oceaniche usano regole fatte per quelli sulla terraferma",
+        "note": "Lo scuotimento viene da relazioni ricavate su terremoti crostali poco profondi, e a ogni faglia è data la rigidità della normale roccia crostale. I grandi terremoti di fossa sono diversi su entrambi i fronti: il modello dipinge un largo tratto del Giappone a un'intensità che il terremoto del 2011 non ha mai raggiunto, e le rotture più superficiali — quelle che fanno tsunami insolitamente grandi — scorrono più di quanto conceda una rigidità sola."
+      },
+      "tunedUnsourced": {
+        "item": "Due tarature delle onde poggiano su numeri che le loro fonti non danno",
+        "note": "Il crollo dell'Anak Krakatau del 2018 è stato tarato su un'onda di circa 85 m attribuita a uno studio del 2019 che ne simula una di quasi 50 m; Storegga su un'onda di 5–10 m attribuita a uno studio che misurava i depositi sulla costa. Restano così finché non si sceglie un numero che le fonti danno davvero, e intanto sono segnalate qui."
+      },
+      "unread": {
+        "item": "Tre numeri non sono stati controllati sulla loro fonte",
+        "note": "I 30 cm registrati da una boa a 1 242 km dal Tōhoku, su cui è tarato un controllo delle onde; i tempi d'arrivo degli tsunami, la cui fonte citata non esiste, per cui i loro test sono spenti; e la profondità dei grandi crateri, presa da uno studio su Venere attraverso un articolo successivo che lo cita."
+      },
+      "airburstShock": {
+        "item": "Quanto lontano arriva l'onda d'urto di un airburst non è validato",
+        "note": "A un'esplosione alta nel cielo un fattore tarato dà una portata maggiore. Per Chelyabinsk disegna l'anello dei danni leggeri a 96 km, vicino ai 108 km fino a cui lo studio di quell'evento modella i vetri rotti — ma per una pressione sette volte più debole, che il modello porta a circa 640 km."
+      },
+      "explosionProject": {
+        "item": "Parti del modello delle esplosioni sono di questo progetto, non del manuale",
+        "note": "Le ustioni partono da dosi di calore fisse, dove Glasstone & Dolan le fanno crescere con la potenza dell'arma; la portata della radiazione iniziale segue una formula di questo progetto; il calore che un'esplosione irraggia tra il suolo e l'aria è una retta tra i due valori del manuale; e i tassi di mortalità delle esplosioni convenzionali sono stati scritti avendo Beirut davanti."
+      },
+      "volcanoCalibrations": {
+        "item": "Le relazioni dei vulcani sono tarature di questo progetto",
+        "note": "Quanto corrono le colate piroclastiche, dove cade la cenere, fin dove arrivano i lahar e quanto un'eruzione raffredda il clima sono fissati su eruzioni di riferimento che la revisione delle fonti di settembre 2026 non è tornata a controllare."
+      },
       "impactToll": {
         "item": "Nessun bilancio d'impatto potrà mai essere verificato",
         "note": "Nessun impatto d'asteroide nella storia registrata ha ucciso qualcuno che sia stato contato. Il simulatore lo dice accanto a ogni bilancio d'impatto."

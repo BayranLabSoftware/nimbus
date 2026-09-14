@@ -267,7 +267,7 @@ in the net:
 
 Each has to go in with its role written before its result is seen.
 
-### 0b. Every source read against its record _(done 14 September; Vaiont and explosions re-tuned, the other gaps open)_
+### 0b. Every source read against its record _(done 14 September; Vaiont and explosions re-tuned, the other gaps open and declared)_
 
 A reviewer checks citations before physics, and until 14 September
 nothing here had. Two passes now exist. `pnpm audit:sources` resolves
@@ -325,6 +325,14 @@ the candidates for re-tuning:
   published table of tsunami arrival times; the tests that need them are
   skipped. The Venus II chapter behind the complex-crater depth, read only
   through Collins et al. 2005.
+
+Every item above is now a declared gap of the validation report and of
+the public validation page, together with two the reading made plain
+without being about one source: the toll band holds the population and
+the fatality curves fixed, and subduction earthquakes are shaken with
+crustal relations and slip on one rigidity of 30 GPa (Bilek & Lay 1999
+infer it lower on shallow megathrusts). The page's list lives in
+`src/ui/pages/validationGaps.ts`.
 
 ### 1. Verify the layers, not just the toll _(intensity done, 9 September)_
 

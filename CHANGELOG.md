@@ -35,6 +35,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   entered the water. The report and the public validation page both say
   so, computed from the rows rather than written in.
 
+- **What the source review found and did not fix is declared.** The
+  validation report and the public validation page now list seven more
+  gaps: the toll band holds the population and the fatality curves
+  fixed; subduction earthquakes are shaken with crustal relations and
+  slip on one rigidity; Anak Krakatau and Storegga are tuned on numbers
+  their sources do not give; three numbers are not traced to a source
+  read here (DART 21413's 30 cm, the arrival-time table, the Venus crater
+  depth); an airburst's altitude factor reaches 640 km at the threshold
+  Popova et al. use for Chelyabinsk's 108 km; parts of the explosion model
+  are the project's rather than Glasstone & Dolan's; and the volcanic
+  relations were not rechecked. The page's list comes from one module
+  that the locale test reads, so a gap cannot appear without words.
+
 - **A custom explosion can be shared by link.** Yield, height or depth
   of burst, ground type, wind and charge type travel in short keys
   (`y`, `h` — negative for a depth under the water — `gt`, `ws`, `wdir`,

@@ -5,6 +5,7 @@ import { BUILD_INFO, shortCommit, validationReportUrl, REPOSITORY_URL } from '..
 import { useAppStore } from '../../store/index.js';
 import { cx } from '../utils/cx';
 import styles from './ValidationPage.module.css';
+import { VALIDATION_GAPS } from './validationGaps.js';
 
 /**
  * The model against the record, in public.
@@ -577,16 +578,7 @@ export function ValidationPage(): JSX.Element {
         <h2>{t('validation.gaps.title')}</h2>
         <p className={styles.prose}>{t('validation.gaps.body')}</p>
         <ul className={styles.gaps}>
-          {(
-            [
-              'evacuation',
-              'farField',
-              'coastalOffline',
-              'impactToll',
-              'surfaceBurst',
-              'outsideCount',
-            ] as const
-          ).map((g) => (
+          {VALIDATION_GAPS.map((g) => (
             <li key={g}>
               <strong>{t(`validation.gaps.${g}.item`)}</strong>
               <span>{t(`validation.gaps.${g}.note`)}</span>

@@ -589,7 +589,7 @@
         "use": {
           "blast": {
             "role": "tuned",
-            "how": "The row checks the energy the preset carries against the 3–30 Mt the flattened forest allows, and two coefficients of the entry model were set on this event: PENETRATION_COEFFICIENT is \"tuned against Tunguska + Chelyabinsk observations\", and SACHS_BETA = 5/3 is \"a single fitted knob, chosen because it lands Chelyabinsk and Tunguska on observation\" (effects/atmosphericEntry.ts). The energy itself is inferred from the forest."
+            "how": "The row checks the energy the preset carries against the 3–30 Mt the flattened forest allows, and two coefficients of the entry model were set on this event: PENETRATION_COEFFICIENT is \"tuned against Tunguska + Chelyabinsk observations\", and SACHS_BETA = 5/3 is \"a fitted value, chosen so that Chelyabinsk and Tunguska land near their damage\" (effects/atmosphericEntry.ts). The altitude factor it sets is not validated by any record: see the declared gaps. The energy itself is inferred from the forest."
           }
         },
         "source": "Boslough & Crawford 2008; Chyba 1993 — 3–30 Mt from the flattened forest"

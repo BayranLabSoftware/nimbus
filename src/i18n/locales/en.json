@@ -1420,6 +1420,34 @@
         "item": "The coastal toll is not in these tables",
         "note": "It needs real sea-floor data that only the live site downloads; it is measured in the browser and documented in the roadmap."
       },
+      "bandPhysicsOnly": {
+        "item": "The band leaves out the people and the buildings",
+        "note": "The nine-in-ten band redraws the earthquake — its size, its depth, the ground, how hard the ground shakes — but keeps the population map and each country's fatality curve fixed. When a village's buildings are far weaker than its country's average, as at Amatrice and in Nepal, the record falls outside and the band cannot widen to warn of it."
+      },
+      "subduction": {
+        "item": "Ocean-trench earthquakes use rules made for earthquakes on land",
+        "note": "The shaking comes from relations fitted to shallow crustal earthquakes, and every fault is given the stiffness of ordinary crustal rock. The great trench earthquakes differ on both counts: the model paints a wide stretch of Japan at an intensity the 2011 earthquake never reached, and the shallowest ruptures — the ones that make unusually large tsunamis — slip further than a single stiffness allows."
+      },
+      "tunedUnsourced": {
+        "item": "Two wave calibrations rest on numbers their sources do not give",
+        "note": "The 2018 collapse of Anak Krakatau was tuned to a wave of about 85 m attributed to a 2019 study that simulates one of nearly 50 m; Storegga to a wave of 5–10 m attributed to a study that measured deposits on the coast. They stay as they are until a number the sources do give is chosen, and are marked here meanwhile."
+      },
+      "unread": {
+        "item": "Three numbers have not been checked against their source",
+        "note": "The 30 cm a buoy recorded 1 242 km from Tōhoku, on which one wave check is tuned; the tsunami arrival times, whose cited source does not exist, so their tests are switched off; and the depth of large craters, taken from a study of Venus through a later paper that quotes it."
+      },
+      "airburstShock": {
+        "item": "How far an airburst's shock reaches has not been validated",
+        "note": "A burst high in the air is given a longer reach by a fitted factor. For Chelyabinsk it draws the light-damage ring at 96 km, close to the 108 km out to which that event's study models broken windows — but for a pressure seven times weaker, which the model carries to about 640 km."
+      },
+      "explosionProject": {
+        "item": "Parts of the explosion model are this project's, not the book's",
+        "note": "Burns start at fixed doses of heat, where Glasstone & Dolan make them grow with the size of the weapon; the reach of the initial radiation follows a fit of this project's; the heat a burst radiates between the ground and the air is a straight line between the book's two values; and the death rates for conventional explosions were written with Beirut in view."
+      },
+      "volcanoCalibrations": {
+        "item": "The volcanic relations are this project's calibrations",
+        "note": "How far pyroclastic currents run, where ash falls, how far lahars travel and how much an eruption cools the climate are set on reference eruptions that the source review of September 2026 did not go back to check."
+      },
       "impactToll": {
         "item": "No impact toll can ever be checked",
         "note": "No asteroid impact in recorded history has killed anyone who was counted. The simulator says so beside every impact toll."
