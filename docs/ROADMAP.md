@@ -1016,6 +1016,13 @@ they do not hold where the hypocentral equation paints 298. The next step is
 that score, written first — hits, misses, false alarms and correct silences
 at each intensity — and tried on earthquakes nobody has read yet.
 
+Written the same night as rules 27 to 30 (`validation/prospectiveRules.ts`):
+the earthquakes are the ones that happen from 15 September 2026, read thirty
+days after each, and the score is the Peirce skill score over MMI VII and
+VIII, run once when eighty have a map — about a year. Every ring law
+committed before then is a candidate, the law in place stays unless beaten by
+a tenth, and a winner still answers to the dead.
+
 ### 5. Widen the anchors where the model is blind
 
 Volcanoes have two toll rows and Pinatubo is 97× out; Merapi 2010,

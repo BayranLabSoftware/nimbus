@@ -19,6 +19,14 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **A test the rings cannot have been fitted to.** Rules 27 to 30
+  (`validation/prospectiveRules.ts`) choose between the ring laws on the
+  earthquakes that happen from 15 September 2026 — the day after they were
+  written — once eighty of them have a USGS ShakeMap, about a year from now.
+  The score counts, at intensities VII and VIII, the bands both the rings
+  and the map reach, the ones either misses, and the ones both rightly
+  leave blank, which the earlier score gave no credit for.
+
 - **The intensity rings are checked against their authors' own code.**
   Boore et al. 2014, which draws the rings, agrees to within 0.0005 % with
   the values David M. Boore's Fortran program gives at 600 inputs —
