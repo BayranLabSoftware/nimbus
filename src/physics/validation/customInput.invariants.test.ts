@@ -249,7 +249,7 @@ describe('I4 PHYSICAL PLAUSIBILITY — extreme inputs do not produce nonphysical
   });
 
   it('asymmetry factor on impact angle stays in [0, 1] for all valid angles', () => {
-    // I4: Schultz-Anderson 1996 asymmetry is bounded.
+    // I4: the ejecta asymmetry heuristic is bounded.
     for (const angleDeg of [10, 30, 45, 60, 90]) {
       const r = simulateImpact({
         impactorDiameter: m(100),

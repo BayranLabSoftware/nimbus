@@ -1959,7 +1959,7 @@ export function Globe(): JSX.Element {
       }
 
       // --- Impact ejecta blanket: asymmetric ellipse offset downrange.
-      // Schultz & Anderson (1996) oblique-impact asymmetry: the ellipse
+      // Nimbus oblique-impact heuristic (effects/asymmetry.ts): the ellipse
       // stretches along the impactor's downrange azimuth and slides
       // forward by the same amount, producing the "butterfly" pattern
       // visible at θ < 30° while staying near-circular for steep

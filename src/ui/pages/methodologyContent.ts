@@ -62,7 +62,8 @@ const popova2013: Citation = {
 const mcgetchin1973: Citation = {
   authors: 'McGetchin, T. R., Settle, M. & Head, J. W.',
   year: 1973,
-  title: 'Radial thickness variation in impact crater ejecta',
+  title:
+    'Radial thickness variation in impact crater ejecta: implications for lunar basin deposits',
   venue: 'Earth and Planetary Science Letters 20 (2), 226–236',
   doi: '10.1016/0012-821X(73)90162-3',
 };
@@ -88,7 +89,7 @@ const wunnemann2010: Citation = {
   authors: 'Wünnemann, K., Collins, G. S. & Weiss, R.',
   year: 2010,
   title:
-    "Impact of a cosmic body into Earth's ocean and the generation of a large tsunami wave: insight from numerical modeling",
+    "Impact of a cosmic body into Earth's ocean and the generation of large tsunami waves: Insight from numerical modeling",
   venue: 'Reviews of Geophysics 48, RG4006',
   doi: '10.1029/2009RG000308',
 };
@@ -97,7 +98,7 @@ const ota1979: Citation = {
   authors: 'U.S. Congress, Office of Technology Assessment',
   year: 1979,
   title: 'The Effects of Nuclear War',
-  venue: 'OTA-NS-89, Washington, DC: U.S. Government Printing Office — ch. II, table 2',
+  venue: 'Washington, DC: U.S. Government Printing Office (NTIS PB-296946) — ch. II, fig. 1, p. 19',
 };
 
 const jaiswalWald2010: Citation = {
@@ -168,7 +169,9 @@ const postol1986: Citation = {
   authors: 'Postol, T. A.',
   year: 1986,
   title: 'Possible fatalities from superfires following nuclear attacks in or near urban areas',
-  venue: 'The Medical Implications of Nuclear War, National Academy Press, pp. 15–72',
+  venue:
+    'In Solomon, F. & Marston, R. Q. (eds.), The Medical Implications of Nuclear War, National Academy Press, pp. 15–72',
+  doi: '10.17226/940',
 };
 const kinneyGraham1985: Citation = {
   authors: 'Kinney, G. F. & Graham, K. J.',
@@ -189,8 +192,9 @@ const nordyke1962: Citation = {
 const needham2018: Citation = {
   authors: 'Needham, C. E.',
   year: 2018,
-  title: 'Blast Waves (2nd ed.), Chapters 3–5 (Height-of-burst effects)',
+  title: 'Blast Waves (2nd ed.), ch. 14 "Height of Burst Effects", pp. 227–281',
   venue: 'Springer',
+  doi: '10.1007/978-3-319-65382-2',
 };
 
 const longmire1978: Citation = {
@@ -542,8 +546,10 @@ const grilli2019: Citation = {
 const schultzAnderson1996: Citation = {
   authors: 'Schultz, P. H. & Anderson, R. R.',
   year: 1996,
-  title: 'Asymmetry of ejecta and target damage in oblique impacts',
-  venue: 'Lunar and Planetary Science XXVII, 1149–1150',
+  title: 'Asymmetry of the Manson impact structure: Evidence for impact angle and direction',
+  venue:
+    'In Koeberl, C. & Anderson, R. R. (eds.), The Manson Impact Structure, Iowa: Anatomy of an Impact Crater, GSA Special Paper 302',
+  doi: '10.1130/0-8137-2302-7.397',
 };
 
 const boslough2008: Citation = {
@@ -647,24 +653,26 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'airburst',
         name: 'Atmospheric airburst classifier',
-        formula: 'h_breakup = H · ln(ρ₀ · v² / Y) ;  h_burst = h_breakup − 2H − k_D·ln(D/D₀)',
+        formula:
+          'h_breakup = H · ln(ρ₀ · v² / Y) ;  h_burst = h_breakup − 2H − 1.2 · H · ln(D / 10 m)',
         description:
-          'Chyba–Thomas–Zahnle 1993 pancake model. Classifies the impactor as INTACT, PARTIAL_AIRBURST or COMPLETE_AIRBURST, with energyFractionToGround used to scale the crater.',
-        citation: chyba1993,
+          'A simplified pancake classifier (the pancake model is Chyba, Thomas & Zahnle 1993). h_breakup is the leading term of Collins et al. 2005 Eq. 11*, with H = 8 km and ρ₀ = 1.225 kg/m³. The −2H drop to the burst, the penetration term and the fraction of the energy that reaches the ground (gf: 0.30 for a burst below 5 km, falling linearly to 0.02 at 15 km and above, 1 for a body that reaches the ground) are Nimbus heuristics tuned on Tunguska and Chelyabinsk, not published equations. Classifies the impactor as INTACT, PARTIAL_AIRBURST or COMPLETE_AIRBURST; gf scales the crater, the ground-level damage and the seismic magnitude.',
+        citation: collins2005,
       },
       {
         id: 'chelyabinsk-validation',
-        name: 'Chelyabinsk 2013 validation anchor',
-        formula: '17 m S-type, 19 km/s → burst ≈ 22 km (observed 27 km)',
+        name: 'Chelyabinsk 2013 calibration anchor',
+        formula: '17 m, 19 km/s, Y = 2 MPa → burst ≈ 22 km (observed 27.0 km)',
         description:
-          'Popova et al. 2013 dataset used to calibrate the pancake-model penetration coefficient.',
+          'One of the two events the penetration term above was tuned on, so not an independent check. Popova et al. 2013 measured an entry at 19.16 ± 0.30 km/s and a burst at 27.0 km, and derived a diameter of 19.8 ± 4.6 m and an energy of 470–590 kt. The preset bursts at 22.1 km, 18 % low, with 0.33 Mt.',
         citation: popova2013,
       },
       {
         id: 'taxonomy',
         name: 'Impactor taxonomy presets',
         formula: 'COMETARY (ρ=600), C-type (2000), S-type (3300), M-type (5300), Iron (7800)',
-        description: 'Density class midpoints from Britt & Consolmagno 2003 Table 2.',
+        description:
+          'Nimbus preset densities in kg/m³. Two have near analogues in Britt & Consolmagno (2003), whose data are meteorites, not asteroids: C-type near the CI and CM carbonaceous chondrites (2.11–2.12 g/cm³, Table 2) and S-type near the ordinary chondrites (3.21–3.40 g/cm³, Table 4). The paper covers stony meteorites only; the M-type, iron and cometary values have no source here.',
         citation: brittConsolmagno2003,
       },
       {
@@ -678,24 +686,26 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'strat-dust',
         name: 'Stratospheric dust loading',
-        formula: 'M_dust ≈ 5 × 10¹⁶ · (E / 4 × 10²³ J)  kg',
-        description: 'Linear scaling anchored at the Chicxulub reference (Toon 1997 Table 3).',
+        formula: 'M_dust = 0.1 % · m_p ,   m_p ≈ 4 · Y · (25 km/s / v)^0.33  Tg   (Y in Mt)',
+        description:
+          'Toon et al. (1997) estimate the rock an impact pulverizes (eq. 10, about 300 times the impactor’s mass at 25 km/s) and take 0.1 % of it — some 30 % of the impactor’s mass — to reach the stratosphere as sub-micrometre dust (§8.2). Y is the energy that forms the crater, so an airburst lofts none. A Chicxulub-size impact, 10⁸ Mt at 20 km/s, gives ≈ 4 × 10¹⁴ kg.',
         citation: toon1997,
       },
       {
         id: 'acid-rain',
         name: 'Shock-produced HNO₃ mass',
-        formula: 'M_HNO3 ≈ 1 × 10¹⁶ · (E / 4 × 10²³ J)  kg',
+        formula: 'M_HNO₃ ≲ 3.1 × 10¹³ · (E / 10²³ J)  kg',
         description:
-          'Globally integrated atmospheric NOx/HNO₃ chemistry from bolide shock heating.',
+          'Nitric acid from the air an impact shock-heats, as if every NO molecule became HNO₃ — an upper limit. Scaled from the asteroid of Prinn & Fegley (1987), 5 × 10¹⁴ kg at 20 km/s, whose entry and ejecta plume make 3 × 10³⁸ NO molecules; their comet, 260 times more energetic, makes about as many per joule. The ejecta plume’s shock makes most of the NO, so E is the energy delivered to the ground.',
         citation: prinn1987,
       },
       {
         id: 'impact-tsunami-cavity',
         name: 'Ocean-impact tsunami cavity',
-        formula: 'R_C = (3·E / (2π · ρ_w · g))^(1/4) ;  A₀ = R_C / 2 ;  A(r) = A₀ · R_C / r',
+        formula:
+          'R_C = (3·E_c / (2π · ρ_w · g))^(1/4) ,  E_c = E · gf · f_water · f_sea ;  A₀ = 0.5·R_C·R_ref/(R_ref + R_C), R_ref = 3 km ;  A(r) = A₀ · R_C / r',
         description:
-          'Ward & Asphaug 2000 energy-partitioning cavity plus 1/r cylindrical spreading.',
+          'A reference row, not the model’s best estimate (that is the rim wave below). The cavity is Ward & Asphaug’s (2000) eq. 12 for a cavity as deep as its radius, with half the energy in the water; they take about 15 % and a diameter 2.5–3 times the depth, which gives a cavity 9–17 % narrower. It is within 2 % of the Gault & Sonett law R_w = 121·E^(1/4) m (E in kt) that Wünnemann et al. (2010) quote. The source amplitude A₀ is a project calibration — Ward & Asphaug start the wave at min(D_C, h), the cavity depth or the water depth (eq. 18) — and 1/r simplifies their decay, which runs from r^−1/2 for a cavity much wider than the water is deep to r^−1.075 for a much narrower one (eq. 17).',
         citation: ward2000,
       },
       {
@@ -713,66 +723,66 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'A_up = min(0.28 R_w, h) · R_w / r ;  A_low = min{A_r, 0.06 · min(R_w/3, h) · (5R_w / r)^q_c},  q_c = 3 e^(−0.8 L/h) (h/L ≥ 2)',
         description:
-          'Wünnemann, Collins & Weiss 2010 eqs. 7–8 and 9b/10b — the upper and lower bounds the Earth Impact Effects Program reports. The collapse wave forms only when the water column is at least twice the impactor diameter and breaks near the source, which is why the lower bound for a deep-ocean impact is decimetres at 1 000 km while the upper bound is tens of metres: the far-field hazard of impact tsunamis is still an open question (Wünnemann 2007, Melosh 2003).',
+          'Wünnemann, Collins & Weiss 2010 eqs. 7–8 and 9b/10b — the upper and lower bounds the Earth Impact Effects Program reports. The collapse wave breaks near the source and forms only in deeper water: the paper prints eq. 9b as valid for h/L < 2, which contradicts its own statement that no collapse wave forms in shallow water, and Nimbus reads it as h/L ≥ 2. (The paper’s text also gives the collapse-wave height as 0.06 · min(h, 2R_w), where eq. 9b has min(R_w/3, h); Nimbus follows the equation.) This is why the lower bound for a deep-ocean impact is decimetres at 1 000 km while the upper bound is tens of metres: the far-field hazard of impact tsunamis is still an open question (Wünnemann 2007, Melosh 2003).',
         citation: wunnemann2010,
       },
       {
         id: 'impact-sea-coupling',
         name: 'Inland impact: how the sea is reached',
         formula:
-          'reach = max(R_rim, R_w, r_ejecta(1 m)) ;  f_sea = 1 for d ≤ max(R_rim, R_w), R_rim / d beyond ;  E_cavity = E · gf · f_water · f_sea',
+          'reach = max(R_rim, R_w, r_ejecta(1 m)) ;  f_sea = 1 for d ≤ R₀ = max(R_rim, R_w), R₀ / d beyond ;  E_cavity = E · gf · f_water · f_sea',
         description:
-          'An impact on land near a coast reaches the sea with its crater when the rim crosses the shoreline, or with the ejecta curtain falling into the water beyond it. The ejecta mass landing beyond a distance d follows McGetchin, Settle & Head 1973 (thickness ∝ (r/R)⁻³, so the fraction beyond d is R/d): that fraction scales the energy the water cavity forms with, continuously across the shoreline. Beyond the 1 m isopach the sea is not moved and no tsunami is emitted. The propagation then starts from the nearest deep-enough water in every compass sector within that reach — for an impact in Florida, the Gulf and the Atlantic at once.',
+          'An impact on land near a coast reaches the sea with its crater when the rim crosses the shoreline, or with the ejecta curtain falling into the water beyond it. The deposit thins as r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47*), so the ejecta mass landing beyond a distance d falls as 1/d, and R₀/d of it reaches the water. Scaling the energy the water cavity forms with by that fraction is a Nimbus assumption; it is continuous across the shoreline. Beyond the 1 m isopach the sea is not moved and no tsunami is emitted. The propagation then starts from the nearest deep-enough water in every compass sector within that reach — for an impact in Florida, the Gulf and the Atlantic at once.',
         citation: mcgetchin1973,
       },
       {
         id: 'penetration-bonus',
         name: 'Pancake penetration bonus',
-        formula: 'penetrationBonus = max(0, 1.2 · ln(D / 10 m) · H_scale)',
+        formula: 'penetrationBonus = max(0, 1.2 · ln(D / 10 m) · H)',
         description:
-          'Diameter-dependent bonus subtracted from the breakup-to-burst altitude gap. For Chicxulub (D = 15 km) this evaluates to ≈ 70 km, exceeding the breakup altitude itself and forcing the regime to INTACT — explaining why a 15 km body fragments at 46 km altitude yet still delivers 100 % of its kinetic energy to the ground.',
-        citation: chyba1993,
+          'A Nimbus tuning, not a published equation: a body larger than 10 m goes deeper before it bursts. For the Chicxulub preset (D = 15 km) it comes to ≈ 70 km, more than the ≈ 50 km breakup altitude, so the regime is INTACT and all the kinetic energy reaches the ground. Collins et al. (2005) apply their entry model only to impactors under 1 km across.',
+        citation: collins2005,
       },
       {
         id: 'atmospheric-yield',
         name: 'Atmospheric airburst yield',
         formula: 'E_atm = (1 − gf) · E_kinetic',
         description:
-          'Yield released as a fireball + shock pulse in the atmosphere during entry. Zero for INTACT events; ≈ 99 % of total KE for COMPLETE_AIRBURST (Tunguska, Chelyabinsk). Drives the entry-damage radii below.',
-        citation: chyba1993,
+          'Energy released in the air as a fireball and shock during entry: none for an INTACT body, 98 % (gf = 0.02) for a COMPLETE_AIRBURST such as the Chelyabinsk preset, 89 % for the Tunguska preset (PARTIAL_AIRBURST, gf = 0.11). gf is the Nimbus heuristic of the airburst classifier. Drives the entry-damage radii below.',
+        citation: collins2005,
       },
       {
         id: 'bolide-airburst-amplification',
         name: 'Bolide-airburst altitude amplification',
-        formula: 'f(h) = (P_0 / P_amb(h))^(1 / β),   β = 5/3,   capped at 15×',
+        formula: 'f(h) = (P₀ / P_amb(h))^(1/β),   β = 5/3,   capped at 15×',
         description:
-          'Closed-form altitude amplification for entry-phase damage radii. Built from Whitham (1974) §8.2 weak-shock invariance ΔP/P_amb ≈ const through stratified atmosphere, Sachs (1944) blast scaling ΔP ∝ R^(−β), Korobeinikov (1991) §1.4 intermediate-shock exponent, and the U.S. Standard Atmosphere 1976 for actual P(h). Validates within ~1 % on Chelyabinsk (Brown 2013) and ~15 % on Tunguska. Replaces a previous 2-point empirical linear fit.',
-        citation: whitham1974,
+          'A Nimbus correction for the altitude of an airburst, applied to the shock radii only. It supposes the overpressure keeps its ratio to the ambient pressure on the way down, and turns that gain into distance with ΔP ∝ R^(−β): a plausibility argument, not a derivation, with β = 5/3 fitted so that Chelyabinsk and Tunguska land near their damage. P(h) is the U.S. Standard Atmosphere 1976. Chelyabinsk does not validate it: the factor there is 7.0 and puts the 0.5 psi ring at 96 km, close to the 108 km to which Popova et al. (2013) model window damage — but they take damage to need only ΔP > 500 Pa, which the amplified model reaches 640 km out (92 km without the factor). Treat it as an order-of-magnitude correction.',
+        citation: popova2013,
       },
       {
         id: 'entry-flash-shock',
         name: 'Atmospheric flash + shock damage radii',
         formula:
-          'r_flash(p) = R_KG_thermal(E_atm, p) · f(h),   r_shock(p) = R_KG_blast(E_atm, p) · f(h)',
+          'r_flash(Q) = R_thermal(η · E_atm, Q) ;   r_shock(p) = R_KG(0.5 · E_atm, p) · f(h)',
         description:
-          'Per-event flash (1°/2°/3° burn) and shock (5/1/0.5 psi) reach radii at the ground. Computed by feeding the atmospheric yield E_atm into the standard Glasstone & Dolan §7 thermal-fluence and Kinney-Graham §5 overpressure formulas, then multiplied by the bolide-airburst amplification factor. Brown 2013 anchors the Chelyabinsk observed 0.5 psi reach at ≈ 120 km.',
-        citation: brown2013,
+          'Burn (1st, 2nd, 3rd degree) and shock (5, 1, 0.5 psi) radii at the ground from the atmospheric yield. The flash takes the explosion module’s burn fluences with the impact luminous efficiency η = 3 × 10⁻³ of Collins et al. (2005) and no altitude factor; the shock takes the Kinney–Graham overpressure with half the yield in the blast, times the altitude factor above. For the Chelyabinsk preset: 5 psi at 17.5 km, 1 psi at 52 km, 0.5 psi at 96 km.',
+        citation: kinneyGraham1985,
       },
       {
         id: 'damage-rings-airburst-honest',
-        name: 'Damage rings honour the airburst regime',
+        name: 'Damage rings of an airburst',
         formula: 'damage(p) = max(R_surface(gf · E_kinetic, p), r_atmospheric_flash_or_shock(p))',
         description:
-          'Pre-fix, every impact regime computed the headline damage rings from `impactDamageRadii(E_kinetic)` as if the FULL kinetic energy hit the ground as a sea-level surface burst — over-stating Tunguska and Chelyabinsk reach by an order of magnitude. The simulator now combines the two physically distinct ground-observer components: ground-coupled `gf · E_kinetic` (drives Chicxulub-class craters) and atmospheric airburst `(1 − gf) · E_kinetic` with altitude amplification (drives Tunguska-class flash + shock). Both are normalised to the same observer at the ground; the union is the max() because being inside either ring is equally bad.',
-        citation: brown2013,
+          'Each ring takes the larger of two estimates for an observer on the ground: the surface-burst radius for the ground-coupled energy gf · E, and the airburst radius for the atmospheric yield (1 − gf) · E — its shock amplified for altitude, its flash not. Taking the larger is a Nimbus rule: being inside either ring is counted as equally bad.',
+        citation: collins2005,
       },
       {
         id: 'ejecta-asymmetry',
         name: 'Oblique-impact ejecta asymmetry',
         formula:
-          'butterfly factor f = max(0, 1 − θ° / 45°);  semi-major × (1 + 0.4·f);  downrange offset = 0.3·f·blanketEdge',
+          'f = max(0, 1 − θ° / 45°);  semi-major × (1 + 0.4·f);  semi-minor × (1 − 0.25·f);  downrange offset = 0.3·f·blanketEdge',
         description:
-          'Schultz & Anderson 1996 oblique-impact pattern: at θ ≥ 45° the ejecta blanket is rotationally symmetric; at very low entry angles (Chelyabinsk-class θ = 18°) it elongates downrange of the trajectory and shifts forward, producing the characteristic "butterfly" pattern observed at experimental crater scales.',
+          'A Nimbus heuristic for the shape of the ejecta blanket drawn on the globe: rotationally symmetric for impacts steeper than 45°, stretched and shifted downrange of the trajectory as the impact grows more grazing. The ramp and the factors are the project’s own, not a published fit. Schultz & Anderson (1996) read the angle and direction of the impact that made the Manson structure from its asymmetry. An airburst leaves no crater and no blanket is drawn.',
         citation: schultzAnderson1996,
       },
     ],
@@ -786,33 +796,36 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'overpressure',
         name: 'Peak overpressure (Kinney–Graham)',
-        formula: 'ΔP(Z) = 808 · [1 + (Z/4.5)²] / √(...)     (Z = R · W^(−1/3))',
+        formula:
+          'ΔP/P₀ = 808·[1 + (Z/4.5)²] / √([1 + (Z/0.048)²]·[1 + (Z/0.32)²]·[1 + (Z/1.35)²]) ,   Z = R · W^(−1/3)  (m, kg TNT)',
         description:
-          'Scaled-distance surface-burst fit. Inverted for the 5 psi (34.5 kPa) and 1 psi (6.9 kPa) ring radii.',
+          'The Kinney–Graham fit for a TNT charge in free air, inverted for the 5, 1 and 0.5 psi radii, with the yield as given. A charge on the ground reflects its blast and acts like twice its yield in free air, so for a chemical surface burst these radii are about a fifth short. A nuclear yield is another matter: only about half of it goes into the air shock (Glasstone & Dolan §1.24), which the reflection roughly restores. The height-of-burst factor below then scales the radii.',
         citation: kinneyGraham1985,
       },
       {
         id: 'blast-thresholds',
         name: 'Blast damage thresholds',
-        formula: '5 psi ≈ 34.5 kPa  (residential collapse) ;  1 psi ≈ 6.9 kPa  (window breakage)',
-        description: 'Glasstone & Dolan §5.129 and §5.139 canonical structural-damage levels.',
+        formula: '5 psi ≈ 34.5 kPa  (residential collapse) ;  1 psi ≈ 6.9 kPa  (light damage)',
+        description:
+          'Glasstone & Dolan: the house tests expected almost complete destruction of wood-frame houses at 5 psi (§5.64), and light damage — windows and doors blown in, interior partitions cracked (Table 5.139a) — reaches out to about 1 psi (§5.143).',
         citation: glasstoneDolan1977,
       },
       {
         id: 'hob-correction',
         name: 'Height-of-burst correction',
         formula:
-          'f(z) piecewise in scaled HOB z = HOB · W^(−1/3)  [0.85 surface, 1.00 optimum, 0.25 stratospheric]',
+          'z = HOB · W^(−1/3) (m·kt^(−1/3)):  f = 1.00 (z < 50) → 1.50 (150 ≤ z < 300) → 0.70 (z = 700) → 0.70·e^(−(z−700)/1500) → 0.25 (z ≥ 1500)',
         description:
-          'Fit to Glasstone Fig. 3.73 / Needham Fig. 3-3. Applied as a scaling factor on the Kinney-Graham 5/1 psi radii.',
+          'A piecewise factor on the Kinney–Graham radii, chosen by the project rather than read from a published curve: a burst near the optimum height reaches half as far again as one on the surface. Glasstone & Dolan’s height-of-burst curves (Figs. 3.73a–c) and Needham (2018, ch. 14) describe the effect; for comparison, Glasstone & Dolan scale the damage ranges of an air burst by three quarters for a surface burst (§5.140), where this factor gives two thirds.',
         citation: needham2018,
       },
       {
         id: 'thermal',
         name: 'Thermal fluence / burn radii',
-        formula: 'Q = f_th · τ · W / (4π · R²) ;  3° burn @ 3.35 × 10⁵ J/m²',
+        formula:
+          'Q = f · τ(R) · W / (4π · R²) ,  τ = e^(−R/L) ,  L = 14 km · (1 + HOB / 4 km) ;  3rd-degree burn at 8 cal/cm²',
         description:
-          'Glasstone §7.03–7.35 point-source inverse-square fluence with a thermal partition factor (0.35 nuclear, 3×10⁻³ impact).',
+          'The thermal energy spread over a sphere, as Glasstone & Dolan write it (§7.94–7.96), with the partition f = 0.35 of a nuclear air burst for every burst — the book gives 0.18 for a contact surface burst (§7.101), so a burst on the ground is drawn with about 1.4 times its burn radius — and 3 × 10⁻³ for an impact (Collins et al. 2005). The transmittance τ and its length L are a project calibration. Burn thresholds are fixed at 2, 5 and 8 cal/cm², where Glasstone & Dolan make the exposure for a burn grow with yield.',
         citation: glasstoneDolan1977,
       },
       {
@@ -820,24 +833,24 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Firestorm ignition / sustain',
         formula: 'Ignition @ 4.19 × 10⁵ J/m² (10 cal/cm²) ;  Sustain @ 2.51 × 10⁵ J/m² (6 cal/cm²)',
         description:
-          'Glasstone §7.40–7.42 dry-kindling ignition and self-drawing firestorm thresholds.',
+          'Project thresholds, without attenuation. Glasstone & Dolan give ignition exposures that depend on material and yield — shredded newspaper, for instance, at a few to about ten cal/cm² from 35 kt to 20 Mt (Table 7.40) — and define a fire storm by its merged convective column and inward winds rather than by an exposure (§7.58).',
         citation: glasstoneDolan1977,
       },
       {
         id: 'crater',
         name: 'Surface-burst crater (ground-type dependent)',
         formula:
-          'D_apparent = K · W_kt^0.3     (K = 40 hard rock, 60 firm, 75 dry, 92 wet, 105 clay)',
+          'D_apparent = K · W_kt^0.3     (K = 40 hard rock, 60 firm, 75 dry, 92 wet, 105 clay; metres)',
         description:
-          'Nordyke 1962 desert-alluvium + Murphey-Vortman 1961 rock + Young 1997 SAND97 clay.',
-        citation: nordyke1962,
+          'The W^0.3 scaling is Glasstone & Dolan’s (§6.09); Nordyke (1962) derived W^(1/3.4) for desert alluvium. The K values are project estimates and have no source: Glasstone & Dolan put the apparent radius of a 1 kt surface burst in dry soil or dry soft rock at about 60 ft, a diameter of 37 m — half the K for dry soil here — with hard rock somewhat less and water-saturated soil appreciably more.',
+        citation: glasstoneDolan1977,
       },
       {
         id: 'radiation',
         name: 'Initial-radiation lethal-dose radii',
-        formula: 'R_LD50 = 700 m · W_kt^0.4  ;  R_LD100 = 0.7 · R_LD50  ;  R_ARS = 1.4 · R_LD50',
+        formula: 'R_LD50 = 700 m · W_kt^0.18  ;  R_LD100 = 0.7 · R_LD50  ;  R_ARS = 1.4 · R_LD50',
         description:
-          'Glasstone Fig. 8.46 yield scaling with the UNSCEAR/BEIR dose-response curve (LD₅₀ ≈ 4.5 Gy, LD₁₀₀ ≈ 8 Gy).',
+          'A project fit whose code cites a Glasstone & Dolan figure (8.46) that holds no dose–range curve; the book’s curves for initial radiation are Figs. 8.33a/b and 8.64a/b, and the fit has not been checked against them. The LD₅₀ dose follows OTA 1979: about 450 rem is fatal to half the people exposed.',
         citation: glasstoneDolan1977,
       },
       {
@@ -846,7 +859,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'HEMP peak = min(50 kV/m, 50 kV/m · (W/1 Mt)^(1/3)) @ HOB > 30 km ;  footprint = √(2·R_E·h + h²)',
         description:
-          'Longmire 1978 Compton-current model with cube-root yield scaling below the IEC 61000-2-9 1 Mt anchor; the 50 kV/m peak saturates above that yield (gamma-flux plateau at the ionising layer). Earth-tangent horizon disc for the affected area. Validated against Starfish Prime 1962 (Oahu at 1 450 km).',
+          'Longmire 1978 explains the high-altitude pulse by Compton currents. The 50 kV/m peak is the IEC 61000-2-9 waveform, which the standard gives without a yield (Savage, Gilbert & Radasky 2010, Meta-R-320, note the early pulse is not closely tied to yield); the cube-root roll-off below 1 Mt is a project assumption. The affected area is the Earth-tangent horizon disc of the burst.',
         citation: longmire1978,
       },
       {
@@ -864,7 +877,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'burns = fires = initial radiation = 0 ;  R_blast = R_surface · e^(−ρ·λ_d/126),  λ_d = depth / W^⅓ in ft·kt^(−⅓),  ρ = 1.025',
         description:
-          'The panel puts a charge in the air, on the surface or under the water. Under the water, Glasstone & Dolan say much of the thermal radiation and of the initial nuclear radiation is absorbed within a short distance, and the fireball of the BAKER shot was visible for a few thousandths of a second (§2.64): the model gives no burns, no fires and no initial radiation. The book adds that a shallow burst lets some escape and gives no amount, so this is the low end. For the air blast it gives the overpressure of a buried burst at an adjusted scaled distance, λ_x·e^(ρ·λ_d/126) (§6.81), and says an underwater burst attenuates "in a pattern similar" (§6.53): every overpressure is reached at the surface burst\'s range times e^(−ρ·λ_d/126) — three quarters for BAKER, under a third past the 150 ft·kt^(−⅓) beyond which the spray dome makes no appreciable air shock. A charge below the sea floor or under land would be an underground burst, which the model does not have; it is drawn as a burst on the surface, and the panel says so.',
+          'The panel puts a charge in the air, on the surface or under the water. Under the water, Glasstone & Dolan say much of the thermal radiation and of the initial nuclear radiation is absorbed within a short distance (§1.39), and the fireball of the BAKER shot was visible for a few thousandths of a second (§2.64): the model gives no burns, no fires and no initial radiation. The book adds that a shallow burst lets some escape and gives no amount, so this is the low end. For the air blast it gives the overpressure of a buried burst at an adjusted scaled distance, λ_x·e^(ρ·λ_d/126) (§6.81), and says an underwater burst attenuates "in a pattern similar" (§6.53): every overpressure is reached at the surface burst\'s range times e^(−ρ·λ_d/126) — taking the surface burst as the reference and water for the ground medium are the model\'s assumptions, since §6.81 is written for a burst buried in the ground — three quarters for BAKER, under a third past the 150 ft·kt^(−⅓) beyond which the spray dome makes no appreciable air shock. A charge below the sea floor or under land would be an underground burst, which the model does not have; it is drawn as a burst on the surface, and the panel says so.',
         citation: glasstoneDolan1977,
       },
       {

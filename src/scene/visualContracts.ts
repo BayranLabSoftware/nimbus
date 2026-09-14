@@ -36,7 +36,7 @@
  *     Stadium-shaped contour. Right for rupture-driven MMI on big
  *     earthquakes, where the rupture is L × W with L ≫ W.
  *   - `asymmetric-ellipse` — oblique-impact downrange stretch
- *     (Schultz & Anderson 1996) or wind-drift thermal pulse.
+ *     (a Nimbus heuristic) or wind-drift thermal pulse.
  *   - `bathymetric-isocontour` — marching-squares iso-line on a
  *     2-D scalar field (FMM arrival, amplitude). Follows real
  *     coastlines because the underlying field is masked by land.

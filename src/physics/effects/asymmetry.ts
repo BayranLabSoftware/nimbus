@@ -25,9 +25,9 @@ import type { Meters, MetersPerSecond } from '../units.js';
  * outer edge at semi-major axis from that shifted centre, so the up-
  * range edge of the ring may end up CLOSER to the event point than the
  * difference (semi-major − offset). This matches the physical reality
- * of an asymmetric ejecta blanket — the "uprange forbidden zone" of
- * Schultz & Anderson (1996) is exactly this: a near-empty wedge
- * uprange of the impactor, with most of the deposit downrange.
+ * of an asymmetric ejecta blanket — the "uprange forbidden zone" of a
+ * grazing impact is exactly this: a near-empty wedge uprange of the
+ * impactor, with most of the deposit downrange.
  */
 export interface RingAsymmetry {
   /** Multiplier on the nominal radius for the semi-major (downrange)
@@ -294,17 +294,18 @@ export function windDriftAsymmetry(input: {
 }
 
 /**
- * Schultz & Anderson (1996) "butterfly" asymmetry of the ejecta
- * blanket downrange of an oblique impact.
+ * "Butterfly" asymmetry of the ejecta blanket downrange of an oblique
+ * impact — a Nimbus heuristic for the drawn blanket, not a published
+ * fit.
  *
  * The same primitive that has been computed inline in
  * `simulate.ts` since M3, repackaged here as a {@link RingAsymmetry}
  * so the renderer can consume it through the same interface as every
- * other asymmetric ring. Reference:
- *
- *   Schultz, P. H. & Anderson, R. R. (1996). "Asymmetry of ejecta and
- *   target damage in oblique impacts." Lunar Planet. Sci. Conf. XXVII,
- *   1149–1150.
+ * other asymmetric ring. Schultz, P. H. & Anderson, R. R. (1996),
+ * "Asymmetry of the Manson impact structure: Evidence for impact angle
+ * and direction", GSA Special Paper 302 (DOI:
+ * 10.1130/0-8137-2302-7.397), read an impact's angle and direction from
+ * a crater's asymmetry; they are not the source of the numbers here.
  *
  * The {@link asymmetryFactor} is the dimensionless [0, 1] number
  * already produced by the impact simulator from the impact angle
@@ -312,8 +313,9 @@ export function windDriftAsymmetry(input: {
  * maximum butterfly with a near-empty uprange "forbidden zone"
  * (θ → 0°, grazing).
  *
- * The geometric factors (1 + 0.4·f, 1 − 0.25·f, 0.3·f) are taken from
- * the prior inline implementation so the rendered shape stays
+ * The geometric factors (1 + 0.4·f, 1 − 0.25·f, 0.3·f) are the
+ * project's own, taken from the prior inline implementation so the
+ * rendered shape stays
  * pixel-identical to the existing ejecta-blanket overlay; future
  * tightening of the fit lives in this one place rather than at the
  * renderer call-site.

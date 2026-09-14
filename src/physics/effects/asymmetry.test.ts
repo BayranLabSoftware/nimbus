@@ -213,7 +213,7 @@ describe('windDriftAsymmetry — Glasstone & Dolan 1977 §7.20', () => {
   });
 });
 
-describe('ejectaButterflyAsymmetry — Schultz & Anderson 1996', () => {
+describe('ejectaButterflyAsymmetry — Nimbus heuristic', () => {
   it('returns the isotropic ring for symmetric (steep) impacts', () => {
     const asym = ejectaButterflyAsymmetry(0, 90, m(1_000));
     expect(asym).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 90 });

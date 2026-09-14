@@ -110,7 +110,7 @@ export interface ImpactScenarioInput {
   /** Compass azimuth (° clockwise from geographic North) the impactor
    *  is travelling toward at the moment of contact. Drives the down-
    *  range orientation of the asymmetric ejecta blanket for oblique
-   *  impacts (Schultz & Anderson 1996). Defaults to 90° (east-bound)
+   *  impacts (a Nimbus heuristic). Defaults to 90° (east-bound)
    *  when omitted. Has no effect on circular damage rings. */
   impactAzimuthDeg?: number;
   /** Ground distance (m) from ground zero to the nearest sea, for an
@@ -317,8 +317,8 @@ export interface ImpactScenarioResult {
    *  - `thirdDegreeBurn`, `overpressure5psi`, `overpressure1psi`:
    *    Pierazzo & Artemieva 2003 conservative envelope — small
    *    downrange elongation + centre offset for oblique entries.
-   *  - `ejectaBlanket`: Schultz & Anderson 1996 butterfly pattern,
-   *    repackaging the existing inline computation through the unified
+   *  - `ejectaBlanket`: the Nimbus butterfly heuristic, repackaging
+   *    the existing inline computation through the unified
    *    {@link RingAsymmetry} interface.
    *
    *  All five share the impactor's downrange compass azimuth, so a
@@ -347,7 +347,7 @@ export interface ImpactScenarioResult {
     thicknessAt2R: Meters;
     /** Thickness at 10 final-crater radii — far-field reference. */
     thicknessAt10R: Meters;
-    /** Schultz & Anderson (1996) downrange-asymmetry coefficient, in
+    /** Downrange-asymmetry coefficient of the drawn blanket, in
      *  [0, 1]. 0 = symmetric blanket (impact angle ≥ 45°), 1 = maximum
      *  butterfly pattern with a near-empty uprange "forbidden zone"
      *  (impact angle → 0°, grazing). The renderer uses this to
@@ -372,9 +372,11 @@ export interface ImpactScenarioResult {
   /** Chyba–Collins airburst classifier output; see
    *  `src/physics/effects/atmosphericEntry.ts`. */
   entry: AtmosphericEntryResult;
-  /** Long-range atmospheric consequences: dust injection into the
-   *  stratosphere (Toon et al. 1997), nitric-acid mass from shock
-   *  heating (Prinn & Fegley 1987), and a qualitative climate tier. */
+  /** Long-range atmospheric consequences: sub-micrometre dust in the
+   *  stratosphere (Toon et al. 1997 eq. 10, on the crater-forming
+   *  energy), nitric acid from shock-heated air (Prinn & Fegley 1987,
+   *  on the energy delivered to the ground), and a qualitative climate
+   *  tier on the kinetic energy. */
   atmosphere: {
     stratosphericDust: Kilograms;
     acidRainMass: Kilograms;
@@ -515,9 +517,9 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   //     full kinetic energy and dominates everything else.
   //
   //   - Atmospheric component: (1 − gf) · KE released in the airburst
-  //     fireball at the burst altitude, lifted by the
-  //     Whitham + Sachs + USSA amplification factor before reaching
-  //     the ground (see {@link atmosphericEntry}). Dominates the
+  //     fireball at the burst altitude, lifted by the altitude
+  //     amplification factor before reaching the ground (see
+  //     {@link atmosphericEntry}). Dominates the
   //     damage rings for COMPLETE_AIRBURST events (Tunguska,
   //     Chelyabinsk) where the surface fireball is essentially
   //     absent.
@@ -548,11 +550,9 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
 
   const craterRimRadius = m((Dfr as number) / 2);
   const blanketEdge1mm = ejectaBlanketOuterEdge(Dtc, craterRimRadius, m(0.001));
-  // Schultz & Anderson (1996) "Asymmetry of ejecta and target damage
-  // in oblique impacts," LPSC XXVII: smooth ramp from 0 (symmetric)
-  // at θ ≥ 45° to 1 (forbidden uprange zone) at θ = 0°. Linear in
-  // angle is a popular-science simplification of the actual
-  // experimental fit, which has scatter of ±0.2 around this line.
+  // A Nimbus heuristic for the drawn blanket: a linear ramp from 0
+  // (symmetric) at θ ≥ 45° to 1 (empty uprange wedge) at θ = 0°. Not a
+  // published fit; see ejectaButterflyAsymmetry.
   const angleDeg = (input.impactAngle as number) * (180 / Math.PI);
   const asymmetryFactor = Math.max(0, Math.min(1, 1 - angleDeg / 45));
   const azimuthDeg = input.impactAzimuthDeg ?? 90;
@@ -572,7 +572,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // the thermal and overpressure rings follow the (smaller) Pierazzo
   // & Artemieva 2003 envelope plus a centre-offset that scales with
   // the ring's own nominal radius. The ejecta-blanket entry reuses
-  // the Schultz & Anderson 1996 butterfly factors that have governed
+  // the Nimbus butterfly factors that have governed
   // the rendered overlay since M3, now exposed through the unified
   // RingAsymmetry interface.
   const thermal3Nominal = damage.thirdDegreeBurn as number;
@@ -617,8 +617,14 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   };
 
   const atmosphere = {
-    stratosphericDust: stratosphericDustMass(ke),
-    acidRainMass: shockAcidRainMass(ke),
+    // Dust comes from the target rock the crater pulverizes; the NO
+    // behind the acid mostly from the ejecta plume of what reached the
+    // ground (see effects/atmosphere.ts).
+    stratosphericDust: stratosphericDustMass(
+      J(craterScale > 0 ? (ke as number) * gf * fSeafloor : 0),
+      input.impactVelocity
+    ),
+    acidRainMass: shockAcidRainMass(groundCoupledKe),
     climateTier: climateTier(ke),
   };
 
@@ -916,7 +922,7 @@ export const IMPACT_PRESETS = {
   /** Siberian airburst, 30 June 1908 — representative stony-bolide inputs. */
   TUNGUSKA: {
     name: 'Tunguska',
-    note: 'Stony bolide airburst at 30°, 30 June 1908 — Boslough & Crawford 2008. Notice the asymmetric ejecta footprint downrange of the entry direction.',
+    note: 'Stony bolide airburst at 30°, 30 June 1908 — Boslough & Crawford 2008. An airburst: no crater and no ejecta blanket.',
     input: {
       impactorDiameter: m(60),
       impactVelocity: mps(15_000),
@@ -944,7 +950,7 @@ export const IMPACT_PRESETS = {
    *  airburst in history (Popova et al. 2013, Science 342). */
   CHELYABINSK: {
     name: 'Chelyabinsk 2013',
-    note: 'S-type bolide airburst at 18°, 15 Feb 2013 — Popova et al. 2013 Science. Pronounced butterfly-pattern asymmetry from the very shallow entry angle (Schultz & Anderson 1996).',
+    note: 'S-type bolide airburst at 18°, 15 Feb 2013 — Popova et al. 2013 Science. A complete airburst at a shallow angle: no crater and no ejecta blanket.',
     input: {
       impactorDiameter: m(17),
       impactVelocity: mps(19_000),

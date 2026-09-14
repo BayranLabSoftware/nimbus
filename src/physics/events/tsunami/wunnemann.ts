@@ -35,12 +35,15 @@ import { m } from '../../units.js';
  *
  * with R_w the water-cavity radius from a crater-scaling law, L the
  * impactor diameter and h the water depth at the impact site.
- * Equation 9b describes the collapse wave, which "is not generated
- * in shallow water impacts"; the paper's stated validity range
- * (h/L < 2) is a typo for the deep-water side — the exponent q_c it
- * quotes (2.7–3.3) is only reached for small L/h, i.e. deep water —
- * so this module includes the collapse-wave branch for h/L ≥ 2 and
- * documents the choice here.
+ * Equation 9b describes the collapse wave. Because collapse waves do
+ * not form in shallow water, the paper calls it "only valid for
+ * h/L < 2" — a condition that contradicts that very reasoning, since
+ * the exponents it reports for
+ * collapse waves (2.7–3.32) need deep water. This module reads the
+ * condition as h/L ≥ 2 (reading it as L/h < 2 would fix it equally)
+ * and includes the collapse-wave branch there. The paper's text on
+ * the collapse wave (p. 20) also gives its height as 0.06 · min(h, 2R_w),
+ * where eq. 9b prints min(R_w/3, h); the module follows the equation.
  *
  * What the simulator uses:
  *
@@ -60,8 +63,8 @@ import { m } from '../../units.js';
  *
  * Reference:
  *   Wünnemann, K., Collins, G. S., & Weiss, R. (2010). "Impact of a
- *   cosmic body into Earth's ocean and the generation of a large
- *   tsunami wave: insight from numerical modeling." Reviews of
+ *   cosmic body into Earth's ocean and the generation of large
+ *   tsunami waves: Insight from numerical modeling." Reviews of
  *   Geophysics 48, RG4006. DOI: 10.1029/2009RG000308. §5.3, eqs. 7–10.
  *   Wünnemann, K., Weiss, R., & Hofmann, K. (2007). Meteoritics &
  *   Planetary Science 42(11), 1893–1903 — the hydrocode runs behind

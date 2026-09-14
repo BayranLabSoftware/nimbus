@@ -79,26 +79,24 @@ describe('atmosphericEntry — Chyba 1993 / Collins 2005 / Popova 2013', () => {
     expect(r.shockWaveRadii.lightDamage as number).toBe(0);
   });
 
-  it('Chelyabinsk 2013 airburst yield ≈ 500 kt and shock-wave reach matches the observed 120 km window-breakage zone', () => {
-    // Popova et al. 2013 / Brown et al. 2013: 17 m S-type at 19 km/s
-    // → ≈ 500 kt TNT atmospheric yield. The observed window-breakage
-    // injuries spanned ≈ 120 km from the trajectory point, matching
-    // the simulator's lightDamage (0.5 psi) reach within a factor of 2.
+  it('Chelyabinsk-like airburst (17 m, 19 km/s): yield of the right order, amplified shock reach pinned', () => {
+    // Brown et al. 2013 put the real airburst at 400–600 kt (their
+    // Table 1) and Popova et al. 2013 derive a 19.8 ± 4.6 m body; this
+    // 17 m chondrite releases ≈ 0.33 Mt in the air. The shock-reach
+    // bounds below pin the model, they do not validate it: Popova et
+    // al. model window damage to 108 km for ΔP > 500 Pa, a threshold the
+    // amplified model reaches ≈ 640 km out.
     const D = m(17);
     const v = mps(19_000);
     const mass = impactorMass(D, CHONDRITIC_DENSITY);
     const ke = kineticEnergy(mass, v);
     const r = atmosphericEntry(D, v, IMPACTOR_STRENGTH.S_TYPE, undefined, ke);
     expect(r.regime).toBe('COMPLETE_AIRBURST');
-    // Atmospheric yield in the 200–800 kt envelope (= 0.2–0.8 Mt) —
-    // Brown et al. 2013 measure 0.44 ± 0.1 Mt, our 17 m / 3 000 kg/m³
-    // preset lands at ≈ 0.33 Mt within that range.
+    // Atmospheric yield in a 200–800 kt envelope (= 0.2–0.8 Mt).
     expect(r.atmosphericYieldMegatons).toBeGreaterThan(0.2);
     expect(r.atmosphericYieldMegatons).toBeLessThan(0.8);
-    // 0.5 psi reach — Brown et al. 2013 report window-breakage out
-    // to ≈ 120 km from the trajectory point. With the
-    // `bolideAirburstAmplification` factor applied (≈ 7× at 27 km
-    // burst altitude) the model reproduces this within a factor of 2.
+    // 0.5 psi reach with the `bolideAirburstAmplification` factor
+    // (≈ 7× at the 22 km burst altitude): ≈ 96 km.
     const lightDamageKm = (r.shockWaveRadii.lightDamage as number) / 1_000;
     expect(lightDamageKm).toBeGreaterThan(60);
     expect(lightDamageKm).toBeLessThan(250);
@@ -107,10 +105,9 @@ describe('atmosphericEntry — Chyba 1993 / Collins 2005 / Popova 2013', () => {
     expect(r.airburstAmplificationFactor).toBeLessThan(10);
   });
 
-  it('Tunguska 1908 atmospheric yield is in the 10–30 Mt envelope and forest-flattening matches a 5 psi reach', () => {
-    // Boslough & Crawford 2008 / Chyba 1993: 60 m stony at 15 km/s
-    // → ~10–15 Mt atmospheric yield. Observed forest-flattening
-    // pattern was a butterfly ≈ 30 km in radius.
+  it('Tunguska-like airburst (60 m, 15 km/s): yield and amplified 5 psi reach pinned', () => {
+    // A regression pin on the tuned classifier, not a validation
+    // against the 1908 forest blowdown.
     const D = m(60);
     const v = mps(15_000);
     const mass = impactorMass(D, CHONDRITIC_DENSITY);
@@ -118,10 +115,8 @@ describe('atmosphericEntry — Chyba 1993 / Collins 2005 / Popova 2013', () => {
     const r = atmosphericEntry(D, v, IMPACTOR_STRENGTH.STONY, undefined, ke);
     expect(r.atmosphericYieldMegatons).toBeGreaterThan(5);
     expect(r.atmosphericYieldMegatons).toBeLessThan(30);
-    // 5 psi reach with the amplification factor (≈ 3× at 8 km burst
-    // altitude) should reproduce the ≈ 28 km forest-flattening edge
-    // within a factor of 2. The amplification factor itself sits in
-    // the ≈ 2–4× range for an 8 km burst.
+    // 5 psi reach with the amplification factor (≈ 2.6× at the 12 km
+    // burst altitude): ≈ 19 km.
     const fivePsiKm = (r.shockWaveRadii.fivePsi as number) / 1_000;
     expect(fivePsiKm).toBeGreaterThan(15);
     expect(fivePsiKm).toBeLessThan(60);

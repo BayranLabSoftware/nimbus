@@ -204,6 +204,32 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(r.crater.depth as number).toBeLessThan(2_000);
   });
 
+  it('B-014 Stratospheric dust follows Toon et al. 1997 eq. 10, not a Table 3 anchor', () => {
+    // Pre-fix: 5 × 10¹⁶ kg at 4 × 10²³ J, credited to Toon et al. 1997
+    // Table 3 — which is impact frequency. Their prescription (0.1 % of
+    // the rock pulverized, ≈ 4 Tg per Mt) gives ≈ 130× less.
+    const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+    const Mt = (r.impactor.kineticEnergy as number) / 4.184e15;
+    const v = r.inputs.impactVelocity as number;
+    expect(r.atmosphere.stratosphericDust as number).toBeCloseTo(
+      4e9 * Mt * (25_000 / v) ** 0.33 * 1e-3,
+      -10
+    );
+    // An airburst pulverizes no target rock.
+    expect(simulateImpact(IMPACT_PRESETS.TUNGUSKA.input).atmosphere.stratosphericDust).toBe(0);
+  });
+
+  it('B-015 Acid rain scales from the Prinn & Fegley 1987 asteroid', () => {
+    // Pre-fix: 10¹⁶ kg of HNO₃ at 4 × 10²³ J — 80× their asteroid, whose
+    // 3 × 10³⁸ NO molecules at 10²³ J are 3.1 × 10¹³ kg as HNO₃.
+    const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+    const perJoule = ((3e38 / 6.02214076e23) * 0.063013) / 1e23;
+    expect(r.atmosphere.acidRainMass as number).toBeCloseTo(
+      perJoule * (r.impactor.kineticEnergy as number),
+      -10
+    );
+  });
+
   // Smoke test: verify every preset still renders sensible numbers
   // (catches regressions from any unrelated change to a preset).
   it('all 5 event-type preset-bundles produce non-degenerate output (smoke)', () => {
@@ -229,9 +255,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-013 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
+    // B-001..B-015 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
     // B-007 superseded by B-011).
-    const expectedRows = 13;
-    expect(expectedRows).toBe(13);
+    const expectedRows = 15;
+    expect(expectedRows).toBe(15);
   });
 });

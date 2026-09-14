@@ -23,8 +23,8 @@ import { J, m, Pa } from '../units.js';
  *   "The 1908 Tunguska explosion: atmospheric disruption of a stony
  *    asteroid." Nature 361 (6407): 40–44. DOI: 10.1038/361040a0.
  *   Collins, G. S., Melosh, H. J., & Marcus, R. A. (2005). "Earth
- *    Impact Effects Program." Meteoritics & Planetary Science 40,
- *    Section 3.3 "Atmospheric entry", Eqs. 9–13.
+ *    Impact Effects Program." Meteoritics & Planetary Science 40 (6),
+ *    817–840, "Atmospheric entry", Eqs. 5–20.
  *   Popova, O. P., Jenniskens, P., Emel'yanenko, V., et al. (2013).
  *    "Chelyabinsk airburst, damage assessment, meteorite recovery,
  *    and characterization." Science 342 (6162): 1069–1073.
@@ -33,15 +33,17 @@ import { J, m, Pa } from '../units.js';
  * Physical picture: as the impactor descends, ram pressure q = ρ_air·v²
  * grows exponentially. When q exceeds the object's tensile strength Y
  * it fragments; the fragment cloud ("pancake") continues to
- * decelerate while spreading laterally. Peak energy deposition
- * happens ~2–3 scale heights below the breakup altitude, adjusted
- * for the object's penetration depth (larger bodies penetrate deeper).
+ * decelerate while spreading laterally, and deposits its energy lower
+ * down (larger bodies penetrate deeper).
  *
- * The implementation uses a simplified closed-form fit to the Chyba
- * pancake: breakup altitude from Collins Eq. 9, then a
- * diameter-dependent penetration correction tuned to reproduce
- * Chelyabinsk 2013 (observed burst ≈ 27 km) and Tunguska 1908
- * (observed burst ≈ 8 km) within a factor of 2.
+ * The implementation is a simplified classifier, not Collins et al.'s
+ * pancake integration: the breakup altitude is the leading term of
+ * their Eq. 11*, the burst sits two scale heights lower less a
+ * diameter-dependent penetration correction, and both the correction
+ * and the ground-energy ramp are Nimbus choices tuned against
+ * Chelyabinsk 2013 (burst at 27.0 km, Popova et al. 2013) and Tunguska
+ * 1908. Collins et al. apply their entry model only to impactors under
+ * 1 km across; this classifier runs for every size.
  */
 
 /** Sea-level atmospheric density (ICAO Standard Atmosphere, ISO 2533). */
@@ -106,15 +108,15 @@ export interface AtmosphericEntryResult {
   /** Yield deposited in the atmosphere as the entry-phase fireball
    *  and shock pulse — `(1 − energyFractionToGround) · KE`, expressed
    *  in TNT-equivalent megatons. 0 for INTACT events (all the kinetic
-   *  energy reaches the ground); equal to ≈ 99 % of total KE for a
-   *  COMPLETE_AIRBURST. Drives the entry-damage radii below. */
+   *  energy reaches the ground); 98 % of the kinetic energy for a
+   *  COMPLETE_AIRBURST (gf = 0.02). Drives the entry-damage radii below. */
   atmosphericYieldMegatons: number;
-  /** Thermal-flash burn radii at ground level, derived by treating the
-   *  airburst yield as a Glasstone & Dolan §7 nuclear-style point-
-   *  source thermal pulse. Calibrated against the Chelyabinsk 2013
-   *  observation: ≈ 500 kt atmospheric yield → 1st-degree burns out
-   *  to ≈ 4 km, retinal flash audible reports out to ≈ 50 km
-   *  (Popova et al. 2013). 0 for INTACT. */
+  /** Thermal-flash burn radii at ground level, from the explosion
+   *  module's burn fluences with the impact luminous efficiency. Not
+   *  calibrated on an event: for the Chelyabinsk preset the first-degree
+   *  radius is ≈ 2 km, while Popova et al. (2013) report a mild sunburn,
+   *  from ultraviolet, 30 km from the point of peak brightness. 0 for
+   *  INTACT. */
   flashBurnRadii: {
     /** Ground range to 2 cal/cm² fluence (sunburn-like erythema). */
     firstDegree: Meters;
@@ -123,14 +125,13 @@ export interface AtmosphericEntryResult {
     /** Ground range to 8 cal/cm² fluence (charring-grade burn). */
     thirdDegree: Meters;
   };
-  /** Sonic-boom / shock-wave overpressure radii at ground level, from
-   *  the Kinney & Graham scaling applied to the airburst yield AND
-   *  multiplied by {@link airburstAmplificationFactor} to account for
-   *  the bolide-entry / high-altitude geometry. The Tunguska 1908
-   *  forest-flattening pattern (≈ 30 km radius, ≈ 4–5 psi) and the
-   *  Chelyabinsk 2013 window-breakage zone (≈ 120 km radius,
-   *  ≈ 0.3–0.5 psi) reproduce within ≈ 50 % once the amplification
-   *  is applied. 0 for INTACT. */
+  /** Shock-wave overpressure radii at ground level, from the Kinney &
+   *  Graham scaling applied to half the airburst yield AND multiplied by
+   *  {@link airburstAmplificationFactor} for the burst's altitude. For
+   *  the Chelyabinsk preset the 0.5 psi ring is 96 km, near the 108 km
+   *  to which Popova et al. (2013) model window damage — but at their
+   *  damage threshold, 500 Pa, the amplified model reaches ≈ 640 km: not
+   *  a validation. 0 for INTACT. */
   shockWaveRadii: {
     /** 5 psi (≈ 34.5 kPa, residential collapse). */
     fivePsi: Meters;
@@ -141,12 +142,13 @@ export interface AtmosphericEntryResult {
     lightDamage: Meters;
   };
   /** Empirical Kinney-Graham → bolide-airburst amplification factor
-   *  applied to the SHOCK-WAVE radii only (the Whitham/Sachs argument
-   *  is a blast-wave result; see {@link bolideAirburstAmplification}).
+   *  applied to the SHOCK-WAVE radii only (the argument is about a
+   *  blast wave; see {@link bolideAirburstAmplification}).
    *  Thermal-flash radii are NOT amplified by it. 1.0 for surface
-   *  bursts and INTACT events; ≈ 3 for a Tunguska-class 8 km burst,
-   *  ≈ 7 for a Chelyabinsk-class 27 km burst. Surfaced in the report
-   *  panel so the user sees how big the altitude correction is. */
+   *  bursts and INTACT events; 2.6 for the Tunguska preset (burst at
+   *  11.8 km), 7.0 for the Chelyabinsk preset (22.1 km). Surfaced in
+   *  the report panel so the user sees how big the altitude correction
+   *  is. */
   airburstAmplificationFactor: number;
 }
 
@@ -176,99 +178,59 @@ const ZERO_ENTRY_DAMAGE = {
 } as const;
 
 /**
- * Closed-form altitude amplification factor that lifts the Kinney-
- * Graham (1985) surface-burst overpressure radii to the bolide-entry
- * geometry at altitude. It is a BLAST-WAVE result and is applied only
- * to the shock-wave radii — NOT to the thermal-flash radii, whose
- * inverse-square line-of-sight geometry does not share the weak-shock
- * pressure-invariance argument. The factor is built from three textbook
- * physics ingredients, all cited; the only fit is the shock-regime
- * exponent that interpolates between two well-known limiting cases.
+ * Altitude amplification factor that lifts the Kinney-Graham (1985)
+ * surface-burst overpressure radii to a burst at altitude. It is
+ * applied only to the shock-wave radii — NOT to the thermal-flash
+ * radii, whose line-of-sight geometry gains nothing from a higher
+ * burst.
  *
- * 1. **Whitham (1974) weak-shock invariance** through a stratified
- *    atmosphere. For weak shocks moving down through layers of
- *    increasing ambient pressure, the dimensionless overpressure
- *    `ΔP / P_amb` is approximately conserved (Whitham,
- *    "Linear and Nonlinear Waves", §8.2 Eq. 8.91). A wave that
- *    emerges from a burst at altitude `h_b` with overpressure
- *    `ΔP_b` reaches the ground at the same *fractional* over-
- *    pressure but a much higher *absolute* value:
- *      ΔP_ground = ΔP_b · (P_ground / P_b)
+ * The factor is a Nimbus plausibility argument, not a derivation from
+ * a source:
  *
- * 2. **Sachs (1944) blast scaling**. The Kinney-Graham overpressure
- *    decays with distance as `ΔP ~ 1/R_s^β`. The exponent is
- *    `β ≈ 1` in the weak-shock far field, `β ≈ 3` in the
- *    strong-shock near field, and lies in between at the
- *    intermediate distances where window-breakage and forest-
- *    flattening damage actually live. We use `β = 5/3 ≈ 1.667`,
- *    the textbook "intermediate-shock" exponent (Sachs 1944
- *    Eq. 9; Korobeinikov 1991 §1.4).
+ * 1. It supposes a weak shock keeps its fractional overpressure
+ *    ΔP / P_amb on the way down through the stratified atmosphere, so
+ *    the absolute overpressure grows by P_ground / P_amb(h_b).
+ * 2. It turns that gain into distance with a decay ΔP ∝ R^(−β), where
+ *    β lies between the weak-shock (≈ 1) and strong-shock (≈ 3)
+ *    limits. β = 5/3 is a fitted value, chosen so that Chelyabinsk and
+ *    Tunguska land near their damage.
+ * 3. P(h) comes from the U.S. Standard Atmosphere 1976 (NOAA-S/T
+ *    76-1562) via {@link ussaPressure}.
  *
- * 3. **U.S. Standard Atmosphere 1976** (NOAA-S/T 76-1562) for the
- *    actual ambient pressure `P(h)` at every altitude, rather than
- *    an exponential fit. Provided by {@link ussaPressure}.
+ * Together, for a fixed ground-level threshold ΔP*, an airburst at
+ * altitude h_b reaches the threshold at a radius larger than a
+ * sea-level burst by
  *
- * Combining (1) and (2): for a fixed ground-level threshold ΔP*, an
- * airburst at altitude `h_b` reaches the threshold at a radius
- * larger than a sea-level burst by a factor
+ *     f(h_b) = (P_ground / P_amb(h_b))^(1/β),   β = 5/3.
  *
- *     f(h_b) = (P_ground / P_amb(h_b))^(1/β)
- *
- * with `β = 5/3`. Caveat: combining the weak-shock pressure invariance
- * (an amplification at a FIXED point) with the Sachs ΔP∼R^(−β) decay (to
- * convert that into a RADIUS gain) is a plausibility argument, not a
- * rigorous derivation — β = 5/3 is effectively a single fitted knob,
- * chosen because it lands Chelyabinsk (~7×) and Tunguska (~2.7×) on
- * observation. Treat the factor as an order-of-magnitude correction.
- *
- * Validation against the canonical reference events:
- *   - Chelyabinsk 2013, simulator's burst altitude ≈ 22 km →
- *     P_amb ≈ 4 000 Pa, ratio ≈ 25 → f ≈ 25^0.6 ≈ 7.0×. Brown
- *     et al. (2013) report the observed window-breakage zone at
- *     ≈ 120 km from the trajectory; the simulator now predicts the
- *     0.5 psi reach at ≈ 17 × 7 ≈ 119 km — within 1 % of observation.
- *   - Tunguska 1908, simulator's burst altitude ≈ 12 km →
- *     P_amb ≈ 19 400 Pa, ratio ≈ 5.2 → f ≈ 5.2^0.6 ≈ 2.7×. The
- *     observed forest-flattening boundary sits at ≈ 28 km from
- *     ground zero; the simulator's 5 psi reach is now ≈ 9 × 2.7 ≈
- *     24 km — within 15 % of observation.
+ * What the events say. For the Chelyabinsk preset (burst at 22.1 km)
+ * f = 7.0 and the 0.5 psi ring reaches 96 km. Popova et al. (2013,
+ * Science 342, 1069–1073) model window damage out to 108 km, but for
+ * an overpressure above 500 Pa, which the amplified model reaches
+ * ≈ 640 km out (92 km without the factor): the fit to Chelyabinsk
+ * compares two different thresholds and does not validate the factor.
+ * For the Tunguska preset (11.8 km) f = 2.6 and the 5 psi ring is
+ * 19.3 km. Treat the factor as an order-of-magnitude correction.
  *
  * The formula is capped at 15× to prevent run-away predictions for
  * synthetic stratospheric scenarios (P_amb < 1 Pa at h > 80 km
  * gives algebraic enhancements > 10⁴× that are not observationally
  * supported).
  *
- * References:
- *   Whitham, G. B. (1974). "Linear and Nonlinear Waves." Wiley.
- *     §8.2 (geometrical acoustics) and §6.3 (weak-shock theory).
- *     ISBN 978-0-471-94090-6.
- *   Sachs, R. G. (1944). "The dependence of blast on ambient
- *     pressure and temperature." BRL Report 466. Aberdeen.
- *   Korobeinikov, V. P. (1991). "Problems of Point Blast Theory."
- *     AIP Press, Springer. Chapter 1, §1.4 ("Dimensional analysis
- *     and self-similar solutions"). ISBN 0-88318-660-7.
- *   COESA / NOAA / USAF (1976). "U.S. Standard Atmosphere 1976."
- *     NOAA-S/T 76-1562. (See {@link ussaPressure}.)
- *   ReVelle, D. O. (1976). "On meteor-generated infrasound."
- *     JGR 81 (7): 1217–1230. DOI: 10.1029/JA081i007p01217.
- *   Brown, P. G., Assink, J. D., Astiz, L., et al. (2013). "A 500-
- *     kiloton airburst over Chelyabinsk and an enhanced hazard from
- *     small impactors." Nature 503: 238–241.
- *     DOI: 10.1038/nature12741.
+ * Background reading, not the source of the formula: Whitham, G. B.
+ * (1974), "Linear and Nonlinear Waves", Wiley, ISBN 978-0-471-94090-6
+ * (weak shocks); Sachs, R. G. (1944), "The dependence of blast on
+ * ambient pressure and temperature", BRL Report 466; ReVelle, D. O.
+ * (1976), "On meteor-generated infrasound", JGR 81 (7): 1217–1230,
+ * DOI: 10.1029/JA081i007p01217.
  *
  * The factor is exposed on
  * {@link AtmosphericEntryResult.airburstAmplificationFactor} so the
- * UI can surface "factor 7.0× — Whitham · Sachs · USSA 1976"
- * alongside the thermal and shock-wave radii.
+ * UI can surface it alongside the thermal and shock-wave radii.
  */
-/** Sachs intermediate-shock decay exponent. β = 5/3 lies between
- *  the weak-shock limit (β = 1) and the strong-shock spherical
- *  limit (β = 3); it is the textbook value Korobeinikov 1991 §1.4
- *  derives from dimensional analysis for the regime where the
- *  blast wave's energy is comparable to the swept-up atmospheric
- *  internal energy — exactly the regime that controls the
- *  intermediate-distance damage thresholds the simulator surfaces
- *  (1 psi window-breakage out to 5 psi residential collapse). */
+/** Shock decay exponent of the amplification, between the weak-shock
+ *  (β ≈ 1) and strong-shock spherical (β ≈ 3) limits. A fitted value,
+ *  not one taken from the literature. */
 const SACHS_BETA = 5 / 3;
 /** Maximum amplification factor we'll allow. Even high-altitude
  *  bursts couple to the troposphere imperfectly; without this cap a
@@ -318,8 +280,8 @@ function computeEntryDamage(
   // Boslough & Crawford 2008).
   const blastEnergy = J(atmosphericYieldJ * IMPACT_BLAST_COUPLING);
   const factor = bolideAirburstAmplification(burstAltitudeM);
-  // The Whitham/Sachs amplification is a BLAST-WAVE argument (weak-shock
-  // overpressure invariance through a stratified atmosphere). It applies
+  // The altitude amplification is a BLAST-WAVE argument (overpressure
+  // carried down through a stratified atmosphere). It applies
   // ONLY to the shock-wave radii. Thermal fluence is governed by
   // line-of-sight inverse-square geometry plus atmospheric transmission;
   // a burst at altitude has a LONGER slant path to a ground observer, so

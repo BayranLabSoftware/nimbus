@@ -1003,33 +1003,33 @@
       },
       "breakupAltitude": {
         "name": "Quota di frammentazione (h_b)",
-        "definition": "Quota a cui inizia la frammentazione: h_b = H · ln(ρ₀ · v² / Y). Per Chelyabinsk (17 m, 19 km/s, S-type) è ≈ 38 km; per Chicxulub (15 km) ≈ 46 km. Attenzione: la sola frammentazione NON significa che il bolide esplode in aria — vedi profondità di penetrazione.",
-        "source": "Collins, Melosh & Marcus (2005) Eq. 9"
+        "definition": "Quota a cui inizia la frammentazione: h_b = H · ln(ρ₀ · v² / Y), il termine principale della quota di rottura di Collins et al. Per il preset di Chelyabinsk (17 m, 19 km/s, 2 MPa) è ≈ 43 km; per Chicxulub (15 km) ≈ 50 km. La sola frammentazione NON significa che il bolide esplode in aria — vedi profondità di penetrazione.",
+        "source": "Collins, Melosh & Marcus (2005) Eq. 11"
       },
       "burstAltitude": {
         "name": "Quota di esplosione",
-        "definition": "Quota di deposizione di picco dell'energia: h_burst = h_b − 2·H − penetrationBonus. Quando è sotto il suolo (corpi grandi) il simulatore classifica il regime come INTACT.",
-        "source": "Chyba 1993 / Collins 2005"
+        "definition": "Quota di deposizione di picco dell'energia: h_burst = h_b − 2·H − penetrationBonus, una regola di Nimbus tarata su Tunguska e Chelyabinsk. Quando è sotto il suolo (corpi grandi) il simulatore classifica il regime come INTACT.",
+        "source": "Nimbus (tarata)"
       },
       "penetrationBonus": {
         "name": "Profondità di penetrazione",
-        "definition": "Profondità (1.2 · ln(D/10) · H) dipendente dal diametro che la pancake guadagna rispetto a una sorgente puntiforme. Per corpi tipo Chicxulub può superare la stessa quota di frammentazione, quindi il bolide non esplode mai in atmosfera.",
-        "source": "Chyba et al. (1993)"
+        "definition": "Profondità (1,2 · ln(D/10 m) · H), dipendente dal diametro, di cui un corpo più grande esplode più in basso. Per corpi tipo Chicxulub supera la stessa quota di frammentazione, quindi il bolide non esplode mai in atmosfera. Una taratura di Nimbus, non un'equazione pubblicata.",
+        "source": "Nimbus (tarata su Tunguska e Chelyabinsk)"
       },
       "energyFractionToGround": {
         "name": "Energia al suolo (gf)",
-        "definition": "Frazione dell'energia cinetica del bolide che raggiunge il suolo come lavoro di cratere / sismico. 1.0 per INTACT (Chicxulub), ≈ 0.02 per COMPLETE_AIRBURST (Tunguska, Chelyabinsk). Il complemento (1 − gf) viene rilasciato in atmosfera come lampo + onda d'urto.",
-        "source": "Collins, Melosh & Marcus (2005) Eq. 22"
+        "definition": "Frazione dell'energia cinetica del bolide che raggiunge il suolo come lavoro di cratere e sismico: 1 per INTACT (Chicxulub), 0,30 per un'esplosione sotto i 5 km che scende a 0,02 da 15 km in su (0,11 per il preset di Tunguska, 0,02 per Chelyabinsk). Il complemento (1 − gf) viene rilasciato in atmosfera come lampo e onda d'urto.",
+        "source": "Euristica di Nimbus"
       },
       "atmosphericYield": {
         "name": "Resa airburst in atmosfera",
-        "definition": "Frazione dell'energia cinetica rilasciata come palla di fuoco + impulso d'urto durante l'ingresso: E_atm = (1 − gf) · E_cinetica. Per Chelyabinsk vale ≈ 0,33 Mt TNT (98 % del totale).",
-        "source": "Brown et al. (2013) Nature 503"
+        "definition": "Frazione dell'energia cinetica rilasciata come palla di fuoco + impulso d'urto durante l'ingresso: E_atm = (1 − gf) · E_cinetica. Per il preset di Chelyabinsk vale ≈ 0,33 Mt TNT (98 % del totale); Brown et al. (2013) stimano l'airburst reale in 400–600 kt.",
+        "source": "Nimbus (euristica gf)"
       },
       "bolideAirburstAmplification": {
         "name": "Amplificazione altitudine bolide",
-        "definition": "Fattore di amplificazione altitudine in forma chiusa f(h) = (P_0 / P_amb(h))^(1/β) con β = 5/3 (esponente Sachs intermediate-shock). Applicato ai raggi di sovrapressione Kinney-Graham e termici Glasstone di un airburst. Costruito da Whitham (1974) invarianza weak-shock, Sachs (1944) scaling, e Atmosfera Standard USA 1976.",
-        "source": "Whitham 1974 / Sachs 1944 / USSA 1976"
+        "definition": "Correzione per la quota f(h) = (P₀ / P_amb(h))^(1/β), β = 5/3, applicata ai raggi d'urto Kinney-Graham di un airburst (non a quelli delle ustioni). Un argomento di plausibilità di Nimbus con un esponente adattato, non una relazione pubblicata; P(h) dall'Atmosfera Standard USA 1976. Da prendere come correzione d'ordine di grandezza.",
+        "source": "Nimbus (adattato); USSA 1976"
       },
       "aftershockCatalogue": {
         "name": "Catalogo scosse di assestamento",
@@ -1125,11 +1125,11 @@
     "craterDepth": "Profondità dal bordo al fondo del cratere fresco (Collins, Melosh & Marcus 2005): per un cratere semplice la conca transitoria meno la lente di breccia più il bordo, 0,21 del diametro (Eq. 23–26); per un cratere complesso d = 0,4·D^0,3 km, il fit su Venere di Herrick et al. 1997 (Eq. 28).",
     "ejecta": "Spessore degli ejecta t = D_tc⁴ / (112·r³), con D_tc il diametro del cratere transitorio e r la distanza dal centro, solo fuori dal bordo finale (Collins, Melosh & Marcus 2005, Eq. 47; r⁻³ da McGetchin et al. 1973). È un limite inferiore. I bordi invertono la stessa formula allo spessore indicato.",
     "firestorm": "Soglie di ignizione e tempesta di fuoco dal Glasstone & Dolan (1977) §7.40–§7.42. Efficienza luminosa di impatto η ≈ 3 × 10⁻³ da Toon et al. (1997); partizione termica nucleare 0.35.",
-    "atmosphere": "Polvere sub-μm in stratosfera scalata linearmente su Toon et al. (1997) Tab. 3; HNO₃ da shock atmosferico scalato su Prinn & Fegley (1987); tier climatico per banda di energia cinetica.",
+    "atmosphere": "Polvere in stratosfera: lo 0,1 % della roccia che il cratere polverizza, m ≈ 4·Y·(25 km/s / v)^0,33 Tg con Y in Mt (Toon et al. 1997, eq. 10 e §8.2). Acido nitrico: l'NO prodotto dall'aria riscaldata dall'urto, scalato dall'asteroide di Prinn & Fegley (1987) — 3 × 10³⁸ molecole per 10²³ J — tutto convertito in HNO₃, un limite superiore. Livello climatico: fasce di energia cinetica di Nimbus.",
     "seismicMagnitude": "Magnitudo sismica M = 0,67·log₁₀(E) − 5,87, con E l'energia che arriva al suolo in joule (Collins, Melosh & Marcus 2005, Eq. 40): la relazione magnitudo–energia di Gutenberg–Richter con un'efficienza sismica di 10⁻⁴ (Schultz & Gault 1975). È una magnitudo energetica, non una magnitudo momento.",
     "seismicMagnitudeRange": "La stessa relazione sull'intervallo di efficienza sismica indicato da Collins et al. (2005), da 10⁻⁵ a 10⁻³: ±0,67 attorno al valore centrale.",
-    "tsunamiCavity": "Raggio cavità in acqua R_C = (3·E / (2π·ρ_w·g))^(1/4) dalla forma energia-partizione di Ward & Asphaug (2000).",
-    "tsunamiFarField": "Ampiezza campo-lontano A(r) = A₀·R_C/r (Ward & Asphaug 2000) — decadimento geometrico 1/r di un'onda di gravità in acqua poco profonda.",
+    "tsunamiCavity": "Raggio della cavità in acqua R_C = (3·E / (2π·ρ_w·g))^(1/4): l'eq. 12 di Ward & Asphaug (2000) per una cavità profonda quanto il suo raggio con metà dell'energia che entra in acqua, entro il 2 % dalla legge di Gault & Sonett citata da Wünnemann et al. (2010).",
+    "tsunamiFarField": "Ampiezza di riferimento a grande distanza A(r) = A₀·R_C/r: un'ampiezza alla sorgente tarata dal progetto con un decadimento 1/r che semplifica l'eq. 17 di Ward & Asphaug (2000), che va da r^−1/2 a r^−1,075. Non è la stima migliore del modello, che è l'onda di bordo di Wünnemann.",
     "tsunamiWunnemann": "Onda di bordo di Wünnemann, Collins & Weiss 2010 (Rev. Geophys. 48, eq. 9a/10a): A(r) = min(0,14 R_w, h)·(R_w/r)^q_r, con q_r = min(1,2; 0,5 + 2e^(−1,75 L/h)). In acqua bassa l'onda decade come r^−0,5 (dispersione geometrica), in oceano profondo come r^−1,2: è la stima migliore che il simulatore usa per il run-up e per la propagazione batimetrica sul globo.",
     "tsunamiWunnemannBounds": "Inviluppo pubblicato da Wünnemann, Collins & Weiss 2010 (eq. 7–8): limite superiore min(0,28 R_w, h)·R_w/r; limite inferiore il minore fra onda di bordo e onda di collasso 0,06·min(R_w/3, h)·(5R_w/r)^q_c, quest'ultima solo per h/L ≥ 2. Lo stesso intervallo che riporta l'Earth Impact Effects Program.",
     "synolakisRunup": "Run-up costiero su spiaggia piana 1:100 con profondità offshore 10 m (Synolakis 1987, JFM 185 523–545). R = 2.831·H·√(cot β)·(H/d)^(1/4). Altezza di inondazione illustrativa — il run-up reale dipende da batimetria, geometria portuale e regime di frangimento.",
@@ -1155,9 +1155,9 @@
     "emp": "Classificazione regime di impulso elettromagnetico. Burst a bassa quota → EMP trascurabile al suolo; burst ad alta quota (> 30 km) → HEMP canonico 50 kV/m per IEC 61000-2-9, con footprint pari al disco tangente all'orizzonte. Modello corrente di Longmire (1978) IEEE AP-26.",
     "thermal": "Raggio ustioni di 3° grado non schermato alla soglia di fluenza 8 cal/cm² (Glasstone & Dolan 1977, Tabella 7.41). Il raggio reale si riduce al 50–70 % con l'attenuazione atmosferica.",
     "nuclearCrater": "Diametro cratere apparente surface-burst D = K · W_kt^0.3 (Nordyke 1977), con K legato al tipo di suolo — roccia dura, terreno compatto, sabbia, corallo umido.",
-    "atmosphericEntry": "Quota di inizio frammentazione h_b = H · ln(ρ₀v² / Y), dove la pressione dinamica supera per la prima volta la resistenza Y del bolide (Chyba et al. 1993, Nature 361: 40; Collins et al. 2005, M&PS 40, Eq. 9). La quota di esplosione è 2 scale di altezza sotto h_b, meno un bonus di penetrazione che cresce con il diametro: per corpi grandi spinge la \"burst altitude\" sotto il livello del suolo, e il bolide attraversa l'atmosfera intatto.",
-    "bolideAirburstAmplification": "Fattore di amplificazione altitudine in forma chiusa f(h) = (P_0 / P_amb(h))^(1/β) con β = 5/3 (esponente di Sachs intermediate-shock). Combina l'invarianza weak-shock di Whitham (1974) §8.2 ΔP/P_amb ≈ costante in atmosfera stratificata, lo scaling di Sachs (1944) ΔP ∝ R^(−β), e l'Atmosfera Standard USA 1976 (NOAA-S/T 76-1562) per il P(h) reale. Limite a 15× per scenari stratosferici. Validato entro ~1 % su Chelyabinsk 2013 (Brown et al. 2013 Nature 503: 238) ed entro ~15 % su Tunguska 1908.",
-    "seaCoupling": "Un impatto sulla terraferma arriva al mare col cratere, se il bordo attraversa la costa, o con la coltre di ejecta che cade oltre la riva. La massa di ejecta oltre una distanza d segue McGetchin, Settle & Head 1973 (spessore ∝ (r/R)⁻³): la frazione oltre la riva è R/d, e scala l'energia con cui si forma la cavità d'acqua. Oltre l'isopaca di 1 m il mare non viene mosso.",
+    "atmosphericEntry": "Quota di inizio frammentazione h_b = H · ln(ρ₀v² / Y), dove la pressione dinamica supera per la prima volta la resistenza Y del bolide: il termine principale dell'Eq. 11 di Collins et al. 2005 (il modello a pancake è di Chyba et al. 1993). Nimbus mette l'esplosione 2 scale di altezza sotto h_b, meno un bonus di penetrazione che cresce con il diametro e porta i corpi grandi al suolo intatti; entrambi i passi sono tarati su Tunguska e Chelyabinsk.",
+    "bolideAirburstAmplification": "Correzione per la quota f(h) = (P₀ / P_amb(h))^(1/β), β = 5/3, con tetto a 15×, applicata ai raggi d'urto di un airburst. Suppone che la sovrapressione mantenga il suo rapporto con la pressione ambiente scendendo (P(h) dall'Atmosfera Standard USA 1976) e traduce il guadagno in distanza con un esponente di decadimento adattato: un argomento di plausibilità di Nimbus, non una derivazione. Non validata: per il preset di Chelyabinsk porta l'anello di 0,5 psi a 96 km, ma ai 500 Pa che Popova et al. (2013) prendono per i vetri rotti il modello corretto arriva a ≈ 640 km, contro i loro 108 km.",
+    "seaCoupling": "Un impatto sulla terraferma arriva al mare col cratere, se il bordo attraversa la costa, o con gli ejecta che cadono oltre la riva. Il deposito si assottiglia come r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47), quindi la massa di ejecta oltre una distanza d cala come 1/d: la frazione oltre la riva, R/d, scala l'energia con cui si forma la cavità d'acqua — un'ipotesi di Nimbus. Oltre l'isopaca di 1 m il mare non viene mosso.",
     "explosionWaveHeight": "Altezza dal cavo alla cresta H ≈ 40 500·W^0,54/R piedi in acque profonde (Glasstone & Dolan 1977 §6.119, entro circa il 35 %), oppure H ≈ 150·d·W^0,25/R in acque meno profonde di 100·W^0,25 piedi (§6.121); W in kilotoni, d la profondità dell'acqua. L'ampiezza mostrata è metà dell'altezza. La relazione contiene già la dispersione del treno d'onde.",
     "explosionWaveSource": "Dentro questo raggio la relazione dell'altezza non si usa: è dove l'altezza di Glasstone & Dolan sarebbe più ripida di quanto l'acqua possa reggere, H = 0,142·L·tanh(2πd/L) (Miche 1944), oppure il raggio massimo della bolla di gas, 128·W^0,25 piedi (§6.119), il maggiore dei due.",
     "underwaterBurst": "Uno scoppio dentro l'acqua (Glasstone & Dolan 1977). Gran parte della radiazione termica e della radiazione nucleare iniziale viene assorbita vicino allo scoppio, e la palla di fuoco di BAKER restò visibile solo pochi millesimi di secondo (§2.64): il modello non dà ustioni, incendi né radiazione iniziale. L'onda d'urto in aria raggiunge ogni sovrappressione alla distanza dello scoppio in superficie accorciata di e^(−ρ·λ_d/126), con λ_d la profondità in ft·kt⁻¹ᐟ³ (§6.81, §6.53). Le onde sono §6.119–6.121."
@@ -1171,13 +1171,13 @@
         "note": "Impattore K-Pg su piattaforma carbonatica di 100 m, cascata tsunami Ward & Asphaug"
       },
       "TUNGUSKA": {
-        "note": "Airburst di bolide condritico a 30°, 30 giugno 1908 — Boslough & Crawford 2008. Notare l'impronta asimmetrica di ejecta sottovento alla direzione di ingresso."
+        "note": "Airburst di bolide condritico a 30°, 30 giugno 1908 — Boslough & Crawford 2008. Un airburst: nessun cratere e nessuna coltre di ejecta."
       },
       "METEOR_CRATER": {
         "note": "Meteorite ferroso, ≈50 ka — Kring 2007"
       },
       "CHELYABINSK": {
-        "note": "Airburst di bolide di tipo S a 18°, 15 feb 2013 — Popova et al. 2013 Science. Marcata asimmetria a farfalla per l'angolo di ingresso molto basso (Schultz & Anderson 1996)."
+        "note": "Airburst di bolide di tipo S a 18°, 15 feb 2013 — Popova et al. 2013 Science. Un airburst completo ad angolo radente: nessun cratere e nessuna coltre di ejecta."
       }
     },
     "explosion": {

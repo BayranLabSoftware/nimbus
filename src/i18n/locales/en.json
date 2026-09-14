@@ -1003,33 +1003,33 @@
       },
       "breakupAltitude": {
         "name": "Breakup altitude (h_b)",
-        "definition": "Altitude at which fragmentation begins: h_b = H · ln(ρ₀ · v² / Y). For Chelyabinsk (17 m, 19 km/s, S-type) this is ≈ 38 km; for Chicxulub (15 km) it is ≈ 46 km. Note: fragmentation onset alone does NOT mean the body airbursts — see penetration bonus.",
-        "source": "Collins, Melosh & Marcus (2005) Eq. 9"
+        "definition": "Altitude at which fragmentation begins: h_b = H · ln(ρ₀ · v² / Y), the leading term of Collins et al.'s breakup altitude. For the Chelyabinsk preset (17 m, 19 km/s, 2 MPa) this is ≈ 43 km; for Chicxulub (15 km) ≈ 50 km. Fragmentation onset alone does NOT mean the body airbursts — see penetration bonus.",
+        "source": "Collins, Melosh & Marcus (2005) Eq. 11"
       },
       "burstAltitude": {
         "name": "Burst altitude",
-        "definition": "Altitude of peak energy deposition: h_burst = h_b − 2·H − penetrationBonus. When this is below the surface (large bodies) the simulator flags the regime as INTACT.",
-        "source": "Chyba 1993 / Collins 2005"
+        "definition": "Altitude of peak energy deposition: h_burst = h_b − 2·H − penetrationBonus, a Nimbus rule tuned on Tunguska and Chelyabinsk. When this is below the surface (large bodies) the simulator flags the regime as INTACT.",
+        "source": "Nimbus (tuned)"
       },
       "penetrationBonus": {
         "name": "Penetration bonus",
-        "definition": "Diameter-dependent depth (1.2 · ln(D/10) · H) that the pancake gains over a point source. For Chicxulub-class bodies it can exceed the breakup altitude itself, so the body never bursts in the atmosphere.",
-        "source": "Chyba et al. (1993)"
+        "definition": "Diameter-dependent depth (1.2 · ln(D/10 m) · H) by which a larger body bursts lower. For Chicxulub-class bodies it exceeds the breakup altitude itself, so the body never bursts in the atmosphere. A Nimbus tuning, not a published equation.",
+        "source": "Nimbus (tuned on Tunguska and Chelyabinsk)"
       },
       "energyFractionToGround": {
         "name": "Energy fraction to ground (gf)",
-        "definition": "Fraction of the impactor's kinetic energy that reaches the ground as cratering / seismic work. 1.0 for INTACT (Chicxulub), ≈ 0.02 for COMPLETE_AIRBURST (Tunguska, Chelyabinsk). The complement (1 − gf) is released in the atmosphere as flash + shock.",
-        "source": "Collins, Melosh & Marcus (2005) Eq. 22 exponent"
+        "definition": "Fraction of the impactor's kinetic energy that reaches the ground as cratering and seismic work: 1 for INTACT (Chicxulub), 0.30 for a burst below 5 km falling to 0.02 at 15 km and above (0.11 for the Tunguska preset, 0.02 for Chelyabinsk). The complement (1 − gf) is released in the atmosphere as flash and shock.",
+        "source": "Nimbus heuristic"
       },
       "atmosphericYield": {
         "name": "Atmospheric airburst yield",
-        "definition": "Fraction of the kinetic energy released as a fireball + shock pulse during entry: E_atm = (1 − gf) · E_kinetic. For Chelyabinsk this is ≈ 0.33 Mt TNT-equivalent (98 % of total).",
-        "source": "Brown et al. (2013) Nature 503"
+        "definition": "Fraction of the kinetic energy released as a fireball + shock pulse during entry: E_atm = (1 − gf) · E_kinetic. For the Chelyabinsk preset this is ≈ 0.33 Mt TNT-equivalent (98 % of total); Brown et al. (2013) estimate the real airburst at 400–600 kt.",
+        "source": "Nimbus (gf heuristic)"
       },
       "bolideAirburstAmplification": {
         "name": "Bolide airburst amplification",
-        "definition": "Closed-form altitude amplification f(h) = (P_0 / P_amb(h))^(1/β) with β = 5/3 (Sachs intermediate-shock exponent). Applied to the Kinney-Graham overpressure / Glasstone thermal radii of an airburst event. Built from Whitham (1974) weak-shock invariance, Sachs (1944) blast scaling, and the U.S. Standard Atmosphere 1976.",
-        "source": "Whitham 1974 / Sachs 1944 / USSA 1976"
+        "definition": "Altitude correction f(h) = (P₀ / P_amb(h))^(1/β), β = 5/3, applied to the Kinney-Graham shock radii of an airburst (not to its burn radii). A Nimbus plausibility argument with a fitted exponent, not a published relation; P(h) from the U.S. Standard Atmosphere 1976. Treat it as an order-of-magnitude correction.",
+        "source": "Nimbus (fitted); USSA 1976"
       },
       "aftershockCatalogue": {
         "name": "Aftershock catalogue",
@@ -1125,11 +1125,11 @@
     "craterDepth": "Rim-to-floor depth of the fresh crater (Collins, Melosh & Marcus 2005): for a simple crater the transient bowl less the breccia lens plus the rim, 0.21 of the diameter (Eqs. 23–26); for a complex crater d = 0.4·D^0.3 km, the Venus fit of Herrick et al. 1997 (Eq. 28).",
     "ejecta": "Ejecta thickness t = D_tc⁴ / (112·r³), with D_tc the transient crater diameter and r the distance from the centre, outside the final rim only (Collins, Melosh & Marcus 2005, Eq. 47; r⁻³ after McGetchin et al. 1973). A lower bound. The edges invert the same formula at the quoted thickness.",
     "firestorm": "Thermal-pulse ignition and firestorm thresholds from Glasstone & Dolan (1977) §7.40–§7.42. Impact luminous efficiency η ≈ 3 × 10⁻³ from Toon et al. (1997); nuclear thermal partition 0.35.",
-    "atmosphere": "Stratospheric sub-µm dust mass linearly scaled against Toon et al. (1997) Table 3; shock-atmospheric HNO₃ linearly scaled against Prinn & Fegley (1987); climate tier by kinetic-energy band.",
+    "atmosphere": "Stratospheric dust: 0.1 % of the rock the crater pulverizes, m ≈ 4·Y·(25 km/s / v)^0.33 Tg with Y in Mt (Toon et al. 1997, eq. 10 and §8.2). Nitric acid: the NO made by shock-heated air, scaled from the asteroid of Prinn & Fegley (1987) — 3 × 10³⁸ molecules for 10²³ J — all taken to HNO₃, an upper limit. Climate tier: Nimbus bands of kinetic energy.",
     "seismicMagnitude": "Seismic magnitude M = 0.67·log₁₀(E) − 5.87, E the energy delivered to the ground in joules (Collins, Melosh & Marcus 2005, Eq. 40): the Gutenberg–Richter magnitude–energy relation at a seismic efficiency of 10⁻⁴ (Schultz & Gault 1975). An energy magnitude, not a moment magnitude.",
     "seismicMagnitudeRange": "The same relation across the seismic-efficiency range Collins et al. (2005) give, 10⁻⁵ to 10⁻³: ±0.67 around the central value.",
-    "tsunamiCavity": "Water-column cavity radius R_C = (3·E / (2π·ρ_w·g))^(1/4) from the Ward & Asphaug (2000) energy-partitioning form.",
-    "tsunamiFarField": "Far-field amplitude A(r) = A₀·R_C/r (Ward & Asphaug 2000) — 1/r geometric decay of a shallow-water gravity wave.",
+    "tsunamiCavity": "Water-cavity radius R_C = (3·E / (2π·ρ_w·g))^(1/4): Ward & Asphaug (2000) eq. 12 for a cavity as deep as its radius holding half the energy that enters the water, within 2 % of the Gault & Sonett law Wünnemann et al. (2010) quote.",
+    "tsunamiFarField": "Reference far-field amplitude A(r) = A₀·R_C/r: a project source amplitude A₀ with a 1/r decay that simplifies Ward & Asphaug (2000) eq. 17, which runs from r^−1/2 to r^−1.075. Not the model's best estimate, which is the Wünnemann rim wave.",
     "tsunamiWunnemann": "Rim wave of Wünnemann, Collins & Weiss 2010 (Rev. Geophys. 48, eq. 9a/10a): A(r) = min(0.14 R_w, h)·(R_w/r)^q_r with q_r = min(1.2, 0.5 + 2e^(−1.75 L/h)). A shallow-water impact decays as r^−0.5 (geometric spreading), a deep-ocean one as r^−1.2 — the best estimate the simulator uses for run-up and for the bathymetric propagation on the globe.",
     "tsunamiWunnemannBounds": "Published envelope of Wünnemann, Collins & Weiss 2010 (eqs. 7–8): upper bound min(0.28 R_w, h)·R_w/r; lower bound the smaller of the rim wave and the collapse wave 0.06·min(R_w/3, h)·(5R_w/r)^q_c, the latter only for h/L ≥ 2. The same range the Earth Impact Effects Program reports.",
     "synolakisRunup": "Coastal run-up on a 1:100 plane beach with 10 m offshore depth (Synolakis 1987, JFM 185 523–545). R = 2.831·H·√(cot β)·(H/d)^(1/4). Illustrative inundation height — real coastal run-up depends on bathymetry, harbour geometry, and breaking regime.",
@@ -1155,9 +1155,9 @@
     "emp": "Electromagnetic-pulse regime classification. Low-altitude bursts are EMP-negligible at ground level; high-altitude (> 30 km) bursts produce the canonical 50 kV/m HEMP per IEC 61000-2-9, with ground footprint equal to the horizon tangent disc. Longmire (1978) IEEE AP-26 is the underlying current-sheet model.",
     "thermal": "Unshielded third-degree-burn radius at the 8 cal/cm² fluence threshold (Glasstone & Dolan 1977, Table 7.41). Real reach shrinks to 50–70 % once atmospheric attenuation is applied.",
     "nuclearCrater": "Apparent surface-burst crater diameter D = K · W_kt^0.3 (Nordyke 1977), with K tied to the ground type — hard rock, firm ground, dry soil, wet coral.",
-    "atmosphericEntry": "Fragmentation-onset altitude h_b = H · ln(ρ₀v² / Y), where dynamic pressure first exceeds the impactor's tensile strength Y (Chyba et al. 1993, Nature 361: 40; Collins et al. 2005, M&PS 40, Eq. 9). Burst altitude is set 2 scale heights below h_b, minus a diameter-dependent penetration bonus that lets large bodies sail through the atmosphere intact.",
-    "bolideAirburstAmplification": "Closed-form altitude amplification f(h) = (P_0 / P_amb(h))^(1/β) with β = 5/3 (Sachs intermediate-shock exponent). Built from Whitham (1974) §8.2 weak-shock invariance ΔP/P_amb ≈ const through stratified atmosphere, Sachs (1944) blast scaling ΔP ∝ R^(−β), and the U.S. Standard Atmosphere 1976 (NOAA-S/T 76-1562) for actual P(h). Capped at 15× for stratospheric scenarios. Validates within ~1 % on Chelyabinsk 2013 (Brown et al. 2013 Nature 503: 238) and within ~15 % on Tunguska 1908.",
-    "seaCoupling": "An impact on land reaches the sea with the crater, when the rim crosses the coast, or with the ejecta blanket falling beyond the shoreline. The ejecta mass beyond a distance d follows McGetchin, Settle & Head 1973 (thickness ∝ (r/R)⁻³): the fraction beyond the shore is R/d, and it scales the energy the water cavity forms with. Beyond the 1 m isopach the sea is not moved.",
+    "atmosphericEntry": "Fragmentation-onset altitude h_b = H · ln(ρ₀v² / Y), where dynamic pressure first exceeds the impactor's strength Y — the leading term of Collins et al. 2005 Eq. 11 (the pancake model is Chyba et al. 1993). Nimbus sets the burst 2 scale heights below h_b, minus a diameter-dependent penetration bonus that lets large bodies reach the ground intact; both steps are tuned on Tunguska and Chelyabinsk.",
+    "bolideAirburstAmplification": "Altitude correction f(h) = (P₀ / P_amb(h))^(1/β), β = 5/3, capped at 15×, applied to the shock radii of an airburst. It supposes the overpressure keeps its ratio to the ambient pressure on the way down (P(h) from the U.S. Standard Atmosphere 1976) and turns the gain into distance with a fitted decay exponent: a Nimbus plausibility argument, not a derivation. Not validated: for the Chelyabinsk preset it puts the 0.5 psi ring at 96 km, but at the 500 Pa that Popova et al. (2013) take for window damage the corrected model reaches ≈ 640 km, against their 108 km.",
+    "seaCoupling": "An impact on land reaches the sea with the crater, when the rim crosses the coast, or with the ejecta falling beyond the shoreline. The deposit thins as r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47), so the ejecta mass beyond a distance d falls as 1/d: the fraction beyond the shore, R/d, scales the energy the water cavity forms with — a Nimbus assumption. Beyond the 1 m isopach the sea is not moved.",
     "explosionWaveHeight": "Height from crest to trough H ≈ 40 500·W^0.54/R feet in deep water (Glasstone & Dolan 1977 §6.119, to about 35 %), or H ≈ 150·d·W^0.25/R in water shallower than 100·W^0.25 ft (§6.121); W in kilotons, d the water depth. The amplitude shown is half the height. The relation already contains the train's dispersion.",
     "explosionWaveSource": "Inside this radius the height relation is not used: it is where Glasstone & Dolan's height would be steeper than the water can hold, H = 0.142·L·tanh(2πd/L) (Miche 1944), or the gas bubble's maximum radius, 128·W^0.25 ft (§6.119), whichever is larger.",
     "underwaterBurst": "A burst within the water (Glasstone & Dolan 1977). Much of the thermal and initial nuclear radiation is absorbed close to the burst, and the BAKER fireball was visible for only a few thousandths of a second (§2.64), so the model gives no burns, no fires and no initial radiation. The air blast reaches each overpressure at the surface burst's range shortened by e^(−ρ·λ_d/126), λ_d the depth in ft·kt⁻¹ᐟ³ (§6.81, §6.53). The waves are §6.119–6.121."

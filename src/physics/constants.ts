@@ -84,9 +84,11 @@ export const IMPACT_LUMINOUS_EFFICIENCY = 3e-3;
 // envelope) rings. Applying 0.5 brings both inside ±15 %.
 export const IMPACT_BLAST_COUPLING = 0.5;
 
-// Asteroid / comet taxonomy with class-midpoint bulk density (kg/m^3)
-// and tensile strength (Pa). Real bodies vary ±30%.
-// Britt & Consolmagno (2003), MAPS 38(8): 1161; Popova et al. (2011),
+// Asteroid / comet taxonomy: Nimbus preset bulk density (kg/m^3) and
+// tensile strength (Pa). Only two densities have near analogues in
+// Britt & Consolmagno (2003), MAPS 38(8): 1161, whose data are
+// meteorites: C-type near the CI/CM chondrites (Table 2), S-type near
+// the ordinary chondrites (Table 4). Strengths: Popova et al. (2011),
 // MAPS 46(10): 1525.
 export const ASTEROID_TAXONOMY = {
   C_TYPE: { density: 2_000, strength: 1e5, label: 'C-type (carbonaceous)' },

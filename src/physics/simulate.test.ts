@@ -193,7 +193,7 @@ describe('simulateImpact — land vs. ocean cascade', () => {
     expect(r.tsunami).toBeUndefined();
   });
 
-  it('Schultz-Anderson 1996 asymmetry: 45° impact → symmetric blanket, 15° → ~0.67 stretch', () => {
+  it('ejecta asymmetry heuristic: 45° impact → symmetric blanket, 15° → ~0.67 stretch', () => {
     // Chicxulub at 45° canonical angle: asymmetryFactor = 0.
     const sym = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
     expect(sym.ejecta.asymmetryFactor).toBe(0);
@@ -313,7 +313,7 @@ describe('simulateImpact — land vs. ocean cascade', () => {
     // shock waves and burns from the airburst at ≈ 12 km, NOT from
     // a 7 Mt surface burst. The simulator's `damage.*` rings must
     // therefore reflect the atmospheric-airburst reach (with the
-    // Whitham/Sachs/USSA amplification), not the legacy full-KE
+    // altitude amplification), not the legacy full-KE
     // surface ring radii. We assert that the values agree exactly
     // with the entry block's atmospheric radii — the max() collapses
     // to the airburst component because the ground-coupled fireball

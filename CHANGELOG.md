@@ -175,6 +175,30 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   breccia lens plus the rim for a simple crater (0.21 of the diameter),
   and for a complex one the fit Herrick et al. 1997 made to fresh
   craters on Venus (Eq. 28*). A fresh Chicxulub is 1.9 km deep, not 4.9.
+- **An impact's stratospheric dust was a hundred times too much, and its
+  acid rain eighty.** The dust scaled from a Chicxulub value credited to
+  Toon et al. 1997 Table 3, which is a table of impact frequencies; it
+  now follows their prescription, 0.1 % of the rock the crater
+  pulverizes (eq. 10), so an airburst lofts none. The nitric acid scaled
+  from 10¹⁶ kg that no case of Prinn & Fegley 1987 gives at that energy;
+  it now scales from their asteroid, whose 3 × 10³⁸ NO molecules at
+  10²³ J are 3.1 × 10¹³ kg as HNO₃, an upper limit. Chicxulub now lofts
+  1.1 × 10¹⁵ kg of dust and 3.3 × 10¹⁴ kg of acid. The climate tiers are
+  said to be the project's bands, with Toon's regimes beside them.
+- **The rest of the impact cards say what the code does.** The airburst
+  classifier, its penetration term and its ground-energy fraction are
+  Nimbus heuristics tuned on Tunguska and Chelyabinsk, not Chyba 1993's
+  equations. The altitude factor on airburst shock radii is a fitted
+  plausibility argument, and Chelyabinsk does not validate it: its 0.5 psi
+  ring lands near the 108 km to which Popova et al. 2013 model window
+  damage, but at their 500 Pa threshold the model reaches about 640 km;
+  the "0.5 psi at 120 km" credited to Brown et al. 2013 is not in their
+  paper. The ejecta butterfly is the project's own, and the Schultz &
+  Anderson abstract it cited is a paper on impact flash spectroscopy; the
+  asteroid densities are presets, two of which resemble meteorite
+  densities in Britt & Consolmagno 2003. The Ward & Asphaug row names its
+  equation and its project calibration, and the Wünnemann card says how
+  Nimbus reads the paper's contradictory validity condition.
 - **The terrain tiles are not CC0.** They combine public-domain data
   with sources that require attribution; the README, ASSETS and the code
   say so and link the list.

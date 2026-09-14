@@ -13,18 +13,23 @@ export interface ImpactCavityInput {
 
 /**
  * Initial cavity radius left in the water column by a deep-water
- * impact, from the Ward & Asphaug (2000) energy-partitioning form:
+ * impact:
  *
  *     R_C = (3 · E_k / (2π · ρ_w · g))^(1/4)
  *
- * where E_k is the impactor kinetic energy, ρ_w the water density
- * and g the surface gravity. Applies in the "deep water" regime
- * where water depth exceeds the impactor size; the simulator uses it
- * as the source-cavity radius when propagating the resulting tsunami.
+ * where E_k is the energy that goes into the water, ρ_w the water
+ * density and g the surface gravity. It is Ward & Asphaug's (2000)
+ * eq. 12 — the tsunami energy (1/3)·π·ρ_w·g·(D_C·R_C)² of a lipped
+ * cavity, eq. 9 — for a cavity as deep as its radius (D_C = R_C) holding
+ * half the impact energy. Ward & Asphaug themselves take about 15 %
+ * and a diameter 2.5–3 times the depth, which gives a cavity 9–17 %
+ * narrower. The formula is within 2 % of the Gault & Sonett law
+ * R_w = 121 · E^(1/4) m (E in kt) that Wünnemann et al. (2010, p. 18)
+ * quote, and is the R_w their rim wave starts from.
  *
  * Source: Ward & Asphaug (2000), "Asteroid Impact Tsunami:
  * A Probabilistic Hazard Assessment", Icarus 145(1), pp. 64–78,
- * Eq. 3. DOI: 10.1006/icar.1999.6336.
+ * eqs. 9–12. DOI: 10.1006/icar.1999.6336.
  */
 export function impactCavityRadius(input: ImpactCavityInput): Meters {
   const E = input.kineticEnergy as number;
@@ -34,18 +39,12 @@ export function impactCavityRadius(input: ImpactCavityInput): Meters {
 }
 
 /**
- * Energy-partition coupling efficiency η for an impact-driven water
- * cavity. The Ward & Asphaug 2000 rule of thumb A₀ = R_C/2 assumes
- * 100 % of the impact energy goes into water displacement — the
- * idealised hemispherical cavity collapse.
- *
- * Real impacts deliver only a fraction of their energy to coherent
- * water displacement: vapor plume formation, atmospheric ejecta,
- * crater excavation in the ocean floor, and shock dissipation
- * absorb the rest. Hydrocode reconstructions of the K-Pg event
- * (Range et al. 2022 GeoLogica, Bralower et al. 2018) settle on
- * source amplitudes 100–1500 m for a ~80 km cavity, NOT the 42 km
- * Ward's raw 0.5·R would imply.
+ * Source amplitude of the Ward & Asphaug reference row — a project
+ * calibration, not their relation. Ward & Asphaug (2000) start the
+ * wave at the cavity depth, limited by the water depth, min(D_C, h)
+ * (their eq. 18). An earlier version took half the cavity radius,
+ * which for a Chicxulub-size cavity is tens of kilometres of water;
+ * the damped form below caps it instead.
  *
  * Phase-17 audit. The previous fit
  *
@@ -67,9 +66,7 @@ export function impactCavityRadius(input: ImpactCavityInput): Meters {
  * so the source amplitude is now strictly monotonic in cavity
  * radius. A₀ asymptotes to 0.5 · R_ref for very large impacts.
  *
- * R_ref = 3 km is the calibration that lands K-Pg-class events at
- * the upper end of the Range et al. 2022 envelope while still
- * recovering Ward's small-impact limit:
+ * R_ref = 3 km is the project's calibration:
  *
  *   R_C =  1 km → η ≈ 0.375 → A₀ ≈ 375 m  (Eltanin-class)
  *   R_C =  3 km → η = 0.250 → A₀ = 750 m
@@ -117,13 +114,17 @@ export interface ImpactAmplitudeAtDistanceInput {
  * for the frequency dispersion that makes short-wavelength impact
  * waves decay faster than classical seismic tsunamis (Melosh 2003;
  * Wünnemann 2007 — the "impact tsunamis are over-rated" result). It
- * is kept as the historical Ward & Asphaug reference row. The
+ * is kept as the historical Ward & Asphaug reference row, and it
+ * simplifies their own decay (eq. 17), which runs from r^−1/2 for a
+ * cavity much wider than the water is deep to r^−1.075 for a much
+ * narrower one. The
  * simulator's best estimate for impact sources — in the readouts AND
  * in the on-globe field — is the Wünnemann, Collins & Weiss (2010)
  * rim wave (`./wunnemann.ts`), whose exponent spans r^−0.5 (shallow
  * shelf) to r^−1.2 (deep ocean) around this 1/r.
  *
- * Source: Ward & Asphaug (2000), Section 4.
+ * Source: Ward & Asphaug (2000), eqs. 17–18 for the decay it
+ * simplifies; their Section 4 uses u ≈ D_C² / r for the far field.
  */
 export function impactAmplitudeAtDistance(input: ImpactAmplitudeAtDistanceInput): Meters {
   const A0 = input.sourceAmplitude as number;
