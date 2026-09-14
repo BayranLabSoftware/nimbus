@@ -1425,8 +1425,8 @@
         "note": "The nine-in-ten band redraws the earthquake — its size, its depth, the ground, how hard the ground shakes — but keeps the population map and each country's fatality curve fixed. When a village's buildings are far weaker than its country's average, as at Amatrice and in Nepal, the record falls outside and the band cannot widen to warn of it."
       },
       "subduction": {
-        "item": "Ocean-trench earthquakes use rules made for earthquakes on land",
-        "note": "The shaking comes from relations fitted to shallow crustal earthquakes, and every fault is given the stiffness of ordinary crustal rock. The great trench earthquakes differ on both counts: the model paints a wide stretch of Japan at an intensity the 2011 earthquake never reached, and the shallowest ruptures — the ones that make unusually large tsunamis — slip further than a single stiffness allows."
+        "item": "Ocean-trench earthquakes are shaken with rules made for earthquakes on land",
+        "note": "The shaking comes from relations fitted to shallow crustal earthquakes, and the model paints a wide stretch of Japan at an intensity the 2011 earthquake never reached. Two more simplifications show on the same event: every fault gets one stiffness of rock, though along a trench it changes with depth, and Tōhoku's fault slips 13 m on average where studies of the earthquake find about 10, because the rupture area taken from a published size relation is smaller than theirs."
       },
       "tunedUnsourced": {
         "item": "Two wave calibrations rest on numbers their sources do not give",

@@ -38,9 +38,10 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 - **What the source review found and did not fix is declared.** The
   validation report and the public validation page now list seven more
   gaps: the toll band holds the population and the fatality curves
-  fixed; subduction earthquakes are shaken with crustal relations and
-  slip on one rigidity; Anak Krakatau and Storegga are tuned on numbers
-  their sources do not give; three numbers are not traced to a source
+  fixed; subduction earthquakes are shaken with crustal relations, slip
+  on one rigidity, and Tōhoku slips 13 m where inversions find about 10;
+  Anak Krakatau and Storegga are tuned on numbers their sources do not
+  give; three numbers are not traced to a source
   read here (DART 21413's 30 cm, the arrival-time table, the Venus crater
   depth); an airburst's altitude factor reaches 640 km at the threshold
   Popova et al. use for Chelyabinsk's 108 km; parts of the explosion model

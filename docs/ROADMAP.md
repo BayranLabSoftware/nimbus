@@ -331,7 +331,8 @@ the public validation page, together with two the reading made plain
 without being about one source: the toll band holds the population and
 the fatality curves fixed, and subduction earthquakes are shaken with
 crustal relations and slip on one rigidity of 30 GPa (Bilek & Lay 1999
-infer it lower on shallow megathrusts). The page's list lives in
+infer it lower on shallow megathrusts), with Tōhoku's 13 m of mean slip
+against about 10 inverted — the rupture area, under move 3. The page's list lives in
 `src/ui/pages/validationGaps.ts`.
 
 ### 1. Verify the layers, not just the toll _(intensity done, 9 September)_
