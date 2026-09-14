@@ -2,7 +2,7 @@ import { simulateEarthquake, type ContourLaw } from '../events/earthquake/simula
 import { m } from '../units.js';
 import type { ShakemapAreas } from './contourLaws.js';
 import { isQuiet, QUIET_DEATHS_BELOW, type UnseenEarthquake } from './depthRules.js';
-import { compareWithRecord, type RecordedEvent } from './recordedTolls.js';
+import { centralEstimate, type RecordedEvent } from './recordedTolls.js';
 
 /**
  * Rule 23's earthquakes as the harness runs them: the toll harness's
@@ -49,7 +49,8 @@ export function unseenShakemaps(rows: readonly UnseenEarthquake[]): ShakemapArea
   return rows.map((row) => ({ comcat: row.comcat, maxMmi: row.maxMmi, areaKm2: row.areaKm2 }));
 }
 
-/** Rule 25: every quiet earthquake's median toll under one law. */
+/** Rule 25: every quiet earthquake's median toll under one law — the
+ *  toll of its median scenario, the harness's central figure. */
 export function quietMedianTolls(
   rows: readonly UnseenEarthquake[],
   law: ContourLaw,
@@ -59,7 +60,7 @@ export function quietMedianTolls(
     .filter(isQuiet)
     .map(
       (row) =>
-        compareWithRecord(unseenEarthquakeEvent(row, { contourLaw: law, vs30: vs30For(row) }))
-          .deaths
+        centralEstimate(unseenEarthquakeEvent(row, { contourLaw: law, vs30: vs30For(row) }))
+          ?.deaths ?? 0
     );
 }

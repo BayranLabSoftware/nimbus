@@ -527,13 +527,29 @@ export function interpolationCost(event: RecordedEvent): InterpolationCost | nul
   };
 }
 
-export function compareWithRecord(event: RecordedEvent): TollComparison {
-  // The same country the browser would see, read off the same file.
+/**
+ * The toll of the median scenario alone, as compareWithRecord computes
+ * it before it draws a band: for counts that need the central figure of
+ * many events and not their bands (rule 25 of depthRules.ts). Null
+ * where the result has no casualty plan.
+ */
+export function centralEstimate(event: RecordedEvent): CasualtyEstimate | null {
   configureCountryLookup(shippedCountryAt);
   const result = event.run();
-  const location = { latitude: event.latitude, longitude: event.longitude };
-  const plan = casualtyPlanForResult(result, location);
-  if (plan === null) {
+  const plan = casualtyPlanForResult(result, {
+    latitude: event.latitude,
+    longitude: event.longitude,
+  });
+  if (plan === null) return null;
+  const cumulative = plan.bands.map((band) =>
+    footprintPopulation(event, band.outerRadiusM, band.polygon)
+  );
+  return estimateCasualties(plan, cumulative);
+}
+
+export function compareWithRecord(event: RecordedEvent): TollComparison {
+  const estimate = centralEstimate(event);
+  if (estimate === null) {
     return {
       event,
       estimate: null,
@@ -544,10 +560,6 @@ export function compareWithRecord(event: RecordedEvent): TollComparison {
       ratio: 0,
     };
   }
-  const cumulative = plan.bands.map((band) =>
-    footprintPopulation(event, band.outerRadiusM, band.polygon)
-  );
-  const estimate = estimateCasualties(plan, cumulative);
 
   // The band: a predictive interval where there is one to build, and
   // the model's own low/high pair where there is not.
