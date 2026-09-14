@@ -204,6 +204,10 @@ describe('Store-setter ↔ schema-validator consistency', () => {
     expect(useAppStore.getState().earthquake.input.magnitude).toBe(7.0);
     // vs30 must persist.
     expect(useAppStore.getState().earthquake.input.vs30).toBe(600);
+    // And only a cleared field gives it back to the terrain.
+    useAppStore.getState().setEarthquakeInput({ vs30: null });
+    expect(useAppStore.getState().earthquake.input.vs30).toBeUndefined();
+    expect(useAppStore.getState().earthquake.input.magnitude).toBe(7.0);
   });
 
   it('No silent cleanup: a NaN-bearing override does NOT half-update other fields', () => {

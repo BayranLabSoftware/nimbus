@@ -307,8 +307,9 @@ export interface EarthquakeInputOverrides {
   magnitude?: number;
   depth?: number;
   faultType?: EarthquakeScenarioInput['faultType'];
-  /** Vs30 (m/s) site reference. */
-  vs30?: number;
+  /** Vs30 (m/s) site reference; `null` gives the choice back to the
+   *  terrain under the pick. */
+  vs30?: number | null;
   /** Megathrust rupture scaling flag (Strasser 2010). */
   subductionInterface?: boolean;
 }
@@ -2293,7 +2294,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
       if (overrides.magnitude !== undefined) merged.magnitude = overrides.magnitude;
       if (overrides.depth !== undefined) merged.depth = m(overrides.depth);
       if (overrides.faultType !== undefined) merged.faultType = overrides.faultType;
-      if (overrides.vs30 !== undefined) merged.vs30 = overrides.vs30;
+      if (overrides.vs30 === null) delete merged.vs30;
+      else if (overrides.vs30 !== undefined) merged.vs30 = overrides.vs30;
       if (overrides.subductionInterface !== undefined)
         merged.subductionInterface = overrides.subductionInterface;
 

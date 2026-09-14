@@ -28,11 +28,15 @@ import { seismicMomentFromMagnitude } from './seismicMoment.js';
 import { seismicTsunamiFromMegathrust, type SeismicTsunamiResult } from './seismicTsunami.js';
 
 /**
- * Free inputs for an earthquake scenario. `depth` is informational for
- * now: the Joyner–Boore fit embeds a fixed 7.3 km saturation depth, so
- * passing a user depth does not re-tune the attenuation. Kept on the
- * API so a future GMPE swap (e.g. ASK14 with a depth term) can honour
- * it without breaking callers.
+ * Free inputs for an earthquake scenario. `depth` does not reach the
+ * shaking: Boore et al. 2014, which draws the rings, is a relation in
+ * the Joyner–Boore distance with a fixed 4.5 km near-source term and no
+ * depth of its own, so a source 35 km down shakes the ground above it as
+ * a shallow one does. It seeds the aftershock catalogue and is echoed in
+ * the report. Held out by rule, the rings paint MMI VII about all 190 of
+ * the 370 earthquakes whose ShakeMaps hold none, the validation page's
+ * `inventedShaking` gap; a relation in rupture distance, with the depth
+ * to the top of the rupture, is the kind that would honour it.
  */
 export interface EarthquakeScenarioInput {
   magnitude: number;

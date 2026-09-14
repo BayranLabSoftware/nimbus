@@ -271,6 +271,16 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The earthquake panel says what the simulator stands on.** With no
+  Vs30 typed in, the simulator reads one off the slope of the terrain
+  under the pick, but the field showed 760 m/s, rock, as though that were
+  the value in use, and once a number was typed there was no way back to
+  the terrain's. The field is now empty with "from the terrain" in it,
+  and emptying it gives the site back to the terrain. The depth field says
+  under it that the shaking rings do not use the depth yet: Boore et al.
+  2014, which draws them, has none, and a source 35 km down shakes the
+  ground as a shallow one does — a declared gap on the validation page.
+
 - **The terrain under a pick near the antimeridian is the terrain under
   it.** Where the tile under a pick is mostly sea, the globe fetches the
   eight around it; next to the 180th meridian the ones past it came back

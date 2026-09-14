@@ -40,6 +40,12 @@ export function EarthquakeCustomInputs(): JSX.Element {
     setEarthquakeInput({ faultType: e.target.value as FaultType });
   };
   const updateVs30 = (text: string): void => {
+    // An empty field hands the site back to the terrain under the pick,
+    // which is what the simulator reads when nobody types one.
+    if (text.trim() === '') {
+      setEarthquakeInput({ vs30: null });
+      return;
+    }
     const v = parseFloat(text);
     if (Number.isFinite(v) && v > 0) setEarthquakeInput({ vs30: v });
   };
@@ -91,8 +97,13 @@ export function EarthquakeCustomInputs(): JSX.Element {
           value={depthKm}
           onValueText={updateDepth}
           aria-invalid={depthIssues.hasError || undefined}
-          aria-describedby={depthIssues.topMessage ? 'quake-depth-feedback' : undefined}
+          aria-describedby={
+            depthIssues.topMessage ? 'quake-depth-help quake-depth-feedback' : 'quake-depth-help'
+          }
         />
+        <span id="quake-depth-help" className={styles.presetNote}>
+          {t('simulator.earthquake.depthHelp')}
+        </span>
         <span id="quake-depth-feedback">
           <FieldFeedback
             field="depth"
@@ -142,7 +153,8 @@ export function EarthquakeCustomInputs(): JSX.Element {
           min={100}
           max={2_000}
           step={10}
-          value={input.vs30 ?? 760}
+          value={input.vs30 ?? ''}
+          placeholder={t('simulator.earthquake.vs30FromTerrain')}
           onValueText={updateVs30}
           aria-invalid={vs30Issues.hasError || undefined}
           aria-describedby={vs30Issues.topMessage ? 'quake-vs30-feedback' : undefined}
