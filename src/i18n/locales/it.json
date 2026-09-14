@@ -288,6 +288,14 @@
       "yieldInput": "Resa (Mt TNT)",
       "groundType": "Tipo di suolo",
       "hobInput": "Altezza detonazione (m)",
+      "placementLabel": "Posizione dello scoppio",
+      "placementAbove": "In aria o in superficie",
+      "placementUnderwater": "Sott'acqua",
+      "depthInput": "Profondità sotto la superficie (m)",
+      "depthHelp": "Per un punto sul mare. Le onde sono quelle di Glasstone & Dolan; l'acqua assorbe il lampo e la radiazione iniziale, e l'onda d'urto in aria si indebolisce con la profondità. Sulla terraferma, o sotto il fondale di quel punto, la carica sarebbe sotterranea, e il modello non la prevede: viene mostrata come uno scoppio in superficie.",
+      "placementResult": "Posizione",
+      "placementResultWater": "{{depth}} sott'acqua, in {{sea}} di mare",
+      "placementResultBuried": "Sotto il fondale o sotto terra — non modellato, mostrato come scoppio in superficie",
       "hobLabel": "Correzione HOB",
       "hobScaled": "HOB scalato",
       "hobRegime": "Regime HOB",
@@ -295,6 +303,7 @@
       "fivePsiHob": "Anello 5 psi (con HOB)",
       "onePsiHob": "Anello 1 psi (con HOB)",
       "regimes": {
+        "UNDERWATER": "Sott'acqua",
         "SURFACE": "Esplosione di superficie",
         "LOW_AIRBURST": "Airburst basso",
         "OPTIMUM": "Airburst ottimale",
@@ -1122,7 +1131,7 @@
     "ashfall": "Area isopach 1 mm ~ 3 000 · V^0.8 km². Fit Walker (1980) / Pyle (1989) semplificato con decadimento esponenziale; la ricaduta reale è sagomata dal vento.",
     "lahar": "Runout debris-flow saturo L = 0.05 · V^0.38 km (V in m³). Iverson (1997) / Vallance & Iverson (2015). Riproduce Mt St Helens 1980 entro fattore 2.",
     "blast": "Picco di sovrappressione invertito dalla formula Kinney–Graham (1985) per surface-burst; soglie a 5 psi (crollo edifici) e 1 psi (rottura vetri) da Glasstone & Dolan (1977) §5.129/§5.139.",
-    "hob": "Correzione altezza di detonazione sul baseline Kinney–Graham — fit piecewise di Fig. 3.73 Glasstone & Dolan (1977) e Fig. 3-3 Needham (2018), Blast Waves, Springer. 0.85× superficie, 1.0× ottimale (≈150–300 m·kt⁻¹ᐟ³), collassa per burst stratosferici.",
+    "hob": "Correzione per l'altezza di detonazione sul baseline Kinney–Graham — fit a tratti di Fig. 3.73 di Glasstone & Dolan (1977) e Fig. 3-3 di Needham (2018), Blast Waves, Springer: 1,0× in superficie, 1,5× vicino all'ottimo (≈150–300 m·kt⁻¹ᐟ³), in calo per scoppi alti e stratosferici. Sott'acqua la portata è quella dello scoppio in superficie, accorciata di e^(−ρ·λ_d/126) con λ_d la profondità in ft·kt⁻¹ᐟ³ (Glasstone & Dolan §6.81, §6.53).",
     "radiation": "Raggi di dose letale da radiazione iniziale (gamma + neutroni). LD₅₀/60 ≈ 4,5 Gy, LD₁₀₀ ≈ 8 Gy, soglia ARS ≈ 1 Gy. Scaling con yield^0.4, ancorato al riferimento 1 kt da Glasstone & Dolan (1977) Fig. 8.46; curve dose-risposta da UNSCEAR 2000 Annex C / BEIR VII (2006).",
     "emp": "Classificazione regime di impulso elettromagnetico. Burst a bassa quota → EMP trascurabile al suolo; burst ad alta quota (> 30 km) → HEMP canonico 50 kV/m per IEC 61000-2-9, con footprint pari al disco tangente all'orizzonte. Modello corrente di Longmire (1978) IEEE AP-26.",
     "thermal": "Raggio ustioni di 3° grado non schermato alla soglia di fluenza 8 cal/cm² (Glasstone & Dolan 1977, Tabella 7.41). Il raggio reale si riduce al 50–70 % con l'attenuazione atmosferica.",
@@ -1131,7 +1140,8 @@
     "bolideAirburstAmplification": "Fattore di amplificazione altitudine in forma chiusa f(h) = (P_0 / P_amb(h))^(1/β) con β = 5/3 (esponente di Sachs intermediate-shock). Combina l'invarianza weak-shock di Whitham (1974) §8.2 ΔP/P_amb ≈ costante in atmosfera stratificata, lo scaling di Sachs (1944) ΔP ∝ R^(−β), e l'Atmosfera Standard USA 1976 (NOAA-S/T 76-1562) per il P(h) reale. Limite a 15× per scenari stratosferici. Validato entro ~1 % su Chelyabinsk 2013 (Brown et al. 2013 Nature 503: 238) ed entro ~15 % su Tunguska 1908.",
     "seaCoupling": "Un impatto sulla terraferma arriva al mare col cratere, se il bordo attraversa la costa, o con la coltre di ejecta che cade oltre la riva. La massa di ejecta oltre una distanza d segue McGetchin, Settle & Head 1973 (spessore ∝ (r/R)⁻³): la frazione oltre la riva è R/d, e scala l'energia con cui si forma la cavità d'acqua. Oltre l'isopaca di 1 m il mare non viene mosso.",
     "explosionWaveHeight": "Altezza dal cavo alla cresta H ≈ 40 500·W^0,54/R piedi in acque profonde (Glasstone & Dolan 1977 §6.119, entro circa il 35 %), oppure H ≈ 150·d·W^0,25/R in acque meno profonde di 100·W^0,25 piedi (§6.121); W in kilotoni, d la profondità dell'acqua. L'ampiezza mostrata è metà dell'altezza. La relazione contiene già la dispersione del treno d'onde.",
-    "explosionWaveSource": "Dentro questo raggio la relazione dell'altezza non si usa: è dove l'altezza di Glasstone & Dolan sarebbe più ripida di quanto l'acqua possa reggere, H = 0,142·L·tanh(2πd/L) (Miche 1944), oppure il raggio massimo della bolla di gas, 128·W^0,25 piedi (§6.119), il maggiore dei due."
+    "explosionWaveSource": "Dentro questo raggio la relazione dell'altezza non si usa: è dove l'altezza di Glasstone & Dolan sarebbe più ripida di quanto l'acqua possa reggere, H = 0,142·L·tanh(2πd/L) (Miche 1944), oppure il raggio massimo della bolla di gas, 128·W^0,25 piedi (§6.119), il maggiore dei due.",
+    "underwaterBurst": "Uno scoppio dentro l'acqua (Glasstone & Dolan 1977). Gran parte della radiazione termica e della radiazione nucleare iniziale viene assorbita vicino allo scoppio, e la palla di fuoco di BAKER restò visibile solo pochi millesimi di secondo (§2.64): il modello non dà ustioni, incendi né radiazione iniziale. L'onda d'urto in aria raggiunge ogni sovrappressione alla distanza dello scoppio in superficie accorciata di e^(−ρ·λ_d/126), con λ_d la profondità in ft·kt⁻¹ᐟ³ (§6.81, §6.53). Le onde sono §6.119–6.121."
   },
   "presets": {
     "impact": {

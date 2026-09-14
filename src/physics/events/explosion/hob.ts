@@ -32,8 +32,16 @@ export function scaledHeightOfBurst(hobMeters: number, yieldKilotons: number): n
   return hobMeters / Math.cbrt(yieldKilotons);
 }
 
-/** HOB regime classifier. */
-export type HobRegime = 'SURFACE' | 'LOW_AIRBURST' | 'OPTIMUM' | 'HIGH_AIRBURST' | 'STRATOSPHERIC';
+/** HOB regime classifier. `UNDERWATER` is never returned by
+ *  {@link hobRegime}, which reads a scaled height; the explosion
+ *  simulation sets it for a burst within the water. */
+export type HobRegime =
+  | 'UNDERWATER'
+  | 'SURFACE'
+  | 'LOW_AIRBURST'
+  | 'OPTIMUM'
+  | 'HIGH_AIRBURST'
+  | 'STRATOSPHERIC';
 
 export function hobRegime(scaled: number): HobRegime {
   if (!Number.isFinite(scaled) || scaled < 50) return 'SURFACE';
@@ -106,4 +114,40 @@ export function correctRadiusForHob(
 ): Meters {
   const factor = hobBlastFactor(scaledHeightOfBurst(hobMeters, yieldKilotons));
   return ((radius as number) * factor) as Meters;
+}
+
+const FOOT_M = 0.3048;
+
+/** Specific gravity of sea water, for the depth scaling below. */
+const SEAWATER_SPECIFIC_GRAVITY = 1.025;
+
+/** Glasstone & Dolan §6.81: the scaled depth, in ft·kt^(−1/3), the
+ *  exponent divides by. */
+const BURIED_AIR_BLAST_DEPTH_SCALE = 126;
+
+/** §6.81: the relation holds for scaled depths below this. */
+export const BURIED_AIR_BLAST_MAX_SCALED_DEPTH_FT = 252;
+
+/**
+ * How far the air blast of a burst under the water reaches, as a
+ * fraction of the same burst on the surface.
+ *
+ * Glasstone & Dolan give the peak overpressure near the surface from a
+ * buried explosion as that of a reference burst at an adjusted scaled
+ * distance, x̄ = λ_x · e^(ρ·λ_d / 126), with λ_x and λ_d the ground range
+ * and the depth in feet per cube root of a kilotonne and ρ the specific
+ * gravity of the medium, for λ_d under 252 (§6.81) — and they say the air
+ * blast of an underwater burst attenuates with depth "in a pattern
+ * similar" (§6.53). A given overpressure is therefore reached at a range
+ * shorter by e^(−ρ·λ_d / 126): about three quarters of the surface
+ * burst's for Crossroads Baker, 90 ft down with 23 kt; under a third at
+ * the 150 ft·kt^(−1/3) beyond which §6.53 says the spray dome rises too
+ * slowly to make an appreciable air shock; an eighth at the relation's
+ * limit of 252 ft·kt^(−1/3). Deeper than that the same exponential is
+ * carried on, and says so in the result.
+ */
+export function underwaterAirBlastFactor(depthM: number, yieldKilotons: number): number {
+  if (!(depthM > 0) || !(yieldKilotons > 0)) return 1;
+  const scaledDepthFt = depthM / FOOT_M / Math.cbrt(yieldKilotons);
+  return Math.exp(-(SEAWATER_SPECIFIC_GRAVITY * scaledDepthFt) / BURIED_AIR_BLAST_DEPTH_SCALE);
 }

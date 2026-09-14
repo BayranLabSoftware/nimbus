@@ -288,6 +288,14 @@
       "yieldInput": "Yield (Mt TNT)",
       "groundType": "Ground type",
       "hobInput": "Height of burst (m)",
+      "placementLabel": "Burst placement",
+      "placementAbove": "In the air or on the surface",
+      "placementUnderwater": "Under the water",
+      "depthInput": "Depth below the water surface (m)",
+      "depthHelp": "For a point on the sea. The waves are Glasstone & Dolan's; the water absorbs the flash and the initial radiation, and the air blast weakens with depth. On land, or deeper than the sea is there, the charge would be underground, which the model does not have: it is shown as a burst on the surface.",
+      "placementResult": "Placement",
+      "placementResultWater": "{{depth}} under water, in {{sea}} of sea",
+      "placementResultBuried": "Below the sea floor or under land — not modelled, shown as a burst on the surface",
       "hobLabel": "HOB correction",
       "hobScaled": "Scaled HOB",
       "hobRegime": "HOB regime",
@@ -295,6 +303,7 @@
       "fivePsiHob": "5 psi ring (HOB-corrected)",
       "onePsiHob": "1 psi ring (HOB-corrected)",
       "regimes": {
+        "UNDERWATER": "Under water",
         "SURFACE": "Surface burst",
         "LOW_AIRBURST": "Low airburst",
         "OPTIMUM": "Near-optimum airburst",
@@ -1122,7 +1131,7 @@
     "ashfall": "1 mm isopach area ~ 3 000 · V^0.8 km². Simplified Walker (1980) / Pyle (1989) exponential-thinning fit; real ashfall is wind-shaped.",
     "lahar": "Saturated debris-flow runout L = 0.05 · V^0.38 km (V in m³). Iverson (1997) / Vallance & Iverson (2015). Reproduces Mt St Helens 1980 within a factor of 2.",
     "blast": "Peak overpressure inverted via Kinney–Graham (1985) surface-burst fit; thresholds at 5 psi (building collapse) and 1 psi (window breakage) from Glasstone & Dolan (1977) §5.129/§5.139.",
-    "hob": "Height-of-burst correction applied over the Kinney–Graham baseline — piecewise fit to Fig. 3.73 of Glasstone & Dolan (1977) and Fig. 3-3 of Needham (2018), Blast Waves, Springer. 0.85× at surface, 1.0× at optimum (≈150–300 m·kt⁻¹ᐟ³), collapses for stratospheric bursts.",
+    "hob": "Height-of-burst correction applied over the Kinney–Graham baseline — piecewise fit to Fig. 3.73 of Glasstone & Dolan (1977) and Fig. 3-3 of Needham (2018), Blast Waves, Springer: 1.0× at the surface, 1.5× near the optimum (≈150–300 m·kt⁻¹ᐟ³), falling for high and stratospheric bursts. Under the water the reach is the surface burst's, shortened by e^(−ρ·λ_d/126) with λ_d the depth in ft·kt⁻¹ᐟ³ (Glasstone & Dolan §6.81, §6.53).",
     "radiation": "Initial gamma + neutron lethal-dose radii. LD₅₀/60 ≈ 4.5 Gy, LD₁₀₀ ≈ 8 Gy, ARS threshold ≈ 1 Gy. Radii scale as yield^0.4, anchored on the 1 kt reference from Glasstone & Dolan (1977) Fig. 8.46; dose-response from UNSCEAR 2000 Annex C / BEIR VII (2006).",
     "emp": "Electromagnetic-pulse regime classification. Low-altitude bursts are EMP-negligible at ground level; high-altitude (> 30 km) bursts produce the canonical 50 kV/m HEMP per IEC 61000-2-9, with ground footprint equal to the horizon tangent disc. Longmire (1978) IEEE AP-26 is the underlying current-sheet model.",
     "thermal": "Unshielded third-degree-burn radius at the 8 cal/cm² fluence threshold (Glasstone & Dolan 1977, Table 7.41). Real reach shrinks to 50–70 % once atmospheric attenuation is applied.",
@@ -1131,7 +1140,8 @@
     "bolideAirburstAmplification": "Closed-form altitude amplification f(h) = (P_0 / P_amb(h))^(1/β) with β = 5/3 (Sachs intermediate-shock exponent). Built from Whitham (1974) §8.2 weak-shock invariance ΔP/P_amb ≈ const through stratified atmosphere, Sachs (1944) blast scaling ΔP ∝ R^(−β), and the U.S. Standard Atmosphere 1976 (NOAA-S/T 76-1562) for actual P(h). Capped at 15× for stratospheric scenarios. Validates within ~1 % on Chelyabinsk 2013 (Brown et al. 2013 Nature 503: 238) and within ~15 % on Tunguska 1908.",
     "seaCoupling": "An impact on land reaches the sea with the crater, when the rim crosses the coast, or with the ejecta blanket falling beyond the shoreline. The ejecta mass beyond a distance d follows McGetchin, Settle & Head 1973 (thickness ∝ (r/R)⁻³): the fraction beyond the shore is R/d, and it scales the energy the water cavity forms with. Beyond the 1 m isopach the sea is not moved.",
     "explosionWaveHeight": "Height from crest to trough H ≈ 40 500·W^0.54/R feet in deep water (Glasstone & Dolan 1977 §6.119, to about 35 %), or H ≈ 150·d·W^0.25/R in water shallower than 100·W^0.25 ft (§6.121); W in kilotons, d the water depth. The amplitude shown is half the height. The relation already contains the train's dispersion.",
-    "explosionWaveSource": "Inside this radius the height relation is not used: it is where Glasstone & Dolan's height would be steeper than the water can hold, H = 0.142·L·tanh(2πd/L) (Miche 1944), or the gas bubble's maximum radius, 128·W^0.25 ft (§6.119), whichever is larger."
+    "explosionWaveSource": "Inside this radius the height relation is not used: it is where Glasstone & Dolan's height would be steeper than the water can hold, H = 0.142·L·tanh(2πd/L) (Miche 1944), or the gas bubble's maximum radius, 128·W^0.25 ft (§6.119), whichever is larger.",
+    "underwaterBurst": "A burst within the water (Glasstone & Dolan 1977). Much of the thermal and initial nuclear radiation is absorbed close to the burst, and the BAKER fireball was visible for only a few thousandths of a second (§2.64), so the model gives no burns, no fires and no initial radiation. The air blast reaches each overpressure at the surface burst's range shortened by e^(−ρ·λ_d/126), λ_d the depth in ft·kt⁻¹ᐟ³ (§6.81, §6.53). The waves are §6.119–6.121."
   },
   "appBar": {
     "label": "Application bar",

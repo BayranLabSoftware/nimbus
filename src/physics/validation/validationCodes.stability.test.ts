@@ -93,6 +93,11 @@ describe('Validation codes — stability gate', () => {
       { code: 'ZERO_FORBIDDEN', type: 'earthquake', raw: { magnitude: 0 } },
       { code: 'OUT_OF_DOMAIN', type: 'landslide', raw: { volumeM3: 1e9, slopeAngleDeg: 0 } },
       {
+        code: 'OUT_OF_DOMAIN',
+        type: 'explosion',
+        raw: { yieldMegatons: 1, heightOfBurst: -12_000 },
+      },
+      {
         code: 'NORMALIZED_AZIMUTH',
         type: 'volcano',
         raw: { volumeEruptionRate: 1e5, totalEjectaVolume: 1e10, windDirectionDegrees: 720 },

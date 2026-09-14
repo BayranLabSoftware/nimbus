@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { m } from '../../units.js';
-import { correctRadiusForHob, hobBlastFactor, hobRegime, scaledHeightOfBurst } from './hob.js';
+import {
+  correctRadiusForHob,
+  hobBlastFactor,
+  hobRegime,
+  scaledHeightOfBurst,
+  underwaterAirBlastFactor,
+} from './hob.js';
 
 describe('scaledHeightOfBurst', () => {
   it('Hiroshima (580 m, 15 kt) → ≈ 235 m·kt⁻¹ᐟ³', () => {
@@ -83,5 +89,36 @@ describe('correctRadiusForHob', () => {
   it('Stratospheric burst collapses the radius to ~25 %', () => {
     const r = correctRadiusForHob(m(2_000), 50_000, 1);
     expect(r as number).toBeLessThan(600);
+  });
+});
+
+describe('underwaterAirBlastFactor (Glasstone & Dolan §6.81, §6.53)', () => {
+  it('leaves Crossroads Baker about three quarters of a surface burst’s reach', () => {
+    // 90 ft down with 23 kt: λ_d = 90 / 23^(1/3) = 31.6 ft·kt^(−1/3).
+    expect(underwaterAirBlastFactor(90 * 0.3048, 23)).toBeCloseTo(
+      Math.exp(-(1.025 * (90 / Math.cbrt(23))) / 126),
+      9
+    );
+    expect(underwaterAirBlastFactor(90 * 0.3048, 23)).toBeGreaterThan(0.75);
+    expect(underwaterAirBlastFactor(90 * 0.3048, 23)).toBeLessThan(0.8);
+  });
+
+  it('is one at the surface and never grows with depth', () => {
+    expect(underwaterAirBlastFactor(0, 1_000)).toBe(1);
+    let previous = 1;
+    for (let depth = 1; depth <= 11_000; depth *= 1.3) {
+      const f = underwaterAirBlastFactor(depth, 1_000);
+      expect(f).toBeLessThanOrEqual(previous);
+      expect(f).toBeGreaterThan(0);
+      previous = f;
+    }
+  });
+
+  it('is an eighth at the depth the relation was given to', () => {
+    // λ_d = 252 ft·kt^(−1/3) for a kilotonne: 252 ft down.
+    expect(underwaterAirBlastFactor(252 * 0.3048, 1)).toBeCloseTo(
+      Math.exp(-(1.025 * 252) / 126),
+      9
+    );
   });
 });

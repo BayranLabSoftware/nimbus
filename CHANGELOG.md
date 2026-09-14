@@ -5,6 +5,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## [Unreleased]
 
+### Added
+
+- **An explosion can be placed under the water.** The panel offers "in
+  the air or on the surface" or "under the water" with a depth, and the
+  result says where the burst was. Within the water — over open water,
+  no deeper than the sea — it makes Glasstone & Dolan's waves; its
+  flash, fires and initial radiation are absorbed (§2.64), and its air
+  blast reaches each overpressure at the surface burst's range times
+  e^(−ρ·λ_d/126), the relation §6.81 gives for a buried burst and §6.53
+  says an underwater one follows. A charge below the sea floor or under
+  land would be an underground burst, which the model does not have: it
+  is drawn as a surface burst, and the panel says so. The schema now
+  accepts a negative height of burst and refuses only one deeper than
+  any ocean. Wave periods under two minutes are shown in seconds.
+
 ### Changed
 
 - **An underwater burst makes the waves Glasstone & Dolan give it.**
@@ -30,10 +45,8 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   tenths beyond, where the maximum passes back into the train
   (declared). Deep Dive no longer runs on an explosion, whose wave its
   350 km Gaussian cannot represent. A burst on the surface of open water
-  still makes no wave, and the validation report now declares it. Nothing
-  changes on the page yet: the panel accepts only heights of burst of
-  zero or more, so no burst a reader can set is within the water — a
-  depth-of-burst input is in the roadmap.
+  still makes no wave, and the validation report now declares it. It
+  reaches the page through the depth of burst below.
 
 ### Fixed
 

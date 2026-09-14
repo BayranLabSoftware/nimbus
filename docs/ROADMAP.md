@@ -427,13 +427,16 @@ same day, except where marked)_:
   (gated) and about six tenths beyond, where the maximum passes back
   into the train (declared). Deep Dive no longer runs on an explosion.
   SCIENCE.md, "The burst's wave, as Glasstone & Dolan give it".
-- **Open: the panel has no depth of burst.** `ExplosionCustomInputs`
-  accepts a height of burst of zero or more and `inputSchema.ts` refuses
-  a negative one, so no burst a reader can set is within the water, and
-  none has made a wave on the page since the depth-of-burst curve of
-  Phase 25 — before the rebuild and after it. Offering one is a product
-  decision: an input, its limits (within the water, not below its
-  floor), a URL key, and copy that says what a burst at depth is.
+- **Closed the same evening: the panel had no depth of burst.** It
+  offers "in the air or on the surface" or "under the water" with a
+  depth now, the schema refuses only a depth deeper than any ocean, and
+  the result says where the burst was. Within the water it makes
+  Glasstone's waves, loses its flash, fires and initial radiation
+  (§2.64) and its air blast reach shortens by e^(−ρ·λ_d/126) (§6.81,
+  §6.53); below the sea floor or under land it is drawn as a surface
+  burst and says it is not modelled. Still open: explosion custom inputs
+  — the depth among them — are not in the shareable URL, as none of
+  them ever were.
 - **The globe started a burst's wave from the 4 km default basin depth,
   not the water it was fired in.** **Closed for explosions**, which now
   hand the veil the depth at the burst. **Open for impacts**, which still

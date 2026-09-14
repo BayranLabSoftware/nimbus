@@ -3,11 +3,22 @@ import { useTranslation } from 'react-i18next';
 import type { ExplosionScenarioInput } from '../../physics/events/explosion/index.js';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
+import { cx } from '../utils/cx.js';
 import { FieldFeedback } from './FieldFeedback.js';
 import styles from './SimulatorPanel.module.css';
 
 type GroundType = NonNullable<ExplosionScenarioInput['groundType']>;
 const GROUND_TYPES: GroundType[] = ['HARD_ROCK', 'FIRM_GROUND', 'DRY_SOIL', 'WET_SOIL'];
+
+/** Above the surface, or under the water. The model keeps one signed
+ *  height of burst; the reader gets a height or a depth. */
+type Placement = 'above' | 'underwater';
+const PLACEMENTS: Placement[] = ['above', 'underwater'];
+/** Where a charge goes when the reader first puts it under the water:
+ *  shallow enough to sit within any sea the globe can be clicked on. */
+const DEFAULT_BURST_DEPTH_M = 30;
+/** Deeper than the Challenger Deep is refused by the schema too. */
+const MAX_BURST_DEPTH_M = 11_000;
 
 export function ExplosionCustomInputs(): JSX.Element {
   const { t } = useTranslation();
@@ -33,6 +44,17 @@ export function ExplosionCustomInputs(): JSX.Element {
     const v = parseFloat(e.target.value);
     if (Number.isFinite(v) && v >= 0) setExplosionInput({ heightOfBurst: v });
   };
+  const updatePlacement = (e: ChangeEvent<HTMLInputElement>): void => {
+    setExplosionInput({
+      heightOfBurst: e.target.value === 'underwater' ? -DEFAULT_BURST_DEPTH_M : 0,
+    });
+  };
+  const updateDepth = (e: ChangeEvent<HTMLInputElement>): void => {
+    const v = parseFloat(e.target.value);
+    if (Number.isFinite(v) && v > 0 && v <= MAX_BURST_DEPTH_M) {
+      setExplosionInput({ heightOfBurst: -v });
+    }
+  };
   const updateWindSpeed = (e: ChangeEvent<HTMLInputElement>): void => {
     const v = parseFloat(e.target.value);
     if (Number.isFinite(v) && v >= 0) setExplosionInput({ windSpeed: v });
@@ -42,7 +64,10 @@ export function ExplosionCustomInputs(): JSX.Element {
     if (Number.isFinite(v)) setExplosionInput({ windDirectionDeg: v });
   };
 
-  const hobValue = input.heightOfBurst === undefined ? 0 : (input.heightOfBurst as number);
+  const signedHob = input.heightOfBurst === undefined ? 0 : (input.heightOfBurst as number);
+  const placement: Placement = signedHob < 0 ? 'underwater' : 'above';
+  const hobValue = Math.max(signedHob, 0);
+  const depthValue = signedHob < 0 ? -signedHob : DEFAULT_BURST_DEPTH_M;
   const windSpeedValue = input.windSpeed === undefined ? 0 : (input.windSpeed as number);
   const windDirectionValue = input.windDirectionDeg ?? 90;
 
@@ -105,32 +130,88 @@ export function ExplosionCustomInputs(): JSX.Element {
         </span>
       </div>
 
-      <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-        <label className={styles.paramLabel} htmlFor="explosion-hob">
-          {t('simulator.explosion.hobInput')}
-        </label>
-        <input
-          id="explosion-hob"
-          className={styles.paramInput}
-          type="number"
-          inputMode="decimal"
-          min={0}
-          max={50_000}
-          step={100}
-          value={hobValue}
-          onChange={updateHob}
-          aria-invalid={hobIssues.hasError || undefined}
-          aria-describedby={hobIssues.topMessage ? 'explosion-hob-feedback' : undefined}
-        />
-        <span id="explosion-hob-feedback">
+      <fieldset className={cx(styles.segFieldset, styles.placementFieldset)}>
+        <legend className={styles.paramLabel}>{t('simulator.explosion.placementLabel')}</legend>
+        <div className={cx(styles.seg, styles.segTwo)}>
+          {PLACEMENTS.map((p) => (
+            <label key={p} className={styles.segItem}>
+              <input
+                type="radio"
+                name="explosion-placement"
+                value={p}
+                checked={placement === p}
+                onChange={updatePlacement}
+                className={styles.segInput}
+                data-testid={`explosion-placement-${p}`}
+              />
+              <span className={styles.segLabelWide}>
+                {t(
+                  p === 'above'
+                    ? 'simulator.explosion.placementAbove'
+                    : 'simulator.explosion.placementUnderwater'
+                )}
+              </span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      {placement === 'above' ? (
+        <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
+          <label className={styles.paramLabel} htmlFor="explosion-hob">
+            {t('simulator.explosion.hobInput')}
+          </label>
+          <input
+            id="explosion-hob"
+            className={styles.paramInput}
+            type="number"
+            inputMode="decimal"
+            min={0}
+            max={50_000}
+            step={100}
+            value={hobValue}
+            onChange={updateHob}
+            aria-invalid={hobIssues.hasError || undefined}
+            aria-describedby={hobIssues.topMessage ? 'explosion-hob-feedback' : undefined}
+          />
+          <span id="explosion-hob-feedback">
+            <FieldFeedback
+              field="heightOfBurst"
+              message={hobIssues.topMessage}
+              code={hobIssues.topCode}
+              isError={hobIssues.hasError}
+            />
+          </span>
+        </div>
+      ) : (
+        <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
+          <label className={styles.paramLabel} htmlFor="explosion-depth">
+            {t('simulator.explosion.depthInput')}
+          </label>
+          <input
+            id="explosion-depth"
+            className={styles.paramInput}
+            type="number"
+            inputMode="decimal"
+            min={1}
+            max={MAX_BURST_DEPTH_M}
+            step={10}
+            value={depthValue}
+            onChange={updateDepth}
+            aria-invalid={hobIssues.hasError || undefined}
+            aria-describedby="explosion-depth-help"
+          />
+          <span id="explosion-depth-help" className={styles.presetNote}>
+            {t('simulator.explosion.depthHelp')}
+          </span>
           <FieldFeedback
             field="heightOfBurst"
             message={hobIssues.topMessage}
             code={hobIssues.topCode}
             isError={hobIssues.hasError}
           />
-        </span>
-      </div>
+        </div>
+      )}
 
       <div className={styles.paramField}>
         <label className={styles.paramLabel} htmlFor="explosion-wind-speed">

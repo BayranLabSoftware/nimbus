@@ -595,12 +595,39 @@ A deep-water burst now makes the wave the book says it makes, where the
 globe used to draw a few centimetres; a shallow one makes a smaller
 wave, as §6.121 says it should.
 
-**None of it reaches a reader of the page yet.** The panel takes a
-height of burst of zero or more and the input schema refuses a negative
-one, so a burst on the page is never within the water and makes no wave
-— before this change and after it. The rebuild lives in the physics, the
-validation harness, the report and the panel rows that will show it; a
-depth of burst in the panel is its own decision, and the roadmap has it.
+**It reached the page the same evening.** Until then the panel took a
+height of burst of zero or more and the input schema refused a negative
+one, so no burst on the page was ever within the water. The next section
+is what changed.
+
+### A burst under the water (14 September 2026)
+
+The panel now places a charge in the air or on the surface, or under
+the water at a depth; the model keeps one signed height of burst, and
+the schema refuses only a depth no sea has, 11 km. Where the charge is
+decides what reaches whom (`BurstPlacement` in
+`events/explosion/simulate.ts`):
+
+- **Within the water** — over open water, no deeper than the sea — it
+  makes Glasstone & Dolan's waves. The flash, the fires and the initial
+  radiation are gone: "much of the thermal radiation and of the initial
+  nuclear radiation will be absorbed within a short distance", and the
+  BAKER fireball was visible for a few thousandths of a second (§2.64).
+  The book says a shallow burst lets some escape without saying how
+  much, so zero is the low end. The air blast reaches each overpressure
+  at the surface burst's range times e^(−ρ·λ_d/126), λ_d the depth in
+  ft·kt^(−1/3) and ρ = 1.025: the relation §6.81 gives for a buried
+  burst, which §6.53 says an underwater burst follows "in a pattern
+  similar". That leaves BAKER about three quarters of a surface burst's
+  reach, and a megatonne at 40 m nine tenths.
+- **Buried** — below the sea floor, under land, or on land beside the
+  sea — it would be an underground burst, which the model does not
+  have. It is drawn as a burst on the surface and makes no wave, and
+  the panel says so rather than inventing an underground explosion.
+
+A megatonne 40 m down in 800 m of sea now reads, on the page: the deep
+relation, a source radius of 508 m, arrival at 100 km in 56 minutes at
+30 m/s, no burns, and air blast at 0.90 of a surface burst's reach.
 
 ### Burns, mass fire and later deaths (Phase 24)
 

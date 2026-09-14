@@ -251,3 +251,72 @@ describe('simulateExplosion — composition', () => {
     }
   });
 });
+
+describe('where the burst is', () => {
+  const burst = (
+    heightOfBurst: number,
+    extra: Partial<Parameters<typeof simulateExplosion>[0]> = {}
+  ) =>
+    simulateExplosion({
+      yieldMegatons: 1,
+      groundType: 'WET_SOIL',
+      heightOfBurst: m(heightOfBurst),
+      ...extra,
+    });
+
+  it('in the air, on the surface, within the water, or buried', () => {
+    expect(burst(500).placement.medium).toBe('air');
+    expect(burst(0).placement.medium).toBe('surface');
+    expect(burst(-40, { waterDepth: m(800) }).placement.medium).toBe('water');
+    // Deeper than the sea, under land, or on land beside the sea.
+    expect(burst(-900, { waterDepth: m(800) }).placement.medium).toBe('buried');
+    expect(burst(-10).placement.medium).toBe('buried');
+    expect(burst(-10, { waterDepth: m(100), shoreDistance: m(2_000) }).placement.medium).toBe(
+      'buried'
+    );
+  });
+
+  it('within the water: no flash, no fires, no initial radiation, and the air blast shortened by the depth', () => {
+    const surface = burst(0, { waterDepth: m(800) });
+    const under = burst(-40, { waterDepth: m(800) });
+    // "Much of the thermal radiation and of the initial nuclear
+    // radiation will be absorbed within a short distance" — Glasstone &
+    // Dolan; the BAKER fireball was gone in milliseconds (§2.64).
+    expect(under.thermal.thirdDegreeBurnRadius as number).toBe(0);
+    expect(under.thermal.firstDegreeBurnRadius as number).toBe(0);
+    expect(under.firestorm.sustainRadius as number).toBe(0);
+    expect(under.radiation.ld50Radius as number).toBe(0);
+    expect(under.crater.apparentDiameter as number).toBe(0);
+    expect(under.blast.hobRegime).toBe('UNDERWATER');
+    // §6.81: e^(−ρ·λ_d/126), λ_d = 40 m in feet over the cube root of
+    // a thousand kilotonnes.
+    const expected = Math.exp(-(1.025 * (40 / 0.3048)) / 10 / 126);
+    expect(under.placement.airBlastDepthFactor).toBeCloseTo(expected, 9);
+    expect(
+      (under.blast.overpressure5psiRadiusHob as number) /
+        (surface.blast.overpressure5psiRadiusHob as number)
+    ).toBeCloseTo(expected, 9);
+    expect(under.tsunami).toBeDefined();
+  });
+
+  it('a deeper charge reaches less far through the air, and the same far through the water', () => {
+    const shallow = burst(-40, { waterDepth: m(800) });
+    const deep = burst(-400, { waterDepth: m(800) });
+    expect(deep.blast.overpressure1psiRadiusHob as number).toBeLessThan(
+      shallow.blast.overpressure1psiRadiusHob
+    );
+    expect(deep.tsunami?.amplitudeAt100km).toBe(shallow.tsunami?.amplitudeAt100km);
+  });
+
+  it('a buried charge is drawn as a burst on the surface, and makes no wave', () => {
+    const surface = burst(0, { waterDepth: m(800) });
+    const belowFloor = burst(-900, { waterDepth: m(800) });
+    expect(belowFloor.blast.overpressure5psiRadiusHob).toBe(
+      surface.blast.overpressure5psiRadiusHob
+    );
+    expect(belowFloor.thermal.thirdDegreeBurnRadius).toBe(surface.thermal.thirdDegreeBurnRadius);
+    expect(belowFloor.tsunami).toBeUndefined();
+    const besideTheSea = burst(-10, { waterDepth: m(100), shoreDistance: m(2_000) });
+    expect(besideTheSea.tsunami).toBeUndefined();
+  });
+});

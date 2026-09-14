@@ -201,13 +201,18 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
 
 function explosionFields(r: ExplosionScenarioResult): { inputs: Field[]; outputs: Field[] } {
   const hob = r.inputs.heightOfBurst;
+  const placement =
+    r.placement.medium === 'water'
+      ? `Under water, ${fmtKm(r.placement.depth ?? 0)} down`
+      : r.placement.medium === 'buried'
+        ? 'Below the sea floor or under land — not modelled, drawn as a surface burst'
+        : hob === undefined || (hob as number) <= 0
+          ? 'Contact surface burst'
+          : `In the air, ${fmtKm(hob)} up`;
   const inputs: Field[] = [
     { label: 'Yield', value: fmtMt(r.yield.megatons) },
     { label: 'Ground type', value: r.inputs.groundType ?? 'FIRM_GROUND' },
-    {
-      label: 'Height of burst',
-      value: hob === undefined || (hob as number) <= 0 ? 'Contact surface burst' : fmtKm(hob),
-    },
+    { label: 'Burst placement', value: placement },
   ];
   if ((r.inputs.waterDepth as number | undefined) !== undefined) {
     inputs.push({ label: 'Water depth at burst', value: fmtKm(r.inputs.waterDepth as number) });

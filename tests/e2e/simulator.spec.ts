@@ -212,6 +212,29 @@ test.describe('simulator flow', () => {
     ]);
   });
 
+  test('an explosion can be placed under the water, with a depth instead of a height', async ({
+    page,
+  }) => {
+    await page.goto('/?lng=en');
+    await page.getByRole('button', { name: 'Try the simulator →' }).click();
+    await expandSimulatorPanelIfCollapsed(page);
+    await page.getByRole('radio', { name: 'Nuclear explosion' }).check();
+
+    await expect(page.getByRole('radio', { name: 'In the air or on the surface' })).toBeChecked();
+    await expect(page.getByLabel('Height of burst (m)')).toBeVisible();
+
+    await page.getByRole('radio', { name: 'Under the water' }).check();
+    const depth = page.getByLabel('Depth below the water surface (m)');
+    await expect(depth).toBeVisible();
+    await expect(depth).toHaveValue('30');
+    await expect(page.getByLabel('Height of burst (m)')).toHaveCount(0);
+    await depth.fill('120');
+    await expect(depth).toHaveValue('120');
+
+    await page.getByRole('radio', { name: 'In the air or on the surface' }).check();
+    await expect(page.getByLabel('Height of burst (m)')).toHaveValue('0');
+  });
+
   test('URL updates as the user selects preset and mode', async ({ page }) => {
     await page.goto('/?lng=en');
     await page.getByRole('button', { name: 'Try the simulator →' }).click();

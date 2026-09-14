@@ -164,6 +164,22 @@ describe('Store-setter ↔ schema-validator consistency', () => {
       expectStateChanged: false,
     },
     {
+      label: 'explosion | valid (a depth of burst, under the water)',
+      apply: () => useAppStore.getState().setExplosionInput({ heightOfBurst: -30 }),
+      read: () => useAppStore.getState().explosion.input,
+      type: 'explosion',
+      buildMerged: () => ({ ...useAppStore.getState().explosion.input, heightOfBurst: -30 }),
+      expectStateChanged: true,
+    },
+    {
+      label: 'explosion | invalid (deeper than any ocean)',
+      apply: () => useAppStore.getState().setExplosionInput({ heightOfBurst: -12_000 }),
+      read: () => useAppStore.getState().explosion.input,
+      type: 'explosion',
+      buildMerged: () => ({ ...useAppStore.getState().explosion.input, heightOfBurst: -12_000 }),
+      expectStateChanged: false,
+    },
+    {
       label: 'volcano | invalid (zero rate)',
       apply: () => useAppStore.getState().setVolcanoInput({ volumeEruptionRate: 0 }),
       read: () => useAppStore.getState().volcano.input,

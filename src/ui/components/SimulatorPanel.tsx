@@ -233,6 +233,9 @@ function AreaWithBand({ m2, field }: { m2: number; field: ConfidenceField }): JS
 
 function formatDurationMinutes(seconds: number): string {
   if (!Number.isFinite(seconds)) return NON_FINITE_PLACEHOLDER;
+  // An explosion's peak wave has a period of tens of seconds, which
+  // rounds to "1 min" and says nothing; under two minutes, seconds.
+  if (seconds < 120) return `${formatInteger(seconds)} s`;
   const minutes = seconds / 60;
   if (minutes < 60) return `${formatInteger(minutes)} min`;
   const hours = Math.floor(minutes / 60);
@@ -1103,6 +1106,29 @@ export function SimulatorPanel(): JSX.Element {
               <dd className={styles.resultValue}>{formatKilotons(result.data.yield.kilotons)}</dd>
               <dt className={styles.resultLabel}>{t('simulator.explosion.yieldJoules')}</dt>
               <dd className={styles.resultValue}>{formatJoules(result.data.yield.joules)}</dd>
+              {result.data.placement.medium === 'water' && (
+                <>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.placementResult')}</dt>
+                  <dd className={styles.resultValue} data-testid="explosion-placement-result">
+                    <CitationTooltip citation={t('citations.underwaterBurst')}>
+                      {t('simulator.explosion.placementResultWater', {
+                        depth: formatKilometres(result.data.placement.depth ?? 0),
+                        sea: formatKilometres(
+                          (result.data.inputs.waterDepth as number | undefined) ?? 0
+                        ),
+                      })}
+                    </CitationTooltip>
+                  </dd>
+                </>
+              )}
+              {result.data.placement.medium === 'buried' && (
+                <>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.placementResult')}</dt>
+                  <dd className={styles.resultValue} data-testid="explosion-placement-result">
+                    {t('simulator.explosion.placementResultBuried')}
+                  </dd>
+                </>
+              )}
               <dt className={styles.resultLabel}>{t('simulator.explosion.fiveBpsi')}</dt>
               <dd className={styles.resultValue}>
                 <CitationTooltip citation={t('citations.blast')}>

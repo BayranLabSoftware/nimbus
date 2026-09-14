@@ -854,6 +854,15 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         citation: glasstoneDolan1977,
       },
       {
+        id: 'underwater-burst-air-effects',
+        name: 'A burst under the water: flash, radiation and air blast',
+        formula:
+          'burns = fires = initial radiation = 0 ;  R_blast = R_surface · e^(−ρ·λ_d/126),  λ_d = depth / W^⅓ in ft·kt^(−⅓),  ρ = 1.025',
+        description:
+          'The panel puts a charge in the air, on the surface or under the water. Under the water, Glasstone & Dolan say much of the thermal radiation and of the initial nuclear radiation is absorbed within a short distance, and the fireball of the BAKER shot was visible for a few thousandths of a second (§2.64): the model gives no burns, no fires and no initial radiation. The book adds that a shallow burst lets some escape and gives no amount, so this is the low end. For the air blast it gives the overpressure of a buried burst at an adjusted scaled distance, λ_x·e^(ρ·λ_d/126) (§6.81), and says an underwater burst attenuates "in a pattern similar" (§6.53): every overpressure is reached at the surface burst\'s range times e^(−ρ·λ_d/126) — three quarters for BAKER, under a third past the 150 ft·kt^(−⅓) beyond which the spray dome makes no appreciable air shock. A charge below the sea floor or under land would be an underground burst, which the model does not have; it is drawn as a burst on the surface, and the panel says so.',
+        citation: glasstoneDolan1977,
+      },
+      {
         id: 'contact-water-burst-flag',
         name: 'Contact-water burst flag (atmospheric ring dimming)',
         formula: 'isContactWaterBurst = (a wave exists) = 0 < burst depth ≤ water depth',

@@ -286,6 +286,9 @@ export function validateEarthquakeInput(
 
 // ---------- Explosion ----------
 
+/** The Challenger Deep, rounded up: no burst can be deeper in any sea. */
+const MAX_OCEAN_DEPTH_M = 11_000;
+
 interface ExplosionRawInput {
   yieldMegatons?: unknown;
   heightOfBurst?: unknown;
@@ -334,11 +337,24 @@ export function validateExplosionInput(
   const out: ExplosionScenarioInput = { yieldMegatons: raw.yieldMegatons };
 
   if (raw.heightOfBurst !== undefined) {
-    if (!isFiniteNumber(raw.heightOfBurst) || raw.heightOfBurst < 0) {
+    // Negative is a depth below the water surface. It is a burst within
+    // the water only over open water no deeper than the sea, which the
+    // physics decides from the water depth; the schema's job is to
+    // refuse a depth no sea on Earth has.
+    if (!isFiniteNumber(raw.heightOfBurst)) {
       errors.push({
         field: 'heightOfBurst',
-        code: isFiniteNumber(raw.heightOfBurst) ? 'NEGATIVE_FORBIDDEN' : 'NOT_FINITE',
-        message: 'heightOfBurst (m) must be finite and non-negative',
+        code: 'NOT_FINITE',
+        message: 'heightOfBurst (m) must be finite',
+        rawValue: raw.heightOfBurst,
+      });
+      return invalid(errors);
+    }
+    if (raw.heightOfBurst < -MAX_OCEAN_DEPTH_M) {
+      errors.push({
+        field: 'heightOfBurst',
+        code: 'OUT_OF_DOMAIN',
+        message: `a depth of burst of ${(-raw.heightOfBurst / 1_000).toString()} km is deeper than any ocean (~11 km)`,
         rawValue: raw.heightOfBurst,
       });
       return invalid(errors);

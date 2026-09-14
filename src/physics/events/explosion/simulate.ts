@@ -8,7 +8,14 @@ import {
 import { OVERPRESSURE_LIGHT_DAMAGE, distanceForOverpressure } from '../impact/damageRings.js';
 import { NUCLEAR_CRATER_COEFFICIENT, nuclearApparentCraterDiameter } from './cratering.js';
 import { electromagneticPulse, type EmpResult } from './emp.js';
-import { hobBlastFactor, hobRegime, scaledHeightOfBurst, type HobRegime } from './hob.js';
+import {
+  BURIED_AIR_BLAST_MAX_SCALED_DEPTH_FT,
+  hobBlastFactor,
+  hobRegime,
+  scaledHeightOfBurst,
+  underwaterAirBlastFactor,
+  type HobRegime,
+} from './hob.js';
 import { peakOverpressure } from './overpressure.js';
 import { peakWindAtRange } from './peakWind.js';
 import { initialRadiationRadii, type RadiationDoseResult } from './radiation.js';
@@ -54,7 +61,10 @@ export interface ExplosionScenarioInput {
   groundType?: ExplosionGroundType;
   /** Height of burst above the target surface (m). 0 = contact surface
    *  burst. Undefined is treated as 0. Drives the Needham/Glasstone
-   *  HOB correction applied on top of the baseline blast radii. */
+   *  HOB correction applied on top of the baseline blast radii.
+   *  Negative is a depth below the water surface: a burst within the
+   *  water when it is over open water no deeper than the sea, and a
+   *  buried burst — which the model does not have — anywhere else. */
   heightOfBurst?: Meters;
   /** Water depth at the burst site (m). 0 or omitted → land/airburst,
    *  no tsunami cascade. A positive value lets a burst within the water
@@ -78,6 +88,26 @@ export interface ExplosionScenarioInput {
    *  DEM-driven value when the click point is on land with a
    *  meaningful slope. */
   coastalBeachSlopeRad?: number;
+}
+
+/** Where the charge is when it goes off, which decides what reaches whom. */
+export type BurstMedium = 'air' | 'surface' | 'water' | 'buried';
+
+export interface BurstPlacement {
+  /** In the air (a positive height), on the surface (zero), within the
+   *  water (a negative height over open water, no deeper than the sea),
+   *  or buried — under land or under the sea floor. A buried burst is an
+   *  underground explosion, which this model does not have; it is drawn
+   *  as a burst on the surface, and this says so. */
+  medium: BurstMedium;
+  /** Depth below the water surface (m), for a burst within the water. */
+  depth?: Meters;
+  /** What the depth leaves of the air blast's reach, for a burst within
+   *  the water (Glasstone & Dolan §6.81, §6.53). */
+  airBlastDepthFactor?: number;
+  /** Whether the scaled depth is inside the 252 ft·kt^(−1/3) the §6.81
+   *  relation was given for. */
+  airBlastWithinStatedRange?: boolean;
 }
 
 export interface ExplosionBlastResult {
@@ -115,6 +145,8 @@ export interface ExplosionBlastResult {
 
 export interface ExplosionScenarioResult {
   inputs: ExplosionScenarioInput;
+  /** Where the burst was, and what that did to its effects. */
+  placement: BurstPlacement;
   yield: {
     joules: Joules;
     kilotons: number;
@@ -243,7 +275,31 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   const yieldJoules = megatonsToJoules(Mt(input.yieldMegatons));
   const yieldKilotons = input.yieldMegatons * 1_000;
 
-  const hobMeters = input.heightOfBurst === undefined ? 0 : (input.heightOfBurst as number);
+  const requestedHob = input.heightOfBurst === undefined ? 0 : (input.heightOfBurst as number);
+  const seaDepthM = (input.waterDepth as number | undefined) ?? 0;
+  const overOpenWater = seaDepthM > 0 && ((input.shoreDistance as number | undefined) ?? 0) <= 0;
+  const medium: BurstMedium =
+    requestedHob > 0
+      ? 'air'
+      : requestedHob === 0
+        ? 'surface'
+        : overOpenWater && -requestedHob <= seaDepthM
+          ? 'water'
+          : 'buried';
+  // A charge below land or below the sea floor is an underground burst,
+  // which this model does not have: it is drawn as a burst on the
+  // surface, and the placement says so rather than inventing its effects.
+  const hobMeters = medium === 'buried' ? 0 : requestedHob;
+  // A burst within the water. Glasstone & Dolan: "much of the thermal
+  // radiation and of the initial nuclear radiation will be absorbed
+  // within a short distance of the explosion", and the fireball of the
+  // BAKER shot was visible for a few thousandths of a second, until the
+  // bubble reached the surface (§2.64) — so no flash, no fires, no
+  // initial radiation here. Its air blast is the surface burst's at a
+  // range shortened by the depth (§6.81, §6.53).
+  const inWater = medium === 'water';
+  const burstDepthM = inWater ? -requestedHob : 0;
+  const depthFactor = inWater ? underwaterAirBlastFactor(burstDepthM, yieldKilotons) : 1;
 
   /* Above ~30 km there is no meaningful air path to the ground:
      ambient pressure is under 1% of sea level, and Glasstone & Dolan
@@ -261,7 +317,8 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
 
   const z = scaledHeightOfBurst(hobMeters, yieldKilotons);
   const regime = hobRegime(z);
-  const factor = exoatmospheric ? 0 : hobBlastFactor(z);
+  const factor = exoatmospheric ? 0 : inWater ? depthFactor : hobBlastFactor(z);
+  const absorbed = (radius: Meters): Meters => (inWater ? m(0) : grounded(radius));
 
   const r5psi = distanceForOverpressure(yieldJoules, FIVE_PSI);
   const r1psi = distanceForOverpressure(yieldJoules, ONE_PSI);
@@ -281,6 +338,15 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
 
   const result: ExplosionScenarioResult = {
     inputs: input,
+    placement: {
+      medium,
+      ...(inWater && {
+        depth: m(burstDepthM),
+        airBlastDepthFactor: depthFactor,
+        airBlastWithinStatedRange:
+          burstDepthM / 0.3048 / Math.cbrt(yieldKilotons) <= BURIED_AIR_BLAST_MAX_SCALED_DEPTH_FT,
+      }),
+    },
     yield: {
       joules: yieldJoules,
       kilotons: yieldKilotons,
@@ -296,13 +362,13 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       overpressure1psiRadiusHob: m((r1psi as number) * factor),
       lightDamageRadiusHob: m((rLight as number) * factor),
       hobScaled: z,
-      hobRegime: regime,
+      hobRegime: inWater ? 'UNDERWATER' : regime,
       hobFactor: factor,
     },
     thermal: {
-      thirdDegreeBurnRadius: grounded(burn3),
-      secondDegreeBurnRadius: grounded(burn2),
-      firstDegreeBurnRadius: grounded(burn1),
+      thirdDegreeBurnRadius: absorbed(burn3),
+      secondDegreeBurnRadius: absorbed(burn2),
+      firstDegreeBurnRadius: absorbed(burn1),
     },
     peakWind: {
       at1km: peakWindAtRange({ distance: m(1_000), yieldEnergy: yieldJoules }),
@@ -311,10 +377,11 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       at50km: peakWindAtRange({ distance: m(50_000), yieldEnergy: yieldJoules }),
     },
     firestorm: {
-      ignitionRadius: grounded(flammableIgnitionRadius({ yieldEnergy: yieldJoules })),
-      sustainRadius: grounded(firestormSustainRadius({ yieldEnergy: yieldJoules })),
-      ignitionArea: exoatmospheric ? sqm(0) : flammableIgnitionArea({ yieldEnergy: yieldJoules }),
-      sustainArea: exoatmospheric ? sqm(0) : firestormArea({ yieldEnergy: yieldJoules }),
+      ignitionRadius: absorbed(flammableIgnitionRadius({ yieldEnergy: yieldJoules })),
+      sustainRadius: absorbed(firestormSustainRadius({ yieldEnergy: yieldJoules })),
+      ignitionArea:
+        exoatmospheric || inWater ? sqm(0) : flammableIgnitionArea({ yieldEnergy: yieldJoules }),
+      sustainArea: exoatmospheric || inWater ? sqm(0) : firestormArea({ yieldEnergy: yieldJoules }),
     },
     crater: {
       // Glasstone & Dolan §6.10: a nuclear airburst at sufficient
@@ -326,28 +393,29 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       // K · W^0.3 only applies in the SURFACE / contact-burst
       // regime; emit 0 for any airburst regime.
       apparentDiameter:
-        regime === 'SURFACE'
+        regime === 'SURFACE' && !inWater
           ? nuclearApparentCraterDiameter({
               yieldEnergy: yieldJoules,
               groundCoefficient: NUCLEAR_CRATER_COEFFICIENT[groundType],
             })
           : m(0),
     },
-    radiation: exoatmospheric
-      ? { ld50Radius: m(0), ld100Radius: m(0), arsThresholdRadius: m(0) }
-      : initialRadiationRadii(input.yieldMegatons),
+    radiation:
+      exoatmospheric || inWater
+        ? { ld50Radius: m(0), ld100Radius: m(0), arsThresholdRadius: m(0) }
+        : initialRadiationRadii(input.yieldMegatons),
     emp: electromagneticPulse(input.yieldMegatons, hobMeters),
     isContactWaterBurst: false,
     asymmetry: {
       crater: ISOTROPIC_RING,
       thermal: windDriftAsymmetry({
-        nominalRadius: burn3,
+        nominalRadius: absorbed(burn3),
         yieldKilotons,
         windSpeed: input.windSpeed ?? mps(0),
         windDirectionDeg: input.windDirectionDeg ?? 0,
       }),
       secondDegreeBurn: windDriftAsymmetry({
-        nominalRadius: burn2,
+        nominalRadius: absorbed(burn2),
         yieldKilotons,
         windSpeed: input.windSpeed ?? mps(0),
         windDirectionDeg: input.windDirectionDeg ?? 0,
@@ -412,9 +480,10 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
     const tsunami = explosionTsunami({
       yieldEnergy: J((yieldJoules as number) * seaCoupling.fraction),
       waterDepth: m(waterDepth),
-      // A burst above the water is at negative depth; one on it is at
-      // zero. Neither is within the water, and neither makes a wave.
-      burstDepth: m(-hobMeters),
+      // A burst above the water is at negative depth; one on it, or
+      // one buried below it, is at zero. None of them is within the
+      // water, and none makes a wave.
+      burstDepth: m(inWater ? burstDepthM : -Math.max(hobMeters, 0)),
       ...(input.meanOceanDepth !== undefined && { meanOceanDepth: input.meanOceanDepth }),
       ...(input.coastalBeachSlopeRad !== undefined && {
         coastalBeachSlopeRad: input.coastalBeachSlopeRad,
