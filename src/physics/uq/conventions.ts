@@ -120,9 +120,13 @@ export const OUTPUT_SIGMA = {
   firestormIgnition: {
     kind: 'linear-fraction',
     sigma: 0.3,
-    source: 'Glasstone & Dolan 1977 §7.40',
+    source: 'project value (thresholds after Glasstone & Dolan 1977 Table 7.40)',
   },
-  firestormSustain: { kind: 'linear-fraction', sigma: 0.3, source: 'Glasstone & Dolan 1977 §7.40' },
+  firestormSustain: {
+    kind: 'linear-fraction',
+    sigma: 0.3,
+    source: 'project value (thresholds after Glasstone & Dolan 1977 Table 7.40)',
+  },
   plumeHeight: { kind: 'lognormal', sigma: 0.5, source: 'Mastin 2009 Fig. 2 + Aubry 2023' },
   pyroclasticRunout: {
     kind: 'linear-fraction',

@@ -255,7 +255,7 @@ export const RECORDED_WAVES: RecordedWave[] = [
     name: 'Beirut 2020',
     observed: { low: 0, high: 2, atRangeM: 300 },
     source:
-      '≈ 0.5 kt TNT-equivalent on a portside quay; the harbour wave was of the order of a metre and drowned nobody',
+      '≈ 0.5 kt TNT-equivalent on a portside quay; a harbour wave said to be of the order of a metre, for which no published measurement is cited here',
     model: () => burstOnGlobe(0.0005, 0, 15, 300),
     gated: true,
     caveat: 'The row this harness was built for: it read 77 000 dead from this wave.',

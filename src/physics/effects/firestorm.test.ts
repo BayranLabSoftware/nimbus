@@ -8,13 +8,11 @@ import {
 } from './firestorm.js';
 
 describe('firestorm (Glasstone & Dolan 1977 thermal-pulse thresholds)', () => {
-  it('flammableIgnitionRadius for Hiroshima-class yield matches published figure within ±30 %', () => {
+  it('flammableIgnitionRadius for a Hiroshima-class yield is pinned near 2.4 km', () => {
     // 15 kt with the default 0.35 thermal partition and unshielded τ = 1.
-    // Glasstone Fig. 7.44 gives ~2.4 km to the 10-cal/cm² contour for 15 kt.
-    // The published 1σ band on the thermal-partition fluence thresholds
-    // (Glasstone & Dolan §7.40) is roughly ±25–30 %: we match that
-    // honestly rather than the artificially tight ±10 % window that
-    // the inverse-square formula itself could hit.
+    // A regression pin, not a validation: Glasstone & Dolan's Fig. 7.44a
+    // records 8–9 cal/cm² a mile (1.6 km) from ground zero at Hiroshima,
+    // well inside the 10 cal/cm² this unattenuated model puts at 2.4 km.
     const W = megatonsToJoules(Mt(0.015));
     const r = flammableIgnitionRadius({ yieldEnergy: W }) as number;
     const observed = 2_400;

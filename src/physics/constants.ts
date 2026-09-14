@@ -54,15 +54,18 @@ export const SEA_LEVEL_PRESSURE = 101_325 as Pascals;
 // Thermal partition of a low-altitude nuclear detonation: fraction of
 // total yield radiated as thermal EM (UV–visible–IR), the rest being
 // blast, neutrons, and prompt gamma.
-// Glasstone & Dolan (1977), §1.22 and §7.03. Dimensionless.
+// Glasstone & Dolan (1977), §1.24–1.25 (35 % for an air burst below
+// about 40 000 ft); a contact surface burst behaves as 0.18 (§7.101),
+// which the model does not apply. Dimensionless.
 export const NUCLEAR_THERMAL_PARTITION = 0.35;
 
 // Luminous efficiency of a cosmic-impact fireball — fraction of the
 // impactor's KE radiated as thermal light reaching the ground. Much
 // lower than the nuclear partition because most impact energy goes into
 // crater excavation and shock work before the fireball forms.
-// Collins, Melosh & Marcus (2005), §"Thermal radiation"; Toon et al.
-// (1997), Rev. Geophys. 35, Table 1. Nominal η = 3e-3, dimensionless.
+// Collins, Melosh & Marcus (2005), "Thermal radiation": η = 3e-3 as a
+// first-order estimate within 1e-4–1e-2 (after Ortiz et al. 2000).
+// Dimensionless.
 export const IMPACT_LUMINOUS_EFFICIENCY = 3e-3;
 
 // Atmospheric blast coupling efficiency for a cosmic impact —
@@ -100,21 +103,24 @@ export const ASTEROID_TAXONOMY = {
 
 export type AsteroidTaxonomyClass = keyof typeof ASTEROID_TAXONOMY;
 
-// Burn fluence thresholds on exposed skin (J/m^2).
-// Glasstone & Dolan (1977), Table 7.41, converted from cal/cm^2.
+// Burn fluence thresholds on exposed skin (J/m^2): project values in
+// cal/cm^2. Glasstone & Dolan (1977) give no fixed thresholds — the
+// exposure that burns grows with yield (Fig. 12.65 gives burn
+// probabilities by yield and exposure).
 export const THIRD_DEGREE_BURN_FLUENCE = 3.35e5; // 8 cal/cm^2
 export const SECOND_DEGREE_BURN_FLUENCE = 2.09e5; // 5 cal/cm^2 — full-thickness blistering
 export const FIRST_DEGREE_BURN_FLUENCE = 8.37e4; // 2 cal/cm^2 — sunburn-like erythema
 
-// Minimum fluence to ignite dry newsprint / light kindling — bounds the
-// urban-firestorm ignition radius. Glasstone & Dolan (1977), Table 7.42,
-// 10 cal/cm^2. J/m^2.
+// Fluence taken to ignite dry newsprint / light kindling — bounds the
+// urban-firestorm ignition radius. A project value, 10 cal/cm^2:
+// Glasstone & Dolan (1977) give ignition exposures that depend on the
+// material and the yield (Table 7.40). J/m^2.
 export const FLAMMABLE_IGNITION_FLUENCE = 4.19e5;
 
-// Threshold above which a self-sustaining firestorm tends to develop
-// over dense flammable urban terrain. Hamburg 1943 and Hiroshima 1945
-// both crossed this line over ~5 km^2 of city.
-// Glasstone & Dolan (1977), §7.40, 6 cal/cm^2. J/m^2.
+// Fluence taken as the edge of a self-sustaining firestorm over dense
+// flammable urban terrain. A project value, 6 cal/cm^2: Glasstone &
+// Dolan (1977) define a fire storm by fuel, fire density, wind and area
+// rather than by an exposure (§7.58). J/m^2.
 export const URBAN_FIRESTORM_FLUENCE = 2.51e5;
 
 // Shear modulus (rigidity) of upper-crustal / oceanic rock — the

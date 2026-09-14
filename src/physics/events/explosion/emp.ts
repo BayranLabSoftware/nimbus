@@ -10,7 +10,8 @@ import { m } from '../../units.js';
  *   IEC 61000-2-9, "Electromagnetic compatibility (EMC) — Part 2-9:
  *    Environment — Description of HEMP environment — Radiated
  *    disturbance." (1996) defines the canonical double-exponential
- *    waveform with peak 50 kV/m for a 1 Mt-class reference event.
+ *    waveform with peak 50 kV/m, without a yield (Savage, Gilbert &
+ *    Radasky 2010, Metatech Meta-R-320, prepared for FERC).
  *   Longmire, C. L. (1978). "On the electromagnetic pulse produced
  *    by nuclear explosions." IEEE Transactions on Antennas and
  *    Propagation AP-26 (1): 3–13.
@@ -19,11 +20,10 @@ import { m } from '../../units.js';
  * of the fireball by the initial gamma burst. For high-altitude
  * (> 30 km) bursts the resulting current sheet radiates the canonical
  * E1 HEMP pulse; the ground footprint is the tangent-line geometry
- * from the burst point to Earth's horizon. Peak field scales with
- * the cube root of yield (Longmire 1978, Fig. 3 — gamma production
- * roughly tracks W, but the Compton deflection geometry softens the
- * field-vs-yield dependence to ≈ W^(1/3) in the saturated regime).
- * Anchor: 50 kV/m at 1 Mt reference (IEC 61000-2-9).
+ * from the burst point to Earth's horizon. Below 1 Mt the peak field
+ * here falls as the cube root of yield from the 50 kV/m of IEC
+ * 61000-2-9: a project assumption. Meta-R-320 finds the early (E1)
+ * peak not closely tied to yield.
  *
  * For low-altitude bursts most of the gammas are absorbed close to
  * the source, so the ground EMP is a local ~0.1·√(W/kt) kV/m field.

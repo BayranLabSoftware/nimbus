@@ -39,7 +39,7 @@ describe('thermalFluence (Glasstone & Dolan 1977, §7.03)', () => {
   });
 });
 
-describe('thirdDegreeBurnRadius (Glasstone & Dolan 1977, Table 7.41)', () => {
+describe('thirdDegreeBurnRadius (8 cal/cm² project threshold)', () => {
   it('inverts thermalFluence: fluence at the burn radius equals the threshold', () => {
     const R = thirdDegreeBurnRadius({ yieldEnergy: HIROSHIMA_YIELD });
     const Q = thermalFluence({ distance: R, yieldEnergy: HIROSHIMA_YIELD });

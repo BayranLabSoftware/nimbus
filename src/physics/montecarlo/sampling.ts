@@ -96,7 +96,8 @@ export function sampleUniform(rng: Rng, min: number, max: number): number {
  * is returned in the caller-preferred unit — we return radians to
  * match {@link impactAngle} conventions.
  *
- * Source: Melosh 1989 "Impact Cratering: A Geologic Process" Ch. 5.
+ * The most likely angle is 45° (Collins et al. 2005, after Shoemaker
+ * 1962).
  */
 export function sampleImpactAngle(rng: Rng): number {
   // Inverse CDF of sin(2θ) over [0, π/2]: solve u = sin²(θ) → θ = arcsin(√u).

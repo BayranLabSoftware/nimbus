@@ -199,6 +199,28 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   densities in Britt & Consolmagno 2003. The Ward & Asphaug row names its
   equation and its project calibration, and the Wünnemann card says how
   Nimbus reads the paper's contradictory validity condition.
+- **The explosion and casualty cards say which numbers are the
+  project's.** Rechecked against Glasstone & Dolan, OTA 1979, PAGER and
+  the other sources they cite, twenty-eight cards and the comments
+  behind them no longer credit tables and figures that do not hold
+  their numbers. The burn (2, 5, 8 cal/cm²) and fire (10, 6 cal/cm²)
+  thresholds, the height-of-burst factor, the initial-radiation fit, the
+  crater coefficients and the EMP roll-off are project values; the crater
+  coefficients are twice what Glasstone & Dolan give for dry soil (§6.09),
+  and the radiation fit cited a figure that holds no dose–range curve.
+  The Kinney–Graham fit is for free air, so a chemical surface burst's
+  radii are about a fifth short (Takazawa, Kim & Garcés 2023); a nuclear
+  burst's half-blast yield roughly compensates. The nuclear thermal
+  partition, 0.35, is Glasstone & Dolan's for an air burst, and a
+  contact surface burst would take 0.18. OTA's blast table is its
+  figure 1, "relatively conservative" in its own words; the direct-blast
+  thresholds are Table 12.38 (lung damage from 12 psi, lethality from
+  40), not §12.44; the PAGER card names the curves the code uses; the
+  pyroclastic, fire, later-death and exposure shares are project
+  estimates; the tsunami toll's formula matches its code; the random
+  generator is Tommy Ettinger's Mulberry32; the Box–Muller transform is
+  the basic form. Part of this text reached the site with the impact
+  commit before it.
 - **The terrain tiles are not CC0.** They combine public-domain data
   with sources that require attribution; the README, ASSETS and the code
   say so and link the list.

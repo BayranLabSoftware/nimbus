@@ -27,14 +27,14 @@ import { m, Pa } from './units.js';
  * Three hazard families, three sources:
  *
  *   BLAST (impacts, explosions) — U.S. Office of Technology Assessment
- *   (1979), *The Effects of Nuclear War*, OTA-NS-89, ch. II, table 2:
- *   the Hiroshima/Nagasaki-derived mortality by peak overpressure
- *   that every civil-defence planning study since has reused.
+ *   (1979), *The Effects of Nuclear War*, ch. II, fig. 1 (p. 19):
+ *   mortality by peak overpressure, assumptions OTA itself calls
+ *   "relatively conservative" and that Postol (1986) describes as the
+ *   standard rules based on what happened at Hiroshima.
  *     ≥ 12 psi  98 % dead,  2 % injured
  *     5–12 psi  50 % dead, 40 % injured
  *     2–5 psi    5 % dead, 45 % injured
  *     1–2 psi    0 % dead, 25 % injured
- *   The bands are the prompt blast + collapse count of the two cities.
  *   The 12 and 2 psi radii are not drawn on the globe; they are
  *   derived from the drawn 5 and 1 psi contours with the Kinney–Graham
  *   curve ratio at the event's yield, so the bands stay consistent
@@ -55,11 +55,11 @@ import { m, Pa } from './units.js';
  *   record at the low end and the near-total mortality Postol (1986)
  *   argued for a nuclear superfire at the high end.
  *
- *   LATER DEATHS — OTA 1979 counts the injured but expects most of the
- *   seriously injured to die for lack of care: two thousand burn beds
- *   in the whole country against hundreds of thousands of burn
- *   casualties. A share of the prompt injured dies within the first
- *   weeks; it is counted, dated and shown apart from the prompt toll.
+ *   LATER DEATHS — OTA 1979 counts the injured and expects many of
+ *   them to die for lack of adequate care: burn victims in the tens of
+ *   thousands against 1 000 to 2 000 specialised burn beds. The share
+ *   of the prompt injured who die within the first weeks is a project
+ *   estimate; it is counted, dated and shown apart from the prompt toll.
  *
  *   The hazards of one annulus act in sequence on the people the
  *   previous ones left alive, so nobody dies twice: the combined
@@ -185,7 +185,7 @@ export function combineMortality(rates: readonly number[]): number {
 
 const PSI = 6_894.757;
 
-/** OTA-NS-89 ch. II table 2 — mortality / injury by overpressure band. */
+/** OTA 1979 ch. II fig. 1 — mortality / injury by overpressure band. */
 export const OTA_BLAST_BANDS = [
   { key: 'blast12psi', minPsi: 12, mortality: 0.98, injury: 0.02 },
   { key: 'blast5psi', minPsi: 5, mortality: 0.5, injury: 0.4 },
@@ -193,17 +193,17 @@ export const OTA_BLAST_BANDS = [
   { key: 'blast1psi', minPsi: 1, mortality: 0, injury: 0.25 },
 ] as const;
 
-/** Scatter on the OTA rates: the Hiroshima/Nagasaki mortality at a
- *  given overpressure spans roughly a factor 2 between studies
- *  (Glasstone & Dolan 1977 ch. XII). */
+/** Scatter on the OTA rates: a factor 2 either way, a project choice
+ *  (OTA gives no range). */
 const BLAST_BAND_FACTOR = 2;
 
 /**
  * Mortality by overpressure for a CONVENTIONAL detonation.
  *
- * OTA's bands are Hiroshima and Nagasaki: a nuclear flash through
- * cities of light timber, where the shock broke the houses and the
- * flash then burned them, and half the people at five psi died. None
+ * OTA's bands are the standard nuclear rules, which Postol (1986)
+ * traces to Hiroshima: a nuclear flash through a city of light timber,
+ * where the shock broke the houses and the flash then burned them, and
+ * half the people at five to twelve psi died. None
  * of that describes a warehouse of ammonium nitrate going off in a
  * city of reinforced concrete, and using OTA there put Beirut 2020 at
  * fifty times the 218 who were killed.
@@ -211,9 +211,9 @@ const BLAST_BAND_FACTOR = 2;
  * What is left when the flash is taken away is the shock itself and
  * what it brings down, and the two have very different thresholds.
  * Direct overpressure barely touches a person below the pressures
- * that damage lungs — Glasstone & Dolan 1977 §12.44 put the threshold
- * of lung injury near 8-12 psi, the threshold of lethality near
- * 20-30 psi and fifty per cent near 30-50 psi — so at the five psi
+ * that damage lungs — Glasstone & Dolan 1977 Table 12.38 put the
+ * threshold of lung damage at 12 psi (8-15), the threshold of lethality
+ * at 40 psi (30-50) and fifty per cent at 62 psi (50-75) — so at the five psi
  * where OTA kills half the population, the blast wave alone kills
  * almost nobody. The dead are under the buildings: collapse and
  * flying debris, with the share of occupants who die in a collapsed
@@ -252,8 +252,8 @@ export const CONVENTIONAL_DELAYED_FRACTION: Triple = { low: 0.005, mid: 0.02, hi
 /**
  * Radius of the luminous fireball of a cosmic impact (m) for its
  * kinetic energy: R_f = 0.002 · E^(1/3), Collins, Melosh & Marcus
- * (2005) eq. 12 — the scaling the Earth Impact Effects Program uses.
- * A 15 km stone at 20 km/s makes one about 200 km across.
+ * (2005) eq. 32* — the scaling the Earth Impact Effects Program uses.
+ * A 15 km stone at 20 km/s makes one about 200 km in radius.
  */
 export function impactFireballRadius(energy: Joules): Meters {
   const e = energy as number;
@@ -262,9 +262,11 @@ export function impactFireballRadius(energy: Joules): Meters {
 
 /**
  * Radius of the luminous fireball of a nuclear burst (m) for its
- * yield: R_f ≈ 55 · W^0.4 with W in kilotonnes, the maximum-brilliance
- * size of Glasstone & Dolan (1977) §2.120 fig. 2.120. A 15 kt burst
- * makes one 160 m across; even a 50 Mt one stays inside 5 km.
+ * yield: R_f ≈ 55 · W^0.4 with W in kilotonnes, a project value near
+ * the maximum radius Glasstone & Dolan (1977) give — about twice the
+ * breakaway radius of 100 · W^0.4 ft for an air burst (§2.127). A 15 kt
+ * burst makes one about 160 m in radius; even a 50 Mt one stays inside
+ * 5 km.
  */
 export function nuclearFireballRadius(yieldEnergy: Joules): Meters {
   const kt = (yieldEnergy as number) / (TNT_SPECIFIC_ENERGY * 1e6);
@@ -320,8 +322,9 @@ export const THIRD_DEGREE_MORTALITY: Triple = { low: 0.3, mid: 0.5, high: 0.8 };
 export const FIRESTORM_MORTALITY: Triple = { low: 0.1, mid: 0.3, high: 0.8 };
 
 /** Share of the prompt injured who die within the first weeks for
- *  lack of care (OTA 1979 ch. II: the seriously injured, the burn
- *  cases above all, outnumber the beds by orders of magnitude). */
+ *  lack of care — a project estimate. OTA 1979 expects many to die for
+ *  lack of adequate care, the burn victims above all: tens of thousands
+ *  against 1 000 to 2 000 specialised burn beds. */
 export const DELAYED_DEATH_FRACTION: Triple = { low: 0.1, mid: 0.3, high: 0.6 };
 
 export interface BlastCasualtyInput {

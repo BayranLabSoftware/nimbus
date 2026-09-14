@@ -161,7 +161,7 @@ _Sources:_
 - Crossroads Baker 1946, ninth wave at 22,000 ft — Glasstone & Dolan 1977 §2.70: at 22,000 ft from surface zero the ninth wave in the series was the highest, with a height of 6 ft
 - Castle Bravo 1954 — 15 Mt fired at the surface on the Bikini reef; remembered for its crater and its fallout, not for a wave
 - Ivy Mike 1952 — 10.4 Mt fired on the islet of Elugelab, which it vapourised; no recorded wave
-- Beirut 2020 — ≈ 0.5 kt TNT-equivalent on a portside quay; the harbour wave was of the order of a metre and drowned nobody
+- Beirut 2020 — ≈ 0.5 kt TNT-equivalent on a portside quay; a harbour wave said to be of the order of a metre, for which no published measurement is cited here
 - Tōhoku 2011 at DART 21413 — DART buoy 21413, 1 242 km from the epicentre, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)
 - Storegga 8200 BP on the Norwegian coast — Bondevik et al. 2005 read 10–25 m of run-up from the Norwegian deposits, implying a metre-scale open-ocean wave at a thousand kilometres
 

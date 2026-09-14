@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { initialRadiationRadii } from './radiation.js';
 
-describe('initialRadiationRadii (Glasstone 1977 Fig. 8.46 / UNSCEAR 2000)', () => {
+describe('initialRadiationRadii (project fit)', () => {
   it('1 kt reference yields LD50 ≈ 700 m', () => {
     const r = initialRadiationRadii(0.001);
     expect(r.ld50Radius as number).toBeGreaterThan(650);
@@ -20,7 +20,7 @@ describe('initialRadiationRadii (Glasstone 1977 Fig. 8.46 / UNSCEAR 2000)', () =
     expect(ratio).toBeCloseTo(1.4, 2);
   });
 
-  it('scales as yield^0.18 between 1 kt and 1 Mt (Glasstone Fig 8.46 atmospheric attenuation)', () => {
+  it('scales as yield^0.18 between 1 kt and 1 Mt', () => {
     const r1kt = initialRadiationRadii(0.001);
     const r1Mt = initialRadiationRadii(1);
     const ratio = (r1Mt.ld50Radius as number) / (r1kt.ld50Radius as number);
@@ -34,7 +34,7 @@ describe('initialRadiationRadii (Glasstone 1977 Fig. 8.46 / UNSCEAR 2000)', () =
     expect(initialRadiationRadii(-1).ld100Radius).toBe(0);
   });
 
-  it('Hiroshima 15 kt LD50 radius matches Glasstone Fig 8.46 (~1.0 km)', () => {
+  it('Hiroshima 15 kt LD50 radius is pinned near 1.0 km', () => {
     // Phase 10 audit: was 2.07 km (factor-2 over) under yield^0.4
     // scaling. After re-fit to yield^0.18 the value drops to ~1.1 km
     // matching Glasstone's anchor at 15 kt.

@@ -17,9 +17,8 @@ import { sampleLognormal, sampleNormal, type Rng } from './sampling.js';
  *                     et al. 1970 reconstruction).
  *
  * Ground type is NOT sampled — it's a site property, not a random
- * variable. Nordyke 1977's 30 % K scatter is captured separately
- * via the fixed-K coefficient in the physics; we don't double-count
- * that uncertainty here.
+ * variable, and the project's K coefficients carry no stated scatter
+ * to sample.
  */
 
 const DEFAULT_ITERATIONS = 200;

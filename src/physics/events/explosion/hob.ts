@@ -5,22 +5,22 @@ import type { Meters } from '../../units.js';
  * Kinney–Graham blast radii.
  *
  * References:
- *   Needham, C. E. (2018). "Blast Waves" (Springer), Chapters 3–5.
- *   Brode, H. L. (1970). "Height of burst effects at high
- *    overpressures." RAND RM-6301-DASA.
- *   Glasstone & Dolan (1977), §3.73 and Fig. 3.73.
+ *   Needham, C. E. (2018). "Blast Waves" (2nd ed., Springer), ch. 14
+ *    "Height of Burst Effects", pp. 227–281.
+ *    DOI: 10.1007/978-3-319-65382-2.
+ *   Glasstone & Dolan (1977), Figs. 3.73a–c (height-of-burst curves)
+ *    and §5.140 (a surface burst's damage ranges are three quarters of
+ *    an air burst's).
  *
- * The simulator's default Kinney–Graham fit represents an optimum-HOB
- * airburst envelope. Real events depart from this baseline:
- *   - Contact surface bursts lose ~15–25 % of the 5 psi ring to
- *     ground-coupling absorption.
- *   - Near-optimum airbursts (scaled HOB ≈ 150–300 m·kt⁻¹ᐟ³) get Mach
- *     reflection enhancement.
- *   - High-altitude bursts above ~700 m·kt⁻¹ᐟ³ decouple from the
- *     ground: thermal dominates, blast radii collapse.
+ * The Kinney–Graham fit is for a charge in free air (overpressure.ts).
+ * A burst near the optimum height (scaled HOB ≈ 150–300 m·kt⁻¹ᐟ³) gains
+ * reach from Mach reflection; above ~700 m·kt⁻¹ᐟ³ the blast decouples
+ * from the ground.
  *
- * The correction factor here is a piecewise fit to Fig. 3.73 of G&D /
- * Fig. 3-3 of Needham, parameterised on the scaled HOB.
+ * The correction factor here is a piecewise function chosen by the
+ * project, parameterised on the scaled HOB; it is not read from a
+ * published curve, and the calibration anchors below were not found
+ * when the sources were rechecked in September 2026.
  */
 
 /** Scaled height-of-burst z = HOB / W^(1/3), in metres per cube-root

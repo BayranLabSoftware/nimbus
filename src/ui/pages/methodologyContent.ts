@@ -181,6 +181,14 @@ const kinneyGraham1985: Citation = {
   doi: '10.1007/978-3-642-86682-1',
 };
 
+const takazawa2023: Citation = {
+  authors: 'Takazawa, S. K., Kim, K. & Garcés, M.',
+  year: 2023,
+  title: 'Chemical Blast Standard (1 kg)',
+  venue: 'Seismological Research Letters 94 (5), 2514–2524',
+  doi: '10.1785/0220230071',
+};
+
 const nordyke1962: Citation = {
   authors: 'Nordyke, M. D.',
   year: 1962,
@@ -393,7 +401,7 @@ const sethian1996: Citation = {
 const melosh1989: Citation = {
   authors: 'Melosh, H. J.',
   year: 1989,
-  title: 'Impact Cratering: A Geologic Process (Ch. 5 — angle distribution)',
+  title: 'Impact Cratering: A Geologic Process',
   venue: 'Oxford University Press',
 };
 
@@ -799,7 +807,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'ΔP/P₀ = 808·[1 + (Z/4.5)²] / √([1 + (Z/0.048)²]·[1 + (Z/0.32)²]·[1 + (Z/1.35)²]) ,   Z = R · W^(−1/3)  (m, kg TNT)',
         description:
-          'The Kinney–Graham fit for a TNT charge in free air, inverted for the 5, 1 and 0.5 psi radii, with the yield as given. A charge on the ground reflects its blast and acts like twice its yield in free air, so for a chemical surface burst these radii are about a fifth short. A nuclear yield is another matter: only about half of it goes into the air shock (Glasstone & Dolan §1.24), which the reflection roughly restores. The height-of-burst factor below then scales the radii.',
+          'The Kinney–Graham fit for a TNT charge in free air, inverted for the 5, 1 and 0.5 psi radii, with the yield as given. A charge on the ground reflects its blast and acts like twice its yield in free air (Takazawa, Kim & Garcés 2023), so for a chemical surface burst these radii are about a fifth short. A nuclear yield is another matter: only about half of it goes into the air shock (Glasstone & Dolan §1.24), which the reflection roughly restores. The height-of-burst factor below then scales the radii.',
         citation: kinneyGraham1985,
       },
       {
@@ -885,7 +893,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Contact-water burst flag (atmospheric ring dimming)',
         formula: 'isContactWaterBurst = (a wave exists) = 0 < burst depth ≤ water depth',
         description:
-          "The flag follows the wave rather than the regime: a burst is a contact-water burst when it is within the water, which is when Glasstone & Dolan's relations give it a wave, and a SURFACE classification does not decide it. A 500 Mt device 580 m above 200 m of sea is SURFACE by scaled height and still makes no wave. The on-globe overpressure / thermal / crater rings are dimmed (alpha 0.85 → 0.4) so the eye reads the tsunami branch as the dominant story; the published radii are emitted unchanged so callers that need the land-equivalent reference can still read them.",
+          "The flag follows the wave rather than the regime: a burst is a contact-water burst when it is within the water, which is when Glasstone & Dolan's relations give it a wave, and a SURFACE classification does not decide it. A 500 Mt device 580 m above 200 m of sea is SURFACE by scaled height and still makes no wave. Under the water the burns, fires, initial radiation and crater are zero, so the globe draws the overpressure rings, shortened for depth and dimmed (alpha 0.85 → 0.4) so the eye reads the wave as the story; the unscaled surface-burst radii are still emitted for callers that want the land-equivalent reference.",
         citation: glasstoneDolan1977,
       },
       {
@@ -894,8 +902,8 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'nearestSea(local tile, planetary mosaic, click) → distance to the shore, basin depth (median of the sea around, ≤ 200 m)',
         description:
-          "When a burst lands on a land cell near the coast (Beirut 2020 on Hangar 12, Castle Bravo on the Bikini reef), the simulator finds the nearest sea a wave could cross — not a lake or a river — and passes the burst its distance and depth, so the sea-coupling law can say whether the crater reaches the water. A wave needs more than that: Glasstone & Dolan's relations are for a burst within the water, and a burst on a quay or a reef is not one, so it makes none. The harbour wave of about a metre seen at Beirut is therefore not drawn; its validation row accepts anything from nothing to two metres, because the record is that loose.",
-        citation: leMehauteWang1996,
+          "When a burst lands on a land cell near the coast (Beirut 2020 on Hangar 12, Castle Bravo on the Bikini reef), the simulator finds the nearest sea a wave could cross — not a lake or a river — and passes the burst its distance and depth, so the sea-coupling law can say whether the crater reaches the water. A wave needs more than that: Glasstone & Dolan's relations are for a burst within the water, and a burst on a quay or a reef is not one, so it makes none. A harbour wave at Beirut is therefore not drawn. Its validation row accepts anything from nothing to two metres, and the “about a metre” it describes has no source in this repository, so the row checks little.",
+        citation: glasstoneDolan1977,
       },
     ],
   },
@@ -1311,7 +1319,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Population exposed inside damage radius',
         formula: 'exposed = Σ population(x, y) · 𝟙[(x − x_0)² + (y − y_0)² ≤ r²]',
         description:
-          'Sum of the WorldPop 2020 population inside a circle. The browser asks the WorldPop zonal-statistics API (api.worldpop.org, free, no key, CORS-enabled) for every ring up to its 100 000 km² allowance — a circle of ≈ 178 km — and sums a shipped 0.125° (≈ 14 km) aggregate of the JRC GHS-POP 2020 grid (Schiavina 2023) for larger rings and when the API is unreachable. An operator may point `VITE_POPULATION_COG_URL` at a CORS-enabled Cloud-Optimised GeoTIFF (WorldPop or JRC GHSL R2023A, Schiavina 2023) for 1 km resolution on every ring. Cell centres decide membership; rim cells are the ±few-percent noise floor.',
+          'Sum of the WorldPop 2020 population inside a circle. The browser asks the WorldPop zonal-statistics API (api.worldpop.org, free, no key, CORS-enabled) for every ring up to its 100 000 km² allowance — a circle of ≈ 178 km — and, for larger rings (up to 1 500 km) or when the API is unreachable, sums shipped 2.5′ tiles of the JRC GHS-POP 2020 grid (Schiavina 2023); planetary rings use a 0.125° (≈ 14 km) aggregate of the same grid. An operator may point `VITE_POPULATION_COG_URL` at a CORS-enabled Cloud-Optimised GeoTIFF (WorldPop or JRC GHSL R2023A) for 1 km resolution on every ring. A cell the ring’s edge crosses counts by the share of a 4 × 4 sub-grid inside it.',
         citation: tatem2017,
       },
       {
@@ -1320,7 +1328,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'deaths = Σ_band pop(band) · m(band) ;  m = 98 % (≥ 12 psi), 50 % (5–12), 5 % (2–5), 0 % (1–2) ;  injured: 2 / 40 / 45 / 25 %',
         description:
-          "Office of Technology Assessment 1979, The Effects of Nuclear War, ch. II table 2 — the Hiroshima/Nagasaki-derived mortality by peak overpressure. Prompt blast, thermal and collapse together, nobody evacuated. The 12 and 2 psi radii are derived from the drawn 5 and 1 psi contours with the Kinney–Graham curve ratio at the event's yield. Band = the factor-2 scatter between studies of the two cities (Glasstone & Dolan 1977 ch. XII).",
+          "Office of Technology Assessment 1979, The Effects of Nuclear War, ch. II fig. 1 (p. 19): mortality by peak overpressure, assumptions OTA calls relatively conservative and that Postol (1986) describes as the standard rules based on Hiroshima. Prompt blast, thermal and collapse together, nobody evacuated. The 12 and 2 psi radii are derived from the drawn 5 and 1 psi contours with the Kinney–Graham curve ratio at the event's yield. The band, a factor of 2 either way, is a project choice. A chemical explosion uses its own project rates instead — 20, 3, 0.5 and 0.05 % dead, a factor of 3 either way — because direct overpressure kills few people below the 40 psi Glasstone & Dolan give for the threshold of lethality (Table 12.38); the dead are under the buildings. When the Monte Carlo band has run, it replaces these table bands.",
         citation: ota1979,
       },
       {
@@ -1328,15 +1336,16 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Shaking casualties (earthquakes)',
         formula: 'ν(S) = Φ(ln(S / θ) / β) ;  deaths = Σ_band pop(band) · ν(S_mid)',
         description:
-          'The USGS PAGER empirical fatality model: a log-normal fatality rate in shaking intensity, fitted per country on 1973–2007 events. The simulator is not a country: the central estimate uses an average-stock pair (θ = 13.5, β = 0.22) and the band spans the published national fits, from earthquake-engineered stocks (θ ≈ 14.5, β = 0.12 — a few deaths per million at MMI VIII, Japan, the United States) to unreinforced masonry (θ ≈ 11.5, β = 0.30 — tens of per cent at IX, Iran, Haiti): three orders of magnitude, which is what not knowing the houses under the ring costs. Applied to the MMI ≥ IX, VIII and VII annuli at their mid-band intensity.',
+          'The USGS PAGER empirical fatality model: a log-normal fatality rate in shaking intensity, fitted by hindcasting earthquakes of 1973–2007, per country or region. The central estimate uses the PAGER curve (fatality.xml) of the country inferred from the nearest city, or the median of its 252 curves (θ = 14.57, β = 0.205) where none is found; the band spans the best and the worst stock in that table (θ = 46.2, β = 0.43, the United States; θ = 8.32, β = 0.10) — orders of magnitude, which is what not knowing the houses under the ring costs. Applied to the MMI ≥ IX, VIII and VII annuli at their mid-band intensity. When the Monte Carlo band has run, it replaces this table band.',
         citation: jaiswalWald2010,
       },
       {
         id: 'casualties-pyroclastic',
         name: 'Pyroclastic casualties (volcanoes)',
-        formula: 'deaths = 0.9 · pop(runout) + 0.9 · (sector / 360°) · pop(lateral-blast annulus)',
+        formula:
+          'deaths = m · pop(runout) + m · (sector / 360°) · pop(lateral-blast annulus) ;  m = 0.9 (0.01–1), or 367 / 410 388 (0–0.01) inside a cleared zone',
         description:
-          'Pyroclastic density currents are the deadliest volcanic hazard in the historical record and people caught inside one almost never survive (Saint-Pierre 1902, Merapi 2010). Mortality inside the runout without evacuation is taken as 90 % (band 50–100 %); a lateral blast counts the same inside its sector. Ashfall at the 1 mm isopach kills nobody; lahars and tsunamis are not converted.',
+          'People caught inside a pyroclastic density current rarely survive. Where no evacuation was ordered, mortality inside the runout is taken as 90 % with a band of 1 to 100 % — project values; the Auker et al. (2013) abstract says pyroclastic currents and lahars caused half of all volcanic deaths, not what share of those inside die. Inside a zone ordered cleared, the measured Merapi 2010 ratio applies: 367 dead among 410 388 displaced (0 to 1 %). A lateral blast counts the same inside its sector. Ashfall at the 1 mm isopach kills nobody and lahars are not converted; a flank-collapse tsunami enters the coastal toll.',
         citation: auker2013,
       },
       {
@@ -1344,7 +1353,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'What the death toll is not',
         formula: 'order of magnitude, low–high band, sources on the label',
         description:
-          'Every figure assumes no evacuation, no warning and no care, and leaves out fallout, initial radiation, famine and disease ; the tsunami toll rests on a run-up height and a beach slope, not on an inundation map. Numbers are printed to two significant figures with their band, next to the vulnerability function and the population source that produced them.',
+          'The blast, burn and fire figures assume no warning and no shelter; warning enters only the tsunami toll, and evacuation only a volcano’s cleared zone. Fallout, initial radiation, famine and disease are left out. The tsunami toll rests on a run-up height and a beach slope, not on an inundation map. Numbers are printed to two significant figures with their band, next to the vulnerability function and the population source that produced them.',
         citation: ota1979,
       },
       {
@@ -1353,16 +1362,16 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'm = exposed × mortality = 0.25 (0.1–0.5) × 0.5 (0.3–0.8) inside the third-degree radius, on the blast survivors',
         description:
-          'Only the people in sight of the fireball receive the pulse — outdoors, at a window; an urban population indoors is mostly shielded — and extensive third-degree burns are fatal without prompt care (Glasstone & Dolan ch. XII). Inside the second-degree radius the exposed survivors count as injured. The hazards of an annulus act in sequence on the survivors of the earlier ones, so the combined mortality is 1 − Π(1 − m) and nobody dies twice.',
+          'Only the people in sight of the fireball receive the pulse — outdoors, at a window; an urban population indoors is mostly shielded — and the flash burns in Japan were sharply limited to exposed skin facing the explosion (Glasstone & Dolan §12.70). The exposed share and the burn mortality are project estimates. Inside the second-degree radius the exposed survivors count as injured. The hazards of an annulus act in sequence on the survivors of the earlier ones, so the combined mortality is 1 − Π(1 − m) and nobody dies twice.',
         citation: glasstoneDolan1977,
       },
       {
         id: 'casualties-horizon',
         name: 'The flash stops at the horizon',
         formula:
-          'd = R⊕ · arccos(R⊕ / (R⊕ + R_f)); R_f = 0.002 · E^(1/3) (impact), 55 · W^0.4 m (nuclear)',
+          'd = R⊕ · arccos(R⊕ / (R⊕ + R_f)); R_f = 0.002 · E^(1/3) (impact, Collins et al. 2005 eq. 32*), 55 · W^0.4 m (nuclear, a project value)',
         description:
-          "A fluence radius says how much heat would arrive with nothing in the way, and for an impact-scale fireball it runs around the planet — a 15 km stone has a third-degree radius of 27 000 km on a globe 20 015 km across. Thermal radiation travels in straight lines, so burns and mass fire are cut where the fireball sets below the curve of the Earth, the cut the Earth Impact Effects Program makes. A 200 km fireball is seen to 1 590 km; Hiroshima's to 46 km, so no nuclear scenario is touched. Heat does reach the far side, from rock re-entering everywhere at once (the cascade says so at +30 min), but that is a diffuse bath where shelter decides and not a flash where sightlines do: it is described, drawn, and deliberately not converted into deaths — Goldin & Melosh 2009 argue the ejecta shield their own radiation enough that the global firestorm may fizzle.",
+          "A fluence radius says how much heat would arrive with nothing in the way, and for an impact-scale fireball it runs around the planet — a 15 km stone has a third-degree radius of 27 000 km on a globe whose farthest point is 20 015 km away. Thermal radiation travels in straight lines, so burns and mass fire are cut where the fireball sets below the curve of the Earth. The Earth Impact Effects Program makes a similar cut — the fireball is wholly hidden once the Earth’s curvature, (1 − cos Δ)·R⊕, exceeds its radius, with a partial-visibility factor before that (Collins et al. 2005). The nuclear radius is near the maximum Glasstone & Dolan give, about twice the breakaway radius of 100·W^0.4 ft (§2.127). A 200 km fireball is seen to 1 590 km; Hiroshima's to 46 km, so no nuclear scenario is touched. Heat does reach the far side, from rock re-entering everywhere at once (the cascade says so at +30 min), but that is a diffuse bath where shelter decides and not a flash where sightlines do: it is described, drawn, and deliberately not converted into deaths — Goldin & Melosh 2009 argue the ejecta shield their own radiation enough that the global firestorm may fizzle.",
         citation: collins2005,
       },
       {
@@ -1371,7 +1380,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'm = 0.3 (0.1–0.8) of the survivors inside the firestorm sustain radius, from +20 min to +6 h',
         description:
-          'Where the thermal fluence can sustain a firestorm, a share of the blast and burn survivors dies in it: the Hamburg 1943 and Dresden 1945 record at the low end, Hiroshima in the middle, the near-total mortality Postol argued for a nuclear superfire at the high end. The Hiroshima fire storm began about twenty minutes after the burst and subsided after some six hours (Glasstone & Dolan ch. VII); the sweep dates the fire deaths in that window.',
+          'Where the thermal fluence can sustain a firestorm, a share of the blast and burn survivors dies in it. The 10 % and 30 % are project estimates; the high end follows Postol (1986), for whom the fire zone of a nuclear superfire is likely to be lethal to all unprotected people. The Hiroshima fire storm began about twenty minutes after the burst and subsided after some six hours (Glasstone & Dolan §7.71); the sweep dates the fire deaths in that window.',
         citation: postol1986,
       },
       {
@@ -1379,16 +1388,16 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Later deaths',
         formula: 'delayed = 0.3 (0.1–0.6) × prompt injured, first day to first month',
         description:
-          'OTA 1979 counts the injured and expects most of the seriously injured to die for lack of care — two thousand burn beds in the whole country against hundreds of thousands of burn casualties. A share of the prompt injured is counted as dying within the first month, shown apart from the prompt toll in the panel and dated in the sweep so the counter keeps rising for weeks.',
+          'OTA 1979 expects many of the injured to die for lack of adequate care — burn victims in the tens of thousands against 1 000 to 2 000 specialised burn beds. The 30 % (10–60 %) is a project estimate; after a chemical explosion, which leaves a city’s medicine standing, it is 2 % (0.5–6 %). The share is counted as dying within the first month, shown apart from the prompt toll in the panel and dated in the sweep so the counter keeps rising for weeks.',
         citation: ota1979,
       },
       {
         id: 'casualties-tsunami',
         name: 'The coastal toll of the wave',
         formula:
-          'H = √(A · min(R, A)); X = 0.06 · H^(4/3) / n², n = 0.03 (≤ 10 km); people = land density × X × coast; ν(h) = Φ(ln(h/θ)/β), h = H/2, θ = 8 m unwarned (≤ 30 min) → 16 m warned (≥ 3 h), 4 m Banda Aceh high, β = 0.8',
+          'H = min(R, (d·γ)^(1/5)·A^(4/5)), d = 50 m, γ = 0.78; X = 0.06 · H^(4/3) / n², n = 0.03 (≤ 10 km); people = land density × X × coast; ν(h) = Φ(ln(h/θ)/β), h = H/2, θ = 8·2^f m (low 16·2^f, high 4 m), β = 0.8, f: 0 → 1 as the lead time (arrival − 10 min) goes from 30 min to 3 h',
         description:
-          'For every coastal cell the wave map reaches — the local grid and, beyond it, the planet at 40 km — the water height at the shore is the geometric mean of the arriving amplitude and the plane-beach run-up, with the run-up trusted only up to that amplitude — the McCowan breaking clamp saturates on 84 to 95 per cent of the coastal cells, and a saturated run-up is the ceiling rather than a measurement — the strip it crosses is the Bretschneider & Wybro inundation distance Hills & Mader used for impact tsunamis (1.3 km for 9 m, the Tōhoku mean), the 2.5′ population tiles give the land density around the cell, and the share of the people in the strip who die follows the mean flow depth through the log-normal form Koshimura fitted to Banda Aceh and Jonkman reviewed for floods. A coast reached within half an hour has no warning; from three hours on it has been warned and emptied, the thresholds shifting on a log scale in between, Banda Aceh the high end throughout. The toll is binned by arrival time and the counter rises as the wave lands, hours after the impact for a far coast. The run-up is a height, not an inundation map; the coast is where the rasters are coarsest; expect a factor of three either way.',
+          'For every coastal cell the wave map reaches — the local grid and, beyond it, the planet at 40 km — the water height at the shore carries the arriving amplitude over the last fifty metres of water with Green’s law until it breaks at McCowan’s index, capped by the plane-beach run-up; the strip it crosses is the Bretschneider & Wybro inundation distance Hills & Mader used for impact tsunamis (1.3 km for 9 m, the Tōhoku mean), the 2.5′ population tiles give the land density around the cell, and the share of the people in the strip who die follows the mean flow depth through a log-normal form like the one Koshimura fitted to Banda Aceh and Jonkman reviewed for floods; θ and β are the project’s reading of Banda Aceh and Tōhoku, not their fits. A warning takes ten minutes to issue, and none comes where a basin has no system. A coast with under half an hour of lead has no warning; from three hours on it has been warned and emptied, the thresholds doubling on a log scale in between, Banda Aceh the high end throughout. The toll is binned by arrival time and the counter rises as the wave lands, hours after the impact for a far coast. The run-up is a height, not an inundation map; the coast is where the rasters are coarsest; expect a factor of three either way.',
         citation: koshimura2009,
       },
       {
@@ -1397,7 +1406,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'deaths(t) = Σ deaths(band) · swept-area fraction at t; t(r) = shock integral | r / 3.5 km/s | r / 30 m/s | r / 400 m/s',
         description:
-          'The counter in the bar sweeps the estimate with the hazard front: the Kinney–Graham shock integral for blast (the same energy the rings use), the crustal shear wave for shaking (PREM 3.2–3.9 km/s), 30 m/s for a pyroclastic current and 400 m/s for a lateral blast (Mt St Helens: 27 km in a minute). Deaths in a band accrue with the annulus area the front has swept, people being assumed evenly spread within the band as the estimate itself assumes. The animation compresses the physical time into five seconds on a log scale and prints the real elapsed time beside the figure; the first number comes from the shipped 0.125° raster and glides to the WorldPop figure when that lands.',
+          'The counter in the bar sweeps the estimate with the hazard front: the Kinney–Graham shock integral for blast (the same energy the rings use), the crustal shear wave for shaking (PREM 3.2–3.9 km/s), 30 m/s for a pyroclastic current and 400 m/s for a lateral blast — a project upper value; the US National Park Service gives the Mount St Helens blast speeds up to 1 080 km/h (300 m/s). Deaths in a band accrue with the annulus area the front has swept, people being assumed evenly spread within the band as the estimate itself assumes. The animation compresses the physical time into five seconds on a log scale and prints the real elapsed time beside the figure; the first number comes from the shipped 0.125° raster and glides to the WorldPop figure when that lands.',
         citation: kinneyGraham1985,
       },
     ],
@@ -1413,25 +1422,27 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Deterministic seeded PRNG',
         formula: 'a ← a + 0x6d2b79f5;  t ← Math.imul(a ^ (a ≫ 15), a | 1); …',
         description:
-          'Mulberry32 counter-based generator: 32-bit state, period 2³², high-quality output for a few million samples. Same seed ⇒ same percentiles, so an MC run is fully reproducible from the scenario URL.',
+          'Mulberry32, a counter-based generator with 32 bits of state and a period of exactly 2³² (Ettinger 2017). Its author has since noted that it cannot produce about a third of all 32-bit values — harmless for a few hundred draws. Same seed ⇒ same percentiles, so an MC run is fully reproducible from the scenario URL.',
         citation: {
-          authors: 'Termine, T. (as popularised by Bryc 2017 in the stdlib PRNG community)',
+          authors: 'Ettinger, T.',
           year: 2017,
-          title: 'Mulberry32 — a simple, high-quality 32-bit PRNG for JavaScript',
-          venue: 'GitHub gist / documented in V8 engineering-blog discussions',
+          title: 'Mulberry32',
+          venue: 'GitHub Gist, gist.github.com/tommyettinger/46a874533244883189143505d203312c',
         },
       },
       {
         id: 'boxMuller',
         name: 'Normal / log-normal deviate',
-        formula: 'z = √(−2 ln u) · cos(2π v)   (Box–Muller polar form)',
+        formula:
+          'z = √(−2 ln u) · cos(2π v)   (Box–Muller, basic form; the sine partner is discarded)',
         description:
-          'Box & Muller 1958 polar transform — two uniform deviates → one unit-normal deviate. Log-normal samples via exp(μ + σ · z) cover the factor-k scatter seen in Mastin 2009 plumes, Popova 2011 meteoroid strengths, and Iverson 1997 lahar runouts.',
+          'Box & Muller 1958 — two uniform deviates → one unit-normal deviate. Log-normal samples via exp(μ + σ · z) for the impactor diameter and density, the explosion yield, the eruption rate, the ejecta and lahar volumes; normal samples for velocity, magnitude, depth, Vs30 and height of burst. Meteoroid strength is not sampled.',
         citation: {
           authors: 'Box, G. E. P. & Muller, M. E.',
           year: 1958,
           title: 'A note on the generation of random normal deviates',
           venue: 'Annals of Mathematical Statistics 29 (2), 610–611',
+          doi: '10.1214/aoms/1177706645',
         },
       },
       {
@@ -1439,34 +1450,28 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Random-impact angle distribution',
         formula: 'p(θ) dθ = sin(2θ) dθ   ;   θ = arcsin(√u)',
         description:
-          'Melosh 1989 Ch. 5 — the canonical distribution of impact angles for randomly-incoming impactors on a flat surface. Peaks at 45°, under-weights both grazing and vertical incidence.',
-        citation: melosh1989,
+          'The distribution of impact angles for impactors arriving from random directions, drawn by inverting its cumulative sin²θ. It peaks at 45°, the angle Collins et al. (2005) give as most likely after Shoemaker (1962), and under-weights both grazing and vertical incidence. In the Monte Carlo it replaces the angle the user chose.',
+        citation: collins2005,
       },
       {
         id: 'toll-band',
         name: 'The death toll\u2019s 5\u201395\u2009% band',
         formula: 'deaths_low = toll(draw at P5),  deaths_high = toll(draw at P95),  N = 200',
         description:
-          'The pair beside the casualty figure is not the gentlest and harshest settings of the vulnerability table \u2014 that pair spans three to five orders of magnitude and contains almost any number. It is the 5th and 95th percentile of 200 realisations of the same scenario, drawn from the input scatter above and, for shaking, dominated by the ground-motion residual \u03c3_lnY \u2248 0.5 that separates a median prediction from one draw of the earth. Each end is a whole realisation rather than a percentile taken column by column, so the per-band rows total to the figure above them. Two things are held fixed and are therefore not in the band: the population (the census has its own error) and the vulnerability functions themselves (published scatter, a factor of 2\u20135). The population inside every sampled radius is read off a curve measured at each damage ring plus two footprints bracketing the radii the draws reach, at one density per annulus; what that interpolation costs is measured against the raster in the calibration suite and is under 1.4\u00d7 on every comparable row.',
-        citation: {
-          authors: 'Jaiswal, K. & Wald, D.',
-          year: 2010,
-          title:
-            'An empirical model for global earthquake fatality estimation (\u00a75, uncertainty)',
-          venue: 'Earthquake Spectra 26 (4), 1017\u20131037',
-        },
+          'The pair beside the casualty figure is not the gentlest and harshest settings of the vulnerability table \u2014 that pair spans three to five orders of magnitude and contains almost any number. It is the 5th and 95th percentile of 200 realisations of the same scenario, drawn from the input scatter above and, for shaking, dominated by the ground-motion residual \u03c3_lnY = 0.5 that separates a median prediction from one draw of the earth (Boore et al. 2014 give a total of about 0.6 for PGA). Each end is a whole realisation rather than a percentile taken column by column, so the per-band rows total to the figure above them. Two things are held fixed and are therefore not in the band: the population (the census has its own error) and the vulnerability functions themselves. An impact\u2019s angle is redrawn from the distribution below, and a landslide keeps its table band. The procedure is the project\u2019s own. The population inside every sampled radius is read off a curve measured at each damage ring plus two footprints bracketing the radii the draws reach, at one density per annulus; what that interpolation costs is measured against the raster in the calibration suite and is under 1.4\u00d7 on every comparable row.',
+        citation: boore2014,
       },
       {
         id: 'percentile-band',
         name: 'Unweighted sample percentiles',
         formula: 'P_n = sort(samples)[⌊n · N / 100⌋]',
         description:
-          'Simple order-statistic percentile estimator — sufficient at N ≥ 100 samples, where variance-weighted estimators offer no material gain. We render P10/P50/P90 rather than mean±σ because the underlying distributions are often log-normal (asymmetric band is more honest than ±σ).',
+          'Simple order-statistic percentile estimator. We render P10/P50/P90 rather than mean±σ because the underlying distributions are often log-normal (asymmetric band is more honest than ±σ). Koonin’s book is background on Monte Carlo methods, not the source of this estimator.',
         citation: {
           authors: 'Koonin, S. E.',
           year: 1986,
-          title: 'Computational Physics (Ch. 7 — Monte Carlo methods)',
-          venue: 'Addison-Wesley',
+          title: 'Computational Physics (chapter "Monte Carlo Methods")',
+          venue: 'Benjamin/Cummings, Menlo Park, CA',
         },
       },
     ],
@@ -1498,6 +1503,7 @@ export const CITATIONS = {
   koshimura2009,
   jonkman2008,
   kinneyGraham1985,
+  takazawa2023,
   nordyke1962,
   needham2018,
   longmire1978,

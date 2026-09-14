@@ -22,9 +22,9 @@ import { sampleImpactAngle, sampleLognormal, sampleNormal, type Rng } from './sa
  *   impactVelocity    — normal, σ = 10 % of the nominal velocity
  *                       (typical orbital-solution uncertainty for a
  *                       well-observed NEO).
- *   impactorDensity   — log-normal with σ_log = 0.15 (taxonomy-class
- *                       spread from Britt & Consolmagno 2003 Table 2).
- *   impactAngle       — Melosh 1989 sin(2θ) distribution, independent
+ *   impactorDensity   — log-normal with σ_log = 0.15 (a project value).
+ *   impactAngle       — sin(2θ) distribution (most likely 45°, Collins
+ *                       et al. 2005 after Shoemaker 1962), independent
  *                       of the caller's nominal angle. Shallow grazing
  *                       and near-vertical are both under-weighted.
  *

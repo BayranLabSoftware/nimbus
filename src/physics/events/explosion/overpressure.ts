@@ -33,28 +33,31 @@ export interface OverpressureInput {
 }
 
 /**
- * Peak incident overpressure at the ground for a surface-burst TNT
- * charge, via the Kinney–Graham (1985) semi-empirical fit.
+ * Peak incident overpressure of a TNT charge in free air, via the
+ * Kinney–Graham (1985) semi-empirical fit.
  *
  *     P_s / P_0 =  808 · [1 + (Z/4.5)²]
  *                 ───────────────────────────────────────────────────────
  *                 √[1 + (Z/0.048)²] · √[1 + (Z/0.32)²] · √[1 + (Z/1.35)²]
  *
  * where Z = R / W^(1/3) is the Hopkinson–Cranz scaled distance (m/kg^(1/3))
- * and P_0 is the ambient pressure. Valid down to ≈ 0.05 m·kg^(-1/3) and
- * up to ≈ 40 m·kg^(-1/3); reproduces the Glasstone & Dolan (1977)
- * Fig. 3.73a surface-burst curve to within a few per cent.
+ * and P_0 is the ambient pressure.
  *
  * Source: Kinney & Graham (1985), "Explosive Shocks in Air" (2nd ed.),
- * Springer-Verlag, Chapter 4.
+ * Springer-Verlag, as written out by Takazawa, Kim & Garcés (2023),
+ * "Chemical Blast Standard (1 kg)", Seismological Research Letters
+ * 94 (5), 2514–2524, DOI: 10.1785/0220230071.
  *
- * Caveats for popular-science display:
- *   - Free (contact) surface burst. Airbursts develop a Mach-stem
- *     reflection that boosts ground-range overpressure at optimum
- *     height-of-burst; model that separately with a HOB correction.
- *   - Yield is TNT-equivalent. Nuclear → TNT parity is ≈1:1 at sea
- *     level but varies ±10 % with altitude, bomb design, and the blast
- *     vs. thermal partition.
+ * Caveats:
+ *   - Free air. A charge on the ground, reflecting perfectly, makes a
+ *     hemispherical wave like twice its yield in free air (Takazawa et
+ *     al. 2023); the simulator passes the yield as given, so a chemical
+ *     surface burst's radii are about a fifth short. A nuclear yield
+ *     puts only about half its energy into the air shock (Glasstone &
+ *     Dolan §1.24), which the reflection roughly restores.
+ *   - Airbursts develop a Mach-stem reflection that boosts ground-range
+ *     overpressure near the optimum height of burst; the HOB correction
+ *     models that separately.
  */
 export function peakOverpressure(input: OverpressureInput): Pascals {
   const Z = scaledDistance(input.distance, input.yieldEnergy);

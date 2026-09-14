@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { Mt, megatonsToJoules } from '../../units.js';
 import { NUCLEAR_CRATER_COEFFICIENT, nuclearApparentCraterDiameter } from './cratering.js';
 
-describe('nuclearApparentCraterDiameter (Glasstone & Dolan 1977, §6.70)', () => {
+describe('nuclearApparentCraterDiameter (Glasstone & Dolan 1977, §6.09 scaling)', () => {
   it('default firm-ground coefficient gives ≈477 m crater for a 1 Mt contact burst', () => {
     const D = nuclearApparentCraterDiameter({ yieldEnergy: megatonsToJoules(Mt(1)) }) as number;
     // K = 60, W_kt = 1000 → D = 60 × 1000^0.3 ≈ 476.6 m.
@@ -43,11 +43,9 @@ describe('nuclearApparentCraterDiameter (Glasstone & Dolan 1977, §6.70)', () =>
   });
 
   it('Castle-Bravo-class (15 Mt, wet coral) predicts a 1.5–2 km crater', () => {
-    // K = 92, W = 15 000 kt → 92 × 15 000^0.3 ≈ 1 647 m. The measured
-    // Castle Bravo crater is ≈1 890 m rim-to-rim; the formula
-    // under-predicts by ≈13 %, well within the ±30 % empirical scatter
-    // band documented for these fits (Glasstone & Dolan 1977 Fig. 6.70
-    // alongside Nordyke 1977 alluvium data).
+    // K = 92, W = 15 000 kt → 92 × 15 000^0.3 ≈ 1 647 m, against a
+    // Castle Bravo crater of roughly 2 km. A pin on the project's K,
+    // not a validation: the value has no published source.
     const D = nuclearApparentCraterDiameter({
       yieldEnergy: megatonsToJoules(Mt(15)),
       groundCoefficient: NUCLEAR_CRATER_COEFFICIENT.WET_SOIL,

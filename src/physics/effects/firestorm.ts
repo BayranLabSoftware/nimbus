@@ -11,13 +11,13 @@ import { m, sqm } from '../units.js';
  * and cosmic impacts. Both events emit a brief bright pulse whose
  * fluence falls with 1/r²; the receiver thresholds are the same.
  *
- * Source: Glasstone & Dolan (1977), "The Effects of Nuclear Weapons"
- * (3rd ed.), U.S. DoD/DoE, §7.03–§7.42. The thermal partition f is
- * the fraction of total event energy emitted as light in the
- * thermal-pulse band; 0.35 (default) is G&D's nominal value for
- * low-altitude nuclear bursts. For cosmic impacts the partition is
- * closer to ~0.003–0.01 (Toon et al. 1997); callers must supply the
- * impact-specific value explicitly.
+ * The fluence is Glasstone & Dolan's (1977) energy spread over a sphere
+ * (§7.94–7.96). The thermal partition f is the fraction of total event
+ * energy emitted as light in the thermal-pulse band; 0.35 (default) is
+ * their value for a nuclear air burst (§1.25). For cosmic impacts
+ * Collins et al. (2005) take a luminous efficiency of 3 × 10⁻³, within
+ * 10⁻⁴–10⁻²; callers must supply it explicitly. The two thresholds are
+ * project values (see constants.ts), not Glasstone & Dolan's.
  */
 
 export interface FirestormInput {

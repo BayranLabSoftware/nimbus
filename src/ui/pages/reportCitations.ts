@@ -302,7 +302,10 @@ export function collectReportCitations(
   }
   if (extras.monteCarlo === true && result.type === 'impact') {
     triggers.push(
-      cite('melosh1989', 'Sin(2θ) impact-angle distribution used for the Monte-Carlo sweep.')
+      cite(
+        'collins2005',
+        'Most likely impact angle 45° (after Shoemaker 1962), the peak of the Monte-Carlo sin(2θ) sweep.'
+      )
     );
   }
   return dedupe(triggers);

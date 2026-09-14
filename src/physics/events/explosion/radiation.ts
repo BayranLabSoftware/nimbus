@@ -16,19 +16,22 @@ import { m } from '../../units.js';
  * sits near 8 Gy. At these dose levels, the death window is 30–60 d
  * post-exposure without intensive medical support.
  *
- * The headline radii implemented here scale with yield^0.4, matching
- * Glasstone Fig. 8.46 in the low-yield regime. Atmospheric scattering
+ * The headline radii scale with yield^0.18, a project fit. The dose–
+ * range curves of Glasstone & Dolan are Figs. 8.33a/b and 8.64a/b; the
+ * "Fig. 8.46" the anchors below cite is not one of them, and the anchors
+ * have not been rechecked against the book. Atmospheric scattering
  * and terrain shadowing are ignored; the radii should be read as
  * nominal upper envelopes on a flat, unshielded target at sea level.
  */
 
-/** Reference LD₅₀/60 radius for a 1 kt burst (Glasstone Fig. 8.46 fit). */
+/** Reference LD₅₀/60 radius for a 1 kt burst (project fit). */
 const LD50_REFERENCE_RADIUS_KT1 = 700;
 /** LD₁₀₀ sits at roughly 70 % of the LD₅₀ distance. */
 const LD100_TO_LD50_RATIO = 0.7;
 /** Yield-scaling exponent for the initial radiation envelope.
  *
- * Phase 10 audit: re-fit against Glasstone Fig. 8.46 anchor points.
+ * Phase 10 audit: re-fit against anchor points credited to a Glasstone
+ * "Fig. 8.46" (not a dose–range figure; unverified).
  * The previous 0.4 over-predicted by factor 2 at 15 kt (Hiroshima
  * lit ~1.0 km, simulator was 2.07 km) and by factor 10+ at 50 Mt
  * because atmospheric attenuation makes the dose envelope grow much
@@ -59,8 +62,8 @@ export function initialRadiationRadii(yieldMegatons: number): RadiationDoseResul
   }
   const ld50 = LD50_REFERENCE_RADIUS_KT1 * Math.pow(yieldKt, YIELD_EXPONENT);
   const ld100 = ld50 * LD100_TO_LD50_RATIO;
-  // ARS-threshold (1 Gy) sits ~1.4× the LD₅₀ distance (log-linear fit
-  // to Glasstone Fig. 8.46 in the sub-lethal dose band).
+  // ARS-threshold (1 Gy) sits ~1.4× the LD₅₀ distance (a project
+  // ratio).
   const ars = ld50 * 1.4;
   return {
     ld50Radius: m(ld50),

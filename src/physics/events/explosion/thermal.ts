@@ -17,8 +17,8 @@ export interface ThermalFluenceInput {
   yieldEnergy: Joules;
   /**
    * Fraction of total yield emitted as thermal radiation. Defaults to
-   * 0.35 — Glasstone & Dolan's representative value for low-altitude
-   * nuclear bursts.
+   * 0.35 — Glasstone & Dolan's value for a nuclear air burst (§1.25);
+   * they give 0.18 for a contact surface burst (§7.101).
    */
   thermalPartition?: number;
   /**
@@ -41,7 +41,7 @@ export interface ThermalFluenceInput {
  * where f is the thermal partition and τ the transmission factor.
  *
  * Source: Glasstone & Dolan (1977), "The Effects of Nuclear Weapons"
- * (3rd ed.), §7.03–§7.35. The inverse-square form is exact for a point
+ * (3rd ed.), §7.94–7.96. The inverse-square form is exact for a point
  * source; the partition and transmission factors bundle the real
  * spectrum, geometry, and atmospheric attenuation.
  *
@@ -87,13 +87,11 @@ export interface BurnRadiusInput {
 /**
  * Effective Beer-Lambert attenuation length (m) for thermal radiation
  * along a horizontal path through the lower atmosphere on a "moderately
- * clear" day (visibility ≈ 56 km). Anchored to Glasstone & Dolan 1977
- * Fig. 7.46 — back-fit so the published 1 Mt clear-day burn radii
- * (3rd-degree ≈ 9.7 km, 2nd-degree ≈ 14 km) reproduce within ±5 % when
- * the inverse-square envelope is multiplied by τ(R) = exp(−R / L).
- *
- * The coefficient also reproduces Castle Bravo (15 Mt surface) at 28 km
- * 3rd-degree burn and the Hiroshima 15 kt low-airburst contour at 2 km.
+ * clear" day (visibility ≈ 56 km). A project calibration: back-fit to
+ * 1 Mt clear-day burn radii (3rd-degree ≈ 9.7 km, 2nd-degree ≈ 14 km)
+ * that the code attributed to a Glasstone & Dolan figure; neither those
+ * radii nor the anchors below (Castle Bravo 28 km, Hiroshima 2 km) were
+ * found when the sources were rechecked in September 2026.
  * Higher-altitude bursts traverse less low-density atmosphere and the
  * effective L lengthens with HOB — see
  * {@link effectiveAtmosphericTransmittanceLength}.
@@ -149,7 +147,7 @@ function solveAttenuatedBurnRadius(R0: number, L: number): number {
  *     R = √[ f · τ · W / (4π · Q_threshold) ]
  *
  * Default threshold is the third-degree-burn line (8 cal/cm² on exposed
- * skin, Glasstone & Dolan 1977 Table 7.41).
+ * skin, a project value — see constants.ts).
  *
  * Two atmospheric-transmission modes are supported:
  *
@@ -187,7 +185,7 @@ export function thirdDegreeBurnRadius(input: BurnRadiusInput): Meters {
  * as {@link thirdDegreeBurnRadius}, with the lower fluence threshold
  * pre-baked.
  *
- * Source: Glasstone & Dolan (1977), Table 7.41.
+ * Threshold: 5 cal/cm², a project value (see constants.ts).
  */
 export function secondDegreeBurnRadius(input: BurnRadiusInput): Meters {
   return thirdDegreeBurnRadius({ ...input, fluenceThreshold: SECOND_DEGREE_BURN_FLUENCE });
