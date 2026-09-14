@@ -64,6 +64,13 @@ describe('every check says whether the model was set on it', () => {
       'Gorkha (Nepal) 2015 toll',
       'Tōhoku 2011 toll',
       'Pinatubo 1991 toll',
+      // Added on 14 September 2026 under the rules in heldOutEvents.ts,
+      // committed before the model was run on them.
+      'Christchurch 2011 toll',
+      'Kumamoto 2016 toll',
+      'Kaikōura 2016 toll',
+      'Pohang 2017 toll',
+      'Durrës (Albania) 2019 toll',
     ]);
   });
 });
@@ -211,10 +218,13 @@ describe('placing a scenario against the record', () => {
     expect(e?.beyond).toBeCloseTo(10 ** 1.2, 1);
   });
 
-  it('a magnitude 6 is a fraction under the smallest measured, and says so', () => {
+  it('a magnitude 6 sits between measured events, beside Christchurch', () => {
+    // Amatrice 2016 (Mw 6.2) was the smallest measured earthquake until
+    // the held-out rows of 14 September 2026 brought in Pohang 2017
+    // (Mw 5.5) and Christchurch 2011 (Mw 6.1).
     const e = calibrationEnvelope('earthquake', 6);
     expect(e?.standing).toBe('measured');
-    expect(e?.nearest?.name).toBe('Amatrice 2016');
+    expect(e?.nearest?.name).toBe('Christchurch 2011');
   });
 
   it('a Toba-class eruption is far past Krakatau', () => {

@@ -172,6 +172,81 @@
         "cause": "drownedOffline",
         "role": "sameSource",
         "source": "UN Office of the Special Envoy for Tsunami Recovery"
+      },
+      {
+        "event": "Christchurch 2011",
+        "recorded": 185,
+        "recordedLow": 185,
+        "recordedHigh": 185,
+        "model": 1,
+        "bandLow": 0,
+        "bandHigh": 15,
+        "ratio": 0.005,
+        "contains": false,
+        "gated": false,
+        "cause": "buildingStock",
+        "role": "heldOut",
+        "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 9779: 185 deaths; USGS usp000huvq, Mww 6.1"
+      },
+      {
+        "event": "Kumamoto 2016",
+        "recorded": 273,
+        "recordedLow": 49,
+        "recordedHigh": 273,
+        "model": 332,
+        "bandLow": 1,
+        "bandHigh": 12168,
+        "ratio": 1.216,
+        "contains": true,
+        "gated": false,
+        "cause": null,
+        "role": "heldOut",
+        "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10177: 273 deaths, which include the disaster-related; 49 caused directly by building collapse and landslides (Fire and Disaster Management Agency, 1 July 2016, in Goda et al. 2016, Front. Built Environ. 2: 19); USGS us20005iis, Mww 7.0"
+      },
+      {
+        "event": "Kaikōura 2016",
+        "recorded": 2,
+        "recordedLow": 2,
+        "recordedHigh": 2,
+        "model": 0,
+        "bandLow": 0,
+        "bandHigh": 0,
+        "ratio": 0,
+        "contains": false,
+        "gated": false,
+        "cause": "belowResolution",
+        "role": "heldOut",
+        "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10206: 2 deaths; USGS us1000778i, Mww 7.8"
+      },
+      {
+        "event": "Pohang 2017",
+        "recorded": 0,
+        "recordedLow": 0,
+        "recordedHigh": 0,
+        "model": 35,
+        "bandLow": 1,
+        "bandHigh": 17877,
+        "ratio": 9007199254740991,
+        "contains": false,
+        "gated": false,
+        "cause": "buildingStock",
+        "role": "heldOut",
+        "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10277: no deaths recorded, 90 injured; USGS us2000bnrs, Mww 5.5"
+      },
+      {
+        "event": "Durrës (Albania) 2019",
+        "recorded": 51,
+        "recordedLow": 51,
+        "recordedHigh": 51,
+        "model": 16,
+        "bandLow": 1,
+        "bandHigh": 510,
+        "ratio": 0.314,
+        "contains": true,
+        "gated": false,
+        "cause": null,
+        "role": "heldOut",
+        "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10461: 51 deaths; USGS us70006d0m, Mww 6.4"
       }
     ],
     "waves": [
@@ -501,7 +576,8 @@
         "measuredHigh": 238,
         "interpolatedLow": 4,
         "interpolatedHigh": 224,
-        "comparable": true
+        "comparable": true,
+        "lowComparable": false
       },
       {
         "event": "L'Aquila 2009",
@@ -509,7 +585,8 @@
         "measuredHigh": 1876,
         "interpolatedLow": 28,
         "interpolatedHigh": 1699,
-        "comparable": true
+        "comparable": true,
+        "lowComparable": false
       },
       {
         "event": "Amatrice 2016",
@@ -517,7 +594,8 @@
         "measuredHigh": 175,
         "interpolatedLow": 0,
         "interpolatedHigh": 213,
-        "comparable": true
+        "comparable": true,
+        "lowComparable": false
       },
       {
         "event": "Gorkha (Nepal) 2015",
@@ -525,7 +603,8 @@
         "measuredHigh": 6942,
         "interpolatedLow": 15,
         "interpolatedHigh": 7416,
-        "comparable": true
+        "comparable": true,
+        "lowComparable": false
       },
       {
         "event": "Beirut 2020",
@@ -533,7 +612,8 @@
         "measuredHigh": 1586,
         "interpolatedLow": 1296,
         "interpolatedHigh": 1586,
-        "comparable": true
+        "comparable": true,
+        "lowComparable": true
       },
       {
         "event": "Mount St Helens 1980",
@@ -541,7 +621,8 @@
         "measuredHigh": 692,
         "interpolatedLow": 164,
         "interpolatedHigh": 708,
-        "comparable": true
+        "comparable": true,
+        "lowComparable": true
       },
       {
         "event": "Pinatubo 1991",
@@ -549,7 +630,8 @@
         "measuredHigh": 312,
         "interpolatedLow": 32,
         "interpolatedHigh": 312,
-        "comparable": true
+        "comparable": true,
+        "lowComparable": false
       },
       {
         "event": "Hiroshima 1945",
@@ -557,7 +639,8 @@
         "measuredHigh": 129200,
         "interpolatedLow": 102027,
         "interpolatedHigh": 127121,
-        "comparable": true
+        "comparable": true,
+        "lowComparable": true
       },
       {
         "event": "Tōhoku 2011",
@@ -565,7 +648,8 @@
         "measuredHigh": 1,
         "interpolatedLow": 0,
         "interpolatedHigh": 31,
-        "comparable": false
+        "comparable": false,
+        "lowComparable": false
       },
       {
         "event": "Sumatra–Andaman 2004",
@@ -573,7 +657,44 @@
         "measuredHigh": 87,
         "interpolatedLow": 0,
         "interpolatedHigh": 223,
-        "comparable": false
+        "comparable": false,
+        "lowComparable": false
+      },
+      {
+        "event": "Christchurch 2011",
+        "measuredLow": 0,
+        "measuredHigh": 15,
+        "interpolatedLow": 0,
+        "interpolatedHigh": 12,
+        "comparable": false,
+        "lowComparable": false
+      },
+      {
+        "event": "Kumamoto 2016",
+        "measuredLow": 1,
+        "measuredHigh": 12168,
+        "interpolatedLow": 1,
+        "interpolatedHigh": 11525,
+        "comparable": true,
+        "lowComparable": false
+      },
+      {
+        "event": "Pohang 2017",
+        "measuredLow": 1,
+        "measuredHigh": 17877,
+        "interpolatedLow": 3,
+        "interpolatedHigh": 12816,
+        "comparable": true,
+        "lowComparable": false
+      },
+      {
+        "event": "Durrës (Albania) 2019",
+        "measuredLow": 1,
+        "measuredHigh": 510,
+        "interpolatedLow": 1,
+        "interpolatedHigh": 647,
+        "comparable": true,
+        "lowComparable": false
       }
     ],
     "anchors": [
@@ -952,6 +1073,81 @@
           }
         },
         "source": "Bondevik et al. 2005 — deposits 10–12 m above the sea of the time in western Norway, 3–6 m in northeast Scotland, over 20 m on Shetland"
+      },
+      {
+        "name": "Christchurch 2011",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [],
+        "use": {
+          "toll": {
+            "role": "heldOut",
+            "how": "Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning."
+          }
+        },
+        "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 9779: 185 deaths; USGS usp000huvq, Mww 6.1"
+      },
+      {
+        "name": "Kumamoto 2016",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [],
+        "use": {
+          "toll": {
+            "role": "heldOut",
+            "how": "Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning."
+          }
+        },
+        "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10177: 273 deaths, which include the disaster-related; 49 caused directly by building collapse and landslides (Fire and Disaster Management Agency, 1 July 2016, in Goda et al. 2016, Front. Built Environ. 2: 19); USGS us20005iis, Mww 7.0"
+      },
+      {
+        "name": "Kaikōura 2016",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [],
+        "use": {
+          "toll": {
+            "role": "heldOut",
+            "how": "Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning."
+          }
+        },
+        "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10206: 2 deaths; USGS us1000778i, Mww 7.8"
+      },
+      {
+        "name": "Pohang 2017",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [],
+        "use": {
+          "toll": {
+            "role": "heldOut",
+            "how": "Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning."
+          }
+        },
+        "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10277: no deaths recorded, 90 injured; USGS us2000bnrs, Mww 5.5"
+      },
+      {
+        "name": "Durrës (Albania) 2019",
+        "eventType": "earthquake",
+        "quantities": [
+          "toll"
+        ],
+        "gated": [],
+        "use": {
+          "toll": {
+            "role": "heldOut",
+            "how": "Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning."
+          }
+        },
+        "source": "NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10461: 51 deaths; USGS us70006d0m, Mww 6.4"
       }
     ]
   },

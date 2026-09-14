@@ -80,13 +80,16 @@ pnpm simulate --help      # every event, preset and override
 Listed so that an hour is not spent finding it again; whether the list
 is complete is itself a question for you.
 
-- **Most checks are fits.** Of the 26 checks in the report, 12 were set
+- **Many checks are fits.** Of the 31 checks in the report, 12 were set
   on the event they check, 3 share a source with it, 2 read an input back
-  from it, 1 is undetermined and 8 are held out. The held-out checks
-  that pass are all records of nothing — a toll of zero, or no wave — so
-  no held-out check yet confirms a number that is not zero.
-- **Most death tolls miss.** 7 of 11 fall outside their band, each with
-  its cause beside it.
+  from it, 1 is undetermined and 13 are held out. Five of the held-out
+  ones are earthquakes written down and pushed before the model was run
+  on them (`src/physics/validation/heldOutEvents.ts`): two fall inside
+  their band — Kumamoto 2016 on a band four orders of magnitude wide,
+  Durrës 2019 at 0.31× on one under three — and three miss. The other
+  held-out checks that pass are records of nothing.
+- **Most death tolls miss.** 10 of 16 fall outside their band, each with
+  its cause beside it; four of the ten are the fatality curve.
 - **The declared gaps** at the end of the report: evacuation, distant
   coasts of long ruptures, the coastal toll that no offline test reaches,
   a band that holds the population and the fatality curves fixed,

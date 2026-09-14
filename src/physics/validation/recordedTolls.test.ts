@@ -141,7 +141,7 @@ describe('the interpolated band and the measured one', () => {
       )
     );
     for (const c of costs.filter((x) => x.comparable)) {
-      expect(c.lowFactor, `${c.event.name}: low end`).toBeLessThan(2);
+      if (c.lowComparable) expect(c.lowFactor, `${c.event.name}: low end`).toBeLessThan(2);
       expect(c.highFactor, `${c.event.name}: high end`).toBeLessThan(2);
     }
     // Every event is sampled twice over the shipped rasters, which is

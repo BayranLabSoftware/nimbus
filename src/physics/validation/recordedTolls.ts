@@ -13,6 +13,7 @@ import { estimateCasualties, type CasualtyEstimate } from '../casualties.js';
 import { EXPLOSION_PRESETS, simulateExplosion } from '../events/explosion/simulate.js';
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
 import { VOLCANO_PRESETS, simulateVolcano } from '../events/volcano/simulate.js';
+import { HELD_OUT_EARTHQUAKES } from './heldOutEvents.js';
 import { shippedCountryAt, shippedPopulationInRadius } from './shippedPopulation.js';
 
 /**
@@ -93,7 +94,10 @@ export type TollCause =
    *  the hour it struck. */
   | 'occupancy'
   /** The dead were killed by something the model does not simulate. */
-  | 'mechanismNotModelled';
+  | 'mechanismNotModelled'
+  /** A handful of deaths among few people: a fatality rate over a
+   *  population rounds them to none. */
+  | 'belowResolution';
 
 export const TOLL_CAUSES: readonly TollCause[] = [
   'evacuation',
@@ -103,6 +107,7 @@ export const TOLL_CAUSES: readonly TollCause[] = [
   'populationChanged',
   'occupancy',
   'mechanismNotModelled',
+  'belowResolution',
 ];
 
 const quake = (preset: keyof typeof EARTHQUAKE_PRESETS): (() => ActiveResult) => {
@@ -247,6 +252,9 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     gated: false,
     caveat: 'Drowning again, and again without a wave here. Reported for the shaking only.',
   },
+  // Held out of every fit, and written down before they were run:
+  // heldOutEvents.ts has the rules they came in under.
+  ...HELD_OUT_EARTHQUAKES,
 ];
 
 export interface TollComparison {
@@ -331,7 +339,10 @@ export function shippedExposureCurve(event: RecordedEvent): ExposurePoint[] {
  *  interpolated bands differ by fewer people than live in one cell of
  *  the raster both read — so their ratio measures the raster, not the
  *  interpolation. Sumatra's shaking-only row is the case: 43 against
- *  115. */
+ *  115. The same holds for either end on its own: Pohang 2017, held
+ *  out, reads 1 dead measured against 3 interpolated at its low end
+ *  and 17 877 against 12 816 at its high one, and only the second is a
+ *  statement about the interpolation. */
 export const INTERPOLATION_COMPARABLE_DEATHS = 100;
 
 export interface InterpolationCost {
@@ -343,8 +354,11 @@ export interface InterpolationCost {
   /** How far apart the two ends are, as factors ≥ 1. */
   lowFactor: number;
   highFactor: number;
-  /** False when too few dead for the ratio to mean anything. */
+  /** False when too few dead at the high end for either ratio to mean
+   *  anything. */
   comparable: boolean;
+  /** Whether the low end, on its own, has dead enough to compare. */
+  lowComparable: boolean;
 }
 
 /**
@@ -372,6 +386,7 @@ export function interpolationCost(event: RecordedEvent): InterpolationCost | nul
     lowFactor: factor(exact.low.deaths, approx.low.deaths),
     highFactor: factor(exact.high.deaths, approx.high.deaths),
     comparable: exact.high.deaths >= INTERPOLATION_COMPARABLE_DEATHS,
+    lowComparable: exact.low.deaths >= INTERPOLATION_COMPARABLE_DEATHS,
   };
 }
 

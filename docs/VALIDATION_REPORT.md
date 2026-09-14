@@ -13,10 +13,10 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 
 ## Summary
 
-- **Death tolls:** 4 of 11 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
+- **Death tolls:** 6 of 16 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
 - **Waves:** 10 of 15 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 5 misses are declared rows, each with its reason below.
 - **Shaking footprint:** centred at 1.18 in radius (0.76 standard errors), scatter σ_ln 0.71 against a ceiling of 0.85 from ground motion; 4 bands painted at an intensity never reached.
-- **Held out** — the rows nothing in the model was set on: death tolls 1 of 4 inside the band, waves 3 of 3. 3 of the 4 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
+- **Held out** — the rows nothing in the model was set on: death tolls 3 of 9 inside the band, waves 3 of 3. 3 of the 6 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
 
 ## Release gate
@@ -57,6 +57,11 @@ model was set on the event, which is under "Which checks are validation".
 | Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | populationChanged | declared | tuned on it |
 | Tōhoku 2011 | 18,500 | 0 | 0 – 1 | 10^0.0 | 0.00× | **misses** | drownedOffline | declared | held out |
 | Sumatra–Andaman 2004 | 227,898 | 1 | 0 – 87 | 10^1.9 | 0.00× | **misses** | drownedOffline | declared | same source |
+| Christchurch 2011 | 185 | 1 | 0 – 15 | 10^1.2 | 0.01× | **misses** | buildingStock | declared | held out |
+| Kumamoto 2016 | 273 (49–273) | 332 | 1 – 12,168 | 10^4.1 | 1.22× | contains | — | declared | held out |
+| Kaikōura 2016 | 2 | 0 | 0 – 0 | — | 0.00× | **misses** | belowResolution | declared | held out |
+| Pohang 2017 | 0 | 35 | 1 – 17,877 | 10^4.3 | from nothing | **misses** | buildingStock | declared | held out |
+| Durrës (Albania) 2019 | 51 | 16 | 1 – 510 | 10^2.7 | 0.31× | contains | — | declared | held out |
 
 #### Where the band misses, and why
 
@@ -74,11 +79,21 @@ model was set on the event, which is under "Which checks are validation".
 
 **Sumatra–Andaman 2004.** Drowning again, and again without a wave here. Reported for the shaking only.
 
+**Christchurch 2011.** Held out, and a miss: 1 dead against 185, on a band that stops at 15. Written after the result, as the rules in heldOutEvents.ts require. New Zealand has no fatality curve of its own and borrows its region’s (θ = 37.8, β = 0.36): with all 265 529 people inside the model’s MMI VII ring shaken at MMI IX it would read about nine deaths, so the intensity alone cannot account for the miss. The rings are also a median on reference rock, 1.8 km of MMI VIII for an Mw 6.1. The band draws the shaking and holds the curve fixed, which is the declared gap this row makes visible.
+
+**Kaikōura 2016.** Held out, and a miss by two: a band of 0 to 0 against 2 dead. Written after the result, as the rules in heldOutEvents.ts require. The rings about the epicentre hold 5 231 people, and the curve New Zealand borrows gives them about one twentieth of a death. A rate over a population cannot resolve a handful of deaths, and no band built from one could contain them.
+
+**Pohang 2017.** Held out, and a miss the other way: 35 dead where nobody died, on a band of 1 to 17 877. Written after the result, as the rules in heldOutEvents.ts require. South Korea has no fatality curve of its own and borrows its region’s, one of the deadliest in the table (θ = 10.3, β = 0.10): inside the model’s MMI VII ring it kills about one in fifteen hundred of 52 188 people, where the city’s buildings killed none. The same steepness is what makes the band four orders of magnitude wide.
+
 #### What to know about the rows that contain their record
 
 **Kokoxili (Kunlun) 2001.** The zero. A model that cannot produce it has learned to kill people who are not there.
 
 **Hiroshima 1945.** Hiroshima held about 350 000 people in 1945 and about 1.2 million today; the raster counts the living, so the model must overshoot by roughly that ratio.
+
+**Kumamoto 2016.** Held out, and inside, on a band that says little: 1 to 12 168 dead, four orders of magnitude, against a record of 49 direct to 273 in all. Written after the result, as the rules in heldOutEvents.ts require. Japan’s own PAGER curve is among the steepest in the table (β = 0.10), so the shift in intensity that one sigma of ground motion makes moves the toll by orders of magnitude. The central estimate, 332, sits between the direct and the total count; the pass is recorded as it came, and it is not evidence of much.
+
+**Durrës (Albania) 2019.** Held out, and inside: 16 dead against 51, on a band of 1 to 510. Written after the result, as the rules in heldOutEvents.ts require. Albania borrows its region’s curve (θ = 16.2, β = 0.22). The band spans nearly three orders of magnitude, which is weak evidence, but it is inside the span the gated rows are held to, so this is the first held-out death toll that is not a zero to land inside a band narrow enough to have been wrong.
 
 ### What the product's interpolation costs
 
@@ -92,18 +107,22 @@ rather than about the interpolation.
 
 | Event | Measured band | Interpolated band | Ends apart (low / high) | Comparable |
 |-------|--------------:|------------------:|------------------------:|------------|
-| Northridge 1994 | 4 – 238 | 4 – 224 | 1.00× / 1.06× | yes |
-| L'Aquila 2009 | 32 – 1,876 | 28 – 1,699 | 1.14× / 1.10× | yes |
-| Amatrice 2016 | 0 – 175 | 0 – 213 | 1.00× / 1.22× | yes |
-| Gorkha (Nepal) 2015 | 13 – 6,942 | 15 – 7,416 | 1.15× / 1.07× | yes |
+| Northridge 1994 | 4 – 238 | 4 – 224 | 1.00× / 1.06× | high end only |
+| L'Aquila 2009 | 32 – 1,876 | 28 – 1,699 | 1.14× / 1.10× | high end only |
+| Amatrice 2016 | 0 – 175 | 0 – 213 | 1.00× / 1.22× | high end only |
+| Gorkha (Nepal) 2015 | 13 – 6,942 | 15 – 7,416 | 1.15× / 1.07× | high end only |
 | Beirut 2020 | 1,296 – 1,586 | 1,296 – 1,586 | 1.00× / 1.00× | yes |
 | Mount St Helens 1980 | 120 – 692 | 164 – 708 | 1.37× / 1.02× | yes |
-| Pinatubo 1991 | 32 – 312 | 32 – 312 | 1.00× / 1.00× | yes |
+| Pinatubo 1991 | 32 – 312 | 32 – 312 | 1.00× / 1.00× | high end only |
 | Hiroshima 1945 | 107,004 – 129,200 | 102,027 – 127,121 | 1.05× / 1.02× | yes |
 | Tōhoku 2011 | 0 – 1 | 0 – 31 | 1.00× / 31.00× | too few dead |
 | Sumatra–Andaman 2004 | 0 – 87 | 0 – 223 | 1.00× / 2.56× | too few dead |
+| Christchurch 2011 | 0 – 15 | 0 – 12 | 1.00× / 1.25× | too few dead |
+| Kumamoto 2016 | 1 – 12,168 | 1 – 11,525 | 1.00× / 1.06× | high end only |
+| Pohang 2017 | 1 – 17,877 | 3 – 12,816 | 3.00× / 1.39× | high end only |
+| Durrës (Albania) 2019 | 1 – 510 | 1 – 647 | 1.00× / 1.27× | high end only |
 
-Worst comparable end: **1.37×**, against a gate of 2×.
+Worst comparable end: **1.39×**, against a gate of 2×.
 
 ### Waves
 
@@ -222,7 +241,7 @@ recorded event, carries one of these roles for each quantity it checks:
 - **held out** — none of these, as far as the code and its cited sources show.
 - **not established** — not yet checked; the note says what is open.
 
-Held out, the tables above read: death tolls **1 of 4** inside the band, waves **3 of 3** inside the record. 3 of the 4 held-out rows inside their record are a record of nothing — no dead, or no wave.
+Held out, the tables above read: death tolls **3 of 9** inside the band, waves **3 of 3** inside the record. 3 of the 6 held-out rows inside their record are a record of nothing — no dead, or no wave.
 
 #### Tuned on it (12)
 
@@ -264,7 +283,7 @@ Held out, the tables above read: death tolls **1 of 4** inside the band, waves *
 
 **Pinatubo 1991, plume.** Mastin et al. 2009 fitted the plume-height relation the model uses on the eruptions in their Table 1, and 15 June 1991 Pinatubo is one of them. Where the preset's eruption rate comes from is not written down.
 
-#### Held out (8)
+#### Held out (13)
 
 **Beirut 2020, wave.** No coefficient decides it. The charge sat on a quay, and the model makes a wave only from a burst within the water, the case Glasstone & Dolan give relations for (§6.119). A zero from a burst on land checks that rule, not a wave law.
 
@@ -281,6 +300,16 @@ Held out, the tables above read: death tolls **1 of 4** inside the band, waves *
 **Tōhoku 2011, toll.** The offline row is the shaking alone, and nothing that decides it was set on this event: Japan's own PAGER curve was fitted on 1973–2007 earthquakes. The drowning curve read from the 2011 record (TSUNAMI_VULNERABILITY) does not enter it — which is why the coastal toll, measured only in the browser, cannot be called validated.
 
 **Pinatubo 1991, toll.** Nothing that decides it was set on this eruption: the currents' reach is Sheridan 1979's mobility ratio on the erupted volume, the mortality inside the cleared zone is Merapi 2010's, and the zone is the one PHIVOLCS actually cleared — an input from the record of the evacuation, not from the toll.
+
+**Christchurch 2011, toll.** Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning.
+
+**Kumamoto 2016, toll.** Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning.
+
+**Kaikōura 2016, toll.** Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning.
+
+**Pohang 2017, toll.** Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning.
+
+**Durrës (Albania) 2019, toll.** Chosen on 14 September 2026 in docs/ROADMAP.md (M9, move 0) before the model was run on it, and put in the net under the rules in heldOutEvents.ts: after PAGER's 1973–2007 fitting window, not looked at when the ring relations were chosen, inputs from the USGS ComCat origin and moment tensor, record from the NCEI significant-earthquake database, no gate, no re-tuning.
 
 #### Not established (1)
 
@@ -308,7 +337,7 @@ these, for the quantity the panel is showing.
 - Castle Bravo 1954 — wave (gated, held out) — Fired on the Bikini reef; remembered for its crater and its fallout, not a wave
 - Tsar Bomba — wave (gated, held out) — The largest device ever fired, 1961, 4 km up over water; no wave
 
-**earthquake** (7)
+**earthquake** (12)
 
 - Amatrice 2016 — toll (declared, tuned on it) — 299 dead
 - L'Aquila 2009 — toll (gated, tuned on it) — 309 dead
@@ -317,6 +346,11 @@ these, for the quantity the panel is showing.
 - Gorkha (Nepal) 2015 — toll (declared, held out) — 8 964 dead
 - Tōhoku 2011 — toll (declared, held out), wave (gated, tuned on it) — 18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 242 km out
 - Sumatra–Andaman 2004 — toll (declared, same source) — 227 898 dead, almost all of them drowned
+- Christchurch 2011 — toll (declared, held out) — NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 9779: 185 deaths; USGS usp000huvq, Mww 6.1
+- Kumamoto 2016 — toll (declared, held out) — NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10177: 273 deaths, which include the disaster-related; 49 caused directly by building collapse and landslides (Fire and Disaster Management Agency, 1 July 2016, in Goda et al. 2016, Front. Built Environ. 2: 19); USGS us20005iis, Mww 7.0
+- Kaikōura 2016 — toll (declared, held out) — NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10206: 2 deaths; USGS us1000778i, Mww 7.8
+- Pohang 2017 — toll (declared, held out) — NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10277: no deaths recorded, 90 injured; USGS us2000bnrs, Mww 5.5
+- Durrës (Albania) 2019 — toll (declared, held out) — NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K), event 10461: 51 deaths; USGS us70006d0m, Mww 6.4
 
 **volcano** (3)
 

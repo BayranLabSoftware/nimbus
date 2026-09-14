@@ -225,7 +225,7 @@ still out by four to a hundred: Pinatubo 97×, Amatrice 0.02×, Gorkha
 0.06×, Tōhoku's headline 11×, Sumatra's coast 0.011×, and the report's
 own DART row 5×.
 
-### 0. Which checks are validation _(labelled 14 September; the held-out set is nearly empty)_
+### 0. Which checks are validation _(labelled 14 September; five held-out earthquakes run the same day, three miss)_
 
 A check the model was built to pass says the fit holds, not that the
 model is right, and until 14 September the report did not say which
@@ -251,7 +251,8 @@ in the net:
 
 - **Earthquake tolls after 2007**, outside PAGER's 1973–2007 window and
   not looked at when the contour law was chosen: Christchurch 2011,
-  Kumamoto 2016, Kaikōura 2016, Pohang 2017, Albania 2019.
+  Kumamoto 2016, Kaikōura 2016, Pohang 2017, Albania 2019. _In the net
+  since 14 September, below._
 - **Volcanic tolls** from eruptions no volcanic constant was set on:
   Unzen 1991 and Fuego 2018 for the pyroclastic currents, Nevado del
   Ruiz 1985 for the lahar path, whose runout was set on Mount St Helens.
@@ -266,6 +267,33 @@ in the net:
   column it was re-tuned to.
 
 Each has to go in with its role written before its result is seen.
+
+**The earthquakes, run once.** The five earthquake tolls went in on
+14 September under rules committed and pushed before the model was run
+on them (`heldOutEvents.ts`, commit `cacee02`): inputs from the USGS
+ComCat origin and moment tensor, the record from the NCEI significant
+earthquake database, no gate, no re-tuning. The result:
+
+| event                 | recorded        | model | band       |                          |
+| --------------------- | --------------- | ----- | ---------- | ------------------------ |
+| Christchurch 2011     | 185             | 1     | 0 – 15     | misses, 185× under       |
+| Kumamoto 2016         | 49 direct – 273 | 332   | 1 – 12 168 | inside, on 10^4.1        |
+| Kaikōura 2016         | 2               | 0     | 0 – 0      | misses by two            |
+| Pohang 2017           | 0               | 35    | 1 – 17 877 | misses, deaths from none |
+| Durrës (Albania) 2019 | 51              | 16    | 1 – 510    | inside, at 0.31×         |
+
+Two inside, and only Durrës on a band narrow enough to have been wrong.
+What the misses share was found after they were seen and is written as
+such: the fatality curve. New Zealand and South Korea have no PAGER
+curve of their own and borrow their region's — New Zealand's reads about
+nine deaths at Christchurch even with everyone inside the model's MMI VII
+ring shaken at MMI IX, South Korea's kills one in fifteen hundred at
+Pohang, where nobody died — and Japan's own is so steep (β = 0.10) that
+one sigma of ground motion spans four orders of magnitude of deaths. The
+toll band holds the curve fixed (a declared gap), so it cannot say any
+of this. The next step is not to re-tune on these rows but to give the
+band the curve's own uncertainty, and then to run the other lists
+above under the same rules.
 
 ### 0b. Every source read against its record _(done 14 September; Vaiont and explosions re-tuned, the other gaps open and declared)_
 

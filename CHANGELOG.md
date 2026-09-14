@@ -35,6 +35,23 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   entered the water. The report and the public validation page both say
   so, computed from the rows rather than written in.
 
+- **Five earthquakes held out of every fit, and run once.** Christchurch
+  2011, Kumamoto 2016, Kaikōura 2016, Pohang 2017 and Durrës (Albania)
+  2019 are in the calibration net under rules committed and pushed before
+  the model was run on any of them (`validation/heldOutEvents.ts`): after
+  the years PAGER's fatality curves were fitted on, inputs from the USGS
+  ComCat origin and moment tensor, the record from the NCEI significant
+  earthquake database, no gate and no re-tuning. Two fall inside their
+  band — Kumamoto on one four orders of magnitude wide, Durrës at 0.31× —
+  and three miss: Christchurch reads 1 dead against 185, Pohang 35 where
+  nobody died, Kaikōura none against 2. The causes, written after the
+  results and saying so, are the fatality curves New Zealand and South
+  Korea borrow from their regions, and at Kaikōura a new one: a handful
+  of deaths below what a rate over a population can resolve. The
+  interpolation check now compares each end of a band only when that end
+  holds a hundred dead, as it already did for the band; Pohang's low end,
+  1 against 3, had been read as a statement about the interpolation.
+
 - **A guide for the scientist asked to break the model.**
   `docs/REVIEWING.md` says what Nimbus claims and what it does not, where
   to start with an hour, a day or more, how to reproduce the report,

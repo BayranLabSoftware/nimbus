@@ -70,6 +70,9 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     source: `${NCEI}, event 9779: 185 deaths; USGS usp000huvq, Mww 6.1`,
     run: quake({ magnitude: 6.1, depth: m(5_900), faultType: 'all' }),
     gated: false,
+    cause: 'buildingStock',
+    caveat:
+      'Held out, and a miss: 1 dead against 185, on a band that stops at 15. Written after the result, as the rules in heldOutEvents.ts require. New Zealand has no fatality curve of its own and borrows its region’s (θ = 37.8, β = 0.36): with all 265 529 people inside the model’s MMI VII ring shaken at MMI IX it would read about nine deaths, so the intensity alone cannot account for the miss. The rings are also a median on reference rock, 1.8 km of MMI VIII for an Mw 6.1. The band draws the shaking and holds the curve fixed, which is the declared gap this row makes visible.',
   },
   {
     name: 'Kumamoto 2016',
@@ -83,6 +86,8 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     source: `${NCEI}, event 10177: 273 deaths, which include the disaster-related; 49 caused directly by building collapse and landslides (Fire and Disaster Management Agency, 1 July 2016, in Goda et al. 2016, Front. Built Environ. 2: 19); USGS us20005iis, Mww 7.0`,
     run: quake({ magnitude: 7.0, depth: m(10_000), faultType: 'strike-slip' }),
     gated: false,
+    caveat:
+      'Held out, and inside, on a band that says little: 1 to 12 168 dead, four orders of magnitude, against a record of 49 direct to 273 in all. Written after the result, as the rules in heldOutEvents.ts require. Japan’s own PAGER curve is among the steepest in the table (β = 0.10), so the shift in intensity that one sigma of ground motion makes moves the toll by orders of magnitude. The central estimate, 332, sits between the direct and the total count; the pass is recorded as it came, and it is not evidence of much.',
   },
   {
     name: 'Kaikōura 2016',
@@ -95,6 +100,9 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     source: `${NCEI}, event 10206: 2 deaths; USGS us1000778i, Mww 7.8`,
     run: quake({ magnitude: 7.8, depth: m(15_110), faultType: 'reverse' }),
     gated: false,
+    cause: 'belowResolution',
+    caveat:
+      'Held out, and a miss by two: a band of 0 to 0 against 2 dead. Written after the result, as the rules in heldOutEvents.ts require. The rings about the epicentre hold 5 231 people, and the curve New Zealand borrows gives them about one twentieth of a death. A rate over a population cannot resolve a handful of deaths, and no band built from one could contain them.',
   },
   {
     name: 'Pohang 2017',
@@ -106,6 +114,9 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     source: `${NCEI}, event 10277: no deaths recorded, 90 injured; USGS us2000bnrs, Mww 5.5`,
     run: quake({ magnitude: 5.5, depth: m(10_000), faultType: 'reverse' }),
     gated: false,
+    cause: 'buildingStock',
+    caveat:
+      'Held out, and a miss the other way: 35 dead where nobody died, on a band of 1 to 17 877. Written after the result, as the rules in heldOutEvents.ts require. South Korea has no fatality curve of its own and borrows its region’s, one of the deadliest in the table (θ = 10.3, β = 0.10): inside the model’s MMI VII ring it kills about one in fifteen hundred of 52 188 people, where the city’s buildings killed none. The same steepness is what makes the band four orders of magnitude wide.',
   },
   {
     name: 'Durrës (Albania) 2019',
@@ -117,6 +128,8 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     source: `${NCEI}, event 10461: 51 deaths; USGS us70006d0m, Mww 6.4`,
     run: quake({ magnitude: 6.4, depth: m(22_000), faultType: 'reverse' }),
     gated: false,
+    caveat:
+      'Held out, and inside: 16 dead against 51, on a band of 1 to 510. Written after the result, as the rules in heldOutEvents.ts require. Albania borrows its region’s curve (θ = 16.2, β = 0.22). The band spans nearly three orders of magnitude, which is weak evidence, but it is inside the span the gated rows are held to, so this is the first held-out death toll that is not a zero to land inside a band narrow enough to have been wrong.',
   },
 ];
 

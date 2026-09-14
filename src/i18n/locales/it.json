@@ -1433,8 +1433,8 @@
         "body": "Il modello conta tutti quelli che abitavano dentro l'impronta. Al Mount St Helens la montagna era chiusa da due mesi; al Pinatubo sessantamila persone erano state evacuate prima del culmine. Un modello che conta tutti quelli che ci abitavano non può arrivare a un bilancio fatto da tutti quelli che se n'erano andati — e questo errore va sempre per eccesso, mai per difetto."
       },
       "buildingStock": {
-        "label": "Gli edifici non erano la media del Paese",
-        "body": "Le vittime da scuotimento usano la curva di mortalità che USGS PAGER ha stimato per ogni Paese. Amatrice ha ucciso 299 persone in borghi medievali di pietra, che reggono molto peggio dell'edificio medio italiano; Gorkha ha ucciso nei mattoni della valle di Kathmandu, e il Nepal usa la curva della sua regione. Una curva nazionale sottostima un paese."
+        "label": "Gli edifici non erano quelli per cui la curva è stata fatta",
+        "body": "Le vittime da scuotimento usano la curva di mortalità che USGS PAGER ha stimato per ogni Paese, e la maggior parte dei Paesi non ne ha una propria e usa quella della sua regione. Amatrice ha ucciso 299 persone in borghi medievali di pietra, che reggono molto peggio dell'edificio medio italiano, e Gorkha ha ucciso nei mattoni della valle di Kathmandu. Tenuti fuori, Christchurch ha ucciso 185 persone dove la curva presa in prestito dalla Nuova Zelanda ne legge una manciata anche allo scuotimento più forte, e Pohang nessuna dove quella presa in prestito dalla Corea del Sud ne legge 35. Una curva fatta per un Paese o una regione può sbagliare sugli edifici a cui la si applica, in tutte e due le direzioni."
       },
       "populationRaster": {
         "label": "La mappa della popolazione è più grossolana dell'esplosione",
@@ -1455,6 +1455,10 @@
       "mechanismNotModelled": {
         "label": "Sono morti di qualcosa che il modello non simula",
         "body": "Al Pinatubo la zona di pericolo era stata allargata a 40 km e circa sessantamila persone se n'erano andate, quindi il modello ora conta le correnti su una zona sgomberata e trova qualche decina di morti. La maggior parte degli 847 morti la uccisero i tetti crollati sotto la cenere inzuppata da un tifone e le malattie nei campi di evacuazione — due meccanismi che questo modello non contiene. Sbaglia per difetto, ed è per questo."
+      },
+      "belowResolution": {
+        "label": "Una manciata di morti è sotto ciò che un tasso può risolvere",
+        "body": "Una curva di mortalità è un tasso applicato a migliaia di persone. A Kaikōura, tenuto fuori, gli anelli attorno all'epicentro contenevano circa cinquemila persone, e la curva presa in prestito dalla Nuova Zelanda dà loro un ventesimo di morto, contro i due registrati. Nessuna banda fatta di questi tassi può contenere una manciata di morti, e l'errore viene mostrato invece di essere giustificato."
       }
     },
     "waves": {
@@ -1479,6 +1483,7 @@
       "measured": "Conteggio esatto",
       "interpolated": "Scorciatoia del sito",
       "tooFew": "troppo poche vittime per confrontare",
+      "tooFewLow": "troppo poche vittime all'estremo basso per confrontarlo",
       "worst": "Estremo peggiore confrontabile: {{factor}}×, contro un limite di 2×."
     },
     "anchors": {

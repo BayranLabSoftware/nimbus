@@ -67,6 +67,8 @@ interface InterpolationRow {
   interpolatedLow: number;
   interpolatedHigh: number;
   comparable: boolean;
+  /** Whether the low end, on its own, has dead enough to compare. */
+  lowComparable: boolean;
 }
 
 interface AnchorRow {
@@ -110,6 +112,7 @@ const CAUSES = [
   'populationChanged',
   'occupancy',
   'mechanismNotModelled',
+  'belowResolution',
 ] as const;
 type Cause = (typeof CAUSES)[number];
 const isCause = (c: string | null): c is Cause =>
@@ -166,7 +169,7 @@ export function ValidationPage(): JSX.Element {
       };
       return Math.max(
         worst,
-        f(r.measuredLow, r.interpolatedLow),
+        r.lowComparable ? f(r.measuredLow, r.interpolatedLow) : 1,
         f(r.measuredHigh, r.interpolatedHigh)
       );
     }, 1);
@@ -504,6 +507,9 @@ export function ValidationPage(): JSX.Element {
                     <td className={styles.num}>
                       {int(r.interpolatedLow)} – {int(r.interpolatedHigh)}
                       {!r.comparable && ` · ${t('validation.interpolation.tooFew')}`}
+                      {r.comparable &&
+                        !r.lowComparable &&
+                        ` · ${t('validation.interpolation.tooFewLow')}`}
                     </td>
                   </tr>
                 ))}

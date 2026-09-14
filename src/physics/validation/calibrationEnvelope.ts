@@ -4,12 +4,12 @@
  * The calibration net — {@link RECORDED_TOLLS}, {@link RECORDED_WAVES}
  * and the historical rows of the golden dataset — checks this
  * simulator against events the world has already performed. There are
- * twenty-one of them, and they are the only places where anyone can say
+ * twenty-six of them, and they are the only places where anyone can say
  * whether an answer is right, because they are the only places anyone
  * measured.
  *
  * A visitor with the custom fields open is not restricted to those
- * twenty-one. They can ask for a two-hundred-kilotonne charge under the
+ * twenty-six. They can ask for a two-hundred-kilotonne charge under the
  * Adriatic, a thirty-kilometre stone at eleven kilometres a second, a
  * magnitude nine and a half under Lisbon. The property sweep in
  * `customScenarios.test.ts` shows the laws do not break out there.
@@ -33,6 +33,7 @@ import type { EarthquakeScenarioResult } from '../events/earthquake/simulate.js'
 import type { ExplosionScenarioResult } from '../events/explosion/simulate.js';
 import type { LandslideScenarioResult } from '../events/landslide/simulate.js';
 import type { VolcanoScenarioResult } from '../events/volcano/simulate.js';
+import { HELD_OUT_EARTHQUAKE_ANCHORS } from './heldOutEvents.js';
 
 /** The event families the envelope knows how to place. */
 export type EnvelopeEventType = 'impact' | 'explosion' | 'earthquake' | 'volcano' | 'landslide';
@@ -154,7 +155,7 @@ const KILOTON_J = 4.184e12;
 const MEGATON_J = 4.184e15;
 
 /**
- * The twenty-one events the model is measured against, each placed on
+ * The twenty-six events the model is measured against, each placed on
  * its family's axis.
  *
  * Impact energies are inferred, not weighed: Chicxulub's is what a
@@ -493,6 +494,9 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
       },
     },
   },
+  // --- Held out of every fit, written down before they were run
+  //     (heldOutEvents.ts). -----------------------------------------
+  ...HELD_OUT_EARTHQUAKE_ANCHORS,
 ];
 
 /**

@@ -1346,8 +1346,8 @@
         "body": "The model counts everyone who lived inside the footprint. At Mount St Helens the mountain had been closed for two months; at Pinatubo sixty thousand people were evacuated before the climax. A model that counts everyone who lived there cannot reach a toll made by everyone having left — and this error only ever runs high, never low."
       },
       "buildingStock": {
-        "label": "The buildings were not the national average",
-        "body": "Deaths from shaking use the fatality curve USGS PAGER fitted for each country. Amatrice killed 299 in medieval stone villages that fare far worse than Italy's average building; Gorkha killed in the brick of the Kathmandu valley, and Nepal borrows its region's curve. A national curve under-predicts a village."
+        "label": "The buildings were not the ones the curve was made for",
+        "body": "Deaths from shaking use the fatality curve USGS PAGER fitted for each country, and most countries have no curve of their own and borrow their region's. Amatrice killed 299 in medieval stone villages that fare far worse than Italy's average building, and Gorkha killed in the brick of the Kathmandu valley. Held out, Christchurch killed 185 where the curve New Zealand borrows reads a handful even at the strongest shaking, and Pohang killed nobody where the one South Korea borrows reads 35. A curve made for a country or a region can be wrong for the buildings it is applied to, in both directions."
       },
       "populationRaster": {
         "label": "The population map is coarser than the blast",
@@ -1368,6 +1368,10 @@
       "mechanismNotModelled": {
         "label": "They died of something the model does not simulate",
         "body": "Pinatubo's danger zone had been widened to 40 km and some sixty thousand people had left, so the model now counts the currents over a cleared zone and finds a few dozen dead. Most of the 847 who died were killed by roofs collapsing under ash soaked by a typhoon, and by disease in the evacuation camps — two mechanisms this model does not contain. It misses from below, and for that reason."
+      },
+      "belowResolution": {
+        "label": "A handful of deaths is below what a rate can resolve",
+        "body": "A fatality curve is a rate applied to thousands of people. At Kaikōura, held out, the rings about the epicentre held about five thousand people, and the curve New Zealand borrows gives them one twentieth of a death, against two recorded. No band made of such rates can contain a handful of deaths, and the miss is shown rather than argued away."
       }
     },
     "waves": {
@@ -1392,6 +1396,7 @@
       "measured": "Exact count",
       "interpolated": "Site's shortcut",
       "tooFew": "too few dead to compare",
+      "tooFewLow": "too few dead at the low end to compare it",
       "worst": "Worst comparable end: {{factor}}×, against a limit of 2×."
     },
     "anchors": {

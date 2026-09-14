@@ -676,6 +676,69 @@ much as a median model can be asked for. The test's bound loses the
 0.25 allowance it carried on top of the misquoted value: 0.95 before,
 0.85 now.
 
+### Held out, and run once (14 September 2026)
+
+Until today every non-trivial pass in the calibration net was on an
+event the model had been set on, and the held-out checks that passed
+were records of nothing. The roadmap named, that morning, earthquakes
+that would test the death toll out of sample; five of them are now in
+the net.
+
+**The protocol.** `validation/heldOutEvents.ts` was committed and
+pushed (`cacee02`) before the model was run on any of the five, with
+the rules it applies to every row: after 2007, so outside the years USGS
+PAGER's fatality curves were fitted on (Japan's entry in PAGER's table
+lists its fitting events, the last from July 2007); shallow crustal;
+magnitude, depth and epicentre from the USGS ComCat preferred origin;
+the fault type from the preferred moment tensor's nodal planes; the
+record from the NCEI/WDS Global Significant Earthquake Database, with a
+published direct count as the low end where one separates it from
+later deaths; held out, ungated, and no re-tuning on the result. What
+was written after the result — the causes of the misses and the
+comparison of interpolated low ends below a hundred dead — says so.
+
+| event                 | recorded        | model | band (5–95 %) | verdict |
+| --------------------- | --------------- | ----- | ------------- | ------- |
+| Christchurch 2011     | 185             | 1     | 0 – 15        | misses  |
+| Kumamoto 2016         | 49 direct – 273 | 332   | 1 – 12 168    | inside  |
+| Kaikōura 2016         | 2               | 0     | 0 – 0         | misses  |
+| Pohang 2017           | 0               | 35    | 1 – 17 877    | misses  |
+| Durrës (Albania) 2019 | 51              | 16    | 1 – 510       | inside  |
+
+Two of five inside, and Kumamoto's pass is on a band four orders of
+magnitude wide, which contains almost anything. Durrës is the first
+held-out death toll that is not a zero to fall inside a band narrow
+enough to have been wrong, and it is one row.
+
+**What the misses share** is the fatality curve, not the shaking.
+New Zealand has no PAGER curve of its own and borrows its region's
+(θ = 37.8, β = 0.36): with all 265 529 people inside the model's MMI VII
+ring around Christchurch shaken at MMI IX, it reads about nine deaths
+against 185, so no error in the rings could close the gap. South Korea
+borrows its region's too, one of the deadliest in the table (θ = 10.3,
+β = 0.10), and at Pohang it kills one in fifteen hundred people inside
+the MMI VII ring where the buildings killed nobody. At Kaikōura the
+curve gives the few thousand people near the epicentre one twentieth
+of a death against two recorded — below what any rate over a population
+can resolve, which is the cause the row now names. And Japan's own curve
+is steep enough (β = 0.10) that one sigma of ground motion spans Kumamoto's
+four orders of magnitude.
+
+The toll band draws the physics and holds the curve fixed, which was a
+declared gap this morning and is now a measured one: of the ten misses in
+the net, four are the fatality curve (Amatrice, Gorkha, Christchurch,
+Pohang). Re-tuning a curve on these rows would spend them. What they
+point to instead is a band that carries the curve's own uncertainty,
+and then the next lists in the roadmap — volcanic tolls, a buoy, two
+plumes — under the same rules.
+
+One harness rule changed because of these rows, and it is not a model
+change: the interpolation check compared Pohang's low end, 1 dead
+measured against 3 interpolated, as if it were a statement about the
+interpolation. The threshold below which the ratio measures the raster
+rather than the interpolation, a hundred dead, now applies to each end
+of a band on its own, as it already applied to the band.
+
 ### Burns, mass fire and later deaths (Phase 24)
 
 The blast bands of OTA 1979 are the prompt blast and collapse count

@@ -354,11 +354,11 @@ function tollSection(net: CalibrationNet): string {
 function interpolationSection(net: CalibrationNet): string {
   const rows = net.interpolation.map(
     (c) =>
-      `| ${c.event.name} | ${grouped(c.measured.low)} – ${grouped(c.measured.high)} | ${grouped(c.interpolated.low)} – ${grouped(c.interpolated.high)} | ${c.lowFactor.toFixed(2)}× / ${c.highFactor.toFixed(2)}× | ${c.comparable ? 'yes' : 'too few dead'} |`
+      `| ${c.event.name} | ${grouped(c.measured.low)} – ${grouped(c.measured.high)} | ${grouped(c.interpolated.low)} – ${grouped(c.interpolated.high)} | ${c.lowFactor.toFixed(2)}× / ${c.highFactor.toFixed(2)}× | ${!c.comparable ? 'too few dead' : c.lowComparable ? 'yes' : 'high end only'} |`
   );
   const worst = net.interpolation
     .filter((c) => c.comparable)
-    .reduce((m, c) => Math.max(m, c.lowFactor, c.highFactor), 1);
+    .reduce((m, c) => Math.max(m, c.lowComparable ? c.lowFactor : 1, c.highFactor), 1);
   return [
     'The browser cannot query the population backend once per realisation, so',
     'it counts the people inside each damage ring plus two footprints that',
@@ -869,6 +869,7 @@ otherwise.
         interpolatedLow: Math.round(c.interpolated.low),
         interpolatedHigh: Math.round(c.interpolated.high),
         comparable: c.comparable,
+        lowComparable: c.lowComparable,
       })),
       anchors: CALIBRATION_ANCHORS.map((a) => ({
         name: a.name,
