@@ -894,6 +894,55 @@ of magnitude wide. Every cell is scored on too few rows, and the table
 says so. That is the programme in one line: more held-out rows, chosen
 by rule, and a casualty model whose band can be both honest and narrow.
 
+### Against the program the impact equations came from (14 September 2026)
+
+The impact pipeline cites Collins, Melosh & Marcus (2005), and their
+equations have an implementation the authors run online, the Earth Impact
+Effects Program. A formula can be cited correctly and coded wrongly, and a
+custom scenario reaches inputs no historical event checks, so the program
+was asked for its answers on a grid fixed before any of them was read —
+seven diameters from 10 m to 10 km, speeds of 12, 20 and 50 km/s, angles
+of 15, 45 and 90°, densities from ice to iron, sedimentary and
+crystalline targets, five distances: 83 impacts on land, two of which the
+program itself fails on (`scripts/eiep-reference.py`,
+`validation/eiepReference.ts`). Water targets are left out: the program
+puts the crater on the sea floor, the simulator models the water cavity.
+
+Where both codes bring a body to the ground whole, at no less than 95 %
+of its entry speed — 34 impacts — the energy agrees within 3 %, the
+transient and final crater diameters within 4 %, the ejecta blanket's
+edge within 2 % at every thickness from 1 cm to 100 m, and the fireball
+within 2 %: the program prints two or three figures, so that is its
+rounding. `eiepComparison.test.ts` gates exactly that and nothing more.
+
+Elsewhere they part, and each part has a name:
+
+- **The atmospheric entry.** The simulator's entry is a classifier tuned
+  on Chelyabinsk and Tunguska: the breakup altitude of Collins et al.'s
+  Eq. 11, a burst two scale heights lower less a logarithmic correction
+  for size, and a share of the energy reaching the ground that is at most
+  0.3 once a body breaks up. The program integrates the pancake equations
+  (their Eqs. 11–20). Of 57 impacts the program brings to the ground, the
+  simulator bursts 21 in the air; a 100 m stony body at 20 km/s digs a
+  1.6 km crater in the program and none here, and a 1 km body at 50 km/s
+  delivers 95 % of its energy to the ground there and 30 % here. This is
+  the largest error the grid found, declared on the validation page, and
+  the next change to the impact pipeline.
+- **The strength.** The simulator takes a strength class — 1 MPa unless a
+  class is chosen, which the custom panel's taxonomy does — and the
+  program a strength that grows with density, so an iron body typed in by
+  density alone breaks up three times higher here. The stony bodies break
+  up about an eighth lower, 1 MPa against the program's 0.3.
+- **The complex crater depth.** The simulator follows the paper's Eq. 28,
+  0.4 D^0.3, and the online program prints about three quarters of it for
+  every complex crater of the grid. The published relation stays until
+  the authors say which they intend.
+- **The air blast.** The simulator reads Kinney & Graham's free-air fit on
+  the energy that reaches the ground, the program the scaling its authors
+  give; across the grid the two part from a fifth to seven times. Neither
+  is a measurement of an impact's blast, and choosing between them wants
+  one.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records

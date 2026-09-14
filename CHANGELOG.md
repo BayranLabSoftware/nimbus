@@ -50,6 +50,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   a shared module so the suite, the report and the scorecard read one
   computation.
 
+- **The impact pipeline against the program its equations came from.**
+  The Earth Impact Effects Program, run online by the authors of the
+  equations the impact pipeline cites, answered a fixed grid of 83 impacts
+  on land (`scripts/eiep-reference.py`). Where both bring a body down
+  whole the energy, the craters, the ejecta blanket and the fireball agree
+  to the program's rounding, and a test now gates it. Where they part the
+  validation report measures and names it: the simulator's tuned entry
+  bursts in the air bodies of 100 m to 1 km that the program brings to the
+  ground with nearly all their energy (a declared gap, and the next
+  change), strength comes in classes rather than from density, the air
+  blast is a different fit, and the online program prints three quarters
+  of the complex-crater depth its own paper gives.
+
 - **Held-out sets chosen by rule, run once.** Written down and pushed
   before the model saw them (`validation/heldOutByRule.ts`, rules 11 to
   16; `scripts/held-out-by-rule.py` reads the sources): every earthquake

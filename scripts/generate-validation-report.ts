@@ -81,6 +81,14 @@ import {
 } from '../src/physics/validation/heldOutByRule.js';
 import { NCEI_UNMATCHED, RULE_READ_ON } from '../src/physics/validation/heldOutByRuleData.js';
 import {
+  eiepRatios,
+  simulateEiepRow,
+  summariseEiep,
+  type EiepQuantity,
+  type EiepSummary,
+} from '../src/physics/validation/eiepComparison.js';
+import { EIEP_READ_ON, EIEP_REFERENCE } from '../src/physics/validation/eiepReference.js';
+import {
   CALIBRATION_ANCHORS,
   CALIBRATION_ROLES,
   type CalibrationQuantity,
@@ -830,6 +838,112 @@ function byRuleSection(
   ].join('\n');
 }
 
+// ---------------------------------------------------------------------
+// The impact pipeline against the Earth Impact Effects Program.
+// ---------------------------------------------------------------------
+
+interface EiepRun {
+  summaries: EiepSummary[];
+  /** Summaries on the impacts both codes bring to the ground intact. */
+  intact: EiepSummary[];
+  /** [program's crater, simulator's crater] → impacts. */
+  craters: Record<string, number>;
+  /** [program's outcome, simulator's regime] → impacts. */
+  regimes: Record<string, number>;
+  failed: number;
+}
+
+function runEiep(): EiepRun {
+  const ratios = eiepRatios();
+  const intactRows = new Set(
+    EIEP_REFERENCE.filter((row) => {
+      if (
+        row.error !== null ||
+        row.impactVelocityKmS === null ||
+        row.impactVelocityKmS === undefined
+      )
+        return false;
+      return (
+        simulateEiepRow(row).entry.regime === 'INTACT' &&
+        row.impactVelocityKmS >= 0.95 * row.velocityKmS
+      );
+    })
+  );
+  const craters: Record<string, number> = {};
+  const regimes: Record<string, number> = {};
+  for (const row of EIEP_REFERENCE) {
+    if (row.error !== null) continue;
+    const r = simulateEiepRow(row);
+    const crater = `${row.craterType ?? 'none'} → ${(r.crater.finalDiameter as number) > 0 ? r.crater.morphology : 'none'}`;
+    craters[crater] = (craters[crater] ?? 0) + 1;
+    const outcome =
+      row.burstAltitudeM === null || row.burstAltitudeM === undefined ? 'ground' : 'airburst';
+    const regime = `${outcome} → ${r.entry.regime}`;
+    regimes[regime] = (regimes[regime] ?? 0) + 1;
+  }
+  return {
+    summaries: summariseEiep(ratios),
+    intact: summariseEiep(ratios.filter((x) => intactRows.has(x.row))),
+    craters: sortedRecord(craters),
+    regimes: sortedRecord(regimes),
+    failed: EIEP_REFERENCE.filter((row) => row.error !== null).length,
+  };
+}
+
+const EIEP_LABEL: Readonly<Record<EiepQuantity, string>> = {
+  energy: 'Energy before entry',
+  breakupAltitude: 'Breakup altitude',
+  burstAltitude: 'Burst altitude (airbursts)',
+  transientDiameter: 'Transient crater diameter',
+  finalDiameter: 'Final crater diameter',
+  finalDepth: 'Final crater depth',
+  overpressure: 'Air-blast overpressure at the distance',
+  fireballRadius: 'Fireball radius',
+  ejectaEdge: 'Ejecta blanket edge (1 cm to 100 m)',
+};
+
+function eiepSection(run: EiepRun): string {
+  const ratio = (v: number): string => `${v.toFixed(2)}×`;
+  const table = (rows: readonly EiepSummary[]): string[] => [
+    '| Quantity | Pairs | Geometric mean | 10th pct | Median | 90th pct | Range |',
+    '|----------|------:|---------------:|---------:|-------:|---------:|-------|',
+    ...rows.map(
+      (x) =>
+        `| ${EIEP_LABEL[x.quantity]} | ${x.pairs.toString()} | ${ratio(x.geometricMean)} | ${ratio(x.p10)} | ${ratio(x.median)} | ${ratio(x.p90)} | ${ratio(x.min)} – ${ratio(x.max)} |`
+    ),
+  ];
+  const count = (record: Record<string, number>): string =>
+    Object.entries(record)
+      .map(([k, v]) => `${k}: ${v.toString()}`)
+      .join('; ');
+  return [
+    'The Earth Impact Effects Program is the implementation of the equations this',
+    "simulator's impact pipeline cites, run online by their authors (Collins,",
+    'Melosh & Marcus 2005). `scripts/eiep-reference.py` fixed a grid of impacts on',
+    'land — seven diameters from 10 m to 10 km, three speeds, three angles, three',
+    'densities, two targets, five distances — and stores what the program printed',
+    `on ${EIEP_READ_ON} (\`validation/eiepReference.ts\`); ${run.failed.toString()} of its ${EIEP_REFERENCE.length.toString()} inputs made the program fail.`,
+    'Each figure is simulator over program, over the pairs where both answer.',
+    '',
+    ...table(run.summaries),
+    '',
+    'On the impacts both bring to the ground whole, at no less than 95 % of their',
+    "entry speed, the equations are the paper's in both codes, and the figures",
+    "agree to the program's own rounding:",
+    '',
+    ...table(run.intact),
+    '',
+    `Where they part, it is by what the simulator does instead. Outcome, program → simulator: ${count(run.regimes)}. Crater, program → simulator: ${count(run.craters)}.`,
+    '',
+    bullet([
+      "**Atmospheric entry.** The simulator's entry is a classifier tuned on Chelyabinsk and Tunguska — the breakup altitude, a burst two scale heights lower less a logarithmic correction for size, and a share of the energy reaching the ground that is at most 0.3 once a body breaks up — where the program integrates Collins et al.'s pancake equations (their Eqs. 11–20). A body of 100 m to 1 km that the program brings to the ground with nearly all its energy can burst in the air here with none of its crater (declared gap below).",
+      '**Strength.** The simulator takes a strength class (Popova et al. 2011; 1 MPa unless a class is chosen), the program a strength that grows with density, so an iron impactor typed in by density alone breaks up three times higher here.',
+      '**Complex crater depth.** The simulator follows Eq. 28 of the paper, d = 0.4 D^0.3; the online program prints about three quarters of that for every complex crater of the grid. Which the authors now intend is a question for them, and the simulator keeps the published relation until it is answered.',
+      "**Air blast.** The simulator reads Kinney & Graham's free-air fit on the energy that reaches the ground; the program, the air-blast scaling its authors give. The two part from a fifth to seven times across the grid, and neither is a measurement of an impact's blast.",
+    ]),
+  ].join('\n');
+}
+
 function plumeSection(net: CalibrationNet): string {
   const rows = net.plumes.map((c) => {
     const o = c.observation;
@@ -1162,6 +1276,7 @@ function main(): void {
   const cells = scorecard(scoreInputs(net));
   const ruleSets = runRuleSets();
   const byRule = ruleCells(ruleSets);
+  const eiep = runEiep();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -1255,6 +1370,10 @@ ${reportTable(goldenAgg)}
 
 ${failureSection(goldenAgg, 'Golden case failures')}
 
+### The impact pipeline against the Earth Impact Effects Program
+
+${eiepSection(eiep)}
+
 ## Declared gaps
 
 What the model is known not to do, stated so nobody has to discover it. The
@@ -1272,6 +1391,7 @@ ${bullet([
   "**Three numbers are not traced to a source read here.** The 30 cm at DART 21413 that the Tōhoku wave row is tuned on is quoted from Satake et al. 2013 without the paper having been read in the source review; the arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005.",
   "**An airburst's shock is stretched by a fitted altitude factor that no record validates.** At Chelyabinsk the 0.5 psi ring reaches 96 km, near the 108 km to which Popova et al. 2013 model window damage — but theirs is the reach of 500 Pa, and at 500 Pa the model reaches about 640 km, 92 km without the factor. Tunguska's blast row checks the energy, not the factor (`effects/atmosphericEntry.ts`).",
   "**Parts of the explosion model are the project's, not the book's.** Burn thresholds are fixed fluences of 8, 5 and 2 cal/cm² where Glasstone & Dolan make them grow with yield; the initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).",
+  "**An impactor's passage through the air is a tuned classifier, not the pancake equations the impact pipeline cites.** Against the Earth Impact Effects Program on a fixed grid (the section above), bodies of 100 m to 1 km that the program brings to the ground with nearly all their energy burst in the air here, keeping at most three tenths of it and sometimes none of their crater: a 100 m stony body at 20 km/s leaves a 1.6 km crater in the program and none here, a 1 km body at 50 km/s keeps 95 % of its energy there and 30 % here. Where both bring a body down whole, the craters, ejecta and fireball agree to the program's rounding.",
   "**No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.",
   "**A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).",
   "**The volcanic relations are the project's calibrations, and a current is a disc.** The reach of pyroclastic currents (L = 10 · V^⅓, a project mobility), the ashfall, the lahars and the climate response were set on anchors that the source review of 14 September did not recheck (docs/ROADMAP.md, move 0b). A current is drawn as a disc about the vent: held out, Fuego 2018's reaches 3.7 km where the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because a reach three times short and a footprint far too wide cancel; Unzen 1991's reaches 0.84 km against a flow of 3.2 km.",
@@ -1466,6 +1586,32 @@ otherwise.
       topErrorCodes: replayAgg.topErrorCodes,
       topWarningCodes: replayAgg.topWarningCodes,
       suspiciousCases: replayAgg.suspiciousCases,
+    },
+    verification: {
+      eiep: {
+        readOn: EIEP_READ_ON,
+        impacts: EIEP_REFERENCE.length,
+        failed: eiep.failed,
+        summaries: eiep.summaries.map((x) => ({
+          quantity: x.quantity,
+          pairs: x.pairs,
+          geometricMean: fixed(x.geometricMean, 3),
+          p10: fixed(x.p10, 3),
+          median: fixed(x.median, 3),
+          p90: fixed(x.p90, 3),
+          min: fixed(x.min, 3),
+          max: fixed(x.max, 3),
+        })),
+        intact: eiep.intact.map((x) => ({
+          quantity: x.quantity,
+          pairs: x.pairs,
+          geometricMean: fixed(x.geometricMean, 3),
+          min: fixed(x.min, 3),
+          max: fixed(x.max, 3),
+        })),
+        regimes: eiep.regimes,
+        craters: eiep.craters,
+      },
     },
     golden: {
       total: goldenAgg.total,

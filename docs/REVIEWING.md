@@ -74,6 +74,7 @@ pnpm simulate --help      # every event, preset and override
 | the scatter behind the bands              | `src/physics/uq/conventions.ts` and `src/physics/uq/tollBand.ts`            |
 | how accuracy and precision are scored     | `src/physics/validation/scorecard.ts`                                       |
 | the held-out sets chosen by rule          | `src/physics/validation/heldOutByRule.ts`, `scripts/held-out-by-rule.py`    |
+| impacts against their reference program   | `src/physics/validation/eiepComparison.ts`, `scripts/eiep-reference.py`     |
 | defects found, fixed and pinned by a test | [BUG_REGISTRY.md](BUG_REGISTRY.md)                                          |
 | why a choice was made, and what it cost   | the dated sections of [SCIENCE.md](SCIENCE.md) and [ROADMAP.md](ROADMAP.md) |
 
@@ -114,8 +115,10 @@ is complete is itself a question for you.
   subduction earthquakes shaken with crustal relations, two wave
   calibrations on amplitudes their sources do not give, three numbers not
   traced to a source read here, the airburst altitude factor, the
-  project's own choices in the explosion model, and volcanic calibrations
-  that were not rechecked.
+  project's own choices in the explosion model, volcanic calibrations
+  that were not rechecked, the intensity rings of great ruptures, and an
+  impactor's passage through the air, measured against the Earth Impact
+  Effects Program.
 - **Every methodology card was read against its source** on
   14 September 2026; what did not match was fixed (B-011 to B-020 in the
   bug registry) or declared. `pnpm audit:sources` passes.

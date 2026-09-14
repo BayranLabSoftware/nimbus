@@ -1498,6 +1498,10 @@
         "item": "The volcanic relations are this project's calibrations",
         "note": "How far pyroclastic currents run, where ash falls, how far lahars travel and how much an eruption cools the climate are set on reference eruptions that the source review of September 2026 did not go back to check. A current is drawn as a disc around the vent: at Fuego in 2018 the model's disc reaches 3.7 km while the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because the two errors cancel."
       },
+      "impactEntry": {
+        "item": "An impactor's passage through the air is a shortcut, not the equations the impacts cite",
+        "note": "The simulator decides whether an asteroid bursts in the air with a rule tuned on Chelyabinsk and Tunguska, where the Earth Impact Effects Program, written by the authors of the equations it cites, follows the break-up and flattening of the body step by step. Checked against that program across sizes, speeds and angles, bodies from 100 metres to a kilometre that it brings to the ground with nearly all their energy burst in the air here and can leave no crater. Where both bring a body down whole, the craters agree to the program's own rounding."
+      },
       "impactToll": {
         "item": "No impact toll can ever be checked",
         "note": "No asteroid impact in recorded history has killed anyone who was counted. The simulator says so beside every impact toll."

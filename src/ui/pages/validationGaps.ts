@@ -20,6 +20,7 @@ export const VALIDATION_GAPS = [
   'explosionProject',
   'surfaceBurst',
   'volcanoCalibrations',
+  'impactEntry',
   'impactToll',
   'outsideCount',
 ] as const;

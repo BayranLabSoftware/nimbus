@@ -1585,6 +1585,10 @@
         "item": "Le relazioni dei vulcani sono tarature di questo progetto",
         "note": "Quanto corrono le colate piroclastiche, dove cade la cenere, fin dove arrivano i lahar e quanto un'eruzione raffredda il clima sono fissati su eruzioni di riferimento che la revisione delle fonti di settembre 2026 non è tornata a controllare. Una colata è disegnata come un disco attorno alla bocca: al Fuego nel 2018 il disco del modello arriva a 3,7 km mentre la colata che ha ucciso è scesa per 11,7 km in un solo burrone, e il suo bilancio cade dentro il dato solo perché i due errori si compensano."
       },
+      "impactEntry": {
+        "item": "Il passaggio di un asteroide nell'aria è una scorciatoia, non le equazioni che gli impatti citano",
+        "note": "Il simulatore decide se un asteroide esplode in aria con una regola tarata su Čeljabinsk e Tunguska, mentre l'Earth Impact Effects Program, scritto dagli autori delle equazioni che cita, segue passo passo la frammentazione e lo schiacciamento del corpo. Confrontati con quel programma su dimensioni, velocità e angoli diversi, corpi da 100 metri a un chilometro che lui porta a terra con quasi tutta la loro energia qui esplodono in aria e possono non lasciare cratere. Dove entrambi portano a terra il corpo intero, i crateri coincidono fino agli arrotondamenti del programma."
+      },
       "impactToll": {
         "item": "Nessun bilancio d'impatto potrà mai essere verificato",
         "note": "Nessun impatto d'asteroide nella storia registrata ha ucciso qualcuno che sia stato contato. Il simulatore lo dice accanto a ogni bilancio d'impatto."

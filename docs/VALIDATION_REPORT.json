@@ -2646,6 +2646,178 @@
     "topWarningCodes": [],
     "suspiciousCases": []
   },
+  "verification": {
+    "eiep": {
+      "readOn": "2026-09-14",
+      "impacts": 83,
+      "failed": 2,
+      "summaries": [
+        {
+          "quantity": "energy",
+          "pairs": 81,
+          "geometricMean": 1.002,
+          "p10": 0.982,
+          "median": 1,
+          "p90": 1.028,
+          "min": 0.982,
+          "max": 1.028
+        },
+        {
+          "quantity": "breakupAltitude",
+          "pairs": 81,
+          "geometricMean": 0.898,
+          "p10": 0.854,
+          "median": 0.875,
+          "p90": 0.901,
+          "min": 0.595,
+          "max": 2.998
+        },
+        {
+          "quantity": "burstAltitude",
+          "pairs": 24,
+          "geometricMean": 1.295,
+          "p10": 0.665,
+          "median": 1.096,
+          "p90": 2.351,
+          "min": 0.281,
+          "max": 22.055
+        },
+        {
+          "quantity": "overpressure",
+          "pairs": 57,
+          "geometricMean": 1.184,
+          "p10": 0.381,
+          "median": 1.375,
+          "p90": 2.121,
+          "min": 0.203,
+          "max": 7.062
+        },
+        {
+          "quantity": "fireballRadius",
+          "pairs": 57,
+          "geometricMean": 0.87,
+          "p10": 0.672,
+          "median": 1.001,
+          "p90": 1.017,
+          "min": 0.276,
+          "max": 1.585
+        },
+        {
+          "quantity": "transientDiameter",
+          "pairs": 48,
+          "geometricMean": 0.933,
+          "p10": 0.725,
+          "median": 0.998,
+          "p90": 1.018,
+          "min": 0.702,
+          "max": 1.336
+        },
+        {
+          "quantity": "finalDiameter",
+          "pairs": 48,
+          "geometricMean": 0.923,
+          "p10": 0.686,
+          "median": 0.995,
+          "p90": 1.013,
+          "min": 0.663,
+          "max": 1.379
+        },
+        {
+          "quantity": "finalDepth",
+          "pairs": 48,
+          "geometricMean": 1.312,
+          "p10": 1.201,
+          "median": 1.344,
+          "p90": 1.375,
+          "min": 0.972,
+          "max": 1.496
+        },
+        {
+          "quantity": "ejectaEdge",
+          "pairs": 237,
+          "geometricMean": 0.911,
+          "p10": 0.636,
+          "median": 1.001,
+          "p90": 1.003,
+          "min": 0.625,
+          "max": 1.499
+        }
+      ],
+      "intact": [
+        {
+          "quantity": "energy",
+          "pairs": 34,
+          "geometricMean": 1.004,
+          "min": 0.982,
+          "max": 1.028
+        },
+        {
+          "quantity": "breakupAltitude",
+          "pairs": 34,
+          "geometricMean": 0.887,
+          "min": 0.595,
+          "max": 2.951
+        },
+        {
+          "quantity": "transientDiameter",
+          "pairs": 34,
+          "geometricMean": 1.001,
+          "min": 0.958,
+          "max": 1.033
+        },
+        {
+          "quantity": "finalDiameter",
+          "pairs": 34,
+          "geometricMean": 0.998,
+          "min": 0.958,
+          "max": 1.021
+        },
+        {
+          "quantity": "finalDepth",
+          "pairs": 34,
+          "geometricMean": 1.351,
+          "min": 1.296,
+          "max": 1.4
+        },
+        {
+          "quantity": "overpressure",
+          "pairs": 34,
+          "geometricMean": 1.273,
+          "min": 0.236,
+          "max": 4.699
+        },
+        {
+          "quantity": "fireballRadius",
+          "pairs": 34,
+          "geometricMean": 1.004,
+          "min": 1,
+          "max": 1.023
+        },
+        {
+          "quantity": "ejectaEdge",
+          "pairs": 170,
+          "geometricMean": 1.002,
+          "min": 0.992,
+          "max": 1.02
+        }
+      ],
+      "regimes": {
+        "airburst → COMPLETE_AIRBURST": 19,
+        "airburst → PARTIAL_AIRBURST": 5,
+        "ground → COMPLETE_AIRBURST": 4,
+        "ground → INTACT": 36,
+        "ground → PARTIAL_AIRBURST": 17
+      },
+      "craters": {
+        "complex → complex": 45,
+        "complex → none": 3,
+        "complex → simple": 1,
+        "none → none": 24,
+        "simple → none": 6,
+        "simple → simple": 2
+      }
+    }
+  },
   "golden": {
     "total": 12,
     "passed": 12,
