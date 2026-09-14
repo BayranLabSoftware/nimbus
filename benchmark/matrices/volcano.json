@@ -1,0 +1,562 @@
+[
+  {
+    "id": "vol-preset-KRAKATAU_1883",
+    "source": "preset",
+    "volumeEruptionRate": 200000,
+    "totalEjectaVolume": 20000000000,
+    "windSpeed": 10,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-preset-MT_ST_HELENS_1980",
+    "source": "preset",
+    "volumeEruptionRate": 40000,
+    "totalEjectaVolume": 1200000000,
+    "windSpeed": 10,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-preset-TAMBORA_1815",
+    "source": "preset",
+    "volumeEruptionRate": 500000,
+    "totalEjectaVolume": 140000000000,
+    "windSpeed": 10,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-preset-ANAK_KRAKATAU_2018",
+    "source": "preset",
+    "volumeEruptionRate": 1,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 10,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-preset-PINATUBO_1991",
+    "source": "preset",
+    "volumeEruptionRate": 200000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 10,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-preset-VESUVIUS_79_CE",
+    "source": "preset",
+    "volumeEruptionRate": 150000,
+    "totalEjectaVolume": 2500000000,
+    "windSpeed": 10,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-preset-ETNA_1669",
+    "source": "preset",
+    "volumeEruptionRate": 20,
+    "totalEjectaVolume": 650000000,
+    "windSpeed": 10,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-preset-HUNGA_TONGA_2022",
+    "source": "preset",
+    "volumeEruptionRate": 800000,
+    "totalEjectaVolume": 1900000000,
+    "windSpeed": 10,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-preset-EYJAFJALLAJOKULL_2010",
+    "source": "preset",
+    "volumeEruptionRate": 300,
+    "totalEjectaVolume": 270000000,
+    "windSpeed": 10,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-preset-MOUNT_PELEE_1902",
+    "source": "preset",
+    "volumeEruptionRate": 800,
+    "totalEjectaVolume": 500000000,
+    "windSpeed": 10,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-001",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-002",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-003",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-004",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-005",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-006",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-007",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-008",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-009",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-010",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-011",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-012",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 10000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-013",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-014",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-015",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-016",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-017",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-018",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-019",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-020",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-021",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-022",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-023",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-024",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 100000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-025",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-026",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-027",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-028",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-029",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-030",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-031",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-032",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-033",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-034",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-035",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-036",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 1000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-037",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-038",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-039",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-040",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-041",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-042",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-043",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-044",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-045",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-046",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-047",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-048",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 10000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-049",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-050",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-051",
+    "source": "grid",
+    "volumeEruptionRate": 1000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-052",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-053",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-054",
+    "source": "grid",
+    "volumeEruptionRate": 10000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-055",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-056",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-057",
+    "source": "grid",
+    "volumeEruptionRate": 100000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-058",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 5,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-059",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 15,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  },
+  {
+    "id": "vol-grid-060",
+    "source": "grid",
+    "volumeEruptionRate": 1000000,
+    "totalEjectaVolume": 100000000000,
+    "windSpeed": 30,
+    "downwindKm": [5, 10, 20, 50, 100, 200, 500]
+  }
+]

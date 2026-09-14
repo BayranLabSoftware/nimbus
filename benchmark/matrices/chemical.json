@@ -1,0 +1,62 @@
+[
+  {
+    "id": "chem-preset-BEIRUT_2020",
+    "source": "preset",
+    "chargeKgTnt": 500000,
+    "scaledDistances": [0.5, 1, 2, 3, 5, 7, 10, 15, 20, 30, 40]
+  },
+  {
+    "id": "chem-preset-HALIFAX_1917",
+    "source": "preset",
+    "chargeKgTnt": 2900000,
+    "scaledDistances": [0.5, 1, 2, 3, 5, 7, 10, 15, 20, 30, 40]
+  },
+  {
+    "id": "chem-preset-TEXAS_CITY_1947",
+    "source": "preset",
+    "chargeKgTnt": 2700000,
+    "scaledDistances": [0.5, 1, 2, 3, 5, 7, 10, 15, 20, 30, 40]
+  },
+  {
+    "id": "chem-grid-001",
+    "source": "grid",
+    "chargeKgTnt": 1,
+    "scaledDistances": [0.5, 1, 2, 3, 5, 7, 10, 15, 20, 30, 40]
+  },
+  {
+    "id": "chem-grid-002",
+    "source": "grid",
+    "chargeKgTnt": 10,
+    "scaledDistances": [0.5, 1, 2, 3, 5, 7, 10, 15, 20, 30, 40]
+  },
+  {
+    "id": "chem-grid-003",
+    "source": "grid",
+    "chargeKgTnt": 100,
+    "scaledDistances": [0.5, 1, 2, 3, 5, 7, 10, 15, 20, 30, 40]
+  },
+  {
+    "id": "chem-grid-004",
+    "source": "grid",
+    "chargeKgTnt": 1000,
+    "scaledDistances": [0.5, 1, 2, 3, 5, 7, 10, 15, 20, 30, 40]
+  },
+  {
+    "id": "chem-grid-005",
+    "source": "grid",
+    "chargeKgTnt": 10000,
+    "scaledDistances": [0.5, 1, 2, 3, 5, 7, 10, 15, 20, 30, 40]
+  },
+  {
+    "id": "chem-grid-006",
+    "source": "grid",
+    "chargeKgTnt": 100000,
+    "scaledDistances": [0.5, 1, 2, 3, 5, 7, 10, 15, 20, 30, 40]
+  },
+  {
+    "id": "chem-grid-007",
+    "source": "grid",
+    "chargeKgTnt": 1000000,
+    "scaledDistances": [0.5, 1, 2, 3, 5, 7, 10, 15, 20, 30, 40]
+  }
+]

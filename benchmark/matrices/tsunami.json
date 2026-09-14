@@ -1,0 +1,204 @@
+[
+  {
+    "id": "tsu-gauss-001",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 1000,
+    "amplitudeM": 1,
+    "radiusKm": 20,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-002",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 1000,
+    "amplitudeM": 1,
+    "radiusKm": 50,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-003",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 1000,
+    "amplitudeM": 1,
+    "radiusKm": 100,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-004",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 1000,
+    "amplitudeM": 5,
+    "radiusKm": 20,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-005",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 1000,
+    "amplitudeM": 5,
+    "radiusKm": 50,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-006",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 1000,
+    "amplitudeM": 5,
+    "radiusKm": 100,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-007",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 1000,
+    "amplitudeM": 20,
+    "radiusKm": 20,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-008",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 1000,
+    "amplitudeM": 20,
+    "radiusKm": 50,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-009",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 1000,
+    "amplitudeM": 20,
+    "radiusKm": 100,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-010",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 4000,
+    "amplitudeM": 1,
+    "radiusKm": 20,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-011",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 4000,
+    "amplitudeM": 1,
+    "radiusKm": 50,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-012",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 4000,
+    "amplitudeM": 1,
+    "radiusKm": 100,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-013",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 4000,
+    "amplitudeM": 5,
+    "radiusKm": 20,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-014",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 4000,
+    "amplitudeM": 5,
+    "radiusKm": 50,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-015",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 4000,
+    "amplitudeM": 5,
+    "radiusKm": 100,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-016",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 4000,
+    "amplitudeM": 20,
+    "radiusKm": 20,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-017",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 4000,
+    "amplitudeM": 20,
+    "radiusKm": 50,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-gauss-018",
+    "source": "grid",
+    "kind": "gaussian",
+    "basinDepthM": 4000,
+    "amplitudeM": 20,
+    "radiusKm": 100,
+    "gaugesKm": [100, 200, 500, 1000, 2000, 3000]
+  },
+  {
+    "id": "tsu-mega-75",
+    "source": "grid",
+    "kind": "megathrust",
+    "basinDepthM": 4000,
+    "magnitude": 7.5,
+    "gaugesKm": [100, 300, 1000, 3000]
+  },
+  {
+    "id": "tsu-mega-8",
+    "source": "grid",
+    "kind": "megathrust",
+    "basinDepthM": 4000,
+    "magnitude": 8,
+    "gaugesKm": [100, 300, 1000, 3000]
+  },
+  {
+    "id": "tsu-mega-85",
+    "source": "grid",
+    "kind": "megathrust",
+    "basinDepthM": 4000,
+    "magnitude": 8.5,
+    "gaugesKm": [100, 300, 1000, 3000]
+  },
+  {
+    "id": "tsu-mega-9",
+    "source": "grid",
+    "kind": "megathrust",
+    "basinDepthM": 4000,
+    "magnitude": 9,
+    "gaugesKm": [100, 300, 1000, 3000]
+  },
+  {
+    "id": "tsu-mega-95",
+    "source": "grid",
+    "kind": "megathrust",
+    "basinDepthM": 4000,
+    "magnitude": 9.5,
+    "gaugesKm": [100, 300, 1000, 3000]
+  }
+]

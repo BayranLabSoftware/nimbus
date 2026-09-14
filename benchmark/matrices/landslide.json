@@ -1,0 +1,338 @@
+[
+  {
+    "id": "land-preset-LITUYA_BAY_1958",
+    "source": "preset",
+    "volumeM3": 30000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 120
+  },
+  {
+    "id": "land-preset-ANAK_KRAKATAU_2018",
+    "source": "preset",
+    "volumeM3": 270000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 200
+  },
+  {
+    "id": "land-preset-VAIONT_1963",
+    "source": "preset",
+    "volumeM3": 270000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 238
+  },
+  {
+    "id": "land-grid-001",
+    "source": "grid",
+    "volumeM3": 100000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-002",
+    "source": "grid",
+    "volumeM3": 100000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-003",
+    "source": "grid",
+    "volumeM3": 100000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-004",
+    "source": "grid",
+    "volumeM3": 100000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-005",
+    "source": "grid",
+    "volumeM3": 100000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-006",
+    "source": "grid",
+    "volumeM3": 100000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-007",
+    "source": "grid",
+    "volumeM3": 100000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-008",
+    "source": "grid",
+    "volumeM3": 100000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-009",
+    "source": "grid",
+    "volumeM3": 100000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-010",
+    "source": "grid",
+    "volumeM3": 1000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-011",
+    "source": "grid",
+    "volumeM3": 1000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-012",
+    "source": "grid",
+    "volumeM3": 1000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-013",
+    "source": "grid",
+    "volumeM3": 1000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-014",
+    "source": "grid",
+    "volumeM3": 1000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-015",
+    "source": "grid",
+    "volumeM3": 1000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-016",
+    "source": "grid",
+    "volumeM3": 1000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-017",
+    "source": "grid",
+    "volumeM3": 1000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-018",
+    "source": "grid",
+    "volumeM3": 1000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-019",
+    "source": "grid",
+    "volumeM3": 10000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-020",
+    "source": "grid",
+    "volumeM3": 10000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-021",
+    "source": "grid",
+    "volumeM3": 10000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-022",
+    "source": "grid",
+    "volumeM3": 10000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-023",
+    "source": "grid",
+    "volumeM3": 10000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-024",
+    "source": "grid",
+    "volumeM3": 10000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-025",
+    "source": "grid",
+    "volumeM3": 10000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-026",
+    "source": "grid",
+    "volumeM3": 10000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-027",
+    "source": "grid",
+    "volumeM3": 10000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-028",
+    "source": "grid",
+    "volumeM3": 100000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-029",
+    "source": "grid",
+    "volumeM3": 100000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-030",
+    "source": "grid",
+    "volumeM3": 100000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-031",
+    "source": "grid",
+    "volumeM3": 100000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-032",
+    "source": "grid",
+    "volumeM3": 100000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-033",
+    "source": "grid",
+    "volumeM3": 100000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-034",
+    "source": "grid",
+    "volumeM3": 100000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-035",
+    "source": "grid",
+    "volumeM3": 100000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-036",
+    "source": "grid",
+    "volumeM3": 100000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-037",
+    "source": "grid",
+    "volumeM3": 1000000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-038",
+    "source": "grid",
+    "volumeM3": 1000000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-039",
+    "source": "grid",
+    "volumeM3": 1000000000,
+    "slopeAngleDeg": 20,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-040",
+    "source": "grid",
+    "volumeM3": 1000000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-041",
+    "source": "grid",
+    "volumeM3": 1000000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-042",
+    "source": "grid",
+    "volumeM3": 1000000000,
+    "slopeAngleDeg": 35,
+    "waterDepthM": 400
+  },
+  {
+    "id": "land-grid-043",
+    "source": "grid",
+    "volumeM3": 1000000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 20
+  },
+  {
+    "id": "land-grid-044",
+    "source": "grid",
+    "volumeM3": 1000000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 100
+  },
+  {
+    "id": "land-grid-045",
+    "source": "grid",
+    "volumeM3": 1000000000,
+    "slopeAngleDeg": 50,
+    "waterDepthM": 400
+  }
+]

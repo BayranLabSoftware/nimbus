@@ -1,0 +1,205 @@
+[
+  {
+    "id": "nuc-preset-HIROSHIMA_1945",
+    "source": "preset",
+    "yieldKt": 15,
+    "heightOfBurstM": 580,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-preset-NAGASAKI_1945",
+    "source": "preset",
+    "yieldKt": 21,
+    "heightOfBurstM": 503,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-preset-CASTLE_BRAVO_1954",
+    "source": "preset",
+    "yieldKt": 15000,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-preset-TSAR_BOMBA_1961",
+    "source": "preset",
+    "yieldKt": 50000,
+    "heightOfBurstM": 4000,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-preset-STARFISH_PRIME_1962",
+    "source": "preset",
+    "yieldKt": 1400,
+    "heightOfBurstM": 400000,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-preset-ONE_MEGATON",
+    "source": "preset",
+    "yieldKt": 1000,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-preset-IVY_MIKE_1952",
+    "source": "preset",
+    "yieldKt": 10400,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-001",
+    "source": "grid",
+    "yieldKt": 0.01,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-002",
+    "source": "grid",
+    "yieldKt": 0.01,
+    "heightOfBurstM": 43.1,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-003",
+    "source": "grid",
+    "yieldKt": 0.1,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-004",
+    "source": "grid",
+    "yieldKt": 0.1,
+    "heightOfBurstM": 92.8,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-005",
+    "source": "grid",
+    "yieldKt": 1,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-006",
+    "source": "grid",
+    "yieldKt": 1,
+    "heightOfBurstM": 200,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-007",
+    "source": "grid",
+    "yieldKt": 10,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-008",
+    "source": "grid",
+    "yieldKt": 10,
+    "heightOfBurstM": 431,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-009",
+    "source": "grid",
+    "yieldKt": 20,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-010",
+    "source": "grid",
+    "yieldKt": 20,
+    "heightOfBurstM": 543,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-011",
+    "source": "grid",
+    "yieldKt": 100,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-012",
+    "source": "grid",
+    "yieldKt": 100,
+    "heightOfBurstM": 928,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-013",
+    "source": "grid",
+    "yieldKt": 500,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-014",
+    "source": "grid",
+    "yieldKt": 500,
+    "heightOfBurstM": 1590,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-015",
+    "source": "grid",
+    "yieldKt": 1000,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-016",
+    "source": "grid",
+    "yieldKt": 1000,
+    "heightOfBurstM": 2000,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-017",
+    "source": "grid",
+    "yieldKt": 5000,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-018",
+    "source": "grid",
+    "yieldKt": 5000,
+    "heightOfBurstM": 3420,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-019",
+    "source": "grid",
+    "yieldKt": 20000,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-020",
+    "source": "grid",
+    "yieldKt": 20000,
+    "heightOfBurstM": 5430,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-021",
+    "source": "grid",
+    "yieldKt": 50000,
+    "heightOfBurstM": 0,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  },
+  {
+    "id": "nuc-grid-022",
+    "source": "grid",
+    "yieldKt": 50000,
+    "heightOfBurstM": 7370,
+    "rangesKm": [0.5, 1, 2, 5, 10, 20, 50, 100]
+  }
+]
