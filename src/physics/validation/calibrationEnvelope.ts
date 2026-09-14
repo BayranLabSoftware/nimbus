@@ -165,7 +165,8 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     value: 23 * KILOTON_J,
     quantities: ['wave'],
     gated: ['wave'],
-    source: 'Operation Crossroads: about 30 m at 300 m and 1.8 m at 5.5 km, from 27 m down',
+    source:
+      'Glasstone & Dolan 1977 Table 6.57: 94 ft crest to trough at 330 yd down to 9 ft at 4 000 yd, from 90 ft down in a 200 ft lagoon',
   },
   {
     name: 'Ivy Mike 1952',

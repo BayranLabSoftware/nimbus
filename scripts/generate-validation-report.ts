@@ -356,10 +356,13 @@ function waveSection(net: CalibrationNet): string {
   const globeMisses = net.waves.filter((w) => w.globeContains === false);
   return [
     'Wave amplitudes against buoys, gauges, surveys and deposits. **Model** is',
-    'the figure the harness computes and gates; **Globe draws** is what the',
-    'amplitude veil on the globe shows at the same range, printed wherever it',
-    'is computed by a different law — because a gate on a number the product',
-    'does not show would be a gate on nothing.',
+    'the figure the harness computes and gates, asked of the veil on the',
+    "globe's own per-cell law on a flat sea of the measured depth; **Globe",
+    'draws** is printed wherever a row gates a different number — because a',
+    'gate on a number the product does not show would be a gate on nothing.',
+    'A height recorded from crest to trough is halved to the amplitude the',
+    "model computes, and Crossroads Baker's figures carry Glasstone & Dolan's",
+    'own 35 % accuracy for explosion waves.',
     '',
     '| Record | Range | Observed | Model | Verdict | Globe draws | Standing |',
     '|--------|------:|---------:|------:|---------|------------:|----------|',
@@ -368,7 +371,7 @@ function waveSection(net: CalibrationNet): string {
     ...(globeMisses.length === 0
       ? []
       : [
-          `**Where the globe misses a record the harness contains (${globeMisses.length.toString()}):** ${globeMisses.map((w) => w.wave.name).join('; ')}. For an underwater burst the veil spreads with the energy normalisation of a ring and the harness spreads without it. Which law is right for a compact source near the burst is open (docs/ROADMAP.md, M9 move 3); the list is pinned in \`recordedWaves.test.ts\` so it cannot change without somebody deciding.`,
+          `**Where the globe misses a record the harness contains (${globeMisses.length.toString()}):** ${globeMisses.map((w) => w.wave.name).join('; ')}. The list is pinned empty in \`recordedWaves.test.ts\`, so a row here is a failure somebody has to explain.`,
           '',
         ]),
     ...net.waves.flatMap((w) =>
@@ -513,7 +516,7 @@ function summary(net: CalibrationNet, replay: AggregateBucket, golden: Aggregate
   const invented = inventedBands(net.footprint);
   return bullet([
     `**Death tolls:** ${tollContains.length.toString()} of ${net.tolls.length.toString()} events inside the model's band; ${tollGated.filter((t) => t.contains).length.toString()} of ${tollGated.length.toString()} gated rows pass. Every miss carries its cause below.`,
-    `**Waves:** ${waveContains.length.toString()} of ${net.waves.length.toString()} records inside the harness figure — but the globe draws a different law for underwater bursts, and there it misses ${net.waves.filter((w) => w.globeContains === false).length.toString()} of the records the harness contains.`,
+    `**Waves:** ${waveContains.length.toString()} of ${net.waves.length.toString()} records inside the model's figure${net.waves.some((w) => w.globeContains === false) ? `, but the globe misses ${net.waves.filter((w) => w.globeContains === false).length.toString()} of them` : ', and what the globe draws is inside every one'}.`,
     `**Shaking footprint:** centred at ${bias.geometricMeanRadiusRatio.toFixed(2)} in radius (${bias.biasInStandardErrors.toFixed(2)} standard errors), scatter σ_ln ${bias.sdLn.toFixed(2)} against 0.70 expected; ${invented.length.toString()} bands painted at an intensity never reached.`,
     `**Replay fixtures:** ${replay.passed.toString()} of ${replay.total.toString()} pass. **Golden dataset:** ${golden.passed.toString()} of ${golden.total.toString()} pass.`,
   ]);

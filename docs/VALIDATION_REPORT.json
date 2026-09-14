@@ -165,16 +165,112 @@
     ],
     "waves": [
       {
-        "record": "Crossroads Baker 1946, near field",
-        "rangeM": 300,
-        "observedLowM": 20,
-        "observedHighM": 45,
-        "modelM": 23.345,
+        "record": "Crossroads Baker 1946, 330 yd",
+        "rangeM": 301.752,
+        "observedLowM": 9.262110000000002,
+        "observedHighM": 19.44243,
+        "modelM": 11.267,
         "contains": true,
-        "globeM": 10.52,
-        "globeContains": false,
+        "globeM": null,
+        "globeContains": null,
         "gated": true,
-        "source": "Glasstone & Dolan 1977 §6.55 and the Operation Crossroads reports: 23 kt suspended 27 m below the surface of Bikini lagoon, first wave about 30 m high at 300 m from surface zero"
+        "source": "Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 94 ft at 330 yd from surface zero, 11 s after the burst"
+      },
+      {
+        "record": "Crossroads Baker 1946, 660 yd",
+        "rangeM": 603.504,
+        "observedLowM": 4.60629,
+        "observedHighM": 9.772650000000002,
+        "modelM": 5.955,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true,
+        "source": "Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 47 ft at 660 yd from surface zero, 23 s after the burst"
+      },
+      {
+        "record": "Crossroads Baker 1946, 1,330 yd",
+        "rangeM": 1216.152,
+        "observedLowM": 2.32791,
+        "observedHighM": 5.04063,
+        "modelM": 3.059,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true,
+        "source": "Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 24 ft at 1,330 yd from surface zero, 48 s after the burst"
+      },
+      {
+        "record": "Crossroads Baker 1946, 2,000 yd",
+        "rangeM": 1828.8,
+        "observedLowM": 1.53543,
+        "observedHighM": 3.3947100000000003,
+        "modelM": 2.06,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true,
+        "source": "Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 16 ft at 2,000 yd from surface zero, 74 s after the burst"
+      },
+      {
+        "record": "Crossroads Baker 1946, 2,700 yd",
+        "rangeM": 2468.88,
+        "observedLowM": 1.23825,
+        "observedHighM": 2.7774900000000002,
+        "modelM": 1.536,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true,
+        "source": "Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 13 ft at 2,700 yd from surface zero, 101 s after the burst"
+      },
+      {
+        "record": "Crossroads Baker 1946, 3,300 yd",
+        "rangeM": 3017.52,
+        "observedLowM": 1.04013,
+        "observedHighM": 2.36601,
+        "modelM": 1.262,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true,
+        "source": "Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 11 ft at 3,300 yd from surface zero, 127 s after the burst"
+      },
+      {
+        "record": "Crossroads Baker 1946, 4,000 yd",
+        "rangeM": 3657.6,
+        "observedLowM": 0.8420100000000001,
+        "observedHighM": 1.95453,
+        "modelM": 1.044,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true,
+        "source": "Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 9 ft at 4,000 yd from surface zero, 154 s after the burst"
+      },
+      {
+        "record": "Crossroads Baker 1946, USS Saratoga's stern",
+        "rangeM": 365.76,
+        "observedLowM": 8.519160000000001,
+        "observedHighM": 31.910274000000005,
+        "modelM": 9.461,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true,
+        "source": "Glasstone & Dolan 1977 §6.58: the carrier, anchored almost broadside on with its stern 400 yd from surface zero, rose on the first wave crest until the stern was over 43 ft above its previous position"
+      },
+      {
+        "record": "Crossroads Baker 1946, ninth wave at 22,000 ft",
+        "rangeM": 6705.6,
+        "observedLowM": 0.54483,
+        "observedHighM": 1.3373100000000002,
+        "modelM": 0.573,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true,
+        "source": "Glasstone & Dolan 1977 §2.70: at 22,000 ft from surface zero the ninth wave in the series was the highest, with a height of 6 ft"
       },
       {
         "record": "Castle Bravo 1954",
@@ -211,18 +307,6 @@
         "globeContains": null,
         "gated": true,
         "source": "≈ 0.5 kt TNT-equivalent on a portside quay; the harbour wave was of the order of a metre and drowned nobody"
-      },
-      {
-        "record": "Crossroads Baker 1946, five kilometres out",
-        "rangeM": 5500,
-        "observedLowM": 1,
-        "observedHighM": 3,
-        "modelM": 1.89,
-        "contains": true,
-        "globeM": 0.716,
-        "globeContains": false,
-        "gated": true,
-        "source": "Operation Crossroads wave records: about 1.8 m at 5.5 km"
       },
       {
         "record": "Tōhoku 2011 at DART 21413",
@@ -511,7 +595,7 @@
         "gated": [
           "wave"
         ],
-        "source": "Operation Crossroads: about 30 m at 300 m and 1.8 m at 5.5 km, from 27 m down"
+        "source": "Glasstone & Dolan 1977 Table 6.57: 94 ft crest to trough at 330 yd down to 9 ft at 4 000 yd, from 90 ft down in a 200 ft lagoon"
       },
       {
         "name": "Ivy Mike 1952",

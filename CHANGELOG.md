@@ -7,6 +7,23 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **Crossroads Baker was being checked against the wrong quantity, on a
+  law the globe does not draw.** The wave harness spread an underwater
+  burst without the energy of a ring and passed Baker at 23.3 m and
+  1.89 m, while the globe drew about half and missed. Glasstone &
+  Dolan's Table 6.57 prints Baker's waves as heights from crest to
+  trough, at seven ranges; the model computes amplitudes, and the
+  "1.8 m at 5.5 km" had no source. Read as printed, the globe's law
+  reads 0.75–0.84 of every tabulated height and the harness's law
+  about twice. The harness now calls the veil's own per-cell law
+  (`veilLaw`, the body of the field's loop), carries all seven ranges,
+  the USS Saratoga's crest and the ninth wave at 22 000 ft, and a test
+  draws the field on a flat lagoon to hold the two together. Nothing on
+  the globe changes. What the same chapter shows about the explosion
+  source — a calibration citing a table the book does not have, and a
+  deep-water wave five to nine times under Glasstone's relation — is in
+  the roadmap.
+
 - **The report's "tsunami source amplitude" was a number the model does
   not propagate.** It sat on Ward & Asphaug's figure, which has no water
   depth in it and read 1 362 m in 200 m of sea for a Chicxulub on Rome.

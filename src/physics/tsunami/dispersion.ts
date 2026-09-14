@@ -86,9 +86,15 @@ export function dispersionParameter(input: DispersionInput): number {
  * because it has to be, and the dispersion parameter is what carries
  * a wave from one end to the other.
  *
- * The one event measured at two ranges agrees. Crossroads Baker was
- * about thirty metres at three hundred and about 1.8 at five and a
- * half kilometres; this puts the model at 23.4 and 1.90.
+ * The one explosion wave measured at many ranges agrees with the
+ * shape. Glasstone & Dolan tabulate Crossroads Baker's waves from 330
+ * to 4 000 yards (Table 6.57); halved to amplitudes, the veil reads
+ * between 0.75 and 0.84 of every one of them — a ratio that holds
+ * from three hundred metres to nearly four kilometres while the wave
+ * falls tenfold. The level is the source's to answer for; the slope
+ * is this law's. This comment used to say 23.4 m against thirty and
+ * 1.90 against 1.8, which was a different spreading law set against
+ * heights measured from crest to trough.
  */
 const DISPERSION_DECAY_EXPONENT = 0.5;
 

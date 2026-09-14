@@ -1264,7 +1264,7 @@
       "tolls": "counted death tolls inside the model's band",
       "tollsGated": "{{pass}} of {{total}} gated rows pass",
       "waves": "measured waves inside the model's figure",
-      "wavesGlobe": "but the globe draws {{count}} of them differently, and misses",
+      "wavesGlobe": "but the globe draws {{count}} of them outside",
       "footprint": "shaking footprint against USGS ShakeMap, centred in radius",
       "footprintScatter": "scatter {{sd}}, against {{expected}} expected from ground motion",
       "invented": "intensity bands the model paints where the earthquake never reached them"
@@ -1331,10 +1331,10 @@
     },
     "waves": {
       "title": "Waves against measurements",
-      "body": "Wave heights written down by instruments and surveys: a buoy in the Pacific, gauges in a lagoon, deposits on a coast. Model is the figure the tests check; On the globe is what the wave map on the globe draws at the same place, shown wherever the two are computed differently — because a check on a number the globe does not show would be a check on nothing.",
+      "body": "Wave heights written down by instruments and surveys: a buoy in the Pacific, a table of heights in a lagoon, deposits on a coast. A height measured from crest to trough is halved, because the model computes how far the crest rises above still water. Model is the figure the tests check, asked of the same law the wave map on the globe uses; On the globe is shown only where a row checks a different number — because a check on a number the globe does not show would be a check on nothing.",
       "noWave": "no wave",
       "globeSame": "same",
-      "globeNote": "Where the globe misses a measurement the tests contain: {{list}}. For an underwater burst the wave map spreads the wave with an energy correction the test does not apply. Which of the two is right for a source this small is an open question; until it is decided, both figures stay on this page."
+      "globeNote": "Where the globe misses a measurement the tests contain: {{list}}. This list is kept empty by the tests, so an entry here is a failure that has to be explained."
     },
     "footprint": {
       "title": "Shaking footprint against USGS ShakeMap",

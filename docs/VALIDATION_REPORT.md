@@ -14,7 +14,7 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 ## Summary
 
 - **Death tolls:** 4 of 11 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
-- **Waves:** 7 of 7 records inside the harness figure — but the globe draws a different law for underwater bursts, and there it misses 2 of the records the harness contains.
+- **Waves:** 14 of 14 records inside the model's figure, and what the globe draws is inside every one.
 - **Shaking footprint:** centred at 1.18 in radius (0.76 standard errors), scatter σ_ln 0.71 against 0.70 expected; 4 bands painted at an intensity never reached.
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
 
@@ -105,30 +105,40 @@ Worst comparable end: **1.37×**, against a gate of 2×.
 ### Waves
 
 Wave amplitudes against buoys, gauges, surveys and deposits. **Model** is
-the figure the harness computes and gates; **Globe draws** is what the
-amplitude veil on the globe shows at the same range, printed wherever it
-is computed by a different law — because a gate on a number the product
-does not show would be a gate on nothing.
+the figure the harness computes and gates, asked of the veil on the
+globe's own per-cell law on a flat sea of the measured depth; **Globe
+draws** is printed wherever a row gates a different number — because a
+gate on a number the product does not show would be a gate on nothing.
+A height recorded from crest to trough is halved to the amplitude the
+model computes, and Crossroads Baker's figures carry Glasstone & Dolan's
+own 35 % accuracy for explosion waves.
 
 | Record | Range | Observed | Model | Verdict | Globe draws | Standing |
 |--------|------:|---------:|------:|---------|------------:|----------|
-| Crossroads Baker 1946, near field | 300 m | 20.0 m – 45.0 m | 23.3 m | contains | 10.5 m — **misses** | gated |
+| Crossroads Baker 1946, 330 yd | 302 m | 9.26 m – 19.4 m | 11.3 m | contains | same | gated |
+| Crossroads Baker 1946, 660 yd | 604 m | 4.61 m – 9.77 m | 5.96 m | contains | same | gated |
+| Crossroads Baker 1946, 1,330 yd | 1,216 m | 2.33 m – 5.04 m | 3.06 m | contains | same | gated |
+| Crossroads Baker 1946, 2,000 yd | 1,829 m | 1.54 m – 3.39 m | 2.06 m | contains | same | gated |
+| Crossroads Baker 1946, 2,700 yd | 2,469 m | 1.24 m – 2.78 m | 1.54 m | contains | same | gated |
+| Crossroads Baker 1946, 3,300 yd | 3,018 m | 1.04 m – 2.37 m | 1.26 m | contains | same | gated |
+| Crossroads Baker 1946, 4,000 yd | 3,658 m | 0.84 m – 1.95 m | 1.04 m | contains | same | gated |
+| Crossroads Baker 1946, USS Saratoga's stern | 366 m | 8.52 m – 31.9 m | 9.46 m | contains | same | gated |
+| Crossroads Baker 1946, ninth wave at 22,000 ft | 6,706 m | 0.54 m – 1.34 m | 0.57 m | contains | same | gated |
 | Castle Bravo 1954 | 300 m | no wave | 0.00 m | contains | same | gated |
 | Ivy Mike 1952 | 300 m | no wave | 0.00 m | contains | same | gated |
 | Beirut 2020 | 300 m | 0.00 m – 2.00 m | 0.00 m | contains | same | gated |
-| Crossroads Baker 1946, five kilometres out | 5,500 m | 1.00 m – 3.00 m | 1.89 m | contains | 0.72 m — **misses** | gated |
 | Tōhoku 2011 at DART 21413 | 1,500 km | 0.20 m – 0.50 m | 0.27 m | contains | same | gated |
 | Storegga 8200 BP on the Norwegian coast | 1,000 km | 0.30 m – 3.00 m | 0.60 m | contains | 0.76 m | gated |
 
-**Where the globe misses a record the harness contains (2):** Crossroads Baker 1946, near field; Crossroads Baker 1946, five kilometres out. For an underwater burst the veil spreads with the energy normalisation of a ring and the harness spreads without it. Which law is right for a compact source near the burst is open (docs/ROADMAP.md, M9 move 3); the list is pinned in `recordedWaves.test.ts` so it cannot change without somebody deciding.
+**Crossroads Baker 1946, 330 yd.** Every Baker height is printed from crest to trough, and the model computes the crest above still water, so each is halved and held to the reference's own 35 %. Near the burst the first wave was a long solitary wave (§6.55) whose crest stood higher than half its height — the Saratoga row below measures it — so halving flatters the model at the first two ranges; beyond a kilometre the highest wave is one of the train that followed (§6.56), and half is the amplitude. Until 14 September 2026 these rows compared an amplitude with the full height, through a law the globe does not draw, and passed at twice what the globe shows.
 
-**Crossroads Baker 1946, near field.** The one loud data point in the whole of explosion-generated wave physics: a known yield, at a known depth, in a lagoon of known depth, with the wave measured at known ranges. If the depth-of-burst curve is wrong anywhere, it is wrong here first.
+**Crossroads Baker 1946, USS Saratoga's stern.** The one Baker figure that is a crest rather than a height, and a lower bound: the stern rose over 43 ft. The globe reads about seven tenths of it — inside the 35 %, and lower than at any tabulated range, because a steep solitary wave that breaks near its source (§6.54) is more than a linear law of spreading carries. Nothing the toll reads is this close to a burst.
+
+**Crossroads Baker 1946, ninth wave at 22,000 ft.** The farthest Baker figure, and the lowest the globe reads against its record: under two thirds of half the height, inside only with the foot the figure was rounded to. Beyond two kilometres the tabulated heights fall more slowly than 1/R, because the highest wave passes back into the train (§6.56) — the ninth one here — while the model's dispersion follows the leading wave.
 
 **Castle Bravo 1954.** A thousand times the energy of Baker and no wave, because the charge never entered the water. Six hundred times, in fact, and this row is the one that says the curve is about placement and not about size.
 
 **Beirut 2020.** The row this harness was built for: it read 77 000 dead from this wave.
-
-**Crossroads Baker 1946, five kilometres out.** Baker is the only event anyone has measured with the same wave written down at two ranges, and the pair is what the dispersive decay is calibrated on: one exponent puts the model at 25.6 m where thirty were seen and 2.95 m where 1.8 were, and leaves a megathrust untouched across an ocean. Before the veil carried dispersion this row read 7.17 m.
 
 **Tōhoku 2011 at DART 21413.** Gated since 9 September 2026, and it used to be the row that measured a divergence rather than a model. This project had four far-field laws for one wave and they bracketed the buoy from opposite sides: the seismic module spread cylindrically from half the rupture length and landed at 1.93 m, six times the 30 cm recorded, while tohoku2011DARTReference spreads as 1/r from a 2 m source and lands at 0.13 m. The product path is now one law, in tsunami/spreading.ts — from half the down-dip width, with the energy normalisation of a ring — and the row reads 0.27 m against the 0.30 recorded, inside the observed band.
 
@@ -136,11 +146,18 @@ does not show would be a gate on nothing.
 
 _Sources:_
 
-- Crossroads Baker 1946, near field — Glasstone & Dolan 1977 §6.55 and the Operation Crossroads reports: 23 kt suspended 27 m below the surface of Bikini lagoon, first wave about 30 m high at 300 m from surface zero
+- Crossroads Baker 1946, 330 yd — Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 94 ft at 330 yd from surface zero, 11 s after the burst
+- Crossroads Baker 1946, 660 yd — Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 47 ft at 660 yd from surface zero, 23 s after the burst
+- Crossroads Baker 1946, 1,330 yd — Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 24 ft at 1,330 yd from surface zero, 48 s after the burst
+- Crossroads Baker 1946, 2,000 yd — Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 16 ft at 2,000 yd from surface zero, 74 s after the burst
+- Crossroads Baker 1946, 2,700 yd — Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 13 ft at 2,700 yd from surface zero, 101 s after the burst
+- Crossroads Baker 1946, 3,300 yd — Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 11 ft at 3,300 yd from surface zero, 127 s after the burst
+- Crossroads Baker 1946, 4,000 yd — Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 9 ft at 4,000 yd from surface zero, 154 s after the burst
+- Crossroads Baker 1946, USS Saratoga's stern — Glasstone & Dolan 1977 §6.58: the carrier, anchored almost broadside on with its stern 400 yd from surface zero, rose on the first wave crest until the stern was over 43 ft above its previous position
+- Crossroads Baker 1946, ninth wave at 22,000 ft — Glasstone & Dolan 1977 §2.70: at 22,000 ft from surface zero the ninth wave in the series was the highest, with a height of 6 ft
 - Castle Bravo 1954 — 15 Mt fired at the surface on the Bikini reef; remembered for its crater and its fallout, not for a wave
 - Ivy Mike 1952 — 10.4 Mt fired on the islet of Elugelab, which it vapourised; no recorded wave
 - Beirut 2020 — ≈ 0.5 kt TNT-equivalent on a portside quay; the harbour wave was of the order of a metre and drowned nobody
-- Crossroads Baker 1946, five kilometres out — Operation Crossroads wave records: about 1.8 m at 5.5 km
 - Tōhoku 2011 at DART 21413 — DART buoy 21413, 1 500 km offshore, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)
 - Storegga 8200 BP on the Norwegian coast — Bondevik et al. 2005 read 10–25 m of run-up from the Norwegian deposits, implying a metre-scale open-ocean wave at a thousand kilometres
 
@@ -201,7 +218,7 @@ these, for the quantity the panel is showing.
 
 - Beirut 2020 — toll (declared), wave (gated) — 218 dead; a harbour wave of the order of a metre that drowned nobody
 - Hiroshima 1945 — toll (declared), blast (gated) — Manhattan Engineer District 1946; Glasstone & Dolan Fig. 3.74a for 5 psi at 1.7 km
-- Crossroads Baker 1946 — wave (gated) — Operation Crossroads: about 30 m at 300 m and 1.8 m at 5.5 km, from 27 m down
+- Crossroads Baker 1946 — wave (gated) — Glasstone & Dolan 1977 Table 6.57: 94 ft crest to trough at 330 yd down to 9 ft at 4 000 yd, from 90 ft down in a 200 ft lagoon
 - Ivy Mike 1952 — wave (gated) — Fired on an islet it vapourised; no recorded wave
 - Castle Bravo 1954 — wave (gated) — Fired on the Bikini reef; remembered for its crater and its fallout, not a wave
 - Tsar Bomba — wave (gated) — The largest device ever fired, 1961, 4 km up over water; no wave

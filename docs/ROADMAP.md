@@ -359,21 +359,78 @@ from 0.90× the record to 0.67×, Tōhoku's coast from 2.9× to about
 log-RMS across the three gets worse, not better. No single scale
 factor fixes them, so the residual is not a scale error.
 
-**Open: the Crossroads Baker anchors check a law the globe does not
+**Closed: the Crossroads Baker anchors checked a law the globe does not
 draw** _(found 14 September by the first regenerated validation
-report)_. The wave harness spreads an underwater burst as A₀·√(R₀/r),
-and its comment said that was the veil's law. It stopped being the
-veil's law on 9 September, when the veil gained the energy
-normalisation of a ring for every source without an exponent of its
-own. At Baker the harness reads 23.3 m at 300 m and 1.89 m at 5.5 km,
-inside both records; the veil draws 10.5 m and 0.72 m, outside both.
-So two gated anchors have been gating a number the product does not
-show. The report now prints both columns, and `recordedWaves.test.ts`
-pins the globe's misses so the list cannot change without a decision.
-The decision is which law is right for a compact source near the
-burst — and it cannot be made on Baker alone, because the same
+report; closed the same day)_. The wave harness spread an underwater
+burst as A₀·√(R₀/r), without the energy normalisation of a ring the
+veil has carried since 9 September, and read 23.3 m at 300 m and
+1.89 m at 5.5 km — inside records of 20–45 m and 1–3 m, while the veil
+drew 10.5 m and 0.72 m, outside both. It looked like a choice between
+two laws that could not be made on Baker alone, because the same
 normalisation is what the coastal toll of a flank collapse like Anak
 Krakatau reads.
+
+It was not a choice between laws. **The records had been read as the
+wrong quantity.** Glasstone & Dolan (1977) tabulate Baker's waves as
+_maximum heights, crest to trough_, at seven ranges from 330 to 4 000
+yards (Table 6.57), and the model computes an amplitude — the crest
+above still water, half a symmetric wave's height. The "1.8 m at
+5.5 km" had no source at all: the book's figure is 6 ft, the ninth
+wave, at 22 000 ft (§2.70). Read as printed, halved and held to the
+book's own 35 % accuracy for explosion waves (§6.119), the globe's law
+reads between 0.75 and 0.84 of every tabulated height, 0.72 of the
+crest the USS Saratoga's stern measured at 400 yards (§6.58), and 0.63
+of the ninth wave; the same law without the ring's energy reads
+between 1.98 and 2.23 of the table, above its tolerance at every
+range. So the globe was right and the gate was wrong, and Anak
+Krakatau does not move: its law is the one that was already on the
+globe.
+
+The harness no longer reconstructs the veil. `veilLaw` in
+`amplitudeField.ts` is the body of the field's loop, exported; the
+wave rows call it on a flat sea of the measured depth, and a test draws
+the whole field on a flat lagoon to prove the two agree. The globe's
+misses are pinned empty. Full account in [SCIENCE.md](./SCIENCE.md),
+"Crossroads Baker, read as it was printed".
+
+**What re-reading Glasstone found next to it, and did not change**
+_(open)_:
+
+- **The explosion source cites pages that do not say what it says.**
+  `underwaterBurst.ts` calibrates its 8 % coupling on "Glasstone
+  Table 6.50 ≈ 180 m source amplitude for 1 Mt" and takes its optimum
+  depth of 4 m·kt^(−1/3) from "Glasstone & Dolan §6.40". The 1977
+  chapter has no Table 6.50, no source amplitude for any yield, and its
+  §6.40 is about buildings swaying in Las Vegas. What the chapter does
+  say: the surface waves carry 2–5 % of the yield (§6.54), and in deep
+  water H ≈ 40 500·W^0.54/R feet "for any depth of burst within the
+  water" (§6.119), with the peak wave's length L ≈ 1 010·W^0.288 ft.
+- **Against that relation the model is five to nine times under in deep
+  water at its own optimum depth, and near zero anywhere else.** At
+  z = 4·W^(1/3) m the ratio of the model's height to Glasstone's is
+  0.20 for 1 kt and 0.11 for 10 Mt, constant with range, so the shape
+  is right and the level is not; most of it is the wavelength, which the
+  model takes as the cavity's diameter (126 m for 1 kt, 1.3 km for
+  10 Mt) where Glasstone's peak wave is 2.4–3.5 times longer, and
+  dispersion goes as λ⁻³. A burst at a quarter of the water depth gets
+  under 4 % of Glasstone's height, because the log-normal depth curve
+  — whose width is the project's own — kills it. Baker lands inside its
+  table because the short wavelength, the normalisation and the curve
+  happen to meet at 90 ft in a 200 ft lagoon.
+- **The globe starts a burst's wave from the 4 km default basin depth,
+  not the water it was fired in.** `extractTsunamiMeta` hands the veil
+  `meanOceanDepth` as the source depth, which the store never sets for
+  an explosion or an impact. In Baker's lagoon Green's law then shoals
+  the wave 2.9× and the apparent path is 2.8× too long, and the two
+  cancel to within 11 %; a shallow source whose wave runs out into deep
+  water gets no such luck.
+
+What would close them: the burst's wave rebuilt on Glasstone & Dolan
+§6.119–6.121 — height, length and period, deep and shallow — so that
+the source cites what it uses, with Baker's table as the check rather
+than the calibration; and the source depth passed as the depth at the
+source for bursts and impacts, measured on real bathymetry before it
+ships.
 
 ### 3b. What the wave does at the coast, layer by layer
 
@@ -766,9 +823,14 @@ dispersion parameter is what carries a wave from one end to the other,
 and with it in the field the exponent is a half because it must be
 rather than because it was fitted.
 
-Crossroads Baker, the only event measured at two ranges, agrees:
-23.4 m where thirty were seen at three hundred metres, and 1.90 m
-where 1.8 were seen at five and a half kilometres. Both rows gate.
+Crossroads Baker agrees with the shape. This paragraph used to say
+23.4 m where thirty were seen at three hundred metres and 1.90 m where
+1.8 were seen at five and a half kilometres; on 14 September that
+turned out to be a law the globe does not draw, set against heights
+from crest to trough and a second range with no source. Read as
+Glasstone & Dolan print it — seven ranges in Table 6.57, halved to
+amplitudes — the globe's law holds between 0.75 and 0.84 of every one
+while the wave falls tenfold (M9 move 3).
 
 **What is left is not propagation.** Tōhoku at DART is still 1.06 m
 against 30 cm and nothing here can touch it: its wave is too long to

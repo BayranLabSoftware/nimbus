@@ -465,6 +465,67 @@ Sumatra moves from eighty-seven times under to nine; Tōhoku from
 slip, and therefore the rigidity or the area it is divided by. It is
 in the roadmap and it is not fitted in the meantime.
 
+### Crossroads Baker, read as it was printed (14 September 2026)
+
+The first regenerated validation report found the two Crossroads
+Baker rows gating a number the globe does not draw. The wave harness
+spread an underwater burst as A₀·√(R₀/r), without the energy of a ring
+that the veil has carried since the section above, and read 23.3 m at
+300 m and 1.89 m at 5.5 km — inside records of 20–45 m and 1–3 m —
+while the veil drew 10.5 m and 0.72 m, outside both. It looked like a
+choice of law for compact sources, and a hard one, because the same
+normalisation carries the coastal toll of a flank collapse.
+
+The records settled it, once they were read as printed. Glasstone &
+Dolan (1977) give Baker's waves in Table 6.57 as _maximum heights,
+crest to trough_, at seven ranges, and the model computes an amplitude,
+the crest above still water. The "1.8 m at 5.5 km" was nowhere in the
+book; its figure is 6 ft at 22 000 ft, for the ninth wave of the train
+(§2.70). Halved, with the foot each height was rounded to and the
+book's own 35 % accuracy for explosion waves (§6.119), on a flat lagoon
+of the 200 ft the book gives:
+
+| range              | printed (crest to trough) | amplitude | globe's law    | same law, no ring energy |
+| ------------------ | ------------------------- | --------- | -------------- | ------------------------ |
+| 330 yd (302 m)     | 94 ft                     | 14.3 m    | 11.3 m (0.79×) | 28.4 m (1.98×)           |
+| 660 yd (604 m)     | 47 ft                     | 7.2 m     | 6.0 m (0.83×)  | 15.4 m (2.15×)           |
+| 1 330 yd (1.2 km)  | 24 ft                     | 3.7 m     | 3.1 m (0.84×)  | 8.0 m (2.20×)            |
+| 2 000 yd (1.8 km)  | 16 ft                     | 2.4 m     | 2.1 m (0.84×)  | 5.4 m (2.23×)            |
+| 2 700 yd (2.5 km)  | 13 ft                     | 2.0 m     | 1.5 m (0.78×)  | 4.1 m (2.05×)            |
+| 3 300 yd (3.0 km)  | 11 ft                     | 1.7 m     | 1.3 m (0.75×)  | 3.3 m (1.99×)            |
+| 4 000 yd (3.7 km)  | 9 ft                      | 1.4 m     | 1.0 m (0.76×)  | 2.8 m (2.02×)            |
+| 22 000 ft (6.7 km) | 6 ft, ninth wave          | 0.9 m     | 0.57 m (0.63×) | 1.5 m (1.66×)            |
+
+and one figure that is a crest rather than a height: the USS Saratoga,
+anchored with its stern 400 yards out, rose "over 43 feet" on the first
+wave (§6.58), where the globe's law reads 9.5 m, 0.72 of it.
+
+So the globe was right and the gate was wrong. The law with the ring's
+energy holds a steady eight tenths of the record from three hundred
+metres to nearly four kilometres while the wave falls tenfold — the
+slope is the law's and the level is the source's — and the law without
+it stands at twice, above the book's tolerance at every tabulated
+range. The residuals that remain have physical names. Near the burst
+the first wave was a long solitary wave (§6.55) whose crest stood
+higher than half its height, which the Saratoga shows and a linear law
+of spreading does not carry; beyond two kilometres the highest wave
+passes back into the train (§6.56) and the heights fall more slowly
+than the model's leading-wave dispersion does. Anak Krakatau does not
+move, because its law is the one already on the globe.
+
+The harness had also been reconstructing the veil rather than asking
+it. `veilLaw` in `amplitudeField.ts` is now the body of the field's
+loop, exported, and every wave row calls it at the measured range on a
+flat sea of the measured depth; a test draws the whole field — fast
+marching included — on a flat lagoon and requires the two to agree
+within 3 %.
+
+What re-reading the chapter found beside Baker is not settled here and
+is in the roadmap: the explosion source's calibration cites a table
+the 1977 edition does not have, and against the book's deep-water
+relation the model's burst is five to nine times under even at its own
+optimum depth.
+
 ### Burns, mass fire and later deaths (Phase 24)
 
 The blast bands of OTA 1979 are the prompt blast and collapse count
@@ -1566,6 +1627,10 @@ Baker, the only event measured at two ranges, agrees: 23.4 m where
 thirty were seen at three hundred metres and 1.90 m where 1.8 were
 seen at five and a half kilometres. An exponential in the same
 parameter, tried first, takes that second point to nothing.
+_(Corrected 14 September 2026: those two figures were a spreading law
+the globe does not draw, set against heights from crest to trough,
+and the second range has no source. Baker is tabulated at seven
+ranges; see "Crossroads Baker, read as it was printed".)_
 
 What it changed is as telling as what it did not. Anak Krakatau's
 coastal toll fell from 8 700 against 437 recorded to 2 200, because a
@@ -1608,6 +1673,11 @@ same buoy gives 7 cm, four times under. The measurement sits between
 two of our own laws, which is the clearest statement yet of why they
 need joining, and neither should be bent to pass a test in the
 meantime.
+
+_(Corrected 14 September 2026: Baker's "~30 m" is a height from crest
+to trough and the model's figures are amplitudes, so "dead on at
+300 m" compared two different quantities. See "Crossroads Baker, read
+as it was printed".)_
 
 ### Where a burst has to be to make a wave (Phase 25)
 

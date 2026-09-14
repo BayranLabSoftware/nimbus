@@ -148,45 +148,63 @@ export interface AmplitudeField {
 // Re-exported here because this is where callers found it.
 export { spreadingFactor, SPREAD_NORMALISATION } from './spreading.js';
 
-export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeField {
-  const { arrivalField, grid, sourceAmplitudeM, sourceCavityRadiusM } = input;
-  const sourceDepth = Math.max(input.sourceDepthM ?? 1_000, MIN_PROPAGATION_DEPTH);
-  const g = input.surfaceGravity ?? STANDARD_GRAVITY;
-  const minDepth = input.minDepthMeters ?? 10;
-  const strikeDeg = input.strikeDeg;
+/** What the veil needs to know about a source: everything in the
+ *  field input except the grids it is drawn on. */
+export type VeilSource = Pick<
+  AmplitudeFieldInput,
+  | 'sourceAmplitudeM'
+  | 'sourceCavityRadiusM'
+  | 'sourceDepthM'
+  | 'sourceWavelengthM'
+  | 'spreadingExponent'
+  | 'strikeDeg'
+  | 'ruptureLengthM'
+  | 'surfaceGravity'
+>;
+
+/**
+ * The amplitude at one cell, given when the wave arrives there
+ * (s), how deep the water is (m), and — for an oriented source only —
+ * the cell's bearing from the nearest point of the rupture (°).
+ */
+export type VeilLaw = (arrivalTimeS: number, depthM: number, bearingDeg?: number) => number;
+
+/**
+ * The veil's law at a single cell, for a source.
+ *
+ * This is the body of {@link computeAmplitudeField}'s loop and not a
+ * copy of it: the field calls it at every cell. It is exported so a
+ * check against a measured wave can ask the globe's own question at
+ * the place the wave was measured. The calibration harness used to
+ * reconstruct this law instead, and for Crossroads Baker it
+ * reconstructed a different one — a gate on a number the globe never
+ * drew.
+ */
+export function veilLaw(source: VeilSource): VeilLaw {
+  const { sourceAmplitudeM, sourceCavityRadiusM } = source;
+  const sourceDepth = Math.max(source.sourceDepthM ?? 1_000, MIN_PROPAGATION_DEPTH);
+  const g = source.surfaceGravity ?? STANDARD_GRAVITY;
+  const strikeDeg = source.strikeDeg;
   const ruptureLengthM =
-    input.ruptureLengthM !== undefined && Number.isFinite(input.ruptureLengthM)
-      ? Math.max(0, input.ruptureLengthM)
+    source.ruptureLengthM !== undefined && Number.isFinite(source.ruptureLengthM)
+      ? Math.max(0, source.ruptureLengthM)
       : 0;
-  const srcLat = input.sourceLatitude ?? 0;
-  const srcLon = input.sourceLongitude ?? 0;
-  const dLatDeg = (input.grid.maxLat - input.grid.minLat) / Math.max(input.grid.nLat - 1, 1);
-  const dLonDeg = (input.grid.maxLon - input.grid.minLon) / Math.max(input.grid.nLon - 1, 1);
   const sourceWavelengthM =
-    input.sourceWavelengthM !== undefined && Number.isFinite(input.sourceWavelengthM)
-      ? Math.max(1, input.sourceWavelengthM)
-      : Math.max(1, 2 * input.sourceCavityRadiusM);
+    source.sourceWavelengthM !== undefined && Number.isFinite(source.sourceWavelengthM)
+      ? Math.max(1, source.sourceWavelengthM)
+      : Math.max(1, 2 * sourceCavityRadiusM);
   // A caller that supplies its own exponent brought its own published
   // far field with it — the Wünnemann rim wave — and that fit already
   // carries its own normalisation. Only the default cylindrical case
   // is normalised here.
-  const normaliseSpread = input.spreadingExponent === undefined;
-  const q = Number.isFinite(input.spreadingExponent)
-    ? Math.min(3, Math.max(0.05, input.spreadingExponent ?? 0.5))
+  const normaliseSpread = source.spreadingExponent === undefined;
+  const q = Number.isFinite(source.spreadingExponent)
+    ? Math.min(3, Math.max(0.05, source.spreadingExponent ?? 0.5))
     : 0.5;
-  const nCells = arrivalField.nLat * arrivalField.nLon;
-  const amplitudes = new Float32Array(nCells);
-  amplitudes.fill(NaN);
-
   const c0 = Math.sqrt(g * sourceDepth);
-  let maxAmplitude = sourceAmplitudeM;
 
-  for (let i = 0; i < nCells; i++) {
-    const T = arrivalField.arrivalTimes[i];
-    if (T === undefined || !Number.isFinite(T)) continue;
-    const elevation = grid.samples[i] ?? 0;
-    if (elevation >= -minDepth) continue; // land or too shallow
-    const h = Math.max(-elevation, MIN_PROPAGATION_DEPTH);
+  return (T, depthM, bearingDeg) => {
+    const h = Math.max(depthM, MIN_PROPAGATION_DEPTH);
     const cLocal = Math.sqrt(g * h);
 
     // Green's law shoaling: amplitude grows as (h₀/h)^(1/4).
@@ -217,8 +235,48 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
 
     // Directivity. An unoriented source leaves this at one, so a
     // crater or a collapse is unaffected and needs no special case.
-    let beam = 1;
-    if (strikeDeg !== undefined && ruptureLengthM > 0) {
+    const beam =
+      strikeDeg !== undefined && ruptureLengthM > 0 && bearingDeg !== undefined
+        ? directivityFactor({
+            bearingDeg,
+            strikeDeg,
+            ruptureLengthM,
+            wavelengthM: sourceWavelengthM,
+          })
+        : 1;
+
+    return sourceAmplitudeM * shoaling * spread * dispersion * beam;
+  };
+}
+
+export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeField {
+  const { arrivalField, grid, sourceAmplitudeM } = input;
+  const minDepth = input.minDepthMeters ?? 10;
+  const strikeDeg = input.strikeDeg;
+  const ruptureLengthM =
+    input.ruptureLengthM !== undefined && Number.isFinite(input.ruptureLengthM)
+      ? Math.max(0, input.ruptureLengthM)
+      : 0;
+  const oriented = strikeDeg !== undefined && ruptureLengthM > 0;
+  const srcLat = input.sourceLatitude ?? 0;
+  const srcLon = input.sourceLongitude ?? 0;
+  const dLatDeg = (input.grid.maxLat - input.grid.minLat) / Math.max(input.grid.nLat - 1, 1);
+  const dLonDeg = (input.grid.maxLon - input.grid.minLon) / Math.max(input.grid.nLon - 1, 1);
+  const law = veilLaw(input);
+  const nCells = arrivalField.nLat * arrivalField.nLon;
+  const amplitudes = new Float32Array(nCells);
+  amplitudes.fill(NaN);
+
+  let maxAmplitude = sourceAmplitudeM;
+
+  for (let i = 0; i < nCells; i++) {
+    const T = arrivalField.arrivalTimes[i];
+    if (T === undefined || !Number.isFinite(T)) continue;
+    const elevation = grid.samples[i] ?? 0;
+    if (elevation >= -minDepth) continue; // land or too shallow
+
+    let bearingDeg: number | undefined;
+    if (oriented) {
       const row = Math.floor(i / arrivalField.nLon);
       const col = i % arrivalField.nLon;
       const cellLat = grid.maxLat - row * dLatDeg;
@@ -227,19 +285,14 @@ export function computeAmplitudeField(input: AmplitudeFieldInput): AmplitudeFiel
       // cell abreast of a long rupture is square across the strike
       // and takes the full beam, where measured from the epicentre it
       // would look as if it lay off the end.
-      beam = directivityFactor({
-        bearingDeg: bearingFromRupture(
-          { latitude: srcLat, longitude: srcLon, strikeDeg, lengthM: ruptureLengthM },
-          cellLat,
-          cellLon
-        ),
-        strikeDeg,
-        ruptureLengthM,
-        wavelengthM: sourceWavelengthM,
-      });
+      bearingDeg = bearingFromRupture(
+        { latitude: srcLat, longitude: srcLon, strikeDeg, lengthM: ruptureLengthM },
+        cellLat,
+        cellLon
+      );
     }
 
-    const A = sourceAmplitudeM * shoaling * spread * dispersion * beam;
+    const A = law(T, -elevation, bearingDeg);
     amplitudes[i] = A;
     if (A > maxAmplitude) maxAmplitude = A;
   }

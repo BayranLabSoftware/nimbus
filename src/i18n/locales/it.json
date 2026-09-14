@@ -1351,7 +1351,7 @@
       "tolls": "bilanci di vittime contati che cadono dentro la banda del modello",
       "tollsGated": "{{pass}} su {{total}} righe vincolanti passano",
       "waves": "onde misurate che cadono dentro la cifra del modello",
-      "wavesGlobe": "ma il globo ne disegna {{count}} in un altro modo, e sbaglia",
+      "wavesGlobe": "ma il globo ne disegna {{count}} fuori",
       "footprint": "impronta dello scuotimento contro USGS ShakeMap, centrata in raggio",
       "footprintScatter": "dispersione {{sd}}, contro {{expected}} attesa dal moto del suolo",
       "invented": "fasce di intensità che il modello dipinge dove il terremoto non è mai arrivato"
@@ -1418,10 +1418,10 @@
     },
     "waves": {
       "title": "Onde contro le misure",
-      "body": "Altezze d'onda annotate da strumenti e rilievi: una boa nel Pacifico, misure in una laguna, depositi su una costa. Modello è la cifra che i test controllano; Sul globo è ciò che la mappa delle onde disegna nello stesso punto, mostrato ovunque le due cifre si calcolano in modo diverso — perché un controllo su un numero che il globo non mostra sarebbe un controllo sul nulla.",
+      "body": "Altezze d'onda annotate da strumenti e rilievi: una boa nel Pacifico, una tabella di altezze in una laguna, depositi su una costa. Un'altezza misurata dal cavo alla cresta viene dimezzata, perché il modello calcola quanto la cresta sale sopra il mare calmo. Modello è la cifra che i test controllano, chiesta alla stessa legge che usa la mappa delle onde sul globo; Sul globo compare solo dove una riga controlla un numero diverso — perché un controllo su un numero che il globo non mostra sarebbe un controllo sul nulla.",
       "noWave": "nessuna onda",
       "globeSame": "uguale",
-      "globeNote": "Dove il globo manca una misura che i test contengono: {{list}}. Per un'esplosione subacquea la mappa delle onde distribuisce l'onda con una correzione d'energia che il test non applica. Quale delle due sia giusta per una sorgente così piccola è una questione aperta; finché non è decisa, entrambe le cifre restano su questa pagina."
+      "globeNote": "Dove il globo manca una misura che i test contengono: {{list}}. I test tengono vuota questa lista, quindi una voce qui è un errore da spiegare."
     },
     "footprint": {
       "title": "Impronta dello scuotimento contro USGS ShakeMap",
