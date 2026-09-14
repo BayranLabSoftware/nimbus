@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   CALIBRATION_ANCHORS,
+  CALIBRATION_ROLES,
   anchorsFor,
   calibrationEnvelope,
   envelopeOf,
@@ -20,6 +21,52 @@ const TYPES: readonly EnvelopeEventType[] = [
   'volcano',
   'landslide',
 ];
+
+describe('every check says whether the model was set on it', () => {
+  it('each quantity an anchor records carries a role and says what makes it so', () => {
+    for (const anchor of CALIBRATION_ANCHORS) {
+      for (const quantity of anchor.quantities) {
+        const use = anchor.use[quantity];
+        expect(use, `${anchor.name} (${quantity})`).toBeDefined();
+        expect(CALIBRATION_ROLES).toContain(use?.role);
+        expect(use?.how.length ?? 0, `${anchor.name} (${quantity})`).toBeGreaterThan(40);
+      }
+      // And no role for a quantity the anchor does not record.
+      for (const quantity of Object.keys(anchor.use)) {
+        expect(anchor.quantities, `${anchor.name}: ${quantity}`).toContain(quantity);
+      }
+    }
+  });
+
+  it('every toll and wave row in the net resolves to its role', () => {
+    const roleOf = (row: string, quantity: 'toll' | 'wave'): string | undefined =>
+      CALIBRATION_ANCHORS.find((a) => row.includes(a.name) && a.quantities.includes(quantity))?.use[
+        quantity
+      ]?.role;
+    for (const toll of RECORDED_EVENTS) expect(roleOf(toll.name, 'toll'), toll.name).toBeDefined();
+    for (const wave of RECORDED_WAVES) expect(roleOf(wave.name, 'wave'), wave.name).toBeDefined();
+  });
+
+  it('the checks called held out are these, and changing the list takes a reason', () => {
+    // Set on 14 September 2026 from an inventory of every calibrated
+    // constant and every preset input re-tuned to a record. A check
+    // moves into this list only when nothing in the repository was
+    // made with it in view; one that leaves it says why in its note.
+    const heldOut = CALIBRATION_ANCHORS.flatMap((a) =>
+      a.quantities.filter((q) => a.use[q]?.role === 'heldOut').map((q) => `${a.name} ${q}`)
+    );
+    expect(heldOut).toEqual([
+      'Beirut 2020 wave',
+      'Ivy Mike 1952 wave',
+      'Castle Bravo 1954 wave',
+      'Tsar Bomba wave',
+      'Kokoxili (Kunlun) 2001 toll',
+      'Gorkha (Nepal) 2015 toll',
+      'Tōhoku 2011 toll',
+      'Pinatubo 1991 toll',
+    ]);
+  });
+});
 
 /**
  * The envelope is a second copy of the calibration net, kept small

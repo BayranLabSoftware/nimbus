@@ -25,6 +25,17 @@ test.describe('validation page', () => {
       report.calibration.waves.length
     );
     await expect(page.getByRole('heading', { level: 2, name: 'Why a row misses' })).toBeVisible();
+
+    // Which rows the model was set on, beside each row and in their own
+    // section: a count of passes means nothing without it.
+    const heldOutTolls = report.calibration.tolls.filter((r) => r.role === 'heldOut').length;
+    await expect(
+      page.getByTestId('validation-tolls').getByText('held out', { exact: true })
+    ).toHaveCount(heldOutTolls);
+    await expect(
+      page.getByRole('heading', { level: 2, name: 'Which checks are validation' })
+    ).toBeVisible();
+    await expect(page.getByTestId('validation-roles').getByText('tuned on it')).toBeVisible();
   });
 
   test('is one click from the landing page', async ({ page }) => {

@@ -16,6 +16,7 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 - **Death tolls:** 4 of 11 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
 - **Waves:** 9 of 14 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 5 misses are declared rows, each with its reason below.
 - **Shaking footprint:** centred at 1.18 in radius (0.76 standard errors), scatter σ_ln 0.71 against 0.70 expected; 4 bands painted at an intensity never reached.
+- **Held out** — the rows nothing in the model was set on: death tolls 1 of 4 inside the band, waves 3 of 3. 3 of the 4 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
 
 ## Release gate
@@ -40,21 +41,22 @@ The band is the 5th–95th percentile of 200 realisations drawn from the
 published input scatter — a claim that can be wrong, not the range of
 the vulnerability table. A **gated** row fails the build when its band
 stops containing the record; a **declared** row is measured and printed
-with its reason, and the reason is below.
+with its reason, and the reason is below. **Role** says whether the
+model was set on the event, which is under "Which checks are validation".
 
-| Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Cause | Standing |
-|-------|---------:|------:|--------------:|-----:|---------------:|---------|-------|----------|
-| Kokoxili (Kunlun) 2001 | 0 | 0 | 0 – 0 | — | both zero | contains | — | gated |
-| Northridge 1994 | 57 | 38 | 5 – 180 | 10^1.6 | 0.67× | contains | — | gated |
-| L'Aquila 2009 | 309 | 227 | 37 – 1,542 | 10^1.6 | 0.73× | contains | — | gated |
-| Amatrice 2016 | 299 | 6 | 0 – 114 | 10^2.1 | 0.02× | **misses** | buildingStock | declared |
-| Gorkha (Nepal) 2015 | 8,964 | 580 | 22 – 4,924 | 10^2.3 | 0.06× | **misses** | buildingStock | declared |
-| Beirut 2020 | 218 | 902 | 817 – 1,533 | 10^0.3 | 4.14× | **misses** | populationRaster | declared |
-| Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | occupancy | declared |
-| Pinatubo 1991 | 847 | 82 | 32 – 312 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared |
-| Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | populationChanged | declared |
-| Tōhoku 2011 | 18,500 | 0 | 0 – 0 | — | 0.00× | **misses** | drownedOffline | declared |
-| Sumatra–Andaman 2004 | 227,898 | 1 | 0 – 43 | 10^1.6 | 0.00× | **misses** | drownedOffline | declared |
+| Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Cause | Standing | Role |
+|-------|---------:|------:|--------------:|-----:|---------------:|---------|-------|----------|------|
+| Kokoxili (Kunlun) 2001 | 0 | 0 | 0 – 0 | — | both zero | contains | — | gated | held out |
+| Northridge 1994 | 57 | 38 | 5 – 180 | 10^1.6 | 0.67× | contains | — | gated | tuned on it |
+| L'Aquila 2009 | 309 | 227 | 37 – 1,542 | 10^1.6 | 0.73× | contains | — | gated | tuned on it |
+| Amatrice 2016 | 299 | 6 | 0 – 114 | 10^2.1 | 0.02× | **misses** | buildingStock | declared | tuned on it |
+| Gorkha (Nepal) 2015 | 8,964 | 580 | 22 – 4,924 | 10^2.3 | 0.06× | **misses** | buildingStock | declared | held out |
+| Beirut 2020 | 218 | 902 | 817 – 1,533 | 10^0.3 | 4.14× | **misses** | populationRaster | declared | tuned on it |
+| Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | occupancy | declared | tuned on it |
+| Pinatubo 1991 | 847 | 82 | 32 – 312 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared | held out |
+| Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | populationChanged | declared | tuned on it |
+| Tōhoku 2011 | 18,500 | 0 | 0 – 0 | — | 0.00× | **misses** | drownedOffline | declared | held out |
+| Sumatra–Andaman 2004 | 227,898 | 1 | 0 – 43 | 10^1.6 | 0.00× | **misses** | drownedOffline | declared | same source |
 
 #### Where the band misses, and why
 
@@ -113,22 +115,22 @@ A height recorded from crest to trough is halved to the amplitude the
 model computes, and Crossroads Baker's figures carry Glasstone & Dolan's
 own 35 % accuracy for explosion waves.
 
-| Record | Range | Observed | Model | Verdict | Globe draws | Standing |
-|--------|------:|---------:|------:|---------|------------:|----------|
-| Crossroads Baker 1946, 330 yd | 302 m | 9.26 m – 19.4 m | 10.1 m | contains | same | gated |
-| Crossroads Baker 1946, 660 yd | 604 m | 4.61 m – 9.77 m | 5.06 m | contains | same | gated |
-| Crossroads Baker 1946, 1,330 yd | 1,216 m | 2.33 m – 5.04 m | 2.51 m | contains | same | gated |
-| Crossroads Baker 1946, 2,000 yd | 1,829 m | 1.54 m – 3.39 m | 1.67 m | contains | same | gated |
-| Crossroads Baker 1946, 2,700 yd | 2,469 m | 1.24 m – 2.78 m | 1.24 m | **misses** | same | declared |
-| Crossroads Baker 1946, 3,300 yd | 3,018 m | 1.04 m – 2.37 m | 1.01 m | **misses** | same | declared |
-| Crossroads Baker 1946, 4,000 yd | 3,658 m | 0.84 m – 1.95 m | 0.83 m | **misses** | same | declared |
-| Crossroads Baker 1946, USS Saratoga's stern | 366 m | 8.52 m – 31.9 m | 8.34 m | **misses** | same | declared |
-| Crossroads Baker 1946, ninth wave at 22,000 ft | 6,706 m | 0.54 m – 1.34 m | 0.46 m | **misses** | same | declared |
-| Castle Bravo 1954 | 300 m | no wave | 0.00 m | contains | same | gated |
-| Ivy Mike 1952 | 300 m | no wave | 0.00 m | contains | same | gated |
-| Beirut 2020 | 300 m | 0.00 m – 2.00 m | 0.00 m | contains | same | gated |
-| Tōhoku 2011 at DART 21413 | 1,500 km | 0.20 m – 0.50 m | 0.27 m | contains | same | gated |
-| Storegga 8200 BP on the Norwegian coast | 1,000 km | 0.30 m – 3.00 m | 0.60 m | contains | 0.76 m | gated |
+| Record | Range | Observed | Model | Verdict | Globe draws | Standing | Role |
+|--------|------:|---------:|------:|---------|------------:|----------|------|
+| Crossroads Baker 1946, 330 yd | 302 m | 9.26 m – 19.4 m | 10.1 m | contains | same | gated | same source |
+| Crossroads Baker 1946, 660 yd | 604 m | 4.61 m – 9.77 m | 5.06 m | contains | same | gated | same source |
+| Crossroads Baker 1946, 1,330 yd | 1,216 m | 2.33 m – 5.04 m | 2.51 m | contains | same | gated | same source |
+| Crossroads Baker 1946, 2,000 yd | 1,829 m | 1.54 m – 3.39 m | 1.67 m | contains | same | gated | same source |
+| Crossroads Baker 1946, 2,700 yd | 2,469 m | 1.24 m – 2.78 m | 1.24 m | **misses** | same | declared | same source |
+| Crossroads Baker 1946, 3,300 yd | 3,018 m | 1.04 m – 2.37 m | 1.01 m | **misses** | same | declared | same source |
+| Crossroads Baker 1946, 4,000 yd | 3,658 m | 0.84 m – 1.95 m | 0.83 m | **misses** | same | declared | same source |
+| Crossroads Baker 1946, USS Saratoga's stern | 366 m | 8.52 m – 31.9 m | 8.34 m | **misses** | same | declared | same source |
+| Crossroads Baker 1946, ninth wave at 22,000 ft | 6,706 m | 0.54 m – 1.34 m | 0.46 m | **misses** | same | declared | same source |
+| Castle Bravo 1954 | 300 m | no wave | 0.00 m | contains | same | gated | held out |
+| Ivy Mike 1952 | 300 m | no wave | 0.00 m | contains | same | gated | held out |
+| Beirut 2020 | 300 m | 0.00 m – 2.00 m | 0.00 m | contains | same | gated | held out |
+| Tōhoku 2011 at DART 21413 | 1,500 km | 0.20 m – 0.50 m | 0.27 m | contains | same | gated | tuned on it |
+| Storegga 8200 BP on the Norwegian coast | 1,000 km | 0.30 m – 3.00 m | 0.60 m | contains | 0.76 m | gated | tuned on it |
 
 **Crossroads Baker 1946, 330 yd.** Every Baker height is printed from crest to trough, and the model computes the crest above still water, so each is halved and held to the reference's own 35 %. The model is Glasstone & Dolan's shallow-water relation (§6.121), H·R = 150·d_w·W^0.25 ft², with nothing fitted to Baker: it reads 0.68–0.71 of the tabulated heights out to 2 000 yards, the approximation the book offers for bursts "such as Bikini BAKER". Until 14 September 2026 these rows compared an amplitude with the full height, through a law the globe did not draw.
 
@@ -203,6 +205,82 @@ and scattering like the ground:
 
 **Bands painted at an intensity the event never reached (4):** L'Aquila 2009 MMI≥8, Amatrice 2016 MMI≥8, Gorkha 2015 MMI≥9, Tōhoku 2011 MMI≥9. A laboratory-level model has none; the count is pinned in `shakemapFootprint.test.ts` so it can only go down.
 
+### Which checks are validation
+
+A check the model was built to pass says the fit holds, not that the
+model is right. Every event above, and every golden case against a
+recorded event, carries one of these roles for each quantity it checks:
+
+- **tuned on it** — a coefficient, an input or a modelling choice in this repository was made with this row in view — set so the quantity comes out as recorded, or chosen because an alternative made the row worse.
+- **input inferred from it** — the scenario’s input is itself inferred, in the literature, from the quantity being checked, so agreement is partly by construction.
+- **same source** — the published relation the model uses was fitted on data that include the event, or the “record” is read from a published relation rather than measured at the event.
+- **held out** — none of these, as far as the code and its cited sources show.
+- **not established** — not yet checked; the note says what is open.
+
+Held out, the tables above read: death tolls **1 of 4** inside the band, waves **3 of 3** inside the record. 3 of the 4 held-out rows inside their record are a record of nothing — no dead, or no wave.
+
+#### Tuned on it (12)
+
+**Tunguska 1908, blast.** The row checks the energy the preset carries against the 3–30 Mt the flattened forest allows, and two coefficients of the entry model were set on this event: PENETRATION_COEFFICIENT is "tuned against Tunguska + Chelyabinsk observations", and SACHS_BETA = 5/3 is "a single fitted knob, chosen because it lands Chelyabinsk and Tunguska on observation" (effects/atmosphericEntry.ts). The energy itself is inferred from the forest.
+
+**Beirut 2020, toll.** The conventional-blast mortality bands (CONVENTIONAL_BLAST_BANDS in casualties.ts) were written after OTA's nuclear bands put this row at fifty times the record. They are composed from Glasstone & Dolan's injury thresholds rather than fitted to the 218, but they were made with this row in view.
+
+**Hiroshima 1945, toll.** OTA 1979's mortality bands are Hiroshima's and Nagasaki's own record, and the central mass-fire mortality is set at Hiroshima's (FIRESTORM_MORTALITY in casualties.ts: "Hiroshima in the middle").
+
+**Hiroshima 1945, blast.** The height-of-burst factor was calibrated on this very figure: hobBlastFactor's 1.5 at Hiroshima's scaled height is set so that 5 psi falls at 1.7 km (events/explosion/hob.ts). And the figure is not a measurement in the city but Glasstone & Dolan's Fig. 3.74a read at Hiroshima's yield and height.
+
+**Amatrice 2016, toll.** The shaking contours are still drawn with Joyner–Boore 1981 partly because NGA-West2, tried on 9 September, pushed this row out of its gate (events/earthquake/simulate.ts): the law was chosen with this row in view. Italy's own PAGER curve was fitted on 1973–2007 earthquakes, before this one.
+
+**L'Aquila 2009, toll.** The contour law was kept because NGA-West2, tried on 9 September, took this toll from 227 dead to 40 against 309 (events/earthquake/simulate.ts): chosen with this row in view. Italy's own PAGER curve was fitted on 1973–2007 earthquakes, before this one.
+
+**Northridge 1994, toll.** The contour law was kept because NGA-West2, tried on 9 September, took this toll from 38 dead to 13 against 57 (events/earthquake/simulate.ts): chosen with this row in view. The United States take PAGER's regional fatality curve, fitted on 1973–2007 earthquakes — this one's period.
+
+**Tōhoku 2011, wave.** The megathrust uplift factor 0.6 is "the calibrated all-in factor against Tōhoku DART buoy amplitudes" (events/earthquake/seismicTsunami.ts), and the far-field source radius — half the down-dip width — was chosen by measuring this buoy against the alternative (tsunami/spreading.ts).
+
+**Mount St Helens 1980, toll.** LATERAL_BLAST_RUNOUT_MULTIPLIER = 2.5 was chosen to land the directed blast on the 27 km Glicken 1996 gives for this eruption (events/volcano/simulate.ts), and 264 of the model's 265 dead are inside that blast.
+
+**Mount St Helens 1980, plume.** The preset's eruption rate was re-tuned from 4×10³ to 4×10⁴ m³/s so that the column would reach the observed height (MT_ST_HELENS_1980 in events/volcano/simulate.ts), and the golden case uses 5×10⁴. Mastin et al. 2009 also fitted the plume-height relation on this eruption (their Table 1, 18 May 1980).
+
+**Vaiont 1963, wave.** The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3) was chosen on this wave, and the preset's basin depth, 250 m, caps the wave at the height observed — so the preset reaches 250 m by construction. The gated golden case, G-B003, checks only that a wave exists.
+
+**Storegga 8200 BP, wave.** The submarine prefactor, VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE = 0.005, was calibrated on the 5–10 m source amplitude Bondevik et al. 2005 give for this slide, and the far-field row is read from that source.
+
+#### Input inferred from it (2)
+
+**Meteor Crater, crater.** The impactor — Kring 2007's 50 m iron at 12.8 km/s — is not observed: its size and speed are estimates made from the crater itself and from the unmelted fragments around it (Melosh & Collins 2005 give about 40 m at 12 km/s).
+
+**Chicxulub, crater.** The impactor's size is not observed. The 10–15 km the literature gives is an estimate made largely from this crater, with the global iridium layer, so a scaling law of the family the model uses was part of how the input was chosen.
+
+#### Same source (3)
+
+**Crossroads Baker 1946, wave.** Glasstone & Dolan give the shallow-water relation the model uses (§6.121) as the approximation for bursts "such as Bikini BAKER", and Table 6.57 — the record — is Baker's own data in the same book. Nothing in Nimbus was set on it, but the relation and the record share their source.
+
+**Sumatra–Andaman 2004, toll.** Indonesia's own PAGER curve was fitted on 1973–2007 earthquakes, this one's period. The row is the shaking alone; the 1 300 km rupture is Lay et al. 2005's measurement, an input rather than a fit.
+
+**Pinatubo 1991, plume.** Mastin et al. 2009 fitted the plume-height relation the model uses on the eruptions in their Table 1, and 15 June 1991 Pinatubo is one of them. Where the preset's eruption rate comes from is not written down.
+
+#### Held out (8)
+
+**Beirut 2020, wave.** No coefficient decides it. The charge sat on a quay, and the model makes a wave only from a burst within the water, the case Glasstone & Dolan give relations for (§6.119). A zero from a burst on land checks that rule, not a wave law.
+
+**Ivy Mike 1952, wave.** No coefficient decides it: the device was fired on an islet, and the model makes a wave only from a burst within the water. The row checks that rule.
+
+**Castle Bravo 1954, wave.** No coefficient decides it: the device was fired on the reef, not in the water, and the model makes a wave only from a burst within the water. The row checks that rule.
+
+**Tsar Bomba, wave.** No coefficient decides it: a burst 4 km up is not in the water, and no relation the model uses gives a wave for it. The row checks that rule.
+
+**Kokoxili (Kunlun) 2001, toll.** Nothing was set on it, and the zero is the population map's: nobody lives in the footprint, so no fatality curve could make it anything else. China's PAGER rates were fitted on 1973–2007 earthquakes; whether this one, which killed nobody, was among them does not bear on this row — which is also why it tests the exposure more than the model.
+
+**Gorkha (Nepal) 2015, toll.** Nothing in Nimbus was set on it, and Nepal borrows its region's PAGER curve, fitted on 1973–2007 earthquakes — before 2015.
+
+**Tōhoku 2011, toll.** The offline row is the shaking alone, and nothing that decides it was set on this event: Japan's own PAGER curve was fitted on 1973–2007 earthquakes. The drowning curve read from the 2011 record (TSUNAMI_VULNERABILITY) does not enter it — which is why the coastal toll, measured only in the browser, cannot be called validated.
+
+**Pinatubo 1991, toll.** Nothing that decides it was set on this eruption: the currents' reach is Sheridan 1979's mobility ratio on the erupted volume, the mortality inside the cleared zone is Merapi 2010's, and the zone is the one PHIVOLCS actually cleared — an input from the record of the evacuation, not from the toll.
+
+#### Not established (1)
+
+**Krakatau 1883, plume.** Krakatau 1883 is not among the eruptions Mastin et al. 2009 fitted, which would make this row held out. But the preset's eruption rate, 2×10⁵ m³/s, has carried no source since the first commit, so whether it was read back from the 40 km column is not established.
+
 ### Where the model has been measured
 
 By event family, and per quantity: **gated** fails the build if the model
@@ -212,39 +290,39 @@ these, for the quantity the panel is showing.
 
 **impact** (3)
 
-- Tunguska 1908 — blast (gated) — Boslough & Crawford 2008; Chyba 1993 — 3–30 Mt from the flattened forest
-- Meteor Crater — crater (gated) — Kring 2007 — a 1.2 km crater from a 50 m iron at 12.8 km/s
-- Chicxulub — crater (gated) — Hildebrand 1991, Morgan 2016 — a final crater of about 180 km
+- Tunguska 1908 — blast (gated, tuned on it) — Boslough & Crawford 2008; Chyba 1993 — 3–30 Mt from the flattened forest
+- Meteor Crater — crater (gated, input inferred from it) — Kring 2007 — a 1.2 km crater from a 50 m iron at 12.8 km/s
+- Chicxulub — crater (gated, input inferred from it) — Hildebrand 1991, Morgan 2016 — a final crater of about 180 km
 
 **explosion** (6)
 
-- Beirut 2020 — toll (declared), wave (gated) — 218 dead; a harbour wave of the order of a metre that drowned nobody
-- Hiroshima 1945 — toll (declared), blast (gated) — Manhattan Engineer District 1946; Glasstone & Dolan Fig. 3.74a for 5 psi at 1.7 km
-- Crossroads Baker 1946 — wave (gated) — Glasstone & Dolan 1977 Table 6.57: 94 ft crest to trough at 330 yd down to 9 ft at 4 000 yd, from 90 ft down in a 200 ft lagoon
-- Ivy Mike 1952 — wave (gated) — Fired on an islet it vapourised; no recorded wave
-- Castle Bravo 1954 — wave (gated) — Fired on the Bikini reef; remembered for its crater and its fallout, not a wave
-- Tsar Bomba — wave (gated) — The largest device ever fired, 1961, 4 km up over water; no wave
+- Beirut 2020 — toll (declared, tuned on it), wave (gated, held out) — 218 dead; a harbour wave of the order of a metre that drowned nobody
+- Hiroshima 1945 — toll (declared, tuned on it), blast (gated, tuned on it) — Manhattan Engineer District 1946; Glasstone & Dolan Fig. 3.74a for 5 psi at 1.7 km
+- Crossroads Baker 1946 — wave (gated, same source) — Glasstone & Dolan 1977 Table 6.57: 94 ft crest to trough at 330 yd down to 9 ft at 4 000 yd, from 90 ft down in a 200 ft lagoon
+- Ivy Mike 1952 — wave (gated, held out) — Fired on an islet it vapourised; no recorded wave
+- Castle Bravo 1954 — wave (gated, held out) — Fired on the Bikini reef; remembered for its crater and its fallout, not a wave
+- Tsar Bomba — wave (gated, held out) — The largest device ever fired, 1961, 4 km up over water; no wave
 
 **earthquake** (7)
 
-- Amatrice 2016 — toll (declared) — 299 dead
-- L'Aquila 2009 — toll (gated) — 309 dead
-- Northridge 1994 — toll (gated) — 57 dead
-- Kokoxili (Kunlun) 2001 — toll (gated) — A 400 km rupture across empty Tibetan plateau; nobody died
-- Gorkha (Nepal) 2015 — toll (declared) — 8 964 dead
-- Tōhoku 2011 — toll (declared), wave (gated) — 18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 500 km out
-- Sumatra–Andaman 2004 — toll (declared) — 227 898 dead, almost all of them drowned
+- Amatrice 2016 — toll (declared, tuned on it) — 299 dead
+- L'Aquila 2009 — toll (gated, tuned on it) — 309 dead
+- Northridge 1994 — toll (gated, tuned on it) — 57 dead
+- Kokoxili (Kunlun) 2001 — toll (gated, held out) — A 400 km rupture across empty Tibetan plateau; nobody died
+- Gorkha (Nepal) 2015 — toll (declared, held out) — 8 964 dead
+- Tōhoku 2011 — toll (declared, held out), wave (gated, tuned on it) — 18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 500 km out
+- Sumatra–Andaman 2004 — toll (declared, same source) — 227 898 dead, almost all of them drowned
 
 **volcano** (3)
 
-- Mount St Helens 1980 — toll (declared), plume (gated) — 57 dead inside a mountain closed for two months; a 24 km column
-- Pinatubo 1991 — toll (declared), plume (gated) — 847 dead after an evacuation that worked; a 35 km column
-- Krakatau 1883 — plume (gated) — Self & Rampino 1981 — a 40 km column; its wave is not checked here
+- Mount St Helens 1980 — toll (declared, tuned on it), plume (gated, tuned on it) — 57 dead inside a mountain closed for two months; a 24 km column
+- Pinatubo 1991 — toll (declared, held out), plume (gated, same source) — 847 dead after an evacuation that worked; a 35 km column
+- Krakatau 1883 — plume (gated, not established) — Self & Rampino 1981 — a 40 km column; its wave is not checked here
 
 **landslide** (2)
 
-- Vaiont 1963 — wave (gated) — Genevois 2005 — the reservoir wave that overtopped the dam by 245 m
-- Storegga 8200 BP — wave (gated) — Bondevik 2005 — 10–25 m of run-up read from the Norwegian deposits
+- Vaiont 1963 — wave (gated, tuned on it) — Genevois 2005 — the reservoir wave that overtopped the dam by 245 m
+- Storegga 8200 BP — wave (gated, tuned on it) — Bondevik 2005 — 10–25 m of run-up read from the Norwegian deposits
 
 ## Against itself
 

@@ -7,6 +7,22 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The validation report says which checks are validation.** Every
+  quantity every recorded event checks now carries a role: _tuned on
+  it_ (a coefficient, an input or a modelling choice was made with that
+  row in view), _input inferred from it_, _same source_ (the published
+  relation was fitted on data that include the event), _held out_, or
+  _not established_ — each with a note naming the constant, the input
+  or the source, so a reader can check it. The roles come from an
+  inventory of every calibrated constant and every preset input
+  re-tuned to a record. Of twenty-six checks, twelve are tuned on their
+  own event — Storegga, Vaiont and Tōhoku's buoy among them — and eight
+  are held out. Held out, the tables read one death toll of four inside
+  its band and three waves of three, and three of those four passes are
+  records of nothing: a plateau nobody lives on, charges that never
+  entered the water. The report and the public validation page both say
+  so, computed from the rows rather than written in.
+
 - **A custom explosion can be shared by link.** Yield, height or depth
   of burst, ground type, wind and charge type travel in short keys
   (`y`, `h` — negative for a depth under the water — `gt`, `ws`, `wdir`,

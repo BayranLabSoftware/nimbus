@@ -34,6 +34,7 @@ interface TollRow {
   contains: boolean;
   gated: boolean;
   cause: string | null;
+  role: string;
   source: string;
 }
 
@@ -47,6 +48,7 @@ interface WaveRow {
   globeM: number | null;
   globeContains: boolean | null;
   gated: boolean;
+  role: string;
   source: string;
 }
 
@@ -71,6 +73,7 @@ interface AnchorRow {
   eventType: string;
   quantities: string[];
   gated: string[];
+  use: Record<string, { role: string; how: string } | undefined>;
   source: string;
 }
 
@@ -107,6 +110,13 @@ type Cause = (typeof CAUSES)[number];
 const isCause = (c: string | null): c is Cause =>
   c !== null && (CAUSES as readonly string[]).includes(c);
 
+/** Whether the model was set on the event behind a check, most
+ *  compromising first — `CalibrationRole` in calibrationEnvelope.ts. */
+const ROLES = ['tuned', 'inputInferred', 'sameSource', 'heldOut', 'unestablished'] as const;
+type Role = (typeof ROLES)[number];
+const isRole = (r: string | undefined): r is Role =>
+  r !== undefined && (ROLES as readonly string[]).includes(r);
+
 const FAMILIES = ['impact', 'explosion', 'earthquake', 'volcano', 'landslide'] as const;
 
 /** Published ground-motion scatter, σ_lnY ≈ 0.5 over an R^(−0.71)
@@ -133,6 +143,18 @@ export function ValidationPage(): JSX.Element {
   const wavesInside = waves.filter((r) => r.contains).length;
   const globeMisses = waves.filter((r) => r.globeContains === false);
   const causesShown = CAUSES.filter((c) => tolls.some((r) => r.cause === c));
+  const heldTolls = tolls.filter((r) => r.role === 'heldOut');
+  const heldWaves = waves.filter((r) => r.role === 'heldOut');
+  // A held-out row that passes on a record of nothing — no dead, no
+  // wave — checks a rule rather than a number; the tile says so.
+  const heldInside = [
+    ...heldTolls.filter((r) => r.contains).map((r) => r.recorded === 0),
+    ...heldWaves.filter((r) => r.contains).map((r) => r.observedHighM <= 0),
+  ];
+  const heldInsideAllZeros = heldInside.length > 0 && heldInside.every(Boolean);
+  const checks = anchors.flatMap((a) =>
+    a.quantities.map((q) => ({ name: a.name, quantity: q, role: a.use[q]?.role }))
+  );
   const worstInterpolation = interpolation
     .filter((r) => r.comparable)
     .reduce((worst, r) => {
@@ -231,6 +253,27 @@ export function ValidationPage(): JSX.Element {
             </span>
           </li>
           <li className={styles.tile}>
+            <span className={styles.tileValue}>
+              {heldTolls.filter((r) => r.contains).length +
+                heldWaves.filter((r) => r.contains).length}{' '}
+              / {heldTolls.length + heldWaves.length}
+            </span>
+            <span className={styles.tileLabel}>{t('validation.summary.heldOut')}</span>
+            <span className={styles.tileNote}>
+              {t('validation.summary.heldOutNote', {
+                tollsInside: heldTolls.filter((r) => r.contains).length,
+                tolls: heldTolls.length,
+                wavesInside: heldWaves.filter((r) => r.contains).length,
+                waves: heldWaves.length,
+              })}
+            </span>
+            {heldInsideAllZeros && (
+              <span className={cx(styles.tileNote, styles.tileWarn)}>
+                {t('validation.summary.heldOutZeros')}
+              </span>
+            )}
+          </li>
+          <li className={styles.tile}>
             <span className={styles.tileValue}>{footprint.inventedBands.length}</span>
             <span className={styles.tileLabel}>{t('validation.summary.invented')}</span>
           </li>
@@ -259,6 +302,7 @@ export function ValidationPage(): JSX.Element {
                 </th>
                 <th scope="col">{t('validation.table.verdict')}</th>
                 <th scope="col">{t('validation.table.cause')}</th>
+                <th scope="col">{t('validation.table.role')}</th>
               </tr>
             </thead>
             <tbody>
@@ -280,6 +324,9 @@ export function ValidationPage(): JSX.Element {
                     <Verdict inside={r.contains} />
                   </td>
                   <td>{isCause(r.cause) ? t(`validation.causes.${r.cause}.label`) : '—'}</td>
+                  <td>
+                    <RoleChip role={r.role} />
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -329,6 +376,7 @@ export function ValidationPage(): JSX.Element {
                 <th scope="col" className={styles.num}>
                   {t('validation.table.globe')}
                 </th>
+                <th scope="col">{t('validation.table.role')}</th>
               </tr>
             </thead>
             <tbody>
@@ -353,6 +401,9 @@ export function ValidationPage(): JSX.Element {
                         {metres(r.globeM)} {r.globeContains === false && <Verdict inside={false} />}
                       </>
                     )}
+                  </td>
+                  <td>
+                    <RoleChip role={r.role} />
                   </td>
                 </tr>
               ))}
@@ -463,6 +514,27 @@ export function ValidationPage(): JSX.Element {
         </details>
       </section>
 
+      <section className={styles.section} data-testid="validation-roles">
+        <h2>{t('validation.roles.title')}</h2>
+        <p className={styles.prose}>{t('validation.roles.body')}</p>
+        <dl className={styles.causes}>
+          {ROLES.filter((role) => checks.some((c) => c.role === role)).map((role) => (
+            <div key={role} className={styles.cause}>
+              <dt>{t(`validation.role.${role}.label`)}</dt>
+              <dd>
+                <p>{t(`validation.role.${role}.body`)}</p>
+                <p className={styles.causeEvents}>
+                  {checks
+                    .filter((c) => c.role === role)
+                    .map((c) => `${c.name} (${t(`validation.quantity.${c.quantity}`)})`)
+                    .join(' · ')}
+                </p>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
       <section className={styles.section}>
         <h2>{t('validation.anchors.title')}</h2>
         <p className={styles.prose}>{t('validation.anchors.body')}</p>
@@ -488,6 +560,7 @@ export function ValidationPage(): JSX.Element {
                                 ? 'validation.standing.gated'
                                 : 'validation.standing.declared'
                             )}
+                            <AnchorRole role={a.use[q]?.role} />
                           </span>
                         ))}
                       </span>
@@ -538,6 +611,25 @@ export function ValidationPage(): JSX.Element {
         </p>
       </footer>
     </div>
+  );
+}
+
+/** The role beside an anchor's quantity chip, when it has one. */
+function AnchorRole({ role }: { role: string | undefined }): JSX.Element | null {
+  const { t } = useTranslation();
+  if (!isRole(role)) return null;
+  return <> · {t(`validation.role.${role}.label`)}</>;
+}
+
+/** Whether the model was set on the event behind a row. Held out is the
+ *  one that counts as validation, so it is the one set apart. */
+function RoleChip({ role }: { role: string }): JSX.Element {
+  const { t } = useTranslation();
+  if (!isRole(role)) return <>—</>;
+  return (
+    <span className={role === 'heldOut' ? styles.chipHeldOut : styles.chip}>
+      {t(`validation.role.${role}.label`)}
+    </span>
   );
 }
 

@@ -1391,7 +1391,10 @@
       "wavesGlobe": "ma il globo ne disegna {{count}} fuori",
       "footprint": "impronta dello scuotimento contro USGS ShakeMap, centrata in raggio",
       "footprintScatter": "dispersione {{sd}}, contro {{expected}} attesa dal moto del suolo",
-      "invented": "fasce di intensità che il modello dipinge dove il terremoto non è mai arrivato"
+      "invented": "fasce di intensità che il modello dipinge dove il terremoto non è mai arrivato",
+      "heldOut": "controlli tenuti fuori che contengono il dato",
+      "heldOutNote": "vittime {{tollsInside}} su {{tolls}} · onde {{wavesInside}} su {{waves}}; le altre righe sono tarature o fonti in comune",
+      "heldOutZeros": "tutti dati di nulla: nessun morto, o nessuna onda"
     },
     "tolls": {
       "title": "Vittime contro eventi contati",
@@ -1411,7 +1414,8 @@
       "globe": "Sul globo",
       "threshold": "Intensità",
       "shakemap": "ShakeMap",
-      "bothZero": "entrambi zero"
+      "bothZero": "entrambi zero",
+      "role": "Ruolo"
     },
     "verdict": {
       "inside": "dentro",
@@ -1517,6 +1521,32 @@
       }
     },
     "footer": "Ogni cifra di questa pagina viene da docs/VALIDATION_REPORT.json, che il software rigenera e verifica a ogni commit.",
-    "toMethodology": "Metodologia & fonti"
+    "toMethodology": "Metodologia & fonti",
+    "roles": {
+      "title": "Quali controlli sono validazione",
+      "body": "Un controllo che il modello è stato costruito per superare mostra che la taratura regge, non che il modello è giusto. Per ogni grandezza che controlla, ogni evento misurato ha uno di questi ruoli; il report completo dice, riga per riga, da cosa dipende."
+    },
+    "role": {
+      "tuned": {
+        "label": "tarato su di esso",
+        "body": "Un coefficiente, un input o una scelta di modello di Nimbus sono stati fatti guardando questa riga: fissati perché la grandezza torni come registrata, o scelti perché un'alternativa la peggiorava."
+      },
+      "inputInferred": {
+        "label": "input ricavato",
+        "body": "L'input dello scenario è ricavato, in letteratura, proprio dalla grandezza che si controlla: l'accordo è in parte costruito."
+      },
+      "sameSource": {
+        "label": "stessa fonte",
+        "body": "La relazione pubblicata che il modello usa è stata ricavata da dati che comprendono questo evento, oppure il «dato» è letto da una relazione pubblicata invece che misurato sull'evento."
+      },
+      "heldOut": {
+        "label": "tenuto fuori",
+        "body": "Nessuno dei casi precedenti, per quanto mostrano il codice e le fonti citate: una prova fuori campione."
+      },
+      "unestablished": {
+        "label": "da stabilire",
+        "body": "Non ancora verificato; il report completo dice cosa resta aperto."
+      }
+    }
   }
 }

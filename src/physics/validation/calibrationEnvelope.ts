@@ -9,7 +9,7 @@
  * measured.
  *
  * A visitor with the custom fields open is not restricted to those
- * nineteen. They can ask for a two-hundred-kilotonne charge under the
+ * twenty-one. They can ask for a two-hundred-kilotonne charge under the
  * Adriatic, a thirty-kilometre stone at eleven kilometres a second, a
  * magnitude nine and a half under Lisbon. The property sweep in
  * `customScenarios.test.ts` shows the laws do not break out there.
@@ -72,6 +72,52 @@ export const AXIS_BY_TYPE: Readonly<Record<EnvelopeEventType, EnvelopeAxis>> = {
   landslide: 'volume',
 };
 
+/**
+ * How a recorded event bears on the model checked against it.
+ *
+ * A check the model was built to pass says the fit holds, not that the
+ * model is right, and the first thing a reviewer asks of a validation
+ * table is which rows are which. Until 14 September 2026 this report
+ * did not say: nine of fourteen waves "inside" read as validation,
+ * while Storegga, Vaiont and Tōhoku's buoy were the very events their
+ * coefficients had been set on.
+ *
+ * Ordered from the most to the least compromising; where more than one
+ * applies, the row carries the first and says the rest.
+ */
+export type CalibrationRole =
+  /** A coefficient, an input or a modelling choice in this repository
+   *  was made with this row in view: set so the quantity comes out as
+   *  recorded, or chosen because an alternative made the row worse. */
+  | 'tuned'
+  /** The scenario's input is itself inferred, in the literature, from
+   *  the quantity being checked, so agreement is partly by construction. */
+  | 'inputInferred'
+  /** The published relation the model uses was fitted on data that
+   *  include this event, or the "record" is read from a published
+   *  relation rather than measured at the event. */
+  | 'sameSource'
+  /** None of the above, as far as the code and its cited sources show. */
+  | 'heldOut'
+  /** Not yet established; `how` says what is open. */
+  | 'unestablished';
+
+export const CALIBRATION_ROLES: readonly CalibrationRole[] = [
+  'tuned',
+  'inputInferred',
+  'sameSource',
+  'heldOut',
+  'unestablished',
+];
+
+export interface CalibrationUse {
+  readonly role: CalibrationRole;
+  /** What makes it so, specifically enough for a reader to check: the
+   *  coefficient or input and where it is set, or the source and what
+   *  its data hold. */
+  readonly how: string;
+}
+
 export interface CalibrationAnchor {
   /** The event, as it is written in the calibration net. */
   readonly name: string;
@@ -99,6 +145,9 @@ export interface CalibrationAnchor {
   readonly gated: readonly CalibrationQuantity[];
   /** Where the number comes from. */
   readonly source: string;
+  /** For each quantity in `quantities`, whether the model was set on
+   *  it — see {@link CalibrationRole}. */
+  readonly use: Readonly<Partial<Record<CalibrationQuantity, CalibrationUse>>>;
 }
 
 const KILOTON_J = 4.184e12;
@@ -123,6 +172,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['blast'],
     gated: ['blast'],
     source: 'Boslough & Crawford 2008; Chyba 1993 — 3–30 Mt from the flattened forest',
+    use: {
+      blast: {
+        role: 'tuned',
+        how: 'The row checks the energy the preset carries against the 3–30 Mt the flattened forest allows, and two coefficients of the entry model were set on this event: PENETRATION_COEFFICIENT is "tuned against Tunguska + Chelyabinsk observations", and SACHS_BETA = 5/3 is "a single fitted knob, chosen because it lands Chelyabinsk and Tunguska on observation" (effects/atmosphericEntry.ts). The energy itself is inferred from the forest.',
+      },
+    },
   },
   {
     name: 'Meteor Crater',
@@ -131,6 +186,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['crater'],
     gated: ['crater'],
     source: 'Kring 2007 — a 1.2 km crater from a 50 m iron at 12.8 km/s',
+    use: {
+      crater: {
+        role: 'inputInferred',
+        how: "The impactor — Kring 2007's 50 m iron at 12.8 km/s — is not observed: its size and speed are estimates made from the crater itself and from the unmelted fragments around it (Melosh & Collins 2005 give about 40 m at 12 km/s).",
+      },
+    },
   },
   {
     name: 'Chicxulub',
@@ -139,6 +200,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['crater'],
     gated: ['crater'],
     source: 'Hildebrand 1991, Morgan 2016 — a final crater of about 180 km',
+    use: {
+      crater: {
+        role: 'inputInferred',
+        how: "The impactor's size is not observed. The 10–15 km the literature gives is an estimate made largely from this crater, with the global iridium layer, so a scaling law of the family the model uses was part of how the input was chosen.",
+      },
+    },
   },
 
   // --- Explosions. The only family with a toll, a wave and a blast
@@ -150,6 +217,16 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll', 'wave'],
     gated: ['wave'],
     source: '218 dead; a harbour wave of the order of a metre that drowned nobody',
+    use: {
+      toll: {
+        role: 'tuned',
+        how: "The conventional-blast mortality bands (CONVENTIONAL_BLAST_BANDS in casualties.ts) were written after OTA's nuclear bands put this row at fifty times the record. They are composed from Glasstone & Dolan's injury thresholds rather than fitted to the 218, but they were made with this row in view.",
+      },
+      wave: {
+        role: 'heldOut',
+        how: 'No coefficient decides it. The charge sat on a quay, and the model makes a wave only from a burst within the water, the case Glasstone & Dolan give relations for (§6.119). A zero from a burst on land checks that rule, not a wave law.',
+      },
+    },
   },
   {
     name: 'Hiroshima 1945',
@@ -158,6 +235,16 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll', 'blast'],
     gated: ['blast'],
     source: 'Manhattan Engineer District 1946; Glasstone & Dolan Fig. 3.74a for 5 psi at 1.7 km',
+    use: {
+      toll: {
+        role: 'tuned',
+        how: "OTA 1979's mortality bands are Hiroshima's and Nagasaki's own record, and the central mass-fire mortality is set at Hiroshima's (FIRESTORM_MORTALITY in casualties.ts: \"Hiroshima in the middle\").",
+      },
+      blast: {
+        role: 'tuned',
+        how: "The height-of-burst factor was calibrated on this very figure: hobBlastFactor's 1.5 at Hiroshima's scaled height is set so that 5 psi falls at 1.7 km (events/explosion/hob.ts). And the figure is not a measurement in the city but Glasstone & Dolan's Fig. 3.74a read at Hiroshima's yield and height.",
+      },
+    },
   },
   {
     name: 'Crossroads Baker 1946',
@@ -167,6 +254,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     gated: ['wave'],
     source:
       'Glasstone & Dolan 1977 Table 6.57: 94 ft crest to trough at 330 yd down to 9 ft at 4 000 yd, from 90 ft down in a 200 ft lagoon',
+    use: {
+      wave: {
+        role: 'sameSource',
+        how: 'Glasstone & Dolan give the shallow-water relation the model uses (§6.121) as the approximation for bursts "such as Bikini BAKER", and Table 6.57 — the record — is Baker\'s own data in the same book. Nothing in Nimbus was set on it, but the relation and the record share their source.',
+      },
+    },
   },
   {
     name: 'Ivy Mike 1952',
@@ -175,6 +268,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['wave'],
     gated: ['wave'],
     source: 'Fired on an islet it vapourised; no recorded wave',
+    use: {
+      wave: {
+        role: 'heldOut',
+        how: 'No coefficient decides it: the device was fired on an islet, and the model makes a wave only from a burst within the water. The row checks that rule.',
+      },
+    },
   },
   {
     name: 'Castle Bravo 1954',
@@ -183,6 +282,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['wave'],
     gated: ['wave'],
     source: 'Fired on the Bikini reef; remembered for its crater and its fallout, not a wave',
+    use: {
+      wave: {
+        role: 'heldOut',
+        how: 'No coefficient decides it: the device was fired on the reef, not in the water, and the model makes a wave only from a burst within the water. The row checks that rule.',
+      },
+    },
   },
   {
     name: 'Tsar Bomba',
@@ -191,6 +296,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['wave'],
     gated: ['wave'],
     source: 'The largest device ever fired, 1961, 4 km up over water; no wave',
+    use: {
+      wave: {
+        role: 'heldOut',
+        how: 'No coefficient decides it: a burst 4 km up is not in the water, and no relation the model uses gives a wave for it. The row checks that rule.',
+      },
+    },
   },
 
   // --- Earthquakes. Five gated tolls from M6.2 to M7.8, and the two
@@ -202,6 +313,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll'],
     gated: [],
     source: '299 dead',
+    use: {
+      toll: {
+        role: 'tuned',
+        how: "The shaking contours are still drawn with Joyner–Boore 1981 partly because NGA-West2, tried on 9 September, pushed this row out of its gate (events/earthquake/simulate.ts): the law was chosen with this row in view. Italy's own PAGER curve was fitted on 1973–2007 earthquakes, before this one.",
+      },
+    },
   },
   {
     name: "L'Aquila 2009",
@@ -210,6 +327,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll'],
     gated: ['toll'],
     source: '309 dead',
+    use: {
+      toll: {
+        role: 'tuned',
+        how: "The contour law was kept because NGA-West2, tried on 9 September, took this toll from 227 dead to 40 against 309 (events/earthquake/simulate.ts): chosen with this row in view. Italy's own PAGER curve was fitted on 1973–2007 earthquakes, before this one.",
+      },
+    },
   },
   {
     name: 'Northridge 1994',
@@ -218,6 +341,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll'],
     gated: ['toll'],
     source: '57 dead',
+    use: {
+      toll: {
+        role: 'tuned',
+        how: "The contour law was kept because NGA-West2, tried on 9 September, took this toll from 38 dead to 13 against 57 (events/earthquake/simulate.ts): chosen with this row in view. The United States take PAGER's regional fatality curve, fitted on 1973–2007 earthquakes — this one's period.",
+      },
+    },
   },
   {
     name: 'Kokoxili (Kunlun) 2001',
@@ -226,6 +355,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll'],
     gated: ['toll'],
     source: 'A 400 km rupture across empty Tibetan plateau; nobody died',
+    use: {
+      toll: {
+        role: 'heldOut',
+        how: "Nothing was set on it, and the zero is the population map's: nobody lives in the footprint, so no fatality curve could make it anything else. China's PAGER rates were fitted on 1973–2007 earthquakes; whether this one, which killed nobody, was among them does not bear on this row — which is also why it tests the exposure more than the model.",
+      },
+    },
   },
   {
     name: 'Gorkha (Nepal) 2015',
@@ -234,6 +369,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll'],
     gated: [],
     source: '8 964 dead',
+    use: {
+      toll: {
+        role: 'heldOut',
+        how: "Nothing in Nimbus was set on it, and Nepal borrows its region's PAGER curve, fitted on 1973–2007 earthquakes — before 2015.",
+      },
+    },
   },
   {
     name: 'Tōhoku 2011',
@@ -242,6 +383,16 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll', 'wave'],
     gated: ['wave'],
     source: '18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 500 km out',
+    use: {
+      toll: {
+        role: 'heldOut',
+        how: "The offline row is the shaking alone, and nothing that decides it was set on this event: Japan's own PAGER curve was fitted on 1973–2007 earthquakes. The drowning curve read from the 2011 record (TSUNAMI_VULNERABILITY) does not enter it — which is why the coastal toll, measured only in the browser, cannot be called validated.",
+      },
+      wave: {
+        role: 'tuned',
+        how: 'The megathrust uplift factor 0.6 is "the calibrated all-in factor against Tōhoku DART buoy amplitudes" (events/earthquake/seismicTsunami.ts), and the far-field source radius — half the down-dip width — was chosen by measuring this buoy against the alternative (tsunami/spreading.ts).',
+      },
+    },
   },
   {
     name: 'Sumatra–Andaman 2004',
@@ -250,6 +401,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll'],
     gated: [],
     source: '227 898 dead, almost all of them drowned',
+    use: {
+      toll: {
+        role: 'sameSource',
+        how: "Indonesia's own PAGER curve was fitted on 1973–2007 earthquakes, this one's period. The row is the shaking alone; the 1 300 km rupture is Lay et al. 2005's measurement, an input rather than a fit.",
+      },
+    },
   },
 
   // --- Volcanoes. Three columns measured, two tolls, and no wave —
@@ -261,6 +418,16 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll', 'plume'],
     gated: ['plume'],
     source: '57 dead inside a mountain closed for two months; a 24 km column',
+    use: {
+      toll: {
+        role: 'tuned',
+        how: "LATERAL_BLAST_RUNOUT_MULTIPLIER = 2.5 was chosen to land the directed blast on the 27 km Glicken 1996 gives for this eruption (events/volcano/simulate.ts), and 264 of the model's 265 dead are inside that blast.",
+      },
+      plume: {
+        role: 'tuned',
+        how: "The preset's eruption rate was re-tuned from 4×10³ to 4×10⁴ m³/s so that the column would reach the observed height (MT_ST_HELENS_1980 in events/volcano/simulate.ts), and the golden case uses 5×10⁴. Mastin et al. 2009 also fitted the plume-height relation on this eruption (their Table 1, 18 May 1980).",
+      },
+    },
   },
   {
     name: 'Pinatubo 1991',
@@ -269,6 +436,16 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['toll', 'plume'],
     gated: ['plume'],
     source: '847 dead after an evacuation that worked; a 35 km column',
+    use: {
+      toll: {
+        role: 'heldOut',
+        how: "Nothing that decides it was set on this eruption: the currents' reach is Sheridan 1979's mobility ratio on the erupted volume, the mortality inside the cleared zone is Merapi 2010's, and the zone is the one PHIVOLCS actually cleared — an input from the record of the evacuation, not from the toll.",
+      },
+      plume: {
+        role: 'sameSource',
+        how: "Mastin et al. 2009 fitted the plume-height relation the model uses on the eruptions in their Table 1, and 15 June 1991 Pinatubo is one of them. Where the preset's eruption rate comes from is not written down.",
+      },
+    },
   },
   {
     name: 'Krakatau 1883',
@@ -277,6 +454,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['plume'],
     gated: ['plume'],
     source: 'Self & Rampino 1981 — a 40 km column; its wave is not checked here',
+    use: {
+      plume: {
+        role: 'unestablished',
+        how: "Krakatau 1883 is not among the eruptions Mastin et al. 2009 fitted, which would make this row held out. But the preset's eruption rate, 2×10⁵ m³/s, has carried no source since the first commit, so whether it was read back from the 40 km column is not established.",
+      },
+    },
   },
 
   // --- Landslides. Two waves, four decades of volume apart. ---------
@@ -287,6 +470,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['wave'],
     gated: ['wave'],
     source: 'Genevois 2005 — the reservoir wave that overtopped the dam by 245 m',
+    use: {
+      wave: {
+        role: 'tuned',
+        how: "The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3) was chosen on this wave, and the preset's basin depth, 250 m, caps the wave at the height observed — so the preset reaches 250 m by construction. The gated golden case, G-B003, checks only that a wave exists.",
+      },
+    },
   },
   {
     name: 'Storegga 8200 BP',
@@ -295,6 +484,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     quantities: ['wave'],
     gated: ['wave'],
     source: 'Bondevik 2005 — 10–25 m of run-up read from the Norwegian deposits',
+    use: {
+      wave: {
+        role: 'tuned',
+        how: 'The submarine prefactor, VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE = 0.005, was calibrated on the 5–10 m source amplitude Bondevik et al. 2005 give for this slide, and the far-field row is read from that source.',
+      },
+    },
   },
 ];
 

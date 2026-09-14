@@ -56,6 +56,10 @@ import {
 } from '../src/physics/validation/shakemapFootprint.js';
 import {
   CALIBRATION_ANCHORS,
+  CALIBRATION_ROLES,
+  type CalibrationQuantity,
+  type CalibrationRole,
+  type CalibrationUse,
   type EnvelopeEventType,
 } from '../src/physics/validation/calibrationEnvelope.js';
 
@@ -250,6 +254,31 @@ function failureSection(b: AggregateBucket, header: string): string {
 // The calibration net — the model against the record.
 // ---------------------------------------------------------------------
 
+const ROLE_LABEL: Readonly<Record<CalibrationRole, string>> = {
+  tuned: 'tuned on it',
+  inputInferred: 'input inferred from it',
+  sameSource: 'same source',
+  heldOut: 'held out',
+  unestablished: 'not established',
+};
+
+/**
+ * Whether the model was set on the event behind a row, for the quantity
+ * the row checks. A row belongs to the anchor whose name it contains —
+ * the rule `calibrationEnvelope.test.ts` holds every row to — and a row
+ * without one stops the report rather than printing a blank.
+ */
+function useOf(rowName: string, quantity: CalibrationQuantity): CalibrationUse {
+  const anchor = CALIBRATION_ANCHORS.find(
+    (a) => rowName.includes(a.name) && a.quantities.includes(quantity)
+  );
+  const use = anchor?.use[quantity];
+  if (use === undefined) {
+    throw new Error(`No calibration role for "${rowName}" (${quantity})`);
+  }
+  return use;
+}
+
 interface CalibrationNet {
   tolls: TollComparison[];
   waves: WaveComparison[];
@@ -288,7 +317,7 @@ function tollRatio(t: TollComparison): string {
 function tollSection(net: CalibrationNet): string {
   const rows = net.tolls.map(
     (t) =>
-      `| ${t.event.name} | ${recordedLabel(t)} | ${grouped(t.deaths)} | ${grouped(t.low)} – ${grouped(t.high)} | ${bandSpan(t.low, t.high)} | ${tollRatio(t)} | ${t.contains ? 'contains' : '**misses**'} | ${t.event.cause ?? '—'} | ${t.event.gated ? 'gated' : 'declared'} |`
+      `| ${t.event.name} | ${recordedLabel(t)} | ${grouped(t.deaths)} | ${grouped(t.low)} – ${grouped(t.high)} | ${bandSpan(t.low, t.high)} | ${tollRatio(t)} | ${t.contains ? 'contains' : '**misses**'} | ${t.event.cause ?? '—'} | ${t.event.gated ? 'gated' : 'declared'} | ${ROLE_LABEL[useOf(t.event.name, 'toll').role]} |`
   );
   const misses = net.tolls.filter((t) => !t.contains && t.event.caveat !== undefined);
   const notes = net.tolls.filter((t) => t.contains && t.event.caveat !== undefined);
@@ -299,10 +328,11 @@ function tollSection(net: CalibrationNet): string {
     'published input scatter — a claim that can be wrong, not the range of',
     'the vulnerability table. A **gated** row fails the build when its band',
     'stops containing the record; a **declared** row is measured and printed',
-    'with its reason, and the reason is below.',
+    'with its reason, and the reason is below. **Role** says whether the',
+    'model was set on the event, which is under "Which checks are validation".',
     '',
-    '| Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Cause | Standing |',
-    '|-------|---------:|------:|--------------:|-----:|---------------:|---------|-------|----------|',
+    '| Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Cause | Standing | Role |',
+    '|-------|---------:|------:|--------------:|-----:|---------------:|---------|-------|----------|------|',
     ...rows,
     '',
     '#### Where the band misses, and why',
@@ -351,7 +381,7 @@ function waveSection(net: CalibrationNet): string {
       w.globe === null
         ? 'same'
         : `${metres(w.globe)}${w.globeContains === true ? '' : ' — **misses**'}`;
-    return `| ${w.wave.name} | ${range(o.atRangeM)} | ${observed} | ${metres(w.model)} | ${w.contains ? 'contains' : '**misses**'} | ${globe} | ${w.wave.gated ? 'gated' : 'declared'} |`;
+    return `| ${w.wave.name} | ${range(o.atRangeM)} | ${observed} | ${metres(w.model)} | ${w.contains ? 'contains' : '**misses**'} | ${globe} | ${w.wave.gated ? 'gated' : 'declared'} | ${ROLE_LABEL[useOf(w.wave.name, 'wave').role]} |`;
   });
   const globeMisses = net.waves.filter((w) => w.globeContains === false);
   return [
@@ -364,8 +394,8 @@ function waveSection(net: CalibrationNet): string {
     "model computes, and Crossroads Baker's figures carry Glasstone & Dolan's",
     'own 35 % accuracy for explosion waves.',
     '',
-    '| Record | Range | Observed | Model | Verdict | Globe draws | Standing |',
-    '|--------|------:|---------:|------:|---------|------------:|----------|',
+    '| Record | Range | Observed | Model | Verdict | Globe draws | Standing | Role |',
+    '|--------|------:|---------:|------:|---------|------------:|----------|------|',
     ...rows,
     '',
     ...(globeMisses.length === 0
@@ -416,6 +446,102 @@ function footprintSection(net: CalibrationNet): string {
   ].join('\n');
 }
 
+const ROLE_MEANING: Readonly<Record<CalibrationRole, string>> = {
+  tuned:
+    'a coefficient, an input or a modelling choice in this repository was made with this row in view — set so the quantity comes out as recorded, or chosen because an alternative made the row worse.',
+  inputInferred:
+    'the scenario’s input is itself inferred, in the literature, from the quantity being checked, so agreement is partly by construction.',
+  sameSource:
+    'the published relation the model uses was fitted on data that include the event, or the “record” is read from a published relation rather than measured at the event.',
+  heldOut: 'none of these, as far as the code and its cited sources show.',
+  unestablished: 'not yet checked; the note says what is open.',
+};
+
+/** Held-out rows of one table, and how many of them contain their record. */
+function heldOutTally<T>(
+  rows: readonly T[],
+  name: (row: T) => string,
+  quantity: CalibrationQuantity,
+  contains: (row: T) => boolean,
+  recordsNothing: (row: T) => boolean
+): HeldOut {
+  const held = rows.filter((r) => useOf(name(r), quantity).role === 'heldOut');
+  const inside = held.filter(contains);
+  return { total: held.length, inside: inside.length, zeros: inside.filter(recordsNothing).length };
+}
+
+interface HeldOut {
+  total: number;
+  inside: number;
+  /** Of those inside, the ones whose record is of nothing: no dead, no wave. */
+  zeros: number;
+}
+
+function heldOutTallies(net: CalibrationNet): { tolls: HeldOut; waves: HeldOut } {
+  return {
+    tolls: heldOutTally(
+      net.tolls,
+      (t) => t.event.name,
+      'toll',
+      (t) => t.contains,
+      (t) => t.event.recordedDeaths === 0
+    ),
+    waves: heldOutTally(
+      net.waves,
+      (w) => w.wave.name,
+      'wave',
+      (w) => w.contains,
+      (w) => w.wave.observed.high <= 0
+    ),
+  };
+}
+
+/**
+ * What the held-out rows that pass are made of. A zero from a place
+ * nobody lives, or from a charge that never entered the water, checks
+ * a rule rather than a number, and a reader deciding whether the model
+ * has been validated needs that said beside the count.
+ */
+function zerosNote(held: { tolls: HeldOut; waves: HeldOut }): string {
+  const inside = held.tolls.inside + held.waves.inside;
+  const zeros = held.tolls.zeros + held.waves.zeros;
+  if (inside === 0) return '';
+  if (zeros === inside) {
+    return ' Every held-out row inside its record is a record of nothing — no dead, or no wave — so no held-out row yet checks a number the model had to get right.';
+  }
+  return ` ${zeros.toString()} of the ${inside.toString()} held-out rows inside their record are a record of nothing — no dead, or no wave.`;
+}
+
+function rolesSection(net: CalibrationNet): string {
+  const held = heldOutTallies(net);
+  const { tolls, waves } = held;
+  const checks = CALIBRATION_ANCHORS.flatMap((a) =>
+    a.quantities.map((q) => ({ anchor: a, quantity: q, use: useOf(a.name, q) }))
+  );
+  const lines = [
+    'A check the model was built to pass says the fit holds, not that the',
+    'model is right. Every event above, and every golden case against a',
+    'recorded event, carries one of these roles for each quantity it checks:',
+    '',
+    bullet(CALIBRATION_ROLES.map((r) => `**${ROLE_LABEL[r]}** — ${ROLE_MEANING[r]}`)),
+    '',
+    `Held out, the tables above read: death tolls **${tolls.inside.toString()} of ${tolls.total.toString()}** inside the band, waves **${waves.inside.toString()} of ${waves.total.toString()}** inside the record.${zerosNote(held)}`,
+    '',
+  ];
+  for (const role of CALIBRATION_ROLES) {
+    const these = checks.filter((c) => c.use.role === role);
+    if (these.length === 0) continue;
+    lines.push(
+      `#### ${ROLE_LABEL[role][0]?.toUpperCase() ?? ''}${ROLE_LABEL[role].slice(1)} (${these.length.toString()})`,
+      ''
+    );
+    for (const c of these) {
+      lines.push(`**${c.anchor.name}, ${c.quantity}.** ${c.use.how}`, '');
+    }
+  }
+  return lines.join('\n');
+}
+
 const TYPE_ORDER: readonly EnvelopeEventType[] = [
   'impact',
   'explosion',
@@ -441,7 +567,10 @@ function anchorsSection(): string {
     }
     for (const a of anchors) {
       const standing = a.quantities
-        .map((q) => `${q} (${a.gated.includes(q) ? 'gated' : 'declared'})`)
+        .map(
+          (q) =>
+            `${q} (${a.gated.includes(q) ? 'gated' : 'declared'}, ${ROLE_LABEL[useOf(a.name, q).role]})`
+        )
         .join(', ');
       lines.push(`- ${a.name} — ${standing} — ${a.source}`);
     }
@@ -524,10 +653,14 @@ function summary(net: CalibrationNet, replay: AggregateBucket, golden: Aggregate
   const waveContains = net.waves.filter((w) => w.contains);
   const bias = footprintBias(net.footprint);
   const invented = inventedBands(net.footprint);
+  const held = heldOutTallies(net);
+  const heldTolls = held.tolls;
+  const heldWaves = held.waves;
   return bullet([
     `**Death tolls:** ${tollContains.length.toString()} of ${net.tolls.length.toString()} events inside the model's band; ${tollGated.filter((t) => t.contains).length.toString()} of ${tollGated.length.toString()} gated rows pass. Every miss carries its cause below.`,
     `**Waves:** ${waveContains.length.toString()} of ${net.waves.length.toString()} records inside the model's figure, which is the figure the globe draws wherever the table prints no second one${net.waves.some((w) => w.globeContains === false) ? `; the globe misses ${net.waves.filter((w) => w.globeContains === false).length.toString()} of the records the model contains` : ''}.${waveMissSummary(net.waves)}`,
     `**Shaking footprint:** centred at ${bias.geometricMeanRadiusRatio.toFixed(2)} in radius (${bias.biasInStandardErrors.toFixed(2)} standard errors), scatter σ_ln ${bias.sdLn.toFixed(2)} against 0.70 expected; ${invented.length.toString()} bands painted at an intensity never reached.`,
+    `**Held out** — the rows nothing in the model was set on: death tolls ${heldTolls.inside.toString()} of ${heldTolls.total.toString()} inside the band, waves ${heldWaves.inside.toString()} of ${heldWaves.total.toString()}.${zerosNote(held)} The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".`,
     `**Replay fixtures:** ${replay.passed.toString()} of ${replay.total.toString()} pass. **Golden dataset:** ${golden.passed.toString()} of ${golden.total.toString()} pass.`,
   ]);
 }
@@ -593,6 +726,10 @@ ${waveSection(net)}
 ### Shaking footprint against USGS ShakeMap
 
 ${footprintSection(net)}
+
+### Which checks are validation
+
+${rolesSection(net)}
 
 ### Where the model has been measured
 
@@ -684,6 +821,7 @@ otherwise.
         contains: t.contains,
         gated: t.event.gated,
         cause: t.event.cause ?? null,
+        role: useOf(t.event.name, 'toll').role,
         source: t.event.source,
       })),
       waves: net.waves.map((w) => ({
@@ -696,6 +834,7 @@ otherwise.
         globeM: w.globe === null ? null : fixed(w.globe, 3),
         globeContains: w.globeContains,
         gated: w.wave.gated,
+        role: useOf(w.wave.name, 'wave').role,
         source: w.wave.source,
       })),
       footprint: {
@@ -723,6 +862,7 @@ otherwise.
         eventType: a.eventType,
         quantities: a.quantities,
         gated: a.gated,
+        use: Object.fromEntries(a.quantities.map((q) => [q, useOf(a.name, q)])),
         source: a.source,
       })),
     },

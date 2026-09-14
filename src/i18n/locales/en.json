@@ -1304,7 +1304,10 @@
       "wavesGlobe": "but the globe draws {{count}} of them outside",
       "footprint": "shaking footprint against USGS ShakeMap, centred in radius",
       "footprintScatter": "scatter {{sd}}, against {{expected}} expected from ground motion",
-      "invented": "intensity bands the model paints where the earthquake never reached them"
+      "invented": "intensity bands the model paints where the earthquake never reached them",
+      "heldOut": "held-out checks inside their record",
+      "heldOutNote": "tolls {{tollsInside}} of {{tolls}} · waves {{wavesInside}} of {{waves}}; the other rows are fits or shared sources",
+      "heldOutZeros": "every one of them a record of nothing — no dead, or no wave"
     },
     "tolls": {
       "title": "Death tolls against events that were counted",
@@ -1324,7 +1327,8 @@
       "globe": "On the globe",
       "threshold": "Intensity",
       "shakemap": "ShakeMap",
-      "bothZero": "both zero"
+      "bothZero": "both zero",
+      "role": "Role"
     },
     "verdict": {
       "inside": "inside",
@@ -1430,6 +1434,32 @@
       }
     },
     "footer": "Every figure here comes from docs/VALIDATION_REPORT.json, which the software regenerates and checks at every commit.",
-    "toMethodology": "Methodology & citations"
+    "toMethodology": "Methodology & citations",
+    "roles": {
+      "title": "Which checks are validation",
+      "body": "A check the model was built to pass shows that the fit holds, not that the model is right. For each quantity it checks, every measured event carries one of these roles; the full report says, row by row, what makes it so."
+    },
+    "role": {
+      "tuned": {
+        "label": "tuned on it",
+        "body": "A coefficient, an input or a modelling choice in Nimbus was made with this row in view: set so the quantity comes out as recorded, or chosen because an alternative made the row worse."
+      },
+      "inputInferred": {
+        "label": "input from it",
+        "body": "The scenario's input is itself inferred, in the literature, from the quantity being checked, so the agreement is partly by construction."
+      },
+      "sameSource": {
+        "label": "same source",
+        "body": "The published relation the model uses was fitted on data that include this event, or the record is read from a published relation rather than measured at the event."
+      },
+      "heldOut": {
+        "label": "held out",
+        "body": "None of these, as far as the code and its cited sources show: an out-of-sample test."
+      },
+      "unestablished": {
+        "label": "not established",
+        "body": "Not yet checked; the full report says what is still open."
+      }
+    }
   }
 }

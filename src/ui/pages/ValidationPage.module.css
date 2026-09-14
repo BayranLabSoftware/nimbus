@@ -332,6 +332,16 @@
   color: var(--accent, #e8a33d);
 }
 
+/* The one role that counts as validation. */
+.chipHeldOut {
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(120, 200, 140, 0.55);
+  color: #8fd4a2;
+  white-space: nowrap;
+}
+
 /* ---- gaps & footer ------------------------------------------------ */
 
 .gaps {

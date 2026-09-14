@@ -223,6 +223,48 @@ still out by four to a hundred: Pinatubo 97×, Amatrice 0.02×, Gorkha
 0.06×, Tōhoku's headline 11×, Sumatra's coast 0.011×, and the report's
 own DART row 5×.
 
+### 0. Which checks are validation _(labelled 14 September; the held-out set is nearly empty)_
+
+A check the model was built to pass says the fit holds, not that the
+model is right, and until 14 September the report did not say which
+rows were which. Now each quantity each anchor checks carries a role,
+with the constant, input or source behind it (`CalibrationUse` in
+`calibrationEnvelope.ts`, the "Which checks are validation" section of
+the report, and the role column on the public page). Twelve of the
+twenty-six checks are tuned on their own event, two have inputs
+inferred from the record, three share their source, one is not
+established, and eight are held out.
+
+What the labels found: held out, the net has one death toll of four
+inside its band and three waves of three, and three of those four
+passes are zeros — Kokoxili's empty plateau, and Castle Bravo and Ivy
+Mike never entering the water. The remaining one is Beirut's harbour
+wave, a 0 m model inside a 0–2 m record. **No held-out row yet checks a
+number the model had to get right.** Every non-trivial pass is on an
+event the model was set on. That is the first thing a reviewer will
+see, and the thing a paper cannot claim around.
+
+What would change it — events outside every fit, measured, and not yet
+in the net:
+
+- **Earthquake tolls after 2007**, outside PAGER's 1973–2007 window and
+  not looked at when the contour law was chosen: Christchurch 2011,
+  Kumamoto 2016, Kaikōura 2016, Pohang 2017, Albania 2019.
+- **Volcanic tolls** from eruptions no volcanic constant was set on:
+  Unzen 1991 and Fuego 2018 for the pyroclastic currents, Nevado del
+  Ruiz 1985 for the lahar path, whose runout was set on Mount St Helens.
+- **Tsunami amplitudes at buoys** for megathrusts the coupling was not
+  tuned on: Illapel 2015 at DART, and Maule 2010 only where the row does
+  not lean on the aspect-ratio fallback its rupture helped set
+  (`seismicTsunami.ts`).
+- **A plume** from an eruption Mastin et al. 2009 did not fit, with an
+  eruption rate measured independently of the column: Grímsvötn 2011,
+  Calbuco 2015 — and Eyjafjallajökull 2010 only once its preset takes the
+  rate from the erupted mass (Gudmundsson et al. 2012) instead of the
+  column it was re-tuned to.
+
+Each has to go in with its role written before its result is seen.
+
 ### 1. Verify the layers, not just the toll _(intensity done, 9 September)_
 
 A death toll is the product of five models — intensity, exposure,
