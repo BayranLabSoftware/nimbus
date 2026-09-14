@@ -252,6 +252,62 @@ describe('simulateExplosion — composition', () => {
   });
 });
 
+describe('a chemical charge (Glasstone & Dolan §1.23–1.25; Takazawa et al. 2023)', () => {
+  const surface = (yieldMegatons: number, chargeType: 'nuclear' | 'chemical') =>
+    simulateExplosion({
+      yieldMegatons,
+      groundType: 'WET_SOIL',
+      heightOfBurst: m(0),
+      chargeType,
+    });
+
+  it('on the ground blasts like a nuclear surface burst of twice its yield', () => {
+    // Kinney–Graham is a free-air fit: perfect reflection doubles a
+    // charge on the ground. A nuclear burst's half-blast yield takes
+    // that back, so the nuclear surface burst is the fit at W.
+    const chemical = surface(0.0005, 'chemical');
+    const nuclearTwice = surface(0.001, 'nuclear');
+    expect(chemical.blast.overpressure5psiRadius as number).toBeCloseTo(
+      nuclearTwice.blast.overpressure5psiRadius,
+      6
+    );
+    expect(chemical.blast.overpressure1psiRadius as number).toBeCloseTo(
+      nuclearTwice.blast.overpressure1psiRadius,
+      6
+    );
+  });
+
+  it('has no burns, no mass fire, no initial radiation and no pulse', () => {
+    const r = surface(0.0005, 'chemical');
+    expect(r.thermal.thirdDegreeBurnRadius).toBe(0);
+    expect(r.thermal.secondDegreeBurnRadius).toBe(0);
+    expect(r.thermal.firstDegreeBurnRadius).toBe(0);
+    expect(r.firestorm.ignitionRadius).toBe(0);
+    expect(r.firestorm.sustainArea).toBe(0);
+    expect(r.radiation.ld50Radius).toBe(0);
+    expect(r.emp.regime).toBe('NEGLIGIBLE');
+  });
+
+  it('Beirut 2020: the 5 psi ring grows by 2^(1/3) over the free-air figure', () => {
+    const r = simulateExplosion(EXPLOSION_PRESETS.BEIRUT_2020.input);
+    const nuclear = surface(0.0005, 'nuclear');
+    expect(
+      (r.blast.overpressure5psiRadius as number) / (nuclear.blast.overpressure5psiRadius as number)
+    ).toBeGreaterThan(1.2);
+  });
+});
+
+describe('a nuclear surface burst radiates less than an air burst (§7.101)', () => {
+  it('uses the 0.18 partition on the ground and the 0.35 one in the air', () => {
+    const ground = simulateExplosion({ yieldMegatons: 1, heightOfBurst: m(0) });
+    const air = simulateExplosion({ yieldMegatons: 1, heightOfBurst: m(2_000) });
+    expect(ground.thermal.thirdDegreeBurnRadius as number).toBeLessThan(
+      air.thermal.thirdDegreeBurnRadius
+    );
+    expect(ground.firestorm.ignitionRadius as number).toBeLessThan(air.firestorm.ignitionRadius);
+  });
+});
+
 describe('where the burst is', () => {
   const burst = (
     heightOfBurst: number,

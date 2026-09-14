@@ -267,7 +267,7 @@ in the net:
 
 Each has to go in with its role written before its result is seen.
 
-### 0b. Every source read against its record _(done 14 September; the gaps it found are open)_
+### 0b. Every source read against its record _(done 14 September; Vaiont and explosions re-tuned, the other gaps open)_
 
 A reviewer checks citations before physics, and until 14 September
 nothing here had. Two passes now exist. `pnpm audit:sources` resolves
@@ -285,26 +285,35 @@ What the reading fixed in the model:
   (2.4–10× too thick); complex craters took a lunar depth fit (2.6× too
   deep); stratospheric dust and acid rain were ≈ 130× and ≈ 80× their
   sources.
+- **Vaiont (re-tuned).** The confined-basin factor is 1.8, set on the
+  wave Genevois & Ghirotti 2005 give — a crest 140 m above a dam top that
+  stood 25 m above the lake — instead of 3 on the slide's thickness. The
+  wave is now a gated row of the report, tuned on it.
+- **Explosions (re-tuned).** A chemical charge enters the free-air blast
+  fit at twice its yield for the ground's reflection (Takazawa, Kim &
+  Garcés 2023), and has no burn, fire, radiation or pulse (Glasstone &
+  Dolan §1.23). A nuclear burst's thermal partition falls from 0.35 in
+  the air to 0.18 on the ground (§7.101). Crater coefficients take the
+  book's dry-soil crater (§6.09) and the mile-wide craters of Castle Bravo
+  and Ivy Mike. Beirut's toll, already four times the record, rose to
+  6.6× with the larger rings: what remains is the population raster and
+  the conventional mortality bands, which were not refitted.
 
 What it found and did not change — the gaps a paper has to state, and
 the candidates for re-tuning:
 
-- **Tuned on numbers the sources do not give.** Vaiont's confined-basin
-  factor was set on a 250 m wave; Genevois & Ghirotti 2005 give a crest
-  140 m above the top of the dam (their 250 m is the slide's thickness).
-  Anak Krakatau's prefactor was set on an 85 m source; Grilli et al. 2019
-  simulate a leading wave nearly 50 m high. Storegga's on a 5–10 m source
-  amplitude that Bondevik et al. 2005 do not give.
+- **Tuned on numbers the sources do not give.** Anak Krakatau's prefactor
+  was set on an 85 m source; Grilli et al. 2019 simulate a leading wave
+  nearly 50 m high. Storegga's on a 5–10 m source amplitude that Bondevik
+  et al. 2005 do not give.
 - **An airburst's shock radii.** The altitude factor puts Chelyabinsk's
   0.5 psi ring at 96 km, near the 108 km of window damage Popova et al.
   2013 model — but at their 500 Pa threshold the model reaches ≈ 640 km.
-- **Explosions.** The Kinney–Graham fit is for free air: a chemical surface
-  burst's radii are about a fifth short (Beirut). The thermal partition of
-  an air burst, 0.35, is used for surface bursts too (Glasstone & Dolan:
-  0.18). The crater coefficients are twice Glasstone & Dolan's dry soil.
-  Burn thresholds are fixed where the book makes them grow with yield,
-  and the initial-radiation fit has not been checked against the book's
-  dose–range curves.
+- **Explosions.** Burn thresholds are fixed where the book makes them grow
+  with yield; the initial-radiation fit has not been checked against the
+  book's dose–range curves; the thermal partition between the ground and
+  the air is interpolated linearly, not read from the book's Table 7.101;
+  the conventional mortality bands were composed with Beirut in view.
 - **Volcanoes.** The PDC, ashfall, lahar and climate relations are
   project calibrations whose anchors were not rechecked.
 - **Unread.** The 30 cm recorded at DART 21413 (Satake et al. 2013) and a

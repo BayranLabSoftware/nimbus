@@ -20,6 +20,9 @@
 import { describe, expect, it } from 'vitest';
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/index.js';
 import { simulateExplosion } from '../events/explosion/simulate.js';
+import { NUCLEAR_CRATER_COEFFICIENT } from '../events/explosion/cratering.js';
+import { thermalPartitionForHeight } from '../events/explosion/thermal.js';
+import { DEFAULT_CONFINEMENT_DYNAMIC_FACTOR } from '../events/volcano/tsunami.js';
 import { simulateVolcano, VOLCANO_PRESETS } from '../events/volcano/index.js';
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/index.js';
 import { simulateImpact, IMPACT_PRESETS } from '../simulate.js';
@@ -62,8 +65,8 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     const r = simulateLandslide(LANDSLIDE_PRESETS.VAIONT_1963.input);
     expect(r.tsunami).not.toBeNull();
     if (r.tsunami === null) return;
-    expect(r.tsunami.sourceAmplitude as number).toBeGreaterThan(150);
-    expect(r.tsunami.sourceAmplitude as number).toBeLessThan(300);
+    expect(r.tsunami.sourceAmplitude as number).toBeGreaterThan(125);
+    expect(r.tsunami.sourceAmplitude as number).toBeLessThan(165);
   });
 
   it('B-004 Sikhote-Alin iron strewn-field largest crater', () => {
@@ -231,6 +234,47 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     );
   });
 
+  it('B-016 Vaiont confined-basin factor set on the wave its source gives', () => {
+    // Pre-fix: factor 3, the preset at its 250 m depth cap — tuned on a
+    // "250 m wave" that is the slide's thickness in Genevois & Ghirotti
+    // 2005. Their crest: 140 m above a dam top 25 m above the lake.
+    expect(DEFAULT_CONFINEMENT_DYNAMIC_FACTOR).toBe(1.8);
+    const r = simulateLandslide(LANDSLIDE_PRESETS.VAIONT_1963.input);
+    expect(r.tsunami?.sourceAmplitude as number).toBeGreaterThan(125);
+    expect(r.tsunami?.sourceAmplitude as number).toBeLessThan(165);
+  });
+
+  it('B-017 A chemical charge on the ground blasts at twice its yield and has no flash', () => {
+    // Pre-fix: the free-air Kinney–Graham fit at the charge's yield
+    // (radii 21 % short) and nuclear burn, fire and radiation rings
+    // drawn around Beirut, Halifax and Texas City.
+    const chemical = simulateExplosion({
+      yieldMegatons: 0.0005,
+      heightOfBurst: m(0),
+      chargeType: 'chemical',
+    });
+    const nuclearTwice = simulateExplosion({ yieldMegatons: 0.001, heightOfBurst: m(0) });
+    expect(chemical.blast.overpressure5psiRadius as number).toBeCloseTo(
+      nuclearTwice.blast.overpressure5psiRadius,
+      6
+    );
+    expect(chemical.thermal.thirdDegreeBurnRadius).toBe(0);
+    expect(chemical.radiation.ld50Radius).toBe(0);
+  });
+
+  it('B-018 Nuclear crater coefficients follow Glasstone & Dolan §6.09 for dry soil', () => {
+    // Pre-fix: dry soil 75 m and firm ground 60 m, twice the 60 ft
+    // apparent radius the book gives a 1 kt burst in dry soil.
+    expect(NUCLEAR_CRATER_COEFFICIENT.DRY_SOIL).toBeCloseTo(2 * 60 * 0.3048, 1);
+    expect(NUCLEAR_CRATER_COEFFICIENT.FIRM_GROUND).toBe(NUCLEAR_CRATER_COEFFICIENT.DRY_SOIL);
+  });
+
+  it('B-019 A nuclear surface burst radiates with the 0.18 partition', () => {
+    // Pre-fix: the air-burst 0.35 for every height of burst.
+    expect(thermalPartitionForHeight(0, 1_000)).toBe(0.18);
+    expect(thermalPartitionForHeight(580, 15)).toBe(0.35);
+  });
+
   // Smoke test: verify every preset still renders sensible numbers
   // (catches regressions from any unrelated change to a preset).
   it('all 5 event-type preset-bundles produce non-degenerate output (smoke)', () => {
@@ -256,9 +300,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-015 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
+    // B-001..B-019 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
     // B-007 superseded by B-011).
-    const expectedRows = 15;
-    expect(expectedRows).toBe(15);
+    const expectedRows = 19;
+    expect(expectedRows).toBe(19);
   });
 });

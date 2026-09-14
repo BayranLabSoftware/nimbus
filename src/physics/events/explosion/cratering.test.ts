@@ -3,33 +3,28 @@ import { Mt, megatonsToJoules } from '../../units.js';
 import { NUCLEAR_CRATER_COEFFICIENT, nuclearApparentCraterDiameter } from './cratering.js';
 
 describe('nuclearApparentCraterDiameter (Glasstone & Dolan 1977, §6.09 scaling)', () => {
-  it('default firm-ground coefficient gives ≈477 m crater for a 1 Mt contact burst', () => {
-    const D = nuclearApparentCraterDiameter({ yieldEnergy: megatonsToJoules(Mt(1)) }) as number;
-    // K = 60, W_kt = 1000 → D = 60 × 1000^0.3 ≈ 476.6 m.
-    expect(D).toBeCloseTo(60 * 1000 ** 0.3, 3);
-  });
-
-  it('respects the chosen ground preset (hard rock < firm < dry < wet)', () => {
-    const yieldJ = megatonsToJoules(Mt(1));
-    const hard = nuclearApparentCraterDiameter({
-      yieldEnergy: yieldJ,
-      groundCoefficient: NUCLEAR_CRATER_COEFFICIENT.HARD_ROCK,
-    }) as number;
-    const firm = nuclearApparentCraterDiameter({
-      yieldEnergy: yieldJ,
-      groundCoefficient: NUCLEAR_CRATER_COEFFICIENT.FIRM_GROUND,
-    }) as number;
-    const dry = nuclearApparentCraterDiameter({
-      yieldEnergy: yieldJ,
+  it('gives the 60 ft apparent radius Glasstone & Dolan give a 1 kt burst in dry soil', () => {
+    const D = nuclearApparentCraterDiameter({
+      yieldEnergy: megatonsToJoules(Mt(0.001)),
       groundCoefficient: NUCLEAR_CRATER_COEFFICIENT.DRY_SOIL,
     }) as number;
-    const wet = nuclearApparentCraterDiameter({
-      yieldEnergy: yieldJ,
-      groundCoefficient: NUCLEAR_CRATER_COEFFICIENT.WET_SOIL,
-    }) as number;
-    expect(hard).toBeLessThan(firm);
-    expect(firm).toBeLessThan(dry);
-    expect(dry).toBeLessThan(wet);
+    expect(D / 2).toBeCloseTo(60 * 0.3048, 0);
+  });
+
+  it('defaults to firm ground, the dry-soil-or-soft-rock crater: ≈ 291 m at 1 Mt', () => {
+    const D = nuclearApparentCraterDiameter({ yieldEnergy: megatonsToJoules(Mt(1)) }) as number;
+    expect(D).toBeCloseTo(36.6 * 1000 ** 0.3, 3);
+  });
+
+  it('orders the ground presets: hard rock < firm = dry < wet < clay', () => {
+    const yieldJ = megatonsToJoules(Mt(1));
+    const D = (k: number): number =>
+      nuclearApparentCraterDiameter({ yieldEnergy: yieldJ, groundCoefficient: k });
+    const c = NUCLEAR_CRATER_COEFFICIENT;
+    expect(D(c.HARD_ROCK)).toBeLessThan(D(c.FIRM_GROUND));
+    expect(D(c.FIRM_GROUND)).toBe(D(c.DRY_SOIL));
+    expect(D(c.DRY_SOIL)).toBeLessThan(D(c.WET_SOIL));
+    expect(D(c.WET_SOIL)).toBeLessThan(D(c.CLAY));
   });
 
   it('scales as W^0.3: 1 000× the yield → ≈ 7.94× the diameter', () => {
@@ -42,15 +37,17 @@ describe('nuclearApparentCraterDiameter (Glasstone & Dolan 1977, §6.09 scaling)
     expect(big / small).toBeCloseTo(1000 ** 0.3, 8);
   });
 
-  it('Castle-Bravo-class (15 Mt, wet coral) predicts a 1.5–2 km crater', () => {
-    // K = 92, W = 15 000 kt → 92 × 15 000^0.3 ≈ 1 647 m, against a
-    // Castle Bravo crater of roughly 2 km. A pin on the project's K,
-    // not a validation: the value has no published source.
-    const D = nuclearApparentCraterDiameter({
-      yieldEnergy: megatonsToJoules(Mt(15)),
-      groundCoefficient: NUCLEAR_CRATER_COEFFICIENT.WET_SOIL,
-    }) as number;
-    expect(D).toBeGreaterThan(1_500);
-    expect(D).toBeLessThan(2_000);
+  it('puts Castle Bravo and Ivy Mike near the mile-wide craters they left in the reef', () => {
+    // Kunkle & Ristvet 2013 (DTRIAC SR-12-001): both left a "mile-wide"
+    // crater, 1.6 km. K = 92 gives 1.65 km for Bravo (15 Mt) and
+    // 1.48 km for Mike (10.4 Mt).
+    const D = (mt: number): number =>
+      nuclearApparentCraterDiameter({
+        yieldEnergy: megatonsToJoules(Mt(mt)),
+        groundCoefficient: NUCLEAR_CRATER_COEFFICIENT.WET_SOIL,
+      });
+    const mile = 1_609;
+    expect(Math.abs(D(15) - mile) / mile).toBeLessThan(0.1);
+    expect(Math.abs(D(10.4) - mile) / mile).toBeLessThan(0.1);
   });
 });

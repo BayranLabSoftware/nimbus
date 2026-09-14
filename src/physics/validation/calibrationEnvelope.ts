@@ -469,11 +469,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     value: 2.7e8,
     quantities: ['wave'],
     gated: ['wave'],
-    source: 'Genevois & Ghirotti 2005 — a wave that crested 140 m above the top of the dam',
+    source:
+      'Genevois & Ghirotti 2005 — a wave that crested 140 m above the top of the dam, which stood 25 m above the lake (ASDSO)',
     use: {
       wave: {
         role: 'tuned',
-        how: "The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3) was chosen on this wave, and the preset's basin depth, 250 m, caps the wave there — so the preset reaches 250 m by construction. The 250 m it was tuned on is not the wave in Genevois & Ghirotti 2005, which crested 140 m above the top of the dam; their 250 m is the thickness of the slide mass. The gated golden case, G-B003, checks only that a wave exists.",
+        how: 'The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 1.8) was chosen on this wave, the only confined basin with a record: 90 m of static rise times 1.8 is 162 m against 165. Until 14 September 2026 the factor was 3, tuned on a 250 m that is the thickness of the slide in the same paper.',
       },
     },
   },

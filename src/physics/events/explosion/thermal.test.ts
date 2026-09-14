@@ -1,13 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import { NUCLEAR_THERMAL_PARTITION, THIRD_DEGREE_BURN_FLUENCE } from '../../constants.js';
 import { Mt, m as meters, megatonsToJoules } from '../../units.js';
-import { thermalFluence, thirdDegreeBurnRadius } from './thermal.js';
+import {
+  CONTACT_SURFACE_BURST_THERMAL_PARTITION,
+  thermalFluence,
+  thermalPartitionForHeight,
+  thirdDegreeBurnRadius,
+} from './thermal.js';
 
 /** Hiroshima ≈ 15 kt = 6.276 × 10¹³ J; Tsar Bomba ≈ 50 Mt = 2.092 × 10¹⁷ J. */
 const HIROSHIMA_YIELD = megatonsToJoules(Mt(0.015));
 const TSAR_BOMBA_YIELD = megatonsToJoules(Mt(50));
 
-describe('thermalFluence (Glasstone & Dolan 1977, §7.03)', () => {
+describe('thermalFluence (Glasstone & Dolan 1977, §7.94–7.96)', () => {
   it('follows inverse-square decay', () => {
     const near = thermalFluence({ distance: meters(1_000), yieldEnergy: HIROSHIMA_YIELD });
     const far = thermalFluence({ distance: meters(2_000), yieldEnergy: HIROSHIMA_YIELD });
@@ -82,5 +87,34 @@ describe('thirdDegreeBurnRadius (8 cal/cm² project threshold)', () => {
       thermalPartition: NUCLEAR_THERMAL_PARTITION,
     }) as number;
     expect(rDefault).toBe(rExplicit);
+  });
+});
+
+describe('thermalPartitionForHeight (Glasstone & Dolan 1977, §7.101)', () => {
+  it('is 0.18 for a contact surface burst and 0.35 for an air burst', () => {
+    expect(thermalPartitionForHeight(0, 1_000)).toBe(CONTACT_SURFACE_BURST_THERMAL_PARTITION);
+    expect(CONTACT_SURFACE_BURST_THERMAL_PARTITION).toBe(0.18);
+    expect(thermalPartitionForHeight(10_000, 1_000)).toBe(NUCLEAR_THERMAL_PARTITION);
+  });
+
+  it('reaches the air-burst value at 200·W^0.4 ft, the height of the book’s air-burst curves', () => {
+    const kt = 15;
+    const airBurstHeightM = 200 * kt ** 0.4 * 0.3048;
+    expect(thermalPartitionForHeight(airBurstHeightM, kt)).toBe(NUCLEAR_THERMAL_PARTITION);
+    expect(thermalPartitionForHeight(airBurstHeightM / 2, kt)).toBeCloseTo((0.18 + 0.35) / 2, 10);
+  });
+
+  it('leaves Hiroshima an air burst: 580 m is above 200·15^0.4 ft ≈ 180 m', () => {
+    expect(thermalPartitionForHeight(580, 15)).toBe(NUCLEAR_THERMAL_PARTITION);
+  });
+
+  it('shrinks a surface burst’s burn radius by √(0.18/0.35) before attenuation', () => {
+    const W = megatonsToJoules(Mt(1));
+    const air = thirdDegreeBurnRadius({ yieldEnergy: W }) as number;
+    const ground = thirdDegreeBurnRadius({
+      yieldEnergy: W,
+      thermalPartition: thermalPartitionForHeight(0, 1_000),
+    }) as number;
+    expect(ground / air).toBeCloseTo(Math.sqrt(0.18 / 0.35), 10);
   });
 });

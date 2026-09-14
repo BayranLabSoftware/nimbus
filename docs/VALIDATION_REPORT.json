@@ -88,10 +88,10 @@
         "recorded": 218,
         "recordedLow": 218,
         "recordedHigh": 218,
-        "model": 902,
-        "bandLow": 817,
-        "bandHigh": 1533,
-        "ratio": 4.138,
+        "model": 1432,
+        "bandLow": 1297,
+        "bandHigh": 2433,
+        "ratio": 6.569,
         "contains": false,
         "gated": false,
         "cause": "populationRaster",
@@ -356,6 +356,19 @@
         "gated": true,
         "role": "tuned",
         "source": "Bondevik et al. 2005 read run-up from tsunami deposits — 10–12 m in western Norway, 3–6 m in northeast Scotland, over 20 m on Shetland; the metre-scale open-ocean wave at a thousand kilometres is this project’s inference from them"
+      },
+      {
+        "record": "Vaiont 1963 at the dam",
+        "rangeM": 0,
+        "observedLowM": 125,
+        "observedHighM": 165,
+        "modelM": 162,
+        "contains": true,
+        "globeM": null,
+        "globeContains": null,
+        "gated": true,
+        "role": "tuned",
+        "source": "Genevois & Ghirotti 2005: the wave crested 140 m above the top of the dam (elsewhere, more than 100 m above the crest); the lake stood 25 m below the crest that night (ASDSO) — 125 to 165 m above the water"
       }
     ],
     "footprint": {
@@ -514,10 +527,10 @@
       },
       {
         "event": "Beirut 2020",
-        "measuredLow": 817,
-        "measuredHigh": 1533,
-        "interpolatedLow": 817,
-        "interpolatedHigh": 1533,
+        "measuredLow": 1297,
+        "measuredHigh": 2433,
+        "interpolatedLow": 1297,
+        "interpolatedHigh": 2433,
         "comparable": true
       },
       {
@@ -908,10 +921,10 @@
         "use": {
           "wave": {
             "role": "tuned",
-            "how": "The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3) was chosen on this wave, and the preset's basin depth, 250 m, caps the wave there — so the preset reaches 250 m by construction. The 250 m it was tuned on is not the wave in Genevois & Ghirotti 2005, which crested 140 m above the top of the dam; their 250 m is the thickness of the slide mass. The gated golden case, G-B003, checks only that a wave exists."
+            "how": "The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 1.8) was chosen on this wave, the only confined basin with a record: 90 m of static rise times 1.8 is 162 m against 165. Until 14 September 2026 the factor was 3, tuned on a 250 m that is the thickness of the slide in the same paper."
           }
         },
-        "source": "Genevois & Ghirotti 2005 — a wave that crested 140 m above the top of the dam"
+        "source": "Genevois & Ghirotti 2005 — a wave that crested 140 m above the top of the dam, which stood 25 m above the lake (ASDSO)"
       },
       {
         "name": "Storegga 8200 BP",

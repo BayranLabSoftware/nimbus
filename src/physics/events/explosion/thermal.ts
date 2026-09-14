@@ -84,6 +84,33 @@ export interface BurnRadiusInput {
   fluenceThreshold?: number;
 }
 
+/** Thermal partition of a contact surface burst: Glasstone & Dolan
+ *  (1977) §7.101 represent one by an effective 0.18. */
+export const CONTACT_SURFACE_BURST_THERMAL_PARTITION = 0.18;
+
+const FOOT_M = 0.3048;
+
+/**
+ * Thermal partition of a nuclear burst at a height of burst.
+ *
+ * Glasstone & Dolan give 0.18 for a contact surface burst (§7.101) and
+ * 0.35 for an air burst below about 15 000 ft (Table 7.88), and derive
+ * the values between — their Table 7.101 — by interpolating between the
+ * two. Nimbus interpolates linearly in height, from the ground up to
+ * 200·W^0.4 ft, the burst height their air-burst exposure curves assume
+ * (§7.42); a burst above that height is an air burst. The linear form
+ * is Nimbus's, not a transcription of Table 7.101.
+ */
+export function thermalPartitionForHeight(heightOfBurstM: number, yieldKilotons: number): number {
+  const airBurst = NUCLEAR_THERMAL_PARTITION;
+  if (!Number.isFinite(yieldKilotons) || yieldKilotons <= 0) return airBurst;
+  const h = Number.isFinite(heightOfBurstM) ? Math.max(0, heightOfBurstM) : 0;
+  const airBurstHeightM = 200 * yieldKilotons ** 0.4 * FOOT_M;
+  if (h >= airBurstHeightM) return airBurst;
+  const contact = CONTACT_SURFACE_BURST_THERMAL_PARTITION;
+  return contact + (airBurst - contact) * (h / airBurstHeightM);
+}
+
 /**
  * Effective Beer-Lambert attenuation length (m) for thermal radiation
  * along a horizontal path through the lower atmosphere on a "moderately

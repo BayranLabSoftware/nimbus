@@ -56,7 +56,7 @@ export const SEA_LEVEL_PRESSURE = 101_325 as Pascals;
 // blast, neutrons, and prompt gamma.
 // Glasstone & Dolan (1977), §1.24–1.25 (35 % for an air burst below
 // about 40 000 ft); a contact surface burst behaves as 0.18 (§7.101),
-// which the model does not apply. Dimensionless.
+// see thermalPartitionForHeight. Dimensionless.
 export const NUCLEAR_THERMAL_PARTITION = 0.35;
 
 // Luminous efficiency of a cosmic-impact fireball — fraction of the

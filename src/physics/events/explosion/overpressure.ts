@@ -51,10 +51,10 @@ export interface OverpressureInput {
  * Caveats:
  *   - Free air. A charge on the ground, reflecting perfectly, makes a
  *     hemispherical wave like twice its yield in free air (Takazawa et
- *     al. 2023); the simulator passes the yield as given, so a chemical
- *     surface burst's radii are about a fifth short. A nuclear yield
- *     puts only about half its energy into the air shock (Glasstone &
- *     Dolan §1.24), which the reflection roughly restores.
+ *     al. 2023); the explosion simulator passes a chemical charge at
+ *     twice its yield. A nuclear yield puts only about half its energy
+ *     into the air shock (Glasstone & Dolan §1.25), which the
+ *     reflection restores, so a nuclear burst passes at its yield.
  *   - Airbursts develop a Mach-stem reflection that boosts ground-range
  *     overpressure near the optimum height of burst; the HOB correction
  *     models that separately.

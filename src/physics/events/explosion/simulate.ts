@@ -20,7 +20,12 @@ import { peakOverpressure } from './overpressure.js';
 import { peakWindAtRange } from './peakWind.js';
 import { initialRadiationRadii, type RadiationDoseResult } from './radiation.js';
 import { computeSeaCoupling, type SeaCoupling } from '../../effects/seaCoupling.js';
-import { firstDegreeBurnRadius, secondDegreeBurnRadius, thirdDegreeBurnRadius } from './thermal.js';
+import {
+  firstDegreeBurnRadius,
+  secondDegreeBurnRadius,
+  thermalPartitionForHeight,
+  thirdDegreeBurnRadius,
+} from './thermal.js';
 import { explosionTsunami, type ExplosionTsunamiResult } from './underwaterBurst.js';
 import type { Joules, Meters, MetersPerSecond, Pascals, SquareMeters } from '../../units.js';
 import { J, Mt, Pa, m, megatonsToJoules, mps, sqm } from '../../units.js';
@@ -40,8 +45,12 @@ export type ExplosionGroundType = keyof typeof NUCLEAR_CRATER_COEFFICIENT;
  * happened. A chemical detonation has no such flash, so the deaths
  * come from the shock and from what it brings down.
  *
- * Only the casualty model reads this; the rings, the crater and the
- * shock front depend on the energy alone.
+ * The physics reads it too. At the few thousand degrees of a chemical
+ * explosion the thermal radiation is comparatively small and nearly
+ * all the energy goes into the blast, where a nuclear burst puts about
+ * half there and a third into heat (Glasstone & Dolan 1977, §1.23–1.25):
+ * a chemical charge has no burn or fire radii, no initial nuclear
+ * radiation, no electromagnetic pulse, and the blast of its whole yield.
  */
 export type ExplosionChargeType = 'nuclear' | 'chemical';
 
@@ -320,9 +329,20 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   const factor = exoatmospheric ? 0 : inWater ? depthFactor : hobBlastFactor(z);
   const absorbed = (radius: Meters): Meters => (inWater ? m(0) : grounded(radius));
 
-  const r5psi = distanceForOverpressure(yieldJoules, FIVE_PSI);
-  const r1psi = distanceForOverpressure(yieldJoules, ONE_PSI);
-  const rLight = distanceForOverpressure(yieldJoules, OVERPRESSURE_LIGHT_DAMAGE);
+  const chemical = input.chargeType === 'chemical';
+  // The blast. Kinney & Graham fit a TNT charge in free air, and a
+  // charge on the ground, reflecting perfectly, makes the hemispherical
+  // wave of twice its yield in free air (Takazawa, Kim & Garcés 2023,
+  // Seismol. Res. Lett. 94: 2514). A chemical charge puts essentially
+  // its whole yield into the blast, so its surface burst is the fit at
+  // twice the yield; a nuclear burst puts about half (Glasstone & Dolan
+  // §1.25), which the reflection restores, so its surface burst is the
+  // fit at the yield itself. The height-of-burst factor starts from
+  // that surface burst either way.
+  const blastYield = J((yieldJoules as number) * (chemical ? 2 : 1));
+  const r5psi = distanceForOverpressure(blastYield, FIVE_PSI);
+  const r1psi = distanceForOverpressure(blastYield, ONE_PSI);
+  const rLight = distanceForOverpressure(blastYield, OVERPRESSURE_LIGHT_DAMAGE);
 
   // Phase-17 thermal calibration. Pass `heightOfBurst` so the burn-
   // radius helpers solve self-consistently with a Beer-Lambert
@@ -332,9 +352,22 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   // (Castle Bravo 3°-burn 72 km computed vs 28 km reference; Tsar
   // Bomba 132 km vs 55 km). With it, every benchmark scenario from
   // Hiroshima to Tsar Bomba lands within ±30 % of the published curves.
-  const burn3 = thirdDegreeBurnRadius({ yieldEnergy: yieldJoules, heightOfBurst: hobMeters });
-  const burn2 = secondDegreeBurnRadius({ yieldEnergy: yieldJoules, heightOfBurst: hobMeters });
-  const burn1 = firstDegreeBurnRadius({ yieldEnergy: yieldJoules, heightOfBurst: hobMeters });
+  //
+  // The partition of the yield that radiates falls from 0.35 for an air
+  // burst to 0.18 for a burst on the ground (Glasstone & Dolan §7.101;
+  // see thermalPartitionForHeight). A chemical charge has no flash.
+  const thermalPartition = thermalPartitionForHeight(hobMeters, yieldKilotons);
+  const flash = (radius: Meters): Meters => (chemical ? m(0) : radius);
+  const burn3 = flash(
+    thirdDegreeBurnRadius({ yieldEnergy: yieldJoules, heightOfBurst: hobMeters, thermalPartition })
+  );
+  const burn2 = flash(
+    secondDegreeBurnRadius({ yieldEnergy: yieldJoules, heightOfBurst: hobMeters, thermalPartition })
+  );
+  const burn1 = flash(
+    firstDegreeBurnRadius({ yieldEnergy: yieldJoules, heightOfBurst: hobMeters, thermalPartition })
+  );
+  const fireInput = { yieldEnergy: yieldJoules, thermalPartition };
 
   const result: ExplosionScenarioResult = {
     inputs: input,
@@ -356,8 +389,8 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       overpressure5psiRadius: r5psi,
       overpressure1psiRadius: r1psi,
       lightDamageRadius: rLight,
-      peakAt1km: peakOverpressure({ distance: m(1_000), yieldEnergy: yieldJoules }),
-      peakAt5km: peakOverpressure({ distance: m(5_000), yieldEnergy: yieldJoules }),
+      peakAt1km: peakOverpressure({ distance: m(1_000), yieldEnergy: blastYield }),
+      peakAt5km: peakOverpressure({ distance: m(5_000), yieldEnergy: blastYield }),
       overpressure5psiRadiusHob: m((r5psi as number) * factor),
       overpressure1psiRadiusHob: m((r1psi as number) * factor),
       lightDamageRadiusHob: m((rLight as number) * factor),
@@ -371,17 +404,17 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       firstDegreeBurnRadius: absorbed(burn1),
     },
     peakWind: {
-      at1km: peakWindAtRange({ distance: m(1_000), yieldEnergy: yieldJoules }),
-      at5km: peakWindAtRange({ distance: m(5_000), yieldEnergy: yieldJoules }),
-      at10km: peakWindAtRange({ distance: m(10_000), yieldEnergy: yieldJoules }),
-      at50km: peakWindAtRange({ distance: m(50_000), yieldEnergy: yieldJoules }),
+      at1km: peakWindAtRange({ distance: m(1_000), yieldEnergy: blastYield }),
+      at5km: peakWindAtRange({ distance: m(5_000), yieldEnergy: blastYield }),
+      at10km: peakWindAtRange({ distance: m(10_000), yieldEnergy: blastYield }),
+      at50km: peakWindAtRange({ distance: m(50_000), yieldEnergy: blastYield }),
     },
     firestorm: {
-      ignitionRadius: absorbed(flammableIgnitionRadius({ yieldEnergy: yieldJoules })),
-      sustainRadius: absorbed(firestormSustainRadius({ yieldEnergy: yieldJoules })),
+      ignitionRadius: absorbed(flash(flammableIgnitionRadius(fireInput))),
+      sustainRadius: absorbed(flash(firestormSustainRadius(fireInput))),
       ignitionArea:
-        exoatmospheric || inWater ? sqm(0) : flammableIgnitionArea({ yieldEnergy: yieldJoules }),
-      sustainArea: exoatmospheric || inWater ? sqm(0) : firestormArea({ yieldEnergy: yieldJoules }),
+        exoatmospheric || inWater || chemical ? sqm(0) : flammableIgnitionArea(fireInput),
+      sustainArea: exoatmospheric || inWater || chemical ? sqm(0) : firestormArea(fireInput),
     },
     crater: {
       // Glasstone & Dolan §6.10: a nuclear airburst at sufficient
@@ -401,10 +434,12 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
           : m(0),
     },
     radiation:
-      exoatmospheric || inWater
+      exoatmospheric || inWater || chemical
         ? { ld50Radius: m(0), ld100Radius: m(0), arsThresholdRadius: m(0) }
         : initialRadiationRadii(input.yieldMegatons),
-    emp: electromagneticPulse(input.yieldMegatons, hobMeters),
+    emp: chemical
+      ? { regime: 'NEGLIGIBLE', peakField: 0, affectedRadius: m(0) }
+      : electromagneticPulse(input.yieldMegatons, hobMeters),
     isContactWaterBurst: false,
     asymmetry: {
       crater: ISOTROPIC_RING,

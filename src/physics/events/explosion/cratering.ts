@@ -5,25 +5,29 @@ import { joulesToMegatons, m } from '../../units.js';
  * Target-ground coefficient K (metres) in the apparent-crater scaling
  *     D_a = K · W_kt^0.3
  *
- * Project estimates, with no source that gives them:
- *   HARD_ROCK    40   — granite, basalt, competent bedrock.
- *   FIRM_GROUND  60   — tuff, limestone, dense soil (default).
- *   DRY_SOIL     75   — sand, gravel, loose earth.
- *   WET_SOIL     92   — saturated alluvium, coral reef.
- *   CLAY        105   — water-saturated clay / soft muck.
+ *   DRY_SOIL     36.6 — sand, gravel, loose earth.
+ *   FIRM_GROUND  36.6 — tuff, limestone, dense soil (default).
+ *     Glasstone & Dolan (1977, §6.09) put the apparent radius of a
+ *     1 kt surface burst in dry soil or dry soft rock at about 60 ft,
+ *     a diameter of 36.6 m, and scale every crater dimension by W^0.3.
+ *   HARD_ROCK    29   — granite, basalt, competent bedrock. The book
+ *     says only "somewhat less"; 0.8 of dry soil is a project value.
+ *   WET_SOIL     92   — saturated alluvium, coral reef. Water-saturated
+ *     soil makes an appreciably larger crater (§6.09). 92 m puts Castle
+ *     Bravo (15 Mt) at 1.6 km and Ivy Mike (10.4 Mt) at 1.5 km, the
+ *     "mile-wide" craters both left in the reef (Kunkle & Ristvet 2013,
+ *     DTRIAC SR-12-001).
+ *   CLAY        105   — water-saturated clay / soft muck. A project
+ *     value above wet soil, with no source.
  *
- * Earlier comments credited them to Murphey & Vortman (1961), a
- * "Nordyke 1977" and Young (1997); none of those was found to give
- * these numbers. Glasstone & Dolan (1977, §6.09) put the apparent
- * radius of a 1 kt surface burst in dry soil or dry soft rock at about
- * 60 ft — a diameter of 37 m, half the DRY_SOIL value and 0.6 of the
- * default — with hard rock "somewhat less" and water-saturated soil
- * appreciably more.
+ * Until 14 September 2026 dry soil and firm ground were 75 and 60 and
+ * hard rock 40 — twice the book's dry-soil crater, credited to papers
+ * that do not give them.
  */
 export const NUCLEAR_CRATER_COEFFICIENT = {
-  HARD_ROCK: 40,
-  FIRM_GROUND: 60,
-  DRY_SOIL: 75,
+  HARD_ROCK: 29,
+  FIRM_GROUND: 36.6,
+  DRY_SOIL: 36.6,
   WET_SOIL: 92,
   CLAY: 105,
 } as const;
@@ -35,7 +39,7 @@ export interface NuclearCraterInput {
   /** Total explosive yield (J). */
   yieldEnergy: Joules;
   /**
-   * Target-ground coefficient K (m). Defaults to 60 (firm ground).
+   * Target-ground coefficient K (m). Defaults to 36.6 (firm ground).
    * See {@link NUCLEAR_CRATER_COEFFICIENT} for named presets.
    */
   groundCoefficient?: number;
@@ -59,8 +63,9 @@ export interface NuclearCraterInput {
  *   - Surface contact burst. Airbursts at practical heights form no
  *     measurable crater; subsurface bursts (Plowshare-style) excavate
  *     much more than the apparent formula predicts.
- *   - The K values are project estimates (see
- *     {@link NUCLEAR_CRATER_COEFFICIENT}).
+ *   - K comes from Glasstone & Dolan for dry soil, from the Bravo and
+ *     Mike craters for saturated reef, and is a project value for hard
+ *     rock and clay (see {@link NUCLEAR_CRATER_COEFFICIENT}).
  */
 export function nuclearApparentCraterDiameter(input: NuclearCraterInput): Meters {
   const W_kt = (joulesToMegatons(input.yieldEnergy) as number) * 1000;

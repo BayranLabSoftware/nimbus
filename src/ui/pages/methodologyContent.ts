@@ -822,7 +822,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'ΔP/P₀ = 808·[1 + (Z/4.5)²] / √([1 + (Z/0.048)²]·[1 + (Z/0.32)²]·[1 + (Z/1.35)²]) ,   Z = R · W^(−1/3)  (m, kg TNT)',
         description:
-          'The Kinney–Graham fit for a TNT charge in free air, inverted for the 5, 1 and 0.5 psi radii, with the yield as given. A charge on the ground reflects its blast and acts like twice its yield in free air (Takazawa, Kim & Garcés 2023), so for a chemical surface burst these radii are about a fifth short. A nuclear yield is another matter: only about half of it goes into the air shock (Glasstone & Dolan §1.24), which the reflection roughly restores. The height-of-burst factor below then scales the radii.',
+          'The Kinney–Graham fit for a TNT charge in free air, inverted for the 5, 1 and 0.5 psi radii. A charge on the ground reflects its blast and, reflecting perfectly, acts like twice its yield in free air (Takazawa, Kim & Garcés 2023): a chemical charge, whose energy goes almost wholly into the blast (Glasstone & Dolan §1.23), enters the fit at twice its yield. A nuclear burst puts only about half its energy into the air shock (§1.25), which the reflection restores, so it enters at its yield. The height-of-burst factor below then scales the radii. Until 14 September 2026 a chemical charge entered at its yield, a quarter short in radius.',
         citation: kinneyGraham1985,
       },
       {
@@ -846,9 +846,9 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         id: 'thermal',
         name: 'Thermal fluence / burn radii',
         formula:
-          'Q = f · τ(R) · W / (4π · R²) ,  τ = e^(−R/L) ,  L = 14 km · (1 + HOB / 4 km) ;  3rd-degree burn at 8 cal/cm²',
+          'Q = f · τ(R) · W / (4π · R²) ,  f = 0.18 → 0.35 over 0 ≤ HOB ≤ 200·W^0.4 ft ,  τ = e^(−R/L) ,  L = 14 km · (1 + HOB / 4 km) ;  3rd-degree burn at 8 cal/cm²',
         description:
-          'The thermal energy spread over a sphere, as Glasstone & Dolan write it (§7.94–7.96), with the partition f = 0.35 of a nuclear air burst for every burst — the book gives 0.18 for a contact surface burst (§7.101), so a burst on the ground is drawn with about 1.4 times its burn radius — and 3 × 10⁻³ for an impact (Collins et al. 2005). The transmittance τ and its length L are a project calibration. Burn thresholds are fixed at 2, 5 and 8 cal/cm², where Glasstone & Dolan make the exposure for a burn grow with yield.',
+          'The thermal energy spread over a sphere, as Glasstone & Dolan write it (§7.94–7.96). The partition f is 0.35 for a nuclear air burst (Table 7.88) and 0.18 for a contact surface burst (§7.101); the book interpolates between the two for bursts in between (Table 7.101), and Nimbus does so linearly in height up to 200·W^0.4 ft, the height of the book’s air-burst curves (§7.42). An impact takes a luminous efficiency of 3 × 10⁻³ (Collins et al. 2005). A chemical charge radiates comparatively little (§1.23) and has no burn radii. The transmittance τ and its length L are a project calibration. Burn thresholds are fixed at 2, 5 and 8 cal/cm², where Glasstone & Dolan make the exposure for a burn grow with yield.',
         citation: glasstoneDolan1977,
       },
       {
@@ -856,16 +856,16 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Firestorm ignition / sustain',
         formula: 'Ignition @ 4.19 × 10⁵ J/m² (10 cal/cm²) ;  Sustain @ 2.51 × 10⁵ J/m² (6 cal/cm²)',
         description:
-          'Project thresholds, without attenuation. Glasstone & Dolan give ignition exposures that depend on material and yield — shredded newspaper, for instance, at a few to about ten cal/cm² from 35 kt to 20 Mt (Table 7.40) — and define a fire storm by its merged convective column and inward winds rather than by an exposure (§7.58).',
+          'Project thresholds, without attenuation, on the fluence of the thermal card — with its height-dependent partition — and none for a chemical charge. Glasstone & Dolan give ignition exposures that depend on material and yield — shredded newspaper, for instance, at a few to about ten cal/cm² from 35 kt to 20 Mt (Table 7.40) — and define a fire storm by its merged convective column and inward winds rather than by an exposure (§7.58).',
         citation: glasstoneDolan1977,
       },
       {
         id: 'crater',
         name: 'Surface-burst crater (ground-type dependent)',
         formula:
-          'D_apparent = K · W_kt^0.3     (K = 40 hard rock, 60 firm, 75 dry, 92 wet, 105 clay; metres)',
+          'D_apparent = K · W_kt^0.3     (K = 29 hard rock, 36.6 firm and dry, 92 wet, 105 clay; metres)',
         description:
-          'The W^0.3 scaling is Glasstone & Dolan’s (§6.09); Nordyke (1962) derived W^(1/3.4) for desert alluvium. The K values are project estimates and have no source: Glasstone & Dolan put the apparent radius of a 1 kt surface burst in dry soil or dry soft rock at about 60 ft, a diameter of 37 m — half the K for dry soil here — with hard rock somewhat less and water-saturated soil appreciably more.',
+          'Glasstone & Dolan (§6.09) put the apparent radius of a 1 kt surface burst in dry soil or dry soft rock at about 60 ft — a diameter of 36.6 m, the K for dry soil and firm ground — and scale every dimension by W^0.3; Nordyke (1962) derived W^(1/3.4) for desert alluvium. For saturated reef, K = 92 puts Castle Bravo and Ivy Mike at 1.6 and 1.5 km, the “mile-wide” craters they left (Kunkle & Ristvet 2013, DTRIAC SR-12-001). Hard rock, “somewhat less” in the book, is a project 0.8 of dry soil, and clay a project value. Until 14 September 2026 dry soil and firm ground were 75 and 60, twice the book.',
         citation: glasstoneDolan1977,
       },
       {
@@ -873,7 +873,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Initial-radiation lethal-dose radii',
         formula: 'R_LD50 = 700 m · W_kt^0.18  ;  R_LD100 = 0.7 · R_LD50  ;  R_ARS = 1.4 · R_LD50',
         description:
-          'A project fit whose code cites a Glasstone & Dolan figure (8.46) that holds no dose–range curve; the book’s curves for initial radiation are Figs. 8.33a/b and 8.64a/b, and the fit has not been checked against them. The LD₅₀ dose follows OTA 1979: about 450 rem is fatal to half the people exposed.',
+          'A project fit whose code cites a Glasstone & Dolan figure (8.46) that holds no dose–range curve; the book’s curves for initial radiation are Figs. 8.33a/b and 8.64a/b, and the fit has not been checked against them. The LD₅₀ dose follows OTA 1979: about 450 rem is fatal to half the people exposed. A chemical charge has none.',
         citation: glasstoneDolan1977,
       },
       {
@@ -1255,9 +1255,9 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         id: 'submarine-landslide',
         name: 'Submarine-landslide source',
         formula:
-          'open water: A₀ = min(K · (γ/γ_ref) · V^(1/3) · sin θ,  0.4 · h),  K = 0.4 above the water, 0.005 under it   ;   confined basin: A₀ = min(f · V / A_basin,  h),  f = 3',
+          'open water: A₀ = min(K · (γ/γ_ref) · V^(1/3) · sin θ,  0.4 · h),  K = 0.4 above the water, 0.005 under it   ;   confined basin: A₀ = min(f · V / A_basin,  h),  f = 1.8',
         description:
-          "A Watts 2000-inspired calibrated form, not Watts' predictive equation: slide thickness and Froude number are folded into a prefactor per regime. A rigid mass falling into the water, K = 0.4, is calibrated on Anak Krakatau 2018 (0.27 km³, Grilli et al. 2019's best estimate); sediment sliding on the sea floor, K = 0.005, on Storegga, against a 5–10 m target Nimbus set for 3 000 km³ on a 5° slope (Bondevik et al. 2005 model 2 400 km³ and map run-up of 3–20 m), so the same volume and slope make a wave up to 80 times taller falling in. γ = ρ_s/ρ_w − 1 is read about each regime's reference density (2 500 and 1 950 kg/m³). A reservoir or a fjord takes the basin-fill form instead, the volume spread over the surface and amplified by f = 3, capped at the basin depth — for Vaiont the 250 m cap sets the wave, against a crest 140 m above the top of the dam in Genevois & Ghirotti (2005), whose 250 m is the thickness of the slide. A slide footprint, when given, replaces V^(1/3) with √(A/π) as the radius the far field decays from. Treat it as an order of magnitude, a factor of 2 either way. Until 14 September 2026 this entry printed a single prefactor of 0.1, which no product path used.",
+          "A Watts 2000-inspired calibrated form, not Watts' predictive equation: slide thickness and Froude number are folded into a prefactor per regime. A rigid mass falling into the water, K = 0.4, is calibrated on Anak Krakatau 2018 (0.27 km³, Grilli et al. 2019's best estimate); sediment sliding on the sea floor, K = 0.005, on Storegga, against a 5–10 m target Nimbus set for 3 000 km³ on a 5° slope (Bondevik et al. 2005 model 2 400 km³ and map run-up of 3–20 m), so the same volume and slope make a wave up to 80 times taller falling in. γ = ρ_s/ρ_w − 1 is read about each regime's reference density (2 500 and 1 950 kg/m³). A reservoir or a fjord takes the basin-fill form instead, the volume spread over the surface and amplified by f = 1.8, capped at the basin depth. f is set on Vaiont, where the wave crested 140 m above the top of a dam that stood 25 m above the lake (Genevois & Ghirotti 2005; ASDSO): 162 m against 165. It was 3 until 14 September 2026, tuned on a 250 m that is the slide's thickness in that paper. A slide footprint, when given, replaces V^(1/3) with √(A/π) as the radius the far field decays from. Treat it as an order of magnitude, a factor of 2 either way. Until 14 September 2026 this entry printed a single prefactor of 0.1, which no product path used.",
         citation: watts2000,
       },
       {

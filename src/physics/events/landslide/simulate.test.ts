@@ -41,16 +41,18 @@ describe('simulateLandslide', () => {
     expect(r.tsunami.amplitudeAt1000km as number).toBeLessThan(3);
   });
 
-  it('Vaiont preset matches the Genevois 2005 ~250 m dam-overtopping wave height', () => {
-    // Confined-basin formula η = V/A × 3 = 2.7e8/3e6 × 3 = 270 m,
-    // capped at the 250 m reservoir depth = 250 m. Open-ocean Watts
-    // (used by the previous version) gave only 56 m for this event
+  it('Vaiont preset stands ≈ 162 m above the lake, the 140 m over the dam crest of Genevois 2005', () => {
+    // Confined-basin formula η = V/A × 1.8 = 2.7e8/3e6 × 1.8 = 162 m,
+    // under the 238 m of water. The wave crested 140 m above the dam
+    // top, which stood 25 m above the lake: 165 m. Open-ocean Watts
+    // (used by an earlier version) gave only 56 m for this event
     // because radial spreading does not apply in a 3 km² reservoir.
     const r = simulateLandslide(LANDSLIDE_PRESETS.VAIONT_1963.input);
     expect(r.tsunami).not.toBeNull();
     if (r.tsunami === null) return;
-    expect(r.tsunami.sourceAmplitude as number).toBeGreaterThan(150);
-    expect(r.tsunami.sourceAmplitude as number).toBeLessThan(300);
+    expect(r.tsunami.sourceAmplitude as number).toBeCloseTo(162, 0);
+    expect(r.tsunami.sourceAmplitude as number).toBeGreaterThan(125);
+    expect(r.tsunami.sourceAmplitude as number).toBeLessThan(165);
   });
 
   it('Lituya preset is capped by the breaking limit at ≈ 48 m (documented under-prediction)', () => {

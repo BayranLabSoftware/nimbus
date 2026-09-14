@@ -52,14 +52,15 @@ describe('volcanoTsunami — regime prefactor split (subaerial vs submarine)', (
 
 describe('volcanoTsunami — confined-basin branch (Vaiont)', () => {
   it('η = min(V/A·factor, depth) and is capped by the basin depth, NOT the McCowan 0.4·h limit', () => {
-    // Vaiont: V = 2.7e8 m³, A = 3e6 m², factor 3, depth 250 m.
-    // V/A·3 = 90·3 = 270 m → capped at the 250 m reservoir depth.
+    // V = 2.7e8 m³, A = 3e6 m², factor 3, depth 250 m.
+    // V/A·3 = 90·3 = 270 m → capped at the 250 m basin depth.
     const r = volcanoTsunami(
       base({
         collapseVolumeM3: 2.7e8,
         slopeAngleRad: (35 * Math.PI) / 180,
         meanOceanDepth: m(250),
         confinedBasinArea: 3e6 as SquareMeters,
+        confinementDynamicFactor: 3,
       })
     );
     expect(r).not.toBeNull();

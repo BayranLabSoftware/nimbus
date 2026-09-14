@@ -198,7 +198,7 @@ export const LANDSLIDE_PRESETS = {
    *  ≈ 270 × 10⁶ m³ of Mt Toc detached and slid into the just-filled
    *  reservoir behind the Vaiont dam at 20–30 m/s. The displaced
    *  reservoir water raised a wave that crested 140 m above the top of
-   *  the 263 m double-curvature dam (which itself survived intact) and
+   *  the 276 m double-curvature dam (which itself survived intact) and
    *  swept down the Piave valley, destroying Longarone, Pirago,
    *  Rivalta and Villanova in minutes; almost 2 000 dead (Genevois &
    *  Ghirotti 2005). The 250 m of earlier comments is the thickness of
@@ -215,16 +215,16 @@ export const LANDSLIDE_PRESETS = {
     input: {
       volumeM3: 2.7e8,
       slopeAngleDeg: 35,
-      // meanOceanDepth = 250 m: maximum reservoir depth at the dam,
-      //   used as the source-amplitude cap (a wave can't be taller
-      //   than the basin it sloshes in).
+      // meanOceanDepth = 238 m: the reservoir was 782 ft deep that
+      //   night, at 700.4 m a.s.l. (ASDSO, Dam Failures: Vajont), used
+      //   as the source-amplitude cap (a wave can't be taller than the
+      //   basin it sloshes in).
       // confinedBasinArea = 3 × 10⁶ m²: reservoir surface area
       //   (Müller 1964 Rock Mech. Eng. Geol. 2: 148, Fig. 3). Triggers
-      //   the basin-fill formula η = V/A × 3 = 270 m, capped to 250 m.
-      //   Tuned on a 250 m wave that Genevois & Ghirotti 2005 do not
-      //   give: their wave crested 140 m above the top of the dam, and
-      //   250 m is the thickness of the slide mass.
-      meanOceanDepth: m(250),
+      //   the basin-fill formula η = V/A × 1.8 = 162 m, against the
+      //   165 m above the lake of a crest 140 m over a dam top 25 m
+      //   above the water (Genevois & Ghirotti 2005; ASDSO).
+      meanOceanDepth: m(238),
       confinedBasinArea: 3e6 as SquareMeters,
       regime: 'subaerial',
     } satisfies LandslideScenarioInput,

@@ -301,6 +301,19 @@ export const RECORDED_WAVES: RecordedWave[] = [
     caveat:
       'Open-ocean amplitude inferred from run-up rather than measured, so the band is wide; it is here because it is the only prehistoric event with deposits good enough to argue from.',
   },
+  {
+    name: 'Vaiont 1963 at the dam',
+    observed: { low: 125, high: 165, atRangeM: 0 },
+    source:
+      'Genevois & Ghirotti 2005: the wave crested 140 m above the top of the dam (elsewhere, more than 100 m above the crest); the lake stood 25 m below the crest that night (ASDSO) — 125 to 165 m above the water',
+    model: () => {
+      const r = simulateLandslide(LANDSLIDE_PRESETS.VAIONT_1963.input);
+      return r.tsunami === null ? 0 : r.tsunami.sourceAmplitude;
+    },
+    gated: true,
+    caveat:
+      'Tuned on this row: the confined-basin amplification, 1.8, was set so the preset stands 162 m above the lake. Until 14 September 2026 the factor was 3 and the preset stood at its 250 m depth cap, tuned on a "250 m wave" that is, in the source, the thickness of the slide.',
+  },
 ];
 
 export interface WaveComparison {

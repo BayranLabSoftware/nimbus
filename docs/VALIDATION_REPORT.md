@@ -14,7 +14,7 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 ## Summary
 
 - **Death tolls:** 4 of 11 events inside the model's band; 3 of 3 gated rows pass. Every miss carries its cause below.
-- **Waves:** 9 of 14 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 5 misses are declared rows, each with its reason below.
+- **Waves:** 10 of 15 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 5 misses are declared rows, each with its reason below.
 - **Shaking footprint:** centred at 1.18 in radius (0.76 standard errors), scatter σ_ln 0.71 against 0.70 expected; 4 bands painted at an intensity never reached.
 - **Held out** — the rows nothing in the model was set on: death tolls 1 of 4 inside the band, waves 3 of 3. 3 of the 4 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
@@ -51,7 +51,7 @@ model was set on the event, which is under "Which checks are validation".
 | L'Aquila 2009 | 309 | 227 | 37 – 1,542 | 10^1.6 | 0.73× | contains | — | gated | tuned on it |
 | Amatrice 2016 | 299 | 6 | 0 – 114 | 10^2.1 | 0.02× | **misses** | buildingStock | declared | tuned on it |
 | Gorkha (Nepal) 2015 | 8,964 | 580 | 22 – 4,924 | 10^2.3 | 0.06× | **misses** | buildingStock | declared | held out |
-| Beirut 2020 | 218 | 902 | 817 – 1,533 | 10^0.3 | 4.14× | **misses** | populationRaster | declared | tuned on it |
+| Beirut 2020 | 218 | 1,432 | 1,297 – 2,433 | 10^0.3 | 6.57× | **misses** | populationRaster | declared | tuned on it |
 | Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | occupancy | declared | tuned on it |
 | Pinatubo 1991 | 847 | 82 | 32 – 312 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared | held out |
 | Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | populationChanged | declared | tuned on it |
@@ -64,7 +64,7 @@ model was set on the event, which is under "Which checks are validation".
 
 **Gorkha (Nepal) 2015.** Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428 and the predictive interval is 22 to 4 924, which does not contain 8 964. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. The band is now narrow enough for the miss to be a statement.
 
-**Beirut 2020.** Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. The band under it is now a predictive interval rather than a range of parameters — the ten per cent a charge's yield actually varies by — and it runs 817 to 1 533, nowhere near the 218 counted. That is the right shape for this row, because what is left is neither scatter in the charge nor the casualty model but the raster underneath: at 240 m the ring is twenty times smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.
+**Beirut 2020.** Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. On 14 September 2026 the blast itself was corrected — a charge on the ground reflects its blast and acts like twice its yield in the free-air fit the rings use (Takazawa, Kim & Garcés 2023) — and the rings grew by a quarter, taking the row to 6.6x, 1 297 to 2 433 on a predictive interval that is the ten per cent a charge's yield actually varies by. That is the right shape for this row, because what is left is neither scatter in the charge nor the blast but the raster underneath and the conventional mortality bands, which were composed with this row in view and not refitted after the correction: at a few hundred metres the rings are far smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.
 
 **Mount St Helens 1980.** Not evacuation, and that took a measurement to see. This row was filed under it until 14 September: 264 of the model's 265 dead are in the lateral-blast sector between 11 and 27 km, and the record agrees that the dead were not in the closed zones — only three of the 57 were inside the Red Zone, most in areas that had been considered safe. So the model is right to count that sector as unwarned, and the preset carries no cleared zone. (Until 14 September this note said the preset had been given one; it never was.) What it cannot know is who was in it: the population map puts 586 residents there, and the blast came at 08:32 on a Sunday, into logging land whose crews were not working. The predictive interval is 120 to 692 against 57.
 
@@ -96,7 +96,7 @@ rather than about the interpolation.
 | L'Aquila 2009 | 37 – 1,542 | 30 – 1,341 | 1.23× / 1.15× | yes |
 | Amatrice 2016 | 0 – 114 | 1 – 121 | 1.00× / 1.06× | yes |
 | Gorkha (Nepal) 2015 | 22 – 4,924 | 26 – 4,871 | 1.18× / 1.01× | yes |
-| Beirut 2020 | 817 – 1,533 | 817 – 1,533 | 1.00× / 1.00× | yes |
+| Beirut 2020 | 1,297 – 2,433 | 1,297 – 2,433 | 1.00× / 1.00× | yes |
 | Mount St Helens 1980 | 120 – 692 | 164 – 708 | 1.37× / 1.02× | yes |
 | Pinatubo 1991 | 32 – 312 | 32 – 312 | 1.00× / 1.00× | yes |
 | Hiroshima 1945 | 107,004 – 129,200 | 102,027 – 127,121 | 1.05× / 1.02× | yes |
@@ -131,6 +131,7 @@ own 35 % accuracy for explosion waves.
 | Beirut 2020 | 300 m | 0.00 m – 2.00 m | 0.00 m | contains | same | gated | held out |
 | Tōhoku 2011 at DART 21413 | 1,242 km | 0.20 m – 0.50 m | 0.30 m | contains | same | gated | tuned on it |
 | Storegga 8200 BP on the Norwegian coast | 1,000 km | 0.30 m – 3.00 m | 0.60 m | contains | 0.76 m | gated | tuned on it |
+| Vaiont 1963 at the dam | 0 m | 125.0 m – 165.0 m | 162.0 m | contains | same | gated | tuned on it |
 
 **Crossroads Baker 1946, 330 yd.** Every Baker height is printed from crest to trough, and the model computes the crest above still water, so each is halved and held to the reference's own 35 %. The model is Glasstone & Dolan's shallow-water relation (§6.121), H·R = 150·d_w·W^0.25 ft², with nothing fitted to Baker: it reads 0.68–0.71 of the tabulated heights out to 2 000 yards, the approximation the book offers for bursts "such as Bikini BAKER". Until 14 September 2026 these rows compared an amplitude with the full height, through a law the globe did not draw.
 
@@ -148,6 +149,8 @@ own 35 % accuracy for explosion waves.
 
 **Storegga 8200 BP on the Norwegian coast.** Open-ocean amplitude inferred from run-up rather than measured, so the band is wide; it is here because it is the only prehistoric event with deposits good enough to argue from.
 
+**Vaiont 1963 at the dam.** Tuned on this row: the confined-basin amplification, 1.8, was set so the preset stands 162 m above the lake. Until 14 September 2026 the factor was 3 and the preset stood at its 250 m depth cap, tuned on a "250 m wave" that is, in the source, the thickness of the slide.
+
 _Sources:_
 
 - Crossroads Baker 1946, 330 yd — Glasstone & Dolan 1977, Table 6.57 (maximum heights, crest to trough): 94 ft at 330 yd from surface zero, 11 s after the burst
@@ -164,6 +167,7 @@ _Sources:_
 - Beirut 2020 — ≈ 0.5 kt TNT-equivalent on a portside quay; a harbour wave said to be of the order of a metre, for which no published measurement is cited here
 - Tōhoku 2011 at DART 21413 — DART buoy 21413, 1 242 km from the epicentre, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)
 - Storegga 8200 BP on the Norwegian coast — Bondevik et al. 2005 read run-up from tsunami deposits — 10–12 m in western Norway, 3–6 m in northeast Scotland, over 20 m on Shetland; the metre-scale open-ocean wave at a thousand kilometres is this project’s inference from them
+- Vaiont 1963 at the dam — Genevois & Ghirotti 2005: the wave crested 140 m above the top of the dam (elsewhere, more than 100 m above the crest); the lake stood 25 m below the crest that night (ASDSO) — 125 to 165 m above the water
 
 ### Shaking footprint against USGS ShakeMap
 
@@ -241,7 +245,7 @@ Held out, the tables above read: death tolls **1 of 4** inside the band, waves *
 
 **Mount St Helens 1980, plume.** The preset's eruption rate was re-tuned from 4×10³ to 4×10⁴ m³/s so that the column would reach the observed height (MT_ST_HELENS_1980 in events/volcano/simulate.ts), and the golden case uses 5×10⁴. Mastin et al. 2009 also fitted the plume-height relation on this eruption (their Table 1, 18 May 1980).
 
-**Vaiont 1963, wave.** The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3) was chosen on this wave, and the preset's basin depth, 250 m, caps the wave there — so the preset reaches 250 m by construction. The 250 m it was tuned on is not the wave in Genevois & Ghirotti 2005, which crested 140 m above the top of the dam; their 250 m is the thickness of the slide mass. The gated golden case, G-B003, checks only that a wave exists.
+**Vaiont 1963, wave.** The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 1.8) was chosen on this wave, the only confined basin with a record: 90 m of static rise times 1.8 is 162 m against 165. Until 14 September 2026 the factor was 3, tuned on a 250 m that is the thickness of the slide in the same paper.
 
 **Storegga 8200 BP, wave.** The submarine prefactor, VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE = 0.005, was calibrated on a 5–10 m source amplitude credited to Bondevik et al. 2005, who give run-up read from deposits, not a source amplitude; the far-field band is the project’s inference from the same paper.
 
@@ -321,7 +325,7 @@ these, for the quantity the panel is showing.
 
 **landslide** (2)
 
-- Vaiont 1963 — wave (gated, tuned on it) — Genevois & Ghirotti 2005 — a wave that crested 140 m above the top of the dam
+- Vaiont 1963 — wave (gated, tuned on it) — Genevois & Ghirotti 2005 — a wave that crested 140 m above the top of the dam, which stood 25 m above the lake (ASDSO)
 - Storegga 8200 BP — wave (gated, tuned on it) — Bondevik et al. 2005 — deposits 10–12 m above the sea of the time in western Norway, 3–6 m in northeast Scotland, over 20 m on Shetland
 
 ## Against itself

@@ -136,8 +136,10 @@ export const DEFAULT_SOURCE_BASIN_DEPTH_M = 1_000;
 
 /** Dynamic amplification of the static V/A rise in a confined basin
  *  when the caller gives none: the value that reproduces the wave at
- *  the Vaiont dam (see `confinedBasinArea`). */
-export const DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3;
+ *  the Vaiont dam (see `confinedBasinArea`). 3 until 14 September
+ *  2026, when the wave it had been set on turned out to be the
+ *  thickness of the slide. */
+export const DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 1.8;
 
 export interface VolcanoTsunamiInput {
   /** Collapsed block volume (m³). Anak Krakatau-class events sit at
@@ -187,16 +189,19 @@ export interface VolcanoTsunamiInput {
    *  slides cannot dissipate energy by 2D radial spreading — the
    *  displaced volume raises the basin water level uniformly to first
    *  order, and the dynamic (impulsive-entry) amplification multiplies
-   *  that static rise by ~2-4. Cap is the basin depth (the wave
-   *  cannot exceed the water column it lives in).
+   *  that static rise. Cap is the basin depth (the wave cannot exceed
+   *  the water column it lives in).
    *
-   *  Calibration anchors (with `confinementDynamicFactor` defaulting
-   *  to 3, calibrated below):
-   *    - Vaiont 1963 (V = 2.7 × 10⁸ m³, A_res ≈ 3 × 10⁶ m², depth ≈
-   *      250 m at the dam): η_static = 90 m, dynamic ×3 = 270 m,
-   *      capped at 250 m — matches the observed 250 m wave height
-   *      that overtopped the dam (Genevois & Ghirotti 2005, Giorn.
-   *      Geol. Appl. 1: 41).
+   *  Calibration anchor (with `confinementDynamicFactor` defaulting to
+   *  1.8, calibrated on it):
+   *    - Vaiont 1963 (V = 2.7 × 10⁸ m³, A_res ≈ 3 × 10⁶ m², 238 m of
+   *      water at the dam): η_static = 90 m, dynamic ×1.8 = 162 m. The
+   *      wave crested 140 m above the top of the dam (Genevois &
+   *      Ghirotti 2005, Giorn. Geol. Appl. 1: 41), and the lake stood
+   *      25 m below the crest (ASDSO, Dam Failures: Vajont) — 165 m
+   *      above the water. The factor was 3 until 14 September 2026,
+   *      tuned on a 250 m wave that is the thickness of the slide in
+   *      that paper.
    *    - Lituya Bay 1958 still acknowledged as out-of-model: even
    *      the basin-fill formula under-predicts the 524 m run-up
    *      because the steep fjord walls produce splash-up effects
@@ -205,9 +210,8 @@ export interface VolcanoTsunamiInput {
   confinedBasinArea?: SquareMeters;
   /** Optional dynamic-amplification factor applied on top of the
    *  static V/A basin rise when `confinedBasinArea` is set. Defaults
-   *  to 3.0 (calibrated against Vaiont). Values 2-4 are physically
-   *  defensible for impulsive slide entries; higher values capture
-   *  resonant sloshing modes specific to certain basin geometries. */
+   *  to 1.8, calibrated against Vaiont; a single event, so a basin
+   *  of another shape may want another value. */
   confinementDynamicFactor?: number;
   /** Regime selects the per-style prefactor. Defaults to 'subaerial'
    *  for back-compat with the volcano-collapse callers. */
@@ -275,7 +279,7 @@ export function volcanoTsunami(input: VolcanoTsunamiInput): VolcanoTsunamiResult
   //
   // The slide volume raises the basin level uniformly (V/A static
   // rise) and the impulsive entry amplifies that by a calibrated
-  // factor (default 3, matching Vaiont 1963). The cap is the basin
+  // factor (default 1.8, matching Vaiont 1963). The cap is the basin
   // depth — wave cannot exceed the water column it lives in, but is
   // NOT subject to the McCowan 0.4·h breaking cap because confined-
   // basin sloshing modes can transiently exceed solitary-wave limits.

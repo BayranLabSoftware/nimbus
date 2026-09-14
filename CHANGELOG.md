@@ -112,6 +112,39 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **Vaiont's wave is the one its source gives.** The confined-basin
+  amplification was 3, tuned so the Vaiont preset reached a 250 m wave
+  that Genevois & Ghirotti 2005 do not give — their 250 m is the
+  thickness of the slide. Their wave crested 140 m above the top of a dam
+  that stood 25 m above the lake that night (ASDSO): 165 m. The factor is
+  now 1.8, the preset stands 162 m above 238 m of water, and the wave is
+  a gated row of the validation report (125–165 m), declared tuned on it.
+  A custom confined-basin slide makes a wave 40 % lower than before.
+- **A chemical explosion blasts, and does not burn.** Kinney & Graham fit
+  a charge in free air; a charge on the ground, reflecting perfectly,
+  makes the wave of twice its yield (Takazawa, Kim & Garcés 2023). A
+  chemical charge now enters the fit at twice its yield — its rings are a
+  quarter wider — while a nuclear burst, which puts only half its energy
+  into the blast (Glasstone & Dolan §1.25), still enters at its yield. And
+  a chemical charge no longer draws the burn, fire and initial-radiation
+  rings of a nuclear burst: at a few thousand degrees it radiates
+  comparatively little (§1.23). Beirut's toll, which reads the rings,
+  rises from 902 to 1 432 against 218 recorded; the row stays declared,
+  with the population raster and the conventional mortality bands named
+  as what is left.
+- **A nuclear burst on the ground radiates less than one in the air.**
+  Every burst took the air-burst thermal partition, 0.35; Glasstone &
+  Dolan give 0.18 for a contact surface burst and interpolate between
+  (§7.101). The partition now rises linearly from 0.18 on the ground to
+  0.35 at 200·W^0.4 ft, the height of the book's air-burst curves. Castle
+  Bravo's third-degree radius falls from 27 to 23 km and its fire radius
+  from 65 to 46 km; Hiroshima and Nagasaki, air bursts, do not change.
+- **Nuclear craters are Glasstone & Dolan's size.** Dry soil and firm
+  ground were 75 and 60 m per kt^0.3, twice the 60 ft apparent radius the
+  book gives a 1 kt burst in dry soil (§6.09); both are now 36.6. Saturated
+  reef keeps 92, which puts Castle Bravo and Ivy Mike near the mile-wide
+  craters they left (DTRIAC SR-12-001). Hard rock (29) and clay (105) are
+  declared project values.
 - **Sources that were not what they were cited as, found by checking
   every one.** A new `pnpm audit:sources` resolves every DOI in the
   repository against Crossref, DataCite and doi.org and compares every
