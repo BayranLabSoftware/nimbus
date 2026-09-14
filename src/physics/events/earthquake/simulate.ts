@@ -115,10 +115,11 @@ export interface EarthquakeScenarioInput {
  * The laws the intensity rings can be drawn with (rule 17 of
  * validation/contourLaws.ts):
  *
- *  - `joynerBoore1981`, shipped: Joyner & Boore 1981's median PGA with
- *    Boore et al. 2014's site term;
+ *  - `joynerBoore1981`: Joyner & Boore 1981's median PGA with Boore et
+ *    al. 2014's site term, shipped until 14 September 2026;
  *  - `boore2014`: Boore et al. 2014's median PGA, with its own
- *    fault-type and site terms — the law tried on 9 September 2026;
+ *    fault-type and site terms — tried on 9 September 2026, and the
+ *    default since rule 19 adopted it;
  *  - `boore2014FromMw7.5`: the first below Mw 7.5 and the second from
  *    it, the magnitude at which the rings become a rupture stadium.
  *
@@ -285,8 +286,11 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
     })
   );
 
-  // The contours: Joyner–Boore 1981 for the shape, and the published
-  // BSSA14 site term for the ground it stands on.
+  // The contours, until 14 September 2026: Joyner–Boore 1981 for the
+  // shape, and the published BSSA14 site term for the ground it stands
+  // on. Since then Boore et al. 2014 outright (`law` below), chosen by
+  // rule 18 of validation/contourLaws.ts on 370 USGS ShakeMaps and
+  // checked on the dead by rule 19; the older law stays a candidate.
   //
   // `vs30` was an input the simulator accepted, fed to the reported
   // accelerations, and dropped on the floor before the rings were
@@ -306,16 +310,20 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // preset in the calibration net.
   //
   // Drawing the contours with NGA-West2 outright was tried and
-  // measured on 9 September and is not this: it takes Northridge's
-  // toll from 38 dead against 57 to 13, L'Aquila's from 227 against
-  // 309 to 40, and pushes Amatrice out of its gate. See
-  // docs/ROADMAP.md.
+  // measured on 9 September and reverted then on those three rows: it
+  // takes Northridge's toll from 38 dead against 57 to 13, L'Aquila's
+  // from 227 against 309 to 40, and pushes Amatrice out of its gate.
+  // Three tuned rows were the wrong jury; rules 17 to 19 are the jury
+  // since. See docs/ROADMAP.md, M9 move 4.
   const siteGain = vs30SiteFactor(
     vs30,
     (peakGroundAcceleration({ magnitude: input.magnitude, distance: m(10_000) }) as number) /
       STANDARD_GRAVITY
   );
-  const law = input.contourLaw ?? 'joynerBoore1981';
+  // Boore et al. 2014 since 14 September 2026, chosen by rule 18 of
+  // validation/contourLaws.ts on 370 USGS ShakeMaps and checked on the
+  // dead by rule 19.
+  const law = input.contourLaw ?? 'boore2014';
   const boore = law === 'boore2014' || (law === 'boore2014FromMw7.5' && input.magnitude >= 7.5);
   const contourAt = (mmi: number): Meters =>
     boore

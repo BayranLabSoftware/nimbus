@@ -18,15 +18,20 @@ import {
  */
 
 describe('the candidate laws', () => {
-  it('leave the shipped rings where they were when none is named', () => {
+  it('draw Boore et al. 2014 when none is named, since rule 19 adopted it', () => {
     const shipped = simulateEarthquake({ magnitude: 7.2, faultType: 'reverse' });
     const named = simulateEarthquake({
       magnitude: 7.2,
       faultType: 'reverse',
+      contourLaw: 'boore2014',
+    });
+    expect(shipped.shaking.mmi8Radius).toBe(named.shaking.mmi8Radius);
+    const jb81 = simulateEarthquake({
+      magnitude: 7.2,
+      faultType: 'reverse',
       contourLaw: 'joynerBoore1981',
     });
-    expect(named.shaking.mmi8Radius).toBe(shipped.shaking.mmi8Radius);
-    expect(shipped.shaking.mmi8Radius).toBe(distanceForPga(7.2, pgaFromMercalliIntensity(8)));
+    expect(jb81.shaking.mmi8Radius).toBe(distanceForPga(7.2, pgaFromMercalliIntensity(8)));
   });
 
   it('draw Boore et al. 2014 with its fault type when asked', () => {
@@ -43,7 +48,7 @@ describe('the candidate laws', () => {
     const below = simulateEarthquake({ magnitude: 7.4, contourLaw: 'boore2014FromMw7.5' });
     const above = simulateEarthquake({ magnitude: 7.6, contourLaw: 'boore2014FromMw7.5' });
     expect(below.shaking.mmi7Radius).toBe(
-      simulateEarthquake({ magnitude: 7.4 }).shaking.mmi7Radius
+      simulateEarthquake({ magnitude: 7.4, contourLaw: 'joynerBoore1981' }).shaking.mmi7Radius
     );
     expect(above.shaking.mmi7Radius).toBe(
       simulateEarthquake({ magnitude: 7.6, contourLaw: 'boore2014' }).shaking.mmi7Radius

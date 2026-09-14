@@ -1,5 +1,5 @@
 import { DRE_DENSITY } from '../constants.js';
-import { simulateEarthquake } from '../events/earthquake/simulate.js';
+import { simulateEarthquake, type ContourLaw } from '../events/earthquake/simulate.js';
 import { m } from '../units.js';
 import type { PlumeHeightObservation } from './fixtures.js';
 import {
@@ -142,7 +142,12 @@ export interface RulePlume {
 const HOUR_S = 3_600;
 const NCEI = 'NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9V7K)';
 
-function earthquakeEvent(row: RuleEarthquakeRow): RecordedEvent {
+/** A row as the net's toll harness runs it; `contourLaw` for rule 19,
+ *  which runs the candidates on the same rows. */
+export function ruleEarthquakeEvent(
+  row: RuleEarthquakeRow,
+  contourLaw?: ContourLaw
+): RecordedEvent {
   return {
     // ComCat's time to the minute: the database lists some places twice
     // on one day, a foreshock and its mainshock.
@@ -158,6 +163,7 @@ function earthquakeEvent(row: RuleEarthquakeRow): RecordedEvent {
         magnitude: row.magnitude,
         depth: m(row.depthKm * 1_000),
         faultType: row.faultType,
+        ...(contourLaw === undefined ? {} : { contourLaw }),
       }),
     }),
     gated: false,
@@ -177,7 +183,7 @@ function plumeObservation(row: RulePlumeRow): PlumeHeightObservation {
 
 export const RULE_EARTHQUAKES: readonly RuleEarthquake[] = NCEI_EARTHQUAKE_ROWS.map((row) => ({
   row,
-  event: earthquakeEvent(row),
+  event: ruleEarthquakeEvent(row),
   role: row.comcat in RULE_TUNED_EARTHQUAKES ? 'tuned' : 'heldOut',
   seen: row.comcat in RULE_SEEN_EARTHQUAKES,
 }));

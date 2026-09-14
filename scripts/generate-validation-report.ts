@@ -76,10 +76,18 @@ import {
   RULE_PLUMES,
   RULE_SEEN_EARTHQUAKES,
   RULE_TUNED_EARTHQUAKES,
+  ruleEarthquakeEvent,
   type RuleEarthquake,
   type RulePlume,
 } from '../src/physics/validation/heldOutByRule.js';
 import { NCEI_UNMATCHED, RULE_READ_ON } from '../src/physics/validation/heldOutByRuleData.js';
+import {
+  compareContourLaws,
+  type ContourComparison,
+} from '../src/physics/validation/contourComparison.js';
+import { adoptOnTolls, CONTOUR_LAWS } from '../src/physics/validation/contourLaws.js';
+import { RULE_SHAKEMAPS } from '../src/physics/validation/ruleShakemapData.js';
+import type { ContourLaw } from '../src/physics/events/earthquake/simulate.js';
 import {
   eiepRatios,
   simulateEiepRow,
@@ -712,6 +720,103 @@ function ruleRecord(e: RuleQuakeRun): string {
   return missing > 0 ? `${grouped(deaths)} (+${grouped(missing)} missing)` : grouped(deaths);
 }
 
+const CONTOUR_LAW_LABEL: Readonly<Record<ContourLaw, string>> = {
+  joynerBoore1981: 'Joyner & Boore 1981',
+  boore2014: 'Boore et al. 2014',
+  'boore2014FromMw7.5': 'Joyner & Boore below Mw 7.5, Boore et al. from it',
+};
+
+/** Rule 19's toll cells for one law: the held-out rows of rule 11's set
+ *  run on it, scored per magnitude cell over the rows with something. */
+function ruleTollCells(law: ContourLaw): { group: string; stats: ScoreStats }[] {
+  const rows = RULE_EARTHQUAKES.filter((q) => q.role === 'heldOut').map((q) => {
+    const toll = compareWithRecord(ruleEarthquakeEvent(q.row, law));
+    const score: ScoreRowInput = {
+      name: q.event.name,
+      quantity: 'toll',
+      family: 'earthquake',
+      size: q.row.magnitude,
+      role: q.role,
+      record: q.event.recordedDeaths,
+      model: toll.deaths,
+      inside: toll.contains,
+      bandDecades: Math.log10(Math.max(toll.high, 1) / Math.max(toll.low, 1)),
+      bandHigh: toll.high,
+    };
+    return score;
+  });
+  return SIZE_BANDS.earthquake.map((b) => ({
+    group: b.label,
+    stats: scoreStats(
+      rows.filter((r) => sizeBandOf('earthquake', r.size) === b.label && isInformative(r))
+    ),
+  }));
+}
+
+interface ContourLawRun {
+  comparison: ContourComparison;
+  tolls: Record<'joynerBoore1981' | 'boore2014', { group: string; stats: ScoreStats }[]>;
+  adopted: boolean;
+}
+
+function runContourLaws(sets: RuleSets): ContourLawRun {
+  const comparison = compareContourLaws(RULE_SHAKEMAPS);
+  // The adopted law is the simulator's default, which the sets held out
+  // by rule have just been run on; only the law used before is run again.
+  const adopted = SIZE_BANDS.earthquake.map((b) => ({
+    group: b.label,
+    stats: scoreStats(
+      sets.earthquakes
+        .filter((e) => e.quake.role === 'heldOut')
+        .map((e) => e.score)
+        .filter((r) => sizeBandOf('earthquake', r.size) === b.label && isInformative(r))
+    ),
+  }));
+  const tolls = { joynerBoore1981: ruleTollCells('joynerBoore1981'), boore2014: adopted };
+  const cells = (law: 'joynerBoore1981' | 'boore2014') =>
+    tolls[law].map((c) => ({ bias: c.stats.bias, inside: c.stats.inside, rows: c.stats.rows }));
+  return { comparison, tolls, adopted: adoptOnTolls(cells('joynerBoore1981'), cells('boore2014')) };
+}
+
+function contourLawSection(run: ContourLawRun): string {
+  const radius = (bias: number | null): string =>
+    bias === null ? '—' : `${Math.exp(bias).toFixed(2)}×`;
+  const { comparison } = run;
+  const shakemapRows = CONTOUR_LAWS.map((law) => {
+    const cells = comparison.scores[law];
+    const invented = cells.reduce((a, c) => a + c.invented, 0);
+    const missed = cells.reduce((a, c) => a + c.missed, 0);
+    return `| ${CONTOUR_LAW_LABEL[law]}${law === comparison.winner ? ' (winner)' : ''} | ${cells.map((c) => radius(c.bias)).join(' | ')} | ${comparison.meanAbsoluteBias[law].toFixed(2)} | ${invented.toString()} | ${missed.toString()} |`;
+  });
+  const tollRow = (law: 'joynerBoore1981' | 'boore2014'): string =>
+    `| ${CONTOUR_LAW_LABEL[law]} | ${run.tolls[law]
+      .map(
+        (c) => `${biasText(c.stats)} · ${c.stats.inside.toString()} of ${c.stats.rows.toString()}`
+      )
+      .join(' | ')} |`;
+  return [
+    'Rules 17 to 19 (`validation/contourLaws.ts`), committed before any candidate ran,',
+    "choose the law on shaking and check it on the dead. Rule 18: each candidate's",
+    `ground area at MMI VII, VIII and IX against the USGS ShakeMaps of ${comparison.events.toString()} earthquakes of rule 11's set, as a`,
+    'radius ratio floored at 10 km² per band, by magnitude cell; the winner has the smallest',
+    'mean absolute log bias over the cells, and the law used before stays unless beaten by',
+    '0.05.',
+    '',
+    `| Law | ${SIZE_BANDS.earthquake.map((b) => b.label).join(' | ')} | Mean abs. log bias | Bands invented | Bands missed |`,
+    `|-----|${SIZE_BANDS.earthquake.map(() => '----:').join('|')}|----:|----:|----:|`,
+    ...shakemapRows,
+    '',
+    "Rule 19: the winner on rule 11's held-out tolls, beside the law used before — bias over the rows where record and model are both above zero, and the band's share inside over the rows with something. It is adopted if its mean absolute log bias is no larger and it holds eight records in ten in every cell.",
+    '',
+    `| Law | ${SIZE_BANDS.earthquake.map((b) => b.label).join(' | ')} |`,
+    `|-----|${SIZE_BANDS.earthquake.map(() => '-----').join('|')}|`,
+    tollRow('joynerBoore1981'),
+    tollRow('boore2014'),
+    '',
+    `Adopted: ${run.adopted ? 'yes' : 'no'}. The score's floor counts a band the model paints and the ShakeMap never reached, and most of Boore et al. 2014's margin is there: where both reach MMI VII it draws the ring smaller than the ShakeMap, about half its radius between Mw 6.5 and 7.5 (docs/SCIENCE.md, "Which law draws the rings").`,
+  ].join('\n');
+}
+
 /** The declared gap the sets held out by rule measure, in their own
  *  figures, so the sentence moves when the model does. */
 function greatRuptureGap(cells: readonly RuleCell[]): string {
@@ -721,7 +826,7 @@ function greatRuptureGap(cells: readonly RuleCell[]): string {
     great === undefined || great.informative.rows === 0
       ? 'The sets held out by rule have no such earthquake to measure it on.'
       : `Held out by rule, the earthquakes of ${String(label)} read ${biasText(great.all)} their record with a scatter of ${great.all.scatterLn === null ? '—' : great.all.scatterLn.toFixed(2)}, and their band holds ${great.informative.inside.toString()} of ${great.informative.rows.toString()} records by spanning a median of ${great.informative.medianBandDecades === null ? '—' : `10^${(Math.round(fixed(great.informative.medianBandDecades, 2) * 10) / 10).toFixed(1)}`}.`;
-  return `**A great rupture's toll is read off intensity rings too large for it.** From Mw 7.5 the rings are Joyner & Boore 1981, a relation for a point, stretched along the rupture as a stadium, and the simulator counts the people inside it. ${measured} Until 14 September 2026 the calibration harness counted circles about the epicentre instead, and hid it (docs/ROADMAP.md, M9 move 4; docs/BUG_REGISTRY.md, B-022).`;
+  return `**A great rupture's toll is read off rings drawn for a point.** From Mw 7.5 the intensity rings — Boore et al. 2014's since 14 September 2026 — are a relation for a point, stretched along the rupture as a stadium, and the simulator counts the people inside it; no finite-fault or subduction-interface relation is implemented. ${measured} On Joyner & Boore 1981's rings the same cell read 13.85×, a figure the calibration harness hid until the same day by counting circles about the epicentre (docs/ROADMAP.md, M9 move 4; docs/BUG_REGISTRY.md, B-022).`;
 }
 
 function byRuleSection(
@@ -1254,6 +1359,7 @@ function main(): void {
   const ruleSets = runRuleSets();
   const byRule = ruleCells(ruleSets);
   const eiep = runEiep();
+  const contourLaws = runContourLaws(ruleSets);
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -1318,6 +1424,10 @@ ${plumeSection(net)}
 
 ${footprintSection(net)}
 
+### Which law draws the intensity rings
+
+${contourLawSection(contourLaws)}
+
 ### Which checks are validation
 
 ${rolesSection(net)}
@@ -1363,6 +1473,7 @@ ${bullet([
   '**The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.',
   "**The toll band draws the fatality curve's published scatter, but not the census.** Since 14 September 2026 a shaking realisation scales its mortality by exp(N(0, G)), G being PAGER's `gnormvalue` for the country — the standard deviation of ln(deaths) PAGER's own loss module uses. The population is still held fixed, and so are the blast and pyroclastic rates, which publish no scatter. G was measured on ShakeMap intensities, so it overlaps, by an amount not separated here, with the ground-motion residual drawn beside it. Where the curve is steep or its scatter large the band spans four orders of magnitude or more — Gorkha, Kumamoto, Pohang — which is the width PAGER's own numbers give a single event, and a row inside such a band has passed nothing (`uq/tollBand.ts`).",
   greatRuptureGap(byRule.earthquakes),
+  "**The rings stand on reference rock, and draw moderate earthquakes' strong shaking too small.** Boore et al. 2014's rings, adopted on 14 September 2026 because they matched 370 USGS ShakeMaps better than Joyner & Boore 1981's (the section above), stop painting intensities no earthquake reached, but where a ShakeMap reaches MMI VII they draw it at a median 0.83, 0.50 and 0.90 of its radius below Mw 6.5, between 6.5 and 7.5 and above, and at about half the radius Wald's and Italy's field surveys give for Northridge and L'Aquila. ShakeMaps count the site's softer ground where the rings take rock unless a scenario sets Vs30, which is the first suspect; the tolls of the middle cell read about a quarter of their record.",
   "**Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings use Joyner & Boore 1981 and the reported accelerations Boore et al. 2014, both for shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI IX band in the footprint table is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).",
   "**Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).",
   "**Three numbers are not traced to a source read here.** The 30 cm at DART 21413 that the Tōhoku wave row is tuned on is quoted from Satake et al. 2013 without the paper having been read in the source review; the arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005.",
@@ -1459,6 +1570,37 @@ otherwise.
         heldOut: scoreJson(c.heldOut),
         all: scoreJson(c.all),
       })),
+      contourLaws: {
+        winner: contourLaws.comparison.winner,
+        adopted: contourLaws.adopted,
+        events: contourLaws.comparison.events,
+        meanAbsoluteBias: Object.fromEntries(
+          CONTOUR_LAWS.map((law) => [law, fixed(contourLaws.comparison.meanAbsoluteBias[law], 3)])
+        ),
+        shakemap: Object.fromEntries(
+          CONTOUR_LAWS.map((law) => [
+            law,
+            contourLaws.comparison.scores[law].map((c) => ({
+              sizeBand: c.sizeBand,
+              pairs: c.pairs,
+              bias: c.bias === null ? null : fixed(c.bias, 3),
+              scatter: c.scatter === null ? null : fixed(c.scatter, 3),
+              invented: c.invented,
+              missed: c.missed,
+            })),
+          ])
+        ),
+        tolls: {
+          joynerBoore1981: contourLaws.tolls.joynerBoore1981.map((c) => ({
+            sizeBand: c.group,
+            ...scoreJson(c.stats),
+          })),
+          boore2014: contourLaws.tolls.boore2014.map((c) => ({
+            sizeBand: c.group,
+            ...scoreJson(c.stats),
+          })),
+        },
+      },
       // The per-row tables are in the Markdown copy; the page reads the
       // cells, and the rows that miss.
       byRule: {

@@ -380,7 +380,10 @@ accepted. The list after the scorecard, then, in order: the shaking
 footprint of great ruptures (move 4 below), which is now a measured
 fourteen-fold error on the toll; a casualty band that is sharp as well as
 calibrated; a set of quiet earthquakes to count false alarms on; and grid
-verification against the reference implementations.
+verification against the reference implementations. The first was taken
+the same day by rules 17 to 19 (move 4): the rings are Boore et al. 2014's,
+and the cells read 0.69×, 0.23× and 1.92× from the smallest magnitudes up,
+249 of 273 records inside.
 
 ### 0b. Every source read against its record _(done 14 September; Vaiont and explosions re-tuned, the other gaps open and declared)_
 
@@ -951,6 +954,20 @@ VIII and IX against the USGS ShakeMap of every earthquake in the rule
 set, by magnitude cell. The tolls then check the winner once, and it is
 adopted only if it is no worse on them and its band still holds eight
 records in ten in every cell.
+
+Run once the same day, on 370 ShakeMaps: Boore et al. 2014 won (mean
+absolute log radius bias 0.73 against 1.45 for the shipped law and 1.14
+for the split one) and passed on the tolls (mean absolute log bias 0.83
+against 1.06, the band holding 90 % or more in every cell), so it draws
+the rings now. It takes the cell above Mw 7.5 from 13.85× the record to
+1.92× and invents no intensity an earthquake never reached, but most of
+its margin on the ShakeMaps is the bands it does not invent: where a
+ShakeMap reaches MMI VII the new rings draw it at a median half its radius
+between Mw 6.5 and 7.5, and that cell's tolls fell from 0.98× to 0.23×.
+Two things follow, in order: the site under the rings (every rule-set row
+and every preset stands on reference rock, and ShakeMaps count softer
+ground), and a relation for long ruptures and trench earthquakes above
+Mw 7.5. Both are chosen the way this one was.
 
 ### 5. Widen the anchors where the model is blind
 

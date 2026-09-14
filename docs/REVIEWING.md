@@ -88,24 +88,24 @@ is complete is itself a question for you.
   source with it, 2 read an input back from it, 1 is undetermined and 18
   are held out. Ten of the held-out ones were written down and pushed
   before the model was run on them (`src/physics/validation/heldOutEvents.ts`,
-  two groups). Of those: five earthquake tolls, three inside on wide bands
-  (Kaikōura 2016 since the harness counts its rupture stadium, B-022) and
-  two missing; Illapel 2015 at DART 32402 on its record (0.97×);
+  two groups). Of those: five earthquake tolls, four inside on wide bands
+  and Christchurch 2011 missing, on the rings adopted on 14 September; Illapel 2015 at DART 32402 on its record (0.97×);
   three eruption columns inside, declared not blind; Fuego 2018's toll
   inside for the wrong reasons; Unzen 1991's missing.
 - **Held out by rule, the earthquake tolls are calibrated and wide, and
   wrong for the largest.** Two sets were chosen by rule and pushed before
   they were run (`src/physics/validation/heldOutByRule.ts`): 406 held-out
-  NCEI earthquakes, whose band holds 260 of the 283 records where there
-  is something to hold, with a scatter of 2.32; below Mw 7.5 the central
-  figure is within 1.7× of the records, from Mw 7.5 it is 13.85× them.
+  NCEI earthquakes, whose band holds 249 of the 273 records where there
+  is something to hold; the central figure reads 0.69×, 0.23× and 1.92×
+  the records from the smallest magnitudes up, on the rings rules 17 to 19
+  chose on 370 USGS ShakeMaps (13.85× above Mw 7.5 on the rings before).
   And 37 IVESPA columns, 0.95× and 35 accepted. The eight rows named by
   hand read 0.11×; the rule says that was the sample. The first run read
   the largest earthquakes at 0.41×, because the harness counted circles
   where the simulator counts the rupture stadium (B-022): corrected after
   the result, and said so. Whether rules 11 to 16 leave room for a choice
   is a question for you.
-- **A third of the death tolls miss.** 6 of 18 fall outside their band, each
+- **Some death tolls miss.** 7 of 18 fall outside their band, each
   with its cause beside it. Where an earthquake's band is four or five
   orders of magnitude wide, a record inside it has passed nothing: that
   width is what PAGER's own scatter gives a single event.

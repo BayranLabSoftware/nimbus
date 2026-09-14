@@ -1136,7 +1136,7 @@
     "tsunamiDispersion": "Dispersion of the leading wave: D = (4π²/6)·r·h²/λ³ on the source wavelength λ and the depth h, after Kajiura (1963), with a decay (1 + D)^(−½) that is a Nimbus closure. A wave from a megathrust barely disperses; a short wave from a slide or an impact does.",
     "seismicMoment": "Seismic moment M₀ = 10^(1.5·Mw + 9.1) N·m — Hanks & Kanamori (1979) SI form of the moment-magnitude scale.",
     "ruptureLength": "Surface rupture length L = 10^(a + b·Mw) km — Wells & Coppersmith (1994) empirical regression by fault slip regime.",
-    "mmi": "Modified Mercalli Intensity from Joyner & Boore (1981) PGA attenuation combined with Worden et al. (2012) piecewise GMICE for California.",
+    "mmi": "Modified Mercalli Intensity rings from the Boore et al. (2014) NGA-West2 PGA attenuation, with its fault-type and site terms, combined with Worden et al. (2012) piecewise GMICE for California; chosen on 370 USGS ShakeMaps on 14 September 2026.",
     "ngaWest2": "Modern PGA estimator from Boore, Stewart, Seyhan & Atkinson (2014), Earthquake Spectra 30(3) 1057–1085 — NGA-West2 BSSA14. Replaces the 1981-era Joyner–Boore fit with magnitude-dependent geometric spreading, 4.5 km near-source clamp, fault-type constants, and Vs30 site amplification.",
     "mmiEurope": "European PGA→MCS conversion from Faenza & Michelini (2010), GJI 180, 1138–1152, calibrated on Italian ShakeMap data. Shown beside the Worden (California) value for every event.",
     "strasser": "Megathrust rupture-length scaling from Strasser, Arango & Bommer (2010), SRL 81(6). Fits 95 subduction-interface events; used instead of Wells–Coppersmith for subduction-zone thrusts, where W&C over-predicts at Mw ≥ 8.",
@@ -1412,7 +1412,7 @@
       },
       "footprint": {
         "label": "The shaking footprint is too large",
-        "body": "For a great rupture the intensity rings are a law made for a point, stretched along the whole fault. They paint far more ground at high intensity than the earthquake shook — at Tōhoku three times the area of intensity VIII that USGS measured — and the toll follows: the shaking alone comes to nearly ten times the whole record, drowned included. The row is inside only because its band is three orders of magnitude wide."
+        "body": "For a great rupture the intensity rings are a relation for a single point, stretched along the whole fault. On the rings used until 14 September 2026 Tōhoku's shaking alone came to ten times the whole record; on Boore et al. 2014's, adopted that day, it is about 4,500 — three times the deaths the earthquake itself caused — with the area of intensity VIII still two and a half times what USGS measured. The row is inside only because its band spans five orders of magnitude."
       }
     },
     "waves": {
@@ -1471,8 +1471,12 @@
         "note": "Since 14 September the nine-in-ten band redraws the earthquake and, for shaking, how far one earthquake's deaths stray from its country's curve, by the amount USGS PAGER publishes. The population map is still held fixed, and so are the death rates for blasts and pyroclastic currents, which publish no such scatter. PAGER measured its scatter on real shaking maps, so it overlaps with the ground-motion scatter drawn beside it by an amount not separated here. Where a country's curve is steep or uncertain the band spans four orders of magnitude or more, and a record inside it has passed nothing."
       },
       "greatRupture": {
-        "item": "The largest earthquakes are counted on intensity rings too large for them",
-        "note": "From magnitude 7.5 the rings come from a relation made for a single point, stretched along the whole rupture, and they paint far more ground at high intensity than such an earthquake shakes. Held out by rule, those earthquakes come out many times their record, and their band holds the records only by being very wide. Until 14 September 2026 the checks counted circles about the epicentre instead of what the simulator counts, and that hid it; the fix to the rings is on the roadmap."
+        "item": "The largest earthquakes are counted on rings drawn for a single point",
+        "note": "From magnitude 7.5 the intensity rings are a relation made for a single point, stretched along the whole rupture. Held out by rule, those earthquakes come out about twice their record — fourteen times on the rings used until 14 September 2026 — and their band holds the records by being very wide. A relation fitted to long ruptures and ocean-trench earthquakes is still to come."
+      },
+      "ringsOnRock": {
+        "item": "The rings stand on bare rock, and draw strong shaking too small for moderate earthquakes",
+        "note": "The rings adopted on 14 September 2026 matched 370 USGS ShakeMaps better than the old ones and stopped painting intensities no earthquake reached. But on bare rock they draw intensity VII at about half the radius the ShakeMaps and field surveys give for magnitudes 6.5 to 7.5, where the ShakeMaps also count softer ground, and those earthquakes' tolls come out about a quarter of the record."
       },
       "subduction": {
         "item": "Ocean-trench earthquakes are shaken with rules made for earthquakes on land",

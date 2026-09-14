@@ -206,6 +206,24 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Changed
 
+- **The intensity rings are Boore et al. 2014's, chosen on 370 USGS
+  ShakeMaps.** Rules 17 to 19 (`validation/contourLaws.ts`) were written
+  down before any candidate ran: choose the law on the ground each draws
+  at MMI VII, VIII and IX against the ShakeMaps of the earthquakes held
+  out by rule, then check the winner once on their death tolls. Boore et
+  al. 2014 won (mean absolute log radius bias 0.73 against Joyner & Boore
+  1981's 1.45) and passed on the tolls, and draws the rings now. It
+  invents no intensity an earthquake never reached — Joyner & Boore
+  painted 180 000 km² of Japan at IX for Tōhoku, whose ShakeMap never
+  reached it — and takes the held-out earthquakes of Mw 7.5 and above from
+  13.85× their record to 1.92×. It also draws moderate earthquakes' MMI VII
+  at about half the radius the ShakeMaps and surveys give, on the
+  reference rock every row stands on, and the tolls of Mw 6.5–7.5 fell from
+  0.98× to 0.23× — a declared gap, with the site conditions the first
+  suspect. In the net eleven of eighteen tolls are inside their band;
+  L'Aquila's widened past the gate and is ungated, as rule 19 says, and
+  Gorkha's interpolation, past two, is declared.
+
 - **An underwater burst makes the waves Glasstone & Dolan give it.**
   The source was a Ward & Asphaug cavity scaled by an 8 % coupling and a
   depth-of-burst curve, all three the project's own, and in deep water

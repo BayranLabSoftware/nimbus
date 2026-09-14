@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   compareWithRecord,
+  INTERPOLATION_DECLARED,
   interpolationCost,
   RECORDED_EVENTS,
   TOLL_CAUSES,
@@ -144,8 +145,19 @@ describe('the interpolated band and the measured one', () => {
       )
     );
     for (const c of costs.filter((x) => x.comparable)) {
+      if (c.event.name in INTERPOLATION_DECLARED) continue;
       if (c.lowComparable) expect(c.lowFactor, `${c.event.name}: low end`).toBeLessThan(2);
       expect(c.highFactor, `${c.event.name}: high end`).toBeLessThan(2);
+    }
+    // A declared row is declared because it is past the gate: the day it
+    // comes back under, the declaration goes.
+    for (const name of Object.keys(INTERPOLATION_DECLARED)) {
+      const c = costs.find((x) => x.event.name === name);
+      expect(c, name).toBeDefined();
+      expect(
+        Math.max(c?.lowFactor ?? 0, c?.highFactor ?? 0),
+        `${name} is still past the gate`
+      ).toBeGreaterThanOrEqual(2);
     }
     // Every event is sampled twice over the shipped rasters, which is
     // close to four seconds on its own and past the default five on a

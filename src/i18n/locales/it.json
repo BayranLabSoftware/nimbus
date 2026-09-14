@@ -1136,7 +1136,7 @@
     "tsunamiDispersion": "Dispersione dell'onda di testa: D = (4π²/6)·r·h²/λ³ sulla lunghezza d'onda λ della sorgente e sulla profondità h, da Kajiura (1963), con un decadimento (1 + D)^(−½) che è una chiusura di Nimbus. L'onda di un megathrust disperde appena; un'onda corta da frana o impatto sì.",
     "seismicMoment": "Momento sismico M₀ = 10^(1.5·Mw + 9.1) N·m — forma SI della scala di magnitudo momento di Hanks & Kanamori (1979).",
     "ruptureLength": "Lunghezza di rottura superficiale L = 10^(a + b·Mw) km — regressione empirica Wells & Coppersmith (1994) per regime di slip.",
-    "mmi": "Intensità Mercalli modificata da attenuazione PGA (Joyner & Boore 1981) + GMICE piecewise Worden et al. (2012), calibrata California.",
+    "mmi": "Anelli di intensità Mercalli modificata dall'attenuazione PGA di Boore et al. (2014), NGA-West2, con i suoi termini di faglia e di sito, + GMICE piecewise Worden et al. (2012), calibrata California; scelti su 370 ShakeMap dell'USGS il 14 settembre 2026.",
     "ngaWest2": "Stima moderna del PGA da Boore, Stewart, Seyhan & Atkinson (2014), Earthquake Spectra 30(3) 1057–1085 — NGA-West2 BSSA14. Sostituisce il fit Joyner–Boore del 1981 con geometric spreading magnitudo-dipendente, clamp near-source a 4.5 km, costanti per tipo di faglia e amplificazione Vs30.",
     "mmiEurope": "Conversione PGA→MCS europea da Faenza & Michelini (2010), GJI 180, 1138–1152, calibrata sui dati ShakeMap italiani. Mostrata accanto al valore Worden (California) per ogni evento.",
     "strasser": "Scaling di rottura megathrust da Strasser, Arango & Bommer (2010), SRL 81(6). Fit su 95 eventi d'interfaccia di subduzione; usato al posto di Wells–Coppersmith per thrust in zona di subduzione, dove W&C sovrastima a Mw ≥ 8.",
@@ -1499,7 +1499,7 @@
       },
       "footprint": {
         "label": "L'impronta dello scuotimento è troppo grande",
-        "body": "Per una rottura molto estesa gli anelli di intensità vengono da una legge pensata per un punto, stirata lungo tutta la faglia. Dipingono a intensità alta molto più terreno di quanto il terremoto abbia scosso — a Tōhoku tre volte l'area di intensità VIII misurata dall'USGS — e le vittime seguono: il solo scuotimento arriva a quasi dieci volte l'intero bilancio, annegati compresi. La riga è dentro solo perché la sua banda è larga tre ordini di grandezza."
+        "body": "Per una rottura molto estesa gli anelli di intensità vengono da una relazione pensata per un solo punto, stirata lungo tutta la faglia. Con gli anelli usati fino al 14 settembre 2026 il solo scuotimento del Tōhoku arrivava a dieci volte l'intero bilancio; con quelli di Boore et al. 2014, adottati quel giorno, è circa 4.500 — tre volte i morti causati dal terremoto stesso — con l'area di intensità VIII ancora due volte e mezzo quella misurata dall'USGS. La riga è dentro solo perché la sua banda copre cinque ordini di grandezza."
       }
     },
     "waves": {
@@ -1558,8 +1558,12 @@
         "note": "Dal 14 settembre la banda dei nove casi su dieci ridisegna il terremoto e, per lo scuotimento, quanto i morti di un singolo terremoto si scostano dalla curva del loro Paese, della misura che pubblica USGS PAGER. La mappa della popolazione resta ferma, e così i tassi di mortalità di esplosioni e colate piroclastiche, per cui una dispersione del genere non è pubblicata. PAGER ha misurato la sua dispersione su mappe di scuotimento reali, quindi si sovrappone a quella del moto del suolo estratta accanto, per una quota che qui non è separata. Dove la curva di un Paese è ripida o incerta la banda copre quattro ordini di grandezza o più, e un dato che vi cade dentro non ha superato niente."
       },
       "greatRupture": {
-        "item": "I terremoti più grandi vengono contati su anelli di intensità troppo grandi per loro",
-        "note": "Dalla magnitudo 7,5 gli anelli vengono da una relazione fatta per un solo punto, stirata lungo tutta la rottura, e dipingono a intensità alta molto più terreno di quanto un terremoto così scuota. Tenuti fuori per regola, quei terremoti risultano molte volte il loro bilancio, e la banda contiene i dati solo perché è larghissima. Fino al 14 settembre 2026 i controlli contavano cerchi attorno all'epicentro invece di ciò che conta il simulatore, e questo lo nascondeva; la correzione degli anelli è nella roadmap."
+        "item": "I terremoti più grandi vengono contati su anelli disegnati per un solo punto",
+        "note": "Dalla magnitudo 7,5 gli anelli di intensità vengono da una relazione fatta per un solo punto, stirata lungo tutta la rottura. Tenuti fuori per regola, quei terremoti risultano circa il doppio del loro bilancio — quattordici volte con gli anelli usati fino al 14 settembre 2026 — e la banda contiene i dati perché è molto larga. Una relazione tarata su rotture lunghe e terremoti delle fosse oceaniche deve ancora arrivare."
+      },
+      "ringsOnRock": {
+        "item": "Gli anelli stanno sulla roccia nuda, e disegnano troppo piccolo lo scuotimento forte dei terremoti medi",
+        "note": "Gli anelli adottati il 14 settembre 2026 hanno riprodotto 370 ShakeMap dell'USGS meglio dei precedenti e non dipingono più intensità che nessun terremoto ha raggiunto. Ma sulla roccia nuda disegnano l'intensità VII a circa metà del raggio che danno le ShakeMap e i rilievi sul campo per magnitudo da 6,5 a 7,5, dove le ShakeMap contano anche i terreni più morbidi, e le vittime di quei terremoti risultano circa un quarto del bilancio."
       },
       "subduction": {
         "item": "I terremoti delle fosse oceaniche scuotono con regole fatte per quelli sulla terraferma",

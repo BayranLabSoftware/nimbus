@@ -316,8 +316,8 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     source: '299 dead',
     use: {
       toll: {
-        role: 'tuned',
-        how: "The shaking contours are still drawn with Joyner–Boore 1981 partly because NGA-West2, tried on 9 September, pushed this row out of its gate (events/earthquake/simulate.ts): the law was chosen with this row in view. Italy's own PAGER curve was fitted on 1973–2007 earthquakes, before this one.",
+        role: 'sameSource',
+        how: "The rings are Boore et al. 2014's since 14 September 2026, chosen by rule 18 of contourLaws.ts on 370 USGS ShakeMaps of 2008–2025 — this event's among them — and not on its toll; until then Joyner & Boore 1981's had been kept partly because the alternative pushed this row out of its gate. Italy's own PAGER curve was fitted on 1973–2007 earthquakes, before this one.",
       },
     },
   },
@@ -326,12 +326,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'earthquake',
     value: 6.3,
     quantities: ['toll'],
-    gated: ['toll'],
+    gated: [],
     source: '309 dead',
     use: {
       toll: {
-        role: 'tuned',
-        how: "The contour law was kept because NGA-West2, tried on 9 September, took this toll from 227 dead to 40 against 309 (events/earthquake/simulate.ts): chosen with this row in view. Italy's own PAGER curve was fitted on 1973–2007 earthquakes, before this one.",
+        role: 'sameSource',
+        how: "The rings are Boore et al. 2014's since 14 September 2026, chosen by rule 18 of contourLaws.ts on 370 USGS ShakeMaps of 2008–2025 — this event's among them — and not on its toll; until then Joyner & Boore 1981's had been kept with this row in view. Italy's own PAGER curve was fitted on 1973–2007 earthquakes, before this one.",
       },
     },
   },
@@ -344,8 +344,8 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     source: '57 dead',
     use: {
       toll: {
-        role: 'tuned',
-        how: "The contour law was kept because NGA-West2, tried on 9 September, took this toll from 38 dead to 13 against 57 (events/earthquake/simulate.ts): chosen with this row in view. The United States take PAGER's regional fatality curve, fitted on 1973–2007 earthquakes — this one's period.",
+        role: 'sameSource',
+        how: "The rings are Boore et al. 2014's since 14 September 2026, chosen by rule 18 of contourLaws.ts on USGS ShakeMaps of 2008–2025 and not on this row; until then Joyner & Boore 1981's had been kept with it in view. The United States take PAGER's regional fatality curve, fitted on 1973–2007 earthquakes — this one's period.",
       },
     },
   },

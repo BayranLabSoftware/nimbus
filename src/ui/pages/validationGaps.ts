@@ -13,6 +13,7 @@ export const VALIDATION_GAPS = [
   'coastalOffline',
   'bandPhysicsOnly',
   'greatRupture',
+  'ringsOnRock',
   'subduction',
   'tunedUnsourced',
   'unread',

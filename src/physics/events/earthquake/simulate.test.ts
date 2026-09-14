@@ -11,21 +11,23 @@ describe('simulateEarthquake', () => {
     expect(r.ruptureLength as number).toBeLessThan(30_000);
     expect(r.shaking.mmiAtEpicenter).toBeGreaterThan(7);
     expect(r.shaking.mmiAtEpicenter).toBeLessThan(10);
-    // Strong-shaking ring reaches 20+ km for a Mw 6.7 event.
-    expect(r.shaking.mmi7Radius as number).toBeGreaterThan(15_000);
+    // Boore et al. 2014's median on reference rock puts MMI VII at about
+    // 10 km; the ShakeMap's grid and Wald's survey put it at 25–30 km, the
+    // gap the validation report declares.
+    expect(r.shaking.mmi7Radius as number).toBeGreaterThan(8_000);
+    expect(r.shaking.mmi7Radius as number).toBeLessThan(12_000);
   });
 
-  it('Tōhoku 2011 Mw 9.1 → M₀ ≈ 5 × 10²² N·m, MMI IX ring exists', () => {
+  it('Tōhoku 2011 Mw 9.1 → M₀ ≈ 5 × 10²² N·m, and no MMI IX anywhere, as its ShakeMap', () => {
     const r = simulateEarthquake(EARTHQUAKE_PRESETS.TOHOKU_2011.input);
     // Hanks–Kanamori moment for Mw 9.1 ≈ 5.6 × 10²² N·m.
     expect(r.seismicMoment as number).toBeGreaterThan(4e22);
     expect(r.seismicMoment as number).toBeLessThan(8e22);
-    // Joyner–Boore was calibrated on crustal events with Mw ≤ 7.7, so
-    // Tōhoku-scale rings under-shoot the subduction-zone reality
-    // (observed MMI IX+ ran hundreds of km). The test checks only that
-    // the contour exists at all — swapping to ASK14 with a subduction
-    // term is tracked as a future upgrade.
-    expect(r.shaking.mmi9Radius as number).toBeGreaterThan(10_000);
+    // The 2011 ShakeMap's highest intensity anywhere was 8.18. Joyner &
+    // Boore 1981, extrapolated past its data, painted 180 000 km² of Japan
+    // at IX; Boore et al. 2014's saturation paints none.
+    expect(r.shaking.mmi9Radius as number).toBe(0);
+    expect(r.shaking.mmi8Radius as number).toBeGreaterThan(10_000);
   });
 
   it('defaults faultType to "all" when omitted', () => {
@@ -166,11 +168,11 @@ describe('the ground the rings stand on', () => {
     const rock = ring(760);
     expect(ring(500)).toBeGreaterThan(rock);
     expect(ring(400)).toBeGreaterThan(ring(500));
-    // And then it stops, because the published site term saturates:
-    // soil that is already shaking hard stops behaving elastically,
-    // which a power law could not have said.
-    expect(ring(250)).toBeLessThan(ring(300));
-    // Rock is unchanged, which is every preset in the calibration net.
-    expect(rock).toBeCloseTo(17.0, 0);
+    // And then it gains less and less, because the published site term
+    // saturates: soil that is already shaking hard stops behaving
+    // elastically, which a power law could not have said.
+    expect(ring(300) - ring(400)).toBeGreaterThan(ring(250) - ring(300));
+    // Rock, where every preset in the calibration net stands.
+    expect(rock).toBeCloseTo(10.1, 0);
   });
 });

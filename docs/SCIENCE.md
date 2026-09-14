@@ -894,6 +894,59 @@ of magnitude wide. Every cell is scored on too few rows, and the table
 says so. That is the programme in one line: more held-out rows, chosen
 by rule, and a casualty model whose band can be both honest and narrow.
 
+### Which law draws the rings (14 September 2026)
+
+Above Mw 7.5 the tolls held out by rule read 13.85× their record on
+Joyner & Boore 1981's rings. Choosing a replacement on those same tolls
+would fit the law to the set that found the fault, so rules 17 to 19
+(`validation/contourLaws.ts`) were committed before any candidate ran: the
+shipped law, Boore et al. 2014 with its fault-type and site terms (tried
+on 9 September and reverted then on three tuned rows), and the first
+below Mw 7.5 with the second from it. Rule 18 scores each on the ground it
+shakes at MMI VII, VIII and IX against the USGS ShakeMaps of the rule set
+(370 of its 408 earthquakes have one): half the log of the area ratio,
+each area plus 10 km², averaged by magnitude cell. Rule 19 runs the winner
+once on the held-out tolls.
+
+| law                 | Mw < 6.5 | 6.5–7.5 | ≥ 7.5 | mean abs. log bias | bands invented |
+| ------------------- | -------- | ------- | ----- | ------------------ | -------------- |
+| Joyner & Boore 1981 | 2.72×    | 3.48×   | 8.22× | 1.45               | 565            |
+| Boore et al. 2014   | 1.70×    | 1.62×   | 3.22× | 0.73               | 424            |
+| JB81, then BSSA14   | 2.72×    | 3.48×   | 3.22× | 1.14               | 506            |
+
+On the tolls, bias and inside where there is something to hold:
+
+| law                 | Mw < 6.5           | 6.5–7.5            | ≥ 7.5             |
+| ------------------- | ------------------ | ------------------ | ----------------- |
+| Joyner & Boore 1981 | 1.69× · 123 of 134 | 0.98× · 108 of 115 | 13.85× · 29 of 34 |
+| Boore et al. 2014   | 0.69× · 121 of 132 | 0.23× · 96 of 107  | 1.92× · 32 of 34  |
+
+Its mean absolute log bias is 0.83 against 1.06 and it holds nine records
+in ten in every cell, so by rule 19 it is adopted, and the simulator draws
+the rings with it.
+
+What the score does not show was read afterwards, and is written here as
+such. Most of Boore et al. 2014's margin on the ShakeMaps is the bands it
+does not invent: Joyner & Boore painted MMI IX for 95 earthquakes whose
+ShakeMaps never reached it, Boore et al. none. Where a ShakeMap does reach
+MMI VII, Joyner & Boore draws it at a median 1.26, 0.89 and 1.13 of its
+radius from the smallest cell up, and Boore et al. at 0.83, 0.50 and
+0.90; at MMI VIII the new rings are smaller still. On the net's anchors
+the same shows: no band invented, Kokoxili's 1 700 km² of MMI IX missed,
+Northridge's MMI VII at a ninth of its ShakeMap area, and the rings of the
+two surveyed crustal events at about half their radii. The middle cell's
+tolls, 0.23×, are where that lands. The rings stand on reference rock —
+every rule-set row and every preset — while ShakeMaps count softer ground,
+and that is the first suspect; a relation for long ruptures and trench
+earthquakes is the second.
+
+In the net, eleven of eighteen tolls are now inside: Northridge 13 dead on
+1–177 against 57, L'Aquila 40 on 1–4 622 against 309 — a band past the
+gate, so ungated as rule 19 says — Tōhoku's shaking 4 505, Gorkha 2 983,
+while Amatrice (1 on 0–131 against 299) and Sumatra's shaking fall
+outside. Gorkha's browser band now stops at half the measured high end,
+past the interpolation gate, and is declared rather than hidden.
+
 ### Against the program the impact equations came from (14 September 2026)
 
 The impact pipeline cites Collins, Melosh & Marcus (2005), and their

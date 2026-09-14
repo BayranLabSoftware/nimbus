@@ -950,7 +950,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'PGA attenuation (Joyner–Boore 1981)',
         formula: 'log₁₀(A/g) = −1.02 + 0.249 · Mw − log₁₀(D) − 0.00255·D ;  D = √(R² + 7.3²) km',
         description:
-          'Joyner & Boore 1981, fitted on western North American records for 5.0 ≤ M ≤ 7.7. Not a legacy row: it is the attenuation behind the MMI VII–IX rings (with the Boore et al. 2014 site term), the epicentral intensity, the liquefaction radius and the aftershock rings. Beyond M 7.7 it is used outside its data.',
+          'Joyner & Boore 1981, fitted on western North American records for 5.0 ≤ M ≤ 7.7. It draws the epicentral intensity, the liquefaction radius and the aftershock rings. Until 14 September 2026 it also drew the MMI VII–IX rings, and beyond M 7.7, outside its data, painted intensities no earthquake reached: 180 000 km² of Japan at IX for Tōhoku, whose ShakeMap never touched it.',
         citation: joynerBoore1981,
       },
       {
@@ -958,7 +958,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'PGA attenuation (NGA-West2, BSSA14)',
         formula: 'ln(PGA_g) = F_E(M, mech) + F_P(R, M) + F_S(Vs30, PGA_rock)',
         description:
-          'Boore et al. 2014 NGA-West2 equation with magnitude-dependent spreading, the 4.5 km near-source term, fault-type constants and the published site term. Shown as PGA at 20 and 100 km and used for the uncertainty band; the MMI rings use Joyner–Boore 1981.',
+          'Boore et al. 2014 NGA-West2 equation with magnitude-dependent spreading, the 4.5 km near-source term, fault-type constants and the published site term. Since 14 September 2026 it draws the MMI VII–IX rings, chosen by rules 17–19 of the validation on 370 USGS ShakeMaps against Joyner & Boore 1981 and checked on 406 held-out death tolls; it invents no intensity an earthquake never reached, and on reference rock draws moderate earthquakes’ MMI VII at about half the ShakeMaps’ radius, a declared gap. Also shown as PGA at 20 and 100 km.',
         citation: boore2014,
       },
       {

@@ -76,12 +76,18 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
    * the model shakes ground the event never shook at all.
    */
   const DECLARED: Record<string, Partial<Record<7 | 8 | 9, number>>> = {
-    'Northridge 1994': { 7: 0.32, 8: 0.21 },
-    "L'Aquila 2009": { 7: 8.92, 8: Infinity },
-    'Amatrice 2016': { 7: 18.19, 8: Infinity },
-    'Gorkha 2015': { 7: 0.42, 8: 2.77, 9: Infinity },
-    'Tōhoku 2011': { 7: 1.3, 8: 3.12, 9: Infinity },
-    'Kokoxili 2001': { 7: 0.36, 8: 0.48, 9: 3.97 },
+    // Boore et al. 2014's rings since 14 September 2026 (rule 19 of
+    // contourLaws.ts). On Joyner & Boore 1981's they read Northridge
+    // 0.32 / 0.21, L'Aquila 8.92 / invented, Amatrice 18.19 / invented,
+    // Gorkha 0.42 / 2.77 / invented, Tōhoku 1.30 / 3.12 / invented,
+    // Kokoxili 0.36 / 0.48 / 3.97. `0` is a band the ShakeMap reached
+    // and the model does not.
+    'Northridge 1994': { 7: 0.113, 8: 0.0156 },
+    "L'Aquila 2009": { 7: 1.9 },
+    'Amatrice 2016': { 7: 4.12 },
+    'Gorkha 2015': { 7: 0.267, 8: 1.55 },
+    'Tōhoku 2011': { 7: 1.22, 8: 2.49 },
+    'Kokoxili 2001': { 7: 0.233, 8: 0.247, 9: 0 },
   };
 
   it('the footprint sits where it was last measured, and no worse', () => {
@@ -97,6 +103,11 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
           // reached this intensity and neither does the model.
           expect(observed, `${f.name} MMI≥${thr.toString()} observed`).toBe(0);
           expect(model, `${f.name} MMI≥${thr.toString()} model`).toBe(0);
+          continue;
+        }
+        if (expected === 0) {
+          expect(observed, `${f.name} MMI≥${thr.toString()}`).toBeGreaterThan(0);
+          expect(model, `${f.name} MMI≥${thr.toString()} misses this band`).toBe(0);
           continue;
         }
         if (expected === Infinity) {
@@ -125,7 +136,8 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
     // What a median model can honestly be held to is being centred,
     // and to scattering no more than the ground does. It is: the
     // geometric mean radius ratio across every band that exists is
-    // 1.18, and the spread is σ_ln = 0.71 — under the 0.85 the
+    // 0.71 on Boore et al. 2014's rings (1.18 on Joyner & Boore 1981's),
+    // and the spread is σ_ln = 0.82 (0.71) — under the 0.85 the
     // published ground-motion sigma implies, and above the 0.49 its
     // between-event part alone would (EXPECTED_RADIUS_SCATTER says why
     // the first is a ceiling).
@@ -157,23 +169,13 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
     expect(sd, 'σ_ln of the radius ratio').toBeLessThan(EXPECTED_RADIUS_SCATTER);
   });
 
-  it('four events are shaken at an intensity they never reached', () => {
-    // The sharpest thing this anchor says, and the one that explains
-    // Tōhoku's headline: the model paints 180 747 km² of Japan at MMI
-    // IX, and the 2011 ShakeMap's maximum anywhere was 8.18. That
-    // band is where 200 000 of the model's dead come from, against a
-    // record of 18 500.
-    //
-    // A laboratory-level model has nothing in this list. Today it has
-    // four, and the count is pinned so it can only go down.
-    //
-    // Drawing the contours with NGA-West2 instead of Joyner–Boore
-    // empties this list, and was tried and reverted on 9 September:
-    // it also takes Northridge's MMI VII ring to 9.9 km where both
-    // the ShakeMap grid (30 km equivalent) and Wald's macroseismic
-    // survey (25 km) put it, breaks the Amatrice toll gate, and its
-    // site term is a power-law surrogate rather than the published
-    // BSSA14 one. See docs/ROADMAP.md.
+  it('no event is shaken at an intensity it never reached', () => {
+    // On Joyner & Boore 1981's rings four were: the model painted
+    // 180 747 km² of Japan at MMI IX where the 2011 ShakeMap's maximum
+    // anywhere was 8.18, and L'Aquila, Amatrice and Gorkha each gained a
+    // band they never had. Boore et al. 2014's saturation, adopted on
+    // 14 September 2026 by rule 19 of contourLaws.ts, invents none — and
+    // misses Kokoxili's 1 700 km² of MMI IX instead, pinned above.
     const invented: string[] = [];
     for (const f of SHAKEMAP_FOOTPRINTS) {
       for (const thr of [7, 8, 9] as const) {
@@ -181,11 +183,6 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
         if (modelAreaKm2(f, thr) > 0) invented.push(`${f.name} MMI≥${thr.toString()}`);
       }
     }
-    expect(invented).toEqual([
-      "L'Aquila 2009 MMI≥8",
-      'Amatrice 2016 MMI≥8',
-      'Gorkha 2015 MMI≥9',
-      'Tōhoku 2011 MMI≥9',
-    ]);
+    expect(invented).toEqual([]);
   });
 });

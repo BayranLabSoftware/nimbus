@@ -127,7 +127,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     gated: false,
     cause: 'buildingStock',
     caveat:
-      'Held out, and a miss: 1 dead against 185, on a band that stopped at 15 on the first run and stops at 34 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. New Zealand has no fatality curve of its own and borrows its region’s (θ = 37.8, β = 0.36): with all 265 529 people inside the model’s MMI VII ring shaken at MMI IX it would read about nine deaths, so the intensity alone cannot account for the miss. The rings are also a median on reference rock, 1.8 km of MMI VIII for an Mw 6.1. The band draws the shaking and holds the curve fixed, which is the declared gap this row makes visible.',
+      'Held out, and a miss: 1 dead against 185, on a band that stopped at 15 on the first run and stops at 34 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. New Zealand has no fatality curve of its own and borrows its region’s (θ = 37.8, β = 0.36): with all 265 529 people inside the model’s MMI VII ring shaken at MMI IX it would read about nine deaths, so the intensity alone cannot account for the miss. The rings are also a median on reference rock, 1.8 km of MMI VIII for an Mw 6.1. The band draws the shaking and holds the curve fixed, which is the declared gap this row makes visible. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 1 dead on 0 to 20.',
   },
   {
     name: 'Kumamoto 2016',
@@ -142,7 +142,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     run: quake({ magnitude: 7.0, depth: m(10_000), faultType: 'strike-slip' }),
     gated: false,
     caveat:
-      'Held out, and inside, on a band that says little: 1 to 12 168 dead on the first run, four orders of magnitude, and 1 to 62 577 with the fatality curve’s own scatter drawn, added the same day, against a record of 49 direct to 273 in all. Written after the result, as the rules in heldOutEvents.ts require. Japan’s own PAGER curve is among the steepest in the table (β = 0.10), so the shift in intensity that one sigma of ground motion makes moves the toll by orders of magnitude. The central estimate, 332, sits between the direct and the total count; the pass is recorded as it came, and it is not evidence of much.',
+      'Held out, and inside, on a band that says little: 1 to 12 168 dead on the first run, four orders of magnitude, and 1 to 62 577 with the fatality curve’s own scatter drawn, added the same day, against a record of 49 direct to 273 in all. Written after the result, as the rules in heldOutEvents.ts require. Japan’s own PAGER curve is among the steepest in the table (β = 0.10), so the shift in intensity that one sigma of ground motion makes moves the toll by orders of magnitude. The central estimate, 332, sits between the direct and the total count; the pass is recorded as it came, and it is not evidence of much. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 61 on 0 to 7 777.',
   },
   {
     name: 'Kaikōura 2016',
@@ -157,7 +157,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     gated: false,
     cause: 'belowResolution',
     caveat:
-      'Held out, and a miss by two: a band of 0 to 0 on the first run and 0 to 1 with the fatality curve’s own scatter drawn, added the same day, against 2 dead. Written after the result, as the rules in heldOutEvents.ts require. The rings about the epicentre hold 5 231 people, and the curve New Zealand borrows gives them about one twentieth of a death. A rate over a population cannot resolve a handful of deaths, and no band built from one could contain them. Those rings were the harness’s circles; counted as the simulator counts an Mw 7.8, on the rupture stadium, the row reads 1 dead on a band of 0 to 30 and is inside — on the same resolution, one death more or less.',
+      'Held out, and a miss by two: a band of 0 to 0 on the first run and 0 to 1 with the fatality curve’s own scatter drawn, added the same day, against 2 dead. Written after the result, as the rules in heldOutEvents.ts require. The rings about the epicentre hold 5 231 people, and the curve New Zealand borrows gives them about one twentieth of a death. A rate over a population cannot resolve a handful of deaths, and no band built from one could contain them. Those rings were the harness’s circles; counted as the simulator counts an Mw 7.8, on the rupture stadium, the row reads 1 dead on a band of 0 to 30 and is inside — on the same resolution, one death more or less. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 0 on 0 to 14.',
   },
   {
     name: 'Pohang 2017',
@@ -171,7 +171,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     gated: false,
     cause: 'buildingStock',
     caveat:
-      'Held out, and a miss the other way: 35 dead where nobody died, on a band of 1 to 17 877 on the first run and 1 to 29 628 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. South Korea has no fatality curve of its own and borrows its region’s, one of the deadliest in the table (θ = 10.3, β = 0.10): inside the model’s MMI VII ring it kills about one in fifteen hundred of 52 188 people, where the city’s buildings killed none. The same steepness is what makes the band four orders of magnitude wide.',
+      'Held out, and a miss the other way: 35 dead where nobody died, on a band of 1 to 17 877 on the first run and 1 to 29 628 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. South Korea has no fatality curve of its own and borrows its region’s, one of the deadliest in the table (θ = 10.3, β = 0.10): inside the model’s MMI VII ring it kills about one in fifteen hundred of 52 188 people, where the city’s buildings killed none. The same steepness is what makes the band four orders of magnitude wide. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 32 on 0 to 12 386, a band that now reaches down to the record of none.',
   },
   {
     name: 'Durrës (Albania) 2019',
@@ -184,7 +184,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     run: quake({ magnitude: 6.4, depth: m(22_000), faultType: 'reverse' }),
     gated: false,
     caveat:
-      'Held out, and inside: 16 dead against 51, on a band of 1 to 510 on the first run and 1 to 1 425 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. Albania borrows its region’s curve (θ = 16.2, β = 0.22). The band spans about three orders of magnitude, which is weak evidence, but it is inside the span the gated rows are held to, so this is the first held-out death toll that is not a zero to land inside a band narrow enough to have been wrong.',
+      'Held out, and inside: 16 dead against 51, on a band of 1 to 510 on the first run and 1 to 1 425 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. Albania borrows its region’s curve (θ = 16.2, β = 0.22). The band spans about three orders of magnitude, which is weak evidence, but it is inside the span the gated rows are held to, so this is the first held-out death toll that is not a zero to land inside a band narrow enough to have been wrong. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 3 on 0 to 453.',
   },
 ];
 
