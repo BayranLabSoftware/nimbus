@@ -15,7 +15,7 @@ import { seismicMomentFromMagnitude } from './seismicMoment.js';
  * and tsunami physics: given the Mw and rupture length of an
  * interface event, estimate the seafloor uplift, the initial
  * tsunami amplitude, and propagate to reference ranges using the
- * shared Lamb 1932 / Heidarzadeh-Satake 2015 infrastructure.
+ * shared Lamb 1932 / Kajiura 1963 infrastructure.
  *
  * The closed-form sequence follows the simplified textbook chain:
  *   1. Hanks–Kanamori (1979) seismic moment M₀ = 10^(1.5·Mw + 9.1).
@@ -25,8 +25,12 @@ import { seismicMomentFromMagnitude } from './seismicMoment.js';
  *   5. Initial tsunami amplitude A₀ ≈ mean uplift.
  *   6. Cylindrical-wave spreading from the line source:
  *        A(r) = A₀ · √(R₀ / r)     (R₀ = L/2, the source half-length).
- *   7. Heidarzadeh & Satake (2015) dispersion multiplier and
+ *   7. Kajiura (1963) dispersion parameter (tsunami/dispersion.ts) and
  *      Synolakis (1987) 1:100 plane-beach run-up at the coast.
+ *
+ * Steps 2 and 6 are the original chain; the code below now takes W
+ * from the caller (Strasser et al. 2010) and spreads from a source
+ * radius built on W with a ring normalisation — see the notes there.
  *
  * Tōhoku 2011 (Mw 9.1, L ≈ 700 km) → A₀ ≈ 6 m, which the cylindrical
  * spread and dispersion reduce to order-of-magnitude correct
@@ -38,7 +42,8 @@ import { seismicMomentFromMagnitude } from './seismicMoment.js';
  *    finite dislocation; our 0.5·D̄ uplift factor is the coarse
  *    Okada average for shallow thrusts.
  *   Synolakis, C. E. (1987) JFM 185 — plane-beach run-up.
- *   Heidarzadeh & Satake (2015) — far-field dispersion.
+ *   Kajiura, K. (1963) Bull. Earthquake Res. Inst. 41 — the leading
+ *    wave of a tsunami, and the dispersion parameter.
  */
 
 /**
@@ -174,13 +179,12 @@ export interface SeismicTsunamiResult {
   amplitudeAt1000km: Meters;
   /** Amplitude at 5 000 km (m). */
   amplitudeAt5000km: Meters;
-  /** Heidarzadeh-Satake dispersion-corrected amplitude at 5 000 km. */
+  /** Dispersion-corrected amplitude at 5 000 km (Kajiura parameter). */
   amplitudeAt5000kmDispersed: Meters;
-  /** Phase-20 dispersion-corrected amplitude at 1 000 km. Same
-   *  Heidarzadeh & Satake 2015 frequency-dependent decay applied to
-   *  the cylindrical-spread `amplitudeAt1000km`. Pinned in the NOAA
-   *  benchmark suite against DART / Cocos Island records — Sumatra-
-   *  Andaman 2004 matches within ±20 %. */
+  /** Dispersion-corrected amplitude at 1 000 km: the same Kajiura
+   *  decay applied to the spread `amplitudeAt1000km`. It was pinned
+   *  against DART and Cocos Island rows whose source could not be
+   *  verified; those tests are skipped (see validation/fixtures.ts). */
   amplitudeAt1000kmDispersed: Meters;
   /** The array factor toward `receiverBearingDeg`: 1 across the fault
    *  and less off its ends, 1 throughout when no receiver was named
@@ -203,14 +207,13 @@ export interface SeismicTsunamiResult {
   /** Lamb 1932 shallow-water travel time to 1 000 km (s). */
   travelTimeTo1000km: Seconds;
   /** Phase speed `c = √(g·h)` of a long gravity wave on the basin
-   *  (Lamb 1932 §170). At 4 km mean depth this is ≈ 198 m/s
+   *  (Lamb 1932, Art. 170). At 4 km mean depth this is ≈ 198 m/s
    *  (≈ 713 km/h) — surfaces in the UI as the tsunami's open-ocean
    *  velocity. */
   deepWaterCelerity: MetersPerSecond;
-  /** Characteristic source-radiated wavelength (m). The dominant
-   *  Fourier component of a finite line-source rupture is set by
-   *  twice the rupture length — Tōhoku ≈ 700 km L gives a ≈ 1 400 km
-   *  dominant wavelength, observed at DART buoys (Satake et al. 2013).
+  /** Characteristic source-radiated wavelength (m): twice the
+   *  down-dip width, a Nimbus heuristic — Tōhoku's W ≈ 205 km gives
+   *  ≈ 410 km (see the note where it is computed).
    *  This is "larghezza" in the tsunami popular-science sense: the
    *  spacing between successive wave crests, not the peak-to-trough
    *  amplitude. */
@@ -227,15 +230,12 @@ export interface SeismicTsunamiResult {
   ruptureWidth: Meters;
   /** Dominant wave period at the source (s). T = λ / c, with λ the
    *  source wavelength above and c the deep-water celerity. For
-   *  Tōhoku 2011 this lands at ≈ 7 000 s ≈ 2 h, consistent with the
-   *  ~30 min – 2 h range reported at coastal tide gauges. */
+   *  Tōhoku 2011 this lands at ≈ 2 070 s ≈ 35 min. */
   dominantPeriod: Seconds;
   /** Estimated inland inundation distance (m) at the 1 000 km contour,
-   *  from the geometric `runup × cot(slope)` envelope on a 1:100
-   *  reference beach (FEMA 55 §3.4 / Murata et al. 2010). Order-of-
-   *  magnitude only — site-specific topography, vegetation roughness
-   *  and back-bay refraction can multiply or divide this by a factor
-   *  of two on real coasts. */
+   *  from the geometric `runup × cot(slope)` wedge on a 1:100
+   *  reference beach — a geometric identity, not a published hazard
+   *  rule. Order of magnitude only. */
   inundationDistanceAt1000km: Meters;
   /** Beach slope (rad) actually consumed by the Synolakis run-up. */
   beachSlopeRadUsed: number;
@@ -360,17 +360,7 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
     dispersionFactor({ rangeM: range, depthM: basinDepth, wavelengthM: 2 * W });
   const amp5000Disp = amp5000 * disperse(5_000_000);
   // Phase-20: also surface the dispersion-corrected amplitude at
-  // 1 000 km. Pre-Phase-20 only the 5 000 km value applied the
-  // Heidarzadeh & Satake 2015 frequency-dependent decay; the 1 000 km
-  // value used the raw cylindrical spread, which over-predicted the
-  // DART/Cocos record by a factor 2-3 for far-field megathrust events.
-  // Applying the dispersion at every distance brings the long-rupture
-  // case (Sumatra-Andaman 2004 at 1 700 km) inside ±20 % of the
-  // observed amplitude. Compact-rupture cases (Tōhoku 2011) stay
-  // outside the ±20 % envelope because the cylindrical 1D model
-  // cannot capture their slip-heterogeneity-driven spectral spread —
-  // that is a known Tier 1 limitation, addressed in the planned
-  // Tier 2 Saint-Venant 1D Web Worker.
+  // 1 000 km, the same dispersion applied at every distance.
   const amp1000Disp = amp1000 * disperse(1_000_000);
   // The beam. Everything above is the amplitude across the fault,
   // where the wave is strongest; a place that is not across the fault

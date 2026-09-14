@@ -14,8 +14,8 @@ import { J } from '../units.js';
  *
  * For every JSON fixture in `geoclawFixtures/` that has a non-empty
  * `geoclawProbes` array, we feed the same source parameters to the
- * Nimbus Phase-21c Saint-Venant 1D-radial pipeline + Heidarzadeh-
- * Satake dispersion post-process and assert the predicted far-field
+ * Nimbus Phase-21c Saint-Venant 1D-radial pipeline + Kajiura
+ * dispersion post-process and assert the predicted far-field
  * amplitude lands within `tolerance` (±25 % default) of the GeoClaw
  * value at every probe.
  *

@@ -100,9 +100,7 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
     triggers.push(cite('wunnemann2007', 'Hydrocode attenuation exponents behind eqs. 10a/10b.'));
     triggers.push(cite('synolakis1987', 'Plane-beach solitary-wave run-up at coast.'));
     triggers.push(cite('koshimura2009', 'Coastal toll by inundation depth (casualty estimate).'));
-    triggers.push(
-      cite('heidarzadehSatake2015', 'Far-field dispersion multiplier (DART-calibrated).')
-    );
+    triggers.push(cite('kajiura1963', 'Dispersion parameter of the leading wave.'));
   }
   if ((result.damage.overpressure5psi as number) > 0) {
     triggers.push(cite('ota1979', 'Blast mortality by overpressure band (casualty estimate).'));
@@ -190,8 +188,8 @@ export function collectEarthquakeCitations(result: EarthquakeScenarioResult): Tr
   if (result.tsunami) {
     triggers.push(cite('synolakis1987', 'Plane-beach tsunami run-up at coast.'));
     triggers.push(cite('koshimura2009', 'Coastal toll by inundation depth (casualty estimate).'));
-    triggers.push(cite('heidarzadehSatake2015', 'Far-field dispersion multiplier.'));
-    triggers.push(cite('ward2000', 'Cylindrical wave spreading from the rupture source.'));
+    triggers.push(cite('kajiura1963', 'Dispersion parameter of the leading wave.'));
+    triggers.push(cite('lamb1932', 'Long-wave speed and the spreading of the wave.'));
   }
 
   if ((result.shaking.mmi7Radius as number) > 0) {

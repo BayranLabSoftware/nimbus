@@ -223,8 +223,8 @@ export interface ExplosionTsunamiResult {
    *  wave. Illustrative coastal-inundation estimate. */
   runupAt100km: Meters;
   /** Estimated inland inundation distance at the 100 km contour
-   *  (m). Geometric `runup × cot(slope)` envelope on a 1:100
-   *  reference beach (FEMA 55 §3.4). */
+   *  (m). Geometric `runup × cot(slope)` wedge on a 1:100
+   *  reference beach — a geometric identity. */
   inundationDistanceAt100km: Meters;
   /** Beach slope (rad) actually consumed by the Synolakis run-up. */
   beachSlopeRadUsed: number;

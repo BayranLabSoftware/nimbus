@@ -15,7 +15,7 @@ import type { FastMarchingResult } from './fastMarching.js';
  * amplitude at every reachable cell. The propagation combines two
  * established approximations:
  *
- *   1. **Green's law** (Lamb 1932 §187, Synolakis & Bernard 2006).
+ *   1. **Green's law** (Lamb 1932 Art. 185, Synolakis & Bernard 2006).
  *      As a long wave moves from depth h₀ at the source to depth h(x)
  *      somewhere downstream, energy conservation along a stream tube
  *      with constant width gives
@@ -71,7 +71,7 @@ import type { FastMarchingResult } from './fastMarching.js';
  * scatter (factor 5–10 for landslide and impact tsunamis).
  *
  * References:
- *   Lamb, H. (1932). "Hydrodynamics" (6th ed.), §187. Cambridge.
+ *   Lamb, H. (1932). "Hydrodynamics" (6th ed.), Art. 185. Cambridge.
  *   Synolakis, C. E. & Bernard, E. N. (2006). "Tsunami science before
  *     and beyond Boxing Day 2004." Phil. Trans. R. Soc. A 364: 2231–2265.
  *   Tinti, S. & Bortolucci, E. (2000). "Energy of water waves

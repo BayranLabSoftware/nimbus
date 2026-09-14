@@ -221,6 +221,29 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   generator is Tommy Ettinger's Mulberry32; the Box–Muller transform is
   the basic form. Part of this text reached the site with the impact
   commit before it.
+- **Two landslide waves were tuned on numbers their sources do not
+  give.** Vaiont's confined-basin factor was chosen to reach a 250 m
+  wave credited to Genevois & Ghirotti 2005; their wave crested 140 m
+  above the top of the dam, and their 250 m is the thickness of the
+  slide. The Anak Krakatau prefactor was set on an 85 m source credited
+  to Grilli et al. 2019, whose simulated leading wave is nearly 50 m;
+  the Storegga one on a 5–10 m source amplitude Bondevik et al. 2005 do
+  not give — they read run-up from deposits. The model is unchanged; the
+  validation report, the regression registry, the cards and the presets
+  now say so, and the gaps are listed for re-tuning.
+- **The volcano and tsunami cards say what the code does.** The PDC,
+  ashfall, lahar, climate and crosswind formulas on the cards were
+  stale or credited to papers that do not contain them; they are Nimbus
+  scalings and calibrations, with the papers named as background. The
+  dispersion card and the report cite Kajiura 1963, not a paper on the
+  1998 Papua New Guinea tsunami; the source wavelength is twice the
+  down-dip width (410 km for Tōhoku, 35 min); the inundation readout is a
+  geometric identity, not "FEMA 55 §3.4"; the coastal damage labels are
+  the project's, beside Japan's warning bands; Green's law is Lamb's
+  Art. 185. Twenty entries of the historical roster are corrected — among
+  them Lisbon's magnitude, Hunga Tonga's 57 km (Proud et al. 2022),
+  Boltysh 0.65 Myr after Chicxulub, and Halifax, Texas City and Ivy Mike
+  credited to what exists.
 - **The terrain tiles are not CC0.** They combine public-domain data
   with sources that require attribution; the README, ASSETS and the code
   say so and link the list.

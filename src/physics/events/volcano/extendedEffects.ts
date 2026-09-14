@@ -110,9 +110,9 @@ export function climateCoolingFromVEI(vei: number): number {
  *
  *     Area(1 mm) ≈ C · V^0.8     (V in km³, Area in km²)
  *
- * with C ≈ 6 × 10⁴ km²·km⁻²·⁴ (see the in-body calibration note — the
- * Pyle 1989 fit is K ≈ 5×10⁴, NOT the 3×10³ used before the Phase-10
- * audit, which under-predicted by ~20×). Order-of-magnitude only; real
+ * with C ≈ 6 × 10⁴ km²·km⁻²·⁴, a project fit (see the in-body note;
+ * Pyle 1989 describes exponential thinning with the square root of
+ * area, not this power law). Order-of-magnitude only; real
  * fallout is wind-shaped and requires HYSPLIT-like Lagrangian
  * advection for a realistic footprint.
  */
@@ -125,8 +125,8 @@ export function ashfallArea1mm(totalEjectaVolume: number): number {
   //   MSH 1980 (V≈1 km³) → 50 000 km² observed
   //   Pinatubo 1991 (V≈10 km³) → 500 000 km² observed
   //   Krakatau 1883 (V≈20 km³) → ~1×10⁶ km² observed
-  // K = 60 000 fits all three within ±factor-2. Old prefactor was a
-  // typo — the published Pyle 1989 fit is K ≈ 5×10⁴, not 3×10³.
+  // K = 60 000 fits all three within ±factor-2 (areas not rechecked
+  // against their sources).
   const areaKm2 = 60_000 * Math.pow(V_km3, 0.8);
   return areaKm2 * 1_000_000; // km² → m²
 }

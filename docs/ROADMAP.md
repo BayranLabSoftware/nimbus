@@ -267,37 +267,50 @@ in the net:
 
 Each has to go in with its role written before its result is seen.
 
-### 0b. Every source read against its record _(14 September; earthquakes done, the rest in progress)_
+### 0b. Every source read against its record _(done 14 September; the gaps it found are open)_
 
 A reviewer checks citations before physics, and until 14 September
 nothing here had. Two passes now exist. `pnpm audit:sources` resolves
 every DOI in the repository and compares every methodology citation
-with Crossref — metadata only, rerunnable by anyone, passing. And each
+with Crossref — metadata only, rerunnable by anyone, passing. And every
 methodology card was read against its source and against the code, by
 section, with the text of the source quoted for every finding.
 
-What the reading found beyond metadata, and what it cost:
+What the reading fixed in the model:
 
-- **Earthquakes (done).** Two code bugs — aftershocks drawn six times too
-  few, steep ground read as soil C — and eighteen cards that said
-  something the code or the source does not.
-- **Impacts (open).** The ejecta blanket is computed on the final rim
-  radius where Collins et al. 2005 use the transient one (2.4× to 11×
-  too thick); the complex-crater depth jumps from 627 m to 1 482 m at
-  3.2 km on a lunar fit; the acid-rain anchor is about 80× what Prinn &
-  Fegley 1987 give; three cards credit Brown et al. 2013 with a figure
-  the paper does not print.
-- **Explosions and casualties (open).** The Kinney–Graham overpressure is
-  a free-air fit used for surface bursts without ground reflection;
-  several Glasstone & Dolan pointers are to sections that say something
-  else; OTA 1979's blast mortality is its figure 1, not table 2, and OTA
-  does not call it Hiroshima's record; the crater K values have no
-  source and Glasstone & Dolan §6.09 implies about half.
-- **Volcanoes and tsunamis (in progress).** The dispersion card credits
-  a paper on Papua New Guinea with a law the code no longer uses.
-- **Test data.** The tsunami arrival-time fixtures had a non-existent
-  source and wrong distances, and are skipped; DART 21413 was placed
-  1 500 km out instead of 1 242.
+- **Earthquakes.** Aftershocks drawn six times too few; steep ground read
+  as soil C.
+- **Impacts.** The seismic magnitude read a radiated energy as a moment,
+  ≈ 2.9 units low; the ejecta thickness used the final rim radius
+  (2.4–10× too thick); complex craters took a lunar depth fit (2.6× too
+  deep); stratospheric dust and acid rain were ≈ 130× and ≈ 80× their
+  sources.
+
+What it found and did not change — the gaps a paper has to state, and
+the candidates for re-tuning:
+
+- **Tuned on numbers the sources do not give.** Vaiont's confined-basin
+  factor was set on a 250 m wave; Genevois & Ghirotti 2005 give a crest
+  140 m above the top of the dam (their 250 m is the slide's thickness).
+  Anak Krakatau's prefactor was set on an 85 m source; Grilli et al. 2019
+  simulate a leading wave nearly 50 m high. Storegga's on a 5–10 m source
+  amplitude that Bondevik et al. 2005 do not give.
+- **An airburst's shock radii.** The altitude factor puts Chelyabinsk's
+  0.5 psi ring at 96 km, near the 108 km of window damage Popova et al.
+  2013 model — but at their 500 Pa threshold the model reaches ≈ 640 km.
+- **Explosions.** The Kinney–Graham fit is for free air: a chemical surface
+  burst's radii are about a fifth short (Beirut). The thermal partition of
+  an air burst, 0.35, is used for surface bursts too (Glasstone & Dolan:
+  0.18). The crater coefficients are twice Glasstone & Dolan's dry soil.
+  Burn thresholds are fixed where the book makes them grow with yield,
+  and the initial-radiation fit has not been checked against the book's
+  dose–range curves.
+- **Volcanoes.** The PDC, ashfall, lahar and climate relations are
+  project calibrations whose anchors were not rechecked.
+- **Unread.** The 30 cm recorded at DART 21413 (Satake et al. 2013) and a
+  published table of tsunami arrival times; the tests that need them are
+  skipped. The Venus II chapter behind the complex-crater depth, read only
+  through Collins et al. 2005.
 
 ### 1. Verify the layers, not just the toll _(intensity done, 9 September)_
 

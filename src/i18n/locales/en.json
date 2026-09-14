@@ -1074,17 +1074,17 @@
       "tsunamiCelerity": {
         "name": "Tsunami celerity",
         "definition": "Open-ocean propagation speed: c = √(g · h). At 4 km mean depth this is ≈ 198 m/s ≈ 713 km/h — the popular-science 'speed of a jet airliner'. On a 100 m continental shelf the wave slows to ≈ 31 m/s.",
-        "source": "Lamb (1932) §170"
+        "source": "Lamb (1932), Art. 170"
       },
       "sourceWavelength": {
         "name": "Tsunami source wavelength",
-        "definition": "Spacing between successive crests at the source, set by the dominant Fourier mode: λ ≈ 2 × cavity diameter (impact / explosion) or 2 × rupture length (megathrust). For Tōhoku 2011 this is ≈ 1 400 km.",
-        "source": "Lamb (1932) / Satake et al. (2013)"
+        "definition": "Spacing between successive crests at the source, a Nimbus heuristic: one cavity diameter for an impact, twice the down-dip width for a megathrust, and from its period for an explosion. For Tōhoku 2011 (W ≈ 205 km) this is ≈ 410 km.",
+        "source": "Nimbus; W from Strasser et al. (2010)"
       },
       "dominantPeriod": {
         "name": "Dominant period",
-        "definition": "Time between successive crests at the source: T = λ / c. For Tōhoku 2011 ≈ 7 000 s ≈ 2 h, consistent with the 30 min – 2 h range reported at coastal tide gauges.",
-        "source": "Lamb (1932) §170"
+        "definition": "Time between successive crests at the source: T = λ / c. For Tōhoku 2011 (λ ≈ 410 km over 4 km of ocean) ≈ 2 070 s ≈ 35 min.",
+        "source": "Lamb (1932), Art. 170"
       },
       "synolakisRunup": {
         "name": "Synolakis run-up",
@@ -1133,7 +1133,7 @@
     "tsunamiWunnemann": "Rim wave of Wünnemann, Collins & Weiss 2010 (Rev. Geophys. 48, eq. 9a/10a): A(r) = min(0.14 R_w, h)·(R_w/r)^q_r with q_r = min(1.2, 0.5 + 2e^(−1.75 L/h)). A shallow-water impact decays as r^−0.5 (geometric spreading), a deep-ocean one as r^−1.2 — the best estimate the simulator uses for run-up and for the bathymetric propagation on the globe.",
     "tsunamiWunnemannBounds": "Published envelope of Wünnemann, Collins & Weiss 2010 (eqs. 7–8): upper bound min(0.28 R_w, h)·R_w/r; lower bound the smaller of the rim wave and the collapse wave 0.06·min(R_w/3, h)·(5R_w/r)^q_c, the latter only for h/L ≥ 2. The same range the Earth Impact Effects Program reports.",
     "synolakisRunup": "Coastal run-up on a 1:100 plane beach with 10 m offshore depth (Synolakis 1987, JFM 185 523–545). R = 2.831·H·√(cot β)·(H/d)^(1/4). Illustrative inundation height — real coastal run-up depends on bathymetry, harbour geometry, and breaking regime.",
-    "tsunamiDispersion": "Frequency-dependent dispersion correction to the far-field amplitude (Heidarzadeh & Satake 2015 GJI 202 / JGR Oceans 120). Exponential decay with ~2 500 km scale length beyond the Wünnemann/Ward 1/r envelope — matches DART-buoy records of Sumatra 2004 and Tōhoku 2011.",
+    "tsunamiDispersion": "Dispersion of the leading wave: D = (4π²/6)·r·h²/λ³ on the source wavelength λ and the depth h, after Kajiura (1963), with a decay (1 + D)^(−½) that is a Nimbus closure. A wave from a megathrust barely disperses; a short wave from a slide or an impact does.",
     "seismicMoment": "Seismic moment M₀ = 10^(1.5·Mw + 9.1) N·m — Hanks & Kanamori (1979) SI form of the moment-magnitude scale.",
     "ruptureLength": "Surface rupture length L = 10^(a + b·Mw) km — Wells & Coppersmith (1994) empirical regression by fault slip regime.",
     "mmi": "Modified Mercalli Intensity from Joyner & Boore (1981) PGA attenuation combined with Worden et al. (2012) piecewise GMICE for California.",
@@ -1142,13 +1142,13 @@
     "strasser": "Megathrust rupture-length scaling from Strasser, Arango & Bommer (2010), SRL 81(6). Fits 95 subduction-interface events; used instead of Wells–Coppersmith for subduction-zone thrusts, where W&C over-predicts at Mw ≥ 8.",
     "liquefaction": "Liquefaction-potential threshold radius on susceptible saturated sandy soil. PGA threshold 0.10 g at Mw 7.5, scaled by Idriss (1999) MSF = (M/7.5)^(−2.56). Reference: Youd & Idriss (2001) ASCE JGGE.",
     "waldAllen": "Site Vs30 derived from the topographic slope at the scenario coordinates (Wald & Allen 2007 Table 1, active-tectonic regions). Rock outcrops → Vs30 ≈ 760 m/s (NEHRP B); alluvial basins → Vs30 ≈ 180 m/s (NEHRP E). Echoes the user override when one was set, otherwise the rock reference.",
-    "vei": "Volcanic Explosivity Index from Newhall & Self (1982), integer 0–8 binned by bulk ejecta volume.",
-    "plumeHeight": "Plinian-plume height H = 2.00 · V̇^0.241 km (Mastin et al. 2009, Eq. 1) from the volume eruption rate.",
-    "pyroclasticRunout": "Pyroclastic-density-current reach L = 10 · V^(1/3) km (H/L ≈ 0.1 mobility, Sheridan 1979).",
-    "pdcEnergyLine": "Upper-bound PDC runout from Dade & Huppert (1998) Geology 26(9) / Hayashi & Self (1992): L = H_plume / slope with slope ≈ 0.10 for dense flows.",
-    "climateCooling": "VEI-scaled stratospheric-aerosol climate forcing. ΔT doubles per unit VEI from the El Chichón 1982 / Pinatubo 1991 / Tambora 1815 record, per Robock (2000) Rev. Geophys. 38 and Sato et al. (1993) GISS AOD dataset.",
-    "ashfall": "1 mm isopach area ~ 3 000 · V^0.8 km². Simplified Walker (1980) / Pyle (1989) exponential-thinning fit; real ashfall is wind-shaped.",
-    "lahar": "Saturated debris-flow runout L = 0.05 · V^0.38 km (V in m³). Iverson (1997) / Vallance & Iverson (2015). Reproduces Mt St Helens 1980 within a factor of 2.",
+    "vei": "Volcanic Explosivity Index from Newhall & Self (1982), nine classes 0–8, binned here by bulk ejecta volume alone; the published index also weighs column height and qualitative criteria.",
+    "plumeHeight": "Plinian-plume height H = 2.00 · V̇^0.241 km above the vent (Mastin et al. 2009, Eq. 1), V̇ in m³ of dense rock per second. Their 50 % envelope spans a factor of four in eruption rate for a given height.",
+    "pyroclasticRunout": "Pyroclastic-density-current reach L = 10 · V^(1/3) km (V in km³), a Nimbus volume scaling; Sheridan (1979) and Hayashi & Self (1992) are background on mobility.",
+    "pdcEnergyLine": "Energy-line upper bound: the current falls from a quarter of the plume top and runs out along H/L = 0.1, L = 0.25·H_plume / 0.1. Both numbers are Nimbus choices; Hayashi & Self (1992) show H/L falling with volume for pyroclastic flows.",
+    "climateCooling": "ΔT = max(−5, −0.05·2.2^(VEI−3)) K, a Nimbus calibration: −0.24 K at VEI 5, −0.53 at 6, −1.17 at 7, −2.58 at 8. Robock (2000) cautions that VEI is a poor measure of the stratospheric sulphur that does the cooling.",
+    "ashfall": "1 mm isopach area ≈ 60 000 · V^0.8 km² (V in km³), fitted in Nimbus to Mount St Helens, Pinatubo and Krakatau to a factor of 2; Pyle (1989) supplies the exponential-thinning framework, not this equation. Real ashfall is wind-shaped.",
+    "lahar": "Lahar runout L = 0.05 · V^0.38 km (V in m³): a Nimbus length recast of Iverson et al. (1998), whose laws give inundated areas, not lengths. Order of magnitude.",
     "blast": "Peak overpressure inverted via Kinney–Graham (1985) surface-burst fit; thresholds at 5 psi (building collapse) and 1 psi (window breakage) from Glasstone & Dolan (1977) §5.129/§5.139.",
     "hob": "Height-of-burst correction on the Kinney–Graham radii — a piecewise factor chosen by the project, not read from a published curve (Glasstone & Dolan 1977 Figs. 3.73a–c and Needham 2018 ch. 14 describe the effect): 1.0× at the surface, 1.5× near the optimum (≈150–300 m·kt⁻¹ᐟ³), falling for high and stratospheric bursts. Under the water the reach is the surface burst's, shortened by e^(−ρ·λ_d/126) with λ_d the depth in ft·kt⁻¹ᐟ³ (Glasstone & Dolan §6.81, §6.53).",
     "radiation": "Initial gamma + neutron lethal-dose radii. LD₅₀/60 ≈ 4.5 Gy, LD₁₀₀ ≈ 8 Gy, ARS threshold ≈ 1 Gy. Radii scale as yield^0.18 from 700 m at 1 kt, a project fit not checked against Glasstone & Dolan's dose–range curves (Figs. 8.33a/b, 8.64a/b).",

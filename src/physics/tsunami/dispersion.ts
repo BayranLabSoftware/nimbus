@@ -7,8 +7,9 @@
  * single crest spreads into a train, and the leading wave loses
  * height faster than geometry alone would take it. Kajiura (1963)
  * wrote the parameter that says when this matters; Watada, Kusumoto
- * & Satake (2014) showed how much of a real ocean-crossing wave it
- * accounts for.
+ * & Satake (2014) showed that dispersion, with the elastic, self-
+ * gravitating Earth, delays distant tsunamis and reverses the phase of
+ * their first arrival.
  *
  * `dispersionAmplitudeFactor` in `events/tsunami/extendedEffects.ts`
  * has carried this for the published far-field rows as a fixed
@@ -27,9 +28,10 @@
  * References:
  *   Kajiura, K. (1963). "The leading wave of a tsunami." Bull.
  *     Earthquake Res. Inst. 41, 535–571.
- *   Watada, S., Kusumoto, S. & Satake, K. (2014). "Simulating tsunami
- *     waveforms using long-period dispersive wave models." JGR Solid
- *     Earth 119 (5), 4287–4310.
+ *   Watada, S., Kusumoto, S. & Satake, K. (2014). "Traveltime delay
+ *     and initial phase reversal of distant tsunamis coupled with the
+ *     self-gravitating elastic Earth." JGR Solid Earth 119 (5),
+ *     4287–4310. DOI: 10.1002/2013JB010841.
  */
 
 /**

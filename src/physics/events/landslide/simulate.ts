@@ -196,11 +196,13 @@ export const LANDSLIDE_PRESETS = {
   },
   /** 9 October 1963 Vaiont reservoir, Dolomites (Friuli, Italy) —
    *  ≈ 270 × 10⁶ m³ of Mt Toc detached and slid into the just-filled
-   *  reservoir behind the Vaiont dam at ≈ 30 m/s. The displaced
-   *  reservoir water generated a ≈ 250 m wave that overtopped the
-   *  263 m double-curvature dam (which itself survived intact) and
+   *  reservoir behind the Vaiont dam at 20–30 m/s. The displaced
+   *  reservoir water raised a wave that crested 140 m above the top of
+   *  the 263 m double-curvature dam (which itself survived intact) and
    *  swept down the Piave valley, destroying Longarone, Pirago,
-   *  Rivalta and Villanova in minutes; ≈ 1 917 fatalities. The dam-
+   *  Rivalta and Villanova in minutes; almost 2 000 dead (Genevois &
+   *  Ghirotti 2005). The 250 m of earlier comments is the thickness of
+   *  the slide mass in that paper, not the wave. The dam-
    *  failure-without-failure remains the textbook case study for
    *  reservoir-triggered landslides and engineering ethics in
    *  geotechnical practice. References: Müller (1964) "The rock
@@ -209,7 +211,7 @@ export const LANDSLIDE_PRESETS = {
    *  Giorn. Geol. Appl. 1: 41-52. DOI: 10.1474/GGA.2005-01.0-05.0005. */
   VAIONT_1963: {
     name: 'Vaiont 1963',
-    note: '≈ 270 Mm³ rockslide into the Vaiont reservoir; ≈ 250 m wave overtopped the dam, ≈ 1 917 fatalities — Genevois & Ghirotti 2005, GGA 1: 41. Type case for reservoir-triggered landslides; uses the confined-basin formula because open-ocean Watts spreading does not apply to a 3 km² reservoir.',
+    note: '≈ 270 Mm³ rockslide into the Vaiont reservoir; the wave crested 140 m above the top of the dam, almost 2 000 dead — Genevois & Ghirotti 2005, GGA 1: 41. Type case for reservoir-triggered landslides; uses the confined-basin formula because open-ocean Watts spreading does not apply to a 3 km² reservoir.',
     input: {
       volumeM3: 2.7e8,
       slopeAngleDeg: 35,
@@ -218,8 +220,10 @@ export const LANDSLIDE_PRESETS = {
       //   than the basin it sloshes in).
       // confinedBasinArea = 3 × 10⁶ m²: reservoir surface area
       //   (Müller 1964 Rock Mech. Eng. Geol. 2: 148, Fig. 3). Triggers
-      //   the basin-fill formula η = V/A × 3 = 270 m, capped to 250 m
-      //   — matches the observed wave height at the dam.
+      //   the basin-fill formula η = V/A × 3 = 270 m, capped to 250 m.
+      //   Tuned on a 250 m wave that Genevois & Ghirotti 2005 do not
+      //   give: their wave crested 140 m above the top of the dam, and
+      //   250 m is the thickness of the slide mass.
       meanOceanDepth: m(250),
       confinedBasinArea: 3e6 as SquareMeters,
       regime: 'subaerial',

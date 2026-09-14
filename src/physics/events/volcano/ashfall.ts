@@ -4,9 +4,9 @@ import type { Meters, SquareMeters } from '../../units.js';
 import { m, sqm } from '../../units.js';
 
 /**
- * Wind-advected tephra fallout model — the popular-science version of
- * Suzuki (1983) / Bonadonna & Phillips (2003) analytical advection-
- * diffusion. Given a Plinian plume height, a vertical release-height
+ * Wind-advected tephra fallout model — a closed-form advection model
+ * built on the Suzuki (1983) release profile. Given a Plinian plume
+ * height, a vertical release-height
  * profile, a set of particle size classes with Ganser (1993) terminal
  * velocities, and a constant wind vector, the model returns the ground
  * deposit thickness at an arbitrary (downwind, crosswind) point and
@@ -24,11 +24,14 @@ import { m, sqm } from '../../units.js';
  *   Suzuki, T. (1983). "A theoretical model for dispersion of tephra."
  *    In Arc Volcanism: Physics and Tectonics (Shimozuru & Yokoyama,
  *    eds.), Terra Scientific Publishing, Tokyo, pp. 95–113.
- *    Fundamental release-height distribution f(z) = A·((1-z/H)·
- *    exp(λ(z/H-1)))^k  — the Suzuki column.
+ *    The release-height distribution — here in the two-parameter
+ *    form f(z) = S₀·((1-z/H)·exp(A(z/H-1)))^λ of Pfeiffer, Costa &
+ *    Macedonio (2005), JVGR 140, 273–294, DOI:
+ *    10.1016/j.jvolgeores.2004.09.001, with A = 4 and λ = 1.
  *   Bonadonna, C. & Phillips, J. C. (2003). "Sedimentation from
  *    strong volcanic plumes." Journal of Geophysical Research
- *    108 (B7), 2340. DOI: 10.1029/2002JB002034.
+ *    108 (B7), 2340. DOI: 10.1029/2002JB002034. Background on plume
+ *    sedimentation; the crosswind closure below is Nimbus's own.
  *   Ganser, G. H. (1993). "A rational approach to drag prediction
  *    of spherical and nonspherical particles." Powder Technology
  *    77 (2): 143–152. DOI: 10.1016/0032-5910(93)80051-B.
@@ -48,11 +51,11 @@ import { m, sqm } from '../../units.js';
 const TROPOPAUSE_AIR_VISCOSITY = 1.5e-5; // m²/s
 /** Tephra particle density (vesicular pumice mean). */
 const TEPHRA_DENSITY = 1_000; // kg/m³
-/** Suzuki column peak-release parameter λ — higher λ concentrates
- *  release near the plume top. λ = 4 matches the Bonadonna 2003
- *  recommended value for sub-Plinian to Plinian columns. */
+/** Suzuki column peak-release parameter (A in the Pfeiffer et al.
+ *  2005 form) — higher values concentrate release near the plume top.
+ *  4 is a project choice. */
 export const SUZUKI_LAMBDA = 4;
-/** Suzuki column exponent k — Bonadonna 2003 default. */
+/** Suzuki column exponent (λ in the Pfeiffer et al. 2005 form), 1. */
 export const SUZUKI_K = 1;
 /** Along-wind Gaussian source-scale factor. σ_x = ALONG_WIND_SOURCE ·
  *  plumeHeight and does NOT grow with wind, because the spread along
@@ -72,10 +75,9 @@ export const CROSSWIND_DIFFUSION_SCALE_OVER_H = 10;
 /**
  * Particle size class definition. Diameter is the representative
  * diameter of the class (m), massFraction the share of the total
- * ejecta volume this class carries. The default four-class
- * distribution below is the Pyle 1989 lognormal fit for a typical
- * Plinian grain-size spectrum: 40 % coarse, 30 % medium, 20 % fine,
- * 10 % very-fine (aerosol-like).
+ * ejecta volume this class carries. The default four-class split
+ * below — 40 % coarse, 30 % medium, 20 % fine, 10 % very fine — is a
+ * project choice, not a fit from Pyle (1989).
  */
 export interface GrainSizeClass {
   /** Representative diameter (m). */

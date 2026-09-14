@@ -112,8 +112,8 @@ describe('simulateEarthquake', () => {
 
   it('submarine strike-slip earthquakes do not auto-trigger a tsunami', () => {
     // Strike-slip displaces the seafloor laterally; the dip-slip
-    // uplift component is small. Bryant 2014 §3.4 — we conservatively
-    // skip the auto-trigger for this fault style.
+    // uplift component is small; Nimbus conservatively skips the
+    // auto-trigger for this fault style.
     const r = simulateEarthquake({
       magnitude: 7.5,
       faultType: 'strike-slip',

@@ -346,7 +346,7 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   //      generates a wave even without the megathrust label.
   //      Strike-slip events at this scale tend to displace the
   //      seafloor laterally and only marginally vertically, so we
-  //      conservatively skip them (Bryant 2014 §3.4).
+  //      conservatively skip them (a Nimbus choice).
   //   3. (Future) shallow large normal-fault on flexural bulge.
   const submarineTsunamiTrigger =
     isSubmarine && input.magnitude >= 6.5 && (faultType === 'reverse' || faultType === 'normal');

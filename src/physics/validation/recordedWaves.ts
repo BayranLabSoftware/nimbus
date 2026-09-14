@@ -283,7 +283,7 @@ export const RECORDED_WAVES: RecordedWave[] = [
     name: 'Storegga 8200 BP on the Norwegian coast',
     observed: { low: 0.3, high: 3, atRangeM: 1_000_000 },
     source:
-      'Bondevik et al. 2005 read 10–25 m of run-up from the Norwegian deposits, implying a metre-scale open-ocean wave at a thousand kilometres',
+      'Bondevik et al. 2005 read run-up from tsunami deposits — 10–12 m in western Norway, 3–6 m in northeast Scotland, over 20 m on Shetland; the metre-scale open-ocean wave at a thousand kilometres is this project’s inference from them',
     model: () => {
       const r = simulateLandslide(LANDSLIDE_PRESETS.STOREGGA_8200_BP.input);
       if (r.tsunami === null) return 0;

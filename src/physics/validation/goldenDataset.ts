@@ -224,7 +224,7 @@ export const GOLDEN_DATASET: readonly GoldenCase[] = [
     oracle: 'historical',
     title: 'B-003 Vaiont 1963 reservoir wave reaches Genevois 2005 envelope',
     description:
-      'Pre-fix: open-ocean Watts source gave ~56 m vs observed 250 m wave above the dam. Post-fix: confined-basin formula η = V/A × 3 capped at depth.',
+      'Pre-fix: open-ocean Watts source gave ~56 m against a 250 m wave then believed observed (Genevois & Ghirotti 2005 give a crest 140 m above the top of the dam). Post-fix: confined-basin formula η = V/A × 3 capped at depth.',
     citation: 'BUG_REGISTRY B-003; commit 2b06388; Genevois & Ghirotti 2005 GGA 1: 41',
     linkedBug: 'B-003',
     scenarioType: 'landslide',

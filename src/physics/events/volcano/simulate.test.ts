@@ -57,12 +57,13 @@ describe('simulateVolcano', () => {
     expect(r.lateralBlast).toBeUndefined();
   });
 
-  it('Anak Krakatau 2018 preset matches the Grilli 2019 source amplitude (~85 m)', () => {
+  it('Anak Krakatau 2018 preset keeps its calibrated ~80 m source amplitude', () => {
     const r = simulateVolcano(VOLCANO_PRESETS.ANAK_KRAKATAU_2018.input);
     expect(r.tsunami).toBeDefined();
     if (!r.tsunami) return;
     // Subaerial K=0.4 calibration → η = 0.4·647·sin(20°) ≈ 88 m, capped
-    // at 200·0.4 = 80 m. Matches Grilli 2019 within ~6 %.
+    // at 200·0.4 = 80 m. A pin on the calibration: Grilli et al. 2019
+    // simulate a leading wave nearly 50 m high near the island.
     expect(r.tsunami.sourceAmplitude as number).toBeGreaterThan(60);
     expect(r.tsunami.sourceAmplitude as number).toBeLessThan(100);
   });

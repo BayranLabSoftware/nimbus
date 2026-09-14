@@ -163,7 +163,7 @@ _Sources:_
 - Ivy Mike 1952 — 10.4 Mt fired on the islet of Elugelab, which it vapourised; no recorded wave
 - Beirut 2020 — ≈ 0.5 kt TNT-equivalent on a portside quay; a harbour wave said to be of the order of a metre, for which no published measurement is cited here
 - Tōhoku 2011 at DART 21413 — DART buoy 21413, 1 242 km from the epicentre, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)
-- Storegga 8200 BP on the Norwegian coast — Bondevik et al. 2005 read 10–25 m of run-up from the Norwegian deposits, implying a metre-scale open-ocean wave at a thousand kilometres
+- Storegga 8200 BP on the Norwegian coast — Bondevik et al. 2005 read run-up from tsunami deposits — 10–12 m in western Norway, 3–6 m in northeast Scotland, over 20 m on Shetland; the metre-scale open-ocean wave at a thousand kilometres is this project’s inference from them
 
 ### Shaking footprint against USGS ShakeMap
 
@@ -241,9 +241,9 @@ Held out, the tables above read: death tolls **1 of 4** inside the band, waves *
 
 **Mount St Helens 1980, plume.** The preset's eruption rate was re-tuned from 4×10³ to 4×10⁴ m³/s so that the column would reach the observed height (MT_ST_HELENS_1980 in events/volcano/simulate.ts), and the golden case uses 5×10⁴. Mastin et al. 2009 also fitted the plume-height relation on this eruption (their Table 1, 18 May 1980).
 
-**Vaiont 1963, wave.** The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3) was chosen on this wave, and the preset's basin depth, 250 m, caps the wave at the height observed — so the preset reaches 250 m by construction. The gated golden case, G-B003, checks only that a wave exists.
+**Vaiont 1963, wave.** The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3) was chosen on this wave, and the preset's basin depth, 250 m, caps the wave there — so the preset reaches 250 m by construction. The 250 m it was tuned on is not the wave in Genevois & Ghirotti 2005, which crested 140 m above the top of the dam; their 250 m is the thickness of the slide mass. The gated golden case, G-B003, checks only that a wave exists.
 
-**Storegga 8200 BP, wave.** The submarine prefactor, VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE = 0.005, was calibrated on the 5–10 m source amplitude Bondevik et al. 2005 give for this slide, and the far-field row is read from that source.
+**Storegga 8200 BP, wave.** The submarine prefactor, VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE = 0.005, was calibrated on a 5–10 m source amplitude credited to Bondevik et al. 2005, who give run-up read from deposits, not a source amplitude; the far-field band is the project’s inference from the same paper.
 
 #### Input inferred from it (2)
 
@@ -321,8 +321,8 @@ these, for the quantity the panel is showing.
 
 **landslide** (2)
 
-- Vaiont 1963 — wave (gated, tuned on it) — Genevois 2005 — the reservoir wave that overtopped the dam by 245 m
-- Storegga 8200 BP — wave (gated, tuned on it) — Bondevik 2005 — 10–25 m of run-up read from the Norwegian deposits
+- Vaiont 1963 — wave (gated, tuned on it) — Genevois & Ghirotti 2005 — a wave that crested 140 m above the top of the dam
+- Storegga 8200 BP — wave (gated, tuned on it) — Bondevik et al. 2005 — deposits 10–12 m above the sea of the time in western Norway, 3–6 m in northeast Scotland, over 20 m on Shetland
 
 ## Against itself
 

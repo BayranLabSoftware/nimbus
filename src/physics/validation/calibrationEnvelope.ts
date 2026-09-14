@@ -469,11 +469,11 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     value: 2.7e8,
     quantities: ['wave'],
     gated: ['wave'],
-    source: 'Genevois 2005 — the reservoir wave that overtopped the dam by 245 m',
+    source: 'Genevois & Ghirotti 2005 — a wave that crested 140 m above the top of the dam',
     use: {
       wave: {
         role: 'tuned',
-        how: "The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3) was chosen on this wave, and the preset's basin depth, 250 m, caps the wave at the height observed — so the preset reaches 250 m by construction. The gated golden case, G-B003, checks only that a wave exists.",
+        how: "The confined-basin amplification (DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3) was chosen on this wave, and the preset's basin depth, 250 m, caps the wave there — so the preset reaches 250 m by construction. The 250 m it was tuned on is not the wave in Genevois & Ghirotti 2005, which crested 140 m above the top of the dam; their 250 m is the thickness of the slide mass. The gated golden case, G-B003, checks only that a wave exists.",
       },
     },
   },
@@ -483,11 +483,12 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     value: 3e12,
     quantities: ['wave'],
     gated: ['wave'],
-    source: 'Bondevik 2005 — 10–25 m of run-up read from the Norwegian deposits',
+    source:
+      'Bondevik et al. 2005 — deposits 10–12 m above the sea of the time in western Norway, 3–6 m in northeast Scotland, over 20 m on Shetland',
     use: {
       wave: {
         role: 'tuned',
-        how: 'The submarine prefactor, VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE = 0.005, was calibrated on the 5–10 m source amplitude Bondevik et al. 2005 give for this slide, and the far-field row is read from that source.',
+        how: 'The submarine prefactor, VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE = 0.005, was calibrated on a 5–10 m source amplitude credited to Bondevik et al. 2005, who give run-up read from deposits, not a source amplitude; the far-field band is the project’s inference from the same paper.',
       },
     },
   },

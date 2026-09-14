@@ -287,8 +287,9 @@ export const VOLCANO_PRESETS = {
   },
   /** 22 December 2018 Anak Krakatau — flank collapse archetype.
    *  ≈ 0.27 km³ of the south-western edifice slid into the Sunda
-   *  Strait, generating an ≈ 85 m source-amplitude tsunami that
-   *  killed 437 people on Sumatra and Java. VEI 3 eruption itself
+   *  Strait (Grilli et al. 2019's best estimate), raising a leading
+   *  wave nearly 50 m high near the island in their simulation; the
+   *  tsunami killed 437 people on Sumatra and Java. VEI 3 eruption itself
    *  but the secondary tsunami is the headline event. */
   ANAK_KRAKATAU_2018: {
     name: 'Anak Krakatau 2018',

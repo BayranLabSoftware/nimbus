@@ -25,7 +25,7 @@ describe('collectImpactCitations', () => {
     expect(ks).toContain('ward2000');
     expect(ks).toContain('wunnemann2007');
     expect(ks).toContain('synolakis1987');
-    expect(ks).toContain('heidarzadehSatake2015');
+    expect(ks).toContain('kajiura1963');
     expect(ks).toContain('toon1997');
     expect(ks).toContain('prinn1987');
     // Chicxulub Mw → liquefaction ring → Youd-Idriss + Joyner-Boore
@@ -95,7 +95,7 @@ describe('collectEarthquakeCitations', () => {
     expect(ks).toContain('strasser2010');
     expect(ks).not.toContain('wellsCoppersmith1994');
     expect(ks).toContain('synolakis1987');
-    expect(ks).toContain('heidarzadehSatake2015');
+    expect(ks).toContain('kajiura1963');
     // Mw 9 triggers basin-scale liquefaction → Youd-Idriss.
     expect(ks).toContain('youdIdriss2001');
   });

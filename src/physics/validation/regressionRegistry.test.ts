@@ -55,7 +55,8 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   });
 
   it('B-003 Vaiont confined-basin source', () => {
-    // Pre-fix: source 56 m vs observed 250 m (Genevois 2005).
+    // Pre-fix: source 56 m vs a 250 m wave then believed observed;
+    // Genevois & Ghirotti 2005 give a crest 140 m above the dam top.
     // Fix: confined-basin formula η = V/A × dynamic_factor.
     // Commit: 2b06388
     const r = simulateLandslide(LANDSLIDE_PRESETS.VAIONT_1963.input);

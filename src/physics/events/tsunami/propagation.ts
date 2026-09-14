@@ -31,7 +31,7 @@ import { m, mps, s } from '../../units.js';
  * tsunamis live in. At h = 4 km (deep ocean) gives ≈ 198 m/s, ≈ 713
  * km/h; at h = 100 m (continental shelf) ≈ 31 m/s, ≈ 113 km/h.
  *
- * Source: Lamb (1932), "Hydrodynamics" (6th ed.), §170; reproduced in
+ * Source: Lamb (1932), "Hydrodynamics" (6th ed.), Art. 170; reproduced in
  * every modern physical-oceanography textbook (e.g. Gill 1982, §6.5).
  */
 export function shallowWaterWaveSpeed(

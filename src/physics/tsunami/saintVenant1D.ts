@@ -9,7 +9,7 @@ import { MANNING_OPEN_OCEAN } from '../events/tsunami/manningFriction.js';
  * shoaling) on compact-rupture far-field events: Tōhoku 2011's DART
  * 21413 amplitude is over-predicted by 3-7× by the cylindrical 1D
  * model because peaked slip distributions inject high-frequency
- * dispersion the closed-form Heidarzadeh-Satake decay cannot
+ * dispersion the closed-form exponential decay of the time cannot
  * capture. A real Saint-Venant solver evolves the wave shape on the
  * actual bathymetry and lets that physics emerge naturally.
  *

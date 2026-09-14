@@ -170,8 +170,7 @@ const postol1986: Citation = {
   year: 1986,
   title: 'Possible fatalities from superfires following nuclear attacks in or near urban areas',
   venue:
-    'In Solomon, F. & Marston, R. Q. (eds.), The Medical Implications of Nuclear War, National Academy Press, pp. 15–72',
-  doi: '10.17226/940',
+    'In Solomon, F. & Marston, R. Q. (eds.), The Medical Implications of Nuclear War, National Academy Press, pp. 15–72 (book DOI 10.17226/940)',
 };
 const kinneyGraham1985: Citation = {
   authors: 'Kinney, G. F. & Graham, K. J.',
@@ -288,7 +287,7 @@ const mastin2009: Citation = {
   authors: 'Mastin, L. G. et al.',
   year: 2009,
   title:
-    'A multidisciplinary effort to assign realistic source parameters to models of volcanic ash-cloud transport',
+    'A multidisciplinary effort to assign realistic source parameters to models of volcanic ash-cloud transport and dispersion during eruptions',
   venue: 'Journal of Volcanology and Geothermal Research 186 (1–2), 10–21',
   doi: '10.1016/j.jvolgeores.2009.01.008',
 };
@@ -340,14 +339,6 @@ const watts2000: Citation = {
   title: 'Tsunami features of solid block underwater landslides',
   venue: 'ASCE Journal of Waterway, Port, Coastal, and Ocean Engineering 126 (3), 144–152',
   doi: '10.1061/(ASCE)0733-950X(2000)126:3(144)',
-};
-
-const heidarzadehSatake2015: Citation = {
-  authors: 'Heidarzadeh, M. & Satake, K.',
-  year: 2015,
-  title:
-    'Source properties of the 1998 July 17 Papua New Guinea tsunami based on tide gauge records and numerical simulation',
-  venue: 'Geophysical Journal International 202 (1), 361–377',
 };
 
 const herrick1997: Citation = {
@@ -408,7 +399,7 @@ const melosh1989: Citation = {
 const whitham1974: Citation = {
   authors: 'Whitham, G. B.',
   year: 1974,
-  title: 'Linear and Nonlinear Waves (§8.2 Geometrical acoustics; §6.3 Weak-shock theory)',
+  title: 'Linear and Nonlinear Waves',
   venue: 'Wiley-Interscience, ISBN 978-0-471-94090-6',
 };
 
@@ -423,8 +414,7 @@ const sachs1944: Citation = {
 const korobeinikov1991: Citation = {
   authors: 'Korobeinikov, V. P.',
   year: 1991,
-  title:
-    'Problems of Point Blast Theory (Ch. 1 §1.4 — Dimensional analysis and self-similar solutions)',
+  title: 'Problems of Point Blast Theory',
   venue: 'AIP Press / Springer, ISBN 0-88318-660-7',
 };
 
@@ -492,7 +482,7 @@ const okada1992: Citation = {
 const lamb1932: Citation = {
   authors: 'Lamb, H.',
   year: 1932,
-  title: 'Hydrodynamics (6th ed.), §170 (Long waves over uniform depth)',
+  title: 'Hydrodynamics (6th ed.), Art. 170 (Long waves in canals)',
   venue: 'Cambridge University Press',
 };
 
@@ -505,26 +495,50 @@ const bryant2014: Citation = {
   doi: '10.1007/978-3-319-06133-7',
 };
 
-const imamura2009: Citation = {
-  authors: 'Imamura, F., Yalçıner, A. C. & Ozyurt, G.',
-  year: 2009,
-  title: 'Tsunami Modelling Manual (revised) — IUGG/IOC Time Project (Ch. 7 intensity scale)',
-  venue: 'UNESCO/IOC, IUGG Tsunami Commission',
+const hayashiSelf1992: Citation = {
+  authors: 'Hayashi, J. N. & Self, S.',
+  year: 1992,
+  title: 'A comparison of pyroclastic flow and debris avalanche mobility',
+  venue: 'Journal of Geophysical Research: Solid Earth 97 (B6), 9063–9071',
+  doi: '10.1029/92JB00173',
 };
 
-const femaP646: Citation = {
-  authors: 'Federal Emergency Management Agency',
-  year: 2019,
-  title:
-    'FEMA P-646 — Guidelines for Design of Structures for Vertical Evacuation from Tsunamis (3rd ed., §3 inundation envelopes)',
-  venue: 'Applied Technology Council, FEMA',
+const iverson1998: Citation = {
+  authors: 'Iverson, R. M., Schilling, S. P. & Vallance, J. W.',
+  year: 1998,
+  title: 'Objective delineation of lahar-inundation hazard zones',
+  venue: 'Geological Society of America Bulletin 110 (8), 972–984',
+  doi: '10.1130/0016-7606(1998)110<0972:ODOLIH>2.3.CO;2',
 };
 
-const fema55: Citation = {
-  authors: 'Federal Emergency Management Agency',
-  year: 2011,
-  title: 'FEMA 55 — Coastal Construction Manual (4th ed., §3.4 — coastal hazard envelopes)',
-  venue: 'FEMA',
+const pfeiffer2005: Citation = {
+  authors: 'Pfeiffer, T., Costa, A. & Macedonio, G.',
+  year: 2005,
+  title: 'A model for the numerical simulation of tephra fall deposits',
+  venue: 'Journal of Volcanology and Geothermal Research 140 (4), 273–294',
+  doi: '10.1016/j.jvolgeores.2004.09.001',
+};
+
+const crandellHoblitt1986: Citation = {
+  authors: 'Crandell, D. R. & Hoblitt, R. P.',
+  year: 1986,
+  title: 'Lateral blasts at Mount St. Helens and hazard zonation',
+  venue: 'Bulletin of Volcanology 48 (1), 27–37',
+  doi: '10.1007/BF01073511',
+};
+
+const kajiura1963: Citation = {
+  authors: 'Kajiura, K.',
+  year: 1963,
+  title: 'The leading wave of a tsunami',
+  venue: 'Bulletin of the Earthquake Research Institute, University of Tokyo 41 (3), 535–571',
+};
+
+const jma2013: Citation = {
+  authors: 'Japan Meteorological Agency',
+  year: 2013,
+  title: 'Tsunami Warnings/Advisories and Tsunami Information (leaflet, 7 March 2013)',
+  venue: 'data.jma.go.jp/eqev/data/en/tsunami/tsunamiwarning-leaflet.pdf',
 };
 
 const leMehauteWang1996: Citation = {
@@ -546,7 +560,8 @@ const glicken1996: Citation = {
 const grilli2019: Citation = {
   authors: 'Grilli, S. T., Tappin, D. R., Carey, S., et al.',
   year: 2019,
-  title: 'Modelling of the tsunami from the December 22, 2018 lateral collapse of Anak Krakatau',
+  title:
+    'Modelling of the tsunami from the December 22, 2018 lateral collapse of Anak Krakatau volcano in the Sunda Straits, Indonesia',
   venue: 'Scientific Reports 9, 11946',
   doi: '10.1038/s41598-019-48327-6',
 };
@@ -1094,7 +1109,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Plinian plume height',
         formula: 'H (km) = 2.00 · V̇^0.241     (V̇ in m³/s)',
         description:
-          'Mastin 2009 Eq. 1. Published ±factor-2 scatter; the simulator honours that band in its tests.',
+          'Mastin et al. 2009, Eq. 1: H in km above the vent, V̇ in m³ of dense rock per second. Their 50 % confidence envelope spans a factor of four in eruption rate for a given height — about ±40 % in height; the tests accept ±50 %.',
         citation: mastin2009,
       },
       {
@@ -1102,43 +1117,46 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Volcanic Explosivity Index',
         formula: 'VEI = integer bin on log₁₀(V_ejecta)     (V in m³)',
         description:
-          'Newhall & Self 1982 eight-level classification, from VEI 0 (non-explosive) to VEI 8 (supereruption).',
+          'The Newhall & Self 1982 index: nine classes, VEI 0 (under 10⁴ m³) to VEI 8 (10¹² m³ and more), binned here on the bulk ejecta volume alone; the published index also weighs column height and qualitative criteria.',
         citation: newhallSelf1982,
       },
       {
         id: 'pdc-sheridan',
         name: 'Pyroclastic runout (Sheridan)',
-        formula: 'L = 10 · V_km3^(1/3)   km    (H/L ≈ 0.1)',
-        description: 'Statistical median mobility for PDCs, retained as a conservative baseline.',
+        formula: 'L = 10 · V_km3^(1/3)   km',
+        description:
+          'A Nimbus volume scaling for the reach of a pyroclastic density current, with K = 10 set in code against Mount St Helens, Krakatau and Tambora. Sheridan (1979) reviews how pyroclastic flows are emplaced and is background, not the source of the equation.',
         citation: {
           authors: 'Sheridan, M. F.',
           year: 1979,
           title: 'Emplacement of pyroclastic flows: A review',
-          venue: 'Geological Society of America Special Paper 180, 125–136',
+          venue:
+            'In Chapin, C. E. & Elston, W. E. (eds.), Ash-Flow Tuffs, GSA Special Paper 180, 125–136',
+          doi: '10.1130/SPE180-p125',
         },
       },
       {
         id: 'pdc-energy-line',
         name: 'PDC runout (energy line)',
-        formula: 'L = H_plume / slope     (slope ≈ 0.10 for dense flows)',
+        formula: 'L = f_c · H_plume / (H/L)     (f_c = 0.25, H/L = 0.10)',
         description:
-          'Dade & Huppert 1998 energy-line upper bound; the runout decreases along an effective H/L energy gradient.',
-        citation: dadeHuppert1998,
+          'An energy-line upper bound: the current falls from a quarter of the Mastin plume top and runs out along a slope H/L = 0.1. Hayashi & Self (1992) show H/L decreasing with volume for pyroclastic flows; f_c and 0.1 are Nimbus choices.',
+        citation: hayashiSelf1992,
       },
       {
         id: 'climate-cooling',
         name: 'Climate cooling from VEI',
-        formula: 'ΔT(VEI) ≈ −0.03 · 2^(VEI − 3)   K',
+        formula: 'ΔT(VEI) = max(−5, −0.05 · 2.2^(VEI − 3))   K   (0 below VEI 1)',
         description:
-          'Power-law fit against El Chichón / Pinatubo / Tambora anomalies (Robock 2000 dataset review).',
+          'A Nimbus calibration, not a relation from Robock (2000): −0.24 K at VEI 5, −0.53 at 6, −1.17 at 7, −2.58 at 8. Robock cautions that VEI is a poor measure of the sulphur an eruption puts into the stratosphere, which is what cools the climate.',
         citation: robock2000,
       },
       {
         id: 'ashfall',
         name: 'Ashfall 1-mm isopach area',
-        formula: 'Area(1 mm) ≈ 3 000 · V_km3^0.8   km²',
+        formula: 'Area(1 mm) ≈ 60 000 · V_km3^0.8   km²',
         description:
-          'Simplified Walker 1980 / Pyle 1989 exponential-thinning fit. Wind-independent envelope.',
+          'A wind-independent envelope fitted in Nimbus to the 1 mm isopach areas of Mount St Helens 1980, Pinatubo 1991 and Krakatau 1883, to a factor of 2. Pyle (1989) supplies the framework — deposits thinning exponentially with the square root of area — not this equation.',
         citation: {
           authors: 'Pyle, D. M.',
           year: 1989,
@@ -1152,23 +1170,23 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Lahar runout (Iverson / Vallance)',
         formula: 'L_km ≈ 0.05 · V_m³^0.38',
         description:
-          'Iverson 1997 debris-flow volume-runout scaling; reproduces Mt St Helens 1980 within a factor of 2.',
-        citation: iverson1997,
+          'A Nimbus length recast of Iverson et al. (1998), whose laws give the inundated cross-section (0.05 · V^(2/3)) and planimetric area (200 · V^(2/3)), not a length; 5 × 10⁷ m³ gives 42 km. Order of magnitude.',
+        citation: iverson1998,
       },
       {
         id: 'ashfall-suzuki',
         name: 'Wind-advected ashfall (Suzuki column)',
-        formula: 'f(z̃) = A · [(1 − z̃) · exp(λ·(z̃ − 1))]^k   ;   x_centre = u · z / v_t',
+        formula: 'f(z̃) = S₀ · [(1 − z̃) · exp(A · (z̃ − 1))]^λ   ;   x_centre = u · z / v_t',
         description:
-          'Suzuki 1983 vertical release-height distribution along the plume column (λ = 4, k = 1 per Bonadonna & Phillips 2003). Each mass-slice advects downwind at u · t_fall; the isopach elongates with wind speed while σ_x stays set by the source column and σ_y grows with Pasquill-Gifford turbulent diffusion.',
-        citation: suzuki1983,
+          'Suzuki’s (1983) release profile along the plume column, in the two-parameter form of Pfeiffer et al. (2005), with A = 4 and λ = 1. Each mass slice lands at u · z / v_t downwind; the isopach elongates with wind speed while σ_x stays set by the column and σ_y grows by a square-root law inspired by Pasquill–Gifford diffusion.',
+        citation: pfeiffer2005,
       },
       {
         id: 'ashfall-bonadonna',
-        name: 'Analytical advection-diffusion sedimentation',
-        formula: 'σ_y(x) = σ_y0 · √(1 + x / L_diff)   ;  L_diff ≈ 10·H',
+        name: 'Crosswind spreading closure',
+        formula: 'σ_y(x) = max(0.3 · H, 500 m) · √(1 + x / (10 · H))',
         description:
-          'Bonadonna & Phillips 2003 analytical closure for Plinian fallout. Deposit thickness at (x, y) integrates the Suzuki release weights × Gaussian cross-sections × grain-class mass fractions. Not a full ATM — for hazard mapping use HYSPLIT / FALL3D.',
+          'A Nimbus closure for how the deposit widens downwind. The thickness at (x, y) sums the Suzuki release weights × Gaussian footprints × grain-class mass fractions. Bonadonna & Phillips (2003) model sedimentation from a gravity-driven umbrella cloud and are background only. Not a full atmospheric transport model — for hazard mapping use HYSPLIT or FALL3D.',
         citation: bonadonnaPhillips2003,
       },
       {
@@ -1177,17 +1195,16 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'C_d = (24/Re)·(1 + 0.1118·Re^0.6567) + 0.4305 / (1 + 3305/Re) ;  v_t = √(4·g·d·Δρ / (3·C_d·ρ_a))',
         description:
-          'Ganser 1993 rational drag prediction covering Stokes → Newton regimes with one continuous formula. 8-iteration fixed point for the Re-dependent C_d. Applied here to 4 grain classes (32 µm → 8 mm) with the Pyle 1989 mass-fraction spectrum.',
+          'Ganser 1993 drag for a sphere, covering the Stokes to Newton regimes with one formula; the coefficients match those Dioguardi et al. (2018) and Bagheri & Bonadonna (2016) give for a sphere below the critical Reynolds number. An 8-iteration fixed point solves for the Re-dependent C_d. Applied to 4 grain classes (8 mm, 1 mm, 125 µm, 32 µm) with a 40/30/20/10 % mass split chosen for Nimbus.',
         citation: ganser1993,
       },
       {
         id: 'lateral-blast-wedge',
         name: 'Flank lateral-blast envelope',
-        formula:
-          'directionDeg, sectorAngleDeg, runout = 0.4 · plumeHeight     (Glicken 1996 § Mt St Helens)',
+        formula: 'runout = 2.5 · L_Sheridan ;  directionDeg, sectorAngleDeg (default 180°)',
         description:
-          'Mt St Helens 1980 archetype: flank decompression releases a directional jet of pressurised gas + debris that flattens forests across a 180° sector for tens of km along the failure axis. The simulator paints a magenta-pink wedge at the user-specified azimuth + sector angle; runout scales with plume height as a first-order proxy for the blast energy.',
-        citation: glicken1996,
+          'The Mount St Helens 1980 archetype: a directed blast over a sector up to 180° reaching about 28 km (Crandell & Hoblitt 1986). The runout is 2.5 times the Sheridan runout — about 27 km for the Mount St Helens preset — and is drawn as a wedge at the chosen azimuth and sector.',
+        citation: crandellHoblitt1986,
       },
       {
         id: 'flank-collapse-tsunami',
@@ -1195,7 +1212,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'A₀ = min(0.4 · (γ/γ_ref) · V^(1/3) · sin θ,  0.4 · h),  γ = ρ_s/ρ_w − 1,  travelTime = r / √(g · h)',
         description:
-          "A Watts 2000-inspired calibrated form, not Watts' predictive equation, applied to volcano flank collapses entering the sea. Slide thickness and Froude number are folded into the prefactor 0.4, which is calibrated on the Anak Krakatau collapse of 22 December 2018 (V ≈ 0.27 km³, θ ≈ 20°): 88 m, against the ≈ 85 m source of Grilli et al. 2019's reconstruction, then held to 40 % of the 200 m of water, so 80 m. γ/γ_ref reads a slide density about the 2 500 kg/m³ of volcanic rock. Until 14 September 2026 this entry printed a prefactor of 0.1, which gives 22 m.",
+          "A Watts 2000-inspired calibrated form, not Watts' predictive equation, applied to volcano flank collapses entering the sea. Slide thickness and Froude number are folded into the prefactor 0.4, which is calibrated on the Anak Krakatau collapse of 22 December 2018 (V ≈ 0.27 km³, Grilli et al. 2019's best estimate; θ = 20° and 200 m of water are Nimbus inputs): 88 m, held to 40 % of the depth, so 80 m — above the leading wave of nearly 50 m that Grilli et al. simulate near the island. γ/γ_ref reads a slide density about the 2 500 kg/m³ of volcanic rock. Until 14 September 2026 this entry printed a prefactor of 0.1, which gives 22 m.",
         citation: grilli2019,
       },
     ],
@@ -1211,24 +1228,19 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Long-wave celerity',
         formula: 'c = √(g · h)',
         description:
-          'Shallow-water gravity-wave speed (Lamb 1932 §170). Drives the tsunami-travel-time calculation.',
-        citation: {
-          authors: 'Lamb, H.',
-          year: 1932,
-          title: 'Hydrodynamics (6th ed.), §170',
-          venue: 'Cambridge University Press',
-        },
+          'Shallow-water gravity-wave speed (Lamb 1932, Art. 170). Drives the tsunami-travel-time calculation.',
+        citation: lamb1932,
       },
       {
         id: 'shoaling',
         name: "Green's law shoaling",
         formula: 'A_shore / A_deep = (h_deep / h_shallow)^(1/4)',
         description:
-          'Amplification as a long wave climbs onto a shelf; a 1 m deep-ocean wave steepens to ~4 m at h=15 m.',
+          'Amplitude gain as a long wave climbs onto a shelf (Green 1838; Lamb 1932, Art. 185): 1 m over 4 000 m of water becomes ≈ 4 m at 15 m. The field on the globe applies A ∝ c^(−1/2), stops at 50 m of depth and caps the gain at 4×.',
         citation: {
           authors: 'Green, G.',
           year: 1838,
-          title: 'On the motion of waves in a variable canal',
+          title: 'On the motion of waves in a variable canal of small depth and width',
           venue: 'Transactions of the Cambridge Philosophical Society 6, 457–462',
         },
       },
@@ -1245,40 +1257,39 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'open water: A₀ = min(K · (γ/γ_ref) · V^(1/3) · sin θ,  0.4 · h),  K = 0.4 above the water, 0.005 under it   ;   confined basin: A₀ = min(f · V / A_basin,  h),  f = 3',
         description:
-          "A Watts 2000-inspired calibrated form, not Watts' predictive equation: slide thickness and Froude number are folded into a prefactor per regime. A rigid mass falling into the water, K = 0.4, is calibrated on Anak Krakatau 2018 (≈ 85 m, Grilli et al. 2019); sediment sliding on the sea floor, K = 0.005, on Storegga (5–10 m, Bondevik et al. 2005), so the same volume and slope make a wave up to 80 times taller falling in. γ = ρ_s/ρ_w − 1 is read about each regime's reference density (2 500 and 1 950 kg/m³). A reservoir or a fjord takes the basin-fill form instead, the volume spread over the surface and amplified by f, whose 3 reproduces the wave at the Vaiont dam. A slide footprint, when given, replaces V^(1/3) with √(A/π) as the radius the far field decays from. Treat it as an order of magnitude, a factor of 2 either way. Until 14 September 2026 this entry printed a single prefactor of 0.1, which no product path used.",
+          "A Watts 2000-inspired calibrated form, not Watts' predictive equation: slide thickness and Froude number are folded into a prefactor per regime. A rigid mass falling into the water, K = 0.4, is calibrated on Anak Krakatau 2018 (0.27 km³, Grilli et al. 2019's best estimate); sediment sliding on the sea floor, K = 0.005, on Storegga, against a 5–10 m target Nimbus set for 3 000 km³ on a 5° slope (Bondevik et al. 2005 model 2 400 km³ and map run-up of 3–20 m), so the same volume and slope make a wave up to 80 times taller falling in. γ = ρ_s/ρ_w − 1 is read about each regime's reference density (2 500 and 1 950 kg/m³). A reservoir or a fjord takes the basin-fill form instead, the volume spread over the surface and amplified by f = 3, capped at the basin depth — for Vaiont the 250 m cap sets the wave, against a crest 140 m above the top of the dam in Genevois & Ghirotti (2005), whose 250 m is the thickness of the slide. A slide footprint, when given, replaces V^(1/3) with √(A/π) as the radius the far field decays from. Treat it as an order of magnitude, a factor of 2 either way. Until 14 September 2026 this entry printed a single prefactor of 0.1, which no product path used.",
         citation: watts2000,
       },
       {
         id: 'dispersion',
         name: 'Far-field dispersion',
-        formula: 'f_disp(r) = exp(−r / 2 500 km)',
+        formula: 'D = (4π²/6) · r · h² / λ³ ;   f_disp = (1 + D)^(−1/2)',
         description:
-          'Heidarzadeh & Satake 2015 empirical fit against DART-buoy records from Sumatra 2004 and Tōhoku 2011.',
-        citation: heidarzadehSatake2015,
+          'Dispersion of the leading wave on the source’s own wavelength λ and the depth h, after Kajiura (1963). 4π²/6 is the first correction to the long-wave speed, c ≈ √(gh)·(1 − (kh)²/6); the exponent ½ is a Nimbus closure that carries the decay from 1/√r toward 1/r. Explosion waves bypass it: Glasstone & Dolan’s relations already contain their dispersion.',
+        citation: kajiura1963,
       },
       {
         id: 'fast-marching',
         name: 'Bathymetric arrival field (Fast Marching)',
         formula: '|∇T|² = 1 / c(x, y)²   ;   c = √(g · h(x, y))',
         description:
-          'Sethian 1996 eikonal solver run on a DEM raster to produce true arrival-time isochrones. The tsunami slows onto continental shelves, refracts around islands, and is blocked by dry coastlines — producing the bent-contour maps NOAA WC/ATWC publishes for tsunami bulletins. Activates whenever a bathymetric grid is loaded; otherwise the uniform-depth Lamb 1932 travel-time falls back.',
+          'Sethian 1996 eikonal solver run on a DEM raster to produce true arrival-time isochrones. The tsunami slows onto continental shelves, refracts around islands, and is blocked by dry coastlines — the bent isochrones of NOAA’s published travel-time maps (NCEI, computed with the TTT software). A source that carries a period (an explosion) moves at that period’s group velocity instead of √(g·h). Activates whenever a bathymetric grid is loaded; otherwise the uniform-depth Lamb 1932 travel-time falls back.',
         citation: sethian1996,
       },
       {
         id: 'tsunami-source-wavelength',
         name: 'Source-radiated wavelength',
-        formula:
-          'λ_cavity ≈ 2 · R_C   (impact / explosion);   λ_seismic ≈ 2 · L_rupture   (megathrust)',
+        formula: 'λ_impact ≈ 2 · R_C ;   λ_megathrust ≈ 2 · W ;   λ_explosion from its period',
         description:
-          'Dominant Fourier mode of the source. Cavity-collapse waves carry λ ≈ 2 cavity diameters; finite line-source megathrusts carry λ ≈ 2 rupture lengths. For Tōhoku 2011 (L = 700 km) this gives λ ≈ 1 400 km, matching the dominant component observed at DART buoys (Satake et al. 2013).',
-        citation: lamb1932,
+          'A Nimbus heuristic: one cavity diameter for an impact, twice the down-dip width for a megathrust. Tōhoku 2011 (Mw 9.1, W ≈ 205 km from Strasser et al. 2010) gives λ ≈ 410 km. An explosion takes its wavelength from the period Glasstone & Dolan give it.',
+        citation: strasser2010,
       },
       {
         id: 'tsunami-period',
         name: 'Dominant wave period',
         formula: 'T = λ / c',
         description:
-          'Period at the source. Tōhoku 2011 (λ ≈ 1 400 km, c ≈ 198 m/s) gives T ≈ 7 000 s ≈ 2 h, consistent with the 30 min – 2 h range reported at coastal tide gauges.',
+          'Period at the source. Tōhoku 2011 (λ ≈ 410 km, c ≈ 198 m/s over 4 km of ocean) gives T ≈ 2 070 s ≈ 35 min. Explosion sources use their own period.',
         citation: lamb1932,
       },
       {
@@ -1286,8 +1297,8 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Inland inundation distance',
         formula: 'L_inland = R_runup / tan(β_beach)',
         description:
-          'Geometric horizontal reach of the run-up wedge. On the textbook 1:100 reference beach this is 100× the run-up height; on a steep 1:30 dune face only 30×, on a gentle 1:300 mud-flat 300×. FEMA 55 §3.4 / Murata 2010 use the same envelope for first-order coastal hazard mapping. Order-of-magnitude only — site-specific topography, vegetation roughness and back-bay refraction can multiply or divide this by a factor of two on real coasts.',
-        citation: fema55,
+          'The geometric reach of a plane-beach run-up wedge, used for the readout: 100× the run-up on a 1:100 beach, 30× on 1:30, 300× on 1:300. A geometric identity, not a published hazard rule; order of magnitude only. The casualty estimate uses a separate roughness-based distance, X = 0.06 · H^(4/3) / n², capped at 10 km.',
+        citation: synolakis1987,
       },
       {
         id: 'coastal-damage-tier',
@@ -1295,15 +1306,15 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'Tier 0: < 0.3 m — tide-gauge only;  Tier 1: 0.3–1 m — light flooding;  Tier 2: 1–3 m — cars / single-storey;  Tier 3: 3–6 m — wood frames / harbours;  Tier 4: 6–10 m — concrete damaged;  Tier 5: > 10 m — Tōhoku-/Lituya-class destruction',
         description:
-          'Six-tier damage assessment surfaced in the report panel under every run-up row. Boundaries from Bryant 2014 §10.5, FEMA P-646 §3 and the Imamura tsunami-intensity scale used in JMA / IUGG warnings.',
-        citation: bryant2014,
+          'Six damage labels chosen for Nimbus by run-up height, shown under every run-up row. The bands resemble, but are not, the height bands of Japan’s tsunami warnings (0.2–1, 1–3, 3–5, 5–10 and over 10 m); Bryant (2014, Fig. 10.13, after Shuto 1993) relates damage to flow depth by building type.',
+        citation: jma2013,
       },
       {
         id: 'beach-slope-from-dem',
         name: 'Beach slope from on-site DEM',
         formula: 'β_beach = atan(|∇z(x, y)|)   when click on land AND atan(1/1000) ≤ β ≤ atan(1/3)',
         description:
-          'When the user clicks a coastal cell with a real terrain gradient, the simulator samples the AWS Terrarium DEM tile around the click and feeds the local slope into the Synolakis (1987) run-up. Outside the [1:1000, 1:3] envelope (mud-flat / cliff face) the formula falls back to the 1:100 textbook reference. The result blob carries `beachSlopeRadUsed` and `beachSlopeFromDEM` so the UI can label the run-up as "DEM locale" or "1:100 riferimento".',
+          'When the user clicks a coastal cell with a real terrain gradient, the simulator samples the AWS Terrarium DEM tile around the click and feeds the local slope into the Synolakis (1987) run-up. Outside the [1:1000, 1:3] envelope (mud-flat / cliff face) the formula falls back to the 1:100 textbook reference. The result blob carries `beachSlopeRadUsed` and `beachSlopeFromDEM` so the UI can label the run-up as "DEM locale" or "riferimento 1:100". The coastal run-up field behind the casualty estimate uses its own per-cell slope, clamped to [1:2000, 1:2].',
         citation: synolakis1987,
       },
     ],
@@ -1522,7 +1533,6 @@ export const CITATIONS = {
   iverson1997,
   synolakis1987,
   watts2000,
-  heidarzadehSatake2015,
   herrick1997,
   suzuki1983,
   bonadonnaPhillips2003,
@@ -1543,9 +1553,12 @@ export const CITATIONS = {
   okada1992,
   lamb1932,
   bryant2014,
-  imamura2009,
-  femaP646,
-  fema55,
+  hayashiSelf1992,
+  iverson1998,
+  pfeiffer2005,
+  crandellHoblitt1986,
+  kajiura1963,
+  jma2013,
   leMehauteWang1996,
   glicken1996,
   grilli2019,
@@ -1571,16 +1584,16 @@ export const VALIDATION_ROSTER: ValidationEntry[] = [
   {
     event: 'Chicxulub',
     year: -66_000_000,
-    note: 'Morgan et al. 2016 — 180 km rim, K-Pg extinction',
+    note: 'Morgan et al. 2016 — peak-ring impact crater, K-Pg extinction',
   },
   { event: 'Popigai', year: -35_700_000, note: 'Tagle & Hecht 2006 — 100 km Siberian crater' },
   {
     event: 'Boltysh',
     year: -65_400_000,
-    note: 'Kelley & Gurov 2002 — 24 km, contemporaneous with Chicxulub',
+    note: 'Kelley & Gurov 2002 — 24 km; about 0.65 Myr after Chicxulub (Pickersgill et al. 2021)',
   },
   { event: 'Meteor Crater', year: -50_000, note: 'Kring 2007 — iron impactor, 1.2 km crater' },
-  { event: 'Tunguska', year: 1908, note: 'Boslough & Crawford 2008 — partial airburst ~8 km' },
+  { event: 'Tunguska', year: 1908, note: 'Boslough & Crawford 2008 — low-altitude airburst' },
   {
     event: 'Sikhote-Alin',
     year: 1947,
@@ -1589,21 +1602,25 @@ export const VALIDATION_ROSTER: ValidationEntry[] = [
   {
     event: 'Chelyabinsk',
     year: 2013,
-    note: 'Popova et al. 2013 / Brown et al. 2013 — burst 27 km, 0.44 Mt, 120 km window-breakage',
+    note: 'Popova et al. 2013 / Brown et al. 2013 — burst at 27 km, 400–600 kt, window damage modelled to 108 km',
   },
   // ─── Explosions ─────────────────────────────────────────────────
   {
     event: 'Halifax',
     year: 1917,
-    note: 'Bird & MacDonald 2001 — 2.9 kt SS Mont-Blanc cargo, largest pre-nuclear accident',
+    note: 'Ruffman & Howell 1994 — ≈ 2.9 kt, the SS Mont-Blanc’s cargo',
   },
-  { event: 'Hiroshima', year: 1945, note: 'Airburst 580 m, 15 kt (Little Boy)' },
+  {
+    event: 'Hiroshima',
+    year: 1945,
+    note: 'Airburst ≈ 600 m, 16 kt in the DS02 dosimetry (Little Boy)',
+  },
   { event: 'Nagasaki', year: 1945, note: 'Airburst 503 m, 21 kt (Fat Man)' },
-  { event: 'Texas City', year: 1947, note: 'Marsh 2010 — 2.7 kt SS Grandcamp NH₄NO₃ detonation' },
+  { event: 'Texas City', year: 1947, note: 'SS Grandcamp ammonium-nitrate detonation' },
   {
     event: 'Ivy Mike',
     year: 1952,
-    note: 'LASL LA-1854 — first thermonuclear, 10.4 Mt, vapourised Elugelab',
+    note: 'DOE/NV-209 — first thermonuclear test, 10.4 Mt, vapourised Elugelab',
   },
   { event: 'Castle Bravo', year: 1954, note: 'Bikini Atoll thermonuclear surface burst, 15 Mt' },
   { event: 'Tsar Bomba', year: 1961, note: 'Airburst 4 000 m, 50 Mt — largest human detonation' },
@@ -1621,20 +1638,24 @@ export const VALIDATION_ROSTER: ValidationEntry[] = [
   {
     event: 'Lisbon',
     year: 1755,
-    note: 'Baptista & Miranda 2009 — Mw 8.7 Atlantic megathrust, trans-oceanic tsunami',
+    note: 'Baptista & Miranda 2009 — Mw 8.5 ± 0.3 off SW Iberia, transatlantic tsunami',
   },
   {
     event: 'Valdivia',
     year: 1960,
-    note: 'Cifuentes 1989 — Mw 9.5, largest instrumentally recorded',
+    note: 'Kanamori 1977 — Mw 9.5, largest instrumentally recorded',
   },
-  { event: 'Great Alaska', year: 1964, note: 'Plafker 1965 — Mw 9.2 Aleutian megathrust' },
-  { event: 'Northridge', year: 1994, note: 'Blind-thrust reverse Mw 6.7, PGA 0.1–0.4 g observed' },
+  { event: 'Great Alaska', year: 1964, note: 'Plafker 1965; Kanamori 1977 — Mw 9.2 megathrust' },
+  {
+    event: 'Northridge',
+    year: 1994,
+    note: 'Blind thrust Mw 6.7; PGA ≈ 1 g near the fault, 1.82 g at Tarzana',
+  },
   { event: 'Kokoxili (Kunlun)', year: 2001, note: 'Strike-slip Mw 7.8 with ~400 km rupture' },
   {
     event: 'Sumatra–Andaman',
     year: 2004,
-    note: 'Lay et al. 2005 — Mw 9.2 Sunda megathrust, 230 000 fatalities',
+    note: 'Lay et al. 2005 — Mw 9.1–9.3 Sunda megathrust, over 283 000 dead',
   },
   {
     event: "L'Aquila",
@@ -1654,9 +1675,13 @@ export const VALIDATION_ROSTER: ValidationEntry[] = [
     year: 79,
     note: 'Cioni 1992 — type Plinian eruption, buried Pompeii + Herculaneum',
   },
-  { event: 'Etna', year: 1669, note: 'Branca 2013 — 5-month flank eruption, lava reached Catania' },
+  { event: 'Etna', year: 1669, note: 'Branca 2013 — 4-month flank eruption, lava reached Catania' },
   { event: 'Tambora', year: 1815, note: "VEI 7 'year without a summer' climate event" },
-  { event: 'Krakatau', year: 1883, note: 'Sunda Strait VEI 6 paroxysm + caldera-collapse tsunami' },
+  {
+    event: 'Krakatau',
+    year: 1883,
+    note: 'Sunda Strait VEI 6 paroxysm and tsunami — source debated; Maeno & Imamura 2011 favour pyroclastic flows entering the sea',
+  },
   {
     event: 'Mount Pelée',
     year: 1902,
@@ -1671,7 +1696,7 @@ export const VALIDATION_ROSTER: ValidationEntry[] = [
   {
     event: 'Eyjafjallajökull',
     year: 2010,
-    note: 'Gudmundsson 2012 — subglacial eruption, grounded European aviation',
+    note: 'Gudmundsson 2012 — ice-capped summit eruption, grounded European aviation',
   },
   {
     event: 'Anak Krakatau',
@@ -1681,23 +1706,23 @@ export const VALIDATION_ROSTER: ValidationEntry[] = [
   {
     event: 'Hunga Tonga',
     year: 2022,
-    note: 'Carr 2022 — 57 km plume into the mesosphere, global tsunami signal',
+    note: 'Proud et al. 2022 — 57 km plume into the mesosphere, global tsunami signal',
   },
-  // ─── Submarine landslides ──────────────────────────────────────
+  // ─── Landslides ─────────────────────────────────────────────────
   {
     event: 'Storegga slide',
     year: -8200,
-    note: 'Norwegian continental margin, ≈ 3 000 km³, trans-Atlantic tsunami',
+    note: 'Norwegian continental margin, ≈ 2 400–3 200 km³, North-Atlantic tsunami',
   },
   {
     event: 'Lituya Bay',
     year: 1958,
-    note: 'Walder 2003 — sub-aerial fjord rockfall, 524 m run-up',
+    note: 'Miller 1960 — sub-aerial rockfall into a fjord, 524 m run-up',
   },
   {
     event: 'Vaiont reservoir',
     year: 1963,
-    note: 'Genevois & Ghirotti 2005 — 270 Mm³ rockslide, 250 m wave overtopped the dam',
+    note: 'Genevois & Ghirotti 2005 — 270 Mm³ rockslide, wave crested 140 m above the dam',
   },
   {
     event: 'Elm rockslide',

@@ -10,8 +10,10 @@ import { tsunamiTravelTime } from '../tsunami/propagation.js';
  *
  * Two well-known archetypes anchor the parameter space:
  *   - Anak Krakatau, 22 December 2018: ≈ 0.27 km³ flank collapse,
- *     ≈ 20° slope, observed source amplitude ≈ 85 m (Grilli et al.
- *     2019, Sci. Rep. 9: 11946).
+ *     the best-estimate volume of Grilli et al. (2019, Sci. Rep. 9:
+ *     11946), whose simulation raises a leading wave nearly 50 m high
+ *     near the island. The ≈ 85 m this prefactor was set on is not in
+ *     that paper.
  *   - Krakatau, 27 August 1883: ≈ 25 km³ caldera collapse,
  *     observed coastal run-up 30–40 m around the Sunda Strait
  *     (Self 1992; Maeno & Imamura 2011, J. Geophys. Res. 116: B09205).
@@ -73,14 +75,16 @@ import { tsunamiTravelTime } from '../tsunami/propagation.js';
  * targets force two distinct values:
  *
  *   - **Subaerial / fast / rigid block** (volcanic flank collapse,
- *     rockfall into water, Anak Krakatau 2018): K ≈ 0.40, calibrated
- *     against Grilli et al. 2019 hydrocode reconstruction giving
- *     ≈ 85 m source amplitude for the 0.27 km³ flank slide at 20°.
+ *     rockfall into water, Anak Krakatau 2018): K ≈ 0.40, set on an
+ *     ≈ 85 m source amplitude for the 0.27 km³ flank slide at 20° that
+ *     was credited to Grilli et al. 2019; the paper's leading wave near
+ *     the island is nearly 50 m.
  *
  *   - **Submarine / slow / soft sediment** (continental-margin slumps,
- *     Storegga 8 200 BP): K ≈ 0.005, calibrated against Bondevik
- *     et al. 2005 giving 5–10 m source amplitude for the 3 000 km³
- *     Norwegian slope failure at 5°. Soft-sediment slides decouple
+ *     Storegga 8 200 BP): K ≈ 0.005, set on a 5–10 m source amplitude
+ *     for a 3 000 km³ slope failure at 5° that was credited to Bondevik
+ *     et al. 2005, who give run-up read from deposits (10–12 m in
+ *     western Norway) for a 2 400 km³ slide, not a source amplitude. Soft-sediment slides decouple
  *     from the water column much more efficiently than a rigid block
  *     would — the V^(1/3) scaling alone over-predicts by factor 70+.
  *

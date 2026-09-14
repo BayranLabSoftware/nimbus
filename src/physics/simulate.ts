@@ -191,7 +191,7 @@ export interface ImpactTsunamiResult {
    *  the source, on this scenario's own wavelength and basin depth. */
   amplitudeAt5000kmDispersed: Meters;
   /** Open-ocean phase speed `c = √(g·h)` of a long gravity wave on the
-   *  basin (Lamb 1932 §170). At 4 km mean depth this is ≈ 198 m/s
+   *  basin (Lamb 1932, Art. 170). At 4 km mean depth this is ≈ 198 m/s
    *  ≈ 713 km/h — the popular-science "speed of a jet airliner". */
   deepWaterCelerity: MetersPerSecond;
   /** Characteristic source-radiated wavelength (m). For a Ward & Asphaug
@@ -204,8 +204,8 @@ export interface ImpactTsunamiResult {
    *  depth at the impact point. */
   dominantPeriod: Seconds;
   /** Estimated inland inundation distance (m) at the 1 000 km contour,
-   *  from the simple geometric `runup / tan(slope)` envelope on a
-   *  1:100 reference beach (FEMA 55 §3.4 / Murata et al. 2010). For
+   *  from the simple geometric `runup / tan(slope)` wedge on a
+   *  1:100 reference beach — a geometric identity. For
    *  the Synolakis run-up this gives the coastal "how far inland does
    *  the water push" headline number — order-of-magnitude only. */
   inundationDistanceAt1000km: Meters;
@@ -841,8 +841,6 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     // cot(slope) = 100, so inundation ≈ 100 × runup. On a real DEM
     // slope the cot factor scales accordingly — a 1:30 beach (~1.9°)
     // gives 30× runup, a 1:300 mud-flat (~0.19°) gives 300×.
-    // FEMA 55 §3.4 uses this geometric envelope for first-order
-    // coastal hazard mapping.
     const inundation = m((runup as number) / Math.tan(beachSlopeRad));
     result.tsunami = {
       cavityRadius,

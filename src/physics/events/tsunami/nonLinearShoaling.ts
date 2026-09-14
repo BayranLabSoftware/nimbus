@@ -1,7 +1,7 @@
 /**
  * Non-linear shoaling correction on top of Green's law.
  *
- * Green's law (Lamb 1932 §187) predicts amplitude amplification
+ * Green's law (Lamb 1932 Art. 185) predicts amplitude amplification
  * from the linear shallow-water energy-flux conservation:
  *
  *     A_linear / A₀ = (h₀ / h)^(1/4)
