@@ -15,7 +15,7 @@
         "recordedHigh": 0,
         "model": 0,
         "bandLow": 0,
-        "bandHigh": 0,
+        "bandHigh": 3,
         "ratio": 1,
         "contains": true,
         "gated": true,
@@ -28,10 +28,10 @@
         "recorded": 57,
         "recordedLow": 57,
         "recordedHigh": 57,
-        "model": 13,
-        "bandLow": 1,
-        "bandHigh": 177,
-        "ratio": 0.228,
+        "model": 29,
+        "bandLow": 2,
+        "bandHigh": 415,
+        "ratio": 0.509,
         "contains": true,
         "gated": true,
         "cause": null,
@@ -43,10 +43,10 @@
         "recorded": 309,
         "recordedLow": 309,
         "recordedHigh": 309,
-        "model": 40,
-        "bandLow": 1,
-        "bandHigh": 4622,
-        "ratio": 0.129,
+        "model": 43,
+        "bandLow": 2,
+        "bandHigh": 4642,
+        "ratio": 0.139,
         "contains": true,
         "gated": false,
         "cause": null,
@@ -60,7 +60,7 @@
         "recordedHigh": 299,
         "model": 1,
         "bandLow": 0,
-        "bandHigh": 131,
+        "bandHigh": 236,
         "ratio": 0.003,
         "contains": false,
         "gated": false,
@@ -73,10 +73,10 @@
         "recorded": 8964,
         "recordedLow": 8964,
         "recordedHigh": 8964,
-        "model": 2983,
-        "bandLow": 12,
-        "bandHigh": 735884,
-        "ratio": 0.333,
+        "model": 5356,
+        "bandLow": 43,
+        "bandHigh": 934524,
+        "ratio": 0.598,
         "contains": true,
         "gated": false,
         "cause": "buildingStock",
@@ -148,10 +148,10 @@
         "recorded": 18500,
         "recordedLow": 18500,
         "recordedHigh": 18500,
-        "model": 4505,
-        "bandLow": 7,
-        "bandHigh": 1042546,
-        "ratio": 0.244,
+        "model": 7997,
+        "bandLow": 8,
+        "bandHigh": 1204212,
+        "ratio": 0.432,
         "contains": true,
         "gated": false,
         "cause": "footprint",
@@ -163,11 +163,11 @@
         "recorded": 227898,
         "recordedLow": 227898,
         "recordedHigh": 227898,
-        "model": 3449,
-        "bandLow": 43,
-        "bandHigh": 188378,
-        "ratio": 0.015,
-        "contains": false,
+        "model": 4263,
+        "bandLow": 115,
+        "bandHigh": 277275,
+        "ratio": 0.019,
+        "contains": true,
         "gated": false,
         "cause": "drownedOffline",
         "role": "sameSource",
@@ -180,7 +180,7 @@
         "recordedHigh": 185,
         "model": 1,
         "bandLow": 0,
-        "bandHigh": 20,
+        "bandHigh": 26,
         "ratio": 0.005,
         "contains": false,
         "gated": false,
@@ -193,10 +193,10 @@
         "recorded": 273,
         "recordedLow": 49,
         "recordedHigh": 273,
-        "model": 61,
+        "model": 198,
         "bandLow": 0,
-        "bandHigh": 7777,
-        "ratio": 0.223,
+        "bandHigh": 19404,
+        "ratio": 0.725,
         "contains": true,
         "gated": false,
         "cause": null,
@@ -223,9 +223,9 @@
         "recorded": 0,
         "recordedLow": 0,
         "recordedHigh": 0,
-        "model": 32,
+        "model": 135,
         "bandLow": 0,
-        "bandHigh": 12386,
+        "bandHigh": 36916,
         "ratio": 9007199254740991,
         "contains": true,
         "gated": false,
@@ -238,10 +238,10 @@
         "recorded": 51,
         "recordedLow": 51,
         "recordedHigh": 51,
-        "model": 3,
+        "model": 15,
         "bandLow": 0,
-        "bandHigh": 453,
-        "ratio": 0.059,
+        "bandHigh": 1833,
+        "ratio": 0.294,
         "contains": true,
         "gated": false,
         "cause": null,
@@ -566,24 +566,24 @@
         "heldOut": {
           "rows": 8,
           "scored": 5,
-          "bias": 0.0895,
-          "scatterLn": 1.52,
+          "bias": 0.197,
+          "scatterLn": 1.82,
           "inside": 7,
           "bothZero": 1,
           "falseAlarms": 1,
           "missedToZero": 1,
-          "medianBandDecades": 3.27
+          "medianBandDecades": 3.78
         },
         "all": {
           "rows": 12,
           "scored": 9,
-          "bias": 0.059,
-          "scatterLn": 1.67,
-          "inside": 9,
+          "bias": 0.103,
+          "scatterLn": 2,
+          "inside": 10,
           "bothZero": 1,
           "falseAlarms": 1,
           "missedToZero": 1,
-          "medianBandDecades": 3.15
+          "medianBandDecades": 3.31
         }
       },
       {
@@ -594,24 +594,24 @@
         "heldOut": {
           "rows": 3,
           "scored": 2,
-          "bias": 0.0178,
-          "scatterLn": 1.19,
+          "bias": 0.0399,
+          "scatterLn": 2,
           "inside": 2,
           "bothZero": 0,
           "falseAlarms": 1,
           "missedToZero": 0,
-          "medianBandDecades": 2.66
+          "medianBandDecades": 3.26
         },
         "all": {
           "rows": 5,
           "scored": 4,
-          "bias": 0.0193,
-          "scatterLn": 1.55,
+          "bias": 0.0293,
+          "scatterLn": 1.96,
           "inside": 3,
           "bothZero": 0,
           "falseAlarms": 1,
           "missedToZero": 0,
-          "medianBandDecades": 2.66
+          "medianBandDecades": 3.26
         }
       },
       {
@@ -628,18 +628,18 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 3.89
+          "medianBandDecades": 4.29
         },
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 0.226,
-          "scatterLn": 0.01,
+          "bias": 0.607,
+          "scatterLn": 0.18,
           "inside": 2,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 3.07
+          "medianBandDecades": 3.3
         }
       },
       {
@@ -650,24 +650,24 @@
         "heldOut": {
           "rows": 4,
           "scored": 2,
-          "bias": 0.285,
+          "bias": 0.508,
           "scatterLn": 0.16,
           "inside": 4,
           "bothZero": 1,
           "falseAlarms": 0,
           "missedToZero": 1,
-          "medianBandDecades": 2.97
+          "medianBandDecades": 2.74
         },
         "all": {
           "rows": 5,
           "scored": 3,
-          "bias": 0.107,
-          "scatterLn": 1.39,
-          "inside": 4,
+          "bias": 0.169,
+          "scatterLn": 1.56,
+          "inside": 5,
           "bothZero": 1,
           "falseAlarms": 0,
           "missedToZero": 1,
-          "medianBandDecades": 3.64
+          "medianBandDecades": 3.38
         }
       },
       {
@@ -1371,6 +1371,304 @@
         ]
       }
     },
+    "ground": {
+      "sitesReadOn": "2026-09-14",
+      "standing": "pick",
+      "siteRules": {
+        "winner": "rock",
+        "adopted": false,
+        "meanAbsoluteBias": {
+          "pick": 0.972,
+          "rock": 0.729,
+          "pickOnLand": 0.841
+        },
+        "shakemap": {
+          "pick": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "pairs": 271,
+              "bias": 0.824,
+              "scatter": 0.79,
+              "invented": 203,
+              "missed": 2
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 328,
+              "bias": 0.789,
+              "scatter": 1.072,
+              "invented": 226,
+              "missed": 1
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 112,
+              "bias": 1.302,
+              "scatter": 1.609,
+              "invented": 40,
+              "missed": 2
+            }
+          ],
+          "rock": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "pairs": 243,
+              "bias": 0.532,
+              "scatter": 0.857,
+              "invented": 175,
+              "missed": 4
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 314,
+              "bias": 0.485,
+              "scatter": 1.077,
+              "invented": 212,
+              "missed": 2
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 109,
+              "bias": 1.169,
+              "scatter": 1.62,
+              "invented": 37,
+              "missed": 2
+            }
+          ],
+          "pickOnLand": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "pairs": 262,
+              "bias": 0.742,
+              "scatter": 0.796,
+              "invented": 194,
+              "missed": 2
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 316,
+              "bias": 0.592,
+              "scatter": 1.046,
+              "invented": 214,
+              "missed": 1
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 109,
+              "bias": 1.188,
+              "scatter": 1.607,
+              "invented": 37,
+              "missed": 2
+            }
+          ]
+        },
+        "tolls": {
+          "pick": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "rows": 132,
+              "scored": 64,
+              "bias": 1.46,
+              "scatterLn": 2.26,
+              "inside": 122,
+              "bothZero": 30,
+              "falseAlarms": 16,
+              "missedToZero": 22,
+              "medianBandDecades": 2.54
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "rows": 112,
+              "scored": 45,
+              "bias": 0.331,
+              "scatterLn": 2.36,
+              "inside": 106,
+              "bothZero": 30,
+              "falseAlarms": 10,
+              "missedToZero": 27,
+              "medianBandDecades": 2.34
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "rows": 35,
+              "scored": 18,
+              "bias": 1.94,
+              "scatterLn": 2.35,
+              "inside": 32,
+              "bothZero": 6,
+              "falseAlarms": 8,
+              "missedToZero": 3,
+              "medianBandDecades": 3.05
+            }
+          ],
+          "rock": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "rows": 132,
+              "scored": 52,
+              "bias": 0.691,
+              "scatterLn": 2.2,
+              "inside": 121,
+              "bothZero": 35,
+              "falseAlarms": 11,
+              "missedToZero": 34,
+              "medianBandDecades": 2.26
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "rows": 107,
+              "scored": 36,
+              "bias": 0.233,
+              "scatterLn": 2.27,
+              "inside": 96,
+              "bothZero": 30,
+              "falseAlarms": 5,
+              "missedToZero": 36,
+              "medianBandDecades": 2.12
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "rows": 34,
+              "scored": 17,
+              "bias": 1.92,
+              "scatterLn": 2.29,
+              "inside": 32,
+              "bothZero": 7,
+              "falseAlarms": 6,
+              "missedToZero": 4,
+              "medianBandDecades": 2.92
+            }
+          ],
+          "pickOnLand": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "rows": 132,
+              "scored": 63,
+              "bias": 1.34,
+              "scatterLn": 2.28,
+              "inside": 119,
+              "bothZero": 32,
+              "falseAlarms": 14,
+              "missedToZero": 23,
+              "medianBandDecades": 2.47
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "rows": 108,
+              "scored": 37,
+              "bias": 0.407,
+              "scatterLn": 2.41,
+              "inside": 100,
+              "bothZero": 31,
+              "falseAlarms": 5,
+              "missedToZero": 35,
+              "medianBandDecades": 2.2
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "rows": 34,
+              "scored": 17,
+              "bias": 2.11,
+              "scatterLn": 2.31,
+              "inside": 31,
+              "bothZero": 7,
+              "falseAlarms": 6,
+              "missedToZero": 4,
+              "medianBandDecades": 2.99
+            }
+          ]
+        }
+      },
+      "laws": {
+        "winner": "boore2014",
+        "adopted": false,
+        "meanAbsoluteBias": {
+          "joynerBoore1981": 1.584,
+          "boore2014": 0.972,
+          "boore2014FromMw7.5": 1.304
+        },
+        "shakemap": {
+          "joynerBoore1981": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "pairs": 282,
+              "bias": 1.26,
+              "scatter": 0.747,
+              "invented": 214,
+              "missed": 1
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 416,
+              "bias": 1.351,
+              "scatter": 0.969,
+              "invented": 314,
+              "missed": 0
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 168,
+              "bias": 2.14,
+              "scatter": 1.531,
+              "invented": 96,
+              "missed": 0
+            }
+          ],
+          "boore2014": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "pairs": 271,
+              "bias": 0.824,
+              "scatter": 0.79,
+              "invented": 203,
+              "missed": 2
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 328,
+              "bias": 0.789,
+              "scatter": 1.072,
+              "invented": 226,
+              "missed": 1
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 112,
+              "bias": 1.302,
+              "scatter": 1.609,
+              "invented": 40,
+              "missed": 2
+            }
+          ],
+          "boore2014FromMw7.5": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "pairs": 282,
+              "bias": 1.26,
+              "scatter": 0.747,
+              "invented": 214,
+              "missed": 1
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 416,
+              "bias": 1.351,
+              "scatter": 0.969,
+              "invented": 314,
+              "missed": 0
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 112,
+              "bias": 1.302,
+              "scatter": 1.609,
+              "invented": 40,
+              "missed": 2
+            }
+          ]
+        }
+      }
+    },
     "byRule": {
       "readOn": "2026-09-14",
       "earthquakes": {
@@ -1384,36 +1682,36 @@
             "group": null,
             "all": {
               "rows": 406,
-              "scored": 105,
-              "bias": 0.562,
-              "scatterLn": 2.35,
-              "inside": 382,
-              "bothZero": 205,
-              "falseAlarms": 22,
-              "missedToZero": 74,
-              "medianBandDecades": 1.23
+              "scored": 127,
+              "bias": 0.897,
+              "scatterLn": 2.42,
+              "inside": 387,
+              "bothZero": 193,
+              "falseAlarms": 34,
+              "missedToZero": 52,
+              "medianBandDecades": 1.55
             },
             "informative": {
-              "rows": 273,
-              "scored": 105,
-              "bias": 0.562,
-              "scatterLn": 2.35,
-              "inside": 249,
-              "bothZero": 72,
-              "falseAlarms": 22,
-              "missedToZero": 74,
-              "medianBandDecades": 2.27
+              "rows": 279,
+              "scored": 127,
+              "bias": 0.897,
+              "scatterLn": 2.42,
+              "inside": 260,
+              "bothZero": 66,
+              "falseAlarms": 34,
+              "missedToZero": 52,
+              "medianBandDecades": 2.51
             },
             "unseen": {
-              "rows": 267,
-              "scored": 100,
-              "bias": 0.617,
-              "scatterLn": 2.35,
-              "inside": 244,
-              "bothZero": 72,
-              "falseAlarms": 22,
-              "missedToZero": 73,
-              "medianBandDecades": 2.27
+              "rows": 273,
+              "scored": 122,
+              "bias": 0.962,
+              "scatterLn": 2.42,
+              "inside": 255,
+              "bothZero": 66,
+              "falseAlarms": 34,
+              "missedToZero": 51,
+              "medianBandDecades": 2.51
             }
           },
           {
@@ -1421,36 +1719,36 @@
             "group": "Mw < 6.5",
             "all": {
               "rows": 152,
-              "scored": 52,
-              "bias": 0.691,
-              "scatterLn": 2.2,
-              "inside": 141,
-              "bothZero": 55,
-              "falseAlarms": 11,
-              "missedToZero": 34,
-              "medianBandDecades": 2.05
+              "scored": 64,
+              "bias": 1.46,
+              "scatterLn": 2.26,
+              "inside": 142,
+              "bothZero": 50,
+              "falseAlarms": 16,
+              "missedToZero": 22,
+              "medianBandDecades": 2.29
             },
             "informative": {
               "rows": 132,
-              "scored": 52,
-              "bias": 0.691,
-              "scatterLn": 2.2,
-              "inside": 121,
-              "bothZero": 35,
-              "falseAlarms": 11,
-              "missedToZero": 34,
-              "medianBandDecades": 2.26
+              "scored": 64,
+              "bias": 1.46,
+              "scatterLn": 2.26,
+              "inside": 122,
+              "bothZero": 30,
+              "falseAlarms": 16,
+              "missedToZero": 22,
+              "medianBandDecades": 2.54
             },
             "unseen": {
               "rows": 130,
-              "scored": 50,
-              "bias": 0.8,
-              "scatterLn": 2.1,
-              "inside": 120,
-              "bothZero": 35,
-              "falseAlarms": 11,
-              "missedToZero": 34,
-              "medianBandDecades": 2.26
+              "scored": 62,
+              "bias": 1.63,
+              "scatterLn": 2.17,
+              "inside": 121,
+              "bothZero": 30,
+              "falseAlarms": 16,
+              "missedToZero": 22,
+              "medianBandDecades": 2.54
             }
           },
           {
@@ -1458,36 +1756,36 @@
             "group": "Mw 6.5–7.5",
             "all": {
               "rows": 196,
-              "scored": 36,
-              "bias": 0.233,
-              "scatterLn": 2.27,
-              "inside": 185,
-              "bothZero": 119,
-              "falseAlarms": 5,
-              "missedToZero": 36,
-              "medianBandDecades": 0
+              "scored": 45,
+              "bias": 0.331,
+              "scatterLn": 2.36,
+              "inside": 190,
+              "bothZero": 114,
+              "falseAlarms": 10,
+              "missedToZero": 27,
+              "medianBandDecades": 0.48
             },
             "informative": {
-              "rows": 107,
-              "scored": 36,
-              "bias": 0.233,
-              "scatterLn": 2.27,
-              "inside": 96,
+              "rows": 112,
+              "scored": 45,
+              "bias": 0.331,
+              "scatterLn": 2.36,
+              "inside": 106,
               "bothZero": 30,
-              "falseAlarms": 5,
-              "missedToZero": 36,
-              "medianBandDecades": 2.12
+              "falseAlarms": 10,
+              "missedToZero": 27,
+              "medianBandDecades": 2.34
             },
             "unseen": {
-              "rows": 106,
-              "scored": 35,
-              "bias": 0.233,
-              "scatterLn": 2.3,
-              "inside": 95,
+              "rows": 111,
+              "scored": 44,
+              "bias": 0.325,
+              "scatterLn": 2.38,
+              "inside": 105,
               "bothZero": 30,
-              "falseAlarms": 5,
-              "missedToZero": 36,
-              "medianBandDecades": 2.11
+              "falseAlarms": 10,
+              "missedToZero": 27,
+              "medianBandDecades": 2.33
             }
           },
           {
@@ -1495,51 +1793,40 @@
             "group": "Mw ≥ 7.5",
             "all": {
               "rows": 58,
-              "scored": 17,
-              "bias": 1.92,
-              "scatterLn": 2.29,
-              "inside": 56,
-              "bothZero": 31,
-              "falseAlarms": 6,
-              "missedToZero": 4,
-              "medianBandDecades": 0.77
+              "scored": 18,
+              "bias": 1.94,
+              "scatterLn": 2.35,
+              "inside": 55,
+              "bothZero": 29,
+              "falseAlarms": 8,
+              "missedToZero": 3,
+              "medianBandDecades": 0.85
             },
             "informative": {
-              "rows": 34,
-              "scored": 17,
-              "bias": 1.92,
-              "scatterLn": 2.29,
+              "rows": 35,
+              "scored": 18,
+              "bias": 1.94,
+              "scatterLn": 2.35,
               "inside": 32,
-              "bothZero": 7,
-              "falseAlarms": 6,
-              "missedToZero": 4,
-              "medianBandDecades": 2.92
+              "bothZero": 6,
+              "falseAlarms": 8,
+              "missedToZero": 3,
+              "medianBandDecades": 3.05
             },
             "unseen": {
-              "rows": 31,
-              "scored": 15,
-              "bias": 2.52,
-              "scatterLn": 2.31,
+              "rows": 32,
+              "scored": 16,
+              "bias": 2.44,
+              "scatterLn": 2.39,
               "inside": 29,
-              "bothZero": 7,
-              "falseAlarms": 6,
-              "missedToZero": 3,
-              "medianBandDecades": 2.9
+              "bothZero": 6,
+              "falseAlarms": 8,
+              "missedToZero": 2,
+              "medianBandDecades": 3.04
             }
           }
         ],
         "outside": [
-          {
-            "event": "2008-06-13 23:43 UTC, JAPAN: HONSHU: TOKYO",
-            "comcat": "usp000g9h6",
-            "magnitude": 6.9,
-            "recorded": 23,
-            "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 9,
-            "seen": false
-          },
           {
             "event": "2008-10-05 15:52 UTC, KYRGYZSTAN: NURA",
             "comcat": "usp000gjd4",
@@ -1557,9 +1844,9 @@
             "magnitude": 6.4,
             "recorded": 0,
             "missing": 0,
-            "model": 68,
+            "model": 270,
             "bandLow": 1,
-            "bandHigh": 22618,
+            "bandHigh": 38865,
             "seen": false
           },
           {
@@ -1570,7 +1857,7 @@
             "missing": 0,
             "model": 4,
             "bandLow": 0,
-            "bandHigh": 2341,
+            "bandHigh": 1901,
             "seen": false
           },
           {
@@ -1581,7 +1868,7 @@
             "missing": 0,
             "model": 1,
             "bandLow": 0,
-            "bandHigh": 12,
+            "bandHigh": 15,
             "seen": true
           },
           {
@@ -1592,7 +1879,7 @@
             "missing": 0,
             "model": 0,
             "bandLow": 0,
-            "bandHigh": 23,
+            "bandHigh": 53,
             "seen": false
           },
           {
@@ -1603,7 +1890,7 @@
             "missing": 0,
             "model": 0,
             "bandLow": 0,
-            "bandHigh": 0,
+            "bandHigh": 3,
             "seen": false
           },
           {
@@ -1618,6 +1905,17 @@
             "seen": false
           },
           {
+            "event": "2013-04-22 01:16 UTC, MEXICO: MICHOACAN: LAZARO CARDENAS",
+            "comcat": "usb000gda9",
+            "magnitude": 6,
+            "recorded": 0,
+            "missing": 0,
+            "model": 106,
+            "bandLow": 1,
+            "bandHigh": 15232,
+            "seen": false
+          },
+          {
             "event": "2013-06-02 05:43 UTC, TAIWAN: JENAI",
             "comcat": "usb000hbrt",
             "magnitude": 6.2,
@@ -1629,14 +1927,14 @@
             "seen": false
           },
           {
-            "event": "2014-05-24 09:25 UTC, GREECE, TURKEY",
-            "comcat": "usb000r2hc",
-            "magnitude": 6.9,
-            "recorded": 3,
+            "event": "2014-08-18 02:32 UTC, IRAN: ILAM PROVINCE: ABDANAN",
+            "comcat": "usb000s3np",
+            "magnitude": 6.2,
+            "recorded": 0,
             "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 2,
+            "model": 684,
+            "bandLow": 1,
+            "bandHigh": 6545,
             "seen": false
           },
           {
@@ -1662,28 +1960,6 @@
             "seen": false
           },
           {
-            "event": "2015-07-03 06:43 UTC, PHILIPPINES: MINDANAO",
-            "comcat": "us10002n6s",
-            "magnitude": 6.1,
-            "recorded": 1,
-            "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 0,
-            "seen": false
-          },
-          {
-            "event": "2015-12-07 07:50 UTC, TAJIKISTAN",
-            "comcat": "us100044k6",
-            "magnitude": 7.2,
-            "recorded": 2,
-            "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 1,
-            "seen": false
-          },
-          {
             "event": "2016-01-25 04:22 UTC, MOROCCO: MELILLA",
             "comcat": "us10004gy9",
             "magnitude": 6.3,
@@ -1702,40 +1978,7 @@
             "missing": 0,
             "model": 0,
             "bandLow": 0,
-            "bandHigh": 2,
-            "seen": false
-          },
-          {
-            "event": "2018-03-06 14:13 UTC, PAPUA NEW GUINEA: S HIGHLANDS, HELA",
-            "comcat": "us2000dcx1",
-            "magnitude": 6.7,
-            "recorded": 25,
-            "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 13,
-            "seen": false
-          },
-          {
-            "event": "2018-10-10 18:44 UTC, INDONESIA: MADURA ISLAND, JAVA",
-            "comcat": "us1000ha6q",
-            "magnitude": 6,
-            "recorded": 4,
-            "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 0,
-            "seen": false
-          },
-          {
-            "event": "2019-04-12 11:40 UTC, INDONESIA: SULAWESI ISLAND: LUWUK",
-            "comcat": "us700034xq",
-            "magnitude": 6.8,
-            "recorded": 1,
-            "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 0,
+            "bandHigh": 4,
             "seen": false
           },
           {
@@ -1766,9 +2009,9 @@
             "magnitude": 6,
             "recorded": 2,
             "missing": 0,
-            "model": 142,
-            "bandLow": 3,
-            "bandHigh": 44594,
+            "model": 728,
+            "bandLow": 4,
+            "bandHigh": 163304,
             "seen": false
           },
           {
@@ -1779,18 +2022,18 @@
             "missing": 0,
             "model": 0,
             "bandLow": 0,
-            "bandHigh": 0,
+            "bandHigh": 1,
             "seen": false
           },
           {
-            "event": "2022-12-20 10:34 UTC, CALIFORNIA: HUMBOLDT COUNTY",
-            "comcat": "nc73821036",
-            "magnitude": 6.4,
-            "recorded": 2,
+            "event": "2023-02-06 10:24 UTC, TURKEY; SYRIA",
+            "comcat": "us6000jlqa",
+            "magnitude": 7.5,
+            "recorded": 0,
             "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 1,
+            "model": 1422,
+            "bandLow": 1,
+            "bandHigh": 108048,
             "seen": false
           }
         ],
@@ -1798,9 +2041,9 @@
           {
             "event": "2009-04-06 01:32 UTC, ITALY: L'AQUILA",
             "recorded": 309,
-            "model": 29,
+            "model": 40,
             "bandLow": 2,
-            "bandHigh": 3437,
+            "bandHigh": 2609,
             "contains": true
           },
           {
@@ -1808,7 +2051,7 @@
             "recorded": 299,
             "model": 1,
             "bandLow": 0,
-            "bandHigh": 170,
+            "bandHigh": 293,
             "contains": false
           }
         ]
@@ -2002,13 +2245,13 @@
           "event": "Northridge 1994",
           "mmi": 7,
           "shakemapKm2": 2824,
-          "modelKm2": 318
+          "modelKm2": 904
         },
         {
           "event": "Northridge 1994",
           "mmi": 8,
           "shakemapKm2": 823,
-          "modelKm2": 13
+          "modelKm2": 68
         },
         {
           "event": "Northridge 1994",
@@ -2020,7 +2263,7 @@
           "event": "L'Aquila 2009",
           "mmi": 7,
           "shakemapKm2": 61,
-          "modelKm2": 116
+          "modelKm2": 124
         },
         {
           "event": "L'Aquila 2009",
@@ -2038,7 +2281,7 @@
           "event": "Amatrice 2016",
           "mmi": 7,
           "shakemapKm2": 26,
-          "modelKm2": 107
+          "modelKm2": 158
         },
         {
           "event": "Amatrice 2016",
@@ -2056,13 +2299,13 @@
           "event": "Gorkha 2015",
           "mmi": 7,
           "shakemapKm2": 40767,
-          "modelKm2": 10893
+          "modelKm2": 15175
         },
         {
           "event": "Gorkha 2015",
           "mmi": 8,
           "shakemapKm2": 3799,
-          "modelKm2": 5894
+          "modelKm2": 7299
         },
         {
           "event": "Gorkha 2015",
@@ -2074,13 +2317,13 @@
           "event": "Tōhoku 2011",
           "mmi": 7,
           "shakemapKm2": 199742,
-          "modelKm2": 243715
+          "modelKm2": 304870
         },
         {
           "event": "Tōhoku 2011",
           "mmi": 8,
           "shakemapKm2": 67625,
-          "modelKm2": 168604
+          "modelKm2": 192279
         },
         {
           "event": "Tōhoku 2011",
@@ -2092,13 +2335,13 @@
           "event": "Kokoxili 2001",
           "mmi": 7,
           "shakemapKm2": 51427,
-          "modelKm2": 12008
+          "modelKm2": 19164
         },
         {
           "event": "Kokoxili 2001",
           "mmi": 8,
           "shakemapKm2": 23334,
-          "modelKm2": 5768
+          "modelKm2": 7596
         },
         {
           "event": "Kokoxili 2001",
@@ -2107,47 +2350,56 @@
           "modelKm2": 0
         }
       ],
-      "geometricMeanRadiusRatio": 0.708,
-      "biasInStandardErrors": 1.339,
-      "sdLn": 0.816,
+      "geometricMeanRadiusRatio": 0.901,
+      "biasInStandardErrors": 0.528,
+      "sdLn": 0.627,
       "expectedSdLn": 0.845,
       "betweenEventSdLn": 0.49,
       "inventedBands": []
     },
     "interpolation": [
       {
+        "event": "Kokoxili (Kunlun) 2001",
+        "measuredLow": 0,
+        "measuredHigh": 2,
+        "interpolatedLow": 0,
+        "interpolatedHigh": 12,
+        "comparable": false,
+        "lowComparable": false
+      },
+      {
         "event": "Northridge 1994",
-        "measuredLow": 1,
-        "measuredHigh": 126,
-        "interpolatedLow": 1,
-        "interpolatedHigh": 120,
+        "measuredLow": 2,
+        "measuredHigh": 246,
+        "interpolatedLow": 2,
+        "interpolatedHigh": 224,
         "comparable": true,
         "lowComparable": false
       },
       {
         "event": "L'Aquila 2009",
         "measuredLow": 9,
-        "measuredHigh": 1019,
-        "interpolatedLow": 7,
-        "interpolatedHigh": 743,
+        "measuredHigh": 1025,
+        "interpolatedLow": 9,
+        "interpolatedHigh": 797,
         "comparable": true,
         "lowComparable": false
       },
       {
         "event": "Amatrice 2016",
         "measuredLow": 0,
-        "measuredHigh": 43,
+        "measuredHigh": 68,
         "interpolatedLow": 0,
-        "interpolatedHigh": 43,
+        "interpolatedHigh": 62,
         "comparable": false,
         "lowComparable": false
       },
       {
         "event": "Gorkha (Nepal) 2015",
-        "measuredLow": 282,
-        "measuredHigh": 72591,
-        "interpolatedLow": 487,
-        "interpolatedHigh": 33842,
+        "measuredLow": 303,
+        "measuredHigh": 99287,
+        "interpolatedLow": 312,
+        "interpolatedHigh": 63758,
         "comparable": true,
         "lowComparable": true
       },
@@ -2189,37 +2441,37 @@
       },
       {
         "event": "Tōhoku 2011",
-        "measuredLow": 11,
-        "measuredHigh": 355701,
-        "interpolatedLow": 19,
-        "interpolatedHigh": 243624,
+        "measuredLow": 15,
+        "measuredHigh": 516763,
+        "interpolatedLow": 23,
+        "interpolatedHigh": 360451,
         "comparable": true,
         "lowComparable": false
       },
       {
         "event": "Sumatra–Andaman 2004",
-        "measuredLow": 165,
-        "measuredHigh": 41036,
-        "interpolatedLow": 163,
-        "interpolatedHigh": 38961,
+        "measuredLow": 166,
+        "measuredHigh": 48898,
+        "interpolatedLow": 167,
+        "interpolatedHigh": 47886,
         "comparable": true,
         "lowComparable": true
       },
       {
         "event": "Christchurch 2011",
         "measuredLow": 0,
-        "measuredHigh": 8,
+        "measuredHigh": 11,
         "interpolatedLow": 0,
-        "interpolatedHigh": 7,
+        "interpolatedHigh": 9,
         "comparable": false,
         "lowComparable": false
       },
       {
         "event": "Kumamoto 2016",
-        "measuredLow": 0,
-        "measuredHigh": 7486,
+        "measuredLow": 1,
+        "measuredHigh": 10890,
         "interpolatedLow": 0,
-        "interpolatedHigh": 5171,
+        "interpolatedHigh": 8449,
         "comparable": true,
         "lowComparable": false
       },
@@ -2234,19 +2486,19 @@
       },
       {
         "event": "Pohang 2017",
-        "measuredLow": 0,
-        "measuredHigh": 14287,
+        "measuredLow": 1,
+        "measuredHigh": 20739,
         "interpolatedLow": 1,
-        "interpolatedHigh": 10646,
+        "interpolatedHigh": 21245,
         "comparable": true,
         "lowComparable": false
       },
       {
         "event": "Durrës (Albania) 2019",
-        "measuredLow": 0,
-        "measuredHigh": 214,
-        "interpolatedLow": 0,
-        "interpolatedHigh": 294,
+        "measuredLow": 1,
+        "measuredHigh": 552,
+        "interpolatedLow": 1,
+        "interpolatedHigh": 584,
         "comparable": true,
         "lowComparable": false
       },

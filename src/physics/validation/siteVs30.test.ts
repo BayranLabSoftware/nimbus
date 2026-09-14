@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { waldAllen2007Vs30FromSlope } from '../elevation/index.js';
 import { simulateEarthquake } from '../events/earthquake/simulate.js';
+import { compareContourLaws, compareSiteRules } from './contourComparison.js';
 import { chooseCandidate } from './contourLaws.js';
+import { RULE_EARTHQUAKES, ruleSiteVs30 } from './heldOutByRule.js';
+import { RULE_SHAKEMAPS } from './ruleShakemapData.js';
 import { NCEI_EARTHQUAKE_ROWS } from './heldOutByRuleData.js';
 import { RECORDED_EVENTS } from './recordedTolls.js';
 import { SITE_RULES, siteVs30, type SiteRow } from './siteVs30.js';
@@ -80,6 +83,40 @@ describe("rule 20's sites, as stored", () => {
         Math.abs(site.vs30 - waldAllen2007Vs30FromSlope(site.slopeRad)),
         site.key
       ).toBeLessThan(0.01);
+    }
+  });
+});
+
+describe('rules 21 and 22, as they ran', () => {
+  it("chose rock on the ShakeMaps, and kept Boore et al. 2014 on the browser's ground", () => {
+    // Rock then lost on the tolls, 0.83 against 0.72, which the report
+    // runs and prints (scripts/generate-validation-report.ts throws if the
+    // rules ever leave the harness on anything but the browser's ground).
+    const sites = compareSiteRules(
+      RULE_SHAKEMAPS,
+      new Map(RULE_SITES.map((site) => [site.key, site])),
+      'boore2014'
+    );
+    expect(sites.winner).toBe('rock');
+    const laws = compareContourLaws(RULE_SHAKEMAPS, {
+      inPlace: 'boore2014',
+      vs30For: (row) => ruleSiteVs30(row, 'pick'),
+    });
+    expect(laws.winner).toBe('boore2014');
+  }, 30_000);
+
+  it("stand every earthquake the harness scores on the browser's ground", () => {
+    const sites = new Map(RULE_SITES.map((site) => [site.key, site]));
+    for (const quake of RULE_EARTHQUAKES.slice(0, 25)) {
+      const result = quake.event.run();
+      if (result.type !== 'earthquake') throw new Error(quake.event.name);
+      expect(result.data.inputs.vs30, quake.event.name).toBe(sites.get(quake.row.comcat)?.vs30);
+    }
+    for (const event of RECORDED_EVENTS) {
+      const result = event.run();
+      if (result.type !== 'earthquake') continue;
+      const site = NET_SITES.find((s) => s.key === event.name);
+      expect(result.data.inputs.vs30, event.name).toBe(site?.vs30);
     }
   });
 });

@@ -77,17 +77,20 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
    */
   const DECLARED: Record<string, Partial<Record<7 | 8 | 9, number>>> = {
     // Boore et al. 2014's rings since 14 September 2026 (rule 19 of
-    // contourLaws.ts). On Joyner & Boore 1981's they read Northridge
-    // 0.32 / 0.21, L'Aquila 8.92 / invented, Amatrice 18.19 / invented,
-    // Gorkha 0.42 / 2.77 / invented, Tōhoku 1.30 / 3.12 / invented,
-    // Kokoxili 0.36 / 0.48 / 3.97. `0` is a band the ShakeMap reached
-    // and the model does not.
-    'Northridge 1994': { 7: 0.113, 8: 0.0156 },
-    "L'Aquila 2009": { 7: 1.9 },
-    'Amatrice 2016': { 7: 4.12 },
-    'Gorkha 2015': { 7: 0.267, 8: 1.55 },
-    'Tōhoku 2011': { 7: 1.22, 8: 2.49 },
-    'Kokoxili 2001': { 7: 0.233, 8: 0.247, 9: 0 },
+    // contourLaws.ts), on the ground the browser reads under each
+    // epicentre since the same day (rule 22 of siteVs30.ts). On rock
+    // they read Northridge 0.113 / 0.0156, L'Aquila 1.9, Amatrice 4.12,
+    // Gorkha 0.267 / 1.55, Tōhoku 1.22 / 2.49, Kokoxili 0.233 / 0.247 /
+    // 0; on Joyner & Boore 1981's, Northridge 0.32 / 0.21, L'Aquila 8.92
+    // / invented, Amatrice 18.19 / invented, Gorkha 0.42 / 2.77 /
+    // invented, Tōhoku 1.30 / 3.12 / invented, Kokoxili 0.36 / 0.48 /
+    // 3.97. `0` is a band the ShakeMap reached and the model does not.
+    'Northridge 1994': { 7: 0.32, 8: 0.0831 },
+    "L'Aquila 2009": { 7: 2.03 },
+    'Amatrice 2016': { 7: 6.08 },
+    'Gorkha 2015': { 7: 0.372, 8: 1.92 },
+    'Tōhoku 2011': { 7: 1.53, 8: 2.84 },
+    'Kokoxili 2001': { 7: 0.373, 8: 0.326, 9: 0 },
   };
 
   it('the footprint sits where it was last measured, and no worse', () => {

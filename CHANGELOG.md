@@ -206,6 +206,25 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Changed
 
+- **The validation harness stands every earthquake on the ground the
+  browser gives it.** With no Vs30 typed in, the browser gives the
+  simulator the Vs30 of the terrain's slope under the pick; the harness
+  ran every earthquake on reference rock, so its figures were for a
+  simulation a visitor sees only by typing 760. Rules 20 to 22
+  (`validation/siteVs30.ts`) were written down first: read the browser's
+  ground under every epicentre with the browser's own tile code, choose
+  between it, rock, and the slope on land with rock under the sea on the
+  370 ShakeMaps, check a winner on the tolls, and choose the rings' law
+  again on the ground that stands. Rock won on the ShakeMaps and lost on
+  the tolls, so the browser's ground stands, and Boore et al. 2014 stays
+  on it. Held out by rule, the earthquakes now read 0.90× their record
+  (0.56× on rock) with the band holding 93 % of the records it has
+  something to say about; in the net twelve of eighteen tolls are inside,
+  Northridge reads 29 dead against 57 (13 on rock), and the footprint
+  anchors are centred at 0.90 in radius (0.71). The report prints the
+  rock figures beside, and a declared gap moves: the rings paint MMI VII
+  about all 190 earthquakes whose ShakeMaps hold none, on any ground.
+
 - **The intensity rings are Boore et al. 2014's, chosen on 370 USGS
   ShakeMaps.** Rules 17 to 19 (`validation/contourLaws.ts`) were written
   down before any candidate ran: choose the law on the ground each draws

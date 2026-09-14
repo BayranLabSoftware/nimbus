@@ -77,14 +77,20 @@ import {
   RULE_SEEN_EARTHQUAKES,
   RULE_TUNED_EARTHQUAKES,
   ruleEarthquakeEvent,
+  ruleSiteVs30,
   type RuleEarthquake,
   type RulePlume,
 } from '../src/physics/validation/heldOutByRule.js';
 import { NCEI_UNMATCHED, RULE_READ_ON } from '../src/physics/validation/heldOutByRuleData.js';
 import {
   compareContourLaws,
+  compareSiteRules,
+  contourPairs,
   type ContourComparison,
+  type SiteComparison,
 } from '../src/physics/validation/contourComparison.js';
+import { SITE_RULES, type SiteRule } from '../src/physics/validation/siteVs30.js';
+import { RULE_SITES, SITES_READ_ON } from '../src/physics/validation/siteVs30Data.js';
 import { adoptOnTolls, CONTOUR_LAWS } from '../src/physics/validation/contourLaws.js';
 import { RULE_SHAKEMAPS } from '../src/physics/validation/ruleShakemapData.js';
 import type { ContourLaw } from '../src/physics/events/earthquake/simulate.js';
@@ -726,11 +732,16 @@ const CONTOUR_LAW_LABEL: Readonly<Record<ContourLaw, string>> = {
   'boore2014FromMw7.5': 'Joyner & Boore below Mw 7.5, Boore et al. from it',
 };
 
-/** Rule 19's toll cells for one law: the held-out rows of rule 11's set
- *  run on it, scored per magnitude cell over the rows with something. */
-function ruleTollCells(law: ContourLaw): { group: string; stats: ScoreStats }[] {
+type TollCells = { group: string; stats: ScoreStats }[];
+
+/** Rule 19's toll cells for one law on one ground: the held-out rows of
+ *  rule 11's set run on them, scored per magnitude cell over the rows
+ *  with something. */
+function ruleTollCells(law: ContourLaw, ground: SiteRule): TollCells {
   const rows = RULE_EARTHQUAKES.filter((q) => q.role === 'heldOut').map((q) => {
-    const toll = compareWithRecord(ruleEarthquakeEvent(q.row, { contourLaw: law }));
+    const toll = compareWithRecord(
+      ruleEarthquakeEvent(q.row, { contourLaw: law, vs30: ruleSiteVs30(q.row, ground) })
+    );
     const score: ScoreRowInput = {
       name: q.event.name,
       quantity: 'toll',
@@ -755,15 +766,50 @@ function ruleTollCells(law: ContourLaw): { group: string; stats: ScoreStats }[] 
 
 interface ContourLawRun {
   comparison: ContourComparison;
-  tolls: Record<'joynerBoore1981' | 'boore2014', { group: string; stats: ScoreStats }[]>;
+  tolls: Record<'joynerBoore1981' | 'boore2014', TollCells>;
   adopted: boolean;
 }
 
-function runContourLaws(sets: RuleSets): ContourLawRun {
+const tollTest = (cells: TollCells) =>
+  cells.map((c) => ({ bias: c.stats.bias, inside: c.stats.inside, rows: c.stats.rows }));
+
+/** Rules 17 to 19, as they ran: every earthquake on rock. */
+function runContourLaws(): ContourLawRun {
   const comparison = compareContourLaws(RULE_SHAKEMAPS, { inPlace: 'joynerBoore1981' });
-  // The adopted law is the simulator's default, which the sets held out
-  // by rule have just been run on; only the law used before is run again.
-  const adopted = SIZE_BANDS.earthquake.map((b) => ({
+  const tolls = {
+    joynerBoore1981: ruleTollCells('joynerBoore1981', 'rock'),
+    boore2014: ruleTollCells('boore2014', 'rock'),
+  };
+  return {
+    comparison,
+    tolls,
+    adopted: adoptOnTolls(tollTest(tolls.joynerBoore1981), tollTest(tolls.boore2014)),
+  };
+}
+
+interface GroundRun {
+  sites: SiteComparison;
+  /** Boore et al. 2014's held-out tolls on each ground. */
+  tolls: Record<SiteRule, TollCells>;
+  /** Rule 21: a winner other than the browser's ground passed on the dead. */
+  siteAdopted: boolean;
+  standing: SiteRule;
+  /** Rule 22, on the ground that stands. */
+  laws: ContourComparison;
+  lawTolls: TollCells | null;
+  lawAdopted: boolean;
+}
+
+/** Rules 20 to 22 (siteVs30.ts), run on the sites stored by rule 20. */
+function runGround(sets: RuleSets, rockTolls: TollCells): GroundRun {
+  const sites = compareSiteRules(
+    RULE_SHAKEMAPS,
+    new Map(RULE_SITES.map((site) => [site.key, site])),
+    'boore2014'
+  );
+  // The sets held out by rule have just been run on the browser's ground
+  // with Boore et al. 2014, the harness's default since rule 22.
+  const pick = SIZE_BANDS.earthquake.map((b) => ({
     group: b.label,
     stats: scoreStats(
       sets.earthquakes
@@ -772,10 +818,30 @@ function runContourLaws(sets: RuleSets): ContourLawRun {
         .filter((r) => sizeBandOf('earthquake', r.size) === b.label && isInformative(r))
     ),
   }));
-  const tolls = { joynerBoore1981: ruleTollCells('joynerBoore1981'), boore2014: adopted };
-  const cells = (law: 'joynerBoore1981' | 'boore2014') =>
-    tolls[law].map((c) => ({ bias: c.stats.bias, inside: c.stats.inside, rows: c.stats.rows }));
-  return { comparison, tolls, adopted: adoptOnTolls(cells('joynerBoore1981'), cells('boore2014')) };
+  const tolls: Record<SiteRule, TollCells> = {
+    pick,
+    rock: rockTolls,
+    pickOnLand: ruleTollCells('boore2014', 'pickOnLand'),
+  };
+  const siteAdopted =
+    sites.winner !== 'pick' && adoptOnTolls(tollTest(tolls.pick), tollTest(tolls[sites.winner]));
+  const standing: SiteRule = siteAdopted ? sites.winner : 'pick';
+  const laws = compareContourLaws(RULE_SHAKEMAPS, {
+    inPlace: 'boore2014',
+    vs30For: (row) => ruleSiteVs30(row, standing),
+  });
+  const lawTolls = laws.winner === 'boore2014' ? null : ruleTollCells(laws.winner, standing);
+  const lawAdopted =
+    lawTolls !== null && adoptOnTolls(tollTest(tolls[standing]), tollTest(lawTolls));
+  // The harness and the browser stand on the browser's ground with Boore
+  // et al. 2014. Rules that leave anything else have not been followed by
+  // the code, and a report that printed them beside it would be wrong.
+  if (standing !== 'pick' || lawAdopted) {
+    throw new Error(
+      `Rules 21 and 22 now leave ${standing} with ${lawAdopted ? laws.winner : 'boore2014'}; the harness runs pick with boore2014`
+    );
+  }
+  return { sites, tolls, siteAdopted, standing, laws, lawTolls, lawAdopted };
 }
 
 function contourLawSection(run: ContourLawRun): string {
@@ -796,7 +862,8 @@ function contourLawSection(run: ContourLawRun): string {
       .join(' | ')} |`;
   return [
     'Rules 17 to 19 (`validation/contourLaws.ts`), committed before any candidate ran,',
-    "choose the law on shaking and check it on the dead. Rule 18: each candidate's",
+    'choose the law on shaking and check it on the dead, with every earthquake on',
+    "reference rock as they ran (the next section moves it). Rule 18: each candidate's",
     `ground area at MMI VII, VIII and IX against the USGS ShakeMaps of ${comparison.events.toString()} earthquakes of rule 11's set, as a`,
     'radius ratio floored at 10 km² per band, by magnitude cell; the winner has the smallest',
     'mean absolute log bias over the cells, and the law used before stays unless beaten by',
@@ -815,6 +882,143 @@ function contourLawSection(run: ContourLawRun): string {
     '',
     `Adopted: ${run.adopted ? 'yes' : 'no'}. The score's floor counts a band the model paints and the ShakeMap never reached, and most of Boore et al. 2014's margin is there: where both reach MMI VII it draws the ring smaller than the ShakeMap, about half its radius between Mw 6.5 and 7.5 (docs/SCIENCE.md, "Which law draws the rings").`,
   ].join('\n');
+}
+
+const GROUND_LABEL: Readonly<Record<SiteRule, string>> = {
+  pick: "The browser's slope under the pick",
+  rock: 'Rock, 760 m/s',
+  pickOnLand: 'The slope on land, rock under the sea',
+};
+
+/** Mean absolute log toll bias over the cells that have one. */
+function tollLogBias(cells: TollCells): number {
+  const logs = cells
+    .map((c) => c.stats.bias)
+    .filter((b): b is number => b !== null && b > 0)
+    .map((b) => Math.abs(Math.log(b)));
+  return logs.length === 0 ? Number.NaN : logs.reduce((a, b) => a + b, 0) / logs.length;
+}
+
+function groundSection(run: GroundRun): string {
+  const radius = (bias: number | null): string =>
+    bias === null ? '—' : `${Math.exp(bias).toFixed(2)}×`;
+  const cellsText = (cells: TollCells): string =>
+    cells
+      .map(
+        (c) => `${biasText(c.stats)} · ${c.stats.inside.toString()} of ${c.stats.rows.toString()}`
+      )
+      .join(' | ');
+  const vs30s = RULE_SITES.map((site) => site.vs30).sort((a, b) => a - b);
+  const medianVs30 = vs30s[Math.floor(vs30s.length / 2)] ?? Number.NaN;
+  const atSea = RULE_SITES.filter((site) => site.elevationM < 0).length;
+  const { sites, laws } = run;
+  const bandsHeader = SIZE_BANDS.earthquake.map((b) => b.label).join(' | ');
+  const shakemapRow = (
+    label: string,
+    cells: readonly { bias: number | null; invented: number; missed: number }[],
+    mab: number,
+    winner: boolean
+  ): string =>
+    `| ${label}${winner ? ' (winner)' : ''} | ${cells.map((c) => radius(c.bias)).join(' | ')} | ${mab.toFixed(2)} | ${cells.reduce((a, c) => a + c.invented, 0).toString()} | ${cells.reduce((a, c) => a + c.missed, 0).toString()} |`;
+  const siteVerdict =
+    sites.winner === 'pick'
+      ? "The browser's ground is not beaten by 0.05 on the ShakeMaps, and stands."
+      : `${GROUND_LABEL[sites.winner]} beats the browser's ground on the ShakeMaps by ${(sites.meanAbsoluteBias.pick - sites.meanAbsoluteBias[sites.winner]).toFixed(2)}; on the tolls its mean absolute log bias is ${tollLogBias(run.tolls[sites.winner]).toFixed(2)} against ${tollLogBias(run.tolls.pick).toFixed(2)}, so by rule 21 it is ${run.siteAdopted ? 'adopted' : "not adopted, and the browser's ground stands"}. Rule 21 checks only the ShakeMap winner on the tolls.`;
+  const lawVerdict =
+    laws.winner === 'boore2014'
+      ? 'Boore et al. 2014 is not beaten by 0.05, and stays.'
+      : `${CONTOUR_LAW_LABEL[laws.winner]} beats Boore et al. 2014 on the ShakeMaps; on the tolls it reads ${run.lawTolls === null ? '—' : cellsText(run.lawTolls)}, and it is ${run.lawAdopted ? 'adopted' : 'not adopted'}.`;
+  return [
+    'Rules 17 to 19 stood every earthquake on reference rock; the browser gives the simulator',
+    'the Vs30 of the slope under the pick. Rules 20 to 22 (`validation/siteVs30.ts`), committed',
+    "before any row ran on other ground, read the browser's ground under every epicentre",
+    `(rule 20: the terrain tiles it would fetch, read on ${SITES_READ_ON}; median ${Math.round(medianVs30).toString()} m/s, ${atSea.toString()} of ${RULE_SITES.length.toString()} epicentres under the sea),`,
+    "choose the ground as rule 18 chooses a law, with Boore et al. 2014, the browser's ground",
+    'staying unless beaten by 0.05 and a winner checked on the tolls as rule 19 checks a law',
+    '(rule 21), and choose the law once more on the ground that stands (rule 22).',
+    '',
+    `| Ground | ${bandsHeader} | Mean abs. log bias | Bands invented | Bands missed |`,
+    `|--------|${SIZE_BANDS.earthquake.map(() => '----:').join('|')}|----:|----:|----:|`,
+    ...SITE_RULES.map((rule) =>
+      shakemapRow(
+        GROUND_LABEL[rule],
+        sites.scores[rule],
+        sites.meanAbsoluteBias[rule],
+        rule === sites.winner
+      )
+    ),
+    '',
+    "Boore et al. 2014's held-out tolls on each ground, bias and inside as in rule 19's table:",
+    '',
+    `| Ground | ${bandsHeader} | Mean abs. log bias |`,
+    `|--------|${SIZE_BANDS.earthquake.map(() => '-----').join('|')}|----:|`,
+    ...SITE_RULES.map(
+      (rule) =>
+        `| ${GROUND_LABEL[rule]} | ${cellsText(run.tolls[rule])} | ${tollLogBias(run.tolls[rule]).toFixed(2)} |`
+    ),
+    '',
+    `${siteVerdict} Rule 22, on ${run.standing === 'pick' ? "the browser's ground" : GROUND_LABEL[run.standing].toLowerCase()}:`,
+    '',
+    `| Law | ${bandsHeader} | Mean abs. log bias | Bands invented | Bands missed |`,
+    `|-----|${SIZE_BANDS.earthquake.map(() => '----:').join('|')}|----:|----:|----:|`,
+    ...CONTOUR_LAWS.map((law) =>
+      shakemapRow(
+        CONTOUR_LAW_LABEL[law],
+        laws.scores[law],
+        laws.meanAbsoluteBias[law],
+        law === laws.winner
+      )
+    ),
+    '',
+    `${lawVerdict} Every earthquake this report scores stands on the browser's ground since, the net's and the footprint anchors' included; the tables of rules 17 to 19 above are on rock, as those rules ran (docs/SCIENCE.md, "The ground under the rings").`,
+  ].join('\n');
+}
+
+function medianOf(values: readonly number[]): number | null {
+  if (values.length === 0) return null;
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 1
+    ? (sorted[mid] ?? null)
+    : ((sorted[mid - 1] ?? 0) + (sorted[mid] ?? 0)) / 2;
+}
+
+/** The rings' declared gap, measured at MMI VII on the ShakeMaps of rule
+ *  11's set with the harness's law, on its ground and on rock. */
+function ringsGap(): string {
+  const atVII = (ground: SiteRule) =>
+    contourPairs('boore2014', RULE_SHAKEMAPS, (row) => ruleSiteVs30(row, ground)).filter(
+      (p) => p.threshold === 7
+    );
+  const medians = (
+    pairs: readonly { magnitude: number; modelKm2: number; observedKm2: number }[]
+  ) =>
+    SIZE_BANDS.earthquake
+      .map((b) =>
+        medianOf(
+          pairs
+            .filter(
+              (p) =>
+                sizeBandOf('earthquake', p.magnitude) === b.label &&
+                p.modelKm2 > 0 &&
+                p.observedKm2 > 0
+            )
+            .map((p) => Math.sqrt(p.modelKm2 / p.observedKm2))
+        )
+      )
+      .map((m) => (m === null ? '—' : m.toFixed(2)));
+  const pick = atVII('pick');
+  const rock = atVII('rock');
+  const without = pick.filter((p) => !(p.observedKm2 > 0));
+  const invented = without.filter((p) => p.modelKm2 > 0).length;
+  const inventedOnRock = rock.filter((p) => !(p.observedKm2 > 0) && p.modelKm2 > 0).length;
+  const [small, middle, great] = medians(pick);
+  const [smallRock, middleRock, greatRock] = medians(rock);
+  const drawn =
+    invented === without.length && inventedOnRock === invented
+      ? `draw a VII band about every one of them, on the ground the browser reads under the epicentre and on rock alike`
+      : `draw a VII band about ${invented.toString()} of them on the ground the browser reads under the epicentre, ${inventedOnRock.toString()} on rock`;
+  return `**The rings paint intensity VII where ShakeMaps record none.** Held out by rule, ${without.length.toString()} of the ${pick.length.toString()} USGS ShakeMaps hold no ground at MMI VII on their low-resolution grid, and Boore et al. 2014's rings ${drawn}. The rings take no account of how deep the source lies, and a ShakeMap's grid does not hold a peak smaller than one of its cells; which of the two, or what else, makes the difference is not established. Where a ShakeMap does reach MMI VII, the ring runs at a median ${String(small)}, ${String(middle)} and ${String(great)} of its radius below Mw 6.5, between 6.5 and 7.5 and above (${String(smallRock)}, ${String(middleRock)} and ${String(greatRock)} on rock). And the ground is one Vs30, read at the epicentre, for the whole footprint, where a ShakeMap reads each cell's own (docs/SCIENCE.md, "The ground under the rings").`;
 }
 
 /** The declared gap the sets held out by rule measure, in their own
@@ -856,7 +1060,8 @@ function byRuleSection(
     'before the model was run on any of their rows: every earthquake of the',
     'NCEI/WDS significant-earthquake database from 2008 to 2025 with magnitude 6',
     'or more and focal depth 40 km or less, run on its USGS ComCat origin and',
-    `moment tensor, and every IVESPA eruption phase from 2009 on. Read on ${RULE_READ_ON}.`,
+    'moment tensor and on the ground the browser reads under its epicentre (rules 20',
+    `to 22), and every IVESPA eruption phase from 2009 on. Read on ${RULE_READ_ON}.`,
     'Nothing here is gated and nothing was re-tuned on it; docs/SCIENCE.md, "Held',
     'out by rule", reads what the first run found.',
     '',
@@ -1359,7 +1564,8 @@ function main(): void {
   const ruleSets = runRuleSets();
   const byRule = ruleCells(ruleSets);
   const eiep = runEiep();
-  const contourLaws = runContourLaws(ruleSets);
+  const contourLaws = runContourLaws();
+  const ground = runGround(ruleSets, contourLaws.tolls.boore2014);
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -1428,6 +1634,10 @@ ${footprintSection(net)}
 
 ${contourLawSection(contourLaws)}
 
+### The ground under the rings
+
+${groundSection(ground)}
+
 ### Which checks are validation
 
 ${rolesSection(net)}
@@ -1473,8 +1683,8 @@ ${bullet([
   '**The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.',
   "**The toll band draws the fatality curve's published scatter, but not the census.** Since 14 September 2026 a shaking realisation scales its mortality by exp(N(0, G)), G being PAGER's `gnormvalue` for the country — the standard deviation of ln(deaths) PAGER's own loss module uses. The population is still held fixed, and so are the blast and pyroclastic rates, which publish no scatter. G was measured on ShakeMap intensities, so it overlaps, by an amount not separated here, with the ground-motion residual drawn beside it. Where the curve is steep or its scatter large the band spans four orders of magnitude or more — Gorkha, Kumamoto, Pohang — which is the width PAGER's own numbers give a single event, and a row inside such a band has passed nothing (`uq/tollBand.ts`).",
   greatRuptureGap(byRule.earthquakes),
-  "**The rings stand on reference rock, and draw moderate earthquakes' strong shaking too small.** Boore et al. 2014's rings, adopted on 14 September 2026 because they matched 370 USGS ShakeMaps better than Joyner & Boore 1981's (the section above), stop painting intensities no earthquake reached, but where a ShakeMap reaches MMI VII they draw it at a median 0.83, 0.50 and 0.90 of its radius below Mw 6.5, between 6.5 and 7.5 and above, and at about half the radius Wald's and Italy's field surveys give for Northridge and L'Aquila. ShakeMaps count the site's softer ground where the rings take rock unless a scenario sets Vs30, which is the first suspect; the tolls of the middle cell read about a quarter of their record.",
-  "**Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings use Joyner & Boore 1981 and the reported accelerations Boore et al. 2014, both for shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI IX band in the footprint table is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).",
+  ringsGap(),
+  "**Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).",
   "**Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).",
   "**Three numbers are not traced to a source read here.** The 30 cm at DART 21413 that the Tōhoku wave row is tuned on is quoted from Satake et al. 2013 without the paper having been read in the source review; the arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005.",
   "**An airburst's shock is stretched by a fitted altitude factor that no record validates.** At Chelyabinsk, which bursts at 29.0 km on Collins et al.'s entry equations, the factor is 13.3 and the 0.5 psi ring reaches 183 km, beyond the 108 km to which Popova et al. 2013 model window damage — and theirs is the reach of 500 Pa, which the amplified model carries about 1 230 km, 92 km without the factor. The factor was fitted when a tuned classifier burst the preset at 22.1 km and has not been refitted. Tunguska's blast row checks the energy, not the factor (`effects/atmosphericEntry.ts`).",
@@ -1599,6 +1809,56 @@ otherwise.
             sizeBand: c.group,
             ...scoreJson(c.stats),
           })),
+        },
+      },
+      ground: {
+        sitesReadOn: SITES_READ_ON,
+        standing: ground.standing,
+        siteRules: {
+          winner: ground.sites.winner,
+          adopted: ground.siteAdopted,
+          meanAbsoluteBias: Object.fromEntries(
+            SITE_RULES.map((rule) => [rule, fixed(ground.sites.meanAbsoluteBias[rule], 3)])
+          ),
+          shakemap: Object.fromEntries(
+            SITE_RULES.map((rule) => [
+              rule,
+              ground.sites.scores[rule].map((c) => ({
+                sizeBand: c.sizeBand,
+                pairs: c.pairs,
+                bias: c.bias === null ? null : fixed(c.bias, 3),
+                scatter: c.scatter === null ? null : fixed(c.scatter, 3),
+                invented: c.invented,
+                missed: c.missed,
+              })),
+            ])
+          ),
+          tolls: Object.fromEntries(
+            SITE_RULES.map((rule) => [
+              rule,
+              ground.tolls[rule].map((c) => ({ sizeBand: c.group, ...scoreJson(c.stats) })),
+            ])
+          ),
+        },
+        laws: {
+          winner: ground.laws.winner,
+          adopted: ground.lawAdopted,
+          meanAbsoluteBias: Object.fromEntries(
+            CONTOUR_LAWS.map((law) => [law, fixed(ground.laws.meanAbsoluteBias[law], 3)])
+          ),
+          shakemap: Object.fromEntries(
+            CONTOUR_LAWS.map((law) => [
+              law,
+              ground.laws.scores[law].map((c) => ({
+                sizeBand: c.sizeBand,
+                pairs: c.pairs,
+                bias: c.bias === null ? null : fixed(c.bias, 3),
+                scatter: c.scatter === null ? null : fixed(c.scatter, 3),
+                invented: c.invented,
+                missed: c.missed,
+              })),
+            ])
+          ),
         },
       },
       // The per-row tables are in the Markdown copy; the page reads the

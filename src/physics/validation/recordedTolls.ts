@@ -19,6 +19,8 @@ import { EXPLOSION_PRESETS, simulateExplosion } from '../events/explosion/simula
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
 import { VOLCANO_PRESETS, simulateVolcano } from '../events/volcano/simulate.js';
 import { HELD_OUT_EARTHQUAKES, HELD_OUT_VOLCANO_TOLLS } from './heldOutEvents.js';
+import { siteVs30 } from './siteVs30.js';
+import { NET_SITES } from './siteVs30Data.js';
 import {
   shippedCountryAt,
   shippedPopulationInPolygon,
@@ -136,7 +138,7 @@ const volcano = (preset: keyof typeof VOLCANO_PRESETS): (() => ActiveResult) => 
   return () => ({ type: 'volcano', data: simulateVolcano(VOLCANO_PRESETS[preset].input) });
 };
 
-export const RECORDED_EVENTS: RecordedEvent[] = [
+const NET_ROWS: RecordedEvent[] = [
   {
     name: 'Kokoxili (Kunlun) 2001',
     latitude: 35.95,
@@ -167,7 +169,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     run: quake('L_AQUILA_2009'),
     gated: false,
     caveat:
-      'Ungated on 14 September 2026, as rule 19 of contourLaws.ts requires of a row that leaves its gate when the rings change: on Boore et al. 2014’s rings it reads 40 dead on a band of 1 to 4 622 against 309 — inside, on a band past the three and a half orders of magnitude a gated row may span. On Joyner & Boore 1981’s it read 227 on 4 to 9 480.',
+      'Ungated on 14 September 2026, as rule 19 of contourLaws.ts requires of a row that leaves its gate when the rings change: on Boore et al. 2014’s rings it reads 40 dead on a band of 1 to 4 622 against 309 (43 on 2 to 4 642 on the ground the browser reads under its epicentre, Vs30 735 m/s, by rule 22 of siteVs30.ts) — inside, on a band past the three and a half orders of magnitude a gated row may span. On Joyner & Boore 1981’s it read 227 on 4 to 9 480.',
   },
   {
     name: 'Amatrice 2016',
@@ -179,7 +181,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     cause: 'buildingStock',
     gated: false,
     caveat:
-      'Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter was 0 to 114, then 0 to 175 once the ground-motion residual was corrected from a misquoted 0.50 to the 0.60 Boore et al. 2014 give, and the record stayed outside both. On 14 September the band also began to draw the fatality curve’s own scatter, Italy’s G of 1.96, and it is 0 to 490 now: the record is inside, on a central estimate of 6, a fiftieth of it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village". On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, it reads 1 dead on a band of 0 to 131, and the record is outside again.',
+      'Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter was 0 to 114, then 0 to 175 once the ground-motion residual was corrected from a misquoted 0.50 to the 0.60 Boore et al. 2014 give, and the record stayed outside both. On 14 September the band also began to draw the fatality curve’s own scatter, Italy’s G of 1.96, and it is 0 to 490 now: the record is inside, on a central estimate of 6, a fiftieth of it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village". On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, it reads 1 dead on a band of 0 to 131, and the record is outside again. On the ground the browser reads under its epicentre, Vs30 610 m/s by rule 22 of siteVs30.ts, 1 on 0 to 236.',
   },
   {
     name: 'Gorkha (Nepal) 2015',
@@ -191,7 +193,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     cause: 'buildingStock',
     gated: false,
     caveat:
-      "Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428, and the predictive interval was 22 to 4 924, then 13 to 6 942 with the ground-motion residual corrected to 0.60, and neither contained 8 964. With the fatality curve's own scatter drawn from 14 September — Nepal's G is 2.5, the widest in PAGER's table — it was 2 to 72 166, which contained the record by spanning almost five orders of magnitude: a statement about how little the curve knows, not a pass. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. Until the same day these figures counted a circle about the epicentre, where the simulator counts the rupture stadium an Mw 7.8 is drawn as; counted as the simulator counts it, the row reads 17 699 dead, twice the record, on a band of 118 to 1 255 286 — inside by four orders of magnitude, which is the same statement again. On Boore et al. 2014's rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 2 983 on 12 to 735 884.",
+      "Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428, and the predictive interval was 22 to 4 924, then 13 to 6 942 with the ground-motion residual corrected to 0.60, and neither contained 8 964. With the fatality curve's own scatter drawn from 14 September — Nepal's G is 2.5, the widest in PAGER's table — it was 2 to 72 166, which contained the record by spanning almost five orders of magnitude: a statement about how little the curve knows, not a pass. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. Until the same day these figures counted a circle about the epicentre, where the simulator counts the rupture stadium an Mw 7.8 is drawn as; counted as the simulator counts it, the row reads 17 699 dead, twice the record, on a band of 118 to 1 255 286 — inside by four orders of magnitude, which is the same statement again. On Boore et al. 2014's rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 2 983 on 12 to 735 884. On the ground the browser reads under its epicentre, Vs30 405 m/s by rule 22 of siteVs30.ts, 5 356 on 43 to 934 524.",
   },
   {
     name: 'Beirut 2020',
@@ -256,7 +258,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     cause: 'footprint',
     gated: false,
     caveat:
-      'Over 90 % of the dead drowned. This harness has no bathymetry and therefore no wave, so the number here is the shaking alone, and until 14 September 2026 it was far below the record — 0 dead on a band of 0 to 5 — because the harness counted a circle about an epicentre at sea. Counted as the simulator counts it, on the rupture stadium along the coast, the shaking alone reads 177 033 dead on a band of 2 529 to 2 969 170: nearly ten times the whole record, drowned included, where NCEI gives the earthquake’s own effects 1 474. Inside only because the band spans three orders of magnitude. The intensity rings are Joyner–Boore 1981 stretched along a megathrust, and painted three times the area of MMI VIII that USGS ShakeMap measured and 180 000 km² of MMI IX where it measured none. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, the shaking alone reads 4 505 on 7 to 1 042 546: three times NCEI’s count for the earthquake’s own effects, the MMI VIII area 2.5 times the ShakeMap’s, and no MMI IX.',
+      'Over 90 % of the dead drowned. This harness has no bathymetry and therefore no wave, so the number here is the shaking alone, and until 14 September 2026 it was far below the record — 0 dead on a band of 0 to 5 — because the harness counted a circle about an epicentre at sea. Counted as the simulator counts it, on the rupture stadium along the coast, the shaking alone reads 177 033 dead on a band of 2 529 to 2 969 170: nearly ten times the whole record, drowned included, where NCEI gives the earthquake’s own effects 1 474. Inside only because the band spans three orders of magnitude. The intensity rings are Joyner–Boore 1981 stretched along a megathrust, and painted three times the area of MMI VIII that USGS ShakeMap measured and 180 000 km² of MMI IX where it measured none. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, the shaking alone reads 4 505 on 7 to 1 042 546: three times NCEI’s count for the earthquake’s own effects, the MMI VIII area 2.5 times the ShakeMap’s, and no MMI IX. On the ground the browser reads under its epicentre, the sea floor’s Vs30 337 m/s by rule 22 of siteVs30.ts, 7 997 on 8 to 1 204 212, with the MMI VIII area 2.8 times the ShakeMap’s.',
   },
   {
     name: 'Sumatra–Andaman 2004',
@@ -268,13 +270,44 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     cause: 'drownedOffline',
     gated: false,
     caveat:
-      'Drowning again, and again without a wave here. Reported for the shaking only: since 14 September 2026 counted on the rupture stadium the simulator draws, 31 427 dead on a band of 1 552 to 329 255, where the circle about the epicentre had counted 1. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 3 449 on 43 to 188 378.',
+      'Drowning again, and again without a wave here. Reported for the shaking only: since 14 September 2026 counted on the rupture stadium the simulator draws, 31 427 dead on a band of 1 552 to 329 255, where the circle about the epicentre had counted 1. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 3 449 on 43 to 188 378. On the ground the browser reads under its epicentre, the sea floor’s Vs30 369 m/s by rule 22 of siteVs30.ts, 4 263 on 115 to 277 275: a band that now holds the record, for a figure that is the shaking alone.',
   },
   // Held out of every fit, and written down before they were run:
   // heldOutEvents.ts has the rules they came in under.
   ...HELD_OUT_EARTHQUAKES,
   ...HELD_OUT_VOLCANO_TOLLS,
 ];
+
+/**
+ * An earthquake of the net stands on the ground the browser reads under
+ * its epicentre.
+ *
+ * With no Vs30 typed in, the store gives the simulator Wald & Allen's
+ * Vs30 of the slope on the terrain tile under the pick, and until 14
+ * September 2026 this harness ran every earthquake on reference rock
+ * instead. Rules 20 to 22 of siteVs30.ts measured the browser's ground
+ * under every epicentre (siteVs30Data.ts), chose between it, rock and
+ * rock under the sea, and kept the browser's; rule 22 puts the harness
+ * on it. A row that sets its own Vs30 keeps it.
+ */
+function onTheBrowsersGround(event: RecordedEvent): RecordedEvent {
+  const vs30 = siteVs30(
+    'pick',
+    NET_SITES.find((site) => site.key === event.name)
+  );
+  if (vs30 === undefined) return event;
+  const run = event.run;
+  return {
+    ...event,
+    run: () => {
+      const result = run();
+      if (result.type !== 'earthquake' || result.data.inputs.vs30 !== undefined) return result;
+      return { type: 'earthquake', data: simulateEarthquake({ ...result.data.inputs, vs30 }) };
+    },
+  };
+}
+
+export const RECORDED_EVENTS: RecordedEvent[] = NET_ROWS.map(onTheBrowsersGround);
 
 export interface TollComparison {
   event: RecordedEvent;
@@ -437,11 +470,13 @@ export const INTERPOLATION_COMPARABLE_DEATHS = 100;
  * Rows whose interpolation cost is past the gate and declared rather
  * than hidden, each with what it is. The report prints their factors
  * like every other row's.
+ *
+ * None today. Gorkha was declared when Boore et al. 2014's rings were
+ * adopted, its browser band stopping at about half the measured high
+ * end, and came back under the gate (1.56×) when the harness moved to
+ * the browser's ground the same day.
  */
-export const INTERPOLATION_DECLARED: Readonly<Record<string, string>> = {
-  'Gorkha (Nepal) 2015':
-    "Since Boore et al. 2014's rings were adopted on 14 September 2026 the browser's band for Gorkha stops at about half the measured high end (33 842 against 72 591): its few lookups are stadiums of a rupture that grows with each realisation's magnitude, and the curve between them under-reads the largest. The shipped band is narrower than the event's.",
-};
+export const INTERPOLATION_DECLARED: Readonly<Record<string, string>> = {};
 
 export interface InterpolationCost {
   event: RecordedEvent;

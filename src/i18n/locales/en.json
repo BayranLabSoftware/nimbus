@@ -1474,13 +1474,13 @@
         "item": "The largest earthquakes are counted on rings drawn for a single point",
         "note": "From magnitude 7.5 the intensity rings are a relation made for a single point, stretched along the whole rupture. Held out by rule, those earthquakes come out about twice their record — fourteen times on the rings used until 14 September 2026 — and their band holds the records by being very wide. A relation fitted to long ruptures and ocean-trench earthquakes is still to come."
       },
-      "ringsOnRock": {
-        "item": "The rings stand on bare rock, and draw strong shaking too small for moderate earthquakes",
-        "note": "The rings adopted on 14 September 2026 matched 370 USGS ShakeMaps better than the old ones and stopped painting intensities no earthquake reached. But on bare rock they draw intensity VII at about half the radius the ShakeMaps and field surveys give for magnitudes 6.5 to 7.5, where the ShakeMaps also count softer ground, and those earthquakes' tolls come out about a quarter of the record."
+      "inventedShaking": {
+        "item": "The rings paint strong shaking where the ShakeMaps record none",
+        "note": "190 of the 370 USGS ShakeMaps the rings were chosen on hold no ground at intensity VII, and the model draws a VII ring about every one of those earthquakes, on any ground. The rings take no account of how deep an earthquake starts, and a ShakeMap's grid misses a peak smaller than one of its cells; which of the two is responsible is not known. The ground is also one value, read under the epicentre, for the whole footprint, where a ShakeMap reads the ground of each place."
       },
       "subduction": {
         "item": "Ocean-trench earthquakes are shaken with rules made for earthquakes on land",
-        "note": "The shaking comes from relations fitted to shallow crustal earthquakes, and the model paints a wide stretch of Japan at an intensity the 2011 earthquake never reached. Two more simplifications show on the same event: every fault gets one stiffness of rock, though along a trench it changes with depth, and Tōhoku's fault slips 13 m on average where studies of the earthquake find about 10, because the rupture area taken from a published size relation is smaller than theirs."
+        "note": "The shaking comes from a relation fitted to shallow crustal earthquakes, and for the 2011 earthquake the model paints nearly three times the area of intensity VIII that the ShakeMap recorded. Two more simplifications show on the same event: every fault gets one stiffness of rock, though along a trench it changes with depth, and Tōhoku's fault slips 13 m on average where studies of the earthquake find about 10, because the rupture area taken from a published size relation is smaller than theirs."
       },
       "tunedUnsourced": {
         "item": "Two wave calibrations rest on numbers their sources do not give",

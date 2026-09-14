@@ -10,6 +10,8 @@ import {
   type RulePlumeRow,
 } from './heldOutByRuleData.js';
 import type { RecordedEvent } from './recordedTolls.js';
+import { siteVs30, type SiteRule } from './siteVs30.js';
+import { RULE_SITES } from './siteVs30Data.js';
 
 /**
  * Held-out sets chosen by a rule, not from a list.
@@ -96,6 +98,12 @@ import type { RecordedEvent } from './recordedTolls.js';
  * stay in docs/SCIENCE.md, "Held out by rule"; the report prints the
  * stadium.
  *
+ * Moved again on 14 September 2026, by rule 22 of siteVs30.ts: rule 16's
+ * harness stood every row on reference rock, where the browser stands a
+ * pick on the Vs30 of the slope under it. Each row now stands on the
+ * browser's ground, measured under its epicentre by rule 20; the report
+ * prints the figures on rock beside it.
+ *
  * This file, the rows it reads (heldOutByRuleData.ts, written by
  * scripts/held-out-by-rule.py) and its test were committed before any
  * row was run through the model; the commit that scores them comes
@@ -148,7 +156,7 @@ const NCEI = 'NCEI/WDS Global Significant Earthquake Database (doi:10.7289/V5TD9
  *  gives. */
 export function ruleEarthquakeEvent(
   row: RuleEarthquakeRow,
-  options: { contourLaw?: ContourLaw; vs30?: number } = {}
+  options: { contourLaw?: ContourLaw; vs30?: number | undefined } = {}
 ): RecordedEvent {
   const { contourLaw, vs30 } = options;
   return {
@@ -185,9 +193,17 @@ function plumeObservation(row: RulePlumeRow): PlumeHeightObservation {
   };
 }
 
+const SITES = new Map(RULE_SITES.map((site) => [site.key, site]));
+
+/** The Vs30 a row stands on: the browser's, under its epicentre, since
+ *  rule 22 of siteVs30.ts; rock before. */
+export function ruleSiteVs30(row: RuleEarthquakeRow, rule: SiteRule = 'pick'): number | undefined {
+  return siteVs30(rule, SITES.get(row.comcat));
+}
+
 export const RULE_EARTHQUAKES: readonly RuleEarthquake[] = NCEI_EARTHQUAKE_ROWS.map((row) => ({
   row,
-  event: ruleEarthquakeEvent(row),
+  event: ruleEarthquakeEvent(row, { vs30: ruleSiteVs30(row) }),
   role: row.comcat in RULE_TUNED_EARTHQUAKES ? 'tuned' : 'heldOut',
   seen: row.comcat in RULE_SEEN_EARTHQUAKES,
 }));

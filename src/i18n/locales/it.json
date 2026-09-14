@@ -1561,13 +1561,13 @@
         "item": "I terremoti più grandi vengono contati su anelli disegnati per un solo punto",
         "note": "Dalla magnitudo 7,5 gli anelli di intensità vengono da una relazione fatta per un solo punto, stirata lungo tutta la rottura. Tenuti fuori per regola, quei terremoti risultano circa il doppio del loro bilancio — quattordici volte con gli anelli usati fino al 14 settembre 2026 — e la banda contiene i dati perché è molto larga. Una relazione tarata su rotture lunghe e terremoti delle fosse oceaniche deve ancora arrivare."
       },
-      "ringsOnRock": {
-        "item": "Gli anelli stanno sulla roccia nuda, e disegnano troppo piccolo lo scuotimento forte dei terremoti medi",
-        "note": "Gli anelli adottati il 14 settembre 2026 hanno riprodotto 370 ShakeMap dell'USGS meglio dei precedenti e non dipingono più intensità che nessun terremoto ha raggiunto. Ma sulla roccia nuda disegnano l'intensità VII a circa metà del raggio che danno le ShakeMap e i rilievi sul campo per magnitudo da 6,5 a 7,5, dove le ShakeMap contano anche i terreni più morbidi, e le vittime di quei terremoti risultano circa un quarto del bilancio."
+      "inventedShaking": {
+        "item": "Gli anelli dipingono scuotimento forte dove le ShakeMap non ne registrano",
+        "note": "190 delle 370 ShakeMap dell'USGS su cui sono stati scelti gli anelli non hanno terreno all'intensità VII, e il modello disegna un anello di VII attorno a ognuno di quei terremoti, su qualunque terreno. Gli anelli non tengono conto della profondità a cui comincia un terremoto, e la griglia di una ShakeMap non vede un picco più piccolo di una sua cella; quale delle due cose sia responsabile non si sa. Il terreno, poi, è un valore solo, letto sotto l'epicentro, per tutta l'impronta, mentre una ShakeMap legge il terreno di ogni luogo."
       },
       "subduction": {
         "item": "I terremoti delle fosse oceaniche scuotono con regole fatte per quelli sulla terraferma",
-        "note": "Lo scuotimento viene da relazioni ricavate su terremoti crostali poco profondi, e il modello dipinge un largo tratto del Giappone a un'intensità che il terremoto del 2011 non ha mai raggiunto. Sullo stesso evento si vedono altre due semplificazioni: ogni faglia ha una sola rigidità della roccia, mentre lungo una fossa cambia con la profondità, e la faglia del Tōhoku scorre in media 13 m dove gli studi del terremoto trovano circa 10, perché l'area di rottura presa da una relazione pubblicata è più piccola della loro."
+        "note": "Lo scuotimento viene da una relazione ricavata su terremoti crostali poco profondi, e per il terremoto del 2011 il modello dipinge quasi tre volte l'area di intensità VIII che la ShakeMap ha registrato. Sullo stesso evento si vedono altre due semplificazioni: ogni faglia ha una sola rigidità della roccia, mentre lungo una fossa cambia con la profondità, e la faglia del Tōhoku scorre in media 13 m dove gli studi del terremoto trovano circa 10, perché l'area di rottura presa da una relazione pubblicata è più piccola della loro."
       },
       "tunedUnsourced": {
         "item": "Due tarature delle onde poggiano su numeri che le loro fonti non danno",

@@ -947,6 +947,82 @@ while Amatrice (1 on 0–131 against 299) and Sumatra's shaking fall
 outside. Gorkha's browser band now stops at half the measured high end,
 past the interpolation gate, and is declared rather than hidden.
 
+### The ground under the rings (14 September 2026)
+
+Rules 17 to 19 chose the rings with every earthquake on reference rock,
+Vs30 760 m/s: rule 3 sets no Vs30, and rock is what the simulator takes
+for a Vs30 nobody set. The browser does not stand a pick on rock. With no
+Vs30 typed in, the store gives the simulator Wald & Allen's (2007) Vs30
+of the slope under the epicentre, on the terrain tile the globe fetched
+for the pick, so every earthquake figure the harness had printed was for
+a simulation a visitor sees only by typing 760. Reading that code turned
+up two defects of the browser, fixed first: a Launch that beat the new
+pick's tile read its Vs30 off the last pick's, 180 m/s wherever it was
+(B-024), and a block of tiles next to the antimeridian ran round the
+planet (B-025).
+
+Rules 20 to 22 (`validation/siteVs30.ts`) were committed before any row
+ran on other ground, and the sites before any was scored. Rule 20 reads
+the browser's Vs30 under the 408 epicentres of the rule set and the net's
+12, on the Terrarium tiles the browser would fetch, chosen and resampled
+by its own code (346 tiles): a median of 522 m/s, with 215 of the 408
+epicentres under the sea, where the slope is the sea floor's. Rule 21
+scores three grounds on the ShakeMaps as rule 18 scored the laws, with
+Boore et al. 2014 — the browser's slope, rock, and the slope on land with
+rock under the sea — keeps the browser's unless beaten by 0.05, and checks
+a winner on the tolls as rule 19 checked a law. Rule 22 chooses the law
+once more on the ground that stands.
+
+| ground                     | Mw < 6.5 | 6.5–7.5 | ≥ 7.5 | mean abs. log bias | bands invented |
+| -------------------------- | -------- | ------- | ----- | ------------------ | -------------- |
+| the browser's slope        | 2.28×    | 2.20×   | 3.68× | 0.97               | 469            |
+| rock                       | 1.70×    | 1.62×   | 3.22× | 0.73               | 424            |
+| slope on land, rock at sea | 2.10×    | 1.81×   | 3.28× | 0.84               | 445            |
+
+On the held-out tolls, with Boore et al. 2014:
+
+| ground                     | Mw < 6.5           | 6.5–7.5            | ≥ 7.5            | mean abs. log bias |
+| -------------------------- | ------------------ | ------------------ | ---------------- | ------------------ |
+| the browser's slope        | 1.46× · 122 of 132 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 0.72               |
+| rock                       | 0.69× · 121 of 132 | 0.23× · 96 of 107  | 1.92× · 32 of 34 | 0.83               |
+| slope on land, rock at sea | 1.34× · 119 of 132 | 0.41× · 100 of 108 | 2.11× · 31 of 34 | 0.65               |
+
+Rock wins on the ShakeMaps by 0.24 and loses on the tolls, 0.83 against
+0.72, so by rule 21 the browser's ground stands. On it, rule 22 keeps
+Boore et al. 2014 (0.97, against 1.58 for Joyner & Boore 1981 and 1.30 for
+the split law). The harness runs every earthquake on the browser's ground
+since — the rule sets, the net and the footprint anchors. Held out by
+rule, the earthquakes read 0.90× their record (0.56× on rock) with a
+scatter of 2.42, and the band holds 260 of the 279 records it has
+something to say about (93 %). In the net twelve of eighteen tolls are
+inside: Northridge 29 dead on 2–415 against 57 (13 on 1–177 on rock),
+Kumamoto 198 against 273, Gorkha 5 356 against 8 964, and Sumatra's band
+for the shaking alone now reaches its record. The footprint anchors are
+centred at 0.90 in radius (0.71 on rock) with a scatter of 0.63 (0.82),
+and Gorkha's interpolation is back under the gate, its declaration gone.
+
+What the scores do not show was read afterwards, and is written here as
+such. The ShakeMaps and the tolls pull opposite ways because the score on
+the ShakeMaps is mostly bands the model paints where the map holds none:
+190 of the 370 maps hold no ground at MMI VII on their low-resolution grid,
+and the rings draw a VII band about every one of them, on rock and on the
+browser's ground alike. Softer ground widens those bands, which the score
+counts against it, and widens the rings where the maps do reach MMI VII,
+which is where the dead are: there the rings now run at a median 1.07, 0.66
+and 1.01 of the map's radius by magnitude cell, against 0.82, 0.50 and 0.90
+on rock. Why the model paints VII about those 190 is not established. Half
+of their epicentres are at sea; for some the map's peak is VII in less than
+a cell; and the rings take no account of the source's depth, but the
+shallow earthquakes among the 190 get a ring as surely as the deep ones.
+
+The third ground, the slope on land and rock under the sea, beat the
+browser's on the ShakeMaps (0.84 against 0.97) and on the tolls (0.65
+against 0.72, holding nine records in ten in every cell): it would have
+passed both tests. Rule 21 checks only the ShakeMap winner on the tolls,
+and the winner was rock. It is not adopted, because adopting it now would
+be choosing on the result; a rule that asks for it has to be tried on
+earthquakes these rules have not seen.
+
 ### Against the program the impact equations came from (14 September 2026)
 
 The impact pipeline cites Collins, Melosh & Marcus (2005), and their

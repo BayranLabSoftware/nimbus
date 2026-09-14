@@ -66,6 +66,14 @@
  * here turns a site into a map. Nor is Wald & Allen's slope a
  * measurement of Vs30: it is the proxy USGS draws its global map with,
  * and its scatter is in the band (uq/conventions.ts).
+ *
+ * Run once, on 14 September 2026, and said here rather than folded into
+ * the rules above: rock won on the ShakeMaps and lost on the tolls, so
+ * `pick` stands, and on it Boore et al. 2014 stays. The harness runs
+ * every earthquake on `pick` since (heldOutByRule.ts, recordedTolls.ts,
+ * shakemapFootprint.ts); the browser already did. The figures, and what
+ * was read in them afterwards, are in docs/SCIENCE.md, "The ground under
+ * the rings", and the `ringsOnRock` gap has been `inventedShaking` since.
  */
 
 export type SiteRule = 'pick' | 'rock' | 'pickOnLand';

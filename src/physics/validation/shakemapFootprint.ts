@@ -1,6 +1,8 @@
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
 import { SHAKEMAP_FOOTPRINTS, type ShakemapFootprint } from './shakemapFixtures.js';
+import { siteVs30 } from './siteVs30.js';
+import { NET_SITES } from './siteVs30Data.js';
 
 /**
  * The shaking footprint against the ShakeMap that recorded it.
@@ -15,10 +17,25 @@ import { SHAKEMAP_FOOTPRINTS, type ShakemapFootprint } from './shakemapFixtures.
 export type MmiThreshold = 7 | 8 | 9;
 export const MMI_THRESHOLDS: readonly MmiThreshold[] = [7, 8, 9];
 
-/** Model footprint (km²) at or above a threshold. */
+/** The net's name for an anchor, where the fixture's is shorter. */
+const NET_ROW_NAME: Readonly<Record<string, string>> = {
+  'Gorkha 2015': 'Gorkha (Nepal) 2015',
+  'Kokoxili 2001': 'Kokoxili (Kunlun) 2001',
+};
+
+/** Model footprint (km²) at or above a threshold, on the ground the
+ *  browser reads under the preset's epicentre (rule 22 of siteVs30.ts;
+ *  rock before 14 September 2026). */
 export function modelAreaKm2(footprint: ShakemapFootprint, threshold: MmiThreshold): number {
   const preset = EARTHQUAKE_PRESETS[footprint.preset as keyof typeof EARTHQUAKE_PRESETS];
-  return footprintAreaKm2(simulateEarthquake(preset.input), threshold);
+  const key = NET_ROW_NAME[footprint.name] ?? footprint.name;
+  const site = NET_SITES.find((s) => s.key === key);
+  if (site === undefined) throw new Error(`${footprint.name} has no site in siteVs30Data.ts`);
+  const vs30 = siteVs30('pick', site);
+  return footprintAreaKm2(
+    simulateEarthquake({ ...preset.input, ...(vs30 === undefined ? {} : { vs30 }) }),
+    threshold
+  );
 }
 
 /** The ground (km²) a simulated earthquake shakes at or above a

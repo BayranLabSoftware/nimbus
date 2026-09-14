@@ -13,9 +13,9 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 
 ## Summary
 
-- **Death tolls:** 11 of 18 events inside the model's band; 2 of 2 gated rows pass. Every miss carries its cause below.
+- **Death tolls:** 12 of 18 events inside the model's band; 2 of 2 gated rows pass. Every miss carries its cause below.
 - **Waves:** 11 of 16 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 5 misses are declared rows, each with its reason below.
-- **Shaking footprint:** centred at 0.71 in radius (1.34 standard errors), scatter σ_ln 0.82 against a ceiling of 0.85 from ground motion; 0 bands painted at an intensity never reached.
+- **Shaking footprint:** centred at 0.90 in radius (0.53 standard errors), scatter σ_ln 0.63 against a ceiling of 0.85 from ground motion; 0 bands painted at an intensity never reached.
 - **Held out** — the rows nothing in the model was set on: death tolls 8 of 11 inside the band, waves 4 of 4, eruption columns 3 of 3. 4 of the 15 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
 
@@ -40,10 +40,10 @@ its own inputs.
 
 | Family | Size | Held-out rows | Scored | Bias | Scatter σ_ln | Inside | Zeros | Band | All rows | Scored | Bias | Scatter σ_ln | Inside | Zeros | Band |
 |--------|------|--------------:|-------:|-----:|-------------:|--------|-------|-----:|---------:|-------:|-----:|-------------:|--------|-------|-----:|
-| **earthquake** | all sizes | 8 | 5 | 0.090× | 1.52 | 7 of 8 | 1 / 1 / 1 | 10^3.3 | 12 | 9 | 0.059× | 1.67 | 9 of 12 | 1 / 1 / 1 | 10^3.2 |
-|  | Mw < 6.5 | 3 | 2 | 0.018× | 1.19 | 2 of 3 | 0 / 1 / 0 | 10^2.7 | 5 | 4 | 0.019× | 1.55 | 3 of 5 | 0 / 1 / 0 | 10^2.7 |
-|  | Mw 6.5–7.5 | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^3.9 | 2 | 2 | 0.23× | 0.01 | 2 of 2 | 0 / 0 / 0 | 10^3.1 |
-|  | Mw ≥ 7.5 | 4 | 2 | 0.28× | 0.16 | 4 of 4 | 1 / 0 / 1 | 10^3.0 | 5 | 3 | 0.11× | 1.39 | 4 of 5 | 1 / 0 / 1 | 10^3.6 |
+| **earthquake** | all sizes | 8 | 5 | 0.20× | 1.82 | 7 of 8 | 1 / 1 / 1 | 10^3.8 | 12 | 9 | 0.10× | 2.00 | 10 of 12 | 1 / 1 / 1 | 10^3.3 |
+|  | Mw < 6.5 | 3 | 2 | 0.040× | 2.00 | 2 of 3 | 0 / 1 / 0 | 10^3.3 | 5 | 4 | 0.029× | 1.96 | 3 of 5 | 0 / 1 / 0 | 10^3.3 |
+|  | Mw 6.5–7.5 | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^4.3 | 2 | 2 | 0.61× | 0.18 | 2 of 2 | 0 / 0 / 0 | 10^3.3 |
+|  | Mw ≥ 7.5 | 4 | 2 | 0.51× | 0.16 | 4 of 4 | 1 / 0 / 1 | 10^2.7 | 5 | 3 | 0.17× | 1.56 | 5 of 5 | 1 / 0 / 1 | 10^3.4 |
 | **explosion** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 2.67× | 0.90 | 1 of 2 | 0 / 0 / 0 | 10^0.1 |
 |  | < 1 kt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^0.1 |
 |  | 1 kt – 1 Mt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^0.1 |
@@ -81,24 +81,25 @@ Two sets chosen by a rule rather than from a list, fixed in
 before the model was run on any of their rows: every earthquake of the
 NCEI/WDS significant-earthquake database from 2008 to 2025 with magnitude 6
 or more and focal depth 40 km or less, run on its USGS ComCat origin and
-moment tensor, and every IVESPA eruption phase from 2009 on. Read on 2026-09-14.
+moment tensor and on the ground the browser reads under its epicentre (rules 20
+to 22), and every IVESPA eruption phase from 2009 on. Read on 2026-09-14.
 Nothing here is gated and nothing was re-tuned on it; docs/SCIENCE.md, "Held
 out by rule", reads what the first run found.
 
 #### Earthquake death tolls
 
-406 rows held out. 1 record has no ComCat event and is left out, and the 2 events the shaking contours were chosen with in view are scored apart, below. **With something** are the rows whose record or band is above zero: the other 133 are a band of nothing about a record of nothing, inside by construction, so the share inside is read over the rows with something. Bias and scatter are over the rows where record and model are both above zero; zeros are both zero / a record of nothing where the model says something / a record the model makes nothing of; the band is the median width of the 5–95 % band over the rows with something.
+406 rows held out. 1 record has no ComCat event and is left out, and the 2 events the shaking contours were chosen with in view are scored apart, below. **With something** are the rows whose record or band is above zero: the other 127 are a band of nothing about a record of nothing, inside by construction, so the share inside is read over the rows with something. Bias and scatter are over the rows where record and model are both above zero; zeros are both zero / a record of nothing where the model says something / a record the model makes nothing of; the band is the median width of the 5–95 % band over the rows with something.
 
 | Size | Rows | With something | Scored | Bias | Scatter σ_ln | Inside, with something | Inside, all rows | Zeros | Band |
 |------|-----:|---------------:|-------:|-----:|-------------:|------------------------|------------------|-------|-----:|
-| **all sizes** | 406 | 273 | 105 | 0.56× | 2.35 | 249 of 273 (91 %) | 382 of 406 (94 %) | 205 / 22 / 74 | 10^2.3 |
-| Mw < 6.5 | 152 | 132 | 52 | 0.69× | 2.20 | 121 of 132 (92 %) | 141 of 152 (93 %) | 55 / 11 / 34 | 10^2.3 |
-| Mw 6.5–7.5 | 196 | 107 | 36 | 0.23× | 2.27 | 96 of 107 (90 %) | 185 of 196 (94 %) | 119 / 5 / 36 | 10^2.1 |
-| Mw ≥ 7.5 | 58 | 34 | 17 | 1.92× | 2.29 | 32 of 34 (94 %) | 56 of 58 (97 %) | 31 / 6 / 4 | 10^2.9 |
+| **all sizes** | 406 | 279 | 127 | 0.90× | 2.42 | 260 of 279 (93 %) | 387 of 406 (95 %) | 193 / 34 / 52 | 10^2.5 |
+| Mw < 6.5 | 152 | 132 | 64 | 1.46× | 2.26 | 122 of 132 (92 %) | 142 of 152 (93 %) | 50 / 16 / 22 | 10^2.5 |
+| Mw 6.5–7.5 | 196 | 112 | 45 | 0.33× | 2.36 | 106 of 112 (95 %) | 190 of 196 (97 %) | 114 / 10 / 27 | 10^2.3 |
+| Mw ≥ 7.5 | 58 | 35 | 18 | 1.94× | 2.35 | 32 of 35 (91 %) | 55 of 58 (95 %) | 29 / 8 / 3 | 10^3.1 |
 
-Without the rows run in the net before the rule (Christchurch 2011, Kumamoto 2016, Kaikōura 2016, Durrës (Albania) 2019, Gorkha (Nepal) 2015, Tōhoku 2011): bias 0.62×, scatter 2.35, inside 244 of 267 (91 %) of the rows with something.
+Without the rows run in the net before the rule (Christchurch 2011, Kumamoto 2016, Kaikōura 2016, Durrës (Albania) 2019, Gorkha (Nepal) 2015, Tōhoku 2011): bias 0.96×, scatter 2.42, inside 255 of 273 (93 %) of the rows with something.
 
-Tuned, and scored apart: L'Aquila 2009, 29 dead against 309 on a band of 2 to 3,437; Amatrice 2016, 1 dead against 299 (+15 missing) on a band of 0 to 170.
+Tuned, and scored apart: L'Aquila 2009, 40 dead against 309 on a band of 2 to 2,609; Amatrice 2016, 1 dead against 299 (+15 missing) on a band of 0 to 293.
 
 #### Eruption columns
 
@@ -119,30 +120,25 @@ Without the phases in the net before the rule: bias 0.95×, scatter 0.46, accept
 
 | Row | Size | Record | Model | Band or tolerance | Seen before |
 |-----|-----:|-------:|------:|-------------------|-------------|
-| 2012-04-11 08:38 UTC, INDONESIA: N SUMATRA: OFF WEST COAST | Mw 8.6 | 10 | 0 | 0 to 0 |  |
+| 2012-04-11 08:38 UTC, INDONESIA: N SUMATRA: OFF WEST COAST | Mw 8.6 | 10 | 0 | 0 to 3 |  |
 | 2012-08-31 12:47 UTC, PHILIPPINES: CAGAYAN DE ORO, TACLOBAN | Mw 7.6 | 1 | 0 | 0 to 0 |  |
+| 2023-02-06 10:24 UTC, TURKEY; SYRIA | Mw 7.5 | 0 | 1,422 | 1 to 108,048 |  |
 | 2014-10-14 03:51 UTC, EL SALVADOR: GULF OF FONSECA | Mw 7.3 | 1 | 0 | 0 to 0 |  |
-| 2015-12-07 07:50 UTC, TAJIKISTAN | Mw 7.2 | 2 | 0 | 0 to 1 |  |
-| 2008-06-13 23:43 UTC, JAPAN: HONSHU: TOKYO | Mw 6.9 | 23 | 0 | 0 to 9 |  |
-| 2010-04-13 23:49 UTC, CHINA: QINGHAI PROVINCE: YUSHU | Mw 6.9 | 2,968 | 4 | 0 to 2,341 |  |
-| 2011-03-24 13:55 UTC, MYANMAR: TACHILEK; THAILAND | Mw 6.9 | 104 | 0 | 0 to 23 |  |
-| 2014-05-24 09:25 UTC, GREECE, TURKEY | Mw 6.9 | 3 | 0 | 0 to 2 |  |
-| 2019-04-12 11:40 UTC, INDONESIA: SULAWESI ISLAND: LUWUK | Mw 6.8 | 1 | 0 | 0 to 0 |  |
+| 2010-04-13 23:49 UTC, CHINA: QINGHAI PROVINCE: YUSHU | Mw 6.9 | 2,968 | 4 | 0 to 1,901 |  |
+| 2011-03-24 13:55 UTC, MYANMAR: TACHILEK; THAILAND | Mw 6.9 | 104 | 0 | 0 to 53 |  |
 | 2008-10-05 15:52 UTC, KYRGYZSTAN: NURA | Mw 6.7 | 74 | 0 | 0 to 2 |  |
-| 2018-03-06 14:13 UTC, PAPUA NEW GUINEA: S HIGHLANDS, HELA | Mw 6.7 | 25 | 0 | 0 to 13 |  |
 | 2019-09-29 15:57 UTC, CHILE: CONCEPCION | Mw 6.7 | 1 | 0 | 0 to 0 |  |
-| 2022-01-11 01:07 UTC, CYPRUS: PAPHOS; EGYPT: DAMIETTA | Mw 6.6 | 3 | 0 | 0 to 0 |  |
-| 2008-10-29 11:32 UTC, PAKISTAN: ZIARAT | Mw 6.4 | 0 | 68 | 1 to 22,618 |  |
+| 2022-01-11 01:07 UTC, CYPRUS: PAPHOS; EGYPT: DAMIETTA | Mw 6.6 | 3 | 0 | 0 to 1 |  |
+| 2008-10-29 11:32 UTC, PAKISTAN: ZIARAT | Mw 6.4 | 0 | 270 | 1 to 38,865 |  |
 | 2015-04-20 01:42 UTC, TAIWAN: TAIPEI | Mw 6.4 | 1 | 0 | 0 to 0 |  |
-| 2022-12-20 10:34 UTC, CALIFORNIA: HUMBOLDT COUNTY | Mw 6.4 | 2 | 0 | 0 to 1 |  |
 | 2016-01-25 04:22 UTC, MOROCCO: MELILLA | Mw 6.3 | 1 | 0 | 0 to 0 |  |
 | 2013-06-02 05:43 UTC, TAIWAN: JENAI | Mw 6.2 | 4 | 0 | 0 to 3 |  |
-| 2011-02-21 23:51 UTC, NEW ZEALAND: CHRISTCHURCH, LYTTELTON | Mw 6.1 | 185 | 1 | 0 to 12 | yes |
-| 2015-07-03 06:43 UTC, PHILIPPINES: MINDANAO | Mw 6.1 | 1 | 0 | 0 to 0 |  |
-| 2018-03-04 19:56 UTC, PAPUA NEW GUINEA: S HIGHLANDS | Mw 6.0 | 11 | 0 | 0 to 2 |  |
-| 2018-10-10 18:44 UTC, INDONESIA: MADURA ISLAND, JAVA | Mw 6.0 | 4 | 0 | 0 to 0 |  |
+| 2014-08-18 02:32 UTC, IRAN: ILAM PROVINCE: ABDANAN | Mw 6.2 | 0 | 684 | 1 to 6,545 |  |
+| 2011-02-21 23:51 UTC, NEW ZEALAND: CHRISTCHURCH, LYTTELTON | Mw 6.1 | 185 | 1 | 0 to 15 | yes |
+| 2013-04-22 01:16 UTC, MEXICO: MICHOACAN: LAZARO CARDENAS | Mw 6.0 | 0 | 106 | 1 to 15,232 |  |
+| 2018-03-04 19:56 UTC, PAPUA NEW GUINEA: S HIGHLANDS | Mw 6.0 | 11 | 0 | 0 to 4 |  |
 | 2019-07-26 23:37 UTC, PHILIPPINES: BATANES: ITBAYAT | Mw 6.0 | 9 | 0 | 0 to 0 |  |
-| 2021-04-28 02:21 UTC, INDIA: ASSAM | Mw 6.0 | 2 | 142 | 3 to 44,594 |  |
+| 2021-04-28 02:21 UTC, INDIA: ASSAM | Mw 6.0 | 2 | 728 | 4 to 163,304 |  |
 | Merapi 2010-11-04 (MER2010_01) | 68 m³/s | 14.0 km | 5.5 km | ± 5.8 km |  |
 | Cotopaxi 2015-08-14 (COT2015_01) | 1 m³/s | 6.5 km | 2.1 km | ± 3.6 km |  |
 
@@ -151,10 +147,10 @@ Without the phases in the net before the rule: bias 0.95×, scatter 0.46, accept
 
 | Origin (UTC) and place | Mw | Depth | Fault | Record | Model | Band | Inside | Role |
 |------------------------|---:|------:|-------|-------:|------:|------|--------|------|
-| 2008-01-22 17:14 UTC, INDONESIA: SUMATRA: NIAS ISLAND: GUNUNGSITOLI | 6.2 | 20.0 km | reverse | 1 | 4 | 0 to 1,149 | yes | held out |
-| 2008-02-20 08:08 UTC, INDONESIA: SUMATERA: ACEH PROVINCE | 7.4 | 26.0 km | reverse | 3 | 1 | 0 to 238 | yes | held out |
+| 2008-01-22 17:14 UTC, INDONESIA: SUMATRA: NIAS ISLAND: GUNUNGSITOLI | 6.2 | 20.0 km | reverse | 1 | 25 | 0 to 2,681 | yes | held out |
+| 2008-02-20 08:08 UTC, INDONESIA: SUMATERA: ACEH PROVINCE | 7.4 | 26.0 km | reverse | 3 | 3 | 0 to 785 | yes | held out |
 | 2008-02-21 14:16 UTC, NEVADA: WELLS | 5.9 | 7.9 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2008-02-25 08:36 UTC, INDONESIA: SUMATRA: PADANG | 7.2 | 25.0 km | reverse | 0 | 0 | 0 to 163 | yes | held out |
+| 2008-02-25 08:36 UTC, INDONESIA: SUMATRA: PADANG | 7.2 | 25.0 km | reverse | 0 | 2 | 0 to 143 | yes | held out |
 | 2008-03-20 22:32 UTC, CHINA: XINJIANG PROVINCE | 7.2 | 10.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2008-04-09 12:46 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 7.3 | 33.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2008-04-15 03:03 UTC, GUATEMALA | 6.1 | 33.0 km | all | 0 | 0 | 0 to 0 | yes | held out |
@@ -163,89 +159,89 @@ Without the phases in the net before the rule: bias 0.95×, scatter 0.46, accept
 | 2008-05-12 06:28 UTC, CHINA: SICHUAN PROVINCE | 7.9 | 19.0 km | all | 87,652 | 29,787 | 54 to 1,085,711 | yes | held out |
 | 2008-05-25 08:21 UTC, CHINA: SICHUAN PROVINCE | 6.1 | 18.0 km | strike-slip | 8 | 9 | 0 to 9,429 | yes | held out |
 | 2008-05-29 15:46 UTC, ICELAND: REYKJAVIK | 6.3 | 9.0 km | strike-slip | 0 | 1 | 0 to 18 | yes | held out |
-| 2008-06-08 12:25 UTC, GREECE: ACHAIA, ILEIA | 6.4 | 16.0 km | strike-slip | 2 | 0 | 0 to 26 | yes | held out |
-| 2008-06-13 23:43 UTC, JAPAN: HONSHU: TOKYO | 6.9 | 7.8 km | reverse | 23 | 0 | 0 to 9 | **no** | held out |
+| 2008-06-08 12:25 UTC, GREECE: ACHAIA, ILEIA | 6.4 | 16.0 km | strike-slip | 2 | 1 | 0 to 80 | yes | held out |
+| 2008-06-13 23:43 UTC, JAPAN: HONSHU: TOKYO | 6.9 | 7.8 km | reverse | 23 | 0 | 0 to 33 | yes | held out |
 | 2008-07-19 02:39 UTC, JAPAN: OFF EAST COAST OF HONSHU ISLAND | 7.0 | 22.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2008-08-05 09:49 UTC, CHINA: SICHUAN PROVINCE | 6.0 | 6.0 km | reverse | 4 | 8 | 0 to 7,684 | yes | held out |
-| 2008-08-15 10:25 UTC, PHILIPPINES: LUZON: LEGASPI | 6.0 | 10.0 km | strike-slip | 0 | 0 | 0 to 2 | yes | held out |
+| 2008-08-15 10:25 UTC, PHILIPPINES: LUZON: LEGASPI | 6.0 | 10.0 km | strike-slip | 0 | 0 | 0 to 18 | yes | held out |
 | 2008-08-21 12:24 UTC, CHINA: YUNNAN PROVINCE | 6.0 | 10.0 km | strike-slip | 5 | 1 | 0 to 90 | yes | held out |
 | 2008-08-25 13:21 UTC, CHINA: TIBET (XIZANG PROVINCE) | 6.7 | 12.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2008-08-27 01:35 UTC, RUSSIA: LAKE BAYKAL (BAIKAL) | 6.3 | 16.0 km | normal | 0 | 0 | 0 to 5 | yes | held out |
-| 2008-09-10 11:00 UTC, IRAN: HORMOZGAN PROVINCE | 6.1 | 12.0 km | reverse | 7 | 56 | 1 to 13,987 | yes | held out |
+| 2008-08-27 01:35 UTC, RUSSIA: LAKE BAYKAL (BAIKAL) | 6.3 | 16.0 km | normal | 0 | 0 | 0 to 19 | yes | held out |
+| 2008-09-10 11:00 UTC, IRAN: HORMOZGAN PROVINCE | 6.1 | 12.0 km | reverse | 7 | 256 | 3 to 17,538 | yes | held out |
 | 2008-09-11 00:20 UTC, JAPAN: HOKKAIDO | 6.8 | 25.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2008-10-05 15:52 UTC, KYRGYZSTAN: NURA | 6.7 | 27.4 km | reverse | 74 | 0 | 0 to 2 | **no** | held out |
-| 2008-10-06 08:30 UTC, CHINA: TIBET (XIZANG PROVINCE) | 6.3 | 12.0 km | normal | 9 | 0 | 0 to 187 | yes | held out |
-| 2008-10-28 23:09 UTC, PAKISTAN: QUETTA | 6.4 | 15.0 km | strike-slip | 215 | 398 | 2 to 30,317 | yes | held out |
-| 2008-10-29 11:32 UTC, PAKISTAN: ZIARAT | 6.4 | 14.0 km | strike-slip | 0 | 68 | 1 to 22,618 | **no** | held out |
-| 2008-11-10 01:22 UTC, CHINA: QINGHAI PROVINCE | 6.3 | 19.0 km | reverse | 0 | 0 | 0 to 24 | yes | held out |
-| 2008-11-16 17:02 UTC, INDONESIA: MINAHASSA PENINSULA | 7.4 | 30.0 km | reverse | 6 | 0 | 0 to 546 | yes | held out |
+| 2008-10-06 08:30 UTC, CHINA: TIBET (XIZANG PROVINCE) | 6.3 | 12.0 km | normal | 9 | 0 | 0 to 506 | yes | held out |
+| 2008-10-28 23:09 UTC, PAKISTAN: QUETTA | 6.4 | 15.0 km | strike-slip | 215 | 1,512 | 5 to 55,643 | yes | held out |
+| 2008-10-29 11:32 UTC, PAKISTAN: ZIARAT | 6.4 | 14.0 km | strike-slip | 0 | 270 | 1 to 38,865 | **no** | held out |
+| 2008-11-10 01:22 UTC, CHINA: QINGHAI PROVINCE | 6.3 | 19.0 km | reverse | 0 | 0 | 0 to 11 | yes | held out |
+| 2008-11-16 17:02 UTC, INDONESIA: MINAHASSA PENINSULA | 7.4 | 30.0 km | reverse | 6 | 0 | 0 to 708 | yes | held out |
 | 2008-11-19 06:11 UTC, PANAMA: PASO CANOA, DAVID, PUERTO ARMUELLES | 6.3 | 32.0 km | strike-slip | 0 | 0 | 0 to 45 | yes | held out |
-| 2009-01-03 19:43 UTC, PAPUA NEW GUINEA: NEAR NORTH COAST | 7.7 | 17.0 km | reverse | 5 | 5 | 0 to 196 | yes | held out |
-| 2009-01-03 22:33 UTC, PAPUA NEW GUINEA: NEAR NORTH COAST | 7.4 | 23.0 km | reverse | 0 | 1 | 0 to 98 | yes | held out |
-| 2009-01-08 19:21 UTC, COSTA RICA: LA PAZ | 6.1 | 14.0 km | strike-slip | 23 (+17 missing) | 3 | 0 to 1,173 | yes | held out |
+| 2009-01-03 19:43 UTC, PAPUA NEW GUINEA: NEAR NORTH COAST | 7.7 | 17.0 km | reverse | 5 | 5 | 0 to 325 | yes | held out |
+| 2009-01-03 22:33 UTC, PAPUA NEW GUINEA: NEAR NORTH COAST | 7.4 | 23.0 km | reverse | 0 | 1 | 0 to 223 | yes | held out |
+| 2009-01-08 19:21 UTC, COSTA RICA: LA PAZ | 6.1 | 14.0 km | strike-slip | 23 (+17 missing) | 7 | 0 to 1,768 | yes | held out |
 | 2009-01-15 17:49 UTC, RUSSIA: KURIL ISLANDS | 7.4 | 36.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2009-02-11 17:34 UTC, INDONESIA: KEPULAUAN TALAUD | 7.2 | 20.0 km | reverse | 0 | 0 | 0 to 1 | yes | held out |
+| 2009-02-11 17:34 UTC, INDONESIA: KEPULAUAN TALAUD | 7.2 | 20.0 km | reverse | 0 | 0 | 0 to 5 | yes | held out |
 | 2009-03-19 18:17 UTC, TONGA ISLANDS | 7.6 | 31.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2009-04-06 01:32 UTC, ITALY: L'AQUILA | 6.3 | 8.8 km | normal | 309 | 29 | 2 to 3,437 | yes | tuned |
-| 2009-05-28 08:24 UTC, HONDURAS: NORTHERN; BELIZE | 7.3 | 19.0 km | strike-slip | 7 | 0 | 0 to 463 | yes | held out |
+| 2009-04-06 01:32 UTC, ITALY: L'AQUILA | 6.3 | 8.8 km | normal | 309 | 40 | 2 to 2,609 | yes | tuned |
+| 2009-05-28 08:24 UTC, HONDURAS: NORTHERN; BELIZE | 7.3 | 19.0 km | strike-slip | 7 | 0 | 0 to 1,620 | yes | held out |
 | 2009-06-02 02:17 UTC, VANUATU ISLANDS: TONGOA | 6.3 | 15.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2009-07-01 09:30 UTC, GREECE: CRETE | 6.4 | 19.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2009-07-04 06:49 UTC, PANAMA: PANAMA CITY | 6.1 | 38.0 km | all | 0 | 0 | 0 to 32 | yes | held out |
+| 2009-07-04 06:49 UTC, PANAMA: PANAMA CITY | 6.1 | 38.0 km | all | 0 | 1 | 0 to 38 | yes | held out |
 | 2009-07-15 09:22 UTC, NEW ZEALAND: OFF WEST COAST OF SOUTH ISLAND | 7.8 | 12.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2009-08-10 19:55 UTC, INDIA: ANDAMAN I | 7.5 | 24.0 km | normal | 0 | 0 | 0 to 43 | yes | held out |
-| 2009-08-10 20:07 UTC, JAPAN: HONSHU: S COAST | 6.2 | 40.4 km | reverse | 1 | 0 | 0 to 553 | yes | held out |
-| 2009-08-16 07:38 UTC, INDONESIA: SUMATRA: PADANG | 6.7 | 20.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
+| 2009-08-10 19:55 UTC, INDIA: ANDAMAN I | 7.5 | 24.0 km | normal | 0 | 0 | 0 to 67 | yes | held out |
+| 2009-08-10 20:07 UTC, JAPAN: HONSHU: S COAST | 6.2 | 40.4 km | reverse | 1 | 9 | 0 to 4,162 | yes | held out |
+| 2009-08-16 07:38 UTC, INDONESIA: SUMATRA: PADANG | 6.7 | 20.0 km | reverse | 0 | 0 | 0 to 2 | yes | held out |
 | 2009-08-28 01:52 UTC, CHINA: QINGHAI PROVINCE | 6.3 | 13.0 km | reverse | 0 | 0 | 0 to 18 | yes | held out |
-| 2009-09-12 20:06 UTC, VENEZUELA: CARABOBO | 6.4 | 14.0 km | strike-slip | 0 | 0 | 0 to 92 | yes | held out |
+| 2009-09-12 20:06 UTC, VENEZUELA: CARABOBO | 6.4 | 14.0 km | strike-slip | 0 | 0 | 0 to 2,959 | yes | held out |
 | 2009-09-21 08:53 UTC, BHUTAN: TASHIGANG | 6.1 | 14.0 km | reverse | 11 | 16 | 1 to 5,186 | yes | held out |
-| 2009-09-29 17:48 UTC, SAMOA ISLANDS | 8.1 | 18.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2009-10-01 01:52 UTC, INDONESIA: SUMATRA: SOUTHERN: KERINCI | 6.6 | 9.0 km | strike-slip | 3 | 0 | 0 to 10 | yes | held out |
-| 2009-10-07 22:18 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS | 7.8 | 35.0 km | reverse | 0 | 0 | 0 to 17 | yes | held out |
+| 2009-09-29 17:48 UTC, SAMOA ISLANDS | 8.1 | 18.0 km | normal | 0 | 0 | 0 to 3 | yes | held out |
+| 2009-10-01 01:52 UTC, INDONESIA: SUMATRA: SOUTHERN: KERINCI | 6.6 | 9.0 km | strike-slip | 3 | 0 | 0 to 49 | yes | held out |
+| 2009-10-07 22:18 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS | 7.8 | 35.0 km | reverse | 0 | 0 | 0 to 21 | yes | held out |
 | 2009-10-22 19:51 UTC, AFGHANISTAN: HINDU KUSH | 6.2 | 185.9 km | reverse | 5 | 2 | 0 to 175 | yes | held out |
-| 2009-11-08 19:41 UTC, INDONESIA: SUMABAWA: BIMA | 6.6 | 18.0 km | reverse | 2 | 0 | 0 to 47 | yes | held out |
+| 2009-11-08 19:41 UTC, INDONESIA: SUMABAWA: BIMA | 6.6 | 18.0 km | reverse | 2 | 0 | 0 to 98 | yes | held out |
 | 2009-12-19 23:19 UTC, MALAWI: KARONGA | 6.0 | 6.0 km | normal | 3 | 0 | 0 to 3 | yes | held out |
 | 2010-01-03 21:48 UTC, SOLOMON ISLANDS | 6.6 | 10.0 km | reverse | 0 | 0 | 0 to 2 | yes | held out |
 | 2010-01-03 22:36 UTC, SOLOMON ISLANDS | 7.1 | 10.0 km | reverse | 0 | 0 | 0 to 3 | yes | held out |
 | 2010-01-05 12:15 UTC, SOLOMON ISLANDS | 6.8 | 15.4 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2010-01-10 00:27 UTC, CALIFORNIA: OFF COAST NORTHERN | 6.5 | 28.7 km | all | 0 | 0 | 0 to 0 | yes | held out |
-| 2010-01-12 21:53 UTC, HAITI: PORT-AU-PRINCE | 7.0 | 13.0 km | strike-slip | 316,000 | 5,829 | 7 to 989,257 | yes | held out |
+| 2010-01-12 21:53 UTC, HAITI: PORT-AU-PRINCE | 7.0 | 13.0 km | strike-slip | 316,000 | 6,565 | 5 to 1,052,319 | yes | held out |
 | 2010-02-26 20:31 UTC, JAPAN: TORI SHIMA, OKINAWA | 7.0 | 25.0 km | all | 0 | 0 | 0 to 0 | yes | held out |
-| 2010-02-27 06:34 UTC, CHILE: MAULE, CONCEPCION, TALCAHUANO | 8.8 | 22.9 km | reverse | 402 | 1,202 | 45 to 27,069 | yes | held out |
-| 2010-02-27 15:45 UTC, ARGENTINA: SALTA | 6.3 | 10.0 km | reverse | 2 | 2 | 0 to 145 | yes | held out |
+| 2010-02-27 06:34 UTC, CHILE: MAULE, CONCEPCION, TALCAHUANO | 8.8 | 22.9 km | reverse | 402 | 1,346 | 38 to 29,964 | yes | held out |
+| 2010-02-27 15:45 UTC, ARGENTINA: SALTA | 6.3 | 10.0 km | reverse | 2 | 5 | 0 to 185 | yes | held out |
 | 2010-03-04 00:18 UTC, TAIWAN: KAO-HSIUNG | 6.3 | 21.0 km | reverse | 0 | 0 | 0 to 3 | yes | held out |
-| 2010-03-08 02:32 UTC, TURKEY: ELAZIG PROVINCE: OKCULAR, YUKARI DEMIRCI | 6.1 | 12.0 km | all | 51 | 1 | 0 to 213 | yes | held out |
-| 2010-03-11 14:39 UTC, CHILE: RANCAGUA | 6.9 | 11.0 km | normal | 0 | 0 | 0 to 15 | yes | held out |
-| 2010-03-30 16:54 UTC, INDIA: ANDAMAN ISLANDS: DIGLIPUR | 6.6 | 34.0 km | all | 0 | 0 | 0 to 78 | yes | held out |
-| 2010-04-04 22:40 UTC, MEXICO: BAJA CALIFORNIA | 7.2 | 10.0 km | all | 2 | 17 | 0 to 4,444 | yes | held out |
-| 2010-04-06 22:15 UTC, INDONESIA: SUMATRA | 7.8 | 31.0 km | reverse | 0 | 2 | 0 to 448 | yes | held out |
-| 2010-04-13 23:49 UTC, CHINA: QINGHAI PROVINCE: YUSHU | 6.9 | 17.0 km | strike-slip | 2,968 | 4 | 0 to 2,341 | **no** | held out |
-| 2010-05-06 02:42 UTC, PERU: TACNA | 6.2 | 37.0 km | reverse | 0 | 0 | 0 to 4 | yes | held out |
-| 2010-05-09 05:59 UTC, INDONESIA: N. SUMATRA: SIMEULUE ISLAND | 7.2 | 38.0 km | reverse | 0 | 0 | 0 to 31 | yes | held out |
+| 2010-03-08 02:32 UTC, TURKEY: ELAZIG PROVINCE: OKCULAR, YUKARI DEMIRCI | 6.1 | 12.0 km | all | 51 | 7 | 0 to 705 | yes | held out |
+| 2010-03-11 14:39 UTC, CHILE: RANCAGUA | 6.9 | 11.0 km | normal | 0 | 0 | 0 to 32 | yes | held out |
+| 2010-03-30 16:54 UTC, INDIA: ANDAMAN ISLANDS: DIGLIPUR | 6.6 | 34.0 km | all | 0 | 1 | 0 to 338 | yes | held out |
+| 2010-04-04 22:40 UTC, MEXICO: BAJA CALIFORNIA | 7.2 | 10.0 km | all | 2 | 60 | 1 to 15,483 | yes | held out |
+| 2010-04-06 22:15 UTC, INDONESIA: SUMATRA | 7.8 | 31.0 km | reverse | 0 | 4 | 0 to 1,113 | yes | held out |
+| 2010-04-13 23:49 UTC, CHINA: QINGHAI PROVINCE: YUSHU | 6.9 | 17.0 km | strike-slip | 2,968 | 4 | 0 to 1,901 | **no** | held out |
+| 2010-05-06 02:42 UTC, PERU: TACNA | 6.2 | 37.0 km | reverse | 0 | 0 | 0 to 99 | yes | held out |
+| 2010-05-09 05:59 UTC, INDONESIA: N. SUMATRA: SIMEULUE ISLAND | 7.2 | 38.0 km | reverse | 0 | 0 | 0 to 74 | yes | held out |
 | 2010-05-27 17:14 UTC, VANUATU ISLANDS | 7.2 | 31.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2010-06-12 19:26 UTC, INDIA: LITTLE NICOBAR ISLAND | 7.5 | 35.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2010-06-16 03:16 UTC, INDONESIA: NEW GUINEA: IRIAN JAYA: JAPEN | 7.0 | 18.0 km | strike-slip | 17 | 0 | 0 to 153 | yes | held out |
-| 2010-06-30 07:22 UTC, MEXICO: SAN ANDRES HUAXPALTEPEC | 6.3 | 20.0 km | reverse | 1 | 8 | 0 to 1,185 | yes | held out |
-| 2010-07-18 13:34 UTC, PAPUA NEW GUINEA: NEW BRITAIN | 7.3 | 35.0 km | reverse | 0 | 0 | 0 to 72 | yes | held out |
-| 2010-08-10 05:23 UTC, VANUATU ISLANDS | 7.3 | 25.0 km | reverse | 0 | 0 | 0 to 35 | yes | held out |
+| 2010-06-16 03:16 UTC, INDONESIA: NEW GUINEA: IRIAN JAYA: JAPEN | 7.0 | 18.0 km | strike-slip | 17 | 2 | 0 to 478 | yes | held out |
+| 2010-06-30 07:22 UTC, MEXICO: SAN ANDRES HUAXPALTEPEC | 6.3 | 20.0 km | reverse | 1 | 18 | 0 to 1,304 | yes | held out |
+| 2010-07-18 13:34 UTC, PAPUA NEW GUINEA: NEW BRITAIN | 7.3 | 35.0 km | reverse | 0 | 0 | 0 to 191 | yes | held out |
+| 2010-08-10 05:23 UTC, VANUATU ISLANDS | 7.3 | 25.0 km | reverse | 0 | 0 | 0 to 181 | yes | held out |
 | 2010-08-13 21:19 UTC, GUAM, NORTHERN MARIANA ISLANDS | 6.9 | 16.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2010-09-03 16:35 UTC, NEW ZEALAND: CHRISTCHURCH | 7.0 | 12.0 km | strike-slip | 0 | 0 | 0 to 1 | yes | held out |
-| 2010-10-25 14:42 UTC, INDONESIA: SUMATRA | 7.8 | 20.1 km | reverse | 0 | 6 | 0 to 418 | yes | held out |
-| 2010-12-20 18:41 UTC, IRAN: KERMAN | 6.7 | 12.0 km | strike-slip | 7 | 2 | 0 to 17,075 | yes | held out |
+| 2010-09-03 16:35 UTC, NEW ZEALAND: CHRISTCHURCH | 7.0 | 12.0 km | strike-slip | 0 | 0 | 0 to 3 | yes | held out |
+| 2010-10-25 14:42 UTC, INDONESIA: SUMATRA | 7.8 | 20.1 km | reverse | 0 | 8 | 0 to 757 | yes | held out |
+| 2010-12-20 18:41 UTC, IRAN: KERMAN | 6.7 | 12.0 km | strike-slip | 7 | 25 | 0 to 52,967 | yes | held out |
 | 2010-12-21 17:19 UTC, JAPAN: BONIN ISLANDS | 7.4 | 14.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2010-12-25 13:16 UTC, VANUATU ISLANDS | 7.3 | 16.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2011-01-09 10:03 UTC, VANUATU ISLANDS | 6.5 | 22.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2011-01-13 16:16 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 7.0 | 9.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2011-02-11 20:05 UTC, CHILE: OFF COAST CENTRAL | 6.9 | 26.0 km | reverse | 0 | 0 | 0 to 94 | yes | held out |
-| 2011-02-21 23:51 UTC, NEW ZEALAND: CHRISTCHURCH, LYTTELTON | 6.1 | 5.9 km | all | 185 | 1 | 0 to 12 | **no** | held out, seen |
+| 2011-02-11 20:05 UTC, CHILE: OFF COAST CENTRAL | 6.9 | 26.0 km | reverse | 0 | 1 | 0 to 252 | yes | held out |
+| 2011-02-21 23:51 UTC, NEW ZEALAND: CHRISTCHURCH, LYTTELTON | 6.1 | 5.9 km | all | 185 | 1 | 0 to 15 | **no** | held out, seen |
 | 2011-03-09 02:45 UTC, JAPAN: HONSHU: E COAST | 7.3 | 32.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2011-03-09 21:24 UTC, JAPAN: SANRIKU | 6.5 | 15.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2011-03-11 05:46 UTC, JAPAN: HONSHU | 9.1 | 29.0 km | reverse | 1,474 | 294 | 0 to 111,256 | yes | held out, seen |
+| 2011-03-11 05:46 UTC, JAPAN: HONSHU | 9.1 | 29.0 km | reverse | 1,474 | 426 | 1 to 63,681 | yes | held out, seen |
 | 2011-03-11 06:25 UTC, JAPAN: OFF EAST COAST HONSHU | 7.7 | 18.6 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2011-03-24 13:55 UTC, MYANMAR: TACHILEK; THAILAND | 6.9 | 8.0 km | strike-slip | 104 | 0 | 0 to 23 | **no** | held out |
-| 2011-04-11 08:16 UTC, JAPAN: HONSHU | 6.6 | 11.0 km | normal | 7 | 0 | 0 to 162 | yes | held out |
-| 2011-04-24 23:07 UTC, INDONESIA: SULAWESI: KENDARI | 6.1 | 8.0 km | all | 0 | 0 | 0 to 105 | yes | held out |
+| 2011-03-24 13:55 UTC, MYANMAR: TACHILEK; THAILAND | 6.9 | 8.0 km | strike-slip | 104 | 0 | 0 to 53 | **no** | held out |
+| 2011-04-11 08:16 UTC, JAPAN: HONSHU | 6.6 | 11.0 km | normal | 7 | 0 | 0 to 553 | yes | held out |
+| 2011-04-24 23:07 UTC, INDONESIA: SULAWESI: KENDARI | 6.1 | 8.0 km | all | 0 | 2 | 0 to 446 | yes | held out |
 | 2011-05-10 08:55 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 6.8 | 11.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2011-06-13 02:20 UTC, NEW ZEALAND: SOUTH ISLAND: CANTERBURY | 5.9 | 6.1 km | strike-slip | 1 | 0 | 0 to 11 | yes | held out |
+| 2011-06-13 02:20 UTC, NEW ZEALAND: SOUTH ISLAND: CANTERBURY | 5.9 | 6.1 km | strike-slip | 1 | 1 | 0 to 16 | yes | held out |
 | 2011-07-06 19:03 UTC, NEW ZEALAND: KERMADEC ISLANDS | 7.6 | 17.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2011-07-10 00:57 UTC, JAPAN: HONSHU: E COAST | 7.0 | 23.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2011-07-19 19:35 UTC, UZBEKISTAN: FARGONA, VIOLYATI | 6.1 | 20.0 km | reverse | 14 | 0 | 0 to 57 | yes | held out |
@@ -253,265 +249,265 @@ Without the phases in the net before the rule: bias 0.95×, scatter 0.46, accept
 | 2011-08-20 18:19 UTC, VANUATU ISLANDS | 7.1 | 28.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2011-09-02 10:55 UTC, ALASKA: ALEUTIAN ISLANDS: FOX ISLANDS | 6.9 | 32.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2011-10-21 17:57 UTC, KERMADEC ISLANDS | 7.4 | 33.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2011-10-23 10:41 UTC, TURKEY: ERCIS, VAN | 7.1 | 18.0 km | reverse | 604 | 4 | 0 to 1,431 | yes | held out |
-| 2011-10-28 18:54 UTC, PERU: SAN VICENTE DE CANETE | 6.9 | 24.0 km | reverse | 1 | 0 | 0 to 7 | yes | held out |
+| 2011-10-23 10:41 UTC, TURKEY: ERCIS, VAN | 7.1 | 18.0 km | reverse | 604 | 7 | 0 to 1,598 | yes | held out |
+| 2011-10-28 18:54 UTC, PERU: SAN VICENTE DE CANETE | 6.9 | 24.0 km | reverse | 1 | 0 | 0 to 8 | yes | held out |
 | 2011-12-27 15:21 UTC, RUSSIA: KYZYL | 6.6 | 15.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2012-01-09 04:07 UTC, SOLOMON ISLANDS | 6.4 | 28.0 km | all | 0 | 0 | 0 to 0 | yes | held out |
 | 2012-02-02 13:34 UTC, VANUATU ISLANDS | 7.1 | 23.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2012-02-06 03:49 UTC, PHILIPPINES: NEGROS ORIENTAL PROVINCE | 6.7 | 11.0 km | reverse | 51 (+62 missing) | 3 | 0 to 713 | yes | held out |
+| 2012-02-06 03:49 UTC, PHILIPPINES: NEGROS ORIENTAL PROVINCE | 6.7 | 11.0 km | reverse | 51 (+62 missing) | 9 | 0 to 1,936 | yes | held out |
 | 2012-03-03 12:19 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 6.6 | 14.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2012-03-09 07:09 UTC, VANUATU ISLANDS | 6.7 | 16.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2012-03-14 09:08 UTC, JAPAN: HOKKAIDO | 6.9 | 12.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2012-03-20 18:02 UTC, MEXICO: GUERRERO, OAXACA | 7.4 | 20.0 km | reverse | 2 | 19 | 0 to 5,849 | yes | held out |
-| 2012-04-11 08:38 UTC, INDONESIA: N SUMATRA: OFF WEST COAST | 8.6 | 20.0 km | strike-slip | 10 | 0 | 0 to 0 | **no** | held out |
+| 2012-03-20 18:02 UTC, MEXICO: GUERRERO, OAXACA | 7.4 | 20.0 km | reverse | 2 | 94 | 1 to 8,988 | yes | held out |
+| 2012-04-11 08:38 UTC, INDONESIA: N SUMATRA: OFF WEST COAST | 8.6 | 20.0 km | strike-slip | 10 | 0 | 0 to 3 | **no** | held out |
 | 2012-04-11 10:43 UTC, INDONESIA: N SUMATRA: OFF WEST COAST | 8.2 | 25.1 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2012-04-14 22:05 UTC, VANUATU ISLANDS | 6.2 | 11.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2012-04-17 03:50 UTC, CHILE: VALPARAISO | 6.7 | 29.0 km | reverse | 2 | 1 | 0 to 110 | yes | held out |
-| 2012-05-14 10:00 UTC, CHILE: ARICA; PERU: TACNA | 6.2 | 105.9 km | all | 0 | 0 | 0 to 3 | yes | held out |
-| 2012-05-20 02:03 UTC, ITALY: EMILIA ROMAGNA: MIRANDOLA | 6.0 | 6.3 km | reverse | 7 | 17 | 0 to 2,147 | yes | held out |
-| 2012-06-10 12:44 UTC, TURKEY: FETHIYE; GREECE: RHODES | 6.0 | 35.0 km | strike-slip | 0 | 0 | 0 to 4 | yes | held out |
+| 2012-04-17 03:50 UTC, CHILE: VALPARAISO | 6.7 | 29.0 km | reverse | 2 | 1 | 0 to 133 | yes | held out |
+| 2012-05-14 10:00 UTC, CHILE: ARICA; PERU: TACNA | 6.2 | 105.9 km | all | 0 | 0 | 0 to 4 | yes | held out |
+| 2012-05-20 02:03 UTC, ITALY: EMILIA ROMAGNA: MIRANDOLA | 6.0 | 6.3 km | reverse | 7 | 58 | 1 to 8,550 | yes | held out |
+| 2012-06-10 12:44 UTC, TURKEY: FETHIYE; GREECE: RHODES | 6.0 | 35.0 km | strike-slip | 0 | 0 | 0 to 2 | yes | held out |
 | 2012-06-29 21:07 UTC, CHINA: XINJIANG PROVINCE | 6.3 | 18.0 km | all | 0 | 0 | 0 to 6 | yes | held out |
-| 2012-07-25 00:27 UTC, INDONESIA: BANDA ACEH | 6.4 | 22.0 km | reverse | 1 | 0 | 0 to 74 | yes | held out |
-| 2012-07-25 11:20 UTC, SOLOMON ISLANDS: GUADALCANAL | 6.4 | 20.0 km | all | 0 | 1 | 0 to 147 | yes | held out |
-| 2012-08-11 12:23 UTC, IRAN: AHAR, HARIS, VARZAGAN | 6.4 | 11.0 km | strike-slip | 306 | 78 | 1 to 12,535 | yes | held out |
-| 2012-08-18 09:41 UTC, INDONESIA: SULAWESI: SIGI, PARIGI MOUNTONG | 6.3 | 10.0 km | strike-slip | 6 | 1 | 0 to 162 | yes | held out |
+| 2012-07-25 00:27 UTC, INDONESIA: BANDA ACEH | 6.4 | 22.0 km | reverse | 1 | 1 | 0 to 373 | yes | held out |
+| 2012-07-25 11:20 UTC, SOLOMON ISLANDS: GUADALCANAL | 6.4 | 20.0 km | all | 0 | 1 | 0 to 139 | yes | held out |
+| 2012-08-11 12:23 UTC, IRAN: AHAR, HARIS, VARZAGAN | 6.4 | 11.0 km | strike-slip | 306 | 124 | 1 to 14,842 | yes | held out |
+| 2012-08-18 09:41 UTC, INDONESIA: SULAWESI: SIGI, PARIGI MOUNTONG | 6.3 | 10.0 km | strike-slip | 6 | 5 | 0 to 848 | yes | held out |
 | 2012-08-27 04:37 UTC, NICARAGUA: OFF THE COAST | 7.3 | 28.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2012-08-31 12:47 UTC, PHILIPPINES: CAGAYAN DE ORO, TACLOBAN | 7.6 | 28.0 km | reverse | 1 | 0 | 0 to 0 | **no** | held out |
 | 2012-09-05 14:42 UTC, COSTA RICA: NICOYA | 7.6 | 35.0 km | reverse | 2 | 134 | 1 to 2,474 | yes | held out |
 | 2012-10-28 03:04 UTC, CANADA: QUEEN CHARLOTTE ISLANDS | 7.8 | 14.0 km | reverse | 0 | 0 | 0 to 1 | yes | held out |
-| 2012-11-07 16:35 UTC, GUATEMALA: SAN MARCOS, SAN CRISTOBAL COCHU | 7.4 | 24.0 km | reverse | 48 | 0 | 0 to 30,327 | yes | held out |
-| 2012-11-11 01:12 UTC, MYANMAR (BURMA): SHWEBO | 6.8 | 13.7 km | strike-slip | 38 | 5 | 0 to 2,901 | yes | held out |
+| 2012-11-07 16:35 UTC, GUATEMALA: SAN MARCOS, SAN CRISTOBAL COCHU | 7.4 | 24.0 km | reverse | 48 | 1 | 0 to 68,889 | yes | held out |
+| 2012-11-11 01:12 UTC, MYANMAR (BURMA): SHWEBO | 6.8 | 13.7 km | strike-slip | 38 | 17 | 0 to 4,669 | yes | held out |
 | 2012-12-07 08:18 UTC, JAPAN: HONSHU: MIYAGI PREFECTURE | 7.3 | 31.0 km | all | 0 | 0 | 0 to 0 | yes | held out |
 | 2013-01-05 08:58 UTC, ALASKA: SOUTHEASTERN | 7.5 | 8.7 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2013-01-21 22:22 UTC, INDONESIA: SUMATERA: N | 6.1 | 12.0 km | strike-slip | 1 | 0 | 0 to 62 | yes | held out |
 | 2013-02-06 01:12 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS | 8.0 | 24.0 km | reverse | 0 | 0 | 0 to 1 | yes | held out |
-| 2013-02-08 15:26 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS | 7.1 | 21.0 km | strike-slip | 0 | 0 | 0 to 5 | yes | held out |
-| 2013-04-09 11:52 UTC, IRAN: BUSHEHR PROVINCE: SHANBE, KAKI, SENA | 6.4 | 12.0 km | reverse | 37 | 144 | 1 to 8,471 | yes | held out |
-| 2013-04-20 00:02 UTC, CHINA: SICHUAN PROVINCE: LONGMEN | 6.6 | 14.0 km | reverse | 196 (+21 missing) | 22 | 0 to 11,107 | yes | held out |
-| 2013-04-22 01:16 UTC, MEXICO: MICHOACAN: LAZARO CARDENAS | 6.0 | 30.0 km | reverse | 0 | 20 | 0 to 6,281 | yes | held out |
-| 2013-05-11 02:08 UTC, IRAN: HORMOZGAN: BASHAGARD | 6.1 | 15.0 km | strike-slip | 2 | 5 | 0 to 2,967 | yes | held out |
+| 2013-02-08 15:26 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS | 7.1 | 21.0 km | strike-slip | 0 | 0 | 0 to 20 | yes | held out |
+| 2013-04-09 11:52 UTC, IRAN: BUSHEHR PROVINCE: SHANBE, KAKI, SENA | 6.4 | 12.0 km | reverse | 37 | 556 | 2 to 21,515 | yes | held out |
+| 2013-04-20 00:02 UTC, CHINA: SICHUAN PROVINCE: LONGMEN | 6.6 | 14.0 km | reverse | 196 (+21 missing) | 35 | 0 to 9,432 | yes | held out |
+| 2013-04-22 01:16 UTC, MEXICO: MICHOACAN: LAZARO CARDENAS | 6.0 | 30.0 km | reverse | 0 | 106 | 1 to 15,232 | **no** | held out |
+| 2013-05-11 02:08 UTC, IRAN: HORMOZGAN: BASHAGARD | 6.1 | 15.0 km | strike-slip | 2 | 7 | 0 to 2,554 | yes | held out |
 | 2013-06-02 05:43 UTC, TAIWAN: JENAI | 6.2 | 17.0 km | reverse | 4 | 0 | 0 to 3 | **no** | held out |
 | 2013-06-15 16:11 UTC, GREECE: CRETE | 6.2 | 10.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2013-07-02 07:37 UTC, INDONESIA: BANDA ACEH | 6.1 | 13.0 km | strike-slip | 48 | 2 | 0 to 597 | yes | held out |
 | 2013-07-21 05:09 UTC, NEW ZEALAND: COOK STRAIT | 6.5 | 17.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
-| 2013-07-21 23:45 UTC, CHINA: GANSU: DINGXI, MIN | 5.9 | 8.0 km | reverse | 95 | 6 | 0 to 5,524 | yes | held out |
-| 2013-08-16 02:31 UTC, NEW ZEALAND: WELLINGTON, MARLBOROUGH | 6.5 | 8.2 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
-| 2013-08-21 12:38 UTC, MEXICO: SAN MARCOS, ACAPULCO | 6.2 | 21.0 km | reverse | 0 | 7 | 0 to 1,377 | yes | held out |
-| 2013-09-24 11:29 UTC, PAKISTAN: AWARAN, KECH | 7.7 | 15.0 km | all | 825 | 4,346 | 18 to 107,718 | yes | held out |
-| 2013-09-25 16:42 UTC, PERU: AREQUIPA | 7.1 | 40.0 km | reverse | 0 | 0 | 0 to 11 | yes | held out |
-| 2013-09-28 07:34 UTC, PAKISTAN: AWARAN | 6.8 | 12.0 km | all | 22 | 21 | 0 to 9,914 | yes | held out |
-| 2013-10-12 13:11 UTC, GREECE: CRETE: CHANIA | 6.6 | 40.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2013-10-15 00:12 UTC, PHILIPPINES: BOHOL, CEBU, SIQUIJOR IS | 7.1 | 19.0 km | reverse | 222 (+8 missing) | 3 | 0 to 5,056 | yes | held out |
+| 2013-07-21 23:45 UTC, CHINA: GANSU: DINGXI, MIN | 5.9 | 8.0 km | reverse | 95 | 8 | 0 to 4,427 | yes | held out |
+| 2013-08-16 02:31 UTC, NEW ZEALAND: WELLINGTON, MARLBOROUGH | 6.5 | 8.2 km | strike-slip | 0 | 0 | 0 to 1 | yes | held out |
+| 2013-08-21 12:38 UTC, MEXICO: SAN MARCOS, ACAPULCO | 6.2 | 21.0 km | reverse | 0 | 18 | 0 to 2,871 | yes | held out |
+| 2013-09-24 11:29 UTC, PAKISTAN: AWARAN, KECH | 7.7 | 15.0 km | all | 825 | 5,749 | 17 to 117,077 | yes | held out |
+| 2013-09-25 16:42 UTC, PERU: AREQUIPA | 7.1 | 40.0 km | reverse | 0 | 0 | 0 to 8 | yes | held out |
+| 2013-09-28 07:34 UTC, PAKISTAN: AWARAN | 6.8 | 12.0 km | all | 22 | 37 | 0 to 8,437 | yes | held out |
+| 2013-10-12 13:11 UTC, GREECE: CRETE: CHANIA | 6.6 | 40.0 km | reverse | 0 | 0 | 0 to 1 | yes | held out |
+| 2013-10-15 00:12 UTC, PHILIPPINES: BOHOL, CEBU, SIQUIJOR IS | 7.1 | 19.0 km | reverse | 222 (+8 missing) | 12 | 0 to 3,939 | yes | held out |
 | 2013-10-25 17:10 UTC, JAPAN: HONSHU: E COAST | 7.1 | 35.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2013-11-17 09:04 UTC, SCOTIA SEA: SOUTH ORKNEY ISLANDS | 7.7 | 10.0 km | all | 0 | 0 | 0 to 0 | yes | held out |
 | 2014-01-13 04:01 UTC, PUERTO RICO | 6.4 | 20.0 km | all | 0 | 0 | 0 to 0 | yes | held out |
 | 2014-01-20 02:52 UTC, NEW ZEALAND: WELLINGTON, MANAWATU-WANGANUI | 6.1 | 28.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2014-01-26 13:55 UTC, GREECE: KEFALONIA | 6.1 | 8.0 km | strike-slip | 0 | 1 | 0 to 47 | yes | held out |
-| 2014-02-03 03:08 UTC, GREECE: KEFALONIA: LIXOURION | 6.0 | 5.0 km | reverse | 0 | 0 | 0 to 21 | yes | held out |
+| 2014-01-26 13:55 UTC, GREECE: KEFALONIA | 6.1 | 8.0 km | strike-slip | 0 | 4 | 0 to 75 | yes | held out |
+| 2014-02-03 03:08 UTC, GREECE: KEFALONIA: LIXOURION | 6.0 | 5.0 km | reverse | 0 | 0 | 0 to 36 | yes | held out |
 | 2014-02-12 09:19 UTC, CHINA: XINJIANG PROVINCE: YUTIAN | 6.9 | 10.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2014-03-16 21:16 UTC, CHILE: IQUIQUE | 6.7 | 20.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2014-04-01 23:46 UTC, CHILE: NORTHERN: IQUIQUE, ALTO HOSPICIO | 8.2 | 25.0 km | reverse | 7 | 0 | 0 to 1,062 | yes | held out |
-| 2014-04-03 02:43 UTC, CHILE: NORTHERN: IQUIQUE | 7.7 | 22.4 km | reverse | 0 | 0 | 0 to 463 | yes | held out |
-| 2014-04-10 23:27 UTC, NICARAGUA: NAGAROTE, MANAGUA | 6.1 | 13.0 km | all | 2 | 0 | 0 to 2,663 | yes | held out |
+| 2014-04-01 23:46 UTC, CHILE: NORTHERN: IQUIQUE, ALTO HOSPICIO | 8.2 | 25.0 km | reverse | 7 | 1 | 0 to 1,060 | yes | held out |
+| 2014-04-03 02:43 UTC, CHILE: NORTHERN: IQUIQUE | 7.7 | 22.4 km | reverse | 0 | 24 | 0 to 749 | yes | held out |
+| 2014-04-10 23:27 UTC, NICARAGUA: NAGAROTE, MANAGUA | 6.1 | 13.0 km | all | 2 | 2 | 0 to 51,858 | yes | held out |
 | 2014-04-12 20:14 UTC, SOLOMON ISLANDS | 7.6 | 22.6 km | strike-slip | 0 | 6 | 0 to 255 | yes | held out |
 | 2014-04-13 12:36 UTC, SOLOMON ISLANDS | 7.4 | 39.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2014-04-18 14:27 UTC, MEXICO: GUERRERO; MEXICO CITY | 7.2 | 24.0 km | reverse | 0 | 7 | 0 to 1,229 | yes | held out |
-| 2014-05-05 11:08 UTC, THAILAND: CHIANG RAI | 6.1 | 6.0 km | strike-slip | 1 | 0 | 0 to 434 | yes | held out |
-| 2014-05-08 17:00 UTC, MEXICO: TECPAN | 6.4 | 17.1 km | reverse | 0 | 6 | 0 to 542 | yes | held out |
-| 2014-05-24 09:25 UTC, GREECE, TURKEY | 6.9 | 6.4 km | strike-slip | 3 | 0 | 0 to 2 | **no** | held out |
+| 2014-04-18 14:27 UTC, MEXICO: GUERRERO; MEXICO CITY | 7.2 | 24.0 km | reverse | 0 | 7 | 0 to 1,308 | yes | held out |
+| 2014-05-05 11:08 UTC, THAILAND: CHIANG RAI | 6.1 | 6.0 km | strike-slip | 1 | 2 | 0 to 321 | yes | held out |
+| 2014-05-08 17:00 UTC, MEXICO: TECPAN | 6.4 | 17.1 km | reverse | 0 | 35 | 0 to 2,691 | yes | held out |
+| 2014-05-24 09:25 UTC, GREECE, TURKEY | 6.9 | 6.4 km | strike-slip | 3 | 0 | 0 to 3 | yes | held out |
 | 2014-06-23 19:19 UTC, KERMADEC ISLANDS: SSE OF RAOUL ISLAND | 6.9 | 20.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2014-07-11 19:22 UTC, JAPAN: SANRIKU | 6.5 | 20.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2014-07-25 10:54 UTC, ALASKA: SOUTHEASTERN | 6.0 | 10.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
-| 2014-08-03 08:30 UTC, CHINA: YUNNAN: LUDIAN: LONGTOUSHAN, ZHAOTONG | 6.2 | 12.0 km | all | 615 (+114 missing) | 27 | 0 to 10,820 | yes | held out |
-| 2014-08-18 02:32 UTC, IRAN: ILAM PROVINCE: ABDANAN | 6.2 | 10.2 km | reverse | 0 | 80 | 0 to 6,101 | yes | held out |
-| 2014-08-24 10:20 UTC, CALIFORNIA: NAPA, VALLEJO | 6.0 | 11.1 km | all | 1 | 0 | 0 to 34 | yes | held out |
+| 2014-08-03 08:30 UTC, CHINA: YUNNAN: LUDIAN: LONGTOUSHAN, ZHAOTONG | 6.2 | 12.0 km | all | 615 (+114 missing) | 88 | 1 to 23,978 | yes | held out |
+| 2014-08-18 02:32 UTC, IRAN: ILAM PROVINCE: ABDANAN | 6.2 | 10.2 km | reverse | 0 | 684 | 1 to 6,545 | **no** | held out |
+| 2014-08-24 10:20 UTC, CALIFORNIA: NAPA, VALLEJO | 6.0 | 11.1 km | all | 1 | 2 | 0 to 96 | yes | held out |
 | 2014-10-07 13:49 UTC, CHINA: YUNNAN PROVINCE: YONGPING | 6.1 | 8.5 km | strike-slip | 1 | 10 | 0 to 7,446 | yes | held out |
 | 2014-10-09 02:14 UTC, CHILE: EASTER ISLAND REGION | 7.0 | 16.5 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2014-10-14 03:51 UTC, EL SALVADOR: GULF OF FONSECA | 7.3 | 40.0 km | normal | 1 | 0 | 0 to 0 | **no** | held out |
-| 2014-11-22 13:08 UTC, JAPAN: NAGANO: HAKUBA, OTARI | 6.2 | 9.0 km | reverse | 0 | 0 | 0 to 97 | yes | held out |
+| 2014-11-22 13:08 UTC, JAPAN: NAGANO: HAKUBA, OTARI | 6.2 | 9.0 km | reverse | 0 | 0 | 0 to 109 | yes | held out |
 | 2015-02-16 23:06 UTC, JAPAN: HONSHU | 6.7 | 23.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2015-02-19 13:18 UTC, VANUATU ISLANDS | 6.4 | 10.0 km | reverse | 0 | 0 | 0 to 14 | yes | held out |
+| 2015-02-19 13:18 UTC, VANUATU ISLANDS | 6.4 | 10.0 km | reverse | 0 | 0 | 0 to 37 | yes | held out |
 | 2015-04-20 01:42 UTC, TAIWAN: TAIPEI | 6.4 | 29.0 km | reverse | 1 | 0 | 0 to 0 | **no** | held out |
-| 2015-04-25 06:11 UTC, NEPAL: KATHMANDU; INDIA; CHINA; BANGLADESH | 7.8 | 8.2 km | reverse | 8,957 (+3 missing) | 2,958 | 37 to 233,423 | yes | held out, seen |
+| 2015-04-25 06:11 UTC, NEPAL: KATHMANDU; INDIA; CHINA; BANGLADESH | 7.8 | 8.2 km | reverse | 8,957 (+3 missing) | 3,016 | 34 to 235,160 | yes | held out, seen |
 | 2015-05-12 07:05 UTC, NEPAL: DOLAKHA | 7.3 | 15.0 km | reverse | 117 | 46 | 0 to 22,940 | yes | held out |
-| 2015-06-04 23:15 UTC, MALAYSIA: SABAH: LAHAD,DATU,KANAK | 6.0 | 10.0 km | normal | 18 | 0 | 0 to 345 | yes | held out |
-| 2015-07-03 01:07 UTC, CHINA: S. XINJIANG: HOTAN | 6.4 | 20.0 km | reverse | 3 | 1 | 0 to 3,471 | yes | held out |
-| 2015-07-03 06:43 UTC, PHILIPPINES: MINDANAO | 6.1 | 32.0 km | reverse | 1 | 0 | 0 to 0 | **no** | held out |
+| 2015-06-04 23:15 UTC, MALAYSIA: SABAH: LAHAD,DATU,KANAK | 6.0 | 10.0 km | normal | 18 | 0 | 0 to 295 | yes | held out |
+| 2015-07-03 01:07 UTC, CHINA: S. XINJIANG: HOTAN | 6.4 | 20.0 km | reverse | 3 | 33 | 0 to 7,680 | yes | held out |
+| 2015-07-03 06:43 UTC, PHILIPPINES: MINDANAO | 6.1 | 32.0 km | reverse | 1 | 0 | 0 to 2 | yes | held out |
 | 2015-07-10 04:12 UTC, SOLOMON ISLANDS | 6.7 | 12.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2015-07-18 02:27 UTC, SOLOMON ISLANDS | 7.0 | 11.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2015-07-27 04:49 UTC, ALASKA | 6.9 | 29.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2015-09-16 22:54 UTC, CHILE: CENTRAL | 8.3 | 22.4 km | reverse | 7 (+1 missing) | 77 | 4 to 6,501 | yes | held out |
-| 2015-09-24 15:53 UTC, INDONESIA: SORONG | 6.6 | 18.0 km | reverse | 0 | 0 | 0 to 87 | yes | held out |
+| 2015-09-16 22:54 UTC, CHILE: CENTRAL | 8.3 | 22.4 km | reverse | 7 (+1 missing) | 126 | 4 to 12,559 | yes | held out |
+| 2015-09-24 15:53 UTC, INDONESIA: SORONG | 6.6 | 18.0 km | reverse | 0 | 0 | 0 to 77 | yes | held out |
 | 2015-11-04 03:44 UTC, INDONESIA: EAST NUSA TENGGARA: ALOR | 6.5 | 20.0 km | all | 0 | 1 | 0 to 132 | yes | held out |
 | 2015-11-11 01:54 UTC, CHILE: LA SERENA | 6.9 | 12.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2015-11-13 20:51 UTC, JAPAN: KYUSYU ISLAND | 6.7 | 12.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2015-11-17 07:10 UTC, GREECE: LEFKADA, KEFALONIA, ITHACA | 6.5 | 11.0 km | strike-slip | 2 | 0 | 0 to 22 | yes | held out |
 | 2015-11-18 18:31 UTC, SOLOMON ISLANDS | 6.8 | 12.6 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2015-12-07 07:50 UTC, TAJIKISTAN | 7.2 | 22.0 km | strike-slip | 2 | 0 | 0 to 1 | **no** | held out |
+| 2015-12-07 07:50 UTC, TAJIKISTAN | 7.2 | 22.0 km | strike-slip | 2 | 0 | 0 to 2 | yes | held out |
 | 2016-01-25 04:22 UTC, MOROCCO: MELILLA | 6.3 | 12.0 km | strike-slip | 1 | 0 | 0 to 0 | **no** | held out |
-| 2016-02-05 19:57 UTC, TAIWAN: TAINAN | 6.4 | 23.0 km | reverse | 117 | 0 | 0 to 205 | yes | held out |
+| 2016-02-05 19:57 UTC, TAIWAN: TAINAN | 6.4 | 23.0 km | reverse | 117 | 2 | 0 to 594 | yes | held out |
 | 2016-03-02 12:49 UTC, INDONESIA: SUMATRA: | 7.8 | 24.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2016-04-03 08:23 UTC, VANUATU ISLANDS | 6.9 | 26.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2016-04-15 16:25 UTC, JAPAN: KUMAMOTO, OITA | 7.0 | 10.0 km | strike-slip | 273 | 61 | 0 to 12,942 | yes | held out, seen |
-| 2016-04-16 23:58 UTC, ECUADOR: NEAR WEST COAST: MANABI, ESMERALDAS | 7.8 | 20.6 km | reverse | 663 (+9 missing) | 2,527 | 33 to 102,473 | yes | held out |
-| 2016-04-28 19:33 UTC, VANUATU ISLANDS | 7.0 | 24.0 km | reverse | 0 | 2 | 0 to 312 | yes | held out |
+| 2016-04-15 16:25 UTC, JAPAN: KUMAMOTO, OITA | 7.0 | 10.0 km | strike-slip | 273 | 198 | 0 to 27,540 | yes | held out, seen |
+| 2016-04-16 23:58 UTC, ECUADOR: NEAR WEST COAST: MANABI, ESMERALDAS | 7.8 | 20.6 km | reverse | 663 (+9 missing) | 3,544 | 52 to 178,705 | yes | held out |
+| 2016-04-28 19:33 UTC, VANUATU ISLANDS | 7.0 | 24.0 km | reverse | 0 | 7 | 0 to 737 | yes | held out |
 | 2016-05-18 16:46 UTC, ECUADOR: MANABI PROVINCE | 6.9 | 29.9 km | reverse | 1 | 13 | 0 to 2,027 | yes | held out |
 | 2016-06-07 19:15 UTC, INDONESIA: MALUKU: TERNATE ISLAND | 6.3 | 31.0 km | reverse | 0 | 0 | 0 to 69 | yes | held out |
 | 2016-08-12 01:26 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 7.2 | 16.4 km | all | 0 | 0 | 0 to 0 | yes | held out |
 | 2016-08-19 07:32 UTC, SOUTH SANDWICH ISLANDS | 7.4 | 10.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2016-08-20 09:01 UTC, JAPAN: OFF EAST COAST HONSHU | 6.0 | 10.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2016-08-24 01:36 UTC, ITALY: ACCUMOLI, ARQUATA, AMATRICE | 6.2 | 4.4 km | normal | 299 (+15 missing) | 1 | 0 to 170 | **no** | tuned |
+| 2016-08-24 01:36 UTC, ITALY: ACCUMOLI, ARQUATA, AMATRICE | 6.2 | 4.4 km | normal | 299 (+15 missing) | 1 | 0 to 293 | **no** | tuned |
 | 2016-09-01 16:37 UTC, NEW ZEALAND: GISBORNE | 7.0 | 19.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2016-10-21 05:07 UTC, JAPAN: KURAYOSHI | 6.2 | 5.6 km | strike-slip | 0 | 0 | 0 to 270 | yes | held out |
 | 2016-10-26 19:18 UTC, ITALY: VISSO, USSITA | 6.1 | 10.0 km | normal | 1 | 1 | 0 to 356 | yes | held out |
 | 2016-10-30 06:40 UTC, ITALY: NORCIA | 6.6 | 8.0 km | normal | 2 | 3 | 0 to 620 | yes | held out |
 | 2016-11-13 11:02 UTC, NEW ZEALAND: AMBERLEY | 7.8 | 15.1 km | reverse | 2 | 0 | 0 to 17 | yes | held out, seen |
-| 2016-11-21 20:59 UTC, JAPAN: NEAR E COAST HONSHU | 6.9 | 9.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
+| 2016-11-21 20:59 UTC, JAPAN: NEAR E COAST HONSHU | 6.9 | 9.0 km | normal | 0 | 0 | 0 to 3 | yes | held out |
 | 2016-11-24 18:43 UTC, NICARAGUA | 6.9 | 10.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2016-11-25 14:24 UTC, CHINA: XINJIANG PROVINCE: KASHGAR | 6.6 | 17.0 km | strike-slip | 1 | 0 | 0 to 2 | yes | held out |
+| 2016-11-25 14:24 UTC, CHINA: XINJIANG PROVINCE: KASHGAR | 6.6 | 17.0 km | strike-slip | 1 | 0 | 0 to 3 | yes | held out |
 | 2016-12-01 22:40 UTC, PERU: PUNO, LAMPA | 6.2 | 12.0 km | normal | 1 | 0 | 0 to 4 | yes | held out |
-| 2016-12-06 22:03 UTC, INDONESIA: SUMATRA: ACEH: PIDIE JAYA | 6.5 | 13.0 km | all | 104 | 7 | 0 to 1,898 | yes | held out |
+| 2016-12-06 22:03 UTC, INDONESIA: SUMATRA: ACEH: PIDIE JAYA | 6.5 | 13.0 km | all | 104 | 33 | 0 to 3,953 | yes | held out |
 | 2016-12-08 05:15 UTC, CHINA: N. XINJIANG: URUMQI | 6.0 | 17.6 km | reverse | 1 | 0 | 0 to 431 | yes | held out |
-| 2016-12-08 17:38 UTC, SOLOMON ISLANDS | 7.8 | 40.0 km | reverse | 1 | 21 | 0 to 888 | yes | held out |
+| 2016-12-08 17:38 UTC, SOLOMON ISLANDS | 7.8 | 40.0 km | reverse | 1 | 23 | 0 to 3,100 | yes | held out |
 | 2016-12-09 19:10 UTC, SOLOMON ISLANDS | 6.9 | 19.7 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2016-12-25 14:22 UTC, CHILE | 7.6 | 38.0 km | reverse | 0 | 4 | 0 to 188 | yes | held out |
+| 2016-12-25 14:22 UTC, CHILE | 7.6 | 38.0 km | reverse | 0 | 5 | 0 to 278 | yes | held out |
 | 2017-01-03 21:52 UTC, FIJI ISLANDS | 6.9 | 12.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2017-02-07 22:03 UTC, PAKISTAN: PASNI | 6.3 | 29.1 km | reverse | 0 | 6 | 0 to 1,365 | yes | held out |
-| 2017-02-10 14:03 UTC, PHILIPPINES: SURIGAO DEL NORTE | 6.5 | 15.0 km | strike-slip | 8 | 0 | 0 to 128 | yes | held out |
-| 2017-04-05 06:09 UTC, IRAN: SEFID SANG | 6.1 | 13.0 km | reverse | 2 | 3 | 0 to 757 | yes | held out |
-| 2017-04-24 21:38 UTC, CHILE: VALPARAISO | 6.9 | 28.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2017-04-28 20:23 UTC, PHILIPPINES: SARANGANI | 6.9 | 26.0 km | reverse | 0 | 0 | 0 to 1 | yes | held out |
+| 2017-02-07 22:03 UTC, PAKISTAN: PASNI | 6.3 | 29.1 km | reverse | 0 | 22 | 0 to 4,124 | yes | held out |
+| 2017-02-10 14:03 UTC, PHILIPPINES: SURIGAO DEL NORTE | 6.5 | 15.0 km | strike-slip | 8 | 1 | 0 to 509 | yes | held out |
+| 2017-04-05 06:09 UTC, IRAN: SEFID SANG | 6.1 | 13.0 km | reverse | 2 | 8 | 0 to 1,980 | yes | held out |
+| 2017-04-24 21:38 UTC, CHILE: VALPARAISO | 6.9 | 28.0 km | reverse | 0 | 0 | 0 to 26 | yes | held out |
+| 2017-04-28 20:23 UTC, PHILIPPINES: SARANGANI | 6.9 | 26.0 km | reverse | 0 | 0 | 0 to 4 | yes | held out |
 | 2017-05-01 12:31 UTC, ALASKA: SKAGWAY; CANADA: BRITISH COLUMBIA | 6.2 | 10.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2017-05-03 04:47 UTC, KYRGYZSTAN: OSH, BATKEN | 6.0 | 11.0 km | strike-slip | 0 | 0 | 0 to 7 | yes | held out |
 | 2017-05-29 14:35 UTC, INDONESIA: SULAWESI: POSO | 6.6 | 12.0 km | normal | 0 | 0 | 0 to 27 | yes | held out |
-| 2017-06-12 12:28 UTC, GREECE: LESBOS | 6.3 | 12.0 km | normal | 1 | 0 | 0 to 124 | yes | held out |
-| 2017-06-22 12:31 UTC, GUATEMALA: ESCUINTLA, SUCHITEPEQUEZ, GUATEMALA | 6.8 | 38.1 km | reverse | 0 | 0 | 0 to 739 | yes | held out |
-| 2017-07-06 08:03 UTC, PHILIPPINES: LEYTE | 6.5 | 9.0 km | strike-slip | 4 | 2 | 0 to 600 | yes | held out |
+| 2017-06-12 12:28 UTC, GREECE: LESBOS | 6.3 | 12.0 km | normal | 1 | 0 | 0 to 426 | yes | held out |
+| 2017-06-22 12:31 UTC, GUATEMALA: ESCUINTLA, SUCHITEPEQUEZ, GUATEMALA | 6.8 | 38.1 km | reverse | 0 | 0 | 0 to 6,445 | yes | held out |
+| 2017-07-06 08:03 UTC, PHILIPPINES: LEYTE | 6.5 | 9.0 km | strike-slip | 4 | 8 | 0 to 1,331 | yes | held out |
 | 2017-07-13 03:36 UTC, PAPUA NEW GUINEA | 6.4 | 34.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2017-07-17 23:34 UTC, RUSSIA: BERING ISLAND | 7.7 | 10.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
-| 2017-07-20 22:31 UTC, TURKEY: BODRUM, DATCA; GREECE: KOS | 6.6 | 7.0 km | normal | 2 | 0 | 0 to 384 | yes | held out |
+| 2017-07-20 22:31 UTC, TURKEY: BODRUM, DATCA; GREECE: KOS | 6.6 | 7.0 km | normal | 2 | 2 | 0 to 2,125 | yes | held out |
 | 2017-08-08 13:19 UTC, CHINA: SICHUAN PROVINCE: ABA | 6.5 | 9.0 km | all | 29 | 0 | 0 to 365 | yes | held out |
-| 2017-08-08 23:27 UTC, CHINA: XINGJIANG: BORTALA | 6.3 | 20.0 km | reverse | 0 | 0 | 0 to 156 | yes | held out |
-| 2017-09-23 12:53 UTC, MEXICO: OAXACA | 6.1 | 10.0 km | normal | 5 | 2 | 0 to 1,145 | yes | held out |
+| 2017-08-08 23:27 UTC, CHINA: XINGJIANG: BORTALA | 6.3 | 20.0 km | reverse | 0 | 1 | 0 to 537 | yes | held out |
+| 2017-09-23 12:53 UTC, MEXICO: OAXACA | 6.1 | 10.0 km | normal | 5 | 3 | 0 to 564 | yes | held out |
 | 2017-10-31 00:42 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 6.7 | 24.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2017-10-31 11:50 UTC, INDONESIA: MALUKU: AMBON | 6.1 | 6.0 km | reverse | 1 | 0 | 0 to 1 | yes | held out |
+| 2017-10-31 11:50 UTC, INDONESIA: MALUKU: AMBON | 6.1 | 6.0 km | reverse | 1 | 0 | 0 to 4 | yes | held out |
 | 2017-11-01 02:23 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 6.6 | 22.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2017-11-12 18:18 UTC, IRAN: KERMANSHAH; IRAQ: KURDISTAN | 7.3 | 19.0 km | reverse | 630 | 98 | 0 to 37,430 | yes | held out |
-| 2017-11-13 02:28 UTC, COSTA RICA: JACO | 6.5 | 19.4 km | reverse | 2 | 1 | 0 to 107 | yes | held out |
+| 2017-11-12 18:18 UTC, IRAN: KERMANSHAH; IRAQ: KURDISTAN | 7.3 | 19.0 km | reverse | 630 | 198 | 1 to 67,750 | yes | held out |
+| 2017-11-13 02:28 UTC, COSTA RICA: JACO | 6.5 | 19.4 km | reverse | 2 | 4 | 0 to 163 | yes | held out |
 | 2017-11-17 22:34 UTC, CHINA: TIBET (XIZANG PROVINCE): NYINGCHI | 6.4 | 8.0 km | reverse | 0 | 0 | 0 to 5 | yes | held out |
 | 2017-11-19 09:25 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 6.3 | 14.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2017-11-19 15:09 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 6.6 | 13.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2017-11-19 22:43 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 7.0 | 10.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2017-12-01 02:32 UTC, IRAN: KERMAN | 6.1 | 9.0 km | reverse | 0 | 0 | 0 to 119 | yes | held out |
+| 2017-12-01 02:32 UTC, IRAN: KERMAN | 6.1 | 9.0 km | reverse | 0 | 0 | 0 to 265 | yes | held out |
 | 2018-01-10 02:51 UTC, HONDURAS | 7.5 | 19.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
-| 2018-01-14 09:18 UTC, PERU: YAUCA | 7.1 | 39.0 km | reverse | 2 | 0 | 0 to 6 | yes | held out |
+| 2018-01-14 09:18 UTC, PERU: YAUCA | 7.1 | 39.0 km | reverse | 2 | 0 | 0 to 7 | yes | held out |
 | 2018-01-23 09:31 UTC, ALASKA: KODIAK ISLAND | 7.9 | 14.1 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
-| 2018-02-06 15:50 UTC, TAIWAN: HUALIEN | 6.4 | 17.0 km | strike-slip | 17 | 1 | 0 to 174 | yes | held out |
-| 2018-02-16 23:39 UTC, MEXICO: OAXACA | 7.2 | 22.0 km | reverse | 14 | 75 | 1 to 5,104 | yes | held out |
-| 2018-02-25 17:44 UTC, PAPUA NEW GUINEA: S HIGHLANDS, HELA; INDONESIA | 7.5 | 25.2 km | reverse | 145 | 407 | 0 to 12,006 | yes | held out |
-| 2018-02-28 02:45 UTC, PAPUA NEW GUINEA: S HIGHLANDS | 6.1 | 16.0 km | reverse | 1 | 0 | 0 to 9 | yes | held out |
-| 2018-03-04 19:56 UTC, PAPUA NEW GUINEA: S HIGHLANDS | 6.0 | 10.0 km | reverse | 11 | 0 | 0 to 2 | **no** | held out |
-| 2018-03-06 14:13 UTC, PAPUA NEW GUINEA: S HIGHLANDS, HELA | 6.7 | 20.5 km | reverse | 25 | 0 | 0 to 13 | **no** | held out |
-| 2018-04-07 05:48 UTC, PAPUA NEW GUINEA: HELA | 6.3 | 18.1 km | reverse | 4 | 0 | 0 to 39 | yes | held out |
+| 2018-02-06 15:50 UTC, TAIWAN: HUALIEN | 6.4 | 17.0 km | strike-slip | 17 | 2 | 0 to 218 | yes | held out |
+| 2018-02-16 23:39 UTC, MEXICO: OAXACA | 7.2 | 22.0 km | reverse | 14 | 120 | 1 to 7,692 | yes | held out |
+| 2018-02-25 17:44 UTC, PAPUA NEW GUINEA: S HIGHLANDS, HELA; INDONESIA | 7.5 | 25.2 km | reverse | 145 | 544 | 0 to 19,913 | yes | held out |
+| 2018-02-28 02:45 UTC, PAPUA NEW GUINEA: S HIGHLANDS | 6.1 | 16.0 km | reverse | 1 | 0 | 0 to 11 | yes | held out |
+| 2018-03-04 19:56 UTC, PAPUA NEW GUINEA: S HIGHLANDS | 6.0 | 10.0 km | reverse | 11 | 0 | 0 to 4 | **no** | held out |
+| 2018-03-06 14:13 UTC, PAPUA NEW GUINEA: S HIGHLANDS, HELA | 6.7 | 20.5 km | reverse | 25 | 0 | 0 to 35 | yes | held out |
+| 2018-04-07 05:48 UTC, PAPUA NEW GUINEA: HELA | 6.3 | 18.1 km | reverse | 4 | 0 | 0 to 142 | yes | held out |
 | 2018-05-04 22:32 UTC, HAWAIIAN ISLANDS: PUNA DISTRICT | 6.9 | 5.8 km | reverse | 0 | 0 | 0 to 1 | yes | held out |
-| 2018-07-28 22:47 UTC, INDONESIA: LOMBOK ISLAND | 6.4 | 14.0 km | reverse | 17 | 2 | 0 to 456 | yes | held out |
-| 2018-08-05 11:46 UTC, INDONESIA: LOMBOK ISLAND | 6.9 | 34.0 km | reverse | 560 | 17 | 0 to 1,011 | yes | held out |
-| 2018-08-19 04:10 UTC, INDONESIA: LOMBOK ISLAND | 6.3 | 16.0 km | reverse | 2 | 1 | 0 to 407 | yes | held out |
+| 2018-07-28 22:47 UTC, INDONESIA: LOMBOK ISLAND | 6.4 | 14.0 km | reverse | 17 | 10 | 0 to 772 | yes | held out |
+| 2018-08-05 11:46 UTC, INDONESIA: LOMBOK ISLAND | 6.9 | 34.0 km | reverse | 560 | 41 | 0 to 4,467 | yes | held out |
+| 2018-08-19 04:10 UTC, INDONESIA: LOMBOK ISLAND | 6.3 | 16.0 km | reverse | 2 | 4 | 0 to 2,089 | yes | held out |
 | 2018-08-19 14:56 UTC, INDONESIA: LOMBOK ISLAND | 6.9 | 21.0 km | reverse | 11 | 5 | 0 to 1,083 | yes | held out |
-| 2018-08-25 22:13 UTC, IRAN: KERMANSHAH | 6.0 | 10.0 km | all | 2 | 13 | 0 to 3,573 | yes | held out |
+| 2018-08-25 22:13 UTC, IRAN: KERMANSHAH | 6.0 | 10.0 km | all | 2 | 64 | 0 to 4,701 | yes | held out |
 | 2018-08-29 03:51 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 7.1 | 21.4 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2018-09-05 18:07 UTC, JAPAN: HOKKAIDO | 6.6 | 35.0 km | reverse | 44 | 0 | 0 to 68 | yes | held out |
-| 2018-09-28 06:59 UTC, INDONESIA: SULAWESI | 6.1 | 5.0 km | strike-slip | 1 | 2 | 0 to 261 | yes | held out |
+| 2018-09-05 18:07 UTC, JAPAN: HOKKAIDO | 6.6 | 35.0 km | reverse | 44 | 0 | 0 to 149 | yes | held out |
+| 2018-09-28 06:59 UTC, INDONESIA: SULAWESI | 6.1 | 5.0 km | strike-slip | 1 | 5 | 0 to 345 | yes | held out |
 | 2018-09-28 10:02 UTC, INDONESIA: SULAWESI | 7.5 | 20.0 km | strike-slip | 4,340 (+667 missing) | 313 | 0 to 18,065 | yes | held out |
-| 2018-10-10 18:44 UTC, INDONESIA: MADURA ISLAND, JAVA | 6.0 | 9.0 km | reverse | 4 | 0 | 0 to 0 | **no** | held out |
+| 2018-10-10 18:44 UTC, INDONESIA: MADURA ISLAND, JAVA | 6.0 | 9.0 km | reverse | 4 | 0 | 0 to 8 | yes | held out |
 | 2018-10-16 01:03 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 6.5 | 17.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2018-10-25 22:54 UTC, GREECE: IONIAN SEA: ZAKYNTHOS, STROFADES | 6.8 | 14.0 km | all | 0 | 0 | 0 to 1 | yes | held out |
-| 2018-11-25 16:37 UTC, IRAN: KERMANSHAH; IRAQ: KURDISTAN | 6.3 | 18.0 km | strike-slip | 1 | 77 | 1 to 38,667 | yes | held out |
+| 2018-10-25 22:54 UTC, GREECE: IONIAN SEA: ZAKYNTHOS, STROFADES | 6.8 | 14.0 km | all | 0 | 0 | 0 to 3 | yes | held out |
+| 2018-11-25 16:37 UTC, IRAN: KERMANSHAH; IRAQ: KURDISTAN | 6.3 | 18.0 km | strike-slip | 1 | 118 | 1 to 49,654 | yes | held out |
 | 2018-12-05 04:18 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 7.5 | 10.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2018-12-20 17:01 UTC, RUSSIA: OFF KAMCHATKA | 7.3 | 16.6 km | all | 0 | 0 | 0 to 0 | yes | held out |
-| 2019-04-12 11:40 UTC, INDONESIA: SULAWESI ISLAND: LUWUK | 6.8 | 15.5 km | strike-slip | 1 | 0 | 0 to 0 | **no** | held out |
-| 2019-04-18 05:01 UTC, TAIWAN: HUALIEN | 6.1 | 20.0 km | reverse | 1 | 1 | 0 to 439 | yes | held out |
-| 2019-04-22 09:11 UTC, PHILIPPINES: PAMPANGA PROVINCE | 6.1 | 21.8 km | strike-slip | 18 (+3 missing) | 3 | 0 to 1,146 | yes | held out |
+| 2019-04-12 11:40 UTC, INDONESIA: SULAWESI ISLAND: LUWUK | 6.8 | 15.5 km | strike-slip | 1 | 0 | 0 to 14 | yes | held out |
+| 2019-04-18 05:01 UTC, TAIWAN: HUALIEN | 6.1 | 20.0 km | reverse | 1 | 5 | 0 to 663 | yes | held out |
+| 2019-04-22 09:11 UTC, PHILIPPINES: PAMPANGA PROVINCE | 6.1 | 21.8 km | strike-slip | 18 (+3 missing) | 21 | 0 to 5,015 | yes | held out |
 | 2019-05-14 12:58 UTC, PAPUA NEW GUINEA: RABAUL, DUKE OF YORK IS | 7.6 | 10.0 km | strike-slip | 0 | 25 | 0 to 1,768 | yes | held out |
 | 2019-06-14 00:19 UTC, CHILE: COQUIMBO | 6.4 | 11.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2019-06-15 22:55 UTC, KERMADEC ISLANDS: S OF, RAOUL | 7.3 | 46.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2019-06-18 13:22 UTC, JAPAN: NIIGATA PREFECTURE | 6.4 | 12.0 km | reverse | 0 | 0 | 0 to 6 | yes | held out |
+| 2019-06-18 13:22 UTC, JAPAN: NIIGATA PREFECTURE | 6.4 | 12.0 km | reverse | 0 | 0 | 0 to 50 | yes | held out |
 | 2019-06-26 02:18 UTC, RUSSIA: OFF KAMCHATKA | 6.3 | 10.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2019-07-04 17:33 UTC, CALIFORNIA: RIDGECREST; NEVADA | 6.4 | 10.5 km | all | 1 | 0 | 0 to 2 | yes | held out |
-| 2019-07-06 03:19 UTC, CALIFORNIA: RIDGECREST | 7.1 | 8.0 km | all | 0 | 0 | 0 to 4 | yes | held out |
+| 2019-07-04 17:33 UTC, CALIFORNIA: RIDGECREST; NEVADA | 6.4 | 10.5 km | all | 1 | 0 | 0 to 3 | yes | held out |
+| 2019-07-06 03:19 UTC, CALIFORNIA: RIDGECREST | 7.1 | 8.0 km | all | 0 | 0 | 0 to 9 | yes | held out |
 | 2019-07-14 09:10 UTC, INDONESIA: MOLUCCA ISLANDS: N | 7.2 | 19.0 km | strike-slip | 8 | 0 | 0 to 195 | yes | held out |
 | 2019-07-26 23:37 UTC, PHILIPPINES: BATANES: ITBAYAT | 6.0 | 9.0 km | strike-slip | 9 | 0 | 0 to 0 | **no** | held out |
-| 2019-09-25 23:46 UTC, INDONESIA: MALUKU: AMBON | 6.5 | 12.3 km | strike-slip | 31 | 1 | 0 to 568 | yes | held out |
+| 2019-09-25 23:46 UTC, INDONESIA: MALUKU: AMBON | 6.5 | 12.3 km | strike-slip | 31 | 4 | 0 to 475 | yes | held out |
 | 2019-09-29 15:57 UTC, CHILE: CONCEPCION | 6.7 | 11.0 km | reverse | 1 | 0 | 0 to 0 | **no** | held out |
-| 2019-10-16 11:37 UTC, PHILIPPINES: MINDANAO: COTABATO, DAVAO | 6.4 | 16.1 km | strike-slip | 7 | 0 | 0 to 130 | yes | held out |
-| 2019-10-29 01:04 UTC, PHILIPPINES: MINDANAO: COTABATO, DAVAO | 6.6 | 15.0 km | strike-slip | 12 | 0 | 0 to 138 | yes | held out |
-| 2019-10-31 01:11 UTC, PHILIPPINES: COTABATO, SULTAN KUDARAT | 6.5 | 10.0 km | strike-slip | 9 | 2 | 0 to 409 | yes | held out |
-| 2019-11-14 16:17 UTC, INDONESIA: MOLUCCA ISLANDS: N | 7.1 | 33.0 km | reverse | 1 | 0 | 0 to 1 | yes | held out |
-| 2019-11-26 02:54 UTC, ALBANIA: DURRES, THUMANE, TIRANA | 6.4 | 22.0 km | reverse | 51 | 3 | 0 to 1,689 | yes | held out, seen |
-| 2019-12-15 06:11 UTC, PHILIPPINES: MINDANAO: DAVAO | 6.8 | 18.0 km | all | 13 (+1 missing) | 3 | 0 to 1,637 | yes | held out |
-| 2020-01-07 08:24 UTC, PUERTO RICO: PONCE,SAN JUAN | 6.4 | 6.0 km | normal | 4 | 0 | 0 to 7 | yes | held out |
+| 2019-10-16 11:37 UTC, PHILIPPINES: MINDANAO: COTABATO, DAVAO | 6.4 | 16.1 km | strike-slip | 7 | 1 | 0 to 212 | yes | held out |
+| 2019-10-29 01:04 UTC, PHILIPPINES: MINDANAO: COTABATO, DAVAO | 6.6 | 15.0 km | strike-slip | 12 | 0 | 0 to 216 | yes | held out |
+| 2019-10-31 01:11 UTC, PHILIPPINES: COTABATO, SULTAN KUDARAT | 6.5 | 10.0 km | strike-slip | 9 | 5 | 0 to 585 | yes | held out |
+| 2019-11-14 16:17 UTC, INDONESIA: MOLUCCA ISLANDS: N | 7.1 | 33.0 km | reverse | 1 | 0 | 0 to 9 | yes | held out |
+| 2019-11-26 02:54 UTC, ALBANIA: DURRES, THUMANE, TIRANA | 6.4 | 22.0 km | reverse | 51 | 15 | 0 to 1,929 | yes | held out, seen |
+| 2019-12-15 06:11 UTC, PHILIPPINES: MINDANAO: DAVAO | 6.8 | 18.0 km | all | 13 (+1 missing) | 13 | 0 to 5,761 | yes | held out |
+| 2020-01-07 08:24 UTC, PUERTO RICO: PONCE,SAN JUAN | 6.4 | 6.0 km | normal | 4 | 1 | 0 to 22 | yes | held out |
 | 2020-01-19 13:27 UTC, CHINA: XINJIANG PROVINCE | 6.0 | 5.5 km | reverse | 1 | 1 | 0 to 1,293 | yes | held out |
-| 2020-01-24 17:55 UTC, TURKEY: ELAZIG AND MALATYA PROVINCES | 6.7 | 10.0 km | strike-slip | 41 | 2 | 0 to 879 | yes | held out |
-| 2020-01-28 19:10 UTC, CUBA: GRANMA; CAYMAN IS; JAMAICA | 7.7 | 14.9 km | strike-slip | 0 | 0 | 0 to 2 | yes | held out |
+| 2020-01-24 17:55 UTC, TURKEY: ELAZIG AND MALATYA PROVINCES | 6.7 | 10.0 km | strike-slip | 41 | 3 | 0 to 1,831 | yes | held out |
+| 2020-01-28 19:10 UTC, CUBA: GRANMA; CAYMAN IS; JAMAICA | 7.7 | 14.9 km | strike-slip | 0 | 0 | 0 to 3 | yes | held out |
 | 2020-02-23 16:00 UTC, TURKEY: VAN; IRAN | 6.0 | 10.0 km | strike-slip | 10 | 79 | 1 to 9,050 | yes | held out |
 | 2020-03-14 10:01 UTC, KERMADEC ISLANDS | 6.4 | 11.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2020-03-31 23:52 UTC, IDAHO: CUSTER COUNTY | 6.5 | 12.1 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2020-05-02 12:51 UTC, GREECE: CRETE | 6.5 | 10.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2020-06-18 12:49 UTC, KERMADEC ISLANDS: S OF, RAOUL | 7.4 | 10.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
-| 2020-06-23 15:29 UTC, MEXICO: OAXACA | 7.4 | 20.0 km | reverse | 10 | 5 | 0 to 3,012 | yes | held out |
+| 2020-06-23 15:29 UTC, MEXICO: OAXACA | 7.4 | 20.0 km | reverse | 10 | 6 | 0 to 4,714 | yes | held out |
 | 2020-07-22 06:12 UTC, ALASKA | 7.8 | 28.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2020-08-18 00:03 UTC, PHILIPPINES: MASBATE | 6.6 | 10.0 km | strike-slip | 2 | 0 | 0 to 61 | yes | held out |
+| 2020-08-18 00:03 UTC, PHILIPPINES: MASBATE | 6.6 | 10.0 km | strike-slip | 2 | 1 | 0 to 249 | yes | held out |
 | 2020-10-19 20:54 UTC, ALASKA | 7.6 | 28.4 km | all | 0 | 0 | 0 to 0 | yes | held out |
-| 2020-10-30 11:51 UTC, GREECE: SAMOS; TURKEY: IZMIR | 7.0 | 21.0 km | normal | 117 | 0 | 0 to 162 | yes | held out |
+| 2020-10-30 11:51 UTC, GREECE: SAMOS; TURKEY: IZMIR | 7.0 | 21.0 km | normal | 117 | 1 | 0 to 359 | yes | held out |
 | 2020-12-27 21:39 UTC, CHILE: OFF COAST CENTRAL | 6.7 | 10.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2020-12-29 11:19 UTC, BALKANS NW: CROATIA: PETRINJA | 6.4 | 10.0 km | strike-slip | 8 | 11 | 0 to 602 | yes | held out |
-| 2021-01-14 18:28 UTC, INDONESIA: SULAWESI: MAMUJU, MAJENE | 6.2 | 18.0 km | reverse | 105 (+3 missing) | 2 | 0 to 578 | yes | held out |
-| 2021-01-19 02:46 UTC, ARGENTINA: SAN JUAN PROVINCE | 6.4 | 20.8 km | all | 0 | 0 | 0 to 1 | yes | held out |
+| 2020-12-29 11:19 UTC, BALKANS NW: CROATIA: PETRINJA | 6.4 | 10.0 km | strike-slip | 8 | 32 | 0 to 1,604 | yes | held out |
+| 2021-01-14 18:28 UTC, INDONESIA: SULAWESI: MAMUJU, MAJENE | 6.2 | 18.0 km | reverse | 105 (+3 missing) | 6 | 0 to 1,008 | yes | held out |
+| 2021-01-19 02:46 UTC, ARGENTINA: SAN JUAN PROVINCE | 6.4 | 20.8 km | all | 0 | 0 | 0 to 3 | yes | held out |
 | 2021-01-23 23:36 UTC, SCOTIA SEA: SOUTH SHETLAND ISLANDS | 6.9 | 15.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2021-02-10 13:19 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 7.7 | 10.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2021-03-03 10:16 UTC, GREECE: TYRNAVOS, LARISA | 6.3 | 8.0 km | normal | 0 | 0 | 0 to 44 | yes | held out |
 | 2021-03-04 13:27 UTC, NEW ZEALAND: GISBORNE | 7.3 | 10.0 km | all | 0 | 0 | 0 to 0 | yes | held out |
 | 2021-03-04 19:28 UTC, KERMADEC ISLANDS: SSE OF RAOUL ISLAND | 8.1 | 28.9 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2021-03-18 00:04 UTC, ALGERIA: BEJAIA | 6.0 | 8.0 km | reverse | 0 | 0 | 0 to 49 | yes | held out |
-| 2021-04-28 02:21 UTC, INDIA: ASSAM | 6.0 | 34.0 km | reverse | 2 | 142 | 3 to 44,594 | **no** | held out |
+| 2021-04-28 02:21 UTC, INDIA: ASSAM | 6.0 | 34.0 km | reverse | 2 | 728 | 4 to 163,304 | **no** | held out |
 | 2021-05-21 13:48 UTC, CHINA: YUNNAN PROVINCE: YANGBI, YONGPING | 6.1 | 9.0 km | strike-slip | 3 | 18 | 0 to 11,869 | yes | held out |
-| 2021-05-21 18:04 UTC, CHINA: QINGHAI PROVINCE | 7.3 | 10.0 km | all | 20 | 3 | 0 to 462 | yes | held out |
+| 2021-05-21 18:04 UTC, CHINA: QINGHAI PROVINCE | 7.3 | 10.0 km | all | 20 | 3 | 0 to 319 | yes | held out |
 | 2021-07-29 06:15 UTC, ALASKA PENINSULA | 8.2 | 35.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2021-07-30 17:10 UTC, PERU: PIURA | 6.2 | 34.0 km | reverse | 0 | 15 | 0 to 753 | yes | held out |
-| 2021-08-14 12:29 UTC, HAITI | 7.2 | 10.0 km | reverse | 2,248 (+329 missing) | 3,461 | 24 to 383,728 | yes | held out |
-| 2021-09-08 01:47 UTC, MEXICO: GUERRERO | 7.0 | 20.0 km | reverse | 3 | 203 | 0 to 31,848 | yes | held out |
-| 2021-09-27 06:17 UTC, GREECE: CRETE | 6.0 | 6.0 km | normal | 1 | 0 | 0 to 135 | yes | held out |
-| 2021-10-12 09:24 UTC, GREECE: CRETE | 6.4 | 20.0 km | normal | 0 | 0 | 0 to 24 | yes | held out |
-| 2021-11-14 12:08 UTC, IRAN: HORMOZGAN PROVINCE | 6.4 | 10.0 km | all | 2 | 23 | 1 to 945 | yes | held out |
-| 2021-12-14 03:20 UTC, INDONESIA: FLORES REGION | 7.3 | 14.3 km | strike-slip | 0 | 0 | 0 to 1 | yes | held out |
+| 2021-07-30 17:10 UTC, PERU: PIURA | 6.2 | 34.0 km | reverse | 0 | 39 | 0 to 926 | yes | held out |
+| 2021-08-14 12:29 UTC, HAITI | 7.2 | 10.0 km | reverse | 2,248 (+329 missing) | 7,937 | 24 to 505,843 | yes | held out |
+| 2021-09-08 01:47 UTC, MEXICO: GUERRERO | 7.0 | 20.0 km | reverse | 3 | 312 | 0 to 39,806 | yes | held out |
+| 2021-09-27 06:17 UTC, GREECE: CRETE | 6.0 | 6.0 km | normal | 1 | 1 | 0 to 292 | yes | held out |
+| 2021-10-12 09:24 UTC, GREECE: CRETE | 6.4 | 20.0 km | normal | 0 | 0 | 0 to 22 | yes | held out |
+| 2021-11-14 12:08 UTC, IRAN: HORMOZGAN PROVINCE | 6.4 | 10.0 km | all | 2 | 88 | 0 to 6,827 | yes | held out |
+| 2021-12-14 03:20 UTC, INDONESIA: FLORES REGION | 7.3 | 14.3 km | strike-slip | 0 | 0 | 0 to 2 | yes | held out |
 | 2022-01-07 17:45 UTC, CHINA: QINGHAI, GANSU | 6.6 | 13.0 km | strike-slip | 0 | 2 | 0 to 427 | yes | held out |
-| 2022-01-11 01:07 UTC, CYPRUS: PAPHOS; EGYPT: DAMIETTA | 6.6 | 21.0 km | reverse | 3 | 0 | 0 to 0 | **no** | held out |
-| 2022-01-14 09:05 UTC, INDONESIA: PANDEGLANG, BANTEN | 6.6 | 33.0 km | reverse | 0 | 0 | 0 to 15 | yes | held out |
+| 2022-01-11 01:07 UTC, CYPRUS: PAPHOS; EGYPT: DAMIETTA | 6.6 | 21.0 km | reverse | 3 | 0 | 0 to 1 | **no** | held out |
+| 2022-01-14 09:05 UTC, INDONESIA: PANDEGLANG, BANTEN | 6.6 | 33.0 km | reverse | 0 | 0 | 0 to 40 | yes | held out |
 | 2022-01-29 02:46 UTC, NEW ZEALAND: KERMADEC ISLANDS | 6.5 | 8.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2022-02-25 01:39 UTC, INDONESIA: W SUMATRA: PASAMAN, WEST PASAMAN | 6.1 | 4.0 km | strike-slip | 27 | 3 | 0 to 746 | yes | held out |
-| 2022-03-22 17:41 UTC, TAIWAN: HUALIEN, T'AIT-TUNG | 6.7 | 24.0 km | reverse | 0 | 0 | 0 to 2 | yes | held out |
+| 2022-03-22 17:41 UTC, TAIWAN: HUALIEN, T'AIT-TUNG | 6.7 | 24.0 km | reverse | 0 | 0 | 0 to 3 | yes | held out |
 | 2022-03-30 20:56 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 6.9 | 10.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2022-03-31 05:44 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 7.0 | 10.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2022-06-21 20:54 UTC, AFGHANISTAN: PAKTIKA PROVINCE; PAKISTAN | 6.0 | 4.0 km | strike-slip | 1,039 | 137 | 3 to 18,054 | yes | held out |
-| 2022-07-01 21:32 UTC, IRAN: HORMOZGAN PROVINCE | 6.0 | 16.0 km | reverse | 5 | 16 | 0 to 1,822 | yes | held out |
+| 2022-06-21 20:54 UTC, AFGHANISTAN: PAKTIKA PROVINCE; PAKISTAN | 6.0 | 4.0 km | strike-slip | 1,039 | 431 | 3 to 22,739 | yes | held out |
+| 2022-07-01 21:32 UTC, IRAN: HORMOZGAN PROVINCE | 6.0 | 16.0 km | reverse | 5 | 103 | 0 to 2,496 | yes | held out |
 | 2022-07-27 00:43 UTC, PHILIPPINES: LUZON: ABRA | 7.0 | 33.7 km | reverse | 11 | 0 | 0 to 142 | yes | held out |
 | 2022-09-05 04:52 UTC, CHINA: SICHUAN PROVINCE | 6.6 | 12.0 km | strike-slip | 118 | 14 | 0 to 2,226 | yes | held out |
 | 2022-09-18 06:44 UTC, TAIWAN: HUALIEN | 6.9 | 10.0 km | strike-slip | 1 | 0 | 0 to 72 | yes | held out |
 | 2022-09-19 18:05 UTC, MEXICO: MICHOACAN, COLIMA, JALISCO | 7.6 | 26.9 km | reverse | 2 | 136 | 0 to 6,486 | yes | held out |
-| 2022-09-22 06:16 UTC, MEXICO: MEXICO CITY, MICHOACAN | 6.8 | 20.0 km | reverse | 3 | 2 | 0 to 100 | yes | held out |
-| 2022-10-25 14:59 UTC, PHILIPPINES: LUZON: ABRA | 6.4 | 6.0 km | reverse | 0 | 0 | 0 to 338 | yes | held out |
+| 2022-09-22 06:16 UTC, MEXICO: MEXICO CITY, MICHOACAN | 6.8 | 20.0 km | reverse | 3 | 2 | 0 to 104 | yes | held out |
+| 2022-10-25 14:59 UTC, PHILIPPINES: LUZON: ABRA | 6.4 | 6.0 km | reverse | 0 | 1 | 0 to 235 | yes | held out |
 | 2022-11-11 10:48 UTC, TONGA ISLANDS | 7.3 | 37.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2022-11-18 13:37 UTC, INDONESIA: SUMATRA | 6.9 | 25.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2022-11-22 02:03 UTC, SOLOMON ISLANDS: HONIARA | 7.0 | 14.0 km | all | 0 | 0 | 0 to 6 | yes | held out |
-| 2022-11-23 01:08 UTC, TURKEY: DUZCE | 6.1 | 10.0 km | strike-slip | 2 | 7 | 0 to 2,750 | yes | held out |
-| 2022-12-20 10:34 UTC, CALIFORNIA: HUMBOLDT COUNTY | 6.4 | 17.9 km | all | 2 | 0 | 0 to 1 | **no** | held out |
-| 2023-02-06 01:17 UTC, TURKEY: KAHRAMANMARAS; SYRIA | 7.8 | 10.0 km | strike-slip | 56,697 | 7,286 | 38 to 502,311 | yes | held out |
-| 2023-02-06 10:24 UTC, TURKEY; SYRIA | 7.5 | 7.4 km | strike-slip | 0 | 1,354 | 0 to 93,553 | yes | held out |
-| 2023-02-20 17:04 UTC, TURKEY; SYRIA | 6.3 | 16.0 km | all | 6 | 19 | 1 to 33,380 | yes | held out |
+| 2022-11-22 02:03 UTC, SOLOMON ISLANDS: HONIARA | 7.0 | 14.0 km | all | 0 | 0 | 0 to 9 | yes | held out |
+| 2022-11-23 01:08 UTC, TURKEY: DUZCE | 6.1 | 10.0 km | strike-slip | 2 | 49 | 0 to 7,870 | yes | held out |
+| 2022-12-20 10:34 UTC, CALIFORNIA: HUMBOLDT COUNTY | 6.4 | 17.9 km | all | 2 | 0 | 0 to 4 | yes | held out |
+| 2023-02-06 01:17 UTC, TURKEY: KAHRAMANMARAS; SYRIA | 7.8 | 10.0 km | strike-slip | 56,697 | 7,676 | 78 to 779,443 | yes | held out |
+| 2023-02-06 10:24 UTC, TURKEY; SYRIA | 7.5 | 7.4 km | strike-slip | 0 | 1,422 | 1 to 108,048 | **no** | held out |
+| 2023-02-20 17:04 UTC, TURKEY; SYRIA | 6.3 | 16.0 km | all | 6 | 141 | 1 to 58,316 | yes | held out |
 | 2023-03-07 06:02 UTC, PHILIPPINES: MINDANAO: DAVAO | 5.9 | 16.1 km | strike-slip | 0 | 0 | 0 to 207 | yes | held out |
 | 2023-03-16 00:56 UTC, KERMADEC ISLANDS | 7.0 | 10.0 km | all | 0 | 0 | 0 to 0 | yes | held out |
-| 2023-04-24 20:00 UTC, INDONESIA: SUMATRA: MENTAWAI ISLANDS | 7.1 | 34.0 km | reverse | 0 | 0 | 0 to 4 | yes | held out |
-| 2023-05-05 05:42 UTC, JAPAN: HONSHU: ISHIKAWA, TOYAMA | 6.2 | 10.0 km | reverse | 1 | 0 | 0 to 11 | yes | held out |
+| 2023-04-24 20:00 UTC, INDONESIA: SUMATRA: MENTAWAI ISLANDS | 7.1 | 34.0 km | reverse | 0 | 0 | 0 to 11 | yes | held out |
+| 2023-05-05 05:42 UTC, JAPAN: HONSHU: ISHIKAWA, TOYAMA | 6.2 | 10.0 km | reverse | 1 | 0 | 0 to 48 | yes | held out |
 | 2023-05-19 02:57 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 7.7 | 18.1 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2023-05-20 01:50 UTC, NEW CALEDONIA: LOYALTY ISLANDS | 7.1 | 27.3 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2023-07-16 06:48 UTC, ALASKA PENINSULA | 7.2 | 25.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
@@ -519,44 +515,44 @@ Without the phases in the net before the rule: bias 0.95×, scatter 0.46, accept
 | 2023-09-08 22:11 UTC, MOROCCO: MARRAKECH, SAFI | 6.8 | 19.0 km | reverse | 2,946 | 29 | 0 to 11,862 | yes | held out |
 | 2023-10-05 01:59 UTC, JAPAN: IZU ISLANDS | 6.1 | 10.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2023-10-06 01:31 UTC, JAPAN: IZU ISLANDS | 6.1 | 10.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
-| 2023-10-07 06:41 UTC, AFGHANISTAN: HERAT | 6.3 | 14.0 km | reverse | 1,482 | 5 | 0 to 3,664 | yes | held out |
-| 2023-10-11 00:41 UTC, AFGHANISTAN: HERAT | 6.3 | 8.0 km | reverse | 3 | 22 | 1 to 6,547 | yes | held out |
-| 2023-10-15 03:36 UTC, AFGHANISTAN: HERAT | 6.3 | 9.0 km | reverse | 4 | 5 | 0 to 2,825 | yes | held out |
+| 2023-10-07 06:41 UTC, AFGHANISTAN: HERAT | 6.3 | 14.0 km | reverse | 1,482 | 16 | 0 to 25,426 | yes | held out |
+| 2023-10-11 00:41 UTC, AFGHANISTAN: HERAT | 6.3 | 8.0 km | reverse | 3 | 75 | 1 to 29,428 | yes | held out |
+| 2023-10-15 03:36 UTC, AFGHANISTAN: HERAT | 6.3 | 9.0 km | reverse | 4 | 7 | 0 to 6,621 | yes | held out |
 | 2023-11-22 04:47 UTC, VANUATU ISLANDS: MAEWO | 6.7 | 13.0 km | reverse | 0 | 0 | 0 to 4 | yes | held out |
-| 2023-12-02 14:37 UTC, PHILIPPINES: MINDANAO: E | 7.6 | 40.0 km | reverse | 3 | 84 | 0 to 9,292 | yes | held out |
-| 2024-01-01 07:10 UTC, JAPAN: HONSHU: ISHIKAWA | 7.5 | 10.0 km | reverse | 549 (+2 missing) | 18 | 0 to 787 | yes | held out |
+| 2023-12-02 14:37 UTC, PHILIPPINES: MINDANAO: E | 7.6 | 40.0 km | reverse | 3 | 98 | 0 to 6,819 | yes | held out |
+| 2024-01-01 07:10 UTC, JAPAN: HONSHU: ISHIKAWA | 7.5 | 10.0 km | reverse | 549 (+2 missing) | 19 | 0 to 2,625 | yes | held out |
 | 2024-01-22 18:09 UTC, CHINA: XINJIANG PROVINCE; KAZAKHSTAN | 7.0 | 13.0 km | reverse | 3 | 0 | 0 to 69 | yes | held out |
-| 2024-03-22 08:52 UTC, INDONESIA: JAVA: TIMUR | 6.4 | 9.5 km | strike-slip | 0 | 0 | 0 to 2 | yes | held out |
-| 2024-03-23 20:22 UTC, PAPUA NEW GUINEA: EAST SEPIK | 6.9 | 41.5 km | all | 5 | 0 | 0 to 77 | yes | held out |
-| 2024-04-02 23:58 UTC, TAIWAN: HUA-LIEN | 7.4 | 40.0 km | reverse | 18 | 0 | 0 to 748 | yes | held out |
-| 2024-06-28 05:36 UTC, PERU: AREQUIPA | 7.2 | 24.0 km | reverse | 0 | 0 | 0 to 8 | yes | held out |
-| 2024-08-08 07:42 UTC, JAPAN: MIYAZAKI | 7.1 | 24.0 km | reverse | 0 | 0 | 0 to 775 | yes | held out |
+| 2024-03-22 08:52 UTC, INDONESIA: JAVA: TIMUR | 6.4 | 9.5 km | strike-slip | 0 | 0 | 0 to 38 | yes | held out |
+| 2024-03-23 20:22 UTC, PAPUA NEW GUINEA: EAST SEPIK | 6.9 | 41.5 km | all | 5 | 1 | 0 to 257 | yes | held out |
+| 2024-04-02 23:58 UTC, TAIWAN: HUA-LIEN | 7.4 | 40.0 km | reverse | 18 | 1 | 0 to 803 | yes | held out |
+| 2024-06-28 05:36 UTC, PERU: AREQUIPA | 7.2 | 24.0 km | reverse | 0 | 0 | 0 to 12 | yes | held out |
+| 2024-08-08 07:42 UTC, JAPAN: MIYAZAKI | 7.1 | 24.0 km | reverse | 0 | 1 | 0 to 1,878 | yes | held out |
 | 2024-08-17 19:10 UTC, RUSSIA: OFF KAMCHATKA | 7.0 | 29.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2024-10-16 07:46 UTC, TURKEY: ELAZIG AND MALATYA PROVINCES | 6.0 | 10.0 km | all | 0 | 0 | 0 to 490 | yes | held out |
 | 2024-11-10 16:49 UTC, CUBA: GRANMA, SANTIAGO DE CUBA | 6.8 | 14.0 km | all | 0 | 0 | 0 to 243 | yes | held out |
 | 2024-12-05 18:44 UTC, CALIFORNIA: OFFSHORE CAPE MENDOCINO | 7.0 | 10.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
-| 2025-01-07 01:05 UTC, CHINA: TIBET (XIZANG PROVINCE) | 7.1 | 10.0 km | normal | 134 | 2 | 0 to 1,077 | yes | held out |
-| 2025-01-13 12:19 UTC, JAPAN: MIYAZAKI | 6.8 | 39.0 km | reverse | 0 | 0 | 0 to 82 | yes | held out |
-| 2025-01-20 16:17 UTC, TAIWAN: TAINAN | 6.0 | 16.0 km | reverse | 0 | 0 | 0 to 30 | yes | held out |
+| 2025-01-07 01:05 UTC, CHINA: TIBET (XIZANG PROVINCE) | 7.1 | 10.0 km | normal | 134 | 2 | 0 to 2,134 | yes | held out |
+| 2025-01-13 12:19 UTC, JAPAN: MIYAZAKI | 6.8 | 39.0 km | reverse | 0 | 1 | 0 to 1,052 | yes | held out |
+| 2025-01-20 16:17 UTC, TAIWAN: TAINAN | 6.0 | 16.0 km | reverse | 0 | 0 | 0 to 34 | yes | held out |
 | 2025-02-08 23:23 UTC, CAYMAN IS; HONDURAS | 7.6 | 14.3 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2025-03-25 01:43 UTC, NEW ZEALAND: OFF WEST COAST OF SOUTH ISLAND | 6.7 | 21.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2025-03-28 06:20 UTC, MYANMAR (BURMA); THAILAND | 7.7 | 10.0 km | strike-slip | 3,815 (+116 missing) | 7,686 | 61 to 729,399 | yes | held out |
+| 2025-03-28 06:20 UTC, MYANMAR (BURMA); THAILAND | 7.7 | 10.0 km | strike-slip | 3,815 (+116 missing) | 12,934 | 35 to 902,015 | yes | held out |
 | 2025-03-30 12:18 UTC, TONGA TRENCH | 7.0 | 29.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2025-04-23 09:49 UTC, TURKEY: ISTANBUL, BURSA, TEKIRDAG | 6.2 | 12.7 km | strike-slip | 0 | 0 | 0 to 17 | yes | held out |
-| 2025-04-25 11:44 UTC, ECUADOR: ESMERALDAS | 6.3 | 18.0 km | reverse | 0 | 1 | 0 to 2,622 | yes | held out |
+| 2025-04-23 09:49 UTC, TURKEY: ISTANBUL, BURSA, TEKIRDAG | 6.2 | 12.7 km | strike-slip | 0 | 0 | 0 to 28 | yes | held out |
+| 2025-04-25 11:44 UTC, ECUADOR: ESMERALDAS | 6.3 | 18.0 km | reverse | 0 | 8 | 0 to 9,071 | yes | held out |
 | 2025-05-02 12:58 UTC, CHILE: DRAKE PASSAGE | 7.4 | 10.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2025-06-08 13:08 UTC, COLOMBIA: CUNDINAMARCA | 6.3 | 9.0 km | reverse | 0 | 0 | 0 to 75 | yes | held out |
+| 2025-06-08 13:08 UTC, COLOMBIA: CUNDINAMARCA | 6.3 | 9.0 km | reverse | 0 | 1 | 0 to 98 | yes | held out |
 | 2025-07-16 20:37 UTC, ALASKA | 7.3 | 38.0 km | all | 0 | 0 | 0 to 0 | yes | held out |
 | 2025-07-20 06:49 UTC, RUSSIA: KAMCHATKA PENINSULA | 7.4 | 34.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2025-07-29 23:24 UTC, RUSSIA: KAMCHATKA PENINSULA | 8.8 | 35.0 km | reverse | 0 | 0 | 0 to 168 | yes | held out |
-| 2025-08-10 16:53 UTC, TURKEY: BALIKESIR | 6.1 | 10.0 km | normal | 1 | 0 | 0 to 469 | yes | held out |
+| 2025-07-29 23:24 UTC, RUSSIA: KAMCHATKA PENINSULA | 8.8 | 35.0 km | reverse | 0 | 8 | 0 to 310 | yes | held out |
+| 2025-08-10 16:53 UTC, TURKEY: BALIKESIR | 6.1 | 10.0 km | normal | 1 | 1 | 0 to 777 | yes | held out |
 | 2025-08-22 02:16 UTC, CHILE: DRAKE PASSAGE | 7.5 | 10.0 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2025-08-31 19:17 UTC, AFGHANISTAN: KUNAR, NANGARHAR | 6.0 | 8.0 km | reverse | 2,205 | 191 | 4 to 23,035 | yes | held out |
 | 2025-09-18 18:58 UTC, RUSSIA: KAMCHATKA PENINSULA | 7.8 | 27.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
-| 2025-09-30 13:59 UTC, PHILIPPINES: CEBU, CENTRAL VISAYAS | 6.9 | 10.0 km | strike-slip | 79 | 0 | 0 to 377 | yes | held out |
-| 2025-09-30 16:49 UTC, INDONESIA: EAST JAVA: SUMENEP | 6.0 | 19.5 km | reverse | 0 | 0 | 0 to 12 | yes | held out |
+| 2025-09-30 13:59 UTC, PHILIPPINES: CEBU, CENTRAL VISAYAS | 6.9 | 10.0 km | strike-slip | 79 | 1 | 0 to 2,406 | yes | held out |
+| 2025-09-30 16:49 UTC, INDONESIA: EAST JAVA: SUMENEP | 6.0 | 19.5 km | reverse | 0 | 0 | 0 to 109 | yes | held out |
 | 2025-10-10 20:29 UTC, CHILE: DRAKE PASSAGE | 7.6 | 5.6 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
-| 2025-11-02 20:29 UTC, AFGHANISTAN: NORTHERN | 6.2 | 28.0 km | all | 26 | 6 | 0 to 1,187 | yes | held out |
+| 2025-11-02 20:29 UTC, AFGHANISTAN: NORTHERN | 6.2 | 28.0 km | all | 26 | 11 | 0 to 6,237 | yes | held out |
 | 2025-11-09 08:03 UTC, JAPAN: OFF EAST COAST HONSHU | 6.8 | 18.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 | 2025-12-12 02:44 UTC, JAPAN: OFF EAST COAST OF HONSHU ISLAND | 6.7 | 19.0 km | reverse | 0 | 0 | 0 to 0 | yes | held out |
 
@@ -636,28 +632,28 @@ model was set on the event, which is under "Which checks are validation".
 
 | Event | Recorded | Model | Band (5–95 %) | Span | Model / record | Verdict | Cause | Standing | Role |
 |-------|---------:|------:|--------------:|-----:|---------------:|---------|-------|----------|------|
-| Kokoxili (Kunlun) 2001 | 0 | 0 | 0 – 0 | — | both zero | contains | — | gated | held out |
-| Northridge 1994 | 57 | 13 | 1 – 177 | 10^2.2 | 0.23× | contains | — | gated | same source |
-| L'Aquila 2009 | 309 | 40 | 1 – 4,622 | 10^3.7 | 0.13× | contains | — | declared | same source |
-| Amatrice 2016 | 299 | 1 | 0 – 131 | 10^2.1 | 0.00× | **misses** | buildingStock | declared | same source |
-| Gorkha (Nepal) 2015 | 8,964 | 2,983 | 12 – 735,884 | 10^4.8 | 0.33× | contains | buildingStock | declared | held out |
+| Kokoxili (Kunlun) 2001 | 0 | 0 | 0 – 3 | 10^0.5 | both zero | contains | — | gated | held out |
+| Northridge 1994 | 57 | 29 | 2 – 415 | 10^2.3 | 0.51× | contains | — | gated | same source |
+| L'Aquila 2009 | 309 | 43 | 2 – 4,642 | 10^3.4 | 0.14× | contains | — | declared | same source |
+| Amatrice 2016 | 299 | 1 | 0 – 236 | 10^2.4 | 0.00× | **misses** | buildingStock | declared | same source |
+| Gorkha (Nepal) 2015 | 8,964 | 5,356 | 43 – 934,524 | 10^4.3 | 0.60× | contains | buildingStock | declared | held out |
 | Beirut 2020 | 218 | 1,432 | 1,296 – 1,586 | 10^0.1 | 6.57× | **misses** | populationRaster | declared | tuned on it |
 | Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | occupancy | declared | tuned on it |
 | Pinatubo 1991 | 847 | 82 | 32 – 312 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared | held out |
 | Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | populationChanged | declared | tuned on it |
-| Tōhoku 2011 | 18,500 | 4,505 | 7 – 1,042,546 | 10^5.2 | 0.24× | contains | footprint | declared | held out |
-| Sumatra–Andaman 2004 | 227,898 | 3,449 | 43 – 188,378 | 10^3.6 | 0.02× | **misses** | drownedOffline | declared | same source |
-| Christchurch 2011 | 185 | 1 | 0 – 20 | 10^1.3 | 0.01× | **misses** | buildingStock | declared | held out |
-| Kumamoto 2016 | 273 (49–273) | 61 | 0 – 7,777 | 10^3.9 | 0.22× | contains | — | declared | held out |
+| Tōhoku 2011 | 18,500 | 7,997 | 8 – 1,204,212 | 10^5.2 | 0.43× | contains | footprint | declared | held out |
+| Sumatra–Andaman 2004 | 227,898 | 4,263 | 115 – 277,275 | 10^3.4 | 0.02× | contains | drownedOffline | declared | same source |
+| Christchurch 2011 | 185 | 1 | 0 – 26 | 10^1.4 | 0.01× | **misses** | buildingStock | declared | held out |
+| Kumamoto 2016 | 273 (49–273) | 198 | 0 – 19,404 | 10^4.3 | 0.73× | contains | — | declared | held out |
 | Kaikōura 2016 | 2 | 0 | 0 – 14 | 10^1.1 | 0.00× | contains | belowResolution | declared | held out |
-| Pohang 2017 | 0 | 32 | 0 – 12,386 | 10^4.1 | from nothing | contains | buildingStock | declared | held out |
-| Durrës (Albania) 2019 | 51 | 3 | 0 – 453 | 10^2.7 | 0.06× | contains | — | declared | held out |
+| Pohang 2017 | 0 | 135 | 0 – 36,916 | 10^4.6 | from nothing | contains | buildingStock | declared | held out |
+| Durrës (Albania) 2019 | 51 | 15 | 0 – 1,833 | 10^3.3 | 0.29× | contains | — | declared | held out |
 | Fuego 2018 | 430 (201–445) | 187 | 14 – 304 | 10^1.3 | 0.43× | contains | — | declared | held out |
 | Unzen 1991 | 43 (40–43) | 10 | 8 – 14 | 10^0.2 | 0.23× | **misses** | occupancy | declared | held out |
 
 #### Where the band misses, and why
 
-**Amatrice 2016.** Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter was 0 to 114, then 0 to 175 once the ground-motion residual was corrected from a misquoted 0.50 to the 0.60 Boore et al. 2014 give, and the record stayed outside both. On 14 September the band also began to draw the fatality curve’s own scatter, Italy’s G of 1.96, and it is 0 to 490 now: the record is inside, on a central estimate of 6, a fiftieth of it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village". On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, it reads 1 dead on a band of 0 to 131, and the record is outside again.
+**Amatrice 2016.** Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter was 0 to 114, then 0 to 175 once the ground-motion residual was corrected from a misquoted 0.50 to the 0.60 Boore et al. 2014 give, and the record stayed outside both. On 14 September the band also began to draw the fatality curve’s own scatter, Italy’s G of 1.96, and it is 0 to 490 now: the record is inside, on a central estimate of 6, a fiftieth of it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village". On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, it reads 1 dead on a band of 0 to 131, and the record is outside again. On the ground the browser reads under its epicentre, Vs30 610 m/s by rule 22 of siteVs30.ts, 1 on 0 to 236.
 
 **Beirut 2020.** Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. On 14 September 2026 the blast itself was corrected — a charge on the ground reflects its blast and acts like twice its yield in the free-air fit the rings use (Takazawa, Kim & Garcés 2023) — and the rings grew by a quarter, taking the row to 6.6x, 1 296 to 1 586 on a predictive interval that is the ten per cent a charge's yield actually varies by (until later that day the interval also drew the charge up to a hundred metres above the quay, and read 1 297 to 2 433). That is the right shape for this row, because what is left is neither scatter in the charge nor the blast but the raster underneath and the conventional mortality bands, which were composed with this row in view and not refitted after the correction: at a few hundred metres the rings are far smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it.
 
@@ -665,9 +661,7 @@ model was set on the event, which is under "Which checks are validation".
 
 **Pinatubo 1991.** The model now knows the zone was cleared — PHIVOLCS widened it to 40 km before the climax — and reads 82 dead where it read 82 477: the currents' mortality in a cleared zone, measured at Merapi in 2010, over the 91 641 people the map puts inside their reach. It misses the 847 counted from below, and should: most of Pinatubo's dead were killed by roofs collapsing under ash wetted by Typhoon Yunya, and by disease in the evacuation camps, neither of which this model simulates. Rounding the Merapi ratio up to one per cent, as the band's high end does, would land the toll within ten per cent of the record — for the wrong dead.
 
-**Sumatra–Andaman 2004.** Drowning again, and again without a wave here. Reported for the shaking only: since 14 September 2026 counted on the rupture stadium the simulator draws, 31 427 dead on a band of 1 552 to 329 255, where the circle about the epicentre had counted 1. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 3 449 on 43 to 188 378.
-
-**Christchurch 2011.** Held out, and a miss: 1 dead against 185, on a band that stopped at 15 on the first run and stops at 34 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. New Zealand has no fatality curve of its own and borrows its region’s (θ = 37.8, β = 0.36): with all 265 529 people inside the model’s MMI VII ring shaken at MMI IX it would read about nine deaths, so the intensity alone cannot account for the miss. The rings are also a median on reference rock, 1.8 km of MMI VIII for an Mw 6.1. The band draws the shaking and holds the curve fixed, which is the declared gap this row makes visible. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 1 dead on 0 to 20.
+**Christchurch 2011.** Held out, and a miss: 1 dead against 185, on a band that stopped at 15 on the first run and stops at 34 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. New Zealand has no fatality curve of its own and borrows its region’s (θ = 37.8, β = 0.36): with all 265 529 people inside the model’s MMI VII ring shaken at MMI IX it would read about nine deaths, so the intensity alone cannot account for the miss. The rings are also a median on reference rock, 1.8 km of MMI VIII for an Mw 6.1. The band draws the shaking and holds the curve fixed, which is the declared gap this row makes visible. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 1 dead on 0 to 20; on the ground the browser reads under its epicentre, Vs30 612 m/s by rule 22 of siteVs30.ts, 1 on 0 to 26.
 
 **Unzen 1991.** Held out, and a miss: 10 dead against 40 to 43. Written after the result, as the rules in heldOutEvents.ts require. The model’s current reaches 0.84 km from the summit, where the raster puts 12 residents; the flow ran 3.2 km and its surge about 4, four times as far. And the 43 were mostly not residents: journalists, firefighters and police, with four taxi drivers and three volcanologists, inside a valley its residents had been advised to leave. A map of where people live cannot hold them, and a longer reach alone would not have found them.
 
@@ -675,21 +669,23 @@ model was set on the event, which is under "Which checks are validation".
 
 **Kokoxili (Kunlun) 2001.** The zero. A model that cannot produce it has learned to kill people who are not there.
 
-**L'Aquila 2009.** Ungated on 14 September 2026, as rule 19 of contourLaws.ts requires of a row that leaves its gate when the rings change: on Boore et al. 2014’s rings it reads 40 dead on a band of 1 to 4 622 against 309 — inside, on a band past the three and a half orders of magnitude a gated row may span. On Joyner & Boore 1981’s it read 227 on 4 to 9 480.
+**L'Aquila 2009.** Ungated on 14 September 2026, as rule 19 of contourLaws.ts requires of a row that leaves its gate when the rings change: on Boore et al. 2014’s rings it reads 40 dead on a band of 1 to 4 622 against 309 (43 on 2 to 4 642 on the ground the browser reads under its epicentre, Vs30 735 m/s, by rule 22 of siteVs30.ts) — inside, on a band past the three and a half orders of magnitude a gated row may span. On Joyner & Boore 1981’s it read 227 on 4 to 9 480.
 
-**Gorkha (Nepal) 2015.** Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428, and the predictive interval was 22 to 4 924, then 13 to 6 942 with the ground-motion residual corrected to 0.60, and neither contained 8 964. With the fatality curve's own scatter drawn from 14 September — Nepal's G is 2.5, the widest in PAGER's table — it was 2 to 72 166, which contained the record by spanning almost five orders of magnitude: a statement about how little the curve knows, not a pass. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. Until the same day these figures counted a circle about the epicentre, where the simulator counts the rupture stadium an Mw 7.8 is drawn as; counted as the simulator counts it, the row reads 17 699 dead, twice the record, on a band of 118 to 1 255 286 — inside by four orders of magnitude, which is the same statement again. On Boore et al. 2014's rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 2 983 on 12 to 735 884.
+**Gorkha (Nepal) 2015.** Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428, and the predictive interval was 22 to 4 924, then 13 to 6 942 with the ground-motion residual corrected to 0.60, and neither contained 8 964. With the fatality curve's own scatter drawn from 14 September — Nepal's G is 2.5, the widest in PAGER's table — it was 2 to 72 166, which contained the record by spanning almost five orders of magnitude: a statement about how little the curve knows, not a pass. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. Until the same day these figures counted a circle about the epicentre, where the simulator counts the rupture stadium an Mw 7.8 is drawn as; counted as the simulator counts it, the row reads 17 699 dead, twice the record, on a band of 118 to 1 255 286 — inside by four orders of magnitude, which is the same statement again. On Boore et al. 2014's rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 2 983 on 12 to 735 884. On the ground the browser reads under its epicentre, Vs30 405 m/s by rule 22 of siteVs30.ts, 5 356 on 43 to 934 524.
 
 **Hiroshima 1945.** Hiroshima held about 350 000 people in 1945 and about 1.2 million today; the raster counts the living, so the model must overshoot by roughly that ratio.
 
-**Tōhoku 2011.** Over 90 % of the dead drowned. This harness has no bathymetry and therefore no wave, so the number here is the shaking alone, and until 14 September 2026 it was far below the record — 0 dead on a band of 0 to 5 — because the harness counted a circle about an epicentre at sea. Counted as the simulator counts it, on the rupture stadium along the coast, the shaking alone reads 177 033 dead on a band of 2 529 to 2 969 170: nearly ten times the whole record, drowned included, where NCEI gives the earthquake’s own effects 1 474. Inside only because the band spans three orders of magnitude. The intensity rings are Joyner–Boore 1981 stretched along a megathrust, and painted three times the area of MMI VIII that USGS ShakeMap measured and 180 000 km² of MMI IX where it measured none. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, the shaking alone reads 4 505 on 7 to 1 042 546: three times NCEI’s count for the earthquake’s own effects, the MMI VIII area 2.5 times the ShakeMap’s, and no MMI IX.
+**Tōhoku 2011.** Over 90 % of the dead drowned. This harness has no bathymetry and therefore no wave, so the number here is the shaking alone, and until 14 September 2026 it was far below the record — 0 dead on a band of 0 to 5 — because the harness counted a circle about an epicentre at sea. Counted as the simulator counts it, on the rupture stadium along the coast, the shaking alone reads 177 033 dead on a band of 2 529 to 2 969 170: nearly ten times the whole record, drowned included, where NCEI gives the earthquake’s own effects 1 474. Inside only because the band spans three orders of magnitude. The intensity rings are Joyner–Boore 1981 stretched along a megathrust, and painted three times the area of MMI VIII that USGS ShakeMap measured and 180 000 km² of MMI IX where it measured none. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, the shaking alone reads 4 505 on 7 to 1 042 546: three times NCEI’s count for the earthquake’s own effects, the MMI VIII area 2.5 times the ShakeMap’s, and no MMI IX. On the ground the browser reads under its epicentre, the sea floor’s Vs30 337 m/s by rule 22 of siteVs30.ts, 7 997 on 8 to 1 204 212, with the MMI VIII area 2.8 times the ShakeMap’s.
 
-**Kumamoto 2016.** Held out, and inside, on a band that says little: 1 to 12 168 dead on the first run, four orders of magnitude, and 1 to 62 577 with the fatality curve’s own scatter drawn, added the same day, against a record of 49 direct to 273 in all. Written after the result, as the rules in heldOutEvents.ts require. Japan’s own PAGER curve is among the steepest in the table (β = 0.10), so the shift in intensity that one sigma of ground motion makes moves the toll by orders of magnitude. The central estimate, 332, sits between the direct and the total count; the pass is recorded as it came, and it is not evidence of much. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 61 on 0 to 7 777.
+**Sumatra–Andaman 2004.** Drowning again, and again without a wave here. Reported for the shaking only: since 14 September 2026 counted on the rupture stadium the simulator draws, 31 427 dead on a band of 1 552 to 329 255, where the circle about the epicentre had counted 1. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 3 449 on 43 to 188 378. On the ground the browser reads under its epicentre, the sea floor’s Vs30 369 m/s by rule 22 of siteVs30.ts, 4 263 on 115 to 277 275: a band that now holds the record, for a figure that is the shaking alone.
 
-**Kaikōura 2016.** Held out, and a miss by two: a band of 0 to 0 on the first run and 0 to 1 with the fatality curve’s own scatter drawn, added the same day, against 2 dead. Written after the result, as the rules in heldOutEvents.ts require. The rings about the epicentre hold 5 231 people, and the curve New Zealand borrows gives them about one twentieth of a death. A rate over a population cannot resolve a handful of deaths, and no band built from one could contain them. Those rings were the harness’s circles; counted as the simulator counts an Mw 7.8, on the rupture stadium, the row reads 1 dead on a band of 0 to 30 and is inside — on the same resolution, one death more or less. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 0 on 0 to 14.
+**Kumamoto 2016.** Held out, and inside, on a band that says little: 1 to 12 168 dead on the first run, four orders of magnitude, and 1 to 62 577 with the fatality curve’s own scatter drawn, added the same day, against a record of 49 direct to 273 in all. Written after the result, as the rules in heldOutEvents.ts require. Japan’s own PAGER curve is among the steepest in the table (β = 0.10), so the shift in intensity that one sigma of ground motion makes moves the toll by orders of magnitude. The central estimate, 332, sits between the direct and the total count; the pass is recorded as it came, and it is not evidence of much. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 61 on 0 to 7 777; on the ground the browser reads under its epicentre, Vs30 306 m/s by rule 22 of siteVs30.ts, 198 on 0 to 19 404.
 
-**Pohang 2017.** Held out, and a miss the other way: 35 dead where nobody died, on a band of 1 to 17 877 on the first run and 1 to 29 628 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. South Korea has no fatality curve of its own and borrows its region’s, one of the deadliest in the table (θ = 10.3, β = 0.10): inside the model’s MMI VII ring it kills about one in fifteen hundred of 52 188 people, where the city’s buildings killed none. The same steepness is what makes the band four orders of magnitude wide. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 32 on 0 to 12 386, a band that now reaches down to the record of none.
+**Kaikōura 2016.** Held out, and a miss by two: a band of 0 to 0 on the first run and 0 to 1 with the fatality curve’s own scatter drawn, added the same day, against 2 dead. Written after the result, as the rules in heldOutEvents.ts require. The rings about the epicentre hold 5 231 people, and the curve New Zealand borrows gives them about one twentieth of a death. A rate over a population cannot resolve a handful of deaths, and no band built from one could contain them. Those rings were the harness’s circles; counted as the simulator counts an Mw 7.8, on the rupture stadium, the row reads 1 dead on a band of 0 to 30 and is inside — on the same resolution, one death more or less. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 0 on 0 to 14, and the same on the ground the browser reads under its epicentre, where the slope reads rock, 760 m/s (rule 22 of siteVs30.ts).
 
-**Durrës (Albania) 2019.** Held out, and inside: 16 dead against 51, on a band of 1 to 510 on the first run and 1 to 1 425 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. Albania borrows its region’s curve (θ = 16.2, β = 0.22). The band spans about three orders of magnitude, which is weak evidence, but it is inside the span the gated rows are held to, so this is the first held-out death toll that is not a zero to land inside a band narrow enough to have been wrong. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 3 on 0 to 453.
+**Pohang 2017.** Held out, and a miss the other way: 35 dead where nobody died, on a band of 1 to 17 877 on the first run and 1 to 29 628 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. South Korea has no fatality curve of its own and borrows its region’s, one of the deadliest in the table (θ = 10.3, β = 0.10): inside the model’s MMI VII ring it kills about one in fifteen hundred of 52 188 people, where the city’s buildings killed none. The same steepness is what makes the band four orders of magnitude wide. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 32 on 0 to 12 386, a band that now reaches down to the record of none; on the ground the browser reads under its epicentre, Vs30 509 m/s by rule 22 of siteVs30.ts, 135 on 0 to 36 916.
+
+**Durrës (Albania) 2019.** Held out, and inside: 16 dead against 51, on a band of 1 to 510 on the first run and 1 to 1 425 with the fatality curve’s own scatter drawn, added the same day. Written after the result, as the rules in heldOutEvents.ts require. Albania borrows its region’s curve (θ = 16.2, β = 0.22). The band spans about three orders of magnitude, which is weak evidence, but it is inside the span the gated rows are held to, so this is the first held-out death toll that is not a zero to land inside a band narrow enough to have been wrong. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 3 on 0 to 453; on the ground the browser reads under its epicentre, Vs30 298 m/s by rule 22 of siteVs30.ts, 15 on 0 to 1 833.
 
 **Fuego 2018.** Held out, and inside for the wrong reasons: 187 dead against 201 to 445. Written after the result, as the rules in heldOutEvents.ts require. The model’s current is a disc 3.7 km round the summit, L = 10 · V^⅓ on 49 × 10⁶ m³ with a project mobility, and the raster puts 207 people inside it. The current that killed ran 11.7 km down the Las Lajas ravine; a disc reaching as far would hold about 110 000. A reach three times short and a footprint that is a disc rather than a ravine land near the record by cancelling, and a pass made of them is not evidence.
 
@@ -705,25 +701,26 @@ rather than about the interpolation.
 
 | Event | Measured band | Interpolated band | Ends apart (low / high) | Comparable |
 |-------|--------------:|------------------:|------------------------:|------------|
-| Northridge 1994 | 1 – 126 | 1 – 120 | 1.00× / 1.05× | high end only |
-| L'Aquila 2009 | 9 – 1,019 | 7 – 743 | 1.29× / 1.37× | high end only |
-| Amatrice 2016 | 0 – 43 | 0 – 43 | 1.00× / 1.00× | too few dead |
-| Gorkha (Nepal) 2015 | 282 – 72,591 | 487 – 33,842 | 1.73× / 2.14× | yes |
+| Kokoxili (Kunlun) 2001 | 0 – 2 | 0 – 12 | 1.00× / 6.00× | too few dead |
+| Northridge 1994 | 2 – 246 | 2 – 224 | 1.00× / 1.10× | high end only |
+| L'Aquila 2009 | 9 – 1,025 | 9 – 797 | 1.00× / 1.29× | high end only |
+| Amatrice 2016 | 0 – 68 | 0 – 62 | 1.00× / 1.10× | too few dead |
+| Gorkha (Nepal) 2015 | 303 – 99,287 | 312 – 63,758 | 1.03× / 1.56× | yes |
 | Beirut 2020 | 1,296 – 1,586 | 1,296 – 1,586 | 1.00× / 1.00× | yes |
 | Mount St Helens 1980 | 120 – 692 | 164 – 708 | 1.37× / 1.02× | yes |
 | Pinatubo 1991 | 32 – 312 | 32 – 312 | 1.00× / 1.00× | high end only |
 | Hiroshima 1945 | 107,004 – 129,200 | 102,027 – 127,121 | 1.05× / 1.02× | yes |
-| Tōhoku 2011 | 11 – 355,701 | 19 – 243,624 | 1.73× / 1.46× | high end only |
-| Sumatra–Andaman 2004 | 165 – 41,036 | 163 – 38,961 | 1.01× / 1.05× | yes |
-| Christchurch 2011 | 0 – 8 | 0 – 7 | 1.00× / 1.14× | too few dead |
-| Kumamoto 2016 | 0 – 7,486 | 0 – 5,171 | 1.00× / 1.45× | high end only |
+| Tōhoku 2011 | 15 – 516,763 | 23 – 360,451 | 1.53× / 1.43× | high end only |
+| Sumatra–Andaman 2004 | 166 – 48,898 | 167 – 47,886 | 1.01× / 1.02× | yes |
+| Christchurch 2011 | 0 – 11 | 0 – 9 | 1.00× / 1.22× | too few dead |
+| Kumamoto 2016 | 1 – 10,890 | 0 – 8,449 | 1.00× / 1.29× | high end only |
 | Kaikōura 2016 | 0 – 6 | 0 – 3 | 1.00× / 2.00× | too few dead |
-| Pohang 2017 | 0 – 14,287 | 1 – 10,646 | 1.00× / 1.34× | high end only |
-| Durrës (Albania) 2019 | 0 – 214 | 0 – 294 | 1.00× / 1.37× | high end only |
+| Pohang 2017 | 1 – 20,739 | 1 – 21,245 | 1.00× / 1.02× | high end only |
+| Durrës (Albania) 2019 | 1 – 552 | 1 – 584 | 1.00× / 1.06× | high end only |
 | Fuego 2018 | 14 – 304 | 14 – 304 | 1.00× / 1.00× | high end only |
 | Unzen 1991 | 8 – 14 | 8 – 14 | 1.00× / 1.00× | too few dead |
 
-Worst comparable end: **2.14×**, against a gate of 2×.
+Worst comparable end: **1.56×**, against a gate of 2×.
 
 ### Waves
 
@@ -819,23 +816,23 @@ geology says.
 
 | Event | Threshold | ShakeMap | Model | Model / record |
 |-------|-----------|---------:|------:|---------------:|
-| Northridge 1994 | MMI ≥ 7 | 2,824 km² | 318 km² | 0.11× |
-| Northridge 1994 | MMI ≥ 8 | 823 km² | 13 km² | 0.02× |
+| Northridge 1994 | MMI ≥ 7 | 2,824 km² | 904 km² | 0.32× |
+| Northridge 1994 | MMI ≥ 8 | 823 km² | 68 km² | 0.08× |
 | Northridge 1994 | MMI ≥ 9 | 0 km² | 0 km² | neither reaches it |
-| L'Aquila 2009 | MMI ≥ 7 | 61 km² | 116 km² | 1.90× |
+| L'Aquila 2009 | MMI ≥ 7 | 61 km² | 124 km² | 2.03× |
 | L'Aquila 2009 | MMI ≥ 8 | 0 km² | 0 km² | neither reaches it |
 | L'Aquila 2009 | MMI ≥ 9 | 0 km² | 0 km² | neither reaches it |
-| Amatrice 2016 | MMI ≥ 7 | 26 km² | 107 km² | 4.12× |
+| Amatrice 2016 | MMI ≥ 7 | 26 km² | 158 km² | 6.08× |
 | Amatrice 2016 | MMI ≥ 8 | 0 km² | 0 km² | neither reaches it |
 | Amatrice 2016 | MMI ≥ 9 | 0 km² | 0 km² | neither reaches it |
-| Gorkha 2015 | MMI ≥ 7 | 40,767 km² | 10,893 km² | 0.27× |
-| Gorkha 2015 | MMI ≥ 8 | 3,799 km² | 5,894 km² | 1.55× |
+| Gorkha 2015 | MMI ≥ 7 | 40,767 km² | 15,175 km² | 0.37× |
+| Gorkha 2015 | MMI ≥ 8 | 3,799 km² | 7,299 km² | 1.92× |
 | Gorkha 2015 | MMI ≥ 9 | 0 km² | 0 km² | neither reaches it |
-| Tōhoku 2011 | MMI ≥ 7 | 199,742 km² | 243,715 km² | 1.22× |
-| Tōhoku 2011 | MMI ≥ 8 | 67,625 km² | 168,604 km² | 2.49× |
+| Tōhoku 2011 | MMI ≥ 7 | 199,742 km² | 304,870 km² | 1.53× |
+| Tōhoku 2011 | MMI ≥ 8 | 67,625 km² | 192,279 km² | 2.84× |
 | Tōhoku 2011 | MMI ≥ 9 | 0 km² | 0 km² | neither reaches it |
-| Kokoxili 2001 | MMI ≥ 7 | 51,427 km² | 12,008 km² | 0.23× |
-| Kokoxili 2001 | MMI ≥ 8 | 23,334 km² | 5,768 km² | 0.25× |
+| Kokoxili 2001 | MMI ≥ 7 | 51,427 km² | 19,164 km² | 0.37× |
+| Kokoxili 2001 | MMI ≥ 8 | 23,334 km² | 7,596 km² | 0.33× |
 | Kokoxili 2001 | MMI ≥ 9 | 1,700 km² | 0 km² | 0.00× |
 
 The model predicts the median ground motion and a ShakeMap records one
@@ -845,15 +842,16 @@ at M ≥ 5.5, over an R^(−0.71) decay) is a factor of 2.3 in radius and
 held to is being centred and scattering no more than the ground:
 
 - Bands both reach: **10**
-- Geometric-mean radius ratio: **0.71**, 1.34 standard errors from centred
-- Scatter σ_ln of the radius ratio: **0.82**, against the 0.85 the published ground-motion sigma implies. That is a ceiling, not a match: over an area the within-event part of the scatter partly averages out, and the between-event part alone implies 0.49.
+- Geometric-mean radius ratio: **0.90**, 0.53 standard errors from centred
+- Scatter σ_ln of the radius ratio: **0.63**, against the 0.85 the published ground-motion sigma implies. That is a ceiling, not a match: over an area the within-event part of the scatter partly averages out, and the between-event part alone implies 0.49.
 
 No band is painted at an intensity its event never reached.
 
 ### Which law draws the intensity rings
 
 Rules 17 to 19 (`validation/contourLaws.ts`), committed before any candidate ran,
-choose the law on shaking and check it on the dead. Rule 18: each candidate's
+choose the law on shaking and check it on the dead, with every earthquake on
+reference rock as they ran (the next section moves it). Rule 18: each candidate's
 ground area at MMI VII, VIII and IX against the USGS ShakeMaps of 370 earthquakes of rule 11's set, as a
 radius ratio floored at 10 km² per band, by magnitude cell; the winner has the smallest
 mean absolute log bias over the cells, and the law used before stays unless beaten by
@@ -873,6 +871,40 @@ Rule 19: the winner on rule 11's held-out tolls, beside the law used before — 
 | Boore et al. 2014 | 0.69× · 121 of 132 | 0.23× · 96 of 107 | 1.92× · 32 of 34 |
 
 Adopted: yes. The score's floor counts a band the model paints and the ShakeMap never reached, and most of Boore et al. 2014's margin is there: where both reach MMI VII it draws the ring smaller than the ShakeMap, about half its radius between Mw 6.5 and 7.5 (docs/SCIENCE.md, "Which law draws the rings").
+
+### The ground under the rings
+
+Rules 17 to 19 stood every earthquake on reference rock; the browser gives the simulator
+the Vs30 of the slope under the pick. Rules 20 to 22 (`validation/siteVs30.ts`), committed
+before any row ran on other ground, read the browser's ground under every epicentre
+(rule 20: the terrain tiles it would fetch, read on 2026-09-14; median 522 m/s, 215 of 408 epicentres under the sea),
+choose the ground as rule 18 chooses a law, with Boore et al. 2014, the browser's ground
+staying unless beaten by 0.05 and a winner checked on the tolls as rule 19 checks a law
+(rule 21), and choose the law once more on the ground that stands (rule 22).
+
+| Ground | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
+|--------|----:|----:|----:|----:|----:|----:|
+| The browser's slope under the pick | 2.28× | 2.20× | 3.68× | 0.97 | 469 | 5 |
+| Rock, 760 m/s (winner) | 1.70× | 1.62× | 3.22× | 0.73 | 424 | 8 |
+| The slope on land, rock under the sea | 2.10× | 1.81× | 3.28× | 0.84 | 445 | 5 |
+
+Boore et al. 2014's held-out tolls on each ground, bias and inside as in rule 19's table:
+
+| Ground | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias |
+|--------|-----|-----|-----|----:|
+| The browser's slope under the pick | 1.46× · 122 of 132 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 0.72 |
+| Rock, 760 m/s | 0.69× · 121 of 132 | 0.23× · 96 of 107 | 1.92× · 32 of 34 | 0.83 |
+| The slope on land, rock under the sea | 1.34× · 119 of 132 | 0.41× · 100 of 108 | 2.11× · 31 of 34 | 0.65 |
+
+Rock, 760 m/s beats the browser's ground on the ShakeMaps by 0.24; on the tolls its mean absolute log bias is 0.83 against 0.72, so by rule 21 it is not adopted, and the browser's ground stands. Rule 21 checks only the ShakeMap winner on the tolls. Rule 22, on the browser's ground:
+
+| Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
+|-----|----:|----:|----:|----:|----:|----:|
+| Joyner & Boore 1981 | 3.53× | 3.86× | 8.50× | 1.58 | 624 | 1 |
+| Boore et al. 2014 (winner) | 2.28× | 2.20× | 3.68× | 0.97 | 469 | 5 |
+| Joyner & Boore below Mw 7.5, Boore et al. from it | 3.53× | 3.86× | 3.68× | 1.30 | 568 | 3 |
+
+Boore et al. 2014 is not beaten by 0.05, and stays. Every earthquake this report scores stands on the browser's ground since, the net's and the footprint anchors' included; the tables of rules 17 to 19 above are on rock, as those rules ran (docs/SCIENCE.md, "The ground under the rings").
 
 ### Which checks are validation
 
@@ -1147,9 +1179,9 @@ shows.
 - **Distant coasts of very long ruptures get too small a wave, and the cause is not settled.** Sumatra's far coasts are five to ten times under-waved. The far-field law does not use the rupture length, but a naive line-source correction would take DART 21413 from 0.90× the record to about 3× (docs/ROADMAP.md, moves 3b and 3d).
 - **The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.
 - **The toll band draws the fatality curve's published scatter, but not the census.** Since 14 September 2026 a shaking realisation scales its mortality by exp(N(0, G)), G being PAGER's `gnormvalue` for the country — the standard deviation of ln(deaths) PAGER's own loss module uses. The population is still held fixed, and so are the blast and pyroclastic rates, which publish no scatter. G was measured on ShakeMap intensities, so it overlaps, by an amount not separated here, with the ground-motion residual drawn beside it. Where the curve is steep or its scatter large the band spans four orders of magnitude or more — Gorkha, Kumamoto, Pohang — which is the width PAGER's own numbers give a single event, and a row inside such a band has passed nothing (`uq/tollBand.ts`).
-- **A great rupture's toll is read off rings drawn for a point.** From Mw 7.5 the intensity rings — Boore et al. 2014's since 14 September 2026 — are a relation for a point, stretched along the rupture as a stadium, and the simulator counts the people inside it; no finite-fault or subduction-interface relation is implemented. Held out by rule, the earthquakes of Mw ≥ 7.5 read 1.92× their record with a scatter of 2.29, and their band holds 32 of 34 records by spanning a median of 10^2.9. On Joyner & Boore 1981's rings the same cell read 13.85×, a figure the calibration harness hid until the same day by counting circles about the epicentre (docs/ROADMAP.md, M9 move 4; docs/BUG_REGISTRY.md, B-022).
-- **The rings stand on reference rock, and draw moderate earthquakes' strong shaking too small.** Boore et al. 2014's rings, adopted on 14 September 2026 because they matched 370 USGS ShakeMaps better than Joyner & Boore 1981's (the section above), stop painting intensities no earthquake reached, but where a ShakeMap reaches MMI VII they draw it at a median 0.83, 0.50 and 0.90 of its radius below Mw 6.5, between 6.5 and 7.5 and above, and at about half the radius Wald's and Italy's field surveys give for Northridge and L'Aquila. ShakeMaps count the site's softer ground where the rings take rock unless a scenario sets Vs30, which is the first suspect; the tolls of the middle cell read about a quarter of their record.
-- **Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings use Joyner & Boore 1981 and the reported accelerations Boore et al. 2014, both for shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI IX band in the footprint table is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).
+- **A great rupture's toll is read off rings drawn for a point.** From Mw 7.5 the intensity rings — Boore et al. 2014's since 14 September 2026 — are a relation for a point, stretched along the rupture as a stadium, and the simulator counts the people inside it; no finite-fault or subduction-interface relation is implemented. Held out by rule, the earthquakes of Mw ≥ 7.5 read 1.94× their record with a scatter of 2.35, and their band holds 32 of 35 records by spanning a median of 10^3.1. On Joyner & Boore 1981's rings the same cell read 13.85×, a figure the calibration harness hid until the same day by counting circles about the epicentre (docs/ROADMAP.md, M9 move 4; docs/BUG_REGISTRY.md, B-022).
+- **The rings paint intensity VII where ShakeMaps record none.** Held out by rule, 190 of the 370 USGS ShakeMaps hold no ground at MMI VII on their low-resolution grid, and Boore et al. 2014's rings draw a VII band about every one of them, on the ground the browser reads under the epicentre and on rock alike. The rings take no account of how deep the source lies, and a ShakeMap's grid does not hold a peak smaller than one of its cells; which of the two, or what else, makes the difference is not established. Where a ShakeMap does reach MMI VII, the ring runs at a median 1.07, 0.66 and 1.01 of its radius below Mw 6.5, between 6.5 and 7.5 and above (0.82, 0.50 and 0.90 on rock). And the ground is one Vs30, read at the epicentre, for the whole footprint, where a ShakeMap reads each cell's own (docs/SCIENCE.md, "The ground under the rings").
+- **Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).
 - **Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).
 - **Three numbers are not traced to a source read here.** The 30 cm at DART 21413 that the Tōhoku wave row is tuned on is quoted from Satake et al. 2013 without the paper having been read in the source review; the arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005.
 - **An airburst's shock is stretched by a fitted altitude factor that no record validates.** At Chelyabinsk, which bursts at 29.0 km on Collins et al.'s entry equations, the factor is 13.3 and the 0.5 psi ring reaches 183 km, beyond the 108 km to which Popova et al. 2013 model window damage — and theirs is the reach of 500 Pa, which the amplified model carries about 1 230 km, 92 km without the factor. The factor was fitted when a tuned classifier burst the preset at 22.1 km and has not been refitted. Tunguska's blast row checks the energy, not the factor (`effects/atmosphericEntry.ts`).

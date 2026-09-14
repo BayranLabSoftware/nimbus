@@ -983,6 +983,20 @@ Launch that beat the new pick's tile read its Vs30 off the last pick's
 (B-024), and a block of tiles next to the antimeridian ran round the
 planet (B-025).
 
+Run once the same day: rock won on the ShakeMaps (0.73 against 0.97 for
+the browser's ground) and lost on the tolls (0.83 against 0.72), so the
+browser's ground stands, Boore et al. 2014 stays on it, and the harness
+runs every earthquake there. The held-out set reads 0.90× its record, the
+middle cell 0.33×. The slope on land with rock under the sea did better on
+both tests than the browser's ground but was not the ShakeMap winner, and
+is not adopted on a result already seen. What the two tests disagree about
+is the next thing to measure: the rings paint MMI VII about all 190
+earthquakes whose ShakeMaps hold none, on any ground, and whether that is
+the missing depth of the source, the maps' resolution or something else
+is not known. It comes before the relation for long ruptures and trench
+earthquakes, and is chosen the same way, on earthquakes not yet looked
+at.
+
 ### 5. Widen the anchors where the model is blind
 
 Volcanoes have two toll rows and Pinatubo is 97× out; Merapi 2010,
