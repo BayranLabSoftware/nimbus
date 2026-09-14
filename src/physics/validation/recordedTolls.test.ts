@@ -117,7 +117,10 @@ describe('every miss has a named cause', () => {
       if (row.contains) continue;
       expect(row.event.cause, `${row.event.name} misses and names no cause`).toBeDefined();
     }
-  });
+    // Every row, with the great ruptures counted on their stadiums since
+    // B-022: seconds on a CI runner, and a timeout says nothing about a
+    // cause.
+  }, 30_000);
 
   it('names only causes the page knows how to explain', () => {
     for (const event of RECORDED_EVENTS) {

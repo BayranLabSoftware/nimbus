@@ -300,7 +300,8 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     const toll = compareWithRecord(tohoku);
     expect(toll.estimate?.exposed ?? 0).toBeGreaterThan(1_000_000);
     expect(toll.deaths).toBeGreaterThan(1_000);
-  });
+    // A band of two hundred stadiums: seconds on a CI runner.
+  }, 30_000);
 
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
