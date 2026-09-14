@@ -125,7 +125,8 @@ from the command line as the browser worker. Full discussion in
 
 - [docs/SCIENCE.md](docs/SCIENCE.md) — bibliography, formula rules, master quantity table.
 - [docs/VALIDATION_REPORT.md](docs/VALIDATION_REPORT.md) — the model against recorded events, generated from the code and kept current by CI.
-- [docs/VALIDATION.md](docs/VALIDATION.md) — how the predicted-vs-observed suites are organised.
+- [docs/REVIEWING.md](docs/REVIEWING.md) — for a scientist asked to try to break the model: where to start, how to reproduce, what we most want checked.
+- [docs/VALIDATION.md](docs/VALIDATION.md) — how the predicted-vs-observed suites were organised in the spring of 2026.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — the four-layer structure and why.
 - [docs/ART_DIRECTION.md](docs/ART_DIRECTION.md) — visual language, palette, asset policy.
 - [docs/ROADMAP.md](docs/ROADMAP.md) — milestones and what's left for v1.0.

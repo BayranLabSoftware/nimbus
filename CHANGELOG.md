@@ -35,6 +35,14 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   entered the water. The report and the public validation page both say
   so, computed from the rows rather than written in.
 
+- **A guide for the scientist asked to break the model.**
+  `docs/REVIEWING.md` says what Nimbus claims and what it does not, where
+  to start with an hour, a day or more, how to reproduce the report,
+  where each kind of check lives, what is already known, which documents
+  are current and which are history, the questions we most want answered
+  in each domain, and how to report a finding. The README and the
+  release checklist point to it.
+
 - **What the source review found and did not fix is declared.** The
   validation report and the public validation page now list seven more
   gaps: the toll band holds the population and the fatality curves

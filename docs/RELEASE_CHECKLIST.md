@@ -87,8 +87,8 @@ or have a written reason in the release PR before pushing the
 - [ ] A scientifically-literate reviewer has signed off on the
       physics modules in the last 30 days. Earth scientist for the
       M3 modules, physicist or engineer for impact / explosion.
-      Give them the validation page and `docs/VALIDATION_REPORT.md`
-      first: the misses and their causes are the fastest way into
+      Give them [`REVIEWING.md`](REVIEWING.md), the validation page and
+      `docs/VALIDATION_REPORT.md` first: the misses and their causes are the fastest way into
       where the model is weakest, and a review that starts there is
       worth more than one that starts from the formulas.
 - [ ] Every citation in `docs/SCIENCE.md`, the citation tooltips,
