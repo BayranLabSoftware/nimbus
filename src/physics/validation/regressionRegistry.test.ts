@@ -103,16 +103,18 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(r.tsunami.meanSlip as number).toBeLessThan(15);
   });
 
-  it('B-007 Chicxulub Teanby-Wookey is headline (UI ordering)', () => {
-    // UI bug — pinned via the data contract: both fields must exist
-    // and Teanby-Wookey must be ~3 Mw units below Schultz-Gault for
-    // Chicxulub-class events. The UI ordering is enforced separately
-    // in the Playwright suite; here we verify the data contract.
-    // Commit: b75a35e
+  it('B-007 SUPERSEDED by B-011 — the Teanby-Wookey headline is gone', () => {
+    // The 'fix' for B-007 promoted a "Teanby-Wookey" Mw ≈ 7.3 over the
+    // Collins et al. 2005 magnitude ≈ 10.2 for Chicxulub. B-011 found
+    // that estimator was neither Teanby & Wookey's nor physically
+    // sound, and removed it: one magnitude is left, with its range.
+    // Commit: b75a35e (superseded)
     const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
-    expect(r.seismic.magnitude).toBeGreaterThan(9); // Schultz-Gault upper bound
-    expect(r.seismic.magnitudeTeanbyWookey).toBeLessThan(8); // modern estimate
-    expect(r.seismic.magnitude - r.seismic.magnitudeTeanbyWookey).toBeGreaterThan(2);
+    expect(Object.keys(r.seismic).sort()).toEqual([
+      'liquefactionRadius',
+      'magnitude',
+      'magnitudeRange',
+    ]);
   });
 
   it('B-008 Eltanin deep-water disruption cutoff', () => {
@@ -166,6 +168,42 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(safe.result).toBeNull();
   });
 
+  it('B-011 Impact seismic magnitude is Collins Eq. 40 on the ground-coupled energy', () => {
+    // Pre-fix: the headline "Teanby-Wookey" Mw took M₀ = 10⁻⁴·E and
+    // Hanks-Kanamori, reading a radiated energy as a seismic moment
+    // (≈ 2 × 10⁴ apart for earthquakes, Kanamori 1977): every impact
+    // ≈ 2.9 units low, Chicxulub 7.3. Teanby & Wookey 2011 use no such
+    // formula. Now M = 0.67·log₁₀(gf·E) − 5.87 (Collins et al. 2005).
+    const chicxulub = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+    const E = chicxulub.impactor.kineticEnergy as number;
+    expect(chicxulub.seismic.magnitude).toBeCloseTo(0.67 * Math.log10(E) - 5.87, 6);
+    expect(chicxulub.seismic.magnitude).toBeGreaterThan(10);
+    // An airburst shakes the ground with its ground-coupled share only.
+    const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
+    const gfE = (tunguska.impactor.kineticEnergy as number) * tunguska.entry.energyFractionToGround;
+    expect(tunguska.seismic.magnitude).toBeCloseTo(0.67 * Math.log10(gfE) - 5.87, 6);
+  });
+
+  it('B-012 Ejecta thickness uses the transient crater diameter', () => {
+    // Pre-fix: 0.14·R·(R/r)³ with R the FINAL rim radius — Collins et
+    // al. 2005 Eq. 47* written with the wrong radius, 2.4× too thick
+    // for a simple crater and ≈ 10× for Chicxulub.
+    const r = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    const Dtc = r.crater.transientDiameter as number;
+    const Rfr = (r.crater.finalDiameter as number) / 2;
+    expect(r.ejecta.thicknessAt2R as number).toBeCloseTo(Dtc ** 4 / (112 * (2 * Rfr) ** 3), 6);
+  });
+
+  it('B-013 Complex crater depth follows Collins Eq. 28, not a lunar fit', () => {
+    // Pre-fix: d = 1.044·D^0.301 km (Pike's lunar complex-crater fit,
+    // credited to Pike 1980) applied from 3.2 km: the depth jumped from
+    // 627 m to 1 482 m at the transition, and Chicxulub came out 4.9 km.
+    const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+    const Dkm = (r.crater.finalDiameter as number) / 1000;
+    expect(r.crater.depth as number).toBeCloseTo(1000 * 0.4 * Dkm ** 0.3, 6);
+    expect(r.crater.depth as number).toBeLessThan(2_000);
+  });
+
   // Smoke test: verify every preset still renders sensible numbers
   // (catches regressions from any unrelated change to a preset).
   it('all 5 event-type preset-bundles produce non-degenerate output (smoke)', () => {
@@ -191,8 +229,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-010 (B-010 now CLOSED via inputSchema.ts + safeRun.ts).
-    const expectedRows = 10;
-    expect(expectedRows).toBe(10);
+    // B-001..B-013 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
+    // B-007 superseded by B-011).
+    const expectedRows = 13;
+    expect(expectedRows).toBe(13);
   });
 });

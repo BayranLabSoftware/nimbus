@@ -86,27 +86,38 @@ describe('impact sea coupling (shoreDistance)', () => {
     expect(r.tsunami?.seaCoupling.fraction).toBeLessThan(1);
   });
 
-  it('Chicxulub 1 000 km inland (Kansas): the ejecta still reach the Gulf, coupling ≈ R/d', () => {
+  it('Chicxulub 600 km inland: the ejecta still reach the sea, coupling ≈ R/d', () => {
+    // Inside the 1 m isopach, which Collins et al. 2005 Eq. 47* puts
+    // ≈ 856 km out for this preset.
     const coast = simulateImpact({
       ...IMPACT_PRESETS.CHICXULUB.input,
       waterDepth: m(200),
       shoreDistance: m(0),
     });
-    const kansas = simulateImpact({
+    const inland = simulateImpact({
       ...IMPACT_PRESETS.CHICXULUB.input,
       waterDepth: m(200),
-      shoreDistance: m(1_000_000),
+      shoreDistance: m(600_000),
     });
-    expect(kansas.tsunami).toBeDefined();
-    expect(kansas.tsunami?.seaCoupling.mechanism).toBe('ejecta');
-    const f = kansas.tsunami?.seaCoupling.fraction ?? 0;
+    expect(inland.tsunami).toBeDefined();
+    expect(inland.tsunami?.seaCoupling.mechanism).toBe('ejecta');
+    const f = inland.tsunami?.seaCoupling.fraction ?? 0;
     expect(f).toBeGreaterThan(0.03);
     expect(f).toBeLessThan(0.2);
     // Less energy in the water → smaller cavity, but a fourth root away.
     const cavityCoast = coast.tsunami?.cavityRadius as number;
-    const cavityKansas = kansas.tsunami?.cavityRadius as number;
-    expect(cavityKansas).toBeLessThan(cavityCoast);
-    expect(cavityKansas / cavityCoast).toBeCloseTo(f ** 0.25, 2);
+    const cavityInland = inland.tsunami?.cavityRadius as number;
+    expect(cavityInland).toBeLessThan(cavityCoast);
+    expect(cavityInland / cavityCoast).toBeCloseTo(f ** 0.25, 2);
+  });
+
+  it('Chicxulub 1 000 km inland is past the 1 m isopach: no tsunami block', () => {
+    const r = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(200),
+      shoreDistance: m(1_000_000),
+    });
+    expect(r.tsunami).toBeUndefined();
   });
 
   it('beyond the 1 m ejecta isopach the sea is not moved: no tsunami block', () => {

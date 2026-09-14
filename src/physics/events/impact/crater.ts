@@ -6,19 +6,16 @@ import { m } from '../../units.js';
  * Crater morphology pipeline (Collins, Melosh & Marcus 2005, "Earth Impact
  * Effects Program", MAPS 40 (6)). The simulator applies the three stages
  * strictly in this order — every other physics module that consumes a
- * crater diameter expects the *final* (Eq. 22 / 27) value, not the
- * transient bowl:
+ * crater diameter expects the *final* (Eq. 22 / 27) value, except the
+ * ejecta deposit, which Eq. 47 writes with the transient one:
  *
  *   1. {@link transientCraterDiameter}  — Eq. 21, pi-group transient bowl
  *   2. {@link finalCraterDiameter}       — Eq. 22 (simple) or Eq. 27 (complex)
- *   3. {@link craterDepth}               — Pike 1980 morphometry on final D
+ *   3. {@link craterDepth}               — Eqs. 23–26 (simple) or Eq. 28 (complex)
  *
- * The "apparent" depth used by the UI is `craterDepth(finalCraterDiameter(
- * transientCraterDiameter(input)))`. Skipping the final-modification step
- * (collapse, central peak, terraces) under-predicts the real crater rim
- * diameter by ~25 % for simple bowls and over-predicts complex craters by
- * up to a factor of two — both already-known historical mistakes in the
- * pre-2005 literature.
+ * The depth shown in the UI is `craterDepth(finalCraterDiameter(
+ * transientCraterDiameter(input)))`. Taking the transient bowl for the
+ * final crater would make a simple crater 20 % too narrow (Eq. 22).
  *
  * Inputs for the transient-bowl scaling. Angles are measured from the
  * target horizontal (0° = grazing, 90° = vertical). `surfaceGravity`
@@ -34,17 +31,21 @@ export interface TransientCraterInput {
 }
 
 /**
- * Transient (bowl-shaped) crater rim-to-rim diameter from pi-group scaling.
+ * Transient crater diameter, measured at the pre-impact surface, from
+ * pi-group scaling:
  *
  *     D_tc = 1.161 · (ρ_i / ρ_t)^(1/3) · L^0.78 · v^0.44 · g^(−0.22) · sin(θ)^(1/3)
  *
- * Derived by Schmidt & Housen (1987) from laboratory impact experiments and
- * adopted (with the same coefficients) by Collins, Melosh & Marcus (2005)
- * for the "Earth Impact Effects Program". Valid for competent-rock targets
- * and hypervelocity (v ≳ a few km/s) impacts.
+ * Collins, Melosh & Marcus (2005) build it on Holsapple & Schmidt (1982),
+ * Schmidt & Housen (1987) and Gault (1974), combining small-scale
+ * hypervelocity and nuclear-explosion cratering data. It holds for solid
+ * rock where gravity stops the crater's growth — every terrestrial crater
+ * more than a couple of hundred metres across — and the constant 1.161 is
+ * a best estimate within 0.8–1.5. L and v are the impactor's diameter and
+ * speed after atmospheric entry.
  *
  * Source: Collins, Melosh & Marcus (2005), Meteoritics & Planetary Science
- * 40(6), pp. 817–840, Eq. 21. DOI: 10.1111/j.1945-5100.2005.tb00157.x.
+ * 40(6), pp. 817–840, Eq. 21*. DOI: 10.1111/j.1945-5100.2005.tb00157.x.
  */
 export function transientCraterDiameter(input: TransientCraterInput): Meters {
   const L = input.impactorDiameter as number;
@@ -78,11 +79,12 @@ export function transientCraterDiameter(input: TransientCraterInput): Meters {
  *     terraces, shallower floor):
  *        D_fr = 1.17 · D_tc^1.13 · D_c^(−0.13)   (Eq. 27)
  *
- * The coefficients are fitted and do not join continuously at the
- * transition — Collins et al. (2005) document the ~5 % discontinuity as
- * acceptable for popular-science use.
+ * Collins et al. apply Eq. 27 when D_tc exceeds 2.56 km, the same test.
+ * The two fits do not join: at D_tc = 2.56 km the simple rule gives
+ * 3.20 km and the complex one 2.91 km. The exponents of Eq. 27 sum to
+ * one, so it holds in metres as printed for kilometres.
  *
- * Source: Collins, Melosh & Marcus (2005), Eqs. 22 & 27.
+ * Source: Collins, Melosh & Marcus (2005), Eqs. 22* & 27*.
  * DOI: 10.1111/j.1945-5100.2005.tb00157.x.
  *
  * @param transient          transient crater diameter D_tc
@@ -103,31 +105,49 @@ export function finalCraterDiameter(
 }
 
 /**
- * Rim-to-floor depth of a final crater, using Pike (1980) lunar morphometry
- * extrapolated to competent-rock targets on Earth.
+ * Rim-to-floor depth of a fresh final crater, as the Earth Impact Effects
+ * Program estimates it (Collins, Melosh & Marcus 2005).
  *
- *   - Simple craters (D < D_c): d ≈ 0.196 · D   — near-parabolic bowl.
- *   - Complex craters (D ≥ D_c): d = 1.044 · D^0.301  (Pike 1980, lunar
- *     complex-crater fit; both in km — scaled here to SI metres).
+ *   - Simple craters (D_fr < D_c): the transient bowl, less the breccia
+ *     lens that slides back into it, plus the rim —
+ *        d_tc = D_tc / (2√2)                        (Eq. 25*)
+ *        h_fr = 0.07 · D_tc⁴ / D_fr³                (Eq. 48*)
+ *        V_br = 0.032 · D_fr³                       (Eq. 23*)
+ *        t_br = 2.8 · V_br · (d_tc + h_fr) / (d_tc · D_fr²)   (Eq. 24*)
+ *        d_fr = d_tc + h_fr − t_br                  (Eq. 26*)
+ *     with D_tc = D_fr / 1.25 (Eq. 22* inverted), which makes the depth
+ *     a fixed 0.213 of the diameter.
+ *   - Complex craters (D_fr ≥ D_c): d_fr = 0.4 · D_fr^0.3, both in km
+ *     (Eq. 28*) — the fit Herrick et al. (1997) made to fresh complex
+ *     craters on Venus, whose gravity is close to Earth's; Collins et al.
+ *     prefer it to terrestrial data, which are few and eroded.
  *
- * Source: Pike (1980), "Formation of complex impact craters: Evidence
- * from Mars and other planets", Icarus 43(1), pp. 1–19, Table III.
- * DOI: 10.1016/0019-1035(80)90244-4.
+ * The two branches do not join: at D_c = 3.2 km the simple rule gives
+ * 681 m and the complex one 567 m.
  *
- * Used for popular-science depth display; real craters show ±30 %
- * scatter around these fits, and post-impact erosion further modifies
- * the preserved profile.
+ * Source: Collins, Melosh & Marcus (2005), Meteoritics & Planetary
+ * Science 40 (6), 817–840, Eqs. 22*–28*, 48*.
+ * DOI: 10.1111/j.1945-5100.2005.tb00157.x. Herrick, Sharpton, Malin,
+ * Lyons & Feely (1997), "Morphology and morphometry of impact craters",
+ * in Venus II, University of Arizona Press, pp. 1015–1046.
+ *
+ * These are fresh-crater depths; erosion and infill change what a real
+ * crater preserves.
  */
 export function craterDepth(
   diameter: Meters,
   transitionDiameter: Meters = SIMPLE_COMPLEX_TRANSITION_EARTH
 ): Meters {
-  const D = diameter as number;
+  const Dfr = diameter as number;
   const Dc = transitionDiameter as number;
-  if (D < Dc) {
-    return m(0.196 * D);
+  if (!Number.isFinite(Dfr) || Dfr <= 0) return m(0);
+  if (Dfr < Dc) {
+    const Dtc = Dfr / 1.25;
+    const dtc = Dtc / (2 * Math.SQRT2);
+    const hfr = (0.07 * Dtc ** 4) / Dfr ** 3;
+    const Vbr = 0.032 * Dfr ** 3;
+    const tbr = (2.8 * Vbr * (dtc + hfr)) / (dtc * Dfr ** 2);
+    return m(dtc + hfr - tbr);
   }
-  // Pike (1980): d (km) = 1.044 · D (km)^0.301.
-  // Converted to metres: d = 1000 · 1.044 · (D / 1000)^0.301.
-  return m(1000 * 1.044 * (D / 1000) ** 0.301);
+  return m(1000 * 0.4 * (Dfr / 1000) ** 0.3);
 }

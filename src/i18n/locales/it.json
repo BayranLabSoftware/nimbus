@@ -111,7 +111,7 @@
         "finalCraterDiameter": "Diametro cratere",
         "ejectaEdge1m": "Bordo ejecta 1 m",
         "firestormIgnition": "Innesco firestorm",
-        "seismicMw": "Mw sismica"
+        "seismicMagnitude": "Magnitudo sismica"
       },
       "explosion": {
         "yieldMt": "Resa (Mt)",
@@ -142,8 +142,8 @@
     "impactSummaryHeading": "Impatto cosmico · energia, cratere, anelli di danno",
     "energy": "Energia",
     "crater": "Cratere finale",
-    "magnitude": "Mw sismica (Schultz-Gault, upper bound storico)",
-    "magnitudeTW": "Mw sismica (Teanby-Wookey, stima moderna)",
+    "magnitude": "Magnitudo sismica",
+    "magnitudeRange": "Intervallo, efficienza sismica 10⁻⁵–10⁻³",
     "impactLiquefaction": "Raggio liquefazione da impatto",
     "morphology": "Morfologia",
     "simple": "Ciotola semplice",
@@ -1119,15 +1119,15 @@
     }
   },
   "citations": {
-    "kineticEnergy": "Energia cinetica E = ½ m v² (Collins, Melosh & Marcus 2005, Eq. 3). Massa da impattore sferico con densità scelta.",
+    "kineticEnergy": "Energia cinetica E = ½ m v² (Collins, Melosh & Marcus 2005, Eq. 1). Massa da impattore sferico con densità scelta.",
     "finalCrater": "Diametro finale del cratere (rim-to-rim) dallo scaling π-group e branch semplice/complesso (Collins, Melosh & Marcus 2005, Eqs. 21, 22, 27).",
     "transientCrater": "Diametro del cratere transiente dallo scaling π-group (Collins, Melosh & Marcus 2005, Eq. 21). Il transiente è la cavità al massimo escavo, prima del collasso gravitazionale.",
-    "craterDepth": "Rapporto profondità-diametro d/D ≈ 1/5 per crateri semplici; crateri complessi seguono la relazione piecewise di Pike (1980).",
-    "ejecta": "Spessore della coltre continua di ejecta T(r) = 0.14 · R · (R/r)³ (McGetchin et al. 1973; Collins et al. 2005 Eq. 28). I bordi esterni invertono la stessa formula alla soglia indicata.",
+    "craterDepth": "Profondità dal bordo al fondo del cratere fresco (Collins, Melosh & Marcus 2005): per un cratere semplice la conca transitoria meno la lente di breccia più il bordo, 0,21 del diametro (Eq. 23–26); per un cratere complesso d = 0,4·D^0,3 km, il fit su Venere di Herrick et al. 1997 (Eq. 28).",
+    "ejecta": "Spessore degli ejecta t = D_tc⁴ / (112·r³), con D_tc il diametro del cratere transitorio e r la distanza dal centro, solo fuori dal bordo finale (Collins, Melosh & Marcus 2005, Eq. 47; r⁻³ da McGetchin et al. 1973). È un limite inferiore. I bordi invertono la stessa formula allo spessore indicato.",
     "firestorm": "Soglie di ignizione e tempesta di fuoco dal Glasstone & Dolan (1977) §7.40–§7.42. Efficienza luminosa di impatto η ≈ 3 × 10⁻³ da Toon et al. (1997); partizione termica nucleare 0.35.",
     "atmosphere": "Polvere sub-μm in stratosfera scalata linearmente su Toon et al. (1997) Tab. 3; HNO₃ da shock atmosferico scalato su Prinn & Fegley (1987); tier climatico per banda di energia cinetica.",
-    "seismicMagnitude": "Magnitudo momento sismica equivalente Mw = 0.67·log₁₀(E) − 5.87 (Schultz & Gault 1975, usato da Collins et al. 2005 Eq. 31).",
-    "seismicMagnitudeTW": "Stima moderna da Teanby & Wookey (2011) EPSL 303: M₀ = k·E con efficienza sismica k ≈ 10⁻⁴, poi Mw via Hanks–Kanamori (1979). Scende di 2–3 unità rispetto a Schultz-Gault — upper bound più difendibile.",
+    "seismicMagnitude": "Magnitudo sismica M = 0,67·log₁₀(E) − 5,87, con E l'energia che arriva al suolo in joule (Collins, Melosh & Marcus 2005, Eq. 40): la relazione magnitudo–energia di Gutenberg–Richter con un'efficienza sismica di 10⁻⁴ (Schultz & Gault 1975). È una magnitudo energetica, non una magnitudo momento.",
+    "seismicMagnitudeRange": "La stessa relazione sull'intervallo di efficienza sismica indicato da Collins et al. (2005), da 10⁻⁵ a 10⁻³: ±0,67 attorno al valore centrale.",
     "tsunamiCavity": "Raggio cavità in acqua R_C = (3·E / (2π·ρ_w·g))^(1/4) dalla forma energia-partizione di Ward & Asphaug (2000).",
     "tsunamiFarField": "Ampiezza campo-lontano A(r) = A₀·R_C/r (Ward & Asphaug 2000) — decadimento geometrico 1/r di un'onda di gravità in acqua poco profonda.",
     "tsunamiWunnemann": "Onda di bordo di Wünnemann, Collins & Weiss 2010 (Rev. Geophys. 48, eq. 9a/10a): A(r) = min(0,14 R_w, h)·(R_w/r)^q_r, con q_r = min(1,2; 0,5 + 2e^(−1,75 L/h)). In acqua bassa l'onda decade come r^−0,5 (dispersione geometrica), in oceano profondo come r^−1,2: è la stima migliore che il simulatore usa per il run-up e per la propagazione batimetrica sul globo.",

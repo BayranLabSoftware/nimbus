@@ -774,16 +774,16 @@ export function SimulatorPanel(): JSX.Element {
                   {formatKilometres(result.data.crater.depth)}
                 </CitationTooltip>
               </dd>
-              <dt className={styles.resultLabel}>{t('simulator.magnitudeTW')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.seismicMagnitudeTW')}>
-                  Mw {result.data.seismic.magnitudeTeanbyWookey.toFixed(1)}
-                </CitationTooltip>
-              </dd>
               <dt className={styles.resultLabel}>{t('simulator.magnitude')}</dt>
               <dd className={styles.resultValue}>
                 <CitationTooltip citation={t('citations.seismicMagnitude')}>
-                  Mw {result.data.seismic.magnitude.toFixed(1)}
+                  M {result.data.seismic.magnitude.toFixed(1)}
+                </CitationTooltip>
+              </dd>
+              <dt className={styles.resultLabel}>{t('simulator.magnitudeRange')}</dt>
+              <dd className={styles.resultValue}>
+                <CitationTooltip citation={t('citations.seismicMagnitudeRange')}>
+                  {`M ${result.data.seismic.magnitudeRange.low.toFixed(1)}–${result.data.seismic.magnitudeRange.high.toFixed(1)}`}
                 </CitationTooltip>
               </dd>
               <dt className={styles.resultLabel}>{t('simulator.impactLiquefaction')}</dt>
@@ -1806,7 +1806,12 @@ function formatMcValue(key: string, value: number, t: (key: string) => string): 
   if (key === 'kineticEnergyMt' || key === 'yieldMt') return formatMegatons(value);
   if (key === 'kineticEnergy') return formatJoules(value);
   if (key === 'climateCoolingK') return `${formatDecimal(value, 2)} K`;
-  if (key === 'magnitude' || key === 'seismicMw' || key === 'mmiAtEpicenter' || key === 'vei') {
+  if (
+    key === 'magnitude' ||
+    key === 'seismicMagnitude' ||
+    key === 'mmiAtEpicenter' ||
+    key === 'vei'
+  ) {
     return formatDecimal(value, 1);
   }
   if (key === 'pgaAt20kmNGA') return `${formatDecimal(value / 9.80665, 2)} g`;

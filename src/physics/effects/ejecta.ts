@@ -2,63 +2,79 @@ import type { Meters } from '../units.js';
 import { m } from '../units.js';
 
 /**
- * Continuous ejecta-blanket thickness vs. radial distance from an
- * impact crater.
+ * Thickness of the ejecta deposit around an impact crater, as the Earth
+ * Impact Effects Program computes it (Collins, Melosh & Marcus 2005,
+ * "Earth Impact Effects Program", Meteoritics & Planetary Science 40 (6),
+ * 817–840, Eq. 47*; DOI: 10.1111/j.1945-5100.2005.tb00157.x):
  *
- * Reference:
- *   McGetchin, T. R., Settle, M., & Head, J. W. (1973).
- *   "Radial thickness variation in impact crater ejecta: Implications
- *   for lunar basin deposits."
- *   Earth and Planetary Science Letters 20 (2): 226–236.
- *   DOI: 10.1016/0012-821X(73)90162-3
+ *     t_e(r) = D_tc⁴ / (112 · r³)
  *
- * Also cited as Eq. 28 of Collins, Melosh & Marcus (2005), "Earth
- * Impact Effects Program", with pre-exponential 0.14 appropriate for
- * Earth-gravity simple-to-complex craters.
+ * with D_tc the transient crater diameter and r the distance from the
+ * crater centre. Collins et al. make the deposit as thick at the
+ * transient rim as the rim is high (h_tr = D_tc / 14.1, from equating
+ * the ejected volume with the transient bowl's, Eqs. 43–46) and thin it
+ * as r⁻³, the decay McGetchin, Settle & Head (1973) measured around
+ * explosion craters (EPSL 20 (2), 226–236, DOI:
+ * 10.1016/0012-821X(73)90162-3). Written with the transient diameter,
+ * one law serves simple and complex craters. It is a lower bound — no
+ * bulking, no ground swept up where the ejecta lands — and it is
+ * reported only outside the final rim, since a complex crater's
+ * collapse takes the thickest part of the blanket back inside.
  *
- * T(r) = 0.14 · R · (R / r)^3   for r ≥ R   (r in same units as T)
- *
- * where R is the final-crater rim radius. Inside the crater the
- * formula is not defined; the caller should treat r < R as "inside
- * the cavity, no sensible thickness".
+ * One departure: Collins et al. stop the deposit at the fireball's edge
+ * for impacts under 200 Mt, where the air stifles the ejecta's flight.
+ * Nimbus does not make that cut, so for a small impact the thinnest
+ * isopachs (the 1 mm edge drawn on the globe) extend the r⁻³ law beyond
+ * the range the Earth Impact Effects Program would report.
  */
 
-/** Pre-exponential in Eq. 28 (Collins et al. 2005, Earth gravity). */
-const MCGETCHIN_COEFFICIENT = 0.14;
+/** Eq. 47* denominator, from the transient rim height h_tr = D_tc / 14.1
+ *  inserted in the r⁻³ law of Eq. 43. */
+const COLLINS_EJECTA_DENOMINATOR = 112;
 
-/** Ejecta-blanket thickness at ground range `distance` from the
- *  impact center, for a crater of rim radius `craterRimRadius`.
- *  Returns 0 for r ≤ R (inside the crater) by convention. */
-export function ejectaThickness(distance: Meters, craterRimRadius: Meters): Meters {
+/** Ejecta thickness at ground range `distance` from the impact centre,
+ *  for a crater of transient diameter `transientDiameter` whose final
+ *  rim lies at `finalRimRadius`. Zero inside the final rim, where the
+ *  deposit is not reported. */
+export function ejectaThickness(
+  distance: Meters,
+  transientDiameter: Meters,
+  finalRimRadius: Meters
+): Meters {
   const r = distance as number;
-  const R = craterRimRadius as number;
-  if (!Number.isFinite(r) || !Number.isFinite(R) || R <= 0) return m(0);
-  if (r <= R) return m(0);
-  const ratio = R / r;
-  return m(MCGETCHIN_COEFFICIENT * R * ratio * ratio * ratio);
+  const Dtc = transientDiameter as number;
+  const Rfr = finalRimRadius as number;
+  if (!Number.isFinite(r) || !Number.isFinite(Dtc) || !Number.isFinite(Rfr)) return m(0);
+  if (Dtc <= 0 || Rfr <= 0 || r < Rfr) return m(0);
+  return m(Dtc ** 4 / (COLLINS_EJECTA_DENOMINATOR * r ** 3));
 }
 
-/** The outer edge of the "continuous" ejecta blanket — the distance
- *  at which thickness drops to `minThickness` (default 1 mm). Invert
- *  T = 0.14 R (R/r)^3 to r = R · (0.14 R / T_min)^(1/3). */
+/** Distance at which the deposit thins to `minThickness` (default
+ *  1 mm): Eq. 47* inverted, r = (D_tc⁴ / (112 · t))^(1/3). Zero when
+ *  the deposit is already thinner than that at the final rim — no
+ *  blanket that thick lies outside the crater. */
 export function ejectaBlanketOuterEdge(
-  craterRimRadius: Meters,
+  transientDiameter: Meters,
+  finalRimRadius: Meters,
   minThickness: Meters = m(0.001)
 ): Meters {
-  const R = craterRimRadius as number;
-  const Tmin = minThickness as number;
-  if (!Number.isFinite(R) || R <= 0 || !Number.isFinite(Tmin) || Tmin <= 0) return m(0);
-  return m(R * Math.cbrt((MCGETCHIN_COEFFICIENT * R) / Tmin));
+  const Dtc = transientDiameter as number;
+  const Rfr = finalRimRadius as number;
+  const t = minThickness as number;
+  if (!Number.isFinite(Dtc) || Dtc <= 0 || !Number.isFinite(Rfr) || Rfr <= 0) return m(0);
+  if (!Number.isFinite(t) || t <= 0) return m(0);
+  const edge = Math.cbrt(Dtc ** 4 / (COLLINS_EJECTA_DENOMINATOR * t));
+  return m(edge >= Rfr ? edge : 0);
 }
 
-/** Convenience: ejecta thickness at the standard reference distance
- *  of 2 crater radii (where most "proximal" deposits live). */
-export function ejectaThicknessAt2R(craterRimRadius: Meters): Meters {
-  return ejectaThickness(m((craterRimRadius as number) * 2), craterRimRadius);
+/** Ejecta thickness at two final-crater radii from the centre, where
+ *  most proximal deposits lie. */
+export function ejectaThicknessAt2R(transientDiameter: Meters, finalRimRadius: Meters): Meters {
+  return ejectaThickness(m((finalRimRadius as number) * 2), transientDiameter, finalRimRadius);
 }
 
-/** Ejecta thickness at 10 crater radii — a common "far-field" probe
- *  where the continuous blanket grades into discontinuous deposits. */
-export function ejectaThicknessAt10R(craterRimRadius: Meters): Meters {
-  return ejectaThickness(m((craterRimRadius as number) * 10), craterRimRadius);
+/** Ejecta thickness at ten final-crater radii, where the continuous
+ *  blanket grades into discontinuous deposits. */
+export function ejectaThicknessAt10R(transientDiameter: Meters, finalRimRadius: Meters): Meters {
+  return ejectaThickness(m((finalRimRadius as number) * 10), transientDiameter, finalRimRadius);
 }

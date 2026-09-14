@@ -68,7 +68,7 @@ function impactSensitivityFor(presetId: keyof typeof IMPACT_PRESETS): unknown {
         kineticEnergyMt: r.impactor.kineticEnergyMegatons,
         finalCraterDiameter: r.crater.finalDiameter,
         ejectaEdge1m: r.ejecta.blanketEdge1m,
-        seismicMw: r.seismic.magnitudeTeanbyWookey,
+        seismicMagnitude: r.seismic.magnitude,
       };
     },
   });

@@ -23,7 +23,7 @@ import { IMPACT_INPUT_SIGMA, asLinearHalfRange } from './conventions.js';
 
 // Phase 14 — bumped from 60 m (Tunguska) to 500 m so the bolide
 // reaches the surface intact and the crater-driven outputs
-// (finalCraterDiameter, seismicMw) remain non-zero under input
+// (finalCraterDiameter, seismicMagnitude) remain non-zero under input
 // perturbation. Tunguska-class bolides now correctly produce no
 // crater under the airburst-suppression rule, which collapsed the
 // finalCraterDiameter elasticity to zero and broke the OAT ranking
@@ -51,7 +51,7 @@ function simulate(params: {
   return {
     kineticEnergy: result.impactor.kineticEnergy,
     finalCraterDiameter: result.crater.finalDiameter,
-    seismicMw: result.seismic.magnitudeTeanbyWookey,
+    seismicMagnitude: result.seismic.magnitude,
   };
 }
 
@@ -73,7 +73,7 @@ describe('OAT sensitivity — medium-bolide impact (500 m, INTACT regime)', () =
     expect(result.rows.map((r) => r.output).sort()).toEqual([
       'finalCraterDiameter',
       'kineticEnergy',
-      'seismicMw',
+      'seismicMagnitude',
     ]);
   });
 

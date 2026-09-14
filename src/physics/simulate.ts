@@ -45,7 +45,7 @@ import { oceanCouplingPartition } from './effects/oceanCoupling.js';
 import { liquefactionRadius } from './events/earthquake/liquefaction.js';
 import { impactDamageRadii, type ImpactDamageRadii } from './events/impact/damageRings.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
-import { seismicMagnitude, seismicMagnitudeTeanbyWookey } from './events/impact/seismic.js';
+import { SEISMIC_EFFICIENCY_RANGE, seismicMagnitude } from './events/impact/seismic.js';
 import { synolakisRunup } from './events/tsunami/extendedEffects.js';
 import { dispersionFactor } from './tsunami/dispersion.js';
 import {
@@ -294,13 +294,15 @@ export interface ImpactScenarioResult {
     morphology: 'simple' | 'complex';
   };
   seismic: {
-    /** Schultz & Gault (1975) estimate — upper-envelope Mw coupling. */
+    /** Seismic magnitude of the energy delivered to the ground (Collins
+     *  et al. 2005 Eq. 40*, seismic efficiency 10⁻⁴). */
     magnitude: number;
-    /** Teanby & Wookey (2011) modern k-scaling estimate (k = 10⁻⁴). */
-    magnitudeTeanbyWookey: number;
+    /** The same magnitude across the seismic-efficiency range Collins
+     *  et al. give, 10⁻⁵ (low) to 10⁻³ (high). */
+    magnitudeRange: { low: number; high: number };
     /** Impact-induced liquefaction radius on saturated sandy soil —
      *  cross-bridge to the earthquake module's Youd & Idriss (2001)
-     *  threshold, fed by the Teanby-Wookey Mw. 0 when the Mw is too
+     *  threshold, fed by {@link magnitude}. 0 when the magnitude is too
      *  low to liquefy susceptible soils anywhere. */
     liquefactionRadius: Meters;
   };
@@ -332,17 +334,18 @@ export interface ImpactScenarioResult {
     lightDamage: RingAsymmetry;
     ejectaBlanket: RingAsymmetry;
   };
-  /** Ejecta-blanket metrics — ground-range from impact centre at which
-   *  the deposit drops to the labelled thickness (McGetchin 1973 /
-   *  Collins et al. 2005 Eq. 28). */
+  /** Ejecta-deposit metrics outside the final rim (Collins et al. 2005
+   *  Eq. 47*, r⁻³ after McGetchin et al. 1973) — see effects/ejecta.ts. */
   ejecta: {
-    /** Outer edge of the continuous blanket (T ≥ 1 mm). */
+    /** Ground range at which the deposit thins to 1 mm; 0 if it is
+     *  thinner than that already at the final rim. */
     blanketEdge1mm: Meters;
-    /** Outer edge of the thicker proximal blanket (T ≥ 1 m). */
+    /** Ground range at which the deposit thins to 1 m; 0 if it is
+     *  thinner than that already at the final rim. */
     blanketEdge1m: Meters;
-    /** Thickness at 2 crater radii — proximal reference. */
+    /** Thickness at 2 final-crater radii — proximal reference. */
     thicknessAt2R: Meters;
-    /** Thickness at 10 crater radii — far-field reference. */
+    /** Thickness at 10 final-crater radii — far-field reference. */
     thicknessAt10R: Meters;
     /** Schultz & Anderson (1996) downrange-asymmetry coefficient, in
      *  [0, 1]. 0 = symmetric blanket (impact angle ≥ 45°), 1 = maximum
@@ -389,12 +392,12 @@ export interface ImpactScenarioResult {
  * Cascade logic (M3): when `input.waterDepth > 0` the evaluator also
  * invokes the impact-tsunami chain — Ward & Asphaug (2000) cavity,
  * Wünnemann, Collins & Weiss (2010) far field — to produce a
- * `tsunami` sub-result. Nothing else in the pipeline changes — the
- * seabed crater and seismic magnitude are unaffected by the overlying
- * water column for the popular-science display envelope.
+ * `tsunami` sub-result. The water column also takes its share of the
+ * energy from the seabed crater (see the ocean-coupling partition
+ * below); the seismic magnitude does not see the water.
  *
- * Cites Collins, Melosh & Marcus (2005), Pike (1980), Schultz & Gault
- * (1975), Glasstone & Dolan (1977), Kinney & Graham (1985), and
+ * Cites Collins, Melosh & Marcus (2005), Herrick et al. (1997), Schultz &
+ * Gault (1975), Glasstone & Dolan (1977), Kinney & Graham (1985), and
  * Ward & Asphaug (2000); see the individual formula modules for
  * equation-level citations.
  */
@@ -412,8 +415,10 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // Crater and ejecta scale with the kinetic energy delivered to the
   // ground, not the pre-entry total. For airbursts the fragments
   // dump most of their KE as a high-altitude thermal + blast pulse,
-  // which this layer treats by scaling the ground-work quantities by
-  // energyFractionToGround^(1/3.4) (Collins 2005 Eq. 22 exponent).
+  // which this layer treats by scaling the transient crater by
+  // energyFractionToGround^(1/3.4). That step is Nimbus's, not Collins
+  // et al.'s: their Eq. 21* takes the impactor's diameter and speed
+  // after entry, which the airburst model here does not carry.
   //
   // Phase 14 — additional crater-suppression rule: a bolide that
   // fragments well above its own size scale (Tunguska-class, burst
@@ -525,6 +530,11 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // magnitude.
   const groundCoupledKe = J((ke as number) * Math.max(gf, 0));
   const surfaceDamage = impactDamageRadii(groundCoupledKe, Dfr);
+  // The seismic source is the same ground-coupled energy: all of it for
+  // an intact impactor, as in Collins et al. (2005), who report no
+  // seismic effects for airbursts; for an airburst, the fraction that
+  // reaches the ground (a Nimbus extension of their relation).
+  const seismicM = seismicMagnitude(groundCoupledKe);
   const damage: ImpactDamageRadii = {
     craterRim: surfaceDamage.craterRim,
     thirdDegreeBurn: m(Math.max(surfaceDamage.thirdDegreeBurn, entry.flashBurnRadii.thirdDegree)),
@@ -537,7 +547,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   };
 
   const craterRimRadius = m((Dfr as number) / 2);
-  const blanketEdge1mm = ejectaBlanketOuterEdge(craterRimRadius, m(0.001));
+  const blanketEdge1mm = ejectaBlanketOuterEdge(Dtc, craterRimRadius, m(0.001));
   // Schultz & Anderson (1996) "Asymmetry of ejecta and target damage
   // in oblique impacts," LPSC XXVII: smooth ramp from 0 (symmetric)
   // at θ ≥ 45° to 1 (forbidden uprange zone) at θ = 0°. Linear in
@@ -549,9 +559,9 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const downrangeOffset = m((blanketEdge1mm as number) * 0.3 * asymmetryFactor);
   const ejecta = {
     blanketEdge1mm,
-    blanketEdge1m: ejectaBlanketOuterEdge(craterRimRadius, m(1)),
-    thicknessAt2R: ejectaThicknessAt2R(craterRimRadius),
-    thicknessAt10R: ejectaThicknessAt10R(craterRimRadius),
+    blanketEdge1m: ejectaBlanketOuterEdge(Dtc, craterRimRadius, m(1)),
+    thicknessAt2R: ejectaThicknessAt2R(Dtc, craterRimRadius),
+    thicknessAt10R: ejectaThicknessAt10R(Dtc, craterRimRadius),
     asymmetryFactor,
     azimuthDeg,
     downrangeOffset,
@@ -626,9 +636,12 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       morphology,
     },
     seismic: {
-      magnitude: seismicMagnitude(ke),
-      magnitudeTeanbyWookey: seismicMagnitudeTeanbyWookey(ke),
-      liquefactionRadius: liquefactionRadius(seismicMagnitudeTeanbyWookey(ke)),
+      magnitude: seismicM,
+      magnitudeRange: {
+        low: seismicMagnitude(groundCoupledKe, SEISMIC_EFFICIENCY_RANGE.low),
+        high: seismicMagnitude(groundCoupledKe, SEISMIC_EFFICIENCY_RANGE.high),
+      },
+      liquefactionRadius: liquefactionRadius(seismicM),
     },
     damage,
     damageAsymmetry,

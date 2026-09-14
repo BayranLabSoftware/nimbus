@@ -103,7 +103,7 @@ function auditImpact(): void {
         'BAD',
         'transient ≤ final',
         `${(r.crater.transientDiameter as number).toFixed(0)} > ${(r.crater.finalDiameter as number).toFixed(0)}`,
-        'Pike 1980'
+        'Collins et al. 2005 Eqs. 22, 27'
       );
     }
     // Damage hierarchy: 5psi < 1psi < lightDamage radii

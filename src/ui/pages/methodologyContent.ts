@@ -59,14 +59,6 @@ const popova2013: Citation = {
   doi: '10.1126/science.1242642',
 };
 
-const teanby2011: Citation = {
-  authors: 'Teanby, N. A. & Wookey, J.',
-  year: 2011,
-  title: 'Seismic detection of meteorite impacts on Mars',
-  venue: 'Physics of the Earth and Planetary Interiors 186, 70–80',
-  doi: '10.1016/j.pepi.2011.03.004',
-};
-
 const mcgetchin1973: Citation = {
   authors: 'McGetchin, T. R., Settle, M. & Head, J. W.',
   year: 1973,
@@ -346,12 +338,12 @@ const heidarzadehSatake2015: Citation = {
   venue: 'Geophysical Journal International 202 (1), 361–377',
 };
 
-const pike1980: Citation = {
-  authors: 'Pike, R. J.',
-  year: 1980,
-  title: 'Formation of complex impact craters: Evidence from Mars and other planets',
-  venue: 'Icarus 43 (1), 1–19',
-  doi: '10.1016/0019-1035(80)90083-4',
+const herrick1997: Citation = {
+  authors: 'Herrick, R. R., Sharpton, V. L., Malin, M. C., Lyons, S. N. & Feely, K.',
+  year: 1997,
+  title: 'Morphology and morphometry of impact craters',
+  venue:
+    'In Bougher, S. W., Hunten, D. M. & Phillips, R. J. (eds.), Venus II, University of Arizona Press, 1015–1046',
 };
 
 const suzuki1983: Citation = {
@@ -621,35 +613,36 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'transient-crater',
         name: 'Transient crater diameter',
-        formula: 'D_tc = 1.161 · (ρ_i/ρ_t)^(1/3) · D^0.78 · v^0.44 · g^(−0.22) · sin^(1/3)(θ)',
+        formula: 'D_tc = 1.161 · (ρ_i/ρ_t)^(1/3) · L^0.78 · v^0.44 · g^(−0.22) · sin^(1/3)(θ)',
         description:
-          'π-group scaling from Collins et al. 2005, Eq. 21. Yields the cavity diameter at maximum excavation.',
+          'π-group scaling, Collins et al. 2005 Eq. 21*: the diameter of the transient crater at the pre-impact surface, for solid rock where gravity stops the growth. The constant 1.161 is a best estimate within 0.8–1.5. Nimbus then scales D_tc by (gf · f_seafloor)^(1/3.4) for the energy an airburst or a water column keeps from the ground, and by 0.15 for the largest crater of an iron strewn field — both Nimbus steps, not in Collins et al.',
         citation: collins2005,
       },
       {
         id: 'final-crater',
         name: 'Final crater diameter',
         formula:
-          'D_fr = { 1.25 · D_tc                (simple, D_tc ≤ 3.2 km)\n        1.17 · D_tc^1.13 / D_c^0.13 (complex, Eq. 27) }',
+          'D_fr = { 1.25 · D_tc                (simple, Eq. 22*, D_tc ≤ 2.56 km)\n        1.17 · D_tc^1.13 / D_c^0.13 (complex, Eq. 27*, D_c = 3.2 km) }',
         description:
-          'Post-collapse rim-to-rim diameter. Piecewise across the simple/complex transition (~3.2 km on Earth).',
+          'Rim-to-rim diameter of the fresh crater after collapse. The two fits do not join: at D_tc = 2.56 km the simple rule gives 3.20 km and the complex one 2.91 km.',
         citation: collins2005,
       },
       {
         id: 'crater-depth',
-        name: 'Crater depth (complex)',
-        formula: 'd/D ≈ 1/5  (simple); d = f(D)  (complex, Pike 1980 piecewise)',
+        name: 'Crater depth',
+        formula:
+          'simple: d_fr = d_tc + h_fr − t_br ≈ 0.213 · D_fr  (Eqs. 23*–26*, 48*)\ncomplex: d_fr = 0.4 · D_fr^0.3  (km, Eq. 28*)',
         description:
-          'Depth-to-diameter ratio falls off for complex craters due to modification collapse.',
-        citation: pike1980,
+          'Rim-to-floor depth of the fresh crater, as Collins et al. (2005) estimate it. A simple crater is the transient bowl (d_tc = D_tc/2√2) plus its rim, less the breccia lens that slides back in, which comes to 0.213 of the diameter. For a complex crater Collins et al. take the fit Herrick et al. (1997) made to fresh complex craters on Venus, whose gravity is close to Earth’s, over the few, eroded terrestrial ones. The branches do not join: 681 m just below 3.2 km, 567 m at it.',
+        citation: herrick1997,
       },
       {
-        id: 'seismic-teanby',
-        name: 'Seismic Mw — Teanby & Wookey 2011',
-        formula: 'M₀ = k · E  (k = 10⁻⁴) ;  Mw = (2/3) · log₁₀(M₀) − 6.07',
+        id: 'seismic-magnitude',
+        name: 'Seismic magnitude',
+        formula: 'M = 0.67 · log₁₀(E) − 5.87   (E in J; ±0.67 for efficiency 10⁻⁵–10⁻³)',
         description:
-          'Modern impact-Mw estimator via seismic efficiency k calibrated from UNE + meteor data. Runs 2–3 Mw units below Schultz-Gault.',
-        citation: teanby2011,
+          'Collins et al. 2005 Eq. 40*: the Gutenberg–Richter magnitude–energy relation applied to a seismic efficiency of 10⁻⁴ (Schultz & Gault 1975), which Collins et al. give a range of 10⁻⁵–10⁻³; Teanby & Wookey (2011) assumed 2 × 10⁻⁵ for Mars and Teanby (2015) suggested 5 × 10⁻⁴. E is the energy delivered to the ground: all of it for an intact impactor, the ground-coupled fraction for an airburst (a Nimbus extension; Collins et al. give no seismic effects for airbursts). M is an energy magnitude: reading 10⁻⁴·E as a seismic moment instead would put every impact ≈ 2.9 units lower, because an earthquake’s moment is about 2 × 10⁴ times the energy it radiates (Kanamori 1977).',
+        citation: collins2005,
       },
       {
         id: 'airburst',
@@ -676,11 +669,11 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       },
       {
         id: 'ejecta',
-        name: 'Ejecta blanket thickness',
-        formula: 'T(r) = 0.14 · R · (R / r)³     (r ≥ R, R = crater rim radius)',
+        name: 'Ejecta deposit thickness',
+        formula: 't_e(r) = D_tc⁴ / (112 · r³)     (r ≥ D_fr / 2)',
         description:
-          'Continuous ejecta-blanket deposit decay with distance. Inverted for blanket outer-edge radii.',
-        citation: mcgetchin1973,
+          'Collins et al. 2005 Eq. 47*: as thick at the transient rim as the rim is high (D_tc/14.1), thinning as r⁻³ — the decay McGetchin, Settle & Head (1973) measured around explosion craters. Written with the transient diameter so that one law serves simple and complex craters, reported only outside the final rim, and a lower bound (no bulking, no ground swept up where the ejecta lands). Inverted for the 1 mm and 1 m edges. Collins et al. also stop the deposit at the fireball radius for impacts under 200 Mt; Nimbus does not, so a small impact’s 1 mm edge extends the law beyond what their program reports.',
+        citation: collins2005,
       },
       {
         id: 'strat-dust',
@@ -1477,7 +1470,6 @@ export const CITATIONS = {
   collins2005,
   chyba1993,
   popova2013,
-  teanby2011,
   mcgetchin1973,
   ward2000,
   wunnemann2007,
@@ -1512,7 +1504,7 @@ export const CITATIONS = {
   synolakis1987,
   watts2000,
   heidarzadehSatake2015,
-  pike1980,
+  herrick1997,
   suzuki1983,
   bonadonnaPhillips2003,
   ganser1993,

@@ -111,7 +111,7 @@
         "finalCraterDiameter": "Crater diameter",
         "ejectaEdge1m": "Ejecta 1 m edge",
         "firestormIgnition": "Firestorm ignition",
-        "seismicMw": "Seismic Mw"
+        "seismicMagnitude": "Seismic magnitude"
       },
       "explosion": {
         "yieldMt": "Yield (Mt)",
@@ -142,8 +142,8 @@
     "impactSummaryHeading": "Cosmic impact · energy, crater, damage rings",
     "energy": "Energy",
     "crater": "Final crater",
-    "magnitude": "Seismic Mw (Schultz-Gault, historical upper bound)",
-    "magnitudeTW": "Seismic Mw (Teanby-Wookey, modern estimate)",
+    "magnitude": "Seismic magnitude",
+    "magnitudeRange": "Range, seismic efficiency 10⁻⁵–10⁻³",
     "impactLiquefaction": "Impact-induced liquefaction radius",
     "morphology": "Morphology",
     "simple": "Simple bowl",
@@ -1119,15 +1119,15 @@
     }
   },
   "citations": {
-    "kineticEnergy": "Kinetic energy E = ½ m v² (Collins, Melosh & Marcus 2005, Eq. 3). Mass from a spherical impactor of the chosen bulk density.",
+    "kineticEnergy": "Kinetic energy E = ½ m v² (Collins, Melosh & Marcus 2005, Eq. 1). Mass from a spherical impactor of the chosen bulk density.",
     "finalCrater": "Final crater rim-to-rim diameter from the π-group scaling and simple/complex branch (Collins, Melosh & Marcus 2005, Eqs. 21, 22, 27).",
     "transientCrater": "Transient crater diameter from π-group scaling (Collins, Melosh & Marcus 2005, Eq. 21). The transient crater is the cavity at maximum excavation, before gravitational modification.",
-    "craterDepth": "Depth-to-diameter ratio d/D ≈ 1/5 for simple craters; complex craters scale from Pike (1980) piecewise relation.",
-    "ejecta": "Continuous ejecta-blanket thickness T(r) = 0.14 · R · (R/r)³ (McGetchin et al. 1973; Collins et al. 2005 Eq. 28). Outer edges invert the same formula at the quoted threshold.",
+    "craterDepth": "Rim-to-floor depth of the fresh crater (Collins, Melosh & Marcus 2005): for a simple crater the transient bowl less the breccia lens plus the rim, 0.21 of the diameter (Eqs. 23–26); for a complex crater d = 0.4·D^0.3 km, the Venus fit of Herrick et al. 1997 (Eq. 28).",
+    "ejecta": "Ejecta thickness t = D_tc⁴ / (112·r³), with D_tc the transient crater diameter and r the distance from the centre, outside the final rim only (Collins, Melosh & Marcus 2005, Eq. 47; r⁻³ after McGetchin et al. 1973). A lower bound. The edges invert the same formula at the quoted thickness.",
     "firestorm": "Thermal-pulse ignition and firestorm thresholds from Glasstone & Dolan (1977) §7.40–§7.42. Impact luminous efficiency η ≈ 3 × 10⁻³ from Toon et al. (1997); nuclear thermal partition 0.35.",
     "atmosphere": "Stratospheric sub-µm dust mass linearly scaled against Toon et al. (1997) Table 3; shock-atmospheric HNO₃ linearly scaled against Prinn & Fegley (1987); climate tier by kinetic-energy band.",
-    "seismicMagnitude": "Seismic-equivalent moment magnitude Mw = 0.67·log₁₀(E) − 5.87 (Schultz & Gault 1975, as used by Collins et al. 2005 Eq. 31).",
-    "seismicMagnitudeTW": "Modern impact-seismicity estimator from Teanby & Wookey (2011) EPSL 303: M₀ = k·E with seismic efficiency k ≈ 10⁻⁴, then Mw via Hanks–Kanamori (1979). Runs 2–3 Mw units below Schultz-Gault — a more defensible upper bound.",
+    "seismicMagnitude": "Seismic magnitude M = 0.67·log₁₀(E) − 5.87, E the energy delivered to the ground in joules (Collins, Melosh & Marcus 2005, Eq. 40): the Gutenberg–Richter magnitude–energy relation at a seismic efficiency of 10⁻⁴ (Schultz & Gault 1975). An energy magnitude, not a moment magnitude.",
+    "seismicMagnitudeRange": "The same relation across the seismic-efficiency range Collins et al. (2005) give, 10⁻⁵ to 10⁻³: ±0.67 around the central value.",
     "tsunamiCavity": "Water-column cavity radius R_C = (3·E / (2π·ρ_w·g))^(1/4) from the Ward & Asphaug (2000) energy-partitioning form.",
     "tsunamiFarField": "Far-field amplitude A(r) = A₀·R_C/r (Ward & Asphaug 2000) — 1/r geometric decay of a shallow-water gravity wave.",
     "tsunamiWunnemann": "Rim wave of Wünnemann, Collins & Weiss 2010 (Rev. Geophys. 48, eq. 9a/10a): A(r) = min(0.14 R_w, h)·(R_w/r)^q_r with q_r = min(1.2, 0.5 + 2e^(−1.75 L/h)). A shallow-water impact decays as r^−0.5 (geometric spreading), a deep-ocean one as r^−1.2 — the best estimate the simulator uses for run-up and for the bathymetric propagation on the globe.",

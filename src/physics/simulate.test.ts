@@ -18,7 +18,7 @@ describe('simulateImpact (deterministic Layer-2 evaluator)', () => {
     expect(Math.abs((r.crater.finalDiameter as number) - 180_000) / 180_000).toBeLessThan(0.1);
     // Complex morphology above the 3.2 km transition.
     expect(r.crater.morphology).toBe('complex');
-    // Mw ≈ 9.9 per Schultz & Gault (1975).
+    // M ≈ 10.2 by Collins et al. 2005 Eq. 40* (efficiency 10⁻⁴).
     expect(r.seismic.magnitude).toBeGreaterThan(9.5);
     expect(r.seismic.magnitude).toBeLessThan(10.5);
   });
@@ -36,8 +36,8 @@ describe('simulateImpact (deterministic Layer-2 evaluator)', () => {
   it('Meteor Crater preset: simple bowl about 1 km across', () => {
     const r = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
     expect(r.crater.morphology).toBe('simple');
-    // Pike depth ≈0.196 · D for simple craters — consistent with the
-    // preserved 170 m depth at Barringer.
+    // Collins et al. 2005: a fresh simple crater is 0.21 of its diameter
+    // deep; Barringer today, eroded and partly filled, is shallower.
     expect(r.crater.depth).toBeLessThan(r.crater.finalDiameter);
   });
 

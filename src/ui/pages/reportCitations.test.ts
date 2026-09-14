@@ -22,7 +22,6 @@ describe('collectImpactCitations', () => {
     const r = simulateImpact(IMPACT_PRESETS.CHICXULUB_OCEAN.input);
     const ks = keys(collectImpactCitations(r));
     expect(ks).toContain('collins2005');
-    expect(ks).toContain('teanby2011');
     expect(ks).toContain('ward2000');
     expect(ks).toContain('wunnemann2007');
     expect(ks).toContain('synolakis1987');
@@ -50,9 +49,9 @@ describe('collectImpactCitations', () => {
     const ks = keys(collectImpactCitations(r));
     expect(ks).not.toContain('chyba1993');
     expect(ks).not.toContain('popova2013');
-    // Simple crater (well below 3.2 km): Pike 1980 complex piecewise
-    // should NOT be cited.
-    expect(ks).not.toContain('pike1980');
+    // Simple crater (well below 3.2 km): the complex-crater depth fit of
+    // Herrick et al. 1997 should NOT be cited.
+    expect(ks).not.toContain('herrick1997');
   });
 
   it('de-duplicates — every citation appears at most once', () => {

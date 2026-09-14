@@ -115,7 +115,7 @@ export const GOLDEN_DATASET: readonly GoldenCase[] = [
     category: 'reference',
     oracle: 'historical',
     title: 'Chicxulub final crater diameter ~180 km',
-    description: 'Hildebrand 1991, Morgan 2016 — Mw-equivalent 7.3 (Teanby-Wookey)',
+    description: 'Hildebrand 1991, Morgan 2016',
     citation: 'Hildebrand 1991, Morgan 2016',
     scenarioType: 'impact',
     rawInput: {

@@ -57,8 +57,8 @@ export interface ImpactMonteCarloMetrics extends Record<string, number> {
   ejectaEdge1m: number;
   /** Firestorm ignition radius (m). */
   firestormIgnition: number;
-  /** Teanby-Wookey seismic Mw. */
-  seismicMw: number;
+  /** Seismic magnitude (Collins et al. 2005 Eq. 40*). */
+  seismicMagnitude: number;
 }
 
 export function impactSampler(nominal: ImpactScenarioInput): (rng: Rng) => ImpactScenarioInput {
@@ -112,7 +112,7 @@ export function runImpactMonteCarlo(
       finalCraterDiameter: r.crater.finalDiameter,
       ejectaEdge1m: r.ejecta.blanketEdge1m,
       firestormIgnition: r.firestorm.ignitionRadius,
-      seismicMw: r.seismic.magnitudeTeanbyWookey,
+      seismicMagnitude: r.seismic.magnitude,
     }),
   });
 }

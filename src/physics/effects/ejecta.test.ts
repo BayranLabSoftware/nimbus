@@ -7,72 +7,83 @@ import {
   ejectaThicknessAt2R,
 } from './ejecta.js';
 
-describe('ejectaThickness (McGetchin 1973 / Collins 2005 Eq. 28)', () => {
-  it('is zero inside the crater', () => {
-    expect(ejectaThickness(m(100), m(500))).toBe(0);
-    expect(ejectaThickness(m(500), m(500))).toBe(0);
+// A simple crater: D_fr = 1.25 · D_tc (Collins et al. 2005 Eq. 22*).
+const Dtc = m(1_000);
+const Rfr = m(625);
+
+describe('ejectaThickness (Collins et al. 2005 Eq. 47*)', () => {
+  it('is zero inside the final rim, where the deposit is not reported', () => {
+    expect(ejectaThickness(m(100), Dtc, Rfr)).toBe(0);
+    expect(ejectaThickness(m(624), Dtc, Rfr)).toBe(0);
   });
 
-  it('equals 0.14·R at the crater rim edge (r = R + ε)', () => {
-    // Just outside the rim: ratio ≈ 1, T ≈ 0.14·R
-    const r = m(1_000);
-    const R = m(1_000);
-    const justOutside = m((r as number) + 1);
-    const t = ejectaThickness(justOutside, R) as number;
-    expect(t).toBeGreaterThan(0.139 * 1_000);
-    expect(t).toBeLessThan(0.141 * 1_000);
+  it('is D_tc⁴ / (112 r³)', () => {
+    expect(ejectaThickness(m(2_000), Dtc, Rfr) as number).toBeCloseTo(1e12 / (112 * 8e9), 9);
+  });
+
+  it('at the final rim of a simple crater equals the rim height of Eq. 48*', () => {
+    // h_fr = 0.07 · D_tc⁴ / D_fr³; Eq. 47* at r = D_fr / 2 gives D_tc⁴ / (14 D_fr³),
+    // which Collins et al. round to 0.07.
+    const Dfr = 2 * (Rfr as number);
+    const hfr = (0.07 * (Dtc as number) ** 4) / Dfr ** 3;
+    const t = ejectaThickness(Rfr, Dtc, Rfr) as number;
+    expect(Math.abs(t - hfr) / hfr).toBeLessThan(0.021);
   });
 
   it('drops with the inverse cube of distance', () => {
-    // T(2R) / T(4R) should be 8 (since (R/r)^3)
-    const R = m(1_000);
-    const t2R = ejectaThickness(m(2_000), R) as number;
-    const t4R = ejectaThickness(m(4_000), R) as number;
-    expect(t2R / t4R).toBeCloseTo(8, 5);
+    const t2 = ejectaThickness(m(2_000), Dtc, Rfr) as number;
+    const t4 = ejectaThickness(m(4_000), Dtc, Rfr) as number;
+    expect(t2 / t4).toBeCloseTo(8, 9);
   });
 
-  it('matches published Chicxulub far-field thickness (~1 mm at ~18 000 km)', () => {
-    // Chicxulub final crater ~165 km → R ≈ 82 500 m.
-    // At the antipode (r ≈ 20 000 km) thickness is ~0.1 mm, well
-    // within order-of-magnitude of the K-Pg boundary layer.
-    const R = m(82_500);
-    const r = m(18_000_000);
-    const t = ejectaThickness(r, R) as number;
-    expect(t).toBeGreaterThan(0);
-    expect(t).toBeLessThan(0.01); // < 10 mm
+  it('is ≈ 2.4× thinner than the same law written with the final rim radius', () => {
+    // The error this module once carried: 0.14 · R (R/r)³ with R the final
+    // rim radius instead of the transient one, (1.25)⁴ · 0.98 ≈ 2.4 too thick.
+    const r = 5_000;
+    const withFinalRim = 0.14 * (Rfr as number) * ((Rfr as number) / r) ** 3;
+    const t = ejectaThickness(m(r), Dtc, Rfr) as number;
+    expect(withFinalRim / t).toBeCloseTo((1.25 ** 4 * (0.14 * 112)) / 16, 2);
+  });
+
+  it('rejects nonsense instead of returning NaN', () => {
+    expect(ejectaThickness(m(Number.NaN), Dtc, Rfr)).toBe(0);
+    expect(ejectaThickness(m(2_000), m(0), Rfr)).toBe(0);
+    expect(ejectaThickness(m(2_000), Dtc, m(-1))).toBe(0);
   });
 });
 
 describe('ejectaThicknessAt2R / ejectaThicknessAt10R', () => {
-  it('produce the expected ratio (2R is 125× thicker than 10R)', () => {
-    // T(2R)/T(10R) = (10/2)^3 = 125
-    const R = m(5_000);
-    const t2R = ejectaThicknessAt2R(R) as number;
-    const t10R = ejectaThicknessAt10R(R) as number;
-    expect(t2R / t10R).toBeCloseTo(125, 4);
+  it('are taken at 2 and 10 final-crater radii, 125× apart', () => {
+    const t2R = ejectaThicknessAt2R(Dtc, Rfr) as number;
+    const t10R = ejectaThicknessAt10R(Dtc, Rfr) as number;
+    expect(t2R).toBeCloseTo(ejectaThickness(m(1_250), Dtc, Rfr), 9);
+    expect(t2R / t10R).toBeCloseTo(125, 6);
   });
 });
 
 describe('ejectaBlanketOuterEdge', () => {
-  it('expands with larger crater radius', () => {
-    const small = ejectaBlanketOuterEdge(m(100)) as number;
-    const big = ejectaBlanketOuterEdge(m(100_000)) as number;
+  it('inverts ejectaThickness: t(edge) = the requested thickness', () => {
+    const edge = ejectaBlanketOuterEdge(Dtc, Rfr, m(0.001));
+    expect(ejectaThickness(edge, Dtc, Rfr) as number).toBeCloseTo(0.001, 9);
+  });
+
+  it('expands with the transient crater', () => {
+    const small = ejectaBlanketOuterEdge(m(100), m(62.5)) as number;
+    const big = ejectaBlanketOuterEdge(m(100_000), m(62_500)) as number;
     expect(big).toBeGreaterThan(small);
   });
 
-  it('inverts ejectaThickness: T(outerEdge, R) = minThickness', () => {
-    const R = m(10_000);
-    const minT = m(0.001);
-    const outer = ejectaBlanketOuterEdge(R, minT);
-    const t = ejectaThickness(outer, R) as number;
-    expect(t).toBeCloseTo(0.001, 6);
+  it('is zero when the deposit is already thinner than that at the final rim', () => {
+    // D_tc = 10 m: at the rim (6.25 m) the deposit is ≈ 0.37 m, so there
+    // is no 1 m blanket outside the crater.
+    expect(ejectaBlanketOuterEdge(m(10), m(6.25), m(1))).toBe(0);
+    expect(ejectaBlanketOuterEdge(m(10), m(6.25), m(0.001)) as number).toBeGreaterThan(6.25);
   });
 
-  it('Chicxulub blanket reaches several thousand km at 1 mm threshold', () => {
-    // R = 82 500 m; outer edge at 1 mm: r = R · (0.14 · R / 0.001)^(1/3)
-    const R = m(82_500);
-    const outer = ejectaBlanketOuterEdge(R, m(0.001)) as number;
-    expect(outer).toBeGreaterThan(15_000_000); // > 15 000 km
-    expect(outer).toBeLessThan(25_000_000); // < 25 000 km
+  it('puts the 1 mm edge of a Chicxulub-size crater thousands of km out', () => {
+    // D_tc ≈ 92 km, final rim ≈ 83 km: (D_tc⁴ / (112 · 1 mm))^(1/3) ≈ 8 600 km.
+    const edge = ejectaBlanketOuterEdge(m(91_500), m(82_800), m(0.001)) as number;
+    expect(edge).toBeGreaterThan(8_000_000);
+    expect(edge).toBeLessThan(9_000_000);
   });
 });

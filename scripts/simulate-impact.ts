@@ -334,8 +334,8 @@ function numericReplacer(_key: string, value: unknown): unknown {
 
 const IMPACT_CITATIONS = [
   'Collins, Melosh & Marcus (2005) — Earth Impact Effects Program',
-  'Pike (1980) — complex crater morphometry',
-  'Schultz & Gault (1975) — seismic magnitude of impacts',
+  'Herrick et al. (1997) — complex crater depth (via Collins et al. Eq. 28)',
+  'Schultz & Gault (1975) — seismic efficiency of impacts',
   'Glasstone & Dolan (1977) — blast overpressure & thermal fluence',
   'Kinney & Graham (1985) — surface-burst overpressure fit',
 ];

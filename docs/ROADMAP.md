@@ -38,7 +38,9 @@ a Node CLI.
 
 - Collins/Melosh/Marcus 2005 — energy, crater, seismic magnitude.
 - Glasstone & Dolan 1977 — overpressure, thermal flux, cratering.
-- Pike 1980 — depth-to-diameter ratio for complex craters.
+- Pike 1980 — depth-to-diameter ratio for complex craters (replaced on
+  14 September 2026 by Collins et al. 2005 Eqs. 23–28, which use the
+  Herrick et al. 1997 fit for complex craters).
 - Comlink Web-Worker wrapper.
 - Deterministic.
 - Storybook scaffold (no components yet).

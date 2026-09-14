@@ -99,32 +99,40 @@ describe('finalCraterDiameter (Collins et al. 2005, Eqs. 22 & 27)', () => {
   });
 });
 
-describe('craterDepth (Pike 1980)', () => {
-  it('gives ≈ 1/5 of diameter for simple craters', () => {
+describe('craterDepth (Collins et al. 2005)', () => {
+  it('gives 0.213 of the diameter for a simple crater (Eqs. 22–26, 48)', () => {
+    // D_tc = 800 m: d_tc = 282.8, h_fr = 28.7, t_br = 98.7 → d_fr = 212.8 m.
     const D = meters(1_000);
-    expect(craterDepth(D) as number).toBeCloseTo(196, 3);
+    expect(craterDepth(D) as number).toBeCloseTo(212.8, 1);
   });
 
-  it('gives the Pike (1980) complex-crater depth above the transition', () => {
+  it('gives 0.4·D^0.3 km above the transition (Eq. 28, Herrick et al. 1997)', () => {
     const D = meters(100_000); // 100 km
-    const expected = 1000 * 1.044 * (100_000 / 1000) ** 0.301;
-    // ≈ 4167 m; complex craters are much shallower than simple ones of the
-    // same diameter (would have been 19 600 m under the simple rule).
-    expect(craterDepth(D) as number).toBeCloseTo(expected, 3);
+    expect(craterDepth(D) as number).toBeCloseTo(1000 * 0.4 * 100 ** 0.3, 6);
   });
 
-  it('Chicxulub complex crater depth is on the order of 5 km', () => {
+  it('drops, rather than jumps, across the 3.2 km transition', () => {
+    const below = craterDepth(meters(3_199)) as number;
+    const above = craterDepth(meters(3_200)) as number;
+    expect(below).toBeCloseTo(681, 0);
+    expect(above).toBeCloseTo(567, 0);
+  });
+
+  it('puts a fresh Chicxulub-size crater (≈ 180 km) at ≈ 1.9 km deep', () => {
     const depth = craterDepth(meters(180_000)) as number;
-    expect(depth).toBeGreaterThan(4_000);
-    expect(depth).toBeLessThan(6_000);
+    expect(depth).toBeCloseTo(1_900, -2);
   });
 
   it('accepts a custom transition (e.g. Mars ≈ 7 km)', () => {
     const D = meters(4_000); // simple on Mars, complex on Earth
     const earthDepth = craterDepth(D, SIMPLE_COMPLEX_TRANSITION_EARTH) as number;
     const marsDepth = craterDepth(D, meters(7_000)) as number;
-    // On Earth (complex branch): 1044 × 4^0.301 = 1044 × 1.232 = 1287 m.
-    // On Mars (still simple):    0.196 × 4000 = 784 m.
-    expect(marsDepth).toBeLessThan(earthDepth);
+    // Earth (complex): 0.4 × 4^0.3 km = 606 m. Mars (still simple): 0.213 × 4 000 = 851 m.
+    expect(earthDepth).toBeCloseTo(606, 0);
+    expect(marsDepth).toBeCloseTo(851, 0);
+  });
+
+  it('returns 0 for a non-positive diameter', () => {
+    expect(craterDepth(meters(0))).toBe(0);
   });
 });

@@ -5,7 +5,7 @@ import styles from './AboutDialog.module.css';
 
 const SOURCES = [
   'Collins, Melosh & Marcus (2005), Meteoritics & Planetary Science 40(6), "Earth Impact Effects Program"',
-  'Pike (1980), Icarus 43(1), "Formation of complex impact craters"',
+  'Herrick et al. (1997), Venus II, "Morphology and morphometry of impact craters"',
   'Schultz & Gault (1975), The Moon 12, "Seismic effects from major basin formations"',
   'Glasstone & Dolan (1977), "The Effects of Nuclear Weapons" (3rd ed.)',
   'Kinney & Graham (1985), "Explosive Shocks in Air" (2nd ed.)',

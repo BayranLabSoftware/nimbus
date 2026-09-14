@@ -118,8 +118,11 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
     { label: 'Final crater diameter', value: fmtKm(r.crater.finalDiameter) },
     { label: 'Crater depth', value: fmtKm(r.crater.depth) },
     { label: 'Crater morphology', value: r.crater.morphology },
-    { label: 'Seismic Mw (Schultz-Gault)', value: fmtNumber(r.seismic.magnitude, 1) },
-    { label: 'Seismic Mw (Teanby-Wookey)', value: fmtNumber(r.seismic.magnitudeTeanbyWookey, 1) },
+    { label: 'Seismic magnitude (Collins et al. 2005)', value: fmtNumber(r.seismic.magnitude, 1) },
+    {
+      label: 'Seismic magnitude, efficiency 10⁻⁵–10⁻³',
+      value: `${fmtNumber(r.seismic.magnitudeRange.low, 1)}–${fmtNumber(r.seismic.magnitudeRange.high, 1)}`,
+    },
     { label: 'Liquefaction radius', value: fmtKm(r.seismic.liquefactionRadius) },
     { label: 'Crater rim radius', value: fmtKm(r.damage.craterRim) },
     { label: '3rd-degree burn radius', value: fmtKm(r.damage.thirdDegreeBurn) },

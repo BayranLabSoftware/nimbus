@@ -48,13 +48,12 @@ function cite(key: CitationKey, reason: string): TriggeredCitation {
 /** Collect the citations exercised by a cosmic-impact run. */
 export function collectImpactCitations(result: ImpactScenarioResult): TriggeredCitation[] {
   const triggers: TriggeredCitation[] = [
-    cite('collins2005', 'Impactor kinetic energy, transient crater, final crater.'),
+    cite('collins2005', 'Impactor kinetic energy, crater diameters and depth, seismic magnitude.'),
     cite('brittConsolmagno2003', 'Impactor taxonomy density classes.'),
-    cite('teanby2011', 'Seismic Mw estimator (modern k-scaling).'),
   ];
 
   if (result.crater.morphology === 'complex') {
-    triggers.push(cite('pike1980', 'Complex crater depth–diameter scaling.'));
+    triggers.push(cite('herrick1997', 'Complex crater depth (Collins et al. 2005 Eq. 28).'));
   }
 
   if (result.entry.regime !== 'INTACT') {
@@ -63,7 +62,9 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
   }
 
   if ((result.ejecta.blanketEdge1m as number) > 0) {
-    triggers.push(cite('mcgetchin1973', 'Ballistic ejecta-blanket thickness.'));
+    triggers.push(
+      cite('mcgetchin1973', 'r⁻³ thinning of the ejecta deposit (Collins et al. 2005 Eq. 47).')
+    );
   }
 
   if ((result.atmosphere.stratosphericDust as number) > 1e13) {

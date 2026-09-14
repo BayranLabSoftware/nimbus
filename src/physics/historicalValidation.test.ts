@@ -89,20 +89,22 @@ describe('Historical validation — cosmic impacts', () => {
     expect(r.crater.finalDiameter as number).toBeLessThan(50);
   });
 
-  it('Impact→liquefaction cross-bridge: Chicxulub Mw feeds Youd-Idriss into a continental ring', () => {
+  it('Impact→liquefaction cross-bridge: Chicxulub magnitude feeds Youd-Idriss into a wide ring', () => {
     const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
-    // Teanby-Wookey Mw for Chicxulub is ~7.3; Youd-Idriss should then
-    // push the liquefaction radius out to hundreds of km.
-    expect(r.seismic.magnitudeTeanbyWookey).toBeGreaterThan(7);
-    // Teanby-Wookey (conservative) gives a ~45 km liquefaction radius
-    // for Chicxulub-equivalent Mw — an order-of-magnitude continent-
-    // spanning effect once you account for real soil distributions.
-    expect((r.seismic.liquefactionRadius as number) / 1_000).toBeGreaterThan(30);
+    // Collins et al. 2005 Eq. 40* for ≈ 10²⁴ J at the ground: M ≈ 10.2,
+    // far past the Joyner–Boore calibration, so the ≈ 200 km ring is an
+    // extrapolation and a floor, not a map of liquefied ground.
+    expect(r.seismic.magnitude).toBeGreaterThan(10);
+    expect(r.seismic.magnitudeRange.low).toBeCloseTo(r.seismic.magnitude - 0.67, 6);
+    expect(r.seismic.magnitudeRange.high).toBeCloseTo(r.seismic.magnitude + 0.67, 6);
+    expect((r.seismic.liquefactionRadius as number) / 1_000).toBeGreaterThan(150);
   });
 
-  it('Impact→liquefaction cross-bridge: Tunguska Mw too low to trigger any liquefaction', () => {
+  it('Impact→liquefaction cross-bridge: Tunguska delivers too little to the ground to liquefy', () => {
     const r = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
-    expect(r.seismic.magnitudeTeanbyWookey).toBeLessThan(5);
+    // An airburst: only the ground-coupled fraction of the energy shakes
+    // the ground, M ≈ 4.6.
+    expect(r.seismic.magnitude).toBeLessThan(5);
     expect(r.seismic.liquefactionRadius).toBe(0);
   });
 });

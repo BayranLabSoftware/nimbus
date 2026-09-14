@@ -98,9 +98,9 @@ export function buildImpactCascade(result: ImpactScenarioResult): CascadeStage[]
     );
   }
 
-  // Impact-induced liquefaction — when the Teanby-Wookey Mw is large
-  // enough (≈ ≥ 6.5) that the seismic waves can trigger Youd-Idriss
-  // liquefaction on saturated sandy soil within the surrounding ring.
+  // Impact-induced liquefaction — when the seismic magnitude is large
+  // enough that the shaking can trigger Youd-Idriss liquefaction on
+  // saturated sandy soil within the surrounding ring.
   if ((result.seismic.liquefactionRadius as number) > 0) {
     stages.push(stage('cascade.impact.liquefaction', s(120), 'secondary'));
   }

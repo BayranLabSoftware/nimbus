@@ -148,6 +148,33 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   values; the NGA-West2 row is not the displayed estimator; the site term
   is the published Boore et al. 2014 one, not the power law it replaced;
   and the tsunami trigger fires on the subduction flag too.
+- **An impact's seismic magnitude was about 2.9 units too low.** The
+  panel led with a "Teanby–Wookey, modern estimate" that took a seismic
+  moment of 10⁻⁴ of the impact energy. Ten to the minus four is the
+  fraction radiated as seismic waves, and an earthquake's moment is some
+  2 × 10⁴ times the energy it radiates (Kanamori 1977); Teanby & Wookey
+  2011 contain no such formula. Chicxulub read 7.3 and drew a 44 km
+  liquefaction ring. The panel now gives the magnitude of Collins et al.
+  2005, Eq. 40* — 10.2 for Chicxulub, 5.3 for Meteor Crater — with its
+  range across the seismic efficiencies they give (10⁻⁵ to 10⁻³, ±0.67),
+  computed on the energy that reaches the ground: an airburst shakes it
+  with its ground-coupled share only (Tunguska 4.6, Chelyabinsk 3.1).
+  Liquefaction (213 km for Chicxulub), the Monte Carlo and the
+  sensitivity table read the same number.
+- **Ejecta deposits were 2.4 to 10 times too thick.** The thickness
+  law was Collins et al.'s Eq. 47* written with the final crater's rim
+  radius instead of the transient crater's, and credited to an equation
+  that gives crater depth. At two crater radii Meteor Crater's deposit
+  is now 5.7 m, not 13.6, and Chicxulub's 1 m edge 856 km, not 1 874; an
+  inland impact reaches the sea over that shorter distance. The deposit
+  is reported only outside the final rim, as Collins et al. do.
+- **Complex craters were about 2.6 times too deep.** The depth
+  came from Pike's fit to lunar craters, credited to a Pike 1980 table,
+  and applied from 3.2 km, where it jumped from 627 m to 1 482 m.
+  Depths now follow Collins et al. 2005: the transient bowl less its
+  breccia lens plus the rim for a simple crater (0.21 of the diameter),
+  and for a complex one the fit Herrick et al. 1997 made to fresh
+  craters on Venus (Eq. 28*). A fresh Chicxulub is 1.9 km deep, not 4.9.
 - **The terrain tiles are not CC0.** They combine public-domain data
   with sources that require attribution; the README, ASSETS and the code
   say so and link the list.
