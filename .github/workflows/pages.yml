@@ -1,4 +1,5 @@
-# Publishes the built simulator to GitHub Pages on every push to main.
+# Publishes the built simulator to GitHub Pages on every push to main
+# that passes CI.
 #
 # The repository ships a Cloudflare Pages workflow too (deploy.yml),
 # gated behind ENABLE_CF_DEPLOY. The two are alternatives, not rivals:
@@ -8,7 +9,13 @@
 name: Pages
 
 on:
-  push:
+  # After CI, not beside it: a commit whose unit tests or validation
+  # gate fail never reaches the live site, where every simulation
+  # report links to the validation report of the commit it was built
+  # from. CI takes about two minutes, so the wait costs little.
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
@@ -25,10 +32,18 @@ permissions:
 
 jobs:
   build:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      # The commit CI passed, not wherever main points by the time this
+      # run starts.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       # pnpm before setup-node: the cache resolver shells out to
       # `pnpm store path`, and with only `corepack enable` the shim is
@@ -51,7 +66,11 @@ jobs:
           # Project sites live under /<repo>/, so the bundle needs the
           # sub-path baked into its asset URLs.
           BASE_PATH: /${{ github.event.repository.name }}/
-        run: pnpm build
+        # On a workflow_run event GITHUB_SHA is main's head when the run
+        # starts, which a later push can move past the commit checked
+        # out above; the bundle is stamped with the commit it is built
+        # from (vite.config.ts, buildCommit).
+        run: GITHUB_SHA="$(git rev-parse HEAD)" pnpm build
 
       # One manual step precedes the first run of this workflow:
       # Settings -> Pages -> Build and deployment -> Source:

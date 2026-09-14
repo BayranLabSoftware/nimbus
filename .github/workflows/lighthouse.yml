@@ -1,10 +1,23 @@
 name: Lighthouse
 
 on:
+  # Prose-only commits leave the bundle as it was; see e2e.yml.
   push:
     branches: [main]
+    paths:
+      - '**'
+      - '!**/*.md'
+      - '!docs/**'
+      - 'docs/VALIDATION_REPORT.json'
+      - '!CITATION.cff'
   pull_request:
     branches: [main]
+    paths:
+      - '**'
+      - '!**/*.md'
+      - '!docs/**'
+      - 'docs/VALIDATION_REPORT.json'
+      - '!CITATION.cff'
 
 concurrency:
   group: lighthouse-${{ github.workflow }}-${{ github.ref }}

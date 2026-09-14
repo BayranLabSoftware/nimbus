@@ -1,10 +1,26 @@
 name: E2E
 
 on:
+  # A commit that touches only prose — the docs, the changelog, the
+  # citation file — changes nothing a browser can see, and does not
+  # wait on five of them. The validation report's JSON is the one file
+  # under docs/ the site imports, so it stays in.
   push:
     branches: [main]
+    paths:
+      - '**'
+      - '!**/*.md'
+      - '!docs/**'
+      - 'docs/VALIDATION_REPORT.json'
+      - '!CITATION.cff'
   pull_request:
     branches: [main]
+    paths:
+      - '**'
+      - '!**/*.md'
+      - '!docs/**'
+      - 'docs/VALIDATION_REPORT.json'
+      - '!CITATION.cff'
 
 concurrency:
   group: e2e-${{ github.workflow }}-${{ github.ref }}
@@ -15,7 +31,7 @@ permissions:
 
 jobs:
   playwright:
-    name: playwright (${{ matrix.project }})
+    name: playwright (${{ matrix.project }} ${{ matrix.shard }}/${{ matrix.shards }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
@@ -25,17 +41,26 @@ jobs:
         # mobile-safari re-use Chromium/WebKit engines respectively,
         # so the browser-install cache is shared with the desktop
         # jobs of the same engine.
+        #
+        # A runner takes one test at a time (`workers` in
+        # playwright.config.ts), so a slow project is split across
+        # runners instead. Unsplit, mobile-chrome ran for eleven
+        # minutes and chromium and webkit for eight, and the slowest
+        # of them set how long every push waited; Firefox finishes in
+        # two on one runner.
         include:
-          - project: chromium
-            browser: chromium
-          - project: firefox
-            browser: firefox
-          - project: webkit
-            browser: webkit
-          - project: mobile-chrome
-            browser: chromium
-          - project: mobile-safari
-            browser: webkit
+          - { project: chromium, browser: chromium, shard: 1, shards: 3 }
+          - { project: chromium, browser: chromium, shard: 2, shards: 3 }
+          - { project: chromium, browser: chromium, shard: 3, shards: 3 }
+          - { project: firefox, browser: firefox, shard: 1, shards: 1 }
+          - { project: webkit, browser: webkit, shard: 1, shards: 3 }
+          - { project: webkit, browser: webkit, shard: 2, shards: 3 }
+          - { project: webkit, browser: webkit, shard: 3, shards: 3 }
+          - { project: mobile-chrome, browser: chromium, shard: 1, shards: 3 }
+          - { project: mobile-chrome, browser: chromium, shard: 2, shards: 3 }
+          - { project: mobile-chrome, browser: chromium, shard: 3, shards: 3 }
+          - { project: mobile-safari, browser: webkit, shard: 1, shards: 2 }
+          - { project: mobile-safari, browser: webkit, shard: 2, shards: 2 }
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -73,7 +98,7 @@ jobs:
         run: pnpm build
 
       - name: Run Playwright tests
-        run: pnpm test:e2e --project=${{ matrix.project }}
+        run: pnpm test:e2e --project=${{ matrix.project }} --shard=${{ matrix.shard }}/${{ matrix.shards }}
         env:
           CI: 'true'
 
@@ -81,7 +106,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-${{ matrix.project }}
+          name: playwright-report-${{ matrix.project }}-${{ matrix.shard }}
           path: playwright-report/
           retention-days: 14
 
@@ -89,6 +114,6 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-traces-${{ matrix.project }}
+          name: playwright-traces-${{ matrix.project }}-${{ matrix.shard }}
           path: test-results/
           retention-days: 14
