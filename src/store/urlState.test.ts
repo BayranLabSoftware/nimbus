@@ -3,6 +3,7 @@ import { EARTHQUAKE_PRESETS } from '../physics/events/earthquake/index.js';
 import { EXPLOSION_PRESETS } from '../physics/events/explosion/index.js';
 import { LANDSLIDE_PRESETS } from '../physics/events/landslide/index.js';
 import { VOLCANO_PRESETS } from '../physics/events/volcano/index.js';
+import { IMPACT_PRESETS } from '../physics/simulate.js';
 import {
   applyIntentToStore,
   decodeSearchParamsToIntent,
@@ -94,16 +95,24 @@ describe('decodeSearchParamsToIntent', () => {
     expect(decodeSearchParamsToIntent(params).eventType).toBeNull();
   });
 
-  it('parses CUSTOM impact overrides when preset=CUSTOM', () => {
+  it('parses CUSTOM impact inputs when preset=CUSTOM, with Earth gravity when the link omits it', () => {
     const params = new URLSearchParams(
-      `?${URL_KEYS.eventType}=impact&${URL_KEYS.preset}=CUSTOM&${URL_KEYS.diameter}=500&${URL_KEYS.velocity}=18000&${URL_KEYS.angleDeg}=60`
+      `?${URL_KEYS.eventType}=impact&${URL_KEYS.preset}=CUSTOM&${URL_KEYS.diameter}=500&${URL_KEYS.velocity}=18000&${URL_KEYS.angleDeg}=60&${URL_KEYS.impactorDensity}=7800&${URL_KEYS.targetDensity}=2500&${URL_KEYS.impactorStrength}=5e7&${URL_KEYS.impactAzimuthDeg}=200`
     );
     const intent = decodeSearchParamsToIntent(params);
     expect(intent.preset).toBe('CUSTOM');
-    expect(intent.impactCustomInput).toEqual({
-      impactorDiameter: 500,
-      impactVelocity: 18_000,
-      impactAngle: 60,
+    expect(intent.customInput).toEqual({
+      type: 'impact',
+      raw: {
+        impactorDiameter: 500,
+        impactVelocity: 18_000,
+        impactAngleDeg: 60,
+        impactorDensity: 7_800,
+        targetDensity: 2_500,
+        impactorStrength: 5e7,
+        impactAzimuthDeg: 200,
+        surfaceGravity: 9.806_65,
+      },
     });
   });
 
@@ -111,7 +120,7 @@ describe('decodeSearchParamsToIntent', () => {
     const params = new URLSearchParams(
       `?${URL_KEYS.eventType}=impact&${URL_KEYS.preset}=CHICXULUB&${URL_KEYS.diameter}=500`
     );
-    expect(decodeSearchParamsToIntent(params).impactCustomInput).toBeNull();
+    expect(decodeSearchParamsToIntent(params).customInput).toBeNull();
   });
 });
 
@@ -139,7 +148,6 @@ describe('applyIntentToStore', () => {
         location: { latitude: 34.2, longitude: -118.5 },
         mode: 'globe',
         simTime: null,
-        impactCustomInput: null,
         customInput: null,
       },
       useAppStore.getState()
@@ -151,7 +159,15 @@ describe('applyIntentToStore', () => {
     expect(s.mode).toBe('globe');
   });
 
-  it('applies CUSTOM impact input via setImpactInput', () => {
+  it('restores a CUSTOM impact wholesale, and an incomplete one not at all', () => {
+    const impact = {
+      impactorDiameter: 250,
+      impactVelocity: 17_000,
+      impactAngleDeg: 45,
+      impactorDensity: 3_000,
+      targetDensity: 2_500,
+      surfaceGravity: 9.806_65,
+    };
     applyIntentToStore(
       {
         eventType: 'impact',
@@ -159,14 +175,36 @@ describe('applyIntentToStore', () => {
         location: null,
         mode: null,
         simTime: null,
-        impactCustomInput: { impactorDiameter: 250 },
-        customInput: null,
+        customInput: { type: 'impact', raw: impact },
       },
       useAppStore.getState()
     );
     const s = useAppStore.getState();
     expect(s.impact.preset).toBe('CUSTOM');
     expect(s.impact.input.impactorDiameter as number).toBe(250);
+    expect(s.impact.input.impactAngle as number).toBeCloseTo(Math.PI / 4, 12);
+    // Nothing of the preset it replaced survives in it.
+    expect(s.impact.input).not.toHaveProperty('waterDepth');
+
+    // Without the densities there is no impactor to rebuild: the store
+    // keeps what it had rather than inventing them.
+    resetAppStore();
+    const before = useAppStore.getState().impact;
+    applyIntentToStore(
+      {
+        eventType: 'impact',
+        preset: 'CUSTOM',
+        location: null,
+        mode: null,
+        simTime: null,
+        customInput: {
+          type: 'impact',
+          raw: { impactorDiameter: 500, impactVelocity: 18_000, impactAngleDeg: 60 },
+        },
+      },
+      useAppStore.getState()
+    );
+    expect(useAppStore.getState().impact).toEqual(before);
   });
 });
 
@@ -424,6 +462,12 @@ describe('every preset, edited in the panel and shared', () => {
   const store = (): AppStore => useAppStore.getState();
 
   const cases = [
+    ...Object.entries(IMPACT_PRESETS).map(([id, p]) => ({
+      type: 'impact' as const,
+      id,
+      preset: p.input,
+      edit: () => store().setImpactInput({}),
+    })),
     ...Object.entries(EXPLOSION_PRESETS).map(([id, p]) => ({
       type: 'explosion' as const,
       id,
@@ -467,6 +511,27 @@ describe('every preset, edited in the panel and shared', () => {
     applyIntentToStore(decodeSearchParamsToIntent(params), store());
     expect(store().eventType).toBe(c.type);
     expect(serialise(store()[c.type].input)).toBe(serialise(sent));
+  });
+
+  it('a custom iron impactor keeps its strength and its azimuth', () => {
+    // Until 14 September 2026 an impact link carried seven fields and
+    // laid them over the recipient's own input: an iron body shared
+    // from Meteor Crater arrived with Chicxulub's strength, which is to
+    // say a different entry regime, and pointing the other way.
+    store().selectPreset('METEOR_CRATER');
+    store().setImpactInput({ impactorDiameter: 60, impactAzimuthDeg: 200, impactAngle: 37.5 });
+    const sent = store().impact.input;
+    expect(sent.impactorStrength).toBeDefined();
+
+    const params = encodeStateToSearchParams(projectSyncableState(store()));
+    resetAppStore();
+    applyIntentToStore(decodeSearchParamsToIntent(params), store());
+    const received = store().impact.input;
+    expect(store().impact.preset).toBe('CUSTOM');
+    expect(received.impactorStrength).toBe(sent.impactorStrength);
+    expect(received.impactAzimuthDeg).toBe(200);
+    expect(received.impactAngle).toBe(sent.impactAngle);
+    expect(serialise(received)).toBe(serialise(sent));
   });
 
   it('a named landslide preset that shares its id with a volcano opens as the landslide', () => {

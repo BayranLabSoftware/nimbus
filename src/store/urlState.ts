@@ -2,6 +2,7 @@ import { EARTHQUAKE_PRESETS } from '../physics/events/earthquake/index.js';
 import { EXPLOSION_PRESETS } from '../physics/events/explosion/index.js';
 import { LANDSLIDE_PRESETS } from '../physics/events/landslide/index.js';
 import { VOLCANO_PRESETS } from '../physics/events/volcano/index.js';
+import { STANDARD_GRAVITY } from '../physics/constants.js';
 import { IMPACT_PRESETS } from '../physics/simulate.js';
 import { deg, degreesToRadians, kgPerM3, m, mps, radiansToDegrees } from '../physics/units.js';
 import type { AppStore, EventType, ViewMode } from './useAppStore.js';
@@ -26,15 +27,20 @@ export const URL_KEYS = {
   mode: 'm',
   // `t` is already the event type, so the playhead gets its own key.
   simTime: 'ts',
-  // impact CUSTOM overrides
+  // impact CUSTOM inputs
   diameter: 'd',
   velocity: 's',
+  // Degrees, the unit a link written by hand uses.
   angleDeg: 'a',
   impactorDensity: 'rho',
   targetDensity: 'trho',
   gravity: 'g',
+  impactAzimuthDeg: 'az',
+  impactorStrength: 'str',
+  // The depths are shared with explosions, and `od` with landslides.
   waterDepth: 'wd',
   meanOceanDepth: 'od',
+  shoreDistance: 'sh',
   // explosion CUSTOM inputs
   yieldMegatons: 'y',
   // Signed: a negative height is a depth below the water surface.
@@ -77,7 +83,7 @@ export const URL_KEYS = {
 } as const;
 
 /** Scenario types whose custom inputs a link restores wholesale. */
-export type RestorableScenario = 'explosion' | 'earthquake' | 'volcano' | 'landslide';
+export type RestorableScenario = EventType;
 
 const EXPLOSION_GROUND_TYPES = ['HARD_ROCK', 'FIRM_GROUND', 'DRY_SOIL', 'WET_SOIL'] as const;
 const FAULT_TYPES = ['strike-slip', 'reverse', 'normal', 'all'] as const;
@@ -155,6 +161,22 @@ function setNumber(params: URLSearchParams, key: string, value: number | undefin
   if (value !== undefined) params.set(key, exact(value));
 }
 
+function encodeImpact(params: URLSearchParams, input: AppStore['impact']['input']): void {
+  setNumber(params, URL_KEYS.diameter, input.impactorDiameter);
+  setNumber(params, URL_KEYS.velocity, input.impactVelocity);
+  // The exact double in degrees comes back through the validator as
+  // the same radians: checked over 29 000 angles, typed and random.
+  setNumber(params, URL_KEYS.angleDeg, radiansToDegrees(input.impactAngle));
+  setNumber(params, URL_KEYS.impactorDensity, input.impactorDensity);
+  setNumber(params, URL_KEYS.targetDensity, input.targetDensity);
+  setNumber(params, URL_KEYS.gravity, input.surfaceGravity);
+  setNumber(params, URL_KEYS.impactAzimuthDeg, input.impactAzimuthDeg);
+  setNumber(params, URL_KEYS.impactorStrength, input.impactorStrength);
+  setNumber(params, URL_KEYS.waterDepth, input.waterDepth);
+  setNumber(params, URL_KEYS.meanOceanDepth, input.meanOceanDepth);
+  setNumber(params, URL_KEYS.shoreDistance, input.shoreDistance);
+}
+
 function encodeExplosion(params: URLSearchParams, input: AppStore['explosion']['input']): void {
   setNumber(params, URL_KEYS.yieldMegatons, input.yieldMegatons);
   setNumber(params, URL_KEYS.heightOfBurst, input.heightOfBurst);
@@ -228,23 +250,7 @@ export function encodeStateToSearchParams(state: SyncableState): URLSearchParams
 
   if (state.eventType === 'impact') {
     params.set(URL_KEYS.preset, state.impact.preset);
-    if (state.impact.preset === 'CUSTOM') {
-      const input = state.impact.input;
-      params.set(URL_KEYS.diameter, trim(input.impactorDiameter, 2));
-      params.set(URL_KEYS.velocity, trim(input.impactVelocity, 2));
-      params.set(URL_KEYS.angleDeg, trim(radiansToDegrees(input.impactAngle), 2));
-      params.set(URL_KEYS.impactorDensity, trim(input.impactorDensity, 1));
-      params.set(URL_KEYS.targetDensity, trim(input.targetDensity, 1));
-      if (input.surfaceGravity !== undefined) {
-        params.set(URL_KEYS.gravity, trim(input.surfaceGravity, 4));
-      }
-      if (input.waterDepth !== undefined) {
-        params.set(URL_KEYS.waterDepth, trim(input.waterDepth, 1));
-      }
-      if (input.meanOceanDepth !== undefined) {
-        params.set(URL_KEYS.meanOceanDepth, trim(input.meanOceanDepth, 0));
-      }
-    }
+    if (state.impact.preset === 'CUSTOM') encodeImpact(params, state.impact.input);
   } else if (state.eventType === 'explosion') {
     params.set(URL_KEYS.preset, state.explosion.preset);
     if (state.explosion.preset === 'CUSTOM') encodeExplosion(params, state.explosion.input);
@@ -291,20 +297,9 @@ export interface DecodedStateIntent {
   mode: ViewMode | null;
   /** Playhead in simulation seconds; null when the URL carries none. */
   simTime: number | null;
-  /** Only filled when preset === 'CUSTOM' and at least one override is set. */
-  impactCustomInput: {
-    impactorDiameter?: number;
-    impactVelocity?: number;
-    impactAngle?: number; // radians
-    impactorDensity?: number;
-    targetDensity?: number;
-    surfaceGravity?: number;
-    waterDepth?: number;
-    meanOceanDepth?: number;
-  } | null;
-  /** An explosion, earthquake, volcano or landslide link whose preset
-   *  is 'CUSTOM': the input fields it carried, each checked against its
-   *  domain. The store validates them as a whole when it restores them. */
+  /** A link whose preset is 'CUSTOM': the input fields it carried, each
+   *  checked against its domain. The store validates them as a whole
+   *  when it restores them. */
   customInput: { type: RestorableScenario; raw: Record<string, unknown> } | null;
 }
 
@@ -343,7 +338,24 @@ function decodeCustomInput(
   const nonNegative = (v: number): boolean => v >= 0;
   const slope = (v: number): boolean => v > 0 && v < 90;
 
-  if (type === 'explosion') {
+  if (type === 'impact') {
+    number('impactorDiameter', URL_KEYS.diameter, positive);
+    number('impactVelocity', URL_KEYS.velocity, positive);
+    number('impactAngleDeg', URL_KEYS.angleDeg, positive);
+    number('impactorDensity', URL_KEYS.impactorDensity, positive);
+    number('targetDensity', URL_KEYS.targetDensity, positive);
+    number('surfaceGravity', URL_KEYS.gravity, positive);
+    number('impactAzimuthDeg', URL_KEYS.impactAzimuthDeg, any);
+    number('impactorStrength', URL_KEYS.impactorStrength, positive);
+    number('waterDepth', URL_KEYS.waterDepth, nonNegative);
+    number('meanOceanDepth', URL_KEYS.meanOceanDepth, positive);
+    number('shoreDistance', URL_KEYS.shoreDistance, nonNegative);
+    // A link written by hand may leave gravity out. The input's own
+    // default is Earth's; the app's links always carry it.
+    if (Object.keys(raw).length > 0 && raw.surfaceGravity === undefined) {
+      raw.surfaceGravity = STANDARD_GRAVITY;
+    }
+  } else if (type === 'explosion') {
     number('yieldMegatons', URL_KEYS.yieldMegatons, positive);
     number('heightOfBurst', URL_KEYS.heightOfBurst, (v) => v >= -MAX_BURST_DEPTH_M);
     oneOf('groundType', URL_KEYS.groundType, EXPLOSION_GROUND_TYPES);
@@ -440,34 +452,10 @@ export function decodeSearchParamsToIntent(search: URLSearchParams): DecodedStat
   const rawTime = numberParam(search, URL_KEYS.simTime);
   const simTime = rawTime !== null && rawTime >= 0 && rawTime < 1e7 ? rawTime : null;
 
-  let impactCustomInput: DecodedStateIntent['impactCustomInput'] = null;
-  if (eventType === 'impact' && preset === 'CUSTOM') {
-    const custom: NonNullable<DecodedStateIntent['impactCustomInput']> = {};
-    const d = numberParam(search, URL_KEYS.diameter);
-    if (d !== null && d > 0) custom.impactorDiameter = d;
-    const v = numberParam(search, URL_KEYS.velocity);
-    if (v !== null && v > 0) custom.impactVelocity = v;
-    const ang = numberParam(search, URL_KEYS.angleDeg);
-    if (ang !== null && ang >= 0 && ang <= 90) custom.impactAngle = ang;
-    const rhoI = numberParam(search, URL_KEYS.impactorDensity);
-    if (rhoI !== null && rhoI > 0) custom.impactorDensity = rhoI;
-    const rhoT = numberParam(search, URL_KEYS.targetDensity);
-    if (rhoT !== null && rhoT > 0) custom.targetDensity = rhoT;
-    const g = numberParam(search, URL_KEYS.gravity);
-    if (g !== null && g > 0) custom.surfaceGravity = g;
-    const wd = numberParam(search, URL_KEYS.waterDepth);
-    if (wd !== null && wd >= 0) custom.waterDepth = wd;
-    const od = numberParam(search, URL_KEYS.meanOceanDepth);
-    if (od !== null && od > 0) custom.meanOceanDepth = od;
-    impactCustomInput = Object.keys(custom).length > 0 ? custom : null;
-  }
-
   const customInput: DecodedStateIntent['customInput'] =
-    eventType !== null && eventType !== 'impact' && preset === 'CUSTOM'
-      ? decodeCustomInput(eventType, search)
-      : null;
+    eventType !== null && preset === 'CUSTOM' ? decodeCustomInput(eventType, search) : null;
 
-  return { eventType, preset, location, mode, simTime, impactCustomInput, customInput };
+  return { eventType, preset, location, mode, simTime, customInput };
 }
 
 /**
@@ -486,7 +474,6 @@ export function decodeUrl(url: string, base = 'http://localhost/'): DecodedState
       location: null,
       mode: null,
       simTime: null,
-      impactCustomInput: null,
       customInput: null,
     };
   }
@@ -494,9 +481,9 @@ export function decodeUrl(url: string, base = 'http://localhost/'): DecodedState
 
 /**
  * Apply a decoded intent to the app store. Uses the existing typed
- * actions (`selectEventType`, `selectPreset`, `setLocation`,
- * `setImpactInput`, `setMode`) so each slice validates its own
- * inputs. Anything left `null` in the intent is ignored.
+ * actions (`selectEventType`, `selectPreset`, `restoreCustomInput`,
+ * `setLocation`, `setMode`) so each slice validates its own inputs.
+ * Anything left `null` in the intent is ignored.
  */
 export function applyIntentToStore(intent: DecodedStateIntent, store: AppStore): void {
   if (intent.eventType !== null) store.selectEventType(intent.eventType);
@@ -504,10 +491,6 @@ export function applyIntentToStore(intent: DecodedStateIntent, store: AppStore):
   if (intent.preset !== null && intent.preset !== 'CUSTOM') {
     // selectPreset routes to the correct event-type slice by itself.
     store.selectPreset(intent.preset as Parameters<AppStore['selectPreset']>[0]);
-  }
-
-  if (intent.impactCustomInput !== null) {
-    store.setImpactInput(intent.impactCustomInput);
   }
 
   if (intent.customInput !== null) {

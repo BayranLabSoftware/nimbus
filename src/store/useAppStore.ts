@@ -561,12 +561,9 @@ export interface AppStore {
   /** Replace one scenario's input wholesale with a raw object, validated
    *  like any edit, and mark it CUSTOM: how a shared link rebuilds
    *  exactly what its sender had, down to the object that seeds the
-   *  predictive band. An invalid object changes nothing. Impacts keep
-   *  `setImpactInput`, which converts the link's degrees. */
-  restoreCustomInput: (
-    type: 'explosion' | 'earthquake' | 'volcano' | 'landslide',
-    raw: Record<string, unknown>
-  ) => void;
+   *  predictive band. An invalid object changes nothing. An impact's
+   *  angle may come as `impactAngleDeg`, which the validator converts. */
+  restoreCustomInput: (type: EventType, raw: Record<string, unknown>) => void;
   setLocation: (coords: Coordinates) => void;
   clearLocation: () => void;
   /** Pin a specific aftershock for click-through detail. The globe
@@ -2394,6 +2391,15 @@ export const useAppStore = create<AppStore>((set, get) => ({
         lastEvaluatedAtLocation: null,
       };
       switch (type) {
+        case 'impact': {
+          const c = classifyStoreInput('impact', raw as unknown as ImpactScenarioInput);
+          if (!c.ok) return state;
+          return {
+            ...cleared,
+            eventType: 'impact',
+            impact: { preset: 'CUSTOM', input: c.classified },
+          };
+        }
         case 'explosion': {
           const c = classifyStoreInput('explosion', raw as unknown as ExplosionScenarioInput);
           if (!c.ok) return state;

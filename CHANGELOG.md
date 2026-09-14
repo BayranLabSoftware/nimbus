@@ -23,7 +23,7 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   basin and regime. The link restores the input wholesale through the
   validator, so the recipient gets the identical object rather than its
   own defaults with the link's values laid over them. A test sends every
-  preset of the four kinds through an edit and a link and requires that
+  preset of every kind through an edit and a link and requires that
   object back; it caught the first draft refusing the dry-land basin of
   Elm 1881, 0 m deep. The slide density travels too (`sd`).
 
@@ -83,6 +83,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   reaches the page through the depth of burst below.
 
 ### Fixed
+
+- **A shared custom impact was not the impact its sender had.** The link
+  carried seven fields and laid them over the recipient's own input, so
+  whatever it left out came from the recipient's open preset: an iron
+  body edited from Meteor Crater arrived with Chicxulub's strength — a
+  different entry regime — and the heading was lost. It also carried
+  an ocean impact's water and basin depths, which the recipient then
+  dropped (the setter did not read them), so the ocean Chicxulub opened
+  as a land impact, and it wrote gravity to four decimals. Impacts now
+  take the path the other four scenarios took: every field of the
+  stored input, the strength (`str`), heading (`az`) and distance to the
+  shore (`sh`) included, written exactly and restored wholesale through
+  the validator. Links made by the app before still open; a hand-written
+  link without `g` gets Earth's gravity, and one without the densities
+  now leaves the preset alone instead of borrowing them.
 
 - **A number typed over another in a custom panel could be stored as a
   different number.** Every field was bound straight to the store, and a

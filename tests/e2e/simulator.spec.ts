@@ -266,6 +266,23 @@ test.describe('simulator flow', () => {
     await expect(page.getByLabel('Preset')).toHaveValue('NORTHRIDGE_1994');
   });
 
+  test('a shared link rebuilds a custom iron impactor, heading and all', async ({ page }) => {
+    // Strength and heading were not in an impact link until 14 September
+    // 2026: an iron body arrived with the strength of whatever the
+    // recipient had open.
+    await page.goto(
+      '/?lng=en&t=impact&p=CUSTOM&d=60&s=12800&a=45&rho=7800&trho=2500&g=9.80665&str=50000000&az=200&m=globe'
+    );
+    await expandSimulatorPanelIfCollapsed(page);
+    await expect(page.getByRole('radio', { name: 'Cosmic impact' })).toBeChecked();
+    await expect(page.getByLabel('Impactor diameter (km)')).toHaveValue('0.06');
+    await expect(page.getByLabel('Impactor density (kg/m³)')).toHaveValue('7800');
+    await expect(page.getByText('Downrange azimuth (° from N): 200')).toBeVisible();
+    // And the link the page writes back still carries them.
+    await expect.poll(() => new URL(page.url()).searchParams.get('str')).toBe('50000000');
+    await expect.poll(() => new URL(page.url()).searchParams.get('az')).toBe('200');
+  });
+
   test('a shared link rebuilds a custom explosion placed under the water', async ({ page }) => {
     await page.goto('/?lng=en&t=explosion&p=CUSTOM&y=2.5&h=-40&gt=WET_SOIL&m=globe');
     await expandSimulatorPanelIfCollapsed(page);

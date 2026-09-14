@@ -442,24 +442,28 @@ same day, except where marked)_:
   the same night: every field of the stored input in the link, restored
   wholesale through the validator (`restoreCustomInput`), so a recipient
   gets the identical object rather than defaults with values laid over
-  them. `urlState.test.ts` sends every preset of the four kinds through
-  an edit and a link and requires the identical object back. That sweep
-  found two things: the decoder was stricter than the validator (Elm
-  1881's 0 m basin was refused), and the landslide Anak Krakatau 2018
-  could not be reached at all — it shares its id with the eruption, and
-  `selectPreset` always chose the volcano, from the panel and from a
-  link. Both fixed. The panel got its landslide fields on 14 September
-  2026 — every field the model reads, the optional ones empty unless
-  set, with the model's defaults imported from the physics rather than
-  retyped — and on the way the landslide validator was found dropping
-  the slide density, and the methodology page printing a prefactor of
-  0.1 that no product path uses (the model runs 0.4 and 0.005, per
-  regime). The same day the other four panels moved onto the landslide
-  panel's `DraftNumberInput`: bound straight to the store, a keystroke
-  the model refused had put the old value back mid-word — on Tunguska,
-  typing 0.07 over the diameter stored 60.7 m — and kilometres picked up
-  float noise on their way to metres. Closed, with e2e tests that type
-  key by key.
+  them. `urlState.test.ts` sends every preset through an edit and a link
+  and requires the identical object back. That sweep found two things:
+  the decoder was stricter than the validator (Elm 1881's 0 m basin was
+  refused), and the landslide Anak Krakatau 2018 could not be reached at
+  all — it shares its id with the eruption, and `selectPreset` always
+  chose the volcano, from the panel and from a link. Both fixed. The
+  panel got its landslide fields on 14 September 2026 — every field the
+  model reads, the optional ones empty unless set, with the model's
+  defaults imported from the physics rather than retyped — and on the
+  way the landslide validator was found dropping the slide density, and
+  the methodology page printing a prefactor of 0.1 that no product path
+  uses (the model runs 0.4 and 0.005, per regime). The same day the
+  other four panels moved onto the landslide panel's `DraftNumberInput`:
+  bound straight to the store, a keystroke the model refused had put the
+  old value back mid-word — on Tunguska, typing 0.07 over the diameter
+  stored 60.7 m — and kilometres picked up float noise on their way to
+  metres. Closed, with e2e tests that type key by key. Last, impacts,
+  whose link predates all of this, moved to the same path: it carried
+  seven fields laid over the recipient's input, so an iron body arrived
+  with the strength of whatever preset was open, the heading was lost,
+  and an ocean impact's depths were written but dropped on arrival. The
+  sweep now covers all five kinds.
 - **Found on the way, and fixed: the explosion validator threw fields
   away.** It copied six fields into its output and the store keeps the
   output, so the panel's wind never reached the thermal ring — the
