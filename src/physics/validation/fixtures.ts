@@ -118,21 +118,23 @@ export const SUMATRA_2004_TIDE_GAUGES: readonly DartBuoyObservation[] = [
  * Earthquake MMI rings — USGS ShakeMap reconstructions
  * ==========================================================================
  *
- * MMI VII (very strong / damaging) intensity contour radii from the
- * Worden 2012 California GMICE plus the Wald 1999 PGV-MMI relation.
+ * MMI VII (very strong / damaging) intensity contour radii. The
+ * simulator's ring is where the Joyner & Boore 1981 PGA, with the
+ * Boore et al. 2014 site term, reaches the PGA that the Worden et al.
+ * 2012 California conversion gives for MMI VII.
  *
  * Sources:
- *   - Tōhoku 2011: USGS ShakeMap event b0001xgp final, MMI VII contour
- *     extends ~250 km along the rupture trace, ±30 km across-strike.
+ *   - Tōhoku 2011 is not in the list below: a megathrust's footprint
+ *     is a stadium, not a ring, and it is compared by area in
+ *     shakemapFixtures.ts.
  *   - Northridge 1994: Wald et al. 1999 EQ Spectra 15(3), Fig. 6
  *     California reference event; MMI VII observed at ~25 km.
  *   - L'Aquila 2009: Galli & Camassi 2009 macroseismic survey
  *     (Quad. Geofis. INGV 65), MMI VIII patch ~5 km, MMI VII ~15 km.
  *
  * The simulator-side comparison uses the MMI 7 ring radius from the
- * earthquake pipeline, which is built on the same Worden 2012 fit
- * — so this validation primarily checks that the rupture-area
- * scaling and depth attenuation reproduce the observed reach.
+ * earthquake pipeline — so what this checks is Joyner & Boore's
+ * distance decay and Worden's conversion together.
  */
 
 export interface ShakemapObservation {

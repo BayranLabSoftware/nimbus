@@ -144,5 +144,8 @@ describe('the interpolated band and the measured one', () => {
       expect(c.lowFactor, `${c.event.name}: low end`).toBeLessThan(2);
       expect(c.highFactor, `${c.event.name}: high end`).toBeLessThan(2);
     }
-  });
+    // Every event is sampled twice over the shipped rasters, which is
+    // close to four seconds on its own and past the default five on a
+    // loaded machine: a timeout there says nothing about the band.
+  }, 30_000);
 });

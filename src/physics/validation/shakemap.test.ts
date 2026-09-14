@@ -7,12 +7,14 @@ import { SHAKEMAP_OBSERVATIONS } from './fixtures.js';
  * Earthquake MMI-ring validation against published macroseismic
  * surveys.
  *
- * The simulator's MMI VII radius is built on the Wald 1999 PGV-MMI
- * relation + a Boore 2014 NGA-West2 attenuation, which is the same
- * production stack USGS ShakeMap runs. So this test does NOT
- * validate the GMICE itself — it pins the *integrated* output (the
- * radius the user sees on the map) to the radii reported by post-
- * earthquake macroseismic intensity surveys.
+ * The simulator's MMI VII radius is the distance at which the Joyner &
+ * Boore 1981 PGA, scaled by the Boore et al. 2014 site term, reaches
+ * the PGA that Worden et al. 2012 convert to MMI VII. (Until
+ * 14 September 2026 this comment named a Wald 1999 PGV relation and an
+ * NGA-West2 attenuation, neither of which draws the rings.) So this
+ * test does NOT validate the conversion itself — it pins the
+ * *integrated* output (the radius the user sees on the map) to the
+ * radii reported by post-earthquake macroseismic intensity surveys.
  *
  * Tolerance: the published macroseismic ring is itself a fitted
  * contour through irregular felt-report data with ±5–10 km
@@ -30,8 +32,10 @@ describe('Earthquake validation — MMI VII ring radius vs ShakeMap surveys', ()
       });
       const predicted = r.shaking.mmi7Radius as number;
       const diff = Math.abs(predicted - obs.observedMmi7RadiusM);
-      // Tolerance is the published macroseismic scatter plus the
-      // 30 % depth-uncertainty band on Mw 6 events.
+      // Tolerance is the survey's own scatter plus 30 % of the radius,
+      // an allowance of this project's: Joyner & Boore's distance
+      // carries a fixed 7.3 km depth term, so the event's depth does
+      // not move the ring.
       const tolerance = obs.toleranceM + 0.3 * obs.observedMmi7RadiusM;
       expect(diff).toBeLessThan(tolerance);
     });
