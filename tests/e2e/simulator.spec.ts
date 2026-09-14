@@ -312,6 +312,55 @@ test.describe('simulator flow', () => {
     await expect(page.getByLabel('Preset')).toHaveValue('ANAK_KRAKATAU_2018');
   });
 
+  test('a landslide is edited in the panel, confined basin and all', async ({ page }) => {
+    await page.goto('/?lng=en&t=landslide&p=VAIONT_1963&m=globe');
+    await expandSimulatorPanelIfCollapsed(page);
+
+    await expect(page.getByRole('radio', { name: 'Above the water' })).toBeChecked();
+    const basin = page.getByLabel('Confined basin surface (km², optional)');
+    const amplification = page.getByLabel('Amplification (empty = 3)');
+    await expect(basin).toHaveValue('3');
+    await expect(amplification).toHaveValue('');
+
+    await amplification.fill('2.5');
+    await expect.poll(() => new URL(page.url()).searchParams.get('p')).toBe('CUSTOM');
+    await expect.poll(() => new URL(page.url()).searchParams.get('bf')).toBe('2.5');
+
+    // Typed key by key over the old value, as a person does. A field
+    // bound straight to the store put the 3 back after the refused 0
+    // and stored 3.5 km²; `fill` sets the whole text at once and would
+    // never have shown it.
+    await basin.click();
+    await page.keyboard.press('ControlOrMeta+A');
+    await page.keyboard.type('0.5');
+    await expect(basin).toHaveValue('0.5');
+    await expect.poll(() => new URL(page.url()).searchParams.get('ba')).toBe('500000');
+
+    // Back to open water: the amplification has nothing left to act on.
+    await basin.fill('');
+    await expect(amplification).toHaveCount(0);
+    await expect.poll(() => new URL(page.url()).searchParams.get('ba')).toBeNull();
+    await expect.poll(() => new URL(page.url()).searchParams.get('bf')).toBeNull();
+
+    await page.getByRole('radio', { name: 'Under the water' }).check();
+    await expect.poll(() => new URL(page.url()).searchParams.get('rg')).toBe('submarine');
+    await expect(page.getByLabel('Density (kg/m³, empty = 1,950)')).toHaveValue('');
+  });
+
+  test('a shared link rebuilds a custom landslide', async ({ page }) => {
+    await page.goto(
+      '/?lng=en&t=landslide&p=CUSTOM&lv=300000000&sl=12&od=400&rg=submarine&sd=2100&fa=50000000&m=globe'
+    );
+    await expandSimulatorPanelIfCollapsed(page);
+    await expect(page.getByRole('radio', { name: 'Under the water' })).toBeChecked();
+    await expect(page.getByLabel('Volume mantissa (m³)')).toHaveValue('3.0');
+    await expect(page.getByLabel('Volume exponent')).toHaveValue('8');
+    await expect(page.getByLabel('Slope of the sliding plane (°)')).toHaveValue('12');
+    await expect(page.getByLabel('Water depth (m)')).toHaveValue('400');
+    await expect(page.getByLabel('Density (kg/m³, empty = 1,950)')).toHaveValue('2100');
+    await expect(page.getByLabel('Area the slide covers (km², optional)')).toHaveValue('50');
+  });
+
   test('ring legend mounts in globe mode with the empty-state copy', async ({ page }) => {
     await page.goto('/?lng=en&t=impact&p=CHICXULUB&m=globe');
 

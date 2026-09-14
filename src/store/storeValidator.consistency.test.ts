@@ -103,6 +103,51 @@ describe('Store-setter ↔ schema-validator consistency', () => {
     expect(useAppStore.getState().impact.input.meanOceanDepth).toBe(basin);
   });
 
+  it('the landslide panel sets every optional field, and clears it back to the default', () => {
+    // The slide density was read by the model but not copied by the
+    // validator until 14 September 2026: no edit could keep one.
+    useAppStore.getState().selectPreset('VAIONT_1963');
+    useAppStore.getState().setLandslideInput({
+      slideDensity: 2_700,
+      slideFootprintArea: 4e6,
+      confinementDynamicFactor: 2.5,
+    });
+    const set = useAppStore.getState().landslide;
+    expect(set.preset).toBe('CUSTOM');
+    expect(set.input).toMatchObject({
+      confinedBasinArea: 3e6,
+      confinementDynamicFactor: 2.5,
+      slideDensity: 2_700,
+      slideFootprintArea: 4e6,
+    });
+
+    useAppStore.getState().setLandslideInput({
+      confinedBasinArea: null,
+      confinementDynamicFactor: null,
+      slideFootprintArea: null,
+      slideDensity: null,
+    });
+    const cleared = useAppStore.getState().landslide.input;
+    expect(cleared).not.toHaveProperty('confinedBasinArea');
+    expect(cleared).not.toHaveProperty('confinementDynamicFactor');
+    expect(cleared).not.toHaveProperty('slideFootprintArea');
+    expect(cleared).not.toHaveProperty('slideDensity');
+    expect(cleared.volumeM3).toBe(2.7e8);
+  });
+
+  it('a slide density must be positive, and one no denser than seawater is flagged', () => {
+    const zero = validateScenario('landslide', { volumeM3: 1e8, slideDensity: 0 });
+    expect(zero.result.status).toBe('invalid');
+    expect(zero.result.errors.map((e) => e.code)).toContain('ZERO_FORBIDDEN');
+
+    const floating = validateScenario('landslide', { volumeM3: 1e8, slideDensity: 1_000 });
+    expect(floating.result.status).not.toBe('invalid');
+    expect(floating.result.warnings.map((w) => [w.field, w.code])).toContainEqual([
+      'slideDensity',
+      'PHYS_SUSPICIOUS_LOW',
+    ]);
+  });
+
   it('INVALID input (zero yield): state is unchanged', () => {
     const before = useAppStore.getState().explosion.input;
     useAppStore.getState().setExplosionInput({ yieldMegatons: 0 });

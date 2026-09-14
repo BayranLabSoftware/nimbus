@@ -108,6 +108,23 @@ describe('simulateLandslide', () => {
     expect(r.characteristicLength as number).toBeCloseTo(1_000, 1);
   });
 
+  it('the regime is the coupling, not a tag: the same slide falling in is 80 times taller', () => {
+    // Until 14 September 2026 the input's comment called the regime
+    // metadata. It picks K = 0.4 or 0.005. Deep water, so neither wave
+    // meets the 0.4·h breaking cap, and no density, so both sit at
+    // their reference.
+    const slide = { volumeM3: 1e8, slopeAngleDeg: 20, meanOceanDepth: m(10_000) };
+    const above = simulateLandslide({ ...slide, regime: 'subaerial' }).tsunami;
+    const below = simulateLandslide({ ...slide, regime: 'submarine' }).tsunami;
+    expect(above).not.toBeNull();
+    expect(below).not.toBeNull();
+    if (above === null || below === null) return;
+    expect((above.sourceAmplitude as number) / (below.sourceAmplitude as number)).toBeCloseTo(
+      80,
+      6
+    );
+  });
+
   it('regime defaults to submarine when unspecified', () => {
     const r = simulateLandslide({ volumeM3: 1e9 });
     expect(r.regime).toBe('submarine');

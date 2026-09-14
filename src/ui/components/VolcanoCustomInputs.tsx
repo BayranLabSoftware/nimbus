@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { FieldFeedback } from './FieldFeedback.js';
+import { splitScientific } from './scientificNotation.js';
 import styles from './SimulatorPanel.module.css';
 
 /**
@@ -13,12 +14,6 @@ import styles from './SimulatorPanel.module.css';
  */
 const EXPONENTS_VDOT = [3, 4, 5, 6, 7, 8, 9];
 const EXPONENTS_VOLUME = [7, 8, 9, 10, 11, 12, 13];
-
-function splitScientific(n: number): { mantissa: number; exp: number } {
-  if (!(n > 0) || !Number.isFinite(n)) return { mantissa: 1, exp: 0 };
-  const exp = Math.floor(Math.log10(n));
-  return { mantissa: n / 10 ** exp, exp };
-}
 
 export function VolcanoCustomInputs(): JSX.Element {
   const { t } = useTranslation();

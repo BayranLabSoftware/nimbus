@@ -73,6 +73,7 @@ export const URL_KEYS = {
   confinedBasinArea: 'ba',
   confinementDynamicFactor: 'bf',
   slideRegime: 'rg',
+  slideDensity: 'sd',
 } as const;
 
 /** Scenario types whose custom inputs a link restores wholesale. */
@@ -211,6 +212,7 @@ function encodeLandslide(params: URLSearchParams, input: AppStore['landslide']['
   setNumber(params, URL_KEYS.confinedBasinArea, input.confinedBasinArea);
   setNumber(params, URL_KEYS.confinementDynamicFactor, input.confinementDynamicFactor);
   if (input.regime !== undefined) params.set(URL_KEYS.slideRegime, input.regime);
+  setNumber(params, URL_KEYS.slideDensity, input.slideDensity);
 }
 
 /**
@@ -398,6 +400,7 @@ function decodeCustomInput(
     number('confinedBasinArea', URL_KEYS.confinedBasinArea, positive);
     number('confinementDynamicFactor', URL_KEYS.confinementDynamicFactor, positive);
     oneOf('regime', URL_KEYS.slideRegime, SLIDE_REGIMES);
+    number('slideDensity', URL_KEYS.slideDensity, positive);
   }
   return Object.keys(raw).length > 0 ? { type, raw } : null;
 }

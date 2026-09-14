@@ -35,6 +35,7 @@ import type { ExplosionScenarioInput } from '../events/explosion/simulate.js';
 import type { VolcanoScenarioInput } from '../events/volcano/simulate.js';
 import type { LandslideScenarioInput, LandslideRegime } from '../events/landslide/simulate.js';
 import type { ImpactScenarioInput } from '../simulate.js';
+import { SEAWATER_DENSITY } from '../constants.js';
 import { m, mps, deg, kgPerM3, degreesToRadians, Pa } from '../units.js';
 
 /** Four-state severity ladder mirroring `VERIFICATION_PLAN.md`. */
@@ -849,6 +850,7 @@ interface LandslideRawInput {
   confinedBasinArea?: unknown;
   confinementDynamicFactor?: unknown;
   regime?: unknown;
+  slideDensity?: unknown;
 }
 
 const VALID_LANDSLIDE_REGIMES: readonly LandslideRegime[] = ['submarine', 'subaerial'] as const;
@@ -977,6 +979,30 @@ export function validateLandslideInput(
       return invalid(errors);
     }
     out.regime = raw.regime as LandslideRegime;
+  }
+
+  // The model has read a slide density since the Watts γ factor went
+  // in; until 14 September 2026 this validator did not copy it, so no
+  // edit and no link could keep one.
+  if (raw.slideDensity !== undefined) {
+    if (!isFiniteNumber(raw.slideDensity) || raw.slideDensity <= 0) {
+      errors.push({
+        field: 'slideDensity',
+        code: isFiniteNumber(raw.slideDensity) ? 'ZERO_FORBIDDEN' : 'NOT_FINITE',
+        message: 'slideDensity (kg/m³) must be finite > 0',
+        rawValue: raw.slideDensity,
+      });
+      return invalid(errors);
+    }
+    if (raw.slideDensity <= (SEAWATER_DENSITY as number)) {
+      warnings.push({
+        field: 'slideDensity',
+        code: 'PHYS_SUSPICIOUS_LOW',
+        message: `slideDensity ${raw.slideDensity.toString()} kg/m³ is no denser than seawater (1 025): the slide floats and raises no wave in open water`,
+        rawValue: raw.slideDensity,
+      });
+    }
+    out.slideDensity = raw.slideDensity;
   }
 
   return withWarnings(out, warnings);

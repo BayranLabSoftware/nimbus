@@ -10,8 +10,12 @@ import {
 } from '../../physics/cascade.js';
 import type { EarthquakeScenarioResult } from '../../physics/events/earthquake/index.js';
 import type { ExplosionScenarioResult } from '../../physics/events/explosion/index.js';
-import type { LandslideScenarioResult } from '../../physics/events/landslide/index.js';
+import {
+  LANDSLIDE_DEFAULT_SLOPE_DEG,
+  type LandslideScenarioResult,
+} from '../../physics/events/landslide/index.js';
 import type { VolcanoScenarioResult } from '../../physics/events/volcano/index.js';
+import { DEFAULT_CONFINEMENT_DYNAMIC_FACTOR } from '../../physics/events/volcano/tsunami.js';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
 import { joulesToMegatons, radiansToDegrees } from '../../physics/units.js';
 import { useAppStore, type ActiveResult } from '../../store/index.js';
@@ -501,12 +505,35 @@ function landslideFields(r: LandslideScenarioResult): { inputs: Field[]; outputs
     { label: 'Block volume', value: `${r.inputs.volumeM3.toExponential(2)} m³` },
     {
       label: 'Slope angle',
-      value: `${(r.inputs.slopeAngleDeg ?? 20).toFixed(0)}°`,
+      value: `${(r.inputs.slopeAngleDeg ?? LANDSLIDE_DEFAULT_SLOPE_DEG).toFixed(0)}°`,
     },
     { label: 'Regime', value: r.regime },
   ];
   if (r.inputs.meanOceanDepth !== undefined) {
-    inputs.push({ label: 'Mean basin depth', value: fmtKm(r.inputs.meanOceanDepth) });
+    inputs.push({
+      label: 'Mean basin depth',
+      value:
+        (r.inputs.meanOceanDepth as number) > 0
+          ? fmtKm(r.inputs.meanOceanDepth)
+          : '0 m (dry land: no wave)',
+    });
+  }
+  // Every optional field that was set: the report shows each input the
+  // slide ran with, not only the ones every preset has.
+  if (r.inputs.slideDensity !== undefined) {
+    inputs.push({ label: 'Slide density', value: `${r.inputs.slideDensity.toFixed(0)} kg/m³` });
+  }
+  if (r.inputs.slideFootprintArea !== undefined) {
+    inputs.push({ label: 'Slide footprint', value: fmtKm2(r.inputs.slideFootprintArea) });
+  }
+  if (r.inputs.confinedBasinArea !== undefined) {
+    inputs.push(
+      { label: 'Confined basin surface', value: fmtKm2(r.inputs.confinedBasinArea) },
+      {
+        label: 'Basin amplification',
+        value: String(r.inputs.confinementDynamicFactor ?? DEFAULT_CONFINEMENT_DYNAMIC_FACTOR),
+      }
+    );
   }
   const outputs: Field[] = [
     { label: 'Characteristic length (V^⅓)', value: fmtKm(r.characteristicLength) },

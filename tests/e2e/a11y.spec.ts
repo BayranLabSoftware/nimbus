@@ -63,6 +63,16 @@ test.describe('accessibility', () => {
     await auditPage(page);
   });
 
+  test('landslide panel, every custom field showing, has no WCAG 2.1 AA violations', async ({
+    page,
+  }) => {
+    // Vaiont has a confined basin, so the amplification field is there too.
+    await page.goto('/?lng=en&t=landslide&p=VAIONT_1963&m=globe');
+    await expect(page.getByRole('complementary', { name: 'Simulator controls' })).toBeVisible();
+    await expect(page.getByLabel('Amplification (empty = 3)')).toBeAttached();
+    await auditPage(page);
+  });
+
   test('About dialog has no WCAG 2.1 AA violations when open', async ({ page }) => {
     await page.goto('/?lng=en&t=impact&p=CHICXULUB&m=globe');
     // About / Glossary triggers live at top-left, OUTSIDE the

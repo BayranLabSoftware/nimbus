@@ -364,6 +364,30 @@ describe('custom earthquakes, volcanoes and landslides in the URL', () => {
     expect(received).toBe(sent);
   });
 
+  it('a landslide keeps the density, footprint and basin amplification the panel set', () => {
+    let params = new URLSearchParams();
+    const { sent, received } = roundTrip(
+      () => {
+        useAppStore.getState().selectEventType('landslide');
+        useAppStore.getState().selectPreset('VAIONT_1963');
+        useAppStore.getState().setLandslideInput({
+          slideDensity: 2_650,
+          slideFootprintArea: 1.5e6,
+          confinementDynamicFactor: 2.5,
+          regime: 'submarine',
+        });
+        params = encodeStateToSearchParams(projectSyncableState(useAppStore.getState()));
+      },
+      () => useAppStore.getState().landslide.input
+    );
+    expect(params.get(URL_KEYS.slideDensity)).toBe('2650');
+    expect(params.get(URL_KEYS.slideFootprintArea)).toBe('1500000');
+    expect(params.get(URL_KEYS.confinedBasinArea)).toBe('3000000');
+    expect(params.get(URL_KEYS.confinementDynamicFactor)).toBe('2.5');
+    expect(params.get(URL_KEYS.slideRegime)).toBe('submarine');
+    expect(received).toBe(sent);
+  });
+
   it('reads a hand-written link, and a link it cannot use leaves the preset alone', () => {
     const intent = decodeSearchParamsToIntent(
       new URLSearchParams('t=earthquake&p=CUSTOM&mw=7.1&dep=12000&ft=reverse&si=0&wi=none')

@@ -126,6 +126,15 @@ export const VOLCANO_TSUNAMI_PREFACTOR = VOLCANO_TSUNAMI_PREFACTOR_SUBAERIAL;
 
 export type LandslideTsunamiRegime = 'subaerial' | 'submarine';
 
+/** Basin depth when the caller gives none (m): most volcanic islands
+ *  sit on a shelf much shallower than the global ocean mean. */
+export const DEFAULT_SOURCE_BASIN_DEPTH_M = 1_000;
+
+/** Dynamic amplification of the static V/A rise in a confined basin
+ *  when the caller gives none: the value that reproduces the wave at
+ *  the Vaiont dam (see `confinedBasinArea`). */
+export const DEFAULT_CONFINEMENT_DYNAMIC_FACTOR = 3;
+
 export interface VolcanoTsunamiInput {
   /** Collapsed block volume (m³). Anak Krakatau-class events sit at
    *  ≈ 3 × 10⁸; Krakatau-class caldera collapses at ≈ 2 × 10¹⁰. */
@@ -242,7 +251,7 @@ export function volcanoTsunami(input: VolcanoTsunamiInput): VolcanoTsunamiResult
   if (!Number.isFinite(V) || V <= 0) return null;
   if (!Number.isFinite(theta) || theta <= 0) return null;
 
-  const meanOceanDepth = input.meanOceanDepth ?? m(1_000);
+  const meanOceanDepth = input.meanOceanDepth ?? m(DEFAULT_SOURCE_BASIN_DEPTH_M);
   // No water → no Watts source. Catches the dry-runout flank failure
   // case where a caller plumbs meanOceanDepth = 0 to flag "no basin".
   if ((meanOceanDepth as number) <= 0) return null;
@@ -272,7 +281,7 @@ export function volcanoTsunami(input: VolcanoTsunamiInput): VolcanoTsunamiResult
   // SOURCE water column to honour the McCowan 1894 wave-breaking
   // ceiling applied at the generation site.
   const basinArea = input.confinedBasinArea as number | undefined;
-  const confinementFactor = input.confinementDynamicFactor ?? 3.0;
+  const confinementFactor = input.confinementDynamicFactor ?? DEFAULT_CONFINEMENT_DYNAMIC_FACTOR;
   let eta0: number;
   if (basinArea !== undefined && Number.isFinite(basinArea) && basinArea > 0) {
     const staticRise = V / basinArea;

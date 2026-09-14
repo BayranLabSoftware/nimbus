@@ -1161,9 +1161,10 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'flank-collapse-tsunami',
         name: 'Volcano flank-collapse tsunami',
-        formula: 'A₀ ≈ 0.1 · V^(1/3) · sin(θ),  travelTime = r / √(g · h)',
+        formula:
+          'A₀ = min(0.4 · (γ/γ_ref) · V^(1/3) · sin θ,  0.4 · h),  γ = ρ_s/ρ_w − 1,  travelTime = r / √(g · h)',
         description:
-          'Watts 2000 solid-block submarine-landslide approximation, applied to volcano flank collapses entering the sea. For the Anak Krakatau 22 December 2018 event (V ≈ 0.27 km³, θ ≈ 20°, h ≈ 200 m) it reproduces the observed ≈ 85 m source amplitude. Grilli 2019 published a full 3D BEM simulation of the same event used here as cross-validation.',
+          "A Watts 2000-inspired calibrated form, not Watts' predictive equation, applied to volcano flank collapses entering the sea. Slide thickness and Froude number are folded into the prefactor 0.4, which is calibrated on the Anak Krakatau collapse of 22 December 2018 (V ≈ 0.27 km³, θ ≈ 20°): 88 m, against the ≈ 85 m source of Grilli et al. 2019's reconstruction, then held to 40 % of the 200 m of water, so 80 m. γ/γ_ref reads a slide density about the 2 500 kg/m³ of volcanic rock. Until 14 September 2026 this entry printed a prefactor of 0.1, which gives 22 m.",
         citation: grilli2019,
       },
     ],
@@ -1210,9 +1211,10 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'submarine-landslide',
         name: 'Submarine-landslide source',
-        formula: 'A₀ ≈ 0.1 · V^(1/3) · sin(θ)     (V in m³, θ slope angle)',
+        formula:
+          'open water: A₀ = min(K · (γ/γ_ref) · V^(1/3) · sin θ,  0.4 · h),  K = 0.4 above the water, 0.005 under it   ;   confined basin: A₀ = min(f · V / A_basin,  h),  f = 3',
         description:
-          'Watts 2000 solid-block approximation; reproduces the Aitape-PNG 1998 observed run-up within a factor of 2.',
+          "A Watts 2000-inspired calibrated form, not Watts' predictive equation: slide thickness and Froude number are folded into a prefactor per regime. A rigid mass falling into the water, K = 0.4, is calibrated on Anak Krakatau 2018 (≈ 85 m, Grilli et al. 2019); sediment sliding on the sea floor, K = 0.005, on Storegga (5–10 m, Bondevik et al. 2005), so the same volume and slope make a wave up to 80 times taller falling in. γ = ρ_s/ρ_w − 1 is read about each regime's reference density (2 500 and 1 950 kg/m³). A reservoir or a fjord takes the basin-fill form instead, the volume spread over the surface and amplified by f, whose 3 reproduces the wave at the Vaiont dam. A slide footprint, when given, replaces V^(1/3) with √(A/π) as the radius the far field decays from. Treat it as an order of magnitude, a factor of 2 either way. Until 14 September 2026 this entry printed a single prefactor of 0.1, which no product path used.",
         citation: watts2000,
       },
       {

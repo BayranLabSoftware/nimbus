@@ -25,8 +25,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   own defaults with the link's values laid over them. A test sends every
   preset of the four kinds through an edit and a link and requires that
   object back; it caught the first draft refusing the dry-land basin of
-  Elm 1881, 0 m deep. The panel has no custom landslide fields, so a
-  custom landslide arrives only by link.
+  Elm 1881, 0 m deep. The slide density travels too (`sd`).
+
+- **A landslide can be edited in the panel.** Every field the model
+  reads: volume, where the slide starts (above or under the water),
+  the slope of the sliding plane, the water depth, and — empty unless
+  set — the slide's density, the area it covers and the surface of a
+  confined basin with its amplification. Empty fields are the model's
+  own defaults, named from the physics so the panel cannot drift from
+  it, and the help under each one says what it does: 0 m of water is a
+  slide that ends on dry land, and a rigid mass falling in raises a wave
+  up to 80 times taller than sediment sliding along the sea floor. The
+  result says which source ran — open water, confined basin, or none —
+  and the printable report lists every field that was set. The numbers
+  in these fields can be typed through: the text stays yours while the
+  field has focus, so "0.5" typed over a basin of 3 km² is 0.5.
 
 - **An explosion can be placed under the water.** The panel offers "in
   the air or on the surface" or "under the water" with a depth, and the
@@ -70,6 +83,20 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   reaches the page through the depth of burst below.
 
 ### Fixed
+
+- **The landslide validator threw the slide density away.** The model
+  has read it since the Watts density factor went in, but no edit could
+  keep one. It is validated now, and one no denser than seawater is
+  flagged: the slide floats and raises no wave.
+
+- **The landslide regime was described as a tag, and the methodology
+  page printed the wrong source.** The input's documentation said the
+  regime was report metadata; it picks the calibrated prefactor, 0.4 or
+  0.005. The methodology page gave a single prefactor of 0.1 for both
+  the landslide and the flank-collapse source — 22 m for Anak Krakatau,
+  where the model gives 88 m held to 80 m by the breaking cap — and
+  called the reconstruction it is calibrated on an observation. Both
+  entries now print the formulas the model runs.
 
 - **Anak Krakatau 2018 could not be picked as a landslide.** The
   eruption and the flank collapse it shed share one preset id, and

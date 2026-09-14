@@ -319,6 +319,13 @@ export interface LandslideInputOverrides {
   slopeAngleDeg?: number;
   meanOceanDepth?: number;
   regime?: LandslideScenarioInput['regime'];
+  /** The optional fields below take `null` to remove them, and the
+   *  model falls back to its own default: a compact slide, open water,
+   *  the factor calibrated on Vaiont, the regime's reference density. */
+  slideFootprintArea?: number | null;
+  confinedBasinArea?: number | null;
+  confinementDynamicFactor?: number | null;
+  slideDensity?: number | null;
 }
 
 /** UI-facing overrides for the volcano scenario. */
@@ -2435,6 +2442,17 @@ export const useAppStore = create<AppStore>((set, get) => ({
       if (overrides.meanOceanDepth !== undefined)
         merged.meanOceanDepth = m(overrides.meanOceanDepth);
       if (overrides.regime !== undefined) merged.regime = overrides.regime;
+      if (overrides.slideFootprintArea === null) delete merged.slideFootprintArea;
+      else if (overrides.slideFootprintArea !== undefined)
+        merged.slideFootprintArea = sqm(overrides.slideFootprintArea);
+      if (overrides.confinedBasinArea === null) delete merged.confinedBasinArea;
+      else if (overrides.confinedBasinArea !== undefined)
+        merged.confinedBasinArea = sqm(overrides.confinedBasinArea);
+      if (overrides.confinementDynamicFactor === null) delete merged.confinementDynamicFactor;
+      else if (overrides.confinementDynamicFactor !== undefined)
+        merged.confinementDynamicFactor = overrides.confinementDynamicFactor;
+      if (overrides.slideDensity === null) delete merged.slideDensity;
+      else if (overrides.slideDensity !== undefined) merged.slideDensity = overrides.slideDensity;
 
       const classification = classifyStoreInput('landslide', merged);
       if (!classification.ok) return state;

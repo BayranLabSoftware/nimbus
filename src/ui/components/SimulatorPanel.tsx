@@ -43,6 +43,7 @@ import { CitySearch } from './CitySearch.js';
 import { EarthquakeCustomInputs } from './EarthquakeCustomInputs.js';
 import { ExplosionCustomInputs } from './ExplosionCustomInputs.js';
 import { ImpactCustomInputs } from './ImpactCustomInputs.js';
+import { LandslideCustomInputs } from './LandslideCustomInputs.js';
 import { VolcanoCustomInputs } from './VolcanoCustomInputs.js';
 import styles from './SimulatorPanel.module.css';
 
@@ -637,6 +638,7 @@ export function SimulatorPanel(): JSX.Element {
         {eventType === 'explosion' && <ExplosionCustomInputs />}
         {eventType === 'earthquake' && <EarthquakeCustomInputs />}
         {eventType === 'volcano' && <VolcanoCustomInputs />}
+        {eventType === 'landslide' && <LandslideCustomInputs />}
 
         <CitySearch />
 
@@ -1625,6 +1627,14 @@ export function SimulatorPanel(): JSX.Element {
               <dt className={styles.resultLabel}>{t('simulator.landslide.charLength')}</dt>
               <dd className={styles.resultValue}>
                 <RangeValue meters={result.data.characteristicLength} />
+              </dd>
+              <dt className={styles.resultLabel}>{t('simulator.landslide.sourceLabel')}</dt>
+              <dd className={styles.resultValue} data-testid="landslide-source-result">
+                {result.data.tsunami === null
+                  ? t('simulator.landslide.sourceDry')
+                  : result.data.inputs.confinedBasinArea !== undefined
+                    ? t('simulator.landslide.sourceConfined')
+                    : t('simulator.landslide.sourceOpenWater')}
               </dd>
               {result.data.tsunami !== null && (
                 <>

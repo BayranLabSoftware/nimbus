@@ -448,8 +448,17 @@ same day, except where marked)_:
   1881's 0 m basin was refused), and the landslide Anak Krakatau 2018
   could not be reached at all — it shares its id with the eruption, and
   `selectPreset` always chose the volcano, from the panel and from a
-  link. Both fixed. **Still open:** the panel has no custom landslide
-  fields, so a custom landslide can only arrive by link.
+  link. Both fixed. The panel got its landslide fields on 14 September
+  2026 — every field the model reads, the optional ones empty unless
+  set, with the model's defaults imported from the physics rather than
+  retyped — and on the way the landslide validator was found dropping
+  the slide density, and the methodology page printing a prefactor of
+  0.1 that no product path uses (the model runs 0.4 and 0.005, per
+  regime). **Still open:** the four older custom panels bind their
+  number inputs straight to the store, so a keystroke the model refuses
+  puts the old value back mid-word — on Tunguska, typing 0.06 over the
+  diameter stores 60.6 m. The landslide panel's `DraftNumberInput` is
+  the fix; the other panels do not use it yet.
 - **Found on the way, and fixed: the explosion validator threw fields
   away.** It copied six fields into its output and the store keeps the
   output, so the panel's wind never reached the thermal ring — the

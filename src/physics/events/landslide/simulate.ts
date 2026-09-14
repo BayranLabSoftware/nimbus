@@ -40,6 +40,11 @@ import { volcanoTsunami, type VolcanoTsunamiResult } from '../volcano/tsunami.js
 
 export type LandslideRegime = 'submarine' | 'subaerial';
 
+/** Failure-plane dip when the input gives none (°). */
+export const LANDSLIDE_DEFAULT_SLOPE_DEG = 20;
+/** Regime when the input gives none. */
+export const LANDSLIDE_DEFAULT_REGIME: LandslideRegime = 'submarine';
+
 export interface LandslideScenarioInput {
   /** Volume of the failed block (m³). Sub-aerial events sit at
    *  ≈ 10⁵ – 10⁹; submarine continental-margin events at ≈ 10⁹ – 10¹². */
@@ -47,9 +52,11 @@ export interface LandslideScenarioInput {
   /** Slope of the failure plane (°). 5–15° for submarine slumps,
    *  20–40° for sub-aerial flank collapses. Defaults to 20°. */
   slopeAngleDeg?: number;
-  /** Mean basin depth used for tsunami travel-time (m). Defaults to
-   *  1 000 m (continental shelf); set to a larger value for open-
-   *  ocean submarine slides. */
+  /** Depth of the water the slide moves into (m). It does three jobs:
+   *  it caps the source amplitude (40 % of it in open water, all of it
+   *  in a confined basin), it sets the travel time, and 0 is a slide
+   *  that ends on dry land and raises no wave (Elm 1881). Defaults to
+   *  1 000 m (continental shelf). */
   meanOceanDepth?: Meters;
   /** Optional planform area of the slide footprint (m²). When set,
    *  the equivalent cavity radius driving the 1/r far-field decay is
@@ -71,10 +78,13 @@ export interface LandslideScenarioInput {
   /** Optional dynamic-amplification factor for the confined-basin
    *  formula above. Defaults to 3.0 (calibrated against Vaiont). */
   confinementDynamicFactor?: number;
-  /** Qualitative tag: 'submarine' (sliding sediment on the seafloor)
-   *  vs 'subaerial' (rockfall or flank collapse entering water).
-   *  Currently used only as metadata in the report; both regimes use
-   *  the same Watts source formula in this layer. */
+  /** 'submarine' (sediment sliding on the sea floor) or 'subaerial'
+   *  (rockfall or flank collapse entering the water). Not a tag: it
+   *  picks the calibrated coupling of the open-water source, K = 0.4
+   *  for a rigid block falling in (Anak Krakatau 2018) against 0.005
+   *  for soft sediment (Storegga), and the reference density the slide
+   *  density is read against. The same volume and slope make a wave up
+   *  to 80 times taller as 'subaerial'. Defaults to 'submarine'. */
   regime?: LandslideRegime;
   /** Slide bulk density (kg/m³). Drives the Watts submerged
    *  specific-gravity factor in {@link volcanoTsunami}: a dense rock
@@ -105,8 +115,8 @@ export interface LandslideScenarioResult {
  * no I/O, no framework imports.
  */
 export function simulateLandslide(input: LandslideScenarioInput): LandslideScenarioResult {
-  const slopeDeg = input.slopeAngleDeg ?? 20;
-  const regime = input.regime ?? 'submarine';
+  const slopeDeg = input.slopeAngleDeg ?? LANDSLIDE_DEFAULT_SLOPE_DEG;
+  const regime = input.regime ?? LANDSLIDE_DEFAULT_REGIME;
   const sideLength = Math.cbrt(Math.max(input.volumeM3, 0));
   const tsunami = volcanoTsunami({
     collapseVolumeM3: input.volumeM3,
