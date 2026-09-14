@@ -307,13 +307,15 @@ export interface PredictiveBand {
  */
 export function bandFromPlans(
   plans: readonly CasualtyPlan[],
-  populationAt: (radiusM: number) => number
+  // The band is handed over too, for a caller that can count its own
+  // footprint — a rupture stadium is not the circle of its radius.
+  populationAt: (radiusM: number, band: CasualtyBand) => number
 ): PredictiveBand | null {
   if (plans.length === 0) return null;
   const draws = plans.map((plan) =>
     estimateCasualties(
       plan,
-      plan.bands.map((band) => populationAt(band.outerRadiusM))
+      plan.bands.map((band) => populationAt(band.outerRadiusM, band))
     )
   );
   draws.sort((a, b) => a.deaths - b.deaths);
@@ -330,7 +332,7 @@ export function bandFromPlans(
 export function sampledTollBand(options: {
   result: ActiveResult;
   planFor: (result: ActiveResult) => CasualtyPlan | null;
-  populationAt: (radiusM: number) => number;
+  populationAt: (radiusM: number, band: CasualtyBand) => number;
   seed: string | number;
   samples?: number;
   curveScatter?: boolean;

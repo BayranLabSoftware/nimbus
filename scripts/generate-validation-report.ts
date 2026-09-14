@@ -704,6 +704,18 @@ function ruleRecord(e: RuleQuakeRun): string {
   return missing > 0 ? `${grouped(deaths)} (+${grouped(missing)} missing)` : grouped(deaths);
 }
 
+/** The declared gap the sets held out by rule measure, in their own
+ *  figures, so the sentence moves when the model does. */
+function greatRuptureGap(cells: readonly RuleCell[]): string {
+  const label = SIZE_BANDS.earthquake[SIZE_BANDS.earthquake.length - 1]?.label;
+  const great = cells.find((c) => c.kind === 'size' && c.group === label);
+  const measured =
+    great === undefined || great.informative.rows === 0
+      ? 'The sets held out by rule have no such earthquake to measure it on.'
+      : `Held out by rule, the earthquakes of ${String(label)} read ${biasText(great.all)} their record with a scatter of ${great.all.scatterLn === null ? '—' : great.all.scatterLn.toFixed(2)}, and their band holds ${great.informative.inside.toString()} of ${great.informative.rows.toString()} records by spanning a median of ${great.informative.medianBandDecades === null ? '—' : `10^${(Math.round(fixed(great.informative.medianBandDecades, 2) * 10) / 10).toFixed(1)}`}.`;
+  return `**A great rupture's toll is read off intensity rings too large for it.** From Mw 7.5 the rings are Joyner & Boore 1981, a relation for a point, stretched along the rupture as a stadium, and the simulator counts the people inside it. ${measured} Until 14 September 2026 the calibration harness counted circles about the epicentre instead, and hid it (docs/ROADMAP.md, M9 move 4; docs/BUG_REGISTRY.md, B-022).`;
+}
+
 function byRuleSection(
   sets: RuleSets,
   cells: { earthquakes: RuleCell[]; plumes: RuleCell[] }
@@ -1254,6 +1266,7 @@ ${bullet([
   "**Distant coasts of very long ruptures get too small a wave, and the cause is not settled.** Sumatra's far coasts are five to ten times under-waved. The far-field law does not use the rupture length, but a naive line-source correction would take DART 21413 from 0.90× the record to about 3× (docs/ROADMAP.md, moves 3b and 3d).",
   '**The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.',
   "**The toll band draws the fatality curve's published scatter, but not the census.** Since 14 September 2026 a shaking realisation scales its mortality by exp(N(0, G)), G being PAGER's `gnormvalue` for the country — the standard deviation of ln(deaths) PAGER's own loss module uses. The population is still held fixed, and so are the blast and pyroclastic rates, which publish no scatter. G was measured on ShakeMap intensities, so it overlaps, by an amount not separated here, with the ground-motion residual drawn beside it. Where the curve is steep or its scatter large the band spans four orders of magnitude or more — Gorkha, Kumamoto, Pohang — which is the width PAGER's own numbers give a single event, and a row inside such a band has passed nothing (`uq/tollBand.ts`).",
+  greatRuptureGap(byRule.earthquakes),
   "**Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings use Joyner & Boore 1981 and the reported accelerations Boore et al. 2014, both for shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI IX band in the footprint table is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).",
   "**Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).",
   "**Three numbers are not traced to a source read here.** The 30 cm at DART 21413 that the Tōhoku wave row is tuned on is quoted from Satake et al. 2013 without the paper having been read in the source review; the arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005.",

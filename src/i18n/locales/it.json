@@ -1495,7 +1495,11 @@
       },
       "belowResolution": {
         "label": "Una manciata di morti è sotto ciò che un tasso può risolvere",
-        "body": "Una curva di mortalità è un tasso applicato a migliaia di persone. A Kaikōura, tenuto fuori, gli anelli attorno all'epicentro contenevano circa cinquemila persone, e la curva presa in prestito dalla Nuova Zelanda dà loro un ventesimo di morto, contro i due registrati. Nessuna banda fatta di questi tassi può contenere una manciata di morti, e l'errore viene mostrato invece di essere giustificato."
+        "body": "Una curva di mortalità è un tasso applicato a migliaia di persone, e non risolve niente di più fine. A Kaikōura, tenuto fuori, la curva presa in prestito dalla Nuova Zelanda dà alle persone vicine alla faglia circa un morto, su una banda che arriva a trenta, contro i due registrati: dentro, per un morto in più o in meno. Tra i terremoti tenuti fuori per regola è il mancato più frequente — da uno a dieci morti dove la banda dice nessuno — e ognuno viene mostrato invece di essere giustificato."
+      },
+      "footprint": {
+        "label": "L'impronta dello scuotimento è troppo grande",
+        "body": "Per una rottura molto estesa gli anelli di intensità vengono da una legge pensata per un punto, stirata lungo tutta la faglia. Dipingono a intensità alta molto più terreno di quanto il terremoto abbia scosso — a Tōhoku tre volte l'area di intensità VIII misurata dall'USGS — e le vittime seguono: il solo scuotimento arriva a quasi dieci volte l'intero bilancio, annegati compresi. La riga è dentro solo perché la sua banda è larga tre ordini di grandezza."
       }
     },
     "waves": {
@@ -1552,6 +1556,10 @@
       "bandPhysicsOnly": {
         "item": "La banda include la dispersione della curva di mortalità, ma non il censimento",
         "note": "Dal 14 settembre la banda dei nove casi su dieci ridisegna il terremoto e, per lo scuotimento, quanto i morti di un singolo terremoto si scostano dalla curva del loro Paese, della misura che pubblica USGS PAGER. La mappa della popolazione resta ferma, e così i tassi di mortalità di esplosioni e colate piroclastiche, per cui una dispersione del genere non è pubblicata. PAGER ha misurato la sua dispersione su mappe di scuotimento reali, quindi si sovrappone a quella del moto del suolo estratta accanto, per una quota che qui non è separata. Dove la curva di un Paese è ripida o incerta la banda copre quattro ordini di grandezza o più, e un dato che vi cade dentro non ha superato niente."
+      },
+      "greatRupture": {
+        "item": "I terremoti più grandi vengono contati su anelli di intensità troppo grandi per loro",
+        "note": "Dalla magnitudo 7,5 gli anelli vengono da una relazione fatta per un solo punto, stirata lungo tutta la rottura, e dipingono a intensità alta molto più terreno di quanto un terremoto così scuota. Tenuti fuori per regola, quei terremoti risultano molte volte il loro bilancio, e la banda contiene i dati solo perché è larghissima. Fino al 14 settembre 2026 i controlli contavano cerchi attorno all'epicentro invece di ciò che conta il simulatore, e questo lo nascondeva; la correzione degli anelli è nella roadmap."
       },
       "subduction": {
         "item": "I terremoti delle fosse oceaniche scuotono con regole fatte per quelli sulla terraferma",

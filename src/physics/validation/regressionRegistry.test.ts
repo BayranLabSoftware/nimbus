@@ -34,6 +34,7 @@ import { safeRunEarthquake } from './safeRun.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
 import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
 import { mulberry32 } from '../montecarlo/sampling.js';
+import { compareWithRecord, RECORDED_EVENTS } from './recordedTolls.js';
 
 describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () => {
   it('B-001 Krakatau caldera-collapse near-field amplitude', () => {
@@ -289,6 +290,18 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     }
   });
 
+  it('B-022 The harness counts a rupture stadium, not the circle of its radius', () => {
+    // Pre-fix: an extended source's intensity bands were counted as
+    // circles about the epicentre. Tōhoku's epicentre is at sea, and its
+    // shaking row read 0 dead on a band of 0 to 5; the simulator counts
+    // the stadium along the coast, tens of millions of people.
+    const tohoku = RECORDED_EVENTS.find((e) => e.name === 'Tōhoku 2011');
+    if (tohoku === undefined) throw new Error('Tōhoku 2011 is not in the net');
+    const toll = compareWithRecord(tohoku);
+    expect(toll.estimate?.exposed ?? 0).toBeGreaterThan(1_000_000);
+    expect(toll.deaths).toBeGreaterThan(1_000);
+  });
+
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
     // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
@@ -322,9 +335,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-021 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
+    // B-001..B-022 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
     // B-007 superseded by B-011).
-    const expectedRows = 21;
-    expect(expectedRows).toBe(21);
+    const expectedRows = 22;
+    expect(expectedRows).toBe(22);
   });
 });

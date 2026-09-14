@@ -73,10 +73,10 @@
         "recorded": 8964,
         "recordedLow": 8964,
         "recordedHigh": 8964,
-        "model": 580,
-        "bandLow": 2,
-        "bandHigh": 72166,
-        "ratio": 0.065,
+        "model": 17699,
+        "bandLow": 118,
+        "bandHigh": 1255286,
+        "ratio": 1.974,
         "contains": true,
         "gated": false,
         "cause": "buildingStock",
@@ -148,13 +148,13 @@
         "recorded": 18500,
         "recordedLow": 18500,
         "recordedHigh": 18500,
-        "model": 0,
-        "bandLow": 0,
-        "bandHigh": 5,
-        "ratio": 0,
-        "contains": false,
+        "model": 177033,
+        "bandLow": 2529,
+        "bandHigh": 2969170,
+        "ratio": 9.569,
+        "contains": true,
         "gated": false,
-        "cause": "drownedOffline",
+        "cause": "footprint",
         "role": "heldOut",
         "source": "Japanese National Police Agency: 15 900 dead and 2 500 missing"
       },
@@ -163,11 +163,11 @@
         "recorded": 227898,
         "recordedLow": 227898,
         "recordedHigh": 227898,
-        "model": 1,
-        "bandLow": 0,
-        "bandHigh": 199,
-        "ratio": 0,
-        "contains": false,
+        "model": 31427,
+        "bandLow": 1552,
+        "bandHigh": 329255,
+        "ratio": 0.138,
+        "contains": true,
         "gated": false,
         "cause": "drownedOffline",
         "role": "sameSource",
@@ -208,11 +208,11 @@
         "recorded": 2,
         "recordedLow": 2,
         "recordedHigh": 2,
-        "model": 0,
+        "model": 1,
         "bandLow": 0,
-        "bandHigh": 1,
-        "ratio": 0,
-        "contains": false,
+        "bandHigh": 30,
+        "ratio": 0.5,
+        "contains": true,
         "gated": false,
         "cause": "belowResolution",
         "role": "heldOut",
@@ -565,25 +565,25 @@
         "predictive": true,
         "heldOut": {
           "rows": 8,
-          "scored": 4,
-          "bias": 0.107,
-          "scatterLn": 2.01,
-          "inside": 4,
+          "scored": 6,
+          "bias": 0.519,
+          "scatterLn": 2.31,
+          "inside": 6,
           "bothZero": 1,
           "falseAlarms": 1,
-          "missedToZero": 2,
-          "medianBandDecades": 2.34
+          "missedToZero": 0,
+          "medianBandDecades": 3.11
         },
         "all": {
           "rows": 12,
-          "scored": 8,
-          "bias": 0.0394,
-          "scatterLn": 3.88,
-          "inside": 7,
+          "scored": 10,
+          "bias": 0.348,
+          "scatterLn": 2.07,
+          "inside": 10,
           "bothZero": 1,
           "falseAlarms": 1,
-          "missedToZero": 2,
-          "medianBandDecades": 2.69
+          "missedToZero": 0,
+          "medianBandDecades": 2.88
         }
       },
       {
@@ -649,25 +649,25 @@
         "predictive": true,
         "heldOut": {
           "rows": 4,
-          "scored": 1,
-          "bias": null,
-          "scatterLn": null,
-          "inside": 2,
+          "scored": 3,
+          "bias": 2.11,
+          "scatterLn": 1.21,
+          "inside": 4,
           "bothZero": 1,
           "falseAlarms": 0,
-          "missedToZero": 2,
-          "medianBandDecades": 0.35
+          "missedToZero": 0,
+          "medianBandDecades": 2.27
         },
         "all": {
           "rows": 5,
-          "scored": 2,
-          "bias": 0.000533,
-          "scatterLn": 4.8,
-          "inside": 2,
+          "scored": 4,
+          "bias": 1.07,
+          "scatterLn": 1.58,
+          "inside": 5,
           "bothZero": 1,
           "falseAlarms": 0,
-          "missedToZero": 2,
-          "medianBandDecades": 0.7
+          "missedToZero": 0,
+          "medianBandDecades": 2.33
         }
       },
       {
@@ -1216,36 +1216,36 @@
             "group": null,
             "all": {
               "rows": 406,
-              "scored": 138,
-              "bias": 1.17,
-              "scatterLn": 2.23,
-              "inside": 379,
-              "bothZero": 187,
-              "falseAlarms": 40,
-              "missedToZero": 41,
-              "medianBandDecades": 1.56
+              "scored": 142,
+              "bias": 1.82,
+              "scatterLn": 2.32,
+              "inside": 383,
+              "bothZero": 180,
+              "falseAlarms": 47,
+              "missedToZero": 37,
+              "medianBandDecades": 1.67
             },
             "informative": {
-              "rows": 276,
-              "scored": 138,
-              "bias": 1.17,
-              "scatterLn": 2.23,
-              "inside": 249,
+              "rows": 283,
+              "scored": 142,
+              "bias": 1.82,
+              "scatterLn": 2.32,
+              "inside": 260,
               "bothZero": 57,
-              "falseAlarms": 40,
-              "missedToZero": 41,
-              "medianBandDecades": 2.63
+              "falseAlarms": 47,
+              "missedToZero": 37,
+              "medianBandDecades": 2.79
             },
             "unseen": {
-              "rows": 270,
-              "scored": 134,
-              "bias": 1.26,
-              "scatterLn": 2.2,
-              "inside": 246,
+              "rows": 277,
+              "scored": 136,
+              "bias": 1.93,
+              "scatterLn": 2.31,
+              "inside": 255,
               "bothZero": 57,
-              "falseAlarms": 40,
-              "missedToZero": 39,
-              "medianBandDecades": 2.63
+              "falseAlarms": 47,
+              "missedToZero": 37,
+              "medianBandDecades": 2.79
             }
           },
           {
@@ -1300,26 +1300,26 @@
               "medianBandDecades": 0.48
             },
             "informative": {
-              "rows": 113,
+              "rows": 115,
               "scored": 54,
               "bias": 0.984,
               "scatterLn": 2.2,
-              "inside": 106,
-              "bothZero": 26,
+              "inside": 108,
+              "bothZero": 28,
               "falseAlarms": 15,
               "missedToZero": 18,
-              "medianBandDecades": 2.62
+              "medianBandDecades": 2.64
             },
             "unseen": {
-              "rows": 112,
+              "rows": 114,
               "scored": 53,
               "bias": 0.98,
               "scatterLn": 2.23,
-              "inside": 105,
-              "bothZero": 26,
+              "inside": 107,
+              "bothZero": 28,
               "falseAlarms": 15,
               "missedToZero": 18,
-              "medianBandDecades": 2.61
+              "medianBandDecades": 2.63
             }
           },
           {
@@ -1327,51 +1327,40 @@
             "group": "Mw ≥ 7.5",
             "all": {
               "rows": 58,
-              "scored": 15,
-              "bias": 0.413,
-              "scatterLn": 2.34,
-              "inside": 49,
-              "bothZero": 35,
-              "falseAlarms": 2,
-              "missedToZero": 6,
-              "medianBandDecades": 0
+              "scored": 19,
+              "bias": 13.9,
+              "scatterLn": 2.16,
+              "inside": 53,
+              "bothZero": 28,
+              "falseAlarms": 9,
+              "missedToZero": 2,
+              "medianBandDecades": 1.14
             },
             "informative": {
-              "rows": 29,
-              "scored": 15,
-              "bias": 0.413,
-              "scatterLn": 2.34,
-              "inside": 20,
-              "bothZero": 6,
-              "falseAlarms": 2,
-              "missedToZero": 6,
-              "medianBandDecades": 2.68
+              "rows": 34,
+              "scored": 19,
+              "bias": 13.9,
+              "scatterLn": 2.16,
+              "inside": 29,
+              "bothZero": 4,
+              "falseAlarms": 9,
+              "missedToZero": 2,
+              "medianBandDecades": 2.93
             },
             "unseen": {
-              "rows": 26,
-              "scored": 14,
-              "bias": 0.472,
-              "scatterLn": 2.36,
-              "inside": 19,
-              "bothZero": 6,
-              "falseAlarms": 2,
-              "missedToZero": 4,
-              "medianBandDecades": 2.74
+              "rows": 31,
+              "scored": 16,
+              "bias": 20.2,
+              "scatterLn": 2.1,
+              "inside": 26,
+              "bothZero": 4,
+              "falseAlarms": 9,
+              "missedToZero": 2,
+              "medianBandDecades": 2.93
             }
           }
         ],
         "outside": [
-          {
-            "event": "2008-05-12 06:28 UTC, CHINA: SICHUAN PROVINCE",
-            "comcat": "usp000g650",
-            "magnitude": 7.9,
-            "recorded": 87652,
-            "missing": 0,
-            "model": 1217,
-            "bandLow": 2,
-            "bandHigh": 79838,
-            "seen": false
-          },
           {
             "event": "2008-10-05 15:52 UTC, KYRGYZSTAN: NURA",
             "comcat": "usp000gjd4",
@@ -1417,17 +1406,6 @@
             "seen": true
           },
           {
-            "event": "2011-03-11 05:46 UTC, JAPAN: HONSHU",
-            "comcat": "official20110311054624120_30",
-            "magnitude": 9.1,
-            "recorded": 1474,
-            "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 1,
-            "seen": true
-          },
-          {
             "event": "2011-03-24 13:55 UTC, MYANMAR: TACHILEK; THAILAND",
             "comcat": "usp000hyfx",
             "magnitude": 6.9,
@@ -1461,6 +1439,17 @@
             "seen": false
           },
           {
+            "event": "2012-09-05 14:42 UTC, COSTA RICA: NICOYA",
+            "comcat": "usp000jrsw",
+            "magnitude": 7.6,
+            "recorded": 2,
+            "missing": 0,
+            "model": 1073,
+            "bandLow": 7,
+            "bandHigh": 8899,
+            "seen": false
+          },
+          {
             "event": "2013-04-22 01:16 UTC, MEXICO: MICHOACAN: LAZARO CARDENAS",
             "comcat": "usb000gda9",
             "magnitude": 6,
@@ -1469,17 +1458,6 @@
             "model": 58,
             "bandLow": 1,
             "bandHigh": 5941,
-            "seen": false
-          },
-          {
-            "event": "2014-04-01 23:46 UTC, CHILE: NORTHERN: IQUIQUE, ALTO HOSPICIO",
-            "comcat": "usc000nzvd",
-            "magnitude": 8.2,
-            "recorded": 7,
-            "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 0,
             "seen": false
           },
           {
@@ -1538,6 +1516,17 @@
             "seen": false
           },
           {
+            "event": "2015-09-16 22:54 UTC, CHILE: CENTRAL",
+            "comcat": "us20003k7a",
+            "magnitude": 8.3,
+            "recorded": 7,
+            "missing": 1,
+            "model": 485,
+            "bandLow": 17,
+            "bandHigh": 14168,
+            "seen": false
+          },
+          {
             "event": "2016-01-25 04:22 UTC, MOROCCO: MELILLA",
             "comcat": "us10004gy9",
             "magnitude": 6.3,
@@ -1546,28 +1535,6 @@
             "model": 0,
             "bandLow": 0,
             "bandHigh": 0,
-            "seen": false
-          },
-          {
-            "event": "2016-11-13 11:02 UTC, NEW ZEALAND: AMBERLEY",
-            "comcat": "us1000778i",
-            "magnitude": 7.8,
-            "recorded": 2,
-            "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 1,
-            "seen": true
-          },
-          {
-            "event": "2018-09-28 10:02 UTC, INDONESIA: SULAWESI",
-            "comcat": "us1000h3p4",
-            "magnitude": 7.5,
-            "recorded": 4340,
-            "missing": 667,
-            "model": 155,
-            "bandLow": 1,
-            "bandHigh": 3752,
             "seen": false
           },
           {
@@ -1637,25 +1604,14 @@
             "seen": false
           },
           {
-            "event": "2023-02-06 01:17 UTC, TURKEY: KAHRAMANMARAS; SYRIA",
-            "comcat": "us6000jllz",
-            "magnitude": 7.8,
-            "recorded": 56697,
-            "missing": 0,
-            "model": 677,
-            "bandLow": 9,
-            "bandHigh": 44812,
-            "seen": false
-          },
-          {
             "event": "2023-02-06 10:24 UTC, TURKEY; SYRIA",
             "comcat": "us6000jlqa",
             "magnitude": 7.5,
             "recorded": 0,
             "missing": 0,
-            "model": 382,
-            "bandLow": 1,
-            "bandHigh": 25223,
+            "model": 17725,
+            "bandLow": 3,
+            "bandHigh": 219400,
             "seen": false
           }
         ],
@@ -2014,12 +1970,12 @@
       },
       {
         "event": "Gorkha (Nepal) 2015",
-        "measuredLow": 13,
-        "measuredHigh": 6942,
-        "interpolatedLow": 15,
-        "interpolatedHigh": 7416,
+        "measuredLow": 800,
+        "measuredHigh": 107720,
+        "interpolatedLow": 505,
+        "interpolatedHigh": 82830,
         "comparable": true,
-        "lowComparable": false
+        "lowComparable": true
       },
       {
         "event": "Beirut 2020",
@@ -2059,21 +2015,21 @@
       },
       {
         "event": "Tōhoku 2011",
-        "measuredLow": 0,
-        "measuredHigh": 1,
-        "interpolatedLow": 0,
-        "interpolatedHigh": 31,
-        "comparable": false,
-        "lowComparable": false
+        "measuredLow": 16962,
+        "measuredHigh": 580332,
+        "interpolatedLow": 31968,
+        "interpolatedHigh": 416902,
+        "comparable": true,
+        "lowComparable": true
       },
       {
         "event": "Sumatra–Andaman 2004",
-        "measuredLow": 0,
-        "measuredHigh": 87,
-        "interpolatedLow": 0,
-        "interpolatedHigh": 223,
-        "comparable": false,
-        "lowComparable": false
+        "measuredLow": 27603,
+        "measuredHigh": 41380,
+        "interpolatedLow": 18709,
+        "interpolatedHigh": 42041,
+        "comparable": true,
+        "lowComparable": true
       },
       {
         "event": "Christchurch 2011",
@@ -2091,6 +2047,15 @@
         "interpolatedLow": 1,
         "interpolatedHigh": 11525,
         "comparable": true,
+        "lowComparable": false
+      },
+      {
+        "event": "Kaikōura 2016",
+        "measuredLow": 0,
+        "measuredHigh": 22,
+        "interpolatedLow": 0,
+        "interpolatedHigh": 6,
+        "comparable": false,
         "lowComparable": false
       },
       {

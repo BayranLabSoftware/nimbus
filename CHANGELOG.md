@@ -60,7 +60,8 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   records where there is something to hold (90 %, against the nine in
   ten it claims) with the central figure at 1.17× the record and a
   scatter of 2.23 — calibrated, and two and a half orders of magnitude
-  wide; above Mw 7.5 it reads 0.41× and holds 20 of 29. The 37 columns
+  wide; above Mw 7.5 it read 0.41× and held 20 of 29 on this first run,
+  before the harness was found counting circles (see Fixed). The 37 columns
   read 0.95× with a scatter of 0.44, 35 accepted. The report prints both
   sets with every row and every miss, and the validation page shows
   their cells; the scorecard's rows can now say whether a record of
@@ -220,6 +221,23 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   reaches the page through the depth of burst below.
 
 ### Fixed
+
+- **The validation checks count a great earthquake the way the
+  simulator does.** From Mw 7.5 the simulator counts the people inside
+  the rupture stadium it draws; the offline harness behind every death
+  toll in the validation report counted a circle of the same radius
+  about the epicentre, and an offshore megathrust's circle sits at sea
+  (B-022). It now counts the stadium, with a fast counter held to the
+  browser's own polygon sum by a test. The model is unchanged; what the
+  report says about it is not. Tōhoku's shaking row went from 0 dead on
+  a band of 0 to 5 to 177 033 on 2 529 to 2 969 170 — nearly ten times
+  the whole record, drowned included — and the held-out earthquakes of
+  Mw 7.5 and above chosen by rule from 0.41× their record to 13.85×. The
+  circle had hidden the largest error in the earthquake model: the
+  shaking footprint of great ruptures, now a declared gap with its own
+  cause on the validation page. Twelve of the eighteen death tolls in the
+  net are inside their band, up from nine, most of them on very wide
+  bands.
 
 - **A burst's Monte Carlo keeps it where it was placed.** The explosion
   sampler drew every height of burst about its nominal value with

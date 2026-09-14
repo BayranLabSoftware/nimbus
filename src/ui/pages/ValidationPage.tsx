@@ -156,6 +156,7 @@ const CAUSES = [
   'occupancy',
   'mechanismNotModelled',
   'belowResolution',
+  'footprint',
 ] as const;
 type Cause = (typeof CAUSES)[number];
 const isCause = (c: string | null): c is Cause =>

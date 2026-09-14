@@ -86,6 +86,16 @@ import type { RecordedEvent } from './recordedTolls.js';
  *      written per row; what the misses have in common is written after
  *      the result, and says so.
  *
+ * Corrected after the first run, and said here rather than folded in:
+ * rule 16's harness counted an extended source — Mw 7.5 and above, in
+ * the model and in any of a band's realisations — as circles about the
+ * epicentre, while the simulator counts the rupture stadium. The
+ * harness now counts the stadium (shippedStadiumCounter in
+ * shippedPopulation.ts, held to the browser's polygon sum by its test).
+ * The model was not changed. The first run's figures, circles and all,
+ * stay in docs/SCIENCE.md, "Held out by rule"; the report prints the
+ * stadium.
+ *
  * This file, the rows it reads (heldOutByRuleData.ts, written by
  * scripts/held-out-by-rule.py) and its test were committed before any
  * row was run through the model; the commit that scores them comes

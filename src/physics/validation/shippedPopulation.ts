@@ -253,6 +253,194 @@ export function shippedPopulationInRadius(
   };
 }
 
+/** The browser's limits for reading a polygon off the fine tiles
+ *  (populationLookup.ts): beyond them it reads the planet. */
+const FINE_MAX_SPAN_DEG = 40;
+const FINE_MAX_TILES = 8;
+
+type GridView = ReturnType<(typeof _internals)['coarseView']>;
+
+/** The raster a footprint in this box is read from, chosen as the
+ *  browser chooses for a polygon: the fine tiles when the box is small
+ *  enough for them, the planet otherwise. */
+function viewForBox(bbox: { minLat: number; maxLat: number; minLon: number; maxLon: number }): {
+  view: GridView;
+  source: string;
+  fine: boolean;
+} {
+  const { coarseView, fineView, tilesForBbox } = _internals;
+  const index = loadFineIndex();
+  if (
+    index !== null &&
+    Math.max(bbox.maxLat - bbox.minLat, bbox.maxLon - bbox.minLon) <= FINE_MAX_SPAN_DEG
+  ) {
+    const names = tilesForBbox(index, bbox);
+    if (names.length > 0 && names.length <= FINE_MAX_TILES) {
+      const tiles = new Map<string, { values: Uint8Array; land: Uint8Array }>();
+      for (const name of names) {
+        const tile = loadTile(name);
+        if (tile !== null) tiles.set(name, tile);
+      }
+      if (tiles.size === names.length) {
+        return { view: fineView(index, tiles), source: index.source, fine: true };
+      }
+    }
+  }
+  const planet = loadCoarse();
+  if (planet === null) throw new Error('no population raster on disk');
+  return {
+    view: coarseView({ meta: planet.meta, values: planet.values, land: planet.land }),
+    source: planet.meta.source,
+    fine: false,
+  };
+}
+
+/**
+ * People inside a polygon — the rupture stadium an extended source is
+ * drawn as — from the shipped rasters, summed by the browser's own
+ * `sumGridRing` on the ring the browser would build. Until 14 September
+ * 2026 the harness counted a stadium band as the circle of its contour
+ * radius about the epicentre, which is not what the simulator counts.
+ */
+export function shippedPopulationInPolygon(
+  polygon: readonly { latDeg: number; lonDeg: number }[]
+): {
+  exposed: number;
+  source: string;
+  fine: boolean;
+} {
+  const { sumGridRing, polygonRing, ringBoundingBox } = _internals;
+  const ring = polygonRing(polygon);
+  const { view, source, fine } = viewForBox(ringBoundingBox(ring));
+  return { exposed: sumGridRing(view, ring), source, fine };
+}
+
+/** The sphere `buildRuptureStadiumLatLon` lays a stadium out on. */
+const STADIUM_EARTH_RADIUS_M = 6_371_008;
+
+/**
+ * Every rupture stadium about one epicentre and one strike, counted
+ * fast enough for a predictive band.
+ *
+ * A band asks for the people inside six hundred stadiums — three
+ * intensity bands in each of two hundred realisations, each with its own
+ * rupture and contour radius — and a polygon summed cell by cell costs
+ * a few milliseconds, seconds an event. A stadium is a rectangle along
+ * the strike grown by a radius, so whether a point lies inside it is a
+ * distance from the rectangle, not a polygon test. This reads once the
+ * populated cells within `reachM` of the epicentre, places in them the
+ * sub-samples `sumGridRing` places, in the frame the polygon is laid
+ * out in (distance and azimuth from the epicentre on the sphere, the
+ * strike as the first axis), and answers a stadium by its sub-samples
+ * within the radius of the rectangle; a cell wholly inside or wholly
+ * outside is decided by its centre alone. Its agreement with
+ * `sumGridRing` on the polygon is tested in shippedPopulation.test.ts.
+ */
+export function shippedStadiumCounter(
+  latitude: number,
+  longitude: number,
+  strikeDeg: number,
+  reachM: number
+): (halfLengthM: number, halfWidthM: number, radiusM: number) => number {
+  const toRad = Math.PI / 180;
+  const dLat = reachM / STADIUM_EARTH_RADIUS_M / toRad;
+  const poleward = Math.min(89.9, Math.abs(latitude) + dLat);
+  const dLon = Math.min(180, dLat / Math.max(Math.cos(poleward * toRad), 1e-6));
+  const bbox = {
+    minLat: Math.max(-89.9, latitude - dLat),
+    maxLat: Math.min(89.9, latitude + dLat),
+    minLon: Math.max(-179.99, longitude - dLon),
+    maxLon: Math.min(179.99, longitude + dLon),
+  };
+  const { view } = viewForBox(bbox);
+  const n = _internals.EDGE_SUBSAMPLES;
+  const row0 = Math.max(0, Math.floor((view.maxLat - bbox.maxLat) / view.cellDeg));
+  const row1 = Math.min(view.nLat - 1, Math.ceil((view.maxLat - bbox.minLat) / view.cellDeg));
+  const col0 = Math.max(0, Math.floor((bbox.minLon - view.minLon) / view.cellDeg));
+  const col1 = Math.min(view.nLon - 1, Math.ceil((bbox.maxLon - view.minLon) / view.cellDeg));
+
+  const lat0 = latitude * toRad;
+  const lon0 = longitude * toRad;
+  const theta = strikeDeg * toRad;
+  const sinLat0 = Math.sin(lat0);
+  const cosLat0 = Math.cos(lat0);
+  // (x along strike, y across it) of a point, in metres.
+  const frame = (latDeg: number, lonDeg: number): [number, number] => {
+    const phi = latDeg * toRad;
+    const dLambda = lonDeg * toRad - lon0;
+    const h =
+      Math.sin((phi - lat0) / 2) ** 2 + cosLat0 * Math.cos(phi) * Math.sin(dLambda / 2) ** 2;
+    const d = 2 * STADIUM_EARTH_RADIUS_M * Math.asin(Math.min(1, Math.sqrt(h)));
+    const azimuth = Math.atan2(
+      Math.sin(dLambda) * Math.cos(phi),
+      cosLat0 * Math.sin(phi) - sinLat0 * Math.cos(phi) * Math.cos(dLambda)
+    );
+    return [d * Math.cos(azimuth - theta), d * Math.sin(azimuth - theta)];
+  };
+
+  const centres: number[] = [];
+  const reach: number[] = [];
+  const people: number[] = [];
+  const samples: number[] = [];
+  for (let r = row0; r <= row1; r++) {
+    const cellLat = view.maxLat - (r + 0.5) * view.cellDeg;
+    for (let c = col0; c <= col1; c++) {
+      const cell = view.cellAt(r, c);
+      if (cell.people === 0) continue;
+      const cellLon = view.minLon + (c + 0.5) * view.cellDeg;
+      const [cx, cy] = frame(cellLat, cellLon);
+      let farthest = 0;
+      for (let a = 0; a < n; a++) {
+        const sLat = cellLat + ((a + 0.5) / n - 0.5) * view.cellDeg;
+        for (let b = 0; b < n; b++) {
+          const sLon = cellLon + ((b + 0.5) / n - 0.5) * view.cellDeg;
+          const [sx, sy] = frame(sLat, sLon);
+          samples.push(sx, sy);
+          farthest = Math.max(farthest, Math.hypot(sx - cx, sy - cy));
+        }
+      }
+      centres.push(cx, cy);
+      reach.push(farthest);
+      people.push(cell.people);
+    }
+  }
+  const C = Float64Array.from(centres);
+  const R = Float64Array.from(reach);
+  const P = Float64Array.from(people);
+  const S = Float64Array.from(samples);
+  const perCell = n * n;
+
+  // Distance from a point to the rectangle ±a along strike, ±b across.
+  const outside = (x: number, y: number, a: number, b: number): number => {
+    const ex = Math.abs(x) - a;
+    const ey = Math.abs(y) - b;
+    return Math.hypot(ex > 0 ? ex : 0, ey > 0 ? ey : 0);
+  };
+
+  return (halfLengthM, halfWidthM, radiusM) => {
+    const a = Math.max(0, halfLengthM);
+    const b = Math.max(0, halfWidthM);
+    let sum = 0;
+    for (let i = 0; i < P.length; i++) {
+      const d = outside(C[2 * i] ?? 0, C[2 * i + 1] ?? 0, a, b);
+      const spread = R[i] ?? 0;
+      if (d - spread > radiusM) continue;
+      const cellPeople = P[i] ?? 0;
+      if (d + spread <= radiusM) {
+        sum += cellPeople;
+        continue;
+      }
+      let inside = 0;
+      const base = 2 * i * perCell;
+      for (let k = 0; k < perCell; k++) {
+        if (outside(S[base + 2 * k] ?? 0, S[base + 2 * k + 1] ?? 0, a, b) <= radiusM) inside += 1;
+      }
+      sum += (cellPeople * inside) / perCell;
+    }
+    return sum;
+  };
+}
+
 /** Land population density (people per km² of land) around a point. */
 export function shippedLandDensity(latitude: number, longitude: number): number {
   const { coarseView, fineView, landDensityAt } = _internals;

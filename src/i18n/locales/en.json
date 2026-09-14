@@ -1408,7 +1408,11 @@
       },
       "belowResolution": {
         "label": "A handful of deaths is below what a rate can resolve",
-        "body": "A fatality curve is a rate applied to thousands of people. At Kaikōura, held out, the rings about the epicentre held about five thousand people, and the curve New Zealand borrows gives them one twentieth of a death, against two recorded. No band made of such rates can contain a handful of deaths, and the miss is shown rather than argued away."
+        "body": "A fatality curve is a rate applied to thousands of people, and it resolves no finer than that. At Kaikōura, held out, the curve New Zealand borrows gives the people near the fault about one death, on a band that reaches thirty, against two recorded: inside, by a death either way. Among the earthquakes held out by rule it is the commonest miss — one to ten dead where the band says none — and each is shown rather than argued away."
+      },
+      "footprint": {
+        "label": "The shaking footprint is too large",
+        "body": "For a great rupture the intensity rings are a law made for a point, stretched along the whole fault. They paint far more ground at high intensity than the earthquake shook — at Tōhoku three times the area of intensity VIII that USGS measured — and the toll follows: the shaking alone comes to nearly ten times the whole record, drowned included. The row is inside only because its band is three orders of magnitude wide."
       }
     },
     "waves": {
@@ -1465,6 +1469,10 @@
       "bandPhysicsOnly": {
         "item": "The band draws the fatality curve's scatter, but not the census",
         "note": "Since 14 September the nine-in-ten band redraws the earthquake and, for shaking, how far one earthquake's deaths stray from its country's curve, by the amount USGS PAGER publishes. The population map is still held fixed, and so are the death rates for blasts and pyroclastic currents, which publish no such scatter. PAGER measured its scatter on real shaking maps, so it overlaps with the ground-motion scatter drawn beside it by an amount not separated here. Where a country's curve is steep or uncertain the band spans four orders of magnitude or more, and a record inside it has passed nothing."
+      },
+      "greatRupture": {
+        "item": "The largest earthquakes are counted on intensity rings too large for them",
+        "note": "From magnitude 7.5 the rings come from a relation made for a single point, stretched along the whole rupture, and they paint far more ground at high intensity than such an earthquake shakes. Held out by rule, those earthquakes come out many times their record, and their band holds the records only by being very wide. Until 14 September 2026 the checks counted circles about the epicentre instead of what the simulator counts, and that hid it; the fix to the rings is on the roadmap."
       },
       "subduction": {
         "item": "Ocean-trench earthquakes are shaken with rules made for earthquakes on land",

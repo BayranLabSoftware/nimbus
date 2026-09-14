@@ -366,17 +366,21 @@ commit `3726ade`) and run once the same day, and they read differently
 from the eight rows named by hand (SCIENCE.md, "Held out by rule"). Over
 406 held-out earthquakes — every NCEI significant earthquake of 2008–2025
 with magnitude 6 or more and depth to 40 km — the death toll's band holds
-249 records of the 276 where there is something to hold, 90 % against the
-nine in ten it claims, and the central figure reads 1.17× the record with
-a scatter of 2.23: calibrated, and two and a half orders of magnitude
-wide. Above Mw 7.5 it reads 0.41× and holds 20 of 29, the great ruptures
-the offline harness counts in circles. The 37 IVESPA columns since 2009
-read 0.95× with a scatter of 0.44, 35 accepted. The list after the
-scorecard, then, in order: a casualty band that is sharp as well as
-calibrated; the rupture's extent in the offline harness, so the Mw ≥ 7.5
-cell measures the model rather than the circle; a set of quiet
-earthquakes to count false alarms on; and grid verification against the
-reference implementations.
+260 records of the 283 where there is something to hold, 92 % against the
+nine in ten it claims, with a scatter of 2.32 and a band nearly three
+orders of magnitude wide: calibrated, and not sharp. Below Mw 7.5 the
+central figure is within a factor of 1.7 of the records; from Mw 7.5 it
+is 13.85× them, and the band holds 29 of 34 only by its width. That last
+figure was 0.41× on the first run, because the harness counted an
+extended source's people in circles about the epicentre where the
+simulator counts the rupture stadium (BUG_REGISTRY B-022, fixed the same
+day): the circle had hidden the largest error in the earthquake model.
+The 37 IVESPA columns since 2009 read 0.95× with a scatter of 0.44, 35
+accepted. The list after the scorecard, then, in order: the shaking
+footprint of great ruptures (move 4 below), which is now a measured
+fourteen-fold error on the toll; a casualty band that is sharp as well as
+calibrated; a set of quiet earthquakes to count false alarms on; and grid
+verification against the reference implementations.
 
 ### 0b. Every source read against its record _(done 14 September; Vaiont and explosions re-tuned, the other gaps open and declared)_
 
@@ -912,6 +916,15 @@ point-source attenuation inflated into a rupture stadium, and a
 megathrust whose slip is concentrated does not shake its whole
 rectangle at MMI IX. After (1) this is a measurement rather than a
 conjecture.
+
+And since 14 September it is measured on the toll as well. Counted as the
+simulator counts it — on the stadium, which the calibration harness had
+been counting as a circle about the epicentre (B-022) — the 58 held-out
+earthquakes of Mw 7.5 and above in the NCEI set read 13.85× their record:
+Tōhoku's shaking alone 177 033 dead where NCEI gives the earthquake's own
+effects 1 474, Wenchuan 316 273 against 87 652. Whatever replaces the
+contours is checked on that cell, which was scored before the fix was
+designed, and on the ShakeMap anchors, before any toll row is re-read.
 
 ### 5. Widen the anchors where the model is blind
 

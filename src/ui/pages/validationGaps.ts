@@ -12,6 +12,7 @@ export const VALIDATION_GAPS = [
   'farField',
   'coastalOffline',
   'bandPhysicsOnly',
+  'greatRupture',
   'subduction',
   'tunedUnsourced',
   'unread',

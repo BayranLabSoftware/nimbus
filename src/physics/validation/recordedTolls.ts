@@ -1,7 +1,7 @@
 import {
+  bandFromPlans,
   exposureCurve,
   populationWithin,
-  sampledTollBand,
   sampleScenarioPlans,
   samplingFootprints,
   type ExposurePoint,
@@ -9,12 +9,22 @@ import {
 } from '../uq/tollBand.js';
 import type { ActiveResult } from '../../store/useAppStore.js';
 import { casualtyPlanForResult, configureCountryLookup } from '../../store/useAppStore.js';
-import { estimateCasualties, type CasualtyEstimate } from '../casualties.js';
+import {
+  estimateCasualties,
+  type CasualtyBand,
+  type CasualtyEstimate,
+  type CasualtyPlan,
+} from '../casualties.js';
 import { EXPLOSION_PRESETS, simulateExplosion } from '../events/explosion/simulate.js';
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
 import { VOLCANO_PRESETS, simulateVolcano } from '../events/volcano/simulate.js';
 import { HELD_OUT_EARTHQUAKES, HELD_OUT_VOLCANO_TOLLS } from './heldOutEvents.js';
-import { shippedCountryAt, shippedPopulationInRadius } from './shippedPopulation.js';
+import {
+  shippedCountryAt,
+  shippedPopulationInPolygon,
+  shippedPopulationInRadius,
+  shippedStadiumCounter,
+} from './shippedPopulation.js';
 
 /**
  * Events with a recorded death toll, and where the simulator lands.
@@ -97,7 +107,11 @@ export type TollCause =
   | 'mechanismNotModelled'
   /** A handful of deaths among few people: a fatality rate over a
    *  population rounds them to none. */
-  | 'belowResolution';
+  | 'belowResolution'
+  /** The intensity rings of a great rupture are a law for a point
+   *  stretched along the fault, and paint far more ground at high
+   *  intensity than the earthquake shook (docs/ROADMAP.md, M9 move 4). */
+  | 'footprint';
 
 export const TOLL_CAUSES: readonly TollCause[] = [
   'evacuation',
@@ -108,6 +122,7 @@ export const TOLL_CAUSES: readonly TollCause[] = [
   'occupancy',
   'mechanismNotModelled',
   'belowResolution',
+  'footprint',
 ];
 
 const quake = (preset: keyof typeof EARTHQUAKE_PRESETS): (() => ActiveResult) => {
@@ -174,7 +189,7 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     cause: 'buildingStock',
     gated: false,
     caveat:
-      "Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428, and the predictive interval was 22 to 4 924, then 13 to 6 942 with the ground-motion residual corrected to 0.60, and neither contained 8 964. With the fatality curve's own scatter drawn from 14 September — Nepal's G is 2.5, the widest in PAGER's table — it is 2 to 72 166, which contains the record by spanning almost five orders of magnitude: a statement about how little the curve knows, not a pass. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley.",
+      "Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428, and the predictive interval was 22 to 4 924, then 13 to 6 942 with the ground-motion residual corrected to 0.60, and neither contained 8 964. With the fatality curve's own scatter drawn from 14 September — Nepal's G is 2.5, the widest in PAGER's table — it was 2 to 72 166, which contained the record by spanning almost five orders of magnitude: a statement about how little the curve knows, not a pass. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. Until the same day these figures counted a circle about the epicentre, where the simulator counts the rupture stadium an Mw 7.8 is drawn as; counted as the simulator counts it, the row reads 17 699 dead, twice the record, on a band of 118 to 1 255 286 — inside by four orders of magnitude, which is the same statement again.",
   },
   {
     name: 'Beirut 2020',
@@ -236,10 +251,10 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     recordedDeaths: 18_500,
     source: 'Japanese National Police Agency: 15 900 dead and 2 500 missing',
     run: quake('TOHOKU_2011'),
-    cause: 'drownedOffline',
+    cause: 'footprint',
     gated: false,
     caveat:
-      'Over 90 % of the dead drowned. This harness has no bathymetry and therefore no wave, so the number here is the shaking alone and is expected to be far below the record.',
+      'Over 90 % of the dead drowned. This harness has no bathymetry and therefore no wave, so the number here is the shaking alone, and until 14 September 2026 it was far below the record — 0 dead on a band of 0 to 5 — because the harness counted a circle about an epicentre at sea. Counted as the simulator counts it, on the rupture stadium along the coast, the shaking alone reads 177 033 dead on a band of 2 529 to 2 969 170: nearly ten times the whole record, drowned included, where NCEI gives the earthquake’s own effects 1 474. Inside only because the band spans three orders of magnitude. The intensity rings are Joyner–Boore 1981 stretched along a megathrust, and paint three times the area of MMI VIII that USGS ShakeMap measured (the footprint table below).',
   },
   {
     name: 'Sumatra–Andaman 2004',
@@ -250,7 +265,8 @@ export const RECORDED_EVENTS: RecordedEvent[] = [
     run: quake('SUMATRA_2004'),
     cause: 'drownedOffline',
     gated: false,
-    caveat: 'Drowning again, and again without a wave here. Reported for the shaking only.',
+    caveat:
+      'Drowning again, and again without a wave here. Reported for the shaking only: since 14 September 2026 counted on the rupture stadium the simulator draws, 31 427 dead on a band of 1 552 to 329 255, where the circle about the epicentre had counted 1.',
   },
   // Held out of every fit, and written down before they were run:
   // heldOutEvents.ts has the rules they came in under.
@@ -296,19 +312,86 @@ export interface TollComparison {
  */
 export function sampleToll(
   event: RecordedEvent,
-  populationAt?: (radiusM: number) => number,
+  populationAt?: (radiusM: number, band: CasualtyBand) => number,
   curveScatter = true
 ): PredictiveBand | null {
   const location = { latitude: event.latitude, longitude: event.longitude };
-  return sampledTollBand({
-    result: event.run(),
-    planFor: (r) => casualtyPlanForResult(r, location),
-    populationAt:
-      populationAt ??
-      ((radiusM) => shippedPopulationInRadius(event.latitude, event.longitude, radiusM).exposed),
+  const result = event.run();
+  // An extended source's bands are rupture stadiums, each realisation
+  // with its own rupture. The plan builder knows the rupture and the
+  // band only its polygon, which survives the copies a band goes
+  // through, so the rupture is remembered by the polygon.
+  const ruptures = new WeakMap<object, { halfLengthM: number; halfWidthM: number }>();
+  const plans = sampleScenarioPlans({
+    result,
+    planFor: (r) => {
+      const plan = casualtyPlanForResult(r, location);
+      if (plan !== null && r.type === 'earthquake' && r.data.isExtendedSource) {
+        for (const band of plan.bands) {
+          if (band.polygon === undefined) continue;
+          ruptures.set(band.polygon, {
+            halfLengthM: (r.data.ruptureLength as number) / 2,
+            halfWidthM: (r.data.ruptureWidth as number) / 2,
+          });
+        }
+      }
+      return plan;
+    },
     seed: `${event.name}:${event.recordedDeaths.toString()}`,
     curveScatter,
   });
+  return bandFromPlans(plans, populationAt ?? measuredPopulation(event, result, plans, ruptures));
+}
+
+/**
+ * The people inside each footprint a realisation asks for, read off the
+ * raster: a circle about the epicentre, or the rupture stadium the
+ * simulator counts for an extended source. Until 14 September 2026 the
+ * stadium was counted as the circle of its contour radius, and an
+ * offshore megathrust's stadium, which runs along the coast, as a
+ * circle at sea.
+ */
+function measuredPopulation(
+  event: RecordedEvent,
+  result: ActiveResult,
+  plans: readonly CasualtyPlan[],
+  ruptures: WeakMap<object, { halfLengthM: number; halfWidthM: number }>
+): (radiusM: number, band: CasualtyBand) => number {
+  const circle = (radiusM: number): number =>
+    shippedPopulationInRadius(event.latitude, event.longitude, radiusM).exposed;
+  if (result.type !== 'earthquake') return circle;
+  let reachM = 0;
+  for (const plan of plans) {
+    for (const band of plan.bands) {
+      const rupture = band.polygon === undefined ? undefined : ruptures.get(band.polygon);
+      if (rupture === undefined) continue;
+      reachM = Math.max(reachM, rupture.halfLengthM + rupture.halfWidthM + band.outerRadiusM);
+    }
+  }
+  if (reachM <= 0) return circle;
+  const stadium = shippedStadiumCounter(
+    event.latitude,
+    event.longitude,
+    result.data.inputs.strikeAzimuthDeg ?? 0,
+    reachM
+  );
+  return (radiusM, band) => {
+    const rupture = band.polygon === undefined ? undefined : ruptures.get(band.polygon);
+    return rupture === undefined
+      ? circle(radiusM)
+      : stadium(rupture.halfLengthM, rupture.halfWidthM, radiusM);
+  };
+}
+
+/** The people inside a band's own footprint, polygon or circle. */
+function footprintPopulation(
+  event: RecordedEvent,
+  radiusM: number,
+  polygon: CasualtyBand['polygon']
+): number {
+  return polygon === undefined
+    ? shippedPopulationInRadius(event.latitude, event.longitude, radiusM).exposed
+    : shippedPopulationInPolygon(polygon).exposed;
 }
 
 /**
@@ -326,14 +409,14 @@ export function shippedExposureCurve(event: RecordedEvent): ExposurePoint[] {
     planFor: (r) => casualtyPlanForResult(r, location),
     seed: `${event.name}:${event.recordedDeaths.toString()}`,
   });
-  const radii = [
-    ...plan.bands.map((b) => b.outerRadiusM),
-    ...samplingFootprints(plans).map((f) => f.radiusM),
+  const footprints = [
+    ...plan.bands.map((b) => ({ radiusM: b.outerRadiusM, polygon: b.polygon })),
+    ...samplingFootprints(plans),
   ];
   return exposureCurve(
-    radii.map((radiusM) => ({
-      radiusM,
-      exposed: shippedPopulationInRadius(event.latitude, event.longitude, radiusM).exposed,
+    footprints.map((f) => ({
+      radiusM: f.radiusM,
+      exposed: footprintPopulation(event, f.radiusM, f.polygon),
     }))
   );
 }
@@ -414,8 +497,8 @@ export function compareWithRecord(event: RecordedEvent): TollComparison {
       ratio: 0,
     };
   }
-  const cumulative = plan.bands.map(
-    (band) => shippedPopulationInRadius(event.latitude, event.longitude, band.outerRadiusM).exposed
+  const cumulative = plan.bands.map((band) =>
+    footprintPopulation(event, band.outerRadiusM, band.polygon)
   );
   const estimate = estimateCasualties(plan, cumulative);
 

@@ -911,9 +911,10 @@ the model was run on any of their rows:
   eruptions Mastin et al. 2009 fitted their relation on.
 
 `scripts/held-out-by-rule.py` reads the sources and writes the rows, and
-the validation report scores them at every commit. The first run,
-earthquakes held out (L'Aquila 2009 and Amatrice 2016 are tuned, and
-scored apart):
+the validation report scores them at every commit. The first run, with
+the harness as rule 16 describes it — which was wrong for the largest
+earthquakes, corrected below — earthquakes held out (L'Aquila 2009 and
+Amatrice 2016 are tuned, and scored apart):
 
 | magnitude  | rows | with something | scored | bias  | scatter σ_ln | inside, with something | band   |
 | ---------- | ---- | -------------- | ------ | ----- | ------------ | ---------------------- | ------ |
@@ -979,6 +980,48 @@ intensity X or a tsunami, so the set leans towards the damaging and the
 band that is sharp as well as calibrated, the extent of great ruptures in
 the offline harness, and a set of quiet earthquakes to count false alarms
 on.
+
+#### Corrected the same day: the stadium, not the circle
+
+The second of those was not a limit of the model but an error of the
+harness, and it hid the model's largest error. From Mw 7.5 — in the
+model, or in any of a band's realisations — the simulator counts the
+people inside the rupture stadium it draws; the harness counted a circle
+of the same contour radius about the epicentre (docs/BUG_REGISTRY.md,
+B-022). An offshore megathrust's circle sits at sea, its stadium runs
+along the coast. The harness now counts the stadium, with a counter held
+to the browser's own polygon sum by a test. The model was not touched,
+and because rule 16 described the harness as it was, the correction is
+made after the result and said so. Counted as the simulator counts:
+
+| magnitude  | rows | with something | scored | bias   | scatter σ_ln | inside, with something | band   |
+| ---------- | ---- | -------------- | ------ | ------ | ------------ | ---------------------- | ------ |
+| all        | 406  | 283            | 142    | 1.82×  | 2.32         | 260 of 283 (92 %)      | 10^2.8 |
+| Mw < 6.5   | 152  | 134            | 69     | 1.69×  | 2.14         | 123 of 134 (92 %)      | 10^2.8 |
+| Mw 6.5–7.5 | 196  | 115            | 54     | 0.98×  | 2.20         | 108 of 115 (94 %)      | 10^2.6 |
+| Mw ≥ 7.5   | 58   | 34             | 19     | 13.85× | 2.16         | 29 of 34 (85 %)        | 10^2.9 |
+
+Above Mw 7.5 the simulator's toll is fourteen times the record on
+average, not four tenths of it, and the band still holds 29 records of 34
+only because it spans three orders of magnitude. It is the error move 4
+of the roadmap describes from the shaking side — Joyner & Boore's rings
+for a point, stretched into a stadium, painting three times the area of
+intensity VIII USGS measured at Tōhoku — now measured on the toll.
+Tōhoku's shaking alone reads 177 033 dead, where NCEI gives the
+earthquake's own effects 1 474; Wenchuan 2008 reads 316 273 against
+87 652, Ecuador 2016 18 880 against 663. Below Mw 7.5 nothing moved but
+the few realisations that cross it. So: calibrated everywhere, sharp
+nowhere, and above Mw 7.5 not accurate either — the first thing to fix
+in the model.
+
+Of the 23 rows now outside, eleven are a handful of deaths the band puts
+at none, three are missed by the band's upper end (Christchurch 2011,
+Myanmar 2011, Nura 2008), and nine read high where nobody or almost
+nobody died — among them Illapel 2015 and Nicoya 2012, both great
+ruptures, and the second shocks at Kahramanmaraş (none recorded, a band
+of 3 to 219 400) and at Ziarat. The great ruptures that killed most no
+longer miss below their record; they sit inside it on bands too wide to
+say much.
 
 ### Burns, mass fire and later deaths (Phase 24)
 

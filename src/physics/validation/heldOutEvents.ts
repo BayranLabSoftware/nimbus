@@ -39,6 +39,11 @@ import type { RecordedWave } from './recordedWaves.js';
  *      as for the earthquake rows already in the net. Vs30 takes the
  *      reference rock, and the offline harness counts people inside
  *      circles about the epicentre, so a strike could not move a row.
+ *      (That was the harness's error, found on 14 September 2026 after
+ *      these rows had run: for an extended source, Mw 7.5 and above,
+ *      the simulator counts the rupture stadium, and the harness now
+ *      does too. With no strike set the stadium lies north to south, as
+ *      the simulator draws it; only Kaikōura's row moved.)
  *   4. The record is the death count of the NCEI/WDS Global Significant
  *      Earthquake Database (NOAA NCEI, doi:10.7289/V5TD9V7K), read on
  *      14 September 2026. Where a published source separates the deaths
@@ -152,7 +157,7 @@ export const HELD_OUT_EARTHQUAKES: readonly RecordedEvent[] = [
     gated: false,
     cause: 'belowResolution',
     caveat:
-      'Held out, and a miss by two: a band of 0 to 0 on the first run and 0 to 1 with the fatality curve’s own scatter drawn, added the same day, against 2 dead. Written after the result, as the rules in heldOutEvents.ts require. The rings about the epicentre hold 5 231 people, and the curve New Zealand borrows gives them about one twentieth of a death. A rate over a population cannot resolve a handful of deaths, and no band built from one could contain them.',
+      'Held out, and a miss by two: a band of 0 to 0 on the first run and 0 to 1 with the fatality curve’s own scatter drawn, added the same day, against 2 dead. Written after the result, as the rules in heldOutEvents.ts require. The rings about the epicentre hold 5 231 people, and the curve New Zealand borrows gives them about one twentieth of a death. A rate over a population cannot resolve a handful of deaths, and no band built from one could contain them. Those rings were the harness’s circles; counted as the simulator counts an Mw 7.8, on the rupture stadium, the row reads 1 dead on a band of 0 to 30 and is inside — on the same resolution, one death more or less.',
   },
   {
     name: 'Pohang 2017',
