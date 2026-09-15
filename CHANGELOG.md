@@ -838,6 +838,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Measured
 
+- **Where a body breaks up, the paper against its program.** The Earth
+  Impact Effects Program breaks small strong bodies up to 3 % lower than
+  Nimbus, and bursts them up to 5 % lower (BM-13). Every altitude it
+  printed, for 265 bodies, is Collins et al.'s Eq. 11 on twice the I_f
+  their Eq. 12 prints, within 0.02 %. Eq. 11 on the printed I_f is the one
+  that lands on the root of their Eq. 10, where the ram pressure first
+  reaches the body's strength (within 40 m below I_f = 0.9), and Nimbus
+  keeps it. Declared, with a test on each side, and nothing moves.
+
 - **People at each intensity, against USGS PAGER.** The benchmark campaign
   put the people Nimbus counts at MMI VII and above at 0.13 of what PAGER
   counts, nobody at IX where PAGER counts people, and the toll at 0.30 of

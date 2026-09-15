@@ -36,6 +36,49 @@ describe('atmospheric entry — Collins, Melosh & Marcus 2005', () => {
     expect(collinsStrength(kgPerM3(8_000)) as number).toBeGreaterThan(4e7);
   });
 
+  it('breaks a body up where the ram pressure on the speed Eq. 8 leaves it reaches its strength (Eq. 10)', () => {
+    // Eq. 11 is Collins et al.'s approximation to the root of Eq. 10. With
+    // I_f as Eq. 12 prints it, it lands within the 40 m its constants
+    // leave at small I_f (8 km × (1.308 − 1.303)). The Earth Impact
+    // Effects Program's breakup altitudes are Eq. 11 on twice that I_f
+    // (BM-13): 480 m below the root for the 10 m iron body, 3.8 km for
+    // the 3 m one, and the 2 m one never breaks, where Eq. 10 breaks it at
+    // 13.8 km. The simulator keeps the paper's.
+    const H = 8_000;
+    for (const [diameterM, velocityMs, angleDeg, density] of [
+      [10, 20_000, 45, 8_000],
+      [50, 12_800, 45, 7_800],
+      [3, 20_000, 45, 8_000],
+      [2, 20_000, 45, 8_000],
+      [30, 20_000, 45, 8_000],
+      [19.8, 19_160, 18.3, 3_300],
+      [100, 20_000, 45, 3_000],
+      [1_000, 50_000, 90, 1_000],
+    ] as const) {
+      const strength = collinsStrength(kgPerM3(density)) as number;
+      // Eq. 8: v = v₀ exp(−k ρ(z)), with ρ₀ = 1 kg/m³ and C_D = 2.
+      const k = (3 * 2 * H) / (4 * density * diameterM * Math.sin((angleDeg * Math.PI) / 180));
+      const ramPressure = (z: number): number => {
+        const rho = Math.exp(-z / H);
+        return rho * (velocityMs * Math.exp(-k * rho)) ** 2;
+      };
+      // It rises as the body descends until ρ = 1 / 2k, then falls: the
+      // breakup is the crossing above that peak, or above the ground.
+      let low = Math.max(0, H * Math.log(2 * k));
+      let high = 200_000;
+      expect(ramPressure(low)).toBeGreaterThan(strength);
+      for (let i = 0; i < 100; i++) {
+        const mid = (low + high) / 2;
+        if (ramPressure(mid) >= strength) low = mid;
+        else high = mid;
+      }
+      const label = `${diameterM.toString()} m at ${velocityMs.toString()} m/s`;
+      const r = entry(diameterM, velocityMs, angleDeg, density);
+      expect(r.regime, label).not.toBe('INTACT');
+      expect(Math.abs((r.breakupAltitude as number) - low), label).toBeLessThan(50);
+    }
+  });
+
   it('bursts Chelyabinsk near the 27.0 km Popova et al. 2013 measured', () => {
     // The preset: Popova et al.'s 19.8 m of 3.3 g/cm³ at 19.16 km/s, 18.3°
     // from the horizontal, at the S-type class's 2 MPa. Nothing in the

@@ -1291,6 +1291,44 @@ is spread along the path. A line source built here would be a model of this
 project's, and none is added. Until this section the project quoted Popova et
 al.'s modelled damage as reaching 108 km; their text says 120 km.
 
+### Where a body breaks up: the paper and its program (15 September 2026)
+
+One quantity of the atmospheric entry stayed outside the campaign's
+tolerance (BM-13). The Earth Impact Effects Program breaks a 10 m iron body
+at 20 km/s and 45° up at 15.9 km and bursts it at 9.18 km, where Nimbus
+gives 16.4 and 9.49 km, and it breaks the Meteor Crater body, its strength
+taken from its density, up at 10.6 km against 10.8. Both codes cite Eqs. 11
+and 12 of Collins et al. (2005).
+
+Every breakup altitude the program printed, for 184 bodies of the campaign
+and 81 of the validation grid, is Eq. 11 evaluated on twice the I_f of Eq. 12,
+within 0.01 %; every burst altitude then follows from Eqs. 16 and 18 as
+printed, within 0.02 %. On the printed I_f the same altitudes part from the
+program by up to 3.0 % at breakup and 4.9 % at the burst. Two bodies outside
+both grids were predicted on the doubled I_f and then sent. A 3 m iron body
+at 20 km/s: 11 360 and 9 573 m predicted, 11 327 and 9 544 m printed (0.3 %,
+where I_f = 0.94 makes Eq. 11 steep), against 15 149 and 12 916 m on the
+printed I_f. A 1 m stone at 12 km/s and 30°: 47 868 and 45 396 m predicted,
+47 866 and 45 395 m printed.
+
+Eq. 11 approximates Eq. 10: the breakup is where the ram pressure on the
+speed Eq. 8 leaves the body first reaches its strength. On a sweep of 4 554
+bodies that break, Eq. 11 on the printed I_f lands within 40 m of that root
+below I_f = 0.9 (the 40 m is 8 km × (1.308 − 1.303), the offset of its
+constants at small I_f) and within 280 m above. On twice the I_f it is up to
+5.7 km off, and it keeps whole 135 bodies whose ram pressure passes their
+strength. The printed equation is the one that solves the paper's physics,
+and Nimbus keeps it. Whether the program keeps those bodies whole cannot be
+read: it returned a server error for each body the doubled I_f keeps whole
+(Sikhote-Alin's preset, two random draws and two probes), as it does for some
+bodies that break.
+
+BM-13 is declared, a departure of the reference program from its paper, and
+nothing in Nimbus changes. `atmosphericEntry.test.ts` holds the breakup
+altitude to the root of Eq. 10 within 50 m, and `eiepComparison.test.ts`
+holds the program's altitudes on the grid to the doubled I_f within 0.1 %,
+so a change on either side shows.
+
 ### The far wave against the deep ocean (15 September 2026)
 
 `scripts/benchmark/dart-records.py`, `dart-c0.ts`, `dart-c1.py`,
