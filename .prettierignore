@@ -25,4 +25,5 @@ public/data/
 # are the source of truth for their layout, as for the validation report.
 benchmark/nimbus/
 benchmark/results/
+benchmark/dart/
 docs/BENCHMARK_REPORT.md

@@ -1,0 +1,7614 @@
+{
+ "readOn": "2026-09-15",
+ "protocol": "docs/BENCHMARK_PROTOCOL.md, After the campaign: the far wave of a megathrust (BM-05)",
+ "sources": [
+  "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2006-01-01&endtime=2026-01-01&minmagnitude=7.7&maxdepth=71&orderby=time-asc",
+  "https://www.ndbc.noaa.gov/data/stations/station_table.txt",
+  "https://www.ndbc.noaa.gov/data/historical/dart/"
+ ],
+ "events": [
+  {
+   "id": "usp000eg5g",
+   "origin": "2006-05-03T15:26:40.290000+00:00",
+   "magnitude": 8,
+   "magnitudeType": "mwc",
+   "lat": -20.187,
+   "lon": -174.123,
+   "depthKm": 55,
+   "place": "2006 Tonga Earthquake",
+   "strikeDeg": 221.0,
+   "dipDeg": 18.0,
+   "rakeDeg": 117.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12527.0
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12880.9
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12247.5
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12214.0
+    },
+    {
+     "station": "42408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10673.3
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7966.1
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8272.4
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8649.3
+    },
+    {
+     "station": "46405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8291.3
+    },
+    {
+     "station": "46406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5426.0
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8739.2
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8228.9
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8159.6
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4811.1
+    }
+   ]
+  },
+  {
+   "id": "usp000ensm",
+   "origin": "2006-07-17T08:19:26.680000+00:00",
+   "magnitude": 7.7,
+   "magnitudeType": "mwc",
+   "lat": -9.284,
+   "lon": 107.419,
+   "depthKm": 20,
+   "place": "226 km SSW of Singaparna, Indonesia",
+   "strikeDeg": 284.0,
+   "dipDeg": 9.0,
+   "rakeDeg": 86.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16689.7
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18347.6
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18186.7
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17378.0
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 19195.8
+    },
+    {
+     "station": "42408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17679.2
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10698.3
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11203.8
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13332.4
+    },
+    {
+     "station": "46405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13265.6
+    },
+    {
+     "station": "46406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13880.7
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11739.7
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13687.0
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14465.4
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10972.2
+    }
+   ]
+  },
+  {
+   "id": "usp000exfn",
+   "origin": "2006-11-15T11:14:13.570000+00:00",
+   "magnitude": 8.3,
+   "magnitudeType": "mwc",
+   "lat": 46.592,
+   "lon": 153.266,
+   "depthKm": 10,
+   "place": "2006 Kuril Islands Earthquake",
+   "strikeDeg": 208.0,
+   "dipDeg": 15.0,
+   "rakeDeg": 83.0,
+   "kept": true,
+   "records": [
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.33",
+     "distanceKm": 1873.0
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.55",
+     "distanceKm": 14922.5
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11221.9
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11380.8
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11984.9
+    },
+    {
+     "station": "42408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10001.6
+    },
+    {
+     "station": "46402",
+     "lat": 50.913,
+     "lon": -164.147,
+     "distanceKm": 3114.3,
+     "bearingDeg": 65.3,
+     "waterDepthM": 4711.7,
+     "crestM": 0.0918,
+     "rangeM": 0.1564,
+     "crestAfterS": 16426,
+     "noiseM": 0.0037,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.004,
+     "kept": true
+    },
+    {
+     "station": "46403",
+     "lat": 52.7,
+     "lon": -156.983,
+     "distanceKm": 3571.4,
+     "bearingDeg": 60.5,
+     "waterDepthM": 4510.5,
+     "crestM": 0.1006,
+     "rangeM": 0.1659,
+     "crestAfterS": 15886,
+     "noiseM": 0.0025,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0049,
+     "kept": true
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.61",
+     "distanceKm": 5739.8
+    },
+    {
+     "station": "46405",
+     "kept": false,
+     "reason": "1-min coverage 0.88",
+     "distanceKm": 5764.6
+    },
+    {
+     "station": "46408",
+     "lat": 49.677,
+     "lon": -169.825,
+     "distanceKm": 2732.4,
+     "bearingDeg": 69.1,
+     "waterDepthM": 5372.6,
+     "crestM": 0.0347,
+     "rangeM": 0.0927,
+     "crestAfterS": 11626,
+     "noiseM": 0.005,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0042,
+     "kept": true
+    },
+    {
+     "station": "46409",
+     "lat": 55.338,
+     "lon": -148.575,
+     "distanceKm": 4060.0,
+     "bearingDeg": 54.3,
+     "waterDepthM": 4191.1,
+     "crestM": 0.073,
+     "rangeM": 0.1231,
+     "crestAfterS": 18616,
+     "noiseM": 0.0075,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0065,
+     "kept": true
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.67",
+     "distanceKm": 4298.9
+    },
+    {
+     "station": "46411",
+     "lat": 39.337,
+     "lon": -127.04,
+     "distanceKm": 6254.6,
+     "bearingDeg": 66.2,
+     "waterDepthM": 4264.3,
+     "crestM": 0.07,
+     "rangeM": 0.1195,
+     "crestAfterS": 28921,
+     "noiseM": 0.0032,
+     "fastCoverage": 0.957,
+     "tideFitRmsM": 0.0065,
+     "kept": true
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.48",
+     "distanceKm": 7188.3
+    },
+    {
+     "station": "46413",
+     "lat": 48.031,
+     "lon": -173.766,
+     "distanceKm": 2471.6,
+     "bearingDeg": 74.1,
+     "waterDepthM": 5572.0,
+     "crestM": 0.0417,
+     "rangeM": 0.0929,
+     "crestAfterS": 9826,
+     "noiseM": 0.0045,
+     "fastCoverage": 0.997,
+     "tideFitRmsM": 0.0042,
+     "kept": true
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.85",
+     "distanceKm": 5519.5
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.46",
+     "distanceKm": 10065.5
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.43",
+     "distanceKm": 5432.0
+    }
+   ]
+  },
+  {
+   "id": "usp000f83m",
+   "origin": "2007-04-01T20:39:58.710000+00:00",
+   "magnitude": 8.1,
+   "magnitudeType": "mwc",
+   "lat": -8.466,
+   "lon": 157.043,
+   "depthKm": 24,
+   "place": "2007 Solomon Islands Earthquake",
+   "strikeDeg": 322.0,
+   "dipDeg": 29.0,
+   "rakeDeg": 101.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4363.1
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6712.9
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7827.0
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13625.4
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12522.1
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15007.0
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15360.0
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14241.2
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15043.9
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10897.9
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11587.5
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8070.0
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9485.8
+    },
+    {
+     "station": "46405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9221.3
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7219.8
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8682.3
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9068.8
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9415.3
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9804.1
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6904.9
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9523.6
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8553.3
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5954.2
+    },
+    {
+     "station": "52402",
+     "lat": 11.928,
+     "lon": 153.876,
+     "distanceKm": 2294.6,
+     "bearingDeg": 351.2,
+     "waterDepthM": 5800.0,
+     "crestM": 0.0988,
+     "rangeM": 0.1205,
+     "crestAfterS": 18586,
+     "noiseM": 0.0024,
+     "fastCoverage": 0.972,
+     "tideFitRmsM": 0.0057,
+     "kept": true
+    },
+    {
+     "station": "52403",
+     "lat": 4.018,
+     "lon": 145.628,
+     "distanceKm": 1878.6,
+     "bearingDeg": 317.2,
+     "waterDepthM": 4435.6,
+     "crestM": 0.0893,
+     "rangeM": 0.1186,
+     "crestAfterS": 20251,
+     "noiseM": 0.0032,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0071,
+     "kept": true
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.62",
+     "distanceKm": 4221.6
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.77",
+     "distanceKm": 3633.5
+    }
+   ]
+  },
+  {
+   "id": "usp000fjta",
+   "origin": "2007-08-15T23:40:57.890000+00:00",
+   "magnitude": 8,
+   "magnitudeType": "mwc",
+   "lat": -13.386,
+   "lon": -76.603,
+   "depthKm": 39,
+   "place": "41 km SW of San Vicente de Ca\u00f1ete, Peru",
+   "strikeDeg": 324.0,
+   "dipDeg": 14.0,
+   "rakeDeg": 63.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14689.1
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12231.7
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12675.1
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13324.9
+    },
+    {
+     "station": "21417",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13933.0
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.04",
+     "distanceKm": 14751.2
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18319.4
+    },
+    {
+     "station": "32401",
+     "lat": -20.611,
+     "lon": -73.394,
+     "distanceKm": 872.7,
+     "bearingDeg": 157.4,
+     "waterDepthM": 4882.0,
+     "crestM": 0.038,
+     "rangeM": 0.0886,
+     "crestAfterS": 3362,
+     "noiseM": 0.0081,
+     "fastCoverage": 0.997,
+     "tideFitRmsM": 0.0092,
+     "kept": true
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.82",
+     "distanceKm": 2573.9
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4215.1
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4324.0
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5174.9
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.19",
+     "distanceKm": 3318.7
+    },
+    {
+     "station": "42408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4436.1
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.52",
+     "distanceKm": 4675.1
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3738.8
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10988.8
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10553.8
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8399.5
+    },
+    {
+     "station": "46405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8343.9
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11367.8
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10129.8
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9966.3
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7848.2
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.58",
+     "distanceKm": 6911.8
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11638.8
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8651.9
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.54",
+     "distanceKm": 5307.0
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9485.5
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14409.0
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14545.4
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15265.8
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16850.8
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16894.8
+    },
+    {
+     "station": "55401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11233.0
+    }
+   ]
+  },
+  {
+   "id": "official20070912111026830_34",
+   "origin": "2007-09-12T11:10:26.830000+00:00",
+   "magnitude": 8.4,
+   "magnitudeType": "mww",
+   "lat": -4.438,
+   "lon": 101.367,
+   "depthKm": 34,
+   "place": "122 km SW of Bengkulu, Indonesia",
+   "strikeDeg": 323.0,
+   "dipDeg": 11.0,
+   "rakeDeg": 103.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6640.3
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9428.9
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9022.4
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8365.2
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6837.8
+    },
+    {
+     "station": "23401",
+     "lat": 8.86,
+     "lon": 88.55,
+     "distanceKm": 2050.7,
+     "bearingDeg": 316.1,
+     "waterDepthM": 3466.8,
+     "crestM": 0.145,
+     "rangeM": 0.1353,
+     "crestAfterS": 17583,
+     "noiseM": 0.0068,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0069,
+     "kept": true
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17171.7
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18666.2
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17582.4
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17371.9
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16779.2
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18354.8
+    },
+    {
+     "station": "42408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17539.6
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16660.7
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17552.7
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15322.5
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16055.9
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10704.8
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11183.6
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13349.7
+    },
+    {
+     "station": "46405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13339.9
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10298.0
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11670.9
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11880.2
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13801.6
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14664.1
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9994.1
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13136.1
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14674.0
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11432.1
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6505.8
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6083.5
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5006.1
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4371.1
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3921.2
+    },
+    {
+     "station": "55401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7349.3
+    }
+   ]
+  },
+  {
+   "id": "usp000fshy",
+   "origin": "2007-11-14T15:40:50.530000+00:00",
+   "magnitude": 7.7,
+   "magnitudeType": "mwc",
+   "lat": -22.247,
+   "lon": -69.89,
+   "depthKm": 40,
+   "place": "36 km ESE of Tocopilla, Chile",
+   "strikeDeg": 6.0,
+   "dipDeg": 17.0,
+   "rakeDeg": 111.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15755.3
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13434.5
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13882.2
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14529.0
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15920.8
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17273.7
+    },
+    {
+     "station": "32401",
+     "lat": -20.611,
+     "lon": -73.394,
+     "distanceKm": 405.7,
+     "bearingDeg": 296.0,
+     "waterDepthM": 4881.6,
+     "crestM": 0.0554,
+     "rangeM": 0.0497,
+     "crestAfterS": 10389,
+     "noiseM": 0.0011,
+     "fastCoverage": 0.998,
+     "tideFitRmsM": 0.0144,
+     "kept": true
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3786.5
+    },
+    {
+     "station": "32412",
+     "kept": false,
+     "reason": "1-min coverage 0.59",
+     "distanceKm": 1784.0
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5086.6
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5122.2
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6150.2
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4176.5
+    },
+    {
+     "station": "42408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5589.5
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5868.2
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4938.7
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6845.8
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12198.7
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11767.3
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9613.8
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12573.7
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11343.3
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11175.3
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8118.4
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12838.9
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9865.2
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6072.6
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10495.5
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15274.8
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15241.9
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17720.7
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17459.0
+    },
+    {
+     "station": "53401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16855.6
+    },
+    {
+     "station": "55401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10812.2
+    }
+   ]
+  },
+  {
+   "id": "usp000gs2d",
+   "origin": "2009-01-03T19:43:50.650000+00:00",
+   "magnitude": 7.7,
+   "magnitudeType": "mwc",
+   "lat": -0.414,
+   "lon": 132.885,
+   "depthKm": 17,
+   "place": "140 km WNW of Manokwari, Indonesia",
+   "strikeDeg": 102.0,
+   "dipDeg": 26.0,
+   "rakeDeg": 62.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3993.1
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4655.7
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5017.3
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16322.6
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15138.8
+    },
+    {
+     "station": "32412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15260.5
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16882.6
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15513.6
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17171.2
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14688.5
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13228.0
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14057.0
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15870.3
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15069.4
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8193.3
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8723.4
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10687.8
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10709.5
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7769.1
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9651.0
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10901.6
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11578.8
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7428.8
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10590.6
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11329.8
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7986.3
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5716.4
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6816.1
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3320.0
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.14",
+     "distanceKm": 2693.4
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.61",
+     "distanceKm": 1499.2
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2340.5
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3606.5
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5820.3
+    }
+   ]
+  },
+  {
+   "id": "usp000gz8j",
+   "origin": "2009-07-15T09:22:29.030000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mwc",
+   "lat": -45.762,
+   "lon": 166.562,
+   "depthKm": 12,
+   "place": "97 km WSW of Te Anau, New Zealand",
+   "strikeDeg": 26.0,
+   "dipDeg": 24.0,
+   "rakeDeg": 131.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8602.7
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10594.7
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10673.9
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10444.5
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9573.8
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10083.1
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10484.0
+    },
+    {
+     "station": "32412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9838.8
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14885.7
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14855.5
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13091.2
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11005.9
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11111.9
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11485.3
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11991.3
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11719.8
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10854.7
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12002.7
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12377.8
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11539.2
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11357.2
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10603.3
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12194.4
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7664.5
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8154.8
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4350.9
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3380.6
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7314.3
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6539.7
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5909.5
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8154.4
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4493.5
+    },
+    {
+     "station": "54401",
+     "kept": false,
+     "reason": "1-min coverage 0.90",
+     "distanceKm": 2227.9
+    },
+    {
+     "station": "55013",
+     "lat": -46.665,
+     "lon": 161.001,
+     "distanceKm": 439.4,
+     "bearingDeg": 254.8,
+     "waterDepthM": 4919.5,
+     "crestM": 0.0738,
+     "rangeM": 0.0877,
+     "crestAfterS": 2011,
+     "noiseM": 0.0019,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0094,
+     "kept": true
+    },
+    {
+     "station": "55015",
+     "lat": -46.956,
+     "lon": 160.343,
+     "distanceKm": 495.2,
+     "bearingDeg": 252.2,
+     "waterDepthM": 4974.9,
+     "crestM": 0.0964,
+     "rangeM": 0.1198,
+     "crestAfterS": 2131,
+     "noiseM": 0.0017,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.009,
+     "kept": true
+    }
+   ]
+  },
+  {
+   "id": "usp000h2g9",
+   "origin": "2009-10-07T22:03:14.470000+00:00",
+   "magnitude": 7.7,
+   "magnitudeType": "mww",
+   "lat": -13.006,
+   "lon": 166.51,
+   "depthKm": 45,
+   "place": "148 km NW of Sola, Vanuatu",
+   "strikeDeg": 342.0,
+   "dipDeg": 34.0,
+   "rakeDeg": 82.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5075.2
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7038.8
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.72",
+     "distanceKm": 6052.9
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12477.8
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11505.0
+    },
+    {
+     "station": "32412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11311.6
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14600.0
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13652.1
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12036.9
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10038.0
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15484.1
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13722.7
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8095.9
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9189.4
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9019.0
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7344.7
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8677.1
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9067.2
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8993.9
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7062.2
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9285.3
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7476.1
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5421.9
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.47",
+     "distanceKm": 1918.4
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.40",
+     "distanceKm": 2875.9
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.04",
+     "distanceKm": 3778.4
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.20",
+     "distanceKm": 2983.5
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5293.7
+    },
+    {
+     "station": "54401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3041.3
+    },
+    {
+     "station": "55013",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3778.1
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3818.8
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6092.4
+    }
+   ]
+  },
+  {
+   "id": "usp000h2gd",
+   "origin": "2009-10-07T22:18:51.240000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mwc",
+   "lat": -12.517,
+   "lon": 166.382,
+   "depthKm": 35,
+   "place": "196 km NW of Sola, Vanuatu",
+   "strikeDeg": 337.0,
+   "dipDeg": 36.0,
+   "rakeDeg": 82.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5019.2
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6985.5
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.69",
+     "distanceKm": 5996.9
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12516.2
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11516.8
+    },
+    {
+     "station": "32412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11344.7
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14594.3
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13635.8
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12028.1
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10035.9
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15456.3
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13699.4
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8050.9
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9156.3
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8988.1
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7296.6
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8633.3
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9023.4
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8966.0
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7013.1
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9249.9
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7493.7
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5396.7
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.41",
+     "distanceKm": 1923.5
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.34",
+     "distanceKm": 2913.0
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.01",
+     "distanceKm": 3722.5
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.16",
+     "distanceKm": 2939.2
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5245.8
+    },
+    {
+     "station": "54401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3092.2
+    },
+    {
+     "station": "55013",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3830.5
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3870.9
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6086.6
+    }
+   ]
+  },
+  {
+   "id": "official20100227063411530_30",
+   "origin": "2010-02-27T06:34:11.530000+00:00",
+   "magnitude": 8.8,
+   "magnitudeType": "mww",
+   "lat": -36.122,
+   "lon": -72.898,
+   "depthKm": 22.9,
+   "place": "2010 Maule, Chile Earthquake",
+   "strikeDeg": 17.0,
+   "dipDeg": 13.0,
+   "rakeDeg": 108.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.78",
+     "distanceKm": 15821.7
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.36",
+     "distanceKm": 14712.6
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16359.2
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16449.6
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.04",
+     "distanceKm": 4935.7
+    },
+    {
+     "station": "32412",
+     "lat": -17.984,
+     "lon": -86.374,
+     "distanceKm": 2412.5,
+     "bearingDeg": 323.2,
+     "waterDepthM": 4325.5,
+     "crestM": 0.2536,
+     "rangeM": 0.3335,
+     "crestAfterS": 11763,
+     "noiseM": 0.0042,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0064,
+     "kept": true
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6691.2
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7686.1
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5736.6
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.70",
+     "distanceKm": 6816.4
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8528.2
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8391.1
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.35",
+     "distanceKm": 12758.4
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.82",
+     "distanceKm": 10691.4
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.79",
+     "distanceKm": 10440.1
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.48",
+     "distanceKm": 13435.6
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.63",
+     "distanceKm": 12430.7
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.74",
+     "distanceKm": 12328.6
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10056.7
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.82",
+     "distanceKm": 9091.6
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.77",
+     "distanceKm": 10978.2
+    },
+    {
+     "station": "51406",
+     "lat": -8.48,
+     "lon": -125.027,
+     "distanceKm": 6086.1,
+     "bearingDeg": 287.0,
+     "waterDepthM": 4480.6,
+     "crestM": 0.2739,
+     "rangeM": 0.3902,
+     "crestAfterS": 32208,
+     "noiseM": 0.0022,
+     "fastCoverage": 0.98,
+     "tideFitRmsM": 0.0083,
+     "kept": true
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10732.7
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.89",
+     "distanceKm": 10560.4
+    },
+    {
+     "station": "51426",
+     "lat": -23.11,
+     "lon": -168.385,
+     "distanceKm": 8981.6,
+     "bearingDeg": 248.1,
+     "waterDepthM": 5680.7,
+     "crestM": 0.1105,
+     "rangeM": 0.1759,
+     "crestAfterS": 39948,
+     "noiseM": 0.0012,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0062,
+     "kept": true
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.69",
+     "distanceKm": 14932.6
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.63",
+     "distanceKm": 14626.3
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.49",
+     "distanceKm": 14699.7
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17028.3
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.45",
+     "distanceKm": 16421.7
+    },
+    {
+     "station": "54401",
+     "kept": false,
+     "reason": "1-min coverage 0.50",
+     "distanceKm": 8714.8
+    },
+    {
+     "station": "55013",
+     "kept": false,
+     "reason": "1-min coverage 0.47",
+     "distanceKm": 9355.6
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.48",
+     "distanceKm": 9363.8
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14428.2
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14212.6
+    }
+   ]
+  },
+  {
+   "id": "usp000hat0",
+   "origin": "2010-04-06T22:15:01.580000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mwc",
+   "lat": 2.383,
+   "lon": 97.048,
+   "depthKm": 31,
+   "place": "75 km E of Sinabang, Indonesia",
+   "strikeDeg": 315.0,
+   "dipDeg": 9.0,
+   "rakeDeg": 97.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6568.2
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8726.9
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6610.1
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.67",
+     "distanceKm": 1184.1
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18819.7
+    },
+    {
+     "station": "32412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18240.6
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16475.4
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15934.7
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17466.8
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16672.6
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14425.5
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15212.8
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10860.6
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13214.4
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10030.3
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11292.6
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11457.4
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13556.6
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14480.6
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12770.6
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15311.7
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9689.1
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10578.5
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6645.7
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6347.0
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5395.8
+    },
+    {
+     "station": "52404",
+     "lat": 20.625,
+     "lon": 132.228,
+     "distanceKm": 4318.4,
+     "bearingDeg": 59.3,
+     "waterDepthM": 5931.8,
+     "crestM": 19.2877,
+     "rangeM": 19.4854,
+     "crestAfterS": 39118,
+     "noiseM": 2.7213,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.8084,
+     "kept": true
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4045.9
+    },
+    {
+     "station": "54401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10133.4
+    },
+    {
+     "station": "55013",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8260.2
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8225.4
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.32",
+     "distanceKm": 2320.4
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.16",
+     "distanceKm": 3016.6
+    }
+   ]
+  },
+  {
+   "id": "usp000hnj4",
+   "origin": "2010-10-25T14:42:22.460000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mwc",
+   "lat": -3.487,
+   "lon": 100.082,
+   "depthKm": 20.1,
+   "place": "215 km SW of Sungai Penuh, Indonesia",
+   "strikeDeg": 324.0,
+   "dipDeg": 8.0,
+   "rakeDeg": 95.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6684.9
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9439.7
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9026.5
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8369.0
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6852.1
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7656.9
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18797.8
+    },
+    {
+     "station": "32412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17524.9
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18082.9
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17420.2
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17202.5
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17340.3
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16742.9
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17650.7
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15154.5
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15924.4
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10712.9
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11185.1
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13353.2
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13511.7
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10309.8
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11661.1
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11860.8
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13824.0
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14701.2
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10010.3
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14839.5
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11532.1
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9249.1
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10011.9
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6589.3
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6187.6
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5129.1
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4413.1
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3994.7
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7196.0
+    },
+    {
+     "station": "54401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9494.5
+    },
+    {
+     "station": "55013",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7543.6
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7507.6
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.64",
+     "distanceKm": 1603.0
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2351.1
+    }
+   ]
+  },
+  {
+   "id": "official20110311054624120_30",
+   "origin": "2011-03-11T05:46:24.120000+00:00",
+   "magnitude": 9.1,
+   "magnitudeType": "mww",
+   "lat": 38.297,
+   "lon": 142.373,
+   "depthKm": 29,
+   "place": "2011 Great Tohoku Earthquake, Japan",
+   "strikeDeg": 192.0,
+   "dipDeg": 8.0,
+   "rakeDeg": 78.0,
+   "kept": true,
+   "records": [
+    {
+     "station": "21401",
+     "lat": 42.617,
+     "lon": 152.583,
+     "distanceKm": 987.4,
+     "bearingDeg": 57.7,
+     "waterDepthM": 5263.6,
+     "crestM": 0.683,
+     "rangeM": 0.9288,
+     "crestAfterS": 3996,
+     "noiseM": 0.002,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0104,
+     "kept": true
+    },
+    {
+     "station": "21413",
+     "lat": 30.487,
+     "lon": 152.124,
+     "distanceKm": 1245.4,
+     "bearingDeg": 131.3,
+     "waterDepthM": 5824.9,
+     "crestM": 0.8016,
+     "rangeM": 1.1328,
+     "crestAfterS": 4836,
+     "noiseM": 0.005,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0071,
+     "kept": true
+    },
+    {
+     "station": "21414",
+     "lat": 48.977,
+     "lon": 178.199,
+     "distanceKm": 3082.5,
+     "bearingDeg": 55.7,
+     "waterDepthM": 5465.6,
+     "crestM": 0.2591,
+     "rangeM": 0.3842,
+     "crestAfterS": 13236,
+     "noiseM": 0.0025,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0079,
+     "kept": true
+    },
+    {
+     "station": "21415",
+     "lat": 50.12,
+     "lon": 171.867,
+     "distanceKm": 2668.2,
+     "bearingDeg": 50.9,
+     "waterDepthM": 4709.8,
+     "crestM": 0.2795,
+     "rangeM": 0.4355,
+     "crestAfterS": 11436,
+     "noiseM": 0.0027,
+     "fastCoverage": 0.998,
+     "tideFitRmsM": 0.0103,
+     "kept": true
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.90",
+     "distanceKm": 2011.2
+    },
+    {
+     "station": "21418",
+     "lat": 38.84,
+     "lon": 148.753,
+     "distanceKm": 557.8,
+     "bearingDeg": 81.8,
+     "waterDepthM": 5662.5,
+     "crestM": 1.8832,
+     "rangeM": 3.2432,
+     "crestAfterS": 1956,
+     "noiseM": 0.0034,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0102,
+     "kept": true
+    },
+    {
+     "station": "21419",
+     "lat": 44.401,
+     "lon": 155.653,
+     "distanceKm": 1297.4,
+     "bearingDeg": 54.2,
+     "waterDepthM": 5292.4,
+     "crestM": 0.5435,
+     "rangeM": 0.7998,
+     "crestAfterS": 5376,
+     "noiseM": 0.0024,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0104,
+     "kept": true
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.88",
+     "distanceKm": 16068.5
+    },
+    {
+     "station": "32411",
+     "lat": 4.979,
+     "lon": -90.793,
+     "distanceKm": 12733.5,
+     "bearingDeg": 61.2,
+     "waterDepthM": 3167.2,
+     "crestM": 0.1206,
+     "rangeM": 0.2447,
+     "crestAfterS": 60576,
+     "noiseM": 0.0019,
+     "fastCoverage": 0.956,
+     "tideFitRmsM": 0.0132,
+     "kept": true
+    },
+    {
+     "station": "32412",
+     "lat": -17.984,
+     "lon": -86.374,
+     "distanceKm": 14802.5,
+     "bearingDeg": 78.4,
+     "waterDepthM": 4325.5,
+     "crestM": 0.1361,
+     "rangeM": 0.2349,
+     "crestAfterS": 94356,
+     "noiseM": 0.0038,
+     "fastCoverage": 0.912,
+     "tideFitRmsM": 0.0155,
+     "kept": true
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.87",
+     "distanceKm": 13470.4
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12481.7
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12625.9
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13259.9
+    },
+    {
+     "station": "43412",
+     "lat": 16.02,
+     "lon": -107.0,
+     "distanceKm": 10611.8,
+     "bearingDeg": 64.6,
+     "waterDepthM": 3233.0,
+     "crestM": 0.1356,
+     "rangeM": 0.2241,
+     "crestAfterS": 48816,
+     "noiseM": 0.0057,
+     "fastCoverage": 0.918,
+     "tideFitRmsM": 0.0083,
+     "kept": true
+    },
+    {
+     "station": "43413",
+     "lat": 10.927,
+     "lon": -100.012,
+     "distanceKm": 11549.7,
+     "bearingDeg": 63.7,
+     "waterDepthM": 3404.1,
+     "crestM": 0.1824,
+     "rangeM": 0.3436,
+     "crestAfterS": 54156,
+     "noiseM": 0.0035,
+     "fastCoverage": 0.926,
+     "tideFitRmsM": 0.0127,
+     "kept": true
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11481.4
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10748.7
+    },
+    {
+     "station": "46402",
+     "lat": 50.913,
+     "lon": -164.147,
+     "distanceKm": 4353.2,
+     "bearingDeg": 53.4,
+     "waterDepthM": 4719.8,
+     "crestM": 0.1371,
+     "rangeM": 1.1612,
+     "crestAfterS": 18936,
+     "noiseM": 0.0012,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0128,
+     "kept": true
+    },
+    {
+     "station": "46403",
+     "lat": 52.7,
+     "lon": -156.983,
+     "distanceKm": 4830.0,
+     "bearingDeg": 50.2,
+     "waterDepthM": 4515.1,
+     "crestM": 0.1124,
+     "rangeM": 0.2013,
+     "crestAfterS": 25716,
+     "noiseM": 0.0011,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0082,
+     "kept": true
+    },
+    {
+     "station": "46404",
+     "lat": 45.852,
+     "lon": -128.745,
+     "distanceKm": 6995.5,
+     "bearingDeg": 51.5,
+     "waterDepthM": 2737.2,
+     "crestM": 0.1426,
+     "rangeM": 0.302,
+     "crestAfterS": 32016,
+     "noiseM": 0.0032,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0114,
+     "kept": true
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.37",
+     "distanceKm": 7154.0
+    },
+    {
+     "station": "46408",
+     "lat": 49.677,
+     "lon": -169.825,
+     "distanceKm": 3952.9,
+     "bearingDeg": 55.5,
+     "waterDepthM": 5379.1,
+     "crestM": 0.2289,
+     "rangeM": 0.3098,
+     "crestAfterS": 17016,
+     "noiseM": 0.001,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0095,
+     "kept": true
+    },
+    {
+     "station": "46409",
+     "lat": 55.338,
+     "lon": -148.575,
+     "distanceKm": 5335.7,
+     "bearingDeg": 45.6,
+     "waterDepthM": 4189.8,
+     "crestM": 0.0927,
+     "rangeM": 0.1602,
+     "crestAfterS": 32376,
+     "noiseM": 0.0013,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0098,
+     "kept": true
+    },
+    {
+     "station": "46410",
+     "lat": 57.641,
+     "lon": -143.771,
+     "distanceKm": 5580.5,
+     "bearingDeg": 42.0,
+     "waterDepthM": 3729.2,
+     "crestM": 0.0485,
+     "rangeM": 0.1455,
+     "crestAfterS": 38496,
+     "noiseM": 0.0017,
+     "fastCoverage": 0.932,
+     "tideFitRmsM": 0.0094,
+     "kept": true
+    },
+    {
+     "station": "46411",
+     "lat": 39.337,
+     "lon": -127.04,
+     "distanceKm": 7478.5,
+     "bearingDeg": 57.0,
+     "waterDepthM": 4259.7,
+     "crestM": 0.1827,
+     "rangeM": 0.3309,
+     "crestAfterS": 33636,
+     "noiseM": 0.0011,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0098,
+     "kept": true
+    },
+    {
+     "station": "46412",
+     "lat": 32.4,
+     "lon": -120.582,
+     "distanceKm": 8392.4,
+     "bearingDeg": 60.0,
+     "waterDepthM": 3717.3,
+     "crestM": 0.1077,
+     "rangeM": 0.2437,
+     "crestAfterS": 37296,
+     "noiseM": 0.0009,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0075,
+     "kept": true
+    },
+    {
+     "station": "51406",
+     "lat": -8.48,
+     "lon": -125.027,
+     "distanceKm": 10816.3,
+     "bearingDeg": 95.1,
+     "waterDepthM": 4450.3,
+     "crestM": 0.1961,
+     "rangeM": 0.3595,
+     "crestAfterS": 51270,
+     "noiseM": 0.0067,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.017,
+     "kept": true
+    },
+    {
+     "station": "51407",
+     "lat": 19.53,
+     "lon": -156.601,
+     "distanceKm": 6178.5,
+     "bearingDeg": 91.4,
+     "waterDepthM": 4682.6,
+     "crestM": 0.3015,
+     "rangeM": 0.5512,
+     "crestAfterS": 28596,
+     "noiseM": 0.0028,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0118,
+     "kept": true
+    },
+    {
+     "station": "51425",
+     "lat": -9.511,
+     "lon": -176.258,
+     "distanceKm": 6828.9,
+     "bearingDeg": 132.1,
+     "waterDepthM": 4977.9,
+     "crestM": 0.141,
+     "rangeM": 0.2502,
+     "crestAfterS": 30936,
+     "noiseM": 0.0017,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0101,
+     "kept": true
+    },
+    {
+     "station": "52402",
+     "lat": 11.928,
+     "lon": 153.876,
+     "distanceKm": 3146.1,
+     "bearingDeg": 155.7,
+     "waterDepthM": 5861.8,
+     "crestM": 0.3372,
+     "rangeM": 0.5786,
+     "crestAfterS": 13476,
+     "noiseM": 0.0026,
+     "fastCoverage": 0.998,
+     "tideFitRmsM": 0.0062,
+     "kept": true
+    },
+    {
+     "station": "52403",
+     "lat": 4.018,
+     "lon": 145.628,
+     "distanceKm": 3825.9,
+     "bearingDeg": 174.2,
+     "waterDepthM": 4431.7,
+     "crestM": 0.145,
+     "rangeM": 0.2402,
+     "crestAfterS": 27576,
+     "noiseM": 0.0022,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0091,
+     "kept": true
+    },
+    {
+     "station": "52405",
+     "lat": 12.992,
+     "lon": 132.232,
+     "distanceKm": 2986.9,
+     "bearingDeg": 202.3,
+     "waterDepthM": 5922.9,
+     "crestM": 0.0975,
+     "rangeM": 0.162,
+     "crestAfterS": 14676,
+     "noiseM": 0.0017,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0059,
+     "kept": true
+    },
+    {
+     "station": "52406",
+     "lat": -5.374,
+     "lon": 164.99,
+     "distanceKm": 5387.8,
+     "bearingDeg": 149.2,
+     "waterDepthM": 1798.1,
+     "crestM": 0.1847,
+     "rangeM": 0.2983,
+     "crestAfterS": 24456,
+     "noiseM": 0.0037,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0106,
+     "kept": true
+    },
+    {
+     "station": "54401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9173.2
+    },
+    {
+     "station": "55013",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9627.6
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6724.5
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6446.9
+    }
+   ]
+  },
+  {
+   "id": "usp000juhz",
+   "origin": "2012-10-28T03:04:08.820000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mww",
+   "lat": 52.788,
+   "lon": -132.101,
+   "depthKm": 14,
+   "place": "206 km SW of Prince Rupert, Canada",
+   "strikeDeg": 322.0,
+   "dipDeg": 24.0,
+   "rakeDeg": 115.0,
+   "kept": true,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6432.8
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3794.6
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4443.1
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5165.1
+    },
+    {
+     "station": "23227",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12411.8
+    },
+    {
+     "station": "23228",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11665.5
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12154.8
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9920.5
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6510.9
+    },
+    {
+     "station": "32412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9011.8
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6268.9
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5141.8
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6916.3
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4641.3
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5465.5
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6282.5
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4806.4
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.58",
+     "distanceKm": 2192.6
+    },
+    {
+     "station": "46403",
+     "lat": 52.7,
+     "lon": -156.983,
+     "distanceKm": 1666.6,
+     "bearingDeg": 279.6,
+     "waterDepthM": 4511.3,
+     "crestM": 0.1242,
+     "rangeM": 0.0639,
+     "crestAfterS": 8691,
+     "noiseM": 0.0112,
+     "fastCoverage": 0.965,
+     "tideFitRmsM": 1.7954,
+     "kept": true
+    },
+    {
+     "station": "46404",
+     "lat": 45.852,
+     "lon": -128.745,
+     "distanceKm": 808.5,
+     "bearingDeg": 161.2,
+     "waterDepthM": 2739.8,
+     "crestM": 0.0665,
+     "rangeM": 0.0901,
+     "crestAfterS": 4731,
+     "noiseM": 0.003,
+     "fastCoverage": 0.996,
+     "tideFitRmsM": 0.0047,
+     "kept": true
+    },
+    {
+     "station": "46407",
+     "lat": 42.704,
+     "lon": -128.895,
+     "distanceKm": 1146.3,
+     "bearingDeg": 166.7,
+     "waterDepthM": 3267.5,
+     "crestM": 0.0755,
+     "rangeM": 0.1291,
+     "crestAfterS": 6771,
+     "noiseM": 0.0026,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0102,
+     "kept": true
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.28",
+     "distanceKm": 2618.5
+    },
+    {
+     "station": "46409",
+     "lat": 55.338,
+     "lon": -148.575,
+     "distanceKm": 1108.9,
+     "bearingDeg": 291.4,
+     "waterDepthM": 4189.8,
+     "crestM": 0.0581,
+     "rangeM": 0.0606,
+     "crestAfterS": 5991,
+     "noiseM": 0.0056,
+     "fastCoverage": 0.968,
+     "tideFitRmsM": 0.0045,
+     "kept": true
+    },
+    {
+     "station": "46410",
+     "lat": 57.641,
+     "lon": -143.771,
+     "distanceKm": 914.1,
+     "bearingDeg": 310.8,
+     "waterDepthM": 3727.7,
+     "crestM": 0.0522,
+     "rangeM": 0.0489,
+     "crestAfterS": 5391,
+     "noiseM": 0.0037,
+     "fastCoverage": 0.997,
+     "tideFitRmsM": 0.0046,
+     "kept": true
+    },
+    {
+     "station": "46411",
+     "lat": 39.337,
+     "lon": -127.04,
+     "distanceKm": 1544.8,
+     "bearingDeg": 163.5,
+     "waterDepthM": 4256.2,
+     "crestM": 0.0556,
+     "rangeM": 0.0832,
+     "crestAfterS": 8991,
+     "noiseM": 0.0017,
+     "fastCoverage": 0.998,
+     "tideFitRmsM": 0.0044,
+     "kept": true
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2448.2
+    },
+    {
+     "station": "46413",
+     "lat": 48.031,
+     "lon": -173.766,
+     "distanceKm": 2956.4,
+     "bearingDeg": 276.6,
+     "waterDepthM": 5393.1,
+     "crestM": 0.0359,
+     "rangeM": 0.6229,
+     "crestAfterS": 14631,
+     "noiseM": 0.0361,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0114,
+     "kept": true
+    },
+    {
+     "station": "46419",
+     "lat": 48.816,
+     "lon": -129.614,
+     "distanceKm": 474.9,
+     "bearingDeg": 157.4,
+     "waterDepthM": 2774.2,
+     "crestM": 0.0843,
+     "rangeM": 0.1219,
+     "crestAfterS": 2691,
+     "noiseM": 0.0025,
+     "fastCoverage": 0.996,
+     "tideFitRmsM": 0.005,
+     "kept": true
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6845.7
+    },
+    {
+     "station": "51407",
+     "lat": 19.53,
+     "lon": -156.601,
+     "distanceKm": 4257.6,
+     "bearingDeg": 219.1,
+     "waterDepthM": 4738.1,
+     "crestM": 32.5241,
+     "rangeM": 65.9609,
+     "crestAfterS": 32391,
+     "noiseM": 2.7206,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 3.7528,
+     "kept": true
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8090.9
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7118.7
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7882.0
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9132.4
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8564.3
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8727.2
+    },
+    {
+     "station": "55013",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12743.9
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12800.2
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13107.2
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12660.5
+    }
+   ]
+  },
+  {
+   "id": "usc000f1s0",
+   "origin": "2013-02-06T01:12:25.830000+00:00",
+   "magnitude": 8,
+   "magnitudeType": "mww",
+   "lat": -10.799,
+   "lon": 165.114,
+   "depthKm": 24,
+   "place": "2013 Santa Cruz Islands Earthquake",
+   "strikeDeg": 309.0,
+   "dipDeg": 17.0,
+   "rakeDeg": 61.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4796.2
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6805.7
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6211.7
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8746.4
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12729.3
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11647.3
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14293.9
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13652.1
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14232.4
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10115.1
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10757.6
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13683.8
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7476.6
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9097.9
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8940.9
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7154.9
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8517.3
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8907.7
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8933.9
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9215.6
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9179.8
+    },
+    {
+     "station": "51406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7646.5
+    },
+    {
+     "station": "51407",
+     "lat": 19.53,
+     "lon": -156.601,
+     "distanceKm": 5380.9,
+     "bearingDeg": 51.3,
+     "waterDepthM": 4738.3,
+     "crestM": 26.9912,
+     "rangeM": 51.9712,
+     "crestAfterS": 22939,
+     "noiseM": 0.0017,
+     "fastCoverage": 0.975,
+     "tideFitRmsM": 0.006,
+     "kept": true
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.40",
+     "distanceKm": 2043.6
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.67",
+     "distanceKm": 3498.4
+    },
+    {
+     "station": "52402",
+     "lat": 11.928,
+     "lon": 153.876,
+     "distanceKm": 2815.5,
+     "bearingDeg": 333.5,
+     "waterDepthM": 5876.9,
+     "crestM": 0.0124,
+     "rangeM": 0.0306,
+     "crestAfterS": 19294,
+     "noiseM": 0.0015,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0071,
+     "kept": true
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.76",
+     "distanceKm": 2714.1
+    },
+    {
+     "station": "52406",
+     "lat": -5.374,
+     "lon": 164.99,
+     "distanceKm": 603.4,
+     "bearingDeg": 358.7,
+     "waterDepthM": 1799.6,
+     "crestM": 0.0911,
+     "rangeM": 0.1338,
+     "crestAfterS": 3514,
+     "noiseM": 0.0049,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0117,
+     "kept": true
+    },
+    {
+     "station": "55013",
+     "kept": false,
+     "reason": "1-min coverage 0.13",
+     "distanceKm": 4007.0
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4045.5
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5980.2
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5111.1
+    }
+   ]
+  },
+  {
+   "id": "usc000nzvd",
+   "origin": "2014-04-01T23:46:47.260000+00:00",
+   "magnitude": 8.2,
+   "magnitudeType": "mww",
+   "lat": -19.6097,
+   "lon": -70.7691,
+   "depthKm": 25,
+   "place": "93 km NW of Iquique, Chile",
+   "strikeDeg": 358.0,
+   "dipDeg": 11.0,
+   "rakeDeg": 107.0,
+   "kept": true,
+   "records": [
+    {
+     "station": "21346",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15822.0
+    },
+    {
+     "station": "21347",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15882.2
+    },
+    {
+     "station": "21348",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15930.3
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.33",
+     "distanceKm": 13161.7
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.30",
+     "distanceKm": 15671.5
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.30",
+     "distanceKm": 14936.5
+    },
+    {
+     "station": "23226",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15646.0
+    },
+    {
+     "station": "23227",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17341.8
+    },
+    {
+     "station": "23228",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15441.0
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17489.9
+    },
+    {
+     "station": "32401",
+     "lat": -20.611,
+     "lon": -73.394,
+     "distanceKm": 295.8,
+     "bearingDeg": 247.4,
+     "waterDepthM": 4797.6,
+     "crestM": 0.2548,
+     "rangeM": 0.3608,
+     "crestAfterS": 1333,
+     "noiseM": 0.0022,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0071,
+     "kept": true
+    },
+    {
+     "station": "32402",
+     "lat": -26.743,
+     "lon": -73.983,
+     "distanceKm": 858.4,
+     "bearingDeg": 201.9,
+     "waterDepthM": 4067.9,
+     "crestM": 0.053,
+     "rangeM": 0.093,
+     "crestAfterS": 4033,
+     "noiseM": 0.0023,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0066,
+     "kept": true
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.72",
+     "distanceKm": 3503.3
+    },
+    {
+     "station": "32412",
+     "lat": -17.984,
+     "lon": -86.374,
+     "distanceKm": 1652.0,
+     "bearingDeg": 273.7,
+     "waterDepthM": 4335.6,
+     "crestM": 0.0471,
+     "rangeM": 0.1085,
+     "crestAfterS": 8083,
+     "noiseM": 0.0053,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0055,
+     "kept": true
+    },
+    {
+     "station": "32413",
+     "lat": -7.432,
+     "lon": -93.464,
+     "distanceKm": 2796.9,
+     "bearingDeg": 295.8,
+     "waterDepthM": 3887.4,
+     "crestM": 0.0168,
+     "rangeM": 20.7448,
+     "crestAfterS": 13753,
+     "noiseM": 0.0028,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0056,
+     "kept": true
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4800.2
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4845.6
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5853.4
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.06",
+     "distanceKm": 3889.3
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.61",
+     "distanceKm": 5601.7
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.64",
+     "distanceKm": 4667.5
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.37",
+     "distanceKm": 11918.7
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11481.4
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.47",
+     "distanceKm": 9126.0
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.76",
+     "distanceKm": 12298.0
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.40",
+     "distanceKm": 11049.9
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10877.4
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.48",
+     "distanceKm": 8777.9
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.50",
+     "distanceKm": 7842.0
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9571.9
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.40",
+     "distanceKm": 10311.3
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11242.6
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.39",
+     "distanceKm": 9899.9
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.30",
+     "distanceKm": 15152.2
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.30",
+     "distanceKm": 15175.6
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.33",
+     "distanceKm": 15706.4
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.30",
+     "distanceKm": 17455.3
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.31",
+     "distanceKm": 13316.0
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11020.9
+    },
+    {
+     "station": "55042",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11101.2
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16271.7
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16044.9
+    }
+   ]
+  },
+  {
+   "id": "usc000p27i",
+   "origin": "2014-04-03T02:43:13.110000+00:00",
+   "magnitude": 7.7,
+   "magnitudeType": "mww",
+   "lat": -20.5709,
+   "lon": -70.4931,
+   "depthKm": 22.4,
+   "place": "53 km SW of Iquique, Chile",
+   "strikeDeg": 356.0,
+   "dipDeg": 15.0,
+   "rakeDeg": 100.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21346",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15913.9
+    },
+    {
+     "station": "21347",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15973.1
+    },
+    {
+     "station": "21348",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16020.0
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13258.3
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15759.7
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15030.9
+    },
+    {
+     "station": "23226",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15631.7
+    },
+    {
+     "station": "23227",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17261.2
+    },
+    {
+     "station": "23228",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15429.1
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17416.9
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.72",
+     "distanceKm": 302.0
+    },
+    {
+     "station": "32402",
+     "lat": -26.743,
+     "lon": -73.983,
+     "distanceKm": 772.8,
+     "bearingDeg": 206.7,
+     "waterDepthM": 4067.9,
+     "crestM": 0.0453,
+     "rangeM": 0.0318,
+     "crestAfterS": 14687,
+     "noiseM": 0.0064,
+     "fastCoverage": 0.961,
+     "tideFitRmsM": 0.0142,
+     "kept": true
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3603.3
+    },
+    {
+     "station": "32412",
+     "kept": false,
+     "reason": "1-min coverage 0.61",
+     "distanceKm": 1690.7
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.10",
+     "distanceKm": 2870.5
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4904.6
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4946.7
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5961.3
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3993.9
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5695.3
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4762.9
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12018.0
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11583.0
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9227.1
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12395.6
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11154.4
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10983.7
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8877.5
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7939.7
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9676.3
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10374.5
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11243.7
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9882.2
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15194.2
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15197.3
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15697.6
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17456.6
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13308.7
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10946.1
+    },
+    {
+     "station": "55042",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11029.8
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16165.4
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15948.5
+    }
+   ]
+  },
+  {
+   "id": "us20002926",
+   "origin": "2015-04-25T06:11:25.950000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mww",
+   "lat": 28.2305,
+   "lon": 84.7314,
+   "depthKm": 8.22,
+   "place": "67 km NNE of Bharatpur, Nepal",
+   "strikeDeg": 290.0,
+   "dipDeg": 7.0,
+   "rakeDeg": 101.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21346",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5690.1
+    },
+    {
+     "station": "21347",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5665.9
+    },
+    {
+     "station": "21348",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5659.3
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7919.6
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7446.7
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6903.1
+    },
+    {
+     "station": "23219",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 1699.4
+    },
+    {
+     "station": "23220",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 1606.0
+    },
+    {
+     "station": "23223",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 1305.6
+    },
+    {
+     "station": "23227",
+     "kept": false,
+     "reason": "1-min coverage 0.29",
+     "distanceKm": 2477.1
+    },
+    {
+     "station": "23228",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2132.2
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.36",
+     "distanceKm": 2190.7
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17648.5
+    },
+    {
+     "station": "32402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17911.6
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16291.3
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17694.6
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13354.8
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12800.7
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14935.2
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15631.2
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11310.1
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12085.0
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8938.7
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9220.2
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11111.8
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11409.7
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8667.3
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9435.6
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9451.8
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11812.2
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12762.1
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8501.4
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11553.1
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11383.2
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12776.1
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7199.8
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7353.4
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6957.8
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4852.1
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5188.3
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9343.0
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11266.1
+    },
+    {
+     "station": "55042",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11240.1
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6000.3
+    }
+   ]
+  },
+  {
+   "id": "us20003k7a",
+   "origin": "2015-09-16T22:54:32.860000+00:00",
+   "magnitude": 8.3,
+   "magnitudeType": "mww",
+   "lat": -31.5729,
+   "lon": -71.6744,
+   "depthKm": 22.44,
+   "place": "48 km W of Illapel, Chile",
+   "strikeDeg": 353.0,
+   "dipDeg": 19.0,
+   "rakeDeg": 83.0,
+   "kept": true,
+   "records": [
+    {
+     "station": "21346",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16499.9
+    },
+    {
+     "station": "21347",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16538.0
+    },
+    {
+     "station": "21348",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16559.4
+    },
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.32",
+     "distanceKm": 15868.4
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.41",
+     "distanceKm": 14007.8
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.42",
+     "distanceKm": 14475.3
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.88",
+     "distanceKm": 15090.3
+    },
+    {
+     "station": "23219",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17197.9
+    },
+    {
+     "station": "23220",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17301.7
+    },
+    {
+     "station": "23227",
+     "kept": false,
+     "reason": "1-min coverage 0.38",
+     "distanceKm": 16536.3
+    },
+    {
+     "station": "23228",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15585.2
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16766.7
+    },
+    {
+     "station": "32401",
+     "lat": -20.611,
+     "lon": -73.394,
+     "distanceKm": 1230.9,
+     "bearingDeg": 351.6,
+     "waterDepthM": 4830.5,
+     "crestM": 0.0627,
+     "rangeM": 0.091,
+     "crestAfterS": 5787,
+     "noiseM": 0.0022,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0053,
+     "kept": true
+    },
+    {
+     "station": "32402",
+     "lat": -26.743,
+     "lon": -73.983,
+     "distanceKm": 581.9,
+     "bearingDeg": 336.8,
+     "waterDepthM": 4054.3,
+     "crestM": 0.1151,
+     "rangeM": 0.199,
+     "crestAfterS": 2367,
+     "noiseM": 0.0017,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0049,
+     "kept": true
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.53",
+     "distanceKm": 4541.6
+    },
+    {
+     "station": "32412",
+     "lat": -17.984,
+     "lon": -86.374,
+     "distanceKm": 2113.4,
+     "bearingDeg": 312.2,
+     "waterDepthM": 4335.7,
+     "crestM": 0.0868,
+     "rangeM": 0.1141,
+     "crestAfterS": 10302,
+     "noiseM": 0.0009,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0041,
+     "kept": true
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6133.4
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6173.8
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7180.9
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5222.6
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.84",
+     "distanceKm": 6496.5
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.56",
+     "distanceKm": 5607.4
+    },
+    {
+     "station": "44401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8012.3
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7882.9
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12836.4
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.36",
+     "distanceKm": 12451.5
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.37",
+     "distanceKm": 10346.1
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.40",
+     "distanceKm": 10110.3
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.37",
+     "distanceKm": 13178.0
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.36",
+     "distanceKm": 12088.4
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.43",
+     "distanceKm": 9736.0
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.37",
+     "distanceKm": 13407.1
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.45",
+     "distanceKm": 10671.5
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.70",
+     "distanceKm": 10806.4
+    },
+    {
+     "station": "51426",
+     "lat": -23.11,
+     "lon": -168.385,
+     "distanceKm": 9280.1,
+     "bearingDeg": 246.8,
+     "waterDepthM": 5570.4,
+     "crestM": 22.3661,
+     "rangeM": 47.2089,
+     "crestAfterS": 42852,
+     "noiseM": 0.0236,
+     "fastCoverage": 0.974,
+     "tideFitRmsM": 2.0008,
+     "kept": true
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.34",
+     "distanceKm": 15100.0
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.34",
+     "distanceKm": 14876.2
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.34",
+     "distanceKm": 15062.1
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.50",
+     "distanceKm": 17344.4
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.57",
+     "distanceKm": 16817.3
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.36",
+     "distanceKm": 12748.7
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.42",
+     "distanceKm": 9849.7
+    },
+    {
+     "station": "55042",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9955.6
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14730.9
+    }
+   ]
+  },
+  {
+   "id": "us20005j32",
+   "origin": "2016-04-16T23:58:36.980000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mww",
+   "lat": 0.3819,
+   "lon": -79.9218,
+   "depthKm": 20.59,
+   "place": "27 km SSE of Muisne, Ecuador",
+   "strikeDeg": 26.0,
+   "dipDeg": 16.0,
+   "rakeDeg": 113.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21346",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13524.1
+    },
+    {
+     "station": "21347",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13594.0
+    },
+    {
+     "station": "21348",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13655.2
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11259.6
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11916.6
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12624.0
+    },
+    {
+     "station": "23219",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18049.5
+    },
+    {
+     "station": "23220",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17987.4
+    },
+    {
+     "station": "23223",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17729.0
+    },
+    {
+     "station": "23227",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18547.4
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.34",
+     "distanceKm": 2439.9
+    },
+    {
+     "station": "32402",
+     "kept": false,
+     "reason": "1-min coverage 0.19",
+     "distanceKm": 3082.5
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.68",
+     "distanceKm": 1310.9
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.54",
+     "distanceKm": 1735.0
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3096.7
+    },
+    {
+     "station": "41424",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3705.7
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2098.3
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2999.3
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3441.3
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.32",
+     "distanceKm": 2510.4
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4429.1
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9570.1
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9106.3
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6938.2
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9968.2
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8643.3
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8453.5
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6444.8
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5549.2
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10261.7
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7168.8
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8598.5
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13566.1
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13922.1
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14930.5
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 16171.1
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12788.4
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12240.9
+    },
+    {
+     "station": "55042",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12231.3
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 18142.3
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 17454.3
+    }
+   ]
+  },
+  {
+   "id": "us1000778i",
+   "origin": "2016-11-13T11:02:56.340000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mww",
+   "lat": -42.7373,
+   "lon": 173.054,
+   "depthKm": 15.11,
+   "place": "53 km NNE of Amberley, New Zealand",
+   "strikeDeg": 219.0,
+   "dipDeg": 38.0,
+   "rakeDeg": 128.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10210.5
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10325.9
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10148.2
+    },
+    {
+     "station": "23218",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10333.6
+    },
+    {
+     "station": "23219",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10544.2
+    },
+    {
+     "station": "23220",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10590.4
+    },
+    {
+     "station": "23223",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10797.5
+    },
+    {
+     "station": "23226",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12776.7
+    },
+    {
+     "station": "23227",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10025.6
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10235.7
+    },
+    {
+     "station": "32402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9692.1
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10885.2
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9730.0
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14125.9
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14416.2
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13488.9
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12514.7
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10415.8
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10582.2
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14781.2
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10644.7
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10994.2
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11403.6
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11126.0
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10410.4
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11490.7
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11859.3
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10936.8
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10741.9
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10175.4
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11615.3
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7589.4
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.03",
+     "distanceKm": 3838.2
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.73",
+     "distanceKm": 2773.1
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7120.3
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6384.9
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5885.7
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7462.0
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4229.9
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.74",
+     "distanceKm": 1104.7
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6760.4
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6042.6
+    }
+   ]
+  },
+  {
+   "id": "us20007z80",
+   "origin": "2016-12-08T17:38:46.280000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mww",
+   "lat": -10.6812,
+   "lon": 161.3273,
+   "depthKm": 40,
+   "place": "69 km WSW of Kirakira, Solomon Islands",
+   "strikeDeg": 290.0,
+   "dipDeg": 44.0,
+   "rakeDeg": 67.0,
+   "kept": false,
+   "records": [
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6836.8
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6838.1
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6542.1
+    },
+    {
+     "station": "23218",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8378.8
+    },
+    {
+     "station": "23219",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8418.1
+    },
+    {
+     "station": "23220",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8411.1
+    },
+    {
+     "station": "23223",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8482.6
+    },
+    {
+     "station": "23226",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10826.8
+    },
+    {
+     "station": "23227",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8261.3
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13095.8
+    },
+    {
+     "station": "32402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12741.3
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12060.2
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11496.9
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14673.4
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15032.4
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14636.0
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12451.8
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10509.6
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11163.4
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13989.0
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7616.3
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8084.7
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9216.1
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7276.5
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8685.3
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9075.0
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9228.3
+    },
+    {
+     "station": "46412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9549.0
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6975.0
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9422.0
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5702.1
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.74",
+     "distanceKm": 2456.7
+    },
+    {
+     "station": "51426",
+     "kept": false,
+     "reason": "1-min coverage 0.16",
+     "distanceKm": 3495.8
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.18",
+     "distanceKm": 3387.2
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.35",
+     "distanceKm": 2645.3
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.61",
+     "distanceKm": 2385.7
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4152.3
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.75",
+     "distanceKm": 714.7
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4034.6
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5574.3
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4706.8
+    }
+   ]
+  },
+  {
+   "id": "us7000asvb",
+   "origin": "2020-07-22T06:12:44.810000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mww",
+   "lat": 55.0715,
+   "lon": -158.596,
+   "depthKm": 28,
+   "place": "2020 Perryville, Alaska Earthquake",
+   "strikeDeg": 231.8,
+   "dipDeg": 20.03,
+   "rakeDeg": 73.23000000000002,
+   "kept": false,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4720.6
+    },
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.50",
+     "distanceKm": 1716.0
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.23",
+     "distanceKm": 2701.4
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4259.3
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.08",
+     "distanceKm": 3423.3
+    },
+    {
+     "station": "21420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5927.7
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11576.5
+    },
+    {
+     "station": "32402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12089.0
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8155.3
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9159.6
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7966.3
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8182.7
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8645.9
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6381.3
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6158.1
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7044.9
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6404.7
+    },
+    {
+     "station": "44403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6698.0
+    },
+    {
+     "station": "46402",
+     "lat": 50.913,
+     "lon": -164.147,
+     "distanceKm": 592.8,
+     "bearingDeg": 221.0,
+     "waterDepthM": 4744.6,
+     "crestM": -0.0021,
+     "rangeM": 0.023,
+     "crestAfterS": 2655,
+     "noiseM": 0.0041,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0069,
+     "kept": true
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.32",
+     "distanceKm": 2324.6
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2540.9
+    },
+    {
+     "station": "46408",
+     "kept": false,
+     "reason": "1-min coverage 0.76",
+     "distanceKm": 968.0
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.90",
+     "distanceKm": 636.0
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.18",
+     "distanceKm": 2916.4
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.63",
+     "distanceKm": 1304.3
+    },
+    {
+     "station": "46414",
+     "lat": 53.756,
+     "lon": -152.456,
+     "distanceKm": 423.2,
+     "bearingDeg": 107.7,
+     "waterDepthM": 4666.9,
+     "crestM": -0.0057,
+     "rangeM": 0.0228,
+     "crestAfterS": 2655,
+     "noiseM": 0.0049,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0066,
+     "kept": false,
+     "reason": "below the detection rule"
+    },
+    {
+     "station": "46415",
+     "kept": false,
+     "reason": "1-min coverage 0.66",
+     "distanceKm": 1238.2
+    },
+    {
+     "station": "46416",
+     "kept": false,
+     "reason": "1-min coverage 0.50",
+     "distanceKm": 1722.1
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2086.8
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3955.6
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6314.8
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7510.7
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11978.9
+    },
+    {
+     "station": "55042",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11716.2
+    },
+    {
+     "station": "56001",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11370.6
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10955.5
+    }
+   ]
+  },
+  {
+   "id": "us6000dg77",
+   "origin": "2021-02-10T13:19:55.530000+00:00",
+   "magnitude": 7.7,
+   "magnitudeType": "mww",
+   "lat": -23.0511,
+   "lon": 171.6566,
+   "depthKm": 10,
+   "place": "southeast of the Loyalty Islands",
+   "strikeDeg": 246.21,
+   "dipDeg": 16.87,
+   "rakeDeg": 65.25,
+   "kept": false,
+   "records": [
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8035.5
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7957.8
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7675.1
+    },
+    {
+     "station": "21420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6992.2
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9696.4
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11456.4
+    },
+    {
+     "station": "32402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11049.1
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10995.4
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10179.3
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14028.0
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14382.9
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13710.4
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11954.0
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9847.9
+    },
+    {
+     "station": "44403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14690.0
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8559.9
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9731.1
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9509.1
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9496.1
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9410.8
+    },
+    {
+     "station": "46414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9209.3
+    },
+    {
+     "station": "46415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9662.1
+    },
+    {
+     "station": "46416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9694.5
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9881.2
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5855.0
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.39",
+     "distanceKm": 1980.0
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5013.5
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4344.6
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6469.2
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2091.7
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.14",
+     "distanceKm": 2843.9
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5673.1
+    }
+   ]
+  },
+  {
+   "id": "us7000dflf",
+   "origin": "2021-03-04T19:28:33.178000+00:00",
+   "magnitude": 8.1,
+   "magnitudeType": "mww",
+   "lat": -29.7228,
+   "lon": -177.2794,
+   "depthKm": 28.93,
+   "place": "2021 Kermadec Islands, New Zealand Earthquake",
+   "strikeDeg": 200.89,
+   "dipDeg": 15.57,
+   "rakeDeg": 97.69999999999999,
+   "kept": false,
+   "records": [
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8762.5
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8869.4
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8688.3
+    },
+    {
+     "station": "21420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8261.8
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10894.5
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.44",
+     "distanceKm": 10138.4
+    },
+    {
+     "station": "32402",
+     "kept": false,
+     "reason": "1-min coverage 0.46",
+     "distanceKm": 9722.4
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.44",
+     "distanceKm": 9943.9
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.40",
+     "distanceKm": 9003.8
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13112.6
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 13448.7
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12661.3
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.47",
+     "distanceKm": 9081.6
+    },
+    {
+     "station": "44403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14192.3
+    },
+    {
+     "station": "46402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9058.6
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9722.2
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9448.9
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9845.7
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9271.3
+    },
+    {
+     "station": "46414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9585.9
+    },
+    {
+     "station": "46415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9887.5
+    },
+    {
+     "station": "46416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9814.6
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9931.3
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.48",
+     "distanceKm": 5907.8
+    },
+    {
+     "station": "51425",
+     "lat": -9.511,
+     "lon": -176.258,
+     "distanceKm": 2250.0,
+     "bearingDeg": 2.9,
+     "waterDepthM": 4951.6,
+     "crestM": 0.0287,
+     "rangeM": 0.0269,
+     "crestAfterS": 17082,
+     "noiseM": 0.0014,
+     "fastCoverage": 0.9,
+     "tideFitRmsM": 0.0051,
+     "kept": true
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6167.5
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5568.0
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7780.9
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.77",
+     "distanceKm": 3285.1
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2716.5
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6762.3
+    }
+   ]
+  },
+  {
+   "id": "ak0219neiszm",
+   "origin": "2021-07-29T06:15:49.188000+00:00",
+   "magnitude": 8.2,
+   "magnitudeType": "mww",
+   "lat": 55.3635,
+   "lon": -157.8876,
+   "depthKm": 35,
+   "place": "2021 Chignik, Alaska Earthquake",
+   "strikeDeg": 238.78,
+   "dipDeg": 14.36,
+   "rakeDeg": 94.52999999999997,
+   "kept": true,
+   "records": [
+    {
+     "station": "21414",
+     "kept": false,
+     "reason": "1-min coverage 0.68",
+     "distanceKm": 1767.3
+    },
+    {
+     "station": "21415",
+     "kept": false,
+     "reason": "1-min coverage 0.57",
+     "distanceKm": 2099.2
+    },
+    {
+     "station": "21416",
+     "kept": false,
+     "reason": "1-min coverage 0.21",
+     "distanceKm": 2746.7
+    },
+    {
+     "station": "21418",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4305.6
+    },
+    {
+     "station": "21419",
+     "kept": false,
+     "reason": "1-min coverage 0.06",
+     "distanceKm": 3468.7
+    },
+    {
+     "station": "21420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5972.9
+    },
+    {
+     "station": "23219",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10168.8
+    },
+    {
+     "station": "23223",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9775.8
+    },
+    {
+     "station": "23228",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10619.5
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10631.4
+    },
+    {
+     "station": "32401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11542.4
+    },
+    {
+     "station": "32403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11854.3
+    },
+    {
+     "station": "32404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12546.4
+    },
+    {
+     "station": "32411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8121.1
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7914.6
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8596.5
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6337.1
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6130.4
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6350.6
+    },
+    {
+     "station": "44403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6642.7
+    },
+    {
+     "station": "46402",
+     "lat": 50.913,
+     "lon": -164.147,
+     "distanceKm": 647.0,
+     "bearingDeg": 222.7,
+     "waterDepthM": 4743.3,
+     "crestM": 0.0393,
+     "rangeM": 0.0645,
+     "crestAfterS": 3851,
+     "noiseM": 0.0009,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0063,
+     "kept": true
+    },
+    {
+     "station": "46403",
+     "lat": 52.7,
+     "lon": -156.983,
+     "distanceKm": 302.0,
+     "bearingDeg": 168.4,
+     "waterDepthM": 4486.1,
+     "crestM": 1.2154,
+     "rangeM": 2.117,
+     "crestAfterS": 1526,
+     "noiseM": 0.0028,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0066,
+     "kept": true
+    },
+    {
+     "station": "46404",
+     "kept": false,
+     "reason": "1-min coverage 0.32",
+     "distanceKm": 2289.2
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.45",
+     "distanceKm": 2510.7
+    },
+    {
+     "station": "46408",
+     "lat": 49.677,
+     "lon": -169.825,
+     "distanceKm": 1023.4,
+     "bearingDeg": 236.8,
+     "waterDepthM": 5387.0,
+     "crestM": 0.0097,
+     "rangeM": 0.0409,
+     "crestAfterS": 6011,
+     "noiseM": 0.0012,
+     "fastCoverage": 0.998,
+     "tideFitRmsM": 0.0062,
+     "kept": true
+    },
+    {
+     "station": "46409",
+     "lat": 55.338,
+     "lon": -148.575,
+     "distanceKm": 588.3,
+     "bearingDeg": 86.4,
+     "waterDepthM": 4196.5,
+     "crestM": 0.0346,
+     "rangeM": 0.0472,
+     "crestAfterS": 3071,
+     "noiseM": 0.0019,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0061,
+     "kept": true
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.50",
+     "distanceKm": 900.7
+    },
+    {
+     "station": "46413",
+     "kept": false,
+     "reason": "1-min coverage 0.82",
+     "distanceKm": 1359.5
+    },
+    {
+     "station": "46414",
+     "lat": 53.756,
+     "lon": -152.456,
+     "distanceKm": 393.0,
+     "bearingDeg": 114.8,
+     "waterDepthM": 4665.7,
+     "crestM": 0.0541,
+     "rangeM": 0.0826,
+     "crestAfterS": 1871,
+     "noiseM": 0.003,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0062,
+     "kept": true
+    },
+    {
+     "station": "46415",
+     "kept": false,
+     "reason": "1-min coverage 0.89",
+     "distanceKm": 1195.6
+    },
+    {
+     "station": "46416",
+     "kept": false,
+     "reason": "1-min coverage 0.50",
+     "distanceKm": 1683.7
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.39",
+     "distanceKm": 2047.0
+    },
+    {
+     "station": "51407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3986.0
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7413.3
+    },
+    {
+     "station": "52401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5566.4
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6369.9
+    },
+    {
+     "station": "52404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6870.3
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7564.5
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 12028.8
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11006.8
+    }
+   ]
+  },
+  {
+   "id": "us6000qw60",
+   "origin": "2025-07-29T23:24:52.483000+00:00",
+   "magnitude": 8.8,
+   "magnitudeType": "mww",
+   "lat": 52.4948,
+   "lon": 160.2395,
+   "depthKm": 35,
+   "place": "2025 Kamchatka Peninsula, Russia Earthquake",
+   "strikeDeg": 198.47,
+   "dipDeg": 18.06,
+   "rakeDeg": 51.400000000000006,
+   "kept": true,
+   "records": [
+    {
+     "station": "21413",
+     "lat": 30.487,
+     "lon": 152.124,
+     "distanceKm": 2535.0,
+     "bearingDeg": 198.3,
+     "waterDepthM": 5779.8,
+     "crestM": 0.0515,
+     "rangeM": 0.1362,
+     "crestAfterS": 9428,
+     "noiseM": 0.0024,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0087,
+     "kept": true
+    },
+    {
+     "station": "21414",
+     "lat": 48.977,
+     "lon": 178.199,
+     "distanceKm": 1319.0,
+     "bearingDeg": 100.1,
+     "waterDepthM": 5442.6,
+     "crestM": 0.2808,
+     "rangeM": 0.4572,
+     "crestAfterS": 6368,
+     "noiseM": 0.0022,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0042,
+     "kept": true
+    },
+    {
+     "station": "21415",
+     "lat": 50.12,
+     "lon": 171.867,
+     "distanceKm": 849.2,
+     "bearingDeg": 103.5,
+     "waterDepthM": 4720.1,
+     "crestM": 0.3273,
+     "rangeM": 0.5934,
+     "crestAfterS": 4148,
+     "noiseM": 0.0026,
+     "fastCoverage": 0.968,
+     "tideFitRmsM": 0.008,
+     "kept": true
+    },
+    {
+     "station": "21416",
+     "lat": 48.126,
+     "lon": 163.355,
+     "distanceKm": 533.7,
+     "bearingDeg": 154.3,
+     "waterDepthM": 5788.4,
+     "crestM": 0.8378,
+     "rangeM": 1.3273,
+     "crestAfterS": 1928,
+     "noiseM": 0.0026,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0063,
+     "kept": true
+    },
+    {
+     "station": "21418",
+     "lat": 38.84,
+     "lon": 148.753,
+     "distanceKm": 1756.4,
+     "bearingDeg": 214.7,
+     "waterDepthM": 5609.0,
+     "crestM": 0.0753,
+     "rangeM": 0.1383,
+     "crestAfterS": 6173,
+     "noiseM": 0.0048,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0078,
+     "kept": true
+    },
+    {
+     "station": "21419",
+     "lat": 44.401,
+     "lon": 155.653,
+     "distanceKm": 961.0,
+     "bearingDeg": 202.3,
+     "waterDepthM": 5321.7,
+     "crestM": 0.2443,
+     "rangeM": 0.3594,
+     "crestAfterS": 2633,
+     "noiseM": 0.0035,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0065,
+     "kept": true
+    },
+    {
+     "station": "21420",
+     "lat": 28.98,
+     "lon": 134.973,
+     "distanceKm": 3336.1,
+     "bearingDeg": 228.3,
+     "waterDepthM": 4822.2,
+     "crestM": 0.0527,
+     "rangeM": 0.0593,
+     "crestAfterS": 15248,
+     "noiseM": 0.0023,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.006,
+     "kept": true
+    },
+    {
+     "station": "23218",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7879.9
+    },
+    {
+     "station": "23223",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7190.5
+    },
+    {
+     "station": "23226",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8430.9
+    },
+    {
+     "station": "23228",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8515.5
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7991.6
+    },
+    {
+     "station": "32402",
+     "kept": false,
+     "reason": "1-min coverage 0.81",
+     "distanceKm": 14726.9
+    },
+    {
+     "station": "32403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14553.6
+    },
+    {
+     "station": "32404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15171.8
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.84",
+     "distanceKm": 11762.7
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10396.5
+    },
+    {
+     "station": "41421",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10554.6
+    },
+    {
+     "station": "41425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9949.4
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11165.1
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9025.7
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.70",
+     "distanceKm": 8784.8
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.88",
+     "distanceKm": 9694.2
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8686.3
+    },
+    {
+     "station": "44403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8770.5
+    },
+    {
+     "station": "46402",
+     "lat": 50.913,
+     "lon": -164.147,
+     "distanceKm": 2435.4,
+     "bearingDeg": 79.8,
+     "waterDepthM": 4712.8,
+     "crestM": 0.0596,
+     "rangeM": 0.1133,
+     "crestAfterS": 12068,
+     "noiseM": 0.0012,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0046,
+     "kept": true
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.52",
+     "distanceKm": 2846.3
+    },
+    {
+     "station": "46404",
+     "lat": 45.852,
+     "lon": -128.745,
+     "distanceKm": 5003.1,
+     "bearingDeg": 68.7,
+     "waterDepthM": 2734.1,
+     "crestM": 0.0599,
+     "rangeM": 0.1154,
+     "crestAfterS": 25268,
+     "noiseM": 0.0068,
+     "fastCoverage": 0.927,
+     "tideFitRmsM": 0.0079,
+     "kept": true
+    },
+    {
+     "station": "46407",
+     "lat": 42.704,
+     "lon": -128.895,
+     "distanceKm": 5202.8,
+     "bearingDeg": 72.3,
+     "waterDepthM": 3266.5,
+     "crestM": 0.0549,
+     "rangeM": 0.1151,
+     "crestAfterS": 25628,
+     "noiseM": 0.0066,
+     "fastCoverage": 0.959,
+     "tideFitRmsM": 0.007,
+     "kept": true
+    },
+    {
+     "station": "46408",
+     "lat": 49.677,
+     "lon": -169.825,
+     "distanceKm": 2098.7,
+     "bearingDeg": 86.6,
+     "waterDepthM": 5324.7,
+     "crestM": 0.0968,
+     "rangeM": 0.2175,
+     "crestAfterS": 10208,
+     "noiseM": 0.0025,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0051,
+     "kept": true
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.07",
+     "distanceKm": 3290.7
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3505.9
+    },
+    {
+     "station": "46411",
+     "lat": 39.337,
+     "lon": -127.04,
+     "distanceKm": 5560.3,
+     "bearingDeg": 74.6,
+     "waterDepthM": 4266.1,
+     "crestM": 0.0857,
+     "rangeM": 0.1374,
+     "crestAfterS": 27008,
+     "noiseM": 0.0022,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0061,
+     "kept": true
+    },
+    {
+     "station": "46413",
+     "lat": 48.031,
+     "lon": -173.766,
+     "distanceKm": 1901.7,
+     "bearingDeg": 94.7,
+     "waterDepthM": 5615.0,
+     "crestM": 0.198,
+     "rangeM": 0.3344,
+     "crestAfterS": 8948,
+     "noiseM": 0.0028,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0047,
+     "kept": true
+    },
+    {
+     "station": "46414",
+     "kept": false,
+     "reason": "1-min coverage 0.28",
+     "distanceKm": 3100.7
+    },
+    {
+     "station": "46415",
+     "kept": false,
+     "reason": "1-min coverage 0.57",
+     "distanceKm": 3909.2
+    },
+    {
+     "station": "46416",
+     "lat": 49.939,
+     "lon": -134.427,
+     "distanceKm": 4401.6,
+     "bearingDeg": 66.6,
+     "waterDepthM": 3392.6,
+     "crestM": 0.0485,
+     "rangeM": 0.0788,
+     "crestAfterS": 22508,
+     "noiseM": 0.0044,
+     "fastCoverage": 0.971,
+     "tideFitRmsM": 0.0065,
+     "kept": true
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.89",
+     "distanceKm": 4764.2
+    },
+    {
+     "station": "51425",
+     "lat": -9.511,
+     "lon": -176.258,
+     "distanceKm": 7249.1,
+     "bearingDeg": 154.3,
+     "waterDepthM": 4951.4,
+     "crestM": 0.0666,
+     "rangeM": 0.0998,
+     "crestAfterS": 31268,
+     "noiseM": 0.0015,
+     "fastCoverage": 0.997,
+     "tideFitRmsM": 0.0047,
+     "kept": true
+    },
+    {
+     "station": "52402",
+     "lat": 11.928,
+     "lon": 153.876,
+     "distanceKm": 4546.7,
+     "bearingDeg": 189.5,
+     "waterDepthM": 5886.4,
+     "crestM": 0.0485,
+     "rangeM": 0.1178,
+     "crestAfterS": 19208,
+     "noiseM": 0.0011,
+     "fastCoverage": 1.0,
+     "tideFitRmsM": 0.0064,
+     "kept": true
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5048.6
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11058.4
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.51",
+     "distanceKm": 8527.2
+    }
+   ]
+  },
+  {
+   "id": "us7000qx2g",
+   "origin": "2025-09-18T18:58:14.939000+00:00",
+   "magnitude": 7.8,
+   "magnitudeType": "mww",
+   "lat": 53.1426,
+   "lon": 160.7206,
+   "depthKm": 27,
+   "place": "140 km E of Petropavlovsk-Kamchatsky, Russia",
+   "strikeDeg": 214.02,
+   "dipDeg": 18.25,
+   "rakeDeg": 86.22000000000003,
+   "kept": true,
+   "records": [
+    {
+     "station": "21413",
+     "kept": false,
+     "reason": "1-min coverage 0.48",
+     "distanceKm": 2613.6
+    },
+    {
+     "station": "21414",
+     "lat": 48.977,
+     "lon": 178.199,
+     "distanceKm": 1302.3,
+     "bearingDeg": 103.8,
+     "waterDepthM": 5442.5,
+     "crestM": 0.0007,
+     "rangeM": 0.0978,
+     "crestAfterS": 6165,
+     "noiseM": 0.0019,
+     "fastCoverage": 0.911,
+     "tideFitRmsM": 0.009,
+     "kept": true
+    },
+    {
+     "station": "21415",
+     "lat": 50.12,
+     "lon": 171.867,
+     "distanceKm": 838.4,
+     "bearingDeg": 109.2,
+     "waterDepthM": 4719.9,
+     "crestM": 0.0346,
+     "rangeM": 0.1189,
+     "crestAfterS": 4065,
+     "noiseM": 0.0028,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0087,
+     "kept": true
+    },
+    {
+     "station": "21416",
+     "lat": 48.126,
+     "lon": 163.355,
+     "distanceKm": 587.8,
+     "bearingDeg": 160.6,
+     "waterDepthM": 5788.2,
+     "crestM": 0.0432,
+     "rangeM": 0.0841,
+     "crestAfterS": 2265,
+     "noiseM": 0.0013,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0079,
+     "kept": true
+    },
+    {
+     "station": "21419",
+     "lat": 44.401,
+     "lon": 155.653,
+     "distanceKm": 1039.9,
+     "bearingDeg": 202.9,
+     "waterDepthM": 5321.5,
+     "crestM": -0.0079,
+     "rangeM": 0.0412,
+     "crestAfterS": 4365,
+     "noiseM": 0.0038,
+     "fastCoverage": 0.999,
+     "tideFitRmsM": 0.0073,
+     "kept": true
+    },
+    {
+     "station": "21420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3408.2
+    },
+    {
+     "station": "23223",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7228.2
+    },
+    {
+     "station": "23228",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8525.6
+    },
+    {
+     "station": "23401",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8034.9
+    },
+    {
+     "station": "32402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14681.4
+    },
+    {
+     "station": "32403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 14502.8
+    },
+    {
+     "station": "32404",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15132.1
+    },
+    {
+     "station": "32413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11720.2
+    },
+    {
+     "station": "34420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 15315.2
+    },
+    {
+     "station": "41420",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 10321.8
+    },
+    {
+     "station": "41425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9873.2
+    },
+    {
+     "station": "42407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11092.5
+    },
+    {
+     "station": "42409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8960.7
+    },
+    {
+     "station": "43412",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8738.4
+    },
+    {
+     "station": "43413",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 9645.3
+    },
+    {
+     "station": "44402",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8609.7
+    },
+    {
+     "station": "44403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8692.0
+    },
+    {
+     "station": "46403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 2794.4
+    },
+    {
+     "station": "46407",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5150.5
+    },
+    {
+     "station": "46409",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3230.5
+    },
+    {
+     "station": "46410",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3440.7
+    },
+    {
+     "station": "46411",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5510.4
+    },
+    {
+     "station": "46413",
+     "lat": 48.031,
+     "lon": -173.766,
+     "distanceKm": 1877.1,
+     "bearingDeg": 97.3,
+     "waterDepthM": 5614.9,
+     "crestM": -0.0075,
+     "rangeM": 0.0481,
+     "crestAfterS": 9285,
+     "noiseM": 0.002,
+     "fastCoverage": 0.907,
+     "tideFitRmsM": 0.0073,
+     "kept": true
+    },
+    {
+     "station": "46414",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3044.6
+    },
+    {
+     "station": "46415",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 3849.5
+    },
+    {
+     "station": "46416",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4343.7
+    },
+    {
+     "station": "46419",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 4705.4
+    },
+    {
+     "station": "51425",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 7300.3
+    },
+    {
+     "station": "52402",
+     "kept": false,
+     "reason": "1-min coverage 0.43",
+     "distanceKm": 4623.2
+    },
+    {
+     "station": "52403",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5634.3
+    },
+    {
+     "station": "52405",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 5124.5
+    },
+    {
+     "station": "52406",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 6519.1
+    },
+    {
+     "station": "55015",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 11130.5
+    },
+    {
+     "station": "56003",
+     "kept": false,
+     "reason": "1-min coverage 0.00",
+     "distanceKm": 8602.4
+    }
+   ]
+  }
+ ]
+}
