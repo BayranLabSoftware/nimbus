@@ -46,7 +46,10 @@ test.describe('validation page', () => {
 
   test('is one click from the landing page', async ({ page }) => {
     await page.goto('/?lng=en');
-    await page.getByRole('button', { name: 'How the model is checked' }).click();
+    // The landing page calls it by the name of the thing it opens; the
+    // copy pass of 16 September renamed the button and this test is what
+    // noticed.
+    await page.getByRole('button', { name: 'Validation report' }).click();
     await expect(page.getByTestId('validation-page')).toBeVisible();
   });
 
