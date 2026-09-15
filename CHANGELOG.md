@@ -19,6 +19,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **What a 9 is.** `docs/GOLD_STANDARD.md` fixes, before any work towards
+  it, what a 9 out of 10 means for each domain: every printed number held
+  to a reference implementation; bias, scatter and a calibrated band no
+  wider than that scatter allows, on held-out sets of a stated size; the
+  input space flagged where it was not measured; and the only gaps a 9 may
+  carry. Where a tool of the field makes the same estimate — USGS PAGER
+  for earthquake deaths — the bound is read against it on the same
+  events. On 15 September 2026 no domain meets it, and every set the
+  harness holds has been read.
 - **Nimbus against the field's own programs.** A night-long campaign, run
   to a protocol committed before any program was asked a case
   (`docs/BENCHMARK_PROTOCOL.md`), compares every hazard with the software

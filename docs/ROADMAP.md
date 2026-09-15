@@ -209,6 +209,12 @@ the machinery for exactly that; what is missing is an outside reader
 who has never seen this repository sitting down with the methodology
 page and trying to break it. That step is worth planning for.
 
+What a 9 out of 10 means, domain by domain — the bias, scatter and band
+a held-out set must meet, the verification every printed number needs,
+and the few ceilings no model of this kind can pass — was written down
+on 15 September 2026 in [GOLD_STANDARD.md](GOLD_STANDARD.md), before any
+work towards it, so that the bar does not move with the work.
+
 ---
 
 ## M9 — Laboratory level: how the model gets there _(open, 9 September)_

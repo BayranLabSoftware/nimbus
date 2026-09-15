@@ -64,19 +64,20 @@ pnpm simulate --help      # every event, preset and override
 
 ## Where things are
 
-| to check                                  | read                                                                        |
-| ----------------------------------------- | --------------------------------------------------------------------------- |
-| a formula against its source              | the cards in `src/ui/pages/methodologyContent.ts`, then the file they name  |
-| whether a check was set on its own event  | `use` of each anchor in `src/physics/validation/calibrationEnvelope.ts`     |
-| death tolls against the record            | `src/physics/validation/recordedTolls.ts`                                   |
-| waves against the record                  | `src/physics/validation/recordedWaves.ts`                                   |
-| the shaken area against USGS ShakeMap     | `src/physics/validation/shakemapFootprint.ts`                               |
-| the scatter behind the bands              | `src/physics/uq/conventions.ts` and `src/physics/uq/tollBand.ts`            |
-| how accuracy and precision are scored     | `src/physics/validation/scorecard.ts`                                       |
-| the held-out sets chosen by rule          | `src/physics/validation/heldOutByRule.ts`, `scripts/held-out-by-rule.py`    |
-| impacts against their reference program   | `src/physics/validation/eiepComparison.ts`, `scripts/eiep-reference.py`     |
-| defects found, fixed and pinned by a test | [BUG_REGISTRY.md](BUG_REGISTRY.md)                                          |
-| why a choice was made, and what it cost   | the dated sections of [SCIENCE.md](SCIENCE.md) and [ROADMAP.md](ROADMAP.md) |
+| to check                                   | read                                                                        |
+| ------------------------------------------ | --------------------------------------------------------------------------- |
+| a formula against its source               | the cards in `src/ui/pages/methodologyContent.ts`, then the file they name  |
+| whether a check was set on its own event   | `use` of each anchor in `src/physics/validation/calibrationEnvelope.ts`     |
+| death tolls against the record             | `src/physics/validation/recordedTolls.ts`                                   |
+| waves against the record                   | `src/physics/validation/recordedWaves.ts`                                   |
+| the shaken area against USGS ShakeMap      | `src/physics/validation/shakemapFootprint.ts`                               |
+| the scatter behind the bands               | `src/physics/uq/conventions.ts` and `src/physics/uq/tollBand.ts`            |
+| how accuracy and precision are scored      | `src/physics/validation/scorecard.ts`                                       |
+| the held-out sets chosen by rule           | `src/physics/validation/heldOutByRule.ts`, `scripts/held-out-by-rule.py`    |
+| impacts against their reference program    | `src/physics/validation/eiepComparison.ts`, `scripts/eiep-reference.py`     |
+| what a 9 out of 10 means, domain by domain | [GOLD_STANDARD.md](GOLD_STANDARD.md)                                        |
+| defects found, fixed and pinned by a test  | [BUG_REGISTRY.md](BUG_REGISTRY.md)                                          |
+| why a choice was made, and what it cost    | the dated sections of [SCIENCE.md](SCIENCE.md) and [ROADMAP.md](ROADMAP.md) |
 
 ## What is already known
 
