@@ -106,6 +106,20 @@ import { passesOnQuiet } from './depthRules.js';
  * the slab. The rupture distance is a hypocentre's depth added to a
  * distance from a symmetric stadium, where a megathrust dips. And the
  * interface earthquakes that killed are few.
+ *
+ * Run once, on 15 September 2026, and said here rather than folded into
+ * the rules above: both candidates beat Boore et al. 2014 by more than
+ * 0.05 in all four readings (1.96, 2.07, 2.83 and 2.91 against 0.57, 0.56,
+ * 2.02 and 2.02 for BC Hydro and 0.55, 0.47, 1.84 and 1.49 for Parker et
+ * al.), and Parker et al. 2022 won. On the dead it raised 0.3 % of 352
+ * quiet interface earthquakes to a toll of ten against 11.9 %, but its band
+ * held none of five, eight of 22 and 11 of 16 of rule 11's records with
+ * something, so it was not adopted and Boore et al. 2014 stays. What was
+ * read afterwards — the Himalayan and Makran earthquakes in the set, the
+ * bands of [0, 0] about moderate earthquakes with a few dead, and how much
+ * of the dead's figures the interface mark itself makes — is in
+ * docs/SCIENCE.md, "The rings of a subduction interface", and is not acted
+ * on here.
  */
 
 /** What rule 35 reads from one ShakeMap. */

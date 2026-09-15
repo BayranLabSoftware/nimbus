@@ -138,6 +138,19 @@ import {
 import { runPagerChains, type PagerChainRun } from '../src/physics/validation/pagerChainRun.js';
 import { PAGER_PRODUCTS_READ_ON } from '../src/physics/validation/pagerProductsData.js';
 import {
+  INTERFACE_LAWS,
+  INTERFACE_READINGS,
+  type InterfaceLaw,
+  type InterfaceReading,
+} from '../src/physics/validation/interfaceRules.js';
+import {
+  runInterfaceRules,
+  type InterfaceRulesRun,
+  type TollCells as InterfaceTollCells,
+} from '../src/physics/validation/interfaceRulesRun.js';
+import { INTERFACE_SET_READ_ON } from '../src/physics/validation/interfaceSetData.js';
+import { meanAbsoluteBias as meanAbsoluteLogBias } from '../src/physics/validation/contourLaws.js';
+import {
   CALIBRATION_ANCHORS,
   CALIBRATION_ROLES,
   type CalibrationQuantity,
@@ -1120,6 +1133,124 @@ function runPager(): PagerChainRun {
   return run;
 }
 
+function runInterface(): InterfaceRulesRun {
+  const run = runInterfaceRules();
+  // Scenarios marked a subduction interface still draw Boore et al. 2014.
+  // A rule that adopts another law has not been followed by the code yet.
+  if (run.dead?.decision.adopted === true) {
+    throw new Error(`Rule 38 adopts ${run.choice.winner}; the simulator still draws boore2014`);
+  }
+  return run;
+}
+
+const INTERFACE_READING_LABEL: Readonly<Record<InterfaceReading, string>> = {
+  rule11Rock: "Rule 11's maps, rock",
+  rule11Ground: "Rule 11's maps, browser's ground",
+  rule23Rock: "Rule 23's maps, rock",
+  rule23Ground: "Rule 23's maps, browser's ground",
+};
+
+function interfaceSection(run: InterfaceRulesRun): string {
+  const radius = (bias: number | null): string =>
+    bias === null ? '—' : `${Math.exp(bias).toFixed(2)}×`;
+  const bandsHeader = SIZE_BANDS.earthquake.map((b) => b.label).join(' | ');
+  const cellRow = (
+    law: InterfaceLaw,
+    cells: readonly { bias: number | null; pairs: number; invented: number; missed: number }[]
+  ): string =>
+    `| ${CONTOUR_LAW_LABEL[law]} | ${cells.map((c) => `${radius(c.bias)} (${c.pairs.toString()})`).join(' | ')} | ${meanAbsoluteLogBias(cells).toFixed(2)} | ${cells.reduce((a, c) => a + c.invented, 0).toString()} | ${cells.reduce((a, c) => a + c.missed, 0).toString()} |`;
+  const sum = (law: InterfaceLaw): number =>
+    INTERFACE_READINGS.reduce((a, reading) => a + run.choice.meanAbsoluteBias[reading][law], 0);
+  const choiceRows = INTERFACE_LAWS.map(
+    (law) =>
+      `| ${CONTOUR_LAW_LABEL[law]}${law === run.choice.winner ? ' (winner)' : run.choice.eligible.includes(law) ? ' (eligible)' : ''} | ${INTERFACE_READINGS.map((reading) => run.choice.meanAbsoluteBias[reading][law].toFixed(2)).join(' | ')} | ${sum(law).toFixed(2)} |`
+  );
+  const tollLine = (law: InterfaceLaw, cells: InterfaceTollCells): string => {
+    const logs = cells
+      .map((c) => (c.stats.bias === null ? null : Math.abs(Math.log(c.stats.bias))))
+      .filter((x): x is number => x !== null);
+    const mab = logs.length === 0 ? null : logs.reduce((a, b) => a + b, 0) / logs.length;
+    const quiet = run.dead?.quiet[law];
+    return `| ${CONTOUR_LAW_LABEL[law]} | ${cells.map((c) => `${biasText(c.stats)} · ${c.stats.inside.toString()} of ${c.stats.rows.toString()}`).join(' | ')} | ${mab === null ? '—' : mab.toFixed(2)} | ${quiet === undefined ? '—' : `${(100 * quiet.share).toFixed(1)} % of ${quiet.quiet.toString()}`} |`;
+  };
+  const dead = run.dead;
+  const verdict =
+    dead === null
+      ? 'No candidate beats Boore et al. 2014 by 0.05 in every reading, so by rule 37 it stays and nothing runs on the dead.'
+      : dead.decision.adopted
+        ? `By rule 38 ${CONTOUR_LAW_LABEL[run.choice.winner]} draws the rings of a scenario marked a subduction interface.`
+        : `${CONTOUR_LAW_LABEL[run.choice.winner]} wins on the shaking, and by rule 38 Boore et al. 2014 stays: ${[
+            dead.decision.tolls
+              ? null
+              : "on rule 11's held-out tolls its band holds fewer than eight records in ten, among the rows with something, in some magnitude cell, or its bias is larger",
+            dead.decision.quiet ? null : 'it raises more quiet earthquakes to a median toll of ten',
+          ]
+            .filter((x): x is string => x !== null)
+            .join(', and ')}.`;
+  const families = Object.entries(run.beside.byModelSet);
+  const presetRows = [...new Set(run.beside.presets.map((p) => p.preset))].map((preset) => {
+    const cellsFor = (law: InterfaceLaw): string => {
+      const found = run.beside.presets.find((p) => p.preset === preset && p.law === law);
+      return found === undefined ? '—' : found.radiiKm.map((r) => r.toFixed(0)).join(' · ');
+    };
+    return `| ${preset} | ${INTERFACE_LAWS.map(cellsFor).join(' | ')} |`;
+  });
+  return [
+    "The benchmark campaign drew the megathrust presets' rings at 4.2 and 6.0 times two",
+    "interface models' distances (docs/BENCHMARK_REPORT.md, BM-10). Rules 35 to 39",
+    '(`validation/interfaceRules.ts`), committed before either candidate was coded, choose whether',
+    'a scenario marked a subduction interface should draw its rings with Abrahamson, Gregor & Addo',
+    '2016 or Parker et al. 2022 instead, on the ShakeMaps USGS drew with its interface models (read',
+    `on ${INTERFACE_SET_READ_ON}: ${run.events.rule11.toString()} earthquakes of rule 11's set and ${run.events.rule23.toString()} of rule 23's), every law run`,
+    'on the scenario marked a subduction interface. A candidate must lower the mean absolute log',
+    "radius ratio by 0.05 in all four readings, then pass rule 19's test on rule 11's held-out tolls",
+    "and rule 25's on rule 23's quiet earthquakes.",
+    '',
+    `| Law | ${INTERFACE_READINGS.map((r) => INTERFACE_READING_LABEL[r]).join(' | ')} | Sum |`,
+    `|-----|${INTERFACE_READINGS.map(() => '----:').join('|')}|----:|`,
+    ...choiceRows,
+    '',
+    `Rule 11's maps on the browser's ground, by magnitude cell (the radius ratio, with its pairs):`,
+    '',
+    `| Law | ${bandsHeader} | Mean abs. log bias | Bands invented | Bands missed |`,
+    `|-----|${SIZE_BANDS.earthquake.map(() => '----:').join('|')}|----:|----:|----:|`,
+    ...INTERFACE_LAWS.map((law) => cellRow(law, run.scores.rule11Ground[law])),
+    '',
+    ...(dead === null
+      ? [verdict]
+      : [
+          `| Law | Rule 11's held-out tolls: ${bandsHeader} | Mean abs. log bias | Quiet earthquakes with a median toll of ten or more |`,
+          `|-----|${SIZE_BANDS.earthquake.map(() => '-----').join('|')}|----:|----:|`,
+          ...INTERFACE_LAWS.filter((law) => dead.tolls[law] !== undefined).map((law) =>
+            tollLine(law, dead.tolls[law] ?? [])
+          ),
+          '',
+          verdict,
+        ]),
+    '',
+    `Printed beside, deciding nothing (rule 39): the ${run.beside.stationsEvents.toString()} maps with ten seismic stations or more, on the browser's ground,`,
+    '',
+    `| Law | ${bandsHeader} | Mean abs. log bias | Bands invented | Bands missed |`,
+    `|-----|${SIZE_BANDS.earthquake.map(() => '----:').join('|')}|----:|----:|----:|`,
+    ...INTERFACE_LAWS.map((law) => cellRow(law, run.beside.stations[law])),
+    '',
+    "and the maps apart by the interface models ShakeMap drew them with, which include BC Hydro's form (NSHMP 2014, Chile) or Parker et al.'s (NSHMP 2023):",
+    '',
+    `| Law | ${families.map(([family, set]) => `${family} (${set.events.toString()})`).join(' | ')} |`,
+    `|-----|${families.map(() => '----:').join('|')}|`,
+    ...INTERFACE_LAWS.map(
+      (law) =>
+        `| ${CONTOUR_LAW_LABEL[law]} | ${families.map(([, set]) => meanAbsoluteLogBias(set.cells[law]).toFixed(2)).join(' | ')} |`
+    ),
+    '',
+    "The megathrust presets' rings under each law, MMI VII · VIII · IX beyond the rupture's stadium (km):",
+    '',
+    `| Preset | ${INTERFACE_LAWS.map((law) => CONTOUR_LAW_LABEL[law]).join(' | ')} |`,
+    `|--------|${INTERFACE_LAWS.map(() => '----:').join('|')}|`,
+    ...presetRows,
+  ].join('\n');
+}
+
 const run33 = (
   run: PagerChainRun
 ): PagerChainRun['decision'] & { halves: PagerChainRun['halves'] } => ({
@@ -1869,6 +2000,7 @@ function main(): void {
   const ground = runGround(ruleSets, contourLaws.tolls.boore2014);
   const depth = runDepth(ground.tolls.pick);
   const pagerChain = runPager();
+  const interfaceRules = runInterface();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -1948,6 +2080,10 @@ ${depthSection(depth)}
 ### PAGER's chain from shaking to loss
 
 ${pagerChainSection(pagerChain)}
+
+### The rings of a subduction interface
+
+${interfaceSection(interfaceRules)}
 
 ### Which checks are validation
 
@@ -2192,6 +2328,52 @@ otherwise.
             ];
           })
         ),
+      },
+      interfaceRules: {
+        readOn: INTERFACE_SET_READ_ON,
+        events: interfaceRules.events,
+        meanAbsoluteBias: Object.fromEntries(
+          INTERFACE_READINGS.map((reading) => [
+            reading,
+            Object.fromEntries(
+              INTERFACE_LAWS.map((law) => [
+                law,
+                fixed(interfaceRules.choice.meanAbsoluteBias[reading][law], 3),
+              ])
+            ),
+          ])
+        ),
+        eligible: interfaceRules.choice.eligible,
+        winner: interfaceRules.choice.winner,
+        dead:
+          interfaceRules.dead === null
+            ? null
+            : {
+                decision: interfaceRules.dead.decision,
+                tolls: Object.fromEntries(
+                  Object.entries(interfaceRules.dead.tolls).map(([law, cells]) => [
+                    law,
+                    cells.map((t) => ({
+                      sizeBand: t.group,
+                      bias: t.stats.bias === null ? null : fixed(t.stats.bias, 3),
+                      inside: t.stats.inside,
+                      rows: t.stats.rows,
+                    })),
+                  ])
+                ),
+                quiet: Object.fromEntries(
+                  Object.entries(interfaceRules.dead.quiet).map(([law, q]) => [
+                    law,
+                    { share: fixed(q.share, 4), earthquakes: q.quiet },
+                  ])
+                ),
+              },
+        stationsEvents: interfaceRules.beside.stationsEvents,
+        presets: interfaceRules.beside.presets.map((p) => ({
+          preset: p.preset,
+          law: p.law,
+          radiiKm: p.radiiKm.map((r) => fixed(r, 1)),
+        })),
       },
       ground: {
         sitesReadOn: SITES_READ_ON,

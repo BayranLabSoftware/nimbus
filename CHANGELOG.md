@@ -860,6 +860,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Measured
 
+- **The rings of a subduction interface.** The campaign drew the megathrust
+  presets' rings at 4.2 and 6.0 times two interface models' distances
+  (BM-10). Rules written before either model was coded
+  (`validation/interfaceRules.ts`) tried Abrahamson, Gregor & Addo 2016 (BC
+  Hydro) and Parker et al. 2022 (NGA-Subduction), both held to OpenQuake,
+  against Boore et al. 2014 on the ShakeMaps of the 451 earthquakes USGS drew
+  with its interface models. Both drew the shaking far better — Parker et
+  al. best, 4.35 against 9.77 over four readings — and Parker et al. raised
+  0.3 % of 352 quiet earthquakes to a toll of ten against 11.9 %; but its toll
+  band held too few of the recorded dead, fewer than eight in ten in every
+  magnitude cell, so the rings stay Boore et al.'s. Read afterwards and left
+  open: marking a scenario an interface draws a rupture stadium at every
+  magnitude, which alone multiplies the held-out tolls of these earthquakes
+  by 2.5 to 18.
+
 - **Where a body breaks up, the paper against its program.** The Earth
   Impact Effects Program breaks small strong bodies up to 3 % lower than
   Nimbus, and bursts them up to 5 % lower (BM-13). Every altitude it

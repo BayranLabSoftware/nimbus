@@ -1468,6 +1468,89 @@ committed before that set is first read, so by rule 29 it is one of its
 candidates. PAGER's bands are not adopted on their own either: choosing them
 now would be choosing on this table.
 
+### The rings of a subduction interface (15 September 2026)
+
+`validation/interfaceRules.ts` (rules 35 to 39),
+`validation/interfaceRulesRun.ts`, `events/earthquake/interfaceAttenuation.ts`.
+The benchmark campaign drew the five megathrust presets' rings with Boore et
+al. 2014 at 4.2 and 6.0 times the distances two interface models give in
+OpenQuake (`docs/BENCHMARK_REPORT.md`, BM-10), a figure made at MMI VIII, which
+those models reach only at the edge of the rupture. On rule 18's ShakeMaps the
+law in place draws 0.19 to 0.98 of the MMI VII area of the great thrust
+earthquakes and VIII where some maps hold none. Boore et al. 2014 is a relation
+for shallow crustal earthquakes in the Joyner–Boore distance; a megathrust
+breaks 20 to 50 km down.
+
+The rules were pushed before either candidate was coded (commit `b423de0`),
+and the candidates before either was scored (`2456244`). Rule 35 takes the
+earthquakes of rule 11's and rule 23's sets whose preferred ShakeMap was drawn
+with a ground-motion model giving its subduction-interface models a weight of
+0.5 or more — the weight ShakeMap's select module sets from STREC and the
+Slab2 model, read from each map's `info.json` (1 177 maps; only 244, drawn
+since ShakeMap wrote them there, carry STREC's probabilities). That is 98
+earthquakes of rule 11's set and 353 of rule 23's, each run with the scenario
+marked a subduction interface, for every law. Rule 36's candidates, for such a
+scenario only, are Abrahamson, Gregor & Addo 2016 (BC Hydro, central magnitude
+scaling, forearc) and Parker et al. 2022 (NGA-Subduction, global model), each
+on median PGA through Worden et al. 2012, the ring standing where the median at
+the rupture distance √(x² + depth²) falls to the threshold; both agree with OpenQuake 3.26.2's implementation to its table's eight significant figures at 1 050 points each. Rule
+37 scores the three laws as rule 18 does, four ways, and a candidate must beat
+Boore et al. 2014 by 0.05 in every one.
+
+| Law (mean abs. log radius ratio) | Rule 11, rock | Rule 11, ground | Rule 23, rock | Rule 23, ground |  Sum |
+| -------------------------------- | ------------: | --------------: | ------------: | --------------: | ---: |
+| Boore et al. 2014                |          1.96 |            2.07 |          2.83 |            2.91 | 9.77 |
+| Abrahamson, Gregor & Addo 2016   |          0.57 |            0.56 |          2.02 |            2.02 | 5.16 |
+| Parker et al. 2022               |          0.55 |            0.47 |          1.84 |            1.49 | 4.35 |
+
+Both candidates beat the law in place in every reading, and Parker et al.
+2022, with the lower sum, is the winner. Most of the difference is bands: with
+the scenario marked an interface, Boore et al. 2014 paints 539 bands of MMI VII or VIII below Mw 6.5 on rule 23's maps, where they hold none, and Parker et al. paints two. Rule 38 then ran the winner on the dead, on the browser's ground.
+
+| Law                | Rule 11's held-out interface tolls, by cell            | Mean abs. log | Quiet earthquakes raised to ten |
+| ------------------ | ------------------------------------------------------ | ------------: | ------------------------------: |
+| Boore et al. 2014  | 43.11× · 35.77× · 13.21× (6 of 14, 39 of 46, 13 of 18) |          3.31 |                   11.9 % of 352 |
+| Parker et al. 2022 | — · 7.41× · 3.16× (0 of 5, 8 of 22, 11 of 16)          |          1.58 |                    0.3 % of 352 |
+
+The cells are Mw < 6.5, 6.5–7.5 and ≥ 7.5, with the records each band holds
+among the rows with something. Parker et al. 2022 reads its dead nearer their
+records than the law in place and raises almost no quiet earthquake to a toll
+of ten, but its band holds none of five, eight of 22 and 11 of 16 — fewer
+than eight in ten in every cell — so by rule 38 it is not adopted, and Boore
+et al. 2014 keeps drawing the rings of a scenario marked a subduction
+interface. BM-10 is declared with these numbers.
+
+Printed beside, deciding nothing (rule 39). On the 61 maps with ten seismic
+stations or more the three laws read 2.08, 0.89 and 0.30, and above Mw 7.5 a
+radius ratio of 4.12×, 3.42× and 1.15×. Apart by the interface models ShakeMap
+drew a map with, no candidate gains on the maps made partly of it: on the 289
+drawn with the NSHMP 2014 set, which holds BC Hydro, Parker et al. reads 0.40
+against BC Hydro's 0.76; on the 47 of the NSHMP 2023 set, which holds Parker
+et al., BC Hydro reads 0.96 against Parker's 1.40; on the 98 of Chile's,
+Montalva et al.'s refit of BC Hydro, BC Hydro reads 0.86 against 1.03. The
+presets' rings, MMI VII and VIII beyond the rupture's stadium, are wider
+under both candidates, whose rupture distance is the hypocentre's depth:
+Tōhoku 50 and 13 km under Boore et al. 2014, 82 and 29 under BC Hydro, 73
+and 27 under Parker et al.; Lisbon 36 and 9, 72 and 30, 59 and 23. None draws
+IX.
+
+What the scores do not show was read afterwards, and is written here as such.
+Rule 35's set holds earthquakes that are not on a subduction interface but lie
+inside STREC's subduction regions, which ShakeMap drew with its interface
+models: Gorkha and Dolakha 2015 under the Himalaya, Awaran 2013 in the Makran,
+Bhutan 2009, Taipei 2015, Paphos 2022. The winner's misses on the dead are
+mostly bands of [0, 0]: the toll counts deaths only inside MMI VII, and Parker
+et al. draws no VII about moderate earthquakes whose records hold a few dead —
+Nias 2008 (1), Bhutan 2009 (11), the Minahassa Peninsula 2008 (6). And marking
+a scenario an interface is itself a large part of the dead's figures: on the
+same held-out rows, unmarked, Boore et al. 2014 reads 5.06×, 1.98× and 5.37×,
+holding 10 of 12, 34 of 37 and 17 of 17; marked, 43.11×, 35.77× and 13.21×,
+because the mark draws Strasser et al.'s interface rupture as a stadium at
+every magnitude. Neither is acted on here: whether an interface scenario below
+Mw 7.5 should be a stadium, and a toll that counts the dead below MMI VII, are
+open. Both candidates were committed before the prospective set is first
+read, so by rule 29 they are among its candidates.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records

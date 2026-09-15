@@ -487,3 +487,14 @@ says what an adopted law draws. Rule 39 lists what is printed beside and
 decides nothing, among it the maps with ten stations or more, since a map of
 few stations is mostly the models USGS runs, and both candidates are among
 them. Nothing is tuned on these sets.
+
+### Outcome
+
+Run once on 15 September 2026, after the candidates were committed
+(`2456244`). Both beat Boore et al. 2014 in every reading and Parker et al.
+2022 won (a sum of 4.35 against BC Hydro's 5.16 and Boore et al.'s 9.77); on
+the dead it raised fewer quiet earthquakes to a toll of ten (0.3 % against
+11.9 % of 352), but its band held none of five, eight of 22 and 11 of 16 of
+rule 11's records, so by rule 38 it is not adopted. BM-10 is declared with
+these numbers; `docs/SCIENCE.md` gives them in full, with what was read
+afterwards.

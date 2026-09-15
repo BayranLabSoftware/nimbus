@@ -5,6 +5,10 @@ import {
   type NGAFaultType,
 } from '../events/earthquake/attenuation.js';
 import {
+  abrahamson2016InterfacePga,
+  parker2022InterfacePga,
+} from '../events/earthquake/interfaceAttenuation.js';
+import {
   allen2012HypocentralMmi,
   allen2012HypocentralSigma,
 } from '../events/earthquake/intensityPrediction.js';
@@ -19,6 +23,7 @@ import {
   BSSA14_PGV_MEAN,
   BSSA14_PGV_MEAN_UNSPECIFIED,
 } from './openQuakeReference.js';
+import { INTERFACE_REFERENCE, INTERFACE_REFERENCE_OPENQUAKE } from './interfaceReference.js';
 
 /**
  * The relations that draw the intensity rings, against their authors'
@@ -29,9 +34,12 @@ import {
  * off by a few per cent. The OpenQuake Engine keeps, as test data, the
  * values of Boore et al. 2014 that David M. Boore's Fortran program gives
  * (July 2014) and those of Allen, Wald & Worden 2012 from an independent
- * Matlab implementation (openQuakeReference.ts). This computes ours at
- * the same inputs and says how far apart they are. One computation for
- * the test that holds it and the report that prints it.
+ * Matlab implementation (openQuakeReference.ts). The two interface
+ * candidates of rule 36 of interfaceRules.ts are held to OpenQuake's own
+ * implementation, whose tests hold it to its tables within a tenth of a
+ * per cent (interfaceReference.ts). This computes ours at the same inputs
+ * and says how far apart they are. One computation for the test that
+ * holds it and the report that prints it.
  */
 
 export interface VerificationRow {
@@ -169,6 +177,24 @@ export function verifyRings(): VerificationRow[] {
         ([mag, r]) => `M ${mag.toString()}, R_hyp ${r.toString()} km`
       ),
     },
+    ...(
+      [
+        ['Abrahamson, Gregor & Addo 2016, interface', 'abrahamson2016', abrahamson2016InterfacePga],
+        ['Parker et al. 2022, global interface', 'parker2022', parker2022InterfacePga],
+      ] as const
+    ).map(([relation, key, pga]) => ({
+      relation,
+      quantity: 'median PGA',
+      reference: `OpenQuake ${INTERFACE_REFERENCE_OPENQUAKE}'s implementation`,
+      rows: INTERFACE_REFERENCE[key].length,
+      ...worst(
+        INTERFACE_REFERENCE[key],
+        ([magnitude, rrupKm, vs30]) => pga({ magnitude, rrupKm, vs30 }),
+        (row) => row[3],
+        ([mag, r, vs30]) =>
+          `M ${mag.toString()}, R_rup ${r.toString()} km, Vs30 ${vs30.toString()} m/s`
+      ),
+    })),
   ];
 }
 

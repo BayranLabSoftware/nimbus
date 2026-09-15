@@ -8,7 +8,9 @@ import { residualAgainstReference, verifyRings } from './ringVerification.js';
  * Worden 2012 a tenth of one. Coded as the papers write them, ours agree
  * to within a thousandth of a per cent, the rounding of the tables; the
  * gate here is a hundredth, so a changed coefficient anywhere in the
- * median, the fault-type terms or the non-linear site term fails it.
+ * median, the fault-type terms or the non-linear site term fails it. The
+ * two interface candidates of rule 36 are held the same way to OpenQuake's
+ * implementation.
  */
 
 describe('the rings against their authors’ code', () => {
@@ -24,7 +26,7 @@ describe('the rings against their authors’ code', () => {
         ),
       ].join('\n')
     );
-    expect(rows).toHaveLength(6);
+    expect(rows).toHaveLength(8);
   });
 
   for (const row of rows) {

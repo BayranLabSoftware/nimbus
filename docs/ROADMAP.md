@@ -450,6 +450,14 @@ the candidates for re-tuning:
   has a site map, and rule 18's score, which credits no band rightly left
   blank. The prospective set (rules 27 to 30) chooses the rings with a
   score that does, and the PGV relation is among its candidates.
+- **The rings of a subduction interface.** Two interface models beat Boore
+  et al. 2014 on the ShakeMaps of 451 interface earthquakes in every reading,
+  and the better, Parker et al. 2022, was not adopted: its toll band held
+  too few of the recorded dead (BM-10, rules 35 to 39). Still open: an
+  interface scenario is a rupture stadium at every magnitude, which alone
+  multiplies these earthquakes' held-out tolls by 2.5 to 18; the toll counts
+  no dead below MMI VII; and the rupture distance is the hypocentre's depth.
+  Both models are among the prospective set's candidates.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and
@@ -951,6 +959,13 @@ model fitted to subduction-interface events up to Mw 9 — the kind USGS
 itself uses for them — implemented from its published coefficient
 tables and checked on this same ShakeMap anchor before any toll row is
 re-read. Not from memory, and not overnight.
+
+_Tried on 15 September 2026 (BM-10, docs/SCIENCE.md, "The rings of a
+subduction interface"):_ Abrahamson, Gregor & Addo 2016 and Parker et al.
+2022, coded from OpenQuake's tables and held to it, drew the ShakeMaps of
+451 interface earthquakes far better than Boore et al. 2014, but Parker et
+al.'s toll band held fewer than eight recorded dead in ten, so by rule 38
+neither is adopted.
 
 The 10× on the headline of every earthquake. The contours come from a
 point-source attenuation inflated into a rupture stadium, and a

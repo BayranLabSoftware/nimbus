@@ -976,6 +976,65 @@ Printed beside, deciding nothing (rule 34): the central toll against PAGER's est
 | Half: PGA, PAGER's bands | 0.37× | 68 % | 0.12 | 0.35 | 614 / 185 |
 | Half: PGV, the rings at 7, 8 and 9 | 0.27× | 66 % | 0.20 | 0.38 | 229 / 570 |
 
+### The rings of a subduction interface
+
+The benchmark campaign drew the megathrust presets' rings at 4.2 and 6.0 times two
+interface models' distances (docs/BENCHMARK_REPORT.md, BM-10). Rules 35 to 39
+(`validation/interfaceRules.ts`), committed before either candidate was coded, choose whether
+a scenario marked a subduction interface should draw its rings with Abrahamson, Gregor & Addo
+2016 or Parker et al. 2022 instead, on the ShakeMaps USGS drew with its interface models (read
+on 2026-09-15: 98 earthquakes of rule 11's set and 353 of rule 23's), every law run
+on the scenario marked a subduction interface. A candidate must lower the mean absolute log
+radius ratio by 0.05 in all four readings, then pass rule 19's test on rule 11's held-out tolls
+and rule 25's on rule 23's quiet earthquakes.
+
+| Law | Rule 11's maps, rock | Rule 11's maps, browser's ground | Rule 23's maps, rock | Rule 23's maps, browser's ground | Sum |
+|-----|----:|----:|----:|----:|----:|
+| Boore et al. 2014 | 1.96 | 2.07 | 2.83 | 2.91 | 9.77 |
+| Abrahamson, Gregor & Addo 2016 on the interface (eligible) | 0.57 | 0.56 | 2.02 | 2.02 | 5.16 |
+| Parker et al. 2022 on the interface (winner) | 0.55 | 0.47 | 1.84 | 1.49 | 4.35 |
+
+Rule 11's maps on the browser's ground, by magnitude cell (the radius ratio, with its pairs):
+
+| Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
+|-----|----:|----:|----:|----:|----:|----:|
+| Boore et al. 2014 | 9.79× (28) | 12.75× (122) | 3.96× (44) | 2.07 | 141 | 0 |
+| Abrahamson, Gregor & Addo 2016 on the interface | 0.52× (1) | 1.34× (30) | 2.06× (37) | 0.56 | 15 | 17 |
+| Parker et al. 2022 on the interface | 0.52× (1) | 0.95× (29) | 0.49× (32) | 0.47 | 9 | 26 |
+
+| Law | Rule 11's held-out tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Quiet earthquakes with a median toll of ten or more |
+|-----|-----|-----|-----|----:|----:|
+| Boore et al. 2014 | 43.11× · 6 of 14 | 35.77× · 39 of 46 | 13.21× · 13 of 18 | 3.31 | 11.9 % of 352 |
+| Parker et al. 2022 on the interface | — · 0 of 5 | 7.41× · 8 of 22 | 3.16× · 11 of 16 | 1.58 | 0.3 % of 352 |
+
+Parker et al. 2022 on the interface wins on the shaking, and by rule 38 Boore et al. 2014 stays: on rule 11's held-out tolls its band holds fewer than eight records in ten, among the rows with something, in some magnitude cell, or its bias is larger.
+
+Printed beside, deciding nothing (rule 39): the 61 maps with ten seismic stations or more, on the browser's ground,
+
+| Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
+|-----|----:|----:|----:|----:|----:|----:|
+| Boore et al. 2014 | 9.23× (64) | 13.52× (42) | 4.12× (14) | 2.08 | 106 | 0 |
+| Abrahamson, Gregor & Addo 2016 on the interface | 0.53× (1) | 2.21× (3) | 3.42× (12) | 0.89 | 2 | 2 |
+| Parker et al. 2022 on the interface | 0.53× (1) | 0.88× (3) | 1.15× (10) | 0.30 | 0 | 4 |
+
+and the maps apart by the interface models ShakeMap drew them with, which include BC Hydro's form (NSHMP 2014, Chile) or Parker et al.'s (NSHMP 2023):
+
+| Law | Chile (98) | NSHMP 2014 (289) | NSHMP 2023 (47) | other (17) |
+|-----|----:|----:|----:|----:|
+| Boore et al. 2014 | 1.86 | 2.19 | 1.88 | 2.44 |
+| Abrahamson, Gregor & Addo 2016 on the interface | 0.86 | 0.76 | 0.96 | 2.20 |
+| Parker et al. 2022 on the interface | 1.03 | 0.40 | 1.40 | 1.37 |
+
+The megathrust presets' rings under each law, MMI VII · VIII · IX beyond the rupture's stadium (km):
+
+| Preset | Boore et al. 2014 | Abrahamson, Gregor & Addo 2016 on the interface | Parker et al. 2022 on the interface |
+|--------|----:|----:|----:|
+| TOHOKU_2011 | 50 · 13 · 0 | 82 · 29 · 0 | 73 · 27 · 0 |
+| SUMATRA_2004 | 55 · 15 · 0 | 85 · 30 · 0 | 77 · 30 · 0 |
+| VALDIVIA_1960 | 72 · 21 · 0 | 96 · 33 · 0 | 90 · 38 · 0 |
+| ALASKA_1964 | 55 · 15 · 0 | 87 · 34 · 0 | 79 · 34 · 0 |
+| LISBON_1755 | 36 · 9 · 0 | 72 · 30 · 0 | 59 · 23 · 0 |
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the
@@ -1259,6 +1318,8 @@ of one; the test here allows a hundredth.
 | Boore et al. 2014 | median PGV, style of faulting unspecified | D. M. Boore's Fortran program, via OpenQuake's test data | 150 | 0.0004 % | M 5, R_JB 0 km, Vs30 200 m/s |
 | Allen, Wald & Worden 2012, hypocentral | median MMI | An independent Matlab implementation, via OpenQuake's test data | 21 | 0.0000 % | M 5, R_hyp 300 km |
 | Allen, Wald & Worden 2012, hypocentral | total σ of MMI | An independent Matlab implementation, via OpenQuake's test data | 21 | 0.0000 % | M 5, R_hyp 100 km |
+| Abrahamson, Gregor & Addo 2016, interface | median PGA | OpenQuake 3.26.2's implementation | 1050 | 0.0000 % | M 7, R_rup 200 km, Vs30 1200 m/s |
+| Parker et al. 2022, global interface | median PGA | OpenQuake 3.26.2's implementation | 1050 | 0.0000 % | M 9, R_rup 1000 km, Vs30 400 m/s |
 
 The toll band draws one ground-motion residual for every earthquake, σ = 0.60 in ln PGA; the Fortran program gives 0.6051 to 0.6051 over the 108 rows of Mw 5.5 and above, R_JB within 80 km and Vs30 of 300 m/s or more. Smaller earthquakes scatter more, up to 0.8009, and softer ground less, down to 0.5493, which one number does not follow (`uq/conventions.ts`).
 

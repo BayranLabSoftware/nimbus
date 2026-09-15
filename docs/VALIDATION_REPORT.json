@@ -1829,6 +1829,237 @@
         }
       }
     },
+    "interfaceRules": {
+      "readOn": "2026-09-15",
+      "events": {
+        "rule11": 98,
+        "rule23": 353
+      },
+      "meanAbsoluteBias": {
+        "rule11Rock": {
+          "boore2014": 1.961,
+          "abrahamson2016Interface": 0.574,
+          "parker2022Interface": 0.548
+        },
+        "rule11Ground": {
+          "boore2014": 2.067,
+          "abrahamson2016Interface": 0.557,
+          "parker2022Interface": 0.471
+        },
+        "rule23Rock": {
+          "boore2014": 2.832,
+          "abrahamson2016Interface": 2.016,
+          "parker2022Interface": 1.84
+        },
+        "rule23Ground": {
+          "boore2014": 2.909,
+          "abrahamson2016Interface": 2.016,
+          "parker2022Interface": 1.488
+        }
+      },
+      "eligible": [
+        "abrahamson2016Interface",
+        "parker2022Interface"
+      ],
+      "winner": "parker2022Interface",
+      "dead": {
+        "decision": {
+          "adopted": false,
+          "tolls": false,
+          "quiet": true
+        },
+        "tolls": {
+          "boore2014": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "bias": 43.109,
+              "inside": 6,
+              "rows": 14
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "bias": 35.77,
+              "inside": 39,
+              "rows": 46
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "bias": 13.206,
+              "inside": 13,
+              "rows": 18
+            }
+          ],
+          "parker2022Interface": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "bias": null,
+              "inside": 0,
+              "rows": 5
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "bias": 7.409,
+              "inside": 8,
+              "rows": 22
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "bias": 3.156,
+              "inside": 11,
+              "rows": 16
+            }
+          ]
+        },
+        "quiet": {
+          "boore2014": {
+            "share": 0.1193,
+            "earthquakes": 352
+          },
+          "parker2022Interface": {
+            "share": 0.0028,
+            "earthquakes": 352
+          }
+        }
+      },
+      "stationsEvents": 61,
+      "presets": [
+        {
+          "preset": "TOHOKU_2011",
+          "law": "boore2014",
+          "radiiKm": [
+            50.5,
+            13.2,
+            0
+          ]
+        },
+        {
+          "preset": "TOHOKU_2011",
+          "law": "abrahamson2016Interface",
+          "radiiKm": [
+            82.1,
+            29,
+            0
+          ]
+        },
+        {
+          "preset": "TOHOKU_2011",
+          "law": "parker2022Interface",
+          "radiiKm": [
+            73.1,
+            27.2,
+            0
+          ]
+        },
+        {
+          "preset": "SUMATRA_2004",
+          "law": "boore2014",
+          "radiiKm": [
+            55.2,
+            14.7,
+            0
+          ]
+        },
+        {
+          "preset": "SUMATRA_2004",
+          "law": "abrahamson2016Interface",
+          "radiiKm": [
+            85.3,
+            30,
+            0
+          ]
+        },
+        {
+          "preset": "SUMATRA_2004",
+          "law": "parker2022Interface",
+          "radiiKm": [
+            77.2,
+            29.7,
+            0
+          ]
+        },
+        {
+          "preset": "VALDIVIA_1960",
+          "law": "boore2014",
+          "radiiKm": [
+            71.9,
+            20.9,
+            0
+          ]
+        },
+        {
+          "preset": "VALDIVIA_1960",
+          "law": "abrahamson2016Interface",
+          "radiiKm": [
+            95.9,
+            33.5,
+            0
+          ]
+        },
+        {
+          "preset": "VALDIVIA_1960",
+          "law": "parker2022Interface",
+          "radiiKm": [
+            90.3,
+            37.8,
+            0
+          ]
+        },
+        {
+          "preset": "ALASKA_1964",
+          "law": "boore2014",
+          "radiiKm": [
+            55.2,
+            14.7,
+            0
+          ]
+        },
+        {
+          "preset": "ALASKA_1964",
+          "law": "abrahamson2016Interface",
+          "radiiKm": [
+            86.9,
+            34.3,
+            0
+          ]
+        },
+        {
+          "preset": "ALASKA_1964",
+          "law": "parker2022Interface",
+          "radiiKm": [
+            79,
+            34,
+            0
+          ]
+        },
+        {
+          "preset": "LISBON_1755",
+          "law": "boore2014",
+          "radiiKm": [
+            35.5,
+            9.1,
+            0
+          ]
+        },
+        {
+          "preset": "LISBON_1755",
+          "law": "abrahamson2016Interface",
+          "radiiKm": [
+            72.5,
+            30.1,
+            0
+          ]
+        },
+        {
+          "preset": "LISBON_1755",
+          "law": "parker2022Interface",
+          "radiiKm": [
+            59.5,
+            23.2,
+            0
+          ]
+        }
+      ]
+    },
     "ground": {
       "sitesReadOn": "2026-09-14",
       "standing": "pick",
@@ -3575,6 +3806,22 @@
         "rows": 21,
         "worstRelative": 5.892e-8,
         "worstAt": "M 5, R_hyp 100 km"
+      },
+      {
+        "relation": "Abrahamson, Gregor & Addo 2016, interface",
+        "quantity": "median PGA",
+        "reference": "OpenQuake 3.26.2's implementation",
+        "rows": 1050,
+        "worstRelative": 4.863e-8,
+        "worstAt": "M 7, R_rup 200 km, Vs30 1200 m/s"
+      },
+      {
+        "relation": "Parker et al. 2022, global interface",
+        "quantity": "median PGA",
+        "reference": "OpenQuake 3.26.2's implementation",
+        "rows": 1050,
+        "worstRelative": 4.781e-8,
+        "worstAt": "M 9, R_rup 1000 km, Vs30 400 m/s"
       }
     ],
     "eiep": {
