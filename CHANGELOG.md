@@ -896,6 +896,16 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Measured
 
+- **The invariants, drawn again after the campaign's fixes.** Five thousand
+  random scenarios of every hazard, over the ranges the custom forms accept:
+  221 invariant failures against the campaign's 12 104. No run hangs, no
+  radius reaches past the antipode, no area is larger than the Earth, and the
+  ashfall grows with the eruption again. What is left is almost all one
+  finding — an airburst's blast rings shrink by a few tenths of a percent as
+  the body grows (BM-16) — with a handful of threshold crossings elsewhere.
+  `benchmark/results/invariants-2026-09-16.json` keeps the draw beside the
+  campaign's.
+
 - **The impact entry, against 357 bolides the sensors measured.** The entry
   agrees with the Earth Impact Effects Program, its authors' own program, to
   the program's rounding — which says the equations are coded right, not that

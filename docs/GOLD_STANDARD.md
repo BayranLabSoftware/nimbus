@@ -281,6 +281,11 @@ not that a rule holds.
   reading of an impact quantity. It bursts a median 13.7 km above the altitude
   the sensors measured and 12.8 km above on average, where I2 asks 5 km and 3
   km. Declared in the validation report.
+- **16 September 2026, G5 re-measured.** The invariants ran again on 5 000
+  random scenarios a hazard, on the physics of that day: 221 failures against
+  the campaign's 12 104 — 199 of them the airburst blast's altitude factor
+  (BM-16), the rest threshold crossings. Still not met, and much nearer
+  (docs/SCIENCE.md, "The invariants after the campaign's fixes").
 - **16 September 2026, E1 and E3 read again.** Rules 66 to 70 adopted an
   intraslab law for scenarios deeper than 70 km, on ShakeMaps no rule had read;
   its band holds fewer of rule 61's deep records than the rings it replaced.

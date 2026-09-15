@@ -2085,6 +2085,42 @@ any choice among strengths belongs to a set nobody has read yet. What the
 reading does settle is that the entry a visitor gets, for the body a visitor
 types, bursts about 13 km higher than the sky does.
 
+### The invariants after the campaign's fixes (16 September 2026)
+
+`scripts/benchmark/invariants.ts`, `benchmark/results/invariants-2026-09-16.json`.
+The benchmark campaign of 15 September drew 5 000 random scenarios of every
+hazard over the ranges the custom forms accept and asked of each output that it
+be finite, non-negative, inside the planet, monotone in the size of the event
+and continuous in it. On the physics of that night it found 12 104 failures:
+11 284 on impacts, 419 on earthquakes, 401 on volcanoes, none on explosions or
+landslides. The fixes that followed — the aftershock loop that never returned
+(B-027), the fire radii past the antipode and the areas larger than the Earth
+(B-028, B-031), the ashfall's isopach edge (B-029) — were each pinned by a test,
+but nothing had drawn the 25 000 scenarios again. This is that draw, on the
+physics of this commit.
+
+| Hazard     | The campaign | Tonight |
+| ---------- | -----------: | ------: |
+| impact     |       11 284 |     199 |
+| earthquake |          419 |      16 |
+| volcano    |          401 |       6 |
+| explosion  |            0 |       0 |
+| landslide  |            0 |       0 |
+
+What is gone is what the fixes were for: no run hangs, no radius reaches past
+the antipode, no area is larger than the Earth's surface, and the ashfall's
+range and area grow with the eruption again. What is left is almost all one
+finding of the campaign, BM-16: an airburst's blast rings shrink by a few tenths
+of a percent as the body grows, because a larger body bursts lower, where the
+altitude factor lifts the reach less — 193 of the 199 impact failures are
+that, with four on the crater and its rim and two on the impact tsunami's
+far-field amplitude. The 16 earthquake failures and the 6 volcanic ones are threshold
+crossings: a ring that appears where there was none (MMI IX at 0.00 → 853 m),
+the liquefaction radius stepping over its threshold, the ashfall's plume
+crossing a grain-size regime. `docs/GOLD_STANDARD.md` (G5) asks that none of
+them happen, so the rule is not met; the count is the measure of how far it is
+from met, and it is much nearer than it was.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records
