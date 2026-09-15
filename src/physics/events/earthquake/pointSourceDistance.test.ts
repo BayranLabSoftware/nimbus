@@ -56,7 +56,9 @@ describe('rule 51 (b): the grid keeps to the integral', () => {
     }
     expect(worst).toBeLessThan(0.05);
     expect(worstFar).toBeLessThan(0.02);
-  });
+    // About seventy nodes of 49 integrals each: 0.7 s alone, 2.6 s under
+    // coverage, and past vitest's 5 s on CI's runner.
+  }, 30_000);
 
   it('is exact at a node, and reads a depth above 1 km at 1 km', () => {
     const grid = pointSourceDistances(6.3, 12);
