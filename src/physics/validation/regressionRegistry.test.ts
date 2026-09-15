@@ -44,7 +44,12 @@ import { TOHOKU_2011_DART_REFERENCE } from './noaaBenchmarkFixtures.js';
 import { RECORDED_WAVES } from './recordedWaves.js';
 import { makeElevationGrid } from '../elevation/index.js';
 import { _internals } from '../../scene/populationLookup.js';
-import { shippedCoarseView } from './shippedPopulation.js';
+import {
+  shippedCoarseView,
+  shippedPopulationInPolygon,
+  shippedStadiumCounter,
+} from './shippedPopulation.js';
+import { buildRuptureStadiumLatLon } from '../../scene/stadiumPolygon.js';
 import { gateImpactByTerrain, resetAppStore, useAppStore } from '../../store/useAppStore.js';
 import {
   fetchTerrainGridForLocation,
@@ -454,6 +459,84 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     }
   });
 
+  it('B-035 A footprint across the antimeridian counts the people on both sides', () => {
+    // Pre-fix: every vertex of a footprint polygon was clamped to
+    // ±179.99°, and the harness's stadium counter clipped its window the
+    // same way, so a Kermadec megathrust whose stadium reached New
+    // Zealand counted nobody and one centred between Samoa and Fiji a
+    // third of its people. Held to a count over every cell of the planet,
+    // each sub-sample placed by its distance from the rupture on the
+    // sphere.
+    const view = shippedCoarseView();
+    const R = 6_371_008;
+    const toRad = Math.PI / 180;
+    const everyCell = (
+      lat0: number,
+      lon0: number,
+      strikeDeg: number,
+      halfL: number,
+      halfW: number,
+      radius: number
+    ): number => {
+      const n = _internals.EDGE_SUBSAMPLES;
+      const within = (lat: number, lon: number): boolean => {
+        const phi = lat * toRad;
+        const phi0 = lat0 * toRad;
+        const dl = (lon - lon0) * toRad;
+        const h =
+          Math.sin((phi - phi0) / 2) ** 2 + Math.cos(phi0) * Math.cos(phi) * Math.sin(dl / 2) ** 2;
+        const d = 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+        const az = Math.atan2(
+          Math.sin(dl) * Math.cos(phi),
+          Math.cos(phi0) * Math.sin(phi) - Math.sin(phi0) * Math.cos(phi) * Math.cos(dl)
+        );
+        const x = d * Math.cos(az - strikeDeg * toRad);
+        const y = d * Math.sin(az - strikeDeg * toRad);
+        return (
+          Math.hypot(Math.max(Math.abs(x) - halfL, 0), Math.max(Math.abs(y) - halfW, 0)) <= radius
+        );
+      };
+      let sum = 0;
+      for (let r = 0; r < view.nLat; r++) {
+        const cellLat = view.maxLat - (r + 0.5) * view.cellDeg;
+        if (Math.abs(cellLat - lat0) > (halfL + halfW + radius) / 111_000 + 1) continue;
+        for (let c = 0; c < view.nLon; c++) {
+          const { people } = view.cellAt(r, c);
+          if (people === 0) continue;
+          const cellLon = view.minLon + (c + 0.5) * view.cellDeg;
+          let inside = 0;
+          for (let a = 0; a < n; a++) {
+            for (let b = 0; b < n; b++) {
+              const sLat = cellLat + ((a + 0.5) / n - 0.5) * view.cellDeg;
+              const sLon = cellLon + ((b + 0.5) / n - 0.5) * view.cellDeg;
+              if (within(sLat, sLon)) inside += 1;
+            }
+          }
+          sum += (people * inside) / (n * n);
+        }
+      }
+      return sum;
+    };
+    for (const [lat, lon, strike, halfL, halfW, radius] of [
+      [-33.0, -177.5, 200, 400_000, 100_000, 450_000], // Kermadec, reaching New Zealand
+      [-16.0, -178.0, 90, 300_000, 80_000, 500_000], // between Samoa and Fiji
+    ] as const) {
+      const truth = everyCell(lat, lon, strike, halfL, halfW, radius);
+      expect(truth).toBeGreaterThan(400_000);
+      const polygon = buildRuptureStadiumLatLon({
+        centerLatDeg: lat,
+        centerLonDeg: lon,
+        strikeAzimuthDeg: strike,
+        halfLengthAlongStrikeM: halfL,
+        halfWidthAcrossStrikeM: halfW,
+        contourRadiusM: radius,
+      });
+      expect(shippedPopulationInPolygon(polygon).exposed / truth).toBeCloseTo(1, 1);
+      const counter = shippedStadiumCounter(lat, lon, strike, halfL + halfW + radius);
+      expect(counter(halfL, halfW, radius) / truth).toBeCloseTo(1, 1);
+    }
+  });
+
   it("B-027 An earthquake of Mw 3.2 to 3.7 finishes, its aftershocks under Båth's ceiling", () => {
     // Pre-fix: the aftershock sampler drew magnitudes at or above the
     // completeness cutoff (2.5 below Mw 6.5) and drew again any above
@@ -710,9 +793,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-034 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-035 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 34;
-    expect(expectedRows).toBe(34);
+    const expectedRows = 35;
+    expect(expectedRows).toBe(35);
   });
 });

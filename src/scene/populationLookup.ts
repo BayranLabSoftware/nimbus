@@ -170,11 +170,25 @@ function circleRing(lat: number, lon: number, radiusM: number, vertices = 48): [
   return ring;
 }
 
+/**
+ * A footprint polygon as a (lon, lat) ring, its longitudes continuous: a
+ * vertex more than 180° from the one before it is carried round the
+ * planet to the near side, so a shape over the antimeridian stays one
+ * shape, its longitudes past ±180°, and the counters wrap the columns it
+ * covers. Until B-035 every vertex was clamped to ±179.99°, and a stadium
+ * about a Kermadec epicentre that reached New Zealand counted nobody.
+ */
 function polygonRing(polygon: PopulationPolygon): [number, number][] {
-  const ring: [number, number][] = polygon.map((v) => [
-    Number(Math.max(-179.99, Math.min(179.99, v.lonDeg)).toFixed(4)),
-    Number(Math.max(-89.9, Math.min(89.9, v.latDeg)).toFixed(4)),
-  ]);
+  let previous: number | null = null;
+  const ring: [number, number][] = polygon.map((v) => {
+    let lon = v.lonDeg;
+    if (previous !== null) {
+      while (lon - previous > 180) lon -= 360;
+      while (lon - previous < -180) lon += 360;
+    }
+    previous = lon;
+    return [Number(lon.toFixed(4)), Number(Math.max(-89.9, Math.min(89.9, v.latDeg)).toFixed(4))];
+  });
   const first = ring[0];
   const last = ring[ring.length - 1];
   if (first !== undefined && last !== undefined && (first[0] !== last[0] || first[1] !== last[1])) {
@@ -761,14 +775,20 @@ function sumGridRing(view: GridView, ring: readonly [number, number][]): number 
   const bbox = ringBoundingBox(ring);
   const row0 = Math.max(0, Math.floor((view.maxLat - bbox.maxLat) / view.cellDeg));
   const row1 = Math.min(view.nLat - 1, Math.ceil((view.maxLat - bbox.minLat) / view.cellDeg));
-  const col0 = Math.max(0, Math.floor((bbox.minLon - view.minLon) / view.cellDeg));
-  const col1 = Math.min(view.nLon - 1, Math.ceil((bbox.maxLon - view.minLon) / view.cellDeg));
+  // The ring's longitudes are continuous and may run past ±180°: the
+  // columns are counted in its frame and read from the map wrapped.
+  const col0 = Math.floor((bbox.minLon - view.minLon) / view.cellDeg);
+  const col1 = Math.min(
+    col0 + view.nLon - 1,
+    Math.ceil((bbox.maxLon - view.minLon) / view.cellDeg)
+  );
+  const wrap = (c: number): number => ((c % view.nLon) + view.nLon) % view.nLon;
   let sum = 0;
   for (let r = row0; r <= row1; r++) {
     const cellLat = view.maxLat - (r + 0.5) * view.cellDeg;
     for (let c = col0; c <= col1; c++) {
       const cellLon = view.minLon + (c + 0.5) * view.cellDeg;
-      const { people } = view.cellAt(r, c);
+      const { people } = view.cellAt(r, wrap(c));
       if (people === 0) continue;
       let inside = 0;
       for (let a = 0; a < EDGE_SUBSAMPLES; a++) {
@@ -866,7 +886,10 @@ export async function populationInRadius(
   }
 
   const areaKm2 = ring !== null ? ringAreaKm2(ring) : circleAreaKm2(radiusM);
-  if (!fast && areaKm2 <= WORLDPOP_API_MAX_AREA_KM2 && apiFailureCount < 2) {
+  // The zonal-statistics API takes GeoJSON on the map, where a shape over
+  // the antimeridian would have to be cut in two; the rasters take it whole.
+  const acrossAntimeridian = bbox.minLon < -180 || bbox.maxLon > 180;
+  if (!fast && !acrossAntimeridian && areaKm2 <= WORLDPOP_API_MAX_AREA_KM2 && apiFailureCount < 2) {
     try {
       const key =
         ring !== null

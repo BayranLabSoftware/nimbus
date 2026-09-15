@@ -355,6 +355,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   misses, 0.7 kPa in the city against about 3 kPa. The project had quoted
   Popova et al.'s modelled damage as reaching 108 km; they give 120 km.
 
+- **A footprint across the antimeridian counts the people on both sides.**
+  Every vertex of a footprint polygon was clamped to ±179.99° before its
+  people were counted, so a shape that crossed the date line was cut at it:
+  the stadium of a great Kermadec earthquake reaching New Zealand counted
+  none of its 553 651 people, one centred between Samoa and Fiji 30 % of
+  them, and the validation harness's stadium counter clipped its window the
+  same way. The ring now keeps its longitudes continuous and the counters
+  read the columns it covers round the planet; the two cases match a count
+  over every cell of the planet within a few per cent, the difference
+  between the raster the footprint reads and the coarse one the count uses
+  (B-035). A shape across the date line is counted on the shipped rasters,
+  since the WorldPop service would need it cut in two.
+
 - **A planetary circle counts everyone inside it.** The people inside a
   circle thousands of kilometres across were counted in a window of
   longitudes that was too narrow toward the poles and never took in every

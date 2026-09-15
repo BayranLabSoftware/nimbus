@@ -252,21 +252,23 @@ export function shippedStadiumCounter(
   reachM: number
 ): (halfLengthM: number, halfWidthM: number, radiusM: number) => number {
   const toRad = Math.PI / 180;
-  const dLat = reachM / STADIUM_EARTH_RADIUS_M / toRad;
-  const poleward = Math.min(89.9, Math.abs(latitude) + dLat);
-  const dLon = Math.min(180, dLat / Math.max(Math.cos(poleward * toRad), 1e-6));
-  const bbox = {
-    minLat: Math.max(-89.9, latitude - dLat),
-    maxLat: Math.min(89.9, latitude + dLat),
-    minLon: Math.max(-179.99, longitude - dLon),
-    maxLon: Math.min(179.99, longitude + dLon),
-  };
+  // The cap every stadium within reach lies in, on the sphere and across
+  // the antimeridian (B-026, B-035); the columns are read wrapped.
+  const bbox = _internals.circleBoundingBox(
+    latitude,
+    longitude,
+    (reachM * STADIUM_EARTH_RADIUS_M) / 6_371_000
+  );
   const { view } = viewForBox(bbox);
   const n = _internals.EDGE_SUBSAMPLES;
   const row0 = Math.max(0, Math.floor((view.maxLat - bbox.maxLat) / view.cellDeg));
   const row1 = Math.min(view.nLat - 1, Math.ceil((view.maxLat - bbox.minLat) / view.cellDeg));
-  const col0 = Math.max(0, Math.floor((bbox.minLon - view.minLon) / view.cellDeg));
-  const col1 = Math.min(view.nLon - 1, Math.ceil((bbox.maxLon - view.minLon) / view.cellDeg));
+  const col0 = Math.floor((bbox.minLon - view.minLon) / view.cellDeg);
+  const col1 = Math.min(
+    col0 + view.nLon - 1,
+    Math.ceil((bbox.maxLon - view.minLon) / view.cellDeg)
+  );
+  const wrap = (c: number): number => ((c % view.nLon) + view.nLon) % view.nLon;
 
   const lat0 = latitude * toRad;
   const lon0 = longitude * toRad;
@@ -294,7 +296,7 @@ export function shippedStadiumCounter(
   for (let r = row0; r <= row1; r++) {
     const cellLat = view.maxLat - (r + 0.5) * view.cellDeg;
     for (let c = col0; c <= col1; c++) {
-      const cell = view.cellAt(r, c);
+      const cell = view.cellAt(r, wrap(c));
       if (cell.people === 0) continue;
       const cellLon = view.minLon + (c + 0.5) * view.cellDeg;
       const [cx, cy] = frame(cellLat, cellLon);
