@@ -3,6 +3,7 @@ import {
   type ContourLaw,
   type IntensityMeasure,
   type InterfaceStadium,
+  type PointSourceDistance,
 } from '../events/earthquake/simulate.js';
 import type { FaultType } from '../events/earthquake/ruptureLength.js';
 import { m } from '../units.js';
@@ -45,8 +46,10 @@ const RULE_ROWS: readonly QuakeInputs[] = RULE_EARTHQUAKES.map((q) => q.row);
 
 /** Every row's footprint under `law` against its ShakeMap. `subductionInterface`
  *  marks every row an interface scenario, as rule 35 of interfaceRules.ts
- *  runs its set, and `interfaceStadium` sets its geometry below Mw 7.5, as
- *  rule 41 of interfaceStadiumRules.ts does. */
+ *  runs its set, `interfaceStadium` sets its geometry below Mw 7.5, as
+ *  rule 41 of interfaceStadiumRules.ts does, and `pointSourceDistance` the
+ *  distance a disc's rings stand at, as rule 51 of pointSourceRules.ts
+ *  does. */
 export function contourPairs(
   law: ContourLaw,
   shakemaps: readonly ShakemapAreas[],
@@ -54,7 +57,8 @@ export function contourPairs(
   rows: readonly QuakeInputs[] = RULE_ROWS,
   measure: IntensityMeasure = 'pga',
   subductionInterface = false,
-  interfaceStadium?: InterfaceStadium
+  interfaceStadium?: InterfaceStadium,
+  pointSourceDistance?: PointSourceDistance
 ): ContourPair[] {
   const byEvent = new Map(shakemaps.map((s) => [s.comcat, s]));
   const pairs: ContourPair[] = [];
@@ -71,6 +75,7 @@ export function contourPairs(
       ...(vs30 === undefined ? {} : { vs30 }),
       ...(subductionInterface ? { subductionInterface } : {}),
       ...(interfaceStadium === undefined ? {} : { interfaceStadium }),
+      ...(pointSourceDistance === undefined ? {} : { pointSourceDistance }),
     });
     for (const threshold of MMI_THRESHOLDS) {
       pairs.push({

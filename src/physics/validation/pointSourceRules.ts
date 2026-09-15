@@ -1,3 +1,4 @@
+import type { PointSourceDistance } from '../events/earthquake/simulate.js';
 import { CONTOUR_LAW_MARGIN, meanAbsoluteBias, type ContourCell } from './contourLaws.js';
 import type { UnseenEarthquake } from './depthRules.js';
 import { adoptInterfaceLaw } from './interfaceRules.js';
@@ -217,7 +218,10 @@ export interface PointSourceEarthquake extends UnseenEarthquake {
 }
 
 /** Rule 51's distances, the one in place first. */
-export const POINT_SOURCE_CANDIDATES = ['epicentral', 'thompsonWorden2018'] as const;
+export const POINT_SOURCE_CANDIDATES = [
+  'epicentral',
+  'thompsonWorden2018',
+] as const satisfies readonly PointSourceDistance[];
 
 /** Rule 52's magnitude cells: the scorecard's cells below Mw 7.5. */
 export const POINT_SOURCE_CELLS: readonly string[] = STADIUM_CELLS;

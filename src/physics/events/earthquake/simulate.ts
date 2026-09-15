@@ -20,8 +20,13 @@ import {
   pgvFromMercalliIntensity,
 } from './intensity.js';
 import { epicentralDistanceForIntensityAllen2012 } from './intensityPrediction.js';
-import { distanceForInterfacePga, type InterfaceMotionModel } from './interfaceAttenuation.js';
+import {
+  distanceForInterfacePga,
+  epicentralDistanceForInterfacePga,
+  type InterfaceMotionModel,
+} from './interfaceAttenuation.js';
 import { liquefactionRadius } from './liquefaction.js';
+import { pointSourceDistances } from './pointSourceDistance.js';
 import {
   megathrustRuptureLength,
   megathrustRuptureWidth,
@@ -146,7 +151,19 @@ export interface EarthquakeScenarioInput {
    *  bands' middles (`midBand`) or their integers (`pager`). On the
    *  shipped rings only; PAGER's banding counts its own. Omitted, `none`. */
   lowIntensityDeaths?: LowIntensityDeaths;
+  /** How far the ground of a scenario drawn as a disc stands from its
+   *  rupture (rule 51 of validation/pointSourceRules.ts): as far as from the
+   *  epicentre (`epicentral`), or at Thompson & Worden 2018's average over
+   *  the ruptures its hypocentre can belong to (`thompsonWorden2018`,
+   *  events/earthquake/pointSourceDistance.ts). Read by Boore et al. 2014's
+   *  rings and the interface models'; a stadium keeps its distances.
+   *  Omitted, `epicentral`. */
+  pointSourceDistance?: PointSourceDistance;
 }
+
+/** Rule 51 of validation/pointSourceRules.ts: the distance a disc's rings
+ *  are drawn at. */
+export type PointSourceDistance = 'epicentral' | 'thompsonWorden2018';
 
 /** Rule 41 of validation/interfaceStadiumRules.ts: the geometry of a
  *  scenario marked a subduction interface below Mw 7.5. */
@@ -462,13 +479,28 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // those. A residual scales PGV as it scales PGA.
   const byPgv = boore && input.intensityMeasure === 'pgv';
   const banding = input.intensityBanding ?? 'rings';
+  // Rule 51 of validation/pointSourceRules.ts: a disc's rings at Thompson
+  // & Worden 2018's average distances to the rupture, where asked.
+  const toRupture =
+    !isExtendedSource && input.pointSourceDistance === 'thompsonWorden2018'
+      ? pointSourceDistances(input.magnitude, depthKm)
+      : null;
+  const fromJoynerBoore = (rjb: Meters): Meters =>
+    toRupture === null ? rjb : m(toRupture.epicentralForRjbKm((rjb as number) / 1_000) * 1_000);
   const contourAt = (mmi: number): Meters =>
     interfaceModel !== null
-      ? distanceForInterfacePga(
-          interfaceModel,
-          { magnitude: input.magnitude, depthKm, vs30 },
-          (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY
-        )
+      ? toRupture === null
+        ? distanceForInterfacePga(
+            interfaceModel,
+            { magnitude: input.magnitude, depthKm, vs30 },
+            (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY
+          )
+        : epicentralDistanceForInterfacePga(
+            interfaceModel,
+            { magnitude: input.magnitude, vs30 },
+            (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY,
+            toRupture.rrupKm
+          )
       : allen
         ? epicentralDistanceForIntensityAllen2012(
             input.magnitude,
@@ -477,14 +509,18 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
             Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0
           )
         : byPgv
-          ? distanceForPgvNGAWest2(
-              { magnitude: input.magnitude, faultType: ngaFault, vs30 },
-              mps((pgvFromMercalliIntensity(mmi) as number) / gm)
+          ? fromJoynerBoore(
+              distanceForPgvNGAWest2(
+                { magnitude: input.magnitude, faultType: ngaFault, vs30 },
+                mps((pgvFromMercalliIntensity(mmi) as number) / gm)
+              )
             )
           : boore
-            ? distanceForPgaNGAWest2(
-                { magnitude: input.magnitude, faultType: ngaFault, vs30 },
-                target(pgaFromMercalliIntensity(mmi))
+            ? fromJoynerBoore(
+                distanceForPgaNGAWest2(
+                  { magnitude: input.magnitude, faultType: ngaFault, vs30 },
+                  target(pgaFromMercalliIntensity(mmi))
+                )
               )
             : distanceForPga(
                 input.magnitude,

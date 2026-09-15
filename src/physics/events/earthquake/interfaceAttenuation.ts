@@ -131,6 +131,31 @@ const MODELS: Readonly<Record<InterfaceMotionModel, (input: InterfaceMotionInput
 };
 
 /**
+ * Rule 51's ring of a point source: the epicentral distance at which the
+ * median PGA at the rupture distance `rrupKm` gives for it falls to
+ * `targetG`. 0 where the median never reaches it.
+ */
+export function epicentralDistanceForInterfacePga(
+  model: InterfaceMotionModel,
+  input: { magnitude: number; vs30: number },
+  targetG: number,
+  rrupKm: (epicentralKm: number) => number
+): Meters {
+  const pga = MODELS[model];
+  const at = (rKm: number): number =>
+    pga({ magnitude: input.magnitude, rrupKm: rrupKm(rKm), vs30: input.vs30 });
+  if (!(at(0) >= targetG)) return m(0);
+  let lo = 0;
+  let hi = 10_000;
+  for (let i = 0; i < 60; i++) {
+    const mid = 0.5 * (lo + hi);
+    if (at(mid) > targetG) lo = mid;
+    else hi = mid;
+  }
+  return m(0.5 * (lo + hi) * 1_000);
+}
+
+/**
  * Rule 36's ring: the Joyner–Boore distance x from the rupture's stadium at
  * which the median PGA at the rupture distance √(x² + h²) falls to
  * `targetG`, h the depth. 0 where the median never reaches it.
