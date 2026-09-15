@@ -1300,7 +1300,7 @@ gives 16.4 and 9.49 km, and it breaks the Meteor Crater body, its strength
 taken from its density, up at 10.6 km against 10.8. Both codes cite Eqs. 11
 and 12 of Collins et al. (2005).
 
-Every breakup altitude the program printed, for 184 bodies of the campaign
+Every breakup altitude the program printed, for 188 bodies of the campaign
 and 81 of the validation grid, is Eq. 11 evaluated on twice the I_f of Eq. 12,
 within 0.01 %; every burst altitude then follows from Eqs. 16 and 18 as
 printed, within 0.02 %. On the printed I_f the same altitudes part from the
