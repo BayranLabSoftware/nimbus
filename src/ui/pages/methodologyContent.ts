@@ -1008,7 +1008,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Båth law — magnitude gap',
         formula: 'M_max_aftershock ≈ M_main − 1.2',
         description:
-          "The largest aftershock averages about 1.2 magnitude units below the mainshock whatever the mainshock's size, with a scatter of about half a unit. The simulator uses it as a hard ceiling on the sampled magnitudes.",
+          "The largest aftershock averages about 1.2 magnitude units below the mainshock whatever the mainshock's size, with a scatter of about half a unit. The simulator uses it as a hard ceiling: the catalogue holds the aftershocks between the completeness cutoff and the ceiling, and none for a mainshock whose ceiling is at or below the cutoff, Mw 3.7 and smaller.",
         citation: bath1965,
       },
       {
@@ -1016,7 +1016,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Magnitude distribution',
         formula: 'log₁₀ N(M ≥ m) = a − b · m   (b = 0.91)',
         description:
-          "Power-law magnitude-frequency distribution, sampled by inverse CDF, m = M_c − log₁₀(U) / b, and capped at the Båth ceiling. The b-value is Reasenberg & Jones's generic 0.91, the same one that sizes the count.",
+          "Power-law magnitude-frequency distribution, cut to the cutoff and the Båth ceiling and sampled by inverse CDF on that window, m = M_c − log₁₀(1 − U·(1 − 10^(−b·(M_max − M_c)))) / b. The b-value is Reasenberg & Jones's generic 0.91, the same one that sizes the count. Until 15 September 2026 a magnitude above the ceiling was drawn again, and a mainshock of Mw 3.13 to 3.70, whose ceiling is under the cutoff, never finished.",
         citation: gutenbergRichter1954,
       },
       {
@@ -1031,9 +1031,9 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         id: 'aftershock-reasenberg-jones',
         name: 'Aftershock count (Reasenberg & Jones)',
         formula:
-          'N = 10^(a + b·(M_main − M_c)) · ∫₀ᵀ (t + c)^(−p) dt   (a = −1.67, b = 0.91, p = 1.08, c = 0.05 d)',
+          'N = 10^(a + b·(M_main − M_c)) · ∫₀ᵀ (t + c)^(−p) dt · (1 − 10^(−b·(M_max − M_c)))   (a = −1.67, b = 0.91, p = 1.08, c = 0.05 d)',
         description:
-          'Reasenberg & Jones 1989 give the daily rate of aftershocks at or above M; the count over the window is that rate integrated, about 6.4 times the amplitude for 30 days. Until 14 September 2026 the amplitude alone was taken as the count, about six times too few. The simulator stops at 500 events for the renderer.',
+          'Reasenberg & Jones 1989 give the daily rate of aftershocks at or above M; the count over the window is that rate integrated, about 6.4 times the amplitude for 30 days, and of those it keeps the share under the Båth ceiling: 99.7 % from Mw 6.5 up, half at Mw 4, none at Mw 3.7. Until 14 September 2026 the amplitude alone was taken as the count, about six times too few. The simulator stops at 500 events for the renderer.',
         citation: reasenbergJones1989,
       },
       {

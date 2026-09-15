@@ -322,6 +322,20 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **An earthquake of magnitude 3.2 to 3.7 finishes.** The aftershock
+  catalogue drew magnitudes above its completeness cutoff and drew again
+  any that came out above Båth's ceiling, a magnitude and two tenths below
+  the mainshock. Up to Mw 3.7 the ceiling is at or under the cutoff, so from
+  Mw 3.13, once the catalogue was to hold one aftershock, no draw could be
+  kept and the simulation never returned: six values the form offers left
+  the page waiting and a processor core busy until reload. The benchmark
+  campaign's random earthquakes found it, 392 in 5 000. Magnitudes are now
+  drawn once from the Gutenberg–Richter law cut to the window between the
+  cutoff and the ceiling, and the count keeps the aftershocks that fall in
+  that window: none for Mw 3.7 and smaller, half the count at Mw 4, 99.7 %
+  of it from Mw 6.5 up, where it was before. On the same 5 000 random
+  earthquakes none hangs (B-027).
+
 - **The earthquake panel says what the simulator stands on.** With no
   Vs30 typed in, the simulator reads one off the slope of the terrain
   under the pick, but the field showed 760 m/s, rock, as though that were

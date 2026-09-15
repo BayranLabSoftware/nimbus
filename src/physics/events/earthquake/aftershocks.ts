@@ -17,13 +17,19 @@ import { pgaFromMercalliIntensity } from './intensity.js';
  *
  * Physics layered together:
  *   - **Båth's law** (1965): the largest aftershock is ≈ 1.2 magnitude
- *     units below the mainshock. We cap the sampled magnitudes at
- *     M_main − 1.2.
+ *     units below the mainshock. The catalogue holds the aftershocks
+ *     between the completeness cutoff M_c and that ceiling,
+ *     M_max = M_main − 1.2, and none when the ceiling is at or below the
+ *     cutoff (up to Mw 3.7 with the default cutoff).
  *   - **Gutenberg-Richter** (1954): the per-magnitude exceedance is
- *     log₁₀ N(M ≥ m) = a − b·m. Magnitudes above a completeness cutoff
- *     M_c are drawn by inverse-CDF, m = M_c − log₁₀(U) / b, with the
+ *     log₁₀ N(M ≥ m) = a − b·m. Magnitudes are drawn by inverse-CDF on
+ *     the law cut to [M_c, M_max),
+ *     m = M_c − log₁₀(1 − U·(1 − 10^(−b·(M_max − M_c)))) / b, with the
  *     b the count below uses, so the catalogue follows the law that
- *     sized it.
+ *     sized it. Until 15 September 2026 magnitudes were drawn above M_c
+ *     and drawn again when above the ceiling; with the ceiling at or
+ *     under the cutoff no draw could be kept, and an earthquake of
+ *     Mw 3.13 to 3.70 never returned (B-027).
  *   - **Omori-Utsu** (1894 / 1961): the rate decays as (t + c)^(−p).
  *     Occurrence times are drawn by inverse-CDF on its integral.
  *   - **Reasenberg & Jones** (1989) give the rate of aftershocks at or
@@ -34,7 +40,9 @@ import { pgaFromMercalliIntensity } from './intensity.js';
  *     The count over T days is that rate integrated,
  *     10^(a + b·(M_main − M_c))·∫₀ᵀ (t + c)^(−p) dt: about 6.4 times the
  *     amplitude for 30 days. Until 14 September 2026 the amplitude alone
- *     was used as the count, which drew some six times too few.
+ *     was used as the count, which drew some six times too few. Of those,
+ *     the share 1 − 10^(−b·(M_max − M_c)) lies under Båth's ceiling and
+ *     is kept: 99.7 % from Mw 6.5 up, half at Mw 4, none at Mw 3.7.
  *
  * Spatial distribution: epicentres scatter uniformly inside a square
  * of side `ruptureLength` centred on the mainshock — a coarse proxy
@@ -138,9 +146,13 @@ export function generateAftershockSequence(
   const span = cTExp - cExp;
   const omoriIntegral = span / (1 - p);
 
-  // Reasenberg & Jones 1989: the rate amplitude at M_c, times the days.
+  // Reasenberg & Jones 1989: the rate amplitude at M_c, times the days,
+  // times the share of Gutenberg-Richter between the cutoff and Båth's
+  // ceiling — nothing when the ceiling is at or below the cutoff.
   const log10Amplitude = RJ_A_COEFF + RJ_B_COEFF * (input.magnitude - Mc);
-  const predictedN = Math.pow(10, log10Amplitude) * omoriIntegral;
+  const window = Mmax - Mc;
+  const underCeiling = window > 0 ? 1 - Math.pow(10, -GR_B_VALUE * window) : 0;
+  const predictedN = Math.pow(10, log10Amplitude) * omoriIntegral * underCeiling;
   const targetCount = Math.min(MAX_AFTERSHOCKS, Math.round(predictedN));
 
   const rng = mulberry32(input.seed);
@@ -149,12 +161,10 @@ export function generateAftershockSequence(
   //   t(U) = ((c^(1-p) + U · ((c+T)^(1-p) − c^(1-p)))^(1/(1-p))) − c
 
   for (let i = 0; i < targetCount; i++) {
-    // Magnitude — Gutenberg-Richter inverse CDF capped at Båth.
-    let magnitude: number;
-    do {
-      const u = Math.max(rng.next(), 1e-12);
-      magnitude = Mc - Math.log10(u) / GR_B_VALUE;
-    } while (magnitude > Mmax);
+    // Magnitude — Gutenberg-Richter inverse CDF on [M_c, M_max): one
+    // draw, always kept. The argument of the logarithm stays at or above
+    // 10^(−b·(M_max − M_c)), so it is never zero.
+    const magnitude = Mc - Math.log10(1 - rng.next() * underCeiling) / GR_B_VALUE;
 
     // Occurrence time — Omori-Utsu inverse CDF.
     const u = rng.next();

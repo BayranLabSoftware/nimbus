@@ -396,6 +396,34 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(strip.maxLon - strip.minLon).toBeLessThan(20);
   });
 
+  it("B-027 An earthquake of Mw 3.2 to 3.7 finishes, its aftershocks under Båth's ceiling", () => {
+    // Pre-fix: the aftershock sampler drew magnitudes at or above the
+    // completeness cutoff (2.5 below Mw 6.5) and drew again any above
+    // Båth's ceiling, M − 1.2. Up to Mw 3.7 the ceiling is at or under
+    // the cutoff, so once the catalogue was to hold one aftershock —
+    // from Mw 3.13 — no draw could ever be kept and the run never
+    // returned: six values of the form, 3.2 to 3.7, froze the worker.
+    let previousCount = 0;
+    for (let tenths = 300; tenths <= 650; tenths += 5) {
+      const magnitude = tenths / 100;
+      const { aftershocks } = simulateEarthquake({ magnitude });
+      const ceiling = aftershocks.bathCeiling;
+      const cutoff = aftershocks.completenessCutoff;
+      if (ceiling <= cutoff) expect(aftershocks.totalCount).toBe(0);
+      for (const event of aftershocks.events) {
+        expect(event.magnitude).toBeGreaterThanOrEqual(cutoff);
+        expect(event.magnitude).toBeLessThanOrEqual(ceiling);
+      }
+      // The catalogue grows with the mainshock instead of jumping to
+      // nothing at the magnitude where the ceiling meets the cutoff.
+      expect(aftershocks.totalCount).toBeGreaterThanOrEqual(previousCount);
+      previousCount = aftershocks.totalCount;
+    }
+    // Just above the meeting point the window between cutoff and ceiling
+    // is a rounding error wide, and a sampler that redraws never leaves it.
+    expect(simulateEarthquake({ magnitude: 3.7000000001 }).aftershocks.totalCount).toBe(0);
+  });
+
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
     // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
@@ -429,9 +457,10 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-025 (B-010 CLOSED via inputSchema.ts + safeRun.ts;
-    // B-007 superseded by B-011).
-    const expectedRows = 25;
-    expect(expectedRows).toBe(25);
+    // B-001..B-025 and B-027 (B-010 CLOSED via inputSchema.ts +
+    // safeRun.ts; B-007 superseded by B-011; B-026, the population of a
+    // planetary circle, is named in docs/ROADMAP.md and not yet entered).
+    const expectedRows = 26;
+    expect(expectedRows).toBe(26);
   });
 });
