@@ -355,6 +355,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   misses, 0.7 kPa in the city against about 3 kPa. The project had quoted
   Popova et al.'s modelled damage as reaching 108 km; they give 120 km.
 
+- **An impact burns only as far as its fireball is seen.** The flash was
+  already cut at the fireball's horizon for the deaths and the fire radii,
+  but the burn rings the globe drew and the panel printed ran on with
+  nothing in the way: Boltysh's third-degree burns reached 936 km,
+  Popigai's 10 900 km and Chicxulub's 27 478 km, where their fireballs set
+  at 523, 1 186 and 1 616 km. They stop there now (B-038, part of BM-11).
+  No toll moves; what the benchmark still finds is the program dimming the
+  flash as the fireball sinks, which Nimbus leaves out.
+
 - **A fireball is seen as long as any of it is above the horizon.** The
   flash was cut at the range where the point one fireball radius above
   ground zero sets. The fireball is a sphere about ground zero, and part of

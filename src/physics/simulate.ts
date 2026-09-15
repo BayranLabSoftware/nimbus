@@ -526,11 +526,26 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // seismic effects for airbursts; for an airburst, the fraction that
   // reaches the ground (a Nimbus extension of their relation).
   const seismicM = seismicMagnitude(groundCoupledKe);
+  // The flash travels in straight lines, so nothing burns and no fire
+  // starts past the range where the fireball sets below the horizon —
+  // the cut the casualty plan makes — or past the antipode. Until
+  // 15 September 2026 the fire radii were the fluence radii with nothing
+  // in the way, 24 579 km for Chicxulub (B-028), and the burn rings were
+  // until the same day: Boltysh's third-degree burns reached 936 km, where
+  // its fireball sets at 523 (B-038).
+  const earthRadius = EARTH_RADIUS as number;
+  const flashReach = Math.min(
+    thermalHorizonRadius(impactFireballRadius(ke)),
+    Math.PI * earthRadius
+  );
+  const seen = (radius: Meters): Meters => m(Math.min(radius, flashReach));
   const damage: ImpactDamageRadii = {
     craterRim: surfaceDamage.craterRim,
-    thirdDegreeBurn: m(Math.max(surfaceDamage.thirdDegreeBurn, entry.flashBurnRadii.thirdDegree)),
-    secondDegreeBurn: m(
-      Math.max(surfaceDamage.secondDegreeBurn, entry.flashBurnRadii.secondDegree)
+    thirdDegreeBurn: seen(
+      m(Math.max(surfaceDamage.thirdDegreeBurn, entry.flashBurnRadii.thirdDegree))
+    ),
+    secondDegreeBurn: seen(
+      m(Math.max(surfaceDamage.secondDegreeBurn, entry.flashBurnRadii.secondDegree))
     ),
     overpressure5psi: m(Math.max(surfaceDamage.overpressure5psi, entry.shockWaveRadii.fivePsi)),
     overpressure1psi: m(Math.max(surfaceDamage.overpressure1psi, entry.shockWaveRadii.onePsi)),
@@ -598,19 +613,10 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     yieldEnergy: ke,
     thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
   };
-  // The flash that lights a fire travels in straight lines, so no fire
-  // starts past the range where the fireball sets below the horizon —
-  // the cut the casualty plan makes — or past the antipode; the area
-  // inside a radius on the Earth is a spherical cap. Until 15 September
-  // 2026 these were the fluence radii with nothing in the way and discs
-  // of them: 24 579 km for Chicxulub, and an ignition area 3.7 times the
-  // Earth's surface (B-028).
-  const earthRadius = EARTH_RADIUS as number;
-  const flashReach = Math.min(
-    thermalHorizonRadius(impactFireballRadius(ke)),
-    Math.PI * earthRadius
-  );
-  const seen = (radius: Meters): Meters => m(Math.min(radius, flashReach));
+  // The fire radii stop where the flash does, as the burns above; the
+  // area inside a radius on the Earth is a spherical cap. Until
+  // 15 September 2026 the areas were discs, and Chicxulub's ignition area
+  // 3.7 times the Earth's surface (B-028).
   const capArea = (radius: Meters): SquareMeters =>
     sqm(2 * Math.PI * earthRadius ** 2 * (1 - Math.cos((radius as number) / earthRadius)));
   const ignitionRadius = seen(flammableIgnitionRadius(firestormInputs));

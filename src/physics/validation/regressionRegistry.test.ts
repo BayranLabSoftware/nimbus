@@ -569,6 +569,30 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(thermalHorizonRadius(m(407_770)) / 2_291_589).toBeCloseTo(1, 3);
   });
 
+  it('B-038 An impact burns only as far as its fireball is seen', () => {
+    // Pre-fix: the burn rings the globe drew and the panel printed were
+    // the fluence radii with nothing in the way — Boltysh's third-degree
+    // burns to 936 km, Popigai's to 10 900 km, Chicxulub's to 27 478 km —
+    // while their fireballs set at 523, 1 186 and 1 616 km, where the
+    // casualty plan and the fire radii (B-028) already stopped the flash.
+    for (const preset of [
+      IMPACT_PRESETS.BOLTYSH,
+      IMPACT_PRESETS.POPIGAI,
+      IMPACT_PRESETS.CHICXULUB,
+    ]) {
+      const r = simulateImpact(preset.input);
+      const horizon = thermalHorizonRadius(impactFireballRadius(r.impactor.kineticEnergy));
+      expect(r.damage.thirdDegreeBurn as number).toBeCloseTo(horizon, -2);
+      expect(r.damage.secondDegreeBurn as number).toBeCloseTo(horizon, -2);
+      expect(r.damage.thirdDegreeBurn as number).toBeLessThanOrEqual(horizon);
+    }
+    // A flash that does not reach its horizon keeps its fluence radius.
+    const meteor = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    const reach = thermalHorizonRadius(impactFireballRadius(meteor.impactor.kineticEnergy));
+    expect(meteor.damage.thirdDegreeBurn as number).toBeGreaterThan(0);
+    expect(meteor.damage.secondDegreeBurn as number).toBeLessThan(reach);
+  });
+
   it("B-027 An earthquake of Mw 3.2 to 3.7 finishes, its aftershocks under Båth's ceiling", () => {
     // Pre-fix: the aftershock sampler drew magnitudes at or above the
     // completeness cutoff (2.5 below Mw 6.5) and drew again any above
@@ -825,9 +849,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-037 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-038 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 37;
-    expect(expectedRows).toBe(37);
+    const expectedRows = 38;
+    expect(expectedRows).toBe(38);
   });
 });
