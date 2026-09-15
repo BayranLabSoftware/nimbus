@@ -391,3 +391,54 @@ not the 0.88 m above, which came from a polynomial detide over ±14 h.
 
 The amended script, its output and `dart-tide-gap.py` are committed before
 either model is run on a record, as the rules were.
+
+## After the campaign: people and deaths against PAGER (BM-03)
+
+Written on 15 September 2026, before either chain named below was run on
+any earthquake the campaign's EQ-PAGER track holds. The rules are numbered
+after the thirty of the validation harness and live with them, in
+`src/physics/validation/pagerChain.ts` (rules 31 to 34); the PAGER products
+they score against are stored first, in `pagerProductsData.ts`, as
+`scripts/benchmark/pager-bench.ts` read them on 15 September 2026.
+
+### What is already known, and so not held out
+
+The campaign measured the chain in place on those 187 earthquakes: people at
+MMI VII and above 0.13× PAGER's, at VIII and above 0.07×, nobody at IX where
+PAGER counts people, the central toll 0.30× PAGER's estimate and the alert in
+agreement for 66 % of them. Reading the code of both sides then found three
+causes, none of them a fit:
+
+- PAGER counts intensity k from k − ½ to k + ½, the banding of ShakeMap's
+  legend; the simulator's VII starts at 7.0.
+- The rings convert Boore et al. 2014's median PGA with Worden et al. 2012's
+  PGA relation, and PGA saturates: the highest intensity the median reaches
+  is 8.0 to 8.8 for any magnitude on any ground, so IX is empty by
+  construction. ShakeMap takes intensity from PGV where it has one. With
+  Boore et al. 2014's median PGV and Worden et al.'s PGV relation — computed
+  for reverse faulting on Vs30 760 and 522 m/s only, on no earthquake of the
+  set — the ring at MMI 7.0 reaches 0.25–0.6 of the PGA ring's radius at
+  Mw 6, 0.8–0.9 at Mw 6.5, 0.9–1.1 at Mw 7, 1.1–1.2 at Mw 7.5 and 1.2–1.3 at
+  Mw 8, and IX appears from about Mw 7.8 on soft ground.
+- PAGER's empirical model counts deaths in the bins from V to IX, each at
+  the rate of its integer intensity; the simulator counts them from VII, at
+  the rates of 7.5, 8.5 and 9.5.
+
+On rule 11's held-out tolls the chain in place reads 1.46×, 0.33× and 1.94×
+by magnitude cell, a mean absolute log bias of 0.72, holding 122 of 132, 106
+of 112 and 32 of 35 records (`docs/SCIENCE.md`, "The ground under the
+rings").
+
+### The chains, the score and the decision
+
+Rule 31 defines the chain in place and PAGER's chain — Boore et al. 2014's
+median PGV through Worden et al. 2012's PGV relation, banded and weighted as
+PAGER's loss model bands and weights it, with everything else shared — and
+holds the new relations to their authors' code before any score. Rule 32
+scores each chain's people at and above VII, VIII and IX, as its own bands
+count them, against PAGER's on the 187 earthquakes. Rule 33 adopts PAGER's
+chain only if its people score is lower by ln 1.25 or more, and if it does
+no worse than the chain in place, by more than 0.10, on rule 11's held-out
+dead and on rule 18's ShakeMaps, holding eight records in ten in every
+magnitude cell. Rule 34 lists what is printed beside and decides nothing.
+Nothing in either chain is tuned on these sets.
