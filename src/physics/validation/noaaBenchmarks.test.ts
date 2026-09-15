@@ -60,7 +60,7 @@ describe('NOAA BP1 — solitary wave runup on a 1:19.85 plane beach (Synolakis 1
   }
 });
 
-describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () => {
+describe('Tōhoku 2011 megathrust at DART buoy 21413, against its NOAA NDBC record', () => {
   // Note. The cylindrical 1D model (Phase-19 / Tier 1) systematically
   // OVER-predicts compact-rupture far-field amplitudes by a factor
   // 3-7×: Tōhoku's 700 km rupture has a peaked slip distribution
@@ -80,7 +80,7 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
     expect(r.meanSlip as number).toBeLessThan(25);
   });
 
-  it('TIER 2 — Saint-Venant 1D-radial DART 21413, beamed, matches the record', () => {
+  it('TIER 2 — Saint-Venant 1D-radial DART 21413, beamed, reads a third of the record (declared)', () => {
     // Tōhoku 2011 routed through the Phase-21c Saint-Venant 1D-radial
     // pipeline (Closes the Tier-2 todo opened by Phase-20).
     //
@@ -163,18 +163,19 @@ describe('Tōhoku 2011 megathrust DART buoy 21413 — Satake et al. 2013', () =>
     // DART 21413 lies at bearing 131° from the epicentre and the
     // Japan Trench strikes 200°, so the buoy is 21° off the seaward
     // perpendicular — inside the main lobe, where the array factor is
-    // the answer. Without it this row reads 1.65× the record; the
-    // solver is radially symmetric and puts the strongest wave the
-    // fault can make in every direction at once. With it, 0.79×.
+    // the answer. The solver is radially symmetric and puts the
+    // strongest wave the fault can make in every direction at once;
+    // the beam takes this row from 0.67× the buoy's crest to 0.32×.
     //
     // Worth saying what that is a check on. This route shares nothing
     // with the closed-form chain: a shallow-water solver on a Gaussian
-    // of its own, against the same buoy. It reads 0.79× where the
-    // chain reads 0.90×, so two independent routes land within twelve
-    // per cent of each other and both inside the record's band. Until
-    // 9 September 2026 the chain read 4.5× and this row read 1.14×,
-    // and the disagreement between them was the thing nobody could
-    // explain.
+    // of its own, against the same buoy, and the two land within
+    // 16 % of each other (0.32× and 0.37×). Both used to
+    // pass, against a record of 30 cm quoted from a paper never read
+    // here; the buoy's NOAA NDBC file crests at 0.81 m (B-034). The
+    // shortfall is declared, not absorbed: across nine megathrusts the
+    // chain reads 1.00× at the median event (BM-05), and this buoy is
+    // one of its misses.
     const beam = { bearingDeg: 131.3, strikeDeg: 200, ruptureLengthM, wavelengthM };
     expect(directivityIsCoherent(beam), 'DART 21413 is inside the main lobe').toBe(true);
     const beamedPeakM = dispersedPeakM * directivityFactor(beam);

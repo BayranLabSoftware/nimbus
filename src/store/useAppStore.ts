@@ -1133,8 +1133,10 @@ export function extractTsunamiMeta(result: ActiveResult): {
       //
       // Along-strike half-length put Tōhoku's full 3.99 m over a disc
       // 351 km across, which is every coast in Japan, and read 0.563 m
-      // at DART 21413 against the 0.30 recorded. Across-strike
-      // half-width reads 0.280 m there.
+      // at DART 21413. Across-strike half-width reads 0.280 m there —
+      // the choice was made against a record of 0.30 m, and the buoy's
+      // file crests at 0.81 (B-034); the law it chose reads 1.00× at
+      // the median of nine megathrusts (BM-05).
       sourceCavityRadiusM: Math.max((result.data.ruptureWidth as number) / 2, 10_000),
       sourceDepthM: 4_000,
       // Seven hundred kilometres of seafloor rising together radiate

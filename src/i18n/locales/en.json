@@ -1463,7 +1463,7 @@
       },
       "farField": {
         "item": "Distant coasts get too small a wave from very long ruptures",
-        "note": "Sumatra's far coasts get a wave five to ten times too small, and the cause is not settled. The wave law does not use the length of the fault — but a naive length correction would take the one far-field buoy the model matches, off Japan, from right to three times too high. The derivation comes first."
+        "note": "Sumatra's far coasts get a wave five to ten times too small, and the cause is not settled. The wave law does not use the length of the fault. In the open ocean it holds: on 113 buoy records of nine great earthquakes at sea, read to rules written before the model was run on them, it is right at the median, where an exact solution for an even slip over the same faults comes out 1.4 times too high. None of the nine faults is as long as Sumatra's. The buoy off Japan it was once tuned on recorded 81 cm, not the 30 this project believed; the model gives it 30 cm."
       },
       "coastalOffline": {
         "item": "The coastal toll is not in these tables",
@@ -1490,8 +1490,8 @@
         "note": "The 2018 collapse of Anak Krakatau was tuned to a wave of about 85 m attributed to a 2019 study that simulates one of nearly 50 m; Storegga to a wave of 5–10 m attributed to a study that measured deposits on the coast. They stay as they are until a number the sources do give is chosen, and are marked here meanwhile."
       },
       "unread": {
-        "item": "Three numbers have not been checked against their source",
-        "note": "The 30 cm a buoy recorded 1 242 km from Tōhoku, on which one wave check is tuned; the tsunami arrival times, whose cited source does not exist, so their tests are switched off; and the depth of large craters, taken from a study of Venus through a later paper that quotes it."
+        "item": "Two numbers have not been checked against their source",
+        "note": "The tsunami arrival times, whose cited source does not exist, so their tests are switched off; and the depth of large craters, taken from a study of Venus through a later paper that quotes it."
       },
       "airburstShock": {
         "item": "An airburst's blast is a point that does not move, drawn as round rings",

@@ -245,9 +245,12 @@ export const RECORDED_WAVES: RecordedWave[] = [
   },
   {
     name: 'Tōhoku 2011 at DART 21413',
-    observed: { low: 0.2, high: 0.5, atRangeM: DART_21413_FROM_TOHOKU_EPICENTRE_M },
+    // The crest of the buoy's NOAA NDBC file as BM-05 reads it, 0.81 m;
+    // 0.80 m with no low-pass, 0.88 m detided by a polynomial over
+    // ±14 h. The band spans the readings tried.
+    observed: { low: 0.77, high: 0.88, atRangeM: DART_21413_FROM_TOHOKU_EPICENTRE_M },
     source:
-      'DART buoy 21413, 1 242 km from the epicentre, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)',
+      'DART buoy 21413, 1 242 km from the epicentre: NOAA NDBC file 21413t2011.txt.gz, crest 0.81 m 1 h 20 min after the origin, read by scripts/benchmark/dart-records.py (benchmark/dart/records.json)',
     model: () =>
       globeVeilAt(
         { type: 'earthquake', data: simulateEarthquake(EARTHQUAKE_PRESETS.TOHOKU_2011.input) },
@@ -258,9 +261,9 @@ export const RECORDED_WAVES: RecordedWave[] = [
         // Pacific under it.
         { depthM: 4_000, bearingDeg: 131 }
       ),
-    gated: true,
+    gated: false,
     caveat:
-      'Gated since 9 September 2026, and it used to be the row that measured a divergence rather than a model. This project had four far-field laws for one wave and they bracketed the buoy from opposite sides: the seismic module spread cylindrically from half the rupture length and landed at 1.93 m, six times the 30 cm recorded, while tohoku2011DARTReference spreads as 1/r from a 2 m source and lands at 0.13 m. The product path is now one law, in tsunami/spreading.ts — from half the down-dip width, with the energy normalisation of a ring — and the row reads 0.29 m against the 0.30 recorded, inside the observed band. (0.27 m at the 1 500 km every row used for this buoy until 14 September 2026; it is 1 242 km from the epicentre.)',
+      'Declared since 15 September 2026, when this row learned what the buoy recorded. It held "about 30 cm" (0.2–0.5 m), credited to Satake et al. 2013 without the paper having been read, and it was gated: the megathrust uplift factor had been set on it, and the source radius of the far-field law chosen by it. The buoy\'s own file crests at 0.81 m (B-034), and the law reads 0.30 m, 0.37× — outside by more than any reading of the record. It is not re-tuned on this buoy: across nine megathrusts and 113 deep-ocean records, read to rules committed before the law was run on them (docs/BENCHMARK_PROTOCOL.md, BM-05), it reads 1.00× at the median event, with the events scattered by a factor of 1.56, and an exact linear solution for a uniform slip on the same rupture reads 1.38×. At this buoy that solution misses too, at 0.37 m: a rupture 702 km long slipping evenly beams its wave into a lobe whose flank 21413 sits on, narrower than the one Tōhoku\'s concentrated slip appears to have made.',
   },
   {
     name: 'Storegga 8200 BP on the Norwegian coast',

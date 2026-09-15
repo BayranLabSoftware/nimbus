@@ -265,9 +265,11 @@ describe('Historical validation — earthquakes', () => {
     // It used to read 9.5 m, closer to the inversions, because this
     // module derived a second width of its own as L / 2.5 = 281 km.
     // That width made the slip look right and the wave wrong: at DART
-    // 21413 the published row read 1.93 m against 0.30 recorded. With
-    // one width and one spreading law the wave reads 0.27 m there,
-    // and the slip is what the area says.
+    // 21413 the published row read 1.93 m against a record then
+    // believed to be 0.30 m (the buoy's file crests at 0.81, B-034).
+    // With one width and one spreading law the wave reads 0.30 m there,
+    // 1.00× at the median of nine megathrusts (BM-05), and the slip is
+    // what the area says.
     expect(r.tsunami.meanSlip as number).toBeGreaterThan(7);
     expect(r.tsunami.meanSlip as number).toBeLessThan(15);
     expect(r.tsunami.initialAmplitude as number).toBeGreaterThan(3);

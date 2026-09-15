@@ -1550,7 +1550,7 @@
       },
       "farField": {
         "item": "Le coste lontane ricevono un'onda troppo piccola dalle rotture molto lunghe",
-        "note": "Le coste lontane di Sumatra ricevono un'onda da cinque a dieci volte troppo piccola, e la causa non è assodata. La legge dell'onda non usa la lunghezza della faglia — ma una correzione ingenua sulla lunghezza porterebbe l'unica boa lontana che il modello azzecca, al largo del Giappone, da giusta a tre volte troppo alta. Prima viene la derivazione."
+        "note": "Le coste lontane di Sumatra ricevono un'onda da cinque a dieci volte troppo piccola, e la causa non è assodata. La legge dell'onda non usa la lunghezza della faglia. In mare aperto regge: su 113 registrazioni di boe da nove grandi terremoti in mare, lette con regole scritte prima di far girare il modello, è giusta nella mediana, mentre una soluzione esatta per uno scorrimento uniforme sulle stesse faglie risulta 1,4 volte troppo alta. Nessuna delle nove faglie è lunga quanto quella di Sumatra. La boa al largo del Giappone su cui era stato tarato ha registrato 81 cm, non i 30 che questo progetto credeva; il modello le dà 30 cm."
       },
       "coastalOffline": {
         "item": "Il bilancio costiero non è in queste tabelle",
@@ -1577,8 +1577,8 @@
         "note": "Il crollo dell'Anak Krakatau del 2018 è stato tarato su un'onda di circa 85 m attribuita a uno studio del 2019 che ne simula una di quasi 50 m; Storegga su un'onda di 5–10 m attribuita a uno studio che misurava i depositi sulla costa. Restano così finché non si sceglie un numero che le fonti danno davvero, e intanto sono segnalate qui."
       },
       "unread": {
-        "item": "Tre numeri non sono stati controllati sulla loro fonte",
-        "note": "I 30 cm registrati da una boa a 1 242 km dal Tōhoku, su cui è tarato un controllo delle onde; i tempi d'arrivo degli tsunami, la cui fonte citata non esiste, per cui i loro test sono spenti; e la profondità dei grandi crateri, presa da uno studio su Venere attraverso un articolo successivo che lo cita."
+        "item": "Due numeri non sono stati controllati sulla loro fonte",
+        "note": "I tempi d'arrivo degli tsunami, la cui fonte citata non esiste, per cui i loro test sono spenti; e la profondità dei grandi crateri, presa da uno studio su Venere attraverso un articolo successivo che lo cita."
       },
       "airburstShock": {
         "item": "L'onda d'urto di un airburst è un punto fermo, disegnato ad anelli rotondi",

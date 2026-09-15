@@ -58,9 +58,10 @@ export const GOLDEN_DATASET: readonly GoldenCase[] = [
       'tsunami.meanSlip.m': { min: 7, max: 15 },
       // And the amplitude row now spreads on the field's law, from
       // half the down-dip width and with the energy normalisation of
-      // a ring. At DART 21413 that takes it from 1.93 m against the
-      // 0.30 recorded to 0.27; at a thousand kilometres it is 0.69 m
-      // where it was 2.36.
+      // a ring. At DART 21413 that takes it from 1.93 m to 0.27 (the
+      // buoy's file crests at 0.81 m, not the 0.30 then believed:
+      // B-034); at a thousand kilometres it is 0.69 m where it was
+      // 2.36.
       'tsunami.amplitudeAt1000kmDispersed.m': { min: 0.3, max: 1.5 },
     },
   },

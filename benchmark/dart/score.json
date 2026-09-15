@@ -1,0 +1,695 @@
+{
+ "headline": "bracketed-2cm",
+ "decision": "C0",
+ "readings": {
+  "bracketed-2cm": {
+   "decided": "C0",
+   "summary": {
+    "C0": {
+     "events": 9,
+     "biasLn": -0.0015081155837615781,
+     "scatterLn": 0.44168076744201623
+    },
+    "C1": {
+     "events": 9,
+     "biasLn": 0.32149192758467365,
+     "scatterLn": 0.48428220801800737
+    },
+    "C1 dispersed": {
+     "events": 9,
+     "biasLn": 0.2844474009615223,
+     "scatterLn": 0.48655350927086194
+    },
+    "C1 range": {
+     "events": 9,
+     "biasLn": 0.48777313522953364,
+     "scatterLn": 0.45655168952989483
+    }
+   },
+   "events": [
+    {
+     "id": "usp000exfn",
+     "date": "2006-11-15",
+     "place": "2006 Kuril Islands Earthquake",
+     "magnitude": 8.3,
+     "records": 11,
+     "medianLn": {
+      "C0": -0.0811393486103792,
+      "C1": 0.09021491797626735,
+      "C1 dispersed": 0.03382730686149745,
+      "C1 range": 0.16022288574937835
+     }
+    },
+    {
+     "id": "official20100227063411530_30",
+     "date": "2010-02-27",
+     "place": "2010 Maule, Chile Earthquake",
+     "magnitude": 8.8,
+     "records": 18,
+     "medianLn": {
+      "C0": -0.1437601159102235,
+      "C1": 0.28339409922909076,
+      "C1 dispersed": 0.2647282755975574,
+      "C1 range": 0.16533803270532252
+     }
+    },
+    {
+     "id": "official20110311054624120_30",
+     "date": "2011-03-11",
+     "place": "2011 Great Tohoku Earthquake, Japan",
+     "magnitude": 9.1,
+     "records": 28,
+     "medianLn": {
+      "C0": -0.3168729069251027,
+      "C1": -0.4586370183417374,
+      "C1 dispersed": -0.46278929067633934,
+      "C1 range": -0.3049432535436064
+     }
+    },
+    {
+     "id": "usp000juhz",
+     "date": "2012-10-28",
+     "place": "206 km SW of Prince Rupert, Canada",
+     "magnitude": 7.8,
+     "records": 7,
+     "medianLn": {
+      "C0": -0.26962956387240666,
+      "C1": 0.19324747740868253,
+      "C1 dispersed": 0.1738717102192118,
+      "C1 range": 0.322450310486584
+     }
+    },
+    {
+     "id": "usc000nzvd",
+     "date": "2014-04-01",
+     "place": "93 km NW of Iquique, Chile",
+     "magnitude": 8.2,
+     "records": 5,
+     "medianLn": {
+      "C0": 0.4770760072194279,
+      "C1": 0.588423999943645,
+      "C1 dispersed": 0.5256619663423192,
+      "C1 range": 0.82129070261737
+     }
+    },
+    {
+     "id": "us20003k7a",
+     "date": "2015-09-16",
+     "place": "48 km W of Illapel, Chile",
+     "magnitude": 8.3,
+     "records": 14,
+     "medianLn": {
+      "C0": -0.0015081155837615781,
+      "C1": 0.32149192758467365,
+      "C1 dispersed": 0.2844474009615223,
+      "C1 range": 0.48777313522953364
+     }
+    },
+    {
+     "id": "ak0219neiszm",
+     "date": "2021-07-29",
+     "place": "2021 Chignik, Alaska Earthquake",
+     "magnitude": 8.2,
+     "records": 4,
+     "medianLn": {
+      "C0": 1.089124403285488,
+      "C1": 1.3133276207840074,
+      "C1 dispersed": 1.3079981073743476,
+      "C1 range": 1.2642640550031938
+     }
+    },
+    {
+     "id": "us6000qw60",
+     "date": "2025-07-29",
+     "place": "2025 Kamchatka Peninsula, Russia Earthquake",
+     "magnitude": 8.8,
+     "records": 22,
+     "medianLn": {
+      "C0": 0.28267484208754373,
+      "C1": 0.7218503669005393,
+      "C1 dispersed": 0.7109492408807119,
+      "C1 range": 0.7867844608035396
+     }
+    },
+    {
+     "id": "us7000qx2g",
+     "date": "2025-09-18",
+     "place": "140 km E of Petropavlovsk-Kamchatsky, Russia",
+     "magnitude": 7.8,
+     "records": 4,
+     "medianLn": {
+      "C0": 0.15850933171986015,
+      "C1": 0.4873779198926972,
+      "C1 dispersed": 0.4709229675620845,
+      "C1 range": 0.509149663528422
+     }
+    }
+   ],
+   "bands": [
+    {
+     "fromKm": 0,
+     "toKm": 1000,
+     "records": 15,
+     "medianLn": {
+      "C0": -0.020262371538089383,
+      "C1": 0.3171526602966309
+     }
+    },
+    {
+     "fromKm": 1000,
+     "toKm": 3000,
+     "records": 27,
+     "medianLn": {
+      "C0": 0.16320244775836,
+      "C1": 0.4518921526241971
+     }
+    },
+    {
+     "fromKm": 3000,
+     "toKm": 7000,
+     "records": 31,
+     "medianLn": {
+      "C0": 0.1451522086180859,
+      "C1": 0.17865729925519924
+     }
+    },
+    {
+     "fromKm": 7000,
+     "toKm": null,
+     "records": 40,
+     "medianLn": {
+      "C0": -0.16996203771715873,
+      "C1": 0.2656255336772028
+     }
+    }
+   ]
+  },
+  "bracketed-1cm": {
+   "decided": "C0",
+   "summary": {
+    "C0": {
+     "events": 11,
+     "biasLn": 0.24289321211406975,
+     "scatterLn": 0.4574866918508551
+    },
+    "C1": {
+     "events": 11,
+     "biasLn": 0.5228636871611974,
+     "scatterLn": 0.5498643652961677
+    },
+    "C1 dispersed": {
+     "events": 11,
+     "biasLn": 0.5081455758913567,
+     "scatterLn": 0.5416429375840105
+    },
+    "C1 range": {
+     "events": 11,
+     "biasLn": 0.6000278317086692,
+     "scatterLn": 0.4610071027895467
+    }
+   },
+   "events": [
+    {
+     "id": "usp000exfn",
+     "date": "2006-11-15",
+     "place": "2006 Kuril Islands Earthquake",
+     "magnitude": 8.3,
+     "records": 12,
+     "medianLn": {
+      "C0": -0.0729220152912193,
+      "C1": 0.11855526446259167,
+      "C1 dispersed": 0.08322294873920792,
+      "C1 range": 0.17927832535861266
+     }
+    },
+    {
+     "id": "official20100227063411530_30",
+     "date": "2010-02-27",
+     "place": "2010 Maule, Chile Earthquake",
+     "magnitude": 8.8,
+     "records": 20,
+     "medianLn": {
+      "C0": -0.11247685153537734,
+      "C1": 0.33903953885084165,
+      "C1 dispersed": 0.3222394524780795,
+      "C1 range": 0.18084386207987063
+     }
+    },
+    {
+     "id": "official20110311054624120_30",
+     "date": "2011-03-11",
+     "place": "2011 Great Tohoku Earthquake, Japan",
+     "magnitude": 9.1,
+     "records": 28,
+     "medianLn": {
+      "C0": -0.3168729069251027,
+      "C1": -0.4586370183417374,
+      "C1 dispersed": -0.46278929067633934,
+      "C1 range": -0.3049432535436064
+     }
+    },
+    {
+     "id": "usp000juhz",
+     "date": "2012-10-28",
+     "place": "206 km SW of Prince Rupert, Canada",
+     "magnitude": 7.8,
+     "records": 8,
+     "medianLn": {
+      "C0": -0.22731104703286864,
+      "C1": 0.19805231145676797,
+      "C1 dispersed": 0.17394251278805234,
+      "C1 range": 0.34372772489058934
+     }
+    },
+    {
+     "id": "usc000f1s0",
+     "date": "2013-02-06",
+     "place": "2013 Santa Cruz Islands Earthquake",
+     "magnitude": 8,
+     "records": 5,
+     "medianLn": {
+      "C0": 0.6122919837426652,
+      "C1": 0.7896548834066152,
+      "C1 dispersed": 0.7607338669408596,
+      "C1 range": 0.7400523932591685
+     }
+    },
+    {
+     "id": "usc000nzvd",
+     "date": "2014-04-01",
+     "place": "93 km NW of Iquique, Chile",
+     "magnitude": 8.2,
+     "records": 6,
+     "medianLn": {
+      "C0": 0.48874516252196887,
+      "C1": 0.593840521866454,
+      "C1 dispersed": 0.5531874304698203,
+      "C1 range": 0.8431372939296986
+     }
+    },
+    {
+     "id": "us20003k7a",
+     "date": "2015-09-16",
+     "place": "48 km W of Illapel, Chile",
+     "magnitude": 8.3,
+     "records": 16,
+     "medianLn": {
+      "C0": 0.03234234122367516,
+      "C1": 0.4222255946264045,
+      "C1 dispersed": 0.36456229028163123,
+      "C1 range": 0.6000278317086692
+     }
+    },
+    {
+     "id": "us7000dflf",
+     "date": "2021-03-04",
+     "place": "2021 Kermadec Islands, New Zealand Earthquake",
+     "magnitude": 8.1,
+     "records": 5,
+     "medianLn": {
+      "C0": 0.8331312539630806,
+      "C1": 1.4822151405645358,
+      "C1 dispersed": 1.4101599280263555,
+      "C1 range": 1.141806743563642
+     }
+    },
+    {
+     "id": "ak0219neiszm",
+     "date": "2021-07-29",
+     "place": "2021 Chignik, Alaska Earthquake",
+     "magnitude": 8.2,
+     "records": 11,
+     "medianLn": {
+      "C0": 1.1054645546792328,
+      "C1": 1.3623582566427497,
+      "C1 dispersed": 1.3485666892970243,
+      "C1 range": 1.279599467511329
+     }
+    },
+    {
+     "id": "us6000qw60",
+     "date": "2025-07-29",
+     "place": "2025 Kamchatka Peninsula, Russia Earthquake",
+     "magnitude": 8.8,
+     "records": 23,
+     "medianLn": {
+      "C0": 0.29616184622604474,
+      "C1": 0.7667011859636209,
+      "C1 dispersed": 0.7585633931991688,
+      "C1 range": 0.8347567626309167
+     }
+    },
+    {
+     "id": "us7000qx2g",
+     "date": "2025-09-18",
+     "place": "140 km E of Petropavlovsk-Kamchatsky, Russia",
+     "magnitude": 7.8,
+     "records": 5,
+     "medianLn": {
+      "C0": 0.24289321211406975,
+      "C1": 0.5228636871611974,
+      "C1 dispersed": 0.5081455758913567,
+      "C1 range": 0.5453918007338593
+     }
+    }
+   ],
+   "bands": [
+    {
+     "fromKm": 0,
+     "toKm": 1000,
+     "records": 17,
+     "medianLn": {
+      "C0": -0.020262371538089383,
+      "C1": 0.4118049196296927
+     }
+    },
+    {
+     "fromKm": 1000,
+     "toKm": 3000,
+     "records": 38,
+     "medianLn": {
+      "C0": 0.45678673813588316,
+      "C1": 0.7597002224682603
+     }
+    },
+    {
+     "fromKm": 3000,
+     "toKm": 7000,
+     "records": 36,
+     "medianLn": {
+      "C0": 0.2367794915013471,
+      "C1": 0.39103958842674835
+     }
+    },
+    {
+     "fromKm": 7000,
+     "toKm": null,
+     "records": 48,
+     "medianLn": {
+      "C0": -0.08347616844374486,
+      "C1": 0.33148267918975316
+     }
+    }
+   ]
+  },
+  "covered-2cm": {
+   "decided": "C0",
+   "summary": {
+    "C0": {
+     "events": 6,
+     "biasLn": 0.04279365821432042,
+     "scatterLn": 0.30198102112695346
+    },
+    "C1": {
+     "events": 6,
+     "biasLn": 0.2941370381639437,
+     "scatterLn": 0.4394411152775357
+    },
+    "C1 dispersed": {
+     "events": 6,
+     "biasLn": 0.2770729581506462,
+     "scatterLn": 0.43869803388544854
+    },
+    "C1 range": {
+     "events": 6,
+     "biasLn": 0.37623989762829313,
+     "scatterLn": 0.4134252706718221
+    }
+   },
+   "events": [
+    {
+     "id": "usp000exfn",
+     "date": "2006-11-15",
+     "place": "2006 Kuril Islands Earthquake",
+     "magnitude": 8.3,
+     "records": 6,
+     "medianLn": {
+      "C0": -0.0729220152912193,
+      "C1": 0.10089615643519023,
+      "C1 dispersed": 0.08322294873920792,
+      "C1 range": 0.21255977605548548
+     }
+    },
+    {
+     "id": "official20110311054624120_30",
+     "date": "2011-03-11",
+     "place": "2011 Great Tohoku Earthquake, Japan",
+     "magnitude": 9.1,
+     "records": 25,
+     "medianLn": {
+      "C0": -0.30742157215188176,
+      "C1": -0.43080440467946124,
+      "C1 dispersed": -0.4361061965358278,
+      "C1 range": -0.26329236058414895
+     }
+    },
+    {
+     "id": "usp000juhz",
+     "date": "2012-10-28",
+     "place": "206 km SW of Prince Rupert, Canada",
+     "magnitude": 7.8,
+     "records": 7,
+     "medianLn": {
+      "C0": -0.3366808367764565,
+      "C1": 0.004253987536061305,
+      "C1 dispersed": -0.004136009958991351,
+      "C1 range": 0.24333013172816434
+     }
+    },
+    {
+     "id": "usc000nzvd",
+     "date": "2014-04-01",
+     "place": "93 km NW of Iquique, Chile",
+     "magnitude": 8.2,
+     "records": 4,
+     "medianLn": {
+      "C0": 0.3598257251940442,
+      "C1": 0.5288432248860384,
+      "C1 dispersed": 0.5185741153935659,
+      "C1 range": 0.777991417655145
+     }
+    },
+    {
+     "id": "us6000qw60",
+     "date": "2025-07-29",
+     "place": "2025 Kamchatka Peninsula, Russia Earthquake",
+     "magnitude": 8.8,
+     "records": 16,
+     "medianLn": {
+      "C0": 0.29981263281879156,
+      "C1": 0.7842551885539957,
+      "C1 dispersed": 0.7786913604108794,
+      "C1 range": 0.8483708781107624
+     }
+    },
+    {
+     "id": "us7000qx2g",
+     "date": "2025-09-18",
+     "place": "140 km E of Petropavlovsk-Kamchatsky, Russia",
+     "magnitude": 7.8,
+     "records": 4,
+     "medianLn": {
+      "C0": 0.15850933171986015,
+      "C1": 0.4873779198926972,
+      "C1 dispersed": 0.4709229675620845,
+      "C1 range": 0.509149663528422
+     }
+    }
+   ],
+   "bands": [
+    {
+     "fromKm": 0,
+     "toKm": 1000,
+     "records": 12,
+     "medianLn": {
+      "C0": -0.14926559873423015,
+      "C1": 0.24756616199455928
+     }
+    },
+    {
+     "fromKm": 1000,
+     "toKm": 3000,
+     "records": 20,
+     "medianLn": {
+      "C0": 0.1641414135429033,
+      "C1": 0.4934889997258157
+     }
+    },
+    {
+     "fromKm": 3000,
+     "toKm": 7000,
+     "records": 22,
+     "medianLn": {
+      "C0": 0.1643679913951784,
+      "C1": 0.03713638151917912
+     }
+    },
+    {
+     "fromKm": 7000,
+     "toKm": null,
+     "records": 8,
+     "medianLn": {
+      "C0": -0.39363195679284924,
+      "C1": -0.37163776336729304
+     }
+    }
+   ]
+  },
+  "covered-1cm": {
+   "decided": "C0",
+   "summary": {
+    "C0": {
+     "events": 7,
+     "biasLn": 0.24289321211406975,
+     "scatterLn": 0.5660301492759116
+    },
+    "C1": {
+     "events": 7,
+     "biasLn": 0.5228636871611974,
+     "scatterLn": 0.6063771329312724
+    },
+    "C1 dispersed": {
+     "events": 7,
+     "biasLn": 0.5081455758913567,
+     "scatterLn": 0.6075541399745212
+    },
+    "C1 range": {
+     "events": 7,
+     "biasLn": 0.5453918007338593,
+     "scatterLn": 0.5172215867783799
+    }
+   },
+   "events": [
+    {
+     "id": "usp000exfn",
+     "date": "2006-11-15",
+     "place": "2006 Kuril Islands Earthquake",
+     "magnitude": 8.3,
+     "records": 6,
+     "medianLn": {
+      "C0": -0.0729220152912193,
+      "C1": 0.10089615643519023,
+      "C1 dispersed": 0.08322294873920792,
+      "C1 range": 0.21255977605548548
+     }
+    },
+    {
+     "id": "official20110311054624120_30",
+     "date": "2011-03-11",
+     "place": "2011 Great Tohoku Earthquake, Japan",
+     "magnitude": 9.1,
+     "records": 25,
+     "medianLn": {
+      "C0": -0.30742157215188176,
+      "C1": -0.43080440467946124,
+      "C1 dispersed": -0.4361061965358278,
+      "C1 range": -0.26329236058414895
+     }
+    },
+    {
+     "id": "usp000juhz",
+     "date": "2012-10-28",
+     "place": "206 km SW of Prince Rupert, Canada",
+     "magnitude": 7.8,
+     "records": 8,
+     "medianLn": {
+      "C0": -0.30315520032443155,
+      "C1": 0.09875073247237191,
+      "C1 dispersed": 0.08486785013011022,
+      "C1 range": 0.28289022110737416
+     }
+    },
+    {
+     "id": "usc000nzvd",
+     "date": "2014-04-01",
+     "place": "93 km NW of Iquique, Chile",
+     "magnitude": 8.2,
+     "records": 4,
+     "medianLn": {
+      "C0": 0.3598257251940442,
+      "C1": 0.5288432248860384,
+      "C1 dispersed": 0.5185741153935659,
+      "C1 range": 0.777991417655145
+     }
+    },
+    {
+     "id": "ak0219neiszm",
+     "date": "2021-07-29",
+     "place": "2021 Chignik, Alaska Earthquake",
+     "magnitude": 8.2,
+     "records": 5,
+     "medianLn": {
+      "C0": 1.3417347359257208,
+      "C1": 1.4807448433117105,
+      "C1 dispersed": 1.4738793956412226,
+      "C1 range": 1.3368476978037567
+     }
+    },
+    {
+     "id": "us6000qw60",
+     "date": "2025-07-29",
+     "place": "2025 Kamchatka Peninsula, Russia Earthquake",
+     "magnitude": 8.8,
+     "records": 16,
+     "medianLn": {
+      "C0": 0.29981263281879156,
+      "C1": 0.7842551885539957,
+      "C1 dispersed": 0.7786913604108794,
+      "C1 range": 0.8483708781107624
+     }
+    },
+    {
+     "id": "us7000qx2g",
+     "date": "2025-09-18",
+     "place": "140 km E of Petropavlovsk-Kamchatsky, Russia",
+     "magnitude": 7.8,
+     "records": 5,
+     "medianLn": {
+      "C0": 0.24289321211406975,
+      "C1": 0.5228636871611974,
+      "C1 dispersed": 0.5081455758913567,
+      "C1 range": 0.5453918007338593
+     }
+    }
+   ],
+   "bands": [
+    {
+     "fromKm": 0,
+     "toKm": 1000,
+     "records": 16,
+     "medianLn": {
+      "C0": 0.019283411930371593,
+      "C1": 0.3644787899631618
+     }
+    },
+    {
+     "fromKm": 1000,
+     "toKm": 3000,
+     "records": 22,
+     "medianLn": {
+      "C0": 0.20398679572075817,
+      "C1": 0.5671714453083487
+     }
+    },
+    {
+     "fromKm": 3000,
+     "toKm": 7000,
+     "records": 23,
+     "medianLn": {
+      "C0": 0.18358377417227092,
+      "C1": 0.05489670192146448
+     }
+    },
+    {
+     "fromKm": 7000,
+     "toKm": null,
+     "records": 8,
+     "medianLn": {
+      "C0": -0.39363195679284924,
+      "C1": -0.37163776336729304
+     }
+    }
+   ]
+  }
+ }
+}

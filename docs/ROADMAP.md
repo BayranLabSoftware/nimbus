@@ -259,7 +259,10 @@ in the net:
 - **Tsunami amplitudes at buoys** for megathrusts the coupling was not
   tuned on: Illapel 2015 at DART, and Maule 2010 only where the row does
   not lean on the aspect-ratio fallback its rupture helped set
-  (`seismicTsunami.ts`).
+  (`seismicTsunami.ts`). _Done on 15 September 2026 as BM-05: nine
+  megathrusts from 2006 to 2025 and 113 DART records, Illapel and Maule
+  among them, read to rules committed before the law ran on them; it
+  reads 1.00× at the median event (docs/SCIENCE.md)._
 - **A plume** from an eruption Mastin et al. 2009 did not fit, with an
   eruption rate measured independently of the column: Grímsvötn 2011,
   Calbuco 2015 — and Eyjafjallajökull 2010 only once its preset takes the
@@ -444,10 +447,11 @@ the candidates for re-tuning:
   the conventional mortality bands were composed with Beirut in view.
 - **Volcanoes.** The PDC, ashfall, lahar and climate relations are
   project calibrations whose anchors were not rechecked.
-- **Unread.** The 30 cm recorded at DART 21413 (Satake et al. 2013) and a
-  published table of tsunami arrival times; the tests that need them are
-  skipped. The Venus II chapter behind the complex-crater depth, read only
-  through Collins et al. 2005.
+- **Unread.** A published table of tsunami arrival times; the tests that
+  need it are skipped. The Venus II chapter behind the complex-crater
+  depth, read only through Collins et al. 2005. The 30 cm credited to
+  Satake et al. 2013 at DART 21413 was read from the buoy's own file on
+  15 September 2026 instead: it crests at 0.81 m (B-034).
 
 Every item above is now a declared gap of the validation report and of
 the public validation page, together with two the reading made plain

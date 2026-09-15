@@ -87,9 +87,11 @@ import { seismicMomentFromMagnitude } from './seismicMoment.js';
  * the Strasser regressions Tōhoku comes out at 13.0 m where the
  * inversions average about 10: the regression area is smaller than
  * the inverted one, and the difference is left standing rather than
- * absorbed into a coupling factor. What is checked against the record
- * is the wave, not the slip — at DART 21413, inside the main lobe,
- * the model reads 0.27 m against the 0.30 recorded.
+ * absorbed into a coupling factor. What is checked against the records
+ * is the wave, not the slip: across nine megathrusts and 113 deep-ocean
+ * records the model reads 1.00× at the median event (BM-05,
+ * docs/BENCHMARK_PROTOCOL.md). At DART 21413, inside the main lobe, it
+ * reads 0.30 m against a crest of 0.81 m.
  */
 function ruptureAspectRatio(input: SeismicTsunamiInput): number {
   if (input.subductionInterface) return 2.5;
@@ -115,8 +117,10 @@ function ruptureAspectRatio(input: SeismicTsunamiInput): number {
  *   - Megathrust subduction (dip ≈ 10–15°, dominantly dip-slip on a
  *     shallow-dipping plane that lifts a wide rupture footprint):
  *     0.6 — Tanioka & Satake (1996) GRL 23: 861 add the horizontal-
- *     slope contribution to a base ≈ 0.5; we use 0.6 as the
- *     calibrated all-in factor against Tōhoku DART buoy amplitudes.
+ *     slope contribution to a base ≈ 0.5; 0.6 was set on Tōhoku at
+ *     DART 21413, against a record of 30 cm the buoy's file does not
+ *     hold (it crests at 0.81 m, B-034). It is not re-tuned: the law
+ *     it sits in reads 1.00× at the median of nine megathrusts (BM-05).
  *   - Continental reverse-thrust (dip ≈ 30°): 0.5 — Okada 1992 §3
  *     mid-dip canonical.
  *   - Continental normal (dip ≈ 50°): 0.4 — geometry rotates more
@@ -159,7 +163,8 @@ function dipDependentUpliftFactor(input: SeismicTsunamiInput): number {
  *
  * Verification anchors after this calibration:
  *   - Tōhoku 2011 mean slip: 8.5 m (Hayes 2017: 8-10 m)
- *   - Tōhoku 2011 peak DART 21413: 0.27 m (observed 0.30 m)
+ *   - Tōhoku 2011 peak DART 21413: 0.27 m (then believed 0.30 m
+ *     recorded; the buoy's file crests at 0.81 m, B-034)
  *   - Sumatra-Andaman 2004 Cocos amplitude: 0.43 m (Bernard 2006: 0.4 m)
  */
 const WAVE_COUPLING_EFFICIENCY = 0.7;
@@ -341,12 +346,15 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
   // decay carries the energy normalisation of a ring, √(4√π) ≈ 2.66,
   // which this row did not have.
   //
-  // The record settles it. At DART 21413, inside the main lobe, this
-  // row read 1.93 m against the 0.30 m recorded; with the field's law
-  // and the beam it reads 0.27 (both at the 1 500 km the rows used
-  // until 14 September 2026; at the buoy's real 1 242 km, 0.29). The gap between the
-  // veil and the number printed beside it is closed, and what closed
-  // it is an observation rather than a preference.
+  // It was settled on DART 21413, inside the main lobe, where this
+  // row read 1.93 m and the field's law with the beam 0.27 (both at
+  // the 1 500 km the rows used until 14 September 2026; at the buoy's
+  // real 1 242 km, 0.30), against a record of 30 cm. The buoy's own
+  // file crests at 0.81 m (B-034), and neither reading is close to
+  // it. What the law rests on is BM-05: across nine megathrusts and
+  // 113 deep-ocean records it reads 1.00× at the median event. The
+  // gap between the veil and the number printed beside it stays
+  // closed.
   const R0 = megathrustSourceRadius(W);
   const amp = (range: number): number => A0 * spreadingFactor(R0, range, 0.5, true);
   const amp1000 = amp(1_000_000);

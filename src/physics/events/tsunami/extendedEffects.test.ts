@@ -47,19 +47,20 @@ describe('submarineLandslideAmplitude (Watts 2000)', () => {
 });
 
 describe('tohoku2011DARTReference', () => {
-  it('brackets the ~30 cm peak recorded at DART 21413', () => {
+  it('gives an independent estimate of the wave at DART 21413', () => {
     const A = tohoku2011DARTReference() as number;
-    // Observed peak ~0.30 m. This 1/r reference lands at ~0.13 m —
-    // under the record by a factor of two, which is what 1/r does to
-    // a wave that spreads over a ring.
+    // The buoy's NOAA NDBC file crests at 0.81 m (B-034; this row long
+    // believed 0.30). This 1/r reference lands at ~0.13 m — under the
+    // record by a factor of six, which is what 1/r does to a wave that
+    // spreads over a ring.
     //
     // It used to be one half of a bracket: the simulator's own
-    // cylindrical law landed at 1.93 m, six times over, and the
-    // record sat between them. Since 9 September 2026 the simulator
-    // has one law and reads 0.27 m here, so this is no longer a
-    // bracket but an independent estimate from a different formula
-    // and a different source amplitude, kept because a law with
-    // nothing to disagree with is a law nobody is checking.
+    // cylindrical law landed at 1.93 m, and the record then believed
+    // sat between them. Since 9 September 2026 the simulator has one
+    // law and reads 0.30 m here, so this is no longer a bracket but an
+    // independent estimate from a different formula and a different
+    // source amplitude, kept because a law with nothing to disagree
+    // with is a law nobody is checking.
     expect(A).toBeGreaterThan(0.05);
     expect(A).toBeLessThan(1.0);
   });

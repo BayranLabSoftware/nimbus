@@ -43,7 +43,7 @@
     "tsunami.amplitudeAt1000kmDispersed.m": {
       "min": 0.3,
       "max": 1.5,
-      "comment": "Kajiura dispersion on the field's spreading law: from half the down-dip width, with the energy normalisation of a ring. 0.69 m here, where the old law read 2.36 and at DART 21413 read 1.93 m against the 0.30 recorded."
+      "comment": "Kajiura dispersion on the field's spreading law: from half the down-dip width, with the energy normalisation of a ring. 0.69 m here, where the old law read 2.36 and at DART 21413 read 1.93 m, against a crest of 0.81 m in the buoy's file."
     }
   }
 }

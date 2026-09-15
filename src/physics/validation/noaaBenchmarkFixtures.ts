@@ -19,7 +19,8 @@
  *     analytic test of synolakisRunup against Carrier-Greenspan
  *     theory + Synolakis 1987 lab data.
  *   - Tōhoku 2011 DART buoy: integration test using
- *     tohoku2011DARTReference and the seismic tsunami pipeline.
+ *     tohoku2011DARTReference and the seismic tsunami pipeline,
+ *     against the crest of the buoy's own NOAA NDBC file.
  *   - Sumatra-Andaman 2004: integration test using simulateEarthquake
  *     and a known DART-distance reference.
  *
@@ -62,7 +63,8 @@ export const NOAA_SEISMIC_PIN_TOLERANCE = 0.25;
  * The cylindrical 1D-radial law over-predicts the deep-water
  * amplitude of a megathrust at buoy range: 1.65× at DART 21413 and
  * 1.80× at Cocos Island, both in the same direction and of the same
- * size. Until 9 September 2026 the two rows read as matches, because
+ * size. (The 1.65× was against the 30 cm then believed recorded; the
+ * buoy's own file crests at 0.81 m, which makes it 0.61×.) Until 9 September 2026 the two rows read as matches, because
  * a fixed exponential exp(−r / 2 500 km) was applied to them under
  * the name of frequency dispersion. It is not dispersion — Kajiura's
  * parameter for a wave 1 400 km long over 4 km of ocean is near zero,
@@ -81,16 +83,20 @@ export const MEGATHRUST_FAR_FIELD_RESIDUAL = { low: 1.3, high: 2.2 } as const;
 
 /**
  * What is left at a buoy inside the main lobe, once the beam is
- * applied: the model reads 1.14× the peak recorded at DART 21413,
- * where the isotropic law read 1.65×.
+ * applied: the Saint-Venant route reads 0.32× the crest of DART
+ * 21413's own file.
  *
- * This is a match rather than a residual, and the band is wide enough
- * to be one: a far-field tsunami amplitude reproduced to within about
- * fifteen per cent of a buoy record is at the limit of what the
- * inter-model spread of MOST, GeoClaw and COMCOT allows anyone to
- * claim (Synolakis et al. 2008 §6 puts that spread at ±25–50 %).
+ * A residual, declared, and not a pass mark. Until 15 September 2026
+ * this band was 0.75–1.5 and called a match, because the route read
+ * 0.79× a record believed to be 30 cm; the buoy's NOAA NDBC file
+ * crests at 0.81 m (B-034). The closed-form chain reads 0.37× there,
+ * and an exact linear solution for a uniform slip on the same rupture
+ * 0.46×: a flat source this long beams its wave into a narrower lobe
+ * than Tōhoku's did. Across nine megathrusts and 113 buoy records the
+ * chain reads 1.00× at the median event (docs/BENCHMARK_PROTOCOL.md,
+ * BM-05), so this buoy is one of its misses rather than its measure.
  */
-export const BEAMED_MAIN_LOBE_RESIDUAL = { low: 0.75, high: 1.5 } as const;
+export const BEAMED_MAIN_LOBE_RESIDUAL = { low: 0.2, high: 0.45 } as const;
 
 /**
  * What is left at a gauge PAST the first null, once the beam is
@@ -112,8 +118,10 @@ export const BEAMED_MAIN_LOBE_RESIDUAL = { low: 0.75, high: 1.5 } as const;
  *
  * The main-lobe row moved the other way in the same change — DART
  * 21413 from 4.5× the record to 0.90× — which is the trade this
- * declares: the measurement where the pattern is a prediction is now
- * right, and the one past its null is short by three.
+ * declared: the measurement where the pattern is a prediction right,
+ * and the one past its null short by three. The record was the 30 cm
+ * then believed; against the 0.81 m of the buoy's file the main-lobe
+ * row reads 0.37× (B-034), and the trade is not one.
  */
 export const BEAMED_PAST_NULL_RESIDUAL = { low: 0.2, high: 0.6 } as const;
 
@@ -181,9 +189,12 @@ export interface NoaaTohokuDARTReference {
   dartId: string;
   /** Great-circle distance from the epicentre to the buoy (m). */
   distanceM: number;
-  /** Observed peak amplitude (m). Range from Satake et al. 2013
-   *  Fig. 6 — DART traces show 0.25-0.40 m at this buoy depending
-   *  on filtering; 0.30 m is the central inversion value. */
+  /** Observed crest (m): the highest value of the buoy's NOAA NDBC
+   *  record in the tsunami window above the record's median there,
+   *  detided and low-passed as BM-05 reads it
+   *  (scripts/benchmark/dart-records.py, benchmark/dart/records.json).
+   *  Until 15 September 2026 this was 0.30 m, credited to a figure of
+   *  Satake et al. 2013 that was never read here (B-034). */
   observedAmplitudeM: number;
   source: string;
 }
@@ -202,8 +213,9 @@ export const TOHOKU_2011_DART_REFERENCE: NoaaTohokuDARTReference = {
   magnitude: 9.1,
   dartId: '21413',
   distanceM: DART_21413_FROM_TOHOKU_EPICENTRE_M,
-  observedAmplitudeM: 0.3,
-  source: 'Satake et al. 2013 BSSA 103(2B), Fig. 6',
+  observedAmplitudeM: 0.81,
+  source:
+    'NOAA NDBC 21413t2011.txt.gz, crest 0.806 m 1 h 20 min after the origin (benchmark/dart/records.json)',
 };
 
 export interface NoaaSumatra2004Reference {

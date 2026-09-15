@@ -507,15 +507,15 @@
       {
         "record": "Tōhoku 2011 at DART 21413",
         "rangeM": 1242000,
-        "observedLowM": 0.2,
-        "observedHighM": 0.5,
+        "observedLowM": 0.77,
+        "observedHighM": 0.88,
         "modelM": 0.297,
-        "contains": true,
+        "contains": false,
         "globeM": null,
         "globeContains": null,
-        "gated": true,
+        "gated": false,
         "role": "tuned",
-        "source": "DART buoy 21413, 1 242 km from the epicentre, recorded a peak of about 30 cm (Satake et al. 2013, BSSA 103 (2B): 1473)"
+        "source": "DART buoy 21413, 1 242 km from the epicentre: NOAA NDBC file 21413t2011.txt.gz, crest 0.81 m 1 h 20 min after the origin, read by scripts/benchmark/dart-records.py (benchmark/dart/records.json)"
       },
       {
         "record": "Storegga 8200 BP on the Norwegian coast",
@@ -885,9 +885,9 @@
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 0.954,
-          "scatterLn": 0.01,
-          "inside": 2,
+          "bias": 0.591,
+          "scatterLn": 0.49,
+          "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
@@ -913,9 +913,9 @@
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 0.954,
-          "scatterLn": 0.01,
-          "inside": 2,
+          "bias": 0.591,
+          "scatterLn": 0.49,
+          "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
@@ -2868,9 +2868,7 @@
           "toll",
           "wave"
         ],
-        "gated": [
-          "wave"
-        ],
+        "gated": [],
         "use": {
           "toll": {
             "role": "heldOut",
@@ -2878,10 +2876,10 @@
           },
           "wave": {
             "role": "tuned",
-            "how": "The megathrust uplift factor 0.6 is \"the calibrated all-in factor against Tōhoku DART buoy amplitudes\" (events/earthquake/seismicTsunami.ts), and the far-field source radius — half the down-dip width — was chosen by measuring this buoy against the alternative (tsunami/spreading.ts)."
+            "how": "The megathrust uplift factor 0.6 was set on this buoy, and the far-field source radius — half the down-dip width — chosen by measuring it against the alternative (tsunami/spreading.ts), both on a record of 30 cm the buoy's file does not hold: it crests at 0.81 m, and the law reads 0.37× it (B-034). The row is declared, not re-tuned: across nine megathrusts and 113 deep-ocean records the law reads 1.00× at the median event (docs/BENCHMARK_PROTOCOL.md, BM-05)."
           }
         },
-        "source": "18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 242 km out"
+        "source": "18 500 dead, over 90 % of them drowned; a crest of 0.81 m at DART 21413, 1 242 km out"
       },
       {
         "name": "Sumatra–Andaman 2004",

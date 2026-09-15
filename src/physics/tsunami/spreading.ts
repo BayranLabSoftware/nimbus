@@ -14,8 +14,8 @@
  * decaying from there. That over-states the far field badly, because
  * a hump does not travel as a coherent ring of its own peak height —
  * it spreads, and the leading crest carries only part of what it
- * started with. For Tōhoku the law read 1.34 m at DART 21413 where
- * 30 cm was recorded, and the whole planet's coasts came out at a
+ * started with. For Tōhoku the law read 1.34 m at DART 21413, and
+ * the whole planet's coasts came out at a
  * metre or two, so the toll of a Sumatran earthquake was dominated by
  * Tokyo Bay, Mumbai and Rio de Janeiro.
  *
@@ -30,8 +30,9 @@
  * the edge of the source, where it belongs. It reproduces the
  * Saint-Venant solver of the NOAA benchmark to three per cent — that
  * solver run on its own Gaussian gives 0.494 m at DART where this
- * gives 0.508 — and it takes the field itself to 0.27 m against the
- * 0.30 recorded.
+ * gives 0.508. Across nine megathrusts and 113 deep-ocean records the
+ * field on this law reads 1.00× at the median event (BM-05,
+ * docs/BENCHMARK_PROTOCOL.md).
  *
  * The constant is 4√π, the algebra of a Gaussian ring rather than a
  * number chosen to make a row pass.
@@ -71,10 +72,13 @@ export function spreadingFactor(
  *
  * Not half its along-strike length. A wave leaving a long fault
  * leaves it broadside, so what it sees is the across-strike profile —
- * the same argument that settles the wavelength at 2·W. Measured at
- * DART 21413: half the along-strike length spreads Tōhoku's whole
- * source amplitude over a disc 351 km across and reads 1.93 m where
- * 0.30 was recorded; half the down-dip width reads 0.27 m.
+ * the same argument that settles the wavelength at 2·W. It was
+ * chosen at DART 21413, where half the along-strike length spreads
+ * Tōhoku's whole source amplitude over a disc 351 km across and reads
+ * 1.93 m and half the down-dip width 0.27 m, against a record of
+ * 30 cm; the buoy's file crests at 0.81 m (B-034), which neither
+ * matches. The choice stands on BM-05 instead: half the down-dip
+ * width reads 1.00× at the median of nine megathrusts.
  *
  * One line, so the veil and the published rows cannot pick different
  * ones — which they did, and the gap was pinned as a known

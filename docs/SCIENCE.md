@@ -454,6 +454,14 @@ per cent of each other and both inside the buoy's band. Before, they
 read 4.5× and 1.14× and the disagreement between them was the thing
 nobody could explain.
 
+_Corrected on 15 September 2026._ The 0.30 m recorded in the table was
+never read from a source: the buoy's own NOAA NDBC file crests at
+0.81 m, where the published row reads 0.30 m (0.37×) and the
+Saint-Venant route 0.32× (B-034). The two routes still agree with each
+other; neither agrees with the buoy. What the law was measured on
+instead, nine megathrusts and 113 deep-ocean records, is in "The far
+wave against the deep ocean" below.
+
 What it costs, stated rather than absorbed. **Cocos Island**, past the
 first null of the 2004 rupture and standing on the incoherent floor,
 goes from 0.83× the gauge to 0.33×: the old agreement was a source
@@ -1282,6 +1290,84 @@ damaged area set mainly by the total energy and its shape by how the energy
 is spread along the path. A line source built here would be a model of this
 project's, and none is added. Until this section the project quoted Popova et
 al.'s modelled damage as reaching 108 km; their text says 120 km.
+
+### The far wave against the deep ocean (15 September 2026)
+
+`scripts/benchmark/dart-records.py`, `dart-c0.ts`, `dart-c1.py`,
+`dart-score.ts`; their outputs in `benchmark/dart/`. The benchmark campaign
+found the megathrust crest 0.28× the exact linear solution for Nimbus's own
+rupture at 3 000 km (`docs/BENCHMARK_REPORT.md`, BM-05): the law spreads the
+wave as a ring from half the down-dip width, where a long rupture keeps its
+broadside wave far longer. Which of the two is nearer the ocean is a question
+for records, and how to ask it was written down before any was read
+(`docs/BENCHMARK_PROTOCOL.md`, "After the campaign: the far wave of a
+megathrust", commit `d3a64b0`):
+
+- **Events.** Every thrust in USGS ComCat from 2006 to 2025 of magnitude 7.7
+  or more and depth 71 km or less: 30 earthquakes.
+- **Records.** Every NOAA NDBC DART file of their years, detided by eight
+  constituents fitted over ±3 days outside the event.
+- **Models.** C0, the law as it stands. C1, Okada's deformation of a uniform
+  slip over Nimbus's own rectangle on the thrust plane, propagated by the
+  exact linear solution on a flat ocean, with no coupling factor.
+- **Score.** ln(model / observed crest), its median over an event's records,
+  and the model whose median over events is nearer zero, by more than ln 1.25.
+
+The first reading of the records (commit `8b0a88a`) kept what a buoy
+transmits wrong — values off by metres, 2¹⁵ and 2¹⁴ mm among them, so that
+Haida Gwaii 2012 had a crest of 32.5 m at DART 51407 — along with seismic
+noise near the source, levels centimetres off the tide prediction, and,
+through its coverage rule, almost no far record. The protocol was amended
+before either model ran (commit `f31536a`): bad samples screened by
+Hampel's identifier, 1-min means low-passed at 3 min, the crest read above
+the record's median and at least 2 cm (on days chosen at random, the tide
+fit misses the level inside its gap by 1.9 cm at the median), and coverage
+asked of the crest rather than of a fixed window, after Davies (2019). Each
+of those is a choice, so the crest's floor and the coverage rule were crossed
+into four readings, and a model could be chosen only if all four chose it.
+
+All four chose C0.
+
+| Reading                                    | Events | Records | C0, the law       | C1, uniform slip, exact |
+| ------------------------------------------ | -----: | ------: | ----------------- | ----------------------- |
+| crest bracketed by samples, ≥ 2 cm (first) |      9 |     113 | 1.00× (σ ln 0.44) | 1.38× (σ ln 0.48)       |
+| crest bracketed by samples, ≥ 1 cm         |     11 |     139 | 1.27× (σ ln 0.46) | 1.69× (σ ln 0.55)       |
+| 90 % of the window sampled, ≥ 2 cm         |      6 |      62 | 1.04× (σ ln 0.30) | 1.34× (σ ln 0.44)       |
+| 90 % of the window sampled, ≥ 1 cm         |      7 |      69 | 1.27× (σ ln 0.57) | 1.69× (σ ln 0.61)       |
+
+The factor is the median over events of each event's median ratio; σ is the
+spread of those event medians. In the first reading the law reads Kuril 2006
+0.92×, Maule 2010 0.87×, Tōhoku 2011 0.73×, Haida Gwaii 2012 0.76×, Iquique
+2014 1.61×, Illapel 2015 1.00×, Chignik 2021 2.97×, and Kamchatka 2025
+1.33× in July and 1.17× in September. Its records pooled by distance read
+0.98× within 1 000 km, 1.18× to 3 000, 1.16× to 7 000 and 0.84× beyond;
+C1's read 1.37×, 1.57×, 1.20× and 1.30×. The two readings at 1 cm add Santa
+Cruz 2013 and Kermadec 2021, whose crests lie within the tide fit's miss, and
+the law reads those two 1.84× and 2.30×.
+
+So the law's fall with distance, measured against a flat ocean and a uniform
+slip, is not a fall against the ocean: the flat solution for that source is
+too high at every distance, and Nimbus's dispersion factor takes it only to
+1.33×. What it lacks — slip that is not uniform, a sea floor that is not
+flat, dispersion — is where the difference would come from, and none of that
+was measured here. BM-05 is declared with these numbers, Nimbus keeps its
+law, and nothing in it was tuned on the records. The scatter between events,
+a factor of 1.56, is the size of the law's error on a megathrust's far wave.
+
+**DART 21413.** The one buoy the law had been checked on was Tōhoku's, at
+"about 30 cm" credited to Satake et al. 2013 without the paper having been
+read; the megathrust uplift factor, 0.6, was set on it, and the far-field
+source radius chosen by it. The buoy's file crests at 0.81 m — 0.80 m with
+no filter, 0.88 m under a polynomial detide over ±14 h — and the law reads
+0.30 m there, 0.37× (B-034). The row is declared, not re-tuned: the nine
+events are the law's measure now. C1 misses the buoy too, at 0.37 m, since
+21413 lies 29° off the seaward broadside of a 702 km rectangle, on the flank
+of the lobe that reaches 2.5 m broadside at the same distance. The protocol's
+own illustration, 0.87 m for C1 "24° off the broadside", had been computed
+24° off the landward broadside with a dip of 12°, not at the buoy; it decided
+nothing, and the script that scored C1 was checked against an independent
+rotation of the receiver instead of the fault: 0.378 m against 0.374 at
+21413, 0.302 against 0.302 at 51407, 2.525 against 2.525 at 21418.
 
 ### Held out by rule (14 September 2026)
 

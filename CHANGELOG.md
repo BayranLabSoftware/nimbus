@@ -355,6 +355,20 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   misses, 0.7 kPa in the city against about 3 kPa. The project had quoted
   Popova et al.'s modelled damage as reaching 108 km; they give 120 km.
 
+- **The Tōhoku buoy says what it recorded, and the megathrust wave is
+  measured on nine earthquakes instead.** The one far-field check of the
+  megathrust wave was DART 21413 for Tōhoku 2011 at "about 30 cm", credited
+  to a paper this project had not read, and the uplift factor was set on it.
+  The buoy's own NOAA file crests at 0.81 m; the law reads 0.30 m there,
+  and the row is declared, not re-tuned (B-034). What measures the law now
+  is BM-05: every thrust of magnitude 7.7 or more from 2006 to 2025, 113
+  DART records of nine of them, read to rules committed before the law ran
+  on them (`docs/BENCHMARK_PROTOCOL.md`, amended the same day for bad
+  transmissions, seismic noise and the tide). The law reads 1.00× at the
+  median event, the events scattered by a factor of 1.56, and an exact
+  shallow-water solution for a uniform slip on the same ruptures reads
+  1.38×; all four readings of the records chose the law. It stays as it is.
+
 - **An impact lights fires as far as its fireball is seen, on a round
   Earth.** The ignition and sustain radii of an impact were the distances
   at which the flash would still carry enough heat with nothing in the way

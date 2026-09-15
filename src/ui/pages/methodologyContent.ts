@@ -1060,7 +1060,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'D̄ = M₀ / (μ · L · W),  W from Strasser 2010 / Wells & Coppersmith 1994 (L / aspect if none),  A₀ = η · upliftFactor · D̄,  A(r) = A₀ · √(a / (a + 4√π·(r − a))),  a = max(W/2, 10 km)',
         description:
-          'Hanks–Kanamori moment spread over the rupture area for the mean slip, lifted by a fault-style uplift factor and a coupling efficiency (both simulator values — see the next entries), then decayed from half the down-dip width with the energy normalisation of a Gaussian ring. The only buoy it is checked on is DART 21413 for Tōhoku 2011, where the uplift factor was set.',
+          "Hanks–Kanamori moment spread over the rupture area for the mean slip, lifted by a fault-style uplift factor and a coupling efficiency (both simulator values — see the next entries), then decayed from half the down-dip width with the energy normalisation of a Gaussian ring. It is checked on 113 deep-ocean buoy records of nine megathrusts, read to rules committed before it was run on them: 1.00× at the median event, the events scattered by a factor of 1.56 (docs/BENCHMARK_PROTOCOL.md, BM-05). The uplift factor was set at DART 21413 for Tōhoku 2011 on a record misread as 30 cm; the buoy's file crests at 0.81 m, where this law reads 0.30 m.",
         citation: satake2013,
       },
       {
@@ -1078,7 +1078,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'upliftFactor = { 0.6: subduction interface ; 0.5: continental reverse / default ; 0.4: continental normal ; 0.05: strike-slip }',
         description:
-          'Simulator-chosen ratios of mean sea-floor uplift to mean slip. The megathrust value, 0.6, was tuned against the Tōhoku 2011 record at DART 21413; 0.5, 0.4 and 0.05 are assumed. Tanioka & Satake 1996 show that the horizontal motion of a sloping sea floor adds to the wave, which is the reason a megathrust value above the others is plausible.',
+          "Simulator-chosen ratios of mean sea-floor uplift to mean slip. The megathrust value, 0.6, was tuned at DART 21413 for Tōhoku 2011, on a record misread as 30 cm (the buoy's file crests at 0.81 m); it is not re-tuned, because the law it sits in reads 1.00× at the median of nine megathrusts' buoy records. 0.5, 0.4 and 0.05 are assumed. Tanioka & Satake 1996 show that the horizontal motion of a sloping sea floor adds to the wave, which is the reason a megathrust value above the others is plausible.",
         citation: taniokaSatake1996,
       },
       {
@@ -1086,7 +1086,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Uplift → wave-amplitude efficiency',
         formula: 'A₀ = η · uplift,   η ≈ 0.7',
         description:
-          "η = 0.7 is a simulator calibration against the Tōhoku 2011 and Sumatra records, not a published efficiency. Satake et al. 2013 find that horizontal displacement of the sea-floor slope accounts for 20–40 % of Tōhoku's tsunami amplitudes, a different quantity.",
+          "η = 0.7 is a simulator calibration against the Sumatra record and the Tōhoku 2011 buoy record as it was misread (30 cm, where the file crests at 0.81 m), not a published efficiency. Satake et al. 2013 find that horizontal displacement of the sea-floor slope accounts for 20–40 % of Tōhoku's tsunami amplitudes, a different quantity.",
         citation: satake2013,
       },
       {

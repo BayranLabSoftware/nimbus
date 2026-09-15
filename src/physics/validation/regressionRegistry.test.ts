@@ -17,6 +17,8 @@
  * fix what we said it fixed, and does it stay fixed".
  */
 
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/index.js';
 import { simulateExplosion } from '../events/explosion/simulate.js';
@@ -38,6 +40,8 @@ import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
 import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
 import { mulberry32 } from '../montecarlo/sampling.js';
 import { compareWithRecord, RECORDED_EVENTS } from './recordedTolls.js';
+import { TOHOKU_2011_DART_REFERENCE } from './noaaBenchmarkFixtures.js';
+import { RECORDED_WAVES } from './recordedWaves.js';
 import { makeElevationGrid } from '../elevation/index.js';
 import { gateImpactByTerrain, resetAppStore, useAppStore } from '../../store/useAppStore.js';
 import {
@@ -599,6 +603,29 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(kilotons).toBeLessThan(640);
   });
 
+  it("B-034 DART 21413 holds the crest of the buoy's own file for Tōhoku", () => {
+    // Pre-fix: "about 30 cm" (a band of 0.2–0.5 m), credited to Satake et
+    // al. 2013 without the paper having been read, and the megathrust
+    // uplift factor was set on it. NOAA NDBC's file for the buoy,
+    // 21413t2011.txt.gz, read by scripts/benchmark/dart-records.py under
+    // BM-05's amended rules, crests at 0.806 m 1 h 20 min after the origin.
+    const records = JSON.parse(
+      readFileSync(
+        fileURLToPath(new URL('../../../benchmark/dart/records.json', import.meta.url)),
+        'utf8'
+      )
+    ) as {
+      events: { origin: string; records: { station: string; crestM?: number }[] }[];
+    };
+    const tohoku = records.events.find((e) => e.origin.startsWith('2011-03-11'));
+    const crest = tohoku?.records.find((r) => r.station === '21413')?.crestM ?? Number.NaN;
+    expect(crest).toBeCloseTo(0.806, 3);
+    expect(TOHOKU_2011_DART_REFERENCE.observedAmplitudeM).toBeCloseTo(crest, 2);
+    const row = RECORDED_WAVES.find((w) => w.name === 'Tōhoku 2011 at DART 21413');
+    expect(row?.observed.low).toBeLessThan(crest);
+    expect(row?.observed.high).toBeGreaterThan(crest);
+  });
+
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
     // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
@@ -632,10 +659,10 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-025 and B-027..B-033 (B-010 CLOSED via inputSchema.ts +
+    // B-001..B-025 and B-027..B-034 (B-010 CLOSED via inputSchema.ts +
     // safeRun.ts; B-007 superseded by B-011; B-026, the population of a
     // planetary circle, is named in docs/ROADMAP.md and not yet entered).
-    const expectedRows = 32;
-    expect(expectedRows).toBe(32);
+    const expectedRows = 33;
+    expect(expectedRows).toBe(33);
   });
 });

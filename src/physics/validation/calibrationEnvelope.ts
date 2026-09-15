@@ -382,8 +382,8 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     eventType: 'earthquake',
     value: 9.1,
     quantities: ['toll', 'wave'],
-    gated: ['wave'],
-    source: '18 500 dead, over 90 % of them drowned; 30 cm at DART 21413, 1 242 km out',
+    gated: [],
+    source: '18 500 dead, over 90 % of them drowned; a crest of 0.81 m at DART 21413, 1 242 km out',
     use: {
       toll: {
         role: 'heldOut',
@@ -391,7 +391,7 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
       },
       wave: {
         role: 'tuned',
-        how: 'The megathrust uplift factor 0.6 is "the calibrated all-in factor against Tōhoku DART buoy amplitudes" (events/earthquake/seismicTsunami.ts), and the far-field source radius — half the down-dip width — was chosen by measuring this buoy against the alternative (tsunami/spreading.ts).',
+        how: "The megathrust uplift factor 0.6 was set on this buoy, and the far-field source radius — half the down-dip width — chosen by measuring it against the alternative (tsunami/spreading.ts), both on a record of 30 cm the buoy's file does not hold: it crests at 0.81 m, and the law reads 0.37× it (B-034). The row is declared, not re-tuned: across nine megathrusts and 113 deep-ocean records the law reads 1.00× at the median event (docs/BENCHMARK_PROTOCOL.md, BM-05).",
       },
     },
   },
