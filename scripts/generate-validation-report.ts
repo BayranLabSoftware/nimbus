@@ -161,6 +161,22 @@ import {
   type StadiumRun,
 } from '../src/physics/validation/interfaceStadiumRun.js';
 import { DEEP_INTERFACE_READ_ON } from '../src/physics/validation/deepInterfaceSetData.js';
+import {
+  LOW_INTENSITY_TOLLS,
+  lowIntensityScore,
+  type LowIntensityToll,
+} from '../src/physics/validation/lowIntensityRules.js';
+import {
+  runLowIntensity,
+  type LowIntensityRun,
+  type ModerateRun,
+} from '../src/physics/validation/lowIntensityRun.js';
+import { MODERATE_READ_ON } from '../src/physics/validation/moderateSetData.js';
+import { shippedCountryAt } from '../src/physics/validation/shippedPopulation.js';
+import { casualtyPlanForResult, configureCountryLookup } from '../src/store/useAppStore.js';
+import { pagerFatalityRate } from '../src/physics/casualties.js';
+import { pagerVulnerabilityFor } from '../src/physics/pagerVulnerability.js';
+import { m } from '../src/physics/units.js';
 import { simulateEarthquake } from '../src/physics/events/earthquake/simulate.js';
 import { meanAbsoluteBias as meanAbsoluteLogBias } from '../src/physics/validation/contourLaws.js';
 import {
@@ -1370,6 +1386,107 @@ function stadiumSection(run: StadiumRun): string {
   ].join('\n');
 }
 
+const LOW_INTENSITY_LABEL: Readonly<Record<LowIntensityToll, string>> = {
+  none: 'Inside MMI VII only',
+  midBand: 'V and VI at their middles',
+  pager: 'V and VI at their integers',
+};
+
+/** The toll a scenario that names none counts below VII, read off the plan
+ *  the store builds, on PAGER's global curve. */
+function tollCountedBelowVii(): LowIntensityToll {
+  const data = simulateEarthquake({ magnitude: 5, depth: m(10_000), faultType: 'strike-slip' });
+  configureCountryLookup(() => null);
+  try {
+    const band = casualtyPlanForResult(
+      { type: 'earthquake', data },
+      { latitude: 0, longitude: 0 }
+    )?.bands.find((b) => b.key === 'mmi5');
+    if (band === undefined) return 'none';
+    return band.mortality === pagerFatalityRate(5, pagerVulnerabilityFor(null).mid)
+      ? 'pager'
+      : 'midBand';
+  } finally {
+    configureCountryLookup(shippedCountryAt);
+  }
+}
+
+function runLow(): LowIntensityRun {
+  const run = runLowIntensity();
+  // What a scenario that names no toll counts below VII must be what rules
+  // 47 and 48 decided.
+  const decided = run.winner?.decision.adopted === true ? run.winner.toll : 'none';
+  const counted = tollCountedBelowVii();
+  if (counted !== decided) {
+    throw new Error(`Rules 47 and 48 decide ${decided}; the simulator counts ${counted}`);
+  }
+  return run;
+}
+
+function lowIntensitySection(run: LowIntensityRun): string {
+  const held = (rows: readonly ModerateRun[]): string =>
+    `${rows.filter((r) => r.inside).length.toString()} of ${rows.length.toString()}`;
+  const selectionRows = LOW_INTENSITY_TOLLS.map((toll) => {
+    const rows = run.selection[toll];
+    const recorded = rows.filter((r) => r.record > 0);
+    const quiet = rows.filter((r) => r.record === 0);
+    const total = Math.round(rows.reduce((a, r) => a + r.central, 0));
+    return `| ${LOW_INTENSITY_LABEL[toll]} | ${lowIntensityScore(rows).toFixed(2)} | ${held(rows)} | ${held(recorded)} | ${quiet.filter((r) => r.central >= 10).length.toString()} of ${quiet.length.toString()} | ${recorded.filter((r) => r.central < 0.5).length.toString()} of ${recorded.length.toString()} | ${grouped(total)} |`;
+  });
+  const recordTotal = run.selection.none.reduce((a, r) => a + r.record, 0);
+  const w = run.winner;
+  const verdict =
+    w === null
+      ? 'Neither candidate lowers the score by ln 1.25 while holding no fewer records, so by rule 47 the toll in place stays and nothing else runs.'
+      : w.decision.adopted
+        ? `By rules 47 and 48 the toll counts the dead below VII, ${LOW_INTENSITY_LABEL[w.toll].toLowerCase()}, in the simulator and in the harness; the runs of rules 19, 25, 33, 38 and 43 above keep the toll in place.`
+        : `By rule 48 the toll in place stays: ${[
+            w.decision.tolls
+              ? null
+              : "the winner does worse on rule 11's held-out dead than the room allows",
+            w.decision.quiet
+              ? null
+              : "it raises more of rule 23's quiet earthquakes to a toll of ten than the room allows",
+          ]
+            .filter((x): x is string => x !== null)
+            .join(', and ')}.`;
+  const bandsHeader = SIZE_BANDS.earthquake.map((b) => b.label).join(' | ');
+  return [
+    'The toll counts the dead inside the MMI VII ring only; USGS PAGER counts them from V. Rules 45 to',
+    '49 (`validation/lowIntensityRules.ts`), committed before either candidate was coded, try adding',
+    "the V and VI bands the rings draw, at PAGER's rates for their middles or for their integers, on",
+    `every NCEI significant earthquake of magnitude 5.0 to 5.99 from 2008 to 2025 no deeper than 40 km (read on ${MODERATE_READ_ON}): ${run.events.earthquakes.toString()} earthquakes, ${run.events.recorded.toString()} of them with deaths, ${grouped(recordTotal)} dead in all, on the browser's ground.`,
+    'A candidate must lower the mean |ln((toll + 1) / (record + 1))| by ln 1.25 and hold no fewer records.',
+    '',
+    '| Toll | Mean abs. ln((toll + 1) / (record + 1)) | Records held | Records of deaths held | Records of none given ten or more | Records of deaths given none | Dead counted |',
+    '|------|----:|----:|----:|----:|----:|----:|',
+    ...selectionRows,
+    '',
+    ...(w === null
+      ? [verdict]
+      : [
+          `| Toll | Rule 11's held-out tolls: ${bandsHeader} | Mean abs. log bias | Rule 23's quiet earthquakes raised to ten |`,
+          `|------|${SIZE_BANDS.earthquake.map(() => '-----').join('|')}|----:|----:|`,
+          ...(['inPlace', 'winner'] as const).map((side) => {
+            const toll = side === 'inPlace' ? 'none' : w.toll;
+            return `| ${LOW_INTENSITY_LABEL[toll]} | ${w.tolls[side].map((t) => `${biasText(t.stats)} · ${t.stats.inside.toString()} of ${t.stats.rows.toString()}`).join(' | ')} | ${tollLogBias(w.tolls[side]).toFixed(2)} | ${(100 * w.quiet[side].share).toFixed(1)} % of ${w.quiet[side].quiet.toString()} |`;
+          }),
+          '',
+          verdict,
+          '',
+          "Printed beside, deciding nothing (rule 49): each toll's central figure against PAGER's estimate on the campaign's PAGER products, and the fatality alert against PAGER's.",
+          '',
+          "| Toll | Toll against PAGER's | Alert agreement |",
+          '|------|----:|----:|',
+          ...(['inPlace', 'winner'] as const).map((side) => {
+            const toll = side === 'inPlace' ? 'none' : w.toll;
+            const a = w.againstPager[side];
+            return `| ${LOW_INTENSITY_LABEL[toll]} | ${biasText(a.stats)} | ${Math.round(100 * a.alertAgreement).toString()} % |`;
+          }),
+        ]),
+  ].join('\n');
+}
+
 const run33 = (
   run: PagerChainRun
 ): PagerChainRun['decision'] & { halves: PagerChainRun['halves'] } => ({
@@ -2121,6 +2238,7 @@ function main(): void {
   const pagerChain = runPager();
   const interfaceRules = runInterface();
   const interfaceStadium = runStadium();
+  const lowIntensity = runLow();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -2208,6 +2326,10 @@ ${interfaceSection(interfaceRules)}
 ### An interface scenario below Mw 7.5
 
 ${stadiumSection(interfaceStadium)}
+
+### The dead below MMI VII
+
+${lowIntensitySection(lowIntensity)}
 
 ### Which checks are validation
 
@@ -2473,6 +2595,31 @@ otherwise.
                 recordedScore: {
                   always: fixed(recordedScore(interfaceStadium.dead.recorded.always), 3),
                   'fromMw7.5': fixed(recordedScore(interfaceStadium.dead.recorded['fromMw7.5']), 3),
+                },
+              },
+      },
+      lowIntensity: {
+        readOn: MODERATE_READ_ON,
+        events: lowIntensity.events,
+        score: Object.fromEntries(
+          LOW_INTENSITY_TOLLS.map((toll) => [toll, fixed(lowIntensity.choice.score[toll], 3)])
+        ),
+        held: lowIntensity.choice.held,
+        eligible: lowIntensity.choice.eligible,
+        winner: lowIntensity.choice.winner,
+        guards:
+          lowIntensity.winner === null
+            ? null
+            : {
+                toll: lowIntensity.winner.toll,
+                decision: lowIntensity.winner.decision,
+                tollLogBias: {
+                  inPlace: fixed(tollLogBias(lowIntensity.winner.tolls.inPlace), 3),
+                  winner: fixed(tollLogBias(lowIntensity.winner.tolls.winner), 3),
+                },
+                quietShare: {
+                  inPlace: fixed(lowIntensity.winner.quiet.inPlace.share, 4),
+                  winner: fixed(lowIntensity.winner.quiet.winner.share, 4),
                 },
               },
       },

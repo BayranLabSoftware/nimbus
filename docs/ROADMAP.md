@@ -455,9 +455,15 @@ the candidates for re-tuning:
   and the better, Parker et al. 2022, was not adopted: its toll band held
   too few of the recorded dead (BM-10, rules 35 to 39). An interface
   scenario below Mw 7.5 is a disc since rules 40 to 44 adopted it on
-  earthquakes no rule had read. Still open: the toll counts no dead below
-  MMI VII, and the rupture distance is the hypocentre's depth. Both models
-  are among the prospective set's candidates.
+  earthquakes no rule had read. Counting the dead below MMI VII, as PAGER
+  does, was tried on 298 moderate earthquakes no rule had read and brought
+  the toll no nearer the record (rules 45 to 49, docs/SCIENCE.md, "The dead
+  below MMI VII"); the toll in place stays. That set showed where the
+  moderate toll goes wrong instead: Iran's steep national curve counts 7 587
+  dead for Shiraz 2010, which killed one, and the deadliest earthquakes stand
+  on the browser's 760 m/s. Still open: the rupture distance is the
+  hypocentre's depth. Both interface models are among the prospective set's
+  candidates.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

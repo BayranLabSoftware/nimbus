@@ -90,6 +90,13 @@ import { meanAbsoluteBias } from './contourLaws.js';
  * heart attack, which no ring holds. And NCEI's criteria admit a moderate
  * earthquake by its damage or its dead, so the set leans towards the ones
  * that did something.
+ *
+ * Run once, on 15 September 2026, after the candidates were committed
+ * (6f720e6), and said here rather than folded into the rules above: on rule
+ * 45's 298 earthquakes the toll in place scored 1.185 and held 261 records,
+ * `midBand` 1.254 and 293, `pager` 1.190 and 295. Neither lowers the score
+ * by ln 1.25, so by rule 47 the toll in place stays and nothing else ran.
+ * What was read afterwards is in docs/SCIENCE.md, "The dead below MMI VII".
  */
 
 /** An earthquake of rule 45's set, as scripts/build-moderate-set.ts stores

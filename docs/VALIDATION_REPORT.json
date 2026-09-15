@@ -1857,6 +1857,28 @@
         }
       }
     },
+    "lowIntensity": {
+      "readOn": "2026-09-15",
+      "events": {
+        "earthquakes": 298,
+        "recorded": 120,
+        "tenOrMore": 21,
+        "missing": 1
+      },
+      "score": {
+        "none": 1.185,
+        "midBand": 1.254,
+        "pager": 1.19
+      },
+      "held": {
+        "none": 261,
+        "midBand": 293,
+        "pager": 295
+      },
+      "eligible": [],
+      "winner": "none",
+      "guards": null
+    },
     "interfaceRules": {
       "readOn": "2026-09-15",
       "events": {

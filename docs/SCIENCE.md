@@ -1608,6 +1608,56 @@ longer eligible, and Parker et al.'s band still holds too few of rule 11's
 records (none of five, 10 of 22, 11 of 16); Boore et al. 2014's interface tolls
 now read 5.06×, 1.98× and 13.21×.
 
+### The dead below MMI VII (15 September 2026)
+
+`validation/lowIntensityRules.ts` (rules 45 to 49),
+`validation/lowIntensityRun.ts`. The toll counts deaths inside the MMI VII ring
+only, at PAGER's rates for 7.5, 8.5 and 9.5; USGS PAGER's empirical model counts
+them from V. BM-10 had found bands of [0, 0] about moderate earthquakes with a
+few dead, so the question was whether counting the bands below VII brings the
+toll nearer the record, put to earthquakes no rule had read.
+
+The rules and the set were pushed before either candidate was coded (commit
+`a551aa3`), and the candidates before they were scored (`6f720e6`). Rule 45's
+set is every NCEI significant earthquake of magnitude 5.0 to 5.99, 2008 to
+2025, no deeper than 40 km: 302 records, 298 earthquakes once matched to
+ComCat, 120 of them with deaths and 1 732 dead in all, on the browser's ground.
+Both candidates draw the V and VI rings at 5.0 and 6.0 as the rings above are
+drawn and count everything above VII as in place; `midBand` counts the new
+bands at PAGER's rates for 5.5 and 6.5, `pager` at those for 5 and 6. A
+candidate had to lower the mean |ln((toll + 1) / (record + 1))| by ln 1.25 and
+hold no fewer records.
+
+| Toll                       | Score | Records held | Of the 120 with deaths | Of 178 without, given ten or more | With deaths, given none | Dead counted |
+| -------------------------- | ----: | -----------: | ---------------------: | --------------------------------: | ----------------------: | -----------: |
+| Inside MMI VII only        | 1.185 |   261 of 298 |                     99 |                                28 |                      45 |       16 378 |
+| V and VI at their middles  | 1.254 |   293 of 298 |                    117 |                                30 |                      38 |       17 569 |
+| V and VI at their integers | 1.190 |   295 of 298 |                    117 |                                28 |                      42 |       16 554 |
+
+Neither candidate lowers the score, let alone by ln 1.25: by rule 47 the toll
+in place stays and the guards on rule 11's and rule 23's sets did not run.
+Counting the bands below VII lifts the band's high end, so it holds more
+records, and it gives a few more earthquakes a toll, but at PAGER's rates for
+intensities 5 to 6.5 it adds little to the central figure, and what it adds
+falls about as often where nobody died as where somebody did.
+
+What the scores do not show was read afterwards, and is written here as such.
+Below magnitude 5.5 (153 earthquakes) the scores are 0.92, 1.03 and 0.95, from
+it (145) 1.47, 1.49 and 1.45: the counting of V at its integer comes nearest in
+the upper half, by far less than the margin. The distance between toll and
+record on this set is not the bands below VII. The toll in place counts 16 378
+dead where 1 732 were recorded, most of them about four Iranian earthquakes near
+cities — Shiraz 2010 (M 5.9), 7 587 against one dead; Khoy 2023 (M 5.9), 1 284
+against three; two more near Khoy that killed nobody, 1 059 and 855 — on
+Iran's national curve, the steepest PAGER fits (β 0.10, one and a half per cent
+dead at 7.5), and ground of 260 to 680 m/s. The deadliest are counted far below
+their records: Cianjur 2022 (M 5.6), 13 against 635; Jajarkot 2023 (M 5.7), 22
+against 154; Jishishan 2023 (M 5.9), 47 against 151. All three stand on the
+browser's reading of 760 m/s under the epicentre. Whether the ground under the
+buildings that fell was softer was not read. A national curve and one Vs30 at
+the epicentre are declared gaps already, and this set is where they show at
+magnitude 5.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records

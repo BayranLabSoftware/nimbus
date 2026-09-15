@@ -1075,6 +1075,22 @@ and rule 11's held-out interface tolls below Mw 7.5, on the browser's ground:
 | A stadium at every magnitude | 1.97 | 7 of 15 · 54 of 61 |
 | A stadium from Mw 7.5, a disc below | 0.73 | 13 of 15 · 59 of 61 |
 
+### The dead below MMI VII
+
+The toll counts the dead inside the MMI VII ring only; USGS PAGER counts them from V. Rules 45 to
+49 (`validation/lowIntensityRules.ts`), committed before either candidate was coded, try adding
+the V and VI bands the rings draw, at PAGER's rates for their middles or for their integers, on
+every NCEI significant earthquake of magnitude 5.0 to 5.99 from 2008 to 2025 no deeper than 40 km (read on 2026-09-15): 298 earthquakes, 120 of them with deaths, 1,732 dead in all, on the browser's ground.
+A candidate must lower the mean |ln((toll + 1) / (record + 1))| by ln 1.25 and hold no fewer records.
+
+| Toll | Mean abs. ln((toll + 1) / (record + 1)) | Records held | Records of deaths held | Records of none given ten or more | Records of deaths given none | Dead counted |
+|------|----:|----:|----:|----:|----:|----:|
+| Inside MMI VII only | 1.18 | 261 of 298 | 99 of 120 | 28 of 178 | 45 of 120 | 16,378 |
+| V and VI at their middles | 1.25 | 293 of 298 | 117 of 120 | 30 of 178 | 38 of 120 | 17,569 |
+| V and VI at their integers | 1.19 | 295 of 298 | 117 of 120 | 28 of 178 | 42 of 120 | 16,554 |
+
+Neither candidate lowers the score by ln 1.25 while holding no fewer records, so by rule 47 the toll in place stays and nothing else runs.
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the

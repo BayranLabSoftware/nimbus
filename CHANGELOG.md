@@ -887,6 +887,18 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   magnitude, which alone multiplies the held-out tolls of these earthquakes
   by 2.5 to 18.
 
+- **The dead below MMI VII.** The toll counts deaths inside the MMI VII
+  ring; USGS PAGER counts them from V. Rules written before either
+  candidate was coded (`validation/lowIntensityRules.ts`) added the V and VI
+  bands at PAGER's rates, for the bands' middles or their integers, on the
+  298 NCEI significant earthquakes of magnitude 5 to 6, 2008 to 2025, that no
+  rule had read. Neither brought the toll nearer the record (1.25 and 1.19
+  against 1.18 in place), so the toll is unchanged; `lowIntensityDeaths` on
+  the earthquake scenario keeps both for the record. The set showed instead
+  that the toll in place counts 16 378 dead where 1 732 died, most of them
+  about four Iranian earthquakes near cities, and counts the deadliest far
+  below their records.
+
 - **Where a body breaks up, the paper against its program.** The Earth
   Impact Effects Program breaks small strong bodies up to 3 % lower than
   Nimbus, and bursts them up to 5 % lower (BM-13). Every altitude it

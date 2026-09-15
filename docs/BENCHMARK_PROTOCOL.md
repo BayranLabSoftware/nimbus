@@ -581,3 +581,14 @@ held-out tolls (0.10 of room and eight records in ten per cell) and on rule
 23's quiet earthquakes (one in a hundred of room). Rule 49 says what adoption
 changes — and that the rules which decided on the toll in place keep it — and
 what is printed beside.
+
+### Outcome
+
+Run once on 15 September 2026, after the candidates were committed
+(`6f720e6`). On the 298 earthquakes the toll in place scored 1.185 and held
+261 records; V and VI at their middles scored 1.254 and held 293, at their
+integers 1.190 and 295. Counting the bands below VII widens the band, which
+holds more records, and does not bring the central figure nearer them. No
+candidate lowers the score by ln 1.25, so by rule 47 the toll in place stays
+and the guards did not run. `docs/SCIENCE.md` gives the figures in full, with
+what was read afterwards.
