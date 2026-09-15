@@ -7,39 +7,119 @@
   "landing": {
     "skipLink": "Vai al contenuto principale",
     "projectName": "Bayran Nimbus",
-    "tagline": "Eventi catastrofici simulati su un globo terrestre 3D interattivo.",
-    "description": "Simulatore scientifico open source di impatti di asteroidi, esplosioni, terremoti, eruzioni vulcaniche e tsunami. Formule pubblicate, scene comparative, italiano e inglese.",
-    "features": {
-      "title": "Cosa fa",
-      "multiEvent": {
-        "name": "Eventi multipli a cascata",
-        "detail": "Un impatto oceanico genera tsunami, onde d'urto e impulso termico — simulati in parallelo sulla stessa timeline."
-      },
-      "realScience": {
-        "name": "Formule scientifiche reali",
-        "detail": "Formule citate da Collins et al. 2005, Glasstone & Dolan, Ward & Asphaug e Mastin, confrontate con eventi registrati, errori compresi."
-      },
-      "globe": {
-        "name": "Globo terrestre 3D",
-        "detail": "Globo fotorealistico in Cesium per localizzare l'evento, con anelli di danno sovrapposti a scala geografica reale."
-      },
-      "accessible": {
-        "name": "Accessibile e multilingua",
-        "detail": "Controlli automatici WCAG 2.1 AA su landing, simulatore e pagina di validazione, pannelli usabili da tastiera, italiano e inglese dal primo giorno."
-      },
-      "shareable": {
-        "name": "URL condivisibili",
-        "detail": "Ogni simulazione sta dentro un indirizzo web: si copia, si manda, si rigioca."
-      }
+    "eyebrow": "Simulatore scientifico · software libero",
+    "tagline": "Simulazione degli eventi catastrofici naturali e antropici su un globo terrestre a scala reale.",
+    "description": "Nimbus calcola gli effetti fisici di impatti di asteroidi, esplosioni, terremoti, eruzioni vulcaniche e frane sottomarine, compresi gli tsunami che ne derivano, e li rappresenta sulla superficie terrestre alla loro estensione reale. Le relazioni impiegate provengono dalla letteratura scientifica e ogni stima è accompagnata dal proprio intervallo di incertezza.",
+    "meta": "Licenza AGPL-3.0 · Interfaccia in italiano e inglese",
+    "hero": {
+      "alt": "Il globo terrestre del simulatore con i raggi degli effetti dell'impatto di Chicxulub",
+      "caption": "Impatto di Chicxulub, 66 milioni di anni fa: raggi delle ustioni e della sovrapressione a scala geografica reale."
+    },
+    "nav": {
+      "label": "Sezioni",
+      "simulator": "Simulatore",
+      "methodology": "Metodologia",
+      "validation": "Validazione",
+      "cite": "Come citare"
     },
     "cta": {
-      "science": "Leggi la scienza",
-      "methodology": "Metodologia & fonti",
       "enterSimulator": "Prova il simulatore →",
-      "validation": "Come viene verificato"
+      "validation": "Rapporto di validazione"
     },
-    "scaleBar": {
-      "label": "Riferimento di scala"
+    "facts": {
+      "label": "Nimbus in cifre",
+      "eventTypes": "tipologie di evento, oltre agli tsunami associati",
+      "presets": "scenari predefiniti, storici e di riferimento",
+      "band": "intervallo predittivo delle stime delle vittime",
+      "monteCarlo": "intervalli di confidenza da simulazione Monte Carlo",
+      "accessibility": "livello di accessibilità dell'interfaccia"
+    },
+    "models": {
+      "eyebrow": "01 — Modelli fisici",
+      "title": "Modelli fisici e fonti",
+      "body": "Ogni fenomeno è descritto da relazioni pubblicate su riviste con revisione paritaria. Nel simulatore ciascun valore numerico riporta la fonte, l'equazione impiegata e, dove disponibile, il DOI dell'articolo.",
+      "listLabel": "Tipologie di evento e fonti principali",
+      "impact": {
+        "name": "Impatto cosmico",
+        "detail": "Energia, cratere, magnitudo sismica, radiazione termica, ejecta"
+      },
+      "explosion": {
+        "name": "Esplosione",
+        "detail": "Sovrapressione, fluenza termica, sfera di fuoco, esplosioni in acqua"
+      },
+      "earthquake": {
+        "name": "Terremoto",
+        "detail": "Momento sismico, rottura, impronta di intensità macrosismica"
+      },
+      "volcano": {
+        "name": "Eruzione vulcanica",
+        "detail": "Altezza della colonna eruttiva, flussi piroclastici, esplosione laterale"
+      },
+      "landslide": {
+        "name": "Frana sottomarina",
+        "detail": "Sorgente dell'onda dal volume e dalla pendenza del corpo di frana"
+      },
+      "tsunami": {
+        "name": "Tsunami",
+        "detail": "Propagazione sulla batimetria, isocrone di arrivo, ampiezza costiera"
+      },
+      "kineticEnergy": "Energia cinetica dell'impattore",
+      "seismicMoment": "Momento sismico dalla magnitudo di momento"
+    },
+    "instrument": {
+      "eyebrow": "02 — Il simulatore",
+      "title": "Rappresentazione a scala geografica reale",
+      "body": "Le zone di danno sono tracciate sul globo con il loro raggio effettivo, senza amplificazioni grafiche. L'illuminazione segue la posizione reale del Sole sul punto selezionato e una legenda descrive il significato di ciascuna soglia.",
+      "alt": "Il simulatore durante lo scenario del terremoto di Tōhoku del 2011, con i contorni di intensità e le isocrone dello tsunami",
+      "caption": "Tōhoku 2011, Mw 9,1. Traccia della rottura, contorni MMI VIII (25,4 km) e MMI VII (78,1 km), isocrone dello tsunami a +1 h e +2 h. Schermata del simulatore.",
+      "figure": "Figura 1",
+      "imagery": "Immagini satellitari: Esri, Maxar, Earthstar Geographics e GIS User Community.",
+      "scale": {
+        "name": "Estensione reale",
+        "detail": "I raggi non vengono amplificati. Quando un effetto supera le dimensioni del pianeta, la rappresentazione si arresta agli antipodi."
+      },
+      "uncertainty": {
+        "name": "Incertezza dichiarata",
+        "detail": "Il valore nominale è indicato da una linea continua, la sua dispersione da una linea tratteggiata."
+      },
+      "reproducible": {
+        "name": "Scenari riproducibili",
+        "detail": "I parametri di ogni simulazione sono contenuti nell'indirizzo web, che consente di riprodurla in modo identico."
+      }
+    },
+    "validation": {
+      "eyebrow": "03 — Validazione",
+      "title": "Validazione sugli eventi documentati",
+      "body": "Le stime del modello sono confrontate con dati osservati: bilanci delle vittime, altezze d'onda registrate da boe e rilievi, impronte di scuotimento dell'USGS. Il rapporto riporta sia le corrispondenze sia gli scostamenti, indicando per ciascuno la causa.",
+      "tolls": "bilanci delle vittime compresi nell'intervallo del modello",
+      "waves": "altezze d'onda compatibili con la stima del modello",
+      "footprint": "rapporto medio fra raggio simulato e impronta USGS ShakeMap",
+      "heldOut": "controlli indipendenti dalla taratura che contengono il dato osservato",
+      "figure": "Figura 2",
+      "caption": "Numero di vittime per {{count}} eventi: intervallo predittivo 5–95 % del modello, valore registrato e stima centrale, in ordine decrescente di gravità. Eventi al di fuori dell'intervallo: {{outside}}.",
+      "legendBand": "intervallo predittivo 5–95 %",
+      "legendRecorded": "valore registrato",
+      "legendModel": "stima del modello",
+      "axis": "numero di vittime (scala logaritmica)",
+      "inside": "incluso",
+      "outside": "escluso",
+      "tableCaption": "Dati della figura 2",
+      "tableEvent": "Evento",
+      "tableRecorded": "Registrato",
+      "tableModel": "Modello",
+      "tableBand": "Intervallo 5–95 %",
+      "tableResult": "Esito",
+      "source": "Dati tratti dal rapporto di validazione della versione {{commit}}",
+      "sourceUnknown": "Dati tratti dal rapporto di validazione di questa versione",
+      "fullReport": "Rapporto completo →",
+      "limits": "Le stime prodotte da Nimbus hanno finalità divulgative: il simulatore non è concepito per applicazioni ingegneristiche."
+    },
+    "cite": {
+      "eyebrow": "04 — Come citare",
+      "title": "Citazione del software",
+      "body": "Nimbus è distribuito con licenza libera AGPL-3.0. Ogni rapporto di simulazione indica la versione del codice che lo ha prodotto, alla quale è opportuno fare riferimento nelle citazioni.",
+      "cff": "File CITATION.cff",
+      "source": "Codice sorgente"
     }
   },
   "footer": {

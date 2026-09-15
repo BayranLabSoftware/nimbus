@@ -120,6 +120,17 @@ Community` is shown in the Cesium credit overlay (wired via
   imagery and the ArcGIS DEM is covered by two ice-cap entities drawn
   in `Globe.tsx`.
 
+### Landing page images
+
+| File                                           | Purpose                         | Licence / terms                                                          | Source                               | Added      |
+| ---------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------ | ------------------------------------ | ---------- |
+| `public/landing/globe-chicxulub.webp`          | Landing hero, Chicxulub preset  | Screenshot of Nimbus; basemap Esri World Imagery (free with attribution) | Captured from the deployed simulator | 2026-09-16 |
+| `public/landing/simulator-tohoku-{it,en}.webp` | Landing figure 1, Tōhoku preset | Screenshot of Nimbus; basemap Esri World Imagery (free with attribution) | Captured from the deployed simulator | 2026-09-16 |
+
+Both images show the satellite basemap, so both captions on the landing
+page carry the World Imagery attribution (`landing.instrument.imagery`),
+next to the picture rather than only in the footer.
+
 ## Adding a new asset
 
 1. Drop the file into the appropriate `public/` subfolder.

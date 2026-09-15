@@ -28,29 +28,46 @@ test.describe('landing page', () => {
   test('language switch flips EN ↔ IT and updates <html lang>', async ({ page }) => {
     await page.goto('/?lng=en');
 
-    // Start in English. The tagline carries the language now that the
-    // "Coming soon" eyebrow is gone.
+    // Start in English. The tagline carries the language.
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await expect(page.getByText('Catastrophic events simulated')).toBeVisible();
+    await expect(page.getByText('Simulation of natural and human-made')).toBeVisible();
 
     // Button is labelled for screen readers regardless of language.
     const button = page.getByRole('button', { name: /Switch language|Cambia lingua/ });
     await button.click();
 
     await expect(page.locator('html')).toHaveAttribute('lang', 'it');
-    await expect(page.getByText('Eventi catastrofici simulati')).toBeVisible();
+    await expect(page.getByText('Simulazione degli eventi catastrofici')).toBeVisible();
 
     // Flip back.
     await button.click();
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   });
 
-  test('has a single H1 and a features section heading', async ({ page }) => {
+  test('has a single H1 and the four section headings', async ({ page }) => {
     await page.goto('/?lng=en');
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
-    // The features heading. It said "What's coming" while all five of
-    // those things were already shipped; the copy pass of 9 September
-    // renamed it and this suite is what noticed.
-    await expect(page.getByRole('heading', { level: 2, name: 'What it does' })).toBeVisible();
+    for (const name of [
+      'Physical models and sources',
+      'Mapping at true geographic scale',
+      'Validation against recorded events',
+      'Citing the software',
+    ]) {
+      await expect(page.getByRole('heading', { level: 2, name })).toBeVisible();
+    }
+  });
+
+  test('the validation section reads the report it links to', async ({ page }) => {
+    await page.goto('/?lng=en');
+    // The section loads on its own chunk. Its figures come from
+    // docs/VALIDATION_REPORT.json, the same file the validation page reads,
+    // so the landing page cannot show a number that page does not.
+    const figure = page.getByText(/Death tolls for \d+ events/);
+    await figure.scrollIntoViewIfNeeded();
+    await expect(figure).toBeVisible();
+    await expect(page.getByRole('table', { name: 'Data of figure 2' })).toBeAttached();
+
+    await page.getByRole('button', { name: 'Full report →' }).click();
+    await expect(page).toHaveURL(/m=validation/);
   });
 });

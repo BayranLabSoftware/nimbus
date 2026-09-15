@@ -7,39 +7,119 @@
   "landing": {
     "skipLink": "Skip to main content",
     "projectName": "Bayran Nimbus",
-    "tagline": "Catastrophic events simulated on an interactive 3D globe.",
-    "description": "Open-source scientific simulator of asteroid impacts, explosions, earthquakes, volcanic eruptions and tsunamis. Published formulas, comparison scenes, Italian and English.",
-    "features": {
-      "title": "What it does",
-      "multiEvent": {
-        "name": "Multi-event cascading",
-        "detail": "An ocean impact triggers tsunami, shock waves, and thermal pulse — simulated in parallel on the same timeline."
-      },
-      "realScience": {
-        "name": "Real scientific formulas",
-        "detail": "Cited formulas from Collins et al. 2005, Glasstone & Dolan, Ward & Asphaug and Mastin, checked against recorded events, misses shown."
-      },
-      "globe": {
-        "name": "3D Earth globe",
-        "detail": "Cesium-powered photorealistic globe for locating events, with damage-ring overlays at true geographic scale."
-      },
-      "accessible": {
-        "name": "Accessible and multilingual",
-        "detail": "Automated WCAG 2.1 AA checks on the landing, simulator and validation pages, panels usable from the keyboard, Italian and English from day one."
-      },
-      "shareable": {
-        "name": "Shareable URLs",
-        "detail": "Every simulation fits in a URL: copy it, send it, replay it."
-      }
+    "eyebrow": "Scientific simulator · free software",
+    "tagline": "Simulation of natural and human-made catastrophic events on a true-scale 3D Earth.",
+    "description": "Nimbus computes the physical effects of asteroid impacts, explosions, earthquakes, volcanic eruptions and submarine landslides, including the tsunamis they generate, and maps them onto the Earth's surface at their true extent. The relations it uses come from the scientific literature, and every estimate carries its own uncertainty interval.",
+    "meta": "AGPL-3.0 licence · Interface in English and Italian",
+    "hero": {
+      "alt": "The simulator's globe with the effect radii of the Chicxulub impact",
+      "caption": "Chicxulub impact, 66 million years ago: burn and overpressure radii at true geographic scale."
+    },
+    "nav": {
+      "label": "Sections",
+      "simulator": "Simulator",
+      "methodology": "Methodology",
+      "validation": "Validation",
+      "cite": "How to cite"
     },
     "cta": {
-      "science": "Read the science",
-      "methodology": "Methodology & citations",
       "enterSimulator": "Try the simulator →",
-      "validation": "How the model is checked"
+      "validation": "Validation report"
     },
-    "scaleBar": {
-      "label": "Scale reference"
+    "facts": {
+      "label": "Nimbus in figures",
+      "eventTypes": "event types, plus the tsunamis they generate",
+      "presets": "preset scenarios, historical and reference",
+      "band": "predictive interval on every casualty estimate",
+      "monteCarlo": "confidence intervals from Monte Carlo sampling",
+      "accessibility": "accessibility level of the interface"
+    },
+    "models": {
+      "eyebrow": "01 — Physical models",
+      "title": "Physical models and sources",
+      "body": "Each phenomenon is described by relations published in peer-reviewed journals. In the simulator every numerical value shows its source, the equation used and, where available, the article's DOI.",
+      "listLabel": "Event types and principal sources",
+      "impact": {
+        "name": "Cosmic impact",
+        "detail": "Energy, crater, seismic magnitude, thermal radiation, ejecta"
+      },
+      "explosion": {
+        "name": "Explosion",
+        "detail": "Overpressure, thermal fluence, fireball, underwater bursts"
+      },
+      "earthquake": {
+        "name": "Earthquake",
+        "detail": "Seismic moment, rupture, macroseismic intensity footprint"
+      },
+      "volcano": {
+        "name": "Volcanic eruption",
+        "detail": "Eruption column height, pyroclastic density currents, lateral blast"
+      },
+      "landslide": {
+        "name": "Submarine landslide",
+        "detail": "Wave source from the volume and slope of the slide body"
+      },
+      "tsunami": {
+        "name": "Tsunami",
+        "detail": "Propagation over bathymetry, arrival isochrones, coastal amplitude"
+      },
+      "kineticEnergy": "Kinetic energy of the impactor",
+      "seismicMoment": "Seismic moment from moment magnitude"
+    },
+    "instrument": {
+      "eyebrow": "02 — The simulator",
+      "title": "Mapping at true geographic scale",
+      "body": "Damage zones are drawn on the globe at their actual radius, with no graphic exaggeration. Lighting follows the real position of the Sun over the chosen point, and a legend explains each threshold.",
+      "alt": "The simulator running the 2011 Tōhoku earthquake scenario, with intensity contours and tsunami isochrones",
+      "caption": "Tōhoku 2011, Mw 9.1. Rupture trace, MMI VIII (25.4 km) and MMI VII (78.1 km) contours, tsunami isochrones at +1 h and +2 h. Screenshot of the simulator.",
+      "figure": "Figure 1",
+      "imagery": "Satellite imagery: Esri, Maxar, Earthstar Geographics, and the GIS User Community.",
+      "scale": {
+        "name": "True extent",
+        "detail": "Radii are never exaggerated. When an effect exceeds the size of the planet, the drawing stops at the antipode."
+      },
+      "uncertainty": {
+        "name": "Stated uncertainty",
+        "detail": "The nominal value is drawn as a solid line, its spread as a dashed line."
+      },
+      "reproducible": {
+        "name": "Reproducible scenarios",
+        "detail": "The parameters of every simulation are carried in its web address, so it can be reproduced exactly."
+      }
+    },
+    "validation": {
+      "eyebrow": "03 — Validation",
+      "title": "Validation against recorded events",
+      "body": "The model's estimates are compared with observed data: death tolls, wave heights recorded by buoys and surveys, USGS shaking footprints. The report shows matches and misses alike, each with its cause.",
+      "tolls": "death tolls inside the model's interval",
+      "waves": "wave heights consistent with the model's estimate",
+      "footprint": "mean ratio of simulated radius to the USGS ShakeMap footprint",
+      "heldOut": "checks independent of calibration that contain the observed value",
+      "figure": "Figure 2",
+      "caption": "Death tolls for {{count}} events: the model's 5–95 % predictive interval, the recorded value and the central estimate, from the most severe. Events outside the interval: {{outside}}.",
+      "legendBand": "5–95 % predictive interval",
+      "legendRecorded": "recorded value",
+      "legendModel": "model estimate",
+      "axis": "death toll (logarithmic scale)",
+      "inside": "inside",
+      "outside": "outside",
+      "tableCaption": "Data of figure 2",
+      "tableEvent": "Event",
+      "tableRecorded": "Recorded",
+      "tableModel": "Model",
+      "tableBand": "5–95 % interval",
+      "tableResult": "Result",
+      "source": "Data from the validation report of version {{commit}}",
+      "sourceUnknown": "Data from the validation report of this version",
+      "fullReport": "Full report →",
+      "limits": "Nimbus's estimates are intended for science communication: the simulator is not designed for engineering use."
+    },
+    "cite": {
+      "eyebrow": "04 — How to cite",
+      "title": "Citing the software",
+      "body": "Nimbus is released under the free AGPL-3.0 licence. Every simulation report names the version of the code that produced it, which is the one to reference in a citation.",
+      "cff": "CITATION.cff file",
+      "source": "Source code"
     }
   },
   "footer": {
