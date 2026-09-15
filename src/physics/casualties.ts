@@ -540,6 +540,11 @@ export interface ShakingCasualtyInput {
    *  `rings`, the shipped three, or `pager`, PAGER's five. Omitted,
    *  `rings`. */
   banding?: 'rings' | 'pager';
+  /** On the shipped rings, whether the dead below VII are counted (rule 46
+   *  of validation/lowIntensityRules.ts): `none`, or the V band from
+   *  `mmi5Radius` and the VI band from `mmi6Radius` at PAGER's rates for
+   *  5.5 and 6.5 (`midBand`) or for 5 and 6 (`pager`). Omitted, `none`. */
+  lowIntensity?: 'none' | 'midBand' | 'pager';
 }
 
 /**
@@ -562,17 +567,22 @@ export function shakingCasualtyPlan(
   } = PAGER_VULNERABILITY
 ): CasualtyPlan | null {
   const pager = input.banding === 'pager';
+  const low = pager ? 'none' : (input.lowIntensity ?? 'none');
+  const five = pager || low !== 'none';
   const r5 = (input.mmi5Radius as number | undefined) ?? 0;
   const r6 = (input.mmi6Radius as number | undefined) ?? 0;
   const r7 = input.mmi7Radius as number;
   const r8 = input.mmi8Radius as number;
   const r9 = input.mmi9Radius as number;
-  const radii = pager ? [r5, r6, r7, r8, r9] : [r7, r8, r9];
+  const radii = five ? [r5, r6, r7, r8, r9] : [r7, r8, r9];
   if (!radii.every((r) => Number.isFinite(r) && r >= 0)) return null;
-  if ((pager ? r5 : r7) <= 0) return null;
+  if ((pager ? r5 : five ? Math.max(r5, r7) : r7) <= 0) return null;
   const inner8 = Math.max(r9, r8);
   const inner7 = Math.max(inner8, r7);
   const inner6 = Math.max(inner7, r6);
+  // Rule 46 of validation/lowIntensityRules.ts: the rates of the V and VI
+  // bands, at their middles or at their integers.
+  const lowRate = (k: 5 | 6): number => (low === 'pager' ? k : k + 0.5);
   const rings: { key: string; inner: number; outer: number; mmi: number }[] = pager
     ? [
         { key: 'mmi9', inner: 0, outer: r9, mmi: 9 },
@@ -585,6 +595,12 @@ export function shakingCasualtyPlan(
         { key: 'mmi9', inner: 0, outer: r9, mmi: 9.5 },
         { key: 'mmi8', inner: r9, outer: inner8, mmi: 8.5 },
         { key: 'mmi7', inner: inner8, outer: inner7, mmi: 7.5 },
+        ...(low === 'none'
+          ? []
+          : [
+              { key: 'mmi6', inner: inner7, outer: inner6, mmi: lowRate(6) },
+              { key: 'mmi5', inner: inner6, outer: Math.max(inner6, r5), mmi: lowRate(5) },
+            ]),
       ];
   const bands: CasualtyBand[] = rings
     .filter((r) => r.outer > r.inner)

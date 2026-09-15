@@ -1542,6 +1542,7 @@ export function casualtyPlanForResult(
           mmi8Radius: result.data.shaking.mmi8Radius,
           mmi9Radius: result.data.shaking.mmi9Radius,
           banding: result.data.inputs.intensityBanding ?? 'rings',
+          lowIntensity: result.data.inputs.lowIntensityDeaths ?? 'none',
         },
         pagerVulnerabilityFor(countryLookup(location.latitude, location.longitude))
       );

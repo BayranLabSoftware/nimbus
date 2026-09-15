@@ -140,11 +140,20 @@ export interface EarthquakeScenarioInput {
    *  and 43 adopted on 15 September 2026; `always` was the geometry until
    *  then. */
   interfaceStadium?: InterfaceStadium;
+  /** Whether the toll counts the dead below MMI VII (rule 46 of
+   *  validation/lowIntensityRules.ts): not at all (`none`), or in the V
+   *  and VI bands the rings draw at 5.0 and 6.0, at PAGER's rates for the
+   *  bands' middles (`midBand`) or their integers (`pager`). On the
+   *  shipped rings only; PAGER's banding counts its own. Omitted, `none`. */
+  lowIntensityDeaths?: LowIntensityDeaths;
 }
 
 /** Rule 41 of validation/interfaceStadiumRules.ts: the geometry of a
  *  scenario marked a subduction interface below Mw 7.5. */
 export type InterfaceStadium = 'always' | 'fromMw7.5';
+
+/** Rule 46 of validation/lowIntensityRules.ts: the dead below MMI VII. */
+export type LowIntensityDeaths = 'none' | 'midBand' | 'pager';
 
 /** Rule 31 of validation/pagerChain.ts: the ground motion intensity is
  *  drawn from. */
@@ -238,9 +247,11 @@ export interface EarthquakeShakingResult {
   /** Epicentral MMI using the Faenza & Michelini (2010) Italian /
    *  European calibration — use this for events on the Eurasian plate. */
   mmiAtEpicenterEurope: number;
-  /** Ground range to where MMI V begins, on PAGER's banding only. */
+  /** Ground range to where MMI V begins, on PAGER's banding or when the
+   *  toll counts the dead below VII. */
   mmi5Radius?: Meters;
-  /** Ground range to where MMI VI begins, on PAGER's banding only. */
+  /** Ground range to where MMI VI begins, on PAGER's banding or when the
+   *  toll counts the dead below VII. */
   mmi6Radius?: Meters;
   /** Ground range to the MMI VII contour (strong shaking): intensity
    *  7.0 on the shipped rings, 6.5 on PAGER's banding. */
@@ -482,10 +493,13 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   const mmi7Radius = contourAt(bandEdge(7, banding));
   const mmi8Radius = contourAt(bandEdge(8, banding));
   const mmi9Radius = contourAt(bandEdge(9, banding));
-  const pagerRings =
-    banding === 'pager'
-      ? { mmi5Radius: contourAt(bandEdge(5, banding)), mmi6Radius: contourAt(bandEdge(6, banding)) }
-      : {};
+  // The V and VI rings: PAGER's banding draws them at its edges, and a
+  // toll that counts the dead below VII (rule 46 of
+  // validation/lowIntensityRules.ts) at 5.0 and 6.0.
+  const lowRings = banding === 'pager' || (input.lowIntensityDeaths ?? 'none') !== 'none';
+  const pagerRings = lowRings
+    ? { mmi5Radius: contourAt(bandEdge(5, banding)), mmi6Radius: contourAt(bandEdge(6, banding)) }
+    : {};
 
   const waterDepthM = (input.waterDepth as number | undefined) ?? 0;
   const isSubmarine = Number.isFinite(waterDepthM) && waterDepthM > 0;

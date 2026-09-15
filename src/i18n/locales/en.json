@@ -1233,6 +1233,8 @@
       "mmi9": "MMI ≥ IX",
       "mmi8": "MMI VIII",
       "mmi7": "MMI VII",
+      "mmi6": "MMI VI",
+      "mmi5": "MMI V",
       "pyroclastic": "Pyroclastic flow",
       "lateralBlast": "Lateral blast",
       "thermalOnly": "Burns only",
