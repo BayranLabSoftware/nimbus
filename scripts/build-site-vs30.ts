@@ -32,11 +32,14 @@ import { terrainSpanForEarthquake } from '../src/store/useAppStore.js';
  *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory]
  *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --unseen
  *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --moderate
+ *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --point-source
  *
  * The second reads the earthquakes of rule 23 of depthRules.ts, from
  * unseenSetData.ts, and writes their sites into unseenSiteData.ts; the
  * third those of rule 45 of lowIntensityRules.ts, from moderateSetData.ts,
- * into moderateSiteData.ts.
+ * into moderateSiteData.ts; the fourth those of rule 50 of
+ * pointSourceRules.ts, from pointSourceSetData.ts, into
+ * pointSourceSiteData.ts.
  *
  * The tiles are revised now and then, so a run on another day can read
  * a different slope; the file in the repository is the one the rules
@@ -48,6 +51,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ARGS = process.argv.slice(2);
 const UNSEEN = ARGS.includes('--unseen');
 const MODERATE = ARGS.includes('--moderate');
+const POINT_SOURCE = ARGS.includes('--point-source');
 const CACHE = resolve(ARGS.find((a) => !a.startsWith('--')) ?? join(tmpdir(), 'nimbus-terrarium'));
 
 let downloaded = 0;
@@ -246,6 +250,55 @@ export const MODERATE_SITES: readonly SiteRow[] = LINES.map(site);
   );
 }
 
+/** Rule 50's earthquakes, read from their generated file by path. */
+async function mainPointSource(): Promise<void> {
+  const file = join(ROOT, 'src', 'physics', 'validation', 'pointSourceSetData.ts');
+  const data = (await import(file)) as {
+    POINT_SOURCE_EARTHQUAKES: readonly { comcat: string; latitude: number; longitude: number }[];
+  };
+  const sites = await measureAll(
+    data.POINT_SOURCE_EARTHQUAKES.map((q) => ({
+      key: q.comcat,
+      latitude: q.latitude,
+      longitude: q.longitude,
+      span: undefined,
+    }))
+  );
+  const readOn = new Date().toISOString().slice(0, 10);
+  const body = `${HEADER(readOn, 'rule 50 of pointSourceRules.ts, with rule 20 of siteVs30.ts,')}
+
+import type { SiteRow } from './siteVs30.js';
+
+export const POINT_SOURCE_SITES_READ_ON = '${readOn}';
+
+type SiteLine = readonly [string, number, number, number, number, number, number];
+
+const site = ([key, latitude, longitude, tiles, elevationM, slopeRad, vs30]: SiteLine): SiteRow => ({
+  key,
+  latitude,
+  longitude,
+  tiles,
+  elevationM,
+  slopeRad,
+  vs30,
+});
+
+/** Rule 50's earthquakes, keyed by ComCat event: key, latitude,
+ *  longitude, tiles, elevation (m), slope (rad), Vs30 (m/s). */
+// prettier-ignore
+const LINES: readonly SiteLine[] = [
+${sites.map(rowText).join('\n')}
+];
+
+export const POINT_SOURCE_SITES: readonly SiteRow[] = LINES.map(site);
+`;
+  const out = join(ROOT, 'src', 'physics', 'validation', 'pointSourceSiteData.ts');
+  writeFileSync(out, body);
+  console.error(
+    `wrote ${sites.length.toString()} sites → ${out}; ${tilesRead.toString()} tile reads, ${downloaded.toString()} tiles downloaded (${(downloadedBytes / 1e6).toFixed(1)} MB) into ${CACHE}`
+  );
+}
+
 async function main(): Promise<void> {
   // Rule 3 sets no strike, so a row of rule 11's set is a pick with none.
   const rulePicks: Pick[] = NCEI_EARTHQUAKE_ROWS.map((r) => ({
@@ -312,4 +365,10 @@ ${netSites.map(rowText).join('\n')}
   );
 }
 
-await (MODERATE ? mainModerate() : UNSEEN ? mainUnseen() : main());
+await (POINT_SOURCE
+  ? mainPointSource()
+  : MODERATE
+    ? mainModerate()
+    : UNSEEN
+      ? mainUnseen()
+      : main());

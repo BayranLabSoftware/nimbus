@@ -592,3 +592,59 @@ holds more records, and does not bring the central figure nearer them. No
 candidate lowers the score by ln 1.25, so by rule 47 the toll in place stays
 and the guards did not run. `docs/SCIENCE.md` gives the figures in full, with
 what was read afterwards.
+
+## After BM-10: how far a point source's ground is from its rupture
+
+Written on 15 September 2026, before the candidate named below was run on any
+earthquake. The rules are numbered after the forty-nine before them and live
+in `src/physics/validation/pointSourceRules.ts` (rules 50 to 55); the set
+comes first, in `pointSourceSetData.ts` and `pointSourceSiteData.ts`, read by
+`scripts/build-point-source-set.ts` and `scripts/build-site-vs30.ts
+--point-source`.
+
+### What is already known, and so not held out
+
+Every scenario below Mw 7.5 is a disc, and its rings take the Joyner–Boore
+distance to be the distance from the epicentre. Rule 18's run found them at
+0.83, 0.50 and 0.90 of the ShakeMaps' radius where a map reaches MMI VII, and
+rule 11's held-out tolls read 1.46×, 0.33× and 1.94× their records on the
+browser's ground: the candidate is proposed because of those figures, and
+draws larger rings below Mw 7.5 wherever it differs. BM-10's point 3 left the
+interface models' rupture distance on the hypocentre's depth. ShakeMap's code
+and ps2ff's were read to write the candidate as ShakeMap 4.0.2 applies it,
+and the candidate was coded and compared with ps2ff on distances alone, with
+no ring drawn. Before the rules were written, ComCat's count of the events
+rule 50 lists was read (445), its ids to find the eight earthquakes of the
+window already read, and one map's info.json; once the set was read, only its
+counts — 421 with a map, 241, 154 and 26 by cell, 86, 70 and 10 interface
+earthquakes, 20, 32 and 8 maps drawn on a finite rupture or with ten stations
+or more — its maps' ShakeMap revisions and the values of their `fault_ref`
+and `median_dist`. No footprint, map area or toll of the set was looked at.
+
+The set's recorded deaths were first meant to decide. They were moved beside
+before the rules were written, once it was recalled that PAGER's country
+curves, which the toll uses, were fitted on the fatal earthquakes of 1973 to
+2007 — rule 1's reason for holding out only later ones.
+
+### The distances, the score and the decision
+
+Rule 50's set is every ComCat earthquake of Mw 6 or more, 2000 to 2007, no
+deeper than 40 km, with a ShakeMap — the ShakeMap Atlas as ShakeMap
+4.0.2+335 redrew it in 2020, with ps2ff's distances wherever the rupture was a
+point. Rule 51's candidate draws a disc's rings at Thompson & Worden's (2018)
+average Joyner–Boore distance — for the interface models, their average
+rupture distance — with the parameters ShakeMap 4.0.2 passes for an origin
+with no tectonic region, computed exactly on a grid of magnitude, depth and
+distance and interpolated, and held to ps2ff 1.5.9 before any score. Rule 52
+scores it under Boore et al. 2014 on the set's maps below Mw 7.5, on rock and
+on the browser's ground, and asks it to be better by 0.05 in both and no worse
+on the maps least made of ShakeMap's models. Rule 53 checks an eligible
+candidate as rule 38 checks a law, on sets whose deaths lie outside the
+curves' years: rule 19's test on rule 11's held-out tolls and rule 25's on
+rule 23's quiet earthquakes. Rule 54 puts the interface models, with the new
+rupture distance below Mw 7.5, to the set's interface maps against the law in
+place, and checks a winner the same way on rule 35's interface earthquakes.
+Rule 55 says what adoption changes and what is printed beside, the set's own
+recorded tolls among it. Where the rupture was a point, the maps are made of
+ps2ff's averages, so the candidate agrees with them partly by construction;
+the rules say so rather than correct it.
