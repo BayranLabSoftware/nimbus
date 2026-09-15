@@ -480,9 +480,15 @@ the candidates for re-tuning:
   maps (0.42 against 0.06) and read rule 11's dead nearer their records, but
   was not adopted: silent where the maps are silent, it also draws bands of
   [0, 0] about moderate earthquakes that killed, and its band held too few
-  records below Mw 6.5. Open: a law that is silent where it should be and
-  still counts the dead it does not ring; the prospective set reads every
-  candidate again.
+  records below Mw 6.5. Counting the dead of its V and VI bands was tried on
+  194 small and deep earthquakes no rule had read (rules 61 to 65,
+  docs/SCIENCE.md, "The hypocentral equation with the dead of V and VI"): it
+  read the dead nearer their records than the toll in place and fixed most of
+  the small earthquakes left at [0, 0], but still held fewer than eight records
+  in ten, because the hypocentral equation draws no V ring about deep
+  earthquakes that killed. Nothing changes. Open: a law silent where the maps
+  are silent that still rings the deep earthquakes' dead; the prospective set
+  reads every candidate again.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

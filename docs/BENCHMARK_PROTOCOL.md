@@ -761,3 +761,15 @@ changes and what is printed beside. The set sits away from the moderate
 shallow earthquakes where the fault showed, the equation is extrapolated for
 the small and the deepest of it, and on deep earthquakes a law that reads depth
 leads; the rules say so rather than correct it.
+
+### Outcome
+
+Run once on 15 September 2026, after the rules, the set and the run were
+committed (`a48eb85`). On the 194 earthquakes the toll in place scored 0.720
+and held 160 records; the equation with V and VI at their middles scored 0.565
+and held 161, at their integers 0.566 and 158. Both read the dead nearer their
+records, but neither band held eight records in ten below Mw 7.5, so by rule 63
+neither is eligible and the guards did not run. The bands fix most of the small
+earthquakes the toll left at [0, 0]; the equation draws no V ring about 24 deep
+earthquakes that killed. `docs/SCIENCE.md` gives the figures in full, with what
+was read afterwards.

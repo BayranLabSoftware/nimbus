@@ -182,6 +182,12 @@ import { runPointSource, type PointSourceRun } from '../src/physics/validation/p
 import { ATLAS_CANDIDATES } from '../src/physics/validation/atlasRules.js';
 import { runAtlas, type AtlasRun } from '../src/physics/validation/atlasRun.js';
 import { ATLAS_READ_ON } from '../src/physics/validation/atlasSetData.js';
+import {
+  ALLEN_TOLL_BESIDE,
+  ALLEN_TOLL_CANDIDATES,
+} from '../src/physics/validation/allenTollRules.js';
+import { runAllenToll, type AllenTollRun } from '../src/physics/validation/allenTollRun.js';
+import { SMALL_DEEP_READ_ON } from '../src/physics/validation/smallDeepSetData.js';
 import type { ProspectiveScore } from '../src/physics/validation/prospectiveRules.js';
 import { POINT_SOURCE_READ_ON } from '../src/physics/validation/pointSourceSetData.js';
 import { shippedCountryAt } from '../src/physics/validation/shippedPopulation.js';
@@ -1712,6 +1718,136 @@ function atlasSection(run: AtlasRun): string {
   ].join('\n');
 }
 
+function runAllenTollRules(): AllenTollRun {
+  const run = runAllenToll();
+  // Rules 63 and 64 adopt nothing unless the simulator's defaults move with
+  // them; a scenario that names nothing is checked by the two sections above.
+  if (run.guards?.decision.adopted === true) {
+    throw new Error(
+      `Rule 64 adopts ${run.guards.winner}; the simulator still draws Boore et al. 2014 and counts inside MMI VII only`
+    );
+  }
+  return run;
+}
+
+const ALLEN_TOLL_LABEL: Readonly<Record<string, string>> = {
+  boore2014: 'Boore et al. 2014, inside MMI VII only (in place)',
+  allenMidBand: 'Allen et al. below Mw 7.5, V and VI at their middles',
+  allenPager: 'Allen et al. below Mw 7.5, V and VI at their integers',
+  allenNone: 'Allen et al. below Mw 7.5, inside MMI VII only',
+  booreMidBand: 'Boore et al. 2014, V and VI at their middles',
+  boorePager: 'Boore et al. 2014, V and VI at their integers',
+};
+
+function allenTollSection(run: AllenTollRun): string {
+  const bands = SIZE_BANDS.earthquake.map((b) => b.label);
+  const row = (key: string, reading: AllenTollRun['readings'][string] | undefined): string => {
+    if (reading === undefined) return '';
+    const runs = run.runs[key] ?? [];
+    return `| ${ALLEN_TOLL_LABEL[key] ?? key} | ${reading.score.toFixed(3)} | ${reading.held.toString()} of ${runs.length.toString()} | ${reading.tollCells.map((t) => `${biasText(t.stats)} · ${t.stats.inside.toString()} of ${t.stats.rows.toString()}`).join(' | ')} | ${grouped(runs.reduce((a, r) => a + r.central, 0))} |`;
+  };
+  const header = `| Toll | Score | Records held | ${bands.join(' | ')} | Dead counted |`;
+  const rule = `|------|----:|----:|${bands.map(() => '-----').join('|')}|----:|`;
+  const recorded = (run.runs.boore2014 ?? []).reduce((a, r) => a + r.record, 0);
+  const g = run.guards;
+  const verdict =
+    run.choice.winner === null
+      ? 'No candidate reads the dead no worse than the toll in place while its band holds eight records in ten in every cell, so by rule 63 Boore et al. 2014 stays, counting the dead inside MMI VII only, and the guards do not run.'
+      : g?.decision.adopted === true
+        ? `By rules 63 and 64 ${ALLEN_TOLL_LABEL[g.winner] ?? g.winner} draws the rings and counts the toll.`
+        : `By rule 64 the toll in place stays: ${[
+            g?.decision.rule11 === true ? null : "the winner fails rule 11's guard",
+            g?.decision.quiet === true ? null : "it raises too many of rule 23's quiet earthquakes",
+            g?.decision.moderate === true
+              ? null
+              : "it reads rule 45's moderate set too far from its records",
+          ]
+            .filter((x): x is string => x !== null)
+            .join(', and ')}.`;
+  return [
+    "Allen et al. 2012's hypocentral equation below Mw 7.5 won the maps above and missed the dead, most of its misses bands of [0, 0]. Rules 61 to 65",
+    '(`validation/allenTollRules.ts`), committed before any toll was run on their set, add the dead of its V and VI bands, as rule 46 counts them,',
+    `and put it to NCEI's significant earthquakes of 2008 to 2025 of magnitude 4 to 4.99 no deeper than 40 km, or of magnitude 5 or more deeper than 40 km, that no rule had read (read on ${SMALL_DEEP_READ_ON}): ${run.events.earthquakes.toString()} earthquakes, ${run.events.small.toString()} small and ${run.events.deep.toString()} deep, ${run.events.recorded.toString()} with deaths and ${grouped(recorded)} dead in all, on the browser's ground.`,
+    "A candidate must read the dead no worse than the toll in place, by rule 47's score, and hold eight records in ten in every cell.",
+    '',
+    header,
+    rule,
+    ...ALLEN_TOLL_CANDIDATES.map((t) => row(t.key, run.readings[t.key])),
+    '',
+    ...(g === null
+      ? [verdict]
+      : [
+          `| Toll | Rule 11's held-out tolls: ${bands.join(' | ')} | Rule 23's quiet earthquakes raised to ten | Rule 45's score |`,
+          `|------|${bands.map(() => '-----').join('|')}|----:|----:|`,
+          ...(['inPlace', 'winner'] as const).map(
+            (side) =>
+              `| ${side === 'inPlace' ? (ALLEN_TOLL_LABEL.boore2014 ?? '') : (ALLEN_TOLL_LABEL[g.winner] ?? g.winner)} | ${g.rule11[side].map((t) => `${biasText(t.stats)} · ${t.stats.inside.toString()} of ${t.stats.rows.toString()}`).join(' | ')} | ${(100 * g.quiet[side].share).toFixed(1)} % of ${g.quiet[side].quiet.toString()} | ${g.moderate[side].toFixed(3)} |`
+          ),
+          '',
+          verdict,
+        ]),
+    '',
+    'Printed beside, deciding nothing (rule 65): the equation counting inside MMI VII only and Boore et al. 2014 counting V and VI,',
+    '',
+    header,
+    rule,
+    ...ALLEN_TOLL_BESIDE.map((t) => row(t.key, run.beside.readings[t.key])),
+    '',
+    'and every toll on the small and the deep earthquakes apart:',
+    '',
+    '| Toll | Small: score | Small: records held | Deep: score | Deep: records held |',
+    '|------|----:|----:|----:|----:|',
+    ...[...ALLEN_TOLL_CANDIDATES, ...ALLEN_TOLL_BESIDE].map((t) => {
+      const w = run.beside.windows[t.key];
+      if (w === undefined) return '';
+      return `| ${ALLEN_TOLL_LABEL[t.key] ?? t.key} | ${w.small.score.toFixed(3)} | ${w.small.held.toString()} of ${w.small.rows.toString()} | ${w.deep.score.toFixed(3)} | ${w.deep.held.toString()} of ${w.deep.rows.toString()} |`;
+    }),
+  ].join('\n');
+}
+
+/** Rules 61 to 65 in the report's JSON. */
+function allenTollJson(run: AllenTollRun) {
+  const g = run.guards;
+  const reading = (r: AllenTollRun['readings'][string] | undefined) =>
+    r === undefined
+      ? null
+      : {
+          score: fixed(r.score, 3),
+          held: r.held,
+          cells: r.tollCells.map((t) => ({
+            bias: t.stats.bias === null ? null : fixed(t.stats.bias, 3),
+            inside: t.stats.inside,
+            rows: t.stats.rows,
+          })),
+        };
+  return {
+    readOn: SMALL_DEEP_READ_ON,
+    events: run.events,
+    readings: Object.fromEntries(
+      ALLEN_TOLL_CANDIDATES.map((t) => [t.key, reading(run.readings[t.key])])
+    ),
+    choice: run.choice,
+    guards:
+      g === null
+        ? null
+        : {
+            winner: g.winner,
+            decision: g.decision,
+            quietShare: {
+              inPlace: fixed(g.quiet.inPlace.share, 4),
+              winner: fixed(g.quiet.winner.share, 4),
+            },
+            moderate: {
+              inPlace: fixed(g.moderate.inPlace, 3),
+              winner: fixed(g.moderate.winner, 3),
+            },
+          },
+    beside: Object.fromEntries(
+      ALLEN_TOLL_BESIDE.map((t) => [t.key, reading(run.beside.readings[t.key])])
+    ),
+  };
+}
+
 /** Rules 56 to 60 in the report's JSON. */
 function atlasJson(run: AtlasRun) {
   const dead = run.dead;
@@ -2656,6 +2792,7 @@ function main(): void {
   const lowIntensity = runLow();
   const pointSource = runPointSourceRules();
   const atlas = runAtlasRules();
+  const allenToll = runAllenTollRules();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -2755,6 +2892,10 @@ ${pointSourceSection(pointSource)}
 ### The rings when a silence counts
 
 ${atlasSection(atlas)}
+
+### The hypocentral equation with the dead of V and VI
+
+${allenTollSection(allenToll)}
 
 ### Which checks are validation
 
@@ -3050,6 +3191,7 @@ otherwise.
       },
       pointSource: pointSourceJson(pointSource),
       atlas: atlasJson(atlas),
+      allenToll: allenTollJson(allenToll),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,

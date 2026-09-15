@@ -2204,6 +2204,150 @@
         }
       }
     },
+    "allenToll": {
+      "readOn": "2026-09-15",
+      "events": {
+        "earthquakes": 194,
+        "small": 94,
+        "deep": 100,
+        "recorded": 75
+      },
+      "readings": {
+        "boore2014": {
+          "score": 0.72,
+          "held": 160,
+          "cells": [
+            {
+              "bias": 5.663,
+              "inside": 41,
+              "rows": 75
+            },
+            {
+              "bias": 3.088,
+              "inside": 17,
+              "rows": 17
+            },
+            {
+              "bias": 3.505,
+              "inside": 21,
+              "rows": 21
+            }
+          ]
+        },
+        "allenMidBand": {
+          "score": 0.565,
+          "held": 161,
+          "cells": [
+            {
+              "bias": 1.587,
+              "inside": 59,
+              "rows": 88
+            },
+            {
+              "bias": 0.984,
+              "inside": 12,
+              "rows": 16
+            },
+            {
+              "bias": 4.594,
+              "inside": 22,
+              "rows": 22
+            }
+          ]
+        },
+        "allenPager": {
+          "score": 0.566,
+          "held": 158,
+          "cells": [
+            {
+              "bias": null,
+              "inside": 53,
+              "rows": 85
+            },
+            {
+              "bias": null,
+              "inside": 12,
+              "rows": 16
+            },
+            {
+              "bias": 3.926,
+              "inside": 21,
+              "rows": 21
+            }
+          ]
+        }
+      },
+      "choice": {
+        "winner": null,
+        "eligible": []
+      },
+      "guards": null,
+      "beside": {
+        "allenNone": {
+          "score": 0.574,
+          "held": 129,
+          "cells": [
+            {
+              "bias": null,
+              "inside": 3,
+              "rows": 55
+            },
+            {
+              "bias": null,
+              "inside": 0,
+              "rows": 13
+            },
+            {
+              "bias": 3.505,
+              "inside": 21,
+              "rows": 21
+            }
+          ]
+        },
+        "booreMidBand": {
+          "score": 0.785,
+          "held": 182,
+          "cells": [
+            {
+              "bias": 4.588,
+              "inside": 106,
+              "rows": 118
+            },
+            {
+              "bias": 4.603,
+              "inside": 17,
+              "rows": 17
+            },
+            {
+              "bias": 4.594,
+              "inside": 22,
+              "rows": 22
+            }
+          ]
+        },
+        "boorePager": {
+          "score": 0.729,
+          "held": 180,
+          "cells": [
+            {
+              "bias": 3.696,
+              "inside": 101,
+              "rows": 115
+            },
+            {
+              "bias": 3.383,
+              "inside": 17,
+              "rows": 17
+            },
+            {
+              "bias": 3.926,
+              "inside": 21,
+              "rows": 21
+            }
+          ]
+        }
+      }
+    },
     "interfaceRules": {
       "readOn": "2026-09-15",
       "events": {

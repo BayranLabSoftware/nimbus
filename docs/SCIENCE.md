@@ -1830,6 +1830,59 @@ set (rules 45 to 49); whether it would help this law was not run. The
 prospective set (rules 27 to 30) will read every candidate again on
 earthquakes not yet happened.
 
+### The hypocentral equation with the dead of V and VI (15 September 2026)
+
+`validation/allenTollRules.ts` (rules 61 to 65), `validation/allenTollRun.ts`.
+The previous section found Allen et al. 2012's hypocentral equation below Mw
+7.5 better on the maps and short on the dead, most of its misses bands of [0, 0]
+about earthquakes that killed. The candidates add the dead of the V and VI
+bands its rings draw, at PAGER's rates for the bands' middles or integers, as
+rule 46 counts them. Since they answer what rule 11's tolls showed, those tolls
+could only guard, and the choice was put to tolls no rule had read.
+
+The rules, the set and the run were pushed before any toll was run on the set
+(commit `a48eb85`). Rule 61's set is every NCEI significant earthquake of 2008
+to 2025 of magnitude 4 to 4.99 no deeper than 40 km, or of magnitude 5 or more
+deeper than 40 km, matched to ComCat and not read by any rule. Of 241 records
+that leaves 194 earthquakes, 75 of them with deaths and 1 871 dead in all, on
+the browser's ground. A candidate had to read the set's dead no worse than the
+toll in place, by rule 47's score, and hold eight records in ten in every
+magnitude cell; a winner would then face guards on rule 11's tolls, rule 23's
+quiet earthquakes and rule 45's moderate set.
+
+| Toll                                     | Score | Records held | Mw < 6.5         | Mw 6.5–7.5       | Mw ≥ 7.5         | Dead counted |
+| ---------------------------------------- | ----: | -----------: | ---------------- | ---------------- | ---------------- | -----------: |
+| Boore et al. 2014, inside MMI VII only   | 0.720 |   160 of 194 | 5.66× · 41 of 75 | 3.09× · 17 of 17 | 3.51× · 21 of 21 |       10 406 |
+| The equation, V and VI at their middles  | 0.565 |   161 of 194 | 1.59× · 59 of 88 | 0.98× · 12 of 16 | 4.59× · 22 of 22 |        8 716 |
+| The equation, V and VI at their integers | 0.566 |   158 of 194 | — · 53 of 85     | — · 12 of 16     | 3.93× · 21 of 21 |        8 277 |
+
+Both candidates read the dead nearer their records, but neither band holds eight
+records in ten below Mw 7.5, so by rule 63 neither is eligible, the guards did
+not run, and Boore et al. 2014 keeps drawing the rings and counting the dead
+inside MMI VII only.
+
+Printed beside, deciding nothing (rule 65). The equation counting inside MMI VII
+only scores 0.574 and holds 129 records, 3 of 55 below Mw 6.5; Boore et al. 2014
+counting V and VI scores 0.785 at the bands' middles and 0.729 at their
+integers, holding 182 and 180. On the small earthquakes every toll scores 0.40
+to 0.44; on the deep ones the toll in place scores 1.006 and the equation with
+V and VI 0.700 and 0.712.
+
+What the scores do not show was read afterwards, and is written here as such.
+The dead the tolls count come mostly from one earthquake. Hindu Kush 2015, Mw
+7.5 at 231 km, counts 7 147 dead in place and 7 600 with the bands, against
+399; from Mw 7.5 the candidates draw Boore et al. 2014's rings, which draw a
+deep earthquake as a shallow one. The bands of V and VI do what they were
+written for: with them the equation holds 59 of 88 records below Mw 6.5, where
+alone it held 3 of 55, and of the bands of [0, 0] about small earthquakes that
+killed, the toll in place leaves 29 (81 dead) and the equation with the bands'
+middles 7 (15 dead). What they cannot reach is depth. The equation draws not
+even a V ring about 24 deep earthquakes that killed — 20 below Mw 6.5 and four
+from 6.5 to 7.5, at 108 to 267 km — 70 dead in all, where the toll in place,
+which draws them as shallow, misses four. On this set the toll in place holds
+41 of 75 records below Mw 6.5 as well, fewer than eight in ten; rule 63 asked
+that share of the candidates only.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records

@@ -1186,6 +1186,40 @@ Printed beside, deciding nothing (rule 60): the same score on rock and on the ma
 | Rule 23’s maps | 0.12 | 0.02 | 0.02 | 0.30 | 0.30 | 0.20 | 0.05 |
 | Rule 50’s maps | 0.06 | 0.02 | 0.02 | 0.39 | 0.39 | 0.17 | 0.05 |
 
+### The hypocentral equation with the dead of V and VI
+
+Allen et al. 2012's hypocentral equation below Mw 7.5 won the maps above and missed the dead, most of its misses bands of [0, 0]. Rules 61 to 65
+(`validation/allenTollRules.ts`), committed before any toll was run on their set, add the dead of its V and VI bands, as rule 46 counts them,
+and put it to NCEI's significant earthquakes of 2008 to 2025 of magnitude 4 to 4.99 no deeper than 40 km, or of magnitude 5 or more deeper than 40 km, that no rule had read (read on 2026-09-15): 194 earthquakes, 94 small and 100 deep, 75 with deaths and 1,871 dead in all, on the browser's ground.
+A candidate must read the dead no worse than the toll in place, by rule 47's score, and hold eight records in ten in every cell.
+
+| Toll | Score | Records held | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Dead counted |
+|------|----:|----:|-----|-----|-----|----:|
+| Boore et al. 2014, inside MMI VII only (in place) | 0.720 | 160 of 194 | 5.66× · 41 of 75 | 3.09× · 17 of 17 | 3.51× · 21 of 21 | 10,406 |
+| Allen et al. below Mw 7.5, V and VI at their middles | 0.565 | 161 of 194 | 1.59× · 59 of 88 | 0.98× · 12 of 16 | 4.59× · 22 of 22 | 8,716 |
+| Allen et al. below Mw 7.5, V and VI at their integers | 0.566 | 158 of 194 | — · 53 of 85 | — · 12 of 16 | 3.93× · 21 of 21 | 8,277 |
+
+No candidate reads the dead no worse than the toll in place while its band holds eight records in ten in every cell, so by rule 63 Boore et al. 2014 stays, counting the dead inside MMI VII only, and the guards do not run.
+
+Printed beside, deciding nothing (rule 65): the equation counting inside MMI VII only and Boore et al. 2014 counting V and VI,
+
+| Toll | Score | Records held | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Dead counted |
+|------|----:|----:|-----|-----|-----|----:|
+| Allen et al. below Mw 7.5, inside MMI VII only | 0.574 | 129 of 194 | — · 3 of 55 | — · 0 of 13 | 3.51× · 21 of 21 | 8,178 |
+| Boore et al. 2014, V and VI at their middles | 0.785 | 182 of 194 | 4.59× · 106 of 118 | 4.60× · 17 of 17 | 4.59× · 22 of 22 | 11,577 |
+| Boore et al. 2014, V and VI at their integers | 0.729 | 180 of 194 | 3.70× · 101 of 115 | 3.38× · 17 of 17 | 3.93× · 21 of 21 | 10,605 |
+
+and every toll on the small and the deep earthquakes apart:
+
+| Toll | Small: score | Small: records held | Deep: score | Deep: records held |
+|------|----:|----:|----:|----:|
+| Boore et al. 2014, inside MMI VII only (in place) | 0.416 | 65 of 94 | 1.006 | 95 of 100 |
+| Allen et al. below Mw 7.5, V and VI at their middles | 0.421 | 85 of 94 | 0.700 | 76 of 100 |
+| Allen et al. below Mw 7.5, V and VI at their integers | 0.410 | 82 of 94 | 0.712 | 76 of 100 |
+| Allen et al. below Mw 7.5, inside MMI VII only | 0.409 | 64 of 94 | 0.729 | 65 of 100 |
+| Boore et al. 2014, V and VI at their middles | 0.442 | 85 of 94 | 1.107 | 97 of 100 |
+| Boore et al. 2014, V and VI at their integers | 0.403 | 83 of 94 | 1.036 | 97 of 100 |
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the

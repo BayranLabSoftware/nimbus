@@ -924,6 +924,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   band held too few of them below Mw 6.5, most of the misses earthquakes that
   killed where it draws no ring, so the rings are unchanged.
 
+- **The hypocentral equation with the dead of V and VI.** Rules written
+  before either candidate was run (`validation/allenTollRules.ts`) added the
+  dead of the V and VI bands to that equation's toll and put it to 194 small
+  and deep earthquakes of 2008 to 2025 that no rule had read. It read the dead
+  nearer their records than the toll in place (0.57 against 0.72) and fixed
+  most of the small earthquakes left without a band, but its band still held
+  fewer than eight records in ten: the equation draws no V ring about deep
+  earthquakes that killed. The rings and the toll are unchanged.
+
 - **Where a body breaks up, the paper against its program.** The Earth
   Impact Effects Program breaks small strong bodies up to 3 % lower than
   Nimbus, and bursts them up to 5 % lower (BM-13). Every altitude it

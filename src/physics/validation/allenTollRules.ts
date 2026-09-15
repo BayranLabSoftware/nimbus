@@ -105,6 +105,17 @@ import type { ModerateEarthquake } from './lowIntensityRules.js';
  * rule 11's tolls, so rule 11 can only stop them, not choose them. And the
  * rates below VII are PAGER's, fitted with its bands, which may already
  * count in higher bands some of the dead these count again.
+ *
+ * Run once, on 15 September 2026, after the rules, the set and the run were
+ * committed (a48eb85), and said here rather than folded into the rules above:
+ * on rule 61's 194 earthquakes the toll in place scored 0.720 and held 160
+ * records; the equation with the V and VI bands at their middles scored 0.565
+ * and held 161, at their integers 0.566 and 158. Both read the dead nearer
+ * their records, but neither held eight records in ten in every cell — 59 of
+ * 88 and 53 of 85 below Mw 6.5, 12 of 16 from 6.5 to 7.5 — so by rule 63
+ * neither is eligible, the guards did not run, and Boore et al. 2014 keeps
+ * drawing the rings. What was read afterwards is in docs/SCIENCE.md, "The
+ * hypocentral equation with the dead of V and VI".
  */
 
 /** An earthquake of rule 61's set: rule 45's columns, and which of the two
