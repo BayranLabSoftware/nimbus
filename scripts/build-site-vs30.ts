@@ -33,13 +33,15 @@ import { terrainSpanForEarthquake } from '../src/store/useAppStore.js';
  *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --unseen
  *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --moderate
  *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --point-source
+ *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --atlas
  *
  * The second reads the earthquakes of rule 23 of depthRules.ts, from
  * unseenSetData.ts, and writes their sites into unseenSiteData.ts; the
  * third those of rule 45 of lowIntensityRules.ts, from moderateSetData.ts,
  * into moderateSiteData.ts; the fourth those of rule 50 of
  * pointSourceRules.ts, from pointSourceSetData.ts, into
- * pointSourceSiteData.ts.
+ * pointSourceSiteData.ts; the fifth those of rule 56 of atlasRules.ts, from
+ * atlasSetData.ts, into atlasSiteData.ts.
  *
  * The tiles are revised now and then, so a run on another day can read
  * a different slope; the file in the repository is the one the rules
@@ -52,6 +54,7 @@ const ARGS = process.argv.slice(2);
 const UNSEEN = ARGS.includes('--unseen');
 const MODERATE = ARGS.includes('--moderate');
 const POINT_SOURCE = ARGS.includes('--point-source');
+const ATLAS = ARGS.includes('--atlas');
 const CACHE = resolve(ARGS.find((a) => !a.startsWith('--')) ?? join(tmpdir(), 'nimbus-terrarium'));
 
 let downloaded = 0;
@@ -250,14 +253,26 @@ export const MODERATE_SITES: readonly SiteRow[] = LINES.map(site);
   );
 }
 
-/** Rule 50's earthquakes, read from their generated file by path. */
-async function mainPointSource(): Promise<void> {
-  const file = join(ROOT, 'src', 'physics', 'validation', 'pointSourceSetData.ts');
-  const data = (await import(file)) as {
-    POINT_SOURCE_EARTHQUAKES: readonly { comcat: string; latitude: number; longitude: number }[];
-  };
+/** A later rule's earthquakes, read from their generated file by path, and
+ *  the sites written beside it: rule 50's of pointSourceRules.ts and rule
+ *  56's of atlasRules.ts. */
+async function mainForSet(set: {
+  dataFile: string;
+  exportName: string;
+  rule: string;
+  ruleNumber: string;
+  prefix: string;
+  outFile: string;
+}): Promise<void> {
+  const file = join(ROOT, 'src', 'physics', 'validation', set.dataFile);
+  const data = (await import(file)) as Record<
+    string,
+    readonly { comcat: string; latitude: number; longitude: number }[] | undefined
+  >;
+  const quakes = data[set.exportName];
+  if (quakes === undefined) throw new Error(`${set.dataFile} exports no ${set.exportName}`);
   const sites = await measureAll(
-    data.POINT_SOURCE_EARTHQUAKES.map((q) => ({
+    quakes.map((q) => ({
       key: q.comcat,
       latitude: q.latitude,
       longitude: q.longitude,
@@ -265,11 +280,11 @@ async function mainPointSource(): Promise<void> {
     }))
   );
   const readOn = new Date().toISOString().slice(0, 10);
-  const body = `${HEADER(readOn, 'rule 50 of pointSourceRules.ts, with rule 20 of siteVs30.ts,')}
+  const body = `${HEADER(readOn, `${set.rule}, with rule 20 of siteVs30.ts,`)}
 
 import type { SiteRow } from './siteVs30.js';
 
-export const POINT_SOURCE_SITES_READ_ON = '${readOn}';
+export const ${set.prefix}_SITES_READ_ON = '${readOn}';
 
 type SiteLine = readonly [string, number, number, number, number, number, number];
 
@@ -283,16 +298,16 @@ const site = ([key, latitude, longitude, tiles, elevationM, slopeRad, vs30]: Sit
   vs30,
 });
 
-/** Rule 50's earthquakes, keyed by ComCat event: key, latitude,
+/** Rule ${set.ruleNumber}'s earthquakes, keyed by ComCat event: key, latitude,
  *  longitude, tiles, elevation (m), slope (rad), Vs30 (m/s). */
 // prettier-ignore
 const LINES: readonly SiteLine[] = [
 ${sites.map(rowText).join('\n')}
 ];
 
-export const POINT_SOURCE_SITES: readonly SiteRow[] = LINES.map(site);
+export const ${set.prefix}_SITES: readonly SiteRow[] = LINES.map(site);
 `;
-  const out = join(ROOT, 'src', 'physics', 'validation', 'pointSourceSiteData.ts');
+  const out = join(ROOT, 'src', 'physics', 'validation', set.outFile);
   writeFileSync(out, body);
   console.error(
     `wrote ${sites.length.toString()} sites → ${out}; ${tilesRead.toString()} tile reads, ${downloaded.toString()} tiles downloaded (${(downloadedBytes / 1e6).toFixed(1)} MB) into ${CACHE}`
@@ -365,10 +380,26 @@ ${netSites.map(rowText).join('\n')}
   );
 }
 
-await (POINT_SOURCE
-  ? mainPointSource()
-  : MODERATE
-    ? mainModerate()
-    : UNSEEN
-      ? mainUnseen()
-      : main());
+await (ATLAS
+  ? mainForSet({
+      dataFile: 'atlasSetData.ts',
+      exportName: 'ATLAS_EARTHQUAKES',
+      rule: 'rule 56 of atlasRules.ts',
+      ruleNumber: '56',
+      prefix: 'ATLAS',
+      outFile: 'atlasSiteData.ts',
+    })
+  : POINT_SOURCE
+    ? mainForSet({
+        dataFile: 'pointSourceSetData.ts',
+        exportName: 'POINT_SOURCE_EARTHQUAKES',
+        rule: 'rule 50 of pointSourceRules.ts',
+        ruleNumber: '50',
+        prefix: 'POINT_SOURCE',
+        outFile: 'pointSourceSiteData.ts',
+      })
+    : MODERATE
+      ? mainModerate()
+      : UNSEEN
+        ? mainUnseen()
+        : main());

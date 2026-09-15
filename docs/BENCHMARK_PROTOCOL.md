@@ -663,3 +663,47 @@ than eight in ten in every cell, so by rule 54 it is not adopted. Most pairs
 the score reads are bands the rings draw where the maps hold none, and a wider
 ring loses on each; where a map reaches MMI VIII the candidate came nearer.
 `docs/SCIENCE.md` gives the figures in full, with what was read afterwards.
+
+## After the point sources: the rings on the ShakeMap Atlas, scored so that silences count
+
+Written on 15 September 2026, before any candidate named below was scored on
+any earthquake of the set it names. The rules are numbered after the
+fifty-five before them and live in `src/physics/validation/atlasRules.ts`
+(rules 56 to 60); the set comes first, in `atlasSetData.ts` and
+`atlasSiteData.ts`, read by `scripts/build-atlas-set.ts` and
+`scripts/build-site-vs30.ts --atlas`, and the run that will score it in
+`atlasRun.ts`, committed with the rules and run on nothing.
+
+### What is already known, and so not held out
+
+Rule 18's score gives nothing to a band rightly left blank, and it decided
+rule 24's run against the hypocentral equation and rule 52's against the
+distance to the rupture. Rule 28 wrote a score that counts silences for the
+prospective set, and BM-03 read it once on rule 18's maps, where it favoured
+Boore et al. 2014 on PGV (0.20 against 0.12). Before the rules were written,
+ComCat's count of the events rule 56 lists was read (1 140), its ids to find
+the two earthquakes of the window already read, and a search of the
+repository for any other; once the set was read, only its counts — 1 101 with
+a map, 617, 419 and 65 by cell, 691 quiet, 849 of no fault type, 47, 68 and 23
+maps drawn on a finite rupture or with ten stations or more — its ShakeMap
+revisions and its fault types. No footprint, map area, reached band or score of
+the set was looked at.
+
+### The candidates, the score and the decision
+
+Rule 56's set is every ComCat earthquake of Mw 6 or more, 1973 to 1999, no
+deeper than 40 km, with a ShakeMap: the ShakeMap Atlas as ShakeMap 4.0.2
+redrew it. Rule 57 reads rule 28's score on its maps, on the browser's ground:
+hits, misses, false alarms and silences at MMI VII and VIII, the Peirce skill
+and the sharpness. Rule 58 puts every way of drawing the rings committed
+before the rules against Boore et al. 2014 — Joyner & Boore 1981, the two
+hypocentral equations, the law on PGV and the law at Thompson & Worden's
+distance — and asks a winner to displace it as rule 29 does, by 0.10 of score
+and within 0.10 of sharpness, and to lose nothing on the least modelled maps.
+Rule 59 checks a winner as rule 38 checks a law, on rule 11's held-out tolls
+and rule 23's quiet earthquakes, since the set's own deaths are among those
+the country curves were fitted on. Rule 60 says what adoption changes and what
+is printed beside. The maps of these years are mostly the models ShakeMap ran,
+the candidates were fitted on data that include some of these earthquakes, and
+six candidates can produce a chance winner; the rules say so rather than
+correct it.
