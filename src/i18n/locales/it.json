@@ -101,6 +101,7 @@
       "legendRecorded": "valore registrato",
       "legendModel": "stima del modello",
       "axis": "numero di vittime (scala logaritmica)",
+      "chartRegion": "Figura 2, grafico scorrevole in orizzontale; gli stessi dati sono nella tabella che segue",
       "inside": "incluso",
       "outside": "escluso",
       "tableCaption": "Dati della figura 2",

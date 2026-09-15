@@ -70,7 +70,20 @@ export function TollChart({ rows }: { rows: TollChartRow[] }): JSX.Element {
         </li>
       </ul>
 
-      <div className={styles.scroll}>
+      {/* On a narrow screen this box scrolls sideways, and a region that
+          scrolls must be reachable from the keyboard: it takes the tab stop
+          and says what it holds. The drawing inside stays hidden from
+          screen readers — the table below carries the same numbers. */}
+      <div
+        className={styles.scroll}
+        /* axe's scrollable-region-focusable asks for exactly this: a box
+           that scrolls has to be reachable from the keyboard, interactive
+           or not. The lint rule is a heuristic; the checker is the law. */
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+        tabIndex={0}
+        role="group"
+        aria-label={t('landing.validation.chartRegion')}
+      >
         <svg
           className={styles.svg}
           viewBox={`0 0 ${String(WIDTH)} ${String(height)}`}

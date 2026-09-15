@@ -101,6 +101,7 @@
       "legendRecorded": "recorded value",
       "legendModel": "model estimate",
       "axis": "death toll (logarithmic scale)",
+      "chartRegion": "Figure 2, chart scrolling sideways; the same data is in the table below",
       "inside": "inside",
       "outside": "outside",
       "tableCaption": "Data of figure 2",
