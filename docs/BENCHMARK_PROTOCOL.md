@@ -648,3 +648,18 @@ Rule 55 says what adoption changes and what is printed beside, the set's own
 recorded tolls among it. Where the rupture was a point, the maps are made of
 ps2ff's averages, so the candidate agrees with them partly by construction;
 the rules say so rather than correct it.
+
+### Outcome
+
+Run once on 15 September 2026, after the candidate was committed
+(`d311936`). Below Mw 7.5 the candidate read the set's maps at 1.53 on rock
+and 1.78 on the browser's ground against 0.88 and 1.17 in place, and the least
+modelled maps at 0.83 and 1.16 against 0.20 and 0.55. It is not eligible, so by
+rule 52 nothing ran on the dead and a disc's rings stay at the epicentral
+distance. On the set's interface maps Parker et al. 2022 at the candidate's
+rupture distance won (1.05 and 0.95 against 1.30 and 1.52), and on rule 11's
+interface records its band held none of five, 27 of 34 and 11 of 16, fewer
+than eight in ten in every cell, so by rule 54 it is not adopted. Most pairs
+the score reads are bands the rings draw where the maps hold none, and a wider
+ring loses on each; where a map reaches MMI VIII the candidate came nearer.
+`docs/SCIENCE.md` gives the figures in full, with what was read afterwards.

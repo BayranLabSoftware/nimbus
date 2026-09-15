@@ -165,6 +165,22 @@ import { STADIUM_CELLS } from './interfaceStadiumRules.js';
  * Thompson & Worden give about the average is not added to the band; and a
  * stadium's rupture distance still stands on the hypocentre's depth. Maps
  * drawn from April 2024 on use FFSimmer, which none of these rules reads.
+ *
+ * Run once, on 15 September 2026, after the candidate was committed
+ * (d311936), and said here rather than folded into the rules above: below Mw
+ * 7.5 the candidate read rule 50's maps at 1.53 on rock and 1.78 on the
+ * browser's ground against 0.88 and 1.17 in place, and on the maps least made
+ * of ShakeMap's models at 0.83 and 1.16 against 0.20 and 0.55. It is not
+ * eligible, so by rule 52 nothing ran on the dead and `epicentral` stays. On
+ * rule 50's interface maps Parker et al. 2022 at the candidate's rupture
+ * distance read 1.05 and 0.95, BC Hydro 1.11 and 1.16, the law in place 1.30
+ * and 1.52; Parker et al. won, raised 0.6 % of rule 23's 352 quiet interface
+ * earthquakes to a toll of ten against 3.4 %, and its band held none of five,
+ * 27 of 34 and 11 of 16 of rule 11's interface records with something, fewer
+ * than eight in ten in every cell, so by rule 54 it is not adopted and Boore
+ * et al. 2014 keeps drawing the rings of a scenario marked a subduction
+ * interface. What was read afterwards is in docs/SCIENCE.md, "A disc's
+ * distance to its rupture".
  */
 
 /** An earthquake of 2000 to 2007 the project had read before rule 50, by

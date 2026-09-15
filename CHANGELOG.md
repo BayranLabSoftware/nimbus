@@ -899,6 +899,20 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   about four Iranian earthquakes near cities, and counts the deadliest far
   below their records.
 
+- **A disc's distance to its rupture.** Below Mw 7.5 the rings take every
+  site to be as far from the rupture as from the epicentre; USGS ShakeMap 4.0
+  draws such an earthquake at Thompson & Worden's (2018) average distance to
+  the ruptures it can have. Rules written before the candidate was scored
+  (`validation/pointSourceRules.ts`) put that average, as ShakeMap 4.0.2
+  computes it and held to ps2ff within 4 × 10⁻¹⁶, to the 421 ShakeMaps of
+  2000 to 2007 that no rule had read. Its wider rings read the maps at 1.53
+  against 0.88 in place, because most of those maps hold no strong shaking
+  where the rings already draw some, and the interface models at the new
+  rupture distance again held too few of the recorded dead; nothing changes,
+  and `pointSourceDistance` on the earthquake scenario keeps the candidate for
+  the record. Where a map does reach MMI VIII, the candidate's rings came
+  nearer to it.
+
 - **Where a body breaks up, the paper against its program.** The Earth
   Impact Effects Program breaks small strong bodies up to 3 % lower than
   Nimbus, and bursts them up to 5 % lower (BM-13). Every altitude it

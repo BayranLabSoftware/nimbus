@@ -1091,6 +1091,68 @@ A candidate must lower the mean |ln((toll + 1) / (record + 1))| by ln 1.25 and h
 
 Neither candidate lowers the score by ln 1.25 while holding no fewer records, so by rule 47 the toll in place stays and nothing else runs.
 
+### A disc's distance to its rupture
+
+Below Mw 7.5 every scenario is a disc, and its rings take the Joyner–Boore distance to be the distance
+from the epicentre; USGS ShakeMap 4.0 to 4.2 draws such an earthquake at Thompson & Worden’s (2018)
+average distance to the ruptures it can have. Rules 50 to 55 (`validation/pointSourceRules.ts`),
+committed before the candidate was scored, put that average, as ShakeMap 4.0.2 computes it for an
+origin with no tectonic region, to ComCat’s ShakeMaps of M 6 or more, 2000 to 2007, no deeper than 40 km (read on 2026-09-15): 421 maps, 60 of them drawn on a finite rupture or with ten stations or more, 166 of interface earthquakes.
+The candidate must lower rule 18's score below Mw 7.5 by 0.05 on rock and on the browser's ground, and be
+no worse on the least modelled maps. Each cell gives the mean log radius ratio and its pairs.
+
+| Distance | Rock: Mw < 6.5 | Mw 6.5–7.5 | Mean abs. | Ground: Mw < 6.5 | Mw 6.5–7.5 | Mean abs. | Least modelled, rock | Least modelled, ground |
+|----------|----:|----:|----:|----:|----:|----:|----:|----:|
+| From the epicentre | 0.92 (381) | 0.84 (297) | 0.88 | 1.18 (452) | 1.17 (303) | 1.17 | 0.20 | 0.55 |
+| Thompson & Worden’s average | 1.46 (381) | 1.60 (297) | 1.53 | 1.70 (452) | 1.86 (303) | 1.78 | 0.83 | 1.16 |
+
+The candidate does not beat the distance in place by 0.05 in both readings while doing no worse on the least modelled maps, so by rule 52 the rings of a disc stay at the epicentral distance and nothing runs on the dead.
+
+Rule 54 puts the interface models, at the candidate's rupture distance below Mw 7.5, to the set's interface maps, each run as a scenario marked a subduction interface: rule 18's mean absolute log bias over the three magnitude cells.
+
+| Law | Rock | Ground |
+|-----|----:|----:|
+| Boore et al. 2014 at the epicentral distance | 1.30 | 1.52 |
+| Parker et al. 2022 on the interface at Thompson & Worden’s average below Mw 7.5 (winner) | 1.05 | 0.95 |
+| Abrahamson, Gregor & Addo 2016 on the interface at Thompson & Worden’s average below Mw 7.5 (eligible) | 1.11 | 1.16 |
+
+| Law | Rule 11's held-out interface tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Rule 23's quiet interface earthquakes raised to ten |
+|-----|-----|-----|-----|----:|----:|
+| Boore et al. 2014 at the epicentral distance | 5.06× · 10 of 12 | 1.98× · 36 of 38 | 13.21× · 17 of 18 | 1.63 | 3.4 % of 352 |
+| Parker et al. 2022 on the interface at Thompson & Worden’s average below Mw 7.5 | — · 0 of 5 | 5.64× · 27 of 34 | 3.16× · 11 of 16 | 1.44 | 0.6 % of 352 |
+
+By rule 54 Boore et al. 2014 keeps drawing the rings of a scenario marked a subduction interface: Parker et al. 2022 on the interface fails rule 19's test on rule 11's interface tolls.
+
+Printed beside, deciding nothing (rule 55): the set's recorded earthquakes below Mw 7.5, on the browser's ground, whose 43,365 dead the country curves were fitted on,
+
+| Distance | Mean abs. ln((toll + 1) / (record + 1)) | Records held | Dead counted |
+|----------|----:|----:|----:|
+| From the epicentre | 1.080 | 116 of 129 | 7,684 |
+| Thompson & Worden’s average | 1.066 | 117 of 129 | 18,884 |
+
+rule 18's mean absolute log bias below Mw 7.5 on the maps drawn on a finite rupture and on those with ten stations or more, and the interface models at rule 36's hypocentral distance on the set's interface maps,
+
+| Maps | Rock | Ground |
+|------|----:|----:|
+| Finite rupture, at the epicentral distance | 0.42 | 0.05 |
+| Ten stations or more, at the epicentral distance | 0.38 | 0.72 |
+| Finite rupture, at Thompson & Worden’s average | 0.26 | 0.60 |
+| Ten stations or more, at Thompson & Worden’s average | 1.04 | 1.32 |
+| Interface maps, Parker et al. 2022 on the interface at the hypocentral distance, three cells | 0.49 | 0.34 |
+| Interface maps, Abrahamson, Gregor & Addo 2016 on the interface at the hypocentral distance, three cells | 0.83 | 0.60 |
+
+and the net's rings below Mw 7.5 under both distances (km):
+
+| Earthquake | MMI VII | MMI VIII | MMI IX |
+|------------|----:|----:|----:|
+| Northridge 1994 (Mw 6.7) | 17.0 → 25.7 | 4.7 → 11.3 | 0.0 → 0.0 |
+| L'Aquila 2009 (Mw 6.3) | 6.3 → 11.5 | 0.0 → 0.0 | 0.0 → 0.0 |
+| Amatrice 2016 (Mw 6.2) | 7.1 → 12.0 | 0.0 → 0.0 | 0.0 → 0.0 |
+| Christchurch 2011 (Mw 6.1) | 9.2 → 13.8 | 2.2 → 5.6 | 0.0 → 0.0 |
+| Kumamoto 2016 (Mw 7) | 19.7 → 31.6 | 6.4 → 15.2 | 0.0 → 0.0 |
+| Pohang 2017 (Mw 5.5) | 8.3 → 10.9 | 2.1 → 4.2 | 0.0 → 0.0 |
+| Durrës (Albania) 2019 (Mw 6.4) | 14.3 → 20.8 | 4.5 → 9.6 | 0.0 → 0.0 |
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the

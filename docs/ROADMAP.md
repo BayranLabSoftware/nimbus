@@ -461,9 +461,17 @@ the candidates for re-tuning:
   below MMI VII"); the toll in place stays. That set showed where the
   moderate toll goes wrong instead: Iran's steep national curve counts 7 587
   dead for Shiraz 2010, which killed one, and the deadliest earthquakes stand
-  on the browser's 760 m/s. Still open: the rupture distance is the
-  hypocentre's depth. Both interface models are among the prospective set's
-  candidates.
+  on the browser's 760 m/s. Drawing a disc's rings at Thompson & Worden's
+  average distance to the rupture, as ShakeMap 4.0 draws a point source, and
+  giving the interface models that rupture distance below Mw 7.5, was tried
+  on the 421 maps of 2000 to 2007 no rule had read (rules 50 to 55,
+  docs/SCIENCE.md, "A disc's distance to its rupture"). The wider rings lost
+  on maps that mostly hold no strong shaking, though they came nearer where a
+  map reaches MMI VIII, and Parker et al. 2022 at that distance again held too
+  few of rule 11's records; nothing changes. Still open: a stadium's rupture
+  distance stands on the hypocentre's depth, and the ring score gives no
+  credit for a band rightly left blank, which the prospective set's does. Both
+  interface models, at either distance, are among its candidates.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

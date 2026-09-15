@@ -172,6 +172,14 @@ import {
   type ModerateRun,
 } from '../src/physics/validation/lowIntensityRun.js';
 import { MODERATE_READ_ON } from '../src/physics/validation/moderateSetData.js';
+import {
+  POINT_SOURCE_CANDIDATES,
+  POINT_SOURCE_CELLS,
+  POINT_SOURCE_INTERFACE_CANDIDATES,
+  POINT_SOURCE_READINGS,
+} from '../src/physics/validation/pointSourceRules.js';
+import { runPointSource, type PointSourceRun } from '../src/physics/validation/pointSourceRun.js';
+import { POINT_SOURCE_READ_ON } from '../src/physics/validation/pointSourceSetData.js';
 import { shippedCountryAt } from '../src/physics/validation/shippedPopulation.js';
 import { casualtyPlanForResult, configureCountryLookup } from '../src/store/useAppStore.js';
 import { pagerFatalityRate } from '../src/physics/casualties.js';
@@ -1423,6 +1431,258 @@ function runLow(): LowIntensityRun {
   return run;
 }
 
+function runPointSourceRules(): PointSourceRun {
+  const run = runPointSource();
+  // What a disc draws when it names no distance must be what rules 52 and
+  // 53 decided, and a scenario marked a subduction interface that names no
+  // law must draw what rule 54 left in place.
+  const disc = { magnitude: 6.8, depth: m(15_000), faultType: 'reverse' } as const;
+  const drawn =
+    simulateEarthquake(disc).shaking.mmi7Radius ===
+    simulateEarthquake({ ...disc, pointSourceDistance: 'thompsonWorden2018' }).shaking.mmi7Radius
+      ? 'thompsonWorden2018'
+      : 'epicentral';
+  if (drawn !== run.distance) {
+    throw new Error(`Rules 52 and 53 decide ${run.distance}; the simulator draws ${drawn}`);
+  }
+  if (run.interface.dead?.decision.adopted === true) {
+    throw new Error(
+      `Rule 54 adopts ${run.interface.dead.winner}; the simulator still draws Boore et al. 2014 on an interface`
+    );
+  }
+  return run;
+}
+
+const DISTANCE_LABEL: Readonly<Record<(typeof POINT_SOURCE_CANDIDATES)[number], string>> = {
+  epicentral: 'From the epicentre',
+  thompsonWorden2018: 'Thompson & Worden’s average',
+};
+
+/** The same distances inside a sentence. */
+const DISTANCE_AT: Readonly<Record<(typeof POINT_SOURCE_CANDIDATES)[number], string>> = {
+  epicentral: 'at the epicentral distance',
+  thompsonWorden2018: 'at Thompson & Worden’s average',
+};
+
+function pointSourceSection(run: PointSourceRun): string {
+  const below = <T extends { sizeBand: string }>(cells: readonly T[]): T[] =>
+    cells.filter((c) => POINT_SOURCE_CELLS.includes(c.sizeBand));
+  const signed = (bias: number | null): string => (bias === null ? '—' : bias.toFixed(2));
+  const meanBelow = (cells: readonly { sizeBand: string; bias: number | null }[]): string =>
+    meanAbsoluteLogBias(below(cells)).toFixed(2);
+  const dead = run.dead;
+  const shakingRows = POINT_SOURCE_CANDIDATES.map(
+    (d) =>
+      `| ${DISTANCE_LABEL[d]} | ${POINT_SOURCE_READINGS.map(
+        (r) =>
+          `${below(run.shaking[r][d])
+            .map((c) => `${signed(c.bias)} (${c.pairs.toString()})`)
+            .join(' | ')} | ${meanBelow(run.shaking[r][d])}`
+      ).join(
+        ' | '
+      )} | ${POINT_SOURCE_READINGS.map((r) => meanBelow(run.leastModelled[r][d])).join(' | ')} |`
+  );
+  const verdict = run.choice.eligible
+    ? run.dead?.decision.adopted === true
+      ? 'By rules 52 and 53 a disc’s rings stand at Thompson & Worden’s average distance to the rupture, in the simulator and in the harness.'
+      : `By rule 53 the distance in place stays: ${[
+          run.dead?.decision.tolls === true
+            ? null
+            : "the candidate fails rule 19's test on rule 11's held-out tolls",
+          run.dead?.decision.quiet === true
+            ? null
+            : "it raises more of rule 23's quiet earthquakes to a toll of ten",
+        ]
+          .filter((x): x is string => x !== null)
+          .join(', and ')}.`
+    : 'The candidate does not beat the distance in place by 0.05 in both readings while doing no worse on the least modelled maps, so by rule 52 the rings of a disc stay at the epicentral distance and nothing runs on the dead.';
+  const bands = SIZE_BANDS.earthquake.map((b) => b.label);
+  const lawLabel = (law: (typeof POINT_SOURCE_INTERFACE_CANDIDATES)[number] | 'inPlace'): string =>
+    law === 'inPlace'
+      ? `Boore et al. 2014 ${DISTANCE_AT[run.distance]}`
+      : `${CONTOUR_LAW_LABEL[law]} at Thompson & Worden’s average below Mw 7.5`;
+  const ic = run.interface.choice;
+  const interfaceRows = (['inPlace', ...POINT_SOURCE_INTERFACE_CANDIDATES] as const).map(
+    (law) =>
+      `| ${lawLabel(law)}${law !== 'inPlace' && law === ic.winner ? ' (winner)' : law !== 'inPlace' && ic.eligible.includes(law) ? ' (eligible)' : ''} | ${POINT_SOURCE_READINGS.map((r) => ic.meanAbsoluteBias[r][law].toFixed(2)).join(' | ')} |`
+  );
+  const idead = run.interface.dead;
+  const interfaceVerdict =
+    ic.winner === null
+      ? 'No interface model beats the law in place by 0.05 in both readings, so by rule 54 nothing runs on the dead.'
+      : idead?.decision.adopted === true
+        ? `By rule 54 ${CONTOUR_LAW_LABEL[ic.winner]} draws the rings of a scenario marked a subduction interface.`
+        : `By rule 54 Boore et al. 2014 keeps drawing the rings of a scenario marked a subduction interface: ${[
+            idead?.decision.tolls === true
+              ? null
+              : `${CONTOUR_LAW_LABEL[ic.winner]} fails rule 19's test on rule 11's interface tolls`,
+            idead?.decision.quiet === true
+              ? null
+              : "it raises more of rule 23's quiet interface earthquakes to a toll of ten",
+          ]
+            .filter((x): x is string => x !== null)
+            .join(', and ')}.`;
+  const recorded = POINT_SOURCE_CANDIDATES.map((d) => {
+    const rows = run.beside.recorded[d];
+    return `| ${DISTANCE_LABEL[d]} | ${recordedScore(rows).toFixed(3)} | ${rows.filter((r) => r.inside).length.toString()} of ${rows.length.toString()} | ${grouped(rows.reduce((a, r) => a + r.central, 0))} |`;
+  });
+  const recordTotal = run.beside.recorded.epicentral.reduce((a, r) => a + r.record, 0);
+  const km = (metresValue: number): string => (metresValue / 1_000).toFixed(1);
+  return [
+    'Below Mw 7.5 every scenario is a disc, and its rings take the Joyner–Boore distance to be the distance',
+    'from the epicentre; USGS ShakeMap 4.0 to 4.2 draws such an earthquake at Thompson & Worden’s (2018)',
+    'average distance to the ruptures it can have. Rules 50 to 55 (`validation/pointSourceRules.ts`),',
+    'committed before the candidate was scored, put that average, as ShakeMap 4.0.2 computes it for an',
+    `origin with no tectonic region, to ComCat’s ShakeMaps of M 6 or more, 2000 to 2007, no deeper than 40 km (read on ${POINT_SOURCE_READ_ON}): ${run.events.earthquakes.toString()} maps, ${run.events.leastModelled.toString()} of them drawn on a finite rupture or with ten stations or more, ${run.events.interface.toString()} of interface earthquakes.`,
+    "The candidate must lower rule 18's score below Mw 7.5 by 0.05 on rock and on the browser's ground, and be",
+    'no worse on the least modelled maps. Each cell gives the mean log radius ratio and its pairs.',
+    '',
+    `| Distance | ${POINT_SOURCE_READINGS.map((r) => `${r === 'rock' ? 'Rock' : 'Ground'}: ${POINT_SOURCE_CELLS.join(' | ')} | Mean abs.`).join(' | ')} | Least modelled, rock | Least modelled, ground |`,
+    `|----------|${[...POINT_SOURCE_READINGS.flatMap(() => [...POINT_SOURCE_CELLS, 'mean']), 'rock', 'ground'].map(() => '----:').join('|')}|`,
+    ...shakingRows,
+    '',
+    ...(dead === null
+      ? [verdict]
+      : [
+          `| Distance | Rule 11's held-out tolls: ${bands.join(' | ')} | Mean abs. log bias | Rule 23's quiet earthquakes raised to ten |`,
+          `|----------|${bands.map(() => '-----').join('|')}|----:|----:|`,
+          ...POINT_SOURCE_CANDIDATES.map(
+            (d) =>
+              `| ${DISTANCE_LABEL[d]} | ${dead.tolls[d].map((t) => `${biasText(t.stats)} · ${t.stats.inside.toString()} of ${t.stats.rows.toString()}`).join(' | ')} | ${tollLogBias(dead.tolls[d]).toFixed(2)} | ${(100 * dead.quiet[d].share).toFixed(1)} % of ${dead.quiet[d].quiet.toString()} |`
+          ),
+          '',
+          verdict,
+        ]),
+    '',
+    "Rule 54 puts the interface models, at the candidate's rupture distance below Mw 7.5, to the set's interface maps, each run as a scenario marked a subduction interface: rule 18's mean absolute log bias over the three magnitude cells.",
+    '',
+    `| Law | ${POINT_SOURCE_READINGS.map((r) => (r === 'rock' ? 'Rock' : 'Ground')).join(' | ')} |`,
+    `|-----|${POINT_SOURCE_READINGS.map(() => '----:').join('|')}|`,
+    ...interfaceRows,
+    '',
+    ...(idead === null
+      ? [interfaceVerdict]
+      : [
+          `| Law | Rule 11's held-out interface tolls: ${bands.join(' | ')} | Mean abs. log bias | Rule 23's quiet interface earthquakes raised to ten |`,
+          `|-----|${bands.map(() => '-----').join('|')}|----:|----:|`,
+          ...(['inPlace', 'winner'] as const).map(
+            (side) =>
+              `| ${side === 'inPlace' ? lawLabel('inPlace') : lawLabel(idead.winner)} | ${idead.tolls[side].map((t) => `${biasText(t.stats)} · ${t.stats.inside.toString()} of ${t.stats.rows.toString()}`).join(' | ')} | ${tollLogBias(idead.tolls[side]).toFixed(2)} | ${(100 * idead.quiet[side].share).toFixed(1)} % of ${idead.quiet[side].quiet.toString()} |`
+          ),
+          '',
+          interfaceVerdict,
+        ]),
+    '',
+    `Printed beside, deciding nothing (rule 55): the set's recorded earthquakes below Mw 7.5, on the browser's ground, whose ${grouped(recordTotal)} dead the country curves were fitted on,`,
+    '',
+    '| Distance | Mean abs. ln((toll + 1) / (record + 1)) | Records held | Dead counted |',
+    '|----------|----:|----:|----:|',
+    ...recorded,
+    '',
+    "rule 18's mean absolute log bias below Mw 7.5 on the maps drawn on a finite rupture and on those with ten stations or more, and the interface models at rule 36's hypocentral distance on the set's interface maps,",
+    '',
+    `| Maps | ${POINT_SOURCE_READINGS.map((r) => (r === 'rock' ? 'Rock' : 'Ground')).join(' | ')} |`,
+    `|------|${POINT_SOURCE_READINGS.map(() => '----:').join('|')}|`,
+    ...POINT_SOURCE_CANDIDATES.flatMap((d) => [
+      `| Finite rupture, ${DISTANCE_AT[d]} | ${POINT_SOURCE_READINGS.map((r) => meanBelow(run.beside.finiteFault[r][d])).join(' | ')} |`,
+      `| Ten stations or more, ${DISTANCE_AT[d]} | ${POINT_SOURCE_READINGS.map((r) => meanBelow(run.beside.stations[r][d])).join(' | ')} |`,
+    ]),
+    ...POINT_SOURCE_INTERFACE_CANDIDATES.map(
+      (law) =>
+        `| Interface maps, ${CONTOUR_LAW_LABEL[law]} at the hypocentral distance, three cells | ${POINT_SOURCE_READINGS.map((r) => meanAbsoluteLogBias(run.beside.hypocentral[r][law]).toFixed(2)).join(' | ')} |`
+    ),
+    '',
+    "and the net's rings below Mw 7.5 under both distances (km):",
+    '',
+    '| Earthquake | MMI VII | MMI VIII | MMI IX |',
+    '|------------|----:|----:|----:|',
+    ...run.beside.net.map(
+      (n) =>
+        `| ${cellText(n.name)} (Mw ${n.magnitude.toString()}) | ${km(n.rings.epicentral.mmi7)} → ${km(n.rings.thompsonWorden2018.mmi7)} | ${km(n.rings.epicentral.mmi8)} → ${km(n.rings.thompsonWorden2018.mmi8)} | ${km(n.rings.epicentral.mmi9)} → ${km(n.rings.thompsonWorden2018.mmi9)} |`
+    ),
+  ].join('\n');
+}
+
+/** Rules 50 to 55 in the report's JSON. */
+function pointSourceJson(run: PointSourceRun) {
+  const side = (d: (typeof POINT_SOURCE_CANDIDATES)[number]) =>
+    d === 'epicentral' ? 'inPlace' : 'candidate';
+  const dead = run.dead;
+  const interfaceDead = run.interface.dead;
+  return {
+    readOn: POINT_SOURCE_READ_ON,
+    events: run.events,
+    belowMw75: Object.fromEntries(
+      POINT_SOURCE_READINGS.map((reading) => [
+        reading,
+        Object.fromEntries(
+          POINT_SOURCE_CANDIDATES.map((d) => [
+            d,
+            {
+              all: fixed(run.choice.all[reading][side(d)], 3),
+              leastModelled: fixed(run.choice.leastModelled[reading][side(d)], 3),
+            },
+          ])
+        ),
+      ])
+    ),
+    eligible: run.choice.eligible,
+    dead:
+      dead === null
+        ? null
+        : {
+            decision: dead.decision,
+            tollLogBias: Object.fromEntries(
+              POINT_SOURCE_CANDIDATES.map((d) => [d, fixed(tollLogBias(dead.tolls[d]), 3)])
+            ),
+            quietShare: Object.fromEntries(
+              POINT_SOURCE_CANDIDATES.map((d) => [d, fixed(dead.quiet[d].share, 4)])
+            ),
+          },
+    distance: run.distance,
+    interface: {
+      meanAbsoluteBias: Object.fromEntries(
+        POINT_SOURCE_READINGS.map((reading) => [
+          reading,
+          Object.fromEntries(
+            Object.entries(run.interface.choice.meanAbsoluteBias[reading]).map(([law, v]) => [
+              law,
+              fixed(v, 3),
+            ])
+          ),
+        ])
+      ),
+      eligible: run.interface.choice.eligible,
+      winner: run.interface.choice.winner,
+      dead:
+        interfaceDead === null
+          ? null
+          : {
+              winner: interfaceDead.winner,
+              decision: interfaceDead.decision,
+              inside: {
+                inPlace: interfaceDead.tolls.inPlace.map((t) => [t.stats.inside, t.stats.rows]),
+                winner: interfaceDead.tolls.winner.map((t) => [t.stats.inside, t.stats.rows]),
+              },
+              quietShare: {
+                inPlace: fixed(interfaceDead.quiet.inPlace.share, 4),
+                winner: fixed(interfaceDead.quiet.winner.share, 4),
+              },
+            },
+    },
+    besideRecorded: Object.fromEntries(
+      POINT_SOURCE_CANDIDATES.map((d) => [
+        d,
+        {
+          score: fixed(recordedScore(run.beside.recorded[d]), 3),
+          held: run.beside.recorded[d].filter((r) => r.inside).length,
+          rows: run.beside.recorded[d].length,
+        },
+      ])
+    ),
+  };
+}
+
 function lowIntensitySection(run: LowIntensityRun): string {
   const held = (rows: readonly ModerateRun[]): string =>
     `${rows.filter((r) => r.inside).length.toString()} of ${rows.length.toString()}`;
@@ -2239,6 +2499,7 @@ function main(): void {
   const interfaceRules = runInterface();
   const interfaceStadium = runStadium();
   const lowIntensity = runLow();
+  const pointSource = runPointSourceRules();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -2330,6 +2591,10 @@ ${stadiumSection(interfaceStadium)}
 ### The dead below MMI VII
 
 ${lowIntensitySection(lowIntensity)}
+
+### A disc's distance to its rupture
+
+${pointSourceSection(pointSource)}
 
 ### Which checks are validation
 
@@ -2623,6 +2888,7 @@ otherwise.
                 },
               },
       },
+      pointSource: pointSourceJson(pointSource),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,

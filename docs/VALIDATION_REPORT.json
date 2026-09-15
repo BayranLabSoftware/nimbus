@@ -1879,6 +1879,112 @@
       "winner": "none",
       "guards": null
     },
+    "pointSource": {
+      "readOn": "2026-09-15",
+      "events": {
+        "earthquakes": 421,
+        "leastModelled": 60,
+        "interface": 166
+      },
+      "belowMw75": {
+        "rock": {
+          "epicentral": {
+            "all": 0.882,
+            "leastModelled": 0.2
+          },
+          "thompsonWorden2018": {
+            "all": 1.532,
+            "leastModelled": 0.833
+          }
+        },
+        "ground": {
+          "epicentral": {
+            "all": 1.175,
+            "leastModelled": 0.549
+          },
+          "thompsonWorden2018": {
+            "all": 1.781,
+            "leastModelled": 1.158
+          }
+        }
+      },
+      "eligible": false,
+      "dead": null,
+      "distance": "epicentral",
+      "interface": {
+        "meanAbsoluteBias": {
+          "rock": {
+            "inPlace": 1.298,
+            "parker2022Interface": 1.05,
+            "abrahamson2016Interface": 1.108
+          },
+          "ground": {
+            "inPlace": 1.517,
+            "parker2022Interface": 0.947,
+            "abrahamson2016Interface": 1.162
+          }
+        },
+        "eligible": [
+          "parker2022Interface",
+          "abrahamson2016Interface"
+        ],
+        "winner": "parker2022Interface",
+        "dead": {
+          "winner": "parker2022Interface",
+          "decision": {
+            "adopted": false,
+            "tolls": false,
+            "quiet": true
+          },
+          "inside": {
+            "inPlace": [
+              [
+                10,
+                12
+              ],
+              [
+                36,
+                38
+              ],
+              [
+                17,
+                18
+              ]
+            ],
+            "winner": [
+              [
+                0,
+                5
+              ],
+              [
+                27,
+                34
+              ],
+              [
+                11,
+                16
+              ]
+            ]
+          },
+          "quietShare": {
+            "inPlace": 0.0341,
+            "winner": 0.0057
+          }
+        }
+      },
+      "besideRecorded": {
+        "epicentral": {
+          "score": 1.08,
+          "held": 116,
+          "rows": 129
+        },
+        "thompsonWorden2018": {
+          "score": 1.066,
+          "held": 117,
+          "rows": 129
+        }
+      }
+    },
     "interfaceRules": {
       "readOn": "2026-09-15",
       "events": {

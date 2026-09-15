@@ -1658,6 +1658,107 @@ buildings that fell was softer was not read. A national curve and one Vs30 at
 the epicentre are declared gaps already, and this set is where they show at
 magnitude 5.
 
+### A disc's distance to its rupture (15 September 2026)
+
+`validation/pointSourceRules.ts` (rules 50 to 55),
+`validation/pointSourceRun.ts`, `events/earthquake/pointSourceDistance.ts`.
+Every earthquake scenario below Mw 7.5 is a disc about its epicentre, and Boore
+et al. 2014 draws its rings with the Joyner–Boore distance taken as the
+distance from the epicentre, as if every site stood as far from the rupture as
+from the point where it began. USGS ShakeMap draws a map without a finite
+rupture the other way. From version 4.0 to 4.2 it takes Thompson & Worden's
+(2018) average distance to the ruptures the hypocentre can belong to (ps2ff),
+and from 4.3.0, in April 2024, it simulates those ruptures (FFSimmer). Rule
+18's run had found the rings at 0.83, 0.50 and 0.90 of the ShakeMaps' radius
+where a map reaches MMI VII, and BM-10 left the interface models' rupture
+distance on the hypocentre's depth. So the question was whether a disc's rings
+should stand at the distance to its rupture, put to maps no rule had read.
+
+The rules and the set were pushed before the candidate was committed (commit
+`fdab1be`), and the candidate before it was scored (`d311936`). Rule 50's set
+is every ComCat earthquake of Mw 6 or more, 2000 to 2007, no deeper than 40 km,
+with a ShakeMap — 445, less eight the project had read and 16 whose map has no
+MMI coverage. That leaves 421 maps of the ShakeMap Atlas as ShakeMap 4.0.2
+redrew them in 2020, with ps2ff's
+distances wherever the rupture was a point: 241 below Mw 6.5, 154 from 6.5 to
+7.5 and 26 above. Rule 51's candidate is ps2ff 1.5.9's single-event integral
+with the parameters ShakeMap 4.0.2 passes for an origin with no tectonic
+region. It is computed on a grid of magnitude, depth and distance, and held to
+ps2ff within 4 × 10⁻¹⁶ at 784 points and to the integral within 4.1 % (1.7 %
+from 3 km). The set's recorded deaths decide nothing: PAGER's country curves
+were fitted on the fatal earthquakes of 1973 to 2007. The check on the dead
+was to use rule 11's held-out tolls and rule 23's quiet earthquakes.
+
+| Distance, below Mw 7.5        | Rock: Mw < 6.5 | 6.5–7.5 | Mean | Ground: Mw < 6.5 | 6.5–7.5 | Mean | Least modelled: rock | ground |
+| ----------------------------- | -------------: | ------: | ---: | ---------------: | ------: | ---: | -------------------: | -----: |
+| From the epicentre (in place) |           0.92 |    0.84 | 0.88 |             1.18 |    1.17 | 1.17 |                 0.20 |   0.55 |
+| Thompson & Worden's average   |           1.46 |    1.60 | 1.53 |             1.70 |    1.86 | 1.78 |                 0.83 |   1.16 |
+
+The figures are rule 18's mean absolute log radius ratio. The least modelled
+maps, drawn on a finite rupture or with ten seismic stations or more, are 20
+below Mw 6.5 and 32 from it. The candidate is worse in both readings and on
+the least modelled maps, so by rule 52 it is not eligible, nothing ran on the
+dead, and the rings of a disc stay at the epicentral distance.
+
+Rule 54 put the interface models, at the candidate's rupture distance below Mw
+7.5, to the set's 166 interface maps, each run as a scenario marked a
+subduction interface.
+
+| Law, three magnitude cells | Rock | Ground |
+| -------------------------- | ---: | -----: |
+| Boore et al. 2014          | 1.30 |   1.52 |
+| Parker et al. 2022         | 1.05 |   0.95 |
+| BC Hydro 2016              | 1.11 |   1.16 |
+
+Both candidates beat the law in place by more than 0.05 in both readings, and
+Parker et al. 2022, with the lower sum, won. On rule 11's held-out tolls of rule
+35's interface earthquakes, on the browser's ground:
+
+| Law                | By cell, with the records each band holds             | Mean abs. log | Quiet interface earthquakes raised to ten |
+| ------------------ | ----------------------------------------------------- | ------------: | ----------------------------------------: |
+| Boore et al. 2014  | 5.06× · 1.98× · 13.21× (10 of 12, 36 of 38, 17 of 18) |          1.63 |                              3.4 % of 352 |
+| Parker et al. 2022 | — · 5.64× · 3.16× (0 of 5, 27 of 34, 11 of 16)        |          1.44 |                              0.6 % of 352 |
+
+Parker et al. reads the dead nearer their records and raises fewer quiet
+earthquakes to a toll of ten, but its band holds fewer than eight records in
+ten in every cell. By rule 54 it is not adopted, and Boore et al. 2014 keeps
+drawing the rings of a scenario marked a subduction interface.
+
+Printed beside, deciding nothing (rule 55). The set's 129 recorded earthquakes
+below Mw 7.5 read 1.080 by |ln((toll + 1) / (record + 1))| with 116 records
+held in place, and 1.066 with 117 at the candidate's distance. The counts are
+7 684 and 18 884 dead where 43 365 were recorded, on curves fitted on those
+years. On the maps drawn on a finite rupture the candidate reads 0.26 against
+0.42 on rock and 0.60 against 0.05 on the browser's ground; on those with ten
+stations or more, 1.04 against 0.38 and 1.32 against 0.72. At rule 36's
+hypocentral distance the interface models read the set's interface maps at
+0.49 and 0.34 (Parker et al.) and 0.83 and 0.60 (BC Hydro). The candidate
+would widen the net's MMI VII rings: Northridge from 17.0 to 25.7 km, Kumamoto
+from 19.7 to 31.6, L'Aquila from 6.3 to 11.5, Amatrice from 7.1 to 12.0.
+
+What the scores do not show was read afterwards, and is written here as such.
+Below Mw 7.5, 53 of the set's 395 maps reach MMI VII, and 10 of its 266 quiet
+earthquakes are among them. On rock, 358 of the 381 scored pairs below Mw 6.5
+and 252 of the 297 from it are bands the rings draw where the map holds none.
+A ring drawn nearer its rupture is wider, and scores worse, on every one of
+them. Where a map does reach the band, the picture is different. At MMI VIII
+the candidate's rings stand at a median 0.61 and 0.76 of the map's radius on
+rock against 0.20 and 0.22 in place (4 and 9 pairs). At MMI VII in the upper
+cell they stand at 1.24 against 0.69 (34 pairs). Below Mw 6.5 (1.45 against
+0.94) and on the browser's ground at MMI VII (1.73 and 1.57 against 1.21 and
+0.97) they are further off. Rule 18's score gives no credit for a band rightly
+left blank, as rule 24's run showed; on maps that mostly hold no strong
+shaking, that decides.
+
+The interface models' average rupture distance is shorter than their
+hypocentral one, so they too draw bands where the maps hold none. It is at the
+candidate's distance that Parker et al.'s band held 27 of rule 11's 34 records
+in the middle cell, one short of eight in ten, and none of five below Mw 6.5.
+The prospective set (rules 27 to 30) scores the rings with a skill score that
+credits a correct silence. Boore et al. 2014 and the interface models at the
+candidate's distance were committed before that set is first read, so by rule
+29 they are among its candidates.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records
