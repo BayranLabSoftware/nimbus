@@ -546,3 +546,38 @@ stadium's 2.29, raised none of 53 quiet earthquakes to a toll of ten against
 read them at 0.65 against 1.69. By rules 42 and 43 it is adopted: a scenario
 marked a subduction interface is a stadium from Mw 7.5 only. `docs/SCIENCE.md`
 gives the figures in full, with what was read afterwards.
+
+## After BM-10: whether the toll counts the dead below MMI VII
+
+Written on 15 September 2026, before either candidate named below was coded
+or run on any earthquake. The rules are numbered after the forty-four before
+them and live in `src/physics/validation/lowIntensityRules.ts` (rules 45 to
+49); the set comes first, in `moderateSetData.ts` and `moderateSiteData.ts`,
+read by `scripts/build-moderate-set.ts` and `scripts/build-site-vs30.ts
+--moderate`.
+
+### What is already known, and so not held out
+
+The toll counts deaths inside the MMI VII ring only, at PAGER's rates for
+7.5, 8.5 and 9.5; PAGER counts them from V. BM-03's half-chain with PAGER's
+bands and rates on the PGA rings read rule 11's held-out tolls at 1.51×,
+0.35× and 3.34× against 1.46×, 0.33× and 1.94× in place, and BM-10 found
+bands of [0, 0] about moderate earthquakes with a few dead. Before the rules
+were written, NCEI's count of the records rule 45 names was read (302), and
+once the set was read, only its counts: 298 earthquakes, 120 records with
+deaths, 21 of ten or more, nine below magnitude 5 in ComCat. No toll of the
+set was run.
+
+### The tolls, the score and the decision
+
+Rule 45's set is every NCEI significant earthquake of magnitude 5.0 to 5.99,
+2008 to 2025, no deeper than 40 km — below rule 11's magnitude, so none of
+them has been read by a rule — on the browser's ground. Rule 46's candidates
+add the V and VI bands the rings draw, at PAGER's rates for their middles
+(5.5 and 6.5) or for their integers (5 and 6), everything else shared. Rule
+47 asks a candidate to lower the mean |ln((toll + 1) / (record + 1))| by ln
+1.25 and hold no fewer records. Rule 48 guards the winner on rule 11's
+held-out tolls (0.10 of room and eight records in ten per cell) and on rule
+23's quiet earthquakes (one in a hundred of room). Rule 49 says what adoption
+changes — and that the rules which decided on the toll in place keep it — and
+what is printed beside.
