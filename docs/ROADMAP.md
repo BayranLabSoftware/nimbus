@@ -508,6 +508,16 @@ the candidates for re-tuning:
   of a deep earthquake counts no dead below MMI VII — read afterwards,
   counting the V and VI bands on these rings holds 87 of rule 61's 100
   records deeper than 40 km against 74, on a set that has been read.
+- **The band's residual, drawn in two parts, was tried and not adopted.** A
+  realisation draws one residual of σ 0.60 for the whole footprint, which
+  counts all of the within-event scatter as if every place moved together.
+  Rules 71 to 75 (docs/SCIENCE.md, "The residual in two parts") drew the
+  between-event part shared and the within-event part averaged over the
+  footprint with Jayaram & Baker 2009's correlation: the bands narrow by a
+  factor of two and drop nine of rule 11's records, Noto 2024 among them, so
+  the interval score gets worse and nothing changes. Open, and the one thing
+  that could keep both: average the within-event part over the people rather
+  than over the ground — a town inside a 50 km ring sees nearly one draw of it.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

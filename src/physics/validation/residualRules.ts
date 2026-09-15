@@ -106,6 +106,17 @@ import type { GroundMotionResidual } from '../uq/groundMotionResidual.js';
  * fatality curve's own scatter was measured on ShakeMap intensities and
  * overlaps the residual by an amount not separated here. And a realisation
  * whose depth crosses 70 km keeps the median scenario's τ and φ.
+ *
+ * Run once, on 16 September 2026, after the rules and the run were committed
+ * (16f0feb), and said here rather than folded into the rules above: on rule
+ * 11's 406 held-out earthquakes the residual in place scored 2.101, its band
+ * holding 258 of the 278 records with something, and the candidate 2.145,
+ * holding 241 of 269. The candidate's bands are narrower — a median of
+ * 10^2.36 against 10^2.52, 231 of them narrower and 29 wider — and by rule 73
+ * that does not pay for the records they drop, so the residual in place stays.
+ * Both guards passed and decided nothing: 3.345 against 3.372 on rule 45's
+ * earthquakes, 3.775 against 3.741 on rule 61's. What was read afterwards is
+ * in docs/SCIENCE.md, "The residual in two parts".
  */
 
 /** Rule 71's candidate and the residual in place, and what rule 75 prints

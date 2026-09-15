@@ -2531,6 +2531,262 @@
         }
       }
     },
+    "residual": {
+      "events": {
+        "rule11": 406,
+        "rule45": 298,
+        "rule61": 194
+      },
+      "readings": {
+        "rule11": {
+          "inPlace": {
+            "intervalScore": 2.101,
+            "held": 258,
+            "rows": 278,
+            "medianWidthDecades": 2.52,
+            "cells": [
+              {
+                "group": "Mw < 6.5",
+                "intervalScore": 2.791,
+                "held": 120,
+                "rows": 131
+              },
+              {
+                "group": "Mw 6.5–7.5",
+                "intervalScore": 1.585,
+                "held": 106,
+                "rows": 112
+              },
+              {
+                "group": "Mw ≥ 7.5",
+                "intervalScore": 2.038,
+                "held": 32,
+                "rows": 35
+              }
+            ]
+          },
+          "candidate": {
+            "intervalScore": 2.145,
+            "held": 241,
+            "rows": 269,
+            "medianWidthDecades": 2.36,
+            "cells": [
+              {
+                "group": "Mw < 6.5",
+                "intervalScore": 2.802,
+                "held": 117,
+                "rows": 130
+              },
+              {
+                "group": "Mw 6.5–7.5",
+                "intervalScore": 1.641,
+                "held": 97,
+                "rows": 108
+              },
+              {
+                "group": "Mw ≥ 7.5",
+                "intervalScore": 2.125,
+                "held": 27,
+                "rows": 31
+              }
+            ]
+          },
+          "beside": {
+            "intervalScore": 2.114,
+            "held": 258,
+            "rows": 278,
+            "medianWidthDecades": 2.498,
+            "cells": [
+              {
+                "group": "Mw < 6.5",
+                "intervalScore": 2.799,
+                "held": 120,
+                "rows": 131
+              },
+              {
+                "group": "Mw 6.5–7.5",
+                "intervalScore": 1.575,
+                "held": 106,
+                "rows": 112
+              },
+              {
+                "group": "Mw ≥ 7.5",
+                "intervalScore": 2.139,
+                "held": 32,
+                "rows": 35
+              }
+            ]
+          }
+        },
+        "rule45": {
+          "inPlace": {
+            "intervalScore": 3.372,
+            "held": 210,
+            "rows": 247,
+            "medianWidthDecades": 2.78,
+            "cells": [
+              {
+                "group": "Mw < 6.5",
+                "intervalScore": 3.372,
+                "held": 210,
+                "rows": 247
+              },
+              {
+                "group": "Mw 6.5–7.5",
+                "intervalScore": 0,
+                "held": 0,
+                "rows": 0
+              },
+              {
+                "group": "Mw ≥ 7.5",
+                "intervalScore": 0,
+                "held": 0,
+                "rows": 0
+              }
+            ]
+          },
+          "candidate": {
+            "intervalScore": 3.345,
+            "held": 200,
+            "rows": 245,
+            "medianWidthDecades": 2.737,
+            "cells": [
+              {
+                "group": "Mw < 6.5",
+                "intervalScore": 3.345,
+                "held": 200,
+                "rows": 245
+              },
+              {
+                "group": "Mw 6.5–7.5",
+                "intervalScore": 0,
+                "held": 0,
+                "rows": 0
+              },
+              {
+                "group": "Mw ≥ 7.5",
+                "intervalScore": 0,
+                "held": 0,
+                "rows": 0
+              }
+            ]
+          },
+          "beside": {
+            "intervalScore": 3.501,
+            "held": 208,
+            "rows": 249,
+            "medianWidthDecades": 2.895,
+            "cells": [
+              {
+                "group": "Mw < 6.5",
+                "intervalScore": 3.501,
+                "held": 208,
+                "rows": 249
+              },
+              {
+                "group": "Mw 6.5–7.5",
+                "intervalScore": 0,
+                "held": 0,
+                "rows": 0
+              },
+              {
+                "group": "Mw ≥ 7.5",
+                "intervalScore": 0,
+                "held": 0,
+                "rows": 0
+              }
+            ]
+          }
+        },
+        "rule61": {
+          "inPlace": {
+            "intervalScore": 3.741,
+            "held": 41,
+            "rows": 96,
+            "medianWidthDecades": 0,
+            "cells": [
+              {
+                "group": "Mw < 6.5",
+                "intervalScore": 3.183,
+                "held": 25,
+                "rows": 67
+              },
+              {
+                "group": "Mw 6.5–7.5",
+                "intervalScore": 7.898,
+                "held": 2,
+                "rows": 13
+              },
+              {
+                "group": "Mw ≥ 7.5",
+                "intervalScore": 3.49,
+                "held": 14,
+                "rows": 16
+              }
+            ]
+          },
+          "candidate": {
+            "intervalScore": 3.775,
+            "held": 40,
+            "rows": 97,
+            "medianWidthDecades": 0,
+            "cells": [
+              {
+                "group": "Mw < 6.5",
+                "intervalScore": 3.273,
+                "held": 24,
+                "rows": 68
+              },
+              {
+                "group": "Mw 6.5–7.5",
+                "intervalScore": 7.905,
+                "held": 2,
+                "rows": 13
+              },
+              {
+                "group": "Mw ≥ 7.5",
+                "intervalScore": 3.277,
+                "held": 14,
+                "rows": 16
+              }
+            ]
+          },
+          "beside": {
+            "intervalScore": 3.761,
+            "held": 41,
+            "rows": 96,
+            "medianWidthDecades": 0,
+            "cells": [
+              {
+                "group": "Mw < 6.5",
+                "intervalScore": 3.188,
+                "held": 25,
+                "rows": 67
+              },
+              {
+                "group": "Mw 6.5–7.5",
+                "intervalScore": 7.774,
+                "held": 2,
+                "rows": 13
+              },
+              {
+                "group": "Mw ≥ 7.5",
+                "intervalScore": 3.681,
+                "held": 14,
+                "rows": 16
+              }
+            ]
+          }
+        }
+      },
+      "decision": {
+        "adopted": false,
+        "score": false,
+        "coverage": true,
+        "rule45": true,
+        "rule61": true
+      }
+    },
     "interfaceRules": {
       "readOn": "2026-09-15",
       "events": {

@@ -1258,6 +1258,45 @@ Printed beside, deciding nothing (rule 70): the score on rock, by depth, and by 
 | Maps drawn with a slab set holding Parker et al. 2022 | 21 | — | — | — |
 | Maps drawn with a slab set holding neither | 107 | — | — | — |
 
+### The ground-motion residual in two parts
+
+A realisation drew one ground-motion residual, σ 0.60 in ln PGA, for every place of its footprint at once — all of the within-event scatter as if every place
+moved together. Rules 71 to 75 (`validation/residualRules.ts`), committed before the candidate drew a band, draw it in the parts the law gives it: the
+between-event τ shared, and the within-event φ averaged over the median MMI VII footprint with Jayaram & Baker 2009’s correlation (b = 40.7 km) for the rings,
+whole for one place. The score is Gneiting & Raftery’s (2007) interval score on log10(deaths + 1): the band’s width plus twenty times the distance by which the
+record lies outside it. The three sets have all been read by rules before, so this is a check that the band stays honest, not a held-out test.
+
+| Set | Residual | Interval score | Records held | Median width |
+|-----|----------|----:|----:|----:|
+| Rule 11’s held-out earthquakes | One draw for the whole footprint, σ 0.60 (in place when the rules ran) | 2.101 | 258 of 278 (93 %) | 10^2.5 |
+|  | The law’s τ shared, its φ averaged over the footprint | 2.145 | 241 of 269 (90 %) | 10^2.4 |
+|  | One draw of the law’s own √(τ² + φ²) | 2.114 | 258 of 278 (93 %) | 10^2.5 |
+| Rule 45’s moderate earthquakes | One draw for the whole footprint, σ 0.60 (in place when the rules ran) | 3.372 | 210 of 247 (85 %) | 10^2.8 |
+|  | The law’s τ shared, its φ averaged over the footprint | 3.345 | 200 of 245 (82 %) | 10^2.7 |
+|  | One draw of the law’s own √(τ² + φ²) | 3.501 | 208 of 249 (84 %) | 10^2.9 |
+| Rule 61’s small and deep earthquakes | One draw for the whole footprint, σ 0.60 (in place when the rules ran) | 3.741 | 41 of 96 (43 %) | 10^0.0 |
+|  | The law’s τ shared, its φ averaged over the footprint | 3.775 | 40 of 97 (41 %) | 10^0.0 |
+|  | One draw of the law’s own √(τ² + φ²) | 3.761 | 41 of 96 (43 %) | 10^0.0 |
+
+By rule 73 the residual in place stays: the candidate's interval score on rule 11's held-out tolls is higher.
+
+Printed beside, deciding nothing (rule 75): the net’s earthquakes under each residual.
+
+| Earthquake | Recorded | In place | The two parts | The law’s total |
+|------------|---------:|---------:|---------:|---------:|
+| Kokoxili (Kunlun) 2001 | 0 | 0 – 3 | 0 – 0 | 0 – 3 |
+| Northridge 1994 | 57 | 2 – 415 | 1 – 510 | 2 – 378 |
+| L'Aquila 2009 | 309 | 2 – 4,642 | 2 – 8,325 | 2 – 4,654 |
+| Amatrice 2016 | 299 | 0 – 236 | 0 – 230 | 0 – 239 |
+| Gorkha (Nepal) 2015 | 8,964 | 43 – 934,524 | 35 – 375,501 | 43 – 940,018 |
+| Tōhoku 2011 | 18,500 | 8 – 1,204,212 | 19 – 751,322 | 8 – 1,207,343 |
+| Sumatra–Andaman 2004 | 227,898 | 115 – 277,275 | 221 – 203,085 | 114 – 277,147 |
+| Christchurch 2011 | 185 | 0 – 26 | 0 – 13 | 0 – 17 |
+| Kumamoto 2016 | 273 | 0 – 19,404 | 0 – 10,780 | 0 – 29,207 |
+| Kaikōura 2016 | 2 | 0 – 14 | 0 – 6 | 0 – 11 |
+| Pohang 2017 | 0 | 0 – 36,916 | 0 – 47,145 | 0 – 37,231 |
+| Durrës (Albania) 2019 | 51 | 0 – 1,833 | 0 – 888 | 0 – 1,848 |
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the

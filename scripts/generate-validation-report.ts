@@ -191,6 +191,23 @@ import { SMALL_DEEP_READ_ON } from '../src/physics/validation/smallDeepSetData.j
 import { SLAB_CANDIDATES } from '../src/physics/validation/slabRules.js';
 import { runSlab, type SlabRun } from '../src/physics/validation/slabRun.js';
 import { SLAB_READ_ON } from '../src/physics/validation/slabSetData.js';
+import {
+  RESIDUAL_CANDIDATE,
+  RESIDUAL_IN_PLACE,
+  type ResidualReading,
+} from '../src/physics/validation/residualRules.js';
+import {
+  runResidual,
+  type ResidualRunResult,
+  type ResidualSetReading,
+} from '../src/physics/validation/residualRun.js';
+import {
+  mmi7FootprintKm2,
+  residualParts,
+  type GroundMotionResidual,
+} from '../src/physics/uq/groundMotionResidual.js';
+import { earthquakeSampler } from '../src/physics/montecarlo/earthquakeMonteCarlo.js';
+import { mulberry32 } from '../src/physics/montecarlo/sampling.js';
 import type { ProspectiveScore } from '../src/physics/validation/prospectiveRules.js';
 import { POINT_SOURCE_READ_ON } from '../src/physics/validation/pointSourceSetData.js';
 import { shippedCountryAt } from '../src/physics/validation/shippedPopulation.js';
@@ -1984,6 +2001,119 @@ function slabJson(run: SlabRun) {
   };
 }
 
+function runResidualRules(): ResidualRunResult {
+  const run = runResidual();
+  // What rules 73 and 74 leave in place must be what a realisation draws
+  // when its scenario names no residual.
+  const expected: GroundMotionResidual = run.decision.adopted
+    ? RESIDUAL_CANDIDATE
+    : RESIDUAL_IN_PLACE;
+  const nominal = { magnitude: 6.6, depth: m(12_000), faultType: 'reverse' as const, vs30: 400 };
+  const parts = residualParts(nominal, mmi7FootprintKm2(simulateEarthquake(nominal)));
+  const draw = (residual: GroundMotionResidual | undefined) =>
+    earthquakeSampler(
+      { ...nominal, ...(residual === undefined ? {} : { groundMotionResidual: residual }) },
+      { parts, withinRng: mulberry32('report:within') }
+    )(mulberry32('report:draw'));
+  if (draw(undefined).groundMotionResidualLn !== draw(expected).groundMotionResidualLn) {
+    throw new Error(
+      `A scenario naming no residual does not draw ${expected}, which rules 73 and 74 leave in place`
+    );
+  }
+  return run;
+}
+
+const RESIDUAL_LABEL: Readonly<Record<string, string>> = {
+  inPlace: 'One draw for the whole footprint, σ 0.60 (in place when the rules ran)',
+  candidate: 'The law’s τ shared, its φ averaged over the footprint',
+  beside: 'One draw of the law’s own √(τ² + φ²)',
+};
+
+const RESIDUAL_SETS: Readonly<Record<'rule11' | 'rule45' | 'rule61', string>> = {
+  rule11: 'Rule 11’s held-out earthquakes',
+  rule45: 'Rule 45’s moderate earthquakes',
+  rule61: 'Rule 61’s small and deep earthquakes',
+};
+
+function residualSection(run: ResidualRunResult): string {
+  const share = (r: ResidualReading): string =>
+    r.rows === 0
+      ? '—'
+      : `${r.held.toString()} of ${r.rows.toString()} (${((100 * r.held) / r.rows).toFixed(0)} %)`;
+  const width = (r: ResidualSetReading): string =>
+    r.medianWidthDecades === null ? '—' : `10^${r.medianWidthDecades.toFixed(1)}`;
+  const rows = (['rule11', 'rule45', 'rule61'] as const).flatMap((key) =>
+    (['inPlace', 'candidate', 'beside'] as const).map(
+      (side) =>
+        `| ${side === 'inPlace' ? RESIDUAL_SETS[key] : ''} | ${RESIDUAL_LABEL[side] ?? side} | ${run.readings[key][side].meanIntervalScore.toFixed(3)} | ${share(run.readings[key][side])} | ${width(run.readings[key][side])} |`
+    )
+  );
+  const d = run.decision;
+  const verdict = d.adopted
+    ? 'By rules 73 and 74 every earthquake realisation draws its residual in two parts.'
+    : `By rule ${d.score && d.coverage ? '74' : '73'} the residual in place stays: ${[
+        d.score ? null : "the candidate's interval score on rule 11's held-out tolls is higher",
+        d.coverage ? null : 'its band holds fewer than 85 % of their records',
+        d.rule45 ? null : "it loses too much on rule 45's moderate earthquakes",
+        d.rule61 ? null : "it loses too much on rule 61's small and deep earthquakes",
+      ]
+        .filter((x): x is string => x !== null)
+        .join(', and ')}.`;
+  return [
+    'A realisation drew one ground-motion residual, σ 0.60 in ln PGA, for every place of its footprint at once — all of the within-event scatter as if every place',
+    'moved together. Rules 71 to 75 (`validation/residualRules.ts`), committed before the candidate drew a band, draw it in the parts the law gives it: the',
+    'between-event τ shared, and the within-event φ averaged over the median MMI VII footprint with Jayaram & Baker 2009’s correlation (b = 40.7 km) for the rings,',
+    'whole for one place. The score is Gneiting & Raftery’s (2007) interval score on log10(deaths + 1): the band’s width plus twenty times the distance by which the',
+    'record lies outside it. The three sets have all been read by rules before, so this is a check that the band stays honest, not a held-out test.',
+    '',
+    '| Set | Residual | Interval score | Records held | Median width |',
+    '|-----|----------|----:|----:|----:|',
+    ...rows,
+    '',
+    verdict,
+    '',
+    'Printed beside, deciding nothing (rule 75): the net’s earthquakes under each residual.',
+    '',
+    '| Earthquake | Recorded | In place | The two parts | The law’s total |',
+    '|------------|---------:|---------:|---------:|---------:|',
+    ...run.net.map(
+      (n) =>
+        `| ${cellText(n.name)} | ${grouped(n.record)} | ${grouped(n.bands.inPlace[0])} – ${grouped(n.bands.inPlace[1])} | ${grouped(n.bands.candidate[0])} – ${grouped(n.bands.candidate[1])} | ${grouped(n.bands.beside[0])} – ${grouped(n.bands.beside[1])} |`
+    ),
+  ].join('\n');
+}
+
+/** Rules 71 to 75 in the report's JSON. */
+function residualJson(run: ResidualRunResult) {
+  const reading = (r: ResidualSetReading) => ({
+    intervalScore: fixed(r.meanIntervalScore, 3),
+    held: r.held,
+    rows: r.rows,
+    medianWidthDecades: r.medianWidthDecades === null ? null : fixed(r.medianWidthDecades, 3),
+    cells: r.cells.map((c) => ({
+      group: c.group,
+      intervalScore: fixed(c.meanIntervalScore, 3),
+      held: c.held,
+      rows: c.rows,
+    })),
+  });
+  return {
+    events: run.events,
+    readings: Object.fromEntries(
+      (['rule11', 'rule45', 'rule61'] as const).map((key) => [
+        key,
+        Object.fromEntries(
+          (['inPlace', 'candidate', 'beside'] as const).map((side) => [
+            side,
+            reading(run.readings[key][side]),
+          ])
+        ),
+      ])
+    ),
+    decision: run.decision,
+  };
+}
+
 /** Rules 61 to 65 in the report's JSON. */
 function allenTollJson(run: AllenTollRun) {
   const g = run.guards;
@@ -2985,6 +3115,7 @@ function main(): void {
   const atlas = runAtlasRules();
   const allenToll = runAllenTollRules();
   const slab = runSlabRules();
+  const residual = runResidualRules();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -3092,6 +3223,10 @@ ${allenTollSection(allenToll)}
 ### The rings of an earthquake deeper than 70 km
 
 ${slabSection(slab)}
+
+### The ground-motion residual in two parts
+
+${residualSection(residual)}
 
 ### Which checks are validation
 
@@ -3390,6 +3525,7 @@ otherwise.
       atlas: atlasJson(atlas),
       allenToll: allenTollJson(allenToll),
       slab: slabJson(slab),
+      residual: residualJson(residual),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,

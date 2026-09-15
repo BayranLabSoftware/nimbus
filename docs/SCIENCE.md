@@ -1967,6 +1967,73 @@ records. There, on the 100 earthquakes deeper than 40 km, counting the dead of
 the V and VI bands the rings draw holds 87 at either rate, where counting
 inside MMI VII holds 74; no rule has put that to a set not yet read.
 
+### The residual in two parts (16 September 2026)
+
+`validation/residualRules.ts` (rules 71 to 75), `uq/groundMotionResidual.ts`.
+Every realisation of an earthquake drew one ground-motion residual, σ = 0.60 in
+ln PGA, and applied it to every place of the footprint at once — all of the
+within-event scatter as if every place moved together. A ground-motion model
+parts that scatter in two: the between-event τ, which does move one
+earthquake's every place together, and the within-event φ, which differs from
+place to place and is correlated over tens of kilometres (Jayaram & Baker
+2009). A toll is counted over a footprint, so φ should average down over it.
+The candidate draws τ shared and φ averaged over the median MMI VII footprint,
+with the range b = 40.7 km their case 2 gives PGA where site conditions are
+clustered — as one Vs30 for a whole footprint makes them — and φ whole for the
+accelerations printed at one place. τ, φ and the correlation were held to
+OpenQuake's implementations within 1e-9 and the mean correlation over a disc to
+SciPy's integral within one part in a million.
+
+The rules and the run were pushed before the candidate drew a band (commit
+`16f0feb`). Every NCEI earthquake toll of 2008 to 2025 has been read by rules
+11, 45 or 61 (docs/GOLD_STANDARD.md), so no held-out set of dead was left: the
+three sets could stop the candidate, not validate it. The score is Gneiting &
+Raftery's (2007) interval score on log10(deaths + 1) — the band's width plus
+twenty times the distance by which the record lies outside it.
+
+| Set                                | Residual                             | Interval score | Records held | Median width |
+| ---------------------------------- | ------------------------------------ | -------------: | -----------: | -----------: |
+| Rule 11's 406 held-out earthquakes | one draw of σ 0.60 (in place)        |          2.101 |   258 of 278 |      10^2.52 |
+|                                    | τ shared, φ averaged (the candidate) |          2.145 |   241 of 269 |      10^2.36 |
+|                                    | one draw of the law's own σ          |          2.114 |   258 of 278 |      10^2.50 |
+| Rule 45's 298 moderate earthquakes | one draw of σ 0.60                   |          3.372 |   210 of 247 |      10^2.78 |
+|                                    | the candidate                        |          3.345 |   200 of 245 |      10^2.74 |
+| Rule 61's 194 small and deep       | one draw of σ 0.60                   |          3.741 |     41 of 96 |      10^0.00 |
+|                                    | the candidate                        |          3.775 |     40 of 97 |      10^0.00 |
+
+By rule 73 the candidate is not adopted: its score on rule 11's earthquakes is
+higher, if barely. Its coverage, 89.6 %, is above the 85 % the rule asks, and
+both of rule 74's guards passed, so they decided nothing. The residual in place
+stays.
+
+What the scores do not show was read afterwards, and is written here as such.
+The narrowing is real: on rule 11's set 231 bands are narrower and 29 wider, a
+median of 10^0.30 — a factor of two — and the same on rule 61's (10^0.35).
+What it costs is nine records: nine rows the band held now fall outside it and
+one falls in, and the nine hold 608 dead. Noto 2024 is the largest, 549 dead on
+a band of 0 to 2 625 in place and 0 to 329 under the candidate; Tokyo 2008, 23
+dead, goes from 0 to 33 to 0 to 9. One of the nine is the other way about:
+Piura 2021 recorded nobody, and the candidate's lower end rose to one. The
+interval score charges twenty units per decade outside the band and one per
+decade of width, so nine such misses outweigh the halving.
+
+Where the footprint is small the candidate is a shade wider than the residual
+in place, since a law's own total at Mw 5.5 and above is 0.605 and ρ̄ is near
+one; the narrowing is all in the large footprints, where ρ̄ falls to 0.10 at a
+radius of 50 km and 0.03 at 100 km. The net's bands move the same way: Gorkha
+2015 from 43–934 524 to 35–375 501, Tōhoku 2011 from 8–1 204 212 to 19–751 322,
+Kumamoto 2016 from 0–19 404 to 0–10 780, Christchurch 2011 from 0–26 to 0–13,
+still short of its 185; L'Aquila 2009, whose footprint is small, widens from
+2–4 642 to 2–8 325.
+
+What this leaves open is where the averaging is done. φ is averaged over the
+footprint's area, where the dead gather in towns much smaller than it: a town
+inside a 50 km ring sees nearly one draw of φ, not the average of the disc, so
+the honest averaging is over the people and not over the ground. That is the
+one change that could keep the records and the narrower band together, and it
+was not tried; neither was the shorter range, 8.5 km, which averages more
+still. The prospective set of rules 27 to 30 will read whatever is in place.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records

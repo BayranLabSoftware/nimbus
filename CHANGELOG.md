@@ -896,6 +896,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Measured
 
+- **The ground-motion residual, drawn in the two parts its model gives it,
+  does not pay for itself yet.** A realisation draws one residual for the
+  whole footprint, σ 0.60, which counts all of the within-event scatter as
+  if every place of an earthquake moved together. Rules written before the
+  candidate drew a band (`validation/residualRules.ts`) drew the
+  between-event part shared and the within-event part averaged over the
+  footprint, with Jayaram & Baker 2009's correlation and each law's own τ
+  and φ, all held to OpenQuake and SciPy. On rule 11's 406 held-out
+  earthquakes the bands narrow by a factor of two and hold 241 of 269
+  records against 258 of 278: by the interval score the narrowing does not
+  pay for the nine records dropped, Noto 2024 among them, so the residual in
+  place stays. The validation report prints the figures on all three sets.
+
 - **The rings of a subduction interface.** The campaign drew the megathrust
   presets' rings at 4.2 and 6.0 times two interface models' distances
   (BM-10). Rules written before either model was coded

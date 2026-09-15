@@ -868,3 +868,14 @@ coverage). Rule 75 says what adoption changes and what is printed beside. The
 mean of the residual over an area is not the residual of the toll, and the
 dead gather in towns smaller than the footprint; the rules say so rather than
 correct it.
+
+### Outcome
+
+Run once on 16 September 2026, after the rules and the run were committed
+(`16f0feb`). On rule 11's 406 held-out earthquakes the residual in place
+scored 2.101 and its band held 258 of the 278 records with something; the
+candidate scored 2.145 and held 241 of 269, on bands narrower by a median of
+10^0.30 — a factor of two. By rule 73 the narrowing does not pay for the nine
+records the bands drop, among them Noto 2024 with 549 dead, so the residual in
+place stays; both of rule 74's guards passed and decided nothing.
+`docs/SCIENCE.md` gives the figures in full, with what was read afterwards.
