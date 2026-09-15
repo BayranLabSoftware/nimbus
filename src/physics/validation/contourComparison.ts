@@ -42,12 +42,16 @@ export type RowVs30 = (row: QuakeInputs) => number | undefined;
 
 const RULE_ROWS: readonly QuakeInputs[] = RULE_EARTHQUAKES.map((q) => q.row);
 
+/** Every row's footprint under `law` against its ShakeMap. `subductionInterface`
+ *  marks every row an interface scenario, as rule 35 of interfaceRules.ts
+ *  runs its set. */
 export function contourPairs(
   law: ContourLaw,
   shakemaps: readonly ShakemapAreas[],
   vs30For?: RowVs30,
   rows: readonly QuakeInputs[] = RULE_ROWS,
-  measure: IntensityMeasure = 'pga'
+  measure: IntensityMeasure = 'pga',
+  subductionInterface = false
 ): ContourPair[] {
   const byEvent = new Map(shakemaps.map((s) => [s.comcat, s]));
   const pairs: ContourPair[] = [];
@@ -62,6 +66,7 @@ export function contourPairs(
       contourLaw: law,
       ...(measure === 'pga' ? {} : { intensityMeasure: measure }),
       ...(vs30 === undefined ? {} : { vs30 }),
+      ...(subductionInterface ? { subductionInterface } : {}),
     });
     for (const threshold of MMI_THRESHOLDS) {
       pairs.push({

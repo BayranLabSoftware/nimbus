@@ -20,6 +20,7 @@ import {
   pgvFromMercalliIntensity,
 } from './intensity.js';
 import { epicentralDistanceForIntensityAllen2012 } from './intensityPrediction.js';
+import { distanceForInterfacePga, type InterfaceMotionModel } from './interfaceAttenuation.js';
 import { liquefactionRadius } from './liquefaction.js';
 import {
   megathrustRuptureLength,
@@ -176,13 +177,30 @@ export function bandEdge(k: number, banding: IntensityBanding = 'rings'): number
  * along Worden et al. 2012's upper slope, 3.70 / ln 10 intensity units a
  * unit: a σ of 0.60 becomes 0.96, within the 0.82 to 1.19 the equation
  * gives.
+ *
+ * Rule 36 of validation/interfaceRules.ts adds two for a scenario marked a
+ * subduction interface, Boore et al. 2014 for any other, written before
+ * either was scored:
+ *
+ *  - `abrahamson2016Interface`: Abrahamson, Gregor & Addo 2016 (BC Hydro),
+ *    interface, central magnitude scaling, forearc;
+ *  - `parker2022Interface`: Parker et al. 2022 (NGA-Subduction), the
+ *    global interface model.
+ *
+ * Both take each intensity's PGA from Worden et al. 2012 and stand the
+ * ring at the Joyner–Boore distance x from the rupture's stadium where the
+ * median at the rupture distance √(x² + h²) falls to it, h the depth
+ * (effects/interfaceAttenuation.ts); they read PGA whatever
+ * `intensityMeasure` asks.
  */
 export type ContourLaw =
   | 'joynerBoore1981'
   | 'boore2014'
   | 'boore2014FromMw7.5'
   | 'allen2012Hypocentral'
-  | 'allen2012HypocentralBelowMw7.5';
+  | 'allen2012HypocentralBelowMw7.5'
+  | 'abrahamson2016Interface'
+  | 'parker2022Interface';
 
 /** The depth a scenario that sets none is drawn at, as the earthquake
  *  Monte Carlo already assumes. */
@@ -393,10 +411,22 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   const allen =
     law === 'allen2012Hypocentral' ||
     (law === 'allen2012HypocentralBelowMw7.5' && input.magnitude < 7.5);
+  // Rule 36 of validation/interfaceRules.ts: an interface model for a
+  // scenario marked a subduction interface, Boore et al. 2014 otherwise.
+  const interfaceModel: InterfaceMotionModel | null =
+    input.subductionInterface !== true
+      ? null
+      : law === 'abrahamson2016Interface'
+        ? 'abrahamson2016'
+        : law === 'parker2022Interface'
+          ? 'parker2022'
+          : null;
   const boore =
     !allen &&
     (law === 'boore2014' ||
       law === 'allen2012HypocentralBelowMw7.5' ||
+      law === 'abrahamson2016Interface' ||
+      law === 'parker2022Interface' ||
       (law === 'boore2014FromMw7.5' && input.magnitude >= 7.5));
   const depthKm = ((input.depth as number | undefined) ?? DEFAULT_HYPOCENTRE_DEPTH_M) / 1_000;
   // Rule 31 of validation/pagerChain.ts: PGV where the chain asks for
@@ -405,27 +435,33 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   const byPgv = boore && input.intensityMeasure === 'pgv';
   const banding = input.intensityBanding ?? 'rings';
   const contourAt = (mmi: number): Meters =>
-    allen
-      ? epicentralDistanceForIntensityAllen2012(
-          input.magnitude,
-          depthKm,
-          mmi,
-          Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0
+    interfaceModel !== null
+      ? distanceForInterfacePga(
+          interfaceModel,
+          { magnitude: input.magnitude, depthKm, vs30 },
+          (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY
         )
-      : byPgv
-        ? distanceForPgvNGAWest2(
-            { magnitude: input.magnitude, faultType: ngaFault, vs30 },
-            mps((pgvFromMercalliIntensity(mmi) as number) / gm)
+      : allen
+        ? epicentralDistanceForIntensityAllen2012(
+            input.magnitude,
+            depthKm,
+            mmi,
+            Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0
           )
-        : boore
-          ? distanceForPgaNGAWest2(
+        : byPgv
+          ? distanceForPgvNGAWest2(
               { magnitude: input.magnitude, faultType: ngaFault, vs30 },
-              target(pgaFromMercalliIntensity(mmi))
+              mps((pgvFromMercalliIntensity(mmi) as number) / gm)
             )
-          : distanceForPga(
-              input.magnitude,
-              mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
-            );
+          : boore
+            ? distanceForPgaNGAWest2(
+                { magnitude: input.magnitude, faultType: ngaFault, vs30 },
+                target(pgaFromMercalliIntensity(mmi))
+              )
+            : distanceForPga(
+                input.magnitude,
+                mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
+              );
   const mmi7Radius = contourAt(bandEdge(7, banding));
   const mmi8Radius = contourAt(bandEdge(8, banding));
   const mmi9Radius = contourAt(bandEdge(9, banding));
