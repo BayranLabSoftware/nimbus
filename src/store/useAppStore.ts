@@ -30,10 +30,13 @@ import type {
 } from '../scene/populationLookup.js';
 import { buildRuptureStadiumLatLon } from '../scene/stadiumPolygon.js';
 import {
+  impactFireballRadius,
+  joulesToKilotons,
+  nuclearFireballRadius,
+} from '../physics/effects/blastWave.js';
+import {
   blastCasualtyPlan,
   estimateCasualties,
-  impactFireballRadius,
-  nuclearFireballRadius,
   pyroclasticCasualtyPlan,
   shakingCasualtyPlan,
   type CasualtyEstimate,
@@ -1520,7 +1523,7 @@ export function casualtyPlanForResult(
         thirdDegreeBurnRadius: result.data.thermal.thirdDegreeBurnRadius,
         secondDegreeBurnRadius: result.data.thermal.secondDegreeBurnRadius,
         firestormRadius: result.data.firestorm.sustainRadius,
-        fireballRadius: nuclearFireballRadius(result.data.yield.joules),
+        fireballRadius: nuclearFireballRadius(joulesToKilotons(result.data.yield.joules)),
         ...(result.data.inputs.chargeType !== undefined && {
           chargeType: result.data.inputs.chargeType,
         }),

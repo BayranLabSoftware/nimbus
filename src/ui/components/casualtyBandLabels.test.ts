@@ -4,9 +4,9 @@ import itLocale from '../../i18n/locales/it.json';
 import {
   blastCasualtyPlan,
   estimateCasualties,
-  nuclearFireballRadius,
   type CasualtyPlan,
 } from '../../physics/casualties.js';
+import { joulesToKilotons, nuclearFireballRadius } from '../../physics/effects/blastWave.js';
 import { simulateExplosion } from '../../physics/events/explosion/simulate.js';
 import { m } from '../../physics/units.js';
 import { bandLabelKey } from './casualtyBandLabel.js';
@@ -55,7 +55,7 @@ describe('every casualty band has a name in both languages', () => {
           thirdDegreeBurnRadius: r.thermal.thirdDegreeBurnRadius,
           secondDegreeBurnRadius: r.thermal.secondDegreeBurnRadius,
           firestormRadius: r.firestorm.sustainRadius,
-          fireballRadius: nuclearFireballRadius(r.yield.joules),
+          fireballRadius: nuclearFireballRadius(joulesToKilotons(r.yield.joules)),
         })
       );
       expect(keys.length).toBeGreaterThan(0);
@@ -82,7 +82,7 @@ describe('every casualty band has a name in both languages', () => {
         thirdDegreeBurnRadius: r.thermal.thirdDegreeBurnRadius,
         secondDegreeBurnRadius: r.thermal.secondDegreeBurnRadius,
         firestormRadius: r.firestorm.sustainRadius,
-        fireballRadius: nuclearFireballRadius(r.yield.joules),
+        fireballRadius: nuclearFireballRadius(joulesToKilotons(r.yield.joules)),
         chargeType: 'chemical',
       })
     );

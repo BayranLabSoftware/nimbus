@@ -355,6 +355,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   misses, 0.7 kPa in the city against about 3 kPa. The project had quoted
   Popova et al.'s modelled damage as reaching 108 km; they give 120 km.
 
+- **A nuclear burst has one fireball.** The globe drew it at 70·W^0.4 m,
+  credited to Glasstone & Dolan figures the book does not give — its "440
+  feet" is a 1-megaton fireball seven-tenths of a millisecond in, and its
+  1-megaton maximum is 5,700 feet across — while the casualty model cut the
+  flash at the horizon of a second relation, 55·W^0.4 m. Both are now the
+  book's own rule, twice the breakaway radius of 100·W^0.4 feet (§2.127):
+  202 m at 20 kt, 966 m at 1 Mt, a tenth past the 5,700 feet. The fireball
+  on the globe is 13 % smaller, and no toll moves. The impact fireball,
+  written twice under two equation numbers, is now one relation under
+  Collins et al.'s Eq. 32* (B-036).
+
 - **A footprint across the antimeridian counts the people on both sides.**
   Every vertex of a footprint polygon was clamped to ±179.99° before its
   people were counted, so a shape that crossed the date line was cut at it:

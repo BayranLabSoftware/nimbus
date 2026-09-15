@@ -10,12 +10,8 @@ import {
   withPredictiveBand,
   type ExposurePoint,
 } from './tollBand.js';
-import {
-  blastCasualtyPlan,
-  estimateCasualties,
-  nuclearFireballRadius,
-  type CasualtyPlan,
-} from '../casualties.js';
+import { blastCasualtyPlan, estimateCasualties, type CasualtyPlan } from '../casualties.js';
+import { joulesToKilotons, nuclearFireballRadius } from '../effects/blastWave.js';
 import { mulberry32 } from '../montecarlo/sampling.js';
 import { m } from '../units.js';
 import {
@@ -48,7 +44,7 @@ const planFor = (result: ActiveResult): CasualtyPlan | null => {
     thirdDegreeBurnRadius: d.thermal.thirdDegreeBurnRadius,
     secondDegreeBurnRadius: d.thermal.secondDegreeBurnRadius,
     firestormRadius: d.firestorm.sustainRadius,
-    fireballRadius: nuclearFireballRadius(d.yield.joules),
+    fireballRadius: nuclearFireballRadius(joulesToKilotons(d.yield.joules)),
     ...(d.inputs.chargeType !== undefined && { chargeType: d.inputs.chargeType }),
   });
 };

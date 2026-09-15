@@ -83,19 +83,21 @@ describe('shockMachNumber — Rankine-Hugoniot normal shock, γ = 1.4', () => {
 });
 
 describe('fireball radius', () => {
-  it('reproduces the Glasstone 20 kt maximum fireball radius (≈ 220 m)', () => {
+  it('is twice the breakaway radius of 100·W^0.4 ft (Glasstone & Dolan §2.127): 202 m at 20 kt', () => {
     const r = nuclearFireballRadius(20) as number;
-    expect(r).toBeGreaterThan(190);
-    expect(r).toBeLessThan(260);
+    expect(r).toBeCloseTo(2 * 100 * 0.3048 * 20 ** 0.4, 6);
+    expect(r).toBeGreaterThan(195);
+    expect(r).toBeLessThan(210);
   });
 
-  it('reproduces the Glasstone 1 Mt maximum fireball radius (≈ 1.1 km)', () => {
+  it('gives 1 Mt a 966 m fireball, a tenth past the 5,700 ft across of §2.05', () => {
     const r = nuclearFireballRadius(1_000) as number;
-    expect(r).toBeGreaterThan(900);
-    expect(r).toBeLessThan(1_300);
+    const halfOf5700Feet = (5_700 * 0.3048) / 2;
+    expect(r / halfOf5700Feet).toBeGreaterThan(1.05);
+    expect(r / halfOf5700Feet).toBeLessThan(1.15);
   });
 
-  it('gives Chicxulub a ≈ 200 km fireball via Collins 2005 Eq. 33', () => {
+  it('gives Chicxulub a ≈ 200 km fireball via Collins 2005 Eq. 32*', () => {
     const r = (impactFireballRadius(CHICXULUB) as number) / 1_000;
     expect(r).toBeGreaterThan(180);
     expect(r).toBeLessThan(230);

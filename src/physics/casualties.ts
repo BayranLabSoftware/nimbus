@@ -6,8 +6,8 @@ import {
 } from './pagerVulnerability.js';
 import { distanceForOverpressure } from './events/impact/damageRings.js';
 import type { Joules, Meters } from './units.js';
-import { EARTH_RADIUS, TNT_SPECIFIC_ENERGY } from './constants.js';
-import { m, Pa } from './units.js';
+import { EARTH_RADIUS } from './constants.js';
+import { Pa } from './units.js';
 
 /**
  * Casualty estimates — people, not just exposure.
@@ -253,30 +253,6 @@ const CONVENTIONAL_BAND_FACTOR = 3;
  * magnitude because that share depends entirely on where it happens.
  */
 export const CONVENTIONAL_DELAYED_FRACTION: Triple = { low: 0.005, mid: 0.02, high: 0.06 };
-
-/**
- * Radius of the luminous fireball of a cosmic impact (m) for its
- * kinetic energy: R_f = 0.002 · E^(1/3), Collins, Melosh & Marcus
- * (2005) eq. 32* — the scaling the Earth Impact Effects Program uses.
- * A 15 km stone at 20 km/s makes one about 200 km in radius.
- */
-export function impactFireballRadius(energy: Joules): Meters {
-  const e = energy as number;
-  return m(e > 0 ? 0.002 * e ** (1 / 3) : 0);
-}
-
-/**
- * Radius of the luminous fireball of a nuclear burst (m) for its
- * yield: R_f ≈ 55 · W^0.4 with W in kilotonnes, a project value near
- * the maximum radius Glasstone & Dolan (1977) give — about twice the
- * breakaway radius of 100 · W^0.4 ft for an air burst (§2.127). A 15 kt
- * burst makes one about 160 m in radius; even a 50 Mt one stays inside
- * 5 km.
- */
-export function nuclearFireballRadius(yieldEnergy: Joules): Meters {
-  const kt = (yieldEnergy as number) / (TNT_SPECIFIC_ENERGY * 1e6);
-  return m(kt > 0 ? 55 * kt ** 0.4 : 0);
-}
 
 /**
  * Ground range (m) beyond which the fireball has set below the

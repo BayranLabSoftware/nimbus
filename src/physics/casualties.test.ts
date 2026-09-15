@@ -5,9 +5,7 @@ import {
   DELAYED_DEATH_FRACTION,
   estimateCasualties,
   FIRESTORM_MORTALITY,
-  impactFireballRadius,
   normalCdf,
-  nuclearFireballRadius,
   PAGER_VULNERABILITY,
   pagerFatalityRate,
   pyroclasticCasualtyPlan,
@@ -20,6 +18,11 @@ import {
   type CasualtyPlan,
 } from './casualties.js';
 import { J, m as meters } from './units.js';
+import {
+  impactFireballRadius,
+  joulesToKilotons,
+  nuclearFireballRadius,
+} from './effects/blastWave.js';
 
 describe('normalCdf', () => {
   it('matches tabulated values', () => {
@@ -391,13 +394,13 @@ describe('the fireball sets: burns stop at the horizon', () => {
   });
 
   it('a nuclear fireball sets far beyond anything it can burn, so nothing is cut', () => {
-    const hiroshima = nuclearFireballRadius(J(15 * 4.184e12)) as number;
+    const hiroshima = nuclearFireballRadius(joulesToKilotons(J(15 * 4.184e12))) as number;
     expect(hiroshima).toBeGreaterThan(120);
     expect(hiroshima).toBeLessThan(220);
     expect(thermalHorizonRadius(meters(hiroshima))).toBeGreaterThan(40_000);
     // Tsar Bomba: 50 Mt, a 4 km fireball seen to a couple of hundred km,
     // still past its ~100 km third-degree radius.
-    const tsar = nuclearFireballRadius(J(5e4 * 4.184e12)) as number;
+    const tsar = nuclearFireballRadius(joulesToKilotons(J(5e4 * 4.184e12))) as number;
     expect(thermalHorizonRadius(meters(tsar))).toBeGreaterThan(200_000);
   });
 

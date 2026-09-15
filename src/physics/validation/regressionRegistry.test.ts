@@ -30,7 +30,8 @@ import { ashfallMassLoading } from '../events/volcano/ashfall.js';
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/index.js';
 import { simulateImpact, IMPACT_PRESETS } from '../simulate.js';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
-import { impactFireballRadius } from '../effects/blastWave.js';
+import { impactFireballRadius, nuclearFireballRadius } from '../effects/blastWave.js';
+import * as casualtiesModule from '../casualties.js';
 import { thermalHorizonRadius } from '../casualties.js';
 import { CRUSTAL_ROCK_DENSITY } from '../constants.js';
 import { deg, degreesToRadians, kgPerM3, m, mps } from '../units.js';
@@ -537,6 +538,20 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     }
   });
 
+  it('B-036 A nuclear burst has one fireball, twice its breakaway radius as Glasstone & Dolan give it', () => {
+    // Pre-fix: the globe drew 70·W^0.4 m, credited to figures the book
+    // does not give, and the flash was cut at the horizon of 55·W^0.4 m
+    // from a second function of the same name. Glasstone & Dolan 1977
+    // §2.127: an air burst breaks away at R ≈ 100·W^0.4 ft, and the
+    // maximum radius may be taken as about twice that.
+    for (const kt of [0.1, 20, 1_000, 50_000]) {
+      expect(nuclearFireballRadius(kt) as number).toBeCloseTo(2 * 100 * 0.3048 * kt ** 0.4, 6);
+    }
+    const casualtyExports = Object.keys(casualtiesModule);
+    expect(casualtyExports).not.toContain('nuclearFireballRadius');
+    expect(casualtyExports).not.toContain('impactFireballRadius');
+  });
+
   it("B-027 An earthquake of Mw 3.2 to 3.7 finishes, its aftershocks under Båth's ceiling", () => {
     // Pre-fix: the aftershock sampler drew magnitudes at or above the
     // completeness cutoff (2.5 below Mw 6.5) and drew again any above
@@ -793,9 +808,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-035 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-036 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 35;
-    expect(expectedRows).toBe(35);
+    const expectedRows = 36;
+    expect(expectedRows).toBe(36);
   });
 });

@@ -135,18 +135,28 @@ export function shockMachNumber(
   return Math.sqrt(1 + ((gamma + 1) / (2 * gamma)) * (dp / p1));
 }
 
+/** Glasstone & Dolan (1977) §2.127: an air burst's fireball radius at
+ *  breakaway, 100·W^0.4 feet with W in kilotonnes. */
+const BREAKAWAY_RADIUS_FT_PER_KT_POW = 100;
+const FOOT_M = 0.3048;
+
 /**
- * Maximum fireball radius of a nuclear detonation.
+ * Maximum fireball radius of a nuclear detonation, the one the globe
+ * draws and the one past whose horizon a flash cannot reach.
  *
- *     R_max ≈ 70 · W^0.4      (W in kilotonnes, R in metres)
+ *     R_max ≈ 2 · 100 · W^0.4 ft ≈ 61 · W^0.4 m      (W in kilotonnes)
  *
- * Fitted to Glasstone & Dolan (1977) §2.120, which quotes a maximum
- * fireball diameter of ≈ 440 m for 20 kt and ≈ 2.2 km for 1 Mt. The
- * W^0.4 exponent is the standard scaling across that range.
+ * Glasstone & Dolan (1977) §2.127 give the radius at breakaway of an air
+ * burst as 100·W^0.4 ft and say the maximum may be taken as about twice
+ * that. A 1 Mt burst reaches 966 m, against the "maximum value of about
+ * 5,700 feet" across the book gives it in §2.05 — 869 m of radius, a
+ * tenth less. Until B-036 this was 70·W^0.4 m, credited to figures the
+ * book does not give, and the flash was cut at a second relation of
+ * 55·W^0.4 m.
  */
 export function nuclearFireballRadius(yieldKilotons: number): Meters {
   if (!Number.isFinite(yieldKilotons) || yieldKilotons <= 0) return m(0);
-  return m(70 * yieldKilotons ** 0.4);
+  return m(2 * BREAKAWAY_RADIUS_FT_PER_KT_POW * FOOT_M * yieldKilotons ** 0.4);
 }
 
 /**
@@ -154,8 +164,10 @@ export function nuclearFireballRadius(yieldKilotons: number): Meters {
  *
  *     R_f = 0.002 · E^(1/3)     (E in joules, R in metres)
  *
- * Collins, Melosh & Marcus (2005), Eq. 33 — the same relation whose
- * horizon term bounds the thermal-radiation reach.
+ * Collins, Melosh & Marcus (2005), Eq. 32* — the relation the Earth
+ * Impact Effects Program uses, and the one whose horizon bounds the
+ * thermal-radiation reach. A 15 km stone at 20 km/s makes one about
+ * 200 km in radius.
  */
 export function impactFireballRadius(energy: Joules): Meters {
   const E = energy as number;
@@ -165,14 +177,11 @@ export function impactFireballRadius(energy: Joules): Meters {
 
 /**
  * Fraction of the MAXIMUM fireball radius at which the shock front
- * breaks away. Breakaway happens well before the fireball stops
- * growing: Glasstone & Dolan §2.117–§2.120 place it at ≈ 15 ms for
- * 20 kt, and the Sedov front is at ≈ 112 m then, against a maximum
- * fireball radius of ≈ 232 m. One anchor, one number, ≈ 0.5.
- *
- * The same 0.5 reproduces the ≈ 0.1 s quoted for a 1 Mt burst without
- * any further tuning, which is the check that it is a scaling and not
- * a fit to a single point.
+ * breaks away: a half, because Glasstone & Dolan (1977) §2.127 take the
+ * maximum to be about twice the radius at breakaway. For 20 kt the
+ * Sedov front reaches that radius, 101 m, after about 12 ms, in the
+ * "about 15 ms" the book's account of breakaway gives (§2.117–§2.120),
+ * and for 1 Mt after about 0.1 s.
  */
 const BREAKAWAY_RADIUS_FRACTION = 0.5;
 
