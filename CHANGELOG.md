@@ -355,6 +355,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   misses, 0.7 kPa in the city against about 3 kPa. The project had quoted
   Popova et al.'s modelled damage as reaching 108 km; they give 120 km.
 
+- **A fireball is seen as long as any of it is above the horizon.** The
+  flash was cut at the range where the point one fireball radius above
+  ground zero sets. The fireball is a sphere about ground zero, and part of
+  it stays in sight until the curve of the Earth between it and the
+  observer reaches its radius — Collins et al. 2005's Eq. 37\*, the cut the
+  Earth Impact Effects Program makes. The cut fell 1.6 % short for a 200 km
+  fireball and 3.2 % for a 408 km one, the benchmark campaign's largest
+  (BM-14, B-037). The Chicxulub preset's flash now reaches 1 616 km instead
+  of 1 591 and its toll on Rome gains 0.16 %; a nuclear fireball's horizon
+  moves by less than a metre in a kilometre, and no row of the validation
+  report moves. The program also dims the flash by the share of the
+  fireball still in sight, which Nimbus leaves out.
+
 - **A nuclear burst has one fireball.** The globe drew it at 70·W^0.4 m,
   credited to Glasstone & Dolan figures the book does not give — its "440
   feet" is a 1-megaton fireball seven-tenths of a millisecond in, and its

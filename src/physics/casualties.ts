@@ -258,14 +258,23 @@ export const CONVENTIONAL_DELAYED_FRACTION: Triple = { low: 0.005, mid: 0.02, hi
  * Ground range (m) beyond which the fireball has set below the
  * horizon, and its light no longer reaches anyone.
  *
- *     d = R⊕ · arccos( R⊕ / (R⊕ + R_f) )
+ *     d = R⊕ · arccos( 1 − R_f / R⊕ )
  *
- * Thermal radiation travels in straight lines. The Earth Impact
- * Effects Program (Collins et al. 2005) makes the same cut: past this
- * range the fireball is under the curve of the Earth and the direct
- * flash — the burns, the ignition of a mass fire — cannot arrive.
- * A 200 km fireball, the one a Chicxulub-class impact raises, is
+ * Thermal radiation travels in straight lines. The fireball is a sphere
+ * of radius R_f about ground zero, and some of it stands above an
+ * observer's horizon until the curve of the Earth between them,
+ * (1 − cos Δ)·R⊕, reaches R_f — Collins et al. (2005) Eq. 37*, the cut
+ * the Earth Impact Effects Program makes. Past this range the direct
+ * flash — the burns, the ignition of a mass fire — cannot arrive. The
+ * program also dims the flash before the cut by the share of the
+ * fireball still in sight (their Eq. 36*); this model keeps only the
+ * cut. A 200 km fireball, the one a Chicxulub-class impact raises, is
  * visible to about 1 600 km; a nuclear fireball to a few tens.
+ *
+ * Until 15 September 2026 this was R⊕ · arccos(R⊕ / (R⊕ + R_f)), the
+ * range at which the point R_f above ground zero sets. The sphere
+ * outlasts that point: the cut fell 1.6 % short for a 200 km fireball
+ * and 3.2 % for a 408 km one (B-037).
  *
  * The heat that does reach the far side of the planet after an impact
  * this size comes from rock thrown out on ballistic arcs and
@@ -282,7 +291,7 @@ export function thermalHorizonRadius(fireballRadius: Meters): number {
   const rf = fireballRadius as number;
   if (!Number.isFinite(rf) || rf <= 0) return Number.POSITIVE_INFINITY;
   const re = EARTH_RADIUS as number;
-  return re * Math.acos(Math.min(1, re / (re + rf)));
+  return re * Math.acos(Math.max(-1, 1 - rf / re));
 }
 
 /** Fraction of the people with a line of sight to the fireball —

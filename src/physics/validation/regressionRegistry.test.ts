@@ -552,6 +552,23 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(casualtyExports).not.toContain('impactFireballRadius');
   });
 
+  it('B-037 A fireball is seen for as long as any of it stands above the horizon', () => {
+    // Pre-fix: d = R⊕·arccos(R⊕ / (R⊕ + R_f)), the range at which the point
+    // R_f above ground zero sets. The fireball is a sphere of radius R_f
+    // about ground zero, and part of it stays above an observer's horizon
+    // until the Earth's curvature between them, (1 − cos Δ)·R⊕, reaches R_f
+    // (Collins et al. 2005 Eq. 37*): 1.6 % farther for a 200 km fireball,
+    // 3.2 % for the 408 km one of the campaign's largest impact, where the
+    // Earth Impact Effects Program prints 2 291.6 km on its R⊕ of 6 370 km.
+    const earthRadius = 6_371_000;
+    for (const rf of [600, 20_000, 200_000, 407_770]) {
+      const d = thermalHorizonRadius(m(rf));
+      // At that range the sphere touches the observer's horizontal plane.
+      expect(earthRadius * Math.cos(d / earthRadius) + rf).toBeCloseTo(earthRadius, 2);
+    }
+    expect(thermalHorizonRadius(m(407_770)) / 2_291_589).toBeCloseTo(1, 3);
+  });
+
   it("B-027 An earthquake of Mw 3.2 to 3.7 finishes, its aftershocks under Båth's ceiling", () => {
     // Pre-fix: the aftershock sampler drew magnitudes at or above the
     // completeness cutoff (2.5 below Mw 6.5) and drew again any above
@@ -808,9 +825,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-036 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-037 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 36;
-    expect(expectedRows).toBe(36);
+    const expectedRows = 37;
+    expect(expectedRows).toBe(37);
   });
 });
