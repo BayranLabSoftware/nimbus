@@ -1,3 +1,4 @@
+import type { InterfaceStadium } from '../events/earthquake/simulate.js';
 import { CONTOUR_LAW_MARGIN, meanAbsoluteBias, type ContourCell } from './contourLaws.js';
 import { passesOnQuiet, type UnseenEarthquake } from './depthRules.js';
 import { SIZE_BANDS } from './scorecard.js';
@@ -108,9 +109,10 @@ export interface DeepInterfaceEarthquake extends UnseenEarthquake {
 
 /** Rule 41's geometries of a scenario marked a subduction interface, the
  *  one in place first. */
-export const INTERFACE_STADIUMS = ['always', 'fromMw7.5'] as const;
-
-export type InterfaceStadium = (typeof INTERFACE_STADIUMS)[number];
+export const INTERFACE_STADIUMS = [
+  'always',
+  'fromMw7.5',
+] as const satisfies readonly InterfaceStadium[];
 
 /** Rule 42's magnitude cells: the scorecard's cells below Mw 7.5. */
 export const STADIUM_CELLS: readonly string[] = SIZE_BANDS.earthquake

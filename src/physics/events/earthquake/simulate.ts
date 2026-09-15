@@ -132,7 +132,17 @@ export interface EarthquakeScenarioInput {
    *  IX (`pager`), where the result also carries the V and VI rings.
    *  Omitted, `rings`. */
   intensityBanding?: IntensityBanding;
+  /** Whether a scenario marked a subduction interface is a rupture
+   *  stadium at every magnitude (`always`) or, as every other scenario,
+   *  from Mw 7.5 only, a disc about the epicentre below (`fromMw7.5`):
+   *  rule 41 of validation/interfaceStadiumRules.ts. Nothing else moves,
+   *  the interface rupture included. Omitted, `always`. */
+  interfaceStadium?: InterfaceStadium;
 }
+
+/** Rule 41 of validation/interfaceStadiumRules.ts: the geometry of a
+ *  scenario marked a subduction interface below Mw 7.5. */
+export type InterfaceStadium = 'always' | 'fromMw7.5';
 
 /** Rule 31 of validation/pagerChain.ts: the ground motion intensity is
  *  drawn from. */
@@ -321,7 +331,9 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // small events. Subduction interface always upgrades regardless of
   // Mw because the rupture rectangle is genuinely 2D (L≫W is rarely
   // true for shallow megathrusts: Tōhoku 500×200 km).
-  const isExtendedSource = input.magnitude >= 7.5 || input.subductionInterface === true;
+  const isExtendedSource =
+    input.magnitude >= 7.5 ||
+    (input.subductionInterface === true && (input.interfaceStadium ?? 'always') === 'always');
 
   // Ground-motion aleatory residual: exp(residual) scales every PGA.
   // Default 0 → gm = 1 → median scenario unchanged. The Monte-Carlo
