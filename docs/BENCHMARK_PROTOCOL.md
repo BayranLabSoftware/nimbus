@@ -720,3 +720,44 @@ fewer quiet earthquakes to a toll of ten, but its band held 81 of 113 records
 below Mw 6.5, fewer than eight in ten, so by rule 59 it is not adopted. Most of
 those misses are bands of [0, 0] about earthquakes that killed. `docs/SCIENCE.md`
 gives the figures in full, with what was read afterwards.
+
+## After the Atlas: the hypocentral equation with the dead of the V and VI bands
+
+Written on 15 September 2026, before either candidate named below was run on
+any earthquake of the set it names. The rules are numbered after the sixty
+before them and live in `src/physics/validation/allenTollRules.ts` (rules 61
+to 65); the set comes first, in `smallDeepSetData.ts` and
+`smallDeepSiteData.ts`, read by `scripts/build-small-deep-set.ts` and
+`scripts/build-site-vs30.ts --small-deep`, and the run that will score it in
+`allenTollRun.ts`, committed with the rules and run on nothing.
+
+### What is already known, and so not held out
+
+Rule 58 chose Allen et al. 2012's hypocentral equation below Mw 7.5 on the
+Atlas maps; rule 59 found its band holding 81 of rule 11's 113 records below Mw
+6.5, and afterwards that 26 of the 32 it missed were bands of [0, 0] about
+earthquakes that killed. Rules 45 to 49 had tried counting the V and VI bands
+on Boore et al. 2014's rings, on the moderate set, and kept the toll in place.
+The candidates are written because of those findings, so the sets that showed
+them can only guard. Before the rules were written, NCEI's counts of the
+records the two queries of rule 61 return were read, with those of the windows
+not taken (13 in 2026, 215 from 1950 to 1972); once the set was read, only its
+counts — 194 earthquakes, 94 small (31 with deaths), 100 deep (44 with deaths,
+8 of ten or more; 49, 21 and 30 by cell) — and no toll.
+
+### The candidates, the score and the decision
+
+Rule 61's set is every NCEI significant earthquake of 2008 to 2025 of magnitude
+4 to 4.99 no deeper than 40 km, or of magnitude 5 or more deeper than 40 km,
+that no rule has read: outside the years the country curves were fitted on, on
+the browser's ground. Rule 62's candidates draw the rings with the hypocentral
+equation below Mw 7.5 and count the dead of the V and VI bands at PAGER's rates
+for the bands' middles or integers. Rule 63 asks a candidate to read the set's
+dead no worse than the toll in place, by rule 47's score, and to hold eight
+records in ten in every cell. Rule 64 guards a winner on rule 11's held-out
+tolls, rule 23's quiet earthquakes and rule 45's moderate set, with the room
+rule 48 allows a toll that counts more bands. Rule 65 says what adoption
+changes and what is printed beside. The set sits away from the moderate
+shallow earthquakes where the fault showed, the equation is extrapolated for
+the small and the deepest of it, and on deep earthquakes a law that reads depth
+leads; the rules say so rather than correct it.
