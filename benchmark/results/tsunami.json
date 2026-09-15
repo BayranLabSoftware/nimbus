@@ -1,26 +1,26 @@
 {
  "track": "TSU",
  "reference": "GeoClaw 5.14.0 (Clawpack), flat ocean on the sphere",
- "referenceStatus": "partial",
- "runs": 19,
+ "referenceStatus": "complete",
+ "runs": 28,
  "stats": [
   {
    "track": "TSU",
    "quantity": "maxAmplitudeGaussian",
    "cls": "C",
    "subset": "all",
-   "rows": 96,
-   "pairs": 96,
+   "rows": 108,
+   "pairs": 108,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.2959759949124674,
-   "scatterLn": 0.25909886188920933,
+   "geometricMeanRatio": 1.2300310288543983,
+   "scatterLn": 0.3042941053131534,
    "medianAbsLn": 0.21223372864507511,
    "maxRelative": 1.717626651188739,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.5416666666666666,
-   "within2": 0.9375,
+   "within125": 0.5370370370370371,
+   "within2": 0.9444444444444444,
    "within10": 1,
    "agreement": null,
    "flagged": false,
@@ -67,18 +67,18 @@
    "quantity": "maxAmplitudeGaussian",
    "cls": "C",
    "subset": "custom",
-   "rows": 96,
-   "pairs": 96,
+   "rows": 108,
+   "pairs": 108,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.2959759949124674,
-   "scatterLn": 0.25909886188920933,
+   "geometricMeanRatio": 1.2300310288543983,
+   "scatterLn": 0.3042941053131534,
    "medianAbsLn": 0.21223372864507511,
    "maxRelative": 1.717626651188739,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.5416666666666666,
-   "within2": 0.9375,
+   "within125": 0.5370370370370371,
+   "within2": 0.9444444444444444,
    "within10": 1,
    "agreement": null,
    "flagged": false,
@@ -125,18 +125,18 @@
    "quantity": "maxAmplitudeGaussian",
    "cls": "C",
    "subset": "bin: 100 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.8623447961913655,
-   "scatterLn": 0.31623222569076487,
-   "medianAbsLn": 0.4892401105115392,
+   "geometricMeanRatio": 1.7779064967344282,
+   "scatterLn": 0.3263042672844507,
+   "medianAbsLn": 0.48708467154372737,
    "maxRelative": 1.717626651188739,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.0625,
-   "within2": 0.625,
+   "within125": 0.16666666666666666,
+   "within2": 0.6666666666666666,
    "within10": 1,
    "agreement": null,
    "flagged": false,
@@ -183,17 +183,17 @@
    "quantity": "maxAmplitudeGaussian",
    "cls": "C",
    "subset": "bin: 200 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.4106846861742568,
-   "scatterLn": 0.1290085832785115,
-   "medianAbsLn": 0.3075602169146704,
+   "geometricMeanRatio": 1.3710433634149426,
+   "scatterLn": 0.14685698177415885,
+   "medianAbsLn": 0.3032912519970745,
    "maxRelative": 0.633428930686033,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.25,
+   "within125": 0.3333333333333333,
    "within2": 1,
    "within10": 1,
    "agreement": null,
@@ -241,17 +241,17 @@
    "quantity": "maxAmplitudeGaussian",
    "cls": "C",
    "subset": "bin: 500 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.2390825989060628,
-   "scatterLn": 0.08992893781699315,
-   "medianAbsLn": 0.22710045677083432,
+   "geometricMeanRatio": 1.1977516111271498,
+   "scatterLn": 0.12994129541463126,
+   "medianAbsLn": 0.21565569909495275,
    "maxRelative": 0.32456894513655987,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.4375,
+   "within125": 0.5,
    "within2": 1,
    "within10": 1,
    "agreement": null,
@@ -299,22 +299,36 @@
    "quantity": "maxAmplitudeGaussian",
    "cls": "C",
    "subset": "bin: 1000 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.180836496390998,
-   "scatterLn": 0.12170152005115956,
-   "medianAbsLn": 0.20870557219627023,
+   "geometricMeanRatio": 1.124061939439995,
+   "scatterLn": 0.18339833512253353,
+   "medianAbsLn": 0.21579768808616995,
    "maxRelative": 0.2578454478591419,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.625,
+   "within125": 0.5555555555555556,
    "within2": 1,
    "within10": 1,
    "agreement": null,
    "flagged": false,
    "worst": [
+    {
+     "caseId": "tsu-gauss-016",
+     "detail": "1000 km",
+     "nimbus": 0.6588444657226658,
+     "reference": 0.869785,
+     "ratio": 0.7574796825912906
+    },
+    {
+     "caseId": "tsu-gauss-013",
+     "detail": "1000 km",
+     "nimbus": 0.16471111643066644,
+     "reference": 0.217223,
+     "ratio": 0.7582581790632964
+    },
     {
      "caseId": "tsu-gauss-010",
      "detail": "1000 km",
@@ -335,20 +349,6 @@
      "nimbus": 0.6208347776998366,
      "reference": 0.494026,
      "ratio": 1.2566844208601098
-    },
-    {
-     "caseId": "tsu-gauss-009",
-     "detail": "1000 km",
-     "nimbus": 2.4833391107993465,
-     "reference": 1.983561,
-     "ratio": 1.2519600409563139
-    },
-    {
-     "caseId": "tsu-gauss-012",
-     "detail": "1000 km",
-     "nimbus": 0.12340866412358173,
-     "reference": 0.098695,
-     "ratio": 1.2504044189024948
     }
    ]
   },
@@ -357,22 +357,36 @@
    "quantity": "maxAmplitudeGaussian",
    "cls": "C",
    "subset": "bin: 2000 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.1294437123233836,
-   "scatterLn": 0.17411739014257396,
-   "medianAbsLn": 0.19298264954341127,
-   "maxRelative": 0.4012099825495844,
+   "geometricMeanRatio": 1.0524704132367455,
+   "scatterLn": 0.26258861120891536,
+   "medianAbsLn": 0.19313724489132295,
+   "maxRelative": 0.4019051672514442,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.9375,
+   "within125": 0.8333333333333334,
    "within2": 1,
    "within10": 1,
    "agreement": null,
    "flagged": false,
    "worst": [
+    {
+     "caseId": "tsu-gauss-016",
+     "detail": "2000 km",
+     "nimbus": 0.3642200160143898,
+     "reference": 0.608967,
+     "ratio": 0.5980948327485558
+    },
+    {
+     "caseId": "tsu-gauss-013",
+     "detail": "2000 km",
+     "nimbus": 0.09105500400359745,
+     "reference": 0.1521,
+     "ratio": 0.598652228820496
+    },
     {
      "caseId": "tsu-gauss-010",
      "detail": "2000 km",
@@ -393,20 +407,6 @@
      "nimbus": 0.42885728490782254,
      "reference": 0.349702,
      "ratio": 1.2263506783141718
-    },
-    {
-     "caseId": "tsu-gauss-009",
-     "detail": "2000 km",
-     "nimbus": 1.7154291396312902,
-     "reference": 1.404157,
-     "ratio": 1.221679014263569
-    },
-    {
-     "caseId": "tsu-gauss-002",
-     "detail": "2000 km",
-     "nimbus": 0.05963859589415072,
-     "reference": 0.048929,
-     "ratio": 1.218880334651244
     }
    ]
   },
@@ -415,22 +415,36 @@
    "quantity": "maxAmplitudeGaussian",
    "cls": "C",
    "subset": "bin: 3000 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.091282232666794,
-   "scatterLn": 0.2105452769181168,
-   "medianAbsLn": 0.17363108411892186,
-   "maxRelative": 0.49028789378544624,
+   "geometricMeanRatio": 1.002696253852533,
+   "scatterLn": 0.31595341682474154,
+   "medianAbsLn": 0.1788372747246976,
+   "maxRelative": 0.49085324691916676,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.9375,
+   "within125": 0.8333333333333334,
    "within2": 1,
    "within10": 1,
    "agreement": null,
    "flagged": false,
    "worst": [
+    {
+     "caseId": "tsu-gauss-016",
+     "detail": "3000 km",
+     "nimbus": 0.25247060045019276,
+     "reference": 0.49587,
+     "ratio": 0.5091467530808332
+    },
+    {
+     "caseId": "tsu-gauss-013",
+     "detail": "3000 km",
+     "nimbus": 0.06311765011254819,
+     "reference": 0.123862,
+     "ratio": 0.509580421053658
+    },
     {
      "caseId": "tsu-gauss-010",
      "detail": "3000 km",
@@ -451,20 +465,6 @@
      "nimbus": 0.34742801293104314,
      "reference": 0.287145,
      "ratio": 1.2099392743423816
-    },
-    {
-     "caseId": "tsu-gauss-002",
-     "detail": "3000 km",
-     "nimbus": 0.04836079941556583,
-     "reference": 0.040055,
-     "ratio": 1.2073598655739815
-    },
-    {
-     "caseId": "tsu-gauss-005",
-     "detail": "3000 km",
-     "nimbus": 0.24180399707782912,
-     "reference": 0.200456,
-     "ratio": 1.2062696904948174
     }
    ]
   },
@@ -473,21 +473,21 @@
    "quantity": "arrivalTimeGaussian",
    "cls": "C",
    "subset": "all",
-   "rows": 96,
-   "pairs": 90,
+   "rows": 108,
+   "pairs": 102,
    "bothZero": 0,
    "unpaired": {
     "reference zero": 6
    },
-   "geometricMeanRatio": 1.6150139259414389,
-   "scatterLn": 0.8065053327142859,
-   "medianAbsLn": 0.09240221915695657,
+   "geometricMeanRatio": 1.5495177807564775,
+   "scatterLn": 0.7673305185031313,
+   "medianAbsLn": 0.09222030544774258,
    "maxRelative": 10.992992738138671,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.6888888888888889,
-   "within2": 0.8666666666666667,
-   "within10": 0.8666666666666667,
+   "within125": 0.7058823529411765,
+   "within2": 0.8823529411764706,
+   "within10": 0.8823529411764706,
    "agreement": null,
    "flagged": false,
    "worst": [
@@ -533,21 +533,21 @@
    "quantity": "arrivalTimeGaussian",
    "cls": "C",
    "subset": "custom",
-   "rows": 96,
-   "pairs": 90,
+   "rows": 108,
+   "pairs": 102,
    "bothZero": 0,
    "unpaired": {
     "reference zero": 6
    },
-   "geometricMeanRatio": 1.6150139259414389,
-   "scatterLn": 0.8065053327142859,
-   "medianAbsLn": 0.09240221915695657,
+   "geometricMeanRatio": 1.5495177807564775,
+   "scatterLn": 0.7673305185031313,
+   "medianAbsLn": 0.09222030544774258,
    "maxRelative": 10.992992738138671,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.6888888888888889,
-   "within2": 0.8666666666666667,
-   "within10": 0.8666666666666667,
+   "within125": 0.7058823529411765,
+   "within2": 0.8823529411764706,
+   "within10": 0.8823529411764706,
    "agreement": null,
    "flagged": false,
    "worst": [
@@ -593,21 +593,21 @@
    "quantity": "arrivalTimeGaussian",
    "cls": "C",
    "subset": "bin: 100 km",
-   "rows": 16,
-   "pairs": 10,
+   "rows": 18,
+   "pairs": 12,
    "bothZero": 0,
    "unpaired": {
     "reference zero": 6
    },
-   "geometricMeanRatio": 5.270951342360432,
-   "scatterLn": 1.0587948540319507,
-   "medianAbsLn": 2.4795859897894736,
+   "geometricMeanRatio": 4.2937915682495005,
+   "scatterLn": 1.070765249587184,
+   "medianAbsLn": 1.454670538988552,
    "maxRelative": 10.992992738138671,
    "within1pct": 0,
    "withinTolerance": 0,
    "within125": 0,
-   "within2": 0.4,
-   "within10": 0.4,
+   "within2": 0.5,
+   "within10": 0.5,
    "agreement": null,
    "flagged": true,
    "worst": [
@@ -653,19 +653,19 @@
    "quantity": "arrivalTimeGaussian",
    "cls": "C",
    "subset": "bin: 200 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 3.3050923918424493,
-   "scatterLn": 1.040741648051411,
-   "medianAbsLn": 0.5770258928486969,
+   "geometricMeanRatio": 2.9567445580967107,
+   "scatterLn": 1.0299456984467563,
+   "medianAbsLn": 0.5769818069693754,
    "maxRelative": 10.992992738138671,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.25,
-   "within2": 0.625,
-   "within10": 0.625,
+   "within125": 0.3333333333333333,
+   "within2": 0.6666666666666666,
+   "within10": 0.6666666666666666,
    "agreement": null,
    "flagged": true,
    "worst": [
@@ -711,17 +711,17 @@
    "quantity": "arrivalTimeGaussian",
    "cls": "C",
    "subset": "bin: 500 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.2874751379700935,
-   "scatterLn": 0.15116909921405922,
-   "medianAbsLn": 0.19315631480414747,
+   "geometricMeanRatio": 1.2620468119231734,
+   "scatterLn": 0.15340898590684074,
+   "medianAbsLn": 0.19313228962575596,
    "maxRelative": 0.5403306820697336,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.625,
+   "within125": 0.6666666666666666,
    "within2": 1,
    "within10": 1,
    "agreement": null,
@@ -769,13 +769,13 @@
    "quantity": "arrivalTimeGaussian",
    "cls": "C",
    "subset": "bin: 1000 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.123064605906707,
-   "scatterLn": 0.06562019828739313,
-   "medianAbsLn": 0.0922148757112477,
+   "geometricMeanRatio": 1.1131366856971625,
+   "scatterLn": 0.06683759037100369,
+   "medianAbsLn": 0.09218772761839461,
    "maxRelative": 0.21327644905836363,
    "within1pct": 0,
    "withinTolerance": 0,
@@ -827,13 +827,13 @@
    "quantity": "arrivalTimeGaussian",
    "cls": "C",
    "subset": "bin: 2000 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.0577094890732879,
-   "scatterLn": 0.03086269834652154,
-   "medianAbsLn": 0.04528573907626735,
+   "geometricMeanRatio": 1.0532561091537027,
+   "scatterLn": 0.03148401811561794,
+   "medianAbsLn": 0.04526501626459335,
    "maxRelative": 0.09680291147490827,
    "within1pct": 0,
    "withinTolerance": 0,
@@ -885,13 +885,13 @@
    "quantity": "arrivalTimeGaussian",
    "cls": "C",
    "subset": "bin: 3000 km",
-   "rows": 16,
-   "pairs": 16,
+   "rows": 18,
+   "pairs": 18,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.0378086858325446,
-   "scatterLn": 0.020177075569476375,
-   "medianAbsLn": 0.03012816896009341,
+   "geometricMeanRatio": 1.0349391228029503,
+   "scatterLn": 0.020595112433077007,
+   "medianAbsLn": 0.030111159669617305,
    "maxRelative": 0.06273414918046316,
    "within1pct": 0,
    "withinTolerance": 0,
@@ -943,56 +943,58 @@
    "quantity": "maxAmplitudeMegathrustOkada",
    "cls": "C",
    "subset": "all",
-   "rows": 8,
-   "pairs": 8,
+   "rows": 20,
+   "pairs": 19,
    "bothZero": 0,
-   "unpaired": {},
-   "geometricMeanRatio": 0.7524433010950076,
-   "scatterLn": 0.1616529588758248,
-   "medianAbsLn": 0.2296896702251857,
-   "maxRelative": 0.40578602915722284,
+   "unpaired": {
+    "the gauge lies over the uplifted sea floor": 1
+   },
+   "geometricMeanRatio": 0.6380578150203148,
+   "scatterLn": 0.4116841509897972,
+   "medianAbsLn": 0.513678154403118,
+   "maxRelative": 0.8900162801762606,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.5,
-   "within2": 1,
+   "within125": 0.2631578947368421,
+   "within2": 0.6842105263157895,
    "within10": 1,
    "agreement": null,
    "flagged": false,
    "worst": [
     {
-     "caseId": "tsu-mega-8 (okada)",
-     "detail": "1000 km",
-     "nimbus": 0.10176389621859233,
-     "reference": 0.171258,
-     "ratio": 0.5942139708427772
-    },
-    {
-     "caseId": "tsu-mega-8 (okada)",
-     "detail": "300 km",
-     "nimbus": 0.19599699892591296,
-     "reference": 0.316821,
-     "ratio": 0.6186363875056039
-    },
-    {
-     "caseId": "tsu-mega-8 (okada)",
+     "caseId": "tsu-mega-95 (okada)",
      "detail": "3000 km",
-     "nimbus": 0.05682383569333368,
-     "reference": 0.085371,
-     "ratio": 0.6656105198877098
+     "nimbus": 0.7648999709900707,
+     "reference": 2.232728,
+     "ratio": 0.3425853803016179
     },
     {
-     "caseId": "tsu-mega-75 (okada)",
-     "detail": "300 km",
-     "nimbus": 0.08118582292852106,
-     "reference": 0.104958,
-     "ratio": 0.7735077166916391
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.3235469720746019,
+     "reference": 0.890556,
+     "ratio": 0.3633089576338848
     },
     {
-     "caseId": "tsu-mega-75 (okada)",
+     "caseId": "tsu-mega-95 (okada)",
      "detail": "1000 km",
-     "nimbus": 0.04211237402394303,
-     "reference": 0.051568,
-     "ratio": 0.8166377215316286
+     "nimbus": 1.385507916429008,
+     "reference": 3.578443,
+     "ratio": 0.3871817761045818
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.577804260837674,
+     "reference": 1.302326,
+     "ratio": 0.44367098624896834
+    },
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.24251898147002213,
+     "reference": 0.524996,
+     "ratio": 0.4619444366624167
     }
    ]
   },
@@ -1001,56 +1003,58 @@
    "quantity": "maxAmplitudeMegathrustOkada",
    "cls": "C",
    "subset": "custom",
-   "rows": 8,
-   "pairs": 8,
+   "rows": 20,
+   "pairs": 19,
    "bothZero": 0,
-   "unpaired": {},
-   "geometricMeanRatio": 0.7524433010950076,
-   "scatterLn": 0.1616529588758248,
-   "medianAbsLn": 0.2296896702251857,
-   "maxRelative": 0.40578602915722284,
+   "unpaired": {
+    "the gauge lies over the uplifted sea floor": 1
+   },
+   "geometricMeanRatio": 0.6380578150203148,
+   "scatterLn": 0.4116841509897972,
+   "medianAbsLn": 0.513678154403118,
+   "maxRelative": 0.8900162801762606,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.5,
-   "within2": 1,
+   "within125": 0.2631578947368421,
+   "within2": 0.6842105263157895,
    "within10": 1,
    "agreement": null,
    "flagged": false,
    "worst": [
     {
-     "caseId": "tsu-mega-8 (okada)",
-     "detail": "1000 km",
-     "nimbus": 0.10176389621859233,
-     "reference": 0.171258,
-     "ratio": 0.5942139708427772
-    },
-    {
-     "caseId": "tsu-mega-8 (okada)",
-     "detail": "300 km",
-     "nimbus": 0.19599699892591296,
-     "reference": 0.316821,
-     "ratio": 0.6186363875056039
-    },
-    {
-     "caseId": "tsu-mega-8 (okada)",
+     "caseId": "tsu-mega-95 (okada)",
      "detail": "3000 km",
-     "nimbus": 0.05682383569333368,
-     "reference": 0.085371,
-     "ratio": 0.6656105198877098
+     "nimbus": 0.7648999709900707,
+     "reference": 2.232728,
+     "ratio": 0.3425853803016179
     },
     {
-     "caseId": "tsu-mega-75 (okada)",
-     "detail": "300 km",
-     "nimbus": 0.08118582292852106,
-     "reference": 0.104958,
-     "ratio": 0.7735077166916391
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.3235469720746019,
+     "reference": 0.890556,
+     "ratio": 0.3633089576338848
     },
     {
-     "caseId": "tsu-mega-75 (okada)",
+     "caseId": "tsu-mega-95 (okada)",
      "detail": "1000 km",
-     "nimbus": 0.04211237402394303,
-     "reference": 0.051568,
-     "ratio": 0.8166377215316286
+     "nimbus": 1.385507916429008,
+     "reference": 3.578443,
+     "ratio": 0.3871817761045818
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.577804260837674,
+     "reference": 1.302326,
+     "ratio": 0.44367098624896834
+    },
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.24251898147002213,
+     "reference": 0.524996,
+     "ratio": 0.4619444366624167
     }
    ]
   },
@@ -1059,22 +1063,31 @@
    "quantity": "maxAmplitudeMegathrustOkada",
    "cls": "C",
    "subset": "bin: 100 km",
-   "rows": 2,
-   "pairs": 2,
+   "rows": 5,
+   "pairs": 4,
    "bothZero": 0,
-   "unpaired": {},
-   "geometricMeanRatio": 0.8732650143385909,
-   "scatterLn": 0.01796427901025722,
+   "unpaired": {
+    "the gauge lies over the uplifted sea floor": 1
+   },
+   "geometricMeanRatio": 1.0626587045346345,
+   "scatterLn": 0.38406373747550004,
    "medianAbsLn": 0.13551620181163776,
-   "maxRelative": 0.13775762066437824,
+   "maxRelative": 0.8900162801762606,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 1,
+   "within125": 0.75,
    "within2": 1,
    "within10": 1,
    "agreement": null,
    "flagged": false,
    "worst": [
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "100 km",
+     "nimbus": 4.05045608972014,
+     "reference": 2.14308,
+     "ratio": 1.8900162801762606
+    },
     {
      "caseId": "tsu-mega-8 (okada)",
      "detail": "100 km",
@@ -1088,6 +1101,13 @@
      "nimbus": 0.15597516742113315,
      "reference": 0.176357,
      "ratio": 0.8844285592357158
+    },
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "100 km",
+     "nimbus": 1.1059404185646537,
+     "reference": 1.250012,
+     "ratio": 0.8847438413108465
     }
    ]
   },
@@ -1096,14 +1116,14 @@
    "quantity": "maxAmplitudeMegathrustOkada",
    "cls": "C",
    "subset": "bin: 300 km",
-   "rows": 2,
-   "pairs": 2,
+   "rows": 5,
+   "pairs": 5,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 0.6917514145716102,
-   "scatterLn": 0.15798035838952112,
-   "medianAbsLn": 0.3685286153997944,
-   "maxRelative": 0.3813636124943961,
+   "geometricMeanRatio": 0.6497036642746072,
+   "scatterLn": 0.1780226788622273,
+   "medianAbsLn": 0.4802375981113059,
+   "maxRelative": 0.4833375937922898,
    "within1pct": 0,
    "withinTolerance": 0,
    "within125": 0,
@@ -1112,6 +1132,20 @@
    "agreement": null,
    "flagged": false,
    "worst": [
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "300 km",
+     "nimbus": 1.1849951950569433,
+     "reference": 2.293558,
+     "ratio": 0.5166624062077102
+    },
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "300 km",
+     "nimbus": 0.47684623961383577,
+     "reference": 0.797014,
+     "ratio": 0.5982909203776041
+    },
     {
      "caseId": "tsu-mega-8 (okada)",
      "detail": "300 km",
@@ -1125,6 +1159,13 @@
      "nimbus": 0.08118582292852106,
      "reference": 0.104958,
      "ratio": 0.7735077166916391
+    },
+    {
+     "caseId": "tsu-mega-95 (okada)",
+     "detail": "300 km",
+     "nimbus": 3.075976452830758,
+     "reference": 3.930301,
+     "ratio": 0.7826312673840395
     }
    ]
   },
@@ -1133,22 +1174,43 @@
    "quantity": "maxAmplitudeMegathrustOkada",
    "cls": "C",
    "subset": "bin: 1000 km",
-   "rows": 2,
-   "pairs": 2,
+   "rows": 5,
+   "pairs": 5,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 0.6966042945972319,
-   "scatterLn": 0.2248289119173587,
-   "medianAbsLn": 0.36153775598564575,
-   "maxRelative": 0.40578602915722284,
+   "geometricMeanRatio": 0.5213238508791277,
+   "scatterLn": 0.29483019294087126,
+   "medianAbsLn": 0.7723106620975155,
+   "maxRelative": 0.6128182238954182,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.5,
-   "within2": 1,
+   "within125": 0.2,
+   "within2": 0.4,
    "within10": 1,
    "agreement": null,
    "flagged": false,
    "worst": [
+    {
+     "caseId": "tsu-mega-95 (okada)",
+     "detail": "1000 km",
+     "nimbus": 1.385507916429008,
+     "reference": 3.578443,
+     "ratio": 0.3871817761045818
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.577804260837674,
+     "reference": 1.302326,
+     "ratio": 0.44367098624896834
+    },
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.24251898147002213,
+     "reference": 0.524996,
+     "ratio": 0.4619444366624167
+    },
     {
      "caseId": "tsu-mega-8 (okada)",
      "detail": "1000 km",
@@ -1170,22 +1232,43 @@
    "quantity": "maxAmplitudeMegathrustOkada",
    "cls": "C",
    "subset": "bin: 3000 km",
-   "rows": 2,
-   "pairs": 2,
+   "rows": 5,
+   "pairs": 5,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 0.7617506886175474,
-   "scatterLn": 0.19079809577178408,
-   "medianAbsLn": 0.2721359571225726,
-   "maxRelative": 0.3343894801122902,
+   "geometricMeanRatio": 0.5099530209850023,
+   "scatterLn": 0.3987537177214372,
+   "medianAbsLn": 0.7391754013138073,
+   "maxRelative": 0.6574146196983821,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0.5,
-   "within2": 1,
+   "within125": 0.2,
+   "within2": 0.4,
    "within10": 1,
    "agreement": null,
    "flagged": false,
    "worst": [
+    {
+     "caseId": "tsu-mega-95 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.7648999709900707,
+     "reference": 2.232728,
+     "ratio": 0.3425853803016179
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.3235469720746019,
+     "reference": 0.890556,
+     "ratio": 0.3633089576338848
+    },
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.13653276597068217,
+     "reference": 0.285928,
+     "ratio": 0.47750750528343555
+    },
     {
      "caseId": "tsu-mega-8 (okada)",
      "detail": "3000 km",
@@ -1204,133 +1287,139 @@
   },
   {
    "track": "TSU",
-   "quantity": "arrivalTimeMegathrust",
+   "quantity": "maxAmplitudeMegathrustOkadaExactLinear",
    "cls": "C",
    "subset": "all",
-   "rows": 12,
-   "pairs": 12,
+   "rows": 20,
+   "pairs": 19,
    "bothZero": 0,
-   "unpaired": {},
-   "geometricMeanRatio": 1.1162216369652518,
-   "scatterLn": 0.12111731884294817,
-   "medianAbsLn": 0.05723738473968444,
-   "maxRelative": 0.44547665123286007,
-   "within1pct": 0.08333333333333333,
-   "withinTolerance": 0.08333333333333333,
-   "within125": 0.75,
-   "within2": 1,
+   "unpaired": {
+    "the gauge lies over the uplifted sea floor": 1
+   },
+   "geometricMeanRatio": 0.45229864798265423,
+   "scatterLn": 0.5087479322997956,
+   "medianAbsLn": 0.7765925395491482,
+   "maxRelative": 0.7871401499509199,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.3684210526315789,
    "within10": 1,
    "agreement": null,
-   "flagged": false,
+   "flagged": true,
    "worst": [
     {
-     "caseId": "tsu-mega-75 (uplift)",
-     "detail": "100 km",
-     "nimbus": 504.90499427563805,
-     "reference": 349.3,
-     "ratio": 1.44547665123286
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.3235469720746019,
+     "reference": 1.52,
+     "ratio": 0.2128598500490802
     },
     {
-     "caseId": "tsu-mega-8 (okada)",
-     "detail": "100 km",
-     "nimbus": 504.90499427563805,
-     "reference": 378.5,
-     "ratio": 1.333962996765226
+     "caseId": "tsu-mega-95 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.7648999709900707,
+     "reference": 3.22,
+     "ratio": 0.23754657484163685
     },
     {
-     "caseId": "tsu-mega-75 (okada)",
-     "detail": "100 km",
-     "nimbus": 504.90499427563805,
-     "reference": 402.1,
-     "ratio": 1.2556702170495848
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.13653276597068217,
+     "reference": 0.5724,
+     "ratio": 0.23852684481251252
     },
     {
-     "caseId": "tsu-mega-75 (uplift)",
-     "detail": "300 km",
-     "nimbus": 1514.7149828269141,
-     "reference": 1349.3,
-     "ratio": 1.122593183744841
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.24251898147002213,
+     "reference": 0.7856,
+     "ratio": 0.3087054244781341
     },
     {
-     "caseId": "tsu-mega-8 (okada)",
-     "detail": "300 km",
-     "nimbus": 1514.7149828269141,
-     "reference": 1352.5,
-     "ratio": 1.1199371407223024
+     "caseId": "tsu-mega-95 (okada)",
+     "detail": "1000 km",
+     "nimbus": 1.385507916429008,
+     "reference": 4.398,
+     "ratio": 0.3150313588970005
     }
    ]
   },
   {
    "track": "TSU",
-   "quantity": "arrivalTimeMegathrust",
+   "quantity": "maxAmplitudeMegathrustOkadaExactLinear",
    "cls": "C",
    "subset": "custom",
-   "rows": 12,
-   "pairs": 12,
+   "rows": 20,
+   "pairs": 19,
    "bothZero": 0,
-   "unpaired": {},
-   "geometricMeanRatio": 1.1162216369652518,
-   "scatterLn": 0.12111731884294817,
-   "medianAbsLn": 0.05723738473968444,
-   "maxRelative": 0.44547665123286007,
-   "within1pct": 0.08333333333333333,
-   "withinTolerance": 0.08333333333333333,
-   "within125": 0.75,
-   "within2": 1,
+   "unpaired": {
+    "the gauge lies over the uplifted sea floor": 1
+   },
+   "geometricMeanRatio": 0.45229864798265423,
+   "scatterLn": 0.5087479322997956,
+   "medianAbsLn": 0.7765925395491482,
+   "maxRelative": 0.7871401499509199,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.3684210526315789,
    "within10": 1,
    "agreement": null,
-   "flagged": false,
+   "flagged": true,
    "worst": [
     {
-     "caseId": "tsu-mega-75 (uplift)",
-     "detail": "100 km",
-     "nimbus": 504.90499427563805,
-     "reference": 349.3,
-     "ratio": 1.44547665123286
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.3235469720746019,
+     "reference": 1.52,
+     "ratio": 0.2128598500490802
     },
     {
-     "caseId": "tsu-mega-8 (okada)",
-     "detail": "100 km",
-     "nimbus": 504.90499427563805,
-     "reference": 378.5,
-     "ratio": 1.333962996765226
+     "caseId": "tsu-mega-95 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.7648999709900707,
+     "reference": 3.22,
+     "ratio": 0.23754657484163685
     },
     {
-     "caseId": "tsu-mega-75 (okada)",
-     "detail": "100 km",
-     "nimbus": 504.90499427563805,
-     "reference": 402.1,
-     "ratio": 1.2556702170495848
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.13653276597068217,
+     "reference": 0.5724,
+     "ratio": 0.23852684481251252
     },
     {
-     "caseId": "tsu-mega-75 (uplift)",
-     "detail": "300 km",
-     "nimbus": 1514.7149828269141,
-     "reference": 1349.3,
-     "ratio": 1.122593183744841
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.24251898147002213,
+     "reference": 0.7856,
+     "ratio": 0.3087054244781341
     },
     {
-     "caseId": "tsu-mega-8 (okada)",
-     "detail": "300 km",
-     "nimbus": 1514.7149828269141,
-     "reference": 1352.5,
-     "ratio": 1.1199371407223024
+     "caseId": "tsu-mega-95 (okada)",
+     "detail": "1000 km",
+     "nimbus": 1.385507916429008,
+     "reference": 4.398,
+     "ratio": 0.3150313588970005
     }
    ]
   },
   {
    "track": "TSU",
-   "quantity": "arrivalTimeMegathrust",
+   "quantity": "maxAmplitudeMegathrustOkadaExactLinear",
    "cls": "C",
    "subset": "bin: 100 km",
-   "rows": 3,
-   "pairs": 3,
+   "rows": 5,
+   "pairs": 4,
    "bothZero": 0,
-   "unpaired": {},
-   "geometricMeanRatio": 1.342796350866953,
-   "scatterLn": 0.07061653514153522,
-   "medianAbsLn": 0.288154208551909,
-   "maxRelative": 0.44547665123286007,
+   "unpaired": {
+    "the gauge lies over the uplifted sea floor": 1
+   },
+   "geometricMeanRatio": 0.9226763211005138,
+   "scatterLn": 0.3875838563251561,
+   "medianAbsLn": 0.29280621084822056,
+   "maxRelative": 0.6478665946786575,
    "within1pct": 0,
    "withinTolerance": 0,
    "within125": 0,
@@ -1340,25 +1429,386 @@
    "flagged": false,
    "worst": [
     {
-     "caseId": "tsu-mega-75 (uplift)",
+     "caseId": "tsu-mega-9 (okada)",
      "detail": "100 km",
-     "nimbus": 504.90499427563805,
-     "reference": 349.3,
-     "ratio": 1.44547665123286
-    },
-    {
-     "caseId": "tsu-mega-8 (okada)",
-     "detail": "100 km",
-     "nimbus": 504.90499427563805,
-     "reference": 378.5,
-     "ratio": 1.333962996765226
+     "nimbus": 4.05045608972014,
+     "reference": 2.458,
+     "ratio": 1.6478665946786575
     },
     {
      "caseId": "tsu-mega-75 (okada)",
      "detail": "100 km",
+     "nimbus": 0.15597516742113315,
+     "reference": 0.2098,
+     "ratio": 0.7434469371836662
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "100 km",
+     "nimbus": 0.39946137398336556,
+     "reference": 0.5334,
+     "ratio": 0.7488964641607904
+    },
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "100 km",
+     "nimbus": 1.1059404185646537,
+     "reference": 1.4,
+     "ratio": 0.7899574418318955
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustOkadaExactLinear",
+   "cls": "C",
+   "subset": "bin: 300 km",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.5211573101738204,
+   "scatterLn": 0.17012755629468773,
+   "medianAbsLn": 0.727779854512565,
+   "maxRelative": 0.5571766834615309,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.4,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "300 km",
+     "nimbus": 1.1849951950569433,
+     "reference": 2.676,
+     "ratio": 0.44282331653846907
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "300 km",
+     "nimbus": 0.19599699892591296,
+     "reference": 0.4152,
+     "ratio": 0.4720544290123144
+    },
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "300 km",
+     "nimbus": 0.47684623961383577,
+     "reference": 0.9873,
+     "ratio": 0.4829800867151178
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "300 km",
+     "nimbus": 0.08118582292852106,
+     "reference": 0.1441,
+     "ratio": 0.5633991875678075
+    },
+    {
+     "caseId": "tsu-mega-95 (okada)",
+     "detail": "300 km",
+     "nimbus": 3.075976452830758,
+     "reference": 4.551,
+     "ratio": 0.6758902335378506
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustOkadaExactLinear",
+   "cls": "C",
+   "subset": "bin: 1000 km",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.35414989920747225,
+   "scatterLn": 0.20436149914468074,
+   "medianAbsLn": 1.1462571124893604,
+   "maxRelative": 0.6912945755218659,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.2,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.24251898147002213,
+     "reference": 0.7856,
+     "ratio": 0.3087054244781341
+    },
+    {
+     "caseId": "tsu-mega-95 (okada)",
+     "detail": "1000 km",
+     "nimbus": 1.385507916429008,
+     "reference": 4.398,
+     "ratio": 0.3150313588970005
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.577804260837674,
+     "reference": 1.818,
+     "ratio": 0.317824125873308
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.10176389621859233,
+     "reference": 0.2838,
+     "ratio": 0.3585760966123761
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.04211237402394303,
+     "reference": 0.08378,
+     "ratio": 0.502654261445966
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustOkadaExactLinear",
+   "cls": "C",
+   "subset": "bin: 3000 km",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.28341357189484556,
+   "scatterLn": 0.31628738761351816,
+   "medianAbsLn": 1.4332734181219093,
+   "maxRelative": 0.7871401499509199,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.3235469720746019,
+     "reference": 1.52,
+     "ratio": 0.2128598500490802
+    },
+    {
+     "caseId": "tsu-mega-95 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.7648999709900707,
+     "reference": 3.22,
+     "ratio": 0.23754657484163685
+    },
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.13653276597068217,
+     "reference": 0.5724,
+     "ratio": 0.23852684481251252
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.05682383569333368,
+     "reference": 0.1724,
+     "ratio": 0.32960461539056657
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.022612158427816526,
+     "reference": 0.04916,
+     "ratio": 0.45997067591164614
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeMegathrust",
+   "cls": "C",
+   "subset": "all",
+   "rows": 40,
+   "pairs": 39,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 1
+   },
+   "geometricMeanRatio": 1.2916103857977708,
+   "scatterLn": 0.5418365924321208,
+   "medianAbsLn": 0.08668642482045222,
+   "maxRelative": 25.297135118522817,
+   "within1pct": 0.05128205128205128,
+   "withinTolerance": 0.05128205128205128,
+   "within125": 0.6923076923076923,
+   "within2": 0.9487179487179487,
+   "within10": 0.9743589743589743,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-9 (uplift)",
+     "detail": "100 km",
      "nimbus": 504.90499427563805,
-     "reference": 402.1,
-     "ratio": 1.2556702170495848
+     "reference": 19.2,
+     "ratio": 26.297135118522817
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 174.2,
+     "ratio": 2.8984213219037778
+    },
+    {
+     "caseId": "tsu-mega-95 (uplift)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 782.4,
+     "ratio": 1.9359854074986123
+    },
+    {
+     "caseId": "tsu-mega-8 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 279,
+     "ratio": 1.8096953199843657
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 329.5,
+     "ratio": 1.5323368566787194
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeMegathrust",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 40,
+   "pairs": 39,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 1
+   },
+   "geometricMeanRatio": 1.2916103857977708,
+   "scatterLn": 0.5418365924321208,
+   "medianAbsLn": 0.08668642482045222,
+   "maxRelative": 25.297135118522817,
+   "within1pct": 0.05128205128205128,
+   "withinTolerance": 0.05128205128205128,
+   "within125": 0.6923076923076923,
+   "within2": 0.9487179487179487,
+   "within10": 0.9743589743589743,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-9 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 19.2,
+     "ratio": 26.297135118522817
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 174.2,
+     "ratio": 2.8984213219037778
+    },
+    {
+     "caseId": "tsu-mega-95 (uplift)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 782.4,
+     "ratio": 1.9359854074986123
+    },
+    {
+     "caseId": "tsu-mega-8 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 279,
+     "ratio": 1.8096953199843657
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 329.5,
+     "ratio": 1.5323368566787194
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeMegathrust",
+   "cls": "C",
+   "subset": "bin: 100 km",
+   "rows": 10,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 1
+   },
+   "geometricMeanRatio": 2.0873429114416866,
+   "scatterLn": 0.9936092330130566,
+   "medianAbsLn": 0.3814057426398745,
+   "maxRelative": 25.297135118522817,
+   "within1pct": 0.1111111111111111,
+   "withinTolerance": 0.1111111111111111,
+   "within125": 0.1111111111111111,
+   "within2": 0.7777777777777778,
+   "within10": 0.8888888888888888,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-mega-9 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 19.2,
+     "ratio": 26.297135118522817
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 174.2,
+     "ratio": 2.8984213219037778
+    },
+    {
+     "caseId": "tsu-mega-8 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 279,
+     "ratio": 1.8096953199843657
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 329.5,
+     "ratio": 1.5323368566787194
+    },
+    {
+     "caseId": "tsu-mega-85 (okada)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 344.8,
+     "ratio": 1.4643416307298087
     }
    ]
   },
@@ -1367,42 +1817,56 @@
    "quantity": "arrivalTimeMegathrust",
    "cls": "C",
    "subset": "bin: 300 km",
-   "rows": 3,
-   "pairs": 3,
+   "rows": 10,
+   "pairs": 10,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.1077887375394777,
-   "scatterLn": 0.020975787492837423,
-   "medianAbsLn": 0.11327255937688552,
-   "maxRelative": 0.12259318374484107,
+   "geometricMeanRatio": 1.2745710205950185,
+   "scatterLn": 0.17635356293295493,
+   "medianAbsLn": 0.17877912668883778,
+   "maxRelative": 0.9359854074986123,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 1,
+   "within125": 0.6,
    "within2": 1,
    "within10": 1,
    "agreement": null,
    "flagged": false,
    "worst": [
     {
-     "caseId": "tsu-mega-75 (uplift)",
+     "caseId": "tsu-mega-95 (uplift)",
      "detail": "300 km",
      "nimbus": 1514.7149828269141,
-     "reference": 1349.3,
-     "ratio": 1.122593183744841
+     "reference": 782.4,
+     "ratio": 1.9359854074986123
     },
     {
-     "caseId": "tsu-mega-8 (okada)",
+     "caseId": "tsu-mega-9 (uplift)",
      "detail": "300 km",
      "nimbus": 1514.7149828269141,
-     "reference": 1352.5,
-     "ratio": 1.1199371407223024
+     "reference": 1019.4,
+     "ratio": 1.4858887412467277
     },
     {
-     "caseId": "tsu-mega-75 (okada)",
+     "caseId": "tsu-mega-95 (okada)",
      "detail": "300 km",
      "nimbus": 1514.7149828269141,
-     "reference": 1400.8,
-     "ratio": 1.081321375518928
+     "reference": 1115.1,
+     "ratio": 1.3583669472037614
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 1177.9,
+     "ratio": 1.2859453118489803
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 1250.3,
+     "ratio": 1.2114812307661476
     }
    ]
   },
@@ -1411,14 +1875,14 @@
    "quantity": "arrivalTimeMegathrust",
    "cls": "C",
    "subset": "bin: 1000 km",
-   "rows": 3,
-   "pairs": 3,
+   "rows": 10,
+   "pairs": 10,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.0322410059657305,
-   "scatterLn": 0.007231004693875451,
-   "medianAbsLn": 0.03551085302999843,
-   "maxRelative": 0.03695753686643921,
+   "geometricMeanRatio": 1.0712728406019485,
+   "scatterLn": 0.04042101299928412,
+   "medianAbsLn": 0.060525710501449725,
+   "maxRelative": 0.17264322706096102,
    "within1pct": 0,
    "withinTolerance": 0,
    "within125": 1,
@@ -1428,25 +1892,39 @@
    "flagged": false,
    "worst": [
     {
-     "caseId": "tsu-mega-75 (uplift)",
+     "caseId": "tsu-mega-95 (uplift)",
      "detail": "1000 km",
      "nimbus": 5049.04994275638,
-     "reference": 4869.1,
-     "ratio": 1.0369575368664392
+     "reference": 4305.7,
+     "ratio": 1.172643227060961
     },
     {
-     "caseId": "tsu-mega-8 (okada)",
+     "caseId": "tsu-mega-9 (uplift)",
      "detail": "1000 km",
      "nimbus": 5049.04994275638,
-     "reference": 4872.9,
-     "ratio": 1.036148893422065
+     "reference": 4544.6,
+     "ratio": 1.1109998553792149
     },
     {
-     "caseId": "tsu-mega-75 (okada)",
+     "caseId": "tsu-mega-95 (okada)",
      "detail": "1000 km",
      "nimbus": 5049.04994275638,
-     "reference": 4932.3,
-     "ratio": 1.0236704869445046
+     "reference": 4629.8,
+     "ratio": 1.0905546552240657
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 5049.04994275638,
+     "reference": 4703.3,
+     "ratio": 1.0735122026569388
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "1000 km",
+     "nimbus": 5049.04994275638,
+     "reference": 4711,
+     "ratio": 1.071757576471318
     }
    ]
   },
@@ -1455,16 +1933,16 @@
    "quantity": "arrivalTimeMegathrust",
    "cls": "C",
    "subset": "bin: 3000 km",
-   "rows": 3,
-   "pairs": 3,
+   "rows": 10,
+   "pairs": 10,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 1.0110055537650873,
-   "scatterLn": 0.0027672182526072876,
-   "medianAbsLn": 0.011944562666287519,
-   "maxRelative": 0.013160171518430408,
-   "within1pct": 0.3333333333333333,
-   "withinTolerance": 0.3333333333333333,
+   "geometricMeanRatio": 1.024505762308962,
+   "scatterLn": 0.013472391486671823,
+   "medianAbsLn": 0.02132755786560873,
+   "maxRelative": 0.05297494131213143,
+   "within1pct": 0.1,
+   "withinTolerance": 0.1,
    "within125": 1,
    "within2": 1,
    "within10": 1,
@@ -1472,25 +1950,39 @@
    "flagged": false,
    "worst": [
     {
-     "caseId": "tsu-mega-75 (uplift)",
+     "caseId": "tsu-mega-95 (uplift)",
      "detail": "3000 km",
      "nimbus": 15147.149828269141,
-     "reference": 14950.4,
-     "ratio": 1.0131601715184304
+     "reference": 14385.1,
+     "ratio": 1.0529749413121314
     },
     {
-     "caseId": "tsu-mega-8 (okada)",
+     "caseId": "tsu-mega-95 (okada)",
      "detail": "3000 km",
      "nimbus": 15147.149828269141,
-     "reference": 14967.3,
-     "ratio": 1.0120161838320298
+     "reference": 14612.1,
+     "ratio": 1.0366169016273596
     },
     {
-     "caseId": "tsu-mega-75 (okada)",
+     "caseId": "tsu-mega-9 (uplift)",
      "detail": "3000 km",
      "nimbus": 15147.149828269141,
-     "reference": 15029.2,
-     "ratio": 1.0078480443582587
+     "reference": 14626.4,
+     "ratio": 1.0356034176741469
+    },
+    {
+     "caseId": "tsu-mega-9 (okada)",
+     "detail": "3000 km",
+     "nimbus": 15147.149828269141,
+     "reference": 14753.8,
+     "ratio": 1.0266609163923288
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 15147.149828269141,
+     "reference": 14778.5,
+     "ratio": 1.024945009863595
     }
    ]
   },
@@ -1499,49 +1991,58 @@
    "quantity": "maxAmplitudeMegathrustUplift",
    "cls": "C",
    "subset": "all",
-   "rows": 4,
-   "pairs": 4,
+   "rows": 20,
+   "pairs": 19,
    "bothZero": 0,
-   "unpaired": {},
-   "geometricMeanRatio": 0.3137315754508976,
-   "scatterLn": 0.07417753947663719,
-   "medianAbsLn": 1.141412907486861,
-   "maxRelative": 0.7175654098851242,
+   "unpaired": {
+    "the gauge lies over the uplifted sea floor": 1
+   },
+   "geometricMeanRatio": 0.2639133093014457,
+   "scatterLn": 0.605256568116306,
+   "medianAbsLn": 1.3245121736213044,
+   "maxRelative": 0.9007578508545389,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0,
-   "within2": 0,
-   "within10": 1,
+   "within125": 0.05263157894736842,
+   "within2": 0.10526315789473684,
+   "within10": 0.9473684210526315,
    "agreement": null,
    "flagged": true,
    "worst": [
     {
-     "caseId": "tsu-mega-75 (uplift)",
-     "detail": "300 km",
-     "nimbus": 0.08118582292852106,
-     "reference": 0.28745,
-     "ratio": 0.2824345901148758
-    },
-    {
-     "caseId": "tsu-mega-75 (uplift)",
-     "detail": "1000 km",
-     "nimbus": 0.04211237402394303,
-     "reference": 0.131962,
-     "ratio": 0.3191250058648932
-    },
-    {
-     "caseId": "tsu-mega-75 (uplift)",
-     "detail": "100 km",
-     "nimbus": 0.15597516742113315,
-     "reference": 0.488017,
-     "ratio": 0.31961011075666046
-    },
-    {
-     "caseId": "tsu-mega-75 (uplift)",
+     "caseId": "tsu-mega-9 (uplift)",
      "detail": "3000 km",
-     "nimbus": 0.022612158427816526,
-     "reference": 0.067237,
-     "ratio": 0.33630528470658305
+     "nimbus": 0.3235469720746019,
+     "reference": 3.260177,
+     "ratio": 0.09924214914546109
+    },
+    {
+     "caseId": "tsu-mega-95 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.7648999709900707,
+     "reference": 6.968121,
+     "ratio": 0.10977133878560241
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 0.24251898147002213,
+     "reference": 1.683996,
+     "ratio": 0.1440139890296783
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.13653276597068217,
+     "reference": 0.943952,
+     "ratio": 0.14463952189378504
+    },
+    {
+     "caseId": "tsu-mega-9 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 0.577804260837674,
+     "reference": 3.457567,
+     "ratio": 0.1671129614661622
     }
    ]
   },
@@ -1550,49 +2051,58 @@
    "quantity": "maxAmplitudeMegathrustUplift",
    "cls": "C",
    "subset": "custom",
-   "rows": 4,
-   "pairs": 4,
+   "rows": 20,
+   "pairs": 19,
    "bothZero": 0,
-   "unpaired": {},
-   "geometricMeanRatio": 0.3137315754508976,
-   "scatterLn": 0.07417753947663719,
-   "medianAbsLn": 1.141412907486861,
-   "maxRelative": 0.7175654098851242,
+   "unpaired": {
+    "the gauge lies over the uplifted sea floor": 1
+   },
+   "geometricMeanRatio": 0.2639133093014457,
+   "scatterLn": 0.605256568116306,
+   "medianAbsLn": 1.3245121736213044,
+   "maxRelative": 0.9007578508545389,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0,
-   "within2": 0,
-   "within10": 1,
+   "within125": 0.05263157894736842,
+   "within2": 0.10526315789473684,
+   "within10": 0.9473684210526315,
    "agreement": null,
    "flagged": true,
    "worst": [
     {
-     "caseId": "tsu-mega-75 (uplift)",
-     "detail": "300 km",
-     "nimbus": 0.08118582292852106,
-     "reference": 0.28745,
-     "ratio": 0.2824345901148758
-    },
-    {
-     "caseId": "tsu-mega-75 (uplift)",
-     "detail": "1000 km",
-     "nimbus": 0.04211237402394303,
-     "reference": 0.131962,
-     "ratio": 0.3191250058648932
-    },
-    {
-     "caseId": "tsu-mega-75 (uplift)",
-     "detail": "100 km",
-     "nimbus": 0.15597516742113315,
-     "reference": 0.488017,
-     "ratio": 0.31961011075666046
-    },
-    {
-     "caseId": "tsu-mega-75 (uplift)",
+     "caseId": "tsu-mega-9 (uplift)",
      "detail": "3000 km",
-     "nimbus": 0.022612158427816526,
-     "reference": 0.067237,
-     "ratio": 0.33630528470658305
+     "nimbus": 0.3235469720746019,
+     "reference": 3.260177,
+     "ratio": 0.09924214914546109
+    },
+    {
+     "caseId": "tsu-mega-95 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.7648999709900707,
+     "reference": 6.968121,
+     "ratio": 0.10977133878560241
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 0.24251898147002213,
+     "reference": 1.683996,
+     "ratio": 0.1440139890296783
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.13653276597068217,
+     "reference": 0.943952,
+     "ratio": 0.14463952189378504
+    },
+    {
+     "caseId": "tsu-mega-9 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 0.577804260837674,
+     "reference": 3.457567,
+     "ratio": 0.1671129614661622
     }
    ]
   },
@@ -1601,21 +2111,23 @@
    "quantity": "maxAmplitudeMegathrustUplift",
    "cls": "C",
    "subset": "bin: 100 km",
-   "rows": 1,
-   "pairs": 1,
+   "rows": 5,
+   "pairs": 4,
    "bothZero": 0,
-   "unpaired": {},
-   "geometricMeanRatio": 0.31961011075666046,
-   "scatterLn": null,
-   "medianAbsLn": 1.1406534299312765,
+   "unpaired": {
+    "the gauge lies over the uplifted sea floor": 1
+   },
+   "geometricMeanRatio": 0.5619004972957826,
+   "scatterLn": 0.5644559461680475,
+   "medianAbsLn": 0.6662202151400597,
    "maxRelative": 0.6803898892433395,
    "within1pct": 0,
    "withinTolerance": 0,
-   "within125": 0,
-   "within2": 0,
+   "within125": 0.25,
+   "within2": 0.5,
    "within10": 1,
    "agreement": null,
-   "flagged": true,
+   "flagged": false,
    "worst": [
     {
      "caseId": "tsu-mega-75 (uplift)",
@@ -1623,6 +2135,27 @@
      "nimbus": 0.15597516742113315,
      "reference": 0.488017,
      "ratio": 0.31961011075666046
+    },
+    {
+     "caseId": "tsu-mega-8 (uplift)",
+     "detail": "100 km",
+     "nimbus": 0.39946137398336556,
+     "reference": 0.935319,
+     "ratio": 0.4270857044317132
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "100 km",
+     "nimbus": 1.1059404185646537,
+     "reference": 1.790269,
+     "ratio": 0.6177509740517507
+    },
+    {
+     "caseId": "tsu-mega-9 (uplift)",
+     "detail": "100 km",
+     "nimbus": 4.05045608972014,
+     "reference": 3.42622,
+     "ratio": 1.1821938140925394
     }
    ]
   },
@@ -1631,14 +2164,14 @@
    "quantity": "maxAmplitudeMegathrustUplift",
    "cls": "C",
    "subset": "bin: 300 km",
-   "rows": 1,
-   "pairs": 1,
+   "rows": 5,
+   "pairs": 5,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 0.2824345901148758,
-   "scatterLn": null,
+   "geometricMeanRatio": 0.3038597953691343,
+   "scatterLn": 0.29772047122812384,
    "medianAbsLn": 1.2643082946213993,
-   "maxRelative": 0.7175654098851242,
+   "maxRelative": 0.7871647533723903,
    "within1pct": 0,
    "withinTolerance": 0,
    "within125": 0,
@@ -1648,11 +2181,39 @@
    "flagged": true,
    "worst": [
     {
+     "caseId": "tsu-mega-8 (uplift)",
+     "detail": "300 km",
+     "nimbus": 0.19599699892591296,
+     "reference": 0.920886,
+     "ratio": 0.2128352466276097
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "300 km",
+     "nimbus": 0.47684623961383577,
+     "reference": 1.793109,
+     "ratio": 0.2659326564162222
+    },
+    {
      "caseId": "tsu-mega-75 (uplift)",
      "detail": "300 km",
      "nimbus": 0.08118582292852106,
      "reference": 0.28745,
      "ratio": 0.2824345901148758
+    },
+    {
+     "caseId": "tsu-mega-9 (uplift)",
+     "detail": "300 km",
+     "nimbus": 1.1849951950569433,
+     "reference": 3.42841,
+     "ratio": 0.3456398724356023
+    },
+    {
+     "caseId": "tsu-mega-95 (uplift)",
+     "detail": "300 km",
+     "nimbus": 3.075976452830758,
+     "reference": 6.561056,
+     "ratio": 0.4688233803873581
     }
    ]
   },
@@ -1661,14 +2222,14 @@
    "quantity": "maxAmplitudeMegathrustUplift",
    "cls": "C",
    "subset": "bin: 1000 km",
-   "rows": 1,
-   "pairs": 1,
+   "rows": 5,
+   "pairs": 5,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 0.3191250058648932,
-   "scatterLn": null,
-   "medianAbsLn": 1.1421723850424457,
-   "maxRelative": 0.6808749941351069,
+   "geometricMeanRatio": 0.20126105320541604,
+   "scatterLn": 0.30048693462351783,
+   "medianAbsLn": 1.5855401949461745,
+   "maxRelative": 0.8559860109703217,
    "within1pct": 0,
    "withinTolerance": 0,
    "within125": 0,
@@ -1677,6 +2238,34 @@
    "agreement": null,
    "flagged": true,
    "worst": [
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 0.24251898147002213,
+     "reference": 1.683996,
+     "ratio": 0.1440139890296783
+    },
+    {
+     "caseId": "tsu-mega-9 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 0.577804260837674,
+     "reference": 3.457567,
+     "ratio": 0.1671129614661622
+    },
+    {
+     "caseId": "tsu-mega-8 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 0.10176389621859233,
+     "reference": 0.496804,
+     "ratio": 0.2048371112523094
+    },
+    {
+     "caseId": "tsu-mega-95 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 1.385507916429008,
+     "reference": 6.60077,
+     "ratio": 0.2099009534386152
+    },
     {
      "caseId": "tsu-mega-75 (uplift)",
      "detail": "1000 km",
@@ -1691,22 +2280,50 @@
    "quantity": "maxAmplitudeMegathrustUplift",
    "cls": "C",
    "subset": "bin: 3000 km",
-   "rows": 1,
-   "pairs": 1,
+   "rows": 5,
+   "pairs": 5,
    "bothZero": 0,
    "unpaired": {},
-   "geometricMeanRatio": 0.33630528470658305,
-   "scatterLn": null,
-   "medianAbsLn": 1.0897359460965708,
-   "maxRelative": 0.663694715293417,
+   "geometricMeanRatio": 0.16420727581618344,
+   "scatterLn": 0.5113321385347241,
+   "medianAbsLn": 1.9335106878347113,
+   "maxRelative": 0.9007578508545389,
    "within1pct": 0,
    "withinTolerance": 0,
    "within125": 0,
    "within2": 0,
-   "within10": 1,
+   "within10": 0.8,
    "agreement": null,
    "flagged": true,
    "worst": [
+    {
+     "caseId": "tsu-mega-9 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.3235469720746019,
+     "reference": 3.260177,
+     "ratio": 0.09924214914546109
+    },
+    {
+     "caseId": "tsu-mega-95 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.7648999709900707,
+     "reference": 6.968121,
+     "ratio": 0.10977133878560241
+    },
+    {
+     "caseId": "tsu-mega-85 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.13653276597068217,
+     "reference": 0.943952,
+     "ratio": 0.14463952189378504
+    },
+    {
+     "caseId": "tsu-mega-8 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.05682383569333368,
+     "reference": 0.252217,
+     "ratio": 0.22529740538240353
+    },
     {
      "caseId": "tsu-mega-75 (uplift)",
      "detail": "3000 km",

@@ -28,6 +28,13 @@ import { printStats, summarise, type Pair } from './stats.js';
  *   the source as well.
  * - Arrival: the gauge's range over √(g·h), against GeoClaw's first
  *   crossing of a tenth of the crest.
+ *
+ * The megathrust maxima of the reference are not converged: the crest of
+ * an Okada source is a spike a finite-volume grid smears (the run records
+ * the exact linear, non-dispersive limit alongside, compared here as its
+ * own quantity), and a uniform uplift's leading step keeps half the uplift
+ * in an ever-thinner spike, which no grid resolves. Gauges over the uplifted
+ * sea floor record the offset and are left out.
  */
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -43,6 +50,22 @@ interface GeoclawCase {
   variant: 'gaussian' | 'okada' | 'uplift';
   basinDepthM: number;
   gauges: Gauge[];
+  notes?: string;
+}
+
+/**
+ * The exact linear, non-dispersive solution the reference run records for
+ * an Okada source (Poisson's formula on the flat plane), by gauge distance.
+ */
+export function exactOkadaLimits(notes: string): Map<number, number> {
+  const out = new Map<number, number>();
+  const m =
+    /peaks at 100 km ([\d.]+) m \(arrival \d+ s\); 300 km ([\d.]+) m \(arrival \d+ s\); 1000 km ([\d.]+) m \(arrival \d+ s\); 3000 km ([\d.]+) m/.exec(
+      notes
+    );
+  if (m === null) return out;
+  [100, 300, 1000, 3000].forEach((km, i) => out.set(km, Number(m[i + 1])));
+  return out;
 }
 
 interface TsunamiCase {
@@ -70,6 +93,7 @@ export function comparePairs(referencePath: string): Pair[] {
     const h = c.basinDepthM;
     const celerity = Math.sqrt(STANDARD_GRAVITY * h);
     let amplitudeAt: (rangeM: number) => number;
+    let sourceHalfWidthM = 0;
     if (c.kind === 'gaussian') {
       const law = veilLaw({
         sourceAmplitudeM: c.amplitudeM ?? 0,
@@ -88,6 +112,7 @@ export function comparePairs(referencePath: string): Pair[] {
       const A0 = (r.tsunami?.initialAmplitude as number | undefined) ?? 0;
       const W = (r.tsunami?.ruptureWidth as number | undefined) ?? r.ruptureWidth;
       const R0 = megathrustSourceRadius(W);
+      sourceHalfWidthM = W / 2;
       amplitudeAt = (rangeM) =>
         A0 *
         spreadingFactor(R0, rangeM, 0.5, true) *
@@ -108,12 +133,26 @@ export function comparePairs(referencePath: string): Pair[] {
         detail: `${gauge.distanceKm.toString()} km`,
         bin: `${gauge.distanceKm.toString()} km`,
       };
+      // A gauge over the uplifted sea floor records the offset, not a wave.
+      const inside = c.kind === 'megathrust' && gauge.distanceKm * 1_000 <= sourceHalfWidthM;
       pairs.push({
         ...base,
         quantity: `maxAmplitude${label}`,
         nimbus: amplitudeAt(gauge.distanceKm * 1_000),
-        reference: gauge.maxEtaM,
+        reference: inside ? null : gauge.maxEtaM,
+        ...(inside ? { note: 'the gauge lies over the uplifted sea floor' } : {}),
       });
+      const exact =
+        g.variant === 'okada' ? exactOkadaLimits(g.notes ?? '').get(gauge.distanceKm) : undefined;
+      if (exact !== undefined) {
+        pairs.push({
+          ...base,
+          quantity: 'maxAmplitudeMegathrustOkadaExactLinear',
+          nimbus: amplitudeAt(gauge.distanceKm * 1_000),
+          reference: inside ? null : exact,
+          ...(inside ? { note: 'the gauge lies over the uplifted sea floor' } : {}),
+        });
+      }
       pairs.push({
         ...base,
         quantity: `arrivalTime${c.kind === 'gaussian' ? 'Gaussian' : 'Megathrust'}`,

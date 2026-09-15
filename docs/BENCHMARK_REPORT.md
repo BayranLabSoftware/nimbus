@@ -73,11 +73,15 @@ within ×1.25 in 100 %. The nuclear 5 and 1 psi rings sit at
    or larger than its surface, and the Chicxulub panel prints an ignition
    area of 1,897.9 million km², 3.7 times the surface of the Earth. The panel
    caps the radii it prints (GLOBAL) but not the areas.
-5. **The megathrust wave is a third of GeoClaw's on the same uplift.**
-   Nimbus's published amplitude is 0.31× the crest GeoClaw computes from
-   Nimbus's own uniform uplift, gauge after gauge; against an Okada
-   deformation of the same slip it is 0.75×. The Gaussian humps
-   agree better (1.30×, closing to 1.09 at 3 000 km).
+5. **The megathrust wave dies away far faster than shallow-water physics
+   lets it.** On an Okada deformation of Nimbus's own rupture, Nimbus's
+   published amplitude is 0.92× the exact linear solution at 100 km and
+   0.28× at 3 000 km; against GeoClaw's crests it is 0.64× (Okada) and 0.26×
+   (Nimbus's uniform uplift). GeoClaw's megathrust crests are themselves
+   below that limit — a grid smears a crest a few kilometres wide — so the
+   ratios bound the gap rather than measure it. The Gaussian humps, where
+   GeoClaw is within 6 % of the exact solution, agree better (1.23×,
+   closing to 1.00 at 3 000 km).
 6. **Complex craters are a third deeper than the program now prints.** The
    web service's depths follow 0.294·D^0.301 (km), not the 0.4·D^0.3 of
    Collins et al. (2005, Eq. 28) that Nimbus implements; every complex
@@ -101,7 +105,7 @@ classification and a reproducer.
 | CHEM | Kingery–Bulmash (Swisdak 1994 fits) | Overpressure ×1.07, rings ×0.99 |
 | EQ-GM | OpenQuake Engine 3.26.2 | BSSA14 identical; rings ×1.32 the NGA-West2 ensemble, ×0.45 Allen 2012 |
 | EQ-PAGER | USGS PAGER loss products | Exposure at VII+ ×0.13, toll ×0.30, alert agrees 66 % |
-| TSU | GeoClaw 5.14.0 (partial, 19 runs) | Humps ×1.30; megathrust ×0.31 on the same uplift |
+| TSU | GeoClaw 5.14.0 (complete, 28 runs) | Humps ×1.23; megathrust ×0.28 the exact linear solution at 3 000 km |
 | VOL | Tephra2 2.0 (local) | Axis loading ×0.51 (σ ln 2.71); isopach reach ×0.92 |
 | LAND | Heller, Hager & Minor 2009 | Inside the band of Heller's Froude range in 35 %; ×0.36 at its centre |
 | INV | Invariants on 5 000 random scenarios a hazard | Earthquake hangs 8 %; impact firestorm off the planet; ashfall not monotone |
@@ -292,30 +296,43 @@ Alert colours, PAGER → Nimbus: yellow → yellow 25; yellow → orange 6; gree
 ## TSU — the open ocean against GeoClaw
 
 Reference: GeoClaw 5.14.0 on the sphere over a flat ocean, no friction;
-19 runs (status: partial). Gaussian humps of 1–20 m and 20–100 km over
+28 runs (status: complete). Gaussian humps of 1–20 m and 20–100 km over
 1 000 and 4 000 m; megathrusts built from Nimbus's own rupture, fed to
 GeoClaw as Nimbus's uniform uplift and as an Okada deformation of the same
-slip. Gauges are broadside to the fault.
+slip. Gauges are broadside to the fault. Every hump run was held to the
+exact solution of the linearised equations on the same sphere (GeoClaw
+6.2 % low at worst, arrivals within 18 s). The megathrust crests are not
+converged: an Okada crest is a spike a few kilometres wide that the grid
+smears (the exact linear solution for each source is compared as its own
+quantity), and a uniform uplift keeps half its height in an ever-thinner
+spike no grid resolves. Gauges over the uplifted sea floor record the
+offset and are left out.
 
 | Quantity | Class | Pairs | Geometric mean N/R | σ ln | Median factor | Within tolerance (A) | Within ×1.25 | Within ×2 | Within ×10 | Review |
 | --- | :-: | --: | --: | --: | --: | --: | --: | --: | --: | :-: |
-| Largest crest, Gaussian humps | C | 96 | 1.296 | 0.26 | ×1.24 |  | 54 % | 94 % | 100 % |  |
-| Arrival, Gaussian humps | C | 90 (+6 apart) | 1.615 | 0.81 | ×1.10 |  | 69 % | 87 % | 87 % |  |
-| Largest crest, megathrust (Nimbus’s uplift in GeoClaw) | C | 4 | 0.314 | 0.07 | ×3.13 |  | 0 % | 0 % | 100 % | flag |
-| Largest crest, megathrust (Okada deformation in GeoClaw) | C | 8 | 0.752 | 0.16 | ×1.26 |  | 50 % | 100 % | 100 % |  |
-| Arrival, megathrusts | C | 12 | 1.116 | 0.12 | ×1.06 |  | 75 % | 100 % | 100 % |  |
+| Largest crest, Gaussian humps | C | 108 | 1.230 | 0.30 | ×1.24 |  | 54 % | 94 % | 100 % |  |
+| Arrival, Gaussian humps | C | 102 (+6 apart) | 1.550 | 0.77 | ×1.10 |  | 71 % | 88 % | 88 % |  |
+| Largest crest, megathrust (Nimbus’s uplift in GeoClaw) | C | 19 (+1 apart) | 0.264 | 0.61 | ×3.76 |  | 5 % | 11 % | 95 % | flag |
+| Largest crest, megathrust (Okada deformation in GeoClaw) | C | 19 (+1 apart) | 0.638 | 0.41 | ×1.67 |  | 26 % | 68 % | 100 % |  |
+| Largest crest, megathrust (exact linear solution for the Okada source) | C | 19 (+1 apart) | 0.452 | 0.51 | ×2.17 |  | 0 % | 37 % | 100 % | flag |
+| Arrival, megathrusts | C | 39 (+1 apart) | 1.292 | 0.54 | ×1.09 |  | 69 % | 95 % | 97 % |  |
 
 | Quantity | 100 km | 200 km | 300 km | 500 km | 1000 km | 2000 km | 3000 km |
 | --- | --: | --: | --: | --: | --: | --: | --: |
-| Largest crest, Gaussian humps | 1.86 (16) | 1.41 (16) |  | 1.24 (16) | 1.18 (16) | 1.13 (16) | 1.09 (16) |
-| Arrival, Gaussian humps | 5.27 (10) | 3.31 (16) |  | 1.29 (16) | 1.12 (16) | 1.06 (16) | 1.04 (16) |
-| Largest crest, megathrust (Nimbus’s uplift in GeoClaw) | 0.32 (1) |  | 0.28 (1) |  | 0.32 (1) |  | 0.34 (1) |
-| Largest crest, megathrust (Okada deformation in GeoClaw) | 0.87 (2) |  | 0.69 (2) |  | 0.70 (2) |  | 0.76 (2) |
+| Largest crest, Gaussian humps | 1.78 (18) | 1.37 (18) |  | 1.20 (18) | 1.12 (18) | 1.05 (18) | 1.00 (18) |
+| Arrival, Gaussian humps | 4.29 (12) | 2.96 (18) |  | 1.26 (18) | 1.11 (18) | 1.05 (18) | 1.03 (18) |
+| Largest crest, megathrust (exact linear solution for the Okada source) | 0.92 (4) |  | 0.52 (5) |  | 0.35 (5) |  | 0.28 (5) |
+| Largest crest, megathrust (Okada deformation in GeoClaw) | 1.06 (4) |  | 0.65 (5) |  | 0.52 (5) |  | 0.51 (5) |
+| Largest crest, megathrust (Nimbus’s uplift in GeoClaw) | 0.56 (4) |  | 0.30 (5) |  | 0.20 (5) |  | 0.16 (5) |
 
 Reading. The globe's spreading law over-states a hump's crest near the
-source (×1.86 at 100 km) and converges on the shallow-water solution
+source (×1.78 at 100 km) and converges on the shallow-water solution
 far out. Arrival near the source is not comparable: GeoClaw's first
-crossing of a tenth of the crest at 100 km is the hump's own flank.
+crossing of a tenth of the crest at 100 km is the hump's own flank. The
+megathrust is the other way round: close to the fault Nimbus is near the
+linear solution, and it loses ground with distance, to 0.28× at 3 000 km —
+the far field of a long rupture spreads more slowly than a ring of the
+same width, and Nimbus spreads it as a ring.
 
 ## VOL — tephra against Tephra2
 
@@ -492,7 +509,7 @@ epicentre at sea, though the radius Nimbus computes reaches the coast.
 | BM-02 | IMP | Airburst blast rings and overpressure far beyond EIEP (×7.28 at 1 kPa; rings the program never lets reach the ground) | Model-form difference (altitude factor) | High for airbursts above ~10 km | `benchmark/results/impact.json`, e.g. imp-grid-016 |
 | BM-03 | EQ-PAGER | Exposure at MMI VII+ ×0.13 PAGER; toll ×0.30; MMI IX ring empty where PAGER has people | Model-form difference (ring area) | High for tolls | `benchmark/results/pager.json` |
 | BM-04 | INV / IMP | Impact firestorm radii past the antipode and areas larger than the Earth; the panel prints them | Implementation defect (no spherical cap) | Medium: absurd numbers on large impacts | Chicxulub preset: `firestorm.ignitionRadius` 24 579 km, `ignitionArea` 1.9 × 10¹⁵ m² |
-| BM-05 | TSU | Megathrust crest ×0.31 GeoClaw on the same uplift | Model-form difference (spreading normalisation of a rectangular source) | Medium for far-field waves | tsu-mega-* (uplift) |
+| BM-05 | TSU | Megathrust crest ×0.28 the exact linear solution at 3 000 km (×0.45 overall); ×0.26 GeoClaw on the same uplift | Model-form difference (far-field spreading of a long rupture) | Medium–high for far-field waves | tsu-mega-* |
 | BM-06 | IMP | Complex-crater depth ×1.31 the service | Reference revision (0.294·D^0.301 against Eq. 28) | Low | imp-grid-007 |
 | BM-07 | VOL | Loading ×0.51 Tephra2 on the axis, σ ln 2.71; plume too narrow across the wind | Model-form difference | Medium for ash thickness away from the axis | vol-* at 50 km, 30 km across |
 | BM-08 | INV | Wind-driven ashfall range and area not monotone in volume; reach capped at 5 000 km then falling | Implementation defect | Low–medium | `simulateVolcano` examples in `invariants.json` |
@@ -546,7 +563,12 @@ epicentre at sea, though the radius Nimbus computes reaches the coast.
    in the subaerial regime (Nimbus's default is submarine); most cases lie
    outside Heller's tested S, M and B ranges under this closure.
 7. **GeoClaw.** The 15 GeoClaw fixtures already in the validation suite
-   were not rerun here. The matrix was not finished in the night: 19 of the 28 planned runs (18 humps, 5 megathrusts two ways) had ended when this report was written; the rest are added when they end.
+   were not rerun here. The humps ran at 18 cells across their radius all
+   the way to the gauges, finer than the minimum the protocol set, because
+   at the minimum the crest lost ~20 % by 3 000 km. The megathrust crests
+   are not converged (halving the cell raises them 9–38 %), so the exact
+   linear solution for the Okada source, computed with the runs, is
+   reported beside them. 
 8. **PAGER.** 187 of the 414 events asked have exposure and loss JSON; one of them is a
    net event. The alert colour is read from the fatality estimate alone.
 9. **INV harness.** A first sweep drew impactor diameters from 1 mm to 100 km

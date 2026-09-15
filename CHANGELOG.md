@@ -34,7 +34,8 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   3.2 to 3.7 never finishes, airbursts carry their blast far beyond the
   impact program's, the earthquake rings hold a fraction of the people
   PAGER counts, large impacts print fire areas larger than the Earth, and
-  the megathrust wave is a third of GeoClaw's on the same uplift. The
+  the megathrust wave falls to about a quarter of the shallow-water
+  solution for its own source by 3 000 km. The
   physics was frozen for the campaign; nothing it found is fixed yet.
 
 - **A test the rings cannot have been fitted to.** Rules 27 to 30

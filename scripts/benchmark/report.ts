@@ -234,6 +234,8 @@ const LABELS: Record<string, string> = {
   arrivalTimeGaussian: 'Arrival, Gaussian humps',
   maxAmplitudeMegathrustUplift: 'Largest crest, megathrust (Nimbus’s uplift in GeoClaw)',
   maxAmplitudeMegathrustOkada: 'Largest crest, megathrust (Okada deformation in GeoClaw)',
+  maxAmplitudeMegathrustOkadaExactLinear:
+    'Largest crest, megathrust (exact linear solution for the Okada source)',
   arrivalTimeMegathrust: 'Arrival, megathrusts',
   // VOL
   massLoadingDownwind: 'Tephra loading on the wind axis',
@@ -458,11 +460,15 @@ ${gm(nuc, 'burnRingAsDrawn')}, the fireball at ${gm(nuc, 'fireballRadius')}.
    or larger than its surface, and the Chicxulub panel prints an ignition
    area of 1,897.9 million km², 3.7 times the surface of the Earth. The panel
    caps the radii it prints (GLOBAL) but not the areas.
-5. **The megathrust wave is a third of GeoClaw's on the same uplift.**
-   Nimbus's published amplitude is ${gm(tsu, 'maxAmplitudeMegathrustUplift')}× the crest GeoClaw computes from
-   Nimbus's own uniform uplift, gauge after gauge; against an Okada
-   deformation of the same slip it is ${gm(tsu, 'maxAmplitudeMegathrustOkada')}×. The Gaussian humps
-   agree better (${gm(tsu, 'maxAmplitudeGaussian')}×, closing to ${gm(tsu, 'maxAmplitudeGaussian', 'bin: 3000 km')} at 3 000 km).
+5. **The megathrust wave dies away far faster than shallow-water physics
+   lets it.** On an Okada deformation of Nimbus's own rupture, Nimbus's
+   published amplitude is ${gm(tsu, 'maxAmplitudeMegathrustOkadaExactLinear', 'bin: 100 km')}× the exact linear solution at 100 km and
+   ${gm(tsu, 'maxAmplitudeMegathrustOkadaExactLinear', 'bin: 3000 km')}× at 3 000 km; against GeoClaw's crests it is ${gm(tsu, 'maxAmplitudeMegathrustOkada')}× (Okada) and ${gm(tsu, 'maxAmplitudeMegathrustUplift')}×
+   (Nimbus's uniform uplift). GeoClaw's megathrust crests are themselves
+   below that limit — a grid smears a crest a few kilometres wide — so the
+   ratios bound the gap rather than measure it. The Gaussian humps, where
+   GeoClaw is within 6 % of the exact solution, agree better (${gm(tsu, 'maxAmplitudeGaussian')}×,
+   closing to ${gm(tsu, 'maxAmplitudeGaussian', 'bin: 3000 km')} at 3 000 km).
 6. **Complex craters are a third deeper than the program now prints.** The
    web service's depths follow 0.294·D^0.301 (km), not the 0.4·D^0.3 of
    Collins et al. (2005, Eq. 28) that Nimbus implements; every complex
@@ -486,7 +492,7 @@ classification and a reproducer.
 | CHEM | Kingery–Bulmash (Swisdak 1994 fits) | Overpressure ×${gm(chem, 'incidentOverpressure')}, rings ×${gm(chem, 'ringRadius')} |
 | EQ-GM | OpenQuake Engine 3.26.2 | BSSA14 identical; rings ×${gm(eq, 'ringVsNgaWest2Ensemble')} the NGA-West2 ensemble, ×${gm(eq, 'ringVsAllen2012Point')} Allen 2012 |
 | EQ-PAGER | USGS PAGER loss products | Exposure at VII+ ×${gm(pager, 'exposureMmi7Plus')}, toll ×${gm(pager, 'centralToll')}, alert agrees ${share(pager, 'fatalityAlert', 'agreement')} |
-| TSU | GeoClaw 5.14.0 (${tsuStatus}, ${tsuRuns.toString()} runs) | Humps ×${gm(tsu, 'maxAmplitudeGaussian')}; megathrust ×${gm(tsu, 'maxAmplitudeMegathrustUplift')} on the same uplift |
+| TSU | GeoClaw 5.14.0 (${tsuStatus}, ${tsuRuns.toString()} runs) | Humps ×${gm(tsu, 'maxAmplitudeGaussian')}; megathrust ×${gm(tsu, 'maxAmplitudeMegathrustOkadaExactLinear', 'bin: 3000 km')} the exact linear solution at 3 000 km |
 | VOL | Tephra2 2.0 (local) | Axis loading ×${gm(vol, 'massLoadingDownwind')} (σ ln ${f(get(vol, 'massLoadingDownwind')?.scatterLn)}); isopach reach ×${gm(vol, 'isopach1mmReach')} |
 | LAND | Heller, Hager & Minor 2009 | Inside the band of Heller's Froude range in ${share(land, 'insideHellerBand', 'agreement')}; ×${gm(land, 'firstCrestAmplitudeAtBandCentre')} at its centre |
 | INV | Invariants on 5 000 random scenarios a hazard | Earthquake hangs ${pct(eqScenarios === 0 ? null : hangs / eqScenarios)}; impact firestorm off the planet; ashfall not monotone |
@@ -606,16 +612,27 @@ Reference: GeoClaw 5.14.0 on the sphere over a flat ocean, no friction;
 ${tsuRuns.toString()} runs (status: ${tsuStatus}). Gaussian humps of 1–20 m and 20–100 km over
 1 000 and 4 000 m; megathrusts built from Nimbus's own rupture, fed to
 GeoClaw as Nimbus's uniform uplift and as an Okada deformation of the same
-slip. Gauges are broadside to the fault.
+slip. Gauges are broadside to the fault. Every hump run was held to the
+exact solution of the linearised equations on the same sphere (GeoClaw
+6.2 % low at worst, arrivals within 18 s). The megathrust crests are not
+converged: an Okada crest is a spike a few kilometres wide that the grid
+smears (the exact linear solution for each source is compared as its own
+quantity), and a uniform uplift keeps half its height in an ever-thinner
+spike no grid resolves. Gauges over the uplifted sea floor record the
+offset and are left out.
 
 ${tsu === null ? '' : scorecard(tsu, LABELS)}
 
-${tsu === null ? '' : binTable(tsu, ['maxAmplitudeGaussian', 'arrivalTimeGaussian', 'maxAmplitudeMegathrustUplift', 'maxAmplitudeMegathrustOkada'], LABELS)}
+${tsu === null ? '' : binTable(tsu, ['maxAmplitudeGaussian', 'arrivalTimeGaussian', 'maxAmplitudeMegathrustOkadaExactLinear', 'maxAmplitudeMegathrustOkada', 'maxAmplitudeMegathrustUplift'], LABELS)}
 
 Reading. The globe's spreading law over-states a hump's crest near the
 source (×${gm(tsu, 'maxAmplitudeGaussian', 'bin: 100 km')} at 100 km) and converges on the shallow-water solution
 far out. Arrival near the source is not comparable: GeoClaw's first
-crossing of a tenth of the crest at 100 km is the hump's own flank.
+crossing of a tenth of the crest at 100 km is the hump's own flank. The
+megathrust is the other way round: close to the fault Nimbus is near the
+linear solution, and it loses ground with distance, to ${gm(tsu, 'maxAmplitudeMegathrustOkadaExactLinear', 'bin: 3000 km')}× at 3 000 km —
+the far field of a long rupture spreads more slowly than a ring of the
+same width, and Nimbus spreads it as a ring.
 
 ## VOL — tephra against Tephra2
 
@@ -697,7 +714,7 @@ epicentre at sea, though the radius Nimbus computes reaches the coast.
 | BM-02 | IMP | Airburst blast rings and overpressure far beyond EIEP (×${gm(imp, 'airblastRadiusAirburst', 'bin: 1 kPa')} at 1 kPa; rings the program never lets reach the ground) | Model-form difference (altitude factor) | High for airbursts above ~10 km | \`benchmark/results/impact.json\`, e.g. imp-grid-016 |
 | BM-03 | EQ-PAGER | Exposure at MMI VII+ ×${gm(pager, 'exposureMmi7Plus')} PAGER; toll ×${gm(pager, 'centralToll')}; MMI IX ring empty where PAGER has people | Model-form difference (ring area) | High for tolls | \`benchmark/results/pager.json\` |
 | BM-04 | INV / IMP | Impact firestorm radii past the antipode and areas larger than the Earth; the panel prints them | Implementation defect (no spherical cap) | Medium: absurd numbers on large impacts | Chicxulub preset: \`firestorm.ignitionRadius\` 24 579 km, \`ignitionArea\` 1.9 × 10¹⁵ m² |
-| BM-05 | TSU | Megathrust crest ×${gm(tsu, 'maxAmplitudeMegathrustUplift')} GeoClaw on the same uplift | Model-form difference (spreading normalisation of a rectangular source) | Medium for far-field waves | tsu-mega-* (uplift) |
+| BM-05 | TSU | Megathrust crest ×${gm(tsu, 'maxAmplitudeMegathrustOkadaExactLinear', 'bin: 3000 km')} the exact linear solution at 3 000 km (×${gm(tsu, 'maxAmplitudeMegathrustOkadaExactLinear')} overall); ×${gm(tsu, 'maxAmplitudeMegathrustUplift')} GeoClaw on the same uplift | Model-form difference (far-field spreading of a long rupture) | Medium–high for far-field waves | tsu-mega-* |
 | BM-06 | IMP | Complex-crater depth ×${gm(imp, 'finalDepth')} the service | Reference revision (0.294·D^0.301 against Eq. 28) | Low | imp-grid-007 |
 | BM-07 | VOL | Loading ×${gm(vol, 'massLoadingDownwind')} Tephra2 on the axis, σ ln ${f(get(vol, 'massLoadingDownwind')?.scatterLn)}; plume too narrow across the wind | Model-form difference | Medium for ash thickness away from the axis | vol-* at 50 km, 30 km across |
 | BM-08 | INV | Wind-driven ashfall range and area not monotone in volume; reach capped at 5 000 km then falling | Implementation defect | Low–medium | \`simulateVolcano\` examples in \`invariants.json\` |
@@ -751,7 +768,12 @@ epicentre at sea, though the radius Nimbus computes reaches the coast.
    in the subaerial regime (Nimbus's default is submarine); most cases lie
    outside Heller's tested S, M and B ranges under this closure.
 7. **GeoClaw.** The 15 GeoClaw fixtures already in the validation suite
-   were not rerun here. ${tsuStatus === 'complete' ? '' : `The matrix was not finished in the night: ${tsuRuns.toString()} of the 28 planned runs (18 humps, 5 megathrusts two ways) had ended when this report was written; the rest are added when they end.`}
+   were not rerun here. The humps ran at 18 cells across their radius all
+   the way to the gauges, finer than the minimum the protocol set, because
+   at the minimum the crest lost ~20 % by 3 000 km. The megathrust crests
+   are not converged (halving the cell raises them 9–38 %), so the exact
+   linear solution for the Okada source, computed with the runs, is
+   reported beside them. ${tsuStatus === 'complete' ? '' : `The matrix was not finished: ${tsuRuns.toString()} of the 28 planned runs had ended when this report was written.`}
 8. **PAGER.** ${pagerEvents.toString()} of the 414 events asked have exposure and loss JSON; one of them is a
    net event. The alert colour is read from the fatality estimate alone.
 9. **INV harness.** A first sweep drew impactor diameters from 1 mm to 100 km
