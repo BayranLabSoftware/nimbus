@@ -440,6 +440,16 @@ the candidates for re-tuning:
   about 3 kPa. No analytic line source holds that close to such a trail
   (Gi, Brown & Aftosmis 2018); the next model wants a 3D solver's results
   to stand on.
+- **People at each intensity, against PAGER.** The rings count people from
+  MMI 7.0 where PAGER counts VII from 6.5, and their median PGA never
+  converts to IX. PAGER's own chain — PGV through Worden et al. 2012, its
+  bands and rates — cut the people score from 1.76 to 0.63 on 187
+  earthquakes and held the dead within the margin, but scored 1.13 against
+  0.97 on rule 18's ShakeMaps, so by rule 33 it is not adopted (BM-03,
+  docs/SCIENCE.md). Still open: one Vs30 under the epicentre where ShakeMap
+  has a site map, and rule 18's score, which credits no band rightly left
+  blank. The prospective set (rules 27 to 30) chooses the rings with a
+  score that does, and the PGV relation is among its candidates.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

@@ -806,6 +806,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Measured
 
+- **People at each intensity, against USGS PAGER.** The benchmark campaign
+  put the people Nimbus counts at MMI VII and above at 0.13 of what PAGER
+  counts, nobody at IX where PAGER counts people, and the toll at 0.30 of
+  PAGER's estimate. Three causes were found, none a fit: PAGER counts VII
+  from 6.5 where Nimbus starts at 7.0; the rings convert a median PGA, which
+  never reaches IX; and PAGER counts deaths from V. Rules written before
+  anything ran (`validation/pagerChain.ts`) tried PAGER's own chain —
+  intensity from Boore et al. 2014's PGV through Worden et al. 2012's PGV
+  relation, as ShakeMap draws it, with PAGER's bands and rates — against the
+  chain in place. It counts PAGER's people far better (a score of 0.63
+  against 1.76) and keeps the held-out dead within the margin, but draws the
+  ShakeMaps' areas worse than the rules allow (1.13 against 0.97), so the
+  chain in place stays. The PGV relation, verified against Boore's own code
+  within 0.0005 %, is kept as a candidate of the prospective rings.
+
 - **The scalar path's run-up is not missing the field's caps.** The
   field caps run-up at four times an amplitude that is itself shoaled up
   to four times, and lands on the same sixteen-fold as the scalar path —

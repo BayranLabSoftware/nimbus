@@ -1369,6 +1369,67 @@ nothing, and the script that scored C1 was checked against an independent
 rotation of the receiver instead of the fault: 0.378 m against 0.374 at
 21413, 0.302 against 0.302 at 51407, 2.525 against 2.525 at 21418.
 
+### People and deaths against PAGER (15 September 2026)
+
+`validation/pagerChain.ts` (rules 31 to 34), `validation/pagerChainRun.ts`.
+The benchmark campaign put the simulator's people at MMI VII and above at
+0.13 of what USGS PAGER counts on 187 earthquakes, at VIII and above 0.07,
+nobody at IX where PAGER counts people, and the central toll at 0.30 of
+PAGER's estimate (`docs/BENCHMARK_REPORT.md`, BM-03). Reading both sides
+found three causes, none of them a fit, and they were written down before
+anything ran (`docs/BENCHMARK_PROTOCOL.md`, commit `6b29669`). PAGER counts
+intensity k from k − ½ to k + ½, the banding of ShakeMap's legend, where the
+simulator's VII starts at 7.0. The rings convert Boore et al. 2014's median
+PGA with Worden et al. 2012's PGA relation, and PGA saturates: the highest
+intensity that median reaches is 8.0 to 8.8 for any magnitude on any ground,
+so the IX ring is empty by construction. And PAGER's empirical model counts
+deaths from V to IX, each bin at its integer intensity, where the simulator
+counts them from VII at 7.5, 8.5 and 9.5.
+
+PAGER's chain was built beside the one in place (commit `04d60b2`):
+Boore et al. 2014's median PGV, which ShakeMap prefers where it has one,
+through Worden et al.'s PGV relation, with the coefficients ShakeMap's code
+carries; PAGER's bands and rates; the ground-motion residual of PGV. Against
+D. M. Boore's own Fortran values in OpenQuake's test data the PGV agrees
+within 0.0005 %. Rule 32 scores each chain's people at and above VII, VIII
+and IX, as its own bands count them, against PAGER's; rule 33 adopts PAGER's
+chain if that score falls by ln 1.25 or more and it does no worse, by more
+than 0.10, on rule 11's held-out dead and on rule 18's ShakeMaps; rule 34
+runs the two halves beside.
+
+| Chain                           | People score | Held-out tolls, by cell              | Mean abs. log | ShakeMaps (rule 18) |
+| ------------------------------- | -----------: | ------------------------------------ | ------------: | ------------------: |
+| In place: PGA, rings at 7, 8, 9 |         1.76 | 1.46× · 0.33× · 1.94× (122, 106, 32) |          0.72 |                0.97 |
+| PAGER's: PGV, PAGER's bands     |         0.63 | 1.13× · 0.50× · 4.70× (128, 119, 36) |          0.79 |                1.13 |
+| Half: PGA, PAGER's bands        |         0.68 | 1.51× · 0.35× · 3.34× (129, 113, 34) |          0.89 |                0.97 |
+| Half: PGV, rings at 7, 8, 9     |         1.49 | 0.97× · 0.44× · 6.33× (119, 107, 34) |          0.90 |                1.13 |
+
+The tolls are the geometric mean of model over record in the cells Mw < 6.5,
+6.5–7.5 and ≥ 7.5, with the records each band holds (of 132 to 136, 112 to 125 and 35 to 37). PAGER's chain cuts the people score from 1.76 to 0.63 and holds the dead within the margin, eight records in ten and more
+in every cell; but its rings, taken at 7.0, 8.0 and 9.0 where the maps are
+summed, score 1.13 on rule 18's ShakeMaps against 0.97, past the 0.10 the
+rule allows. By rule 33 the chain in place stays, and nothing in it is
+changed. Neither half passes either: PAGER's bands on the PGA rings count
+the people almost as well (0.68) and do worse on the dead than the margin
+allows (0.89); PGV on the rings in place does worse on both.
+
+What the scores do not show was read afterwards, and is written here as
+such. Most of the people score is the bands: at VII and above PAGER's chain
+reads 0.52×, 0.37× and 0.88× PAGER by magnitude cell, where the chain in
+place read 0.25×, 0.12× and 0.45×, and the half with the bands alone reads
+0.73×, 0.32× and 0.69×. Above Mw 7.5 PAGER's chain overshoots instead —
+3.67× PAGER at VIII and above, 2.72× at IX — and so do its tolls, 4.70× the
+record against 1.94×: the PGV that reaches IX near a long rupture reaches it
+over a stadium hundreds of kilometres long. Rule 18's score is the one
+`docs/SCIENCE.md` already found gives no credit for a band rightly left
+blank ("Whether the rings carry depth"); on rule 23's maps rule 28's score,
+which does, reads 0.20 for PGV against 0.12 for PGA, because PGV paints MMI VIII about 229 earthquakes whose maps hold none, where PGA paints it about 614. That score
+decided nothing here. The rings of the prospective set are chosen with it
+(`validation/prospectiveRules.ts`, rules 27 to 30), and the PGV relation was
+committed before that set is first read, so by rule 29 it is one of its
+candidates. PAGER's bands are not adopted on their own either: choosing them
+now would be choosing on this table.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records

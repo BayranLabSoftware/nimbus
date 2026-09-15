@@ -131,6 +131,13 @@ import {
   type VerificationRow,
 } from '../src/physics/validation/ringVerification.js';
 import {
+  PEOPLE_LEVELS,
+  SHAKING_CHAINS,
+  type ShakingChainName,
+} from '../src/physics/validation/pagerChain.js';
+import { runPagerChains, type PagerChainRun } from '../src/physics/validation/pagerChainRun.js';
+import { PAGER_PRODUCTS_READ_ON } from '../src/physics/validation/pagerProductsData.js';
+import {
   CALIBRATION_ANCHORS,
   CALIBRATION_ROLES,
   type CalibrationQuantity,
@@ -1091,6 +1098,100 @@ function runDepth(inPlaceTolls: TollCells): DepthRun {
   return { unseen, seen, tolls, quietShare, recorded, adopted };
 }
 
+const CHAIN_LABEL: Readonly<Record<ShakingChainName, string>> = {
+  inPlace: 'In place: PGA, the rings at 7, 8 and 9',
+  pager: "PAGER's: PGV, PAGER's bands",
+  pgaWithPagerBands: "Half: PGA, PAGER's bands",
+  pgvWithRings: 'Half: PGV, the rings at 7, 8 and 9',
+};
+
+const CHAIN_NAMES = Object.keys(SHAKING_CHAINS) as ShakingChainName[];
+
+/** Rules 31 to 34 (pagerChain.ts), run on the products stored first. */
+function runPager(): PagerChainRun {
+  const run = runPagerChains();
+  // The simulator and the harness draw the chain in place. A rule that
+  // adopts PAGER's has not been followed by the code yet.
+  if (run.decision.adopted) {
+    throw new Error("Rule 33 adopts PAGER's chain; the simulator still draws the chain in place");
+  }
+  return run;
+}
+
+const run33 = (
+  run: PagerChainRun
+): PagerChainRun['decision'] & { halves: PagerChainRun['halves'] } => ({
+  ...run.decision,
+  halves: run.halves,
+});
+
+function pagerChainSection(run: PagerChainRun): string {
+  const factor = (ln: number | null): string => (ln === null ? '—' : `${Math.exp(ln).toFixed(2)}×`);
+  const bandsHeader = SIZE_BANDS.earthquake.map((b) => b.label).join(' | ');
+  const peopleRows = CHAIN_NAMES.map((name) => {
+    const c = run.chains[name];
+    const byLevel = PEOPLE_LEVELS.map((level) =>
+      c.people.cells
+        .filter((cell) => cell.level === level)
+        .map((cell) => `${factor(cell.bias)} (${cell.pairs.toString()})`)
+        .join(' · ')
+    );
+    return `| ${CHAIN_LABEL[name]} | ${byLevel.join(' | ')} | ${c.people.score.toFixed(2)} |`;
+  });
+  const tollRows = CHAIN_NAMES.map((name) => {
+    const c = run.chains[name];
+    const logBias = c.tolls.map((t) => (t.stats.bias === null ? null : Math.log(t.stats.bias)));
+    const mab =
+      logBias.filter((b): b is number => b !== null).reduce((a, b) => a + Math.abs(b), 0) /
+      Math.max(logBias.filter((b) => b !== null).length, 1);
+    return `| ${CHAIN_LABEL[name]} | ${c.tolls.map((t) => `${biasText(t.stats)} · ${t.stats.inside.toString()} of ${t.stats.rows.toString()}`).join(' | ')} | ${mab.toFixed(2)} | ${c.shakingScore.toFixed(2)} |`;
+  });
+  const besideRows = CHAIN_NAMES.map((name) => {
+    const c = run.chains[name];
+    const q = c.quietMaps;
+    const band8 = q.bands.find((b) => b.band === 8)?.outcome;
+    return `| ${CHAIN_LABEL[name]} | ${biasText(c.people.tollAgainstPager)} | ${Math.round(100 * c.people.alertAgreement).toString()} % | ${q.score === null ? '—' : q.score.toFixed(2)} | ${q.sharpness === null ? '—' : q.sharpness.toFixed(2)} | ${band8 === undefined ? '—' : `${band8.falseAlarms.toString()} / ${band8.silences.toString()}`} |`;
+  });
+  const d = run.decision;
+  const failed = [
+    d.people ? null : 'its people score does not fall by ln 1.25',
+    d.tolls ? null : 'it does worse on the dead than the margin allows',
+    d.shaking ? null : "it does worse on rule 18's ShakeMaps than the margin allows",
+  ].filter((x): x is string => x !== null);
+  const verdict = d.adopted
+    ? "By rule 33 PAGER's chain replaces the chain in place."
+    : `By rule 33 the chain in place stays: ${failed.join(', and ')}.`;
+  return [
+    "The benchmark campaign put the simulator's people at MMI VII and above at 0.13 of what USGS",
+    'PAGER counts on 187 earthquakes (docs/BENCHMARK_REPORT.md, BM-03). Rules 31 to 34',
+    '(`validation/pagerChain.ts`), committed before either chain ran on them, try the chain PAGER',
+    "uses — intensity from Boore et al. 2014's median PGV through Worden et al. 2012's PGV relation,",
+    'banded and weighted as its loss model bands and weights it — against the chain in place, on',
+    `PAGER's products read on ${PAGER_PRODUCTS_READ_ON}. People at and above each intensity are scored`,
+    "as ln((model + 1 000) / (PAGER + 1 000)) by magnitude cell; PAGER's chain is adopted if that",
+    "score falls by ln 1.25 or more and it does no worse by more than 0.10 on rule 11's held-out dead",
+    "and on rule 18's ShakeMaps.",
+    '',
+    `| Chain | People at VII and above (${SIZE_BANDS.earthquake.map((b) => b.label).join(' · ')}) | At VIII and above | At IX and above | People score |`,
+    '|-------|-----|-----|-----|----:|',
+    ...peopleRows,
+    '',
+    'Each cell is the geometric mean of model over PAGER, floored at a thousand people, by magnitude cell, with its pairs; the score is the mean absolute log over the cells with five pairs or more.',
+    '',
+    `| Chain | Rule 11's held-out tolls: ${bandsHeader} | Mean abs. log bias | Rule 18's ShakeMaps |`,
+    `|-------|${SIZE_BANDS.earthquake.map(() => '-----').join('|')}|----:|----:|`,
+    ...tollRows,
+    '',
+    verdict,
+    '',
+    "Printed beside, deciding nothing (rule 34): the central toll against PAGER's estimate, the fatality alert against PAGER's, and rule 28's score on rule 23's maps, which credits a band rightly left blank.",
+    '',
+    "| Chain | Toll against PAGER's | Alert agreement | Rule 28 score | Sharpness | MMI VIII false alarms / silences |",
+    '|-------|----:|----:|----:|----:|----:|',
+    ...besideRows,
+  ].join('\n');
+}
+
 function depthSection(run: DepthRun): string {
   const radius = (bias: number | null): string =>
     bias === null ? '—' : `${Math.exp(bias).toFixed(2)}×`;
@@ -1765,6 +1866,7 @@ function main(): void {
   const contourLaws = runContourLaws();
   const ground = runGround(ruleSets, contourLaws.tolls.boore2014);
   const depth = runDepth(ground.tolls.pick);
+  const pagerChain = runPager();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -1840,6 +1942,10 @@ ${groundSection(ground)}
 ### Whether the rings carry depth
 
 ${depthSection(depth)}
+
+### PAGER's chain from shaking to loss
+
+${pagerChainSection(pagerChain)}
 
 ### Which checks are validation
 
@@ -2047,6 +2153,42 @@ otherwise.
             law,
             fixed(depth.quietShare[law] ?? 0, 4),
           ])
+        ),
+      },
+      pagerChain: {
+        readOn: PAGER_PRODUCTS_READ_ON,
+        decision: run33(pagerChain),
+        chains: Object.fromEntries(
+          CHAIN_NAMES.map((name) => {
+            const c = pagerChain.chains[name];
+            return [
+              name,
+              {
+                peopleScore: fixed(c.people.score, 3),
+                people: c.people.cells.map((cell) => ({
+                  level: cell.level,
+                  sizeBand: cell.sizeBand,
+                  pairs: cell.pairs,
+                  bias: cell.bias === null ? null : fixed(cell.bias, 3),
+                })),
+                tolls: c.tolls.map((t) => ({
+                  sizeBand: t.group,
+                  bias: t.stats.bias === null ? null : fixed(t.stats.bias, 3),
+                  inside: t.stats.inside,
+                  rows: t.stats.rows,
+                })),
+                shakemapScore: fixed(c.shakingScore, 3),
+                tollAgainstPager:
+                  c.people.tollAgainstPager.bias === null
+                    ? null
+                    : fixed(c.people.tollAgainstPager.bias, 3),
+                alertAgreement: fixed(c.people.alertAgreement, 3),
+                rule28Score: c.quietMaps.score === null ? null : fixed(c.quietMaps.score, 3),
+                rule28Sharpness:
+                  c.quietMaps.sharpness === null ? null : fixed(c.quietMaps.sharpness, 3),
+              },
+            ];
+          })
         ),
       },
       ground: {

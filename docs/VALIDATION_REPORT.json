@@ -1468,6 +1468,367 @@
         "boore2014": 0.0286
       }
     },
+    "pagerChain": {
+      "readOn": "2026-09-15",
+      "decision": {
+        "adopted": false,
+        "people": true,
+        "tolls": true,
+        "shaking": false,
+        "halves": {
+          "pgaWithPagerBands": {
+            "adopted": false,
+            "people": true,
+            "tolls": false,
+            "shaking": true
+          },
+          "pgvWithRings": {
+            "adopted": false,
+            "people": true,
+            "tolls": false,
+            "shaking": false
+          }
+        }
+      },
+      "chains": {
+        "inPlace": {
+          "peopleScore": 1.761,
+          "people": [
+            {
+              "level": 7,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 54,
+              "bias": -1.378
+            },
+            {
+              "level": 7,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 49,
+              "bias": -2.149
+            },
+            {
+              "level": 7,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 14,
+              "bias": -0.8
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 29,
+              "bias": -0.923
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 26,
+              "bias": -2.067
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 11,
+              "bias": 0.296
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 3,
+              "bias": -3.48
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 5,
+              "bias": -2.01
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 7,
+              "bias": -4.464
+            }
+          ],
+          "tolls": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "bias": 1.455,
+              "inside": 122,
+              "rows": 132
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "bias": 0.331,
+              "inside": 106,
+              "rows": 112
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "bias": 1.943,
+              "inside": 32,
+              "rows": 35
+            }
+          ],
+          "shakemapScore": 0.972,
+          "tollAgainstPager": 0.3,
+          "alertAgreement": 0.658,
+          "rule28Score": 0.116,
+          "rule28Sharpness": 0.346
+        },
+        "pager": {
+          "peopleScore": 0.627,
+          "people": [
+            {
+              "level": 7,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 56,
+              "bias": -0.651
+            },
+            {
+              "level": 7,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 53,
+              "bias": -0.982
+            },
+            {
+              "level": 7,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 14,
+              "bias": -0.128
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 33,
+              "bias": -0.171
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 33,
+              "bias": -0.12
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 11,
+              "bias": 1.3
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 3,
+              "bias": -3.48
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 8,
+              "bias": -0.665
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 9,
+              "bias": 1.001
+            }
+          ],
+          "tolls": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "bias": 1.128,
+              "inside": 128,
+              "rows": 136
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "bias": 0.501,
+              "inside": 119,
+              "rows": 125
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "bias": 4.704,
+              "inside": 36,
+              "rows": 37
+            }
+          ],
+          "shakemapScore": 1.134,
+          "tollAgainstPager": 0.329,
+          "alertAgreement": 0.684,
+          "rule28Score": 0.203,
+          "rule28Sharpness": 0.377
+        },
+        "pgaWithPagerBands": {
+          "peopleScore": 0.678,
+          "people": [
+            {
+              "level": 7,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 56,
+              "bias": -0.319
+            },
+            {
+              "level": 7,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 52,
+              "bias": -1.146
+            },
+            {
+              "level": 7,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 14,
+              "bias": -0.364
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 41,
+              "bias": 0.4
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 31,
+              "bias": -0.419
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 11,
+              "bias": 0.645
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 3,
+              "bias": -3.48
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 5,
+              "bias": -2.01
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 9,
+              "bias": 0.118
+            }
+          ],
+          "tolls": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "bias": 1.506,
+              "inside": 129,
+              "rows": 136
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "bias": 0.345,
+              "inside": 113,
+              "rows": 118
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "bias": 3.335,
+              "inside": 34,
+              "rows": 36
+            }
+          ],
+          "shakemapScore": 0.972,
+          "tollAgainstPager": 0.367,
+          "alertAgreement": 0.684,
+          "rule28Score": 0.116,
+          "rule28Sharpness": 0.346
+        },
+        "pgvWithRings": {
+          "peopleScore": 1.491,
+          "people": [
+            {
+              "level": 7,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 53,
+              "bias": -1.866
+            },
+            {
+              "level": 7,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 49,
+              "bias": -2.005
+            },
+            {
+              "level": 7,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 14,
+              "bias": -0.537
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 26,
+              "bias": -1.514
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 26,
+              "bias": -1.894
+            },
+            {
+              "level": 8,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 11,
+              "bias": 0.521
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw < 6.5",
+              "pairs": 3,
+              "bias": -3.48
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw 6.5–7.5",
+              "pairs": 5,
+              "bias": -2.01
+            },
+            {
+              "level": 9,
+              "sizeBand": "Mw ≥ 7.5",
+              "pairs": 9,
+              "bias": -1.578
+            }
+          ],
+          "tolls": [
+            {
+              "sizeBand": "Mw < 6.5",
+              "bias": 0.972,
+              "inside": 119,
+              "rows": 132
+            },
+            {
+              "sizeBand": "Mw 6.5–7.5",
+              "bias": 0.441,
+              "inside": 107,
+              "rows": 114
+            },
+            {
+              "sizeBand": "Mw ≥ 7.5",
+              "bias": 6.335,
+              "inside": 34,
+              "rows": 36
+            }
+          ],
+          "shakemapScore": 1.134,
+          "tollAgainstPager": 0.275,
+          "alertAgreement": 0.663,
+          "rule28Score": 0.203,
+          "rule28Sharpness": 0.377
+        }
+      }
+    },
     "ground": {
       "sitesReadOn": "2026-09-14",
       "standing": "pick",

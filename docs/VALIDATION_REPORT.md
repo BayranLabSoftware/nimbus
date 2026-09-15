@@ -937,6 +937,45 @@ Boore et al. 2014 is not beaten by 0.05 on the unseen ShakeMaps, and stays; noth
 |-----|-----|-----|-----|----:|-----|-----|-----|
 | Boore et al. 2014 | 1.46× · 122 of 132 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 2.9 % of 805 | 2.02× · 3 of 3 | — · 0 of 0 | — · 0 of 0 |
 
+### PAGER's chain from shaking to loss
+
+The benchmark campaign put the simulator's people at MMI VII and above at 0.13 of what USGS
+PAGER counts on 187 earthquakes (docs/BENCHMARK_REPORT.md, BM-03). Rules 31 to 34
+(`validation/pagerChain.ts`), committed before either chain ran on them, try the chain PAGER
+uses — intensity from Boore et al. 2014's median PGV through Worden et al. 2012's PGV relation,
+banded and weighted as its loss model bands and weights it — against the chain in place, on
+PAGER's products read on 2026-09-15. People at and above each intensity are scored
+as ln((model + 1 000) / (PAGER + 1 000)) by magnitude cell; PAGER's chain is adopted if that
+score falls by ln 1.25 or more and it does no worse by more than 0.10 on rule 11's held-out dead
+and on rule 18's ShakeMaps.
+
+| Chain | People at VII and above (Mw < 6.5 · Mw 6.5–7.5 · Mw ≥ 7.5) | At VIII and above | At IX and above | People score |
+|-------|-----|-----|-----|----:|
+| In place: PGA, the rings at 7, 8 and 9 | 0.25× (54) · 0.12× (49) · 0.45× (14) | 0.40× (29) · 0.13× (26) · 1.34× (11) | 0.03× (3) · 0.13× (5) · 0.01× (7) | 1.76 |
+| PAGER's: PGV, PAGER's bands | 0.52× (56) · 0.37× (53) · 0.88× (14) | 0.84× (33) · 0.89× (33) · 3.67× (11) | 0.03× (3) · 0.51× (8) · 2.72× (9) | 0.63 |
+| Half: PGA, PAGER's bands | 0.73× (56) · 0.32× (52) · 0.69× (14) | 1.49× (41) · 0.66× (31) · 1.91× (11) | 0.03× (3) · 0.13× (5) · 1.13× (9) | 0.68 |
+| Half: PGV, the rings at 7, 8 and 9 | 0.15× (53) · 0.13× (49) · 0.58× (14) | 0.22× (26) · 0.15× (26) · 1.68× (11) | 0.03× (3) · 0.13× (5) · 0.21× (9) | 1.49 |
+
+Each cell is the geometric mean of model over PAGER, floored at a thousand people, by magnitude cell, with its pairs; the score is the mean absolute log over the cells with five pairs or more.
+
+| Chain | Rule 11's held-out tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Rule 18's ShakeMaps |
+|-------|-----|-----|-----|----:|----:|
+| In place: PGA, the rings at 7, 8 and 9 | 1.46× · 122 of 132 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 0.72 | 0.97 |
+| PAGER's: PGV, PAGER's bands | 1.13× · 128 of 136 | 0.50× · 119 of 125 | 4.70× · 36 of 37 | 0.79 | 1.13 |
+| Half: PGA, PAGER's bands | 1.51× · 129 of 136 | 0.35× · 113 of 118 | 3.34× · 34 of 36 | 0.89 | 0.97 |
+| Half: PGV, the rings at 7, 8 and 9 | 0.97× · 119 of 132 | 0.44× · 107 of 114 | 6.33× · 34 of 36 | 0.90 | 1.13 |
+
+By rule 33 the chain in place stays: it does worse on rule 18's ShakeMaps than the margin allows.
+
+Printed beside, deciding nothing (rule 34): the central toll against PAGER's estimate, the fatality alert against PAGER's, and rule 28's score on rule 23's maps, which credits a band rightly left blank.
+
+| Chain | Toll against PAGER's | Alert agreement | Rule 28 score | Sharpness | MMI VIII false alarms / silences |
+|-------|----:|----:|----:|----:|----:|
+| In place: PGA, the rings at 7, 8 and 9 | 0.30× | 66 % | 0.12 | 0.35 | 614 / 185 |
+| PAGER's: PGV, PAGER's bands | 0.33× | 68 % | 0.20 | 0.38 | 229 / 570 |
+| Half: PGA, PAGER's bands | 0.37× | 68 % | 0.12 | 0.35 | 614 / 185 |
+| Half: PGV, the rings at 7, 8 and 9 | 0.27× | 66 % | 0.20 | 0.38 | 229 / 570 |
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the
