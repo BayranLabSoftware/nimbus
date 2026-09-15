@@ -313,15 +313,13 @@ describe('simulateImpact — land vs. ocean cascade', () => {
   });
 
   it('damage rings for an airburst event match the atmospheric airburst, not the full-KE surface burst', () => {
-    // Tunguska is the canonical PARTIAL_AIRBURST: the ground sees
-    // shock waves and burns from the airburst at ≈ 12 km, NOT from
-    // a 7 Mt surface burst. The simulator's `damage.*` rings must
-    // therefore reflect the atmospheric-airburst reach (with the
-    // altitude amplification), not the legacy full-KE
-    // surface ring radii. We assert that the values agree exactly
-    // with the entry block's atmospheric radii — the max() collapses
-    // to the airburst component because the ground-coupled fireball
-    // from gf · KE is much smaller for an airburst regime.
+    // Tunguska is an airburst: the ground sees shock waves and burns
+    // from the burst at ≈ 10 km, NOT from a 9 Mt surface burst. The
+    // simulator's `damage.*` rings must therefore be the airburst's
+    // (the Earth Impact Effects Program's air blast at the burst
+    // altitude), not surface ring radii for the full energy. The values
+    // agree exactly with the entry block's radii — the max() collapses to
+    // the airburst component because nothing reaches the ground.
     const r = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
     expect(r.entry.regime).not.toBe('INTACT');
     expect(r.damage.overpressure5psi).toBe(r.entry.shockWaveRadii.fivePsi);

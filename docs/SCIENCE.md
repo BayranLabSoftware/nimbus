@@ -1168,6 +1168,82 @@ and at 29 km it carries the 0.5 psi ring to 183 km, against the 96 km it
 drew before and the 108 km to which Popova et al. model window damage. The
 factor is a declared gap and stays unrefitted.
 
+### The airburst's blast, the program's own (15 September 2026)
+
+`src/physics/effects/airburstBlast.ts`. The benchmark campaign
+(`docs/BENCHMARK_REPORT.md`, BM-02) measured what the altitude factor
+did: an airburst's 1 kPa ring 7.3 times the Earth Impact Effects
+Program's, its overpressure ten times the program's at 100 km, and 144
+of 240 rings where the program has no blast. The factor — a
+surface-burst reach times (P₀/P(h))^(3/5), capped at 15 — had a fitted
+exponent and a cap with no source (B-032).
+
+It is replaced by the air blast the program uses, as its authors publish
+it. The source is still, at the burst altitude, and is given the larger
+of the energy the body keeps there and the energy it has handed to the
+air by then (Collins et al. 2017). Scaled to one kiloton (Collins et al.
+2005 Eq. 57), the overpressure near the point under the burst is the
+regular-reflection fit of 2017 Eq. 7, which replaced 2005 Eqs. 55–56
+because they attenuated high bursts too fast; beyond the edge of the
+Mach region (2005 Eq. 58, which exists only for a scaled burst below
+550 m) it is the surface-burst relation with its crossover moved out by
+the burst altitude (Eq. 54). The paper's shock-physics runs found a
+moving source up to twice as strong within three burst altitudes: the
+panel prints that as the upper figure, and the rings and tolls use the
+lower. Nothing in it is Nimbus's, and no blast coupling is applied: both
+relations are fits to nuclear yields.
+
+The rules were pushed before any check ran (`docs/BENCHMARK_PROTOCOL.md`,
+"After the campaign", commit `0a9d418`), with what had been looked at
+first: the campaign's 636 point overpressures, used to read how the
+program combines those pieces. On them the law reproduces 618 within
+1 %; the rest are two bodies whose burst altitude differs by 1.5–3 %
+(BM-13) and points near the edge of the Mach region, where the program
+blends the two regions in a way neither paper describes and the law
+keeps the published step. The checks, `scripts/benchmark/airburst-checks.ts`:
+
+- **Held out, the validation grid.** The 24 airburst rows the program
+  printed on 14 September: all 48 values, low and high end, within 1 %
+  (median 0.03 %). `eiepComparison.test.ts` gates them.
+- **Against the paper's own runs** (Table 2, static source): 0.92× on the
+  geometric mean, the median off by a factor of 1.21, under the ln 1.25
+  flag — ground-zero overpressures from 0.72× (0.5 Mt at 21.5 km) to 1.24×
+  (50 Mt at 11 km). One threshold is missed: the runs reach 20 kPa out to
+  4.5 km for 5 Mt at 14 km, and the law, peaking at 17.6 kPa, does not.
+  The upper figure against their moving source: 1.00×, the median off by
+  1.18.
+- **Two events** (class C, flagged outside ×2). Chelyabinsk's preset,
+  0.33 Mt bursting at 29.0 km with 0.18 Mt in the blast, raises 1.2 kPa
+  under the burst: 1 kPa, the overpressure Collins et al. take for window
+  damage, reaches 17.6 km against the 56 km radius of the ~10 000 km² over
+  which windows broke (0.31×, flagged), and the upper figure 53.9 km.
+  Tunguska's, 9.1 Mt at 9.8 km with 7.7 Mt in the blast: 20 kPa reaches
+  11.5 km against the 26.5 km radius of the ~2 200 km² of flattened forest
+  (0.43×, flagged); 10 kPa, the factor of two the paper allows for terrain
+  and the trees' state, 20.1 km (0.76×); the upper figures 20.1 and
+  29.4 km. Both flags are declared: a burst on a shallow path spreads its
+  energy along a line and damages an ellipse, which Collins et al. say
+  wants a line source, and the presets' energies are estimates.
+- **Invariants**, the campaign's 5 000 random impacts. Blast rings that
+  shrink when the body grows by 1 %: from 1 062 to 177, all in the Mach
+  region, where a larger body bursting lower draws a shorter reach at low
+  overpressure, as a nuclear burst below its optimum height does (the
+  largest example kept, 1.7 %). New: 10 jumps above 5 % for a body 0.1 %
+  larger, 2 at the edge of the Mach region — the published step — and 8
+  where a ring is born under the burst and grows steeply from nothing.
+- **The campaign's IMP track, rerun** (its result files stay as
+  measured): the airburst overpressure from 45× the program's to 0.998×,
+  97 % within 1 %; the airburst rings from 4.2× to 1.4×, because the
+  program's lie where its own printed overpressure is about 26.4, 5.5 and
+  1.6 kPa rather than at the 20, 5 and 1 kPa its map labels; and 139 of
+  the 144 rings where the program has no blast are drawn by neither.
+
+On the presets, Tunguska's 5, 1 and 0.5 psi rings move from 16.7, 49.1
+and 91.4 km to 5.8, 26.4 and 44.2 km (13.1 km for 5 psi at the upper
+figure), and Chelyabinsk's from 33.5, 98.3 and 183 km to none. The flash,
+a swarm that strikes the ground and the blast of a ground impact are
+unchanged.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records
@@ -2710,6 +2786,3 @@ labelled in its JSDoc as a fit (not the cited authors' formula):
   — the rupture aspect, dip-uplift, and wave-coupling factors are
   tuned to the Tōhoku DART + Sumatra anchors; that is calibration to a
   few targets, not independent validation.
-- **Bolide airburst amplification** (`effects/atmosphericEntry.ts`) —
-  the Sachs exponent β = 5/3 is effectively a single fitted knob
-  landing Chelyabinsk / Tunguska on observation.

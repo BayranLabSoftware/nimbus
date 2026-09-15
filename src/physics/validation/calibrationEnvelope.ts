@@ -175,8 +175,8 @@ export const CALIBRATION_ANCHORS: readonly CalibrationAnchor[] = [
     source: 'Boslough & Crawford 2008; Chyba 1993 — 3–30 Mt from the flattened forest',
     use: {
       blast: {
-        role: 'tuned',
-        how: 'The row checks the energy the preset carries against the 3–30 Mt the flattened forest allows, and two coefficients of the entry model were set on this event: PENETRATION_COEFFICIENT is "tuned against Tunguska + Chelyabinsk observations", and SACHS_BETA = 5/3 is "a fitted value, chosen so that Chelyabinsk and Tunguska land near their damage" (effects/atmosphericEntry.ts). The altitude factor it sets is not validated by any record: see the declared gaps. The energy itself is inferred from the forest.',
+        role: 'inputInferred',
+        how: "The row checks the energy the preset carries against the 3–30 Mt the flattened forest allows, and that energy is itself inferred from the forest. Nothing of the entry or the blast is set on the event any more: the entry is Collins et al. 2005 Eqs. 8–20 since 14 September 2026, and the blast the Earth Impact Effects Program's since 15 September 2026 (effects/airburstBlast.ts), which draws the 20 kPa ring at 11.5 km against the 26.5 km of the flattened forest — a declared gap.",
       },
     },
   },

@@ -1,5 +1,5 @@
-import { ussaPressure, USSA_SEA_LEVEL_PRESSURE } from '../atmosphere/ussa1976.js';
 import { IMPACT_BLAST_COUPLING, IMPACT_LUMINOUS_EFFICIENCY } from '../constants.js';
+import { airburstBlastYield, airburstReach } from './airburstBlast.js';
 import {
   OVERPRESSURE_LIGHT_DAMAGE,
   OVERPRESSURE_WINDOW_BREAK,
@@ -121,7 +121,8 @@ export interface AtmosphericEntryResult {
    *  for a COMPLETE_AIRBURST, `(1 − energyFractionToGround) · KE` for a
    *  swarm that still strikes the ground, and none counted for a body
    *  that stays whole, whose drag is spread along its path. Drives the
-   *  entry-damage radii below. */
+   *  flash radii below, and the shock of a swarm that strikes the
+   *  ground; an airburst's shock is computed on {@link blastYieldMegatons}. */
   atmosphericYieldMegatons: number;
   /** Thermal-flash burn radii at ground level, from the explosion
    *  module's burn fluences with the impact luminous efficiency. Not
@@ -137,33 +138,40 @@ export interface AtmosphericEntryResult {
     /** Ground range to 8 cal/cm² fluence (charring-grade burn). */
     thirdDegree: Meters;
   };
-  /** Shock-wave overpressure radii at ground level, from the Kinney &
-   *  Graham scaling applied to half the airburst yield AND multiplied by
-   *  {@link airburstAmplificationFactor} for the burst's altitude. For
-   *  the Chelyabinsk preset, bursting at 29.0 km, the 0.5 psi ring is
-   *  183 km, beyond the 108 km to which Popova et al. (2013) model
-   *  window damage — and at their damage threshold, 500 Pa, the
-   *  amplified model reaches ≈ 1 230 km: not a validation. 0 for
-   *  INTACT. */
-  shockWaveRadii: {
-    /** 5 psi (≈ 34.5 kPa, residential collapse). */
-    fivePsi: Meters;
-    /** 1 psi (≈ 6.9 kPa, window breakage + minor injury). */
-    onePsi: Meters;
-    /** 0.5 psi (≈ 3.45 kPa, scattered-window damage and shopfront
-     *  injury — the "Chelyabinsk reach"). */
-    lightDamage: Meters;
-  };
-  /** Empirical Kinney-Graham → bolide-airburst amplification factor
-   *  applied to the SHOCK-WAVE radii only (the argument is about a
-   *  blast wave; see {@link bolideAirburstAmplification}).
-   *  Thermal-flash radii are NOT amplified by it. 1.0 for surface
-   *  bursts and INTACT events; 2.2 for the Tunguska preset (burst at
-   *  9.8 km), 13.3 for the Chelyabinsk preset (29.0 km). Surfaced in
-   *  the report panel so the user sees how big the altitude correction
-   *  is. */
-  airburstAmplificationFactor: number;
+  /** Shock-wave overpressure radii at ground level. An airburst's are
+   *  the Earth Impact Effects Program's static source at the burst
+   *  altitude (effects/airburstBlast.ts, Collins et al. 2005 and 2017) on
+   *  {@link blastYieldMegatons}; a swarm that strikes the ground blasts
+   *  its air share like a ground impact, Kinney & Graham on half of it.
+   *  0 for INTACT. */
+  shockWaveRadii: EntryShockRadii;
+  /** The same rings at the high end of the program's range: within three
+   *  burst altitudes of the point under the burst, twice the static
+   *  source's overpressure, as Collins et al. (2017) found a moving source
+   *  gives. Equal to {@link shockWaveRadii} beyond that, and for a swarm
+   *  that strikes the ground. */
+  shockWaveRadiiHigh: EntryShockRadii;
+  /** Energy the airburst's blast is computed on, in TNT-equivalent
+   *  megatons: for an airburst the larger of the kinetic energy the body
+   *  keeps at the burst altitude and the energy it has given the air by
+   *  then (Collins et al. 2017); for a swarm that strikes the ground, the
+   *  atmospheric yield. 0 for INTACT. */
+  blastYieldMegatons: number;
 }
+
+/** Ground ranges at which the entry's shock reaches three overpressures. */
+export interface EntryShockRadii {
+  /** 5 psi (≈ 34.5 kPa, residential collapse). */
+  fivePsi: Meters;
+  /** 1 psi (≈ 6.9 kPa, window breakage + minor injury). */
+  onePsi: Meters;
+  /** 0.5 psi (≈ 3.45 kPa, scattered-window damage and shopfront
+   *  injury). */
+  lightDamage: Meters;
+}
+
+/** No rings. */
+const NO_SHOCK: EntryShockRadii = { fivePsi: m(0), onePsi: m(0), lightDamage: m(0) };
 
 /**
  * Empty entry-damage block — used for INTACT regimes where no energy
@@ -175,166 +183,100 @@ const ZERO_ENTRY_DAMAGE = {
     secondDegree: m(0),
     thirdDegree: m(0),
   },
-  shockWaveRadii: {
-    fivePsi: m(0),
-    onePsi: m(0),
-    lightDamage: m(0),
-  },
-  airburstAmplificationFactor: 1,
+  shockWaveRadii: NO_SHOCK,
+  shockWaveRadiiHigh: NO_SHOCK,
+  blastYieldMegatons: 0,
 } as const;
 
 /**
- * Altitude amplification factor that lifts the Kinney-Graham (1985)
- * surface-burst overpressure radii to a burst at altitude. It is
- * applied only to the shock-wave radii — NOT to the thermal-flash
- * radii, whose line-of-sight geometry gains nothing from a higher
- * burst.
+ * The ground-level thermal-flash and shock-wave radii of the energy the
+ * entry leaves in the air.
  *
- * The factor is a Nimbus plausibility argument, not a derivation from
- * a source:
+ * The flash takes Glasstone & Dolan's burn fluences (§7) on the
+ * atmospheric yield with the impact luminous efficiency, as a bare
+ * inverse-square envelope: a higher burst has a longer path to the
+ * ground, not a longer reach.
  *
- * 1. It supposes a weak shock keeps its fractional overpressure
- *    ΔP / P_amb on the way down through the stratified atmosphere, so
- *    the absolute overpressure grows by P_ground / P_amb(h_b).
- * 2. It turns that gain into distance with a decay ΔP ∝ R^(−β), where
- *    β lies between the weak-shock (≈ 1) and strong-shock (≈ 3)
- *    limits. β = 5/3 is a fitted value, chosen so that Chelyabinsk and
- *    Tunguska land near their damage.
- * 3. P(h) comes from the U.S. Standard Atmosphere 1976 (NOAA-S/T
- *    76-1562) via {@link ussaPressure}.
+ * The shock of an airburst (burst altitude above 0) is the Earth Impact
+ * Effects Program's static source at that altitude on `blastYieldJ`
+ * (effects/airburstBlast.ts), with the program's high end beside it. The
+ * shock of a swarm that strikes the ground is a ground impact's: Kinney &
+ * Graham on the half of the atmospheric yield that goes into the blast
+ * (`IMPACT_BLAST_COUPLING`), with no range; a threshold the inversion
+ * cannot reach draws no ring.
  *
- * Together, for a fixed ground-level threshold ΔP*, an airburst at
- * altitude h_b reaches the threshold at a radius larger than a
- * sea-level burst by
- *
- *     f(h_b) = (P_ground / P_amb(h_b))^(1/β),   β = 5/3.
- *
- * What the events say. β was fitted when a tuned classifier burst the
- * Chelyabinsk preset at 22.1 km (f = 7.0, a 0.5 psi ring at 96 km) and
- * Tunguska at 11.8 km (f = 2.6, a 5 psi ring at 19.3 km). On Collins et
- * al.'s entry equations, since 14 September 2026, Chelyabinsk bursts at
- * 29.0 km, where f = 13.3 and the 0.5 psi ring reaches 183 km; Popova et
- * al. (2013, Science 342, 1069–1073) model window damage out to 108 km,
- * for an overpressure above 500 Pa that the amplified model carries
- * ≈ 1 230 km (92 km without the factor). Tunguska bursts at 9.8 km, where
- * f = 2.2 and the 5 psi ring is 16.7 km. The factor was not refitted:
- * treat it as an order-of-magnitude correction that no record validates.
- *
- * The formula is capped at 15× to prevent run-away predictions for
- * synthetic stratospheric scenarios (P_amb < 1 Pa at h > 80 km
- * gives algebraic enhancements > 10⁴× that are not observationally
- * supported).
- *
- * Background reading, not the source of the formula: Whitham, G. B.
- * (1974), "Linear and Nonlinear Waves", Wiley, ISBN 978-0-471-94090-6
- * (weak shocks); Sachs, R. G. (1944), "The dependence of blast on
- * ambient pressure and temperature", BRL Report 466; ReVelle, D. O.
- * (1976), "On meteor-generated infrasound", JGR 81 (7): 1217–1230,
- * DOI: 10.1029/JA081i007p01217.
- *
- * The factor is exposed on
- * {@link AtmosphericEntryResult.airburstAmplificationFactor} so the
- * UI can surface it alongside the thermal and shock-wave radii.
- */
-/** Shock decay exponent of the amplification, between the weak-shock
- *  (β ≈ 1) and strong-shock spherical (β ≈ 3) limits. A fitted value,
- *  not one taken from the literature. */
-const SACHS_BETA = 5 / 3;
-/** Maximum amplification factor we'll allow. Even high-altitude
- *  bursts couple to the troposphere imperfectly; without this cap a
- *  burst near the mesopause (≈ 80 km, P_amb ≈ 1 Pa) would predict a
- *  > 10⁴× enhancement that has no observational support. */
-const MAX_AIRBURST_AMPLIFICATION = 15;
-
-export function bolideAirburstAmplification(burstAltitudeM: number): number {
-  if (!Number.isFinite(burstAltitudeM) || burstAltitudeM <= 0) return 1;
-  const pressureAtBurst = ussaPressure(burstAltitudeM);
-  if (!Number.isFinite(pressureAtBurst) || pressureAtBurst <= 0) return MAX_AIRBURST_AMPLIFICATION;
-  const pressureRatio = USSA_SEA_LEVEL_PRESSURE / pressureAtBurst;
-  if (pressureRatio <= 1) return 1;
-  const factor = Math.pow(pressureRatio, 1 / SACHS_BETA);
-  return Math.min(factor, MAX_AIRBURST_AMPLIFICATION);
-}
-
-/**
- * Compute the ground-level thermal-flash and shock-wave radii from the
- * fraction of the impactor's kinetic energy deposited in the atmosphere.
- * Reuses the Glasstone & Dolan §7 burn-fluence and §3 overpressure
- * formulas, then applies the {@link bolideAirburstAmplification} factor
- * to lift the surface-burst Kinney-Graham reach to the observed bolide-
- * entry geometry. The `distanceForOverpressure` bisector throws when
- * the requested threshold is below the value at 10⁸ m (effectively
- * infinite reach); we catch and floor to 0 so a sub-kt airburst's
- * "1 psi" reach doesn't break the pipeline.
+ * Until 15 September 2026 an airburst's shock was that ground reach
+ * multiplied by (P₀ / P(h))^(3/5), capped at 15 — a fitted exponent and
+ * an unsourced cap that carried Chelyabinsk's 0.5 psi ring to 183 km, where
+ * the program has no blast (B-032).
  */
 function computeEntryDamage(
   atmosphericYieldJ: number,
-  burstAltitudeM: number
+  burstAltitudeM: number,
+  blastYieldJ: number
 ): Pick<
   AtmosphericEntryResult,
-  'flashBurnRadii' | 'shockWaveRadii' | 'airburstAmplificationFactor'
+  'flashBurnRadii' | 'shockWaveRadii' | 'shockWaveRadiiHigh' | 'blastYieldMegatons'
 > {
   if (!Number.isFinite(atmosphericYieldJ) || atmosphericYieldJ <= 0) {
     return ZERO_ENTRY_DAMAGE;
   }
   const yieldEnergy = J(atmosphericYieldJ);
-  // Phase-17 calibration. The Kinney-Graham over-pressure inverter
-  // assumes the FULL energy partitions into the air-shock; for an
-  // impact only ≈ 50 % does (the rest goes into thermal radiation,
-  // crater excavation, ejecta KE, ground-coupled seismic waves). See
-  // `IMPACT_BLAST_COUPLING` in `src/physics/constants.ts` for the
-  // citation chain. This brings the Tunguska 1 psi forest-blowdown
-  // ring from +43 % to +13 % of the published value (Svetsov 1996,
-  // Boslough & Crawford 2008).
+  const flashBurnRadii = {
+    // The atmospheric-entry flash-burn radii are an impact phenomenon
+    // (thermal pulse from a meteor / bolide entry, not a nuclear
+    // detonation), so the burn-radius helpers are passed the impact
+    // luminous efficiency rather than the nuclear default. See the
+    // matching note in `damageRings.ts` for the citation chain
+    // (Collins-Melosh-Marcus 2005 / Toon 1997).
+    firstDegree: firstDegreeBurnRadius({
+      yieldEnergy,
+      thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+    }),
+    secondDegree: secondDegreeBurnRadius({
+      yieldEnergy,
+      thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+    }),
+    thirdDegree: thirdDegreeBurnRadius({
+      yieldEnergy,
+      thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+    }),
+  };
+
+  if (Number.isFinite(burstAltitudeM) && burstAltitudeM > 0) {
+    const blastYield = J(Math.max(blastYieldJ, 0));
+    const altitude = m(burstAltitudeM);
+    const rings = (end: 'low' | 'high'): EntryShockRadii => ({
+      fivePsi: airburstReach(OVERPRESSURE_BUILDING_COLLAPSE, altitude, blastYield, end),
+      onePsi: airburstReach(OVERPRESSURE_WINDOW_BREAK, altitude, blastYield, end),
+      lightDamage: airburstReach(OVERPRESSURE_LIGHT_DAMAGE, altitude, blastYield, end),
+    });
+    return {
+      flashBurnRadii,
+      shockWaveRadii: rings('low'),
+      shockWaveRadiiHigh: rings('high'),
+      blastYieldMegatons: (blastYield as number) / JOULES_PER_MEGATON_TNT,
+    };
+  }
+
   const blastEnergy = J(atmosphericYieldJ * IMPACT_BLAST_COUPLING);
-  const factor = bolideAirburstAmplification(burstAltitudeM);
-  // The altitude amplification is a BLAST-WAVE argument (overpressure
-  // carried down through a stratified atmosphere). It applies
-  // ONLY to the shock-wave radii. Thermal fluence is governed by
-  // line-of-sight inverse-square geometry plus atmospheric transmission;
-  // a burst at altitude has a LONGER slant path to a ground observer, so
-  // the burn radius does not grow with altitude the way the shock reach
-  // does. Multiplying the thermal radii by `factor` (the old behaviour)
-  // was physically backwards — it inflated the high-altitude flash-burn
-  // reach by up to 7×. Thermal radii therefore use the bare inverse-
-  // square envelope (τ = 1) here; HOB-dependent attenuation is the
-  // separate `heightOfBurst` path in thermal.ts.
-  const scaleShock = (raw: Meters): Meters => m((raw as number) * factor);
-  const safeDistance = (target: Pascals): Meters => {
+  const groundReach = (target: Pascals): Meters => {
     try {
-      return scaleShock(distanceForOverpressure(blastEnergy, target));
+      return distanceForOverpressure(blastEnergy, target);
     } catch {
       return m(0);
     }
   };
+  const shockWaveRadii: EntryShockRadii = {
+    fivePsi: groundReach(OVERPRESSURE_BUILDING_COLLAPSE),
+    onePsi: groundReach(OVERPRESSURE_WINDOW_BREAK),
+    lightDamage: groundReach(OVERPRESSURE_LIGHT_DAMAGE),
+  };
   return {
-    flashBurnRadii: {
-      // The atmospheric-entry flash-burn radii are an impact phenomenon
-      // (thermal pulse from a meteor / bolide entry, not a nuclear
-      // detonation), so the burn-radius helpers are passed the impact
-      // luminous efficiency rather than the nuclear default. See the
-      // matching note in `damageRings.ts` for the citation chain
-      // (Collins-Melosh-Marcus 2005 / Toon 1997). No blast-amplification
-      // factor is applied (see the note above).
-      firstDegree: firstDegreeBurnRadius({
-        yieldEnergy,
-        thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
-      }),
-      secondDegree: secondDegreeBurnRadius({
-        yieldEnergy,
-        thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
-      }),
-      thirdDegree: thirdDegreeBurnRadius({
-        yieldEnergy,
-        thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
-      }),
-    },
-    shockWaveRadii: {
-      fivePsi: safeDistance(OVERPRESSURE_BUILDING_COLLAPSE),
-      onePsi: safeDistance(OVERPRESSURE_WINDOW_BREAK),
-      lightDamage: safeDistance(OVERPRESSURE_LIGHT_DAMAGE),
-    },
-    airburstAmplificationFactor: factor,
+    flashBurnRadii,
+    shockWaveRadii,
+    shockWaveRadiiHigh: shockWaveRadii,
+    blastYieldMegatons: atmosphericYieldJ / JOULES_PER_MEGATON_TNT,
   };
 }
 
@@ -420,6 +362,9 @@ export function atmosphericEntry(
       (8 * (3 + alpha * alpha) + 3 * alpha * (l / H_SCALE) * (2 + alpha * alpha));
     const endVelocity = vStar * Math.exp(-k * integral);
     const atmosphericYieldJ = totalKE;
+    // Collins et al. 2017: the blast is given the larger of the energy the
+    // body keeps at the burst altitude and the energy it has lost by then.
+    const blastYield = airburstBlastYield(J(totalKE), (endVelocity / v0) ** 2);
     return {
       burstAltitude: m(zBurst),
       breakupAltitude: m(zStar),
@@ -427,7 +372,7 @@ export function atmosphericEntry(
       endVelocity: mps(endVelocity),
       energyFractionToGround: 0,
       atmosphericYieldMegatons: atmosphericYieldJ / JOULES_PER_MEGATON_TNT,
-      ...computeEntryDamage(atmosphericYieldJ, zBurst),
+      ...computeEntryDamage(atmosphericYieldJ, zBurst, blastYield),
     };
   }
 
@@ -450,6 +395,6 @@ export function atmosphericEntry(
     endVelocity: mps(endVelocity),
     energyFractionToGround,
     atmosphericYieldMegatons: atmosphericYieldJ / JOULES_PER_MEGATON_TNT,
-    ...computeEntryDamage(atmosphericYieldJ, 0),
+    ...computeEntryDamage(atmosphericYieldJ, 0, atmosphericYieldJ),
   };
 }

@@ -63,6 +63,12 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
   }
   if (result.entry.regime === 'COMPLETE_AIRBURST') {
     triggers.push(cite('popova2013', 'Chelyabinsk 2013, the airburst the entry is checked on.'));
+    triggers.push(
+      cite(
+        'collins2017',
+        'Air blast of the airburst: regular reflection (Eq. 7), its energy and its factor-of-two range.'
+      )
+    );
   }
 
   if ((result.ejecta.blanketEdge1m as number) > 0) {

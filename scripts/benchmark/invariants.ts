@@ -15,7 +15,7 @@ import { simulateImpact } from '../../src/physics/simulate.js';
  * on 5 000 random custom scenarios a hazard drawn over the ranges the
  * custom-input forms accept (seeded, so the same scenarios every run).
  *
- *   pnpm exec tsx scripts/benchmark/invariants.ts [scenarios per hazard]
+ *   pnpm exec tsx scripts/benchmark/invariants.ts [scenarios per hazard] [hazard]
  *
  * - finite: no output is NaN or infinite, and no run throws;
  * - non-negative: radii, runouts, areas, diameters, amplitudes, lengths,
@@ -38,6 +38,9 @@ import { simulateImpact } from '../../src/physics/simulate.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const N = Number(process.argv[2] ?? 5_000);
+/** One hazard only, by name; each hazard has its own seed, so its
+ *  scenarios are the same either way. */
+const ONLY = process.argv[3];
 const HALF_CIRCUMFERENCE = Math.PI * (EARTH_RADIUS as number);
 const EARTH_SURFACE = 4 * Math.PI * (EARTH_RADIUS as number) ** 2;
 
@@ -365,7 +368,7 @@ async function main(): Promise<void> {
   const report: Record<string, Record<string, Tally>> = {};
   const scenarios: Record<string, number> = {};
   const runner = new Runner();
-  for (const hazard of HAZARDS) {
+  for (const hazard of HAZARDS.filter((h) => ONLY === undefined || h.name === ONLY)) {
     const rng = mulberry32(`benchmark-2026-09-15-inv-${hazard.name}`);
     const u = (): number => rng.next();
     const tallies: Record<string, Tally> = {};

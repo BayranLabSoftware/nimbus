@@ -10,8 +10,10 @@ import { EIEP_REFERENCE } from './eiepReference.js';
  * energy, the atmospheric entry, the craters, the ejecta blanket and the
  * fireball — to the program's own rounding: it prints two or three
  * significant figures, and a burst altitude of a kilometre or two to
- * the metre but from inputs rounded before it. The complex crater's depth
- * and the air blast differ by design, and the report says how much.
+ * the metre but from inputs rounded before it; the air blast of an
+ * airburst, low and high end, within 1 %. The complex crater's depth and
+ * the air blast of an impact that reaches the ground differ by design, and
+ * the report says how much.
  */
 
 const ratios = eiepRatios();
@@ -26,6 +28,8 @@ const TOLERANCE: Readonly<Record<Exclude<EiepQuantity, 'finalDepth' | 'overpress
   finalDiameter: 0.05,
   ejectaEdge: 0.02,
   fireballRadius: 0.02,
+  airburstOverpressure: 0.01,
+  airburstOverpressureHigh: 0.01,
 };
 
 describe('the impact pipeline agrees with its reference implementation where it means to', () => {

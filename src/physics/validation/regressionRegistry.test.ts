@@ -548,6 +548,42 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(atSea.firestorm.sustainArea as number).toBe(0);
   });
 
+  it('B-032 An airburst blasts the ground as the Earth Impact Effects Program has it, with no altitude factor', () => {
+    // Pre-fix: the entry's shock radii were a surface-burst reach times
+    // (P₀/P(h))^(3/5), up to ×15 — ×13 for a burst near 30 km — and the
+    // rings reached where the program says the blast never does. The
+    // brackets are the program's printed overpressure at the campaign's
+    // distances (benchmark IMP track, 15 September 2026), for the same
+    // bodies on the same crystalline target.
+    const airburst = (diameter: number, speed: number, angle: number) =>
+      simulateImpact({
+        impactorDiameter: m(diameter),
+        impactVelocity: mps(speed),
+        impactorDensity: kgPerM3(3_000),
+        targetDensity: kgPerM3(2_750),
+        impactAngle: degreesToRadians(deg(angle)),
+      });
+
+    // Tunguska's body: 42.7 kPa at 3 km, 23.0 at 10, 5.79 at 30, 2.71 at 100.
+    const tunguska = airburst(60, 15_000, 30);
+    expect(tunguska.entry.regime).toBe('COMPLETE_AIRBURST');
+    const km = (r: unknown) => (r as number) / 1_000;
+    expect(km(tunguska.damage.overpressure5psi)).toBeGreaterThan(3);
+    expect(km(tunguska.damage.overpressure5psi)).toBeLessThan(10);
+    expect(km(tunguska.damage.overpressure1psi)).toBeGreaterThan(10);
+    expect(km(tunguska.damage.overpressure1psi)).toBeLessThan(30);
+    expect(km(tunguska.damage.lightDamage)).toBeGreaterThan(30);
+    expect(km(tunguska.damage.lightDamage)).toBeLessThan(100);
+
+    // Chelyabinsk's body, bursting at 34 km: 1.08 kPa below the burst and
+    // less everywhere else, so not even 0.5 psi (3.45 kPa) reaches the ground.
+    const chelyabinsk = airburst(17, 19_000, 18);
+    expect(chelyabinsk.entry.regime).toBe('COMPLETE_AIRBURST');
+    expect(chelyabinsk.damage.lightDamage as number).toBe(0);
+    expect(chelyabinsk.damage.overpressure1psi as number).toBe(0);
+    expect(chelyabinsk.damage.overpressure5psi as number).toBe(0);
+  });
+
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
     // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
@@ -581,10 +617,10 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-025 and B-027..B-031 (B-010 CLOSED via inputSchema.ts +
+    // B-001..B-025 and B-027..B-032 (B-010 CLOSED via inputSchema.ts +
     // safeRun.ts; B-007 superseded by B-011; B-026, the population of a
     // planetary circle, is named in docs/ROADMAP.md and not yet entered).
-    const expectedRows = 30;
-    expect(expectedRows).toBe(30);
+    const expectedRows = 31;
+    expect(expectedRows).toBe(31);
   });
 });

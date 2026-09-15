@@ -43,6 +43,14 @@ const collins2005: Citation = {
   doi: '10.1111/j.1945-5100.2005.tb00157.x',
 };
 
+const collins2017: Citation = {
+  authors: 'Collins, G. S., Lynch, E., McAdam, R. & Davison, T. M.',
+  year: 2017,
+  title: 'A numerical assessment of simple airblast models of impact airbursts',
+  venue: 'Meteoritics & Planetary Science 52 (8), 1542–1560',
+  doi: '10.1111/maps.12873',
+};
+
 const chyba1993: Citation = {
   authors: 'Chyba, C. F., Thomas, P. J. & Zahnle, K. J.',
   year: 1993,
@@ -767,28 +775,29 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         citation: collins2005,
       },
       {
-        id: 'bolide-airburst-amplification',
-        name: 'Bolide-airburst altitude amplification',
-        formula: 'f(h) = (P₀ / P_amb(h))^(1/β),   β = 5/3,   capped at 15×',
+        id: 'airburst-blast',
+        name: 'Air blast of an airburst',
+        formula:
+          'W = E₀ · max(f, 1 − f),  f = (v_b / v₀)² ;  r₁ = r / W_kt^⅓,  z₁ = z_b / W_kt^⅓ ;  regular: p = 3.14 × 10¹¹ (r₁² + z₁²)^(−1.3) + 1.8 × 10⁷ (r₁² + z₁²)^(−0.565) ;  Mach (z₁ < 550 m, r₁ ≥ 550 z₁ / 1.2(550 − z₁)): p = (p_x r_x / 4r₁)(1 + 3 (r_x / r₁)^1.3),  p_x = 75 kPa,  r_x = 289 + 0.65 z₁ ;  within r < 3 z_b: p to 2p',
         description:
-          'A Nimbus correction for the altitude of an airburst, applied to the shock radii only. It supposes the overpressure keeps its ratio to the ambient pressure on the way down, and turns that gain into distance with ΔP ∝ R^(−β): a plausibility argument, not a derivation, with β = 5/3 fitted when a tuned entry burst Chelyabinsk at 22.1 km and Tunguska at 11.8 km. P(h) is the U.S. Standard Atmosphere 1976. On Collins et al.’s entry equations Chelyabinsk bursts at 29.0 km, the factor there is 13.3 and the 0.5 psi ring reaches 183 km, beyond the 108 km to which Popova et al. (2013) model window damage — for an overpressure above 500 Pa, which the amplified model carries about 1 230 km (92 km without the factor). The factor has not been refitted; treat it as an order-of-magnitude correction.',
-        citation: popova2013,
+          'The Earth Impact Effects Program’s air blast, as its authors publish it: a still source at the burst altitude, given the larger of the energy the body keeps there and the energy it has lost, scaled to one kiloton (Collins et al. 2005 Eq. 57) and read off fits to nuclear tests — the regular reflection region of Collins et al. 2017 Eq. 7, which replaced the 2005 Eqs. 55–56 because they attenuated high bursts too fast, and beyond the edge of the Mach region (2005 Eq. 58) the surface-burst relation with its crossover moved out by the burst altitude (Eq. 54). Their shock-physics runs found a moving source up to twice as strong within three burst altitudes, printed as the upper figure. Nothing in it is Nimbus’s: held out, it reproduces the program’s printed overpressure within 1 % on 24 of 24 airbursts. For the Tunguska preset: 5 psi at 5.8 km (13.1 km moving), 1 psi at 26.4 km, 0.5 psi at 44.2 km; Chelyabinsk’s 0.18 Mt at 29 km raises about 1 kPa under the burst and draws no ring, where windows broke over some 10 000 km² — a burst on a shallow path spreads along a line and damages an ellipse, which this round source does not draw. Until 15 September 2026 the rings were a surface-burst reach times a fitted altitude factor, up to 15×.',
+        citation: collins2017,
       },
       {
         id: 'entry-flash-shock',
         name: 'Atmospheric flash + shock damage radii',
         formula:
-          'r_flash(Q) = R_thermal(η · E_atm, Q) ;   r_shock(p) = R_KG(0.5 · E_atm, p) · f(h)',
+          'r_flash(Q) = R_thermal(η · E_atm, Q) ;   r_shock(p) = R_airburst(W, z_b, p) for an airburst,  R_KG(0.5 · E_atm, p) for a swarm that strikes the ground',
         description:
-          'Burn (1st, 2nd, 3rd degree) and shock (5, 1, 0.5 psi) radii at the ground from the atmospheric yield. The flash takes the explosion module’s burn fluences with the impact luminous efficiency η = 3 × 10⁻³ of Collins et al. (2005) and no altitude factor; the shock takes the Kinney–Graham overpressure with half the yield in the blast, times the altitude factor above. For the Chelyabinsk preset: 5 psi at 17.5 km, 1 psi at 52 km, 0.5 psi at 96 km.',
-        citation: kinneyGraham1985,
+          'Burn (1st, 2nd, 3rd degree) and shock (5, 1, 0.5 psi) radii at the ground from the energy left in the air. The flash takes the explosion module’s burn fluences with the impact luminous efficiency η = 3 × 10⁻³ of Collins et al. (2005), with no gain for altitude. The shock of an airburst is the program’s air blast above; the shock of a broken swarm that still strikes the ground blasts like a ground impact, Kinney–Graham on half the energy lost in the air.',
+        citation: collins2005,
       },
       {
         id: 'damage-rings-airburst-honest',
         name: 'Damage rings of an airburst',
         formula: 'damage(p) = max(R_surface(gf · E_kinetic, p), r_atmospheric_flash_or_shock(p))',
         description:
-          'Each ring takes the larger of two estimates for an observer on the ground: the surface-burst radius for the ground-coupled energy gf · E, and the airburst radius for the atmospheric yield (1 − gf) · E — its shock amplified for altitude, its flash not. Taking the larger is a Nimbus rule: being inside either ring is counted as equally bad.',
+          'Each ring takes the larger of two estimates for an observer on the ground: the surface-burst radius for the ground-coupled energy gf · E, and the airburst radius for the atmospheric yield (1 − gf) · E — its shock the program’s air blast at the burst altitude, its flash with no gain for altitude. Taking the larger is a Nimbus rule: being inside either ring is counted as equally bad.',
         citation: collins2005,
       },
       {
@@ -1490,6 +1499,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
  */
 export const CITATIONS = {
   collins2005,
+  collins2017,
   chyba1993,
   popova2013,
   mcgetchin1973,

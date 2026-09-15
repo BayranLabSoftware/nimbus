@@ -17,7 +17,7 @@ const GLOSSARY = {
     'endVelocity',
     'energyFractionToGround',
     'atmosphericYield',
-    'bolideAirburstAmplification',
+    'airburstBlast',
   ],
   seismology: [
     'mw',

@@ -429,9 +429,11 @@ the candidates for re-tuning:
   was set on an 85 m source; Grilli et al. 2019 simulate a leading wave
   nearly 50 m high. Storegga's on a 5–10 m source amplitude that Bondevik
   et al. 2005 do not give.
-- **An airburst's shock radii.** The altitude factor puts Chelyabinsk's
-  0.5 psi ring at 96 km, near the 108 km of window damage Popova et al.
-  2013 model — but at their 500 Pa threshold the model reaches ≈ 640 km.
+- **An airburst's shock radii.** Replaced on 15 September 2026 by the
+  Earth Impact Effects Program's own air blast (B-032, docs/SCIENCE.md).
+  What stays open is the source's shape: a still point draws Chelyabinsk's
+  1 kPa ring at 17.6 km where windows broke over ~10 000 km², and a line
+  source along the path would be the next model.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

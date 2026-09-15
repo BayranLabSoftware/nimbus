@@ -172,7 +172,6 @@
     "endVelocity": "Velocità a fine ingresso",
     "energyFractionToGround": "Energia al suolo",
     "atmosphericYield": "Resa in atmosfera (eq. TNT)",
-    "entryAmplificationFactor": "Amplificazione altitudine (×)",
     "entryFlashLabel": "Ingresso · danni da lampo termico",
     "entryFlashFirstDegree": "Raggio ustioni 1° grado",
     "entryFlashSecondDegree": "Raggio ustioni 2° grado",
@@ -181,6 +180,8 @@
     "entryShockLightDamage": "0,5 psi (vetri)",
     "entryShockOnePsi": "1 psi (rottura vetri + ferimenti)",
     "entryShockFivePsi": "5 psi (collasso edifici residenziali)",
+    "entryBlastYield": "Resa dell'onda d'urto (eq. TNT)",
+    "entryShockUpTo": "fino a {{range}} con una sorgente in moto",
     "ejectaLabel": "Coltre di ejecta",
     "ejectaEdge1m": "Bordo esterno (≥ 1 m)",
     "ejectaEdge1mm": "Bordo esterno (≥ 1 mm)",
@@ -1028,10 +1029,10 @@
         "definition": "Frazione dell'energia cinetica rilasciata come palla di fuoco + impulso d'urto durante l'ingresso: E_atm = (1 − gf) · E_cinetica. Per il preset di Chelyabinsk vale ≈ 0,33 Mt TNT (98 % del totale); Brown et al. (2013) stimano l'airburst reale in 400–600 kt.",
         "source": "Nimbus (euristica gf)"
       },
-      "bolideAirburstAmplification": {
-        "name": "Amplificazione altitudine bolide",
-        "definition": "Correzione per la quota f(h) = (P₀ / P_amb(h))^(1/β), β = 5/3, applicata ai raggi d'urto Kinney-Graham di un airburst (non a quelli delle ustioni). Un argomento di plausibilità di Nimbus con un esponente adattato, non una relazione pubblicata; P(h) dall'Atmosfera Standard USA 1976. Da prendere come correzione d'ordine di grandezza.",
-        "source": "Nimbus (adattato); USSA 1976"
+      "airburstBlast": {
+        "name": "Onda d'urto di un airburst",
+        "definition": "L'onda d'urto che l'Earth Impact Effects Program disegna per un airburst: una sorgente ferma alla quota di scoppio, con la maggiore tra l'energia che il corpo conserva lì e quella che ha già perso (W = E₀ · max(f, 1 − f), f = (v_b / v₀)²), riportata a un kilotone e letta su fit dei test nucleari — riflessione regolare vicino al punto sotto lo scoppio, riflessione di Mach più lontano quando la quota riscalata è sotto i 550 m. Entro tre quote di scoppio una sorgente in moto può spingere fino al doppio, mostrato come valore alto. Il preset di Tunguska dà alla sua onda da 7,7 Mt i 5 psi fino a 5,8 km (13,1 km in moto) e 1 psi fino a 26,4 km; gli 0,18 Mt di Čeljabinsk a 29 km portano circa 1 kPa sotto lo scoppio e non disegnano anelli.",
+        "source": "Collins, Melosh & Marcus 2005; Collins et al. 2017"
       },
       "aftershockCatalogue": {
         "name": "Catalogo scosse di assestamento",
@@ -1158,7 +1159,7 @@
     "thermal": "Raggio delle ustioni di 3° grado a 8 cal/cm², una soglia del progetto — Glasstone & Dolan (1977) fanno crescere con la potenza l'esposizione che ustiona (Fig. 12.65) — con la fluenza distribuita su una sfera (§7.94–7.96), una partizione termica da 0,18 al suolo a 0,35 in aria (§7.101) e una trasmittanza del progetto e^(−R/L). Nessuno per una carica chimica.",
     "nuclearCrater": "Diametro del cratere apparente di uno scoppio in superficie D = K · W_kt^0.3 (Glasstone & Dolan 1977 §6.09): K = 36,6 m per terreno secco e compatto, il cratere da 1 kt del libro; 92 m per la barriera corallina satura, che porta Castle Bravo e Ivy Mike vicino ai loro crateri larghi un miglio (DTRIAC SR-12-001); roccia dura e argilla valori del progetto.",
     "atmosphericEntry": "Quota di frammentazione dall'Eq. 11 di Collins et al. 2005, dove la pressione dinamica supera per la prima volta la resistenza del corpo; il corpo rotto si allarga poi come una pancake (Chyba et al. 1993) ed esplode in aria se raggiunge sette volte la sua dimensione sopra il suolo (Eq. 18).",
-    "bolideAirburstAmplification": "Correzione per la quota f(h) = (P₀ / P_amb(h))^(1/β), β = 5/3, con tetto a 15×, applicata ai raggi d'urto di un airburst. Suppone che la sovrapressione mantenga il suo rapporto con la pressione ambiente scendendo (P(h) dall'Atmosfera Standard USA 1976) e traduce il guadagno in distanza con un esponente di decadimento adattato: un argomento di plausibilità di Nimbus, non una derivazione. Non validata: per il preset di Chelyabinsk porta l'anello di 0,5 psi a 96 km, ma ai 500 Pa che Popova et al. (2013) prendono per i vetri rotti il modello corretto arriva a ≈ 640 km, contro i loro 108 km.",
+    "airburstBlast": "L'onda d'urto di un airburst dell'Earth Impact Effects Program (Collins et al. 2005 Eq. 54, 57–58; Collins et al. 2017 Eq. 7): una sorgente ferma alla quota di scoppio, con la maggiore tra l'energia che il corpo conserva e quella che ha perso lì, letta su fit dei test nucleari — riflessione regolare vicino al punto sotto lo scoppio, riflessione di Mach più lontano per una quota riscalata sotto i 550 m. Entro tre quote di scoppio una sorgente in moto può dare fino al doppio della sovrapressione, il valore alto. Su dati tenuti da parte riproduce la sovrapressione stampata dal programma entro l'1 % su 24 airburst su 24; uno scoppio su una traiettoria radente, come a Čeljabinsk, danneggia un'ellisse che questa sorgente rotonda non disegna.",
     "seaCoupling": "Un impatto sulla terraferma arriva al mare col cratere, se il bordo attraversa la costa, o con gli ejecta che cadono oltre la riva. Il deposito si assottiglia come r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47), quindi la massa di ejecta oltre una distanza d cala come 1/d: la frazione oltre la riva, R/d, scala l'energia con cui si forma la cavità d'acqua — un'ipotesi di Nimbus. Oltre l'isopaca di 1 m il mare non viene mosso.",
     "explosionWaveHeight": "Altezza dal cavo alla cresta H ≈ 40 500·W^0,54/R piedi in acque profonde (Glasstone & Dolan 1977 §6.119, entro circa il 35 %), oppure H ≈ 150·d·W^0,25/R in acque meno profonde di 100·W^0,25 piedi (§6.121); W in kilotoni, d la profondità dell'acqua. L'ampiezza mostrata è metà dell'altezza. La relazione contiene già la dispersione del treno d'onde.",
     "explosionWaveSource": "Dentro questo raggio la relazione dell'altezza non si usa: è dove l'altezza di Glasstone & Dolan sarebbe più ripida di quanto l'acqua possa reggere, H = 0,142·L·tanh(2πd/L) (Miche 1944), oppure il raggio massimo della bolla di gas, 128·W^0,25 piedi (§6.119), il maggiore dei due.",
@@ -1580,8 +1581,8 @@
         "note": "I 30 cm registrati da una boa a 1 242 km dal Tōhoku, su cui è tarato un controllo delle onde; i tempi d'arrivo degli tsunami, la cui fonte citata non esiste, per cui i loro test sono spenti; e la profondità dei grandi crateri, presa da uno studio su Venere attraverso un articolo successivo che lo cita."
       },
       "airburstShock": {
-        "item": "Quanto lontano arriva l'onda d'urto di un airburst non è validato",
-        "note": "A un'esplosione alta nel cielo un fattore tarato dà una portata maggiore. Per Čeljabinsk disegna l'anello dei danni leggeri a 183 km, oltre i 108 km fino a cui lo studio di quell'evento modella i vetri rotti, e porta la pressione più debole di quello studio a circa 1.200 km. Il fattore fu tarato su un'esplosione più bassa e non è stato ritarato."
+        "item": "L'onda d'urto di un airburst è un punto fermo, disegnato ad anelli rotondi",
+        "note": "Dal 15 settembre 2026 l'onda d'urto di un airburst è quella che disegna l'Earth Impact Effects Program, e ne riproduce i numeri entro l'1 %. Tratta lo scoppio come un punto fermo. A Čeljabinsk arriva a 1 kPa, abbastanza per rompere i vetri, solo fino a 17,6 km, mentre i vetri si ruppero su circa 10 000 km² — un cerchio di 56 km; a Tunguska il suo anello di 20 kPa è a 11,5 km, contro i 26,5 km della foresta abbattuta. Una sorgente in moto, mostrata come valore alto, arriva a 53,9 e 20,1 km. Un corpo su una traiettoria radente distribuisce l'energia lungo il percorso e danneggia un'ellisse."
       },
       "explosionProject": {
         "item": "Parti del modello delle esplosioni sono di questo progetto, non del manuale",

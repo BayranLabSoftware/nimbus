@@ -188,6 +188,26 @@ function RangeValue({ meters }: { meters: number }): JSX.Element {
 }
 
 /**
+ * An airburst's shock ring at the low end of the Earth Impact Effects
+ * Program's range, and — where a moving source carries it farther, within
+ * three burst altitudes — how far the high end reaches.
+ */
+function ShockRangeValue({ low, high }: { low: number; high: number }): JSX.Element {
+  const { t } = useTranslation();
+  return (
+    <>
+      <RangeValue meters={low} />
+      {high > low && (
+        <span className={styles.confidenceBand}>
+          {' '}
+          ({t('simulator.entryShockUpTo', { range: formatRange(high).label })})
+        </span>
+      )}
+    </>
+  );
+}
+
+/**
  * The width of a field's band as a reader can take it: a factor for a
  * log-normal scatter, a percentage for a linear one. A log-normal σ
  * printed as a percentage read "±110 %" for a band of three times
@@ -868,12 +888,6 @@ export function SimulatorPanel(): JSX.Element {
               <>
                 <SectionHeading labelKey="simulator.entryFlashLabel" />
                 <dl className={styles.result} aria-label={t('simulator.entryFlashLabel')}>
-                  <dt className={styles.resultLabel}>{t('simulator.entryAmplificationFactor')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.bolideAirburstAmplification')}>
-                      {result.data.entry.airburstAmplificationFactor.toFixed(2)} ×
-                    </CitationTooltip>
-                  </dd>
                   <dt className={styles.resultLabel}>{t('simulator.entryFlashFirstDegree')}</dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.thermal')}>
@@ -891,19 +905,44 @@ export function SimulatorPanel(): JSX.Element {
                 </dl>
                 <SectionHeading labelKey="simulator.entryShockLabel" />
                 <dl className={styles.result} aria-label={t('simulator.entryShockLabel')}>
+                  {result.data.entry.regime === 'COMPLETE_AIRBURST' && (
+                    <>
+                      <dt className={styles.resultLabel}>{t('simulator.entryBlastYield')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.airburstBlast')}>
+                          {formatMegatons(result.data.entry.blastYieldMegatons)}
+                        </CitationTooltip>
+                      </dd>
+                    </>
+                  )}
                   <dt className={styles.resultLabel}>{t('simulator.entryShockLightDamage')}</dt>
                   <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.blast')}>
-                      <RangeValue meters={result.data.entry.shockWaveRadii.lightDamage} />
+                    <CitationTooltip
+                      citation={t(
+                        result.data.entry.regime === 'COMPLETE_AIRBURST'
+                          ? 'citations.airburstBlast'
+                          : 'citations.blast'
+                      )}
+                    >
+                      <ShockRangeValue
+                        low={result.data.entry.shockWaveRadii.lightDamage}
+                        high={result.data.entry.shockWaveRadiiHigh.lightDamage}
+                      />
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.entryShockOnePsi')}</dt>
                   <dd className={styles.resultValue}>
-                    <RangeValue meters={result.data.entry.shockWaveRadii.onePsi} />
+                    <ShockRangeValue
+                      low={result.data.entry.shockWaveRadii.onePsi}
+                      high={result.data.entry.shockWaveRadiiHigh.onePsi}
+                    />
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.entryShockFivePsi')}</dt>
                   <dd className={styles.resultValue}>
-                    <RangeValue meters={result.data.entry.shockWaveRadii.fivePsi} />
+                    <ShockRangeValue
+                      low={result.data.entry.shockWaveRadii.fivePsi}
+                      high={result.data.entry.shockWaveRadiiHigh.fivePsi}
+                    />
                   </dd>
                 </dl>
               </>

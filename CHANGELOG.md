@@ -322,6 +322,26 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **An airburst blasts the ground as the Earth Impact Effects Program
+  has it.** Its shock rings were a surface burst's reach multiplied by a
+  factor for the thin air of the burst, up to 15 times, with a fitted
+  exponent and a cap from no source: the benchmark campaign measured the
+  rings 7.3 times the program's and 144 of 240 where the program has no
+  blast. They are now the program's own air blast as Collins et al.
+  publish it (2005 Eqs. 54, 57–58; 2017 Eq. 7): a still source at the
+  burst altitude, given the larger of the energy the body keeps there and
+  the energy it has lost, with the factor of two a moving source can add
+  within three burst altitudes printed beside each ring. The rules and
+  checks were pushed before any check ran (`docs/BENCHMARK_PROTOCOL.md`).
+  Held out, the 24 airbursts of the validation grid match the program
+  within 1 % at both ends; against the paper's shock-physics runs the law
+  reads 0.92×. At the two events it falls short, and both are declared:
+  Chelyabinsk's 1 kPa ring reaches 17.6 km where windows broke over some
+  10 000 km², and Tunguska's 20 kPa ring 11.5 km against 26.5 km of
+  flattened forest. Tunguska's rings move from 16.7, 49.1 and 91.4 km to
+  5.8, 26.4 and 44.2 km; Chelyabinsk's 29 km burst no longer draws any
+  (B-032).
+
 - **An impact lights fires as far as its fireball is seen, on a round
   Earth.** The ignition and sustain radii of an impact were the distances
   at which the flash would still carry enough heat with nothing in the way

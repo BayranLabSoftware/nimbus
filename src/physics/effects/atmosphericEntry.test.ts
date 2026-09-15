@@ -74,7 +74,9 @@ describe('atmospheric entry — Collins, Melosh & Marcus 2005', () => {
     expect(r.energyFractionToGround).toBeGreaterThan(0.9);
     const chicxulub = entry(15_000, 20_000, 45, 3_000);
     expect(chicxulub.energyFractionToGround).toBeGreaterThan(0.99);
-    expect(chicxulub.airburstAmplificationFactor).toBe(1);
+    // A swarm that strikes the ground blasts its air share like a ground
+    // impact: no range between a static and a moving source.
+    expect(chicxulub.shockWaveRadiiHigh).toEqual(chicxulub.shockWaveRadii);
   });
 
   it('keeps a body too strong to break whole, with no entry damage', () => {
@@ -94,12 +96,39 @@ describe('atmospheric entry — Collins, Melosh & Marcus 2005', () => {
     expect(larger.burstAltitude as number).toBeLessThan(small.burstAltitude);
   });
 
-  it('amplifies the shock more for the higher burst', () => {
-    const tunguska = entry(60, 15_000, 30, CHONDRITIC_DENSITY);
-    const chelyabinsk = entry(17, 19_000, 18, CHONDRITIC_DENSITY, 2e6);
-    expect(chelyabinsk.airburstAmplificationFactor).toBeGreaterThan(
-      tunguska.airburstAmplificationFactor
+  it("gives an airburst's blast the larger of the energy kept and the energy lost at the burst", () => {
+    // Collins et al. 2017: W = E₀ · max(f, 1 − f), f = (v_b / v₀)².
+    for (const r of [
+      entry(60, 15_000, 30, CHONDRITIC_DENSITY),
+      entry(17, 19_000, 18, CHONDRITIC_DENSITY, 2e6),
+      entry(30, 20_000, 45, 3_000),
+    ]) {
+      expect(r.regime).toBe('COMPLETE_AIRBURST');
+      expect(r.blastYieldMegatons).toBeGreaterThanOrEqual(r.atmosphericYieldMegatons / 2 - 1e-12);
+      expect(r.blastYieldMegatons).toBeLessThanOrEqual(r.atmosphericYieldMegatons);
+    }
+    // The 30 m stony body at 20 km/s keeps 27 % of its energy at the
+    // 15.3 km burst, so the blast is given the 73 % it lost.
+    const grid = entry(30, 20_000, 45, 3_000);
+    const f = ((grid.endVelocity as number) / 20_000) ** 2;
+    expect(grid.blastYieldMegatons / grid.atmosphericYieldMegatons).toBeCloseTo(
+      Math.max(f, 1 - f),
+      12
     );
+  });
+
+  it("draws an airburst's rings at the high end at least as far as at the low end", () => {
+    const r = entry(60, 15_000, 30, CHONDRITIC_DENSITY);
+    const low = r.shockWaveRadii;
+    const high = r.shockWaveRadiiHigh;
+    expect(high.fivePsi as number).toBeGreaterThan(low.fivePsi);
+    expect(high.onePsi as number).toBeGreaterThanOrEqual(low.onePsi);
+    expect(high.lightDamage as number).toBeGreaterThanOrEqual(low.lightDamage);
+    // Beyond three burst altitudes the two ends agree.
+    const threeHeights = 3 * (r.burstAltitude as number);
+    if ((low.lightDamage as number) > threeHeights) {
+      expect(high.lightDamage).toBe(low.lightDamage);
+    }
   });
 
   it('falls back to a whole body with no burst on inputs it cannot use', () => {

@@ -951,9 +951,7 @@ recorded event, carries one of these roles for each quantity it checks:
 
 Held out, the tables above read: death tolls **8 of 11** inside the band, waves **4 of 4** inside the record, eruption columns **3 of 3**. 4 of the 15 held-out rows inside their record are a record of nothing — no dead, or no wave.
 
-#### Tuned on it (9)
-
-**Tunguska 1908, blast.** The row checks the energy the preset carries against the 3–30 Mt the flattened forest allows, and two coefficients of the entry model were set on this event: PENETRATION_COEFFICIENT is "tuned against Tunguska + Chelyabinsk observations", and SACHS_BETA = 5/3 is "a fitted value, chosen so that Chelyabinsk and Tunguska land near their damage" (effects/atmosphericEntry.ts). The altitude factor it sets is not validated by any record: see the declared gaps. The energy itself is inferred from the forest.
+#### Tuned on it (8)
 
 **Beirut 2020, toll.** The conventional-blast mortality bands (CONVENTIONAL_BLAST_BANDS in casualties.ts) were written after OTA's nuclear bands put this row at fifty times the record. They are composed from Glasstone & Dolan's injury thresholds rather than fitted to the 218, but they were made with this row in view.
 
@@ -971,7 +969,9 @@ Held out, the tables above read: death tolls **8 of 11** inside the band, waves 
 
 **Storegga 8200 BP, wave.** The submarine prefactor, VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE = 0.005, was calibrated on a 5–10 m source amplitude credited to Bondevik et al. 2005, who give run-up read from deposits, not a source amplitude; the far-field band is the project’s inference from the same paper.
 
-#### Input inferred from it (2)
+#### Input inferred from it (3)
+
+**Tunguska 1908, blast.** The row checks the energy the preset carries against the 3–30 Mt the flattened forest allows, and that energy is itself inferred from the forest. Nothing of the entry or the blast is set on the event any more: the entry is Collins et al. 2005 Eqs. 8–20 since 14 September 2026, and the blast the Earth Impact Effects Program's since 15 September 2026 (effects/airburstBlast.ts), which draws the 20 kPa ring at 11.5 km against the 26.5 km of the flattened forest — a declared gap.
 
 **Meteor Crater, crater.** The impactor — Kring 2007's 50 m iron at 12.8 km/s — is not observed: its size and speed are estimates made from the crater itself and from the unmelted fragments around it (Melosh & Collins 2005 give about 40 m at 12 km/s).
 
@@ -1042,7 +1042,7 @@ these, for the quantity the panel is showing.
 
 **impact** (3)
 
-- Tunguska 1908 — blast (gated, tuned on it) — Boslough & Crawford 2008; Chyba 1993 — 3–30 Mt from the flattened forest
+- Tunguska 1908 — blast (gated, input inferred from it) — Boslough & Crawford 2008; Chyba 1993 — 3–30 Mt from the flattened forest
 - Meteor Crater — crater (gated, input inferred from it) — Kring 2007 — a 1.2 km crater from a 50 m iron at 12.8 km/s
 - Chicxulub — crater (gated, input inferred from it) — Hildebrand 1991, Morgan 2016 — a final crater of about 180 km
 
@@ -1186,18 +1186,20 @@ Each figure is simulator over program, over the pairs where both answer.
 | Energy before entry | 81 | 1.00× | 0.98× | 1.00× | 1.03× | 0.98× – 1.03× |
 | Breakup altitude | 81 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.01× |
 | Burst altitude (airbursts) | 24 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.05× |
+| Air-blast overpressure at the distance (airbursts) | 24 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.00× |
+| The same, high end within three burst altitudes | 24 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.00× |
 | Speed at the ground | 57 | 1.00× | 0.99× | 1.00× | 1.01× | 0.97× – 1.04× |
 | Transient crater diameter | 57 | 1.00× | 0.99× | 1.00× | 1.01× | 0.96× – 1.03× |
 | Final crater diameter | 57 | 1.00× | 0.98× | 1.00× | 1.01× | 0.96× – 1.02× |
 | Final crater depth | 57 | 1.29× | 1.00× | 1.35× | 1.36× | 0.99× – 1.40× |
-| Air-blast overpressure at the distance | 57 | 1.47× | 0.77× | 1.65× | 2.77× | 0.24× – 8.44× |
+| Air-blast overpressure at the distance (ground impacts) | 57 | 1.47× | 0.77× | 1.65× | 2.77× | 0.24× – 8.44× |
 | Fireball radius | 57 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.00× |
 | Ejecta blanket edge (1 cm to 100 m) | 277 | 1.00× | 1.00× | 1.00× | 1.00× | 0.99× – 1.00× |
 
-Outcome, program → simulator: airburst → COMPLETE_AIRBURST: 24; ground → PARTIAL_AIRBURST: 57. Crater, program → simulator: complex → complex: 49; none → none: 24; simple → simple: 8. Until 14 September 2026 the simulator's entry was a classifier tuned on Chelyabinsk and Tunguska, and it burst in the air 21 of the 57 impacts the program brings to the ground (B-023); it now integrates the same pancake equations (Collins et al.'s Eqs. 8–20), and `eiepComparison.test.ts` gates the outcome, the entry, the craters, the ejecta blanket and the fireball to the program's rounding. Two quantities part by design:
+Outcome, program → simulator: airburst → COMPLETE_AIRBURST: 24; ground → PARTIAL_AIRBURST: 57. Crater, program → simulator: complex → complex: 49; none → none: 24; simple → simple: 8. Until 14 September 2026 the simulator's entry was a classifier tuned on Chelyabinsk and Tunguska, and it burst in the air 21 of the 57 impacts the program brings to the ground (B-023); it now integrates the same pancake equations (Collins et al.'s Eqs. 8–20), and `eiepComparison.test.ts` gates the outcome, the entry, the craters, the ejecta blanket and the fireball to the program's rounding. Since 15 September 2026 the air blast of an airburst is the program's own (Collins et al. 2005 Eqs. 54, 57–58 and Collins et al. 2017 Eq. 7, with their airburst energy and factor-of-two range; B-032), gated at 1 % at both ends on these rows, which were held out when it was adopted (`docs/BENCHMARK_PROTOCOL.md`). Two quantities part by design:
 
 - **Complex crater depth.** The simulator follows Eq. 28 of the paper, d = 0.4 D^0.3; the online program prints about three quarters of that for every complex crater of the grid. Which the authors now intend is a question for them, and the simulator keeps the published relation until it is answered.
-- **Air blast.** The simulator reads Kinney & Graham's free-air fit on the energy that reaches the ground; the program, the air-blast scaling its authors give. The two part from a quarter to eight times across the grid, and neither is a measurement of an impact's blast.
+- **Air blast of an impact that reaches the ground.** The simulator reads Kinney & Graham's free-air fit on the energy that reaches the ground; the program, the air-blast scaling its authors give. The two part from a quarter to eight times across the grid, and neither is a measurement of an impact's blast.
 - **Strength.** Where a strength class is chosen — every impact preset but Tunguska, and the custom panel's taxonomy — the simulator takes it (Popova et al. 2011); the grid, like the program, takes the strength of Collins et al.'s Eq. 9 from density.
 
 ### The intensity rings against their authors' code
@@ -1234,7 +1236,7 @@ shows.
 - **Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).
 - **Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).
 - **Three numbers are not traced to a source read here.** The 30 cm at DART 21413 that the Tōhoku wave row is tuned on is quoted from Satake et al. 2013 without the paper having been read in the source review; the arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005.
-- **An airburst's shock is stretched by a fitted altitude factor that no record validates.** At Chelyabinsk, which bursts at 29.0 km on Collins et al.'s entry equations, the factor is 13.3 and the 0.5 psi ring reaches 183 km, beyond the 108 km to which Popova et al. 2013 model window damage — and theirs is the reach of 500 Pa, which the amplified model carries about 1 230 km, 92 km without the factor. The factor was fitted when a tuned classifier burst the preset at 22.1 km and has not been refitted. Tunguska's blast row checks the energy, not the factor (`effects/atmosphericEntry.ts`).
+- **An airburst's blast is a point that does not move, drawn as round rings.** Since 15 September 2026 it is the Earth Impact Effects Program's own air blast (Collins et al. 2005 and 2017; B-032), reproduced within 1 % on the airburst rows above, which were held out when it was adopted. What that model is not was checked against rules written first (`docs/BENCHMARK_PROTOCOL.md`): against the shock-physics runs of Collins et al. 2017, Table 2, its figures are 0.92× theirs, the median off by a factor of 1.21; at Chelyabinsk its 1 kPa ring reaches 17.6 km, against the 56 km radius of the ~10 000 km² over which windows broke (0.31×), and at Tunguska its 20 kPa ring 11.5 km, against the 26.5 km radius of the ~2 200 km² of flattened forest (0.43×) — both beyond a factor of two. The high end of the program's range, a moving source within three burst altitudes, reaches 53.9 and 20.1 km. A shallow, high burst like Chelyabinsk spreads its energy along its path and breaks windows over an ellipse, which Collins et al. model with a line source; the two presets' energies are estimates. Tunguska's blast row checks the energy, not the blast (`effects/airburstBlast.ts`).
 - **Parts of the explosion model are the project's, not the book's.** Burn thresholds are fixed fluences of 8, 5 and 2 cal/cm² where Glasstone & Dolan make them grow with yield; the initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).
 - **No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.
 - **A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).

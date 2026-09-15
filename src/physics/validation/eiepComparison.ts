@@ -1,3 +1,4 @@
+import { airburstOverpressureRange } from '../effects/airburstBlast.js';
 import { ejectaBlanketOuterEdge } from '../effects/ejecta.js';
 import { impactFireballRadius } from '../effects/blastWave.js';
 import { peakOverpressure } from '../events/explosion/overpressure.js';
@@ -12,10 +13,12 @@ import { EIEP_REFERENCE, type EiepRow } from './eiepReference.js';
  * implementation of the equations the simulator cites prints for it.
  *
  * Where the two differ by design the difference is still measured, and
- * the report names the design: the simulator's air blast is Kinney &
- * Graham's free-air fit on the energy that reaches the ground, the
- * program's the scaling Collins et al. give; the simulator's strength
- * classes are Popova et al.'s, the program's a function of density.
+ * the report names the design: the air blast of an impact that reaches
+ * the ground is Kinney & Graham's free-air fit on the energy that reaches
+ * it here, the program's the scaling Collins et al. give; the simulator's
+ * strength classes are Popova et al.'s, the program's a function of
+ * density. The air blast of an airburst is the program's own
+ * (effects/airburstBlast.ts), at both ends of its range.
  */
 
 /** Collins et al. 2005's target density for each target (Section 3). */
@@ -43,6 +46,8 @@ export type EiepQuantity =
   | 'finalDiameter'
   | 'finalDepth'
   | 'overpressure'
+  | 'airburstOverpressure'
+  | 'airburstOverpressureHigh'
   | 'fireballRadius'
   | 'ejectaEdge';
 
@@ -79,6 +84,20 @@ export function eiepRatios(rows: readonly EiepRow[] = EIEP_REFERENCE): EiepRatio
     pair('transientDiameter', r.crater.transientDiameter, row.transientDiameterM);
     pair('finalDiameter', r.crater.finalDiameter, row.finalDiameterM);
     pair('finalDepth', r.crater.depth, row.finalDepthM);
+    if (
+      airburst &&
+      r.entry.regime === 'COMPLETE_AIRBURST' &&
+      row.overpressurePa !== null &&
+      row.overpressurePa !== undefined
+    ) {
+      const p = airburstOverpressureRange({
+        groundRange: m(row.distanceKm * 1_000),
+        burstAltitude: r.entry.burstAltitude,
+        blastYield: J(r.entry.blastYieldMegatons * 4.184e15),
+      });
+      pair('airburstOverpressure', p.low, row.overpressurePa[0]);
+      pair('airburstOverpressureHigh', p.high, row.overpressurePa[1]);
+    }
     if (!airburst && row.overpressurePa !== null && row.overpressurePa !== undefined) {
       pair(
         'overpressure',

@@ -4,6 +4,10 @@ import { fileURLToPath } from 'node:url';
 import { thermalHorizonRadius } from '../../src/physics/casualties.js';
 import { IMPACT_BLAST_COUPLING, IMPACT_LUMINOUS_EFFICIENCY } from '../../src/physics/constants.js';
 import { impactFireballRadius } from '../../src/physics/effects/blastWave.js';
+import {
+  airburstOverpressureRange,
+  airburstReach,
+} from '../../src/physics/effects/airburstBlast.js';
 import { ejectaBlanketOuterEdge } from '../../src/physics/effects/ejecta.js';
 import { peakOverpressure } from '../../src/physics/events/explosion/overpressure.js';
 import { thirdDegreeBurnRadius } from '../../src/physics/events/explosion/thermal.js';
@@ -29,17 +33,24 @@ import { printedResolution, printStats, summarise, type Pair } from './stats.js'
  * Nimbus model is evaluated at the program's threshold, the way Nimbus
  * builds its own rings:
  *
- * - air blast: the larger of the ground-coupled shock (Kinney & Graham on
- *   half the energy that reaches the ground) and the entry shock (half the
- *   energy left in the air, its reach lifted by the burst-altitude factor),
- *   as `simulate.ts` combines them;
+ * - air blast: for an airburst, the program's own static source at the
+ *   burst altitude (effects/airburstBlast.ts, adopted after the campaign:
+ *   docs/BENCHMARK_PROTOCOL.md, "After the campaign"), low and high ends,
+ *   compared as class A; otherwise the larger of the ground-coupled shock
+ *   (Kinney & Graham on half the energy that reaches the ground) and the
+ *   entry shock at the ground (half the energy left in the air), as
+ *   `simulate.ts` combines them. Until 15 September 2026 the entry shock of
+ *   an airburst was that reach lifted by a burst-altitude factor, and the
+ *   campaign's results in benchmark/results/ were measured on it;
  * - thermal: the program's clothing-ignition fluence, 1 MJ/m² times the
  *   impact energy in megatons to the 1/6 (Collins et al. 2005, Table 3,
  *   read back from the program's own radii), through Nimbus's burn-radius
  *   inversion with the impact luminous efficiency.
  *
  * The program's /map page lists the air-blast radii of an airburst as 20,
- * 5 and 1 kPa, smallest first, as its impact.js labels them. For an impact
+ * 5 and 1 kPa, smallest first, as its impact.js labels them; they lie
+ * where the program's own printed overpressure is about 26.4, 5.5 and
+ * 1.6 kPa, so they stay class B. For an impact
  * that reaches the ground it lists four radii, and the same labels read
  * them one threshold off: their third and fourth radii fall at the scaled
  * distances of the airburst's 20 and 5 kPa radii (to within the rounding
@@ -155,24 +166,28 @@ export function comparePairs(eiepPath: string): Pair[] {
     const gf = Math.max(r.entry.energyFractionToGround, 0);
     const groundEnergy = ke * gf;
     const atmosphericEnergy = r.entry.atmosphericYieldMegatons * JOULES_PER_MEGATON;
-    const lift = r.entry.airburstAmplificationFactor;
     const nimbusAirburst = r.entry.regime === 'COMPLETE_AIRBURST';
     const eiepAirburst = line.burstAltitudeM !== null && line.burstAltitudeM !== undefined;
     const water = c.target === 'water';
     const surfaceBlast = groundEnergy * IMPACT_BLAST_COUPLING;
     const entryBlast = atmosphericEnergy * IMPACT_BLAST_COUPLING;
-    const nimbusOverpressure = (distance: number): number =>
-      Math.max(
+    const burst = {
+      burstAltitude: r.entry.burstAltitude,
+      blastYield: J(r.entry.blastYieldMegatons * JOULES_PER_MEGATON),
+    };
+    const nimbusOverpressure = (distance: number): { low: number; high: number } => {
+      if (nimbusAirburst) {
+        const p = airburstOverpressureRange({ ...burst, groundRange: m(distance) });
+        return { low: p.low, high: p.high };
+      }
+      const p = Math.max(
         surfaceBlast > 0
           ? peakOverpressure({ distance: m(distance), yieldEnergy: J(surfaceBlast) })
           : 0,
-        entryBlast > 0
-          ? peakOverpressure({
-              distance: m(distance / lift),
-              yieldEnergy: J(entryBlast),
-            })
-          : 0
+        entryBlast > 0 ? peakOverpressure({ distance: m(distance), yieldEnergy: J(entryBlast) }) : 0
       );
+      return { low: p, high: p };
+    };
     const inverted = (energy: number, pressure: number): number => {
       if (energy <= 0) return 0;
       try {
@@ -182,17 +197,27 @@ export function comparePairs(eiepPath: string): Pair[] {
       }
     };
     const nimbusBlastRadius = (pressure: number): number =>
-      Math.max(inverted(surfaceBlast, pressure), lift * inverted(entryBlast, pressure));
+      nimbusAirburst
+        ? airburstReach(Pa(pressure), burst.burstAltitude, burst.blastYield)
+        : Math.max(inverted(surfaceBlast, pressure), inverted(entryBlast, pressure));
 
     if (line.overpressurePa !== null && line.overpressurePa !== undefined) {
-      push(
-        eiepAirburst ? 'overpressureAtDistanceAirburst' : 'overpressureAtDistanceGround',
-        'B',
-        `${line.distanceKm.toString()} km`,
-        nimbusOverpressure(line.distanceKm * 1_000),
-        line.overpressurePa[0],
-        { bin: `${line.distanceKm.toString()} km` }
-      );
+      const at = nimbusOverpressure(line.distanceKm * 1_000);
+      const detail = `${line.distanceKm.toString()} km`;
+      if (eiepAirburst) {
+        push('overpressureAtDistanceAirburst', 'A', detail, at.low, line.overpressurePa[0], {
+          bin: detail,
+          resolution: printedResolution(line.overpressurePa[0]),
+        });
+        push('overpressureAtDistanceAirburstHigh', 'A', detail, at.high, line.overpressurePa[1], {
+          bin: detail,
+          resolution: printedResolution(line.overpressurePa[1]),
+        });
+      } else {
+        push('overpressureAtDistanceGround', 'B', detail, at.low, line.overpressurePa[0], {
+          bin: detail,
+        });
+      }
     }
 
     if (seenCase.has(c.id)) continue;
