@@ -951,16 +951,22 @@ export const IMPACT_PRESETS = {
     } satisfies ImpactScenarioInput,
   },
   /** Chelyabinsk superbolide, 15 February 2013 — the best-instrumented
-   *  airburst in history (Popova et al. 2013, Science 342). */
+   *  airburst in history (Popova et al. 2013, Science 342). The body is
+   *  theirs: 19.16 km/s at 18.3° from the horizon (Table 1), and 19.8 m
+   *  for their 590 kt at the 3.3 g/cm³ of the recovered LL5 meteorites.
+   *  Until 15 September 2026 the preset flew 17 m at 3.0 g/cm³, 0.33 Mt
+   *  (B-033). The strength stays at the S-type class: Popova et al.
+   *  model a fragmentation that starts at 0.2 MPa and hardens, which one
+   *  strength does not represent. */
   CHELYABINSK: {
     name: 'Chelyabinsk 2013',
-    note: 'S-type bolide airburst at 18°, 15 Feb 2013 — Popova et al. 2013 Science. A complete airburst at a shallow angle: no crater and no ejecta blanket.',
+    note: 'LL chondrite airburst at 18.3°, 15 Feb 2013 — a 19.8 m body at 19.16 km/s, Popova et al. 2013 Science. A complete airburst at a shallow angle: no crater and no ejecta blanket.',
     input: {
-      impactorDiameter: m(17),
-      impactVelocity: mps(19_000),
-      impactorDensity: CHONDRITIC_DENSITY,
+      impactorDiameter: m(19.8),
+      impactVelocity: mps(19_160),
+      impactorDensity: kgPerM3(3_300),
       targetDensity: CRUSTAL_ROCK_DENSITY,
-      impactAngle: degreesToRadians(deg(18)),
+      impactAngle: degreesToRadians(deg(18.3)),
       surfaceGravity: STANDARD_GRAVITY,
       impactorStrength: IMPACTOR_STRENGTH.S_TYPE,
     } satisfies ImpactScenarioInput,

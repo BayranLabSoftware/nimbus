@@ -342,6 +342,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   5.8, 26.4 and 44.2 km; Chelyabinsk's 29 km burst no longer draws any
   (B-032).
 
+- **The Chelyabinsk preset flies the body that was measured.** It flew
+  17 m of 3.0 g/cm³ at 19 km/s and 18°, 0.33 Mt; the source it cites,
+  Popova et al. 2013, measured 19.16 km/s at 18.3° and derives 19.8 m at the
+  3.3 g/cm³ of the recovered meteorites, 590 kt. The preset takes those
+  values, written into the benchmark protocol before it ran again (B-033):
+  it bursts at 27.1 km against the 27.0 km observed, with 0.59 Mt. Its
+  window-damage ring (1 kPa) reaches 30 km where windows broke over some
+  10 000 km², inside the factor of two the check allows — a re-run, not a
+  validation. The blast stays a point: the only analytic line source does
+  not hold so close to the trail, and the declared gap says what a point
+  misses, 0.7 kPa in the city against about 3 kPa. The project had quoted
+  Popova et al.'s modelled damage as reaching 108 km; they give 120 km.
+
 - **An impact lights fires as far as its fireball is seen, on a round
   Earth.** The ignition and sustain radii of an impact were the distances
   at which the flash would still carry enough heat with nothing in the way

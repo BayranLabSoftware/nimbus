@@ -584,6 +584,21 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(chelyabinsk.damage.overpressure5psi as number).toBe(0);
   });
 
+  it('B-033 The Chelyabinsk preset flies the body Popova et al. 2013 measured', () => {
+    // Pre-fix: 17 m at 3.0 g/cm³, 19 km/s and 18°, 0.33 Mt. Popova et al.
+    // 2013 (Science 342, Table 1 and text): 19.16 km/s at 18.3° from the
+    // horizon, and 19.8 m for their 590 ± 50 kt at the 3.3 g/cm³ of the
+    // recovered meteorites.
+    const input = IMPACT_PRESETS.CHELYABINSK.input;
+    expect(input.impactorDiameter as number).toBeCloseTo(19.8, 6);
+    expect(input.impactorDensity as number).toBe(3_300);
+    expect(input.impactVelocity as number).toBe(19_160);
+    expect(((input.impactAngle as number) * 180) / Math.PI).toBeCloseTo(18.3, 6);
+    const kilotons = (simulateImpact(input).impactor.kineticEnergyMegatons as number) * 1_000;
+    expect(kilotons).toBeGreaterThan(540);
+    expect(kilotons).toBeLessThan(640);
+  });
+
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
     // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
@@ -617,10 +632,10 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-025 and B-027..B-032 (B-010 CLOSED via inputSchema.ts +
+    // B-001..B-025 and B-027..B-033 (B-010 CLOSED via inputSchema.ts +
     // safeRun.ts; B-007 superseded by B-011; B-026, the population of a
     // planetary circle, is named in docs/ROADMAP.md and not yet entered).
-    const expectedRows = 31;
-    expect(expectedRows).toBe(31);
+    const expectedRows = 32;
+    expect(expectedRows).toBe(32);
   });
 });

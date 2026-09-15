@@ -1165,7 +1165,7 @@ digging 1.45 km against the 1.2 km observed, closer than the 1.55 km
 before. What moved further from its record is downstream: the altitude
 factor on an airburst's shock was fitted when Chelyabinsk burst at 22 km,
 and at 29 km it carries the 0.5 psi ring to 183 km, against the 96 km it
-drew before and the 108 km to which Popova et al. model window damage. The
+drew before and the 120 km to which Popova et al. model window damage. The
 factor is a declared gap and stays unrefitted.
 
 ### The airburst's blast, the program's own (15 September 2026)
@@ -1243,6 +1243,45 @@ and 91.4 km to 5.8, 26.4 and 44.2 km (13.1 km for 5 psi at the upper
 figure), and Chelyabinsk's from 33.5, 98.3 and 183 km to none. The flash,
 a swarm that strikes the ground and the blast of a ground impact are
 unchanged.
+
+#### Corrected the same day: Chelyabinsk's inputs, and no line source
+
+The check that flagged Chelyabinsk ran on a preset that was not the body its
+source measured: 17 m of 3.0 g/cm³ at 19 km/s and 18°, 0.33 Mt, where Popova
+et al. 2013 give 19.16 km/s at 18.3° from the horizon and derive 19.8 m for
+their 590 kt at the 3.3 g/cm³ of the recovered meteorites (B-033). The
+correction was written into the protocol and pushed before the preset ran
+again (`docs/BENCHMARK_PROTOCOL.md`, commit `7711464`), with the strength
+left at the S-type class and nothing else moved. The preset now bursts at
+27.1 km, against the 27.0 km observed, releasing 0.59 Mt with 0.30 Mt in the
+blast; it raises 1.6 kPa under the burst and still draws no 0.5 psi ring.
+
+Re-run, and not a validation, since the check had been seen: 1 kPa reaches
+30.2 km against the 56 km radius of the windows broken over ~10 000 km²
+(0.54×, inside the factor of two), and 68.0 km at the upper figure; 500 Pa,
+the overpressure Popova et al. take for the edge of the damage, reaches
+68.0 km, against the 120 km to which they model it across the path for
+520 kt. A comparison not written beforehand, given because it says where the
+point fails: in the city, 45 km from the point of peak brightness (their
+Table S11), the law gives 0.74 kPa, where Brown et al. 2013 read 3.2 ±
+0.6 kPa from the broken windows and 2.6 kPa from the speed of glass shards,
+and Avramenko et al. 2014 1.6–1.9 kPa from car exhaust. Tunguska is unchanged.
+
+Why the blast is still a point. The damage was elongated across the path —
+about 180 km north to south against 80 km east to west — because a body on a
+shallow path deposits its energy along a line. The one analytic model of
+that line source, ReVelle's weak-shock cylindrical blast (1974, 1976), is
+"largely inapplicable" beneath Chelyabinsk's trail by the account of those
+who applied it there, since within one blast radius the ambient pressure
+changes by a factor of several (Gi, Brown & Aftosmis 2018); benchmarked on
+smaller bolides it stays within a factor of about two of a 3D solver's
+footprint areas (their Table 1). The elongated footprint has been reproduced
+only by three-dimensional hydrocodes — SOVA (Popova et al. 2013), Cart3D
+(Aftosmis et al. 2016), CTH (Brown et al. 2013) — whose authors find the
+damaged area set mainly by the total energy and its shape by how the energy
+is spread along the path. A line source built here would be a model of this
+project's, and none is added. Until this section the project quoted Popova et
+al.'s modelled damage as reaching 108 km; their text says 120 km.
 
 ### Held out by rule (14 September 2026)
 

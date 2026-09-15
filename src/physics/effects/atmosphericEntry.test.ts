@@ -37,16 +37,17 @@ describe('atmospheric entry — Collins, Melosh & Marcus 2005', () => {
   });
 
   it('bursts Chelyabinsk near the 27.0 km Popova et al. 2013 measured', () => {
-    // The preset: 17 m, 19 km/s, 18° from the horizontal, an S-type
-    // chondrite at 2 MPa. Nothing in the equations was tuned on it.
-    const r = entry(17, 19_000, 18, CHONDRITIC_DENSITY, IMPACTOR_STRENGTH.S_TYPE);
+    // The preset: Popova et al.'s 19.8 m of 3.3 g/cm³ at 19.16 km/s, 18.3°
+    // from the horizontal, at the S-type class's 2 MPa. Nothing in the
+    // equations was tuned on it.
+    const r = entry(19.8, 19_160, 18.3, 3_300, IMPACTOR_STRENGTH.S_TYPE);
     expect(r.regime).toBe('COMPLETE_AIRBURST');
     expect(r.burstAltitude as number).toBeGreaterThan(25_000);
-    expect(r.burstAltitude as number).toBeLessThan(32_000);
+    expect(r.burstAltitude as number).toBeLessThan(29_000);
     expect(r.energyFractionToGround).toBe(0);
-    // All of the 0.33 Mt goes into the air.
-    expect(r.atmosphericYieldMegatons).toBeGreaterThan(0.3);
-    expect(r.atmosphericYieldMegatons).toBeLessThan(0.36);
+    // All of the 0.59 Mt goes into the air.
+    expect(r.atmosphericYieldMegatons).toBeGreaterThan(0.55);
+    expect(r.atmosphericYieldMegatons).toBeLessThan(0.62);
   });
 
   it('bursts Tunguska between 6 and 12 km, with its strength from density', () => {

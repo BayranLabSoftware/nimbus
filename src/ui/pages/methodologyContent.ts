@@ -693,9 +693,10 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'chelyabinsk-validation',
         name: 'Chelyabinsk 2013 calibration anchor',
-        formula: '17 m, 19 km/s, 18°, Y = 2 MPa → burst at 29.0 km (observed 27.0 km)',
+        formula:
+          '19.8 m, 3.3 g/cm³, 19.16 km/s, 18.3°, Y = 2 MPa → burst at 27.1 km (observed 27.0 km)',
         description:
-          'Popova et al. 2013 measured an entry at 19.16 ± 0.30 km/s and a burst at 27.0 km, and derived a diameter of 19.8 ± 4.6 m and an energy of 470–590 kt. On Collins et al.’s equations, which nothing here was tuned on, the preset bursts at 29.0 km, 7 % high, releasing 0.33 Mt; the strength class, S-type at 2 MPa, is the preset’s choice. Until 14 September 2026 the tuned classifier burst it at 22.1 km.',
+          'Popova et al. 2013 measured an entry at 19.16 ± 0.30 km/s and 18.3° and a burst at 27.0 km, and derived a diameter of 19.8 ± 4.6 m for their 590 ± 50 kt at the 3.3 g/cm³ of the recovered meteorites. The preset flies that body: on Collins et al.’s equations, which nothing here was tuned on, it bursts at 27.1 km, releasing 0.59 Mt; the strength class, S-type at 2 MPa, is the preset’s choice. Until 15 September 2026 the preset flew 17 m at 3.0 g/cm³, 0.33 Mt, bursting at 29.0 km (B-033); until 14 September the tuned classifier burst that body at 22.1 km.',
         citation: popova2013,
       },
       {
@@ -771,7 +772,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Atmospheric airburst yield',
         formula: 'E_atm = (1 − gf) · E_kinetic',
         description:
-          'Energy released in the air during entry: none counted for a body that stays whole, all of it for an airburst — the Tunguska preset’s 9.1 Mt and Chelyabinsk’s 0.33 Mt — and the share drag took for a swarm that still strikes the ground, 27 % for the Meteor Crater preset. gf = (v_end / v₀)² from Collins et al.’s entry equations. Drives the entry-damage radii below.',
+          'Energy released in the air during entry: none counted for a body that stays whole, all of it for an airburst — the Tunguska preset’s 9.1 Mt and Chelyabinsk’s 0.59 Mt — and the share drag took for a swarm that still strikes the ground, 27 % for the Meteor Crater preset. gf = (v_end / v₀)² from Collins et al.’s entry equations. Drives the entry-damage radii below.',
         citation: collins2005,
       },
       {
@@ -780,7 +781,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'W = E₀ · max(f, 1 − f),  f = (v_b / v₀)² ;  r₁ = r / W_kt^⅓,  z₁ = z_b / W_kt^⅓ ;  regular: p = 3.14 × 10¹¹ (r₁² + z₁²)^(−1.3) + 1.8 × 10⁷ (r₁² + z₁²)^(−0.565) ;  Mach (z₁ < 550 m, r₁ ≥ 550 z₁ / 1.2(550 − z₁)): p = (p_x r_x / 4r₁)(1 + 3 (r_x / r₁)^1.3),  p_x = 75 kPa,  r_x = 289 + 0.65 z₁ ;  within r < 3 z_b: p to 2p',
         description:
-          'The Earth Impact Effects Program’s air blast, as its authors publish it: a still source at the burst altitude, given the larger of the energy the body keeps there and the energy it has lost, scaled to one kiloton (Collins et al. 2005 Eq. 57) and read off fits to nuclear tests — the regular reflection region of Collins et al. 2017 Eq. 7, which replaced the 2005 Eqs. 55–56 because they attenuated high bursts too fast, and beyond the edge of the Mach region (2005 Eq. 58) the surface-burst relation with its crossover moved out by the burst altitude (Eq. 54). Their shock-physics runs found a moving source up to twice as strong within three burst altitudes, printed as the upper figure. Nothing in it is Nimbus’s: held out, it reproduces the program’s printed overpressure within 1 % on 24 of 24 airbursts. For the Tunguska preset: 5 psi at 5.8 km (13.1 km moving), 1 psi at 26.4 km, 0.5 psi at 44.2 km; Chelyabinsk’s 0.18 Mt at 29 km raises about 1 kPa under the burst and draws no ring, where windows broke over some 10 000 km² — a burst on a shallow path spreads along a line and damages an ellipse, which this round source does not draw. Until 15 September 2026 the rings were a surface-burst reach times a fitted altitude factor, up to 15×.',
+          'The Earth Impact Effects Program’s air blast, as its authors publish it: a still source at the burst altitude, given the larger of the energy the body keeps there and the energy it has lost, scaled to one kiloton (Collins et al. 2005 Eq. 57) and read off fits to nuclear tests — the regular reflection region of Collins et al. 2017 Eq. 7, which replaced the 2005 Eqs. 55–56 because they attenuated high bursts too fast, and beyond the edge of the Mach region (2005 Eq. 58) the surface-burst relation with its crossover moved out by the burst altitude (Eq. 54). Their shock-physics runs found a moving source up to twice as strong within three burst altitudes, printed as the upper figure. Nothing in it is Nimbus’s: held out, it reproduces the program’s printed overpressure within 1 % on 24 of 24 airbursts. For the Tunguska preset: 5 psi at 5.8 km (13.1 km moving), 1 psi at 26.4 km, 0.5 psi at 44.2 km; Chelyabinsk’s 0.30 Mt at 27 km raises 1.6 kPa under the burst and draws no 0.5 psi ring, and 0.7 kPa in the city 45 km away, where the broken windows put about 3 kPa (Brown et al. 2013) — a burst on a shallow path spreads its energy along a line and damages an ellipse that reaches farthest across it, which this round source does not draw. The only analytic line source, ReVelle’s weak shock, is largely inapplicable so close to such a trail (Gi, Brown & Aftosmis 2018); only three-dimensional hydrocodes have drawn the shape. Until 15 September 2026 the rings were a surface-burst reach times a fitted altitude factor, up to 15×.',
         citation: collins2017,
       },
       {
@@ -1605,7 +1606,7 @@ export const VALIDATION_ROSTER: ValidationEntry[] = [
   {
     event: 'Chelyabinsk',
     year: 2013,
-    note: 'Popova et al. 2013 / Brown et al. 2013 — burst at 27 km, 400–600 kt, window damage modelled to 108 km',
+    note: 'Popova et al. 2013 / Brown et al. 2013 — burst at 27 km, 400–600 kt, window damage modelled to 120 km',
   },
   // ─── Explosions ─────────────────────────────────────────────────
   {

@@ -430,10 +430,13 @@ the candidates for re-tuning:
   nearly 50 m high. Storegga's on a 5–10 m source amplitude that Bondevik
   et al. 2005 do not give.
 - **An airburst's shock radii.** Replaced on 15 September 2026 by the
-  Earth Impact Effects Program's own air blast (B-032, docs/SCIENCE.md).
-  What stays open is the source's shape: a still point draws Chelyabinsk's
-  1 kPa ring at 17.6 km where windows broke over ~10 000 km², and a line
-  source along the path would be the next model.
+  Earth Impact Effects Program's own air blast (B-032, docs/SCIENCE.md),
+  and Chelyabinsk's preset now flies the body Popova et al. 2013 measured
+  (B-033). What stays open is the source's shape: a still point draws the
+  1 kPa ring at 30 km and gives 0.7 kPa in the city where the windows say
+  about 3 kPa. No analytic line source holds that close to such a trail
+  (Gi, Brown & Aftosmis 2018); the next model wants a 3D solver's results
+  to stand on.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

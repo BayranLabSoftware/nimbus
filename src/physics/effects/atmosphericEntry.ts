@@ -127,7 +127,7 @@ export interface AtmosphericEntryResult {
   /** Thermal-flash burn radii at ground level, from the explosion
    *  module's burn fluences with the impact luminous efficiency. Not
    *  calibrated on an event: for the Chelyabinsk preset the first-degree
-   *  radius is ≈ 2 km, while Popova et al. (2013) report a mild sunburn,
+   *  radius is ≈ 2.7 km, while Popova et al. (2013) report a mild sunburn,
    *  from ultraviolet, 30 km from the point of peak brightness. 0 for
    *  INTACT. */
   flashBurnRadii: {

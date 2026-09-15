@@ -1006,12 +1006,12 @@
       },
       "breakupAltitude": {
         "name": "Breakup altitude (h_b)",
-        "definition": "Altitude at which the ram pressure first exceeds the body's strength and it begins to break up, from Collins et al.'s analytic approximation. For the Chelyabinsk preset (17 m, 19 km/s, 2 MPa, 18°) it is about 41 km. Breaking up does not by itself make an airburst — see burst altitude.",
+        "definition": "Altitude at which the ram pressure first exceeds the body's strength and it begins to break up, from Collins et al.'s analytic approximation. For the Chelyabinsk preset (19.8 m, 19.16 km/s, 2 MPa, 18.3°) it is about 42 km. Breaking up does not by itself make an airburst — see burst altitude.",
         "source": "Collins, Melosh & Marcus (2005) Eq. 11"
       },
       "burstAltitude": {
         "name": "Burst altitude",
-        "definition": "Altitude at which the flattening swarm of fragments has spread to seven times the body's size. Above the ground the body airbursts; at or below it the swarm strikes the ground. For the Tunguska preset it is 9.8 km, for Chelyabinsk 29.0 km against the 27.0 km observed.",
+        "definition": "Altitude at which the flattening swarm of fragments has spread to seven times the body's size. Above the ground the body airbursts; at or below it the swarm strikes the ground. For the Tunguska preset it is 9.8 km, for Chelyabinsk 27.1 km against the 27.0 km observed.",
         "source": "Collins, Melosh & Marcus (2005) Eq. 18"
       },
       "endVelocity": {
@@ -1026,12 +1026,12 @@
       },
       "atmosphericYield": {
         "name": "Atmospheric airburst yield",
-        "definition": "Fraction of the kinetic energy released as a fireball + shock pulse during entry: E_atm = (1 − gf) · E_kinetic. For the Chelyabinsk preset this is ≈ 0.33 Mt TNT-equivalent (98 % of total); Brown et al. (2013) estimate the real airburst at 400–600 kt.",
+        "definition": "Fraction of the kinetic energy released as a fireball + shock pulse during entry: E_atm = (1 − gf) · E_kinetic. For the Chelyabinsk preset this is all of its 0.59 Mt TNT-equivalent; Popova et al. (2013) estimate 590 ± 50 kt, Brown et al. (2013) 400–600 kt.",
         "source": "Nimbus (gf heuristic)"
       },
       "airburstBlast": {
         "name": "Airburst blast",
-        "definition": "The air blast the Earth Impact Effects Program draws for an airburst: a still source at the burst altitude, given the larger of the energy the body keeps there and the energy it has lost (W = E₀ · max(f, 1 − f), f = (v_b / v₀)²), scaled to one kiloton and read off fits to nuclear tests — regular reflection near the point under the burst, Mach reflection farther out when the scaled burst is below 550 m. Within three burst altitudes a moving source can blow up to twice as hard, printed as the upper figure. The Tunguska preset gives its 7.7 Mt blast 5 psi out to 5.8 km (13.1 km moving) and 1 psi to 26.4 km; Chelyabinsk's 0.18 Mt at 29 km raises about 1 kPa under the burst and draws no ring.",
+        "definition": "The air blast the Earth Impact Effects Program draws for an airburst: a still source at the burst altitude, given the larger of the energy the body keeps there and the energy it has lost (W = E₀ · max(f, 1 − f), f = (v_b / v₀)²), scaled to one kiloton and read off fits to nuclear tests — regular reflection near the point under the burst, Mach reflection farther out when the scaled burst is below 550 m. Within three burst altitudes a moving source can blow up to twice as hard, printed as the upper figure. The Tunguska preset gives its 7.7 Mt blast 5 psi out to 5.8 km (13.1 km moving) and 1 psi to 26.4 km; Chelyabinsk's 0.30 Mt at 27 km raises 1.6 kPa under the burst and draws no 0.5 psi ring.",
         "source": "Collins, Melosh & Marcus 2005; Collins et al. 2017"
       },
       "aftershockCatalogue": {
@@ -1495,7 +1495,7 @@
       },
       "airburstShock": {
         "item": "An airburst's blast is a point that does not move, drawn as round rings",
-        "note": "Since 15 September 2026 the blast of an airburst is the one the Earth Impact Effects Program draws, and it matches that program's numbers within 1 %. It treats the burst as a still point. At Chelyabinsk it reaches 1 kPa, enough to break windows, only 17.6 km out, where windows broke over about 10,000 km² — a circle of 56 km; at Tunguska its 20 kPa ring is at 11.5 km, against the 26.5 km of flattened forest. A moving source, shown as the upper figure, reaches 53.9 and 20.1 km. A body on a shallow path spreads its energy along the path and damages an ellipse."
+        "note": "Since 15 September 2026 the blast of an airburst is the one the Earth Impact Effects Program draws, and it matches that program's numbers within 1 %. It treats the burst as a still point. At Chelyabinsk, flown as Popova et al. measured it, 1 kPa, enough to break windows, reaches 30 km (68 km for a moving source), where windows broke over about 10,000 km² — a circle of 56 km; in the city it gives 0.7 kPa where the broken windows say about 3 kPa. At Tunguska its 20 kPa ring is at 11.5 km, against the 26.5 km of flattened forest. A body on a shallow path spreads its energy along the path and damages an ellipse that reaches farthest across it; the only analytic model of that line source does not hold so close to the trail, and the shape has been drawn only by three-dimensional simulations."
       },
       "explosionProject": {
         "item": "Parts of the explosion model are this project's, not the book's",

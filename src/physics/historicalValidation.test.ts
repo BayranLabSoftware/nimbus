@@ -31,7 +31,8 @@ describe('Historical validation — cosmic impacts', () => {
     expect(r.impactor.kineticEnergyMegatons as number).toBeLessThan(0.7);
     expect(r.crater.finalDiameter as number).toBeLessThan(500);
     // Observed burst altitude 27.0 km (Popova 2013 Science 342). Collins
-    // et al.'s pancake, tuned on nothing here, gives 29.0 km.
+    // et al.'s pancake, tuned on nothing here, gives 27.1 km for the body
+    // Popova et al. measured.
     expect(r.entry.burstAltitude as number).toBeGreaterThan(25_000);
     expect(r.entry.burstAltitude as number).toBeLessThan(32_000);
   });

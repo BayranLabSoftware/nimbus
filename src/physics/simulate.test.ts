@@ -55,10 +55,10 @@ describe('simulateImpact (deterministic Layer-2 evaluator)', () => {
     expect(r.damage.overpressure5psi).toBeLessThan(r.damage.overpressure1psi);
   });
 
-  it('Chelyabinsk 2013 preset: ≈0.4–0.5 Mt, complete airburst, no ground crater', () => {
+  it('Chelyabinsk 2013 preset: ≈0.6 Mt, complete airburst, no ground crater', () => {
     const r = simulateImpact(IMPACT_PRESETS.CHELYABINSK.input);
-    // Popova et al. 2013 (Science 342): total energy ≈ 0.5 Mt TNT,
-    // main disruption at ~27 km altitude, no ground crater recovered.
+    // Popova et al. 2013 (Science 342): 590 ± 50 kt, main disruption at
+    // ~27 km altitude, no ground crater recovered.
     expect(r.impactor.kineticEnergyMegatons as number).toBeGreaterThan(0.3);
     expect(r.impactor.kineticEnergyMegatons as number).toBeLessThan(0.7);
     expect(r.entry.regime).toBe('COMPLETE_AIRBURST');
