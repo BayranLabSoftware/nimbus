@@ -27,6 +27,7 @@ import {
 } from './interfaceAttenuation.js';
 import { liquefactionRadius } from './liquefaction.js';
 import { pointSourceDistances } from './pointSourceDistance.js';
+import { epicentralDistanceForSlabPga, type SlabMotionModel } from './slabAttenuation.js';
 import {
   megathrustRuptureLength,
   megathrustRuptureWidth,
@@ -159,11 +160,25 @@ export interface EarthquakeScenarioInput {
    *  rings and the interface models'; a stadium keeps its distances.
    *  Omitted, `epicentral`. */
   pointSourceDistance?: PointSourceDistance;
+  /** Which law draws the rings of a scenario deeper than 70 km (rule 67 of
+   *  validation/slabRules.ts): the law any other scenario draws (`none`), or
+   *  an intraslab model at the hypocentral distance, the scenario a disc
+   *  about its epicentre at every magnitude (`abrahamson2016Slab`,
+   *  `parker2022Slab`, events/earthquake/slabAttenuation.ts). Omitted,
+   *  `none`. */
+  deepLaw?: DeepLaw;
 }
 
 /** Rule 51 of validation/pointSourceRules.ts: the distance a disc's rings
  *  are drawn at. */
 export type PointSourceDistance = 'epicentral' | 'thompsonWorden2018';
+
+/** Rule 67 of validation/slabRules.ts: the law of a scenario deeper than
+ *  {@link DEEP_LAW_FROM_KM}. */
+export type DeepLaw = 'none' | SlabMotionModel;
+
+/** Rule 67: the depth (km) below which `deepLaw` draws the rings. */
+export const DEEP_LAW_FROM_KM = 70;
 
 /** Rule 41 of validation/interfaceStadiumRules.ts: the geometry of a
  *  scenario marked a subduction interface below Mw 7.5. */
@@ -364,9 +379,18 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // to the ShakeMaps of 64 deep interface earthquakes no rule had read
   // (0.99 against 2.29) and no worse on their dead; `interfaceStadium`
   // keeps the old geometry for the rules that ran on it.
+  const depthKm = ((input.depth as number | undefined) ?? DEFAULT_HYPOCENTRE_DEPTH_M) / 1_000;
+  // Rule 67 of validation/slabRules.ts: an intraslab model for a scenario
+  // deeper than 70 km where asked, a disc about the epicentre at every
+  // magnitude.
+  const deepModel: SlabMotionModel | null =
+    input.deepLaw !== undefined && input.deepLaw !== 'none' && depthKm > DEEP_LAW_FROM_KM
+      ? input.deepLaw
+      : null;
   const isExtendedSource =
-    input.magnitude >= 7.5 ||
-    (input.subductionInterface === true && (input.interfaceStadium ?? 'fromMw7.5') === 'always');
+    deepModel === null &&
+    (input.magnitude >= 7.5 ||
+      (input.subductionInterface === true && (input.interfaceStadium ?? 'fromMw7.5') === 'always'));
 
   // Ground-motion aleatory residual: exp(residual) scales every PGA.
   // Default 0 → gm = 1 → median scenario unchanged. The Monte-Carlo
@@ -473,7 +497,6 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
       law === 'abrahamson2016Interface' ||
       law === 'parker2022Interface' ||
       (law === 'boore2014FromMw7.5' && input.magnitude >= 7.5));
-  const depthKm = ((input.depth as number | undefined) ?? DEFAULT_HYPOCENTRE_DEPTH_M) / 1_000;
   // Rule 31 of validation/pagerChain.ts: PGV where the chain asks for
   // it, and the rings at the edges of PAGER's bands where it asks for
   // those. A residual scales PGV as it scales PGA.
@@ -482,50 +505,56 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // Rule 51 of validation/pointSourceRules.ts: a disc's rings at Thompson
   // & Worden 2018's average distances to the rupture, where asked.
   const toRupture =
-    !isExtendedSource && input.pointSourceDistance === 'thompsonWorden2018'
+    deepModel === null && !isExtendedSource && input.pointSourceDistance === 'thompsonWorden2018'
       ? pointSourceDistances(input.magnitude, depthKm)
       : null;
   const fromJoynerBoore = (rjb: Meters): Meters =>
     toRupture === null ? rjb : m(toRupture.epicentralForRjbKm((rjb as number) / 1_000) * 1_000);
   const contourAt = (mmi: number): Meters =>
-    interfaceModel !== null
-      ? toRupture === null
-        ? distanceForInterfacePga(
-            interfaceModel,
-            { magnitude: input.magnitude, depthKm, vs30 },
-            (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY
-          )
-        : epicentralDistanceForInterfacePga(
-            interfaceModel,
-            { magnitude: input.magnitude, vs30 },
-            (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY,
-            toRupture.rrupKm
-          )
-      : allen
-        ? epicentralDistanceForIntensityAllen2012(
-            input.magnitude,
-            depthKm,
-            mmi,
-            Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0
-          )
-        : byPgv
-          ? fromJoynerBoore(
-              distanceForPgvNGAWest2(
-                { magnitude: input.magnitude, faultType: ngaFault, vs30 },
-                mps((pgvFromMercalliIntensity(mmi) as number) / gm)
-              )
+    deepModel !== null
+      ? epicentralDistanceForSlabPga(
+          deepModel,
+          { magnitude: input.magnitude, depthKm, vs30 },
+          (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY
+        )
+      : interfaceModel !== null
+        ? toRupture === null
+          ? distanceForInterfacePga(
+              interfaceModel,
+              { magnitude: input.magnitude, depthKm, vs30 },
+              (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY
             )
-          : boore
+          : epicentralDistanceForInterfacePga(
+              interfaceModel,
+              { magnitude: input.magnitude, vs30 },
+              (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY,
+              toRupture.rrupKm
+            )
+        : allen
+          ? epicentralDistanceForIntensityAllen2012(
+              input.magnitude,
+              depthKm,
+              mmi,
+              Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0
+            )
+          : byPgv
             ? fromJoynerBoore(
-                distanceForPgaNGAWest2(
+                distanceForPgvNGAWest2(
                   { magnitude: input.magnitude, faultType: ngaFault, vs30 },
-                  target(pgaFromMercalliIntensity(mmi))
+                  mps((pgvFromMercalliIntensity(mmi) as number) / gm)
                 )
               )
-            : distanceForPga(
-                input.magnitude,
-                mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
-              );
+            : boore
+              ? fromJoynerBoore(
+                  distanceForPgaNGAWest2(
+                    { magnitude: input.magnitude, faultType: ngaFault, vs30 },
+                    target(pgaFromMercalliIntensity(mmi))
+                  )
+                )
+              : distanceForPga(
+                  input.magnitude,
+                  mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
+                );
   const mmi7Radius = contourAt(bandEdge(7, banding));
   const mmi8Radius = contourAt(bandEdge(8, banding));
   const mmi9Radius = contourAt(bandEdge(9, banding));

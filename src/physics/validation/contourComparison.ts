@@ -1,6 +1,7 @@
 import {
   simulateEarthquake,
   type ContourLaw,
+  type DeepLaw,
   type IntensityMeasure,
   type InterfaceStadium,
   type PointSourceDistance,
@@ -47,9 +48,10 @@ const RULE_ROWS: readonly QuakeInputs[] = RULE_EARTHQUAKES.map((q) => q.row);
 /** Every row's footprint under `law` against its ShakeMap. `subductionInterface`
  *  marks every row an interface scenario, as rule 35 of interfaceRules.ts
  *  runs its set, `interfaceStadium` sets its geometry below Mw 7.5, as
- *  rule 41 of interfaceStadiumRules.ts does, and `pointSourceDistance` the
+ *  rule 41 of interfaceStadiumRules.ts does, `pointSourceDistance` the
  *  distance a disc's rings stand at, as rule 51 of pointSourceRules.ts
- *  does. */
+ *  does, and `deepLaw` the law of a row deeper than 70 km, as rule 67 of
+ *  slabRules.ts does. */
 export function contourPairs(
   law: ContourLaw,
   shakemaps: readonly ShakemapAreas[],
@@ -58,7 +60,8 @@ export function contourPairs(
   measure: IntensityMeasure = 'pga',
   subductionInterface = false,
   interfaceStadium?: InterfaceStadium,
-  pointSourceDistance?: PointSourceDistance
+  pointSourceDistance?: PointSourceDistance,
+  deepLaw?: DeepLaw
 ): ContourPair[] {
   const byEvent = new Map(shakemaps.map((s) => [s.comcat, s]));
   const pairs: ContourPair[] = [];
@@ -76,6 +79,7 @@ export function contourPairs(
       ...(subductionInterface ? { subductionInterface } : {}),
       ...(interfaceStadium === undefined ? {} : { interfaceStadium }),
       ...(pointSourceDistance === undefined ? {} : { pointSourceDistance }),
+      ...(deepLaw === undefined ? {} : { deepLaw }),
     });
     for (const threshold of MMI_THRESHOLDS) {
       pairs.push({

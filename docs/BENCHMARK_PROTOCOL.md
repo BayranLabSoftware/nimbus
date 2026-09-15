@@ -773,3 +773,47 @@ neither is eligible and the guards did not run. The bands fix most of the small
 earthquakes the toll left at [0, 0]; the equation draws no V ring about 24 deep
 earthquakes that killed. `docs/SCIENCE.md` gives the figures in full, with what
 was read afterwards.
+
+## After Allen's tolls: the rings of an earthquake deeper than 70 km
+
+Written on 15 September 2026, before either candidate named below was scored
+on any earthquake of the set it names. The rules are numbered after the
+sixty-five before them and live in `src/physics/validation/slabRules.ts`
+(rules 66 to 70); the set comes first, in `slabSetData.ts` and
+`slabSiteData.ts`, read by `scripts/build-slab-set.ts` and
+`scripts/build-site-vs30.ts --slab`, and the run that will score it in
+`slabRun.ts`, committed with the rules and run on nothing.
+
+### What is already known, and so not held out
+
+Boore et al. 2014 reads no depth, and draws an earthquake at 200 km as one at
+10 km. Rule 61's run found the hypocentral equation drawing not even an MMI V
+ring about 24 deep earthquakes that killed, and the dead the tolls counted
+coming mostly from Hindu Kush 2015, Mw 7.5 at 231 km, drawn as a shallow
+earthquake. The candidates are written because of that run, so rule 61's
+deep earthquakes can only guard. Both candidates were coded and held to
+OpenQuake's medians before the rules were written, with no ring drawn on any
+earthquake. Before the rules were written, ComCat's count of the events rule
+66 lists was read (737), its ids to take out the 44 earthquakes already read,
+and the repository searched for any other; once the set was read, only its
+counts — 618 with a map, 427, 180 and 11 by cell, 562 quiet, 22, 9 and 1 maps
+drawn on a finite rupture or with ten stations or more — its ShakeMap
+revisions and the slab models its maps were drawn with. No footprint, map
+area, reached band, toll or score of the set was looked at.
+
+### The candidates, the score and the decision
+
+Rule 66's set is every ComCat earthquake of Mw 6 or more, 1973 to 2025,
+deeper than 70 km and no deeper than 300 km, with a ShakeMap. Rule 67's
+candidates draw a scenario deeper than 70 km as a disc at every magnitude, its
+rings where Abrahamson, Gregor & Addo 2016's or Parker et al. 2022's intraslab
+median PGA, at the hypocentral distance, falls to Worden et al. 2012's PGA for
+the intensity. Rule 68 reads rule 28's score on the set's maps, on the
+browser's ground, and asks a winner to displace Boore et al. 2014 as rule 29
+does and to lose nothing on the least modelled maps. Rule 69 guards a winner on
+the dead of rule 61's earthquakes deeper than 70 km, by rule 47's score with
+0.10 of room, since all of the set's own records are among those the country
+curves were fitted on. Rule 70 says what adoption changes and what is printed
+beside. Most of the maps are the models ShakeMap ran, and Abrahamson et al.
+2016 is among them for 490 of 618; the band's scatter stays Boore et al.
+2014's; the rules say so rather than correct it.

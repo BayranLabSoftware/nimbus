@@ -35,6 +35,7 @@ import { terrainSpanForEarthquake } from '../src/store/useAppStore.js';
  *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --point-source
  *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --atlas
  *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --small-deep
+ *   pnpm exec tsx scripts/build-site-vs30.ts [tile cache directory] --slab
  *
  * The second reads the earthquakes of rule 23 of depthRules.ts, from
  * unseenSetData.ts, and writes their sites into unseenSiteData.ts; the
@@ -43,7 +44,9 @@ import { terrainSpanForEarthquake } from '../src/store/useAppStore.js';
  * pointSourceRules.ts, from pointSourceSetData.ts, into
  * pointSourceSiteData.ts; the fifth those of rule 56 of atlasRules.ts, from
  * atlasSetData.ts, into atlasSiteData.ts; the sixth those of rule 61 of
- * allenTollRules.ts, from smallDeepSetData.ts, into smallDeepSiteData.ts.
+ * allenTollRules.ts, from smallDeepSetData.ts, into smallDeepSiteData.ts;
+ * the seventh those of rule 66 of slabRules.ts, from slabSetData.ts, into
+ * slabSiteData.ts.
  *
  * The tiles are revised now and then, so a run on another day can read
  * a different slope; the file in the repository is the one the rules
@@ -58,6 +61,7 @@ const MODERATE = ARGS.includes('--moderate');
 const POINT_SOURCE = ARGS.includes('--point-source');
 const ATLAS = ARGS.includes('--atlas');
 const SMALL_DEEP = ARGS.includes('--small-deep');
+const SLAB = ARGS.includes('--slab');
 const CACHE = resolve(ARGS.find((a) => !a.startsWith('--')) ?? join(tmpdir(), 'nimbus-terrarium'));
 
 let downloaded = 0;
@@ -258,7 +262,8 @@ export const MODERATE_SITES: readonly SiteRow[] = LINES.map(site);
 
 /** A later rule's earthquakes, read from their generated file by path, and
  *  the sites written beside it: rule 50's of pointSourceRules.ts, rule 56's
- *  of atlasRules.ts and rule 61's of allenTollRules.ts. */
+ *  of atlasRules.ts, rule 61's of allenTollRules.ts and rule 66's of
+ *  slabRules.ts. */
 async function mainForSet(set: {
   dataFile: string;
   exportName: string;
@@ -383,35 +388,44 @@ ${netSites.map(rowText).join('\n')}
   );
 }
 
-await (SMALL_DEEP
+await (SLAB
   ? mainForSet({
-      dataFile: 'smallDeepSetData.ts',
-      exportName: 'SMALL_DEEP_EARTHQUAKES',
-      rule: 'rule 61 of allenTollRules.ts',
-      ruleNumber: '61',
-      prefix: 'SMALL_DEEP',
-      outFile: 'smallDeepSiteData.ts',
+      dataFile: 'slabSetData.ts',
+      exportName: 'SLAB_EARTHQUAKES',
+      rule: 'rule 66 of slabRules.ts',
+      ruleNumber: '66',
+      prefix: 'SLAB',
+      outFile: 'slabSiteData.ts',
     })
-  : ATLAS
+  : SMALL_DEEP
     ? mainForSet({
-        dataFile: 'atlasSetData.ts',
-        exportName: 'ATLAS_EARTHQUAKES',
-        rule: 'rule 56 of atlasRules.ts',
-        ruleNumber: '56',
-        prefix: 'ATLAS',
-        outFile: 'atlasSiteData.ts',
+        dataFile: 'smallDeepSetData.ts',
+        exportName: 'SMALL_DEEP_EARTHQUAKES',
+        rule: 'rule 61 of allenTollRules.ts',
+        ruleNumber: '61',
+        prefix: 'SMALL_DEEP',
+        outFile: 'smallDeepSiteData.ts',
       })
-    : POINT_SOURCE
+    : ATLAS
       ? mainForSet({
-          dataFile: 'pointSourceSetData.ts',
-          exportName: 'POINT_SOURCE_EARTHQUAKES',
-          rule: 'rule 50 of pointSourceRules.ts',
-          ruleNumber: '50',
-          prefix: 'POINT_SOURCE',
-          outFile: 'pointSourceSiteData.ts',
+          dataFile: 'atlasSetData.ts',
+          exportName: 'ATLAS_EARTHQUAKES',
+          rule: 'rule 56 of atlasRules.ts',
+          ruleNumber: '56',
+          prefix: 'ATLAS',
+          outFile: 'atlasSiteData.ts',
         })
-      : MODERATE
-        ? mainModerate()
-        : UNSEEN
-          ? mainUnseen()
-          : main());
+      : POINT_SOURCE
+        ? mainForSet({
+            dataFile: 'pointSourceSetData.ts',
+            exportName: 'POINT_SOURCE_EARTHQUAKES',
+            rule: 'rule 50 of pointSourceRules.ts',
+            ruleNumber: '50',
+            prefix: 'POINT_SOURCE',
+            outFile: 'pointSourceSiteData.ts',
+          })
+        : MODERATE
+          ? mainModerate()
+          : UNSEEN
+            ? mainUnseen()
+            : main());
