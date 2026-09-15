@@ -442,3 +442,48 @@ no worse than the chain in place, by more than 0.10, on rule 11's held-out
 dead and on rule 18's ShakeMaps, holding eight records in ten in every
 magnitude cell. Rule 34 lists what is printed beside and decides nothing.
 Nothing in either chain is tuned on these sets.
+
+## After the campaign: the rings of a subduction interface (BM-10)
+
+Written on 15 September 2026, before either candidate named below was coded
+or run on any earthquake. The rules are numbered after the thirty-four of
+the validation harness and live with them, in
+`src/physics/validation/interfaceRules.ts` (rules 35 to 39); what USGS says
+each earthquake is comes first, in `interfaceSetData.ts`, read from the
+preferred ShakeMap's `info.json` of every earthquake of rule 11's and rule
+23's sets by `scripts/build-interface-set.ts`.
+
+### What is already known, and so not held out
+
+The campaign compared the five megathrust presets with two interface models
+in OpenQuake: Boore et al. 2014's rings at 4.2× Abrahamson, Gregor & Addo
+2016's and 6.0× Parker et al. 2022's, a figure made at MMI VIII, which those
+models reach only at the edge of the rupture; at MMI VII the rings were 0.71×
+and 0.83× theirs. On rule 18's ShakeMaps, the law in place — no candidate —
+was then read on the 76 reverse-faulting earthquakes of Mw 7 or more: at MMI
+VII it draws 0.98 of Tōhoku 2011's area, 0.78 of Maule 2010's, 0.47 of
+Kamchatka 2025's and Chignik 2021's and 0.19 of Ecuador 2016's; at MMI VIII
+1.8 times Tōhoku's, 5.6 times Chignik's, and ground at Maule and Iquique 2014
+where their maps hold none. One `info.json` (Kamchatka 2025) was opened to
+see what it carries, and once the set was read, the count of maps that carry
+STREC's probabilities (244 of 1 177) and of the earthquakes rule 35 then
+classes as interface events: 98 of rule 11's maps and 353 of rule 23's.
+
+### The candidates, the score and the decision
+
+Rule 35 takes the earthquakes whose ShakeMap was drawn with a ground-motion
+model giving its subduction-interface models a weight of 0.5 or more — the
+weight ShakeMap's select module sets from STREC and Slab2 — and runs every law
+on rules 1 to 3's inputs with the scenario marked a subduction interface.
+Rule 36 names the candidates for such a scenario, Abrahamson, Gregor & Addo
+2016 and Parker et al. 2022, each on median PGA through Worden et al. 2012,
+with the rupture distance taken from the depth, and holds both to
+OpenQuake's implementation within 0.1 % before any score. Rule 37 scores the
+three laws on those ShakeMaps as rule 18 scores a law, four ways — each set on
+rock and on the browser's ground — and a candidate must beat Boore et al.
+2014 by 0.05 in every one. Rule 38 checks a winner on rule 11's held-out tolls
+of those earthquakes and on rule 23's quiet ones, as rules 19 and 25 do, and
+says what an adopted law draws. Rule 39 lists what is printed beside and
+decides nothing, among it the maps with ten stations or more, since a map of
+few stations is mostly the models USGS runs, and both candidates are among
+them. Nothing is tuned on these sets.
