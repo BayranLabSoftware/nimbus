@@ -234,3 +234,86 @@ three-dimensional hydrocodes (Popova et al. 2013, SOVA; Aftosmis et al. 2016,
 Cart3D), whose authors also find the damaged area set mainly by the total
 energy and its shape by how the energy is spread along the path. The declared
 gap says so.
+
+## After the campaign: the far wave of a megathrust (BM-05)
+
+Written on 15 September 2026, before any deep-ocean record other than the one
+named below was read and before either model was run on one.
+
+### What is already known, and so not held out
+
+The campaign found Nimbus's published megathrust amplitude 0.92× the exact
+linear solution for its own rupture at 100 km and 0.28× at 3 000 km: the
+wave is spread as a ring leaving a disc half the down-dip width across, where
+a rupture hundreds of kilometres long keeps its broadside wave far longer.
+The one far-field record the model was checked on, Tōhoku 2011 at DART 21413,
+has stood in the project at "about 30 cm". Before this was written the NOAA
+NDBC file for that buoy (`21413t2011.txt.gz`) was read: detided with a
+polynomial over ±14 h, its largest crest is 0.88 m at 1 h 20 min after the
+origin. At that buoy Nimbus's law gives 0.29 m and the exact linear solution
+for a uniform slip on Nimbus's rupture 0.87 m (flat ocean, 24° off the
+broadside). Those three numbers are not evidence for either model. Davies
+2019 (GJI 218: 1939) had already tested that source family, Strasser et al.
+2010 areas with uniform slip, against DART buoys with a full propagation
+model, and found it biased low.
+
+### The records
+
+- **Events.** Every earthquake in USGS ComCat from 2006 to 2025 of preferred
+  magnitude 7.7 or more and depth 71 km or less, after Davies 2019, whose
+  preferred moment tensor has a nodal plane dipping 45° or less with a rake
+  between 45° and 135° (a thrust). An event within 24 h after a larger one of
+  the set, whose wave it would overlap, is left out.
+- **Stations.** Every DART station with an NDBC historical file for the
+  event's year, at the position NDBC's station table gives.
+- **A record.** The water-column height from 3 days before to 3 days after
+  the origin, detided by a least-squares fit of the constituents M2, S2, N2,
+  K2, K1, O1, P1 and Q1 plus a quadratic drift to every sample outside the
+  window from 1 h before the origin to 30 h after it. The tsunami window runs
+  from the arrival at 250 m/s along the great circle, less 30 min (never
+  before 20 min after the origin, which leaves out the Rayleigh waves), to
+  3 h after the arrival at 150 m/s. A record counts only if samples of 1 min
+  or finer cover at least 90 % of that window. Its crest is the largest
+  detided value in the window; its range, largest less smallest.
+- **Detection.** A record whose range is under 2 cm, or under five times the
+  standard deviation of the detided samples in the 3 h before the origin, is
+  left out. An event with fewer than four records left is left out.
+
+The script that does this is committed with its output, the list of records,
+before either model is run on them.
+
+### The two models
+
+- **C0, Nimbus's law as it stands.** The amplitude
+  `seismicTsunami.ts` publishes toward a receiver, at the great-circle
+  distance: the initial amplitude from Strasser et al. 2010's area and the
+  couplings 0.6 and 0.7, the ring spreading from half the down-dip width, the
+  dispersion of a wave twice that width over 4 000 m, and the beam toward the
+  receiver's bearing from the strike of the thrust plane.
+- **C1, the same rupture as physics propagates it.** Okada's deformation of a
+  uniform slip over Nimbus's own rectangle — the same length, width and mean
+  slip — on the thrust plane's strike and dip, rake 90°, the top at 5 km,
+  centred on the epicentre; its exact linear, non-dispersive solution on a
+  flat ocean (Poisson's formula, the check the campaign used), at the
+  receiver's distance and azimuth from the strike. No coupling factor: the
+  deformation is the source. Its crest is compared with the record's crest,
+  its range with the record's range.
+
+A third row, C1 with Nimbus's dispersion factor applied to its crest, is
+reported beside them and decides nothing.
+
+### The score, and what may be done with it
+
+For each model and record, ln(model / observed) of the crest. An event's
+score is the median over its records; a model's bias is the median over
+events of those scores, and its scatter their standard deviation. The model
+with the smaller absolute bias is the one the far wave is built on; if the
+two are within ln 1.25 of each other, the smaller scatter decides. The
+ranges are reported and decide nothing.
+
+If C1 wins, Nimbus replaces the ring spreading and the couplings with a
+propagation of that source, and the replacement is held to C1 on these
+records, within 15 % of its crest, before it ships; the recorded row for
+DART 21413 takes the 0.88 m of its own file whichever model wins. If C0 wins,
+BM-05 is declared with these numbers. Nothing is tuned on the records: a
+model that loses is not adjusted and run again.
