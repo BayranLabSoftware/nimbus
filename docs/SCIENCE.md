@@ -1883,6 +1883,90 @@ which draws them as shallow, misses four. On this set the toll in place holds
 41 of 75 records below Mw 6.5 as well, fewer than eight in ten; rule 63 asked
 that share of the candidates only.
 
+### The rings of an earthquake deeper than 70 km (15 September 2026)
+
+`validation/slabRules.ts` (rules 66 to 70), `validation/slabRun.ts`. The rings
+read no depth: Boore et al. 2014 takes the Joyner–Boore distance, which is the
+same for a hypocentre at 10 km and at 200. The previous section found the cost
+on both sides. The hypocentral equation drew no ring about 24 deep earthquakes
+that killed, and Hindu Kush 2015, Mw 7.5 at 231 km, drawn as a shallow
+earthquake, gave most of the dead the tolls counted. ShakeMap draws such
+earthquakes with models fitted on records of earthquakes inside the subducting
+slab. These rules put two of them to the maps: Abrahamson, Gregor & Addo 2016
+(BC Hydro) and Parker et al. 2022, each held to OpenQuake's implementation
+within 1e-9 of the median. Each draws a scenario deeper than 70 km as a disc at
+every magnitude, its rings where its median PGA at the hypocentral distance
+falls to the PGA Worden et al. 2012 give the intensity.
+
+The rules, the set and the run were pushed before any candidate was scored
+(commit `905c5ec`). Rule 66's set is every ComCat earthquake of Mw 6 or more,
+1973 to 2025, deeper than 70 km and no deeper than 300 km, with a ShakeMap:
+737, less 44 the project had read and 75 without MMI coverage. That leaves 618
+maps, 32 of them drawn on a finite rupture or with ten stations or more, on the
+browser's ground. A winner had to displace Boore et al. 2014 by 0.10 of rule
+28's score within 0.10 of sharpness and lose nothing on the least modelled
+maps. It then had to read the dead of rule 61's 62 earthquakes deeper than 70
+km no worse than the law in place, with 0.10 of room, since every record of
+the set itself is among those the country curves were fitted on.
+
+| Law                            | MMI VII: hits · misses · false alarms · silences | Skill | MMI VIII: hits · misses · false alarms · silences | Skill | Score | Sharpness | Least modelled |
+| ------------------------------ | ------------------------------------------------ | ----: | ------------------------------------------------- | ----: | ----: | --------: | -------------: |
+| Boore et al. 2014 (in place)   | 16 · 0 · 602 · 0                                 |  0.00 | 0 · 0 · 423 · 195                                 |     — |  0.00 |      0.56 |              — |
+| Abrahamson, Gregor & Addo 2016 | 14 · 2 · 7 · 595                                 |  0.86 | 0 · 0 · 0 · 618                                   |     — |  0.86 |      0.36 |              — |
+| Parker et al. 2022             | 12 · 4 · 4 · 598                                 |  0.74 | 0 · 0 · 3 · 615                                   |     — |  0.74 |      0.34 |              — |
+
+No map of the set reaches MMI VIII, so the score is the skill at MMI VII. Both
+candidates displace the law in place. The guard on the least modelled maps read
+nothing, as rule 68 allows: only 3 of those 32 maps reach MMI VII, and a band
+is scored from five. Abrahamson et al. 2016, with the higher score, won. On
+rule 61's earthquakes deeper than 70 km, counting the dead inside MMI VII:
+
+| Law                            | Rule 47's score | Records held | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 |
+| ------------------------------ | --------------: | -----------: | -------: | ---------: | -------: |
+| Boore et al. 2014              |           1.091 |     58 of 62 | 17 of 21 |   19 of 19 | 22 of 22 |
+| Abrahamson, Gregor & Addo 2016 |           0.801 |     38 of 62 | 10 of 21 |    8 of 19 | 20 of 22 |
+
+The winner reads the dead nearer their records, well within rule 69's room, so
+it is adopted: since this commit it draws the rings of every scenario deeper
+than 70 km, and the input check warns only beyond 300 km, where the set ends.
+Its band holds 20 fewer of those records than the rings it replaced, which rule
+69 prints and does not decide on.
+
+Printed beside, deciding nothing (rule 70). On reference rock Abrahamson et al.
+2016 scores 0.74, with a sharpness of 0.11, Parker et al. 2022 0.75 and Boore
+et al. 2014 0.00. The 16 maps that reach MMI VII are all no deeper than 150 km,
+so on the 212 deeper maps no score can be read; there Boore et al. 2014 paints
+VII about every map, Abrahamson et al. about one and Parker et al. about none.
+On the 490 maps drawn with a slab set that holds Abrahamson et al. 2016 it
+scores 0.84 and Parker et al. 0.71; the 21 maps drawn with the sets that hold
+Parker et al. and the 107 drawn with Chile's hold too few bands of MMI VII to
+score.
+
+What the scores do not show was read afterwards, and is written here as such.
+The 16 maps that reach MMI VII are of earthquakes from Mw 6.9 to 7.8, 71 to 129 km deep; the skill rests on them and on the 602 maps that do not reach it, about every one of which Boore et al. 2014 draws VII and Abrahamson et al. 2016 draws it about seven. Abrahamson et al. 2016 misses
+Vrancea 1990 (Mw 7.0 at 89 km) and Vanuatu 2021 (Mw 6.9 at 93 km); its seven
+false alarms are earthquakes of Mw 7.2 to 7.8, 90 to 167 km deep, whose maps
+peak at MMI 6.6 to 6.9. Where both reach MMI VII its ring stands at a median
+1.4 times the map's radius, and at Iquique 2005 its area is 122 times the
+map's. On the dead, the law in place counted 8 713 against 1 660 recorded, 7 147
+of them at Hindu Kush 2015, where 399 died. The adopted law counts 5 981, 5 547
+of them at Mashkal 2013 (Mw 7.7 at 80 km), where 40 died, and none at Hindu
+Kush 2015, whose band it leaves at [0, 0]. It leaves 21 other records with deaths at [0, 0] too, 468 dead in all with Hindu Kush's, where the law in place left 3 records and 3 dead. The pattern is the one the hypocentral equation showed on
+the Atlas: a law silent where the maps are silent is silent about some
+earthquakes that killed, because the toll counts the dead inside MMI VII only.
+Two things the rules held fixed may be part of it, and neither was tried: the
+band draws Boore et al. 2014's σ of 0.60 where Abrahamson et al. 2016's is
+0.74, and the dead of the V and VI bands are not counted.
+
+Adopting the law moved the printed figures of the rules that decided before,
+as rule 70 has it, and none of their verdicts. Among rule 11's held-out
+earthquakes, Hindu Kush 2009 (Mw 6.2 at 186 km, 5 dead) now sits on a band of
+[0, 0], and the set's band holds 258 of its 278 records with something (93 %).
+On rule 61's set the toll in place now scores 0.627 and holds 139 of 194
+records. There, on the 100 earthquakes deeper than 40 km, counting the dead of
+the V and VI bands the rings draw holds 87 at either rate, where counting
+inside MMI VII holds 74; no rule has put that to a set not yet read.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records

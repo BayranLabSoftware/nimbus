@@ -12,6 +12,7 @@
  */
 
 import type { EarthquakeScenarioResult } from '../../physics/events/earthquake/index.js';
+import { deepLawFor } from '../../physics/events/earthquake/simulate.js';
 import type { ExplosionScenarioResult } from '../../physics/events/explosion/index.js';
 import type { VolcanoScenarioResult } from '../../physics/events/volcano/index.js';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
@@ -182,6 +183,17 @@ export function collectEarthquakeCitations(result: EarthquakeScenarioResult): Tr
     cite('faenzaMichelini2010', 'MMI from PGA, Italian / European calibration.'),
     cite('waldAllen2007', 'NEHRP site-class classification from Vs30 at the scenario coordinates.'),
   ];
+
+  const deepLaw = deepLawFor(result.inputs);
+  if (deepLaw === 'abrahamson2016Slab') {
+    triggers.push(
+      cite('abrahamson2016', 'Intraslab PGA attenuation for a hypocentre deeper than 70 km.')
+    );
+  } else if (deepLaw === 'parker2022Slab') {
+    triggers.push(
+      cite('parker2022', 'Intraslab PGA attenuation for a hypocentre deeper than 70 km.')
+    );
+  }
 
   if (result.inputs.subductionInterface === true) {
     triggers.push(cite('strasser2010', 'Subduction-interface rupture-length scaling.'));

@@ -232,18 +232,18 @@ export function validateEarthquakeInputs(input: EarthquakeValidityInput): Validi
     });
   }
 
-  // Boore 2014 NGA-West2 attenuation was fit for hypocentre depths
-  // 0–35 km (crustal), with a separate extension for subduction
-  // interface up to 100 km. Beyond that we are in deep-focus territory
-  // where path effects dominate.
-  if (input.depthM > 1e5) {
+  // Since 15 September 2026 a scenario deeper than 70 km is drawn with
+  // Abrahamson, Gregor & Addo 2016's intraslab model, chosen by rules 66 to
+  // 70 of validation/slabRules.ts on USGS ShakeMaps of earthquakes 70 to 300
+  // km deep. Deeper than that, nothing the rings were chosen on reaches.
+  if (input.depthM > 3e5) {
     out.push({
       parameter: 'depth',
       value: input.depthM,
       calibrationMin: 0,
-      calibrationMax: 1e5,
+      calibrationMax: 3e5,
       message:
-        'Hypocentre depth > 100 km: beyond Boore 2014 NGA-West2 calibration. Deep-focus events have systematically different ground-motion patterns.',
+        'Hypocentre depth > 300 km: deeper than the ShakeMaps the intraslab law drawing these rings was chosen on (70–300 km). Results are extrapolation.',
       severity: 'extrapolation',
     });
   }

@@ -495,6 +495,19 @@ the candidates for re-tuning:
   earthquakes that killed. Nothing changes. Open: a law silent where the maps
   are silent that still rings the deep earthquakes' dead; the prospective set
   reads every candidate again.
+- **Earthquakes deeper than 70 km.** Since 15 September 2026 their rings are
+  drawn with Abrahamson, Gregor & Addo 2016's intraslab model, a disc at every
+  magnitude, chosen on the 618 ShakeMaps of 1973 to 2025 no rule had read
+  (rules 66 to 70, docs/SCIENCE.md, "The rings of an earthquake deeper than 70
+  km"): a skill of 0.86 at MMI VII where Boore et al. 2014, painting VII about
+  every one of them, scored 0.00, and the dead of 62 deep earthquakes read
+  nearer their records (0.80 against 1.09). Its band holds fewer of those
+  records, 38 against 58, most of the misses bands of [0, 0] about deep
+  earthquakes that killed, Hindu Kush 2015 among them. Open: the band still
+  draws Boore et al. 2014's σ of 0.60 where the model's is 0.74, and the toll
+  of a deep earthquake counts no dead below MMI VII — read afterwards,
+  counting the V and VI bands on these rings holds 87 of rule 61's 100
+  records deeper than 40 km against 74, on a set that has been read.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

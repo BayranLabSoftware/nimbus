@@ -8,14 +8,22 @@ import {
   epicentralDistanceForSlabPga,
   parker2022SlabPga,
 } from './slabAttenuation.js';
-import { DEEP_LAW_FROM_KM, simulateEarthquake, type EarthquakeScenarioInput } from './simulate.js';
+import {
+  DEEP_LAW_FROM_KM,
+  DEFAULT_DEEP_LAW,
+  deepLawFor,
+  simulateEarthquake,
+  type EarthquakeScenarioInput,
+} from './simulate.js';
 
 /**
  * Rule 67 of validation/slabRules.ts, held before any score: each slab
  * candidate against OpenQuake's implementation within 1e-9 of the median,
  * its ring where that median falls to the threshold, and the simulator
  * drawing a scenario deeper than 70 km with it — a disc at every magnitude,
- * nothing else moved — only where asked.
+ * nothing else moved. Rules 68 and 69 adopted Abrahamson, Gregor & Addo
+ * 2016 on 15 September 2026, so it is also what a deep scenario draws when
+ * it names no deep law; `none` keeps the rings drawn before.
  */
 
 const MODELS = {
@@ -131,7 +139,7 @@ describe('the deep law in the simulator', () => {
       [6.2, 71],
       [8.2, 110],
     ] as const) {
-      const plain = simulateEarthquake(scenario(magnitude, depthKm));
+      const plain = simulateEarthquake(scenario(magnitude, depthKm, { deepLaw: 'none' }));
       const deep = simulateEarthquake(
         scenario(magnitude, depthKm, { deepLaw: 'abrahamson2016Slab' })
       );
@@ -164,12 +172,27 @@ describe('the deep law in the simulator', () => {
     }
   });
 
-  it('draws as before where it names none, deep or not', () => {
+  it('keeps the rings drawn before where it names none: a stadium from Mw 7.5, deep or not', () => {
     for (const depthKm of [30, 100, 250]) {
-      const plain = simulateEarthquake(scenario(7.6, depthKm));
       const none = simulateEarthquake(scenario(7.6, depthKm, { deepLaw: 'none' }));
-      expect(none).toEqual({ ...plain, inputs: none.inputs });
-      expect(plain.isExtendedSource).toBe(true);
+      expect(none.isExtendedSource).toBe(true);
     }
+    const shallow = simulateEarthquake(scenario(7.6, 30));
+    const shallowNone = simulateEarthquake(scenario(7.6, 30, { deepLaw: 'none' }));
+    expect(shallowNone).toEqual({ ...shallow, inputs: shallowNone.inputs });
+  });
+
+  it('draws Abrahamson, Gregor & Addo 2016 where a deep scenario names no deep law, since rules 68 and 69 adopted it', () => {
+    expect(DEFAULT_DEEP_LAW).toBe('abrahamson2016Slab');
+    for (const depthKm of [71, 100, 250, 400]) {
+      const unnamed = simulateEarthquake(scenario(7.6, depthKm));
+      const named = simulateEarthquake(scenario(7.6, depthKm, { deepLaw: 'abrahamson2016Slab' }));
+      expect(unnamed.isExtendedSource).toBe(false);
+      expect(unnamed).toEqual({ ...named, inputs: unnamed.inputs });
+      expect(deepLawFor(unnamed.inputs)).toBe('abrahamson2016Slab');
+    }
+    expect(deepLawFor({ depth: m(70_000) })).toBeNull();
+    expect(deepLawFor({ depth: m(150_000), deepLaw: 'none' })).toBeNull();
+    expect(deepLawFor({})).toBeNull();
   });
 });

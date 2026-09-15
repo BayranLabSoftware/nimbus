@@ -1208,18 +1208,18 @@
       "adopted": true,
       "events": 370,
       "meanAbsoluteBias": {
-        "joynerBoore1981": 1.451,
-        "boore2014": 0.729,
-        "boore2014FromMw7.5": 1.139
+        "joynerBoore1981": 1.449,
+        "boore2014": 0.727,
+        "boore2014FromMw7.5": 1.137
       },
       "shakemap": {
         "joynerBoore1981": [
           {
             "sizeBand": "Mw < 6.5",
-            "pairs": 264,
-            "bias": 1.001,
-            "scatter": 0.801,
-            "invented": 196,
+            "pairs": 260,
+            "bias": 0.997,
+            "scatter": 0.802,
+            "invented": 192,
             "missed": 1
           },
           {
@@ -1242,10 +1242,10 @@
         "boore2014": [
           {
             "sizeBand": "Mw < 6.5",
-            "pairs": 243,
-            "bias": 0.532,
-            "scatter": 0.857,
-            "invented": 175,
+            "pairs": 239,
+            "bias": 0.528,
+            "scatter": 0.858,
+            "invented": 171,
             "missed": 4
           },
           {
@@ -1268,10 +1268,10 @@
         "boore2014FromMw7.5": [
           {
             "sizeBand": "Mw < 6.5",
-            "pairs": 264,
-            "bias": 1.001,
-            "scatter": 0.801,
-            "invented": 196,
+            "pairs": 260,
+            "bias": 0.997,
+            "scatter": 0.802,
+            "invented": 192,
             "missed": 1
           },
           {
@@ -1296,15 +1296,15 @@
         "joynerBoore1981": [
           {
             "sizeBand": "Mw < 6.5",
-            "rows": 134,
-            "scored": 69,
-            "bias": 1.69,
-            "scatterLn": 2.14,
-            "inside": 123,
-            "bothZero": 25,
+            "rows": 133,
+            "scored": 68,
+            "bias": 1.7,
+            "scatterLn": 2.16,
+            "inside": 121,
+            "bothZero": 24,
             "falseAlarms": 23,
-            "missedToZero": 17,
-            "medianBandDecades": 2.77
+            "missedToZero": 18,
+            "medianBandDecades": 2.78
           },
           {
             "sizeBand": "Mw 6.5–7.5",
@@ -1334,15 +1334,15 @@
         "boore2014": [
           {
             "sizeBand": "Mw < 6.5",
-            "rows": 132,
-            "scored": 52,
-            "bias": 0.691,
-            "scatterLn": 2.2,
-            "inside": 121,
-            "bothZero": 35,
+            "rows": 131,
+            "scored": 51,
+            "bias": 0.698,
+            "scatterLn": 2.22,
+            "inside": 119,
+            "bothZero": 34,
             "falseAlarms": 11,
-            "missedToZero": 34,
-            "medianBandDecades": 2.26
+            "missedToZero": 35,
+            "medianBandDecades": 2.27
           },
           {
             "sizeBand": "Mw 6.5–7.5",
@@ -1552,9 +1552,9 @@
           "tolls": [
             {
               "sizeBand": "Mw < 6.5",
-              "bias": 1.455,
-              "inside": 122,
-              "rows": 132
+              "bias": 1.486,
+              "inside": 120,
+              "rows": 131
             },
             {
               "sizeBand": "Mw 6.5–7.5",
@@ -1569,7 +1569,7 @@
               "rows": 35
             }
           ],
-          "shakemapScore": 0.972,
+          "shakemapScore": 0.971,
           "tollAgainstPager": 0.3,
           "alertAgreement": 0.658,
           "rule28Score": 0.116,
@@ -1636,8 +1636,8 @@
           "tolls": [
             {
               "sizeBand": "Mw < 6.5",
-              "bias": 1.128,
-              "inside": 128,
+              "bias": 1.166,
+              "inside": 127,
               "rows": 136
             },
             {
@@ -1653,7 +1653,7 @@
               "rows": 37
             }
           ],
-          "shakemapScore": 1.134,
+          "shakemapScore": 1.131,
           "tollAgainstPager": 0.329,
           "alertAgreement": 0.684,
           "rule28Score": 0.203,
@@ -1720,8 +1720,8 @@
           "tolls": [
             {
               "sizeBand": "Mw < 6.5",
-              "bias": 1.506,
-              "inside": 129,
+              "bias": 1.52,
+              "inside": 128,
               "rows": 136
             },
             {
@@ -1737,7 +1737,7 @@
               "rows": 36
             }
           ],
-          "shakemapScore": 0.972,
+          "shakemapScore": 0.971,
           "tollAgainstPager": 0.367,
           "alertAgreement": 0.684,
           "rule28Score": 0.116,
@@ -1804,9 +1804,9 @@
           "tolls": [
             {
               "sizeBand": "Mw < 6.5",
-              "bias": 0.972,
-              "inside": 119,
-              "rows": 132
+              "bias": 1.006,
+              "inside": 117,
+              "rows": 131
             },
             {
               "sizeBand": "Mw 6.5–7.5",
@@ -1821,7 +1821,7 @@
               "rows": 36
             }
           ],
-          "shakemapScore": 1.134,
+          "shakemapScore": 1.131,
           "tollAgainstPager": 0.275,
           "alertAgreement": 0.663,
           "rule28Score": 0.203,
@@ -2165,14 +2165,14 @@
           "quiet": true
         },
         "tollLogBias": {
-          "inPlace": 0.715,
+          "inPlace": 0.722,
           "winner": 0.372
         },
         "inside": {
           "inPlace": [
             [
-              122,
-              132
+              120,
+              131
             ],
             [
               106,
@@ -2214,65 +2214,65 @@
       },
       "readings": {
         "boore2014": {
-          "score": 0.72,
-          "held": 160,
+          "score": 0.627,
+          "held": 139,
           "cells": [
             {
-              "bias": 5.663,
-              "inside": 41,
-              "rows": 75
+              "bias": 4.697,
+              "inside": 25,
+              "rows": 67
             },
             {
-              "bias": 3.088,
-              "inside": 17,
-              "rows": 17
+              "bias": 1.26,
+              "inside": 2,
+              "rows": 13
             },
             {
-              "bias": 3.505,
-              "inside": 21,
-              "rows": 21
+              "bias": 3.542,
+              "inside": 14,
+              "rows": 16
             }
           ]
         },
         "allenMidBand": {
-          "score": 0.565,
-          "held": 161,
+          "score": 0.612,
+          "held": 164,
           "cells": [
             {
-              "bias": 1.587,
-              "inside": 59,
-              "rows": 88
+              "bias": 1.861,
+              "inside": 62,
+              "rows": 89
             },
             {
-              "bias": 0.984,
-              "inside": 12,
-              "rows": 16
+              "bias": 9.675,
+              "inside": 15,
+              "rows": 18
             },
             {
-              "bias": 4.594,
-              "inside": 22,
-              "rows": 22
+              "bias": 3.888,
+              "inside": 17,
+              "rows": 17
             }
           ]
         },
         "allenPager": {
-          "score": 0.566,
-          "held": 158,
+          "score": 0.561,
+          "held": 161,
           "cells": [
             {
               "bias": null,
-              "inside": 53,
-              "rows": 85
+              "inside": 56,
+              "rows": 86
             },
             {
-              "bias": null,
-              "inside": 12,
-              "rows": 16
+              "bias": 2.471,
+              "inside": 15,
+              "rows": 18
             },
             {
-              "bias": 3.926,
-              "inside": 21,
-              "rows": 21
+              "bias": 2.288,
+              "inside": 17,
+              "rows": 17
             }
           ]
         }
@@ -2284,8 +2284,8 @@
       "guards": null,
       "beside": {
         "allenNone": {
-          "score": 0.574,
-          "held": 129,
+          "score": 0.57,
+          "held": 128,
           "cells": [
             {
               "bias": null,
@@ -2293,58 +2293,241 @@
               "rows": 55
             },
             {
-              "bias": null,
-              "inside": 0,
+              "bias": 1.26,
+              "inside": 2,
               "rows": 13
             },
             {
-              "bias": 3.505,
-              "inside": 21,
-              "rows": 21
+              "bias": 3.542,
+              "inside": 13,
+              "rows": 16
             }
           ]
         },
         "booreMidBand": {
-          "score": 0.785,
-          "held": 182,
+          "score": 0.705,
+          "held": 172,
           "cells": [
             {
-              "bias": 4.588,
-              "inside": 106,
-              "rows": 118
+              "bias": 4.054,
+              "inside": 92,
+              "rows": 111
             },
             {
-              "bias": 4.603,
+              "bias": 9.675,
+              "inside": 15,
+              "rows": 18
+            },
+            {
+              "bias": 3.888,
               "inside": 17,
               "rows": 17
-            },
-            {
-              "bias": 4.594,
-              "inside": 22,
-              "rows": 22
             }
           ]
         },
         "boorePager": {
-          "score": 0.729,
-          "held": 180,
+          "score": 0.623,
+          "held": 170,
           "cells": [
             {
-              "bias": 3.696,
-              "inside": 101,
-              "rows": 115
+              "bias": 2.586,
+              "inside": 87,
+              "rows": 108
             },
             {
-              "bias": 3.383,
+              "bias": 2.471,
+              "inside": 15,
+              "rows": 18
+            },
+            {
+              "bias": 2.288,
               "inside": 17,
               "rows": 17
-            },
-            {
-              "bias": 3.926,
-              "inside": 21,
-              "rows": 21
             }
           ]
+        }
+      }
+    },
+    "slab": {
+      "readOn": "2026-09-15",
+      "events": {
+        "earthquakes": 618,
+        "leastModelled": 32,
+        "quiet": 562,
+        "byCell": [
+          427,
+          180,
+          11
+        ],
+        "deeper": 212,
+        "guard": 62
+      },
+      "scores": {
+        "boore2014": {
+          "score": 0,
+          "sharpness": 0.559,
+          "bands": [
+            {
+              "band": 7,
+              "hits": 16,
+              "misses": 0,
+              "falseAlarms": 602,
+              "silences": 0
+            },
+            {
+              "band": 8,
+              "hits": 0,
+              "misses": 0,
+              "falseAlarms": 423,
+              "silences": 195
+            }
+          ],
+          "leastModelled": null
+        },
+        "abrahamson2016Slab": {
+          "score": 0.863,
+          "sharpness": 0.357,
+          "bands": [
+            {
+              "band": 7,
+              "hits": 14,
+              "misses": 2,
+              "falseAlarms": 7,
+              "silences": 595
+            },
+            {
+              "band": 8,
+              "hits": 0,
+              "misses": 0,
+              "falseAlarms": 0,
+              "silences": 618
+            }
+          ],
+          "leastModelled": null
+        },
+        "parker2022Slab": {
+          "score": 0.743,
+          "sharpness": 0.34,
+          "bands": [
+            {
+              "band": 7,
+              "hits": 12,
+              "misses": 4,
+              "falseAlarms": 4,
+              "silences": 598
+            },
+            {
+              "band": 8,
+              "hits": 0,
+              "misses": 0,
+              "falseAlarms": 3,
+              "silences": 615
+            }
+          ],
+          "leastModelled": null
+        }
+      },
+      "choice": {
+        "winner": "abrahamson2016Slab",
+        "displacing": [
+          "abrahamson2016Slab",
+          "parker2022Slab"
+        ],
+        "guarded": [
+          "abrahamson2016Slab",
+          "parker2022Slab"
+        ]
+      },
+      "dead": {
+        "winner": "abrahamson2016Slab",
+        "adopted": true,
+        "inPlace": {
+          "score": 1.091,
+          "held": 58,
+          "rows": 62,
+          "cells": [
+            [
+              17,
+              21
+            ],
+            [
+              19,
+              19
+            ],
+            [
+              22,
+              22
+            ]
+          ]
+        },
+        "candidate": {
+          "score": 0.801,
+          "held": 38,
+          "rows": 62,
+          "cells": [
+            [
+              10,
+              21
+            ],
+            [
+              8,
+              19
+            ],
+            [
+              20,
+              22
+            ]
+          ]
+        }
+      },
+      "beside": {
+        "rock": {
+          "maps": 618,
+          "scores": {
+            "boore2014": 0,
+            "abrahamson2016Slab": 0.742,
+            "parker2022Slab": 0.745
+          }
+        },
+        "shallower": {
+          "maps": 406,
+          "scores": {
+            "boore2014": 0,
+            "abrahamson2016Slab": 0.86,
+            "parker2022Slab": 0.74
+          }
+        },
+        "deeper": {
+          "maps": 212,
+          "scores": {
+            "boore2014": null,
+            "abrahamson2016Slab": null,
+            "parker2022Slab": null
+          }
+        },
+        "withAbrahamson2016": {
+          "maps": 490,
+          "scores": {
+            "boore2014": 0,
+            "abrahamson2016Slab": 0.845,
+            "parker2022Slab": 0.706
+          }
+        },
+        "withParker2022": {
+          "maps": 21,
+          "scores": {
+            "boore2014": null,
+            "abrahamson2016Slab": null,
+            "parker2022Slab": null
+          }
+        },
+        "withNeither": {
+          "maps": 107,
+          "scores": {
+            "boore2014": null,
+            "abrahamson2016Slab": null,
+            "parker2022Slab": null
+          }
         }
       }
     },
@@ -2585,18 +2768,18 @@
         "winner": "rock",
         "adopted": false,
         "meanAbsoluteBias": {
-          "pick": 0.972,
-          "rock": 0.729,
-          "pickOnLand": 0.841
+          "pick": 0.971,
+          "rock": 0.727,
+          "pickOnLand": 0.839
         },
         "shakemap": {
           "pick": [
             {
               "sizeBand": "Mw < 6.5",
-              "pairs": 271,
-              "bias": 0.824,
-              "scatter": 0.79,
-              "invented": 203,
+              "pairs": 267,
+              "bias": 0.821,
+              "scatter": 0.791,
+              "invented": 199,
               "missed": 2
             },
             {
@@ -2619,10 +2802,10 @@
           "rock": [
             {
               "sizeBand": "Mw < 6.5",
-              "pairs": 243,
-              "bias": 0.532,
-              "scatter": 0.857,
-              "invented": 175,
+              "pairs": 239,
+              "bias": 0.528,
+              "scatter": 0.858,
+              "invented": 171,
               "missed": 4
             },
             {
@@ -2645,10 +2828,10 @@
           "pickOnLand": [
             {
               "sizeBand": "Mw < 6.5",
-              "pairs": 262,
-              "bias": 0.742,
-              "scatter": 0.796,
-              "invented": 194,
+              "pairs": 258,
+              "bias": 0.737,
+              "scatter": 0.797,
+              "invented": 190,
               "missed": 2
             },
             {
@@ -2673,15 +2856,15 @@
           "pick": [
             {
               "sizeBand": "Mw < 6.5",
-              "rows": 132,
-              "scored": 64,
-              "bias": 1.46,
-              "scatterLn": 2.26,
-              "inside": 122,
-              "bothZero": 30,
+              "rows": 131,
+              "scored": 63,
+              "bias": 1.49,
+              "scatterLn": 2.27,
+              "inside": 120,
+              "bothZero": 29,
               "falseAlarms": 16,
-              "missedToZero": 22,
-              "medianBandDecades": 2.54
+              "missedToZero": 23,
+              "medianBandDecades": 2.55
             },
             {
               "sizeBand": "Mw 6.5–7.5",
@@ -2711,15 +2894,15 @@
           "rock": [
             {
               "sizeBand": "Mw < 6.5",
-              "rows": 132,
-              "scored": 52,
-              "bias": 0.691,
-              "scatterLn": 2.2,
-              "inside": 121,
-              "bothZero": 35,
+              "rows": 131,
+              "scored": 51,
+              "bias": 0.698,
+              "scatterLn": 2.22,
+              "inside": 119,
+              "bothZero": 34,
               "falseAlarms": 11,
-              "missedToZero": 34,
-              "medianBandDecades": 2.26
+              "missedToZero": 35,
+              "medianBandDecades": 2.27
             },
             {
               "sizeBand": "Mw 6.5–7.5",
@@ -2749,14 +2932,14 @@
           "pickOnLand": [
             {
               "sizeBand": "Mw < 6.5",
-              "rows": 132,
-              "scored": 63,
-              "bias": 1.34,
-              "scatterLn": 2.28,
-              "inside": 119,
-              "bothZero": 32,
+              "rows": 131,
+              "scored": 62,
+              "bias": 1.37,
+              "scatterLn": 2.29,
+              "inside": 117,
+              "bothZero": 31,
               "falseAlarms": 14,
-              "missedToZero": 23,
+              "missedToZero": 24,
               "medianBandDecades": 2.47
             },
             {
@@ -2790,18 +2973,18 @@
         "winner": "boore2014",
         "adopted": false,
         "meanAbsoluteBias": {
-          "joynerBoore1981": 1.584,
-          "boore2014": 0.972,
-          "boore2014FromMw7.5": 1.304
+          "joynerBoore1981": 1.582,
+          "boore2014": 0.971,
+          "boore2014FromMw7.5": 1.303
         },
         "shakemap": {
           "joynerBoore1981": [
             {
               "sizeBand": "Mw < 6.5",
-              "pairs": 282,
-              "bias": 1.26,
-              "scatter": 0.747,
-              "invented": 214,
+              "pairs": 278,
+              "bias": 1.256,
+              "scatter": 0.749,
+              "invented": 210,
               "missed": 1
             },
             {
@@ -2824,10 +3007,10 @@
           "boore2014": [
             {
               "sizeBand": "Mw < 6.5",
-              "pairs": 271,
-              "bias": 0.824,
-              "scatter": 0.79,
-              "invented": 203,
+              "pairs": 267,
+              "bias": 0.821,
+              "scatter": 0.791,
+              "invented": 199,
               "missed": 2
             },
             {
@@ -2850,10 +3033,10 @@
           "boore2014FromMw7.5": [
             {
               "sizeBand": "Mw < 6.5",
-              "pairs": 282,
-              "bias": 1.26,
-              "scatter": 0.747,
-              "invented": 214,
+              "pairs": 278,
+              "bias": 1.256,
+              "scatter": 0.749,
+              "invented": 210,
               "missed": 1
             },
             {
@@ -2889,35 +3072,35 @@
             "group": null,
             "all": {
               "rows": 406,
-              "scored": 127,
-              "bias": 0.897,
-              "scatterLn": 2.42,
-              "inside": 387,
+              "scored": 126,
+              "bias": 0.903,
+              "scatterLn": 2.43,
+              "inside": 386,
               "bothZero": 193,
               "falseAlarms": 34,
-              "missedToZero": 52,
-              "medianBandDecades": 1.55
+              "missedToZero": 53,
+              "medianBandDecades": 1.54
             },
             "informative": {
-              "rows": 279,
-              "scored": 127,
-              "bias": 0.897,
-              "scatterLn": 2.42,
-              "inside": 260,
-              "bothZero": 66,
+              "rows": 278,
+              "scored": 126,
+              "bias": 0.903,
+              "scatterLn": 2.43,
+              "inside": 258,
+              "bothZero": 65,
               "falseAlarms": 34,
-              "missedToZero": 52,
-              "medianBandDecades": 2.51
+              "missedToZero": 53,
+              "medianBandDecades": 2.52
             },
             "unseen": {
-              "rows": 273,
-              "scored": 122,
-              "bias": 0.962,
-              "scatterLn": 2.42,
-              "inside": 255,
-              "bothZero": 66,
+              "rows": 272,
+              "scored": 121,
+              "bias": 0.969,
+              "scatterLn": 2.43,
+              "inside": 253,
+              "bothZero": 65,
               "falseAlarms": 34,
-              "missedToZero": 51,
+              "missedToZero": 52,
               "medianBandDecades": 2.51
             }
           },
@@ -2926,36 +3109,36 @@
             "group": "Mw < 6.5",
             "all": {
               "rows": 152,
-              "scored": 64,
-              "bias": 1.46,
-              "scatterLn": 2.26,
-              "inside": 142,
+              "scored": 63,
+              "bias": 1.49,
+              "scatterLn": 2.27,
+              "inside": 141,
               "bothZero": 50,
               "falseAlarms": 16,
-              "missedToZero": 22,
+              "missedToZero": 23,
               "medianBandDecades": 2.29
             },
             "informative": {
-              "rows": 132,
-              "scored": 64,
-              "bias": 1.46,
-              "scatterLn": 2.26,
-              "inside": 122,
-              "bothZero": 30,
+              "rows": 131,
+              "scored": 63,
+              "bias": 1.49,
+              "scatterLn": 2.27,
+              "inside": 120,
+              "bothZero": 29,
               "falseAlarms": 16,
-              "missedToZero": 22,
-              "medianBandDecades": 2.54
+              "missedToZero": 23,
+              "medianBandDecades": 2.55
             },
             "unseen": {
-              "rows": 130,
-              "scored": 62,
-              "bias": 1.63,
-              "scatterLn": 2.17,
-              "inside": 121,
-              "bothZero": 30,
+              "rows": 129,
+              "scored": 61,
+              "bias": 1.67,
+              "scatterLn": 2.18,
+              "inside": 119,
+              "bothZero": 29,
               "falseAlarms": 16,
-              "missedToZero": 22,
-              "medianBandDecades": 2.54
+              "missedToZero": 23,
+              "medianBandDecades": 2.55
             }
           },
           {
@@ -3054,6 +3237,17 @@
             "model": 270,
             "bandLow": 1,
             "bandHigh": 38865,
+            "seen": false
+          },
+          {
+            "event": "2009-10-22 19:51 UTC, AFGHANISTAN: HINDU KUSH",
+            "comcat": "usp000h39a",
+            "magnitude": 6.2,
+            "recorded": 5,
+            "missing": 0,
+            "model": 0,
+            "bandLow": 0,
+            "bandHigh": 0,
             "seen": false
           },
           {

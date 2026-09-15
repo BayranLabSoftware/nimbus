@@ -147,6 +147,20 @@ import { displacesLawInPlace, type ProspectiveScore } from './prospectiveRules.j
  * deeper than 300 km, so a deeper scenario is extrapolated. And the dead of
  * rule 61's deep earthquakes have been read under the law in place, whose
  * figures on them are known, though not the candidates'.
+ *
+ * Run once, on 15 September 2026, after the rules, the set and the run were
+ * committed (905c5ec), and said here rather than folded into the rules above:
+ * of rule 66's 618 maps, 16 reach MMI VII and none reaches VIII, so the score
+ * is the skill at MMI VII. Boore et al. 2014 draws VII about every map and
+ * scored 0.00; Abrahamson, Gregor & Addo 2016 scored 0.86, with a sharpness
+ * of 0.36 against 0.56, and Parker et al. 2022 0.74. Both displaced the law in
+ * place; the guard on the least modelled maps read nothing, since only 3 of
+ * the 32 reach MMI VII; the first won. On rule 61's 62 earthquakes deeper
+ * than 70 km it scored 0.801 against 1.091, within the room, so by rule 69 it
+ * is adopted and draws the rings of every scenario deeper than 70 km. Its
+ * band held 38 of those 62 records where the law in place held 58, printed
+ * and deciding nothing. What was read afterwards is in docs/SCIENCE.md, "The
+ * rings of an earthquake deeper than 70 km".
  */
 
 /** An earthquake of rule 66's set: rule 50's columns, and the weight the

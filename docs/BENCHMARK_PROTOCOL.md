@@ -817,3 +817,17 @@ curves were fitted on. Rule 70 says what adoption changes and what is printed
 beside. Most of the maps are the models ShakeMap ran, and Abrahamson et al.
 2016 is among them for 490 of 618; the band's scatter stays Boore et al.
 2014's; the rules say so rather than correct it.
+
+### Outcome
+
+Run once on 15 September 2026, after the rules, the set and the run were
+committed (`905c5ec`). Of the 618 maps 16 reach MMI VII and none reaches VIII,
+so the score is the skill at MMI VII. Boore et al. 2014 draws VII about every
+map and scored 0.00; Abrahamson, Gregor & Addo 2016 scored 0.86 and Parker et
+al. 2022 0.74, both within the sharpness allowed. The guard on the least
+modelled maps read nothing, since only 3 of them reach MMI VII. On the dead of
+rule 61's 62 earthquakes deeper than 70 km the winner scored 0.801 against
+1.091, so by rules 68 and 69 it is adopted and draws every scenario deeper than
+70 km. Its band held 38 of those records against 58, which the rules print and
+do not decide on. `docs/SCIENCE.md` gives the figures in full, with what was
+read afterwards.

@@ -165,7 +165,8 @@ export interface EarthquakeScenarioInput {
    *  an intraslab model at the hypocentral distance, the scenario a disc
    *  about its epicentre at every magnitude (`abrahamson2016Slab`,
    *  `parker2022Slab`, events/earthquake/slabAttenuation.ts). Omitted,
-   *  `none`. */
+   *  `abrahamson2016Slab`, which rules 68 and 69 adopted on 15 September
+   *  2026; `none` keeps the rings the rules that ran before drew. */
   deepLaw?: DeepLaw;
 }
 
@@ -179,6 +180,20 @@ export type DeepLaw = 'none' | SlabMotionModel;
 
 /** Rule 67: the depth (km) below which `deepLaw` draws the rings. */
 export const DEEP_LAW_FROM_KM = 70;
+
+/** Rules 68 and 69 of validation/slabRules.ts: the deep law a scenario
+ *  that names none draws, since 15 September 2026. */
+export const DEFAULT_DEEP_LAW: DeepLaw = 'abrahamson2016Slab';
+
+/** The intraslab model that draws a scenario's rings, or null where the
+ *  scenario is no deeper than {@link DEEP_LAW_FROM_KM} or names `none`. */
+export function deepLawFor(
+  input: Pick<EarthquakeScenarioInput, 'depth' | 'deepLaw'>
+): SlabMotionModel | null {
+  const depthKm = ((input.depth as number | undefined) ?? DEFAULT_HYPOCENTRE_DEPTH_M) / 1_000;
+  const law = input.deepLaw ?? DEFAULT_DEEP_LAW;
+  return law !== 'none' && depthKm > DEEP_LAW_FROM_KM ? law : null;
+}
 
 /** Rule 41 of validation/interfaceStadiumRules.ts: the geometry of a
  *  scenario marked a subduction interface below Mw 7.5. */
@@ -380,13 +395,13 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // (0.99 against 2.29) and no worse on their dead; `interfaceStadium`
   // keeps the old geometry for the rules that ran on it.
   const depthKm = ((input.depth as number | undefined) ?? DEFAULT_HYPOCENTRE_DEPTH_M) / 1_000;
-  // Rule 67 of validation/slabRules.ts: an intraslab model for a scenario
-  // deeper than 70 km where asked, a disc about the epicentre at every
-  // magnitude.
-  const deepModel: SlabMotionModel | null =
-    input.deepLaw !== undefined && input.deepLaw !== 'none' && depthKm > DEEP_LAW_FROM_KM
-      ? input.deepLaw
-      : null;
+  // Rules 66 to 70 of validation/slabRules.ts: an intraslab model for a
+  // scenario deeper than 70 km, a disc about the epicentre at every
+  // magnitude. Abrahamson, Gregor & Addo 2016 since 15 September 2026, when
+  // it scored 0.86 against Boore et al. 2014's 0.00 on 618 ShakeMaps no rule
+  // had read and read the dead of 62 deep earthquakes nearer their records
+  // (0.80 against 1.09), though its band held fewer of them (38 against 58).
+  const deepModel = deepLawFor(input);
   const isExtendedSource =
     deepModel === null &&
     (input.magnitude >= 7.5 ||

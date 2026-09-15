@@ -88,16 +88,16 @@ out by rule", reads what the first run found.
 
 #### Earthquake death tolls
 
-406 rows held out. 1 record has no ComCat event and is left out, and the 2 events the shaking contours were chosen with in view are scored apart, below. **With something** are the rows whose record or band is above zero: the other 127 are a band of nothing about a record of nothing, inside by construction, so the share inside is read over the rows with something. Bias and scatter are over the rows where record and model are both above zero; zeros are both zero / a record of nothing where the model says something / a record the model makes nothing of; the band is the median width of the 5–95 % band over the rows with something.
+406 rows held out. 1 record has no ComCat event and is left out, and the 2 events the shaking contours were chosen with in view are scored apart, below. **With something** are the rows whose record or band is above zero: the other 128 are a band of nothing about a record of nothing, inside by construction, so the share inside is read over the rows with something. Bias and scatter are over the rows where record and model are both above zero; zeros are both zero / a record of nothing where the model says something / a record the model makes nothing of; the band is the median width of the 5–95 % band over the rows with something.
 
 | Size | Rows | With something | Scored | Bias | Scatter σ_ln | Inside, with something | Inside, all rows | Zeros | Band |
 |------|-----:|---------------:|-------:|-----:|-------------:|------------------------|------------------|-------|-----:|
-| **all sizes** | 406 | 279 | 127 | 0.90× | 2.42 | 260 of 279 (93 %) | 387 of 406 (95 %) | 193 / 34 / 52 | 10^2.5 |
-| Mw < 6.5 | 152 | 132 | 64 | 1.46× | 2.26 | 122 of 132 (92 %) | 142 of 152 (93 %) | 50 / 16 / 22 | 10^2.5 |
+| **all sizes** | 406 | 278 | 126 | 0.90× | 2.43 | 258 of 278 (93 %) | 386 of 406 (95 %) | 193 / 34 / 53 | 10^2.5 |
+| Mw < 6.5 | 152 | 131 | 63 | 1.49× | 2.27 | 120 of 131 (92 %) | 141 of 152 (93 %) | 50 / 16 / 23 | 10^2.6 |
 | Mw 6.5–7.5 | 196 | 112 | 45 | 0.33× | 2.36 | 106 of 112 (95 %) | 190 of 196 (97 %) | 114 / 10 / 27 | 10^2.3 |
 | Mw ≥ 7.5 | 58 | 35 | 18 | 1.94× | 2.35 | 32 of 35 (91 %) | 55 of 58 (95 %) | 29 / 8 / 3 | 10^3.1 |
 
-Without the rows run in the net before the rule (Christchurch 2011, Kumamoto 2016, Kaikōura 2016, Durrës (Albania) 2019, Gorkha (Nepal) 2015, Tōhoku 2011): bias 0.96×, scatter 2.42, inside 255 of 273 (93 %) of the rows with something.
+Without the rows run in the net before the rule (Christchurch 2011, Kumamoto 2016, Kaikōura 2016, Durrës (Albania) 2019, Gorkha (Nepal) 2015, Tōhoku 2011): bias 0.97×, scatter 2.43, inside 253 of 272 (93 %) of the rows with something.
 
 Tuned, and scored apart: L'Aquila 2009, 40 dead against 309 on a band of 2 to 2,609; Amatrice 2016, 1 dead against 299 (+15 missing) on a band of 0 to 293.
 
@@ -132,6 +132,7 @@ Without the phases in the net before the rule: bias 0.95×, scatter 0.46, accept
 | 2008-10-29 11:32 UTC, PAKISTAN: ZIARAT | Mw 6.4 | 0 | 270 | 1 to 38,865 |  |
 | 2015-04-20 01:42 UTC, TAIWAN: TAIPEI | Mw 6.4 | 1 | 0 | 0 to 0 |  |
 | 2016-01-25 04:22 UTC, MOROCCO: MELILLA | Mw 6.3 | 1 | 0 | 0 to 0 |  |
+| 2009-10-22 19:51 UTC, AFGHANISTAN: HINDU KUSH | Mw 6.2 | 5 | 0 | 0 to 0 |  |
 | 2013-06-02 05:43 UTC, TAIWAN: JENAI | Mw 6.2 | 4 | 0 | 0 to 3 |  |
 | 2014-08-18 02:32 UTC, IRAN: ILAM PROVINCE: ABDANAN | Mw 6.2 | 0 | 684 | 1 to 6,545 |  |
 | 2011-02-21 23:51 UTC, NEW ZEALAND: CHRISTCHURCH, LYTTELTON | Mw 6.1 | 185 | 1 | 0 to 15 | yes |
@@ -197,7 +198,7 @@ Without the phases in the net before the rule: bias 0.95×, scatter 0.46, accept
 | 2009-09-29 17:48 UTC, SAMOA ISLANDS | 8.1 | 18.0 km | normal | 0 | 0 | 0 to 3 | yes | held out |
 | 2009-10-01 01:52 UTC, INDONESIA: SUMATRA: SOUTHERN: KERINCI | 6.6 | 9.0 km | strike-slip | 3 | 0 | 0 to 49 | yes | held out |
 | 2009-10-07 22:18 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS | 7.8 | 35.0 km | reverse | 0 | 0 | 0 to 21 | yes | held out |
-| 2009-10-22 19:51 UTC, AFGHANISTAN: HINDU KUSH | 6.2 | 185.9 km | reverse | 5 | 2 | 0 to 175 | yes | held out |
+| 2009-10-22 19:51 UTC, AFGHANISTAN: HINDU KUSH | 6.2 | 185.9 km | reverse | 5 | 0 | 0 to 0 | **no** | held out |
 | 2009-11-08 19:41 UTC, INDONESIA: SUMABAWA: BIMA | 6.6 | 18.0 km | reverse | 2 | 0 | 0 to 98 | yes | held out |
 | 2009-12-19 23:19 UTC, MALAWI: KARONGA | 6.0 | 6.0 km | normal | 3 | 0 | 0 to 3 | yes | held out |
 | 2010-01-03 21:48 UTC, SOLOMON ISLANDS | 6.6 | 10.0 km | reverse | 0 | 0 | 0 to 2 | yes | held out |
@@ -263,7 +264,7 @@ Without the phases in the net before the rule: bias 0.95×, scatter 0.46, accept
 | 2012-04-11 10:43 UTC, INDONESIA: N SUMATRA: OFF WEST COAST | 8.2 | 25.1 km | strike-slip | 0 | 0 | 0 to 0 | yes | held out |
 | 2012-04-14 22:05 UTC, VANUATU ISLANDS | 6.2 | 11.0 km | normal | 0 | 0 | 0 to 0 | yes | held out |
 | 2012-04-17 03:50 UTC, CHILE: VALPARAISO | 6.7 | 29.0 km | reverse | 2 | 1 | 0 to 133 | yes | held out |
-| 2012-05-14 10:00 UTC, CHILE: ARICA; PERU: TACNA | 6.2 | 105.9 km | all | 0 | 0 | 0 to 4 | yes | held out |
+| 2012-05-14 10:00 UTC, CHILE: ARICA; PERU: TACNA | 6.2 | 105.9 km | all | 0 | 0 | 0 to 0 | yes | held out |
 | 2012-05-20 02:03 UTC, ITALY: EMILIA ROMAGNA: MIRANDOLA | 6.0 | 6.3 km | reverse | 7 | 58 | 1 to 8,550 | yes | held out |
 | 2012-06-10 12:44 UTC, TURKEY: FETHIYE; GREECE: RHODES | 6.0 | 35.0 km | strike-slip | 0 | 0 | 0 to 2 | yes | held out |
 | 2012-06-29 21:07 UTC, CHINA: XINJIANG PROVINCE | 6.3 | 18.0 km | all | 0 | 0 | 0 to 6 | yes | held out |
@@ -859,16 +860,16 @@ mean absolute log bias over the cells, and the law used before stays unless beat
 
 | Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
 |-----|----:|----:|----:|----:|----:|----:|
-| Joyner & Boore 1981 | 2.72× | 3.48× | 8.22× | 1.45 | 565 | 1 |
-| Boore et al. 2014 (winner) | 1.70× | 1.62× | 3.22× | 0.73 | 424 | 8 |
-| Joyner & Boore below Mw 7.5, Boore et al. from it | 2.72× | 3.48× | 3.22× | 1.14 | 506 | 3 |
+| Joyner & Boore 1981 | 2.71× | 3.48× | 8.22× | 1.45 | 561 | 1 |
+| Boore et al. 2014 (winner) | 1.70× | 1.62× | 3.22× | 0.73 | 420 | 8 |
+| Joyner & Boore below Mw 7.5, Boore et al. from it | 2.71× | 3.48× | 3.22× | 1.14 | 502 | 3 |
 
 Rule 19: the winner on rule 11's held-out tolls, beside the law used before — bias over the rows where record and model are both above zero, and the band's share inside over the rows with something. It is adopted if its mean absolute log bias is no larger and it holds eight records in ten in every cell.
 
 | Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 |
 |-----|-----|-----|-----|
-| Joyner & Boore 1981 | 1.69× · 123 of 134 | 0.98× · 108 of 115 | 13.85× · 29 of 34 |
-| Boore et al. 2014 | 0.69× · 121 of 132 | 0.23× · 96 of 107 | 1.92× · 32 of 34 |
+| Joyner & Boore 1981 | 1.70× · 121 of 133 | 0.98× · 108 of 115 | 13.85× · 29 of 34 |
+| Boore et al. 2014 | 0.70× · 119 of 131 | 0.23× · 96 of 107 | 1.92× · 32 of 34 |
 
 Adopted: yes. The score's floor counts a band the model paints and the ShakeMap never reached, and most of Boore et al. 2014's margin is there: where both reach MMI VII it draws the ring smaller than the ShakeMap, about half its radius between Mw 6.5 and 7.5 (docs/SCIENCE.md, "Which law draws the rings").
 
@@ -884,25 +885,25 @@ staying unless beaten by 0.05 and a winner checked on the tolls as rule 19 check
 
 | Ground | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
 |--------|----:|----:|----:|----:|----:|----:|
-| The browser's slope under the pick | 2.28× | 2.20× | 3.68× | 0.97 | 469 | 5 |
-| Rock, 760 m/s (winner) | 1.70× | 1.62× | 3.22× | 0.73 | 424 | 8 |
-| The slope on land, rock under the sea | 2.10× | 1.81× | 3.28× | 0.84 | 445 | 5 |
+| The browser's slope under the pick | 2.27× | 2.20× | 3.68× | 0.97 | 465 | 5 |
+| Rock, 760 m/s (winner) | 1.70× | 1.62× | 3.22× | 0.73 | 420 | 8 |
+| The slope on land, rock under the sea | 2.09× | 1.81× | 3.28× | 0.84 | 441 | 5 |
 
 Boore et al. 2014's held-out tolls on each ground, bias and inside as in rule 19's table:
 
 | Ground | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias |
 |--------|-----|-----|-----|----:|
-| The browser's slope under the pick | 1.46× · 122 of 132 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 0.72 |
-| Rock, 760 m/s | 0.69× · 121 of 132 | 0.23× · 96 of 107 | 1.92× · 32 of 34 | 0.83 |
-| The slope on land, rock under the sea | 1.34× · 119 of 132 | 0.41× · 100 of 108 | 2.11× · 31 of 34 | 0.65 |
+| The browser's slope under the pick | 1.49× · 120 of 131 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 0.72 |
+| Rock, 760 m/s | 0.70× · 119 of 131 | 0.23× · 96 of 107 | 1.92× · 32 of 34 | 0.82 |
+| The slope on land, rock under the sea | 1.37× · 117 of 131 | 0.41× · 100 of 108 | 2.11× · 31 of 34 | 0.65 |
 
-Rock, 760 m/s beats the browser's ground on the ShakeMaps by 0.24; on the tolls its mean absolute log bias is 0.83 against 0.72, so by rule 21 it is not adopted, and the browser's ground stands. Rule 21 checks only the ShakeMap winner on the tolls. Rule 22, on the browser's ground:
+Rock, 760 m/s beats the browser's ground on the ShakeMaps by 0.24; on the tolls its mean absolute log bias is 0.82 against 0.72, so by rule 21 it is not adopted, and the browser's ground stands. Rule 21 checks only the ShakeMap winner on the tolls. Rule 22, on the browser's ground:
 
 | Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
 |-----|----:|----:|----:|----:|----:|----:|
-| Joyner & Boore 1981 | 3.53× | 3.86× | 8.50× | 1.58 | 624 | 1 |
-| Boore et al. 2014 (winner) | 2.28× | 2.20× | 3.68× | 0.97 | 469 | 5 |
-| Joyner & Boore below Mw 7.5, Boore et al. from it | 3.53× | 3.86× | 3.68× | 1.30 | 568 | 3 |
+| Joyner & Boore 1981 | 3.51× | 3.86× | 8.50× | 1.58 | 620 | 1 |
+| Boore et al. 2014 (winner) | 2.27× | 2.20× | 3.68× | 0.97 | 465 | 5 |
+| Joyner & Boore below Mw 7.5, Boore et al. from it | 3.51× | 3.86× | 3.68× | 1.30 | 564 | 3 |
 
 Boore et al. 2014 is not beaten by 0.05, and stays. Every earthquake this report scores stands on the browser's ground since, the net's and the footprint anchors' included; the tables of rules 17 to 19 above are on rock, as those rules ran (docs/SCIENCE.md, "The ground under the rings").
 
@@ -927,7 +928,7 @@ The same candidates on rule 18's 370 ShakeMaps, which decide nothing:
 
 | Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
 |-----|----:|----:|----:|----:|----:|----:|
-| Boore et al. 2014 (winner) | 2.28× | 2.20× | 3.68× | 0.97 | 469 | 5 |
+| Boore et al. 2014 (winner) | 2.27× | 2.20× | 3.68× | 0.97 | 465 | 5 |
 | Allen, Wald & Worden 2012, hypocentral | 1.71× | 2.75× | 3.95× | 0.97 | 167 | 42 |
 | Allen et al. below Mw 7.5, Boore et al. from it | 1.71× | 2.75× | 3.68× | 0.95 | 178 | 36 |
 
@@ -935,7 +936,7 @@ Boore et al. 2014 is not beaten by 0.05 on the unseen ShakeMaps, and stays; noth
 
 | Law | Rule 11's held-out tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Quiet earthquakes with a median toll of ten or more | The set's recorded tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 |
 |-----|-----|-----|-----|----:|-----|-----|-----|
-| Boore et al. 2014 | 1.46× · 122 of 132 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 2.9 % of 805 | 2.02× · 3 of 3 | — · 0 of 0 | — · 0 of 0 |
+| Boore et al. 2014 | 1.49× · 120 of 131 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 2.9 % of 805 | 2.02× · 3 of 3 | — · 0 of 0 | — · 0 of 0 |
 
 ### PAGER's chain from shaking to loss
 
@@ -960,10 +961,10 @@ Each cell is the geometric mean of model over PAGER, floored at a thousand peopl
 
 | Chain | Rule 11's held-out tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Rule 18's ShakeMaps |
 |-------|-----|-----|-----|----:|----:|
-| In place: PGA, the rings at 7, 8 and 9 | 1.46× · 122 of 132 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 0.72 | 0.97 |
-| PAGER's: PGV, PAGER's bands | 1.13× · 128 of 136 | 0.50× · 119 of 125 | 4.70× · 36 of 37 | 0.79 | 1.13 |
-| Half: PGA, PAGER's bands | 1.51× · 129 of 136 | 0.35× · 113 of 118 | 3.34× · 34 of 36 | 0.89 | 0.97 |
-| Half: PGV, the rings at 7, 8 and 9 | 0.97× · 119 of 132 | 0.44× · 107 of 114 | 6.33× · 34 of 36 | 0.90 | 1.13 |
+| In place: PGA, the rings at 7, 8 and 9 | 1.49× · 120 of 131 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 0.72 | 0.97 |
+| PAGER's: PGV, PAGER's bands | 1.17× · 127 of 136 | 0.50× · 119 of 125 | 4.70× · 36 of 37 | 0.80 | 1.13 |
+| Half: PGA, PAGER's bands | 1.52× · 128 of 136 | 0.35× · 113 of 118 | 3.34× · 34 of 36 | 0.90 | 0.97 |
+| Half: PGV, the rings at 7, 8 and 9 | 1.01× · 117 of 131 | 0.44× · 107 of 114 | 6.33× · 34 of 36 | 0.89 | 1.13 |
 
 By rule 33 the chain in place stays: it does worse on rule 18's ShakeMaps than the margin allows.
 
@@ -1172,7 +1173,7 @@ A candidate must displace Boore et al. 2014 by 0.10 of score within 0.10 of shar
 
 | Law | Rule 11's held-out tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Rule 23's quiet earthquakes raised to ten |
 |-----|-----|-----|-----|----:|----:|
-| Boore et al. 2014 | 1.46× · 122 of 132 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 0.72 | 2.9 % of 805 |
+| Boore et al. 2014 | 1.49× · 120 of 131 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 0.72 | 2.9 % of 805 |
 | Allen et al. below Mw 7.5, Boore et al. from it | 1.05× · 81 of 113 | 0.67× · 128 of 139 | 1.94× · 33 of 36 | 0.37 | 1.4 % of 805 |
 
 By rule 59 Boore et al. 2014 keeps drawing the rings: Allen et al. below Mw 7.5, Boore et al. from it fails rule 19's test on rule 11's held-out tolls.
@@ -1182,7 +1183,7 @@ Printed beside, deciding nothing (rule 60): the same score on rock and on the ma
 | Maps | Boore et al. 2014 (in place) | Joyner & Boore 1981 | Joyner & Boore below Mw 7.5, Boore et al. from it | Allen, Wald & Worden 2012, hypocentral | Allen et al. below Mw 7.5, Boore et al. from it | Boore et al. 2014 on PGV | Boore et al. 2014 at Thompson & Worden’s distance |
 |------|----:|----:|----:|----:|----:|----:|----:|
 | Rule 56’s maps, on rock | 0.18 | 0.07 | 0.07 | 0.39 | 0.42 | 0.14 | 0.12 |
-| Rule 11’s maps | 0.08 | 0.02 | 0.02 | 0.30 | 0.34 | 0.14 | 0.03 |
+| Rule 11’s maps | 0.08 | 0.02 | 0.03 | 0.30 | 0.34 | 0.15 | 0.04 |
 | Rule 23’s maps | 0.12 | 0.02 | 0.02 | 0.30 | 0.30 | 0.20 | 0.05 |
 | Rule 50’s maps | 0.06 | 0.02 | 0.02 | 0.39 | 0.39 | 0.17 | 0.05 |
 
@@ -1195,9 +1196,9 @@ A candidate must read the dead no worse than the toll in place, by rule 47's sco
 
 | Toll | Score | Records held | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Dead counted |
 |------|----:|----:|-----|-----|-----|----:|
-| Boore et al. 2014, inside MMI VII only (in place) | 0.720 | 160 of 194 | 5.66× · 41 of 75 | 3.09× · 17 of 17 | 3.51× · 21 of 21 | 10,406 |
-| Allen et al. below Mw 7.5, V and VI at their middles | 0.565 | 161 of 194 | 1.59× · 59 of 88 | 0.98× · 12 of 16 | 4.59× · 22 of 22 | 8,716 |
-| Allen et al. below Mw 7.5, V and VI at their integers | 0.566 | 158 of 194 | — · 53 of 85 | — · 12 of 16 | 3.93× · 21 of 21 | 8,277 |
+| Boore et al. 2014, inside MMI VII only (in place) | 0.627 | 139 of 194 | 4.70× · 25 of 67 | 1.26× · 2 of 13 | 3.54× · 14 of 16 | 7,674 |
+| Allen et al. below Mw 7.5, V and VI at their middles | 0.612 | 164 of 194 | 1.86× · 62 of 89 | 9.68× · 15 of 18 | 3.89× · 17 of 17 | 6,995 |
+| Allen et al. below Mw 7.5, V and VI at their integers | 0.561 | 161 of 194 | — · 56 of 86 | 2.47× · 15 of 18 | 2.29× · 17 of 17 | 6,250 |
 
 No candidate reads the dead no worse than the toll in place while its band holds eight records in ten in every cell, so by rule 63 Boore et al. 2014 stays, counting the dead inside MMI VII only, and the guards do not run.
 
@@ -1205,20 +1206,57 @@ Printed beside, deciding nothing (rule 65): the equation counting inside MMI VII
 
 | Toll | Score | Records held | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Dead counted |
 |------|----:|----:|-----|-----|-----|----:|
-| Allen et al. below Mw 7.5, inside MMI VII only | 0.574 | 129 of 194 | — · 3 of 55 | — · 0 of 13 | 3.51× · 21 of 21 | 8,178 |
-| Boore et al. 2014, V and VI at their middles | 0.785 | 182 of 194 | 4.59× · 106 of 118 | 4.60× · 17 of 17 | 4.59× · 22 of 22 | 11,577 |
-| Boore et al. 2014, V and VI at their integers | 0.729 | 180 of 194 | 3.70× · 101 of 115 | 3.38× · 17 of 17 | 3.93× · 21 of 21 | 10,605 |
+| Allen et al. below Mw 7.5, inside MMI VII only | 0.570 | 128 of 194 | — · 3 of 55 | 1.26× · 2 of 13 | 3.54× · 13 of 16 | 6,095 |
+| Boore et al. 2014, V and VI at their middles | 0.705 | 172 of 194 | 4.05× · 92 of 111 | 9.68× · 15 of 18 | 3.89× · 17 of 17 | 9,074 |
+| Boore et al. 2014, V and VI at their integers | 0.623 | 170 of 194 | 2.59× · 87 of 108 | 2.47× · 15 of 18 | 2.29× · 17 of 17 | 7,906 |
 
 and every toll on the small and the deep earthquakes apart:
 
 | Toll | Small: score | Small: records held | Deep: score | Deep: records held |
 |------|----:|----:|----:|----:|
-| Boore et al. 2014, inside MMI VII only (in place) | 0.416 | 65 of 94 | 1.006 | 95 of 100 |
-| Allen et al. below Mw 7.5, V and VI at their middles | 0.421 | 85 of 94 | 0.700 | 76 of 100 |
-| Allen et al. below Mw 7.5, V and VI at their integers | 0.410 | 82 of 94 | 0.712 | 76 of 100 |
-| Allen et al. below Mw 7.5, inside MMI VII only | 0.409 | 64 of 94 | 0.729 | 65 of 100 |
-| Boore et al. 2014, V and VI at their middles | 0.442 | 85 of 94 | 1.107 | 97 of 100 |
-| Boore et al. 2014, V and VI at their integers | 0.403 | 83 of 94 | 1.036 | 97 of 100 |
+| Boore et al. 2014, inside MMI VII only (in place) | 0.416 | 65 of 94 | 0.826 | 74 of 100 |
+| Allen et al. below Mw 7.5, V and VI at their middles | 0.421 | 85 of 94 | 0.792 | 79 of 100 |
+| Allen et al. below Mw 7.5, V and VI at their integers | 0.410 | 82 of 94 | 0.704 | 79 of 100 |
+| Allen et al. below Mw 7.5, inside MMI VII only | 0.409 | 64 of 94 | 0.722 | 64 of 100 |
+| Boore et al. 2014, V and VI at their middles | 0.442 | 85 of 94 | 0.952 | 87 of 100 |
+| Boore et al. 2014, V and VI at their integers | 0.403 | 83 of 94 | 0.830 | 87 of 100 |
+
+### The rings of an earthquake deeper than 70 km
+
+Until 15 September 2026 no ring law read the depth of a deep earthquake. Rules 66 to 70 (`validation/slabRules.ts`), committed before any candidate was scored,
+put two intraslab models to rule 28's score — hits, misses, false alarms and silences at MMI VII and VIII, and the Peirce
+skill score — on ComCat's ShakeMaps of M 6 or more, 1973 to 2025, deeper than 70 km and no deeper than 300 km (read on 2026-09-15): 618 maps, 32 of them drawn on a finite rupture or with ten stations or more, on the browser's ground.
+Each candidate draws a scenario deeper than 70 km as a disc at every magnitude, its rings where its median PGA at the hypocentral
+distance falls to the PGA Worden et al. 2012 give the intensity. A candidate must displace Boore et al. 2014 by 0.10 of score
+within 0.10 of sharpness and lose nothing on the least modelled maps.
+
+| Law | MMI VII: hits · misses · false alarms · silences | Skill | MMI VIII: hits · misses · false alarms · silences | Skill | Score | Sharpness | Least modelled |
+|-----|-----|----:|-----|----:|----:|----:|----:|
+| Boore et al. 2014 (in place when the rules ran) | 16 · 0 · 602 · 0 | 0.00 | 0 · 0 · 423 · 195 | — (not scored) | 0.00 | 0.56 | — |
+| Abrahamson, Gregor & Addo 2016, intraslab (winner) | 14 · 2 · 7 · 595 | 0.86 | 0 · 0 · 0 · 618 | — (not scored) | 0.86 | 0.36 | — |
+| Parker et al. 2022, intraslab (displaces) | 12 · 4 · 4 · 598 | 0.74 | 0 · 0 · 3 · 615 | — (not scored) | 0.74 | 0.34 | — |
+
+The guard on the least modelled maps reads nothing for the intraslab model of Abrahamson, Gregor & Addo 2016 and the intraslab model of Parker et al. 2022, as rule 68 allows: on those 32 maps no band is reached often enough to be scored for both sides.
+
+On rule 61's 62 earthquakes deeper than 70 km, counting the dead inside MMI VII:
+
+| Law | Rule 47's score | Records held | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 |
+|-----|----:|----:|----:|----:|----:|
+| Boore et al. 2014 | 1.091 | 58 of 62 | 17 of 21 | 19 of 19 | 22 of 22 |
+| Abrahamson, Gregor & Addo 2016, intraslab | 0.801 | 38 of 62 | 10 of 21 | 8 of 19 | 20 of 22 |
+
+By rules 68 and 69 the intraslab model of Abrahamson, Gregor & Addo 2016 draws the rings of every scenario deeper than 70 km.
+
+Printed beside, deciding nothing (rule 70): the score on rock, by depth, and by the slab models that drew the maps.
+
+| Maps | Count | Boore et al. 2014 (in place when the rules ran) | Abrahamson, Gregor & Addo 2016, intraslab | Parker et al. 2022, intraslab |
+|------|----:|----:|----:|----:|
+| All maps, on rock | 618 | 0.00 | 0.74 | 0.75 |
+| Maps no deeper than 150 km | 406 | 0.00 | 0.86 | 0.74 |
+| Maps deeper than 150 km | 212 | — | — | — |
+| Maps drawn with a slab set holding Abrahamson et al. 2016 | 490 | 0.00 | 0.84 | 0.71 |
+| Maps drawn with a slab set holding Parker et al. 2022 | 21 | — | — | — |
+| Maps drawn with a slab set holding neither | 107 | — | — | — |
 
 ### Which checks are validation
 
@@ -1519,8 +1557,9 @@ shows.
 - **The coastal toll needs bathymetry**, so no offline test reaches it: the death-toll rows above are the shaking, blast and pyroclastic tolls only, and the wave rows are open-ocean amplitudes. The coastal numbers are measured in the browser; docs/ROADMAP.md carries the console snippet that reproduces them.
 - **The toll band draws the fatality curve's published scatter, but not the census.** Since 14 September 2026 a shaking realisation scales its mortality by exp(N(0, G)), G being PAGER's `gnormvalue` for the country — the standard deviation of ln(deaths) PAGER's own loss module uses. The population is still held fixed, and so are the blast and pyroclastic rates, which publish no scatter. G was measured on ShakeMap intensities, so it overlaps, by an amount not separated here, with the ground-motion residual drawn beside it. Where the curve is steep or its scatter large the band spans four orders of magnitude or more — Gorkha, Kumamoto, Pohang — which is the width PAGER's own numbers give a single event, and a row inside such a band has passed nothing (`uq/tollBand.ts`).
 - **A great rupture's toll is read off rings drawn for a point.** From Mw 7.5 the intensity rings — Boore et al. 2014's since 14 September 2026 — are a relation for a point, stretched along the rupture as a stadium, and the simulator counts the people inside it; no finite-fault or subduction-interface relation is implemented. Held out by rule, the earthquakes of Mw ≥ 7.5 read 1.94× their record with a scatter of 2.35, and their band holds 32 of 35 records by spanning a median of 10^3.1. On Joyner & Boore 1981's rings the same cell read 13.85×, a figure the calibration harness hid until the same day by counting circles about the epicentre (docs/ROADMAP.md, M9 move 4; docs/BUG_REGISTRY.md, B-022).
-- **The rings paint intensity VII where ShakeMaps record none.** Held out by rule, 190 of the 370 USGS ShakeMaps hold no ground at MMI VII on their low-resolution grid, and Boore et al. 2014's rings draw a VII band about every one of them, on the ground the browser reads under the epicentre and on rock alike. The rings take no account of how deep the source lies, and a ShakeMap's grid does not hold a peak smaller than one of its cells; which of the two, or what else, makes the difference is not established. Where a ShakeMap does reach MMI VII, the ring runs at a median 1.07, 0.66 and 1.01 of its radius below Mw 6.5, between 6.5 and 7.5 and above (0.82, 0.50 and 0.90 on rock). On the 809 earthquakes of rule 23 no rule had read, Boore et al. 2014 paints 1374 bands where their ShakeMaps hold none, and Allen, Wald & Worden's intensity equation, which reads the depth, 298; the score rules 23 to 26 chose with gives no credit for a band rightly left blank, and it kept Boore et al. 2014 (docs/SCIENCE.md, "Whether the rings carry depth"). And the ground is one Vs30, read at the epicentre, for the whole footprint, where a ShakeMap reads each cell's own (docs/SCIENCE.md, "The ground under the rings").
-- **Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).
+- **The rings paint intensity VII where ShakeMaps record none.** Held out by rule, 190 of the 370 USGS ShakeMaps hold no ground at MMI VII on their low-resolution grid, and Boore et al. 2014's rings draw a VII band about 188 of them on the ground the browser reads under the epicentre, 188 on rock. The rings of a source no deeper than 70 km take no account of how deep it lies, and a ShakeMap's grid does not hold a peak smaller than one of its cells; which of the two, or what else, makes the difference is not established. Where a ShakeMap does reach MMI VII, the ring runs at a median 1.07, 0.66 and 1.01 of its radius below Mw 6.5, between 6.5 and 7.5 and above (0.82, 0.50 and 0.90 on rock). On the 809 earthquakes of rule 23 no rule had read, Boore et al. 2014 paints 1374 bands where their ShakeMaps hold none, and Allen, Wald & Worden's intensity equation, which reads the depth, 298; the score rules 23 to 26 chose with gives no credit for a band rightly left blank, and it kept Boore et al. 2014 (docs/SCIENCE.md, "Whether the rings carry depth"). And the ground is one Vs30, read at the epicentre, for the whole footprint, where a ShakeMap reads each cell's own (docs/SCIENCE.md, "The ground under the rings").
+- **An earthquake deeper than 70 km is drawn with a law silent where its maps are silent, and its band misses deep dead.** Since 15 September 2026 the intraslab model of Abrahamson, Gregor & Addo 2016 draws the rings of every scenario deeper than 70 km, chosen by rules 66 to 70 on 618 ShakeMaps no rule had read. The toll still counts the dead inside MMI VII only, and on rule 61's 62 earthquakes deeper than 70 km its band holds 38 records, where the rings it replaced held 58; 22 records with deaths, 468 dead in all, sit on a band of [0, 0], against 3 before. The band's ground-motion scatter is still Boore et al. 2014's σ of 0.60, where the model's own is 0.74 (docs/SCIENCE.md, "The rings of an earthquake deeper than 70 km").
+- **Subduction-interface earthquakes are shaken with laws fitted to crustal ones.** The intensity rings of a scenario no deeper than 70 km and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; the two subduction-interface relations implemented were not adopted (rules 35 to 39 and 50 to 55), and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).
 - **Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).
 - **Two numbers are not traced to a source read here.** The arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005. A third, the 30 cm at DART 21413 that the Tōhoku wave row was tuned on, was read from the buoy's own file on 15 September 2026: it crests at 0.81 m, and the row is declared (B-034).
 - **An airburst's blast is a point that does not move, drawn as round rings.** Since 15 September 2026 it is the Earth Impact Effects Program's own air blast (Collins et al. 2005 and 2017; B-032), reproduced within 1 % on the airburst rows above, which were held out when it was adopted. What that model is not was checked against rules written first (`docs/BENCHMARK_PROTOCOL.md`): against the shock-physics runs of Collins et al. 2017, Table 2, its figures are 0.92× theirs, the median off by a factor of 1.21; at Tunguska its 20 kPa ring reaches 11.5 km, against the 26.5 km radius of the ~2 200 km² of flattened forest (0.43×), beyond a factor of two. At Chelyabinsk the check first flagged a 1 kPa ring of 17.6 km against the 56 km radius of the ~10 000 km² over which windows broke; the preset then took the body Popova et al. 2013 measured, as its source says and not as the check asked (B-033), and on a re-run that is not a validation the ring reaches 30.2 km (0.54×), 68.0 km for a moving source. In the city, 45 km out, the law gives 0.74 kPa where the broken windows put about 3.2 kPa (Brown et al. 2013). A shallow, high burst spreads its energy along its path and damages an ellipse, farthest across the path; ReVelle's weak-shock line source, the only analytic one, is "largely inapplicable" beneath Chelyabinsk's trail (Gi, Brown & Aftosmis 2018), and the elongated footprint has been reproduced only by three-dimensional hydrocodes (Popova et al. 2013; Aftosmis et al. 2016). Tunguska's blast row checks the energy, not the blast (`effects/airburstBlast.ts`).

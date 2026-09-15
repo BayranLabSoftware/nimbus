@@ -100,9 +100,11 @@ describe('validateEarthquakeInputs', () => {
     expect(w.some((x) => x.parameter === 'magnitude')).toBe(true);
   });
 
-  it('flags deep-focus events > 100 km', () => {
-    const w = validateEarthquakeInputs({ magnitude: 7.0, depthM: 200_000 });
-    expect(w.some((x) => x.parameter === 'depth')).toBe(true);
+  it('flags a hypocentre deeper than the intraslab law was chosen on (> 300 km)', () => {
+    const deep = validateEarthquakeInputs({ magnitude: 7.0, depthM: 400_000 });
+    expect(deep.some((x) => x.parameter === 'depth')).toBe(true);
+    const measured = validateEarthquakeInputs({ magnitude: 7.0, depthM: 200_000 });
+    expect(measured.some((x) => x.parameter === 'depth')).toBe(false);
   });
 });
 

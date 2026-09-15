@@ -251,6 +251,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Changed
 
+- **Earthquakes deeper than 70 km are drawn with a model for a subducting
+  slab.** No ring law read a deep earthquake's depth: Boore et al. 2014 drew
+  one at 200 km as one at 10 km, and painted MMI VII about every earthquake
+  of Mw 6 or more. Rules written before either candidate was scored
+  (`validation/slabRules.ts`) put two intraslab models, held to OpenQuake,
+  to the 618 ShakeMaps of 1973 to 2025 deeper than 70 km that no rule had
+  read. Abrahamson, Gregor & Addo 2016 (BC Hydro) scored 0.86 at MMI VII
+  where Boore et al. 2014 scored 0.00, and read the dead of 62 deep
+  earthquakes nearer their records, so it now draws the rings of every
+  scenario deeper than 70 km, as a disc at every magnitude; the depth
+  warning moves from 100 to 300 km. Its band holds fewer of those records
+  (38 against 58): the toll counts the dead inside MMI VII only, and a law
+  silent where the maps are silent leaves some deep earthquakes that killed,
+  Hindu Kush 2015 among them, at [0, 0]. The validation report declares it.
+
 - **An interface earthquake below Mw 7.5 is drawn as a disc.** A scenario
   marked a subduction interface was a rupture stadium at every magnitude,
   where every other becomes one from Mw 7.5, and that alone multiplied the

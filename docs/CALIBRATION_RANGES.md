@@ -33,11 +33,11 @@ the table below is the editorial reference behind the runtime checks.
 
 ## Earthquake
 
-| Input               | Calibration window                          | Source                                         | Behaviour outside                                                                                |
-| ------------------- | ------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Moment magnitude Mw | 4.0 – 9.5                                   | Wells & Coppersmith 1994 + Hanks-Kanamori 1979 | < 4: microseismic regime, no useful damage radii. > 9.5: above Valdivia 1960 (largest recorded). |
-| Hypocentre depth    | 0 – 100 km                                  | Boore 2014 NGA-West2 + subduction extension    | > 100 km: deep-focus regime, path effects dominate ground-motion attenuation.                    |
-| Fault type          | reverse / normal / strike-slip / megathrust | W&C taxonomy                                   | Other types fall through to "all" (continental reverse) coefficients.                            |
+| Input               | Calibration window                          | Source                                                                                                                                            | Behaviour outside                                                                                |
+| ------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Moment magnitude Mw | 4.0 – 9.5                                   | Wells & Coppersmith 1994 + Hanks-Kanamori 1979                                                                                                    | < 4: microseismic regime, no useful damage radii. > 9.5: above Valdivia 1960 (largest recorded). |
+| Hypocentre depth    | 0 – 70 km; 70 – 300 km                      | Boore 2014 NGA-West2; from 70 km Abrahamson, Gregor & Addo 2016 intraslab, chosen on USGS ShakeMaps of 70–300 km (rules 66–70, 15 September 2026) | > 300 km: deeper than any ShakeMap the intraslab law was chosen on; extrapolation.               |
+| Fault type          | reverse / normal / strike-slip / megathrust | W&C taxonomy                                                                                                                                      | Other types fall through to "all" (continental reverse) coefficients.                            |
 
 ## Volcano
 

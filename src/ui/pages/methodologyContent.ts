@@ -264,6 +264,20 @@ const boore2014: Citation = {
   doi: '10.1193/070113EQS184M',
 };
 
+const abrahamson2016: Citation = {
+  authors: 'Abrahamson, N., Gregor, N. & Addo, K.',
+  year: 2016,
+  title: 'BC Hydro ground motion prediction equations for subduction earthquakes',
+  venue: 'Earthquake Spectra 32 (1), 23–44',
+};
+
+const parker2022: Citation = {
+  authors: 'Parker, G. A., Stewart, J. P., Boore, D. M., Atkinson, G. M. & Hassani, B.',
+  year: 2022,
+  title: 'NGA-subduction global ground motion models with regional adjustment factors',
+  venue: 'Earthquake Spectra 38 (1), 456–493',
+};
+
 const faenzaMichelini2010: Citation = {
   authors: 'Faenza, L. & Michelini, A.',
   year: 2010,
@@ -968,8 +982,17 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'PGA attenuation (NGA-West2, BSSA14)',
         formula: 'ln(PGA_g) = F_E(M, mech) + F_P(R, M) + F_S(Vs30, PGA_rock)',
         description:
-          'Boore et al. 2014 NGA-West2 equation with magnitude-dependent spreading, the 4.5 km near-source term, fault-type constants and the published site term. Since 14 September 2026 it draws the MMI VII–IX rings, chosen by rules 17–19 of the validation on 370 USGS ShakeMaps against Joyner & Boore 1981 and checked on 406 held-out death tolls; it invents no intensity an earthquake never reached, and on reference rock draws moderate earthquakes’ MMI VII at about half the ShakeMaps’ radius, a declared gap. Also shown as PGA at 20 and 100 km.',
+          'Boore et al. 2014 NGA-West2 equation with magnitude-dependent spreading, the 4.5 km near-source term, fault-type constants and the published site term. Since 14 September 2026 it draws the MMI VII–IX rings of every scenario no deeper than 70 km, chosen by rules 17–19 of the validation on 370 USGS ShakeMaps against Joyner & Boore 1981 and checked on 406 held-out death tolls; it invents no intensity an earthquake never reached, and on reference rock draws moderate earthquakes’ MMI VII at about half the ShakeMaps’ radius, a declared gap. Also shown as PGA at 20 and 100 km, at every depth.',
         citation: boore2014,
+      },
+      {
+        id: 'pga-slab',
+        name: 'PGA of an earthquake deeper than 70 km (BC Hydro 2016, intraslab)',
+        formula:
+          'ln PGA_g = θ₁ + θ₄·ΔC₁ + f_M(M) + (θ₂ + θ₁₄ + θ₃·(M − 7.8))·ln(R_hyp + 10·e^(0.4·(M − 6))) + θ₆·R_hyp + θ₁₀ + θ₁₁·(min(Z_hyp, 120) − 60) + f_S(Vs30, PGA₁₀₀₀)',
+        description:
+          'Abrahamson, Gregor & Addo 2016, the BC Hydro model for earthquakes inside a subducting slab: the central magnitude scaling (ΔC₁ = −0.3), a forearc site, the ergodic model, the distance to the hypocentre and its depth, held to OpenQuake’s implementation within one part in a billion. Since 15 September 2026 it draws the MMI VII–IX rings of every scenario deeper than 70 km, as a disc about the epicentre at every magnitude, chosen by rules 66–70 of the validation on 618 USGS ShakeMaps of 1973–2025 no rule had read: a skill of 0.86 at MMI VII, where Boore et al. 2014, painting VII about every one of them, scored 0.00, and Parker et al. 2022 0.74. On the dead of 62 deep earthquakes it reads nearer the records than the rings it replaced, but its band holds fewer of them (38 against 58), a declared gap; deeper than 300 km nothing it was chosen on reaches.',
+        citation: abrahamson2016,
       },
       {
         id: 'vs30',
@@ -1527,6 +1550,8 @@ export const CITATIONS = {
   strasser2010,
   joynerBoore1981,
   boore2014,
+  abrahamson2016,
+  parker2022,
   faenzaMichelini2010,
   worden2012,
   youdIdriss2001,

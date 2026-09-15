@@ -188,6 +188,9 @@ import {
 } from '../src/physics/validation/allenTollRules.js';
 import { runAllenToll, type AllenTollRun } from '../src/physics/validation/allenTollRun.js';
 import { SMALL_DEEP_READ_ON } from '../src/physics/validation/smallDeepSetData.js';
+import { SLAB_CANDIDATES } from '../src/physics/validation/slabRules.js';
+import { runSlab, type SlabRun } from '../src/physics/validation/slabRun.js';
+import { SLAB_READ_ON } from '../src/physics/validation/slabSetData.js';
 import type { ProspectiveScore } from '../src/physics/validation/prospectiveRules.js';
 import { POINT_SOURCE_READ_ON } from '../src/physics/validation/pointSourceSetData.js';
 import { shippedCountryAt } from '../src/physics/validation/shippedPopulation.js';
@@ -1805,6 +1808,182 @@ function allenTollSection(run: AllenTollRun): string {
   ].join('\n');
 }
 
+function runSlabRules(): SlabRun {
+  const run = runSlab();
+  // A scenario deeper than 70 km that names no deep law must draw what
+  // rules 68 and 69 left in place.
+  const deep = { magnitude: 7.1, depth: m(120_000), faultType: 'normal' } as const;
+  const plain = simulateEarthquake(deep).shaking;
+  const inPlace = run.dead?.adopted === true ? run.dead.winner : 'none';
+  const named = simulateEarthquake({
+    ...deep,
+    deepLaw: SLAB_CANDIDATES.find((c) => c.key === inPlace)?.deepLaw ?? 'none',
+  }).shaking;
+  if (plain.mmi7Radius !== named.mmi7Radius || plain.mmi8Radius !== named.mmi8Radius) {
+    throw new Error(
+      `A scenario deeper than 70 km naming no deep law does not draw ${inPlace}, which rules 68 and 69 leave in place`
+    );
+  }
+  return run;
+}
+
+const SLAB_LABEL: Readonly<Record<string, string>> = {
+  boore2014: 'Boore et al. 2014 (in place when the rules ran)',
+  abrahamson2016Slab: 'Abrahamson, Gregor & Addo 2016, intraslab',
+  parker2022Slab: 'Parker et al. 2022, intraslab',
+};
+
+/** The same laws, as a sentence names them. */
+const SLAB_NAME: Readonly<Record<string, string>> = {
+  boore2014: 'Boore et al. 2014',
+  abrahamson2016Slab: 'the intraslab model of Abrahamson, Gregor & Addo 2016',
+  parker2022Slab: 'the intraslab model of Parker et al. 2022',
+};
+
+const SLAB_BESIDE_LABEL: Readonly<Record<string, string>> = {
+  rock: 'All maps, on rock',
+  shallower: 'Maps no deeper than 150 km',
+  deeper: 'Maps deeper than 150 km',
+  withAbrahamson2016: 'Maps drawn with a slab set holding Abrahamson et al. 2016',
+  withParker2022: 'Maps drawn with a slab set holding Parker et al. 2022',
+  withNeither: 'Maps drawn with a slab set holding neither',
+};
+
+function slabSection(run: SlabRun): string {
+  const skill = (v: number | null): string => (v === null ? '—' : v.toFixed(2));
+  const bandCells = (s: ProspectiveScore): string =>
+    s.bands
+      .map(
+        (b) =>
+          `${b.outcome.hits.toString()} · ${b.outcome.misses.toString()} · ${b.outcome.falseAlarms.toString()} · ${b.outcome.silences.toString()} | ${skill(b.skill)}${b.scored ? '' : ' (not scored)'}`
+      )
+      .join(' | ');
+  const rows = SLAB_CANDIDATES.map((c) => {
+    const s = run.scores[c.key];
+    if (s === undefined) return '';
+    const mark =
+      c.key === run.choice.winner
+        ? ' (winner)'
+        : run.choice.displacing.includes(c.key)
+          ? ' (displaces)'
+          : '';
+    return `| ${SLAB_LABEL[c.key] ?? c.key}${mark} | ${bandCells(s.all)} | ${skill(s.all.score)} | ${skill(s.all.sharpness)} | ${skill(s.leastModelled.score)} |`;
+  });
+  const dead = run.dead;
+  const verdict =
+    run.choice.winner === null
+      ? 'No candidate displaces Boore et al. 2014 by 0.10 of score within 0.10 of sharpness while losing nothing on the least modelled maps, so by rule 68 the law in place stays and nothing runs on the dead.'
+      : dead?.adopted === true
+        ? `By rules 68 and 69 ${SLAB_NAME[dead.winner] ?? dead.winner} draws the rings of every scenario deeper than 70 km.`
+        : `By rule 69 Boore et al. 2014 keeps drawing the rings: ${SLAB_NAME[run.choice.winner] ?? run.choice.winner} reads the dead of rule 61's deep earthquakes worse than the law in place by more than 0.10.`;
+  const inPlaceScores = run.scores[SLAB_CANDIDATES[0]?.key ?? 'boore2014'];
+  const unreadGuard = run.choice.displacing.filter(
+    (key) =>
+      inPlaceScores?.leastModelled.score == null || run.scores[key]?.leastModelled.score == null
+  );
+  const guardNote =
+    unreadGuard.length === 0
+      ? []
+      : [
+          `The guard on the least modelled maps reads nothing for ${unreadGuard.map((key) => SLAB_NAME[key] ?? key).join(' and ')}, as rule 68 allows: on those ${run.events.leastModelled.toString()} maps no band is reached often enough to be scored for both sides.`,
+          '',
+        ];
+  const bands = SIZE_BANDS.earthquake.map((b) => b.label);
+  return [
+    'Until 15 September 2026 no ring law read the depth of a deep earthquake. Rules 66 to 70 (`validation/slabRules.ts`), committed before any candidate was scored,',
+    "put two intraslab models to rule 28's score — hits, misses, false alarms and silences at MMI VII and VIII, and the Peirce",
+    `skill score — on ComCat's ShakeMaps of M 6 or more, 1973 to 2025, deeper than 70 km and no deeper than 300 km (read on ${SLAB_READ_ON}): ${run.events.earthquakes.toString()} maps, ${run.events.leastModelled.toString()} of them drawn on a finite rupture or with ten stations or more, on the browser's ground.`,
+    'Each candidate draws a scenario deeper than 70 km as a disc at every magnitude, its rings where its median PGA at the hypocentral',
+    'distance falls to the PGA Worden et al. 2012 give the intensity. A candidate must displace Boore et al. 2014 by 0.10 of score',
+    'within 0.10 of sharpness and lose nothing on the least modelled maps.',
+    '',
+    '| Law | MMI VII: hits · misses · false alarms · silences | Skill | MMI VIII: hits · misses · false alarms · silences | Skill | Score | Sharpness | Least modelled |',
+    '|-----|-----|----:|-----|----:|----:|----:|----:|',
+    ...rows,
+    '',
+    ...guardNote,
+    ...(dead === null
+      ? [verdict]
+      : [
+          `On rule 61's ${run.events.guard.toString()} earthquakes deeper than 70 km, counting the dead inside MMI VII:`,
+          '',
+          `| Law | Rule 47's score | Records held | ${bands.join(' | ')} |`,
+          `|-----|----:|----:|${bands.map(() => '----:').join('|')}|`,
+          ...(['inPlace', 'winner'] as const).map((side) => {
+            const r = dead.readings[side];
+            return `| ${side === 'inPlace' ? 'Boore et al. 2014' : (SLAB_LABEL[dead.winner] ?? dead.winner)} | ${r.score.toFixed(3)} | ${r.held.toString()} of ${r.rows.toString()} | ${r.cells.map((c) => `${c.held.toString()} of ${c.rows.toString()}`).join(' | ')} |`;
+          }),
+          '',
+          verdict,
+        ]),
+    '',
+    'Printed beside, deciding nothing (rule 70): the score on rock, by depth, and by the slab models that drew the maps.',
+    '',
+    `| Maps | Count | ${SLAB_CANDIDATES.map((c) => SLAB_LABEL[c.key] ?? c.key).join(' | ')} |`,
+    `|------|----:|${SLAB_CANDIDATES.map(() => '----:').join('|')}|`,
+    ...Object.entries(run.beside).map(
+      ([label, reading]) =>
+        `| ${SLAB_BESIDE_LABEL[label] ?? label} | ${reading.maps.toString()} | ${SLAB_CANDIDATES.map((c) => skill(reading.scores[c.key]?.score ?? null)).join(' | ')} |`
+    ),
+  ].join('\n');
+}
+
+/** Rules 66 to 70 in the report's JSON. */
+function slabJson(run: SlabRun) {
+  const dead = run.dead;
+  const reading = (r: NonNullable<SlabRun['dead']>['readings']['inPlace']) => ({
+    score: fixed(r.score, 3),
+    held: r.held,
+    rows: r.rows,
+    cells: r.cells.map((c) => [c.held, c.rows]),
+  });
+  return {
+    readOn: SLAB_READ_ON,
+    events: run.events,
+    scores: Object.fromEntries(
+      SLAB_CANDIDATES.map((c) => {
+        const s = run.scores[c.key];
+        return [
+          c.key,
+          s === undefined
+            ? null
+            : {
+                score: s.all.score === null ? null : fixed(s.all.score, 3),
+                sharpness: s.all.sharpness === null ? null : fixed(s.all.sharpness, 3),
+                bands: s.all.bands.map((b) => ({ band: b.band, ...b.outcome })),
+                leastModelled:
+                  s.leastModelled.score === null ? null : fixed(s.leastModelled.score, 3),
+              },
+        ];
+      })
+    ),
+    choice: run.choice,
+    dead:
+      dead === null
+        ? null
+        : {
+            winner: dead.winner,
+            adopted: dead.adopted,
+            inPlace: reading(dead.readings.inPlace),
+            candidate: reading(dead.readings.winner),
+          },
+    beside: Object.fromEntries(
+      Object.entries(run.beside).map(([label, r]) => [
+        label,
+        {
+          maps: r.maps,
+          scores: Object.fromEntries(
+            SLAB_CANDIDATES.map((c) => {
+              const score = r.scores[c.key]?.score ?? null;
+              return [c.key, score === null ? null : fixed(score, 3)];
+            })
+          ),
+        },
+      ])
+    ),
+  };
+}
+
 /** Rules 61 to 65 in the report's JSON. */
 function allenTollJson(run: AllenTollRun) {
   const g = run.guards;
@@ -2230,7 +2409,7 @@ function ringsGap(depth: DepthRun): string {
     invented === without.length && inventedOnRock === invented
       ? `draw a VII band about every one of them, on the ground the browser reads under the epicentre and on rock alike`
       : `draw a VII band about ${invented.toString()} of them on the ground the browser reads under the epicentre, ${inventedOnRock.toString()} on rock`;
-  return `**The rings paint intensity VII where ShakeMaps record none.** Held out by rule, ${without.length.toString()} of the ${pick.length.toString()} USGS ShakeMaps hold no ground at MMI VII on their low-resolution grid, and Boore et al. 2014's rings ${drawn}. The rings take no account of how deep the source lies, and a ShakeMap's grid does not hold a peak smaller than one of its cells; which of the two, or what else, makes the difference is not established. Where a ShakeMap does reach MMI VII, the ring runs at a median ${String(small)}, ${String(middle)} and ${String(great)} of its radius below Mw 6.5, between 6.5 and 7.5 and above (${String(smallRock)}, ${String(middleRock)} and ${String(greatRock)} on rock). On the ${depth.unseen.events.toString()} earthquakes of rule 23 no rule had read, Boore et al. 2014 paints ${unseenInvented(depth, 'boore2014').toString()} bands where their ShakeMaps hold none, and Allen, Wald & Worden's intensity equation, which reads the depth, ${unseenInvented(depth, 'allen2012Hypocentral').toString()}; the score rules 23 to 26 chose with gives no credit for a band rightly left blank, and it kept Boore et al. 2014 (docs/SCIENCE.md, "Whether the rings carry depth"). And the ground is one Vs30, read at the epicentre, for the whole footprint, where a ShakeMap reads each cell's own (docs/SCIENCE.md, "The ground under the rings").`;
+  return `**The rings paint intensity VII where ShakeMaps record none.** Held out by rule, ${without.length.toString()} of the ${pick.length.toString()} USGS ShakeMaps hold no ground at MMI VII on their low-resolution grid, and Boore et al. 2014's rings ${drawn}. The rings of a source no deeper than 70 km take no account of how deep it lies, and a ShakeMap's grid does not hold a peak smaller than one of its cells; which of the two, or what else, makes the difference is not established. Where a ShakeMap does reach MMI VII, the ring runs at a median ${String(small)}, ${String(middle)} and ${String(great)} of its radius below Mw 6.5, between 6.5 and 7.5 and above (${String(smallRock)}, ${String(middleRock)} and ${String(greatRock)} on rock). On the ${depth.unseen.events.toString()} earthquakes of rule 23 no rule had read, Boore et al. 2014 paints ${unseenInvented(depth, 'boore2014').toString()} bands where their ShakeMaps hold none, and Allen, Wald & Worden's intensity equation, which reads the depth, ${unseenInvented(depth, 'allen2012Hypocentral').toString()}; the score rules 23 to 26 chose with gives no credit for a band rightly left blank, and it kept Boore et al. 2014 (docs/SCIENCE.md, "Whether the rings carry depth"). And the ground is one Vs30, read at the epicentre, for the whole footprint, where a ShakeMap reads each cell's own (docs/SCIENCE.md, "The ground under the rings").`;
 }
 
 function unseenInvented(depth: DepthRun, law: DepthCandidate): number {
@@ -2239,6 +2418,18 @@ function unseenInvented(depth: DepthRun, law: DepthCandidate): number {
 
 /** The declared gap the sets held out by rule measure, in their own
  *  figures, so the sentence moves when the model does. */
+/** The gap rule 70 leaves when rules 68 and 69 adopt a deep law: its band
+ *  on the deep dead it was guarded on. */
+function deepGap(run: SlabRun): string[] {
+  const dead = run.dead;
+  if (dead?.adopted !== true) return [];
+  const missed = dead.runs.winner.filter((r) => r.record > 0 && r.high === 0);
+  const missedInPlace = dead.runs.inPlace.filter((r) => r.record > 0 && r.high === 0);
+  return [
+    `**An earthquake deeper than 70 km is drawn with a law silent where its maps are silent, and its band misses deep dead.** Since 15 September 2026 ${SLAB_NAME[dead.winner] ?? dead.winner} draws the rings of every scenario deeper than 70 km, chosen by rules 66 to 70 on ${run.events.earthquakes.toString()} ShakeMaps no rule had read. The toll still counts the dead inside MMI VII only, and on rule 61's ${dead.readings.winner.rows.toString()} earthquakes deeper than 70 km its band holds ${dead.readings.winner.held.toString()} records, where the rings it replaced held ${dead.readings.inPlace.held.toString()}; ${missed.length.toString()} records with deaths, ${grouped(missed.reduce((a, r) => a + r.record, 0))} dead in all, sit on a band of [0, 0], against ${missedInPlace.length.toString()} before. The band's ground-motion scatter is still Boore et al. 2014's σ of 0.60, where the model's own is 0.74 (docs/SCIENCE.md, "The rings of an earthquake deeper than 70 km").`,
+  ];
+}
+
 function greatRuptureGap(cells: readonly RuleCell[]): string {
   const label = SIZE_BANDS.earthquake[SIZE_BANDS.earthquake.length - 1]?.label;
   const great = cells.find((c) => c.kind === 'size' && c.group === label);
@@ -2793,6 +2984,7 @@ function main(): void {
   const pointSource = runPointSourceRules();
   const atlas = runAtlasRules();
   const allenToll = runAllenTollRules();
+  const slab = runSlabRules();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -2897,6 +3089,10 @@ ${atlasSection(atlas)}
 
 ${allenTollSection(allenToll)}
 
+### The rings of an earthquake deeper than 70 km
+
+${slabSection(slab)}
+
 ### Which checks are validation
 
 ${rolesSection(net)}
@@ -2947,7 +3143,8 @@ ${bullet([
   "**The toll band draws the fatality curve's published scatter, but not the census.** Since 14 September 2026 a shaking realisation scales its mortality by exp(N(0, G)), G being PAGER's `gnormvalue` for the country — the standard deviation of ln(deaths) PAGER's own loss module uses. The population is still held fixed, and so are the blast and pyroclastic rates, which publish no scatter. G was measured on ShakeMap intensities, so it overlaps, by an amount not separated here, with the ground-motion residual drawn beside it. Where the curve is steep or its scatter large the band spans four orders of magnitude or more — Gorkha, Kumamoto, Pohang — which is the width PAGER's own numbers give a single event, and a row inside such a band has passed nothing (`uq/tollBand.ts`).",
   greatRuptureGap(byRule.earthquakes),
   ringsGap(depth),
-  "**Subduction earthquakes are shaken with laws fitted to crustal ones.** The intensity rings and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; no subduction-interface relation is implemented, and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).",
+  ...deepGap(slab),
+  "**Subduction-interface earthquakes are shaken with laws fitted to crustal ones.** The intensity rings of a scenario no deeper than 70 km and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; the two subduction-interface relations implemented were not adopted (rules 35 to 39 and 50 to 55), and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).",
   "**Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).",
   "**Two numbers are not traced to a source read here.** The arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005. A third, the 30 cm at DART 21413 that the Tōhoku wave row was tuned on, was read from the buoy's own file on 15 September 2026: it crests at 0.81 m, and the row is declared (B-034).",
   "**An airburst's blast is a point that does not move, drawn as round rings.** Since 15 September 2026 it is the Earth Impact Effects Program's own air blast (Collins et al. 2005 and 2017; B-032), reproduced within 1 % on the airburst rows above, which were held out when it was adopted. What that model is not was checked against rules written first (`docs/BENCHMARK_PROTOCOL.md`): against the shock-physics runs of Collins et al. 2017, Table 2, its figures are 0.92× theirs, the median off by a factor of 1.21; at Tunguska its 20 kPa ring reaches 11.5 km, against the 26.5 km radius of the ~2 200 km² of flattened forest (0.43×), beyond a factor of two. At Chelyabinsk the check first flagged a 1 kPa ring of 17.6 km against the 56 km radius of the ~10 000 km² over which windows broke; the preset then took the body Popova et al. 2013 measured, as its source says and not as the check asked (B-033), and on a re-run that is not a validation the ring reaches 30.2 km (0.54×), 68.0 km for a moving source. In the city, 45 km out, the law gives 0.74 kPa where the broken windows put about 3.2 kPa (Brown et al. 2013). A shallow, high burst spreads its energy along its path and damages an ellipse, farthest across the path; ReVelle's weak-shock line source, the only analytic one, is \"largely inapplicable\" beneath Chelyabinsk's trail (Gi, Brown & Aftosmis 2018), and the elongated footprint has been reproduced only by three-dimensional hydrocodes (Popova et al. 2013; Aftosmis et al. 2016). Tunguska's blast row checks the energy, not the blast (`effects/airburstBlast.ts`).",
@@ -3192,6 +3389,7 @@ otherwise.
       pointSource: pointSourceJson(pointSource),
       atlas: atlasJson(atlas),
       allenToll: allenTollJson(allenToll),
+      slab: slabJson(slab),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,

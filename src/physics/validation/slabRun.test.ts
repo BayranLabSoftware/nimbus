@@ -94,13 +94,15 @@ describe('rule 69: rule 61’s earthquakes deeper than 70 km, under a candidate'
     }
   });
 
-  it('draw the law in place exactly as a scenario that names nothing', () => {
-    const inPlace = SLAB_CANDIDATES[0];
+  it('draw the adopted law exactly as a scenario that names nothing, since rules 68 and 69', () => {
+    // Before 15 September 2026 the scenario that named nothing drew the law in
+    // place (`none`); rules 68 and 69 adopted Abrahamson, Gregor & Addo 2016.
+    const adopted = SLAB_CANDIDATES.find((c) => c.deepLaw === 'abrahamson2016Slab');
     const row = SLAB_GUARD_EARTHQUAKES[0];
-    if (inPlace === undefined || row === undefined) throw new Error('empty');
+    if (adopted === undefined || row === undefined) throw new Error('empty');
     const event = smallDeepEarthquakeEvent(row);
     const plain = event.run();
-    const named = withSlabCandidate(event, inPlace).run();
+    const named = withSlabCandidate(event, adopted).run();
     if (plain.type !== 'earthquake' || named.type !== 'earthquake') throw new Error(row.comcat);
     expect(named.data.shaking).toEqual(plain.data.shaking);
     expect(named.data.isExtendedSource).toBe(plain.data.isExtendedSource);
