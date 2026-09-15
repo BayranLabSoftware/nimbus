@@ -104,3 +104,105 @@ and by the size bands of the scorecard (`validation/scorecard.ts`).
 - Findings are listed with a reproducer and a classification: implementation
   defect, model-form difference, reference limitation, or input mismatch.
   None is fixed during the campaign.
+
+## After the campaign: the airburst's blast (BM-02)
+
+Written on 15 September 2026, after the report and before the checks below
+were run. It fixes what replaces the altitude factor on an airburst's shock,
+what the replacement is held to, and what may be done with the answers.
+
+### What is replaced, and by what
+
+The shock radii of an airburst are Kinney & Graham's surface-burst reach on
+half the atmospheric yield, multiplied by f(h) = (P₀/P(h))^(3/5) with a cap
+of 15. The exponent was fitted on two events and the cap has no source. It is
+replaced by the air-blast model of the Earth Impact Effects Program as its
+authors publish it:
+
+1. **Energy.** W = E₀ · max(f, 1 − f), f = (v_b/v₀)²: the larger of the
+   kinetic energy the body keeps at the burst altitude and the energy it has
+   given the air there (Collins et al. 2017, "three improvements to the web
+   program"), with v_b from Collins et al. 2005 Eq. 19 as the entry already
+   computes it. No blast coupling factor: both relations below are fits to
+   nuclear yields and the program feeds them the impact energy.
+2. **Scaling.** r₁ = r / W_kt^⅓ and z₁ = z_b / W_kt^⅓, W_kt = W / 4.184 × 10¹² J
+   (2005 Eq. 57).
+3. **Regular reflection.** p = 3.14 × 10¹¹ (r₁² + z₁²)^(−1.3) +
+   1.8 × 10⁷ (r₁² + z₁²)^(−0.565) Pa (2017 Eq. 7, which replaces 2005 Eqs.
+   55–56).
+4. **Mach reflection.** For z₁ < 550 m, from r_m1 = 550 z₁ / (1.2 (550 − z₁))
+   outwards (2005 Eq. 58): p = (p_x r_x / 4r₁)(1 + 3 (r_x/r₁)^1.3), with
+   p_x = 75 000 Pa and r_x = 289 + 0.65 z₁ (2005 Eq. 54 and the text under
+   it). Above 550 m there is no Mach region. The published law steps at
+   r_m1; the step is kept.
+5. **Range.** Within r < 3 z_b the overpressure is a range from p to 2p: the
+   static source is the low end, the moving source the high one (2017, the
+   third improvement). Nimbus's rings (5, 1, 0.5 psi) and everything
+   downstream of them use the low end; the high end is printed beside it.
+6. **Ring radius.** The largest ground range at which the overpressure
+   reaches the threshold, no farther than half the Earth's circumference.
+
+Nothing in it is set by Nimbus. It applies to complete airbursts only: the
+flash radii, a swarm that strikes the ground, and the blast of a ground
+impact are unchanged.
+
+What was looked at before this was written: the campaign's 636 EIEP point
+overpressures of airbursts were used to read how the program combines the
+published pieces — which region applies where, and which energy it feeds
+them. With them, the law above reproduces 618 of the 636 within 1 %, so they
+are code verification and are not held out. While reading the paper, two
+numbers of the 0.5 Mt row of Table 2 were estimated by hand from Eq. 7
+alone (2.75 kPa at ground zero against 3.81; the 1 kPa range 43 km against
+52.3). Nothing else below has been computed.
+
+### Checks, held out
+
+- **H1, code verification (class A).** The 24 airburst rows with a printed
+  overpressure in `validation/eiepReference.ts` (read 14 September 2026, a
+  grid the campaign did not use), with Nimbus's own entry: within 1 % plus
+  the printed rounding. Rows where Nimbus's burst altitude is more than 1 %
+  from the program's (BM-13) are reported apart. A row outside is a
+  candidate implementation defect.
+- **H2, the simple law against the paper's shock-physics runs (class B).**
+  Collins et al. 2017 Table 2, static source (S) at the burst altitudes the
+  paper gives, the law fed W directly. Nimbus's low end against S; its high
+  end against the moving source (M) as a sensitivity row. Flag if the median
+  |ln ratio| exceeds ln 1.25. A cell the paper marks n/a (not reached) is
+  checked as not reached.
+
+  | W (Mt) | z_b (km) | Peak p S / M (kPa) | p at 3 z_b S / M (kPa) | 1 kPa S / M (km) | 10 kPa S / M (km) | 20 kPa S / M (km) | 35 kPa S / M (km) |
+  | -----: | -------: | -----------------: | ---------------------: | ---------------: | ----------------: | ----------------: | ----------------: |
+  |    0.5 |     21.5 |        3.81 / 5.27 |          0.786 / 0.811 |      52.3 / 54.8 |         n/a / n/a |         n/a / n/a |         n/a / n/a |
+  |      5 |       14 |        21.6 / 35.2 |            4.16 / 4.41 |        142 / 140 |       18.7 / 22.4 |       4.48 / 11.8 |        n/a / 1.16 |
+  |     15 |       10 |         65.8 / 143 |            11.8 / 13.0 |        257 / 236 |       34.4 / 36.2 |       19.2 / 22.1 |       11.1 / 14.9 |
+  |     50 |       11 |          116 / 326 |            19.6 / 20.5 |            — / — |       57.0 / 54.3 |       32.4 / 33.5 |       20.4 / 23.3 |
+
+  (— : too low to be seen in the paper's mesh; not compared.)
+
+- **H3, two events (class C).** On Nimbus's presets as the app runs them.
+  Chelyabinsk: the range at 1 kPa, the overpressure Collins et al. 2017 take
+  for window damage, against the radius of a circle of the ~10 000 km² over
+  which Popova et al. 2013 found windows broken, 56.4 km. Tunguska: the range
+  at 20 kPa against the radius of a circle of the ~2 200 km² of flattened
+  forest, 26.5 km; the range at 10 kPa, the factor of two the paper allows
+  for terrain and the state of the trees, reported beside it. Flag outside
+  ×2. The presets' energies are estimates (0.33 Mt against Chelyabinsk's
+  ~0.5 Mt; Tunguska inside 3–15 Mt) and the footprints are not circles.
+- **H4, invariants.** `scripts/benchmark/invariants.ts` rerun on the impact
+  hazard, same seed and 5 000 cases; the failures before and after are
+  counted by invariant. A break at r_m1 is the published law's and is
+  reported, not smoothed.
+- **H5, the campaign's IMP track.** `compare-impact.ts` rerun on the
+  campaign's EIEP answers: the airburst overpressure becomes class A. The
+  program's airburst radii lie where its own printed overpressure is about
+  26.4, 5.5 and 1.6 kPa rather than at the 20, 5 and 1 kPa its map labels
+  (the airburst side of BM-17); they stay class B with that note.
+
+### What may be done with the answers
+
+The law is adopted if H1 holds, rows reported apart excepted. H2 to H5 do not
+decide it: a flag goes into the declared gaps with its numbers. No
+coefficient is changed after any check has run; an H1 row outside tolerance
+is corrected only where the code departs from the papers, and that departure
+is reported. The campaign's result files are not rewritten: the numbers after
+the change are recorded in `docs/SCIENCE.md` and the changelog.
