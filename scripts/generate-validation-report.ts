@@ -149,6 +149,19 @@ import {
   type TollCells as InterfaceTollCells,
 } from '../src/physics/validation/interfaceRulesRun.js';
 import { INTERFACE_SET_READ_ON } from '../src/physics/validation/interfaceSetData.js';
+import {
+  INTERFACE_STADIUMS,
+  recordedScore,
+  STADIUM_CELLS,
+  type RecordedRun,
+} from '../src/physics/validation/interfaceStadiumRules.js';
+import {
+  runInterfaceStadium,
+  seenRecordedBelow,
+  type StadiumRun,
+} from '../src/physics/validation/interfaceStadiumRun.js';
+import { DEEP_INTERFACE_READ_ON } from '../src/physics/validation/deepInterfaceSetData.js';
+import { simulateEarthquake } from '../src/physics/events/earthquake/simulate.js';
 import { meanAbsoluteBias as meanAbsoluteLogBias } from '../src/physics/validation/contourLaws.js';
 import {
   CALIBRATION_ANCHORS,
@@ -1204,7 +1217,9 @@ function interfaceSection(run: InterfaceRulesRun): string {
     `on ${INTERFACE_SET_READ_ON}: ${run.events.rule11.toString()} earthquakes of rule 11's set and ${run.events.rule23.toString()} of rule 23's), every law run`,
     'on the scenario marked a subduction interface. A candidate must lower the mean absolute log',
     "radius ratio by 0.05 in all four readings, then pass rule 19's test on rule 11's held-out tolls",
-    "and rule 25's on rule 23's quiet earthquakes.",
+    "and rule 25's on rule 23's quiet earthquakes. Since rules 40 to 44 below, a marked scenario is",
+    'a stadium from Mw 7.5 only, so these are the figures under that geometry; the rules ran once, on',
+    '15 September 2026, on the stadium at every magnitude, and docs/SCIENCE.md gives those figures.',
     '',
     `| Law | ${INTERFACE_READINGS.map((r) => INTERFACE_READING_LABEL[r]).join(' | ')} | Sum |`,
     `|-----|${INTERFACE_READINGS.map(() => '----:').join('|')}|----:|`,
@@ -1248,6 +1263,110 @@ function interfaceSection(run: InterfaceRulesRun): string {
     `| Preset | ${INTERFACE_LAWS.map((law) => CONTOUR_LAW_LABEL[law]).join(' | ')} |`,
     `|--------|${INTERFACE_LAWS.map(() => '----:').join('|')}|`,
     ...presetRows,
+  ].join('\n');
+}
+
+function runStadium(): StadiumRun {
+  const run = runInterfaceStadium();
+  // What a scenario marked a subduction interface draws below Mw 7.5 when
+  // it names no geometry must be what rules 42 and 43 decided.
+  const drawn = simulateEarthquake({ magnitude: 7, subductionInterface: true }).isExtendedSource
+    ? 'always'
+    : 'fromMw7.5';
+  const decided = run.dead?.decision.adopted === true ? 'fromMw7.5' : 'always';
+  if (drawn !== decided) {
+    throw new Error(`Rules 42 and 43 decide ${decided}; the simulator draws ${drawn}`);
+  }
+  return run;
+}
+
+const STADIUM_LABEL: Readonly<Record<(typeof INTERFACE_STADIUMS)[number], string>> = {
+  always: 'A stadium at every magnitude',
+  'fromMw7.5': 'A stadium from Mw 7.5, a disc below',
+};
+
+function stadiumSection(run: StadiumRun): string {
+  const radius = (bias: number | null): string =>
+    bias === null ? '—' : `${Math.exp(bias).toFixed(2)}×`;
+  const below = <T extends { sizeBand: string }>(cells: readonly T[]): T[] =>
+    cells.filter((c) => STADIUM_CELLS.includes(c.sizeBand));
+  const cellRow = (
+    label: string,
+    cells: readonly {
+      sizeBand: string;
+      bias: number | null;
+      pairs: number;
+      invented: number;
+      missed: number;
+    }[]
+  ): string => {
+    const kept = below(cells);
+    return `| ${label} | ${kept.map((c) => `${radius(c.bias)} (${c.pairs.toString()})`).join(' | ')} | ${meanAbsoluteLogBias(kept).toFixed(2)} | ${kept.reduce((a, c) => a + c.invented, 0).toString()} | ${kept.reduce((a, c) => a + c.missed, 0).toString()} |`;
+  };
+  const insideText = (rows: readonly RecordedRun[]): string =>
+    STADIUM_CELLS.map(
+      (cell) =>
+        `${rows.filter((r) => r.sizeBand === cell && r.inside).length.toString()} of ${rows.filter((r) => r.sizeBand === cell).length.toString()}`
+    ).join(' · ');
+  const dead = run.dead;
+  const verdict =
+    dead === null
+      ? 'The disc is not better by 0.05 on the maps, so by rule 42 the stadium stays and nothing runs on the dead.'
+      : dead.decision.adopted
+        ? 'By rules 42 and 43 the disc is adopted: a scenario marked a subduction interface is a rupture stadium from Mw 7.5 only, in the simulator and in the harness, the runs of rules 35 to 39 above included.'
+        : `By rule 43 the stadium stays: ${[
+            dead.decision.quiet ? null : 'the disc raises more quiet earthquakes to a toll of ten',
+            dead.decision.recorded
+              ? null
+              : 'the disc holds fewer records in a cell or reads them worse',
+          ]
+            .filter((x): x is string => x !== null)
+            .join(', and ')}.`;
+  const seenRows = Object.entries(run.beside.seen).map(
+    ([reading, cells]) =>
+      `| ${reading.replace('rule11', "Rule 11's maps, ").replace('rule23', "Rule 23's maps, ").replace('Rock', 'rock').replace('Ground', "browser's ground")} | ${INTERFACE_STADIUMS.map((g) => meanAbsoluteLogBias(below(cells[g])).toFixed(2)).join(' | ')} |`
+  );
+  const seenTolls = INTERFACE_STADIUMS.map((g) => {
+    const rows = seenRecordedBelow(g);
+    return `| ${STADIUM_LABEL[g]} | ${recordedScore(rows).toFixed(2)} | ${insideText(rows)} |`;
+  });
+  return [
+    'A scenario marked a subduction interface was a rupture stadium at every magnitude, where any',
+    'other becomes one from Mw 7.5. Rules 40 to 44 (`validation/interfaceStadiumRules.ts`), committed',
+    'before either geometry was run on the earthquakes they name, put the stadium below Mw 7.5 to',
+    `earthquakes no rule had read: ComCat's M 6 to 7.5 earthquakes of 2008 to 2025 deeper than 40 km and no deeper than 70 (read on ${DEEP_INTERFACE_READ_ON}), of which ${run.events.interface.toString()} are interface earthquakes by rule 35's weight, ${run.events.quiet.toString()} of them quiet.`,
+    "On reference rock, the disc must lower rule 18's score below Mw 7.5 by 0.05, raise no more quiet",
+    'earthquakes to a toll of ten, hold no fewer records in either cell and read them no worse.',
+    '',
+    `| Geometry | ${STADIUM_CELLS.join(' | ')} | Mean abs. log bias | Bands invented | Bands missed |`,
+    `|----------|${STADIUM_CELLS.map(() => '----:').join('|')}|----:|----:|----:|`,
+    ...INTERFACE_STADIUMS.map((g) => cellRow(STADIUM_LABEL[g], run.shaking[g])),
+    '',
+    ...(dead === null
+      ? [verdict]
+      : [
+          `| Geometry | Quiet earthquakes raised to ten | Recorded: mean abs. ln((toll + 1) / (record + 1)) | Records held (${STADIUM_CELLS.join(' · ')}) |`,
+          '|----------|----:|----:|----:|',
+          ...INTERFACE_STADIUMS.map(
+            (g) =>
+              `| ${STADIUM_LABEL[g]} | ${(100 * dead.quiet[g].share).toFixed(1)} % of ${dead.quiet[g].quiet.toString()} | ${recordedScore(dead.recorded[g]).toFixed(2)} | ${insideText(dead.recorded[g])} |`
+          ),
+          '',
+          verdict,
+        ]),
+    '',
+    "Printed beside, deciding nothing (rule 44): rule 18's score below Mw 7.5 on rule 35's interface earthquakes of rule 11's and rule 23's sets, where the disc is the unmarked scenario and its figures were known before these rules,",
+    '',
+    `| Maps | ${INTERFACE_STADIUMS.map((g) => STADIUM_LABEL[g]).join(' | ')} |`,
+    `|------|${INTERFACE_STADIUMS.map(() => '----:').join('|')}|`,
+    ...seenRows,
+    `| Rule 40's ${run.beside.stationsEvents.toString()} maps with ten stations or more, rock | ${INTERFACE_STADIUMS.map((g) => meanAbsoluteLogBias(below(run.beside.stations[g])).toFixed(2)).join(' | ')} |`,
+    '',
+    "and rule 11's held-out interface tolls below Mw 7.5, on the browser's ground:",
+    '',
+    `| Geometry | Mean abs. ln((toll + 1) / (record + 1)) | Records held (${STADIUM_CELLS.join(' · ')}) |`,
+    '|----------|----:|----:|',
+    ...seenTolls,
   ].join('\n');
 }
 
@@ -2001,6 +2120,7 @@ function main(): void {
   const depth = runDepth(ground.tolls.pick);
   const pagerChain = runPager();
   const interfaceRules = runInterface();
+  const interfaceStadium = runStadium();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -2084,6 +2204,10 @@ ${pagerChainSection(pagerChain)}
 ### The rings of a subduction interface
 
 ${interfaceSection(interfaceRules)}
+
+### An interface scenario below Mw 7.5
+
+${stadiumSection(interfaceStadium)}
 
 ### Which checks are validation
 
@@ -2328,6 +2452,29 @@ otherwise.
             ];
           })
         ),
+      },
+      interfaceStadium: {
+        readOn: DEEP_INTERFACE_READ_ON,
+        events: interfaceStadium.events,
+        meanAbsoluteBias: {
+          always: fixed(interfaceStadium.choice.inPlace, 3),
+          'fromMw7.5': fixed(interfaceStadium.choice.candidate, 3),
+        },
+        eligible: interfaceStadium.choice.eligible,
+        dead:
+          interfaceStadium.dead === null
+            ? null
+            : {
+                decision: interfaceStadium.dead.decision,
+                quietShare: {
+                  always: fixed(interfaceStadium.dead.quiet.always.share, 4),
+                  'fromMw7.5': fixed(interfaceStadium.dead.quiet['fromMw7.5'].share, 4),
+                },
+                recordedScore: {
+                  always: fixed(recordedScore(interfaceStadium.dead.recorded.always), 3),
+                  'fromMw7.5': fixed(recordedScore(interfaceStadium.dead.recorded['fromMw7.5']), 3),
+                },
+              },
       },
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,

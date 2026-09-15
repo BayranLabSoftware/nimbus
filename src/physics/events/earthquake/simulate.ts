@@ -136,7 +136,9 @@ export interface EarthquakeScenarioInput {
    *  stadium at every magnitude (`always`) or, as every other scenario,
    *  from Mw 7.5 only, a disc about the epicentre below (`fromMw7.5`):
    *  rule 41 of validation/interfaceStadiumRules.ts. Nothing else moves,
-   *  the interface rupture included. Omitted, `always`. */
+   *  the interface rupture included. Omitted, `fromMw7.5`, which rules 42
+   *  and 43 adopted on 15 September 2026; `always` was the geometry until
+   *  then. */
   interfaceStadium?: InterfaceStadium;
 }
 
@@ -328,12 +330,15 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // existing point-source ring, so there is nothing to gain by
   // upgrading the geometry; we keep the simpler renderer in that
   // regime to avoid spurious "the circle squashed itself" visuals on
-  // small events. Subduction interface always upgrades regardless of
-  // Mw because the rupture rectangle is genuinely 2D (L≫W is rarely
-  // true for shallow megathrusts: Tōhoku 500×200 km).
+  // small events. A scenario marked a subduction interface was a stadium
+  // at every magnitude until 15 September 2026, when rules 40 to 44 of
+  // validation/interfaceStadiumRules.ts found the disc below Mw 7.5 closer
+  // to the ShakeMaps of 64 deep interface earthquakes no rule had read
+  // (0.99 against 2.29) and no worse on their dead; `interfaceStadium`
+  // keeps the old geometry for the rules that ran on it.
   const isExtendedSource =
     input.magnitude >= 7.5 ||
-    (input.subductionInterface === true && (input.interfaceStadium ?? 'always') === 'always');
+    (input.subductionInterface === true && (input.interfaceStadium ?? 'fromMw7.5') === 'always');
 
   // Ground-motion aleatory residual: exp(residual) scales every PGA.
   // Default 0 → gm = 1 → median scenario unchanged. The Monte-Carlo

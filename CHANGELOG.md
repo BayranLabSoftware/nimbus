@@ -242,6 +242,18 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Changed
 
+- **An interface earthquake below Mw 7.5 is drawn as a disc.** A scenario
+  marked a subduction interface was a rupture stadium at every magnitude,
+  where every other becomes one from Mw 7.5, and that alone multiplied the
+  held-out tolls of interface earthquakes several times over. Rules written
+  before either geometry ran (`validation/interfaceStadiumRules.ts`) put the
+  question to 64 interface earthquakes 40 to 70 km deep that no rule had
+  read: below Mw 7.5 the disc drew their ShakeMaps closer (0.99 against
+  2.29), raised none of 53 quiet earthquakes to a toll of ten against 5.7 %,
+  and held as many recorded dead, so it is adopted. A marked scenario is now
+  a stadium from Mw 7.5 only; the interface rupture and the tsunami do not
+  change, and no preset does, all being Mw 8.7 or more.
+
 - **Whether the intensity rings should carry depth, asked of 809
   earthquakes nobody had looked at.** Boore et al. 2014, which draws the
   rings, has no depth, so a scenario's depth moves nothing it shakes. Rules

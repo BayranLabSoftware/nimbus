@@ -536,3 +536,13 @@ no fewer records held in either cell, and a mean |ln((toll + 1) / (record +
 1))| no larger. Rule 44 says what adoption changes and what is printed beside.
 The set's earthquakes are deep, and Boore et al. 2014 draws them as shallow
 ones; the rules say so rather than correct it.
+
+### Outcome
+
+Run once on 15 September 2026, after the candidate was committed
+(`7deba3d`). Below Mw 7.5 the disc scored 0.99 on the maps against the
+stadium's 2.29, raised none of 53 quiet earthquakes to a toll of ten against
+5.7 %, held one record of one and eight of ten against none and eight, and
+read them at 0.65 against 1.69. By rules 42 and 43 it is adopted: a scenario
+marked a subduction interface is a stadium from Mw 7.5 only. `docs/SCIENCE.md`
+gives the figures in full, with what was read afterwards.

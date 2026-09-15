@@ -8,6 +8,8 @@ import { simulateEarthquake, type EarthquakeScenarioInput } from './simulate.js'
  * the candidate geometry draws what the stadium in place draws at Mw 7.5
  * and above and on any scenario not marked a subduction interface, and
  * below Mw 7.5 a disc of the same ring radii, with nothing else moved.
+ * Rules 42 and 43 adopted it on 15 September 2026, so it is also what a
+ * marked scenario draws when it names no geometry.
  */
 
 const scenario = (magnitude: number, extra: Partial<EarthquakeScenarioInput> = {}) => ({
@@ -20,7 +22,9 @@ const scenario = (magnitude: number, extra: Partial<EarthquakeScenarioInput> = {
 describe('an interface scenario below Mw 7.5, drawn from Mw 7.5 only', () => {
   it('is a disc of the same ring radii below Mw 7.5, the rupture and the tsunami untouched', () => {
     for (const magnitude of [6, 6.5, 7, 7.4]) {
-      const always = simulateEarthquake(scenario(magnitude, { subductionInterface: true }));
+      const always = simulateEarthquake(
+        scenario(magnitude, { subductionInterface: true, interfaceStadium: 'always' })
+      );
       const disc = simulateEarthquake(
         scenario(magnitude, { subductionInterface: true, interfaceStadium: 'fromMw7.5' })
       );
@@ -39,7 +43,9 @@ describe('an interface scenario below Mw 7.5, drawn from Mw 7.5 only', () => {
 
   it('draws what the stadium in place draws from Mw 7.5, and on a scenario not marked', () => {
     for (const magnitude of [7.5, 8.2, 9.1]) {
-      const always = simulateEarthquake(scenario(magnitude, { subductionInterface: true }));
+      const always = simulateEarthquake(
+        scenario(magnitude, { subductionInterface: true, interfaceStadium: 'always' })
+      );
       const from = simulateEarthquake(
         scenario(magnitude, { subductionInterface: true, interfaceStadium: 'fromMw7.5' })
       );
@@ -50,5 +56,14 @@ describe('an interface scenario below Mw 7.5, drawn from Mw 7.5 only', () => {
       const from = simulateEarthquake(scenario(magnitude, { interfaceStadium: 'fromMw7.5' }));
       expect(from).toEqual({ ...plain, inputs: from.inputs });
     }
+  });
+
+  it('is what a marked scenario draws when it names no geometry, since rule 43 adopted it', () => {
+    const named = simulateEarthquake(
+      scenario(7, { subductionInterface: true, interfaceStadium: 'fromMw7.5' })
+    );
+    const unnamed = simulateEarthquake(scenario(7, { subductionInterface: true }));
+    expect(unnamed.isExtendedSource).toBe(false);
+    expect(unnamed).toEqual({ ...named, inputs: unnamed.inputs });
   });
 });

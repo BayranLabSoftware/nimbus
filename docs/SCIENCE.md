@@ -1551,6 +1551,63 @@ Mw 7.5 should be a stadium, and a toll that counts the dead below MMI VII, are
 open. Both candidates were committed before the prospective set is first
 read, so by rule 29 they are among its candidates.
 
+### An interface scenario below Mw 7.5 (15 September 2026)
+
+`validation/interfaceStadiumRules.ts` (rules 40 to 44),
+`validation/interfaceStadiumRun.ts`. Every earthquake scenario becomes a
+rupture stadium from Mw 7.5 and is a disc about the epicentre below; a scenario
+marked a subduction interface was a stadium at every magnitude, on Strasser et
+al. 2010's interface rupture. The previous section found that mark taking
+Boore et al. 2014's held-out tolls of rule 11's interface earthquakes from
+5.06×, 1.98× and 5.37× their records to 43.11×, 35.77× and 13.21×. Below Mw 7.5
+a marked scenario drawn as a disc is the unmarked one, whose figures on rule
+11's and rule 23's sets were thereby known, so the question was put to
+earthquakes no rule had read.
+
+The rules were pushed before either geometry ran on them (commit `71115b9`),
+and the candidate before it was scored (`7deba3d`). Rule 40's set is every
+ComCat earthquake of M 6 to 7.5, 2008 to 2025, deeper than 40 km and no deeper
+than 70 km, with a ShakeMap and outside rule 11's and rule 23's sets: 179
+listed, three taken out, 153 with a low-resolution MMI map, of which 64 are
+interface earthquakes by rule 35's weight — 43 below Mw 6.5 (42 quiet), 21 from
+it (11 quiet). On reference rock the disc had to lower rule 18's score below Mw
+7.5 by 0.05, raise no more quiet earthquakes to a toll of ten, hold no fewer
+records in either magnitude cell, and read them no worse by the mean of
+|ln((toll + 1) / (record + 1))|.
+
+| Geometry, below Mw 7.5              | Mw < 6.5   | Mw 6.5–7.5  | Mean abs. log | Quiet raised to ten | Recorded: score, held |
+| ----------------------------------- | ---------- | ----------- | ------------: | ------------------: | --------------------- |
+| A stadium at every magnitude        | 8.59× (62) | 11.43× (42) |          2.29 |         5.7 % of 53 | 1.69; 0 of 1, 8 of 10 |
+| A stadium from Mw 7.5, a disc below | 2.97× (62) | 2.45× (42)  |          0.99 |         0.0 % of 53 | 0.65; 1 of 1, 8 of 10 |
+
+The disc passes every test, and by rules 42 and 43 it is adopted: a scenario
+marked a subduction interface is a stadium from Mw 7.5 only, in the simulator
+and in the harness. Nothing else moves — the interface rupture, which the
+tsunami reads, stays Strasser et al.'s — and no preset changes, since every
+megathrust preset is of Mw 8.7 or more. The option `interfaceStadium` keeps the
+old geometry for the rules that ran on it.
+
+Printed beside, deciding nothing (rule 44). On rule 35's interface earthquakes
+below Mw 7.5, where the disc is the unmarked scenario, rule 18's score falls
+from 2.29 to 0.89 on rule 11's maps on rock, from 2.41 to 1.26 on the browser's
+ground, from 2.30 to 1.05 and from 2.38 to 1.32 on rule 23's; on the nine maps
+of rule 40's set with ten stations or more, from 2.03 to 0.68. Rule 11's
+held-out interface tolls below Mw 7.5, on the browser's ground, read 0.73
+instead of 1.97 by the same score, the band holding 13 of 15 and 59 of 61
+records instead of 7 and 54.
+
+What the scores do not show was read afterwards, and is written here as such.
+Most of the difference is bands the maps do not hold: every one of the 62
+scored pairs below Mw 6.5 is a band both geometries paint about a deep
+earthquake whose map shows none, and the disc paints less of it — the limit the
+rules named, since Boore et al. 2014 draws a deep earthquake as a shallow one.
+With the geometry adopted, rules 35 to 39 print different figures, as rule 44
+said they would, and decide the same: Parker et al. 2022 still wins on the maps
+(0.75, 0.70, 1.94 and 1.72 against 1.03, 1.30, 2.00 and 2.20), BC Hydro is no
+longer eligible, and Parker et al.'s band still holds too few of rule 11's
+records (none of five, 10 of 22, 11 of 16); Boore et al. 2014's interface tolls
+now read 5.06×, 1.98× and 13.21×.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records

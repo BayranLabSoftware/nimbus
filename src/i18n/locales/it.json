@@ -652,7 +652,7 @@
       },
       "fault": {
         "item": "Geometria di rottura della faglia",
-        "note": "Lunghezza e larghezza della rottura vengono da Wells & Coppersmith 1994 per i terremoti crostali e da Strasser et al. 2010 per le interfacce di subduzione. Gli eventi da Mw 7,5 in su, o di interfaccia, sono disegnati come il rettangolo di rottura allargato su ogni lato di un raggio d'intensità calcolato ancora come distanza da un punto, con una traccia schematica diritta lungo la direzione della faglia. Non risolviamo il campo di dislocazione elastica: niente deformazioni di Okada, niente tracce di faglia mappate, niente variazioni di stress che inneschino repliche oltre la statistica di Reasenberg & Jones 1989."
+        "note": "Lunghezza e larghezza della rottura vengono da Wells & Coppersmith 1994 per i terremoti crostali e da Strasser et al. 2010 per le interfacce di subduzione. Gli eventi da Mw 7,5 in su, di interfaccia o no, sono disegnati come il rettangolo di rottura allargato su ogni lato di un raggio d'intensità calcolato ancora come distanza da un punto, con una traccia schematica diritta lungo la direzione della faglia. Non risolviamo il campo di dislocazione elastica: niente deformazioni di Okada, niente tracce di faglia mappate, niente variazioni di stress che inneschino repliche oltre la statistica di Reasenberg & Jones 1989."
       },
       "plume": {
         "item": "Morfologia 3D del fungo atomico",

@@ -986,26 +986,28 @@ a scenario marked a subduction interface should draw its rings with Abrahamson, 
 on 2026-09-15: 98 earthquakes of rule 11's set and 353 of rule 23's), every law run
 on the scenario marked a subduction interface. A candidate must lower the mean absolute log
 radius ratio by 0.05 in all four readings, then pass rule 19's test on rule 11's held-out tolls
-and rule 25's on rule 23's quiet earthquakes.
+and rule 25's on rule 23's quiet earthquakes. Since rules 40 to 44 below, a marked scenario is
+a stadium from Mw 7.5 only, so these are the figures under that geometry; the rules ran once, on
+15 September 2026, on the stadium at every magnitude, and docs/SCIENCE.md gives those figures.
 
 | Law | Rule 11's maps, rock | Rule 11's maps, browser's ground | Rule 23's maps, rock | Rule 23's maps, browser's ground | Sum |
 |-----|----:|----:|----:|----:|----:|
-| Boore et al. 2014 | 1.96 | 2.07 | 2.83 | 2.91 | 9.77 |
-| Abrahamson, Gregor & Addo 2016 on the interface (eligible) | 0.57 | 0.56 | 2.02 | 2.02 | 5.16 |
-| Parker et al. 2022 on the interface (winner) | 0.55 | 0.47 | 1.84 | 1.49 | 4.35 |
+| Boore et al. 2014 | 1.03 | 1.30 | 2.00 | 2.20 | 6.53 |
+| Abrahamson, Gregor & Addo 2016 on the interface | 0.72 | 0.60 | 2.15 | 2.13 | 5.60 |
+| Parker et al. 2022 on the interface (winner) | 0.75 | 0.70 | 1.94 | 1.72 | 5.12 |
 
 Rule 11's maps on the browser's ground, by magnitude cell (the radius ratio, with its pairs):
 
 | Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
 |-----|----:|----:|----:|----:|----:|----:|
-| Boore et al. 2014 | 9.79× (28) | 12.75× (122) | 3.96× (44) | 2.07 | 141 | 0 |
-| Abrahamson, Gregor & Addo 2016 on the interface | 0.52× (1) | 1.34× (30) | 2.06× (37) | 0.56 | 15 | 17 |
-| Parker et al. 2022 on the interface | 0.52× (1) | 0.95× (29) | 0.49× (32) | 0.47 | 9 | 26 |
+| Boore et al. 2014 | 3.73× (28) | 3.36× (122) | 3.96× (44) | 1.30 | 141 | 0 |
+| Abrahamson, Gregor & Addo 2016 on the interface | 0.52× (1) | 0.66× (30) | 2.06× (37) | 0.60 | 15 | 17 |
+| Parker et al. 2022 on the interface | 0.52× (1) | 0.47× (29) | 0.49× (32) | 0.70 | 9 | 26 |
 
 | Law | Rule 11's held-out tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Quiet earthquakes with a median toll of ten or more |
 |-----|-----|-----|-----|----:|----:|
-| Boore et al. 2014 | 43.11× · 6 of 14 | 35.77× · 39 of 46 | 13.21× · 13 of 18 | 3.31 | 11.9 % of 352 |
-| Parker et al. 2022 on the interface | — · 0 of 5 | 7.41× · 8 of 22 | 3.16× · 11 of 16 | 1.58 | 0.3 % of 352 |
+| Boore et al. 2014 | 5.06× · 10 of 12 | 1.98× · 36 of 38 | 13.21× · 17 of 18 | 1.63 | 3.4 % of 352 |
+| Parker et al. 2022 on the interface | — · 0 of 5 | 1.14× · 10 of 22 | 3.16× · 11 of 16 | 0.64 | 0.0 % of 352 |
 
 Parker et al. 2022 on the interface wins on the shaking, and by rule 38 Boore et al. 2014 stays: on rule 11's held-out tolls its band holds fewer than eight records in ten, among the rows with something, in some magnitude cell, or its bias is larger.
 
@@ -1013,17 +1015,17 @@ Printed beside, deciding nothing (rule 39): the 61 maps with ten seismic station
 
 | Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
 |-----|----:|----:|----:|----:|----:|----:|
-| Boore et al. 2014 | 9.23× (64) | 13.52× (42) | 4.12× (14) | 2.08 | 106 | 0 |
-| Abrahamson, Gregor & Addo 2016 on the interface | 0.53× (1) | 2.21× (3) | 3.42× (12) | 0.89 | 2 | 2 |
-| Parker et al. 2022 on the interface | 0.53× (1) | 0.88× (3) | 1.15× (10) | 0.30 | 0 | 4 |
+| Boore et al. 2014 | 3.60× (64) | 4.17× (42) | 4.12× (14) | 1.38 | 106 | 0 |
+| Abrahamson, Gregor & Addo 2016 on the interface | 0.53× (1) | 0.85× (3) | 3.42× (12) | 0.68 | 2 | 2 |
+| Parker et al. 2022 on the interface | 0.53× (1) | 0.64× (3) | 1.15× (10) | 0.41 | 0 | 4 |
 
 and the maps apart by the interface models ShakeMap drew them with, which include BC Hydro's form (NSHMP 2014, Chile) or Parker et al.'s (NSHMP 2023):
 
 | Law | Chile (98) | NSHMP 2014 (289) | NSHMP 2023 (47) | other (17) |
 |-----|----:|----:|----:|----:|
-| Boore et al. 2014 | 1.86 | 2.19 | 1.88 | 2.44 |
-| Abrahamson, Gregor & Addo 2016 on the interface | 0.86 | 0.76 | 0.96 | 2.20 |
-| Parker et al. 2022 on the interface | 1.03 | 0.40 | 1.40 | 1.37 |
+| Boore et al. 2014 | 1.13 | 1.46 | 1.12 | 1.42 |
+| Abrahamson, Gregor & Addo 2016 on the interface | 1.01 | 0.68 | 0.96 | 0.30 |
+| Parker et al. 2022 on the interface | 1.17 | 0.27 | 1.19 | 0.66 |
 
 The megathrust presets' rings under each law, MMI VII · VIII · IX beyond the rupture's stadium (km):
 
@@ -1034,6 +1036,44 @@ The megathrust presets' rings under each law, MMI VII · VIII · IX beyond the r
 | VALDIVIA_1960 | 72 · 21 · 0 | 96 · 33 · 0 | 90 · 38 · 0 |
 | ALASKA_1964 | 55 · 15 · 0 | 87 · 34 · 0 | 79 · 34 · 0 |
 | LISBON_1755 | 36 · 9 · 0 | 72 · 30 · 0 | 59 · 23 · 0 |
+
+### An interface scenario below Mw 7.5
+
+A scenario marked a subduction interface was a rupture stadium at every magnitude, where any
+other becomes one from Mw 7.5. Rules 40 to 44 (`validation/interfaceStadiumRules.ts`), committed
+before either geometry was run on the earthquakes they name, put the stadium below Mw 7.5 to
+earthquakes no rule had read: ComCat's M 6 to 7.5 earthquakes of 2008 to 2025 deeper than 40 km and no deeper than 70 (read on 2026-09-15), of which 64 are interface earthquakes by rule 35's weight, 53 of them quiet.
+On reference rock, the disc must lower rule 18's score below Mw 7.5 by 0.05, raise no more quiet
+earthquakes to a toll of ten, hold no fewer records in either cell and read them no worse.
+
+| Geometry | Mw < 6.5 | Mw 6.5–7.5 | Mean abs. log bias | Bands invented | Bands missed |
+|----------|----:|----:|----:|----:|----:|
+| A stadium at every magnitude | 8.59× (62) | 11.43× (42) | 2.29 | 100 | 0 |
+| A stadium from Mw 7.5, a disc below | 2.97× (62) | 2.45× (42) | 0.99 | 100 | 0 |
+
+| Geometry | Quiet earthquakes raised to ten | Recorded: mean abs. ln((toll + 1) / (record + 1)) | Records held (Mw < 6.5 · Mw 6.5–7.5) |
+|----------|----:|----:|----:|
+| A stadium at every magnitude | 5.7 % of 53 | 1.69 | 0 of 1 · 8 of 10 |
+| A stadium from Mw 7.5, a disc below | 0.0 % of 53 | 0.65 | 1 of 1 · 8 of 10 |
+
+By rules 42 and 43 the disc is adopted: a scenario marked a subduction interface is a rupture stadium from Mw 7.5 only, in the simulator and in the harness, the runs of rules 35 to 39 above included.
+
+Printed beside, deciding nothing (rule 44): rule 18's score below Mw 7.5 on rule 35's interface earthquakes of rule 11's and rule 23's sets, where the disc is the unmarked scenario and its figures were known before these rules,
+
+| Maps | A stadium at every magnitude | A stadium from Mw 7.5, a disc below |
+|------|----:|----:|
+| Rule 11's maps, rock | 2.29 | 0.89 |
+| Rule 11's maps, browser's ground | 2.41 | 1.26 |
+| Rule 23's maps, rock | 2.30 | 1.05 |
+| Rule 23's maps, browser's ground | 2.38 | 1.32 |
+| Rule 40's 9 maps with ten stations or more, rock | 2.03 | 0.68 |
+
+and rule 11's held-out interface tolls below Mw 7.5, on the browser's ground:
+
+| Geometry | Mean abs. ln((toll + 1) / (record + 1)) | Records held (Mw < 6.5 · Mw 6.5–7.5) |
+|----------|----:|----:|
+| A stadium at every magnitude | 1.97 | 7 of 15 · 54 of 61 |
+| A stadium from Mw 7.5, a disc below | 0.73 | 13 of 15 · 59 of 61 |
 
 ### Which checks are validation
 

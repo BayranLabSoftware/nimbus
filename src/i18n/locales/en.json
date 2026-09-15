@@ -652,7 +652,7 @@
       },
       "fault": {
         "item": "Fault rupture geometry",
-        "note": "Rupture length and width come from Wells & Coppersmith 1994 for crustal events and Strasser et al. 2010 for subduction interfaces. Events of Mw 7.5 and above, or on an interface, are drawn as the rupture rectangle grown on every side by an intensity radius that is still computed as a distance from a point, with a straight schematic trace along strike. We do not solve the elastic dislocation field: no Okada strain output, no mapped surface traces, and no stress changes triggering aftershocks beyond the Reasenberg & Jones 1989 statistics."
+        "note": "Rupture length and width come from Wells & Coppersmith 1994 for crustal events and Strasser et al. 2010 for subduction interfaces. Events of Mw 7.5 and above, on an interface or not, are drawn as the rupture rectangle grown on every side by an intensity radius that is still computed as a distance from a point, with a straight schematic trace along strike. We do not solve the elastic dislocation field: no Okada strain output, no mapped surface traces, and no stress changes triggering aftershocks beyond the Reasenberg & Jones 1989 statistics."
       },
       "plume": {
         "item": "Mushroom-cloud morphology in 3D",

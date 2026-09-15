@@ -453,11 +453,11 @@ the candidates for re-tuning:
 - **The rings of a subduction interface.** Two interface models beat Boore
   et al. 2014 on the ShakeMaps of 451 interface earthquakes in every reading,
   and the better, Parker et al. 2022, was not adopted: its toll band held
-  too few of the recorded dead (BM-10, rules 35 to 39). Still open: an
-  interface scenario is a rupture stadium at every magnitude, which alone
-  multiplies these earthquakes' held-out tolls by 2.5 to 18; the toll counts
-  no dead below MMI VII; and the rupture distance is the hypocentre's depth.
-  Both models are among the prospective set's candidates.
+  too few of the recorded dead (BM-10, rules 35 to 39). An interface
+  scenario below Mw 7.5 is a disc since rules 40 to 44 adopted it on
+  earthquakes no rule had read. Still open: the toll counts no dead below
+  MMI VII, and the rupture distance is the hypocentre's depth. Both models
+  are among the prospective set's candidates.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

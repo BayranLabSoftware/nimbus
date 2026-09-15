@@ -93,6 +93,14 @@ import { SIZE_BANDS } from './scorecard.js';
  * sets only beside, where the answer is already known. The set is small,
  * and eleven of its earthquakes have a record. And a map of few stations is
  * still mostly the models USGS runs.
+ *
+ * Run once, on 15 September 2026, and said here rather than folded into
+ * the rules above: below Mw 7.5 the disc scored 0.99 on the maps against the
+ * stadium's 2.29, raised none of 53 quiet earthquakes to a toll of ten
+ * against 5.7 %, held one record of one and eight of ten as the stadium held
+ * none and eight, and read them at 0.65 against 1.69. By rules 42 and 43 it
+ * is adopted, and `interfaceStadium` defaults to `fromMw7.5`. What was read
+ * afterwards is in docs/SCIENCE.md, "An interface scenario below Mw 7.5".
  */
 
 /** An earthquake of rule 40's set, as scripts/build-deep-interface-set.ts

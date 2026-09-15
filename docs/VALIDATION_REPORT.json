@@ -1829,6 +1829,34 @@
         }
       }
     },
+    "interfaceStadium": {
+      "readOn": "2026-09-15",
+      "events": {
+        "interface": 64,
+        "quiet": 53,
+        "recorded": 11
+      },
+      "meanAbsoluteBias": {
+        "always": 2.293,
+        "fromMw7.5": 0.992
+      },
+      "eligible": true,
+      "dead": {
+        "decision": {
+          "adopted": true,
+          "quiet": true,
+          "recorded": true
+        },
+        "quietShare": {
+          "always": 0.0566,
+          "fromMw7.5": 0
+        },
+        "recordedScore": {
+          "always": 1.694,
+          "fromMw7.5": 0.65
+        }
+      }
+    },
     "interfaceRules": {
       "readOn": "2026-09-15",
       "events": {
@@ -1837,28 +1865,27 @@
       },
       "meanAbsoluteBias": {
         "rule11Rock": {
-          "boore2014": 1.961,
-          "abrahamson2016Interface": 0.574,
-          "parker2022Interface": 0.548
+          "boore2014": 1.031,
+          "abrahamson2016Interface": 0.724,
+          "parker2022Interface": 0.755
         },
         "rule11Ground": {
-          "boore2014": 2.067,
-          "abrahamson2016Interface": 0.557,
-          "parker2022Interface": 0.471
+          "boore2014": 1.301,
+          "abrahamson2016Interface": 0.599,
+          "parker2022Interface": 0.705
         },
         "rule23Rock": {
-          "boore2014": 2.832,
-          "abrahamson2016Interface": 2.016,
-          "parker2022Interface": 1.84
+          "boore2014": 2,
+          "abrahamson2016Interface": 2.152,
+          "parker2022Interface": 1.943
         },
         "rule23Ground": {
-          "boore2014": 2.909,
-          "abrahamson2016Interface": 2.016,
-          "parker2022Interface": 1.488
+          "boore2014": 2.202,
+          "abrahamson2016Interface": 2.128,
+          "parker2022Interface": 1.716
         }
       },
       "eligible": [
-        "abrahamson2016Interface",
         "parker2022Interface"
       ],
       "winner": "parker2022Interface",
@@ -1872,20 +1899,20 @@
           "boore2014": [
             {
               "sizeBand": "Mw < 6.5",
-              "bias": 43.109,
-              "inside": 6,
-              "rows": 14
+              "bias": 5.058,
+              "inside": 10,
+              "rows": 12
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "bias": 35.77,
-              "inside": 39,
-              "rows": 46
+              "bias": 1.975,
+              "inside": 36,
+              "rows": 38
             },
             {
               "sizeBand": "Mw ≥ 7.5",
               "bias": 13.206,
-              "inside": 13,
+              "inside": 17,
               "rows": 18
             }
           ],
@@ -1898,8 +1925,8 @@
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "bias": 7.409,
-              "inside": 8,
+              "bias": 1.144,
+              "inside": 10,
               "rows": 22
             },
             {
@@ -1912,11 +1939,11 @@
         },
         "quiet": {
           "boore2014": {
-            "share": 0.1193,
+            "share": 0.0341,
             "earthquakes": 352
           },
           "parker2022Interface": {
-            "share": 0.0028,
+            "share": 0,
             "earthquakes": 352
           }
         }
