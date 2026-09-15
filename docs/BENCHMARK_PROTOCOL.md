@@ -498,3 +498,41 @@ the dead it raised fewer quiet earthquakes to a toll of ten (0.3 % against
 rule 11's records, so by rule 38 it is not adopted. BM-10 is declared with
 these numbers; `docs/SCIENCE.md` gives them in full, with what was read
 afterwards.
+
+## After BM-10: whether an interface scenario below Mw 7.5 is a stadium
+
+Written on 15 September 2026, before either geometry named below was run on
+any earthquake of the set it names. The rules are numbered after the
+thirty-nine before them and live in
+`src/physics/validation/interfaceStadiumRules.ts` (rules 40 to 44); the set
+comes first, in `deepInterfaceSetData.ts`, read by
+`scripts/build-deep-interface-set.ts`.
+
+### What is already known, and so not held out
+
+A scenario marked a subduction interface is a rupture stadium at every
+magnitude; any other becomes one from Mw 7.5. Rule 38's run of BM-10 found
+the mark taking Boore et al. 2014's held-out tolls of rule 11's interface
+earthquakes from 5.06×, 1.98× and 5.37× their records, unmarked, to 43.11×,
+35.77× and 13.21×. Below Mw 7.5 a marked scenario drawn as a disc is the
+unmarked one, so on rule 11's and rule 23's sets the candidate's figures are
+already known, and those sets decide nothing here. Before the rules were
+written, ComCat's count of the events rule 40 lists was read (179), and once
+the set was read, only its counts: 153 with a map, 64 interface earthquakes,
+43 below Mw 6.5 (42 quiet) and 21 from it (11 quiet), nine maps with ten
+stations or more. No footprint, map area or toll of the set was looked at.
+
+### The geometries, the score and the decision
+
+Rule 40's set is every ComCat earthquake of Mw 6 to 7.5, 2008 to 2025, deeper
+than 40 km and no deeper than 70 km, with a ShakeMap and in neither rule 11's
+nor rule 23's set: none of them has been read by a rule. Rule 41's candidate
+draws a marked scenario as a stadium from Mw 7.5 only, a disc below; all else
+is shared. Rule 42 scores both on the ShakeMaps of the set's interface
+earthquakes, on reference rock, in the cells below Mw 7.5, and asks the
+candidate to be better by 0.05. Rule 43 checks it on the dead, against the
+geometry it would replace: no more quiet earthquakes raised to a toll of ten,
+no fewer records held in either cell, and a mean |ln((toll + 1) / (record +
+1))| no larger. Rule 44 says what adoption changes and what is printed beside.
+The set's earthquakes are deep, and Boore et al. 2014 draws them as shallow
+ones; the rules say so rather than correct it.
