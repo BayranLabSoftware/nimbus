@@ -1,6 +1,12 @@
 import { simulateEarthquake, type EarthquakeScenarioInput } from '../events/earthquake/index.js';
 import { m } from '../units.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
+import {
+  DEFAULT_GROUND_MOTION_RESIDUAL,
+  mmi7FootprintKm2,
+  residualParts,
+  type ResidualParts,
+} from '../uq/groundMotionResidual.js';
 import type { MonteCarloOutput } from './engine.js';
 import { runMonteCarlo } from './engine.js';
 import { sampleNormal, type Rng } from './sampling.js';
@@ -54,9 +60,31 @@ export interface EarthquakeMonteCarloMetrics extends Record<string, number> {
   liquefactionRadius: number;
 }
 
+/** What a sampler may be handed about the scenario it draws about, so that
+ *  rule 71's residual is not recomputed for every realisation. */
+export interface EarthquakeSamplerOptions {
+  /** Rule 71's parts for the median scenario; computed from it when absent. */
+  parts?: ResidualParts | null;
+  /** The stream the within-event draws take, so that a realisation's other
+   *  draws are the same whichever residual it draws. Absent, `rng`. */
+  withinRng?: Rng;
+}
+
 export function earthquakeSampler(
-  nominal: EarthquakeScenarioInput
+  nominal: EarthquakeScenarioInput,
+  options: EarthquakeSamplerOptions = {}
 ): (rng: Rng) => EarthquakeScenarioInput {
+  const mode = nominal.groundMotionResidual ?? DEFAULT_GROUND_MOTION_RESIDUAL;
+  let parts: ResidualParts | null | undefined = options.parts;
+  const partsFor = (): ResidualParts | null => {
+    if (parts === undefined) {
+      parts = residualParts(
+        nominal,
+        mmi7FootprintKm2(simulateEarthquake({ ...nominal, groundMotionResidualLn: 0 }))
+      );
+    }
+    return parts;
+  };
   return (rng: Rng): EarthquakeScenarioInput => {
     const magnitude = Math.max(
       sampleNormal(rng, nominal.magnitude, EARTHQUAKE_INPUT_SIGMA.magnitude.sigma),
@@ -70,20 +98,43 @@ export function earthquakeSampler(
     const vs30 = Math.max(sampleNormal(rng, vs30Nominal, vs30Sigma), 100);
     // GMPE aleatory residual in ln-space: N(0, σ_lnY). Threaded into
     // simulateEarthquake, which scales every PGA by exp(residual).
-    const groundMotionResidualLn = sampleNormal(
-      rng,
-      0,
+    const sigmaInPlace =
       nominal.intensityMeasure === 'pgv'
         ? EARTHQUAKE_INPUT_SIGMA.groundMotionPgv.sigma
-        : EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma
-    );
+        : EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma;
+    const residualInPlace = sampleNormal(rng, 0, sigmaInPlace);
+    // Rule 71 of validation/residualRules.ts: the same draw, read as the
+    // between-event part, and the within-event part apart for the
+    // footprint and for one place.
+    const law = mode === 'onePerScenario' ? null : partsFor();
+    let groundMotionResidualLn = residualInPlace;
+    let site: number | undefined;
+    if (law !== null) {
+      const z1 = residualInPlace / sigmaInPlace;
+      if (mode === 'lawTotal') {
+        groundMotionResidualLn = Math.hypot(law.tau, law.phi) * z1;
+      } else {
+        const within = options.withinRng ?? rng;
+        const z2 = sampleNormal(within, 0, 1);
+        const z3 = sampleNormal(within, 0, 1);
+        groundMotionResidualLn = law.tau * z1 + law.phi * Math.sqrt(law.meanCorrelation) * z2;
+        site = law.tau * z1 + law.phi * z3;
+      }
+    }
     // Everything not sampled stays as the caller set it — the strike
     // the stadium is drawn around, a documented rupture-length
     // override, whether the basin had a warning system. Rebuilding
     // the input from scratch used to drop those, so a realisation of
     // Sumatra ran on the 803 km the regression gives rather than on
     // the 1 300 km that was observed.
-    return { ...nominal, magnitude, depth: m(depth), vs30, groundMotionResidualLn };
+    return {
+      ...nominal,
+      magnitude,
+      depth: m(depth),
+      vs30,
+      groundMotionResidualLn,
+      ...(site === undefined ? {} : { groundMotionSiteResidualLn: site }),
+    };
   };
 }
 

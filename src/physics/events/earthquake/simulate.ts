@@ -28,6 +28,7 @@ import {
 import { liquefactionRadius } from './liquefaction.js';
 import { pointSourceDistances } from './pointSourceDistance.js';
 import { epicentralDistanceForSlabPga, type SlabMotionModel } from './slabAttenuation.js';
+import type { GroundMotionResidual } from '../../uq/groundMotionResidual.js';
 import {
   megathrustRuptureLength,
   megathrustRuptureWidth,
@@ -119,6 +120,18 @@ export interface EarthquakeScenarioInput {
    *  ({@link EARTHQUAKE_INPUT_SIGMA.groundMotion}); the deterministic
    *  pipeline leaves it at 0, so the median scenario is unchanged. */
   groundMotionResidualLn?: number;
+  /** Where a realisation draws the within-event part of the residual apart
+   *  for one place and for the footprint (rule 71 of
+   *  validation/residualRules.ts), the residual of the accelerations the
+   *  scenario prints at one distance and at the epicentre; the rings and the
+   *  liquefaction radius keep `groundMotionResidualLn`. Omitted, every
+   *  quantity takes `groundMotionResidualLn`. */
+  groundMotionSiteResidualLn?: number;
+  /** How the Monte Carlo realisations of this scenario draw their
+   *  ground-motion residual (rule 71 of validation/residualRules.ts,
+   *  uq/groundMotionResidual.ts); the scenario itself draws nothing.
+   *  Omitted, `DEFAULT_GROUND_MOTION_RESIDUAL`. */
+  groundMotionResidual?: GroundMotionResidual;
   /** Which law draws the intensity rings. Not a setting a scenario
    *  offers: the candidates of rule 17 in validation/contourLaws.ts and
    *  of rule 24 in validation/depthRules.ts, compared on USGS ShakeMaps
@@ -413,7 +426,12 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // fold in the GMPE's intrinsic scatter, not just the input spread.
   const residual = input.groundMotionResidualLn ?? 0;
   const gm = Number.isFinite(residual) ? Math.exp(residual) : 1;
-  const scalePga = (p: MetersPerSecondSquared): MetersPerSecondSquared => mps2((p as number) * gm);
+  // Rule 71 of validation/residualRules.ts: a place's accelerations may
+  // draw their own within-event part; the footprint keeps `gm`.
+  const siteResidual = input.groundMotionSiteResidualLn ?? residual;
+  const siteGm = Number.isFinite(siteResidual) ? Math.exp(siteResidual) : 1;
+  const scalePga = (p: MetersPerSecondSquared): MetersPerSecondSquared =>
+    mps2((p as number) * siteGm);
   // A given fixed PGA target is reached, under the perturbed field,
   // where the MEDIAN PGA equals target / gm — so contour radii inflate
   // for gm > 1 and shrink for gm < 1.

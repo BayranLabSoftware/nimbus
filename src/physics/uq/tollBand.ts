@@ -6,7 +6,15 @@ import {
 } from '../casualties.js';
 import type { CasualtyBand, CasualtyPlan } from '../casualties.js';
 import { mulberry32, sampleNormal, type Rng } from '../montecarlo/sampling.js';
-import { earthquakeSampler } from '../montecarlo/earthquakeMonteCarlo.js';
+import {
+  earthquakeSampler,
+  type EarthquakeSamplerOptions,
+} from '../montecarlo/earthquakeMonteCarlo.js';
+import {
+  DEFAULT_GROUND_MOTION_RESIDUAL,
+  mmi7FootprintKm2,
+  residualParts,
+} from './groundMotionResidual.js';
 import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
 import { impactSampler } from '../montecarlo/impactMonteCarlo.js';
 import { volcanoSampler } from '../montecarlo/volcanoMonteCarlo.js';
@@ -151,12 +159,28 @@ export function exposureCurve(points: readonly ExposurePoint[]): ExposurePoint[]
  * have no sampler yet and return `null`, which leaves their pair as
  * it was.
  */
-export function resampleResult(result: ActiveResult, rng: Rng): ActiveResult | null {
+export function resampleResult(
+  result: ActiveResult,
+  rng: Rng,
+  earthquake: EarthquakeSamplerOptions = {}
+): ActiveResult | null {
   switch (result.type) {
     case 'earthquake':
       return {
         type: 'earthquake',
-        data: simulateEarthquake(earthquakeSampler(result.data.inputs)(rng)),
+        data: simulateEarthquake(
+          earthquakeSampler(result.data.inputs, {
+            // Rule 71's parts are the median scenario's, which is this one.
+            parts:
+              earthquake.parts !== undefined
+                ? earthquake.parts
+                : (result.data.inputs.groundMotionResidual ?? DEFAULT_GROUND_MOTION_RESIDUAL) ===
+                    'onePerScenario'
+                  ? null
+                  : residualParts(result.data.inputs, mmi7FootprintKm2(result.data)),
+            ...(earthquake.withinRng === undefined ? {} : { withinRng: earthquake.withinRng }),
+          })(rng)
+        ),
       };
     case 'explosion':
       return {
@@ -196,10 +220,26 @@ export function sampleScenarioPlans(options: {
   // The curve's scatter has a stream of its own, so the physics of
   // every realisation is the same whether it is drawn or not.
   const curveRng = mulberry32(`${String(options.seed)}:curve`);
+  // So do the within-event draws of rule 71 of validation/residualRules.ts,
+  // so that a realisation's magnitude, depth, ground and between-event draw
+  // are the same whichever residual it draws.
+  const withinRng = mulberry32(`${String(options.seed)}:within`);
+  const result = options.result;
+  const earthquake: EarthquakeSamplerOptions =
+    result.type === 'earthquake'
+      ? {
+          parts:
+            (result.data.inputs.groundMotionResidual ?? DEFAULT_GROUND_MOTION_RESIDUAL) ===
+            'onePerScenario'
+              ? null
+              : residualParts(result.data.inputs, mmi7FootprintKm2(result.data)),
+          withinRng,
+        }
+      : {};
   const plans: CasualtyPlan[] = [];
   const wanted = options.samples ?? TOLL_BAND_SAMPLES;
   for (let i = 0; i < wanted; i++) {
-    const realisation = resampleResult(options.result, rng);
+    const realisation = resampleResult(options.result, rng, earthquake);
     if (realisation === null) return [];
     const plan = options.planFor(realisation);
     if (plan === null) continue;

@@ -831,3 +831,40 @@ rule 61's 62 earthquakes deeper than 70 km the winner scored 0.801 against
 70 km. Its band held 38 of those records against 58, which the rules print and
 do not decide on. `docs/SCIENCE.md` gives the figures in full, with what was
 read afterwards.
+
+## After the deep earthquakes: the ground-motion residual in its two parts
+
+Written on 16 September 2026, before the candidate named below drew a band for
+any earthquake. The rules are numbered after the seventy before them and live
+in `src/physics/validation/residualRules.ts` (rules 71 to 75); the candidate is
+in `src/physics/uq/groundMotionResidual.ts`, held to OpenQuake and SciPy in its
+test, and the run that will read it in `residualRun.ts`, committed with the
+rules and run on nothing.
+
+### What is already known, and so not held out
+
+Every realisation draws one ground-motion residual, σ = 0.60, for every place
+of the footprint at once, and since rules 66 to 70 that includes scenarios
+drawn with a model whose own σ is 0.74. Every NCEI earthquake toll of 2008 to
+2025 that a set could hold has been read by rules 11, 45 and 61 under that
+residual (`docs/GOLD_STANDARD.md`), so no held-out set exists for the dead; the
+sets these rules read can stop a candidate, not validate it. The candidate's
+parts were read from OpenQuake's implementations and the literature, and its
+correlation range was chosen from the model's own assumption — one Vs30 for a
+whole footprint — with neither range run.
+
+### The candidate, the score and the decision
+
+Rule 71's candidate draws a realisation's residual in the parts of the law that
+draws its rings: the between-event τ shared by every place, and the
+within-event φ averaged over the median MMI VII footprint with Jayaram & Baker
+2009's correlation (b = 40.7 km) for the rings, and whole for the accelerations
+printed at one place. Rule 72 bands rule 11's 406 held-out earthquakes, rule
+45's 298 and rule 61's 194 under both residuals and scores each band with
+Gneiting & Raftery's interval score on log10(deaths + 1). Rule 73 adopts the
+candidate if on rule 11's set its score is no worse and its coverage is 85 % or
+more, and rule 74 guards rules 45 and 61 (5 % on the score, five points on the
+coverage). Rule 75 says what adoption changes and what is printed beside. The
+mean of the residual over an area is not the residual of the toll, and the
+dead gather in towns smaller than the footprint; the rules say so rather than
+correct it.
