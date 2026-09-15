@@ -879,3 +879,42 @@ candidate scored 2.145 and held 241 of 269, on bands narrower by a median of
 records the bands drop, among them Noto 2024 with 549 dead, so the residual in
 place stays; both of rule 74's guards passed and decided nothing.
 `docs/SCIENCE.md` gives the figures in full, with what was read afterwards.
+
+## After the residual: the entry model against the bolides that fell
+
+Written on 16 September 2026, before the model was run on any bolide of the
+set it names. The rules are numbered after the seventy-five before them and
+live in `src/physics/validation/fireballRules.ts` (rules 76 to 79); the set
+comes first, in `fireballSetData.ts`, read by `scripts/build-fireball-set.ts`,
+and the run that will read it in `fireballRun.ts`, committed with the rules and
+run on nothing.
+
+### What is already known, and so not held out
+
+The impact pipeline's entry has been held to the Earth Impact Effects Program,
+its authors' own program, within the program's printed rounding: the breakup
+altitude, the burst altitude, the speed and the energy at the ground all agree,
+because both run Collins et al. 2005's equations 8 to 20. That is verification
+and not validation — nothing has said how near either comes to a body that
+fell. Before these rules were written, the catalogue's fields and its counts
+were read, and that Chelyabinsk 2013 is in it: its preset carries the body
+Popova et al. 2013 measured (B-033), so it is taken out. No altitude of any
+other bolide was looked at.
+
+### The set, the scenario and the score
+
+Rule 76's set is every bolide NASA JPL's Fireball Data API returns with an
+altitude of peak brightness, a pre-entry speed with its components, an energy
+and a place: 357 of 1 072, from 1998 to 2026. Rule 77 builds each body from
+what was measured — the mass is twice the energy over the speed squared, the
+diameter that mass at the density a scenario with no class carries, and the
+angle comes from the velocity's components at the place — and runs the entry as
+the panel runs it, with the stony and the iron class read beside. Rule 78 reads
+the model's burst altitude against the altitude the sensors measured: the
+median absolute difference, the mean difference, the share within 5 km and the
+share the model brings to the ground, by energy and by speed. Rule 79 says what
+the reading decides: nothing in the model, which no candidate stands against
+here, and everything in what `docs/GOLD_STANDARD.md` asks of an impact's entry
+(I2). The body is inferred and not observed, and the altitude of peak
+brightness is not the burst altitude by definition; the rules say so rather
+than correct it.
