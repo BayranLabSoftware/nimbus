@@ -1,0 +1,5734 @@
+{
+ "track": "EQ-GM",
+ "reference": "OpenQuake Engine 3.26.2 hazardlib",
+ "stats": [
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "all",
+   "rows": 4498,
+   "pairs": 4498,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000059340766,
+   "scatterLn": 1.2587656889521356e-7,
+   "medianAbsLn": 6.406571423196947e-8,
+   "maxRelative": 4.693870663263766e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-194",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-198",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-202",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-206",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-036",
+     "detail": "5 km",
+     "nimbus": 0.10288894702316574,
+     "reference": 0.1028889,
+     "ratio": 1.0000004570285592
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 130,
+   "pairs": 130,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9999999942373496,
+   "scatterLn": 1.2869945860867748e-7,
+   "medianAbsLn": 6.321487122682983e-8,
+   "maxRelative": 4.469463755762959e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "150 km",
+     "nimbus": 0.10066035501019906,
+     "reference": 0.1006604,
+     "ratio": 0.9999995530536244
+    },
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "300 km",
+     "nimbus": 0.0011074714380275663,
+     "reference": 0.001107471,
+     "ratio": 1.0000003955205745
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "100 km",
+     "nimbus": 0.1305685523266955,
+     "reference": 0.1305686,
+     "ratio": 0.999999634879255
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "100 km",
+     "nimbus": 0.1305685523266955,
+     "reference": 0.1305686,
+     "ratio": 0.999999634879255
+    },
+    {
+     "caseId": "eq-preset-NORTHRIDGE_1994",
+     "detail": "20 km",
+     "nimbus": 0.12814615514335415,
+     "reference": 0.1281462,
+     "ratio": 0.9999996499572688
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 4368,
+   "pairs": 4368,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000062821934,
+   "scatterLn": 1.2578996986640558e-7,
+   "medianAbsLn": 6.425530752966745e-8,
+   "maxRelative": 4.693870663263766e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-194",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-198",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-202",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-206",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-036",
+     "detail": "5 km",
+     "nimbus": 0.10288894702316574,
+     "reference": 0.1028889,
+     "ratio": 1.0000004570285592
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 1261,
+   "pairs": 1261,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9999999958557755,
+   "scatterLn": 1.2771137329271834e-7,
+   "medianAbsLn": 7.058683420426591e-8,
+   "maxRelative": 4.693870663263766e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-194",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-198",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-202",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-206",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-147",
+     "detail": "150 km",
+     "nimbus": 0.012269164999178494,
+     "reference": 0.01226916,
+     "ratio": 1.0000004074589046
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 1339,
+   "pairs": 1339,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000126043747,
+   "scatterLn": 1.1315212385393295e-7,
+   "medianAbsLn": 5.543102512131593e-8,
+   "maxRelative": 4.469463755762959e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "150 km",
+     "nimbus": 0.10066035501019906,
+     "reference": 0.1006604,
+     "ratio": 0.9999995530536244
+    },
+    {
+     "caseId": "eq-grid-324",
+     "detail": "50 km",
+     "nimbus": 0.11384964922197939,
+     "reference": 0.1138496,
+     "ratio": 1.0000004323421372
+    },
+    {
+     "caseId": "eq-grid-328",
+     "detail": "50 km",
+     "nimbus": 0.11384964922197939,
+     "reference": 0.1138496,
+     "ratio": 1.0000004323421372
+    },
+    {
+     "caseId": "eq-grid-332",
+     "detail": "50 km",
+     "nimbus": 0.11384964922197939,
+     "reference": 0.1138496,
+     "ratio": 1.0000004323421372
+    },
+    {
+     "caseId": "eq-grid-336",
+     "detail": "50 km",
+     "nimbus": 0.11384964922197939,
+     "reference": 0.1138496,
+     "ratio": 1.0000004323421372
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "band: Mw < 6.5",
+   "rows": 1898,
+   "pairs": 1898,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000079241758,
+   "scatterLn": 1.3264589458073664e-7,
+   "medianAbsLn": 6.723281816196581e-8,
+   "maxRelative": 4.5702855921980756e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-036",
+     "detail": "5 km",
+     "nimbus": 0.10288894702316574,
+     "reference": 0.1028889,
+     "ratio": 1.0000004570285592
+    },
+    {
+     "caseId": "eq-grid-040",
+     "detail": "5 km",
+     "nimbus": 0.10288894702316574,
+     "reference": 0.1028889,
+     "ratio": 1.0000004570285592
+    },
+    {
+     "caseId": "eq-grid-044",
+     "detail": "5 km",
+     "nimbus": 0.10288894702316574,
+     "reference": 0.1028889,
+     "ratio": 1.0000004570285592
+    },
+    {
+     "caseId": "eq-grid-048",
+     "detail": "5 km",
+     "nimbus": 0.10288894702316574,
+     "reference": 0.1028889,
+     "ratio": 1.0000004570285592
+    },
+    {
+     "caseId": "eq-grid-098",
+     "detail": "150 km",
+     "nimbus": 0.011100505018140722,
+     "reference": 0.01110051,
+     "ratio": 0.9999995512044692
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 0 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000156711024,
+   "scatterLn": 8.804398444379779e-8,
+   "medianAbsLn": 5.4674935749640167e-8,
+   "maxRelative": 2.796109377367628e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-004",
+     "detail": "0 km",
+     "nimbus": 0.1641403458954232,
+     "reference": 0.1641403,
+     "ratio": 1.0000002796109377
+    },
+    {
+     "caseId": "eq-grid-008",
+     "detail": "0 km",
+     "nimbus": 0.1641403458954232,
+     "reference": 0.1641403,
+     "ratio": 1.0000002796109377
+    },
+    {
+     "caseId": "eq-grid-012",
+     "detail": "0 km",
+     "nimbus": 0.1641403458954232,
+     "reference": 0.1641403,
+     "ratio": 1.0000002796109377
+    },
+    {
+     "caseId": "eq-grid-016",
+     "detail": "0 km",
+     "nimbus": 0.1641403458954232,
+     "reference": 0.1641403,
+     "ratio": 1.0000002796109377
+    },
+    {
+     "caseId": "eq-grid-019",
+     "detail": "0 km",
+     "nimbus": 0.1596787423836508,
+     "reference": 0.1596787,
+     "ratio": 1.0000002654308358
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 1 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.000000002837758,
+   "scatterLn": 8.967684434728616e-8,
+   "medianAbsLn": 5.376594142300474e-8,
+   "maxRelative": 2.788888745497431e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-020",
+     "detail": "1 km",
+     "nimbus": 0.12585286490102635,
+     "reference": 0.1258529,
+     "ratio": 0.9999997211111255
+    },
+    {
+     "caseId": "eq-grid-024",
+     "detail": "1 km",
+     "nimbus": 0.12585286490102635,
+     "reference": 0.1258529,
+     "ratio": 0.9999997211111255
+    },
+    {
+     "caseId": "eq-grid-028",
+     "detail": "1 km",
+     "nimbus": 0.12585286490102635,
+     "reference": 0.1258529,
+     "ratio": 0.9999997211111255
+    },
+    {
+     "caseId": "eq-grid-032",
+     "detail": "1 km",
+     "nimbus": 0.12585286490102635,
+     "reference": 0.1258529,
+     "ratio": 0.9999997211111255
+    },
+    {
+     "caseId": "eq-grid-004",
+     "detail": "1 km",
+     "nimbus": 0.15994235766551873,
+     "reference": 0.1599424,
+     "ratio": 0.999999735314205
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 2 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9999999996991921,
+   "scatterLn": 1.0418268453065131e-7,
+   "medianAbsLn": 6.160204547470833e-8,
+   "maxRelative": 4.026415256763727e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-020",
+     "detail": "2 km",
+     "nimbus": 0.11721614719606933,
+     "reference": 0.1172161,
+     "ratio": 1.0000004026415257
+    },
+    {
+     "caseId": "eq-grid-024",
+     "detail": "2 km",
+     "nimbus": 0.11721614719606933,
+     "reference": 0.1172161,
+     "ratio": 1.0000004026415257
+    },
+    {
+     "caseId": "eq-grid-028",
+     "detail": "2 km",
+     "nimbus": 0.11721614719606933,
+     "reference": 0.1172161,
+     "ratio": 1.0000004026415257
+    },
+    {
+     "caseId": "eq-grid-032",
+     "detail": "2 km",
+     "nimbus": 0.11721614719606933,
+     "reference": 0.1172161,
+     "ratio": 1.0000004026415257
+    },
+    {
+     "caseId": "eq-grid-019",
+     "detail": "2 km",
+     "nimbus": 0.1452830417671293,
+     "reference": 0.145283,
+     "ratio": 1.0000002874880702
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 5 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9999999919511661,
+   "scatterLn": 1.218718930883784e-7,
+   "medianAbsLn": 6.783549735632347e-8,
+   "maxRelative": 4.5702855921980756e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-036",
+     "detail": "5 km",
+     "nimbus": 0.10288894702316574,
+     "reference": 0.1028889,
+     "ratio": 1.0000004570285592
+    },
+    {
+     "caseId": "eq-grid-040",
+     "detail": "5 km",
+     "nimbus": 0.10288894702316574,
+     "reference": 0.1028889,
+     "ratio": 1.0000004570285592
+    },
+    {
+     "caseId": "eq-grid-044",
+     "detail": "5 km",
+     "nimbus": 0.10288894702316574,
+     "reference": 0.1028889,
+     "ratio": 1.0000004570285592
+    },
+    {
+     "caseId": "eq-grid-048",
+     "detail": "5 km",
+     "nimbus": 0.10288894702316574,
+     "reference": 0.1028889,
+     "ratio": 1.0000004570285592
+    },
+    {
+     "caseId": "eq-grid-019",
+     "detail": "5 km",
+     "nimbus": 0.10440185811614822,
+     "reference": 0.1044019,
+     "ratio": 0.9999995988209813
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 10 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9999999952937936,
+   "scatterLn": 1.1943143256419995e-7,
+   "medianAbsLn": 7.497888413682093e-8,
+   "maxRelative": 3.4901803891429495e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-033",
+     "detail": "10 km",
+     "nimbus": 0.11127246116389027,
+     "reference": 0.1112725,
+     "ratio": 0.9999996509819611
+    },
+    {
+     "caseId": "eq-grid-037",
+     "detail": "10 km",
+     "nimbus": 0.11127246116389027,
+     "reference": 0.1112725,
+     "ratio": 0.9999996509819611
+    },
+    {
+     "caseId": "eq-grid-041",
+     "detail": "10 km",
+     "nimbus": 0.11127246116389027,
+     "reference": 0.1112725,
+     "ratio": 0.9999996509819611
+    },
+    {
+     "caseId": "eq-grid-045",
+     "detail": "10 km",
+     "nimbus": 0.11127246116389027,
+     "reference": 0.1112725,
+     "ratio": 0.9999996509819611
+    },
+    {
+     "caseId": "eq-grid-067",
+     "detail": "10 km",
+     "nimbus": 0.1528961487629168,
+     "reference": 0.1528961,
+     "ratio": 1.0000003189284539
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 20 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000200397918,
+   "scatterLn": 1.413949738786442e-7,
+   "medianAbsLn": 8.772405194951218e-8,
+   "maxRelative": 3.69435989355793e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-131",
+     "detail": "20 km",
+     "nimbus": 0.11954734416507504,
+     "reference": 0.1195473,
+     "ratio": 1.0000003694359894
+    },
+    {
+     "caseId": "eq-grid-135",
+     "detail": "20 km",
+     "nimbus": 0.11954734416507504,
+     "reference": 0.1195473,
+     "ratio": 1.0000003694359894
+    },
+    {
+     "caseId": "eq-grid-139",
+     "detail": "20 km",
+     "nimbus": 0.11954734416507504,
+     "reference": 0.1195473,
+     "ratio": 1.0000003694359894
+    },
+    {
+     "caseId": "eq-grid-143",
+     "detail": "20 km",
+     "nimbus": 0.11954734416507504,
+     "reference": 0.1195473,
+     "ratio": 1.0000003694359894
+    },
+    {
+     "caseId": "eq-preset-NORTHRIDGE_1994",
+     "detail": "20 km",
+     "nimbus": 0.12814615514335415,
+     "reference": 0.1281462,
+     "ratio": 0.9999996499572688
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 30 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9999999850083144,
+   "scatterLn": 1.6736076522886077e-7,
+   "medianAbsLn": 9.90750550718657e-8,
+   "maxRelative": 3.7280935560879414e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-196",
+     "detail": "30 km",
+     "nimbus": 0.10697236011968848,
+     "reference": 0.1069724,
+     "ratio": 0.9999996271906444
+    },
+    {
+     "caseId": "eq-grid-200",
+     "detail": "30 km",
+     "nimbus": 0.10697236011968848,
+     "reference": 0.1069724,
+     "ratio": 0.9999996271906444
+    },
+    {
+     "caseId": "eq-grid-204",
+     "detail": "30 km",
+     "nimbus": 0.10697236011968848,
+     "reference": 0.1069724,
+     "ratio": 0.9999996271906444
+    },
+    {
+     "caseId": "eq-grid-208",
+     "detail": "30 km",
+     "nimbus": 0.10697236011968848,
+     "reference": 0.1069724,
+     "ratio": 0.9999996271906444
+    },
+    {
+     "caseId": "eq-grid-259",
+     "detail": "30 km",
+     "nimbus": 0.1334435505731611,
+     "reference": 0.1334436,
+     "ratio": 0.9999996296050249
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 50 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000149719366,
+   "scatterLn": 1.324993216052154e-7,
+   "medianAbsLn": 6.001447663503777e-8,
+   "maxRelative": 4.693870663263766e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-194",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-198",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-202",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-206",
+     "detail": "50 km",
+     "nimbus": 0.10244065191566035,
+     "reference": 0.1024407,
+     "ratio": 0.9999995306129337
+    },
+    {
+     "caseId": "eq-grid-324",
+     "detail": "50 km",
+     "nimbus": 0.11384964922197939,
+     "reference": 0.1138496,
+     "ratio": 1.0000004323421372
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 75 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000138460883,
+   "scatterLn": 1.1301983946387346e-7,
+   "medianAbsLn": 5.048166290288651e-8,
+   "maxRelative": 4.1037611697714027e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-322",
+     "detail": "75 km",
+     "nimbus": 0.11895305118448872,
+     "reference": 0.1189531,
+     "ratio": 0.999999589623883
+    },
+    {
+     "caseId": "eq-grid-326",
+     "detail": "75 km",
+     "nimbus": 0.11895305118448872,
+     "reference": 0.1189531,
+     "ratio": 0.999999589623883
+    },
+    {
+     "caseId": "eq-grid-330",
+     "detail": "75 km",
+     "nimbus": 0.11895305118448872,
+     "reference": 0.1189531,
+     "ratio": 0.999999589623883
+    },
+    {
+     "caseId": "eq-grid-334",
+     "detail": "75 km",
+     "nimbus": 0.11895305118448872,
+     "reference": 0.1189531,
+     "ratio": 0.999999589623883
+    },
+    {
+     "caseId": "eq-grid-084",
+     "detail": "75 km",
+     "nimbus": 0.014761024631901098,
+     "reference": 0.01476102,
+     "ratio": 1.0000003137927527
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 100 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.999999999888069,
+   "scatterLn": 1.3379659477179514e-7,
+   "medianAbsLn": 6.569379212129843e-8,
+   "maxRelative": 3.868577803656237e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-083",
+     "detail": "100 km",
+     "nimbus": 0.011784625441024196,
+     "reference": 0.01178463,
+     "ratio": 0.9999996131422196
+    },
+    {
+     "caseId": "eq-grid-087",
+     "detail": "100 km",
+     "nimbus": 0.011784625441024196,
+     "reference": 0.01178463,
+     "ratio": 0.9999996131422196
+    },
+    {
+     "caseId": "eq-grid-091",
+     "detail": "100 km",
+     "nimbus": 0.011784625441024196,
+     "reference": 0.01178463,
+     "ratio": 0.9999996131422196
+    },
+    {
+     "caseId": "eq-grid-095",
+     "detail": "100 km",
+     "nimbus": 0.011784625441024196,
+     "reference": 0.01178463,
+     "ratio": 0.9999996131422196
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "100 km",
+     "nimbus": 0.1305685523266955,
+     "reference": 0.1305686,
+     "ratio": 0.999999634879255
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 150 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000095430603,
+   "scatterLn": 1.5370790083133073e-7,
+   "medianAbsLn": 6.258484201549167e-8,
+   "maxRelative": 4.4879553084964385e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-098",
+     "detail": "150 km",
+     "nimbus": 0.011100505018140722,
+     "reference": 0.01110051,
+     "ratio": 0.9999995512044692
+    },
+    {
+     "caseId": "eq-grid-102",
+     "detail": "150 km",
+     "nimbus": 0.011100505018140722,
+     "reference": 0.01110051,
+     "ratio": 0.9999995512044692
+    },
+    {
+     "caseId": "eq-grid-106",
+     "detail": "150 km",
+     "nimbus": 0.011100505018140722,
+     "reference": 0.01110051,
+     "ratio": 0.9999995512044692
+    },
+    {
+     "caseId": "eq-grid-110",
+     "detail": "150 km",
+     "nimbus": 0.011100505018140722,
+     "reference": 0.01110051,
+     "ratio": 0.9999995512044692
+    },
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "150 km",
+     "nimbus": 0.10066035501019906,
+     "reference": 0.1006604,
+     "ratio": 0.9999995530536244
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 200 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000025844507,
+   "scatterLn": 1.1360825046635408e-7,
+   "medianAbsLn": 5.4455722891523166e-8,
+   "maxRelative": 3.232220990856405e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-177",
+     "detail": "200 km",
+     "nimbus": 0.011556693735377599,
+     "reference": 0.01155669,
+     "ratio": 1.000000323222099
+    },
+    {
+     "caseId": "eq-grid-181",
+     "detail": "200 km",
+     "nimbus": 0.011556693735377599,
+     "reference": 0.01155669,
+     "ratio": 1.000000323222099
+    },
+    {
+     "caseId": "eq-grid-185",
+     "detail": "200 km",
+     "nimbus": 0.011556693735377599,
+     "reference": 0.01155669,
+     "ratio": 1.000000323222099
+    },
+    {
+     "caseId": "eq-grid-189",
+     "detail": "200 km",
+     "nimbus": 0.011556693735377599,
+     "reference": 0.01155669,
+     "ratio": 1.000000323222099
+    },
+    {
+     "caseId": "eq-grid-145",
+     "detail": "200 km",
+     "nimbus": 0.011919403540272943,
+     "reference": 0.0119194,
+     "ratio": 1.0000002970177142
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaBoore2014",
+   "cls": "A",
+   "subset": "bin: 300 km",
+   "rows": 346,
+   "pairs": 346,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000000258082717,
+   "scatterLn": 1.277129586753171e-7,
+   "medianAbsLn": 6.269112232671423e-8,
+   "maxRelative": 4.0238164378259e-7,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-322",
+     "detail": "300 km",
+     "nimbus": 0.01135994457103133,
+     "reference": 0.01135994,
+     "ratio": 1.0000004023816438
+    },
+    {
+     "caseId": "eq-grid-326",
+     "detail": "300 km",
+     "nimbus": 0.01135994457103133,
+     "reference": 0.01135994,
+     "ratio": 1.0000004023816438
+    },
+    {
+     "caseId": "eq-grid-330",
+     "detail": "300 km",
+     "nimbus": 0.01135994457103133,
+     "reference": 0.01135994,
+     "ratio": 1.0000004023816438
+    },
+    {
+     "caseId": "eq-grid-334",
+     "detail": "300 km",
+     "nimbus": 0.01135994457103133,
+     "reference": 0.01135994,
+     "ratio": 1.0000004023816438
+    },
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "300 km",
+     "nimbus": 0.0011074714380275663,
+     "reference": 0.001107471,
+     "ratio": 1.0000003955205745
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringBoore2014",
+   "cls": "A",
+   "subset": "all",
+   "rows": 1038,
+   "pairs": 542,
+   "bothZero": 496,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0038607347928743,
+   "scatterLn": 0.033805089207730274,
+   "medianAbsLn": 0.00009647809523707484,
+   "maxRelative": 0.4807248591313156,
+   "within1pct": 0.9704797047970479,
+   "withinTolerance": 1,
+   "within125": 0.992619926199262,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-257",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-261",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-265",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-269",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-100",
+     "detail": "MMI 8",
+     "nimbus": 0.8370914766924743,
+     "reference": 0.8026,
+     "ratio": 1.0429746781615679
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringBoore2014",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 30,
+   "pairs": 18,
+   "bothZero": 12,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9999892758782519,
+   "scatterLn": 0.00017511407540590196,
+   "medianAbsLn": 0.000045940051137554136,
+   "maxRelative": 0.0006615142001316077,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-NORTHRIDGE_1994",
+     "detail": "MMI 8",
+     "nimbus": 2.0190347372016055,
+     "reference": 2.0177,
+     "ratio": 1.0006615142001316
+    },
+    {
+     "caseId": "eq-preset-AMATRICE_2016",
+     "detail": "MMI 7",
+     "nimbus": 5.838644015977841,
+     "reference": 5.8396,
+     "ratio": 0.9998362928929792
+    },
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "MMI 7",
+     "nimbus": 6.077435372515294,
+     "reference": 6.0781,
+     "ratio": 0.9998906520977433
+    },
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 8",
+     "nimbus": 9.09481139351022,
+     "reference": 9.0958,
+     "ratio": 0.999891311760397
+    },
+    {
+     "caseId": "eq-preset-KUNLUN_2001",
+     "detail": "MMI 8",
+     "nimbus": 5.249162982981594,
+     "reference": 5.2497,
+     "ratio": 0.9998977051986959
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringBoore2014",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 1008,
+   "pairs": 524,
+   "bothZero": 484,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0039939897850776,
+   "scatterLn": 0.03437415512613554,
+   "medianAbsLn": 0.00009728675880234579,
+   "maxRelative": 0.4807248591313156,
+   "within1pct": 0.9694656488549618,
+   "withinTolerance": 1,
+   "within125": 0.9923664122137404,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-257",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-261",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-265",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-269",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-100",
+     "detail": "MMI 8",
+     "nimbus": 0.8370914766924743,
+     "reference": 0.8026,
+     "ratio": 1.0429746781615679
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringBoore2014",
+   "cls": "A",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 291,
+   "pairs": 178,
+   "bothZero": 113,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0006069227834362,
+   "scatterLn": 0.0013090828914669786,
+   "medianAbsLn": 0.0001116866919299794,
+   "maxRelative": 0.0047430637362266825,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-163",
+     "detail": "MMI 8",
+     "nimbus": 0.9844472538487549,
+     "reference": 0.9798,
+     "ratio": 1.0047430637362267
+    },
+    {
+     "caseId": "eq-grid-167",
+     "detail": "MMI 8",
+     "nimbus": 0.9844472538487549,
+     "reference": 0.9798,
+     "ratio": 1.0047430637362267
+    },
+    {
+     "caseId": "eq-grid-171",
+     "detail": "MMI 8",
+     "nimbus": 0.9844472538487549,
+     "reference": 0.9798,
+     "ratio": 1.0047430637362267
+    },
+    {
+     "caseId": "eq-grid-175",
+     "detail": "MMI 8",
+     "nimbus": 0.9844472538487549,
+     "reference": 0.9798,
+     "ratio": 1.0047430637362267
+    },
+    {
+     "caseId": "eq-grid-177",
+     "detail": "MMI 8",
+     "nimbus": 2.2427017075338274,
+     "reference": 2.2339,
+     "ratio": 1.0039400633572797
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringBoore2014",
+   "cls": "A",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 309,
+   "pairs": 202,
+   "bothZero": 107,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0081456149751267,
+   "scatterLn": 0.05482433709778447,
+   "medianAbsLn": 0.00004226656876361093,
+   "maxRelative": 0.4807248591313156,
+   "within1pct": 0.9603960396039604,
+   "withinTolerance": 1,
+   "within125": 0.9801980198019802,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-257",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-261",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-265",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-269",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-308",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 1.2633,
+     "ratio": 1.0166784017804522
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringBoore2014",
+   "cls": "A",
+   "subset": "band: Mw < 6.5",
+   "rows": 438,
+   "pairs": 162,
+   "bothZero": 276,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0021117381266422,
+   "scatterLn": 0.006943496022882189,
+   "medianAbsLn": 0.00015906254450811984,
+   "maxRelative": 0.04297467816156786,
+   "within1pct": 0.9506172839506173,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-100",
+     "detail": "MMI 8",
+     "nimbus": 0.8370914766924743,
+     "reference": 0.8026,
+     "ratio": 1.0429746781615679
+    },
+    {
+     "caseId": "eq-grid-104",
+     "detail": "MMI 8",
+     "nimbus": 0.8370914766924743,
+     "reference": 0.8026,
+     "ratio": 1.0429746781615679
+    },
+    {
+     "caseId": "eq-grid-108",
+     "detail": "MMI 8",
+     "nimbus": 0.8370914766924743,
+     "reference": 0.8026,
+     "ratio": 1.0429746781615679
+    },
+    {
+     "caseId": "eq-grid-112",
+     "detail": "MMI 8",
+     "nimbus": 0.8370914766924743,
+     "reference": 0.8026,
+     "ratio": 1.0429746781615679
+    },
+    {
+     "caseId": "eq-grid-129",
+     "detail": "MMI 8",
+     "nimbus": 1.1181685484399706,
+     "reference": 1.1022,
+     "ratio": 1.0144878864452644
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringBoore2014",
+   "cls": "A",
+   "subset": "bin: MMI 7",
+   "rows": 346,
+   "pairs": 314,
+   "bothZero": 32,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0001070136548509,
+   "scatterLn": 0.0008981077805186441,
+   "medianAbsLn": 0.00006784074220294667,
+   "maxRelative": 0.005601999596020368,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-002",
+     "detail": "MMI 7",
+     "nimbus": 1.8658945102504156,
+     "reference": 1.8555,
+     "ratio": 1.0056019995960204
+    },
+    {
+     "caseId": "eq-grid-006",
+     "detail": "MMI 7",
+     "nimbus": 1.8658945102504156,
+     "reference": 1.8555,
+     "ratio": 1.0056019995960204
+    },
+    {
+     "caseId": "eq-grid-010",
+     "detail": "MMI 7",
+     "nimbus": 1.8658945102504156,
+     "reference": 1.8555,
+     "ratio": 1.0056019995960204
+    },
+    {
+     "caseId": "eq-grid-014",
+     "detail": "MMI 7",
+     "nimbus": 1.8658945102504156,
+     "reference": 1.8555,
+     "ratio": 1.0056019995960204
+    },
+    {
+     "caseId": "eq-grid-034",
+     "detail": "MMI 7",
+     "nimbus": 1.457685280794028,
+     "reference": 1.4511,
+     "ratio": 1.0045381302419047
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringBoore2014",
+   "cls": "A",
+   "subset": "bin: MMI 8",
+   "rows": 346,
+   "pairs": 228,
+   "bothZero": 118,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0090534066005714,
+   "scatterLn": 0.051732864208383085,
+   "medianAbsLn": 0.00016872286630389445,
+   "maxRelative": 0.4807248591313156,
+   "within1pct": 0.9298245614035088,
+   "withinTolerance": 1,
+   "within125": 0.9824561403508771,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-257",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-261",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-265",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-269",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 0.2273,
+     "ratio": 1.4807248591313156
+    },
+    {
+     "caseId": "eq-grid-100",
+     "detail": "MMI 8",
+     "nimbus": 0.8370914766924743,
+     "reference": 0.8026,
+     "ratio": 1.0429746781615679
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringBoore2014",
+   "cls": "A",
+   "subset": "bin: MMI 9",
+   "rows": 346,
+   "pairs": 0,
+   "bothZero": 346,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2014",
+   "cls": "C",
+   "subset": "all",
+   "rows": 1023,
+   "pairs": 380,
+   "bothZero": 473,
+   "unpaired": {
+    "reference zero": 152,
+    "Nimbus zero": 18
+   },
+   "geometricMeanRatio": 1.187628220788078,
+   "scatterLn": 1.0976680803550638,
+   "medianAbsLn": 0.373883208189471,
+   "maxRelative": 377.88011127183887,
+   "within1pct": 0.034210526315789476,
+   "withinTolerance": 0.034210526315789476,
+   "within125": 0.3815789473684211,
+   "within2": 0.6789473684210526,
+   "within10": 0.9342105263157895,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-234",
+     "detail": "MMI 8",
+     "nimbus": 5.9105297358406865,
+     "reference": 0.0156,
+     "ratio": 378.88011127183887
+    },
+    {
+     "caseId": "eq-grid-235",
+     "detail": "MMI 8",
+     "nimbus": 5.079620386173057,
+     "reference": 0.0206,
+     "ratio": 246.583513891896
+    },
+    {
+     "caseId": "eq-grid-282",
+     "detail": "MMI 8",
+     "nimbus": 7.616697401796805,
+     "reference": 0.0858,
+     "ratio": 88.77269699063875
+    },
+    {
+     "caseId": "eq-grid-283",
+     "detail": "MMI 8",
+     "nimbus": 6.593567456716591,
+     "reference": 0.0916,
+     "ratio": 71.98217747507195
+    },
+    {
+     "caseId": "eq-grid-087",
+     "detail": "MMI 7",
+     "nimbus": 8.403530980718715,
+     "reference": 0.121,
+     "ratio": 69.45066926213815
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2014",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 15,
+   "pairs": 7,
+   "bothZero": 6,
+   "unpaired": {
+    "reference zero": 1,
+    "Nimbus zero": 1
+   },
+   "geometricMeanRatio": 0.9241999974675543,
+   "scatterLn": 0.31764443126403025,
+   "medianAbsLn": 0.20090141793688057,
+   "maxRelative": 0.4629155888019322,
+   "within1pct": 0.14285714285714285,
+   "withinTolerance": 0.14285714285714285,
+   "within125": 0.5714285714285714,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "MMI 8",
+     "nimbus": 4.732841539918493,
+     "reference": 8.8121,
+     "ratio": 0.5370844111980678
+    },
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "MMI 7",
+     "nimbus": 18.0451903812848,
+     "reference": 26.4962,
+     "ratio": 0.681048240173489
+    },
+    {
+     "caseId": "eq-preset-AMATRICE_2016",
+     "detail": "MMI 7",
+     "nimbus": 5.838644015977841,
+     "reference": 4.4525,
+     "ratio": 1.31131813946723
+    },
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "MMI 7",
+     "nimbus": 6.077435372515294,
+     "reference": 4.9713,
+     "ratio": 1.222504248891697
+    },
+    {
+     "caseId": "eq-preset-NORTHRIDGE_1994",
+     "detail": "MMI 7",
+     "nimbus": 10.066514241051784,
+     "reference": 10.3868,
+     "ratio": 0.969164154605055
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2014",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 1008,
+   "pairs": 373,
+   "bothZero": 467,
+   "unpaired": {
+    "Nimbus zero": 17,
+    "reference zero": 151
+   },
+   "geometricMeanRatio": 1.193230873178543,
+   "scatterLn": 1.1066682105301797,
+   "medianAbsLn": 0.37413479643578995,
+   "maxRelative": 377.88011127183887,
+   "within1pct": 0.032171581769437,
+   "withinTolerance": 0.032171581769437,
+   "within125": 0.3780160857908847,
+   "within2": 0.6729222520107239,
+   "within10": 0.9329758713136729,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-234",
+     "detail": "MMI 8",
+     "nimbus": 5.9105297358406865,
+     "reference": 0.0156,
+     "ratio": 378.88011127183887
+    },
+    {
+     "caseId": "eq-grid-235",
+     "detail": "MMI 8",
+     "nimbus": 5.079620386173057,
+     "reference": 0.0206,
+     "ratio": 246.583513891896
+    },
+    {
+     "caseId": "eq-grid-282",
+     "detail": "MMI 8",
+     "nimbus": 7.616697401796805,
+     "reference": 0.0858,
+     "ratio": 88.77269699063875
+    },
+    {
+     "caseId": "eq-grid-283",
+     "detail": "MMI 8",
+     "nimbus": 6.593567456716591,
+     "reference": 0.0916,
+     "ratio": 71.98217747507195
+    },
+    {
+     "caseId": "eq-grid-087",
+     "detail": "MMI 7",
+     "nimbus": 8.403530980718715,
+     "reference": 0.121,
+     "ratio": 69.45066926213815
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2014",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 291,
+   "pairs": 137,
+   "bothZero": 109,
+   "unpaired": {
+    "reference zero": 41,
+    "Nimbus zero": 4
+   },
+   "geometricMeanRatio": 1.211397032979229,
+   "scatterLn": 0.9496039529565219,
+   "medianAbsLn": 0.19986875239847213,
+   "maxRelative": 377.88011127183887,
+   "within1pct": 0.043795620437956206,
+   "withinTolerance": 0.043795620437956206,
+   "within125": 0.5547445255474452,
+   "within2": 0.8248175182481752,
+   "within10": 0.9635036496350365,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-234",
+     "detail": "MMI 8",
+     "nimbus": 5.9105297358406865,
+     "reference": 0.0156,
+     "ratio": 378.88011127183887
+    },
+    {
+     "caseId": "eq-grid-235",
+     "detail": "MMI 8",
+     "nimbus": 5.079620386173057,
+     "reference": 0.0206,
+     "ratio": 246.583513891896
+    },
+    {
+     "caseId": "eq-grid-175",
+     "detail": "MMI 7",
+     "nimbus": 9.178697235930635,
+     "reference": 0.3731,
+     "ratio": 24.601171900108913
+    },
+    {
+     "caseId": "eq-grid-229",
+     "detail": "MMI 8",
+     "nimbus": 3.286171478232339,
+     "reference": 0.1812,
+     "ratio": 18.135604184505183
+    },
+    {
+     "caseId": "eq-grid-225",
+     "detail": "MMI 8",
+     "nimbus": 3.286171478232339,
+     "reference": 0.2713,
+     "ratio": 12.112685139079762
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2014",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 294,
+   "pairs": 178,
+   "bothZero": 97,
+   "unpaired": {
+    "reference zero": 14,
+    "Nimbus zero": 5
+   },
+   "geometricMeanRatio": 0.9350512364311396,
+   "scatterLn": 1.1912784273373684,
+   "medianAbsLn": 0.4749911032096359,
+   "maxRelative": 87.77269699063875,
+   "within1pct": 0.028089887640449437,
+   "withinTolerance": 0.028089887640449437,
+   "within125": 0.33707865168539325,
+   "within2": 0.601123595505618,
+   "within10": 0.9157303370786517,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-282",
+     "detail": "MMI 8",
+     "nimbus": 7.616697401796805,
+     "reference": 0.0858,
+     "ratio": 88.77269699063875
+    },
+    {
+     "caseId": "eq-grid-283",
+     "detail": "MMI 8",
+     "nimbus": 6.593567456716591,
+     "reference": 0.0916,
+     "ratio": 71.98217747507195
+    },
+    {
+     "caseId": "eq-grid-266",
+     "detail": "MMI 8",
+     "nimbus": 4.443632920487855,
+     "reference": 0.0944,
+     "ratio": 47.0723826322866
+    },
+    {
+     "caseId": "eq-grid-267",
+     "detail": "MMI 8",
+     "nimbus": 3.4788137818888725,
+     "reference": 0.1005,
+     "ratio": 34.615062506356935
+    },
+    {
+     "caseId": "eq-grid-333",
+     "detail": "MMI 8",
+     "nimbus": 6.178220281673219,
+     "reference": 0.1883,
+     "ratio": 32.81051663129696
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2014",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 438,
+   "pairs": 65,
+   "bothZero": 267,
+   "unpaired": {
+    "Nimbus zero": 9,
+    "reference zero": 97
+   },
+   "geometricMeanRatio": 2.192388564928585,
+   "scatterLn": 0.8674942044753872,
+   "medianAbsLn": 0.5572695639232168,
+   "maxRelative": 68.45066926213815,
+   "within1pct": 0.03076923076923077,
+   "withinTolerance": 0.03076923076923077,
+   "within125": 0.13846153846153847,
+   "within2": 0.5846153846153846,
+   "within10": 0.9230769230769231,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-087",
+     "detail": "MMI 7",
+     "nimbus": 8.403530980718715,
+     "reference": 0.121,
+     "ratio": 69.45066926213815
+    },
+    {
+     "caseId": "eq-grid-123",
+     "detail": "MMI 7",
+     "nimbus": 7.547020781429529,
+     "reference": 0.3583,
+     "ratio": 21.063412730755033
+    },
+    {
+     "caseId": "eq-grid-070",
+     "detail": "MMI 7",
+     "nimbus": 7.826418182712894,
+     "reference": 0.4212,
+     "ratio": 18.581239750030612
+    },
+    {
+     "caseId": "eq-grid-069",
+     "detail": "MMI 7",
+     "nimbus": 8.271243366014438,
+     "reference": 0.4484,
+     "ratio": 18.44612704285111
+    },
+    {
+     "caseId": "eq-grid-068",
+     "detail": "MMI 7",
+     "nimbus": 4.454024894504104,
+     "reference": 0.3191,
+     "ratio": 13.95808490913226
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2014",
+   "cls": "C",
+   "subset": "bin: MMI 7",
+   "rows": 341,
+   "pairs": 253,
+   "bothZero": 26,
+   "unpaired": {
+    "Nimbus zero": 6,
+    "reference zero": 56
+   },
+   "geometricMeanRatio": 0.9758716453148595,
+   "scatterLn": 0.7530746382656831,
+   "medianAbsLn": 0.29797314877688535,
+   "maxRelative": 68.45066926213815,
+   "within1pct": 0.05138339920948617,
+   "withinTolerance": 0.05138339920948617,
+   "within125": 0.4308300395256917,
+   "within2": 0.7707509881422925,
+   "within10": 0.9762845849802372,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-087",
+     "detail": "MMI 7",
+     "nimbus": 8.403530980718715,
+     "reference": 0.121,
+     "ratio": 69.45066926213815
+    },
+    {
+     "caseId": "eq-grid-175",
+     "detail": "MMI 7",
+     "nimbus": 9.178697235930635,
+     "reference": 0.3731,
+     "ratio": 24.601171900108913
+    },
+    {
+     "caseId": "eq-grid-123",
+     "detail": "MMI 7",
+     "nimbus": 7.547020781429529,
+     "reference": 0.3583,
+     "ratio": 21.063412730755033
+    },
+    {
+     "caseId": "eq-grid-070",
+     "detail": "MMI 7",
+     "nimbus": 7.826418182712894,
+     "reference": 0.4212,
+     "ratio": 18.581239750030612
+    },
+    {
+     "caseId": "eq-grid-069",
+     "detail": "MMI 7",
+     "nimbus": 8.271243366014438,
+     "reference": 0.4484,
+     "ratio": 18.44612704285111
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2014",
+   "cls": "C",
+   "subset": "bin: MMI 8",
+   "rows": 341,
+   "pairs": 127,
+   "bothZero": 108,
+   "unpaired": {
+    "reference zero": 96,
+    "Nimbus zero": 10
+   },
+   "geometricMeanRatio": 1.7562428543787587,
+   "scatterLn": 1.5027443098436863,
+   "medianAbsLn": 0.7752100025513284,
+   "maxRelative": 377.88011127183887,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.28346456692913385,
+   "within2": 0.49606299212598426,
+   "within10": 0.8503937007874016,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-234",
+     "detail": "MMI 8",
+     "nimbus": 5.9105297358406865,
+     "reference": 0.0156,
+     "ratio": 378.88011127183887
+    },
+    {
+     "caseId": "eq-grid-235",
+     "detail": "MMI 8",
+     "nimbus": 5.079620386173057,
+     "reference": 0.0206,
+     "ratio": 246.583513891896
+    },
+    {
+     "caseId": "eq-grid-282",
+     "detail": "MMI 8",
+     "nimbus": 7.616697401796805,
+     "reference": 0.0858,
+     "ratio": 88.77269699063875
+    },
+    {
+     "caseId": "eq-grid-283",
+     "detail": "MMI 8",
+     "nimbus": 6.593567456716591,
+     "reference": 0.0916,
+     "ratio": 71.98217747507195
+    },
+    {
+     "caseId": "eq-grid-266",
+     "detail": "MMI 8",
+     "nimbus": 4.443632920487855,
+     "reference": 0.0944,
+     "ratio": 47.0723826322866
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2014",
+   "cls": "C",
+   "subset": "bin: MMI 9",
+   "rows": 341,
+   "pairs": 0,
+   "bothZero": 339,
+   "unpaired": {
+    "Nimbus zero": 2
+   },
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsCampbellBozorgnia2014",
+   "cls": "C",
+   "subset": "all",
+   "rows": 1023,
+   "pairs": 325,
+   "bothZero": 474,
+   "unpaired": {
+    "reference zero": 207,
+    "Nimbus zero": 17
+   },
+   "geometricMeanRatio": 1.8580003778278333,
+   "scatterLn": 1.1894740590781818,
+   "medianAbsLn": 0.39342541971217915,
+   "maxRelative": 433.851722736109,
+   "within1pct": 0.009230769230769232,
+   "withinTolerance": 0.009230769230769232,
+   "within125": 0.3230769230769231,
+   "within2": 0.72,
+   "within10": 0.9076923076923077,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-267",
+     "detail": "MMI 8",
+     "nimbus": 3.4788137818888725,
+     "reference": 0.008,
+     "ratio": 434.851722736109
+    },
+    {
+     "caseId": "eq-grid-288",
+     "detail": "MMI 7",
+     "nimbus": 15.037974818603844,
+     "reference": 0.0401,
+     "ratio": 375.0118408629388
+    },
+    {
+     "caseId": "eq-grid-065",
+     "detail": "MMI 7",
+     "nimbus": 8.271243366014438,
+     "reference": 0.0329,
+     "ratio": 251.40557343508934
+    },
+    {
+     "caseId": "eq-grid-320",
+     "detail": "MMI 7",
+     "nimbus": 14.295146576409053,
+     "reference": 0.0881,
+     "ratio": 162.26046057217994
+    },
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 7",
+     "nimbus": 25.29113918809688,
+     "reference": 0.2067,
+     "ratio": 122.35674498353596
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsCampbellBozorgnia2014",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 15,
+   "pairs": 7,
+   "bothZero": 6,
+   "unpaired": {
+    "reference zero": 1,
+    "Nimbus zero": 1
+   },
+   "geometricMeanRatio": 0.9900463561945159,
+   "scatterLn": 0.36478812355532375,
+   "medianAbsLn": 0.37925477135148433,
+   "maxRelative": 0.5523963668828413,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.2857142857142857,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "MMI 8",
+     "nimbus": 4.732841539918493,
+     "reference": 7.4517,
+     "ratio": 0.6351358132934086
+    },
+    {
+     "caseId": "eq-preset-NORTHRIDGE_1994",
+     "detail": "MMI 7",
+     "nimbus": 10.066514241051784,
+     "reference": 6.4845,
+     "ratio": 1.5523963668828413
+    },
+    {
+     "caseId": "eq-preset-KUNLUN_2001",
+     "detail": "MMI 8",
+     "nimbus": 5.249162982981594,
+     "reference": 7.8913,
+     "ratio": 0.6651835544183586
+    },
+    {
+     "caseId": "eq-preset-AMATRICE_2016",
+     "detail": "MMI 7",
+     "nimbus": 5.838644015977841,
+     "reference": 3.9958,
+     "ratio": 1.4611952590164274
+    },
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "MMI 7",
+     "nimbus": 6.077435372515294,
+     "reference": 4.8125,
+     "ratio": 1.2628437137694117
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsCampbellBozorgnia2014",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 1008,
+   "pairs": 318,
+   "bothZero": 468,
+   "unpaired": {
+    "reference zero": 206,
+    "Nimbus zero": 16
+   },
+   "geometricMeanRatio": 1.8839259258181213,
+   "scatterLn": 1.1977601497701087,
+   "medianAbsLn": 0.39735521276501756,
+   "maxRelative": 433.851722736109,
+   "within1pct": 0.009433962264150943,
+   "withinTolerance": 0.009433962264150943,
+   "within125": 0.3238993710691824,
+   "within2": 0.7138364779874213,
+   "within10": 0.9056603773584906,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-267",
+     "detail": "MMI 8",
+     "nimbus": 3.4788137818888725,
+     "reference": 0.008,
+     "ratio": 434.851722736109
+    },
+    {
+     "caseId": "eq-grid-288",
+     "detail": "MMI 7",
+     "nimbus": 15.037974818603844,
+     "reference": 0.0401,
+     "ratio": 375.0118408629388
+    },
+    {
+     "caseId": "eq-grid-065",
+     "detail": "MMI 7",
+     "nimbus": 8.271243366014438,
+     "reference": 0.0329,
+     "ratio": 251.40557343508934
+    },
+    {
+     "caseId": "eq-grid-320",
+     "detail": "MMI 7",
+     "nimbus": 14.295146576409053,
+     "reference": 0.0881,
+     "ratio": 162.26046057217994
+    },
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 7",
+     "nimbus": 25.29113918809688,
+     "reference": 0.2067,
+     "ratio": 122.35674498353596
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsCampbellBozorgnia2014",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 291,
+   "pairs": 110,
+   "bothZero": 107,
+   "unpaired": {
+    "reference zero": 68,
+    "Nimbus zero": 6
+   },
+   "geometricMeanRatio": 1.475933757367485,
+   "scatterLn": 0.8632106822432344,
+   "medianAbsLn": 0.33655778622481203,
+   "maxRelative": 95.23986640784798,
+   "within1pct": 0.00909090909090909,
+   "withinTolerance": 0.00909090909090909,
+   "within125": 0.36363636363636365,
+   "within2": 0.7363636363636363,
+   "within10": 0.9545454545454546,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-166",
+     "detail": "MMI 8",
+     "nimbus": 2.175020980817364,
+     "reference": 0.0226,
+     "ratio": 96.23986640784798
+    },
+    {
+     "caseId": "eq-grid-169",
+     "detail": "MMI 7",
+     "nimbus": 12.076849232723337,
+     "reference": 0.4588,
+     "ratio": 26.32268795275357
+    },
+    {
+     "caseId": "eq-grid-182",
+     "detail": "MMI 8",
+     "nimbus": 4.675075598743372,
+     "reference": 0.4114,
+     "ratio": 11.36382012334315
+    },
+    {
+     "caseId": "eq-grid-214",
+     "detail": "MMI 8",
+     "nimbus": 3.2224216936295416,
+     "reference": 0.2946,
+     "ratio": 10.938294954614873
+    },
+    {
+     "caseId": "eq-grid-225",
+     "detail": "MMI 8",
+     "nimbus": 3.286171478232339,
+     "reference": 0.3051,
+     "ratio": 10.77080130525185
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsCampbellBozorgnia2014",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 294,
+   "pairs": 149,
+   "bothZero": 92,
+   "unpaired": {
+    "Nimbus zero": 10,
+    "reference zero": 43
+   },
+   "geometricMeanRatio": 1.9433240663579983,
+   "scatterLn": 1.3718272886559164,
+   "medianAbsLn": 0.3847964833672869,
+   "maxRelative": 433.851722736109,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.35570469798657717,
+   "within2": 0.7718120805369127,
+   "within10": 0.8859060402684564,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-267",
+     "detail": "MMI 8",
+     "nimbus": 3.4788137818888725,
+     "reference": 0.008,
+     "ratio": 434.851722736109
+    },
+    {
+     "caseId": "eq-grid-288",
+     "detail": "MMI 7",
+     "nimbus": 15.037974818603844,
+     "reference": 0.0401,
+     "ratio": 375.0118408629388
+    },
+    {
+     "caseId": "eq-grid-320",
+     "detail": "MMI 7",
+     "nimbus": 14.295146576409053,
+     "reference": 0.0881,
+     "ratio": 162.26046057217994
+    },
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 7",
+     "nimbus": 25.29113918809688,
+     "reference": 0.2067,
+     "ratio": 122.35674498353596
+    },
+    {
+     "caseId": "eq-grid-287",
+     "detail": "MMI 7",
+     "nimbus": 20.44977314099185,
+     "reference": 0.1713,
+     "ratio": 119.3798782311258
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsCampbellBozorgnia2014",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 438,
+   "pairs": 66,
+   "bothZero": 275,
+   "unpaired": {
+    "reference zero": 96,
+    "Nimbus zero": 1
+   },
+   "geometricMeanRatio": 2.464086267472098,
+   "scatterLn": 1.1587676006270178,
+   "medianAbsLn": 0.5535272734333387,
+   "maxRelative": 250.40557343508934,
+   "within1pct": 0.030303030303030304,
+   "withinTolerance": 0.030303030303030304,
+   "within125": 0.18181818181818182,
+   "within2": 0.5757575757575758,
+   "within10": 0.8787878787878788,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-065",
+     "detail": "MMI 7",
+     "nimbus": 8.271243366014438,
+     "reference": 0.0329,
+     "ratio": 251.40557343508934
+    },
+    {
+     "caseId": "eq-grid-068",
+     "detail": "MMI 7",
+     "nimbus": 4.454024894504104,
+     "reference": 0.1,
+     "ratio": 44.540248945041036
+    },
+    {
+     "caseId": "eq-grid-124",
+     "detail": "MMI 7",
+     "nimbus": 5.3966555940394265,
+     "reference": 0.1328,
+     "ratio": 40.63746682258604
+    },
+    {
+     "caseId": "eq-grid-066",
+     "detail": "MMI 7",
+     "nimbus": 7.826418182712894,
+     "reference": 0.3372,
+     "ratio": 23.21001833544749
+    },
+    {
+     "caseId": "eq-grid-067",
+     "detail": "MMI 7",
+     "nimbus": 6.323838639429405,
+     "reference": 0.2861,
+     "ratio": 22.1035953842342
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsCampbellBozorgnia2014",
+   "cls": "C",
+   "subset": "bin: MMI 7",
+   "rows": 341,
+   "pairs": 231,
+   "bothZero": 32,
+   "unpaired": {
+    "reference zero": 78
+   },
+   "geometricMeanRatio": 1.7757708418985163,
+   "scatterLn": 1.0855816069367257,
+   "medianAbsLn": 0.33006588070468057,
+   "maxRelative": 374.0118408629388,
+   "within1pct": 0.012987012987012988,
+   "withinTolerance": 0.012987012987012988,
+   "within125": 0.36363636363636365,
+   "within2": 0.7792207792207793,
+   "within10": 0.935064935064935,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-288",
+     "detail": "MMI 7",
+     "nimbus": 15.037974818603844,
+     "reference": 0.0401,
+     "ratio": 375.0118408629388
+    },
+    {
+     "caseId": "eq-grid-065",
+     "detail": "MMI 7",
+     "nimbus": 8.271243366014438,
+     "reference": 0.0329,
+     "ratio": 251.40557343508934
+    },
+    {
+     "caseId": "eq-grid-320",
+     "detail": "MMI 7",
+     "nimbus": 14.295146576409053,
+     "reference": 0.0881,
+     "ratio": 162.26046057217994
+    },
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 7",
+     "nimbus": 25.29113918809688,
+     "reference": 0.2067,
+     "ratio": 122.35674498353596
+    },
+    {
+     "caseId": "eq-grid-287",
+     "detail": "MMI 7",
+     "nimbus": 20.44977314099185,
+     "reference": 0.1713,
+     "ratio": 119.3798782311258
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsCampbellBozorgnia2014",
+   "cls": "C",
+   "subset": "bin: MMI 8",
+   "rows": 341,
+   "pairs": 94,
+   "bothZero": 110,
+   "unpaired": {
+    "reference zero": 129,
+    "Nimbus zero": 8
+   },
+   "geometricMeanRatio": 2.0766171836608427,
+   "scatterLn": 1.413157515337775,
+   "medianAbsLn": 0.5872732458836923,
+   "maxRelative": 433.851722736109,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.22340425531914893,
+   "within2": 0.574468085106383,
+   "within10": 0.8404255319148937,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-267",
+     "detail": "MMI 8",
+     "nimbus": 3.4788137818888725,
+     "reference": 0.008,
+     "ratio": 434.851722736109
+    },
+    {
+     "caseId": "eq-grid-282",
+     "detail": "MMI 8",
+     "nimbus": 7.616697401796805,
+     "reference": 0.0666,
+     "ratio": 114.36482585280487
+    },
+    {
+     "caseId": "eq-grid-166",
+     "detail": "MMI 8",
+     "nimbus": 2.175020980817364,
+     "reference": 0.0226,
+     "ratio": 96.23986640784798
+    },
+    {
+     "caseId": "eq-grid-305",
+     "detail": "MMI 8",
+     "nimbus": 2.3982109919822943,
+     "reference": 0.0364,
+     "ratio": 65.88491736215094
+    },
+    {
+     "caseId": "eq-grid-309",
+     "detail": "MMI 8",
+     "nimbus": 2.3982109919822943,
+     "reference": 0.0364,
+     "ratio": 65.88491736215094
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsCampbellBozorgnia2014",
+   "cls": "C",
+   "subset": "bin: MMI 9",
+   "rows": 341,
+   "pairs": 0,
+   "bothZero": 332,
+   "unpaired": {
+    "Nimbus zero": 9
+   },
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsChiouYoungs2014",
+   "cls": "C",
+   "subset": "all",
+   "rows": 1023,
+   "pairs": 374,
+   "bothZero": 468,
+   "unpaired": {
+    "reference zero": 158,
+    "Nimbus zero": 23
+   },
+   "geometricMeanRatio": 1.0085233220910477,
+   "scatterLn": 0.8903131352210167,
+   "medianAbsLn": 0.29394379062273324,
+   "maxRelative": 1563.8435610630186,
+   "within1pct": 0.02406417112299465,
+   "withinTolerance": 0.02406417112299465,
+   "within125": 0.3770053475935829,
+   "within2": 0.7540106951871658,
+   "within10": 0.9759358288770054,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-233",
+     "detail": "MMI 8",
+     "nimbus": 3.286171478232339,
+     "reference": 0.0021,
+     "ratio": 1564.8435610630186
+    },
+    {
+     "caseId": "eq-grid-316",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 0.0104,
+     "ratio": 123.49709855473515
+    },
+    {
+     "caseId": "eq-grid-238",
+     "detail": "MMI 8",
+     "nimbus": 5.9105297358406865,
+     "reference": 0.0834,
+     "ratio": 70.86966110120727
+    },
+    {
+     "caseId": "eq-grid-068",
+     "detail": "MMI 7",
+     "nimbus": 4.454024894504104,
+     "reference": 0.0763,
+     "ratio": 58.375162444352604
+    },
+    {
+     "caseId": "eq-grid-266",
+     "detail": "MMI 8",
+     "nimbus": 4.443632920487855,
+     "reference": 0.1743,
+     "ratio": 25.494164776178167
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsChiouYoungs2014",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 15,
+   "pairs": 7,
+   "bothZero": 6,
+   "unpaired": {
+    "reference zero": 1,
+    "Nimbus zero": 1
+   },
+   "geometricMeanRatio": 1.049504907806106,
+   "scatterLn": 0.5500107596386014,
+   "medianAbsLn": 0.32785490880892865,
+   "maxRelative": 1.2872425337790734,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.2857142857142857,
+   "within2": 0.7142857142857143,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-AMATRICE_2016",
+     "detail": "MMI 7",
+     "nimbus": 5.838644015977841,
+     "reference": 2.5527,
+     "ratio": 2.2872425337790734
+    },
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "MMI 7",
+     "nimbus": 6.077435372515294,
+     "reference": 2.6651,
+     "ratio": 2.280377986760457
+    },
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "MMI 8",
+     "nimbus": 4.732841539918493,
+     "reference": 7.9068,
+     "ratio": 0.5985786335709128
+    },
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "MMI 7",
+     "nimbus": 18.0451903812848,
+     "reference": 25.0465,
+     "ratio": 0.7204675456165452
+    },
+    {
+     "caseId": "eq-preset-KUNLUN_2001",
+     "detail": "MMI 8",
+     "nimbus": 5.249162982981594,
+     "reference": 6.9377,
+     "ratio": 0.756614293351052
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsChiouYoungs2014",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 1008,
+   "pairs": 367,
+   "bothZero": 462,
+   "unpaired": {
+    "reference zero": 157,
+    "Nimbus zero": 22
+   },
+   "geometricMeanRatio": 1.0077574119857229,
+   "scatterLn": 0.8960063960217666,
+   "medianAbsLn": 0.2922414296380814,
+   "maxRelative": 1563.8435610630186,
+   "within1pct": 0.02452316076294278,
+   "withinTolerance": 0.02452316076294278,
+   "within125": 0.3787465940054496,
+   "within2": 0.7547683923705722,
+   "within10": 0.9754768392370572,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-233",
+     "detail": "MMI 8",
+     "nimbus": 3.286171478232339,
+     "reference": 0.0021,
+     "ratio": 1564.8435610630186
+    },
+    {
+     "caseId": "eq-grid-316",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 0.0104,
+     "ratio": 123.49709855473515
+    },
+    {
+     "caseId": "eq-grid-238",
+     "detail": "MMI 8",
+     "nimbus": 5.9105297358406865,
+     "reference": 0.0834,
+     "ratio": 70.86966110120727
+    },
+    {
+     "caseId": "eq-grid-068",
+     "detail": "MMI 7",
+     "nimbus": 4.454024894504104,
+     "reference": 0.0763,
+     "ratio": 58.375162444352604
+    },
+    {
+     "caseId": "eq-grid-266",
+     "detail": "MMI 8",
+     "nimbus": 4.443632920487855,
+     "reference": 0.1743,
+     "ratio": 25.494164776178167
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsChiouYoungs2014",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 291,
+   "pairs": 135,
+   "bothZero": 105,
+   "unpaired": {
+    "reference zero": 43,
+    "Nimbus zero": 8
+   },
+   "geometricMeanRatio": 1.2085150350479221,
+   "scatterLn": 0.9671863072156812,
+   "medianAbsLn": 0.2352128373336323,
+   "maxRelative": 1563.8435610630186,
+   "within1pct": 0.02962962962962963,
+   "withinTolerance": 0.02962962962962963,
+   "within125": 0.4962962962962963,
+   "within2": 0.8444444444444444,
+   "within10": 0.9703703703703703,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-233",
+     "detail": "MMI 8",
+     "nimbus": 3.286171478232339,
+     "reference": 0.0021,
+     "ratio": 1564.8435610630186
+    },
+    {
+     "caseId": "eq-grid-238",
+     "detail": "MMI 8",
+     "nimbus": 5.9105297358406865,
+     "reference": 0.0834,
+     "ratio": 70.86966110120727
+    },
+    {
+     "caseId": "eq-grid-192",
+     "detail": "MMI 7",
+     "nimbus": 9.240985265409966,
+     "reference": 0.4903,
+     "ratio": 18.847614247215922
+    },
+    {
+     "caseId": "eq-grid-235",
+     "detail": "MMI 8",
+     "nimbus": 5.079620386173057,
+     "reference": 0.3889,
+     "ratio": 13.061507807079087
+    },
+    {
+     "caseId": "eq-grid-183",
+     "detail": "MMI 8",
+     "nimbus": 3.9497695945031137,
+     "reference": 0.4814,
+     "ratio": 8.204756116541574
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsChiouYoungs2014",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 294,
+   "pairs": 185,
+   "bothZero": 87,
+   "unpaired": {
+    "Nimbus zero": 15,
+    "reference zero": 7
+   },
+   "geometricMeanRatio": 0.7212482802862568,
+   "scatterLn": 0.6896731551402507,
+   "medianAbsLn": 0.342191997515783,
+   "maxRelative": 122.49709855473515,
+   "within1pct": 0.02702702702702703,
+   "withinTolerance": 0.02702702702702703,
+   "within125": 0.34594594594594597,
+   "within2": 0.7135135135135136,
+   "within10": 0.9891891891891892,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-316",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 0.0104,
+     "ratio": 123.49709855473515
+    },
+    {
+     "caseId": "eq-grid-266",
+     "detail": "MMI 8",
+     "nimbus": 4.443632920487855,
+     "reference": 0.1743,
+     "ratio": 25.494164776178167
+    },
+    {
+     "caseId": "eq-grid-313",
+     "detail": "MMI 8",
+     "nimbus": 2.3982109919822943,
+     "reference": 0.3527,
+     "ratio": 6.799577521923148
+    },
+    {
+     "caseId": "eq-grid-333",
+     "detail": "MMI 8",
+     "nimbus": 6.178220281673219,
+     "reference": 34.7778,
+     "ratio": 0.17764839298843568
+    },
+    {
+     "caseId": "eq-grid-336",
+     "detail": "MMI 8",
+     "nimbus": 5.410716191820332,
+     "reference": 29.8344,
+     "ratio": 0.1813583042333793
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsChiouYoungs2014",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 438,
+   "pairs": 54,
+   "bothZero": 276,
+   "unpaired": {
+    "reference zero": 108
+   },
+   "geometricMeanRatio": 2.0234358370257763,
+   "scatterLn": 0.7696850258203499,
+   "medianAbsLn": 0.47078019927093623,
+   "maxRelative": 57.375162444352604,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.18518518518518517,
+   "within2": 0.6666666666666666,
+   "within10": 0.9444444444444444,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-068",
+     "detail": "MMI 7",
+     "nimbus": 4.454024894504104,
+     "reference": 0.0763,
+     "ratio": 58.375162444352604
+    },
+    {
+     "caseId": "eq-grid-086",
+     "detail": "MMI 7",
+     "nimbus": 10.106224739714008,
+     "reference": 0.4273,
+     "ratio": 23.6513567510274
+    },
+    {
+     "caseId": "eq-grid-131",
+     "detail": "MMI 8",
+     "nimbus": 3.0258352165162377,
+     "reference": 0.2614,
+     "ratio": 11.575498150406418
+    },
+    {
+     "caseId": "eq-grid-084",
+     "detail": "MMI 7",
+     "nimbus": 6.367012449185198,
+     "reference": 1.2287,
+     "ratio": 5.1819097006471875
+    },
+    {
+     "caseId": "eq-grid-085",
+     "detail": "MMI 7",
+     "nimbus": 10.616328929548644,
+     "reference": 2.1214,
+     "ratio": 5.004397534434168
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsChiouYoungs2014",
+   "cls": "C",
+   "subset": "bin: MMI 7",
+   "rows": 341,
+   "pairs": 239,
+   "bothZero": 32,
+   "unpaired": {
+    "reference zero": 70
+   },
+   "geometricMeanRatio": 0.99468506414723,
+   "scatterLn": 0.6794251465003427,
+   "medianAbsLn": 0.27392189737695316,
+   "maxRelative": 57.375162444352604,
+   "within1pct": 0.02092050209205021,
+   "withinTolerance": 0.02092050209205021,
+   "within125": 0.4100418410041841,
+   "within2": 0.7907949790794979,
+   "within10": 0.9874476987447699,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-068",
+     "detail": "MMI 7",
+     "nimbus": 4.454024894504104,
+     "reference": 0.0763,
+     "ratio": 58.375162444352604
+    },
+    {
+     "caseId": "eq-grid-086",
+     "detail": "MMI 7",
+     "nimbus": 10.106224739714008,
+     "reference": 0.4273,
+     "ratio": 23.6513567510274
+    },
+    {
+     "caseId": "eq-grid-192",
+     "detail": "MMI 7",
+     "nimbus": 9.240985265409966,
+     "reference": 0.4903,
+     "ratio": 18.847614247215922
+    },
+    {
+     "caseId": "eq-grid-224",
+     "detail": "MMI 7",
+     "nimbus": 8.221150586788168,
+     "reference": 1.3565,
+     "ratio": 6.060560697964001
+    },
+    {
+     "caseId": "eq-grid-084",
+     "detail": "MMI 7",
+     "nimbus": 6.367012449185198,
+     "reference": 1.2287,
+     "ratio": 5.1819097006471875
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsChiouYoungs2014",
+   "cls": "C",
+   "subset": "bin: MMI 8",
+   "rows": 341,
+   "pairs": 135,
+   "bothZero": 110,
+   "unpaired": {
+    "reference zero": 88,
+    "Nimbus zero": 8
+   },
+   "geometricMeanRatio": 1.0334959657748617,
+   "scatterLn": 1.1771127000261776,
+   "medianAbsLn": 0.31658382500124455,
+   "maxRelative": 1563.8435610630186,
+   "within1pct": 0.02962962962962963,
+   "withinTolerance": 0.02962962962962963,
+   "within125": 0.31851851851851853,
+   "within2": 0.6888888888888889,
+   "within10": 0.9555555555555556,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-233",
+     "detail": "MMI 8",
+     "nimbus": 3.286171478232339,
+     "reference": 0.0021,
+     "ratio": 1564.8435610630186
+    },
+    {
+     "caseId": "eq-grid-316",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 0.0104,
+     "ratio": 123.49709855473515
+    },
+    {
+     "caseId": "eq-grid-238",
+     "detail": "MMI 8",
+     "nimbus": 5.9105297358406865,
+     "reference": 0.0834,
+     "ratio": 70.86966110120727
+    },
+    {
+     "caseId": "eq-grid-266",
+     "detail": "MMI 8",
+     "nimbus": 4.443632920487855,
+     "reference": 0.1743,
+     "ratio": 25.494164776178167
+    },
+    {
+     "caseId": "eq-grid-235",
+     "detail": "MMI 8",
+     "nimbus": 5.079620386173057,
+     "reference": 0.3889,
+     "ratio": 13.061507807079087
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsChiouYoungs2014",
+   "cls": "C",
+   "subset": "bin: MMI 9",
+   "rows": 341,
+   "pairs": 0,
+   "bothZero": 326,
+   "unpaired": {
+    "Nimbus zero": 15
+   },
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "all",
+   "rows": 1023,
+   "pairs": 393,
+   "bothZero": 483,
+   "unpaired": {
+    "reference zero": 139,
+    "Nimbus zero": 8
+   },
+   "geometricMeanRatio": 1.3235440455835086,
+   "scatterLn": 0.7510617764065283,
+   "medianAbsLn": 0.21844297594069179,
+   "maxRelative": 144.6936069195339,
+   "within1pct": 0.022900763358778626,
+   "withinTolerance": 0.022900763358778626,
+   "within125": 0.5038167938931297,
+   "within2": 0.8295165394402035,
+   "within10": 0.9618320610687023,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-175",
+     "detail": "MMI 7",
+     "nimbus": 9.178697235930635,
+     "reference": 0.063,
+     "ratio": 145.6936069195339
+    },
+    {
+     "caseId": "eq-grid-142",
+     "detail": "MMI 7",
+     "nimbus": 12.124120426242877,
+     "reference": 0.336,
+     "ratio": 36.08369174477046
+    },
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 8",
+     "nimbus": 7.616697401796805,
+     "reference": 0.2783,
+     "ratio": 27.368657570236454
+    },
+    {
+     "caseId": "eq-grid-266",
+     "detail": "MMI 8",
+     "nimbus": 4.443632920487855,
+     "reference": 0.1627,
+     "ratio": 27.31181881061988
+    },
+    {
+     "caseId": "eq-grid-287",
+     "detail": "MMI 8",
+     "nimbus": 6.593567456716591,
+     "reference": 0.2477,
+     "ratio": 26.619166155496934
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 15,
+   "pairs": 7,
+   "bothZero": 7,
+   "unpaired": {
+    "reference zero": 1
+   },
+   "geometricMeanRatio": 0.9616110738030889,
+   "scatterLn": 0.2522297021405943,
+   "medianAbsLn": 0.2294240601753902,
+   "maxRelative": 0.34673709830185007,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.42857142857142855,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "MMI 8",
+     "nimbus": 4.732841539918493,
+     "reference": 7.0167,
+     "ratio": 0.6745110293896693
+    },
+    {
+     "caseId": "eq-preset-AMATRICE_2016",
+     "detail": "MMI 7",
+     "nimbus": 5.838644015977841,
+     "reference": 4.3354,
+     "ratio": 1.34673709830185
+    },
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "MMI 7",
+     "nimbus": 6.077435372515294,
+     "reference": 4.7836,
+     "ratio": 1.2704731525452158
+    },
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "MMI 7",
+     "nimbus": 18.0451903812848,
+     "reference": 22.6986,
+     "ratio": 0.7949913378483607
+    },
+    {
+     "caseId": "eq-preset-KUNLUN_2001",
+     "detail": "MMI 8",
+     "nimbus": 5.249162982981594,
+     "reference": 6.3002,
+     "ratio": 0.8331740235201412
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 1008,
+   "pairs": 386,
+   "bothZero": 476,
+   "unpaired": {
+    "reference zero": 138,
+    "Nimbus zero": 8
+   },
+   "geometricMeanRatio": 1.3312339652983467,
+   "scatterLn": 0.7559559487787046,
+   "medianAbsLn": 0.21844297594069179,
+   "maxRelative": 144.6936069195339,
+   "within1pct": 0.023316062176165803,
+   "withinTolerance": 0.023316062176165803,
+   "within125": 0.5051813471502591,
+   "within2": 0.8264248704663213,
+   "within10": 0.961139896373057,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-175",
+     "detail": "MMI 7",
+     "nimbus": 9.178697235930635,
+     "reference": 0.063,
+     "ratio": 145.6936069195339
+    },
+    {
+     "caseId": "eq-grid-142",
+     "detail": "MMI 7",
+     "nimbus": 12.124120426242877,
+     "reference": 0.336,
+     "ratio": 36.08369174477046
+    },
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 8",
+     "nimbus": 7.616697401796805,
+     "reference": 0.2783,
+     "ratio": 27.368657570236454
+    },
+    {
+     "caseId": "eq-grid-266",
+     "detail": "MMI 8",
+     "nimbus": 4.443632920487855,
+     "reference": 0.1627,
+     "ratio": 27.31181881061988
+    },
+    {
+     "caseId": "eq-grid-287",
+     "detail": "MMI 8",
+     "nimbus": 6.593567456716591,
+     "reference": 0.2477,
+     "ratio": 26.619166155496934
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 291,
+   "pairs": 139,
+   "bothZero": 110,
+   "unpaired": {
+    "reference zero": 39,
+    "Nimbus zero": 3
+   },
+   "geometricMeanRatio": 1.3273111652697542,
+   "scatterLn": 0.7340310818069814,
+   "medianAbsLn": 0.14269314034444588,
+   "maxRelative": 144.6936069195339,
+   "within1pct": 0.04316546762589928,
+   "withinTolerance": 0.04316546762589928,
+   "within125": 0.6474820143884892,
+   "within2": 0.8561151079136691,
+   "within10": 0.9712230215827338,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-175",
+     "detail": "MMI 7",
+     "nimbus": 9.178697235930635,
+     "reference": 0.063,
+     "ratio": 145.6936069195339
+    },
+    {
+     "caseId": "eq-grid-234",
+     "detail": "MMI 8",
+     "nimbus": 5.9105297358406865,
+     "reference": 0.2791,
+     "ratio": 21.17710403382546
+    },
+    {
+     "caseId": "eq-grid-235",
+     "detail": "MMI 8",
+     "nimbus": 5.079620386173057,
+     "reference": 0.2487,
+     "ratio": 20.4246899323404
+    },
+    {
+     "caseId": "eq-grid-166",
+     "detail": "MMI 8",
+     "nimbus": 2.175020980817364,
+     "reference": 0.1357,
+     "ratio": 16.028157559449994
+    },
+    {
+     "caseId": "eq-grid-192",
+     "detail": "MMI 7",
+     "nimbus": 9.240985265409966,
+     "reference": 1.2176,
+     "ratio": 7.589508266598198
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 294,
+   "pairs": 178,
+   "bothZero": 98,
+   "unpaired": {
+    "reference zero": 14,
+    "Nimbus zero": 4
+   },
+   "geometricMeanRatio": 1.119052246288216,
+   "scatterLn": 0.751784973641299,
+   "medianAbsLn": 0.19488274967468389,
+   "maxRelative": 26.368657570236454,
+   "within1pct": 0.016853932584269662,
+   "withinTolerance": 0.016853932584269662,
+   "within125": 0.5337078651685393,
+   "within2": 0.8820224719101124,
+   "within10": 0.9550561797752809,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 8",
+     "nimbus": 7.616697401796805,
+     "reference": 0.2783,
+     "ratio": 27.368657570236454
+    },
+    {
+     "caseId": "eq-grid-266",
+     "detail": "MMI 8",
+     "nimbus": 4.443632920487855,
+     "reference": 0.1627,
+     "ratio": 27.31181881061988
+    },
+    {
+     "caseId": "eq-grid-287",
+     "detail": "MMI 8",
+     "nimbus": 6.593567456716591,
+     "reference": 0.2477,
+     "ratio": 26.619166155496934
+    },
+    {
+     "caseId": "eq-grid-267",
+     "detail": "MMI 8",
+     "nimbus": 3.4788137818888725,
+     "reference": 0.1435,
+     "ratio": 24.242604751838833
+    },
+    {
+     "caseId": "eq-grid-318",
+     "detail": "MMI 8",
+     "nimbus": 6.093561391306243,
+     "reference": 0.2733,
+     "ratio": 22.296236338478753
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 438,
+   "pairs": 76,
+   "bothZero": 275,
+   "unpaired": {
+    "reference zero": 86,
+    "Nimbus zero": 1
+   },
+   "geometricMeanRatio": 1.950708111616245,
+   "scatterLn": 0.6354425950060965,
+   "medianAbsLn": 0.4518823659707606,
+   "maxRelative": 35.08369174477046,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.17105263157894737,
+   "within2": 0.6578947368421053,
+   "within10": 0.9605263157894737,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-142",
+     "detail": "MMI 7",
+     "nimbus": 12.124120426242877,
+     "reference": 0.336,
+     "ratio": 36.08369174477046
+    },
+    {
+     "caseId": "eq-grid-088",
+     "detail": "MMI 7",
+     "nimbus": 6.367012449185198,
+     "reference": 0.3641,
+     "ratio": 17.486988325144736
+    },
+    {
+     "caseId": "eq-grid-071",
+     "detail": "MMI 7",
+     "nimbus": 6.323838639429405,
+     "reference": 0.4494,
+     "ratio": 14.071737070381408
+    },
+    {
+     "caseId": "eq-grid-068",
+     "detail": "MMI 7",
+     "nimbus": 4.454024894504104,
+     "reference": 0.691,
+     "ratio": 6.445766851670195
+    },
+    {
+     "caseId": "eq-grid-001",
+     "detail": "MMI 7",
+     "nimbus": 2.3330102053875517,
+     "reference": 0.4579,
+     "ratio": 5.095021195430338
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "bin: MMI 7",
+   "rows": 341,
+   "pairs": 265,
+   "bothZero": 32,
+   "unpaired": {
+    "reference zero": 44
+   },
+   "geometricMeanRatio": 1.1938929379695002,
+   "scatterLn": 0.6016848666803848,
+   "medianAbsLn": 0.18667033686696294,
+   "maxRelative": 144.6936069195339,
+   "within1pct": 0.022641509433962263,
+   "withinTolerance": 0.022641509433962263,
+   "within125": 0.5584905660377358,
+   "within2": 0.8830188679245283,
+   "within10": 0.9849056603773585,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-175",
+     "detail": "MMI 7",
+     "nimbus": 9.178697235930635,
+     "reference": 0.063,
+     "ratio": 145.6936069195339
+    },
+    {
+     "caseId": "eq-grid-142",
+     "detail": "MMI 7",
+     "nimbus": 12.124120426242877,
+     "reference": 0.336,
+     "ratio": 36.08369174477046
+    },
+    {
+     "caseId": "eq-grid-088",
+     "detail": "MMI 7",
+     "nimbus": 6.367012449185198,
+     "reference": 0.3641,
+     "ratio": 17.486988325144736
+    },
+    {
+     "caseId": "eq-grid-071",
+     "detail": "MMI 7",
+     "nimbus": 6.323838639429405,
+     "reference": 0.4494,
+     "ratio": 14.071737070381408
+    },
+    {
+     "caseId": "eq-grid-192",
+     "detail": "MMI 7",
+     "nimbus": 9.240985265409966,
+     "reference": 1.2176,
+     "ratio": 7.589508266598198
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "bin: MMI 8",
+   "rows": 341,
+   "pairs": 128,
+   "bothZero": 112,
+   "unpaired": {
+    "reference zero": 95,
+    "Nimbus zero": 6
+   },
+   "geometricMeanRatio": 1.6384475062419277,
+   "scatterLn": 0.9594236806623279,
+   "medianAbsLn": 0.37287133397206923,
+   "maxRelative": 26.368657570236454,
+   "within1pct": 0.0234375,
+   "withinTolerance": 0.0234375,
+   "within125": 0.390625,
+   "within2": 0.71875,
+   "within10": 0.9140625,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 8",
+     "nimbus": 7.616697401796805,
+     "reference": 0.2783,
+     "ratio": 27.368657570236454
+    },
+    {
+     "caseId": "eq-grid-266",
+     "detail": "MMI 8",
+     "nimbus": 4.443632920487855,
+     "reference": 0.1627,
+     "ratio": 27.31181881061988
+    },
+    {
+     "caseId": "eq-grid-287",
+     "detail": "MMI 8",
+     "nimbus": 6.593567456716591,
+     "reference": 0.2477,
+     "ratio": 26.619166155496934
+    },
+    {
+     "caseId": "eq-grid-267",
+     "detail": "MMI 8",
+     "nimbus": 3.4788137818888725,
+     "reference": 0.1435,
+     "ratio": 24.242604751838833
+    },
+    {
+     "caseId": "eq-grid-318",
+     "detail": "MMI 8",
+     "nimbus": 6.093561391306243,
+     "reference": 0.2733,
+     "ratio": 22.296236338478753
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "bin: MMI 9",
+   "rows": 341,
+   "pairs": 0,
+   "bothZero": 339,
+   "unpaired": {
+    "Nimbus zero": 2
+   },
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Finite",
+   "cls": "C",
+   "subset": "all",
+   "rows": 1023,
+   "pairs": 237,
+   "bothZero": 491,
+   "unpaired": {
+    "reference zero": 295
+   },
+   "geometricMeanRatio": 1.9901489295941253,
+   "scatterLn": 1.4427290268049415,
+   "medianAbsLn": 0.38705478390767983,
+   "maxRelative": 288.7918887931563,
+   "within1pct": 0.004219409282700422,
+   "withinTolerance": 0.004219409282700422,
+   "within125": 0.2911392405063291,
+   "within2": 0.70042194092827,
+   "within10": 0.8649789029535865,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-285",
+     "detail": "MMI 7",
+     "nimbus": 26.77677052448764,
+     "reference": 0.0924,
+     "ratio": 289.7918887931563
+    },
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 7",
+     "nimbus": 25.29113918809688,
+     "reference": 0.0924,
+     "ratio": 273.71362757680606
+    },
+    {
+     "caseId": "eq-grid-287",
+     "detail": "MMI 7",
+     "nimbus": 20.44977314099185,
+     "reference": 0.0924,
+     "ratio": 221.31789113627545
+    },
+    {
+     "caseId": "eq-grid-133",
+     "detail": "MMI 7",
+     "nimbus": 12.755798152633187,
+     "reference": 0.0681,
+     "ratio": 187.3098113455681
+    },
+    {
+     "caseId": "eq-grid-134",
+     "detail": "MMI 7",
+     "nimbus": 12.124120426242877,
+     "reference": 0.0681,
+     "ratio": 178.03407380679704
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Finite",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 15,
+   "pairs": 5,
+   "bothZero": 7,
+   "unpaired": {
+    "reference zero": 3
+   },
+   "geometricMeanRatio": 0.9944612618091313,
+   "scatterLn": 0.6928836564824896,
+   "medianAbsLn": 0.6630515372104188,
+   "maxRelative": 1.1539731960004587,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.6,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "MMI 7",
+     "nimbus": 6.077435372515294,
+     "reference": 2.8215,
+     "ratio": 2.1539731960004587
+    },
+    {
+     "caseId": "eq-preset-AMATRICE_2016",
+     "detail": "MMI 7",
+     "nimbus": 5.838644015977841,
+     "reference": 2.8642,
+     "ratio": 2.038490334466113
+    },
+    {
+     "caseId": "eq-preset-KUNLUN_2001",
+     "detail": "MMI 7",
+     "nimbus": 18.99350575821666,
+     "reference": 36.8608,
+     "ratio": 0.5152765473949741
+    },
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "MMI 7",
+     "nimbus": 18.0451903812848,
+     "reference": 31.0108,
+     "ratio": 0.5819001890078553
+    },
+    {
+     "caseId": "eq-preset-KUNLUN_2001",
+     "detail": "MMI 8",
+     "nimbus": 5.249162982981594,
+     "reference": 7.1054,
+     "ratio": 0.7387568585838368
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Finite",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 1008,
+   "pairs": 232,
+   "bothZero": 484,
+   "unpaired": {
+    "reference zero": 292
+   },
+   "geometricMeanRatio": 2.020128810273145,
+   "scatterLn": 1.451745429126966,
+   "medianAbsLn": 0.37828706818374197,
+   "maxRelative": 288.7918887931563,
+   "within1pct": 0.004310344827586207,
+   "withinTolerance": 0.004310344827586207,
+   "within125": 0.2974137931034483,
+   "within2": 0.7025862068965517,
+   "within10": 0.8620689655172413,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-285",
+     "detail": "MMI 7",
+     "nimbus": 26.77677052448764,
+     "reference": 0.0924,
+     "ratio": 289.7918887931563
+    },
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 7",
+     "nimbus": 25.29113918809688,
+     "reference": 0.0924,
+     "ratio": 273.71362757680606
+    },
+    {
+     "caseId": "eq-grid-287",
+     "detail": "MMI 7",
+     "nimbus": 20.44977314099185,
+     "reference": 0.0924,
+     "ratio": 221.31789113627545
+    },
+    {
+     "caseId": "eq-grid-133",
+     "detail": "MMI 7",
+     "nimbus": 12.755798152633187,
+     "reference": 0.0681,
+     "ratio": 187.3098113455681
+    },
+    {
+     "caseId": "eq-grid-134",
+     "detail": "MMI 7",
+     "nimbus": 12.124120426242877,
+     "reference": 0.0681,
+     "ratio": 178.03407380679704
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Finite",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 291,
+   "pairs": 72,
+   "bothZero": 113,
+   "unpaired": {
+    "reference zero": 106
+   },
+   "geometricMeanRatio": 1.7687103587450463,
+   "scatterLn": 1.033163333870726,
+   "medianAbsLn": 0.34285262249621573,
+   "maxRelative": 57.067583582669506,
+   "within1pct": 0.013888888888888888,
+   "withinTolerance": 0.013888888888888888,
+   "within125": 0.3472222222222222,
+   "within2": 0.7638888888888888,
+   "within10": 0.9166666666666666,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-233",
+     "detail": "MMI 7",
+     "nimbus": 20.114610953036717,
+     "reference": 0.3464,
+     "ratio": 58.067583582669506
+    },
+    {
+     "caseId": "eq-grid-234",
+     "detail": "MMI 7",
+     "nimbus": 19.03498722063752,
+     "reference": 0.3464,
+     "ratio": 54.95088689560486
+    },
+    {
+     "caseId": "eq-grid-235",
+     "detail": "MMI 7",
+     "nimbus": 15.517472688926732,
+     "reference": 0.3464,
+     "ratio": 44.79639921745593
+    },
+    {
+     "caseId": "eq-grid-236",
+     "detail": "MMI 7",
+     "nimbus": 11.558379050932253,
+     "reference": 0.3464,
+     "ratio": 33.36714506620165
+    },
+    {
+     "caseId": "eq-grid-217",
+     "detail": "MMI 7",
+     "nimbus": 15.25091501567735,
+     "reference": 1.1694,
+     "ratio": 13.041658128679108
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Finite",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 294,
+   "pairs": 123,
+   "bothZero": 102,
+   "unpaired": {
+    "reference zero": 69
+   },
+   "geometricMeanRatio": 1.6026769775555003,
+   "scatterLn": 1.5439666100581686,
+   "medianAbsLn": 0.328993453368863,
+   "maxRelative": 288.7918887931563,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.34146341463414637,
+   "within2": 0.7967479674796748,
+   "within10": 0.8699186991869918,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-285",
+     "detail": "MMI 7",
+     "nimbus": 26.77677052448764,
+     "reference": 0.0924,
+     "ratio": 289.7918887931563
+    },
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 7",
+     "nimbus": 25.29113918809688,
+     "reference": 0.0924,
+     "ratio": 273.71362757680606
+    },
+    {
+     "caseId": "eq-grid-287",
+     "detail": "MMI 7",
+     "nimbus": 20.44977314099185,
+     "reference": 0.0924,
+     "ratio": 221.31789113627545
+    },
+    {
+     "caseId": "eq-grid-288",
+     "detail": "MMI 7",
+     "nimbus": 15.037974818603844,
+     "reference": 0.0924,
+     "ratio": 162.74864522298535
+    },
+    {
+     "caseId": "eq-grid-306",
+     "detail": "MMI 8",
+     "nimbus": 6.093561391306243,
+     "reference": 0.0685,
+     "ratio": 88.95710060301083
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Finite",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 438,
+   "pairs": 42,
+   "bothZero": 276,
+   "unpaired": {
+    "reference zero": 120
+   },
+   "geometricMeanRatio": 4.593123269215642,
+   "scatterLn": 1.4688981061516488,
+   "medianAbsLn": 0.8849876893042649,
+   "maxRelative": 186.3098113455681,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.047619047619047616,
+   "within2": 0.30952380952380953,
+   "within10": 0.7619047619047619,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-133",
+     "detail": "MMI 7",
+     "nimbus": 12.755798152633187,
+     "reference": 0.0681,
+     "ratio": 187.3098113455681
+    },
+    {
+     "caseId": "eq-grid-134",
+     "detail": "MMI 7",
+     "nimbus": 12.124120426242877,
+     "reference": 0.0681,
+     "ratio": 178.03407380679704
+    },
+    {
+     "caseId": "eq-grid-135",
+     "detail": "MMI 7",
+     "nimbus": 10.036749277536776,
+     "reference": 0.0681,
+     "ratio": 147.38251508864576
+    },
+    {
+     "caseId": "eq-grid-136",
+     "detail": "MMI 7",
+     "nimbus": 7.597832497697712,
+     "reference": 0.0681,
+     "ratio": 111.56875914387243
+    },
+    {
+     "caseId": "eq-grid-117",
+     "detail": "MMI 7",
+     "nimbus": 9.876165915814571,
+     "reference": 0.3261,
+     "ratio": 30.285697380602794
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Finite",
+   "cls": "C",
+   "subset": "bin: MMI 7",
+   "rows": 341,
+   "pairs": 196,
+   "bothZero": 32,
+   "unpaired": {
+    "reference zero": 113
+   },
+   "geometricMeanRatio": 1.9442442989186102,
+   "scatterLn": 1.4192223941121818,
+   "medianAbsLn": 0.40584028204858236,
+   "maxRelative": 288.7918887931563,
+   "within1pct": 0.00510204081632653,
+   "withinTolerance": 0.00510204081632653,
+   "within125": 0.29081632653061223,
+   "within2": 0.6887755102040817,
+   "within10": 0.8775510204081632,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-285",
+     "detail": "MMI 7",
+     "nimbus": 26.77677052448764,
+     "reference": 0.0924,
+     "ratio": 289.7918887931563
+    },
+    {
+     "caseId": "eq-grid-286",
+     "detail": "MMI 7",
+     "nimbus": 25.29113918809688,
+     "reference": 0.0924,
+     "ratio": 273.71362757680606
+    },
+    {
+     "caseId": "eq-grid-287",
+     "detail": "MMI 7",
+     "nimbus": 20.44977314099185,
+     "reference": 0.0924,
+     "ratio": 221.31789113627545
+    },
+    {
+     "caseId": "eq-grid-133",
+     "detail": "MMI 7",
+     "nimbus": 12.755798152633187,
+     "reference": 0.0681,
+     "ratio": 187.3098113455681
+    },
+    {
+     "caseId": "eq-grid-134",
+     "detail": "MMI 7",
+     "nimbus": 12.124120426242877,
+     "reference": 0.0681,
+     "ratio": 178.03407380679704
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Finite",
+   "cls": "C",
+   "subset": "bin: MMI 8",
+   "rows": 341,
+   "pairs": 41,
+   "bothZero": 118,
+   "unpaired": {
+    "reference zero": 182
+   },
+   "geometricMeanRatio": 2.225023456004572,
+   "scatterLn": 1.5639833261476817,
+   "medianAbsLn": 0.34562539864840974,
+   "maxRelative": 87.95710060301083,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.2926829268292683,
+   "within2": 0.7560975609756098,
+   "within10": 0.8048780487804879,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-306",
+     "detail": "MMI 8",
+     "nimbus": 6.093561391306243,
+     "reference": 0.0685,
+     "ratio": 88.95710060301083
+    },
+    {
+     "caseId": "eq-grid-310",
+     "detail": "MMI 8",
+     "nimbus": 6.093561391306243,
+     "reference": 0.0685,
+     "ratio": 88.95710060301083
+    },
+    {
+     "caseId": "eq-grid-307",
+     "detail": "MMI 8",
+     "nimbus": 4.955154427159704,
+     "reference": 0.0685,
+     "ratio": 72.33802083444823
+    },
+    {
+     "caseId": "eq-grid-311",
+     "detail": "MMI 8",
+     "nimbus": 4.955154427159704,
+     "reference": 0.0685,
+     "ratio": 72.33802083444823
+    },
+    {
+     "caseId": "eq-grid-305",
+     "detail": "MMI 8",
+     "nimbus": 2.3982109919822943,
+     "reference": 0.0685,
+     "ratio": 35.01037944499699
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Finite",
+   "cls": "C",
+   "subset": "bin: MMI 9",
+   "rows": 341,
+   "pairs": 0,
+   "bothZero": 341,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Point",
+   "cls": "C",
+   "subset": "all",
+   "rows": 1023,
+   "pairs": 299,
+   "bothZero": 483,
+   "unpaired": {
+    "reference zero": 233,
+    "Nimbus zero": 8
+   },
+   "geometricMeanRatio": 0.4456491421094665,
+   "scatterLn": 0.7507793668338296,
+   "medianAbsLn": 0.9211865038607928,
+   "maxRelative": 2.1172535782695756,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.08695652173913043,
+   "within2": 0.34782608695652173,
+   "within10": 0.9765886287625418,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-257",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 17.3549,
+     "ratio": 0.01939329875024045
+    },
+    {
+     "caseId": "eq-grid-261",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 15.0399,
+     "ratio": 0.022378390845720252
+    },
+    {
+     "caseId": "eq-grid-308",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 29.9706,
+     "ratio": 0.04285432473721732
+    },
+    {
+     "caseId": "eq-grid-312",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 28.6918,
+     "ratio": 0.04476435166037841
+    },
+    {
+     "caseId": "eq-grid-316",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 22.8738,
+     "ratio": 0.056150260340181585
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Point",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 15,
+   "pairs": 7,
+   "bothZero": 7,
+   "unpaired": {
+    "reference zero": 1
+   },
+   "geometricMeanRatio": 0.3126941015091337,
+   "scatterLn": 0.4294163125402223,
+   "medianAbsLn": 1.4337005868042143,
+   "maxRelative": 0.7971845052893852,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.14285714285714285,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "MMI 8",
+     "nimbus": 4.732841539918493,
+     "reference": 23.3357,
+     "ratio": 0.20281549471061475
+    },
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "MMI 7",
+     "nimbus": 18.0451903812848,
+     "reference": 79.888,
+     "ratio": 0.2258811133247146
+    },
+    {
+     "caseId": "eq-preset-KUNLUN_2001",
+     "detail": "MMI 8",
+     "nimbus": 5.249162982981594,
+     "reference": 22.5514,
+     "ratio": 0.23276439524737239
+    },
+    {
+     "caseId": "eq-preset-KUNLUN_2001",
+     "detail": "MMI 7",
+     "nimbus": 18.99350575821666,
+     "reference": 79.6624,
+     "ratio": 0.2384249753737856
+    },
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "MMI 7",
+     "nimbus": 6.077435372515294,
+     "reference": 14.2721,
+     "ratio": 0.42582628852903875
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Point",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 1008,
+   "pairs": 292,
+   "bothZero": 476,
+   "unpaired": {
+    "reference zero": 232,
+    "Nimbus zero": 8
+   },
+   "geometricMeanRatio": 0.44945045081600643,
+   "scatterLn": 0.7552050091093323,
+   "medianAbsLn": 0.9081429545249666,
+   "maxRelative": 2.1172535782695756,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.08904109589041095,
+   "within2": 0.3527397260273973,
+   "within10": 0.976027397260274,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-257",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 17.3549,
+     "ratio": 0.01939329875024045
+    },
+    {
+     "caseId": "eq-grid-261",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 15.0399,
+     "ratio": 0.022378390845720252
+    },
+    {
+     "caseId": "eq-grid-308",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 29.9706,
+     "ratio": 0.04285432473721732
+    },
+    {
+     "caseId": "eq-grid-312",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 28.6918,
+     "ratio": 0.04476435166037841
+    },
+    {
+     "caseId": "eq-grid-316",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 22.8738,
+     "ratio": 0.056150260340181585
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Point",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 291,
+   "pairs": 103,
+   "bothZero": 107,
+   "unpaired": {
+    "reference zero": 75,
+    "Nimbus zero": 6
+   },
+   "geometricMeanRatio": 0.6570605131957713,
+   "scatterLn": 0.5958466731332498,
+   "medianAbsLn": 0.5903628430768433,
+   "maxRelative": 2.1172535782695756,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.11650485436893204,
+   "within2": 0.6019417475728155,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-211",
+     "detail": "MMI 8",
+     "nimbus": 2.284197566836421,
+     "reference": 9.5463,
+     "ratio": 0.23927569496416634
+    },
+    {
+     "caseId": "eq-grid-163",
+     "detail": "MMI 8",
+     "nimbus": 0.9844472538487549,
+     "reference": 4.11,
+     "ratio": 0.23952487928193547
+    },
+    {
+     "caseId": "eq-grid-212",
+     "detail": "MMI 7",
+     "nimbus": 8.221150586788168,
+     "reference": 34.0472,
+     "ratio": 0.2414633387411643
+    },
+    {
+     "caseId": "eq-grid-216",
+     "detail": "MMI 7",
+     "nimbus": 8.221150586788168,
+     "reference": 32.9274,
+     "ratio": 0.24967506049029586
+    },
+    {
+     "caseId": "eq-grid-228",
+     "detail": "MMI 8",
+     "nimbus": 2.681563624184744,
+     "reference": 9.5463,
+     "ratio": 0.28090083322174497
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Point",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 294,
+   "pairs": 158,
+   "bothZero": 100,
+   "unpaired": {
+    "reference zero": 34,
+    "Nimbus zero": 2
+   },
+   "geometricMeanRatio": 0.27818903777908516,
+   "scatterLn": 0.5279212190340086,
+   "medianAbsLn": 1.2194043916133883,
+   "maxRelative": 0.9806067012497596,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.04430379746835443,
+   "within10": 0.9556962025316456,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-257",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 17.3549,
+     "ratio": 0.01939329875024045
+    },
+    {
+     "caseId": "eq-grid-261",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 15.0399,
+     "ratio": 0.022378390845720252
+    },
+    {
+     "caseId": "eq-grid-308",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 29.9706,
+     "ratio": 0.04285432473721732
+    },
+    {
+     "caseId": "eq-grid-312",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 28.6918,
+     "ratio": 0.04476435166037841
+    },
+    {
+     "caseId": "eq-grid-316",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 22.8738,
+     "ratio": 0.056150260340181585
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Point",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 438,
+   "pairs": 38,
+   "bothZero": 276,
+   "unpaired": {
+    "reference zero": 124
+   },
+   "geometricMeanRatio": 1.103801314548874,
+   "scatterLn": 0.40715873689527815,
+   "medianAbsLn": 0.3262805372078658,
+   "maxRelative": 0.9693666415702187,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.3684210526315789,
+   "within2": 0.9210526315789473,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "MMI 7",
+     "nimbus": 6.077435372515294,
+     "reference": 14.2721,
+     "ratio": 0.42582628852903875
+    },
+    {
+     "caseId": "eq-preset-AMATRICE_2016",
+     "detail": "MMI 7",
+     "nimbus": 5.838644015977841,
+     "reference": 12.9737,
+     "ratio": 0.45003692207911705
+    },
+    {
+     "caseId": "eq-grid-116",
+     "detail": "MMI 7",
+     "nimbus": 5.3966555940394265,
+     "reference": 11.3923,
+     "ratio": 0.47371080414309896
+    },
+    {
+     "caseId": "eq-grid-049",
+     "detail": "MMI 7",
+     "nimbus": 11.004033046437755,
+     "reference": 5.5876,
+     "ratio": 1.9693666415702187
+    },
+    {
+     "caseId": "eq-grid-081",
+     "detail": "MMI 7",
+     "nimbus": 10.616328929548644,
+     "reference": 5.5876,
+     "ratio": 1.8999801219752028
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Point",
+   "cls": "C",
+   "subset": "bin: MMI 7",
+   "rows": 341,
+   "pairs": 209,
+   "bothZero": 32,
+   "unpaired": {
+    "reference zero": 100
+   },
+   "geometricMeanRatio": 0.5147966508905284,
+   "scatterLn": 0.6742885825031021,
+   "medianAbsLn": 0.8237973639864246,
+   "maxRelative": 2.1172535782695756,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.09090909090909091,
+   "within2": 0.3827751196172249,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-308",
+     "detail": "MMI 7",
+     "nimbus": 14.295146576409053,
+     "reference": 99.755,
+     "ratio": 0.14330255702881112
+    },
+    {
+     "caseId": "eq-grid-312",
+     "detail": "MMI 7",
+     "nimbus": 14.295146576409053,
+     "reference": 99.3783,
+     "ratio": 0.14384575482181777
+    },
+    {
+     "caseId": "eq-grid-316",
+     "detail": "MMI 7",
+     "nimbus": 14.295146576409053,
+     "reference": 97.8573,
+     "ratio": 0.14608155524839797
+    },
+    {
+     "caseId": "eq-grid-320",
+     "detail": "MMI 7",
+     "nimbus": 14.295146576409053,
+     "reference": 93.547,
+     "ratio": 0.15281245338075036
+    },
+    {
+     "caseId": "eq-grid-260",
+     "detail": "MMI 7",
+     "nimbus": 10.579643597784823,
+     "reference": 57.642,
+     "ratio": 0.18354053637599013
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Point",
+   "cls": "C",
+   "subset": "bin: MMI 8",
+   "rows": 341,
+   "pairs": 90,
+   "bothZero": 110,
+   "unpaired": {
+    "reference zero": 133,
+    "Nimbus zero": 8
+   },
+   "geometricMeanRatio": 0.3188034031535607,
+   "scatterLn": 0.8139048501939048,
+   "medianAbsLn": 1.1321631077831262,
+   "maxRelative": 0.9806067012497596,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.07777777777777778,
+   "within2": 0.26666666666666666,
+   "within10": 0.9222222222222223,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-grid-257",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 17.3549,
+     "ratio": 0.01939329875024045
+    },
+    {
+     "caseId": "eq-grid-261",
+     "detail": "MMI 8",
+     "nimbus": 0.336568760480548,
+     "reference": 15.0399,
+     "ratio": 0.022378390845720252
+    },
+    {
+     "caseId": "eq-grid-308",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 29.9706,
+     "ratio": 0.04285432473721732
+    },
+    {
+     "caseId": "eq-grid-312",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 28.6918,
+     "ratio": 0.04476435166037841
+    },
+    {
+     "caseId": "eq-grid-316",
+     "detail": "MMI 8",
+     "nimbus": 1.2843698249692455,
+     "reference": 22.8738,
+     "ratio": 0.056150260340181585
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAllen2012Point",
+   "cls": "C",
+   "subset": "bin: MMI 9",
+   "rows": 341,
+   "pairs": 0,
+   "bothZero": 341,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaReportedVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "all",
+   "rows": 682,
+   "pairs": 682,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0111803542767854,
+   "scatterLn": 0.4499627710953111,
+   "medianAbsLn": 0.2993070639666475,
+   "maxRelative": 3.405441791290885,
+   "within1pct": 0.016129032258064516,
+   "withinTolerance": 0.016129032258064516,
+   "within125": 0.38563049853372433,
+   "within2": 0.8768328445747801,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-020",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002109492,
+     "ratio": 4.405441791290885
+    },
+    {
+     "caseId": "eq-grid-036",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002400993,
+     "ratio": 3.8705836356848153
+    },
+    {
+     "caseId": "eq-grid-019",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002567035,
+     "ratio": 3.620224973634482
+    },
+    {
+     "caseId": "eq-grid-004",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002572248,
+     "ratio": 3.6128881100087518
+    },
+    {
+     "caseId": "eq-grid-024",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.00262239,
+     "ratio": 3.5438070672912083
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaReportedVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2730781014514887,
+   "scatterLn": 0.31603371386533385,
+   "medianAbsLn": 0.38735241999740505,
+   "maxRelative": 0.7367323296670916,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.3,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-AMATRICE_2016",
+     "detail": "20 km",
+     "nimbus": 0.13845890090391327,
+     "reference": 0.0797238,
+     "ratio": 1.7367323296670916
+    },
+    {
+     "caseId": "eq-preset-L_AQUILA_2009",
+     "detail": "20 km",
+     "nimbus": 0.14662934002580186,
+     "reference": 0.08597685,
+     "ratio": 1.705451409603886
+    },
+    {
+     "caseId": "eq-preset-KUNLUN_2001",
+     "detail": "20 km",
+     "nimbus": 0.3465140749886448,
+     "reference": 0.2156953,
+     "ratio": 1.6064980321251543
+    },
+    {
+     "caseId": "eq-preset-AMATRICE_2016",
+     "detail": "100 km",
+     "nimbus": 0.018491295974310692,
+     "reference": 0.01168076,
+     "ratio": 1.583055894848511
+    },
+    {
+     "caseId": "eq-preset-NEPAL_2015",
+     "detail": "20 km",
+     "nimbus": 0.3465140749886448,
+     "reference": 0.2351219,
+     "ratio": 1.4737635030537128
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaReportedVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 672,
+   "pairs": 672,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0077205960383975,
+   "scatterLn": 0.45093448859545177,
+   "medianAbsLn": 0.29792853231791716,
+   "maxRelative": 3.405441791290885,
+   "within1pct": 0.01636904761904762,
+   "withinTolerance": 0.01636904761904762,
+   "within125": 0.3869047619047619,
+   "within2": 0.875,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-020",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002109492,
+     "ratio": 4.405441791290885
+    },
+    {
+     "caseId": "eq-grid-036",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002400993,
+     "ratio": 3.8705836356848153
+    },
+    {
+     "caseId": "eq-grid-019",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002567035,
+     "ratio": 3.620224973634482
+    },
+    {
+     "caseId": "eq-grid-004",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002572248,
+     "ratio": 3.6128881100087518
+    },
+    {
+     "caseId": "eq-grid-024",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.00262239,
+     "ratio": 3.5438070672912083
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaReportedVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 194,
+   "pairs": 194,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8999647707536058,
+   "scatterLn": 0.37020601282661086,
+   "medianAbsLn": 0.226184340396532,
+   "maxRelative": 0.8694302608652891,
+   "within1pct": 0.02577319587628866,
+   "withinTolerance": 0.02577319587628866,
+   "within125": 0.4948453608247423,
+   "within2": 0.9123711340206185,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-205",
+     "detail": "100 km",
+     "nimbus": 0.029252793810908048,
+     "reference": 0.08280927,
+     "ratio": 0.35325506203481866
+    },
+    {
+     "caseId": "eq-grid-237",
+     "detail": "100 km",
+     "nimbus": 0.029252793810908048,
+     "reference": 0.08246482,
+     "ratio": 0.3547305846409178
+    },
+    {
+     "caseId": "eq-grid-157",
+     "detail": "100 km",
+     "nimbus": 0.021961770559049076,
+     "reference": 0.05768497,
+     "ratio": 0.3807191120849864
+    },
+    {
+     "caseId": "eq-grid-189",
+     "detail": "100 km",
+     "nimbus": 0.021961770559049076,
+     "reference": 0.05740153,
+     "ratio": 0.3825990449914676
+    },
+    {
+     "caseId": "eq-grid-206",
+     "detail": "100 km",
+     "nimbus": 0.029252793810908048,
+     "reference": 0.07116891,
+     "ratio": 0.41103332636270595
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaReportedVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 196,
+   "pairs": 196,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8990252935757204,
+   "scatterLn": 0.4829494349679469,
+   "medianAbsLn": 0.3805918784439138,
+   "maxRelative": 1.0441562564203553,
+   "within1pct": 0.00510204081632653,
+   "withinTolerance": 0.00510204081632653,
+   "within125": 0.2602040816326531,
+   "within2": 0.8367346938775511,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-301",
+     "detail": "100 km",
+     "nimbus": 0.051899999065962016,
+     "reference": 0.1558624,
+     "ratio": 0.3329860124440661
+    },
+    {
+     "caseId": "eq-grid-333",
+     "detail": "100 km",
+     "nimbus": 0.051899999065962016,
+     "reference": 0.1544535,
+     "ratio": 0.336023457325098
+    },
+    {
+     "caseId": "eq-grid-253",
+     "detail": "100 km",
+     "nimbus": 0.0389643423075882,
+     "reference": 0.1153656,
+     "ratio": 0.33774662730994504
+    },
+    {
+     "caseId": "eq-grid-285",
+     "detail": "100 km",
+     "nimbus": 0.0389643423075882,
+     "reference": 0.1133175,
+     "ratio": 0.3438510583765808
+    },
+    {
+     "caseId": "eq-grid-302",
+     "detail": "100 km",
+     "nimbus": 0.051899999065962016,
+     "reference": 0.1466634,
+     "ratio": 0.35387151167886477
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaReportedVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 292,
+   "pairs": 292,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1822775547437057,
+   "scatterLn": 0.4286488617384025,
+   "medianAbsLn": 0.2752013242521107,
+   "maxRelative": 3.405441791290885,
+   "within1pct": 0.017123287671232876,
+   "withinTolerance": 0.017123287671232876,
+   "within125": 0.3972602739726027,
+   "within2": 0.8801369863013698,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-020",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002109492,
+     "ratio": 4.405441791290885
+    },
+    {
+     "caseId": "eq-grid-036",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002400993,
+     "ratio": 3.8705836356848153
+    },
+    {
+     "caseId": "eq-grid-019",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002567035,
+     "ratio": 3.620224973634482
+    },
+    {
+     "caseId": "eq-grid-004",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002572248,
+     "ratio": 3.6128881100087518
+    },
+    {
+     "caseId": "eq-grid-024",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.00262239,
+     "ratio": 3.5438070672912083
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaReportedVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "bin: 20 km",
+   "rows": 341,
+   "pairs": 341,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2383695021813095,
+   "scatterLn": 0.24677156220383786,
+   "medianAbsLn": 0.22519840330787141,
+   "maxRelative": 1.8444702796151504,
+   "within1pct": 0.01466275659824047,
+   "withinTolerance": 0.01466275659824047,
+   "within125": 0.49266862170087977,
+   "within2": 0.967741935483871,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-020",
+     "detail": "20 km",
+     "nimbus": 0.06958584090887922,
+     "reference": 0.02446355,
+     "ratio": 2.8444702796151504
+    },
+    {
+     "caseId": "eq-grid-024",
+     "detail": "20 km",
+     "nimbus": 0.06958584090887922,
+     "reference": 0.02782818,
+     "ratio": 2.5005530691866737
+    },
+    {
+     "caseId": "eq-grid-036",
+     "detail": "20 km",
+     "nimbus": 0.06958584090887922,
+     "reference": 0.02804488,
+     "ratio": 2.481231544184864
+    },
+    {
+     "caseId": "eq-grid-019",
+     "detail": "20 km",
+     "nimbus": 0.06958584090887922,
+     "reference": 0.02953971,
+     "ratio": 2.3556710918583565
+    },
+    {
+     "caseId": "eq-grid-004",
+     "detail": "20 km",
+     "nimbus": 0.06958584090887922,
+     "reference": 0.03048121,
+     "ratio": 2.282909402509914
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "pgaReportedVsNgaWest2Ensemble",
+   "cls": "C",
+   "subset": "bin: 100 km",
+   "rows": 341,
+   "pairs": 341,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8256709383380982,
+   "scatterLn": 0.5120883523011708,
+   "medianAbsLn": 0.4174733554216391,
+   "maxRelative": 3.405441791290885,
+   "within1pct": 0.017595307917888565,
+   "withinTolerance": 0.017595307917888565,
+   "within125": 0.2785923753665689,
+   "within2": 0.7859237536656891,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-grid-020",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002109492,
+     "ratio": 4.405441791290885
+    },
+    {
+     "caseId": "eq-grid-036",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002400993,
+     "ratio": 3.8705836356848153
+    },
+    {
+     "caseId": "eq-grid-019",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002567035,
+     "ratio": 3.620224973634482
+    },
+    {
+     "caseId": "eq-grid-004",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.002572248,
+     "ratio": 3.6128881100087518
+    },
+    {
+     "caseId": "eq-grid-024",
+     "detail": "100 km",
+     "nimbus": 0.009293244215193792,
+     "reference": 0.00262239,
+     "ratio": 3.5438070672912083
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2016Interface",
+   "cls": "C",
+   "subset": "all",
+   "rows": 15,
+   "pairs": 10,
+   "bothZero": 5,
+   "unpaired": {},
+   "geometricMeanRatio": 4.225155657220471,
+   "scatterLn": 2.131186880187783,
+   "medianAbsLn": 0.6114841148024249,
+   "maxRelative": 83.47133955953075,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.1,
+   "within2": 0.6,
+   "within10": 0.6,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "MMI 8",
+     "nimbus": 20.948892210763624,
+     "reference": 0.248,
+     "ratio": 84.47133955953075
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3431,
+     "ratio": 42.835858981209945
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3431,
+     "ratio": 42.835858981209945
+    },
+    {
+     "caseId": "eq-preset-TOHOKU_2011",
+     "detail": "MMI 8",
+     "nimbus": 13.211580213859005,
+     "reference": 0.3771,
+     "ratio": 35.03468632686026
+    },
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 7",
+     "nimbus": 35.529476878530964,
+     "reference": 66.2638,
+     "ratio": 0.5361823028339903
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2016Interface",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 15,
+   "pairs": 10,
+   "bothZero": 5,
+   "unpaired": {},
+   "geometricMeanRatio": 4.225155657220471,
+   "scatterLn": 2.131186880187783,
+   "medianAbsLn": 0.6114841148024249,
+   "maxRelative": 83.47133955953075,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.1,
+   "within2": 0.6,
+   "within10": 0.6,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "MMI 8",
+     "nimbus": 20.948892210763624,
+     "reference": 0.248,
+     "ratio": 84.47133955953075
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3431,
+     "ratio": 42.835858981209945
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3431,
+     "ratio": 42.835858981209945
+    },
+    {
+     "caseId": "eq-preset-TOHOKU_2011",
+     "detail": "MMI 8",
+     "nimbus": 13.211580213859005,
+     "reference": 0.3771,
+     "ratio": 35.03468632686026
+    },
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 7",
+     "nimbus": 35.529476878530964,
+     "reference": 66.2638,
+     "ratio": 0.5361823028339903
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2016Interface",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 15,
+   "pairs": 10,
+   "bothZero": 5,
+   "unpaired": {},
+   "geometricMeanRatio": 4.225155657220471,
+   "scatterLn": 2.131186880187783,
+   "medianAbsLn": 0.6114841148024249,
+   "maxRelative": 83.47133955953075,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.1,
+   "within2": 0.6,
+   "within10": 0.6,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "MMI 8",
+     "nimbus": 20.948892210763624,
+     "reference": 0.248,
+     "ratio": 84.47133955953075
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3431,
+     "ratio": 42.835858981209945
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3431,
+     "ratio": 42.835858981209945
+    },
+    {
+     "caseId": "eq-preset-TOHOKU_2011",
+     "detail": "MMI 8",
+     "nimbus": 13.211580213859005,
+     "reference": 0.3771,
+     "ratio": 35.03468632686026
+    },
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 7",
+     "nimbus": 35.529476878530964,
+     "reference": 66.2638,
+     "ratio": 0.5361823028339903
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2016Interface",
+   "cls": "C",
+   "subset": "bin: MMI 7",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7122504718061324,
+   "scatterLn": 0.18951881409677881,
+   "medianAbsLn": 0.303588091103004,
+   "maxRelative": 0.46381769716600973,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.2,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 7",
+     "nimbus": 35.529476878530964,
+     "reference": 66.2638,
+     "ratio": 0.5361823028339903
+    },
+    {
+     "caseId": "eq-preset-TOHOKU_2011",
+     "detail": "MMI 7",
+     "nimbus": 50.48781707797394,
+     "reference": 73.1488,
+     "ratio": 0.6902070447905359
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "MMI 7",
+     "nimbus": 55.2015922316951,
+     "reference": 74.7822,
+     "ratio": 0.7381648605108582
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "MMI 7",
+     "nimbus": 55.2015922316951,
+     "reference": 74.7822,
+     "ratio": 0.7381648605108582
+    },
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "MMI 7",
+     "nimbus": 71.91383256930139,
+     "reference": 79.1129,
+     "ratio": 0.909002609805751
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2016Interface",
+   "cls": "C",
+   "subset": "bin: MMI 8",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 25.064132681404903,
+   "scatterLn": 1.5030266591348527,
+   "medianAbsLn": 3.757375578470691,
+   "maxRelative": 83.47133955953075,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.2,
+   "within10": 0.2,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "MMI 8",
+     "nimbus": 20.948892210763624,
+     "reference": 0.248,
+     "ratio": 84.47133955953075
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3431,
+     "ratio": 42.835858981209945
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3431,
+     "ratio": 42.835858981209945
+    },
+    {
+     "caseId": "eq-preset-TOHOKU_2011",
+     "detail": "MMI 8",
+     "nimbus": 13.211580213859005,
+     "reference": 0.3771,
+     "ratio": 35.03468632686026
+    },
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 8",
+     "nimbus": 9.09481139351022,
+     "reference": 4.9929,
+     "ratio": 1.8215488781089588
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsAbrahamson2016Interface",
+   "cls": "C",
+   "subset": "bin: MMI 9",
+   "rows": 5,
+   "pairs": 0,
+   "bothZero": 5,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsParker2020Interface",
+   "cls": "C",
+   "subset": "all",
+   "rows": 15,
+   "pairs": 10,
+   "bothZero": 5,
+   "unpaired": {},
+   "geometricMeanRatio": 6.001630502723749,
+   "scatterLn": 2.1022909607843663,
+   "medianAbsLn": 1.8141835127289485,
+   "maxRelative": 72.50488495004781,
+   "within1pct": 0.1,
+   "withinTolerance": 0.1,
+   "within125": 0.4,
+   "within2": 0.5,
+   "within10": 0.5,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "MMI 8",
+     "nimbus": 20.948892210763624,
+     "reference": 0.285,
+     "ratio": 73.50488495004781
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3248,
+     "ratio": 45.24933256297147
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3248,
+     "ratio": 45.24933256297147
+    },
+    {
+     "caseId": "eq-preset-TOHOKU_2011",
+     "detail": "MMI 8",
+     "nimbus": 13.211580213859005,
+     "reference": 0.3343,
+     "ratio": 39.52013225802873
+    },
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 8",
+     "nimbus": 9.09481139351022,
+     "reference": 0.3509,
+     "ratio": 25.918527767199258
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsParker2020Interface",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 15,
+   "pairs": 10,
+   "bothZero": 5,
+   "unpaired": {},
+   "geometricMeanRatio": 6.001630502723749,
+   "scatterLn": 2.1022909607843663,
+   "medianAbsLn": 1.8141835127289485,
+   "maxRelative": 72.50488495004781,
+   "within1pct": 0.1,
+   "withinTolerance": 0.1,
+   "within125": 0.4,
+   "within2": 0.5,
+   "within10": 0.5,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "MMI 8",
+     "nimbus": 20.948892210763624,
+     "reference": 0.285,
+     "ratio": 73.50488495004781
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3248,
+     "ratio": 45.24933256297147
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3248,
+     "ratio": 45.24933256297147
+    },
+    {
+     "caseId": "eq-preset-TOHOKU_2011",
+     "detail": "MMI 8",
+     "nimbus": 13.211580213859005,
+     "reference": 0.3343,
+     "ratio": 39.52013225802873
+    },
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 8",
+     "nimbus": 9.09481139351022,
+     "reference": 0.3509,
+     "ratio": 25.918527767199258
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsParker2020Interface",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 15,
+   "pairs": 10,
+   "bothZero": 5,
+   "unpaired": {},
+   "geometricMeanRatio": 6.001630502723749,
+   "scatterLn": 2.1022909607843663,
+   "medianAbsLn": 1.8141835127289485,
+   "maxRelative": 72.50488495004781,
+   "within1pct": 0.1,
+   "withinTolerance": 0.1,
+   "within125": 0.4,
+   "within2": 0.5,
+   "within10": 0.5,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "MMI 8",
+     "nimbus": 20.948892210763624,
+     "reference": 0.285,
+     "ratio": 73.50488495004781
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3248,
+     "ratio": 45.24933256297147
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3248,
+     "ratio": 45.24933256297147
+    },
+    {
+     "caseId": "eq-preset-TOHOKU_2011",
+     "detail": "MMI 8",
+     "nimbus": 13.211580213859005,
+     "reference": 0.3343,
+     "ratio": 39.52013225802873
+    },
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 8",
+     "nimbus": 9.09481139351022,
+     "reference": 0.3509,
+     "ratio": 25.918527767199258
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsParker2020Interface",
+   "cls": "C",
+   "subset": "bin: MMI 7",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.829745017083233,
+   "scatterLn": 0.13206499167562857,
+   "medianAbsLn": 0.16914353582029187,
+   "maxRelative": 0.311616342454484,
+   "within1pct": 0.2,
+   "withinTolerance": 0.2,
+   "within125": 0.8,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 7",
+     "nimbus": 35.529476878530964,
+     "reference": 51.6129,
+     "ratio": 0.688383657545516
+    },
+    {
+     "caseId": "eq-preset-TOHOKU_2011",
+     "detail": "MMI 7",
+     "nimbus": 50.48781707797394,
+     "reference": 62.7481,
+     "ratio": 0.804611089068417
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "MMI 7",
+     "nimbus": 55.2015922316951,
+     "reference": 65.3747,
+     "ratio": 0.8443876948069375
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "MMI 7",
+     "nimbus": 55.2015922316951,
+     "reference": 65.3747,
+     "ratio": 0.8443876948069375
+    },
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "MMI 7",
+     "nimbus": 71.91383256930139,
+     "reference": 72.2087,
+     "ratio": 0.9959164556251726
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsParker2020Interface",
+   "cls": "C",
+   "subset": "bin: MMI 8",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 43.41040675103077,
+   "scatterLn": 0.37269616021110086,
+   "medianAbsLn": 3.812187920047572,
+   "maxRelative": 72.50488495004781,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 0,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "eq-preset-VALDIVIA_1960",
+     "detail": "MMI 8",
+     "nimbus": 20.948892210763624,
+     "reference": 0.285,
+     "ratio": 73.50488495004781
+    },
+    {
+     "caseId": "eq-preset-SUMATRA_2004",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3248,
+     "ratio": 45.24933256297147
+    },
+    {
+     "caseId": "eq-preset-ALASKA_1964",
+     "detail": "MMI 8",
+     "nimbus": 14.696983216453132,
+     "reference": 0.3248,
+     "ratio": 45.24933256297147
+    },
+    {
+     "caseId": "eq-preset-TOHOKU_2011",
+     "detail": "MMI 8",
+     "nimbus": 13.211580213859005,
+     "reference": 0.3343,
+     "ratio": 39.52013225802873
+    },
+    {
+     "caseId": "eq-preset-LISBON_1755",
+     "detail": "MMI 8",
+     "nimbus": 9.09481139351022,
+     "reference": 0.3509,
+     "ratio": 25.918527767199258
+    }
+   ]
+  },
+  {
+   "track": "EQ-GM",
+   "quantity": "ringVsParker2020Interface",
+   "cls": "C",
+   "subset": "bin: MMI 9",
+   "rows": 5,
+   "pairs": 0,
+   "bothZero": 5,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  }
+ ]
+}

@@ -1,0 +1,514 @@
+{
+ "written": "Nimbus parameters for the benchmark references, before any reference ran",
+ "megathrusts": [
+  {
+   "id": "tsu-mega-75",
+   "magnitude": 7.5,
+   "ruptureLengthM": 81376.6860778786,
+   "ruptureWidthM": 56298.9117394243,
+   "meanSlipM": 1.628841197809454,
+   "seafloorUpliftM": 0.9773047186856723,
+   "initialAmplitudeM": 0.6841133030799705,
+   "note": "Nimbus lifts the sea floor by 0.6 × slip over the rupture and couples 0.7 of that into the wave (seismicTsunami.ts)."
+  },
+  {
+   "id": "tsu-mega-8",
+   "magnitude": 8,
+   "ruptureLengthM": 159587.9147236732,
+   "ruptureWidthM": 84333.47577642748,
+   "meanSlipM": 3.1180189138251864,
+   "seafloorUpliftM": 1.8708113482951116,
+   "initialAmplitudeM": 1.3095679438065781,
+   "note": "Nimbus lifts the sea floor by 0.6 × slip over the rupture and couples 0.7 of that into the wave (seismicTsunami.ts)."
+  },
+  {
+   "id": "tsu-mega-85",
+   "magnitude": 8.5,
+   "ruptureLengthM": 312968.0471563671,
+   "ruptureWidthM": 126328.11038073555,
+   "meanSlipM": 5.968686180117668,
+   "seafloorUpliftM": 3.581211708070601,
+   "initialAmplitudeM": 2.5068481956494204,
+   "note": "Nimbus lifts the sea floor by 0.6 × slip over the rupture and couples 0.7 of that into the wave (seismicTsunami.ts)."
+  },
+  {
+   "id": "tsu-mega-9",
+   "magnitude": 9,
+   "ruptureLengthM": 613762.0051647939,
+   "ruptureWidthM": 189234.3618644974,
+   "meanSlipM": 11.425592884881729,
+   "seafloorUpliftM": 6.855355730929037,
+   "initialAmplitudeM": 4.798749011650325,
+   "note": "Nimbus lifts the sea floor by 0.6 × slip over the rupture and couples 0.7 of that into the wave (seismicTsunami.ts)."
+  },
+  {
+   "id": "tsu-mega-95",
+   "magnitude": 9.5,
+   "ruptureLengthM": 1203649.389791212,
+   "ruptureWidthM": 283465.36334896646,
+   "meanSlipM": 21.87150887676364,
+   "seafloorUpliftM": 13.122905326058184,
+   "initialAmplitudeM": 9.186033728240728,
+   "note": "Nimbus lifts the sea floor by 0.6 × slip over the rupture and couples 0.7 of that into the wave (seismicTsunami.ts)."
+  }
+ ],
+ "tephra": {
+  "depositDensityKgM3": 1000,
+  "particleDensityKgM3": 1000,
+  "grainClasses": [
+   {
+    "diameterM": 0.008,
+    "phi": -3,
+    "massFraction": 0.4
+   },
+   {
+    "diameterM": 0.001,
+    "phi": 0,
+    "massFraction": 0.3
+   },
+   {
+    "diameterM": 0.000125,
+    "phi": 3,
+    "massFraction": 0.2
+   },
+   {
+    "diameterM": 0.000032,
+    "phi": 4.965784284662087,
+    "massFraction": 0.1
+   }
+  ],
+  "medianPhi": -0.10342157153379139,
+  "stdPhi": 2.8027139230968934,
+  "note": "Nimbus uses these four classes at a single particle density of 1 000 kg/m³ and a Suzuki release profile; the φ moments are for a program that takes a Gaussian distribution."
+ },
+ "eruptions": [
+  {
+   "id": "vol-preset-KRAKATAU_1883",
+   "plumeHeightAboveVentM": 37894.678305735775,
+   "eruptedMassKg": 20000000000000,
+   "windSpeedMs": 10
+  },
+  {
+   "id": "vol-preset-MT_ST_HELENS_1980",
+   "plumeHeightAboveVentM": 25711.443141729276,
+   "eruptedMassKg": 1200000000000,
+   "windSpeedMs": 10
+  },
+  {
+   "id": "vol-preset-TAMBORA_1815",
+   "plumeHeightAboveVentM": 47258.69955292336,
+   "eruptedMassKg": 140000000000000,
+   "windSpeedMs": 10
+  },
+  {
+   "id": "vol-preset-ANAK_KRAKATAU_2018",
+   "plumeHeightAboveVentM": 2000,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 10
+  },
+  {
+   "id": "vol-preset-PINATUBO_1991",
+   "plumeHeightAboveVentM": 37894.678305735775,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 10
+  },
+  {
+   "id": "vol-preset-VESUVIUS_79_CE",
+   "plumeHeightAboveVentM": 35356.395970789534,
+   "eruptedMassKg": 2500000000000,
+   "windSpeedMs": 10
+  },
+  {
+   "id": "vol-preset-ETNA_1669",
+   "plumeHeightAboveVentM": 4116.974951007707,
+   "eruptedMassKg": 650000000000,
+   "windSpeedMs": 10
+  },
+  {
+   "id": "vol-preset-HUNGA_TONGA_2022",
+   "plumeHeightAboveVentM": 52926.68368437917,
+   "eruptedMassKg": 1900000000000,
+   "windSpeedMs": 10
+  },
+  {
+   "id": "vol-preset-EYJAFJALLAJOKULL_2010",
+   "plumeHeightAboveVentM": 7907.081552137669,
+   "eruptedMassKg": 270000000000,
+   "windSpeedMs": 10
+  },
+  {
+   "id": "vol-preset-MOUNT_PELEE_1902",
+   "plumeHeightAboveVentM": 10015.547212617606,
+   "eruptedMassKg": 500000000000,
+   "windSpeedMs": 10
+  },
+  {
+   "id": "vol-grid-001",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-002",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-003",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-004",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-005",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-006",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-007",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-008",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-009",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-010",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-011",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-012",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 10000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-013",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-014",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-015",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-016",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-017",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-018",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-019",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-020",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-021",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-022",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-023",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-024",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 100000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-025",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-026",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-027",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-028",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-029",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-030",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-031",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-032",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-033",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-034",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-035",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-036",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 1000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-037",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-038",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-039",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-040",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-041",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-042",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-043",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-044",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-045",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-046",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-047",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-048",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 10000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-049",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-050",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-051",
+   "plumeHeightAboveVentM": 10568.905035503609,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-052",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-053",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-054",
+   "plumeHeightAboveVentM": 18408.991435063424,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-055",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-056",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-057",
+   "plumeHeightAboveVentM": 32064.90781380083,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 30
+  },
+  {
+   "id": "vol-grid-058",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 5
+  },
+  {
+   "id": "vol-grid-059",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 15
+  },
+  {
+   "id": "vol-grid-060",
+   "plumeHeightAboveVentM": 55850.87682474675,
+   "eruptedMassKg": 100000000000000,
+   "windSpeedMs": 30
+  }
+ ],
+ "earthquake": {
+  "pgaThresholdsG": {
+   "7": 0.21518086487930072,
+   "8": 0.4009349528846004,
+   "9": 0.7470405722866853
+  },
+  "note": "Worden et al. 2012, as Nimbus inverts it for the ring thresholds."
+ }
+}

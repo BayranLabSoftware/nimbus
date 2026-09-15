@@ -1,0 +1,1398 @@
+{
+ "track": "CHEM",
+ "reference": "Kingery–Bulmash surface burst, Swisdak 1994 simplified fits (kingery-bulmash package, commit 194c3c7)",
+ "stats": [
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "all",
+   "rows": 110,
+   "pairs": 110,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0687640382307488,
+   "scatterLn": 0.11835303462052606,
+   "medianAbsLn": 0.09137706235116325,
+   "maxRelative": 0.2553765534884218,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.9090909090909091,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 33,
+   "pairs": 33,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0687640382307486,
+   "scatterLn": 0.11964051810098655,
+   "medianAbsLn": 0.09137706235116325,
+   "maxRelative": 0.2553765534884218,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.9090909090909091,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.6145549723,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884216
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.6145549723,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884216
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 0.5 m/kg^1/3",
+     "nimbus": 5966377.187455539,
+     "reference": 4887649.867024541,
+     "ratio": 1.2207047046697916
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "Z = 0.5 m/kg^1/3",
+     "nimbus": 5966377.187455538,
+     "reference": 4887649.867024541,
+     "ratio": 1.2207047046697914
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 77,
+   "pairs": 77,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0687640382307488,
+   "scatterLn": 0.11858639607213163,
+   "medianAbsLn": 0.09137706235116325,
+   "maxRelative": 0.2553765534884218,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.9090909090909091,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-002",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.6145549723,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884216
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "band: < 1 kt",
+   "rows": 77,
+   "pairs": 77,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0687640382307488,
+   "scatterLn": 0.11858639607213162,
+   "medianAbsLn": 0.09137706235116325,
+   "maxRelative": 0.2553765534884218,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.9090909090909091,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.6145549723,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884216
+    },
+    {
+     "caseId": "chem-grid-002",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.6145549723,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884216
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 33,
+   "pairs": 33,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0687640382307488,
+   "scatterLn": 0.11964051810098655,
+   "medianAbsLn": 0.09137706235116325,
+   "maxRelative": 0.2553765534884218,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.9090909090909091,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.6145549723,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884216
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 0.5 m/kg^1/3",
+     "nimbus": 5966377.187455539,
+     "reference": 4887649.867024541,
+     "ratio": 1.2207047046697916
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "Z = 0.5 m/kg^1/3",
+     "nimbus": 5966377.187455539,
+     "reference": 4887649.867024541,
+     "ratio": 1.2207047046697916
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 0.5",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2207047046697916,
+   "scatterLn": 1.034389230519697e-16,
+   "medianAbsLn": 0.19942831876154965,
+   "maxRelative": 0.22070470466979164,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 0.5 m/kg^1/3",
+     "nimbus": 5966377.187455539,
+     "reference": 4887649.867024541,
+     "ratio": 1.2207047046697916
+    },
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 0.5 m/kg^1/3",
+     "nimbus": 5966377.187455539,
+     "reference": 4887649.867024541,
+     "ratio": 1.2207047046697916
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "Z = 0.5 m/kg^1/3",
+     "nimbus": 5966377.187455539,
+     "reference": 4887649.867024541,
+     "ratio": 1.2207047046697916
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "Z = 0.5 m/kg^1/3",
+     "nimbus": 5966377.187455539,
+     "reference": 4887649.867024541,
+     "ratio": 1.2207047046697916
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "Z = 0.5 m/kg^1/3",
+     "nimbus": 5966377.187455539,
+     "reference": 4887649.867024541,
+     "ratio": 1.2207047046697916
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 1",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2134473228034248,
+   "scatterLn": 2.925694557147251e-16,
+   "medianAbsLn": 0.19346533593322235,
+   "maxRelative": 0.21344732280342527,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 1 m/kg^1/3",
+     "nimbus": 1642648.793545219,
+     "reference": 1353704.2463040014,
+     "ratio": 1.2134473228034253
+    },
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 1 m/kg^1/3",
+     "nimbus": 1642648.793545219,
+     "reference": 1353704.2463040014,
+     "ratio": 1.2134473228034253
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "Z = 1 m/kg^1/3",
+     "nimbus": 1642648.793545219,
+     "reference": 1353704.2463040014,
+     "ratio": 1.2134473228034253
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "Z = 1 m/kg^1/3",
+     "nimbus": 1642648.793545219,
+     "reference": 1353704.2463040014,
+     "ratio": 1.2134473228034253
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "Z = 1 m/kg^1/3",
+     "nimbus": 1642648.793545219,
+     "reference": 1353704.2463040014,
+     "ratio": 1.2134473228034253
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 2",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2553765534884218,
+   "scatterLn": 9.251858538542972e-17,
+   "medianAbsLn": 0.22743557020021837,
+   "maxRelative": 0.2553765534884218,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "Z = 2 m/kg^1/3",
+     "nimbus": 356208.61455497233,
+     "reference": 283746.4293602944,
+     "ratio": 1.2553765534884218
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 3",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1989213317890872,
+   "scatterLn": 3.477763656540197e-16,
+   "medianAbsLn": 0.18142226237415454,
+   "maxRelative": 0.19892133178908766,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 3 m/kg^1/3",
+     "nimbus": 138746.77698146697,
+     "reference": 115726.33942080454,
+     "ratio": 1.1989213317890877
+    },
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 3 m/kg^1/3",
+     "nimbus": 138746.77698146697,
+     "reference": 115726.33942080454,
+     "ratio": 1.1989213317890877
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "Z = 3 m/kg^1/3",
+     "nimbus": 138746.77698146697,
+     "reference": 115726.33942080454,
+     "ratio": 1.1989213317890877
+    },
+    {
+     "caseId": "chem-grid-004",
+     "detail": "Z = 3 m/kg^1/3",
+     "nimbus": 138746.77698146697,
+     "reference": 115726.33942080454,
+     "ratio": 1.1989213317890877
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "Z = 3 m/kg^1/3",
+     "nimbus": 138746.77698146697,
+     "reference": 115726.33942080454,
+     "ratio": 1.1989213317890877
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 5",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0539903708011042,
+   "scatterLn": 2.0452415121694198e-16,
+   "medianAbsLn": 0.052583314215108194,
+   "maxRelative": 0.05399037080110447,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 5 m/kg^1/3",
+     "nimbus": 45563.96550006271,
+     "reference": 43229.96372863539,
+     "ratio": 1.0539903708011045
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "Z = 5 m/kg^1/3",
+     "nimbus": 45563.96550006271,
+     "reference": 43229.96372863539,
+     "ratio": 1.0539903708011045
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "Z = 5 m/kg^1/3",
+     "nimbus": 45563.96550006271,
+     "reference": 43229.96372863539,
+     "ratio": 1.0539903708011045
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "Z = 5 m/kg^1/3",
+     "nimbus": 45563.96550006269,
+     "reference": 43229.96372863539,
+     "ratio": 1.053990370801104
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "Z = 5 m/kg^1/3",
+     "nimbus": 45563.96550006269,
+     "reference": 43229.96372863539,
+     "ratio": 1.053990370801104
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 7",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9718697067226856,
+   "scatterLn": 3.173127006633908e-16,
+   "medianAbsLn": 0.02853353008834326,
+   "maxRelative": 0.028130293277314533,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "Z = 7 m/kg^1/3",
+     "nimbus": 24240.766050640967,
+     "reference": 24942.40316676303,
+     "ratio": 0.9718697067226855
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "Z = 7 m/kg^1/3",
+     "nimbus": 24240.766050640967,
+     "reference": 24942.40316676303,
+     "ratio": 0.9718697067226855
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 7 m/kg^1/3",
+     "nimbus": 24240.766050640967,
+     "reference": 24942.40316676303,
+     "ratio": 0.9718697067226855
+    },
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 7 m/kg^1/3",
+     "nimbus": 24240.766050640967,
+     "reference": 24942.40316676303,
+     "ratio": 0.9718697067226855
+    },
+    {
+     "caseId": "chem-grid-002",
+     "detail": "Z = 7 m/kg^1/3",
+     "nimbus": 24240.766050640967,
+     "reference": 24942.40316676303,
+     "ratio": 0.9718697067226855
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 10",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9233980348129591,
+   "scatterLn": 4.1769349257545213e-16,
+   "medianAbsLn": 0.07969489711926805,
+   "maxRelative": 0.07660196518704143,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "Z = 10 m/kg^1/3",
+     "nimbus": 13748.899906854582,
+     "reference": 14889.461953034726,
+     "ratio": 0.9233980348129586
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "Z = 10 m/kg^1/3",
+     "nimbus": 13748.899906854582,
+     "reference": 14889.461953034726,
+     "ratio": 0.9233980348129586
+    },
+    {
+     "caseId": "chem-grid-002",
+     "detail": "Z = 10 m/kg^1/3",
+     "nimbus": 13748.899906854582,
+     "reference": 14889.461953034726,
+     "ratio": 0.9233980348129586
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 10 m/kg^1/3",
+     "nimbus": 13748.89990685459,
+     "reference": 14889.461953034726,
+     "ratio": 0.9233980348129591
+    },
+    {
+     "caseId": "chem-grid-004",
+     "detail": "Z = 10 m/kg^1/3",
+     "nimbus": 13748.89990685459,
+     "reference": 14889.461953034726,
+     "ratio": 0.9233980348129591
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 15",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.912673511190994,
+   "scatterLn": 1.5418993223417738e-16,
+   "medianAbsLn": 0.09137706235116325,
+   "maxRelative": 0.08732648880900629,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-002",
+     "detail": "Z = 15 m/kg^1/3",
+     "nimbus": 7993.569059093672,
+     "reference": 8758.410276049823,
+     "ratio": 0.9126735111909937
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "Z = 15 m/kg^1/3",
+     "nimbus": 7993.569059093675,
+     "reference": 8758.410276049823,
+     "ratio": 0.912673511190994
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "Z = 15 m/kg^1/3",
+     "nimbus": 7993.569059093675,
+     "reference": 8758.410276049823,
+     "ratio": 0.912673511190994
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "Z = 15 m/kg^1/3",
+     "nimbus": 7993.5690590936765,
+     "reference": 8758.410276049823,
+     "ratio": 0.9126735111909942
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "Z = 15 m/kg^1/3",
+     "nimbus": 7993.5690590936765,
+     "reference": 8758.410276049823,
+     "ratio": 0.9126735111909942
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 20",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9314929347651782,
+   "scatterLn": 9.692398198737426e-17,
+   "medianAbsLn": 0.07096667376241131,
+   "maxRelative": 0.06850706523482186,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "Z = 20 m/kg^1/3",
+     "nimbus": 5684.019265055684,
+     "reference": 6102.053008580875,
+     "ratio": 0.9314929347651781
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "Z = 20 m/kg^1/3",
+     "nimbus": 5684.019265055684,
+     "reference": 6102.053008580875,
+     "ratio": 0.9314929347651781
+    },
+    {
+     "caseId": "chem-grid-002",
+     "detail": "Z = 20 m/kg^1/3",
+     "nimbus": 5684.019265055684,
+     "reference": 6102.053008580875,
+     "ratio": 0.9314929347651781
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 20 m/kg^1/3",
+     "nimbus": 5684.019265055685,
+     "reference": 6102.053008580875,
+     "ratio": 0.9314929347651782
+    },
+    {
+     "caseId": "chem-grid-004",
+     "detail": "Z = 20 m/kg^1/3",
+     "nimbus": 5684.019265055685,
+     "reference": 6102.053008580875,
+     "ratio": 0.9314929347651782
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 30",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0228868551038566,
+   "scatterLn": 6.802633072517172e-17,
+   "medianAbsLn": 0.022628879781240955,
+   "maxRelative": 0.022886855103856796,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-002",
+     "detail": "Z = 30 m/kg^1/3",
+     "nimbus": 3640.440324985795,
+     "reference": 3558.9863207462668,
+     "ratio": 1.0228868551038568
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "Z = 30 m/kg^1/3",
+     "nimbus": 3640.440324985794,
+     "reference": 3558.9863207462668,
+     "ratio": 1.0228868551038566
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "Z = 30 m/kg^1/3",
+     "nimbus": 3640.440324985794,
+     "reference": 3558.9863207462668,
+     "ratio": 1.0228868551038566
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 30 m/kg^1/3",
+     "nimbus": 3640.440324985794,
+     "reference": 3558.9863207462668,
+     "ratio": 1.0228868551038566
+    },
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 30 m/kg^1/3",
+     "nimbus": 3640.440324985794,
+     "reference": 3558.9863207462668,
+     "ratio": 1.0228868551038566
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "incidentOverpressure",
+   "cls": "B",
+   "subset": "bin: Z = 40",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1333072433519855,
+   "scatterLn": 1.89154694687692e-16,
+   "medianAbsLn": 0.12514012211725128,
+   "maxRelative": 0.13330724335198574,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "Z = 40 m/kg^1/3",
+     "nimbus": 2691.132966175687,
+     "reference": 2374.5837520777827,
+     "ratio": 1.1333072433519857
+    },
+    {
+     "caseId": "chem-grid-001",
+     "detail": "Z = 40 m/kg^1/3",
+     "nimbus": 2691.132966175687,
+     "reference": 2374.5837520777827,
+     "ratio": 1.1333072433519857
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "Z = 40 m/kg^1/3",
+     "nimbus": 2691.132966175687,
+     "reference": 2374.5837520777827,
+     "ratio": 1.1333072433519857
+    },
+    {
+     "caseId": "chem-grid-004",
+     "detail": "Z = 40 m/kg^1/3",
+     "nimbus": 2691.132966175687,
+     "reference": 2374.5837520777827,
+     "ratio": 1.1333072433519857
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "Z = 40 m/kg^1/3",
+     "nimbus": 2691.132966175687,
+     "reference": 2374.5837520777827,
+     "ratio": 1.1333072433519857
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "ringRadius",
+   "cls": "B",
+   "subset": "all",
+   "rows": 30,
+   "pairs": 30,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9898641279228766,
+   "scatterLn": 0.04264997948530487,
+   "medianAbsLn": 0.028662183224270294,
+   "maxRelative": 0.0661267500555226,
+   "within1pct": 0.3333333333333333,
+   "withinTolerance": 0.3333333333333333,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-006",
+     "detail": "1 psi",
+     "nimbus": 786.4845658212787,
+     "reference": 842.1748517457144,
+     "ratio": 0.9338732499444774
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "1 psi",
+     "nimbus": 365.0537978524847,
+     "reference": 390.9029387812406,
+     "ratio": 0.9338732499444785
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "1 psi",
+     "nimbus": 1344.8696899868569,
+     "reference": 1440.098739381185,
+     "ratio": 0.9338732499444807
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "1 psi",
+     "nimbus": 1694.4296317800336,
+     "reference": 1814.4107156734256,
+     "ratio": 0.933873249944481
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "1 psi",
+     "nimbus": 2416.3297647149557,
+     "reference": 2587.427967187842,
+     "ratio": 0.9338732499444824
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "ringRadius",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 9,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.989864127922844,
+   "scatterLn": 0.04447679243977783,
+   "medianAbsLn": 0.028662183224271158,
+   "maxRelative": 0.06612675005551927,
+   "within1pct": 0.3333333333333333,
+   "withinTolerance": 0.3333333333333333,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "1 psi",
+     "nimbus": 1344.8696899868569,
+     "reference": 1440.098739381185,
+     "ratio": 0.9338732499444807
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "1 psi",
+     "nimbus": 2416.3297647149557,
+     "reference": 2587.427967187842,
+     "ratio": 0.9338732499444824
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "1 psi",
+     "nimbus": 2359.4536974638545,
+     "reference": 2526.5245552371434,
+     "ratio": 0.9338732499444845
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "0.5 psi",
+     "nimbus": 2506.669616195198,
+     "reference": 2435.8428657595373,
+     "ratio": 1.0290768963102124
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "0.5 psi",
+     "nimbus": 4503.737759141746,
+     "reference": 4376.483210623073,
+     "ratio": 1.0290768963102124
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "ringRadius",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 21,
+   "pairs": 21,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9898641279228907,
+   "scatterLn": 0.0429686637137823,
+   "medianAbsLn": 0.028662183224268785,
+   "maxRelative": 0.0661267500555226,
+   "within1pct": 0.3333333333333333,
+   "withinTolerance": 0.3333333333333333,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-006",
+     "detail": "1 psi",
+     "nimbus": 786.4845658212787,
+     "reference": 842.1748517457144,
+     "ratio": 0.9338732499444774
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "1 psi",
+     "nimbus": 365.0537978524847,
+     "reference": 390.9029387812406,
+     "ratio": 0.9338732499444785
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "1 psi",
+     "nimbus": 1694.4296317800336,
+     "reference": 1814.4107156734256,
+     "ratio": 0.933873249944481
+    },
+    {
+     "caseId": "chem-grid-004",
+     "detail": "1 psi",
+     "nimbus": 169.44296317800652,
+     "reference": 181.44107156734262,
+     "ratio": 0.9338732499444982
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "1 psi",
+     "nimbus": 78.6484565821344,
+     "reference": 84.21748517457146,
+     "ratio": 0.9338732499445547
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "ringRadius",
+   "cls": "B",
+   "subset": "band: < 1 kt",
+   "rows": 21,
+   "pairs": 21,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9898641279228911,
+   "scatterLn": 0.04296866371378261,
+   "medianAbsLn": 0.028662183224270294,
+   "maxRelative": 0.0661267500555226,
+   "within1pct": 0.3333333333333333,
+   "withinTolerance": 0.3333333333333333,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-006",
+     "detail": "1 psi",
+     "nimbus": 786.4845658212787,
+     "reference": 842.1748517457144,
+     "ratio": 0.9338732499444774
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "1 psi",
+     "nimbus": 365.0537978524847,
+     "reference": 390.9029387812406,
+     "ratio": 0.9338732499444785
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "1 psi",
+     "nimbus": 1344.8696899868569,
+     "reference": 1440.098739381185,
+     "ratio": 0.9338732499444807
+    },
+    {
+     "caseId": "chem-grid-004",
+     "detail": "1 psi",
+     "nimbus": 169.44296317800652,
+     "reference": 181.44107156734262,
+     "ratio": 0.9338732499444982
+    },
+    {
+     "caseId": "chem-grid-003",
+     "detail": "1 psi",
+     "nimbus": 78.6484565821344,
+     "reference": 84.21748517457146,
+     "ratio": 0.9338732499445547
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "ringRadius",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 9,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9898641279228427,
+   "scatterLn": 0.044476792439777084,
+   "medianAbsLn": 0.028662183224270294,
+   "maxRelative": 0.06612675005551905,
+   "within1pct": 0.3333333333333333,
+   "withinTolerance": 0.3333333333333333,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-007",
+     "detail": "1 psi",
+     "nimbus": 1694.4296317800336,
+     "reference": 1814.4107156734256,
+     "ratio": 0.933873249944481
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "1 psi",
+     "nimbus": 2416.3297647149557,
+     "reference": 2587.427967187842,
+     "ratio": 0.9338732499444824
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "1 psi",
+     "nimbus": 2359.4536974638545,
+     "reference": 2526.5245552371434,
+     "ratio": 0.9338732499444845
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "0.5 psi",
+     "nimbus": 4503.737759141746,
+     "reference": 4376.483210623073,
+     "ratio": 1.0290768963102124
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "0.5 psi",
+     "nimbus": 4397.727852956394,
+     "reference": 4273.468648188089,
+     "ratio": 1.0290768963102115
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "ringRadius",
+   "cls": "B",
+   "subset": "bin: 5 psi",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0092319581021973,
+   "scatterLn": 3.655084693085311e-13,
+   "medianAbsLn": 0.00918960405124344,
+   "maxRelative": 0.00923195810322941,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-001",
+     "detail": "5 psi",
+     "nimbus": 5.7658366081373815,
+     "reference": 5.7130935676807235,
+     "ratio": 1.0092319581032294
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "5 psi",
+     "nimbus": 124.22118405613432,
+     "reference": 123.08486969609366,
+     "ratio": 1.0092319581021316
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "5 psi",
+     "nimbus": 802.8792845021135,
+     "reference": 795.5349392739552,
+     "ratio": 1.0092319581021307
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "5 psi",
+     "nimbus": 822.2331782568178,
+     "reference": 814.7117931174471,
+     "ratio": 1.0092319581021292
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "5 psi",
+     "nimbus": 457.6347548612021,
+     "reference": 453.44853696645663,
+     "ratio": 1.0092319581021278
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "ringRadius",
+   "cls": "B",
+   "subset": "bin: 1 psi",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9338732499445156,
+   "scatterLn": 6.1168105605448e-14,
+   "medianAbsLn": 0.06841455665983666,
+   "maxRelative": 0.0661267500555226,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-006",
+     "detail": "1 psi",
+     "nimbus": 786.4845658212787,
+     "reference": 842.1748517457144,
+     "ratio": 0.9338732499444774
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "1 psi",
+     "nimbus": 365.0537978524847,
+     "reference": 390.9029387812406,
+     "ratio": 0.9338732499444785
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "1 psi",
+     "nimbus": 1344.8696899868569,
+     "reference": 1440.098739381185,
+     "ratio": 0.9338732499444807
+    },
+    {
+     "caseId": "chem-grid-007",
+     "detail": "1 psi",
+     "nimbus": 1694.4296317800336,
+     "reference": 1814.4107156734256,
+     "ratio": 0.933873249944481
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "1 psi",
+     "nimbus": 2416.3297647149557,
+     "reference": 2587.427967187842,
+     "ratio": 0.9338732499444824
+    }
+   ]
+  },
+  {
+   "track": "CHEM",
+   "quantity": "ringRadius",
+   "cls": "B",
+   "subset": "bin: 0.5 psi",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0290768963102082,
+   "scatterLn": 1.0502954082874878e-14,
+   "medianAbsLn": 0.028662183224270294,
+   "maxRelative": 0.029076896310220368,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "chem-grid-003",
+     "detail": "0.5 psi",
+     "nimbus": 146.59092843188108,
+     "reference": 142.448954939603,
+     "ratio": 1.0290768963102204
+    },
+    {
+     "caseId": "chem-grid-005",
+     "detail": "0.5 psi",
+     "nimbus": 680.4148165183465,
+     "reference": 661.189478607471,
+     "ratio": 1.0290768963102164
+    },
+    {
+     "caseId": "chem-preset-BEIRUT_2020",
+     "detail": "0.5 psi",
+     "nimbus": 2506.669616195198,
+     "reference": 2435.8428657595373,
+     "ratio": 1.0290768963102124
+    },
+    {
+     "caseId": "chem-preset-HALIFAX_1917",
+     "detail": "0.5 psi",
+     "nimbus": 4503.737759141746,
+     "reference": 4376.483210623073,
+     "ratio": 1.0290768963102124
+    },
+    {
+     "caseId": "chem-preset-TEXAS_CITY_1947",
+     "detail": "0.5 psi",
+     "nimbus": 4397.727852956394,
+     "reference": 4273.468648188089,
+     "ratio": 1.0290768963102115
+    }
+   ]
+  }
+ ]
+}

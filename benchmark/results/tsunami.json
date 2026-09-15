@@ -1,0 +1,1720 @@
+{
+ "track": "TSU",
+ "reference": "GeoClaw 5.14.0 (Clawpack), flat ocean on the sphere",
+ "referenceStatus": "partial",
+ "runs": 19,
+ "stats": [
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeGaussian",
+   "cls": "C",
+   "subset": "all",
+   "rows": 96,
+   "pairs": 96,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2959759949124674,
+   "scatterLn": 0.25909886188920933,
+   "medianAbsLn": 0.21223372864507511,
+   "maxRelative": 1.717626651188739,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5416666666666666,
+   "within2": 0.9375,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "100 km",
+     "nimbus": 0.99995887918485,
+     "reference": 0.367953,
+     "ratio": 2.717626651188739
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "100 km",
+     "nimbus": 4.99979439592425,
+     "reference": 1.83982,
+     "ratio": 2.7175454098358807
+    },
+    {
+     "caseId": "tsu-gauss-009",
+     "detail": "100 km",
+     "nimbus": 19.999177583697,
+     "reference": 7.360097,
+     "ratio": 2.7172437515017807
+    },
+    {
+     "caseId": "tsu-gauss-012",
+     "detail": "100 km",
+     "nimbus": 0.9993426750558798,
+     "reference": 0.367951,
+     "ratio": 2.7159667321352026
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "100 km",
+     "nimbus": 4.996713375279399,
+     "reference": 1.83977,
+     "ratio": 2.715944588334085
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeGaussian",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 96,
+   "pairs": 96,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2959759949124674,
+   "scatterLn": 0.25909886188920933,
+   "medianAbsLn": 0.21223372864507511,
+   "maxRelative": 1.717626651188739,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5416666666666666,
+   "within2": 0.9375,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "100 km",
+     "nimbus": 0.99995887918485,
+     "reference": 0.367953,
+     "ratio": 2.717626651188739
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "100 km",
+     "nimbus": 4.99979439592425,
+     "reference": 1.83982,
+     "ratio": 2.7175454098358807
+    },
+    {
+     "caseId": "tsu-gauss-009",
+     "detail": "100 km",
+     "nimbus": 19.999177583697,
+     "reference": 7.360097,
+     "ratio": 2.7172437515017807
+    },
+    {
+     "caseId": "tsu-gauss-012",
+     "detail": "100 km",
+     "nimbus": 0.9993426750558798,
+     "reference": 0.367951,
+     "ratio": 2.7159667321352026
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "100 km",
+     "nimbus": 4.996713375279399,
+     "reference": 1.83977,
+     "ratio": 2.715944588334085
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeGaussian",
+   "cls": "C",
+   "subset": "bin: 100 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.8623447961913655,
+   "scatterLn": 0.31623222569076487,
+   "medianAbsLn": 0.4892401105115392,
+   "maxRelative": 1.717626651188739,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.0625,
+   "within2": 0.625,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "100 km",
+     "nimbus": 0.99995887918485,
+     "reference": 0.367953,
+     "ratio": 2.717626651188739
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "100 km",
+     "nimbus": 4.99979439592425,
+     "reference": 1.83982,
+     "ratio": 2.7175454098358807
+    },
+    {
+     "caseId": "tsu-gauss-009",
+     "detail": "100 km",
+     "nimbus": 19.999177583697,
+     "reference": 7.360097,
+     "ratio": 2.7172437515017807
+    },
+    {
+     "caseId": "tsu-gauss-012",
+     "detail": "100 km",
+     "nimbus": 0.9993426750558798,
+     "reference": 0.367951,
+     "ratio": 2.7159667321352026
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "100 km",
+     "nimbus": 4.996713375279399,
+     "reference": 1.83977,
+     "ratio": 2.715944588334085
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeGaussian",
+   "cls": "C",
+   "subset": "bin: 200 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.4106846861742568,
+   "scatterLn": 0.1290085832785115,
+   "medianAbsLn": 0.3075602169146704,
+   "maxRelative": 0.633428930686033,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.25,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "200 km",
+     "nimbus": 0.35155637503583215,
+     "reference": 0.215226,
+     "ratio": 1.633428930686033
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "200 km",
+     "nimbus": 1.7577818751791607,
+     "reference": 1.076673,
+     "ratio": 1.6326051411887925
+    },
+    {
+     "caseId": "tsu-gauss-012",
+     "detail": "200 km",
+     "nimbus": 0.351123531776391,
+     "reference": 0.215206,
+     "ratio": 1.6315694347573533
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "200 km",
+     "nimbus": 1.755617658881955,
+     "reference": 1.076166,
+     "ratio": 1.6313632458951082
+    },
+    {
+     "caseId": "tsu-gauss-018",
+     "detail": "200 km",
+     "nimbus": 7.02247063552782,
+     "reference": 4.30669,
+     "ratio": 1.6305958022350855
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeGaussian",
+   "cls": "C",
+   "subset": "bin: 500 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2390825989060628,
+   "scatterLn": 0.08992893781699315,
+   "medianAbsLn": 0.22710045677083432,
+   "maxRelative": 0.32456894513655987,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.4375,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "500 km",
+     "nimbus": 0.18451775233330334,
+     "reference": 0.139304,
+     "ratio": 1.3245689451365599
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "500 km",
+     "nimbus": 0.9225887616665167,
+     "reference": 0.697275,
+     "ratio": 1.3231347196823589
+    },
+    {
+     "caseId": "tsu-gauss-012",
+     "detail": "500 km",
+     "nimbus": 0.1839515043965556,
+     "reference": 0.139274,
+     "ratio": 1.3207885491660727
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "500 km",
+     "nimbus": 0.919757521982778,
+     "reference": 0.696577,
+     "ratio": 1.3203960538214412
+    },
+    {
+     "caseId": "tsu-gauss-009",
+     "detail": "500 km",
+     "nimbus": 3.690355046666067,
+     "reference": 2.797132,
+     "ratio": 1.3193353215601076
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeGaussian",
+   "cls": "C",
+   "subset": "bin: 1000 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.180836496390998,
+   "scatterLn": 0.12170152005115956,
+   "medianAbsLn": 0.20870557219627023,
+   "maxRelative": 0.2578454478591419,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.625,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-010",
+     "detail": "1000 km",
+     "nimbus": 0.03294222328613328,
+     "reference": 0.04343,
+     "ratio": 0.7585130851055326
+    },
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "1000 km",
+     "nimbus": 0.12416695553996733,
+     "reference": 0.098714,
+     "ratio": 1.2578454478591419
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "1000 km",
+     "nimbus": 0.6208347776998366,
+     "reference": 0.494026,
+     "ratio": 1.2566844208601098
+    },
+    {
+     "caseId": "tsu-gauss-009",
+     "detail": "1000 km",
+     "nimbus": 2.4833391107993465,
+     "reference": 1.983561,
+     "ratio": 1.2519600409563139
+    },
+    {
+     "caseId": "tsu-gauss-012",
+     "detail": "1000 km",
+     "nimbus": 0.12340866412358173,
+     "reference": 0.098695,
+     "ratio": 1.2504044189024948
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeGaussian",
+   "cls": "C",
+   "subset": "bin: 2000 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1294437123233836,
+   "scatterLn": 0.17411739014257396,
+   "medianAbsLn": 0.19298264954341127,
+   "maxRelative": 0.4012099825495844,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.9375,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-010",
+     "detail": "2000 km",
+     "nimbus": 0.01821100080071949,
+     "reference": 0.030413,
+     "ratio": 0.5987900174504156
+    },
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "2000 km",
+     "nimbus": 0.0857714569815645,
+     "reference": 0.069865,
+     "ratio": 1.2276741856661348
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "2000 km",
+     "nimbus": 0.42885728490782254,
+     "reference": 0.349702,
+     "ratio": 1.2263506783141718
+    },
+    {
+     "caseId": "tsu-gauss-009",
+     "detail": "2000 km",
+     "nimbus": 1.7154291396312902,
+     "reference": 1.404157,
+     "ratio": 1.221679014263569
+    },
+    {
+     "caseId": "tsu-gauss-002",
+     "detail": "2000 km",
+     "nimbus": 0.05963859589415072,
+     "reference": 0.048929,
+     "ratio": 1.218880334651244
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeGaussian",
+   "cls": "C",
+   "subset": "bin: 3000 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.091282232666794,
+   "scatterLn": 0.2105452769181168,
+   "medianAbsLn": 0.17363108411892186,
+   "maxRelative": 0.49028789378544624,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.9375,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-010",
+     "detail": "3000 km",
+     "nimbus": 0.012623530022509639,
+     "reference": 0.024766,
+     "ratio": 0.5097121062145538
+    },
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "3000 km",
+     "nimbus": 0.06948560258620863,
+     "reference": 0.057364,
+     "ratio": 1.2113102744963502
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "3000 km",
+     "nimbus": 0.34742801293104314,
+     "reference": 0.287145,
+     "ratio": 1.2099392743423816
+    },
+    {
+     "caseId": "tsu-gauss-002",
+     "detail": "3000 km",
+     "nimbus": 0.04836079941556583,
+     "reference": 0.040055,
+     "ratio": 1.2073598655739815
+    },
+    {
+     "caseId": "tsu-gauss-005",
+     "detail": "3000 km",
+     "nimbus": 0.24180399707782912,
+     "reference": 0.200456,
+     "ratio": 1.2062696904948174
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeGaussian",
+   "cls": "C",
+   "subset": "all",
+   "rows": 96,
+   "pairs": 90,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 6
+   },
+   "geometricMeanRatio": 1.6150139259414389,
+   "scatterLn": 0.8065053327142859,
+   "medianAbsLn": 0.09240221915695657,
+   "maxRelative": 10.992992738138671,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.6888888888888889,
+   "within2": 0.8666666666666667,
+   "within10": 0.8666666666666667,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-002",
+     "detail": "100 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.2,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-011",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 42.1,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-012",
+     "detail": "200 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.2,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-014",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 42.1,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "200 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.2,
+     "ratio": 11.992992738138671
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeGaussian",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 96,
+   "pairs": 90,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 6
+   },
+   "geometricMeanRatio": 1.6150139259414389,
+   "scatterLn": 0.8065053327142859,
+   "medianAbsLn": 0.09240221915695657,
+   "maxRelative": 10.992992738138671,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.6888888888888889,
+   "within2": 0.8666666666666667,
+   "within10": 0.8666666666666667,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-002",
+     "detail": "100 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.2,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-011",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 42.1,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-012",
+     "detail": "200 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.2,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-014",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 42.1,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "200 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.2,
+     "ratio": 11.992992738138671
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeGaussian",
+   "cls": "C",
+   "subset": "bin: 100 km",
+   "rows": 16,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 6
+   },
+   "geometricMeanRatio": 5.270951342360432,
+   "scatterLn": 1.0587948540319507,
+   "medianAbsLn": 2.4795859897894736,
+   "maxRelative": 10.992992738138671,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.4,
+   "within10": 0.4,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-002",
+     "detail": "100 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.2,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-011",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 42.1,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-014",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 42.1,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-005",
+     "detail": "100 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.4,
+     "ratio": 11.964573324067251
+    },
+    {
+     "caseId": "tsu-gauss-017",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 42.2,
+     "ratio": 11.964573324067251
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeGaussian",
+   "cls": "C",
+   "subset": "bin: 200 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 3.3050923918424493,
+   "scatterLn": 1.040741648051411,
+   "medianAbsLn": 0.5770258928486969,
+   "maxRelative": 10.992992738138671,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.25,
+   "within2": 0.625,
+   "within10": 0.625,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-012",
+     "detail": "200 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.2,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "200 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.2,
+     "ratio": 11.992992738138671
+    },
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "200 km",
+     "nimbus": 2019.6199771025522,
+     "reference": 168.5,
+     "ratio": 11.985875235029983
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "200 km",
+     "nimbus": 2019.6199771025522,
+     "reference": 168.8,
+     "ratio": 11.964573324067251
+    },
+    {
+     "caseId": "tsu-gauss-018",
+     "detail": "200 km",
+     "nimbus": 1009.8099885512761,
+     "reference": 84.4,
+     "ratio": 11.964573324067251
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeGaussian",
+   "cls": "C",
+   "subset": "bin: 500 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2874751379700935,
+   "scatterLn": 0.15116909921405922,
+   "medianAbsLn": 0.19315631480414747,
+   "maxRelative": 0.5403306820697336,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.625,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-009",
+     "detail": "500 km",
+     "nimbus": 5049.04994275638,
+     "reference": 3277.9,
+     "ratio": 1.5403306820697336
+    },
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "500 km",
+     "nimbus": 5049.04994275638,
+     "reference": 3278.4,
+     "ratio": 1.540095760967661
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "500 km",
+     "nimbus": 5049.04994275638,
+     "reference": 3278.4,
+     "ratio": 1.540095760967661
+    },
+    {
+     "caseId": "tsu-gauss-012",
+     "detail": "500 km",
+     "nimbus": 2524.52497137819,
+     "reference": 1639.2,
+     "ratio": 1.540095760967661
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "500 km",
+     "nimbus": 2524.52497137819,
+     "reference": 1639.2,
+     "ratio": 1.540095760967661
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeGaussian",
+   "cls": "C",
+   "subset": "bin: 1000 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.123064605906707,
+   "scatterLn": 0.06562019828739313,
+   "medianAbsLn": 0.0922148757112477,
+   "maxRelative": 0.21327644905836363,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-009",
+     "detail": "1000 km",
+     "nimbus": 10098.09988551276,
+     "reference": 8323,
+     "ratio": 1.2132764490583636
+    },
+    {
+     "caseId": "tsu-gauss-018",
+     "detail": "1000 km",
+     "nimbus": 5049.04994275638,
+     "reference": 4162.2,
+     "ratio": 1.2130723998741963
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "1000 km",
+     "nimbus": 10098.09988551276,
+     "reference": 8324.5,
+     "ratio": 1.2130578275587434
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "1000 km",
+     "nimbus": 5049.04994275638,
+     "reference": 4162.4,
+     "ratio": 1.2130141127129495
+    },
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "1000 km",
+     "nimbus": 10098.09988551276,
+     "reference": 8324.9,
+     "ratio": 1.2129995417978308
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeGaussian",
+   "cls": "C",
+   "subset": "bin: 2000 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0577094890732879,
+   "scatterLn": 0.03086269834652154,
+   "medianAbsLn": 0.04528573907626735,
+   "maxRelative": 0.09680291147490827,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-009",
+     "detail": "2000 km",
+     "nimbus": 20196.19977102552,
+     "reference": 18413.7,
+     "ratio": 1.0968029114749083
+    },
+    {
+     "caseId": "tsu-gauss-018",
+     "detail": "2000 km",
+     "nimbus": 10098.09988551276,
+     "reference": 9208.5,
+     "ratio": 1.0966063838315425
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "2000 km",
+     "nimbus": 20196.19977102552,
+     "reference": 18417.1,
+     "ratio": 1.0966004295478398
+    },
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "2000 km",
+     "nimbus": 20196.19977102552,
+     "reference": 18418,
+     "ratio": 1.0965468439040895
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "2000 km",
+     "nimbus": 10098.09988551276,
+     "reference": 9209,
+     "ratio": 1.0965468439040895
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeGaussian",
+   "cls": "C",
+   "subset": "bin: 3000 km",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0378086858325446,
+   "scatterLn": 0.020177075569476375,
+   "medianAbsLn": 0.03012816896009341,
+   "maxRelative": 0.06273414918046316,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-gauss-009",
+     "detail": "3000 km",
+     "nimbus": 30294.299656538282,
+     "reference": 28506,
+     "ratio": 1.0627341491804632
+    },
+    {
+     "caseId": "tsu-gauss-006",
+     "detail": "3000 km",
+     "nimbus": 30294.299656538282,
+     "reference": 28510.6,
+     "ratio": 1.0625626839329332
+    },
+    {
+     "caseId": "tsu-gauss-018",
+     "detail": "3000 km",
+     "nimbus": 15147.149828269141,
+     "reference": 14255.3,
+     "ratio": 1.0625626839329332
+    },
+    {
+     "caseId": "tsu-gauss-003",
+     "detail": "3000 km",
+     "nimbus": 30294.299656538282,
+     "reference": 28511.8,
+     "ratio": 1.0625179629675532
+    },
+    {
+     "caseId": "tsu-gauss-015",
+     "detail": "3000 km",
+     "nimbus": 15147.149828269141,
+     "reference": 14255.9,
+     "ratio": 1.0625179629675532
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustOkada",
+   "cls": "C",
+   "subset": "all",
+   "rows": 8,
+   "pairs": 8,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7524433010950076,
+   "scatterLn": 0.1616529588758248,
+   "medianAbsLn": 0.2296896702251857,
+   "maxRelative": 0.40578602915722284,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.10176389621859233,
+     "reference": 0.171258,
+     "ratio": 0.5942139708427772
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "300 km",
+     "nimbus": 0.19599699892591296,
+     "reference": 0.316821,
+     "ratio": 0.6186363875056039
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.05682383569333368,
+     "reference": 0.085371,
+     "ratio": 0.6656105198877098
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "300 km",
+     "nimbus": 0.08118582292852106,
+     "reference": 0.104958,
+     "ratio": 0.7735077166916391
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.04211237402394303,
+     "reference": 0.051568,
+     "ratio": 0.8166377215316286
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustOkada",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 8,
+   "pairs": 8,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7524433010950076,
+   "scatterLn": 0.1616529588758248,
+   "medianAbsLn": 0.2296896702251857,
+   "maxRelative": 0.40578602915722284,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.10176389621859233,
+     "reference": 0.171258,
+     "ratio": 0.5942139708427772
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "300 km",
+     "nimbus": 0.19599699892591296,
+     "reference": 0.316821,
+     "ratio": 0.6186363875056039
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.05682383569333368,
+     "reference": 0.085371,
+     "ratio": 0.6656105198877098
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "300 km",
+     "nimbus": 0.08118582292852106,
+     "reference": 0.104958,
+     "ratio": 0.7735077166916391
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.04211237402394303,
+     "reference": 0.051568,
+     "ratio": 0.8166377215316286
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustOkada",
+   "cls": "C",
+   "subset": "bin: 100 km",
+   "rows": 2,
+   "pairs": 2,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8732650143385909,
+   "scatterLn": 0.01796427901025722,
+   "medianAbsLn": 0.13551620181163776,
+   "maxRelative": 0.13775762066437824,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "100 km",
+     "nimbus": 0.39946137398336556,
+     "reference": 0.463282,
+     "ratio": 0.8622423793356218
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "100 km",
+     "nimbus": 0.15597516742113315,
+     "reference": 0.176357,
+     "ratio": 0.8844285592357158
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustOkada",
+   "cls": "C",
+   "subset": "bin: 300 km",
+   "rows": 2,
+   "pairs": 2,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.6917514145716102,
+   "scatterLn": 0.15798035838952112,
+   "medianAbsLn": 0.3685286153997944,
+   "maxRelative": 0.3813636124943961,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "300 km",
+     "nimbus": 0.19599699892591296,
+     "reference": 0.316821,
+     "ratio": 0.6186363875056039
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "300 km",
+     "nimbus": 0.08118582292852106,
+     "reference": 0.104958,
+     "ratio": 0.7735077166916391
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustOkada",
+   "cls": "C",
+   "subset": "bin: 1000 km",
+   "rows": 2,
+   "pairs": 2,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.6966042945972319,
+   "scatterLn": 0.2248289119173587,
+   "medianAbsLn": 0.36153775598564575,
+   "maxRelative": 0.40578602915722284,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.10176389621859233,
+     "reference": 0.171258,
+     "ratio": 0.5942139708427772
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "1000 km",
+     "nimbus": 0.04211237402394303,
+     "reference": 0.051568,
+     "ratio": 0.8166377215316286
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustOkada",
+   "cls": "C",
+   "subset": "bin: 3000 km",
+   "rows": 2,
+   "pairs": 2,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7617506886175474,
+   "scatterLn": 0.19079809577178408,
+   "medianAbsLn": 0.2721359571225726,
+   "maxRelative": 0.3343894801122902,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.05682383569333368,
+     "reference": 0.085371,
+     "ratio": 0.6656105198877098
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "3000 km",
+     "nimbus": 0.022612158427816526,
+     "reference": 0.025938,
+     "ratio": 0.8717772545229596
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeMegathrust",
+   "cls": "C",
+   "subset": "all",
+   "rows": 12,
+   "pairs": 12,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1162216369652518,
+   "scatterLn": 0.12111731884294817,
+   "medianAbsLn": 0.05723738473968444,
+   "maxRelative": 0.44547665123286007,
+   "within1pct": 0.08333333333333333,
+   "withinTolerance": 0.08333333333333333,
+   "within125": 0.75,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 349.3,
+     "ratio": 1.44547665123286
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 378.5,
+     "ratio": 1.333962996765226
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 402.1,
+     "ratio": 1.2556702170495848
+    },
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 1349.3,
+     "ratio": 1.122593183744841
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 1352.5,
+     "ratio": 1.1199371407223024
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeMegathrust",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 12,
+   "pairs": 12,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1162216369652518,
+   "scatterLn": 0.12111731884294817,
+   "medianAbsLn": 0.05723738473968444,
+   "maxRelative": 0.44547665123286007,
+   "within1pct": 0.08333333333333333,
+   "withinTolerance": 0.08333333333333333,
+   "within125": 0.75,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 349.3,
+     "ratio": 1.44547665123286
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 378.5,
+     "ratio": 1.333962996765226
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 402.1,
+     "ratio": 1.2556702170495848
+    },
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 1349.3,
+     "ratio": 1.122593183744841
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 1352.5,
+     "ratio": 1.1199371407223024
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeMegathrust",
+   "cls": "C",
+   "subset": "bin: 100 km",
+   "rows": 3,
+   "pairs": 3,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.342796350866953,
+   "scatterLn": 0.07061653514153522,
+   "medianAbsLn": 0.288154208551909,
+   "maxRelative": 0.44547665123286007,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 349.3,
+     "ratio": 1.44547665123286
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 378.5,
+     "ratio": 1.333962996765226
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "100 km",
+     "nimbus": 504.90499427563805,
+     "reference": 402.1,
+     "ratio": 1.2556702170495848
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeMegathrust",
+   "cls": "C",
+   "subset": "bin: 300 km",
+   "rows": 3,
+   "pairs": 3,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1077887375394777,
+   "scatterLn": 0.020975787492837423,
+   "medianAbsLn": 0.11327255937688552,
+   "maxRelative": 0.12259318374484107,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 1349.3,
+     "ratio": 1.122593183744841
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 1352.5,
+     "ratio": 1.1199371407223024
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "300 km",
+     "nimbus": 1514.7149828269141,
+     "reference": 1400.8,
+     "ratio": 1.081321375518928
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeMegathrust",
+   "cls": "C",
+   "subset": "bin: 1000 km",
+   "rows": 3,
+   "pairs": 3,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0322410059657305,
+   "scatterLn": 0.007231004693875451,
+   "medianAbsLn": 0.03551085302999843,
+   "maxRelative": 0.03695753686643921,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 5049.04994275638,
+     "reference": 4869.1,
+     "ratio": 1.0369575368664392
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "1000 km",
+     "nimbus": 5049.04994275638,
+     "reference": 4872.9,
+     "ratio": 1.036148893422065
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "1000 km",
+     "nimbus": 5049.04994275638,
+     "reference": 4932.3,
+     "ratio": 1.0236704869445046
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "arrivalTimeMegathrust",
+   "cls": "C",
+   "subset": "bin: 3000 km",
+   "rows": 3,
+   "pairs": 3,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0110055537650873,
+   "scatterLn": 0.0027672182526072876,
+   "medianAbsLn": 0.011944562666287519,
+   "maxRelative": 0.013160171518430408,
+   "within1pct": 0.3333333333333333,
+   "withinTolerance": 0.3333333333333333,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 15147.149828269141,
+     "reference": 14950.4,
+     "ratio": 1.0131601715184304
+    },
+    {
+     "caseId": "tsu-mega-8 (okada)",
+     "detail": "3000 km",
+     "nimbus": 15147.149828269141,
+     "reference": 14967.3,
+     "ratio": 1.0120161838320298
+    },
+    {
+     "caseId": "tsu-mega-75 (okada)",
+     "detail": "3000 km",
+     "nimbus": 15147.149828269141,
+     "reference": 15029.2,
+     "ratio": 1.0078480443582587
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustUplift",
+   "cls": "C",
+   "subset": "all",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.3137315754508976,
+   "scatterLn": 0.07417753947663719,
+   "medianAbsLn": 1.141412907486861,
+   "maxRelative": 0.7175654098851242,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "300 km",
+     "nimbus": 0.08118582292852106,
+     "reference": 0.28745,
+     "ratio": 0.2824345901148758
+    },
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 0.04211237402394303,
+     "reference": 0.131962,
+     "ratio": 0.3191250058648932
+    },
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "100 km",
+     "nimbus": 0.15597516742113315,
+     "reference": 0.488017,
+     "ratio": 0.31961011075666046
+    },
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.022612158427816526,
+     "reference": 0.067237,
+     "ratio": 0.33630528470658305
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustUplift",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.3137315754508976,
+   "scatterLn": 0.07417753947663719,
+   "medianAbsLn": 1.141412907486861,
+   "maxRelative": 0.7175654098851242,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "300 km",
+     "nimbus": 0.08118582292852106,
+     "reference": 0.28745,
+     "ratio": 0.2824345901148758
+    },
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 0.04211237402394303,
+     "reference": 0.131962,
+     "ratio": 0.3191250058648932
+    },
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "100 km",
+     "nimbus": 0.15597516742113315,
+     "reference": 0.488017,
+     "ratio": 0.31961011075666046
+    },
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.022612158427816526,
+     "reference": 0.067237,
+     "ratio": 0.33630528470658305
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustUplift",
+   "cls": "C",
+   "subset": "bin: 100 km",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.31961011075666046,
+   "scatterLn": null,
+   "medianAbsLn": 1.1406534299312765,
+   "maxRelative": 0.6803898892433395,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "100 km",
+     "nimbus": 0.15597516742113315,
+     "reference": 0.488017,
+     "ratio": 0.31961011075666046
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustUplift",
+   "cls": "C",
+   "subset": "bin: 300 km",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.2824345901148758,
+   "scatterLn": null,
+   "medianAbsLn": 1.2643082946213993,
+   "maxRelative": 0.7175654098851242,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "300 km",
+     "nimbus": 0.08118582292852106,
+     "reference": 0.28745,
+     "ratio": 0.2824345901148758
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustUplift",
+   "cls": "C",
+   "subset": "bin: 1000 km",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.3191250058648932,
+   "scatterLn": null,
+   "medianAbsLn": 1.1421723850424457,
+   "maxRelative": 0.6808749941351069,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "1000 km",
+     "nimbus": 0.04211237402394303,
+     "reference": 0.131962,
+     "ratio": 0.3191250058648932
+    }
+   ]
+  },
+  {
+   "track": "TSU",
+   "quantity": "maxAmplitudeMegathrustUplift",
+   "cls": "C",
+   "subset": "bin: 3000 km",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.33630528470658305,
+   "scatterLn": null,
+   "medianAbsLn": 1.0897359460965708,
+   "maxRelative": 0.663694715293417,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "tsu-mega-75 (uplift)",
+     "detail": "3000 km",
+     "nimbus": 0.022612158427816526,
+     "reference": 0.067237,
+     "ratio": 0.33630528470658305
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,778 @@
+{
+ "track": "UI",
+ "base": "http://localhost:5178",
+ "presets": [
+  {
+   "type": "impact",
+   "preset": "CHICXULUB",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 69,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "impact",
+   "preset": "CHICXULUB_OCEAN",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 102,
+   "numbersDifferingCount": 4,
+   "numbersDiffering": [
+    {
+     "path": "seismic.liquefactionRadius",
+     "browser": 0,
+     "node": 212815.05128573242
+    },
+    {
+     "path": "firestorm.ignitionRadius",
+     "browser": 0,
+     "node": 24578790.554203406
+    },
+    {
+     "path": "firestorm.sustainRadius",
+     "browser": 0,
+     "node": 31756355.827742066
+    },
+    {
+     "path": "firestorm.ignitionArea",
+     "browser": 0,
+     "node": 1897889356658511.8
+    }
+   ],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "impact",
+   "preset": "TUNGUSKA",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 69,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "impact",
+   "preset": "METEOR_CRATER",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 69,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "impact",
+   "preset": "CHELYABINSK",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 69,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "impact",
+   "preset": "POPIGAI",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 69,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "impact",
+   "preset": "BOLTYSH",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 69,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "impact",
+   "preset": "SIKHOTE_ALIN_1947",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 69,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "explosion",
+   "preset": "HIROSHIMA_1945",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 57,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "explosion",
+   "preset": "NAGASAKI_1945",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 57,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "explosion",
+   "preset": "CASTLE_BRAVO_1954",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 57,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "explosion",
+   "preset": "TSAR_BOMBA_1961",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 57,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "explosion",
+   "preset": "STARFISH_PRIME_1962",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 57,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "explosion",
+   "preset": "ONE_MEGATON",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 57,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "explosion",
+   "preset": "BEIRUT_2020",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 57,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "explosion",
+   "preset": "IVY_MIKE_1952",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 57,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "explosion",
+   "preset": "HALIFAX_1917",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 57,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "explosion",
+   "preset": "TEXAS_CITY_1947",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 57,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 9,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "earthquake",
+   "preset": "NORTHRIDGE_1994",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 2020,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 7,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "earthquake",
+   "preset": "TOHOKU_2011",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 2038,
+   "numbersDifferingCount": 1,
+   "numbersDiffering": [
+    {
+     "path": "shaking.liquefactionRadius",
+     "browser": 0,
+     "node": 132435.97643020318
+    }
+   ],
+   "browserOnly": 0,
+   "displayedChecked": 7,
+   "displayedFailures": [
+    {
+     "label": "Liquefaction radius",
+     "text": "0 m",
+     "node": 132435.97643020318
+    }
+   ],
+   "displayedMissing": []
+  },
+  {
+   "type": "earthquake",
+   "preset": "KUNLUN_2001",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 2020,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 7,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "earthquake",
+   "preset": "SUMATRA_2004",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 2038,
+   "numbersDifferingCount": 1,
+   "numbersDiffering": [
+    {
+     "path": "shaking.liquefactionRadius",
+     "browser": 0,
+     "node": 138892.051402896
+    }
+   ],
+   "browserOnly": 0,
+   "displayedChecked": 7,
+   "displayedFailures": [
+    {
+     "label": "Liquefaction radius",
+     "text": "0 m",
+     "node": 138892.051402896
+    }
+   ],
+   "displayedMissing": []
+  },
+  {
+   "type": "earthquake",
+   "preset": "LISBON_1755",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 2038,
+   "numbersDifferingCount": 1,
+   "numbersDiffering": [
+    {
+     "path": "shaking.liquefactionRadius",
+     "browser": 0,
+     "node": 108133.00220489109
+    }
+   ],
+   "browserOnly": 0,
+   "displayedChecked": 7,
+   "displayedFailures": [
+    {
+     "label": "Liquefaction radius",
+     "text": "0 m",
+     "node": 108133.00220489109
+    }
+   ],
+   "displayedMissing": []
+  },
+  {
+   "type": "earthquake",
+   "preset": "VALDIVIA_1960",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 2038,
+   "numbersDifferingCount": 1,
+   "numbersDiffering": [
+    {
+     "path": "shaking.liquefactionRadius",
+     "browser": 0,
+     "node": 159110.79695599427
+    }
+   ],
+   "browserOnly": 0,
+   "displayedChecked": 7,
+   "displayedFailures": [
+    {
+     "label": "Liquefaction radius",
+     "text": "0 m",
+     "node": 159110.79695599427
+    }
+   ],
+   "displayedMissing": []
+  },
+  {
+   "type": "earthquake",
+   "preset": "ALASKA_1964",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 2038,
+   "numbersDifferingCount": 1,
+   "numbersDiffering": [
+    {
+     "path": "shaking.liquefactionRadius",
+     "browser": 0,
+     "node": 138892.051402896
+    }
+   ],
+   "browserOnly": 0,
+   "displayedChecked": 7,
+   "displayedFailures": [
+    {
+     "label": "Liquefaction radius",
+     "text": "0 m",
+     "node": 138892.051402896
+    }
+   ],
+   "displayedMissing": []
+  },
+  {
+   "type": "earthquake",
+   "preset": "L_AQUILA_2009",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 1584,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 7,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "earthquake",
+   "preset": "AMATRICE_2016",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 1288,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 7,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "earthquake",
+   "preset": "NEPAL_2015",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 2020,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 7,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "volcano",
+   "preset": "KRAKATAU_1883",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 14,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 4,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "volcano",
+   "preset": "MT_ST_HELENS_1980",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 11,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 4,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "volcano",
+   "preset": "TAMBORA_1815",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 7,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 4,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "volcano",
+   "preset": "ANAK_KRAKATAU_2018",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 14,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 4,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "volcano",
+   "preset": "PINATUBO_1991",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 8,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 4,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "volcano",
+   "preset": "VESUVIUS_79_CE",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 7,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 4,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "volcano",
+   "preset": "ETNA_1669",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 7,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 4,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "volcano",
+   "preset": "HUNGA_TONGA_2022",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 14,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 4,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "volcano",
+   "preset": "EYJAFJALLAJOKULL_2010",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 7,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 4,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "volcano",
+   "preset": "MOUNT_PELEE_1902",
+   "site": {
+    "lat": 40,
+    "lon": -100
+   },
+   "launched": true,
+   "numbersCompared": 11,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 4,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "landslide",
+   "preset": "LITUYA_BAY_1958",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 9,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 3,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "landslide",
+   "preset": "STOREGGA_8200_BP",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 9,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 3,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "landslide",
+   "preset": "ANAK_KRAKATAU_2018",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 9,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 3,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "landslide",
+   "preset": "VAIONT_1963",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 9,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 3,
+   "displayedFailures": [],
+   "displayedMissing": []
+  },
+  {
+   "type": "landslide",
+   "preset": "ELM_1881",
+   "site": {
+    "lat": -10,
+    "lon": -140
+   },
+   "launched": true,
+   "numbersCompared": 2,
+   "numbersDifferingCount": 0,
+   "numbersDiffering": [],
+   "browserOnly": 0,
+   "displayedChecked": 1,
+   "displayedFailures": [],
+   "displayedMissing": [
+    "Tsunami source amplitude",
+    "Tsunami travel to 100 km"
+   ]
+  }
+ ]
+}

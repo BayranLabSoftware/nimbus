@@ -21,3 +21,8 @@ public/luts/
 public/hdri/
 public/models/
 public/data/
+# Written by the benchmark campaign's scripts (scripts/benchmark/), which
+# are the source of truth for their layout, as for the validation report.
+benchmark/nimbus/
+benchmark/results/
+docs/BENCHMARK_REPORT.md

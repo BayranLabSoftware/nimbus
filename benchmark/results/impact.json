@@ -1,0 +1,8142 @@
+{
+ "track": "IMP",
+ "reference": "Earth Impact Effects Program, impact.ese.ic.ac.uk/map",
+ "stats": [
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "all",
+   "rows": 864,
+   "pairs": 864,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.31616184770148154,
+   "scatterLn": 2.504504771157859,
+   "medianAbsLn": 0.3923587046433661,
+   "maxRelative": 14.140566954359478,
+   "within1pct": 0.008101851851851851,
+   "withinTolerance": 0.008101851851851851,
+   "within125": 0.3263888888888889,
+   "within2": 0.6157407407407407,
+   "within10": 0.7905092592592593,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "1 km",
+     "nimbus": 81857524.38494304,
+     "reference": 12476627631739.49,
+     "ratio": 0.000006560869395244624
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "1 km",
+     "nimbus": 81852579.74119411,
+     "reference": 8548545494436.041,
+     "ratio": 0.000009575030020541997
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "1 km",
+     "nimbus": 81850014.71702085,
+     "reference": 7392379322932.408,
+     "ratio": 0.000011072215201823897
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "1 km",
+     "nimbus": 81846324.48504716,
+     "reference": 6070846837133.89,
+     "ratio": 0.000013481862857157449
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "1 km",
+     "nimbus": 81840137.2984245,
+     "reference": 4638941203347.048,
+     "ratio": 0.000017641986330711827
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 40,
+   "pairs": 40,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.19711141654132344,
+   "scatterLn": 3.3506558831444173,
+   "medianAbsLn": 1.5431111561106465,
+   "maxRelative": 14.140566954359478,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.25,
+   "within2": 0.4,
+   "within10": 0.625,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "1 km",
+     "nimbus": 81798570.03316699,
+     "reference": 1684195598522.006,
+     "ratio": 0.000048568331436651825
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "1 km",
+     "nimbus": 81798570.03316699,
+     "reference": 1684195598522.006,
+     "ratio": 0.000048568331436651825
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "1 km",
+     "nimbus": 81624243.45790292,
+     "reference": 390304353367.022,
+     "ratio": 0.00020912972851508965
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "3 km",
+     "nimbus": 81228892.27262431,
+     "reference": 134598723508.458,
+     "ratio": 0.0006034893211117266
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "3 km",
+     "nimbus": 81228892.27262431,
+     "reference": 134598723508.458,
+     "ratio": 0.0006034893211117266
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 824,
+   "pairs": 824,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.3234971906900407,
+   "scatterLn": 2.456423012058464,
+   "medianAbsLn": 0.3871401187030641,
+   "maxRelative": 3.570067398733567,
+   "within1pct": 0.00849514563106796,
+   "withinTolerance": 0.00849514563106796,
+   "within125": 0.3300970873786408,
+   "within2": 0.6262135922330098,
+   "within10": 0.7985436893203883,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "1 km",
+     "nimbus": 81857524.38494304,
+     "reference": 12476627631739.49,
+     "ratio": 0.000006560869395244624
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "1 km",
+     "nimbus": 81852579.74119411,
+     "reference": 8548545494436.041,
+     "ratio": 0.000009575030020541997
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "1 km",
+     "nimbus": 81850014.71702085,
+     "reference": 7392379322932.408,
+     "ratio": 0.000011072215201823897
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "1 km",
+     "nimbus": 81846324.48504716,
+     "reference": 6070846837133.89,
+     "ratio": 0.000013481862857157449
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "1 km",
+     "nimbus": 81840137.2984245,
+     "reference": 4638941203347.048,
+     "ratio": 0.000017641986330711827
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 736,
+   "pairs": 736,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.2370082073912717,
+   "scatterLn": 2.598788933855257,
+   "medianAbsLn": 0.3979806537419831,
+   "maxRelative": 2.3990001779031043,
+   "within1pct": 0.009510869565217392,
+   "withinTolerance": 0.009510869565217392,
+   "within125": 0.34375,
+   "within2": 0.5991847826086957,
+   "within10": 0.7567934782608695,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "1 km",
+     "nimbus": 81857524.38494304,
+     "reference": 12476627631739.49,
+     "ratio": 0.000006560869395244624
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "1 km",
+     "nimbus": 81852579.74119411,
+     "reference": 8548545494436.041,
+     "ratio": 0.000009575030020541997
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "1 km",
+     "nimbus": 81850014.71702085,
+     "reference": 7392379322932.408,
+     "ratio": 0.000011072215201823897
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "1 km",
+     "nimbus": 81846324.48504716,
+     "reference": 6070846837133.89,
+     "ratio": 0.000013481862857157449
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "1 km",
+     "nimbus": 81840137.2984245,
+     "reference": 4638941203347.048,
+     "ratio": 0.000017641986330711827
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 128,
+   "pairs": 128,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.6576750277874797,
+   "scatterLn": 0.5376451530000546,
+   "medianAbsLn": 0.3871401187030641,
+   "maxRelative": 14.140566954359478,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.2265625,
+   "within2": 0.7109375,
+   "within10": 0.984375,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "1 km",
+     "nimbus": 2317090.8065278316,
+     "reference": 153038.576,
+     "ratio": 15.140566954359478
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "3 km",
+     "nimbus": 206421.7549286029,
+     "reference": 18985.892,
+     "ratio": 10.872375916212043
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "10 km",
+     "nimbus": 17831.525104970588,
+     "reference": 3299.336,
+     "ratio": 5.404579923042269
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "3000 km",
+     "nimbus": 41.78751989582981,
+     "reference": 8.888,
+     "ratio": 4.701566144895343
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "1000 km",
+     "nimbus": 125.36736519249446,
+     "reference": 26.675,
+     "ratio": 4.699807504873269
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "bin: 1 km",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.008268456183314026,
+   "scatterLn": 3.5256289966803216,
+   "medianAbsLn": 4.574810783617362,
+   "maxRelative": 14.140566954359478,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.07407407407407407,
+   "within2": 0.14814814814814814,
+   "within10": 0.25,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "1 km",
+     "nimbus": 81857524.38494304,
+     "reference": 12476627631739.49,
+     "ratio": 0.000006560869395244624
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "1 km",
+     "nimbus": 81852579.74119411,
+     "reference": 8548545494436.041,
+     "ratio": 0.000009575030020541997
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "1 km",
+     "nimbus": 81850014.71702085,
+     "reference": 7392379322932.408,
+     "ratio": 0.000011072215201823897
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "1 km",
+     "nimbus": 81846324.48504716,
+     "reference": 6070846837133.89,
+     "ratio": 0.000013481862857157449
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "1 km",
+     "nimbus": 81840137.2984245,
+     "reference": 4638941203347.048,
+     "ratio": 0.000017641986330711827
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "bin: 3 km",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.05437570545603472,
+   "scatterLn": 2.911572268763302,
+   "medianAbsLn": 2.4400994423998,
+   "maxRelative": 9.872375916212043,
+   "within1pct": 0.018518518518518517,
+   "withinTolerance": 0.018518518518518517,
+   "within125": 0.07407407407407407,
+   "within2": 0.19444444444444445,
+   "within10": 0.4722222222222222,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "3 km",
+     "nimbus": 81753137.77467643,
+     "reference": 997073399140.449,
+     "ratio": 0.00008199309884824294
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "3 km",
+     "nimbus": 81708831.9781985,
+     "reference": 683162848524.394,
+     "ratio": 0.00011960374038882016
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "3 km",
+     "nimbus": 81685872.87569705,
+     "reference": 590768308811.056,
+     "ratio": 0.0001382705735182258
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "3 km",
+     "nimbus": 81652871.46318612,
+     "reference": 485158467664.258,
+     "ratio": 0.000168301445621046
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "3 km",
+     "nimbus": 81597617.25880748,
+     "reference": 370727992504.871,
+     "ratio": 0.0002201010414872715
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "bin: 10 km",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.24818639632781092,
+   "scatterLn": 2.0257904645741274,
+   "medianAbsLn": 1.1358973893977031,
+   "maxRelative": 4.404579923042269,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.25,
+   "within2": 0.3888888888888889,
+   "within10": 0.7222222222222222,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "10 km",
+     "nimbus": 80592365.74555522,
+     "reference": 62538839378.695,
+     "ratio": 0.0012886770292863876
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "10 km",
+     "nimbus": 80123753.54736719,
+     "reference": 42850644968.326,
+     "ratio": 0.0018698377493872598
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "10 km",
+     "nimbus": 79883729.37835209,
+     "reference": 37055694269.091,
+     "ratio": 0.0021557747319009193
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "10 km",
+     "nimbus": 79542012.10819814,
+     "reference": 30431847061.144,
+     "ratio": 0.002613775363302183
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "10 km",
+     "nimbus": 78978385.9405816,
+     "reference": 23254707563.686,
+     "ratio": 0.0033962321703805204
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "bin: 30 km",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.5873773412051537,
+   "scatterLn": 1.2237683066869296,
+   "medianAbsLn": 0.4198564164096896,
+   "maxRelative": 3.6616217772096986,
+   "within1pct": 0.009259259259259259,
+   "withinTolerance": 0.009259259259259259,
+   "within125": 0.26851851851851855,
+   "within2": 0.6296296296296297,
+   "within10": 0.8796296296296297,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "30 km",
+     "nimbus": 72099642.56533423,
+     "reference": 4999729420.12,
+     "ratio": 0.014420708903803788
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "30 km",
+     "nimbus": 69196934.03958437,
+     "reference": 3426067078.153,
+     "ratio": 0.020197191841581977
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "30 km",
+     "nimbus": 67817846.82599676,
+     "reference": 2962866291.161,
+     "ratio": 0.022889270105881935
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "30 km",
+     "nimbus": 65965401.62639839,
+     "reference": 2433398216.25,
+     "ratio": 0.027108346338830927
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "30 km",
+     "nimbus": 63160438.57567739,
+     "reference": 1859683528.929,
+     "ratio": 0.03396300370098549
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "bin: 100 km",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9353219402058934,
+   "scatterLn": 0.5790914304183991,
+   "medianAbsLn": 0.17317644984789357,
+   "maxRelative": 3.667047193749438,
+   "within1pct": 0.009259259259259259,
+   "withinTolerance": 0.009259259259259259,
+   "within125": 0.5648148148148148,
+   "within2": 0.7962962962962963,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "100 km",
+     "nimbus": 38918911.022980325,
+     "reference": 314194129.145,
+     "ratio": 0.12386899503465681
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "100 km",
+     "nimbus": 33874064.94192584,
+     "reference": 215404591.048,
+     "ratio": 0.15725785962648056
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "100 km",
+     "nimbus": 31862232.850732498,
+     "reference": 186321693.134,
+     "ratio": 0.17100656565962835
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "100 km",
+     "nimbus": 29449069.927334018,
+     "reference": 153074306.464,
+     "ratio": 0.19238414733082493
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "100 km",
+     "nimbus": 1259.0246544105921,
+     "reference": 269.769,
+     "ratio": 4.667047193749438
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "bin: 300 km",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.093204061647297,
+   "scatterLn": 0.34030948711369036,
+   "medianAbsLn": 0.1307070624249205,
+   "maxRelative": 3.6912343388211433,
+   "within1pct": 0.009259259259259259,
+   "withinTolerance": 0.009259259259259259,
+   "within125": 0.6574074074074074,
+   "within2": 0.9166666666666666,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "300 km",
+     "nimbus": 418.07342180706263,
+     "reference": 89.118,
+     "ratio": 4.691234338821143
+    },
+    {
+     "caseId": "imp-grid-021",
+     "detail": "300 km",
+     "nimbus": 1862.0597126914006,
+     "reference": 699.675,
+     "ratio": 2.6613209171278105
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "300 km",
+     "nimbus": 1249.775116282301,
+     "reference": 489.166,
+     "ratio": 2.5549100229417028
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "300 km",
+     "nimbus": 1629.7352512492293,
+     "reference": 664.224,
+     "ratio": 2.453592841043427
+    },
+    {
+     "caseId": "imp-grid-030",
+     "detail": "300 km",
+     "nimbus": 2818.430220155287,
+     "reference": 1303.067,
+     "ratio": 2.1629204178720562
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "bin: 1000 km",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1781040833945342,
+   "scatterLn": 0.34089238962381796,
+   "medianAbsLn": 0.23965470551662316,
+   "maxRelative": 3.6998075048732693,
+   "within1pct": 0.009259259259259259,
+   "withinTolerance": 0.009259259259259259,
+   "within125": 0.46296296296296297,
+   "within2": 0.9259259259259259,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "1000 km",
+     "nimbus": 125.36736519249446,
+     "reference": 26.675,
+     "ratio": 4.699807504873269
+    },
+    {
+     "caseId": "imp-grid-021",
+     "detail": "1000 km",
+     "nimbus": 553.9166314457896,
+     "reference": 203.566,
+     "ratio": 2.7210665408063703
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "1000 km",
+     "nimbus": 373.488988256927,
+     "reference": 143.878,
+     "ratio": 2.595872810693275
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "1000 km",
+     "nimbus": 485.7479529215613,
+     "reference": 193.614,
+     "ratio": 2.5088472575410936
+    },
+    {
+     "caseId": "imp-grid-030",
+     "detail": "1000 km",
+     "nimbus": 829.7836392076913,
+     "reference": 366.874,
+     "ratio": 2.2617673621125816
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceGround",
+   "cls": "B",
+   "subset": "bin: 3000 km",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2644602240320864,
+   "scatterLn": 0.33505681473058274,
+   "medianAbsLn": 0.29246767769260906,
+   "maxRelative": 3.7015661448953434,
+   "within1pct": 0.009259259259259259,
+   "withinTolerance": 0.009259259259259259,
+   "within125": 0.25925925925925924,
+   "within2": 0.9259259259259259,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "3000 km",
+     "nimbus": 41.78751989582981,
+     "reference": 8.888,
+     "ratio": 4.701566144895343
+    },
+    {
+     "caseId": "imp-grid-021",
+     "detail": "3000 km",
+     "nimbus": 184.50104826741105,
+     "reference": 67.431,
+     "ratio": 2.7361458122734508
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "3000 km",
+     "nimbus": 124.45401897122834,
+     "reference": 47.767,
+     "ratio": 2.60543929849537
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "3000 km",
+     "nimbus": 161.82298130663182,
+     "reference": 64.159,
+     "ratio": 2.522217947702299
+    },
+    {
+     "caseId": "imp-grid-030",
+     "detail": "3000 km",
+     "nimbus": 276.1326743224818,
+     "reference": 120.681,
+     "ratio": 2.2881205353160965
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "referenceAnswered",
+   "cls": "A",
+   "subset": "all",
+   "rows": 194,
+   "pairs": 194,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0.9690721649484536,
+   "flagged": true,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "referenceAnswered",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 8,
+   "pairs": 8,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0.875,
+   "flagged": true,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "referenceAnswered",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 186,
+   "pairs": 186,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0.9731182795698925,
+   "flagged": true,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "referenceAnswered",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 97,
+   "pairs": 97,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0.9896907216494846,
+   "flagged": true,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "referenceAnswered",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 54,
+   "pairs": 54,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 1,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "referenceAnswered",
+   "cls": "A",
+   "subset": "band: < 1 Mt",
+   "rows": 43,
+   "pairs": 43,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0.8837209302325582,
+   "flagged": true,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "energy",
+   "cls": "A",
+   "subset": "all",
+   "rows": 188,
+   "pairs": 188,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.001192960766676,
+   "scatterLn": 0.013748818414114582,
+   "medianAbsLn": 0.005998403957723617,
+   "maxRelative": 0.04719755119659785,
+   "within1pct": 0.6382978723404256,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-041",
+     "detail": "",
+     "nimbus": 104719755119659.78,
+     "reference": 100000000000000,
+     "ratio": 1.0471975511965979
+    },
+    {
+     "caseId": "imp-grid-046",
+     "detail": "",
+     "nimbus": 104719755119659780,
+     "reference": 100000000000000000,
+     "ratio": 1.0471975511965979
+    },
+    {
+     "caseId": "imp-grid-051",
+     "detail": "",
+     "nimbus": 104719755119659760000,
+     "reference": 100000000000000000000,
+     "ratio": 1.0471975511965976
+    },
+    {
+     "caseId": "imp-grid-015",
+     "detail": "",
+     "nimbus": 103908177017482400,
+     "reference": 100000000000000000,
+     "ratio": 1.039081770174824
+    },
+    {
+     "caseId": "imp-grid-025",
+     "detail": "",
+     "nimbus": 103908177017482400000,
+     "reference": 100000000000000000000,
+     "ratio": 1.039081770174824
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "energy",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 7,
+   "pairs": 7,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9906574847428908,
+   "scatterLn": 0.02387906520053475,
+   "medianAbsLn": 0.018061459159728076,
+   "maxRelative": 0.03610225401222256,
+   "within1pct": 0.42857142857142855,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 1.0602875205865552e+24,
+     "reference": 1.1e+24,
+     "ratio": 0.9638977459877774
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 1.0602875205865552e+24,
+     "reference": 1.1e+24,
+     "ratio": 0.9638977459877774
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "",
+     "nimbus": 1.2374444938620887e+21,
+     "reference": 1.2e+21,
+     "ratio": 1.031203744885074
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "",
+     "nimbus": 1.6695711414164133e+23,
+     "reference": 1.7e+23,
+     "ratio": 0.9821006714214195
+    },
+    {
+     "caseId": "imp-preset-CHELYABINSK",
+     "detail": "",
+     "nimbus": 1392976684814570.5,
+     "reference": 1400000000000000,
+     "ratio": 0.9949833462961218
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "energy",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 181,
+   "pairs": 181,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0016026528545,
+   "scatterLn": 0.013147390523398242,
+   "medianAbsLn": 0.005998403957723617,
+   "maxRelative": 0.04719755119659785,
+   "within1pct": 0.6464088397790055,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-041",
+     "detail": "",
+     "nimbus": 104719755119659.78,
+     "reference": 100000000000000,
+     "ratio": 1.0471975511965979
+    },
+    {
+     "caseId": "imp-grid-046",
+     "detail": "",
+     "nimbus": 104719755119659780,
+     "reference": 100000000000000000,
+     "ratio": 1.0471975511965979
+    },
+    {
+     "caseId": "imp-grid-051",
+     "detail": "",
+     "nimbus": 104719755119659760000,
+     "reference": 100000000000000000000,
+     "ratio": 1.0471975511965976
+    },
+    {
+     "caseId": "imp-grid-015",
+     "detail": "",
+     "nimbus": 103908177017482400,
+     "reference": 100000000000000000,
+     "ratio": 1.039081770174824
+    },
+    {
+     "caseId": "imp-grid-025",
+     "detail": "",
+     "nimbus": 103908177017482400000,
+     "reference": 100000000000000000000,
+     "ratio": 1.039081770174824
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "energy",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 96,
+   "pairs": 96,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0009939753529589,
+   "scatterLn": 0.014205200567271613,
+   "medianAbsLn": 0.006023933390967838,
+   "maxRelative": 0.04719755119659763,
+   "within1pct": 0.65625,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-051",
+     "detail": "",
+     "nimbus": 104719755119659760000,
+     "reference": 100000000000000000000,
+     "ratio": 1.0471975511965976
+    },
+    {
+     "caseId": "imp-grid-025",
+     "detail": "",
+     "nimbus": 103908177017482400000,
+     "reference": 100000000000000000000,
+     "ratio": 1.039081770174824
+    },
+    {
+     "caseId": "imp-grid-035",
+     "detail": "",
+     "nimbus": 1.0390817701748239e+23,
+     "reference": 1e+23,
+     "ratio": 1.039081770174824
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 1.0602875205865552e+24,
+     "reference": 1.1e+24,
+     "ratio": 0.9638977459877774
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 1.0602875205865552e+24,
+     "reference": 1.1e+24,
+     "ratio": 0.9638977459877774
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "energy",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 54,
+   "pairs": 54,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.000967917783726,
+   "scatterLn": 0.012724269449156455,
+   "medianAbsLn": 0.005918597295374733,
+   "maxRelative": 0.04719755119659785,
+   "within1pct": 0.6111111111111112,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-046",
+     "detail": "",
+     "nimbus": 104719755119659780,
+     "reference": 100000000000000000,
+     "ratio": 1.0471975511965979
+    },
+    {
+     "caseId": "imp-grid-015",
+     "detail": "",
+     "nimbus": 103908177017482400,
+     "reference": 100000000000000000,
+     "ratio": 1.039081770174824
+    },
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "",
+     "nimbus": 125732061564852580,
+     "reference": 130000000000000000,
+     "ratio": 0.9671697043450198
+    },
+    {
+     "caseId": "imp-grid-013",
+     "detail": "",
+     "nimbus": 13253594007331938,
+     "reference": 13000000000000000,
+     "ratio": 1.019507231333226
+    },
+    {
+     "caseId": "imp-grid-047",
+     "detail": "",
+     "nimbus": 157079632679489630,
+     "reference": 160000000000000000,
+     "ratio": 0.9817477042468102
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "energy",
+   "cls": "A",
+   "subset": "band: < 1 Mt",
+   "rows": 38,
+   "pairs": 38,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0020158826025352,
+   "scatterLn": 0.014299434909107758,
+   "medianAbsLn": 0.006626659173093274,
+   "maxRelative": 0.04719755119659785,
+   "within1pct": 0.631578947368421,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-041",
+     "detail": "",
+     "nimbus": 104719755119659.78,
+     "reference": 100000000000000,
+     "ratio": 1.0471975511965979
+    },
+    {
+     "caseId": "imp-lhs-118",
+     "detail": "",
+     "nimbus": 15448486394518.637,
+     "reference": 15000000000000,
+     "ratio": 1.029899092967909
+    },
+    {
+     "caseId": "imp-lhs-026",
+     "detail": "",
+     "nimbus": 155426314284530.5,
+     "reference": 160000000000000,
+     "ratio": 0.9714144642783156
+    },
+    {
+     "caseId": "imp-lhs-033",
+     "detail": "",
+     "nimbus": 126570306317940.72,
+     "reference": 130000000000000,
+     "ratio": 0.9736177409072363
+    },
+    {
+     "caseId": "imp-lhs-065",
+     "detail": "",
+     "nimbus": 112858935437557.14,
+     "reference": 110000000000000.02,
+     "ratio": 1.0259903221596103
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "breakupAltitude",
+   "cls": "A",
+   "subset": "all",
+   "rows": 188,
+   "pairs": 188,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0004553617141265,
+   "scatterLn": 0.0026908025730851388,
+   "medianAbsLn": 0.00001134590698035462,
+   "maxRelative": 0.029772447606216224,
+   "within1pct": 0.9840425531914894,
+   "withinTolerance": 0.9840425531914894,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-045",
+     "detail": "",
+     "nimbus": 16386.76895875772,
+     "reference": 15913,
+     "ratio": 1.0297724476062162
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 10779.826384306616,
+     "reference": 10602,
+     "ratio": 1.0167729092913238
+    },
+    {
+     "caseId": "imp-lhs-044",
+     "detail": "",
+     "nimbus": 28864.244398894207,
+     "reference": 28439,
+     "ratio": 1.0149528604695737
+    },
+    {
+     "caseId": "imp-lhs-093",
+     "detail": "",
+     "nimbus": 40776.50873148979,
+     "reference": 40645,
+     "ratio": 1.0032355451221502
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "",
+     "nimbus": 16755.289071306954,
+     "reference": 16716,
+     "ratio": 1.002350387132505
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "breakupAltitude",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 7,
+   "pairs": 7,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.002421612599046,
+   "scatterLn": 0.006268698083525474,
+   "medianAbsLn": 0.000007525991161720022,
+   "maxRelative": 0.0167729092913238,
+   "within1pct": 0.8571428571428571,
+   "withinTolerance": 0.8571428571428571,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 10779.826384306616,
+     "reference": 10602,
+     "ratio": 1.0167729092913238
+    },
+    {
+     "caseId": "imp-preset-CHELYABINSK",
+     "detail": "",
+     "nimbus": 55814.37222763281,
+     "reference": 55803,
+     "ratio": 1.0002037924060143
+    },
+    {
+     "caseId": "imp-preset-TUNGUSKA",
+     "detail": "",
+     "nimbus": 52039.60928692787,
+     "reference": 52036,
+     "ratio": 1.0000693613446052
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 56645.42631137356,
+     "reference": 56645,
+     "ratio": 1.000007526019482
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 56645.42631137356,
+     "reference": 56645,
+     "ratio": 1.000007526019482
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "breakupAltitude",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 181,
+   "pairs": 181,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0003793963742937,
+   "scatterLn": 0.002460972988027417,
+   "medianAbsLn": 0.000011363504275490898,
+   "maxRelative": 0.029772447606216224,
+   "within1pct": 0.988950276243094,
+   "withinTolerance": 0.988950276243094,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-045",
+     "detail": "",
+     "nimbus": 16386.76895875772,
+     "reference": 15913,
+     "ratio": 1.0297724476062162
+    },
+    {
+     "caseId": "imp-lhs-044",
+     "detail": "",
+     "nimbus": 28864.244398894207,
+     "reference": 28439,
+     "ratio": 1.0149528604695737
+    },
+    {
+     "caseId": "imp-lhs-093",
+     "detail": "",
+     "nimbus": 40776.50873148979,
+     "reference": 40645,
+     "ratio": 1.0032355451221502
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "",
+     "nimbus": 16755.289071306954,
+     "reference": 16716,
+     "ratio": 1.002350387132505
+    },
+    {
+     "caseId": "imp-lhs-114",
+     "detail": "",
+     "nimbus": 49798.548561871714,
+     "reference": 49703,
+     "ratio": 1.0019223902354328
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "breakupAltitude",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 96,
+   "pairs": 96,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000208086541833,
+   "scatterLn": 0.00005327487374434606,
+   "medianAbsLn": 0.000007603844690117929,
+   "maxRelative": 0.0003816423846396688,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-002",
+     "detail": "",
+     "nimbus": 10575.034341648026,
+     "reference": 10571,
+     "ratio": 1.0003816423846397
+    },
+    {
+     "caseId": "imp-grid-055",
+     "detail": "",
+     "nimbus": 16789.65742395096,
+     "reference": 16785,
+     "ratio": 1.0002774753619876
+    },
+    {
+     "caseId": "imp-lhs-032",
+     "detail": "",
+     "nimbus": 33417.33068889383,
+     "reference": 33411,
+     "ratio": 1.0001894791803247
+    },
+    {
+     "caseId": "imp-lhs-100",
+     "detail": "",
+     "nimbus": 20151.460363667353,
+     "reference": 20148,
+     "ratio": 1.0001717472536904
+    },
+    {
+     "caseId": "imp-lhs-011",
+     "detail": "",
+     "nimbus": 13694.140345636664,
+     "reference": 13693,
+     "ratio": 1.0000832794593342
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "breakupAltitude",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 54,
+   "pairs": 54,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0004115724747331,
+   "scatterLn": 0.0022794966841418614,
+   "medianAbsLn": 0.000017659960808531926,
+   "maxRelative": 0.0167729092913238,
+   "within1pct": 0.9814814814814815,
+   "withinTolerance": 0.9814814814814815,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 10779.826384306616,
+     "reference": 10602,
+     "ratio": 1.0167729092913238
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "",
+     "nimbus": 16755.289071306954,
+     "reference": 16716,
+     "ratio": 1.002350387132505
+    },
+    {
+     "caseId": "imp-lhs-108",
+     "detail": "",
+     "nimbus": 25315.30301355617,
+     "reference": 25278,
+     "ratio": 1.0014757106399308
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "",
+     "nimbus": 28822.028648790612,
+     "reference": 28815,
+     "ratio": 1.000243923261864
+    },
+    {
+     "caseId": "imp-grid-016",
+     "detail": "",
+     "nimbus": 56635.99845820095,
+     "reference": 56626,
+     "ratio": 1.000176570095026
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "breakupAltitude",
+   "cls": "A",
+   "subset": "band: < 1 Mt",
+   "rows": 38,
+   "pairs": 38,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0016163197215402,
+   "scatterLn": 0.005221992408771769,
+   "medianAbsLn": 0.0001500305329126893,
+   "maxRelative": 0.029772447606216224,
+   "within1pct": 0.9473684210526315,
+   "withinTolerance": 0.9473684210526315,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-045",
+     "detail": "",
+     "nimbus": 16386.76895875772,
+     "reference": 15913,
+     "ratio": 1.0297724476062162
+    },
+    {
+     "caseId": "imp-lhs-044",
+     "detail": "",
+     "nimbus": 28864.244398894207,
+     "reference": 28439,
+     "ratio": 1.0149528604695737
+    },
+    {
+     "caseId": "imp-lhs-093",
+     "detail": "",
+     "nimbus": 40776.50873148979,
+     "reference": 40645,
+     "ratio": 1.0032355451221502
+    },
+    {
+     "caseId": "imp-lhs-114",
+     "detail": "",
+     "nimbus": 49798.548561871714,
+     "reference": 49703,
+     "ratio": 1.0019223902354328
+    },
+    {
+     "caseId": "imp-lhs-118",
+     "detail": "",
+     "nimbus": 43450.47911287952,
+     "reference": 43370,
+     "ratio": 1.001855640140178
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airburstOutcome",
+   "cls": "A",
+   "subset": "all",
+   "rows": 188,
+   "pairs": 188,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 1,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "airburstOutcome",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 7,
+   "pairs": 7,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 1,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "airburstOutcome",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 181,
+   "pairs": 181,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 1,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "airburstOutcome",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 96,
+   "pairs": 96,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 1,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "airburstOutcome",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 54,
+   "pairs": 54,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 1,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "airburstOutcome",
+   "cls": "A",
+   "subset": "band: < 1 Mt",
+   "rows": 38,
+   "pairs": 38,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 1,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "groundVelocity",
+   "cls": "A",
+   "subset": "all",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0008087590296522,
+   "scatterLn": 0.01162688655686037,
+   "medianAbsLn": 0.006549245044209166,
+   "maxRelative": 0.046962134978416836,
+   "within1pct": 0.6666666666666666,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 10.469621349784168,
+     "reference": 10,
+     "ratio": 1.0469621349784168
+    },
+    {
+     "caseId": "imp-lhs-078",
+     "detail": "",
+     "nimbus": 15.489508538728282,
+     "reference": 15,
+     "ratio": 1.0326339025818856
+    },
+    {
+     "caseId": "imp-grid-021",
+     "detail": "",
+     "nimbus": 10.655195456306854,
+     "reference": 11,
+     "ratio": 0.9686541323915322
+    },
+    {
+     "caseId": "imp-lhs-002",
+     "detail": "",
+     "nimbus": 13.387147190620057,
+     "reference": 13,
+     "ratio": 1.0297805531246198
+    },
+    {
+     "caseId": "imp-grid-051",
+     "detail": "",
+     "nimbus": 19.49581141704583,
+     "reference": 19,
+     "ratio": 1.026095337739254
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "groundVelocity",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0082463002514326,
+   "scatterLn": 0.021101483166689684,
+   "medianAbsLn": 0.0007000562590679625,
+   "maxRelative": 0.046962134978416836,
+   "within1pct": 0.8,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 10.469621349784168,
+     "reference": 10,
+     "ratio": 1.0469621349784168
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "",
+     "nimbus": 16.942713117846132,
+     "reference": 17,
+     "ratio": 0.9966301834027137
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "",
+     "nimbus": 19.98600377446289,
+     "reference": 20,
+     "ratio": 0.9993001887231445
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 19.992453663461983,
+     "reference": 20,
+     "ratio": 0.9996226831730992
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 19.992453663461983,
+     "reference": 20,
+     "ratio": 0.9996226831730992
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "groundVelocity",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 103,
+   "pairs": 103,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0004491129265183,
+   "scatterLn": 0.01102414655036953,
+   "medianAbsLn": 0.006549245044209166,
+   "maxRelative": 0.03263390258188559,
+   "within1pct": 0.6601941747572816,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-078",
+     "detail": "",
+     "nimbus": 15.489508538728282,
+     "reference": 15,
+     "ratio": 1.0326339025818856
+    },
+    {
+     "caseId": "imp-grid-021",
+     "detail": "",
+     "nimbus": 10.655195456306854,
+     "reference": 11,
+     "ratio": 0.9686541323915322
+    },
+    {
+     "caseId": "imp-lhs-002",
+     "detail": "",
+     "nimbus": 13.387147190620057,
+     "reference": 13,
+     "ratio": 1.0297805531246198
+    },
+    {
+     "caseId": "imp-grid-051",
+     "detail": "",
+     "nimbus": 19.49581141704583,
+     "reference": 19,
+     "ratio": 1.026095337739254
+    },
+    {
+     "caseId": "imp-grid-027",
+     "detail": "",
+     "nimbus": 14.363293750611804,
+     "reference": 14,
+     "ratio": 1.0259495536151289
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "groundVelocity",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 92,
+   "pairs": 92,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.000710566394302,
+   "scatterLn": 0.0105762570589992,
+   "medianAbsLn": 0.006549245044209166,
+   "maxRelative": 0.03263390258188559,
+   "within1pct": 0.6847826086956522,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-078",
+     "detail": "",
+     "nimbus": 15.489508538728282,
+     "reference": 15,
+     "ratio": 1.0326339025818856
+    },
+    {
+     "caseId": "imp-lhs-002",
+     "detail": "",
+     "nimbus": 13.387147190620057,
+     "reference": 13,
+     "ratio": 1.0297805531246198
+    },
+    {
+     "caseId": "imp-grid-051",
+     "detail": "",
+     "nimbus": 19.49581141704583,
+     "reference": 19,
+     "ratio": 1.026095337739254
+    },
+    {
+     "caseId": "imp-grid-027",
+     "detail": "",
+     "nimbus": 14.363293750611804,
+     "reference": 14,
+     "ratio": 1.0259495536151289
+    },
+    {
+     "caseId": "imp-grid-030",
+     "detail": "",
+     "nimbus": 19.505831496695446,
+     "reference": 20,
+     "ratio": 0.9752915748347724
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "groundVelocity",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0013735536901642,
+   "scatterLn": 0.016891330425361346,
+   "medianAbsLn": 0.006295864760790764,
+   "maxRelative": 0.046962134978416836,
+   "within1pct": 0.5625,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 10.469621349784168,
+     "reference": 10,
+     "ratio": 1.0469621349784168
+    },
+    {
+     "caseId": "imp-grid-021",
+     "detail": "",
+     "nimbus": 10.655195456306854,
+     "reference": 11,
+     "ratio": 0.9686541323915322
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "",
+     "nimbus": 26.546409101225628,
+     "reference": 27,
+     "ratio": 0.9832003370824306
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "",
+     "nimbus": 14.775352665619955,
+     "reference": 15,
+     "ratio": 0.9850235110413303
+    },
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "",
+     "nimbus": 21.266137555514575,
+     "reference": 21,
+     "ratio": 1.0126732169292656
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "groundEnergy",
+   "cls": "A",
+   "subset": "all",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.00049501796864,
+   "scatterLn": 0.013600523431690902,
+   "medianAbsLn": 0.004962718587315252,
+   "maxRelative": 0.04717512853596206,
+   "within1pct": 0.7129629629629629,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "",
+     "nimbus": 1.047175128535962e+21,
+     "reference": 1e+21,
+     "ratio": 1.047175128535962
+    },
+    {
+     "caseId": "imp-lhs-083",
+     "detail": "",
+     "nimbus": 104360624012765090000,
+     "reference": 100000000000000000000,
+     "ratio": 1.043606240127651
+    },
+    {
+     "caseId": "imp-lhs-048",
+     "detail": "",
+     "nimbus": 124947331488022070000,
+     "reference": 120000000000000000000,
+     "ratio": 1.041227762400184
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 1.0594875428918155e+24,
+     "reference": 1.1e+24,
+     "ratio": 0.9631704935380141
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 1.0594875428918155e+24,
+     "reference": 1.1e+24,
+     "ratio": 0.9631704935380141
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "groundEnergy",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9858453675882465,
+   "scatterLn": 0.026240411396234738,
+   "medianAbsLn": 0.023975789781905878,
+   "maxRelative": 0.036829506461985906,
+   "within1pct": 0.2,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 1.0594875428918155e+24,
+     "reference": 1.1e+24,
+     "ratio": 0.9631704935380141
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 1.0594875428918155e+24,
+     "reference": 1.1e+24,
+     "ratio": 0.9631704935380141
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "",
+     "nimbus": 1.2291186238785808e+21,
+     "reference": 1.2e+21,
+     "ratio": 1.0242655198988173
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "",
+     "nimbus": 1.6672351896406593e+23,
+     "reference": 1.7e+23,
+     "ratio": 0.9807265821415643
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 27979193538136044,
+     "reference": 28000000000000000,
+     "ratio": 0.9992569120762873
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "groundEnergy",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 103,
+   "pairs": 103,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.00121168044452,
+   "scatterLn": 0.012484219697174278,
+   "medianAbsLn": 0.004774542256949754,
+   "maxRelative": 0.04717512853596206,
+   "within1pct": 0.7378640776699029,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "",
+     "nimbus": 1.047175128535962e+21,
+     "reference": 1e+21,
+     "ratio": 1.047175128535962
+    },
+    {
+     "caseId": "imp-lhs-083",
+     "detail": "",
+     "nimbus": 104360624012765090000,
+     "reference": 100000000000000000000,
+     "ratio": 1.043606240127651
+    },
+    {
+     "caseId": "imp-lhs-048",
+     "detail": "",
+     "nimbus": 124947331488022070000,
+     "reference": 120000000000000000000,
+     "ratio": 1.041227762400184
+    },
+    {
+     "caseId": "imp-lhs-106",
+     "detail": "",
+     "nimbus": 1.2549870630709576e+22,
+     "reference": 1.3e+22,
+     "ratio": 0.9653746639007366
+    },
+    {
+     "caseId": "imp-grid-035",
+     "detail": "",
+     "nimbus": 1.035098126428969e+23,
+     "reference": 1e+23,
+     "ratio": 1.0350981264289691
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "groundEnergy",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 92,
+   "pairs": 92,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0007324127291677,
+   "scatterLn": 0.014352998078913111,
+   "medianAbsLn": 0.0055359251697327085,
+   "maxRelative": 0.04717512853596206,
+   "within1pct": 0.6956521739130435,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "",
+     "nimbus": 1.047175128535962e+21,
+     "reference": 1e+21,
+     "ratio": 1.047175128535962
+    },
+    {
+     "caseId": "imp-lhs-083",
+     "detail": "",
+     "nimbus": 104360624012765090000,
+     "reference": 100000000000000000000,
+     "ratio": 1.043606240127651
+    },
+    {
+     "caseId": "imp-lhs-048",
+     "detail": "",
+     "nimbus": 124947331488022070000,
+     "reference": 120000000000000000000,
+     "ratio": 1.041227762400184
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 1.0594875428918155e+24,
+     "reference": 1.1e+24,
+     "ratio": 0.9631704935380141
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 1.0594875428918155e+24,
+     "reference": 1.1e+24,
+     "ratio": 0.9631704935380141
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "groundEnergy",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9991310905487013,
+   "scatterLn": 0.008207763381898804,
+   "medianAbsLn": 0.0018393708083709155,
+   "maxRelative": 0.020981714628560244,
+   "within1pct": 0.8125,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-030",
+     "detail": "",
+     "nimbus": 18601347422057356,
+     "reference": 19000000000000000,
+     "ratio": 0.9790182853714398
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "",
+     "nimbus": 1624533362436923000,
+     "reference": 1600000000000000000,
+     "ratio": 1.015333351523077
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "",
+     "nimbus": 285768491477975070,
+     "reference": 290000000000000000,
+     "ratio": 0.9854085913033623
+    },
+    {
+     "caseId": "imp-lhs-059",
+     "detail": "",
+     "nimbus": 3270433378953336300,
+     "reference": 3300000000000000000,
+     "ratio": 0.9910404178646474
+    },
+    {
+     "caseId": "imp-grid-021",
+     "detail": "",
+     "nimbus": 2407556495085432300,
+     "reference": 2400000000000000000,
+     "ratio": 1.0031485396189301
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "transientDiameter",
+   "cls": "A",
+   "subset": "all",
+   "rows": 81,
+   "pairs": 81,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9994656954469086,
+   "scatterLn": 0.014161568014196373,
+   "medianAbsLn": 0.008666427959355086,
+   "maxRelative": 0.04297065237916908,
+   "within1pct": 0.5679012345679012,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 104297.0652379169,
+     "reference": 100000,
+     "ratio": 1.042970652379169
+    },
+    {
+     "caseId": "imp-grid-005",
+     "detail": "",
+     "nimbus": 1241.7588131041991,
+     "reference": 1200,
+     "ratio": 1.034799010920166
+    },
+    {
+     "caseId": "imp-grid-054",
+     "detail": "",
+     "nimbus": 13446.912585443,
+     "reference": 13000,
+     "ratio": 1.0343778911879231
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 1135.5609136573644,
+     "reference": 1100,
+     "ratio": 1.0323281033248768
+    },
+    {
+     "caseId": "imp-grid-007",
+     "detail": "",
+     "nimbus": 11327.17106904648,
+     "reference": 11000,
+     "ratio": 1.029742824458771
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "transientDiameter",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0001865543096051,
+   "scatterLn": 0.02129497970607661,
+   "medianAbsLn": 0.012374430944071925,
+   "maxRelative": 0.03232810332487679,
+   "within1pct": 0.25,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 1135.5609136573644,
+     "reference": 1100,
+     "ratio": 1.0323281033248768
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "",
+     "nimbus": 56241.89321701596,
+     "reference": 57000,
+     "ratio": 0.98669988100028
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 90960.83896809783,
+     "reference": 92000,
+     "ratio": 0.9887047713923677
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "",
+     "nimbus": 15899.174436749034,
+     "reference": 16000,
+     "ratio": 0.9936984022968146
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "transientDiameter",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 77,
+   "pairs": 77,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.999428262432073,
+   "scatterLn": 0.013898781146974746,
+   "medianAbsLn": 0.008345123374088317,
+   "maxRelative": 0.04297065237916908,
+   "within1pct": 0.5844155844155844,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 104297.0652379169,
+     "reference": 100000,
+     "ratio": 1.042970652379169
+    },
+    {
+     "caseId": "imp-grid-005",
+     "detail": "",
+     "nimbus": 1241.7588131041991,
+     "reference": 1200,
+     "ratio": 1.034799010920166
+    },
+    {
+     "caseId": "imp-grid-054",
+     "detail": "",
+     "nimbus": 13446.912585443,
+     "reference": 13000,
+     "ratio": 1.0343778911879231
+    },
+    {
+     "caseId": "imp-grid-007",
+     "detail": "",
+     "nimbus": 11327.17106904648,
+     "reference": 11000,
+     "ratio": 1.029742824458771
+    },
+    {
+     "caseId": "imp-lhs-113",
+     "detail": "",
+     "nimbus": 18499.870263725905,
+     "reference": 19000,
+     "ratio": 0.9736773823013634
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "transientDiameter",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 72,
+   "pairs": 72,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9984846958115294,
+   "scatterLn": 0.013359190078644284,
+   "medianAbsLn": 0.008233182855929208,
+   "maxRelative": 0.04297065237916908,
+   "within1pct": 0.5833333333333334,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 104297.0652379169,
+     "reference": 100000,
+     "ratio": 1.042970652379169
+    },
+    {
+     "caseId": "imp-grid-054",
+     "detail": "",
+     "nimbus": 13446.912585443,
+     "reference": 13000,
+     "ratio": 1.0343778911879231
+    },
+    {
+     "caseId": "imp-grid-007",
+     "detail": "",
+     "nimbus": 11327.17106904648,
+     "reference": 11000,
+     "ratio": 1.029742824458771
+    },
+    {
+     "caseId": "imp-lhs-113",
+     "detail": "",
+     "nimbus": 18499.870263725905,
+     "reference": 19000,
+     "ratio": 0.9736773823013634
+    },
+    {
+     "caseId": "imp-lhs-021",
+     "detail": "",
+     "nimbus": 14374.295964652823,
+     "reference": 14000,
+     "ratio": 1.0267354260466302
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "transientDiameter",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 9,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.007348469738057,
+   "scatterLn": 0.018533368127969244,
+   "medianAbsLn": 0.012768925400250403,
+   "maxRelative": 0.03479901092016591,
+   "within1pct": 0.4444444444444444,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-005",
+     "detail": "",
+     "nimbus": 1241.7588131041991,
+     "reference": 1200,
+     "ratio": 1.034799010920166
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 1135.5609136573644,
+     "reference": 1100,
+     "ratio": 1.0323281033248768
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "",
+     "nimbus": 1956.4375674440591,
+     "reference": 2000,
+     "ratio": 0.9782187837220295
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "",
+     "nimbus": 2543.2233841192233,
+     "reference": 2500,
+     "ratio": 1.0172893536476892
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "",
+     "nimbus": 3342.407627541048,
+     "reference": 3300,
+     "ratio": 1.01285079622456
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDiameter",
+   "cls": "A",
+   "subset": "all",
+   "rows": 81,
+   "pairs": 81,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9952836562586874,
+   "scatterLn": 0.012993596375951693,
+   "medianAbsLn": 0.0070302803261680785,
+   "maxRelative": 0.042216139229774075,
+   "within1pct": 0.6172839506172839,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-048",
+     "detail": "",
+     "nimbus": 11493.40632924271,
+     "reference": 12000,
+     "ratio": 0.9577838607702259
+    },
+    {
+     "caseId": "imp-grid-058",
+     "detail": "",
+     "nimbus": 115020.2252276829,
+     "reference": 120000,
+     "ratio": 0.9585018768973574
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 164445.46506737443,
+     "reference": 170000,
+     "ratio": 0.9673262651022025
+    },
+    {
+     "caseId": "imp-grid-005",
+     "detail": "",
+     "nimbus": 1552.198516380249,
+     "reference": 1600,
+     "ratio": 0.9701240727376557
+    },
+    {
+     "caseId": "imp-grid-053",
+     "detail": "",
+     "nimbus": 13380.620041602237,
+     "reference": 13000,
+     "ratio": 1.0292784647386335
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDiameter",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9929560153176327,
+   "scatterLn": 0.01944204799082748,
+   "medianAbsLn": 0.009417065056382935,
+   "maxRelative": 0.03267373489779746,
+   "within1pct": 0.5,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 164445.46506737443,
+     "reference": 170000,
+     "ratio": 0.9673262651022025
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 1419.4511420717054,
+     "reference": 1400,
+     "ratio": 1.013893672908361
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "",
+     "nimbus": 95517.7507517966,
+     "reference": 96000,
+     "ratio": 0.9949765703312146
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "",
+     "nimbus": 22912.34992742428,
+     "reference": 23000,
+     "ratio": 0.9961891272793164
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDiameter",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 77,
+   "pairs": 77,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9954047216464359,
+   "scatterLn": 0.012747360971922224,
+   "medianAbsLn": 0.0070302803261680785,
+   "maxRelative": 0.042216139229774075,
+   "within1pct": 0.6233766233766234,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-048",
+     "detail": "",
+     "nimbus": 11493.40632924271,
+     "reference": 12000,
+     "ratio": 0.9577838607702259
+    },
+    {
+     "caseId": "imp-grid-058",
+     "detail": "",
+     "nimbus": 115020.2252276829,
+     "reference": 120000,
+     "ratio": 0.9585018768973574
+    },
+    {
+     "caseId": "imp-grid-005",
+     "detail": "",
+     "nimbus": 1552.198516380249,
+     "reference": 1600,
+     "ratio": 0.9701240727376557
+    },
+    {
+     "caseId": "imp-grid-053",
+     "detail": "",
+     "nimbus": 13380.620041602237,
+     "reference": 13000,
+     "ratio": 1.0292784647386335
+    },
+    {
+     "caseId": "imp-lhs-112",
+     "detail": "",
+     "nimbus": 155542.5476244669,
+     "reference": 160000,
+     "ratio": 0.9721409226529182
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDiameter",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 72,
+   "pairs": 72,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9949841847113524,
+   "scatterLn": 0.012701398545444349,
+   "medianAbsLn": 0.006513013479587166,
+   "maxRelative": 0.042216139229774075,
+   "within1pct": 0.625,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-048",
+     "detail": "",
+     "nimbus": 11493.40632924271,
+     "reference": 12000,
+     "ratio": 0.9577838607702259
+    },
+    {
+     "caseId": "imp-grid-058",
+     "detail": "",
+     "nimbus": 115020.2252276829,
+     "reference": 120000,
+     "ratio": 0.9585018768973574
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 164445.46506737443,
+     "reference": 170000,
+     "ratio": 0.9673262651022025
+    },
+    {
+     "caseId": "imp-grid-053",
+     "detail": "",
+     "nimbus": 13380.620041602237,
+     "reference": 13000,
+     "ratio": 1.0292784647386335
+    },
+    {
+     "caseId": "imp-lhs-112",
+     "detail": "",
+     "nimbus": 155542.5476244669,
+     "reference": 160000,
+     "ratio": 0.9721409226529182
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDiameter",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 9,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9976826757883861,
+   "scatterLn": 0.015787206095582238,
+   "medianAbsLn": 0.008763852136668308,
+   "maxRelative": 0.029875927262344337,
+   "within1pct": 0.5555555555555556,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-005",
+     "detail": "",
+     "nimbus": 1552.198516380249,
+     "reference": 1600,
+     "ratio": 0.9701240727376557
+    },
+    {
+     "caseId": "imp-lhs-081",
+     "detail": "",
+     "nimbus": 2745.840400004459,
+     "reference": 2800,
+     "ratio": 0.9806572857158782
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "",
+     "nimbus": 2445.546959305074,
+     "reference": 2400,
+     "ratio": 1.0189778997104475
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 1419.4511420717054,
+     "reference": 1400,
+     "ratio": 1.013893672908361
+    },
+    {
+     "caseId": "imp-grid-021",
+     "detail": "",
+     "nimbus": 3965.097753904272,
+     "reference": 4000,
+     "ratio": 0.991274438476068
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDepth",
+   "cls": "A",
+   "subset": "all",
+   "rows": 81,
+   "pairs": 81,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.3113129069663725,
+   "scatterLn": 0.08509572210419597,
+   "medianAbsLn": 0.29569050835859473,
+   "maxRelative": 0.39890551654917683,
+   "within1pct": 0.08641975308641975,
+   "withinTolerance": 0.08641975308641975,
+   "within125": 0.08641975308641975,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-009",
+     "detail": "",
+     "nimbus": 1678.6866198590121,
+     "reference": 1200,
+     "ratio": 1.3989055165491768
+    },
+    {
+     "caseId": "imp-lhs-055",
+     "detail": "",
+     "nimbus": 1528.438628675064,
+     "reference": 1100,
+     "ratio": 1.3894896624318762
+    },
+    {
+     "caseId": "imp-grid-058",
+     "detail": "",
+     "nimbus": 1660.7040906889304,
+     "reference": 1200,
+     "ratio": 1.3839200755741086
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 1936.4627113464635,
+     "reference": 1400,
+     "ratio": 1.3831876509617596
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "",
+     "nimbus": 2071.415587081183,
+     "reference": 1500,
+     "ratio": 1.3809437247207885
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDepth",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.23733249513787,
+   "scatterLn": 0.13782613713599295,
+   "medianAbsLn": 0.2735960360964669,
+   "maxRelative": 0.34668892660728257,
+   "within1pct": 0.25,
+   "withinTolerance": 0.25,
+   "within125": 0.25,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "",
+     "nimbus": 1023.4835842215347,
+     "reference": 760,
+     "ratio": 1.3466889266072826
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 1848.700513046902,
+     "reference": 1400,
+     "ratio": 1.320500366462073
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "",
+     "nimbus": 1570.6709719217936,
+     "reference": 1200,
+     "ratio": 1.3088924766014947
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 302.1044640384888,
+     "reference": 300,
+     "ratio": 1.007014880128296
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDepth",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 77,
+   "pairs": 77,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.315274685329471,
+   "scatterLn": 0.08176705754069834,
+   "medianAbsLn": 0.2958070867798156,
+   "maxRelative": 0.39890551654917683,
+   "within1pct": 0.07792207792207792,
+   "withinTolerance": 0.07792207792207792,
+   "within125": 0.07792207792207792,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-009",
+     "detail": "",
+     "nimbus": 1678.6866198590121,
+     "reference": 1200,
+     "ratio": 1.3989055165491768
+    },
+    {
+     "caseId": "imp-lhs-055",
+     "detail": "",
+     "nimbus": 1528.438628675064,
+     "reference": 1100,
+     "ratio": 1.3894896624318762
+    },
+    {
+     "caseId": "imp-grid-058",
+     "detail": "",
+     "nimbus": 1660.7040906889304,
+     "reference": 1200,
+     "ratio": 1.3839200755741086
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 1936.4627113464635,
+     "reference": 1400,
+     "ratio": 1.3831876509617596
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "",
+     "nimbus": 2071.415587081183,
+     "reference": 1500,
+     "ratio": 1.3809437247207885
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDepth",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 72,
+   "pairs": 72,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.3455859834342738,
+   "scatterLn": 0.013103186749719666,
+   "medianAbsLn": 0.2971975905396362,
+   "maxRelative": 0.39890551654917683,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-009",
+     "detail": "",
+     "nimbus": 1678.6866198590121,
+     "reference": 1200,
+     "ratio": 1.3989055165491768
+    },
+    {
+     "caseId": "imp-lhs-055",
+     "detail": "",
+     "nimbus": 1528.438628675064,
+     "reference": 1100,
+     "ratio": 1.3894896624318762
+    },
+    {
+     "caseId": "imp-grid-058",
+     "detail": "",
+     "nimbus": 1660.7040906889304,
+     "reference": 1200,
+     "ratio": 1.3839200755741086
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 1936.4627113464635,
+     "reference": 1400,
+     "ratio": 1.3831876509617596
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "",
+     "nimbus": 2071.415587081183,
+     "reference": 1500,
+     "ratio": 1.3809437247207885
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDepth",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 9,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.066756718044831,
+   "scatterLn": 0.13026553549454475,
+   "medianAbsLn": 0.005014333774027442,
+   "maxRelative": 0.34376599628971505,
+   "within1pct": 0.7777777777777778,
+   "withinTolerance": 0.7777777777777778,
+   "within125": 0.7777777777777778,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-021",
+     "detail": "",
+     "nimbus": 604.6946983303718,
+     "reference": 450,
+     "ratio": 1.343765996289715
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "",
+     "nimbus": 603.2134852884622,
+     "reference": 450,
+     "ratio": 1.340474411752138
+    },
+    {
+     "caseId": "imp-lhs-081",
+     "detail": "",
+     "nimbus": 584.4023917356303,
+     "reference": 590,
+     "ratio": 0.9905125283654751
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 302.1044640384888,
+     "reference": 300,
+     "ratio": 1.007014880128296
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "",
+     "nimbus": 676.5987875673894,
+     "reference": 680,
+     "ratio": 0.9949982170108668
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "fireballRadius",
+   "cls": "A",
+   "subset": "all",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0002296812504718,
+   "scatterLn": 0.0004391190821068277,
+   "medianAbsLn": 0.00015875698162497076,
+   "maxRelative": 0.004433549826680316,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 607.1673269258423,
+     "reference": 604.4873023512723,
+     "ratio": 1.0044335498266803
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "",
+     "nimbus": 1808.2328174551571,
+     "reference": 1804.9716559845845,
+     "ratio": 1.0018067660285743
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "",
+     "nimbus": 2351.109595180861,
+     "reference": 2350.0532825805276,
+     "ratio": 1.0004494845321863
+    },
+    {
+     "caseId": "imp-lhs-032",
+     "detail": "",
+     "nimbus": 8011.0139251018045,
+     "reference": 8007.747346562987,
+     "ratio": 1.0004079272731075
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "",
+     "nimbus": 1317.350810822484,
+     "reference": 1316.9127801620004,
+     "ratio": 1.000332619340538
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "fireballRadius",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0010115020674228,
+   "scatterLn": 0.001907790944313028,
+   "medianAbsLn": 0.0001573652018119586,
+   "maxRelative": 0.004433549826680316,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 607.1673269258423,
+     "reference": 604.4873023512723,
+     "ratio": 1.0044335498266803
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "",
+     "nimbus": 21423.705781881952,
+     "reference": 21420.289651551786,
+     "ratio": 1.0001594810521117
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "",
+     "nimbus": 110076.75501709542,
+     "reference": 110059.4341292156,
+     "ratio": 1.0001573775843648
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 203889.69705908324,
+     "reference": 203857.6511671372,
+     "ratio": 1.0001571973961367
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 203889.69705908324,
+     "reference": 203857.6511671372,
+     "ratio": 1.0001571973961367
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "fireballRadius",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 103,
+   "pairs": 103,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0001917443279704,
+   "scatterLn": 0.00016783117710340457,
+   "medianAbsLn": 0.000158816583671374,
+   "maxRelative": 0.0018067660285743248,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-050",
+     "detail": "",
+     "nimbus": 1808.2328174551571,
+     "reference": 1804.9716559845845,
+     "ratio": 1.0018067660285743
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "",
+     "nimbus": 2351.109595180861,
+     "reference": 2350.0532825805276,
+     "ratio": 1.0004494845321863
+    },
+    {
+     "caseId": "imp-lhs-032",
+     "detail": "",
+     "nimbus": 8011.0139251018045,
+     "reference": 8007.747346562987,
+     "ratio": 1.0004079272731075
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "",
+     "nimbus": 1317.350810822484,
+     "reference": 1316.9127801620004,
+     "ratio": 1.000332619340538
+    },
+    {
+     "caseId": "imp-grid-055",
+     "detail": "",
+     "nimbus": 18826.805375218588,
+     "reference": 18820.585089135286,
+     "ratio": 1.0003305043947275
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "fireballRadius",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 92,
+   "pairs": 92,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0001694490570727,
+   "scatterLn": 0.00003923162322326843,
+   "medianAbsLn": 0.00015797757511199618,
+   "maxRelative": 0.0004079272731074557,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-032",
+     "detail": "",
+     "nimbus": 8011.0139251018045,
+     "reference": 8007.747346562987,
+     "ratio": 1.0004079272731075
+    },
+    {
+     "caseId": "imp-grid-055",
+     "detail": "",
+     "nimbus": 18826.805375218588,
+     "reference": 18820.585089135286,
+     "ratio": 1.0003305043947275
+    },
+    {
+     "caseId": "imp-lhs-002",
+     "detail": "",
+     "nimbus": 35013.64124416966,
+     "reference": 35002.181829782436,
+     "ratio": 1.00032739143071
+    },
+    {
+     "caseId": "imp-lhs-100",
+     "detail": "",
+     "nimbus": 22830.309121712984,
+     "reference": 22823.785747374364,
+     "ratio": 1.0002858147377838
+    },
+    {
+     "caseId": "imp-lhs-067",
+     "detail": "",
+     "nimbus": 10567.40640060905,
+     "reference": 10564.705549830152,
+     "ratio": 1.0002556484670735
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "fireballRadius",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0005760867615674,
+   "scatterLn": 0.001102731102715285,
+   "medianAbsLn": 0.0001866294862474757,
+   "maxRelative": 0.004433549826680316,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 607.1673269258423,
+     "reference": 604.4873023512723,
+     "ratio": 1.0044335498266803
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "",
+     "nimbus": 1808.2328174551571,
+     "reference": 1804.9716559845845,
+     "ratio": 1.0018067660285743
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "",
+     "nimbus": 2351.109595180861,
+     "reference": 2350.0532825805276,
+     "ratio": 1.0004494845321863
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "",
+     "nimbus": 1317.350810822484,
+     "reference": 1316.9127801620004,
+     "ratio": 1.000332619340538
+    },
+    {
+     "caseId": "imp-lhs-059",
+     "detail": "",
+     "nimbus": 2968.6916974842247,
+     "reference": 2968.0876487409855,
+     "ratio": 1.0002035144560153
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "fireballVisibleRadius",
+   "cls": "A",
+   "subset": "all",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9953051179496123,
+   "scatterLn": 0.0072825844529183035,
+   "medianAbsLn": 0.0016759736929290608,
+   "maxRelative": 0.03586466305330538,
+   "within1pct": 0.8240740740740741,
+   "withinTolerance": 0.8240740740740741,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "",
+     "nimbus": 2396187.940799367,
+     "reference": 2485323.220687894,
+     "ratio": 0.9641353369466946
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "",
+     "nimbus": 2221196.3384934813,
+     "reference": 2291579.7809347925,
+     "ratio": 0.9692860606351659
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 2151992.5388283413,
+     "reference": 2215788.4654672365,
+     "ratio": 0.9712084760647751
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "",
+     "nimbus": 2068939.4178755172,
+     "reference": 2125411.069555015,
+     "ratio": 0.9734302448649047
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "",
+     "nimbus": 1959343.7272221346,
+     "reference": 2007070.772559341,
+     "ratio": 0.9762205468836823
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "fireballVisibleRadius",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9922173263033891,
+   "scatterLn": 0.008136054468912452,
+   "medianAbsLn": 0.008432548720405511,
+   "maxRelative": 0.015555020257745245,
+   "within1pct": 0.6,
+   "withinTolerance": 0.6,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 1590760.3059258745,
+     "reference": 1615895.5946348205,
+     "ratio": 0.9844449797422548
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 1590760.3059258745,
+     "reference": 1615895.5946348205,
+     "ratio": 0.9844449797422548
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "",
+     "nimbus": 1175881.1708781538,
+     "reference": 1185838.7711102907,
+     "ratio": 0.991602905492107
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 87954.03179719471,
+     "reference": 87756.99423220343,
+     "ratio": 1.0022452633743348
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "",
+     "nimbus": 521745.2338991815,
+     "reference": 522539.5395486577,
+     "ratio": 0.9984799128307834
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "fireballVisibleRadius",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 103,
+   "pairs": 103,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9954552550630572,
+   "scatterLn": 0.007248703876850819,
+   "medianAbsLn": 0.0014352272993362887,
+   "maxRelative": 0.03586466305330538,
+   "within1pct": 0.8349514563106796,
+   "withinTolerance": 0.8349514563106796,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "",
+     "nimbus": 2396187.940799367,
+     "reference": 2485323.220687894,
+     "ratio": 0.9641353369466946
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "",
+     "nimbus": 2221196.3384934813,
+     "reference": 2291579.7809347925,
+     "ratio": 0.9692860606351659
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 2151992.5388283413,
+     "reference": 2215788.4654672365,
+     "ratio": 0.9712084760647751
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "",
+     "nimbus": 2068939.4178755172,
+     "reference": 2125411.069555015,
+     "ratio": 0.9734302448649047
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "",
+     "nimbus": 1959343.7272221346,
+     "reference": 2007070.772559341,
+     "ratio": 0.9762205468836823
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "fireballVisibleRadius",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 92,
+   "pairs": 92,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9944456932401591,
+   "scatterLn": 0.007564123090946401,
+   "medianAbsLn": 0.0024885809681928672,
+   "maxRelative": 0.03586466305330538,
+   "within1pct": 0.7934782608695652,
+   "withinTolerance": 0.7934782608695652,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "",
+     "nimbus": 2396187.940799367,
+     "reference": 2485323.220687894,
+     "ratio": 0.9641353369466946
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "",
+     "nimbus": 2221196.3384934813,
+     "reference": 2291579.7809347925,
+     "ratio": 0.9692860606351659
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 2151992.5388283413,
+     "reference": 2215788.4654672365,
+     "ratio": 0.9712084760647751
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "",
+     "nimbus": 2068939.4178755172,
+     "reference": 2125411.069555015,
+     "ratio": 0.9734302448649047
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "",
+     "nimbus": 1959343.7272221346,
+     "reference": 2007070.772559341,
+     "ratio": 0.9762205468836823
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "fireballVisibleRadius",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.000261243492755,
+   "scatterLn": 0.0005650283671177472,
+   "medianAbsLn": 0.0001151246205509556,
+   "maxRelative": 0.0022452633743348382,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 87954.03179719471,
+     "reference": 87756.99423220343,
+     "ratio": 1.0022452633743348
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "",
+     "nimbus": 151773.0357134077,
+     "reference": 151645.72184381826,
+     "ratio": 1.0008395480468653
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "",
+     "nimbus": 129548.41637969262,
+     "reference": 129530.10050780531,
+     "ratio": 1.0001414024370823
+    },
+    {
+     "caseId": "imp-lhs-030",
+     "detail": "",
+     "nimbus": 82169.27997448546,
+     "reference": 82158.58505484721,
+     "ratio": 1.0001301740972184
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "",
+     "nimbus": 173056.7204748756,
+     "reference": 173036.18095073188,
+     "ratio": 1.0001187007481953
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "clothingIgnitionRadius",
+   "cls": "B",
+   "subset": "all",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0991269873738676,
+   "scatterLn": 0.4522184335452951,
+   "medianAbsLn": 0.3021659047785191,
+   "maxRelative": 2.8899678582393973,
+   "within1pct": 0.009259259259259259,
+   "withinTolerance": 0.009259259259259259,
+   "within125": 0.28703703703703703,
+   "within2": 0.8796296296296297,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "",
+     "nimbus": 9202843.726986192,
+     "reference": 2365789.1433456233,
+     "ratio": 3.8899678582393973
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "",
+     "nimbus": 7541857.75872592,
+     "reference": 2164643.1549312742,
+     "ratio": 3.4841113379564717
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 6944869.799444591,
+     "reference": 2085024.3328699504,
+     "ratio": 3.3308339331873706
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "",
+     "nimbus": 6263330.224881825,
+     "reference": 1988541.5117656887,
+     "ratio": 3.1497105732132376
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "",
+     "nimbus": 5427463.807654208,
+     "reference": 1863190.925136085,
+     "ratio": 2.9129939043996758
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "clothingIgnitionRadius",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.335830127004229,
+   "scatterLn": 0.5311093655083012,
+   "medianAbsLn": 0.4140983346141148,
+   "maxRelative": 1.1878309225613815,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.2,
+   "within2": 0.6,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "",
+     "nimbus": 3161211.3942094673,
+     "reference": 1444906.6249180308,
+     "ratio": 2.1878309225613815
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 3161211.3942094673,
+     "reference": 1444906.6249180308,
+     "ratio": 2.1878309225613815
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "",
+     "nimbus": 1465152.0339350817,
+     "reference": 968371.6590447802,
+     "ratio": 1.5130059004208518
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "",
+     "nimbus": 2205.8506024136896,
+     "reference": 3072.6735337631007,
+     "ratio": 0.7178929288046382
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "",
+     "nimbus": 190087.45849501961,
+     "reference": 232340.59893441576,
+     "ratio": 0.8181413810880155
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "clothingIgnitionRadius",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 103,
+   "pairs": 103,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0887697791906257,
+   "scatterLn": 0.4488976006459056,
+   "medianAbsLn": 0.30118796813375615,
+   "maxRelative": 2.8899678582393973,
+   "within1pct": 0.009708737864077669,
+   "withinTolerance": 0.009708737864077669,
+   "within125": 0.2912621359223301,
+   "within2": 0.8932038834951457,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "",
+     "nimbus": 9202843.726986192,
+     "reference": 2365789.1433456233,
+     "ratio": 3.8899678582393973
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "",
+     "nimbus": 7541857.75872592,
+     "reference": 2164643.1549312742,
+     "ratio": 3.4841113379564717
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 6944869.799444591,
+     "reference": 2085024.3328699504,
+     "ratio": 3.3308339331873706
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "",
+     "nimbus": 6263330.224881825,
+     "reference": 1988541.5117656887,
+     "ratio": 3.1497105732132376
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "",
+     "nimbus": 5427463.807654208,
+     "reference": 1863190.925136085,
+     "ratio": 2.9129939043996758
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "clothingIgnitionRadius",
+   "cls": "B",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 92,
+   "pairs": 92,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.085180582698445,
+   "scatterLn": 0.4491152269162302,
+   "medianAbsLn": 0.28642949773516946,
+   "maxRelative": 2.8899678582393973,
+   "within1pct": 0.010869565217391304,
+   "withinTolerance": 0.010869565217391304,
+   "within125": 0.33695652173913043,
+   "within2": 0.8695652173913043,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-077",
+     "detail": "",
+     "nimbus": 9202843.726986192,
+     "reference": 2365789.1433456233,
+     "ratio": 3.8899678582393973
+    },
+    {
+     "caseId": "imp-grid-010",
+     "detail": "",
+     "nimbus": 7541857.75872592,
+     "reference": 2164643.1549312742,
+     "ratio": 3.4841113379564717
+    },
+    {
+     "caseId": "imp-lhs-034",
+     "detail": "",
+     "nimbus": 6944869.799444591,
+     "reference": 2085024.3328699504,
+     "ratio": 3.3308339331873706
+    },
+    {
+     "caseId": "imp-lhs-087",
+     "detail": "",
+     "nimbus": 6263330.224881825,
+     "reference": 1988541.5117656887,
+     "ratio": 3.1497105732132376
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "",
+     "nimbus": 5427463.807654208,
+     "reference": 1863190.925136085,
+     "ratio": 2.9129939043996758
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "clothingIgnitionRadius",
+   "cls": "B",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1828687275623866,
+   "scatterLn": 0.47786247655103475,
+   "medianAbsLn": 0.44502732578817916,
+   "maxRelative": 1.5058390981038032,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.9375,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-117",
+     "detail": "",
+     "nimbus": 10045.059646878866,
+     "reference": 4008.6610726443196,
+     "ratio": 2.5058390981038032
+    },
+    {
+     "caseId": "imp-lhs-030",
+     "detail": "",
+     "nimbus": 4915.342318471325,
+     "reference": 2682.143454584585,
+     "ratio": 1.8326172338282412
+    },
+    {
+     "caseId": "imp-grid-005",
+     "detail": "",
+     "nimbus": 6527.220600024791,
+     "reference": 3789.763183566406,
+     "ratio": 1.7223294131751696
+    },
+    {
+     "caseId": "imp-grid-056",
+     "detail": "",
+     "nimbus": 6527.220600024791,
+     "reference": 3789.763183566406,
+     "ratio": 1.7223294131751696
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "",
+     "nimbus": 6527.220600024791,
+     "reference": 3789.763183566406,
+     "ratio": 1.7223294131751696
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGround",
+   "cls": "B",
+   "subset": "all",
+   "rows": 216,
+   "pairs": 206,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 10
+   },
+   "geometricMeanRatio": 0.7979537612306086,
+   "scatterLn": 0.06637640651357113,
+   "medianAbsLn": 0.2886741802533007,
+   "maxRelative": 0.2508783872795127,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.47572815533980584,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-005",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-056",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-060",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-061",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGround",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 10,
+   "pairs": 8,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 2
+   },
+   "geometricMeanRatio": 0.7881513765428613,
+   "scatterLn": 0.06893703969687326,
+   "medianAbsLn": 0.28671407769892904,
+   "maxRelative": 0.25087431224313717,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.375,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "20 kPa (ground)",
+     "nimbus": 3127009.7638338404,
+     "reference": 4174212.438499034,
+     "ratio": 0.7491256877568628
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "20 kPa (ground)",
+     "nimbus": 3127009.7638338404,
+     "reference": 4174212.438499034,
+     "ratio": 0.7491256877568628
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "20 kPa (ground)",
+     "nimbus": 1688222.0763212843,
+     "reference": 2253589.484064438,
+     "ratio": 0.7491258227192775
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "20 kPa (ground)",
+     "nimbus": 328570.4874927318,
+     "reference": 438604.2858232116,
+     "ratio": 0.7491273982333333
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "20 kPa (ground)",
+     "nimbus": 9311.986760310998,
+     "reference": 12377.5507170965,
+     "ratio": 0.7523287097057749
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGround",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 206,
+   "pairs": 198,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 8
+   },
+   "geometricMeanRatio": 0.7983523694674892,
+   "scatterLn": 0.06640350281071326,
+   "medianAbsLn": 0.2886741802533007,
+   "maxRelative": 0.2508783872795127,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.4797979797979798,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-005",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-056",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-060",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-061",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGround",
+   "cls": "B",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 184,
+   "pairs": 174,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 10
+   },
+   "geometricMeanRatio": 0.7974333104786905,
+   "scatterLn": 0.06637034634735513,
+   "medianAbsLn": 0.2887788007064356,
+   "maxRelative": 0.25087473174920527,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.47126436781609193,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-088",
+     "detail": "20 kPa (ground)",
+     "nimbus": 75903.44248310408,
+     "reference": 101322.76362848953,
+     "ratio": 0.7491252682507947
+    },
+    {
+     "caseId": "imp-lhs-052",
+     "detail": "20 kPa (ground)",
+     "nimbus": 110161.51022489865,
+     "reference": 147053.48519136995,
+     "ratio": 0.7491254633070311
+    },
+    {
+     "caseId": "imp-lhs-040",
+     "detail": "20 kPa (ground)",
+     "nimbus": 3583151.653198677,
+     "reference": 4783112.426678988,
+     "ratio": 0.7491255344977396
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "20 kPa (ground)",
+     "nimbus": 2419438.483219345,
+     "reference": 3229683.635291795,
+     "ratio": 0.7491255356349336
+    },
+    {
+     "caseId": "imp-lhs-060",
+     "detail": "20 kPa (ground)",
+     "nimbus": 4810189.2632264495,
+     "reference": 6421072.349064194,
+     "ratio": 0.7491255356945925
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGround",
+   "cls": "B",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 32,
+   "pairs": 32,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8007896629306599,
+   "scatterLn": 0.06735769436064286,
+   "medianAbsLn": 0.22042975320220531,
+   "maxRelative": 0.2508783872795127,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-005",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-056",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-060",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-061",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGround",
+   "cls": "B",
+   "subset": "bin: 5 kPa",
+   "rows": 108,
+   "pairs": 98,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 10
+   },
+   "geometricMeanRatio": 0.8553925121868148,
+   "scatterLn": 0.00046092890087125275,
+   "medianAbsLn": 0.15627092647147733,
+   "maxRelative": 0.14467825409797186,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-005",
+     "detail": "5 kPa (ground)",
+     "nimbus": 56418.40382681341,
+     "reference": 65961.61514321629,
+     "ratio": 0.8553217459020281
+    },
+    {
+     "caseId": "imp-grid-056",
+     "detail": "5 kPa (ground)",
+     "nimbus": 56418.40382681341,
+     "reference": 65961.61514321629,
+     "ratio": 0.8553217459020281
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "5 kPa (ground)",
+     "nimbus": 56418.40382681341,
+     "reference": 65961.61514321629,
+     "ratio": 0.8553217459020281
+    },
+    {
+     "caseId": "imp-grid-060",
+     "detail": "5 kPa (ground)",
+     "nimbus": 56418.40382681341,
+     "reference": 65961.61514321629,
+     "ratio": 0.8553217459020281
+    },
+    {
+     "caseId": "imp-grid-061",
+     "detail": "5 kPa (ground)",
+     "nimbus": 56418.40382681341,
+     "reference": 65961.61514321629,
+     "ratio": 0.8553217459020281
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGround",
+   "cls": "B",
+   "subset": "bin: 20 kPa",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7491782613779898,
+   "scatterLn": 0.00043943233076147064,
+   "medianAbsLn": 0.28884776651909844,
+   "maxRelative": 0.2508783872795127,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-005",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-056",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-060",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    },
+    {
+     "caseId": "imp-grid-061",
+     "detail": "20 kPa (ground)",
+     "nimbus": 19753.33688616877,
+     "reference": 26368.665048166415,
+     "ratio": 0.7491216127204873
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGroundAsLabelled",
+   "cls": "B",
+   "subset": "all",
+   "rows": 324,
+   "pairs": 314,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 10
+   },
+   "geometricMeanRatio": 2.943095696656971,
+   "scatterLn": 0.25788394447771357,
+   "medianAbsLn": 1.1599664478949525,
+   "maxRelative": 3.059863225517476,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 125704.04557151855,
+     "reference": 30962.63065746412,
+     "ratio": 4.059863225517476
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 374364.9738864498,
+     "reference": 92453.0102022985,
+     "ratio": 4.049245914949589
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 486758.71475598426,
+     "reference": 120372.80440941075,
+     "ratio": 4.043759860411871
+    },
+    {
+     "caseId": "imp-lhs-032",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 1658549.1591151794,
+     "reference": 410167.29801519914,
+     "ratio": 4.043591888336549
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 272735.89834904263,
+     "reference": 67453.99590967014,
+     "ratio": 4.043287497960421
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGroundAsLabelled",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 15,
+   "pairs": 13,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 2
+   },
+   "geometricMeanRatio": 2.8635023746966444,
+   "scatterLn": 0.25304091351871605,
+   "medianAbsLn": 1.1599662159772597,
+   "maxRelative": 3.059863225517476,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 125704.04557151855,
+     "reference": 30962.63065746412,
+     "ratio": 4.059863225517476
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 4435427.21831179,
+     "reference": 1097175.2665062458,
+     "ratio": 4.042587682855445
+    },
+    {
+     "caseId": "imp-preset-POPIGAI",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 20015086.79602057,
+     "reference": 5637388.239682404,
+     "ratio": 3.5504183755043575
+    },
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "20 kPa (ground, as labelled)",
+     "nimbus": 9311.986760310998,
+     "reference": 2906.84903204539,
+     "ratio": 3.2034641832632995
+    },
+    {
+     "caseId": "imp-preset-BOLTYSH",
+     "detail": "20 kPa (ground, as labelled)",
+     "nimbus": 328570.4874927318,
+     "reference": 103005.55197363303,
+     "ratio": 3.189832792477419
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGroundAsLabelled",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 309,
+   "pairs": 301,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 8
+   },
+   "geometricMeanRatio": 2.9465826846652297,
+   "scatterLn": 0.2584391753200778,
+   "medianAbsLn": 1.1599666282305885,
+   "maxRelative": 3.049245914949589,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-050",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 374364.9738864498,
+     "reference": 92453.0102022985,
+     "ratio": 4.049245914949589
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 486758.71475598426,
+     "reference": 120372.80440941075,
+     "ratio": 4.043759860411871
+    },
+    {
+     "caseId": "imp-lhs-032",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 1658549.1591151794,
+     "reference": 410167.29801519914,
+     "ratio": 4.043591888336549
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 272735.89834904263,
+     "reference": 67453.99590967014,
+     "ratio": 4.043287497960421
+    },
+    {
+     "caseId": "imp-grid-055",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 3897781.5437384993,
+     "reference": 964014.996850406,
+     "ratio": 4.043278949469859
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGroundAsLabelled",
+   "cls": "B",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 276,
+   "pairs": 266,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 10
+   },
+   "geometricMeanRatio": 2.9289150341960877,
+   "scatterLn": 0.2567297657461272,
+   "medianAbsLn": 1.159966542445781,
+   "maxRelative": 3.0435918883365494,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-032",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 1658549.1591151794,
+     "reference": 410167.29801519914,
+     "ratio": 4.043591888336549
+    },
+    {
+     "caseId": "imp-grid-055",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 3897781.5437384993,
+     "reference": 964014.996850406,
+     "ratio": 4.043278949469859
+    },
+    {
+     "caseId": "imp-lhs-002",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 7249000.661591057,
+     "reference": 1792857.5571156896,
+     "ratio": 4.043266367046522
+    },
+    {
+     "caseId": "imp-lhs-100",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 4726641.390237689,
+     "reference": 1169064.173146827,
+     "ratio": 4.043098316420696
+    },
+    {
+     "caseId": "imp-lhs-067",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 2187808.3303338876,
+     "reference": 541138.0432175987,
+     "ratio": 4.042976386071865
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGroundAsLabelled",
+   "cls": "B",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 48,
+   "pairs": 48,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 3.0229338337397067,
+   "scatterLn": 0.26533814564287045,
+   "medianAbsLn": 1.1599658132874278,
+   "maxRelative": 3.059863225517476,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 125704.04557151855,
+     "reference": 30962.63065746412,
+     "ratio": 4.059863225517476
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 374364.9738864498,
+     "reference": 92453.0102022985,
+     "ratio": 4.049245914949589
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 486758.71475598426,
+     "reference": 120372.80440941075,
+     "ratio": 4.043759860411871
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 272735.89834904263,
+     "reference": 67453.99590967014,
+     "ratio": 4.043287497960421
+    },
+    {
+     "caseId": "imp-lhs-059",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 614618.9689056252,
+     "reference": 152029.33340284548,
+     "ratio": 4.042765663367183
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGroundAsLabelled",
+   "cls": "B",
+   "subset": "bin: 1 kPa",
+   "rows": 108,
+   "pairs": 98,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 10
+   },
+   "geometricMeanRatio": 3.8283633748746055,
+   "scatterLn": 0.15502354390813003,
+   "medianAbsLn": 1.3968834547992244,
+   "maxRelative": 3.059863225517476,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 125704.04557151855,
+     "reference": 30962.63065746412,
+     "ratio": 4.059863225517476
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 374364.9738864498,
+     "reference": 92453.0102022985,
+     "ratio": 4.049245914949589
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 486758.71475598426,
+     "reference": 120372.80440941075,
+     "ratio": 4.043759860411871
+    },
+    {
+     "caseId": "imp-lhs-032",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 1658549.1591151794,
+     "reference": 410167.29801519914,
+     "ratio": 4.043591888336549
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "1 kPa (ground, as labelled)",
+     "nimbus": 272735.89834904263,
+     "reference": 67453.99590967014,
+     "ratio": 4.043287497960421
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGroundAsLabelled",
+   "cls": "B",
+   "subset": "bin: 5 kPa",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 2.1388359728190163,
+   "scatterLn": 0.004527130947505109,
+   "medianAbsLn": 0.7606252144064304,
+   "maxRelative": 1.148760242346996,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "5 kPa (ground, as labelled)",
+     "nimbus": 26596.38887853051,
+     "reference": 12377.5507170965,
+     "ratio": 2.148760242346996
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "5 kPa (ground, as labelled)",
+     "nimbus": 79207.92352160299,
+     "reference": 36958.80480527983,
+     "ratio": 2.14314082771117
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "5 kPa (ground, as labelled)",
+     "nimbus": 102988.12586980984,
+     "reference": 48119.95815276262,
+     "ratio": 2.1402372284460762
+    },
+    {
+     "caseId": "imp-lhs-032",
+     "detail": "5 kPa (ground, as labelled)",
+     "nimbus": 350914.8668162009,
+     "reference": 163967.5449364212,
+     "ratio": 2.140148326013352
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "5 kPa (ground, as labelled)",
+     "nimbus": 57705.3028058632,
+     "reference": 26965.255784604662,
+     "ratio": 2.1399872215864173
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusGroundAsLabelled",
+   "cls": "B",
+   "subset": "bin: 20 kPa",
+   "rows": 108,
+   "pairs": 108,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 3.19004937102886,
+   "scatterLn": 0.0004394323307614761,
+   "medianAbsLn": 1.1599669515821263,
+   "maxRelative": 2.2034641832632995,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-METEOR_CRATER",
+     "detail": "20 kPa (ground, as labelled)",
+     "nimbus": 9311.986760310998,
+     "reference": 2906.84903204539,
+     "ratio": 3.2034641832632995
+    },
+    {
+     "caseId": "imp-grid-050",
+     "detail": "20 kPa (ground, as labelled)",
+     "nimbus": 27732.45415058187,
+     "reference": 8679.71931033087,
+     "ratio": 3.1950865182441843
+    },
+    {
+     "caseId": "imp-lhs-047",
+     "detail": "20 kPa (ground, as labelled)",
+     "nimbus": 36058.43142649594,
+     "reference": 11300.899263148796,
+     "ratio": 3.1907577075816613
+    },
+    {
+     "caseId": "imp-lhs-032",
+     "detail": "20 kPa (ground, as labelled)",
+     "nimbus": 122863.09275717378,
+     "reference": 38507.52949264437,
+     "ratio": 3.1906251680114366
+    },
+    {
+     "caseId": "imp-grid-049",
+     "detail": "20 kPa (ground, as labelled)",
+     "nimbus": 20203.908815670184,
+     "reference": 6332.7494645662455,
+     "ratio": 3.1903849866029756
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "ejectaEdge",
+   "cls": "A",
+   "subset": "all",
+   "rows": 405,
+   "pairs": 398,
+   "bothZero": 4,
+   "unpaired": {
+    "Nimbus zero": 3
+   },
+   "geometricMeanRatio": 0.9969630426616827,
+   "scatterLn": 0.003899437763654083,
+   "medianAbsLn": 0.00040692770841787304,
+   "maxRelative": 0.008525754985009737,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "100 m",
+     "nimbus": 15134.034590281253,
+     "reference": 15264.173190956099,
+     "ratio": 0.9914742450149903
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "10 m",
+     "nimbus": 32605.2891214444,
+     "reference": 32885.66423725049,
+     "ratio": 0.9914742450149905
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "0.01 m",
+     "nimbus": 326052.89121444395,
+     "reference": 328856.6423725048,
+     "ratio": 0.9914742450149906
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "1 m",
+     "nimbus": 70245.96596175901,
+     "reference": 70850.01583747334,
+     "ratio": 0.9914742450149906
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "0.1 m",
+     "nimbus": 151340.34590281252,
+     "reference": 152641.7319095609,
+     "ratio": 0.9914742450149907
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "ejectaEdge",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 20,
+   "pairs": 19,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9939640109119654,
+   "scatterLn": 0.004988142914644805,
+   "medianAbsLn": 0.008562007130553983,
+   "maxRelative": 0.008525614723580599,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "0.01 m",
+     "nimbus": 3939126.5703715603,
+     "reference": 3972998.8276735423,
+     "ratio": 0.9914743852764194
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "0.1 m",
+     "nimbus": 1828380.5903224037,
+     "reference": 1844102.6994486176,
+     "ratio": 0.9914743852764194
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "1 m",
+     "nimbus": 848659.093163481,
+     "reference": 855956.6497795886,
+     "ratio": 0.9914743852764194
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "10 m",
+     "nimbus": 393912.65703715605,
+     "reference": 397299.88276735425,
+     "ratio": 0.9914743852764194
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB",
+     "detail": "100 m",
+     "nimbus": 182838.0590322404,
+     "reference": 184410.26994486176,
+     "ratio": 0.9914743852764194
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "ejectaEdge",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 385,
+   "pairs": 379,
+   "bothZero": 3,
+   "unpaired": {
+    "Nimbus zero": 3
+   },
+   "geometricMeanRatio": 0.9971136278604976,
+   "scatterLn": 0.003782326124139293,
+   "medianAbsLn": 0.00040687815021637233,
+   "maxRelative": 0.008525754985009737,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "100 m",
+     "nimbus": 15134.034590281253,
+     "reference": 15264.173190956099,
+     "ratio": 0.9914742450149903
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "10 m",
+     "nimbus": 32605.2891214444,
+     "reference": 32885.66423725049,
+     "ratio": 0.9914742450149905
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "0.01 m",
+     "nimbus": 326052.89121444395,
+     "reference": 328856.6423725048,
+     "ratio": 0.9914742450149906
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "1 m",
+     "nimbus": 70245.96596175901,
+     "reference": 70850.01583747334,
+     "ratio": 0.9914742450149906
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "0.1 m",
+     "nimbus": 151340.34590281252,
+     "reference": 152641.7319095609,
+     "ratio": 0.9914742450149907
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "ejectaEdge",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 360,
+   "pairs": 360,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9968928808876079,
+   "scatterLn": 0.0038436010295902208,
+   "medianAbsLn": 0.0004069137908925196,
+   "maxRelative": 0.008525754985009737,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "100 m",
+     "nimbus": 15134.034590281253,
+     "reference": 15264.173190956099,
+     "ratio": 0.9914742450149903
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "10 m",
+     "nimbus": 32605.2891214444,
+     "reference": 32885.66423725049,
+     "ratio": 0.9914742450149905
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "0.01 m",
+     "nimbus": 326052.89121444395,
+     "reference": 328856.6423725048,
+     "ratio": 0.9914742450149906
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "1 m",
+     "nimbus": 70245.96596175901,
+     "reference": 70850.01583747334,
+     "ratio": 0.9914742450149906
+    },
+    {
+     "caseId": "imp-lhs-075",
+     "detail": "0.1 m",
+     "nimbus": 151340.34590281252,
+     "reference": 152641.7319095609,
+     "ratio": 0.9914742450149907
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "ejectaEdge",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 45,
+   "pairs": 38,
+   "bothZero": 4,
+   "unpaired": {
+    "Nimbus zero": 3
+   },
+   "geometricMeanRatio": 0.9976279781874826,
+   "scatterLn": 0.004393945269560487,
+   "medianAbsLn": 0.0010432037286277167,
+   "maxRelative": 0.0085250191391959,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-081",
+     "detail": "0.1 m",
+     "nimbus": 12762.850905390938,
+     "reference": 12872.589981352994,
+     "ratio": 0.9914749808608041
+    },
+    {
+     "caseId": "imp-lhs-081",
+     "detail": "1 m",
+     "nimbus": 5923.990624752732,
+     "reference": 5974.9269917123775,
+     "ratio": 0.9914749808608043
+    },
+    {
+     "caseId": "imp-lhs-081",
+     "detail": "0.01 m",
+     "nimbus": 27496.728734279073,
+     "reference": 27733.15440638376,
+     "ratio": 0.9914749808608044
+    },
+    {
+     "caseId": "imp-lhs-081",
+     "detail": "10 m",
+     "nimbus": 2749.6728734279077,
+     "reference": 2773.3154406383765,
+     "ratio": 0.9914749808608044
+    },
+    {
+     "caseId": "imp-lhs-117",
+     "detail": "10 m",
+     "nimbus": 1229.4045520349887,
+     "reference": 1239.9744800308224,
+     "ratio": 0.9914756890838826
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "transientDiameterSeafloor",
+   "cls": "C",
+   "subset": "all",
+   "rows": 27,
+   "pairs": 17,
+   "bothZero": 1,
+   "unpaired": {
+    "Nimbus zero": 9
+   },
+   "geometricMeanRatio": 0.97359149115748,
+   "scatterLn": 0.06134588429018544,
+   "medianAbsLn": 0.038247210485153546,
+   "maxRelative": 0.13803217519086375,
+   "within1pct": 0.17647058823529413,
+   "withinTolerance": 0.47058823529411764,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-065",
+     "detail": "",
+     "nimbus": 5516.594078778472,
+     "reference": 6400,
+     "ratio": 0.8619678248091363
+    },
+    {
+     "caseId": "imp-lhs-088",
+     "detail": "",
+     "nimbus": 2047.7734355300336,
+     "reference": 1800,
+     "ratio": 1.1376519086277965
+    },
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "",
+     "nimbus": 1983.8439517244776,
+     "reference": 2200,
+     "ratio": 0.9017472507838534
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "",
+     "nimbus": 1012.9230920656312,
+     "reference": 1100,
+     "ratio": 0.9208391746051192
+    },
+    {
+     "caseId": "imp-lhs-110",
+     "detail": "",
+     "nimbus": 20577.645497286016,
+     "reference": 22000,
+     "ratio": 0.9353475226039099
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "transientDiameterSeafloor",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9972810240167075,
+   "scatterLn": null,
+   "medianAbsLn": 0.0027226791124940826,
+   "maxRelative": 0.0027189759832925153,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 90752.57318552038,
+     "reference": 91000,
+     "ratio": 0.9972810240167075
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "transientDiameterSeafloor",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 26,
+   "pairs": 16,
+   "bothZero": 1,
+   "unpaired": {
+    "Nimbus zero": 9
+   },
+   "geometricMeanRatio": 0.9721297198633557,
+   "scatterLn": 0.06303385220294767,
+   "medianAbsLn": 0.040369249805537966,
+   "maxRelative": 0.13803217519086375,
+   "within1pct": 0.125,
+   "withinTolerance": 0.4375,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-065",
+     "detail": "",
+     "nimbus": 5516.594078778472,
+     "reference": 6400,
+     "ratio": 0.8619678248091363
+    },
+    {
+     "caseId": "imp-lhs-088",
+     "detail": "",
+     "nimbus": 2047.7734355300336,
+     "reference": 1800,
+     "ratio": 1.1376519086277965
+    },
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "",
+     "nimbus": 1983.8439517244776,
+     "reference": 2200,
+     "ratio": 0.9017472507838534
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "",
+     "nimbus": 1012.9230920656312,
+     "reference": 1100,
+     "ratio": 0.9208391746051192
+    },
+    {
+     "caseId": "imp-lhs-110",
+     "detail": "",
+     "nimbus": 20577.645497286016,
+     "reference": 22000,
+     "ratio": 0.9353475226039099
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "transientDiameterSeafloor",
+   "cls": "C",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 20,
+   "pairs": 15,
+   "bothZero": 0,
+   "unpaired": {
+    "Nimbus zero": 5
+   },
+   "geometricMeanRatio": 0.9822207350800805,
+   "scatterLn": 0.059800553053475806,
+   "medianAbsLn": 0.019652814956055496,
+   "maxRelative": 0.13803217519086375,
+   "within1pct": 0.2,
+   "withinTolerance": 0.5333333333333333,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-065",
+     "detail": "",
+     "nimbus": 5516.594078778472,
+     "reference": 6400,
+     "ratio": 0.8619678248091363
+    },
+    {
+     "caseId": "imp-lhs-088",
+     "detail": "",
+     "nimbus": 2047.7734355300336,
+     "reference": 1800,
+     "ratio": 1.1376519086277965
+    },
+    {
+     "caseId": "imp-lhs-110",
+     "detail": "",
+     "nimbus": 20577.645497286016,
+     "reference": 22000,
+     "ratio": 0.9353475226039099
+    },
+    {
+     "caseId": "imp-lhs-107",
+     "detail": "",
+     "nimbus": 80622.02390649907,
+     "reference": 86000,
+     "ratio": 0.9374653942616171
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "",
+     "nimbus": 52785.81260267129,
+     "reference": 50000,
+     "ratio": 1.0557162520534258
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "transientDiameterSeafloor",
+   "cls": "C",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 7,
+   "pairs": 2,
+   "bothZero": 1,
+   "unpaired": {
+    "Nimbus zero": 4
+   },
+   "geometricMeanRatio": 0.9112432134804841,
+   "scatterLn": 0.014814685797995001,
+   "medianAbsLn": 0.09294544317069556,
+   "maxRelative": 0.09825274921614657,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "",
+     "nimbus": 1983.8439517244776,
+     "reference": 2200,
+     "ratio": 0.9017472507838534
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "",
+     "nimbus": 1012.9230920656312,
+     "reference": 1100,
+     "ratio": 0.9208391746051192
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDiameterSeafloor",
+   "cls": "C",
+   "subset": "all",
+   "rows": 27,
+   "pairs": 17,
+   "bothZero": 1,
+   "unpaired": {
+    "Nimbus zero": 9
+   },
+   "geometricMeanRatio": 0.9751757938484577,
+   "scatterLn": 0.06356167310249301,
+   "medianAbsLn": 0.026380411730741713,
+   "maxRelative": 0.1551282771471969,
+   "within1pct": 0.29411764705882354,
+   "withinTolerance": 0.6470588235294118,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-065",
+     "detail": "",
+     "nimbus": 6927.948127392985,
+     "reference": 8200,
+     "ratio": 0.8448717228528031
+    },
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "",
+     "nimbus": 2479.804939655597,
+     "reference": 2800,
+     "ratio": 0.8856446213055704
+    },
+    {
+     "caseId": "imp-lhs-088",
+     "detail": "",
+     "nimbus": 2559.716794412542,
+     "reference": 2300,
+     "ratio": 1.1129203453967575
+    },
+    {
+     "caseId": "imp-lhs-110",
+     "detail": "",
+     "nimbus": 30665.7424743972,
+     "reference": 34000,
+     "ratio": 0.901933602188153
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "",
+     "nimbus": 88912.08890341324,
+     "reference": 84000,
+     "ratio": 1.0584772488501577
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDiameterSeafloor",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9648239026958683,
+   "scatterLn": null,
+   "medianAbsLn": 0.03580967854841456,
+   "maxRelative": 0.03517609730413174,
+   "within1pct": 0,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 164020.0634582976,
+     "reference": 170000,
+     "ratio": 0.9648239026958683
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDiameterSeafloor",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 26,
+   "pairs": 16,
+   "bothZero": 1,
+   "unpaired": {
+    "Nimbus zero": 9
+   },
+   "geometricMeanRatio": 0.9758264625693788,
+   "scatterLn": 0.06558473768722828,
+   "medianAbsLn": 0.02151054905237057,
+   "maxRelative": 0.1551282771471969,
+   "within1pct": 0.3125,
+   "withinTolerance": 0.625,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-065",
+     "detail": "",
+     "nimbus": 6927.948127392985,
+     "reference": 8200,
+     "ratio": 0.8448717228528031
+    },
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "",
+     "nimbus": 2479.804939655597,
+     "reference": 2800,
+     "ratio": 0.8856446213055704
+    },
+    {
+     "caseId": "imp-lhs-088",
+     "detail": "",
+     "nimbus": 2559.716794412542,
+     "reference": 2300,
+     "ratio": 1.1129203453967575
+    },
+    {
+     "caseId": "imp-lhs-110",
+     "detail": "",
+     "nimbus": 30665.7424743972,
+     "reference": 34000,
+     "ratio": 0.901933602188153
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "",
+     "nimbus": 88912.08890341324,
+     "reference": 84000,
+     "ratio": 1.0584772488501577
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDiameterSeafloor",
+   "cls": "C",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 20,
+   "pairs": 15,
+   "bothZero": 0,
+   "unpaired": {
+    "Nimbus zero": 5
+   },
+   "geometricMeanRatio": 0.9815380185280651,
+   "scatterLn": 0.06252509717011967,
+   "medianAbsLn": 0.01664068637399943,
+   "maxRelative": 0.1551282771471969,
+   "within1pct": 0.3333333333333333,
+   "withinTolerance": 0.6666666666666666,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-065",
+     "detail": "",
+     "nimbus": 6927.948127392985,
+     "reference": 8200,
+     "ratio": 0.8448717228528031
+    },
+    {
+     "caseId": "imp-lhs-088",
+     "detail": "",
+     "nimbus": 2559.716794412542,
+     "reference": 2300,
+     "ratio": 1.1129203453967575
+    },
+    {
+     "caseId": "imp-lhs-110",
+     "detail": "",
+     "nimbus": 30665.7424743972,
+     "reference": 34000,
+     "ratio": 0.901933602188153
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "",
+     "nimbus": 88912.08890341324,
+     "reference": 84000,
+     "ratio": 1.0584772488501577
+    },
+    {
+     "caseId": "imp-grid-064",
+     "detail": "",
+     "nimbus": 12408.318530946512,
+     "reference": 13000,
+     "ratio": 0.9544860408420394
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDiameterSeafloor",
+   "cls": "C",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 7,
+   "pairs": 2,
+   "bothZero": 1,
+   "unpaired": {
+    "Nimbus zero": 4
+   },
+   "geometricMeanRatio": 0.9287553127936528,
+   "scatterLn": 0.0672169354478755,
+   "medianAbsLn": 0.0739099625965129,
+   "maxRelative": 0.11435537869442958,
+   "within1pct": 0,
+   "withinTolerance": 0.5,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "",
+     "nimbus": 2479.804939655597,
+     "reference": 2800,
+     "ratio": 0.8856446213055704
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "",
+     "nimbus": 1266.153865082039,
+     "reference": 1300,
+     "ratio": 0.9739645116015684
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDepthSeafloor",
+   "cls": "C",
+   "subset": "all",
+   "rows": 27,
+   "pairs": 17,
+   "bothZero": 3,
+   "unpaired": {
+    "Nimbus zero": 7
+   },
+   "geometricMeanRatio": 1.2734961399491898,
+   "scatterLn": 0.12891516144880724,
+   "medianAbsLn": 0.29214927099199245,
+   "maxRelative": 0.4096570694912134,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.17647058823529413,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-102",
+     "detail": "",
+     "nimbus": 1409.6570694912134,
+     "reference": 1000,
+     "ratio": 1.4096570694912134
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "",
+     "nimbus": 1537.2632161125794,
+     "reference": 1100,
+     "ratio": 1.3975120146477995
+    },
+    {
+     "caseId": "imp-lhs-107",
+     "detail": "",
+     "nimbus": 1774.609098158957,
+     "reference": 1300,
+     "ratio": 1.3650839216607362
+    },
+    {
+     "caseId": "imp-lhs-082",
+     "detail": "",
+     "nimbus": 1767.4810208191218,
+     "reference": 1300,
+     "ratio": 1.3596007852454783
+    },
+    {
+     "caseId": "imp-lhs-094",
+     "detail": "",
+     "nimbus": 1356.1794503589856,
+     "reference": 1000,
+     "ratio": 1.3561794503589857
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDepthSeafloor",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.3194746422166221,
+   "scatterLn": null,
+   "medianAbsLn": 0.2772336590551861,
+   "maxRelative": 0.31947464221662214,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 1847.264499103271,
+     "reference": 1400,
+     "ratio": 1.3194746422166221
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDepthSeafloor",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 26,
+   "pairs": 16,
+   "bothZero": 3,
+   "unpaired": {
+    "Nimbus zero": 7
+   },
+   "geometricMeanRatio": 1.2706762698739205,
+   "scatterLn": 0.13280796246915,
+   "medianAbsLn": 0.2954973977604688,
+   "maxRelative": 0.4096570694912134,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.1875,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-102",
+     "detail": "",
+     "nimbus": 1409.6570694912134,
+     "reference": 1000,
+     "ratio": 1.4096570694912134
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "",
+     "nimbus": 1537.2632161125794,
+     "reference": 1100,
+     "ratio": 1.3975120146477995
+    },
+    {
+     "caseId": "imp-lhs-107",
+     "detail": "",
+     "nimbus": 1774.609098158957,
+     "reference": 1300,
+     "ratio": 1.3650839216607362
+    },
+    {
+     "caseId": "imp-lhs-082",
+     "detail": "",
+     "nimbus": 1767.4810208191218,
+     "reference": 1300,
+     "ratio": 1.3596007852454783
+    },
+    {
+     "caseId": "imp-lhs-094",
+     "detail": "",
+     "nimbus": 1356.1794503589856,
+     "reference": 1000,
+     "ratio": 1.3561794503589857
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDepthSeafloor",
+   "cls": "C",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 20,
+   "pairs": 15,
+   "bothZero": 1,
+   "unpaired": {
+    "Nimbus zero": 4
+   },
+   "geometricMeanRatio": 1.3284121137085751,
+   "scatterLn": 0.05069294471676303,
+   "medianAbsLn": 0.29884552452894514,
+   "maxRelative": 0.4096570694912134,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.06666666666666667,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-102",
+     "detail": "",
+     "nimbus": 1409.6570694912134,
+     "reference": 1000,
+     "ratio": 1.4096570694912134
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "",
+     "nimbus": 1537.2632161125794,
+     "reference": 1100,
+     "ratio": 1.3975120146477995
+    },
+    {
+     "caseId": "imp-lhs-107",
+     "detail": "",
+     "nimbus": 1774.609098158957,
+     "reference": 1300,
+     "ratio": 1.3650839216607362
+    },
+    {
+     "caseId": "imp-lhs-082",
+     "detail": "",
+     "nimbus": 1767.4810208191218,
+     "reference": 1300,
+     "ratio": 1.3596007852454783
+    },
+    {
+     "caseId": "imp-lhs-094",
+     "detail": "",
+     "nimbus": 1356.1794503589856,
+     "reference": 1000,
+     "ratio": 1.3561794503589857
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "finalDepthSeafloor",
+   "cls": "C",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 7,
+   "pairs": 2,
+   "bothZero": 2,
+   "unpaired": {
+    "Nimbus zero": 3
+   },
+   "geometricMeanRatio": 0.9278626124738283,
+   "scatterLn": 0.051715585746232536,
+   "medianAbsLn": 0.07487160405916332,
+   "maxRelative": 0.10545497814531701,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "",
+     "nimbus": 527.781562894263,
+     "reference": 590,
+     "ratio": 0.894545021854683
+    },
+    {
+     "caseId": "imp-grid-059",
+     "detail": "",
+     "nimbus": 269.4779154163711,
+     "reference": 280,
+     "ratio": 0.9624211264870397
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "waterCavityDiameter",
+   "cls": "C",
+   "subset": "all",
+   "rows": 27,
+   "pairs": 21,
+   "bothZero": 0,
+   "unpaired": {
+    "Nimbus: no tsunami source": 6
+   },
+   "geometricMeanRatio": 0.7567911458735364,
+   "scatterLn": 0.5368539115324769,
+   "medianAbsLn": 0.20216010851878013,
+   "maxRelative": 0.7505140909386855,
+   "within1pct": 0.047619047619047616,
+   "withinTolerance": 0.047619047619047616,
+   "within125": 0.5238095238095238,
+   "within2": 0.7142857142857143,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-040",
+     "detail": "",
+     "nimbus": 39917.74544981032,
+     "reference": 160000,
+     "ratio": 0.2494859090613145
+    },
+    {
+     "caseId": "imp-lhs-094",
+     "detail": "",
+     "nimbus": 17276.293327484454,
+     "reference": 60000,
+     "ratio": 0.2879382221247409
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 50002.344095665394,
+     "reference": 150000,
+     "ratio": 0.3333489606377693
+    },
+    {
+     "caseId": "imp-lhs-016",
+     "detail": "",
+     "nimbus": 35874.748070837784,
+     "reference": 89000,
+     "ratio": 0.40308705697570546
+    },
+    {
+     "caseId": "imp-lhs-014",
+     "detail": "",
+     "nimbus": 61830.58493142165,
+     "reference": 130000,
+     "ratio": 0.4756198840878588
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "waterCavityDiameter",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.3333489606377693,
+   "scatterLn": null,
+   "medianAbsLn": 1.0985654078537244,
+   "maxRelative": 0.6666510393622307,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 50002.344095665394,
+     "reference": 150000,
+     "ratio": 0.3333489606377693
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "waterCavityDiameter",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 26,
+   "pairs": 20,
+   "bothZero": 0,
+   "unpaired": {
+    "Nimbus: no tsunami source": 6
+   },
+   "geometricMeanRatio": 0.7884604058316359,
+   "scatterLn": 0.5159762862554685,
+   "medianAbsLn": 0.19169867990002204,
+   "maxRelative": 0.7505140909386855,
+   "within1pct": 0.05,
+   "withinTolerance": 0.05,
+   "within125": 0.55,
+   "within2": 0.75,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-040",
+     "detail": "",
+     "nimbus": 39917.74544981032,
+     "reference": 160000,
+     "ratio": 0.2494859090613145
+    },
+    {
+     "caseId": "imp-lhs-094",
+     "detail": "",
+     "nimbus": 17276.293327484454,
+     "reference": 60000,
+     "ratio": 0.2879382221247409
+    },
+    {
+     "caseId": "imp-lhs-016",
+     "detail": "",
+     "nimbus": 35874.748070837784,
+     "reference": 89000,
+     "ratio": 0.40308705697570546
+    },
+    {
+     "caseId": "imp-lhs-014",
+     "detail": "",
+     "nimbus": 61830.58493142165,
+     "reference": 130000,
+     "ratio": 0.4756198840878588
+    },
+    {
+     "caseId": "imp-lhs-082",
+     "detail": "",
+     "nimbus": 63824.41904014507,
+     "reference": 130000,
+     "ratio": 0.49095706953957746
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "waterCavityDiameter",
+   "cls": "C",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 20,
+   "pairs": 19,
+   "bothZero": 0,
+   "unpaired": {
+    "Nimbus: no tsunami source": 1
+   },
+   "geometricMeanRatio": 0.7228362736876356,
+   "scatterLn": 0.5448547871218518,
+   "medianAbsLn": 0.3152882128202386,
+   "maxRelative": 0.7505140909386855,
+   "within1pct": 0.05263157894736842,
+   "withinTolerance": 0.05263157894736842,
+   "within125": 0.47368421052631576,
+   "within2": 0.6842105263157895,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-040",
+     "detail": "",
+     "nimbus": 39917.74544981032,
+     "reference": 160000,
+     "ratio": 0.2494859090613145
+    },
+    {
+     "caseId": "imp-lhs-094",
+     "detail": "",
+     "nimbus": 17276.293327484454,
+     "reference": 60000,
+     "ratio": 0.2879382221247409
+    },
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "",
+     "nimbus": 50002.344095665394,
+     "reference": 150000,
+     "ratio": 0.3333489606377693
+    },
+    {
+     "caseId": "imp-lhs-016",
+     "detail": "",
+     "nimbus": 35874.748070837784,
+     "reference": 89000,
+     "ratio": 0.40308705697570546
+    },
+    {
+     "caseId": "imp-lhs-014",
+     "detail": "",
+     "nimbus": 61830.58493142165,
+     "reference": 130000,
+     "ratio": 0.4756198840878588
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "waterCavityDiameter",
+   "cls": "C",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 7,
+   "pairs": 2,
+   "bothZero": 0,
+   "unpaired": {
+    "Nimbus: no tsunami source": 5
+   },
+   "geometricMeanRatio": 1.1704935642001046,
+   "scatterLn": 0.01577156819685565,
+   "medianAbsLn": 0.15742550959975665,
+   "maxRelative": 0.18362018159099902,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "",
+     "nimbus": 5799.738889795895,
+     "reference": 4900,
+     "ratio": 1.183620181590999
+    },
+    {
+     "caseId": "imp-lhs-059",
+     "detail": "",
+     "nimbus": 7060.826396313052,
+     "reference": 6100,
+     "ratio": 1.1575125239857462
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "tsunamiAmplitudeAtRadius",
+   "cls": "C",
+   "subset": "all",
+   "rows": 118,
+   "pairs": 49,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 14,
+    "Nimbus: no tsunami source": 55
+   },
+   "geometricMeanRatio": 0.8628915845449323,
+   "scatterLn": 1.004553413243279,
+   "medianAbsLn": 0.7814180515743422,
+   "maxRelative": 9.386604550913049,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.04081632653061224,
+   "within2": 0.40816326530612246,
+   "within10": 0.9795918367346939,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-064",
+     "detail": "1 m",
+     "nimbus": 10.386604550913049,
+     "reference": 1,
+     "ratio": 10.386604550913049
+    },
+    {
+     "caseId": "imp-lhs-102",
+     "detail": "10 m",
+     "nimbus": 60.61923765806353,
+     "reference": 10,
+     "ratio": 6.061923765806354
+    },
+    {
+     "caseId": "imp-lhs-059",
+     "detail": "1 m",
+     "nimbus": 0.18223611660015698,
+     "reference": 1,
+     "ratio": 0.18223611660015698
+    },
+    {
+     "caseId": "imp-lhs-061",
+     "detail": "10 m",
+     "nimbus": 1.9560629666982072,
+     "reference": 10,
+     "ratio": 0.1956062966698207
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "100 m",
+     "nimbus": 422.217052365638,
+     "reference": 100,
+     "ratio": 4.22217052365638
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "tsunamiAmplitudeAtRadius",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 2,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 1
+   },
+   "geometricMeanRatio": 1.2919751048684573,
+   "scatterLn": null,
+   "medianAbsLn": 0.25617213649710213,
+   "maxRelative": 0.29197510486845735,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHICXULUB_OCEAN",
+     "detail": "10 m",
+     "nimbus": 12.919751048684573,
+     "reference": 10,
+     "ratio": 1.2919751048684573
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "tsunamiAmplitudeAtRadius",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 116,
+   "pairs": 48,
+   "bothZero": 0,
+   "unpaired": {
+    "Nimbus: no tsunami source": 55,
+    "the reference's cap past a quarter of the Earth": 13
+   },
+   "geometricMeanRatio": 0.8556658386107701,
+   "scatterLn": 1.0134395268978267,
+   "medianAbsLn": 0.8000411391383881,
+   "maxRelative": 9.386604550913049,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.041666666666666664,
+   "within2": 0.3958333333333333,
+   "within10": 0.9791666666666666,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-064",
+     "detail": "1 m",
+     "nimbus": 10.386604550913049,
+     "reference": 1,
+     "ratio": 10.386604550913049
+    },
+    {
+     "caseId": "imp-lhs-102",
+     "detail": "10 m",
+     "nimbus": 60.61923765806353,
+     "reference": 10,
+     "ratio": 6.061923765806354
+    },
+    {
+     "caseId": "imp-lhs-059",
+     "detail": "1 m",
+     "nimbus": 0.18223611660015698,
+     "reference": 1,
+     "ratio": 0.18223611660015698
+    },
+    {
+     "caseId": "imp-lhs-061",
+     "detail": "10 m",
+     "nimbus": 1.9560629666982072,
+     "reference": 10,
+     "ratio": 0.1956062966698207
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "100 m",
+     "nimbus": 422.217052365638,
+     "reference": 100,
+     "ratio": 4.22217052365638
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "tsunamiAmplitudeAtRadius",
+   "cls": "C",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 62,
+   "pairs": 43,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference's cap past a quarter of the Earth": 14,
+    "Nimbus: no tsunami source": 5
+   },
+   "geometricMeanRatio": 0.9639286114669523,
+   "scatterLn": 1.0136318973287888,
+   "medianAbsLn": 0.8186642267024342,
+   "maxRelative": 9.386604550913049,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.046511627906976744,
+   "within2": 0.4186046511627907,
+   "within10": 0.9767441860465116,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-064",
+     "detail": "1 m",
+     "nimbus": 10.386604550913049,
+     "reference": 1,
+     "ratio": 10.386604550913049
+    },
+    {
+     "caseId": "imp-lhs-102",
+     "detail": "10 m",
+     "nimbus": 60.61923765806353,
+     "reference": 10,
+     "ratio": 6.061923765806354
+    },
+    {
+     "caseId": "imp-lhs-061",
+     "detail": "10 m",
+     "nimbus": 1.9560629666982072,
+     "reference": 10,
+     "ratio": 0.1956062966698207
+    },
+    {
+     "caseId": "imp-lhs-089",
+     "detail": "100 m",
+     "nimbus": 422.217052365638,
+     "reference": 100,
+     "ratio": 4.22217052365638
+    },
+    {
+     "caseId": "imp-grid-065",
+     "detail": "10 m",
+     "nimbus": 2.418595903914863,
+     "reference": 10,
+     "ratio": 0.24185959039148627
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "tsunamiAmplitudeAtRadius",
+   "cls": "C",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 42,
+   "pairs": 6,
+   "bothZero": 0,
+   "unpaired": {
+    "Nimbus: no tsunami source": 36
+   },
+   "geometricMeanRatio": 0.3902303076128131,
+   "scatterLn": 0.44264636908182564,
+   "medianAbsLn": 0.7498450746292807,
+   "maxRelative": 0.8177638833998431,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.3333333333333333,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-059",
+     "detail": "1 m",
+     "nimbus": 0.18223611660015698,
+     "reference": 1,
+     "ratio": 0.18223611660015698
+    },
+    {
+     "caseId": "imp-lhs-059",
+     "detail": "10 m",
+     "nimbus": 2.8882478062013845,
+     "reference": 10,
+     "ratio": 0.28882478062013844
+    },
+    {
+     "caseId": "imp-lhs-059",
+     "detail": "100 m",
+     "nimbus": 45.775642861893196,
+     "reference": 100,
+     "ratio": 0.45775642861893195
+    },
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "1 m",
+     "nimbus": 0.48759404336401885,
+     "reference": 1,
+     "ratio": 0.48759404336401885
+    },
+    {
+     "caseId": "imp-lhs-036",
+     "detail": "10 m",
+     "nimbus": 5.272390154772368,
+     "reference": 10,
+     "ratio": 0.5272390154772368
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "tsunamiAmplitudeAtRadius",
+   "cls": "C",
+   "subset": "band: < 1 Mt",
+   "rows": 14,
+   "pairs": 0,
+   "bothZero": 0,
+   "unpaired": {
+    "Nimbus: no tsunami source": 14
+   },
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "all",
+   "rows": 636,
+   "pairs": 636,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 45.450366931056536,
+   "scatterLn": 2.8108878728170366,
+   "medianAbsLn": 3.3887962588104994,
+   "maxRelative": 41115.18761216798,
+   "within1pct": 0.0015723270440251573,
+   "withinTolerance": 0.0015723270440251573,
+   "within125": 0.07232704402515723,
+   "within2": 0.139937106918239,
+   "within10": 0.300314465408805,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-026",
+     "detail": "1 km",
+     "nimbus": 11885168.539736113,
+     "reference": 289.063,
+     "ratio": 41116.18761216798
+    },
+    {
+     "caseId": "imp-lhs-025",
+     "detail": "1 km",
+     "nimbus": 31606190.941832665,
+     "reference": 835.91,
+     "ratio": 37810.5190054344
+    },
+    {
+     "caseId": "imp-lhs-050",
+     "detail": "1 km",
+     "nimbus": 22124244.450925995,
+     "reference": 621.659,
+     "ratio": 35589.03587163702
+    },
+    {
+     "caseId": "imp-lhs-066",
+     "detail": "1 km",
+     "nimbus": 3403852.605457377,
+     "reference": 100.921,
+     "ratio": 33727.89216770917
+    },
+    {
+     "caseId": "imp-lhs-058",
+     "detail": "1 km",
+     "nimbus": 16536506.428629914,
+     "reference": 498.577,
+     "ratio": 33167.407298431164
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 16,
+   "pairs": 16,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 32.11721265593855,
+   "scatterLn": 3.0434659045914274,
+   "medianAbsLn": 3.360897438773126,
+   "maxRelative": 26004.38718542895,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.0625,
+   "within2": 0.25,
+   "within10": 0.375,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHELYABINSK",
+     "detail": "1 km",
+     "nimbus": 28101265.36025141,
+     "reference": 1080.594,
+     "ratio": 26005.38718542895
+    },
+    {
+     "caseId": "imp-preset-CHELYABINSK",
+     "detail": "3 km",
+     "nimbus": 6880970.356007809,
+     "reference": 1076.151,
+     "ratio": 6394.0565552676235
+    },
+    {
+     "caseId": "imp-preset-CHELYABINSK",
+     "detail": "10 km",
+     "nimbus": 660195.3831322733,
+     "reference": 1028.887,
+     "ratio": 641.659757711268
+    },
+    {
+     "caseId": "imp-preset-TUNGUSKA",
+     "detail": "1 km",
+     "nimbus": 10549741.742172442,
+     "reference": 46410.324,
+     "ratio": 227.31454626717198
+    },
+    {
+     "caseId": "imp-preset-CHELYABINSK",
+     "detail": "30 km",
+     "nimbus": 54517.24328100183,
+     "reference": 768.631,
+     "ratio": 70.92771860750065
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 620,
+   "pairs": 620,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 45.8594661633007,
+   "scatterLn": 2.8067174825082306,
+   "medianAbsLn": 3.3887962588104994,
+   "maxRelative": 41115.18761216798,
+   "within1pct": 0.0016129032258064516,
+   "withinTolerance": 0.0016129032258064516,
+   "within125": 0.07258064516129033,
+   "within2": 0.13709677419354838,
+   "within10": 0.29838709677419356,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-026",
+     "detail": "1 km",
+     "nimbus": 11885168.539736113,
+     "reference": 289.063,
+     "ratio": 41116.18761216798
+    },
+    {
+     "caseId": "imp-lhs-025",
+     "detail": "1 km",
+     "nimbus": 31606190.941832665,
+     "reference": 835.91,
+     "ratio": 37810.5190054344
+    },
+    {
+     "caseId": "imp-lhs-050",
+     "detail": "1 km",
+     "nimbus": 22124244.450925995,
+     "reference": 621.659,
+     "ratio": 35589.03587163702
+    },
+    {
+     "caseId": "imp-lhs-066",
+     "detail": "1 km",
+     "nimbus": 3403852.605457377,
+     "reference": 100.921,
+     "ratio": 33727.89216770917
+    },
+    {
+     "caseId": "imp-lhs-058",
+     "detail": "1 km",
+     "nimbus": 16536506.428629914,
+     "reference": 498.577,
+     "ratio": 33167.407298431164
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 304,
+   "pairs": 304,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 20.337959442426854,
+   "scatterLn": 2.6342762457047484,
+   "medianAbsLn": 2.487792322235928,
+   "maxRelative": 21335.435275808137,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.12828947368421054,
+   "within2": 0.23355263157894737,
+   "within10": 0.48355263157894735,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-038",
+     "detail": "1 km",
+     "nimbus": 52234644.66542276,
+     "reference": 2448.143,
+     "ratio": 21336.435275808137
+    },
+    {
+     "caseId": "imp-grid-016",
+     "detail": "1 km",
+     "nimbus": 46933666.80484531,
+     "reference": 2268.699,
+     "ratio": 20687.480712445904
+    },
+    {
+     "caseId": "imp-lhs-018",
+     "detail": "1 km",
+     "nimbus": 33528313.78846419,
+     "reference": 2283.649,
+     "ratio": 14681.903299703321
+    },
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "1 km",
+     "nimbus": 71081142.77435839,
+     "reference": 5954.521,
+     "ratio": 11937.340178052675
+    },
+    {
+     "caseId": "imp-lhs-005",
+     "detail": "1 km",
+     "nimbus": 25656015.829320017,
+     "reference": 2311.515,
+     "ratio": 11099.220999785863
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "band: < 1 Mt",
+   "rows": 300,
+   "pairs": 300,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 148.70274991322455,
+   "scatterLn": 2.5040108175401663,
+   "medianAbsLn": 3.6728113390528607,
+   "maxRelative": 41115.18761216798,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 0.04666666666666667,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-026",
+     "detail": "1 km",
+     "nimbus": 11885168.539736113,
+     "reference": 289.063,
+     "ratio": 41116.18761216798
+    },
+    {
+     "caseId": "imp-lhs-025",
+     "detail": "1 km",
+     "nimbus": 31606190.941832665,
+     "reference": 835.91,
+     "ratio": 37810.5190054344
+    },
+    {
+     "caseId": "imp-lhs-050",
+     "detail": "1 km",
+     "nimbus": 22124244.450925995,
+     "reference": 621.659,
+     "ratio": 35589.03587163702
+    },
+    {
+     "caseId": "imp-lhs-066",
+     "detail": "1 km",
+     "nimbus": 3403852.605457377,
+     "reference": 100.921,
+     "ratio": 33727.89216770917
+    },
+    {
+     "caseId": "imp-lhs-058",
+     "detail": "1 km",
+     "nimbus": 16536506.428629914,
+     "reference": 498.577,
+     "ratio": 33167.407298431164
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 32,
+   "pairs": 32,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.409759389119118,
+   "scatterLn": 1.0731888754427361,
+   "medianAbsLn": 0.6297691785646784,
+   "maxRelative": 11.035815725312482,
+   "within1pct": 0.03125,
+   "withinTolerance": 0.03125,
+   "within125": 0.21875,
+   "within2": 0.5625,
+   "within10": 0.9375,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-097",
+     "detail": "1 km",
+     "nimbus": 67647627.545253,
+     "reference": 1496071400.014,
+     "ratio": 0.04521684429273894
+    },
+    {
+     "caseId": "imp-lhs-103",
+     "detail": "1 km",
+     "nimbus": 52971788.240367986,
+     "reference": 4401179.733,
+     "ratio": 12.035815725312482
+    },
+    {
+     "caseId": "imp-lhs-062",
+     "detail": "1 km",
+     "nimbus": 55111059.13353784,
+     "reference": 6021114.927,
+     "ratio": 9.152965821397588
+    },
+    {
+     "caseId": "imp-grid-026",
+     "detail": "1 km",
+     "nimbus": 37590453.42933595,
+     "reference": 256888876.158,
+     "ratio": 0.14632962700267282
+    },
+    {
+     "caseId": "imp-lhs-103",
+     "detail": "3 km",
+     "nimbus": 20168711.565892767,
+     "reference": 3835576.989,
+     "ratio": 5.258325311611355
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "bin: 1 km",
+   "rows": 80,
+   "pairs": 80,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 2153.5386674084125,
+   "scatterLn": 3.409804215949249,
+   "medianAbsLn": 9.123742513376701,
+   "maxRelative": 41115.18761216798,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.0125,
+   "within2": 0.05,
+   "within10": 0.1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-026",
+     "detail": "1 km",
+     "nimbus": 11885168.539736113,
+     "reference": 289.063,
+     "ratio": 41116.18761216798
+    },
+    {
+     "caseId": "imp-lhs-025",
+     "detail": "1 km",
+     "nimbus": 31606190.941832665,
+     "reference": 835.91,
+     "ratio": 37810.5190054344
+    },
+    {
+     "caseId": "imp-lhs-050",
+     "detail": "1 km",
+     "nimbus": 22124244.450925995,
+     "reference": 621.659,
+     "ratio": 35589.03587163702
+    },
+    {
+     "caseId": "imp-lhs-066",
+     "detail": "1 km",
+     "nimbus": 3403852.605457377,
+     "reference": 100.921,
+     "ratio": 33727.89216770917
+    },
+    {
+     "caseId": "imp-lhs-058",
+     "detail": "1 km",
+     "nimbus": 16536506.428629914,
+     "reference": 498.577,
+     "ratio": 33167.407298431164
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "bin: 3 km",
+   "rows": 80,
+   "pairs": 80,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 471.30369979650874,
+   "scatterLn": 2.9033064890932065,
+   "medianAbsLn": 7.326888868963831,
+   "maxRelative": 9968.448745153784,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.075,
+   "within2": 0.0875,
+   "within10": 0.15,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-025",
+     "detail": "3 km",
+     "nimbus": 8318976.59704734,
+     "reference": 834.447,
+     "ratio": 9969.448745153784
+    },
+    {
+     "caseId": "imp-lhs-001",
+     "detail": "3 km",
+     "nimbus": 8548750.030512039,
+     "reference": 998.472,
+     "ratio": 8561.832510588218
+    },
+    {
+     "caseId": "imp-lhs-038",
+     "detail": "3 km",
+     "nimbus": 19638191.23220319,
+     "reference": 2439.933,
+     "ratio": 8048.660037879396
+    },
+    {
+     "caseId": "imp-lhs-050",
+     "detail": "3 km",
+     "nimbus": 4701976.136634348,
+     "reference": 620.192,
+     "ratio": 7581.484663836922
+    },
+    {
+     "caseId": "imp-grid-016",
+     "detail": "3 km",
+     "nimbus": 16149417.610752586,
+     "reference": 2258.841,
+     "ratio": 7149.426458414996
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "bin: 10 km",
+   "rows": 80,
+   "pairs": 80,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 65.07946733285428,
+   "scatterLn": 2.2595897019869766,
+   "medianAbsLn": 5.0461095212035545,
+   "maxRelative": 1878.7171158517403,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.05,
+   "within2": 0.125,
+   "within10": 0.225,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "10 km",
+     "nimbus": 10768841.08548403,
+     "reference": 5728.969,
+     "ratio": 1879.7171158517403
+    },
+    {
+     "caseId": "imp-lhs-038",
+     "detail": "10 km",
+     "nimbus": 3213828.9461980886,
+     "reference": 2351.443,
+     "ratio": 1366.7475444644367
+    },
+    {
+     "caseId": "imp-grid-016",
+     "detail": "10 km",
+     "nimbus": 2352047.9973987956,
+     "reference": 2154.227,
+     "ratio": 1091.829225703139
+    },
+    {
+     "caseId": "imp-lhs-025",
+     "detail": "10 km",
+     "nimbus": 864522.6163579145,
+     "reference": 818.282,
+     "ratio": 1056.5093896210774
+    },
+    {
+     "caseId": "imp-lhs-001",
+     "detail": "10 km",
+     "nimbus": 899183.4253032528,
+     "reference": 969.896,
+     "ratio": 927.0926215833995
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "bin: 30 km",
+   "rows": 80,
+   "pairs": 80,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 17.12388270500398,
+   "scatterLn": 1.619735897320243,
+   "medianAbsLn": 3.730726889917642,
+   "maxRelative": 351.26391687142404,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.125,
+   "within2": 0.1375,
+   "within10": 0.3625,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "30 km",
+     "nimbus": 1573316.6841867582,
+     "reference": 4466.301,
+     "ratio": 352.26391687142404
+    },
+    {
+     "caseId": "imp-lhs-038",
+     "detail": "30 km",
+     "nimbus": 307465.37381890643,
+     "reference": 1826.11,
+     "ratio": 168.37177049515444
+    },
+    {
+     "caseId": "imp-grid-016",
+     "detail": "30 km",
+     "nimbus": 210131.1048143716,
+     "reference": 1586.325,
+     "ratio": 132.4640945672366
+    },
+    {
+     "caseId": "imp-lhs-086",
+     "detail": "30 km",
+     "nimbus": 331119.2592937615,
+     "reference": 2893.302,
+     "ratio": 114.44337967269283
+    },
+    {
+     "caseId": "imp-lhs-017",
+     "detail": "30 km",
+     "nimbus": 1497305.0443788406,
+     "reference": 13758.316,
+     "ratio": 108.82909248332722
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "bin: 100 km",
+   "rows": 80,
+   "pairs": 80,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 10.262545170047975,
+   "scatterLn": 1.2621891784393042,
+   "medianAbsLn": 2.9806935446622456,
+   "maxRelative": 60.279255939348936,
+   "within1pct": 0.0125,
+   "withinTolerance": 0.0125,
+   "within125": 0.1375,
+   "within2": 0.1875,
+   "within10": 0.4125,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "100 km",
+     "nimbus": 104025.15243314524,
+     "reference": 1697.559,
+     "ratio": 61.279255939348936
+    },
+    {
+     "caseId": "imp-grid-001",
+     "detail": "100 km",
+     "nimbus": 421.28225662894783,
+     "reference": 12.398,
+     "ratio": 33.9798561565533
+    },
+    {
+     "caseId": "imp-lhs-015",
+     "detail": "100 km",
+     "nimbus": 482.26186073296446,
+     "reference": 14.475,
+     "ratio": 33.31688157049841
+    },
+    {
+     "caseId": "imp-lhs-038",
+     "detail": "100 km",
+     "nimbus": 23639.82514023541,
+     "reference": 714.355,
+     "ratio": 33.09254521944329
+    },
+    {
+     "caseId": "imp-lhs-090",
+     "detail": "100 km",
+     "nimbus": 815.285085705499,
+     "reference": 25.15,
+     "ratio": 32.416902016123224
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "bin: 300 km",
+   "rows": 80,
+   "pairs": 80,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 10.361945253180211,
+   "scatterLn": 1.1917244495036297,
+   "medianAbsLn": 2.8551750020565976,
+   "maxRelative": 33.934474337610574,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.1,
+   "within2": 0.1875,
+   "within10": 0.4125,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-001",
+     "detail": "300 km",
+     "nimbus": 140.36671788851928,
+     "reference": 4.018,
+     "ratio": 34.934474337610574
+    },
+    {
+     "caseId": "imp-lhs-015",
+     "detail": "300 km",
+     "nimbus": 160.66293605315406,
+     "reference": 4.699,
+     "ratio": 34.1908780704733
+    },
+    {
+     "caseId": "imp-lhs-093",
+     "detail": "300 km",
+     "nimbus": 437.3237351754219,
+     "reference": 13.77,
+     "ratio": 31.759167405622506
+    },
+    {
+     "caseId": "imp-lhs-090",
+     "detail": "300 km",
+     "nimbus": 271.3235262745959,
+     "reference": 8.714,
+     "ratio": 31.136507490772996
+    },
+    {
+     "caseId": "imp-grid-002",
+     "detail": "300 km",
+     "nimbus": 421.28225662894783,
+     "reference": 13.623,
+     "ratio": 30.924338004033462
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "bin: 1000 km",
+   "rows": 80,
+   "pairs": 80,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 11.604168616576143,
+   "scatterLn": 1.2174533672839525,
+   "medianAbsLn": 2.9965213277839453,
+   "maxRelative": 39.25616051289329,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.0375,
+   "within2": 0.175,
+   "within10": 0.3625,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-001",
+     "detail": "1000 km",
+     "nimbus": 42.10794389648638,
+     "reference": 1.046,
+     "ratio": 40.25616051289329
+    },
+    {
+     "caseId": "imp-lhs-015",
+     "detail": "1000 km",
+     "nimbus": 48.19577474694342,
+     "reference": 1.224,
+     "ratio": 39.37563296318907
+    },
+    {
+     "caseId": "imp-lhs-093",
+     "detail": "1000 km",
+     "nimbus": 131.13456410869225,
+     "reference": 3.557,
+     "ratio": 36.86661909156375
+    },
+    {
+     "caseId": "imp-grid-002",
+     "detail": "1000 km",
+     "nimbus": 126.32874858792121,
+     "reference": 3.532,
+     "ratio": 35.766916361246096
+    },
+    {
+     "caseId": "imp-lhs-118",
+     "detail": "1000 km",
+     "nimbus": 154.27739732052396,
+     "reference": 4.315,
+     "ratio": 35.75374213685375
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "overpressureAtDistanceAirburst",
+   "cls": "B",
+   "subset": "bin: 3000 km",
+   "rows": 76,
+   "pairs": 76,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 12.21687480655148,
+   "scatterLn": 1.2629593077464036,
+   "medianAbsLn": 3.078393660508344,
+   "maxRelative": 41.519151913526336,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.039473684210526314,
+   "within2": 0.17105263157894737,
+   "within10": 0.3815789473684211,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-093",
+     "detail": "3000 km",
+     "nimbus": 43.70968816710508,
+     "reference": 1.028,
+     "ratio": 42.519151913526336
+    },
+    {
+     "caseId": "imp-lhs-118",
+     "detail": "3000 km",
+     "nimbus": 51.42281412444295,
+     "reference": 1.248,
+     "ratio": 41.204177984329284
+    },
+    {
+     "caseId": "imp-grid-002",
+     "detail": "3000 km",
+     "nimbus": 42.10794389648638,
+     "reference": 1.022,
+     "ratio": 41.201510661924054
+    },
+    {
+     "caseId": "imp-lhs-114",
+     "detail": "3000 km",
+     "nimbus": 44.50515239040468,
+     "reference": 1.09,
+     "ratio": 40.83041503706851
+    },
+    {
+     "caseId": "imp-grid-041",
+     "detail": "3000 km",
+     "nimbus": 97.32211457353205,
+     "reference": 2.458,
+     "ratio": 39.59402545709196
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "burstAltitude",
+   "cls": "A",
+   "subset": "all",
+   "rows": 80,
+   "pairs": 80,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0008097058868872,
+   "scatterLn": 0.004016907850984472,
+   "medianAbsLn": 0.00000688591666013035,
+   "maxRelative": 0.0337024315669574,
+   "within1pct": 0.975,
+   "withinTolerance": 0.975,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-045",
+     "detail": "",
+     "nimbus": 9485.809643966584,
+     "reference": 9176.538,
+     "ratio": 1.0337024315669574
+    },
+    {
+     "caseId": "imp-lhs-044",
+     "detail": "",
+     "nimbus": 24462.788284005288,
+     "reference": 24139.183,
+     "ratio": 1.01340580930205
+    },
+    {
+     "caseId": "imp-lhs-108",
+     "detail": "",
+     "nimbus": 1410.9392168107952,
+     "reference": 1402.593,
+     "ratio": 1.0059505621451093
+    },
+    {
+     "caseId": "imp-lhs-093",
+     "detail": "",
+     "nimbus": 35180.712929495625,
+     "reference": 35088.249,
+     "ratio": 1.002635182208597
+    },
+    {
+     "caseId": "imp-lhs-114",
+     "detail": "",
+     "nimbus": 44303.87850176487,
+     "reference": 44236.664,
+     "ratio": 1.001519429714792
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "burstAltitude",
+   "cls": "A",
+   "subset": "preset",
+   "rows": 2,
+   "pairs": 2,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0000500684649791,
+   "scatterLn": 0.000040718017380146684,
+   "medianAbsLn": 0.000050067211595362976,
+   "maxRelative": 0.00007886230726961152,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-preset-CHELYABINSK",
+     "detail": "",
+     "nimbus": 34105.22340451498,
+     "reference": 34102.534,
+     "ratio": 1.0000788623072696
+    },
+    {
+     "caseId": "imp-preset-TUNGUSKA",
+     "detail": "",
+     "nimbus": 9805.9216209734,
+     "reference": 9805.713,
+     "ratio": 1.0000212754517086
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "burstAltitude",
+   "cls": "A",
+   "subset": "custom",
+   "rows": 78,
+   "pairs": 78,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0008291913550074,
+   "scatterLn": 0.004066850491215455,
+   "medianAbsLn": 0.0000061389994409508806,
+   "maxRelative": 0.0337024315669574,
+   "within1pct": 0.9743589743589743,
+   "withinTolerance": 0.9743589743589743,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-045",
+     "detail": "",
+     "nimbus": 9485.809643966584,
+     "reference": 9176.538,
+     "ratio": 1.0337024315669574
+    },
+    {
+     "caseId": "imp-lhs-044",
+     "detail": "",
+     "nimbus": 24462.788284005288,
+     "reference": 24139.183,
+     "ratio": 1.01340580930205
+    },
+    {
+     "caseId": "imp-lhs-108",
+     "detail": "",
+     "nimbus": 1410.9392168107952,
+     "reference": 1402.593,
+     "ratio": 1.0059505621451093
+    },
+    {
+     "caseId": "imp-lhs-093",
+     "detail": "",
+     "nimbus": 35180.712929495625,
+     "reference": 35088.249,
+     "ratio": 1.002635182208597
+    },
+    {
+     "caseId": "imp-lhs-114",
+     "detail": "",
+     "nimbus": 44303.87850176487,
+     "reference": 44236.664,
+     "ratio": 1.001519429714792
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "burstAltitude",
+   "cls": "A",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 38,
+   "pairs": 38,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.000163924159956,
+   "scatterLn": 0.0009612462927633817,
+   "medianAbsLn": 0.0000016552248016994876,
+   "maxRelative": 0.0059505621451092505,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-lhs-108",
+     "detail": "",
+     "nimbus": 1410.9392168107952,
+     "reference": 1402.593,
+     "ratio": 1.0059505621451093
+    },
+    {
+     "caseId": "imp-grid-016",
+     "detail": "",
+     "nimbus": 34413.53814591453,
+     "reference": 34411.169,
+     "ratio": 1.0000688481671323
+    },
+    {
+     "caseId": "imp-lhs-005",
+     "detail": "",
+     "nimbus": 25174.69266262579,
+     "reference": 25173.806,
+     "ratio": 1.0000352216357664
+    },
+    {
+     "caseId": "imp-grid-012",
+     "detail": "",
+     "nimbus": 14884.713711397926,
+     "reference": 14884.308,
+     "ratio": 1.0000272576594038
+    },
+    {
+     "caseId": "imp-grid-017",
+     "detail": "",
+     "nimbus": 25664.224681252726,
+     "reference": 25663.53,
+     "ratio": 1.0000270688113726
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "burstAltitude",
+   "cls": "A",
+   "subset": "band: < 1 Mt",
+   "rows": 38,
+   "pairs": 38,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.001540703404579,
+   "scatterLn": 0.005699317998852676,
+   "medianAbsLn": 0.000055355007891662246,
+   "maxRelative": 0.0337024315669574,
+   "within1pct": 0.9473684210526315,
+   "withinTolerance": 0.9473684210526315,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-045",
+     "detail": "",
+     "nimbus": 9485.809643966584,
+     "reference": 9176.538,
+     "ratio": 1.0337024315669574
+    },
+    {
+     "caseId": "imp-lhs-044",
+     "detail": "",
+     "nimbus": 24462.788284005288,
+     "reference": 24139.183,
+     "ratio": 1.01340580930205
+    },
+    {
+     "caseId": "imp-lhs-093",
+     "detail": "",
+     "nimbus": 35180.712929495625,
+     "reference": 35088.249,
+     "ratio": 1.002635182208597
+    },
+    {
+     "caseId": "imp-lhs-114",
+     "detail": "",
+     "nimbus": 44303.87850176487,
+     "reference": 44236.664,
+     "ratio": 1.001519429714792
+    },
+    {
+     "caseId": "imp-lhs-118",
+     "detail": "",
+     "nimbus": 36017.33289102881,
+     "reference": 35967.067,
+     "ratio": 1.0013975532402686
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "burstAltitude",
+   "cls": "A",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.000004994636926,
+   "scatterLn": 0.000009215259918132014,
+   "medianAbsLn": 5.663529232168397e-7,
+   "maxRelative": 0.000018801982221816615,
+   "within1pct": 1,
+   "withinTolerance": 1,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "imp-grid-026",
+     "detail": "",
+     "nimbus": 1638.624808815257,
+     "reference": 1638.594,
+     "ratio": 1.0000188019822218
+    },
+    {
+     "caseId": "imp-lhs-103",
+     "detail": "",
+     "nimbus": 8323.83042185437,
+     "reference": 8323.822,
+     "ratio": 1.0000010117773266
+    },
+    {
+     "caseId": "imp-lhs-062",
+     "detail": "",
+     "nimbus": 8229.725995212735,
+     "reference": 8229.725,
+     "ratio": 1.000000120929039
+    },
+    {
+     "caseId": "imp-lhs-097",
+     "detail": "",
+     "nimbus": 2366.453104091983,
+     "reference": 2366.453,
+     "ratio": 1.000000043986499
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusAirburst",
+   "cls": "B",
+   "subset": "all",
+   "rows": 240,
+   "pairs": 96,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 144
+   },
+   "geometricMeanRatio": 4.183956867024028,
+   "scatterLn": 1.131579583548527,
+   "medianAbsLn": 1.3690104265533978,
+   "maxRelative": 45.029243536023436,
+   "within1pct": 0.020833333333333332,
+   "withinTolerance": 0.020833333333333332,
+   "within125": 0.17708333333333334,
+   "within2": 0.3229166666666667,
+   "within10": 0.7395833333333334,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "5 kPa (airburst)",
+     "nimbus": 658340.9676062262,
+     "reference": 14302.667544188402,
+     "ratio": 46.029243536023436
+    },
+    {
+     "caseId": "imp-grid-016",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 1266679.2672155562,
+     "reference": 28967.289607916184,
+     "ratio": 43.72791808831842
+    },
+    {
+     "caseId": "imp-lhs-038",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 1491228.004590539,
+     "reference": 37794.36746909939,
+     "ratio": 39.45635565431184
+    },
+    {
+     "caseId": "imp-lhs-018",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 834847.4914373509,
+     "reference": 23343.972597131276,
+     "ratio": 35.7628714634434
+    },
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 3111554.856996929,
+     "reference": 104760.7891541726,
+     "ratio": 29.7015217441496
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusAirburst",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 6,
+   "pairs": 3,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 3
+   },
+   "geometricMeanRatio": 2.761648577867407,
+   "scatterLn": 0.30407196993541086,
+   "medianAbsLn": 0.9727493478490646,
+   "maxRelative": 2.8157670555924756,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-preset-TUNGUSKA",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 306687.6898870522,
+     "reference": 80373.79782855553,
+     "ratio": 3.8157670555924756
+    },
+    {
+     "caseId": "imp-preset-TUNGUSKA",
+     "detail": "20 kPa (airburst)",
+     "nimbus": 22719.011904463827,
+     "reference": 8588.746114232092,
+     "ratio": 2.6452070654198288
+    },
+    {
+     "caseId": "imp-preset-TUNGUSKA",
+     "detail": "5 kPa (airburst)",
+     "nimbus": 64888.80312013072,
+     "reference": 31096.109113190058,
+     "ratio": 2.0867177589303862
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusAirburst",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 234,
+   "pairs": 93,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 141
+   },
+   "geometricMeanRatio": 4.240403257809394,
+   "scatterLn": 1.1464762050444688,
+   "medianAbsLn": 1.409855166320934,
+   "maxRelative": 45.029243536023436,
+   "within1pct": 0.021505376344086023,
+   "withinTolerance": 0.021505376344086023,
+   "within125": 0.1827956989247312,
+   "within2": 0.3333333333333333,
+   "within10": 0.7311827956989247,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "5 kPa (airburst)",
+     "nimbus": 658340.9676062262,
+     "reference": 14302.667544188402,
+     "ratio": 46.029243536023436
+    },
+    {
+     "caseId": "imp-grid-016",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 1266679.2672155562,
+     "reference": 28967.289607916184,
+     "ratio": 43.72791808831842
+    },
+    {
+     "caseId": "imp-lhs-038",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 1491228.004590539,
+     "reference": 37794.36746909939,
+     "ratio": 39.45635565431184
+    },
+    {
+     "caseId": "imp-lhs-018",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 834847.4914373509,
+     "reference": 23343.972597131276,
+     "ratio": 35.7628714634434
+    },
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 3111554.856996929,
+     "reference": 104760.7891541726,
+     "ratio": 29.7015217441496
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusAirburst",
+   "cls": "B",
+   "subset": "band: 1 Mt – 1 Gt",
+   "rows": 114,
+   "pairs": 81,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 33
+   },
+   "geometricMeanRatio": 4.7554730884860605,
+   "scatterLn": 1.1443594264852552,
+   "medianAbsLn": 1.486797984312904,
+   "maxRelative": 45.029243536023436,
+   "within1pct": 0.024691358024691357,
+   "withinTolerance": 0.024691358024691357,
+   "within125": 0.16049382716049382,
+   "within2": 0.25925925925925924,
+   "within10": 0.7037037037037037,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "5 kPa (airburst)",
+     "nimbus": 658340.9676062262,
+     "reference": 14302.667544188402,
+     "ratio": 46.029243536023436
+    },
+    {
+     "caseId": "imp-grid-016",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 1266679.2672155562,
+     "reference": 28967.289607916184,
+     "ratio": 43.72791808831842
+    },
+    {
+     "caseId": "imp-lhs-038",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 1491228.004590539,
+     "reference": 37794.36746909939,
+     "ratio": 39.45635565431184
+    },
+    {
+     "caseId": "imp-lhs-018",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 834847.4914373509,
+     "reference": 23343.972597131276,
+     "ratio": 35.7628714634434
+    },
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 3111554.856996929,
+     "reference": 104760.7891541726,
+     "ratio": 29.7015217441496
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusAirburst",
+   "cls": "B",
+   "subset": "band: < 1 Mt",
+   "rows": 114,
+   "pairs": 3,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 111
+   },
+   "geometricMeanRatio": 7.054501044874305,
+   "scatterLn": 0.558154071032025,
+   "medianAbsLn": 1.9065828920028642,
+   "maxRelative": 11.60218288451974,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 0.6666666666666666,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-007",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 297661.9904690035,
+     "reference": 23619.87547686245,
+     "ratio": 12.60218288451974
+    },
+    {
+     "caseId": "imp-grid-011",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 193809.00585637536,
+     "reference": 28797.54890979402,
+     "ratio": 6.730052146572137
+    },
+    {
+     "caseId": "imp-grid-045",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 83404.10642957795,
+     "reference": 20148.96463347916,
+     "ratio": 4.139374302687254
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusAirburst",
+   "cls": "B",
+   "subset": "band: ≥ 1 Gt",
+   "rows": 12,
+   "pairs": 12,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.5471176751245914,
+   "scatterLn": 0.4505990826641171,
+   "medianAbsLn": 0.46828267138821206,
+   "maxRelative": 2.307691587637723,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.3333333333333333,
+   "within2": 0.8333333333333334,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-103",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 1526179.5667236175,
+     "reference": 461403.22526671225,
+     "ratio": 3.307691587637723
+    },
+    {
+     "caseId": "imp-lhs-062",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 1634042.7267686727,
+     "reference": 515756.04705587286,
+     "ratio": 3.1682473450314266
+    },
+    {
+     "caseId": "imp-lhs-097",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 2612568.6746552736,
+     "reference": 1346558.692213647,
+     "ratio": 1.940181805488475
+    },
+    {
+     "caseId": "imp-grid-026",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 950949.9837805001,
+     "reference": 510528.68854507944,
+     "ratio": 1.862676878140868
+    },
+    {
+     "caseId": "imp-lhs-103",
+     "detail": "5 kPa (airburst)",
+     "nimbus": 322908.18541678996,
+     "reference": 185642.96469858274,
+     "ratio": 1.7394043773276109
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusAirburst",
+   "cls": "B",
+   "subset": "bin: 1 kPa",
+   "rows": 80,
+   "pairs": 45,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 35
+   },
+   "geometricMeanRatio": 7.276364696503892,
+   "scatterLn": 0.9849071655556642,
+   "medianAbsLn": 1.9509570273583845,
+   "maxRelative": 42.72791808831842,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.15555555555555556,
+   "within10": 0.6222222222222222,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-grid-016",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 1266679.2672155562,
+     "reference": 28967.289607916184,
+     "ratio": 43.72791808831842
+    },
+    {
+     "caseId": "imp-lhs-038",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 1491228.004590539,
+     "reference": 37794.36746909939,
+     "ratio": 39.45635565431184
+    },
+    {
+     "caseId": "imp-lhs-018",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 834847.4914373509,
+     "reference": 23343.972597131276,
+     "ratio": 35.7628714634434
+    },
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 3111554.856996929,
+     "reference": 104760.7891541726,
+     "ratio": 29.7015217441496
+    },
+    {
+     "caseId": "imp-lhs-005",
+     "detail": "1 kPa (airburst)",
+     "nimbus": 634277.382082507,
+     "reference": 21944.613957442703,
+     "ratio": 28.90355616701958
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusAirburst",
+   "cls": "B",
+   "subset": "bin: 5 kPa",
+   "rows": 80,
+   "pairs": 31,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 49
+   },
+   "geometricMeanRatio": 3.0255135152875523,
+   "scatterLn": 1.0253874703116885,
+   "medianAbsLn": 0.8697585863901198,
+   "maxRelative": 45.029243536023436,
+   "within1pct": 0.06451612903225806,
+   "withinTolerance": 0.06451612903225806,
+   "within125": 0.25806451612903225,
+   "within2": 0.3870967741935484,
+   "within10": 0.8387096774193549,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-064",
+     "detail": "5 kPa (airburst)",
+     "nimbus": 658340.9676062262,
+     "reference": 14302.667544188402,
+     "ratio": 46.029243536023436
+    },
+    {
+     "caseId": "imp-lhs-115",
+     "detail": "5 kPa (airburst)",
+     "nimbus": 137933.86856265532,
+     "reference": 7605.817940760023,
+     "ratio": 18.135310315996346
+    },
+    {
+     "caseId": "imp-lhs-003",
+     "detail": "5 kPa (airburst)",
+     "nimbus": 136891.02205159186,
+     "reference": 8641.488444207364,
+     "ratio": 15.841139282359837
+    },
+    {
+     "caseId": "imp-grid-012",
+     "detail": "5 kPa (airburst)",
+     "nimbus": 52355.818976101946,
+     "reference": 4808.788357707211,
+     "ratio": 10.887528225730598
+    },
+    {
+     "caseId": "imp-lhs-017",
+     "detail": "5 kPa (airburst)",
+     "nimbus": 642777.4349954851,
+     "reference": 63837.89928740131,
+     "ratio": 10.068900170127309
+    }
+   ]
+  },
+  {
+   "track": "IMP",
+   "quantity": "airblastRadiusAirburst",
+   "cls": "B",
+   "subset": "bin: 20 kPa",
+   "rows": 80,
+   "pairs": 20,
+   "bothZero": 0,
+   "unpaired": {
+    "reference zero": 60
+   },
+   "geometricMeanRatio": 1.991005327728318,
+   "scatterLn": 1.0092463847234625,
+   "medianAbsLn": 0.3222330461261732,
+   "maxRelative": 18.357960479926202,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.45,
+   "within2": 0.6,
+   "within10": 0.85,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "imp-lhs-017",
+     "detail": "20 kPa (airburst)",
+     "nimbus": 225050.66352584213,
+     "reference": 11625.74248249008,
+     "ratio": 19.357960479926202
+    },
+    {
+     "caseId": "imp-lhs-091",
+     "detail": "20 kPa (airburst)",
+     "nimbus": 245037.94636583148,
+     "reference": 19588.53504462904,
+     "ratio": 12.509253285534397
+    },
+    {
+     "caseId": "imp-grid-015",
+     "detail": "20 kPa (airburst)",
+     "nimbus": 57797.26925662824,
+     "reference": 5749.007378628501,
+     "ratio": 10.053434523581446
+    },
+    {
+     "caseId": "imp-lhs-120",
+     "detail": "20 kPa (airburst)",
+     "nimbus": 45046.89366237504,
+     "reference": 6994.326008191283,
+     "ratio": 6.4404909936453
+    },
+    {
+     "caseId": "imp-lhs-010",
+     "detail": "20 kPa (airburst)",
+     "nimbus": 72369.61266852057,
+     "reference": 17671.11402455984,
+     "ratio": 4.095362214738648
+    }
+   ]
+  }
+ ]
+}

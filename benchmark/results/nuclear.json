@@ -1,0 +1,6184 @@
+{
+ "track": "NUC",
+ "reference": "NUKEMAP 2.76 (rings drawn by the page) and the Fourmilab Nuclear Bomb Effects Computer (1962 slide rule, partial read)",
+ "stats": [
+  {
+   "track": "NUC",
+   "quantity": "fireballRadius",
+   "cls": "B",
+   "subset": "all",
+   "rows": 29,
+   "pairs": 29,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9131886579220249,
+   "scatterLn": 0.1400941461216044,
+   "medianAbsLn": 0.0429693163545525,
+   "maxRelative": 0.2080714138800146,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5172413793103449,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "",
+     "nimbus": 3277.4384440323447,
+     "reference": 4138.553022931008,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "",
+     "nimbus": 11.094252347227794,
+     "reference": 14.009157570108096,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "",
+     "nimbus": 27.867501938744805,
+     "reference": 35.18941281723424,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "",
+     "nimbus": 175.8320502056706,
+     "reference": 222.03018464979397,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "",
+     "nimbus": 232.01178121379908,
+     "reference": 292.9705850757696,
+     "ratio": 0.7919285861199854
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fireballRadius",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 7,
+   "pairs": 7,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9257432348379586,
+   "scatterLn": 0.1461052062273607,
+   "medianAbsLn": 0.042969316354552284,
+   "maxRelative": 0.2080714138800146,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5714285714285714,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "",
+     "nimbus": 3277.4384440323447,
+     "reference": 4138.553022931008,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "",
+     "nimbus": 1109.4252347227796,
+     "reference": 1400.9157570108096,
+     "ratio": 0.7919285861199855
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "",
+     "nimbus": 2830.8142669834997,
+     "reference": 3574.5827548073903,
+     "ratio": 0.7919285861199856
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "",
+     "nimbus": 236.58421116648,
+     "reference": 226.63366442671543,
+     "ratio": 1.043905863521799
+    },
+    {
+     "caseId": "nuc-preset-STARFISH_PRIME_1962",
+     "detail": "",
+     "nimbus": 1269.256085386999,
+     "reference": 1215.8721679222508,
+     "ratio": 1.043905863521799
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fireballRadius",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 22,
+   "pairs": 22,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9092298359277377,
+   "scatterLn": 0.14137717276196976,
+   "medianAbsLn": 0.1381266883140791,
+   "maxRelative": 0.2080714138800146,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "",
+     "nimbus": 11.094252347227794,
+     "reference": 14.009157570108096,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "",
+     "nimbus": 27.867501938744805,
+     "reference": 35.18941281723424,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "",
+     "nimbus": 175.8320502056706,
+     "reference": 222.03018464979397,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "",
+     "nimbus": 232.01178121379908,
+     "reference": 292.9705850757696,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "",
+     "nimbus": 441.6701411361353,
+     "reference": 557.7146082073841,
+     "ratio": 0.7919285861199854
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fireballRadius",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 12,
+   "pairs": 12,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9304041128768723,
+   "scatterLn": 0.14225077843548165,
+   "medianAbsLn": 0.042969316354552284,
+   "maxRelative": 0.2080714138800146,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5833333333333334,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "",
+     "nimbus": 175.8320502056706,
+     "reference": 222.03018464979397,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "",
+     "nimbus": 232.01178121379908,
+     "reference": 292.9705850757696,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "",
+     "nimbus": 441.6701411361353,
+     "reference": 557.7146082073841,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "",
+     "nimbus": 70,
+     "reference": 88.3918085884,
+     "ratio": 0.7919285861199855
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "",
+     "nimbus": 840.787103787002,
+     "reference": 1061.6956105933698,
+     "ratio": 0.7919285861199855
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fireballRadius",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 13,
+   "pairs": 13,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8987810165410718,
+   "scatterLn": 0.14232745307886413,
+   "medianAbsLn": 0.2332840602736057,
+   "maxRelative": 0.2080714138800146,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.46153846153846156,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "",
+     "nimbus": 3277.4384440323447,
+     "reference": 4138.553022931008,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "",
+     "nimbus": 3677.138926165275,
+     "reference": 4643.270858779368,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "",
+     "nimbus": 5305.007982786395,
+     "reference": 6698.8464310627005,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "",
+     "nimbus": 1109.4252347227796,
+     "reference": 1400.9157570108096,
+     "ratio": 0.7919285861199855
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "",
+     "nimbus": 1109.4252347227796,
+     "reference": 1400.9157570108096,
+     "ratio": 0.7919285861199855
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fireballRadius",
+   "cls": "B",
+   "subset": "band: < 1 kt",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9092298359277375,
+   "scatterLn": 0.15949496136081012,
+   "medianAbsLn": 0.13812668831407904,
+   "maxRelative": 0.2080714138800146,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "",
+     "nimbus": 11.094252347227794,
+     "reference": 14.009157570108096,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "",
+     "nimbus": 27.867501938744805,
+     "reference": 35.18941281723424,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "",
+     "nimbus": 11.094252347227794,
+     "reference": 10.627636777323383,
+     "ratio": 1.0439058635217988
+    },
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "",
+     "nimbus": 27.867501938744805,
+     "reference": 26.695416619970807,
+     "ratio": 1.0439058635217988
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fireballRadius",
+   "cls": "B",
+   "subset": "bin: ",
+   "rows": 29,
+   "pairs": 29,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9131886579220249,
+   "scatterLn": 0.1400941461216044,
+   "medianAbsLn": 0.0429693163545525,
+   "maxRelative": 0.2080714138800146,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5172413793103449,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "",
+     "nimbus": 3277.4384440323447,
+     "reference": 4138.553022931008,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "",
+     "nimbus": 11.094252347227794,
+     "reference": 14.009157570108096,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "",
+     "nimbus": 27.867501938744805,
+     "reference": 35.18941281723424,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "",
+     "nimbus": 175.8320502056706,
+     "reference": 222.03018464979397,
+     "ratio": 0.7919285861199854
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "",
+     "nimbus": 232.01178121379908,
+     "reference": 292.9705850757696,
+     "ratio": 0.7919285861199854
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRingAsDrawn",
+   "cls": "B",
+   "subset": "all",
+   "rows": 58,
+   "pairs": 56,
+   "bothZero": 2,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0910125919630056,
+   "scatterLn": 0.06279626681140826,
+   "medianAbsLn": 0.0967354232765479,
+   "maxRelative": 0.19927055963442575,
+   "within1pct": 0.25,
+   "withinTolerance": 0.25,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 psi",
+     "nimbus": 5565.590252680386,
+     "reference": 4640.812874099859,
+     "ratio": 1.1992705596344257
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "1 psi",
+     "nimbus": 64056.461045824566,
+     "reference": 54436.32919672976,
+     "ratio": 1.1767226407630866
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "1 psi",
+     "nimbus": 434.6150870520112,
+     "reference": 371.6780788461611,
+     "ratio": 1.1693320423987124
+    },
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "1 psi",
+     "nimbus": 936.3498203560963,
+     "reference": 800.9277201678478,
+     "ratio": 1.1690815497806326
+    },
+    {
+     "caseId": "nuc-grid-006",
+     "detail": "1 psi",
+     "nimbus": 2017.3045349802853,
+     "reference": 1726.349594940111,
+     "ratio": 1.1685376709867783
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRingAsDrawn",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 14,
+   "pairs": 12,
+   "bothZero": 2,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0875274355334772,
+   "scatterLn": 0.06764999699859908,
+   "medianAbsLn": 0.0967354232765479,
+   "maxRelative": 0.19927055963442575,
+   "within1pct": 0.25,
+   "withinTolerance": 0.25,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 psi",
+     "nimbus": 5565.590252680386,
+     "reference": 4640.812874099859,
+     "ratio": 1.1992705596344257
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "1 psi",
+     "nimbus": 64056.461045824566,
+     "reference": 54436.32919672976,
+     "ratio": 1.1767226407630866
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "1 psi",
+     "nimbus": 33167.33867846668,
+     "reference": 29015.612760852153,
+     "ratio": 1.1430859293523532
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "1 psi",
+     "nimbus": 13448.696899868592,
+     "reference": 11765.254522455998,
+     "ratio": 1.1430859293523532
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "1 psi",
+     "nimbus": 29355.62416592506,
+     "reference": 25681.03010642193,
+     "ratio": 1.1430859293523525
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRingAsDrawn",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 44,
+   "pairs": 44,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0919650260442673,
+   "scatterLn": 0.0622050849301264,
+   "medianAbsLn": 0.09858311333026806,
+   "maxRelative": 0.16933204239871236,
+   "within1pct": 0.25,
+   "withinTolerance": 0.25,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "1 psi",
+     "nimbus": 434.6150870520112,
+     "reference": 371.6780788461611,
+     "ratio": 1.1693320423987124
+    },
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "1 psi",
+     "nimbus": 936.3498203560963,
+     "reference": 800.9277201678478,
+     "ratio": 1.1690815497806326
+    },
+    {
+     "caseId": "nuc-grid-006",
+     "detail": "1 psi",
+     "nimbus": 2017.3045349802853,
+     "reference": 1726.349594940111,
+     "ratio": 1.1685376709867783
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "1 psi",
+     "nimbus": 9363.498203560914,
+     "reference": 8013.094890381007,
+     "ratio": 1.1685245628129206
+    },
+    {
+     "caseId": "nuc-grid-010",
+     "detail": "1 psi",
+     "nimbus": 5475.806967787303,
+     "reference": 4686.294916038555,
+     "ratio": 1.168472549400741
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRingAsDrawn",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 24,
+   "pairs": 24,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0939229472126542,
+   "scatterLn": 0.06224768286491615,
+   "medianAbsLn": 0.0967354232765479,
+   "maxRelative": 0.19927055963442575,
+   "within1pct": 0.20833333333333334,
+   "withinTolerance": 0.20833333333333334,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 psi",
+     "nimbus": 5565.590252680386,
+     "reference": 4640.812874099859,
+     "ratio": 1.1992705596344257
+    },
+    {
+     "caseId": "nuc-grid-006",
+     "detail": "1 psi",
+     "nimbus": 2017.3045349802853,
+     "reference": 1726.349594940111,
+     "ratio": 1.1685376709867783
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "1 psi",
+     "nimbus": 9363.498203560914,
+     "reference": 8013.094890381007,
+     "ratio": 1.1685245628129206
+    },
+    {
+     "caseId": "nuc-grid-010",
+     "detail": "1 psi",
+     "nimbus": 5475.806967787303,
+     "reference": 4686.294916038555,
+     "ratio": 1.168472549400741
+    },
+    {
+     "caseId": "nuc-grid-008",
+     "detail": "1 psi",
+     "nimbus": 4346.150870520171,
+     "reference": 3719.8349394236343,
+     "ratio": 1.1683719684598641
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRingAsDrawn",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 26,
+   "pairs": 24,
+   "bothZero": 2,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0876937779099878,
+   "scatterLn": 0.06494297879128384,
+   "medianAbsLn": 0.09824861904083361,
+   "maxRelative": 0.17672264076308664,
+   "within1pct": 0.2916666666666667,
+   "withinTolerance": 0.2916666666666667,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "1 psi",
+     "nimbus": 64056.461045824566,
+     "reference": 54436.32919672976,
+     "ratio": 1.1767226407630866
+    },
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "1 psi",
+     "nimbus": 34495.422319381134,
+     "reference": 29522.115798071733,
+     "ratio": 1.1684603690103483
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "1 psi",
+     "nimbus": 20173.045349802887,
+     "reference": 17265.023024882124,
+     "ratio": 1.1684343148995375
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "1 psi",
+     "nimbus": 54758.06967787289,
+     "reference": 46866.766849088075,
+     "ratio": 1.1683773675746605
+    },
+    {
+     "caseId": "nuc-grid-022",
+     "detail": "1 psi",
+     "nimbus": 74318.13449217478,
+     "reference": 63609.00053273273,
+     "ratio": 1.1683587836587874
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRingAsDrawn",
+   "cls": "B",
+   "subset": "band: < 1 kt",
+   "rows": 8,
+   "pairs": 8,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0922654862461112,
+   "scatterLn": 0.06585416808394944,
+   "medianAbsLn": 0.09858311333026806,
+   "maxRelative": 0.16933204239871236,
+   "within1pct": 0.25,
+   "withinTolerance": 0.25,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "1 psi",
+     "nimbus": 434.6150870520112,
+     "reference": 371.6780788461611,
+     "ratio": 1.1693320423987124
+    },
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "1 psi",
+     "nimbus": 936.3498203560963,
+     "reference": 800.9277201678478,
+     "ratio": 1.1690815497806326
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "1 psi",
+     "nimbus": 624.2332135707309,
+     "reference": 546.0947401604402,
+     "ratio": 1.1430859293523572
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "1 psi",
+     "nimbus": 289.74339136800745,
+     "reference": 253.4747248023371,
+     "ratio": 1.1430859293523372
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "5 psi",
+     "nimbus": 147.89162868558313,
+     "reference": 138.80153416142997,
+     "ratio": 1.0654898706925036
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRingAsDrawn",
+   "cls": "B",
+   "subset": "bin: 5 psi",
+   "rows": 29,
+   "pairs": 28,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0304793298496993,
+   "scatterLn": 0.03238017753412738,
+   "medianAbsLn": 0.010759888068716224,
+   "maxRelative": 0.0898973477917202,
+   "within1pct": 0.5,
+   "withinTolerance": 0.5,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "5 psi",
+     "nimbus": 1893.8693837082214,
+     "reference": 1737.658493752148,
+     "ratio": 1.0898973477917202
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "5 psi",
+     "nimbus": 147.89162868558313,
+     "reference": 138.80153416142997,
+     "ratio": 1.0654898706925036
+    },
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "5 psi",
+     "nimbus": 318.622855205532,
+     "reference": 299.09631826104135,
+     "ratio": 1.065285113029872
+    },
+    {
+     "caseId": "nuc-grid-006",
+     "detail": "5 psi",
+     "nimbus": 686.4521322918032,
+     "reference": 644.6525365527723,
+     "ratio": 1.0648405045647549
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "5 psi",
+     "nimbus": 3186.2285520553005,
+     "reference": 2992.2421280318213,
+     "ratio": 1.0648297884072222
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRingAsDrawn",
+   "cls": "B",
+   "subset": "bin: 1 psi",
+   "rows": 29,
+   "pairs": 28,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1551017486158104,
+   "scatterLn": 0.015040083550774087,
+   "medianAbsLn": 0.13373156077285392,
+   "maxRelative": 0.19927055963442575,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 psi",
+     "nimbus": 5565.590252680386,
+     "reference": 4640.812874099859,
+     "ratio": 1.1992705596344257
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "1 psi",
+     "nimbus": 64056.461045824566,
+     "reference": 54436.32919672976,
+     "ratio": 1.1767226407630866
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "1 psi",
+     "nimbus": 434.6150870520112,
+     "reference": 371.6780788461611,
+     "ratio": 1.1693320423987124
+    },
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "1 psi",
+     "nimbus": 936.3498203560963,
+     "reference": 800.9277201678478,
+     "ratio": 1.1690815497806326
+    },
+    {
+     "caseId": "nuc-grid-006",
+     "detail": "1 psi",
+     "nimbus": 2017.3045349802853,
+     "reference": 1726.349594940111,
+     "ratio": 1.1685376709867783
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRadiusAtNukemapThreshold",
+   "cls": "B",
+   "subset": "all",
+   "rows": 29,
+   "pairs": 28,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": 1.219228801373809,
+   "scatterLn": 0.15546059935957676,
+   "medianAbsLn": 0.16758702327336136,
+   "maxRelative": 1.3758447090016532,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 0.9642857142857143,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "20 psi",
+     "nimbus": 883.2055911474027,
+     "reference": 371.7438213874391,
+     "ratio": 2.3758447090016532
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "20 psi",
+     "nimbus": 2842.4187422572204,
+     "reference": 2180.3517569377705,
+     "ratio": 1.303651455877606
+    },
+    {
+     "caseId": "nuc-grid-022",
+     "detail": "20 psi",
+     "nimbus": 13193.339094512834,
+     "reference": 10130.041342177856,
+     "ratio": 1.302397359384952
+    },
+    {
+     "caseId": "nuc-grid-008",
+     "detail": "20 psi",
+     "nimbus": 771.5511507722589,
+     "reference": 592.4236453935125,
+     "ratio": 1.3023638687813726
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "20 psi",
+     "nimbus": 9720.93535928577,
+     "reference": 7464.148808290419,
+     "ratio": 1.302350155249952
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRadiusAtNukemapThreshold",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 7,
+   "pairs": 6,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": 1.3118383738131385,
+   "scatterLn": 0.3001030539811964,
+   "medianAbsLn": 0.16758702327329578,
+   "maxRelative": 1.3758447090016532,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 0.8333333333333334,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "20 psi",
+     "nimbus": 883.2055911474027,
+     "reference": 371.7438213874391,
+     "ratio": 2.3758447090016532
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "20 psi",
+     "nimbus": 11371.633821903873,
+     "reference": 8920.289840507257,
+     "ratio": 1.2748054183469468
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "20 psi",
+     "nimbus": 988.0323284010759,
+     "reference": 775.2375725635721,
+     "ratio": 1.2744897349774076
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "20 psi",
+     "nimbus": 2387.482137323728,
+     "reference": 2176.2672873143997,
+     "ratio": 1.097053726461135
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "20 psi",
+     "nimbus": 5211.362026221268,
+     "reference": 4750.325258027269,
+     "ratio": 1.0970537264611349
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRadiusAtNukemapThreshold",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 22,
+   "pairs": 22,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.195126338589576,
+   "scatterLn": 0.0876402285878387,
+   "medianAbsLn": 0.17746999235994296,
+   "maxRelative": 0.303651455877606,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "20 psi",
+     "nimbus": 2842.4187422572204,
+     "reference": 2180.3517569377705,
+     "ratio": 1.303651455877606
+    },
+    {
+     "caseId": "nuc-grid-022",
+     "detail": "20 psi",
+     "nimbus": 13193.339094512834,
+     "reference": 10130.041342177856,
+     "ratio": 1.302397359384952
+    },
+    {
+     "caseId": "nuc-grid-008",
+     "detail": "20 psi",
+     "nimbus": 771.5511507722589,
+     "reference": 592.4236453935125,
+     "ratio": 1.3023638687813726
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "20 psi",
+     "nimbus": 9720.93535928577,
+     "reference": 7464.148808290419,
+     "ratio": 1.302350155249952
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "20 psi",
+     "nimbus": 3581.2232059855914,
+     "reference": 2750.1213173663627,
+     "ratio": 1.3022055366688798
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRadiusAtNukemapThreshold",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 12,
+   "pairs": 12,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2725333392435605,
+   "scatterLn": 0.2137513579903749,
+   "medianAbsLn": 0.25320189660150105,
+   "maxRelative": 1.3758447090016532,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.4166666666666667,
+   "within2": 0.9166666666666666,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "20 psi",
+     "nimbus": 883.2055911474027,
+     "reference": 371.7438213874391,
+     "ratio": 2.3758447090016532
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "20 psi",
+     "nimbus": 2842.4187422572204,
+     "reference": 2180.3517569377705,
+     "ratio": 1.303651455877606
+    },
+    {
+     "caseId": "nuc-grid-008",
+     "detail": "20 psi",
+     "nimbus": 771.5511507722589,
+     "reference": 592.4236453935125,
+     "ratio": 1.3023638687813726
+    },
+    {
+     "caseId": "nuc-grid-010",
+     "detail": "20 psi",
+     "nimbus": 972.0935359285787,
+     "reference": 746.5534259835694,
+     "ratio": 1.3021084655098392
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "20 psi",
+     "nimbus": 1662.256564357757,
+     "reference": 1276.7178471354978,
+     "ratio": 1.3019764453730098
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRadiusAtNukemapThreshold",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 13,
+   "pairs": 12,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1762165580184458,
+   "scatterLn": 0.08629787002009501,
+   "medianAbsLn": 0.09262815590159795,
+   "maxRelative": 0.30239735938495205,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5833333333333334,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-022",
+     "detail": "20 psi",
+     "nimbus": 13193.339094512834,
+     "reference": 10130.041342177856,
+     "ratio": 1.302397359384952
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "20 psi",
+     "nimbus": 9720.93535928577,
+     "reference": 7464.148808290419,
+     "ratio": 1.302350155249952
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "20 psi",
+     "nimbus": 3581.2232059855914,
+     "reference": 2750.1213173663627,
+     "ratio": 1.3022055366688798
+    },
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "20 psi",
+     "nimbus": 6123.805541915765,
+     "reference": 4702.880199899974,
+     "ratio": 1.3021393872729339
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "20 psi",
+     "nimbus": 11371.633821903873,
+     "reference": 8920.289840507257,
+     "ratio": 1.2748054183469468
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRadiusAtNukemapThreshold",
+   "cls": "B",
+   "subset": "band: < 1 kt",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1943376378072512,
+   "scatterLn": 0.09810771364465916,
+   "medianAbsLn": 0.17746999235994296,
+   "maxRelative": 0.300565115568983,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "20 psi",
+     "nimbus": 166.2256564357855,
+     "reference": 127.81032986807709,
+     "ratio": 1.300565115568983
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "20 psi",
+     "nimbus": 77.15511507723572,
+     "reference": 59.35320066297307,
+     "ratio": 1.2999318354430076
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "20 psi",
+     "nimbus": 51.436743384823814,
+     "reference": 46.886257385717286,
+     "ratio": 1.097053726461279
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "20 psi",
+     "nimbus": 110.81710429052367,
+     "reference": 101.01337939755292,
+     "ratio": 1.0970537264611924
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "blastRadiusAtNukemapThreshold",
+   "cls": "B",
+   "subset": "bin: 20 psi",
+   "rows": 29,
+   "pairs": 28,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": 1.219228801373809,
+   "scatterLn": 0.15546059935957676,
+   "medianAbsLn": 0.16758702327336136,
+   "maxRelative": 1.3758447090016532,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 0.9642857142857143,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "20 psi",
+     "nimbus": 883.2055911474027,
+     "reference": 371.7438213874391,
+     "ratio": 2.3758447090016532
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "20 psi",
+     "nimbus": 2842.4187422572204,
+     "reference": 2180.3517569377705,
+     "ratio": 1.303651455877606
+    },
+    {
+     "caseId": "nuc-grid-022",
+     "detail": "20 psi",
+     "nimbus": 13193.339094512834,
+     "reference": 10130.041342177856,
+     "ratio": 1.302397359384952
+    },
+    {
+     "caseId": "nuc-grid-008",
+     "detail": "20 psi",
+     "nimbus": 771.5511507722589,
+     "reference": 592.4236453935125,
+     "ratio": 1.3023638687813726
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "20 psi",
+     "nimbus": 9720.93535928577,
+     "reference": 7464.148808290419,
+     "ratio": 1.302350155249952
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRingAsDrawn",
+   "cls": "B",
+   "subset": "all",
+   "rows": 87,
+   "pairs": 84,
+   "bothZero": 3,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8052285238417192,
+   "scatterLn": 0.2796953302992299,
+   "medianAbsLn": 0.13412261147510895,
+   "maxRelative": 0.6242887706442556,
+   "within1pct": 0.023809523809523808,
+   "withinTolerance": 0.023809523809523808,
+   "within125": 0.6428571428571429,
+   "within2": 0.9166666666666666,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "2nd degree",
+     "nimbus": 53.44720779290918,
+     "reference": 142.25608290856374,
+     "ratio": 0.3757112293557444
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "3rd degree",
+     "nimbus": 42.23278316640163,
+     "reference": 108.33299506469751,
+     "ratio": 0.38984229265681986
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "1st degree",
+     "nimbus": 84.36375542856787,
+     "reference": 202.92605833262928,
+     "ratio": 0.41573643188930304
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "2nd degree",
+     "nimbus": 74.47473342437299,
+     "reference": 163.74178292741502,
+     "ratio": 0.45483035602089933
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "3rd degree",
+     "nimbus": 58.8571665946932,
+     "reference": 121.6641253314697,
+     "ratio": 0.4837676384418076
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRingAsDrawn",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 21,
+   "pairs": 18,
+   "bothZero": 3,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8125904168156707,
+   "scatterLn": 0.2465084223289135,
+   "medianAbsLn": 0.211735401113284,
+   "maxRelative": 0.4481066991654874,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5555555555555556,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "1st degree",
+     "nimbus": 32483.893217094585,
+     "reference": 58859.009826674825,
+     "ratio": 0.5518933008345126
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "2nd degree",
+     "nimbus": 25955.097308338827,
+     "reference": 44452.91690973642,
+     "ratio": 0.5838783844273207
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "1st degree",
+     "nimbus": 29785.091041185442,
+     "reference": 50734.571672695,
+     "ratio": 0.5870768207789083
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "2nd degree",
+     "nimbus": 23550.208922090656,
+     "reference": 38152.73712169137,
+     "ratio": 0.617261321172719
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "3rd degree",
+     "nimbus": 22880.39808282115,
+     "reference": 34016.943810883284,
+     "ratio": 0.6726176875272628
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRingAsDrawn",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 66,
+   "pairs": 66,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8032323359113855,
+   "scatterLn": 0.2897776407172732,
+   "medianAbsLn": 0.12577113906004792,
+   "maxRelative": 0.6242887706442556,
+   "within1pct": 0.030303030303030304,
+   "withinTolerance": 0.030303030303030304,
+   "within125": 0.6666666666666666,
+   "within2": 0.8939393939393939,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "2nd degree",
+     "nimbus": 53.44720779290918,
+     "reference": 142.25608290856374,
+     "ratio": 0.3757112293557444
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "3rd degree",
+     "nimbus": 42.23278316640163,
+     "reference": 108.33299506469751,
+     "ratio": 0.38984229265681986
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "1st degree",
+     "nimbus": 84.36375542856787,
+     "reference": 202.92605833262928,
+     "ratio": 0.41573643188930304
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "2nd degree",
+     "nimbus": 74.47473342437299,
+     "reference": 163.74178292741502,
+     "ratio": 0.45483035602089933
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "3rd degree",
+     "nimbus": 58.8571665946932,
+     "reference": 121.6641253314697,
+     "ratio": 0.4837676384418076
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRingAsDrawn",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 36,
+   "pairs": 36,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9886295056345241,
+   "scatterLn": 0.10171952136546436,
+   "medianAbsLn": 0.09219427590055289,
+   "maxRelative": 0.20408779642485875,
+   "within1pct": 0.027777777777777776,
+   "withinTolerance": 0.027777777777777776,
+   "within125": 0.9722222222222222,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "2nd degree",
+     "nimbus": 525.5362482955903,
+     "reference": 660.294245941883,
+     "ratio": 0.7959122035751413
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "3rd degree",
+     "nimbus": 416.7170386293552,
+     "reference": 502.83722020412824,
+     "ratio": 0.8287314898053643
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "2nd degree",
+     "nimbus": 8757.89196468899,
+     "reference": 10389.301976314006,
+     "ratio": 0.8429721250432053
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "2nd degree",
+     "nimbus": 1599.363081306485,
+     "reference": 1852.7493266368137,
+     "ratio": 0.8632377075045085
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "1st degree",
+     "nimbus": 12226.655606657241,
+     "reference": 14133.632362468288,
+     "ratio": 0.8650752540532324
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRingAsDrawn",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 39,
+   "pairs": 36,
+   "bothZero": 3,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7569561326942571,
+   "scatterLn": 0.22028631691133652,
+   "medianAbsLn": 0.21595183415718114,
+   "maxRelative": 0.5092921029537768,
+   "within1pct": 0.027777777777777776,
+   "withinTolerance": 0.027777777777777776,
+   "within125": 0.5277777777777778,
+   "within2": 0.9722222222222222,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "1st degree",
+     "nimbus": 42087.39969307407,
+     "reference": 85768.74337343212,
+     "ratio": 0.4907078970462232
+    },
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "2nd degree",
+     "nimbus": 34689.10366311656,
+     "reference": 66170.15162531177,
+     "ratio": 0.5242409577590735
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "1st degree",
+     "nimbus": 34679.843102811275,
+     "reference": 66017.39374000214,
+     "ratio": 0.5253137262490507
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "1st degree",
+     "nimbus": 32483.893217094585,
+     "reference": 58859.009826674825,
+     "ratio": 0.5518933008345126
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "2nd degree",
+     "nimbus": 27929.656530855886,
+     "reference": 50071.31831308241,
+     "ratio": 0.5577975070721984
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRingAsDrawn",
+   "cls": "B",
+   "subset": "band: < 1 kt",
+   "rows": 12,
+   "pairs": 12,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.5237465982514222,
+   "scatterLn": 0.2254554743078991,
+   "medianAbsLn": 0.6511403033669583,
+   "maxRelative": 0.6242887706442556,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.5,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "2nd degree",
+     "nimbus": 53.44720779290918,
+     "reference": 142.25608290856374,
+     "ratio": 0.3757112293557444
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "3rd degree",
+     "nimbus": 42.23278316640163,
+     "reference": 108.33299506469751,
+     "ratio": 0.38984229265681986
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "1st degree",
+     "nimbus": 84.36375542856787,
+     "reference": 202.92605833262928,
+     "ratio": 0.41573643188930304
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "2nd degree",
+     "nimbus": 74.47473342437299,
+     "reference": 163.74178292741502,
+     "ratio": 0.45483035602089933
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "3rd degree",
+     "nimbus": 58.8571665946932,
+     "reference": 121.6641253314697,
+     "ratio": 0.4837676384418076
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRingAsDrawn",
+   "cls": "B",
+   "subset": "bin: 3rd degree",
+   "rows": 29,
+   "pairs": 28,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8471967502475255,
+   "scatterLn": 0.2756678531985806,
+   "medianAbsLn": 0.11318574479865537,
+   "maxRelative": 0.6101577073431801,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.6785714285714286,
+   "within2": 0.9285714285714286,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "3rd degree",
+     "nimbus": 42.23278316640163,
+     "reference": 108.33299506469751,
+     "ratio": 0.38984229265681986
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "3rd degree",
+     "nimbus": 58.8571665946932,
+     "reference": 121.6641253314697,
+     "ratio": 0.4837676384418076
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "3rd degree",
+     "nimbus": 133.1189889886844,
+     "reference": 233.39636264243717,
+     "ratio": 0.5703558850770202
+    },
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "3rd degree",
+     "nimbus": 31122.133789171196,
+     "reference": 51366.65878837241,
+     "ratio": 0.6058819966740009
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "3rd degree",
+     "nimbus": 24730.62124941006,
+     "reference": 38417.441984403784,
+     "ratio": 0.6437341991549015
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRingAsDrawn",
+   "cls": "B",
+   "subset": "bin: 2nd degree",
+   "rows": 29,
+   "pairs": 28,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7738563431850742,
+   "scatterLn": 0.2759225429461256,
+   "medianAbsLn": 0.16453641866958083,
+   "maxRelative": 0.6242887706442556,
+   "within1pct": 0.03571428571428571,
+   "withinTolerance": 0.03571428571428571,
+   "within125": 0.6071428571428571,
+   "within2": 0.9285714285714286,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "2nd degree",
+     "nimbus": 53.44720779290918,
+     "reference": 142.25608290856374,
+     "ratio": 0.3757112293557444
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "2nd degree",
+     "nimbus": 74.47473342437299,
+     "reference": 163.74178292741502,
+     "ratio": 0.45483035602089933
+    },
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "2nd degree",
+     "nimbus": 34689.10366311656,
+     "reference": 66170.15162531177,
+     "ratio": 0.5242409577590735
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "2nd degree",
+     "nimbus": 168.3229135883624,
+     "reference": 306.4814398862614,
+     "ratio": 0.5492107895696029
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "2nd degree",
+     "nimbus": 27929.656530855886,
+     "reference": 50071.31831308241,
+     "ratio": 0.5577975070721984
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRingAsDrawn",
+   "cls": "B",
+   "subset": "bin: 1st degree",
+   "rows": 29,
+   "pairs": 28,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7963662088304377,
+   "scatterLn": 0.2896817088501815,
+   "medianAbsLn": 0.14072402518430494,
+   "maxRelative": 0.5842635681106969,
+   "within1pct": 0.03571428571428571,
+   "withinTolerance": 0.03571428571428571,
+   "within125": 0.6428571428571429,
+   "within2": 0.8928571428571429,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "1st degree",
+     "nimbus": 84.36375542856787,
+     "reference": 202.92605833262928,
+     "ratio": 0.41573643188930304
+    },
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "1st degree",
+     "nimbus": 42087.39969307407,
+     "reference": 85768.74337343212,
+     "ratio": 0.4907078970462232
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "1st degree",
+     "nimbus": 117.50573228153047,
+     "reference": 237.34024990961956,
+     "ratio": 0.4950939940708636
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "1st degree",
+     "nimbus": 34679.843102811275,
+     "reference": 66017.39374000214,
+     "ratio": 0.5253137262490507
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "1st degree",
+     "nimbus": 32483.893217094585,
+     "reference": 58859.009826674825,
+     "ratio": 0.5518933008345126
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRadiusAtNukemapFluence",
+   "cls": "B",
+   "subset": "all",
+   "rows": 87,
+   "pairs": 80,
+   "bothZero": 0,
+   "unpaired": {
+    "NUKEMAP gives no fluence": 3,
+    "NUKEMAP fluence not positive": 4
+   },
+   "geometricMeanRatio": 0.8031492938489007,
+   "scatterLn": 0.31791704855437547,
+   "medianAbsLn": 0.19063950684499115,
+   "maxRelative": 1.8326213039142836,
+   "within1pct": 0.0375,
+   "withinTolerance": 0.0375,
+   "within125": 0.5375,
+   "within2": 0.9,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "1st degree",
+     "nimbus": 1448.3806298075642,
+     "reference": 511.32166089625406,
+     "ratio": 2.8326213039142836
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "3rd degree",
+     "nimbus": 42.14534371746066,
+     "reference": 108.33299506469751,
+     "ratio": 0.3890351567617147
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "1st degree",
+     "nimbus": 1052.251917995913,
+     "reference": 437.19093958325004,
+     "ratio": 2.406847495510695
+    },
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "1st degree",
+     "nimbus": 35987.8525590988,
+     "reference": 85768.74337343212,
+     "ratio": 0.41959169673746743
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "1st degree",
+     "nimbus": 29836.07473202455,
+     "reference": 66017.39374000214,
+     "ratio": 0.45194263271780566
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRadiusAtNukemapFluence",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 21,
+   "pairs": 18,
+   "bothZero": 0,
+   "unpaired": {
+    "NUKEMAP gives no fluence": 3
+   },
+   "geometricMeanRatio": 0.7349220477468735,
+   "scatterLn": 0.28339971494702204,
+   "medianAbsLn": 0.332587066297542,
+   "maxRelative": 0.5252784739320357,
+   "within1pct": 0.05555555555555555,
+   "withinTolerance": 0.05555555555555555,
+   "within125": 0.3333333333333333,
+   "within2": 0.9444444444444444,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "1st degree",
+     "nimbus": 27941.638967768373,
+     "reference": 58859.009826674825,
+     "ratio": 0.4747215260679642
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "1st degree",
+     "nimbus": 25621.192859428713,
+     "reference": 50734.571672695,
+     "ratio": 0.5050046154862458
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "2nd degree",
+     "nimbus": 23643.88653905239,
+     "reference": 44452.91690973642,
+     "ratio": 0.5318860534408199
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "2nd degree",
+     "nimbus": 21472.483459828276,
+     "reference": 38152.73712169137,
+     "ratio": 0.5628032240869111
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "3rd degree",
+     "nimbus": 19942.69265618211,
+     "reference": 34016.943810883284,
+     "ratio": 0.5862576240550363
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRadiusAtNukemapFluence",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 66,
+   "pairs": 62,
+   "bothZero": 0,
+   "unpaired": {
+    "NUKEMAP fluence not positive": 4
+   },
+   "geometricMeanRatio": 0.8241185135160769,
+   "scatterLn": 0.32482579174178583,
+   "medianAbsLn": 0.16378884285777423,
+   "maxRelative": 1.8326213039142836,
+   "within1pct": 0.03225806451612903,
+   "withinTolerance": 0.03225806451612903,
+   "within125": 0.5967741935483871,
+   "within2": 0.8870967741935484,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "1st degree",
+     "nimbus": 1448.3806298075642,
+     "reference": 511.32166089625406,
+     "ratio": 2.8326213039142836
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "3rd degree",
+     "nimbus": 42.14534371746066,
+     "reference": 108.33299506469751,
+     "ratio": 0.3890351567617147
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "1st degree",
+     "nimbus": 1052.251917995913,
+     "reference": 437.19093958325004,
+     "ratio": 2.406847495510695
+    },
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "1st degree",
+     "nimbus": 35987.8525590988,
+     "reference": 85768.74337343212,
+     "ratio": 0.41959169673746743
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "1st degree",
+     "nimbus": 29836.07473202455,
+     "reference": 66017.39374000214,
+     "ratio": 0.45194263271780566
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRadiusAtNukemapFluence",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 36,
+   "pairs": 36,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9472273482760062,
+   "scatterLn": 0.10292315466216989,
+   "medianAbsLn": 0.06836531168987253,
+   "maxRelative": 0.25721881819388803,
+   "within1pct": 0.08333333333333333,
+   "withinTolerance": 0.08333333333333333,
+   "within125": 0.9444444444444444,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "1st degree",
+     "nimbus": 10498.196149407306,
+     "reference": 14133.632362468288,
+     "ratio": 0.742781181806112
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "2nd degree",
+     "nimbus": 8152.176926094808,
+     "reference": 10389.301976314006,
+     "ratio": 0.7846703219023284
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "3rd degree",
+     "nimbus": 6440.3553595302965,
+     "reference": 7906.899216283829,
+     "ratio": 0.8145235171667212
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "1st degree",
+     "nimbus": 5855.267561680202,
+     "reference": 7100.425764966,
+     "ratio": 0.8246361211986052
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "2nd degree",
+     "nimbus": 4366.411612429406,
+     "reference": 5142.214285356437,
+     "ratio": 0.8491306215813883
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRadiusAtNukemapFluence",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 39,
+   "pairs": 36,
+   "bothZero": 0,
+   "unpaired": {
+    "NUKEMAP gives no fluence": 3
+   },
+   "geometricMeanRatio": 0.6634585038341045,
+   "scatterLn": 0.21874239588954503,
+   "medianAbsLn": 0.36305149772373924,
+   "maxRelative": 0.5804083032625326,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.2222222222222222,
+   "within2": 0.8888888888888888,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "1st degree",
+     "nimbus": 35987.8525590988,
+     "reference": 85768.74337343212,
+     "ratio": 0.41959169673746743
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "1st degree",
+     "nimbus": 29836.07473202455,
+     "reference": 66017.39374000214,
+     "ratio": 0.45194263271780566
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "1st degree",
+     "nimbus": 27941.638967768373,
+     "reference": 58859.009826674825,
+     "ratio": 0.4747215260679642
+    },
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "2nd degree",
+     "nimbus": 31439.503556472937,
+     "reference": 66170.15162531177,
+     "ratio": 0.47513120015953725
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "1st degree",
+     "nimbus": 25621.192859428713,
+     "reference": 50734.571672695,
+     "ratio": 0.5050046154862458
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRadiusAtNukemapFluence",
+   "cls": "B",
+   "subset": "band: < 1 kt",
+   "rows": 12,
+   "pairs": 8,
+   "bothZero": 0,
+   "unpaired": {
+    "NUKEMAP fluence not positive": 4
+   },
+   "geometricMeanRatio": 0.9031436814357716,
+   "scatterLn": 0.7105940671957643,
+   "medianAbsLn": 0.5836435683032911,
+   "maxRelative": 1.8326213039142836,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.125,
+   "within2": 0.5,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "1st degree",
+     "nimbus": 1448.3806298075642,
+     "reference": 511.32166089625406,
+     "ratio": 2.8326213039142836
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "3rd degree",
+     "nimbus": 42.14534371746066,
+     "reference": 108.33299506469751,
+     "ratio": 0.3890351567617147
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "1st degree",
+     "nimbus": 1052.251917995913,
+     "reference": 437.19093958325004,
+     "ratio": 2.406847495510695
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "3rd degree",
+     "nimbus": 58.73537708125046,
+     "reference": 121.6641253314697,
+     "ratio": 0.48276660783306463
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "3rd degree",
+     "nimbus": 150.45634183236453,
+     "reference": 233.39636264243717,
+     "ratio": 0.6446387601286803
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRadiusAtNukemapFluence",
+   "cls": "B",
+   "subset": "bin: 3rd degree",
+   "rows": 29,
+   "pairs": 28,
+   "bothZero": 0,
+   "unpaired": {
+    "NUKEMAP gives no fluence": 1
+   },
+   "geometricMeanRatio": 0.7893996733222067,
+   "scatterLn": 0.2664915057885062,
+   "medianAbsLn": 0.1657529877267182,
+   "maxRelative": 0.6109648432382853,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5714285714285714,
+   "within2": 0.9285714285714286,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "3rd degree",
+     "nimbus": 42.14534371746066,
+     "reference": 108.33299506469751,
+     "ratio": 0.3890351567617147
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "3rd degree",
+     "nimbus": 58.73537708125046,
+     "reference": 121.6641253314697,
+     "ratio": 0.48276660783306463
+    },
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "3rd degree",
+     "nimbus": 27336.52246788696,
+     "reference": 51366.65878837241,
+     "ratio": 0.5321841660076005
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "3rd degree",
+     "nimbus": 21565.717737021216,
+     "reference": 38417.441984403784,
+     "ratio": 0.5613522562427813
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "3rd degree",
+     "nimbus": 19942.69265618211,
+     "reference": 34016.943810883284,
+     "ratio": 0.5862576240550363
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRadiusAtNukemapFluence",
+   "cls": "B",
+   "subset": "bin: 2nd degree",
+   "rows": 29,
+   "pairs": 26,
+   "bothZero": 0,
+   "unpaired": {
+    "NUKEMAP gives no fluence": 1,
+    "NUKEMAP fluence not positive": 2
+   },
+   "geometricMeanRatio": 0.7972526670942199,
+   "scatterLn": 0.23437355443331434,
+   "medianAbsLn": 0.1760041047915531,
+   "maxRelative": 0.5248687998404628,
+   "within1pct": 0.038461538461538464,
+   "withinTolerance": 0.038461538461538464,
+   "within125": 0.5769230769230769,
+   "within2": 0.9615384615384616,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "2nd degree",
+     "nimbus": 31439.503556472937,
+     "reference": 66170.15162531177,
+     "ratio": 0.47513120015953725
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "2nd degree",
+     "nimbus": 25414.62607889368,
+     "reference": 50071.31831308241,
+     "ratio": 0.5075685429327604
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "2nd degree",
+     "nimbus": 23643.88653905239,
+     "reference": 44452.91690973642,
+     "ratio": 0.5318860534408199
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "2nd degree",
+     "nimbus": 21472.483459828276,
+     "reference": 38152.73712169137,
+     "ratio": 0.5628032240869111
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "2nd degree",
+     "nimbus": 17476.12278538777,
+     "reference": 28004.390942745948,
+     "ratio": 0.6240493792961657
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "burnRadiusAtNukemapFluence",
+   "cls": "B",
+   "subset": "bin: 1st degree",
+   "rows": 29,
+   "pairs": 26,
+   "bothZero": 0,
+   "unpaired": {
+    "NUKEMAP gives no fluence": 1,
+    "NUKEMAP fluence not positive": 2
+   },
+   "geometricMeanRatio": 0.8242762653244073,
+   "scatterLn": 0.43204566398753447,
+   "medianAbsLn": 0.28495419202569394,
+   "maxRelative": 1.8326213039142836,
+   "within1pct": 0.07692307692307693,
+   "withinTolerance": 0.07692307692307693,
+   "within125": 0.46153846153846156,
+   "within2": 0.8076923076923077,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "1st degree",
+     "nimbus": 1448.3806298075642,
+     "reference": 511.32166089625406,
+     "ratio": 2.8326213039142836
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "1st degree",
+     "nimbus": 1052.251917995913,
+     "reference": 437.19093958325004,
+     "ratio": 2.406847495510695
+    },
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "1st degree",
+     "nimbus": 35987.8525590988,
+     "reference": 85768.74337343212,
+     "ratio": 0.41959169673746743
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "1st degree",
+     "nimbus": 29836.07473202455,
+     "reference": 66017.39374000214,
+     "ratio": 0.45194263271780566
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "1st degree",
+     "nimbus": 27941.638967768373,
+     "reference": 58859.009826674825,
+     "ratio": 0.4747215260679642
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "radiationRingNearestDose",
+   "cls": "B",
+   "subset": "all",
+   "rows": 87,
+   "pairs": 76,
+   "bothZero": 3,
+   "unpaired": {
+    "the reference gives no value": 8
+   },
+   "geometricMeanRatio": 0.9699823043167125,
+   "scatterLn": 0.3946104103315606,
+   "medianAbsLn": 0.2169537528369582,
+   "maxRelative": 12.341503988119568,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5263157894736842,
+   "within2": 0.9868421052631579,
+   "within10": 0.9868421052631579,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 4539.841352853998,
+     "reference": 340.27957844158095,
+     "ratio": 13.341503988119568
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 6871.32794572802,
+     "reference": 3639.330780314228,
+     "ratio": 1.8880745830789072
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 3398.0211344348095,
+     "reference": 2082.324245519251,
+     "ratio": 1.6318405463254235
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 2427.157953167721,
+     "reference": 1504.0124961710612,
+     "ratio": 1.6137884222018224
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 4908.091389805729,
+     "reference": 3088.7145069777703,
+     "ratio": 1.589040158524775
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "radiationRingNearestDose",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 21,
+   "pairs": 18,
+   "bothZero": 3,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0424060809099498,
+   "scatterLn": 0.2731636581925487,
+   "medianAbsLn": 0.20762189741851278,
+   "maxRelative": 0.8880745830789072,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5555555555555556,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 6871.32794572802,
+     "reference": 3639.330780314228,
+     "ratio": 1.8880745830789072
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 4908.091389805729,
+     "reference": 3088.7145069777703,
+     "ratio": 1.589040158524775
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 847.6089875748808,
+     "reference": 1177.7523374037708,
+     "ratio": 0.7196835537115929
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 5532.513754667397,
+     "reference": 4011.2261315725164,
+     "ratio": 1.3792575071050637
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 1699.0105672174047,
+     "reference": 2334.649050747599,
+     "ratio": 0.727737030400072
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "radiationRingNearestDose",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 66,
+   "pairs": 58,
+   "bothZero": 0,
+   "unpaired": {
+    "the reference gives no value": 8
+   },
+   "geometricMeanRatio": 0.9485459167373328,
+   "scatterLn": 0.42484236691724947,
+   "medianAbsLn": 0.21798655537623768,
+   "maxRelative": 12.341503988119568,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5172413793103449,
+   "within2": 0.9827586206896551,
+   "within10": 0.9827586206896551,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 4539.841352853998,
+     "reference": 340.27957844158095,
+     "ratio": 13.341503988119568
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 3398.0211344348095,
+     "reference": 2082.324245519251,
+     "ratio": 1.6318405463254235
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 2427.157953167721,
+     "reference": 1504.0124961710612,
+     "ratio": 1.6137884222018224
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 840.1976824031698,
+     "reference": 1269.5045103272578,
+     "ratio": 0.6618311912783834
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 741.645011733742,
+     "reference": 1119.5064646208534,
+     "ratio": 0.6624749701511702
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "radiationRingNearestDose",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 36,
+   "pairs": 36,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8866663057497094,
+   "scatterLn": 0.1875451067044843,
+   "medianAbsLn": 0.1288983030906017,
+   "maxRelative": 0.39730639641627774,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.6666666666666666,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 840.1976824031698,
+     "reference": 1269.5045103272578,
+     "ratio": 0.6618311912783834
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 741.645011733742,
+     "reference": 1119.5064646208534,
+     "ratio": 0.6624749701511702
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 1122.5251498562088,
+     "reference": 1672.7263788350501,
+     "ratio": 0.6710751764660863
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 489.99999999999994,
+     "reference": 728.03038568286,
+     "ratio": 0.6730488309775722
+    },
+    {
+     "caseId": "nuc-grid-006",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 489.99999999999994,
+     "reference": 700.034922704621,
+     "ratio": 0.699965079037571
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "radiationRingNearestDose",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 39,
+   "pairs": 28,
+   "bothZero": 3,
+   "unpaired": {
+    "the reference gives no value": 8
+   },
+   "geometricMeanRatio": 1.2089200367974773,
+   "scatterLn": 0.5444923043552984,
+   "medianAbsLn": 0.237958030458571,
+   "maxRelative": 12.341503988119568,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.39285714285714285,
+   "within2": 0.9642857142857143,
+   "within10": 0.9642857142857143,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 4539.841352853998,
+     "reference": 340.27957844158095,
+     "ratio": 13.341503988119568
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 6871.32794572802,
+     "reference": 3639.330780314228,
+     "ratio": 1.8880745830789072
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 3398.0211344348095,
+     "reference": 2082.324245519251,
+     "ratio": 1.6318405463254235
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 2427.157953167721,
+     "reference": 1504.0124961710612,
+     "ratio": 1.6137884222018224
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 4908.091389805729,
+     "reference": 3088.7145069777703,
+     "ratio": 1.589040158524775
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "radiationRingNearestDose",
+   "cls": "B",
+   "subset": "band: < 1 kt",
+   "rows": 12,
+   "pairs": 12,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7596773535374843,
+   "scatterLn": 0.0843313588236276,
+   "medianAbsLn": 0.2554277015096311,
+   "maxRelative": 0.324971709927093,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.4166666666666667,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 213.89275779768133,
+     "reference": 316.8648795068717,
+     "ratio": 0.675028290072907
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 213.89275779768133,
+     "reference": 313.9368639169068,
+     "ratio": 0.681324120808873
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 323.73978952372204,
+     "reference": 473.4481302500028,
+     "ratio": 0.6837914627580687
+    },
+    {
+     "caseId": "nuc-grid-004",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 323.73978952372204,
+     "reference": 464.2924098852797,
+     "ratio": 0.6972756448973907
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 427.78551559536265,
+     "reference": 569.5993771951104,
+     "ratio": 0.7510287628857942
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "radiationRingNearestDose",
+   "cls": "B",
+   "subset": "bin: LD50 vs 500 rem",
+   "rows": 29,
+   "pairs": 25,
+   "bothZero": 1,
+   "unpaired": {
+    "the reference gives no value": 3
+   },
+   "geometricMeanRatio": 0.9781788070591816,
+   "scatterLn": 0.18826215683437794,
+   "medianAbsLn": 0.10218549233209859,
+   "maxRelative": 0.6137884222018224,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.84,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 2427.157953167721,
+     "reference": 1504.0124961710612,
+     "ratio": 1.6137884222018224
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 4908.091389805729,
+     "reference": 3088.7145069777703,
+     "ratio": 1.589040158524775
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 2142.4595977318404,
+     "reference": 1651.9255098162141,
+     "ratio": 1.2969468568653564
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 305.5610825681162,
+     "reference": 383.58004362353256,
+     "ratio": 0.7966031800862179
+    },
+    {
+     "caseId": "nuc-grid-002",
+     "detail": "LD50 vs 500 rem",
+     "nimbus": 305.5610825681162,
+     "reference": 381.16486266090857,
+     "ratio": 0.801650709446293
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "radiationRingNearestDose",
+   "cls": "B",
+   "subset": "bin: LD100 vs 1000 rem",
+   "rows": 29,
+   "pairs": 25,
+   "bothZero": 1,
+   "unpaired": {
+    "the reference gives no value": 3
+   },
+   "geometricMeanRatio": 0.7674245352244472,
+   "scatterLn": 0.19012402764689706,
+   "medianAbsLn": 0.33156564437151065,
+   "maxRelative": 0.4108478061214642,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.16,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 840.1976824031698,
+     "reference": 1269.5045103272578,
+     "ratio": 0.6618311912783834
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 741.645011733742,
+     "reference": 1119.5064646208534,
+     "ratio": 0.6624749701511702
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 1122.5251498562088,
+     "reference": 1672.7263788350501,
+     "ratio": 0.6710751764660863
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 489.99999999999994,
+     "reference": 728.03038568286,
+     "ratio": 0.6730488309775722
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "LD100 vs 1000 rem",
+     "nimbus": 213.89275779768133,
+     "reference": 316.8648795068717,
+     "ratio": 0.675028290072907
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "radiationRingNearestDose",
+   "cls": "B",
+   "subset": "bin: 1 Gy vs 100 rem",
+   "rows": 29,
+   "pairs": 26,
+   "bothZero": 1,
+   "unpaired": {
+    "the reference gives no value": 2
+   },
+   "geometricMeanRatio": 1.2052175298189225,
+   "scatterLn": 0.5426354065459711,
+   "medianAbsLn": 0.1784045289068691,
+   "maxRelative": 12.341503988119568,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5769230769230769,
+   "within2": 0.9615384615384616,
+   "within10": 0.9615384615384616,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 4539.841352853998,
+     "reference": 340.27957844158095,
+     "ratio": 13.341503988119568
+    },
+    {
+     "caseId": "nuc-preset-TSAR_BOMBA_1961",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 6871.32794572802,
+     "reference": 3639.330780314228,
+     "ratio": 1.8880745830789072
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 3398.0211344348095,
+     "reference": 2082.324245519251,
+     "ratio": 1.6318405463254235
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 2999.4434368245766,
+     "reference": 2146.5896416973096,
+     "ratio": 1.3973063964162777
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "1 Gy vs 100 rem",
+     "nimbus": 5532.513754667397,
+     "reference": 4011.2261315725164,
+     "ratio": 1.3792575071050637
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "all",
+   "rows": 34,
+   "pairs": 34,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2059613098434987,
+   "scatterLn": 0.3721310195225343,
+   "medianAbsLn": 0.13869166224812263,
+   "maxRelative": 1.5576337135089977,
+   "within1pct": 0,
+   "withinTolerance": 0.029411764705882353,
+   "within125": 0.6176470588235294,
+   "within2": 0.8235294117647058,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "2 km",
+     "nimbus": 247.06741672496915,
+     "reference": 96.6,
+     "ratio": 2.5576337135089977
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "1 km",
+     "nimbus": 211.92184628778705,
+     "reference": 83.2,
+     "ratio": 2.5471375755743635
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "1 km",
+     "nimbus": 338.1262376928913,
+     "reference": 134,
+     "ratio": 2.5233301320365022
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "5 km",
+     "nimbus": 92.9546204679574,
+     "reference": 41.8,
+     "ratio": 2.2237947480372586
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "2 km",
+     "nimbus": 77.15999878149398,
+     "reference": 36.1,
+     "ratio": 2.137396088130027
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 6,
+   "pairs": 6,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0509636843834607,
+   "scatterLn": 0.21404792123379432,
+   "medianAbsLn": 0.10917643587224997,
+   "maxRelative": 0.44104328876796717,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.6666666666666666,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 km",
+     "nimbus": 19.454084398367556,
+     "reference": 13.5,
+     "ratio": 1.4410432887679672
+    },
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "1 km",
+     "nimbus": 15.06843306413147,
+     "reference": 11.4,
+     "ratio": 1.3217923740466202
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "5 km",
+     "nimbus": 1.1385127549990175,
+     "reference": 1.28,
+     "ratio": 0.8894630898429824
+    },
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "5 km",
+     "nimbus": 0.994111978937037,
+     "reference": 1.1,
+     "ratio": 0.9037381626700335
+    },
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "2 km",
+     "nimbus": 3.6871919373268423,
+     "reference": 3.99,
+     "ratio": 0.9241082549691333
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 28,
+   "pairs": 28,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2420412435954091,
+   "scatterLn": 0.39454249261189256,
+   "medianAbsLn": 0.14547213583757246,
+   "maxRelative": 1.5576337135089977,
+   "within1pct": 0,
+   "withinTolerance": 0.03571428571428571,
+   "within125": 0.6071428571428571,
+   "within2": 0.7857142857142857,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "2 km",
+     "nimbus": 247.06741672496915,
+     "reference": 96.6,
+     "ratio": 2.5576337135089977
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "1 km",
+     "nimbus": 211.92184628778705,
+     "reference": 83.2,
+     "ratio": 2.5471375755743635
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "1 km",
+     "nimbus": 338.1262376928913,
+     "reference": 134,
+     "ratio": 2.5233301320365022
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "5 km",
+     "nimbus": 92.9546204679574,
+     "reference": 41.8,
+     "ratio": 2.2237947480372586
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "2 km",
+     "nimbus": 77.15999878149398,
+     "reference": 36.1,
+     "ratio": 2.137396088130027
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 21,
+   "pairs": 21,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1253253451341247,
+   "scatterLn": 0.3191372995104775,
+   "medianAbsLn": 0.12326948459164247,
+   "maxRelative": 1.5471375755743635,
+   "within1pct": 0,
+   "withinTolerance": 0.047619047619047616,
+   "within125": 0.6666666666666666,
+   "within2": 0.9047619047619048,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "1 km",
+     "nimbus": 211.92184628778705,
+     "reference": 83.2,
+     "ratio": 2.5471375755743635
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "1 km",
+     "nimbus": 65.08782186563869,
+     "reference": 31.6,
+     "ratio": 2.0597411982797054
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "2 km",
+     "nimbus": 45.29417181891,
+     "reference": 24.6,
+     "ratio": 1.8412264967036585
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 km",
+     "nimbus": 19.454084398367556,
+     "reference": 13.5,
+     "ratio": 1.4410432887679672
+    },
+    {
+     "caseId": "nuc-grid-010",
+     "detail": "1 km",
+     "nimbus": 18.741538354730054,
+     "reference": 13.2,
+     "ratio": 1.419813511721974
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 13,
+   "pairs": 13,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.3486032524645064,
+   "scatterLn": 0.43492082649770625,
+   "medianAbsLn": 0.15513402806194465,
+   "maxRelative": 1.5576337135089977,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5384615384615384,
+   "within2": 0.6923076923076923,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "2 km",
+     "nimbus": 247.06741672496915,
+     "reference": 96.6,
+     "ratio": 2.5576337135089977
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "1 km",
+     "nimbus": 338.1262376928913,
+     "reference": 134,
+     "ratio": 2.5233301320365022
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "5 km",
+     "nimbus": 92.9546204679574,
+     "reference": 41.8,
+     "ratio": 2.2237947480372586
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "2 km",
+     "nimbus": 77.15999878149398,
+     "reference": 36.1,
+     "ratio": 2.137396088130027
+    },
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "5 km",
+     "nimbus": 32.01674156507273,
+     "reference": 19.1,
+     "ratio": 1.6762691918886243
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 1 km",
+   "rows": 8,
+   "pairs": 8,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.5772548644542708,
+   "scatterLn": 0.3737010074975263,
+   "medianAbsLn": 0.35794644528216923,
+   "maxRelative": 1.5471375755743635,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.25,
+   "within2": 0.625,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "1 km",
+     "nimbus": 211.92184628778705,
+     "reference": 83.2,
+     "ratio": 2.5471375755743635
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "1 km",
+     "nimbus": 338.1262376928913,
+     "reference": 134,
+     "ratio": 2.5233301320365022
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "1 km",
+     "nimbus": 65.08782186563869,
+     "reference": 31.6,
+     "ratio": 2.0597411982797054
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 km",
+     "nimbus": 19.454084398367556,
+     "reference": 13.5,
+     "ratio": 1.4410432887679672
+    },
+    {
+     "caseId": "nuc-grid-010",
+     "detail": "1 km",
+     "nimbus": 18.741538354730054,
+     "reference": 13.2,
+     "ratio": 1.419813511721974
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 2 km",
+   "rows": 9,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2706786193177242,
+   "scatterLn": 0.4187790938163976,
+   "medianAbsLn": 0.11267353110343532,
+   "maxRelative": 1.5576337135089977,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5555555555555556,
+   "within2": 0.7777777777777778,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "2 km",
+     "nimbus": 247.06741672496915,
+     "reference": 96.6,
+     "ratio": 2.5576337135089977
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "2 km",
+     "nimbus": 77.15999878149398,
+     "reference": 36.1,
+     "ratio": 2.137396088130027
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "2 km",
+     "nimbus": 45.29417181891,
+     "reference": 24.6,
+     "ratio": 1.8412264967036585
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "2 km",
+     "nimbus": 13.148962387903268,
+     "reference": 10.4,
+     "ratio": 1.2643233065291604
+    },
+    {
+     "caseId": "nuc-grid-008",
+     "detail": "2 km",
+     "nimbus": 2.9304907231015944,
+     "reference": 3.28,
+     "ratio": 0.8934422936285349
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 5 km",
+   "rows": 8,
+   "pairs": 8,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1326018830412,
+   "scatterLn": 0.3498982771409644,
+   "medianAbsLn": 0.12780785213432055,
+   "maxRelative": 1.2237947480372586,
+   "within1pct": 0,
+   "withinTolerance": 0.125,
+   "within125": 0.75,
+   "within2": 0.875,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "5 km",
+     "nimbus": 92.9546204679574,
+     "reference": 41.8,
+     "ratio": 2.2237947480372586
+    },
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "5 km",
+     "nimbus": 32.01674156507273,
+     "reference": 19.1,
+     "ratio": 1.6762691918886243
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "5 km",
+     "nimbus": 2.31502673120941,
+     "reference": 2.66,
+     "ratio": 0.870310801206545
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "5 km",
+     "nimbus": 9.498301044275397,
+     "reference": 8.27,
+     "ratio": 1.148524914664498
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "5 km",
+     "nimbus": 1.1385127549990175,
+     "reference": 1.28,
+     "ratio": 0.8894630898429824
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 10 km",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0042493088051732,
+   "scatterLn": 0.2046460337856177,
+   "medianAbsLn": 0.13004917157702153,
+   "maxRelative": 0.40913822216015383,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.8,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "10 km",
+     "nimbus": 18.741538354730046,
+     "reference": 13.3,
+     "ratio": 1.4091382221601538
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "10 km",
+     "nimbus": 1.8381625264325732,
+     "reference": 2.14,
+     "ratio": 0.8589544516040061
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "10 km",
+     "nimbus": 2.599034673749138,
+     "reference": 2.96,
+     "ratio": 0.878052254644979
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "10 km",
+     "nimbus": 0.925364686524861,
+     "reference": 1.01,
+     "ratio": 0.916202659925605
+    },
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "10 km",
+     "nimbus": 6.849916037176333,
+     "reference": 6.53,
+     "ratio": 1.0489917361678915
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 20 km",
+   "rows": 3,
+   "pairs": 3,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8981916506020381,
+   "scatterLn": 0.045742574202832696,
+   "medianAbsLn": 0.10302174086378413,
+   "maxRelative": 0.14369959849107206,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "20 km",
+     "nimbus": 2.046557959606338,
+     "reference": 2.39,
+     "ratio": 0.8563004015089279
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "20 km",
+     "nimbus": 1.010360243956079,
+     "reference": 1.12,
+     "ratio": 0.9021073606750705
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "20 km",
+     "nimbus": 4.380660001851494,
+     "reference": 4.67,
+     "ratio": 0.938042826948928
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 50 km",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8787498305831791,
+   "scatterLn": null,
+   "medianAbsLn": 0.12925502865024927,
+   "maxRelative": 0.12125016941682087,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "50 km",
+     "nimbus": 1.1160122848406375,
+     "reference": 1.27,
+     "ratio": 0.8787498305831791
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "all",
+   "rows": 33,
+   "pairs": 33,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0548128204030551,
+   "scatterLn": 0.19035062455504198,
+   "medianAbsLn": 0.11708094940618853,
+   "maxRelative": 0.5374653006640169,
+   "within1pct": 0,
+   "withinTolerance": 0.12121212121212122,
+   "within125": 0.7575757575757576,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "5 km",
+     "nimbus": 699.5467118021277,
+     "reference": 455,
+     "ratio": 1.5374653006640169
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "2 km",
+     "nimbus": 878.1470215666028,
+     "reference": 572,
+     "ratio": 1.535222065675879
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "1 km",
+     "nimbus": 1099.590167169213,
+     "reference": 774,
+     "ratio": 1.4206591307095775
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 km",
+     "nimbus": 492.6386577015823,
+     "reference": 352,
+     "ratio": 1.399541641197677
+    },
+    {
+     "caseId": "nuc-grid-010",
+     "detail": "1 km",
+     "nimbus": 479.2832182028219,
+     "reference": 346,
+     "ratio": 1.3852116133029535
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 6,
+   "pairs": 6,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0537637420712762,
+   "scatterLn": 0.19635356272126003,
+   "medianAbsLn": 0.11317177333165776,
+   "maxRelative": 0.3995416411976771,
+   "within1pct": 0,
+   "withinTolerance": 0.16666666666666666,
+   "within125": 0.6666666666666666,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 km",
+     "nimbus": 492.6386577015823,
+     "reference": 352,
+     "ratio": 1.399541641197677
+    },
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "1 km",
+     "nimbus": 406.72621865932217,
+     "reference": 313,
+     "ratio": 1.2994447880489526
+    },
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "5 km",
+     "nimbus": 35.75843002433024,
+     "reference": 40.2,
+     "ratio": 0.8895131846848318
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "5 km",
+     "nimbus": 40.790521110683656,
+     "reference": 45.5,
+     "ratio": 0.8964949694655748
+    },
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "2 km",
+     "nimbus": 123.75986659138619,
+     "reference": 129,
+     "ratio": 0.9593788107859395
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 27,
+   "pairs": 27,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0550460907186028,
+   "scatterLn": 0.19282182484888902,
+   "medianAbsLn": 0.12199260511209839,
+   "maxRelative": 0.5374653006640169,
+   "within1pct": 0,
+   "withinTolerance": 0.1111111111111111,
+   "within125": 0.7777777777777778,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "5 km",
+     "nimbus": 699.5467118021277,
+     "reference": 455,
+     "ratio": 1.5374653006640169
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "2 km",
+     "nimbus": 878.1470215666028,
+     "reference": 572,
+     "ratio": 1.535222065675879
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "1 km",
+     "nimbus": 1099.590167169213,
+     "reference": 774,
+     "ratio": 1.4206591307095775
+    },
+    {
+     "caseId": "nuc-grid-010",
+     "detail": "1 km",
+     "nimbus": 479.2832182028219,
+     "reference": 346,
+     "ratio": 1.3852116133029535
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "10 km",
+     "nimbus": 479.2832182028218,
+     "reference": 348,
+     "ratio": 1.3772506270196028
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 22,
+   "pairs": 22,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0408950536058685,
+   "scatterLn": 0.1928039956090413,
+   "medianAbsLn": 0.11660614419618925,
+   "maxRelative": 0.535222065675879,
+   "within1pct": 0,
+   "withinTolerance": 0.13636363636363635,
+   "within125": 0.7727272727272727,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "2 km",
+     "nimbus": 878.1470215666028,
+     "reference": 572,
+     "ratio": 1.535222065675879
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "1 km",
+     "nimbus": 1099.590167169213,
+     "reference": 774,
+     "ratio": 1.4206591307095775
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 km",
+     "nimbus": 492.6386577015823,
+     "reference": 352,
+     "ratio": 1.399541641197677
+    },
+    {
+     "caseId": "nuc-grid-010",
+     "detail": "1 km",
+     "nimbus": 479.2832182028219,
+     "reference": 346,
+     "ratio": 1.3852116133029535
+    },
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "1 km",
+     "nimbus": 406.72621865932217,
+     "reference": 313,
+     "ratio": 1.2994447880489526
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 11,
+   "pairs": 11,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0832091239881319,
+   "scatterLn": 0.1916201306445436,
+   "medianAbsLn": 0.12199260511209839,
+   "maxRelative": 0.5374653006640169,
+   "within1pct": 0,
+   "withinTolerance": 0.09090909090909091,
+   "within125": 0.7272727272727273,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "5 km",
+     "nimbus": 699.5467118021277,
+     "reference": 455,
+     "ratio": 1.5374653006640169
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "10 km",
+     "nimbus": 479.2832182028218,
+     "reference": 348,
+     "ratio": 1.3772506270196028
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "2 km",
+     "nimbus": 1217.2468350618028,
+     "reference": 936,
+     "ratio": 1.3004773878865414
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "5 km",
+     "nimbus": 281.90586351134294,
+     "reference": 245,
+     "ratio": 1.1506361775973182
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "20 km",
+     "nimbus": 36.32661769606746,
+     "reference": 41.1,
+     "ratio": 0.8838593113398409
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 1 km",
+   "rows": 6,
+   "pairs": 6,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2609670374925428,
+   "scatterLn": 0.15967622540126014,
+   "medianAbsLn": 0.293895002240328,
+   "maxRelative": 0.4206591307095775,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.3333333333333333,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "1 km",
+     "nimbus": 1099.590167169213,
+     "reference": 774,
+     "ratio": 1.4206591307095775
+    },
+    {
+     "caseId": "nuc-preset-NAGASAKI_1945",
+     "detail": "1 km",
+     "nimbus": 492.6386577015823,
+     "reference": 352,
+     "ratio": 1.399541641197677
+    },
+    {
+     "caseId": "nuc-grid-010",
+     "detail": "1 km",
+     "nimbus": 479.2832182028219,
+     "reference": 346,
+     "ratio": 1.3852116133029535
+    },
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "1 km",
+     "nimbus": 406.72621865932217,
+     "reference": 313,
+     "ratio": 1.2994447880489526
+    },
+    {
+     "caseId": "nuc-grid-008",
+     "detail": "1 km",
+     "nimbus": 321.2992387185828,
+     "reference": 267,
+     "ratio": 1.203367935275591
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 2 km",
+   "rows": 8,
+   "pairs": 8,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0857764336037607,
+   "scatterLn": 0.19571166143853957,
+   "medianAbsLn": 0.09090634499412237,
+   "maxRelative": 0.535222065675879,
+   "within1pct": 0,
+   "withinTolerance": 0.25,
+   "within125": 0.75,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "2 km",
+     "nimbus": 878.1470215666028,
+     "reference": 572,
+     "ratio": 1.535222065675879
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "2 km",
+     "nimbus": 1217.2468350618028,
+     "reference": 936,
+     "ratio": 1.3004773878865414
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "2 km",
+     "nimbus": 365.9872081735091,
+     "reference": 293,
+     "ratio": 1.2491030995682904
+    },
+    {
+     "caseId": "nuc-grid-006",
+     "detail": "2 km",
+     "nimbus": 36.32661769606746,
+     "reference": 40.8,
+     "ratio": 0.8903582768643985
+    },
+    {
+     "caseId": "nuc-grid-008",
+     "detail": "2 km",
+     "nimbus": 100.19792536134848,
+     "reference": 107,
+     "ratio": 0.9364292089845653
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 5 km",
+   "rows": 9,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0170577300608796,
+   "scatterLn": 0.18690240561013474,
+   "medianAbsLn": 0.11477601540114182,
+   "maxRelative": 0.5374653006640169,
+   "within1pct": 0,
+   "withinTolerance": 0.1111111111111111,
+   "within125": 0.8888888888888888,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "5 km",
+     "nimbus": 699.5467118021277,
+     "reference": 455,
+     "ratio": 1.5374653006640169
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "5 km",
+     "nimbus": 281.90586351134294,
+     "reference": 245,
+     "ratio": 1.1506361775973182
+    },
+    {
+     "caseId": "nuc-grid-008",
+     "detail": "5 km",
+     "nimbus": 30.660281028100297,
+     "reference": 35.2,
+     "ratio": 0.8710307110255765
+    },
+    {
+     "caseId": "nuc-preset-HIROSHIMA_1945",
+     "detail": "5 km",
+     "nimbus": 35.75843002433024,
+     "reference": 40.2,
+     "ratio": 0.8895131846848318
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "5 km",
+     "nimbus": 1357.162841840969,
+     "reference": 1210,
+     "ratio": 1.1216221833396438
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 10 km",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0166468198613792,
+   "scatterLn": 0.1828955872188907,
+   "medianAbsLn": 0.08831284943155651,
+   "maxRelative": 0.37725062701960277,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.8,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "10 km",
+     "nimbus": 479.2832182028218,
+     "reference": 348,
+     "ratio": 1.3772506270196028
+    },
+    {
+     "caseId": "nuc-grid-012",
+     "detail": "10 km",
+     "nimbus": 33.34882967433873,
+     "reference": 37.9,
+     "ratio": 0.8799163502464046
+    },
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "10 km",
+     "nimbus": 64.63249449422915,
+     "reference": 70.6,
+     "ratio": 0.9154744262638691
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "10 km",
+     "nimbus": 89.60774216203637,
+     "reference": 96.6,
+     "ratio": 0.9276163784889895
+    },
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "10 km",
+     "nimbus": 214.2286637760108,
+     "reference": 203,
+     "ratio": 1.0553136146601516
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 20 km",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.9045145520025921,
+   "scatterLn": 0.05378885882364738,
+   "medianAbsLn": 0.10795239141491435,
+   "maxRelative": 0.1443389076316024,
+   "within1pct": 0,
+   "withinTolerance": 0.25,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-014",
+     "detail": "20 km",
+     "nimbus": 27.980117720446604,
+     "reference": 32.7,
+     "ratio": 0.8556610923683976
+    },
+    {
+     "caseId": "nuc-grid-016",
+     "detail": "20 km",
+     "nimbus": 36.32661769606746,
+     "reference": 41.1,
+     "ratio": 0.8838593113398409
+    },
+    {
+     "caseId": "nuc-grid-018",
+     "detail": "20 km",
+     "nimbus": 71.56822718197691,
+     "reference": 78.5,
+     "ratio": 0.911697161553846
+    },
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "20 km",
+     "nimbus": 144.64817965112533,
+     "reference": 149,
+     "ratio": 0.9707931520209754
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindOptimumHeight",
+   "cls": "B",
+   "subset": "bin: 50 km",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8851549140997904,
+   "scatterLn": null,
+   "medianAbsLn": 0.12199260511209839,
+   "maxRelative": 0.11484508590020959,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-020",
+     "detail": "50 km",
+     "nimbus": 40.00900211731053,
+     "reference": 45.2,
+     "ratio": 0.8851549140997904
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsInside",
+   "cls": "B",
+   "subset": "all",
+   "rows": 14,
+   "pairs": 14,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8006293277890313,
+   "scatterLn": 0.16022100455919303,
+   "medianAbsLn": 0.27170212254278614,
+   "maxRelative": 0.33877119046815773,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.42857142857142855,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "surface burst",
+     "nimbus": 470.04787215704664,
+     "reference": 710.8702243174281,
+     "ratio": 0.6612288095318423
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "surface burst",
+     "nimbus": 357.0755291353807,
+     "reference": 523.7736595661925,
+     "ratio": 0.6817363237225847
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "surface burst",
+     "nimbus": 327.55065139762746,
+     "reference": 475.87995139038946,
+     "ratio": 0.6883052131963432
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "surface burst",
+     "nimbus": 293.4682292053385,
+     "reference": 421.1900489376492,
+     "ratio": 0.6967596455460942
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "surface burst",
+     "nimbus": 235.58199271877592,
+     "reference": 329.9567295339586,
+     "ratio": 0.713978445148003
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsInside",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 3,
+   "pairs": 3,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7122230908916083,
+   "scatterLn": 0.04897415282429683,
+   "medianAbsLn": 0.36131476909036275,
+   "maxRelative": 0.3116947868036568,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "surface burst",
+     "nimbus": 327.55065139762746,
+     "reference": 475.87995139038946,
+     "ratio": 0.6883052131963432
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "surface burst",
+     "nimbus": 293.4682292053385,
+     "reference": 421.1900489376492,
+     "ratio": 0.6967596455460942
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "surface burst",
+     "nimbus": 145.3620669545435,
+     "reference": 192.95986599999995,
+     "ratio": 0.7533279845589421
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsInside",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 11,
+   "pairs": 11,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8265902006794419,
+   "scatterLn": 0.16632793971455126,
+   "medianAbsLn": 0.20650173911898376,
+   "maxRelative": 0.33877119046815773,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5454545454545454,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "surface burst",
+     "nimbus": 470.04787215704664,
+     "reference": 710.8702243174281,
+     "ratio": 0.6612288095318423
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "surface burst",
+     "nimbus": 357.0755291353807,
+     "reference": 523.7736595661925,
+     "ratio": 0.6817363237225847
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "surface burst",
+     "nimbus": 235.58199271877592,
+     "reference": 329.9567295339586,
+     "ratio": 0.713978445148003
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "surface burst",
+     "nimbus": 145.3620669545435,
+     "reference": 192.95986599999995,
+     "ratio": 0.7533279845589421
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "surface burst",
+     "nimbus": 118.07068722312353,
+     "reference": 153.1523471380214,
+     "ratio": 0.7709361915081708
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsInside",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 7,
+   "pairs": 7,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7061980394161083,
+   "scatterLn": 0.04979818849505191,
+   "medianAbsLn": 0.36131476909036275,
+   "maxRelative": 0.33877119046815773,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "surface burst",
+     "nimbus": 470.04787215704664,
+     "reference": 710.8702243174281,
+     "ratio": 0.6612288095318423
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "surface burst",
+     "nimbus": 357.0755291353807,
+     "reference": 523.7736595661925,
+     "ratio": 0.6817363237225847
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "surface burst",
+     "nimbus": 327.55065139762746,
+     "reference": 475.87995139038946,
+     "ratio": 0.6883052131963432
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "surface burst",
+     "nimbus": 293.4682292053385,
+     "reference": 421.1900489376492,
+     "ratio": 0.6967596455460942
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "surface burst",
+     "nimbus": 235.58199271877592,
+     "reference": 329.9567295339586,
+     "ratio": 0.713978445148003
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsInside",
+   "cls": "B",
+   "subset": "band: < 1 kt",
+   "rows": 2,
+   "pairs": 2,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.0641040616044959,
+   "scatterLn": 0.05427245111717161,
+   "medianAbsLn": 0.06213318839698805,
+   "maxRelative": 0.10573426401482466,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "surface burst",
+     "nimbus": 4.5967521696625315,
+     "reference": 4.157194290943038,
+     "ratio": 1.1057342640148247
+    },
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "surface burst",
+     "nimbus": 9.171726375379084,
+     "reference": 8.956403593610183,
+     "ratio": 1.024041210237837
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsInside",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8517603787919665,
+   "scatterLn": 0.07843372067741752,
+   "medianAbsLn": 0.1528538087045139,
+   "maxRelative": 0.22906380849182917,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.8,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "surface burst",
+     "nimbus": 118.07068722312353,
+     "reference": 153.1523471380214,
+     "ratio": 0.7709361915081708
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "surface burst",
+     "nimbus": 72.85361221129,
+     "reference": 89.5640359361018,
+     "ratio": 0.813424846813138
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "surface burst",
+     "nimbus": 44.95314575583792,
+     "reference": 52.37736595661925,
+     "ratio": 0.8582551820774965
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "surface burst",
+     "nimbus": 36.5133003639305,
+     "reference": 41.57194290943038,
+     "ratio": 0.8783159460090484
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "surface burst",
+     "nimbus": 18.3,
+     "reference": 19.2959866,
+     "ratio": 0.9483837431769362
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsInside",
+   "cls": "B",
+   "subset": "bin: surface burst",
+   "rows": 14,
+   "pairs": 14,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8006293277890313,
+   "scatterLn": 0.16022100455919303,
+   "medianAbsLn": 0.27170212254278614,
+   "maxRelative": 0.33877119046815773,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.42857142857142855,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "surface burst",
+     "nimbus": 470.04787215704664,
+     "reference": 710.8702243174281,
+     "ratio": 0.6612288095318423
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "surface burst",
+     "nimbus": 357.0755291353807,
+     "reference": 523.7736595661925,
+     "ratio": 0.6817363237225847
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "surface burst",
+     "nimbus": 327.55065139762746,
+     "reference": 475.87995139038946,
+     "ratio": 0.6883052131963432
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "surface burst",
+     "nimbus": 293.4682292053385,
+     "reference": 421.1900489376492,
+     "ratio": 0.6967596455460942
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "surface burst",
+     "nimbus": 235.58199271877592,
+     "reference": 329.9567295339586,
+     "ratio": 0.713978445148003
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsLip",
+   "cls": "B",
+   "subset": "all",
+   "rows": 14,
+   "pairs": 14,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.40031466389451553,
+   "scatterLn": 0.16022100455919305,
+   "medianAbsLn": 0.9648493031027314,
+   "maxRelative": 0.6693855952340788,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.14285714285714285,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "surface burst",
+     "nimbus": 470.04787215704664,
+     "reference": 1421.7404486348562,
+     "ratio": 0.33061440476592113
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "surface burst",
+     "nimbus": 357.0755291353807,
+     "reference": 1047.547319132385,
+     "ratio": 0.3408681618612924
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "surface burst",
+     "nimbus": 327.55065139762746,
+     "reference": 951.7599027807789,
+     "ratio": 0.3441526065981716
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "surface burst",
+     "nimbus": 293.4682292053385,
+     "reference": 842.3800978752984,
+     "ratio": 0.3483798227730471
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "surface burst",
+     "nimbus": 235.58199271877592,
+     "reference": 659.9134590679172,
+     "ratio": 0.3569892225740015
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsLip",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 3,
+   "pairs": 3,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.35611154544580415,
+   "scatterLn": 0.04897415282429683,
+   "medianAbsLn": 1.054461949650308,
+   "maxRelative": 0.6558473934018284,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "surface burst",
+     "nimbus": 327.55065139762746,
+     "reference": 951.7599027807789,
+     "ratio": 0.3441526065981716
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "surface burst",
+     "nimbus": 293.4682292053385,
+     "reference": 842.3800978752984,
+     "ratio": 0.3483798227730471
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "surface burst",
+     "nimbus": 145.3620669545435,
+     "reference": 385.9197319999999,
+     "ratio": 0.37666399227947106
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsLip",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 11,
+   "pairs": 11,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.413295100339721,
+   "scatterLn": 0.16632793971455131,
+   "medianAbsLn": 0.899648919678929,
+   "maxRelative": 0.6693855952340788,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.18181818181818182,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "surface burst",
+     "nimbus": 470.04787215704664,
+     "reference": 1421.7404486348562,
+     "ratio": 0.33061440476592113
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "surface burst",
+     "nimbus": 357.0755291353807,
+     "reference": 1047.547319132385,
+     "ratio": 0.3408681618612924
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "surface burst",
+     "nimbus": 235.58199271877592,
+     "reference": 659.9134590679172,
+     "ratio": 0.3569892225740015
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "surface burst",
+     "nimbus": 145.3620669545435,
+     "reference": 385.9197319999999,
+     "ratio": 0.37666399227947106
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "surface burst",
+     "nimbus": 118.07068722312353,
+     "reference": 306.3046942760428,
+     "ratio": 0.3854680957540854
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsLip",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 7,
+   "pairs": 7,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.3530990197080542,
+   "scatterLn": 0.04979818849505191,
+   "medianAbsLn": 1.054461949650308,
+   "maxRelative": 0.6693855952340788,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "surface burst",
+     "nimbus": 470.04787215704664,
+     "reference": 1421.7404486348562,
+     "ratio": 0.33061440476592113
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "surface burst",
+     "nimbus": 357.0755291353807,
+     "reference": 1047.547319132385,
+     "ratio": 0.3408681618612924
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "surface burst",
+     "nimbus": 327.55065139762746,
+     "reference": 951.7599027807789,
+     "ratio": 0.3441526065981716
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "surface burst",
+     "nimbus": 293.4682292053385,
+     "reference": 842.3800978752984,
+     "ratio": 0.3483798227730471
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "surface burst",
+     "nimbus": 235.58199271877592,
+     "reference": 659.9134590679172,
+     "ratio": 0.3569892225740015
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsLip",
+   "cls": "B",
+   "subset": "band: < 1 kt",
+   "rows": 2,
+   "pairs": 2,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.5320520308022479,
+   "scatterLn": 0.0542724511171716,
+   "medianAbsLn": 0.6310139921629573,
+   "maxRelative": 0.48797939488108155,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-003",
+     "detail": "surface burst",
+     "nimbus": 9.171726375379084,
+     "reference": 17.912807187220366,
+     "ratio": 0.5120206051189184
+    },
+    {
+     "caseId": "nuc-grid-001",
+     "detail": "surface burst",
+     "nimbus": 4.5967521696625315,
+     "reference": 8.314388581886076,
+     "ratio": 0.5528671320074123
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsLip",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 5,
+   "pairs": 5,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.42588018939598327,
+   "scatterLn": 0.07843372067741752,
+   "medianAbsLn": 0.8460009892644592,
+   "maxRelative": 0.6145319042459145,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "surface burst",
+     "nimbus": 118.07068722312353,
+     "reference": 306.3046942760428,
+     "ratio": 0.3854680957540854
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "surface burst",
+     "nimbus": 72.85361221129,
+     "reference": 179.1280718722036,
+     "ratio": 0.406712423406569
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "surface burst",
+     "nimbus": 44.95314575583792,
+     "reference": 104.7547319132385,
+     "ratio": 0.42912759103874826
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "surface burst",
+     "nimbus": 36.5133003639305,
+     "reference": 83.14388581886077,
+     "ratio": 0.4391579730045242
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "surface burst",
+     "nimbus": 18.3,
+     "reference": 38.5919732,
+     "ratio": 0.4741918715884681
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "craterRadiusVsLip",
+   "cls": "B",
+   "subset": "bin: surface burst",
+   "rows": 14,
+   "pairs": 14,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.40031466389451553,
+   "scatterLn": 0.16022100455919305,
+   "medianAbsLn": 0.9648493031027314,
+   "maxRelative": 0.6693855952340788,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.14285714285714285,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-021",
+     "detail": "surface burst",
+     "nimbus": 470.04787215704664,
+     "reference": 1421.7404486348562,
+     "ratio": 0.33061440476592113
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "surface burst",
+     "nimbus": 357.0755291353807,
+     "reference": 1047.547319132385,
+     "ratio": 0.3408681618612924
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "surface burst",
+     "nimbus": 327.55065139762746,
+     "reference": 951.7599027807789,
+     "ratio": 0.3441526065981716
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "surface burst",
+     "nimbus": 293.4682292053385,
+     "reference": 842.3800978752984,
+     "ratio": 0.3483798227730471
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "surface burst",
+     "nimbus": 235.58199271877592,
+     "reference": 659.9134590679172,
+     "ratio": 0.3569892225740015
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "all",
+   "rows": 58,
+   "pairs": 58,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.260178344081172,
+   "scatterLn": 0.13504037460155163,
+   "medianAbsLn": 0.2476930961098124,
+   "maxRelative": 0.5924366419954155,
+   "within1pct": 0,
+   "withinTolerance": 0.017241379310344827,
+   "within125": 0.43103448275862066,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "20 km",
+     "nimbus": 0.1656134107675232,
+     "reference": 0.104,
+     "ratio": 1.5924366419954155
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "50 km",
+     "nimbus": 0.19395484426080153,
+     "reference": 0.124,
+     "ratio": 1.5641519698451736
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "5 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.158,
+     "ratio": 1.5510226925396193
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "100 km",
+     "nimbus": 0.20909351566452028,
+     "reference": 0.135,
+     "ratio": 1.5488408567742242
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "50 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.159,
+     "ratio": 1.5412678328381122
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 18,
+   "pairs": 18,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2532278996637736,
+   "scatterLn": 0.12953365853900942,
+   "medianAbsLn": 0.25263440549913235,
+   "maxRelative": 0.5412678328381122,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.3888888888888889,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "50 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.159,
+     "ratio": 1.5412678328381122
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "100 km",
+     "nimbus": 0.2678495090458983,
+     "reference": 0.177,
+     "ratio": 1.5132740624062053
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "100 km",
+     "nimbus": 0.30339001578409697,
+     "reference": 0.206,
+     "ratio": 1.4727670669130921
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "1 km",
+     "nimbus": 146.31255369742865,
+     "reference": 106,
+     "ratio": 1.3803071103531006
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "2 km",
+     "nimbus": 176.50020209825422,
+     "reference": 129,
+     "ratio": 1.3682186209166993
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 40,
+   "pairs": 40,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2633186073987475,
+   "scatterLn": 0.13898954244016745,
+   "medianAbsLn": 0.2476930961098124,
+   "maxRelative": 0.5924366419954155,
+   "within1pct": 0,
+   "withinTolerance": 0.025,
+   "within125": 0.45,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "20 km",
+     "nimbus": 0.1656134107675232,
+     "reference": 0.104,
+     "ratio": 1.5924366419954155
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "50 km",
+     "nimbus": 0.19395484426080153,
+     "reference": 0.124,
+     "ratio": 1.5641519698451736
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "5 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.158,
+     "ratio": 1.5510226925396193
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "100 km",
+     "nimbus": 0.20909351566452028,
+     "reference": 0.135,
+     "ratio": 1.5488408567742242
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "50 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.159,
+     "ratio": 1.5412678328381122
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 35,
+   "pairs": 35,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2526337177033287,
+   "scatterLn": 0.13055870615411191,
+   "medianAbsLn": 0.241265092059045,
+   "maxRelative": 0.5488408567742242,
+   "within1pct": 0,
+   "withinTolerance": 0.02857142857142857,
+   "within125": 0.4,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "100 km",
+     "nimbus": 0.20909351566452028,
+     "reference": 0.135,
+     "ratio": 1.5488408567742242
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "50 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.159,
+     "ratio": 1.5412678328381122
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "50 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.159,
+     "ratio": 1.5412678328381122
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "100 km",
+     "nimbus": 0.2678495090458983,
+     "reference": 0.177,
+     "ratio": 1.5132740624062053
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "100 km",
+     "nimbus": 0.30339001578409697,
+     "reference": 0.206,
+     "ratio": 1.4727670669130921
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 23,
+   "pairs": 23,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2717465775382533,
+   "scatterLn": 0.14408240250192217,
+   "medianAbsLn": 0.2541211001605798,
+   "maxRelative": 0.5924366419954155,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.4782608695652174,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "20 km",
+     "nimbus": 0.1656134107675232,
+     "reference": 0.104,
+     "ratio": 1.5924366419954155
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "50 km",
+     "nimbus": 0.19395484426080153,
+     "reference": 0.124,
+     "ratio": 1.5641519698451736
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "5 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.158,
+     "ratio": 1.5510226925396193
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "10 km",
+     "nimbus": 0.26430847920408723,
+     "reference": 0.172,
+     "ratio": 1.536677204674926
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "20 km",
+     "nimbus": 0.28512248627654263,
+     "reference": 0.189,
+     "ratio": 1.5085845834737706
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "bin: 2 km",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2318486531931856,
+   "scatterLn": 0.10179316785434403,
+   "medianAbsLn": 0.24095073703045194,
+   "maxRelative": 0.3786621966706778,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.4,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "2 km",
+     "nimbus": 103.67539718963498,
+     "reference": 75.2,
+     "ratio": 1.3786621966706778
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "2 km",
+     "nimbus": 176.50020209825422,
+     "reference": 129,
+     "ratio": 1.3682186209166993
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "2 km",
+     "nimbus": 227.92545595909095,
+     "reference": 170,
+     "ratio": 1.3407379762299467
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "2 km",
+     "nimbus": 0.6372102265568528,
+     "reference": 0.484,
+     "ratio": 1.3165500548695306
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "2 km",
+     "nimbus": 30.15726286388888,
+     "reference": 23.7,
+     "ratio": 1.2724583486872947
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "bin: 5 km",
+   "rows": 11,
+   "pairs": 11,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2064643309695682,
+   "scatterLn": 0.12560732799761246,
+   "medianAbsLn": 0.19529136690925622,
+   "maxRelative": 0.5510226925396193,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5454545454545454,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "5 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.158,
+     "ratio": 1.5510226925396193
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "5 km",
+     "nimbus": 0.5426567550848285,
+     "reference": 0.401,
+     "ratio": 1.3532587408599213
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "5 km",
+     "nimbus": 36.54033381777444,
+     "reference": 28.2,
+     "ratio": 1.2957565183607958
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "5 km",
+     "nimbus": 0.6975264115548373,
+     "reference": 0.541,
+     "ratio": 1.2893279326337104
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "5 km",
+     "nimbus": 29.21571026829412,
+     "reference": 23.2,
+     "ratio": 1.259297856391988
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "bin: 10 km",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1867942254879622,
+   "scatterLn": 0.1431928821095191,
+   "medianAbsLn": 0.10799486095139085,
+   "maxRelative": 0.536677204674926,
+   "within1pct": 0,
+   "withinTolerance": 0.1,
+   "within125": 0.7,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "10 km",
+     "nimbus": 0.26430847920408723,
+     "reference": 0.172,
+     "ratio": 1.536677204674926
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "10 km",
+     "nimbus": 0.3347414044395702,
+     "reference": 0.228,
+     "ratio": 1.4681640545595183
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "10 km",
+     "nimbus": 0.5877885692862651,
+     "reference": 0.442,
+     "ratio": 1.3298383920503736
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "10 km",
+     "nimbus": 1.0816479662092444,
+     "reference": 0.921,
+     "ratio": 1.1744277591848473
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "10 km",
+     "nimbus": 1.4482546263323606,
+     "reference": 1.3,
+     "ratio": 1.114042020255662
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "bin: 20 km",
+   "rows": 9,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.256690483714571,
+   "scatterLn": 0.153893568076007,
+   "medianAbsLn": 0.26678422126433704,
+   "maxRelative": 0.5924366419954155,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.4444444444444444,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "20 km",
+     "nimbus": 0.1656134107675232,
+     "reference": 0.104,
+     "ratio": 1.5924366419954155
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "20 km",
+     "nimbus": 0.28512248627654263,
+     "reference": 0.189,
+     "ratio": 1.5085845834737706
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "20 km",
+     "nimbus": 0.4971776515447335,
+     "reference": 0.363,
+     "ratio": 1.3696354037045
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "20 km",
+     "nimbus": 0.6372102265568528,
+     "reference": 0.488,
+     "ratio": 1.3057586609771574
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "20 km",
+     "nimbus": 0.6372102265568528,
+     "reference": 0.488,
+     "ratio": 1.3057586609771574
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "bin: 50 km",
+   "rows": 7,
+   "pairs": 7,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.4183447384498578,
+   "scatterLn": 0.08763343877176212,
+   "medianAbsLn": 0.33885650168752524,
+   "maxRelative": 0.5641519698451736,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "50 km",
+     "nimbus": 0.19395484426080153,
+     "reference": 0.124,
+     "ratio": 1.5641519698451736
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "50 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.159,
+     "ratio": 1.5412678328381122
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "50 km",
+     "nimbus": 0.24506158542125986,
+     "reference": 0.159,
+     "ratio": 1.5412678328381122
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "50 km",
+     "nimbus": 0.4252126119290525,
+     "reference": 0.303,
+     "ratio": 1.4033419535612295
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "50 km",
+     "nimbus": 0.5502995613486888,
+     "reference": 0.412,
+     "ratio": 1.3356785469628372
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "bin: 100 km",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.4955088097422686,
+   "scatterLn": 0.029416379805201853,
+   "medianAbsLn": 0.40070927331282036,
+   "maxRelative": 0.5488408567742242,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "100 km",
+     "nimbus": 0.20909351566452028,
+     "reference": 0.135,
+     "ratio": 1.5488408567742242
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "100 km",
+     "nimbus": 0.2678495090458983,
+     "reference": 0.177,
+     "ratio": 1.5132740624062053
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "100 km",
+     "nimbus": 0.30339001578409697,
+     "reference": 0.206,
+     "ratio": 1.4727670669130921
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "100 km",
+     "nimbus": 0.3347414044395701,
+     "reference": 0.231,
+     "ratio": 1.449096988915888
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabOverpressureSurface",
+   "cls": "B",
+   "subset": "bin: 1 km",
+   "rows": 7,
+   "pairs": 7,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.227999010848242,
+   "scatterLn": 0.11820392561880322,
+   "medianAbsLn": 0.2226575939316789,
+   "maxRelative": 0.3803071103531006,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5714285714285714,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "1 km",
+     "nimbus": 146.31255369742865,
+     "reference": 106,
+     "ratio": 1.3803071103531006
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "1 km",
+     "nimbus": 146.31255369742865,
+     "reference": 106,
+     "ratio": 1.3803071103531006
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "1 km",
+     "nimbus": 87.73299629861434,
+     "reference": 64.2,
+     "ratio": 1.3665575747447716
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "1 km",
+     "nimbus": 25.362671827144197,
+     "reference": 20.3,
+     "ratio": 1.2493927008445418
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "1 km",
+     "nimbus": 1.4482546263323606,
+     "reference": 1.29,
+     "ratio": 1.1226780049088065
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "all",
+   "rows": 57,
+   "pairs": 57,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2254053340841735,
+   "scatterLn": 0.13045845501132455,
+   "medianAbsLn": 0.20242811390205478,
+   "maxRelative": 0.6132380708159231,
+   "within1pct": 0.017543859649122806,
+   "withinTolerance": 0.05263157894736842,
+   "within125": 0.631578947368421,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "20 km",
+     "nimbus": 6.098039907684189,
+     "reference": 3.78,
+     "ratio": 1.613238070815923
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "50 km",
+     "nimbus": 7.13575891076929,
+     "reference": 4.52,
+     "ratio": 1.5787077236215246
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "100 km",
+     "nimbus": 7.689367120598007,
+     "reference": 4.93,
+     "ratio": 1.5597093550908736
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "5 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.85,
+     "ratio": 1.5389333739214404
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "50 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.92,
+     "ratio": 1.5207365265946664
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "preset",
+   "rows": 17,
+   "pairs": 17,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1989555119323676,
+   "scatterLn": 0.12801770634626605,
+   "medianAbsLn": 0.20247779862599385,
+   "maxRelative": 0.5207365265946664,
+   "within1pct": 0.058823529411764705,
+   "withinTolerance": 0.11764705882352941,
+   "within125": 0.6470588235294118,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "50 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.92,
+     "ratio": 1.5207365265946664
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "100 km",
+     "nimbus": 9.833473259256198,
+     "reference": 6.6,
+     "ratio": 1.4899201907963937
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "100 km",
+     "nimbus": 11.12691117560905,
+     "reference": 7.65,
+     "ratio": 1.454498192890072
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "50 km",
+     "nimbus": 20.041086911063307,
+     "reference": 15.5,
+     "ratio": 1.2929733491008586
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "20 km",
+     "nimbus": 23.14946442421447,
+     "reference": 18.4,
+     "ratio": 1.2581230665333953
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "custom",
+   "rows": 40,
+   "pairs": 40,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2368224595470299,
+   "scatterLn": 0.13198053150440328,
+   "medianAbsLn": 0.20077648761286898,
+   "maxRelative": 0.6132380708159231,
+   "within1pct": 0,
+   "withinTolerance": 0.025,
+   "within125": 0.625,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "20 km",
+     "nimbus": 6.098039907684189,
+     "reference": 3.78,
+     "ratio": 1.613238070815923
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "50 km",
+     "nimbus": 7.13575891076929,
+     "reference": 4.52,
+     "ratio": 1.5787077236215246
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "100 km",
+     "nimbus": 7.689367120598007,
+     "reference": 4.93,
+     "ratio": 1.5597093550908736
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "5 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.85,
+     "ratio": 1.5389333739214404
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "50 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.92,
+     "ratio": 1.5207365265946664
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "band: ≥ 1 Mt",
+   "rows": 34,
+   "pairs": 34,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2044235744326435,
+   "scatterLn": 0.125260793581556,
+   "medianAbsLn": 0.19183981596055985,
+   "maxRelative": 0.5597093550908736,
+   "within1pct": 0.029411764705882353,
+   "withinTolerance": 0.08823529411764706,
+   "within125": 0.6764705882352942,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "100 km",
+     "nimbus": 7.689367120598007,
+     "reference": 4.93,
+     "ratio": 1.5597093550908736
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "50 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.92,
+     "ratio": 1.5207365265946664
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "50 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.92,
+     "ratio": 1.5207365265946664
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "100 km",
+     "nimbus": 9.833473259256198,
+     "reference": 6.6,
+     "ratio": 1.4899201907963937
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "100 km",
+     "nimbus": 11.12691117560905,
+     "reference": 7.65,
+     "ratio": 1.454498192890072
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "band: 1 kt – 1 Mt",
+   "rows": 23,
+   "pairs": 23,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2570932376321902,
+   "scatterLn": 0.1365442548188403,
+   "medianAbsLn": 0.21222312870420357,
+   "maxRelative": 0.6132380708159231,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5652173913043478,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "20 km",
+     "nimbus": 6.098039907684189,
+     "reference": 3.78,
+     "ratio": 1.613238070815923
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "50 km",
+     "nimbus": 7.13575891076929,
+     "reference": 4.52,
+     "ratio": 1.5787077236215246
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "5 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.85,
+     "ratio": 1.5389333739214404
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "10 km",
+     "nimbus": 9.704459335411821,
+     "reference": 6.4,
+     "ratio": 1.516321771158097
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "20 km",
+     "nimbus": 10.462422718815361,
+     "reference": 7.03,
+     "ratio": 1.488253587313707
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "bin: 5 km",
+   "rows": 11,
+   "pairs": 11,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2060219839256783,
+   "scatterLn": 0.10536791461719454,
+   "medianAbsLn": 0.20242811390205478,
+   "maxRelative": 0.5389333739214404,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.8181818181818182,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "5 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.85,
+     "ratio": 1.5389333739214404
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "5 km",
+     "nimbus": 19.767016536042934,
+     "reference": 15,
+     "ratio": 1.3178011024028622
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "5 km",
+     "nimbus": 25.29784775581014,
+     "reference": 20.4,
+     "ratio": 1.240090576265203
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "5 km",
+     "nimbus": 657.346801565121,
+     "reference": 534,
+     "ratio": 1.2309865197848708
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "5 km",
+     "nimbus": 538.7504763200454,
+     "reference": 440,
+     "ratio": 1.224432900727376
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "bin: 10 km",
+   "rows": 10,
+   "pairs": 10,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1936915870154763,
+   "scatterLn": 0.1246102407352814,
+   "medianAbsLn": 0.11996312436195786,
+   "maxRelative": 0.516321771158097,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.7,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "10 km",
+     "nimbus": 9.704459335411821,
+     "reference": 6.4,
+     "ratio": 1.516321771158097
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "10 km",
+     "nimbus": 12.26571741942071,
+     "reference": 8.48,
+     "ratio": 1.4464289409694233
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "10 km",
+     "nimbus": 21.383741197454977,
+     "reference": 16.6,
+     "ratio": 1.2881771805695768
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "10 km",
+     "nimbus": 38.81357961162908,
+     "reference": 33.9,
+     "ratio": 1.1449433513754892
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "10 km",
+     "nimbus": 236.48368468574444,
+     "reference": 208,
+     "ratio": 1.1369407917583867
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "bin: 20 km",
+   "rows": 9,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.2394553823682652,
+   "scatterLn": 0.1526475614080962,
+   "medianAbsLn": 0.2296209806265515,
+   "maxRelative": 0.6132380708159231,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.4444444444444444,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "20 km",
+     "nimbus": 6.098039907684189,
+     "reference": 3.78,
+     "ratio": 1.613238070815923
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "20 km",
+     "nimbus": 10.462422718815361,
+     "reference": 7.03,
+     "ratio": 1.488253587313707
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "20 km",
+     "nimbus": 18.133705459468455,
+     "reference": 13.6,
+     "ratio": 1.3333606955491513
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "20 km",
+     "nimbus": 23.14946442421447,
+     "reference": 18.4,
+     "ratio": 1.2581230665333953
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "20 km",
+     "nimbus": 23.14946442421447,
+     "reference": 18.4,
+     "ratio": 1.2581230665333953
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "bin: 50 km",
+   "rows": 7,
+   "pairs": 7,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.3876318452604006,
+   "scatterLn": 0.10326553756662966,
+   "medianAbsLn": 0.3098446414063182,
+   "maxRelative": 0.5787077236215246,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.14285714285714285,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "50 km",
+     "nimbus": 7.13575891076929,
+     "reference": 4.52,
+     "ratio": 1.5787077236215246
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "50 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.92,
+     "ratio": 1.5207365265946664
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "50 km",
+     "nimbus": 9.002760237440425,
+     "reference": 5.92,
+     "ratio": 1.5207365265946664
+    },
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "50 km",
+     "nimbus": 15.540631742858,
+     "reference": 11.4,
+     "ratio": 1.3632133107770175
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "50 km",
+     "nimbus": 20.041086911063307,
+     "reference": 15.5,
+     "ratio": 1.2929733491008586
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "bin: 100 km",
+   "rows": 4,
+   "pairs": 4,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.4813320457730192,
+   "scatterLn": 0.03895007693963816,
+   "medianAbsLn": 0.3866917559121782,
+   "maxRelative": 0.5597093550908736,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "nuc-grid-017",
+     "detail": "100 km",
+     "nimbus": 7.689367120598007,
+     "reference": 4.93,
+     "ratio": 1.5597093550908736
+    },
+    {
+     "caseId": "nuc-preset-IVY_MIKE_1952",
+     "detail": "100 km",
+     "nimbus": 9.833473259256198,
+     "reference": 6.6,
+     "ratio": 1.4899201907963937
+    },
+    {
+     "caseId": "nuc-preset-CASTLE_BRAVO_1954",
+     "detail": "100 km",
+     "nimbus": 11.12691117560905,
+     "reference": 7.65,
+     "ratio": 1.454498192890072
+    },
+    {
+     "caseId": "nuc-grid-019",
+     "detail": "100 km",
+     "nimbus": 12.265717419420708,
+     "reference": 8.61,
+     "ratio": 1.4245897118955528
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "bin: 1 km",
+   "rows": 7,
+   "pairs": 7,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.1122069343426666,
+   "scatterLn": 0.060531203476759624,
+   "medianAbsLn": 0.10338713553144449,
+   "maxRelative": 0.23642373592828192,
+   "within1pct": 0,
+   "withinTolerance": 0.2857142857142857,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "1 km",
+     "nimbus": 595.9562407174319,
+     "reference": 482,
+     "ratio": 1.236423735928282
+    },
+    {
+     "caseId": "nuc-grid-009",
+     "detail": "1 km",
+     "nimbus": 236.48368468574458,
+     "reference": 207,
+     "ratio": 1.142433259351423
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "1 km",
+     "nimbus": 1312.4254200816083,
+     "reference": 1160,
+     "ratio": 1.131401224208283
+    },
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "1 km",
+     "nimbus": 51.453917165390855,
+     "reference": 46.4,
+     "ratio": 1.1089206285644582
+    },
+    {
+     "caseId": "nuc-grid-007",
+     "detail": "1 km",
+     "nimbus": 158.9474240871486,
+     "reference": 144,
+     "ratio": 1.1038015561607541
+    }
+   ]
+  },
+  {
+   "track": "NUC",
+   "quantity": "fourmilabWindSurface",
+   "cls": "B",
+   "subset": "bin: 2 km",
+   "rows": 9,
+   "pairs": 9,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 1.14440307393276,
+   "scatterLn": 0.08260583648449757,
+   "medianAbsLn": 0.10692905235362753,
+   "maxRelative": 0.271948594737059,
+   "within1pct": 0.1111111111111111,
+   "withinTolerance": 0.1111111111111111,
+   "within125": 0.8888888888888888,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "nuc-grid-005",
+     "detail": "2 km",
+     "nimbus": 23.14946442421447,
+     "reference": 18.2,
+     "ratio": 1.271948594737059
+    },
+    {
+     "caseId": "nuc-preset-ONE_MEGATON",
+     "detail": "2 km",
+     "nimbus": 671.7445229649592,
+     "reference": 545,
+     "ratio": 1.2325587577338701
+    },
+    {
+     "caseId": "nuc-grid-015",
+     "detail": "2 km",
+     "nimbus": 671.7445229649592,
+     "reference": 545,
+     "ratio": 1.2325587577338701
+    },
+    {
+     "caseId": "nuc-grid-013",
+     "detail": "2 km",
+     "nimbus": 458.8457076841461,
+     "reference": 376,
+     "ratio": 1.220334328947197
+    },
+    {
+     "caseId": "nuc-grid-011",
+     "detail": "2 km",
+     "nimbus": 180.28255814872506,
+     "reference": 162,
+     "ratio": 1.1128552972143522
+    }
+   ]
+  }
+ ]
+}

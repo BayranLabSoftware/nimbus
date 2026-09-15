@@ -19,6 +19,24 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Nimbus against the field's own programs.** A night-long campaign, run
+  to a protocol committed before any program was asked a case
+  (`docs/BENCHMARK_PROTOCOL.md`), compares every hazard with the software
+  its field uses — the Earth Impact Effects Program, NUKEMAP and the 1962
+  Nuclear Bomb Effects Computer, Kingery–Bulmash, the OpenQuake Engine,
+  USGS PAGER, GeoClaw, Tephra2 and Heller's impulse-wave method — on the
+  presets and on thousands of custom cases, and holds every output to
+  invariants on 5 000 random scenarios a hazard and every preset of the
+  application to the same physics run in Node. `docs/BENCHMARK_REPORT.md`
+  says where Nimbus reproduces its sources to their printed rounding (the
+  impact pipeline, Boore et al. 2014), where it agrees within ×1.25 (the
+  blast of explosions), and where it does not: an earthquake of magnitude
+  3.2 to 3.7 never finishes, airbursts carry their blast far beyond the
+  impact program's, the earthquake rings hold a fraction of the people
+  PAGER counts, large impacts print fire areas larger than the Earth, and
+  the megathrust wave is a third of GeoClaw's on the same uplift. The
+  physics was frozen for the campaign; nothing it found is fixed yet.
+
 - **A test the rings cannot have been fitted to.** Rules 27 to 30
   (`validation/prospectiveRules.ts`) choose between the ring laws on the
   earthquakes that happen from 15 September 2026 — the day after they were

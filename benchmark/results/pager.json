@@ -1,0 +1,1297 @@
+{
+ "track": "EQ-PAGER",
+ "reference": "USGS PAGER loss products via ComCat",
+ "events": 187,
+ "unmatched": [],
+ "alertConfusion": {
+  "PAGER yellow → Nimbus yellow": 25,
+  "PAGER yellow → Nimbus orange": 6,
+  "PAGER green → Nimbus yellow": 22,
+  "PAGER yellow → Nimbus green": 18,
+  "PAGER green → Nimbus green": 91,
+  "PAGER red → Nimbus orange": 4,
+  "PAGER orange → Nimbus yellow": 11,
+  "PAGER orange → Nimbus orange": 3,
+  "PAGER red → Nimbus red": 4,
+  "PAGER red → Nimbus yellow": 3
+ },
+ "stats": [
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi7Plus",
+   "cls": "C",
+   "subset": "all",
+   "rows": 187,
+   "pairs": 100,
+   "bothZero": 53,
+   "unpaired": {
+    "reference zero": 18,
+    "Nimbus zero": 16
+   },
+   "geometricMeanRatio": 0.12728776675061282,
+   "scatterLn": 2.1811959135363987,
+   "medianAbsLn": 1.7529413674271819,
+   "maxRelative": 111.16666666666667,
+   "within1pct": 0.01,
+   "withinTolerance": 0.01,
+   "within125": 0.06,
+   "within2": 0.19,
+   "within10": 0.6,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us10008w1z 2017-05-29 14:35 UTC, INDONESIA: SULAWESI: POSO",
+     "detail": "MMI ≥ 7",
+     "nimbus": 4,
+     "reference": 23084,
+     "ratio": 0.00017328019407381737
+    },
+    {
+     "caseId": "us7000nr0v 2024-11-10 16:49 UTC, CUBA: GRANMA, SANTIAGO DE CUBA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 17,
+     "reference": 31626,
+     "ratio": 0.0005375324100423702
+    },
+    {
+     "caseId": "us7000jvl3 2023-04-24 20:00 UTC, INDONESIA: SUMATRA: MENTAWAI ISLANDS",
+     "detail": "MMI ≥ 7",
+     "nimbus": 20,
+     "reference": 27979,
+     "ratio": 0.0007148218306587083
+    },
+    {
+     "caseId": "usp000jv5f 2012-11-07 16:35 UTC, GUATEMALA: SAN MARCOS, SAN CRISTOBAL COCHU",
+     "detail": "MMI ≥ 7",
+     "nimbus": 569,
+     "reference": 470263,
+     "ratio": 0.001209961234458165
+    },
+    {
+     "caseId": "us2000a5x1 2017-08-08 13:19 UTC, CHINA: SICHUAN PROVINCE: ABA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 3,
+     "reference": 2061,
+     "ratio": 0.001455604075691412
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi7Plus",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.05321693724507162,
+   "scatterLn": null,
+   "medianAbsLn": 2.9333785640350163,
+   "maxRelative": 0.9467830627549284,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 0,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us70006d0m Durrës (Albania) 2019",
+     "detail": "MMI ≥ 7",
+     "nimbus": 45495,
+     "reference": 854897,
+     "ratio": 0.05321693724507163
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi7Plus",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 186,
+   "pairs": 99,
+   "bothZero": 53,
+   "unpaired": {
+    "reference zero": 18,
+    "Nimbus zero": 16
+   },
+   "geometricMeanRatio": 0.12841397543484162,
+   "scatterLn": 2.190507701953865,
+   "medianAbsLn": 1.7384601561136388,
+   "maxRelative": 111.16666666666667,
+   "within1pct": 0.010101010101010102,
+   "withinTolerance": 0.010101010101010102,
+   "within125": 0.06060606060606061,
+   "within2": 0.1919191919191919,
+   "within10": 0.6060606060606061,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us10008w1z 2017-05-29 14:35 UTC, INDONESIA: SULAWESI: POSO",
+     "detail": "MMI ≥ 7",
+     "nimbus": 4,
+     "reference": 23084,
+     "ratio": 0.00017328019407381737
+    },
+    {
+     "caseId": "us7000nr0v 2024-11-10 16:49 UTC, CUBA: GRANMA, SANTIAGO DE CUBA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 17,
+     "reference": 31626,
+     "ratio": 0.0005375324100423702
+    },
+    {
+     "caseId": "us7000jvl3 2023-04-24 20:00 UTC, INDONESIA: SUMATRA: MENTAWAI ISLANDS",
+     "detail": "MMI ≥ 7",
+     "nimbus": 20,
+     "reference": 27979,
+     "ratio": 0.0007148218306587083
+    },
+    {
+     "caseId": "usp000jv5f 2012-11-07 16:35 UTC, GUATEMALA: SAN MARCOS, SAN CRISTOBAL COCHU",
+     "detail": "MMI ≥ 7",
+     "nimbus": 569,
+     "reference": 470263,
+     "ratio": 0.001209961234458165
+    },
+    {
+     "caseId": "us2000a5x1 2017-08-08 13:19 UTC, CHINA: SICHUAN PROVINCE: ABA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 3,
+     "reference": 2061,
+     "ratio": 0.001455604075691412
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi7Plus",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 87,
+   "pairs": 40,
+   "bothZero": 31,
+   "unpaired": {
+    "Nimbus zero": 10,
+    "reference zero": 6
+   },
+   "geometricMeanRatio": 0.06584905458648165,
+   "scatterLn": 2.6446902289068888,
+   "medianAbsLn": 2.5141467134958715,
+   "maxRelative": 111.16666666666667,
+   "within1pct": 0.025,
+   "withinTolerance": 0.025,
+   "within125": 0.05,
+   "within2": 0.2,
+   "within10": 0.45,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us10008w1z 2017-05-29 14:35 UTC, INDONESIA: SULAWESI: POSO",
+     "detail": "MMI ≥ 7",
+     "nimbus": 4,
+     "reference": 23084,
+     "ratio": 0.00017328019407381737
+    },
+    {
+     "caseId": "us7000nr0v 2024-11-10 16:49 UTC, CUBA: GRANMA, SANTIAGO DE CUBA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 17,
+     "reference": 31626,
+     "ratio": 0.0005375324100423702
+    },
+    {
+     "caseId": "us7000jvl3 2023-04-24 20:00 UTC, INDONESIA: SUMATRA: MENTAWAI ISLANDS",
+     "detail": "MMI ≥ 7",
+     "nimbus": 20,
+     "reference": 27979,
+     "ratio": 0.0007148218306587083
+    },
+    {
+     "caseId": "usp000jv5f 2012-11-07 16:35 UTC, GUATEMALA: SAN MARCOS, SAN CRISTOBAL COCHU",
+     "detail": "MMI ≥ 7",
+     "nimbus": 569,
+     "reference": 470263,
+     "ratio": 0.001209961234458165
+    },
+    {
+     "caseId": "us2000a5x1 2017-08-08 13:19 UTC, CHINA: SICHUAN PROVINCE: ABA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 3,
+     "reference": 2061,
+     "ratio": 0.001455604075691412
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi7Plus",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 27,
+   "pairs": 13,
+   "bothZero": 12,
+   "unpaired": {
+    "Nimbus zero": 2
+   },
+   "geometricMeanRatio": 0.3254788746271019,
+   "scatterLn": 1.1058041023864202,
+   "medianAbsLn": 0.7639660318573787,
+   "maxRelative": 0.9792060491493384,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.07692307692307693,
+   "within2": 0.38461538461538464,
+   "within10": 0.8461538461538461,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us7000qx2g 2025-09-18 18:58 UTC, RUSSIA: KAMCHATKA PENINSULA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 22,
+     "reference": 1058,
+     "ratio": 0.020793950850661626
+    },
+    {
+     "caseId": "us6000m0xl 2024-01-01 07:10 UTC, JAPAN: HONSHU: ISHIKAWA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 118180,
+     "reference": 1363246,
+     "ratio": 0.08669014983355902
+    },
+    {
+     "caseId": "ak0219neiszm 2021-07-29 06:15 UTC, ALASKA PENINSULA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 241,
+     "reference": 1734,
+     "ratio": 0.1389850057670127
+    },
+    {
+     "caseId": "us7000pn9s 2025-03-28 06:20 UTC, MYANMAR (BURMA); THAILAND",
+     "detail": "MMI ≥ 7",
+     "nimbus": 4584431,
+     "reference": 18640093,
+     "ratio": 0.2459446420143934
+    },
+    {
+     "caseId": "us6000jllz 2023-02-06 01:17 UTC, TURKEY: KAHRAMANMARAS; SYRIA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 2965271,
+     "reference": 9027408,
+     "ratio": 0.3284742419972599
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi7Plus",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 73,
+   "pairs": 47,
+   "bothZero": 10,
+   "unpaired": {
+    "reference zero": 12,
+    "Nimbus zero": 4
+   },
+   "geometricMeanRatio": 0.17203414285309668,
+   "scatterLn": 1.8084929457968524,
+   "medianAbsLn": 1.7384601561136388,
+   "maxRelative": 6.743254462432545,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.06382978723404255,
+   "within2": 0.1276595744680851,
+   "within10": 0.6595744680851063,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us7000fu12 2021-11-14 12:08 UTC, IRAN: HORMOZGAN PROVINCE",
+     "detail": "MMI ≥ 7",
+     "nimbus": 746,
+     "reference": 403735,
+     "ratio": 0.001847746665510793
+    },
+    {
+     "caseId": "us6000len8 2023-10-11 00:41 UTC, AFGHANISTAN: HERAT",
+     "detail": "MMI ≥ 7",
+     "nimbus": 5364,
+     "reference": 569983,
+     "ratio": 0.009410806988980372
+    },
+    {
+     "caseId": "ci38443183 2019-07-04 17:33 UTC, CALIFORNIA: RIDGECREST; NEVADA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 417,
+     "reference": 42029,
+     "ratio": 0.00992172071664803
+    },
+    {
+     "caseId": "us7000df40 2021-03-03 10:16 UTC, GREECE: TYRNAVOS, LARISA",
+     "detail": "MMI ≥ 7",
+     "nimbus": 1886,
+     "reference": 124990,
+     "ratio": 0.015089207136570925
+    },
+    {
+     "caseId": "nc73821036 2022-12-20 10:34 UTC, CALIFORNIA: HUMBOLDT COUNTY",
+     "detail": "MMI ≥ 7",
+     "nimbus": 1436,
+     "reference": 78764,
+     "ratio": 0.018231679447463307
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi8Plus",
+   "cls": "C",
+   "subset": "all",
+   "rows": 187,
+   "pairs": 40,
+   "bothZero": 90,
+   "unpaired": {
+    "reference zero": 37,
+    "Nimbus zero": 20
+   },
+   "geometricMeanRatio": 0.06608074430069191,
+   "scatterLn": 3.2051790284235864,
+   "medianAbsLn": 3.0786365893490863,
+   "maxRelative": 981.0625,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.025,
+   "within2": 0.025,
+   "within10": 0.375,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us6000i5rd 2022-07-27 00:43 UTC, PHILIPPINES: LUZON: ABRA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 7,
+     "reference": 170986,
+     "ratio": 0.00004093902424759922
+    },
+    {
+     "caseId": "us6000n8tq 2024-06-28 05:36 UTC, PERU: AREQUIPA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 9,
+     "reference": 13041,
+     "ratio": 0.0006901311249137336
+    },
+    {
+     "caseId": "us70003kyy 2019-05-14 12:58 UTC, PAPUA NEW GUINEA: RABAUL, DUKE OF YORK IS",
+     "detail": "MMI ≥ 8",
+     "nimbus": 15713,
+     "reference": 16,
+     "ratio": 982.0625
+    },
+    {
+     "caseId": "us6000qznb 2025-08-10 16:53 UTC, TURKEY: BALIKESIR",
+     "detail": "MMI ≥ 8",
+     "nimbus": 60,
+     "reference": 48031,
+     "ratio": 0.0012491932293726968
+    },
+    {
+     "caseId": "us7000kufc 2023-09-08 22:11 UTC, MOROCCO: MARRAKECH, SAFI",
+     "detail": "MMI ≥ 8",
+     "nimbus": 195,
+     "reference": 131023,
+     "ratio": 0.001488288315791884
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi8Plus",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.03462581887714599,
+   "scatterLn": null,
+   "medianAbsLn": 3.363155664872816,
+   "maxRelative": 0.965374181122854,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 0,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us70006d0m Durrës (Albania) 2019",
+     "detail": "MMI ≥ 8",
+     "nimbus": 5016,
+     "reference": 144863,
+     "ratio": 0.03462581887714599
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi8Plus",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 186,
+   "pairs": 39,
+   "bothZero": 90,
+   "unpaired": {
+    "reference zero": 37,
+    "Nimbus zero": 20
+   },
+   "geometricMeanRatio": 0.06718490658243655,
+   "scatterLn": 3.245342196634974,
+   "medianAbsLn": 2.7941175138253573,
+   "maxRelative": 981.0625,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.02564102564102564,
+   "within2": 0.02564102564102564,
+   "within10": 0.38461538461538464,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us6000i5rd 2022-07-27 00:43 UTC, PHILIPPINES: LUZON: ABRA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 7,
+     "reference": 170986,
+     "ratio": 0.00004093902424759922
+    },
+    {
+     "caseId": "us6000n8tq 2024-06-28 05:36 UTC, PERU: AREQUIPA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 9,
+     "reference": 13041,
+     "ratio": 0.0006901311249137336
+    },
+    {
+     "caseId": "us70003kyy 2019-05-14 12:58 UTC, PAPUA NEW GUINEA: RABAUL, DUKE OF YORK IS",
+     "detail": "MMI ≥ 8",
+     "nimbus": 15713,
+     "reference": 16,
+     "ratio": 982.0625
+    },
+    {
+     "caseId": "us6000qznb 2025-08-10 16:53 UTC, TURKEY: BALIKESIR",
+     "detail": "MMI ≥ 8",
+     "nimbus": 60,
+     "reference": 48031,
+     "ratio": 0.0012491932293726968
+    },
+    {
+     "caseId": "us7000kufc 2023-09-08 22:11 UTC, MOROCCO: MARRAKECH, SAFI",
+     "detail": "MMI ≥ 8",
+     "nimbus": 195,
+     "reference": 131023,
+     "ratio": 0.001488288315791884
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi8Plus",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 87,
+   "pairs": 17,
+   "bothZero": 52,
+   "unpaired": {
+    "reference zero": 11,
+    "Nimbus zero": 7
+   },
+   "geometricMeanRatio": 0.009798557841897646,
+   "scatterLn": 2.1254267975600865,
+   "medianAbsLn": 4.537551702339129,
+   "maxRelative": 0.9999590609757524,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 0.11764705882352941,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us6000i5rd 2022-07-27 00:43 UTC, PHILIPPINES: LUZON: ABRA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 7,
+     "reference": 170986,
+     "ratio": 0.00004093902424759922
+    },
+    {
+     "caseId": "us6000n8tq 2024-06-28 05:36 UTC, PERU: AREQUIPA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 9,
+     "reference": 13041,
+     "ratio": 0.0006901311249137336
+    },
+    {
+     "caseId": "us7000kufc 2023-09-08 22:11 UTC, MOROCCO: MARRAKECH, SAFI",
+     "detail": "MMI ≥ 8",
+     "nimbus": 195,
+     "reference": 131023,
+     "ratio": 0.001488288315791884
+    },
+    {
+     "caseId": "us6000ah9t 2020-06-23 15:29 UTC, MEXICO: OAXACA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 137,
+     "reference": 46879,
+     "ratio": 0.002922417287058171
+    },
+    {
+     "caseId": "us7000m9g4 2024-04-02 23:58 UTC, TAIWAN: HUA-LIEN",
+     "detail": "MMI ≥ 8",
+     "nimbus": 557,
+     "reference": 176293,
+     "ratio": 0.0031595128564378618
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi8Plus",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 27,
+   "pairs": 10,
+   "bothZero": 14,
+   "unpaired": {
+    "reference zero": 2,
+    "Nimbus zero": 1
+   },
+   "geometricMeanRatio": 1.3176835865719192,
+   "scatterLn": 3.628408247667131,
+   "medianAbsLn": 1.5346362467544776,
+   "maxRelative": 981.0625,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.1,
+   "within2": 0.1,
+   "within10": 0.7,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "us70003kyy 2019-05-14 12:58 UTC, PAPUA NEW GUINEA: RABAUL, DUKE OF YORK IS",
+     "detail": "MMI ≥ 8",
+     "nimbus": 15713,
+     "reference": 16,
+     "ratio": 982.0625
+    },
+    {
+     "caseId": "us7000i9bw 2022-09-19 18:05 UTC, MEXICO: MICHOACAN, COLIMA, JALISCO",
+     "detail": "MMI ≥ 8",
+     "nimbus": 27260,
+     "reference": 93,
+     "ratio": 293.1182795698925
+    },
+    {
+     "caseId": "us6000qw60 2025-07-29 23:24 UTC, RUSSIA: KAMCHATKA PENINSULA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 296,
+     "reference": 58146,
+     "ratio": 0.005090633921507928
+    },
+    {
+     "caseId": "us2000d7q6 2018-02-25 17:44 UTC, PAPUA NEW GUINEA: S HIGHLANDS, HELA; INDONESIA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 357157,
+     "reference": 55296,
+     "ratio": 6.4590024594907405
+    },
+    {
+     "caseId": "us6000m0xl 2024-01-01 07:10 UTC, JAPAN: HONSHU: ISHIKAWA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 39820,
+     "reference": 191673,
+     "ratio": 0.20774965696785672
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi8Plus",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 73,
+   "pairs": 13,
+   "bothZero": 24,
+   "unpaired": {
+    "reference zero": 24,
+    "Nimbus zero": 12
+   },
+   "geometricMeanRatio": 0.0802122480595004,
+   "scatterLn": 2.196646346623548,
+   "medianAbsLn": 2.5939903843862337,
+   "maxRelative": 8.326086956521738,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 0.46153846153846156,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us6000qznb 2025-08-10 16:53 UTC, TURKEY: BALIKESIR",
+     "detail": "MMI ≥ 8",
+     "nimbus": 60,
+     "reference": 48031,
+     "ratio": 0.0012491932293726968
+    },
+    {
+     "caseId": "us6000ftxu 2021-10-12 09:24 UTC, GREECE: CRETE",
+     "detail": "MMI ≥ 8",
+     "nimbus": 20,
+     "reference": 2655,
+     "ratio": 0.007532956685499058
+    },
+    {
+     "caseId": "us6000k9mb 2023-05-05 05:42 UTC, JAPAN: HONSHU: ISHIKAWA, TOYAMA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 200,
+     "reference": 11347,
+     "ratio": 0.01762580417731559
+    },
+    {
+     "caseId": "us6000jqcn 2023-02-20 17:04 UTC, TURKEY; SYRIA",
+     "detail": "MMI ≥ 8",
+     "nimbus": 15312,
+     "reference": 686215,
+     "ratio": 0.022313706345678832
+    },
+    {
+     "caseId": "us70006d0m Durrës (Albania) 2019",
+     "detail": "MMI ≥ 8",
+     "nimbus": 5016,
+     "reference": 144863,
+     "ratio": 0.03462581887714599
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi9Plus",
+   "cls": "C",
+   "subset": "all",
+   "rows": 187,
+   "pairs": 0,
+   "bothZero": 169,
+   "unpaired": {
+    "Nimbus zero": 18
+   },
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi9Plus",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 1,
+   "pairs": 0,
+   "bothZero": 1,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi9Plus",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 186,
+   "pairs": 0,
+   "bothZero": 168,
+   "unpaired": {
+    "Nimbus zero": 18
+   },
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi9Plus",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 87,
+   "pairs": 0,
+   "bothZero": 80,
+   "unpaired": {
+    "Nimbus zero": 7
+   },
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi9Plus",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 27,
+   "pairs": 0,
+   "bothZero": 20,
+   "unpaired": {
+    "Nimbus zero": 7
+   },
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "exposureMmi9Plus",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 73,
+   "pairs": 0,
+   "bothZero": 69,
+   "unpaired": {
+    "Nimbus zero": 4
+   },
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": null,
+   "flagged": false,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "centralToll",
+   "cls": "C",
+   "subset": "all",
+   "rows": 187,
+   "pairs": 56,
+   "bothZero": 91,
+   "unpaired": {
+    "reference zero": 22,
+    "Nimbus zero": 18
+   },
+   "geometricMeanRatio": 0.3001604643808469,
+   "scatterLn": 2.213602906973686,
+   "medianAbsLn": 1.9459101490553135,
+   "maxRelative": 38.5,
+   "within1pct": 0.07142857142857142,
+   "withinTolerance": 0.07142857142857142,
+   "within125": 0.10714285714285714,
+   "within2": 0.26785714285714285,
+   "within10": 0.625,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us6000qznb 2025-08-10 16:53 UTC, TURKEY: BALIKESIR",
+     "detail": "",
+     "nimbus": 1,
+     "reference": 249,
+     "ratio": 0.004016064257028112
+    },
+    {
+     "caseId": "us6000pi9w 2025-01-07 01:05 UTC, CHINA: TIBET (XIZANG PROVINCE)",
+     "detail": "",
+     "nimbus": 2,
+     "reference": 291,
+     "ratio": 0.006872852233676976
+    },
+    {
+     "caseId": "us6000rdrz 2025-09-30 13:59 UTC, PHILIPPINES: CEBU, CENTRAL VISAYAS",
+     "detail": "",
+     "nimbus": 1,
+     "reference": 113,
+     "ratio": 0.008849557522123894
+    },
+    {
+     "caseId": "us60007ewc 2020-01-24 17:55 UTC, TURKEY: ELAZIG AND MALATYA PROVINCES",
+     "detail": "",
+     "nimbus": 3,
+     "reference": 275,
+     "ratio": 0.01090909090909091
+    },
+    {
+     "caseId": "usp000jv5f 2012-11-07 16:35 UTC, GUATEMALA: SAN MARCOS, SAN CRISTOBAL COCHU",
+     "detail": "",
+     "nimbus": 1,
+     "reference": 82,
+     "ratio": 0.012195121951219513
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "centralToll",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.12195121951219512,
+   "scatterLn": null,
+   "medianAbsLn": 2.1041341542702074,
+   "maxRelative": 0.8780487804878049,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0,
+   "within10": 1,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us70006d0m Durrës (Albania) 2019",
+     "detail": "",
+     "nimbus": 15,
+     "reference": 123,
+     "ratio": 0.12195121951219512
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "centralToll",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 186,
+   "pairs": 55,
+   "bothZero": 91,
+   "unpaired": {
+    "reference zero": 22,
+    "Nimbus zero": 18
+   },
+   "geometricMeanRatio": 0.3051164495188107,
+   "scatterLn": 2.230579052585508,
+   "medianAbsLn": 1.9459101490553132,
+   "maxRelative": 38.5,
+   "within1pct": 0.07272727272727272,
+   "withinTolerance": 0.07272727272727272,
+   "within125": 0.10909090909090909,
+   "within2": 0.2727272727272727,
+   "within10": 0.6181818181818182,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us6000qznb 2025-08-10 16:53 UTC, TURKEY: BALIKESIR",
+     "detail": "",
+     "nimbus": 1,
+     "reference": 249,
+     "ratio": 0.004016064257028112
+    },
+    {
+     "caseId": "us6000pi9w 2025-01-07 01:05 UTC, CHINA: TIBET (XIZANG PROVINCE)",
+     "detail": "",
+     "nimbus": 2,
+     "reference": 291,
+     "ratio": 0.006872852233676976
+    },
+    {
+     "caseId": "us6000rdrz 2025-09-30 13:59 UTC, PHILIPPINES: CEBU, CENTRAL VISAYAS",
+     "detail": "",
+     "nimbus": 1,
+     "reference": 113,
+     "ratio": 0.008849557522123894
+    },
+    {
+     "caseId": "us60007ewc 2020-01-24 17:55 UTC, TURKEY: ELAZIG AND MALATYA PROVINCES",
+     "detail": "",
+     "nimbus": 3,
+     "reference": 275,
+     "ratio": 0.01090909090909091
+    },
+    {
+     "caseId": "usp000jv5f 2012-11-07 16:35 UTC, GUATEMALA: SAN MARCOS, SAN CRISTOBAL COCHU",
+     "detail": "",
+     "nimbus": 1,
+     "reference": 82,
+     "ratio": 0.012195121951219513
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "centralToll",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 87,
+   "pairs": 20,
+   "bothZero": 49,
+   "unpaired": {
+    "Nimbus zero": 10,
+    "reference zero": 8
+   },
+   "geometricMeanRatio": 0.12727667674232157,
+   "scatterLn": 2.1904476141916644,
+   "medianAbsLn": 2.432169929873318,
+   "maxRelative": 6,
+   "within1pct": 0.05,
+   "withinTolerance": 0.05,
+   "within125": 0.05,
+   "within2": 0.15,
+   "within10": 0.45,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us6000pi9w 2025-01-07 01:05 UTC, CHINA: TIBET (XIZANG PROVINCE)",
+     "detail": "",
+     "nimbus": 2,
+     "reference": 291,
+     "ratio": 0.006872852233676976
+    },
+    {
+     "caseId": "us6000rdrz 2025-09-30 13:59 UTC, PHILIPPINES: CEBU, CENTRAL VISAYAS",
+     "detail": "",
+     "nimbus": 1,
+     "reference": 113,
+     "ratio": 0.008849557522123894
+    },
+    {
+     "caseId": "us60007ewc 2020-01-24 17:55 UTC, TURKEY: ELAZIG AND MALATYA PROVINCES",
+     "detail": "",
+     "nimbus": 3,
+     "reference": 275,
+     "ratio": 0.01090909090909091
+    },
+    {
+     "caseId": "usp000jv5f 2012-11-07 16:35 UTC, GUATEMALA: SAN MARCOS, SAN CRISTOBAL COCHU",
+     "detail": "",
+     "nimbus": 1,
+     "reference": 82,
+     "ratio": 0.012195121951219513
+    },
+    {
+     "caseId": "us7000kufc 2023-09-08 22:11 UTC, MOROCCO: MARRAKECH, SAFI",
+     "detail": "",
+     "nimbus": 29,
+     "reference": 1665,
+     "ratio": 0.017417417417417418
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "centralToll",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 27,
+   "pairs": 9,
+   "bothZero": 16,
+   "unpaired": {
+    "reference zero": 2
+   },
+   "geometricMeanRatio": 0.7190033753599916,
+   "scatterLn": 1.6523020894035478,
+   "medianAbsLn": 1.0333439546430132,
+   "maxRelative": 18.428571428571427,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0,
+   "within2": 0.3333333333333333,
+   "within10": 0.8888888888888888,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "us2000d7q6 2018-02-25 17:44 UTC, PAPUA NEW GUINEA: S HIGHLANDS, HELA; INDONESIA",
+     "detail": "",
+     "nimbus": 544,
+     "reference": 28,
+     "ratio": 19.428571428571427
+    },
+    {
+     "caseId": "us1000h3p4 2018-09-28 10:02 UTC, INDONESIA: SULAWESI",
+     "detail": "",
+     "nimbus": 313,
+     "reference": 2733,
+     "ratio": 0.11452616172703989
+    },
+    {
+     "caseId": "us6000m0xl 2024-01-01 07:10 UTC, JAPAN: HONSHU: ISHIKAWA",
+     "detail": "",
+     "nimbus": 19,
+     "reference": 133,
+     "ratio": 0.14285714285714285
+    },
+    {
+     "caseId": "us7000pn9s 2025-03-28 06:20 UTC, MYANMAR (BURMA); THAILAND",
+     "detail": "",
+     "nimbus": 12934,
+     "reference": 67146,
+     "ratio": 0.19262502606260984
+    },
+    {
+     "caseId": "us6000jllz 2023-02-06 01:17 UTC, TURKEY: KAHRAMANMARAS; SYRIA",
+     "detail": "",
+     "nimbus": 7676,
+     "reference": 21573,
+     "ratio": 0.3558151392944885
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "centralToll",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 73,
+   "pairs": 27,
+   "bothZero": 26,
+   "unpaired": {
+    "reference zero": 12,
+    "Nimbus zero": 8
+   },
+   "geometricMeanRatio": 0.42354327914276396,
+   "scatterLn": 2.250702954593411,
+   "medianAbsLn": 2.0541237336955462,
+   "maxRelative": 38.5,
+   "within1pct": 0.1111111111111111,
+   "withinTolerance": 0.1111111111111111,
+   "within125": 0.18518518518518517,
+   "within2": 0.3333333333333333,
+   "within10": 0.6666666666666666,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "us6000qznb 2025-08-10 16:53 UTC, TURKEY: BALIKESIR",
+     "detail": "",
+     "nimbus": 1,
+     "reference": 249,
+     "ratio": 0.004016064257028112
+    },
+    {
+     "caseId": "us7000qsvj 2025-08-31 19:17 UTC, AFGHANISTAN: KUNAR, NANGARHAR",
+     "detail": "",
+     "nimbus": 191,
+     "reference": 8590,
+     "ratio": 0.022235157159487776
+    },
+    {
+     "caseId": "us6000lfn5 2023-10-15 03:36 UTC, AFGHANISTAN: HERAT",
+     "detail": "",
+     "nimbus": 7,
+     "reference": 298,
+     "ratio": 0.02348993288590604
+    },
+    {
+     "caseId": "us70007v9g 2020-02-23 16:00 UTC, TURKEY: VAN; IRAN",
+     "detail": "",
+     "nimbus": 79,
+     "reference": 2,
+     "ratio": 39.5
+    },
+    {
+     "caseId": "us6000jqcn 2023-02-20 17:04 UTC, TURKEY; SYRIA",
+     "detail": "",
+     "nimbus": 141,
+     "reference": 4595,
+     "ratio": 0.030685527747551688
+    }
+   ]
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "fatalityAlert",
+   "cls": "C",
+   "subset": "all",
+   "rows": 187,
+   "pairs": 187,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0.6577540106951871,
+   "flagged": true,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "fatalityAlert",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 1,
+   "pairs": 1,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0,
+   "flagged": true,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "fatalityAlert",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 186,
+   "pairs": 186,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0.6612903225806451,
+   "flagged": true,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "fatalityAlert",
+   "cls": "C",
+   "subset": "band: Mw 6.5–7.5",
+   "rows": 87,
+   "pairs": 87,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0.7011494252873564,
+   "flagged": true,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "fatalityAlert",
+   "cls": "C",
+   "subset": "band: Mw ≥ 7.5",
+   "rows": 27,
+   "pairs": 27,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0.7407407407407407,
+   "flagged": true,
+   "worst": []
+  },
+  {
+   "track": "EQ-PAGER",
+   "quantity": "fatalityAlert",
+   "cls": "C",
+   "subset": "band: Mw < 6.5",
+   "rows": 73,
+   "pairs": 73,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": null,
+   "scatterLn": null,
+   "medianAbsLn": null,
+   "maxRelative": null,
+   "within1pct": null,
+   "withinTolerance": null,
+   "within125": null,
+   "within2": null,
+   "within10": null,
+   "agreement": 0.5753424657534246,
+   "flagged": true,
+   "worst": []
+  }
+ ]
+}
