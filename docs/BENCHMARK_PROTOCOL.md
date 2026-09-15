@@ -206,3 +206,31 @@ coefficient is changed after any check has run; an H1 row outside tolerance
 is corrected only where the code departs from the papers, and that departure
 is reported. The campaign's result files are not rewritten: the numbers after
 the change are recorded in `docs/SCIENCE.md` and the changelog.
+
+### Added after H3 was seen: Chelyabinsk's inputs
+
+Written on 15 September 2026, after H3 flagged Chelyabinsk and before the
+preset below was run. It is not a held-out check, and it says so.
+
+The preset flew a 17 m body of 3.0 g/cm³ at 19 km/s and 18°, 0.33 Mt. The
+source it cites, Popova et al. 2013 (Science 342, Table 1 and text), measured
+19.16 km/s at 18.3° from the horizon, and derives a diameter of 19.8 m for
+their 590 kt at the 3.3 g/cm³ of the recovered meteorites. The preset takes
+those four values, from the source and not from the check. Its strength stays
+at the S-type class, 2 MPa: Popova et al. model a fragmentation that starts at
+0.2 MPa and hardens as the pieces shrink, which a single strength does not
+represent, and choosing one now would be choosing with the check in view.
+
+Nothing else moves: not the blast law, not its energy rule, not H3's
+thresholds or footprints. H3 is reported again with the new inputs beside the
+old, as a re-run and not as a validation.
+
+No line source is added. The only analytic one, ReVelle's weak-shock
+cylindrical source, is "largely inapplicable" beneath Chelyabinsk's trail, by
+the account of those who applied it there (Gi, Brown & Aftosmis 2018, MAPS,
+arXiv:1802.07299: within one blast radius the ambient pressure changes by a
+factor of several), and the elongated footprint has been reproduced only by
+three-dimensional hydrocodes (Popova et al. 2013, SOVA; Aftosmis et al. 2016,
+Cart3D), whose authors also find the damaged area set mainly by the total
+energy and its shape by how the energy is spread along the path. The declared
+gap says so.
