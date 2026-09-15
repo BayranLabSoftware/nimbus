@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """The deep-ocean records of BM-05 (docs/BENCHMARK_PROTOCOL.md, "After the
-campaign: the far wave of a megathrust"), under the rules written there and
-nothing else: it reads no model and computes no model value.
+campaign: the far wave of a megathrust", as amended on 15 September 2026),
+under the rules written there and nothing else: it reads no model and computes
+no model value.
 
   - USGS ComCat, through its FDSN event service: the events, their preferred
     magnitude, origin and moment tensor;
   - NOAA NDBC: the station table (positions of the DART stations) and the
     historical DART files, <station>t<year>.txt.gz, of water-column height.
+
+Needs numpy and scipy:
 
     python3 scripts/benchmark/dart-records.py <work dir>
 
@@ -29,6 +32,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import numpy as np
+from scipy.signal import butter, filtfilt
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 OUT = ROOT / "benchmark" / "dart" / "records.json"
@@ -52,9 +56,29 @@ EXCLUDE_BEFORE_H = 1.0
 EXCLUDE_AFTER_H = 30.0
 FAST_MS, SLOW_MS = 250.0, 150.0
 LEAD_S, TAIL_S, RAYLEIGH_S = 1800.0, 3 * 3600.0, 1200.0
-MIN_COVERAGE = 0.90
 MIN_RANGE_M = 0.02
 NOISE_MULTIPLE = 5.0
+MIN_EVENT_RECORDS = 4
+
+# The amendment of 15 September 2026.
+# Bad samples: Hampel's identifier on the tide residual, among the neighbours
+# of the same kind (T 1 = 15 min, 2 = 1 min, 3 = 15 s) within these spans.
+SCREEN_HALF_S = {1: 4500.0, 2: 300.0, 3: 300.0}
+SCREEN_MADS = 5.0
+SCREEN_FLOOR_M = 0.01
+MAX_BAD_SHARE = 0.05
+MAX_FIT_RMS_M = 0.02
+# Seismic noise: one-minute means, short gaps bridged, low-passed at 3 min.
+BRIDGE_MIN = 3
+MIN_STRETCH_MIN = 30
+LOWPASS_PERIOD_MIN = 3.0
+# The two coverage rules and the two crest floors, crossed into four variants.
+MIN_COVERAGE = 0.90
+MIN_SERIES_MIN = 60
+CREST_MARGIN_S = 1800.0
+EDGE_S = 90.0
+CREST_FLOORS_M = {"2cm": 0.02, "1cm": 0.01}
+CREST_NOISE_MULTIPLE = 2.5
 
 # Periods (h) of the tidal constituents fitted.
 CONSTITUENTS = {
@@ -239,6 +263,60 @@ def read_dart(work, station, year):
     return rows
 
 
+def tide_design(hours):
+    cols = [np.ones_like(hours), hours / 72.0, (hours / 72.0) ** 2]
+    for period in CONSTITUENTS.values():
+        w = 2 * math.pi / period
+        cols += [np.cos(w * hours), np.sin(w * hours)]
+    return np.stack(cols, axis=1)
+
+
+def spikes(secs, kinds, resid, good):
+    """Hampel's identifier: a sample further from the median of its neighbours
+    of the same kind than five scaled median absolute deviations, and than
+    1 cm. Transmitted DART values carry bit errors of metres (4.9, 16.4,
+    32.8 m); a tsunami moves a minute's mean by nothing like that."""
+    bad = np.zeros(resid.size, dtype=bool)
+    for kind, half in SCREEN_HALF_S.items():
+        idx = np.flatnonzero(good & (kinds == kind))
+        if idx.size == 0:
+            continue
+        s, r = secs[idx], resid[idx]
+        lo = np.searchsorted(s, s - half, side="left")
+        hi = np.searchsorted(s, s + half, side="right")
+        for j in range(idx.size):
+            near = np.concatenate([r[lo[j] : j], r[j + 1 : hi[j]]])
+            if near.size < 4:
+                continue
+            med = np.median(near)
+            mad = np.median(np.abs(near - med))
+            if abs(r[j] - med) > max(SCREEN_MADS * 1.4826 * mad, SCREEN_FLOOR_M):
+                bad[idx[j]] = True
+    return bad
+
+
+def lowpassed(secs, resid):
+    """One-minute means of the high-rate residuals, gaps of up to 3 min bridged,
+    every stretch of 30 min or more low-passed at a 3-min period (Butterworth,
+    fourth order, forward and back): near the source the 15-s values swing by
+    metres with the seismic waves long after 20 min."""
+    if secs.size == 0:
+        return []
+    minute = np.floor(secs / 60.0).astype(int)
+    mins, inverse = np.unique(minute, return_inverse=True)
+    means = np.bincount(inverse, weights=resid) / np.bincount(inverse)
+    b, a = butter(4, 2.0 / LOWPASS_PERIOD_MIN)
+    out = []
+    breaks = np.flatnonzero(np.diff(mins) > BRIDGE_MIN + 1) + 1
+    for part in np.split(np.arange(mins.size), breaks):
+        m = mins[part]
+        full = np.arange(m[0], m[-1] + 1)
+        if full.size < MIN_STRETCH_MIN:
+            continue
+        out.append((full * 60.0 + 30.0, filtfilt(b, a, np.interp(full, m, means[part]))))
+    return out
+
+
 def record(work, event, sid, pos):
     origin = datetime.fromisoformat(event["origin"])
     start, end = origin - timedelta(days=FIT_DAYS), origin + timedelta(days=FIT_DAYS)
@@ -247,74 +325,94 @@ def record(work, event, sid, pos):
         rows += [r for r in read_dart(work, sid, year) if start <= r[0] <= end]
     if not rows:
         return None
-    rows.sort()
+    # A time stamped twice for the same kind of sample keeps the mean.
+    grouped = {}
+    for t, kind, h in rows:
+        grouped.setdefault((t, kind), []).append(h)
+    keys = sorted(grouped)
+    secs = np.array([(t - origin).total_seconds() for t, _ in keys])
+    kinds = np.array([kind for _, kind in keys])
+    height = np.array([sum(grouped[k]) / len(grouped[k]) for k in keys])
     dist_km = km_between(event["lat"], event["lon"], pos[0], pos[1])
     t_open = max(dist_km * 1_000 / FAST_MS - LEAD_S, RAYLEIGH_S)
     t_close = dist_km * 1_000 / SLOW_MS + TAIL_S
-    secs = np.array([(r[0] - origin).total_seconds() for r in rows])
-    kinds = np.array([r[1] for r in rows])
-    height = np.array([r[2] for r in rows])
-    # Tide: constituents and a quadratic drift, fitted outside the event.
+    # Tide: constituents and a quadratic drift, fitted outside the event, with
+    # bad samples screened out of the residual and the fit repeated.
     fit = (secs < -EXCLUDE_BEFORE_H * 3600) | (secs > EXCLUDE_AFTER_H * 3600)
     if fit.sum() < 100:
         return None
-    hours = secs / 3600.0
-    cols = [np.ones_like(hours), hours / 72.0, (hours / 72.0) ** 2]
-    for period in CONSTITUENTS.values():
-        w = 2 * math.pi / period
-        cols += [np.cos(w * hours), np.sin(w * hours)]
-    A = np.stack(cols, axis=1)
-    coef, *_ = np.linalg.lstsq(A[fit], height[fit], rcond=None)
+    A = tide_design(secs / 3600.0)
+    good = np.ones(height.size, dtype=bool)
+    for _ in range(10):
+        coef, *_ = np.linalg.lstsq(A[fit & good], height[fit & good], rcond=None)
+        bad = spikes(secs, kinds, height - A @ coef, good)
+        if not bad.any():
+            break
+        good &= ~bad
+    coef, *_ = np.linalg.lstsq(A[fit & good], height[fit & good], rcond=None)
     resid = height - A @ coef
-    window = (secs >= t_open) & (secs <= t_close)
-    fast = window & (kinds >= 2)
-    if not window.any():
-        return None
-    # Coverage by samples of 1 min or finer: the share of the window within
-    # 60 s of such a sample.
-    fast_secs = np.sort(secs[fast])
-    covered = 0.0
-    if fast_secs.size:
-        lo = np.maximum(fast_secs - 30.0, t_open)
-        hi = np.minimum(fast_secs + 30.0, t_close)
-        edges = [(a, b) for a, b in zip(lo, hi) if b > a]
-        merged = []
-        for a, b in edges:
-            if merged and a <= merged[-1][1]:
-                merged[-1][1] = max(merged[-1][1], b)
-            else:
-                merged.append([a, b])
-        covered = sum(b - a for a, b in merged) / (t_close - t_open)
-    before = (secs >= -3 * 3600) & (secs < 0)
+    fit_rms = float(np.std(resid[fit & good]))
+    before = good & (secs >= -3 * 3600) & (secs < 0)
     noise = float(np.std(resid[before])) if before.sum() >= 5 else float("nan")
-    if covered < MIN_COVERAGE:
-        return {
-            "station": sid,
-            "kept": False,
-            "reason": f"1-min coverage {covered:.2f}",
-            "distanceKm": round(dist_km, 1),
-        }
-    crest = float(resid[fast].max())
-    trough = float(resid[fast].min())
-    rng = crest - trough
-    kept = rng >= MIN_RANGE_M and (math.isnan(noise) or rng >= NOISE_MULTIPLE * noise)
-    at = float(secs[fast][int(np.argmax(resid[fast]))])
-    return {
+    fast = (kinds == 2) | (kinds == 3)
+    window = (secs >= t_open) & (secs <= t_close)
+    fast_in_window = int((fast & window).sum())
+    bad_share = float((fast & window & ~good).sum() / fast_in_window) if fast_in_window else 0.0
+    base = {
         "station": sid,
         "lat": pos[0],
         "lon": pos[1],
         "distanceKm": round(dist_km, 1),
         "bearingDeg": round(bearing_deg(event["lat"], event["lon"], pos[0], pos[1]), 1),
-        "waterDepthM": round(float(np.median(height[window])), 1),
+    }
+    pieces = []
+    for t, v in lowpassed(secs[fast & good], resid[fast & good]):
+        inside = (t >= t_open) & (t <= t_close)
+        if inside.any():
+            pieces.append((t[inside], v[inside]))
+    minutes = sum(t.size for t, _ in pieces)
+    if minutes == 0:
+        return {**base, "coverage": 0.0, "keptBy": {}, "reason": "no high-rate samples in the window"}
+    t_all = np.concatenate([t for t, _ in pieces])
+    v_all = np.concatenate([v for _, v in pieces])
+    level = float(np.median(v_all))
+    i = int(np.argmax(v_all))
+    crest = float(v_all[i]) - level
+    at = float(t_all[i])
+    rng = float(v_all.max() - v_all.min())
+    coverage = min(minutes * 60.0 / (t_close - t_open), 1.0)
+    seg = next(t for t, _ in pieces if t[0] <= at <= t[-1])
+    bracketed = (
+        minutes >= MIN_SERIES_MIN
+        and (at - seg[0] >= CREST_MARGIN_S or seg[0] - t_open <= EDGE_S)
+        and (seg[-1] - at >= CREST_MARGIN_S or t_close - seg[-1] <= EDGE_S)
+    )
+    quiet = math.isnan(noise)
+    sound = fit_rms <= MAX_FIT_RMS_M and bad_share <= MAX_BAD_SHARE
+    ranged = rng >= MIN_RANGE_M and (quiet or rng >= NOISE_MULTIPLE * noise)
+    kept_by = {}
+    for name, floor in CREST_FLOORS_M.items():
+        crested = crest >= floor and (quiet or crest >= CREST_NOISE_MULTIPLE * noise)
+        kept_by[f"bracketed-{name}"] = bool(sound and ranged and crested and bracketed)
+        kept_by[f"covered-{name}"] = bool(sound and ranged and crested and coverage >= MIN_COVERAGE)
+    waterline = good & window
+    return {
+        **base,
+        "waterDepthM": round(float(np.median(height[waterline])), 1) if waterline.any() else None,
         "crestM": round(crest, 4),
         "rangeM": round(rng, 4),
+        "levelM": round(level, 4),
         "crestAfterS": round(at),
-        "noiseM": None if math.isnan(noise) else round(noise, 4),
-        "fastCoverage": round(covered, 3),
-        "tideFitRmsM": round(float(np.std(resid[fit])), 4),
-        "kept": bool(kept),
-        **({} if kept else {"reason": "below the detection rule"}),
+        "noiseM": None if quiet else round(noise, 4),
+        "tideFitRmsM": round(fit_rms, 4),
+        "badShare": round(bad_share, 3),
+        "coverage": round(coverage, 3),
+        "bracketed": bool(bracketed),
+        "keptBy": kept_by,
     }
+
+
+VARIANTS = ("bracketed-2cm", "bracketed-1cm", "covered-2cm", "covered-1cm")
 
 
 def main():
@@ -330,16 +428,18 @@ def main():
             r = record(work, e, sid, pos)
             if r is not None:
                 recs.append(r)
-        kept = [r for r in recs if r.get("kept")]
-        out_events.append({**e, "kept": len(kept) >= 4, "records": recs})
-        print(e["origin"][:10], e["magnitude"], e["place"], "records", len(recs), "kept", len(kept), flush=True)
+        kept_by = {v: sum(1 for r in recs if r["keptBy"].get(v)) >= MIN_EVENT_RECORDS for v in VARIANTS}
+        out_events.append({**e, "keptBy": kept_by, "records": recs})
+        counts = " ".join(f"{v} {sum(1 for r in recs if r['keptBy'].get(v))}" for v in VARIANTS)
+        print(e["origin"][:10], e["magnitude"], e["place"], "records", len(recs), counts, flush=True)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(
         json.dumps(
             {
                 "readOn": datetime.now(timezone.utc).date().isoformat(),
-                "protocol": "docs/BENCHMARK_PROTOCOL.md, After the campaign: the far wave of a megathrust (BM-05)",
+                "protocol": "docs/BENCHMARK_PROTOCOL.md, After the campaign: the far wave of a megathrust (BM-05), amended 15 September 2026",
                 "sources": [COMCAT, STATION_TABLE, DART_INDEX],
+                "variants": list(VARIANTS),
                 "events": out_events,
             },
             indent=1,

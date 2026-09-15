@@ -317,3 +317,77 @@ records, within 15 % of its crest, before it ships; the recorded row for
 DART 21413 takes the 0.88 m of its own file whichever model wins. If C0 wins,
 BM-05 is declared with these numbers. Nothing is tuned on the records: a
 model that loses is not adjusted and run again.
+
+### Amendment of 15 September 2026: the records read again
+
+Written after `dart-records.py` had read the records under the rules above
+(its output is in the commit that precedes this one) and before C0 or C1 was
+computed for any of them. It changes how a record is read, not the events,
+the models or the score, and each change answers something that reading
+showed:
+
+- **Bad samples.** The transmitted values carry errors of metres (32.8 m and
+  16.4 m are 2¹⁵ and 2¹⁴ mm, a flipped bit), and the rules kept them: Haida
+  Gwaii 2012 had a crest of 32.5 m at DART 51407, Illapel 2015 one of 22.4 m
+  at 51426.
+- **Seismic waves.** Within a few hundred kilometres the 15-s values swing
+  by a metre and more from one sample to the next for tens of minutes, past the
+  20 min the rules set aside: Chignik 2021 had its crest of 1.2 m at 46403,
+  302 km away, 25 min after the origin, inside that noise.
+- **The level across the gap.** The tide fit misses the level inside its
+  31-h gap. On 479 eight-hour windows of days chosen at random
+  (`dart-tide-gap.py`) the largest miss is 1.9 cm at the median and 4.4 cm
+  at the 95th percentile. Kamchatka 2025-09-18's records sat 2 to 4 cm below
+  the prediction, and three of the five had crests between −8 mm and +1 mm,
+  where ln(model / observed) has no value.
+- **Coverage.** A DART stays in event mode for about 4 h, while the window
+  grows by 2.67 s for every kilometre (7.2 h at 5 000 km): unless a station
+  was held in event mode for the whole window, a far record failed the rule
+  whatever its quality. Maule 2010, read at 35 stations, kept three.
+
+The rules that replace the reading of a record:
+
+- A time stamped twice for the same kind of sample keeps the mean of its
+  values.
+- **Bad samples** are dropped by Hampel's identifier on the tide residual: a
+  sample further from the median of the samples of its kind within 5 min
+  (for 1-min and 15-s samples) or 75 min (for 15-min samples) than five
+  scaled median absolute deviations, and than 1 cm. The tide is fitted again
+  without them, until no sample is dropped. Davies 2019 also replaced
+  spikes, by interpolation.
+- A record is left out when more than 5 % of its high-rate samples in the
+  window were dropped, or when its residual outside the gap has a standard
+  deviation above 2 cm, a level the tidal model does not describe to the
+  centimetre (the median record's is 0.7 cm).
+- **Seismic noise.** The high-rate residuals are averaged into 1-min means,
+  gaps of up to 3 min are bridged, and every stretch of 30 min or more is
+  low-passed at a 3-min period (Butterworth, fourth order, run forward and
+  back). A wave twice the down-dip width of a magnitude 7.7 rupture (Strasser
+  et al. 2010) takes 11 min to pass over 4 000 m of water, a period the
+  filter keeps within 0.1 %.
+- **The crest** is the highest value of that record in the window above its
+  median in the window; the range, highest less lowest.
+- **Detection** keeps the range rule and adds one for the crest: at least
+  2 cm, and 2.5 times the standard deviation before the origin. On the days
+  chosen at random, the highest value above the median is 1.0 cm at the
+  median and 1.9 cm at the 84th percentile.
+- **Coverage**, in place of the 90 %: the record holds at least an hour of
+  the window, and its crest lies at least 30 min inside the stretch of
+  samples that holds it, unless that stretch reaches the window's own edge.
+  Davies 2019 read up to 3 h of the wave within the high-rate sampling,
+  rather than asking the sampling to span a fixed window.
+
+**Four readings, one decision.** The floor of the crest (2 cm, or 1 cm) and
+the coverage (the crest bracketed as above, or 90 % of the window as first
+registered) are crossed into four readings. Each keeps the events with four
+records or more, and the decision rule above is applied to each. A model is
+chosen only if all four readings choose it; if they part, BM-05 is declared
+undecided with the four results, Nimbus keeps its law, and the gap stays
+declared. The numbers quoted first are those of the bracketed, 2-cm reading.
+If C1 is chosen, its replacement is held to C1 on the records of all four.
+
+The recorded row for DART 21413 takes the crest this reading gives, 0.81 m,
+not the 0.88 m above, which came from a polynomial detide over ±14 h.
+
+The amended script, its output and `dart-tide-gap.py` are committed before
+either model is run on a record, as the rules were.
