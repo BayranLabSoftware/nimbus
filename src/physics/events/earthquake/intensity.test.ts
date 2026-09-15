@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { mps2 } from '../../units.js';
+import { mps, mps2 } from '../../units.js';
 import {
+  mercalliIntensityFromPgv,
   mmiFromPgaEuropean,
   modifiedMercalliIntensity,
   pgaFromMercalliIntensity,
+  pgvFromMercalliIntensity,
 } from './intensity.js';
 
 describe('modifiedMercalliIntensity (Worden et al. 2012)', () => {
@@ -67,5 +69,27 @@ describe('mmiFromPgaEuropean (Faenza & Michelini 2010, MCS in Italy)', () => {
 
   it('clamps to the [1, 12] intensity range', () => {
     expect(mmiFromPgaEuropean(mps2(1_000))).toBe(12);
+  });
+});
+
+describe('mercalliIntensityFromPgv (Worden et al. 2012, as ShakeMap carries it)', () => {
+  // shakelib/gmice/wgrw12.py: C1 3.78, C2 1.47, C3 2.89, C4 3.16, T1 0.53,
+  // T2 4.56 for PGV in cm/s.
+  it('reads the two segments of the published relation', () => {
+    expect(mercalliIntensityFromPgv(mps(0.01))).toBeCloseTo(3.78, 10); // 1 cm/s
+    expect(mercalliIntensityFromPgv(mps(0.1))).toBeCloseTo(2.89 + 3.16, 10); // 10 cm/s
+    expect(mercalliIntensityFromPgv(mps(1))).toBeCloseTo(2.89 + 3.16 * 2, 10); // 100 cm/s
+  });
+
+  it('gives back the PGV of an intensity, changing segment at 4.56', () => {
+    for (const mmi of [2, 3.5, 4.5, 4.55, 4.57, 5.5, 6.5, 7.5, 8.5, 9, 10]) {
+      expect(mercalliIntensityFromPgv(pgvFromMercalliIntensity(mmi))).toBeCloseTo(mmi, 9);
+    }
+    // The published segments meet at log PGV 0.53 a hundredth apart,
+    // 4.559 and 4.565, and an intensity in between reads back on the
+    // upper one — as it does in ShakeMap's code.
+    expect(mercalliIntensityFromPgv(pgvFromMercalliIntensity(4.56))).toBeCloseTo(4.567, 3);
+    // MMI IX needs 85.8 cm/s, where the PGA relation needs 0.75 g.
+    expect((pgvFromMercalliIntensity(9) as number) * 100).toBeCloseTo(10 ** (6.11 / 3.16), 9);
   });
 });

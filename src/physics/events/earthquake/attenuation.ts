@@ -1,6 +1,6 @@
 import { STANDARD_GRAVITY } from '../../constants.js';
-import type { Meters, MetersPerSecondSquared } from '../../units.js';
-import { m, mps2 } from '../../units.js';
+import type { Meters, MetersPerSecond, MetersPerSecondSquared } from '../../units.js';
+import { m, mps, mps2 } from '../../units.js';
 
 /**
  * Joyner–Boore (1981) saturation depth (km), chosen so that the PGA
@@ -226,8 +226,19 @@ const BSSA14_SITE = {
  * names no site is unaffected.
  */
 export function vs30SiteFactor(vs30: number, referencePgaG = 0): number {
+  return siteFactorFor(BSSA14_SITE, vs30, referencePgaG);
+}
+
+/** Boore et al. 2014's site term for one intensity measure's
+ *  coefficients; the reference-rock PGA drives the non-linear half for
+ *  every measure, as the paper defines it. */
+function siteFactorFor(
+  site: { c: number; vc: number; vref: number; f1: number; f3: number; f4: number; f5: number },
+  vs30: number,
+  referencePgaG: number
+): number {
   if (!Number.isFinite(vs30) || vs30 <= 0) return 1;
-  const { c, vc, vref, f1, f3, f4, f5 } = BSSA14_SITE;
+  const { c, vc, vref, f1, f3, f4, f5 } = site;
   const fLin = c * Math.log(Math.min(vs30, vc) / vref);
   const f2 = f4 * (Math.exp(f5 * (Math.min(vs30, 760) - 360)) - Math.exp(f5 * (760 - 360)));
   const pgaR = Math.max(0, Number.isFinite(referencePgaG) ? referencePgaG : 0);
@@ -235,32 +246,110 @@ export function vs30SiteFactor(vs30: number, referencePgaG = 0): number {
   return Math.exp(fLin + fNl);
 }
 
-export function peakGroundAccelerationNGAWest2(input: NGAInput): MetersPerSecondSquared {
-  const M = input.magnitude;
-  const R = (input.distance as number) / 1_000; // km
-  const mech = input.faultType ?? 'unspecified';
+/** ln of the median PGA (g) on Boore et al. 2014's reference rock,
+ *  Vs30 = 760 m/s: the event and path terms without the site term. */
+function lnRockPgaG(magnitude: number, distanceKm: number, mech: NGAFaultType): number {
   const { e0, e1, e2, e3, e4, e5, e6, c1, c2, c3 } = BSSA14_PGA;
-
-  // Fault-type coefficient
   const e = mech === 'strike-slip' ? e1 : mech === 'normal' ? e2 : mech === 'reverse' ? e3 : e0;
-
-  // Event function
-  const dM = M - BSSA14_MH;
-  const F_E = M <= BSSA14_MH ? e + e4 * dM + e5 * dM * dM : e + e6 * dM;
-
+  const dM = magnitude - BSSA14_MH;
+  const F_E = magnitude <= BSSA14_MH ? e + e4 * dM + e5 * dM * dM : e + e6 * dM;
   // Path function (R_JB with near-source saturation). R_ref is 1 km
   // in the published form, which the logarithm swallows and the
   // linear term does not — worth the 0.8 % rather than not.
-  const Rprime = Math.sqrt(R * R + BSSA14_H * BSSA14_H);
+  const Rprime = Math.sqrt(distanceKm * distanceKm + BSSA14_H * BSSA14_H);
   const F_P =
-    (c1 + c2 * (M - BSSA14_MREF)) * Math.log(Rprime / BSSA14_RREF) + c3 * (Rprime - BSSA14_RREF);
+    (c1 + c2 * (magnitude - BSSA14_MREF)) * Math.log(Rprime / BSSA14_RREF) +
+    c3 * (Rprime - BSSA14_RREF);
+  return F_E + F_P;
+}
 
+export function peakGroundAccelerationNGAWest2(input: NGAInput): MetersPerSecondSquared {
+  const R = (input.distance as number) / 1_000; // km
+  const mech = input.faultType ?? 'unspecified';
   // Site function: the non-linear half needs the acceleration this
   // event would produce on reference rock, so the rock value is
   // computed first and then amplified.
-  const lnRockG = F_E + F_P;
+  const lnRockG = lnRockPgaG(input.magnitude, R, mech);
   const F_S = Math.log(vs30SiteFactor(input.vs30 ?? BSSA14_SITE.vref, Math.exp(lnRockG)));
-
   const lnPGAg = lnRockG + F_S;
   return mps2(Math.exp(lnPGAg) * STANDARD_GRAVITY);
+}
+
+/**
+ * Boore et al. 2014's median PGV (their Table 2 row "PGV", with the
+ * PGV site coefficients of Table 3), for the same inputs as
+ * {@link peakGroundAccelerationNGAWest2}: magnitude, R_JB, style of
+ * faulting and Vs30, global, no basin term.
+ *
+ * PGV is the measure ShakeMap draws intensity from where it has one, and
+ * it saturates less than PGA near a large rupture: its hinge magnitude is
+ * 6.2 against 5.5, and the slope above it is positive. Verified against
+ * the values D. M. Boore's own Fortran program gives
+ * (validation/ringVerification.ts).
+ */
+const BSSA14_PGV = {
+  e0: 5.037,
+  e1: 5.078, // strike-slip
+  e2: 4.849, // normal
+  e3: 5.033, // reverse
+  e4: 1.073,
+  e5: -0.1536,
+  e6: 0.2252,
+  mh: 6.2,
+  c1: -1.243,
+  c2: 0.1489,
+  c3: -0.00344,
+  h: 5.3,
+} as const;
+
+/** Site coefficients for PGV, Boore et al. 2014 Table 3. */
+const BSSA14_PGV_SITE = {
+  c: -0.84,
+  vc: 1300,
+  vref: 760,
+  f1: 0,
+  f3: 0.1,
+  f4: -0.1,
+  f5: -0.00844,
+} as const;
+
+export function peakGroundVelocityNGAWest2(input: NGAInput): MetersPerSecond {
+  const M = input.magnitude;
+  const R = (input.distance as number) / 1_000; // km
+  const mech = input.faultType ?? 'unspecified';
+  const { e0, e1, e2, e3, e4, e5, e6, mh, c1, c2, c3, h } = BSSA14_PGV;
+  const e = mech === 'strike-slip' ? e1 : mech === 'normal' ? e2 : mech === 'reverse' ? e3 : e0;
+  const dM = M - mh;
+  const F_E = M <= mh ? e + e4 * dM + e5 * dM * dM : e + e6 * dM;
+  const Rprime = Math.sqrt(R * R + h * h);
+  const F_P =
+    (c1 + c2 * (M - BSSA14_MREF)) * Math.log(Rprime / BSSA14_RREF) + c3 * (Rprime - BSSA14_RREF);
+  const rockPgaG = Math.exp(lnRockPgaG(M, R, mech));
+  const F_S = Math.log(
+    siteFactorFor(BSSA14_PGV_SITE, input.vs30 ?? BSSA14_PGV_SITE.vref, rockPgaG)
+  );
+  // cm/s in the published form.
+  return mps(Math.exp(F_E + F_P + F_S) / 100);
+}
+
+/**
+ * Ground range at which Boore et al. 2014's median PGV falls to
+ * `target`; zero when even the near-source value never reaches it.
+ */
+export function distanceForPgvNGAWest2(
+  input: Omit<NGAInput, 'distance'>,
+  target: MetersPerSecond
+): Meters {
+  const targetVelocity = target as number;
+  const at = (rangeM: number): number =>
+    peakGroundVelocityNGAWest2({ ...input, distance: m(rangeM) });
+  if (at(0) < targetVelocity) return m(0);
+  let lo = 0;
+  let hi = 1e7;
+  for (let i = 0; i < 60; i++) {
+    const mid = 0.5 * (lo + hi);
+    if (at(mid) > targetVelocity) lo = mid;
+    else hi = mid;
+  }
+  return m(0.5 * (lo + hi));
 }

@@ -1,18 +1,9 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { RULE_EARTHQUAKES } from '../../src/physics/validation/heldOutByRule.js';
-import { HELD_OUT_EARTHQUAKES } from '../../src/physics/validation/heldOutEvents.js';
-import {
-  centralEstimate,
-  RECORDED_EVENTS,
-  type RecordedEvent,
-} from '../../src/physics/validation/recordedTolls.js';
+import { pagerSetEvents } from '../../src/physics/validation/pagerChainRun.js';
+import { centralEstimate } from '../../src/physics/validation/recordedTolls.js';
 import { sizeBandOf } from '../../src/physics/validation/scorecard.js';
-import { siteVs30 } from '../../src/physics/validation/siteVs30.js';
-import { unseenEarthquakeEvent } from '../../src/physics/validation/unseenSet.js';
-import { UNSEEN_EARTHQUAKES } from '../../src/physics/validation/unseenSetData.js';
-import { UNSEEN_SITES } from '../../src/physics/validation/unseenSiteData.js';
 import { printStats, summarise, type Pair } from './stats.js';
 
 /**
@@ -36,20 +27,6 @@ import { printStats, summarise, type Pair } from './stats.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
-/** The net's earthquakes, by the ComCat ids pager-bench.ts asked for. */
-const NET: Readonly<Record<string, string>> = {
-  ci3144585: 'Northridge 1994',
-  usp000gvtu: "L'Aquila 2009",
-  us10006g7d: 'Amatrice 2016',
-  us20002926: 'Gorkha (Nepal) 2015',
-  official20110311054624120_30: 'Tōhoku 2011',
-  usp000asvm: 'Kokoxili (Kunlun) 2001',
-  usp000huvq: 'Christchurch 2011',
-  us20005iis: 'Kumamoto 2016',
-  us1000778i: 'Kaikōura 2016',
-  us70006d0m: 'Durrës (Albania) 2019',
-};
-
 interface PagerRow {
   comcat: string;
   status: string;
@@ -61,30 +38,12 @@ const ALERTS = ['green', 'yellow', 'orange', 'red'] as const;
 const alertOf = (deaths: number): number =>
   deaths < 1 ? 0 : deaths < 100 ? 1 : deaths < 1_000 ? 2 : 3;
 
-function eventsByComcat(): Map<string, { event: RecordedEvent; net: boolean }> {
-  const out = new Map<string, { event: RecordedEvent; net: boolean }>();
-  const sites = new Map(UNSEEN_SITES.map((s) => [s.key, s]));
-  for (const q of UNSEEN_EARTHQUAKES) {
-    out.set(q.comcat, {
-      event: unseenEarthquakeEvent(q, { vs30: siteVs30('pick', sites.get(q.comcat)) }),
-      net: false,
-    });
-  }
-  for (const r of RULE_EARTHQUAKES) out.set(r.row.comcat, { event: r.event, net: false });
-  const named = [...RECORDED_EVENTS, ...HELD_OUT_EARTHQUAKES];
-  for (const [comcat, name] of Object.entries(NET)) {
-    const event = named.find((e) => e.name === name);
-    if (event !== undefined) out.set(comcat, { event, net: true });
-  }
-  return out;
-}
-
 export function comparePairs(pagerPath: string): { pairs: Pair[]; missing: string[] } {
   const rows = readFileSync(pagerPath, 'utf8')
     .split('\n')
     .filter((l) => l.trim() !== '')
     .map((l) => JSON.parse(l) as PagerRow);
-  const events = eventsByComcat();
+  const events = pagerSetEvents();
   const pairs: Pair[] = [];
   const missing: string[] = [];
   for (const row of rows) {

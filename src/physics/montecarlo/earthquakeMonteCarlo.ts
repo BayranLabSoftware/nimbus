@@ -70,7 +70,13 @@ export function earthquakeSampler(
     const vs30 = Math.max(sampleNormal(rng, vs30Nominal, vs30Sigma), 100);
     // GMPE aleatory residual in ln-space: N(0, σ_lnY). Threaded into
     // simulateEarthquake, which scales every PGA by exp(residual).
-    const groundMotionResidualLn = sampleNormal(rng, 0, EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma);
+    const groundMotionResidualLn = sampleNormal(
+      rng,
+      0,
+      nominal.intensityMeasure === 'pgv'
+        ? EARTHQUAKE_INPUT_SIGMA.groundMotionPgv.sigma
+        : EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma
+    );
     // Everything not sampled stays as the caller set it — the strike
     // the stadium is drawn around, a documented rupture-length
     // override, whether the basin had a warning system. Rebuilding

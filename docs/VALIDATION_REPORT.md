@@ -1216,6 +1216,8 @@ of one; the test here allows a hundredth.
 |----------|----------|-----------|-----:|-------------------:|-------|
 | Boore et al. 2014 | median PGA, with style of faulting | D. M. Boore's Fortran program, via OpenQuake's test data | 450 | 0.0005 % | M 3, rake 90°, R_JB 75 km, Vs30 400 m/s |
 | Boore et al. 2014 | median PGA, style of faulting unspecified | D. M. Boore's Fortran program, via OpenQuake's test data | 150 | 0.0005 % | M 3, R_JB 0 km, Vs30 400 m/s |
+| Boore et al. 2014 | median PGV, with style of faulting | D. M. Boore's Fortran program, via OpenQuake's test data | 450 | 0.0005 % | M 3, rake 90°, R_JB 100 km, Vs30 600 m/s |
+| Boore et al. 2014 | median PGV, style of faulting unspecified | D. M. Boore's Fortran program, via OpenQuake's test data | 150 | 0.0004 % | M 5, R_JB 0 km, Vs30 200 m/s |
 | Allen, Wald & Worden 2012, hypocentral | median MMI | An independent Matlab implementation, via OpenQuake's test data | 21 | 0.0000 % | M 5, R_hyp 300 km |
 | Allen, Wald & Worden 2012, hypocentral | total σ of MMI | An independent Matlab implementation, via OpenQuake's test data | 21 | 0.0000 % | M 5, R_hyp 100 km |
 

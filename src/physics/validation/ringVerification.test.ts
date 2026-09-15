@@ -24,7 +24,7 @@ describe('the rings against their authors’ code', () => {
         ),
       ].join('\n')
     );
-    expect(rows).toHaveLength(4);
+    expect(rows).toHaveLength(6);
   });
 
   for (const row of rows) {

@@ -119,6 +119,42 @@ describe('shakingCasualtyPlan', () => {
     });
     expect(plan?.bands.map((b) => b.key)).toEqual(['mmi8', 'mmi7']);
   });
+
+  it('bands intensity as PAGER does when asked: V to IX, each at its integer rate', () => {
+    const plan = shakingCasualtyPlan({
+      mmi5Radius: meters(200_000),
+      mmi6Radius: meters(110_000),
+      mmi7Radius: meters(60_000),
+      mmi8Radius: meters(35_000),
+      mmi9Radius: meters(20_000),
+      banding: 'pager',
+    });
+    expect(plan?.bands.map((b) => b.key)).toEqual(['mmi9', 'mmi8', 'mmi7', 'mmi6', 'mmi5']);
+    expect(plan?.bands.map((b) => [b.innerRadiusM, b.outerRadiusM])).toEqual([
+      [0, 20_000],
+      [20_000, 35_000],
+      [35_000, 60_000],
+      [60_000, 110_000],
+      [110_000, 200_000],
+    ]);
+    const mid = PAGER_VULNERABILITY.mid;
+    expect(plan?.bands.map((b) => b.mortality)).toEqual(
+      [9, 8, 7, 6, 5].map((k) => pagerFatalityRate(k, mid))
+    );
+  });
+
+  it("has no plan on PAGER's banding without a V ring", () => {
+    expect(
+      shakingCasualtyPlan({
+        mmi5Radius: meters(0),
+        mmi6Radius: meters(0),
+        mmi7Radius: meters(0),
+        mmi8Radius: meters(0),
+        mmi9Radius: meters(0),
+        banding: 'pager',
+      })
+    ).toBeNull();
+  });
 });
 
 describe('pyroclasticCasualtyPlan — who had been told to leave', () => {

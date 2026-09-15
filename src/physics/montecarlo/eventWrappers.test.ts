@@ -3,8 +3,9 @@ import { EARTHQUAKE_PRESETS } from '../events/earthquake/index.js';
 import { EXPLOSION_PRESETS } from '../events/explosion/index.js';
 import { VOLCANO_PRESETS } from '../events/volcano/index.js';
 import { IMPACT_PRESETS } from '../simulate.js';
-import { runEarthquakeMonteCarlo } from './earthquakeMonteCarlo.js';
+import { earthquakeSampler, runEarthquakeMonteCarlo } from './earthquakeMonteCarlo.js';
 import { m } from '../units.js';
+import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
 import { explosionSampler, runExplosionMonteCarlo } from './explosionMonteCarlo.js';
 import { runImpactMonteCarlo } from './impactMonteCarlo.js';
 import { mulberry32 } from './sampling.js';
@@ -159,5 +160,27 @@ describe('runVolcanoMonteCarlo — Pinatubo', () => {
     expect(a.metrics.plumeHeight.p50).toBe(b.metrics.plumeHeight.p50);
     expect(a.metrics.plumeHeight.p10).toBe(b.metrics.plumeHeight.p10);
     expect(a.metrics.plumeHeight.p90).toBe(b.metrics.plumeHeight.p90);
+  });
+});
+
+describe('earthquakeSampler — the residual of the measure the rings are drawn from', () => {
+  const spread = (intensityMeasure: 'pga' | 'pgv'): number => {
+    const sample = earthquakeSampler({ magnitude: 7, intensityMeasure });
+    const rng = mulberry32(7);
+    const draws = Array.from({ length: 4_000 }, () => sample(rng).groundMotionResidualLn ?? 0);
+    const mean = draws.reduce((a, b) => a + b, 0) / draws.length;
+    return Math.sqrt(draws.reduce((a, b) => a + (b - mean) ** 2, 0) / draws.length);
+  };
+
+  it("draws PGA's σ for PGA and PGV's for PGV, and keeps the chain", () => {
+    expect(spread('pga')).toBeCloseTo(EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma, 1);
+    expect(spread('pgv')).toBeCloseTo(EARTHQUAKE_INPUT_SIGMA.groundMotionPgv.sigma, 1);
+    const sample = earthquakeSampler({
+      magnitude: 7,
+      intensityMeasure: 'pgv',
+      intensityBanding: 'pager',
+    })(mulberry32(1));
+    expect(sample.intensityMeasure).toBe('pgv');
+    expect(sample.intensityBanding).toBe('pager');
   });
 });

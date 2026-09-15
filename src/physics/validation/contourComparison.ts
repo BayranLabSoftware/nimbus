@@ -1,4 +1,8 @@
-import { simulateEarthquake, type ContourLaw } from '../events/earthquake/simulate.js';
+import {
+  simulateEarthquake,
+  type ContourLaw,
+  type IntensityMeasure,
+} from '../events/earthquake/simulate.js';
 import type { FaultType } from '../events/earthquake/ruptureLength.js';
 import { m } from '../units.js';
 import {
@@ -42,7 +46,8 @@ export function contourPairs(
   law: ContourLaw,
   shakemaps: readonly ShakemapAreas[],
   vs30For?: RowVs30,
-  rows: readonly QuakeInputs[] = RULE_ROWS
+  rows: readonly QuakeInputs[] = RULE_ROWS,
+  measure: IntensityMeasure = 'pga'
 ): ContourPair[] {
   const byEvent = new Map(shakemaps.map((s) => [s.comcat, s]));
   const pairs: ContourPair[] = [];
@@ -55,6 +60,7 @@ export function contourPairs(
       depth: m(row.depthKm * 1_000),
       faultType: row.faultType,
       contourLaw: law,
+      ...(measure === 'pga' ? {} : { intensityMeasure: measure }),
       ...(vs30 === undefined ? {} : { vs30 }),
     });
     for (const threshold of MMI_THRESHOLDS) {

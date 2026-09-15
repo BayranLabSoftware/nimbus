@@ -1533,9 +1533,12 @@ export function casualtyPlanForResult(
       // median pair everywhere.
       const plan = shakingCasualtyPlan(
         {
+          mmi5Radius: result.data.shaking.mmi5Radius,
+          mmi6Radius: result.data.shaking.mmi6Radius,
           mmi7Radius: result.data.shaking.mmi7Radius,
           mmi8Radius: result.data.shaking.mmi8Radius,
           mmi9Radius: result.data.shaking.mmi9Radius,
+          banding: result.data.inputs.intensityBanding ?? 'rings',
         },
         pagerVulnerabilityFor(countryLookup(location.latitude, location.longitude))
       );

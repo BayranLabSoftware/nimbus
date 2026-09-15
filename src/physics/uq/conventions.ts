@@ -110,6 +110,14 @@ export const EARTHQUAKE_INPUT_SIGMA = {
     sigma: 0.6,
     source: 'Boore et al. 2014: τ = 0.348, φ = 0.495 for PGA at M ≥ 5.5, σ_lnY ≈ 0.60',
   },
+  /** The same for PGV, the measure PAGER's chain draws intensity with
+   *  (rule 31 of validation/pagerChain.ts): τ = 0.346 and φ = 0.552 at
+   *  M ≥ 5.5 in quadrature, 0.65. */
+  groundMotionPgv: {
+    kind: 'lognormal',
+    sigma: 0.65,
+    source: 'Boore et al. 2014: τ = 0.346, φ = 0.552 for PGV at M ≥ 5.5, σ_lnY ≈ 0.65',
+  },
 } as const satisfies Record<string, SigmaConvention>;
 
 /**

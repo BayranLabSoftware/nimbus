@@ -1,11 +1,12 @@
 import { STANDARD_GRAVITY } from '../../constants.js';
 import { nehrpClassFromVs30, type NEHRPClass } from '../../elevation/index.js';
 import type { Meters, MetersPerSecondSquared, NewtonMeters } from '../../units.js';
-import { m, mps2 } from '../../units.js';
+import { m, mps, mps2 } from '../../units.js';
 import { generateAftershockSequence, type AftershockSequenceResult } from './aftershocks.js';
 import {
   distanceForPga,
   distanceForPgaNGAWest2,
+  distanceForPgvNGAWest2,
   vs30SiteFactor,
   peakGroundAcceleration,
   peakGroundAccelerationNGAWest2,
@@ -16,6 +17,7 @@ import {
   mmiFromPgaEuropean,
   modifiedMercalliIntensity,
   pgaFromMercalliIntensity,
+  pgvFromMercalliIntensity,
 } from './intensity.js';
 import { epicentralDistanceForIntensityAllen2012 } from './intensityPrediction.js';
 import { liquefactionRadius } from './liquefaction.js';
@@ -116,6 +118,33 @@ export interface EarthquakeScenarioInput {
    *  before any of them replaces the shipped one. Omitted, the rings are
    *  the shipped law's. */
   contourLaw?: ContourLaw;
+  /** Which ground motion the rings take intensity from (rule 31 of
+   *  validation/pagerChain.ts): Worden et al. 2012 on Boore et al.
+   *  2014's median PGA (`pga`, shipped) or on its median PGV (`pgv`,
+   *  PAGER's chain). Read by the Boore et al. 2014 laws; Joyner & Boore
+   *  1981 has no PGV and Allen et al. 2012 no ground motion at all.
+   *  Omitted, `pga`. */
+  intensityMeasure?: IntensityMeasure;
+  /** Where the rings stand (rule 31 of validation/pagerChain.ts): at
+   *  intensity 7.0, 8.0 and 9.0 (`rings`, shipped), or at the lower
+   *  edge of PAGER's bands — intensity k from k − ½ to k + ½ — for V to
+   *  IX (`pager`), where the result also carries the V and VI rings.
+   *  Omitted, `rings`. */
+  intensityBanding?: IntensityBanding;
+}
+
+/** Rule 31 of validation/pagerChain.ts: the ground motion intensity is
+ *  drawn from. */
+export type IntensityMeasure = 'pga' | 'pgv';
+
+/** Rule 31 of validation/pagerChain.ts: where a band of intensity
+ *  begins. */
+export type IntensityBanding = 'rings' | 'pager';
+
+/** The intensity at which band k begins: k itself on the shipped rings,
+ *  k − ½ as PAGER and ShakeMap's legend band it. */
+export function bandEdge(k: number, banding: IntensityBanding = 'rings'): number {
+  return banding === 'pager' ? k - 0.5 : k;
 }
 
 /**
@@ -179,7 +208,12 @@ export interface EarthquakeShakingResult {
   /** Epicentral MMI using the Faenza & Michelini (2010) Italian /
    *  European calibration — use this for events on the Eurasian plate. */
   mmiAtEpicenterEurope: number;
-  /** Ground range to the MMI VII contour (strong shaking). */
+  /** Ground range to where MMI V begins, on PAGER's banding only. */
+  mmi5Radius?: Meters;
+  /** Ground range to where MMI VI begins, on PAGER's banding only. */
+  mmi6Radius?: Meters;
+  /** Ground range to the MMI VII contour (strong shaking): intensity
+   *  7.0 on the shipped rings, 6.5 on PAGER's banding. */
   mmi7Radius: Meters;
   /** Ground range to the MMI VIII contour (severe shaking). */
   mmi8Radius: Meters;
@@ -365,6 +399,11 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
       law === 'allen2012HypocentralBelowMw7.5' ||
       (law === 'boore2014FromMw7.5' && input.magnitude >= 7.5));
   const depthKm = ((input.depth as number | undefined) ?? DEFAULT_HYPOCENTRE_DEPTH_M) / 1_000;
+  // Rule 31 of validation/pagerChain.ts: PGV where the chain asks for
+  // it, and the rings at the edges of PAGER's bands where it asks for
+  // those. A residual scales PGV as it scales PGA.
+  const byPgv = boore && input.intensityMeasure === 'pgv';
+  const banding = input.intensityBanding ?? 'rings';
   const contourAt = (mmi: number): Meters =>
     allen
       ? epicentralDistanceForIntensityAllen2012(
@@ -373,18 +412,27 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
           mmi,
           Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0
         )
-      : boore
-        ? distanceForPgaNGAWest2(
+      : byPgv
+        ? distanceForPgvNGAWest2(
             { magnitude: input.magnitude, faultType: ngaFault, vs30 },
-            target(pgaFromMercalliIntensity(mmi))
+            mps((pgvFromMercalliIntensity(mmi) as number) / gm)
           )
-        : distanceForPga(
-            input.magnitude,
-            mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
-          );
-  const mmi7Radius = contourAt(7);
-  const mmi8Radius = contourAt(8);
-  const mmi9Radius = contourAt(9);
+        : boore
+          ? distanceForPgaNGAWest2(
+              { magnitude: input.magnitude, faultType: ngaFault, vs30 },
+              target(pgaFromMercalliIntensity(mmi))
+            )
+          : distanceForPga(
+              input.magnitude,
+              mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
+            );
+  const mmi7Radius = contourAt(bandEdge(7, banding));
+  const mmi8Radius = contourAt(bandEdge(8, banding));
+  const mmi9Radius = contourAt(bandEdge(9, banding));
+  const pagerRings =
+    banding === 'pager'
+      ? { mmi5Radius: contourAt(bandEdge(5, banding)), mmi6Radius: contourAt(bandEdge(6, banding)) }
+      : {};
 
   const waterDepthM = (input.waterDepth as number | undefined) ?? 0;
   const isSubmarine = Number.isFinite(waterDepthM) && waterDepthM > 0;
@@ -402,6 +450,7 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
       pgaAt100kmNGA,
       mmiAtEpicenter: modifiedMercalliIntensity(epicentralPga),
       mmiAtEpicenterEurope: mmiFromPgaEuropean(epicentralPga),
+      ...pagerRings,
       mmi7Radius,
       mmi8Radius,
       mmi9Radius,

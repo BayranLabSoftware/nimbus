@@ -3184,6 +3184,22 @@
         "worstAt": "M 3, R_JB 0 km, Vs30 400 m/s"
       },
       {
+        "relation": "Boore et al. 2014",
+        "quantity": "median PGV, with style of faulting",
+        "reference": "D. M. Boore's Fortran program, via OpenQuake's test data",
+        "rows": 450,
+        "worstRelative": 0.000004829,
+        "worstAt": "M 3, rake 90°, R_JB 100 km, Vs30 600 m/s"
+      },
+      {
+        "relation": "Boore et al. 2014",
+        "quantity": "median PGV, style of faulting unspecified",
+        "reference": "D. M. Boore's Fortran program, via OpenQuake's test data",
+        "rows": 150,
+        "worstRelative": 0.000003895,
+        "worstAt": "M 5, R_JB 0 km, Vs30 200 m/s"
+      },
+      {
         "relation": "Allen, Wald & Worden 2012, hypocentral",
         "quantity": "median MMI",
         "reference": "An independent Matlab implementation, via OpenQuake's test data",

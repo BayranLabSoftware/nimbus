@@ -1,5 +1,5 @@
-import type { MetersPerSecondSquared } from '../../units.js';
-import { mps2 } from '../../units.js';
+import type { MetersPerSecond, MetersPerSecondSquared } from '../../units.js';
+import { mps, mps2 } from '../../units.js';
 
 /**
  * Lowest PGA a human can reliably feel indoors. Used as the lower
@@ -52,6 +52,50 @@ export function pgaFromMercalliIntensity(mmi: number): MetersPerSecondSquared {
   const logPga = clamped <= breakMmi ? (clamped - 1.78) / 1.55 : (clamped + 1.6) / 3.7;
   const pgaCmS2 = 10 ** logPga;
   return mps2(pgaCmS2 / 100); // cm/s² → m/s²
+}
+
+/** Worden et al. (2012) break-point for PGV, log₁₀(PGV_cm/s), and the
+ *  intensity at which the inverse changes segment. */
+const WORDEN_BREAK_LOG_PGV = 0.53;
+const WORDEN_BREAK_MMI_PGV = 4.56;
+
+/** Intensity units per unit of ln PGV on Worden et al. (2012)'s upper
+ *  segment, 3.16 / ln 10. */
+export const MMI_PER_LN_PGV = 3.16 / Math.LN10;
+
+/** Lowest PGV the relation is read at, 0.01 cm/s: far below any ring. */
+const MIN_PGV_FOR_MMI_CM_S = 0.01;
+
+/**
+ * Modified Mercalli Intensity from peak ground velocity, Worden et al.
+ * (2012):
+ *
+ *     log₁₀(PGV) ≤ 0.53:  MMI = 3.78 + 1.47·log₁₀(PGV_cm/s)
+ *     log₁₀(PGV) >  0.53: MMI = 2.89 + 3.16·log₁₀(PGV_cm/s)
+ *
+ * The relation ShakeMap draws intensity with where it has a PGV, and the
+ * coefficients its code carries (shakelib/gmice/wgrw12.py), whose third
+ * segment for intensities below II no ring here reaches. PGV follows
+ * damaging shaking where PGA saturates: Boore et al. 2014's median PGA
+ * never converts to more than MMI 8.8, its median PGV reaches IX near
+ * the largest ruptures. Clamped to [I, XII].
+ */
+export function mercalliIntensityFromPgv(pgv: MetersPerSecond): number {
+  const pgvCmS = Math.max((pgv as number) * 100, MIN_PGV_FOR_MMI_CM_S);
+  const logPgv = Math.log10(pgvCmS);
+  const mmi = logPgv <= WORDEN_BREAK_LOG_PGV ? 3.78 + 1.47 * logPgv : 2.89 + 3.16 * logPgv;
+  return Math.max(1, Math.min(12, mmi));
+}
+
+/**
+ * Inverse of {@link mercalliIntensityFromPgv}: the PGV of a given
+ * intensity, changing segment at MMI 4.56 as ShakeMap's code does.
+ */
+export function pgvFromMercalliIntensity(mmi: number): MetersPerSecond {
+  const clamped = Math.max(1, Math.min(12, mmi));
+  const logPgv =
+    clamped <= WORDEN_BREAK_MMI_PGV ? (clamped - 3.78) / 1.47 : (clamped - 2.89) / 3.16;
+  return mps(10 ** logPgv / 100); // cm/s → m/s
 }
 
 /**

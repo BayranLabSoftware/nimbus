@@ -1,6 +1,7 @@
 import { STANDARD_GRAVITY } from '../constants.js';
 import {
   peakGroundAccelerationNGAWest2,
+  peakGroundVelocityNGAWest2,
   type NGAFaultType,
 } from '../events/earthquake/attenuation.js';
 import {
@@ -15,6 +16,8 @@ import {
   BSSA14_PGA_MEAN,
   BSSA14_PGA_MEAN_UNSPECIFIED,
   BSSA14_PGA_TOTAL_SIGMA,
+  BSSA14_PGV_MEAN,
+  BSSA14_PGV_MEAN_UNSPECIFIED,
 } from './openQuakeReference.js';
 
 /**
@@ -76,6 +79,14 @@ const pgaG = (magnitude: number, rjbKm: number, vs30: number, faultType: NGAFaul
     vs30,
   }) as number) / STANDARD_GRAVITY;
 
+const pgvCmS = (magnitude: number, rjbKm: number, vs30: number, faultType: NGAFaultType): number =>
+  (peakGroundVelocityNGAWest2({
+    magnitude,
+    distance: m(rjbKm * 1_000),
+    faultType,
+    vs30,
+  }) as number) * 100;
+
 export function verifyRings(): VerificationRow[] {
   const boore = 'Boore et al. 2014';
   const allen = 'Allen, Wald & Worden 2012, hypocentral';
@@ -103,6 +114,32 @@ export function verifyRings(): VerificationRow[] {
       ...worst(
         BSSA14_PGA_MEAN_UNSPECIFIED,
         ([mag, rjb, vs30]) => pgaG(mag, rjb, vs30, 'unspecified'),
+        (row) => row[3],
+        ([mag, rjb, vs30]) =>
+          `M ${mag.toString()}, R_JB ${rjb.toString()} km, Vs30 ${vs30.toString()} m/s`
+      ),
+    },
+    {
+      relation: boore,
+      quantity: 'median PGV, with style of faulting',
+      reference: fortran,
+      rows: BSSA14_PGV_MEAN.length,
+      ...worst(
+        BSSA14_PGV_MEAN,
+        ([mag, rake, rjb, vs30]) => pgvCmS(mag, rjb, vs30, faultTypeFromRake(rake)),
+        (row) => row[4],
+        ([mag, rake, rjb, vs30]) =>
+          `M ${mag.toString()}, rake ${rake.toString()}°, R_JB ${rjb.toString()} km, Vs30 ${vs30.toString()} m/s`
+      ),
+    },
+    {
+      relation: boore,
+      quantity: 'median PGV, style of faulting unspecified',
+      reference: fortran,
+      rows: BSSA14_PGV_MEAN_UNSPECIFIED.length,
+      ...worst(
+        BSSA14_PGV_MEAN_UNSPECIFIED,
+        ([mag, rjb, vs30]) => pgvCmS(mag, rjb, vs30, 'unspecified'),
         (row) => row[3],
         ([mag, rjb, vs30]) =>
           `M ${mag.toString()}, R_JB ${rjb.toString()} km, Vs30 ${vs30.toString()} m/s`

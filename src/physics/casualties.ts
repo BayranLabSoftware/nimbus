@@ -548,10 +548,25 @@ export interface ShakingCasualtyInput {
   mmi7Radius: Meters;
   mmi8Radius: Meters;
   mmi9Radius: Meters;
+  /** Where MMI V and VI begin, for PAGER's banding. */
+  mmi5Radius?: Meters | undefined;
+  mmi6Radius?: Meters | undefined;
+  /** How the rings band intensity (rule 31 of validation/pagerChain.ts):
+   *  `rings`, the shipped three, or `pager`, PAGER's five. Omitted,
+   *  `rings`. */
+  banding?: 'rings' | 'pager';
 }
 
-/** Shaking casualty plan: the ≥ IX, VIII–IX and VII–VIII annuli at
- *  their mid-band intensity (9.5, 8.5, 7.5). */
+/**
+ * Shaking casualty plan.
+ *
+ * On the shipped rings: the ≥ IX, VIII–IX and VII–VIII annuli at their
+ * mid-band intensity (9.5, 8.5, 7.5). On PAGER's banding (rule 31 of
+ * validation/pagerChain.ts): its bins as its empirical model counts them
+ * (usgs/pager, losspager/models/emploss.py) — intensity k from k − ½ to
+ * k + ½ for V to IX, IX open above — each at the rate of its integer
+ * intensity.
+ */
 export function shakingCasualtyPlan(
   input: ShakingCasualtyInput,
   vulnerability: {
@@ -561,16 +576,31 @@ export function shakingCasualtyPlan(
     lossSigmaLn?: number;
   } = PAGER_VULNERABILITY
 ): CasualtyPlan | null {
+  const pager = input.banding === 'pager';
+  const r5 = (input.mmi5Radius as number | undefined) ?? 0;
+  const r6 = (input.mmi6Radius as number | undefined) ?? 0;
   const r7 = input.mmi7Radius as number;
   const r8 = input.mmi8Radius as number;
   const r9 = input.mmi9Radius as number;
-  if (![r7, r8, r9].every((r) => Number.isFinite(r) && r >= 0)) return null;
-  if (r7 <= 0) return null;
-  const rings: { key: string; inner: number; outer: number; mmi: number }[] = [
-    { key: 'mmi9', inner: 0, outer: r9, mmi: 9.5 },
-    { key: 'mmi8', inner: r9, outer: Math.max(r9, r8), mmi: 8.5 },
-    { key: 'mmi7', inner: Math.max(r9, r8), outer: Math.max(r9, r8, r7), mmi: 7.5 },
-  ];
+  const radii = pager ? [r5, r6, r7, r8, r9] : [r7, r8, r9];
+  if (!radii.every((r) => Number.isFinite(r) && r >= 0)) return null;
+  if ((pager ? r5 : r7) <= 0) return null;
+  const inner8 = Math.max(r9, r8);
+  const inner7 = Math.max(inner8, r7);
+  const inner6 = Math.max(inner7, r6);
+  const rings: { key: string; inner: number; outer: number; mmi: number }[] = pager
+    ? [
+        { key: 'mmi9', inner: 0, outer: r9, mmi: 9 },
+        { key: 'mmi8', inner: r9, outer: inner8, mmi: 8 },
+        { key: 'mmi7', inner: inner8, outer: inner7, mmi: 7 },
+        { key: 'mmi6', inner: inner7, outer: inner6, mmi: 6 },
+        { key: 'mmi5', inner: inner6, outer: Math.max(inner6, r5), mmi: 5 },
+      ]
+    : [
+        { key: 'mmi9', inner: 0, outer: r9, mmi: 9.5 },
+        { key: 'mmi8', inner: r9, outer: inner8, mmi: 8.5 },
+        { key: 'mmi7', inner: inner8, outer: inner7, mmi: 7.5 },
+      ];
   const bands: CasualtyBand[] = rings
     .filter((r) => r.outer > r.inner)
     .map((r) => ({

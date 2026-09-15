@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { m } from '../../units.js';
+import { m, mps } from '../../units.js';
+import { distanceForPgaNGAWest2, distanceForPgvNGAWest2 } from './attenuation.js';
+import { pgaFromMercalliIntensity, pgvFromMercalliIntensity } from './intensity.js';
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from './simulate.js';
 
 describe('simulateEarthquake', () => {
@@ -174,5 +176,43 @@ describe('the ground the rings stand on', () => {
     expect(ring(300) - ring(400)).toBeGreaterThan(ring(250) - ring(300));
     // Rock, where every preset in the calibration net stands.
     expect(rock).toBeCloseTo(10.1, 0);
+  });
+});
+
+describe('rule 31 of validation/pagerChain.ts: the chain the rings are drawn with', () => {
+  const quake = { magnitude: 7.6, faultType: 'reverse', vs30: 400 } as const;
+
+  it('draws the rings from PGV when asked, and from PGA otherwise', () => {
+    const pga = simulateEarthquake(quake);
+    const pgv = simulateEarthquake({ ...quake, intensityMeasure: 'pgv' });
+    const site = { magnitude: 7.6, faultType: 'reverse', vs30: 400 } as const;
+    expect(pga.shaking.mmi8Radius).toBe(distanceForPgaNGAWest2(site, pgaFromMercalliIntensity(8)));
+    expect(pgv.shaking.mmi8Radius).toBe(distanceForPgvNGAWest2(site, pgvFromMercalliIntensity(8)));
+    expect(pga.shaking.mmi5Radius).toBeUndefined();
+  });
+
+  it("stands the rings at the edges of PAGER's bands when asked, V and VI included", () => {
+    const r = simulateEarthquake({ ...quake, intensityMeasure: 'pgv', intensityBanding: 'pager' });
+    const site = { magnitude: 7.6, faultType: 'reverse', vs30: 400 } as const;
+    const at = (mmi: number) => distanceForPgvNGAWest2(site, pgvFromMercalliIntensity(mmi));
+    expect(r.shaking.mmi5Radius).toBe(at(4.5));
+    expect(r.shaking.mmi6Radius).toBe(at(5.5));
+    expect(r.shaking.mmi7Radius).toBe(at(6.5));
+    expect(r.shaking.mmi8Radius).toBe(at(7.5));
+    expect(r.shaking.mmi9Radius).toBe(at(8.5));
+  });
+
+  it('moves a PGV ring out for a positive residual as it does a PGA ring', () => {
+    const median = simulateEarthquake({ ...quake, intensityMeasure: 'pgv' });
+    const strong = simulateEarthquake({
+      ...quake,
+      intensityMeasure: 'pgv',
+      groundMotionResidualLn: 0.5,
+    });
+    const site = { magnitude: 7.6, faultType: 'reverse', vs30: 400 } as const;
+    expect(strong.shaking.mmi7Radius).toBe(
+      distanceForPgvNGAWest2(site, mps((pgvFromMercalliIntensity(7) as number) / Math.exp(0.5)))
+    );
+    expect(strong.shaking.mmi7Radius as number).toBeGreaterThan(median.shaking.mmi7Radius);
   });
 });
