@@ -24,9 +24,12 @@ import { NUCLEAR_CRATER_COEFFICIENT } from '../events/explosion/cratering.js';
 import { thermalPartitionForHeight } from '../events/explosion/thermal.js';
 import { DEFAULT_CONFINEMENT_DYNAMIC_FACTOR } from '../events/volcano/tsunami.js';
 import { simulateVolcano, VOLCANO_PRESETS } from '../events/volcano/index.js';
+import { ashfallMassLoading } from '../events/volcano/ashfall.js';
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/index.js';
 import { simulateImpact, IMPACT_PRESETS } from '../simulate.js';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
+import { impactFireballRadius } from '../effects/blastWave.js';
+import { thermalHorizonRadius } from '../casualties.js';
 import { CRUSTAL_ROCK_DENSITY } from '../constants.js';
 import { deg, degreesToRadians, kgPerM3, m, mps } from '../units.js';
 import { validateScenario } from './inputSchema.js';
@@ -36,7 +39,7 @@ import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
 import { mulberry32 } from '../montecarlo/sampling.js';
 import { compareWithRecord, RECORDED_EVENTS } from './recordedTolls.js';
 import { makeElevationGrid } from '../elevation/index.js';
-import { resetAppStore, useAppStore } from '../../store/useAppStore.js';
+import { gateImpactByTerrain, resetAppStore, useAppStore } from '../../store/useAppStore.js';
 import {
   fetchTerrainGridForLocation,
   TERRAIN_TILE_ZOOM,
@@ -424,6 +427,127 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(simulateEarthquake({ magnitude: 3.7000000001 }).aftershocks.totalCount).toBe(0);
   });
 
+  it('B-028 An impact lights fires as far as its fireball is seen, on a round Earth', () => {
+    // Pre-fix: the ignition and sustain radii were the fluence radii with
+    // nothing in the way — 24 579 km for Chicxulub, past the antipode —
+    // and their areas πr², so the panel printed an ignition area of
+    // 1 897.9 million km², 3.7 times the surface of the Earth. The flash
+    // travels in straight lines and stops at the fireball's horizon, the
+    // cut the casualty plan already made; an area on a sphere is a cap.
+    const earthRadius = 6_371_000;
+    const capArea = (r: number): number =>
+      2 * Math.PI * earthRadius ** 2 * (1 - Math.cos(r / earthRadius));
+    const chicxulub = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+    const fireball = impactFireballRadius(chicxulub.impactor.kineticEnergy);
+    const horizon = thermalHorizonRadius(fireball);
+    const { ignitionRadius, sustainRadius, ignitionArea, sustainArea } = chicxulub.firestorm;
+    expect(ignitionRadius as number).toBeCloseTo(horizon, -2);
+    expect(sustainRadius as number).toBeLessThanOrEqual(horizon);
+    expect(ignitionArea as number).toBeCloseTo(capArea(ignitionRadius), -6);
+    expect(sustainArea as number).toBeCloseTo(capArea(sustainRadius), -6);
+    expect(sustainArea as number).toBeLessThan(4 * Math.PI * earthRadius ** 2);
+    // An impact whose flash does not reach its horizon keeps its fluence
+    // radius, and its areas stay the disc's to a part in a million.
+    const meteor = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    const r = meteor.firestorm.ignitionRadius as number;
+    expect(r).toBeGreaterThan(0);
+    expect(r).toBeLessThan(
+      thermalHorizonRadius(impactFireballRadius(meteor.impactor.kineticEnergy))
+    );
+    expect(meteor.firestorm.ignitionArea as number).toBeCloseTo(Math.PI * r * r, -2);
+    // A body far larger than the Earth's own diameter keeps every radius
+    // inside the antipode and every area inside the planet.
+    const planetary = simulateImpact({
+      impactorDiameter: m(50_000_000),
+      impactVelocity: mps(30_000),
+      impactorDensity: kgPerM3(3_000),
+      targetDensity: kgPerM3(2_500),
+      impactAngle: degreesToRadians(deg(45)),
+    });
+    expect(planetary.firestorm.sustainRadius as number).toBeLessThanOrEqual(Math.PI * earthRadius);
+    expect(planetary.firestorm.sustainArea as number).toBeLessThanOrEqual(
+      4 * Math.PI * earthRadius ** 2
+    );
+  });
+
+  it('B-029 The 1 mm isopach reaches its farthest band, and grows with the eruption', () => {
+    // Pre-fix: along the wind the deposit is a row of bands — the coarse
+    // classes near the vent, the finest thousands of kilometres out — and
+    // its edge was a bisection over the whole axis, which lands on
+    // whichever band edge it meets. 1 % more tephra took a reach from
+    // 184 to 159 km, or from the 5 000 km bracket to 4 070 km; a reach at
+    // the bracket came with no width and no area. The campaign's random
+    // eruptions found 343 such cases in 5 000.
+    const eruptions = [
+      { volumeEruptionRate: 94_992.9, totalEjectaVolume: 7.2435e10, windSpeed: 19.26 },
+      { volumeEruptionRate: 4_301.65, totalEjectaVolume: 5.4329e7, windSpeed: 40.61 },
+      { volumeEruptionRate: 24_849.8, totalEjectaVolume: 2.7837e10, windSpeed: 29.53 },
+    ];
+    for (const eruption of eruptions) {
+      const base = simulateVolcano(eruption);
+      const grown = simulateVolcano({
+        ...eruption,
+        volumeEruptionRate: eruption.volumeEruptionRate * 1.01,
+        totalEjectaVolume: eruption.totalEjectaVolume * 1.01,
+      });
+      const a = base.windAdvectedAshfall;
+      const b = grown.windAdvectedAshfall;
+      if (a === undefined || b === undefined) throw new Error('no ashfall footprint');
+      expect(b.downwindRange as number).toBeGreaterThanOrEqual(a.downwindRange);
+      expect(b.area as number).toBeGreaterThanOrEqual(a.area);
+      expect(a.area as number).toBeGreaterThan(0);
+      expect(a.crosswindHalfWidth as number).toBeGreaterThan(0);
+      // The edge is an edge: 1 mm just inside it, less just past it,
+      // unless the deposit runs on past the 5 000 km the footprint reports.
+      const range = a.downwindRange as number;
+      if (range < 5_000_000) {
+        const loadingAt = (x: number): number =>
+          ashfallMassLoading({
+            plumeHeight: base.plumeHeight,
+            totalEjectaVolume: eruption.totalEjectaVolume,
+            windSpeed: eruption.windSpeed,
+            downwindDistance: x,
+            crosswindDistance: 0,
+          });
+        expect(loadingAt(range - 500)).toBeGreaterThanOrEqual(1);
+        expect(loadingAt(range + 500)).toBeLessThan(1);
+      }
+    }
+  });
+
+  it('B-030 A body under a metre across burns up without breaking the run', () => {
+    // Pre-fix: the surface burst of a few centimetres of iron could not
+    // raise 5 psi even a metre away, and the inversion that finds the
+    // ring threw — reachable through a link, which takes any positive
+    // diameter. A threshold never reached draws no ring, as the entry's
+    // own rings already did.
+    for (const diameter of [0.001, 0.01, 0.05, 0.2, 0.5]) {
+      const r = simulateImpact({
+        impactorDiameter: m(diameter),
+        impactVelocity: mps(33_000),
+        impactorDensity: kgPerM3(8_400),
+        targetDensity: kgPerM3(1_800),
+        impactAngle: degreesToRadians(deg(80)),
+      });
+      for (const radius of Object.values(r.damage)) {
+        expect(Number.isFinite(radius as number)).toBe(true);
+        expect(radius as number).toBeGreaterThanOrEqual(0);
+      }
+    }
+  });
+
+  it('B-031 An impact at sea draws no fire, and prints no fire area either', () => {
+    // Pre-fix: the open-water gate zeroed the ignition and sustain radii
+    // and the ignition area, and left the sustain area — the panel's
+    // "firestorm area" — beside rings of nothing. The explosion gate
+    // zeroes all four.
+    const atSea = gateImpactByTerrain(simulateImpact(IMPACT_PRESETS.CHICXULUB_OCEAN.input), true);
+    expect(atSea.firestorm.ignitionRadius as number).toBe(0);
+    expect(atSea.firestorm.sustainRadius as number).toBe(0);
+    expect(atSea.firestorm.ignitionArea as number).toBe(0);
+    expect(atSea.firestorm.sustainArea as number).toBe(0);
+  });
+
   it('B-020 The ground-motion residual is the total Boore et al. 2014 give', () => {
     // Pre-fix: σ_lnY 0.50, quoted with a τ ≈ 0.397 and a φ ≈ 0.308 that
     // are not in the paper. For PGA at M ≥ 5.5 it gives τ = 0.348 and
@@ -457,10 +581,10 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-025 and B-027 (B-010 CLOSED via inputSchema.ts +
+    // B-001..B-025 and B-027..B-031 (B-010 CLOSED via inputSchema.ts +
     // safeRun.ts; B-007 superseded by B-011; B-026, the population of a
     // planetary circle, is named in docs/ROADMAP.md and not yet entered).
-    const expectedRows = 26;
-    expect(expectedRows).toBe(26);
+    const expectedRows = 30;
+    expect(expectedRows).toBe(30);
   });
 });

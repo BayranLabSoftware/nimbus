@@ -11,7 +11,7 @@ import {
   finalCraterDiameter,
   transientCraterDiameter,
 } from './events/impact/crater.js';
-import { IMPACT_LUMINOUS_EFFICIENCY } from './constants.js';
+import { EARTH_RADIUS, IMPACT_LUMINOUS_EFFICIENCY } from './constants.js';
 import {
   climateTier,
   shockAcidRainMass,
@@ -35,12 +35,9 @@ import {
   ejectaThicknessAt10R,
   ejectaThicknessAt2R,
 } from './effects/ejecta.js';
-import {
-  firestormArea,
-  firestormSustainRadius,
-  flammableIgnitionArea,
-  flammableIgnitionRadius,
-} from './effects/firestorm.js';
+import { impactFireballRadius } from './effects/blastWave.js';
+import { firestormSustainRadius, flammableIgnitionRadius } from './effects/firestorm.js';
+import { thermalHorizonRadius } from './casualties.js';
 import { oceanCouplingPartition } from './effects/oceanCoupling.js';
 import { liquefactionRadius } from './events/earthquake/liquefaction.js';
 import { impactDamageRadii, type ImpactDamageRadii } from './events/impact/damageRings.js';
@@ -78,7 +75,7 @@ import type {
   Seconds,
   SquareMeters,
 } from './units.js';
-import { deg, degreesToRadians, J, joulesToMegatons, kgPerM3, m, mps } from './units.js';
+import { deg, degreesToRadians, J, joulesToMegatons, kgPerM3, m, mps, sqm } from './units.js';
 
 /** Default basin depth used to propagate impact-generated tsunamis when
  *  the caller doesn't override it. 4 km is the rough global-ocean mean. */
@@ -362,7 +359,9 @@ export interface ImpactScenarioResult {
   };
   /** Thermal-pulse firestorm metrics — applied with the impact
    *  luminous efficiency η ≈ 3 × 10⁻³ (Collins et al. 2005, Toon
-   *  et al. 1997) rather than the nuclear 0.35 partition. */
+   *  et al. 1997) rather than the nuclear 0.35 partition. The radii
+   *  stop at the fireball's horizon and the antipode; the areas are
+   *  spherical caps. */
   firestorm: {
     ignitionRadius: Meters;
     sustainRadius: Meters;
@@ -599,11 +598,28 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     yieldEnergy: ke,
     thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
   };
+  // The flash that lights a fire travels in straight lines, so no fire
+  // starts past the range where the fireball sets below the horizon —
+  // the cut the casualty plan makes — or past the antipode; the area
+  // inside a radius on the Earth is a spherical cap. Until 15 September
+  // 2026 these were the fluence radii with nothing in the way and discs
+  // of them: 24 579 km for Chicxulub, and an ignition area 3.7 times the
+  // Earth's surface (B-028).
+  const earthRadius = EARTH_RADIUS as number;
+  const flashReach = Math.min(
+    thermalHorizonRadius(impactFireballRadius(ke)),
+    Math.PI * earthRadius
+  );
+  const seen = (radius: Meters): Meters => m(Math.min(radius, flashReach));
+  const capArea = (radius: Meters): SquareMeters =>
+    sqm(2 * Math.PI * earthRadius ** 2 * (1 - Math.cos((radius as number) / earthRadius)));
+  const ignitionRadius = seen(flammableIgnitionRadius(firestormInputs));
+  const sustainRadius = seen(firestormSustainRadius(firestormInputs));
   const firestorm = {
-    ignitionRadius: flammableIgnitionRadius(firestormInputs),
-    sustainRadius: firestormSustainRadius(firestormInputs),
-    ignitionArea: flammableIgnitionArea(firestormInputs),
-    sustainArea: firestormArea(firestormInputs),
+    ignitionRadius,
+    sustainRadius,
+    ignitionArea: capArea(ignitionRadius),
+    sustainArea: capArea(sustainRadius),
   };
 
   const atmosphere = {

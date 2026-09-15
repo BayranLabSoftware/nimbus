@@ -322,6 +322,37 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **An impact lights fires as far as its fireball is seen, on a round
+  Earth.** The ignition and sustain radii of an impact were the distances
+  at which the flash would still carry enough heat with nothing in the way
+  — 24 579 km for Chicxulub, past the antipode — and their areas were
+  discs of them, so the panel printed an ignition area of 1 897.9 million
+  km², 3.7 times the surface of the Earth. The flash travels in straight
+  lines: the radii now stop where the fireball sets below the horizon, the
+  cut the casualty count already made, and never pass the antipode, and the
+  areas are spherical caps. Chicxulub's fires reach 1 591 km (B-028).
+
+- **The ashfall footprint grows with the eruption.** Along the wind the
+  deposit is a row of bands, the coarse grains near the vent and the
+  finest far out, and the edge of the 1 mm isopach was found by a
+  bisection that stopped at whichever band edge it met: 1 % more tephra
+  could shorten the reach from 184 to 159 km, or from 5 000 to 4 070 km,
+  and a reach at the 5 000 km limit came with no width and no area. The
+  edge is now the far side of the farthest band above 1 mm, and the width
+  is measured where the bands are widest. On the campaign's 5 000 random
+  eruptions none shrinks when it grows; a distal band crossing 1 mm still
+  moves the edge in a jump, which is the deposit's shape (B-029).
+
+- **A body under a metre across burns up without breaking the run.** A
+  few centimetres of iron could not raise 5 psi even a metre from its
+  impact, and the calculation of that ring threw; a link with such a
+  diameter broke the simulation. A threshold the blast cannot reach now
+  draws no ring, as the entry's own rings already did (B-030).
+
+- **An impact at sea prints no fire area.** The open-water gate cleared
+  the fire radii and the ignition area of an ocean impact and left the
+  firestorm area, which the panel printed beside rings of nothing (B-031).
+
 - **An earthquake of magnitude 3.2 to 3.7 finishes.** The aftershock
   catalogue drew magnitudes above its completeness cutoff and drew again
   any that came out above Båth's ceiling, a magnitude and two tenths below

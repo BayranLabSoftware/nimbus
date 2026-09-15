@@ -187,16 +187,39 @@ const SUZUKI_NORMALISATION = (() => {
  * actually computed below).
  */
 export function ashfallMassLoading(input: AshDepositInput): number {
+  const x = input.downwindDistance;
+  if (!Number.isFinite(x)) return 0;
+  return loadingAt(depositPieces(input), x, input.crosswindDistance);
+}
+
+/** One (grain class, release height) pair of the deposit: its mass and
+ *  the Gaussian it lands in. */
+interface DepositPiece {
+  /** Mass of the class times the release weight (kg). */
+  mass: number;
+  /** Downwind centre of the landing (m). */
+  xCentre: number;
+  sigmaX: number;
+  sigmaY: number;
+  /** 2π σ_x σ_y. */
+  denominator: number;
+}
+
+/**
+ * The pieces {@link ashfallMassLoading} sums, computed once for an
+ * eruption: a search along the deposit asks for thousands of points, and
+ * the terminal velocities and release weights do not change between them.
+ * Empty where the eruption deposits nothing.
+ */
+function depositPieces(
+  input: Omit<AshDepositInput, 'downwindDistance' | 'crosswindDistance'>
+): DepositPiece[] {
   const H = input.plumeHeight as number;
   const V = input.totalEjectaVolume;
-  const x = input.downwindDistance;
-  const y = input.crosswindDistance;
   const u = input.windSpeed;
-  if (!Number.isFinite(H) || H <= 0) return 0;
-  if (!Number.isFinite(V) || V <= 0) return 0;
-  if (!Number.isFinite(u) || u <= 0) return 0;
-  if (!Number.isFinite(x)) return 0;
-  if (x <= 0) return 0; // upwind of the vent — no deposit
+  if (!Number.isFinite(H) || H <= 0) return [];
+  if (!Number.isFinite(V) || V <= 0) return [];
+  if (!Number.isFinite(u) || u <= 0) return [];
 
   const depositDensity = input.depositDensity ?? TEPHRA_DENSITY;
   const totalMass = V * depositDensity;
@@ -204,7 +227,7 @@ export function ashfallMassLoading(input: AshDepositInput): number {
 
   // Integrate over N_z release-height points and sum grain classes.
   const N_z = 24;
-  let loading = 0;
+  const pieces: DepositPiece[] = [];
   for (const grain of spectrum) {
     const vt = ganserTerminalVelocity(grain.diameter);
     if (vt <= 0) continue;
@@ -225,12 +248,28 @@ export function ashfallMassLoading(input: AshDepositInput): number {
       const sigmaY =
         Math.max(H * CROSSWIND_BASE_FACTOR, 500) *
         Math.sqrt(1 + xCentre / Math.max(diffusionScale, 1));
-      const dx = (x - xCentre) / sigmaX;
-      const dy = y / sigmaY;
-      const lateral = Math.exp(-(dx * dx + dy * dy) / 2);
-      // Per-cell deposit: mass_slice · lateral_Gauss / (2π σ_x σ_y).
-      loading += (massClass * weight * lateral) / (2 * Math.PI * sigmaX * sigmaY);
+      pieces.push({
+        mass: massClass * weight,
+        xCentre,
+        sigmaX,
+        sigmaY,
+        denominator: 2 * Math.PI * sigmaX * sigmaY,
+      });
     }
+  }
+  return pieces;
+}
+
+/** Mass loading (kg/m²) of the pieces at (x, y). */
+function loadingAt(pieces: readonly DepositPiece[], x: number, y: number): number {
+  if (x <= 0) return 0; // upwind of the vent — no deposit
+  let loading = 0;
+  for (const piece of pieces) {
+    const dx = (x - piece.xCentre) / piece.sigmaX;
+    const dy = y / piece.sigmaY;
+    const lateral = Math.exp(-(dx * dx + dy * dy) / 2);
+    // Per-cell deposit: mass_slice · lateral_Gauss / (2π σ_x σ_y).
+    loading += (piece.mass * lateral) / piece.denominator;
   }
   return loading; // kg/m²
 }
@@ -277,74 +316,109 @@ export interface AshFootprint {
 
 /**
  * Compute the wind-advected 1-mm isopach footprint of a Plinian
- * ashfall. Binary searches along the downwind axis for the farthest
- * point where the deposit thickness drops below the threshold, and
- * measures the maximum crosswind half-width.
+ * ashfall: how far downwind the deposit stays above the threshold, and
+ * how wide it gets across the wind.
+ *
+ * Along the wind the deposit is a row of bands — the coarse classes land
+ * near the vent, the finest thousands of kilometres out — with the loading
+ * falling below the threshold between them. The downwind edge is the far
+ * side of the farthest band above the threshold, found by walking the
+ * axis in steps of half the along-wind spread (a band cannot hide
+ * between two samples) out to six spreads past the farthest landing
+ * centre, and refined by bisection inside the last step; a band above
+ * the threshold that lands past 5 000 km puts the edge at 5 000 km. The
+ * width is measured where the bands are widest, at their landing
+ * centres, as well as at 24 points along the reach. Until 15
+ * September 2026 the edge was a bisection over the whole axis, which
+ * lands on whichever band edge it meets: 1 % more tephra could move the
+ * reach from 5 000 km to 4 070 km, and a reach at the 5 000 km bracket
+ * came with no width and no area (B-029).
  */
 export function ashFootprint(input: AshFootprintInput): AshFootprint {
   const threshold = (input.thicknessThreshold ?? m(1e-3)) as number;
   const depositDensity = input.depositDensity ?? TEPHRA_DENSITY;
   const loadingThreshold = threshold * depositDensity;
+  const empty: AshFootprint = {
+    downwindRange: m(0),
+    crosswindHalfWidth: m(0),
+    widestPointDownwind: m(0),
+    area: sqm(0),
+  };
 
-  const baseInput: AshDepositInput = {
+  if (input.windSpeed <= 0 || input.totalEjectaVolume <= 0) return empty;
+  const pieces = depositPieces({
     plumeHeight: input.plumeHeight,
     totalEjectaVolume: input.totalEjectaVolume,
     windSpeed: input.windSpeed,
-    downwindDistance: 0,
-    crosswindDistance: 0,
     ...(input.grainSpectrum !== undefined ? { grainSpectrum: input.grainSpectrum } : {}),
     ...(input.depositDensity !== undefined ? { depositDensity: input.depositDensity } : {}),
-  };
+  });
+  if (pieces.length === 0) return empty;
 
-  if (input.windSpeed <= 0 || input.totalEjectaVolume <= 0) {
-    return {
-      downwindRange: m(0),
-      crosswindHalfWidth: m(0),
-      widestPointDownwind: m(0),
-      area: sqm(0),
-    };
+  const atAxis = (x: number): number => loadingAt(pieces, x, 0);
+  const reachLimit = 5_000_000; // 5 000 km, the farthest the footprint reports
+  const spread = Math.min(...pieces.map((p) => p.sigmaX));
+  const farthestCentre = Math.max(...pieces.map((p) => p.xCentre));
+  const scanEnd = Math.min(reachLimit, farthestCentre + 6 * spread);
+  const samples = Math.min(50_000, Math.max(64, Math.ceil(scanEnd / (spread / 2))));
+  const step = scanEnd / samples;
+  // Sample positions are counted in steps, not accumulated, so the step
+  // after the last one above the threshold is exactly the next sample.
+  let lastAboveStep = 0;
+  for (let i = 1; i <= samples; i++) {
+    if (atAxis(i * step) >= loadingThreshold) lastAboveStep = i;
+  }
+  const lastAbove = lastAboveStep * step;
+  // A band that lands past the limit, above the threshold, reaches the limit.
+  const pastLimit = pieces.some(
+    (p) => p.xCentre > reachLimit && atAxis(p.xCentre) >= loadingThreshold
+  );
+
+  // A band whose peak only just clears the threshold can sit between two
+  // samples; its landing centre cannot, and it moves with the band.
+  const centresAbove = pieces
+    .map((p) => p.xCentre)
+    .filter((x) => x > 0 && x <= reachLimit && atAxis(x) >= loadingThreshold);
+  const farthestCentreAbove = centresAbove.length > 0 ? Math.max(...centresAbove) : 0;
+
+  let downwindRange: number;
+  if (pastLimit || lastAbove >= reachLimit) {
+    downwindRange = reachLimit;
+  } else if (lastAbove <= 0 && farthestCentreAbove <= 0) {
+    return empty;
+  } else {
+    // The edge lies past the last point found above the threshold and
+    // before the next sample, which was below it.
+    let lo = lastAbove;
+    let hi = (lastAboveStep + 1) * step;
+    if (farthestCentreAbove > lastAbove) {
+      lo = farthestCentreAbove;
+      const next = Math.floor(farthestCentreAbove / step) + 1;
+      hi = (next * step > farthestCentreAbove ? next : next + 1) * step;
+    }
+    for (let i = 0; i < 40; i++) {
+      const mid = 0.5 * (lo + hi);
+      if (atAxis(mid) >= loadingThreshold) lo = mid;
+      else hi = mid;
+    }
+    downwindRange = 0.5 * (lo + hi);
   }
 
-  // Bisection on x to find the downwind isopach edge.
-  const atAxis = (x: number): number =>
-    ashfallMassLoading({ ...baseInput, downwindDistance: x, crosswindDistance: 0 });
-  let lo = 0;
-  let hi = 5_000_000; // 5 000 km upper bracket
-  if (atAxis(hi) >= loadingThreshold) {
-    // Grew beyond bracket — clamp.
-    return {
-      downwindRange: m(hi),
-      crosswindHalfWidth: m(0),
-      widestPointDownwind: m(0),
-      area: sqm(0),
-    };
-  }
-  if (atAxis(lo + 1) < loadingThreshold) {
-    return {
-      downwindRange: m(0),
-      crosswindHalfWidth: m(0),
-      widestPointDownwind: m(0),
-      area: sqm(0),
-    };
-  }
-  for (let i = 0; i < 40; i++) {
-    const mid = 0.5 * (lo + hi);
-    if (atAxis(mid) >= loadingThreshold) lo = mid;
-    else hi = mid;
-  }
-  const downwindRange = 0.5 * (lo + hi);
-
-  // Sweep crosswind half-width in ~20 downwind samples.
+  // The crosswind half-width, at 24 points along the reach and at every
+  // landing centre above the threshold — where a band is widest — so a
+  // band between two of the 24 is not missed, and a band carried past the
+  // 5 000 km limit still counts for how wide the deposit gets.
+  const stations = [
+    ...Array.from({ length: 24 }, (_, i) => ((i + 1) / 24) * downwindRange),
+    ...pieces.map((p) => p.xCentre).filter((x) => x > 0 && atAxis(x) >= loadingThreshold),
+  ];
   let maxHalfWidth = 0;
   let widestX = 0;
-  const N = 24;
-  for (let i = 1; i <= N; i++) {
-    const x = (i / N) * downwindRange;
+  for (const x of stations) {
     // Bisection in y.
     let yLo = 0;
     let yHi = Math.max(downwindRange * 0.5, 5_000);
-    const atXY = (y: number): number =>
-      ashfallMassLoading({ ...baseInput, downwindDistance: x, crosswindDistance: y });
+    const atXY = (y: number): number => loadingAt(pieces, x, y);
     if (atXY(yHi) >= loadingThreshold) {
       // widen
       yHi = downwindRange * 2;

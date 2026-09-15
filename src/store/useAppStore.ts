@@ -865,11 +865,15 @@ export function gateImpactByTerrain(
   if (!isOpenWater) return data;
   return {
     ...data,
+    // All four, as the explosion gate: until 15 September 2026 the
+    // sustain area stayed and the panel printed it beside rings of
+    // nothing (B-031).
     firestorm: {
       ...data.firestorm,
       ignitionRadius: m(0),
       sustainRadius: m(0),
       ignitionArea: sqm(0),
+      sustainArea: sqm(0),
     },
     seismic: {
       ...data.seismic,

@@ -1170,7 +1170,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Wind-advected ashfall (Suzuki column)',
         formula: 'f(z̃) = S₀ · [(1 − z̃) · exp(A · (z̃ − 1))]^λ   ;   x_centre = u · z / v_t',
         description:
-          'Suzuki’s (1983) release profile along the plume column, in the two-parameter form of Pfeiffer et al. (2005), with A = 4 and λ = 1. Each mass slice lands at u · z / v_t downwind; the isopach elongates with wind speed while σ_x stays set by the column and σ_y grows by a square-root law inspired by Pasquill–Gifford diffusion.',
+          'Suzuki’s (1983) release profile along the plume column, in the two-parameter form of Pfeiffer et al. (2005), with A = 4 and λ = 1. Each mass slice lands at u · z / v_t downwind; the isopach elongates with wind speed while σ_x stays set by the column and σ_y grows by a square-root law inspired by Pasquill–Gifford diffusion. Because σ_x does not grow with the fall, the deposit along the wind is a row of bands — the coarse classes near the vent, the finest far out — and the 1 mm edge is the far side of the farthest band above it, found by walking the axis in half-spread steps; until 15 September 2026 it was a bisection that could stop at a nearer band, so a larger eruption could report a shorter reach.',
         citation: pfeiffer2005,
       },
       {

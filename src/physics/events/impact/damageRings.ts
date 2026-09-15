@@ -106,10 +106,23 @@ export function impactDamageRadii(
     // brings Tunguska 1 psi from +43 % to +13 % vs the published
     // forest-blowdown radius and Chicxulub 1 psi from +42 % to +12 %
     // vs the Collins-Melosh-Marcus envelope.
-    overpressure5psi: distanceForOverpressure(blastEnergy, OVERPRESSURE_BUILDING_COLLAPSE),
-    overpressure1psi: distanceForOverpressure(blastEnergy, OVERPRESSURE_WINDOW_BREAK),
-    lightDamage: distanceForOverpressure(blastEnergy, OVERPRESSURE_LIGHT_DAMAGE),
+    overpressure5psi: reachOf(blastEnergy, OVERPRESSURE_BUILDING_COLLAPSE),
+    overpressure1psi: reachOf(blastEnergy, OVERPRESSURE_WINDOW_BREAK),
+    lightDamage: reachOf(blastEnergy, OVERPRESSURE_LIGHT_DAMAGE),
   };
+}
+
+/**
+ * The ring of an overpressure threshold, or none when the blast cannot
+ * raise it even a metre away — a body a few centimetres across, or no
+ * energy at the ground at all. {@link distanceForOverpressure} throws
+ * there; until 15 September 2026 so did every impact under about half a
+ * metre (B-030), where the entry's own rings already drew nothing.
+ */
+function reachOf(blastEnergy: Joules, target: Pascals): Meters {
+  const atOneMetre = peakOverpressure({ distance: m(1), yieldEnergy: blastEnergy }) as number;
+  if (!((blastEnergy as number) > 0) || !(atOneMetre >= (target as number))) return m(0);
+  return distanceForOverpressure(blastEnergy, target);
 }
 
 /**
