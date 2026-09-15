@@ -72,9 +72,19 @@
  * and the model then has no burst altitude to give. The angle is read from
  * components the catalogue rounds to a tenth of a kilometre per second, whose
  * length differs from the speed it prints by more than 2 % on eight rows and
- * points upward on five. And the sensors see what
- * they see: the catalogue is not a census, and nothing here corrects for what
- * it missed.
+ * points upward on five. And the sensors see what they see: the catalogue is
+ * not a census, and nothing here corrects for what it missed.
+ *
+ * Run once, on 16 September 2026, after the rules, the set and the run were
+ * committed (1af2286), and said here rather than folded into the rules above:
+ * the model bursts 356 of the 357 bolides in the air, at a median 46.9 km
+ * where the sensors put the peak brightness at 33.3 km — a median absolute
+ * difference of 13.7 km and a mean of +12.8 km, 49 of 356 within 5 km. It
+ * misses the bar of I2 by a wide margin, and the gap is declared. At the
+ * panel's stony class the same bodies burst at 40.6 km, 8.3 km and +6.6 km
+ * from the record; at an iron's they reach the ground 289 times of 357. The
+ * difference hardly moves with the entry angle. What was read afterwards is in
+ * docs/SCIENCE.md, "The entry model against the bolides".
  */
 
 /** One bolide of rule 76's set, as the catalogue gives it. */

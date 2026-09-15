@@ -273,6 +273,21 @@ not that a rule holds.
 | V4, V5 | Not met: Fuego 2018's current 3.7 km against 11.7, Unzen 1991's 0.84 against 3.2; one held-out toll of three inside, 0.21×.                                                                                                                       |
 | C1–C3  | Not met.                                                                                                                                                                                                                                          |
 
+## What has moved since
+
+- **16 September 2026, I2 measured and missed.** Rules 76 to 79 put the entry
+  model to the 357 bolides of NASA JPL's fireball catalogue that carry an
+  altitude of peak brightness, a speed and an energy — the first held-out
+  reading of an impact quantity. It bursts a median 13.7 km above the altitude
+  the sensors measured and 12.8 km above on average, where I2 asks 5 km and 3
+  km. Declared in the validation report.
+- **16 September 2026, E1 and E3 read again.** Rules 66 to 70 adopted an
+  intraslab law for scenarios deeper than 70 km, on ShakeMaps no rule had read;
+  its band holds fewer of rule 61's deep records than the rings it replaced.
+  Rules 71 to 75 then tried the ground-motion residual in its two parts, which
+  narrows the bands by a factor of two and drops nine of rule 11's records, and
+  was not adopted. Neither set can be held out again.
+
 ## What these rules cannot settle
 
 - Outside earthquakes the sets are small: ten explosions or fifteen eruptions

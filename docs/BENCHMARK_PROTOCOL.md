@@ -918,3 +918,17 @@ here, and everything in what `docs/GOLD_STANDARD.md` asks of an impact's entry
 (I2). The body is inferred and not observed, and the altitude of peak
 brightness is not the burst altitude by definition; the rules say so rather
 than correct it.
+
+### Outcome
+
+Run once on 16 September 2026, after the rules, the set and the run were
+committed (`1af2286`). The model bursts 356 of the 357 bolides in the air, at a
+median altitude of 46.9 km where the sensors put the peak brightness at 33.3
+km: a median absolute difference of 13.7 km and a mean of +12.8 km, with 49 of
+356 within 5 km. `docs/GOLD_STANDARD.md` asks 5 km and 3 km of an impact's
+entry (I2), so the bar is missed and the gap is declared in the validation
+report. At the panel's stony class the same bodies burst 8.3 km above the
+record, and at an iron's they reach the ground 289 times of 357; the difference
+hardly moves with the entry angle. Nothing in the model changes: rule 79 lets
+this reading decide nothing, and rule 5 forbids tuning on a set now read.
+`docs/SCIENCE.md` gives the figures in full, with what was read afterwards.

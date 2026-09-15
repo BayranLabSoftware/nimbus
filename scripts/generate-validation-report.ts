@@ -207,6 +207,14 @@ import {
   type GroundMotionResidual,
 } from '../src/physics/uq/groundMotionResidual.js';
 import { earthquakeSampler } from '../src/physics/montecarlo/earthquakeMonteCarlo.js';
+import {
+  FIREBALL_BODIES,
+  FIREBALL_MEAN_ERROR_KM,
+  FIREBALL_MEDIAN_ERROR_KM,
+  type FireballReading,
+} from '../src/physics/validation/fireballRules.js';
+import { runFireball, type FireballRunResult } from '../src/physics/validation/fireballRun.js';
+import { FIREBALL_READ_ON } from '../src/physics/validation/fireballSetData.js';
 import { mulberry32 } from '../src/physics/montecarlo/sampling.js';
 import type { ProspectiveScore } from '../src/physics/validation/prospectiveRules.js';
 import { POINT_SOURCE_READ_ON } from '../src/physics/validation/pointSourceSetData.js';
@@ -2114,6 +2122,89 @@ function residualJson(run: ResidualRunResult) {
   };
 }
 
+const FIREBALL_LABEL: Readonly<Record<string, string>> = {
+  default: 'The body a scenario with no class carries (Collins et al.’s Eq. 9 strength)',
+  stony: 'The panel’s stony class, 1 MPa',
+  iron: 'An iron, 50 MPa at 7 800 kg/m³',
+};
+
+function fireballSection(run: FireballRunResult): string {
+  const km = (x: number | null, digits = 1): string =>
+    x === null ? '—' : `${x.toFixed(digits)} km`;
+  const row = (label: string, r: FireballReading): string =>
+    `| ${label} | ${r.burst.toString()} of ${r.rows.toString()} | ${km(r.medianAbsoluteErrorKm)} | ${r.meanErrorKm === null ? '—' : `${r.meanErrorKm > 0 ? '+' : ''}${r.meanErrorKm.toFixed(1)} km`} | ${r.withinFiveKm.toString()} of ${r.burst.toString()} |`;
+  const first = FIREBALL_BODIES[0];
+  const reading = run.readings[first.key];
+  const verdict =
+    reading === undefined
+      ? ''
+      : run.meetsBar
+        ? `The entry meets the bar docs/GOLD_STANDARD.md sets for it (I2): a median absolute difference of ${FIREBALL_MEDIAN_ERROR_KM.toString()} km or less and a mean within ${FIREBALL_MEAN_ERROR_KM.toString()} km.`
+        : `The entry misses the bar docs/GOLD_STANDARD.md sets for it (I2), ${FIREBALL_MEDIAN_ERROR_KM.toString()} km in the median and ${FIREBALL_MEAN_ERROR_KM.toString()} km in the mean, and the gap is declared below. Nothing in the model moves on this reading (rule 79), and rule 5 forbids tuning on a set now read.`;
+  return [
+    `The entry is Collins et al. 2005's, and it agrees with their own program within its printed rounding — which says the equations are coded right, not that they match the sky. Rules 76 to 79 (\`validation/fireballRules.ts\`), committed before the model was run on any of them, put it to the ${run.events.bolides.toString()} bolides of NASA JPL's fireball catalogue that carry an altitude of peak brightness, a pre-entry speed with its components and an energy (read on ${FIREBALL_READ_ON}): ${run.events.byEnergy.join(', ')} by energy, ${run.events.fast.toString()} of them at 17 km/s or more. Each body is built from what was measured and run as the panel runs it.`,
+    '',
+    '| Body | Burst in the air | Median \\|Δh\\| | Mean Δh | Within 5 km |',
+    '|------|----:|----:|----:|----:|',
+    ...FIREBALL_BODIES.map((body) => {
+      const r = run.readings[body.key];
+      return r === undefined ? '' : row(FIREBALL_LABEL[body.key] ?? body.key, r);
+    }),
+    '',
+    verdict,
+    '',
+    'By energy and by speed, for the body a scenario with no class carries:',
+    '',
+    '| Bolides | Burst in the air | Median \\|Δh\\| | Mean Δh | Within 5 km |',
+    '|---------|----:|----:|----:|----:|',
+    ...(run.cells[first.key] ?? []).map((cell) => row(cell.label, cell.reading)),
+  ].join('\n');
+}
+
+/** The gap rule 79 declares where the entry misses the bar of I2. */
+function fireballGap(run: FireballRunResult): string[] {
+  const first = FIREBALL_BODIES[0];
+  const reading = run.readings[first.key];
+  if (reading === undefined || run.meetsBar) return [];
+  const stony = run.readings.stony;
+  return [
+    `**The entry bursts a body higher than the sky does.** On the ${reading.rows.toString()} bolides of NASA JPL's fireball catalogue that carry an altitude of peak brightness, a speed and an energy — held out until 16 September 2026, when rules 76 to 79 read them — Collins et al. 2005's entry, which the Earth Impact Effects Program reproduces to its rounding, bursts ${reading.burst.toString()} in the air a median ${(reading.medianAbsoluteErrorKm ?? 0).toFixed(1)} km from the altitude the sensors measured, and ${(reading.meanErrorKm ?? 0) > 0 ? 'above' : 'below'} it by ${Math.abs(reading.meanErrorKm ?? 0).toFixed(1)} km on average, with ${reading.withinFiveKm.toString()} within 5 km. ${stony === undefined ? '' : `At the panel's stony class, ten times that strength, the median difference is ${(stony.medianAbsoluteErrorKm ?? 0).toFixed(1)} km. `}The body is inferred from the energy and the speed, so the reading is the model's answer for the body a visitor would type; nothing is tuned on it (docs/SCIENCE.md, "The entry model against the bolides").`,
+  ];
+}
+
+/** Rules 76 to 79 in the report's JSON. */
+function fireballJson(run: FireballRunResult) {
+  const reading = (r: FireballReading) => ({
+    rows: r.rows,
+    burst: r.burst,
+    toTheGround: r.toTheGround,
+    medianAbsoluteErrorKm:
+      r.medianAbsoluteErrorKm === null ? null : fixed(r.medianAbsoluteErrorKm, 2),
+    meanErrorKm: r.meanErrorKm === null ? null : fixed(r.meanErrorKm, 2),
+    withinFiveKm: r.withinFiveKm,
+  });
+  return {
+    readOn: FIREBALL_READ_ON,
+    events: run.events,
+    meetsBar: run.meetsBar,
+    readings: Object.fromEntries(
+      FIREBALL_BODIES.map((body) => {
+        const r = run.readings[body.key];
+        return [body.key, r === undefined ? null : reading(r)];
+      })
+    ),
+    cells: Object.fromEntries(
+      FIREBALL_BODIES.map((body) => [
+        body.key,
+        (run.cells[body.key] ?? []).map((cell) => ({
+          label: cell.label,
+          ...reading(cell.reading),
+        })),
+      ])
+    ),
+  };
+}
+
 /** Rules 61 to 65 in the report's JSON. */
 function allenTollJson(run: AllenTollRun) {
   const g = run.guards;
@@ -3116,6 +3207,7 @@ function main(): void {
   const allenToll = runAllenTollRules();
   const slab = runSlabRules();
   const residual = runResidualRules();
+  const fireball = runFireball();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -3228,6 +3320,10 @@ ${slabSection(slab)}
 
 ${residualSection(residual)}
 
+### The entry model against the bolides that fell
+
+${fireballSection(fireball)}
+
 ### Which checks are validation
 
 ${rolesSection(net)}
@@ -3279,6 +3375,7 @@ ${bullet([
   greatRuptureGap(byRule.earthquakes),
   ringsGap(depth),
   ...deepGap(slab),
+  ...fireballGap(fireball),
   "**Subduction-interface earthquakes are shaken with laws fitted to crustal ones.** The intensity rings of a scenario no deeper than 70 km and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; the two subduction-interface relations implemented were not adopted (rules 35 to 39 and 50 to 55), and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).",
   "**Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).",
   "**Two numbers are not traced to a source read here.** The arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005. A third, the 30 cm at DART 21413 that the Tōhoku wave row was tuned on, was read from the buoy's own file on 15 September 2026: it crests at 0.81 m, and the row is declared (B-034).",
@@ -3526,6 +3623,7 @@ otherwise.
       allenToll: allenTollJson(allenToll),
       slab: slabJson(slab),
       residual: residualJson(residual),
+      fireball: fireballJson(fireball),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,

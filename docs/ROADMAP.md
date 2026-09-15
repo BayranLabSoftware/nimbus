@@ -518,6 +518,15 @@ the candidates for re-tuning:
   the interval score gets worse and nothing changes. Open, and the one thing
   that could keep both: average the within-event part over the people rather
   than over the ground — a town inside a 50 km ring sees nearly one draw of it.
+- **Impacts: the entry bursts higher than the sky does.** Held out until 16
+  September 2026, the 357 bolides of NASA JPL's fireball catalogue that carry
+  an altitude of peak brightness, a speed and an energy say the entry — Collins
+  et al. 2005's, reproduced to the rounding of their own program — bursts a
+  median 13.7 km above the altitude the sensors measured, and 12.8 km above it
+  on average (rules 76 to 79, docs/SCIENCE.md, "The entry model against the
+  bolides"). At the panel's stony class, ten times the strength, 8.3 km. The
+  gap is declared; nothing is tuned on a set now read, and any choice among
+  strengths belongs to a set nobody has read yet.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

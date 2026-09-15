@@ -2034,6 +2034,57 @@ one change that could keep the records and the narrower band together, and it
 was not tried; neither was the shorter range, 8.5 km, which averages more
 still. The prospective set of rules 27 to 30 will read whatever is in place.
 
+### The entry model against the bolides (16 September 2026)
+
+`validation/fireballRules.ts` (rules 76 to 79), `validation/fireballRun.ts`.
+The impact pipeline's atmospheric entry is Collins, Melosh & Marcus 2005's
+equations 8 to 20, and every figure of it agrees with the Earth Impact Effects
+Program — their own program — within the program's printed rounding. That says
+the equations are coded right. It says nothing about the sky. NASA JPL's
+Center for Near-Earth Object Studies publishes what the United States
+Government sensors recorded of every fireball since 1988, and among those
+numbers is the altitude at which each burned brightest: the one quantity the
+entry model predicts and the sensors measure.
+
+The rules, the set and the run were pushed before the model was run on any
+bolide (commit `1af2286`). Rule 76's set is the 357 bolides of 1 072 that carry
+an altitude, a pre-entry speed with its components and an energy, from 1998 to
+2026, less Chelyabinsk 2013, whose preset carries the body Popova et al. 2013
+measured. Rule 77 builds each body from what was measured — mass twice the
+energy over the speed squared, diameter that mass at 3 000 kg/m³, angle from
+the velocity's components at the place — and runs the entry as the panel runs
+a scenario that names no class, which takes Collins et al.'s equation 9 for the
+strength.
+
+| Body                              | Burst in the air | Median \|Δh\| |  Mean Δh | Within 5 km |
+| --------------------------------- | ---------------: | ------------: | -------: | ----------: |
+| No class (Collins et al.'s Eq. 9) |       356 of 357 |       13.7 km | +12.8 km |   49 of 356 |
+| The panel's stony class, 1 MPa    |       355 of 357 |        8.3 km |  +6.6 km |   99 of 355 |
+| An iron, 50 MPa at 7 800 kg/m³    |        68 of 357 |       20.7 km | −20.4 km |     2 of 68 |
+
+The model bursts too high. Its median burst altitude is 46.9 km where the
+sensors put the peak brightness at 33.3 km, and 329 of the 356 bursts are above
+the record rather than below it. `docs/GOLD_STANDARD.md` asks a median absolute
+difference of 5 km and a mean within 3 km of an impact's entry (I2): the
+reading misses both by a factor of three or more, and the gap is now declared
+in the validation report. Nothing in the model moves — rule 79 lets this
+reading decide nothing, and rule 5 forbids tuning on a set that has now been
+read.
+
+What the scores do not show was read afterwards, and is written here as such.
+The bodies are small: a median diameter of 1.6 m and none above 11 m, since a
+catalogue of fireballs is a catalogue of metre-scale stones. The difference
+hardly moves with the entry angle — a median of 13.8 km below 20° from the
+horizontal, 15.3 km from 20 to 45, 12.2 km from 45 to 70 and 11.9 km above it —
+so it is not the geometry. It moves with the strength: at the panel's stony
+class, ten times the strength Collins et al.'s equation 9 gives that density,
+the median difference falls from 13.7 to 8.3 km, and at an iron's the same
+bodies survive to the ground 289 times, which the record says they did not. A
+strength chosen to fit these altitudes would fit them; rule 5 forbids it, and
+any choice among strengths belongs to a set nobody has read yet. What the
+reading does settle is that the entry a visitor gets, for the body a visitor
+types, bursts about 13 km higher than the sky does.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records

@@ -896,6 +896,18 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Measured
 
+- **The impact entry, against 357 bolides the sensors measured.** The entry
+  agrees with the Earth Impact Effects Program, its authors' own program, to
+  the program's rounding — which says the equations are coded right, not that
+  they match the sky. Rules written before the model was run on any of them
+  (`validation/fireballRules.ts`) put it to every bolide of NASA JPL's
+  fireball catalogue that carries an altitude of peak brightness, a pre-entry
+  speed with its components and an energy. The model bursts them a median
+  13.7 km above the altitude the sensors measured, and 12.8 km above on
+  average; at the panel's stony class 8.3 km. The bar the gold standard sets
+  for an impact's entry is 5 km and 3 km, so the validation report now
+  declares the gap. Nothing is tuned on the set.
+
 - **The ground-motion residual, drawn in the two parts its model gives it,
   does not pay for itself yet.** A realisation draws one residual for the
   whole footprint, σ 0.60, which counts all of the within-event scatter as
