@@ -115,6 +115,19 @@ import { displacesLawInPlace, type ProspectiveScore } from './prospectiveRules.j
  * compared with the law in place, so one may pass the margin by chance; the
  * guard and the dead are the only other stops, and the dead's sets have been
  * read.
+ *
+ * Run once, on 15 September 2026, after the rules, the set and the run were
+ * committed (9a58165), and said here rather than folded into the rules above:
+ * on rule 56's 1 101 maps Boore et al. 2014 scored 0.056. It draws MMI VII
+ * about every one of them, where 237 reach it, so its skill in that band is
+ * nil. Allen et al. 2012's hypocentral equation below Mw 7.5 scored 0.418,
+ * with a sharpness of 0.51 against 0.53, and 0.33 against 0.05 on the least
+ * modelled maps; it won. On rule 11's held-out tolls it read 1.05×, 0.67× and
+ * 1.94× against 1.46×, 0.33× and 1.94×, and raised 1.4 % of rule 23's 805
+ * quiet earthquakes to a toll of ten against 2.9 %, but its band held 81 of
+ * 113 records below Mw 6.5, fewer than eight in ten. By rule 59 it is not
+ * adopted, and Boore et al. 2014 keeps drawing the rings. What was read
+ * afterwards is in docs/SCIENCE.md, "The rings when a silence counts".
  */
 
 /** Rule 56: the earthquakes of its window already read, taken out. */

@@ -707,3 +707,16 @@ is printed beside. The maps of these years are mostly the models ShakeMap ran,
 the candidates were fitted on data that include some of these earthquakes, and
 six candidates can produce a chance winner; the rules say so rather than
 correct it.
+
+### Outcome
+
+Run once on 15 September 2026, after the rules, the set and the run were
+committed (`9a58165`). Boore et al. 2014 scored 0.056: it draws MMI VII about
+every one of the 1 101 earthquakes, where 237 maps reach it, so its skill in
+that band is nil. Allen et al. 2012's hypocentral equation below Mw 7.5 scored
+0.418, sharper and ahead on the least modelled maps, and won. On rule 11's
+held-out tolls it read the dead nearer their records in every cell and raised
+fewer quiet earthquakes to a toll of ten, but its band held 81 of 113 records
+below Mw 6.5, fewer than eight in ten, so by rule 59 it is not adopted. Most of
+those misses are bands of [0, 0] about earthquakes that killed. `docs/SCIENCE.md`
+gives the figures in full, with what was read afterwards.

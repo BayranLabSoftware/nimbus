@@ -469,9 +469,20 @@ the candidates for re-tuning:
   on maps that mostly hold no strong shaking, though they came nearer where a
   map reaches MMI VIII, and Parker et al. 2022 at that distance again held too
   few of rule 11's records; nothing changes. Still open: a stadium's rupture
-  distance stands on the hypocentre's depth, and the ring score gives no
-  credit for a band rightly left blank, which the prospective set's does. Both
-  interface models, at either distance, are among its candidates.
+  distance stands on the hypocentre's depth. Both interface models, at either
+  distance, are among the prospective set's candidates.
+- **Rings that are always there.** Scored with the prospective set's skill
+  score, which credits a band rightly left blank, on the 1 101 ShakeMaps of
+  1973 to 1999 no rule had read (rules 56 to 60, docs/SCIENCE.md, "The rings
+  when a silence counts"), Boore et al. 2014 has no skill at MMI VII: it draws
+  the band about every earthquake of Mw 6 or more, in that set and in every set
+  read before. Allen et al. 2012's hypocentral equation below Mw 7.5 won the
+  maps (0.42 against 0.06) and read rule 11's dead nearer their records, but
+  was not adopted: silent where the maps are silent, it also draws bands of
+  [0, 0] about moderate earthquakes that killed, and its band held too few
+  records below Mw 6.5. Open: a law that is silent where it should be and
+  still counts the dead it does not ring; the prospective set reads every
+  candidate again.
 - **Explosions.** Burn thresholds are fixed where the book makes them grow
   with yield; the initial-radiation fit has not been checked against the
   book's dose–range curves; the thermal partition between the ground and

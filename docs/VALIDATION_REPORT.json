@@ -1985,6 +1985,225 @@
         }
       }
     },
+    "atlas": {
+      "readOn": "2026-09-15",
+      "events": {
+        "earthquakes": 1101,
+        "leastModelled": 138,
+        "quiet": 691,
+        "byCell": [
+          617,
+          419,
+          65
+        ]
+      },
+      "scores": {
+        "boore2014": {
+          "score": 0.056,
+          "sharpness": 0.526,
+          "bands": [
+            {
+              "band": 7,
+              "hits": 237,
+              "misses": 0,
+              "falseAlarms": 864,
+              "silences": 0
+            },
+            {
+              "band": 8,
+              "hits": 66,
+              "misses": 8,
+              "falseAlarms": 801,
+              "silences": 226
+            }
+          ],
+          "leastModelled": 0.05
+        },
+        "joynerBoore1981": {
+          "score": 0.011,
+          "sharpness": 0.516,
+          "bands": [
+            {
+              "band": 7,
+              "hits": 237,
+              "misses": 0,
+              "falseAlarms": 864,
+              "silences": 0
+            },
+            {
+              "band": 8,
+              "hits": 72,
+              "misses": 2,
+              "falseAlarms": 976,
+              "silences": 51
+            }
+          ],
+          "leastModelled": 0.017
+        },
+        "boore2014FromMw7.5": {
+          "score": 0.011,
+          "sharpness": 0.518,
+          "bands": [
+            {
+              "band": 7,
+              "hits": 237,
+              "misses": 0,
+              "falseAlarms": 864,
+              "silences": 0
+            },
+            {
+              "band": 8,
+              "hits": 72,
+              "misses": 2,
+              "falseAlarms": 976,
+              "silences": 51
+            }
+          ],
+          "leastModelled": 0.017
+        },
+        "allen2012Hypocentral": {
+          "score": 0.387,
+          "sharpness": 0.538,
+          "bands": [
+            {
+              "band": 7,
+              "hits": 210,
+              "misses": 27,
+              "falseAlarms": 295,
+              "silences": 569
+            },
+            {
+              "band": 8,
+              "hits": 20,
+              "misses": 54,
+              "falseAlarms": 41,
+              "silences": 986
+            }
+          ],
+          "leastModelled": 0.3
+        },
+        "allen2012HypocentralBelowMw7.5": {
+          "score": 0.418,
+          "sharpness": 0.509,
+          "bands": [
+            {
+              "band": 7,
+              "hits": 210,
+              "misses": 27,
+              "falseAlarms": 295,
+              "silences": 569
+            },
+            {
+              "band": 8,
+              "hits": 27,
+              "misses": 47,
+              "falseAlarms": 76,
+              "silences": 951
+            }
+          ],
+          "leastModelled": 0.329
+        },
+        "boore2014Pgv": {
+          "score": 0.139,
+          "sharpness": 0.549,
+          "bands": [
+            {
+              "band": 7,
+              "hits": 235,
+              "misses": 2,
+              "falseAlarms": 863,
+              "silences": 1
+            },
+            {
+              "band": 8,
+              "hits": 52,
+              "misses": 22,
+              "falseAlarms": 428,
+              "silences": 599
+            }
+          ],
+          "leastModelled": 0.123
+        },
+        "boore2014ThompsonWorden2018": {
+          "score": 0.015,
+          "sharpness": 0.535,
+          "bands": [
+            {
+              "band": 7,
+              "hits": 237,
+              "misses": 0,
+              "falseAlarms": 864,
+              "silences": 0
+            },
+            {
+              "band": 8,
+              "hits": 68,
+              "misses": 6,
+              "falseAlarms": 912,
+              "silences": 115
+            }
+          ],
+          "leastModelled": 0.006
+        }
+      },
+      "choice": {
+        "winner": "allen2012HypocentralBelowMw7.5",
+        "displacing": [
+          "allen2012Hypocentral",
+          "allen2012HypocentralBelowMw7.5"
+        ],
+        "guarded": [
+          "allen2012Hypocentral",
+          "allen2012HypocentralBelowMw7.5"
+        ]
+      },
+      "dead": {
+        "winner": "allen2012HypocentralBelowMw7.5",
+        "decision": {
+          "adopted": false,
+          "tolls": false,
+          "quiet": true
+        },
+        "tollLogBias": {
+          "inPlace": 0.715,
+          "winner": 0.372
+        },
+        "inside": {
+          "inPlace": [
+            [
+              122,
+              132
+            ],
+            [
+              106,
+              112
+            ],
+            [
+              32,
+              35
+            ]
+          ],
+          "winner": [
+            [
+              81,
+              113
+            ],
+            [
+              128,
+              139
+            ],
+            [
+              33,
+              36
+            ]
+          ]
+        },
+        "quietShare": {
+          "inPlace": 0.0286,
+          "winner": 0.0137
+        }
+      }
+    },
     "interfaceRules": {
       "readOn": "2026-09-15",
       "events": {

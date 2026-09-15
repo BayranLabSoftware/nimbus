@@ -913,6 +913,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   the record. Where a map does reach MMI VIII, the candidate's rings came
   nearer to it.
 
+- **The rings when a silence counts.** The score that chose the rings gives
+  nothing to a band rightly left blank. Rules written before any candidate
+  was scored (`validation/atlasRules.ts`) read instead the prospective set's
+  skill score, which counts hits, misses, false alarms and silences, on the
+  1 101 ShakeMaps of 1973 to 1999 that no rule had read. Boore et al. 2014,
+  which draws the rings, scored 0.06: it paints MMI VII about every
+  earthquake of Mw 6 or more. Allen et al. 2012's hypocentral equation below
+  Mw 7.5 scored 0.42 and read the held-out dead nearer their records, but its
+  band held too few of them below Mw 6.5, most of the misses earthquakes that
+  killed where it draws no ring, so the rings are unchanged.
+
 - **Where a body breaks up, the paper against its program.** The Earth
   Impact Effects Program breaks small strong bodies up to 3 % lower than
   Nimbus, and bursts them up to 5 % lower (BM-13). Every altitude it

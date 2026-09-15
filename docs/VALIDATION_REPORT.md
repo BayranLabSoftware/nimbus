@@ -1153,6 +1153,39 @@ and the net's rings below Mw 7.5 under both distances (km):
 | Pohang 2017 (Mw 5.5) | 8.3 → 10.9 | 2.1 → 4.2 | 0.0 → 0.0 |
 | Durrës (Albania) 2019 (Mw 6.4) | 14.3 → 20.8 | 4.5 → 9.6 | 0.0 → 0.0 |
 
+### The rings when a silence counts
+
+Rule 18's score gives nothing to a band rightly left blank. Rules 56 to 60 (`validation/atlasRules.ts`), committed before any
+candidate was scored, read rule 28's score instead — hits, misses, false alarms and silences at MMI VII and VIII, and
+the Peirce skill score — on ComCat’s ShakeMaps of M 6 or more, 1973 to 1999, no deeper than 40 km (read on 2026-09-15): 1101 maps, 138 of them drawn on a finite rupture or with ten stations or more, on the browser's ground.
+A candidate must displace Boore et al. 2014 by 0.10 of score within 0.10 of sharpness and lose nothing on the least modelled maps.
+
+| Law | MMI VII: hits · misses · false alarms · silences | Skill | MMI VIII: hits · misses · false alarms · silences | Skill | Score | Sharpness | Least modelled |
+|-----|-----|----:|-----|----:|----:|----:|----:|
+| Boore et al. 2014 (in place) | 237 · 0 · 864 · 0 | 0.00 | 66 · 8 · 801 · 226 | 0.11 | 0.06 | 0.53 | 0.05 |
+| Joyner & Boore 1981 | 237 · 0 · 864 · 0 | 0.00 | 72 · 2 · 976 · 51 | 0.02 | 0.01 | 0.52 | 0.02 |
+| Joyner & Boore below Mw 7.5, Boore et al. from it | 237 · 0 · 864 · 0 | 0.00 | 72 · 2 · 976 · 51 | 0.02 | 0.01 | 0.52 | 0.02 |
+| Allen, Wald & Worden 2012, hypocentral (displaces) | 210 · 27 · 295 · 569 | 0.54 | 20 · 54 · 41 · 986 | 0.23 | 0.39 | 0.54 | 0.30 |
+| Allen et al. below Mw 7.5, Boore et al. from it (winner) | 210 · 27 · 295 · 569 | 0.54 | 27 · 47 · 76 · 951 | 0.29 | 0.42 | 0.51 | 0.33 |
+| Boore et al. 2014 on PGV | 235 · 2 · 863 · 1 | -0.01 | 52 · 22 · 428 · 599 | 0.29 | 0.14 | 0.55 | 0.12 |
+| Boore et al. 2014 at Thompson & Worden’s distance | 237 · 0 · 864 · 0 | 0.00 | 68 · 6 · 912 · 115 | 0.03 | 0.02 | 0.54 | 0.01 |
+
+| Law | Rule 11's held-out tolls: Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Rule 23's quiet earthquakes raised to ten |
+|-----|-----|-----|-----|----:|----:|
+| Boore et al. 2014 | 1.46× · 122 of 132 | 0.33× · 106 of 112 | 1.94× · 32 of 35 | 0.72 | 2.9 % of 805 |
+| Allen et al. below Mw 7.5, Boore et al. from it | 1.05× · 81 of 113 | 0.67× · 128 of 139 | 1.94× · 33 of 36 | 0.37 | 1.4 % of 805 |
+
+By rule 59 Boore et al. 2014 keeps drawing the rings: Allen et al. below Mw 7.5, Boore et al. from it fails rule 19's test on rule 11's held-out tolls.
+
+Printed beside, deciding nothing (rule 60): the same score on rock and on the maps already read.
+
+| Maps | Boore et al. 2014 (in place) | Joyner & Boore 1981 | Joyner & Boore below Mw 7.5, Boore et al. from it | Allen, Wald & Worden 2012, hypocentral | Allen et al. below Mw 7.5, Boore et al. from it | Boore et al. 2014 on PGV | Boore et al. 2014 at Thompson & Worden’s distance |
+|------|----:|----:|----:|----:|----:|----:|----:|
+| Rule 56’s maps, on rock | 0.18 | 0.07 | 0.07 | 0.39 | 0.42 | 0.14 | 0.12 |
+| Rule 11’s maps | 0.08 | 0.02 | 0.02 | 0.30 | 0.34 | 0.14 | 0.03 |
+| Rule 23’s maps | 0.12 | 0.02 | 0.02 | 0.30 | 0.30 | 0.20 | 0.05 |
+| Rule 50’s maps | 0.06 | 0.02 | 0.02 | 0.39 | 0.39 | 0.17 | 0.05 |
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the

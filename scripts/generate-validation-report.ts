@@ -179,6 +179,10 @@ import {
   POINT_SOURCE_READINGS,
 } from '../src/physics/validation/pointSourceRules.js';
 import { runPointSource, type PointSourceRun } from '../src/physics/validation/pointSourceRun.js';
+import { ATLAS_CANDIDATES } from '../src/physics/validation/atlasRules.js';
+import { runAtlas, type AtlasRun } from '../src/physics/validation/atlasRun.js';
+import { ATLAS_READ_ON } from '../src/physics/validation/atlasSetData.js';
+import type { ProspectiveScore } from '../src/physics/validation/prospectiveRules.js';
 import { POINT_SOURCE_READ_ON } from '../src/physics/validation/pointSourceSetData.js';
 import { shippedCountryAt } from '../src/physics/validation/shippedPopulation.js';
 import { casualtyPlanForResult, configureCountryLookup } from '../src/store/useAppStore.js';
@@ -1603,6 +1607,157 @@ function pointSourceSection(run: PointSourceRun): string {
   ].join('\n');
 }
 
+function runAtlasRules(): AtlasRun {
+  const run = runAtlas();
+  // A scenario that names no law must draw what rules 58 and 59 left in
+  // place: Boore et al. 2014 on PGA at the epicentral distance.
+  const disc = { magnitude: 6.8, depth: m(15_000), faultType: 'reverse' } as const;
+  const plain = simulateEarthquake(disc).shaking;
+  const named = simulateEarthquake({
+    ...disc,
+    contourLaw: 'boore2014',
+    intensityMeasure: 'pga',
+    pointSourceDistance: 'epicentral',
+  }).shaking;
+  if (plain.mmi7Radius !== named.mmi7Radius || plain.mmi8Radius !== named.mmi8Radius) {
+    throw new Error('A scenario naming no law no longer draws Boore et al. 2014 on PGA');
+  }
+  if (run.dead?.decision.adopted === true) {
+    throw new Error(
+      `Rule 59 adopts ${run.dead.winner}; the simulator still draws Boore et al. 2014`
+    );
+  }
+  return run;
+}
+
+const ATLAS_LABEL: Readonly<Record<string, string>> = {
+  boore2014: 'Boore et al. 2014 (in place)',
+  joynerBoore1981: 'Joyner & Boore 1981',
+  'boore2014FromMw7.5': 'Joyner & Boore below Mw 7.5, Boore et al. from it',
+  allen2012Hypocentral: 'Allen, Wald & Worden 2012, hypocentral',
+  'allen2012HypocentralBelowMw7.5': 'Allen et al. below Mw 7.5, Boore et al. from it',
+  boore2014Pgv: 'Boore et al. 2014 on PGV',
+  boore2014ThompsonWorden2018: 'Boore et al. 2014 at Thompson & Worden’s distance',
+};
+
+function atlasSection(run: AtlasRun): string {
+  const skill = (v: number | null): string => (v === null ? '—' : v.toFixed(2));
+  const bandCells = (s: ProspectiveScore): string =>
+    s.bands
+      .map(
+        (b) =>
+          `${b.outcome.hits.toString()} · ${b.outcome.misses.toString()} · ${b.outcome.falseAlarms.toString()} · ${b.outcome.silences.toString()} | ${skill(b.skill)}${b.scored ? '' : ' (not scored)'}`
+      )
+      .join(' | ');
+  const rows = ATLAS_CANDIDATES.map((c) => {
+    const s = run.scores[c.key];
+    if (s === undefined) return '';
+    const mark =
+      c.key === run.choice.winner
+        ? ' (winner)'
+        : run.choice.displacing.includes(c.key)
+          ? ' (displaces)'
+          : '';
+    return `| ${ATLAS_LABEL[c.key] ?? c.key}${mark} | ${bandCells(s.all)} | ${skill(s.all.score)} | ${skill(s.all.sharpness)} | ${skill(s.leastModelled.score)} |`;
+  });
+  const dead = run.dead;
+  const verdict =
+    run.choice.winner === null
+      ? 'No candidate displaces Boore et al. 2014 by 0.10 of score within 0.10 of sharpness while losing nothing on the least modelled maps, so by rule 58 the law in place stays and nothing runs on the dead.'
+      : dead?.decision.adopted === true
+        ? `By rules 58 and 59 ${ATLAS_LABEL[dead.winner] ?? dead.winner} draws the rings.`
+        : `By rule 59 Boore et al. 2014 keeps drawing the rings: ${[
+            dead?.decision.tolls === true
+              ? null
+              : `${ATLAS_LABEL[run.choice.winner] ?? run.choice.winner} fails rule 19's test on rule 11's held-out tolls`,
+            dead?.decision.quiet === true
+              ? null
+              : "it raises more of rule 23's quiet earthquakes to a toll of ten",
+          ]
+            .filter((x): x is string => x !== null)
+            .join(', and ')}.`;
+  const bands = SIZE_BANDS.earthquake.map((b) => b.label);
+  const beside = (['rock', 'rule11', 'rule23', 'rule50'] as const).map(
+    (k) =>
+      `| ${{ rock: 'Rule 56’s maps, on rock', rule11: 'Rule 11’s maps', rule23: 'Rule 23’s maps', rule50: 'Rule 50’s maps' }[k]} | ${ATLAS_CANDIDATES.map((c) => skill(run.beside[k][c.key]?.score ?? null)).join(' | ')} |`
+  );
+  return [
+    "Rule 18's score gives nothing to a band rightly left blank. Rules 56 to 60 (`validation/atlasRules.ts`), committed before any",
+    "candidate was scored, read rule 28's score instead — hits, misses, false alarms and silences at MMI VII and VIII, and",
+    `the Peirce skill score — on ComCat’s ShakeMaps of M 6 or more, 1973 to 1999, no deeper than 40 km (read on ${ATLAS_READ_ON}): ${run.events.earthquakes.toString()} maps, ${run.events.leastModelled.toString()} of them drawn on a finite rupture or with ten stations or more, on the browser's ground.`,
+    'A candidate must displace Boore et al. 2014 by 0.10 of score within 0.10 of sharpness and lose nothing on the least modelled maps.',
+    '',
+    '| Law | MMI VII: hits · misses · false alarms · silences | Skill | MMI VIII: hits · misses · false alarms · silences | Skill | Score | Sharpness | Least modelled |',
+    '|-----|-----|----:|-----|----:|----:|----:|----:|',
+    ...rows,
+    '',
+    ...(dead === null
+      ? [verdict]
+      : [
+          `| Law | Rule 11's held-out tolls: ${bands.join(' | ')} | Mean abs. log bias | Rule 23's quiet earthquakes raised to ten |`,
+          `|-----|${bands.map(() => '-----').join('|')}|----:|----:|`,
+          ...(['inPlace', 'winner'] as const).map(
+            (side) =>
+              `| ${side === 'inPlace' ? 'Boore et al. 2014' : (ATLAS_LABEL[dead.winner] ?? dead.winner)} | ${dead.tolls[side].map((t) => `${biasText(t.stats)} · ${t.stats.inside.toString()} of ${t.stats.rows.toString()}`).join(' | ')} | ${tollLogBias(dead.tolls[side]).toFixed(2)} | ${(100 * dead.quiet[side].share).toFixed(1)} % of ${dead.quiet[side].quiet.toString()} |`
+          ),
+          '',
+          verdict,
+        ]),
+    '',
+    'Printed beside, deciding nothing (rule 60): the same score on rock and on the maps already read.',
+    '',
+    `| Maps | ${ATLAS_CANDIDATES.map((c) => ATLAS_LABEL[c.key] ?? c.key).join(' | ')} |`,
+    `|------|${ATLAS_CANDIDATES.map(() => '----:').join('|')}|`,
+    ...beside,
+  ].join('\n');
+}
+
+/** Rules 56 to 60 in the report's JSON. */
+function atlasJson(run: AtlasRun) {
+  const dead = run.dead;
+  return {
+    readOn: ATLAS_READ_ON,
+    events: run.events,
+    scores: Object.fromEntries(
+      ATLAS_CANDIDATES.map((c) => {
+        const s = run.scores[c.key];
+        return [
+          c.key,
+          s === undefined
+            ? null
+            : {
+                score: s.all.score === null ? null : fixed(s.all.score, 3),
+                sharpness: s.all.sharpness === null ? null : fixed(s.all.sharpness, 3),
+                bands: s.all.bands.map((b) => ({ band: b.band, ...b.outcome })),
+                leastModelled:
+                  s.leastModelled.score === null ? null : fixed(s.leastModelled.score, 3),
+              },
+        ];
+      })
+    ),
+    choice: run.choice,
+    dead:
+      dead === null
+        ? null
+        : {
+            winner: dead.winner,
+            decision: dead.decision,
+            tollLogBias: {
+              inPlace: fixed(tollLogBias(dead.tolls.inPlace), 3),
+              winner: fixed(tollLogBias(dead.tolls.winner), 3),
+            },
+            inside: {
+              inPlace: dead.tolls.inPlace.map((t) => [t.stats.inside, t.stats.rows]),
+              winner: dead.tolls.winner.map((t) => [t.stats.inside, t.stats.rows]),
+            },
+            quietShare: {
+              inPlace: fixed(dead.quiet.inPlace.share, 4),
+              winner: fixed(dead.quiet.winner.share, 4),
+            },
+          },
+  };
+}
+
 /** Rules 50 to 55 in the report's JSON. */
 function pointSourceJson(run: PointSourceRun) {
   const side = (d: (typeof POINT_SOURCE_CANDIDATES)[number]) =>
@@ -2500,6 +2655,7 @@ function main(): void {
   const interfaceStadium = runStadium();
   const lowIntensity = runLow();
   const pointSource = runPointSourceRules();
+  const atlas = runAtlasRules();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -2595,6 +2751,10 @@ ${lowIntensitySection(lowIntensity)}
 ### A disc's distance to its rupture
 
 ${pointSourceSection(pointSource)}
+
+### The rings when a silence counts
+
+${atlasSection(atlas)}
 
 ### Which checks are validation
 
@@ -2889,6 +3049,7 @@ otherwise.
               },
       },
       pointSource: pointSourceJson(pointSource),
+      atlas: atlasJson(atlas),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,

@@ -1759,6 +1759,77 @@ credits a correct silence. Boore et al. 2014 and the interface models at the
 candidate's distance were committed before that set is first read, so by rule
 29 they are among its candidates.
 
+### The rings when a silence counts (15 September 2026)
+
+`validation/atlasRules.ts` (rules 56 to 60), `validation/atlasRun.ts`. Rule
+18's score takes half the log of the ratio of the ground a law shakes to the
+ground a ShakeMap shakes, and gives nothing to a law that draws no band where
+the map holds none. That decided rule 24's run against Allen et al.'s
+hypocentral equation and rule 52's against the distance to the rupture. Rule
+28 wrote a score that counts silences for the prospective set: at MMI VII and
+VIII, hits, misses, false alarms and silences, a side reaching a band with 10
+km², and the Peirce skill score — the share of the bands a map reaches that
+the law reaches, less the share of the bands a map leaves blank that the law
+paints. These rules read it now, on maps no rule had read.
+
+The rules, the set and the run were pushed before any candidate was scored
+(commit `9a58165`). Rule 56's set is every ComCat earthquake of Mw 6 or more,
+1973 to 1999, no deeper than 40 km, with a ShakeMap: 1 140, less Northridge
+1994 and Aitape 1998, which the project had read, and 37 without MMI coverage.
+That leaves 1 101 maps of the ShakeMap Atlas, 138 of them drawn on a finite
+rupture or with ten stations or more. Every way of drawing the rings
+committed before the rules stood against Boore et al. 2014, on the browser's
+ground. A winner had to displace it as rule 29 says, by 0.10 of score and
+within 0.10 of sharpness (the median absolute log radius ratio where both
+reach MMI VII), and lose nothing on the least modelled maps. It then had to
+pass rule 38's test on rule 11's tolls and rule 23's quiet earthquakes, since
+the set's own deaths are among those the country curves were fitted on.
+
+| Law                                             | MMI VII: hits · misses · false alarms · silences | Skill | MMI VIII: hits · misses · false alarms · silences | Skill | Score | Sharpness | Least modelled |
+| ----------------------------------------------- | ------------------------------------------------ | ----: | ------------------------------------------------- | ----: | ----: | --------: | -------------: |
+| Boore et al. 2014 (in place)                    | 237 · 0 · 864 · 0                                |  0.00 | 66 · 8 · 801 · 226                                |  0.11 |  0.06 |      0.53 |           0.05 |
+| Joyner & Boore 1981                             | 237 · 0 · 864 · 0                                |  0.00 | 72 · 2 · 976 · 51                                 |  0.02 |  0.01 |      0.52 |           0.02 |
+| JB81 below Mw 7.5, Boore et al. from it         | 237 · 0 · 864 · 0                                |  0.00 | 72 · 2 · 976 · 51                                 |  0.02 |  0.01 |      0.52 |           0.02 |
+| Allen et al. 2012, hypocentral                  | 210 · 27 · 295 · 569                             |  0.54 | 20 · 54 · 41 · 986                                |  0.23 |  0.39 |      0.54 |           0.30 |
+| Allen et al. below Mw 7.5, Boore et al. from it | 210 · 27 · 295 · 569                             |  0.54 | 27 · 47 · 76 · 951                                |  0.29 |  0.42 |      0.51 |           0.33 |
+| Boore et al. 2014 on PGV                        | 235 · 2 · 863 · 1                                | −0.01 | 52 · 22 · 428 · 599                               |  0.29 |  0.14 |      0.55 |           0.12 |
+| Boore et al. at the rupture distance            | 237 · 0 · 864 · 0                                |  0.00 | 68 · 6 · 912 · 115                                |  0.03 |  0.02 |      0.54 |           0.01 |
+
+Both hypocentral equations displace the law in place, and pass the guard;
+Allen et al. 2012 below Mw 7.5, with the higher score, won. On rule 11's
+held-out tolls, on the browser's ground:
+
+| Law                       | By cell, with the records each band holds                | Mean abs. log | Quiet earthquakes raised to ten |
+| ------------------------- | -------------------------------------------------------- | ------------: | ------------------------------: |
+| Boore et al. 2014         | 1.46× · 0.33× · 1.94× (122 of 132, 106 of 112, 32 of 35) |          0.72 |                    2.9 % of 805 |
+| Allen et al. below Mw 7.5 | 1.05× · 0.67× · 1.94× (81 of 113, 128 of 139, 33 of 36)  |          0.37 |                    1.4 % of 805 |
+
+The winner reads the dead nearer their records in every cell and raises fewer
+quiet earthquakes to a toll of ten. Below Mw 6.5, though, its band holds 81 of
+113 records, fewer than eight in ten. By rule 59 it is not adopted, and Boore
+et al. 2014 keeps drawing the rings.
+
+Printed beside, deciding nothing (rule 60). On reference rock the law in place
+scores 0.18, its MMI VIII skill rising to 0.37, and Allen et al. below Mw 7.5
+scores 0.42. On the maps already read the order is the same. Boore et al. 2014
+scores 0.08 on rule 11's, 0.12 on rule 23's and 0.06 on rule 50's; Allen et al.
+below Mw 7.5 scores 0.34, 0.30 and 0.39; the law on PGV 0.14, 0.20 and 0.17.
+
+What the scores do not show was read afterwards, and is written here as such.
+Boore et al. 2014 draws MMI VII about every earthquake of Mw 6 or more in all
+four sets, with no silence in any of them, so rule 18's score, which reads
+sizes, has been reading rings that are always there. Allen et al.'s misses on
+the dead below Mw 6.5 are mostly the other side of its silences. Twenty-six of
+its 32 misses are bands of [0, 0] about earthquakes that killed, 408 dead in
+all — Tainan 2016 (117), Mamuju 2021 (105), Durrës 2019 (51) — against three
+such misses, of 11 dead, for Boore et al. 2014. The toll counts deaths inside
+the MMI VII ring only, so a law that is silent where a map is silent is silent
+about some earthquakes that killed; the equation also reads no ground.
+Counting the dead below MMI VII did not help the toll in place on the moderate
+set (rules 45 to 49); whether it would help this law was not run. The
+prospective set (rules 27 to 30) will read every candidate again on
+earthquakes not yet happened.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records
