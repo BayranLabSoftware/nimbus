@@ -355,6 +355,14 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   misses, 0.7 kPa in the city against about 3 kPa. The project had quoted
   Popova et al.'s modelled damage as reaching 108 km; they give 120 km.
 
+- **A planetary circle counts everyone inside it.** The people inside a
+  circle thousands of kilometres across were counted in a window of
+  longitudes that was too narrow toward the poles and never took in every
+  longitude when the circle held one: 7 000 km about New York left out 183
+  million people, a circle of the same size about Delhi or Beijing 2 to 3 %.
+  The window is now the exact one on the sphere, and four circles, two of
+  them over a pole, match a count over every cell of the planet (B-026).
+
 - **The Tōhoku buoy says what it recorded, and the megathrust wave is
   measured on nine earthquakes instead.** The one far-field check of the
   megathrust wave was DART 21413 for Tōhoku 2011 at "about 30 cm", credited

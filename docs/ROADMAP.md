@@ -1053,14 +1053,15 @@ great circles; the tsunami's travel times run on a grid that narrows with the
 meridians. The Earth is a sphere of 6 371 km rather than the ellipsoid, which
 is half a per cent at most. What is still flat, in the order to mend it:
 
-- **The count of people in a planetary circle (B-026, to fix).** The
-  longitude window of the cap is ρ / cos φ₀, which is too narrow toward the
-  poles and never opens to every longitude when the cap holds a pole.
-  Measured against an exact count on the sphere, the error is under 0.15 % to
-  4 000 km, and a 7 000 km circle about New York leaves out 183 million people
-  (−12.9 %); 7 000 km about Delhi or Beijing and 9 000 km about Cairo lose 2 to
-  3 %. The exact window is Δλ = asin(sin ρ / cos φ₀), and every longitude when
-  the cap passes a pole.
+- **The count of people in a planetary circle (B-026, fixed 15 September
+  2026).** The longitude window of the cap was ρ / cos φ₀, too narrow toward
+  the poles and never every longitude when the cap held a pole: a 7 000 km
+  circle about New York left out 183 million people (−12.9 %), 7 000 km
+  about Delhi or Beijing and 9 000 km about Cairo 2 to 3 %. The window is now
+  Δλ = asin(sin ρ / cos φ₀), every longitude over a pole, and each cell is
+  judged by its own width rather than the width at the circle's centre; the
+  harness picks the fine tiles as the browser does. Four caps, two over a
+  pole, now match a count over every cell of the planet to a millionth.
 - **A far wave spreads on a plane.** `tsunami/spreading.ts` spreads the crest
   over a ring of 2πr where the sphere has 2πR·sin(r/R): half a per cent at
   1 500 km, a quarter too small at 10 000 km, and no focusing toward the

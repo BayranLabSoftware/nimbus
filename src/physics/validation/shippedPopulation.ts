@@ -101,25 +101,27 @@ function tileNameFor(index: FineIndex, latitude: number, longitude: number): str
   return `${col.toString()}_${row.toString()}`;
 }
 
-/** Every tile a circle of `radiusM` around the point can touch. */
+/** Every tile a circle of `radiusM` around the point can touch, chosen
+ *  as the browser chooses them (populationLookup.ts, sumFineRaster). */
 function tilesAround(
   index: FineIndex,
   latitude: number,
   longitude: number,
   radiusM: number
 ): string[] {
-  const dLat = ((radiusM / 6_371_000) * 180) / Math.PI;
-  const dLon = dLat / Math.max(Math.cos((latitude * Math.PI) / 180), 1e-6);
-  const names = new Set<string>();
-  for (const lat of [latitude - dLat, latitude, latitude + dLat]) {
-    for (const lon of [longitude - dLon, longitude, longitude + dLon]) {
-      names.add(tileNameFor(index, Math.max(-89.9, Math.min(89.9, lat)), lon));
-    }
-  }
-  return [...names].filter((n) => index.tiles.includes(n));
+  const { circleBoundingBox, tilesForBbox } = _internals;
+  return tilesForBbox(index, circleBoundingBox(latitude, longitude, radiusM));
 }
 
 const FINE_MAX_RADIUS_M = 1_500_000;
+
+/** The shipped 0.125° planet as the counters read it, for tests that
+ *  hold them to a count over every cell. */
+export function shippedCoarseView(): ReturnType<(typeof _internals)['coarseView']> {
+  const planet = loadCoarse();
+  if (planet === null) throw new Error('no population raster on disk');
+  return _internals.coarseView({ meta: planet.meta, values: planet.values, land: planet.land });
+}
 
 /**
  * People inside a circle, from the shipped rasters: the 2.5′ tiles
@@ -132,8 +134,8 @@ export function shippedPopulationInRadius(
 ): { exposed: number; source: string; fine: boolean } {
   const { coarseView, fineView, sumGridCircle } = _internals;
   const index = loadFineIndex();
-  if (index !== null && radiusM <= FINE_MAX_RADIUS_M) {
-    const names = tilesAround(index, latitude, longitude, radiusM);
+  const names = index === null ? [] : tilesAround(index, latitude, longitude, radiusM);
+  if (index !== null && radiusM <= FINE_MAX_RADIUS_M && names.length <= FINE_MAX_TILES) {
     const tiles = new Map<string, { values: Uint8Array; land: Uint8Array }>();
     let complete = true;
     for (const name of names) {

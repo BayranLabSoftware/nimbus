@@ -43,6 +43,8 @@ import { compareWithRecord, RECORDED_EVENTS } from './recordedTolls.js';
 import { TOHOKU_2011_DART_REFERENCE } from './noaaBenchmarkFixtures.js';
 import { RECORDED_WAVES } from './recordedWaves.js';
 import { makeElevationGrid } from '../elevation/index.js';
+import { _internals } from '../../scene/populationLookup.js';
+import { shippedCoarseView } from './shippedPopulation.js';
 import { gateImpactByTerrain, resetAppStore, useAppStore } from '../../store/useAppStore.js';
 import {
   fetchTerrainGridForLocation,
@@ -403,6 +405,55 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(strip.maxLon - strip.minLon).toBeLessThan(20);
   });
 
+  it('B-026 A planetary circle counts everyone inside it, on the sphere', () => {
+    // Pre-fix: the circle's longitude window was ρ / cos φ₀ about its
+    // centre, too narrow toward the poles and never every longitude when
+    // the cap holds one; 7 000 km about New York counted 12.9 % too few,
+    // 183 million people. Held to a count over every cell of the planet,
+    // each decided as the counter decides a cell it looks at.
+    const view = shippedCoarseView();
+    const { greatCircleM, sumGridCircle, EDGE_SUBSAMPLES } = _internals;
+    const everyCell = (lat: number, lon: number, radiusM: number): number => {
+      const cellLatM = (view.cellDeg * Math.PI * 6_371_000) / 180;
+      let sum = 0;
+      for (let r = 0; r < view.nLat; r++) {
+        const cellLat = view.maxLat - (r + 0.5) * view.cellDeg;
+        const cellLonM = cellLatM * Math.max(Math.cos((cellLat * Math.PI) / 180), 1e-6);
+        const halfDiagonal = 0.5 * Math.hypot(cellLatM, cellLonM);
+        for (let c = 0; c < view.nLon; c++) {
+          const cellLon = view.minLon + (c + 0.5) * view.cellDeg;
+          const d = greatCircleM(lat, lon, cellLat, cellLon);
+          if (d - halfDiagonal > radiusM) continue;
+          const { people } = view.cellAt(r, c);
+          if (people === 0) continue;
+          if (d + halfDiagonal <= radiusM) {
+            sum += people;
+            continue;
+          }
+          let inside = 0;
+          for (let a = 0; a < EDGE_SUBSAMPLES; a++) {
+            const sLat = cellLat + ((a + 0.5) / EDGE_SUBSAMPLES - 0.5) * view.cellDeg;
+            for (let b = 0; b < EDGE_SUBSAMPLES; b++) {
+              const sLon = cellLon + ((b + 0.5) / EDGE_SUBSAMPLES - 0.5) * view.cellDeg;
+              if (greatCircleM(lat, lon, sLat, sLon) <= radiusM) inside += 1;
+            }
+          }
+          sum += (people * inside) / (EDGE_SUBSAMPLES * EDGE_SUBSAMPLES);
+        }
+      }
+      return sum;
+    };
+    for (const [lat, lon, radiusM] of [
+      [40.7, -74.0, 7_000_000], // New York: the cap holds the North Pole
+      [64.1, -21.9, 3_000_000], // Reykjavík
+      [-54.8, -68.3, 5_000_000], // Ushuaia: the South Pole
+      [28.6, 77.2, 7_000_000], // Delhi
+    ] as const) {
+      const counted = sumGridCircle(view, lat, lon, radiusM);
+      expect(counted / everyCell(lat, lon, radiusM)).toBeCloseTo(1, 6);
+    }
+  });
+
   it("B-027 An earthquake of Mw 3.2 to 3.7 finishes, its aftershocks under Båth's ceiling", () => {
     // Pre-fix: the aftershock sampler drew magnitudes at or above the
     // completeness cutoff (2.5 below Mw 6.5) and drew again any above
@@ -659,10 +710,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-025 and B-027..B-034 (B-010 CLOSED via inputSchema.ts +
-    // safeRun.ts; B-007 superseded by B-011; B-026, the population of a
-    // planetary circle, is named in docs/ROADMAP.md and not yet entered).
-    const expectedRows = 33;
-    expect(expectedRows).toBe(33);
+    // B-001..B-034 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // superseded by B-011).
+    const expectedRows = 34;
+    expect(expectedRows).toBe(34);
   });
 });

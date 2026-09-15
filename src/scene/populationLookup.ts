@@ -105,26 +105,36 @@ export interface PopulationLookupResult {
 // ---------------------------------------------------------------------
 
 /**
- * Convert a geographic-radius circle into a [west, south, east, north]
- * bbox in degrees. Δlat = r / R_E, Δlon = r / (R_E · cos φ); standard
- * spherical-Earth approximation, accurate to ≤ 0.5 % below the polar
- * circles which is well inside the population-data scatter.
+ * The [west, south, east, north] box, in degrees, of a spherical cap of
+ * angular radius ρ = r / R about (φ₀, λ₀): Δφ = ρ, and Δλ = asin(sin ρ /
+ * cos φ₀), the widest a small circle on the sphere reaches in longitude.
+ * When the cap holds a pole, φ₀ + ρ past ±90°, it reaches every
+ * longitude. Longitudes may run past ±180°; callers wrap them.
+ *
+ * Until B-026 the window was ρ / cos φ₀, too narrow toward the poles and
+ * never every longitude over one: a 7 000 km circle about New York
+ * counted 12.9 % too few people.
  */
 function circleBoundingBox(
   lat: number,
   lon: number,
   radiusM: number
 ): { minLat: number; maxLat: number; minLon: number; maxLon: number } {
-  const dLat = ((radiusM / EARTH_RADIUS_M) * 180) / Math.PI;
+  const rho = Math.min(radiusM / EARTH_RADIUS_M, Math.PI);
+  const dLat = (rho * 180) / Math.PI;
+  const south = lat - dLat;
+  const north = lat + dLat;
+  if (north >= 90 || south <= -90) {
+    return {
+      minLat: Math.max(-90, south),
+      maxLat: Math.min(90, north),
+      minLon: lon - 180,
+      maxLon: lon + 180,
+    };
+  }
   const dLon =
-    ((radiusM / (EARTH_RADIUS_M * Math.max(Math.cos((lat * Math.PI) / 180), 1e-6))) * 180) /
-    Math.PI;
-  return {
-    minLat: Math.max(-90, lat - dLat),
-    maxLat: Math.min(90, lat + dLat),
-    minLon: lon - dLon,
-    maxLon: lon + dLon,
-  };
+    (Math.asin(Math.min(1, Math.sin(rho) / Math.cos((lat * Math.PI) / 180))) * 180) / Math.PI;
+  return { minLat: south, maxLat: north, minLon: lon - dLon, maxLon: lon + dLon };
 }
 
 /** Great-circle distance (m) — haversine. */
@@ -712,10 +722,13 @@ function sumGridCircle(view: GridView, lat: number, lon: number, radiusM: number
     Math.ceil((bbox.maxLon - bbox.minLon) / view.cellDeg) + 1
   );
   const colStart = Math.floor((bbox.minLon - view.minLon) / view.cellDeg);
-  const halfDiagonal = 0.5 * Math.hypot(cellLatM, cellLonM);
   let sum = 0;
   for (let r = row0; r <= row1; r++) {
     const cellLat = view.maxLat - (r + 0.5) * view.cellDeg;
+    // A cell's own width, at its own latitude: the circle's centre can be
+    // thousands of kilometres away on a different parallel.
+    const halfDiagonal =
+      0.5 * Math.hypot(cellLatM, cellLatM * Math.max(Math.cos((cellLat * Math.PI) / 180), 1e-6));
     for (let k = 0; k <= colSpan; k++) {
       // Wrap columns across the antimeridian.
       const c = wrap(colStart + k);
@@ -1057,6 +1070,7 @@ export function _resetPopulationLookupCache(): void {
 
 /** Exposed for unit tests of the geometry helpers. */
 export const _internals = {
+  circleBoundingBox,
   landDensityAt,
   sumGridCircle,
   sumGridRing,
