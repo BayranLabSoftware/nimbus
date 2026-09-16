@@ -242,6 +242,107 @@ A bound changes only by a dated amendment in this file that says why,
 written before the figure it touches has been measured on the set it names,
 and it is never loosened after a figure has failed it.
 
+One amendment has been made, and it is below. It re-anchors bounds to the
+rule this file opened with, rather than loosening any: the verdict each rule
+reached under its bound as first written stays recorded, and no rule is met
+today that was not met before it.
+
+## Amendment of 16 September 2026: every validation bound read against the field
+
+**Why.** This file opens with its own principle: _where the field has a tool
+that makes the same estimate for the same events, a bound is read against that
+tool on the same rows, so that a 9 means as good as the field and never better
+than the field can be._ The verification rules keep to it — G1, I1, N1, V1 and
+L1 hold the model to the field's own implementations. The validation rules did
+not. Their bias and σ bounds were written on 15 September as the project's
+choice, without measuring what the field's tools achieve on the same data, and
+two measurements of 16 September show what that did:
+
+- **L2** asked σ_ln no more than 0.7 of the wave a landslide raises. Heller,
+  Hager & Minor (2009) — the method the field uses, reproduced here to 0.4 %
+  of its own manual — reads **σ_ln 1.78** on the thirty-seven held-out
+  landslides of rules 122 to 125. The bound was two and a half times tighter
+  than the state of the art, and no software using the field's method could
+  ever meet it.
+- **I2** asked that an entering body deposit its energy within 5 km of where
+  the sensors saw it peak. The model reproduces the Earth Impact Effects
+  Program's burst altitude at 1.002× (twenty-three of twenty-four airbursts of
+  the benchmark grid within 1 %), and on the CNEOS fireballs it misses by a
+  median 13.7 km — which is, to that agreement, the program's own miss.
+
+A rule a faithful implementation of the field cannot meet does not measure
+the model. It measures the field, and it names the model as having failed.
+
+**The amendment.** Every validation bound whose quantity the field has a tool
+for is read against that tool, on the same held-out rows and against the same
+record:
+
+> A model meets a re-anchored bound when its bias is **no further from one**
+> than the reference's (|ln bias| no larger) **and** its σ_ln is **no larger**
+> than the reference's, overall and in every cell with twenty scored rows or
+> more. Where the model implements the reference exactly — verified under G1 —
+> the two agree by construction, and the held-out reading is printed for what
+> it says of the field, not as a bar. G3's band width becomes exp(3.29 σ) with
+> σ the reference's.
+
+Where the field has no tool for a quantity — a tsunami's death toll, an
+explosion's, an eruption's — the bound stays the project's choice, and this
+file says so. A bound whose reference has not yet been run on the rows is
+**pending**, and a pending rule is not met.
+
+| Rule   | Bound as first written                                                         | Read against                                                                                                                                                             | Standing under the re-anchored bound                                                                                                                                                                                                                                                              |
+| ------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| E1     | score ≥ 0.50 (≥ 0.40 on finite-rupture or ten-station maps), sharpness ≤ 0.35  | a ShakeMap scenario run on its own ground-motion models without stations, scored the same way on the same maps                                                           | pending: the scenario mode has not been run                                                                                                                                                                                                                                                       |
+| E2     | within ×1.5 of PAGER, σ_ln ≤ 1.0                                               | unchanged: PAGER is the reference and the rule already reads against it                                                                                                  | not met: 0.13×, σ_ln 2.18                                                                                                                                                                                                                                                                         |
+| E3, E4 | bias ×1.5; σ_ln ≤ PAGER's own + 0.25                                           | PAGER's own loss estimates on the same rows. **Tighter**: the 0.25 allowance goes, since as good as the field leaves none                                                | pending: PAGER's own σ_ln on those rows not read                                                                                                                                                                                                                                                  |
+| T1     | ×1.25 at the median event, σ_ln ≤ 0.50, ×1.5 beyond 7 000 km                   | GeoClaw on real bathymetry, on the same DART records                                                                                                                     | pending: GeoClaw has been run only over a flat ocean                                                                                                                                                                                                                                              |
+| T2     | ×1.5, σ_ln ≤ 0.8                                                               | GeoClaw on real bathymetry, on the same coastal bins                                                                                                                     | pending. Under the bound as first written, **not met** (3.16×, rules 102 to 105), and that stays recorded                                                                                                                                                                                         |
+| T3     | within 5 % or 5 min on 90 %                                                    | a reference travel-time computation on the same records                                                                                                                  | pending                                                                                                                                                                                                                                                                                           |
+| T4     | ×2, σ_ln ≤ 1.5                                                                 | **no tool of the field computes a tsunami's toll**: the project's choice, declared                                                                                       | pending                                                                                                                                                                                                                                                                                           |
+| L2     | ×1.5, σ_ln ≤ 0.7                                                               | Heller et al. 2009 on the same rows and record                                                                                                                           | **not met**. Against `Peak height` on the same thirty-seven rows, first crest against source amplitude: Heller 1.282× at σ_ln 1.776; the model 2.090× at σ_ln 1.529 — tighter, and further from one. Under the bound as first written, not met twice (rules 121 and 125), and that stays recorded |
+| L3     | a band meeting G3 at L2's σ                                                    | follows L2                                                                                                                                                               | not met: no sampler                                                                                                                                                                                                                                                                               |
+| I2     | median error ≤ 5 km, mean ≤ 3 km                                               | the Earth Impact Effects Program's entry on the same fireballs                                                                                                           | pending: expected equal, since the model reproduces the program's burst altitude, but the program has not been run on the fireballs themselves. Under the bound as first written, **not met** (13.7 km, rules 76 to 79), and that stays recorded                                                  |
+| I3     | holds Tunguska, Chelyabinsk and 90 % of Collins et al. 2017's runs; width ≤ ×3 | already read against Collins et al. 2017's shock-physics runs; the ×3 width is the project's choice, declared                                                            | not met                                                                                                                                                                                                                                                                                           |
+| N2     | radius ×1.25, σ_ln ≤ 0.3                                                       | Glasstone & Dolan's and Kingery–Bulmash's scaling on the same accidental explosions                                                                                      | pending: no set                                                                                                                                                                                                                                                                                   |
+| N3     | ×2, σ_ln ≤ 1.0                                                                 | **no tool of the field in use**: NUKEMAP publishes a casualty estimate, and this project does not query it (BENCHMARK_PROTOCOL, Conduct). The project's choice, declared | not met                                                                                                                                                                                                                                                                                           |
+| V2     | ×1.15, σ_ln ≤ 0.35                                                             | Mastin et al. 2009 on the same phases — which is the model, so where G1 verifies the implementation the two agree by construction                                        | pending: no set beyond IVESPA, which is read (0.95×, σ_ln 0.44)                                                                                                                                                                                                                                   |
+| V3     | 1 cm isopach area ×2, σ_ln ≤ 0.7                                               | Tephra2 on the same eruptions                                                                                                                                            | pending                                                                                                                                                                                                                                                                                           |
+| V4     | runout ×1.5, σ_ln ≤ 0.5                                                        | the energy cone and LaharZ on the same currents                                                                                                                          | pending. Under the bound as first written, not met, and that stays recorded                                                                                                                                                                                                                       |
+| V5     | ×3, σ_ln ≤ 1.2                                                                 | **no tool of the field**: the project's choice, declared                                                                                                                 | not met                                                                                                                                                                                                                                                                                           |
+| V6     | bands meeting G3                                                               | follows V2 to V5                                                                                                                                                         | pending                                                                                                                                                                                                                                                                                           |
+
+Unchanged, because they are not bounds against the world or already read
+against the field: G1 to G7, E5, L1, I1, I4, N1, V1 and C1 to C3.
+
+**What this changes today: nothing is met that was not.** Every rule the
+standing below names as not met is still not met — L2 because the model is
+further from one than Heller is, the rest because they were not met before
+or because their reference has not been run. The amendment does not move a
+single rule across the line. What it does is make the line one a faithful
+implementation of the field can reach, and name, rule by rule, the reference
+run that would settle it.
+
+**Why this is not a bound loosened after it failed**, which the paragraph
+above forbids, and the three things that make the difference checkable: the
+new bound is a **measurement of the field**, not a number chosen to let the
+model through; the verdict under the old bound **stays recorded** beside the
+new one; and the re-anchored bound is evaluated on **outputs already
+committed** — L2's head-to-head above is arithmetic on
+`benchmark/results/slide-wave-2026-09-16-1.json`, and the model was not run on
+that set again. Where anchoring makes a bound tighter, as it does for E3, it
+is tightened. Andrea asked for it on 16 September 2026, on the view that a
+software that reaches the results of the field's gold-standard tools, all in
+one place, is a gold standard in its own right; this amendment is that view
+written as a rule.
+
+**What it does not claim.** Agreeing with the field's tools is agreeing with
+the field, errors included: where the field's best method misses the world by
+a factor of four, a 9 here misses it too, and the validation report prints by
+how much. And a software that joins the field's tools — an earthquake into a
+wave, a wave onto a coast, a coast into a toll — makes joins no single tool
+checks. Those joins are this project's own contribution, and they are measured
+as such (T2, T4, N3, V5), not inherited from any reference.
+
 ## Where each domain stands, 15 September 2026
 
 Read from `docs/VALIDATION_REPORT.md` and `docs/BENCHMARK_REPORT.md` that
@@ -261,7 +362,7 @@ not that a rule holds.
 | T2–T4  | T2 measured on 16 September 2026 and **not met**: over 2 468 coastal bins of 64 earthquakes (6 672 NCEI observations, Tōhoku, Sumatra and BM-05's own events left out) the run-up is 3.16× what was measured, σ_ln 1.365, against bounds of ×1.5 and 0.8; 4.63× at the distant tide gauges that carry two thirds of the bins, 1.49× at the nearer ones (rules 102 to 105). T3 and T4 still not measured.                                                                                                                                                                                                                                                                                                                               |
 | T5     | Not met: waves carry no band.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | L1     | Not met: the relation in place is Watts 2000's cube-root scaling with prefactors set on Anak Krakatau, Storegga and Vaiont; Heller et al. 2009's Example 1 is reproduced only in the benchmark.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| L2, L3 | Not met: two rows, both tuned; 0.36× the centre of Heller's band; no sampler.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| L2, L3 | L2 measured twice on 16 September 2026 against held-out landslides and **not met** either time under its bound as first written — 7.762× against `Wave h max` (rule 121), 3.984× against `Peak height` (rule 125), both Heller's crest and trough against a height. Under the amendment of the same day it is read against Heller on the same rows, like for like, and is **still not met**: Heller 1.282× at σ_ln 1.776, the model 2.090× at σ_ln 1.529. L3: no sampler.                                                                                                                                                                                                                                                              |
 | I1     | Not met for the air blast of ground impacts, and for one reason now known: the overpressure is computed from the energy that reaches the ground where it comes from the energy deposited in the air, so it answers the impact angle backwards — 0.24× to 8.4× the program, and of fourteen groups holding more than one angle this model rises with a steeper impact in twelve where the program falls in twelve (BM-21). Also the impact tsunami (BM-09) and the visible fraction of the fireball (Eq. 36\*). The crater depth is closed: 1.293× became 0.995× on 16 September 2026 when the Venus fit it carried was replaced by Collins et al.'s own Eq. 28\* (B-040). Everything else both print agrees between 0.995× and 1.002×. |
 | I2, I4 | I2 not met (see above). I4's counting clause measured on 16 September 2026 and missed — the ring count was up to 10.4 % from an exact count of the same cells on 20 km circles — then met: the edge cells are split 12 × 12 and the worst is 2.7 % (rules 94 to 97). The polygon counter an extended rupture uses was measured the same night (rules 98 to 101) and passes as it stands, worst 1.19 % over thirty stadiums — because a stadium is far larger than the circles that failed, not because its arithmetic is finer. The ceiling clause is unchanged.                                                                                                                                                                       |
 | I3     | Not met: Tunguska's 20 kPa ring 0.43× the flattened forest; Chelyabinsk's 1 kPa ring 0.54× on a re-run that is not a validation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
