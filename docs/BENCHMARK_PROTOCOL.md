@@ -1255,3 +1255,57 @@ failed is the size of the footprint, not the arithmetic: the smallest stadium
 of this set is about 130 km by 80 km where the circles that missed were 40 km
 across. Nothing here says what the polygon counter would do on a footprint a
 few cells wide.
+
+## The coast, measured for the first time (T2)
+
+Written on 16 September 2026. The rules are numbered after the hundred and one
+before them and live in `src/physics/validation/runupRules.ts` (rules 102 to
+105), with the set builder in `scripts/build-runup-set.ts`, the run in
+`runupRun.ts` and the script in `scripts/benchmark/runup.ts`.
+
+### Why this one was different
+
+Every other bar of `docs/GOLD_STANDARD.md` was missed. This one was out of
+reach: the validation report has said from the start that "the coastal toll
+needs bathymetry, so no offline test reaches it", and nothing could compute the
+left-hand side of T2. What made it reachable was not physics but plumbing —
+`validation/terrariumTiles.ts` reads the same AWS terrain tiles the browser
+reads, and `fetchGlobalBathymetricMosaic` now takes a loader, so the planetary
+mosaic the product propagates a trans-oceanic wave across is buildable in Node.
+
+As in the two rounds before it, the rules were written in full and then the set
+was run, and only then were they committed; the rules say so in their own
+header. Rule 103's four choices are the ones to weigh with that in mind, and
+none of them moved after a number was seen.
+
+### The outcome, 16 September 2026
+
+Run once with `pnpm exec tsx scripts/benchmark/runup.ts <cache>`: 64 events,
+5 602 observations, 2 468 coastal bins, 45 seconds.
+
+**T2 is not met, and not narrowly.** Against the run-up the product draws, the
+bias is **3.16×** where T2 allows 1.5, and σ_ln is **1.365** where it allows
+0.8; 23 % of bins land within a factor of two. Read against the shore height
+the product derives from the same cell — which is nearer what a tide gauge
+measures, and decides nothing — the bias is 2.23× and σ_ln 1.285.
+
+Where it goes wrong is legible. By NCEI measurement type:
+
+| type | bins | run-up bias | σ_ln | shore bias |
+| ---- | ---: | ----------: | ---: | ---------: |
+| 1    |  403 |       1.49× | 1.16 |      0.88× |
+| 2    | 1661 |       4.63× | 1.27 |      3.49× |
+| 5    |   79 |       0.83× | 1.21 |      0.53× |
+| 4    |   15 |       0.32× | 0.89 |      0.27× |
+
+Type 2 is the distant tide gauge — a median 3 000 km from its source and a
+median height of 13 cm — and it carries two thirds of the bins. There the model
+stands 4.6× too high. At type 1, nearer and larger, it stands at 1.49×, just
+inside T2's bias bound, and still at σ_ln 1.16.
+
+So the bias is not one number wrong everywhere: the model's coastal wave grows
+too large with distance, and its scatter is roughly 1.7 times what T2 allows
+whatever the range. 1 070 observations of the 6 672 found no coastal cell
+within 50 km and were scored by nobody — a coast a 40 km mosaic cannot see.
+
+Nothing is tuned on any of this (rules 5 and 6), and the set is now read.

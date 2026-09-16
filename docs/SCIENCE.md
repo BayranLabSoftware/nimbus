@@ -2082,6 +2082,71 @@ The reference is arithmetic on the very same cells rather than a measurement of
 the world — there is nothing to tune towards — but it is weaker, and a reader
 should weigh it as one.
 
+### The coast, measured for the first time (16 September 2026)
+
+`validation/runupRules.ts` (rules 102 to 105), `validation/runupRun.ts`,
+`validation/terrariumTiles.ts`. Of the five domains, waves were the only one
+whose bar had never been reached rather than missed. `docs/GOLD_STANDARD.md`
+asks of the coast (T2) a bias within ×1.5 and a σ_ln no more than 0.8 against
+at least 500 run-up observations of NOAA NCEI's Global Historical Tsunami
+Database, and the validation report had said from the beginning that "the
+coastal toll needs bathymetry, so no offline test reaches it". Nothing could
+compute the left-hand side.
+
+What was missing was plumbing, not physics. `terrainSampling.ts` had already
+written down what to do — the browser fetches and decodes the terrarium tiles,
+and "the validation harness hands in a loader that reads them in Node" — and
+only the loader was missing. With it, the sixteen AWS terrain tiles of the
+planetary mosaic decode offline in under a second, and the product's own
+`computeBathymetricTsunami` propagates a wave across them unchanged.
+
+The set is 6 672 observations of 64 earthquakes, built by a rule and not by
+hand: every NCEI run-up with a height, not doubtful, not measured by a
+deep-ocean gauge, whose tsunami the database blames on an earthquake it can
+place. Three groups are left out because this project has already read their
+wave — every tsunami of 2006 or later at magnitude 7.7 or more, which is
+BM-05's own selection (5 725 observations), Tōhoku 2011 (6 014) and Sumatra
+2004 (1 988) — and an event is kept only if thirty observations survive.
+
+**T2 is not met, and not narrowly.** Over 2 468 coastal bins the model's run-up
+stands at **3.16×** what was measured, where T2 allows 1.5, with **σ_ln 1.365**
+where it allows 0.8. Twenty-three per cent of bins land within a factor of two.
+Read against the shore height the product derives from the same cell — nearer
+what a tide gauge measures, and deciding nothing — it is 2.23× and 1.285.
+
+The failure is not uniform, and that is the useful part:
+
+| NCEI type | bins | run-up bias | σ_ln | shore bias |
+| --------- | ---: | ----------: | ---: | ---------: |
+| 1         |  403 |       1.49× | 1.16 |      0.88× |
+| 2         | 1661 |       4.63× | 1.27 |      3.49× |
+| 5         |   79 |       0.83× | 1.21 |      0.53× |
+| 4         |   15 |       0.32× | 0.89 |      0.27× |
+
+Type 2 — the distant tide gauge, a median 3 000 km from its source reading a
+median 13 cm — carries two thirds of the bins, and there the model stands 4.6
+times too high. At type 1, nearer and larger, it is 1.49×, just inside T2's
+bias bound. So the wave does not come out uniformly too big: it grows too large
+with distance. That sits oddly beside the gap the report already declares in
+the other direction — Sumatra's far coasts five to ten times under-waved — and
+the two together say the far field is wrong in a way that depends on the
+source, not scaled wrongly by a constant.
+
+The scatter says something plainer and worse. σ_ln is about 1.3 at every type
+and every range, against a bar of 0.8. A σ_ln of 1.3 means the middle half of
+the bins are spread over a factor of six. A 40 km cell cannot hold a bay, a
+headland or a river mouth, and those are what make one village's run-up three
+times its neighbour's; Synolakis on a plane beach whose slope is read from a
+40 km grid cannot know them either. Some of that scatter is the coast and not
+the model, and this round cannot say how much.
+
+What it does not touch: 1 070 of the 6 672 observations found no coastal cell
+within 50 km and were scored by nobody. The events are mostly old, because the
+recent large ones are the ones already read — this is the coast of the
+twentieth century, surveyed as the twentieth century surveyed it. And nothing
+is tuned on any of it (rules 5 and 6): the set is read now, and a better wave
+has to be chosen against something else.
+
 ### And how many the rupture stadiums hold (16 September 2026)
 
 `validation/polygonCountRules.ts` (rules 98 to 101), `validation/polygonCountRun.ts`.
