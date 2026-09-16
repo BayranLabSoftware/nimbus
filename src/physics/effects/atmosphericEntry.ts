@@ -99,18 +99,18 @@ export type EntryRegime = 'INTACT' | 'PARTIAL_AIRBURST' | 'COMPLETE_AIRBURST';
  * the Earth Impact Effects Program part.
  *
  * - `paper`: the equations as the 2005 paper prints them.
- * - `program`: as the program computes them (rules 141 to 144 of
+ * - `program`: as the program computes them (rules 141 to 145 of
  *   validation/entryProgramRules.ts). Two places differ. Eq. 11 takes twice
- *   the I_f of Eq. 12 (BM-13), so a body breaks lower, and one whose doubled
- *   I_f reaches 1 — where the program takes the square root of a negative
- *   number and answers with an error — is read here as a body that never
- *   breaks. And Eq. 20, the speed at the ground of a broken body, lacks the
- *   −3(l/H)² inside its bracket, which only matters for a body that breaks low.
+ *   the I_f of Eq. 12 (BM-13), so a body breaks lower. And Eq. 20, the speed at
+ *   the ground of a broken body, lacks the −3(l/H)² inside its bracket, which
+ *   only matters for a body that breaks low. Where the doubled I_f reaches 1
+ *   the program takes the square root of a negative number and answers with an
+ *   error; there the paper's equations are used (rule 145).
  */
 export type EntryEquations = 'paper' | 'program';
 
 /** What an entry that names no equations uses. */
-export const DEFAULT_ENTRY_EQUATIONS: EntryEquations = 'paper';
+export const DEFAULT_ENTRY_EQUATIONS: EntryEquations = 'program';
 
 export interface AtmosphericEntryResult {
   /** Airburst altitude (m), Collins et al. Eq. 18; 0 when the body or
@@ -364,10 +364,13 @@ export function atmosphericEntry(
   const wholeSpeed = (z: number): number =>
     v0 * Math.exp((-3 * density(z) * DRAG_COEFFICIENT * H_SCALE) / (4 * rhoI * L0 * sinTheta));
 
-  // Eq. 12, doubled where the program doubles it (BM-13).
-  const If =
-    ((program ? 2 : 1) * (4.07 * DRAG_COEFFICIENT * H_SCALE * Y)) /
-    (rhoI * L0 * v0 * v0 * sinTheta);
+  // Eq. 12, doubled where the program doubles it (BM-13). Where the doubled
+  // value reaches 1 the program takes the square root of a negative number
+  // and has no answer, and the paper's equations are used (rule 145 of
+  // validation/entryProgramRules.ts).
+  const paperIf = (4.07 * DRAG_COEFFICIENT * H_SCALE * Y) / (rhoI * L0 * v0 * v0 * sinTheta);
+  const followsProgram = program && 2 * paperIf < 1;
+  const If = followsProgram ? 2 * paperIf : paperIf;
   if (If >= 1) {
     // Never breaks. The speed at the ground, never below the terminal
     // velocity of the body.
@@ -419,7 +422,7 @@ export function atmosphericEntry(
     (3 * (4 + r * r) * Math.exp(zStar / H_SCALE) +
       6 * Math.exp((2 * zStar) / H_SCALE) -
       16 * Math.exp((3 * zStar) / (2 * H_SCALE)) -
-      (program ? 0 : 3 * r * r) -
+      (followsProgram ? 0 : 3 * r * r) -
       2);
   const endVelocity = vStar * Math.exp(-k * Math.max(integral, 0));
   const energyFractionToGround = Math.min(1, (endVelocity / v0) ** 2);

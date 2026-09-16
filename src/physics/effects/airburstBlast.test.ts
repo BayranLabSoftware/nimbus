@@ -439,6 +439,7 @@ describe('airburst blast — an impact that reaches the ground, as the program r
       expect(at(reach * 0.999)).toBeGreaterThanOrEqual(threshold);
       expect(at(reach * 1.001)).toBeLessThan(threshold);
     }
-    expect(DEFAULT_GROUND_BLAST).toBe('project');
+    // Rule 144 of validation/entryProgramRules.ts adopted the program's.
+    expect(DEFAULT_GROUND_BLAST).toBe('program');
   });
 });

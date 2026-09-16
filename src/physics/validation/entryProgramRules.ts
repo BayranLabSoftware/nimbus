@@ -63,10 +63,70 @@
  *       items printed. Adopted, the impact family's sweep (rule 134) is run in
  *       the same session under both and printed; it does not decide.
  *
+ *  145. **Amended after rule 144's run, and said so.** Rule 141 read a body
+ *       whose doubled I_f reaches 1, where the program has no answer, as one
+ *       that never breaks. Adopting the candidate showed what that choice does:
+ *       the Sikhote-Alin preset, a 3 m iron at 14.5 km/s with 50 MPa, has an
+ *       I_f of 0.936 — the paper breaks it at 6.0 km, as the fall broke at
+ *       about 5.6 — and doubled it is 1.87, so the candidate brought it to the
+ *       ground whole and dug a crater of 129 m where the largest observed is
+ *       26 m. The choice was arbitrary and the observation is not. From here,
+ *       where the program has no answer, the paper's equations are used, Eq. 11
+ *       and Eq. 20 both. No question the held-out check asked is touched: the
+ *       program answered all 68, so every one of its bodies has a doubled I_f
+ *       below 1. The rest of rule 144 is read on the amended candidate.
+ *
  * What these rules cannot settle. Whether the program or its paper is right
  * where they differ: a doubled I_f and a dropped term are what the field's
  * tool computes, and this project, whose aim is the tool's results, follows
  * the tool and declares that it does. The paper's equations stay reachable.
+ */
+
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 16 September 2026: ADOPTED, with
+ * rule 145's amendment
+ * ===========================================================================
+ *
+ * The rules were pushed in `8235974` and the program asked afterwards
+ * (`benchmark/results/entry-program-eiep-2026-09-16.json`, scored in
+ * `entry-program-against-eiep-2026-09-16.json`). It answered all 68
+ * questions, and every body where the candidate put it — twelve on the ground,
+ * four in the air.
+ *
+ * **Everything compared agrees.** The 60 ground overpressures, the worst
+ * ×1.00186 (a slow body of 127 m at 13 km/s, 1.4 km out); the 16 breakup
+ * altitudes, the worst 1.6 m off; the 4 burst altitudes, within 10 cm; the 8
+ * airburst overpressures, the worst ×0.99832. Rule 145's amendment, written
+ * after the adoption's first test run showed Sikhote-Alin's preset digging a
+ * 129 m crater, changes none of these: rescored, the same.
+ *
+ * **The release gate stays PASS**, with both defaults, and Meteor Crater's
+ * crater inside its band. The validation report moves where it should: the
+ * grid's 57 ground overpressures from 0.24–8.44× to 1.00–1.00×, now gated at
+ * 1 % in `eiepComparison.test.ts`; its 81 breakup altitudes from 1.00–1.01× and
+ * 24 burst altitudes from 1.00–1.05× to 1.00–1.00×, gated at 0.2 %; the
+ * fireballs' median miss unchanged at 13.7 km and the mean from +12.8 to
+ * +12.7 km. Sikhote-Alin's largest crater is 26.7 m, the observed 26.
+ *
+ * Four tests changed, and why: two named the old defaults; the breakup's check
+ * against the root of Eq. 10 now runs on the paper's equations, which are what
+ * that root belongs to; and the grid test that rebuilt the program's altitudes
+ * from Eq. 12 now reads them from the model directly.
+ *
+ * **The sweep, as rule 144 asked, in the same session**
+ * (`invariants-2026-09-16-8.json` with both, `-9` without): 425 impact
+ * failures against 181. The blast rings that shrink as a body grows by 1 % go
+ * from 167 to 407, the jumps from 8 to 14, the crater sizes from 4 to 2, the
+ * tsunami amplitudes stay at 2. The new shrinking rings are the program's
+ * ground blast: a larger body puts Eq. 18's altitude deeper, its crossover
+ * shortens, and at a fixed range it blasts less. Asked at the ring of two of
+ * them, the program falls with the model — 3 444.6 to 3 365.2 Pa, and 3 446.1
+ * to 3 423.0 Pa, for the body and the body 1 % larger. It does not decide, and
+ * it is declared.
+ *
+ * `DEFAULT_ENTRY_EQUATIONS` is `program` and `DEFAULT_GROUND_BLAST` is
+ * `program`. I1's air blast clause (BM-21) is closed.
  */
 
 /** Rule 143: G1's tolerance, and the rounding of what the program prints. */

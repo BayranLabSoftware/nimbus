@@ -2804,24 +2804,24 @@
           "rows": 357,
           "burst": 356,
           "toTheGround": 1,
-          "medianAbsoluteErrorKm": 13.74,
-          "meanErrorKm": 12.75,
+          "medianAbsoluteErrorKm": 13.68,
+          "meanErrorKm": 12.69,
           "withinFiveKm": 49
         },
         "stony": {
           "rows": 357,
           "burst": 355,
           "toTheGround": 2,
-          "medianAbsoluteErrorKm": 8.29,
-          "meanErrorKm": 6.56,
-          "withinFiveKm": 99
+          "medianAbsoluteErrorKm": 8.13,
+          "meanErrorKm": 6.35,
+          "withinFiveKm": 105
         },
         "iron": {
           "rows": 357,
           "burst": 68,
           "toTheGround": 289,
-          "medianAbsoluteErrorKm": 20.68,
-          "meanErrorKm": -20.41,
+          "medianAbsoluteErrorKm": 20.72,
+          "meanErrorKm": -20.96,
           "withinFiveKm": 2
         }
       },
@@ -2832,8 +2832,8 @@
             "rows": 200,
             "burst": 199,
             "toTheGround": 1,
-            "medianAbsoluteErrorKm": 14.26,
-            "meanErrorKm": 13.45,
+            "medianAbsoluteErrorKm": 14.22,
+            "meanErrorKm": 13.37,
             "withinFiveKm": 22
           },
           {
@@ -2841,8 +2841,8 @@
             "rows": 129,
             "burst": 129,
             "toTheGround": 0,
-            "medianAbsoluteErrorKm": 12.99,
-            "meanErrorKm": 12.61,
+            "medianAbsoluteErrorKm": 12.95,
+            "meanErrorKm": 12.56,
             "withinFiveKm": 20
           },
           {
@@ -2850,8 +2850,8 @@
             "rows": 28,
             "burst": 28,
             "toTheGround": 0,
-            "medianAbsoluteErrorKm": 11.28,
-            "meanErrorKm": 8.5,
+            "medianAbsoluteErrorKm": 11.2,
+            "meanErrorKm": 8.48,
             "withinFiveKm": 7
           },
           {
@@ -2859,8 +2859,8 @@
             "rows": 168,
             "burst": 168,
             "toTheGround": 0,
-            "medianAbsoluteErrorKm": 12.22,
-            "meanErrorKm": 10.62,
+            "medianAbsoluteErrorKm": 12.13,
+            "meanErrorKm": 10.54,
             "withinFiveKm": 30
           },
           {
@@ -2868,8 +2868,8 @@
             "rows": 189,
             "burst": 188,
             "toTheGround": 1,
-            "medianAbsoluteErrorKm": 14.93,
-            "meanErrorKm": 14.66,
+            "medianAbsoluteErrorKm": 14.9,
+            "meanErrorKm": 14.61,
             "withinFiveKm": 19
           }
         ],
@@ -2879,17 +2879,17 @@
             "rows": 200,
             "burst": 198,
             "toTheGround": 2,
-            "medianAbsoluteErrorKm": 8.63,
-            "meanErrorKm": 6.78,
-            "withinFiveKm": 45
+            "medianAbsoluteErrorKm": 8.38,
+            "meanErrorKm": 6.52,
+            "withinFiveKm": 51
           },
           {
             "label": "0.3 to 3 kt",
             "rows": 129,
             "burst": 129,
             "toTheGround": 0,
-            "medianAbsoluteErrorKm": 7.73,
-            "meanErrorKm": 6.72,
+            "medianAbsoluteErrorKm": 7.87,
+            "meanErrorKm": 6.55,
             "withinFiveKm": 46
           },
           {
@@ -2897,8 +2897,8 @@
             "rows": 28,
             "burst": 28,
             "toTheGround": 0,
-            "medianAbsoluteErrorKm": 7.28,
-            "meanErrorKm": 4.27,
+            "medianAbsoluteErrorKm": 7.26,
+            "meanErrorKm": 4.19,
             "withinFiveKm": 8
           },
           {
@@ -2906,18 +2906,18 @@
             "rows": 168,
             "burst": 167,
             "toTheGround": 1,
-            "medianAbsoluteErrorKm": 6.9,
-            "meanErrorKm": 4.36,
-            "withinFiveKm": 63
+            "medianAbsoluteErrorKm": 6.76,
+            "meanErrorKm": 4.11,
+            "withinFiveKm": 66
           },
           {
             "label": "from 17 km/s",
             "rows": 189,
             "burst": 188,
             "toTheGround": 1,
-            "medianAbsoluteErrorKm": 9.63,
-            "meanErrorKm": 8.52,
-            "withinFiveKm": 36
+            "medianAbsoluteErrorKm": 9.59,
+            "meanErrorKm": 8.34,
+            "withinFiveKm": 39
           }
         ],
         "iron": [
@@ -2926,8 +2926,8 @@
             "rows": 200,
             "burst": 11,
             "toTheGround": 189,
-            "medianAbsoluteErrorKm": 18.94,
-            "meanErrorKm": -18.9,
+            "medianAbsoluteErrorKm": 19.15,
+            "meanErrorKm": -19.55,
             "withinFiveKm": 0
           },
           {
@@ -2935,8 +2935,8 @@
             "rows": 129,
             "burst": 35,
             "toTheGround": 94,
-            "medianAbsoluteErrorKm": 21.94,
-            "meanErrorKm": -21.36,
+            "medianAbsoluteErrorKm": 22.18,
+            "meanErrorKm": -21.83,
             "withinFiveKm": 1
           },
           {
@@ -2944,8 +2944,8 @@
             "rows": 28,
             "burst": 22,
             "toTheGround": 6,
-            "medianAbsoluteErrorKm": 18.51,
-            "meanErrorKm": -19.67,
+            "medianAbsoluteErrorKm": 18.55,
+            "meanErrorKm": -20.3,
             "withinFiveKm": 1
           },
           {
@@ -2954,7 +2954,7 @@
             "burst": 14,
             "toTheGround": 154,
             "medianAbsoluteErrorKm": 26.75,
-            "meanErrorKm": -25.92,
+            "meanErrorKm": -25.99,
             "withinFiveKm": 0
           },
           {
@@ -2962,8 +2962,8 @@
             "rows": 189,
             "burst": 54,
             "toTheGround": 135,
-            "medianAbsoluteErrorKm": 18.95,
-            "meanErrorKm": -18.98,
+            "medianAbsoluteErrorKm": 19.19,
+            "meanErrorKm": -19.66,
             "withinFiveKm": 2
           }
         ]
@@ -6247,37 +6247,37 @@
           "median": 1,
           "p90": 1,
           "min": 1,
-          "max": 1.008
+          "max": 1
         },
         {
           "quantity": "burstAltitude",
           "pairs": 24,
-          "geometricMean": 1.002,
+          "geometricMean": 1,
           "p10": 1,
           "median": 1,
           "p90": 1,
           "min": 1,
-          "max": 1.049
+          "max": 1
         },
         {
           "quantity": "airburstOverpressure",
           "pairs": 24,
-          "geometricMean": 1.001,
+          "geometricMean": 1,
           "p10": 1,
           "median": 1,
           "p90": 1.001,
-          "min": 1,
-          "max": 1.006
+          "min": 0.999,
+          "max": 1.003
         },
         {
           "quantity": "airburstOverpressureHigh",
           "pairs": 24,
-          "geometricMean": 1.001,
+          "geometricMean": 1,
           "p10": 1,
           "median": 1,
           "p90": 1.001,
-          "min": 1,
-          "max": 1.006
+          "min": 0.999,
+          "max": 1.003
         },
         {
           "quantity": "groundVelocity",
@@ -6287,7 +6287,7 @@
           "median": 0.998,
           "p90": 1.006,
           "min": 0.968,
-          "max": 1.038
+          "max": 1.037
         },
         {
           "quantity": "transientDiameter",
@@ -6322,12 +6322,12 @@
         {
           "quantity": "overpressure",
           "pairs": 57,
-          "geometricMean": 1.466,
-          "p10": 0.77,
-          "median": 1.653,
-          "p90": 2.772,
-          "min": 0.236,
-          "max": 8.443
+          "geometricMean": 1,
+          "p10": 1,
+          "median": 1,
+          "p90": 1,
+          "min": 1,
+          "max": 1.001
         },
         {
           "quantity": "fireballRadius",
@@ -6337,7 +6337,7 @@
           "median": 1,
           "p90": 1,
           "min": 1,
-          "max": 1.001
+          "max": 1
         },
         {
           "quantity": "ejectaEdge",

@@ -574,6 +574,14 @@ and a scaled crossover of 92 m, against 290 for a burst on the ground, makes tha
 law was not adopted. What stands between it and adoption is now the entry, not
 the blast.
 
+**Closed the same night (rules 141 to 145, `validation/entryProgramRules.ts`).**
+The program's entry parts from its paper in two places: BM-13's doubled I_f,
+and an Eq. 20 without the −3(l/H)² term, which is 4 % of the bracket for a body
+that breaks low. On the program's entry the law held on sixteen new bodies —
+60 of 60 ground overpressures, 8 of 8 airburst ones, every breakup and burst
+altitude — and Nimbus now computes both as the program does, with the paper's
+equations where the program has no answer. BM-13 is no longer a departure.
+
 ## Deviations from the protocol
 
 1. **Kingery–Bulmash coefficients.** UFC 3-340-02 and Swisdak (1994) were

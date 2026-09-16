@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { atmosphericEntry, DEFAULT_ENTRY_EQUATIONS } from '../effects/atmosphericEntry.js';
-import { deg, degreesToRadians, J, kgPerM3, m, mps } from '../units.js';
+import { deg, degreesToRadians, J, kgPerM3, m, mps, Pa } from '../units.js';
 import {
   ENTRY_PROGRAM_BODIES,
   ENTRY_PROGRAM_MIN_AIRBURSTS,
@@ -47,8 +47,24 @@ describe('rule 141: where the program parts from the paper', () => {
     expect(Math.abs(high('program') / high('paper') - 1)).toBeLessThan(0.002);
   });
 
-  it('is not the default until rule 144 says so', () => {
-    expect(DEFAULT_ENTRY_EQUATIONS).toBe('paper');
+  it('is the default since rule 144', () => {
+    expect(DEFAULT_ENTRY_EQUATIONS).toBe('program');
+  });
+
+  it("uses the paper's equations where the program has no answer (rule 145)", () => {
+    // Sikhote-Alin's preset body: I_f 0.936, doubled 1.87. The paper breaks it
+    // at 6.0 km; read as whole, it dug a 129 m crater against 26 m observed.
+    const program = atmosphericEntry(
+      m(3),
+      mps(14_500),
+      Pa(5e7),
+      kgPerM3(7_800),
+      undefined,
+      degreesToRadians(deg(45)),
+      'program'
+    );
+    expect(program.regime).toBe('COMPLETE_AIRBURST');
+    expect(program.breakupAltitude as number).toBeCloseTo(6_016, -1);
   });
 });
 

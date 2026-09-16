@@ -2,7 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { CHONDRITIC_DENSITY } from '../constants.js';
 import { impactorMass, kineticEnergy } from '../events/impact/kinetic.js';
 import { deg, degreesToRadians, kgPerM3, m, mps, Pa } from '../units.js';
-import { IMPACTOR_STRENGTH, atmosphericEntry, collinsStrength } from './atmosphericEntry.js';
+import {
+  IMPACTOR_STRENGTH,
+  atmosphericEntry,
+  collinsStrength,
+  type EntryEquations,
+} from './atmosphericEntry.js';
 
 /**
  * Collins, Melosh & Marcus 2005's atmospheric entry. The grid in
@@ -15,7 +20,8 @@ const entry = (
   velocityMs: number,
   angleDeg: number,
   density: number,
-  strength?: number
+  strength?: number,
+  equations?: EntryEquations
 ) => {
   const D = m(diameterM);
   const v = mps(velocityMs);
@@ -26,7 +32,8 @@ const entry = (
     strength === undefined ? undefined : Pa(strength),
     rho,
     kineticEnergy(impactorMass(D, rho), v),
-    degreesToRadians(deg(angleDeg))
+    degreesToRadians(deg(angleDeg)),
+    equations
   );
 };
 
@@ -73,7 +80,10 @@ describe('atmospheric entry — Collins, Melosh & Marcus 2005', () => {
         else high = mid;
       }
       const label = `${diameterM.toString()} m at ${velocityMs.toString()} m/s`;
-      const r = entry(diameterM, velocityMs, angleDeg, density);
+      // The paper's equations: the program's doubled I_f (BM-13), the default
+      // since rule 144 of validation/entryProgramRules.ts, breaks a body lower
+      // than this root, as the program does.
+      const r = entry(diameterM, velocityMs, angleDeg, density, undefined, 'paper');
       expect(r.regime, label).not.toBe('INTACT');
       expect(Math.abs((r.breakupAltitude as number) - low), label).toBeLessThan(50);
     }

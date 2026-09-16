@@ -1,0 +1,1094 @@
+{
+ "reference": "Earth Impact Effects Program, impact.ese.ic.ac.uk (Collins, Melosh & Marcus 2005)",
+ "readOn": "2026-09-16",
+ "rows": [
+  {
+   "key": "body 1 range 1",
+   "diameterM": 131.611,
+   "densityKgM3": 4406.2,
+   "velocityKmS": 21.781,
+   "angleDeg": 29.52,
+   "target": "sedimentary",
+   "rangeKm": 3.069,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 44664.0,
+   "overpressurePa": [
+    1773066.158,
+    1773066.158
+   ]
+  },
+  {
+   "key": "body 1 range 2",
+   "diameterM": 131.611,
+   "densityKgM3": 4406.2,
+   "velocityKmS": 21.781,
+   "angleDeg": 29.52,
+   "target": "sedimentary",
+   "rangeKm": 4.822,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 44664.0,
+   "overpressurePa": [
+    650463.099,
+    650463.099
+   ]
+  },
+  {
+   "key": "body 1 range 3",
+   "diameterM": 131.611,
+   "densityKgM3": 4406.2,
+   "velocityKmS": 21.781,
+   "angleDeg": 29.52,
+   "target": "sedimentary",
+   "rangeKm": 85.962,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 44664.0,
+   "overpressurePa": [
+    3732.52,
+    3732.52
+   ]
+  },
+  {
+   "key": "body 1 range 4",
+   "diameterM": 131.611,
+   "densityKgM3": 4406.2,
+   "velocityKmS": 21.781,
+   "angleDeg": 29.52,
+   "target": "sedimentary",
+   "rangeKm": 312.769,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 44664.0,
+   "overpressurePa": [
+    848.567,
+    848.567
+   ]
+  },
+  {
+   "key": "body 1 range 5",
+   "diameterM": 131.611,
+   "densityKgM3": 4406.2,
+   "velocityKmS": 21.781,
+   "angleDeg": 29.52,
+   "target": "sedimentary",
+   "rangeKm": 6.01,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 44664.0,
+   "overpressurePa": [
+    402420.744,
+    402420.744
+   ]
+  },
+  {
+   "key": "body 2 range 1",
+   "diameterM": 226.058,
+   "densityKgM3": 4169.8,
+   "velocityKmS": 12.005,
+   "angleDeg": 68.06,
+   "target": "sedimentary",
+   "rangeKm": 11.769,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 37208.0,
+   "overpressurePa": [
+    24818.025,
+    24818.025
+   ]
+  },
+  {
+   "key": "body 2 range 2",
+   "diameterM": 226.058,
+   "densityKgM3": 4169.8,
+   "velocityKmS": 12.005,
+   "angleDeg": 68.06,
+   "target": "sedimentary",
+   "rangeKm": 49.989,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 37208.0,
+   "overpressurePa": [
+    2962.394,
+    2962.394
+   ]
+  },
+  {
+   "key": "body 2 range 3",
+   "diameterM": 226.058,
+   "densityKgM3": 4169.8,
+   "velocityKmS": 12.005,
+   "angleDeg": 68.06,
+   "target": "sedimentary",
+   "rangeKm": 44.466,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 37208.0,
+   "overpressurePa": [
+    3426.18,
+    3426.18
+   ]
+  },
+  {
+   "key": "body 2 range 4",
+   "diameterM": 226.058,
+   "densityKgM3": 4169.8,
+   "velocityKmS": 12.005,
+   "angleDeg": 68.06,
+   "target": "sedimentary",
+   "rangeKm": 2.741,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 37208.0,
+   "overpressurePa": [
+    456676.503,
+    456676.503
+   ]
+  },
+  {
+   "key": "body 2 range 5",
+   "diameterM": 226.058,
+   "densityKgM3": 4169.8,
+   "velocityKmS": 12.005,
+   "angleDeg": 68.06,
+   "target": "sedimentary",
+   "rangeKm": 1.822,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 37208.0,
+   "overpressurePa": [
+    1121289.857,
+    1121289.857
+   ]
+  },
+  {
+   "key": "body 3 range 1",
+   "diameterM": 126.955,
+   "densityKgM3": 4803.2,
+   "velocityKmS": 13.021,
+   "angleDeg": 82.05,
+   "target": "sedimentary",
+   "rangeKm": 3.805,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 33064.0,
+   "overpressurePa": [
+    30499.044,
+    30499.044
+   ]
+  },
+  {
+   "key": "body 3 range 2",
+   "diameterM": 126.955,
+   "densityKgM3": 4803.2,
+   "velocityKmS": 13.021,
+   "angleDeg": 82.05,
+   "target": "sedimentary",
+   "rangeKm": 98.384,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 33064.0,
+   "overpressurePa": [
+    461.372,
+    461.372
+   ]
+  },
+  {
+   "key": "body 3 range 3",
+   "diameterM": 126.955,
+   "densityKgM3": 4803.2,
+   "velocityKmS": 13.021,
+   "angleDeg": 82.05,
+   "target": "sedimentary",
+   "rangeKm": 1.389,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 33064.0,
+   "overpressurePa": [
+    223255.401,
+    223255.401
+   ]
+  },
+  {
+   "key": "body 3 range 4",
+   "diameterM": 126.955,
+   "densityKgM3": 4803.2,
+   "velocityKmS": 13.021,
+   "angleDeg": 82.05,
+   "target": "sedimentary",
+   "rangeKm": 344.698,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 33064.0,
+   "overpressurePa": [
+    129.247,
+    129.247
+   ]
+  },
+  {
+   "key": "body 3 range 5",
+   "diameterM": 126.955,
+   "densityKgM3": 4803.2,
+   "velocityKmS": 13.021,
+   "angleDeg": 82.05,
+   "target": "sedimentary",
+   "rangeKm": 72.064,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 33064.0,
+   "overpressurePa": [
+    637.115,
+    637.115
+   ]
+  },
+  {
+   "key": "body 4 range 1",
+   "diameterM": 74.872,
+   "densityKgM3": 6711.5,
+   "velocityKmS": 17.17,
+   "angleDeg": 47.08,
+   "target": "crystalline",
+   "rangeKm": 2.748,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 22940.0,
+   "overpressurePa": [
+    186325.358,
+    186325.358
+   ]
+  },
+  {
+   "key": "body 4 range 2",
+   "diameterM": 74.872,
+   "densityKgM3": 6711.5,
+   "velocityKmS": 17.17,
+   "angleDeg": 47.08,
+   "target": "crystalline",
+   "rangeKm": 34.003,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 22940.0,
+   "overpressurePa": [
+    2850.015,
+    2850.015
+   ]
+  },
+  {
+   "key": "body 4 range 3",
+   "diameterM": 74.872,
+   "densityKgM3": 6711.5,
+   "velocityKmS": 17.17,
+   "angleDeg": 47.08,
+   "target": "crystalline",
+   "rangeKm": 4.626,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 22940.0,
+   "overpressurePa": [
+    64800.134,
+    64800.134
+   ]
+  },
+  {
+   "key": "body 4 range 4",
+   "diameterM": 74.872,
+   "densityKgM3": 6711.5,
+   "velocityKmS": 17.17,
+   "angleDeg": 47.08,
+   "target": "crystalline",
+   "rangeKm": 0.874,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 22940.0,
+   "overpressurePa": [
+    2281067.805,
+    2281067.805
+   ]
+  },
+  {
+   "key": "body 4 range 5",
+   "diameterM": 74.872,
+   "densityKgM3": 6711.5,
+   "velocityKmS": 17.17,
+   "angleDeg": 47.08,
+   "target": "crystalline",
+   "rangeKm": 204.191,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 22940.0,
+   "overpressurePa": [
+    402.112,
+    402.112
+   ]
+  },
+  {
+   "key": "body 5 range 1",
+   "diameterM": 49.339,
+   "densityKgM3": 7847.7,
+   "velocityKmS": 12.027,
+   "angleDeg": 27.78,
+   "target": "crystalline",
+   "rangeKm": 6.039,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 8989.0,
+   "overpressurePa": [
+    22889.612,
+    22889.612
+   ]
+  },
+  {
+   "key": "body 5 range 2",
+   "diameterM": 49.339,
+   "densityKgM3": 7847.7,
+   "velocityKmS": 12.027,
+   "angleDeg": 27.78,
+   "target": "crystalline",
+   "rangeKm": 349.162,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 8989.0,
+   "overpressurePa": [
+    172.559,
+    172.559
+   ]
+  },
+  {
+   "key": "body 5 range 3",
+   "diameterM": 49.339,
+   "densityKgM3": 7847.7,
+   "velocityKmS": 12.027,
+   "angleDeg": 27.78,
+   "target": "crystalline",
+   "rangeKm": 4.654,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 8989.0,
+   "overpressurePa": [
+    36489.787,
+    36489.787
+   ]
+  },
+  {
+   "key": "body 5 range 4",
+   "diameterM": 49.339,
+   "densityKgM3": 7847.7,
+   "velocityKmS": 12.027,
+   "angleDeg": 27.78,
+   "target": "crystalline",
+   "rangeKm": 13.66,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 8989.0,
+   "overpressurePa": [
+    6367.147,
+    6367.147
+   ]
+  },
+  {
+   "key": "body 5 range 5",
+   "diameterM": 49.339,
+   "densityKgM3": 7847.7,
+   "velocityKmS": 12.027,
+   "angleDeg": 27.78,
+   "target": "crystalline",
+   "rangeKm": 0.852,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 8989.0,
+   "overpressurePa": [
+    1243662.419,
+    1243662.419
+   ]
+  },
+  {
+   "key": "body 6 range 1",
+   "diameterM": 65.966,
+   "densityKgM3": 5586.4,
+   "velocityKmS": 15.943,
+   "angleDeg": 84.95,
+   "target": "sedimentary",
+   "rangeKm": 166.861,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 30041.0,
+   "overpressurePa": [
+    221.13,
+    221.13
+   ]
+  },
+  {
+   "key": "body 6 range 2",
+   "diameterM": 65.966,
+   "densityKgM3": 5586.4,
+   "velocityKmS": 15.943,
+   "angleDeg": 84.95,
+   "target": "sedimentary",
+   "rangeKm": 48.058,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 30041.0,
+   "overpressurePa": [
+    796.167,
+    796.167
+   ]
+  },
+  {
+   "key": "body 6 range 3",
+   "diameterM": 65.966,
+   "densityKgM3": 5586.4,
+   "velocityKmS": 15.943,
+   "angleDeg": 84.95,
+   "target": "sedimentary",
+   "rangeKm": 0.802,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 30041.0,
+   "overpressurePa": [
+    479646.694,
+    479646.694
+   ]
+  },
+  {
+   "key": "body 6 range 4",
+   "diameterM": 65.966,
+   "densityKgM3": 5586.4,
+   "velocityKmS": 15.943,
+   "angleDeg": 84.95,
+   "target": "sedimentary",
+   "rangeKm": 1.073,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 30041.0,
+   "overpressurePa": [
+    256287.23,
+    256287.23
+   ]
+  },
+  {
+   "key": "body 6 range 5",
+   "diameterM": 65.966,
+   "densityKgM3": 5586.4,
+   "velocityKmS": 15.943,
+   "angleDeg": 84.95,
+   "target": "sedimentary",
+   "rangeKm": 167.328,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 30041.0,
+   "overpressurePa": [
+    220.506,
+    220.506
+   ]
+  },
+  {
+   "key": "body 7 range 1",
+   "diameterM": 38.654,
+   "densityKgM3": 6707.7,
+   "velocityKmS": 22.014,
+   "angleDeg": 68.51,
+   "target": "crystalline",
+   "rangeKm": 0.596,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 26947.0,
+   "overpressurePa": [
+    8839834.316,
+    8839834.316
+   ]
+  },
+  {
+   "key": "body 7 range 2",
+   "diameterM": 38.654,
+   "densityKgM3": 6707.7,
+   "velocityKmS": 22.014,
+   "angleDeg": 68.51,
+   "target": "crystalline",
+   "rangeKm": 23.963,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 26947.0,
+   "overpressurePa": [
+    5939.965,
+    5939.965
+   ]
+  },
+  {
+   "key": "body 7 range 3",
+   "diameterM": 38.654,
+   "densityKgM3": 6707.7,
+   "velocityKmS": 22.014,
+   "angleDeg": 68.51,
+   "target": "crystalline",
+   "rangeKm": 235.483,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 26947.0,
+   "overpressurePa": [
+    433.465,
+    433.465
+   ]
+  },
+  {
+   "key": "body 7 range 4",
+   "diameterM": 38.654,
+   "densityKgM3": 6707.7,
+   "velocityKmS": 22.014,
+   "angleDeg": 68.51,
+   "target": "crystalline",
+   "rangeKm": 2.212,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 26947.0,
+   "overpressurePa": [
+    469967.98,
+    469967.98
+   ]
+  },
+  {
+   "key": "body 7 range 5",
+   "diameterM": 38.654,
+   "densityKgM3": 6707.7,
+   "velocityKmS": 22.014,
+   "angleDeg": 68.51,
+   "target": "crystalline",
+   "rangeKm": 397.102,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 26947.0,
+   "overpressurePa": [
+    254.345,
+    254.345
+   ]
+  },
+  {
+   "key": "body 8 range 1",
+   "diameterM": 277.627,
+   "densityKgM3": 4242.1,
+   "velocityKmS": 12.658,
+   "angleDeg": 42.44,
+   "target": "sedimentary",
+   "rangeKm": 290.664,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 37414.0,
+   "overpressurePa": [
+    917.543,
+    917.543
+   ]
+  },
+  {
+   "key": "body 8 range 2",
+   "diameterM": 277.627,
+   "densityKgM3": 4242.1,
+   "velocityKmS": 12.658,
+   "angleDeg": 42.44,
+   "target": "sedimentary",
+   "rangeKm": 120.094,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 37414.0,
+   "overpressurePa": [
+    2471.806,
+    2471.806
+   ]
+  },
+  {
+   "key": "body 8 range 3",
+   "diameterM": 277.627,
+   "densityKgM3": 4242.1,
+   "velocityKmS": 12.658,
+   "angleDeg": 42.44,
+   "target": "sedimentary",
+   "rangeKm": 1.975,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 37414.0,
+   "overpressurePa": [
+    4788453.324,
+    4788453.324
+   ]
+  },
+  {
+   "key": "body 8 range 4",
+   "diameterM": 277.627,
+   "densityKgM3": 4242.1,
+   "velocityKmS": 12.658,
+   "angleDeg": 42.44,
+   "target": "sedimentary",
+   "rangeKm": 55.43,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 37414.0,
+   "overpressurePa": [
+    6734.842,
+    6734.842
+   ]
+  },
+  {
+   "key": "body 8 range 5",
+   "diameterM": 277.627,
+   "densityKgM3": 4242.1,
+   "velocityKmS": 12.658,
+   "angleDeg": 42.44,
+   "target": "sedimentary",
+   "rangeKm": 311.234,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 37414.0,
+   "overpressurePa": [
+    853.078,
+    853.078
+   ]
+  },
+  {
+   "key": "body 9 range 1",
+   "diameterM": 4401.104,
+   "densityKgM3": 6769.8,
+   "velocityKmS": 29.861,
+   "angleDeg": 46.19,
+   "target": "sedimentary",
+   "rangeKm": 152.423,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 31440.0,
+   "overpressurePa": [
+    3251561.561,
+    3251561.561
+   ]
+  },
+  {
+   "key": "body 9 range 2",
+   "diameterM": 4401.104,
+   "densityKgM3": 6769.8,
+   "velocityKmS": 29.861,
+   "angleDeg": 46.19,
+   "target": "sedimentary",
+   "rangeKm": 244.16,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 31440.0,
+   "overpressurePa": [
+    1130991.421,
+    1130991.421
+   ]
+  },
+  {
+   "key": "body 9 range 3",
+   "diameterM": 4401.104,
+   "densityKgM3": 6769.8,
+   "velocityKmS": 29.861,
+   "angleDeg": 46.19,
+   "target": "sedimentary",
+   "rangeKm": 47.215,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 31440.0,
+   "overpressurePa": [
+    46915130.1,
+    46915130.1
+   ]
+  },
+  {
+   "key": "body 9 range 4",
+   "diameterM": 4401.104,
+   "densityKgM3": 6769.8,
+   "velocityKmS": 29.861,
+   "angleDeg": 46.19,
+   "target": "sedimentary",
+   "rangeKm": 31.012,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 31440.0,
+   "overpressurePa": [
+    122975839.345,
+    122975839.345
+   ]
+  },
+  {
+   "key": "body 9 range 5",
+   "diameterM": 4401.104,
+   "densityKgM3": 6769.8,
+   "velocityKmS": 29.861,
+   "angleDeg": 46.19,
+   "target": "sedimentary",
+   "rangeKm": 75.54,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 31440.0,
+   "overpressurePa": [
+    16017509.28,
+    16017509.28
+   ]
+  },
+  {
+   "key": "body 10 range 1",
+   "diameterM": 94.457,
+   "densityKgM3": 4878.4,
+   "velocityKmS": 59.068,
+   "angleDeg": 79.56,
+   "target": "crystalline",
+   "rangeKm": 0.726,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 56646.0,
+   "overpressurePa": [
+    86417460.66,
+    86417460.66
+   ]
+  },
+  {
+   "key": "body 10 range 2",
+   "diameterM": 94.457,
+   "densityKgM3": 4878.4,
+   "velocityKmS": 59.068,
+   "angleDeg": 79.56,
+   "target": "crystalline",
+   "rangeKm": 152.123,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 56646.0,
+   "overpressurePa": [
+    2562.498,
+    2562.498
+   ]
+  },
+  {
+   "key": "body 10 range 3",
+   "diameterM": 94.457,
+   "densityKgM3": 4878.4,
+   "velocityKmS": 59.068,
+   "angleDeg": 79.56,
+   "target": "crystalline",
+   "rangeKm": 92.637,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 56646.0,
+   "overpressurePa": [
+    4793.808,
+    4793.808
+   ]
+  },
+  {
+   "key": "body 10 range 4",
+   "diameterM": 94.457,
+   "densityKgM3": 4878.4,
+   "velocityKmS": 59.068,
+   "angleDeg": 79.56,
+   "target": "crystalline",
+   "rangeKm": 294.008,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 56646.0,
+   "overpressurePa": [
+    1208.586,
+    1208.586
+   ]
+  },
+  {
+   "key": "body 10 range 5",
+   "diameterM": 94.457,
+   "densityKgM3": 4878.4,
+   "velocityKmS": 59.068,
+   "angleDeg": 79.56,
+   "target": "crystalline",
+   "rangeKm": 292.271,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 56646.0,
+   "overpressurePa": [
+    1216.442,
+    1216.442
+   ]
+  },
+  {
+   "key": "body 11 range 1",
+   "diameterM": 57.47,
+   "densityKgM3": 6453.2,
+   "velocityKmS": 40.186,
+   "angleDeg": 58.98,
+   "target": "sedimentary",
+   "rangeKm": 486.638,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 38421.0,
+   "overpressurePa": [
+    382.024,
+    382.024
+   ]
+  },
+  {
+   "key": "body 11 range 2",
+   "diameterM": 57.47,
+   "densityKgM3": 6453.2,
+   "velocityKmS": 40.186,
+   "angleDeg": 58.98,
+   "target": "sedimentary",
+   "rangeKm": 96.069,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 38421.0,
+   "overpressurePa": [
+    2190.481,
+    2190.481
+   ]
+  },
+  {
+   "key": "body 11 range 3",
+   "diameterM": 57.47,
+   "densityKgM3": 6453.2,
+   "velocityKmS": 40.186,
+   "angleDeg": 58.98,
+   "target": "sedimentary",
+   "rangeKm": 224.6,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 38421.0,
+   "overpressurePa": [
+    853.853,
+    853.853
+   ]
+  },
+  {
+   "key": "body 11 range 4",
+   "diameterM": 57.47,
+   "densityKgM3": 6453.2,
+   "velocityKmS": 40.186,
+   "angleDeg": 58.98,
+   "target": "sedimentary",
+   "rangeKm": 2.131,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 38421.0,
+   "overpressurePa": [
+    1937012.301,
+    1937012.301
+   ]
+  },
+  {
+   "key": "body 11 range 5",
+   "diameterM": 57.47,
+   "densityKgM3": 6453.2,
+   "velocityKmS": 40.186,
+   "angleDeg": 58.98,
+   "target": "sedimentary",
+   "rangeKm": 174.453,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 38421.0,
+   "overpressurePa": [
+    1119.925,
+    1119.925
+   ]
+  },
+  {
+   "key": "body 12 range 1",
+   "diameterM": 4422.97,
+   "densityKgM3": 3667.8,
+   "velocityKmS": 46.712,
+   "angleDeg": 51.47,
+   "target": "crystalline",
+   "rangeKm": 12.405,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 63562.0,
+   "overpressurePa": [
+    1286850582.302,
+    1286850582.302
+   ]
+  },
+  {
+   "key": "body 12 range 2",
+   "diameterM": 4422.97,
+   "densityKgM3": 3667.8,
+   "velocityKmS": 46.712,
+   "angleDeg": 51.47,
+   "target": "crystalline",
+   "rangeKm": 12.439,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 63562.0,
+   "overpressurePa": [
+    1278780152.473,
+    1278780152.473
+   ]
+  },
+  {
+   "key": "body 12 range 3",
+   "diameterM": 4422.97,
+   "densityKgM3": 3667.8,
+   "velocityKmS": 46.712,
+   "angleDeg": 51.47,
+   "target": "crystalline",
+   "rangeKm": 9.129,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 63562.0,
+   "overpressurePa": [
+    2604137180.527,
+    2604137180.527
+   ]
+  },
+  {
+   "key": "body 12 range 4",
+   "diameterM": 4422.97,
+   "densityKgM3": 3667.8,
+   "velocityKmS": 46.712,
+   "angleDeg": 51.47,
+   "target": "crystalline",
+   "rangeKm": 0.675,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 63562.0,
+   "overpressurePa": [
+    1039718917696.703,
+    1039718917696.703
+   ]
+  },
+  {
+   "key": "body 12 range 5",
+   "diameterM": 4422.97,
+   "densityKgM3": 3667.8,
+   "velocityKmS": 46.712,
+   "angleDeg": 51.47,
+   "target": "crystalline",
+   "rangeKm": 192.93,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 63562.0,
+   "overpressurePa": [
+    2427539.743,
+    2427539.743
+   ]
+  },
+  {
+   "key": "body 13 range 1",
+   "diameterM": 12.238,
+   "densityKgM3": 6904.4,
+   "velocityKmS": 58.258,
+   "angleDeg": 59.31,
+   "target": "crystalline",
+   "rangeKm": 104.269,
+   "error": null,
+   "burstAltitudeM": 17071.849,
+   "breakupAltitudeM": 41170.0,
+   "overpressurePa": [
+    611.966,
+    611.966
+   ]
+  },
+  {
+   "key": "body 13 range 2",
+   "diameterM": 12.238,
+   "densityKgM3": 6904.4,
+   "velocityKmS": 58.258,
+   "angleDeg": 59.31,
+   "target": "crystalline",
+   "rangeKm": 3.504,
+   "error": null,
+   "burstAltitudeM": 17071.849,
+   "breakupAltitudeM": 41170.0,
+   "overpressurePa": [
+    6248.336,
+    12496.672
+   ]
+  },
+  {
+   "key": "body 14 range 1",
+   "diameterM": 16.717,
+   "densityKgM3": 3287.4,
+   "velocityKmS": 17.621,
+   "angleDeg": 24.81,
+   "target": "sedimentary",
+   "rangeKm": 3.495,
+   "error": null,
+   "burstAltitudeM": 29045.66,
+   "breakupAltitudeM": 51648.0,
+   "overpressurePa": [
+    1180.103,
+    2360.206
+   ]
+  },
+  {
+   "key": "body 14 range 2",
+   "diameterM": 16.717,
+   "densityKgM3": 3287.4,
+   "velocityKmS": 17.621,
+   "angleDeg": 24.81,
+   "target": "sedimentary",
+   "rangeKm": 63.785,
+   "error": null,
+   "burstAltitudeM": 29045.66,
+   "breakupAltitudeM": 51648.0,
+   "overpressurePa": [
+    422.118,
+    844.236
+   ]
+  },
+  {
+   "key": "body 15 range 1",
+   "diameterM": 11.651,
+   "densityKgM3": 6583.4,
+   "velocityKmS": 27.75,
+   "angleDeg": 59.27,
+   "target": "sedimentary",
+   "rangeKm": 1.235,
+   "error": null,
+   "burstAltitudeM": 15120.809,
+   "breakupAltitudeM": 31474.0,
+   "overpressurePa": [
+    3600.125,
+    7200.25
+   ]
+  },
+  {
+   "key": "body 15 range 2",
+   "diameterM": 11.651,
+   "densityKgM3": 6583.4,
+   "velocityKmS": 27.75,
+   "angleDeg": 59.27,
+   "target": "sedimentary",
+   "rangeKm": 13.171,
+   "error": null,
+   "burstAltitudeM": 15120.809,
+   "breakupAltitudeM": 31474.0,
+   "overpressurePa": [
+    2473.387,
+    4946.774
+   ]
+  },
+  {
+   "key": "body 16 range 1",
+   "diameterM": 8.929,
+   "densityKgM3": 2772,
+   "velocityKmS": 45.333,
+   "angleDeg": 22.52,
+   "target": "crystalline",
+   "rangeKm": 9.987,
+   "error": null,
+   "burstAltitudeM": 43460.661,
+   "breakupAltitudeM": 72173.0,
+   "overpressurePa": [
+    761.473,
+    1522.946
+   ]
+  },
+  {
+   "key": "body 16 range 2",
+   "diameterM": 8.929,
+   "densityKgM3": 2772,
+   "velocityKmS": 45.333,
+   "angleDeg": 22.52,
+   "target": "crystalline",
+   "rangeKm": 3.517,
+   "error": null,
+   "burstAltitudeM": 43460.661,
+   "breakupAltitudeM": 72173.0,
+   "overpressurePa": [
+    781.917,
+    1563.834
+   ]
+  }
+ ]
+}

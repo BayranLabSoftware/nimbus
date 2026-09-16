@@ -1,4 +1,8 @@
-import { airburstOverpressureRange } from '../effects/airburstBlast.js';
+import {
+  airburstOverpressureRange,
+  DEFAULT_GROUND_BLAST,
+  groundImpactOverpressure,
+} from '../effects/airburstBlast.js';
 import { ejectaBlanketOuterEdge } from '../effects/ejecta.js';
 import { impactFireballRadius } from '../effects/blastWave.js';
 import { peakOverpressure } from '../events/explosion/overpressure.js';
@@ -99,12 +103,19 @@ export function eiepRatios(rows: readonly EiepRow[] = EIEP_REFERENCE): EiepRatio
       pair('airburstOverpressureHigh', p.high, row.overpressurePa[1]);
     }
     if (!airburst && row.overpressurePa !== null && row.overpressurePa !== undefined) {
+      const distance = m(row.distanceKm * 1_000);
+      const gf = r.entry.energyFractionToGround;
+      // The blast the model draws for an impact that reaches the ground: the
+      // program's own since rule 144 of entryProgramRules.ts.
       pair(
         'overpressure',
-        peakOverpressure({
-          distance: m(row.distanceKm * 1_000),
-          yieldEnergy: J(groundEnergy),
-        }),
+        DEFAULT_GROUND_BLAST === 'program'
+          ? groundImpactOverpressure({
+              groundRange: distance,
+              virtualBurstAltitude: r.entry.virtualBurstAltitude,
+              blastYield: J((r.impactor.kineticEnergy as number) * Math.max(gf, 1 - gf)),
+            })
+          : peakOverpressure({ distance, yieldEnergy: J(groundEnergy) }),
         row.overpressurePa[0]
       );
     }

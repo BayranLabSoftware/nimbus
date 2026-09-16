@@ -1354,6 +1354,30 @@ altitude to the root of Eq. 10 within 50 m, and `eiepComparison.test.ts`
 holds the program's altitudes on the grid to the doubled I_f within 0.1 %,
 so a change on either side shows.
 
+#### Amended on 16 September 2026: Nimbus follows the program
+
+The paragraph above kept the printed I_f because it solves the paper's
+physics. The gold standard was read against the field's own tool the same
+day, and the air blast of a ground impact then showed what keeping it costs:
+the program reads that blast from Eq. 18's altitude, and a body's breakup moves
+it. Its entry parts from the paper in one more place, found on a slow iron
+where the ground blast missed by 9 %: Eq. 20's bracket has no −3(l/H)² term,
+4 % of the bracket for a body that breaks low. Rules 141 to 145
+(`validation/entryProgramRules.ts`) put the program's entry and its ground
+blast to sixteen bodies nobody had asked it about, and everything agreed: 60
+ground overpressures, 8 airburst ones, 16 breakup and 4 burst altitudes. Nimbus
+now takes the doubled I_f and the program's Eq. 20. Where the doubled I_f
+would keep a body whole — the program cannot compute it and errs — the paper's
+equations are used: that is how Sikhote-Alin's body breaks at 6.0 km and digs
+26.7 m, where reading it as whole dug 129 m (rule 145, written after the
+adoption's first test run showed it). `atmosphericEntry.test.ts` now holds the
+paper's equations, reachable as `EntryEquations` `paper`, to the root of
+Eq. 10, and `eiepComparison.test.ts` the model's altitudes to the program's
+within 0.2 %. The price is in the invariants: the program's ground blast
+weakens at a fixed range as a larger body goes deeper, and 407 blast rings
+shrink as a body grows by 1 % where 167 did (see "The invariants after the
+campaign's fixes").
+
 ### The far wave against the deep ocean (15 September 2026)
 
 `scripts/benchmark/dart-records.py`, `dart-c0.ts`, `dart-c1.py`,

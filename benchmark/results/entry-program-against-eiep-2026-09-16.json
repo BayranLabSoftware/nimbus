@@ -1,0 +1,630 @@
+{
+ "rules": "src/physics/validation/entryProgramRules.ts, rules 141 to 144",
+ "verdict": {
+  "groundPoints": 60,
+  "groundBodies": 12,
+  "airbursts": 4,
+  "failing": 0,
+  "apart": 0,
+  "enough": true,
+  "heldOutPasses": true
+ },
+ "items": [
+  {
+   "body": 1,
+   "kind": "slow",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "44664.1 against 44664 m"
+  },
+  {
+   "body": 1,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "3.069 km: 1773856.050 against 1773066.158 Pa (×1.00045)"
+  },
+  {
+   "body": 1,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "4.822 km: 650747.136 against 650463.099 Pa (×1.00044)"
+  },
+  {
+   "body": 1,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "85.962 km: 3733.468 against 3732.52 Pa (×1.00025)"
+  },
+  {
+   "body": 1,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "312.769 km: 848.746 against 848.567 Pa (×1.00021)"
+  },
+  {
+   "body": 1,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "6.01 km: 402593.980 against 402420.744 Pa (×1.00043)"
+  },
+  {
+   "body": 2,
+   "kind": "slow",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "37208.5 against 37208 m"
+  },
+  {
+   "body": 2,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "11.769 km: 24840.996 against 24818.025 Pa (×1.00093)"
+  },
+  {
+   "body": 2,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "49.989 km: 2964.311 against 2962.394 Pa (×1.00065)"
+  },
+  {
+   "body": 2,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "44.466 km: 3428.451 against 3426.18 Pa (×1.00066)"
+  },
+  {
+   "body": 2,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "2.741 km: 457199.559 against 456676.503 Pa (×1.00115)"
+  },
+  {
+   "body": 2,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "1.822 km: 1122603.177 against 1121289.857 Pa (×1.00117)"
+  },
+  {
+   "body": 3,
+   "kind": "slow",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "33064.6 against 33064 m"
+  },
+  {
+   "body": 3,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "3.805 km: 30547.431 against 30499.044 Pa (×1.00159)"
+  },
+  {
+   "body": 3,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "98.384 km: 461.790 against 461.372 Pa (×1.00091)"
+  },
+  {
+   "body": 3,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "1.389 km: 223670.693 against 223255.401 Pa (×1.00186)"
+  },
+  {
+   "body": 3,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "344.698 km: 129.362 against 129.247 Pa (×1.00089)"
+  },
+  {
+   "body": 3,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "72.064 km: 637.700 against 637.115 Pa (×1.00092)"
+  },
+  {
+   "body": 4,
+   "kind": "slow",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "22940.8 against 22940 m"
+  },
+  {
+   "body": 4,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "2.748 km: 186459.986 against 186325.358 Pa (×1.00072)"
+  },
+  {
+   "body": 4,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "34.003 km: 2851.214 against 2850.015 Pa (×1.00042)"
+  },
+  {
+   "body": 4,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "4.626 km: 64843.720 against 64800.134 Pa (×1.00067)"
+  },
+  {
+   "body": 4,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "0.874 km: 2282835.487 against 2281067.805 Pa (×1.00077)"
+  },
+  {
+   "body": 4,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "204.191 km: 402.254 against 402.112 Pa (×1.00035)"
+  },
+  {
+   "body": 5,
+   "kind": "slow",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "8990.6 against 8989 m"
+  },
+  {
+   "body": 5,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "6.039 km: 22908.219 against 22889.612 Pa (×1.00081)"
+  },
+  {
+   "body": 5,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "349.162 km: 172.641 against 172.559 Pa (×1.00047)"
+  },
+  {
+   "body": 5,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "4.654 km: 36521.238 against 36489.787 Pa (×1.00086)"
+  },
+  {
+   "body": 5,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "13.66 km: 6371.334 against 6367.147 Pa (×1.00066)"
+  },
+  {
+   "body": 5,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "0.852 km: 1244958.313 against 1243662.419 Pa (×1.00104)"
+  },
+  {
+   "body": 6,
+   "kind": "slow",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "30041.2 against 30041 m"
+  },
+  {
+   "body": 6,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "166.861 km: 221.262 against 221.13 Pa (×1.00060)"
+  },
+  {
+   "body": 6,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "48.058 km: 796.663 against 796.167 Pa (×1.00062)"
+  },
+  {
+   "body": 6,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "0.802 km: 480261.677 against 479646.694 Pa (×1.00128)"
+  },
+  {
+   "body": 6,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "1.073 km: 256608.389 against 256287.23 Pa (×1.00125)"
+  },
+  {
+   "body": 6,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "167.328 km: 220.637 against 220.506 Pa (×1.00059)"
+  },
+  {
+   "body": 7,
+   "kind": "slow",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "26947.9 against 26947 m"
+  },
+  {
+   "body": 7,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "0.596 km: 8843614.088 against 8839834.316 Pa (×1.00043)"
+  },
+  {
+   "body": 7,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "23.963 km: 5941.514 against 5939.965 Pa (×1.00026)"
+  },
+  {
+   "body": 7,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "235.483 km: 433.549 against 433.465 Pa (×1.00019)"
+  },
+  {
+   "body": 7,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "2.212 km: 470160.074 against 469967.98 Pa (×1.00041)"
+  },
+  {
+   "body": 7,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "397.102 km: 254.393 against 254.345 Pa (×1.00019)"
+  },
+  {
+   "body": 8,
+   "kind": "slow",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "37414.9 against 37414 m"
+  },
+  {
+   "body": 8,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "290.664 km: 917.861 against 917.543 Pa (×1.00035)"
+  },
+  {
+   "body": 8,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "120.094 km: 2472.764 against 2471.806 Pa (×1.00039)"
+  },
+  {
+   "body": 8,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "1.975 km: 4791973.764 against 4788453.324 Pa (×1.00074)"
+  },
+  {
+   "body": 8,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "55.43 km: 6737.946 against 6734.842 Pa (×1.00046)"
+  },
+  {
+   "body": 8,
+   "kind": "slow",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "311.234 km: 853.372 against 853.078 Pa (×1.00034)"
+  },
+  {
+   "body": 9,
+   "kind": "general",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "31440.8 against 31440 m"
+  },
+  {
+   "body": 9,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "152.423 km: 3252791.602 against 3251561.561 Pa (×1.00038)"
+  },
+  {
+   "body": 9,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "244.16 km: 1131412.771 against 1130991.421 Pa (×1.00037)"
+  },
+  {
+   "body": 9,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "47.215 km: 46933140.910 against 46915130.1 Pa (×1.00038)"
+  },
+  {
+   "body": 9,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "31.012 km: 123023133.354 against 122975839.345 Pa (×1.00038)"
+  },
+  {
+   "body": 9,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "75.54 km: 16023636.920 against 16017509.28 Pa (×1.00038)"
+  },
+  {
+   "body": 10,
+   "kind": "general",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "56646.1 against 56646 m"
+  },
+  {
+   "body": 10,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "0.726 km: 86462118.115 against 86417460.66 Pa (×1.00052)"
+  },
+  {
+   "body": 10,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "152.123 km: 2563.190 against 2562.498 Pa (×1.00027)"
+  },
+  {
+   "body": 10,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "92.637 km: 4795.249 against 4793.808 Pa (×1.00030)"
+  },
+  {
+   "body": 10,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "294.008 km: 1208.884 against 1208.586 Pa (×1.00025)"
+  },
+  {
+   "body": 10,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "292.271 km: 1216.742 against 1216.442 Pa (×1.00025)"
+  },
+  {
+   "body": 11,
+   "kind": "general",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "38421.5 against 38421 m"
+  },
+  {
+   "body": 11,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "486.638 km: 382.104 against 382.024 Pa (×1.00021)"
+  },
+  {
+   "body": 11,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "96.069 km: 2191.006 against 2190.481 Pa (×1.00024)"
+  },
+  {
+   "body": 11,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "224.6 km: 854.039 against 853.853 Pa (×1.00022)"
+  },
+  {
+   "body": 11,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "2.131 km: 1937900.175 against 1937012.301 Pa (×1.00046)"
+  },
+  {
+   "body": 11,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "174.453 km: 1120.174 against 1119.925 Pa (×1.00022)"
+  },
+  {
+   "body": 12,
+   "kind": "general",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "63562.3 against 63562 m"
+  },
+  {
+   "body": 12,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "12.405 km: 1287342783.576 against 1286850582.302 Pa (×1.00038)"
+  },
+  {
+   "body": 12,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "12.439 km: 1279269265.799 against 1278780152.473 Pa (×1.00038)"
+  },
+  {
+   "body": 12,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "9.129 km: 2605133436.243 against 2604137180.527 Pa (×1.00038)"
+  },
+  {
+   "body": 12,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "0.675 km: 1040116846378.032 against 1039718917696.703 Pa (×1.00038)"
+  },
+  {
+   "body": 12,
+   "kind": "general",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "192.93 km: 2428448.353 against 2427539.743 Pa (×1.00037)"
+  },
+  {
+   "body": 13,
+   "kind": "airburst",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "41170.8 against 41170 m"
+  },
+  {
+   "body": 13,
+   "kind": "airburst",
+   "what": "burst altitude",
+   "agrees": true,
+   "detail": "17071.9 against 17071.849 m"
+  },
+  {
+   "body": 13,
+   "kind": "airburst",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "104.269 km: 611.722 against 611.966 Pa (×0.99960)"
+  },
+  {
+   "body": 13,
+   "kind": "airburst",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "3.504 km: 6245.078 against 6248.336 Pa (×0.99948)"
+  },
+  {
+   "body": 14,
+   "kind": "airburst",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "51648.6 against 51648 m"
+  },
+  {
+   "body": 14,
+   "kind": "airburst",
+   "what": "burst altitude",
+   "agrees": true,
+   "detail": "29045.7 against 29045.66 m"
+  },
+  {
+   "body": 14,
+   "kind": "airburst",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "3.495 km: 1181.110 against 1180.103 Pa (×1.00085)"
+  },
+  {
+   "body": 14,
+   "kind": "airburst",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "63.785 km: 422.461 against 422.118 Pa (×1.00081)"
+  },
+  {
+   "body": 15,
+   "kind": "airburst",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "31474.8 against 31474 m"
+  },
+  {
+   "body": 15,
+   "kind": "airburst",
+   "what": "burst altitude",
+   "agrees": true,
+   "detail": "15120.9 against 15120.809 m"
+  },
+  {
+   "body": 15,
+   "kind": "airburst",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "1.235 km: 3594.060 against 3600.125 Pa (×0.99832)"
+  },
+  {
+   "body": 15,
+   "kind": "airburst",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "13.171 km: 2469.452 against 2473.387 Pa (×0.99841)"
+  },
+  {
+   "body": 16,
+   "kind": "airburst",
+   "what": "breakup altitude",
+   "agrees": true,
+   "detail": "72173.5 against 72173 m"
+  },
+  {
+   "body": 16,
+   "kind": "airburst",
+   "what": "burst altitude",
+   "agrees": true,
+   "detail": "43460.7 against 43460.661 m"
+  },
+  {
+   "body": 16,
+   "kind": "airburst",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "9.987 km: 761.708 against 761.473 Pa (×1.00031)"
+  },
+  {
+   "body": 16,
+   "kind": "airburst",
+   "what": "overpressure",
+   "agrees": true,
+   "detail": "3.517 km: 782.158 against 781.917 Pa (×1.00031)"
+  }
+ ]
+}

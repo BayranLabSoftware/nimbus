@@ -208,7 +208,7 @@ export function airburstOverpressureRange(input: AirburstBlastInput): {
 export type GroundBlast = 'project' | 'program';
 
 /** What an impact that names no ground blast draws. */
-export const DEFAULT_GROUND_BLAST: GroundBlast = 'project';
+export const DEFAULT_GROUND_BLAST: GroundBlast = 'program';
 
 export interface GroundImpactBlastInput {
   /** Distance along the ground from the point of impact (m). */
