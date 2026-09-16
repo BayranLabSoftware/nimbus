@@ -984,9 +984,15 @@ check is a consistency check across two figures rather than the reproduction of
 an example on the figure traced, and it is weaker than it was described as
 being. The numbers are unchanged and correct for the figure they came from; the
 sentence describing them was not, and is corrected in every place it appeared.
-Tracing Figure 12.65 — which would also give the product the book's own 18 %
-and 82 % bands around each ring — is a round nobody has run, and is now a
-declared gap of the validation report.
+Figure 12.65 was then traced as well, the same night
+(`scripts/benchmark/burn-probability-curves.py`), so the difference could be
+read instead of argued about. It reproduces its own worked example on its own
+figure — at 1 Mt its 18 %-second-degree band runs 4.71 to 6.25 cal/cm² where
+§12.65 reads 4.5 to 6 — and set beside it, 12.64's middle pigmentation asks 2 to
+14 % more exposure, so the rings drawn are 1 to 7 % narrower than 50 % rings.
+Nothing is adopted on that reading: which figure a simulator should draw is a
+choice about what a ring means, and it belongs to Andrea. The table is in
+docs/SCIENCE.md and the difference is a declared gap of the validation report.
 
 ### The outcome, 16 September 2026
 

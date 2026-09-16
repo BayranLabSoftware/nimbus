@@ -2284,13 +2284,40 @@ Where the two stand beside each other is this. At 1 Mt the traced first-degree
 curve for a middling skin asks 3.32 cal/cm², below the 4.5-to-6 band in which
 §12.65 puts 18 % of an exposed population at second-degree burns and the rest
 at first; the traced second-degree curve asks 6.30, just above that band.
-Whether the rings the simulator now draws are wider or narrower than 12.65's
-50 % rings is not settled here, because 12.65 has not been traced. The numbers
-are unchanged and correct for the figure they came from; what was wrong was the
-sentence describing them, and it is corrected in the rules' own text, in the
-report's declared gaps and here. Reading Figure 12.65 instead — which would
-also give the product the book's own 18 % and 82 % bands around each ring — is
-a round nobody has run.
+The numbers are unchanged and correct for the figure they came from; what was
+wrong was the sentence describing them, and it is corrected in the rules' own
+text, in the report's declared gaps and here.
+
+Figure 12.65 was then traced as well, the same night, so that the difference
+could be read rather than argued about (`scripts/benchmark/burn-probability-curves.py`;
+nothing in the product moves on it). It reproduces its own worked example on
+its own figure, which the 12.64 trace could not: at 1 Mt the 18 %-second-degree
+band runs 4.71 to 6.25 cal/cm² where §12.65 reads 4.5 to 6. Its seven curves at
+1 kt and 10 Mt, in cal/cm²:
+
+| curve                           | 1 kt | 10 Mt |
+| ------------------------------- | ---: | ----: |
+| 100 % third-degree              | 6.99 | 12.80 |
+| 50 % third-degree               | 5.97 | 10.98 |
+| 18 % third-degree, 82 % second  | 4.99 |  8.56 |
+| 50 % second-degree              | 3.97 |  7.00 |
+| 18 % second-degree, 82 % first  | 2.87 |  5.32 |
+| 50 % first-degree               | 1.92 |  3.64 |
+| 18 % first-degree, 82 % no burn | 1.11 |  2.19 |
+
+Set beside them, 12.64's middle pigmentation asks a little more exposure than
+12.65's 50 % line everywhere: 8 % more at 1 kt and 14 % at 10 Mt for a
+first-degree burn, 2 % and 9 % for a second, 4 % and 7 % for a third. Since a
+ring goes as the inverse square root of the exposure it is drawn at, the rings
+this product draws are between 1 % and 7 % narrower than 50 % rings would be —
+a real difference, and a small one.
+
+So the choice is not between a right figure and a wrong one. It is between
+drawing the exposure a burn needs on an average skin, which is what the product
+does, and drawing the exposure at which half of a mixed population burns, which
+would also come with the book's own 18 % and 82 % bands and give every ring a
+band instead of a line. That is a choice about what a ring is meant to mean,
+and it is Andrea's to make; nothing has been adopted on it.
 
 ### The entry model against the bolides (16 September 2026)
 
