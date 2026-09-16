@@ -71,6 +71,25 @@ export function combineImpactFlashes(
   return m(combiner === 'sum' ? Math.hypot(g, a) : Math.max(g, a));
 }
 
+/**
+ * How an impact's thermal exposure is computed.
+ *
+ * - `project`: the energy that reaches the ground radiated over a sphere,
+ *   4π Δ², at every range.
+ * - `program`: as the Earth Impact Effects Program computes it
+ *   (effects/impactThermal.ts; rules 146 to 149 of
+ *   validation/impactThermalRules.ts): over the half-space above the ground,
+ *   2π Δ², and dimmed by the share of the fireball still above the observer's
+ *   horizon (Collins et al.'s Eq. 36*). The flash of the energy left in the
+ *   air, which the program does not compute, keeps the project's sphere, and
+ *   the two add. The exposures a burn or a fire needs stay the project's
+ *   (rule 81 of validation/burnRules.ts).
+ */
+export type ImpactThermal = 'project' | 'program';
+
+/** What an impact that names no thermal law uses. */
+export const DEFAULT_IMPACT_THERMAL: ImpactThermal = 'project';
+
 export interface ImpactDamageRadii {
   craterRim: Meters;
   thirdDegreeBurn: Meters;

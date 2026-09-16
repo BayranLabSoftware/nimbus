@@ -49,6 +49,7 @@ def main():
                 "error": error,
                 "burstAltitudeM": got.get("burstAltitudeM"),
                 "breakupAltitudeM": got.get("breakupAltitudeM"),
+                "fireballRadiiM": got.get("fireballRadiiM"),
                 "overpressurePa": got.get("overpressurePa"),
             }
         )

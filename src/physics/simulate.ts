@@ -11,7 +11,14 @@ import {
   finalCraterDiameter,
   transientCraterDiameter,
 } from './events/impact/crater.js';
-import { EARTH_RADIUS, IMPACT_LUMINOUS_EFFICIENCY } from './constants.js';
+import {
+  EARTH_RADIUS,
+  FLAMMABLE_IGNITION_FLUENCE,
+  IMPACT_LUMINOUS_EFFICIENCY,
+  SECOND_DEGREE_BURN_FLUENCE,
+  THIRD_DEGREE_BURN_FLUENCE,
+  URBAN_FIRESTORM_FLUENCE,
+} from './constants.js';
 import {
   climateTier,
   shockAcidRainMass,
@@ -37,12 +44,14 @@ import {
 } from './effects/ejecta.js';
 import { impactFireballRadius } from './effects/blastWave.js';
 import { DEFAULT_GROUND_BLAST, groundImpactReach } from './effects/airburstBlast.js';
+import { fluenceReach, impactThermalExposure } from './effects/impactThermal.js';
 import { firestormSustainRadius, flammableIgnitionRadius } from './effects/firestorm.js';
 import { thermalHorizonRadius } from './casualties.js';
 import { oceanCouplingPartition } from './effects/oceanCoupling.js';
 import { liquefactionRadius } from './events/earthquake/liquefaction.js';
 import {
   combineImpactFlashes,
+  DEFAULT_IMPACT_THERMAL,
   impactDamageRadii,
   OVERPRESSURE_BUILDING_COLLAPSE,
   OVERPRESSURE_LIGHT_DAMAGE,
@@ -551,6 +560,16 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     Math.PI * earthRadius
   );
   const seen = (radius: Meters): Meters => m(Math.min(radius, flashReach));
+  // The thermal exposure the burn and fire rings are drawn on: the project's
+  // spheres, or the program's fireball on the ground plus the project's flash
+  // in the air (`ImpactThermal` in events/impact/damageRings.ts).
+  const groundThermalEnergy = J((ke as number) * Math.max(gf, 0));
+  const airThermalEnergy = entry.atmosphericYieldMegatons * 4.184e15;
+  const thermalFluence = (range: number): number =>
+    impactThermalExposure(m(range), groundThermalEnergy) +
+    (IMPACT_LUMINOUS_EFFICIENCY * airThermalEnergy) / (4 * Math.PI * range * range);
+  const thermalRing = (projectRing: Meters, exposure: number): Meters =>
+    DEFAULT_IMPACT_THERMAL === 'program' ? fluenceReach(thermalFluence, exposure) : projectRing;
   // The blast of a body or swarm that reaches the ground: the larger of the
   // project's two Kinney–Graham rings, or the Earth Impact Effects Program's
   // own reading of it (effects/airburstBlast.ts, `GroundBlast`).
@@ -568,10 +587,16 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const damage: ImpactDamageRadii = {
     craterRim: surfaceDamage.craterRim,
     thirdDegreeBurn: seen(
-      combineImpactFlashes(surfaceDamage.thirdDegreeBurn, entry.flashBurnRadii.thirdDegree)
+      thermalRing(
+        combineImpactFlashes(surfaceDamage.thirdDegreeBurn, entry.flashBurnRadii.thirdDegree),
+        THIRD_DEGREE_BURN_FLUENCE
+      )
     ),
     secondDegreeBurn: seen(
-      combineImpactFlashes(surfaceDamage.secondDegreeBurn, entry.flashBurnRadii.secondDegree)
+      thermalRing(
+        combineImpactFlashes(surfaceDamage.secondDegreeBurn, entry.flashBurnRadii.secondDegree),
+        SECOND_DEGREE_BURN_FLUENCE
+      )
     ),
     overpressure5psi: blastRing(
       surfaceDamage.overpressure5psi,
@@ -657,8 +682,12 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // 3.7 times the Earth's surface (B-028).
   const capArea = (radius: Meters): SquareMeters =>
     sqm(2 * Math.PI * earthRadius ** 2 * (1 - Math.cos((radius as number) / earthRadius)));
-  const ignitionRadius = seen(flammableIgnitionRadius(firestormInputs));
-  const sustainRadius = seen(firestormSustainRadius(firestormInputs));
+  const ignitionRadius = seen(
+    thermalRing(flammableIgnitionRadius(firestormInputs), FLAMMABLE_IGNITION_FLUENCE)
+  );
+  const sustainRadius = seen(
+    thermalRing(firestormSustainRadius(firestormInputs), URBAN_FIRESTORM_FLUENCE)
+  );
   const firestorm = {
     ignitionRadius,
     sustainRadius,
