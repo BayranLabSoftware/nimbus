@@ -6,6 +6,7 @@ import {
   airburstOverpressure,
   airburstOverpressureRange,
   airburstReach,
+  DEFAULT_MACH_TRANSITION,
 } from './airburstBlast.js';
 
 /**
@@ -182,5 +183,171 @@ describe('airburst blast — the Earth Impact Effects Program (Collins et al. 20
       previous = reach;
     }
     expect(previous).toBeGreaterThan(0);
+  });
+});
+
+/**
+ * The program's passage from regular reflection to the Mach region, held to
+ * the overpressures it was read off (rule 129 of
+ * validation/machBlendRules.ts, 16 September 2026). Each body is fed the
+ * program's own printed burst altitude and the yield scale its innermost
+ * printed point gives through 2017 Eq. 7, so what is held here is the blast
+ * alone, free of BM-13. These points are code verification, not held out.
+ */
+interface BlendBody {
+  label: string;
+  burstAltitudeM: number;
+  /** Cube-root yield scale (m per m of a 1 kt burst). */
+  scale: number;
+  /** [distance (km), low (Pa)] as the program prints them. */
+  printed: readonly (readonly [number, number])[];
+}
+
+const BLEND_BODIES: readonly BlendBody[] = [
+  {
+    // z₁ 492.5 m: the blend rises, 46.2 to 69.7 km — the knee.
+    label: '29.06 m body of 7 087 kg/m³ at 19.19 km/s, 30.63°',
+    burstAltitudeM: 7_264.68,
+    scale: 14.749584,
+    printed: [
+      [25, 4_994.517],
+      [44, 2_380.637],
+      [46, 2_250.436],
+      [48, 2_290.698],
+      [50, 2_349.635],
+      [61, 2_673.788],
+      [68, 2_880.067],
+      [70, 2_913.007],
+      [76, 2_636.11],
+    ],
+  },
+  {
+    // z₁ 147.5 m: the blend falls, 1.51 to 3.74 km.
+    label: '28.139 m body of 7 800 kg/m³ at 20 km/s, 45°',
+    burstAltitudeM: 2_302.791,
+    scale: 15.611072,
+    printed: [
+      [0.5, 741_294.68],
+      [1.9667, 442_429.88],
+      [2.6223, 352_238.815],
+      [3.409, 244_012.289],
+      [3.9334, 178_648.127],
+    ],
+  },
+  {
+    // z₁ 293.9 m: the blend falls, 5.32 to 17.75 km.
+    label: '53.917 m body of 3 000 kg/m³ at 20 km/s, 45°',
+    burstAltitudeM: 6_446.252,
+    scale: 21.936946,
+    printed: [
+      [4.5, 95_105.746],
+      [8.6509, 68_281.195],
+      [11.5345, 55_562.924],
+      [17.3018, 30_125.942],
+    ],
+  },
+  {
+    // z₁ 427.8 m: the blend falls, 19.37 to 42.53 km.
+    label: '47.904 m body of 3 000 kg/m³ at 20 km/s, 45°',
+    burstAltitudeM: 8_251.259,
+    scale: 19.287784,
+    printed: [
+      [12, 20_405.652],
+      [23.2103, 10_059.425],
+      [35.5892, 8_301.839],
+      [46.4207, 6_457.753],
+    ],
+  },
+];
+
+const KILOTON = 4.184e12;
+const blendInput = (b: BlendBody) => ({
+  burstAltitude: m(b.burstAltitudeM),
+  blastYield: J(b.scale ** 3 * KILOTON),
+});
+
+describe('airburst blast — the program’s passage to the Mach region (rule 129)', () => {
+  for (const b of BLEND_BODIES) {
+    it(`prints the program's overpressure across the blend for a ${b.label}`, () => {
+      for (const [km, printed] of b.printed) {
+        const p = airburstOverpressure({
+          ...blendInput(b),
+          groundRange: m(km * 1_000),
+          machTransition: 'program',
+        }) as number;
+        expect(Math.abs(p / printed - 1), `${km.toString()} km`).toBeLessThan(1e-4);
+      }
+    });
+  }
+
+  it('steps where the program blends, which is what the published relations do', () => {
+    // Either side of the knee's r_m1, 57.94 km: the program prints 2 526 Pa at
+    // 56 km and 2 585 Pa at 58; the step gives 0.70 and 1.42 of them.
+    const knee = BLEND_BODIES[0];
+    if (knee === undefined) throw new Error('no knee');
+    const published = (km: number) =>
+      airburstOverpressure({
+        ...blendInput(knee),
+        groundRange: m(km * 1_000),
+        machTransition: 'published',
+      }) as number;
+    expect(published(56) / 2_526.446).toBeLessThan(0.71);
+    expect(published(58) / 2_585.383).toBeGreaterThan(1.41);
+    expect(DEFAULT_MACH_TRANSITION).toBe('published');
+  });
+
+  it('is continuous across both ends of the blend', () => {
+    for (const b of BLEND_BODIES) {
+      const at = (r: number) =>
+        airburstOverpressure({
+          ...blendInput(b),
+          groundRange: m(r),
+          machTransition: 'program',
+        }) as number;
+      // Sample finely; no neighbouring pair may differ by more than the
+      // steepest slope of the relations allows over the step.
+      const z1 = b.burstAltitudeM / b.scale;
+      const edge = (550 * z1) / (1.2 * (550 - z1));
+      const half = 0.00328 * z1 * z1;
+      for (const end of [edge - half, edge + half]) {
+        const r = end * b.scale;
+        const below = at(r * (1 - 1e-9));
+        const above = at(r * (1 + 1e-9));
+        expect(
+          Math.abs(above / below - 1),
+          `${b.label} at ${(r / 1_000).toFixed(3)} km`
+        ).toBeLessThan(1e-6);
+      }
+    }
+  });
+
+  it('reaches each threshold at the farthest range its own overpressure holds it, on a rising blend too', () => {
+    for (const b of BLEND_BODIES) {
+      const input = blendInput(b);
+      const at = (r: number) =>
+        airburstOverpressure({ ...input, groundRange: m(r), machTransition: 'program' }) as number;
+      const samples = Array.from({ length: 4_000 }, (_, i) => (i + 1) * 30 * b.scale);
+      const peakOutside = (r: number) => samples.filter((x) => x > r * 1.001).map(at);
+      for (const threshold of [1e6, 3e5, 6e4, 3e4, 9e3, 6.5e3, 2.9e3, 2.6e3, 2.3e3, 1e3]) {
+        const reach = airburstReach(
+          Pa(threshold),
+          input.burstAltitude,
+          input.blastYield,
+          'low',
+          'program'
+        ) as number;
+        if (reach === 0) {
+          expect(samples.map(at).every((p) => p < threshold)).toBe(true);
+          continue;
+        }
+        expect(at(reach * 0.9999), `${b.label}, ${threshold.toString()} Pa`).toBeGreaterThanOrEqual(
+          threshold * (1 - 1e-6)
+        );
+        expect(
+          Math.max(...peakOutside(reach)),
+          `${b.label}, ${threshold.toString()} Pa`
+        ).toBeLessThan(threshold);
+      }
+    }
   });
 });

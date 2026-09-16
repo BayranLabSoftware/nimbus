@@ -26,6 +26,11 @@ import { J, m, Pa } from '../units.js';
  * Nothing here is set by Nimbus. Against the program's own printed
  * overpressure, 636 airburst points of the benchmark campaign
  * (docs/BENCHMARK_PROTOCOL.md), the relations agree to within 1 % in 618.
+ *
+ * Neither paper says how the program passes from regular reflection to the
+ * Mach region, and the program does not step where Eq. 58 puts the edge. What
+ * it does was read off its printed overpressure on 16 September 2026 (rule 129
+ * of validation/machBlendRules.ts) and is `MachTransition` `program`.
  */
 
 /** One kiloton of TNT (J): the relations are for a 1 kt explosion. */
@@ -36,6 +41,13 @@ const CROSSOVER_PRESSURE = 75_000;
 /** Scaled burst altitude (m) at and above which there is no Mach region
  *  (2005, under Eq. 58). */
 const MACH_CEILING = 550;
+/** The crossover distance of the Mach region at a scaled burst altitude of
+ *  zero (m): 289 as the project read 2005, 290 as the program computes it. */
+const PUBLISHED_CROSSOVER_BASE = 289;
+const PROGRAM_CROSSOVER_BASE = 290;
+/** Half the width of the program's blend, per square scaled metre of burst
+ *  altitude (1/m): the blend spans r_m1 ± 0.00328 z₁². */
+const BLEND_HALF_WIDTH = 0.00328;
 /** The farthest a ring is drawn: half the Earth's circumference (m). */
 const HALF_CIRCUMFERENCE = Math.PI * (EARTH_RADIUS as number);
 
@@ -54,6 +66,23 @@ export function airburstBlastYield(kineticEnergy: Joules, keptFraction: number):
   return J(energy * Math.max(kept, 1 - kept));
 }
 
+/**
+ * How the overpressure passes from regular reflection to the Mach region.
+ *
+ * - `published`: the relations as the papers print them, stepping from one to
+ *   the other at r_m1 (2005 Eq. 58), with r_x = 289 + 0.65 z₁.
+ * - `program`: what the Earth Impact Effects Program computes (rule 129 of
+ *   validation/machBlendRules.ts). The Mach relation takes r_x = 290 + 0.65 z₁,
+ *   and from r_m1 − 0.00328 z₁² to r_m1 + 0.00328 z₁² the overpressure is a
+ *   straight line in range, from the regular relation at the inner end to the
+ *   Mach relation at the outer. Where the line rises, it is the knee a burst
+ *   above the ground draws where the Mach stem forms.
+ */
+export type MachTransition = 'published' | 'program';
+
+/** What a blast that names no transition uses. */
+export const DEFAULT_MACH_TRANSITION: MachTransition = 'published';
+
 export interface AirburstBlastInput {
   /** Distance along the ground from the point under the burst (m). */
   groundRange: Meters;
@@ -61,6 +90,8 @@ export interface AirburstBlastInput {
   burstAltitude: Meters;
   /** Energy of the static source, {@link airburstBlastYield} (J). */
   blastYield: Joules;
+  /** {@link MachTransition}; {@link DEFAULT_MACH_TRANSITION} when omitted. */
+  machTransition?: MachTransition;
 }
 
 /** 2005 Eq. 58: where the Mach region begins for a 1 kt burst at scaled
@@ -75,18 +106,43 @@ function regularReflection(d1: number): number {
   return 3.14e11 * d2 ** -1.3 + 1.8e7 * d2 ** -0.565;
 }
 
-/** 2005 Eq. 54 with r_x = 289 + 0.65 z₁, at scaled ground range r₁ (m). */
-function machReflection(r1: number, z1: number): number {
-  const rx = 289 + 0.65 * z1;
+/** 2005 Eq. 54 with r_x = base + 0.65 z₁, at scaled ground range r₁ (m). */
+function machReflection(r1: number, z1: number, base: number): number {
+  const rx = base + 0.65 * z1;
   return ((CROSSOVER_PRESSURE * rx) / (4 * r1)) * (1 + 3 * (rx / r1) ** 1.3);
 }
 
-/** Overpressure of a 1 kt burst at scaled altitude z₁, scaled range r₁. */
-function scaledOverpressure(r1: number, z1: number): number {
-  if (r1 >= machEdge(z1)) {
-    return r1 > 0 ? machReflection(r1, z1) : Infinity;
+/** The program's blend, in scaled metres: where it starts and ends, and the
+ *  overpressure the line runs between. Both ends are infinite where there is
+ *  no Mach region. */
+function blend(z1: number): { inner: number; outer: number; pInner: number; pOuter: number } {
+  const edge = machEdge(z1);
+  if (!Number.isFinite(edge)) {
+    return { inner: Infinity, outer: Infinity, pInner: 0, pOuter: 0 };
   }
-  return regularReflection(Math.hypot(r1, z1));
+  const half = BLEND_HALF_WIDTH * z1 * z1;
+  const inner = edge - half;
+  const outer = edge + half;
+  return {
+    inner,
+    outer,
+    pInner: regularReflection(Math.hypot(inner, z1)),
+    pOuter: outer > 0 ? machReflection(outer, z1, PROGRAM_CROSSOVER_BASE) : Infinity,
+  };
+}
+
+/** Overpressure of a 1 kt burst at scaled altitude z₁, scaled range r₁. */
+function scaledOverpressure(r1: number, z1: number, transition: MachTransition): number {
+  if (transition === 'published') {
+    if (r1 >= machEdge(z1)) {
+      return r1 > 0 ? machReflection(r1, z1, PUBLISHED_CROSSOVER_BASE) : Infinity;
+    }
+    return regularReflection(Math.hypot(r1, z1));
+  }
+  const b = blend(z1);
+  if (r1 >= b.outer) return r1 > 0 ? machReflection(r1, z1, PROGRAM_CROSSOVER_BASE) : Infinity;
+  if (r1 <= b.inner) return regularReflection(Math.hypot(r1, z1));
+  return b.pInner + ((b.pOuter - b.pInner) * (r1 - b.inner)) / (b.outer - b.inner);
 }
 
 /** Cube-root yield scale (m per m of a 1 kt burst), or NaN on bad input. */
@@ -104,12 +160,13 @@ export function airburstOverpressure({
   groundRange,
   burstAltitude,
   blastYield,
+  machTransition = DEFAULT_MACH_TRANSITION,
 }: AirburstBlastInput): Pascals {
   const s = yieldScale(blastYield);
   const r = Math.abs(groundRange);
   const z = burstAltitude as number;
   if (!Number.isFinite(s) || !Number.isFinite(r) || !(z >= 0) || !Number.isFinite(z)) return Pa(0);
-  return Pa(scaledOverpressure(r / s, z / s));
+  return Pa(scaledOverpressure(r / s, z / s, machTransition));
 }
 
 /**
@@ -154,24 +211,43 @@ function upperBracket(
 
 /**
  * The farthest scaled ground range r₁ ≤ limit at which a 1 kt burst at
- * scaled altitude z₁ reaches the target overpressure, 0 if none. Each
- * region's overpressure falls with range, so the set above the target in
- * a region starts where the region does: the Mach region, the outer one,
- * is tried first.
+ * scaled altitude z₁ reaches the target overpressure, 0 if none. The
+ * regions are tried from the outermost in. In the Mach region and the
+ * regular one the overpressure falls with range, so the set above the target
+ * in each starts where the region does; the program's blend between them is
+ * a straight line, which may rise.
  */
-function scaledReach(target: number, z1: number, limit: number): number {
-  const edge = machEdge(z1);
+function scaledReach(
+  target: number,
+  z1: number,
+  limit: number,
+  transition: MachTransition
+): number {
+  const base = transition === 'published' ? PUBLISHED_CROSSOVER_BASE : PROGRAM_CROSSOVER_BASE;
+  const b = transition === 'published' ? null : blend(z1);
+  const edge = b === null ? machEdge(z1) : b.outer;
   if (edge <= limit) {
     const start = edge > 0 ? edge : 0;
-    const atStart = start > 0 ? machReflection(start, z1) : Infinity;
+    const atStart = start > 0 ? machReflection(start, z1, base) : Infinity;
     if (atStart >= target) {
-      const mach = (r1: number) => machReflection(r1, z1);
+      const mach = (r1: number) => machReflection(r1, z1, base);
       if (mach(limit) >= target) return limit;
       const hi = upperBracket(mach, target, start, limit);
       return crossing(mach, target, start, hi);
     }
   }
-  const inner = Math.min(edge, limit);
+  if (b !== null && b.inner < limit && b.outer > b.inner) {
+    const end = Math.min(b.outer, limit);
+    const line = (r1: number) =>
+      b.pInner + ((b.pOuter - b.pInner) * (r1 - b.inner)) / (b.outer - b.inner);
+    if (line(end) >= target) return end;
+    // The line is above the target at its inner end and below it at `end`,
+    // so it falls, and crosses once.
+    if (b.pInner >= target) {
+      return b.inner + ((b.pInner - target) * (b.outer - b.inner)) / (b.pInner - b.pOuter);
+    }
+  }
+  const inner = Math.min(b === null ? edge : b.inner, limit);
   if (regularReflection(z1) < target) return 0;
   const byRange = (r1: number) => regularReflection(Math.hypot(r1, z1));
   if (byRange(inner) >= target) return inner;
@@ -190,7 +266,8 @@ export function airburstReach(
   threshold: Pascals,
   burstAltitude: Meters,
   blastYield: Joules,
-  end: 'low' | 'high' = 'low'
+  end: 'low' | 'high' = 'low',
+  transition: MachTransition = DEFAULT_MACH_TRANSITION
 ): Meters {
   const s = yieldScale(blastYield);
   const target = threshold as number;
@@ -198,8 +275,8 @@ export function airburstReach(
   if (!Number.isFinite(s) || !(target > 0) || !(z >= 0) || !Number.isFinite(z)) return m(0);
   const z1 = z / s;
   const limit = HALF_CIRCUMFERENCE / s;
-  const low = scaledReach(target, z1, limit);
+  const low = scaledReach(target, z1, limit, transition);
   if (end === 'low') return m(low * s);
-  const nearField = scaledReach(target / 2, z1, Math.min(3 * z1, limit));
+  const nearField = scaledReach(target / 2, z1, Math.min(3 * z1, limit), transition);
   return m(Math.max(low, nearField) * s);
 }
