@@ -1,0 +1,2879 @@
+{
+ "verdict": {
+  "counts": {
+   "within": 352,
+   "bm13": 4,
+   "departs": 0,
+   "regime": 0,
+   "unanswered": 1
+  },
+  "implementsReference": true,
+  "nimbus": {
+   "medianAbsKm": 13.74406478421711,
+   "meanKm": 12.753842048528037
+  },
+  "eiep": {
+   "medianAbsKm": 13.683605000000002,
+   "meanKm": 12.689405887640449
+  },
+  "met": true
+ },
+ "rows": [
+  {
+   "date": "1998-01-04T23:00:27Z",
+   "observedKm": 30,
+   "nimbusBurstKm": 49.22944848502771,
+   "eiepBurstKm": 49.156351,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.15663495636117
+  },
+  {
+   "date": "2003-09-27T12:59:02Z",
+   "observedKm": 26,
+   "nimbusBurstKm": 41.29584668606989,
+   "eiepBurstKm": 41.286767,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.28680453298753
+  },
+  {
+   "date": "2003-11-10T13:54:05Z",
+   "observedKm": 23,
+   "nimbusBurstKm": 43.8290981883513,
+   "eiepBurstKm": 43.820333,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.820372532266816
+  },
+  {
+   "date": "2004-04-06T03:24:49Z",
+   "observedKm": 35,
+   "nimbusBurstKm": 49.864177624750646,
+   "eiepBurstKm": 49.84987400000001,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.849919974065116
+  },
+  {
+   "date": "2004-04-22T04:21:49Z",
+   "observedKm": 29.6,
+   "nimbusBurstKm": 49.28830568085725,
+   "eiepBurstKm": 49.184854,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.18525510453249
+  },
+  {
+   "date": "2004-06-05T20:34:10Z",
+   "observedKm": 43,
+   "nimbusBurstKm": 43.521642997056084,
+   "eiepBurstKm": 43.510639000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.51068143691971
+  },
+  {
+   "date": "2004-10-07T13:14:43Z",
+   "observedKm": 35,
+   "nimbusBurstKm": 40.572562332941885,
+   "eiepBurstKm": 40.566668,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.56669502435271
+  },
+  {
+   "date": "2005-01-02T23:09:49Z",
+   "observedKm": 35.2,
+   "nimbusBurstKm": 47.07338969783384,
+   "eiepBurstKm": 47.058108,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.05816308191705
+  },
+  {
+   "date": "2005-04-19T07:37:47Z",
+   "observedKm": 38.5,
+   "nimbusBurstKm": 44.61151689764921,
+   "eiepBurstKm": 44.587891000000006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.58798656712814
+  },
+  {
+   "date": "2005-05-07T09:31:44Z",
+   "observedKm": 15.2,
+   "nimbusBurstKm": 47.96768823118076,
+   "eiepBurstKm": 47.906597000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.906826980227024
+  },
+  {
+   "date": "2005-06-03T08:15:41Z",
+   "observedKm": 29.6,
+   "nimbusBurstKm": 50.6361618311957,
+   "eiepBurstKm": 50.624704,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.624752265458234
+  },
+  {
+   "date": "2005-08-09T14:35:45Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 50.98425265380292,
+   "eiepBurstKm": 50.822466,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.82310299894673
+  },
+  {
+   "date": "2005-11-09T07:33:08Z",
+   "observedKm": 30.7,
+   "nimbusBurstKm": 43.482528146279016,
+   "eiepBurstKm": 43.433387,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.433573801472235
+  },
+  {
+   "date": "2005-12-03T12:45:49Z",
+   "observedKm": 32.2,
+   "nimbusBurstKm": 49.54455705388068,
+   "eiepBurstKm": 49.460273,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.46060115709046
+  },
+  {
+   "date": "2005-12-29T10:05:35Z",
+   "observedKm": 42.2,
+   "nimbusBurstKm": 45.1918038910668,
+   "eiepBurstKm": 45.178942,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.178986737245275
+  },
+  {
+   "date": "2006-01-10T23:25:28Z",
+   "observedKm": 32.4,
+   "nimbusBurstKm": 47.76593893517851,
+   "eiepBurstKm": 47.71343,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.71362676535008
+  },
+  {
+   "date": "2006-01-28T03:33:48Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 47.000208685350465,
+   "eiepBurstKm": 46.97394,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.974039501043926
+  },
+  {
+   "date": "2006-02-04T08:38:05Z",
+   "observedKm": 38.9,
+   "nimbusBurstKm": 52.265725566451465,
+   "eiepBurstKm": 52.188233999999994,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.188540764969176
+  },
+  {
+   "date": "2006-06-07T00:06:28Z",
+   "observedKm": 40.7,
+   "nimbusBurstKm": 49.08880837367441,
+   "eiepBurstKm": 49.055906,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.05603495808346
+  },
+  {
+   "date": "2006-07-15T15:22:50Z",
+   "observedKm": 38.9,
+   "nimbusBurstKm": 57.74018662617834,
+   "eiepBurstKm": 57.706375,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 57.70650405466929
+  },
+  {
+   "date": "2006-07-15T23:55:45Z",
+   "observedKm": 29.6,
+   "nimbusBurstKm": 40.26658091149543,
+   "eiepBurstKm": 40.227192,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.22733959561224
+  },
+  {
+   "date": "2006-09-02T04:26:15Z",
+   "observedKm": 44.1,
+   "nimbusBurstKm": 36.26407989298026,
+   "eiepBurstKm": 36.253644,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 36.25368421374111
+  },
+  {
+   "date": "2006-10-14T18:10:49Z",
+   "observedKm": 44.4,
+   "nimbusBurstKm": 55.429343719202656,
+   "eiepBurstKm": 55.359832000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 55.36009566396436
+  },
+  {
+   "date": "2006-12-09T06:31:14Z",
+   "observedKm": 26.5,
+   "nimbusBurstKm": 49.41443038669687,
+   "eiepBurstKm": 49.283823,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.28433614793768
+  },
+  {
+   "date": "2007-01-22T07:24:56Z",
+   "observedKm": 32,
+   "nimbusBurstKm": 43.11792244347156,
+   "eiepBurstKm": 43.066313,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.066510796523936
+  },
+  {
+   "date": "2007-03-17T06:48:35Z",
+   "observedKm": 32.5,
+   "nimbusBurstKm": 46.246081839879515,
+   "eiepBurstKm": 46.166506999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.16681202237848
+  },
+  {
+   "date": "2007-04-18T12:44:23Z",
+   "observedKm": 38,
+   "nimbusBurstKm": 49.12128207760784,
+   "eiepBurstKm": 49.106692,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.106740264888415
+  },
+  {
+   "date": "2007-06-11T09:47:05Z",
+   "observedKm": 35.2,
+   "nimbusBurstKm": 46.69498622302885,
+   "eiepBurstKm": 46.657248,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.657393360255725
+  },
+  {
+   "date": "2007-09-22T17:57:13Z",
+   "observedKm": 30.2,
+   "nimbusBurstKm": 44.40791277261404,
+   "eiepBurstKm": 44.38566,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.38574980004962
+  },
+  {
+   "date": "2007-10-12T09:14:03Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 50.00446917716424,
+   "eiepBurstKm": 49.942786,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.94301754610044
+  },
+  {
+   "date": "2008-01-09T03:53:16Z",
+   "observedKm": 31.5,
+   "nimbusBurstKm": 41.35569546361898,
+   "eiepBurstKm": 41.285788000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.286054006029566
+  },
+  {
+   "date": "2008-02-17T12:19:16Z",
+   "observedKm": 40.4,
+   "nimbusBurstKm": 47.05371983282598,
+   "eiepBurstKm": 46.913581,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.91412890807996
+  },
+  {
+   "date": "2008-03-15T11:29:55Z",
+   "observedKm": 26.7,
+   "nimbusBurstKm": 42.678032726396424,
+   "eiepBurstKm": 42.621608,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.621822717766236
+  },
+  {
+   "date": "2008-05-24T10:18:10Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 45.5387246091589,
+   "eiepBurstKm": 45.467358999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.46763791528054
+  },
+  {
+   "date": "2008-06-27T02:01:23Z",
+   "observedKm": 33.7,
+   "nimbusBurstKm": 47.32581642508738,
+   "eiepBurstKm": 47.312248,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.31229161660651
+  },
+  {
+   "date": "2008-07-01T17:40:19Z",
+   "observedKm": 36.1,
+   "nimbusBurstKm": 39.495415148964135,
+   "eiepBurstKm": 39.391143,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 39.39155082067716
+  },
+  {
+   "date": "2008-07-08T15:55:30Z",
+   "observedKm": 52.2,
+   "nimbusBurstKm": 51.37875275960018,
+   "eiepBurstKm": 51.345099999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.345236744664604
+  },
+  {
+   "date": "2008-07-23T14:45:25Z",
+   "observedKm": 31.5,
+   "nimbusBurstKm": 41.71939536633653,
+   "eiepBurstKm": 41.694641000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.694741242018885
+  },
+  {
+   "date": "2008-08-07T06:07:10Z",
+   "observedKm": 45.4,
+   "nimbusBurstKm": 46.93481496463158,
+   "eiepBurstKm": 46.794176,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.79472844506434
+  },
+  {
+   "date": "2008-10-07T02:45:45Z",
+   "observedKm": 38.9,
+   "nimbusBurstKm": 47.85669870200879,
+   "eiepBurstKm": 47.502084,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.503519789955526
+  },
+  {
+   "date": "2008-10-21T02:20:26Z",
+   "observedKm": 29.6,
+   "nimbusBurstKm": 41.62680832406681,
+   "eiepBurstKm": 41.540229,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.5405613603739
+  },
+  {
+   "date": "2008-11-18T09:41:51Z",
+   "observedKm": 35.2,
+   "nimbusBurstKm": 55.874287562618875,
+   "eiepBurstKm": 55.730745000000006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 55.731306627082986
+  },
+  {
+   "date": "2008-11-21T00:26:44Z",
+   "observedKm": 28.2,
+   "nimbusBurstKm": 42.781827795463364,
+   "eiepBurstKm": 42.724416,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.72463700732643
+  },
+  {
+   "date": "2008-11-24T22:01:19Z",
+   "observedKm": 34.8,
+   "nimbusBurstKm": 54.93206480431469,
+   "eiepBurstKm": 54.871507,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.871741027243154
+  },
+  {
+   "date": "2008-12-24T15:51:58Z",
+   "observedKm": 21.1,
+   "nimbusBurstKm": 54.15492502711899,
+   "eiepBurstKm": 54.11414499999999,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.1143101556855
+  },
+  {
+   "date": "2009-02-07T19:51:32Z",
+   "observedKm": 40,
+   "nimbusBurstKm": 36.336721353561984,
+   "eiepBurstKm": 36.328445,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 36.32847491205543
+  },
+  {
+   "date": "2009-04-10T18:42:45Z",
+   "observedKm": 32.4,
+   "nimbusBurstKm": 47.11455768175782,
+   "eiepBurstKm": 47.089578,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.089670786451926
+  },
+  {
+   "date": "2009-06-27T13:08:05Z",
+   "observedKm": 26.1,
+   "nimbusBurstKm": 44.869972374433786,
+   "eiepBurstKm": 44.826648,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.82680997294416
+  },
+  {
+   "date": "2009-08-23T21:17:19Z",
+   "observedKm": 34,
+   "nimbusBurstKm": 37.72714828924264,
+   "eiepBurstKm": 37.703275000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 37.703369105810154
+  },
+  {
+   "date": "2009-09-04T02:23:18Z",
+   "observedKm": 28.3,
+   "nimbusBurstKm": 44.94455418063417,
+   "eiepBurstKm": 44.936954,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.93697866166734
+  },
+  {
+   "date": "2009-10-08T02:57:14Z",
+   "observedKm": 19.1,
+   "nimbusBurstKm": 30.22229302380313,
+   "eiepBurstKm": 30.220187000000003,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 30.22019239861933
+  },
+  {
+   "date": "2009-11-21T20:53:29Z",
+   "observedKm": 38,
+   "nimbusBurstKm": 46.162170527190405,
+   "eiepBurstKm": 46.159276,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.1592869529937
+  },
+  {
+   "date": "2010-01-15T19:17:54Z",
+   "observedKm": 25,
+   "nimbusBurstKm": 43.2859709206358,
+   "eiepBurstKm": 43.242711,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.24287708515408
+  },
+  {
+   "date": "2010-02-28T22:24:50Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 42.38314883543974,
+   "eiepBurstKm": 42.357098,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.35719448869435
+  },
+  {
+   "date": "2010-03-08T22:02:07Z",
+   "observedKm": 52,
+   "nimbusBurstKm": 56.2068588754069,
+   "eiepBurstKm": 56.130764000000006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 56.1310618610519
+  },
+  {
+   "date": "2010-04-16T04:38:52Z",
+   "observedKm": 22.2,
+   "nimbusBurstKm": 43.802353675907995,
+   "eiepBurstKm": 43.788779000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.78882986758269
+  },
+  {
+   "date": "2010-07-06T23:54:43Z",
+   "observedKm": 26,
+   "nimbusBurstKm": 34.603829460305384,
+   "eiepBurstKm": 34.598514,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 34.59853523255754
+  },
+  {
+   "date": "2010-09-03T12:04:58Z",
+   "observedKm": 33.3,
+   "nimbusBurstKm": 33.75621387847859,
+   "eiepBurstKm": 33.743755,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 33.74379958689671
+  },
+  {
+   "date": "2010-12-25T23:24:13Z",
+   "observedKm": 26,
+   "nimbusBurstKm": 35.13711722415118,
+   "eiepBurstKm": 35.133451,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 35.13346511848272
+  },
+  {
+   "date": "2011-02-21T05:07:03Z",
+   "observedKm": 44.4,
+   "nimbusBurstKm": 53.203981380254255,
+   "eiepBurstKm": 52.826208,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.82774449623883
+  },
+  {
+   "date": "2011-03-01T10:37:54Z",
+   "observedKm": 30.6,
+   "nimbusBurstKm": 43.43262896643541,
+   "eiepBurstKm": 43.323929,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.32435545823673
+  },
+  {
+   "date": "2011-04-06T08:30:55Z",
+   "observedKm": 22.2,
+   "nimbusBurstKm": 44.29713710183944,
+   "eiepBurstKm": 44.20063,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.201003568724545
+  },
+  {
+   "date": "2011-05-25T05:40:02Z",
+   "observedKm": 59,
+   "nimbusBurstKm": 37.13396092850865,
+   "eiepBurstKm": 37.106,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 37.10610261246231
+  },
+  {
+   "date": "2011-09-13T23:36:47Z",
+   "observedKm": 21.3,
+   "nimbusBurstKm": 48.01792957622183,
+   "eiepBurstKm": 47.959405,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.95963134305683
+  },
+  {
+   "date": "2012-01-15T12:26:20Z",
+   "observedKm": 26.3,
+   "nimbusBurstKm": 44.39844534573249,
+   "eiepBurstKm": 44.276485,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.27696437371991
+  },
+  {
+   "date": "2012-02-04T14:42:51Z",
+   "observedKm": 34.2,
+   "nimbusBurstKm": 46.9149769573811,
+   "eiepBurstKm": 46.111007,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.11451932425717
+  },
+  {
+   "date": "2012-03-12T06:40:44Z",
+   "observedKm": 25,
+   "nimbusBurstKm": 41.59112575567795,
+   "eiepBurstKm": 41.522972,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.5232303751733
+  },
+  {
+   "date": "2012-05-15T11:04:17Z",
+   "observedKm": 33.3,
+   "nimbusBurstKm": 44.35912643791281,
+   "eiepBurstKm": 44.339146,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.3392307097414
+  },
+  {
+   "date": "2012-07-25T07:48:20Z",
+   "observedKm": 26.8,
+   "nimbusBurstKm": 48.93811601219029,
+   "eiepBurstKm": 48.89594,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.89610610859995
+  },
+  {
+   "date": "2012-08-26T14:55:47Z",
+   "observedKm": 36,
+   "nimbusBurstKm": 38.05185997590122,
+   "eiepBurstKm": 38.030347,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 38.030431398607206
+  },
+  {
+   "date": "2012-08-27T06:57:43Z",
+   "observedKm": 38.7,
+   "nimbusBurstKm": 54.845158308445676,
+   "eiepBurstKm": 54.822849999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.82292679141403
+  },
+  {
+   "date": "2012-09-10T01:03:32Z",
+   "observedKm": 23.8,
+   "nimbusBurstKm": 49.63460280563522,
+   "eiepBurstKm": 49.542863,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.54321606294478
+  },
+  {
+   "date": "2012-09-18T19:34:39Z",
+   "observedKm": 28.1,
+   "nimbusBurstKm": 45.74286662095077,
+   "eiepBurstKm": 45.72208800000001,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.72217138654686
+  },
+  {
+   "date": "2012-10-02T16:38:38Z",
+   "observedKm": 35,
+   "nimbusBurstKm": 39.05456924522571,
+   "eiepBurstKm": 39.043544000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 39.043591035484134
+  },
+  {
+   "date": "2012-10-09T00:54:55Z",
+   "observedKm": 27.8,
+   "nimbusBurstKm": 46.70914897732932,
+   "eiepBurstKm": 46.55724,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.557839471415384
+  },
+  {
+   "date": "2012-10-19T16:26:22Z",
+   "observedKm": 29.3,
+   "nimbusBurstKm": 43.04204772855471,
+   "eiepBurstKm": 42.986719,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.986928902908474
+  },
+  {
+   "date": "2012-11-20T20:37:31Z",
+   "observedKm": 33.3,
+   "nimbusBurstKm": 44.77762807214478,
+   "eiepBurstKm": 44.71957,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.7197865514656
+  },
+  {
+   "date": "2013-04-21T06:23:12Z",
+   "observedKm": 40.7,
+   "nimbusBurstKm": 40.03415003435646,
+   "eiepBurstKm": 40.015966999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.01603104086866
+  },
+  {
+   "date": "2013-04-30T08:40:37Z",
+   "observedKm": 21.2,
+   "nimbusBurstKm": 33.440993168113245,
+   "eiepBurstKm": 33.430252,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 33.430296892686286
+  },
+  {
+   "date": "2013-07-27T08:30:36Z",
+   "observedKm": 26.5,
+   "nimbusBurstKm": 52.8802085245528,
+   "eiepBurstKm": 52.830841,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.831028346348255
+  },
+  {
+   "date": "2013-07-30T02:36:58Z",
+   "observedKm": 25.6,
+   "nimbusBurstKm": 47.3647500589379,
+   "eiepBurstKm": 47.337391000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.33749614507791
+  },
+  {
+   "date": "2013-07-31T03:50:13Z",
+   "observedKm": 29.1,
+   "nimbusBurstKm": 47.74794400155112,
+   "eiepBurstKm": 47.707269999999994,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.70741963554083
+  },
+  {
+   "date": "2013-10-12T16:06:45Z",
+   "observedKm": 22.2,
+   "nimbusBurstKm": 37.06029383026796,
+   "eiepBurstKm": 37.043215,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 37.0432829854548
+  },
+  {
+   "date": "2013-11-21T01:50:35Z",
+   "observedKm": 59.3,
+   "nimbusBurstKm": 42.04368617404667,
+   "eiepBurstKm": 41.986195,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.98641911508341
+  },
+  {
+   "date": "2013-12-08T03:10:09Z",
+   "observedKm": 23.5,
+   "nimbusBurstKm": 40.719939338126444,
+   "eiepBurstKm": 40.666767,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.66697389832094
+  },
+  {
+   "date": "2013-12-23T08:30:57Z",
+   "observedKm": 34.3,
+   "nimbusBurstKm": 45.38921649026813,
+   "eiepBurstKm": 45.339904000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.34009490662752
+  },
+  {
+   "date": "2014-01-08T17:05:33Z",
+   "observedKm": 18.7,
+   "nimbusBurstKm": 63.95661957716618,
+   "eiepBurstKm": 63.936853,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 63.93693711875702
+  },
+  {
+   "date": "2014-01-12T16:00:48Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 44.1031366471907,
+   "eiepBurstKm": 44.077557999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.077659381919425
+  },
+  {
+   "date": "2014-03-29T13:45:42Z",
+   "observedKm": 30.7,
+   "nimbusBurstKm": 45.79771108524087,
+   "eiepBurstKm": 45.761391,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.76153472779489
+  },
+  {
+   "date": "2014-05-08T19:42:37Z",
+   "observedKm": 35.4,
+   "nimbusBurstKm": 39.39055359212078,
+   "eiepBurstKm": 39.38443,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 39.384452921581335
+  },
+  {
+   "date": "2014-05-16T12:42:47Z",
+   "observedKm": 44,
+   "nimbusBurstKm": 41.353976710944714,
+   "eiepBurstKm": 41.339039,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.339093635230135
+  },
+  {
+   "date": "2014-05-16T20:06:26Z",
+   "observedKm": 30.8,
+   "nimbusBurstKm": 52.70120264733496,
+   "eiepBurstKm": 52.468591,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.46951584880154
+  },
+  {
+   "date": "2014-06-26T05:54:41Z",
+   "observedKm": 28.5,
+   "nimbusBurstKm": 41.709869692413015,
+   "eiepBurstKm": 41.617836000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.61819531428259
+  },
+  {
+   "date": "2014-06-28T02:40:05Z",
+   "observedKm": 26.3,
+   "nimbusBurstKm": 41.063118041038614,
+   "eiepBurstKm": 41.016741,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.01691706080001
+  },
+  {
+   "date": "2014-08-23T06:29:41Z",
+   "observedKm": 22.2,
+   "nimbusBurstKm": 37.472145852366815,
+   "eiepBurstKm": 37.465221,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 37.46525125521979
+  },
+  {
+   "date": "2014-10-14T10:25:03Z",
+   "observedKm": 27.2,
+   "nimbusBurstKm": 47.41513834639639,
+   "eiepBurstKm": 47.368919999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.3690994365577
+  },
+  {
+   "date": "2014-11-04T20:13:30Z",
+   "observedKm": 22.2,
+   "nimbusBurstKm": 45.04077267958692,
+   "eiepBurstKm": 45.005469,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.00560042031495
+  },
+  {
+   "date": "2014-11-26T17:40:16Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 48.66068689970966,
+   "eiepBurstKm": 48.630967,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.631074653411034
+  },
+  {
+   "date": "2014-11-26T23:16:51Z",
+   "observedKm": 23.3,
+   "nimbusBurstKm": 50.74276256461554,
+   "eiepBurstKm": 50.728865,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.72892245108812
+  },
+  {
+   "date": "2014-11-28T11:47:18Z",
+   "observedKm": 26.1,
+   "nimbusBurstKm": 38.59411007841927,
+   "eiepBurstKm": 38.573722000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 38.57379749994778
+  },
+  {
+   "date": "2014-12-12T06:48:07Z",
+   "observedKm": 26.3,
+   "nimbusBurstKm": 42.146426861391646,
+   "eiepBurstKm": 42.073975,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.07424957433233
+  },
+  {
+   "date": "2014-12-13T02:53:52Z",
+   "observedKm": 30.7,
+   "nimbusBurstKm": 53.81704640454217,
+   "eiepBurstKm": 53.742433,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.74271959024862
+  },
+  {
+   "date": "2015-01-02T13:39:19Z",
+   "observedKm": 38.1,
+   "nimbusBurstKm": 52.312186324120894,
+   "eiepBurstKm": 52.141872000000006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.142537989967316
+  },
+  {
+   "date": "2015-01-07T01:05:58Z",
+   "observedKm": 45.5,
+   "nimbusBurstKm": 56.04846857141389,
+   "eiepBurstKm": 56.036910000000006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 56.036949047762974
+  },
+  {
+   "date": "2015-01-09T10:41:11Z",
+   "observedKm": 36,
+   "nimbusBurstKm": 45.973173004692235,
+   "eiepBurstKm": 45.944589,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.944695761231166
+  },
+  {
+   "date": "2015-02-17T13:19:50Z",
+   "observedKm": 39,
+   "nimbusBurstKm": 53.05032278109621,
+   "eiepBurstKm": 53.037839999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.037893288100136
+  },
+  {
+   "date": "2015-02-26T22:06:23Z",
+   "observedKm": 33.7,
+   "nimbusBurstKm": 45.80501739431277,
+   "eiepBurstKm": 45.792894999999994,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.79294163689114
+  },
+  {
+   "date": "2015-03-04T04:30:05Z",
+   "observedKm": 39.8,
+   "nimbusBurstKm": 47.5145449289652,
+   "eiepBurstKm": 47.478402,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.4785353409394
+  },
+  {
+   "date": "2015-03-11T06:18:59Z",
+   "observedKm": 35.2,
+   "nimbusBurstKm": 49.13695367891462,
+   "eiepBurstKm": 49.105748,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.10586869281057
+  },
+  {
+   "date": "2015-03-30T21:33:52Z",
+   "observedKm": 33.1,
+   "nimbusBurstKm": 43.23129760519202,
+   "eiepBurstKm": 43.186983,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.18715825322866
+  },
+  {
+   "date": "2015-04-08T04:06:31Z",
+   "observedKm": 36.3,
+   "nimbusBurstKm": 52.517769793933915,
+   "eiepBurstKm": 52.407441,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.407869080745066
+  },
+  {
+   "date": "2015-04-21T01:42:51Z",
+   "observedKm": 37.4,
+   "nimbusBurstKm": 51.356672988348635,
+   "eiepBurstKm": 51.317318,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.31746736874404
+  },
+  {
+   "date": "2015-04-30T10:21:00Z",
+   "observedKm": 26.7,
+   "nimbusBurstKm": 42.6964131957185,
+   "eiepBurstKm": 42.639975,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.64019089701295
+  },
+  {
+   "date": "2015-05-07T20:34:34Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 48.202716386038794,
+   "eiepBurstKm": 48.153551,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.15374672291533
+  },
+  {
+   "date": "2015-05-10T07:45:01Z",
+   "observedKm": 29.6,
+   "nimbusBurstKm": 39.38763629851258,
+   "eiepBurstKm": 39.354156,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 39.35428726499449
+  },
+  {
+   "date": "2015-06-14T03:03:06Z",
+   "observedKm": 32.4,
+   "nimbusBurstKm": 58.124669293285095,
+   "eiepBurstKm": 58.098377,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 58.09848336641336
+  },
+  {
+   "date": "2015-07-04T01:40:11Z",
+   "observedKm": 46.3,
+   "nimbusBurstKm": 59.00368419631581,
+   "eiepBurstKm": 59.000067,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 59.0000860051627
+  },
+  {
+   "date": "2015-07-19T07:06:26Z",
+   "observedKm": 22,
+   "nimbusBurstKm": 50.57236106605941,
+   "eiepBurstKm": 50.484025,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.4843721272287
+  },
+  {
+   "date": "2015-09-02T20:10:30Z",
+   "observedKm": 39.8,
+   "nimbusBurstKm": 54.79131472479653,
+   "eiepBurstKm": 54.740303999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.74050496048968
+  },
+  {
+   "date": "2015-09-07T01:41:18Z",
+   "observedKm": 29.3,
+   "nimbusBurstKm": 42.37189884370712,
+   "eiepBurstKm": 42.364923000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.36494894348401
+  },
+  {
+   "date": "2015-09-08T13:46:42Z",
+   "observedKm": 44.4,
+   "nimbusBurstKm": 46.45787658670491,
+   "eiepBurstKm": 46.410897,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.4110766517016
+  },
+  {
+   "date": "2015-10-10T09:57:51Z",
+   "observedKm": 51.8,
+   "nimbusBurstKm": 42.887980660678316,
+   "eiepBurstKm": 42.791342,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.79171877010638
+  },
+  {
+   "date": "2015-10-13T12:23:08Z",
+   "observedKm": 38.9,
+   "nimbusBurstKm": 44.89727505862214,
+   "eiepBurstKm": 44.792724,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.793137752689645
+  },
+  {
+   "date": "2015-12-21T02:32:48Z",
+   "observedKm": 42.2,
+   "nimbusBurstKm": 40.4582525934486,
+   "eiepBurstKm": 40.413302,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.41347440514482
+  },
+  {
+   "date": "2016-01-21T16:44:54Z",
+   "observedKm": 42.5,
+   "nimbusBurstKm": 52.10248172447679,
+   "eiepBurstKm": 51.952013,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.95260558814381
+  },
+  {
+   "date": "2016-01-27T09:59:15Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 40.33475892734257,
+   "eiepBurstKm": 40.278242,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.27845619694018
+  },
+  {
+   "date": "2016-02-06T13:55:09Z",
+   "observedKm": 31,
+   "nimbusBurstKm": 40.728713940572796,
+   "eiepBurstKm": 40.713772,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.7138327881472
+  },
+  {
+   "date": "2016-02-19T08:15:02Z",
+   "observedKm": 39.4,
+   "nimbusBurstKm": 41.70428678633166,
+   "eiepBurstKm": 41.68367,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.68374481607418
+  },
+  {
+   "date": "2016-02-23T03:59:13Z",
+   "observedKm": 44,
+   "nimbusBurstKm": 48.86075565246522,
+   "eiepBurstKm": 48.809902,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.81009674938985
+  },
+  {
+   "date": "2016-03-03T01:32:43Z",
+   "observedKm": 31.8,
+   "nimbusBurstKm": 42.30338440254251,
+   "eiepBurstKm": 42.218128,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.218459616857686
+  },
+  {
+   "date": "2016-03-16T23:54:20Z",
+   "observedKm": 42,
+   "nimbusBurstKm": 44.24777080996495,
+   "eiepBurstKm": 44.17509,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.17536890576495
+  },
+  {
+   "date": "2016-04-10T14:57:53Z",
+   "observedKm": 35.2,
+   "nimbusBurstKm": 40.01251447500103,
+   "eiepBurstKm": 39.996413999999994,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 39.99647502490357
+  },
+  {
+   "date": "2016-04-18T11:59:10Z",
+   "observedKm": 31.5,
+   "nimbusBurstKm": 46.3280171613584,
+   "eiepBurstKm": 46.292522,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.292651100681546
+  },
+  {
+   "date": "2016-05-16T10:09:41Z",
+   "observedKm": 41.7,
+   "nimbusBurstKm": 39.58677921635538,
+   "eiepBurstKm": 39.551010000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 39.551146874288506
+  },
+  {
+   "date": "2016-05-20T11:59:46Z",
+   "observedKm": 30.6,
+   "nimbusBurstKm": 53.83474874607801,
+   "eiepBurstKm": 53.732910000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.73330642087754
+  },
+  {
+   "date": "2016-06-05T06:12:55Z",
+   "observedKm": 28.7,
+   "nimbusBurstKm": 39.568005132084295,
+   "eiepBurstKm": 39.551656,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 39.55172166682386
+  },
+  {
+   "date": "2016-06-27T10:02:42Z",
+   "observedKm": 33.3,
+   "nimbusBurstKm": 47.89705237458551,
+   "eiepBurstKm": 47.890004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.89002325657998
+  },
+  {
+   "date": "2016-07-05T01:24:26Z",
+   "observedKm": 38.2,
+   "nimbusBurstKm": 54.836810434914604,
+   "eiepBurstKm": 54.796023999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.79618399138437
+  },
+  {
+   "date": "2016-08-11T05:59:58Z",
+   "observedKm": 34.3,
+   "nimbusBurstKm": 41.42091815974771,
+   "eiepBurstKm": 41.399617,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.39970103109198
+  },
+  {
+   "date": "2016-09-14T15:01:51Z",
+   "observedKm": 54,
+   "nimbusBurstKm": 49.533803484316614,
+   "eiepBurstKm": 49.479849,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.48005650379756
+  },
+  {
+   "date": "2016-09-22T04:57:49Z",
+   "observedKm": 40,
+   "nimbusBurstKm": 47.51186502010616,
+   "eiepBurstKm": 47.469968,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.4701218877494
+  },
+  {
+   "date": "2016-10-01T20:23:45Z",
+   "observedKm": 27.8,
+   "nimbusBurstKm": 44.187372847981294,
+   "eiepBurstKm": 44.137508000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.137700785976406
+  },
+  {
+   "date": "2016-11-24T14:10:34Z",
+   "observedKm": 30.6,
+   "nimbusBurstKm": 46.37746858356221,
+   "eiepBurstKm": 46.346974,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.347094155491035
+  },
+  {
+   "date": "2016-12-23T03:29:09Z",
+   "observedKm": 42,
+   "nimbusBurstKm": 60.44714772736742,
+   "eiepBurstKm": 60.337951000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 60.338368626685636
+  },
+  {
+   "date": "2017-02-18T19:48:29Z",
+   "observedKm": 38,
+   "nimbusBurstKm": 46.097035071255355,
+   "eiepBurstKm": 46.091531,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.09155969519774
+  },
+  {
+   "date": "2017-02-25T01:22:58Z",
+   "observedKm": 25.4,
+   "nimbusBurstKm": 42.71040357348184,
+   "eiepBurstKm": 42.634150999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.63444370996411
+  },
+  {
+   "date": "2017-03-09T04:16:37Z",
+   "observedKm": 23,
+   "nimbusBurstKm": 51.921434600836484,
+   "eiepBurstKm": 51.919263,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.91928005198599
+  },
+  {
+   "date": "2017-04-30T21:28:28Z",
+   "observedKm": 32.4,
+   "nimbusBurstKm": 46.519984925584,
+   "eiepBurstKm": 46.508396999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.50844686049405
+  },
+  {
+   "date": "2017-05-24T07:03:02Z",
+   "observedKm": 46,
+   "nimbusBurstKm": 47.07340034551254,
+   "eiepBurstKm": 47.04699900000001,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.047107481792615
+  },
+  {
+   "date": "2017-06-20T13:41:31Z",
+   "observedKm": 33.3,
+   "nimbusBurstKm": 37.65270195409333,
+   "eiepBurstKm": 37.63794,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 37.637999672782826
+  },
+  {
+   "date": "2017-06-23T20:21:55Z",
+   "observedKm": 35.1,
+   "nimbusBurstKm": 52.823874893861216,
+   "eiepBurstKm": 52.794062,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.79417210447034
+  },
+  {
+   "date": "2017-06-30T14:26:46Z",
+   "observedKm": 20,
+   "nimbusBurstKm": 42.87908231219804,
+   "eiepBurstKm": 42.853216,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.85331998998282
+  },
+  {
+   "date": "2017-07-13T09:30:36Z",
+   "observedKm": 35,
+   "nimbusBurstKm": 42.37137902078908,
+   "eiepBurstKm": 42.332398999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.33254784437956
+  },
+  {
+   "date": "2017-07-23T06:12:38Z",
+   "observedKm": 38,
+   "nimbusBurstKm": 50.457725445766954,
+   "eiepBurstKm": 50.348504,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.348930577211355
+  },
+  {
+   "date": "2017-09-05T05:11:27Z",
+   "observedKm": 36,
+   "nimbusBurstKm": 49.27455587172581,
+   "eiepBurstKm": 49.009003,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.0100633890035
+  },
+  {
+   "date": "2017-10-04T12:07:05Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 48.86075285676834,
+   "eiepBurstKm": 48.640911,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.641779387558564
+  },
+  {
+   "date": "2017-10-15T04:33:16Z",
+   "observedKm": 24.1,
+   "nimbusBurstKm": 46.0698388078843,
+   "eiepBurstKm": 46.026196000000006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.0263696462074
+  },
+  {
+   "date": "2017-10-23T15:31:22Z",
+   "observedKm": 35.4,
+   "nimbusBurstKm": 46.80290451633333,
+   "eiepBurstKm": 46.762755,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.762917832999975
+  },
+  {
+   "date": "2017-11-19T04:17:32Z",
+   "observedKm": 33.3,
+   "nimbusBurstKm": 41.51435230458017,
+   "eiepBurstKm": 41.434238,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.43454423600131
+  },
+  {
+   "date": "2017-12-15T13:14:37Z",
+   "observedKm": 20,
+   "nimbusBurstKm": 43.22625137982535,
+   "eiepBurstKm": 43.224025000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.224031820889465
+  },
+  {
+   "date": "2018-01-06T21:24:21Z",
+   "observedKm": 26,
+   "nimbusBurstKm": 51.23608362930184,
+   "eiepBurstKm": 51.193999000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.19415551338022
+  },
+  {
+   "date": "2018-01-15T02:18:38Z",
+   "observedKm": 43.6,
+   "nimbusBurstKm": 54.69052169115085,
+   "eiepBurstKm": 54.634427,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.63464253325723
+  },
+  {
+   "date": "2018-02-01T12:21:36Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 48.605270620129026,
+   "eiepBurstKm": 48.52935,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.5296402339194
+  },
+  {
+   "date": "2018-02-21T01:28:03Z",
+   "observedKm": 31.5,
+   "nimbusBurstKm": 43.68295149970704,
+   "eiepBurstKm": 43.615947,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.616205810352405
+  },
+  {
+   "date": "2018-04-19T13:39:39Z",
+   "observedKm": 31.5,
+   "nimbusBurstKm": 34.96474847273648,
+   "eiepBurstKm": 34.942577,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 34.94266487923133
+  },
+  {
+   "date": "2018-04-19T14:02:27Z",
+   "observedKm": 30,
+   "nimbusBurstKm": 54.046610332432685,
+   "eiepBurstKm": 53.939574,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.939993591554455
+  },
+  {
+   "date": "2018-04-21T12:06:03Z",
+   "observedKm": 28.2,
+   "nimbusBurstKm": 46.15222166969991,
+   "eiepBurstKm": 46.078652999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.07893763831906
+  },
+  {
+   "date": "2018-04-30T13:17:57Z",
+   "observedKm": 34,
+   "nimbusBurstKm": 44.517550176207244,
+   "eiepBurstKm": 44.431599,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.43192985486554
+  },
+  {
+   "date": "2018-05-03T07:23:59Z",
+   "observedKm": 39,
+   "nimbusBurstKm": 42.69001581858461,
+   "eiepBurstKm": 42.583239999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.58365557218445
+  },
+  {
+   "date": "2018-06-02T16:44:12Z",
+   "observedKm": 28.7,
+   "nimbusBurstKm": 47.4449838786753,
+   "eiepBurstKm": 47.39741,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.397590490547195
+  },
+  {
+   "date": "2018-06-21T01:16:20Z",
+   "observedKm": 27.2,
+   "nimbusBurstKm": 35.45781873815926,
+   "eiepBurstKm": 35.448808,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 35.44884112327622
+  },
+  {
+   "date": "2018-06-26T17:51:53Z",
+   "observedKm": 63,
+   "nimbusBurstKm": 43.98737987734507,
+   "eiepBurstKm": 43.937792,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.937981604978035
+  },
+  {
+   "date": "2018-07-25T21:55:23Z",
+   "observedKm": 43.3,
+   "nimbusBurstKm": 55.32805758691167,
+   "eiepBurstKm": 55.270142,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 55.27036298425293
+  },
+  {
+   "date": "2018-08-27T04:36:44Z",
+   "observedKm": 33,
+   "nimbusBurstKm": 46.54908156182011,
+   "eiepBurstKm": 46.503198,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.50338290958016
+  },
+  {
+   "date": "2018-09-25T00:16:58Z",
+   "observedKm": 40.7,
+   "nimbusBurstKm": 47.15892492872826,
+   "eiepBurstKm": 46.608837,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.61114504469315
+  },
+  {
+   "date": "2018-09-25T14:10:42Z",
+   "observedKm": 33,
+   "nimbusBurstKm": 45.986495387055584,
+   "eiepBurstKm": 45.947720000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.94786187649245
+  },
+  {
+   "date": "2018-10-05T00:27:02Z",
+   "observedKm": 31.5,
+   "nimbusBurstKm": 47.62913341096544,
+   "eiepBurstKm": 47.513224,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.51367395687788
+  },
+  {
+   "date": "2018-11-17T21:48:23Z",
+   "observedKm": 32.5,
+   "nimbusBurstKm": 49.463118934365326,
+   "eiepBurstKm": 49.421692,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.42185365817543
+  },
+  {
+   "date": "2018-11-20T17:30:27Z",
+   "observedKm": 27.4,
+   "nimbusBurstKm": 45.74561404138955,
+   "eiepBurstKm": 45.717996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.71810089871569
+  },
+  {
+   "date": "2018-12-18T23:48:18Z",
+   "observedKm": 26,
+   "nimbusBurstKm": 24.38636554621271,
+   "eiepBurstKm": 24.383905,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 24.383912644485445
+  },
+  {
+   "date": "2018-12-23T23:38:02Z",
+   "observedKm": 31.8,
+   "nimbusBurstKm": 44.40266517651647,
+   "eiepBurstKm": 44.376463,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.376562763618914
+  },
+  {
+   "date": "2019-01-22T09:18:00Z",
+   "observedKm": 42.5,
+   "nimbusBurstKm": 42.60014522555564,
+   "eiepBurstKm": 42.502072,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.50245383678947
+  },
+  {
+   "date": "2019-02-01T18:17:09Z",
+   "observedKm": 23.7,
+   "nimbusBurstKm": 43.25001026401173,
+   "eiepBurstKm": 43.229029000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.22911113666173
+  },
+  {
+   "date": "2019-02-18T10:00:42Z",
+   "observedKm": 26,
+   "nimbusBurstKm": 38.93232760599759,
+   "eiepBurstKm": 38.928098,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 38.92811399267244
+  },
+  {
+   "date": "2019-03-15T12:26:56Z",
+   "observedKm": 31.5,
+   "nimbusBurstKm": 47.88362240218983,
+   "eiepBurstKm": 47.733088,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.73367946101347
+  },
+  {
+   "date": "2019-03-19T02:06:39Z",
+   "observedKm": 28.7,
+   "nimbusBurstKm": 47.37181741618179,
+   "eiepBurstKm": 47.314764000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.314987214550406
+  },
+  {
+   "date": "2019-04-06T11:59:09Z",
+   "observedKm": 41.5,
+   "nimbusBurstKm": 51.72461538508704,
+   "eiepBurstKm": 51.59998,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.6004711103873
+  },
+  {
+   "date": "2019-04-14T17:54:33Z",
+   "observedKm": 30.6,
+   "nimbusBurstKm": 47.47018252184733,
+   "eiepBurstKm": 47.405493,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.40574807645648
+  },
+  {
+   "date": "2019-04-22T21:42:10Z",
+   "observedKm": 33.3,
+   "nimbusBurstKm": 39.46631073537281,
+   "eiepBurstKm": 39.419453000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 39.419634868370835
+  },
+  {
+   "date": "2019-05-19T14:47:03Z",
+   "observedKm": 33.3,
+   "nimbusBurstKm": 44.337370628182214,
+   "eiepBurstKm": 44.299690999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.29983339029491
+  },
+  {
+   "date": "2019-05-21T13:12:33Z",
+   "observedKm": 31.5,
+   "nimbusBurstKm": 34.62153787964409,
+   "eiepBurstKm": 34.604943,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 34.60500968723662
+  },
+  {
+   "date": "2019-05-25T06:44:04Z",
+   "observedKm": 29.2,
+   "nimbusBurstKm": 42.798280081587116,
+   "eiepBurstKm": 42.77461,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.77469588450229
+  },
+  {
+   "date": "2019-05-26T10:07:54Z",
+   "observedKm": 24.4,
+   "nimbusBurstKm": 49.03605981959362,
+   "eiepBurstKm": 48.974463,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.9746954731972
+  },
+  {
+   "date": "2019-06-22T21:25:47Z",
+   "observedKm": 25,
+   "nimbusBurstKm": 37.27110385672187,
+   "eiepBurstKm": 37.261006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 37.26104543202539
+  },
+  {
+   "date": "2019-06-30T16:52:47Z",
+   "observedKm": 59,
+   "nimbusBurstKm": 58.84899423886209,
+   "eiepBurstKm": 58.843318,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 58.84335121298395
+  },
+  {
+   "date": "2019-07-23T20:42:57Z",
+   "observedKm": 30.6,
+   "nimbusBurstKm": 44.33394756674726,
+   "eiepBurstKm": 44.306409,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.30651865596593
+  },
+  {
+   "date": "2019-08-16T20:36:05Z",
+   "observedKm": 36,
+   "nimbusBurstKm": 46.06534310423258,
+   "eiepBurstKm": 46.000792000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.00103801792754
+  },
+  {
+   "date": "2019-08-24T12:02:59Z",
+   "observedKm": 39.8,
+   "nimbusBurstKm": 48.44241768906107,
+   "eiepBurstKm": 46.678314,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.687381120629
+  },
+  {
+   "date": "2019-09-12T02:34:58Z",
+   "observedKm": 30.6,
+   "nimbusBurstKm": 46.98246303786996,
+   "eiepBurstKm": 46.943684000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.94383071563995
+  },
+  {
+   "date": "2019-09-12T12:49:47Z",
+   "observedKm": 42,
+   "nimbusBurstKm": 49.95305278251908,
+   "eiepBurstKm": 49.895067000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.895287698101875
+  },
+  {
+   "date": "2019-09-13T02:02:03Z",
+   "observedKm": 27.4,
+   "nimbusBurstKm": 43.194365671700986,
+   "eiepBurstKm": 43.142224999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.14241928160537
+  },
+  {
+   "date": "2019-09-14T12:39:33Z",
+   "observedKm": 38,
+   "nimbusBurstKm": 43.417530962194235,
+   "eiepBurstKm": 43.391632,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.391726871587316
+  },
+  {
+   "date": "2019-09-28T10:40:19Z",
+   "observedKm": 52,
+   "nimbusBurstKm": 52.64827027102543,
+   "eiepBurstKm": 52.576054,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.576340980045906
+  },
+  {
+   "date": "2019-10-10T16:16:36Z",
+   "observedKm": 47.3,
+   "nimbusBurstKm": 41.007622734220604,
+   "eiepBurstKm": 40.982527000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.98262418759992
+  },
+  {
+   "date": "2019-11-05T11:24:50Z",
+   "observedKm": 38,
+   "nimbusBurstKm": 53.53863875752559,
+   "eiepBurstKm": 53.517795,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.51786878019118
+  },
+  {
+   "date": "2019-11-28T11:55:02Z",
+   "observedKm": 22.5,
+   "nimbusBurstKm": 52.09049727518979,
+   "eiepBurstKm": 52.067629999999994,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.06771602217102
+  },
+  {
+   "date": "2019-11-28T20:30:53Z",
+   "observedKm": 35,
+   "nimbusBurstKm": 43.99195971713999,
+   "eiepBurstKm": 43.916556,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.916851462365734
+  },
+  {
+   "date": "2019-12-11T01:19:10Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 48.83021189318578,
+   "eiepBurstKm": 48.777608,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.77780713666062
+  },
+  {
+   "date": "2019-12-21T14:30:52Z",
+   "observedKm": 35.5,
+   "nimbusBurstKm": 50.0624569864455,
+   "eiepBurstKm": 50.040089,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.04017794244368
+  },
+  {
+   "date": "2020-01-16T09:31:42Z",
+   "observedKm": 27.8,
+   "nimbusBurstKm": 44.79745151897627,
+   "eiepBurstKm": 44.695033,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.69543240615869
+  },
+  {
+   "date": "2020-01-17T21:29:46Z",
+   "observedKm": 14.5,
+   "nimbusBurstKm": 44.1439337089091,
+   "eiepBurstKm": 44.110326,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.110450948755386
+  },
+  {
+   "date": "2020-01-21T20:07:43Z",
+   "observedKm": 43.3,
+   "nimbusBurstKm": 54.26297733904709,
+   "eiepBurstKm": 54.239744,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.23983065104146
+  },
+  {
+   "date": "2020-01-24T11:13:30Z",
+   "observedKm": 32,
+   "nimbusBurstKm": 52.79177586889434,
+   "eiepBurstKm": 52.732271999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.73250648777134
+  },
+  {
+   "date": "2020-01-27T05:39:13Z",
+   "observedKm": 32.5,
+   "nimbusBurstKm": 52.19814558240212,
+   "eiepBurstKm": 52.119017,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.119316042859445
+  },
+  {
+   "date": "2020-02-10T23:48:17Z",
+   "observedKm": 41.7,
+   "nimbusBurstKm": 58.9067278483513,
+   "eiepBurstKm": 58.868545,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 58.86868255858917
+  },
+  {
+   "date": "2020-02-28T09:30:34Z",
+   "observedKm": 34.5,
+   "nimbusBurstKm": 49.30076575341464,
+   "eiepBurstKm": 49.27643,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.27651743559916
+  },
+  {
+   "date": "2020-03-04T20:25:58Z",
+   "observedKm": 24.3,
+   "nimbusBurstKm": 45.78501761271126,
+   "eiepBurstKm": 45.770185,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.770245627788114
+  },
+  {
+   "date": "2020-03-26T23:27:56Z",
+   "observedKm": 26.5,
+   "nimbusBurstKm": 47.644376983582866,
+   "eiepBurstKm": 47.62381,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.62388240489349
+  },
+  {
+   "date": "2020-05-09T02:56:11Z",
+   "observedKm": 31.2,
+   "nimbusBurstKm": 45.71873297059857,
+   "eiepBurstKm": 45.650402,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.650662400235596
+  },
+  {
+   "date": "2020-05-27T17:30:17Z",
+   "observedKm": 29.3,
+   "nimbusBurstKm": 43.41517950529385,
+   "eiepBurstKm": 43.382604,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.382731220898805
+  },
+  {
+   "date": "2020-07-12T07:50:31Z",
+   "observedKm": 29.4,
+   "nimbusBurstKm": null,
+   "eiepBurstKm": null,
+   "eiepError": "HTTP 500",
+   "nimbusOnEiepIfKm": null
+  },
+  {
+   "date": "2020-07-20T21:25:09Z",
+   "observedKm": 31.6,
+   "nimbusBurstKm": 44.74540523288857,
+   "eiepBurstKm": 44.684444000000006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.684675111295114
+  },
+  {
+   "date": "2020-08-02T16:36:24Z",
+   "observedKm": 38,
+   "nimbusBurstKm": 40.99100743443549,
+   "eiepBurstKm": 40.912572999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.91287954390467
+  },
+  {
+   "date": "2020-08-30T16:08:21Z",
+   "observedKm": 27.8,
+   "nimbusBurstKm": 51.340805284095154,
+   "eiepBurstKm": 51.319019,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.319112523489004
+  },
+  {
+   "date": "2020-09-18T08:05:26Z",
+   "observedKm": 46,
+   "nimbusBurstKm": 40.539212667236626,
+   "eiepBurstKm": 40.486835,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.48704187162384
+  },
+  {
+   "date": "2020-10-18T10:52:42Z",
+   "observedKm": 36,
+   "nimbusBurstKm": 46.66802969522226,
+   "eiepBurstKm": 46.622678,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.62285067796819
+  },
+  {
+   "date": "2020-10-22T17:39:33Z",
+   "observedKm": 40,
+   "nimbusBurstKm": 51.47395984002443,
+   "eiepBurstKm": 51.331835,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.332393381610764
+  },
+  {
+   "date": "2020-10-26T15:07:09Z",
+   "observedKm": 28.5,
+   "nimbusBurstKm": 45.709140233456345,
+   "eiepBurstKm": 45.683164,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.683262518407226
+  },
+  {
+   "date": "2020-11-07T21:27:04Z",
+   "observedKm": 22.3,
+   "nimbusBurstKm": 44.4323940722534,
+   "eiepBurstKm": 44.408127,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.408221692410955
+  },
+  {
+   "date": "2020-11-28T16:34:10Z",
+   "observedKm": 28.1,
+   "nimbusBurstKm": 50.012643578538515,
+   "eiepBurstKm": 49.970613,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.970776079608086
+  },
+  {
+   "date": "2020-12-22T23:23:28Z",
+   "observedKm": 35.5,
+   "nimbusBurstKm": 46.928459871561294,
+   "eiepBurstKm": 46.770595,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.771216279245344
+  },
+  {
+   "date": "2020-12-28T17:27:53Z",
+   "observedKm": 28.3,
+   "nimbusBurstKm": 46.83030771946631,
+   "eiepBurstKm": 46.759518,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.759792928652445
+  },
+  {
+   "date": "2020-12-29T20:32:22Z",
+   "observedKm": 33,
+   "nimbusBurstKm": 48.32805692206352,
+   "eiepBurstKm": 48.141864999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.142603290993875
+  },
+  {
+   "date": "2021-01-24T07:33:43Z",
+   "observedKm": 37.5,
+   "nimbusBurstKm": 49.125136967251294,
+   "eiepBurstKm": 49.08884,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.088984194191816
+  },
+  {
+   "date": "2021-01-29T16:12:47Z",
+   "observedKm": 30,
+   "nimbusBurstKm": 45.351993805366696,
+   "eiepBurstKm": 45.28726,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.2875135037955
+  },
+  {
+   "date": "2021-01-31T02:59:38Z",
+   "observedKm": 39.4,
+   "nimbusBurstKm": 42.64732382780669,
+   "eiepBurstKm": 42.621315,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.62141337374983
+  },
+  {
+   "date": "2021-02-02T10:03:20Z",
+   "observedKm": 20,
+   "nimbusBurstKm": 42.702102373345426,
+   "eiepBurstKm": 42.644713,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.644938511565904
+  },
+  {
+   "date": "2021-02-09T23:27:29Z",
+   "observedKm": 31,
+   "nimbusBurstKm": 43.20269431839508,
+   "eiepBurstKm": 43.144339,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.1445666379958
+  },
+  {
+   "date": "2021-03-05T13:50:01Z",
+   "observedKm": 32.5,
+   "nimbusBurstKm": 50.96218228165573,
+   "eiepBurstKm": 50.936626,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.936712683620776
+  },
+  {
+   "date": "2021-03-06T08:43:06Z",
+   "observedKm": 31.1,
+   "nimbusBurstKm": 46.68949666710259,
+   "eiepBurstKm": 46.662862999999994,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.662970568627024
+  },
+  {
+   "date": "2021-04-02T15:52:57Z",
+   "observedKm": 40,
+   "nimbusBurstKm": 45.60686492137721,
+   "eiepBurstKm": 45.531048000000006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.531345087521125
+  },
+  {
+   "date": "2021-04-13T02:16:47Z",
+   "observedKm": 44.4,
+   "nimbusBurstKm": 46.29488837892192,
+   "eiepBurstKm": 46.199771999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.20014272024971
+  },
+  {
+   "date": "2021-05-06T05:54:26Z",
+   "observedKm": 31,
+   "nimbusBurstKm": 54.52406914268431,
+   "eiepBurstKm": 54.49424,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.494347475368976
+  },
+  {
+   "date": "2021-07-05T03:46:22Z",
+   "observedKm": 43.4,
+   "nimbusBurstKm": 47.54231403492884,
+   "eiepBurstKm": 47.46883999999999,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.469122038147525
+  },
+  {
+   "date": "2021-07-29T13:19:57Z",
+   "observedKm": 26.4,
+   "nimbusBurstKm": 44.09376208584761,
+   "eiepBurstKm": 44.053919,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.05407786549553
+  },
+  {
+   "date": "2021-09-06T17:55:41Z",
+   "observedKm": 26,
+   "nimbusBurstKm": 47.29943787505782,
+   "eiepBurstKm": 47.109704,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.11044913504928
+  },
+  {
+   "date": "2021-09-29T10:50:59Z",
+   "observedKm": 28,
+   "nimbusBurstKm": 50.47196154643261,
+   "eiepBurstKm": 50.438997,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.43911885020946
+  },
+  {
+   "date": "2021-10-20T00:43:53Z",
+   "observedKm": 31.4,
+   "nimbusBurstKm": 53.07110702120351,
+   "eiepBurstKm": 53.054783,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.05484813664324
+  },
+  {
+   "date": "2021-10-21T10:32:02Z",
+   "observedKm": 30,
+   "nimbusBurstKm": 47.18079599132583,
+   "eiepBurstKm": 47.120339,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.12057399962779
+  },
+  {
+   "date": "2021-11-17T15:53:11Z",
+   "observedKm": 35,
+   "nimbusBurstKm": 52.38503466000867,
+   "eiepBurstKm": 52.351449,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.35157977029079
+  },
+  {
+   "date": "2021-11-28T18:06:50Z",
+   "observedKm": 38.4,
+   "nimbusBurstKm": 51.01769869017989,
+   "eiepBurstKm": 50.964485,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.964695341311725
+  },
+  {
+   "date": "2021-12-20T23:15:54Z",
+   "observedKm": 56,
+   "nimbusBurstKm": 49.38950576413774,
+   "eiepBurstKm": 49.337493,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.33769851214276
+  },
+  {
+   "date": "2021-12-29T03:15:35Z",
+   "observedKm": 44,
+   "nimbusBurstKm": 50.80233588295025,
+   "eiepBurstKm": 50.773892,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.77400195482122
+  },
+  {
+   "date": "2022-01-11T03:33:13Z",
+   "observedKm": 40.8,
+   "nimbusBurstKm": 43.11739453123667,
+   "eiepBurstKm": 43.112826,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.1128478155054
+  },
+  {
+   "date": "2022-01-30T02:06:18Z",
+   "observedKm": 36.6,
+   "nimbusBurstKm": 50.864282581686496,
+   "eiepBurstKm": 50.816925000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.817109303933634
+  },
+  {
+   "date": "2022-02-03T19:50:40Z",
+   "observedKm": 36,
+   "nimbusBurstKm": 55.07505705844671,
+   "eiepBurstKm": 54.990897,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.991222298694254
+  },
+  {
+   "date": "2022-02-07T20:06:25Z",
+   "observedKm": 26.5,
+   "nimbusBurstKm": 38.58482797410218,
+   "eiepBurstKm": 38.564485999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 38.56456867823933
+  },
+  {
+   "date": "2022-02-17T03:53:23Z",
+   "observedKm": 32.4,
+   "nimbusBurstKm": 48.915194056273805,
+   "eiepBurstKm": 48.894081,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.89416067557968
+  },
+  {
+   "date": "2022-03-11T21:22:45Z",
+   "observedKm": 33.3,
+   "nimbusBurstKm": 38.20668252078136,
+   "eiepBurstKm": 38.199681,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 38.199707915957966
+  },
+  {
+   "date": "2022-03-24T03:43:42Z",
+   "observedKm": 56.7,
+   "nimbusBurstKm": 46.64393402720128,
+   "eiepBurstKm": 46.615328,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.615431869275206
+  },
+  {
+   "date": "2022-03-28T10:20:24Z",
+   "observedKm": 29,
+   "nimbusBurstKm": 45.27219260488071,
+   "eiepBurstKm": 45.258283000000006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.25833988188482
+  },
+  {
+   "date": "2022-04-04T00:30:39Z",
+   "observedKm": 31.5,
+   "nimbusBurstKm": 51.265187374772935,
+   "eiepBurstKm": 51.205861,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.20608759135961
+  },
+  {
+   "date": "2022-04-12T21:59:11Z",
+   "observedKm": 23.8,
+   "nimbusBurstKm": 50.450116009137794,
+   "eiepBurstKm": 50.411396999999994,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.41153771918136
+  },
+  {
+   "date": "2022-04-21T22:15:28Z",
+   "observedKm": 28.4,
+   "nimbusBurstKm": 43.62415498581712,
+   "eiepBurstKm": 43.546782,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.547085117181325
+  },
+  {
+   "date": "2022-06-07T22:53:17Z",
+   "observedKm": 41.1,
+   "nimbusBurstKm": 53.78425638072158,
+   "eiepBurstKm": 53.748853000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.7489774664216
+  },
+  {
+   "date": "2022-06-26T20:16:26Z",
+   "observedKm": 19,
+   "nimbusBurstKm": 51.54420355666093,
+   "eiepBurstKm": 51.485912,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.486130787861356
+  },
+  {
+   "date": "2022-07-08T01:36:36Z",
+   "observedKm": 22,
+   "nimbusBurstKm": 49.80708236805368,
+   "eiepBurstKm": 49.773697999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 49.773830058122705
+  },
+  {
+   "date": "2022-07-20T10:56:52Z",
+   "observedKm": 32.2,
+   "nimbusBurstKm": 48.48375196501085,
+   "eiepBurstKm": 48.397422,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.39776217104573
+  },
+  {
+   "date": "2022-07-22T00:16:18Z",
+   "observedKm": 32.7,
+   "nimbusBurstKm": 48.54855238985135,
+   "eiepBurstKm": 48.494364000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.49457283001461
+  },
+  {
+   "date": "2022-07-25T07:28:16Z",
+   "observedKm": 33.6,
+   "nimbusBurstKm": 44.49214845125802,
+   "eiepBurstKm": 44.451907,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.45205517132598
+  },
+  {
+   "date": "2022-07-27T04:41:27Z",
+   "observedKm": 38.1,
+   "nimbusBurstKm": 47.80680850332111,
+   "eiepBurstKm": 47.78398,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.784071022381475
+  },
+  {
+   "date": "2022-07-28T01:36:07Z",
+   "observedKm": 37.5,
+   "nimbusBurstKm": 51.29852434160661,
+   "eiepBurstKm": 51.290247,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.290279639090876
+  },
+  {
+   "date": "2022-09-04T03:54:55Z",
+   "observedKm": 14,
+   "nimbusBurstKm": 50.675689186761645,
+   "eiepBurstKm": 50.644956,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.645065725135225
+  },
+  {
+   "date": "2022-09-14T23:31:14Z",
+   "observedKm": 35.8,
+   "nimbusBurstKm": 52.928903132627795,
+   "eiepBurstKm": 51.944659,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.94907229078561
+  },
+  {
+   "date": "2022-11-20T13:53:54Z",
+   "observedKm": 26,
+   "nimbusBurstKm": 53.38896385877527,
+   "eiepBurstKm": 53.326665999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.3269118687126
+  },
+  {
+   "date": "2022-12-13T17:26:00Z",
+   "observedKm": 20,
+   "nimbusBurstKm": 48.479006716366925,
+   "eiepBurstKm": 48.441421999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.441561597692356
+  },
+  {
+   "date": "2022-12-29T06:52:08Z",
+   "observedKm": 32.3,
+   "nimbusBurstKm": 44.606554185354966,
+   "eiepBurstKm": 44.580633999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.580741139432476
+  },
+  {
+   "date": "2023-01-09T01:17:13Z",
+   "observedKm": 27,
+   "nimbusBurstKm": 46.06157965011237,
+   "eiepBurstKm": 46.025048999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.02518499851217
+  },
+  {
+   "date": "2023-01-11T23:59:50Z",
+   "observedKm": 33.5,
+   "nimbusBurstKm": 47.45674167825936,
+   "eiepBurstKm": 47.415398,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.41554931689922
+  },
+  {
+   "date": "2023-01-17T06:57:17Z",
+   "observedKm": 38,
+   "nimbusBurstKm": 44.97218460374236,
+   "eiepBurstKm": 44.912521,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.91275805332921
+  },
+  {
+   "date": "2023-02-14T22:55:24Z",
+   "observedKm": 32.3,
+   "nimbusBurstKm": 46.35458037065734,
+   "eiepBurstKm": 46.302167000000004,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.30237375719356
+  },
+  {
+   "date": "2023-02-19T06:15:33Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 48.11572315587435,
+   "eiepBurstKm": 48.102596,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.10264738810862
+  },
+  {
+   "date": "2023-03-03T02:53:54Z",
+   "observedKm": 32,
+   "nimbusBurstKm": 54.654362154129664,
+   "eiepBurstKm": 54.616728,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.61687323431986
+  },
+  {
+   "date": "2023-04-01T00:02:02Z",
+   "observedKm": 61.8,
+   "nimbusBurstKm": 62.62159361512261,
+   "eiepBurstKm": 62.612048,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 62.61209733629896
+  },
+  {
+   "date": "2023-04-06T14:47:38Z",
+   "observedKm": 31.2,
+   "nimbusBurstKm": 50.26830730598276,
+   "eiepBurstKm": 50.242207,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.24230231383788
+  },
+  {
+   "date": "2023-04-15T08:21:58Z",
+   "observedKm": 41.4,
+   "nimbusBurstKm": 40.19683119157405,
+   "eiepBurstKm": 40.18528,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.18531746993563
+  },
+  {
+   "date": "2023-04-26T13:14:59Z",
+   "observedKm": 29.6,
+   "nimbusBurstKm": 47.51807558219578,
+   "eiepBurstKm": 47.457595,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.4578278525169
+  },
+  {
+   "date": "2023-05-20T11:22:22Z",
+   "observedKm": 29,
+   "nimbusBurstKm": 45.048717665204265,
+   "eiepBurstKm": 45.045415,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.04542961073584
+  },
+  {
+   "date": "2023-06-21T19:39:12Z",
+   "observedKm": 40.4,
+   "nimbusBurstKm": 51.00941756568439,
+   "eiepBurstKm": 50.796896999999994,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.797733954590996
+  },
+  {
+   "date": "2023-07-07T16:15:30Z",
+   "observedKm": 38.3,
+   "nimbusBurstKm": 56.53205040885494,
+   "eiepBurstKm": 56.468917999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 56.46915617711714
+  },
+  {
+   "date": "2023-07-26T03:41:53Z",
+   "observedKm": 36.1,
+   "nimbusBurstKm": 45.86797074362049,
+   "eiepBurstKm": 45.819243,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.81942510411439
+  },
+  {
+   "date": "2023-08-05T19:54:49Z",
+   "observedKm": 44,
+   "nimbusBurstKm": 41.027865223961285,
+   "eiepBurstKm": 41.024373,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 41.024391465211274
+  },
+  {
+   "date": "2023-08-17T05:57:37Z",
+   "observedKm": 35.4,
+   "nimbusBurstKm": 43.82247245798298,
+   "eiepBurstKm": 43.796133999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.79623192490798
+  },
+  {
+   "date": "2023-10-14T22:55:25Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 47.514182025949054,
+   "eiepBurstKm": 47.486953,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.48704934138245
+  },
+  {
+   "date": "2023-10-16T17:14:52Z",
+   "observedKm": 35.3,
+   "nimbusBurstKm": 49.01010736778884,
+   "eiepBurstKm": 48.980491,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.9806106994776
+  },
+  {
+   "date": "2023-10-26T08:58:24Z",
+   "observedKm": 44.2,
+   "nimbusBurstKm": 53.537381901746365,
+   "eiepBurstKm": 53.524309,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.524356553472096
+  },
+  {
+   "date": "2023-10-30T07:22:55Z",
+   "observedKm": 33.8,
+   "nimbusBurstKm": 48.67548651390831,
+   "eiepBurstKm": 48.623998,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.62420073851674
+  },
+  {
+   "date": "2023-11-21T22:17:29Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 46.75140589219547,
+   "eiepBurstKm": 46.725604,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.72570736589534
+  },
+  {
+   "date": "2023-12-05T23:10:11Z",
+   "observedKm": 24.1,
+   "nimbusBurstKm": 51.04360061925079,
+   "eiepBurstKm": 51.002778,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.00294255593274
+  },
+  {
+   "date": "2023-12-11T08:32:58Z",
+   "observedKm": 31.7,
+   "nimbusBurstKm": 55.102812684663206,
+   "eiepBurstKm": 55.064309,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 55.06444972556545
+  },
+  {
+   "date": "2023-12-30T21:04:33Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 59.77967312834861,
+   "eiepBurstKm": 59.657856,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 59.658325792119626
+  },
+  {
+   "date": "2024-02-05T00:32:54Z",
+   "observedKm": 23,
+   "nimbusBurstKm": 45.17695001089594,
+   "eiepBurstKm": 45.116374,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.11660607677708
+  },
+  {
+   "date": "2024-02-26T11:21:01Z",
+   "observedKm": 33.1,
+   "nimbusBurstKm": 61.09102436937084,
+   "eiepBurstKm": 60.999353,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 60.99970601718779
+  },
+  {
+   "date": "2024-03-17T06:17:58Z",
+   "observedKm": 42.1,
+   "nimbusBurstKm": 54.086190765248794,
+   "eiepBurstKm": 54.057673,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.057789409550956
+  },
+  {
+   "date": "2024-05-05T20:11:03Z",
+   "observedKm": 39,
+   "nimbusBurstKm": 43.401790489281666,
+   "eiepBurstKm": 43.357551,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.357727376067764
+  },
+  {
+   "date": "2024-05-18T22:46:48Z",
+   "observedKm": 74.3,
+   "nimbusBurstKm": 66.20781936039994,
+   "eiepBurstKm": 66.073458,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 66.07398286043494
+  },
+  {
+   "date": "2024-05-24T16:19:59Z",
+   "observedKm": 42,
+   "nimbusBurstKm": 56.73533397950795,
+   "eiepBurstKm": 56.725993,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 56.72603421621109
+  },
+  {
+   "date": "2024-05-27T03:19:36Z",
+   "observedKm": 56,
+   "nimbusBurstKm": 56.039779011845106,
+   "eiepBurstKm": 56.032593999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 56.032619964511326
+  },
+  {
+   "date": "2024-06-01T23:24:58Z",
+   "observedKm": 26.5,
+   "nimbusBurstKm": 40.72341054357234,
+   "eiepBurstKm": 40.683752999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.68390399203509
+  },
+  {
+   "date": "2024-06-18T13:51:19Z",
+   "observedKm": 44.3,
+   "nimbusBurstKm": 54.471353962223105,
+   "eiepBurstKm": 54.465925999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.46595570621908
+  },
+  {
+   "date": "2024-06-18T21:01:32Z",
+   "observedKm": 28.7,
+   "nimbusBurstKm": 49.02282377728671,
+   "eiepBurstKm": 48.926103000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.92648282026337
+  },
+  {
+   "date": "2024-06-28T16:05:19Z",
+   "observedKm": 29.2,
+   "nimbusBurstKm": 47.897303980828916,
+   "eiepBurstKm": 47.800176,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.80055064376104
+  },
+  {
+   "date": "2024-07-12T00:09:35Z",
+   "observedKm": 41.5,
+   "nimbusBurstKm": 53.89961460849677,
+   "eiepBurstKm": 53.837908000000006,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.83814588799164
+  },
+  {
+   "date": "2024-07-20T14:08:10Z",
+   "observedKm": 38.8,
+   "nimbusBurstKm": 58.80358316239035,
+   "eiepBurstKm": 58.760023999999994,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 58.76018291982827
+  },
+  {
+   "date": "2024-07-30T19:27:16Z",
+   "observedKm": 39,
+   "nimbusBurstKm": 46.17115450322755,
+   "eiepBurstKm": 46.096998,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.09728394810015
+  },
+  {
+   "date": "2024-08-25T06:50:49Z",
+   "observedKm": 38.2,
+   "nimbusBurstKm": 55.28178872119993,
+   "eiepBurstKm": 54.742112,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.74436349227217
+  },
+  {
+   "date": "2024-09-04T16:39:32Z",
+   "observedKm": 25,
+   "nimbusBurstKm": 48.19543015137286,
+   "eiepBurstKm": 48.169537,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.169638619309744
+  },
+  {
+   "date": "2024-09-06T12:36:22Z",
+   "observedKm": 27,
+   "nimbusBurstKm": 53.1733214308325,
+   "eiepBurstKm": 53.128821,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.1290006719299
+  },
+  {
+   "date": "2024-09-28T00:10:19Z",
+   "observedKm": 34.2,
+   "nimbusBurstKm": 45.37017457774033,
+   "eiepBurstKm": 45.319659,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.31985541796855
+  },
+  {
+   "date": "2024-10-05T12:27:48Z",
+   "observedKm": 39.5,
+   "nimbusBurstKm": 42.92462832195647,
+   "eiepBurstKm": 42.869926,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.870137612075595
+  },
+  {
+   "date": "2024-12-01T08:50:16Z",
+   "observedKm": 35.9,
+   "nimbusBurstKm": 51.07265474872524,
+   "eiepBurstKm": 51.043082000000005,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.04319733587296
+  },
+  {
+   "date": "2024-12-20T17:52:01Z",
+   "observedKm": 32.6,
+   "nimbusBurstKm": 42.083158257742326,
+   "eiepBurstKm": 42.077464,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.07748818788761
+  },
+  {
+   "date": "2024-12-28T04:45:12Z",
+   "observedKm": 33.7,
+   "nimbusBurstKm": 50.7848407883261,
+   "eiepBurstKm": 50.645143,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.64568668067931
+  },
+  {
+   "date": "2025-01-10T21:11:07Z",
+   "observedKm": 34.6,
+   "nimbusBurstKm": 45.30573618159801,
+   "eiepBurstKm": 45.232474,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.23275611839307
+  },
+  {
+   "date": "2025-01-11T14:46:00Z",
+   "observedKm": 61,
+   "nimbusBurstKm": 46.622733320507905,
+   "eiepBurstKm": 46.445882,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.44658136129349
+  },
+  {
+   "date": "2025-02-06T17:52:54Z",
+   "observedKm": 36.2,
+   "nimbusBurstKm": 48.39704459157693,
+   "eiepBurstKm": 48.344996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.34519592332203
+  },
+  {
+   "date": "2025-02-07T17:25:57Z",
+   "observedKm": 50.8,
+   "nimbusBurstKm": 51.3175789727697,
+   "eiepBurstKm": 51.263235,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 51.26343926092705
+  },
+  {
+   "date": "2025-02-12T04:33:39Z",
+   "observedKm": 42,
+   "nimbusBurstKm": 55.825192001657015,
+   "eiepBurstKm": 55.645919,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 55.646627346864264
+  },
+  {
+   "date": "2025-02-22T10:26:08Z",
+   "observedKm": 46.7,
+   "nimbusBurstKm": 45.63400698969586,
+   "eiepBurstKm": 45.580023999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.580234629456385
+  },
+  {
+   "date": "2025-03-13T09:46:51Z",
+   "observedKm": 38,
+   "nimbusBurstKm": 56.21021893361632,
+   "eiepBurstKm": 56.174979,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 56.17510388317364
+  },
+  {
+   "date": "2025-03-18T17:48:32Z",
+   "observedKm": 27,
+   "nimbusBurstKm": 48.096766214458576,
+   "eiepBurstKm": 48.071053,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.07114377735304
+  },
+  {
+   "date": "2025-03-24T05:51:43Z",
+   "observedKm": 21.5,
+   "nimbusBurstKm": 54.658674757836096,
+   "eiepBurstKm": 54.639112999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 54.63919604862397
+  },
+  {
+   "date": "2025-03-27T16:05:23Z",
+   "observedKm": 38.1,
+   "nimbusBurstKm": 43.61009499537245,
+   "eiepBurstKm": 43.602141,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.60217114629529
+  },
+  {
+   "date": "2025-03-29T08:12:43Z",
+   "observedKm": 21.6,
+   "nimbusBurstKm": 41.00106292260644,
+   "eiepBurstKm": 40.95514,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.95532105484929
+  },
+  {
+   "date": "2025-04-08T14:16:48Z",
+   "observedKm": 44.9,
+   "nimbusBurstKm": 53.06979655702731,
+   "eiepBurstKm": 53.026997,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.02717042051833
+  },
+  {
+   "date": "2025-05-31T23:06:33Z",
+   "observedKm": 47.3,
+   "nimbusBurstKm": 43.87676974009997,
+   "eiepBurstKm": 43.859327,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.85939150313429
+  },
+  {
+   "date": "2025-06-26T00:37:20Z",
+   "observedKm": 30,
+   "nimbusBurstKm": 47.77771713826859,
+   "eiepBurstKm": 47.753125,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.753227295852554
+  },
+  {
+   "date": "2025-07-11T01:48:33Z",
+   "observedKm": 28,
+   "nimbusBurstKm": 43.25133513911425,
+   "eiepBurstKm": 43.200969,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.20115848242937
+  },
+  {
+   "date": "2025-08-19T14:08:48Z",
+   "observedKm": 27.5,
+   "nimbusBurstKm": 42.62369916793177,
+   "eiepBurstKm": 42.614727,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 42.61476253951833
+  },
+  {
+   "date": "2025-09-09T17:49:10Z",
+   "observedKm": 24,
+   "nimbusBurstKm": 47.76071520890514,
+   "eiepBurstKm": 47.741667,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.74174150308694
+  },
+  {
+   "date": "2025-09-13T22:24:59Z",
+   "observedKm": 25.1,
+   "nimbusBurstKm": 47.87877071056082,
+   "eiepBurstKm": 47.83771,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.837864702967444
+  },
+  {
+   "date": "2025-10-20T13:31:27Z",
+   "observedKm": 41,
+   "nimbusBurstKm": 56.636392706490604,
+   "eiepBurstKm": 56.586536,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 56.58672807208399
+  },
+  {
+   "date": "2025-11-11T17:39:51Z",
+   "observedKm": 42,
+   "nimbusBurstKm": 46.48090423058166,
+   "eiepBurstKm": 46.456644999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.4567338537165
+  },
+  {
+   "date": "2025-11-15T00:48:43Z",
+   "observedKm": 30,
+   "nimbusBurstKm": 44.72289092384617,
+   "eiepBurstKm": 44.692248,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 44.69237011247642
+  },
+  {
+   "date": "2025-12-16T20:58:12Z",
+   "observedKm": 25,
+   "nimbusBurstKm": 46.25383474694418,
+   "eiepBurstKm": 46.23129,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 46.231369039779274
+  },
+  {
+   "date": "2026-01-30T10:25:37Z",
+   "observedKm": 89,
+   "nimbusBurstKm": 75.44275799617176,
+   "eiepBurstKm": 75.358662,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 75.35898166655774
+  },
+  {
+   "date": "2026-03-17T12:56:42Z",
+   "observedKm": 45,
+   "nimbusBurstKm": 45.69794248770767,
+   "eiepBurstKm": 45.639388,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.639610277707575
+  },
+  {
+   "date": "2026-03-23T19:23:43Z",
+   "observedKm": 35,
+   "nimbusBurstKm": 40.192174720648424,
+   "eiepBurstKm": 40.13844,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 40.138647316447816
+  },
+  {
+   "date": "2026-04-01T02:13:14Z",
+   "observedKm": 90.5,
+   "nimbusBurstKm": 73.16766631529,
+   "eiepBurstKm": 73.14049899999999,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 73.14061293630348
+  },
+  {
+   "date": "2026-04-01T23:59:35Z",
+   "observedKm": 37,
+   "nimbusBurstKm": 62.14553207043709,
+   "eiepBurstKm": 62.109625,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 62.10976796607962
+  },
+  {
+   "date": "2026-04-08T01:58:47Z",
+   "observedKm": 62,
+   "nimbusBurstKm": 48.77644285051276,
+   "eiepBurstKm": 48.726309,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 48.72650470099797
+  },
+  {
+   "date": "2026-04-29T14:00:39Z",
+   "observedKm": 28.7,
+   "nimbusBurstKm": 50.12022358290598,
+   "eiepBurstKm": 50.0432,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 50.04349540154952
+  },
+  {
+   "date": "2026-05-07T05:52:03Z",
+   "observedKm": 36,
+   "nimbusBurstKm": 52.879117500807816,
+   "eiepBurstKm": 52.852968999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 52.85307010208209
+  },
+  {
+   "date": "2026-05-10T16:57:37Z",
+   "observedKm": 32.7,
+   "nimbusBurstKm": 53.534194317527884,
+   "eiepBurstKm": 53.486012,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 53.48619662625228
+  },
+  {
+   "date": "2026-05-21T02:15:51Z",
+   "observedKm": 31.5,
+   "nimbusBurstKm": 47.79986812708909,
+   "eiepBurstKm": 47.724610999999996,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 47.724904819833085
+  },
+  {
+   "date": "2026-08-14T07:48:36Z",
+   "observedKm": 30,
+   "nimbusBurstKm": 43.53097124849447,
+   "eiepBurstKm": 43.435367,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 43.43574307940451
+  },
+  {
+   "date": "2026-09-10T05:22:22Z",
+   "observedKm": 33.6,
+   "nimbusBurstKm": 45.774820347893844,
+   "eiepBurstKm": 45.759108999999995,
+   "eiepError": null,
+   "nimbusOnEiepIfKm": 45.75917567041173
+  }
+ ]
+}

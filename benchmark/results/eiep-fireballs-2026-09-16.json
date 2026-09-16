@@ -1,0 +1,5361 @@
+{
+ "reference": "Earth Impact Effects Program, impact.ese.ic.ac.uk (Collins, Melosh & Marcus 2005)",
+ "readOn": "2026-09-16",
+ "rows": [
+  {
+   "date": "1998-01-04T23:00:27Z",
+   "sent": {
+    "diameterM": 1.612,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.1,
+    "angleDeg": 26.3
+   },
+   "error": null,
+   "observedKm": 30,
+   "nimbusBurstKm": 49.22944848502771,
+   "eiepBurstKm": 49.156351,
+   "eiepBreakupKm": 53.944,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2003-09-27T12:59:02Z",
+   "sent": {
+    "diameterM": 4.198,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.2,
+    "angleDeg": 38.45
+   },
+   "error": null,
+   "observedKm": 26,
+   "nimbusBurstKm": 41.29584668606989,
+   "eiepBurstKm": 41.286767,
+   "eiepBreakupKm": 55.09,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2003-11-10T13:54:05Z",
+   "sent": {
+    "diameterM": 2.578,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.1,
+    "angleDeg": 55.68
+   },
+   "error": null,
+   "observedKm": 23,
+   "nimbusBurstKm": 43.8290981883513,
+   "eiepBurstKm": 43.820333,
+   "eiepBreakupKm": 56.679,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2004-04-06T03:24:49Z",
+   "sent": {
+    "diameterM": 2.076,
+    "densityKgM3": 3000,
+    "velocityKmS": 25.6,
+    "angleDeg": 38.4
+   },
+   "error": null,
+   "observedKm": 35,
+   "nimbusBurstKm": 49.864177624750646,
+   "eiepBurstKm": 49.84987400000001,
+   "eiepBreakupKm": 60.548,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2004-04-22T04:21:49Z",
+   "sent": {
+    "diameterM": 3.11,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.3,
+    "angleDeg": 11.13
+   },
+   "error": null,
+   "observedKm": 29.6,
+   "nimbusBurstKm": 49.28830568085725,
+   "eiepBurstKm": 49.184854,
+   "eiepBreakupKm": 53.114,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2004-06-05T20:34:10Z",
+   "sent": {
+    "diameterM": 3.795,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.5,
+    "angleDeg": 34.53
+   },
+   "error": null,
+   "observedKm": 43,
+   "nimbusBurstKm": 43.521642997056084,
+   "eiepBurstKm": 43.510639000000005,
+   "eiepBreakupKm": 56.191,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2004-10-07T13:14:43Z",
+   "sent": {
+    "diameterM": 6.383,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.2,
+    "angleDeg": 27.21
+   },
+   "error": null,
+   "observedKm": 35,
+   "nimbusBurstKm": 40.572562332941885,
+   "eiepBurstKm": 40.566668,
+   "eiepBreakupKm": 55.955,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2005-01-02T23:09:49Z",
+   "sent": {
+    "diameterM": 1.592,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.5,
+    "angleDeg": 74.53
+   },
+   "error": null,
+   "observedKm": 35.2,
+   "nimbusBurstKm": 47.07338969783384,
+   "eiepBurstKm": 47.058108,
+   "eiepBreakupKm": 57.746,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2005-04-19T07:37:47Z",
+   "sent": {
+    "diameterM": 2.294,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.8,
+    "angleDeg": 44.37
+   },
+   "error": null,
+   "observedKm": 38.5,
+   "nimbusBurstKm": 44.61151689764921,
+   "eiepBurstKm": 44.587891000000006,
+   "eiepBreakupKm": 53.767,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2005-05-07T09:31:44Z",
+   "sent": {
+    "diameterM": 1.212,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.6,
+    "angleDeg": 46.6
+   },
+   "error": null,
+   "observedKm": 15.2,
+   "nimbusBurstKm": 47.96768823118076,
+   "eiepBurstKm": 47.906597000000005,
+   "eiepBreakupKm": 53.497,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2005-06-03T08:15:41Z",
+   "sent": {
+    "diameterM": 1.247,
+    "densityKgM3": 3000,
+    "velocityKmS": 26.2,
+    "angleDeg": 73.46
+   },
+   "error": null,
+   "observedKm": 29.6,
+   "nimbusBurstKm": 50.6361618311957,
+   "eiepBurstKm": 50.624704,
+   "eiepBreakupKm": 60.917,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2005-08-09T14:35:45Z",
+   "sent": {
+    "diameterM": 1.184,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.9,
+    "angleDeg": 19.42
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 50.98425265380292,
+   "eiepBurstKm": 50.822466,
+   "eiepBreakupKm": 53.577,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2005-11-09T07:33:08Z",
+   "sent": {
+    "diameterM": 1.86,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.8,
+    "angleDeg": 49.74
+   },
+   "error": null,
+   "observedKm": 30.7,
+   "nimbusBurstKm": 43.482528146279016,
+   "eiepBurstKm": 43.433387,
+   "eiepBreakupKm": 50.559,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2005-12-03T12:45:49Z",
+   "sent": {
+    "diameterM": 1.707,
+    "densityKgM3": 3000,
+    "velocityKmS": 17,
+    "angleDeg": 22.28
+   },
+   "error": null,
+   "observedKm": 32.2,
+   "nimbusBurstKm": 49.54455705388068,
+   "eiepBurstKm": 49.460273,
+   "eiepBreakupKm": 53.826,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2005-12-29T10:05:35Z",
+   "sent": {
+    "diameterM": 1.875,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.7,
+    "angleDeg": 84.08
+   },
+   "error": null,
+   "observedKm": 42.2,
+   "nimbusBurstKm": 45.1918038910668,
+   "eiepBurstKm": 45.178942,
+   "eiepBreakupKm": 57.146,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2006-01-10T23:25:28Z",
+   "sent": {
+    "diameterM": 1.223,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.9,
+    "angleDeg": 51.47
+   },
+   "error": null,
+   "observedKm": 32.4,
+   "nimbusBurstKm": 47.76593893517851,
+   "eiepBurstKm": 47.71343,
+   "eiepBreakupKm": 53.803,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2006-01-28T03:33:48Z",
+   "sent": {
+    "diameterM": 3.016,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.7,
+    "angleDeg": 25.65
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 47.000208685350465,
+   "eiepBurstKm": 46.97394,
+   "eiepBreakupKm": 55.482,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2006-02-04T08:38:05Z",
+   "sent": {
+    "diameterM": 1.597,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.8,
+    "angleDeg": 18.85
+   },
+   "error": null,
+   "observedKm": 38.9,
+   "nimbusBurstKm": 52.265725566451465,
+   "eiepBurstKm": 52.188233999999994,
+   "eiepBreakupKm": 56.283,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2006-06-07T00:06:28Z",
+   "sent": {
+    "diameterM": 1.381,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.6,
+    "angleDeg": 46.57
+   },
+   "error": null,
+   "observedKm": 40.7,
+   "nimbusBurstKm": 49.08880837367441,
+   "eiepBurstKm": 49.055906,
+   "eiepBreakupKm": 56.218,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2006-07-15T15:22:50Z",
+   "sent": {
+    "diameterM": 1.4,
+    "densityKgM3": 3000,
+    "velocityKmS": 30.2,
+    "angleDeg": 19.46
+   },
+   "error": null,
+   "observedKm": 38.9,
+   "nimbusBurstKm": 57.74018662617834,
+   "eiepBurstKm": 57.706375,
+   "eiepBreakupKm": 63.145,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2006-07-15T23:55:45Z",
+   "sent": {
+    "diameterM": 2.081,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.4,
+    "angleDeg": 75.36
+   },
+   "error": null,
+   "observedKm": 29.6,
+   "nimbusBurstKm": 40.26658091149543,
+   "eiepBurstKm": 40.227192,
+   "eiepBreakupKm": 48.866,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2006-09-02T04:26:15Z",
+   "sent": {
+    "diameterM": 4.198,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.2,
+    "angleDeg": 63.05
+   },
+   "error": null,
+   "observedKm": 44.1,
+   "nimbusBurstKm": 36.26407989298026,
+   "eiepBurstKm": 36.253644,
+   "eiepBreakupKm": 51.112,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2006-10-14T18:10:49Z",
+   "sent": {
+    "diameterM": 1.869,
+    "densityKgM3": 3000,
+    "velocityKmS": 23.9,
+    "angleDeg": 12.71
+   },
+   "error": null,
+   "observedKm": 44.4,
+   "nimbusBurstKm": 55.429343719202656,
+   "eiepBurstKm": 55.359832000000004,
+   "eiepBreakupKm": 59.323,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2006-12-09T06:31:14Z",
+   "sent": {
+    "diameterM": 6.657,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.9,
+    "angleDeg": 4.49
+   },
+   "error": null,
+   "observedKm": 26.5,
+   "nimbusBurstKm": 49.41443038669687,
+   "eiepBurstKm": 49.283823,
+   "eiepBreakupKm": 52.659,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2007-01-22T07:24:56Z",
+   "sent": {
+    "diameterM": 1.924,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.4,
+    "angleDeg": 48.2
+   },
+   "error": null,
+   "observedKm": 32,
+   "nimbusBurstKm": 43.11792244347156,
+   "eiepBurstKm": 43.066313,
+   "eiepBreakupKm": 50.08,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2007-03-17T06:48:35Z",
+   "sent": {
+    "diameterM": 1.488,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.5,
+    "angleDeg": 37.79
+   },
+   "error": null,
+   "observedKm": 32.5,
+   "nimbusBurstKm": 46.246081839879515,
+   "eiepBurstKm": 46.166506999999996,
+   "eiepBreakupKm": 51.287,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2007-04-18T12:44:23Z",
+   "sent": {
+    "diameterM": 1.435,
+    "densityKgM3": 3000,
+    "velocityKmS": 24.4,
+    "angleDeg": 69.99
+   },
+   "error": null,
+   "observedKm": 38,
+   "nimbusBurstKm": 49.12128207760784,
+   "eiepBurstKm": 49.106692,
+   "eiepBreakupKm": 59.777,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2007-06-11T09:47:05Z",
+   "sent": {
+    "diameterM": 1.434,
+    "densityKgM3": 3000,
+    "velocityKmS": 17,
+    "angleDeg": 55.3
+   },
+   "error": null,
+   "observedKm": 35.2,
+   "nimbusBurstKm": 46.69498622302885,
+   "eiepBurstKm": 46.657248,
+   "eiepBreakupKm": 53.927,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2007-09-22T17:57:13Z",
+   "sent": {
+    "diameterM": 2.297,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.9,
+    "angleDeg": 46.41
+   },
+   "error": null,
+   "observedKm": 30.2,
+   "nimbusBurstKm": 44.40791277261404,
+   "eiepBurstKm": 44.38566,
+   "eiepBreakupKm": 53.866,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2007-10-12T09:14:03Z",
+   "sent": {
+    "diameterM": 1.201,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.4,
+    "angleDeg": 37.44
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 50.00446917716424,
+   "eiepBurstKm": 49.942786,
+   "eiepBreakupKm": 55.147,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-01-09T03:53:16Z",
+   "sent": {
+    "diameterM": 1.77,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.6,
+    "angleDeg": 57.75
+   },
+   "error": null,
+   "observedKm": 31.5,
+   "nimbusBurstKm": 41.35569546361898,
+   "eiepBurstKm": 41.285788000000004,
+   "eiepBreakupKm": 47.727,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-02-17T12:19:16Z",
+   "sent": {
+    "diameterM": 2.088,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.9,
+    "angleDeg": 17.72
+   },
+   "error": null,
+   "observedKm": 40.4,
+   "nimbusBurstKm": 47.05371983282598,
+   "eiepBurstKm": 46.913581,
+   "eiepBreakupKm": 50.484,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-03-15T11:29:55Z",
+   "sent": {
+    "diameterM": 1.724,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.9,
+    "angleDeg": 56.96
+   },
+   "error": null,
+   "observedKm": 26.7,
+   "nimbusBurstKm": 42.678032726396424,
+   "eiepBurstKm": 42.621608,
+   "eiepBreakupKm": 49.46,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-05-24T10:18:10Z",
+   "sent": {
+    "diameterM": 2.248,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.2,
+    "angleDeg": 26.74
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 45.5387246091589,
+   "eiepBurstKm": 45.467358999999995,
+   "eiepBreakupKm": 50.965,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-06-27T02:01:23Z",
+   "sent": {
+    "diameterM": 1.698,
+    "densityKgM3": 3000,
+    "velocityKmS": 23.1,
+    "angleDeg": 70.18
+   },
+   "error": null,
+   "observedKm": 33.7,
+   "nimbusBurstKm": 47.32581642508738,
+   "eiepBurstKm": 47.312248,
+   "eiepBreakupKm": 58.904,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-07-01T17:40:19Z",
+   "sent": {
+    "diameterM": 1.881,
+    "densityKgM3": 3000,
+    "velocityKmS": 9.8,
+    "angleDeg": 52.42
+   },
+   "error": null,
+   "observedKm": 36.1,
+   "nimbusBurstKm": 39.495415148964135,
+   "eiepBurstKm": 39.391143,
+   "eiepBreakupKm": 44.942,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-07-08T15:55:30Z",
+   "sent": {
+    "diameterM": 1.334,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.7,
+    "angleDeg": 37.07
+   },
+   "error": null,
+   "observedKm": 52.2,
+   "nimbusBurstKm": 51.37875275960018,
+   "eiepBurstKm": 51.345099999999995,
+   "eiepBreakupKm": 57.844,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-07-23T14:45:25Z",
+   "sent": {
+    "diameterM": 2.089,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.5,
+    "angleDeg": 73.51
+   },
+   "error": null,
+   "observedKm": 31.5,
+   "nimbusBurstKm": 41.71939536633653,
+   "eiepBurstKm": 41.694641000000004,
+   "eiepBreakupKm": 51.405,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-08-07T06:07:10Z",
+   "sent": {
+    "diameterM": 1.576,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.8,
+    "angleDeg": 23.98
+   },
+   "error": null,
+   "observedKm": 45.4,
+   "nimbusBurstKm": 46.93481496463158,
+   "eiepBurstKm": 46.794176,
+   "eiepBreakupKm": 50.366,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-10-07T02:45:45Z",
+   "sent": {
+    "diameterM": 3.111,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.3,
+    "angleDeg": 6.23
+   },
+   "error": null,
+   "observedKm": 38.9,
+   "nimbusBurstKm": 47.85669870200879,
+   "eiepBurstKm": 47.502084,
+   "eiepBreakupKm": 49.37,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-10-21T02:20:26Z",
+   "sent": {
+    "diameterM": 1.843,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.3,
+    "angleDeg": 46.56
+   },
+   "error": null,
+   "observedKm": 29.6,
+   "nimbusBurstKm": 41.62680832406681,
+   "eiepBurstKm": 41.540229,
+   "eiepBreakupKm": 47.27,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-11-18T09:41:51Z",
+   "sent": {
+    "diameterM": 0.981,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.4,
+    "angleDeg": 15.09
+   },
+   "error": null,
+   "observedKm": 35.2,
+   "nimbusBurstKm": 55.874287562618875,
+   "eiepBurstKm": 55.730745000000006,
+   "eiepBreakupKm": 58.133,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-11-21T00:26:44Z",
+   "sent": {
+    "diameterM": 2.359,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.9,
+    "angleDeg": 36.95
+   },
+   "error": null,
+   "observedKm": 28.2,
+   "nimbusBurstKm": 42.781827795463364,
+   "eiepBurstKm": 42.724416,
+   "eiepBreakupKm": 49.457,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-11-24T22:01:19Z",
+   "sent": {
+    "diameterM": 1.585,
+    "densityKgM3": 3000,
+    "velocityKmS": 23.7,
+    "angleDeg": 16.81
+   },
+   "error": null,
+   "observedKm": 34.8,
+   "nimbusBurstKm": 54.93206480431469,
+   "eiepBurstKm": 54.871507,
+   "eiepBreakupKm": 59.204,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2008-12-24T15:51:58Z",
+   "sent": {
+    "diameterM": 1.032,
+    "densityKgM3": 3000,
+    "velocityKmS": 24.1,
+    "angleDeg": 34.19
+   },
+   "error": null,
+   "observedKm": 21.1,
+   "nimbusBurstKm": 54.15492502711899,
+   "eiepBurstKm": 54.11414499999999,
+   "eiepBreakupKm": 59.509,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2009-02-07T19:51:32Z",
+   "sent": {
+    "diameterM": 4.284,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.4,
+    "angleDeg": 65.72
+   },
+   "error": null,
+   "observedKm": 40,
+   "nimbusBurstKm": 36.336721353561984,
+   "eiepBurstKm": 36.328445,
+   "eiepBreakupKm": 52.42,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2009-04-10T18:42:45Z",
+   "sent": {
+    "diameterM": 2.191,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.1,
+    "angleDeg": 37.12
+   },
+   "error": null,
+   "observedKm": 32.4,
+   "nimbusBurstKm": 47.11455768175782,
+   "eiepBurstKm": 47.089578,
+   "eiepBreakupKm": 55.826,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2009-06-27T13:08:05Z",
+   "sent": {
+    "diameterM": 1.364,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.2,
+    "angleDeg": 76.38
+   },
+   "error": null,
+   "observedKm": 26.1,
+   "nimbusBurstKm": 44.869972374433786,
+   "eiepBurstKm": 44.826648,
+   "eiepBreakupKm": 52.123,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2009-08-23T21:17:19Z",
+   "sent": {
+    "diameterM": 3.502,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.2,
+    "angleDeg": 53.03
+   },
+   "error": null,
+   "observedKm": 34,
+   "nimbusBurstKm": 37.72714828924264,
+   "eiepBurstKm": 37.703275000000005,
+   "eiepBreakupKm": 48.64,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2009-09-04T02:23:18Z",
+   "sent": {
+    "diameterM": 2.771,
+    "densityKgM3": 3000,
+    "velocityKmS": 24,
+    "angleDeg": 50.92
+   },
+   "error": null,
+   "observedKm": 28.3,
+   "nimbusBurstKm": 44.94455418063417,
+   "eiepBurstKm": 44.936954,
+   "eiepBreakupKm": 59.53,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2009-10-08T02:57:14Z",
+   "sent": {
+    "diameterM": 7.813,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.2,
+    "angleDeg": 67.46
+   },
+   "error": null,
+   "observedKm": 19.1,
+   "nimbusBurstKm": 30.22229302380313,
+   "eiepBurstKm": 30.220187000000003,
+   "eiepBreakupKm": 55.977,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2009-11-21T20:53:29Z",
+   "sent": {
+    "diameterM": 4.694,
+    "densityKgM3": 3000,
+    "velocityKmS": 32.1,
+    "angleDeg": 28.67
+   },
+   "error": null,
+   "observedKm": 38,
+   "nimbusBurstKm": 46.162170527190405,
+   "eiepBurstKm": 46.159276,
+   "eiepBreakupKm": 64.198,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2010-01-15T19:17:54Z",
+   "sent": {
+    "diameterM": 3.195,
+    "densityKgM3": 3000,
+    "velocityKmS": 14,
+    "angleDeg": 28.1
+   },
+   "error": null,
+   "observedKm": 25,
+   "nimbusBurstKm": 43.2859709206358,
+   "eiepBurstKm": 43.242711,
+   "eiepBreakupKm": 50.802,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2010-02-28T22:24:50Z",
+   "sent": {
+    "diameterM": 2.158,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.1,
+    "angleDeg": 62.86
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 42.38314883543974,
+   "eiepBurstKm": 42.357098,
+   "eiepBreakupKm": 52.057,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2010-03-08T22:02:07Z",
+   "sent": {
+    "diameterM": 1.961,
+    "densityKgM3": 3000,
+    "velocityKmS": 24.5,
+    "angleDeg": 10.5
+   },
+   "error": null,
+   "observedKm": 52,
+   "nimbusBurstKm": 56.2068588754069,
+   "eiepBurstKm": 56.130764000000006,
+   "eiepBreakupKm": 59.702,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2010-04-16T04:38:52Z",
+   "sent": {
+    "diameterM": 3.213,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.8,
+    "angleDeg": 38.87
+   },
+   "error": null,
+   "observedKm": 22.2,
+   "nimbusBurstKm": 43.802353675907995,
+   "eiepBurstKm": 43.788779000000005,
+   "eiepBreakupKm": 55.599,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2010-07-06T23:54:43Z",
+   "sent": {
+    "diameterM": 6.713,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.7,
+    "angleDeg": 43.87
+   },
+   "error": null,
+   "observedKm": 26,
+   "nimbusBurstKm": 34.603829460305384,
+   "eiepBurstKm": 34.598514,
+   "eiepBreakupKm": 52.737,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2010-09-03T12:04:58Z",
+   "sent": {
+    "diameterM": 5.115,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.3,
+    "angleDeg": 59.65
+   },
+   "error": null,
+   "observedKm": 33.3,
+   "nimbusBurstKm": 33.75621387847859,
+   "eiepBurstKm": 33.743755,
+   "eiepBreakupKm": 48.807,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2010-12-25T23:24:13Z",
+   "sent": {
+    "diameterM": 5.403,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.1,
+    "angleDeg": 60.89
+   },
+   "error": null,
+   "observedKm": 26,
+   "nimbusBurstKm": 35.13711722415118,
+   "eiepBurstKm": 35.133451,
+   "eiepBreakupKm": 55.022,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2011-02-21T05:07:03Z",
+   "sent": {
+    "diameterM": 1.32,
+    "densityKgM3": 3000,
+    "velocityKmS": 18,
+    "angleDeg": 7.8
+   },
+   "error": null,
+   "observedKm": 44.4,
+   "nimbusBurstKm": 53.203981380254255,
+   "eiepBurstKm": 52.826208,
+   "eiepBreakupKm": 54.187,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2011-03-01T10:37:54Z",
+   "sent": {
+    "diameterM": 1.605,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.9,
+    "angleDeg": 39.33
+   },
+   "error": null,
+   "observedKm": 30.6,
+   "nimbusBurstKm": 43.43262896643541,
+   "eiepBurstKm": 43.323929,
+   "eiepBreakupKm": 48.051,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2011-04-06T08:30:55Z",
+   "sent": {
+    "diameterM": 2.459,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.7,
+    "angleDeg": 23.92
+   },
+   "error": null,
+   "observedKm": 22.2,
+   "nimbusBurstKm": 44.29713710183944,
+   "eiepBurstKm": 44.20063,
+   "eiepBreakupKm": 49.123,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2011-05-25T05:40:02Z",
+   "sent": {
+    "diameterM": 5.789,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.6,
+    "angleDeg": 29.65
+   },
+   "error": null,
+   "observedKm": 59,
+   "nimbusBurstKm": 37.13396092850865,
+   "eiepBurstKm": 37.106,
+   "eiepBreakupKm": 47.825,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2011-09-13T23:36:47Z",
+   "sent": {
+    "diameterM": 1.589,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.7,
+    "angleDeg": 33.79
+   },
+   "error": null,
+   "observedKm": 21.3,
+   "nimbusBurstKm": 48.01792957622183,
+   "eiepBurstKm": 47.959405,
+   "eiepBreakupKm": 53.596,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-01-15T12:26:20Z",
+   "sent": {
+    "diameterM": 1.435,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.3,
+    "angleDeg": 37.78
+   },
+   "error": null,
+   "observedKm": 26.3,
+   "nimbusBurstKm": 44.39844534573249,
+   "eiepBurstKm": 44.276485,
+   "eiepBreakupKm": 48.555,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-02-04T14:42:51Z",
+   "sent": {
+    "diameterM": 2.387,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.2,
+    "angleDeg": 5.31
+   },
+   "error": null,
+   "observedKm": 34.2,
+   "nimbusBurstKm": 46.9149769573811,
+   "eiepBurstKm": 46.111007,
+   "eiepBreakupKm": 47.205,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-03-12T06:40:44Z",
+   "sent": {
+    "diameterM": 2.281,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.8,
+    "angleDeg": 40.54
+   },
+   "error": null,
+   "observedKm": 25,
+   "nimbusBurstKm": 41.59112575567795,
+   "eiepBurstKm": 41.522972,
+   "eiepBreakupKm": 48.006,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-05-15T11:04:17Z",
+   "sent": {
+    "diameterM": 1.922,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.1,
+    "angleDeg": 62.13
+   },
+   "error": null,
+   "observedKm": 33.3,
+   "nimbusBurstKm": 44.35912643791281,
+   "eiepBurstKm": 44.339146,
+   "eiepBreakupKm": 54.058,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-07-25T07:48:20Z",
+   "sent": {
+    "diameterM": 1.824,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.5,
+    "angleDeg": 30.38
+   },
+   "error": null,
+   "observedKm": 26.8,
+   "nimbusBurstKm": 48.93811601219029,
+   "eiepBurstKm": 48.89594,
+   "eiepBreakupKm": 55.27,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-08-26T14:55:47Z",
+   "sent": {
+    "diameterM": 2.835,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.7,
+    "angleDeg": 80.63
+   },
+   "error": null,
+   "observedKm": 36,
+   "nimbusBurstKm": 38.05185997590122,
+   "eiepBurstKm": 38.030347,
+   "eiepBreakupKm": 49.29,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-08-27T06:57:43Z",
+   "sent": {
+    "diameterM": 1.12,
+    "densityKgM3": 3000,
+    "velocityKmS": 28.9,
+    "angleDeg": 41.11
+   },
+   "error": null,
+   "observedKm": 38.7,
+   "nimbusBurstKm": 54.845158308445676,
+   "eiepBurstKm": 54.822849999999995,
+   "eiepBreakupKm": 62.47,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-09-10T01:03:32Z",
+   "sent": {
+    "diameterM": 1.206,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.9,
+    "angleDeg": 30.9
+   },
+   "error": null,
+   "observedKm": 23.8,
+   "nimbusBurstKm": 49.63460280563522,
+   "eiepBurstKm": 49.542863,
+   "eiepBreakupKm": 53.719,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-09-18T19:34:39Z",
+   "sent": {
+    "diameterM": 2.222,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.3,
+    "angleDeg": 43.29
+   },
+   "error": null,
+   "observedKm": 28.1,
+   "nimbusBurstKm": 45.74286662095077,
+   "eiepBurstKm": 45.72208800000001,
+   "eiepBreakupKm": 55.145,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-10-02T16:38:38Z",
+   "sent": {
+    "diameterM": 3.079,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.4,
+    "angleDeg": 72.85
+   },
+   "error": null,
+   "observedKm": 35,
+   "nimbusBurstKm": 39.05456924522571,
+   "eiepBurstKm": 39.043544000000004,
+   "eiepBreakupKm": 52.406,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-10-09T00:54:55Z",
+   "sent": {
+    "diameterM": 2.554,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.5,
+    "angleDeg": 14.22
+   },
+   "error": null,
+   "observedKm": 27.8,
+   "nimbusBurstKm": 46.70914897732932,
+   "eiepBurstKm": 46.55724,
+   "eiepBreakupKm": 49.99,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-10-19T16:26:22Z",
+   "sent": {
+    "diameterM": 1.422,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.2,
+    "angleDeg": 83.82
+   },
+   "error": null,
+   "observedKm": 29.3,
+   "nimbusBurstKm": 43.04204772855471,
+   "eiepBurstKm": 42.986719,
+   "eiepBreakupKm": 49.832,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2012-11-20T20:37:31Z",
+   "sent": {
+    "diameterM": 1.324,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.3,
+    "angleDeg": 65.05
+   },
+   "error": null,
+   "observedKm": 33.3,
+   "nimbusBurstKm": 44.77762807214478,
+   "eiepBurstKm": 44.71957,
+   "eiepBreakupKm": 51.112,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2013-04-21T06:23:12Z",
+   "sent": {
+    "diameterM": 3.915,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.9,
+    "angleDeg": 40.8
+   },
+   "error": null,
+   "observedKm": 40.7,
+   "nimbusBurstKm": 40.03415003435646,
+   "eiepBurstKm": 40.015966999999996,
+   "eiepBreakupKm": 51.865,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2013-04-30T08:40:37Z",
+   "sent": {
+    "diameterM": 7.091,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.1,
+    "angleDeg": 39.5
+   },
+   "error": null,
+   "observedKm": 21.2,
+   "nimbusBurstKm": 33.440993168113245,
+   "eiepBurstKm": 33.430252,
+   "eiepBreakupKm": 48.544,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2013-07-27T08:30:36Z",
+   "sent": {
+    "diameterM": 1.578,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.1,
+    "angleDeg": 23.01
+   },
+   "error": null,
+   "observedKm": 26.5,
+   "nimbusBurstKm": 52.8802085245528,
+   "eiepBurstKm": 52.830841,
+   "eiepBreakupKm": 58.109,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2013-07-30T02:36:58Z",
+   "sent": {
+    "diameterM": 2.47,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.8,
+    "angleDeg": 30.24
+   },
+   "error": null,
+   "observedKm": 25.6,
+   "nimbusBurstKm": 47.3647500589379,
+   "eiepBurstKm": 47.337391000000004,
+   "eiepBreakupKm": 55.564,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2013-07-31T03:50:13Z",
+   "sent": {
+    "diameterM": 1.547,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.8,
+    "angleDeg": 43.55
+   },
+   "error": null,
+   "observedKm": 29.1,
+   "nimbusBurstKm": 47.74794400155112,
+   "eiepBurstKm": 47.707269999999994,
+   "eiepBreakupKm": 54.661,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2013-10-12T16:06:45Z",
+   "sent": {
+    "diameterM": 4.846,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.8,
+    "angleDeg": 40.9
+   },
+   "error": null,
+   "observedKm": 22.2,
+   "nimbusBurstKm": 37.06029383026796,
+   "eiepBurstKm": 37.043215,
+   "eiepBreakupKm": 49.428,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2013-11-21T01:50:35Z",
+   "sent": {
+    "diameterM": 1.997,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.4,
+    "angleDeg": 48.82
+   },
+   "error": null,
+   "observedKm": 59.3,
+   "nimbusBurstKm": 42.04368617404667,
+   "eiepBurstKm": 41.986195,
+   "eiepBreakupKm": 48.821,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2013-12-08T03:10:09Z",
+   "sent": {
+    "diameterM": 2.397,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.8,
+    "angleDeg": 46.29
+   },
+   "error": null,
+   "observedKm": 23.5,
+   "nimbusBurstKm": 40.719939338126444,
+   "eiepBurstKm": 40.666767,
+   "eiepBreakupKm": 48.035,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2013-12-23T08:30:57Z",
+   "sent": {
+    "diameterM": 2.643,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.1,
+    "angleDeg": 26.85
+   },
+   "error": null,
+   "observedKm": 34.3,
+   "nimbusBurstKm": 45.38921649026813,
+   "eiepBurstKm": 45.339904000000004,
+   "eiepBreakupKm": 52.0,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-01-08T17:05:33Z",
+   "sent": {
+    "diameterM": 0.701,
+    "densityKgM3": 3000,
+    "velocityKmS": 44.8,
+    "angleDeg": 27.29
+   },
+   "error": null,
+   "observedKm": 18.7,
+   "nimbusBurstKm": 63.95661957716618,
+   "eiepBurstKm": 63.936853,
+   "eiepBreakupKm": 69.487,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-01-12T16:00:48Z",
+   "sent": {
+    "diameterM": 1.695,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.2,
+    "angleDeg": 76.19
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 44.1031366471907,
+   "eiepBurstKm": 44.077557999999996,
+   "eiepBreakupKm": 53.181,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-03-29T13:45:42Z",
+   "sent": {
+    "diameterM": 1.376,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.3,
+    "angleDeg": 68.11
+   },
+   "error": null,
+   "observedKm": 30.7,
+   "nimbusBurstKm": 45.79771108524087,
+   "eiepBurstKm": 45.761391,
+   "eiepBreakupKm": 53.253,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-05-08T19:42:37Z",
+   "sent": {
+    "diameterM": 3.284,
+    "densityKgM3": 3000,
+    "velocityKmS": 19,
+    "angleDeg": 83.41
+   },
+   "error": null,
+   "observedKm": 35.4,
+   "nimbusBurstKm": 39.39055359212078,
+   "eiepBurstKm": 39.38443,
+   "eiepBreakupKm": 55.791,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-05-16T12:42:47Z",
+   "sent": {
+    "diameterM": 2.621,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.5,
+    "angleDeg": 66.16
+   },
+   "error": null,
+   "observedKm": 44,
+   "nimbusBurstKm": 41.353976710944714,
+   "eiepBurstKm": 41.339039,
+   "eiepBreakupKm": 53.506,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-05-16T20:06:26Z",
+   "sent": {
+    "diameterM": 1.874,
+    "densityKgM3": 3000,
+    "velocityKmS": 18,
+    "angleDeg": 8.04
+   },
+   "error": null,
+   "observedKm": 30.8,
+   "nimbusBurstKm": 52.70120264733496,
+   "eiepBurstKm": 52.468591,
+   "eiepBreakupKm": 54.454,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-06-26T05:54:41Z",
+   "sent": {
+    "diameterM": 2.04,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.2,
+    "angleDeg": 39.08
+   },
+   "error": null,
+   "observedKm": 28.5,
+   "nimbusBurstKm": 41.709869692413015,
+   "eiepBurstKm": 41.617836000000004,
+   "eiepBreakupKm": 47.113,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-06-28T02:40:05Z",
+   "sent": {
+    "diameterM": 2.853,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.4,
+    "angleDeg": 38.55
+   },
+   "error": null,
+   "observedKm": 26.3,
+   "nimbusBurstKm": 41.063118041038614,
+   "eiepBurstKm": 41.016741,
+   "eiepBreakupKm": 48.849,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-08-23T06:29:41Z",
+   "sent": {
+    "diameterM": 5.363,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.2,
+    "angleDeg": 42.08
+   },
+   "error": null,
+   "observedKm": 22.2,
+   "nimbusBurstKm": 37.472145852366815,
+   "eiepBurstKm": 37.465221,
+   "eiepBreakupKm": 53.231,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-10-14T10:25:03Z",
+   "sent": {
+    "diameterM": 1.308,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.9,
+    "angleDeg": 51.51
+   },
+   "error": null,
+   "observedKm": 27.2,
+   "nimbusBurstKm": 47.41513834639639,
+   "eiepBurstKm": 47.368919999999996,
+   "eiepBreakupKm": 53.812,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-11-04T20:13:30Z",
+   "sent": {
+    "diameterM": 2.06,
+    "densityKgM3": 3000,
+    "velocityKmS": 16,
+    "angleDeg": 42.92
+   },
+   "error": null,
+   "observedKm": 22.2,
+   "nimbusBurstKm": 45.04077267958692,
+   "eiepBurstKm": 45.005469,
+   "eiepBreakupKm": 52.963,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-11-26T17:40:16Z",
+   "sent": {
+    "diameterM": 1.627,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.9,
+    "angleDeg": 42.82
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 48.66068689970966,
+   "eiepBurstKm": 48.630967,
+   "eiepBreakupKm": 56.473,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-11-26T23:16:51Z",
+   "sent": {
+    "diameterM": 1.428,
+    "densityKgM3": 3000,
+    "velocityKmS": 25.3,
+    "angleDeg": 52.4
+   },
+   "error": null,
+   "observedKm": 23.3,
+   "nimbusBurstKm": 50.74276256461554,
+   "eiepBurstKm": 50.728865,
+   "eiepBreakupKm": 60.351,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-11-28T11:47:18Z",
+   "sent": {
+    "diameterM": 3.695,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.4,
+    "angleDeg": 48.25
+   },
+   "error": null,
+   "observedKm": 26.1,
+   "nimbusBurstKm": 38.59411007841927,
+   "eiepBurstKm": 38.573722000000004,
+   "eiepBreakupKm": 50.157,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-12-12T06:48:07Z",
+   "sent": {
+    "diameterM": 1.597,
+    "densityKgM3": 3000,
+    "velocityKmS": 12,
+    "angleDeg": 59.78
+   },
+   "error": null,
+   "observedKm": 26.3,
+   "nimbusBurstKm": 42.146426861391646,
+   "eiepBurstKm": 42.073975,
+   "eiepBreakupKm": 48.267,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2014-12-13T02:53:52Z",
+   "sent": {
+    "diameterM": 1.193,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.7,
+    "angleDeg": 22.72
+   },
+   "error": null,
+   "observedKm": 30.7,
+   "nimbusBurstKm": 53.81704640454217,
+   "eiepBurstKm": 53.742433,
+   "eiepBreakupKm": 57.763,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-01-02T13:39:19Z",
+   "sent": {
+    "diameterM": 1.059,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.1,
+    "angleDeg": 18.4
+   },
+   "error": null,
+   "observedKm": 38.1,
+   "nimbusBurstKm": 52.312186324120894,
+   "eiepBurstKm": 52.141872000000006,
+   "eiepBreakupKm": 54.664,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-01-07T01:05:58Z",
+   "sent": {
+    "diameterM": 1.197,
+    "densityKgM3": 3000,
+    "velocityKmS": 35.7,
+    "angleDeg": 43.59
+   },
+   "error": null,
+   "observedKm": 45.5,
+   "nimbusBurstKm": 56.04846857141389,
+   "eiepBurstKm": 56.036910000000006,
+   "eiepBreakupKm": 65.878,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-01-09T10:41:11Z",
+   "sent": {
+    "diameterM": 1.925,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.5,
+    "angleDeg": 46.12
+   },
+   "error": null,
+   "observedKm": 36,
+   "nimbusBurstKm": 45.973173004692235,
+   "eiepBurstKm": 45.944589,
+   "eiepBreakupKm": 54.414,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-02-17T13:19:50Z",
+   "sent": {
+    "diameterM": 0.965,
+    "densityKgM3": 3000,
+    "velocityKmS": 28.8,
+    "angleDeg": 85.56
+   },
+   "error": null,
+   "observedKm": 39,
+   "nimbusBurstKm": 53.05032278109621,
+   "eiepBurstKm": 53.037839999999996,
+   "eiepBreakupKm": 62.43,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-02-26T22:06:23Z",
+   "sent": {
+    "diameterM": 1.851,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.1,
+    "angleDeg": 72.3
+   },
+   "error": null,
+   "observedKm": 33.7,
+   "nimbusBurstKm": 45.80501739431277,
+   "eiepBurstKm": 45.792894999999994,
+   "eiepBreakupKm": 57.451,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-03-04T04:30:05Z",
+   "sent": {
+    "diameterM": 1.409,
+    "densityKgM3": 3000,
+    "velocityKmS": 18,
+    "angleDeg": 53.48
+   },
+   "error": null,
+   "observedKm": 39.8,
+   "nimbusBurstKm": 47.5145449289652,
+   "eiepBurstKm": 47.478402,
+   "eiepBreakupKm": 54.85,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-03-11T06:18:59Z",
+   "sent": {
+    "diameterM": 1.457,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.9,
+    "angleDeg": 44.52
+   },
+   "error": null,
+   "observedKm": 35.2,
+   "nimbusBurstKm": 49.13695367891462,
+   "eiepBurstKm": 49.105748,
+   "eiepBreakupKm": 56.466,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-03-30T21:33:52Z",
+   "sent": {
+    "diameterM": 1.804,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.8,
+    "angleDeg": 55.22
+   },
+   "error": null,
+   "observedKm": 33.1,
+   "nimbusBurstKm": 43.23129760519202,
+   "eiepBurstKm": 43.186983,
+   "eiepBreakupKm": 50.565,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-04-08T04:06:31Z",
+   "sent": {
+    "diameterM": 2.02,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.2,
+    "angleDeg": 12.07
+   },
+   "error": null,
+   "observedKm": 36.3,
+   "nimbusBurstKm": 52.517769793933915,
+   "eiepBurstKm": 52.407441,
+   "eiepBreakupKm": 55.727,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-04-21T01:42:51Z",
+   "sent": {
+    "diameterM": 1.469,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.3,
+    "angleDeg": 31.95
+   },
+   "error": null,
+   "observedKm": 37.4,
+   "nimbusBurstKm": 51.356672988348635,
+   "eiepBurstKm": 51.317318,
+   "eiepBreakupKm": 57.539,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-04-30T10:21:00Z",
+   "sent": {
+    "diameterM": 2.172,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.9,
+    "angleDeg": 41.54
+   },
+   "error": null,
+   "observedKm": 26.7,
+   "nimbusBurstKm": 42.6964131957185,
+   "eiepBurstKm": 42.639975,
+   "eiepBreakupKm": 49.46,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-05-07T20:34:34Z",
+   "sent": {
+    "diameterM": 1.446,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.3,
+    "angleDeg": 39.65
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 48.202716386038794,
+   "eiepBurstKm": 48.153551,
+   "eiepBreakupKm": 54.178,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-05-10T07:45:01Z",
+   "sent": {
+    "diameterM": 2.448,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.2,
+    "angleDeg": 66.19
+   },
+   "error": null,
+   "observedKm": 29.6,
+   "nimbusBurstKm": 39.38763629851258,
+   "eiepBurstKm": 39.354156,
+   "eiepBreakupKm": 48.616,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-06-14T03:03:06Z",
+   "sent": {
+    "diameterM": 1.048,
+    "densityKgM3": 3000,
+    "velocityKmS": 31.9,
+    "angleDeg": 27.85
+   },
+   "error": null,
+   "observedKm": 32.4,
+   "nimbusBurstKm": 58.124669293285095,
+   "eiepBurstKm": 58.098377,
+   "eiepBreakupKm": 64.035,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-07-04T01:40:11Z",
+   "sent": {
+    "diameterM": 0.799,
+    "densityKgM3": 3000,
+    "velocityKmS": 49,
+    "angleDeg": 79.63
+   },
+   "error": null,
+   "observedKm": 46.3,
+   "nimbusBurstKm": 59.00368419631581,
+   "eiepBurstKm": 59.000067,
+   "eiepBreakupKm": 70.961,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-07-19T07:06:26Z",
+   "sent": {
+    "diameterM": 1.126,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.8,
+    "angleDeg": 30.47
+   },
+   "error": null,
+   "observedKm": 22,
+   "nimbusBurstKm": 50.57236106605941,
+   "eiepBurstKm": 50.484025,
+   "eiepBreakupKm": 54.554,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-09-02T20:10:30Z",
+   "sent": {
+    "diameterM": 1.06,
+    "densityKgM3": 3000,
+    "velocityKmS": 24.1,
+    "angleDeg": 28.17
+   },
+   "error": null,
+   "observedKm": 39.8,
+   "nimbusBurstKm": 54.79131472479653,
+   "eiepBurstKm": 54.740303999999995,
+   "eiepBreakupKm": 59.49,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-09-07T01:41:18Z",
+   "sent": {
+    "diameterM": 3.612,
+    "densityKgM3": 3000,
+    "velocityKmS": 21,
+    "angleDeg": 45.39
+   },
+   "error": null,
+   "observedKm": 29.3,
+   "nimbusBurstKm": 42.37189884370712,
+   "eiepBurstKm": 42.364923000000005,
+   "eiepBreakupKm": 57.391,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-09-08T13:46:42Z",
+   "sent": {
+    "diameterM": 1.15,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.1,
+    "angleDeg": 75.13
+   },
+   "error": null,
+   "observedKm": 44.4,
+   "nimbusBurstKm": 46.45787658670491,
+   "eiepBurstKm": 46.410897,
+   "eiepBreakupKm": 53.034,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-10-10T09:57:51Z",
+   "sent": {
+    "diameterM": 1.707,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.8,
+    "angleDeg": 41.52
+   },
+   "error": null,
+   "observedKm": 51.8,
+   "nimbusBurstKm": 42.887980660678316,
+   "eiepBurstKm": 42.791342,
+   "eiepBreakupKm": 47.942,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-10-13T12:23:08Z",
+   "sent": {
+    "diameterM": 1.379,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.9,
+    "angleDeg": 40.73
+   },
+   "error": null,
+   "observedKm": 38.9,
+   "nimbusBurstKm": 44.89727505862214,
+   "eiepBurstKm": 44.792724,
+   "eiepBreakupKm": 49.353,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2015-12-21T02:32:48Z",
+   "sent": {
+    "diameterM": 2.115,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.1,
+    "angleDeg": 63.03
+   },
+   "error": null,
+   "observedKm": 42.2,
+   "nimbusBurstKm": 40.4582525934486,
+   "eiepBurstKm": 40.413302,
+   "eiepBreakupKm": 48.458,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-01-21T16:44:54Z",
+   "sent": {
+    "diameterM": 1.785,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.1,
+    "angleDeg": 11.83
+   },
+   "error": null,
+   "observedKm": 42.5,
+   "nimbusBurstKm": 52.10248172447679,
+   "eiepBurstKm": 51.952013,
+   "eiepBreakupKm": 54.699,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-01-27T09:59:15Z",
+   "sent": {
+    "diameterM": 2.216,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.5,
+    "angleDeg": 53.0
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 40.33475892734257,
+   "eiepBurstKm": 40.278242,
+   "eiepBreakupKm": 47.618,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-02-06T13:55:09Z",
+   "sent": {
+    "diameterM": 6.578,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.6,
+    "angleDeg": 21.91
+   },
+   "error": null,
+   "observedKm": 31,
+   "nimbusBurstKm": 40.728713940572796,
+   "eiepBurstKm": 40.713772,
+   "eiepBreakupKm": 52.603,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-02-19T08:15:02Z",
+   "sent": {
+    "diameterM": 2.316,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.5,
+    "angleDeg": 69.09
+   },
+   "error": null,
+   "observedKm": 39.4,
+   "nimbusBurstKm": 41.70428678633166,
+   "eiepBurstKm": 41.68367,
+   "eiepBreakupKm": 52.49,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-02-23T03:59:13Z",
+   "sent": {
+    "diameterM": 1.259,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.9,
+    "angleDeg": 43.86
+   },
+   "error": null,
+   "observedKm": 44,
+   "nimbusBurstKm": 48.86075565246522,
+   "eiepBurstKm": 48.809902,
+   "eiepBreakupKm": 54.726,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-03-03T01:32:43Z",
+   "sent": {
+    "diameterM": 1.948,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.7,
+    "angleDeg": 40.32
+   },
+   "error": null,
+   "observedKm": 31.8,
+   "nimbusBurstKm": 42.30338440254251,
+   "eiepBurstKm": 42.218128,
+   "eiepBreakupKm": 47.829,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-03-16T23:54:20Z",
+   "sent": {
+    "diameterM": 1.491,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.3,
+    "angleDeg": 49.67
+   },
+   "error": null,
+   "observedKm": 42,
+   "nimbusBurstKm": 44.24777080996495,
+   "eiepBurstKm": 44.17509,
+   "eiepBreakupKm": 49.915,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-04-10T14:57:53Z",
+   "sent": {
+    "diameterM": 3.198,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.1,
+    "angleDeg": 54.25
+   },
+   "error": null,
+   "observedKm": 35.2,
+   "nimbusBurstKm": 40.01251447500103,
+   "eiepBurstKm": 39.996413999999994,
+   "eiepBreakupKm": 52.081,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-04-18T11:59:10Z",
+   "sent": {
+    "diameterM": 2.268,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.1,
+    "angleDeg": 33.95
+   },
+   "error": null,
+   "observedKm": 31.5,
+   "nimbusBurstKm": 46.3280171613584,
+   "eiepBurstKm": 46.292522,
+   "eiepBreakupKm": 54.03,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-05-16T10:09:41Z",
+   "sent": {
+    "diameterM": 3.502,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.2,
+    "angleDeg": 38.43
+   },
+   "error": null,
+   "observedKm": 41.7,
+   "nimbusBurstKm": 39.58677921635538,
+   "eiepBurstKm": 39.551010000000005,
+   "eiepBreakupKm": 48.612,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-05-20T11:59:46Z",
+   "sent": {
+    "diameterM": 1.106,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.8,
+    "angleDeg": 20.43
+   },
+   "error": null,
+   "observedKm": 30.6,
+   "nimbusBurstKm": 53.83474874607801,
+   "eiepBurstKm": 53.732910000000004,
+   "eiepBreakupKm": 57.027,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-06-05T06:12:55Z",
+   "sent": {
+    "diameterM": 2.825,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.5,
+    "angleDeg": 69.01
+   },
+   "error": null,
+   "observedKm": 28.7,
+   "nimbusBurstKm": 39.568005132084295,
+   "eiepBurstKm": 39.551656,
+   "eiepBreakupKm": 51.428,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-06-27T10:02:42Z",
+   "sent": {
+    "diameterM": 1.906,
+    "densityKgM3": 3000,
+    "velocityKmS": 29.1,
+    "angleDeg": 70.68
+   },
+   "error": null,
+   "observedKm": 33.3,
+   "nimbusBurstKm": 47.89705237458551,
+   "eiepBurstKm": 47.890004,
+   "eiepBreakupKm": 62.619,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-07-05T01:24:26Z",
+   "sent": {
+    "diameterM": 1.595,
+    "densityKgM3": 3000,
+    "velocityKmS": 25.1,
+    "angleDeg": 20.3
+   },
+   "error": null,
+   "observedKm": 38.2,
+   "nimbusBurstKm": 54.836810434914604,
+   "eiepBurstKm": 54.796023999999996,
+   "eiepBreakupKm": 60.164,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-08-11T05:59:58Z",
+   "sent": {
+    "diameterM": 2.363,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.9,
+    "angleDeg": 65.55
+   },
+   "error": null,
+   "observedKm": 34.3,
+   "nimbusBurstKm": 41.42091815974771,
+   "eiepBurstKm": 41.399617,
+   "eiepBreakupKm": 51.851,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-09-14T15:01:51Z",
+   "sent": {
+    "diameterM": 1.563,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.3,
+    "angleDeg": 30.72
+   },
+   "error": null,
+   "observedKm": 54,
+   "nimbusBurstKm": 49.533803484316614,
+   "eiepBurstKm": 49.479849,
+   "eiepBreakupKm": 55.073,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-09-22T04:57:49Z",
+   "sent": {
+    "diameterM": 1.588,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.5,
+    "angleDeg": 42.71
+   },
+   "error": null,
+   "observedKm": 40,
+   "nimbusBurstKm": 47.51186502010616,
+   "eiepBurstKm": 47.469968,
+   "eiepBreakupKm": 54.387,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-10-01T20:23:45Z",
+   "sent": {
+    "diameterM": 1.427,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.2,
+    "angleDeg": 67.7
+   },
+   "error": null,
+   "observedKm": 27.8,
+   "nimbusBurstKm": 44.187372847981294,
+   "eiepBurstKm": 44.137508000000004,
+   "eiepBreakupKm": 51.013,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-11-24T14:10:34Z",
+   "sent": {
+    "diameterM": 1.916,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.4,
+    "angleDeg": 42.37
+   },
+   "error": null,
+   "observedKm": 30.6,
+   "nimbusBurstKm": 46.37746858356221,
+   "eiepBurstKm": 46.346974,
+   "eiepBreakupKm": 54.314,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2016-12-23T03:29:09Z",
+   "sent": {
+    "diameterM": 0.968,
+    "densityKgM3": 3000,
+    "velocityKmS": 29.7,
+    "angleDeg": 11.35
+   },
+   "error": null,
+   "observedKm": 42,
+   "nimbusBurstKm": 60.44714772736742,
+   "eiepBurstKm": 60.337951000000004,
+   "eiepBreakupKm": 62.727,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-02-18T19:48:29Z",
+   "sent": {
+    "diameterM": 1.977,
+    "densityKgM3": 3000,
+    "velocityKmS": 24.2,
+    "angleDeg": 75.31
+   },
+   "error": null,
+   "observedKm": 38,
+   "nimbusBurstKm": 46.097035071255355,
+   "eiepBurstKm": 46.091531,
+   "eiepBreakupKm": 59.66,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-02-25T01:22:58Z",
+   "sent": {
+    "diameterM": 2.156,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.2,
+    "angleDeg": 36.36
+   },
+   "error": null,
+   "observedKm": 25.4,
+   "nimbusBurstKm": 42.71040357348184,
+   "eiepBurstKm": 42.634150999999996,
+   "eiepBreakupKm": 48.522,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-03-09T04:16:37Z",
+   "sent": {
+    "diameterM": 1.638,
+    "densityKgM3": 3000,
+    "velocityKmS": 36.5,
+    "angleDeg": 57.07
+   },
+   "error": null,
+   "observedKm": 23,
+   "nimbusBurstKm": 51.921434600836484,
+   "eiepBurstKm": 51.919263,
+   "eiepBreakupKm": 66.249,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-04-30T21:28:28Z",
+   "sent": {
+    "diameterM": 1.664,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.5,
+    "angleDeg": 81.28
+   },
+   "error": null,
+   "observedKm": 32.4,
+   "nimbusBurstKm": 46.519984925584,
+   "eiepBurstKm": 46.508396999999995,
+   "eiepBreakupKm": 57.75,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-05-24T07:03:02Z",
+   "sent": {
+    "diameterM": 1.677,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.4,
+    "angleDeg": 48.71
+   },
+   "error": null,
+   "observedKm": 46,
+   "nimbusBurstKm": 47.07340034551254,
+   "eiepBurstKm": 47.04699900000001,
+   "eiepBreakupKm": 55.217,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-06-20T13:41:31Z",
+   "sent": {
+    "diameterM": 3.257,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.6,
+    "angleDeg": 73.26
+   },
+   "error": null,
+   "observedKm": 33.3,
+   "nimbusBurstKm": 37.65270195409333,
+   "eiepBurstKm": 37.63794,
+   "eiepBreakupKm": 50.405,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-06-23T20:21:55Z",
+   "sent": {
+    "diameterM": 1.534,
+    "densityKgM3": 3000,
+    "velocityKmS": 24.3,
+    "angleDeg": 30.08
+   },
+   "error": null,
+   "observedKm": 35.1,
+   "nimbusBurstKm": 52.823874893861216,
+   "eiepBurstKm": 52.794062,
+   "eiepBreakupKm": 59.673,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-06-30T14:26:46Z",
+   "sent": {
+    "diameterM": 1.905,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.2,
+    "angleDeg": 71.44
+   },
+   "error": null,
+   "observedKm": 20,
+   "nimbusBurstKm": 42.87908231219804,
+   "eiepBurstKm": 42.853216,
+   "eiepBreakupKm": 52.158,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-07-13T09:30:36Z",
+   "sent": {
+    "diameterM": 1.869,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.7,
+    "angleDeg": 64.42
+   },
+   "error": null,
+   "observedKm": 35,
+   "nimbusBurstKm": 42.37137902078908,
+   "eiepBurstKm": 42.332398999999995,
+   "eiepBreakupKm": 50.464,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-07-23T06:12:38Z",
+   "sent": {
+    "diameterM": 1.361,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.2,
+    "angleDeg": 22.39
+   },
+   "error": null,
+   "observedKm": 38,
+   "nimbusBurstKm": 50.457725445766954,
+   "eiepBurstKm": 50.348504,
+   "eiepBreakupKm": 53.963,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-09-05T05:11:27Z",
+   "sent": {
+    "diameterM": 1.511,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.7,
+    "angleDeg": 13.31
+   },
+   "error": null,
+   "observedKm": 36,
+   "nimbusBurstKm": 49.27455587172581,
+   "eiepBurstKm": 49.009003,
+   "eiepBreakupKm": 51.141,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-10-04T12:07:05Z",
+   "sent": {
+    "diameterM": 2.041,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.6,
+    "angleDeg": 11.57
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 48.86075285676834,
+   "eiepBurstKm": 48.640911,
+   "eiepBreakupKm": 51.119,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-10-15T04:33:16Z",
+   "sent": {
+    "diameterM": 1.323,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.9,
+    "angleDeg": 61.66
+   },
+   "error": null,
+   "observedKm": 24.1,
+   "nimbusBurstKm": 46.0698388078843,
+   "eiepBurstKm": 46.026196000000006,
+   "eiepBreakupKm": 52.837,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-10-23T15:31:22Z",
+   "sent": {
+    "diameterM": 1.193,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.7,
+    "angleDeg": 69.78
+   },
+   "error": null,
+   "observedKm": 35.4,
+   "nimbusBurstKm": 46.80290451633333,
+   "eiepBurstKm": 46.762755,
+   "eiepBreakupKm": 53.631,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-11-19T04:17:32Z",
+   "sent": {
+    "diameterM": 1.59,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.4,
+    "angleDeg": 61.54
+   },
+   "error": null,
+   "observedKm": 33.3,
+   "nimbusBurstKm": 41.51435230458017,
+   "eiepBurstKm": 41.434238,
+   "eiepBreakupKm": 47.426,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2017-12-15T13:14:37Z",
+   "sent": {
+    "diameterM": 3.495,
+    "densityKgM3": 3000,
+    "velocityKmS": 31.4,
+    "angleDeg": 56.04
+   },
+   "error": null,
+   "observedKm": 20,
+   "nimbusBurstKm": 43.22625137982535,
+   "eiepBurstKm": 43.224025000000005,
+   "eiepBreakupKm": 63.848,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-01-06T21:24:21Z",
+   "sent": {
+    "diameterM": 1.013,
+    "densityKgM3": 3000,
+    "velocityKmS": 21,
+    "angleDeg": 49.67
+   },
+   "error": null,
+   "observedKm": 26,
+   "nimbusBurstKm": 51.23608362930184,
+   "eiepBurstKm": 51.193999000000005,
+   "eiepBreakupKm": 57.308,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-01-15T02:18:38Z",
+   "sent": {
+    "diameterM": 1.734,
+    "densityKgM3": 3000,
+    "velocityKmS": 23.7,
+    "angleDeg": 16.35
+   },
+   "error": null,
+   "observedKm": 43.6,
+   "nimbusBurstKm": 54.69052169115085,
+   "eiepBurstKm": 54.634427,
+   "eiepBreakupKm": 59.214,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-02-01T12:21:36Z",
+   "sent": {
+    "diameterM": 2.181,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.5,
+    "angleDeg": 20.1
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 48.605270620129026,
+   "eiepBurstKm": 48.52935,
+   "eiepBreakupKm": 53.367,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-02-21T01:28:03Z",
+   "sent": {
+    "diameterM": 1.953,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.1,
+    "angleDeg": 39.12
+   },
+   "error": null,
+   "observedKm": 31.5,
+   "nimbusBurstKm": 43.68295149970704,
+   "eiepBurstKm": 43.615947,
+   "eiepBreakupKm": 49.683,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-04-19T13:39:39Z",
+   "sent": {
+    "diameterM": 3.775,
+    "densityKgM3": 3000,
+    "velocityKmS": 10.9,
+    "angleDeg": 68.9
+   },
+   "error": null,
+   "observedKm": 31.5,
+   "nimbusBurstKm": 34.96474847273648,
+   "eiepBurstKm": 34.942577,
+   "eiepBreakupKm": 46.838,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-04-19T14:02:27Z",
+   "sent": {
+    "diameterM": 1.135,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.9,
+    "angleDeg": 18.83
+   },
+   "error": null,
+   "observedKm": 30,
+   "nimbusBurstKm": 54.046610332432685,
+   "eiepBurstKm": 53.939574,
+   "eiepBreakupKm": 57.092,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-04-21T12:06:03Z",
+   "sent": {
+    "diameterM": 1.481,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.6,
+    "angleDeg": 39.82
+   },
+   "error": null,
+   "observedKm": 28.2,
+   "nimbusBurstKm": 46.15222166969991,
+   "eiepBurstKm": 46.078652999999996,
+   "eiepBreakupKm": 51.408,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-04-30T13:17:57Z",
+   "sent": {
+    "diameterM": 1.459,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.1,
+    "angleDeg": 45
+   },
+   "error": null,
+   "observedKm": 34,
+   "nimbusBurstKm": 44.517550176207244,
+   "eiepBurstKm": 44.431599,
+   "eiepBreakupKm": 49.644,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-05-03T07:23:59Z",
+   "sent": {
+    "diameterM": 1.78,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.5,
+    "angleDeg": 38.31
+   },
+   "error": null,
+   "observedKm": 39,
+   "nimbusBurstKm": 42.69001581858461,
+   "eiepBurstKm": 42.583239999999996,
+   "eiepBreakupKm": 47.508,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-06-02T16:44:12Z",
+   "sent": {
+    "diameterM": 2.57,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.9,
+    "angleDeg": 23.34
+   },
+   "error": null,
+   "observedKm": 28.7,
+   "nimbusBurstKm": 47.4449838786753,
+   "eiepBurstKm": 47.39741,
+   "eiepBreakupKm": 53.812,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-06-21T01:16:20Z",
+   "sent": {
+    "diameterM": 4.159,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.4,
+    "angleDeg": 80.02
+   },
+   "error": null,
+   "observedKm": 27.2,
+   "nimbusBurstKm": 35.45781873815926,
+   "eiepBurstKm": 35.448808,
+   "eiepBreakupKm": 51.342,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-06-26T17:51:53Z",
+   "sent": {
+    "diameterM": 1.389,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.1,
+    "angleDeg": 76.48
+   },
+   "error": null,
+   "observedKm": 63,
+   "nimbusBurstKm": 43.98737987734507,
+   "eiepBurstKm": 43.937792,
+   "eiepBreakupKm": 50.902,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-07-25T21:55:23Z",
+   "sent": {
+    "diameterM": 2.322,
+    "densityKgM3": 3000,
+    "velocityKmS": 24.4,
+    "angleDeg": 11.27
+   },
+   "error": null,
+   "observedKm": 43.3,
+   "nimbusBurstKm": 55.32805758691167,
+   "eiepBurstKm": 55.270142,
+   "eiepBreakupKm": 59.677,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-08-27T04:36:44Z",
+   "sent": {
+    "diameterM": 1.312,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.1,
+    "angleDeg": 56.36
+   },
+   "error": null,
+   "observedKm": 33,
+   "nimbusBurstKm": 46.54908156182011,
+   "eiepBurstKm": 46.503198,
+   "eiepBreakupKm": 53.032,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-09-25T00:16:58Z",
+   "sent": {
+    "diameterM": 1.831,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.5,
+    "angleDeg": 8.61
+   },
+   "error": null,
+   "observedKm": 40.7,
+   "nimbusBurstKm": 47.15892492872826,
+   "eiepBurstKm": 46.608837,
+   "eiepBreakupKm": 48.023,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-09-25T14:10:42Z",
+   "sent": {
+    "diameterM": 3.338,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.5,
+    "angleDeg": 22.24
+   },
+   "error": null,
+   "observedKm": 33,
+   "nimbusBurstKm": 45.986495387055584,
+   "eiepBurstKm": 45.947720000000004,
+   "eiepBreakupKm": 53.45,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-10-05T00:27:02Z",
+   "sent": {
+    "diameterM": 1.702,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.7,
+    "angleDeg": 22.99
+   },
+   "error": null,
+   "observedKm": 31.5,
+   "nimbusBurstKm": 47.62913341096544,
+   "eiepBurstKm": 47.513224,
+   "eiepBreakupKm": 51.431,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-11-17T21:48:23Z",
+   "sent": {
+    "diameterM": 1.99,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.1,
+    "angleDeg": 26.61
+   },
+   "error": null,
+   "observedKm": 32.5,
+   "nimbusBurstKm": 49.463118934365326,
+   "eiepBurstKm": 49.421692,
+   "eiepBreakupKm": 55.785,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-11-20T17:30:27Z",
+   "sent": {
+    "diameterM": 2.685,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.4,
+    "angleDeg": 32.04
+   },
+   "error": null,
+   "observedKm": 27.4,
+   "nimbusBurstKm": 45.74561404138955,
+   "eiepBurstKm": 45.717996,
+   "eiepBreakupKm": 54.324,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-12-18T23:48:18Z",
+   "sent": {
+    "diameterM": 11.217,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.6,
+    "angleDeg": 68.59
+   },
+   "error": null,
+   "observedKm": 26,
+   "nimbusBurstKm": 24.38636554621271,
+   "eiepBurstKm": 24.383905,
+   "eiepBreakupKm": 50.454,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2018-12-23T23:38:02Z",
+   "sent": {
+    "diameterM": 1.763,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.5,
+    "angleDeg": 66.36
+   },
+   "error": null,
+   "observedKm": 31.8,
+   "nimbusBurstKm": 44.40266517651647,
+   "eiepBurstKm": 44.376463,
+   "eiepBreakupKm": 53.476,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-01-22T09:18:00Z",
+   "sent": {
+    "diameterM": 1.85,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.6,
+    "angleDeg": 38.61
+   },
+   "error": null,
+   "observedKm": 42.5,
+   "nimbusBurstKm": 42.60014522555564,
+   "eiepBurstKm": 42.502072,
+   "eiepBreakupKm": 47.664,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-02-01T18:17:09Z",
+   "sent": {
+    "diameterM": 3.242,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.3,
+    "angleDeg": 35.17
+   },
+   "error": null,
+   "observedKm": 23.7,
+   "nimbusBurstKm": 43.25001026401173,
+   "eiepBurstKm": 43.229029000000004,
+   "eiepBreakupKm": 53.291,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-02-18T10:00:42Z",
+   "sent": {
+    "diameterM": 3.755,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.8,
+    "angleDeg": 71.85
+   },
+   "error": null,
+   "observedKm": 26,
+   "nimbusBurstKm": 38.93232760599759,
+   "eiepBurstKm": 38.928098,
+   "eiepBreakupKm": 57.247,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-03-15T12:26:56Z",
+   "sent": {
+    "diameterM": 1.781,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.4,
+    "angleDeg": 18.4
+   },
+   "error": null,
+   "observedKm": 31.5,
+   "nimbusBurstKm": 47.88362240218983,
+   "eiepBurstKm": 47.733088,
+   "eiepBreakupKm": 51.03,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-03-19T02:06:39Z",
+   "sent": {
+    "diameterM": 1.266,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.2,
+    "angleDeg": 48.05
+   },
+   "error": null,
+   "observedKm": 28.7,
+   "nimbusBurstKm": 47.37181741618179,
+   "eiepBurstKm": 47.314764000000004,
+   "eiepBreakupKm": 53.11,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-04-06T11:59:09Z",
+   "sent": {
+    "diameterM": 1.552,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.1,
+    "angleDeg": 15.84
+   },
+   "error": null,
+   "observedKm": 41.5,
+   "nimbusBurstKm": 51.72461538508704,
+   "eiepBurstKm": 51.59998,
+   "eiepBreakupKm": 54.749,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-04-14T17:54:33Z",
+   "sent": {
+    "diameterM": 1.323,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.9,
+    "angleDeg": 41.74
+   },
+   "error": null,
+   "observedKm": 30.6,
+   "nimbusBurstKm": 47.47018252184733,
+   "eiepBurstKm": 47.405493,
+   "eiepBreakupKm": 52.792,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-04-22T21:42:10Z",
+   "sent": {
+    "diameterM": 2.475,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.4,
+    "angleDeg": 54.38
+   },
+   "error": null,
+   "observedKm": 33.3,
+   "nimbusBurstKm": 39.46631073537281,
+   "eiepBurstKm": 39.419453000000004,
+   "eiepBreakupKm": 47.496,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-05-19T14:47:03Z",
+   "sent": {
+    "diameterM": 1.478,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.2,
+    "angleDeg": 78.53
+   },
+   "error": null,
+   "observedKm": 33.3,
+   "nimbusBurstKm": 44.337370628182214,
+   "eiepBurstKm": 44.299690999999996,
+   "eiepBreakupKm": 52.134,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-05-21T13:12:33Z",
+   "sent": {
+    "diameterM": 4.009,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.5,
+    "angleDeg": 73.05
+   },
+   "error": null,
+   "observedKm": 31.5,
+   "nimbusBurstKm": 34.62153787964409,
+   "eiepBurstKm": 34.604943,
+   "eiepBreakupKm": 47.712,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-05-25T06:44:04Z",
+   "sent": {
+    "diameterM": 1.955,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.8,
+    "angleDeg": 78.35
+   },
+   "error": null,
+   "observedKm": 29.2,
+   "nimbusBurstKm": 42.798280081587116,
+   "eiepBurstKm": 42.77461,
+   "eiepBreakupKm": 52.79,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-05-26T10:07:54Z",
+   "sent": {
+    "diameterM": 1.126,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.5,
+    "angleDeg": 45
+   },
+   "error": null,
+   "observedKm": 24.4,
+   "nimbusBurstKm": 49.03605981959362,
+   "eiepBurstKm": 48.974463,
+   "eiepBreakupKm": 54.342,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-06-22T21:25:47Z",
+   "sent": {
+    "diameterM": 5.241,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.9,
+    "angleDeg": 41.6
+   },
+   "error": null,
+   "observedKm": 25,
+   "nimbusBurstKm": 37.27110385672187,
+   "eiepBurstKm": 37.261006,
+   "eiepBreakupKm": 51.884,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-06-30T16:52:47Z",
+   "sent": {
+    "diameterM": 0.689,
+    "densityKgM3": 3000,
+    "velocityKmS": 42.3,
+    "angleDeg": 87.1
+   },
+   "error": null,
+   "observedKm": 59,
+   "nimbusBurstKm": 58.84899423886209,
+   "eiepBurstKm": 58.843318,
+   "eiepBreakupKm": 68.598,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-07-23T20:42:57Z",
+   "sent": {
+    "diameterM": 2.42,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.1,
+    "angleDeg": 40.7
+   },
+   "error": null,
+   "observedKm": 30.6,
+   "nimbusBurstKm": 44.33394756674726,
+   "eiepBurstKm": 44.306409,
+   "eiepBreakupKm": 53.077,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-08-16T20:36:05Z",
+   "sent": {
+    "diameterM": 1.339,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.9,
+    "angleDeg": 49.37
+   },
+   "error": null,
+   "observedKm": 36,
+   "nimbusBurstKm": 46.06534310423258,
+   "eiepBurstKm": 46.000792000000004,
+   "eiepBreakupKm": 51.755,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-08-24T12:02:59Z",
+   "sent": {
+    "diameterM": 1.568,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.4,
+    "angleDeg": 4.22
+   },
+   "error": null,
+   "observedKm": 39.8,
+   "nimbusBurstKm": 48.44241768906107,
+   "eiepBurstKm": 46.678314,
+   "eiepBreakupKm": 47.261,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-09-12T02:34:58Z",
+   "sent": {
+    "diameterM": 1.507,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.2,
+    "angleDeg": 49.47
+   },
+   "error": null,
+   "observedKm": 30.6,
+   "nimbusBurstKm": 46.98246303786996,
+   "eiepBurstKm": 46.943684000000005,
+   "eiepBreakupKm": 54.113,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-09-12T12:49:47Z",
+   "sent": {
+    "diameterM": 1.87,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.5,
+    "angleDeg": 23.61
+   },
+   "error": null,
+   "observedKm": 42,
+   "nimbusBurstKm": 49.95305278251908,
+   "eiepBurstKm": 49.895067000000004,
+   "eiepBreakupKm": 55.24,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-09-13T02:02:03Z",
+   "sent": {
+    "diameterM": 1.6,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.5,
+    "angleDeg": 63.74
+   },
+   "error": null,
+   "observedKm": 27.4,
+   "nimbusBurstKm": 43.194365671700986,
+   "eiepBurstKm": 43.142224999999996,
+   "eiepBreakupKm": 50.202,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-09-14T12:39:33Z",
+   "sent": {
+    "diameterM": 1.909,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.9,
+    "angleDeg": 68.17
+   },
+   "error": null,
+   "observedKm": 38,
+   "nimbusBurstKm": 43.417530962194235,
+   "eiepBurstKm": 43.391632,
+   "eiepBreakupKm": 52.885,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-09-28T10:40:19Z",
+   "sent": {
+    "diameterM": 0.999,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.4,
+    "angleDeg": 31.0
+   },
+   "error": null,
+   "observedKm": 52,
+   "nimbusBurstKm": 52.64827027102543,
+   "eiepBurstKm": 52.576054,
+   "eiepBreakupKm": 56.772,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-10-10T16:16:36Z",
+   "sent": {
+    "diameterM": 2.481,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.1,
+    "angleDeg": 59.4
+   },
+   "error": null,
+   "observedKm": 47.3,
+   "nimbusBurstKm": 41.007622734220604,
+   "eiepBurstKm": 40.982527000000005,
+   "eiepBreakupKm": 50.958,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-11-05T11:24:50Z",
+   "sent": {
+    "diameterM": 1.462,
+    "densityKgM3": 3000,
+    "velocityKmS": 27.4,
+    "angleDeg": 34.85
+   },
+   "error": null,
+   "observedKm": 38,
+   "nimbusBurstKm": 53.53863875752559,
+   "eiepBurstKm": 53.517795,
+   "eiepBreakupKm": 61.619,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-11-28T11:55:02Z",
+   "sent": {
+    "diameterM": 0.916,
+    "densityKgM3": 3000,
+    "velocityKmS": 24.7,
+    "angleDeg": 77.87
+   },
+   "error": null,
+   "observedKm": 22.5,
+   "nimbusBurstKm": 52.09049727518979,
+   "eiepBurstKm": 52.067629999999994,
+   "eiepBreakupKm": 59.949,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-11-28T20:30:53Z",
+   "sent": {
+    "diameterM": 1.466,
+    "densityKgM3": 3000,
+    "velocityKmS": 13,
+    "angleDeg": 50.77
+   },
+   "error": null,
+   "observedKm": 35,
+   "nimbusBurstKm": 43.99195971713999,
+   "eiepBurstKm": 43.916556,
+   "eiepBreakupKm": 49.54,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-12-11T01:19:10Z",
+   "sent": {
+    "diameterM": 1.144,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.8,
+    "angleDeg": 49.26
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 48.83021189318578,
+   "eiepBurstKm": 48.777608,
+   "eiepBreakupKm": 54.633,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2019-12-21T14:30:52Z",
+   "sent": {
+    "diameterM": 1.411,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.2,
+    "angleDeg": 47.95
+   },
+   "error": null,
+   "observedKm": 35.5,
+   "nimbusBurstKm": 50.0624569864455,
+   "eiepBurstKm": 50.040089,
+   "eiepBreakupKm": 58.237,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-01-16T09:31:42Z",
+   "sent": {
+    "diameterM": 1.759,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.9,
+    "angleDeg": 31.66
+   },
+   "error": null,
+   "observedKm": 27.8,
+   "nimbusBurstKm": 44.79745151897627,
+   "eiepBurstKm": 44.695033,
+   "eiepBreakupKm": 49.361,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-01-17T21:29:46Z",
+   "sent": {
+    "diameterM": 2.053,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.5,
+    "angleDeg": 48.56
+   },
+   "error": null,
+   "observedKm": 14.5,
+   "nimbusBurstKm": 44.1439337089091,
+   "eiepBurstKm": 44.110326,
+   "eiepBreakupKm": 52.458,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-01-21T20:07:43Z",
+   "sent": {
+    "diameterM": 0.892,
+    "densityKgM3": 3000,
+    "velocityKmS": 27.4,
+    "angleDeg": 56.29
+   },
+   "error": null,
+   "observedKm": 43.3,
+   "nimbusBurstKm": 54.26297733904709,
+   "eiepBurstKm": 54.239744,
+   "eiepBreakupKm": 61.61,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-01-24T11:13:30Z",
+   "sent": {
+    "diameterM": 1.092,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.2,
+    "angleDeg": 30.89
+   },
+   "error": null,
+   "observedKm": 32,
+   "nimbusBurstKm": 52.79177586889434,
+   "eiepBurstKm": 52.732271999999995,
+   "eiepBreakupKm": 57.417,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-01-27T05:39:13Z",
+   "sent": {
+    "diameterM": 1.396,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.8,
+    "angleDeg": 22.15
+   },
+   "error": null,
+   "observedKm": 32.5,
+   "nimbusBurstKm": 52.19814558240212,
+   "eiepBurstKm": 52.119017,
+   "eiepBreakupKm": 56.287,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-02-10T23:48:17Z",
+   "sent": {
+    "diameterM": 0.634,
+    "densityKgM3": 3000,
+    "velocityKmS": 31.7,
+    "angleDeg": 39.97
+   },
+   "error": null,
+   "observedKm": 41.7,
+   "nimbusBurstKm": 58.9067278483513,
+   "eiepBurstKm": 58.868545,
+   "eiepBreakupKm": 63.917,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-02-28T09:30:34Z",
+   "sent": {
+    "diameterM": 1.529,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.5,
+    "angleDeg": 47.35
+   },
+   "error": null,
+   "observedKm": 34.5,
+   "nimbusBurstKm": 49.30076575341464,
+   "eiepBurstKm": 49.27643,
+   "eiepBreakupKm": 57.725,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-03-04T20:25:58Z",
+   "sent": {
+    "diameterM": 2.37,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.8,
+    "angleDeg": 44.43
+   },
+   "error": null,
+   "observedKm": 24.3,
+   "nimbusBurstKm": 45.78501761271126,
+   "eiepBurstKm": 45.770185,
+   "eiepBreakupKm": 56.423,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-03-26T23:27:56Z",
+   "sent": {
+    "diameterM": 1.633,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.7,
+    "angleDeg": 56.47
+   },
+   "error": null,
+   "observedKm": 26.5,
+   "nimbusBurstKm": 47.644376983582866,
+   "eiepBurstKm": 47.62381,
+   "eiepBreakupKm": 57.127,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-05-09T02:56:11Z",
+   "sent": {
+    "diameterM": 1.449,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.5,
+    "angleDeg": 45
+   },
+   "error": null,
+   "observedKm": 31.2,
+   "nimbusBurstKm": 45.71873297059857,
+   "eiepBurstKm": 45.650402,
+   "eiepBreakupKm": 51.311,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-05-27T17:30:17Z",
+   "sent": {
+    "diameterM": 1.658,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.9,
+    "angleDeg": 78.43
+   },
+   "error": null,
+   "observedKm": 29.3,
+   "nimbusBurstKm": 43.41517950529385,
+   "eiepBurstKm": 43.382604,
+   "eiepBreakupKm": 51.824,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-07-12T07:50:31Z",
+   "sent": {
+    "diameterM": 1.626,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.3,
+    "angleDeg": 0.68
+   },
+   "error": "HTTP 500",
+   "observedKm": 29.4,
+   "nimbusBurstKm": null,
+   "eiepBurstKm": null,
+   "eiepBreakupKm": null,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-07-20T21:25:09Z",
+   "sent": {
+    "diameterM": 1.658,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.1,
+    "angleDeg": 45
+   },
+   "error": null,
+   "observedKm": 31.6,
+   "nimbusBurstKm": 44.74540523288857,
+   "eiepBurstKm": 44.684444000000006,
+   "eiepBreakupKm": 50.878,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-08-02T16:36:24Z",
+   "sent": {
+    "diameterM": 2.086,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.1,
+    "angleDeg": 44.52
+   },
+   "error": null,
+   "observedKm": 38,
+   "nimbusBurstKm": 40.99100743443549,
+   "eiepBurstKm": 40.912572999999995,
+   "eiepBreakupKm": 46.997,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-08-30T16:08:21Z",
+   "sent": {
+    "diameterM": 1.248,
+    "densityKgM3": 3000,
+    "velocityKmS": 23.4,
+    "angleDeg": 47.98
+   },
+   "error": null,
+   "observedKm": 27.8,
+   "nimbusBurstKm": 51.340805284095154,
+   "eiepBurstKm": 51.319019,
+   "eiepBreakupKm": 59.078,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-09-18T08:05:26Z",
+   "sent": {
+    "diameterM": 1.913,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.7,
+    "angleDeg": 66.96
+   },
+   "error": null,
+   "observedKm": 46,
+   "nimbusBurstKm": 40.539212667236626,
+   "eiepBurstKm": 40.486835,
+   "eiepBreakupKm": 47.899,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-10-18T10:52:42Z",
+   "sent": {
+    "diameterM": 1.405,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.4,
+    "angleDeg": 52.1
+   },
+   "error": null,
+   "observedKm": 36,
+   "nimbusBurstKm": 46.66802969522226,
+   "eiepBurstKm": 46.622678,
+   "eiepBreakupKm": 53.335,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-10-22T17:39:33Z",
+   "sent": {
+    "diameterM": 1.34,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.6,
+    "angleDeg": 17.55
+   },
+   "error": null,
+   "observedKm": 40,
+   "nimbusBurstKm": 51.47395984002443,
+   "eiepBurstKm": 51.331835,
+   "eiepBreakupKm": 54.267,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-10-26T15:07:09Z",
+   "sent": {
+    "diameterM": 1.728,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.6,
+    "angleDeg": 57.36
+   },
+   "error": null,
+   "observedKm": 28.5,
+   "nimbusBurstKm": 45.709140233456345,
+   "eiepBurstKm": 45.683164,
+   "eiepBreakupKm": 54.511,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-11-07T21:27:04Z",
+   "sent": {
+    "diameterM": 1.706,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.7,
+    "angleDeg": 73.22
+   },
+   "error": null,
+   "observedKm": 22.3,
+   "nimbusBurstKm": 44.4323940722534,
+   "eiepBurstKm": 44.408127,
+   "eiepBreakupKm": 53.672,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-11-28T16:34:10Z",
+   "sent": {
+    "diameterM": 1.004,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.6,
+    "angleDeg": 57.45
+   },
+   "error": null,
+   "observedKm": 28.1,
+   "nimbusBurstKm": 50.012643578538515,
+   "eiepBurstKm": 49.970613,
+   "eiepBreakupKm": 56.198,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-12-22T23:23:28Z",
+   "sent": {
+    "diameterM": 7.018,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.6,
+    "angleDeg": 4.92
+   },
+   "error": null,
+   "observedKm": 35.5,
+   "nimbusBurstKm": 46.928459871561294,
+   "eiepBurstKm": 46.770595,
+   "eiepBreakupKm": 50.097,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-12-28T17:27:53Z",
+   "sent": {
+    "diameterM": 1.321,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.2,
+    "angleDeg": 43.22
+   },
+   "error": null,
+   "observedKm": 28.3,
+   "nimbusBurstKm": 46.83030771946631,
+   "eiepBurstKm": 46.759518,
+   "eiepBreakupKm": 52.059,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2020-12-29T20:32:22Z",
+   "sent": {
+    "diameterM": 1.975,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.4,
+    "angleDeg": 13.92
+   },
+   "error": null,
+   "observedKm": 33,
+   "nimbusBurstKm": 48.32805692206352,
+   "eiepBurstKm": 48.141864999999996,
+   "eiepBreakupKm": 50.959,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-01-24T07:33:43Z",
+   "sent": {
+    "diameterM": 1.424,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.2,
+    "angleDeg": 42.34
+   },
+   "error": null,
+   "observedKm": 37.5,
+   "nimbusBurstKm": 49.125136967251294,
+   "eiepBurstKm": 49.08884,
+   "eiepBreakupKm": 55.878,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-01-29T16:12:47Z",
+   "sent": {
+    "diameterM": 1.816,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.3,
+    "angleDeg": 36.11
+   },
+   "error": null,
+   "observedKm": 30,
+   "nimbusBurstKm": 45.351993805366696,
+   "eiepBurstKm": 45.28726,
+   "eiepBreakupKm": 51.092,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-01-31T02:59:38Z",
+   "sent": {
+    "diameterM": 2.586,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.2,
+    "angleDeg": 46.19
+   },
+   "error": null,
+   "observedKm": 39.4,
+   "nimbusBurstKm": 42.64732382780669,
+   "eiepBurstKm": 42.621315,
+   "eiepBreakupKm": 52.161,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-02-02T10:03:20Z",
+   "sent": {
+    "diameterM": 1.574,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.8,
+    "angleDeg": 64.19
+   },
+   "error": null,
+   "observedKm": 20,
+   "nimbusBurstKm": 42.702102373345426,
+   "eiepBurstKm": 42.644713,
+   "eiepBreakupKm": 49.33,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-02-09T23:27:29Z",
+   "sent": {
+    "diameterM": 1.55,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.1,
+    "angleDeg": 60.72
+   },
+   "error": null,
+   "observedKm": 31,
+   "nimbusBurstKm": 43.20269431839508,
+   "eiepBurstKm": 43.144339,
+   "eiepBreakupKm": 49.7,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-03-05T13:50:01Z",
+   "sent": {
+    "diameterM": 1.085,
+    "densityKgM3": 3000,
+    "velocityKmS": 23.3,
+    "angleDeg": 64.52
+   },
+   "error": null,
+   "observedKm": 32.5,
+   "nimbusBurstKm": 50.96218228165573,
+   "eiepBurstKm": 50.936626,
+   "eiepBreakupKm": 59.014,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-03-06T08:43:06Z",
+   "sent": {
+    "diameterM": 1.941,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.1,
+    "angleDeg": 42.26
+   },
+   "error": null,
+   "observedKm": 31.1,
+   "nimbusBurstKm": 46.68949666710259,
+   "eiepBurstKm": 46.662862999999994,
+   "eiepBreakupKm": 54.954,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-04-02T15:52:57Z",
+   "sent": {
+    "diameterM": 2.406,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.1,
+    "angleDeg": 24.0
+   },
+   "error": null,
+   "observedKm": 40,
+   "nimbusBurstKm": 45.60686492137721,
+   "eiepBurstKm": 45.531048000000006,
+   "eiepBreakupKm": 50.842,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-04-13T02:16:47Z",
+   "sent": {
+    "diameterM": 1.3,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.1,
+    "angleDeg": 39.72
+   },
+   "error": null,
+   "observedKm": 44.4,
+   "nimbusBurstKm": 46.29488837892192,
+   "eiepBurstKm": 46.199771999999996,
+   "eiepBreakupKm": 50.803,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-05-06T05:54:26Z",
+   "sent": {
+    "diameterM": 1.107,
+    "densityKgM3": 3000,
+    "velocityKmS": 26.6,
+    "angleDeg": 37.32
+   },
+   "error": null,
+   "observedKm": 31,
+   "nimbusBurstKm": 54.52406914268431,
+   "eiepBurstKm": 54.49424,
+   "eiepBreakupKm": 61.124,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-07-05T03:46:22Z",
+   "sent": {
+    "diameterM": 3.388,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.7,
+    "angleDeg": 14.33
+   },
+   "error": null,
+   "observedKm": 43.4,
+   "nimbusBurstKm": 47.54231403492884,
+   "eiepBurstKm": 47.46883999999999,
+   "eiepBreakupKm": 52.575,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-07-29T13:19:57Z",
+   "sent": {
+    "diameterM": 1.474,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.7,
+    "angleDeg": 75.47
+   },
+   "error": null,
+   "observedKm": 26.4,
+   "nimbusBurstKm": 44.09376208584761,
+   "eiepBurstKm": 44.053919,
+   "eiepBreakupKm": 51.588,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-09-06T17:55:41Z",
+   "sent": {
+    "diameterM": 1.384,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.6,
+    "angleDeg": 22.29
+   },
+   "error": null,
+   "observedKm": 26,
+   "nimbusBurstKm": 47.29943787505782,
+   "eiepBurstKm": 47.109704,
+   "eiepBreakupKm": 50.038,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-09-29T10:50:59Z",
+   "sent": {
+    "diameterM": 1.798,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.2,
+    "angleDeg": 30.31
+   },
+   "error": null,
+   "observedKm": 28,
+   "nimbusBurstKm": 50.47196154643261,
+   "eiepBurstKm": 50.438997,
+   "eiepBreakupKm": 57.479,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-10-20T00:43:53Z",
+   "sent": {
+    "diameterM": 0.971,
+    "densityKgM3": 3000,
+    "velocityKmS": 27.5,
+    "angleDeg": 68.3
+   },
+   "error": null,
+   "observedKm": 31.4,
+   "nimbusBurstKm": 53.07110702120351,
+   "eiepBurstKm": 53.054783,
+   "eiepBreakupKm": 61.682,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-10-21T10:32:02Z",
+   "sent": {
+    "diameterM": 1.434,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.9,
+    "angleDeg": 40.84
+   },
+   "error": null,
+   "observedKm": 30,
+   "nimbusBurstKm": 47.18079599132583,
+   "eiepBurstKm": 47.120339,
+   "eiepBreakupKm": 52.803,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-11-17T15:53:11Z",
+   "sent": {
+    "diameterM": 0.964,
+    "densityKgM3": 3000,
+    "velocityKmS": 23,
+    "angleDeg": 50.93
+   },
+   "error": null,
+   "observedKm": 35,
+   "nimbusBurstKm": 52.38503466000867,
+   "eiepBurstKm": 52.351449,
+   "eiepBreakupKm": 58.78,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-11-28T18:06:50Z",
+   "sent": {
+    "diameterM": 1.111,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.7,
+    "angleDeg": 38.68
+   },
+   "error": null,
+   "observedKm": 38.4,
+   "nimbusBurstKm": 51.01769869017989,
+   "eiepBurstKm": 50.964485,
+   "eiepBreakupKm": 56.253,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-12-20T23:15:54Z",
+   "sent": {
+    "diameterM": 1.209,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.2,
+    "angleDeg": 42.21
+   },
+   "error": null,
+   "observedKm": 56,
+   "nimbusBurstKm": 49.38950576413774,
+   "eiepBurstKm": 49.337493,
+   "eiepBreakupKm": 54.986,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2021-12-29T03:15:35Z",
+   "sent": {
+    "diameterM": 0.938,
+    "densityKgM3": 3000,
+    "velocityKmS": 22,
+    "angleDeg": 77.31
+   },
+   "error": null,
+   "observedKm": 44,
+   "nimbusBurstKm": 50.80233588295025,
+   "eiepBurstKm": 50.773892,
+   "eiepBreakupKm": 58.08,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-01-11T03:33:13Z",
+   "sent": {
+    "diameterM": 3.097,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.8,
+    "angleDeg": 54.12
+   },
+   "error": null,
+   "observedKm": 40.8,
+   "nimbusBurstKm": 43.11739453123667,
+   "eiepBurstKm": 43.112826,
+   "eiepBreakupKm": 58.711,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-01-30T02:06:18Z",
+   "sent": {
+    "diameterM": 1.313,
+    "densityKgM3": 3000,
+    "velocityKmS": 20,
+    "angleDeg": 34.59
+   },
+   "error": null,
+   "observedKm": 36.6,
+   "nimbusBurstKm": 50.864282581686496,
+   "eiepBurstKm": 50.816925000000005,
+   "eiepBreakupKm": 56.51,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-02-03T19:50:40Z",
+   "sent": {
+    "diameterM": 1.652,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.8,
+    "angleDeg": 13.34
+   },
+   "error": null,
+   "observedKm": 36,
+   "nimbusBurstKm": 55.07505705844671,
+   "eiepBurstKm": 54.990897,
+   "eiepBreakupKm": 58.536,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-02-07T20:06:25Z",
+   "sent": {
+    "diameterM": 6.012,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.1,
+    "angleDeg": 26.68
+   },
+   "error": null,
+   "observedKm": 26.5,
+   "nimbusBurstKm": 38.58482797410218,
+   "eiepBurstKm": 38.564485999999995,
+   "eiepBreakupKm": 49.789,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-02-17T03:53:23Z",
+   "sent": {
+    "diameterM": 1.321,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.5,
+    "angleDeg": 64.4
+   },
+   "error": null,
+   "observedKm": 32.4,
+   "nimbusBurstKm": 48.915194056273805,
+   "eiepBurstKm": 48.894081,
+   "eiepBreakupKm": 57.73,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-03-11T21:22:45Z",
+   "sent": {
+    "diameterM": 4.09,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.2,
+    "angleDeg": 57.82
+   },
+   "error": null,
+   "observedKm": 33.3,
+   "nimbusBurstKm": 38.20668252078136,
+   "eiepBurstKm": 38.199681,
+   "eiepBreakupKm": 54.193,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-03-24T03:43:42Z",
+   "sent": {
+    "diameterM": 1.569,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.2,
+    "angleDeg": 57.67
+   },
+   "error": null,
+   "observedKm": 56.7,
+   "nimbusBurstKm": 46.64393402720128,
+   "eiepBurstKm": 46.615328,
+   "eiepBreakupKm": 55.045,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-03-28T10:20:24Z",
+   "sent": {
+    "diameterM": 2.386,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.6,
+    "angleDeg": 47.26
+   },
+   "error": null,
+   "observedKm": 29,
+   "nimbusBurstKm": 45.27219260488071,
+   "eiepBurstKm": 45.258283000000006,
+   "eiepBreakupKm": 56.263,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-04-04T00:30:39Z",
+   "sent": {
+    "diameterM": 1.081,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.7,
+    "angleDeg": 37.39
+   },
+   "error": null,
+   "observedKm": 31.5,
+   "nimbusBurstKm": 51.265187374772935,
+   "eiepBurstKm": 51.205861,
+   "eiepBreakupKm": 56.244,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-04-12T21:59:11Z",
+   "sent": {
+    "diameterM": 1.114,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.6,
+    "angleDeg": 50.76
+   },
+   "error": null,
+   "observedKm": 23.8,
+   "nimbusBurstKm": 50.450116009137794,
+   "eiepBurstKm": 50.411396999999994,
+   "eiepBreakupKm": 57.008,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-04-21T22:15:28Z",
+   "sent": {
+    "diameterM": 1.537,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.7,
+    "angleDeg": 49.03
+   },
+   "error": null,
+   "observedKm": 28.4,
+   "nimbusBurstKm": 43.62415498581712,
+   "eiepBurstKm": 43.546782,
+   "eiepBreakupKm": 49.161,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-06-07T22:53:17Z",
+   "sent": {
+    "diameterM": 0.948,
+    "densityKgM3": 3000,
+    "velocityKmS": 24.9,
+    "angleDeg": 45.42
+   },
+   "error": null,
+   "observedKm": 41.1,
+   "nimbusBurstKm": 53.78425638072158,
+   "eiepBurstKm": 53.748853000000004,
+   "eiepBreakupKm": 60.056,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-06-26T20:16:26Z",
+   "sent": {
+    "diameterM": 1.382,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.1,
+    "angleDeg": 28.06
+   },
+   "error": null,
+   "observedKm": 19,
+   "nimbusBurstKm": 51.54420355666093,
+   "eiepBurstKm": 51.485912,
+   "eiepBreakupKm": 56.571,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-07-08T01:36:36Z",
+   "sent": {
+    "diameterM": 1.128,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.2,
+    "angleDeg": 55.86
+   },
+   "error": null,
+   "observedKm": 22,
+   "nimbusBurstKm": 49.80708236805368,
+   "eiepBurstKm": 49.773697999999996,
+   "eiepBreakupKm": 56.699,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-07-20T10:56:52Z",
+   "sent": {
+    "diameterM": 1.461,
+    "densityKgM3": 3000,
+    "velocityKmS": 16,
+    "angleDeg": 28.77
+   },
+   "error": null,
+   "observedKm": 32.2,
+   "nimbusBurstKm": 48.48375196501085,
+   "eiepBurstKm": 48.397422,
+   "eiepBreakupKm": 52.847,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-07-22T00:16:18Z",
+   "sent": {
+    "diameterM": 1.546,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.4,
+    "angleDeg": 34.31
+   },
+   "error": null,
+   "observedKm": 32.7,
+   "nimbusBurstKm": 48.54855238985135,
+   "eiepBurstKm": 48.494364000000004,
+   "eiepBreakupKm": 54.264,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-07-25T07:28:16Z",
+   "sent": {
+    "diameterM": 1.84,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.2,
+    "angleDeg": 50.15
+   },
+   "error": null,
+   "observedKm": 33.6,
+   "nimbusBurstKm": 44.49214845125802,
+   "eiepBurstKm": 44.451907,
+   "eiepBreakupKm": 52.131,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-07-27T04:41:27Z",
+   "sent": {
+    "diameterM": 2.604,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.8,
+    "angleDeg": 28.77
+   },
+   "error": null,
+   "observedKm": 38.1,
+   "nimbusBurstKm": 47.80680850332111,
+   "eiepBurstKm": 47.78398,
+   "eiepBreakupKm": 56.403,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-07-28T01:36:07Z",
+   "sent": {
+    "diameterM": 1.602,
+    "densityKgM3": 3000,
+    "velocityKmS": 29.9,
+    "angleDeg": 51.72
+   },
+   "error": null,
+   "observedKm": 37.5,
+   "nimbusBurstKm": 51.29852434160661,
+   "eiepBurstKm": 51.290247,
+   "eiepBreakupKm": 63.044,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-09-04T03:54:55Z",
+   "sent": {
+    "diameterM": 0.989,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.9,
+    "angleDeg": 69.79
+   },
+   "error": null,
+   "observedKm": 14,
+   "nimbusBurstKm": 50.675689186761645,
+   "eiepBurstKm": 50.644956,
+   "eiepBreakupKm": 58.007,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-09-14T23:31:14Z",
+   "sent": {
+    "diameterM": 1.183,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.4,
+    "angleDeg": 4.67
+   },
+   "error": null,
+   "observedKm": 35.8,
+   "nimbusBurstKm": 52.928903132627795,
+   "eiepBurstKm": 51.944659,
+   "eiepBreakupKm": 52.623,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-11-20T13:53:54Z",
+   "sent": {
+    "diameterM": 1.107,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.7,
+    "angleDeg": 27.87
+   },
+   "error": null,
+   "observedKm": 26,
+   "nimbusBurstKm": 53.38896385877527,
+   "eiepBurstKm": 53.326665999999996,
+   "eiepBreakupKm": 57.784,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-12-13T17:26:00Z",
+   "sent": {
+    "diameterM": 1.45,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.7,
+    "angleDeg": 45
+   },
+   "error": null,
+   "observedKm": 20,
+   "nimbusBurstKm": 48.479006716366925,
+   "eiepBurstKm": 48.441421999999996,
+   "eiepBreakupKm": 55.458,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2022-12-29T06:52:08Z",
+   "sent": {
+    "diameterM": 1.555,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.4,
+    "angleDeg": 88.35
+   },
+   "error": null,
+   "observedKm": 32.3,
+   "nimbusBurstKm": 44.606554185354966,
+   "eiepBurstKm": 44.580633999999996,
+   "eiepBreakupKm": 53.374,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-01-09T01:17:13Z",
+   "sent": {
+    "diameterM": 1.614,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.7,
+    "angleDeg": 52.06
+   },
+   "error": null,
+   "observedKm": 27,
+   "nimbusBurstKm": 46.06157965011237,
+   "eiepBurstKm": 46.025048999999996,
+   "eiepBreakupKm": 53.647,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-01-11T23:59:50Z",
+   "sent": {
+    "diameterM": 1.313,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.5,
+    "angleDeg": 55.94
+   },
+   "error": null,
+   "observedKm": 33.5,
+   "nimbusBurstKm": 47.45674167825936,
+   "eiepBurstKm": 47.415398,
+   "eiepBreakupKm": 54.388,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-01-17T06:57:17Z",
+   "sent": {
+    "diameterM": 1.382,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.2,
+    "angleDeg": 55.41
+   },
+   "error": null,
+   "observedKm": 38,
+   "nimbusBurstKm": 44.97218460374236,
+   "eiepBurstKm": 44.912521,
+   "eiepBreakupKm": 50.988,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-02-14T22:55:24Z",
+   "sent": {
+    "diameterM": 2.249,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.6,
+    "angleDeg": 28.18
+   },
+   "error": null,
+   "observedKm": 32.3,
+   "nimbusBurstKm": 46.35458037065734,
+   "eiepBurstKm": 46.302167000000004,
+   "eiepBreakupKm": 52.513,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-02-19T06:15:33Z",
+   "sent": {
+    "diameterM": 1.591,
+    "densityKgM3": 3000,
+    "velocityKmS": 23,
+    "angleDeg": 64.92
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 48.11572315587435,
+   "eiepBurstKm": 48.102596,
+   "eiepBreakupKm": 58.829,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-03-03T02:53:54Z",
+   "sent": {
+    "diameterM": 1.185,
+    "densityKgM3": 3000,
+    "velocityKmS": 25.3,
+    "angleDeg": 29.69
+   },
+   "error": null,
+   "observedKm": 32,
+   "nimbusBurstKm": 54.654362154129664,
+   "eiepBurstKm": 54.616728,
+   "eiepBreakupKm": 60.299,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-04-01T00:02:02Z",
+   "sent": {
+    "diameterM": 0.592,
+    "densityKgM3": 3000,
+    "velocityKmS": 46.4,
+    "angleDeg": 48.55
+   },
+   "error": null,
+   "observedKm": 61.8,
+   "nimbusBurstKm": 62.62159361512261,
+   "eiepBurstKm": 62.612048,
+   "eiepBreakupKm": 70.069,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-04-06T14:47:38Z",
+   "sent": {
+    "diameterM": 1.339,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.1,
+    "angleDeg": 48.8
+   },
+   "error": null,
+   "observedKm": 31.2,
+   "nimbusBurstKm": 50.26830730598276,
+   "eiepBurstKm": 50.242207,
+   "eiepBreakupKm": 58.161,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-04-15T08:21:58Z",
+   "sent": {
+    "diameterM": 4.892,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.2,
+    "angleDeg": 35.22
+   },
+   "error": null,
+   "observedKm": 41.4,
+   "nimbusBurstKm": 40.19683119157405,
+   "eiepBurstKm": 40.18528,
+   "eiepBreakupKm": 54.184,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-04-26T13:14:59Z",
+   "sent": {
+    "diameterM": 1.307,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.2,
+    "angleDeg": 44.33
+   },
+   "error": null,
+   "observedKm": 29.6,
+   "nimbusBurstKm": 47.51807558219578,
+   "eiepBurstKm": 47.457595,
+   "eiepBreakupKm": 53.104,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-05-20T11:22:22Z",
+   "sent": {
+    "diameterM": 3.649,
+    "densityKgM3": 3000,
+    "velocityKmS": 27.9,
+    "angleDeg": 39.67
+   },
+   "error": null,
+   "observedKm": 29,
+   "nimbusBurstKm": 45.048717665204265,
+   "eiepBurstKm": 45.045415,
+   "eiepBreakupKm": 61.949,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-06-21T19:39:12Z",
+   "sent": {
+    "diameterM": 3.015,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.5,
+    "angleDeg": 6.36
+   },
+   "error": null,
+   "observedKm": 40.4,
+   "nimbusBurstKm": 51.00941756568439,
+   "eiepBurstKm": 50.796896999999994,
+   "eiepBreakupKm": 53.098,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-07-07T16:15:30Z",
+   "sent": {
+    "diameterM": 0.909,
+    "densityKgM3": 3000,
+    "velocityKmS": 25.7,
+    "angleDeg": 25.37
+   },
+   "error": null,
+   "observedKm": 38.3,
+   "nimbusBurstKm": 56.53205040885494,
+   "eiepBurstKm": 56.468917999999995,
+   "eiepBreakupKm": 60.5,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-07-26T03:41:53Z",
+   "sent": {
+    "diameterM": 2.128,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.6,
+    "angleDeg": 33.2
+   },
+   "error": null,
+   "observedKm": 36.1,
+   "nimbusBurstKm": 45.86797074362049,
+   "eiepBurstKm": 45.819243,
+   "eiepBreakupKm": 52.527,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-08-05T19:54:49Z",
+   "sent": {
+    "diameterM": 3.492,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.8,
+    "angleDeg": 59.27
+   },
+   "error": null,
+   "observedKm": 44,
+   "nimbusBurstKm": 41.027865223961285,
+   "eiepBurstKm": 41.024373,
+   "eiepBreakupKm": 57.996,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-08-17T05:57:37Z",
+   "sent": {
+    "diameterM": 1.854,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.1,
+    "angleDeg": 66.5
+   },
+   "error": null,
+   "observedKm": 35.4,
+   "nimbusBurstKm": 43.82247245798298,
+   "eiepBurstKm": 43.796133999999995,
+   "eiepBreakupKm": 53.084,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-10-14T22:55:25Z",
+   "sent": {
+    "diameterM": 1.371,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.3,
+    "angleDeg": 67.19
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 47.514182025949054,
+   "eiepBurstKm": 47.486953,
+   "eiepBreakupKm": 55.99,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-10-16T17:14:52Z",
+   "sent": {
+    "diameterM": 1.143,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.8,
+    "angleDeg": 64.84
+   },
+   "error": null,
+   "observedKm": 35.3,
+   "nimbusBurstKm": 49.01010736778884,
+   "eiepBurstKm": 48.980491,
+   "eiepBreakupKm": 56.385,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-10-26T08:58:24Z",
+   "sent": {
+    "diameterM": 1.658,
+    "densityKgM3": 3000,
+    "velocityKmS": 30.2,
+    "angleDeg": 35.1
+   },
+   "error": null,
+   "observedKm": 44.2,
+   "nimbusBurstKm": 53.537381901746365,
+   "eiepBurstKm": 53.524309,
+   "eiepBreakupKm": 63.193,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-10-30T07:22:55Z",
+   "sent": {
+    "diameterM": 1.165,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.6,
+    "angleDeg": 48.42
+   },
+   "error": null,
+   "observedKm": 33.8,
+   "nimbusBurstKm": 48.67548651390831,
+   "eiepBurstKm": 48.623998,
+   "eiepBreakupKm": 54.45,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-11-21T22:17:29Z",
+   "sent": {
+    "diameterM": 1.336,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.3,
+    "angleDeg": 79.59
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 46.75140589219547,
+   "eiepBurstKm": 46.725604,
+   "eiepBreakupKm": 55.133,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-12-05T23:10:11Z",
+   "sent": {
+    "diameterM": 0.984,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.6,
+    "angleDeg": 51.37
+   },
+   "error": null,
+   "observedKm": 24.1,
+   "nimbusBurstKm": 51.04360061925079,
+   "eiepBurstKm": 51.002778,
+   "eiepBreakupKm": 56.995,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-12-11T08:32:58Z",
+   "sent": {
+    "diameterM": 1.416,
+    "densityKgM3": 3000,
+    "velocityKmS": 26,
+    "angleDeg": 23.74
+   },
+   "error": null,
+   "observedKm": 31.7,
+   "nimbusBurstKm": 55.102812684663206,
+   "eiepBurstKm": 55.064309,
+   "eiepBreakupKm": 60.739,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2023-12-30T21:04:33Z",
+   "sent": {
+    "diameterM": 1.629,
+    "densityKgM3": 3000,
+    "velocityKmS": 28.3,
+    "angleDeg": 6.68
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 59.77967312834861,
+   "eiepBurstKm": 59.657856,
+   "eiepBreakupKm": 61.927,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-02-05T00:32:54Z",
+   "sent": {
+    "diameterM": 1.602,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.4,
+    "angleDeg": 44.7
+   },
+   "error": null,
+   "observedKm": 23,
+   "nimbusBurstKm": 45.17695001089594,
+   "eiepBurstKm": 45.116374,
+   "eiepBreakupKm": 51.215,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-02-26T11:21:01Z",
+   "sent": {
+    "diameterM": 0.891,
+    "densityKgM3": 3000,
+    "velocityKmS": 31.3,
+    "angleDeg": 12.82
+   },
+   "error": null,
+   "observedKm": 33.1,
+   "nimbusBurstKm": 61.09102436937084,
+   "eiepBurstKm": 60.999353,
+   "eiepBreakupKm": 63.6,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-03-17T06:17:58Z",
+   "sent": {
+    "diameterM": 0.963,
+    "densityKgM3": 3000,
+    "velocityKmS": 25.6,
+    "angleDeg": 44.44
+   },
+   "error": null,
+   "observedKm": 42.1,
+   "nimbusBurstKm": 54.086190765248794,
+   "eiepBurstKm": 54.057673,
+   "eiepBreakupKm": 60.504,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-05-05T20:11:03Z",
+   "sent": {
+    "diameterM": 1.53,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.9,
+    "angleDeg": 72.27
+   },
+   "error": null,
+   "observedKm": 39,
+   "nimbusBurstKm": 43.401790489281666,
+   "eiepBurstKm": 43.357551,
+   "eiepBreakupKm": 50.68,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-05-18T22:46:48Z",
+   "sent": {
+    "diameterM": 0.751,
+    "densityKgM3": 3000,
+    "velocityKmS": 40.4,
+    "angleDeg": 6.7
+   },
+   "error": null,
+   "observedKm": 74.3,
+   "nimbusBurstKm": 66.20781936039994,
+   "eiepBurstKm": 66.073458,
+   "eiepBreakupKm": 67.605,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-05-24T16:19:59Z",
+   "sent": {
+    "diameterM": 0.896,
+    "densityKgM3": 3000,
+    "velocityKmS": 36.5,
+    "angleDeg": 59.35
+   },
+   "error": null,
+   "observedKm": 42,
+   "nimbusBurstKm": 56.73533397950795,
+   "eiepBurstKm": 56.725993,
+   "eiepBreakupKm": 66.232,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-05-27T03:19:36Z",
+   "sent": {
+    "diameterM": 0.966,
+    "densityKgM3": 3000,
+    "velocityKmS": 39.2,
+    "angleDeg": 70.94
+   },
+   "error": null,
+   "observedKm": 56,
+   "nimbusBurstKm": 56.039779011845106,
+   "eiepBurstKm": 56.032593999999996,
+   "eiepBreakupKm": 67.384,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-06-01T23:24:58Z",
+   "sent": {
+    "diameterM": 2.032,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.6,
+    "angleDeg": 71.06
+   },
+   "error": null,
+   "observedKm": 26.5,
+   "nimbusBurstKm": 40.72341054357234,
+   "eiepBurstKm": 40.683752999999996,
+   "eiepBreakupKm": 49.12,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-06-18T13:51:19Z",
+   "sent": {
+    "diameterM": 1.721,
+    "densityKgM3": 3000,
+    "velocityKmS": 35.4,
+    "angleDeg": 35.64
+   },
+   "error": null,
+   "observedKm": 44.3,
+   "nimbusBurstKm": 54.471353962223105,
+   "eiepBurstKm": 54.465925999999996,
+   "eiepBreakupKm": 65.749,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-06-18T21:01:32Z",
+   "sent": {
+    "diameterM": 1.17,
+    "densityKgM3": 3000,
+    "velocityKmS": 16.2,
+    "angleDeg": 32.78
+   },
+   "error": null,
+   "observedKm": 28.7,
+   "nimbusBurstKm": 49.02282377728671,
+   "eiepBurstKm": 48.926103000000005,
+   "eiepBreakupKm": 53.026,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-06-28T16:05:19Z",
+   "sent": {
+    "diameterM": 1.436,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.3,
+    "angleDeg": 29.64
+   },
+   "error": null,
+   "observedKm": 29.2,
+   "nimbusBurstKm": 47.897303980828916,
+   "eiepBurstKm": 47.800176,
+   "eiepBreakupKm": 52.112,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-07-12T00:09:35Z",
+   "sent": {
+    "diameterM": 1.403,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.4,
+    "angleDeg": 20.94
+   },
+   "error": null,
+   "observedKm": 41.5,
+   "nimbusBurstKm": 53.89961460849677,
+   "eiepBurstKm": 53.837908000000006,
+   "eiepBreakupKm": 58.297,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-07-20T14:08:10Z",
+   "sent": {
+    "diameterM": 3.06,
+    "densityKgM3": 3000,
+    "velocityKmS": 30.8,
+    "angleDeg": 7.22
+   },
+   "error": null,
+   "observedKm": 38.8,
+   "nimbusBurstKm": 58.80358316239035,
+   "eiepBurstKm": 58.760023999999994,
+   "eiepBreakupKm": 63.444,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-07-30T19:27:16Z",
+   "sent": {
+    "diameterM": 1.334,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.6,
+    "angleDeg": 45.07
+   },
+   "error": null,
+   "observedKm": 39,
+   "nimbusBurstKm": 46.17115450322755,
+   "eiepBurstKm": 46.096998,
+   "eiepBreakupKm": 51.407,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-08-25T06:50:49Z",
+   "sent": {
+    "diameterM": 1.067,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.1,
+    "angleDeg": 5.93
+   },
+   "error": null,
+   "observedKm": 38.2,
+   "nimbusBurstKm": 55.28178872119993,
+   "eiepBurstKm": 54.742112,
+   "eiepBreakupKm": 55.674,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-09-04T16:39:32Z",
+   "sent": {
+    "diameterM": 1.4,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.7,
+    "angleDeg": 56.84
+   },
+   "error": null,
+   "observedKm": 25,
+   "nimbusBurstKm": 48.19543015137286,
+   "eiepBurstKm": 48.169537,
+   "eiepBreakupKm": 56.315,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-09-06T12:36:22Z",
+   "sent": {
+    "diameterM": 0.925,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.6,
+    "angleDeg": 41.4
+   },
+   "error": null,
+   "observedKm": 27,
+   "nimbusBurstKm": 53.1733214308325,
+   "eiepBurstKm": 53.128821,
+   "eiepBreakupKm": 58.472,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-09-28T00:10:19Z",
+   "sent": {
+    "diameterM": 1.964,
+    "densityKgM3": 3000,
+    "velocityKmS": 15,
+    "angleDeg": 37.01
+   },
+   "error": null,
+   "observedKm": 34.2,
+   "nimbusBurstKm": 45.37017457774033,
+   "eiepBurstKm": 45.319659,
+   "eiepBreakupKm": 51.89,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-10-05T12:27:48Z",
+   "sent": {
+    "diameterM": 1.434,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.1,
+    "angleDeg": 82.91
+   },
+   "error": null,
+   "observedKm": 39.5,
+   "nimbusBurstKm": 42.92462832195647,
+   "eiepBurstKm": 42.869926,
+   "eiepBreakupKm": 49.709,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-12-01T08:50:16Z",
+   "sent": {
+    "diameterM": 1.606,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.1,
+    "angleDeg": 33.24
+   },
+   "error": null,
+   "observedKm": 35.9,
+   "nimbusBurstKm": 51.07265474872524,
+   "eiepBurstKm": 51.043082000000005,
+   "eiepBreakupKm": 58.149,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-12-20T17:52:01Z",
+   "sent": {
+    "diameterM": 3.439,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.1,
+    "angleDeg": 50.56
+   },
+   "error": null,
+   "observedKm": 32.6,
+   "nimbusBurstKm": 42.083158257742326,
+   "eiepBurstKm": 42.077464,
+   "eiepBreakupKm": 57.468,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2024-12-28T04:45:12Z",
+   "sent": {
+    "diameterM": 1.266,
+    "densityKgM3": 3000,
+    "velocityKmS": 17,
+    "angleDeg": 20.32
+   },
+   "error": null,
+   "observedKm": 33.7,
+   "nimbusBurstKm": 50.7848407883261,
+   "eiepBurstKm": 50.645143,
+   "eiepBreakupKm": 53.717,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-01-10T21:11:07Z",
+   "sent": {
+    "diameterM": 1.372,
+    "densityKgM3": 3000,
+    "velocityKmS": 14,
+    "angleDeg": 48.48
+   },
+   "error": null,
+   "observedKm": 34.6,
+   "nimbusBurstKm": 45.30573618159801,
+   "eiepBurstKm": 45.232474,
+   "eiepBreakupKm": 50.736,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-01-11T14:46:00Z",
+   "sent": {
+    "diameterM": 1.451,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.2,
+    "angleDeg": 23.65
+   },
+   "error": null,
+   "observedKm": 61,
+   "nimbusBurstKm": 46.622733320507905,
+   "eiepBurstKm": 46.445882,
+   "eiepBreakupKm": 49.58,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-02-06T17:52:54Z",
+   "sent": {
+    "diameterM": 1.087,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.4,
+    "angleDeg": 55.8
+   },
+   "error": null,
+   "observedKm": 36.2,
+   "nimbusBurstKm": 48.39704459157693,
+   "eiepBurstKm": 48.344996,
+   "eiepBreakupKm": 54.268,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-02-07T17:25:57Z",
+   "sent": {
+    "diameterM": 1.043,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.1,
+    "angleDeg": 41.01
+   },
+   "error": null,
+   "observedKm": 50.8,
+   "nimbusBurstKm": 51.3175789727697,
+   "eiepBurstKm": 51.263235,
+   "eiepBreakupKm": 56.579,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-02-12T04:33:39Z",
+   "sent": {
+    "diameterM": 1.13,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.9,
+    "angleDeg": 11.33
+   },
+   "error": null,
+   "observedKm": 42,
+   "nimbusBurstKm": 55.825192001657015,
+   "eiepBurstKm": 55.645919,
+   "eiepBreakupKm": 57.702,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-02-22T10:26:08Z",
+   "sent": {
+    "diameterM": 1.621,
+    "densityKgM3": 3000,
+    "velocityKmS": 15,
+    "angleDeg": 43.92
+   },
+   "error": null,
+   "observedKm": 46.7,
+   "nimbusBurstKm": 45.63400698969586,
+   "eiepBurstKm": 45.580023999999995,
+   "eiepBreakupKm": 51.882,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-03-13T09:46:51Z",
+   "sent": {
+    "diameterM": 2.299,
+    "densityKgM3": 3000,
+    "velocityKmS": 28.1,
+    "angleDeg": 13.66
+   },
+   "error": null,
+   "observedKm": 38,
+   "nimbusBurstKm": 56.21021893361632,
+   "eiepBurstKm": 56.174979,
+   "eiepBreakupKm": 61.992,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-03-18T17:48:32Z",
+   "sent": {
+    "diameterM": 1.633,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.1,
+    "angleDeg": 48.66
+   },
+   "error": null,
+   "observedKm": 27,
+   "nimbusBurstKm": 48.096766214458576,
+   "eiepBurstKm": 48.071053,
+   "eiepBreakupKm": 56.644,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-03-24T05:51:43Z",
+   "sent": {
+    "diameterM": 1.023,
+    "densityKgM3": 3000,
+    "velocityKmS": 28.2,
+    "angleDeg": 45.42
+   },
+   "error": null,
+   "observedKm": 21.5,
+   "nimbusBurstKm": 54.658674757836096,
+   "eiepBurstKm": 54.639112999999995,
+   "eiepBreakupKm": 62.074,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-03-27T16:05:23Z",
+   "sent": {
+    "diameterM": 3.043,
+    "densityKgM3": 3000,
+    "velocityKmS": 21.3,
+    "angleDeg": 48.53
+   },
+   "error": null,
+   "observedKm": 38.1,
+   "nimbusBurstKm": 43.61009499537245,
+   "eiepBurstKm": 43.602141,
+   "eiepBreakupKm": 57.614,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-03-29T08:12:43Z",
+   "sent": {
+    "diameterM": 1.884,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.3,
+    "angleDeg": 70.17
+   },
+   "error": null,
+   "observedKm": 21.6,
+   "nimbusBurstKm": 41.00106292260644,
+   "eiepBurstKm": 40.95514,
+   "eiepBreakupKm": 48.716,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-04-08T14:16:48Z",
+   "sent": {
+    "diameterM": 0.925,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.6,
+    "angleDeg": 42.57
+   },
+   "error": null,
+   "observedKm": 44.9,
+   "nimbusBurstKm": 53.06979655702731,
+   "eiepBurstKm": 53.026997,
+   "eiepBreakupKm": 58.475,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-05-31T23:06:33Z",
+   "sent": {
+    "diameterM": 2.562,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.8,
+    "angleDeg": 47.68
+   },
+   "error": null,
+   "observedKm": 47.3,
+   "nimbusBurstKm": 43.87676974009997,
+   "eiepBurstKm": 43.859327,
+   "eiepBreakupKm": 54.714,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-06-26T00:37:20Z",
+   "sent": {
+    "diameterM": 1.773,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.3,
+    "angleDeg": 43.16
+   },
+   "error": null,
+   "observedKm": 30,
+   "nimbusBurstKm": 47.77771713826859,
+   "eiepBurstKm": 47.753125,
+   "eiepBreakupKm": 55.986,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-07-11T01:48:33Z",
+   "sent": {
+    "diameterM": 1.469,
+    "densityKgM3": 3000,
+    "velocityKmS": 13.6,
+    "angleDeg": 78.52
+   },
+   "error": null,
+   "observedKm": 28,
+   "nimbusBurstKm": 43.25133513911425,
+   "eiepBurstKm": 43.200969,
+   "eiepBreakupKm": 50.323,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-08-19T14:08:48Z",
+   "sent": {
+    "diameterM": 2.81,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.6,
+    "angleDeg": 58.16
+   },
+   "error": null,
+   "observedKm": 27.5,
+   "nimbusBurstKm": 42.62369916793177,
+   "eiepBurstKm": 42.614727,
+   "eiepBreakupKm": 56.278,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-09-09T17:49:10Z",
+   "sent": {
+    "diameterM": 1.762,
+    "densityKgM3": 3000,
+    "velocityKmS": 20.7,
+    "angleDeg": 49.45
+   },
+   "error": null,
+   "observedKm": 24,
+   "nimbusBurstKm": 47.76071520890514,
+   "eiepBurstKm": 47.741667,
+   "eiepBreakupKm": 57.126,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-09-13T22:24:59Z",
+   "sent": {
+    "diameterM": 2.006,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.8,
+    "angleDeg": 31.26
+   },
+   "error": null,
+   "observedKm": 25.1,
+   "nimbusBurstKm": 47.87877071056082,
+   "eiepBurstKm": 47.83771,
+   "eiepBreakupKm": 54.659,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-10-20T13:31:27Z",
+   "sent": {
+    "diameterM": 0.817,
+    "densityKgM3": 3000,
+    "velocityKmS": 26.7,
+    "angleDeg": 31.73
+   },
+   "error": null,
+   "observedKm": 41,
+   "nimbusBurstKm": 56.636392706490604,
+   "eiepBurstKm": 56.586536,
+   "eiepBreakupKm": 61.136,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-11-11T17:39:51Z",
+   "sent": {
+    "diameterM": 1.622,
+    "densityKgM3": 3000,
+    "velocityKmS": 18.7,
+    "angleDeg": 60.4
+   },
+   "error": null,
+   "observedKm": 42,
+   "nimbusBurstKm": 46.48090423058166,
+   "eiepBurstKm": 46.456644999999995,
+   "eiepBreakupKm": 55.489,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-11-15T00:48:43Z",
+   "sent": {
+    "diameterM": 1.881,
+    "densityKgM3": 3000,
+    "velocityKmS": 16,
+    "angleDeg": 51.61
+   },
+   "error": null,
+   "observedKm": 30,
+   "nimbusBurstKm": 44.72289092384617,
+   "eiepBurstKm": 44.692248,
+   "eiepBreakupKm": 52.968,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2025-12-16T20:58:12Z",
+   "sent": {
+    "diameterM": 1.624,
+    "densityKgM3": 3000,
+    "velocityKmS": 19,
+    "angleDeg": 66.28
+   },
+   "error": null,
+   "observedKm": 25,
+   "nimbusBurstKm": 46.25383474694418,
+   "eiepBurstKm": 46.23129,
+   "eiepBreakupKm": 55.75,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-01-30T10:25:37Z",
+   "sent": {
+    "diameterM": 0.502,
+    "densityKgM3": 3000,
+    "velocityKmS": 71.1,
+    "angleDeg": 5.15
+   },
+   "error": null,
+   "observedKm": 89,
+   "nimbusBurstKm": 75.44275799617176,
+   "eiepBurstKm": 75.358662,
+   "eiepBreakupKm": 76.761,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-03-17T12:56:42Z",
+   "sent": {
+    "diameterM": 2.071,
+    "densityKgM3": 3000,
+    "velocityKmS": 14.9,
+    "angleDeg": 31.92
+   },
+   "error": null,
+   "observedKm": 45,
+   "nimbusBurstKm": 45.69794248770767,
+   "eiepBurstKm": 45.639388,
+   "eiepBreakupKm": 51.768,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-03-23T19:23:43Z",
+   "sent": {
+    "diameterM": 1.899,
+    "densityKgM3": 3000,
+    "velocityKmS": 11.5,
+    "angleDeg": 72.67
+   },
+   "error": null,
+   "observedKm": 35,
+   "nimbusBurstKm": 40.192174720648424,
+   "eiepBurstKm": 40.13844,
+   "eiepBreakupKm": 47.622,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-04-01T02:13:14Z",
+   "sent": {
+    "diameterM": 0.457,
+    "densityKgM3": 3000,
+    "velocityKmS": 69.2,
+    "angleDeg": 14.54
+   },
+   "error": null,
+   "observedKm": 90.5,
+   "nimbusBurstKm": 73.16766631529,
+   "eiepBurstKm": 73.14049899999999,
+   "eiepBreakupKm": 76.433,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-04-01T23:59:35Z",
+   "sent": {
+    "diameterM": 0.671,
+    "densityKgM3": 3000,
+    "velocityKmS": 37.3,
+    "angleDeg": 26.19
+   },
+   "error": null,
+   "observedKm": 37,
+   "nimbusBurstKm": 62.14553207043709,
+   "eiepBurstKm": 62.109625,
+   "eiepBreakupKm": 66.52,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-04-08T01:58:47Z",
+   "sent": {
+    "diameterM": 1.189,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.8,
+    "angleDeg": 47.46
+   },
+   "error": null,
+   "observedKm": 62,
+   "nimbusBurstKm": 48.77644285051276,
+   "eiepBurstKm": 48.726309,
+   "eiepBreakupKm": 54.635,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-04-29T14:00:39Z",
+   "sent": {
+    "diameterM": 1.391,
+    "densityKgM3": 3000,
+    "velocityKmS": 17.8,
+    "angleDeg": 27.64
+   },
+   "error": null,
+   "observedKm": 28.7,
+   "nimbusBurstKm": 50.12022358290598,
+   "eiepBurstKm": 50.0432,
+   "eiepBreakupKm": 54.581,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-05-07T05:52:03Z",
+   "sent": {
+    "diameterM": 1.201,
+    "densityKgM3": 3000,
+    "velocityKmS": 24.8,
+    "angleDeg": 41.14
+   },
+   "error": null,
+   "observedKm": 36,
+   "nimbusBurstKm": 52.879117500807816,
+   "eiepBurstKm": 52.852968999999995,
+   "eiepBreakupKm": 60.005,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-05-10T16:57:37Z",
+   "sent": {
+    "diameterM": 1.245,
+    "densityKgM3": 3000,
+    "velocityKmS": 22.9,
+    "angleDeg": 27.98
+   },
+   "error": null,
+   "observedKm": 32.7,
+   "nimbusBurstKm": 53.534194317527884,
+   "eiepBurstKm": 53.486012,
+   "eiepBreakupKm": 58.68,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-05-21T02:15:51Z",
+   "sent": {
+    "diameterM": 1.368,
+    "densityKgM3": 3000,
+    "velocityKmS": 15.8,
+    "angleDeg": 35.95
+   },
+   "error": null,
+   "observedKm": 31.5,
+   "nimbusBurstKm": 47.79986812708909,
+   "eiepBurstKm": 47.724610999999996,
+   "eiepBreakupKm": 52.67,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-08-14T07:48:36Z",
+   "sent": {
+    "diameterM": 1.669,
+    "densityKgM3": 3000,
+    "velocityKmS": 12.2,
+    "angleDeg": 39.76
+   },
+   "error": null,
+   "observedKm": 30,
+   "nimbusBurstKm": 43.53097124849447,
+   "eiepBurstKm": 43.435367,
+   "eiepBreakupKm": 48.477,
+   "eiepReachesGround": false
+  },
+  {
+   "date": "2026-09-10T05:22:22Z",
+   "sent": {
+    "diameterM": 1.677,
+    "densityKgM3": 3000,
+    "velocityKmS": 19.3,
+    "angleDeg": 74.43
+   },
+   "error": null,
+   "observedKm": 33.6,
+   "nimbusBurstKm": 45.774820347893844,
+   "eiepBurstKm": 45.759108999999995,
+   "eiepBreakupKm": 56.009,
+   "eiepReachesGround": false
+  }
+ ]
+}

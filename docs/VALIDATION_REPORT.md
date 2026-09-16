@@ -1307,7 +1307,7 @@ The entry is Collins et al. 2005's, and it agrees with their own program within 
 | The panel’s stony class, 1 MPa | 355 of 357 | 8.3 km | +6.6 km | 99 of 355 |
 | An iron, 50 MPa at 7 800 kg/m³ | 68 of 357 | 20.7 km | -20.4 km | 2 of 68 |
 
-The entry misses the bar docs/GOLD_STANDARD.md set for it as first written (I2), 5 km in the median and 3 km in the mean, and the gap is declared below. Nothing in the model moves on this reading (rule 79), and rule 5 forbids tuning on a set now read. Under that file's amendment of 16 September 2026 the bar is read against the Earth Impact Effects Program's own entry on the same fireballs, since the entry here reproduces the program's burst altitude: the miss above is then expected to be the program's own, and the rule stays pending until the program is run on the fireballs themselves.
+The entry misses the bar docs/GOLD_STANDARD.md set for it as first written (I2), 5 km in the median and 3 km in the mean, and the gap is declared below. Nothing in the model moves on this reading (rule 79), and rule 5 forbids tuning on a set now read. Under that file's amendment of 16 September 2026 the bar is read against the Earth Impact Effects Program's own entry on the same fireballs, and **it is met**: the program, run on these fireballs for the first time (`scripts/eiep-fireballs.py`), answers 356 of 357, and the entry here agrees with it on every one — within 1 % on 352, through BM-13's declared I_f on the other 4, median departure 0.086 % (rules 126 to 128, `validation/fireballAnchorRules.ts`). The miss above is the field's own: the program's is 13.68 km in the median, this entry's 13.74.
 
 By energy and by speed, for the body a scenario with no class carries:
 
