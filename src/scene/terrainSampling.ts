@@ -461,11 +461,26 @@ export function reprojectMercatorToLinearLat(
   return out;
 }
 
-export async function fetchGlobalBathymetricMosaic(): Promise<ElevationGrid> {
-  if (globalMosaicCache !== null) return globalMosaicCache;
-  if (globalMosaicInflight !== null) return globalMosaicInflight;
+/**
+ * Where the mosaic's tiles come from: the samples of one terrarium tile,
+ * in metres, row-major from the top. The browser leaves this out and the
+ * tiles are fetched and decoded here; the validation harness hands one in
+ * so the mosaic it measures a coast on is spliced and reprojected by this
+ * module and not by a copy of it, exactly as `fetchTerrainGridForLocation`
+ * takes its loader.
+ */
+export type TerrariumTileSamples = (zoom: number, x: number, y: number) => Promise<Float32Array>;
 
-  globalMosaicInflight = (async (): Promise<ElevationGrid> => {
+export async function fetchGlobalBathymetricMosaic(
+  loadTile?: TerrariumTileSamples
+): Promise<ElevationGrid> {
+  const injected = loadTile !== undefined;
+  if (!injected) {
+    if (globalMosaicCache !== null) return globalMosaicCache;
+    if (globalMosaicInflight !== null) return globalMosaicInflight;
+  }
+
+  const build = async (): Promise<ElevationGrid> => {
     const n = 2 ** GLOBAL_ZOOM;
     const mercatorSamples = new Float32Array(GLOBAL_GRID_DIMENSION * GLOBAL_GRID_DIMENSION);
 
@@ -475,7 +490,9 @@ export async function fetchGlobalBathymetricMosaic(): Promise<ElevationGrid> {
         const url = TERRAIN_TILE_URL.replace('{z}', GLOBAL_ZOOM.toString())
           .replace('{x}', tx.toString())
           .replace('{y}', ty.toString());
-        tilePromises.push(decodeTerrariumTile(url).then((tile) => ({ x: tx, y: ty, tile })));
+        const samples =
+          loadTile === undefined ? decodeTerrariumTile(url) : loadTile(GLOBAL_ZOOM, tx, ty);
+        tilePromises.push(samples.then((tile) => ({ x: tx, y: ty, tile })));
       }
     }
 
@@ -516,9 +533,12 @@ export async function fetchGlobalBathymetricMosaic(): Promise<ElevationGrid> {
       nLon: GLOBAL_GRID_DIMENSION,
       samples,
     });
-    globalMosaicCache = grid;
+    if (!injected) globalMosaicCache = grid;
     return grid;
-  })();
+  };
+
+  if (injected) return build();
+  globalMosaicInflight = build();
   // Whatever happens, the next caller must be able to retry: a failed
   // fetch left `globalMosaicInflight` pointing at a rejected promise
   // for the rest of the session, so a Launch after a transient
