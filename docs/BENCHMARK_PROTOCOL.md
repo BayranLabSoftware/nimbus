@@ -971,3 +971,21 @@ what is printed, rule 84 what an adoption changes. A traced curve carries the
 scan's own error, and the tolls cannot judge the change, since no row of the
 net counts the burned apart from the dead; the rules say so rather than
 correct it.
+
+### The outcome, 16 September 2026
+
+Run once after the rules were pushed (`bd255bc`), with
+`pnpm exec tsx scripts/benchmark/burn.ts`. The trace passed its three checks
+and the book's own worked example at 1 Mt. No guard failed: the release gate
+stayed PASS, and the largest move of any ring is a factor of 0.83 — Tsar
+Bomba's first-degree ring from 71.3 to 60.3 km. **Adopted.** Every explosion
+now draws its burn rings at the book's curves, at the middle pigmentation;
+Hiroshima's three go from 4.03 · 2.66 · 2.14 km to 3.65 · 2.80 · 2.25, the
+outer two shrinking and the third-degree ring growing because at 15 kt the
+book asks 7.20 cal/cm² of it where the project asked 8. An impact keeps the
+project's fluences (rule 81). The two rows of the net that are explosions
+decide nothing, as rule 82 said: Beirut's charge is chemical and draws no
+flash at all, so its band does not move, and Hiroshima's, tuned on its own
+mortality, goes from 107 004 / 113 594 / 129 200 to 107 512 / 115 748 /
+129 492 against a record of 105 000. The validation report prints the table,
+and the light and dark curves beside it.

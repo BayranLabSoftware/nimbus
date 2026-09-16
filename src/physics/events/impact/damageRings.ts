@@ -86,13 +86,20 @@ export function impactDamageRadii(
   // size.
   return {
     craterRim: m((finalCraterDiameter as number) / 2),
+    // Rule 81 of validation/burnRules.ts: the exposure that burns is the
+    // project's own 8 and 5 cal/cm² here, not Glasstone & Dolan's curves.
+    // Theirs are drawn against the yield of a nuclear fireball, whose pulse
+    // lasts seconds; an impact's is a different one, and what it takes to
+    // burn under it is a gap of its own.
     thirdDegreeBurn: thirdDegreeBurnRadius({
       yieldEnergy: kineticEnergy,
       thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+      burnExposure: 'project',
     }),
     secondDegreeBurn: secondDegreeBurnRadius({
       yieldEnergy: kineticEnergy,
       thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+      burnExposure: 'project',
     }),
     // Phase-17 calibration. Pass `kineticEnergy × IMPACT_BLAST_COUPLING`
     // (≈ 0.5 W) to the Kinney-Graham overpressure inverter, not the

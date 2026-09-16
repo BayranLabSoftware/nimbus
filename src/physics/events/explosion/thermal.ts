@@ -86,10 +86,9 @@ export interface BurnRadiusInput {
    */
   heightOfBurst?: number;
   /**
-   * Fluence threshold (J/m²). Defaults to 3.35 × 10⁵ J/m² — Glasstone &
-   * Dolan's 8 cal/cm² third-degree burn line on exposed skin. Pass 1.26 ×
-   * 10⁵ J/m² (3 cal/cm²) for second-degree, 4.19 × 10⁴ (1 cal/cm²) for
-   * first-degree, etc.
+   * Fluence threshold (J/m²), fixed by the caller. Left out, the threshold
+   * comes from `burnExposure`: the book's curve for this yield and degree,
+   * or the project's fixed 8, 5 and 2 cal/cm².
    */
   fluenceThreshold?: number;
 }
@@ -183,8 +182,10 @@ function solveAttenuatedBurnRadius(R0: number, L: number): number {
  *
  *     R = √[ f · τ · W / (4π · Q_threshold) ]
  *
- * Default threshold is the third-degree-burn line (8 cal/cm² on exposed
- * skin, a project value — see constants.ts).
+ * Default threshold is the third-degree-burn line: Glasstone & Dolan's own
+ * curve for this yield (6.2 cal/cm² at 1 kt rising to 11.8 at 10 Mt — the
+ * exposure that burns half of an average exposed population), or the
+ * project's flat 8 cal/cm² where the caller asks for `project`.
  *
  * Two atmospheric-transmission modes are supported:
  *
@@ -220,24 +221,24 @@ export function thirdDegreeBurnRadius(
 }
 
 /**
- * Slant distance at which the thermal fluence equals the second-degree
- * burn threshold (5 cal/cm² ≈ 2.09 × 10⁵ J/m²) on exposed skin —
- * full-thickness dermal blistering, painful but typically survivable
- * without grafting in a healthy adult. Same inverse-square inversion
- * as {@link thirdDegreeBurnRadius}, with the lower fluence threshold
- * pre-baked.
- *
- * Threshold: 5 cal/cm², a project value (see constants.ts).
+ * Slant distance at which the thermal fluence equals the second-degree burn
+ * threshold on exposed skin — full-thickness dermal blistering, painful but
+ * typically survivable without grafting in a healthy adult. Same
+ * inverse-square inversion as {@link thirdDegreeBurnRadius}, at the lower
+ * threshold: Glasstone & Dolan's curve for this yield (4.0 cal/cm² at 1 kt
+ * rising to 7.6 at 10 Mt) under `glasstone1977`, the project's flat
+ * 5 cal/cm² under `project`.
  */
 export function secondDegreeBurnRadius(input: BurnRadiusInput): Meters {
   return thirdDegreeBurnRadius(input, 'second');
 }
 
 /**
- * Slant distance at which the thermal fluence equals the first-degree
- * burn threshold (2 cal/cm² ≈ 8.37 × 10⁴ J/m²) on exposed skin —
- * sunburn-like erythema, no blistering. Outermost burn contour in the
- * three-tier Glasstone & Dolan thermal-injury palette.
+ * Slant distance at which the thermal fluence equals the first-degree burn
+ * threshold on exposed skin — sunburn-like erythema, no blistering.
+ * Outermost burn contour of the three: Glasstone & Dolan's curve for this
+ * yield (2.1 cal/cm² at 1 kt rising to 4.2 at 10 Mt) under `glasstone1977`,
+ * the project's flat 2 cal/cm² under `project`.
  */
 export function firstDegreeBurnRadius(input: BurnRadiusInput): Meters {
   return thirdDegreeBurnRadius(input, 'first');

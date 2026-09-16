@@ -27,9 +27,11 @@ export type BurnSkin = 'light' | 'medium' | 'dark';
  *  the book's curves. */
 export type BurnExposureSource = 'project' | 'glasstone1977';
 
-/** What a scenario that names no source draws; rules 82 and 83 of
- *  validation/burnRules.ts say what it is. */
-export const DEFAULT_BURN_EXPOSURE: BurnExposureSource = 'project';
+/** What a scenario that names no source draws: the book's curves, adopted on
+ *  16 September 2026 by rule 82 of validation/burnRules.ts. An impact names
+ *  `project` for itself (rule 81) — the curves are a nuclear fireball's
+ *  pulse. */
+export const DEFAULT_BURN_EXPOSURE: BurnExposureSource = 'glasstone1977';
 
 /** The skin the book's curves are read at where a scenario names none: the
  *  middle of its three, which is the average exposed population. */

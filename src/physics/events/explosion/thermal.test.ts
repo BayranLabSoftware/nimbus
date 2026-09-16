@@ -45,8 +45,14 @@ describe('thermalFluence (Glasstone & Dolan 1977, §7.94–7.96)', () => {
 });
 
 describe('thirdDegreeBurnRadius (8 cal/cm² project threshold)', () => {
+  // Every row here names `project`, so it reads the flat 8 cal/cm² these
+  // tests were written against: the inverse-square inversion, the partition
+  // and the attenuation are what they check, and none of them moved when the
+  // book's curves were adopted for what a scenario draws by default (rule 84
+  // of validation/burnRules.ts). The default is checked below and in
+  // validation/burnRules.test.ts.
   it('inverts thermalFluence: fluence at the burn radius equals the threshold', () => {
-    const R = thirdDegreeBurnRadius({ yieldEnergy: HIROSHIMA_YIELD });
+    const R = thirdDegreeBurnRadius({ yieldEnergy: HIROSHIMA_YIELD, burnExposure: 'project' });
     const Q = thermalFluence({ distance: R, yieldEnergy: HIROSHIMA_YIELD });
     expect(Math.abs(Q - THIRD_DEGREE_BURN_FLUENCE) / THIRD_DEGREE_BURN_FLUENCE).toBeLessThan(1e-9);
   });
@@ -54,7 +60,10 @@ describe('thirdDegreeBurnRadius (8 cal/cm² project threshold)', () => {
   it('Hiroshima 3rd-degree burn radius ≈ 2.4 km (unshielded)', () => {
     // R = √(0.35 × 6.276e13 / (4π × 3.35e5)) = √(5.22e6) ≈ 2 285 m.
     // Published Hiroshima thermal-burn radius: ~2–3 km.
-    const R = thirdDegreeBurnRadius({ yieldEnergy: HIROSHIMA_YIELD }) as number;
+    const R = thirdDegreeBurnRadius({
+      yieldEnergy: HIROSHIMA_YIELD,
+      burnExposure: 'project',
+    }) as number;
     expect(R).toBeGreaterThan(2_000);
     expect(R).toBeLessThan(3_000);
   });
@@ -62,11 +71,15 @@ describe('thirdDegreeBurnRadius (8 cal/cm² project threshold)', () => {
   it('Tsar Bomba unshielded burn radius is >100 km; drops below at τ ≈ 0.3', () => {
     // Without atmospheric attenuation: ≈132 km. Real reach is shorter
     // because τ drops to ~0.3 at ~100 km over clear air.
-    const unshielded = thirdDegreeBurnRadius({ yieldEnergy: TSAR_BOMBA_YIELD }) as number;
+    const unshielded = thirdDegreeBurnRadius({
+      yieldEnergy: TSAR_BOMBA_YIELD,
+      burnExposure: 'project',
+    }) as number;
     expect(unshielded).toBeGreaterThan(130_000);
 
     const attenuated = thirdDegreeBurnRadius({
       yieldEnergy: TSAR_BOMBA_YIELD,
+      burnExposure: 'project',
       atmosphericTransmission: 0.3,
     }) as number;
     expect(attenuated).toBeLessThan(unshielded);
@@ -74,19 +87,41 @@ describe('thirdDegreeBurnRadius (8 cal/cm² project threshold)', () => {
   });
 
   it('scales with √W at fixed threshold and partition', () => {
-    const r15 = thirdDegreeBurnRadius({ yieldEnergy: HIROSHIMA_YIELD }) as number;
-    const r60 = thirdDegreeBurnRadius({ yieldEnergy: megatonsToJoules(Mt(0.06)) }) as number;
+    const r15 = thirdDegreeBurnRadius({
+      yieldEnergy: HIROSHIMA_YIELD,
+      burnExposure: 'project',
+    }) as number;
+    const r60 = thirdDegreeBurnRadius({
+      yieldEnergy: megatonsToJoules(Mt(0.06)),
+      burnExposure: 'project',
+    }) as number;
     // Four times the yield ⇒ twice the radius.
     expect(r60 / r15).toBeCloseTo(2, 10);
   });
 
   it('uses the default thermal partition 0.35 when unspecified', () => {
-    const rDefault = thirdDegreeBurnRadius({ yieldEnergy: HIROSHIMA_YIELD }) as number;
+    const rDefault = thirdDegreeBurnRadius({
+      yieldEnergy: HIROSHIMA_YIELD,
+      burnExposure: 'project',
+    }) as number;
     const rExplicit = thirdDegreeBurnRadius({
       yieldEnergy: HIROSHIMA_YIELD,
+      burnExposure: 'project',
       thermalPartition: NUCLEAR_THERMAL_PARTITION,
     }) as number;
     expect(rDefault).toBe(rExplicit);
+  });
+
+  it('draws the book’s curve where the caller names no exposure (rule 84)', () => {
+    // At 15 kt the book asks 7.20 cal/cm² of an average exposed population
+    // for a third-degree burn, less than the project's flat 8, so the ring
+    // the simulator draws by default is the wider of the two.
+    const asks = thirdDegreeBurnRadius({ yieldEnergy: HIROSHIMA_YIELD }) as number;
+    const project = thirdDegreeBurnRadius({
+      yieldEnergy: HIROSHIMA_YIELD,
+      burnExposure: 'project',
+    }) as number;
+    expect(asks / project).toBeCloseTo(Math.sqrt(8 / 7.2), 2);
   });
 });
 
@@ -110,9 +145,10 @@ describe('thermalPartitionForHeight (Glasstone & Dolan 1977, §7.101)', () => {
 
   it('shrinks a surface burst’s burn radius by √(0.18/0.35) before attenuation', () => {
     const W = megatonsToJoules(Mt(1));
-    const air = thirdDegreeBurnRadius({ yieldEnergy: W }) as number;
+    const air = thirdDegreeBurnRadius({ yieldEnergy: W, burnExposure: 'project' }) as number;
     const ground = thirdDegreeBurnRadius({
       yieldEnergy: W,
+      burnExposure: 'project',
       thermalPartition: thermalPartitionForHeight(0, 1_000),
     }) as number;
     expect(ground / air).toBeCloseTo(Math.sqrt(0.18 / 0.35), 10);

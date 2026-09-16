@@ -79,7 +79,10 @@ describe('rule 81: the exposure a scenario reads', () => {
     expect(burnFluenceThreshold('third', 4.184e13, 'project')).toBe(THIRD_DEGREE_BURN_FLUENCE);
     expect(burnFluenceThreshold('second', 4.184e13, 'project')).toBe(SECOND_DEGREE_BURN_FLUENCE);
     expect(burnFluenceThreshold('first', 4.184e13, 'project')).toBe(FIRST_DEGREE_BURN_FLUENCE);
-    expect(DEFAULT_BURN_EXPOSURE).toBe(BURN_IN_PLACE);
+    // Rule 84, since the adoption of 16 September 2026: a scenario that names
+    // no source draws the book's curves. An impact names the project for
+    // itself, in events/impact/damageRings.ts.
+    expect(DEFAULT_BURN_EXPOSURE).toBe(BURN_CANDIDATE);
   });
 
   it('gives the book’s curve where the scenario names the book', () => {
@@ -95,7 +98,7 @@ describe('rule 81: the exposure a scenario reads', () => {
     const inPlace = simulateExplosion({ ...preset, burnExposure: BURN_IN_PLACE });
     const unnamed = simulateExplosion(preset);
     const book = simulateExplosion({ ...preset, burnExposure: BURN_CANDIDATE });
-    expect(unnamed.thermal).toEqual(inPlace.thermal);
+    expect(unnamed.thermal).toEqual(book.thermal);
     expect(book.thermal.thirdDegreeBurnRadius).not.toBe(inPlace.thermal.thirdDegreeBurnRadius);
     // At 1 Mt the book asks more than 8 cal/cm² for a third-degree burn, so
     // the ring is smaller than the project's.

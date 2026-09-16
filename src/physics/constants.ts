@@ -105,8 +105,14 @@ export type AsteroidTaxonomyClass = keyof typeof ASTEROID_TAXONOMY;
 
 // Burn fluence thresholds on exposed skin (J/m^2): project values in
 // cal/cm^2. Glasstone & Dolan (1977) give no fixed thresholds — the
-// exposure that burns grows with yield (Fig. 12.65 gives burn
-// probabilities by yield and exposure).
+// exposure that burns grows with yield (Fig. 12.64 draws it, for three
+// degrees and three skin pigmentations, from 1 kt to 10 Mt).
+//
+// Since 16 September 2026 an explosion's burn rings are drawn at those
+// curves instead (effects/burnExposure.ts, rules 80 to 84 of
+// validation/burnRules.ts). These three are what an *impact* still draws
+// its rings at: the curves are the pulse of a nuclear fireball, and what
+// it takes to burn under an impact's is a gap of its own.
 export const THIRD_DEGREE_BURN_FLUENCE = 3.35e5; // 8 cal/cm^2
 export const SECOND_DEGREE_BURN_FLUENCE = 2.09e5; // 5 cal/cm^2 — full-thickness blistering
 export const FIRST_DEGREE_BURN_FLUENCE = 8.37e4; // 2 cal/cm^2 — sunburn-like erythema

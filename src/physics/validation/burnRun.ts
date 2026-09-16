@@ -59,9 +59,10 @@ export interface BurnRingRow {
 
 const ringsOf = (
   preset: ExplosionScenarioInput,
-  source: BurnExposureSource
+  source: BurnExposureSource,
+  skin: BurnSkin
 ): Record<'first' | 'second' | 'third', number> => {
-  const result = simulateExplosion({ ...preset, burnExposure: source });
+  const result = simulateExplosion({ ...preset, burnExposure: source, burnSkin: skin });
   return {
     first: (result.thermal.firstDegreeBurnRadius as number) / 1_000,
     second: (result.thermal.secondDegreeBurnRadius as number) / 1_000,
@@ -83,8 +84,8 @@ export function burnRingRows(skin: BurnSkin = 'medium'): BurnRingRow[] {
         second: burnExposureCalPerCm2('second', yieldKt, skin),
         third: burnExposureCalPerCm2('third', yieldKt, skin),
       },
-      inPlaceKm: ringsOf(input, BURN_IN_PLACE),
-      candidateKm: ringsOf(input, BURN_CANDIDATE),
+      inPlaceKm: ringsOf(input, BURN_IN_PLACE, skin),
+      candidateKm: ringsOf(input, BURN_CANDIDATE, skin),
     };
   });
 }

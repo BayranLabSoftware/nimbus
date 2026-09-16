@@ -133,10 +133,10 @@
         "recorded": 105000,
         "recordedLow": 70000,
         "recordedHigh": 140000,
-        "model": 113594,
-        "bandLow": 107004,
-        "bandHigh": 129200,
-        "ratio": 1.082,
+        "model": 115748,
+        "bandLow": 107512,
+        "bandHigh": 129492,
+        "ratio": 1.102,
         "contains": true,
         "gated": false,
         "cause": "populationChanged",
@@ -689,8 +689,8 @@
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 2.67,
-          "scatterLn": 0.9,
+          "bias": 2.69,
+          "scatterLn": 0.89,
           "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
@@ -2969,6 +2969,652 @@
         ]
       }
     },
+    "burn": {
+      "trace": {
+        "nine": true,
+        "risesWithYield": true,
+        "neverCrosses": true,
+        "matchesTheExample": true
+      },
+      "yieldsKt": [
+        1,
+        3,
+        10,
+        30,
+        100,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "rings": [
+        {
+          "name": "Hiroshima 1945",
+          "yieldKt": 15,
+          "exposureCalPerCm2": {
+            "first": 2.49,
+            "second": 4.49,
+            "third": 7.2
+          },
+          "inPlaceKm": {
+            "first": 4.03,
+            "second": 2.662,
+            "third": 2.137
+          },
+          "candidateKm": {
+            "first": 3.653,
+            "second": 2.795,
+            "third": 2.246
+          }
+        },
+        {
+          "name": "Nagasaki 1945",
+          "yieldKt": 21,
+          "exposureCalPerCm2": {
+            "first": 2.54,
+            "second": 4.59,
+            "third": 7.39
+          },
+          "inPlaceKm": {
+            "first": 4.664,
+            "second": 3.101,
+            "third": 2.497
+          },
+          "candidateKm": {
+            "first": 4.197,
+            "second": 3.222,
+            "third": 2.591
+          }
+        },
+        {
+          "name": "Castle Bravo 1954",
+          "yieldKt": 15000,
+          "exposureCalPerCm2": {
+            "first": 4.16,
+            "second": 7.62,
+            "third": 11.75
+          },
+          "inPlaceKm": {
+            "first": 32.484,
+            "second": 25.955,
+            "third": 22.88
+          },
+          "candidateKm": {
+            "first": 27.202,
+            "second": 23.193,
+            "third": 20.536
+          }
+        },
+        {
+          "name": "Tsar Bomba 1961",
+          "yieldKt": 50000,
+          "exposureCalPerCm2": {
+            "first": 4.16,
+            "second": 7.62,
+            "third": 11.75
+          },
+          "inPlaceKm": {
+            "first": 71.349,
+            "second": 57.657,
+            "third": 51.152
+          },
+          "candidateKm": {
+            "first": 60.285,
+            "second": 51.815,
+            "third": 46.161
+          }
+        },
+        {
+          "name": "Starfish Prime 1962",
+          "yieldKt": 1400,
+          "exposureCalPerCm2": {
+            "first": 3.42,
+            "second": 6.49,
+            "third": 10.29
+          },
+          "inPlaceKm": {
+            "first": 0,
+            "second": 0,
+            "third": 0
+          },
+          "candidateKm": {
+            "first": 0,
+            "second": 0,
+            "third": 0
+          }
+        },
+        {
+          "name": "1 Mt reference",
+          "yieldKt": 1000,
+          "exposureCalPerCm2": {
+            "first": 3.32,
+            "second": 6.3,
+            "third": 10.04
+          },
+          "inPlaceKm": {
+            "first": 15.425,
+            "second": 11.308,
+            "third": 9.52
+          },
+          "candidateKm": {
+            "first": 13.039,
+            "second": 10.4,
+            "third": 8.741
+          }
+        },
+        {
+          "name": "Beirut port 2020",
+          "yieldKt": 0.5,
+          "exposureCalPerCm2": {
+            "first": 2.08,
+            "second": 4.04,
+            "third": 6.21
+          },
+          "inPlaceKm": {
+            "first": 0,
+            "second": 0,
+            "third": 0
+          },
+          "candidateKm": {
+            "first": 0,
+            "second": 0,
+            "third": 0
+          }
+        },
+        {
+          "name": "Ivy Mike 1952",
+          "yieldKt": 10400,
+          "exposureCalPerCm2": {
+            "first": 4.16,
+            "second": 7.62,
+            "third": 11.75
+          },
+          "inPlaceKm": {
+            "first": 29.785,
+            "second": 23.55,
+            "third": 20.639
+          },
+          "candidateKm": {
+            "first": 24.736,
+            "second": 20.935,
+            "third": 18.434
+          }
+        },
+        {
+          "name": "Halifax 1917",
+          "yieldKt": 2.9,
+          "exposureCalPerCm2": {
+            "first": 2.24,
+            "second": 4.14,
+            "third": 6.47
+          },
+          "inPlaceKm": {
+            "first": 0,
+            "second": 0,
+            "third": 0
+          },
+          "candidateKm": {
+            "first": 0,
+            "second": 0,
+            "third": 0
+          }
+        },
+        {
+          "name": "Texas City 1947",
+          "yieldKt": 2.7,
+          "exposureCalPerCm2": {
+            "first": 2.22,
+            "second": 4.13,
+            "third": 6.45
+          },
+          "inPlaceKm": {
+            "first": 0,
+            "second": 0,
+            "third": 0
+          },
+          "candidateKm": {
+            "first": 0,
+            "second": 0,
+            "third": 0
+          }
+        }
+      ],
+      "beside": [
+        {
+          "skin": "light",
+          "rows": [
+            {
+              "name": "Hiroshima 1945",
+              "yieldKt": 15,
+              "exposureCalPerCm2": {
+                "first": 2.72,
+                "second": 4.96,
+                "third": 7.91
+              },
+              "inPlaceKm": {
+                "first": 4.03,
+                "second": 2.662,
+                "third": 2.137
+              },
+              "candidateKm": {
+                "first": 3.515,
+                "second": 2.671,
+                "third": 2.15
+              }
+            },
+            {
+              "name": "Nagasaki 1945",
+              "yieldKt": 21,
+              "exposureCalPerCm2": {
+                "first": 2.77,
+                "second": 5.06,
+                "third": 8.13
+              },
+              "inPlaceKm": {
+                "first": 4.664,
+                "second": 3.101,
+                "third": 2.497
+              },
+              "candidateKm": {
+                "first": 4.041,
+                "second": 3.083,
+                "third": 2.48
+              }
+            },
+            {
+              "name": "Castle Bravo 1954",
+              "yieldKt": 15000,
+              "exposureCalPerCm2": {
+                "first": 4.46,
+                "second": 8.19,
+                "third": 12.61
+              },
+              "inPlaceKm": {
+                "first": 32.484,
+                "second": 25.955,
+                "third": 22.88
+              },
+              "candidateKm": {
+                "first": 26.724,
+                "second": 22.738,
+                "third": 20.121
+              }
+            },
+            {
+              "name": "Tsar Bomba 1961",
+              "yieldKt": 50000,
+              "exposureCalPerCm2": {
+                "first": 4.46,
+                "second": 8.19,
+                "third": 12.61
+              },
+              "inPlaceKm": {
+                "first": 71.349,
+                "second": 57.657,
+                "third": 51.152
+              },
+              "candidateKm": {
+                "first": 59.278,
+                "second": 50.849,
+                "third": 45.272
+              }
+            },
+            {
+              "name": "Starfish Prime 1962",
+              "yieldKt": 1400,
+              "exposureCalPerCm2": {
+                "first": 3.68,
+                "second": 7.02,
+                "third": 11.13
+              },
+              "inPlaceKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              },
+              "candidateKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              }
+            },
+            {
+              "name": "1 Mt reference",
+              "yieldKt": 1000,
+              "exposureCalPerCm2": {
+                "first": 3.57,
+                "second": 6.82,
+                "third": 10.87
+              },
+              "inPlaceKm": {
+                "first": 15.425,
+                "second": 11.308,
+                "third": 9.52
+              },
+              "candidateKm": {
+                "first": 12.718,
+                "second": 10.103,
+                "third": 8.48
+              }
+            },
+            {
+              "name": "Beirut port 2020",
+              "yieldKt": 0.5,
+              "exposureCalPerCm2": {
+                "first": 2.28,
+                "second": 4.43,
+                "third": 6.82
+              },
+              "inPlaceKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              },
+              "candidateKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              }
+            },
+            {
+              "name": "Ivy Mike 1952",
+              "yieldKt": 10400,
+              "exposureCalPerCm2": {
+                "first": 4.46,
+                "second": 8.19,
+                "third": 12.61
+              },
+              "inPlaceKm": {
+                "first": 29.785,
+                "second": 23.55,
+                "third": 20.639
+              },
+              "candidateKm": {
+                "first": 24.281,
+                "second": 20.505,
+                "third": 18.044
+              }
+            },
+            {
+              "name": "Halifax 1917",
+              "yieldKt": 2.9,
+              "exposureCalPerCm2": {
+                "first": 2.44,
+                "second": 4.55,
+                "third": 7.1
+              },
+              "inPlaceKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              },
+              "candidateKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              }
+            },
+            {
+              "name": "Texas City 1947",
+              "yieldKt": 2.7,
+              "exposureCalPerCm2": {
+                "first": 2.43,
+                "second": 4.54,
+                "third": 7.08
+              },
+              "inPlaceKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              },
+              "candidateKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              }
+            }
+          ]
+        },
+        {
+          "skin": "dark",
+          "rows": [
+            {
+              "name": "Hiroshima 1945",
+              "yieldKt": 15,
+              "exposureCalPerCm2": {
+                "first": 2.2,
+                "second": 4.02,
+                "third": 6.46
+              },
+              "inPlaceKm": {
+                "first": 4.03,
+                "second": 2.662,
+                "third": 2.137
+              },
+              "candidateKm": {
+                "first": 3.862,
+                "second": 2.942,
+                "third": 2.362
+              }
+            },
+            {
+              "name": "Nagasaki 1945",
+              "yieldKt": 21,
+              "exposureCalPerCm2": {
+                "first": 2.24,
+                "second": 4.11,
+                "third": 6.61
+              },
+              "inPlaceKm": {
+                "first": 4.664,
+                "second": 3.101,
+                "third": 2.497
+              },
+              "candidateKm": {
+                "first": 4.435,
+                "second": 3.39,
+                "third": 2.729
+              }
+            },
+            {
+              "name": "Castle Bravo 1954",
+              "yieldKt": 15000,
+              "exposureCalPerCm2": {
+                "first": 3.69,
+                "second": 6.57,
+                "third": 10.36
+              },
+              "inPlaceKm": {
+                "first": 32.484,
+                "second": 25.955,
+                "third": 22.88
+              },
+              "candidateKm": {
+                "first": 28.036,
+                "second": 24.144,
+                "third": 21.29
+              }
+            },
+            {
+              "name": "Tsar Bomba 1961",
+              "yieldKt": 50000,
+              "exposureCalPerCm2": {
+                "first": 3.69,
+                "second": 6.57,
+                "third": 10.36
+              },
+              "inPlaceKm": {
+                "first": 71.349,
+                "second": 57.657,
+                "third": 51.152
+              },
+              "candidateKm": {
+                "first": 62.037,
+                "second": 53.83,
+                "third": 47.769
+              }
+            },
+            {
+              "name": "Starfish Prime 1962",
+              "yieldKt": 1400,
+              "exposureCalPerCm2": {
+                "first": 3,
+                "second": 5.73,
+                "third": 9.03
+              },
+              "inPlaceKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              },
+              "candidateKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              }
+            },
+            {
+              "name": "1 Mt reference",
+              "yieldKt": 1000,
+              "exposureCalPerCm2": {
+                "first": 2.9,
+                "second": 5.56,
+                "third": 8.8
+              },
+              "inPlaceKm": {
+                "first": 15.425,
+                "second": 11.308,
+                "third": 9.52
+              },
+              "candidateKm": {
+                "first": 13.65,
+                "second": 10.882,
+                "third": 9.189
+              }
+            },
+            {
+              "name": "Beirut port 2020",
+              "yieldKt": 0.5,
+              "exposureCalPerCm2": {
+                "first": 1.86,
+                "second": 3.6,
+                "third": 5.62
+              },
+              "inPlaceKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              },
+              "candidateKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              }
+            },
+            {
+              "name": "Ivy Mike 1952",
+              "yieldKt": 10400,
+              "exposureCalPerCm2": {
+                "first": 3.69,
+                "second": 6.57,
+                "third": 10.36
+              },
+              "inPlaceKm": {
+                "first": 29.785,
+                "second": 23.55,
+                "third": 20.639
+              },
+              "candidateKm": {
+                "first": 25.53,
+                "second": 21.833,
+                "third": 19.141
+              }
+            },
+            {
+              "name": "Halifax 1917",
+              "yieldKt": 2.9,
+              "exposureCalPerCm2": {
+                "first": 1.99,
+                "second": 3.7,
+                "third": 5.87
+              },
+              "inPlaceKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              },
+              "candidateKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              }
+            },
+            {
+              "name": "Texas City 1947",
+              "yieldKt": 2.7,
+              "exposureCalPerCm2": {
+                "first": 1.98,
+                "second": 3.69,
+                "third": 5.86
+              },
+              "inPlaceKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              },
+              "candidateKm": {
+                "first": 0,
+                "second": 0,
+                "third": 0
+              }
+            }
+          ]
+        }
+      ],
+      "tolls": [
+        {
+          "name": "Beirut 2020",
+          "record": 218,
+          "gated": false,
+          "inPlace": [
+            1296,
+            1432,
+            1586
+          ],
+          "candidate": [
+            1296,
+            1432,
+            1586
+          ],
+          "insideInPlace": false,
+          "insideCandidate": false
+        },
+        {
+          "name": "Hiroshima 1945",
+          "record": 105000,
+          "gated": false,
+          "inPlace": [
+            107004,
+            113594,
+            129200
+          ],
+          "candidate": [
+            107512,
+            115748,
+            129492
+          ],
+          "insideInPlace": true,
+          "insideCandidate": true
+        }
+      ],
+      "worstRingFactor": 0.8305,
+      "decision": {
+        "adopted": true,
+        "trace": true,
+        "gate": true,
+        "rings": true
+      }
+    },
     "interfaceRules": {
       "readOn": "2026-09-15",
       "events": {
@@ -4271,10 +4917,10 @@
       },
       {
         "event": "Hiroshima 1945",
-        "measuredLow": 107004,
-        "measuredHigh": 129200,
-        "interpolatedLow": 102027,
-        "interpolatedHigh": 127121,
+        "measuredLow": 107512,
+        "measuredHigh": 129492,
+        "interpolatedLow": 105995,
+        "interpolatedHigh": 130680,
         "comparable": true,
         "lowComparable": true
       },

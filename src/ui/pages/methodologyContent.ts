@@ -862,9 +862,9 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         id: 'thermal',
         name: 'Thermal fluence / burn radii',
         formula:
-          'Q = f · τ(R) · W / (4π · R²) ,  f = 0.18 → 0.35 over 0 ≤ HOB ≤ 200·W^0.4 ft ,  τ = e^(−R/L) ,  L = 14 km · (1 + HOB / 4 km) ;  3rd-degree burn at 8 cal/cm²',
+          'Q = f · τ(R) · W / (4π · R²) ,  f = 0.18 → 0.35 over 0 ≤ HOB ≤ 200·W^0.4 ft ,  τ = e^(−R/L) ,  L = 14 km · (1 + HOB / 4 km) ;  3rd-degree burn at 6.2 cal/cm² (1 kt) → 11.8 (10 Mt)',
         description:
-          'The thermal energy spread over a sphere, as Glasstone & Dolan write it (§7.94–7.96). The partition f is 0.35 for a nuclear air burst (Table 7.88) and 0.18 for a contact surface burst (§7.101); the book interpolates between the two for bursts in between (Table 7.101), and Nimbus does so linearly in height up to 200·W^0.4 ft, the height of the book’s air-burst curves (§7.42). An impact takes a luminous efficiency of 3 × 10⁻³ (Collins et al. 2005). A chemical charge radiates comparatively little (§1.23) and has no burn radii. The transmittance τ and its length L are a project calibration. Burn thresholds are fixed at 2, 5 and 8 cal/cm², where Glasstone & Dolan make the exposure for a burn grow with yield.',
+          'The thermal energy spread over a sphere, as Glasstone & Dolan write it (§7.94–7.96). The partition f is 0.35 for a nuclear air burst (Table 7.88) and 0.18 for a contact surface burst (§7.101); the book interpolates between the two for bursts in between (Table 7.101), and Nimbus does so linearly in height up to 200·W^0.4 ft, the height of the book’s air-burst curves (§7.42). The exposure that burns is the book’s own, read off its Figure 12.64 — the exposure at which half of an average exposed population takes a burn of that degree, growing with the yield because a larger explosion spreads its pulse over a longer time, at the middle of the figure’s three skin pigmentations. An impact takes a luminous efficiency of 3 × 10⁻³ (Collins et al. 2005) and keeps the project’s fixed 8 and 5 cal/cm²: the figure’s curves are a nuclear fireball’s pulse. A chemical charge radiates comparatively little (§1.23) and has no burn radii. The transmittance τ and its length L are a project calibration.',
         citation: glasstoneDolan1977,
       },
       {

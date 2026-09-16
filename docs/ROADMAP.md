@@ -527,11 +527,16 @@ the candidates for re-tuning:
   bolides"). At the panel's stony class, ten times the strength, 8.3 km. The
   gap is declared; nothing is tuned on a set now read, and any choice among
   strengths belongs to a set nobody has read yet.
-- **Explosions.** Burn thresholds are fixed where the book makes them grow
-  with yield; the initial-radiation fit has not been checked against the
-  book's dose–range curves; the thermal partition between the ground and
-  the air is interpolated linearly, not read from the book's Table 7.101;
-  the conventional mortality bands were composed with Beirut in view.
+- **Explosions.** The initial-radiation fit has not been checked against
+  the book's dose–range curves; the thermal partition between the ground
+  and the air is interpolated linearly, not read from the book's Table
+  7.101; the conventional mortality bands were composed with Beirut in
+  view. (Closed on 16 September 2026: the burn thresholds were fixed at 8,
+  5 and 2 cal/cm² where the book makes the exposure grow with the yield.
+  Its Figure 12.64 was traced from the public scan and adopted — rules 80
+  to 84, docs/SCIENCE.md, "The exposure that burns, from the book's own
+  figure". An impact still draws the project's fluences, which is a gap of
+  its own.)
 - **Volcanoes.** The PDC, ashfall, lahar and climate relations are
   project calibrations whose anchors were not rechecked.
 - **Unread.** A published table of tsunami arrival times; the tests that

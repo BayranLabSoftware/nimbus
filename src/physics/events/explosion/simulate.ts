@@ -20,7 +20,7 @@ import { peakOverpressure } from './overpressure.js';
 import { peakWindAtRange } from './peakWind.js';
 import { initialRadiationRadii, type RadiationDoseResult } from './radiation.js';
 import { computeSeaCoupling, type SeaCoupling } from '../../effects/seaCoupling.js';
-import type { BurnExposureSource } from '../../effects/burnExposure.js';
+import type { BurnExposureSource, BurnSkin } from '../../effects/burnExposure.js';
 import {
   firstDegreeBurnRadius,
   secondDegreeBurnRadius,
@@ -67,6 +67,10 @@ export interface ExplosionScenarioInput {
    *  Glasstone & Dolan's curves, where the exposure that burns grows with
    *  the yield. Omitted, {@link DEFAULT_BURN_EXPOSURE}. */
   burnExposure?: BurnExposureSource;
+  /** Which of the book's three skin pigmentations its curves are read at.
+   *  Omitted, the middle one — the average exposed population. Rule 83 of
+   *  validation/burnRules.ts prints the other two beside it. */
+  burnSkin?: BurnSkin;
   /** Distance from the burst point to the nearest usable sea (m).
    *  Zero or omitted means the burst is over the water. A surface
    *  burst beside the sea is not a burst in it, and this is what
@@ -369,6 +373,7 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
     heightOfBurst: hobMeters,
     thermalPartition,
     ...(input.burnExposure === undefined ? {} : { burnExposure: input.burnExposure }),
+    ...(input.burnSkin === undefined ? {} : { burnSkin: input.burnSkin }),
   };
   const burn3 = flash(thirdDegreeBurnRadius(burnInput));
   const burn2 = flash(secondDegreeBurnRadius(burnInput));

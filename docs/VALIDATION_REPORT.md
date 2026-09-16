@@ -44,7 +44,7 @@ its own inputs.
 |  | Mw < 6.5 | 3 | 2 | 0.040× | 2.00 | 2 of 3 | 0 / 1 / 0 | 10^3.3 | 5 | 4 | 0.029× | 1.96 | 3 of 5 | 0 / 1 / 0 | 10^3.3 |
 |  | Mw 6.5–7.5 | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^4.3 | 2 | 2 | 0.61× | 0.18 | 2 of 2 | 0 / 0 / 0 | 10^3.3 |
 |  | Mw ≥ 7.5 | 4 | 2 | 0.51× | 0.16 | 4 of 4 | 1 / 0 / 1 | 10^2.7 | 5 | 3 | 0.17× | 1.56 | 5 of 5 | 1 / 0 / 1 | 10^3.4 |
-| **explosion** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 2.67× | 0.90 | 1 of 2 | 0 / 0 / 0 | 10^0.1 |
+| **explosion** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 2.69× | 0.89 | 1 of 2 | 0 / 0 / 0 | 10^0.1 |
 |  | < 1 kt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^0.1 |
 |  | 1 kt – 1 Mt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^0.1 |
 | **volcano** | all sizes | 3 | 3 | 0.21× | 0.62 | 1 of 3 | 0 / 0 / 0 | 10^1.0 | 4 | 4 | 0.46× | 1.44 | 1 of 4 | 0 / 0 / 0 | 10^0.9 |
@@ -641,7 +641,7 @@ model was set on the event, which is under "Which checks are validation".
 | Beirut 2020 | 218 | 1,432 | 1,296 – 1,586 | 10^0.1 | 6.57× | **misses** | populationRaster | declared | tuned on it |
 | Mount St Helens 1980 | 57 | 265 | 120 – 692 | 10^0.8 | 4.65× | **misses** | occupancy | declared | tuned on it |
 | Pinatubo 1991 | 847 | 82 | 32 – 312 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared | held out |
-| Hiroshima 1945 | 105,000 (70,000–140,000) | 113,594 | 107,004 – 129,200 | 10^0.1 | 1.08× | contains | populationChanged | declared | tuned on it |
+| Hiroshima 1945 | 105,000 (70,000–140,000) | 115,748 | 107,512 – 129,492 | 10^0.1 | 1.10× | contains | populationChanged | declared | tuned on it |
 | Tōhoku 2011 | 18,500 | 7,997 | 8 – 1,204,212 | 10^5.2 | 0.43× | contains | footprint | declared | held out |
 | Sumatra–Andaman 2004 | 227,898 | 4,263 | 115 – 277,275 | 10^3.4 | 0.02× | contains | drownedOffline | declared | same source |
 | Christchurch 2011 | 185 | 1 | 0 – 26 | 10^1.4 | 0.01× | **misses** | buildingStock | declared | held out |
@@ -710,7 +710,7 @@ rather than about the interpolation.
 | Beirut 2020 | 1,296 – 1,586 | 1,296 – 1,586 | 1.00× / 1.00× | yes |
 | Mount St Helens 1980 | 120 – 692 | 164 – 708 | 1.37× / 1.02× | yes |
 | Pinatubo 1991 | 32 – 312 | 32 – 312 | 1.00× / 1.00× | high end only |
-| Hiroshima 1945 | 107,004 – 129,200 | 102,027 – 127,121 | 1.05× / 1.02× | yes |
+| Hiroshima 1945 | 107,512 – 129,492 | 105,995 – 130,680 | 1.01× / 1.01× | yes |
 | Tōhoku 2011 | 15 – 516,763 | 23 – 360,451 | 1.53× / 1.43× | high end only |
 | Sumatra–Andaman 2004 | 166 – 48,898 | 167 – 47,886 | 1.01× / 1.02× | yes |
 | Christchurch 2011 | 0 – 11 | 0 – 9 | 1.00× / 1.22× | too few dead |
@@ -1319,6 +1319,32 @@ By energy and by speed, for the body a scenario with no class carries:
 | below 17 km/s | 168 of 168 | 12.2 km | +10.6 km | 30 of 168 |
 | from 17 km/s | 188 of 189 | 14.9 km | +14.7 km | 19 of 188 |
 
+### The exposure that burns, from the book's own figure
+
+Nimbus drew its burn rings at 8, 5 and 2 cal/cm², three numbers of the project's own: Glasstone & Dolan give no fixed threshold, and their Figure 12.64 (page 564) draws the exposure that burns rising with the yield — a larger explosion spreads the same heat over a longer pulse and the skin sheds more of it as it arrives. Rules 80 to 84 (`validation/burnRules.ts`), committed before the curves were run on any row of the net, traced the figure's nine curves from the public scan by machine (`scripts/benchmark/burn-curves.py`, which refuses to write unless it finds nine of them, each rising and none crossing) and read them at 9 yields from 1 kt to 10 Mt. The exposure below is the middle of the figure's three skin pigmentations, which is the average exposed population; the rings are the simulator's own, everything else in the thermal chain unchanged.
+
+| Explosion | Yield | Book's exposure, 1st / 2nd / 3rd (cal/cm²) | Rings at 2·5·8 cal/cm² (km) | Rings at the book's (km) |
+|-----------|------:|------:|------:|------:|
+| Hiroshima 1945 | 15 kt | 2.49 / 4.49 / 7.20 | 4.03 · 2.66 · 2.14 | 3.65 · 2.80 · 2.25 |
+| Nagasaki 1945 | 21 kt | 2.54 / 4.59 / 7.39 | 4.66 · 3.10 · 2.50 | 4.20 · 3.22 · 2.59 |
+| Castle Bravo 1954 | 15 Mt | 4.16 / 7.62 / 11.75 | 32.48 · 25.96 · 22.88 | 27.20 · 23.19 · 20.54 |
+| Tsar Bomba 1961 | 50 Mt | 4.16 / 7.62 / 11.75 | 71.35 · 57.66 · 51.15 | 60.28 · 51.82 · 46.16 |
+| 1 Mt reference | 1 Mt | 3.32 / 6.30 / 10.04 | 15.42 · 11.31 · 9.52 | 13.04 · 10.40 · 8.74 |
+| Ivy Mike 1952 | 10.4 Mt | 4.16 / 7.62 / 11.75 | 29.79 · 23.55 · 20.64 | 24.74 · 20.93 · 18.43 |
+
+The most any ring moves is a factor of 0.83; a misread figure could not stay inside two, which is the guard rule 82 set. The curves are adopted: they are the book the project cites for the number, where the three fluences were the project’s own. The two rows of the calibration net that are explosions read Beirut 2020 1432 against 218, Hiroshima 1945 115748 against 105000 — neither can judge the change (Hiroshima's toll is tuned on its own mortality, Beirut's charge is chemical and draws no flash), and no row of the net counts the burned apart from the dead.
+
+Beside, deciding nothing — the figure's light and dark curves, which bracket the middle one, at the third-degree ring:
+
+| Explosion | Light skin (km) | Middle (km) | Dark skin (km) |
+|-----------|------:|------:|------:|
+| Hiroshima 1945 | 2.15 | 2.25 | 2.36 |
+| Nagasaki 1945 | 2.48 | 2.59 | 2.73 |
+| Castle Bravo 1954 | 20.12 | 20.54 | 21.29 |
+| Tsar Bomba 1961 | 45.27 | 46.16 | 47.77 |
+| 1 Mt reference | 8.48 | 8.74 | 9.19 |
+| Ivy Mike 1952 | 18.04 | 18.43 | 19.14 |
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the
@@ -1625,7 +1651,7 @@ shows.
 - **Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).
 - **Two numbers are not traced to a source read here.** The arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005. A third, the 30 cm at DART 21413 that the Tōhoku wave row was tuned on, was read from the buoy's own file on 15 September 2026: it crests at 0.81 m, and the row is declared (B-034).
 - **An airburst's blast is a point that does not move, drawn as round rings.** Since 15 September 2026 it is the Earth Impact Effects Program's own air blast (Collins et al. 2005 and 2017; B-032), reproduced within 1 % on the airburst rows above, which were held out when it was adopted. What that model is not was checked against rules written first (`docs/BENCHMARK_PROTOCOL.md`): against the shock-physics runs of Collins et al. 2017, Table 2, its figures are 0.92× theirs, the median off by a factor of 1.21; at Tunguska its 20 kPa ring reaches 11.5 km, against the 26.5 km radius of the ~2 200 km² of flattened forest (0.43×), beyond a factor of two. At Chelyabinsk the check first flagged a 1 kPa ring of 17.6 km against the 56 km radius of the ~10 000 km² over which windows broke; the preset then took the body Popova et al. 2013 measured, as its source says and not as the check asked (B-033), and on a re-run that is not a validation the ring reaches 30.2 km (0.54×), 68.0 km for a moving source. In the city, 45 km out, the law gives 0.74 kPa where the broken windows put about 3.2 kPa (Brown et al. 2013). A shallow, high burst spreads its energy along its path and damages an ellipse, farthest across the path; ReVelle's weak-shock line source, the only analytic one, is "largely inapplicable" beneath Chelyabinsk's trail (Gi, Brown & Aftosmis 2018), and the elongated footprint has been reproduced only by three-dimensional hydrocodes (Popova et al. 2013; Aftosmis et al. 2016). Tunguska's blast row checks the energy, not the blast (`effects/airburstBlast.ts`).
-- **Parts of the explosion model are the project's, not the book's.** Burn thresholds are fixed fluences of 8, 5 and 2 cal/cm² where Glasstone & Dolan make them grow with yield; the initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).
+- **Parts of the explosion model are the project's, not the book's.** The initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).
 - **No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.
 - **A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).
 - **The volcanic relations are the project's calibrations, and a current is a disc.** The reach of pyroclastic currents (L = 10 · V^⅓, a project mobility), the ashfall, the lahars and the climate response were set on anchors that the source review of 14 September did not recheck (docs/ROADMAP.md, move 0b). A current is drawn as a disc about the vent: held out, Fuego 2018's reaches 3.7 km where the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because a reach three times short and a footprint far too wide cancel; Unzen 1991's reaches 0.84 km against a flow of 3.2 km.

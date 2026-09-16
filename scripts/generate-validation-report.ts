@@ -215,6 +215,8 @@ import {
 } from '../src/physics/validation/fireballRules.js';
 import { runFireball, type FireballRunResult } from '../src/physics/validation/fireballRun.js';
 import { FIREBALL_READ_ON } from '../src/physics/validation/fireballSetData.js';
+import { runBurn, type BurnRunResult } from '../src/physics/validation/burnRun.js';
+import { BURN_CURVE_YIELDS_KT } from '../src/physics/effects/burnExposureData.js';
 import { mulberry32 } from '../src/physics/montecarlo/sampling.js';
 import type { ProspectiveScore } from '../src/physics/validation/prospectiveRules.js';
 import { POINT_SOURCE_READ_ON } from '../src/physics/validation/pointSourceSetData.js';
@@ -2172,6 +2174,77 @@ function fireballGap(run: FireballRunResult): string[] {
   ];
 }
 
+/** Rules 80 to 84: the exposure that burns, read off the book's own figure. */
+function burnSection(run: BurnRunResult): string {
+  const km = (x: number): string => (x > 0 ? x.toFixed(2) : '—');
+  const cal = (x: number): string => x.toFixed(2);
+  const drawn = run.rings.filter((row) => row.inPlaceKm.third > 0);
+  const kt = (x: number): string =>
+    x >= 1_000 ? `${(x / 1_000).toString()} Mt` : `${x.toString()} kt`;
+  const row = (r: (typeof run.rings)[number]): string =>
+    `| ${r.name} | ${kt(r.yieldKt)} | ${cal(r.exposure.first)} / ${cal(r.exposure.second)} / ${cal(r.exposure.third)} | ${km(r.inPlaceKm.first)} · ${km(r.inPlaceKm.second)} · ${km(r.inPlaceKm.third)} | ${km(r.candidateKm.first)} · ${km(r.candidateKm.second)} · ${km(r.candidateKm.third)} |`;
+  const light = new Map(run.beside.find((b) => b.skin === 'light')?.rows.map((r) => [r.name, r]));
+  const dark = new Map(run.beside.find((b) => b.skin === 'dark')?.rows.map((r) => [r.name, r]));
+  return [
+    `Nimbus drew its burn rings at 8, 5 and 2 cal/cm², three numbers of the project's own: Glasstone & Dolan give no fixed threshold, and their Figure 12.64 (page 564) draws the exposure that burns rising with the yield — a larger explosion spreads the same heat over a longer pulse and the skin sheds more of it as it arrives. Rules 80 to 84 (\`validation/burnRules.ts\`), committed before the curves were run on any row of the net, traced the figure's nine curves from the public scan by machine (\`scripts/benchmark/burn-curves.py\`, which refuses to write unless it finds nine of them, each rising and none crossing) and read them at ${BURN_CURVE_YIELDS_KT.length.toString()} yields from ${kt(BURN_CURVE_YIELDS_KT[0] ?? 1)} to ${kt(BURN_CURVE_YIELDS_KT[BURN_CURVE_YIELDS_KT.length - 1] ?? 10_000)}. The exposure below is the middle of the figure's three skin pigmentations, which is the average exposed population; the rings are the simulator's own, everything else in the thermal chain unchanged.`,
+    '',
+    "| Explosion | Yield | Book's exposure, 1st / 2nd / 3rd (cal/cm²) | Rings at 2·5·8 cal/cm² (km) | Rings at the book's (km) |",
+    '|-----------|------:|------:|------:|------:|',
+    ...drawn.map(row),
+    '',
+    `The most any ring moves is a factor of ${run.worstRingFactor.toFixed(2)}; a misread figure could not stay inside two, which is the guard rule 82 set. ${run.decision.adopted ? 'The curves are adopted: they are the book the project cites for the number, where the three fluences were the project’s own.' : 'The curves are not adopted.'} The two rows of the calibration net that are explosions read ${run.tolls.map((t) => `${t.name} ${t.candidate[1].toString()} against ${t.record.toString()}`).join(', ')} — neither can judge the change (Hiroshima's toll is tuned on its own mortality, Beirut's charge is chemical and draws no flash), and no row of the net counts the burned apart from the dead.`,
+    '',
+    "Beside, deciding nothing — the figure's light and dark curves, which bracket the middle one, at the third-degree ring:",
+    '',
+    '| Explosion | Light skin (km) | Middle (km) | Dark skin (km) |',
+    '|-----------|------:|------:|------:|',
+    ...drawn.map(
+      (r) =>
+        `| ${r.name} | ${km(light.get(r.name)?.candidateKm.third ?? 0)} | ${km(r.candidateKm.third)} | ${km(dark.get(r.name)?.candidateKm.third ?? 0)} |`
+    ),
+  ].join('\n');
+}
+
+/** Rules 80 to 84 in the report's JSON. */
+function burnJson(run: BurnRunResult) {
+  const ring = (r: (typeof run.rings)[number]) => ({
+    name: r.name,
+    yieldKt: fixed(r.yieldKt, 4),
+    exposureCalPerCm2: {
+      first: fixed(r.exposure.first, 2),
+      second: fixed(r.exposure.second, 2),
+      third: fixed(r.exposure.third, 2),
+    },
+    inPlaceKm: {
+      first: fixed(r.inPlaceKm.first, 3),
+      second: fixed(r.inPlaceKm.second, 3),
+      third: fixed(r.inPlaceKm.third, 3),
+    },
+    candidateKm: {
+      first: fixed(r.candidateKm.first, 3),
+      second: fixed(r.candidateKm.second, 3),
+      third: fixed(r.candidateKm.third, 3),
+    },
+  });
+  return {
+    trace: run.trace,
+    yieldsKt: BURN_CURVE_YIELDS_KT,
+    rings: run.rings.map(ring),
+    beside: run.beside.map((b) => ({ skin: b.skin, rows: b.rows.map(ring) })),
+    tolls: run.tolls.map((t) => ({
+      name: t.name,
+      record: t.record,
+      gated: t.gated,
+      inPlace: t.inPlace.map((x) => fixed(x, 0)),
+      candidate: t.candidate.map((x) => fixed(x, 0)),
+      insideInPlace: t.insideInPlace,
+      insideCandidate: t.insideCandidate,
+    })),
+    worstRingFactor: fixed(run.worstRingFactor, 4),
+    decision: run.decision,
+  };
+}
+
 /** Rules 76 to 79 in the report's JSON. */
 function fireballJson(run: FireballRunResult) {
   const reading = (r: FireballReading) => ({
@@ -3208,6 +3281,7 @@ function main(): void {
   const slab = runSlabRules();
   const residual = runResidualRules();
   const fireball = runFireball();
+  const burn = runBurn();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -3324,6 +3398,10 @@ ${residualSection(residual)}
 
 ${fireballSection(fireball)}
 
+### The exposure that burns, from the book's own figure
+
+${burnSection(burn)}
+
 ### Which checks are validation
 
 ${rolesSection(net)}
@@ -3380,7 +3458,7 @@ ${bullet([
   "**Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).",
   "**Two numbers are not traced to a source read here.** The arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005. A third, the 30 cm at DART 21413 that the Tōhoku wave row was tuned on, was read from the buoy's own file on 15 September 2026: it crests at 0.81 m, and the row is declared (B-034).",
   "**An airburst's blast is a point that does not move, drawn as round rings.** Since 15 September 2026 it is the Earth Impact Effects Program's own air blast (Collins et al. 2005 and 2017; B-032), reproduced within 1 % on the airburst rows above, which were held out when it was adopted. What that model is not was checked against rules written first (`docs/BENCHMARK_PROTOCOL.md`): against the shock-physics runs of Collins et al. 2017, Table 2, its figures are 0.92× theirs, the median off by a factor of 1.21; at Tunguska its 20 kPa ring reaches 11.5 km, against the 26.5 km radius of the ~2 200 km² of flattened forest (0.43×), beyond a factor of two. At Chelyabinsk the check first flagged a 1 kPa ring of 17.6 km against the 56 km radius of the ~10 000 km² over which windows broke; the preset then took the body Popova et al. 2013 measured, as its source says and not as the check asked (B-033), and on a re-run that is not a validation the ring reaches 30.2 km (0.54×), 68.0 km for a moving source. In the city, 45 km out, the law gives 0.74 kPa where the broken windows put about 3.2 kPa (Brown et al. 2013). A shallow, high burst spreads its energy along its path and damages an ellipse, farthest across the path; ReVelle's weak-shock line source, the only analytic one, is \"largely inapplicable\" beneath Chelyabinsk's trail (Gi, Brown & Aftosmis 2018), and the elongated footprint has been reproduced only by three-dimensional hydrocodes (Popova et al. 2013; Aftosmis et al. 2016). Tunguska's blast row checks the energy, not the blast (`effects/airburstBlast.ts`).",
-  "**Parts of the explosion model are the project's, not the book's.** Burn thresholds are fixed fluences of 8, 5 and 2 cal/cm² where Glasstone & Dolan make them grow with yield; the initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).",
+  "**Parts of the explosion model are the project's, not the book's.** The initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).",
   "**No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.",
   "**A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).",
   "**The volcanic relations are the project's calibrations, and a current is a disc.** The reach of pyroclastic currents (L = 10 · V^⅓, a project mobility), the ashfall, the lahars and the climate response were set on anchors that the source review of 14 September did not recheck (docs/ROADMAP.md, move 0b). A current is drawn as a disc about the vent: held out, Fuego 2018's reaches 3.7 km where the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because a reach three times short and a footprint far too wide cancel; Unzen 1991's reaches 0.84 km against a flow of 3.2 km.",
@@ -3624,6 +3702,7 @@ otherwise.
       slab: slabJson(slab),
       residual: residualJson(residual),
       fireball: fireballJson(fireball),
+      burn: burnJson(burn),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,
