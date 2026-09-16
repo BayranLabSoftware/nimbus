@@ -23,6 +23,17 @@ import type { Meters } from '../../units.js';
  * when the sources were rechecked in September 2026.
  */
 
+/**
+ * What draws an air burst's blast rings: `project`, the piecewise factor below
+ * on the surface burst's radii, or `glasstone1977`, the book's own
+ * height-of-burst curves (Figure 3.73c, `hobCurves.ts`; rules 168 to 173 of
+ * validation/hobRules.ts).
+ */
+export type HobBlastSource = 'project' | 'glasstone1977';
+
+/** What a scenario that names no source draws. */
+export const DEFAULT_HOB_BLAST_SOURCE: HobBlastSource = 'project';
+
 /** Scaled height-of-burst z = HOB / W^(1/3), in metres per cube-root
  *  kilotonne. A unit-independent HOB classifier. */
 export function scaledHeightOfBurst(hobMeters: number, yieldKilotons: number): number {

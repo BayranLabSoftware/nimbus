@@ -10,12 +10,15 @@ import { NUCLEAR_CRATER_COEFFICIENT, nuclearApparentCraterDiameter } from './cra
 import { electromagneticPulse, type EmpResult } from './emp.js';
 import {
   BURIED_AIR_BLAST_MAX_SCALED_DEPTH_FT,
+  DEFAULT_HOB_BLAST_SOURCE,
   hobBlastFactor,
   hobRegime,
   scaledHeightOfBurst,
   underwaterAirBlastFactor,
+  type HobBlastSource,
   type HobRegime,
 } from './hob.js';
+import { glasstoneGroundRangeM } from './hobCurves.js';
 import { peakOverpressure } from './overpressure.js';
 import { peakWindAtRange } from './peakWind.js';
 import { initialRadiationRadii, type RadiationDoseResult } from './radiation.js';
@@ -78,6 +81,11 @@ export interface ExplosionScenarioInput {
    *  Dolan's own dose–range figures. Omitted,
    *  {@link DEFAULT_RADIATION_SOURCE}. */
   radiationSource?: RadiationSource;
+  /** What draws an air burst's blast rings (rule 170 of
+   *  validation/hobRules.ts): the project's piecewise factor on the surface
+   *  burst's radii, or Glasstone & Dolan's height-of-burst curves. Omitted,
+   *  {@link DEFAULT_HOB_BLAST_SOURCE}. */
+  hobBlast?: HobBlastSource;
   /** Distance from the burst point to the nearest usable sea (m).
    *  Zero or omitted means the burst is over the water. A surface
    *  burst beside the sea is not a burst in it, and this is what
@@ -165,8 +173,12 @@ export interface ExplosionBlastResult {
   hobScaled: number;
   /** Qualitative HOB regime (surface / low / optimum / high / stratospheric). */
   hobRegime: HobRegime;
-  /** Dimensionless HOB correction factor applied to the radii above. */
+  /** Dimensionless HOB correction factor applied to the radii above. Under
+   *  `glasstone1977` there is no single factor, and this is the 5 psi ring
+   *  over the surface burst's. */
   hobFactor: number;
+  /** What drew the three rings above. */
+  hobBlastSource: HobBlastSource;
 }
 
 export interface ExplosionScenarioResult {
@@ -361,6 +373,46 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   const r1psi = distanceForOverpressure(blastYield, ONE_PSI);
   const rLight = distanceForOverpressure(blastYield, OVERPRESSURE_LIGHT_DAMAGE);
 
+  // The rings of a burst at its height. Under `glasstone1977` they are read
+  // off the book's curves (Figure 3.73c) for a nuclear burst — its contact
+  // surface burst included, at a height of zero. A chemical charge keeps the
+  // surface burst's radii, which N1 holds to Kingery–Bulmash, and takes the
+  // book's change with height at the nuclear yield whose blast it matches,
+  // twice its own (the doubling above). Below 1 psi the figure draws nothing,
+  // and the light-damage ring carries the 1 psi curve out by the ratio the
+  // surface relation gives between 0.5 and 1 psi. A burst in the water and
+  // one above the atmosphere keep what they had.
+  const hobSource = input.hobBlast ?? DEFAULT_HOB_BLAST_SOURCE;
+  const PSI_PA = 6_894.757;
+  const lightPsi = (OVERPRESSURE_LIGHT_DAMAGE as number) / PSI_PA;
+  const lightOverOne = (r1psi as number) > 0 ? (rLight as number) / (r1psi as number) : 1;
+  let r5Hob: number;
+  let r1Hob: number;
+  let rLightHob: number;
+  let hobFactorOut: number;
+  if (hobSource === 'glasstone1977' && !exoatmospheric && !inWater) {
+    if (chemical) {
+      const twice = 2 * yieldKilotons;
+      const change = (psi: number, below = 1): number => {
+        const atZero = glasstoneGroundRangeM(psi, twice, 0, below);
+        return atZero > 0 ? glasstoneGroundRangeM(psi, twice, hobMeters, below) / atZero : 0;
+      };
+      r5Hob = (r5psi as number) * change(5);
+      r1Hob = (r1psi as number) * change(1);
+      rLightHob = (rLight as number) * change(lightPsi, lightOverOne);
+    } else {
+      r5Hob = glasstoneGroundRangeM(5, yieldKilotons, hobMeters);
+      r1Hob = glasstoneGroundRangeM(1, yieldKilotons, hobMeters);
+      rLightHob = glasstoneGroundRangeM(lightPsi, yieldKilotons, hobMeters, lightOverOne);
+    }
+    hobFactorOut = (r5psi as number) > 0 ? r5Hob / (r5psi as number) : 0;
+  } else {
+    r5Hob = (r5psi as number) * factor;
+    r1Hob = (r1psi as number) * factor;
+    rLightHob = (rLight as number) * factor;
+    hobFactorOut = factor;
+  }
+
   // Phase-17 thermal calibration. Pass `heightOfBurst` so the burn-
   // radius helpers solve self-consistently with a Beer-Lambert
   // atmospheric attenuation τ(R) = exp(−R / L_eff(HOB)). Without this,
@@ -409,12 +461,13 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       lightDamageRadius: rLight,
       peakAt1km: peakOverpressure({ distance: m(1_000), yieldEnergy: blastYield }),
       peakAt5km: peakOverpressure({ distance: m(5_000), yieldEnergy: blastYield }),
-      overpressure5psiRadiusHob: m((r5psi as number) * factor),
-      overpressure1psiRadiusHob: m((r1psi as number) * factor),
-      lightDamageRadiusHob: m((rLight as number) * factor),
+      overpressure5psiRadiusHob: m(r5Hob),
+      overpressure1psiRadiusHob: m(r1Hob),
+      lightDamageRadiusHob: m(rLightHob),
       hobScaled: z,
       hobRegime: inWater ? 'UNDERWATER' : regime,
-      hobFactor: factor,
+      hobFactor: hobFactorOut,
+      hobBlastSource: hobSource,
     },
     thermal: {
       thirdDegreeBurnRadius: absorbed(burn3),
