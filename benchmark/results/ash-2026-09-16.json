@@ -36,5 +36,12 @@
   "crosswind": true,
   "gate": true,
   "invariants": false
+ },
+ "decisionAgain": {
+  "adopted": true,
+  "axis": true,
+  "crosswind": true,
+  "gate": true,
+  "invariants": true
  }
 }

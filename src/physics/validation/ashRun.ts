@@ -2,10 +2,12 @@ import { readFileSync } from 'node:fs';
 import { ashfallMassLoading, type AshSpreadLaw } from '../events/volcano/ashfall.js';
 import { plumeHeight } from '../events/volcano/plumeHeight.js';
 import {
+  ASH2_WITH_CANDIDATE,
   ASH_CANDIDATE,
   ASH_IN_PLACE,
   ASH_INVARIANTS_MEASURED,
   chooseAshSpread,
+  chooseAshSpreadAgain,
   type AshReading,
 } from './ashRules.js';
 
@@ -84,31 +86,42 @@ export interface AshRunResult {
   cases: number;
   inPlace: AshLawResult;
   candidate: AshLawResult;
+  /** Rule 108's choice, on the count it names. */
   decision: ReturnType<typeof chooseAshSpread>;
+  /** Rule 112's choice, on the sweep taken with the candidate in place. */
+  decisionAgain: ReturnType<typeof chooseAshSpreadAgain>;
 }
 
 export function runAsh(
   matrixPath: string,
   referencePath: string,
   gatePasses = true,
-  /** What rule 19's sweep gives. Omitted, the reading of 16 September 2026
-   *  under the law in place — the one that refused the candidate. */
-  invariantFailures: number = ASH_INVARIANTS_MEASURED
+  /** Rule 108: what rule 19's sweep gives. Omitted, the reading of 16
+   *  September 2026 under the law in place — the one that refused the
+   *  candidate. */
+  invariantFailures: number = ASH_INVARIANTS_MEASURED,
+  /** Rule 112: the same sweep taken with the candidate in place. Omitted, the
+   *  reading of 16 September 2026,
+   *  `benchmark/results/invariants-2026-09-16-2.json`. */
+  invariantFailuresWithCandidate: number = ASH2_WITH_CANDIDATE
 ): AshRunResult {
   const cases = JSON.parse(readFileSync(matrixPath, 'utf8')) as AshCase[];
   const reference = (JSON.parse(readFileSync(referencePath, 'utf8')) as { cases: ReferenceCase[] })
     .cases;
   const inPlace = scoreAsh(cases, reference, ASH_IN_PLACE);
   const candidate = scoreAsh(cases, reference, ASH_CANDIDATE);
+  const axis = { before: inPlace.axis, after: candidate.axis };
+  const crosswind = { before: inPlace.crosswind, after: candidate.crosswind };
   return {
     cases: reference.length,
     inPlace,
     candidate,
-    decision: chooseAshSpread({
-      axis: { before: inPlace.axis, after: candidate.axis },
-      crosswind: { before: inPlace.crosswind, after: candidate.crosswind },
+    decision: chooseAshSpread({ axis, crosswind, gatePasses, invariantFailures }),
+    decisionAgain: chooseAshSpreadAgain({
+      axis,
+      crosswind,
       gatePasses,
-      invariantFailures,
+      invariantFailuresWithCandidate,
     }),
   };
 }

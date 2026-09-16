@@ -8,6 +8,7 @@ import {
 } from '../events/volcano/ashfall.js';
 import {
   ASH2_BASELINE_INVARIANTS,
+  ASH2_WITH_CANDIDATE,
   ASH_CANDIDATE,
   ASH_IN_PLACE,
   ASH_INVARIANT_FAILURES,
@@ -128,8 +129,11 @@ describe('rule 108: the verdict of 16 September 2026', () => {
     );
   });
 
-  it('leaves the law in place, in the rules and in the model alike', () => {
-    expect(DEFAULT_ASH_SPREAD).toBe(ASH_IN_PLACE);
+  it('names the law it was measured against, and the law it measured', () => {
+    // What this round left in place was `project`. It is no longer what the
+    // model draws — rules 110 to 113 adopted the candidate later the same day
+    // — and that is asserted below, where it belongs. This round's verdict
+    // does not change for it.
     expect(ASH_IN_PLACE).toBe('project');
     expect(ASH_CANDIDATE).toBe('tephra2');
   });
@@ -207,6 +211,15 @@ describe('rules 110 and 112: a baseline that measures the candidate', () => {
     expect(worse.invariants).toBe(false);
     expect(worse.axis).toBe(true);
     expect(worse.crosswind).toBe(true);
+  });
+
+  it('adopted the candidate, and the model draws it', () => {
+    expect(ASH2_WITH_CANDIDATE).toBe(222);
+    expect(ashRoundTwoInvariantsPass(ASH2_WITH_CANDIDATE)).toBe(true);
+    expect(
+      chooseAshSpreadAgain({ ...day, invariantFailuresWithCandidate: ASH2_WITH_CANDIDATE })
+    ).toEqual({ adopted: true, axis: true, crosswind: true, gate: true, invariants: true });
+    expect(DEFAULT_ASH_SPREAD).toBe(ASH_CANDIDATE);
   });
 
   it('keeps every other clause of rule 108 exactly as it was', () => {

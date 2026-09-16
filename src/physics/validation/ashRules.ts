@@ -293,11 +293,62 @@ export function chooseAshSpread(input: {
  * baseline is a file committed before this rule existed, which the history
  * shows. If the answer had been no, it would have been no — the sweep with the
  * candidate in place had not been run when this was written.
+ *
+ * ---
+ *
+ * **The outcome, written after the run of 16 September 2026: ADOPTED.**
+ *
+ * The sweep with the candidate in place
+ * (`benchmark/results/invariants-2026-09-16-2.json`) reads 222, the same as
+ * the baseline: impact 199, explosion 1, earthquake 16, volcano 6,
+ * landslide 0. The explosion's one failure is the radiation cliff, unmoved and
+ * untouchable from here; the volcano's six are the same six, split three and
+ * three where the law in place splits four and two. The candidate breaks
+ * nothing, which is what rule 108 was trying to ask and asked wrongly.
+ *
+ * `DEFAULT_ASH_SPREAD` is `tephra2`. Across the wind the ash goes from 0.008×
+ * Tephra2's to 0.299×, its scatter from 31.8 to 4.1; on the axis from 0.466×
+ * to 0.686×, with 59 % of points within a factor of two against 23 %. The
+ * whole test suite passes with one assertion changed, and the change is the
+ * honest one: the clause that read "this round left the law in place" now says
+ * which law each round names, and what the model draws is asserted under rules
+ * 110 to 113, where it belongs.
+ *
+ * **What it costs, which rule 112 did not guard.** Rule 109 asks that the 1 mm
+ * isopach reach be printed, because neither attempt was aimed at it. On the
+ * thirty eruptions both laws can score it, the reach goes from 0.993× the
+ * reference to **0.806×** — further from one, which by `improves()`'s own test
+ * is worse — while its scatter falls from 0.543 to 0.389 and the share within
+ * a factor of two rises from 87 % to 93 %. Ten more eruptions become scoreable
+ * at all, because the law in place pushed their 1 mm isopach past the sampled
+ * 500 km (and, on the largest, out to the solver's own 5 000 km limit); no
+ * case goes the other way. So the deposit is a little thinner along the axis
+ * than Tephra2's and reaches less far, where before it was unbiased and far
+ * noisier. That is a real cost, it was not guarded, and it is written here as
+ * a cost rather than reported as ten more cases scored.
+ *
+ * `AshFootprintInput` gained a `spreadLaw` so this could be measured at all:
+ * the footprint could only ever be computed under whatever the default was,
+ * where the deposit could always be asked for either law. Omitted, it is the
+ * default, so nothing a scenario draws changes for it.
+ *
+ * Rules 106 to 109 keep their refusal. Both verdicts are printed side by side
+ * by `scripts/benchmark/ash.ts`, which is the point: a reader sees the guard
+ * that bit, the reason it bit, and the round that answered it.
  */
 
 /** Rule 110: the sweep under the law in place, in the same session as the
  *  candidate's, committed in `05b1883` before this rule was written. */
 export const ASH2_BASELINE_INVARIANTS = 222;
+
+/**
+ * Rule 112: the sweep taken with the candidate in place, 16 September 2026 —
+ * `benchmark/results/invariants-2026-09-16-2.json`. Impact 199, explosion 1,
+ * earthquake 16, volcano 6, landslide 0: the same total as the law in place,
+ * the same explosion cliff, and the volcano's six split three and three where
+ * the law in place splits four and two. The candidate breaks nothing.
+ */
+export const ASH2_WITH_CANDIDATE = 222;
 
 /** Rule 112: the sweep with the candidate in place may not be worse. */
 export function ashRoundTwoInvariantsPass(withCandidate: number): boolean {

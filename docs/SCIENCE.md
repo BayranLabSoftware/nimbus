@@ -2116,11 +2116,9 @@ rises from a quarter to nearly two thirds. Nothing else changes: the Suzuki
 release profile, the Ganser terminal velocities, the grain classes and the mass
 are what they were.
 
-**And it was refused.** Rule 108 asks two things, and the second is that rule
-19's invariants come back no worse than the 221 failures it names. They came
-back at 222. The closure is in the file, reachable as `spreadLaw: 'tephra2'`,
-and `DEFAULT_ASH_SPREAD` is still `project`; the loading across the wind a
-visitor sees is 0.008× Tephra2's, as it was.
+**And the first round refused it.** Rule 108 asks two things, and the second is
+that rule 19's invariants come back no worse than the 221 failures it names.
+They came back at 222.
 
 The 222nd failure is not the closure's. The sweep that found it was taken with
 the candidate switched off — the law in place, nothing else touched — and still
@@ -2138,10 +2136,42 @@ What was wrong was the number. 221 was read before the burn round (rules 80 to 8
 physics, and neither re-read rule 19; rules 85 to 89 are what gave the
 radiation rings a height of burst, where the project fit had ignored it and was
 smooth in consequence. The bound was stale the day it was written, by the same
-hand it now binds. It is not moved for that: a bound re-read as "no worse than
+hand it now binds. It was not moved for that: a bound re-read as "no worse than
 the law in place" the moment it bites is the failure the whole protocol exists
-to prevent, and a refusal that costs something is the only kind worth having
-written down.
+to prevent, and the refusal stands as that round's verdict — in the protocol,
+in the history, and in a test that breaks if anyone edits the rule after the
+fact.
+
+**The second round adopted it.** Rules 110 to 113, written and pushed before
+anything was re-run, put the same candidate — unchanged to the constant, with
+`ashRules.test.ts` pinning each one and three values the closure returns — to a
+baseline that measures the candidate rather than the calendar: the sweep under
+the law in place, and the sweep again with the candidate in place. Both read
+222, hazard by hazard: impact 199, explosion 1, earthquake 16, volcano 6,
+landslide 0. The candidate breaks nothing, which is what rule 108 was trying to
+ask and asked wrongly, and `DEFAULT_ASH_SPREAD` is now `tephra2`.
+
+The general lesson is in the protocol's Conduct, where the next guard will find
+it: a guard on the invariants names the reading under the law in place, taken
+in the same run as the candidate's, and never a count carried from another day.
+A count carried from another day measures whatever else happened in between.
+`scripts/benchmark/ash.ts` prints both verdicts side by side, which is the
+point — a reader sees the guard that bit, the reason it bit, and the round that
+answered it.
+
+**And it costs something neither round guarded.** The 1 mm isopach reach is
+printed because neither attempt was aimed at it, and it is the one figure that
+does not simply improve. On the thirty eruptions both laws can score, the reach
+goes from 0.993× the reference to 0.806× — further from one, which by the
+round's own test is worse — while its scatter falls from 0.543 to 0.389 and the
+share within a factor of two rises from 87 % to 93 %. Ten more eruptions become
+scoreable at all, because the old law pushed their 1 mm isopach past the
+sampled 500 km, and on the largest out to the solver's own 5 000 km limit: a
+pencil-thin streak across a continent, which is not what an isopach map looks
+like. No case goes the other way. So the deposit is now a little thinner along
+the axis than Tephra2's and reaches less far, where before it was unbiased and
+far noisier, and the shape it draws is a lobe rather than a streak. The cost is
+written down as a cost.
 
 Three things about this round are worth keeping. The first is that the
 campaign had left no reference points behind, only statistics, so nothing could
@@ -2170,10 +2200,11 @@ the same scenarios, with the same numbers as before it.
 What none of this settles: agreeing with Tephra2 is not agreeing with a
 deposit. The reference is a model, and its eddy constant and diffusion
 coefficient come from one inversion of one eruption at Colima, carried here
-unchanged and declared. V3 — ten eruptions with a published isopach map — is
-the rule that would read the world, and it is still not measured. And the
-closure that would close most of the gap sits in the file unused, which is the
-honest price of a guard that was written down before it was convenient.
+unchanged and declared. Three times too narrow is still too narrow, and part of
+what remains between the two is a wind and not a spread — Tephra2 turns its
+wind with height where Nimbus holds one constant. V3 — ten eruptions with a
+published isopach map — is the rule that would read the world, and it is still
+not measured.
 
 ### The coast, measured for the first time (16 September 2026)
 

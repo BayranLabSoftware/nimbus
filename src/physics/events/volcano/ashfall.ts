@@ -90,17 +90,24 @@ export const CROSSWIND_DIFFUSION_SCALE_OVER_H = 10;
 export type AshSpreadLaw = 'project' | 'tephra2';
 
 /**
- * What a scenario that names no law draws: the project's own closure, still.
+ * What a scenario that names no law draws: Tephra2's closure, adopted on 16
+ * September 2026 by rule 112 of validation/ashRules.ts.
  *
- * Rule 108 of validation/ashRules.ts refused the candidate on 16 September
- * 2026. Every figure of the comparison improved, and the guard it was refused
- * by is the other half of that rule — rule 19's invariants, "no worse than the
- * 221 failures of 16 September" — which the sweep read at 222. The extra
- * failure is in the explosion's radiation and not in any ash: the law here
- * cannot reach it. The guard names a number all the same, and a bound is not
- * loosened after a figure has failed it (docs/BENCHMARK_PROTOCOL.md).
+ * It took two rounds, and the first one refused it. Rule 108 asked that rule
+ * 19's invariants come back "no worse than the 221 failures of 16 September"
+ * and the sweep read 222 — a count that had been taken three rounds earlier,
+ * before the burn and radiation rounds changed the explosion's own physics, so
+ * the extra failure was a radiation ring this file cannot reach. Every figure
+ * of the comparison had improved and the candidate was refused anyway, because
+ * a bound is not loosened after a figure has failed it.
+ *
+ * Rules 110 to 113 then put the same candidate — unchanged to the constant,
+ * and `ashRules.test.ts` pins each one — to a baseline that measures the
+ * candidate rather than the calendar: the sweep under the law in place, and
+ * the sweep again with the candidate in place. Both read 222. The refusal
+ * stands as its own round's verdict; this is the law the model draws.
  */
-export const DEFAULT_ASH_SPREAD: AshSpreadLaw = 'project';
+export const DEFAULT_ASH_SPREAD: AshSpreadLaw = 'tephra2';
 
 /** Tephra2's own example configuration, the one its Colima inversion left and
  *  the one the reference runs on (docs/TEPHRA2_SETUP.md). The eddy constant
@@ -371,6 +378,11 @@ export interface AshFootprintInput {
   grainSpectrum?: GrainSizeClass[];
   /** Bulk deposit density (kg/m³). Defaults to 1 000. */
   depositDensity?: number;
+  /** Which law spreads a release (rule 107 of validation/ashRules.ts).
+   *  Omitted, {@link DEFAULT_ASH_SPREAD} — which is what a scenario draws and
+   *  what the invariants sweep reads. It is named here so the footprint can be
+   *  scored under either law, as the deposit already could. */
+  spreadLaw?: AshSpreadLaw;
 }
 
 export interface AshFootprint {
@@ -423,6 +435,7 @@ export function ashFootprint(input: AshFootprintInput): AshFootprint {
     windSpeed: input.windSpeed,
     ...(input.grainSpectrum !== undefined ? { grainSpectrum: input.grainSpectrum } : {}),
     ...(input.depositDensity !== undefined ? { depositDensity: input.depositDensity } : {}),
+    ...(input.spreadLaw !== undefined ? { spreadLaw: input.spreadLaw } : {}),
   });
   if (pieces.length === 0) return empty;
 

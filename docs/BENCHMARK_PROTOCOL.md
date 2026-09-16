@@ -1461,3 +1461,56 @@ which the test's constants pin; that the test of improvement is the same
 function, which the diff shows; and that the baseline is a file committed
 before this rule existed, which the history shows. The sweep with the candidate
 in place had not been run when this was written.
+
+#### The outcome, 16 September 2026: adopted
+
+The sweep with the candidate in place
+(`benchmark/results/invariants-2026-09-16-2.json`) reads **222**, the same as
+rule 110's baseline, and the same hazard by hazard: impact 199, explosion 1,
+earthquake 16, volcano 6, landslide 0. The explosion's one failure is the
+radiation cliff, unmoved and unreachable from `ashfall.ts`; the volcano's six
+are the same six, split three and three where the law in place splits four and
+two. The candidate breaks nothing, which is what rule 108 was trying to ask.
+
+| Law               |      Axis |           |          | Across the wind |           |          |
+| ----------------- | --------: | --------: | -------: | --------------: | --------: | -------: |
+|                   |      bias |      σ ln |       ×2 |            bias |      σ ln |       ×2 |
+| before            |     0.466 |     2.873 |     23 % |           0.008 |    31.828 |     27 % |
+| Tephra2's closure | **0.686** | **1.370** | **59 %** |       **0.299** | **4.081** | **34 %** |
+
+`DEFAULT_ASH_SPREAD` is `tephra2`. The worst number in the project — a cloud a
+hundred and twenty-five times too narrow thirty kilometres off the axis — is
+now three times too narrow, and the wind axis improved with it. The whole test
+suite passes with one assertion changed: the clause that read "this round left
+the law in place" now names which law each round names, and what the model
+draws is asserted under rules 110 to 113.
+
+**What it costs, which rule 112 did not guard.** Rule 109 asks that the 1 mm
+isopach reach be printed, because neither attempt was aimed at it, and it is
+the one figure that does not simply improve. On the thirty eruptions both laws
+can score:
+
+| The 1 mm isopach reach | bias      |  σ ln |   ×2 | cases scored |
+| ---------------------- | --------- | ----: | ---: | -----------: |
+| before                 | **0.993** | 0.543 | 87 % |     30 of 44 |
+| Tephra2's closure      | **0.806** | 0.389 | 93 % |     40 of 44 |
+
+Further from one, which by `improves()`'s own test is worse; tighter and more
+often within a factor of two, which is better. Ten more eruptions become
+scoreable at all, because the law in place pushed their 1 mm isopach past the
+sampled 500 km — and on the largest, out to the solver's own 5 000 km limit, a
+pencil-thin streak across a continent. No case goes the other way. The deposit
+is now a little thinner along the axis than Tephra2's and reaches less far,
+where before it was unbiased and far noisier. That is a real cost, it was not
+guarded, and it is recorded as a cost and not as ten more cases scored.
+
+`AshFootprintInput` gained a `spreadLaw` so the footprint could be computed
+under either law — it could only ever be computed under whatever the default
+was, where the deposit could always be asked for either. Omitted it is the
+default, so nothing a scenario draws changes for it.
+
+Rules 106 to 109 keep their refusal, and `scripts/benchmark/ash.ts` prints both
+verdicts side by side — the guard that bit, and the round that answered it.
+What neither settles is V3: Tephra2 is a model, its constants come from one
+inversion of one eruption at Colima, and ten eruptions with a published isopach
+map is the rule that would read the world.

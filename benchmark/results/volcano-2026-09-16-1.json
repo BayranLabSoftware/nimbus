@@ -1,0 +1,1569 @@
+{
+ "track": "VOL",
+ "reference": "Tephra2 2.0 (commit ff621c6), run locally",
+ "stats": [
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "all",
+   "rows": 490,
+   "pairs": 490,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.6855869952184631,
+   "scatterLn": 1.3701589165488177,
+   "medianAbsLn": 0.5641310602476672,
+   "maxRelative": 3.0684478206396015,
+   "within1pct": 0.01020408163265306,
+   "withinTolerance": 0.01020408163265306,
+   "within125": 0.28775510204081634,
+   "within2": 0.5857142857142857,
+   "within10": 0.9775510204081632,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-preset-ANAK_KRAKATAU_2018",
+     "detail": "500 km downwind, 0 km across",
+     "nimbus": 2.94830476410333e-14,
+     "reference": 0.000524434,
+     "ratio": 5.621879519831533e-11
+    },
+    {
+     "caseId": "vol-grid-003",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 0.07508350887887176,
+     "reference": 5.82982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-015",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 0.7508350887887176,
+     "reference": 58.2982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-027",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 7.508350887887176,
+     "reference": 582.982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-039",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 75.08350887887177,
+     "reference": 5829.82,
+     "ratio": 0.012879215632536129
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 70,
+   "pairs": 70,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.5483395338504707,
+   "scatterLn": 2.901172608981231,
+   "medianAbsLn": 0.6746815644268818,
+   "maxRelative": 3.0684478206396015,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.3,
+   "within2": 0.5285714285714286,
+   "within10": 0.9857142857142858,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-preset-ANAK_KRAKATAU_2018",
+     "detail": "500 km downwind, 0 km across",
+     "nimbus": 2.94830476410333e-14,
+     "reference": 0.000524434,
+     "ratio": 5.621879519831533e-11
+    },
+    {
+     "caseId": "vol-preset-MT_ST_HELENS_1980",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 31.6121265288866,
+     "reference": 167.422,
+     "ratio": 0.1888170403464694
+    },
+    {
+     "caseId": "vol-preset-MOUNT_PELEE_1902",
+     "detail": "20 km downwind, 0 km across",
+     "nimbus": 109.18297524805372,
+     "reference": 554.13,
+     "ratio": 0.19703494712080868
+    },
+    {
+     "caseId": "vol-preset-HUNGA_TONGA_2022",
+     "detail": "100 km downwind, 0 km across",
+     "nimbus": 10.207820057075955,
+     "reference": 46.6861,
+     "ratio": 0.21864794996960452
+    },
+    {
+     "caseId": "vol-preset-VESUVIUS_79_CE",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 83.00526428400606,
+     "reference": 370.036,
+     "ratio": 0.22431672670768807
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 420,
+   "pairs": 420,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7115925725120761,
+   "scatterLn": 0.8917315552645996,
+   "medianAbsLn": 0.47715742425856345,
+   "maxRelative": 2.914562441440966,
+   "within1pct": 0.011904761904761904,
+   "withinTolerance": 0.011904761904761904,
+   "within125": 0.2857142857142857,
+   "within2": 0.5952380952380952,
+   "within10": 0.9761904761904762,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-003",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 0.07508350887887176,
+     "reference": 5.82982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-015",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 0.7508350887887176,
+     "reference": 58.2982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-027",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 7.508350887887176,
+     "reference": 582.982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-039",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 75.08350887887177,
+     "reference": 5829.82,
+     "ratio": 0.012879215632536129
+    },
+    {
+     "caseId": "vol-grid-051",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 750.8350887887177,
+     "reference": 58298.2,
+     "ratio": 0.012879215632536129
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "band: ≥ 10¹⁰ m³",
+   "rows": 189,
+   "pairs": 189,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7142449640703783,
+   "scatterLn": 0.8655067081275539,
+   "medianAbsLn": 0.4810881983654953,
+   "maxRelative": 2.9145624414409657,
+   "within1pct": 0.010582010582010581,
+   "withinTolerance": 0.010582010582010581,
+   "within125": 0.291005291005291,
+   "within2": 0.6031746031746031,
+   "within10": 0.9788359788359788,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-039",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 75.08350887887177,
+     "reference": 5829.82,
+     "ratio": 0.012879215632536129
+    },
+    {
+     "caseId": "vol-grid-051",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 750.8350887887177,
+     "reference": 58298.2,
+     "ratio": 0.012879215632536129
+    },
+    {
+     "caseId": "vol-grid-048",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 17.383403839849084,
+     "reference": 250.724,
+     "ratio": 0.06933282749098245
+    },
+    {
+     "caseId": "vol-grid-060",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 173.83403839849086,
+     "reference": 2507.24,
+     "ratio": 0.06933282749098246
+    },
+    {
+     "caseId": "vol-grid-038",
+     "detail": "20 km downwind, 0 km across",
+     "nimbus": 2562.424972188759,
+     "reference": 19590.3,
+     "ratio": 0.1308007009687835
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "band: 10⁸ – 10¹⁰ m³",
+   "rows": 210,
+   "pairs": 210,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7164922409964706,
+   "scatterLn": 0.8852480853727545,
+   "medianAbsLn": 0.565640779792088,
+   "maxRelative": 2.914562441440966,
+   "within1pct": 0.009523809523809525,
+   "withinTolerance": 0.009523809523809525,
+   "within125": 0.2904761904761905,
+   "within2": 0.5714285714285714,
+   "within10": 0.9809523809523809,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-015",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 0.7508350887887176,
+     "reference": 58.2982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-027",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 7.508350887887176,
+     "reference": 582.982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-036",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 1.7383403839849076,
+     "reference": 25.0724,
+     "ratio": 0.06933282749098242
+    },
+    {
+     "caseId": "vol-grid-024",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 0.17383403839849082,
+     "reference": 2.50724,
+     "ratio": 0.06933282749098245
+    },
+    {
+     "caseId": "vol-grid-026",
+     "detail": "20 km downwind, 0 km across",
+     "nimbus": 256.24249721887566,
+     "reference": 1959.03,
+     "ratio": 0.13080070096878335
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "band: < 10⁸ m³",
+   "rows": 91,
+   "pairs": 91,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.5687684192301554,
+   "scatterLn": 2.6023481380088165,
+   "medianAbsLn": 0.5641310602476673,
+   "maxRelative": 3.0684478206396015,
+   "within1pct": 0.01098901098901099,
+   "withinTolerance": 0.01098901098901099,
+   "within125": 0.27472527472527475,
+   "within2": 0.5824175824175825,
+   "within10": 0.967032967032967,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-preset-ANAK_KRAKATAU_2018",
+     "detail": "500 km downwind, 0 km across",
+     "nimbus": 2.94830476410333e-14,
+     "reference": 0.000524434,
+     "ratio": 5.621879519831533e-11
+    },
+    {
+     "caseId": "vol-grid-003",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 0.07508350887887176,
+     "reference": 5.82982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-012",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 0.017383403839849078,
+     "reference": 0.250724,
+     "ratio": 0.06933282749098242
+    },
+    {
+     "caseId": "vol-grid-002",
+     "detail": "20 km downwind, 0 km across",
+     "nimbus": 2.5624249721887598,
+     "reference": 19.5903,
+     "ratio": 0.13080070096878352
+    },
+    {
+     "caseId": "vol-grid-002",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 0.004392190274791066,
+     "reference": 0.0302697,
+     "ratio": 0.14510187662220192
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "bin: 5 km",
+   "rows": 70,
+   "pairs": 70,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.6853994934206822,
+   "scatterLn": 0.3347830083571615,
+   "medianAbsLn": 0.39962490291036257,
+   "maxRelative": 0.7297707527901949,
+   "within1pct": 0.07142857142857142,
+   "withinTolerance": 0.07142857142857142,
+   "within125": 0.4,
+   "within2": 0.8142857142857143,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-preset-ANAK_KRAKATAU_2018",
+     "detail": "5 km downwind, 0 km across",
+     "nimbus": 66.39019168375214,
+     "reference": 245.681,
+     "ratio": 0.2702292472098051
+    },
+    {
+     "caseId": "vol-preset-ETNA_1669",
+     "detail": "5 km downwind, 0 km across",
+     "nimbus": 5542.234407252608,
+     "reference": 19225.2,
+     "ratio": 0.2882796749710072
+    },
+    {
+     "caseId": "vol-grid-023",
+     "detail": "5 km downwind, 0 km across",
+     "nimbus": 361.5211537389457,
+     "reference": 834.518,
+     "ratio": 0.4332095338134656
+    },
+    {
+     "caseId": "vol-grid-059",
+     "detail": "5 km downwind, 0 km across",
+     "nimbus": 361521.15373894596,
+     "reference": 834518,
+     "ratio": 0.43320953381346594
+    },
+    {
+     "caseId": "vol-grid-047",
+     "detail": "5 km downwind, 0 km across",
+     "nimbus": 36152.11537389461,
+     "reference": 83451.8,
+     "ratio": 0.43320953381346605
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "bin: 10 km",
+   "rows": 70,
+   "pairs": 70,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7055673654897514,
+   "scatterLn": 0.4639886387965635,
+   "medianAbsLn": 0.2003960812502282,
+   "maxRelative": 0.7727403680181907,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5142857142857142,
+   "within2": 0.8285714285714286,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-001",
+     "detail": "10 km downwind, 0 km across",
+     "nimbus": 5.200268528823752,
+     "reference": 22.8825,
+     "ratio": 0.22725963198180935
+    },
+    {
+     "caseId": "vol-grid-037",
+     "detail": "10 km downwind, 0 km across",
+     "nimbus": 5200.268528823753,
+     "reference": 22882.5,
+     "ratio": 0.22725963198180935
+    },
+    {
+     "caseId": "vol-grid-049",
+     "detail": "10 km downwind, 0 km across",
+     "nimbus": 52002.685288237524,
+     "reference": 228825,
+     "ratio": 0.22725963198180935
+    },
+    {
+     "caseId": "vol-grid-013",
+     "detail": "10 km downwind, 0 km across",
+     "nimbus": 52.00268528823753,
+     "reference": 228.825,
+     "ratio": 0.22725963198180937
+    },
+    {
+     "caseId": "vol-grid-025",
+     "detail": "10 km downwind, 0 km across",
+     "nimbus": 520.0268528823756,
+     "reference": 2288.25,
+     "ratio": 0.22725963198180948
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "bin: 20 km",
+   "rows": 70,
+   "pairs": 70,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.6540995107685645,
+   "scatterLn": 0.6203195663503939,
+   "medianAbsLn": 0.1919751718572688,
+   "maxRelative": 0.8691992990312166,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5428571428571428,
+   "within2": 0.8285714285714286,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-026",
+     "detail": "20 km downwind, 0 km across",
+     "nimbus": 256.24249721887566,
+     "reference": 1959.03,
+     "ratio": 0.13080070096878335
+    },
+    {
+     "caseId": "vol-grid-014",
+     "detail": "20 km downwind, 0 km across",
+     "nimbus": 25.624249721887587,
+     "reference": 195.903,
+     "ratio": 0.13080070096878346
+    },
+    {
+     "caseId": "vol-grid-038",
+     "detail": "20 km downwind, 0 km across",
+     "nimbus": 2562.424972188759,
+     "reference": 19590.3,
+     "ratio": 0.1308007009687835
+    },
+    {
+     "caseId": "vol-grid-050",
+     "detail": "20 km downwind, 0 km across",
+     "nimbus": 25624.249721887594,
+     "reference": 195903,
+     "ratio": 0.1308007009687835
+    },
+    {
+     "caseId": "vol-grid-002",
+     "detail": "20 km downwind, 0 km across",
+     "nimbus": 2.5624249721887598,
+     "reference": 19.5903,
+     "ratio": 0.13080070096878352
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "bin: 50 km",
+   "rows": 70,
+   "pairs": 70,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.5269761007080782,
+   "scatterLn": 1.2573325403083797,
+   "medianAbsLn": 0.7394471820241082,
+   "maxRelative": 1.396083513273147,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.17142857142857143,
+   "within2": 0.4857142857142857,
+   "within10": 0.9285714285714286,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-003",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 0.07508350887887176,
+     "reference": 5.82982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-015",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 0.7508350887887176,
+     "reference": 58.2982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-027",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 7.508350887887176,
+     "reference": 582.982,
+     "ratio": 0.012879215632536127
+    },
+    {
+     "caseId": "vol-grid-039",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 75.08350887887177,
+     "reference": 5829.82,
+     "ratio": 0.012879215632536129
+    },
+    {
+     "caseId": "vol-grid-051",
+     "detail": "50 km downwind, 0 km across",
+     "nimbus": 750.8350887887177,
+     "reference": 58298.2,
+     "ratio": 0.012879215632536129
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "bin: 100 km",
+   "rows": 70,
+   "pairs": 70,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.6624775649249672,
+   "scatterLn": 0.8359158623830371,
+   "medianAbsLn": 0.9288969041841921,
+   "maxRelative": 1.6863411623266913,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.08571428571428572,
+   "within2": 0.4,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-preset-HUNGA_TONGA_2022",
+     "detail": "100 km downwind, 0 km across",
+     "nimbus": 10.207820057075955,
+     "reference": 46.6861,
+     "ratio": 0.21864794996960452
+    },
+    {
+     "caseId": "vol-grid-042",
+     "detail": "100 km downwind, 0 km across",
+     "nimbus": 263.2762111537493,
+     "reference": 1192.88,
+     "ratio": 0.22070636707275607
+    },
+    {
+     "caseId": "vol-grid-018",
+     "detail": "100 km downwind, 0 km across",
+     "nimbus": 2.6327621115374935,
+     "reference": 11.9288,
+     "ratio": 0.22070636707275612
+    },
+    {
+     "caseId": "vol-grid-054",
+     "detail": "100 km downwind, 0 km across",
+     "nimbus": 2632.762111537493,
+     "reference": 11928.8,
+     "ratio": 0.22070636707275612
+    },
+    {
+     "caseId": "vol-grid-006",
+     "detail": "100 km downwind, 0 km across",
+     "nimbus": 0.26327621115374933,
+     "reference": 1.19288,
+     "ratio": 0.22070636707275615
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "bin: 200 km",
+   "rows": 70,
+   "pairs": 70,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.8070735876769622,
+   "scatterLn": 1.1927579987051455,
+   "medianAbsLn": 0.9143744082716097,
+   "maxRelative": 3.0684478206396015,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.15714285714285714,
+   "within2": 0.2571428571428571,
+   "within10": 0.9285714285714286,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-012",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 0.017383403839849078,
+     "reference": 0.250724,
+     "ratio": 0.06933282749098242
+    },
+    {
+     "caseId": "vol-grid-036",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 1.7383403839849076,
+     "reference": 25.0724,
+     "ratio": 0.06933282749098242
+    },
+    {
+     "caseId": "vol-grid-024",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 0.17383403839849082,
+     "reference": 2.50724,
+     "ratio": 0.06933282749098245
+    },
+    {
+     "caseId": "vol-grid-048",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 17.383403839849084,
+     "reference": 250.724,
+     "ratio": 0.06933282749098245
+    },
+    {
+     "caseId": "vol-grid-060",
+     "detail": "200 km downwind, 0 km across",
+     "nimbus": 173.83403839849086,
+     "reference": 2507.24,
+     "ratio": 0.06933282749098246
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingDownwind",
+   "cls": "C",
+   "subset": "bin: 500 km",
+   "rows": 70,
+   "pairs": 70,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.7987974654016956,
+   "scatterLn": 2.9605601971355613,
+   "medianAbsLn": 0.8127329238017138,
+   "maxRelative": 2.914562441440966,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.14285714285714285,
+   "within2": 0.4857142857142857,
+   "within10": 0.9857142857142858,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-preset-ANAK_KRAKATAU_2018",
+     "detail": "500 km downwind, 0 km across",
+     "nimbus": 2.94830476410333e-14,
+     "reference": 0.000524434,
+     "ratio": 5.621879519831533e-11
+    },
+    {
+     "caseId": "vol-grid-001",
+     "detail": "500 km downwind, 0 km across",
+     "nimbus": 0.001708549923191324,
+     "reference": 0.00043646,
+     "ratio": 3.9145624414409657
+    },
+    {
+     "caseId": "vol-grid-013",
+     "detail": "500 km downwind, 0 km across",
+     "nimbus": 0.01708549923191324,
+     "reference": 0.0043646,
+     "ratio": 3.914562441440966
+    },
+    {
+     "caseId": "vol-grid-025",
+     "detail": "500 km downwind, 0 km across",
+     "nimbus": 0.1708549923191324,
+     "reference": 0.043646,
+     "ratio": 3.914562441440966
+    },
+    {
+     "caseId": "vol-grid-037",
+     "detail": "500 km downwind, 0 km across",
+     "nimbus": 1.708549923191324,
+     "reference": 0.43646,
+     "ratio": 3.9145624414409657
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingCrosswind",
+   "cls": "C",
+   "subset": "all",
+   "rows": 140,
+   "pairs": 140,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.29944532668155754,
+   "scatterLn": 4.0810062824064826,
+   "medianAbsLn": 0.8850222629103711,
+   "maxRelative": 5.981469853022737,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.12857142857142856,
+   "within2": 0.3357142857142857,
+   "within10": 0.8571428571428571,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "vol-grid-003",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-23,
+     "reference": 9.25658e-14,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-015",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-22,
+     "reference": 9.25658e-13,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-027",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155126e-21,
+     "reference": 9.25658e-12,
+     "ratio": 1.0508641030656166e-9
+    },
+    {
+     "caseId": "vol-grid-039",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-20,
+     "reference": 9.25658e-11,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-051",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155125e-19,
+     "reference": 9.25658e-10,
+     "ratio": 1.0508641030656166e-9
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingCrosswind",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 20,
+   "pairs": 20,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.5086489278229444,
+   "scatterLn": 1.0875350458862065,
+   "medianAbsLn": 1.149589161821817,
+   "maxRelative": 1.9619007694499326,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.15,
+   "within2": 0.35,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-preset-VESUVIUS_79_CE",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 0.9684813862918387,
+     "reference": 8.29484,
+     "ratio": 0.11675709070842097
+    },
+    {
+     "caseId": "vol-preset-KRAKATAU_1883",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.33628807115018,
+     "reference": 72.1917,
+     "ratio": 0.12932633628450613
+    },
+    {
+     "caseId": "vol-preset-PINATUBO_1991",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 4.66814403557509,
+     "reference": 36.0958,
+     "ratio": 0.1293265154276977
+    },
+    {
+     "caseId": "vol-preset-MT_ST_HELENS_1980",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 16.60188923533856,
+     "reference": 89.6411,
+     "ratio": 0.1852039882970932
+    },
+    {
+     "caseId": "vol-preset-ETNA_1669",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 2.4072019402911997,
+     "reference": 11.996,
+     "ratio": 0.20066705070783591
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingCrosswind",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 120,
+   "pairs": 120,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.2741368642023541,
+   "scatterLn": 4.382901416276475,
+   "medianAbsLn": 0.8688576451361583,
+   "maxRelative": 5.981469853022737,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.125,
+   "within2": 0.3333333333333333,
+   "within10": 0.8333333333333334,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "vol-grid-003",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-23,
+     "reference": 9.25658e-14,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-015",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-22,
+     "reference": 9.25658e-13,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-027",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155126e-21,
+     "reference": 9.25658e-12,
+     "ratio": 1.0508641030656166e-9
+    },
+    {
+     "caseId": "vol-grid-039",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-20,
+     "reference": 9.25658e-11,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-051",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155125e-19,
+     "reference": 9.25658e-10,
+     "ratio": 1.0508641030656166e-9
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingCrosswind",
+   "cls": "C",
+   "subset": "band: ≥ 10¹⁰ m³",
+   "rows": 54,
+   "pairs": 54,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.2767043393040436,
+   "scatterLn": 4.160242054865649,
+   "medianAbsLn": 0.885022262910371,
+   "maxRelative": 5.981469853022737,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.12962962962962962,
+   "within2": 0.3333333333333333,
+   "within10": 0.8518518518518519,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "vol-grid-039",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-20,
+     "reference": 9.25658e-11,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-051",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155125e-19,
+     "reference": 9.25658e-10,
+     "ratio": 1.0508641030656166e-9
+    },
+    {
+     "caseId": "vol-grid-051",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.29290386205314456,
+     "reference": 89.7225,
+     "ratio": 0.0032645530614187584
+    },
+    {
+     "caseId": "vol-grid-039",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.02929038620531446,
+     "reference": 8.97225,
+     "ratio": 0.003264553061418759
+    },
+    {
+     "caseId": "vol-grid-053",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 0.09668142262745737,
+     "reference": 2.10639,
+     "ratio": 0.04589910825035125
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingCrosswind",
+   "cls": "C",
+   "subset": "band: 10⁸ – 10¹⁰ m³",
+   "rows": 60,
+   "pairs": 60,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.3210321218117355,
+   "scatterLn": 3.984952771861861,
+   "medianAbsLn": 0.919510775593531,
+   "maxRelative": 5.981469853022734,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.13333333333333333,
+   "within2": 0.31666666666666665,
+   "within10": 0.8666666666666667,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "vol-grid-015",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-22,
+     "reference": 9.25658e-13,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-027",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155126e-21,
+     "reference": 9.25658e-12,
+     "ratio": 1.0508641030656166e-9
+    },
+    {
+     "caseId": "vol-grid-015",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.00029290386205314454,
+     "reference": 0.0897225,
+     "ratio": 0.0032645530614187584
+    },
+    {
+     "caseId": "vol-grid-027",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.0029290386205314454,
+     "reference": 0.897225,
+     "ratio": 0.003264553061418758
+    },
+    {
+     "caseId": "vol-grid-017",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 0.00009668142262745738,
+     "reference": 0.00210639,
+     "ratio": 0.045899108250351255
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingCrosswind",
+   "cls": "C",
+   "subset": "band: < 10⁸ m³",
+   "rows": 26,
+   "pairs": 26,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.30046613579490383,
+   "scatterLn": 4.290214951726038,
+   "medianAbsLn": 0.8326832414762095,
+   "maxRelative": 5.981469853022736,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.11538461538461539,
+   "within2": 0.38461538461538464,
+   "within10": 0.8461538461538461,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "vol-grid-003",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-23,
+     "reference": 9.25658e-14,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-003",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.000029290386205314456,
+     "reference": 0.00897225,
+     "ratio": 0.003264553061418759
+    },
+    {
+     "caseId": "vol-grid-005",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 0.000009668142262745739,
+     "reference": 0.000210639,
+     "ratio": 0.04589910825035126
+    },
+    {
+     "caseId": "vol-grid-009",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 2.3228092722725824e-9,
+     "reference": 4.63096e-8,
+     "ratio": 0.05015826680153969
+    },
+    {
+     "caseId": "vol-grid-005",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.06512641475498938,
+     "reference": 0.542342,
+     "ratio": 0.12008366446815734
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingCrosswind",
+   "cls": "C",
+   "subset": "bin: 10 km across",
+   "rows": 70,
+   "pairs": 70,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.5630720089670381,
+   "scatterLn": 1.7315666996911494,
+   "medianAbsLn": 0.8526930273619454,
+   "maxRelative": 2.8535332887510525,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.17142857142857143,
+   "within2": 0.4142857142857143,
+   "within10": 0.9285714285714286,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-015",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.00029290386205314454,
+     "reference": 0.0897225,
+     "ratio": 0.0032645530614187584
+    },
+    {
+     "caseId": "vol-grid-027",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.0029290386205314454,
+     "reference": 0.897225,
+     "ratio": 0.003264553061418758
+    },
+    {
+     "caseId": "vol-grid-051",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.29290386205314456,
+     "reference": 89.7225,
+     "ratio": 0.0032645530614187584
+    },
+    {
+     "caseId": "vol-grid-003",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.000029290386205314456,
+     "reference": 0.00897225,
+     "ratio": 0.003264553061418759
+    },
+    {
+     "caseId": "vol-grid-039",
+     "detail": "50 km downwind, 10 km across",
+     "nimbus": 0.02929038620531446,
+     "reference": 8.97225,
+     "ratio": 0.003264553061418759
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "massLoadingCrosswind",
+   "cls": "C",
+   "subset": "bin: 30 km across",
+   "rows": 70,
+   "pairs": 70,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.15924695641667708,
+   "scatterLn": 5.453731856493902,
+   "medianAbsLn": 0.9426788435160909,
+   "maxRelative": 5.981469853022737,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.08571428571428572,
+   "within2": 0.2571428571428571,
+   "within10": 0.7857142857142857,
+   "agreement": null,
+   "flagged": true,
+   "worst": [
+    {
+     "caseId": "vol-grid-003",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-23,
+     "reference": 9.25658e-14,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-015",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-22,
+     "reference": 9.25658e-13,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-027",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155126e-21,
+     "reference": 9.25658e-12,
+     "ratio": 1.0508641030656166e-9
+    },
+    {
+     "caseId": "vol-grid-039",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155127e-20,
+     "reference": 9.25658e-11,
+     "ratio": 1.0508641030656169e-9
+    },
+    {
+     "caseId": "vol-grid-051",
+     "detail": "50 km downwind, 30 km across",
+     "nimbus": 9.727407639155125e-19,
+     "reference": 9.25658e-10,
+     "ratio": 1.0508641030656166e-9
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "isopach1mmReach",
+   "cls": "C",
+   "subset": "all",
+   "rows": 70,
+   "pairs": 40,
+   "bothZero": 0,
+   "unpaired": {
+    "outside the sampled 5–500 km (Nimbus beyond, Tephra2 beyond)": 25,
+    "outside the sampled 5–500 km (Nimbus beyond, Tephra2 inside)": 4,
+    "outside the sampled 5–500 km (Nimbus inside, Tephra2 beyond)": 1
+   },
+   "geometricMeanRatio": 0.8304792328275029,
+   "scatterLn": 0.35367274642311003,
+   "medianAbsLn": 0.21066512179691751,
+   "maxRelative": 0.7782551969923326,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.525,
+   "within2": 0.95,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-015",
+     "detail": "",
+     "nimbus": 47.95143900858983,
+     "reference": 216.2460556378035,
+     "ratio": 0.22174480300766744
+    },
+    {
+     "caseId": "vol-grid-003",
+     "detail": "",
+     "nimbus": 34.26248010376807,
+     "reference": 100.18155065879772,
+     "ratio": 0.34200389072096293
+    },
+    {
+     "caseId": "vol-grid-024",
+     "detail": "",
+     "nimbus": 150.93119135920224,
+     "reference": 274.2438309351923,
+     "ratio": 0.5503540073974149
+    },
+    {
+     "caseId": "vol-grid-005",
+     "detail": "",
+     "nimbus": 40.06873460071114,
+     "reference": 69.14851191685011,
+     "ratio": 0.5794591017214239
+    },
+    {
+     "caseId": "vol-grid-026",
+     "detail": "",
+     "nimbus": 178.62414051431318,
+     "reference": 303.70372919408277,
+     "ratio": 0.5881526084263617
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "isopach1mmReach",
+   "cls": "C",
+   "subset": "preset",
+   "rows": 10,
+   "pairs": 6,
+   "bothZero": 0,
+   "unpaired": {
+    "outside the sampled 5–500 km (Nimbus beyond, Tephra2 beyond)": 3,
+    "outside the sampled 5–500 km (Nimbus beyond, Tephra2 inside)": 1
+   },
+   "geometricMeanRatio": 0.938134276287378,
+   "scatterLn": 0.2339845270329707,
+   "medianAbsLn": 0.14176258327097324,
+   "maxRelative": 0.3678710777878893,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.6666666666666666,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-preset-EYJAFJALLAJOKULL_2010",
+     "detail": "",
+     "nimbus": 93.78734979498498,
+     "reference": 138.20654044545196,
+     "ratio": 0.6786028323457053
+    },
+    {
+     "caseId": "vol-preset-ETNA_1669",
+     "detail": "",
+     "nimbus": 236.06450431803003,
+     "reference": 172.57803615512637,
+     "ratio": 1.3678710777878893
+    },
+    {
+     "caseId": "vol-preset-MOUNT_PELEE_1902",
+     "detail": "",
+     "nimbus": 154.55835450499183,
+     "reference": 181.1845842786086,
+     "ratio": 0.853043624656977
+    },
+    {
+     "caseId": "vol-preset-VESUVIUS_79_CE",
+     "detail": "",
+     "nimbus": 356.5278746287095,
+     "reference": 403.82959840809025,
+     "ratio": 0.8828671202758647
+    },
+    {
+     "caseId": "vol-preset-ANAK_KRAKATAU_2018",
+     "detail": "",
+     "nimbus": 30.604244878239335,
+     "reference": 33.09975506431851,
+     "ratio": 0.9246063851158425
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "isopach1mmReach",
+   "cls": "C",
+   "subset": "custom",
+   "rows": 60,
+   "pairs": 34,
+   "bothZero": 0,
+   "unpaired": {
+    "outside the sampled 5–500 km (Nimbus beyond, Tephra2 beyond)": 22,
+    "outside the sampled 5–500 km (Nimbus beyond, Tephra2 inside)": 3,
+    "outside the sampled 5–500 km (Nimbus inside, Tephra2 beyond)": 1
+   },
+   "geometricMeanRatio": 0.8128063534873584,
+   "scatterLn": 0.36926108906125643,
+   "medianAbsLn": 0.21797536057626216,
+   "maxRelative": 0.7782551969923326,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5,
+   "within2": 0.9411764705882353,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-015",
+     "detail": "",
+     "nimbus": 47.95143900858983,
+     "reference": 216.2460556378035,
+     "ratio": 0.22174480300766744
+    },
+    {
+     "caseId": "vol-grid-003",
+     "detail": "",
+     "nimbus": 34.26248010376807,
+     "reference": 100.18155065879772,
+     "ratio": 0.34200389072096293
+    },
+    {
+     "caseId": "vol-grid-024",
+     "detail": "",
+     "nimbus": 150.93119135920224,
+     "reference": 274.2438309351923,
+     "ratio": 0.5503540073974149
+    },
+    {
+     "caseId": "vol-grid-005",
+     "detail": "",
+     "nimbus": 40.06873460071114,
+     "reference": 69.14851191685011,
+     "ratio": 0.5794591017214239
+    },
+    {
+     "caseId": "vol-grid-026",
+     "detail": "",
+     "nimbus": 178.62414051431318,
+     "reference": 303.70372919408277,
+     "ratio": 0.5881526084263617
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "isopach1mmReach",
+   "cls": "C",
+   "subset": "band: ≥ 10¹⁰ m³",
+   "rows": 27,
+   "pairs": 2,
+   "bothZero": 0,
+   "unpaired": {
+    "outside the sampled 5–500 km (Nimbus beyond, Tephra2 beyond)": 22,
+    "outside the sampled 5–500 km (Nimbus beyond, Tephra2 inside)": 2,
+    "outside the sampled 5–500 km (Nimbus inside, Tephra2 beyond)": 1
+   },
+   "geometricMeanRatio": 0.9490162404906382,
+   "scatterLn": 0.025343763882303635,
+   "medianAbsLn": 0.05232936725137055,
+   "maxRelative": 0.06783935619626891,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 1,
+   "within2": 1,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-043",
+     "detail": "",
+     "nimbus": 415.4558339857317,
+     "reference": 445.69124082566077,
+     "ratio": 0.9321606438037311
+    },
+    {
+     "caseId": "vol-grid-046",
+     "detail": "",
+     "nimbus": 470.1084648369333,
+     "reference": 486.5657610740749,
+     "ratio": 0.9661766249215465
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "isopach1mmReach",
+   "cls": "C",
+   "subset": "band: 10⁸ – 10¹⁰ m³",
+   "rows": 30,
+   "pairs": 25,
+   "bothZero": 0,
+   "unpaired": {
+    "outside the sampled 5–500 km (Nimbus beyond, Tephra2 inside)": 2,
+    "outside the sampled 5–500 km (Nimbus beyond, Tephra2 beyond)": 3
+   },
+   "geometricMeanRatio": 0.864339298261872,
+   "scatterLn": 0.39065997201867597,
+   "medianAbsLn": 0.226142050757125,
+   "maxRelative": 0.7782551969923326,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.48,
+   "within2": 0.96,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-015",
+     "detail": "",
+     "nimbus": 47.95143900858983,
+     "reference": 216.2460556378035,
+     "ratio": 0.22174480300766744
+    },
+    {
+     "caseId": "vol-grid-024",
+     "detail": "",
+     "nimbus": 150.93119135920224,
+     "reference": 274.2438309351923,
+     "ratio": 0.5503540073974149
+    },
+    {
+     "caseId": "vol-grid-026",
+     "detail": "",
+     "nimbus": 178.62414051431318,
+     "reference": 303.70372919408277,
+     "ratio": 0.5881526084263617
+    },
+    {
+     "caseId": "vol-grid-021",
+     "detail": "",
+     "nimbus": 175.0791702027537,
+     "reference": 262.7415175335451,
+     "ratio": 0.6663551761681544
+    },
+    {
+     "caseId": "vol-grid-020",
+     "detail": "",
+     "nimbus": 110.65196462938808,
+     "reference": 164.86607118955328,
+     "ratio": 0.6711627433771196
+    }
+   ]
+  },
+  {
+   "track": "VOL",
+   "quantity": "isopach1mmReach",
+   "cls": "C",
+   "subset": "band: < 10⁸ m³",
+   "rows": 13,
+   "pairs": 13,
+   "bothZero": 0,
+   "unpaired": {},
+   "geometricMeanRatio": 0.75342192494579,
+   "scatterLn": 0.2909875808108666,
+   "medianAbsLn": 0.2016605000351239,
+   "maxRelative": 0.6579961092790371,
+   "within1pct": 0,
+   "withinTolerance": 0,
+   "within125": 0.5384615384615384,
+   "within2": 0.9230769230769231,
+   "within10": 1,
+   "agreement": null,
+   "flagged": false,
+   "worst": [
+    {
+     "caseId": "vol-grid-003",
+     "detail": "",
+     "nimbus": 34.26248010376807,
+     "reference": 100.18155065879772,
+     "ratio": 0.34200389072096293
+    },
+    {
+     "caseId": "vol-grid-005",
+     "detail": "",
+     "nimbus": 40.06873460071114,
+     "reference": 69.14851191685011,
+     "ratio": 0.5794591017214239
+    },
+    {
+     "caseId": "vol-grid-004",
+     "detail": "",
+     "nimbus": 23.07670726887972,
+     "reference": 34.38370766192601,
+     "ratio": 0.6711523811154656
+    },
+    {
+     "caseId": "vol-grid-002",
+     "detail": "",
+     "nimbus": 44.16807128527796,
+     "reference": 63.12379784154935,
+     "ratio": 0.6997055436389737
+    },
+    {
+     "caseId": "vol-grid-006",
+     "detail": "",
+     "nimbus": 75.61557869332341,
+     "reference": 106.78630126333019,
+     "ratio": 0.7081018613694543
+    }
+   ]
+  }
+ ]
+}

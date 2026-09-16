@@ -33,6 +33,7 @@ console.log(line(`${run.inPlace.law}, across`, run.inPlace.crosswind));
 console.log(line(`${run.candidate.law}, axis`, run.candidate.axis));
 console.log(line(`${run.candidate.law}, across`, run.candidate.crosswind));
 console.log('rule 108:', JSON.stringify(run.decision));
+console.log('rule 112:', JSON.stringify(run.decisionAgain));
 
 const out = process.argv[3];
 if (out !== undefined) {
