@@ -558,6 +558,21 @@ function landslideFields(r: LandslideScenarioResult): { inputs: Field[]; outputs
       }
     );
   }
+  if (r.inputs.slideThicknessM !== undefined) {
+    inputs.push({ label: 'Slide thickness', value: `${r.inputs.slideThicknessM.toFixed(1)} m` });
+  }
+  if (r.inputs.slideWidthM !== undefined) {
+    inputs.push({ label: 'Slide width', value: `${r.inputs.slideWidthM.toFixed(1)} m` });
+  }
+  if (r.inputs.impactVelocityMS !== undefined) {
+    inputs.push({
+      label: 'Speed into the water',
+      value: `${r.inputs.impactVelocityMS.toFixed(1)} m/s`,
+    });
+  }
+  if (r.inputs.dropHeightM !== undefined) {
+    inputs.push({ label: 'Drop to the water', value: `${r.inputs.dropHeightM.toFixed(0)} m` });
+  }
   const outputs: Field[] = [
     { label: 'Characteristic length (V^⅓)', value: fmtKm(r.characteristicLength) },
     {
@@ -583,6 +598,45 @@ function landslideFields(r: LandslideScenarioResult): { inputs: Field[]; outputs
       { label: 'Tsunami travel to 100 km', value: fmtMin(r.tsunami.travelTimeTo100km) },
       { label: 'Tsunami travel to 1 000 km', value: fmtMin(r.tsunami.travelTimeTo1000km) }
     );
+  }
+  const w = r.impulseWave;
+  if (w !== undefined) {
+    const speedFrom =
+      w.closed.velocity === 'given'
+        ? 'as given'
+        : w.closed.velocity === 'fromDropHeight'
+          ? 'from the drop height (Eq. 3.5)'
+          : 'from a drop of V^⅓·sin α (Eq. 3.5; the weakest estimate)';
+    const closed = [w.closed.thickness ? 'thickness' : null, w.closed.width ? 'width' : null]
+      .filter((x): x is string => x !== null)
+      .join(' and ');
+    outputs.push(
+      {
+        label: 'Wave source',
+        value: w.held
+          ? 'none: the bed friction holds the slide on this slope (Eq. 3.5 gives no speed)'
+          : 'impulse wave manual, first crest (Evers et al. 2019, Eq. 3.26)',
+      },
+      {
+        label: 'Speed into the water',
+        value: `${w.impactVelocityMS.toFixed(1)} m/s, ${speedFrom}`,
+      },
+      { label: 'Impulse product parameter P', value: w.impulseProduct.toFixed(3) },
+      {
+        label: 'Slide thickness and width used',
+        value: `${w.thicknessM.toFixed(1)} m × ${w.widthM.toFixed(1)} m${closed === '' ? '' : ` (${closed} estimated as V^⅓)`}`,
+      },
+      {
+        label: "Outside the manual's experiments",
+        value: w.outsideTestedRange.length === 0 ? 'none' : w.outsideTestedRange.join(', '),
+      }
+    );
+    if (!w.held) {
+      outputs.push(
+        { label: 'First trough at the slide', value: `${w.firstTroughM.toFixed(0)} m` },
+        { label: 'Second crest at the slide', value: `${w.secondCrestM.toFixed(0)} m` }
+      );
+    }
   }
   return { inputs, outputs };
 }

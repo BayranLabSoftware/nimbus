@@ -6,6 +6,7 @@ import {
   type EarthquakePresetId,
 } from '../../physics/events/earthquake/index.js';
 import { EXPLOSION_PRESETS, type ExplosionPresetId } from '../../physics/events/explosion/index.js';
+import { IMPULSE_WAVE_SLIDE_FRICTION } from '../../physics/effects/impulseWave.js';
 import { LANDSLIDE_PRESETS, type LandslidePresetId } from '../../physics/events/landslide/index.js';
 import { VOLCANO_PRESETS, type VolcanoPresetId } from '../../physics/events/volcano/index.js';
 import {
@@ -1714,10 +1715,19 @@ export function SimulatorPanel(): JSX.Element {
               <dt className={styles.resultLabel}>{t('simulator.landslide.sourceLabel')}</dt>
               <dd className={styles.resultValue} data-testid="landslide-source-result">
                 {result.data.tsunami === null
-                  ? t('simulator.landslide.sourceDry')
+                  ? result.data.impulseWave?.held === true
+                    ? t('simulator.landslide.sourceHeld', {
+                        delta: formatDecimal(
+                          (Math.atan(IMPULSE_WAVE_SLIDE_FRICTION) * 180) / Math.PI,
+                          1
+                        ),
+                      })
+                    : t('simulator.landslide.sourceDry')
                   : result.data.inputs.confinedBasinArea !== undefined
                     ? t('simulator.landslide.sourceConfined')
-                    : t('simulator.landslide.sourceOpenWater')}
+                    : result.data.impulseWave !== undefined
+                      ? t('simulator.landslide.sourceManual')
+                      : t('simulator.landslide.sourceOpenWater')}
               </dd>
               {result.data.tsunami !== null && (
                 <>
@@ -1730,28 +1740,74 @@ export function SimulatorPanel(): JSX.Element {
                     {Math.round((result.data.tsunami.travelTimeTo100km as number) / 60)} min
                   </dd>
                   {result.data.regimeSensitivity !== null &&
-                    result.data.regimeSensitivity.ratio > 1.05 && (
+                    (result.data.regimeSensitivity.ratio === null ||
+                      result.data.regimeSensitivity.ratio > 1.05) && (
                       <>
                         <dt className={styles.resultLabel}>
                           {t('simulator.landslide.regimeOtherLabel')}
                         </dt>
                         <dd className={styles.resultValue} data-testid="landslide-regime-note">
-                          {t('simulator.landslide.regimeNote', {
-                            other: (
-                              (result.data.regime === 'subaerial'
-                                ? result.data.regimeSensitivity.submarineAmplitude
-                                : result.data.regimeSensitivity.subaerialAmplitude) as number
-                            ).toFixed(0),
-                            ratio: result.data.regimeSensitivity.ratio.toFixed(0),
-                            direction: t(
-                              result.data.regime === 'subaerial'
-                                ? 'simulator.landslide.regimeLower'
-                                : 'simulator.landslide.regimeHigher'
-                            ),
-                          })}
+                          {result.data.regimeSensitivity.ratio === null
+                            ? t('simulator.landslide.regimeNoWave')
+                            : t('simulator.landslide.regimeNote', {
+                                other: (
+                                  (result.data.regime === 'subaerial'
+                                    ? result.data.regimeSensitivity.submarineAmplitude
+                                    : result.data.regimeSensitivity.subaerialAmplitude) as number
+                                ).toFixed(0),
+                                ratio: result.data.regimeSensitivity.ratio.toFixed(0),
+                                direction: t(
+                                  result.data.regime === 'subaerial'
+                                    ? 'simulator.landslide.regimeLower'
+                                    : 'simulator.landslide.regimeHigher'
+                                ),
+                              })}
                         </dd>
                       </>
                     )}
+                </>
+              )}
+              {result.data.impulseWave !== undefined && !result.data.impulseWave.held && (
+                <>
+                  <dt className={styles.resultLabel}>{t('simulator.landslide.impactSpeed')}</dt>
+                  <dd className={styles.resultValue} data-testid="landslide-impact-speed">
+                    {t(
+                      result.data.impulseWave.closed.velocity === 'given'
+                        ? 'simulator.landslide.speedGiven'
+                        : result.data.impulseWave.closed.velocity === 'fromDropHeight'
+                          ? 'simulator.landslide.speedFromDrop'
+                          : 'simulator.landslide.speedFromVolume',
+                      { v: formatDecimal(result.data.impulseWave.impactVelocityMS, 1) }
+                    )}
+                  </dd>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.landslide.manualLimitsLabel')}
+                  </dt>
+                  <dd className={styles.resultValue} data-testid="landslide-manual-limits">
+                    {result.data.impulseWave.outsideTestedRange.length === 0
+                      ? t('simulator.landslide.manualInside')
+                      : t('simulator.landslide.manualOutside', {
+                          list: result.data.impulseWave.outsideTestedRange.join(', '),
+                        })}
+                  </dd>
+                  {(result.data.impulseWave.closed.thickness ||
+                    result.data.impulseWave.closed.width) && (
+                    <>
+                      <dt className={styles.resultLabel}>{t('simulator.landslide.closedLabel')}</dt>
+                      <dd className={styles.resultValue} data-testid="landslide-closed">
+                        {[
+                          result.data.impulseWave.closed.thickness
+                            ? t('simulator.landslide.closedThickness')
+                            : null,
+                          result.data.impulseWave.closed.width
+                            ? t('simulator.landslide.closedWidth')
+                            : null,
+                        ]
+                          .filter((x): x is string => x !== null)
+                          .join(', ')}
+                      </dd>
+                    </>
+                  )}
                 </>
               )}
             </dl>

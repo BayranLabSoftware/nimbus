@@ -330,6 +330,13 @@ export interface LandslideInputOverrides {
   confinedBasinArea?: number | null;
   confinementDynamicFactor?: number | null;
   slideDensity?: number | null;
+  /** What the impulse wave manual wants of a slide above the water: its
+   *  thickness, width and speed as it meets the water, or the drop the speed
+   *  comes from. Empty, the model estimates them and says so. */
+  slideThicknessM?: number | null;
+  slideWidthM?: number | null;
+  impactVelocityMS?: number | null;
+  dropHeightM?: number | null;
 }
 
 /** UI-facing overrides for the volcano scenario. */
@@ -2493,6 +2500,16 @@ export const useAppStore = create<AppStore>((set, get) => ({
         merged.confinementDynamicFactor = overrides.confinementDynamicFactor;
       if (overrides.slideDensity === null) delete merged.slideDensity;
       else if (overrides.slideDensity !== undefined) merged.slideDensity = overrides.slideDensity;
+      if (overrides.slideThicknessM === null) delete merged.slideThicknessM;
+      else if (overrides.slideThicknessM !== undefined)
+        merged.slideThicknessM = overrides.slideThicknessM;
+      if (overrides.slideWidthM === null) delete merged.slideWidthM;
+      else if (overrides.slideWidthM !== undefined) merged.slideWidthM = overrides.slideWidthM;
+      if (overrides.impactVelocityMS === null) delete merged.impactVelocityMS;
+      else if (overrides.impactVelocityMS !== undefined)
+        merged.impactVelocityMS = overrides.impactVelocityMS;
+      if (overrides.dropHeightM === null) delete merged.dropHeightM;
+      else if (overrides.dropHeightM !== undefined) merged.dropHeightM = overrides.dropHeightM;
 
       const classification = classifyStoreInput('landslide', merged);
       if (!classification.ok) return state;

@@ -851,6 +851,10 @@ interface LandslideRawInput {
   confinementDynamicFactor?: unknown;
   regime?: unknown;
   slideDensity?: unknown;
+  slideThicknessM?: unknown;
+  slideWidthM?: unknown;
+  impactVelocityMS?: unknown;
+  dropHeightM?: unknown;
 }
 
 const VALID_LANDSLIDE_REGIMES: readonly LandslideRegime[] = ['submarine', 'subaerial'] as const;
@@ -994,7 +998,11 @@ export function validateLandslideInput(
       });
       return invalid(errors);
     }
-    if (raw.slideDensity <= (SEAWATER_DENSITY as number)) {
+    // Under the water the calibrated form reads the density as a buoyancy,
+    // and a slide no denser than the sea raises nothing. Above it, the impulse
+    // wave manual reads it as a mass, and an ice or snow avalanche of half the
+    // water's density makes a wave (its Example 2).
+    if (raw.slideDensity <= (SEAWATER_DENSITY as number) && out.regime !== 'subaerial') {
       warnings.push({
         field: 'slideDensity',
         code: 'PHYS_SUSPICIOUS_LOW',
@@ -1003,6 +1011,30 @@ export function validateLandslideInput(
       });
     }
     out.slideDensity = raw.slideDensity;
+  }
+
+  // What the impulse wave manual wants of a slide above the water. Until
+  // 17 September 2026 the model read these and this validator did not copy
+  // them, so no edit and no link could keep one.
+  const slideMeasures = [
+    ['slideThicknessM', 'slide thickness (m)'],
+    ['slideWidthM', 'slide width (m)'],
+    ['impactVelocityMS', 'impact velocity (m/s)'],
+    ['dropHeightM', 'drop height (m)'],
+  ] as const;
+  for (const [field, what] of slideMeasures) {
+    const value = raw[field];
+    if (value === undefined) continue;
+    if (!isFiniteNumber(value) || value <= 0) {
+      errors.push({
+        field,
+        code: isFiniteNumber(value) ? 'ZERO_FORBIDDEN' : 'NOT_FINITE',
+        message: `${field}: ${what} must be finite > 0`,
+        rawValue: value,
+      });
+      return invalid(errors);
+    }
+    out[field] = value;
   }
 
   return withWarnings(out, warnings);

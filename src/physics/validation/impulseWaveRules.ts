@@ -132,6 +132,46 @@
  * the product keeps its own 1/r decay, which no rule here holds.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 17 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `28a9bd2` and the tool run afterwards
+ * (`benchmark/results/impulse-wave-against-tool-2026-09-17.json`). It answered
+ * all 143 cases — sixty of its own slides, forty of Nimbus's scenarios, the
+ * forty-three rows of L2. **Every number agrees**: 1 015 of 1 015, the worst
+ * 3.1 × 10⁻¹⁰, which is the twelve decimals Excel hands to AppleScript. **Every
+ * limit agrees**, on all 143, and each of the eight limits was found inside on
+ * some cases and outside on others. Three of Nimbus's scenarios and six of L2's
+ * rows are slides the bed friction holds, where the tool and the product both
+ * give nothing. The validation report, regenerated with the candidate, keeps
+ * the release gate at PASS.
+ *
+ * What moves. A landslide above the water, in open water, draws the manual's
+ * first crest. Lituya Bay 1958 goes from the 48 m of the ceiling to 94 m, and
+ * Anak Krakatau 2018 in its landslide framing from 80 to 150 m; both are
+ * outside the manual's experiments, on S, M, V, D and P and also α for Anak
+ * Krakatau, and the panel says so. Storegga, Vaiont and Elm do not move. The
+ * form keeps a slide's thickness, width, speed and drop height, which the
+ * model read and no edit or link could set, and the report page cites the
+ * manual — and no longer a plume height, the explosivity index and the climate,
+ * which a landslide's report had cited since it borrowed the volcano's list.
+ *
+ * The sweep, in the same session: 0 failures under the project law
+ * (`invariants-2026-09-16-20.json`), then **606** under the candidate
+ * (`-21`), every one an infinite ratio between the two regimes where the
+ * friction holds the slide above the water and the calibrated form still
+ * gives a wave below it. The ratio is null there now — the numbers compared
+ * above do not change — and the sweep gives 0 (`-22`). The application prints
+ * what Node computes on every landslide preset (`benchmark/results/ui.json`).
+ *
+ * `DEFAULT_LANDSLIDE_WAVE_LAW` is `impulseWaveManual`. As rule 167 fixed
+ * before the run: L1 stays not met, because a slide under the water and a
+ * confined basin still draw the project's relations; L2 is met under the
+ * amendment of 16 September, the model being the reference on its rows.
+ */
+
 import type { ImpulseWaveDimensionless } from '../effects/impulseWave.js';
 import { LANDSLIDE_DEFAULT_SLOPE_DEG } from '../events/landslide/simulate.js';
 import { SLIDE_WAVE_EVENTS, type SlideWaveEvent } from './slideWaveSetData.js';

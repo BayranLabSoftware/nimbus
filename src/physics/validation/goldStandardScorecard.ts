@@ -203,14 +203,14 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         standsFor: ['G1', 'G4'],
         status: 'not met',
         evidence:
-          "The relation in place is Watts 2000's cube root with the project's prefactors; Heller et al. 2009 is verified to 0.4 % of its manual but is not the default, and the product does not warn outside Heller's ranges.",
+          "A slide entering open water from above draws the impulse wave manual's first crest (Evers et al. 2019, 2nd edition), held in CI to its worked Examples 1 and 2 and to the manual's own spreadsheet on 143 held-out cases within 10⁻⁹, and the panel and the report name each of the manual's limits a scenario falls outside of (rules 162 to 167). A slide under the water and a confined basin still draw the project's calibrated forms, which no source's worked example holds.",
       },
       {
         rule: 'L2',
         measure: 'fidelity',
-        status: 'not met',
+        status: 'met',
         evidence:
-          'Against Heller on the same rows: Heller 1.282× at σ_ln 1.776, the model 2.090× at 1.529.',
+          "Read under the amendment of 16 September 2026: on the same 43 rows the model is the manual's first crest, checked against the manual's own spreadsheet on every row (rule 165), so its bias and σ_ln are the reference's. The field's reading printed beside it stays the one committed on 16 September, 1.282× at σ_ln 1.776, computed before B-042 corrected the slide's speed; the set is closed to further readings (rule 125).",
       },
       {
         rule: 'L3',
@@ -224,7 +224,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         measure: 'beyond',
         status: 'met',
         evidence:
-          'No failure in the sweep of 5 000 landslides, and the application prints what Node computes (benchmark/results/invariants-2026-09-16-4.json).',
+          'No failure in the sweep of 5 000 landslides under the impulse wave manual, once the ratio between regimes was null where one makes no wave, and the application prints what Node computes on every preset (benchmark/results/invariants-2026-09-16-22.json, ui.json).',
       },
       G6,
       G7,

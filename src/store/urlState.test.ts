@@ -426,6 +426,40 @@ describe('custom earthquakes, volcanoes and landslides in the URL', () => {
     expect(received).toBe(sent);
   });
 
+  it('a landslide keeps the thickness, width, speed and drop the impulse wave manual wants', () => {
+    // The model read all four before 17 September 2026 and the validator
+    // copied none, so no edit and no link could keep one.
+    let params = new URLSearchParams();
+    const { sent, received } = roundTrip(
+      () => {
+        useAppStore.getState().selectEventType('landslide');
+        useAppStore.getState().selectPreset('LITUYA_BAY_1958');
+        useAppStore.getState().setLandslideInput({
+          slideThicknessM: 92,
+          slideWidthM: 823,
+          impactVelocityMS: 110,
+          dropHeightM: 610,
+        });
+        params = encodeStateToSearchParams(projectSyncableState(useAppStore.getState()));
+      },
+      () => useAppStore.getState().landslide.input
+    );
+    expect(params.get(URL_KEYS.slideThicknessM)).toBe('92');
+    expect(params.get(URL_KEYS.slideWidthM)).toBe('823');
+    expect(params.get(URL_KEYS.slideImpactVelocityMS)).toBe('110');
+    expect(params.get(URL_KEYS.slideDropHeightM)).toBe('610');
+    expect(JSON.parse(sent)).toMatchObject({
+      slideThicknessM: 92,
+      slideWidthM: 823,
+      impactVelocityMS: 110,
+      dropHeightM: 610,
+    });
+    expect(received).toBe(sent);
+    // And an empty field takes the measure away again.
+    useAppStore.getState().setLandslideInput({ slideThicknessM: null });
+    expect(useAppStore.getState().landslide.input.slideThicknessM).toBeUndefined();
+  });
+
   it('reads a hand-written link, and a link it cannot use leaves the preset alone', () => {
     const intent = decodeSearchParamsToIntent(
       new URLSearchParams('t=earthquake&p=CUSTOM&mw=7.1&dep=12000&ft=reverse&si=0&wi=none')

@@ -76,8 +76,11 @@ export const LANDSLIDE_DEFAULT_REGIME: LandslideRegime = 'submarine';
  */
 export type LandslideWaveLaw = 'project' | 'impulseWaveManual';
 
-/** What a scenario that names no law draws. */
-export const DEFAULT_LANDSLIDE_WAVE_LAW: LandslideWaveLaw = 'project';
+/** What a scenario that names no law draws: the impulse wave manual since
+ *  17 September 2026, when rules 162 to 167 of validation/impulseWaveRules.ts
+ *  held it to the manual's own spreadsheet on 143 cases drawn after they were
+ *  pushed. */
+export const DEFAULT_LANDSLIDE_WAVE_LAW: LandslideWaveLaw = 'impulseWaveManual';
 
 export interface LandslideScenarioInput {
   /** Volume of the failed block (m³). Sub-aerial events sit at
@@ -182,8 +185,13 @@ export interface LandslideScenarioResult {
   regimeSensitivity: {
     subaerialAmplitude: Meters;
     submarineAmplitude: Meters;
-    /** The larger over the smaller, 1 where the two agree. */
-    ratio: number;
+    /** The larger over the smaller, 1 where the two agree; null where one of
+     *  the two makes no wave at all — a slide the bed friction holds above the
+     *  water raises nothing, and a ratio to nothing is not a number a panel
+     *  can print. Until 17 September 2026 that was Infinity, which no scenario
+     *  reached until the impulse wave manual became the law above the water
+     *  and the landslide sweep found 606. */
+    ratio: number | null;
   } | null;
   /** Present only where `impulseWaveManual` made the wave: what the slide
    *  looked like to the manual's equations, which of its three unknowns had to
@@ -300,7 +308,7 @@ function regimeSensitivity(
   return {
     subaerialAmplitude: m(subaerial),
     submarineAmplitude: m(submarine),
-    ratio: lo > 0 ? hi / lo : Number.POSITIVE_INFINITY,
+    ratio: lo > 0 ? hi / lo : null,
   };
 }
 

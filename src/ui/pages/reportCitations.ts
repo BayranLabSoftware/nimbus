@@ -14,6 +14,7 @@
 import type { EarthquakeScenarioResult } from '../../physics/events/earthquake/index.js';
 import { deepLawFor } from '../../physics/events/earthquake/simulate.js';
 import type { ExplosionScenarioResult } from '../../physics/events/explosion/index.js';
+import type { LandslideScenarioResult } from '../../physics/events/landslide/index.js';
 import type { VolcanoScenarioResult } from '../../physics/events/volcano/index.js';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
 import type { ActiveResult } from '../../store/useAppStore.js';
@@ -278,6 +279,35 @@ export function collectVolcanoCitations(result: VolcanoScenarioResult): Triggere
 }
 
 /**
+ * Collect the citations exercised by a landslide run. Until 17 September 2026
+ * a landslide borrowed the volcano's collector, which cites a plume's height,
+ * the explosivity index and the climate whatever it is given, so a landslide's
+ * report cited all three and never the relation that made its wave.
+ */
+export function collectLandslideCitations(result: LandslideScenarioResult): TriggeredCitation[] {
+  const triggers: TriggeredCitation[] = [];
+  const manual = result.impulseWave;
+  if (manual !== undefined) {
+    triggers.push(
+      cite(
+        'evers2019',
+        manual.held
+          ? "The slide's speed (Eq. 3.5), which friction holds at zero on this slope: no wave."
+          : "The first crest at the slide (Eqs. 3.12 and 3.26) and the slide's speed (Eq. 3.5)."
+      )
+    );
+  }
+  if (result.tsunami === null) return dedupe(triggers);
+  if (manual === undefined && result.inputs.confinedBasinArea === undefined) {
+    triggers.push(
+      cite('watts2000', 'Calibrated cube-root source amplitude (Watts 2000-inspired).')
+    );
+  }
+  triggers.push(cite('ward2000', '1/r far-field decay from the slide as a cavity.'));
+  return dedupe(triggers);
+}
+
+/**
  * Polymorphic collector that dispatches on the tagged {@link ActiveResult}
  * envelope the app store uses. Returns the sorted, de-duplicated
  * citation list for the run. Optional `extras` flags let the caller
@@ -312,18 +342,7 @@ export function collectReportCitations(
       triggers = collectVolcanoCitations(result.data);
       break;
     case 'landslide':
-      // Reuses the volcano-tsunami formula stack — the Watts cube-root
-      // source amplitude and the Ward-Asphaug 1/r far-field decay are
-      // the only equations the landslide branch exercises.
-      triggers =
-        result.data.tsunami === null
-          ? []
-          : collectVolcanoCitations({
-              ...result.data,
-              // Synthetic shape: collectVolcanoCitations only reads the
-              // tsunami flag, not the volcano-specific fields, so the cast
-              // is safe for citation collection.
-            } as never);
+      triggers = collectLandslideCitations(result.data);
       break;
   }
   if (extras.bathymetricTsunami === true) {

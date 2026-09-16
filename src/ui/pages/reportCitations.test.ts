@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../../physics/events/earthquake/index.js';
 import { EXPLOSION_PRESETS, simulateExplosion } from '../../physics/events/explosion/index.js';
+import { LANDSLIDE_PRESETS, simulateLandslide } from '../../physics/events/landslide/index.js';
 import { VOLCANO_PRESETS, simulateVolcano } from '../../physics/events/volcano/index.js';
 import { IMPACT_PRESETS, simulateImpact } from '../../physics/simulate.js';
 import type { CitationKey } from './methodologyContent.js';
@@ -8,6 +9,7 @@ import {
   collectEarthquakeCitations,
   collectExplosionCitations,
   collectImpactCitations,
+  collectLandslideCitations,
   collectReportCitations,
   collectVolcanoCitations,
   formatCitationLine,
@@ -159,5 +161,31 @@ describe('formatCitationLine', () => {
       venue: 'Journal',
     });
     expect(line).toBe('Smith, A. (2020). "Example." Journal.');
+  });
+});
+
+describe('collectLandslideCitations', () => {
+  it("cites the impulse wave manual for a slide above the water, and not a volcano's plume", () => {
+    const r = simulateLandslide(LANDSLIDE_PRESETS.LITUYA_BAY_1958.input);
+    const ks = keys(collectLandslideCitations(r));
+    expect(ks).toContain('evers2019');
+    expect(ks).toContain('ward2000');
+    expect(ks).not.toContain('watts2000');
+    expect(ks).not.toContain('mastin2009');
+    expect(ks).not.toContain('robock2000');
+  });
+
+  it('cites the calibrated form for a slide under the water', () => {
+    const ks = keys(
+      collectLandslideCitations(simulateLandslide(LANDSLIDE_PRESETS.STOREGGA_8200_BP.input))
+    );
+    expect(ks).toContain('watts2000');
+    expect(ks).not.toContain('evers2019');
+  });
+
+  it('cites nothing for a slide that ends on dry land', () => {
+    expect(collectLandslideCitations(simulateLandslide(LANDSLIDE_PRESETS.ELM_1881.input))).toEqual(
+      []
+    );
   });
 });

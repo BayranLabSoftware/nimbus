@@ -65,31 +65,35 @@ describe('simulateLandslide', () => {
     expect(r.tsunami.sourceAmplitude as number).toBeLessThan(165);
   });
 
-  it('Lituya preset is capped by the breaking limit at ≈ 48 m (documented under-prediction)', () => {
-    // Lituya 1958 is a documented limitation: the fjord geometry
-    // amplifies the wave to 524 m run-up, but an open-ocean Watts-style
-    // source can't capture reflection/focusing inside a narrow inlet.
-    // For this preset the McCowan breaking cap is the SOLE binding
-    // constraint: 0.4 × 120 m source depth = 48 m, below the uncapped
-    // K=0.4 Watts-style value (≈ 71 m), which is therefore discarded.
-    // So the result is ≈ 48 m — an order-of-magnitude under-prediction
-    // of the observed run-up, kept on purpose so the module header's
-    // Lituya caveat stays accurate. (Change the depth and the answer
-    // moves; change K alone and it does not, until K drops below ~0.27.)
+  it("Lituya preset draws the impulse wave manual's crest, and still falls far short of the 524 m run-up", () => {
+    // Until 17 September 2026 the preset sat on the project's ceiling, 0.4 ×
+    // 120 m = 48 m, which decided the wave outright (B-039). It is the manual's
+    // first crest now, with no ceiling: 94 m on the closures — a slide of
+    // V^(1/3) thickness and width reaching 45 m/s, where Fritz et al. give it
+    // 110 m/s — and outside the manual's experiments on S, M, V, D and P, which
+    // the result names. The fjord's far wall is what made 524 m of run-up, and
+    // no generation relation reaches that.
     const r = simulateLandslide(LANDSLIDE_PRESETS.LITUYA_BAY_1958.input);
+    expect(r.waveLaw).toBe('impulseWaveManual');
     expect(r.tsunami).not.toBeNull();
     if (r.tsunami === null) return;
-    expect(r.tsunami.sourceAmplitude as number).toBeCloseTo(48, 0); // 0.4 × 120 m cap
+    expect(r.tsunami.sourceAmplitude as number).toBeCloseTo(93.9, 1);
+    expect(r.tsunami.sourceAmplitude as number).toBeGreaterThan(48);
+    expect(r.tsunami.sourceAmplitude as number).toBeLessThan(524 / 4);
+    expect(r.impulseWave?.outsideTestedRange).toEqual(['S', 'M', 'V', 'D', 'P']);
   });
 
   describe('Watts submerged-density-contrast factor (slideDensity)', () => {
     // Deep basin so the McCowan breaking cap (0.4·depth) never binds and
     // the density factor is visible in the source amplitude.
+    // The project law, named: above the water the impulse wave manual reads the
+    // density as a mass, not a buoyancy (rule 163 of impulseWaveRules.ts).
     const baseInput = {
       volumeM3: 1e7,
       slopeAngleDeg: 20,
       meanOceanDepth: m(4_000),
       regime: 'subaerial' as const,
+      waveLaw: 'project' as const,
     };
     const sourceAmp = (slideDensity?: number): number => {
       const r = simulateLandslide(
@@ -125,7 +129,14 @@ describe('simulateLandslide', () => {
     // metadata. It picks K = 0.4 or 0.005. Deep water, so neither wave
     // meets the 0.4·h breaking cap, and no density, so both sit at
     // their reference.
-    const slide = { volumeM3: 1e8, slopeAngleDeg: 20, meanOceanDepth: m(10_000) };
+    // Under the project law, which both regimes kept until 17 September 2026;
+    // above the water the impulse wave manual now draws the wave instead.
+    const slide = {
+      volumeM3: 1e8,
+      slopeAngleDeg: 20,
+      meanOceanDepth: m(10_000),
+      waveLaw: 'project' as const,
+    };
     const above = simulateLandslide({ ...slide, regime: 'subaerial' }).tsunami;
     const below = simulateLandslide({ ...slide, regime: 'submarine' }).tsunami;
     expect(above).not.toBeNull();

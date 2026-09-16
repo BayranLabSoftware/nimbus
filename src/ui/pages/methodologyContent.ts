@@ -363,6 +363,15 @@ const watts2000: Citation = {
   doi: '10.1061/(ASCE)0733-950X(2000)126:3(144)',
 };
 
+const evers2019: Citation = {
+  authors: 'Evers, F. M., Heller, V., Fuchs, H., Hager, W. H. & Boes, R. M.',
+  year: 2019,
+  title:
+    'Landslide-generated Impulse Waves in Reservoirs — Basics and Computation (2nd edition; version 2.1 of 2023, with the addendum on shallow slide impact angles)',
+  venue: 'VAW-Mitteilung 254, ETH Zürich',
+  doi: '10.3929/ethz-b-000413216',
+};
+
 const herrick1997: Citation = {
   authors: 'Herrick, R. R., Sharpton, V. L., Malin, M. C., Lyons, S. N. & Feely, K.',
   year: 1997,
@@ -1309,12 +1318,21 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         citation: synolakis1987,
       },
       {
-        id: 'submarine-landslide',
-        name: 'Submarine-landslide source',
+        id: 'impulse-wave-manual',
+        name: 'A landslide entering the water (impulse wave manual)',
         formula:
-          'open water: A₀ = min(K · (γ/γ_ref) · V^(1/3) · sin θ,  0.4 · h),  K = 0.4 above the water, 0.005 under it   ;   confined basin: A₀ = min(f · V / A_basin,  h),  f = 1.8',
+          'a₀,c₁ = 0.2 · P^0.5 · (b/h)^0.75 · cos(6α/7)^0.25 · h ;  P = F · S^0.5 · M^0.25 · cos(6α/7)^0.5 ;  V_s = √(2 g Δz · (1 − tan δ · cot α))',
         description:
-          "A Watts 2000-inspired calibrated form, not Watts' predictive equation: slide thickness and Froude number are folded into a prefactor per regime. A rigid mass falling into the water, K = 0.4, is calibrated on Anak Krakatau 2018 (0.27 km³, Grilli et al. 2019's best estimate); sediment sliding on the sea floor, K = 0.005, on Storegga, against a 5–10 m target Nimbus set for 3 000 km³ on a 5° slope (Bondevik et al. 2005 model 2 400 km³ and map run-up of 3–20 m), so the same volume and slope make a wave up to 80 times taller falling in. γ = ρ_s/ρ_w − 1 is read about each regime's reference density (2 500 and 1 950 kg/m³). A reservoir or a fjord takes the basin-fill form instead, the volume spread over the surface and amplified by f = 1.8, capped at the basin depth. f is set on Vaiont, where the wave crested 140 m above the top of a dam that stood 25 m above the lake (Genevois & Ghirotti 2005; ASDSO): 162 m against 165. It was 3 until 14 September 2026, tuned on a 250 m that is the slide's thickness in that paper. A slide footprint, when given, replaces V^(1/3) with √(A/π) as the radius the far field decays from. Treat it as an order of magnitude, a factor of 2 either way. Until 14 September 2026 this entry printed a single prefactor of 0.1, which no product path used.",
+          "Since 17 September 2026, the wave a slide raises when it enters open water from above: the first crest of the three-dimensional generation equations of the impulse wave manual, the field's method (Evers, Heller, Fuchs, Hager & Boes 2019, 2nd edition; Eqs. 3.12, 3.26 and 3.5). F = V_s/√(gh) is the slide's Froude number, S = s/h its relative thickness and M = ρ_s·V/(ρ_w·b·h²) its relative mass, with b its width, h the depth and α the angle it comes in at. It is held in CI to the manual's worked Examples 1 and 2, and on 143 held-out cases to the manual's own spreadsheet, every number within 10⁻⁹ (rules 162 to 167). Where the slide's thickness, width or speed is not given Nimbus estimates it — thickness and width as V^⅓, the speed from Eq. 3.5 with tan δ = 0.3 and a drop of V^⅓ · sin α — and says which; on a slope no steeper than δ the slide gathers no speed and there is no wave. The crest is not held to the depth, since the manual gives up to 0.94 of it inside its own experiments. Outside the limits of its Table 3-3, with the extended density range and the 2023 addendum's shallow angles, the equations are extrapolated, and the panel names each limit. Until 16 September 2026 the manual was credited to its first edition of 2009 and the speed was low by √(sin α) (B-042, B-043), on a path no scenario drew. A slide under the water and a confined basin keep the calibrated forms below.",
+        citation: evers2019,
+      },
+      {
+        id: 'submarine-landslide',
+        name: 'Submarine-landslide and confined-basin source',
+        formula:
+          'open water: A₀ = min(K · (γ/γ_ref) · V^(1/3) · sin θ,  0.4 · h),  K = 0.4 for a volcanic flank collapse, 0.005 under the water   ;   confined basin: A₀ = min(f · V / A_basin,  h),  f = 1.8',
+        description:
+          "A Watts 2000-inspired calibrated form, not Watts' predictive equation, for what the impulse wave manual above does not cover: a slide under the water, a confined basin, and a volcano's flank collapse. Slide thickness and Froude number are folded into a prefactor per regime. A rigid mass falling into the water, K = 0.4, which a landslide above the water drew until 17 September 2026, is calibrated on Anak Krakatau 2018 (0.27 km³, Grilli et al. 2019's best estimate); sediment sliding on the sea floor, K = 0.005, on Storegga, against a 5–10 m target Nimbus set for 3 000 km³ on a 5° slope (Bondevik et al. 2005 model 2 400 km³ and map run-up of 3–20 m), so the same volume and slope make a wave up to 80 times taller falling in. γ = ρ_s/ρ_w − 1 is read about each regime's reference density (2 500 and 1 950 kg/m³). A reservoir or a fjord takes the basin-fill form instead, the volume spread over the surface and amplified by f = 1.8, capped at the basin depth. f is set on Vaiont, where the wave crested 140 m above the top of a dam that stood 25 m above the lake (Genevois & Ghirotti 2005; ASDSO): 162 m against 165. It was 3 until 14 September 2026, tuned on a 250 m that is the slide's thickness in that paper. A slide footprint, when given, replaces V^(1/3) with √(A/π) as the radius the far field decays from. Treat it as an order of magnitude, a factor of 2 either way. Until 14 September 2026 this entry printed a single prefactor of 0.1, which no product path used.",
         citation: watts2000,
       },
       {
@@ -1554,6 +1572,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
  * an airburst run cites Chyba+Popova but not Longmire or Iverson.
  */
 export const CITATIONS = {
+  evers2019,
   collins2005,
   collins2017,
   chyba1993,

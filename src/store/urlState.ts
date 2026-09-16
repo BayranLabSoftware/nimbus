@@ -80,6 +80,10 @@ export const URL_KEYS = {
   confinementDynamicFactor: 'bf',
   slideRegime: 'rg',
   slideDensity: 'sd',
+  slideThicknessM: 'sth',
+  slideWidthM: 'swd',
+  slideImpactVelocityMS: 'svs',
+  slideDropHeightM: 'sdz',
 } as const;
 
 /** Scenario types whose custom inputs a link restores wholesale. */
@@ -235,6 +239,10 @@ function encodeLandslide(params: URLSearchParams, input: AppStore['landslide']['
   setNumber(params, URL_KEYS.confinementDynamicFactor, input.confinementDynamicFactor);
   if (input.regime !== undefined) params.set(URL_KEYS.slideRegime, input.regime);
   setNumber(params, URL_KEYS.slideDensity, input.slideDensity);
+  setNumber(params, URL_KEYS.slideThicknessM, input.slideThicknessM);
+  setNumber(params, URL_KEYS.slideWidthM, input.slideWidthM);
+  setNumber(params, URL_KEYS.slideImpactVelocityMS, input.impactVelocityMS);
+  setNumber(params, URL_KEYS.slideDropHeightM, input.dropHeightM);
 }
 
 /**
@@ -413,6 +421,10 @@ function decodeCustomInput(
     number('confinementDynamicFactor', URL_KEYS.confinementDynamicFactor, positive);
     oneOf('regime', URL_KEYS.slideRegime, SLIDE_REGIMES);
     number('slideDensity', URL_KEYS.slideDensity, positive);
+    number('slideThicknessM', URL_KEYS.slideThicknessM, positive);
+    number('slideWidthM', URL_KEYS.slideWidthM, positive);
+    number('impactVelocityMS', URL_KEYS.slideImpactVelocityMS, positive);
+    number('dropHeightM', URL_KEYS.slideDropHeightM, positive);
   }
   return Object.keys(raw).length > 0 ? { type, raw } : null;
 }

@@ -57,4 +57,23 @@ describe('a landslide says how much its regime decides', () => {
       expect(r.regimeSensitivity === null, key).toBe(!made);
     }
   });
+
+  it('has no ratio where one of the two makes no wave, rather than an infinite one', () => {
+    // Above the water on a 12° slope the bed friction holds the slide and the
+    // impulse wave manual gives nothing; under it the calibrated form still
+    // gives a wave. Until 17 September 2026 that ratio was Infinity, and the
+    // landslide sweep found 606 of them once the manual became the law.
+    const r = simulateLandslide({
+      volumeM3: 1e8,
+      slopeAngleDeg: 12,
+      meanOceanDepth: m(500),
+      regime: 'submarine',
+    });
+    const s = r.regimeSensitivity;
+    expect(s).not.toBeNull();
+    if (s === null) return;
+    expect(Number(s.subaerialAmplitude)).toBe(0);
+    expect(Number(s.submarineAmplitude)).toBeGreaterThan(0);
+    expect(s.ratio).toBeNull();
+  });
 });

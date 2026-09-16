@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { BREAKING_INDEX } from '../../tsunamiCasualties.js';
 import { m, sqm } from '../../units.js';
 import { LANDSLIDE_PRESETS, simulateLandslide } from '../landslide/simulate.js';
+import { simulateVolcano, VOLCANO_PRESETS } from './simulate.js';
 import { SOURCE_AMPLITUDE_CEILING, volcanoTsunami } from './tsunami.js';
 
 /**
@@ -21,18 +22,28 @@ describe("B-039 the source ceiling is the project's own number, and says so", ()
     expect(SOURCE_AMPLITUDE_CEILING).not.toBe(BREAKING_INDEX);
   });
 
-  it('decides the wave outright at Lituya Bay and Anak Krakatau', () => {
-    // Both sit exactly on it: what a visitor sees is the ceiling, not the
-    // relation above it. If either stops sitting on it, the ceiling moved and
-    // this test is the place that says so.
-    for (const key of ['LITUYA_BAY_1958', 'ANAK_KRAKATAU_2018'] as const) {
-      const r = simulateLandslide({ ...LANDSLIDE_PRESETS[key].input });
-      const wave = r.tsunami;
-      expect(wave).not.toBeNull();
+  it('decides the wave outright at the volcanic collapses, and no longer at the landslides', () => {
+    // Until 17 September 2026 it decided four presets: Lituya Bay 1958, Anak
+    // Krakatau 2018 in both framings, and Hunga Tonga 2022. Since then a
+    // landslide above the water draws the impulse wave manual's crest, which
+    // the ceiling does not touch (rules 162 to 167 of impulseWaveRules.ts), so
+    // the two landslide framings stand above it; the volcanic collapses keep
+    // the project law and sit on it still. If any of these moves, this is the
+    // test that says so.
+    for (const key of ['ANAK_KRAKATAU_2018', 'HUNGA_TONGA_2022'] as const) {
+      const wave = simulateVolcano({ ...VOLCANO_PRESETS[key].input }).tsunami;
+      expect(wave).toBeDefined();
       const amplitude = Number(wave?.sourceAmplitude ?? 0);
       const depth = Number(wave?.meanOceanDepth ?? 0);
       expect(depth).toBeGreaterThan(0);
-      expect(amplitude / depth).toBeCloseTo(SOURCE_AMPLITUDE_CEILING, 9);
+      expect(amplitude / depth, key).toBeCloseTo(SOURCE_AMPLITUDE_CEILING, 9);
+    }
+    for (const key of ['LITUYA_BAY_1958', 'ANAK_KRAKATAU_2018'] as const) {
+      const r = simulateLandslide({ ...LANDSLIDE_PRESETS[key].input });
+      const amplitude = Number(r.tsunami?.sourceAmplitude ?? 0);
+      const depth = Number(r.tsunami?.meanOceanDepth ?? 0);
+      expect(r.impulseWave, key).toBeDefined();
+      expect(amplitude / depth, key).toBeGreaterThan(SOURCE_AMPLITUDE_CEILING);
     }
   });
 

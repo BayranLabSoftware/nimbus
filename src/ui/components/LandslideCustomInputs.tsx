@@ -45,6 +45,10 @@ export function LandslideCustomInputs(): JSX.Element {
   const footprintIssues = useFieldIssues('landslide', 'slideFootprintArea');
   const basinIssues = useFieldIssues('landslide', 'confinedBasinArea');
   const factorIssues = useFieldIssues('landslide', 'confinementDynamicFactor');
+  const thicknessIssues = useFieldIssues('landslide', 'slideThicknessM');
+  const widthIssues = useFieldIssues('landslide', 'slideWidthM');
+  const speedIssues = useFieldIssues('landslide', 'impactVelocityMS');
+  const dropIssues = useFieldIssues('landslide', 'dropHeightM');
 
   const volume = splitScientific(input.volumeM3);
   // A link can carry a volume outside the list; it still has to show.
@@ -104,6 +108,13 @@ export function LandslideCustomInputs(): JSX.Element {
     const v = optional(text);
     if (v !== undefined) setLandslideInput({ confinementDynamicFactor: v });
   };
+  /** The slide as the impulse wave manual wants it, each field optional. */
+  const measures = [
+    ['landslide-thickness', 'slideThicknessM', 'thicknessInput', thicknessIssues, 1],
+    ['landslide-width', 'slideWidthM', 'widthInput', widthIssues, 10],
+    ['landslide-speed', 'impactVelocityMS', 'speedInput', speedIssues, 1],
+    ['landslide-drop', 'dropHeightM', 'dropInput', dropIssues, 10],
+  ] as const;
 
   return (
     <fieldset className={styles.customParams}>
@@ -264,6 +275,45 @@ export function LandslideCustomInputs(): JSX.Element {
           isError={depthIssues.hasError}
         />
       </div>
+
+      {regime === 'subaerial' &&
+        measures.map(([id, field, label, issues, step]) => (
+          <div key={id} className={styles.paramField}>
+            <label className={styles.paramLabel} htmlFor={id}>
+              {t(`simulator.landslide.${label}`)}
+            </label>
+            <DraftNumberInput
+              id={id}
+              className={styles.paramInput}
+              inputMode="decimal"
+              min={0}
+              step={step}
+              value={input[field] ?? ''}
+              onValueText={(text: string) => {
+                const v = optional(text);
+                if (v !== undefined) setLandslideInput({ [field]: v });
+              }}
+              aria-invalid={issues.hasError || undefined}
+              aria-describedby="landslide-manual-help"
+              data-testid={id}
+            />
+            <FieldFeedback
+              field={field}
+              message={issues.topMessage}
+              code={issues.topCode}
+              isError={issues.hasError}
+            />
+          </div>
+        ))}
+      {regime === 'subaerial' && (
+        <span
+          id="landslide-manual-help"
+          className={styles.presetNote}
+          style={{ gridColumn: '1 / -1' }}
+        >
+          {t('simulator.landslide.manualHelp')}
+        </span>
+      )}
 
       <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
         <label className={styles.paramLabel} htmlFor="landslide-footprint">

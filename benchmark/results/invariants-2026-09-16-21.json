@@ -1,0 +1,61 @@
+{
+ "track": "INV",
+ "scenariosPerHazard": {
+  "landslide": 5000
+ },
+ "watchdogMs": 2000,
+ "failures": {
+  "landslide": {
+   "finite: infinite at regimeSensitivity.ratio": {
+    "count": 606,
+    "examples": [
+     {
+      "input": {
+       "volumeM3": 8559817755.571567,
+       "regime": "subaerial",
+       "slopeAngleDeg": 5.575790490955114,
+       "meanOceanDepth": 2174.3898657150567
+      },
+      "detail": "regimeSensitivity.ratio = Infinity"
+     },
+     {
+      "input": {
+       "volumeM3": 28108983472455.293,
+       "regime": "submarine",
+       "slopeAngleDeg": 6.74895703047514,
+       "meanOceanDepth": 6804.826017003506
+      },
+      "detail": "regimeSensitivity.ratio = Infinity"
+     },
+     {
+      "input": {
+       "volumeM3": 5128797.961235978,
+       "regime": "submarine",
+       "slopeAngleDeg": 10.99301515519619,
+       "meanOceanDepth": 1709.4116434454918
+      },
+      "detail": "regimeSensitivity.ratio = Infinity"
+     },
+     {
+      "input": {
+       "volumeM3": 139186516.80927724,
+       "regime": "subaerial",
+       "slopeAngleDeg": 8.764086341485381,
+       "meanOceanDepth": 9162.50357334502
+      },
+      "detail": "regimeSensitivity.ratio = Infinity"
+     },
+     {
+      "input": {
+       "volumeM3": 598349609295.8375,
+       "regime": "submarine",
+       "slopeAngleDeg": 13.738970320671797,
+       "meanOceanDepth": 5798.085158923641
+      },
+      "detail": "regimeSensitivity.ratio = Infinity"
+     }
+    ]
+   }
+  }
+ }
+}

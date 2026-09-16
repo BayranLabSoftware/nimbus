@@ -140,7 +140,9 @@ describe('rules 162 to 167: the impulse wave manual against its own tool', () =>
     ).toBe(false);
   });
 
-  it('is not yet the default: the rules are pushed before the tool is run', () => {
-    expect(DEFAULT_LANDSLIDE_WAVE_LAW).toBe('project');
+  it('is the default since rule 166 adopted it', () => {
+    // Pushed in 28a9bd2 with the default still 'project'; the tool answered
+    // all 143 cases and every number and limit agreed.
+    expect(DEFAULT_LANDSLIDE_WAVE_LAW).toBe('impulseWaveManual');
   });
 });
