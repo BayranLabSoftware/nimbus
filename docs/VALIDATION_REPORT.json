@@ -6312,12 +6312,12 @@
         {
           "quantity": "finalDepth",
           "pairs": 57,
-          "geometricMean": 1.293,
-          "p10": 1.003,
-          "median": 1.345,
-          "p90": 1.362,
-          "min": 0.99,
-          "max": 1.4
+          "geometricMean": 0.995,
+          "p10": 0.989,
+          "median": 0.993,
+          "p90": 1.007,
+          "min": 0.957,
+          "max": 1.033
         },
         {
           "quantity": "overpressure",

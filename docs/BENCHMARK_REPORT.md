@@ -83,10 +83,14 @@ within ×1.25 in 100 %. The nuclear 5 and 1 psi rings sit at
    GeoClaw is within 6 % of the exact solution, agree better (1.23×,
    closing to 1.00 at 3 000 km).
 6. **Complex craters are a third deeper than the program now prints.** The
-   web service's depths follow 0.294·D^0.301 (km), not the 0.4·D^0.3 of
-   Collins et al. (2005, Eq. 28) that Nimbus implements; every complex
-   crater is 1.31× deeper in Nimbus. The reference was revised
-   after the publication Nimbus cites.
+   web service's depths follow 0.294·D^0.301 (km), not the 0.4·D^0.3
+   Nimbus implemented; every complex crater was 1.31× deeper in Nimbus.
+   *Corrected on 16 September 2026 (B-040): this finding blamed the
+   reference — "the reference was revised after the publication Nimbus
+   cites" — and it was not revised. Eq. 28 of Collins et al. (2005) is
+   0.294·D^0.301, the program and the paper agree, and 0.4·D^0.3 is
+   Herrick et al.'s Venus fit that Nimbus had carried under Eq. 28's name.
+   The misreading was Nimbus's. The depth is now 0.995×.*
 7. **Tephra falls in the right place but not in the right amount.** On the
    wind axis Nimbus's loading is 0.51× Tephra2's with a scatter of
    σ ln = 2.71 (35 % within ×2); 30 km off the axis
