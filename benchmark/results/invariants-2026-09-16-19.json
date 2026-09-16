@@ -1,0 +1,10 @@
+{
+ "track": "INV",
+ "scenariosPerHazard": {
+  "volcano": 5000
+ },
+ "watchdogMs": 2000,
+ "failures": {
+  "volcano": {}
+ }
+}

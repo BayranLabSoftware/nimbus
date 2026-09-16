@@ -36,26 +36,40 @@ describe('ganserTerminalVelocity', () => {
 });
 
 describe('ashfallMassLoading', () => {
-  it('no advection upwind of the vent — returns 0 at x ≤ 0', () => {
-    const r = ashfallMassLoading({
-      plumeHeight: m(20_000),
-      totalEjectaVolume: 1e10,
-      downwindDistance: -1_000,
-      crosswindDistance: 0,
-      windSpeed: 20,
-    });
-    expect(r).toBe(0);
+  it('upwind of the vent: none in the closed form, a little by diffusion in the program', () => {
+    const at = (x: number, depositModel: 'closed-form' | 'program'): number =>
+      ashfallMassLoading({
+        plumeHeight: m(20_000),
+        totalEjectaVolume: 1e10,
+        downwindDistance: x,
+        crosswindDistance: 0,
+        windSpeed: 20,
+        depositModel,
+      });
+    expect(at(-1_000, 'closed-form')).toBe(0);
+    // Since rule 161 of validation/tephra2Rules.ts the deposit is Tephra2's,
+    // whose diffusion spreads the grains that land near the vent both ways.
+    expect(at(-1_000, 'program')).toBeGreaterThan(0);
+    expect(at(-20_000, 'program')).toBeLessThan(at(20_000, 'program'));
   });
 
-  it('zero wind gives zero deposit (advection model degenerates)', () => {
-    const r = ashfallMassLoading({
-      plumeHeight: m(20_000),
-      totalEjectaVolume: 1e10,
-      downwindDistance: 10_000,
-      crosswindDistance: 0,
-      windSpeed: 0,
-    });
-    expect(r).toBe(0);
+  it('zero wind: nothing in the closed form, a deposit about the vent in the program', () => {
+    const at = (x: number, depositModel: 'closed-form' | 'program'): number =>
+      ashfallMassLoading({
+        plumeHeight: m(20_000),
+        totalEjectaVolume: 1e10,
+        downwindDistance: x,
+        crosswindDistance: 0,
+        windSpeed: 0,
+        depositModel,
+      });
+    expect(at(10_000, 'closed-form')).toBe(0);
+    expect(at(10_000, 'program')).toBeGreaterThan(0);
+    // Nearly symmetric: a calm wind is read as 1 mm/s north and east, as the
+    // program reads it, which carries the finest grains a little north-east.
+    const upwind = at(-10_000, 'program');
+    const downwind = at(10_000, 'program');
+    expect(Math.abs(upwind - downwind) / downwind).toBeLessThan(0.01);
   });
 
   it('deposit attenuates in the far field past all grain-class peaks', () => {

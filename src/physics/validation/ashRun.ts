@@ -1,5 +1,9 @@
 import { readFileSync } from 'node:fs';
-import { ashfallMassLoading, type AshSpreadLaw } from '../events/volcano/ashfall.js';
+import {
+  ashfallMassLoading,
+  type AshDepositModel,
+  type AshSpreadLaw,
+} from '../events/volcano/ashfall.js';
 import { plumeHeight } from '../events/volcano/plumeHeight.js';
 import {
   ASH2_WITH_CANDIDATE,
@@ -52,11 +56,15 @@ export interface AshLawResult {
   crosswind: AshReading;
 }
 
-/** Nimbus against the reference under one law. */
+/** Nimbus against the reference under one law. Rules 106 to 113 read the
+ *  closed-form deposit's spread laws, so that is what a law is scored on unless
+ *  the deposit model is named (rule 161 of tephra2Rules.ts made the program's
+ *  the default). */
 export function scoreAsh(
   cases: readonly AshCase[],
   reference: readonly ReferenceCase[],
-  law: AshSpreadLaw
+  law: AshSpreadLaw,
+  depositModel: AshDepositModel = 'closed-form'
 ): AshLawResult {
   const byId = new Map(cases.map((c) => [c.id, c]));
   const axis: number[] = [];
@@ -74,6 +82,7 @@ export function scoreAsh(
         crosswindDistance: p.yKm * 1_000,
         windSpeed: c.windSpeed,
         spreadLaw: law,
+        depositModel,
       });
       if (!(nimbus > 0)) continue;
       (p.yKm === 0 ? axis : crosswind).push(Math.log(nimbus / p.massLoadingKgM2));

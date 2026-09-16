@@ -1,0 +1,77 @@
+{
+ "track": "INV",
+ "scenariosPerHazard": {
+  "volcano": 5000
+ },
+ "watchdogMs": 2000,
+ "failures": {
+  "volcano": {
+   "continuous: windAdvectedAshfall.area": {
+    "count": 3,
+    "examples": [
+     {
+      "input": {
+       "volumeEruptionRate": 943981.2573743984,
+       "totalEjectaVolume": 552600641.5043958,
+       "windSpeed": 45.122725325636566,
+       "windDirectionDegrees": 58.84808341716416
+      },
+      "detail": "2.35901e+10 → 2.81874e+10"
+     },
+     {
+      "input": {
+       "volumeEruptionRate": 4245.771475369111,
+       "totalEjectaVolume": 55765009.567840025,
+       "windSpeed": 34.56179703120142,
+       "windDirectionDegrees": 252.52749402215704
+      },
+      "detail": "2.08367e+9 → 2.30147e+9"
+     },
+     {
+      "input": {
+       "volumeEruptionRate": 60723.87754661031,
+       "totalEjectaVolume": 300605584.4179355,
+       "windSpeed": 39.10696911625564,
+       "windDirectionDegrees": 289.88439577282406,
+       "evacuationRadiusM": 72893.30479688942
+      },
+      "detail": "1.23614e+10 → 1.32064e+10"
+     }
+    ]
+   },
+   "continuous: windAdvectedAshfall.downwindRange": {
+    "count": 3,
+    "examples": [
+     {
+      "input": {
+       "volumeEruptionRate": 943981.2573743984,
+       "totalEjectaVolume": 552600641.5043958,
+       "windSpeed": 45.122725325636566,
+       "windDirectionDegrees": 58.84808341716416
+      },
+      "detail": "447448 → 534457"
+     },
+     {
+      "input": {
+       "volumeEruptionRate": 4245.771475369111,
+       "totalEjectaVolume": 55765009.567840025,
+       "windSpeed": 34.56179703120142,
+       "windDirectionDegrees": 252.52749402215704
+      },
+      "detail": "158003 → 174460"
+     },
+     {
+      "input": {
+       "volumeEruptionRate": 60723.87754661031,
+       "totalEjectaVolume": 300605584.4179355,
+       "windSpeed": 39.10696911625564,
+       "windDirectionDegrees": 289.88439577282406,
+       "evacuationRadiusM": 72893.30479688942
+      },
+      "detail": "437604 → 467361"
+     }
+    ]
+   }
+  }
+ }
+}

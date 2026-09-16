@@ -53,8 +53,8 @@ describe("rule 158: Nimbus's forward model against the program", () => {
     }
   });
 
-  it('is not the default until rule 161 says so', () => {
-    expect(DEFAULT_ASH_DEPOSIT_MODEL).toBe('closed-form');
+  it('is the default since rule 161', () => {
+    expect(DEFAULT_ASH_DEPOSIT_MODEL).toBe('program');
   });
 
   it("draws the candidate's footprint off the program's deposit", () => {

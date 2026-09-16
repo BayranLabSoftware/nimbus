@@ -451,8 +451,9 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
           },
           {
             name: 'the ash',
-            status: 'not met',
-            evidence: "Tephra2's closure adopted (rules 110 to 113), still 0.299× across the wind.",
+            status: 'met',
+            evidence:
+              "Tephra2's forward model, written anew: forty held-out eruptions, all 1 600 points within the program's printing (rules 158 to 161).",
           },
           {
             name: 'the pyroclastic currents',
@@ -506,9 +507,9 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
       {
         rule: 'G5',
         measure: 'beyond',
-        status: 'not met',
+        status: 'met',
         evidence:
-          "6 failures: the ashfall's plume crossing a grain-size regime (benchmark/results/invariants-2026-09-16-4.json).",
+          "No failure in the sweep of 5 000 volcanoes on Tephra2's deposit, where the closed form had 6 (rules 158 to 161, benchmark/results/invariants-2026-09-16-19.json), and the application prints what Node computes on every preset (benchmark/results/ui.json).",
       },
       G6,
       G7,

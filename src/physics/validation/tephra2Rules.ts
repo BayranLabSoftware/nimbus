@@ -61,6 +61,41 @@
  * the footprint: Tephra2 prints loadings at points, not a reach or an area.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 16 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `8f26baf` and the program run afterwards
+ * (`benchmark/results/tephra2-against-binary-2026-09-16.json`). It ran all
+ * forty eruptions. **Every point agrees**: 1 600 of 1 600, 1 299 of them above
+ * zero, the worst 4.8 × 10⁻⁶ — the program's own printing. The release gate
+ * stays PASS.
+ *
+ * What moves. A scenario's ash is Tephra2's deposit. Against the reference run
+ * on the benchmark's 70 eruptions it reads 1.000× on the axis and across the
+ * wind, at σ_ln below 10⁻⁵, where the closed form read 0.686× and 0.299× (rules
+ * 106 to 113, whose verdicts `scripts/benchmark/ash.ts` still prints on the
+ * closed form they were about). At a 15 m/s wind the 1 mm isopach of
+ * Pinatubo 1991 reaches 882 km instead of 669 and covers 204 000 km² instead
+ * of 192 000; Mount St Helens 1980's covers 31 000 km² instead of 55 000;
+ * Tambora 1815's reaches 2 459 km instead of 3 153. The radial 1 mm area is a
+ * separate relation and does not move. Three tests changed with it: the
+ * default's name, and two that held the closed form's deposit to nothing
+ * upwind of the vent and nothing in a calm, where the program's diffusion lays
+ * some; each now reads both models.
+ *
+ * The sweep, in the same session (`invariants-2026-09-16-18.json` under the
+ * closed form, `-19` under the program's deposit): 6 and 0. The six were the
+ * closed form's isopach jumping as its bands crossed the threshold; the
+ * program's deposit is smooth. The application, run on every volcano preset
+ * the same evening, prints what Node computes (`benchmark/results/ui.json`),
+ * and a Krakatau with a 15 m/s wind drew the reach Node draws.
+ *
+ * `DEFAULT_ASH_DEPOSIT_MODEL` is `program`. V1's ash clause holds, and G5 holds
+ * for volcanoes.
+ */
+
 import { programEruption } from '../events/volcano/ashfall.js';
 import { plumeHeight } from '../events/volcano/plumeHeight.js';
 import type { Tephra2Eruption, WindReading } from '../events/volcano/tephra2Fallout.js';

@@ -602,7 +602,7 @@
               "G1"
             ],
             "holds": false,
-            "credit": 0.25,
+            "credit": 0.5,
             "status": null,
             "clauses": [
               {
@@ -611,7 +611,7 @@
               },
               {
                 "name": "the ash",
-                "status": "not met"
+                "status": "met"
               },
               {
                 "name": "the pyroclastic currents",
@@ -683,9 +683,9 @@
             "rule": "G5",
             "measure": "beyond",
             "standsFor": [],
-            "holds": false,
-            "credit": 0,
-            "status": "not met",
+            "holds": true,
+            "credit": 1,
+            "status": "met",
             "clauses": []
           },
           {
@@ -707,23 +707,23 @@
             "clauses": []
           }
         ],
-        "held": 1,
+        "held": 2,
         "pending": 4,
-        "credit": 1.25,
-        "reading": 1.1,
+        "credit": 2.5,
+        "reading": 2.2,
         "fidelity": {
           "rules": 4,
           "held": 0,
           "pending": 3,
-          "credit": 0.25,
-          "reading": 0.5
+          "credit": 0.5,
+          "reading": 1.1
         },
         "beyond": {
           "rules": 6,
-          "held": 1,
+          "held": 2,
           "pending": 1,
-          "credit": 1,
-          "reading": 1.5
+          "credit": 2,
+          "reading": 3
         }
       }
     ],

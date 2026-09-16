@@ -1,0 +1,8331 @@
+{
+ "rules": "src/physics/validation/tephra2Rules.ts, rules 158 to 161",
+ "verdict": {
+  "eruptions": 40,
+  "points": 1600,
+  "departs": 0,
+  "heldOutPasses": true
+ },
+ "cases": [
+  {
+   "key": "program 1",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000003782689958862283,
+   "agreements": [
+    {
+     "model": 0.000005699288732655283,
+     "program": 0.00000569929,
+     "agrees": true
+    },
+    {
+     "model": 0.05278871352407036,
+     "program": 0.0527887,
+     "agrees": true
+    },
+    {
+     "model": 0.0000051219564538384234,
+     "program": 0.00000512196,
+     "agrees": true
+    },
+    {
+     "model": 0.05106045269951584,
+     "program": 0.0510605,
+     "agrees": true
+    },
+    {
+     "model": 0.015079947719525071,
+     "program": 0.0150799,
+     "agrees": true
+    },
+    {
+     "model": 0.00008245116299612532,
+     "program": 0.0000824512,
+     "agrees": true
+    },
+    {
+     "model": 0.000004213772619416189,
+     "program": 0.00000421377,
+     "agrees": true
+    },
+    {
+     "model": 0.03564313834552829,
+     "program": 0.0356431,
+     "agrees": true
+    },
+    {
+     "model": 0.000023523756549387958,
+     "program": 0.0000235238,
+     "agrees": true
+    },
+    {
+     "model": 0.000004819360151784895,
+     "program": 0.00000481936,
+     "agrees": true
+    },
+    {
+     "model": 0.012283370767102425,
+     "program": 0.0122834,
+     "agrees": true
+    },
+    {
+     "model": 0.010972817974612201,
+     "program": 0.0109728,
+     "agrees": true
+    },
+    {
+     "model": 0.000010091761825849474,
+     "program": 0.0000100918,
+     "agrees": true
+    },
+    {
+     "model": 0.014014020765496684,
+     "program": 0.014014,
+     "agrees": true
+    },
+    {
+     "model": 0.021798765753160403,
+     "program": 0.0217988,
+     "agrees": true
+    },
+    {
+     "model": 0.000012197910164175107,
+     "program": 0.0000121979,
+     "agrees": true
+    },
+    {
+     "model": 0.000005269996288774356,
+     "program": 0.00000527,
+     "agrees": true
+    },
+    {
+     "model": 0.003414180375877741,
+     "program": 0.00341418,
+     "agrees": true
+    },
+    {
+     "model": 0.0021380089283504215,
+     "program": 0.00213801,
+     "agrees": true
+    },
+    {
+     "model": 0.000013402029445618003,
+     "program": 0.000013402,
+     "agrees": true
+    },
+    {
+     "model": 0.000006969852734786172,
+     "program": 0.00000696985,
+     "agrees": true
+    },
+    {
+     "model": 0.015322315546792423,
+     "program": 0.0153223,
+     "agrees": true
+    },
+    {
+     "model": 0.000002147202761028876,
+     "program": 0.0000021472,
+     "agrees": true
+    },
+    {
+     "model": 0.000010858006676602257,
+     "program": 0.000010858,
+     "agrees": true
+    },
+    {
+     "model": 0.000005913760571485957,
+     "program": 0.00000591376,
+     "agrees": true
+    },
+    {
+     "model": 0.000005183255875138728,
+     "program": 0.00000518326,
+     "agrees": true
+    },
+    {
+     "model": 0.000008304325916316367,
+     "program": 0.00000830433,
+     "agrees": true
+    },
+    {
+     "model": 0.000004797861174906722,
+     "program": 0.00000479786,
+     "agrees": true
+    },
+    {
+     "model": 0.0001286260542479638,
+     "program": 0.000128626,
+     "agrees": true
+    },
+    {
+     "model": 0.000007766891136905909,
+     "program": 0.00000776689,
+     "agrees": true
+    },
+    {
+     "model": 0.004529263135860565,
+     "program": 0.00452926,
+     "agrees": true
+    },
+    {
+     "model": 0.00003149898451643806,
+     "program": 0.000031499,
+     "agrees": true
+    },
+    {
+     "model": 0.000017828635107238996,
+     "program": 0.0000178286,
+     "agrees": true
+    },
+    {
+     "model": 0.000018283966786174314,
+     "program": 0.000018284,
+     "agrees": true
+    },
+    {
+     "model": 0.000004353502594178903,
+     "program": 0.0000043535,
+     "agrees": true
+    },
+    {
+     "model": 0.023395492119892565,
+     "program": 0.0233955,
+     "agrees": true
+    },
+    {
+     "model": 0.014719316912372073,
+     "program": 0.0147193,
+     "agrees": true
+    },
+    {
+     "model": 0.000013137233294797022,
+     "program": 0.0000131372,
+     "agrees": true
+    },
+    {
+     "model": 0.015520069964528564,
+     "program": 0.0155201,
+     "agrees": true
+    },
+    {
+     "model": 0.0000180032624894746,
+     "program": 0.0000180033,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 2",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000003768154487128944,
+   "agreements": [
+    {
+     "model": 2.5127551817858344e-106,
+     "program": 2.51276e-106,
+     "agrees": true
+    },
+    {
+     "model": 9.191929235429452e-74,
+     "program": 9.19193e-74,
+     "agrees": true
+    },
+    {
+     "model": 2.3552854680599764e-164,
+     "program": 2.35529e-164,
+     "agrees": true
+    },
+    {
+     "model": 1.1547200070575508e-97,
+     "program": 1.15472e-97,
+     "agrees": true
+    },
+    {
+     "model": 2.1157998734594054e-58,
+     "program": 2.1158e-58,
+     "agrees": true
+    },
+    {
+     "model": 0.053116565516364934,
+     "program": 0.0531166,
+     "agrees": true
+    },
+    {
+     "model": 0.0000011863656252664216,
+     "program": 0.00000118637,
+     "agrees": true
+    },
+    {
+     "model": 3.34173540355497e-113,
+     "program": 3.34174e-113,
+     "agrees": true
+    },
+    {
+     "model": 2.983403093725519e-39,
+     "program": 2.9834e-39,
+     "agrees": true
+    },
+    {
+     "model": 1.924787889017e-36,
+     "program": 1.92479e-36,
+     "agrees": true
+    },
+    {
+     "model": 5.236540560454782e-294,
+     "program": 5.23654e-294,
+     "agrees": true
+    },
+    {
+     "model": 6.023573925191289e-7,
+     "program": 6.02357e-7,
+     "agrees": true
+    },
+    {
+     "model": 6.257481531363144e-66,
+     "program": 6.25748e-66,
+     "agrees": true
+    },
+    {
+     "model": 1.1430356928486951e-10,
+     "program": 1.14304e-10,
+     "agrees": true
+    },
+    {
+     "model": 0.0000066831023581983615,
+     "program": 0.0000066831,
+     "agrees": true
+    },
+    {
+     "model": 2.1754896531973907e-82,
+     "program": 2.17549e-82,
+     "agrees": true
+    },
+    {
+     "model": 0.3625587336404385,
+     "program": 0.362559,
+     "agrees": true
+    },
+    {
+     "model": 5.498085275884145e-107,
+     "program": 5.49809e-107,
+     "agrees": true
+    },
+    {
+     "model": 8.622249967266016e-186,
+     "program": 8.62225e-186,
+     "agrees": true
+    },
+    {
+     "model": 0.000027432662140532017,
+     "program": 0.0000274327,
+     "agrees": true
+    },
+    {
+     "model": 0.00008590356740349179,
+     "program": 0.0000859036,
+     "agrees": true
+    },
+    {
+     "model": 7.670655174874908e-64,
+     "program": 7.67066e-64,
+     "agrees": true
+    },
+    {
+     "model": 2.1563648719292655e-55,
+     "program": 2.15636e-55,
+     "agrees": true
+    },
+    {
+     "model": 1.9047668840663823e-73,
+     "program": 1.90477e-73,
+     "agrees": true
+    },
+    {
+     "model": 8.739911253830317e-118,
+     "program": 8.73991e-118,
+     "agrees": true
+    },
+    {
+     "model": 1.2425043217509946e-51,
+     "program": 1.2425e-51,
+     "agrees": true
+    },
+    {
+     "model": 2.7741422965516e-88,
+     "program": 2.77414e-88,
+     "agrees": true
+    },
+    {
+     "model": 0.00011800757161003954,
+     "program": 0.000118008,
+     "agrees": true
+    },
+    {
+     "model": 3.341081378451573e-76,
+     "program": 3.34108e-76,
+     "agrees": true
+    },
+    {
+     "model": 2.9928245607861545e-8,
+     "program": 2.99282e-8,
+     "agrees": true
+    },
+    {
+     "model": 2.791617975578576e-156,
+     "program": 2.79162e-156,
+     "agrees": true
+    },
+    {
+     "model": 2.266164432700851e-7,
+     "program": 2.26616e-7,
+     "agrees": true
+    },
+    {
+     "model": 1.470852585840326e-42,
+     "program": 1.47085e-42,
+     "agrees": true
+    },
+    {
+     "model": 243.16519685279476,
+     "program": 243.165,
+     "agrees": true
+    },
+    {
+     "model": 0.0000027004287283225083,
+     "program": 0.00000270043,
+     "agrees": true
+    },
+    {
+     "model": 1067.6625878875864,
+     "program": 1067.66,
+     "agrees": true
+    },
+    {
+     "model": 6.754265637904787e-35,
+     "program": 6.75427e-35,
+     "agrees": true
+    },
+    {
+     "model": 0.002844849340310669,
+     "program": 0.00284485,
+     "agrees": true
+    },
+    {
+     "model": 7.954961252685727e-111,
+     "program": 7.95496e-111,
+     "agrees": true
+    },
+    {
+     "model": 1.2401399541053633e-201,
+     "program": 1.24014e-201,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 3",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000031704504054004056,
+   "agreements": [
+    {
+     "model": 2.5568343981393447e-27,
+     "program": 2.55683e-27,
+     "agrees": true
+    },
+    {
+     "model": 3.2488933382865487e-18,
+     "program": 3.24889e-18,
+     "agrees": true
+    },
+    {
+     "model": 2.252857116673989,
+     "program": 2.25286,
+     "agrees": true
+    },
+    {
+     "model": 1.1131000199498218e-24,
+     "program": 1.1131e-24,
+     "agrees": true
+    },
+    {
+     "model": 1.4631746389079197e-27,
+     "program": 1.46317e-27,
+     "agrees": true
+    },
+    {
+     "model": 1.5653157805792854e-8,
+     "program": 1.56532e-8,
+     "agrees": true
+    },
+    {
+     "model": 40.450085165573526,
+     "program": 40.4501,
+     "agrees": true
+    },
+    {
+     "model": 0.45266038067041636,
+     "program": 0.45266,
+     "agrees": true
+    },
+    {
+     "model": 2.669258411361553,
+     "program": 2.66926,
+     "agrees": true
+    },
+    {
+     "model": 1.794027190702791e-42,
+     "program": 1.79403e-42,
+     "agrees": true
+    },
+    {
+     "model": 2.590209945974788e-16,
+     "program": 2.59021e-16,
+     "agrees": true
+    },
+    {
+     "model": 0.3799312056489543,
+     "program": 0.379931,
+     "agrees": true
+    },
+    {
+     "model": 3.2782467087982603e-19,
+     "program": 3.27825e-19,
+     "agrees": true
+    },
+    {
+     "model": 1.554839850339707e-50,
+     "program": 1.55484e-50,
+     "agrees": true
+    },
+    {
+     "model": 0.4904202929623903,
+     "program": 0.49042,
+     "agrees": true
+    },
+    {
+     "model": 0.027198716525573433,
+     "program": 0.0271987,
+     "agrees": true
+    },
+    {
+     "model": 2.1282084484046114e-44,
+     "program": 2.12821e-44,
+     "agrees": true
+    },
+    {
+     "model": 1.1766296443452866e-26,
+     "program": 1.17663e-26,
+     "agrees": true
+    },
+    {
+     "model": 1.3265707603480728,
+     "program": 1.32657,
+     "agrees": true
+    },
+    {
+     "model": 1.9651437750855388e-11,
+     "program": 1.96514e-11,
+     "agrees": true
+    },
+    {
+     "model": 1.520876088211734e-12,
+     "program": 1.52088e-12,
+     "agrees": true
+    },
+    {
+     "model": 4.462558813561252e-29,
+     "program": 4.46256e-29,
+     "agrees": true
+    },
+    {
+     "model": 0.4847151825876914,
+     "program": 0.484715,
+     "agrees": true
+    },
+    {
+     "model": 0.5358687601198705,
+     "program": 0.535869,
+     "agrees": true
+    },
+    {
+     "model": 0.04476627585609208,
+     "program": 0.0447663,
+     "agrees": true
+    },
+    {
+     "model": 0.8482711379997996,
+     "program": 0.848271,
+     "agrees": true
+    },
+    {
+     "model": 9.71710086115098e-12,
+     "program": 9.7171e-12,
+     "agrees": true
+    },
+    {
+     "model": 1.4319831226926292,
+     "program": 1.43198,
+     "agrees": true
+    },
+    {
+     "model": 8.542832123453348e-23,
+     "program": 8.54283e-23,
+     "agrees": true
+    },
+    {
+     "model": 0.05698701390546287,
+     "program": 0.056987,
+     "agrees": true
+    },
+    {
+     "model": 11.11422288249573,
+     "program": 11.1142,
+     "agrees": true
+    },
+    {
+     "model": 1.3147231394605521e-14,
+     "program": 1.31472e-14,
+     "agrees": true
+    },
+    {
+     "model": 0.0007554970863264824,
+     "program": 0.000755497,
+     "agrees": true
+    },
+    {
+     "model": 2.551701083989981e-16,
+     "program": 2.5517e-16,
+     "agrees": true
+    },
+    {
+     "model": 0.0744870091445073,
+     "program": 0.074487,
+     "agrees": true
+    },
+    {
+     "model": 4.296276846746362e-8,
+     "program": 4.29628e-8,
+     "agrees": true
+    },
+    {
+     "model": 8.653037628613782e-28,
+     "program": 8.65304e-28,
+     "agrees": true
+    },
+    {
+     "model": 4.192377643383536e-17,
+     "program": 4.19238e-17,
+     "agrees": true
+    },
+    {
+     "model": 4.686888245378103e-26,
+     "program": 4.68689e-26,
+     "agrees": true
+    },
+    {
+     "model": 0.5166265279557313,
+     "program": 0.516627,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 4",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000019677998476070613,
+   "agreements": [
+    {
+     "model": 9.876106412247217e-50,
+     "program": 9.87611e-50,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.2265443813850726e-51,
+     "program": 2.22654e-51,
+     "agrees": true
+    },
+    {
+     "model": 7.353465977855914e-61,
+     "program": 7.35347e-61,
+     "agrees": true
+    },
+    {
+     "model": 5.226141923174487e-20,
+     "program": 5.22614e-20,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 7.8123346637185e-64,
+     "program": 7.81233e-64,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.8159267260170843e-10,
+     "program": 1.81593e-10,
+     "agrees": true
+    },
+    {
+     "model": 4.028704015313325e-29,
+     "program": 4.0287e-29,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.722782380921586e-70,
+     "program": 2.72278e-70,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.330256323555169e-59,
+     "program": 2.33026e-59,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 5",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000004322411580247772,
+   "agreements": [
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.4788699492817e-10,
+     "program": 1.47887e-10,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.6261014301638006e-22,
+     "program": 1.6261e-22,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 8.122764527404381e-15,
+     "program": 8.12276e-15,
+     "agrees": true
+    },
+    {
+     "model": 2.3554249868852047e-62,
+     "program": 2.35542e-62,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1148.8550341542318,
+     "program": 1148.86,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.504079948278863e-45,
+     "program": 1.50408e-45,
+     "agrees": true
+    },
+    {
+     "model": 1.733839458550413e-60,
+     "program": 1.73384e-60,
+     "agrees": true
+    },
+    {
+     "model": 8.062899436697664e-50,
+     "program": 8.0629e-50,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 4.0245168327924004e-75,
+     "program": 4.02452e-75,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 4.316089796054424e-49,
+     "program": 4.31609e-49,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.3099644263062624e-41,
+     "program": 1.30996e-41,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.4434670375436817e-99,
+     "program": 2.44347e-99,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 6",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000041691594325066765,
+   "agreements": [
+    {
+     "model": 1.2005738891511878e-7,
+     "program": 1.20057e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.00006704156690221633,
+     "program": 0.0000670416,
+     "agrees": true
+    },
+    {
+     "model": 4.552536607833613e-7,
+     "program": 4.55254e-7,
+     "agrees": true
+    },
+    {
+     "model": 2.2638653816387117e-7,
+     "program": 2.26387e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0002744281472535997,
+     "program": 0.000274428,
+     "agrees": true
+    },
+    {
+     "model": 9.877974635199484e-9,
+     "program": 9.87797e-9,
+     "agrees": true
+    },
+    {
+     "model": 1.9873278905761228e-7,
+     "program": 1.98733e-7,
+     "agrees": true
+    },
+    {
+     "model": 2.859417949439172e-7,
+     "program": 2.85942e-7,
+     "agrees": true
+    },
+    {
+     "model": 1.5551493636546198e-7,
+     "program": 1.55515e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0000018589953956445438,
+     "program": 0.000001859,
+     "agrees": true
+    },
+    {
+     "model": 0.0000017902654679376134,
+     "program": 0.00000179027,
+     "agrees": true
+    },
+    {
+     "model": 8.237704412674862e-8,
+     "program": 8.2377e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.000001009070220471166,
+     "program": 0.00000100907,
+     "agrees": true
+    },
+    {
+     "model": 4.035071337822802e-7,
+     "program": 4.03507e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.00002855516565556779,
+     "program": 0.0000285552,
+     "agrees": true
+    },
+    {
+     "model": 1.0195742507498825e-8,
+     "program": 1.01957e-8,
+     "agrees": true
+    },
+    {
+     "model": 3.552202444768316e-8,
+     "program": 3.5522e-8,
+     "agrees": true
+    },
+    {
+     "model": 9.806930118011161e-8,
+     "program": 9.80693e-8,
+     "agrees": true
+    },
+    {
+     "model": 7.893126569261386e-7,
+     "program": 7.89313e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0000014206377828431235,
+     "program": 0.00000142064,
+     "agrees": true
+    },
+    {
+     "model": 9.439912954836531e-8,
+     "program": 9.43991e-8,
+     "agrees": true
+    },
+    {
+     "model": 9.747191534339732e-7,
+     "program": 9.74719e-7,
+     "agrees": true
+    },
+    {
+     "model": 1.8632327395428503e-7,
+     "program": 1.86323e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0004938773349392294,
+     "program": 0.000493877,
+     "agrees": true
+    },
+    {
+     "model": 1.0120175434545647e-7,
+     "program": 1.01202e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0000012465308572245127,
+     "program": 0.00000124653,
+     "agrees": true
+    },
+    {
+     "model": 0.0002841562702544397,
+     "program": 0.000284156,
+     "agrees": true
+    },
+    {
+     "model": 0.00030179112614957845,
+     "program": 0.000301791,
+     "agrees": true
+    },
+    {
+     "model": 0.000028035293203743076,
+     "program": 0.0000280353,
+     "agrees": true
+    },
+    {
+     "model": 2.124995468950203e-8,
+     "program": 2.125e-8,
+     "agrees": true
+    },
+    {
+     "model": 3.397796704765694e-7,
+     "program": 3.3978e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0000014962490244316456,
+     "program": 0.00000149625,
+     "agrees": true
+    },
+    {
+     "model": 3.338815112859745e-7,
+     "program": 3.33882e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0005844282479984274,
+     "program": 0.000584428,
+     "agrees": true
+    },
+    {
+     "model": 1.0896261255453365e-7,
+     "program": 1.08963e-7,
+     "agrees": true
+    },
+    {
+     "model": 1.1970055680337417e-7,
+     "program": 1.19701e-7,
+     "agrees": true
+    },
+    {
+     "model": 1.162517615814841e-7,
+     "program": 1.16252e-7,
+     "agrees": true
+    },
+    {
+     "model": 8.081969940033305e-8,
+     "program": 8.08197e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.00001369773813433472,
+     "program": 0.0000136977,
+     "agrees": true
+    },
+    {
+     "model": 0.00024930724725368366,
+     "program": 0.000249307,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 7",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000001263686392828961,
+   "agreements": [
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 9.477125824355966e-189,
+     "program": 9.47713e-189,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 7.092469008966805e-304,
+     "program": 7.09247e-304,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 5.854629226233373e-185,
+     "program": 5.85463e-185,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.6175429796134076e-42,
+     "program": 2.61754e-42,
+     "agrees": true
+    },
+    {
+     "model": 5.148546558634973e-151,
+     "program": 5.14855e-151,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.7891308817212073e-136,
+     "program": 2.78913e-136,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.9484675377449743e-142,
+     "program": 1.94847e-142,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 4.254363668681146e-146,
+     "program": 4.25436e-146,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 4.141266170528074e-201,
+     "program": 4.14127e-201,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 8",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.00000442720578934614,
+   "agreements": [
+    {
+     "model": 1229.7897155204114,
+     "program": 1229.79,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.000010525518494978482,
+     "program": 0.0000105255,
+     "agrees": true
+    },
+    {
+     "model": 5.710815581874929e-7,
+     "program": 5.71082e-7,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.4751790928780127,
+     "program": 0.475179,
+     "agrees": true
+    },
+    {
+     "model": 2.749690364650979e-169,
+     "program": 2.74969e-169,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 5.51092372775764e-310,
+     "program": 5.51092e-310,
+     "agrees": true
+    },
+    {
+     "model": 26839.674000576975,
+     "program": 26839.7,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 108.57176746189074,
+     "program": 108.572,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.6072733245091338,
+     "program": 0.607273,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.0003285302060377931,
+     "program": 0.00032853,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2706.284261883673,
+     "program": 2706.28,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.02062140111091268,
+     "program": 0.0206214,
+     "agrees": true
+    },
+    {
+     "model": 5197.635470291366,
+     "program": 5197.64,
+     "agrees": true
+    },
+    {
+     "model": 1238.2044132371068,
+     "program": 1238.2,
+     "agrees": true
+    },
+    {
+     "model": 2.224485497193212e-286,
+     "program": 2.22449e-286,
+     "agrees": true
+    },
+    {
+     "model": 94.9463416072005,
+     "program": 94.9463,
+     "agrees": true
+    },
+    {
+     "model": 10.860448081225755,
+     "program": 10.8604,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 793.7838301155671,
+     "program": 793.784,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 4.935683443787569e-93,
+     "program": 4.93568e-93,
+     "agrees": true
+    },
+    {
+     "model": 4.219372675294169e-7,
+     "program": 4.21937e-7,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 9",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000003887599529798052,
+   "agreements": [
+    {
+     "model": 17.646898285674933,
+     "program": 17.6469,
+     "agrees": true
+    },
+    {
+     "model": 0.022756486916727228,
+     "program": 0.0227565,
+     "agrees": true
+    },
+    {
+     "model": 0.0016935940240618375,
+     "program": 0.00169359,
+     "agrees": true
+    },
+    {
+     "model": 0.012627637900208153,
+     "program": 0.0126276,
+     "agrees": true
+    },
+    {
+     "model": 0.006270170290498183,
+     "program": 0.00627017,
+     "agrees": true
+    },
+    {
+     "model": 25.3025260971221,
+     "program": 25.3025,
+     "agrees": true
+    },
+    {
+     "model": 24.30280098584894,
+     "program": 24.3028,
+     "agrees": true
+    },
+    {
+     "model": 25.51235409240977,
+     "program": 25.5124,
+     "agrees": true
+    },
+    {
+     "model": 0.17705058899790574,
+     "program": 0.177051,
+     "agrees": true
+    },
+    {
+     "model": 23.84133140142084,
+     "program": 23.8413,
+     "agrees": true
+    },
+    {
+     "model": 23.881138140062443,
+     "program": 23.8811,
+     "agrees": true
+    },
+    {
+     "model": 25.016779178210932,
+     "program": 25.0168,
+     "agrees": true
+    },
+    {
+     "model": 0.014795265671285375,
+     "program": 0.0147953,
+     "agrees": true
+    },
+    {
+     "model": 0.30801825769419816,
+     "program": 0.308018,
+     "agrees": true
+    },
+    {
+     "model": 0.11229596962864997,
+     "program": 0.112296,
+     "agrees": true
+    },
+    {
+     "model": 0.02950622898131806,
+     "program": 0.0295062,
+     "agrees": true
+    },
+    {
+     "model": 1.125115625984017,
+     "program": 1.12512,
+     "agrees": true
+    },
+    {
+     "model": 24.977018525400993,
+     "program": 24.977,
+     "agrees": true
+    },
+    {
+     "model": 0.0004272264427044493,
+     "program": 0.000427226,
+     "agrees": true
+    },
+    {
+     "model": 1.6074727234083659,
+     "program": 1.60747,
+     "agrees": true
+    },
+    {
+     "model": 0.4140545230101517,
+     "program": 0.414055,
+     "agrees": true
+    },
+    {
+     "model": 13.192184366620177,
+     "program": 13.1922,
+     "agrees": true
+    },
+    {
+     "model": 0.0008366245030768815,
+     "program": 0.000836625,
+     "agrees": true
+    },
+    {
+     "model": 0.00042211266353152203,
+     "program": 0.000422113,
+     "agrees": true
+    },
+    {
+     "model": 0.10216032085919978,
+     "program": 0.10216,
+     "agrees": true
+    },
+    {
+     "model": 0.22483704930231077,
+     "program": 0.224837,
+     "agrees": true
+    },
+    {
+     "model": 0.18863152149168277,
+     "program": 0.188632,
+     "agrees": true
+    },
+    {
+     "model": 0.1592195005308751,
+     "program": 0.15922,
+     "agrees": true
+    },
+    {
+     "model": 19.149024581627685,
+     "program": 19.149,
+     "agrees": true
+    },
+    {
+     "model": 0.0005292716032040255,
+     "program": 0.000529272,
+     "agrees": true
+    },
+    {
+     "model": 25.099592289414996,
+     "program": 25.0996,
+     "agrees": true
+    },
+    {
+     "model": 0.0014576542595301084,
+     "program": 0.00145765,
+     "agrees": true
+    },
+    {
+     "model": 0.021482965272257595,
+     "program": 0.021483,
+     "agrees": true
+    },
+    {
+     "model": 0.54577951967212,
+     "program": 0.54578,
+     "agrees": true
+    },
+    {
+     "model": 0.20087902264992402,
+     "program": 0.200879,
+     "agrees": true
+    },
+    {
+     "model": 24.879639190007236,
+     "program": 24.8796,
+     "agrees": true
+    },
+    {
+     "model": 0.0004618439542868595,
+     "program": 0.000461844,
+     "agrees": true
+    },
+    {
+     "model": 25.111893067968985,
+     "program": 25.1119,
+     "agrees": true
+    },
+    {
+     "model": 0.14914573311287935,
+     "program": 0.149146,
+     "agrees": true
+    },
+    {
+     "model": 0.01353251981746517,
+     "program": 0.0135325,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 10",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.00000411183930711609,
+   "agreements": [
+    {
+     "model": 0.006113191164079098,
+     "program": 0.00611319,
+     "agrees": true
+    },
+    {
+     "model": 3.8185262539544573,
+     "program": 3.81853,
+     "agrees": true
+    },
+    {
+     "model": 0.11144354176018026,
+     "program": 0.111444,
+     "agrees": true
+    },
+    {
+     "model": 36.75136787001022,
+     "program": 36.7514,
+     "agrees": true
+    },
+    {
+     "model": 0.00931155100367224,
+     "program": 0.00931155,
+     "agrees": true
+    },
+    {
+     "model": 0.004809051182043314,
+     "program": 0.00480905,
+     "agrees": true
+    },
+    {
+     "model": 0.07698273381381412,
+     "program": 0.0769827,
+     "agrees": true
+    },
+    {
+     "model": 0.015119725811943556,
+     "program": 0.0151197,
+     "agrees": true
+    },
+    {
+     "model": 0.004596757966987547,
+     "program": 0.00459676,
+     "agrees": true
+    },
+    {
+     "model": 0.011217923022043592,
+     "program": 0.0112179,
+     "agrees": true
+    },
+    {
+     "model": 1.4450435072296157,
+     "program": 1.44504,
+     "agrees": true
+    },
+    {
+     "model": 0.015306709512561448,
+     "program": 0.0153067,
+     "agrees": true
+    },
+    {
+     "model": 0.42426868854631006,
+     "program": 0.424269,
+     "agrees": true
+    },
+    {
+     "model": 0.006853642701113887,
+     "program": 0.00685364,
+     "agrees": true
+    },
+    {
+     "model": 0.08236136874887688,
+     "program": 0.0823614,
+     "agrees": true
+    },
+    {
+     "model": 0.33348829545779257,
+     "program": 0.333488,
+     "agrees": true
+    },
+    {
+     "model": 1.4598694426879932,
+     "program": 1.45987,
+     "agrees": true
+    },
+    {
+     "model": 0.03101462115441646,
+     "program": 0.0310146,
+     "agrees": true
+    },
+    {
+     "model": 1.954813261392719,
+     "program": 1.95481,
+     "agrees": true
+    },
+    {
+     "model": 0.18573164771049777,
+     "program": 0.185732,
+     "agrees": true
+    },
+    {
+     "model": 0.496192696946203,
+     "program": 0.496193,
+     "agrees": true
+    },
+    {
+     "model": 6.769131050303214,
+     "program": 6.76913,
+     "agrees": true
+    },
+    {
+     "model": 3.5232521239640926,
+     "program": 3.52325,
+     "agrees": true
+    },
+    {
+     "model": 4.168953133860088,
+     "program": 4.16895,
+     "agrees": true
+    },
+    {
+     "model": 3.7263513554012255,
+     "program": 3.72635,
+     "agrees": true
+    },
+    {
+     "model": 0.022731399220890056,
+     "program": 0.0227314,
+     "agrees": true
+    },
+    {
+     "model": 0.38606985968155744,
+     "program": 0.38607,
+     "agrees": true
+    },
+    {
+     "model": 0.034276138847752734,
+     "program": 0.0342761,
+     "agrees": true
+    },
+    {
+     "model": 5.038376436184453,
+     "program": 5.03838,
+     "agrees": true
+    },
+    {
+     "model": 0.04237728339758894,
+     "program": 0.0423773,
+     "agrees": true
+    },
+    {
+     "model": 0.07361631005452081,
+     "program": 0.0736163,
+     "agrees": true
+    },
+    {
+     "model": 0.3768286812727579,
+     "program": 0.376829,
+     "agrees": true
+    },
+    {
+     "model": 22.726701407382144,
+     "program": 22.7267,
+     "agrees": true
+    },
+    {
+     "model": 0.14208085108775376,
+     "program": 0.142081,
+     "agrees": true
+    },
+    {
+     "model": 0.33306900386824856,
+     "program": 0.333069,
+     "agrees": true
+    },
+    {
+     "model": 0.017387367326490027,
+     "program": 0.0173874,
+     "agrees": true
+    },
+    {
+     "model": 0.2137181091588122,
+     "program": 0.213718,
+     "agrees": true
+    },
+    {
+     "model": 0.014029211919372118,
+     "program": 0.0140292,
+     "agrees": true
+    },
+    {
+     "model": 0.02271392411266061,
+     "program": 0.0227139,
+     "agrees": true
+    },
+    {
+     "model": 0.006013368328211667,
+     "program": 0.00601337,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 11",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000037673130535226165,
+   "agreements": [
+    {
+     "model": 3.2978290212736514e-13,
+     "program": 3.29783e-13,
+     "agrees": true
+    },
+    {
+     "model": 0.000005717922579217647,
+     "program": 0.00000571792,
+     "agrees": true
+    },
+    {
+     "model": 1.1884964049456206e-14,
+     "program": 1.1885e-14,
+     "agrees": true
+    },
+    {
+     "model": 9.034724733532574e-14,
+     "program": 9.03472e-14,
+     "agrees": true
+    },
+    {
+     "model": 3.5016517377735336e-14,
+     "program": 3.50165e-14,
+     "agrees": true
+    },
+    {
+     "model": 5.402353751821426e-7,
+     "program": 5.40235e-7,
+     "agrees": true
+    },
+    {
+     "model": 1.409139213042389e-13,
+     "program": 1.40914e-13,
+     "agrees": true
+    },
+    {
+     "model": 1.773518757650649e-15,
+     "program": 1.77352e-15,
+     "agrees": true
+    },
+    {
+     "model": 1.1311293303827257e-14,
+     "program": 1.13113e-14,
+     "agrees": true
+    },
+    {
+     "model": 0.001964508086390479,
+     "program": 0.00196451,
+     "agrees": true
+    },
+    {
+     "model": 5.6644788304078524e-15,
+     "program": 5.66448e-15,
+     "agrees": true
+    },
+    {
+     "model": 9.682295079917588e-7,
+     "program": 9.6823e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.00017562204606263136,
+     "program": 0.000175622,
+     "agrees": true
+    },
+    {
+     "model": 2.781812685862029e-15,
+     "program": 2.78181e-15,
+     "agrees": true
+    },
+    {
+     "model": 6.887082408050014e-15,
+     "program": 6.88708e-15,
+     "agrees": true
+    },
+    {
+     "model": 1.1086020787952807e-14,
+     "program": 1.1086e-14,
+     "agrees": true
+    },
+    {
+     "model": 5.695731426873789e-15,
+     "program": 5.69573e-15,
+     "agrees": true
+    },
+    {
+     "model": 5.6124172044653564e-14,
+     "program": 5.61242e-14,
+     "agrees": true
+    },
+    {
+     "model": 0.000001865285944530025,
+     "program": 0.00000186529,
+     "agrees": true
+    },
+    {
+     "model": 2.4044952327453656e-14,
+     "program": 2.4045e-14,
+     "agrees": true
+    },
+    {
+     "model": 2.590660068870098e-14,
+     "program": 2.59066e-14,
+     "agrees": true
+    },
+    {
+     "model": 2.2637720736486633e-12,
+     "program": 2.26377e-12,
+     "agrees": true
+    },
+    {
+     "model": 1.381946112650416e-11,
+     "program": 1.38195e-11,
+     "agrees": true
+    },
+    {
+     "model": 1.2079754491611776e-15,
+     "program": 1.20798e-15,
+     "agrees": true
+    },
+    {
+     "model": 6.7797819808853145e-15,
+     "program": 6.77978e-15,
+     "agrees": true
+    },
+    {
+     "model": 1.4011490517732306e-14,
+     "program": 1.40115e-14,
+     "agrees": true
+    },
+    {
+     "model": 0.000022815062501342624,
+     "program": 0.0000228151,
+     "agrees": true
+    },
+    {
+     "model": 2.981856505432928e-14,
+     "program": 2.98186e-14,
+     "agrees": true
+    },
+    {
+     "model": 0.1805460359636687,
+     "program": 0.180546,
+     "agrees": true
+    },
+    {
+     "model": 3.838200037597469e-14,
+     "program": 3.8382e-14,
+     "agrees": true
+    },
+    {
+     "model": 3.341784304013029e-15,
+     "program": 3.34178e-15,
+     "agrees": true
+    },
+    {
+     "model": 1.1309889816467035e-13,
+     "program": 1.13099e-13,
+     "agrees": true
+    },
+    {
+     "model": 6.693647508472599e-13,
+     "program": 6.69365e-13,
+     "agrees": true
+    },
+    {
+     "model": 5.714134231576458e-15,
+     "program": 5.71413e-15,
+     "agrees": true
+    },
+    {
+     "model": 5.522310167154713e-15,
+     "program": 5.52231e-15,
+     "agrees": true
+    },
+    {
+     "model": 2.1846525250930026e-13,
+     "program": 2.18465e-13,
+     "agrees": true
+    },
+    {
+     "model": 0.00006723385793798506,
+     "program": 0.0000672339,
+     "agrees": true
+    },
+    {
+     "model": 8.932008402664986e-14,
+     "program": 8.93201e-14,
+     "agrees": true
+    },
+    {
+     "model": 5.8927015747955874e-15,
+     "program": 5.8927e-15,
+     "agrees": true
+    },
+    {
+     "model": 0.000019299500373398283,
+     "program": 0.0000192995,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 12",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000003083819716062977,
+   "agreements": [
+    {
+     "model": 1.3945043003865941e-45,
+     "program": 1.3945e-45,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 6.583804909832094e-110,
+     "program": 6.5838e-110,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.6698762448691642e-52,
+     "program": 2.66988e-52,
+     "agrees": true
+    },
+    {
+     "model": 1.578337738455859e-104,
+     "program": 1.57834e-104,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.0669179909123794,
+     "program": 0.066918,
+     "agrees": true
+    },
+    {
+     "model": 0.048699340830489636,
+     "program": 0.0486993,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 3.2515107503269417e-74,
+     "program": 3.25151e-74,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.20723336865838296,
+     "program": 0.207233,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.9820856073482265e-118,
+     "program": 1.98209e-118,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.6305427905321622e-62,
+     "program": 1.63054e-62,
+     "agrees": true
+    },
+    {
+     "model": 3.3843350347524225e-18,
+     "program": 3.38434e-18,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.448323432385136e-303,
+     "program": 1.44832e-303,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 7.554560385363836e-71,
+     "program": 7.55456e-71,
+     "agrees": true
+    },
+    {
+     "model": 4.707853468579774e-55,
+     "program": 4.70785e-55,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.7305761934890407e-33,
+     "program": 1.73058e-33,
+     "agrees": true
+    },
+    {
+     "model": 3.290042529177204e-26,
+     "program": 3.29004e-26,
+     "agrees": true
+    },
+    {
+     "model": 1.3504386772123352e-113,
+     "program": 1.35044e-113,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 13",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000002692963221803332,
+   "agreements": [
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.0069981578364725e-70,
+     "program": 1.007e-70,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 3.95268531019107e-17,
+     "program": 3.95269e-17,
+     "agrees": true
+    },
+    {
+     "model": 1.4541139158647505e-70,
+     "program": 1.45411e-70,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 14",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000044126519905403475,
+   "agreements": [
+    {
+     "model": 38.10360388702212,
+     "program": 38.1036,
+     "agrees": true
+    },
+    {
+     "model": 2.181992526322935,
+     "program": 2.18199,
+     "agrees": true
+    },
+    {
+     "model": 0.0011046851253874725,
+     "program": 0.00110469,
+     "agrees": true
+    },
+    {
+     "model": 0.008083323324253105,
+     "program": 0.00808332,
+     "agrees": true
+    },
+    {
+     "model": 0.003207011381275208,
+     "program": 0.00320701,
+     "agrees": true
+    },
+    {
+     "model": 0.006342931330126335,
+     "program": 0.00634293,
+     "agrees": true
+    },
+    {
+     "model": 0.0005786422594029725,
+     "program": 0.000578642,
+     "agrees": true
+    },
+    {
+     "model": 0.002270535876218418,
+     "program": 0.00227054,
+     "agrees": true
+    },
+    {
+     "model": 126.22390989675071,
+     "program": 126.224,
+     "agrees": true
+    },
+    {
+     "model": 0.0006339367000221086,
+     "program": 0.000633937,
+     "agrees": true
+    },
+    {
+     "model": 30.536760775021357,
+     "program": 30.5368,
+     "agrees": true
+    },
+    {
+     "model": 0.1199635228359672,
+     "program": 0.119964,
+     "agrees": true
+    },
+    {
+     "model": 0.23145949585914757,
+     "program": 0.231459,
+     "agrees": true
+    },
+    {
+     "model": 0.024745835297373578,
+     "program": 0.0247458,
+     "agrees": true
+    },
+    {
+     "model": 0.6568941932933505,
+     "program": 0.656894,
+     "agrees": true
+    },
+    {
+     "model": 43.36672089515696,
+     "program": 43.3667,
+     "agrees": true
+    },
+    {
+     "model": 0.0008456250435315906,
+     "program": 0.000845625,
+     "agrees": true
+    },
+    {
+     "model": 518.9364660069913,
+     "program": 518.936,
+     "agrees": true
+    },
+    {
+     "model": 0.00041411133794130086,
+     "program": 0.000414111,
+     "agrees": true
+    },
+    {
+     "model": 0.002114707117625283,
+     "program": 0.00211471,
+     "agrees": true
+    },
+    {
+     "model": 0.26424493480907896,
+     "program": 0.264245,
+     "agrees": true
+    },
+    {
+     "model": 0.014214207235367489,
+     "program": 0.0142142,
+     "agrees": true
+    },
+    {
+     "model": 0.09028861413573443,
+     "program": 0.0902886,
+     "agrees": true
+    },
+    {
+     "model": 0.0010447889690262109,
+     "program": 0.00104479,
+     "agrees": true
+    },
+    {
+     "model": 1.4689200894347043,
+     "program": 1.46892,
+     "agrees": true
+    },
+    {
+     "model": 0.007297579618324514,
+     "program": 0.00729758,
+     "agrees": true
+    },
+    {
+     "model": 1.8393189895077546,
+     "program": 1.83932,
+     "agrees": true
+    },
+    {
+     "model": 0.0004275810806942965,
+     "program": 0.000427581,
+     "agrees": true
+    },
+    {
+     "model": 0.0004192770501979019,
+     "program": 0.000419277,
+     "agrees": true
+    },
+    {
+     "model": 0.05040909809728227,
+     "program": 0.0504091,
+     "agrees": true
+    },
+    {
+     "model": 0.0010741124389867256,
+     "program": 0.00107411,
+     "agrees": true
+    },
+    {
+     "model": 0.06696891295214441,
+     "program": 0.0669689,
+     "agrees": true
+    },
+    {
+     "model": 1392.4594775808043,
+     "program": 1392.46,
+     "agrees": true
+    },
+    {
+     "model": 0.5044782528772055,
+     "program": 0.504478,
+     "agrees": true
+    },
+    {
+     "model": 0.0065022905206726656,
+     "program": 0.00650229,
+     "agrees": true
+    },
+    {
+     "model": 450.5767185837653,
+     "program": 450.577,
+     "agrees": true
+    },
+    {
+     "model": 0.6594922644978529,
+     "program": 0.659492,
+     "agrees": true
+    },
+    {
+     "model": 13.326286703682458,
+     "program": 13.3263,
+     "agrees": true
+    },
+    {
+     "model": 9.367900007370183,
+     "program": 9.3679,
+     "agrees": true
+    },
+    {
+     "model": 1408.7403121302525,
+     "program": 1408.74,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 15",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000004299086655794519,
+   "agreements": [
+    {
+     "model": 0.012358903731885458,
+     "program": 0.0123589,
+     "agrees": true
+    },
+    {
+     "model": 0.014197775032872362,
+     "program": 0.0141978,
+     "agrees": true
+    },
+    {
+     "model": 0.0013609573589034802,
+     "program": 0.00136096,
+     "agrees": true
+    },
+    {
+     "model": 0.004175615480971364,
+     "program": 0.00417562,
+     "agrees": true
+    },
+    {
+     "model": 0.002960060235244057,
+     "program": 0.00296006,
+     "agrees": true
+    },
+    {
+     "model": 0.012553013119118833,
+     "program": 0.012553,
+     "agrees": true
+    },
+    {
+     "model": 0.0017385737698699594,
+     "program": 0.00173857,
+     "agrees": true
+    },
+    {
+     "model": 0.003921810637902638,
+     "program": 0.00392181,
+     "agrees": true
+    },
+    {
+     "model": 0.013122844924047614,
+     "program": 0.0131228,
+     "agrees": true
+    },
+    {
+     "model": 0.0017820192192845466,
+     "program": 0.00178202,
+     "agrees": true
+    },
+    {
+     "model": 0.0010175608209591694,
+     "program": 0.00101756,
+     "agrees": true
+    },
+    {
+     "model": 0.23598803437397423,
+     "program": 0.235988,
+     "agrees": true
+    },
+    {
+     "model": 0.016260821802994808,
+     "program": 0.0162608,
+     "agrees": true
+    },
+    {
+     "model": 0.0019209453051841337,
+     "program": 0.00192095,
+     "agrees": true
+    },
+    {
+     "model": 0.021027626593734267,
+     "program": 0.0210276,
+     "agrees": true
+    },
+    {
+     "model": 0.2364805240982759,
+     "program": 0.236481,
+     "agrees": true
+    },
+    {
+     "model": 0.009185915604197199,
+     "program": 0.00918592,
+     "agrees": true
+    },
+    {
+     "model": 0.0005313926836038292,
+     "program": 0.000531393,
+     "agrees": true
+    },
+    {
+     "model": 0.10844476051067932,
+     "program": 0.108445,
+     "agrees": true
+    },
+    {
+     "model": 0.05957714777419958,
+     "program": 0.0595771,
+     "agrees": true
+    },
+    {
+     "model": 0.025729846606842972,
+     "program": 0.0257298,
+     "agrees": true
+    },
+    {
+     "model": 0.010858546681632452,
+     "program": 0.0108585,
+     "agrees": true
+    },
+    {
+     "model": 0.0005431139551593127,
+     "program": 0.000543114,
+     "agrees": true
+    },
+    {
+     "model": 0.0002577133023530567,
+     "program": 0.000257713,
+     "agrees": true
+    },
+    {
+     "model": 0.042052249573275705,
+     "program": 0.0420522,
+     "agrees": true
+    },
+    {
+     "model": 1622.6072394727257,
+     "program": 1622.61,
+     "agrees": true
+    },
+    {
+     "model": 0.0002986694359886244,
+     "program": 0.000298669,
+     "agrees": true
+    },
+    {
+     "model": 0.011781439201296196,
+     "program": 0.0117814,
+     "agrees": true
+    },
+    {
+     "model": 0.002776542432855371,
+     "program": 0.00277654,
+     "agrees": true
+    },
+    {
+     "model": 0.10564787489285409,
+     "program": 0.105648,
+     "agrees": true
+    },
+    {
+     "model": 0.00034283632831349614,
+     "program": 0.000342836,
+     "agrees": true
+    },
+    {
+     "model": 0.009956609495315476,
+     "program": 0.00995661,
+     "agrees": true
+    },
+    {
+     "model": 0.22800396035599915,
+     "program": 0.228004,
+     "agrees": true
+    },
+    {
+     "model": 64.53112690923867,
+     "program": 64.5311,
+     "agrees": true
+    },
+    {
+     "model": 0.12505369932445554,
+     "program": 0.125054,
+     "agrees": true
+    },
+    {
+     "model": 0.0005654839527605242,
+     "program": 0.000565484,
+     "agrees": true
+    },
+    {
+     "model": 0.2365176215478551,
+     "program": 0.236518,
+     "agrees": true
+    },
+    {
+     "model": 0.00043556188391770395,
+     "program": 0.000435562,
+     "agrees": true
+    },
+    {
+     "model": 0.0003390845991373655,
+     "program": 0.000339085,
+     "agrees": true
+    },
+    {
+     "model": 0.18348259477409806,
+     "program": 0.183483,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 16",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000034883947963948687,
+   "agreements": [
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 4.921439309710843e-15,
+     "program": 4.92144e-15,
+     "agrees": true
+    },
+    {
+     "model": 1.7718415109890527e-14,
+     "program": 1.77184e-14,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.0000010324064183574314,
+     "program": 0.00000103241,
+     "agrees": true
+    },
+    {
+     "model": 7.873126304599215e-19,
+     "program": 7.87313e-19,
+     "agrees": true
+    },
+    {
+     "model": 3.325019675145298e-11,
+     "program": 3.32502e-11,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 7.454538713903161e-43,
+     "program": 7.45454e-43,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.7567406814710764e-11,
+     "program": 1.75674e-11,
+     "agrees": true
+    },
+    {
+     "model": 1.2157991097113188e-7,
+     "program": 1.2158e-7,
+     "agrees": true
+    },
+    {
+     "model": 6.4281411382642575e-12,
+     "program": 6.42814e-12,
+     "agrees": true
+    },
+    {
+     "model": 0.00020707921593411942,
+     "program": 0.000207079,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 3.260611171281514e-253,
+     "program": 3.26061e-253,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 4.0001735788487873e-11,
+     "program": 4.00017e-11,
+     "agrees": true
+    },
+    {
+     "model": 5.52442898561641e-30,
+     "program": 5.52443e-30,
+     "agrees": true
+    },
+    {
+     "model": 1.2726244394009859e-12,
+     "program": 1.27262e-12,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.0379565694607524e-7,
+     "program": 2.03796e-7,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 7.986855836450559e-21,
+     "program": 7.98686e-21,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.000005808211552748458,
+     "program": 0.00000580821,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 17",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000002439635041146414,
+   "agreements": [
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.45799349939641987,
+     "program": 0.457993,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.4895236338851864e-16,
+     "program": 1.48952e-16,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 9.792231810790727e-13,
+     "program": 9.79223e-13,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 4.5359722523455974e-18,
+     "program": 4.53597e-18,
+     "agrees": true
+    },
+    {
+     "model": 1.4272268081086865e-11,
+     "program": 1.42723e-11,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.8844813349687436e-26,
+     "program": 1.88448e-26,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 3.9626816440962674e-19,
+     "program": 3.96268e-19,
+     "agrees": true
+    },
+    {
+     "model": 5.356680498998283e-8,
+     "program": 5.35668e-8,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.00002159894187935398,
+     "program": 0.0000215989,
+     "agrees": true
+    },
+    {
+     "model": 4.483296728117309e-24,
+     "program": 4.4833e-24,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.4017388453326494e-7,
+     "program": 1.40174e-7,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 3.1853595225453226e-8,
+     "program": 3.18536e-8,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.4534380905375104e-12,
+     "program": 1.45344e-12,
+     "agrees": true
+    },
+    {
+     "model": 3.604024654190263e-18,
+     "program": 3.60402e-18,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 18",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000037264897653719075,
+   "agreements": [
+    {
+     "model": 5.932869739850371,
+     "program": 5.93287,
+     "agrees": true
+    },
+    {
+     "model": 0.12729047434488222,
+     "program": 0.12729,
+     "agrees": true
+    },
+    {
+     "model": 0.057952891241117535,
+     "program": 0.0579529,
+     "agrees": true
+    },
+    {
+     "model": 0.021907013615716026,
+     "program": 0.021907,
+     "agrees": true
+    },
+    {
+     "model": 0.0842232082181705,
+     "program": 0.0842232,
+     "agrees": true
+    },
+    {
+     "model": 5.503322781747607,
+     "program": 5.50332,
+     "agrees": true
+    },
+    {
+     "model": 16.814723798645822,
+     "program": 16.8147,
+     "agrees": true
+    },
+    {
+     "model": 0.05640495255089502,
+     "program": 0.056405,
+     "agrees": true
+    },
+    {
+     "model": 99.85583554340562,
+     "program": 99.8558,
+     "agrees": true
+    },
+    {
+     "model": 0.04872118212435757,
+     "program": 0.0487212,
+     "agrees": true
+    },
+    {
+     "model": 0.013816234958442654,
+     "program": 0.0138162,
+     "agrees": true
+    },
+    {
+     "model": 82.40847537102658,
+     "program": 82.4085,
+     "agrees": true
+    },
+    {
+     "model": 32.859558172370306,
+     "program": 32.8596,
+     "agrees": true
+    },
+    {
+     "model": 0.018959000739899087,
+     "program": 0.018959,
+     "agrees": true
+    },
+    {
+     "model": 15.972681337591625,
+     "program": 15.9727,
+     "agrees": true
+    },
+    {
+     "model": 0.017698462061896906,
+     "program": 0.0176985,
+     "agrees": true
+    },
+    {
+     "model": 25.783942360637088,
+     "program": 25.7839,
+     "agrees": true
+    },
+    {
+     "model": 11.75533368320994,
+     "program": 11.7553,
+     "agrees": true
+    },
+    {
+     "model": 0.04265612854376095,
+     "program": 0.0426561,
+     "agrees": true
+    },
+    {
+     "model": 0.043739099516481715,
+     "program": 0.0437391,
+     "agrees": true
+    },
+    {
+     "model": 10.397896106769242,
+     "program": 10.3979,
+     "agrees": true
+    },
+    {
+     "model": 0.021728691443597112,
+     "program": 0.0217287,
+     "agrees": true
+    },
+    {
+     "model": 45.43042331771551,
+     "program": 45.4304,
+     "agrees": true
+    },
+    {
+     "model": 25.112380036318243,
+     "program": 25.1124,
+     "agrees": true
+    },
+    {
+     "model": 25.030010034436792,
+     "program": 25.03,
+     "agrees": true
+    },
+    {
+     "model": 0.050527128074662975,
+     "program": 0.0505271,
+     "agrees": true
+    },
+    {
+     "model": 0.04109324395241734,
+     "program": 0.0410932,
+     "agrees": true
+    },
+    {
+     "model": 0.027965621383495974,
+     "program": 0.0279656,
+     "agrees": true
+    },
+    {
+     "model": 34.986780192098976,
+     "program": 34.9868,
+     "agrees": true
+    },
+    {
+     "model": 0.025785662762174203,
+     "program": 0.0257857,
+     "agrees": true
+    },
+    {
+     "model": 11.973355957783262,
+     "program": 11.9734,
+     "agrees": true
+    },
+    {
+     "model": 0.03284209087612332,
+     "program": 0.0328421,
+     "agrees": true
+    },
+    {
+     "model": 32.593300328621474,
+     "program": 32.5933,
+     "agrees": true
+    },
+    {
+     "model": 0.03028276250862403,
+     "program": 0.0302828,
+     "agrees": true
+    },
+    {
+     "model": 0.11533469569556623,
+     "program": 0.115335,
+     "agrees": true
+    },
+    {
+     "model": 0.04461159740125231,
+     "program": 0.0446116,
+     "agrees": true
+    },
+    {
+     "model": 0.034525776997338935,
+     "program": 0.0345258,
+     "agrees": true
+    },
+    {
+     "model": 0.006476526872867751,
+     "program": 0.00647653,
+     "agrees": true
+    },
+    {
+     "model": 27.6737416271286,
+     "program": 27.6737,
+     "agrees": true
+    },
+    {
+     "model": 0.025692100313750126,
+     "program": 0.0256921,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 19",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000036328255477611063,
+   "agreements": [
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 6.326525819783628e-10,
+     "program": 6.32653e-10,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 5.966521478383571e-12,
+     "program": 5.96652e-12,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.05481841690283374,
+     "program": 0.0548184,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 3.82005297103506e-25,
+     "program": 3.82005e-25,
+     "agrees": true
+    },
+    {
+     "model": 4.659518103786762e-9,
+     "program": 4.65952e-9,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 8.284496532419542e-12,
+     "program": 8.2845e-12,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.0000010766260887910305,
+     "program": 0.00000107663,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 6.82406721513112e-8,
+     "program": 6.82407e-8,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.4151430683425453e-20,
+     "program": 2.41514e-20,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.86208229436546e-17,
+     "program": 1.86208e-17,
+     "agrees": true
+    },
+    {
+     "model": 9.521169796107427e-10,
+     "program": 9.52117e-10,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.570811111171356e-207,
+     "program": 2.57081e-207,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.5210346142337646e-13,
+     "program": 2.52103e-13,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 20",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000003680237508994709,
+   "agreements": [
+    {
+     "model": 5.527585696794286e-19,
+     "program": 5.52759e-19,
+     "agrees": true
+    },
+    {
+     "model": 2.610085332376057e-19,
+     "program": 2.61009e-19,
+     "agrees": true
+    },
+    {
+     "model": 1.240156414182701e-7,
+     "program": 1.24016e-7,
+     "agrees": true
+    },
+    {
+     "model": 4.236189277091053e-19,
+     "program": 4.23619e-19,
+     "agrees": true
+    },
+    {
+     "model": 7.957827285946048e-25,
+     "program": 7.95783e-25,
+     "agrees": true
+    },
+    {
+     "model": 5.955850912611518e-17,
+     "program": 5.95585e-17,
+     "agrees": true
+    },
+    {
+     "model": 1.4924983938713233e-8,
+     "program": 1.4925e-8,
+     "agrees": true
+    },
+    {
+     "model": 1.1540185831774504e-13,
+     "program": 1.15402e-13,
+     "agrees": true
+    },
+    {
+     "model": 1.6753530571907007e-25,
+     "program": 1.67535e-25,
+     "agrees": true
+    },
+    {
+     "model": 4.52319160919883e-19,
+     "program": 4.52319e-19,
+     "agrees": true
+    },
+    {
+     "model": 1.438053417521328e-14,
+     "program": 1.43805e-14,
+     "agrees": true
+    },
+    {
+     "model": 5.942305220809038e-19,
+     "program": 5.94231e-19,
+     "agrees": true
+    },
+    {
+     "model": 2.269026607698344e-24,
+     "program": 2.26903e-24,
+     "agrees": true
+    },
+    {
+     "model": 2.9854746032826087e-18,
+     "program": 2.98547e-18,
+     "agrees": true
+    },
+    {
+     "model": 1.0389295309287828e-13,
+     "program": 1.03893e-13,
+     "agrees": true
+    },
+    {
+     "model": 6.1807719609287425e-18,
+     "program": 6.18077e-18,
+     "agrees": true
+    },
+    {
+     "model": 2.708793197484575e-9,
+     "program": 2.70879e-9,
+     "agrees": true
+    },
+    {
+     "model": 3.257006589109941e-15,
+     "program": 3.25701e-15,
+     "agrees": true
+    },
+    {
+     "model": 4.750580131516781e-17,
+     "program": 4.75058e-17,
+     "agrees": true
+    },
+    {
+     "model": 5.511657888802828e-19,
+     "program": 5.51166e-19,
+     "agrees": true
+    },
+    {
+     "model": 7.14755096889322e-27,
+     "program": 7.14755e-27,
+     "agrees": true
+    },
+    {
+     "model": 1.2185168578397208e-17,
+     "program": 1.21852e-17,
+     "agrees": true
+    },
+    {
+     "model": 3.279229979312283e-17,
+     "program": 3.27923e-17,
+     "agrees": true
+    },
+    {
+     "model": 1.2192117936351564e-18,
+     "program": 1.21921e-18,
+     "agrees": true
+    },
+    {
+     "model": 2.2588232876589186e-7,
+     "program": 2.25882e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0005546675073672483,
+     "program": 0.000554668,
+     "agrees": true
+    },
+    {
+     "model": 8.012176008569207e-23,
+     "program": 8.01218e-23,
+     "agrees": true
+    },
+    {
+     "model": 2.4397181159178744e-8,
+     "program": 2.43972e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.000001158035738137755,
+     "program": 0.00000115804,
+     "agrees": true
+    },
+    {
+     "model": 0.007410749373409947,
+     "program": 0.00741075,
+     "agrees": true
+    },
+    {
+     "model": 7.126428910996591e-12,
+     "program": 7.12643e-12,
+     "agrees": true
+    },
+    {
+     "model": 2.747414361391297e-18,
+     "program": 2.74741e-18,
+     "agrees": true
+    },
+    {
+     "model": 2.690170517461307e-19,
+     "program": 2.69017e-19,
+     "agrees": true
+    },
+    {
+     "model": 1.0452873388526576e-9,
+     "program": 1.04529e-9,
+     "agrees": true
+    },
+    {
+     "model": 0.00000978656427374987,
+     "program": 0.00000978656,
+     "agrees": true
+    },
+    {
+     "model": 3.874202297344689e-17,
+     "program": 3.8742e-17,
+     "agrees": true
+    },
+    {
+     "model": 1.5193447187763713e-25,
+     "program": 1.51934e-25,
+     "agrees": true
+    },
+    {
+     "model": 2.5103581272378202e-11,
+     "program": 2.51036e-11,
+     "agrees": true
+    },
+    {
+     "model": 8.815488923006557e-16,
+     "program": 8.81549e-16,
+     "agrees": true
+    },
+    {
+     "model": 1.330066409301303e-24,
+     "program": 1.33007e-24,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 21",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000021933714265413874,
+   "agreements": [
+    {
+     "model": 3.730851512049093e-17,
+     "program": 3.73085e-17,
+     "agrees": true
+    },
+    {
+     "model": 4.2393855782166804e-13,
+     "program": 4.23939e-13,
+     "agrees": true
+    },
+    {
+     "model": 8.271462654511016e-7,
+     "program": 8.27146e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0038524965753656136,
+     "program": 0.0038525,
+     "agrees": true
+    },
+    {
+     "model": 0.0012452307894662016,
+     "program": 0.00124523,
+     "agrees": true
+    },
+    {
+     "model": 0.0021846282108271666,
+     "program": 0.00218463,
+     "agrees": true
+    },
+    {
+     "model": 1.933939700948708e-12,
+     "program": 1.93394e-12,
+     "agrees": true
+    },
+    {
+     "model": 6.905257974828732e-7,
+     "program": 6.90526e-7,
+     "agrees": true
+    },
+    {
+     "model": 5.876942789854215e-11,
+     "program": 5.87694e-11,
+     "agrees": true
+    },
+    {
+     "model": 8.715194138992943e-7,
+     "program": 8.71519e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0020211244330668576,
+     "program": 0.00202112,
+     "agrees": true
+    },
+    {
+     "model": 1.1392079697764428,
+     "program": 1.13921,
+     "agrees": true
+    },
+    {
+     "model": 0.0006287352380085536,
+     "program": 0.000628735,
+     "agrees": true
+    },
+    {
+     "model": 3.413271561611427e-7,
+     "program": 3.41327e-7,
+     "agrees": true
+    },
+    {
+     "model": 1.4942771963276794e-9,
+     "program": 1.49428e-9,
+     "agrees": true
+    },
+    {
+     "model": 0.3365617840120965,
+     "program": 0.336562,
+     "agrees": true
+    },
+    {
+     "model": 4.84133500172349e-10,
+     "program": 4.84134e-10,
+     "agrees": true
+    },
+    {
+     "model": 4.000683560118294e-9,
+     "program": 4.00068e-9,
+     "agrees": true
+    },
+    {
+     "model": 1.6010134740871491e-18,
+     "program": 1.60101e-18,
+     "agrees": true
+    },
+    {
+     "model": 0.00010974198076980782,
+     "program": 0.000109742,
+     "agrees": true
+    },
+    {
+     "model": 8.05590258878631e-12,
+     "program": 8.0559e-12,
+     "agrees": true
+    },
+    {
+     "model": 4.5632584409011464e-7,
+     "program": 4.56326e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.000034470718093006,
+     "program": 0.0000344707,
+     "agrees": true
+    },
+    {
+     "model": 1.0781912616681348e-13,
+     "program": 1.07819e-13,
+     "agrees": true
+    },
+    {
+     "model": 3.10167264643565e-14,
+     "program": 3.10167e-14,
+     "agrees": true
+    },
+    {
+     "model": 3.4152981149309687,
+     "program": 3.4153,
+     "agrees": true
+    },
+    {
+     "model": 0.0035360315938266058,
+     "program": 0.00353603,
+     "agrees": true
+    },
+    {
+     "model": 0.0009978999584371764,
+     "program": 0.0009979,
+     "agrees": true
+    },
+    {
+     "model": 3.2415313926505993,
+     "program": 3.24153,
+     "agrees": true
+    },
+    {
+     "model": 5.096181337371709e-13,
+     "program": 5.09618e-13,
+     "agrees": true
+    },
+    {
+     "model": 0.008326166219363067,
+     "program": 0.00832617,
+     "agrees": true
+    },
+    {
+     "model": 3.036980669631711,
+     "program": 3.03698,
+     "agrees": true
+    },
+    {
+     "model": 0.0009496970673079076,
+     "program": 0.000949697,
+     "agrees": true
+    },
+    {
+     "model": 0.0000021642208087909014,
+     "program": 0.00000216422,
+     "agrees": true
+    },
+    {
+     "model": 8.64250369213806e-7,
+     "program": 8.6425e-7,
+     "agrees": true
+    },
+    {
+     "model": 5.187564556806463e-16,
+     "program": 5.18756e-16,
+     "agrees": true
+    },
+    {
+     "model": 1.35262296009755e-11,
+     "program": 1.35262e-11,
+     "agrees": true
+    },
+    {
+     "model": 5.633319628007542e-15,
+     "program": 5.63332e-15,
+     "agrees": true
+    },
+    {
+     "model": 5.257027864742851e-17,
+     "program": 5.25703e-17,
+     "agrees": true
+    },
+    {
+     "model": 1.2807981218518241e-17,
+     "program": 1.2808e-17,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 22",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 7.304597856317343e-7,
+   "agreements": [
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 3.8757616914608395e-53,
+     "program": 3.87576e-53,
+     "agrees": true
+    },
+    {
+     "model": 3.484517454698268e-101,
+     "program": 3.48452e-101,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 6.718678119426826e-292,
+     "program": 6.71868e-292,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 23",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000002850031166082167,
+   "agreements": [
+    {
+     "model": 0.000026894813906545585,
+     "program": 0.0000268948,
+     "agrees": true
+    },
+    {
+     "model": 1.4723838019180097e-95,
+     "program": 1.47238e-95,
+     "agrees": true
+    },
+    {
+     "model": 0.016497858749364592,
+     "program": 0.0164979,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 7.273829058881193e-253,
+     "program": 7.27383e-253,
+     "agrees": true
+    },
+    {
+     "model": 0.883300000838414,
+     "program": 0.8833,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.692315176835257e-82,
+     "program": 1.69232e-82,
+     "agrees": true
+    },
+    {
+     "model": 0.008198216486556886,
+     "program": 0.00819822,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.010260894017781e-135,
+     "program": 2.01026e-135,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 2.027931341266148e-49,
+     "program": 2.02793e-49,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 6.461466312467994e-301,
+     "program": 6.46147e-301,
+     "agrees": true
+    },
+    {
+     "model": 9.803001057667494e-83,
+     "program": 9.803e-83,
+     "agrees": true
+    },
+    {
+     "model": 3.926441693023974e-65,
+     "program": 3.92644e-65,
+     "agrees": true
+    },
+    {
+     "model": 0.14267991803695762,
+     "program": 0.14268,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.00048116949327881465,
+     "program": 0.000481169,
+     "agrees": true
+    },
+    {
+     "model": 0.0024361267122593173,
+     "program": 0.00243613,
+     "agrees": true
+    },
+    {
+     "model": 2.7269134937409674e-85,
+     "program": 2.72691e-85,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.5154451089060038,
+     "program": 0.515445,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.01260170254355385,
+     "program": 0.0126017,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.00040182246528925193,
+     "program": 0.000401822,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.2204909060783067e-170,
+     "program": 1.22049e-170,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 1.6082932156299058e-49,
+     "program": 1.60829e-49,
+     "agrees": true
+    },
+    {
+     "model": 0,
+     "program": 0,
+     "agrees": true
+    },
+    {
+     "model": 0.37156488911056806,
+     "program": 0.371565,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "program 24",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000003239441224884664,
+   "agreements": [
+    {
+     "model": 1.2285089497959086e-7,
+     "program": 1.22851e-7,
+     "agrees": true
+    },
+    {
+     "model": 2.6455475906909746e-8,
+     "program": 2.64555e-8,
+     "agrees": true
+    },
+    {
+     "model": 9.592670115596871e-8,
+     "program": 9.59267e-8,
+     "agrees": true
+    },
+    {
+     "model": 2.085444572260226e-8,
+     "program": 2.08544e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.00010338022237166269,
+     "program": 0.00010338,
+     "agrees": true
+    },
+    {
+     "model": 0.000004572181480675304,
+     "program": 0.00000457218,
+     "agrees": true
+    },
+    {
+     "model": 0.00009868032856521765,
+     "program": 0.0000986803,
+     "agrees": true
+    },
+    {
+     "model": 3.395336368281463e-8,
+     "program": 3.39534e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.028145024693664752,
+     "program": 0.028145,
+     "agrees": true
+    },
+    {
+     "model": 0.00008896630003595142,
+     "program": 0.0000889663,
+     "agrees": true
+    },
+    {
+     "model": 0.00000994638580138464,
+     "program": 0.00000994639,
+     "agrees": true
+    },
+    {
+     "model": 1.1248728433398259e-8,
+     "program": 1.12487e-8,
+     "agrees": true
+    },
+    {
+     "model": 1.507324882874547e-7,
+     "program": 1.50732e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0000036648636854153504,
+     "program": 0.00000366486,
+     "agrees": true
+    },
+    {
+     "model": 1.3654416842182996e-7,
+     "program": 1.36544e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.00000838677483202144,
+     "program": 0.00000838677,
+     "agrees": true
+    },
+    {
+     "model": 0.0000020058296248283684,
+     "program": 0.00000200583,
+     "agrees": true
+    },
+    {
+     "model": 0.00000477894890545352,
+     "program": 0.00000477895,
+     "agrees": true
+    },
+    {
+     "model": 3.7586880879548285e-8,
+     "program": 3.75869e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.00003623407490013271,
+     "program": 0.0000362341,
+     "agrees": true
+    },
+    {
+     "model": 3.304656308929211e-7,
+     "program": 3.30466e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.0000032113707031387343,
+     "program": 0.00000321137,
+     "agrees": true
+    },
+    {
+     "model": 0.000029855207725899485,
+     "program": 0.0000298552,
+     "agrees": true
+    },
+    {
+     "model": 0.0000189766538051907,
+     "program": 0.0000189767,
+     "agrees": true
+    },
+    {
+     "model": 5.16369086942162e-8,
+     "program": 5.16369e-8,
+     "agrees": true
+    },
+    {
+     "model": 4.017738003636712e-8,
+     "program": 4.01774e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.00003851793226326289,
+     "program": 0.0000385179,
+     "agrees": true
+    },
+    {
+     "model": 0.000001627053129019193,
+     "program": 0.00000162705,
+     "agrees": true
+    },
+    {
+     "model": 3.2655762980147e-8,
+     "program": 3.26558e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.000014074179025607572,
+     "program": 0.0000140742,
+     "agrees": true
+    },
+    {
+     "model": 3.202495849577058e-8,
+     "program": 3.2025e-8,
+     "agrees": true
+    },
+    {
+     "model": 1.4078076834196527e-8,
+     "program": 1.40781e-8,
+     "agrees": true
+    },
+    {
+     "model": 2.07024071784141e-8,
+     "program": 2.07024e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.000007596691579392077,
+     "program": 0.00000759669,
+     "agrees": true
+    },
+    {
+     "model": 0.000025075219988553205,
+     "program": 0.0000250752,
+     "agrees": true
+    },
+    {
+     "model": 1.308786338426466e-7,
+     "program": 1.30879e-7,
+     "agrees": true
+    },
+    {
+     "model": 2.3375364801342098e-7,
+     "program": 2.33754e-7,
+     "agrees": true
+    },
+    {
+     "model": 0.000003292455043179528,
+     "program": 0.00000329246,
+     "agrees": true
+    },
+    {
+     "model": 3.117547969396721e-8,
+     "program": 3.11755e-8,
+     "agrees": true
+    },
+    {
+     "model": 1.5741813349898285e-8,
+     "program": 1.57418e-8,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 1",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000003152316782563688,
+   "agreements": [
+    {
+     "model": 293.6935630862051,
+     "program": 293.694,
+     "agrees": true
+    },
+    {
+     "model": 4353182.144374455,
+     "program": 4353180,
+     "agrees": true
+    },
+    {
+     "model": 515.9327883132827,
+     "program": 515.933,
+     "agrees": true
+    },
+    {
+     "model": 2343843.5624460154,
+     "program": 2343840,
+     "agrees": true
+    },
+    {
+     "model": 2879952.334284702,
+     "program": 2879950,
+     "agrees": true
+    },
+    {
+     "model": 222.81371401079008,
+     "program": 222.814,
+     "agrees": true
+    },
+    {
+     "model": 15644149.315158978,
+     "program": 15644100,
+     "agrees": true
+    },
+    {
+     "model": 937.5046441468108,
+     "program": 937.505,
+     "agrees": true
+    },
+    {
+     "model": 328.7795681385593,
+     "program": 328.78,
+     "agrees": true
+    },
+    {
+     "model": 11601830.723425655,
+     "program": 11601800,
+     "agrees": true
+    },
+    {
+     "model": 208.2015921164213,
+     "program": 208.202,
+     "agrees": true
+    },
+    {
+     "model": 341.7682805090629,
+     "program": 341.768,
+     "agrees": true
+    },
+    {
+     "model": 37985.76035146134,
+     "program": 37985.8,
+     "agrees": true
+    },
+    {
+     "model": 1717.6759731081238,
+     "program": 1717.68,
+     "agrees": true
+    },
+    {
+     "model": 2032.2106903074887,
+     "program": 2032.21,
+     "agrees": true
+    },
+    {
+     "model": 9190441.94323172,
+     "program": 9190440,
+     "agrees": true
+    },
+    {
+     "model": 476.44873628373875,
+     "program": 476.449,
+     "agrees": true
+    },
+    {
+     "model": 3485771.6565138567,
+     "program": 3485770,
+     "agrees": true
+    },
+    {
+     "model": 2436.390892161719,
+     "program": 2436.39,
+     "agrees": true
+    },
+    {
+     "model": 6759.637386146481,
+     "program": 6759.64,
+     "agrees": true
+    },
+    {
+     "model": 186.5333670465562,
+     "program": 186.533,
+     "agrees": true
+    },
+    {
+     "model": 3248.3787072096497,
+     "program": 3248.38,
+     "agrees": true
+    },
+    {
+     "model": 583.9054010770608,
+     "program": 583.905,
+     "agrees": true
+    },
+    {
+     "model": 12369926.53677423,
+     "program": 12369900,
+     "agrees": true
+    },
+    {
+     "model": 3003841.5789242825,
+     "program": 3003840,
+     "agrees": true
+    },
+    {
+     "model": 348.54154295056355,
+     "program": 348.542,
+     "agrees": true
+    },
+    {
+     "model": 12524909.950411964,
+     "program": 12524900,
+     "agrees": true
+    },
+    {
+     "model": 7266.741995824257,
+     "program": 7266.74,
+     "agrees": true
+    },
+    {
+     "model": 84927091.81603876,
+     "program": 84927100,
+     "agrees": true
+    },
+    {
+     "model": 297.93356547649654,
+     "program": 297.934,
+     "agrees": true
+    },
+    {
+     "model": 90795991.565205,
+     "program": 90796000,
+     "agrees": true
+    },
+    {
+     "model": 7637298.707598228,
+     "program": 7637300,
+     "agrees": true
+    },
+    {
+     "model": 477560155.7377074,
+     "program": 477560000,
+     "agrees": true
+    },
+    {
+     "model": 6661.364165244847,
+     "program": 6661.36,
+     "agrees": true
+    },
+    {
+     "model": 4397.501027953892,
+     "program": 4397.5,
+     "agrees": true
+    },
+    {
+     "model": 68880653.49967332,
+     "program": 68880700,
+     "agrees": true
+    },
+    {
+     "model": 4103280.355837265,
+     "program": 4103280,
+     "agrees": true
+    },
+    {
+     "model": 4338321.778286614,
+     "program": 4338320,
+     "agrees": true
+    },
+    {
+     "model": 2542308.8449705807,
+     "program": 2542310,
+     "agrees": true
+    },
+    {
+     "model": 408.3261440581599,
+     "program": 408.326,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 2",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000003565702992187529,
+   "agreements": [
+    {
+     "model": 41.823760159062964,
+     "program": 41.8238,
+     "agrees": true
+    },
+    {
+     "model": 0.03968542367118818,
+     "program": 0.0396854,
+     "agrees": true
+    },
+    {
+     "model": 0.0820352058688441,
+     "program": 0.0820352,
+     "agrees": true
+    },
+    {
+     "model": 5.819912564314046e-12,
+     "program": 5.81991e-12,
+     "agrees": true
+    },
+    {
+     "model": 0.013780941464996994,
+     "program": 0.0137809,
+     "agrees": true
+    },
+    {
+     "model": 6.724837875769377,
+     "program": 6.72484,
+     "agrees": true
+    },
+    {
+     "model": 9.56127185477056,
+     "program": 9.56127,
+     "agrees": true
+    },
+    {
+     "model": 0.003915610747033899,
+     "program": 0.00391561,
+     "agrees": true
+    },
+    {
+     "model": 1.7869336558309694,
+     "program": 1.78693,
+     "agrees": true
+    },
+    {
+     "model": 10.029918773516858,
+     "program": 10.0299,
+     "agrees": true
+    },
+    {
+     "model": 0.01038233193024791,
+     "program": 0.0103823,
+     "agrees": true
+    },
+    {
+     "model": 0.0014877857295147623,
+     "program": 0.00148779,
+     "agrees": true
+    },
+    {
+     "model": 3.2566070126602007,
+     "program": 3.25661,
+     "agrees": true
+    },
+    {
+     "model": 1.3561083484508707,
+     "program": 1.35611,
+     "agrees": true
+    },
+    {
+     "model": 0.023373977975316793,
+     "program": 0.023374,
+     "agrees": true
+    },
+    {
+     "model": 51.82101325982869,
+     "program": 51.821,
+     "agrees": true
+    },
+    {
+     "model": 0.06253285046044246,
+     "program": 0.0625329,
+     "agrees": true
+    },
+    {
+     "model": 1.9119769674361502,
+     "program": 1.91198,
+     "agrees": true
+    },
+    {
+     "model": 0.019586419446946935,
+     "program": 0.0195864,
+     "agrees": true
+    },
+    {
+     "model": 0.06597608124097996,
+     "program": 0.0659761,
+     "agrees": true
+    },
+    {
+     "model": 0.02690302069657685,
+     "program": 0.026903,
+     "agrees": true
+    },
+    {
+     "model": 5.904252790737477e-12,
+     "program": 5.90425e-12,
+     "agrees": true
+    },
+    {
+     "model": 0.000016749602062355904,
+     "program": 0.0000167496,
+     "agrees": true
+    },
+    {
+     "model": 9.69026263197667,
+     "program": 9.69026,
+     "agrees": true
+    },
+    {
+     "model": 0.01940902575001539,
+     "program": 0.019409,
+     "agrees": true
+    },
+    {
+     "model": 0.006005002354396789,
+     "program": 0.006005,
+     "agrees": true
+    },
+    {
+     "model": 0.019065574950674884,
+     "program": 0.0190656,
+     "agrees": true
+    },
+    {
+     "model": 0.6879468525635227,
+     "program": 0.687947,
+     "agrees": true
+    },
+    {
+     "model": 0.008179252080000423,
+     "program": 0.00817925,
+     "agrees": true
+    },
+    {
+     "model": 0.0020670924806399445,
+     "program": 0.00206709,
+     "agrees": true
+    },
+    {
+     "model": 0.017051146769078228,
+     "program": 0.0170511,
+     "agrees": true
+    },
+    {
+     "model": 0.026323014716706963,
+     "program": 0.026323,
+     "agrees": true
+    },
+    {
+     "model": 2.7196072821384556,
+     "program": 2.71961,
+     "agrees": true
+    },
+    {
+     "model": 0.0006768159939917944,
+     "program": 0.000676816,
+     "agrees": true
+    },
+    {
+     "model": 0.46322659651217635,
+     "program": 0.463227,
+     "agrees": true
+    },
+    {
+     "model": 4.925004138128129e-10,
+     "program": 4.925e-10,
+     "agrees": true
+    },
+    {
+     "model": 0.007472240515127643,
+     "program": 0.00747224,
+     "agrees": true
+    },
+    {
+     "model": 0.0015509764907871125,
+     "program": 0.00155098,
+     "agrees": true
+    },
+    {
+     "model": 0.010378962991568643,
+     "program": 0.010379,
+     "agrees": true
+    },
+    {
+     "model": 0.04420175425672373,
+     "program": 0.0442018,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 3",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.00000265975541922203,
+   "agreements": [
+    {
+     "model": 700.8863187688064,
+     "program": 700.886,
+     "agrees": true
+    },
+    {
+     "model": 0.001490748457757053,
+     "program": 0.00149075,
+     "agrees": true
+    },
+    {
+     "model": 11370.499253805356,
+     "program": 11370.5,
+     "agrees": true
+    },
+    {
+     "model": 31904.539107224664,
+     "program": 31904.5,
+     "agrees": true
+    },
+    {
+     "model": 26584.53927141877,
+     "program": 26584.5,
+     "agrees": true
+    },
+    {
+     "model": 46.96127103693014,
+     "program": 46.9613,
+     "agrees": true
+    },
+    {
+     "model": 21.098409229326062,
+     "program": 21.0984,
+     "agrees": true
+    },
+    {
+     "model": 35.22538861588241,
+     "program": 35.2254,
+     "agrees": true
+    },
+    {
+     "model": 317.7553889361693,
+     "program": 317.755,
+     "agrees": true
+    },
+    {
+     "model": 15503.75876368393,
+     "program": 15503.8,
+     "agrees": true
+    },
+    {
+     "model": 39.721243667819536,
+     "program": 39.7212,
+     "agrees": true
+    },
+    {
+     "model": 70.29229472634621,
+     "program": 70.2923,
+     "agrees": true
+    },
+    {
+     "model": 446789.99230042147,
+     "program": 446790,
+     "agrees": true
+    },
+    {
+     "model": 134993.31758626585,
+     "program": 134993,
+     "agrees": true
+    },
+    {
+     "model": 22.939883713347296,
+     "program": 22.9399,
+     "agrees": true
+    },
+    {
+     "model": 79.4858103061606,
+     "program": 79.4858,
+     "agrees": true
+    },
+    {
+     "model": 34.803806270118464,
+     "program": 34.8038,
+     "agrees": true
+    },
+    {
+     "model": 19953.040467807252,
+     "program": 19953,
+     "agrees": true
+    },
+    {
+     "model": 1.9222351643047427e-9,
+     "program": 1.92224e-9,
+     "agrees": true
+    },
+    {
+     "model": 116420.93422324605,
+     "program": 116421,
+     "agrees": true
+    },
+    {
+     "model": 35.50322826426684,
+     "program": 35.5032,
+     "agrees": true
+    },
+    {
+     "model": 89296.66416495202,
+     "program": 89296.7,
+     "agrees": true
+    },
+    {
+     "model": 175.80794789031768,
+     "program": 175.808,
+     "agrees": true
+    },
+    {
+     "model": 3141.452966390649,
+     "program": 3141.45,
+     "agrees": true
+    },
+    {
+     "model": 31370.83119056663,
+     "program": 31370.8,
+     "agrees": true
+    },
+    {
+     "model": 51.500592228980025,
+     "program": 51.5006,
+     "agrees": true
+    },
+    {
+     "model": 8888.154141598761,
+     "program": 8888.15,
+     "agrees": true
+    },
+    {
+     "model": 174341.28102804226,
+     "program": 174341,
+     "agrees": true
+    },
+    {
+     "model": 61549.226285310324,
+     "program": 61549.2,
+     "agrees": true
+    },
+    {
+     "model": 26.966782334091338,
+     "program": 26.9668,
+     "agrees": true
+    },
+    {
+     "model": 4.091809869059756,
+     "program": 4.09181,
+     "agrees": true
+    },
+    {
+     "model": 1.345302673147875,
+     "program": 1.3453,
+     "agrees": true
+    },
+    {
+     "model": 85495.81415359011,
+     "program": 85495.8,
+     "agrees": true
+    },
+    {
+     "model": 1.919383604288741e-9,
+     "program": 1.91938e-9,
+     "agrees": true
+    },
+    {
+     "model": 1.9363287790639943e-9,
+     "program": 1.93633e-9,
+     "agrees": true
+    },
+    {
+     "model": 0.32777120590879816,
+     "program": 0.327771,
+     "agrees": true
+    },
+    {
+     "model": 72016.75067427405,
+     "program": 72016.8,
+     "agrees": true
+    },
+    {
+     "model": 20725.80371486912,
+     "program": 20725.8,
+     "agrees": true
+    },
+    {
+     "model": 20.053468857244418,
+     "program": 20.0535,
+     "agrees": true
+    },
+    {
+     "model": 0.5746618375576081,
+     "program": 0.574662,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 4",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000003983035884790686,
+   "agreements": [
+    {
+     "model": 409230.9794866382,
+     "program": 409231,
+     "agrees": true
+    },
+    {
+     "model": 251767.21998839066,
+     "program": 251767,
+     "agrees": true
+    },
+    {
+     "model": 246.38334143382983,
+     "program": 246.383,
+     "agrees": true
+    },
+    {
+     "model": 1636494.6869380884,
+     "program": 1636490,
+     "agrees": true
+    },
+    {
+     "model": 21847496.14009494,
+     "program": 21847500,
+     "agrees": true
+    },
+    {
+     "model": 60.92774919911566,
+     "program": 60.9277,
+     "agrees": true
+    },
+    {
+     "model": 413494.70262630854,
+     "program": 413495,
+     "agrees": true
+    },
+    {
+     "model": 250.03720094345812,
+     "program": 250.037,
+     "agrees": true
+    },
+    {
+     "model": 1389.85846715332,
+     "program": 1389.86,
+     "agrees": true
+    },
+    {
+     "model": 639.2133566834311,
+     "program": 639.213,
+     "agrees": true
+    },
+    {
+     "model": 179.8190180350772,
+     "program": 179.819,
+     "agrees": true
+    },
+    {
+     "model": 60.46139767256456,
+     "program": 60.4614,
+     "agrees": true
+    },
+    {
+     "model": 190891.64211757804,
+     "program": 190892,
+     "agrees": true
+    },
+    {
+     "model": 10970.456304104826,
+     "program": 10970.5,
+     "agrees": true
+    },
+    {
+     "model": 1489126.7946268313,
+     "program": 1489130,
+     "agrees": true
+    },
+    {
+     "model": 21.865871356718817,
+     "program": 21.8659,
+     "agrees": true
+    },
+    {
+     "model": 349.7215038212214,
+     "program": 349.722,
+     "agrees": true
+    },
+    {
+     "model": 26.827845235909358,
+     "program": 26.8278,
+     "agrees": true
+    },
+    {
+     "model": 657325.1582840177,
+     "program": 657325,
+     "agrees": true
+    },
+    {
+     "model": 2849819.9689477147,
+     "program": 2849820,
+     "agrees": true
+    },
+    {
+     "model": 1544236.908708642,
+     "program": 1544240,
+     "agrees": true
+    },
+    {
+     "model": 288.47681845718034,
+     "program": 288.477,
+     "agrees": true
+    },
+    {
+     "model": 208498.32973903415,
+     "program": 208498,
+     "agrees": true
+    },
+    {
+     "model": 20.1940642638645,
+     "program": 20.1941,
+     "agrees": true
+    },
+    {
+     "model": 74.69166271576134,
+     "program": 74.6917,
+     "agrees": true
+    },
+    {
+     "model": 1604606.0466081551,
+     "program": 1604610,
+     "agrees": true
+    },
+    {
+     "model": 122.79519106090278,
+     "program": 122.795,
+     "agrees": true
+    },
+    {
+     "model": 17.48531380187322,
+     "program": 17.4853,
+     "agrees": true
+    },
+    {
+     "model": 967.6768297951589,
+     "program": 967.677,
+     "agrees": true
+    },
+    {
+     "model": 2419.758727523778,
+     "program": 2419.76,
+     "agrees": true
+    },
+    {
+     "model": 28.433745709595954,
+     "program": 28.4337,
+     "agrees": true
+    },
+    {
+     "model": 928460.3599282197,
+     "program": 928460,
+     "agrees": true
+    },
+    {
+     "model": 35.23987717035597,
+     "program": 35.2399,
+     "agrees": true
+    },
+    {
+     "model": 521592.5338827667,
+     "program": 521593,
+     "agrees": true
+    },
+    {
+     "model": 1189.5213156775296,
+     "program": 1189.52,
+     "agrees": true
+    },
+    {
+     "model": 856753.6978649785,
+     "program": 856754,
+     "agrees": true
+    },
+    {
+     "model": 2501.2861908254367,
+     "program": 2501.29,
+     "agrees": true
+    },
+    {
+     "model": 4877875.839708289,
+     "program": 4877880,
+     "agrees": true
+    },
+    {
+     "model": 351573.3504780178,
+     "program": 351573,
+     "agrees": true
+    },
+    {
+     "model": 223.57079074806433,
+     "program": 223.571,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 5",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000041884444330243794,
+   "agreements": [
+    {
+     "model": 0.00035674377704684996,
+     "program": 0.000356744,
+     "agrees": true
+    },
+    {
+     "model": 25.00013839125574,
+     "program": 25.0001,
+     "agrees": true
+    },
+    {
+     "model": 0.0006853333795844917,
+     "program": 0.000685333,
+     "agrees": true
+    },
+    {
+     "model": 541.5848599266641,
+     "program": 541.585,
+     "agrees": true
+    },
+    {
+     "model": 0.00022194305758422493,
+     "program": 0.000221943,
+     "agrees": true
+    },
+    {
+     "model": 0.7033152964216965,
+     "program": 0.703315,
+     "agrees": true
+    },
+    {
+     "model": 0.0018076532701190929,
+     "program": 0.00180765,
+     "agrees": true
+    },
+    {
+     "model": 0.07404655601793479,
+     "program": 0.0740466,
+     "agrees": true
+    },
+    {
+     "model": 1.7381149997974468e-13,
+     "program": 1.73811e-13,
+     "agrees": true
+    },
+    {
+     "model": 0.10606609933480768,
+     "program": 0.106066,
+     "agrees": true
+    },
+    {
+     "model": 0.07308866800663734,
+     "program": 0.0730887,
+     "agrees": true
+    },
+    {
+     "model": 0.0009585080610143043,
+     "program": 0.000958508,
+     "agrees": true
+    },
+    {
+     "model": 49.09712612627284,
+     "program": 49.0971,
+     "agrees": true
+    },
+    {
+     "model": 0.0000022762927424448916,
+     "program": 0.00000227629,
+     "agrees": true
+    },
+    {
+     "model": 234.1226266963021,
+     "program": 234.123,
+     "agrees": true
+    },
+    {
+     "model": 0.02465473502786041,
+     "program": 0.0246547,
+     "agrees": true
+    },
+    {
+     "model": 0.13598766522323188,
+     "program": 0.135988,
+     "agrees": true
+    },
+    {
+     "model": 1.7880920034800003e-13,
+     "program": 1.78809e-13,
+     "agrees": true
+    },
+    {
+     "model": 0.07024838183944841,
+     "program": 0.0702484,
+     "agrees": true
+    },
+    {
+     "model": 0.16511506577931975,
+     "program": 0.165115,
+     "agrees": true
+    },
+    {
+     "model": 1.5692743137997494e-8,
+     "program": 1.56927e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.09478381514812545,
+     "program": 0.0947838,
+     "agrees": true
+    },
+    {
+     "model": 0.025131638075186934,
+     "program": 0.0251316,
+     "agrees": true
+    },
+    {
+     "model": 0.09557755218902726,
+     "program": 0.0955776,
+     "agrees": true
+    },
+    {
+     "model": 0.0004442981773972261,
+     "program": 0.000444298,
+     "agrees": true
+    },
+    {
+     "model": 0.007770770298302676,
+     "program": 0.00777077,
+     "agrees": true
+    },
+    {
+     "model": 0.0013765056121915285,
+     "program": 0.00137651,
+     "agrees": true
+    },
+    {
+     "model": 0.16919596265135484,
+     "program": 0.169196,
+     "agrees": true
+    },
+    {
+     "model": 0.26661797655399605,
+     "program": 0.266618,
+     "agrees": true
+    },
+    {
+     "model": 4.456480516055428e-9,
+     "program": 4.45648e-9,
+     "agrees": true
+    },
+    {
+     "model": 0.0000015408075133985713,
+     "program": 0.00000154081,
+     "agrees": true
+    },
+    {
+     "model": 0.00008684945886644015,
+     "program": 0.0000868495,
+     "agrees": true
+    },
+    {
+     "model": 1.864245805962487e-10,
+     "program": 1.86425e-10,
+     "agrees": true
+    },
+    {
+     "model": 0.1862894763196346,
+     "program": 0.186289,
+     "agrees": true
+    },
+    {
+     "model": 0.011686251052581823,
+     "program": 0.0116863,
+     "agrees": true
+    },
+    {
+     "model": 0.0009418536981703464,
+     "program": 0.000941854,
+     "agrees": true
+    },
+    {
+     "model": 0.1816704435690807,
+     "program": 0.18167,
+     "agrees": true
+    },
+    {
+     "model": 0.007542792157712463,
+     "program": 0.00754279,
+     "agrees": true
+    },
+    {
+     "model": 0.00024260384271800772,
+     "program": 0.000242604,
+     "agrees": true
+    },
+    {
+     "model": 7.437291637522661,
+     "program": 7.43729,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 6",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000004778671212685249,
+   "agreements": [
+    {
+     "model": 0.7822416551135307,
+     "program": 0.782242,
+     "agrees": true
+    },
+    {
+     "model": 0.0010000631461397277,
+     "program": 0.00100006,
+     "agrees": true
+    },
+    {
+     "model": 0.0009154341939690612,
+     "program": 0.000915434,
+     "agrees": true
+    },
+    {
+     "model": 0.00018570947391952355,
+     "program": 0.000185709,
+     "agrees": true
+    },
+    {
+     "model": 1.0255149005751154e-14,
+     "program": 1.02551e-14,
+     "agrees": true
+    },
+    {
+     "model": 0.0006771959123287598,
+     "program": 0.000677196,
+     "agrees": true
+    },
+    {
+     "model": 9.277167805083913e-15,
+     "program": 9.27717e-15,
+     "agrees": true
+    },
+    {
+     "model": 0.01254206468683721,
+     "program": 0.0125421,
+     "agrees": true
+    },
+    {
+     "model": 0.002751625155630438,
+     "program": 0.00275163,
+     "agrees": true
+    },
+    {
+     "model": 9.23441659495265e-15,
+     "program": 9.23442e-15,
+     "agrees": true
+    },
+    {
+     "model": 0.00003301748884631951,
+     "program": 0.0000330175,
+     "agrees": true
+    },
+    {
+     "model": 0.000276522798927649,
+     "program": 0.000276523,
+     "agrees": true
+    },
+    {
+     "model": 0.00021667827745727933,
+     "program": 0.000216678,
+     "agrees": true
+    },
+    {
+     "model": 0.0003692773563599977,
+     "program": 0.000369277,
+     "agrees": true
+    },
+    {
+     "model": 0.0000016075802128502441,
+     "program": 0.00000160758,
+     "agrees": true
+    },
+    {
+     "model": 0.0005319058105885967,
+     "program": 0.000531906,
+     "agrees": true
+    },
+    {
+     "model": 0.0008865743805701986,
+     "program": 0.000886574,
+     "agrees": true
+    },
+    {
+     "model": 0.0020296090179444106,
+     "program": 0.00202961,
+     "agrees": true
+    },
+    {
+     "model": 0.0011266632235018802,
+     "program": 0.00112666,
+     "agrees": true
+    },
+    {
+     "model": 0.0002731576810898081,
+     "program": 0.000273158,
+     "agrees": true
+    },
+    {
+     "model": 4.663664818387039,
+     "program": 4.66366,
+     "agrees": true
+    },
+    {
+     "model": 1.7844863870413376e-9,
+     "program": 1.78449e-9,
+     "agrees": true
+    },
+    {
+     "model": 0.9175189951326868,
+     "program": 0.917519,
+     "agrees": true
+    },
+    {
+     "model": 0.010384284219687673,
+     "program": 0.0103843,
+     "agrees": true
+    },
+    {
+     "model": 0.000386953164929086,
+     "program": 0.000386953,
+     "agrees": true
+    },
+    {
+     "model": 3.641394337627628e-9,
+     "program": 3.64139e-9,
+     "agrees": true
+    },
+    {
+     "model": 0.000021262297261824274,
+     "program": 0.0000212623,
+     "agrees": true
+    },
+    {
+     "model": 0.0010302144210083434,
+     "program": 0.00103021,
+     "agrees": true
+    },
+    {
+     "model": 0.0013759482463652443,
+     "program": 0.00137595,
+     "agrees": true
+    },
+    {
+     "model": 1.0306719839628574e-14,
+     "program": 1.03067e-14,
+     "agrees": true
+    },
+    {
+     "model": 0.0006626214084814506,
+     "program": 0.000662621,
+     "agrees": true
+    },
+    {
+     "model": 0.0000010511165571507812,
+     "program": 0.00000105112,
+     "agrees": true
+    },
+    {
+     "model": 166.0104421707246,
+     "program": 166.01,
+     "agrees": true
+    },
+    {
+     "model": 1.5999076714782985,
+     "program": 1.59991,
+     "agrees": true
+    },
+    {
+     "model": 0.06471565345827594,
+     "program": 0.0647157,
+     "agrees": true
+    },
+    {
+     "model": 0.000073019313263443,
+     "program": 0.0000730193,
+     "agrees": true
+    },
+    {
+     "model": 0.000018902543782146803,
+     "program": 0.0000189025,
+     "agrees": true
+    },
+    {
+     "model": 0.000004858447787334579,
+     "program": 0.00000485845,
+     "agrees": true
+    },
+    {
+     "model": 0.13138553203109982,
+     "program": 0.131386,
+     "agrees": true
+    },
+    {
+     "model": 0.000006254306145885936,
+     "program": 0.00000625431,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 7",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000004760763545316916,
+   "agreements": [
+    {
+     "model": 505.1328865166071,
+     "program": 505.133,
+     "agrees": true
+    },
+    {
+     "model": 9706.378949470633,
+     "program": 9706.38,
+     "agrees": true
+    },
+    {
+     "model": 217259.359138152,
+     "program": 217259,
+     "agrees": true
+    },
+    {
+     "model": 186424.6916783438,
+     "program": 186425,
+     "agrees": true
+    },
+    {
+     "model": 0.27885161971446837,
+     "program": 0.278852,
+     "agrees": true
+    },
+    {
+     "model": 121499.54041435017,
+     "program": 121500,
+     "agrees": true
+    },
+    {
+     "model": 126821.41933623342,
+     "program": 126821,
+     "agrees": true
+    },
+    {
+     "model": 376456.69929503865,
+     "program": 376457,
+     "agrees": true
+    },
+    {
+     "model": 24.002426542488806,
+     "program": 24.0024,
+     "agrees": true
+    },
+    {
+     "model": 10413.950421408439,
+     "program": 10414,
+     "agrees": true
+    },
+    {
+     "model": 57.95583857743355,
+     "program": 57.9558,
+     "agrees": true
+    },
+    {
+     "model": 270.0432406594614,
+     "program": 270.043,
+     "agrees": true
+    },
+    {
+     "model": 111.71333547438844,
+     "program": 111.713,
+     "agrees": true
+    },
+    {
+     "model": 23.597764572364895,
+     "program": 23.5978,
+     "agrees": true
+    },
+    {
+     "model": 375726.1169906475,
+     "program": 375726,
+     "agrees": true
+    },
+    {
+     "model": 109889.25853100998,
+     "program": 109889,
+     "agrees": true
+    },
+    {
+     "model": 147.10585127763432,
+     "program": 147.106,
+     "agrees": true
+    },
+    {
+     "model": 45.629329574251386,
+     "program": 45.6293,
+     "agrees": true
+    },
+    {
+     "model": 175.37676251122215,
+     "program": 175.377,
+     "agrees": true
+    },
+    {
+     "model": 298.27937290786156,
+     "program": 298.279,
+     "agrees": true
+    },
+    {
+     "model": 503209.1417488818,
+     "program": 503209,
+     "agrees": true
+    },
+    {
+     "model": 747242.711082073,
+     "program": 747243,
+     "agrees": true
+    },
+    {
+     "model": 180.65867390371434,
+     "program": 180.659,
+     "agrees": true
+    },
+    {
+     "model": 57.403040563655345,
+     "program": 57.403,
+     "agrees": true
+    },
+    {
+     "model": 72.81523597230924,
+     "program": 72.8152,
+     "agrees": true
+    },
+    {
+     "model": 505.3392792786486,
+     "program": 505.339,
+     "agrees": true
+    },
+    {
+     "model": 84.66504956112735,
+     "program": 84.665,
+     "agrees": true
+    },
+    {
+     "model": 105381.99575887968,
+     "program": 105382,
+     "agrees": true
+    },
+    {
+     "model": 50.699383375575,
+     "program": 50.6994,
+     "agrees": true
+    },
+    {
+     "model": 189491.55563407345,
+     "program": 189492,
+     "agrees": true
+    },
+    {
+     "model": 0.1913024295996317,
+     "program": 0.191302,
+     "agrees": true
+    },
+    {
+     "model": 1156.6858637301443,
+     "program": 1156.69,
+     "agrees": true
+    },
+    {
+     "model": 60.81577354907597,
+     "program": 60.8158,
+     "agrees": true
+    },
+    {
+     "model": 266.7448544758891,
+     "program": 266.745,
+     "agrees": true
+    },
+    {
+     "model": 545.9781866012471,
+     "program": 545.978,
+     "agrees": true
+    },
+    {
+     "model": 82.52050556665287,
+     "program": 82.5205,
+     "agrees": true
+    },
+    {
+     "model": 98.25440707692029,
+     "program": 98.2544,
+     "agrees": true
+    },
+    {
+     "model": 171329.09647734297,
+     "program": 171329,
+     "agrees": true
+    },
+    {
+     "model": 564.4260558328011,
+     "program": 564.426,
+     "agrees": true
+    },
+    {
+     "model": 97345.43300311225,
+     "program": 97345.4,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 8",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000024041241254781117,
+   "agreements": [
+    {
+     "model": 0.000005652775963164113,
+     "program": 0.00000565278,
+     "agrees": true
+    },
+    {
+     "model": 30275.08107240303,
+     "program": 30275.1,
+     "agrees": true
+    },
+    {
+     "model": 0.4952948697614159,
+     "program": 0.495295,
+     "agrees": true
+    },
+    {
+     "model": 47.72973070537927,
+     "program": 47.7297,
+     "agrees": true
+    },
+    {
+     "model": 0.0000019030187430950182,
+     "program": 0.00000190302,
+     "agrees": true
+    },
+    {
+     "model": 285.7006636546351,
+     "program": 285.701,
+     "agrees": true
+    },
+    {
+     "model": 0.0000019310317590752728,
+     "program": 0.00000193103,
+     "agrees": true
+    },
+    {
+     "model": 345.54957139199763,
+     "program": 345.55,
+     "agrees": true
+    },
+    {
+     "model": 0.0464273856673143,
+     "program": 0.0464274,
+     "agrees": true
+    },
+    {
+     "model": 488.32401339440486,
+     "program": 488.324,
+     "agrees": true
+    },
+    {
+     "model": 16.034970795781874,
+     "program": 16.035,
+     "agrees": true
+    },
+    {
+     "model": 676.0398667842497,
+     "program": 676.04,
+     "agrees": true
+    },
+    {
+     "model": 538713.9962588346,
+     "program": 538714,
+     "agrees": true
+    },
+    {
+     "model": 590.4137665122835,
+     "program": 590.414,
+     "agrees": true
+    },
+    {
+     "model": 1570.6293355636267,
+     "program": 1570.63,
+     "agrees": true
+    },
+    {
+     "model": 1.3744402670633138,
+     "program": 1.37444,
+     "agrees": true
+    },
+    {
+     "model": 9846343.490683872,
+     "program": 9846340,
+     "agrees": true
+    },
+    {
+     "model": 3.6262315267599123,
+     "program": 3.62623,
+     "agrees": true
+    },
+    {
+     "model": 557.9078178362738,
+     "program": 557.908,
+     "agrees": true
+    },
+    {
+     "model": 0.0000018924610795214604,
+     "program": 0.00000189246,
+     "agrees": true
+    },
+    {
+     "model": 468643.8020928735,
+     "program": 468644,
+     "agrees": true
+    },
+    {
+     "model": 0.2557677412376475,
+     "program": 0.255768,
+     "agrees": true
+    },
+    {
+     "model": 3539.2278216980067,
+     "program": 3539.23,
+     "agrees": true
+    },
+    {
+     "model": 0.000002008744829260296,
+     "program": 0.00000200874,
+     "agrees": true
+    },
+    {
+     "model": 0.000002102831300536405,
+     "program": 0.00000210283,
+     "agrees": true
+    },
+    {
+     "model": 0.238879748152642,
+     "program": 0.23888,
+     "agrees": true
+    },
+    {
+     "model": 192.32061959658034,
+     "program": 192.321,
+     "agrees": true
+    },
+    {
+     "model": 728.4775779282764,
+     "program": 728.478,
+     "agrees": true
+    },
+    {
+     "model": 0.17494463172842692,
+     "program": 0.174945,
+     "agrees": true
+    },
+    {
+     "model": 60.160080827259684,
+     "program": 60.1601,
+     "agrees": true
+    },
+    {
+     "model": 1434.9222653609377,
+     "program": 1434.92,
+     "agrees": true
+    },
+    {
+     "model": 33.16835139929749,
+     "program": 33.1684,
+     "agrees": true
+    },
+    {
+     "model": 524.5457439770884,
+     "program": 524.546,
+     "agrees": true
+    },
+    {
+     "model": 1228.0428753476574,
+     "program": 1228.04,
+     "agrees": true
+    },
+    {
+     "model": 614.4866302226701,
+     "program": 614.487,
+     "agrees": true
+    },
+    {
+     "model": 713.8729962837663,
+     "program": 713.873,
+     "agrees": true
+    },
+    {
+     "model": 0.0000020464979847664823,
+     "program": 0.0000020465,
+     "agrees": true
+    },
+    {
+     "model": 0.000990218962012625,
+     "program": 0.000990219,
+     "agrees": true
+    },
+    {
+     "model": 629.1577043022572,
+     "program": 629.158,
+     "agrees": true
+    },
+    {
+     "model": 264.6194196224234,
+     "program": 264.619,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 9",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000029530138194150167,
+   "agreements": [
+    {
+     "model": 2559.5602198152246,
+     "program": 2559.56,
+     "agrees": true
+    },
+    {
+     "model": 832.1784232749841,
+     "program": 832.178,
+     "agrees": true
+    },
+    {
+     "model": 1167.0472183301736,
+     "program": 1167.05,
+     "agrees": true
+    },
+    {
+     "model": 2845.1456628640112,
+     "program": 2845.15,
+     "agrees": true
+    },
+    {
+     "model": 362508.64045533224,
+     "program": 362509,
+     "agrees": true
+    },
+    {
+     "model": 0.0000011380477173963298,
+     "program": 0.00000113805,
+     "agrees": true
+    },
+    {
+     "model": 0.8569913901790559,
+     "program": 0.856991,
+     "agrees": true
+    },
+    {
+     "model": 481150.2106829025,
+     "program": 481150,
+     "agrees": true
+    },
+    {
+     "model": 120.48603794082473,
+     "program": 120.486,
+     "agrees": true
+    },
+    {
+     "model": 353.75571653412163,
+     "program": 353.756,
+     "agrees": true
+    },
+    {
+     "model": 83072.53976121628,
+     "program": 83072.5,
+     "agrees": true
+    },
+    {
+     "model": 88.8427182185538,
+     "program": 88.8427,
+     "agrees": true
+    },
+    {
+     "model": 168.0796068415915,
+     "program": 168.08,
+     "agrees": true
+    },
+    {
+     "model": 29.55835887547951,
+     "program": 29.5584,
+     "agrees": true
+    },
+    {
+     "model": 1033.3705514124124,
+     "program": 1033.37,
+     "agrees": true
+    },
+    {
+     "model": 1388950.0881955898,
+     "program": 1388950,
+     "agrees": true
+    },
+    {
+     "model": 315.24357019630685,
+     "program": 315.244,
+     "agrees": true
+    },
+    {
+     "model": 95589.35744500333,
+     "program": 95589.4,
+     "agrees": true
+    },
+    {
+     "model": 564457.5482829702,
+     "program": 564458,
+     "agrees": true
+    },
+    {
+     "model": 1833373.643824682,
+     "program": 1833370,
+     "agrees": true
+    },
+    {
+     "model": 437925.3118049997,
+     "program": 437925,
+     "agrees": true
+    },
+    {
+     "model": 3727588.073524463,
+     "program": 3727590,
+     "agrees": true
+    },
+    {
+     "model": 9.382836498437396,
+     "program": 9.38284,
+     "agrees": true
+    },
+    {
+     "model": 7940.42664290831,
+     "program": 7940.43,
+     "agrees": true
+    },
+    {
+     "model": 869.5610119126898,
+     "program": 869.561,
+     "agrees": true
+    },
+    {
+     "model": 3829.9613299619637,
+     "program": 3829.96,
+     "agrees": true
+    },
+    {
+     "model": 423.9891987467654,
+     "program": 423.989,
+     "agrees": true
+    },
+    {
+     "model": 172.91062538127602,
+     "program": 172.911,
+     "agrees": true
+    },
+    {
+     "model": 5159.802272965205,
+     "program": 5159.8,
+     "agrees": true
+    },
+    {
+     "model": 2257666.1877420903,
+     "program": 2257670,
+     "agrees": true
+    },
+    {
+     "model": 482794.5386110636,
+     "program": 482795,
+     "agrees": true
+    },
+    {
+     "model": 0.33045240394826797,
+     "program": 0.330452,
+     "agrees": true
+    },
+    {
+     "model": 1651185.841802376,
+     "program": 1651190,
+     "agrees": true
+    },
+    {
+     "model": 633.7296943758939,
+     "program": 633.73,
+     "agrees": true
+    },
+    {
+     "model": 0.000007059802913085285,
+     "program": 0.0000070598,
+     "agrees": true
+    },
+    {
+     "model": 935.8472955087415,
+     "program": 935.847,
+     "agrees": true
+    },
+    {
+     "model": 0.0000011233066828500465,
+     "program": 0.00000112331,
+     "agrees": true
+    },
+    {
+     "model": 2354339.8646205147,
+     "program": 2354340,
+     "agrees": true
+    },
+    {
+     "model": 1811.3489595022086,
+     "program": 1811.35,
+     "agrees": true
+    },
+    {
+     "model": 0.026451004078605077,
+     "program": 0.026451,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 10",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000004043064293034374,
+   "agreements": [
+    {
+     "model": 64158.511678005576,
+     "program": 64158.5,
+     "agrees": true
+    },
+    {
+     "model": 368.5830037993338,
+     "program": 368.583,
+     "agrees": true
+    },
+    {
+     "model": 9416.667933447055,
+     "program": 9416.67,
+     "agrees": true
+    },
+    {
+     "model": 0.011925906395301916,
+     "program": 0.0119259,
+     "agrees": true
+    },
+    {
+     "model": 0.9926864357350459,
+     "program": 0.992686,
+     "agrees": true
+    },
+    {
+     "model": 13016.758916035036,
+     "program": 13016.8,
+     "agrees": true
+    },
+    {
+     "model": 0.00022180630460566015,
+     "program": 0.000221806,
+     "agrees": true
+    },
+    {
+     "model": 1889.3828577796753,
+     "program": 1889.38,
+     "agrees": true
+    },
+    {
+     "model": 392.1040189267388,
+     "program": 392.104,
+     "agrees": true
+    },
+    {
+     "model": 15.690506355505496,
+     "program": 15.6905,
+     "agrees": true
+    },
+    {
+     "model": 16881.937507976527,
+     "program": 16881.9,
+     "agrees": true
+    },
+    {
+     "model": 30.133386873916905,
+     "program": 30.1334,
+     "agrees": true
+    },
+    {
+     "model": 69616.2996042012,
+     "program": 69616.3,
+     "agrees": true
+    },
+    {
+     "model": 775.1264576704319,
+     "program": 775.126,
+     "agrees": true
+    },
+    {
+     "model": 11551.427209821271,
+     "program": 11551.4,
+     "agrees": true
+    },
+    {
+     "model": 113781.46002389833,
+     "program": 113781,
+     "agrees": true
+    },
+    {
+     "model": 0.03743697786506488,
+     "program": 0.037437,
+     "agrees": true
+    },
+    {
+     "model": 14.57368162273873,
+     "program": 14.5737,
+     "agrees": true
+    },
+    {
+     "model": 27610.058764707555,
+     "program": 27610.1,
+     "agrees": true
+    },
+    {
+     "model": 120.50819232705176,
+     "program": 120.508,
+     "agrees": true
+    },
+    {
+     "model": 304.8399371725732,
+     "program": 304.84,
+     "agrees": true
+    },
+    {
+     "model": 2126.402157702809,
+     "program": 2126.4,
+     "agrees": true
+    },
+    {
+     "model": 0.4821304192027475,
+     "program": 0.48213,
+     "agrees": true
+    },
+    {
+     "model": 26.502089432125434,
+     "program": 26.5021,
+     "agrees": true
+    },
+    {
+     "model": 21.798799860969737,
+     "program": 21.7988,
+     "agrees": true
+    },
+    {
+     "model": 880.4287707873063,
+     "program": 880.429,
+     "agrees": true
+    },
+    {
+     "model": 419194.19079354376,
+     "program": 419194,
+     "agrees": true
+    },
+    {
+     "model": 386.61278144650873,
+     "program": 386.613,
+     "agrees": true
+    },
+    {
+     "model": 282.6837644222282,
+     "program": 282.684,
+     "agrees": true
+    },
+    {
+     "model": 265.7059870774616,
+     "program": 265.706,
+     "agrees": true
+    },
+    {
+     "model": 159.63020880938723,
+     "program": 159.63,
+     "agrees": true
+    },
+    {
+     "model": 11967.234181760867,
+     "program": 11967.2,
+     "agrees": true
+    },
+    {
+     "model": 865.7678537675195,
+     "program": 865.768,
+     "agrees": true
+    },
+    {
+     "model": 21.475492774926085,
+     "program": 21.4755,
+     "agrees": true
+    },
+    {
+     "model": 0.000037894201107556206,
+     "program": 0.0000378942,
+     "agrees": true
+    },
+    {
+     "model": 255509.94364907485,
+     "program": 255510,
+     "agrees": true
+    },
+    {
+     "model": 46752.04966150976,
+     "program": 46752,
+     "agrees": true
+    },
+    {
+     "model": 1.6240984558739583e-7,
+     "program": 1.6241e-7,
+     "agrees": true
+    },
+    {
+     "model": 1.8808931057446399,
+     "program": 1.88089,
+     "agrees": true
+    },
+    {
+     "model": 40.47723106883163,
+     "program": 40.4772,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 11",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000004396722637811851,
+   "agreements": [
+    {
+     "model": 2.677579990288254,
+     "program": 2.67758,
+     "agrees": true
+    },
+    {
+     "model": 2.766262959148006,
+     "program": 2.76626,
+     "agrees": true
+    },
+    {
+     "model": 565.2184009908066,
+     "program": 565.218,
+     "agrees": true
+    },
+    {
+     "model": 586.0252403175299,
+     "program": 586.025,
+     "agrees": true
+    },
+    {
+     "model": 30.161859830632302,
+     "program": 30.1619,
+     "agrees": true
+    },
+    {
+     "model": 12.502110641718579,
+     "program": 12.5021,
+     "agrees": true
+    },
+    {
+     "model": 38.93644561689681,
+     "program": 38.9364,
+     "agrees": true
+    },
+    {
+     "model": 3.6163661726142133,
+     "program": 3.61637,
+     "agrees": true
+    },
+    {
+     "model": 662.6217738069066,
+     "program": 662.622,
+     "agrees": true
+    },
+    {
+     "model": 0.018424295781250304,
+     "program": 0.0184243,
+     "agrees": true
+    },
+    {
+     "model": 0.00006383357905668931,
+     "program": 0.0000638336,
+     "agrees": true
+    },
+    {
+     "model": 4.3883267798759915,
+     "program": 4.38833,
+     "agrees": true
+    },
+    {
+     "model": 6232.69290058831,
+     "program": 6232.69,
+     "agrees": true
+    },
+    {
+     "model": 16.440541385066606,
+     "program": 16.4405,
+     "agrees": true
+    },
+    {
+     "model": 69951.97481785376,
+     "program": 69952,
+     "agrees": true
+    },
+    {
+     "model": 9.022541430829531e-9,
+     "program": 9.02254e-9,
+     "agrees": true
+    },
+    {
+     "model": 107.67606909419695,
+     "program": 107.676,
+     "agrees": true
+    },
+    {
+     "model": 3.0880810299938846,
+     "program": 3.08808,
+     "agrees": true
+    },
+    {
+     "model": 126.9288701861373,
+     "program": 126.929,
+     "agrees": true
+    },
+    {
+     "model": 102.153204674908,
+     "program": 102.153,
+     "agrees": true
+    },
+    {
+     "model": 3.4672111808387394,
+     "program": 3.46721,
+     "agrees": true
+    },
+    {
+     "model": 4.0174972099112916,
+     "program": 4.0175,
+     "agrees": true
+    },
+    {
+     "model": 6.421937503499695,
+     "program": 6.42194,
+     "agrees": true
+    },
+    {
+     "model": 5.974544039598471,
+     "program": 5.97454,
+     "agrees": true
+    },
+    {
+     "model": 18.316609137663967,
+     "program": 18.3166,
+     "agrees": true
+    },
+    {
+     "model": 1.6144421661664563,
+     "program": 1.61444,
+     "agrees": true
+    },
+    {
+     "model": 4243.363871483225,
+     "program": 4243.36,
+     "agrees": true
+    },
+    {
+     "model": 1925.5612084502939,
+     "program": 1925.56,
+     "agrees": true
+    },
+    {
+     "model": 17003.32459001894,
+     "program": 17003.3,
+     "agrees": true
+    },
+    {
+     "model": 0.6981494801232818,
+     "program": 0.698149,
+     "agrees": true
+    },
+    {
+     "model": 3.30691644550704,
+     "program": 3.30692,
+     "agrees": true
+    },
+    {
+     "model": 10410.691201866066,
+     "program": 10410.7,
+     "agrees": true
+    },
+    {
+     "model": 9.437336160003503e-9,
+     "program": 9.43734e-9,
+     "agrees": true
+    },
+    {
+     "model": 1612.7927225165577,
+     "program": 1612.79,
+     "agrees": true
+    },
+    {
+     "model": 6.9939615056147035,
+     "program": 6.99396,
+     "agrees": true
+    },
+    {
+     "model": 0.8536103889399551,
+     "program": 0.85361,
+     "agrees": true
+    },
+    {
+     "model": 2.3389557548183157,
+     "program": 2.33896,
+     "agrees": true
+    },
+    {
+     "model": 7.773408397368703,
+     "program": 7.77341,
+     "agrees": true
+    },
+    {
+     "model": 1.0269954845658509,
+     "program": 1.027,
+     "agrees": true
+    },
+    {
+     "model": 10.006326450547384,
+     "program": 10.0063,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 12",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000003693350128941898,
+   "agreements": [
+    {
+     "model": 0.0000010028089683011118,
+     "program": 0.00000100281,
+     "agrees": true
+    },
+    {
+     "model": 0.307826807217288,
+     "program": 0.307827,
+     "agrees": true
+    },
+    {
+     "model": 0.0013087089641038074,
+     "program": 0.00130871,
+     "agrees": true
+    },
+    {
+     "model": 4.51045924843936,
+     "program": 4.51046,
+     "agrees": true
+    },
+    {
+     "model": 0.010067884135587969,
+     "program": 0.0100679,
+     "agrees": true
+    },
+    {
+     "model": 0.00191034109343477,
+     "program": 0.00191034,
+     "agrees": true
+    },
+    {
+     "model": 0.3414888245076597,
+     "program": 0.341489,
+     "agrees": true
+    },
+    {
+     "model": 1.6170595420346653e-15,
+     "program": 1.61706e-15,
+     "agrees": true
+    },
+    {
+     "model": 0.14666808200962847,
+     "program": 0.146668,
+     "agrees": true
+    },
+    {
+     "model": 0.00022091765426613603,
+     "program": 0.000220918,
+     "agrees": true
+    },
+    {
+     "model": 0.439928232815539,
+     "program": 0.439928,
+     "agrees": true
+    },
+    {
+     "model": 0.0007359464720439123,
+     "program": 0.000735946,
+     "agrees": true
+    },
+    {
+     "model": 0.00046260658369438277,
+     "program": 0.000462607,
+     "agrees": true
+    },
+    {
+     "model": 1.6755603694582382e-7,
+     "program": 1.67556e-7,
+     "agrees": true
+    },
+    {
+     "model": 1.5980027389282072,
+     "program": 1.598,
+     "agrees": true
+    },
+    {
+     "model": 0.009035832108629509,
+     "program": 0.00903583,
+     "agrees": true
+    },
+    {
+     "model": 0.00025885800535779363,
+     "program": 0.000258858,
+     "agrees": true
+    },
+    {
+     "model": 0.023021635020849227,
+     "program": 0.0230216,
+     "agrees": true
+    },
+    {
+     "model": 0.00520124858540332,
+     "program": 0.00520125,
+     "agrees": true
+    },
+    {
+     "model": 0.04488360661746212,
+     "program": 0.0448836,
+     "agrees": true
+    },
+    {
+     "model": 0.007567433802017648,
+     "program": 0.00756743,
+     "agrees": true
+    },
+    {
+     "model": 6.807861965412845,
+     "program": 6.80786,
+     "agrees": true
+    },
+    {
+     "model": 0.001156277061927944,
+     "program": 0.00115628,
+     "agrees": true
+    },
+    {
+     "model": 0.15272434750328087,
+     "program": 0.152724,
+     "agrees": true
+    },
+    {
+     "model": 0.06130151494330431,
+     "program": 0.0613015,
+     "agrees": true
+    },
+    {
+     "model": 0.0034846556492820445,
+     "program": 0.00348466,
+     "agrees": true
+    },
+    {
+     "model": 1.2622414351075785e-14,
+     "program": 1.26224e-14,
+     "agrees": true
+    },
+    {
+     "model": 1.6122079533348239e-15,
+     "program": 1.61221e-15,
+     "agrees": true
+    },
+    {
+     "model": 1.981665973571787e-9,
+     "program": 1.98167e-9,
+     "agrees": true
+    },
+    {
+     "model": 1.0822439970912436,
+     "program": 1.08224,
+     "agrees": true
+    },
+    {
+     "model": 0.0003405786855620044,
+     "program": 0.000340579,
+     "agrees": true
+    },
+    {
+     "model": 0.007778732253651037,
+     "program": 0.00777873,
+     "agrees": true
+    },
+    {
+     "model": 3.064468064142713e-9,
+     "program": 3.06447e-9,
+     "agrees": true
+    },
+    {
+     "model": 0.12920171994068125,
+     "program": 0.129202,
+     "agrees": true
+    },
+    {
+     "model": 0.006180419315207214,
+     "program": 0.00618042,
+     "agrees": true
+    },
+    {
+     "model": 2.7888872558194323e-11,
+     "program": 2.78889e-11,
+     "agrees": true
+    },
+    {
+     "model": 1.614032452601698e-15,
+     "program": 1.61403e-15,
+     "agrees": true
+    },
+    {
+     "model": 1.2141181325937576,
+     "program": 1.21412,
+     "agrees": true
+    },
+    {
+     "model": 1.6389223504296239e-15,
+     "program": 1.63892e-15,
+     "agrees": true
+    },
+    {
+     "model": 0.0008848043604459498,
+     "program": 0.000884804,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 13",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.000004267365184427643,
+   "agreements": [
+    {
+     "model": 2904.2006939013563,
+     "program": 2904.2,
+     "agrees": true
+    },
+    {
+     "model": 71.11828096051782,
+     "program": 71.1183,
+     "agrees": true
+    },
+    {
+     "model": 20.280451187054453,
+     "program": 20.2805,
+     "agrees": true
+    },
+    {
+     "model": 105.95075846819609,
+     "program": 105.951,
+     "agrees": true
+    },
+    {
+     "model": 51301.30342494212,
+     "program": 51301.3,
+     "agrees": true
+    },
+    {
+     "model": 14.857525155154491,
+     "program": 14.8575,
+     "agrees": true
+    },
+    {
+     "model": 44866.51976314678,
+     "program": 44866.5,
+     "agrees": true
+    },
+    {
+     "model": 58.93441976699811,
+     "program": 58.9344,
+     "agrees": true
+    },
+    {
+     "model": 17560.716710720983,
+     "program": 17560.7,
+     "agrees": true
+    },
+    {
+     "model": 159.29338680882367,
+     "program": 159.293,
+     "agrees": true
+    },
+    {
+     "model": 55.15286692054278,
+     "program": 55.1529,
+     "agrees": true
+    },
+    {
+     "model": 68.30134290170119,
+     "program": 68.3013,
+     "agrees": true
+    },
+    {
+     "model": 22.584536307398864,
+     "program": 22.5845,
+     "agrees": true
+    },
+    {
+     "model": 49.66371688432513,
+     "program": 49.6637,
+     "agrees": true
+    },
+    {
+     "model": 41.89596234072871,
+     "program": 41.896,
+     "agrees": true
+    },
+    {
+     "model": 23.17618406570887,
+     "program": 23.1762,
+     "agrees": true
+    },
+    {
+     "model": 378440.7415148763,
+     "program": 378441,
+     "agrees": true
+    },
+    {
+     "model": 1488601.0337169704,
+     "program": 1488600,
+     "agrees": true
+    },
+    {
+     "model": 51195.983367621244,
+     "program": 51196,
+     "agrees": true
+    },
+    {
+     "model": 26.88467728022734,
+     "program": 26.8847,
+     "agrees": true
+    },
+    {
+     "model": 30.778826584343875,
+     "program": 30.7788,
+     "agrees": true
+    },
+    {
+     "model": 319.46620215671237,
+     "program": 319.466,
+     "agrees": true
+    },
+    {
+     "model": 16.807824079123375,
+     "program": 16.8078,
+     "agrees": true
+    },
+    {
+     "model": 3.3077527270339284,
+     "program": 3.30775,
+     "agrees": true
+    },
+    {
+     "model": 160.82585639999866,
+     "program": 160.826,
+     "agrees": true
+    },
+    {
+     "model": 182819.53997037074,
+     "program": 182820,
+     "agrees": true
+    },
+    {
+     "model": 64014.856406940155,
+     "program": 64014.9,
+     "agrees": true
+    },
+    {
+     "model": 354250.98475285684,
+     "program": 354251,
+     "agrees": true
+    },
+    {
+     "model": 59.95493699189584,
+     "program": 59.9549,
+     "agrees": true
+    },
+    {
+     "model": 12283.543211713815,
+     "program": 12283.5,
+     "agrees": true
+    },
+    {
+     "model": 16.266226434941892,
+     "program": 16.2662,
+     "agrees": true
+    },
+    {
+     "model": 119.62675606018219,
+     "program": 119.627,
+     "agrees": true
+    },
+    {
+     "model": 116.8748357269519,
+     "program": 116.875,
+     "agrees": true
+    },
+    {
+     "model": 71.43762469699186,
+     "program": 71.4376,
+     "agrees": true
+    },
+    {
+     "model": 153344.8159865286,
+     "program": 153345,
+     "agrees": true
+    },
+    {
+     "model": 15.117573402346594,
+     "program": 15.1176,
+     "agrees": true
+    },
+    {
+     "model": 22.196171332304,
+     "program": 22.1962,
+     "agrees": true
+    },
+    {
+     "model": 548.0025918238522,
+     "program": 548.003,
+     "agrees": true
+    },
+    {
+     "model": 66.42386127514655,
+     "program": 66.4239,
+     "agrees": true
+    },
+    {
+     "model": 103487.44161682084,
+     "program": 103487,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 14",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000035124625488730804,
+   "agreements": [
+    {
+     "model": 17.849339754917445,
+     "program": 17.8493,
+     "agrees": true
+    },
+    {
+     "model": 191.42458947185804,
+     "program": 191.425,
+     "agrees": true
+    },
+    {
+     "model": 13582.359277486015,
+     "program": 13582.4,
+     "agrees": true
+    },
+    {
+     "model": 17115.497562514964,
+     "program": 17115.5,
+     "agrees": true
+    },
+    {
+     "model": 100.07431949852518,
+     "program": 100.074,
+     "agrees": true
+    },
+    {
+     "model": 1676.3642731192483,
+     "program": 1676.36,
+     "agrees": true
+    },
+    {
+     "model": 5.557443575257642e-11,
+     "program": 5.55744e-11,
+     "agrees": true
+    },
+    {
+     "model": 12.733441672354552,
+     "program": 12.7334,
+     "agrees": true
+    },
+    {
+     "model": 1640230.0701715357,
+     "program": 1640230,
+     "agrees": true
+    },
+    {
+     "model": 0.000028182432690011972,
+     "program": 0.0000281824,
+     "agrees": true
+    },
+    {
+     "model": 0.41413769607016065,
+     "program": 0.414138,
+     "agrees": true
+    },
+    {
+     "model": 0.016076030062999465,
+     "program": 0.016076,
+     "agrees": true
+    },
+    {
+     "model": 5.21024815482957e-11,
+     "program": 5.21025e-11,
+     "agrees": true
+    },
+    {
+     "model": 10681.520090339704,
+     "program": 10681.5,
+     "agrees": true
+    },
+    {
+     "model": 0.1327636625626076,
+     "program": 0.132764,
+     "agrees": true
+    },
+    {
+     "model": 4.549066591835538,
+     "program": 4.54907,
+     "agrees": true
+    },
+    {
+     "model": 16.29545177454963,
+     "program": 16.2955,
+     "agrees": true
+    },
+    {
+     "model": 0.7801331593870283,
+     "program": 0.780133,
+     "agrees": true
+    },
+    {
+     "model": 871.4495805014326,
+     "program": 871.45,
+     "agrees": true
+    },
+    {
+     "model": 3.8602000574933157,
+     "program": 3.8602,
+     "agrees": true
+    },
+    {
+     "model": 0.00002937655133501715,
+     "program": 0.0000293766,
+     "agrees": true
+    },
+    {
+     "model": 0.00001662470944600097,
+     "program": 0.0000166247,
+     "agrees": true
+    },
+    {
+     "model": 3.904147043768096,
+     "program": 3.90415,
+     "agrees": true
+    },
+    {
+     "model": 0.000022908187963206738,
+     "program": 0.0000229082,
+     "agrees": true
+    },
+    {
+     "model": 3.0750293361674584e-10,
+     "program": 3.07503e-10,
+     "agrees": true
+    },
+    {
+     "model": 0.00008190902448642686,
+     "program": 0.000081909,
+     "agrees": true
+    },
+    {
+     "model": 0.794068779803284,
+     "program": 0.794069,
+     "agrees": true
+    },
+    {
+     "model": 5.208757101160035e-11,
+     "program": 5.20876e-11,
+     "agrees": true
+    },
+    {
+     "model": 5.1945783438338045e-11,
+     "program": 5.19458e-11,
+     "agrees": true
+    },
+    {
+     "model": 11.176391092597688,
+     "program": 11.1764,
+     "agrees": true
+    },
+    {
+     "model": 5.2061260277892816e-11,
+     "program": 5.20613e-11,
+     "agrees": true
+    },
+    {
+     "model": 33.750500339974856,
+     "program": 33.7505,
+     "agrees": true
+    },
+    {
+     "model": 7.3727176088157815,
+     "program": 7.37272,
+     "agrees": true
+    },
+    {
+     "model": 133464.46878730162,
+     "program": 133464,
+     "agrees": true
+    },
+    {
+     "model": 5.887851506750712e-11,
+     "program": 5.88785e-11,
+     "agrees": true
+    },
+    {
+     "model": 335.3378184448418,
+     "program": 335.338,
+     "agrees": true
+    },
+    {
+     "model": 5.279932448136037e-11,
+     "program": 5.27993e-11,
+     "agrees": true
+    },
+    {
+     "model": 415.58346485665845,
+     "program": 415.583,
+     "agrees": true
+    },
+    {
+     "model": 20.93485264422154,
+     "program": 20.9349,
+     "agrees": true
+    },
+    {
+     "model": 43.22224998860775,
+     "program": 43.2222,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 15",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000034523272127768486,
+   "agreements": [
+    {
+     "model": 4.200458590194764e-8,
+     "program": 4.20046e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.08481325775912602,
+     "program": 0.0848133,
+     "agrees": true
+    },
+    {
+     "model": 0.0002590919711468061,
+     "program": 0.000259092,
+     "agrees": true
+    },
+    {
+     "model": 0.07673480914022549,
+     "program": 0.0767348,
+     "agrees": true
+    },
+    {
+     "model": 0.06586323075410731,
+     "program": 0.0658632,
+     "agrees": true
+    },
+    {
+     "model": 665.3912965890584,
+     "program": 665.391,
+     "agrees": true
+    },
+    {
+     "model": 96.98608178040331,
+     "program": 96.9861,
+     "agrees": true
+    },
+    {
+     "model": 4.898581376974922e-8,
+     "program": 4.89858e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.01828108391042986,
+     "program": 0.0182811,
+     "agrees": true
+    },
+    {
+     "model": 0.06801906062247555,
+     "program": 0.0680191,
+     "agrees": true
+    },
+    {
+     "model": 0.8837787599602019,
+     "program": 0.883779,
+     "agrees": true
+    },
+    {
+     "model": 0.10603918332329987,
+     "program": 0.106039,
+     "agrees": true
+    },
+    {
+     "model": 658.5606381662494,
+     "program": 658.561,
+     "agrees": true
+    },
+    {
+     "model": 0.0572631212634454,
+     "program": 0.0572631,
+     "agrees": true
+    },
+    {
+     "model": 0.6604324861694009,
+     "program": 0.660432,
+     "agrees": true
+    },
+    {
+     "model": 0.2849004477330398,
+     "program": 0.2849,
+     "agrees": true
+    },
+    {
+     "model": 121.37241901585847,
+     "program": 121.372,
+     "agrees": true
+    },
+    {
+     "model": 0.030458700673900014,
+     "program": 0.0304587,
+     "agrees": true
+    },
+    {
+     "model": 0.002273117063213879,
+     "program": 0.00227312,
+     "agrees": true
+    },
+    {
+     "model": 0.07343980653690084,
+     "program": 0.0734398,
+     "agrees": true
+    },
+    {
+     "model": 313.7790143899205,
+     "program": 313.779,
+     "agrees": true
+    },
+    {
+     "model": 82.74230500872426,
+     "program": 82.7423,
+     "agrees": true
+    },
+    {
+     "model": 0.21791591569195434,
+     "program": 0.217916,
+     "agrees": true
+    },
+    {
+     "model": 66.0814027186226,
+     "program": 66.0814,
+     "agrees": true
+    },
+    {
+     "model": 94.41385465799247,
+     "program": 94.4139,
+     "agrees": true
+    },
+    {
+     "model": 133.02125441822014,
+     "program": 133.021,
+     "agrees": true
+    },
+    {
+     "model": 42.46736047488847,
+     "program": 42.4674,
+     "agrees": true
+    },
+    {
+     "model": 0.02129653658694033,
+     "program": 0.0212965,
+     "agrees": true
+    },
+    {
+     "model": 0.0001504819183468293,
+     "program": 0.000150482,
+     "agrees": true
+    },
+    {
+     "model": 0.04417497306753119,
+     "program": 0.044175,
+     "agrees": true
+    },
+    {
+     "model": 0.05389715053979102,
+     "program": 0.0538972,
+     "agrees": true
+    },
+    {
+     "model": 0.6709691025427097,
+     "program": 0.670969,
+     "agrees": true
+    },
+    {
+     "model": 1.0468899962476568,
+     "program": 1.04689,
+     "agrees": true
+    },
+    {
+     "model": 0.039448478786091874,
+     "program": 0.0394485,
+     "agrees": true
+    },
+    {
+     "model": 0.3466684050105604,
+     "program": 0.346668,
+     "agrees": true
+    },
+    {
+     "model": 0.1386401309501753,
+     "program": 0.13864,
+     "agrees": true
+    },
+    {
+     "model": 0.02853315027076958,
+     "program": 0.0285332,
+     "agrees": true
+    },
+    {
+     "model": 56.48606232132504,
+     "program": 56.4861,
+     "agrees": true
+    },
+    {
+     "model": 550.3038978797161,
+     "program": 550.304,
+     "agrees": true
+    },
+    {
+     "model": 0.5063248219721663,
+     "program": 0.506325,
+     "agrees": true
+    }
+   ]
+  },
+  {
+   "key": "nimbus 16",
+   "points": 40,
+   "agree": 40,
+   "worstRelative": 0.0000026792517157552016,
+   "agreements": [
+    {
+     "model": 0.04399277578837866,
+     "program": 0.0439928,
+     "agrees": true
+    },
+    {
+     "model": 0.15289998811415795,
+     "program": 0.1529,
+     "agrees": true
+    },
+    {
+     "model": 0.0012257276358990062,
+     "program": 0.00122573,
+     "agrees": true
+    },
+    {
+     "model": 2.0648718570672977,
+     "program": 2.06487,
+     "agrees": true
+    },
+    {
+     "model": 2.594345551294313e-10,
+     "program": 2.59435e-10,
+     "agrees": true
+    },
+    {
+     "model": 1.8568250250850367e-8,
+     "program": 1.85683e-8,
+     "agrees": true
+    },
+    {
+     "model": 0.007551880145822007,
+     "program": 0.00755188,
+     "agrees": true
+    },
+    {
+     "model": 2.0406768035922267e-14,
+     "program": 2.04068e-14,
+     "agrees": true
+    },
+    {
+     "model": 0.28423276963248895,
+     "program": 0.284233,
+     "agrees": true
+    },
+    {
+     "model": 0.0001663752319078922,
+     "program": 0.000166375,
+     "agrees": true
+    },
+    {
+     "model": 9.766043906296088e-10,
+     "program": 9.76604e-10,
+     "agrees": true
+    },
+    {
+     "model": 54.93972432899224,
+     "program": 54.9397,
+     "agrees": true
+    },
+    {
+     "model": 0.00954488867111803,
+     "program": 0.00954489,
+     "agrees": true
+    },
+    {
+     "model": 0.000131803845304311,
+     "program": 0.000131804,
+     "agrees": true
+    },
+    {
+     "model": 0.008896266408000349,
+     "program": 0.00889627,
+     "agrees": true
+    },
+    {
+     "model": 0.008142251005324092,
+     "program": 0.00814225,
+     "agrees": true
+    },
+    {
+     "model": 1.3690526868738542,
+     "program": 1.36905,
+     "agrees": true
+    },
+    {
+     "model": 0.005354957975168143,
+     "program": 0.00535496,
+     "agrees": true
+    },
+    {
+     "model": 0.007532211280441613,
+     "program": 0.00753221,
+     "agrees": true
+    },
+    {
+     "model": 2.0913280905200312e-14,
+     "program": 2.09133e-14,
+     "agrees": true
+    },
+    {
+     "model": 0.11259304505176752,
+     "program": 0.112593,
+     "agrees": true
+    },
+    {
+     "model": 0.034130202927182725,
+     "program": 0.0341302,
+     "agrees": true
+    },
+    {
+     "model": 2.4221462109259178,
+     "program": 2.42215,
+     "agrees": true
+    },
+    {
+     "model": 1.447386620800872,
+     "program": 1.44739,
+     "agrees": true
+    },
+    {
+     "model": 0.0028926411070686175,
+     "program": 0.00289264,
+     "agrees": true
+    },
+    {
+     "model": 0.0030584630755272984,
+     "program": 0.00305846,
+     "agrees": true
+    },
+    {
+     "model": 0.0001477810201575536,
+     "program": 0.000147781,
+     "agrees": true
+    },
+    {
+     "model": 3.1081393114691093e-11,
+     "program": 3.10814e-11,
+     "agrees": true
+    },
+    {
+     "model": 0.0008767783734332788,
+     "program": 0.000876778,
+     "agrees": true
+    },
+    {
+     "model": 1.4370709753218845e-11,
+     "program": 1.43707e-11,
+     "agrees": true
+    },
+    {
+     "model": 0.0188074461022375,
+     "program": 0.0188074,
+     "agrees": true
+    },
+    {
+     "model": 2.052262433604327e-14,
+     "program": 2.05226e-14,
+     "agrees": true
+    },
+    {
+     "model": 44.48509954534431,
+     "program": 44.4851,
+     "agrees": true
+    },
+    {
+     "model": 0.07605535386668821,
+     "program": 0.0760554,
+     "agrees": true
+    },
+    {
+     "model": 2.043920220281865e-14,
+     "program": 2.04392e-14,
+     "agrees": true
+    },
+    {
+     "model": 0.015496171307868395,
+     "program": 0.0154962,
+     "agrees": true
+    },
+    {
+     "model": 75.61431981610284,
+     "program": 75.6143,
+     "agrees": true
+    },
+    {
+     "model": 0.227622738088023,
+     "program": 0.227623,
+     "agrees": true
+    },
+    {
+     "model": 0.0054146285241898715,
+     "program": 0.00541463,
+     "agrees": true
+    },
+    {
+     "model": 0.1327161299423014,
+     "program": 0.132716,
+     "agrees": true
+    }
+   ]
+  }
+ ]
+}

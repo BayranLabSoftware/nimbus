@@ -92,3 +92,26 @@ The crosswind figure — the one the ash round is about — reproduces to three
 decimals. The other two sit a few per cent off, which is the reference script
 choosing its wind levels and its vent frame where the campaign chose by hand;
 the script is the record from here on.
+
+## Nimbus's own Tephra2, against the program
+
+Since 16 September 2026 the deposit a scenario draws is Tephra2's forward model,
+written for Nimbus in `src/physics/events/volcano/tephra2Fallout.ts` after the
+program's source was read — to understand it, not to transcribe it (rules 158
+to 161 of `src/physics/validation/tephra2Rules.ts`). The script that holds it to
+the program writes each eruption as the program's three input files, runs the
+binary once and compares every point:
+
+```bash
+# the program's own Colima example
+pnpm exec tsx scripts/benchmark/tephra2-against-binary.ts example ./tephra2_native \
+  inputs/tephra2.conf inputs/colima.data.grid inputs/wind1
+# rule 160's forty held-out eruptions, and rule 161's verdict
+pnpm exec tsx scripts/benchmark/tephra2-against-binary.ts heldout ./tephra2_native <out.json>
+```
+
+Two inputs the native build cannot be given. A wind file whose highest reading
+lies below the plume top leaves the levels above it unset — the program tests a
+field `malloc` does not clear — so every wind the checks write reaches past the
+top. And more than a hundred grain steps overflow the array the program keeps
+each point's size distribution in. Neither is a case Nimbus draws.

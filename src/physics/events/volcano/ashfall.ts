@@ -125,7 +125,7 @@ export const DEFAULT_ASH_SPREAD: AshSpreadLaw = 'tephra2';
 export type AshDepositModel = 'closed-form' | 'program';
 
 /** What a scenario that names no deposit model draws. */
-export const DEFAULT_ASH_DEPOSIT_MODEL: AshDepositModel = 'closed-form';
+export const DEFAULT_ASH_DEPOSIT_MODEL: AshDepositModel = 'program';
 
 /** Tephra2's own example configuration, the one its Colima inversion left and
  *  the one the reference runs on (docs/TEPHRA2_SETUP.md). The eddy constant

@@ -387,6 +387,16 @@ const bonadonnaPhillips2003: Citation = {
   doi: '10.1029/2002JB002034',
 };
 
+const bonadonna2005: Citation = {
+  authors:
+    'Bonadonna, C., Connor, C. B., Houghton, B. F., Connor, L., Byrne, M., Laing, A. & Hincks, T. K.',
+  year: 2005,
+  title:
+    'Probabilistic modeling of tephra dispersal: Hazard assessment of a multiphase rhyolitic eruption at Tarawera, New Zealand',
+  venue: 'Journal of Geophysical Research 110 (B3), B03203',
+  doi: '10.1029/2003JB002896',
+};
+
 const ganser1993: Citation = {
   authors: 'Ganser, G. H.',
   year: 1993,
@@ -1211,11 +1221,20 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         citation: iverson1998,
       },
       {
+        id: 'ashfall-tephra2',
+        name: 'Wind-advected ashfall (Tephra2)',
+        formula:
+          'M(x, y) = Σ_sizes Σ_levels m · exp(−|r − r_land|² / S) / (π S) ;  S = 4K(t + t_c) below the fall-time threshold, (8/5)C(t + t_f)^(5/2) above',
+        description:
+          'The forward model of Tephra2, the advection–diffusion program the field runs on isopach maps (Bonadonna et al. 2005; Connor & Connor 2006), written for Nimbus from its equations and behaviour after its source was read, not transcribed, and since 16 September 2026 the deposit a scenario draws: a hundred grain sizes in φ, normally distributed; a release along the column shaped by a beta distribution; each grain falling through the column at its terminal speed in the air of each level (Stokes, Kunii & Levenspiel, Newton by Reynolds number); the wind carrying it level by level; and a Gaussian spread that grows with the time it falls, as Suzuki’s law once it falls longer than the threshold. Against the program itself it gives every point of its own Colima example, and all 1 600 points of forty eruptions nobody had run it on, within the six figures the program prints (rules 158 to 161). A scenario gives it the parameters the campaign’s reference run gave Tephra2 for Nimbus’s eruptions: Mastin et al.’s plume height, the volume at 1 000 kg/m³, Nimbus’s grain classes as a normal distribution in φ (−0.10 ± 2.80), and Tephra2’s own example for the rest — C = 0.04, K = 5 138 m²/s, a threshold of 288 s, α 1.04487, β 1.46425 — with the wind constant with height. Those parameters come from one inversion of one eruption at Colima and are not every eruption’s; the reach, width and area of the 1 mm isopach are read off the deposit by Nimbus, which Tephra2 does not do. Agreeing with Tephra2 is not agreeing with a deposit, and hazard mapping still wants a transport model with real winds.',
+        citation: bonadonna2005,
+      },
+      {
         id: 'ashfall-suzuki',
-        name: 'Wind-advected ashfall (Suzuki column)',
+        name: 'Wind-advected ashfall (Suzuki column, until 16 September 2026)',
         formula: 'f(z̃) = S₀ · [(1 − z̃) · exp(A · (z̃ − 1))]^λ   ;   x_centre = u · z / v_t',
         description:
-          'Suzuki’s (1983) release profile along the plume column, in the two-parameter form of Pfeiffer et al. (2005), with A = 4 and λ = 1. Each mass slice lands at u · z / v_t downwind; the isopach elongates with wind speed, and since 16 September 2026 both spreads grow with the time a release spends falling (see the card below). The deposit along the wind is still a row of bands — the coarse classes near the vent, the finest far out — and the 1 mm edge is the far side of the farthest band above it, found by walking the axis in half-spread steps; until 15 September 2026 it was a bisection that could stop at a nearer band, so a larger eruption could report a shorter reach.',
+          'The deposit a scenario drew until 16 September 2026, when Tephra2’s model above replaced it, and kept as the `closed-form` model. Suzuki’s (1983) release profile along the plume column, in the two-parameter form of Pfeiffer et al. (2005), with A = 4 and λ = 1. Each mass slice lands at u · z / v_t downwind; the isopach elongates with wind speed, and since 16 September 2026 both spreads grow with the time a release spends falling (see the card below). The deposit along the wind is still a row of bands — the coarse classes near the vent, the finest far out — and the 1 mm edge is the far side of the farthest band above it, found by walking the axis in half-spread steps; until 15 September 2026 it was a bisection that could stop at a nearer band, so a larger eruption could report a shorter reach.',
         citation: pfeiffer2005,
       },
       {
