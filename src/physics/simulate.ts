@@ -40,7 +40,11 @@ import { firestormSustainRadius, flammableIgnitionRadius } from './effects/fires
 import { thermalHorizonRadius } from './casualties.js';
 import { oceanCouplingPartition } from './effects/oceanCoupling.js';
 import { liquefactionRadius } from './events/earthquake/liquefaction.js';
-import { impactDamageRadii, type ImpactDamageRadii } from './events/impact/damageRings.js';
+import {
+  combineImpactFlashes,
+  impactDamageRadii,
+  type ImpactDamageRadii,
+} from './events/impact/damageRings.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
 import { SEISMIC_EFFICIENCY_RANGE, seismicMagnitude } from './events/impact/seismic.js';
 import { synolakisRunup } from './events/tsunami/extendedEffects.js';
@@ -542,10 +546,10 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const damage: ImpactDamageRadii = {
     craterRim: surfaceDamage.craterRim,
     thirdDegreeBurn: seen(
-      m(Math.max(surfaceDamage.thirdDegreeBurn, entry.flashBurnRadii.thirdDegree))
+      combineImpactFlashes(surfaceDamage.thirdDegreeBurn, entry.flashBurnRadii.thirdDegree)
     ),
     secondDegreeBurn: seen(
-      m(Math.max(surfaceDamage.secondDegreeBurn, entry.flashBurnRadii.secondDegree))
+      combineImpactFlashes(surfaceDamage.secondDegreeBurn, entry.flashBurnRadii.secondDegree)
     ),
     overpressure5psi: m(Math.max(surfaceDamage.overpressure5psi, entry.shockWaveRadii.fivePsi)),
     overpressure1psi: m(Math.max(surfaceDamage.overpressure1psi, entry.shockWaveRadii.onePsi)),

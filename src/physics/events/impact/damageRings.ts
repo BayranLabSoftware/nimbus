@@ -42,6 +42,33 @@ export const OVERPRESSURE_BUILDING_COLLAPSE = Pa(34_474);
  * outward by radius). Callers decide rendering — colours, labels,
  * translation keys — Layer 2 only provides the numbers.
  */
+/**
+ * How an impact's two flashes make one burn ring: the fireball of the energy
+ * that reaches the ground, and the flash of the energy left in the air.
+ *
+ * - `larger`: the larger of the two rings.
+ * - `sum`: where the two fluences add up to the threshold (rules 132 to 137 of
+ *   validation/impactInvariantRules.ts). Both are drawn inverse-square from
+ *   the point of impact with the same luminous efficiency and the same
+ *   exposure, so that ring is √(r_ground² + r_air²) — the ring of the energy
+ *   the two carry together.
+ */
+export type ImpactFlashCombiner = 'larger' | 'sum';
+
+/** What an impact that names no combiner draws. */
+export const DEFAULT_IMPACT_FLASH_COMBINER: ImpactFlashCombiner = 'larger';
+
+/** One burn ring from the ground's and the air's rings of the same degree. */
+export function combineImpactFlashes(
+  ground: Meters,
+  air: Meters,
+  combiner: ImpactFlashCombiner = DEFAULT_IMPACT_FLASH_COMBINER
+): Meters {
+  const g = Math.max(ground, 0);
+  const a = Math.max(air, 0);
+  return m(combiner === 'sum' ? Math.hypot(g, a) : Math.max(g, a));
+}
+
 export interface ImpactDamageRadii {
   craterRim: Meters;
   thirdDegreeBurn: Meters;

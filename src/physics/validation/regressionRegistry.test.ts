@@ -24,7 +24,12 @@ import { COMPLEX_DEPTH_COEFFICIENT, COMPLEX_DEPTH_EXPONENT } from '../events/imp
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/index.js';
 import { simulateExplosion } from '../events/explosion/simulate.js';
 import { NUCLEAR_CRATER_COEFFICIENT } from '../events/explosion/cratering.js';
-import { thermalPartitionForHeight } from '../events/explosion/thermal.js';
+import {
+  firstDegreeBurnRadius,
+  secondDegreeBurnRadius,
+  thermalPartitionForHeight,
+  thirdDegreeBurnRadius,
+} from '../events/explosion/thermal.js';
 import { DEFAULT_CONFINEMENT_DYNAMIC_FACTOR } from '../events/volcano/tsunami.js';
 import { simulateVolcano, VOLCANO_PRESETS } from '../events/volcano/index.js';
 import { ashfallMassLoading } from '../events/volcano/ashfall.js';
@@ -34,8 +39,8 @@ import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
 import { impactFireballRadius, nuclearFireballRadius } from '../effects/blastWave.js';
 import * as casualtiesModule from '../casualties.js';
 import { thermalHorizonRadius } from '../casualties.js';
-import { CRUSTAL_ROCK_DENSITY } from '../constants.js';
-import { deg, degreesToRadians, kgPerM3, m, mps } from '../units.js';
+import { CRUSTAL_ROCK_DENSITY, IMPACT_LUMINOUS_EFFICIENCY } from '../constants.js';
+import { deg, degreesToRadians, J, kgPerM3, m, mps } from '../units.js';
 import { validateScenario } from './inputSchema.js';
 import { safeRunEarthquake } from './safeRun.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
@@ -800,6 +805,42 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(chelyabinsk.damage.overpressure5psi as number).toBe(0);
   });
 
+  it("B-041 An airburst's flash burns at the project's fluences, as rule 81 says of every impact", () => {
+    // Pre-fix: rule 81 of validation/burnRules.ts keeps an impact's burn
+    // rings at the project's 8, 5 and 2 cal/cm², because the book's curves
+    // are a nuclear fireball's pulse, and damageRings.ts names 'project' for
+    // the fireball on the ground. The flash of the energy left in the air
+    // named nothing, so when the explosions' default moved to the book's
+    // curves on 16 September 2026 the airbursts' rings moved with it:
+    // Tunguska's third-degree burns from 5.22 to 4.46 km and its first-degree
+    // from 10.43 to 7.75, Chelyabinsk's third from 1.32 to 1.22.
+    for (const preset of [IMPACT_PRESETS.TUNGUSKA, IMPACT_PRESETS.CHELYABINSK]) {
+      const r = simulateImpact(preset.input);
+      expect(r.entry.regime).toBe('COMPLETE_AIRBURST');
+      const flash = {
+        yieldEnergy: J(r.entry.atmosphericYieldMegatons * 4.184e15),
+        thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+        burnExposure: 'project' as const,
+      };
+      expect(r.entry.flashBurnRadii.thirdDegree as number).toBeCloseTo(
+        thirdDegreeBurnRadius(flash),
+        6
+      );
+      expect(r.entry.flashBurnRadii.secondDegree as number).toBeCloseTo(
+        secondDegreeBurnRadius(flash),
+        6
+      );
+      expect(r.entry.flashBurnRadii.firstDegree as number).toBeCloseTo(
+        firstDegreeBurnRadius(flash),
+        6
+      );
+      // And the ring an airburst draws is that flash.
+      expect(r.damage.thirdDegreeBurn).toBe(r.entry.flashBurnRadii.thirdDegree);
+    }
+    const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
+    expect((tunguska.entry.flashBurnRadii.thirdDegree as number) / 1_000).toBeCloseTo(5.22, 2);
+  });
+
   it('B-033 The Chelyabinsk preset flies the body Popova et al. 2013 measured', () => {
     // Pre-fix: 17 m at 3.0 g/cm³, 19 km/s and 18°, 0.33 Mt. Popova et al.
     // 2013 (Science 342, Table 1 and text): 19.16 km/s at 18.3° from the
@@ -871,9 +912,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-038 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-041 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 38;
-    expect(expectedRows).toBe(38);
+    const expectedRows = 41;
+    expect(expectedRows).toBe(41);
   });
 });

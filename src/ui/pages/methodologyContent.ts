@@ -804,7 +804,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'r_flash(Q) = R_thermal(η · E_atm, Q) ;   r_shock(p) = R_airburst(W, z_b, p) for an airburst,  R_KG(0.5 · E_atm, p) for a swarm that strikes the ground',
         description:
-          'Burn (1st, 2nd, 3rd degree) and shock (5, 1, 0.5 psi) radii at the ground from the energy left in the air. The flash takes the explosion module’s burn fluences with the impact luminous efficiency η = 3 × 10⁻³ of Collins et al. (2005), with no gain for altitude. The shock of an airburst is the program’s air blast above; the shock of a broken swarm that still strikes the ground blasts like a ground impact, Kinney–Graham on half the energy lost in the air.',
+          'Burn (1st, 2nd, 3rd degree) and shock (5, 1, 0.5 psi) radii at the ground from the energy left in the air. The flash takes the project’s burn fluences of 8, 5 and 2 cal/cm², as every impact does — Glasstone & Dolan’s yield-dependent curves are a nuclear fireball’s pulse — with the impact luminous efficiency η = 3 × 10⁻³ of Collins et al. (2005), and no gain for altitude. The shock of an airburst is the program’s air blast above; the shock of a broken swarm that still strikes the ground blasts like a ground impact, Kinney–Graham on half the energy lost in the air.',
         citation: collins2005,
       },
       {

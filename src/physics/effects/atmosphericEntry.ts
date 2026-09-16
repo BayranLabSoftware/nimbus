@@ -228,18 +228,24 @@ function computeEntryDamage(
     // detonation), so the burn-radius helpers are passed the impact
     // luminous efficiency rather than the nuclear default. See the
     // matching note in `damageRings.ts` for the citation chain
-    // (Collins-Melosh-Marcus 2005 / Toon 1997).
+    // (Collins-Melosh-Marcus 2005 / Toon 1997). And the project's own
+    // exposures, as rule 81 of validation/burnRules.ts keeps them for every
+    // impact: Glasstone & Dolan's curves are a nuclear fireball's pulse. Until
+    // B-041 this named none and followed the explosions' default to them.
     firstDegree: firstDegreeBurnRadius({
       yieldEnergy,
       thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+      burnExposure: 'project',
     }),
     secondDegree: secondDegreeBurnRadius({
       yieldEnergy,
       thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+      burnExposure: 'project',
     }),
     thirdDegree: thirdDegreeBurnRadius({
       yieldEnergy,
       thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
+      burnExposure: 'project',
     }),
   };
 

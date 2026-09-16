@@ -117,7 +117,27 @@ export interface OceanCouplingInput {
   impactorDensity: KilogramPerCubicMeter;
   /** Water density. Defaults to SEAWATER_DENSITY (1025 kg/m³). */
   waterDensity?: KilogramPerCubicMeter;
+  /** {@link SeafloorCutoff}; {@link DEFAULT_SEAFLOOR_CUTOFF} when omitted. */
+  cutoff?: SeafloorCutoff;
 }
+
+/**
+ * How the seafloor share ends at the disruption depth d_d.
+ *
+ * - `step`: e^(−d/d_c) up to d_d and nothing beyond. At the cutoff the share
+ *   drops from e^(−3), 5 %, to 0 when the water deepens by a millimetre, and
+ *   a body 1 % larger, which sits on the shallow side of its own cutoff, sends
+ *   5 % less of its energy into the water than the smaller one.
+ * - `taper`: the same exponential less its value at the cutoff, rescaled to
+ *   start from 1, (e^(−d/d_c) − e^(−d_d/d_c)) / (1 − e^(−d_d/d_c)), which
+ *   reaches 0 at d_d (rules 132 to 137 of validation/impactInvariantRules.ts).
+ *   Both calibration ends are kept: all of the energy on the seafloor under
+ *   no water, none of it from the cutoff on.
+ */
+export type SeafloorCutoff = 'step' | 'taper';
+
+/** What a partition that names no cutoff uses. */
+export const DEFAULT_SEAFLOOR_CUTOFF: SeafloorCutoff = 'step';
 
 export interface OceanCouplingResult {
   /** Fraction of post-atmospheric KE that reaches the seafloor as
@@ -187,7 +207,12 @@ export function oceanCouplingPartition(input: OceanCouplingInput): OceanCoupling
     };
   }
 
-  const seafloorFraction = Math.exp(-dWater / dCritical);
+  const exponential = Math.exp(-dWater / dCritical);
+  const atCutoff = Math.exp(-disruptionDepth / dCritical);
+  const seafloorFraction =
+    (input.cutoff ?? DEFAULT_SEAFLOOR_CUTOFF) === 'taper'
+      ? Math.max(0, (exponential - atCutoff) / (1 - atCutoff))
+      : exponential;
   return {
     seafloorFraction,
     waterFraction: 1 - seafloorFraction,
