@@ -1383,6 +1383,31 @@ Beside, deciding nothing — the book's own reliability on the LD₅₀ ring, a 
 | 10000 kt | 8.33b / 8.64b | 3.70 | 4.14 | 4.26 |
 | 20000 kt | 8.33b / 8.64b | 4.37 | 4.86 | 4.99 |
 
+### The crater, from the numbers the book prints
+
+Nimbus digs a nuclear surface burst's apparent crater as D_a = K · W_kt^0.3, with a coefficient for each of five ground types. Two of the five stood on nothing — hard rock's 29 m was “0.8 of dry soil, a project value” and clay's 105 m “a project value above wet soil, with no source” — and a third was read from a sentence of the book rather than from its figure. Because a crater's size changes so fast as the burst passes through the surface, Glasstone & Dolan print the contact-surface-burst radius and depth of a 1 kt explosion in four media on Figures 6.72a and b themselves: 82, 61, 58 and 49 feet of radius and 31, 28, 28 and 22 feet of depth. Nothing is traced here — those eight numbers are read by eye — and §6.72's W^0.3 is confirmed by the book's own arithmetic. Rules 90 to 93 (`validation/craterRules.ts`), committed before the candidate dug a crater for any preset, put them in the project's place.
+
+| Ground | The book's medium | K in place (m) | The book's K (m) | Adopted | Why not |
+|--------|:--|------:|------:|------:|:--|
+| HARD_ROCK | dry hard rock | 29.00 | 29.87 | 29.87 | — |
+| DRY_SOIL | dry soil or dry soft rock | 36.60 | 37.19 | 37.19 | — |
+| FIRM_GROUND | dry soil or dry soft rock | 36.60 | 37.19 | 37.19 | — |
+| WET_SOIL | wet soil or wet soft rock | 92.00 | 49.99 | 92.00 | set on the Bravo and Mike craters, four decades above the figure (rule 92 d) |
+| CLAY | — | 105.00 | — | 105.00 | the book has no such medium (rule 91) |
+
+The largest move is a factor of 1.030, and the five keep their order. The book's numbers are adopted where rule 92 lets them be. Two coefficients stay, for reasons rule 92 fixed before the run. Clay is not one of the book's media at all. And wet soil's 92 m was set on the craters Castle Bravo and Ivy Mike left in the Bikini reef, at 15 and 10.4 Mt, where the book's figure is drawn for 1 kt: a curve carried four decades up in yield is weaker evidence than a crater somebody measured at the yield in question, so the measurement stays and the disagreement is printed rather than settled quietly — the book's wet soil would put Castle Bravo 1954 at 0.89 km instead of 1.65, Ivy Mike 1952 at 0.80 km instead of 1.48.
+
+The presets that dig a crater, before and after — and beside, deciding nothing, the depth the book gives, which the product does not draw:
+
+| Explosion | Yield | Ground | Apparent diameter before (m) | after (m) | The book’s depth (m) |
+|-----------|------:|:--|------:|------:|------:|
+| Castle Bravo 1954 | 15 Mt | WET_SOIL | 1646.70 | 1646.70 | 169.12 |
+| 1 Mt reference | 1 Mt | FIRM_GROUND | 290.72 | 295.38 | 67.79 |
+| Beirut port 2020 | 0.5 kt | WET_SOIL | 74.73 | 74.73 | 7.67 |
+| Ivy Mike 1952 | 10.4 Mt | WET_SOIL | 1475.36 | 1475.36 | 151.53 |
+| Halifax 1917 | 2.9 kt | WET_SOIL | 126.62 | 126.62 | 13.00 |
+| Texas City 1947 | 2.7 kt | WET_SOIL | 123.94 | 123.94 | 12.73 |
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the

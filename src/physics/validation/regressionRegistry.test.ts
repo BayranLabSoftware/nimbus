@@ -290,10 +290,13 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(chemical.radiation.ld50Radius).toBe(0);
   });
 
-  it('B-018 Nuclear crater coefficients follow Glasstone & Dolan §6.09 for dry soil', () => {
-    // Pre-fix: dry soil 75 m and firm ground 60 m, twice the 60 ft
-    // apparent radius the book gives a 1 kt burst in dry soil.
-    expect(NUCLEAR_CRATER_COEFFICIENT.DRY_SOIL).toBeCloseTo(2 * 60 * 0.3048, 1);
+  it('B-018 Nuclear crater coefficients follow Glasstone & Dolan for dry soil', () => {
+    // Pre-fix: dry soil 75 m and firm ground 60 m, twice the apparent
+    // radius the book gives a 1 kt burst in dry soil. The fix read §6.09's
+    // "about 60 ft"; since 16 September 2026 it reads the 61 ft the book
+    // prints on Figure 6.72a itself (rules 90 to 93), and the verdict of
+    // B-018 is unchanged.
+    expect(NUCLEAR_CRATER_COEFFICIENT.DRY_SOIL).toBeCloseTo(2 * 61 * 0.3048, 1);
     expect(NUCLEAR_CRATER_COEFFICIENT.FIRM_GROUND).toBe(NUCLEAR_CRATER_COEFFICIENT.DRY_SOIL);
   });
 

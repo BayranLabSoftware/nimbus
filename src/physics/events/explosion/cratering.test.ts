@@ -3,17 +3,19 @@ import { Mt, megatonsToJoules } from '../../units.js';
 import { NUCLEAR_CRATER_COEFFICIENT, nuclearApparentCraterDiameter } from './cratering.js';
 
 describe('nuclearApparentCraterDiameter (Glasstone & Dolan 1977, §6.09 scaling)', () => {
-  it('gives the 60 ft apparent radius Glasstone & Dolan give a 1 kt burst in dry soil', () => {
+  it('gives the 61 ft apparent radius Glasstone & Dolan print for a 1 kt burst in dry soil', () => {
+    // Figure 6.72a prints the contact-surface-burst radius of each medium on
+    // the page: 61 feet for dry soil or dry soft rock (curve 2).
     const D = nuclearApparentCraterDiameter({
       yieldEnergy: megatonsToJoules(Mt(0.001)),
       groundCoefficient: NUCLEAR_CRATER_COEFFICIENT.DRY_SOIL,
     }) as number;
-    expect(D / 2).toBeCloseTo(60 * 0.3048, 0);
+    expect(D / 2).toBeCloseTo(61 * 0.3048, 6);
   });
 
-  it('defaults to firm ground, the dry-soil-or-soft-rock crater: ≈ 291 m at 1 Mt', () => {
+  it('defaults to firm ground, the dry-soil-or-soft-rock crater: ≈ 295 m at 1 Mt', () => {
     const D = nuclearApparentCraterDiameter({ yieldEnergy: megatonsToJoules(Mt(1)) }) as number;
-    expect(D).toBeCloseTo(36.6 * 1000 ** 0.3, 3);
+    expect(D).toBeCloseTo(2 * 61 * 0.3048 * 1000 ** 0.3, 3);
   });
 
   it('orders the ground presets: hard rock < firm = dry < wet < clay', () => {

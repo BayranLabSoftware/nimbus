@@ -1102,3 +1102,19 @@ book's figure is drawn for 1 kt, and a curve carried four decades up in yield is
 weaker evidence than a crater measured at the yield in question. So wet soil
 keeps its number and both are printed side by side. Rule 93 says what is
 printed and what an adoption does.
+
+### The outcome, 16 September 2026
+
+Run once after the rules were pushed (`7ace5a4`), with
+`pnpm exec tsx scripts/benchmark/crater.ts`. The numbers passed their checks
+and the exponent the book's own arithmetic gives. No guard failed: the gate
+stayed PASS, the largest move is a factor of 1.030, and the five keep their
+order. **Adopted, for three of the five.** Hard rock goes from 29 to 29.87 m,
+dry soil and firm ground from 36.6 to 37.19 — a few per cent each, which is
+the point: the project's numbers were close, but three of them were guesses
+that happened to be close. Clay was never a candidate, since the book has no
+clay. And wet soil keeps its 92 m under rule 92 (d): the book's 49.99 would
+put Castle Bravo's crater at 0.89 km and Ivy Mike's at 0.80, where 92 puts
+them at 1.6 and 1.5, near the holes they left in the reef. Both numbers are
+printed side by side in the validation report. This is the first round where a
+rule had to say in advance that the book does not always win.

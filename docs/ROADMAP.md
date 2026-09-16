@@ -529,8 +529,8 @@ the candidates for re-tuning:
   strengths belongs to a set nobody has read yet.
 - **Explosions.** The thermal partition between the ground and the air is
   interpolated linearly, not read from the book's Table 7.101; the
-  conventional mortality bands were composed with Beirut in view. (Two
-  closed on 16 September 2026, both by tracing the page the project already
+  conventional mortality bands were composed with Beirut in view. (Three
+  closed on 16 September 2026, each by reading the page the project already
   cited. The burn thresholds were fixed at 8, 5 and 2 cal/cm² where the
   book makes the exposure grow with the yield: its Figure 12.64 was traced
   and adopted — rules 80 to 84. The initial-radiation radii were a fit

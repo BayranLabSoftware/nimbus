@@ -217,6 +217,7 @@ import { runFireball, type FireballRunResult } from '../src/physics/validation/f
 import { FIREBALL_READ_ON } from '../src/physics/validation/fireballSetData.js';
 import { runBurn, type BurnRunResult } from '../src/physics/validation/burnRun.js';
 import { runDose, type DoseRunResult } from '../src/physics/validation/doseRun.js';
+import { runCrater, type CraterRunResult } from '../src/physics/validation/craterRun.js';
 import { BURN_CURVE_YIELDS_KT } from '../src/physics/effects/burnExposureData.js';
 import { mulberry32 } from '../src/physics/montecarlo/sampling.js';
 import type { ProspectiveScore } from '../src/physics/validation/prospectiveRules.js';
@@ -2306,6 +2307,67 @@ function doseJson(run: DoseRunResult) {
   };
 }
 
+/** Rules 90 to 93: the crater, from the numbers the book prints. */
+function craterSection(run: CraterRunResult): string {
+  const m2 = (x: number | null): string => (x === null ? '—' : x.toFixed(2));
+  const kt = (x: number): string =>
+    x >= 1_000 ? `${(x / 1_000).toString()} Mt` : `${x.toString()} kt`;
+  return [
+    "Nimbus digs a nuclear surface burst's apparent crater as D_a = K · W_kt^0.3, with a coefficient for each of five ground types. Two of the five stood on nothing — hard rock's 29 m was “0.8 of dry soil, a project value” and clay's 105 m “a project value above wet soil, with no source” — and a third was read from a sentence of the book rather than from its figure. Because a crater's size changes so fast as the burst passes through the surface, Glasstone & Dolan print the contact-surface-burst radius and depth of a 1 kt explosion in four media on Figures 6.72a and b themselves: 82, 61, 58 and 49 feet of radius and 31, 28, 28 and 22 feet of depth. Nothing is traced here — those eight numbers are read by eye — and §6.72's W^0.3 is confirmed by the book's own arithmetic. Rules 90 to 93 (`validation/craterRules.ts`), committed before the candidate dug a crater for any preset, put them in the project's place.",
+    '',
+    "| Ground | The book's medium | K in place (m) | The book's K (m) | Adopted | Why not |",
+    '|--------|:--|------:|------:|------:|:--|',
+    ...run.coefficients.map(
+      (r) =>
+        `| ${r.groundType} | ${r.mediumName} | ${m2(r.inPlace)} | ${m2(r.book)} | ${m2(r.adopted)} | ${r.kept ?? '—'} |`
+    ),
+    '',
+    `The largest move is a factor of ${run.worstMove.toFixed(3)}, and the five keep their order. ${run.decision.adopted ? "The book's numbers are adopted where rule 92 lets them be." : "The book's numbers are not adopted."} Two coefficients stay, for reasons rule 92 fixed before the run. Clay is not one of the book's media at all. And wet soil's 92 m was set on the craters Castle Bravo and Ivy Mike left in the Bikini reef, at 15 and 10.4 Mt, where the book's figure is drawn for 1 kt: a curve carried four decades up in yield is weaker evidence than a crater somebody measured at the yield in question, so the measurement stays and the disagreement is printed rather than settled quietly — the book's wet soil would put ${run.bikini.map((b) => `${b.name} at ${(b.bookM / 1_000).toFixed(2)} km instead of ${(b.inPlaceM / 1_000).toFixed(2)}`).join(', ')}.`,
+    '',
+    'The presets that dig a crater, before and after — and beside, deciding nothing, the depth the book gives, which the product does not draw:',
+    '',
+    '| Explosion | Yield | Ground | Apparent diameter before (m) | after (m) | The book’s depth (m) |',
+    '|-----------|------:|:--|------:|------:|------:|',
+    ...run.presets.map(
+      (r) =>
+        `| ${r.name} | ${kt(r.yieldKt)} | ${r.groundType} | ${m2(r.inPlaceM)} | ${m2(r.adoptedM)} | ${m2(r.bookDepthM)} |`
+    ),
+  ].join('\n');
+}
+
+/** Rules 90 to 93 in the report's JSON. */
+function craterJson(run: CraterRunResult) {
+  return {
+    numbers: run.numbers,
+    coefficients: run.coefficients.map((r) => ({
+      groundType: r.groundType,
+      medium: r.medium,
+      inPlace: fixed(r.inPlace, 4),
+      book: r.book === null ? null : fixed(r.book, 4),
+      adopted: fixed(r.adopted, 4),
+      kept: r.kept,
+      depthAt1KtM: r.depthAt1KtM === null ? null : fixed(r.depthAt1KtM, 4),
+    })),
+    presets: run.presets.map((r) => ({
+      name: r.name,
+      yieldKt: fixed(r.yieldKt, 4),
+      groundType: r.groundType,
+      inPlaceM: fixed(r.inPlaceM, 2),
+      adoptedM: fixed(r.adoptedM, 2),
+      bookDepthM: r.bookDepthM === null ? null : fixed(r.bookDepthM, 2),
+    })),
+    bikini: run.bikini.map((b) => ({
+      name: b.name,
+      yieldKt: fixed(b.yieldKt, 4),
+      inPlaceM: fixed(b.inPlaceM, 2),
+      bookM: fixed(b.bookM, 2),
+    })),
+    worstMove: fixed(run.worstMove, 4),
+    orderSurvives: run.orderSurvives,
+    decision: run.decision,
+  };
+}
+
 /** Rules 76 to 79 in the report's JSON. */
 function fireballJson(run: FireballRunResult) {
   const reading = (r: FireballReading) => ({
@@ -3344,6 +3406,7 @@ function main(): void {
   const fireball = runFireball();
   const burn = runBurn();
   const dose = runDose();
+  const crater = runCrater();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -3467,6 +3530,10 @@ ${burnSection(burn)}
 ### The initial radiation, from the figures the book draws
 
 ${doseSection(dose)}
+
+### The crater, from the numbers the book prints
+
+${craterSection(crater)}
 
 ### Which checks are validation
 
@@ -3770,6 +3837,7 @@ otherwise.
       fireball: fireballJson(fireball),
       burn: burnJson(burn),
       dose: doseJson(dose),
+      crater: craterJson(crater),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,

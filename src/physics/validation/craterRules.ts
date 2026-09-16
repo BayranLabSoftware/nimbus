@@ -96,6 +96,21 @@ export const CRATER_MEDIUM_OF: Readonly<Partial<Record<ExplosionGroundType, Book
  *  crater at a yield the book's figure does not cover. */
 export const CRATER_SET_ON_A_MEASUREMENT: readonly ExplosionGroundType[] = ['WET_SOIL'];
 
+/** What the project's five coefficients were on 16 September 2026, before
+ *  these rules were run — kept so the report can always show what moved, the
+ *  way the burn and dose rounds keep their laws in place beside the book's. */
+export const CRATER_BEFORE_THE_BOOK: Readonly<Record<ExplosionGroundType, number>> = {
+  HARD_ROCK: 29,
+  FIRM_GROUND: 36.6,
+  DRY_SOIL: 36.6,
+  WET_SOIL: 92,
+  CLAY: 105,
+};
+
+/** Rule 92 (d) names two craters, and only two: the ones wet soil's
+ *  coefficient was set on. */
+export const CRATER_MEASURED_PRESETS: readonly string[] = ['Castle Bravo 1954', 'Ivy Mike 1952'];
+
 /** Rule 92 (c): the most a coefficient may move and still be believed. */
 export const CRATER_MOVE_FACTOR = 2;
 

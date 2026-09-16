@@ -879,9 +879,9 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         id: 'crater',
         name: 'Surface-burst crater (ground-type dependent)',
         formula:
-          'D_apparent = K · W_kt^0.3     (K = 29 hard rock, 36.6 firm and dry, 92 wet, 105 clay; metres)',
+          'D_apparent = K · W_kt^0.3     (K = 29.87 hard rock, 37.19 firm and dry, 92 wet, 105 clay; metres)',
         description:
-          'Glasstone & Dolan (§6.09) put the apparent radius of a 1 kt surface burst in dry soil or dry soft rock at about 60 ft — a diameter of 36.6 m, the K for dry soil and firm ground — and scale every dimension by W^0.3; Nordyke (1962) derived W^(1/3.4) for desert alluvium. For saturated reef, K = 92 puts Castle Bravo and Ivy Mike at 1.6 and 1.5 km, the “mile-wide” craters they left (Kunkle & Ristvet 2013, DTRIAC SR-12-001). Hard rock, “somewhat less” in the book, is a project 0.8 of dry soil, and clay a project value. Until 14 September 2026 dry soil and firm ground were 75 and 60, twice the book.',
+          'Because a crater’s size changes so fast as the burst passes through the surface, Glasstone & Dolan print the contact-surface-burst radius of a 1 kt explosion on Figures 6.72a and b themselves: 82, 61, 58 and 49 feet for wet soil or wet soft rock, dry soil or dry soft rock, wet hard rock and dry hard rock, with depths of 31, 28, 28 and 22 feet. Three of the four K here are twice those radii — 37.19 m for dry soil and firm ground, 29.87 for hard rock — and §6.72 scales every dimension by W^0.3, which the book’s own worked example confirms; Nordyke (1962) derived W^(1/3.4) for desert alluvium. Two are not the book’s. For saturated reef K = 92 stays, because the book’s 49.99 would put Castle Bravo and Ivy Mike at 0.89 and 0.80 km where 92 puts them at 1.6 and 1.5, the “mile-wide” craters they left (Kunkle & Ristvet 2013, DTRIAC SR-12-001), and the figure is drawn for 1 kt against their 15 and 10.4 Mt. Clay is a project value; the book has no clay. The depth the book gives is not drawn here. Until 16 September 2026 dry soil and firm ground were 36.6, read from §6.09’s sentence rather than the figure, and hard rock a project 0.8 of dry soil; until 14 September they were 75 and 60, twice the book.',
         citation: glasstoneDolan1977,
       },
       {

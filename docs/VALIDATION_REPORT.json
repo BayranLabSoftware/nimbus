@@ -3976,6 +3976,133 @@
         "rings": true
       }
     },
+    "crater": {
+      "numbers": {
+        "eight": true,
+        "exponent": true,
+        "ordered": true
+      },
+      "coefficients": [
+        {
+          "groundType": "HARD_ROCK",
+          "medium": "dryHardRock",
+          "inPlace": 29,
+          "book": 29.8704,
+          "adopted": 29.8704,
+          "kept": null,
+          "depthAt1KtM": 6.7056
+        },
+        {
+          "groundType": "DRY_SOIL",
+          "medium": "drySoilOrSoftRock",
+          "inPlace": 36.6,
+          "book": 37.1856,
+          "adopted": 37.1856,
+          "kept": null,
+          "depthAt1KtM": 8.5344
+        },
+        {
+          "groundType": "FIRM_GROUND",
+          "medium": "drySoilOrSoftRock",
+          "inPlace": 36.6,
+          "book": 37.1856,
+          "adopted": 37.1856,
+          "kept": null,
+          "depthAt1KtM": 8.5344
+        },
+        {
+          "groundType": "WET_SOIL",
+          "medium": "wetSoilOrSoftRock",
+          "inPlace": 92,
+          "book": 49.9872,
+          "adopted": 92,
+          "kept": "set on the Bravo and Mike craters, four decades above the figure (rule 92 d)",
+          "depthAt1KtM": 9.4488
+        },
+        {
+          "groundType": "CLAY",
+          "medium": null,
+          "inPlace": 105,
+          "book": null,
+          "adopted": 105,
+          "kept": "the book has no such medium (rule 91)",
+          "depthAt1KtM": null
+        }
+      ],
+      "presets": [
+        {
+          "name": "Castle Bravo 1954",
+          "yieldKt": 15000,
+          "groundType": "WET_SOIL",
+          "inPlaceM": 1646.7,
+          "adoptedM": 1646.7,
+          "bookDepthM": 169.12
+        },
+        {
+          "name": "1 Mt reference",
+          "yieldKt": 1000,
+          "groundType": "FIRM_GROUND",
+          "inPlaceM": 290.72,
+          "adoptedM": 295.38,
+          "bookDepthM": 67.79
+        },
+        {
+          "name": "Beirut port 2020",
+          "yieldKt": 0.5,
+          "groundType": "WET_SOIL",
+          "inPlaceM": 74.73,
+          "adoptedM": 74.73,
+          "bookDepthM": 7.67
+        },
+        {
+          "name": "Ivy Mike 1952",
+          "yieldKt": 10400,
+          "groundType": "WET_SOIL",
+          "inPlaceM": 1475.36,
+          "adoptedM": 1475.36,
+          "bookDepthM": 151.53
+        },
+        {
+          "name": "Halifax 1917",
+          "yieldKt": 2.9,
+          "groundType": "WET_SOIL",
+          "inPlaceM": 126.62,
+          "adoptedM": 126.62,
+          "bookDepthM": 13
+        },
+        {
+          "name": "Texas City 1947",
+          "yieldKt": 2.7,
+          "groundType": "WET_SOIL",
+          "inPlaceM": 123.94,
+          "adoptedM": 123.94,
+          "bookDepthM": 12.73
+        }
+      ],
+      "bikini": [
+        {
+          "name": "Castle Bravo 1954",
+          "yieldKt": 15000,
+          "inPlaceM": 1646.7,
+          "bookM": 894.72
+        },
+        {
+          "name": "Ivy Mike 1952",
+          "yieldKt": 10400,
+          "inPlaceM": 1475.36,
+          "bookM": 801.62
+        }
+      ],
+      "worstMove": 1.03,
+      "orderSurvives": true,
+      "decision": {
+        "adopted": true,
+        "numbers": true,
+        "gate": true,
+        "move": true,
+        "order": true
+      }
+    },
     "interfaceRules": {
       "readOn": "2026-09-15",
       "events": {

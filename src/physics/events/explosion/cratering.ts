@@ -1,3 +1,4 @@
+import { bookCraterCoefficient } from '../../effects/nuclearCrater.js';
 import type { Joules, Meters } from '../../units.js';
 import { joulesToMegatons, m } from '../../units.js';
 
@@ -5,29 +6,42 @@ import { joulesToMegatons, m } from '../../units.js';
  * Target-ground coefficient K (metres) in the apparent-crater scaling
  *     D_a = K · W_kt^0.3
  *
- *   DRY_SOIL     36.6 — sand, gravel, loose earth.
- *   FIRM_GROUND  36.6 — tuff, limestone, dense soil (default).
- *     Glasstone & Dolan (1977, §6.09) put the apparent radius of a
- *     1 kt surface burst in dry soil or dry soft rock at about 60 ft,
- *     a diameter of 36.6 m, and scale every crater dimension by W^0.3.
- *   HARD_ROCK    29   — granite, basalt, competent bedrock. The book
- *     says only "somewhat less"; 0.8 of dry soil is a project value.
- *   WET_SOIL     92   — saturated alluvium, coral reef. Water-saturated
- *     soil makes an appreciably larger crater (§6.09). 92 m puts Castle
- *     Bravo (15 Mt) at 1.6 km and Ivy Mike (10.4 Mt) at 1.5 km, the
- *     "mile-wide" craters both left in the reef (Kunkle & Ristvet 2013,
- *     DTRIAC SR-12-001).
+ * Three of the five are the book's own, adopted on 16 September 2026 by
+ * rule 92 of validation/craterRules.ts. Glasstone & Dolan print the
+ * contact-surface-burst radius of a 1 kt explosion on Figures 6.72a and b
+ * themselves, because a crater's size changes too fast near the surface
+ * to be read off the curve, and §6.72 scales every dimension by W^0.3:
+ *
+ *   DRY_SOIL     37.19 — sand, gravel, loose earth.
+ *   FIRM_GROUND  37.19 — tuff, limestone, dense soil (default). Both are
+ *     the book's "dry soil or dry soft rock", 61 ft of radius (Fig.
+ *     6.72a, curve 2). They were 36.6, read from §6.09's "about 60 ft".
+ *   HARD_ROCK    29.87 — granite, basalt, competent bedrock: the book's
+ *     "dry hard rock", 49 ft (curve 4). It was 29, which was 0.8 of dry
+ *     soil and a project value with no source.
+ *
+ * Two are not the book's, and rule 92 says why each stays:
+ *
+ *   WET_SOIL     92   — saturated alluvium, coral reef. The book's "wet
+ *     soil or wet soft rock" is 82 ft, a coefficient of 49.99, which
+ *     would put Castle Bravo's crater at 0.89 km and Ivy Mike's at 0.80.
+ *     92 m puts them at 1.6 and 1.5 km, the "mile-wide" craters both left
+ *     in the reef (Kunkle & Ristvet 2013, DTRIAC SR-12-001). The figure
+ *     is drawn for 1 kt and these were 15 and 10.4 Mt: a curve carried
+ *     four decades up in yield is weaker evidence than a crater somebody
+ *     measured at the yield in question, so the measurement stays and the
+ *     validation report prints both.
  *   CLAY        105   — water-saturated clay / soft muck. A project
- *     value above wet soil, with no source.
+ *     value above wet soil, with no source. The book has no clay.
  *
  * Until 14 September 2026 dry soil and firm ground were 75 and 60 and
  * hard rock 40 — twice the book's dry-soil crater, credited to papers
  * that do not give them.
  */
 export const NUCLEAR_CRATER_COEFFICIENT = {
-  HARD_ROCK: 29,
-  FIRM_GROUND: 36.6,
-  DRY_SOIL: 36.6,
+  HARD_ROCK: bookCraterCoefficient('dryHardRock'),
+  FIRM_GROUND: bookCraterCoefficient('drySoilOrSoftRock'),
+  DRY_SOIL: bookCraterCoefficient('drySoilOrSoftRock'),
   WET_SOIL: 92,
   CLAY: 105,
 } as const;
@@ -63,9 +77,10 @@ export interface NuclearCraterInput {
  *   - Surface contact burst. Airbursts at practical heights form no
  *     measurable crater; subsurface bursts (Plowshare-style) excavate
  *     much more than the apparent formula predicts.
- *   - K comes from Glasstone & Dolan for dry soil, from the Bravo and
- *     Mike craters for saturated reef, and is a project value for hard
- *     rock and clay (see {@link NUCLEAR_CRATER_COEFFICIENT}).
+ *   - K comes from Glasstone & Dolan's Figure 6.72a for dry soil, firm
+ *     ground and hard rock, from the Bravo and Mike craters for
+ *     saturated reef, and is a project value for clay (see
+ *     {@link NUCLEAR_CRATER_COEFFICIENT}).
  */
 export function nuclearApparentCraterDiameter(input: NuclearCraterInput): Meters {
   const W_kt = (joulesToMegatons(input.yieldEnergy) as number) * 1000;

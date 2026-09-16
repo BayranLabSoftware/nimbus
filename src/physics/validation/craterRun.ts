@@ -15,6 +15,8 @@ import {
 } from '../events/explosion/simulate.js';
 import {
   chooseCraterCoefficients,
+  CRATER_BEFORE_THE_BOOK,
+  CRATER_MEASURED_PRESETS,
   CRATER_MEDIUM_OF,
   CRATER_SET_ON_A_MEASUREMENT,
   type CraterNumberChecks,
@@ -82,7 +84,7 @@ export interface CraterCoefficientRow {
 export function craterCoefficientRows(): CraterCoefficientRow[] {
   return ORDER.map((groundType) => {
     const medium = CRATER_MEDIUM_OF[groundType] ?? null;
-    const inPlace = NUCLEAR_CRATER_COEFFICIENT[groundType];
+    const inPlace = CRATER_BEFORE_THE_BOOK[groundType];
     const book = medium === null ? null : bookCraterCoefficient(medium);
     const measured = CRATER_SET_ON_A_MEASUREMENT.includes(groundType);
     const kept =
@@ -122,10 +124,12 @@ export function craterPresetRows(rows: readonly CraterCoefficientRow[]): CraterP
       const input: ExplosionScenarioInput = preset.input;
       const groundType: ExplosionGroundType = input.groundType ?? 'FIRM_GROUND';
       const yieldKt = input.yieldMegatons * KILOTONS_PER_MEGATON;
-      const inPlaceM = simulateExplosion(input).crater.apparentDiameter as number;
+      const drawnM = simulateExplosion(input).crater.apparentDiameter as number;
+      const inPlaceM =
+        (drawnM * CRATER_BEFORE_THE_BOOK[groundType]) / NUCLEAR_CRATER_COEFFICIENT[groundType];
       const factor =
         (adoptedOf.get(groundType) ?? NUCLEAR_CRATER_COEFFICIENT[groundType]) /
-        NUCLEAR_CRATER_COEFFICIENT[groundType];
+        CRATER_BEFORE_THE_BOOK[groundType];
       const medium = CRATER_MEDIUM_OF[groundType] ?? null;
       return {
         name: preset.name,
@@ -164,13 +168,13 @@ export function runCrater(gatePasses = true): CraterRunResult {
   const orderSurvives = adopted.every((v, i) => i === 0 || v >= (adopted[i - 1] ?? 0));
   const wet = bookCraterCoefficient('wetSoilOrSoftRock');
   const bikini = Object.values(EXPLOSION_PRESETS)
-    .filter((preset) => preset.input.groundType === 'WET_SOIL')
+    .filter((preset) => CRATER_MEASURED_PRESETS.includes(preset.name))
     .map((preset) => {
       const yieldKt = preset.input.yieldMegatons * KILOTONS_PER_MEGATON;
       return {
         name: preset.name,
         yieldKt,
-        inPlaceM: simulateExplosion(preset.input).crater.apparentDiameter,
+        inPlaceM: CRATER_BEFORE_THE_BOOK.WET_SOIL * yieldKt ** CRATER_YIELD_EXPONENT,
         bookM: wet * yieldKt ** CRATER_YIELD_EXPONENT,
       };
     });

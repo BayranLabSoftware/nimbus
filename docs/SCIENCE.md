@@ -2034,6 +2034,55 @@ one change that could keep the records and the narrower band together, and it
 was not tried; neither was the shorter range, 8.5 km, which averages more
 still. The prospective set of rules 27 to 30 will read whatever is in place.
 
+### The crater, from the numbers the book prints (16 September 2026)
+
+`validation/craterRules.ts` (rules 90 to 93), `validation/craterRun.ts`,
+`effects/nuclearCrater.ts`. The apparent crater of a nuclear surface burst is
+D_a = K · W_kt^0.3, and two of the five ground coefficients stood on nothing:
+hard rock's 29 m was "0.8 of dry soil, a project value" and clay's 105 m "a
+project value above wet soil, with no source". A third, firm ground's 36.6 m,
+came from a sentence of the book — §6.09's "about 60 ft" of radius in dry soil
+— rather than from its figure.
+
+The book does better than that sentence, and it needed no tracing. Because a
+crater's size changes so fast as the burst passes through the surface,
+Figures 6.72a and b print the contact-surface-burst radius and depth of a 1 kt
+explosion in each of four media on the page itself, in words: 82, 61, 58 and
+49 feet of radius and 31, 28, 28 and 22 feet of depth, for wet soil or wet
+soft rock, dry soil or dry soft rock, wet hard rock and dry hard rock. §6.72
+scales both dimensions as W^0.3, and the book's own worked example confirms the
+exponent by arithmetic: it divides a 270-foot burst depth at 20 kt by 2.46 and
+multiplies the answer back by the same 2.46, and 20^0.3 = 2.4622.
+
+Three coefficients became the book's: hard rock 29 → 29.87, dry soil and firm
+ground 36.6 → 37.19. The moves are a few per cent, which is the point — the
+project's numbers were close, but three of them were guesses that happened to
+be close, and now they are the book's.
+
+Two did not move, and rule 92 said in advance why. Clay is not one of the
+book's media at all — it has no clay — so it was never a candidate. And wet
+soil's 92 m was set on the craters Castle Bravo and Ivy Mike left in the Bikini
+reef, at 15 and 10.4 Mt. The book's wet soil gives 49.99, which would put those
+craters at 0.89 and 0.80 km where 92 puts them at 1.6 and 1.5, near the
+"mile-wide" holes they left. The figure is drawn for 1 kt. Carrying it four
+decades up in yield is weaker evidence than a crater somebody measured at the
+yield in question, so the measurement stays and the validation report prints
+both numbers side by side rather than settling the disagreement quietly. This
+is the first round where a rule had to say, before the run, that the book does
+not always win.
+
+What this cannot settle. No toll and no scored row of this project depends on a
+nuclear crater, so the round is a reading of the book against the project's own
+constants and not of either against the ground. The book's numbers are for a
+1 kt explosion carried by W^0.3, which §6.72 calls "the best empirical fit" and
+not a law, and nobody has fired a megaton contact surface burst in dry soil to
+check it. The product's ground types are coarser than the book's media, and a
+real site coarser still: §6.72 says the moisture of a soil alone moves the
+crater significantly. And the apparent crater is not the hole a visitor
+imagines — the true crater reaches further and the lip further again (§6.71) —
+nor does the product draw the depth the book gives, which the report now prints
+beside the diameters.
+
 ### The initial radiation, from the figures the book draws (16 September 2026)
 
 `validation/doseRules.ts` (rules 85 to 89), `validation/doseRun.ts`,
