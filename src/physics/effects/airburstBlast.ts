@@ -187,6 +187,82 @@ export function airburstOverpressureRange(input: AirburstBlastInput): {
   return { low, high: Pa(within ? 2 * (low as number) : low) };
 }
 
+/**
+ * How the air blast of an impact whose body or swarm reaches the ground is
+ * drawn.
+ *
+ * - `project`: Kinney & Graham on half the energy that reaches the ground,
+ *   and on half the energy a swarm left in the air, the larger ring of the
+ *   two.
+ * - `program`: the Earth Impact Effects Program's own (rules 138 to 140 of
+ *   validation/groundBlastRules.ts). It reads its airburst law at Eq. 18's
+ *   altitude even where that altitude lies below the ground: the energy is
+ *   W = E₀ · max(f, 1 − f), f the share of E₀ that reaches the ground, and at
+ *   every range the Mach relation holds with r_x = 290 + 0.65 z₁, z₁ ≤ 0 —
+ *   no regular region and no blend. The deeper that altitude, the shorter
+ *   the crossover and the weaker the blast, which is why a steeper impact
+ *   blasts less. Where r_x ≤ 0 the program answers with an error and this
+ *   draws no blast; a body that never breaks, which the program refuses too,
+ *   is read at z₁ = 0.
+ */
+export type GroundBlast = 'project' | 'program';
+
+/** What an impact that names no ground blast draws. */
+export const DEFAULT_GROUND_BLAST: GroundBlast = 'project';
+
+export interface GroundImpactBlastInput {
+  /** Distance along the ground from the point of impact (m). */
+  groundRange: Meters;
+  /** Eq. 18's altitude (m), at or below zero; above zero is read as zero. */
+  virtualBurstAltitude: Meters;
+  /** E₀ · max(f, 1 − f) (J). */
+  blastYield: Joules;
+}
+
+/** The scaled altitude and crossover the program's ground blast is read at,
+ *  or null where there is no blast. */
+function groundScaled(
+  virtualBurstAltitude: Meters,
+  blastYield: Joules
+): { s: number; z1: number } | null {
+  const s = yieldScale(blastYield);
+  const z = virtualBurstAltitude as number;
+  if (!Number.isFinite(s) || !Number.isFinite(z)) return null;
+  const z1 = Math.min(z, 0) / s;
+  return PROGRAM_CROSSOVER_BASE + 0.65 * z1 > 0 ? { s, z1 } : null;
+}
+
+/** Peak overpressure on the ground from an impact that reaches it, as the
+ *  program computes it; 0 where it has none. */
+export function groundImpactOverpressure({
+  groundRange,
+  virtualBurstAltitude,
+  blastYield,
+}: GroundImpactBlastInput): Pascals {
+  const g = groundScaled(virtualBurstAltitude, blastYield);
+  const r = Math.abs(groundRange);
+  if (g === null || !Number.isFinite(r)) return Pa(0);
+  const r1 = r / g.s;
+  return Pa(r1 > 0 ? machReflection(r1, g.z1, PROGRAM_CROSSOVER_BASE) : Infinity);
+}
+
+/** The farthest ground range at which that blast reaches the threshold, never
+ *  beyond half the Earth's circumference; 0 when it does not. */
+export function groundImpactReach(
+  threshold: Pascals,
+  virtualBurstAltitude: Meters,
+  blastYield: Joules
+): Meters {
+  const g = groundScaled(virtualBurstAltitude, blastYield);
+  const target = threshold as number;
+  if (g === null || !(target > 0)) return m(0);
+  const limit = HALF_CIRCUMFERENCE / g.s;
+  const mach = (r1: number) => machReflection(r1, g.z1, PROGRAM_CROSSOVER_BASE);
+  if (mach(limit) >= target) return m(limit * g.s);
+  const hi = upperBracket(mach, target, 0, limit);
+  return m(crossing(mach, target, 0, hi) * g.s);
+}
+
 /** Geometric bisection for the point where a decreasing f crosses target,
  *  between lo (f ≥ target) and hi (f < target). */
 function crossing(f: (x: number) => number, target: number, lo: number, hi: number): number {

@@ -6,7 +6,10 @@ import {
   airburstOverpressure,
   airburstOverpressureRange,
   airburstReach,
+  DEFAULT_GROUND_BLAST,
   DEFAULT_MACH_TRANSITION,
+  groundImpactOverpressure,
+  groundImpactReach,
 } from './airburstBlast.js';
 
 /**
@@ -350,5 +353,92 @@ describe('airburst blast — the program’s passage to the Mach region (rule 12
         ).toBeLessThan(threshold);
       }
     }
+  });
+});
+
+/**
+ * The program's blast of an impact that reaches the ground, held to the
+ * overpressures it was read off (rule 138 of validation/groundBlastRules.ts,
+ * 16 September 2026): a 100 m body of 3 000 kg/m³ at 12 km/s on a sedimentary
+ * target, fed Nimbus's own entry. Code verification, not held out.
+ */
+describe('airburst blast — an impact that reaches the ground, as the program reads it (rule 138)', () => {
+  const body = (angleDeg: number, diameterM = 100, densityKgM3 = 3_000, speed = 12_000) =>
+    simulateImpact({
+      impactorDiameter: m(diameterM),
+      impactVelocity: mps(speed),
+      impactorDensity: kgPerM3(densityKgM3),
+      targetDensity: kgPerM3(2_500),
+      impactAngle: degreesToRadians(deg(angleDeg)),
+    });
+  const ground = (r: ReturnType<typeof body>) => {
+    const gf = r.entry.energyFractionToGround;
+    return {
+      virtualBurstAltitude: r.entry.virtualBurstAltitude,
+      blastYield: J((r.impactor.kineticEnergy as number) * Math.max(gf, 1 - gf)),
+    };
+  };
+  const PRINTED: readonly (readonly [number, number, number])[] = [
+    // [angle (°), range (km), low end (Pa)]
+    [45, 100, 1_213.663],
+    [60, 100, 633.687],
+    [75, 100, 323.847],
+    [90, 100, 240.354],
+    [90, 0.3, 1_630_234.705],
+    [90, 1, 121_059.381],
+    [90, 3, 15_703.423],
+    [90, 10, 2_866.603],
+    [90, 30, 831.993],
+    [90, 300, 79.499],
+    [60, 0.3, 13_840_568.333],
+    [60, 1, 916_448.257],
+    [60, 3, 88_751.219],
+    [60, 10, 10_408.339],
+    [60, 30, 2_383.216],
+    [60, 300, 205.785],
+  ];
+
+  it("prints the program's overpressure at every angle and range, a steeper impact blasting less", () => {
+    for (const [angle, km, printed] of PRINTED) {
+      const r = body(angle);
+      expect(r.entry.regime).toBe('PARTIAL_AIRBURST');
+      expect(r.entry.virtualBurstAltitude as number).toBeLessThan(0);
+      const p = groundImpactOverpressure({ ...ground(r), groundRange: m(km * 1_000) }) as number;
+      expect(Math.abs(p / printed - 1), `${angle.toString()}° at ${km.toString()} km`).toBeLessThan(
+        0.01
+      );
+    }
+  });
+
+  it('draws no blast where the crossover is not positive, which the program answers with an error', () => {
+    for (const diameter of [30, 40]) {
+      const r = body(90, diameter, 8_000, 11_200);
+      expect(groundImpactOverpressure({ ...ground(r), groundRange: m(10_000) }) as number).toBe(0);
+      expect(
+        groundImpactReach(Pa(3_447), ground(r).virtualBurstAltitude, ground(r).blastYield)
+      ).toBe(0);
+    }
+    // A body that never breaks, which the program refuses too, is read on the ground.
+    const whole = body(90, 3, 8_000, 11_200);
+    expect(whole.entry.regime).toBe('INTACT');
+    expect(whole.entry.virtualBurstAltitude as number).toBe(0);
+    expect(
+      groundImpactOverpressure({ ...ground(whole), groundRange: m(300) }) as number
+    ).toBeGreaterThan(0);
+  });
+
+  it('reaches each threshold where its own overpressure falls to it', () => {
+    const g = ground(body(60));
+    for (const threshold of [34_474, 6_895, 3_447, 200]) {
+      const reach = groundImpactReach(
+        Pa(threshold),
+        g.virtualBurstAltitude,
+        g.blastYield
+      ) as number;
+      const at = (r: number) => groundImpactOverpressure({ ...g, groundRange: m(r) }) as number;
+      expect(at(reach * 0.999)).toBeGreaterThanOrEqual(threshold);
+      expect(at(reach * 1.001)).toBeLessThan(threshold);
+    }
+    expect(DEFAULT_GROUND_BLAST).toBe('project');
   });
 });

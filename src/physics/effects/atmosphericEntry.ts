@@ -100,6 +100,12 @@ export interface AtmosphericEntryResult {
   burstAltitude: Meters;
   /** Breakup altitude (m), Eq. 11; 0 for a body that never breaks. */
   breakupAltitude: Meters;
+  /** Eq. 18's airburst altitude (m) wherever the body breaks: the burst
+   *  altitude of an airburst, and below zero — under the ground — for a
+   *  swarm that strikes it, where the Earth Impact Effects Program still
+   *  reads its blast from it (rules 138 to 140 of
+   *  validation/groundBlastRules.ts). 0 for a body that never breaks. */
+  virtualBurstAltitude: Meters;
   /** INTACT: never breaks. PARTIAL_AIRBURST: breaks, and the swarm
    *  still strikes the ground. COMPLETE_AIRBURST: the swarm spreads to
    *  seven times its size above the ground. */
@@ -315,6 +321,7 @@ export function atmosphericEntry(
   const whole = (endVelocity: number, breakupAltitude = 0): AtmosphericEntryResult => ({
     burstAltitude: m(0),
     breakupAltitude: m(breakupAltitude),
+    virtualBurstAltitude: m(0),
     regime: 'INTACT',
     endVelocity: mps(endVelocity),
     energyFractionToGround: v0 > 0 ? Math.min(1, (endVelocity / v0) ** 2) : 1,
@@ -374,6 +381,7 @@ export function atmosphericEntry(
     return {
       burstAltitude: m(zBurst),
       breakupAltitude: m(zStar),
+      virtualBurstAltitude: m(zBurst),
       regime: 'COMPLETE_AIRBURST',
       endVelocity: mps(endVelocity),
       energyFractionToGround: 0,
@@ -397,6 +405,7 @@ export function atmosphericEntry(
   return {
     burstAltitude: m(0),
     breakupAltitude: m(zStar),
+    virtualBurstAltitude: m(zBurst),
     regime: 'PARTIAL_AIRBURST',
     endVelocity: mps(endVelocity),
     energyFractionToGround,

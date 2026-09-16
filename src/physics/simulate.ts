@@ -36,6 +36,7 @@ import {
   ejectaThicknessAt2R,
 } from './effects/ejecta.js';
 import { impactFireballRadius } from './effects/blastWave.js';
+import { DEFAULT_GROUND_BLAST, groundImpactReach } from './effects/airburstBlast.js';
 import { firestormSustainRadius, flammableIgnitionRadius } from './effects/firestorm.js';
 import { thermalHorizonRadius } from './casualties.js';
 import { oceanCouplingPartition } from './effects/oceanCoupling.js';
@@ -43,6 +44,9 @@ import { liquefactionRadius } from './events/earthquake/liquefaction.js';
 import {
   combineImpactFlashes,
   impactDamageRadii,
+  OVERPRESSURE_BUILDING_COLLAPSE,
+  OVERPRESSURE_LIGHT_DAMAGE,
+  OVERPRESSURE_WINDOW_BREAK,
   type ImpactDamageRadii,
 } from './events/impact/damageRings.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
@@ -547,6 +551,20 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     Math.PI * earthRadius
   );
   const seen = (radius: Meters): Meters => m(Math.min(radius, flashReach));
+  // The blast of a body or swarm that reaches the ground: the larger of the
+  // project's two Kinney–Graham rings, or the Earth Impact Effects Program's
+  // own reading of it (effects/airburstBlast.ts, `GroundBlast`).
+  const groundBlast =
+    DEFAULT_GROUND_BLAST === 'program' && entry.regime !== 'COMPLETE_AIRBURST'
+      ? {
+          altitude: entry.virtualBurstAltitude,
+          energy: J((ke as number) * Math.max(gf, 1 - gf)),
+        }
+      : null;
+  const blastRing = (surface: Meters, air: Meters, threshold: Pascals): Meters =>
+    groundBlast === null
+      ? m(Math.max(surface, air))
+      : groundImpactReach(threshold, groundBlast.altitude, groundBlast.energy);
   const damage: ImpactDamageRadii = {
     craterRim: surfaceDamage.craterRim,
     thirdDegreeBurn: seen(
@@ -555,9 +573,21 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     secondDegreeBurn: seen(
       combineImpactFlashes(surfaceDamage.secondDegreeBurn, entry.flashBurnRadii.secondDegree)
     ),
-    overpressure5psi: m(Math.max(surfaceDamage.overpressure5psi, entry.shockWaveRadii.fivePsi)),
-    overpressure1psi: m(Math.max(surfaceDamage.overpressure1psi, entry.shockWaveRadii.onePsi)),
-    lightDamage: m(Math.max(surfaceDamage.lightDamage, entry.shockWaveRadii.lightDamage)),
+    overpressure5psi: blastRing(
+      surfaceDamage.overpressure5psi,
+      entry.shockWaveRadii.fivePsi,
+      OVERPRESSURE_BUILDING_COLLAPSE
+    ),
+    overpressure1psi: blastRing(
+      surfaceDamage.overpressure1psi,
+      entry.shockWaveRadii.onePsi,
+      OVERPRESSURE_WINDOW_BREAK
+    ),
+    lightDamage: blastRing(
+      surfaceDamage.lightDamage,
+      entry.shockWaveRadii.lightDamage,
+      OVERPRESSURE_LIGHT_DAMAGE
+    ),
   };
 
   const craterRimRadius = m((Dfr as number) / 2);

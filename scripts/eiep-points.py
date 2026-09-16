@@ -3,7 +3,8 @@
 
 Each point names a body and a range; the program is sent it as the campaign's
 scripts/eiep-reference.py sends a case, with the same fetch and the same
-parser, on a sedimentary target, one request every 1.5 s. What comes back is
+parser, on the point's target (sedimentary where it names none), one request
+every 1.5 s. What comes back is
 the printed burst altitude (null where the body reaches the ground) and the
 printed overpressure, low and high ends. It runs the reference, never the
 model: the scripts that write the points and read the answers are Nimbus's.
@@ -11,7 +12,7 @@ model: the scripts that write the points and read the answers are Nimbus's.
     python3 scripts/eiep-points.py <points.json> <out.json>
 
 points.json is a list of {"key", "diameterM", "densityKgM3", "velocityKmS",
-"angleDeg", "rangeKm"}.
+"angleDeg", "rangeKm"} and, optionally, "target".
 """
 
 import importlib.util
@@ -34,7 +35,12 @@ def main():
     out = []
     for i, p in enumerate(points):
         page, error = eiep.fetch(
-            p["diameterM"], p["densityKgM3"], p["velocityKmS"], p["angleDeg"], "sedimentary", p["rangeKm"]
+            p["diameterM"],
+            p["densityKgM3"],
+            p["velocityKmS"],
+            p["angleDeg"],
+            p.get("target", "sedimentary"),
+            p["rangeKm"],
         )
         got = eiep.parse(page) if page is not None else {}
         out.append(
