@@ -19,6 +19,19 @@
  * 16 September 2026). The reading is 9 × credit / rules: a 9 only when
  * everything holds, as the file says a 9 is.
  *
+ * Two measures beside it (the amendment of 16 September 2026, evening, at
+ * Andrea's request). Every rule of a domain is also counted under one of two:
+ * **fidelity**, the rules that ask the model to give what a tool of the field
+ * gives on the same inputs — verification (G1, and I1, N1, V1 and L1, which
+ * stand for it), I4's count against an exact count, and every accuracy bound
+ * the first amendment of that day read against a tool of the field on the same
+ * rows; and **beyond**, the rules that ask for what no tool of the field gives —
+ * bands (G3), the input space (G4), robustness (G5), gaps (G6), method (G7),
+ * the airburst band that must hold measured footprints (I3), and the tolls no
+ * tool of the field computes (T4, N3, V5). Each measure reads 9 × its credit
+ * over its rules, as the count does. Neither is a 9: a domain has a 9 only when
+ * every rule holds.
+ *
  * What it cannot do is decide a status: each one here is the verdict a rule
  * file, a test or the report already reached, and its evidence says which. A
  * status changes in the same commit as the verdict that changes it.
@@ -42,19 +55,28 @@ export interface ScorecardRule {
   evidence: string;
 }
 
-export interface DomainScorecard {
-  domain: string;
-  rules: readonly ScorecardRule[];
+/** Which of the two measures a domain's rule is counted under. */
+export type Measure = 'fidelity' | 'beyond';
+
+export interface DomainRule extends ScorecardRule {
+  measure: Measure;
 }
 
-const G6: ScorecardRule = {
+export interface DomainScorecard {
+  domain: string;
+  rules: readonly DomainRule[];
+}
+
+const G6: DomainRule = {
   rule: 'G6',
+  measure: 'beyond',
   status: 'not met',
   evidence:
     'Every gap is declared in the report, but a 9 may carry only the ceilings, and the report declares gaps that are not ceilings.',
 };
-const G7: ScorecardRule = {
+const G7: DomainRule = {
   rule: 'G7',
+  measure: 'beyond',
   status: 'met',
   evidence:
     'Every default changed since the rules were written changed by rules pushed before their candidate ran, with every outcome recorded (docs/BENCHMARK_PROTOCOL.md; the rule files of validation/).',
@@ -66,39 +88,46 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
     rules: [
       {
         rule: 'G1',
+        measure: 'fidelity',
         status: 'not met',
         evidence:
           "Met for Boore et al. 2014 (to Boore's Fortran), Allen et al. 2012, the interface models and Thompson & Worden's distances; not for every relation that sets a printed number.",
       },
       {
         rule: 'E1',
+        measure: 'fidelity',
         status: 'pending',
         evidence: 'A ShakeMap scenario run without stations on the same maps has not been run.',
       },
       {
         rule: 'E2',
+        measure: 'fidelity',
         status: 'not met',
         evidence: "0.13× PAGER's people at MMI VII and above, σ_ln 2.18.",
       },
       {
         rule: 'E3',
+        measure: 'fidelity',
         status: 'pending',
         evidence: "PAGER's own σ_ln on the same rows has not been read.",
       },
       {
         rule: 'E4',
+        measure: 'beyond',
         standsFor: ['G3'],
         status: 'pending',
         evidence: 'Follows E3.',
       },
       {
         rule: 'E5',
+        measure: 'beyond',
         standsFor: ['G4'],
         status: 'not met',
         evidence: 'The envelope has no depth cells.',
       },
       {
         rule: 'G5',
+        measure: 'beyond',
         status: 'not met',
         evidence:
           'The sweep of 16 September 2026 finds 16 failures: rings stepping over their thresholds (benchmark/results/invariants-2026-09-16-4.json).',
@@ -112,44 +141,52 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
     rules: [
       {
         rule: 'G1',
+        measure: 'fidelity',
         status: 'not met',
         evidence:
           'The far-field and run-up relations are held to GeoClaw fixtures by tolerance, not within 1 % of a reference implementation.',
       },
       {
         rule: 'T1',
+        measure: 'fidelity',
         status: 'pending',
         evidence: 'GeoClaw has been run only over a flat ocean.',
       },
       {
         rule: 'T2',
+        measure: 'fidelity',
         status: 'pending',
         evidence:
           'GeoClaw on real bathymetry not run; under the bound as first written, not met (3.16×, rules 102 to 105).',
       },
       {
         rule: 'T3',
+        measure: 'fidelity',
         status: 'pending',
         evidence: 'No reference travel-time computation on the records.',
       },
       {
         rule: 'T4',
+        measure: 'beyond',
         status: 'pending',
         evidence: 'No held-out set of tsunami tolls.',
       },
       {
         rule: 'T5',
+        measure: 'beyond',
         standsFor: ['G3'],
         status: 'not met',
         evidence: 'Waves carry no band.',
       },
       {
         rule: 'G4',
+        measure: 'beyond',
         status: 'not met',
         evidence: 'No measured cells for waves.',
       },
       {
         rule: 'G5',
+        measure: 'beyond',
         status: 'pending',
         evidence: "The earthquake sweep checks the shaking's rings and not the wave's.",
       },
@@ -162,6 +199,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
     rules: [
       {
         rule: 'L1',
+        measure: 'fidelity',
         standsFor: ['G1', 'G4'],
         status: 'not met',
         evidence:
@@ -169,18 +207,21 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
       },
       {
         rule: 'L2',
+        measure: 'fidelity',
         status: 'not met',
         evidence:
           'Against Heller on the same rows: Heller 1.282× at σ_ln 1.776, the model 2.090× at 1.529.',
       },
       {
         rule: 'L3',
+        measure: 'beyond',
         standsFor: ['G3'],
         status: 'not met',
         evidence: 'No Monte Carlo sampler.',
       },
       {
         rule: 'G5',
+        measure: 'beyond',
         status: 'met',
         evidence:
           'No failure in the sweep of 5 000 landslides, and the application prints what Node computes (benchmark/results/invariants-2026-09-16-4.json).',
@@ -194,6 +235,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
     rules: [
       {
         rule: 'I1',
+        measure: 'fidelity',
         standsFor: ['G1'],
         evidence:
           'Against the Earth Impact Effects Program on the grid of validation/eiepReference.ts, gated in eiepComparison.test.ts.',
@@ -260,33 +302,39 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
       },
       {
         rule: 'I2',
+        measure: 'fidelity',
         status: 'met',
         evidence:
           "Read against the program's entry on the 357 CNEOS fireballs (rules 126 to 128, validation/fireballAnchorRules.ts).",
       },
       {
         rule: 'I3',
+        measure: 'beyond',
         status: 'not met',
         evidence: "Tunguska's 20 kPa ring 0.43× the flattened forest.",
       },
       {
         rule: 'I4',
+        measure: 'fidelity',
         status: 'met',
         evidence:
           'Rings counted within 2.7 % of an exact count (rules 94 to 97), and the toll carries its ceiling.',
       },
       {
         rule: 'G3',
+        measure: 'beyond',
         status: 'not met',
         evidence: 'No quantity of an impact carries a band scored on a held-out set.',
       },
       {
         rule: 'G4',
+        measure: 'beyond',
         status: 'not met',
         evidence: 'No measured cells for impacts.',
       },
       {
         rule: 'G5',
+        measure: 'beyond',
         status: 'not met',
         evidence:
           "464 failures in the sweep of 16 September 2026; 38 are an airburst's magnitude falling as the body grows, as the program's does (rules 154 to 157), and two a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-17.json).",
@@ -300,6 +348,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
     rules: [
       {
         rule: 'N1',
+        measure: 'fidelity',
         standsFor: ['G1'],
         evidence:
           'Against Glasstone & Dolan 1977 and Kingery–Bulmash (docs/GOLD_STANDARD.md, standing).',
@@ -353,26 +402,31 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
       },
       {
         rule: 'N2',
+        measure: 'fidelity',
         status: 'pending',
         evidence: 'No set of accidental explosions.',
       },
       {
         rule: 'N3',
+        measure: 'beyond',
         status: 'not met',
         evidence: 'Two tolls, both tuned; Beirut 6.6× outside its band.',
       },
       {
         rule: 'G3',
+        measure: 'beyond',
         status: 'not met',
         evidence: 'No band scored on a held-out set.',
       },
       {
         rule: 'G4',
+        measure: 'beyond',
         status: 'not met',
         evidence: 'No measured cells for explosions.',
       },
       {
         rule: 'G5',
+        measure: 'beyond',
         status: 'met',
         evidence:
           'One failure in the sweep, the lethal-dose ring where the sphere meets the ground tangentially, which is the geometry and declared; the application prints what Node computes.',
@@ -386,6 +440,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
     rules: [
       {
         rule: 'V1',
+        measure: 'fidelity',
         standsFor: ['G1'],
         evidence: 'The column, the ash and the flows against their references.',
         clauses: [
@@ -413,37 +468,44 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
       },
       {
         rule: 'V2',
+        measure: 'fidelity',
         status: 'pending',
         evidence: 'No held-out set beyond IVESPA 1.0, which is read.',
       },
       {
         rule: 'V3',
+        measure: 'fidelity',
         status: 'pending',
         evidence: 'Tephra2 not run on a set of isopach maps.',
       },
       {
         rule: 'V4',
+        measure: 'fidelity',
         status: 'pending',
         evidence: 'The energy cone and LaharZ not run on a set of currents.',
       },
       {
         rule: 'V5',
+        measure: 'beyond',
         status: 'not met',
         evidence: 'One held-out toll of three inside, 0.21×.',
       },
       {
         rule: 'V6',
+        measure: 'beyond',
         standsFor: ['G3'],
         status: 'pending',
         evidence: 'Follows V2 to V5.',
       },
       {
         rule: 'G4',
+        measure: 'beyond',
         status: 'not met',
         evidence: 'No measured cells for volcanoes.',
       },
       {
         rule: 'G5',
+        measure: 'beyond',
         status: 'not met',
         evidence:
           "6 failures: the ashfall's plume crossing a grain-size regime (benchmark/results/invariants-2026-09-16-4.json).",
@@ -474,28 +536,43 @@ export function ruleHolds(r: ScorecardRule): boolean {
   return ruleCredit(r) === 1;
 }
 
-export interface DomainCount {
-  domain: string;
+export interface RuleCount {
   rules: number;
   held: number;
   pending: number;
   credit: number;
-  /** 9 × credit / rules, cut to one decimal, so that only a domain where
-   *  everything holds reads 9. */
+  /** 9 × credit / rules, cut to one decimal, so that only rules that all hold
+   *  read 9. */
   reading: number;
 }
 
-export function domainCount(d: DomainScorecard): DomainCount {
-  const credit = d.rules.reduce((sum, r) => sum + ruleCredit(r), 0);
-  const pending = d.rules.filter(
+export interface DomainCount extends RuleCount {
+  domain: string;
+  /** The rules that ask for what a tool of the field gives on the same inputs. */
+  fidelity: RuleCount;
+  /** The rules that ask for what no tool of the field gives. */
+  beyond: RuleCount;
+}
+
+function countRules(rules: readonly ScorecardRule[]): RuleCount {
+  const credit = rules.reduce((sum, r) => sum + ruleCredit(r), 0);
+  const pending = rules.filter(
     (r) => r.status === 'pending' || (r.clauses?.some((c) => c.status === 'pending') ?? false)
   ).length;
   return {
-    domain: d.domain,
-    rules: d.rules.length,
-    held: d.rules.filter(ruleHolds).length,
+    rules: rules.length,
+    held: rules.filter(ruleHolds).length,
     pending,
     credit,
-    reading: Math.floor((90 * credit) / d.rules.length + 1e-9) / 10,
+    reading: rules.length === 0 ? 0 : Math.floor((90 * credit) / rules.length + 1e-9) / 10,
+  };
+}
+
+export function domainCount(d: DomainScorecard): DomainCount {
+  return {
+    domain: d.domain,
+    ...countRules(d.rules),
+    fidelity: countRules(d.rules.filter((r) => r.measure === 'fidelity')),
+    beyond: countRules(d.rules.filter((r) => r.measure === 'beyond')),
   };
 }

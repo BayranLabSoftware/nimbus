@@ -277,17 +277,25 @@ function goldStandardSection(): string {
   return [
     'The count `docs/GOLD_STANDARD.md` reads below a 9, from `validation/goldStandardScorecard.ts`. Each domain is scored on its own rules and on the rules of every domain that apply to it, each counted once; a rule with clauses earns the share of them that holds, and a rule that does not hold or is pending earns nothing. The count is 9 × what is earned over the rules, cut to one decimal, so a domain reads 9 only when everything holds. A status here is a verdict a rule file, a test or this report reached, never a reading.',
     '',
-    '| Domain | Count | Rules that hold | Pending |',
-    '| --- | --: | --: | --: |',
+    'Beside the count, the same rules are split in two (the amendment of 16 September 2026, evening). **Fidelity** counts the rules that ask the model to give what a tool of the field gives on the same inputs: verification, and every bound read against a tool of the field on the same rows. **Beyond** counts the rules that ask for what no tool of the field gives: bands, the input space, robustness, gaps, method, and the figures no tool of the field computes. Each reads 9 × its credit over its rules. Neither is a 9: a domain has one only when every rule holds.',
+    '',
+    '| Domain | Count | Fidelity | Beyond | Rules that hold | Pending |',
+    '| --- | --: | --: | --: | --: | --: |',
     ...rows.map(
       (c) =>
-        `| ${c.domain} | ${c.reading.toFixed(1)} | ${c.held.toString()} of ${c.rules.toString()} | ${c.pending.toString()} |`
+        `| ${c.domain} | ${c.reading.toFixed(1)} | ${c.fidelity.reading.toFixed(1)} (${c.fidelity.held.toString()} of ${c.fidelity.rules.toString()}) | ${c.beyond.reading.toFixed(1)} (${c.beyond.held.toString()} of ${c.beyond.rules.toString()}) | ${c.held.toString()} of ${c.rules.toString()} | ${c.pending.toString()} |`
     ),
     '',
     ...GOLD_STANDARD_SCORECARD.flatMap((d) => [
       `#### ${d.domain}`,
       '',
-      bullet(d.rules.map(ruleLine)),
+      'Fidelity:',
+      '',
+      bullet(d.rules.filter((r) => r.measure === 'fidelity').map(ruleLine)),
+      '',
+      'Beyond:',
+      '',
+      bullet(d.rules.filter((r) => r.measure === 'beyond').map(ruleLine)),
       '',
     ]),
     `**Nimbus as a whole** also needs C1 to C3: ${CITABILITY.map((r) => `${r.rule} ${r.status ?? 'not met'}`).join(', ')}.`,
@@ -299,8 +307,11 @@ function goldStandardJson() {
     domains: GOLD_STANDARD_SCORECARD.map((d) => ({
       ...domainCount(d),
       credit: fixed(domainCount(d).credit, 3),
+      fidelity: { ...domainCount(d).fidelity, credit: fixed(domainCount(d).fidelity.credit, 3) },
+      beyond: { ...domainCount(d).beyond, credit: fixed(domainCount(d).beyond.credit, 3) },
       rules: d.rules.map((r) => ({
         rule: r.rule,
+        measure: r.measure,
         standsFor: r.standsFor ?? [],
         holds: ruleHolds(r),
         credit: fixed(ruleCredit(r), 3),

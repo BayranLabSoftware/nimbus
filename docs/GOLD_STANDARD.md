@@ -25,7 +25,8 @@ the last section allows.
   holds. `src/physics/validation/goldStandardScorecard.ts` holds each status
   with its evidence, and the validation report prints the count at every
   commit ("Toward a 9"). A status changes only with the verdict that changes
-  it.
+  it. Beside the count the report prints two measures of the same rules,
+  fidelity and beyond (the second amendment below); neither is a 9.
 - Where the field has a tool that makes the same estimate for the same
   events, a bound is read against that tool on the same rows, so that a 9
   means as good as the field and never better than the field can be.
@@ -250,10 +251,11 @@ A bound changes only by a dated amendment in this file that says why,
 written before the figure it touches has been measured on the set it names,
 and it is never loosened after a figure has failed it.
 
-One amendment has been made, and it is below. It re-anchors bounds to the
-rule this file opened with, rather than loosening any: the verdict each rule
-reached under its bound as first written stays recorded, and no rule is met
-today that was not met before it.
+Two amendments have been made, and they are below. The first re-anchors
+bounds to the rule this file opened with, rather than loosening any: the
+verdict each rule reached under its bound as first written stays recorded, and
+no rule is met today that was not met before it. The second changes no bound
+and no status: it reads the same verdicts under two measures.
 
 ## Amendment of 16 September 2026: every validation bound read against the field
 
@@ -348,6 +350,62 @@ wave, a wave onto a coast, a coast into a toll — makes joins no single tool
 checks. Those joins are this project's own contribution, and they are measured
 as such (T2, T4, N3, V5), not inherited from any reference.
 
+## Amendment of 16 September 2026, evening: two measures beside the count
+
+**Why.** The count mixes two questions. One is whether Nimbus gives what the
+field's tools give on the same inputs, which is what Andrea set as the goal —
+a software that reaches the results of the field's gold-standard tools, all in
+one place. The other is whether it goes past them: bands calibrated on the
+record, a warning outside the measured cells, rings that never shrink as an
+event grows, no gap but the ceilings. The field's tools do not do the second:
+the Earth Impact Effects Program, asked, shrinks its own blast rings and
+magnitudes as a body grows, and prints no band. So a domain that matches its
+tool to the fifth digit read 4.0 on 16 September 2026, and the count could not
+say whether a round had brought the model nearer the field or past it. Worse,
+the two pull against each other: following the program on the air blast of a
+ground impact took G5's sweep from 181 failures to 425.
+
+**The amendment.** The count stays as it is, and a 9 stays every rule at once.
+Beside it the report prints two measures of the same rules and the same
+verdicts, each read as the count is, 9 × credit over rules:
+
+- **Fidelity** — the rules that ask the model to give what a tool of the field
+  gives on the same inputs: G1 and the rules that stand for it (I1, N1, V1,
+  L1); I4, a count held to an exact count; and every bound the first amendment
+  read against a tool of the field on the same rows — E1, E2, E3, T1, T2, T3,
+  L2, I2, N2, V2, V3 and V4.
+- **Beyond** — every other rule of a domain: the bands (G3, E4, T5, L3, V6),
+  the input space (G4, E5), robustness (G5), gaps (G6), method (G7), the
+  airburst band that must hold the measured footprints (I3), and the tolls no
+  tool of the field computes (T4, N3, V5).
+
+A rule belongs to one measure only, and the two add up to the count.
+
+**What it changed on the day it was written.** No status and no count:
+
+| Domain                 | Count | Fidelity     | Beyond       |
+| ---------------------- | ----: | ------------ | ------------ |
+| Impacts                |   4.0 | 9.0 (3 of 3) | 1.5 (1 of 6) |
+| Explosions             |   3.2 | 4.0 (0 of 2) | 3.0 (2 of 6) |
+| Waves from landslides  |   3.0 | 0.0 (0 of 2) | 4.5 (2 of 4) |
+| Volcanoes              |   1.1 | 0.5 (0 of 4) | 1.5 (1 of 6) |
+| Earthquakes            |   1.0 | 0.0 (0 of 4) | 1.8 (1 of 5) |
+| Waves from earthquakes |   0.9 | 0.0 (0 of 4) | 1.5 (1 of 6) |
+
+Fidelity says where the work of matching the field stands: done for impacts;
+half done for explosions, where the overpressure with height of burst and a
+set of accidental explosions remain; not begun in a way a rule can see for
+the rest — the landslide relation of the field is verified but not the
+default, the earthquake relations are verified one by one but not all, and
+most of the other bounds are pending because the field's tool has not been
+run on their rows.
+
+**What it does not claim.** A fidelity of 9 is not a 9, and it is not
+accuracy: it means the model is the field's tool on the quantities that tool
+computes, errors included, and says nothing of what no tool computes — a toll,
+a band, a join between two tools. Those are counted beyond, and a 9 still
+needs them.
+
 ## Where each domain stands, 15 September 2026
 
 Read from `docs/VALIDATION_REPORT.md` and `docs/BENCHMARK_REPORT.md` that
@@ -380,6 +438,16 @@ not that a rule holds.
 | C1–C3  | Not met.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## What has moved since
+
+- **16 September 2026, evening, two measures beside the count.** Andrea
+  asked why a domain that matches its tool reads 4.0. The count now prints,
+  beside itself, fidelity — the rules that ask for what a tool of the field
+  gives on the same inputs — and beyond — the rules that ask for what no tool
+  gives. Nothing changed status. Fidelity reads impacts 9.0, explosions 4.0,
+  volcanoes 0.5, and 0.0 for waves from landslides, earthquakes and waves from
+  earthquakes; beyond reads 1.5 to 4.5. The split corrected a reading given to
+  Andrea the same evening: the waves from landslides do not match Heller et al.
+  2009 in the product, since that relation is verified but is not the default.
 
 - **16 September 2026, I1 met: the seismic magnitude closed.** The program
   prints no magnitude, but its map draws the ranges of Mercalli III, V, VII,

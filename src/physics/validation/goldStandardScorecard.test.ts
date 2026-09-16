@@ -69,6 +69,49 @@ describe('the count toward a 9', () => {
       const c = domainCount(d);
       expect(c.reading).toBeLessThanOrEqual(9);
       expect(c.reading === 9, d.domain).toBe(c.held === c.rules);
+      for (const m of [c.fidelity, c.beyond]) {
+        expect(m.reading).toBeLessThanOrEqual(9);
+        expect(m.reading === 9, d.domain).toBe(m.held === m.rules);
+      }
+    }
+  });
+});
+
+describe('the two measures beside the count', () => {
+  // The amendment of 16 September 2026, evening: fidelity is verification,
+  // I4's exact count and every bound the first amendment read against a tool
+  // of the field on the same rows; everything else is beyond.
+  const FIDELITY = ['G1', 'E1', 'E2', 'E3', 'T1', 'T2', 'T3', 'L1', 'L2', 'I1', 'I2', 'I4'];
+  const FIDELITY_TOO = ['N1', 'N2', 'V1', 'V2', 'V3', 'V4'];
+
+  it('puts every rule of a domain under one measure, as the amendment lists them', () => {
+    for (const d of GOLD_STANDARD_SCORECARD) {
+      for (const r of d.rules) {
+        const fidelity = [...FIDELITY, ...FIDELITY_TOO].includes(r.rule);
+        expect(r.measure, `${d.domain} ${r.rule}`).toBe(fidelity ? 'fidelity' : 'beyond');
+      }
+    }
+  });
+
+  it('never counts a band, the input space, robustness, gaps or method as fidelity', () => {
+    for (const d of GOLD_STANDARD_SCORECARD) {
+      for (const r of d.rules) {
+        const generic = [r.rule, ...(r.standsFor ?? [])].filter((x) =>
+          ['G3', 'G4', 'G5', 'G6', 'G7'].includes(x)
+        );
+        if (generic.length > 0 && r.rule !== 'L1') {
+          expect(r.measure, `${d.domain} ${r.rule}`).toBe('beyond');
+        }
+      }
+    }
+  });
+
+  it('splits the count without changing it', () => {
+    for (const d of GOLD_STANDARD_SCORECARD) {
+      const c = domainCount(d);
+      expect(c.fidelity.rules + c.beyond.rules, d.domain).toBe(c.rules);
+      expect(c.fidelity.held + c.beyond.held, d.domain).toBe(c.held);
+      expect(c.fidelity.credit + c.beyond.credit, d.domain).toBeCloseTo(c.credit, 12);
     }
   });
 });

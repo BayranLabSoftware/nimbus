@@ -7,6 +7,7 @@
         "rules": [
           {
             "rule": "G1",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -15,6 +16,7 @@
           },
           {
             "rule": "E1",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -23,6 +25,7 @@
           },
           {
             "rule": "E2",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -31,6 +34,7 @@
           },
           {
             "rule": "E3",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -39,6 +43,7 @@
           },
           {
             "rule": "E4",
+            "measure": "beyond",
             "standsFor": [
               "G3"
             ],
@@ -49,6 +54,7 @@
           },
           {
             "rule": "E5",
+            "measure": "beyond",
             "standsFor": [
               "G4"
             ],
@@ -59,6 +65,7 @@
           },
           {
             "rule": "G5",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -67,6 +74,7 @@
           },
           {
             "rule": "G6",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -75,6 +83,7 @@
           },
           {
             "rule": "G7",
+            "measure": "beyond",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -85,13 +94,28 @@
         "held": 1,
         "pending": 3,
         "credit": 1,
-        "reading": 1
+        "reading": 1,
+        "fidelity": {
+          "rules": 4,
+          "held": 0,
+          "pending": 2,
+          "credit": 0,
+          "reading": 0
+        },
+        "beyond": {
+          "rules": 5,
+          "held": 1,
+          "pending": 1,
+          "credit": 1,
+          "reading": 1.8
+        }
       },
       {
         "domain": "Waves from earthquakes",
         "rules": [
           {
             "rule": "G1",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -100,6 +124,7 @@
           },
           {
             "rule": "T1",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -108,6 +133,7 @@
           },
           {
             "rule": "T2",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -116,6 +142,7 @@
           },
           {
             "rule": "T3",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -124,6 +151,7 @@
           },
           {
             "rule": "T4",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -132,6 +160,7 @@
           },
           {
             "rule": "T5",
+            "measure": "beyond",
             "standsFor": [
               "G3"
             ],
@@ -142,6 +171,7 @@
           },
           {
             "rule": "G4",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -150,6 +180,7 @@
           },
           {
             "rule": "G5",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -158,6 +189,7 @@
           },
           {
             "rule": "G6",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -166,6 +198,7 @@
           },
           {
             "rule": "G7",
+            "measure": "beyond",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -176,13 +209,28 @@
         "held": 1,
         "pending": 5,
         "credit": 1,
-        "reading": 0.9
+        "reading": 0.9,
+        "fidelity": {
+          "rules": 4,
+          "held": 0,
+          "pending": 3,
+          "credit": 0,
+          "reading": 0
+        },
+        "beyond": {
+          "rules": 6,
+          "held": 1,
+          "pending": 2,
+          "credit": 1,
+          "reading": 1.5
+        }
       },
       {
         "domain": "Waves from landslides",
         "rules": [
           {
             "rule": "L1",
+            "measure": "fidelity",
             "standsFor": [
               "G1",
               "G4"
@@ -194,6 +242,7 @@
           },
           {
             "rule": "L2",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -202,6 +251,7 @@
           },
           {
             "rule": "L3",
+            "measure": "beyond",
             "standsFor": [
               "G3"
             ],
@@ -212,6 +262,7 @@
           },
           {
             "rule": "G5",
+            "measure": "beyond",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -220,6 +271,7 @@
           },
           {
             "rule": "G6",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -228,6 +280,7 @@
           },
           {
             "rule": "G7",
+            "measure": "beyond",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -238,13 +291,28 @@
         "held": 2,
         "pending": 0,
         "credit": 2,
-        "reading": 3
+        "reading": 3,
+        "fidelity": {
+          "rules": 2,
+          "held": 0,
+          "pending": 0,
+          "credit": 0,
+          "reading": 0
+        },
+        "beyond": {
+          "rules": 4,
+          "held": 2,
+          "pending": 0,
+          "credit": 2,
+          "reading": 4.5
+        }
       },
       {
         "domain": "Impacts",
         "rules": [
           {
             "rule": "I1",
+            "measure": "fidelity",
             "standsFor": [
               "G1"
             ],
@@ -300,6 +368,7 @@
           },
           {
             "rule": "I2",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -308,6 +377,7 @@
           },
           {
             "rule": "I3",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -316,6 +386,7 @@
           },
           {
             "rule": "I4",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -324,6 +395,7 @@
           },
           {
             "rule": "G3",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -332,6 +404,7 @@
           },
           {
             "rule": "G4",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -340,6 +413,7 @@
           },
           {
             "rule": "G5",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -348,6 +422,7 @@
           },
           {
             "rule": "G6",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -356,6 +431,7 @@
           },
           {
             "rule": "G7",
+            "measure": "beyond",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -366,13 +442,28 @@
         "held": 4,
         "pending": 0,
         "credit": 4,
-        "reading": 4
+        "reading": 4,
+        "fidelity": {
+          "rules": 3,
+          "held": 3,
+          "pending": 0,
+          "credit": 3,
+          "reading": 9
+        },
+        "beyond": {
+          "rules": 6,
+          "held": 1,
+          "pending": 0,
+          "credit": 1,
+          "reading": 1.5
+        }
       },
       {
         "domain": "Explosions",
         "rules": [
           {
             "rule": "N1",
+            "measure": "fidelity",
             "standsFor": [
               "G1"
             ],
@@ -420,6 +511,7 @@
           },
           {
             "rule": "N2",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -428,6 +520,7 @@
           },
           {
             "rule": "N3",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -436,6 +529,7 @@
           },
           {
             "rule": "G3",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -444,6 +538,7 @@
           },
           {
             "rule": "G4",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -452,6 +547,7 @@
           },
           {
             "rule": "G5",
+            "measure": "beyond",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -460,6 +556,7 @@
           },
           {
             "rule": "G6",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -468,6 +565,7 @@
           },
           {
             "rule": "G7",
+            "measure": "beyond",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -478,13 +576,28 @@
         "held": 2,
         "pending": 1,
         "credit": 2.889,
-        "reading": 3.2
+        "reading": 3.2,
+        "fidelity": {
+          "rules": 2,
+          "held": 0,
+          "pending": 1,
+          "credit": 0.889,
+          "reading": 4
+        },
+        "beyond": {
+          "rules": 6,
+          "held": 2,
+          "pending": 0,
+          "credit": 2,
+          "reading": 3
+        }
       },
       {
         "domain": "Volcanoes",
         "rules": [
           {
             "rule": "V1",
+            "measure": "fidelity",
             "standsFor": [
               "G1"
             ],
@@ -512,6 +625,7 @@
           },
           {
             "rule": "V2",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -520,6 +634,7 @@
           },
           {
             "rule": "V3",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -528,6 +643,7 @@
           },
           {
             "rule": "V4",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -536,6 +652,7 @@
           },
           {
             "rule": "V5",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -544,6 +661,7 @@
           },
           {
             "rule": "V6",
+            "measure": "beyond",
             "standsFor": [
               "G3"
             ],
@@ -554,6 +672,7 @@
           },
           {
             "rule": "G4",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -562,6 +681,7 @@
           },
           {
             "rule": "G5",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -570,6 +690,7 @@
           },
           {
             "rule": "G6",
+            "measure": "beyond",
             "standsFor": [],
             "holds": false,
             "credit": 0,
@@ -578,6 +699,7 @@
           },
           {
             "rule": "G7",
+            "measure": "beyond",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -588,7 +710,21 @@
         "held": 1,
         "pending": 4,
         "credit": 1.25,
-        "reading": 1.1
+        "reading": 1.1,
+        "fidelity": {
+          "rules": 4,
+          "held": 0,
+          "pending": 3,
+          "credit": 0.25,
+          "reading": 0.5
+        },
+        "beyond": {
+          "rules": 6,
+          "held": 1,
+          "pending": 1,
+          "credit": 1,
+          "reading": 1.5
+        }
       }
     ],
     "citability": [
