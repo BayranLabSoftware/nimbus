@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { combineImpactFlashes } from '../events/impact/damageRings.js';
+import {
+  combineImpactFlashes,
+  DEFAULT_IMPACT_FLASH_COMBINER,
+} from '../events/impact/damageRings.js';
 import { thirdDegreeBurnRadius } from '../events/explosion/thermal.js';
-import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
+import { DEFAULT_SEAFLOOR_CUTOFF, oceanCouplingPartition } from '../effects/oceanCoupling.js';
 import { IMPACT_LUMINOUS_EFFICIENCY } from '../constants.js';
 import { J, kgPerM3, m } from '../units.js';
 import {
@@ -96,5 +99,12 @@ describe('rules 135 and 136: what decides', () => {
     expect(taperPresetHolds(10, 10.5)).toBe(true);
     expect(taperPresetHolds(10, 10.6)).toBe(false);
     expect(taperPresetHolds(0, 0)).toBe(true);
+  });
+});
+
+describe('the outcome of 16 September 2026', () => {
+  it('adopted the flashes that add and refused the taper', () => {
+    expect(DEFAULT_IMPACT_FLASH_COMBINER).toBe('sum');
+    expect(DEFAULT_SEAFLOOR_CUTOFF).toBe('step');
   });
 });

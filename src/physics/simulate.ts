@@ -518,8 +518,12 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   //     absent.
   //
   // The risk to a person at the ground is the union of both shocks
-  // and both flashes — taking the max is the simplest scientifically
-  // honest combiner. Pre-fix the simulator passed the FULL `ke` here
+  // and both flashes. For the shocks, taking the max is the simplest
+  // scientifically honest combiner. The flashes add: both are drawn
+  // inverse-square from the point of impact with one efficiency, so their
+  // fluences sum (rule 135 of validation/impactInvariantRules.ts, adopted
+  // 16 September 2026 — the larger alone let a body 1 % bigger burn up to
+  // 5 % less where it began to reach the ground). Pre-fix the simulator passed the FULL `ke` here
   // regardless of regime, which mis-attributed Tunguska's 7 Mt to a
   // surface burst and over-stated the ring radii by an order of
   // magnitude.

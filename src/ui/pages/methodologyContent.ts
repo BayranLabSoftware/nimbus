@@ -810,9 +810,10 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'damage-rings-airburst-honest',
         name: 'Damage rings of an airburst',
-        formula: 'damage(p) = max(R_surface(gf · E_kinetic, p), r_atmospheric_flash_or_shock(p))',
+        formula:
+          'shock(p) = max(R_surface(gf · E_kinetic, p), r_atmospheric_shock(p)) ;  burn(Q) = √(R_surface(gf · E_kinetic, Q)² + r_atmospheric_flash(Q)²)',
         description:
-          'Each ring takes the larger of two estimates for an observer on the ground: the surface-burst radius for the ground-coupled energy gf · E, and the airburst radius for the atmospheric yield (1 − gf) · E — its shock the program’s air blast at the burst altitude, its flash with no gain for altitude. Taking the larger is a Nimbus rule: being inside either ring is counted as equally bad.',
+          'Two estimates for an observer on the ground: the surface burst of the ground-coupled energy gf · E, and the airburst of the atmospheric yield (1 − gf) · E — its shock the program’s air blast at the burst altitude, its flash with no gain for altitude. A shock ring takes the larger of the two, a Nimbus rule: being inside either ring is counted as equally bad. The two flashes add, because both are drawn from the point of impact with one luminous efficiency, so their fluences sum: the burn ring is the ring of the energy they carry together. Until 16 September 2026 it took the larger of the two as well, and a body 1 % bigger that began to reach the ground burned up to 5 % less.',
         citation: collins2005,
       },
       {

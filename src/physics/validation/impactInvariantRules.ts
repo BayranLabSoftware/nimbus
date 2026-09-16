@@ -86,6 +86,45 @@
  *       reachable and its failures stay declared.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 16 September 2026:
+ * A ADOPTED, B REFUSED
+ * ===========================================================================
+ *
+ * The rules were pushed in `92934a9`, with B-041 fixed in the same commit, and
+ * the sweep run three times in one session afterwards
+ * (`benchmark/results/invariants-2026-09-16-5.json`, `-6` and `-7`).
+ *
+ * The first run, both defaults in place: **187** impact failures — 167 blast
+ * rings that shrink and 8 that jump (177 and 10 before rules 129 to 131
+ * replaced the step), 6 burn rings, 4 crater sizes, 2 tsunami amplitudes. The
+ * 8 jumps are all rings born under the burst: its peak overpressure on the
+ * ground is 0.4 % to 3 % above the threshold, and a ring drawn under a peak
+ * that close grows steeply from nothing.
+ *
+ * **A, the flashes add: ADOPTED.** (a) Its run has no burn-ring failure,
+ * 181 in all. (b) Every other invariant fails exactly as often as in the first
+ * run, and none is new. (c) Of the eight presets only Meteor Crater's burn
+ * rings move, ×1.1716 both — 4.66 to 5.46 km and 5.90 to 6.91 km, the square
+ * root of all of the energy over the 72.9 % that reaches the ground — while
+ * Chicxulub's, Popigai's and Boltysh's stay at their fireballs' horizons and
+ * the three complete airbursts' do not move. (d) With A as the default all
+ * 2 120 tests pass and none needed a new number, and the validation report
+ * regenerated on it keeps the release gate at PASS and does not change: no
+ * row of it reads a partial airburst's burns.
+ *
+ * **B, the seafloor taper: REFUSED.** (a) held: no tsunami amplitude fails in
+ * its run. (b) did not: the crater sizes fail three times each where the first
+ * run had two. The new one is an ocean impact, a 139 m body of 4 238 kg/m³ at
+ * 67.8 km/s into 51 m of water, whose smaller seafloor share under the taper
+ * puts its final crater on Collins et al.'s simple-to-complex step, 3 186 to
+ * 2 941 m. It is the published step moved onto another scenario, not a new
+ * kind of failure, and the rule does not ask why a count grows. `step` stays
+ * the default, `taper` stays reachable, and the two tsunami failures stay
+ * declared.
+ */
+
 /** Rule 135 (a): the rings candidate A answers for. */
 export const FLASH_RINGS: readonly string[] = ['damage.thirdDegreeBurn', 'damage.secondDegreeBurn'];
 /** Rule 136 (a): the rings candidate B answers for. */

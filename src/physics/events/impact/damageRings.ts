@@ -55,8 +55,10 @@ export const OVERPRESSURE_BUILDING_COLLAPSE = Pa(34_474);
  */
 export type ImpactFlashCombiner = 'larger' | 'sum';
 
-/** What an impact that names no combiner draws. */
-export const DEFAULT_IMPACT_FLASH_COMBINER: ImpactFlashCombiner = 'larger';
+/** What an impact that names no combiner draws: the sum, adopted on
+ *  16 September 2026 by rule 135 of validation/impactInvariantRules.ts, when it
+ *  cleared the sweep's six burn-ring failures and moved nothing else. */
+export const DEFAULT_IMPACT_FLASH_COMBINER: ImpactFlashCombiner = 'sum';
 
 /** One burn ring from the ground's and the air's rings of the same degree. */
 export function combineImpactFlashes(

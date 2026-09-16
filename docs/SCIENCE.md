@@ -2688,6 +2688,50 @@ the ring wrong everywhere to make one test green. It is also what refused the
 ash round of the same night, whose guard had been written against the 221 above
 — see "The ash cloud is a hundred and twenty-five times too narrow".
 
+**And the impact family's read to their causes, the same evening.** One
+sentence above is wrong: "193 of the 199 impact failures are that", the
+altitude factor. The factor had been gone since B-032 replaced it with the
+Earth Impact Effects Program's own air blast the day before. Followed one by
+one, the 199 are: 177 blast rings that shrink when a larger body bursts lower
+in the Mach region, below its optimum height — the program's own
+overpressure falls with them on the body it was asked about, 3 453.9 to
+3 445.8 Pa at 76.65 km — and 10 that jump, 2 at the step between regular and
+Mach reflection and 8 where a ring is born under the burst; 6 burn rings at
+the passage from a complete to a partial airburst; 4 crater sizes at Collins
+et al.'s simple-to-complex step; 2 tsunami amplitudes at the seafloor cutoff.
+
+Three things followed. The step went: the program does not take it, and its
+passage, read off it and held out on twelve bodies, is now the law (rules 129
+to 131; see "Amended on 16 September 2026: the program does not step"). A
+partial airburst's two flashes now add, where the ring was the larger of
+them — rules 132 to 137, pushed before a sweep run three times in one session
+(`invariants-2026-09-16-5.json` to `-7`): with the flashes added no burn ring
+fails and nothing else moves. The seafloor share's taper, which cleared the
+two tsunami failures, was refused, because it moved the crater step onto one
+more random scenario and the rule let no count grow. And B-041 was found and
+fixed on the way: an airburst's flash had been drawing its burn rings at a
+nuclear fireball's exposure since the explosions' default moved to Glasstone
+& Dolan's curves, against rule 81.
+
+| Impact failures                           | 8bf7057 | the step replaced | the flashes added |
+| ----------------------------------------- | ------: | ----------------: | ----------------: |
+| blast rings that shrink (Mach region)     |     177 |               167 |               167 |
+| blast rings that jump                     |      10 |                 8 |                 8 |
+| burn rings that shrink                    |       6 |                 6 |                 0 |
+| crater sizes at the simple-complex step   |       4 |                 4 |                 4 |
+| tsunami amplitudes at the seafloor cutoff |       2 |                 2 |                 2 |
+| **total**                                 |     199 |               187 |           **181** |
+
+The 8 jumps left are all rings born under the burst: its peak overpressure on
+the ground is 0.4 % to 3 % above the threshold, and a ring drawn under a peak
+that close grows steeply from nothing, as the lethal-dose ring above does. The
+crater step is the published law; asked across it, the program prints its
+craters to two figures and answers the bodies just below it with an error
+(HTTP 500 for iron bodies of 101 to 110 m and stony ones of 170 to 180 m at
+20 km/s and 45°), so whether it steps cannot be read off it. What is left of
+the 181 is the program's physics, the published crater law, and one cutoff of
+the model's own, declared.
+
 ### Held out by rule (14 September 2026)
 
 Eight held-out earthquakes cannot say whether a band holds nine records
