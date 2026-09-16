@@ -558,6 +558,22 @@ against either energy, so no single fraction reconciles them: what remains is
 the geometry of where along the path the energy goes, which is a model and not
 a constant.
 
+**Found the same evening, and refused on one body.** The program reads a ground
+impact's blast with its airburst law at Eq. 18's altitude even where that
+altitude lies below the ground: the energy E₀ · max(f, 1 − f), and at every
+range the Mach relation with r_x = 290 + 0.65 z₁, z₁ < 0 — so a steeper entry,
+putting that altitude deeper, blasts less, which is the sign this finding
+named. Fed Nimbus's own entry, it gives the grid's 57 points within 0.18 % and
+18 new ones on a 100 m body within 0.27 %, and the program errs exactly where
+its r_x would be negative (rule 138, `validation/groundBlastRules.ts`). Held
+out on twelve bodies drawn after the rules were pushed, it agreed on 55 of 60
+points within 0.054 %; the model in place on 1. All five outside are one slow
+iron, 39 m at 13.6 km/s, on which the entry's speed at the ground, at the
+program's breakup altitude, is 1.3 % faster than the one its blast implies and BM-13 moves the breakup,
+and a scaled crossover of 92 m, against 290 for a burst on the ground, makes that 5 %. Rule 140 asked every point, and the
+law was not adopted. What stands between it and adoption is now the entry, not
+the blast.
+
 ## Deviations from the protocol
 
 1. **Kingery–Bulmash coefficients.** UFC 3-340-02 and Swisdak (1994) were

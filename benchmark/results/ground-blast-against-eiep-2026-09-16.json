@@ -1,0 +1,493 @@
+{
+ "rules": "src/physics/validation/groundBlastRules.ts, rules 138 to 140",
+ "verdict": {
+  "compared": 60,
+  "bodies": 12,
+  "lawAgrees": 55,
+  "inPlaceAgrees": 1,
+  "enough": true,
+  "adopted": false
+ },
+ "points": [
+  {
+   "body": 1,
+   "rangeKm": 79.162,
+   "apart": null,
+   "programPa": 1201623.039,
+   "programLawPa": 1202148.4606676141,
+   "inPlacePa": 1236662.1225465108
+  },
+  {
+   "body": 1,
+   "rangeKm": 1.727,
+   "apart": null,
+   "programPa": 7499292371.939,
+   "programLawPa": 7502680992.289168,
+   "inPlacePa": 75511423.76146194
+  },
+  {
+   "body": 1,
+   "rangeKm": 0.618,
+   "apart": null,
+   "programPa": 79686326981.107,
+   "programLawPa": 79722340283.25441,
+   "inPlacePa": 80968794.39307837
+  },
+  {
+   "body": 1,
+   "rangeKm": 5.155,
+   "apart": null,
+   "programPa": 607076765.224,
+   "programLawPa": 607350872.3298664,
+   "inPlacePa": 50653286.75893874
+  },
+  {
+   "body": 1,
+   "rangeKm": 1.938,
+   "apart": null,
+   "programPa": 5753189337.865,
+   "programLawPa": 5755788865.991201,
+   "inPlacePa": 74084042.09264253
+  },
+  {
+   "body": 2,
+   "rangeKm": 1.046,
+   "apart": null,
+   "programPa": 55032297.373,
+   "programLawPa": 55053024.773171134,
+   "inPlacePa": 18667512.08633135
+  },
+  {
+   "body": 2,
+   "rangeKm": 436.594,
+   "apart": null,
+   "programPa": 945.433,
+   "programLawPa": 945.5995777547013,
+   "inPlacePa": 1141.2305793650996
+  },
+  {
+   "body": 2,
+   "rangeKm": 0.857,
+   "apart": null,
+   "programPa": 86898429.56,
+   "programLawPa": 86931187.63484204,
+   "inPlacePa": 23376091.17322833
+  },
+  {
+   "body": 2,
+   "rangeKm": 345.389,
+   "apart": null,
+   "programPa": 1218.198,
+   "programLawPa": 1218.4165776785842,
+   "inPlacePa": 1445.6375573151818
+  },
+  {
+   "body": 2,
+   "rangeKm": 2.099,
+   "apart": null,
+   "programPa": 11200270.604,
+   "programLawPa": 11204465.567880722,
+   "inPlacePa": 7165914.454330717
+  },
+  {
+   "body": 3,
+   "rangeKm": 23.211,
+   "apart": null,
+   "programPa": 16877111.039,
+   "programLawPa": 16885655.707553484,
+   "inPlacePa": 10841471.849552924
+  },
+  {
+   "body": 3,
+   "rangeKm": 12.09,
+   "apart": null,
+   "programPa": 75080354.362,
+   "programLawPa": 75118528.91284621,
+   "inPlacePa": 24209601.54817938
+  },
+  {
+   "body": 3,
+   "rangeKm": 2.4,
+   "apart": null,
+   "programPa": 3079254626.94,
+   "programLawPa": 3080824704.7999754,
+   "inPlacePa": 70566264.10669306
+  },
+  {
+   "body": 3,
+   "rangeKm": 1.981,
+   "apart": null,
+   "programPa": 4786633014.68,
+   "programLawPa": 4789073878.784851,
+   "inPlacePa": 73664887.22610785
+  },
+  {
+   "body": 3,
+   "rangeKm": 4.218,
+   "apart": null,
+   "programPa": 842392655.214,
+   "programLawPa": 842821998.523639,
+   "inPlacePa": 56685088.01152794
+  },
+  {
+   "body": 4,
+   "rangeKm": 6.777,
+   "apart": null,
+   "programPa": 708807830.359,
+   "programLawPa": 709137422.579571,
+   "inPlacePa": 51903378.614243396
+  },
+  {
+   "body": 4,
+   "rangeKm": 4.37,
+   "apart": null,
+   "programPa": 1943142584.542,
+   "programLawPa": 1944046492.3913465,
+   "inPlacePa": 64575651.988804914
+  },
+  {
+   "body": 4,
+   "rangeKm": 0.561,
+   "apart": null,
+   "programPa": 218087468308.09,
+   "programLawPa": 218188966295.74103,
+   "inPlacePa": 81469182.23479559
+  },
+  {
+   "body": 4,
+   "rangeKm": 60.515,
+   "apart": null,
+   "programPa": 4729105.477,
+   "programLawPa": 4731273.004290139,
+   "inPlacePa": 3882239.3458691263
+  },
+  {
+   "body": 4,
+   "rangeKm": 292.31,
+   "apart": null,
+   "programPa": 149307.601,
+   "programLawPa": 149370.16060481136,
+   "inPlacePa": 129122.25863488673
+  },
+  {
+   "body": 5,
+   "rangeKm": 35.75,
+   "apart": null,
+   "programPa": 29669.657,
+   "programLawPa": 29679.463735029112,
+   "inPlacePa": 27779.861150419678
+  },
+  {
+   "body": 5,
+   "rangeKm": 2.635,
+   "apart": null,
+   "programPa": 7477561.93,
+   "programLawPa": 7480688.079079672,
+   "inPlacePa": 6431991.557763764
+  },
+  {
+   "body": 5,
+   "rangeKm": 0.958,
+   "apart": null,
+   "programPa": 75465239.122,
+   "programLawPa": 75497062.31864782,
+   "inPlacePa": 24625463.813002534
+  },
+  {
+   "body": 5,
+   "rangeKm": 69.735,
+   "apart": null,
+   "programPa": 9796.792,
+   "programLawPa": 9799.52944800305,
+   "inPlacePa": 9942.613356216838
+  },
+  {
+   "body": 5,
+   "rangeKm": 1.995,
+   "apart": null,
+   "programPa": 14090713.511,
+   "programLawPa": 14096625.412500119,
+   "inPlacePa": 9873245.608644936
+  },
+  {
+   "body": 6,
+   "rangeKm": 12.754,
+   "apart": null,
+   "programPa": 3240741.417,
+   "programLawPa": 3242417.219340491,
+   "inPlacePa": 4018286.580965666
+  },
+  {
+   "body": 6,
+   "rangeKm": 4.063,
+   "apart": null,
+   "programPa": 43850089.931,
+   "programLawPa": 43873098.31065787,
+   "inPlacePa": 21076272.284101717
+  },
+  {
+   "body": 6,
+   "rangeKm": 56.747,
+   "apart": null,
+   "programPa": 125329.617,
+   "programLawPa": 125388.45686872228,
+   "inPlacePa": 163091.8513422344
+  },
+  {
+   "body": 6,
+   "rangeKm": 78.171,
+   "apart": null,
+   "programPa": 65977.747,
+   "programLawPa": 66007.28415831846,
+   "inPlacePa": 78929.31424546092
+  },
+  {
+   "body": 6,
+   "rangeKm": 33.036,
+   "apart": null,
+   "programPa": 392548.369,
+   "programLawPa": 392742.86065931164,
+   "inPlacePa": 570958.1889976038
+  },
+  {
+   "body": 7,
+   "rangeKm": 1.386,
+   "apart": null,
+   "programPa": 154789381509.546,
+   "programLawPa": 154849434102.85486,
+   "inPlacePa": 81326533.74310704
+  },
+  {
+   "body": 7,
+   "rangeKm": 0.707,
+   "apart": null,
+   "programPa": 727968509830.757,
+   "programLawPa": 728250941980.9442,
+   "inPlacePa": 81728013.8051578
+  },
+  {
+   "body": 7,
+   "rangeKm": 25.619,
+   "apart": null,
+   "programPa": 189469515.897,
+   "programLawPa": 189542885.9741434,
+   "inPlacePa": 33257161.93011169
+  },
+  {
+   "body": 7,
+   "rangeKm": 33.097,
+   "apart": null,
+   "programPa": 105268261.966,
+   "programLawPa": 105308995.34156127,
+   "inPlacePa": 25916385.352614045
+  },
+  {
+   "body": 7,
+   "rangeKm": 14.887,
+   "apart": null,
+   "programPa": 659223689.532,
+   "programLawPa": 659479213.6934916,
+   "inPlacePa": 50751584.72542455
+  },
+  {
+   "body": 8,
+   "rangeKm": 441.082,
+   "apart": null,
+   "programPa": 712.586,
+   "programLawPa": 712.7638064495443,
+   "inPlacePa": 1142.1237397380755
+  },
+  {
+   "body": 8,
+   "rangeKm": 1.556,
+   "apart": null,
+   "programPa": 12349610.215,
+   "programLawPa": 12356292.706994183,
+   "inPlacePa": 11373650.661485841
+  },
+  {
+   "body": 8,
+   "rangeKm": 7.93,
+   "apart": null,
+   "programPa": 325211.16,
+   "programLawPa": 325376.95724528626,
+   "inPlacePa": 540228.6203073605
+  },
+  {
+   "body": 8,
+   "rangeKm": 152.22,
+   "apart": null,
+   "programPa": 2305.438,
+   "programLawPa": 2306.084020317085,
+   "inPlacePa": 3396.039135685592
+  },
+  {
+   "body": 8,
+   "rangeKm": 124.083,
+   "apart": null,
+   "programPa": 2948.116,
+   "programLawPa": 2948.9742234645073,
+   "inPlacePa": 4226.862297848947
+  },
+  {
+   "body": 9,
+   "rangeKm": 145.947,
+   "apart": null,
+   "programPa": 3177.567,
+   "programLawPa": 3178.469889163236,
+   "inPlacePa": 4750.5842061918775
+  },
+  {
+   "body": 9,
+   "rangeKm": 103.134,
+   "apart": null,
+   "programPa": 4973.675,
+   "programLawPa": 4975.203057547212,
+   "inPlacePa": 7074.779702291241
+  },
+  {
+   "body": 9,
+   "rangeKm": 139.919,
+   "apart": null,
+   "programPa": 3349.205,
+   "programLawPa": 3350.1646997741814,
+   "inPlacePa": 4978.093235594276
+  },
+  {
+   "body": 9,
+   "rangeKm": 62.228,
+   "apart": null,
+   "programPa": 10264.247,
+   "programLawPa": 10267.843520494742,
+   "inPlacePa": 13737.405014886479
+  },
+  {
+   "body": 9,
+   "rangeKm": 10.809,
+   "apart": null,
+   "programPa": 270139.406,
+   "programLawPa": 270271.1510876723,
+   "inPlacePa": 492285.20953732915
+  },
+  {
+   "body": 10,
+   "rangeKm": 0.672,
+   "apart": null,
+   "programPa": 58040422028.429,
+   "programLawPa": 58064475944.21245,
+   "inPlacePa": 80761867.5656925
+  },
+  {
+   "body": 10,
+   "rangeKm": 6.652,
+   "apart": null,
+   "programPa": 298516265.604,
+   "programLawPa": 298639807.4484203,
+   "inPlacePa": 41604135.82333404
+  },
+  {
+   "body": 10,
+   "rangeKm": 30.043,
+   "apart": null,
+   "programPa": 9458323.875,
+   "programLawPa": 9462203.565591995,
+   "inPlacePa": 7225942.830087952
+  },
+  {
+   "body": 10,
+   "rangeKm": 288.095,
+   "apart": null,
+   "programPa": 69255.732,
+   "programLawPa": 69280.217664161,
+   "inPlacePa": 63535.8789458383
+  },
+  {
+   "body": 10,
+   "rangeKm": 189.733,
+   "apart": null,
+   "programPa": 161275.847,
+   "programLawPa": 161336.2846000964,
+   "inPlacePa": 162002.65925696207
+  },
+  {
+   "body": 11,
+   "rangeKm": 5.415,
+   "apart": null,
+   "programPa": 127002984.58,
+   "programLawPa": 127057748.1930855,
+   "inPlacePa": 30802750.823459174
+  },
+  {
+   "body": 11,
+   "rangeKm": 202.24,
+   "apart": null,
+   "programPa": 44992.256,
+   "programLawPa": 45008.18734423504,
+   "inPlacePa": 42288.79120981952
+  },
+  {
+   "body": 11,
+   "rangeKm": 9.425,
+   "apart": null,
+   "programPa": 35659765.291,
+   "programLawPa": 35675103.187245004,
+   "inPlacePa": 16890821.673580874
+  },
+  {
+   "body": 11,
+   "rangeKm": 5.847,
+   "apart": null,
+   "programPa": 106496925.438,
+   "programLawPa": 106542835.3502958,
+   "inPlacePa": 28591981.887101825
+  },
+  {
+   "body": 11,
+   "rangeKm": 14.227,
+   "apart": null,
+   "programPa": 13916152.673,
+   "programLawPa": 13922117.719527522,
+   "inPlacePa": 9736284.099248113
+  },
+  {
+   "body": 12,
+   "rangeKm": 297.229,
+   "apart": null,
+   "programPa": 81.322,
+   "programLawPa": 84.88681505983425,
+   "inPlacePa": 315.06178866102385
+  },
+  {
+   "body": 12,
+   "rangeKm": 3.246,
+   "apart": null,
+   "programPa": 14113.718,
+   "programLawPa": 15129.231516894173,
+   "inPlacePa": 88305.13908086166
+  },
+  {
+   "body": 12,
+   "rangeKm": 2.301,
+   "apart": null,
+   "programPa": 25230.597,
+   "programLawPa": 27213.0479541569,
+   "inPlacePa": 193973.69334597385
+  },
+  {
+   "body": 12,
+   "rangeKm": 207.169,
+   "apart": null,
+   "programPa": 116.85,
+   "programLawPa": 121.98355739315494,
+   "inPlacePa": 452.15488373670905
+  },
+  {
+   "body": 12,
+   "rangeKm": 0.859,
+   "apart": null,
+   "programPa": 170330.05,
+   "programLawPa": 186259.14428136207,
+   "inPlacePa": 1751319.82398881
+  }
+ ]
+}

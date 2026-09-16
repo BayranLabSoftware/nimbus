@@ -80,6 +80,41 @@
  * errors, which no reference can decide.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 16 September 2026: REFUSED
+ * ===========================================================================
+ *
+ * The rules were pushed in `7bd4a72` and the program asked afterwards
+ * (`benchmark/results/ground-blast-eiep-2026-09-16.json`, scored in
+ * `ground-blast-against-eiep-2026-09-16.json`). It answered all 60 ranges, on
+ * the ground for all twelve bodies.
+ *
+ * The program's law, fed Nimbus's own entry, agrees on **55 of 60**, those
+ * within 0.054 %; the model in place on 1, from 0.0001 to 10.3 times the
+ * program. The five outside are all of one body, the twelfth — a 39 m iron of
+ * 7 853 kg/m³ at 13.6 km/s and 49.9° — at 1.044 to 1.094. Rule 140 asks every
+ * point, so `project` stays the default and BM-21 stays open.
+ *
+ * What the refusal found. The law is not what departs on that body. The
+ * program's five overpressures there imply one crossover distance, 1 285.87 m
+ * to within 0.01 m at every range, so its shape holds; it is the crossover
+ * Nimbus's entry feeds it, 1 342 m, that is long. Two things make it so. BM-13,
+ * the program's doubled I_f, which this project keeps out of Eq. 12 and which
+ * these rules did not allow for as rule 126 did for the fireballs: with it the
+ * breakup altitude is the program's to the metre and the departure falls to
+ * 1.027–1.057. And the speed at the ground: at the program's breakup altitude
+ * the entry gives 9.812 km/s where the program's blast implies 9.688, a pancake
+ * deceleration 4 % stronger, on the one body whose breakup is low (11.3 km) and
+ * whose deceleration is not negligible. On the other eleven the implied speed
+ * is the entry's within 0.22 %, nine of them within 0.03 %. A scaled crossover
+ * this short — r_x = 92 m, against 290 for a burst on the ground — turns that
+ * 1.3 % in speed into 5 % in overpressure. The next round has two things to settle first: the ground
+ * speed of a slow strong body, which the program prints to two figures and
+ * its blast reveals to five, and whether BM-13 is kept out of a ground blast
+ * it moves this much.
+ */
+
 /** Rule 139: G1's tolerance, and half the program's last printed digit (Pa). */
 export const GROUND_BLAST_TOLERANCE = 0.01;
 export const GROUND_BLAST_ROUNDING_PA = 0.0005;

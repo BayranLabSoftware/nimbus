@@ -373,6 +373,19 @@ not that a rule holds.
 
 ## What has moved since
 
+- **16 September 2026, BM-21's law found, and refused on one body.** The air
+  blast of a ground impact, the largest open clause of I1, answered the angle
+  backwards because the program reads it at Eq. 18's altitude below the
+  ground, where r_x = 290 + 0.65 z₁ shortens as a steeper entry goes deeper.
+  Read off 18 new points and checked on the grid's 57 (within 0.18 %), then
+  held out on twelve bodies after rules 138 to 140 were pushed: 55 of 60
+  within 0.054 %, where the model in place matched 1. The five outside are one
+  slow iron, whose speed at the ground the entry gives 1.3 % faster than the
+  program's blast implies, amplified by a scaled crossover of 92 m. Rule 140 asked
+  for every point; the law stays reachable and I1 stays open on this clause,
+  which now waits on the entry's ground speed for slow strong bodies and on
+  BM-13, not on the blast.
+
 - **16 September 2026, the impact family's G5 failures read to their causes,
   199 to 181.** Every failure the sweep found for impacts was followed to what
   makes it. The program's passage to the Mach region (rules 129 to 131) took
