@@ -155,6 +155,28 @@ export interface LandslideScenarioResult {
   regime: LandslideRegime;
   /** Which law made the wave. */
   waveLaw: LandslideWaveLaw;
+  /**
+   * How much the regime decides this scenario's wave.
+   *
+   * `regime` is not a label: it picks K = 0.4 for a rigid block falling in
+   * against 0.005 for soft sediment sliding on the sea floor, eighty times
+   * apart, and a visitor setting up a scenario usually cannot know which
+   * their slide was — the catalogues do not say. Measured on the
+   * twenty-six held-out landslides of rules 118 to 121, the same events came
+   * out 3.630× the record as subaerial and 0.049× as submarine: the switch
+   * moves the answer by about seventy times, and it is the largest single
+   * uncertainty in a landslide wave.
+   *
+   * So the product computes both and says so, rather than printing one and
+   * leaving the reader to discover that the other exists (G4 of
+   * docs/GOLD_STANDARD.md).
+   */
+  regimeSensitivity: {
+    subaerialAmplitude: Meters;
+    submarineAmplitude: Meters;
+    /** The larger over the smaller, 1 where the two agree. */
+    ratio: number;
+  } | null;
   /** Present only under `heller2009`: what the slide looked like to Heller's
    *  equations, which of its three unknowns had to be closed, and which of his
    *  tested ranges the scenario falls outside of — G4 of
@@ -165,6 +187,42 @@ export interface LandslideScenarioResult {
     widthM: number;
     closed: SlideClosure['closed'];
     outsideTestedRange: string[];
+  };
+}
+
+/** Both regimes' source amplitudes for the same slide, under the project law,
+ *  so the result can say how much the switch decides. Null where there is no
+ *  wave either way. */
+function regimeSensitivity(
+  input: LandslideScenarioInput,
+  slopeDeg: number
+): LandslideScenarioResult['regimeSensitivity'] {
+  const under = (regime: LandslideRegime): number => {
+    const t = volcanoTsunami({
+      collapseVolumeM3: input.volumeM3,
+      slopeAngleRad: (slopeDeg * Math.PI) / 180,
+      regime,
+      ...(input.meanOceanDepth !== undefined && { meanOceanDepth: input.meanOceanDepth }),
+      ...(input.slideFootprintArea !== undefined && {
+        slideFootprintArea: input.slideFootprintArea,
+      }),
+      ...(input.confinedBasinArea !== undefined && { confinedBasinArea: input.confinedBasinArea }),
+      ...(input.confinementDynamicFactor !== undefined && {
+        confinementDynamicFactor: input.confinementDynamicFactor,
+      }),
+      ...(input.slideDensity !== undefined && { slideDensity: input.slideDensity }),
+    });
+    return Number(t?.sourceAmplitude ?? 0);
+  };
+  const subaerial = under('subaerial');
+  const submarine = under('submarine');
+  if (!(subaerial > 0) && !(submarine > 0)) return null;
+  const hi = Math.max(subaerial, submarine);
+  const lo = Math.min(subaerial, submarine);
+  return {
+    subaerialAmplitude: m(subaerial),
+    submarineAmplitude: m(submarine),
+    ratio: lo > 0 ? hi / lo : Number.POSITIVE_INFINITY,
   };
 }
 
@@ -223,6 +281,7 @@ export function simulateLandslide(input: LandslideScenarioInput): LandslideScena
     tsunami,
     regime,
     waveLaw,
+    regimeSensitivity: regimeSensitivity(input, slopeDeg),
     ...(impulse === null
       ? {}
       : {

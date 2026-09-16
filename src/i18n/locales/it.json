@@ -478,7 +478,11 @@
       "sourceLabel": "Sorgente dell'onda",
       "sourceOpenWater": "Mare aperto (forma di Watts tarata)",
       "sourceConfined": "Bacino chiuso (volume su superficie × amplificazione)",
-      "sourceDry": "Nessuna: la frana si ferma all'asciutto"
+      "sourceDry": "Nessuna: la frana si ferma all'asciutto",
+      "regimeNote": "{{other}} m — {{ratio}}× {{direction}}. Se una frana sia partita sopra o sotto il pelo dell’acqua è la maggiore incertezza singola di quest’onda, e i cataloghi di eventi reali di solito non lo dicono.",
+      "regimeHigher": "più alta",
+      "regimeLower": "più bassa",
+      "regimeOtherLabel": "Se fosse partita nell’altro modo"
     },
     "citySearch": {
       "label": "Vai a una città",

@@ -478,7 +478,11 @@
       "sourceLabel": "Wave source",
       "sourceOpenWater": "Open water (calibrated Watts form)",
       "sourceConfined": "Confined basin (volume over surface × amplification)",
-      "sourceDry": "None: the slide ends on dry land"
+      "sourceDry": "None: the slide ends on dry land",
+      "regimeNote": "{{other}} m — {{ratio}}× {{direction}}. Whether a slide started above the waterline or below it is the largest single uncertainty in this wave, and a catalogue of real events usually does not say which.",
+      "regimeHigher": "higher",
+      "regimeLower": "lower",
+      "regimeOtherLabel": "If it had started the other way"
     },
     "citySearch": {
       "label": "Go to a city",

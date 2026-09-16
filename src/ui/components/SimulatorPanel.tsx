@@ -1698,6 +1698,29 @@ export function SimulatorPanel(): JSX.Element {
                   <dd className={styles.resultValue}>
                     {Math.round((result.data.tsunami.travelTimeTo100km as number) / 60)} min
                   </dd>
+                  {result.data.regimeSensitivity !== null &&
+                    result.data.regimeSensitivity.ratio > 1.05 && (
+                      <>
+                        <dt className={styles.resultLabel}>
+                          {t('simulator.landslide.regimeOtherLabel')}
+                        </dt>
+                        <dd className={styles.resultValue} data-testid="landslide-regime-note">
+                          {t('simulator.landslide.regimeNote', {
+                            other: (
+                              (result.data.regime === 'subaerial'
+                                ? result.data.regimeSensitivity.submarineAmplitude
+                                : result.data.regimeSensitivity.subaerialAmplitude) as number
+                            ).toFixed(0),
+                            ratio: result.data.regimeSensitivity.ratio.toFixed(0),
+                            direction: t(
+                              result.data.regime === 'subaerial'
+                                ? 'simulator.landslide.regimeLower'
+                                : 'simulator.landslide.regimeHigher'
+                            ),
+                          })}
+                        </dd>
+                      </>
+                    )}
                 </>
               )}
             </dl>
