@@ -48,6 +48,7 @@ def main():
                 **p,
                 "error": error,
                 "burstAltitudeM": got.get("burstAltitudeM"),
+                "breakupAltitudeM": got.get("breakupAltitudeM"),
                 "overpressurePa": got.get("overpressurePa"),
             }
         )
