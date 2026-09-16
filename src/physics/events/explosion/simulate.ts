@@ -11,12 +11,14 @@ import { electromagneticPulse, type EmpResult } from './emp.js';
 import {
   BURIED_AIR_BLAST_MAX_SCALED_DEPTH_FT,
   DEFAULT_HOB_BLAST_SOURCE,
+  DEFAULT_WATER_BLAST_SOURCE,
   hobBlastFactor,
   hobRegime,
   scaledHeightOfBurst,
   underwaterAirBlastFactor,
   type HobBlastSource,
   type HobRegime,
+  type WaterBlastSource,
 } from './hob.js';
 import { glasstoneGroundRangeM } from './hobCurves.js';
 import { peakOverpressure } from './overpressure.js';
@@ -86,6 +88,9 @@ export interface ExplosionScenarioInput {
    *  burst's radii, or Glasstone & Dolan's height-of-burst curves. Omitted,
    *  {@link DEFAULT_HOB_BLAST_SOURCE}. */
   hobBlast?: HobBlastSource;
+  /** What a burst within the water shortens by its depth (rule 175 of
+   *  validation/hobRules.ts). Omitted, {@link DEFAULT_WATER_BLAST_SOURCE}. */
+  waterBlast?: WaterBlastSource;
   /** Distance from the burst point to the nearest usable sea (m).
    *  Zero or omitted means the burst is over the water. A surface
    *  burst beside the sea is not a burst in it, and this is what
@@ -406,6 +411,17 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       rLightHob = glasstoneGroundRangeM(lightPsi, yieldKilotons, hobMeters, lightOverOne);
     }
     hobFactorOut = (r5psi as number) > 0 ? r5Hob / (r5psi as number) : 0;
+  } else if (
+    inWater &&
+    !chemical &&
+    (input.waterBlast ?? DEFAULT_WATER_BLAST_SOURCE) === 'glasstone1977'
+  ) {
+    // §6.81 adjusts a contact surface burst, and the book's is Figure 3.73c at
+    // a height of zero: the same burst as the one just above the water.
+    r5Hob = glasstoneGroundRangeM(5, yieldKilotons, 0) * depthFactor;
+    r1Hob = glasstoneGroundRangeM(1, yieldKilotons, 0) * depthFactor;
+    rLightHob = glasstoneGroundRangeM(lightPsi, yieldKilotons, 0, lightOverOne) * depthFactor;
+    hobFactorOut = factor;
   } else {
     r5Hob = (r5psi as number) * factor;
     r1Hob = (r1psi as number) * factor;

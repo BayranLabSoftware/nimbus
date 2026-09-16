@@ -1,12 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_HOB_BLAST_SOURCE } from '../events/explosion/hob.js';
+import { DEFAULT_HOB_BLAST_SOURCE, DEFAULT_WATER_BLAST_SOURCE } from '../events/explosion/hob.js';
 import {
   HOB_CANDIDATE,
   HOB_GUARD_HEIGHTS_M,
   HOB_GUARD_YIELDS_KT,
   HOB_IN_PLACE,
   HOB_NUKEMAP_KEPT,
+  HOB_WATERLINE_TOLERANCE,
   chooseHobBlastSource,
+  waterlinePasses,
 } from './hobRules.js';
 import { hobTracePasses } from './hobRun.js';
 
@@ -55,5 +57,18 @@ describe('rules 168 to 173: an air burst drawn from the book', () => {
   it('is the default since rule 171 adopted it', () => {
     // Pushed in 7aeac70 with the default still 'project'.
     expect(DEFAULT_HOB_BLAST_SOURCE).toBe('glasstone1977');
+  });
+});
+
+describe('rules 174 to 176: a burst in the water, from the same curves', () => {
+  it('allows no step across the waterline beyond the depth factor', () => {
+    expect(HOB_WATERLINE_TOLERANCE).toBe(1e-6);
+    expect(waterlinePasses(0)).toBe(true);
+    expect(waterlinePasses(0.12)).toBe(false);
+    expect(waterlinePasses(Number.NaN)).toBe(false);
+  });
+
+  it('is not yet the default: the rules are pushed before the candidate runs', () => {
+    expect(DEFAULT_WATER_BLAST_SOURCE).toBe('surfaceRelation');
   });
 });

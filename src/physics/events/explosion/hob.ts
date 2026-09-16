@@ -39,6 +39,18 @@ export type HobBlastSource = 'project' | 'glasstone1977';
  *  them. */
 export const DEFAULT_HOB_BLAST_SOURCE: HobBlastSource = 'glasstone1977';
 
+/**
+ * What a burst within the water shortens by its depth: `surfaceRelation`, the
+ * surface burst's radius from the project's overpressure relation, or
+ * `glasstone1977`, the book's contact surface burst — Figure 3.73c at a height
+ * of zero, the reference burst §6.81 adjusts (rules 174 to 176 of
+ * validation/hobRules.ts).
+ */
+export type WaterBlastSource = 'surfaceRelation' | 'glasstone1977';
+
+/** What a scenario that names no source draws. */
+export const DEFAULT_WATER_BLAST_SOURCE: WaterBlastSource = 'surfaceRelation';
+
 /** Scaled height-of-burst z = HOB / W^(1/3), in metres per cube-root
  *  kilotonne. A unit-independent HOB classifier. */
 export function scaledHeightOfBurst(hobMeters: number, yieldKilotons: number): number {

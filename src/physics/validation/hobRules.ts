@@ -154,6 +154,39 @@ import type { HobBlastSource } from '../events/explosion/hob.js';
  * which a later round may close.
  */
 
+/*
+ * ===========================================================================
+ * The same curves for a burst in the water (rules 174 to 176)
+ * ===========================================================================
+ *
+ * Written on 17 September 2026, after the outcome above was committed and
+ * pushed (`eac8535`), which named the inconsistency these rules take up.
+ *
+ *  174. **Why, and what was looked at.** A burst on the surface now draws its
+ *       rings off Figure 3.73c at a height of zero, and a burst a millimetre
+ *       under the water still shortens the surface relation's radius by its
+ *       depth factor: the 1 psi ring steps by 12 % across the waterline, the
+ *       5 psi ring by under 1 %. §6.81, which the depth factor comes from,
+ *       adjusts "a reference burst" on the surface, and the book's own is the
+ *       figure's contact surface burst. Looked at: the size of the step, from
+ *       the adoption's figures of a burst on the ground. No burst in the water
+ *       has been run under the candidate.
+ *
+ *  175. **The candidate (`waterBlast: glasstone1977`).** A nuclear burst within
+ *       the water shortens, by the same depth factor as before, the rings of
+ *       the book's contact surface burst at its yield — rule 170's curves at a
+ *       height of zero, 0.5 psi with the same closure. A chemical charge in the
+ *       water keeps the surface relation it keeps on the surface.
+ *
+ *  176. **What decides.** Adopted unless a guard fails: (a) on the yields of
+ *       rule 171 (c), a burst a millimetre under a hundred metres of water and
+ *       the same burst on that water's surface draw rings that differ by no
+ *       more than the depth factor's own departure from one; (b) the release
+ *       gate stays PASS. Printed, deciding nothing: the step across the
+ *       waterline under both sources, and the explosion family's sweep under
+ *       both in the same session.
+ */
+
 /** Rule 170's candidate and the law in place. */
 export const HOB_IN_PLACE: HobBlastSource = 'project';
 export const HOB_CANDIDATE: HobBlastSource = 'glasstone1977';
@@ -194,4 +227,12 @@ export function chooseHobBlastSource(input: {
   return input.traceChecksPass && input.releaseGatePasses && guardPasses
     ? HOB_CANDIDATE
     : HOB_IN_PLACE;
+}
+
+/** Rule 176 (a): the largest relative step across the waterline, over the
+ *  yields of rule 171 (c), beyond the depth factor's own departure from one. */
+export const HOB_WATERLINE_TOLERANCE = 1e-6;
+
+export function waterlinePasses(worstExcessStep: number): boolean {
+  return Number.isFinite(worstExcessStep) && worstExcessStep <= HOB_WATERLINE_TOLERANCE;
 }

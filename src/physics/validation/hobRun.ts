@@ -1,5 +1,5 @@
 import { EXPLOSION_PRESETS, simulateExplosion } from '../events/explosion/simulate.js';
-import type { HobBlastSource } from '../events/explosion/hob.js';
+import type { HobBlastSource, WaterBlastSource } from '../events/explosion/hob.js';
 import { HOB_CURVE_CHECKS } from '../events/explosion/hobCurvesData.js';
 import { m } from '../units.js';
 import {
@@ -157,4 +157,41 @@ export function hobNukemapRows(
       candidateM: pick(rings(y, h, HOB_CANDIDATE)),
     };
   });
+}
+
+/** Rule 176 (a): for each yield, how much a burst a millimetre under the water
+ *  and the same burst on its surface differ, ring by ring, beyond the depth
+ *  factor's own departure from one. */
+export function hobWaterline(source: WaterBlastSource): {
+  worstExcessStep: number;
+  rows: { yieldKt: number; stepFivePsi: number; stepOnePsi: number; stepHalfPsi: number }[];
+} {
+  let worst = 0;
+  const rows = HOB_GUARD_YIELDS_KT.map((y) => {
+    const base = {
+      yieldMegatons: y / 1_000,
+      waterDepth: m(100),
+      waterBlast: source,
+    };
+    const surface = simulateExplosion({ ...base, heightOfBurst: m(0) });
+    const under = simulateExplosion({ ...base, heightOfBurst: m(-0.001) });
+    const depthFactor = under.placement.airBlastDepthFactor ?? 1;
+    const step = (a: number, b: number): number => (b > 0 ? a / b - 1 : 0);
+    const s5 = step(
+      Number(under.blast.overpressure5psiRadiusHob),
+      Number(surface.blast.overpressure5psiRadiusHob)
+    );
+    const s1 = step(
+      Number(under.blast.overpressure1psiRadiusHob),
+      Number(surface.blast.overpressure1psiRadiusHob)
+    );
+    const sh = step(
+      Number(under.blast.lightDamageRadiusHob),
+      Number(surface.blast.lightDamageRadiusHob)
+    );
+    const allowed = Math.abs(depthFactor - 1);
+    for (const x of [s5, s1, sh]) worst = Math.max(worst, Math.abs(x) - allowed);
+    return { yieldKt: y, stepFivePsi: s5, stepOnePsi: s1, stepHalfPsi: sh };
+  });
+  return { worstExcessStep: Math.max(0, worst), rows };
 }
