@@ -1345,6 +1345,44 @@ Beside, deciding nothing — the figure's light and dark curves, which bracket t
 | 1 Mt reference | 8.48 | 8.74 | 9.19 |
 | Ivy Mike 1952 | 18.04 | 18.43 | 19.14 |
 
+### The initial radiation, from the figures the book draws
+
+Nimbus drew its three initial-radiation rings from a fit of its own: an LD₅₀ range of 700 m at 1 kt growing as the yield to the 0.18, with LD₁₀₀ at 0.7 of it and the acute-radiation threshold at 1.4. The fit's own comment credited its anchors to a "Glasstone Fig. 8.46" — not a dose–range figure of the book — and said they had never been rechecked. The book's dose–range figures are 8.33a and b for gamma rays and 8.64a and b for neutrons, six curves apiece at 30, 100, 300, 1 000, 3 000 and 10 000 rads. Rules 85 to 89 (`validation/doseRules.ts`), committed before the candidate drew a ring for any preset, traced all twenty-four from the public scan and put them in the fit's place. The three doses the rings are drawn at do not move: 800, 450 and 100 rads, project values after OTA 1979, UNSCEAR and BEIR VII.
+
+| Explosion | Yield | HOB | Figures | LD₁₀₀ · LD₅₀ · threshold, the fit (km) | the book (km) | the book at the fit's LD₅₀ (rads) |
+|-----------|------:|----:|:--|------:|------:|------:|
+| Hiroshima 1945 | 15 kt | 580 m | 8.33a / 8.64a | 0.80 · 1.14 · 1.60 | 1.21 · 1.33 · 1.67 | 1132 |
+| Nagasaki 1945 | 21 kt | 503 m | 8.33a / 8.64a | 0.85 · 1.21 · 1.70 | 1.32 · 1.44 · 1.78 | 1381 |
+| Castle Bravo 1954 | 15 Mt | 0 m | 8.33b / 8.64b | 2.77 · 3.95 · 5.53 | 4.72 · 4.88 · 5.33 | 7831 |
+| Tsar Bomba 1961 | 50 Mt | 4000 m | 8.33b / 8.64b | 3.44 · 4.91 · 6.87 | 2.43 · 2.77 · 3.47 | 3 \* |
+| 1 Mt reference | 1 Mt | 0 m | 8.33b / 8.64b | 1.70 · 2.43 · 3.40 | 2.62 · 2.77 · 3.13 | 1706 |
+| Ivy Mike 1952 | 10.4 Mt | 0 m | 8.33b / 8.64b | 2.59 · 3.70 · 5.18 | 4.34 · 4.49 · 4.98 | 6040 |
+| 1 kt | 1 kt | 200 m | 8.33a / 8.64a | 0.49 · 0.70 · 0.98 | 0.83 · 0.92 · 1.19 | 1936 |
+| 10 kt | 10 kt | 200 m | 8.33a / 8.64a | 0.74 · 1.06 · 1.48 | 1.24 · 1.35 · 1.66 | 2315 |
+| 50 kt | 50 kt | 200 m | 8.33a / 8.64a | 0.99 · 1.42 · 1.98 | 1.61 · 1.74 · 2.07 | 2089 |
+| 99 kt | 99 kt | 200 m | 8.33a / 8.64a | 1.12 · 1.60 · 2.24 | 1.79 · 1.93 · 2.28 | 1880 |
+| 100 kt | 100 kt | 200 m | 8.33b / 8.64b | 1.12 · 1.60 · 2.25 | 1.71 · 1.83 · 2.18 | 1339 |
+| 300 kt | 300 kt | 200 m | 8.33b / 8.64b | 1.37 · 1.95 · 2.74 | 2.04 · 2.18 · 2.54 | 1123 |
+| 1000 kt | 1 Mt | 200 m | 8.33b / 8.64b | 1.70 · 2.43 · 3.40 | 2.49 · 2.64 · 3.00 | 1024 |
+| 10000 kt | 10 Mt | 200 m | 8.33b / 8.64b | 2.57 · 3.67 · 5.14 | 3.97 · 4.14 · 4.55 | 1918 |
+| 20000 kt | 20 Mt | 200 m | 8.33b / 8.64b | 2.91 · 4.16 · 5.83 | 4.68 · 4.86 · 5.29 | 2986 |
+
+\* the yield falls outside the 1 kt to 20 Mt the figures cover, and the curves are held flat there: Tsar Bomba 1961. The trace passed rule 85's five checks, including the book's own worked example at §8.34 — 2 000 yards from a 50 kt fission air burst, which the book reads as "somewhat less than 300 rads … about 250". The rings keep their order and grow with the yield, save the 5.3 % step at 100 kt where the book changes from a fission weapon to one of half that fission yield. The figures are adopted. No toll can judge this: no death in Nimbus is counted from initial radiation at all.
+
+Beside, deciding nothing — the book's own reliability on the LD₅₀ ring, a factor of 0.5 to 2 on the dose for a fission weapon and 0.25 to 1.5 for a thermonuclear one:
+
+| Yield | Figures | Dose read low (km) | As drawn (km) | Dose read high (km) |
+|-------|:--|------:|------:|------:|
+| 1 kt | 8.33a / 8.64a | 0.81 | 0.92 | 1.05 |
+| 10 kt | 8.33a / 8.64a | 1.22 | 1.35 | 1.49 |
+| 50 kt | 8.33a / 8.64a | 1.59 | 1.74 | 1.89 |
+| 99 kt | 8.33a / 8.64a | 1.76 | 1.93 | 2.10 |
+| 100 kt | 8.33b / 8.64b | 1.54 | 1.83 | 1.92 |
+| 300 kt | 8.33b / 8.64b | 1.84 | 2.18 | 2.28 |
+| 1000 kt | 8.33b / 8.64b | 2.28 | 2.64 | 2.74 |
+| 10000 kt | 8.33b / 8.64b | 3.70 | 4.14 | 4.26 |
+| 20000 kt | 8.33b / 8.64b | 4.37 | 4.86 | 4.99 |
+
 ### Which checks are validation
 
 A check the model was built to pass says the fit holds, not that the
@@ -1651,7 +1689,7 @@ shows.
 - **Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).
 - **Two numbers are not traced to a source read here.** The arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005. A third, the 30 cm at DART 21413 that the Tōhoku wave row was tuned on, was read from the buoy's own file on 15 September 2026: it crests at 0.81 m, and the row is declared (B-034).
 - **An airburst's blast is a point that does not move, drawn as round rings.** Since 15 September 2026 it is the Earth Impact Effects Program's own air blast (Collins et al. 2005 and 2017; B-032), reproduced within 1 % on the airburst rows above, which were held out when it was adopted. What that model is not was checked against rules written first (`docs/BENCHMARK_PROTOCOL.md`): against the shock-physics runs of Collins et al. 2017, Table 2, its figures are 0.92× theirs, the median off by a factor of 1.21; at Tunguska its 20 kPa ring reaches 11.5 km, against the 26.5 km radius of the ~2 200 km² of flattened forest (0.43×), beyond a factor of two. At Chelyabinsk the check first flagged a 1 kPa ring of 17.6 km against the 56 km radius of the ~10 000 km² over which windows broke; the preset then took the body Popova et al. 2013 measured, as its source says and not as the check asked (B-033), and on a re-run that is not a validation the ring reaches 30.2 km (0.54×), 68.0 km for a moving source. In the city, 45 km out, the law gives 0.74 kPa where the broken windows put about 3.2 kPa (Brown et al. 2013). A shallow, high burst spreads its energy along its path and damages an ellipse, farthest across the path; ReVelle's weak-shock line source, the only analytic one, is "largely inapplicable" beneath Chelyabinsk's trail (Gi, Brown & Aftosmis 2018), and the elongated footprint has been reproduced only by three-dimensional hydrocodes (Popova et al. 2013; Aftosmis et al. 2016). Tunguska's blast row checks the energy, not the blast (`effects/airburstBlast.ts`).
-- **Parts of the explosion model are the project's, not the book's.** The initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).
+- **Parts of the explosion model are the project's, not the book's.** The thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101, and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).
 - **No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.
 - **A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).
 - **The volcanic relations are the project's calibrations, and a current is a disc.** The reach of pyroclastic currents (L = 10 · V^⅓, a project mobility), the ashfall, the lahars and the climate response were set on anchors that the source review of 14 September did not recheck (docs/ROADMAP.md, move 0b). A current is drawn as a disc about the vent: held out, Fuego 2018's reaches 3.7 km where the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because a reach three times short and a footprint far too wide cancel; Unzen 1991's reaches 0.84 km against a flow of 3.2 km.

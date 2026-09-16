@@ -24,9 +24,9 @@ import { DOSE_CURVE_RADS, DOSE_CURVES, YARD_M } from './initialRadiationData.js'
 
 export type RadiationSource = 'project' | 'glasstone1977';
 
-/** What a scenario that names no source draws; rules 87 and 88 of
- *  validation/doseRules.ts say what it is. */
-export const DEFAULT_RADIATION_SOURCE: RadiationSource = 'project';
+/** What a scenario that names no source draws: the book's own figures,
+ *  adopted on 16 September 2026 by rule 87 of validation/doseRules.ts. */
+export const DEFAULT_RADIATION_SOURCE: RadiationSource = 'glasstone1977';
 
 /** Which of the book's two weapons a yield is read as. The book draws its
  *  fission figures to 100 kt and its thermonuclear ones from 100 kt, and that

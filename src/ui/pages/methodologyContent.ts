@@ -887,9 +887,10 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'radiation',
         name: 'Initial-radiation lethal-dose radii',
-        formula: 'R_LD50 = 700 m · W_kt^0.18  ;  R_LD100 = 0.7 · R_LD50  ;  R_ARS = 1.4 · R_LD50',
+        formula:
+          'dose = gamma (Figs. 8.33a/b) + neutron (Figs. 8.64a/b) at slant range ;  rings at 800 / 450 / 100 rads ;  R_ground = √(R_slant² − HOB²)',
         description:
-          'A project fit whose code cites a Glasstone & Dolan figure (8.46) that holds no dose–range curve; the book’s curves for initial radiation are Figs. 8.33a/b and 8.64a/b, and the fit has not been checked against them. The LD₅₀ dose follows OTA 1979: about 450 rem is fatal to half the people exposed. A chemical charge has none.',
+          'The book’s own dose–range figures, traced from the page: 8.33a and b for gamma rays and 8.64a and b for neutrons, six curves apiece from 30 to 10 000 rads, the “a” of each pair for fission weapons to 100 kt and the “b” for thermonuclear weapons of 50 % fission yield to 20 Mt. The two doses are added, the figures are read for a burst at 290·W^0.4 ft and corrected towards a contact surface burst below 300 ft (Table 8.37 for gamma rays, one half for neutrons), and the slant range they give becomes a ring on the ground. The three doses the rings are drawn at are the project’s — 800, 450 and 100 rads, after OTA 1979, UNSCEAR and BEIR VII — not the book’s. The book gives its figures a reliability factor of 0.5 to 2 for a fission weapon and 0.25 to 1.5 for a thermonuclear one; outside 1 kt and 20 Mt they are held flat, and rads of neutrons are added as if worth the same as rads of gamma rays, which §8.65 says they are often not. Until 16 September 2026 these rings were a project fit, 700 m · W_kt^0.18 with LD₁₀₀ at 0.7 of it and the threshold at 1.4, whose own anchors cited a figure the book does not have. A chemical charge has none, and neither has a burst under the water or above the atmosphere.',
         citation: glasstoneDolan1977,
       },
       {

@@ -216,6 +216,7 @@ import {
 import { runFireball, type FireballRunResult } from '../src/physics/validation/fireballRun.js';
 import { FIREBALL_READ_ON } from '../src/physics/validation/fireballSetData.js';
 import { runBurn, type BurnRunResult } from '../src/physics/validation/burnRun.js';
+import { runDose, type DoseRunResult } from '../src/physics/validation/doseRun.js';
 import { BURN_CURVE_YIELDS_KT } from '../src/physics/effects/burnExposureData.js';
 import { mulberry32 } from '../src/physics/montecarlo/sampling.js';
 import type { ProspectiveScore } from '../src/physics/validation/prospectiveRules.js';
@@ -2245,6 +2246,66 @@ function burnJson(run: BurnRunResult) {
   };
 }
 
+/** Rules 85 to 89: the initial radiation, from the figures the book draws. */
+function doseSection(run: DoseRunResult): string {
+  const km = (x: number): string => (x > 0 ? x.toFixed(2) : '—');
+  const three = (r: readonly number[]): string => r.map(km).join(' · ');
+  const kt = (x: number): string =>
+    x >= 1_000 ? `${(x / 1_000).toString()} Mt` : `${x.toString()} kt`;
+  const row = (r: DoseRunResult['presets'][number]): string =>
+    `| ${r.name} | ${kt(r.yieldKt)} | ${r.heightOfBurstM.toFixed(0)} m | ${r.weapon === 'fission' ? '8.33a / 8.64a' : '8.33b / 8.64b'} | ${three(r.inPlaceKm)} | ${three(r.candidateKm)} | ${r.doseAtTheFitRad.toFixed(0)}${r.outsideTheFigures ? ' \\*' : ''} |`;
+  const outside = [...run.presets, ...run.grid].filter((r) => r.outsideTheFigures);
+  return [
+    `Nimbus drew its three initial-radiation rings from a fit of its own: an LD₅₀ range of 700 m at 1 kt growing as the yield to the 0.18, with LD₁₀₀ at 0.7 of it and the acute-radiation threshold at 1.4. The fit's own comment credited its anchors to a "Glasstone Fig. 8.46" — not a dose–range figure of the book — and said they had never been rechecked. The book's dose–range figures are 8.33a and b for gamma rays and 8.64a and b for neutrons, six curves apiece at 30, 100, 300, 1 000, 3 000 and 10 000 rads. Rules 85 to 89 (\`validation/doseRules.ts\`), committed before the candidate drew a ring for any preset, traced all twenty-four from the public scan and put them in the fit's place. The three doses the rings are drawn at do not move: ${run.doses.ld100.toString()}, ${run.doses.ld50.toString()} and ${run.doses.ars.toString()} rads, project values after OTA 1979, UNSCEAR and BEIR VII.`,
+    '',
+    "| Explosion | Yield | HOB | Figures | LD₁₀₀ · LD₅₀ · threshold, the fit (km) | the book (km) | the book at the fit's LD₅₀ (rads) |",
+    '|-----------|------:|----:|:--|------:|------:|------:|',
+    ...run.presets.map(row),
+    ...run.grid.map(row),
+    '',
+    `${outside.length === 0 ? '' : `\\* the yield falls outside the 1 kt to 20 Mt the figures cover, and the curves are held flat there: ${outside.map((r) => r.name).join(', ')}. `}The trace passed rule 85's five checks, including the book's own worked example at §8.34 — 2 000 yards from a 50 kt fission air burst, which the book reads as "somewhat less than 300 rads … about 250". The rings keep their order and grow with the yield, save the ${((1 - run.stepAt100Kt) * 100).toFixed(1)} % step at 100 kt where the book changes from a fission weapon to one of half that fission yield. ${run.decision.adopted ? 'The figures are adopted.' : 'The figures are not adopted.'} No toll can judge this: no death in Nimbus is counted from initial radiation at all.`,
+    '',
+    "Beside, deciding nothing — the book's own reliability on the LD₅₀ ring, a factor of 0.5 to 2 on the dose for a fission weapon and 0.25 to 1.5 for a thermonuclear one:",
+    '',
+    '| Yield | Figures | Dose read low (km) | As drawn (km) | Dose read high (km) |',
+    '|-------|:--|------:|------:|------:|',
+    ...run.reliability.map(
+      (r) =>
+        `| ${r.name} | ${r.weapon === 'fission' ? '8.33a / 8.64a' : '8.33b / 8.64b'} | ${km(r.low)} | ${km(r.middle)} | ${km(r.high)} |`
+    ),
+  ].join('\n');
+}
+
+/** Rules 85 to 89 in the report's JSON. */
+function doseJson(run: DoseRunResult) {
+  const ring = (r: DoseRunResult['presets'][number]) => ({
+    name: r.name,
+    yieldKt: fixed(r.yieldKt, 4),
+    heightOfBurstM: fixed(r.heightOfBurstM, 1),
+    weapon: r.weapon,
+    inPlaceKm: r.inPlaceKm.map((x) => fixed(x, 3)),
+    candidateKm: r.candidateKm.map((x) => fixed(x, 3)),
+    doseAtTheFitRad: fixed(r.doseAtTheFitRad, 1),
+    outsideTheFigures: r.outsideTheFigures,
+  });
+  return {
+    trace: run.trace,
+    doses: run.doses,
+    presets: run.presets.map(ring),
+    grid: run.grid.map(ring),
+    reliability: run.reliability.map((r) => ({
+      name: r.name,
+      weapon: r.weapon,
+      low: fixed(r.low, 3),
+      middle: fixed(r.middle, 3),
+      high: fixed(r.high, 3),
+    })),
+    stepAt100Kt: fixed(run.stepAt100Kt, 4),
+    ringsBehave: run.ringsBehave,
+    decision: run.decision,
+  };
+}
+
 /** Rules 76 to 79 in the report's JSON. */
 function fireballJson(run: FireballRunResult) {
   const reading = (r: FireballReading) => ({
@@ -3282,6 +3343,7 @@ function main(): void {
   const residual = runResidualRules();
   const fireball = runFireball();
   const burn = runBurn();
+  const dose = runDose();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -3402,6 +3464,10 @@ ${fireballSection(fireball)}
 
 ${burnSection(burn)}
 
+### The initial radiation, from the figures the book draws
+
+${doseSection(dose)}
+
 ### Which checks are validation
 
 ${rolesSection(net)}
@@ -3458,7 +3524,7 @@ ${bullet([
   "**Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).",
   "**Two numbers are not traced to a source read here.** The arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table; and the complex-crater depth is Herrick et al. 1997's Venus relation, read only through Collins et al. 2005. A third, the 30 cm at DART 21413 that the Tōhoku wave row was tuned on, was read from the buoy's own file on 15 September 2026: it crests at 0.81 m, and the row is declared (B-034).",
   "**An airburst's blast is a point that does not move, drawn as round rings.** Since 15 September 2026 it is the Earth Impact Effects Program's own air blast (Collins et al. 2005 and 2017; B-032), reproduced within 1 % on the airburst rows above, which were held out when it was adopted. What that model is not was checked against rules written first (`docs/BENCHMARK_PROTOCOL.md`): against the shock-physics runs of Collins et al. 2017, Table 2, its figures are 0.92× theirs, the median off by a factor of 1.21; at Tunguska its 20 kPa ring reaches 11.5 km, against the 26.5 km radius of the ~2 200 km² of flattened forest (0.43×), beyond a factor of two. At Chelyabinsk the check first flagged a 1 kPa ring of 17.6 km against the 56 km radius of the ~10 000 km² over which windows broke; the preset then took the body Popova et al. 2013 measured, as its source says and not as the check asked (B-033), and on a re-run that is not a validation the ring reaches 30.2 km (0.54×), 68.0 km for a moving source. In the city, 45 km out, the law gives 0.74 kPa where the broken windows put about 3.2 kPa (Brown et al. 2013). A shallow, high burst spreads its energy along its path and damages an ellipse, farthest across the path; ReVelle's weak-shock line source, the only analytic one, is \"largely inapplicable\" beneath Chelyabinsk's trail (Gi, Brown & Aftosmis 2018), and the elongated footprint has been reproduced only by three-dimensional hydrocodes (Popova et al. 2013; Aftosmis et al. 2016). Tunguska's blast row checks the energy, not the blast (`effects/airburstBlast.ts`).",
-  "**Parts of the explosion model are the project's, not the book's.** The initial-radiation radii scale as a project fit not checked against the book's dose–range curves; the thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101; and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).",
+  "**Parts of the explosion model are the project's, not the book's.** The thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101, and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).",
   "**No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.",
   "**A burst on the surface of open water makes no wave here.** Glasstone & Dolan's wave relations are for a burst within the water, at any depth in it (§6.119), and give nothing for one on its surface, so the wave steps from nothing to the full relation as the charge goes under. The wider explosion-wave literature describes surface bursts that do make waves; until a relation is taken from it, the step stays and is said (docs/ROADMAP.md, M9 move 3).",
   "**The volcanic relations are the project's calibrations, and a current is a disc.** The reach of pyroclastic currents (L = 10 · V^⅓, a project mobility), the ashfall, the lahars and the climate response were set on anchors that the source review of 14 September did not recheck (docs/ROADMAP.md, move 0b). A current is drawn as a disc about the vent: held out, Fuego 2018's reaches 3.7 km where the current that killed ran 11.7 km down one ravine, and its toll lands inside the record only because a reach three times short and a footprint far too wide cancel; Unzen 1991's reaches 0.84 km against a flow of 3.2 km.",
@@ -3703,6 +3769,7 @@ otherwise.
       residual: residualJson(residual),
       fireball: fireballJson(fireball),
       burn: burnJson(burn),
+      dose: doseJson(dose),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,

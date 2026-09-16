@@ -527,16 +527,19 @@ the candidates for re-tuning:
   bolides"). At the panel's stony class, ten times the strength, 8.3 km. The
   gap is declared; nothing is tuned on a set now read, and any choice among
   strengths belongs to a set nobody has read yet.
-- **Explosions.** The initial-radiation fit has not been checked against
-  the book's dose–range curves; the thermal partition between the ground
-  and the air is interpolated linearly, not read from the book's Table
-  7.101; the conventional mortality bands were composed with Beirut in
-  view. (Closed on 16 September 2026: the burn thresholds were fixed at 8,
-  5 and 2 cal/cm² where the book makes the exposure grow with the yield.
-  Its Figure 12.64 was traced from the public scan and adopted — rules 80
-  to 84, docs/SCIENCE.md, "The exposure that burns, from the book's own
-  figure". An impact still draws the project's fluences, which is a gap of
-  its own.)
+- **Explosions.** The thermal partition between the ground and the air is
+  interpolated linearly, not read from the book's Table 7.101; the
+  conventional mortality bands were composed with Beirut in view. (Two
+  closed on 16 September 2026, both by tracing the page the project already
+  cited. The burn thresholds were fixed at 8, 5 and 2 cal/cm² where the
+  book makes the exposure grow with the yield: its Figure 12.64 was traced
+  and adopted — rules 80 to 84. The initial-radiation radii were a fit
+  whose own anchors cited a figure the book does not have: its Figures
+  8.33a/b and 8.64a/b were traced and adopted, and the rings now answer to
+  the height of burst as well — rules 85 to 89. See docs/SCIENCE.md, "The
+  exposure that burns, from the book's own figure" and "The initial
+  radiation, from the figures the book draws". An impact still draws the
+  project's burn fluences, which is a gap of its own.)
 - **Volcanoes.** The PDC, ashfall, lahar and climate relations are
   project calibrations whose anchors were not rechecked.
 - **Unread.** A published table of tsunami arrival times; the tests that

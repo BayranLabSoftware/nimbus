@@ -1037,3 +1037,21 @@ they say: no toll can judge this, the figures stop at 1 kt and 20 Mt, rads of
 neutrons are added as if they were worth the same as rads of gamma rays where
 the book says they are often worth more, and the book's own reliability is a
 factor of two either way for a fission weapon.
+
+### The outcome, 16 September 2026
+
+Run once after the rules were pushed (`06f31d1`), with
+`pnpm exec tsx scripts/benchmark/dose.ts`. The trace passed all five checks,
+the book's own worked example included. No guard failed: the release gate
+stayed PASS — which it could hardly not, since no death here is counted from
+radiation — and the rings kept their order and grew with the yield across the
+figures' span. **Adopted.** The rings widen almost everywhere: Hiroshima's
+LD₅₀ from 1.14 to 1.33 km, the 1 Mt reference from 2.43 to 2.77, Castle Bravo
+from 3.95 to 4.88. They also crowd together, because the book's curves do —
+the fit held LD₁₀₀ at a flat 0.7 of LD₅₀ and the threshold at 1.4, where the
+book puts Hiroshima's at 0.91 and 1.26 — and they now answer to the height of
+burst: Tsar Bomba, 4 km up, draws 2.77 km where the fit drew 4.91, and a burst
+above the atmosphere draws nothing. One reading is declared rather than
+mended: at 50 Mt the figures are held flat at their 20 Mt end, so Tsar Bomba's
+rings are too small by an unknown amount. The validation report prints the
+table and the book's own reliability beside it.

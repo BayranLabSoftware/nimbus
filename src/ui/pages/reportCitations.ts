@@ -137,7 +137,10 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
 export function collectExplosionCitations(result: ExplosionScenarioResult): TriggeredCitation[] {
   const triggers: TriggeredCitation[] = [
     cite('kinneyGraham1985', 'Peak-overpressure scaled-distance fit.'),
-    cite('glasstoneDolan1977', 'Blast thresholds, thermal fluence, firestorm, initial radiation.'),
+    cite(
+      'glasstoneDolan1977',
+      'Blast thresholds; thermal fluence and the exposure that burns (Fig. 12.64); firestorm; the initial-radiation dose against slant range (Figs. 8.33a/b and 8.64a/b).'
+    ),
   ];
 
   if (result.blast.hobRegime === 'SURFACE') {

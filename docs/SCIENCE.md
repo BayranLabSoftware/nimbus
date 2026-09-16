@@ -2034,6 +2034,66 @@ one change that could keep the records and the narrower band together, and it
 was not tried; neither was the shorter range, 8.5 km, which averages more
 still. The prospective set of rules 27 to 30 will read whatever is in place.
 
+### The initial radiation, from the figures the book draws (16 September 2026)
+
+`validation/doseRules.ts` (rules 85 to 89), `validation/doseRun.ts`,
+`effects/initialRadiation.ts`. Nimbus drew its three initial-radiation rings
+from a fit of its own: an LD₅₀ range of 700 m at 1 kt growing as the yield to
+the 0.18, with LD₁₀₀ at 0.7 of that distance and the acute-radiation threshold
+at 1.4. The fit's own comment named its anchors "Glasstone Fig. 8.46" and said
+they had never been rechecked. There is no dose–range figure 8.46 in the book.
+The dose–range figures are 8.33a and b for gamma rays and 8.64a and b for
+neutrons — six curves apiece at 30, 100, 300, 1 000, 3 000 and 10 000 rads in
+tissue, the "a" of each pair for fission weapons from 1 to 100 kt and the "b"
+for thermonuclear weapons of 50 % fission yield from 0.1 to 20 Mt — and the fit
+had never been read against them.
+
+All twenty-four were traced from the public scan
+(`scripts/benchmark/dose-curves.py`, on DTIC ADA087568). Each frame is
+calibrated against that figure's own decade ticks, which land on their labelled
+yields to under a percent — 1.012, 2.02, 5.03, 100.9 kt — and that is the
+strongest evidence the axes were read right. The script refuses to write unless
+each figure holds six curves, each rises with the yield, none crosses another,
+the fission and thermonuclear figures of one radiation agree within 18 % where
+they meet at 100 kt, and the traced gamma table reproduces the book's own
+worked example at §8.34. That last check earned its place at once: the first
+trace read the third curve's label as 500 rads and put the example at 394 rads
+where the book reads "somewhat less than 300 … about 250". The label is 300,
+the series is the regular 30-100-300-1 000-3 000-10 000, and the corrected
+trace reads the example at 255 rads.
+
+The candidate adds the two doses, reads the fission figures below 100 kt and
+the thermonuclear pair above — the book's own division — corrects towards a
+contact surface burst below 300 feet by Table 8.37 for gamma rays and by one
+half for neutrons (§8.37, §8.65), and turns the figure's slant range into a
+ring on the ground, √(slant² − height²). The three doses the rings are drawn at
+do not move: 800, 450 and 100 rads, project values after OTA 1979, UNSCEAR and
+BEIR VII, not the book's.
+
+The rules were pushed before the candidate drew a ring for any preset (commit
+`06f31d1`). Rule 87 made the choice an adoption unless a guard failed, because
+the candidate replaces a fit whose anchors cite a figure that does not exist
+with the source the project claims. None failed, and the figures are in place.
+The rings widen almost everywhere: Hiroshima's LD₅₀ goes from 1.14 to 1.33 km,
+the 1 Mt reference from 2.43 to 2.77 km, Castle Bravo from 3.95 to 4.88. The
+three rings also crowd together, because the book's own curves do: the fit put
+LD₁₀₀ at a flat 0.7 of LD₅₀ and the threshold at 1.4, where the book puts
+Hiroshima's at 0.91 and 1.26 of it. And the rings now answer to the height of
+burst, which the fit could not: Tsar Bomba, burst 4 km up, draws 2.77 km where
+the fit drew 4.91, and a burst above the atmosphere draws nothing.
+
+What this cannot settle is written in the rules. No toll can judge it: no death
+in Nimbus is counted from initial radiation at all, so this is a reading of the
+book against a fit and not of either against the world. The figures stop at
+1 kt and 20 Mt and are held flat outside, so Tsar Bomba's 50 Mt is read as
+20 Mt and its rings are too small by an unknown amount. Rads of neutrons are
+added as if worth the same as rads of gamma rays, where §8.65 says they are
+often worth more. The rings step down 5.3 % at 100 kt, where the book itself
+changes weapon. And the book's own reliability is a factor of two either way on
+a fission weapon's dose, which puts Hiroshima's LD₅₀ anywhere from 1.22 to
+1.49 km — wider than the distance between the fit and the figures at some
+yields. The report prints that band beside the rings, deciding nothing.
+
 ### The exposure that burns, from the book's own figure (16 September 2026)
 
 `validation/burnRules.ts` (rules 80 to 84), `validation/burnRun.ts`,

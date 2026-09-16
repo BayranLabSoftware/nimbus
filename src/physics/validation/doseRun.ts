@@ -11,7 +11,11 @@ import {
   LD100_RAD,
   LD50_RAD,
 } from '../events/explosion/radiation.js';
-import { EXPLOSION_PRESETS, type ExplosionScenarioInput } from '../events/explosion/simulate.js';
+import {
+  EXPLOSION_PRESETS,
+  simulateExplosion,
+  type ExplosionScenarioInput,
+} from '../events/explosion/simulate.js';
 import {
   chooseRadiationSource,
   DOSE_CANDIDATE,
@@ -122,16 +126,25 @@ function ringRow(name: string, yieldKt: number, heightM: number): DoseRingRow {
   };
 }
 
-/** Rule 88: every explosion preset that draws a radiation ring. */
+/** Rule 88: every explosion preset that draws a radiation ring. The preset is
+ *  run through the simulator, not read past it, so a chemical charge, a burst
+ *  in the water and one above the atmosphere draw nothing here either. */
 export function doseRingRows(): DoseRingRow[] {
   return Object.values(EXPLOSION_PRESETS)
     .map((preset) => {
       const input: ExplosionScenarioInput = preset.input;
-      return ringRow(
-        preset.name,
-        input.yieldMegatons * KILOTONS_PER_MEGATON,
-        (input.heightOfBurst as number | undefined) ?? 0
-      );
+      const yieldKt = input.yieldMegatons * KILOTONS_PER_MEGATON;
+      const heightM = (input.heightOfBurst as number | undefined) ?? 0;
+      const from = (source: RadiationSource): [number, number, number] => {
+        const r = simulateExplosion({ ...input, radiationSource: source }).radiation;
+        return [
+          (r.ld100Radius as number) / 1_000,
+          (r.ld50Radius as number) / 1_000,
+          (r.arsThresholdRadius as number) / 1_000,
+        ];
+      };
+      const row = ringRow(preset.name, yieldKt, heightM);
+      return { ...row, inPlaceKm: from(DOSE_IN_PLACE), candidateKm: from(DOSE_CANDIDATE) };
     })
     .filter((row) => row.inPlaceKm[1] > 0 || row.candidateKm[1] > 0);
 }
