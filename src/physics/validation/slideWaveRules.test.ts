@@ -8,6 +8,10 @@ import {
   SLIDE_WAVE_DEPTH_SOURCE_REJECTED,
   SLIDE_WAVE_MARINE,
   SLIDE_WAVE_MIN_EVENTS,
+  SLIDE_WAVE_PEAK_BAND,
+  SLIDE_WAVE_PEAK_MIDPOINT,
+  SLIDE_WAVE_RUNUP_AMPLIFICATION,
+  meetsL2AgainstPeak,
   SLIDE_WAVE_PRINTED_WHILE_COUNTING,
   SLIDE_WAVE_SEEN_WHILE_LOOKING,
   SLIDE_WAVE_SIGMA_BOUND,
@@ -93,5 +97,48 @@ describe("rule 121: L2's bounds", () => {
     expect(meetsL2(reading(26, 1 / SLIDE_WAVE_BIAS_BOUND, 0.5))).toBe(true);
     expect(meetsL2(reading(26, SLIDE_WAVE_BIAS_BOUND * 1.001, 0.5))).toBe(false);
     expect(meetsL2(reading(26, 1 / (SLIDE_WAVE_BIAS_BOUND * 1.001), 0.5))).toBe(false);
+  });
+});
+
+describe('rules 122 to 125: the height L2 actually asks for', () => {
+  const reading = (rows: number, bias: number, sigmaLn: number) => ({
+    rows,
+    bias,
+    sigmaLn,
+    withinTwo: 0.5,
+  });
+
+  it('takes its band from a constant the project already shipped', () => {
+    // Not fitted to the set: it is the cap this project's own coastal chain
+    // puts on a run-up over the wave that made it.
+    expect(SLIDE_WAVE_RUNUP_AMPLIFICATION).toBe(4);
+    expect(SLIDE_WAVE_PEAK_BAND).toEqual([0.25, 1]);
+    expect(SLIDE_WAVE_PEAK_MIDPOINT).toBeCloseTo(0.5, 10);
+  });
+
+  it('asks for a bias below one, because a run-up is bigger than its wave', () => {
+    // A model reading 1.0 against a peak run-up is a model whose source wave
+    // equals the run-up, which is two to four times too big.
+    expect(meetsL2AgainstPeak(reading(26, 0.5, 0.6))).toBe(true);
+    expect(meetsL2AgainstPeak(reading(26, 0.34, 0.6))).toBe(true);
+    expect(meetsL2AgainstPeak(reading(26, 0.74, 0.6))).toBe(true);
+    expect(meetsL2AgainstPeak(reading(26, 1.0, 0.6))).toBe(false);
+    expect(meetsL2AgainstPeak(reading(26, 0.3, 0.6))).toBe(false);
+  });
+
+  it('keeps L2’s other two clauses exactly as rule 121 had them', () => {
+    expect(meetsL2AgainstPeak(reading(9, 0.5, 0.6))).toBe(false);
+    expect(meetsL2AgainstPeak(reading(26, 0.5, 0.71))).toBe(false);
+  });
+
+  it('is a different question from rule 121, not a looser one', () => {
+    // The band is 1.5 either way around its midpoint, the same width rule 121
+    // allows around one. Only the centre moved, and it moved for a reason
+    // written down before the run.
+    const width = (lo: number, hi: number) => Math.log(hi / lo);
+    expect(width(SLIDE_WAVE_PEAK_MIDPOINT / 1.5, SLIDE_WAVE_PEAK_MIDPOINT * 1.5)).toBeCloseTo(
+      width(1 / 1.5, 1.5),
+      10
+    );
   });
 });

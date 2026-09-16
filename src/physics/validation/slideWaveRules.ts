@@ -163,6 +163,64 @@
  * missed.**
  */
 
+/*
+ * ===========================================================================
+ * The same set, read against the height L2 actually asks for (rules 122 to 125)
+ * ===========================================================================
+ *
+ * Written on 16 September 2026, after the run above was committed and pushed
+ * (`55bfc40`), and after Andrea chose this of three ways forward. **It is not
+ * a pre-registration**: the figures of rules 118 to 121 are in that commit,
+ * and they are why anyone would write these rules. What is fixed in advance,
+ * and what a reader can check, is below.
+ *
+ * Rule 120 scored against the catalogue's `Wave h max`, and L2 asks for "a
+ * measured wave or **run-up** near the source". The run was what showed the
+ * choice was wrong: Karrat Fjord 2017 carries `Wave h max` 1.5 m beside a
+ * `Run-up h` of 90 m. That column is often a height at a distant gauge.
+ *
+ * **And the obvious correction does not work either, which is worth writing
+ * down before anyone tries it again.** The two columns are not "far field" and
+ * "near field": across the seventeen rows of the set that carry both, the
+ * run-up is the larger in only ten. Greenland 2014 gives `Wave h max` 50 m
+ * beside a run-up of 15; Kolombo 1650 gives 30 beside 20; Stromboli 2002
+ * gives 15 beside 10.9. The catalogue records what each event's literature
+ * reported, and neither column is reliably the wave at the slide. So a
+ * "the model should sit between the two" test is not available, and this round
+ * does not pretend it is.
+ *
+ *  122. **The set.** Rule 118's filter with its wave clause replaced: a row is
+ *       in when its status is "okay", it carries a slide volume, its water
+ *       body is marine, its name is not one this project is calibrated on, and
+ *       it carries a **`Peak height`** above zero — the catalogue's own
+ *       "maximum of wave and run-up height", which is the largest water height
+ *       anyone reported for that event and the nearest thing the file holds to
+ *       a wave near the source. Depths come from rule 119's GMRT unchanged.
+ *
+ *  123. **What is compared.** The same model figure as rule 120: Heller's
+ *       crest plus trough, a height. Against `Peak height`, and printed
+ *       beside it against `Run-up h` alone and against `Wave h max` alone, so
+ *       the three readings can be set side by side. Only the first decides.
+ *
+ *  124. **Where a well-behaved model would sit, fixed before the run.** A peak
+ *       that is a run-up is larger than the wave that made it: this project's
+ *       own coastal chain caps that amplification at four (the constant in
+ *       `events/tsunami/extendedEffects.ts`, McCowan's breaking limit as the
+ *       caller applies it), and Synolakis on the project's own 1:100 beach at
+ *       10 m gives about 2.8 times the incident amplitude. So a source wave
+ *       that agreed with these records would read **between 0.25 and 1.0**
+ *       against them, not 1.0, and the midpoint of that band in the log is
+ *       0.5. This band is arithmetic on a constant this project already
+ *       shipped; nothing is fitted to the set.
+ *
+ *  125. **What decides.** The reading meets L2 when its bias lies within a
+ *       factor of 1.5 of rule 124's midpoint — that is, between 0.333 and
+ *       0.75 — at σ_ln no more than 0.7, on at least ten events. Anything else
+ *       is not met, and is declared. **Nothing is tuned on this set whatever
+ *       it says** (rules 5 and 6), and the set stays read: this is the second
+ *       and last reading of it, and a third would be shopping.
+ */
+
 /** Rule 118: the catalogue. */
 export const SLIDE_WAVE_SOURCE =
   'Dohmen, K; Braun, A; Fernandez-Steeger, T M (2025): A catalog of landslide-triggered tsunamis. PANGAEA, doi:10.1594/PANGAEA.979839 (CC-BY-4.0)';
@@ -192,6 +250,31 @@ export const SLIDE_WAVE_DEPTH_RADIUS_M = 5_000;
  *  constant so the amendment is in the code and not only in a comment. */
 export const SLIDE_WAVE_DEPTH_SOURCE_REJECTED =
   'AWS Terrain Tiles at zoom 10 — rejected 16 September 2026: Kitimat Arm (about 200 m deep) read 1 m, Sognefjord (about 1 200 m) read 0.8 m';
+
+/** Rule 124: a run-up is larger than the wave that made it, by the factor
+ *  this project already caps its own coastal chain at. */
+export const SLIDE_WAVE_RUNUP_AMPLIFICATION = 4;
+/** Rule 124's band, and its midpoint in the log: where a source wave that
+ *  agreed with a peak run-up would read. */
+export const SLIDE_WAVE_PEAK_BAND: readonly [number, number] = [
+  1 / SLIDE_WAVE_RUNUP_AMPLIFICATION,
+  1,
+];
+export const SLIDE_WAVE_PEAK_MIDPOINT = Math.sqrt(
+  SLIDE_WAVE_PEAK_BAND[0] * SLIDE_WAVE_PEAK_BAND[1]
+);
+
+/** Rule 125: whether the reading against `Peak height` meets L2. */
+export function meetsL2AgainstPeak(r: SlideWaveReading): boolean {
+  const lo = SLIDE_WAVE_PEAK_MIDPOINT / SLIDE_WAVE_BIAS_BOUND;
+  const hi = SLIDE_WAVE_PEAK_MIDPOINT * SLIDE_WAVE_BIAS_BOUND;
+  return (
+    r.rows >= SLIDE_WAVE_MIN_EVENTS &&
+    r.bias >= lo &&
+    r.bias <= hi &&
+    r.sigmaLn <= SLIDE_WAVE_SIGMA_BOUND
+  );
+}
 
 /** Rule 121: L2's bounds. */
 export const SLIDE_WAVE_BIAS_BOUND = 1.5;
