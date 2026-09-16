@@ -19,6 +19,91 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 - **Held out** — the rows nothing in the model was set on: death tolls 8 of 11 inside the band, waves 4 of 4, eruption columns 3 of 3. 4 of the 15 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
 - **Replay fixtures:** 3 of 3 pass. **Golden dataset:** 12 of 12 pass.
 
+## Toward a 9
+
+The count `docs/GOLD_STANDARD.md` reads below a 9, from `validation/goldStandardScorecard.ts`. Each domain is scored on its own rules and on the rules of every domain that apply to it, each counted once; a rule with clauses earns the share of them that holds, and a rule that does not hold or is pending earns nothing. The count is 9 × what is earned over the rules, cut to one decimal, so a domain reads 9 only when everything holds. A status here is a verdict a rule file, a test or this report reached, never a reading.
+
+| Domain | Count | Rules that hold | Pending |
+| --- | --: | --: | --: |
+| Impacts | 3.7 | 3 of 9 | 1 |
+| Explosions | 3.2 | 2 of 8 | 1 |
+| Waves from landslides | 3.0 | 2 of 6 | 0 |
+| Volcanoes | 1.1 | 1 of 10 | 4 |
+| Earthquakes | 1.0 | 1 of 9 | 3 |
+| Waves from earthquakes | 0.9 | 1 of 10 | 5 |
+
+#### Earthquakes
+
+- **G1**, not met. Met for Boore et al. 2014 (to Boore's Fortran), Allen et al. 2012, the interface models and Thompson & Worden's distances; not for every relation that sets a printed number.
+- **E1**, pending. A ShakeMap scenario run without stations on the same maps has not been run.
+- **E2**, not met. 0.13× PAGER's people at MMI VII and above, σ_ln 2.18.
+- **E3**, pending. PAGER's own σ_ln on the same rows has not been read.
+- **E4 (G3)**, pending. Follows E3.
+- **E5 (G4)**, not met. The envelope has no depth cells.
+- **G5**, not met. The sweep of 16 September 2026 finds 16 failures: rings stepping over their thresholds (benchmark/results/invariants-2026-09-16-4.json).
+- **G6**, not met. Every gap is declared in the report, but a 9 may carry only the ceilings, and the report declares gaps that are not ceilings.
+- **G7**, met. Every default changed since the rules were written changed by rules pushed before their candidate ran, with every outcome recorded (docs/BENCHMARK_PROTOCOL.md; the rule files of validation/).
+
+#### Waves from earthquakes
+
+- **G1**, not met. The far-field and run-up relations are held to GeoClaw fixtures by tolerance, not within 1 % of a reference implementation.
+- **T1**, pending. GeoClaw has been run only over a flat ocean.
+- **T2**, pending. GeoClaw on real bathymetry not run; under the bound as first written, not met (3.16×, rules 102 to 105).
+- **T3**, pending. No reference travel-time computation on the records.
+- **T4**, pending. No held-out set of tsunami tolls.
+- **T5 (G3)**, not met. Waves carry no band.
+- **G4**, not met. No measured cells for waves.
+- **G5**, pending. The earthquake sweep checks the shaking's rings and not the wave's.
+- **G6**, not met. Every gap is declared in the report, but a 9 may carry only the ceilings, and the report declares gaps that are not ceilings.
+- **G7**, met. Every default changed since the rules were written changed by rules pushed before their candidate ran, with every outcome recorded (docs/BENCHMARK_PROTOCOL.md; the rule files of validation/).
+
+#### Waves from landslides
+
+- **L1 (G1, G4)**, not met. The relation in place is Watts 2000's cube root with the project's prefactors; Heller et al. 2009 is verified to 0.4 % of its manual but is not the default, and the product does not warn outside Heller's ranges.
+- **L2**, not met. Against Heller on the same rows: Heller 1.282× at σ_ln 1.776, the model 2.090× at 1.529.
+- **L3 (G3)**, not met. No Monte Carlo sampler.
+- **G5**, met. No failure in the sweep of 5 000 landslides, and the application prints what Node computes (benchmark/results/invariants-2026-09-16-4.json).
+- **G6**, not met. Every gap is declared in the report, but a 9 may carry only the ceilings, and the report declares gaps that are not ceilings.
+- **G7**, met. Every default changed since the rules were written changed by rules pushed before their candidate ran, with every outcome recorded (docs/BENCHMARK_PROTOCOL.md; the rule files of validation/).
+
+#### Impacts
+
+- **I1 (G1)**, 8 of 11 clauses — open: the thermal exposure (not met); the seismic magnitude (pending); the impact tsunami (not met). Against the Earth Impact Effects Program on the grid of validation/eiepReference.ts, gated in eiepComparison.test.ts.
+- **I2**, met. Read against the program's entry on the 357 CNEOS fireballs (rules 126 to 128, validation/fireballAnchorRules.ts).
+- **I3**, not met. Tunguska's 20 kPa ring 0.43× the flattened forest.
+- **I4**, met. Rings counted within 2.7 % of an exact count (rules 94 to 97), and the toll carries its ceiling.
+- **G3**, not met. No quantity of an impact carries a band scored on a held-out set.
+- **G4**, not met. No measured cells for impacts.
+- **G5**, not met. 425 failures in the sweep of 16 September 2026; two are a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-8.json).
+- **G6**, not met. Every gap is declared in the report, but a 9 may carry only the ceilings, and the report declares gaps that are not ceilings.
+- **G7**, met. Every default changed since the rules were written changed by rules pushed before their candidate ran, with every outcome recorded (docs/BENCHMARK_PROTOCOL.md; the rule files of validation/).
+
+#### Explosions
+
+- **N1 (G1)**, 8 of 9 clauses — open: overpressure with height of burst (not met). Against Glasstone & Dolan 1977 and Kingery–Bulmash (docs/GOLD_STANDARD.md, standing).
+- **N2**, pending. No set of accidental explosions.
+- **N3**, not met. Two tolls, both tuned; Beirut 6.6× outside its band.
+- **G3**, not met. No band scored on a held-out set.
+- **G4**, not met. No measured cells for explosions.
+- **G5**, met. One failure in the sweep, the lethal-dose ring where the sphere meets the ground tangentially, which is the geometry and declared; the application prints what Node computes.
+- **G6**, not met. Every gap is declared in the report, but a 9 may carry only the ceilings, and the report declares gaps that are not ceilings.
+- **G7**, met. Every default changed since the rules were written changed by rules pushed before their candidate ran, with every outcome recorded (docs/BENCHMARK_PROTOCOL.md; the rule files of validation/).
+
+#### Volcanoes
+
+- **V1 (G1)**, 1 of 4 clauses — open: the ash (not met); the pyroclastic currents (not met); the lahars (not met). The column, the ash and the flows against their references.
+- **V2**, pending. No held-out set beyond IVESPA 1.0, which is read.
+- **V3**, pending. Tephra2 not run on a set of isopach maps.
+- **V4**, pending. The energy cone and LaharZ not run on a set of currents.
+- **V5**, not met. One held-out toll of three inside, 0.21×.
+- **V6 (G3)**, pending. Follows V2 to V5.
+- **G4**, not met. No measured cells for volcanoes.
+- **G5**, not met. 6 failures: the ashfall's plume crossing a grain-size regime (benchmark/results/invariants-2026-09-16-4.json).
+- **G6**, not met. Every gap is declared in the report, but a 9 may carry only the ceilings, and the report declares gaps that are not ceilings.
+- **G7**, met. Every default changed since the rules were written changed by rules pushed before their candidate ran, with every outcome recorded (docs/BENCHMARK_PROTOCOL.md; the rule files of validation/).
+
+**Nimbus as a whole** also needs C1 to C3: C1 not met, C2 not met, C3 not met.
+
 ## Scorecard
 
 How accurate and how precise the model is, scored on the rows nothing in the

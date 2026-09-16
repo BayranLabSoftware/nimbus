@@ -16,8 +16,16 @@ the last section allows.
   read from the validation report that commit regenerates. A rule not yet
   measured does not hold.
 - Nimbus has a 9 when every domain has one and rules C1 to C3 hold.
-- There is no 10, and below 9 a grade stays a reading: these rules say only
-  what a 9 is.
+- There is no 10. Below 9 a grade is a count, not a reading (since
+  16 September 2026, at Andrea's request): each domain is scored on its own
+  rules and on the rules of every domain that apply to it, each counted once;
+  a rule that lists clauses earns the share of them that holds, and a rule
+  that does not hold, or is pending, earns nothing. The grade is 9 × what is
+  earned over the rules, cut to one decimal, so it reads 9 only when every rule
+  holds. `src/physics/validation/goldStandardScorecard.ts` holds each status
+  with its evidence, and the validation report prints the count at every
+  commit ("Toward a 9"). A status changes only with the verdict that changes
+  it.
 - Where the field has a tool that makes the same estimate for the same
   events, a bound is read against that tool on the same rows, so that a 9
   means as good as the field and never better than the field can be.
@@ -372,6 +380,15 @@ not that a rule holds.
 | C1–C3  | Not met.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ## What has moved since
+
+- **16 September 2026, the grade becomes a count.** Readings such as
+  "impacts 7.5" judged how good a model is; they could not show progress
+  toward the rules, and they moved with whoever read them. The count replaces
+  them. On the day it was written it reads impacts 3.7, explosions 3.2, waves
+  from landslides 3.0, volcanoes 1.1, earthquakes 1.0 and waves from
+  earthquakes 0.9 — lower than the readings because it counts what holds, and
+  most of what does not hold is pending: a reference that has not been run on
+  the rows, or a held-out set that has not been gathered.
 
 - **16 September 2026, the air blast of a ground impact closed, by following
   the program where it parts from its paper.** Rules 138 to 140 were refused on

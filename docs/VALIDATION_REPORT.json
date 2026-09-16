@@ -1,5 +1,611 @@
 {
   "mode": "strict",
+  "goldStandard": {
+    "domains": [
+      {
+        "domain": "Earthquakes",
+        "rules": [
+          {
+            "rule": "G1",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "E1",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "E2",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "E3",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "E4",
+            "standsFor": [
+              "G3"
+            ],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "E5",
+            "standsFor": [
+              "G4"
+            ],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G5",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G6",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G7",
+            "standsFor": [],
+            "holds": true,
+            "credit": 1,
+            "status": "met",
+            "clauses": []
+          }
+        ],
+        "held": 1,
+        "pending": 3,
+        "credit": 1,
+        "reading": 1
+      },
+      {
+        "domain": "Waves from earthquakes",
+        "rules": [
+          {
+            "rule": "G1",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "T1",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "T2",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "T3",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "T4",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "T5",
+            "standsFor": [
+              "G3"
+            ],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G4",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G5",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "G6",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G7",
+            "standsFor": [],
+            "holds": true,
+            "credit": 1,
+            "status": "met",
+            "clauses": []
+          }
+        ],
+        "held": 1,
+        "pending": 5,
+        "credit": 1,
+        "reading": 0.9
+      },
+      {
+        "domain": "Waves from landslides",
+        "rules": [
+          {
+            "rule": "L1",
+            "standsFor": [
+              "G1",
+              "G4"
+            ],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "L2",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "L3",
+            "standsFor": [
+              "G3"
+            ],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G5",
+            "standsFor": [],
+            "holds": true,
+            "credit": 1,
+            "status": "met",
+            "clauses": []
+          },
+          {
+            "rule": "G6",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G7",
+            "standsFor": [],
+            "holds": true,
+            "credit": 1,
+            "status": "met",
+            "clauses": []
+          }
+        ],
+        "held": 2,
+        "pending": 0,
+        "credit": 2,
+        "reading": 3
+      },
+      {
+        "domain": "Impacts",
+        "rules": [
+          {
+            "rule": "I1",
+            "standsFor": [
+              "G1"
+            ],
+            "holds": false,
+            "credit": 0.727,
+            "status": null,
+            "clauses": [
+              {
+                "name": "the entry",
+                "status": "met"
+              },
+              {
+                "name": "the burst",
+                "status": "met"
+              },
+              {
+                "name": "the speed and energy at the ground",
+                "status": "met"
+              },
+              {
+                "name": "the crater's diameters and depth",
+                "status": "met"
+              },
+              {
+                "name": "the fireball and its horizon",
+                "status": "met"
+              },
+              {
+                "name": "the thermal exposure",
+                "status": "not met"
+              },
+              {
+                "name": "the ejecta",
+                "status": "met"
+              },
+              {
+                "name": "the air blast of airbursts",
+                "status": "met"
+              },
+              {
+                "name": "the air blast of ground impacts",
+                "status": "met"
+              },
+              {
+                "name": "the seismic magnitude",
+                "status": "pending"
+              },
+              {
+                "name": "the impact tsunami",
+                "status": "not met"
+              }
+            ]
+          },
+          {
+            "rule": "I2",
+            "standsFor": [],
+            "holds": true,
+            "credit": 1,
+            "status": "met",
+            "clauses": []
+          },
+          {
+            "rule": "I3",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "I4",
+            "standsFor": [],
+            "holds": true,
+            "credit": 1,
+            "status": "met",
+            "clauses": []
+          },
+          {
+            "rule": "G3",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G4",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G5",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G6",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G7",
+            "standsFor": [],
+            "holds": true,
+            "credit": 1,
+            "status": "met",
+            "clauses": []
+          }
+        ],
+        "held": 3,
+        "pending": 1,
+        "credit": 3.727,
+        "reading": 3.7
+      },
+      {
+        "domain": "Explosions",
+        "rules": [
+          {
+            "rule": "N1",
+            "standsFor": [
+              "G1"
+            ],
+            "holds": false,
+            "credit": 0.889,
+            "status": null,
+            "clauses": [
+              {
+                "name": "overpressure with range",
+                "status": "met"
+              },
+              {
+                "name": "overpressure with height of burst",
+                "status": "not met"
+              },
+              {
+                "name": "the fireball",
+                "status": "met"
+              },
+              {
+                "name": "thermal fluence and its partition",
+                "status": "met"
+              },
+              {
+                "name": "burns at exposures that grow with yield",
+                "status": "met"
+              },
+              {
+                "name": "initial radiation",
+                "status": "met"
+              },
+              {
+                "name": "the crater",
+                "status": "met"
+              },
+              {
+                "name": "the water wave",
+                "status": "met"
+              },
+              {
+                "name": "Kingery–Bulmash for a charge on the ground",
+                "status": "met"
+              }
+            ]
+          },
+          {
+            "rule": "N2",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "N3",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G3",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G4",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G5",
+            "standsFor": [],
+            "holds": true,
+            "credit": 1,
+            "status": "met",
+            "clauses": []
+          },
+          {
+            "rule": "G6",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G7",
+            "standsFor": [],
+            "holds": true,
+            "credit": 1,
+            "status": "met",
+            "clauses": []
+          }
+        ],
+        "held": 2,
+        "pending": 1,
+        "credit": 2.889,
+        "reading": 3.2
+      },
+      {
+        "domain": "Volcanoes",
+        "rules": [
+          {
+            "rule": "V1",
+            "standsFor": [
+              "G1"
+            ],
+            "holds": false,
+            "credit": 0.25,
+            "status": null,
+            "clauses": [
+              {
+                "name": "the column",
+                "status": "met"
+              },
+              {
+                "name": "the ash",
+                "status": "not met"
+              },
+              {
+                "name": "the pyroclastic currents",
+                "status": "not met"
+              },
+              {
+                "name": "the lahars",
+                "status": "not met"
+              }
+            ]
+          },
+          {
+            "rule": "V2",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "V3",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "V4",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "V5",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "V6",
+            "standsFor": [
+              "G3"
+            ],
+            "holds": false,
+            "credit": 0,
+            "status": "pending",
+            "clauses": []
+          },
+          {
+            "rule": "G4",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G5",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G6",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "G7",
+            "standsFor": [],
+            "holds": true,
+            "credit": 1,
+            "status": "met",
+            "clauses": []
+          }
+        ],
+        "held": 1,
+        "pending": 4,
+        "credit": 1.25,
+        "reading": 1.1
+      }
+    ],
+    "citability": [
+      {
+        "rule": "C1",
+        "status": "not met"
+      },
+      {
+        "rule": "C2",
+        "status": "not met"
+      },
+      {
+        "rule": "C3",
+        "status": "not met"
+      }
+    ]
+  },
   "gate": {
     "decision": "pass",
     "exitCode": 0,

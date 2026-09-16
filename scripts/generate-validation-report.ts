@@ -235,6 +235,14 @@ import { m } from '../src/physics/units.js';
 import { simulateEarthquake } from '../src/physics/events/earthquake/simulate.js';
 import { meanAbsoluteBias as meanAbsoluteLogBias } from '../src/physics/validation/contourLaws.js';
 import {
+  CITABILITY,
+  GOLD_STANDARD_SCORECARD,
+  domainCount,
+  ruleCredit,
+  ruleHolds,
+  type ScorecardRule,
+} from '../src/physics/validation/goldStandardScorecard.js';
+import {
   CALIBRATION_ANCHORS,
   CALIBRATION_ROLES,
   type CalibrationQuantity,
@@ -250,6 +258,59 @@ const REPO_ROOT = fileURLToPath(new URL('..', import.meta.url));
 // thousands are grouped by hand rather than by the runtime's locale
 // data, so the bytes do not depend on which Node wrote them.
 // ---------------------------------------------------------------------
+
+function ruleLine(r: ScorecardRule): string {
+  const name = r.standsFor === undefined ? r.rule : `${r.rule} (${r.standsFor.join(', ')})`;
+  if (r.clauses !== undefined) {
+    const held = r.clauses.filter((c) => c.status === 'met').length;
+    const open = r.clauses.filter((c) => c.status !== 'met');
+    const rest = open.map((c) => `${c.name} (${c.status})`).join('; ');
+    return `**${name}**, ${held.toString()} of ${r.clauses.length.toString()} clauses${rest === '' ? '' : ` — open: ${rest}`}. ${r.evidence}`;
+  }
+  return `**${name}**, ${r.status ?? 'not met'}. ${r.evidence}`;
+}
+
+function goldStandardSection(): string {
+  const rows = GOLD_STANDARD_SCORECARD.map(domainCount).sort(
+    (a, b) => b.reading - a.reading || byCodeUnit(a.domain, b.domain)
+  );
+  return [
+    'The count `docs/GOLD_STANDARD.md` reads below a 9, from `validation/goldStandardScorecard.ts`. Each domain is scored on its own rules and on the rules of every domain that apply to it, each counted once; a rule with clauses earns the share of them that holds, and a rule that does not hold or is pending earns nothing. The count is 9 × what is earned over the rules, cut to one decimal, so a domain reads 9 only when everything holds. A status here is a verdict a rule file, a test or this report reached, never a reading.',
+    '',
+    '| Domain | Count | Rules that hold | Pending |',
+    '| --- | --: | --: | --: |',
+    ...rows.map(
+      (c) =>
+        `| ${c.domain} | ${c.reading.toFixed(1)} | ${c.held.toString()} of ${c.rules.toString()} | ${c.pending.toString()} |`
+    ),
+    '',
+    ...GOLD_STANDARD_SCORECARD.flatMap((d) => [
+      `#### ${d.domain}`,
+      '',
+      bullet(d.rules.map(ruleLine)),
+      '',
+    ]),
+    `**Nimbus as a whole** also needs C1 to C3: ${CITABILITY.map((r) => `${r.rule} ${r.status ?? 'not met'}`).join(', ')}.`,
+  ].join('\n');
+}
+
+function goldStandardJson() {
+  return {
+    domains: GOLD_STANDARD_SCORECARD.map((d) => ({
+      ...domainCount(d),
+      credit: fixed(domainCount(d).credit, 3),
+      rules: d.rules.map((r) => ({
+        rule: r.rule,
+        standsFor: r.standsFor ?? [],
+        holds: ruleHolds(r),
+        credit: fixed(ruleCredit(r), 3),
+        status: r.status ?? null,
+        clauses: (r.clauses ?? []).map((c) => ({ name: c.name, status: c.status })),
+      })),
+    })),
+    citability: CITABILITY.map((r) => ({ rule: r.rule, status: r.status })),
+  };
+}
 
 function grouped(n: number): string {
   const rounded = Math.round(n);
@@ -3533,6 +3594,10 @@ A machine-readable copy of the same data is in \`docs/VALIDATION_REPORT.json\`.
 
 ${summary(net, replayAgg, goldenAgg)}
 
+## Toward a 9
+
+${goldStandardSection()}
+
 ## Scorecard
 
 ${scorecardSection(cells)}
@@ -3744,6 +3809,7 @@ otherwise.
   const bias = footprintBias(net.footprint);
   const jsonSummary = {
     mode: decision.mode,
+    goldStandard: goldStandardJson(),
     gate: {
       decision: decision.blocking.length === 0 ? 'pass' : 'block',
       exitCode: decision.exitCode,
