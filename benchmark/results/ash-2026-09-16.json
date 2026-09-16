@@ -1,0 +1,40 @@
+{
+ "cases": 70,
+ "inPlace": {
+  "law": "project",
+  "axis": {
+   "pairs": 488,
+   "bias": 0.4656198368058342,
+   "sigmaLn": 2.8725313261705643,
+   "withinTwo": 0.23155737704918034
+  },
+  "crosswind": {
+   "pairs": 140,
+   "bias": 0.00826897928408189,
+   "sigmaLn": 31.827926558084787,
+   "withinTwo": 0.2714285714285714
+  }
+ },
+ "candidate": {
+  "law": "tephra2",
+  "axis": {
+   "pairs": 490,
+   "bias": 0.6855869952184631,
+   "sigmaLn": 1.3701589165488177,
+   "withinTwo": 0.5857142857142857
+  },
+  "crosswind": {
+   "pairs": 140,
+   "bias": 0.29944532668155754,
+   "sigmaLn": 4.0810062824064826,
+   "withinTwo": 0.3357142857142857
+  }
+ },
+ "decision": {
+  "adopted": false,
+  "axis": true,
+  "crosswind": true,
+  "gate": true,
+  "invariants": false
+ }
+}

@@ -268,13 +268,30 @@ not that a rule holds.
 | N1     | Not met: blast rings 1.09× NUKEMAP, overpressure 1.07× Kingery–Bulmash; height of burst set on Hiroshima. Three clauses met since 16 September 2026, each by reading the page the project already cited: the burn exposures are the book's Figure 12.64 (rules 80 to 84), the initial-radiation ranges its Figures 8.33a/b and 8.64a/b (rules 85 to 89), and three of the five crater coefficients the numbers printed on its Figures 6.72a/b (rules 90 to 93). Wet soil's crater keeps the measured Bravo and Mike craters over a 1 kt figure carried four decades, and clay is nowhere in the book — both declared. |
 | N2     | Not measured.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | N3     | Not met: two tolls, both tuned, on a band of 10^0.1 that Beirut misses by 6.6×.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| V1     | Not met: ash 0.51× Tephra2 on the wind axis, σ_ln 2.71; currents a project mobility.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| V1     | Not met, unchanged: ash 0.51× Tephra2 on the wind axis and 0.008× thirty kilometres off it; currents a project mobility; no lahar follows a valley, so LaharZ is unmeasured. A closure that would move the crosswind figure to 0.299× was written and measured on 16 September 2026 (rules 106 to 109) and **refused** by rule 108's invariant guard, on a failure that is neither the closure's nor a defect — see below. It is in the file, reachable by name, and not in place.                                                                                                                                    |
 | V2     | On IVESPA 1.0, now read: 0.95×, σ_ln 0.44.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | V4, V5 | Not met: Fuego 2018's current 3.7 km against 11.7, Unzen 1991's 0.84 against 3.2; one held-out toll of three inside, 0.21×.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | C1–C3  | Not met.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ## What has moved since
 
+- **16 September 2026, the ash cloud was widened towards Tephra2, and the
+  widening was refused.** The worst number in the project — the tephra loading
+  across the wind, 0.008× the model the field runs — comes from a spread that
+  grows with the downwind distance and not with the time a grain spends
+  falling, so fine ash spreads no more than a lapillus. Tephra2's own closure
+  (rules 106 to 109) makes it 0.299× with the scatter down from 31.8 to 4.1,
+  and improves the wind axis at the same time: every figure of the comparison
+  gets better. Rule 108 refused it on its other clause, rule 19's invariants,
+  which came back at 222 against the 221 the rule names. The 222nd failure is
+  not the closure's — the sweep gives 222 with the candidate switched off — and
+  is not a defect: it is the ring √(slant² − h²) where a lethal dose reaches the
+  ground with fifty-three centimetres to spare, whose derivative is genuinely
+  infinite there. The bound was stale, having been read before the burn and
+  radiation rounds changed the explosion; a bound is not moved after it has
+  failed, so the refusal stands. The reference generator the campaign never
+  left behind is now in the repository (docs/TEPHRA2_SETUP.md), which is what
+  lets any of this be re-run.
 - **16 September 2026, T2 measured for the first time — and missed.** Of the
   five domains, waves were the only one whose bar had never been reached
   rather than missed: no offline harness could compute a coastal run-up. One
@@ -319,11 +336,17 @@ not that a rule holds.
   reading of an impact quantity. It bursts a median 13.7 km above the altitude
   the sensors measured and 12.8 km above on average, where I2 asks 5 km and 3
   km. Declared in the validation report.
-- **16 September 2026, G5 re-measured.** The invariants ran again on 5 000
-  random scenarios a hazard, on the physics of that day: 221 failures against
-  the campaign's 12 104 — 199 of them the airburst blast's altitude factor
-  (BM-16), the rest threshold crossings. Still not met, and much nearer
-  (docs/SCIENCE.md, "The invariants after the campaign's fixes").
+- **16 September 2026, G5 re-measured, twice.** The invariants ran again on
+  5 000 random scenarios a hazard, on the physics of that day: 221 failures
+  against the campaign's 12 104 — 199 of them the airburst blast's altitude
+  factor (BM-16), the rest threshold crossings. Still not met, and much nearer
+  (docs/SCIENCE.md, "The invariants after the campaign's fixes"). Run again at
+  the end of the day, after the burn and radiation rounds had changed the
+  explosion, it gives **222**: the radiation rings now answer to the height of
+  burst, and where the lethal dose only just reaches the ground the ring
+  √(slant² − h²) is genuinely not smooth in yield. Declared and not fixed —
+  the geometry is right and the invariant assumes a smoothness the world has
+  not got here — and it is what refused the ash round.
 - **16 September 2026, E1 and E3 read again.** Rules 66 to 70 adopted an
   intraslab law for scenarios deeper than 70 km, on ShakeMaps no rule had read;
   its band holds fewer of rule 61's deep records than the rings it replaced.

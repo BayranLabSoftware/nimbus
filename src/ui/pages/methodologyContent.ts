@@ -1212,7 +1212,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Crosswind spreading closure',
         formula: 'σ_y(x) = max(0.3 · H, 500 m) · √(1 + x / (10 · H))',
         description:
-          'A Nimbus closure for how the deposit widens downwind. The thickness at (x, y) sums the Suzuki release weights × Gaussian footprints × grain-class mass fractions. Bonadonna & Phillips (2003) model sedimentation from a gravity-driven umbrella cloud and are background only. Not a full atmospheric transport model — for hazard mapping use HYSPLIT or FALL3D.',
+          'A Nimbus closure for how the deposit widens downwind. The thickness at (x, y) sums the Suzuki release weights × Gaussian footprints × grain-class mass fractions. Bonadonna & Phillips (2003) model sedimentation from a gravity-driven umbrella cloud and are background only. Not a full atmospheric transport model — for hazard mapping use HYSPLIT or FALL3D. This is the weakest closure in Nimbus and it is known by how much: the spread grows with the downwind distance and the plume height and with nothing else, so a 32 µm grain that takes a day to fall spreads exactly as much as an 8 mm lapillus that takes four minutes, and against Tephra2 — the advection–diffusion model the field runs — the loading comes out 0.51× on the wind axis and 0.008× thirty kilometres off it. The closure Tephra2 uses instead, where the spread is the one a release’s own fall time earns, is written and measured (docs/BENCHMARK_PROTOCOL.md, “The ash cloud’s width”): it would give 0.299× across the wind and 0.69× on the axis. It was refused on 16 September 2026 by the invariant guard of its own pre-registered rule and is not in place.',
         citation: bonadonnaPhillips2003,
       },
       {

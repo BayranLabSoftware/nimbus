@@ -2082,6 +2082,99 @@ The reference is arithmetic on the very same cells rather than a measurement of
 the world — there is nothing to tune towards — but it is weaker, and a reader
 should weigh it as one.
 
+### The ash cloud is a hundred and twenty-five times too narrow, and the fix was refused (16 September 2026)
+
+`validation/ashRules.ts` (rules 106 to 109), `validation/ashRun.ts`,
+`events/volcano/ashfall.ts`. The campaign of the day before had found the worst
+number in the project here. Against Tephra2 — the advection-diffusion model the
+field runs, Connor & Connor 2006 on Bonadonna et al. 2005 and Suzuki 1983 —
+Nimbus's tephra loading came out 0.51× on the wind axis and **0.008×** fifty
+kilometres downwind and thirty across: a hundred and twenty-five times too
+little, at a scatter of 31.8 in the log. Thirty kilometres off the axis the
+ratio was zero to two decimals.
+
+The cause was one line. Nimbus spread a release by
+σ_y = max(0.3·H, 500 m)·√(1 + x/10H) — the downwind distance and the plume
+height, and nothing else — so a 32 µm ash grain that takes a day to reach the
+ground spread exactly as much as an 8 mm lapillus that takes four minutes. In
+an advection-diffusion model it is the **fall time** that earns the spread, and
+the fine tail is what makes a cloud wide. Tephra2's own closure, read out of
+`tephra2_calc.c`: above a fall-time threshold σ² = (8/5)·C·(t + (0.2·h²)^(2/5))^(5/2),
+below it σ² = 4·K·(t + 0.0032·h²/K).
+
+It moves every figure:
+
+| Law       | axis bias | axis σ | axis ×2 | across bias | across σ | across ×2 |
+| --------- | --------: | -----: | ------: | ----------: | -------: | --------: |
+| in place  |     0.466 |  2.873 |    23 % |       0.008 |   31.828 |      27 % |
+| Tephra2's |     0.686 |  1.370 |    59 % |       0.299 |    4.081 |      34 % |
+
+Across the wind the model goes from a hundred and twenty-five times too narrow
+to three times, and its scatter falls by a factor of eight. On the axis the
+bias moves from 0.47 to 0.69 and the share of points within a factor of two
+rises from a quarter to nearly two thirds. Nothing else changes: the Suzuki
+release profile, the Ganser terminal velocities, the grain classes and the mass
+are what they were.
+
+**And it was refused.** Rule 108 asks two things, and the second is that rule
+19's invariants come back no worse than the 221 failures it names. They came
+back at 222. The closure is in the file, reachable as `spreadLaw: 'tephra2'`,
+and `DEFAULT_ASH_SPREAD` is still `project`; the loading across the wind a
+visitor sees is 0.008× Tephra2's, as it was.
+
+The 222nd failure is not the closure's. The sweep that found it was taken with
+the candidate switched off — the law in place, nothing else touched — and still
+came back at 222; the extra one is `continuous: radiation.ld50Radius`, in a
+hazard that never opens `ashfall.ts`. Nor is it a defect. A 1.258 Mt burst at
+2 751.65 m reaches 450 rad at a slant range of 2 752.18 m, so the lethal sphere
+touches the ground with fifty-three centimetres to spare and the ring it cuts
+is √(slant² − h²) = 53.9 m; a 0.1 % step in yield moves that slant by 0.017 %
+and the ring by 37 %, amplified by (slant/ground)² = 2 606. That is the
+derivative of a sphere meeting a plane, one airburst in two hundred thousand is
+that steep, and rule 19's continuity check simply assumes a smoothness the
+geometry has not got there. Smoothing it would be lying about a sphere.
+
+What was wrong was the number. 221 was read before the burn round (rules 80 to 84) and the radiation round (rules 85 to 89) changed the explosion's own
+physics, and neither re-read rule 19; rules 85 to 89 are what gave the
+radiation rings a height of burst, where the project fit had ignored it and was
+smooth in consequence. The bound was stale the day it was written, by the same
+hand it now binds. It is not moved for that: a bound re-read as "no worse than
+the law in place" the moment it bites is the failure the whole protocol exists
+to prevent, and a refusal that costs something is the only kind worth having
+written down.
+
+Three things about this round are worth keeping. The first is that the
+campaign had left no reference points behind, only statistics, so nothing could
+ever have been measured against it; the generator that was missing is now in
+the repository and reproduces the campaign's crosswind figure to three decimals
+(0.008 at σ 31.83 against 31.84), which is what says it is faithful.
+
+The second is that the candidate's form was found by scoring it twice, and the
+rules say so rather than leave it to be noticed. The first attempt added
+Tephra2's spread to Nimbus's source width in quadrature and came out nine times
+too _wide_; reading the reference again showed Tephra2's plume-diffusion term
+already carries the source's size, so the first attempt had counted it twice.
+A round whose candidate is fitted to a reference cannot be pre-registered in
+the strict sense — choosing the form _is_ the fitting — so what was fixed in
+advance is the test of improvement, and it is a strict one: every figure must
+get better and none may get worse.
+
+The third is a defect the candidate caught on its way past, fixed here because
+it is wrong rather than because it was in the way. Under the wider cloud the
+isopach solver's bracket can end past the 5 000 km limit the function says it
+reports, so a footprint came back at 5 000.26 km and a larger eruption, capped
+at exactly 5 000, then read as smaller. The solved edge is now held to its own
+limit. Under the law in place the sweep's volcano failures are the same six, in
+the same scenarios, with the same numbers as before it.
+
+What none of this settles: agreeing with Tephra2 is not agreeing with a
+deposit. The reference is a model, and its eddy constant and diffusion
+coefficient come from one inversion of one eruption at Colima, carried here
+unchanged and declared. V3 — ten eruptions with a published isopach map — is
+the rule that would read the world, and it is still not measured. And the
+closure that would close most of the gap sits in the file unused, which is the
+honest price of a guard that was written down before it was convenient.
+
 ### The coast, measured for the first time (16 September 2026)
 
 `validation/runupRules.ts` (rules 102 to 105), `validation/runupRun.ts`,
@@ -2470,6 +2563,32 @@ the liquefaction radius stepping over its threshold, the ashfall's plume
 crossing a grain-size regime. `docs/GOLD_STANDARD.md` (G5) asks that none of
 them happen, so the rule is not met; the count is the measure of how far it is
 from met, and it is much nearer than it was.
+
+**And drawn once more at the end of the same day** — after the burn round
+(rules 80 to 84) and the radiation round (rules 85 to 89) had changed the
+explosion's own physics, which neither round re-read this sweep for —
+`benchmark/results/invariants-2026-09-16-1.json`. The impact, earthquake,
+volcano and landslide counts are unmoved at 199, 16, 6 and 0; the explosion
+goes from 0 to **1**, and the total from 221 to **222**.
+
+The new failure is `continuous: radiation.ld50Radius`, and it is the price of
+having made those rings honest. Rules 85 to 89 read the initial-radiation
+ranges off the book's own dose–range figures, which give a **slant** range, so
+the ring on the ground became √(slant² − h²) and started answering to the
+height of burst — where the project fit, 700·W^0.18, had ignored it and was
+smooth in consequence. At 1.258 Mt and a burst height of 2 751.65 m the 450-rad
+slant range is 2 752.18 m: the lethal sphere touches the ground with
+fifty-three centimetres to spare, and cuts a ring of 53.9 m. A 0.1 % step in
+yield moves the slant by 0.017 % and the ring by 37 %, amplified by
+(slant/ground)² = 2 606 — the derivative of a sphere meeting a plane, which is
+unbounded where they are tangent. One airburst in two hundred thousand is that
+steep, and the sweep's 5 000 found the one.
+
+It is declared and not fixed. The invariant asks for a smoothness the geometry
+has not got at that point, and rounding the sphere off to satisfy it would make
+the ring wrong everywhere to make one test green. It is also what refused the
+ash round of the same night, whose guard had been written against the 221 above
+— see "The ash cloud is a hundred and twenty-five times too narrow".
 
 ### Held out by rule (14 September 2026)
 

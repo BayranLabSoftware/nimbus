@@ -1309,3 +1309,106 @@ whatever the range. 1 070 observations of the 6 672 found no coastal cell
 within 50 km and were scored by nobody — a coast a 40 km mosaic cannot see.
 
 Nothing is tuned on any of this (rules 5 and 6), and the set is now read.
+
+## The ash cloud's width, against the model the field runs (BM-07)
+
+Written on 16 September 2026. The rules are numbered after the hundred and
+five before them and live in `src/physics/validation/ashRules.ts` (rules 106 to
+109), with the reference generator in `scripts/benchmark/tephra2-reference.ts`,
+the run in `ashRun.ts` and the script in `scripts/benchmark/ash.ts`.
+`docs/TEPHRA2_SETUP.md` says how to build the reference.
+
+### What was already known
+
+The campaign found the worst number in the project here: on the wind axis
+Nimbus's tephra loading came out 0.51× Tephra2's, and fifty kilometres
+downwind, thirty kilometres off the axis, 0.008× — a hundred and twenty-five
+times too little, at a scatter of 31.8 in the log. Its diagnosis was "plume too
+narrow across the wind", and BM-07 has been open since. Rule V1 of the gold
+standard asks the ash be held to Tephra2 where the model is Tephra2's, so this
+is verification and not validation: agreeing with the reference is the aim, and
+closing the gap spends no held-out data because there is none to spend.
+
+What the campaign left behind was only statistics. `benchmark/results/volcano.json`
+holds aggregates and not one reference point, so no candidate could have been
+measured against it; the first thing this round did was write the generator
+that had been missing, and check it by regenerating the campaign's own figure —
+0.008 at σ 31.83 against 31.84.
+
+### The candidate, and how its form was found
+
+Nimbus spreads a release by the downwind distance and the plume height and
+nothing else, so a 32 µm grain that takes a day to fall spreads exactly as much
+as an 8 mm lapillus that takes four minutes. Tephra2 — read from
+`tephra2_calc.c` rather than from a summary of it — gives each release the
+spread its own fall time earns.
+
+The form was arrived at by scoring it twice, which the rules say in their own
+header. The first attempt added that spread to Nimbus's source width in
+quadrature and came out nine times too wide across the wind; reading the
+reference again showed that Tephra2's plume-diffusion term already carries the
+source's size, so the first attempt had counted it twice. The second dropped
+the quadrature. A round whose candidate is fitted to a reference cannot be
+pre-registered in the strict sense — choosing the form _is_ the fitting — so
+what rule 108 fixes instead is a strict test of improvement: every figure must
+get better and none may get worse.
+
+### The outcome, 16 September 2026: refused
+
+| Law               |      Axis |           |          | Across the wind |           |          |
+| ----------------- | --------: | --------: | -------: | --------------: | --------: | -------: |
+|                   |      bias |      σ ln |       ×2 |            bias |      σ ln |       ×2 |
+| in place          |     0.466 |     2.873 |     23 % |           0.008 |    31.828 |     27 % |
+| Tephra2's closure | **0.686** | **1.370** | **59 %** |       **0.299** | **4.081** | **34 %** |
+
+Every figure improves, and by a long way: across the wind the model goes from a
+hundred and twenty-five times too narrow to three times, its scatter falls by a
+factor of eight, and on the axis the bias moves from 0.47 to 0.69 with the
+share of points within a factor of two rising from a quarter to nearly two
+thirds. The release gate stays PASS.
+
+**Rule 108 refuses it all the same**, on its other clause: rule 19's invariants
+came back at **222** where the rule names 221. The candidate is not in place,
+`DEFAULT_ASH_SPREAD` stays `project`, and V1 stays not met.
+
+The 222nd failure is not the candidate's, and the sweep says so plainly — it
+was taken with the candidate switched off, under the law in place, and still
+came back at 222 (`benchmark/results/invariants-2026-09-16-1.json`). The extra
+one is `continuous: radiation.ld50Radius`, in a hazard that never opens
+`ashfall.ts`.
+
+It is not a defect either. A 1.258 Mt burst at 2 751.65 m reaches 450 rad at a
+slant range of 2 752.18 m — the lethal sphere touches the ground with
+fifty-three centimetres to spare — and the ring it cuts is
+√(slant² − h²) = 53.9 m. A 0.1 % step in yield moves that slant by 0.017 % and
+the ring by 37 %, amplified by (slant/ground)² = 2 606, which is the derivative
+of a sphere meeting a plane and nothing else. One airburst in two hundred
+thousand is that steep. Rule 19's continuity check assumes the rings are smooth
+in size; this one is genuinely not, at the one point where the dose only just
+arrives, and smoothing it would be lying about a sphere.
+
+What went wrong is the number 221. It was read on 16 September at commit
+`116dfdb` — **before** the burn round (rules 80 to 84) and the radiation round
+(rules 85 to 89) changed the explosion's own physics, and neither of those
+rounds re-read rule 19. Rules 85 to 89 are what made the radiation rings answer
+to the height of burst, where the project fit had ignored it and was smooth in
+consequence; the cliff came with them. So rule 108's bound was stale the day it
+was written, and it was written by the same hand it now binds.
+
+That changes nothing. A bound is not loosened after a figure has failed it, and
+a guard re-read as "no worse than the law in place" the moment it bites is the
+precise failure this protocol exists to prevent. The refusal stands and is not
+revised. A later round may put the same candidate to a baseline that is not
+stale; it would not be a pre-registration and must not be dressed as one, since
+the figures above are already known, and what it can offer a reader instead is
+that the candidate is unchanged to the constant, that the test of improvement
+is the same `improves()`, and that its baseline is a sweep anyone can re-run.
+
+One line of `ashfall.ts` did change, and it is declared here rather than left
+to be found: running the candidate exposed that the isopach solver's bracket
+can end past the 5 000 km limit the function says it reports, so a footprint
+came back at 5 000.26 km and a larger eruption, capped at exactly 5 000, then
+read as smaller. The solved edge is now held to its own limit. Under the law in
+place the sweep's volcano failures are the same six, in the same scenarios,
+with the same numbers as the day's reading — the line is inert where it stands
+and was fixed because it is wrong, not because it was in the way.

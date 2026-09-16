@@ -73,6 +73,65 @@ export const CROSSWIND_BASE_FACTOR = 0.3;
 export const CROSSWIND_DIFFUSION_SCALE_OVER_H = 10;
 
 /**
+ * Which law spreads a release across the wind (rule 107 of
+ * validation/ashRules.ts).
+ *
+ * `project` is the closure above: a spread that grows with the downwind
+ * distance and the plume height, and with nothing else. Every grain class
+ * therefore spreads alike, and the fine ash that an advection-diffusion model
+ * carries for hundreds of kilometres spreads here no more than a lapillus.
+ *
+ * `tephra2` is the closure Tephra2 uses (Connor & Connor 2006, on Bonadonna
+ * et al. 2005 and Suzuki 1983), read from its own source: a release's spread
+ * grows with the time that release spends falling, so a small particle that
+ * takes a day to reach the ground spreads far more than a large one that
+ * takes a minute.
+ */
+export type AshSpreadLaw = 'project' | 'tephra2';
+
+/**
+ * What a scenario that names no law draws: the project's own closure, still.
+ *
+ * Rule 108 of validation/ashRules.ts refused the candidate on 16 September
+ * 2026. Every figure of the comparison improved, and the guard it was refused
+ * by is the other half of that rule — rule 19's invariants, "no worse than the
+ * 221 failures of 16 September" — which the sweep read at 222. The extra
+ * failure is in the explosion's radiation and not in any ash: the law here
+ * cannot reach it. The guard names a number all the same, and a bound is not
+ * loosened after a figure has failed it (docs/BENCHMARK_PROTOCOL.md).
+ */
+export const DEFAULT_ASH_SPREAD: AshSpreadLaw = 'project';
+
+/** Tephra2's own example configuration, the one its Colima inversion left and
+ *  the one the reference runs on (docs/TEPHRA2_SETUP.md). The eddy constant
+ *  is in m²/s^(5/2), the diffusion coefficient in m²/s, the threshold in s. */
+export const TEPHRA2_EDDY_CONSTANT = 0.04;
+export const TEPHRA2_DIFFUSION_COEFFICIENT = 5_138;
+export const TEPHRA2_FALL_TIME_THRESHOLD_S = 288;
+
+/**
+ * The Gaussian spread (m) diffusion gives a release that fell for `fallTimeS`
+ * from `heightAboveVentM`, as `tephra2_calc.c` computes it.
+ *
+ * Tephra2 carries a quantity it calls sigma and uses as exp(−r²/σ) over
+ * π·σ — so its σ is twice the square of a Gaussian's, and what comes back
+ * here is √(σ/2). Above the fall-time threshold the spread is the fine-particle
+ * branch, σ = (8/5)·C·(t + t_f)^(5/2) with t_f = (0.2·h²)^(2/5); below it the
+ * coarse branch, σ = 4·K·(t + t_c) with t_c = 0.0032·h²/K. The factor 8/5 is
+ * applied to the eddy constant when Tephra2 loads its configuration, and is
+ * written out here rather than hidden in a constant.
+ */
+export function tephra2DiffusionSigmaM(fallTimeS: number, heightAboveVentM: number): number {
+  const t = Math.max(fallTimeS, 0);
+  const h = Math.max(heightAboveVentM, 0);
+  const sigma =
+    t >= TEPHRA2_FALL_TIME_THRESHOLD_S
+      ? (8 / 5) * TEPHRA2_EDDY_CONSTANT * (t + Math.pow(0.2 * h * h, 0.4)) ** 2.5
+      : 4 * TEPHRA2_DIFFUSION_COEFFICIENT * (t + (0.0032 * h * h) / TEPHRA2_DIFFUSION_COEFFICIENT);
+  return Math.sqrt(Math.max(sigma, 0) / 2);
+}
+
+/**
  * Particle size class definition. Diameter is the representative
  * diameter of the class (m), massFraction the share of the total
  * ejecta volume this class carries. The default four-class split
@@ -146,6 +205,9 @@ export interface AshDepositInput {
   grainSpectrum?: GrainSizeClass[];
   /** Bulk deposit density (kg/m³). Defaults to 1 000 (loose tephra). */
   depositDensity?: number;
+  /** Which law spreads a release (rule 107 of validation/ashRules.ts).
+   *  Omitted, {@link DEFAULT_ASH_SPREAD}. */
+  spreadLaw?: AshSpreadLaw;
 }
 
 /**
@@ -224,6 +286,7 @@ function depositPieces(
   const depositDensity = input.depositDensity ?? TEPHRA_DENSITY;
   const totalMass = V * depositDensity;
   const spectrum = input.grainSpectrum ?? DEFAULT_GRAIN_SPECTRUM;
+  const spreadLaw = input.spreadLaw ?? DEFAULT_ASH_SPREAD;
 
   // Integrate over N_z release-height points and sum grain classes.
   const N_z = 24;
@@ -241,13 +304,21 @@ function depositPieces(
       // Along-wind σ is set by the source-column vertical extent (not
       // by wind speed or downwind range). This is what lets stronger
       // winds extend the isopach downwind instead of diluting it.
-      const sigmaX = Math.max(H * ALONG_WIND_SOURCE_FACTOR, 500);
+      const sourceX = Math.max(H * ALONG_WIND_SOURCE_FACTOR, 500);
+      const sourceY = Math.max(H * CROSSWIND_BASE_FACTOR, 500);
       // Crosswind σ grows sub-linearly with downwind range via a
       // Pasquill-Gifford-style diffusion term.
       const diffusionScale = H * CROSSWIND_DIFFUSION_SCALE_OVER_H;
+      // Under Tephra2's closure the spread a release earns comes from the time
+      // it spent falling, it is the same across the wind and along it, and it
+      // is not added to the source's own size: the diffusion time already
+      // carries the plume's extent, so adding it again counts it twice.
+      const spread = spreadLaw === 'tephra2' ? tephra2DiffusionSigmaM(fallTime, z) : 0;
+      const sigmaX = spreadLaw === 'tephra2' ? spread : sourceX;
       const sigmaY =
-        Math.max(H * CROSSWIND_BASE_FACTOR, 500) *
-        Math.sqrt(1 + xCentre / Math.max(diffusionScale, 1));
+        spreadLaw === 'tephra2'
+          ? spread
+          : sourceY * Math.sqrt(1 + xCentre / Math.max(diffusionScale, 1));
       pieces.push({
         mass: massClass * weight,
         xCentre,
@@ -401,7 +472,13 @@ export function ashFootprint(input: AshFootprintInput): AshFootprint {
       if (atAxis(mid) >= loadingThreshold) lo = mid;
       else hi = mid;
     }
-    downwindRange = 0.5 * (lo + hi);
+    // The bracket's upper end can sit past the limit — it is the next sample
+    // after the farthest release centre above the threshold — so the solved
+    // edge is held to the limit this function says it reports. Without it a
+    // footprint could come back at 5 000.26 km where the limit is 5 000, and
+    // a larger eruption capped at exactly 5 000 then read as smaller: one
+    // failure of rule 19's monotonicity on 16 September 2026.
+    downwindRange = Math.min(0.5 * (lo + hi), reachLimit);
   }
 
   // The crosswind half-width, at 24 points along the reach and at every

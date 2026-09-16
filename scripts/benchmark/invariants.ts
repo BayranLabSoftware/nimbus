@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isMainThread, parentPort, Worker } from 'node:worker_threads';
@@ -403,11 +403,26 @@ async function main(): Promise<void> {
     }
   }
   await runner.stop();
-  mkdirSync(join(ROOT, 'benchmark', 'results'), { recursive: true });
+  // The campaign's own file is a record of what was run on 15 September 2026
+  // and is not overwritten: a later sweep writes beside it, named by its day.
+  // Until 16 September this wrote straight over it.
+  const resultsDir = join(ROOT, 'benchmark', 'results');
+  mkdirSync(resultsDir, { recursive: true });
+  // A name nothing has taken: the day, then the day and a number. A sweep
+  // never writes over a sweep.
+  const stamp = new Date().toISOString().slice(0, 10);
+  let out = join(resultsDir, 'invariants.json');
+  for (let n = 0; existsSync(out); n++) {
+    out = join(
+      resultsDir,
+      n === 0 ? `invariants-${stamp}.json` : `invariants-${stamp}-${n.toString()}.json`
+    );
+  }
   writeFileSync(
-    join(ROOT, 'benchmark', 'results', 'invariants.json'),
+    out,
     `${JSON.stringify({ track: 'INV', scenariosPerHazard: scenarios, watchdogMs: WATCHDOG_MS, failures: report }, null, 1)}\n`
   );
+  console.error(`wrote ${out}`);
 }
 
 if (isMainThread) {

@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ashfallMassLoading } from '../../src/physics/events/volcano/ashfall.js';
@@ -133,12 +133,26 @@ const referencePath = process.argv[2];
 if (referencePath !== undefined) {
   const pairs = comparePairs(referencePath);
   const stats = summarise(pairs);
-  mkdirSync(join(ROOT, 'benchmark', 'results'), { recursive: true });
+  // The campaign's own file is a record of what was run on 15 September 2026
+  // and is not overwritten: a later run writes beside it, named by its day.
+  // Until 16 September this wrote straight over it, so a regeneration erased
+  // the numbers the benchmark report quotes.
+  const stamp = new Date().toISOString().slice(0, 10);
+  const resultsDir = join(ROOT, 'benchmark', 'results');
+  mkdirSync(resultsDir, { recursive: true });
+  let out = join(resultsDir, 'volcano.json');
+  for (let n = 0; existsSync(out); n++) {
+    out = join(
+      resultsDir,
+      n === 0 ? `volcano-${stamp}.json` : `volcano-${stamp}-${n.toString()}.json`
+    );
+  }
   writeFileSync(
-    join(ROOT, 'benchmark', 'results', 'volcano.json'),
+    out,
     `${JSON.stringify({ track: 'VOL', reference: 'Tephra2 2.0 (commit ff621c6), run locally', stats }, null, 1)}\n`
   );
   const pairsOut = process.argv[3];
   if (pairsOut !== undefined) writeFileSync(pairsOut, JSON.stringify(pairs));
   printStats(stats);
+  console.error(`wrote ${out}`);
 }
