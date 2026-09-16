@@ -45,6 +45,12 @@ import {
 import { impactFireballRadius } from './effects/blastWave.js';
 import { DEFAULT_GROUND_BLAST, groundImpactReach } from './effects/airburstBlast.js';
 import { fluenceReach, impactThermalExposure } from './effects/impactThermal.js';
+import {
+  DEFAULT_IMPACT_TSUNAMI_LAW,
+  programTsunamiAmplitude,
+  programTsunamiReferenceAmplitude,
+  programWaterCraterDiameter,
+} from './events/tsunami/impactProgram.js';
 import { firestormSustainRadius, flammableIgnitionRadius } from './effects/firestorm.js';
 import { thermalHorizonRadius } from './casualties.js';
 import { oceanCouplingPartition } from './effects/oceanCoupling.js';
@@ -171,6 +177,13 @@ export interface ImpactTsunamiResult {
    *  min(0.14 R_w, h): the source amplitude behind the two rows above
    *  and behind the bathymetric propagation on the globe. */
   rimWaveSourceAmplitude: Meters;
+  /** Which law draws the far field: Wünnemann et al.'s rim wave, or the
+   *  Earth Impact Effects Program's (events/tsunami/impactProgram.ts). */
+  farFieldLaw: 'wunnemann' | 'program';
+  /** The range at which {@link rimWaveSourceAmplitude} holds and from which
+   *  the far field falls (m): the cavity rim for the rim wave, one water
+   *  crater diameter for the program's wave. */
+  farFieldReferenceRadius: Meters;
   /** Rim-wave attenuation exponent q_r (Wünnemann 2010 eq. 10a):
    *  0.5 for an impactor much larger than the water depth (pure
    *  cylindrical spreading), 1.2 for a deep-ocean strike. */
@@ -767,7 +780,19 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // does not describe the physics, and a hydrocode-quality emulator
   // is out of scope for Layer 2.
   const regime = entry.regime;
-  const reachesSurface = regime === 'INTACT' || (regime === 'PARTIAL_AIRBURST' && gf >= 0.5);
+  // The program's wave (`ImpactTsunamiLaw` in events/tsunami/impactProgram.ts)
+  // comes from any body that reaches the water, however much of its energy it
+  // brings there (BM-09).
+  const programWave = DEFAULT_IMPACT_TSUNAMI_LAW === 'program';
+  const reachesSurface = programWave
+    ? regime !== 'COMPLETE_AIRBURST'
+    : regime === 'INTACT' || (regime === 'PARTIAL_AIRBURST' && gf >= 0.5);
+  const programCraterDiameter = programWaterCraterDiameter({
+    impactorDiameter: input.impactorDiameter,
+    impactorDensity: input.impactorDensity,
+    impactVelocity: entry.endVelocity,
+    impactAngle: input.impactAngle,
+  });
   // Sea coupling for an impact on land near a coast. The store hands
   // over the shoreline distance; the physics decides whether the sea
   // is within reach and how much energy enters it. Reach = the
@@ -787,7 +812,9 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const seaCoupling = computeSeaCoupling({
     shoreDistanceM,
     craterRimRadiusM: craterRimRadius,
-    cavityAtFullCouplingM: impactCavityRadius({ kineticEnergy: fullCouplingKe }),
+    cavityAtFullCouplingM: programWave
+      ? m((programCraterDiameter as number) / 2)
+      : impactCavityRadius({ kineticEnergy: fullCouplingKe }),
     ejectaReachM: ejecta.blanketEdge1m,
   });
   const seaWithinReach = seaCoupling.fraction > 0 || shoreDistanceM <= 0;
@@ -805,18 +832,21 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     // (above) then discounts an inland strike by the ejecta that
     // never reaches the water.
     const surfaceCoupledKe = J((fullCouplingKe as number) * seaCouplingFraction);
-    const cavityRadius = impactCavityRadius({ kineticEnergy: surfaceCoupledKe });
-    const sourceAmplitude = impactSourceAmplitude(cavityRadius);
+    const wardCavityRadius = impactCavityRadius({ kineticEnergy: surfaceCoupledKe });
+    const sourceAmplitude = impactSourceAmplitude(wardCavityRadius);
     const amp1000 = impactAmplitudeAtDistance({
       sourceAmplitude,
-      cavityRadius,
+      cavityRadius: wardCavityRadius,
       distance: m(1_000_000),
     });
     const amp5000 = impactAmplitudeAtDistance({
       sourceAmplitude,
-      cavityRadius,
+      cavityRadius: wardCavityRadius,
       distance: m(5_000_000),
     });
+    // The water crater the far field and the veil stand on: the program's
+    // where its law is in place, Ward & Asphaug's otherwise.
+    const cavityRadius = programWave ? m((programCraterDiameter as number) / 2) : wardCavityRadius;
     // Wünnemann, Collins & Weiss (2010) far field. The Ward rows above
     // stay as the historical reference; the rim wave (eq. 9a) is the
     // best estimate every downstream consumer uses — run-up, Manning
@@ -833,7 +863,19 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       impactorDiameter: input.impactorDiameter,
       waterDepth: siteDepth,
     });
-    const rimWaveSourceAmplitude = wunnemannRimWaveSourceAmplitude(cavityRadius, siteDepth);
+    // The program's wave is scaled by the share of an inland strike's ejecta
+    // that reaches the water, the project's own reach for a strike on land.
+    const rimWaveSourceAmplitude = programWave
+      ? m(
+          (programTsunamiReferenceAmplitude(programCraterDiameter, siteDepth) as number) *
+            seaCouplingFraction
+        )
+      : wunnemannRimWaveSourceAmplitude(cavityRadius, siteDepth);
+    const programAt = (range: number): Meters =>
+      m(
+        (programTsunamiAmplitude(programCraterDiameter, siteDepth, m(range)) as number) *
+          seaCouplingFraction
+      );
     const wunnemannCommon = {
       cavityRadius,
       waterDepth: siteDepth,
@@ -841,8 +883,8 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     };
     const wunnemann1000 = wunnemannFarField({ ...wunnemannCommon, distance: m(1_000_000) });
     const wunnemann5000 = wunnemannFarField({ ...wunnemannCommon, distance: m(5_000_000) });
-    const amp1000W = wunnemann1000.rimWave;
-    const amp5000W = wunnemann5000.rimWave;
+    const amp1000W = programWave ? programAt(1_000_000) : wunnemann1000.rimWave;
+    const amp5000W = programWave ? programAt(5_000_000) : wunnemann5000.rimWave;
     // Pick the beach slope: caller-supplied DEM slope when the store
     // sampled one at the click site, otherwise the textbook 1:100
     // plane-beach reference. Below the lower bound (1:1000, ~0.057°)
@@ -906,19 +948,23 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     });
     const celerity = shallowWaterWaveSpeed(meanOceanDepth);
     const wavelength = m(2 * (cavityRadius as number));
+    // The program's 1/r is the whole of its far field, dispersion included,
+    // as Lamb's is for a compact source; Kajiura's factor is not put on top.
     // An impact wave is short — a cavity nine kilometres across makes
     // an eighteen-kilometre wave — so it disperses hard, and by a
     // thousand kilometres three quarters of its height is gone. The
     // same law leaves a megathrust untouched, which is why it has to
     // be this one and not a fixed scale length.
-    const amp5000Dispersed = m(
-      (amp5000Friction as number) *
-        dispersionFactor({
-          rangeM: 5_000_000,
-          depthM: meanOceanDepth,
-          wavelengthM: wavelength,
-        })
-    );
+    const amp5000Dispersed = programWave
+      ? amp5000Friction
+      : m(
+          (amp5000Friction as number) *
+            dispersionFactor({
+              rangeM: 5_000_000,
+              depthM: meanOceanDepth,
+              wavelengthM: wavelength,
+            })
+        );
     const period = (wavelength / Math.max(celerity, 1e-6)) as Seconds;
     // Inundation distance ≈ runup × cot(slope). On a 1:100 beach
     // cot(slope) = 100, so inundation ≈ 100 × runup. On a real DEM
@@ -933,14 +979,16 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       amplitudeAt1000kmWunnemann: amp1000W,
       amplitudeAt5000kmWunnemann: amp5000W,
       rimWaveSourceAmplitude,
-      rimWaveExponent: wunnemannRegime.rimWaveExponent,
+      rimWaveExponent: programWave ? 1 : wunnemannRegime.rimWaveExponent,
+      farFieldLaw: DEFAULT_IMPACT_TSUNAMI_LAW,
+      farFieldReferenceRadius: programWave ? programCraterDiameter : cavityRadius,
       collapseWaveExponent: wunnemannRegime.collapseWaveExponent,
       collapseWaveForms: wunnemannRegime.collapseWaveForms,
       depthToImpactorRatio: wunnemannRegime.depthToImpactorRatio,
-      amplitudeAt1000kmUpper: wunnemann1000.upper,
-      amplitudeAt1000kmLower: wunnemann1000.lower,
-      amplitudeAt5000kmUpper: wunnemann5000.upper,
-      amplitudeAt5000kmLower: wunnemann5000.lower,
+      amplitudeAt1000kmUpper: programWave ? amp1000W : wunnemann1000.upper,
+      amplitudeAt1000kmLower: programWave ? amp1000W : wunnemann1000.lower,
+      amplitudeAt5000kmUpper: programWave ? amp5000W : wunnemann5000.upper,
+      amplitudeAt5000kmLower: programWave ? amp5000W : wunnemann5000.lower,
       travelTimeTo1000km: tsunamiTravelTime(m(1_000_000), meanOceanDepth),
       meanOceanDepth,
       runupAt1000km: runup,

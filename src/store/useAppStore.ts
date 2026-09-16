@@ -1057,6 +1057,18 @@ export function extractTsunamiMeta(result: ActiveResult): {
 } | null {
   if (result.type === 'impact' && result.data.tsunami !== undefined) {
     const t = result.data.tsunami;
+    // The Earth Impact Effects Program's wave, where its law is in place: the
+    // height one water-crater diameter out, falling as 1/r with the train's
+    // dispersion already inside it — the same law as the row the panel prints.
+    if (t.farFieldLaw === 'program') {
+      return {
+        sourceAmplitudeM: t.rimWaveSourceAmplitude,
+        sourceCavityRadiusM: t.farFieldReferenceRadius,
+        sourceDepthM: t.meanOceanDepth,
+        spreadingExponent: 1,
+        farFieldIncludesDispersion: true,
+      };
+    }
     // Impact sources propagate the Wünnemann, Collins & Weiss (2010)
     // rim wave: its height at the cavity rim, min(0.14 R_w, h), and
     // its regime-dependent exponent q_r. This is what the panel's
