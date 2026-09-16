@@ -2548,6 +2548,68 @@ a fission weapon's dose, which puts Hiroshima's LD₅₀ anywhere from 1.22 to
 1.49 km — wider than the distance between the fit and the figures at some
 yields. The report prints that band beside the rings, deciding nothing.
 
+### An air burst's rings, from the curves the book draws (17 September 2026)
+
+`validation/hobRules.ts` (rules 168 to 173), `validation/hobRun.ts`,
+`events/explosion/hobCurves.ts`, `scripts/benchmark/hob-curves.py`. A burst in
+the air reaches farther than one on the ground, because its wave reflects from
+the surface and, past a point, the reflected and incident waves merge into a
+Mach stem. Nimbus drew that with a factor on the surface burst's radii — 1.0 on
+the ground, 1.5 near the optimum height, falling to 0.25 high up — which its
+own module called "a piecewise function chosen by the project". Glasstone &
+Dolan draw the effect itself: Figure 3.73c gives, for a 1-kiloton burst, the
+peak overpressure on the ground as contours over distance and height of burst,
+at 1, 2, 4, 6, 8, 10 and 15 psi, and the caption scales both axes as the cube
+root of the yield.
+
+The seven curves were traced from the public scan. The page is skewed by
+under a degree and not quite straight, so no two calibration points would
+do: every one of the twenty-seven grid lines is located and a smooth map from
+pixels to feet is fitted through all of them (0.88 px rms). The grid, the
+dashes of the triple-point line and the labels are then taken off the ink, the
+gaps the scan leaves in the curves are closed, and the curves cut the plot
+into regions; each curve is read where a ray from ground zero passes from one
+region to the next. Rays, because along a line of constant angle of incidence
+the overpressure falls as the scaled slant range grows, which is also what
+makes it the right direction to interpolate in: 5 psi, which the book does not
+draw, lies between the 4 and 6 psi curves in the logarithms of both range and
+overpressure along each ray. The trace passes the caption's own worked example
+(4 psi reaches farthest, 2 600 ft, for a burst at about 1 100 ft: the trace
+reads 2 618 at 1 080) and the example scaled to 125 kt, and it agrees with the
+same 10 and 15 psi curves as Figure 3.73b draws them, read from another page on
+its own grid, within 3.9 % — which is also how far apart two figures of the
+same book stand.
+
+The ring for a burst is the farthest distance at which its contour crosses the
+burst's scaled height, as §3.74 reads the figure; above the contour's top the
+overpressure never reaches the ground and the ring is zero. The strongest
+evidence the trace is right came from outside it: on the five cases the
+benchmark campaign kept of its comparison with NUKEMAP, the 1 psi ring is
+0.999× to 1.003× NUKEMAP's, where the factor stood 1.17× to 1.20×. Hiroshima's
+5 and 1 psi rings go from 1.69 and 4.98 km to 1.62 and 4.49, Tsar Bomba's 1 psi
+ring from 64 to 54 km, and a nuclear burst on the ground now reads the curves
+at a height of zero, 12 % inside the surface relation's 1 psi ring. Hiroshima's
+toll moves from 116 639 to 109 102 against the record's 105 000; it was tuned
+on the factor's rings and is not re-tuned.
+
+What the round found besides. Under the factor every burst below 30 km had a
+5 psi ring, and the blast casualty plan returned nothing without one; under the
+curves a burst high enough that 5 psi never reaches the ground still puts 1 psi
+there, and its people were in no band at all. The plan now keeps their 2 and
+1 psi bands.
+
+What it leaves. The 0.5 psi light-damage ring, below anything the figure draws,
+carries the 1 psi curve out by the surface relation's ratio, the project's
+closure. A chemical charge keeps its Kingery–Bulmash surface radii and takes
+the curves' change with height at twice its yield. A burst in the water still
+shortens the surface relation's radius, so its 1 psi ring steps across the
+waterline. The figure is for nearly ideal surfaces and a sea-level atmosphere:
+a precursor over heated or dusty ground (§3.79) and bursts above 5 000 ft are
+read without the corrections the book describes. And the explosion sweep gains
+one failure, a 5 psi ring just under the top of its contour, where the
+farthest crossing moves steeply with the height — the geometry of any contour
+near its top, declared.
+
 ### The exposure that burns, from the book's own figure (16 September 2026)
 
 `validation/burnRules.ts` (rules 80 to 84), `validation/burnRun.ts`,

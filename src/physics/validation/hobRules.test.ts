@@ -52,7 +52,8 @@ describe('rules 168 to 173: an air burst drawn from the book', () => {
     ).toBe('project');
   });
 
-  it('is not yet the default: the rules are pushed before the candidate draws a preset', () => {
-    expect(DEFAULT_HOB_BLAST_SOURCE).toBe('project');
+  it('is the default since rule 171 adopted it', () => {
+    // Pushed in 7aeac70 with the default still 'project'.
+    expect(DEFAULT_HOB_BLAST_SOURCE).toBe('glasstone1977');
   });
 });

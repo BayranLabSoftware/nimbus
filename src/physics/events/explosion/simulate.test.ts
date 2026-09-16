@@ -348,9 +348,13 @@ describe('where the burst is', () => {
     // a thousand kilotonnes.
     const expected = Math.exp(-(1.025 * (40 / 0.3048)) / 10 / 126);
     expect(under.placement.airBlastDepthFactor).toBeCloseTo(expected, 9);
+    // Shortened from the surface burst's radius the project's relation gives
+    // (§6.53): since 17 September 2026 a burst on the surface draws its rings
+    // off Glasstone & Dolan's curves at a height of zero instead, and rule 170
+    // of validation/hobRules.ts left a burst in the water as it was.
     expect(
       (under.blast.overpressure5psiRadiusHob as number) /
-        (surface.blast.overpressure5psiRadiusHob as number)
+        (surface.blast.overpressure5psiRadius as number)
     ).toBeCloseTo(expected, 9);
     expect(under.tsunami).toBeDefined();
   });

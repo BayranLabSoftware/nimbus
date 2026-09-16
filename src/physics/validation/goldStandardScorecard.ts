@@ -360,8 +360,9 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
           },
           {
             name: 'overpressure with height of burst',
-            status: 'not met',
-            evidence: "A piecewise factor of the project's stands in for Figs. 3.73a–c.",
+            status: 'met',
+            evidence:
+              "Figure 3.73c's own curves since rules 168 to 173, traced from the scan: the caption's example within 1 %, Figure 3.73b's 10 and 15 psi curves within 3.9 %, and NUKEMAP's 1 psi ring within 0.3 % on the five cases the campaign kept.",
           },
           {
             name: 'the fireball',
@@ -429,7 +430,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         measure: 'beyond',
         status: 'met',
         evidence:
-          'One failure in the sweep, the lethal-dose ring where the sphere meets the ground tangentially, which is the geometry and declared; the application prints what Node computes.',
+          "Two failures in the sweep, both the geometry and declared: the lethal-dose ring where the sphere meets the ground tangentially, and a 5 psi ring just under the top of the book's contour, where the farthest crossing moves steeply with the height (benchmark/results/invariants-2026-09-16-24.json); the application prints what Node computes on every preset (ui.json).",
       },
       G6,
       G7,

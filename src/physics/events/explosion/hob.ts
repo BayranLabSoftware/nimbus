@@ -20,7 +20,10 @@ import type { Meters } from '../../units.js';
  * The correction factor here is a piecewise function chosen by the
  * project, parameterised on the scaled HOB; it is not read from a
  * published curve, and the calibration anchors below were not found
- * when the sources were rechecked in September 2026.
+ * when the sources were rechecked in September 2026. Since 17 September
+ * 2026 it draws no ring by default: the rings come from the book's own
+ * curves (`hobCurves.ts`, rules 168 to 173 of validation/hobRules.ts), and
+ * this is the `project` source, kept so the two can be compared.
  */
 
 /**
@@ -31,8 +34,10 @@ import type { Meters } from '../../units.js';
  */
 export type HobBlastSource = 'project' | 'glasstone1977';
 
-/** What a scenario that names no source draws. */
-export const DEFAULT_HOB_BLAST_SOURCE: HobBlastSource = 'project';
+/** What a scenario that names no source draws: the book's curves since
+ *  17 September 2026, when rules 168 to 173 of validation/hobRules.ts adopted
+ *  them. */
+export const DEFAULT_HOB_BLAST_SOURCE: HobBlastSource = 'glasstone1977';
 
 /** Scaled height-of-burst z = HOB / W^(1/3), in metres per cube-root
  *  kilotonne. A unit-independent HOB classifier. */

@@ -109,6 +109,51 @@ import type { HobBlastSource } from '../events/explosion/hob.js';
  * not the damage a city shows.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 17 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `7aeac70` and the candidate run afterwards
+ * (`benchmark/results/hob-blast-2026-09-17.json`). No guard failed: the trace
+ * passes its five checks; on 288 cases of the grid every ring is finite, the
+ * rings keep their order and none shrinks as the yield grows; and the
+ * validation report regenerated with the candidate keeps the release gate at
+ * PASS.
+ *
+ * What moves. Hiroshima's rings go from 1.69 · 4.98 · 9.27 km (5, 1 and
+ * 0.5 psi) to 1.62 · 4.49 · 7.05; Nagasaki's from 1.89 · 5.57 · 10.37 to
+ * 1.70 · 4.66 · 7.42; Tsar Bomba's, 4 km up, from 21.80 · 64.06 · 119.39 to
+ * 20.28 · 54.42 · 92.04. A nuclear burst on the ground now reads the curves at
+ * a height of zero, which move its 5 psi ring by under 1 % and its 1 psi ring
+ * by 12 %: Castle Bravo 33.17 km to 29.11. Beirut, Halifax and Texas City, all
+ * chemical charges on the ground, do not move. On the five cases the campaign
+ * kept of its comparison with NUKEMAP 2.76, the 1 psi ring is 0.999× to 1.003×
+ * NUKEMAP's, where the factor was 1.169× to 1.199×. Hiroshima's toll moves
+ * from 116 639 to 109 102 against a record of 105 000, inside its band as it
+ * was; it is not re-tuned.
+ *
+ * Found on the way, and fixed with it. A burst high enough that 5 psi never
+ * reaches the ground — which no burst below 30 km was under the factor — had
+ * no blast casualty plan at all, so its toll was zero wherever its 1 psi ring
+ * fell: `blastCasualtyPlan` now keeps the 2 and 1 psi bands of such a burst.
+ * The rings compared above do not move with it.
+ *
+ * The sweep, in the same session (`invariants-2026-09-16-23.json` under the
+ * factor, `-24` under the curves): 1 failure and 2. The one both share is the
+ * lethal-dose ring meeting the ground tangentially. The new one is a 5 psi
+ * ring just under the top of its contour (132 Mt at 28 km), where the
+ * farthest crossing moves steeply with the height: the geometry of any
+ * contour near its top, declared. The application prints what Node computes
+ * on every explosion preset.
+ *
+ * `DEFAULT_HOB_BLAST_SOURCE` is `glasstone1977`, and N1's clause "overpressure
+ * with height of burst" is met. A burst in the water still shortens the
+ * surface relation's radius rather than the curves' at a height of zero, as
+ * rule 170 left it: its 1 psi ring steps by up to 12 % across the waterline,
+ * which a later round may close.
+ */
+
 /** Rule 170's candidate and the law in place. */
 export const HOB_IN_PLACE: HobBlastSource = 'project';
 export const HOB_CANDIDATE: HobBlastSource = 'glasstone1977';

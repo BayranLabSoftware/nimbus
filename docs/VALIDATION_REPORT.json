@@ -467,8 +467,8 @@
             "standsFor": [
               "G1"
             ],
-            "holds": false,
-            "credit": 0.889,
+            "holds": true,
+            "credit": 1,
             "status": null,
             "clauses": [
               {
@@ -477,7 +477,7 @@
               },
               {
                 "name": "overpressure with height of burst",
-                "status": "not met"
+                "status": "met"
               },
               {
                 "name": "the fireball",
@@ -573,16 +573,16 @@
             "clauses": []
           }
         ],
-        "held": 2,
+        "held": 3,
         "pending": 1,
-        "credit": 2.889,
-        "reading": 3.2,
+        "credit": 3,
+        "reading": 3.3,
         "fidelity": {
           "rules": 2,
-          "held": 0,
+          "held": 1,
           "pending": 1,
-          "credit": 0.889,
-          "reading": 4
+          "credit": 1,
+          "reading": 4.5
         },
         "beyond": {
           "rules": 6,
@@ -875,10 +875,10 @@
         "recorded": 105000,
         "recordedLow": 70000,
         "recordedHigh": 140000,
-        "model": 116639,
-        "bandLow": 105334,
-        "bandHigh": 130195,
-        "ratio": 1.111,
+        "model": 109102,
+        "bandLow": 99039,
+        "bandHigh": 120820,
+        "ratio": 1.039,
         "contains": true,
         "gated": false,
         "cause": "populationChanged",
@@ -1431,8 +1431,8 @@
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 2.7,
-          "scatterLn": 0.89,
+          "bias": 2.61,
+          "scatterLn": 0.92,
           "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
@@ -4336,14 +4336,14 @@
           "record": 105000,
           "gated": false,
           "inPlace": [
-            104653,
-            115954,
-            129745
+            98261,
+            108354,
+            120216
           ],
           "candidate": [
-            105751,
-            117299,
-            130702
+            99590,
+            109968,
+            121488
           ],
           "insideInPlace": true,
           "insideCandidate": true
@@ -6263,10 +6263,10 @@
       },
       {
         "event": "Hiroshima 1945",
-        "measuredLow": 105334,
-        "measuredHigh": 130195,
-        "interpolatedLow": 103862,
-        "interpolatedHigh": 129248,
+        "measuredLow": 99039,
+        "measuredHigh": 120820,
+        "interpolatedLow": 97628,
+        "interpolatedHigh": 119368,
         "comparable": true,
         "lowComparable": true
       },

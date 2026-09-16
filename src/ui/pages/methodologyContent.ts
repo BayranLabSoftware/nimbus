@@ -881,12 +881,12 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       },
       {
         id: 'hob-correction',
-        name: 'Height-of-burst correction',
+        name: 'Height of burst: the book’s curves',
         formula:
-          'z = HOB · W^(−1/3) (m·kt^(−1/3)):  f = 1.00 (z < 50) → 1.50 (150 ≤ z < 300) → 0.70 (z = 700) → 0.70·e^(−(z−700)/1500) → 0.25 (z ≥ 1500)',
+          'ring(P, W, h) = W^(1/3) · D_P(h · W^(−1/3)),  D_P the farthest distance at which Figure 3.73c’s contour for P crosses the scaled height (ft·kt^(−1/3))',
         description:
-          'A piecewise factor on the Kinney–Graham radii, chosen by the project rather than read from a published curve: a burst near the optimum height reaches half as far again as one on the surface. Glasstone & Dolan’s height-of-burst curves (Figs. 3.73a–c) and Needham (2018, ch. 14) describe the effect; for comparison, Glasstone & Dolan scale the damage ranges of an air burst by three quarters for a surface burst (§5.140), where this factor gives two thirds.',
-        citation: needham2018,
+          'Since 17 September 2026 a nuclear burst’s 5, 1 and 0.5 psi rings are read off Glasstone & Dolan’s own height-of-burst curves, Figure 3.73c: seven contours of peak overpressure on the ground, 1 to 15 psi, for a 1-kiloton burst over distance and height, scaled as the cube root of the yield. They were traced from the public scan (scripts/benchmark/hob-curves.py) and checked against the caption’s worked example (4 psi reaches farthest, 2 600 ft, for a burst at about 1 100 ft; the trace reads 2 618 at 1 080) and against the same two curves in Figure 3.73b (within 3.9 %); on the five cases the benchmark campaign kept, the 1 psi ring agrees with NUKEMAP’s within 0.3 %, where the factor it replaced was 17 to 20 % wide (rules 168 to 173). 5 psi lies between the 4 and 6 psi curves, read in the logarithms of range and overpressure along lines from ground zero; 0.5 psi, which the figure does not draw, carries the 1 psi curve out by the ratio the surface relation gives — the project’s closure. Above a contour’s top the overpressure never reaches the ground and the ring is zero. A chemical charge keeps its surface radii and takes the curves’ change with height at twice its yield. Until then the rings were a piecewise factor chosen by the project, 1.0 at the surface to 1.5 near the optimum; it is kept as the `project` source.',
+        citation: glasstoneDolan1977,
       },
       {
         id: 'thermal',

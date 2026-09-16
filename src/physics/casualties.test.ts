@@ -76,9 +76,32 @@ describe('blastCasualtyPlan (OTA 1979)', () => {
       blastCasualtyPlan({
         blastEnergy: J(1e13),
         overpressure5psiRadius: meters(0),
+        overpressure1psiRadius: meters(0),
+      })
+    ).toBeNull();
+    expect(
+      blastCasualtyPlan({
+        blastEnergy: J(1e13),
+        overpressure5psiRadius: meters(2_000),
         overpressure1psiRadius: meters(1_000),
       })
     ).toBeNull();
+  });
+
+  it('keeps the lighter bands of a burst whose 5 psi never reaches the ground', () => {
+    // A burst above the top of the book's 5 psi contour still puts 1 psi on
+    // the ground (rules 168 to 173 of validation/hobRules.ts): its people are
+    // in the 2 and 1 psi bands, and until 17 September 2026 they were in none.
+    const high = blastCasualtyPlan({
+      blastEnergy: J(1e13),
+      overpressure5psiRadius: meters(0),
+      overpressure1psiRadius: meters(1_000),
+    });
+    expect(high).not.toBeNull();
+    if (high === null) return;
+    expect(high.bands.map((b) => b.psiBand)).toEqual(['blast2psi', 'blast1psi']);
+    expect(high.bands[0]?.innerRadiusM).toBe(0);
+    expect(high.bands[1]?.outerRadiusM).toBe(1_000);
   });
 });
 

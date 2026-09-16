@@ -439,6 +439,23 @@ not that a rule holds.
 
 ## What has moved since
 
+- **17 September 2026, night, N1 held whole: an air burst's rings from the
+  book's curves.** The last clause of N1 left was the overpressure with
+  height of burst, drawn by a factor its own module called chosen. The seven
+  curves of Glasstone & Dolan's Figure 3.73c were traced from the public scan
+  — every grid line located, the grid and the triple-point dashes taken off
+  the ink, each curve read along rays of constant incidence — and checked
+  against the caption's example (4 psi farthest at 2 600 ft for a burst at
+  about 1 100 ft; 2 618 at 1 080) and against Figure 3.73b's own 10 and
+  15 psi curves (within 3.9 %). Rules 168 to 173 were pushed before the
+  curves drew a preset. No guard failed and the release gate stayed PASS. On
+  the five cases the campaign kept of its NUKEMAP comparison, the 1 psi ring
+  now agrees within 0.3 %, where the factor was 17 to 20 % wide; Hiroshima's
+  rings tighten to 1.62 and 4.49 km, and its toll moves from 116 639 to
+  109 102 against a record of 105 000, not re-tuned. A burst whose 5 psi
+  never reaches the ground had no casualty plan at all, and now keeps its
+  lighter bands. Explosions count 3.3, fidelity 4.5.
+
 - **17 September 2026, night, L2 met: a landslide's wave is the field's
   method.** At Andrea's choice the waves from landslides came first. The
   impulse wave manual was read again, whole, with its authors' spreadsheet,

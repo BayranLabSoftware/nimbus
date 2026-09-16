@@ -382,7 +382,12 @@ function positiveRadius(value: Meters | undefined): number {
 export function blastCasualtyPlan(input: BlastCasualtyInput): CasualtyPlan | null {
   const r5 = positiveRadius(input.overpressure5psiRadius);
   const r1 = positiveRadius(input.overpressure1psiRadius);
-  if (r5 <= 0 || r1 <= r5) return null;
+  // A burst high enough that 5 psi never reaches the ground still puts 1 psi
+  // there, and its people are in the lighter bands. Until 17 September 2026
+  // this returned no plan at all without a 5 psi ring, which no burst below
+  // 30 km lacked until the rings came from Glasstone & Dolan's curves (rules
+  // 168 to 173 of validation/hobRules.ts).
+  if (r1 <= 0 || r1 <= r5) return null;
   const r12 = r5 * overpressureRadiusRatio(input.blastEnergy, 12, 5);
   const r2 = r1 * overpressureRadiusRatio(input.blastEnergy, 2, 1);
   const psiEdges = [0, Math.min(r12, r5), r5, Math.max(r5, Math.min(r2, r1)), r1];

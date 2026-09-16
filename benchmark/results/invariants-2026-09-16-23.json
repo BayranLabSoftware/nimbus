@@ -1,0 +1,26 @@
+{
+ "track": "INV",
+ "scenariosPerHazard": {
+  "explosion": 5000
+ },
+ "watchdogMs": 2000,
+ "failures": {
+  "explosion": {
+   "continuous: radiation.ld50Radius": {
+    "count": 1,
+    "examples": [
+     {
+      "input": {
+       "yieldMegatons": 1.258324978251819,
+       "chargeType": "nuclear",
+       "windSpeed": 61.4517717808485,
+       "windDirectionDeg": 175.49444534699433,
+       "heightOfBurst": 2751.6525704413652
+      },
+      "detail": "53.9129 → 73.9559"
+     }
+    ]
+   }
+  }
+ }
+}
