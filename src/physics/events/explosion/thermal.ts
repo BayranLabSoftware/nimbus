@@ -1,9 +1,11 @@
+import { NUCLEAR_THERMAL_PARTITION } from '../../constants.js';
 import {
-  FIRST_DEGREE_BURN_FLUENCE,
-  NUCLEAR_THERMAL_PARTITION,
-  SECOND_DEGREE_BURN_FLUENCE,
-  THIRD_DEGREE_BURN_FLUENCE,
-} from '../../constants.js';
+  burnFluenceThreshold,
+  DEFAULT_BURN_EXPOSURE,
+  type BurnDegree,
+  type BurnExposureSource,
+  type BurnSkin,
+} from '../../effects/burnExposure.js';
 import type { Joules, Meters } from '../../units.js';
 import { m } from '../../units.js';
 
@@ -62,6 +64,14 @@ export function thermalFluence(input: ThermalFluenceInput): number {
 export interface BurnRadiusInput {
   /** Total explosive yield (J). */
   yieldEnergy: Joules;
+  /** Which radiant exposure the ring is drawn at (rule 81 of
+   *  validation/burnRules.ts): the project's fixed fluences, or Glasstone &
+   *  Dolan's own curves for this yield. Omitted,
+   *  {@link DEFAULT_BURN_EXPOSURE}. `fluenceThreshold` overrides both. */
+  burnExposure?: BurnExposureSource;
+  /** Which of the book's three skin pigmentations its curves are read at.
+   *  Omitted, the middle one. */
+  burnSkin?: BurnSkin;
   /** Thermal partition; defaults to 0.35 (low-altitude nuclear burst). */
   thermalPartition?: number;
   /** Atmospheric transmission factor; defaults to 1 (unshielded). */
@@ -191,10 +201,15 @@ function solveAttenuatedBurnRadius(R0: number, L: number): number {
  *   3. Neither: τ = 1 (vacuum line of sight) — the original behaviour,
  *      retained so existing callers and tests don't break.
  */
-export function thirdDegreeBurnRadius(input: BurnRadiusInput): Meters {
+export function thirdDegreeBurnRadius(
+  input: BurnRadiusInput,
+  degree: BurnDegree = 'third'
+): Meters {
   const W = input.yieldEnergy as number;
   const f = input.thermalPartition ?? NUCLEAR_THERMAL_PARTITION;
-  const Q = input.fluenceThreshold ?? THIRD_DEGREE_BURN_FLUENCE;
+  const Q =
+    input.fluenceThreshold ??
+    burnFluenceThreshold(degree, W, input.burnExposure ?? DEFAULT_BURN_EXPOSURE, input.burnSkin);
   const R0 = Math.sqrt((f * W) / (4 * Math.PI * Q));
   if (input.heightOfBurst !== undefined) {
     const L = effectiveAtmosphericTransmittanceLength(input.heightOfBurst);
@@ -215,7 +230,7 @@ export function thirdDegreeBurnRadius(input: BurnRadiusInput): Meters {
  * Threshold: 5 cal/cm², a project value (see constants.ts).
  */
 export function secondDegreeBurnRadius(input: BurnRadiusInput): Meters {
-  return thirdDegreeBurnRadius({ ...input, fluenceThreshold: SECOND_DEGREE_BURN_FLUENCE });
+  return thirdDegreeBurnRadius(input, 'second');
 }
 
 /**
@@ -225,5 +240,5 @@ export function secondDegreeBurnRadius(input: BurnRadiusInput): Meters {
  * three-tier Glasstone & Dolan thermal-injury palette.
  */
 export function firstDegreeBurnRadius(input: BurnRadiusInput): Meters {
-  return thirdDegreeBurnRadius({ ...input, fluenceThreshold: FIRST_DEGREE_BURN_FLUENCE });
+  return thirdDegreeBurnRadius(input, 'first');
 }

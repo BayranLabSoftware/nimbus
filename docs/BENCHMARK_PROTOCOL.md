@@ -932,3 +932,42 @@ record, and at an iron's they reach the ground 289 times of 357; the difference
 hardly moves with the entry angle. Nothing in the model changes: rule 79 lets
 this reading decide nothing, and rule 5 forbids tuning on a set now read.
 `docs/SCIENCE.md` gives the figures in full, with what was read afterwards.
+
+## After the bolides: the radiant exposure that burns, from the book itself
+
+Written on 16 September 2026, before the candidate drew a ring for any row of
+the calibration net. The rules are numbered after the seventy-nine before them
+and live in `src/physics/validation/burnRules.ts` (rules 80 to 84); the curves
+come first, in `src/physics/effects/burnExposureData.ts`, traced by
+`scripts/benchmark/burn-curves.py` from the public scan of Glasstone & Dolan
+(1977), and the run that will read them in `burnRun.ts`, committed with the
+rules and run on nothing.
+
+### What is already known, and so not held out
+
+Nimbus draws its burn rings at 8, 5 and 2 cal/cm², three numbers of the
+project's own: the book gives no fixed threshold, and its Figure 12.64 (page
+564; the text calls it 12.65) draws the exposure that burns as a curve rising
+with the yield, nine of them for three degrees and three skin pigmentations.
+The validation report has carried the difference as a declared gap since 14
+September 2026. Before these rules were written, that page was read, with the
+book's worked example at 1 Mt, the curves were traced, and the rings a
+scenario draws under them at six yields were printed. No toll and no row of
+the net was run under the candidate.
+
+### The curves, the candidate and the decision
+
+Rule 80 traces the nine curves and refuses to write them unless there are
+nine, each rising with the yield and none crossing another; the reading is
+good to about a tenth of a cal/cm². Rule 81's candidate draws an explosion's
+burn rings at the exposure the book gives for that yield and the middle of its
+three pigmentations, interpolated in the logarithm of the yield and held flat
+outside the figure; an impact's burn rings are left as they are, since the
+book's curves are the pulse of a nuclear fireball. Rule 82 adopts the book —
+this replaces the project's own numbers with the source it cites — unless the
+trace fails its checks, the release gate stops passing, or a ring moves by
+more than a factor of two, which a misread figure could not pass. Rule 83 says
+what is printed, rule 84 what an adoption changes. A traced curve carries the
+scan's own error, and the tolls cannot judge the change, since no row of the
+net counts the burned apart from the dead; the rules say so rather than
+correct it.

@@ -20,6 +20,7 @@ import { peakOverpressure } from './overpressure.js';
 import { peakWindAtRange } from './peakWind.js';
 import { initialRadiationRadii, type RadiationDoseResult } from './radiation.js';
 import { computeSeaCoupling, type SeaCoupling } from '../../effects/seaCoupling.js';
+import type { BurnExposureSource } from '../../effects/burnExposure.js';
 import {
   firstDegreeBurnRadius,
   secondDegreeBurnRadius,
@@ -61,6 +62,11 @@ export interface ExplosionScenarioInput {
   /** Nuclear unless said otherwise — the shipped conventional
    *  disasters (Beirut, Halifax, Texas City) say otherwise. */
   chargeType?: ExplosionChargeType;
+  /** Which radiant exposure the burn rings are drawn at (rule 81 of
+   *  validation/burnRules.ts): the project's fixed 8, 5 and 2 cal/cm², or
+   *  Glasstone & Dolan's curves, where the exposure that burns grows with
+   *  the yield. Omitted, {@link DEFAULT_BURN_EXPOSURE}. */
+  burnExposure?: BurnExposureSource;
   /** Distance from the burst point to the nearest usable sea (m).
    *  Zero or omitted means the burst is over the water. A surface
    *  burst beside the sea is not a burst in it, and this is what
@@ -358,15 +364,15 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   // see thermalPartitionForHeight). A chemical charge has no flash.
   const thermalPartition = thermalPartitionForHeight(hobMeters, yieldKilotons);
   const flash = (radius: Meters): Meters => (chemical ? m(0) : radius);
-  const burn3 = flash(
-    thirdDegreeBurnRadius({ yieldEnergy: yieldJoules, heightOfBurst: hobMeters, thermalPartition })
-  );
-  const burn2 = flash(
-    secondDegreeBurnRadius({ yieldEnergy: yieldJoules, heightOfBurst: hobMeters, thermalPartition })
-  );
-  const burn1 = flash(
-    firstDegreeBurnRadius({ yieldEnergy: yieldJoules, heightOfBurst: hobMeters, thermalPartition })
-  );
+  const burnInput = {
+    yieldEnergy: yieldJoules,
+    heightOfBurst: hobMeters,
+    thermalPartition,
+    ...(input.burnExposure === undefined ? {} : { burnExposure: input.burnExposure }),
+  };
+  const burn3 = flash(thirdDegreeBurnRadius(burnInput));
+  const burn2 = flash(secondDegreeBurnRadius(burnInput));
+  const burn1 = flash(firstDegreeBurnRadius(burnInput));
   const fireInput = { yieldEnergy: yieldJoules, thermalPartition };
 
   const result: ExplosionScenarioResult = {
