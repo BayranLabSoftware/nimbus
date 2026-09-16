@@ -30,7 +30,8 @@ import { J, m, Pa } from '../units.js';
  * Neither paper says how the program passes from regular reflection to the
  * Mach region, and the program does not step where Eq. 58 puts the edge. What
  * it does was read off its printed overpressure on 16 September 2026 (rule 129
- * of validation/machBlendRules.ts) and is `MachTransition` `program`.
+ * of validation/machBlendRules.ts), is `MachTransition` `program`, and is the
+ * default since it held on twelve bodies nobody had asked about (rule 131).
  */
 
 /** One kiloton of TNT (J): the relations are for a 1 kt explosion. */
@@ -80,8 +81,11 @@ export function airburstBlastYield(kineticEnergy: Joules, keptFraction: number):
  */
 export type MachTransition = 'published' | 'program';
 
-/** What a blast that names no transition uses. */
-export const DEFAULT_MACH_TRANSITION: MachTransition = 'published';
+/** What a blast that names no transition uses: the program's, adopted on
+ *  16 September 2026 by rule 131 of validation/machBlendRules.ts, when it
+ *  reproduced the program's printed overpressure on 72 of 72 held-out points
+ *  of twelve bodies and the step did on 42. */
+export const DEFAULT_MACH_TRANSITION: MachTransition = 'program';
 
 export interface AirburstBlastInput {
   /** Distance along the ground from the point under the burst (m). */

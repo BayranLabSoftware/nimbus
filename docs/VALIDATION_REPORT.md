@@ -1677,8 +1677,8 @@ Each figure is simulator over program, over the pairs where both answer.
 | Energy before entry | 81 | 1.00× | 0.98× | 1.00× | 1.03× | 0.98× – 1.03× |
 | Breakup altitude | 81 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.01× |
 | Burst altitude (airbursts) | 24 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.05× |
-| Air-blast overpressure at the distance (airbursts) | 24 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.00× |
-| The same, high end within three burst altitudes | 24 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.00× |
+| Air-blast overpressure at the distance (airbursts) | 24 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.01× |
+| The same, high end within three burst altitudes | 24 | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× – 1.01× |
 | Speed at the ground | 57 | 1.00× | 0.99× | 1.00× | 1.01× | 0.97× – 1.04× |
 | Transient crater diameter | 57 | 1.00× | 0.99× | 1.00× | 1.01× | 0.96× – 1.03× |
 | Final crater diameter | 57 | 1.00× | 0.98× | 1.00× | 1.01× | 0.96× – 1.02× |

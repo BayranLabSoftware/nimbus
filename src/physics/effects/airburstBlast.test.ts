@@ -293,7 +293,8 @@ describe('airburst blast — the program’s passage to the Mach region (rule 12
       }) as number;
     expect(published(56) / 2_526.446).toBeLessThan(0.71);
     expect(published(58) / 2_585.383).toBeGreaterThan(1.41);
-    expect(DEFAULT_MACH_TRANSITION).toBe('published');
+    // Rule 131 adopted the program's passage.
+    expect(DEFAULT_MACH_TRANSITION).toBe('program');
   });
 
   it('is continuous across both ends of the blend', () => {

@@ -1208,7 +1208,7 @@ program combines those pieces. On them the law reproduces 618 within
 1 %; the rest are two bodies whose burst altitude differs by 1.5–3 %
 (BM-13) and points near the edge of the Mach region, where the program
 blends the two regions in a way neither paper describes and the law
-keeps the published step. The checks, `scripts/benchmark/airburst-checks.ts`:
+kept the published step (until the amendment below). The checks, `scripts/benchmark/airburst-checks.ts`:
 
 - **Held out, the validation grid.** The 24 airburst rows the program
   printed on 14 September: all 48 values, low and high end, within 1 %
@@ -1251,6 +1251,31 @@ and 91.4 km to 5.8, 26.4 and 44.2 km (13.1 km for 5 psi at the upper
 figure), and Chelyabinsk's from 33.5, 98.3 and 183 km to none. The flash,
 a swarm that strikes the ground and the blast of a ground impact are
 unchanged.
+
+#### Amended on 16 September 2026: the program does not step
+
+The law above steps from regular reflection to the Mach region at r_m1, as
+the papers print it, and the rules said the step was kept. The invariants
+of the gold standard then found a body 0.1 % larger whose blast ring jumped
+from 33 to 61 km, and the program, asked on it, did not step: it agreed with
+the law to 0.3 % out to 40 km and then rose smoothly where the law fell,
+the law 41 % below it at 61 km. Fifty printed overpressures on four bodies gave its
+passage to seven digits (rule 129, `validation/machBlendRules.ts`): the Mach
+relation takes r_x = 290 + 0.65 z₁, not 289, and between r_m1 − 0.00328 z₁²
+and r_m1 + 0.00328 z₁² the overpressure is a straight line in range, from the
+regular relation at the inner end to the Mach relation at the outer. Where
+the line rises it is the knee a burst above the ground draws where the Mach
+stem forms. Neither paper prints it.
+
+Rules 130 and 131 were pushed before the program was asked again
+(`ef3a2ea`): twelve bodies drawn with a seed, the program's own burst
+altitude and yield scale for each, six ranges placed across the blend. The
+blend reproduced the program's printed low end on **72 of 72** points,
+within 3.5 × 10⁻⁷; the step on 42, missing by up to 43 %. Through
+Nimbus's own entry, which departs from the program's through BM-13, the
+blend stays within 0.75 % everywhere. It is the default; the step stays
+reachable as `published`. No preset moves: Tunguska's rings all lie inside
+its regular region, and Chelyabinsk draws none.
 
 #### Corrected the same day: Chelyabinsk's inputs, and no line source
 

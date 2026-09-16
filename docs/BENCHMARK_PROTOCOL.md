@@ -143,7 +143,13 @@ authors publish it:
    outwards (2005 Eq. 58): p = (p_x r_x / 4r₁)(1 + 3 (r_x/r₁)^1.3), with
    p_x = 75 000 Pa and r_x = 289 + 0.65 z₁ (2005 Eq. 54 and the text under
    it). Above 550 m there is no Mach region. The published law steps at
-   r_m1; the step is kept.
+   r_m1; the step is kept. (Amended on 16 September 2026 by rules 129 to 131
+   of `src/physics/validation/machBlendRules.ts`: the program does not step.
+   Its Mach relation takes r_x = 290 + 0.65 z₁, and between r_m1 − 0.00328 z₁²
+   and r_m1 + 0.00328 z₁² it draws a straight line in range from one relation
+   to the other; held out on twelve bodies, 72 of 72 points within 1 %, it is
+   now the law. The step stays reachable, and this item stays as decided
+   then.)
 5. **Range.** Within r < 3 z_b the overpressure is a range from p to 2p: the
    static source is the low end, the moving source the high one (2017, the
    third improvement). Nimbus's rings (5, 1, 0.5 psi) and everything

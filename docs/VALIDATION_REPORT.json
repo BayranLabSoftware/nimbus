@@ -6262,22 +6262,22 @@
         {
           "quantity": "airburstOverpressure",
           "pairs": 24,
-          "geometricMean": 1,
-          "p10": 0.998,
+          "geometricMean": 1.001,
+          "p10": 1,
           "median": 1,
           "p90": 1.001,
-          "min": 0.997,
-          "max": 1.003
+          "min": 1,
+          "max": 1.006
         },
         {
           "quantity": "airburstOverpressureHigh",
           "pairs": 24,
-          "geometricMean": 1,
-          "p10": 0.998,
+          "geometricMean": 1.001,
+          "p10": 1,
           "median": 1,
           "p90": 1.001,
-          "min": 0.997,
-          "max": 1.003
+          "min": 1,
+          "max": 1.006
         },
         {
           "quantity": "groundVelocity",

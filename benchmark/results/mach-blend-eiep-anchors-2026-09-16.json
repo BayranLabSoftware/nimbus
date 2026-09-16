@@ -1,0 +1,174 @@
+{
+ "reference": "Earth Impact Effects Program, impact.ese.ic.ac.uk (Collins, Melosh & Marcus 2005)",
+ "readOn": "2026-09-16",
+ "rows": [
+  {
+   "key": "body 1 anchor",
+   "diameterM": 60.756,
+   "densityKgM3": 1983.2,
+   "velocityKmS": 46.875,
+   "angleDeg": 63.48,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 4662.852,
+   "overpressurePa": [
+    1307640.425,
+    2615280.85
+   ]
+  },
+  {
+   "key": "body 2 anchor",
+   "diameterM": 59.541,
+   "densityKgM3": 3789.5,
+   "velocityKmS": 55.249,
+   "angleDeg": 13.53,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 20387.146,
+   "overpressurePa": [
+    55375.641,
+    110751.282
+   ]
+  },
+  {
+   "key": "body 3 anchor",
+   "diameterM": 61.49,
+   "densityKgM3": 3986.8,
+   "velocityKmS": 52.278,
+   "angleDeg": 35.75,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 5372.27,
+   "overpressurePa": [
+    1897701.995,
+    3795403.99
+   ]
+  },
+  {
+   "key": "body 4 anchor",
+   "diameterM": 24.737,
+   "densityKgM3": 7410.6,
+   "velocityKmS": 69.151,
+   "angleDeg": 32.22,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 13604.317,
+   "overpressurePa": [
+    47440.159,
+    94880.318
+   ]
+  },
+  {
+   "key": "body 5 anchor",
+   "diameterM": 103.602,
+   "densityKgM3": 5901.1,
+   "velocityKmS": 36.694,
+   "angleDeg": 13.53,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 6961.26,
+   "overpressurePa": [
+    2617598.376,
+    5235196.752
+   ]
+  },
+  {
+   "key": "body 6 anchor",
+   "diameterM": 21.98,
+   "densityKgM3": 6426.9,
+   "velocityKmS": 54.131,
+   "angleDeg": 55.66,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 10711.563,
+   "overpressurePa": [
+    42969.657,
+    85939.314
+   ]
+  },
+  {
+   "key": "body 7 anchor",
+   "diameterM": 43.479,
+   "densityKgM3": 4962.8,
+   "velocityKmS": 13.263,
+   "angleDeg": 38.96,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 5146.302,
+   "overpressurePa": [
+    116869.759,
+    233739.518
+   ]
+  },
+  {
+   "key": "body 8 anchor",
+   "diameterM": 72.416,
+   "densityKgM3": 2528.1,
+   "velocityKmS": 59.27,
+   "angleDeg": 13.08,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 21590.677,
+   "overpressurePa": [
+    64899.081,
+    129798.162
+   ]
+  },
+  {
+   "key": "body 9 anchor",
+   "diameterM": 45.375,
+   "densityKgM3": 2023.1,
+   "velocityKmS": 56.46,
+   "angleDeg": 40.7,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 14165.183,
+   "overpressurePa": [
+    57169.692,
+    114339.384
+   ]
+  },
+  {
+   "key": "body 10 anchor",
+   "diameterM": 52.38,
+   "densityKgM3": 2339.8,
+   "velocityKmS": 21.37,
+   "angleDeg": 59.3,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 6072.112,
+   "overpressurePa": [
+    150512.065,
+    301024.13
+   ]
+  },
+  {
+   "key": "body 11 anchor",
+   "diameterM": 51.848,
+   "densityKgM3": 1435.2,
+   "velocityKmS": 56.911,
+   "angleDeg": 45.63,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 13394.351,
+   "overpressurePa": [
+    71680.521,
+    143361.042
+   ]
+  },
+  {
+   "key": "body 12 anchor",
+   "diameterM": 89.228,
+   "densityKgM3": 5116.8,
+   "velocityKmS": 23.187,
+   "angleDeg": 21.59,
+   "rangeKm": 0.01,
+   "error": null,
+   "burstAltitudeM": 3518.985,
+   "overpressurePa": [
+    4484433.195,
+    8968866.39
+   ]
+  }
+ ]
+}

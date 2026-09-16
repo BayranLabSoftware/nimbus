@@ -89,6 +89,32 @@
  * find it.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 16 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `ef3a2ea` and the program asked afterwards
+ * (`benchmark/results/mach-blend-eiep-anchors-2026-09-16.json`,
+ * `mach-blend-eiep-ranges-2026-09-16.json`, scored in
+ * `mach-blend-against-eiep-2026-09-16.json`). All twelve bodies burst in the
+ * air with a Mach region, at z₁ from 73.9 to 517.8 m; the program answered
+ * all 72 ranges — 21 on regular reflection, 31 in the blend, 20 in the Mach
+ * region.
+ *
+ * The blend agrees on **72 of 72**, the worst to 3.5 × 10⁻⁷. The step agrees
+ * on 42 — the 21 regular points, the 20 Mach points, where r_x = 289 leaves it
+ * 0.2 % to 0.7 % low, and one of the 31 blend points (body 3 at 6.63 km,
+ * 0.08 % low, where the line crosses the step); in the blend it misses by up
+ * to 43 %, 0.567 of the program at 10.09 km from body 7, and 1.295 at 157.3 km
+ * from body 6. Through Nimbus's own entry, which
+ * departs from the program's through BM-13 and decides nothing, the blend is
+ * within 0.75 % of the program on every point.
+ *
+ * `DEFAULT_MACH_TRANSITION` is `program`. No preset moves: Tunguska's rings
+ * lie inside its regular region and Chelyabinsk draws none.
+ */
+
 /** Rule 130: G1's tolerance, and half the program's last printed digit (Pa). */
 export const MACH_BLEND_TOLERANCE = 0.01;
 export const MACH_BLEND_ROUNDING_PA = 0.0005;
