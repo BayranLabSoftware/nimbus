@@ -2,6 +2,7 @@ import { ussaDensity } from '../../atmosphere/ussa1976.js';
 import { STANDARD_GRAVITY } from '../../constants.js';
 import type { Meters, SquareMeters } from '../../units.js';
 import { m, sqm } from '../../units.js';
+import { prepareTephra2Deposit, tephra2Field, type Tephra2Eruption } from './tephra2Fallout.js';
 
 /**
  * Wind-advected tephra fallout model — a closed-form advection model
@@ -109,6 +110,23 @@ export type AshSpreadLaw = 'project' | 'tephra2';
  */
 export const DEFAULT_ASH_SPREAD: AshSpreadLaw = 'tephra2';
 
+/**
+ * Which model lays the deposit (rules 158 to 161 of validation/tephra2Rules.ts).
+ *
+ * `closed-form` is this file's own: four grain classes, a Suzuki release and
+ * one Gaussian per class and level, with the spread law above.
+ *
+ * `program` is the forward model of Tephra2, the field's program for tephra
+ * fall, in `tephra2Fallout.ts`, given the parameters the campaign's reference
+ * run gave it for Nimbus's eruptions ({@link programEruption}). The footprint
+ * read off it keeps this file's definitions: the farthest point on the axis
+ * above the threshold, the widest half-width, and the ellipse of the two.
+ */
+export type AshDepositModel = 'closed-form' | 'program';
+
+/** What a scenario that names no deposit model draws. */
+export const DEFAULT_ASH_DEPOSIT_MODEL: AshDepositModel = 'closed-form';
+
 /** Tephra2's own example configuration, the one its Colima inversion left and
  *  the one the reference runs on (docs/TEPHRA2_SETUP.md). The eddy constant
  *  is in m²/s^(5/2), the diffusion coefficient in m²/s, the threshold in s. */
@@ -215,6 +233,80 @@ export interface AshDepositInput {
   /** Which law spreads a release (rule 107 of validation/ashRules.ts).
    *  Omitted, {@link DEFAULT_ASH_SPREAD}. */
   spreadLaw?: AshSpreadLaw;
+  /** Which model lays the deposit. Omitted, {@link DEFAULT_ASH_DEPOSIT_MODEL}. */
+  depositModel?: AshDepositModel;
+}
+
+/**
+ * The eruption Tephra2 is given for one of Nimbus's: the parameters
+ * `scripts/benchmark/tephra2-reference.ts` gave it on 15 September 2026, which
+ * is what the report's ash comparison reads against. The vent stands a
+ * millimetre above the datum, where the program has an answer, and so do the
+ * points; the plume top is the vent plus Mastin et al.'s height; the mass is
+ * the bulk volume at the deposit density; the grain sizes are Nimbus's classes
+ * as a normal distribution in φ, to five decimals; the rest is Tephra2's own
+ * example, with a hundred steps each way.
+ */
+export function programEruption(input: {
+  plumeHeight: Meters;
+  totalEjectaVolume: number;
+  grainSpectrum?: GrainSizeClass[];
+  depositDensity?: number;
+}): Tephra2Eruption {
+  const spectrum = input.grainSpectrum ?? DEFAULT_GRAIN_SPECTRUM;
+  const phis = spectrum.map((g) => -Math.log2(g.diameter * 1_000));
+  const total = spectrum.reduce((a, g) => a + g.massFraction, 0);
+  const mean = spectrum.reduce((a, g, i) => a + g.massFraction * (phis[i] ?? 0), 0) / total;
+  const variance =
+    spectrum.reduce((a, g, i) => a + g.massFraction * ((phis[i] ?? 0) - mean) ** 2, 0) / total;
+  const five = (x: number): number => Number(x.toFixed(5));
+  return {
+    ventElevationM: PROGRAM_VENT_ELEVATION_M,
+    plumeTopElevationM: PROGRAM_VENT_ELEVATION_M + (input.plumeHeight as number),
+    massKg: input.totalEjectaVolume * (input.depositDensity ?? TEPHRA_DENSITY),
+    coarsestPhi: -7,
+    finestPhi: 7,
+    medianPhi: five(mean),
+    sigmaPhi: five(Math.sqrt(variance)),
+    releaseAlpha: 1.04487,
+    releaseBeta: 1.46425,
+    eddyConstant: TEPHRA2_EDDY_CONSTANT,
+    diffusionCoefficientM2S: TEPHRA2_DIFFUSION_COEFFICIENT,
+    fallTimeThresholdS: TEPHRA2_FALL_TIME_THRESHOLD_S,
+    lithicDensityKgM3: 2_700,
+    pumiceDensityKgM3: 1_000,
+    columnSteps: 100,
+    grainSteps: 100,
+  };
+}
+
+/** Where the program model puts the vent and the points (m above sea level). */
+export const PROGRAM_VENT_ELEVATION_M = 0.001;
+
+/** The program's deposit as a function of the downwind and crosswind distances
+ *  (m) from the vent, for a wind constant with height. */
+function programDeposit(
+  input: Omit<AshDepositInput, 'downwindDistance' | 'crosswindDistance'>
+): ((downwind: number, crosswind: number) => number) | null {
+  const H = input.plumeHeight as number;
+  const V = input.totalEjectaVolume;
+  const u = input.windSpeed;
+  if (!Number.isFinite(H) || H <= 0) return null;
+  if (!Number.isFinite(V) || V <= 0) return null;
+  if (!Number.isFinite(u) || u < 0) return null;
+  const eruption = programEruption({
+    plumeHeight: input.plumeHeight,
+    totalEjectaVolume: V,
+    ...(input.grainSpectrum !== undefined ? { grainSpectrum: input.grainSpectrum } : {}),
+    ...(input.depositDensity !== undefined ? { depositDensity: input.depositDensity } : {}),
+  });
+  // Blowing towards the east at every height, so that east is downwind.
+  const wind = [
+    { heightM: 0, speedMS: u, towardDeg: 90 },
+    { heightM: eruption.plumeTopElevationM + 1_000, speedMS: u, towardDeg: 90 },
+  ];
+  const field = tephra2Field(prepareTephra2Deposit(eruption, wind), PROGRAM_VENT_ELEVATION_M);
+  return (downwind, crosswind) => field(crosswind, downwind);
 }
 
 /**
@@ -258,6 +350,9 @@ const SUZUKI_NORMALISATION = (() => {
 export function ashfallMassLoading(input: AshDepositInput): number {
   const x = input.downwindDistance;
   if (!Number.isFinite(x)) return 0;
+  if ((input.depositModel ?? DEFAULT_ASH_DEPOSIT_MODEL) === 'program') {
+    return programDeposit(input)?.(x, input.crosswindDistance) ?? 0;
+  }
   return loadingAt(depositPieces(input), x, input.crosswindDistance);
 }
 
@@ -383,6 +478,8 @@ export interface AshFootprintInput {
    *  what the invariants sweep reads. It is named here so the footprint can be
    *  scored under either law, as the deposit already could. */
   spreadLaw?: AshSpreadLaw;
+  /** Which model lays the deposit. Omitted, {@link DEFAULT_ASH_DEPOSIT_MODEL}. */
+  depositModel?: AshDepositModel;
 }
 
 export interface AshFootprint {
@@ -429,6 +526,10 @@ export function ashFootprint(input: AshFootprintInput): AshFootprint {
   };
 
   if (input.windSpeed <= 0 || input.totalEjectaVolume <= 0) return empty;
+  if ((input.depositModel ?? DEFAULT_ASH_DEPOSIT_MODEL) === 'program') {
+    const deposit = programDeposit(input);
+    return deposit === null ? empty : programFootprint(deposit, loadingThreshold);
+  }
   const pieces = depositPieces({
     plumeHeight: input.plumeHeight,
     totalEjectaVolume: input.totalEjectaVolume,
@@ -534,5 +635,118 @@ export function ashFootprint(input: AshFootprintInput): AshFootprint {
     crosswindHalfWidth: m(maxHalfWidth),
     widestPointDownwind: m(widestX),
     area: sqm(area),
+  };
+}
+
+/**
+ * The footprint of the program's deposit, with this file's definitions: the
+ * downwind edge is the farthest point on the axis above the threshold, found
+ * on a geometric row of 240 points from 10 m to the 5 000 km limit and refined
+ * by bisection; the half-width is the widest the deposit gets across the wind,
+ * searched at 32 stations along the reach and refined around the widest by a
+ * golden-section search; the area is the ellipse of the two. Each search stops
+ * at a part in ten million of what it measures.
+ */
+const PRECISION = 1e-7;
+
+function programFootprint(
+  deposit: (downwind: number, crosswind: number) => number,
+  threshold: number
+): AshFootprint {
+  const empty: AshFootprint = {
+    downwindRange: m(0),
+    crosswindHalfWidth: m(0),
+    widestPointDownwind: m(0),
+    area: sqm(0),
+  };
+  const reachLimit = 5_000_000;
+  const onAxis = (x: number): number => deposit(x, 0);
+  const samples = 240;
+  const row = Array.from(
+    { length: samples },
+    (_, k) => 10 * Math.pow(reachLimit / 10, k / (samples - 1))
+  );
+  let last = -1;
+  for (let k = 0; k < samples; k++) if (onAxis(row[k] ?? 0) >= threshold) last = k;
+  if (last < 0) return empty;
+
+  let downwindRange: number;
+  if (last === samples - 1) {
+    downwindRange = reachLimit;
+  } else {
+    let lo = row[last] ?? 0;
+    let hi = row[last + 1] ?? reachLimit;
+    while (hi - lo > PRECISION * hi) {
+      const mid = 0.5 * (lo + hi);
+      if (onAxis(mid) >= threshold) lo = mid;
+      else hi = mid;
+    }
+    downwindRange = 0.5 * (lo + hi);
+  }
+
+  const halfWidthAt = (x: number): number => {
+    if (onAxis(x) < threshold) return 0;
+    let lo = 0;
+    let hi = Math.max(1_000, 0.05 * downwindRange);
+    for (let i = 0; i < 60 && deposit(x, hi) >= threshold; i++) {
+      lo = hi;
+      hi *= 2;
+    }
+    while (hi - lo > PRECISION * hi) {
+      const mid = 0.5 * (lo + hi);
+      if (deposit(x, mid) >= threshold) lo = mid;
+      else hi = mid;
+    }
+    return 0.5 * (lo + hi);
+  };
+  const stations = 32;
+  let best = 0;
+  let bestX = 0;
+  let bestIndex = 0;
+  for (let k = 1; k <= stations; k++) {
+    const x = (k / stations) * downwindRange;
+    const w = halfWidthAt(x);
+    if (w > best) {
+      best = w;
+      bestX = x;
+      bestIndex = k;
+    }
+  }
+  if (best > 0) {
+    // Refine between the stations on either side of the widest.
+    let a = (Math.max(bestIndex - 1, 0) / stations) * downwindRange;
+    let b = (Math.min(bestIndex + 1, stations) / stations) * downwindRange;
+    const golden = (Math.sqrt(5) - 1) / 2;
+    let c = b - golden * (b - a);
+    let d = a + golden * (b - a);
+    let wc = halfWidthAt(c);
+    let wd = halfWidthAt(d);
+    while (b - a > PRECISION * downwindRange) {
+      if (wc >= wd) {
+        b = d;
+        d = c;
+        wd = wc;
+        c = b - golden * (b - a);
+        wc = halfWidthAt(c);
+      } else {
+        a = c;
+        c = d;
+        wc = wd;
+        d = a + golden * (b - a);
+        wd = halfWidthAt(d);
+      }
+    }
+    const x = 0.5 * (a + b);
+    const w = halfWidthAt(x);
+    if (w > best) {
+      best = w;
+      bestX = x;
+    }
+  }
+  return {
+    downwindRange: m(downwindRange),
+    crosswindHalfWidth: m(best),
+    widestPointDownwind: m(bestX),
+    area: sqm(Math.PI * (downwindRange / 2) * best),
   };
 }
