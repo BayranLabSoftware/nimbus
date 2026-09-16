@@ -2601,9 +2601,12 @@ there, and its people were in no band at all. The plan now keeps their 2 and
 What it leaves. The 0.5 psi light-damage ring, below anything the figure draws,
 carries the 1 psi curve out by the surface relation's ratio, the project's
 closure. A chemical charge keeps its Kingery–Bulmash surface radii and takes
-the curves' change with height at twice its yield. A burst in the water still
-shortens the surface relation's radius, so its 1 psi ring steps across the
-waterline. The figure is for nearly ideal surfaces and a sea-level atmosphere:
+the curves' change with height at twice its yield. A burst in the water went on
+shortening the surface relation's radius, so its 1 psi ring stepped by 14 %
+across the waterline; rules 174 to 176 closed that the same night, shortening
+the book's contact surface burst instead — the reference burst §6.81 adjusts —
+and the step is now the depth factor's alone. The figure is for nearly ideal
+surfaces and a sea-level atmosphere:
 a precursor over heated or dusty ground (§3.79) and bursts above 5 000 ft are
 read without the corrections the book describes. And the explosion sweep gains
 one failure, a 5 psi ring just under the top of its contour, where the

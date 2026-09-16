@@ -68,7 +68,8 @@ describe('rules 174 to 176: a burst in the water, from the same curves', () => {
     expect(waterlinePasses(Number.NaN)).toBe(false);
   });
 
-  it('is not yet the default: the rules are pushed before the candidate runs', () => {
-    expect(DEFAULT_WATER_BLAST_SOURCE).toBe('surfaceRelation');
+  it('is the default since rule 176 adopted it', () => {
+    // Pushed in fb0e2f7 with the default still 'surfaceRelation'.
+    expect(DEFAULT_WATER_BLAST_SOURCE).toBe('glasstone1977');
   });
 });

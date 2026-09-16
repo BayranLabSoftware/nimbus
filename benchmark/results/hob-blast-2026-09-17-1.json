@@ -1,0 +1,330 @@
+{
+ "rules": "src/physics/validation/hobRules.ts, rules 168 to 176",
+ "trace": true,
+ "guard": {
+  "cases": 288,
+  "notFinite": 0,
+  "outOfOrder": 0,
+  "shrinksWithYield": 0,
+  "examples": []
+ },
+ "presets": [
+  {
+   "name": "Hiroshima 1945",
+   "yieldKt": 15,
+   "heightOfBurstM": 580,
+   "chemical": false,
+   "inPlace": {
+    "fivePsiM": 1692.9365371079348,
+    "onePsiM": 4975.100801770014,
+    "halfPsiM": 9272.968310726885
+   },
+   "candidate": {
+    "fivePsiM": 1621.8168888922166,
+    "onePsiM": 4493.512169632335,
+    "halfPsiM": 7046.70462474547
+   }
+  },
+  {
+   "name": "Nagasaki 1945",
+   "yieldKt": 21,
+   "heightOfBurstM": 503,
+   "chemical": false,
+   "inPlace": {
+    "fivePsiM": 1893.8693837082214,
+    "onePsiM": 5565.590252680386,
+    "halfPsiM": 10373.567109481379
+   },
+   "candidate": {
+    "fivePsiM": 1698.4707620878476,
+    "onePsiM": 4655.6753739471615,
+    "halfPsiM": 7418.793122542721
+   }
+  },
+  {
+   "name": "Castle Bravo 1954",
+   "yieldKt": 15000,
+   "heightOfBurstM": 0,
+   "chemical": false,
+   "inPlace": {
+    "fivePsiM": 11286.24358071957,
+    "onePsiM": 33167.33867846668,
+    "halfPsiM": 61819.78873817917
+   },
+   "candidate": {
+    "fivePsiM": 11217.70732991986,
+    "onePsiM": 29113.396781112067,
+    "halfPsiM": 54263.74590698205
+   }
+  },
+  {
+   "name": "Tsar Bomba 1961",
+   "yieldKt": 50000,
+   "heightOfBurstM": 4000,
+   "chemical": false,
+   "inPlace": {
+    "fivePsiM": 21797.251485583256,
+    "onePsiM": 64056.461045824566,
+    "halfPsiM": 119393.26599451325
+   },
+   "candidate": {
+    "fivePsiM": 20278.708985060344,
+    "onePsiM": 54423.085442943026,
+    "halfPsiM": 92043.63563118316
+   }
+  },
+  {
+   "name": "Starfish Prime 1962",
+   "yieldKt": 1400,
+   "heightOfBurstM": 400000,
+   "chemical": false,
+   "inPlace": {
+    "fivePsiM": 0,
+    "onePsiM": 0,
+    "halfPsiM": 0
+   },
+   "candidate": {
+    "fivePsiM": 0,
+    "onePsiM": 0,
+    "halfPsiM": 0
+   }
+  },
+  {
+   "name": "1 Mt reference",
+   "yieldKt": 1000,
+   "heightOfBurstM": 0,
+   "chemical": false,
+   "inPlace": {
+    "fivePsiM": 4576.347548612008,
+    "onePsiM": 13448.696899868592,
+    "halfPsiM": 25066.696161951964
+   },
+   "candidate": {
+    "fivePsiM": 4548.557460519795,
+    "onePsiM": 11804.904,
+    "halfPsiM": 22002.870909515612
+   }
+  },
+  {
+   "name": "Beirut port 2020",
+   "yieldKt": 0.5,
+   "heightOfBurstM": 0,
+   "chemical": true,
+   "inPlace": {
+    "fivePsiM": 457.6347548612021,
+    "onePsiM": 1344.8696899868569,
+    "halfPsiM": 2506.669616195198
+   },
+   "candidate": {
+    "fivePsiM": 457.6347548612021,
+    "onePsiM": 1344.8696899868569,
+    "halfPsiM": 2506.669616195198
+   }
+  },
+  {
+   "name": "Ivy Mike 1952",
+   "yieldKt": 10400,
+   "heightOfBurstM": 0,
+   "chemical": false,
+   "inPlace": {
+    "fivePsiM": 9989.186289938556,
+    "onePsiM": 29355.62416592506,
+    "halfPsiM": 54715.227586019
+   },
+   "candidate": {
+    "fivePsiM": 9928.526481211604,
+    "onePsiM": 25767.576421639165,
+    "halfPsiM": 48027.55343511517
+   }
+  },
+  {
+   "name": "Halifax 1917",
+   "yieldKt": 2.9,
+   "heightOfBurstM": 0,
+   "chemical": true,
+   "inPlace": {
+    "fivePsiM": 822.2331782568178,
+    "onePsiM": 2416.3297647149557,
+    "halfPsiM": 4503.737759141746
+   },
+   "candidate": {
+    "fivePsiM": 822.2331782568178,
+    "onePsiM": 2416.3297647149557,
+    "halfPsiM": 4503.737759141746
+   }
+  },
+  {
+   "name": "Texas City 1947",
+   "yieldKt": 2.7,
+   "heightOfBurstM": 0,
+   "chemical": true,
+   "inPlace": {
+    "fivePsiM": 802.8792845021135,
+    "onePsiM": 2359.4536974638545,
+    "halfPsiM": 4397.727852956394
+   },
+   "candidate": {
+    "fivePsiM": 802.8792845021135,
+    "onePsiM": 2359.4536974638545,
+    "halfPsiM": 4397.727852956394
+   }
+  }
+ ],
+ "nukemap": [
+  {
+   "caseId": "nuc-preset-NAGASAKI_1945",
+   "psi": 1,
+   "nukemapM": 4640.812874099859,
+   "inPlaceM": 5565.590252680386,
+   "candidateM": 4655.6753739471615
+  },
+  {
+   "caseId": "nuc-preset-TSAR_BOMBA_1961",
+   "psi": 1,
+   "nukemapM": 54436.32919672976,
+   "inPlaceM": 64056.461045824566,
+   "candidateM": 54423.085442943026
+  },
+  {
+   "caseId": "nuc-grid-002",
+   "psi": 1,
+   "nukemapM": 371.6780788461611,
+   "inPlaceM": 434.6150870520112,
+   "candidateM": 371.7467783280057
+  },
+  {
+   "caseId": "nuc-grid-004",
+   "psi": 1,
+   "nukemapM": 800.9277201678478,
+   "inPlaceM": 936.3498203560963,
+   "candidateM": 800.7452447977658
+  },
+  {
+   "caseId": "nuc-grid-006",
+   "psi": 1,
+   "nukemapM": 1726.349594940111,
+   "inPlaceM": 2017.3045349802853,
+   "candidateM": 1725.3471356436364
+  }
+ ],
+ "waterline": {
+  "surfaceRelation": {
+   "worstExcessStep": 0.1392450632911334,
+   "rows": [
+    {
+     "yieldKt": 0.001,
+     "stepFivePsi": 0.005841160163764014,
+     "stepOnePsi": 0.13894259589487046,
+     "stepHalfPsi": 0.13894259589487068
+    },
+    {
+     "yieldKt": 0.01,
+     "stepFivePsi": 0.00598501843976651,
+     "stepOnePsi": 0.13910549071845457,
+     "stepHalfPsi": 0.1391054907184548
+    },
+    {
+     "yieldKt": 0.1,
+     "stepFivePsi": 0.006051798527756169,
+     "stepOnePsi": 0.13918110771427017,
+     "stepHalfPsi": 0.1391811077142704
+    },
+    {
+     "yieldKt": 1,
+     "stepFivePsi": 0.006082796605168195,
+     "stepOnePsi": 0.13921620772026433,
+     "stepHalfPsi": 0.13921620772026433
+    },
+    {
+     "yieldKt": 15,
+     "stepFivePsi": 0.006098760611739529,
+     "stepOnePsi": 0.13923428421963102,
+     "stepHalfPsi": 0.13923428421963124
+    },
+    {
+     "yieldKt": 100,
+     "stepFivePsi": 0.006103863516595753,
+     "stepOnePsi": 0.13924006238414632,
+     "stepHalfPsi": 0.13924006238414677
+    },
+    {
+     "yieldKt": 1000,
+     "stepFivePsi": 0.0061069634417789675,
+     "stepOnePsi": 0.1392435725177288,
+     "stepHalfPsi": 0.13924357251772856
+    },
+    {
+     "yieldKt": 10000,
+     "stepFivePsi": 0.0061084023028343815,
+     "stepOnePsi": 0.13924520178108657,
+     "stepHalfPsi": 0.13924520178108635
+    },
+    {
+     "yieldKt": 50000,
+     "stepFivePsi": 0.006108919794721057,
+     "stepOnePsi": 0.13924578775189067,
+     "stepHalfPsi": 0.13924578775189045
+    }
+   ]
+  },
+  "glasstone1977": {
+   "worstExcessStep": 1.1102230246251565e-16,
+   "rows": [
+    {
+     "yieldKt": 0.001,
+     "stepFivePsi": -0.0002668581086571198,
+     "stepOnePsi": -0.0002668581086572308,
+     "stepHalfPsi": -0.0002668581086571198
+    },
+    {
+     "yieldKt": 0.01,
+     "stepFivePsi": -0.00012387341885689018,
+     "stepOnePsi": -0.00012387341885677916,
+     "stepHalfPsi": -0.00012387341885677916
+    },
+    {
+     "yieldKt": 0.1,
+     "stepFivePsi": -0.000057498856117943475,
+     "stepOnePsi": -0.000057498856117943475,
+     "stepHalfPsi": -0.000057498856117943475
+    },
+    {
+     "yieldKt": 1,
+     "stepFivePsi": -0.00002668901600366702,
+     "stepOnePsi": -0.000026689016003778043,
+     "stepHalfPsi": -0.000026689016003778043
+    },
+    {
+     "yieldKt": 15,
+     "stepFivePsi": -0.000010821951617168146,
+     "stepOnePsi": -0.000010821951617168146,
+     "stepHalfPsi": -0.000010821951617057124
+    },
+    {
+     "yieldKt": 100,
+     "stepFivePsi": -0.000005750034392515424,
+     "stepOnePsi": -0.000005750034392515424,
+     "stepHalfPsi": -0.000005750034392515424
+    },
+    {
+     "yieldKt": 1000,
+     "stepFivePsi": -0.0000026689336544150066,
+     "stepOnePsi": -0.0000026689336546370512,
+     "stepHalfPsi": -0.000002668933654526029
+    },
+    {
+     "yieldKt": 10000,
+     "stepFivePsi": -0.000001238810150572256,
+     "stepOnePsi": -0.0000012388101506832783,
+     "stepHalfPsi": -0.0000012388101506832783
+    },
+    {
+     "yieldKt": 50000,
+     "stepFivePsi": -7.244607572731709e-7,
+     "stepOnePsi": -7.244607573841932e-7,
+     "stepHalfPsi": -7.244607571621486e-7
+    }
+   ]
+  }
+ }
+}

@@ -454,7 +454,9 @@ not that a rule holds.
   rings tighten to 1.62 and 4.49 km, and its toll moves from 116 639 to
   109 102 against a record of 105 000, not re-tuned. A burst whose 5 psi
   never reaches the ground had no casualty plan at all, and now keeps its
-  lighter bands. Explosions count 3.3, fidelity 4.5.
+  lighter bands. Rules 174 to 176 then put a burst in the water on the same
+  curves, closing a 14 % step in its 1 psi ring at the waterline. Explosions
+  count 3.3, fidelity 4.5.
 
 - **17 September 2026, night, L2 met: a landslide's wave is the field's
   method.** At Andrea's choice the waves from landslides came first. The

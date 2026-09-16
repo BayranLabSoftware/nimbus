@@ -48,8 +48,10 @@ export const DEFAULT_HOB_BLAST_SOURCE: HobBlastSource = 'glasstone1977';
  */
 export type WaterBlastSource = 'surfaceRelation' | 'glasstone1977';
 
-/** What a scenario that names no source draws. */
-export const DEFAULT_WATER_BLAST_SOURCE: WaterBlastSource = 'surfaceRelation';
+/** What a scenario that names no source draws: the book's contact surface
+ *  burst since 17 September 2026, when rules 174 to 176 of
+ *  validation/hobRules.ts adopted it. */
+export const DEFAULT_WATER_BLAST_SOURCE: WaterBlastSource = 'glasstone1977';
 
 /** Scaled height-of-burst z = HOB / W^(1/3), in metres per cube-root
  *  kilotonne. A unit-independent HOB classifier. */

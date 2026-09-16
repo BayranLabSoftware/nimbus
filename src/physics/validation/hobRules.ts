@@ -187,6 +187,24 @@ import type { HobBlastSource } from '../events/explosion/hob.js';
  *       both in the same session.
  */
 
+/*
+ * ===========================================================================
+ * The outcome of rules 174 to 176, 17 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `fb0e2f7` and the candidate run afterwards
+ * (`benchmark/results/hob-blast-2026-09-17-1.json`). Under the source in place
+ * a burst a millimetre under the water drew its 1 psi and 0.5 psi rings 13.9 %
+ * beyond the same burst on the surface, and its 5 psi ring 0.6 %; under the
+ * candidate the rings differ by the depth factor alone, the excess 1 × 10⁻¹⁶,
+ * on every yield from 1 t to 50 Mt. The release gate stays PASS, and the
+ * validation report does not move: no row of it is a burst in the water. The
+ * explosion sweep, in the same session, gives the same 2 failures under both
+ * (`invariants-2026-09-16-25.json` and `-26`).
+ *
+ * `DEFAULT_WATER_BLAST_SOURCE` is `glasstone1977`.
+ */
+
 /** Rule 170's candidate and the law in place. */
 export const HOB_IN_PLACE: HobBlastSource = 'project';
 export const HOB_CANDIDATE: HobBlastSource = 'glasstone1977';
