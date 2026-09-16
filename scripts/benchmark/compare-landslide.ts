@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -6,6 +6,15 @@ import {
   simulateLandslide,
   type LandslideRegime,
 } from '../../src/physics/events/landslide/simulate.js';
+import {
+  IMPULSE_WAVE_EXAMPLE_ONE_MANUAL,
+  IMPULSE_WAVE_TESTED,
+  IMPULSE_WAVE_WATER_DENSITY,
+  impulseProduct,
+  impulseWaveAmplitudes,
+  impulseWaveExampleOne,
+  type ImpulseWaveSlide,
+} from '../../src/physics/effects/impulseWave.js';
 import {
   VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL,
   VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBMARINE,
@@ -37,57 +46,32 @@ import { printStats, summarise, type Pair } from './stats.js';
  * model; the presets keep their own. The method is first held to the
  * manual's worked Example 1 (§5.1: P = 0.64, a₀,c₁ = 14.4 m, a₀,t₁ = 22.7
  * m, a₀,c₂ = 10.1 m).
+ *
+ * Since 16 September 2026 the equations are not written here: they are
+ * `src/physics/effects/impulseWave.ts`, where `impulseWave.test.ts` holds them
+ * to that same Example 1 on every CI run, and this script imports them.
  */
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const WATER_DENSITY = 1_000;
-const F_LOW = 0.4;
-const F_HIGH = 3.4;
+const WATER_DENSITY = IMPULSE_WAVE_WATER_DENSITY;
+const [F_LOW, F_HIGH] = IMPULSE_WAVE_TESTED.froude;
 const F_MID = Math.sqrt(F_LOW * F_HIGH);
 
-export interface HellerSlide {
-  froude: number;
-  thicknessM: number;
-  widthM: number;
-  volumeM3: number;
-  densityKgM3: number;
-  angleDeg: number;
-  depthM: number;
-}
-
-/** Impulse product parameter P (Heller et al. 2009, Eq. 3.19). */
-export function impulseProduct(s: HellerSlide): number {
-  const S = s.thicknessM / s.depthM;
-  const M = (s.densityKgM3 * s.volumeM3) / (WATER_DENSITY * s.widthM * s.depthM ** 2);
-  const cosTerm = Math.cos(((6 / 7) * s.angleDeg * Math.PI) / 180);
-  return s.froude * S ** 0.5 * M ** 0.25 * cosTerm ** 0.5;
-}
-
-/** Initial amplitudes of the first crest, first trough and second crest (Eqs. 3.26–3.28). */
-export function initialAmplitudes(s: HellerSlide): { c1: number; t1: number; c2: number } {
-  const P = impulseProduct(s);
-  const B = s.widthM / s.depthM;
-  const cosTerm = Math.cos(((6 / 7) * s.angleDeg * Math.PI) / 180);
-  return {
-    c1: 0.2 * P ** 0.5 * B ** 0.75 * cosTerm ** 0.25 * s.depthM,
-    t1: 0.35 * P ** 0.5 * B ** 0.5 * cosTerm ** 0.5 * s.depthM,
-    c2: 0.14 * P ** 0.25 * B ** 0.25 * cosTerm ** 0.25 * s.depthM,
-  };
-}
-
-/** The manual's Example 1, as the check of this implementation. */
-export function exampleOne(): { P: number; c1: number; t1: number; c2: number } {
-  const slide: HellerSlide = {
-    froude: 58 / Math.sqrt(9.81 * 80),
-    thicknessM: 12,
-    widthM: 100,
-    volumeM3: 220_000,
-    densityKgM3: 1_700,
-    angleDeg: 40,
-    depthM: 80,
-  };
-  return { P: impulseProduct(slide), ...initialAmplitudes(slide) };
-}
+/** Heller's equations now live in `src/physics/effects/impulseWave.ts`, where a
+ *  test in CI holds them to the manual's Example 1 (rule L1 of
+ *  docs/GOLD_STANDARD.md). This script imports them, so the reference Nimbus is
+ *  scored against and the relation Nimbus could draw are the same code and
+ *  cannot drift apart. */
+export type HellerSlide = ImpulseWaveSlide;
+export { impulseProduct };
+export const initialAmplitudes = (s: HellerSlide): { c1: number; t1: number; c2: number } => {
+  const a = impulseWaveAmplitudes(s);
+  return { c1: a.firstCrest, t1: a.firstTrough, c2: a.secondCrest };
+};
+export const exampleOne = (): { P: number; c1: number; t1: number; c2: number } => {
+  const e = impulseWaveExampleOne();
+  return { P: e.impulseProduct, c1: e.firstCrest, t1: e.firstTrough, c2: e.secondCrest };
+};
 
 interface LandslideCase {
   id: string;
@@ -139,12 +123,14 @@ export function comparePairs(): Pair[] {
     const M = (density * c.volumeM3) / (WATER_DENSITY * side * c.waterDepthM ** 2);
     const B = side / c.waterDepthM;
     const P = impulseProduct(slide(F_MID));
+    const span = (v: number, r: readonly [number, number], name: string): string | null =>
+      v < r[0] || v > r[1] ? name : null;
     const outside = [
-      S < 0.15 || S > 0.6 ? 'S' : null,
-      M < 0.25 || M > 1 ? 'M' : null,
-      B < 0.83 || B > 5 ? 'B' : null,
-      c.slopeAngleDeg < 30 ? 'α' : null,
-      P < 0.13 || P > 2.08 ? 'P' : null,
+      span(S, IMPULSE_WAVE_TESTED.relativeThickness, 'S'),
+      span(M, IMPULSE_WAVE_TESTED.relativeMass, 'M'),
+      span(B, IMPULSE_WAVE_TESTED.relativeWidth, 'B'),
+      span(c.slopeAngleDeg, IMPULSE_WAVE_TESTED.angleDeg, 'α'),
+      span(P, IMPULSE_WAVE_TESTED.impulseProduct, 'P'),
     ].filter((x): x is string => x !== null);
     const base = {
       track: 'LAND',
@@ -179,10 +165,20 @@ if (process.argv[1] !== undefined && fileURLToPath(import.meta.url) === resolve(
   const check = exampleOne();
   const pairs = comparePairs();
   const stats = summarise(pairs);
-  mkdirSync(join(ROOT, 'benchmark', 'results'), { recursive: true });
+  const resultsDir = join(ROOT, 'benchmark', 'results');
+  mkdirSync(resultsDir, { recursive: true });
+  // A name nothing has taken: the campaign's record is never written over.
+  const stamp = new Date().toISOString().slice(0, 10);
+  let out = join(resultsDir, 'landslide.json');
+  for (let n = 0; existsSync(out); n++) {
+    out = join(
+      resultsDir,
+      n === 0 ? `landslide-${stamp}.json` : `landslide-${stamp}-${n.toString()}.json`
+    );
+  }
   writeFileSync(
-    join(ROOT, 'benchmark', 'results', 'landslide.json'),
-    `${JSON.stringify({ track: 'LAND', reference: 'Heller, Hager & Minor 2009 (VAW 4257), 3D generation equations', exampleOne: { computed: check, manual: { P: 0.64, c1: 14.4, t1: 22.7, c2: 10.1 } }, froudeBand: [F_LOW, F_HIGH], stats }, null, 1)}\n`
+    out,
+    `${JSON.stringify({ track: 'LAND', reference: 'Heller, Hager & Minor 2009 (VAW 4257), 3D generation equations', exampleOne: { computed: check, manual: { P: IMPULSE_WAVE_EXAMPLE_ONE_MANUAL.impulseProduct, c1: IMPULSE_WAVE_EXAMPLE_ONE_MANUAL.firstCrest, t1: IMPULSE_WAVE_EXAMPLE_ONE_MANUAL.firstTrough, c2: IMPULSE_WAVE_EXAMPLE_ONE_MANUAL.secondCrest } }, froudeBand: [F_LOW, F_HIGH], stats }, null, 1)}\n`
   );
   const pairsOut = process.argv[2];
   if (pairsOut !== undefined) writeFileSync(pairsOut, JSON.stringify(pairs));
