@@ -114,6 +114,55 @@
  * says which rows those are, they are kept, and the split is printed.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 16 September 2026: L2 NOT MET
+ * ===========================================================================
+ *
+ * Twenty-six rows scored, of which Heller's equations return a wave for
+ * twenty-two — the other four have a slope so shallow that the closure's
+ * friction holds the slide (Grand Banks drops 3 km over 1 000 km of seabed,
+ * which is 0.17°). On those twenty-two, Heller's crest plus trough against the
+ * catalogue's maximum wave height:
+ *
+ *     bias 7.762x, sigma_ln 1.588, within a factor of two on 9 %
+ *     EM 6.962x (n=15), OM 9.801x (n=7)
+ *
+ * L2 asks a bias within x1.5 and sigma no more than 0.7. **Not met, and not
+ * nearly.** Printed beside it, deciding nothing: the project law subaerial
+ * 3.630x and submarine 0.049x, both an amplitude against a height; and what
+ * the product would draw under heller2009 after the source ceiling, 2.137x
+ * with 42 % inside a factor of two — the ceiling of B-039 is truncating the
+ * wildest rows and is the only thing keeping that figure near the record.
+ *
+ * **Every one of the twenty-six rows falls outside at least one of Heller's
+ * tested ranges**, most of them outside four or five. So this is not a test of
+ * Heller's method. It is a test of Heller's method extrapolated a long way
+ * past the experiments that made it, plus three closures of this project's own
+ * — and the result is that it is worse out there than the cube root it was
+ * meant to replace. That is worth more than the number: the field's method is
+ * not automatically the better one outside the box it was fitted in.
+ *
+ * **A flaw in rule 120's own choice, found by the run and not fixed by it.**
+ * The rule scores against the catalogue's `Wave h max`, and for at least some
+ * events that is a height at a distant gauge rather than a wave at the slide:
+ * Karrat Fjord 2017 carries `Wave h max` 1.5 m beside a `Run-up h` of 90 m,
+ * and Grand Banks 1929 carries 7.5 m beside 13 m. L2 asks for a wave or run-up
+ * **near the source**, and `Wave h max` is often not that. The choice was made
+ * before the run, for a reason that was about mixing quantities and not about
+ * distance, and it was the wrong choice.
+ *
+ * It is not changed now. Rule 121's verdict is the verdict: a comparison is
+ * not re-pointed at a different column after it has failed, and part of the
+ * 7.762x is certainly a model computing a wave at a slide while the record
+ * measures one somewhere else. Whether to read the same set against `Run-up h`
+ * is a separate round with its own rules, which would not be a
+ * pre-registration and must not be dressed as one — the figures above are
+ * known. What this round settles is that **the landslide wave has now been
+ * measured against landslides somebody measured, for the first time, and it
+ * missed.**
+ */
+
 /** Rule 118: the catalogue. */
 export const SLIDE_WAVE_SOURCE =
   'Dohmen, K; Braun, A; Fernandez-Steeger, T M (2025): A catalog of landslide-triggered tsunamis. PANGAEA, doi:10.1594/PANGAEA.979839 (CC-BY-4.0)';

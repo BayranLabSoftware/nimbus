@@ -1,0 +1,900 @@
+{
+ "rows": [
+  {
+   "event": {
+    "event": "LTT_Kolombo_1650",
+    "year": 1650,
+    "latitude": 36.404,
+    "longitude": 25.396,
+    "waterBody": "EM",
+    "cause": "V",
+    "volumeM3": 1200000000,
+    "waveHeightM": 30,
+    "depthM": 389.3,
+    "widthM": 0,
+    "dropHeightM": 1000,
+    "slidingDistanceM": 0,
+    "country": "Greece"
+   },
+   "recordM": 30,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 145.38025445523468,
+   "projectSubmarineM": 1.8172531806904333,
+   "hellerHeightM": 523.7197443166103,
+   "hellerCrestM": 223.23012887799774,
+   "hellerAsDrawnM": 155.72000000000003,
+   "outside": [
+    "S",
+    "M",
+    "α"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Shimabara_1792",
+    "year": 1792,
+    "latitude": 32.76,
+    "longitude": 130.34,
+    "waterBody": "EM",
+    "cause": "V",
+    "volumeM3": 150000000,
+    "waveHeightM": 20,
+    "depthM": 65.1,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Japan"
+   },
+   "recordM": 20,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 26.04,
+   "projectSubmarineM": 0.9086265903452166,
+   "hellerHeightM": 303.2562286458756,
+   "hellerCrestM": 149.85487729440158,
+   "hellerAsDrawnM": 26.04,
+   "outside": [
+    "S",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_CookInlet_1883",
+    "year": 1883,
+    "latitude": 59.4,
+    "longitude": -153.4,
+    "waterBody": "EM",
+    "cause": "V",
+    "volumeM3": 250000000,
+    "waveHeightM": 9.14,
+    "depthM": 40.3,
+    "widthM": 0,
+    "dropHeightM": 1250,
+    "slidingDistanceM": 8850,
+    "country": "USA"
+   },
+   "recordM": 9.14,
+   "slopeDeg": 8.039444550836647,
+   "slopeFromCatalogue": true,
+   "projectSubaerialM": 16.12,
+   "projectSubmarineM": 0.4405150330859896,
+   "hellerHeightM": 0,
+   "hellerCrestM": 0,
+   "hellerAsDrawnM": 16.12,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_GrandBanks_1929",
+    "year": 18.1,
+    "latitude": 44.42,
+    "longitude": -56.02,
+    "waterBody": "OM",
+    "cause": "EQ",
+    "volumeM3": 175000000000,
+    "waveHeightM": 7.5,
+    "depthM": 2557.7,
+    "widthM": 33000,
+    "dropHeightM": 3000,
+    "slidingDistanceM": 1000000,
+    "country": "Canada"
+   },
+   "recordM": 7.5,
+   "slopeDeg": 0.1718868228800159,
+   "slopeFromCatalogue": true,
+   "projectSubaerialM": 6.712103448090825,
+   "projectSubmarineM": 0.0839012931011353,
+   "hellerHeightM": 0,
+   "hellerCrestM": 0,
+   "hellerAsDrawnM": 6.712103448090825,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": true
+  },
+  {
+   "event": {
+    "event": "LTT_MadeiraIsland_1930",
+    "year": 4,
+    "latitude": 32.617,
+    "longitude": -16.967,
+    "waterBody": "OM",
+    "cause": "V",
+    "volumeM3": 2870000,
+    "waveHeightM": 5,
+    "depthM": 2008.1,
+    "widthM": 0,
+    "dropHeightM": 350,
+    "slidingDistanceM": 500,
+    "country": "Portugal"
+   },
+   "recordM": 5,
+   "slopeDeg": 34.992020198558656,
+   "slopeFromCatalogue": true,
+   "projectSubaerialM": 32.598093121413626,
+   "projectSubmarineM": 0.4074761640176703,
+   "hellerHeightM": 38.004494971622385,
+   "hellerCrestM": 8.89376104454606,
+   "hellerAsDrawnM": 8.89376104454606,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "B",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Orkdalsfjorden_1930",
+    "year": 2,
+    "latitude": 63.317,
+    "longitude": 9.85,
+    "waterBody": "EM",
+    "cause": "A",
+    "volumeM3": 17000000,
+    "waveHeightM": 15,
+    "depthM": 329.2,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Norway"
+   },
+   "recordM": 15,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 35.17720392670332,
+   "projectSubmarineM": 0.4397150490837915,
+   "hellerHeightM": 63.723895132025746,
+   "hellerCrestM": 22.434184880244413,
+   "hellerAsDrawnM": 22.434184880244413,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "B",
+    "α"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_PugetSound_1949_2",
+    "year": 16,
+    "latitude": 47.3,
+    "longitude": -122.533,
+    "waterBody": "EM",
+    "cause": "EQ",
+    "volumeM3": 500000,
+    "waveHeightM": 2.4,
+    "depthM": 175,
+    "widthM": 0,
+    "dropHeightM": 90,
+    "slidingDistanceM": 0,
+    "country": "USA"
+   },
+   "recordM": 2.4,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 10.858462706189618,
+   "projectSubmarineM": 0.13573078382737022,
+   "hellerHeightM": 22.13347866527535,
+   "hellerCrestM": 7.120578262624232,
+   "hellerAsDrawnM": 7.120578262624232,
+   "outside": [
+    "F",
+    "B",
+    "α"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Suva_1953",
+    "year": 14,
+    "latitude": -18.1448,
+    "longitude": 178.38612,
+    "waterBody": "OM",
+    "cause": "EQ",
+    "volumeM3": 60000000,
+    "waveHeightM": 15,
+    "depthM": 837.2,
+    "widthM": 1800,
+    "dropHeightM": 200,
+    "slidingDistanceM": 1500,
+    "country": "Fiji"
+   },
+   "recordM": 15,
+   "slopeDeg": 7.594643368591445,
+   "slopeFromCatalogue": true,
+   "projectSubaerialM": 20.69613884483302,
+   "projectSubmarineM": 0.2587017355604127,
+   "hellerHeightM": 0,
+   "hellerCrestM": 0,
+   "hellerAsDrawnM": 20.69613884483302,
+   "outside": [
+    "F",
+    "M",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": true
+  },
+  {
+   "event": {
+    "event": "LTT_Reisafjorden_1959",
+    "year": 7,
+    "latitude": 69.817,
+    "longitude": 20.917,
+    "waterBody": "EM",
+    "cause": "A",
+    "volumeM3": 4000000,
+    "waveHeightM": 4,
+    "depthM": 109.7,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Norway"
+   },
+   "recordM": 4,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 21.716925412379236,
+   "projectSubmarineM": 0.27146156765474044,
+   "hellerHeightM": 48.59035244258489,
+   "hellerCrestM": 18.85134879706972,
+   "hellerAsDrawnM": 18.85134879706972,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "α"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_CorinthGulf_1963",
+    "year": 7,
+    "latitude": 38.31,
+    "longitude": 22.02,
+    "waterBody": "EM",
+    "cause": "PR",
+    "volumeM3": 57000,
+    "waveHeightM": 6,
+    "depthM": 420,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Greece"
+   },
+   "recordM": 6,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 5.265059634033165,
+   "projectSubmarineM": 0.06581324542541456,
+   "hellerHeightM": 4.766860013712137,
+   "hellerCrestM": 1.1500812676769399,
+   "hellerAsDrawnM": 1.1500812676769399,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_CliffMine_1964",
+    "year": 27,
+    "latitude": 61.12,
+    "longitude": -146.29,
+    "waterBody": "EM",
+    "cause": "EQ",
+    "volumeM3": 95000000,
+    "waveHeightM": 12,
+    "depthM": 247.6,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "USA"
+   },
+   "recordM": 12,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 62.42418453344488,
+   "projectSubmarineM": 0.7803023066680609,
+   "hellerHeightM": 151.96079290407997,
+   "hellerCrestM": 61.15081219344781,
+   "hellerAsDrawnM": 61.15081219344781,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "α"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Kitimat_1975",
+    "year": 27,
+    "latitude": 54,
+    "longitude": -128.67,
+    "waterBody": "EM",
+    "cause": "A",
+    "volumeM3": 55000000,
+    "waveHeightM": 8.2,
+    "depthM": 184.7,
+    "widthM": 0,
+    "dropHeightM": 30,
+    "slidingDistanceM": 0,
+    "country": "Canada"
+   },
+   "recordM": 8.2,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 52.027453827612625,
+   "projectSubmarineM": 0.6503431728451579,
+   "hellerHeightM": 91.25882415023611,
+   "hellerCrestM": 37.333681023969945,
+   "hellerAsDrawnM": 37.333681023969945,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "α"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_GioiaTauro_1977",
+    "year": 7.1,
+    "latitude": 38.464241,
+    "longitude": 15.904663,
+    "waterBody": "OM",
+    "cause": "A",
+    "volumeM3": 5500000,
+    "waveHeightM": 5,
+    "depthM": 357.4,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Italy"
+   },
+   "recordM": 5,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 24.14900487275512,
+   "projectSubmarineM": 0.301862560909439,
+   "hellerHeightM": 37.52314054048243,
+   "hellerCrestM": 12.24672082489796,
+   "hellerAsDrawnM": 12.24672082489796,
+   "outside": [
+    "F",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_NewZealand_1978",
+    "year": 10.1,
+    "latitude": -43.08,
+    "longitude": 172.97,
+    "waterBody": "OM",
+    "cause": "U",
+    "volumeM3": 400000,
+    "waveHeightM": 0.2,
+    "depthM": 28.4,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "New Zealand"
+   },
+   "recordM": 0.2,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 10.080103849450106,
+   "projectSubmarineM": 0.12600129811812633,
+   "hellerHeightM": 27.689022657831224,
+   "hellerCrestM": 11.716194500686067,
+   "hellerAsDrawnM": 11.36,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "α"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Nice_1979",
+    "year": 16.1,
+    "latitude": 43.55,
+    "longitude": 7.33,
+    "waterBody": "OM",
+    "cause": "A",
+    "volumeM3": 10000000,
+    "waveHeightM": 3.5,
+    "depthM": 1828.7,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "France"
+   },
+   "recordM": 3.5,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 29.474402458819903,
+   "projectSubmarineM": 0.36843003073524877,
+   "hellerHeightM": 28.86046503537288,
+   "hellerCrestM": 7.300363998304818,
+   "hellerAsDrawnM": 7.300363998304818,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Norway_1983",
+    "year": 18,
+    "latitude": 61.233,
+    "longitude": 7.717,
+    "waterBody": "EM",
+    "cause": "PA",
+    "volumeM3": 150000,
+    "waveHeightM": 3.5,
+    "depthM": 197,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Norway"
+   },
+   "recordM": 3.5,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 7.269012722761734,
+   "projectSubmarineM": 0.09086265903452168,
+   "hellerHeightM": 9.264586432367492,
+   "hellerCrestM": 2.724132726147634,
+   "hellerAsDrawnM": 2.724132726147634,
+   "outside": [
+    "F",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Vulcano_1988",
+    "year": 20,
+    "latitude": 38.4,
+    "longitude": 14.967,
+    "waterBody": "EM",
+    "cause": "V",
+    "volumeM3": 200000,
+    "waveHeightM": 5.5,
+    "depthM": 1014.8,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Italy"
+   },
+   "recordM": 5.5,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 8.000583727282896,
+   "projectSubmarineM": 0.10000729659103622,
+   "hellerHeightM": 6.280188502889995,
+   "hellerCrestM": 1.385927511030774,
+   "hellerAsDrawnM": 1.385927511030774,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_LomaPrieta_1989",
+    "year": 18.1,
+    "latitude": 36.8,
+    "longitude": -121.8,
+    "waterBody": "EM",
+    "cause": "EQ",
+    "volumeM3": 13000000,
+    "waveHeightM": 0.4,
+    "depthM": 339.9,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "USA"
+   },
+   "recordM": 0.4,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 32.168153076034805,
+   "projectSubmarineM": 0.402101913450435,
+   "hellerHeightM": 55.93586450658843,
+   "hellerCrestM": 19.30686860785649,
+   "hellerAsDrawnM": 19.30686860785649,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "B",
+    "α"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Skagway_1994",
+    "year": 3.1,
+    "latitude": 59.45,
+    "longitude": -135.33,
+    "waterBody": "EM",
+    "cause": "A",
+    "volumeM3": 800000,
+    "waveHeightM": 9,
+    "depthM": 317.1,
+    "widthM": 330,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "USA"
+   },
+   "recordM": 9,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 12.700135025048528,
+   "projectSubmarineM": 0.1587516878131066,
+   "hellerHeightM": 29.722413810057766,
+   "hellerCrestM": 10.955278389934398,
+   "hellerAsDrawnM": 10.955278389934398,
+   "outside": [
+    "F",
+    "M",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": true
+  },
+  {
+   "event": {
+    "event": "LTT_Montserrat_1997",
+    "year": 26.1,
+    "latitude": 16.72,
+    "longitude": -62.18,
+    "waterBody": "OM",
+    "cause": "V",
+    "volumeM3": 25000000,
+    "waveHeightM": 3,
+    "depthM": 629.9,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Montserrat"
+   },
+   "recordM": 3,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 40.00291863641449,
+   "projectSubmarineM": 0.500036482955181,
+   "hellerHeightM": 60.894071466490985,
+   "hellerCrestM": 19.667535707064847,
+   "hellerAsDrawnM": 19.667535707064847,
+   "outside": [
+    "F",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Stromboli_2002_1",
+    "year": 30.1,
+    "latitude": 38.8,
+    "longitude": 15.2,
+    "waterBody": "OM",
+    "cause": "V",
+    "volumeM3": 12000000,
+    "waveHeightM": 15,
+    "depthM": 1745.3,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Italy"
+   },
+   "recordM": 15,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 31.321226344401992,
+   "projectSubmarineM": 0.39151532930502486,
+   "hellerHeightM": 31.72082251598173,
+   "hellerCrestM": 8.18599218764866,
+   "hellerAsDrawnM": 8.18599218764866,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Stromboli_2002_2",
+    "year": 30.1,
+    "latitude": 38.8,
+    "longitude": 15.2,
+    "waterBody": "OM",
+    "cause": "V",
+    "volumeM3": 8000000,
+    "waveHeightM": 15,
+    "depthM": 1745.3,
+    "widthM": 0,
+    "dropHeightM": 650,
+    "slidingDistanceM": 0,
+    "country": "Italy"
+   },
+   "recordM": 15,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 27.361611466053496,
+   "projectSubmarineM": 0.3420201433256687,
+   "hellerHeightM": 46.632780617070566,
+   "hellerCrestM": 11.735014090260137,
+   "hellerAsDrawnM": 11.735014090260137,
+   "outside": [
+    "F",
+    "S",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_AysenFjord_AguasCalientes_2007",
+    "year": 21,
+    "latitude": -45.43,
+    "longitude": -73.03,
+    "waterBody": "EM",
+    "cause": "EQ",
+    "volumeM3": 2000000,
+    "waveHeightM": 7.6,
+    "depthM": 225.7,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Chile"
+   },
+   "recordM": 7.6,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 17.236735122562862,
+   "projectSubmarineM": 0.21545918903203576,
+   "hellerHeightM": 27.895466307556408,
+   "hellerCrestM": 9.293193188878888,
+   "hellerAsDrawnM": 9.293193188878888,
+   "outside": [
+    "F",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Statland_2014",
+    "year": 29,
+    "latitude": 64.5,
+    "longitude": 11.15,
+    "waterBody": "EM",
+    "cause": "PA",
+    "volumeM3": 400000,
+    "waveHeightM": 4,
+    "depthM": 433.6,
+    "widthM": 0,
+    "dropHeightM": 380,
+    "slidingDistanceM": 1300,
+    "country": "Norway"
+   },
+   "recordM": 4,
+   "slopeDeg": 16.29404745659891,
+   "slopeFromCatalogue": true,
+   "projectSubaerialM": 8.268941082537797,
+   "projectSubmarineM": 0.10336176353172247,
+   "hellerHeightM": 0,
+   "hellerCrestM": 0,
+   "hellerAsDrawnM": 8.268941082537797,
+   "outside": [
+    "F",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_Greenland_2014",
+    "year": 2,
+    "latitude": 69.8,
+    "longitude": -50.217,
+    "waterBody": "EM",
+    "cause": "PA",
+    "volumeM3": 900000,
+    "waveHeightM": 50,
+    "depthM": 338,
+    "widthM": 0,
+    "dropHeightM": 0,
+    "slidingDistanceM": 0,
+    "country": "Greenland"
+   },
+   "recordM": 50,
+   "slopeDeg": 20,
+   "slopeFromCatalogue": false,
+   "projectSubaerialM": 13.208672708089168,
+   "projectSubmarineM": 0.1651084088511146,
+   "hellerHeightM": 17.15083377328154,
+   "hellerCrestM": 5.094231204120032,
+   "hellerAsDrawnM": 5.094231204120032,
+   "outside": [
+    "F",
+    "M",
+    "B",
+    "α",
+    "P"
+   ],
+   "widthFromCatalogue": false
+  },
+  {
+   "event": {
+    "event": "LTT_KarratFjord_2017",
+    "year": 17,
+    "latitude": 71.64,
+    "longitude": -52.35,
+    "waterBody": "EM",
+    "cause": "PA",
+    "volumeM3": 45000000,
+    "waveHeightM": 1.5,
+    "depthM": 1197,
+    "widthM": 1000,
+    "dropHeightM": 1270,
+    "slidingDistanceM": 1800,
+    "country": "Greenland"
+   },
+   "recordM": 1.5,
+   "slopeDeg": 35.20509388909058,
+   "slopeFromCatalogue": true,
+   "projectSubaerialM": 82.02266561216902,
+   "projectSubmarineM": 1.025283320152113,
+   "hellerHeightM": 264.5527389540128,
+   "hellerCrestM": 95.6781926902307,
+   "hellerAsDrawnM": 95.6781926902307,
+   "outside": [
+    "M"
+   ],
+   "widthFromCatalogue": true
+  }
+ ],
+ "heller": {
+  "rows": 22,
+  "bias": 7.76222716649338,
+  "sigmaLn": 1.5884758006097355,
+  "withinTwo": 0.09090909090909091
+ },
+ "hellerMeetsL2": false,
+ "projectSubaerial": {
+  "rows": 26,
+  "bias": 3.6301087524421107,
+  "sigmaLn": 1.3317140314283062,
+  "withinTwo": 0.3076923076923077
+ },
+ "projectSubmarine": {
+  "rows": 26,
+  "bias": 0.04864542049425593,
+  "sigmaLn": 1.3060155612348838,
+  "withinTwo": 0.11538461538461539
+ },
+ "hellerAsDrawn": {
+  "rows": 26,
+  "bias": 2.1366887325009447,
+  "sigmaLn": 1.5709372958552483,
+  "withinTwo": 0.4230769230769231
+ },
+ "byWaterBody": [
+  {
+   "body": "EM",
+   "heller": {
+    "rows": 15,
+    "bias": 6.96165304471516,
+    "sigmaLn": 1.7123895814524017,
+    "withinTwo": 0.13333333333333333
+   }
+  },
+  {
+   "body": "OM",
+   "heller": {
+    "rows": 7,
+    "bias": 9.801391124563994,
+    "sigmaLn": 1.3770670398529388,
+    "withinTwo": 0
+   }
+  }
+ ],
+ "slopesFromCatalogue": 6,
+ "widthsFromCatalogue": 4,
+ "outsideAnyRange": 26
+}
