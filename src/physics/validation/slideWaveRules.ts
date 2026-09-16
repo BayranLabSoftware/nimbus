@@ -221,6 +221,44 @@
  *       and last reading of it, and a third would be shopping.
  */
 
+/*
+ * ===========================================================================
+ * The outcome of rules 122 to 125, 16 September 2026: L2 STILL NOT MET
+ * ===========================================================================
+ *
+ * Forty-three rows scored, thirty-seven of which Heller's equations answer.
+ * Against the catalogue's `Peak height`:
+ *
+ *     bias 3.984x, sigma_ln 1.648, within a factor of two on 19 %
+ *     EM 2.720x (n=26), OM 9.820x (n=11)
+ *
+ * Rule 124's band was 0.25 to 1.0 and rule 125 allowed 0.333 to 0.750. The
+ * reading is more than five times above the top of it, and the scatter is
+ * more than twice L2's 0.7. **Not met.** Printed beside it: against the
+ * run-up alone 3.628x on twenty-nine rows, and against `Wave h max` the
+ * 7.762x rule 121 already recorded.
+ *
+ * What the two readings together say. Changing the record from a gauge height
+ * to a near-source peak moved the bias from 7.76 to 3.98 — the direction rule
+ * 124 predicted, and about the factor it predicted — so the quantity error was
+ * real and is now corrected. What is left after correcting it is the model:
+ * **the landslide wave is about four times too big against the largest water
+ * height anyone measured, with a scatter of 1.6 in the log.** That is not a
+ * bookkeeping problem. It is the model.
+ *
+ * Two things in the split are worth keeping. Enclosed water reads 2.7x and open
+ * marine 9.8x: Heller's experiments are a slide entering a basin, and a fjord
+ * is the nearer thing to that, so the model does least badly where the
+ * reference was fitted — which is the same lesson rule 121 drew, seen from the
+ * other side. And **all forty-three rows fall outside at least one of Heller's
+ * tested ranges**, as all twenty-six did before. Nothing in this set is inside
+ * the box the equations came from.
+ *
+ * This is the second and last reading of this set. It stays read, nothing is
+ * tuned on it (rules 5 and 6), and a third reading would be shopping. Landslide
+ * waves stay at 3.
+ */
+
 /** Rule 118: the catalogue. */
 export const SLIDE_WAVE_SOURCE =
   'Dohmen, K; Braun, A; Fernandez-Steeger, T M (2025): A catalog of landslide-triggered tsunamis. PANGAEA, doi:10.1594/PANGAEA.979839 (CC-BY-4.0)';

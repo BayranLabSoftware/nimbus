@@ -10,7 +10,7 @@ import {
 } from '../events/landslide/simulate.js';
 import { VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL } from '../events/volcano/tsunami.js';
 import { m } from '../units.js';
-import { meetsL2, type SlideWaveReading } from './slideWaveRules.js';
+import { meetsL2, meetsL2AgainstPeak, type SlideWaveReading } from './slideWaveRules.js';
 import { SLIDE_WAVE_EVENTS, type SlideWaveEvent } from './slideWaveSetData.js';
 
 /**
@@ -34,8 +34,13 @@ import { SLIDE_WAVE_EVENTS, type SlideWaveEvent } from './slideWaveSetData.js';
 
 export interface SlideWaveRow {
   event: SlideWaveEvent;
-  /** The catalogue's measured maximum wave height (m). */
+  /** Rule 120's record: the catalogue's maximum wave height (m), zero where
+   *  it gives none. Often a height at a distant gauge. */
   recordM: number;
+  /** Rule 122's record: the catalogue's own maximum of wave and run-up (m). */
+  peakM: number;
+  /** The run-up alone (m), zero where the catalogue gives none. */
+  runUpM: number;
   /** The slope used, and whether the catalogue gave it. */
   slopeDeg: number;
   slopeFromCatalogue: boolean;
@@ -115,6 +120,8 @@ export function slideWaveRows(
     return {
       event: e,
       recordM: e.waveHeightM,
+      peakM: e.peakHeightM,
+      runUpM: e.runUpM,
       slopeDeg: deg,
       slopeFromCatalogue: fromCatalogue,
       projectSubaerialM: projectAmplitude(e, deg, 'subaerial'),
@@ -130,9 +137,15 @@ export function slideWaveRows(
 
 export interface SlideWaveResult {
   rows: SlideWaveRow[];
-  /** Rule 121's comparison: Heller's height against the record's height. */
+  /** Rule 121's comparison: Heller's height against `Wave h max`. */
   heller: SlideWaveReading;
   hellerMeetsL2: boolean;
+  /** Rule 125's comparison, which is the one that decides now: Heller's
+   *  height against the catalogue's `Peak height`. */
+  againstPeak: SlideWaveReading;
+  peakMeetsL2: boolean;
+  /** Printed beside it (rule 123): the run-up alone. */
+  againstRunUp: SlideWaveReading;
   /** Printed, deciding nothing (rule 120): the project law both ways, an
    *  amplitude against a height. */
   projectSubaerial: SlideWaveReading;
@@ -152,12 +165,22 @@ export function runSlideWave(
   const rows = slideWaveRows(events);
   const logs = (pick: (r: SlideWaveRow) => number): number[] =>
     rows.filter((r) => pick(r) > 0 && r.recordM > 0).map((r) => Math.log(pick(r) / r.recordM));
-  const heller = reading(logs((r) => r.hellerHeightM));
+  const against = (record: (r: SlideWaveRow) => number): SlideWaveReading =>
+    reading(
+      rows
+        .filter((r) => r.hellerHeightM > 0 && record(r) > 0)
+        .map((r) => Math.log(r.hellerHeightM / record(r)))
+    );
+  const heller = against((r) => r.recordM);
+  const againstPeak = against((r) => r.peakM);
   const bodies = [...new Set(rows.map((r) => r.event.waterBody))].sort();
   return {
     rows,
     heller,
     hellerMeetsL2: meetsL2(heller),
+    againstPeak,
+    peakMeetsL2: meetsL2AgainstPeak(againstPeak),
+    againstRunUp: against((r) => r.runUpM),
     projectSubaerial: reading(logs((r) => r.projectSubaerialM)),
     projectSubmarine: reading(logs((r) => r.projectSubmarineM)),
     hellerAsDrawn: reading(logs((r) => r.hellerAsDrawnM)),
@@ -165,8 +188,8 @@ export function runSlideWave(
       body,
       heller: reading(
         rows
-          .filter((r) => r.event.waterBody === body && r.hellerHeightM > 0 && r.recordM > 0)
-          .map((r) => Math.log(r.hellerHeightM / r.recordM))
+          .filter((r) => r.event.waterBody === body && r.hellerHeightM > 0 && r.peakM > 0)
+          .map((r) => Math.log(r.hellerHeightM / r.peakM))
       ),
     })),
     slopesFromCatalogue: rows.filter((r) => r.slopeFromCatalogue).length,

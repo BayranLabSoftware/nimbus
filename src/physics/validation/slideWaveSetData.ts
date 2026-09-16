@@ -9,9 +9,9 @@
 export const SLIDE_WAVE_READ_ON = '2026-09-16';
 
 /** Rows the catalogue holds that passed rule 118's filter. */
-export const SLIDE_WAVE_FILTERED = 26;
+export const SLIDE_WAVE_FILTERED = 44;
 /** Of those, dropped because no water was found within the radius. */
-export const SLIDE_WAVE_NO_WATER = 0;
+export const SLIDE_WAVE_NO_WATER = 1;
 
 export interface SlideWaveEvent {
   event: string;
@@ -24,8 +24,14 @@ export interface SlideWaveEvent {
    *  anthropogenic, U unknown — the cause of the slide, not of the wave. */
   cause: string;
   volumeM3: number;
-  /** The catalogue's maximum tsunami wave HEIGHT (m), not an amplitude. */
+  /** The catalogue's maximum tsunami wave HEIGHT (m), not an amplitude. Zero
+   *  where it gives none; often a height at a distant gauge (rule 120). */
   waveHeightM: number;
+  /** The catalogue's maximum run-up height (m), zero where it gives none. */
+  runUpM: number;
+  /** The catalogue's own maximum of the two — what rule 122 selects on and
+   *  rule 125 decides on. */
+  peakHeightM: number;
   /** Rule 119's depth (m). */
   depthM: number;
   /** Zero where the catalogue gives none. */
@@ -48,37 +54,56 @@ type Line = readonly [
   number,
   number,
   number,
+  number,
+  number,
   string,
 ];
 
 // prettier-ignore
 const LINES: readonly Line[] = [
-  ["LTT_Kolombo_1650", 1650, 36.404, 25.396, "EM", "V", 1200000000, 30, 389.3, 0, 1000, 0, "Greece"],
-  ["LTT_Shimabara_1792", 1792, 32.76, 130.34, "EM", "V", 150000000, 20, 65.1, 0, 0, 0, "Japan"],
-  ["LTT_CookInlet_1883", 1883, 59.4, -153.4, "EM", "V", 250000000, 9.14, 40.3, 0, 1250, 8850, "USA"],
-  ["LTT_GrandBanks_1929", 18.1, 44.42, -56.02, "OM", "EQ", 175000000000, 7.5, 2557.7, 33000, 3000, 1000000, "Canada"],
-  ["LTT_MadeiraIsland_1930", 4, 32.617, -16.967, "OM", "V", 2870000, 5, 2008.1, 0, 350, 500, "Portugal"],
-  ["LTT_Orkdalsfjorden_1930", 2, 63.317, 9.85, "EM", "A", 17000000, 15, 329.2, 0, 0, 0, "Norway"],
-  ["LTT_PugetSound_1949_2", 16, 47.3, -122.533, "EM", "EQ", 500000, 2.4, 175.0, 0, 90, 0, "USA"],
-  ["LTT_Suva_1953", 14, -18.1448, 178.38612, "OM", "EQ", 60000000, 15, 837.2, 1800, 200, 1500, "Fiji"],
-  ["LTT_Reisafjorden_1959", 7, 69.817, 20.917, "EM", "A", 4000000, 4, 109.7, 0, 0, 0, "Norway"],
-  ["LTT_CorinthGulf_1963", 7, 38.31, 22.02, "EM", "PR", 57000, 6, 420.0, 0, 0, 0, "Greece"],
-  ["LTT_CliffMine_1964", 27, 61.12, -146.29, "EM", "EQ", 95000000, 12, 247.6, 0, 0, 0, "USA"],
-  ["LTT_Kitimat_1975", 27, 54, -128.67, "EM", "A", 55000000, 8.2, 184.7, 0, 30, 0, "Canada"],
-  ["LTT_GioiaTauro_1977", 7.1, 38.464241, 15.904663, "OM", "A", 5500000, 5, 357.4, 0, 0, 0, "Italy"],
-  ["LTT_NewZealand_1978", 10.1, -43.08, 172.97, "OM", "U", 400000, 0.2, 28.4, 0, 0, 0, "New Zealand"],
-  ["LTT_Nice_1979", 16.1, 43.55, 7.33, "OM", "A", 10000000, 3.5, 1828.7, 0, 0, 0, "France"],
-  ["LTT_Norway_1983", 18, 61.233, 7.717, "EM", "PA", 150000, 3.5, 197.0, 0, 0, 0, "Norway"],
-  ["LTT_Vulcano_1988", 20, 38.4, 14.967, "EM", "V", 200000, 5.5, 1014.8, 0, 0, 0, "Italy"],
-  ["LTT_LomaPrieta_1989", 18.1, 36.8, -121.8, "EM", "EQ", 13000000, 0.4, 339.9, 0, 0, 0, "USA"],
-  ["LTT_Skagway_1994", 3.1, 59.45, -135.33, "EM", "A", 800000, 9, 317.1, 330, 0, 0, "USA"],
-  ["LTT_Montserrat_1997", 26.1, 16.72, -62.18, "OM", "V", 25000000, 3, 629.9, 0, 0, 0, "Montserrat"],
-  ["LTT_Stromboli_2002_1", 30.1, 38.8, 15.2, "OM", "V", 12000000, 15, 1745.3, 0, 0, 0, "Italy"],
-  ["LTT_Stromboli_2002_2", 30.1, 38.8, 15.2, "OM", "V", 8000000, 15, 1745.3, 0, 650, 0, "Italy"],
-  ["LTT_AysenFjord_AguasCalientes_2007", 21, -45.43, -73.03, "EM", "EQ", 2000000, 7.6, 225.7, 0, 0, 0, "Chile"],
-  ["LTT_Statland_2014", 29, 64.5, 11.15, "EM", "PA", 400000, 4, 433.6, 0, 380, 1300, "Norway"],
-  ["LTT_Greenland_2014", 2, 69.8, -50.217, "EM", "PA", 900000, 50, 338.0, 0, 0, 0, "Greenland"],
-  ["LTT_KarratFjord_2017", 17, 71.64, -52.35, "EM", "PA", 45000000, 1.5, 1197.0, 1000, 1270, 1800, "Greenland"],
+  ["LTT_Kolombo_1650", 1650, 36.404, 25.396, "EM", "V", 1200000000, 30, 20, 30, 389.3, 0, 1000, 0, "Greece"],
+  ["LTT_Storfjorden_1731", 1731, 62.333, 6.967, "EM", "PA", 100000, 0, 75, 75, 662.1, 0, 0, 0, "Norway"],
+  ["LTT_OshimaOshima_1741", 1741, 41.51, 139.36, "OM", "V", 2200000000, 0, 15, 15, 1512.3, 4500, 1600, 15000, "Japan"],
+  ["LTT_Langfjord_1756", 1756, 62.77, 7.87, "EM", "PA", 3900000, 0, 40, 40, 347.3, 575, 300, 0, "Norway"],
+  ["LTT_Messina_1783-1", 1783, 38.217, 15.633, "EM", "EQ", 5000000, 0, 16, 16, 424.0, 0, 425, 0, "Italy"],
+  ["LTT_Shimabara_1792", 1792, 32.76, 130.34, "EM", "V", 150000000, 20, 100, 100, 65.1, 0, 0, 0, "Japan"],
+  ["LTT_CookInlet_1883", 1883, 59.4, -153.4, "EM", "V", 250000000, 9.14, 0, 9.14, 40.3, 0, 1250, 8850, "USA"],
+  ["LTT_RitterVolcano_1888", 1888, -5.52, 148.12, "EM", "V", 5000000000, 0, 15, 15, 1249.5, 0, 0, 0, "Papua New Guinea"],
+  ["LTT_AegeanSea_1905", 8.1, 40.092, 24.627, "OM", "EQ", 2700000, 0, 3, 3, 1027.9, 0, 300, 800, "Greece"],
+  ["LTT_GrandBanks_1929", 18.1, 44.42, -56.02, "OM", "EQ", 175000000000, 7.5, 13, 13, 2557.7, 33000, 3000, 1000000, "Canada"],
+  ["LTT_MadeiraIsland_1930", 4, 32.617, -16.967, "OM", "V", 2870000, 5, 15, 15, 2008.1, 0, 350, 500, "Portugal"],
+  ["LTT_Orkdalsfjorden_1930", 2, 63.317, 9.85, "EM", "A", 17000000, 15, 0, 15, 329.2, 0, 0, 0, "Norway"],
+  ["LTT_Tafjord_1934", 7, 62.28, 7.39, "EM", "PA", 3000000, 0, 62, 62, 270.5, 0, 730, 0, "Norway"],
+  ["LTT_Aleutian_1946", 1, 53.492, -162.832, "OM", "EQ", 300000000000, 0, 42, 42, 4596.4, 25000, 7000, 0, "USA"],
+  ["LTT_PugetSound_1949_2", 16, 47.3, -122.533, "EM", "EQ", 500000, 2.4, 0, 2.4, 175.0, 0, 90, 0, "USA"],
+  ["LTT_Niiortuut_1952", 15.1, 70.34, -53.23, "EM", "PA", 4500000, 0, 2.7, 2.7, 570.7, 600, 800, 2750, "Greenland"],
+  ["LTT_Suva_1953", 14, -18.1448, 178.38612, "OM", "EQ", 60000000, 15, 2, 15, 837.2, 1800, 200, 1500, "Fiji"],
+  ["LTT_Reisafjorden_1959", 7, 69.817, 20.917, "EM", "A", 4000000, 4, 0, 4, 109.7, 0, 0, 0, "Norway"],
+  ["LTT_CorinthGulf_1963", 7, 38.31, 22.02, "EM", "PR", 57000, 6, 0, 6, 420.0, 0, 0, 0, "Greece"],
+  ["LTT_CliffMine_1964", 27, 61.12, -146.29, "EM", "EQ", 95000000, 12, 52, 52, 247.6, 0, 0, 0, "USA"],
+  ["LTT_Kitimat_1975", 27, 54, -128.67, "EM", "A", 55000000, 8.2, 8.2, 8.2, 184.7, 0, 30, 0, "Canada"],
+  ["LTT_GioiaTauro_1977", 7.1, 38.464241, 15.904663, "OM", "A", 5500000, 5, 0, 5, 357.4, 0, 0, 0, "Italy"],
+  ["LTT_NewZealand_1978", 10.1, -43.08, 172.97, "OM", "U", 400000, 0.2, 0, 0.2, 28.4, 0, 0, 0, "New Zealand"],
+  ["LTT_Lomblen_1979", 18, -8.57, 123.54, "EM", "U", 20000000, 0, 9, 9, 1986.3, 1000, 0, 0, "Indonesia"],
+  ["LTT_Norway_1979", 6.1, 65.117, 12.333, "EM", "PA", 5000, 0, 2, 2, 647.5, 0, 110, 0, "Norway"],
+  ["LTT_Nice_1979", 16.1, 43.55, 7.33, "OM", "A", 10000000, 3.5, 10, 10, 1828.7, 0, 0, 0, "France"],
+  ["LTT_Norway_1983", 18, 61.233, 7.717, "EM", "PA", 150000, 3.5, 7, 7, 197.0, 0, 0, 0, "Norway"],
+  ["LTT_Vulcano_1988", 20, 38.4, 14.967, "EM", "V", 200000, 5.5, 0, 5.5, 1014.8, 0, 0, 0, "Italy"],
+  ["LTT_LomaPrieta_1989", 18.1, 36.8, -121.8, "EM", "EQ", 13000000, 0.4, 0.4, 0.4, 339.9, 0, 0, 0, "USA"],
+  ["LTT_Skagway_1994", 3.1, 59.45, -135.33, "EM", "A", 800000, 9, 11, 11, 317.1, 330, 0, 0, "USA"],
+  ["LTT_Montserrat_1997", 26.1, 16.72, -62.18, "OM", "V", 25000000, 3, 0, 3, 629.9, 0, 0, 0, "Montserrat"],
+  ["LTT_PapuaNewGuinea_1998", 17, -2.93, 142.24, "OM", "EQ", 4000000000, 0, 15, 15, 1491.8, 0, 0, 0, "Papua New Guinea"],
+  ["LTT_FatuHiva_1999", 13, -10.54, -138.67, "OM", "V", 3000000, 0, 8, 8, 1843.0, 0, 0, 0, "French Polynesia"],
+  ["LTT_Paatuut_2000", 21.1, 70.22, -52.64, "EM", "PA", 30000000, 0, 50, 50, 421.5, 0, 1400, 0, "Greenland"],
+  ["LTT_Stromboli_2002_1", 30.1, 38.8, 15.2, "OM", "V", 12000000, 15, 10.9, 15, 1745.3, 0, 0, 0, "Italy"],
+  ["LTT_Stromboli_2002_2", 30.1, 38.8, 15.2, "OM", "V", 8000000, 15, 10.9, 15, 1745.3, 0, 650, 0, "Italy"],
+  ["LTT_AysenFjord_AguasCalientes_2007", 21, -45.43, -73.03, "EM", "EQ", 2000000, 7.6, 50, 50, 225.7, 0, 0, 0, "Chile"],
+  ["LTT_Statland_2014", 29, 64.5, 11.15, "EM", "PA", 400000, 4, 9.6, 9.6, 433.6, 0, 380, 1300, "Norway"],
+  ["LTT_Greenland_2014", 2, 69.8, -50.217, "EM", "PA", 900000, 50, 15, 50, 338.0, 0, 0, 0, "Greenland"],
+  ["LTT_KarratFjord_2017", 17, 71.64, -52.35, "EM", "PA", 45000000, 1.5, 90, 90, 1197.0, 1000, 1270, 1800, "Greenland"],
+  ["LTT_Palu_2018_A", 28, -0.89, 119.86, "EM", "EQ", 410000, 0, 9.1, 9.1, 77.7, 72, 0, 255, "Indonesia"],
+  ["LTT_DicksonFjord_2023", 16, 72.81, -26.948, "EM", "PA", 25000000, 0, 200, 200, 661.7, 0, 400, 0, "Greenland"],
+  ["LTT_PedersenLagoon_2024", 7, 59.904, -149.825, "EM", "PR", 2000000, 0, 17, 17, 215.2, 0, 0, 0, "USA"],
 ];
 
 export const SLIDE_WAVE_EVENTS: readonly SlideWaveEvent[] = LINES.map((l) => ({
@@ -90,9 +115,11 @@ export const SLIDE_WAVE_EVENTS: readonly SlideWaveEvent[] = LINES.map((l) => ({
   cause: l[5],
   volumeM3: l[6],
   waveHeightM: l[7],
-  depthM: l[8],
-  widthM: l[9],
-  dropHeightM: l[10],
-  slidingDistanceM: l[11],
-  country: l[12],
+  runUpM: l[8],
+  peakHeightM: l[9],
+  depthM: l[10],
+  widthM: l[11],
+  dropHeightM: l[12],
+  slidingDistanceM: l[13],
+  country: l[14],
 }));

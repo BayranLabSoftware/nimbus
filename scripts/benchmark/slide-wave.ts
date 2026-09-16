@@ -2,6 +2,8 @@ import { writeFileSync } from 'node:fs';
 import { runSlideWave } from '../../src/physics/validation/slideWaveRun.js';
 import {
   SLIDE_WAVE_BIAS_BOUND,
+  SLIDE_WAVE_PEAK_BAND,
+  SLIDE_WAVE_PEAK_MIDPOINT,
   SLIDE_WAVE_SIGMA_BOUND,
 } from '../../src/physics/validation/slideWaveRules.js';
 import {
@@ -30,11 +32,14 @@ console.log(
 console.log(
   `  slope from the catalogue on ${run.slopesFromCatalogue.toString()}/${run.rows.length.toString()}, width on ${run.widthsFromCatalogue.toString()}/${run.rows.length.toString()}, outside one of Heller's ranges on ${run.outsideAnyRange.toString()}/${run.rows.length.toString()}`
 );
-console.log('\nrule 121 decides on this one — a height against a height:');
-console.log(line("Heller's crest + trough", run.heller));
+console.log("\nrule 125 decides on this one — Heller's height against the peak height:");
+console.log(line('against Peak height', run.againstPeak));
 console.log(
-  `  L2 asks bias within x${SLIDE_WAVE_BIAS_BOUND.toString()} and sigma <= ${SLIDE_WAVE_SIGMA_BOUND.toString()}: ${run.hellerMeetsL2 ? 'MET' : 'NOT MET'}`
+  `  rule 124's band is ${SLIDE_WAVE_PEAK_BAND[0].toString()} to ${SLIDE_WAVE_PEAK_BAND[1].toString()}, midpoint ${SLIDE_WAVE_PEAK_MIDPOINT.toFixed(3)}; rule 125 allows x${SLIDE_WAVE_BIAS_BOUND.toString()} either way of it (${(SLIDE_WAVE_PEAK_MIDPOINT / SLIDE_WAVE_BIAS_BOUND).toFixed(3)} to ${(SLIDE_WAVE_PEAK_MIDPOINT * SLIDE_WAVE_BIAS_BOUND).toFixed(3)}) at sigma <= ${SLIDE_WAVE_SIGMA_BOUND.toString()}: ${run.peakMeetsL2 ? 'MET' : 'NOT MET'}`
 );
+console.log('\nprinted beside it (rule 123), deciding nothing:');
+console.log(line('against Run-up h alone', run.againstRunUp));
+console.log(line('against Wave h max (rule 120)', run.heller));
 for (const c of run.byWaterBody) console.log(line(`  ${c.body}`, c.heller));
 
 console.log('\nprinted, deciding nothing (rule 120) — an amplitude against a height:');
@@ -44,11 +49,11 @@ console.log(line('heller as the product draws it', run.hellerAsDrawn));
 
 console.log('\nevent by event:');
 console.log(
-  `  ${'event'.padEnd(36)}${'record'.padStart(8)}${'Heller'.padStart(9)}${'proj sub-a'.padStart(11)}${'proj sub-m'.padStart(11)}  outside`
+  `  ${'event'.padEnd(36)}${'peak'.padStart(8)}${'run-up'.padStart(8)}${'gauge'.padStart(8)}${'Heller'.padStart(9)}  outside`
 );
-for (const r of [...run.rows].sort((a, b) => b.recordM - a.recordM)) {
+for (const r of [...run.rows].sort((a, b) => b.peakM - a.peakM)) {
   console.log(
-    `  ${r.event.event.padEnd(36)}${r.recordM.toFixed(1).padStart(8)}${r.hellerHeightM.toFixed(1).padStart(9)}${r.projectSubaerialM.toFixed(1).padStart(11)}${r.projectSubmarineM.toFixed(1).padStart(11)}  ${r.outside.join(',')}`
+    `  ${r.event.event.padEnd(36)}${r.peakM.toFixed(1).padStart(8)}${r.runUpM.toFixed(1).padStart(8)}${r.recordM.toFixed(1).padStart(8)}${r.hellerHeightM.toFixed(1).padStart(9)}  ${r.outside.join(',')}`
   );
 }
 
