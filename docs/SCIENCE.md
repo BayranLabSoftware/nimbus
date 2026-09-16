@@ -2082,6 +2082,34 @@ The reference is arithmetic on the very same cells rather than a measurement of
 the world — there is nothing to tune towards — but it is weaker, and a reader
 should weigh it as one.
 
+### And how many the rupture stadiums hold (16 September 2026)
+
+`validation/polygonCountRules.ts` (rules 98 to 101), `validation/polygonCountRun.ts`.
+The counter beside the circle's takes a polygon, and an extended rupture's
+stadium is the footprint every scored earthquake of the calibration net counts
+its people in — so if that one were out by ten per cent too, a good part of
+this report would be. It is not the circle counter with a different shape: it
+splits every cell of the bounding box rather than only the ones the edge
+crosses, because a ring has no cheap "wholly inside" test the way a circle has
+its centre-to-centre distance. The rim, though, is cut exactly as coarsely.
+
+It passes. On thirty rupture stadiums built by a fixed rule from the same
+centres the circles used — three shapes, about an M 6.5, an M 7.5 and a
+megathrust, at a strike that turns 37° with each one — the count in place is a
+median 0.032 % from the same counter at 32 × 32 and 1.19 % at its worst, against
+a bar of 5 %. Nothing changes.
+
+The reason it passes where the circle's failed is the size of the footprint and
+not the quality of the arithmetic. The circles that missed were 20 km across, so
+almost every cell they touched was a rim cell; the smallest stadium here is
+about 130 km by 80 km, and its rim is a thin border around a great many cells
+that are wholly inside. This round therefore says nothing about what the polygon
+counter would do on a footprint a few cells wide — and it is worth knowing that
+the finer sub-grid would have cost 8.8 times the wall-clock of the set, far more
+than it costs a circle, so rule 101's budget would have refused it on cost had
+it been needed. The cheap "wholly inside" test that would make it affordable is
+named in the rules and left to a later round rather than invented in this one.
+
 ### The crater, from the numbers the book prints (16 September 2026)
 
 `validation/craterRules.ts` (rules 90 to 93), `validation/craterRun.ts`,

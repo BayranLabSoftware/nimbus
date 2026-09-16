@@ -784,7 +784,11 @@ function sumGridCircle(
 
 /** People inside a polygon on a grid: cells by their centre, edge
  *  cells by the sub-sampled share inside the ring. */
-function sumGridRing(view: GridView, ring: readonly [number, number][]): number {
+function sumGridRing(
+  view: GridView,
+  ring: readonly [number, number][],
+  edgeSubsamples: number = EDGE_SUBSAMPLES
+): number {
   const bbox = ringBoundingBox(ring);
   const row0 = Math.max(0, Math.floor((view.maxLat - bbox.maxLat) / view.cellDeg));
   const row1 = Math.min(view.nLat - 1, Math.ceil((view.maxLat - bbox.minLat) / view.cellDeg));
@@ -804,15 +808,15 @@ function sumGridRing(view: GridView, ring: readonly [number, number][]): number 
       const { people } = view.cellAt(r, wrap(c));
       if (people === 0) continue;
       let inside = 0;
-      for (let a = 0; a < EDGE_SUBSAMPLES; a++) {
-        const sLat = cellLat + ((a + 0.5) / EDGE_SUBSAMPLES - 0.5) * view.cellDeg;
-        for (let b = 0; b < EDGE_SUBSAMPLES; b++) {
-          const sLon = cellLon + ((b + 0.5) / EDGE_SUBSAMPLES - 0.5) * view.cellDeg;
+      for (let a = 0; a < edgeSubsamples; a++) {
+        const sLat = cellLat + ((a + 0.5) / edgeSubsamples - 0.5) * view.cellDeg;
+        for (let b = 0; b < edgeSubsamples; b++) {
+          const sLon = cellLon + ((b + 0.5) / edgeSubsamples - 0.5) * view.cellDeg;
           if (pointInRing(sLon, sLat, ring)) inside += 1;
         }
       }
       if (inside === 0) continue;
-      sum += (people * inside) / (EDGE_SUBSAMPLES * EDGE_SUBSAMPLES);
+      sum += (people * inside) / (edgeSubsamples * edgeSubsamples);
     }
   }
   return sum;
@@ -1107,6 +1111,7 @@ export function _resetPopulationLookupCache(): void {
 /** Exposed for unit tests of the geometry helpers. */
 export const _internals = {
   CIRCLE_EDGE_SUBSAMPLES,
+  RING_EDGE_SUBSAMPLES: EDGE_SUBSAMPLES,
   circleBoundingBox,
   landDensityAt,
   sumGridCircle,

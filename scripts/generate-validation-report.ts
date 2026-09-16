@@ -219,6 +219,10 @@ import { runBurn, type BurnRunResult } from '../src/physics/validation/burnRun.j
 import { runDose, type DoseRunResult } from '../src/physics/validation/doseRun.js';
 import { runCrater, type CraterRunResult } from '../src/physics/validation/craterRun.js';
 import { runRingCount, type RingCountRunResult } from '../src/physics/validation/ringCountRun.js';
+import {
+  runPolygonCount,
+  type PolygonCountRunResult,
+} from '../src/physics/validation/polygonCountRun.js';
 import { BURN_CURVE_YIELDS_KT } from '../src/physics/effects/burnExposureData.js';
 import { mulberry32 } from '../src/physics/montecarlo/sampling.js';
 import type { ProspectiveScore } from '../src/physics/validation/prospectiveRules.js';
@@ -2383,7 +2387,7 @@ function ringCountSection(run: RingCountRunResult): string {
     row('4 × 4, until 16 September 2026', run.inPlace),
     row('12 × 12, adopted', run.candidate),
     '',
-    `The count in place missed the bar docs/GOLD_STANDARD.md sets (I4, and the same clause under every other letter): ${pc(run.inPlace.worstError)} on a ${worst === undefined ? '20' : worst.radiusKm.toString()} km circle, where I4 asks 5 % of each ring and not of the median. The three worst were ${run.worstRows.map((r) => `${r.name} at ${r.radiusKm.toString()} km (${r.inPlace.toFixed(0)} against ${r.exact.toFixed(0)}, ${pc(r.error)})`).join('; ')}. Splitting the edge cells 12 × 12 brings every circle inside, at ${run.timeFactor.toFixed(2)}× the wall-clock of the set — the edge cells are a small share of a large circle — and the release gate stays PASS, so rule 97 adopts it. ${run.inPlace.belowACell.toString()} circles narrower than one cell are counted apart and scored by nobody: the raster does not say where inside a cell its people live, so there is no exact answer to compare against, and what the code does there is a model rather than an arithmetic. The polygon counter an extended rupture uses keeps its 4 × 4 until a round measures that too.`,
+    `The count in place missed the bar docs/GOLD_STANDARD.md sets (I4, and the same clause under every other letter): ${pc(run.inPlace.worstError)} on a ${worst === undefined ? '20' : worst.radiusKm.toString()} km circle, where I4 asks 5 % of each ring and not of the median. The three worst were ${run.worstRows.map((r) => `${r.name} at ${r.radiusKm.toString()} km (${r.inPlace.toFixed(0)} against ${r.exact.toFixed(0)}, ${pc(r.error)})`).join('; ')}. Splitting the edge cells 12 × 12 brings every circle inside, for a few per cent more time — the edge cells are a small share of a large circle — and the release gate stays PASS, so rule 97 adopts it. The cost is a wall-clock measurement, so the number is in \`docs/BENCHMARK_PROTOCOL.md\` rather than here: this report regenerates to the byte and a clock does not. ${run.inPlace.belowACell.toString()} circles narrower than one cell are counted apart and scored by nobody: the raster does not say where inside a cell its people live, so there is no exact answer to compare against, and what the code does there is a model rather than an arithmetic. The polygon counter an extended rupture uses keeps its 4 × 4 until a round measures that too.`,
   ].join('\n');
 }
 
@@ -2407,12 +2411,58 @@ function ringCountJson(run: RingCountRunResult) {
     },
     inPlace: reading(run.inPlace),
     candidate: reading(run.candidate),
-    timeFactor: fixed(run.timeFactor, 3),
     worstRows: run.worstRows.map((r) => ({
       name: r.name,
       latitude: fixed(r.latitude, 4),
       longitude: fixed(r.longitude, 4),
       radiusKm: r.radiusKm,
+      inPlace: fixed(r.inPlace, 1),
+      exact: fixed(r.exact, 1),
+      error: fixed(r.error, 6),
+    })),
+    decision: run.decision,
+  };
+}
+
+/** Rules 98 to 101: the same question, asked of the rupture stadiums. */
+function polygonCountSection(run: PolygonCountRunResult): string {
+  const pc = (x: number): string => `${(100 * x).toFixed(3)} %`;
+  const row = (label: string, r: PolygonCountRunResult['inPlace']): string =>
+    `| ${label} | ${r.scored.toString()} | ${pc(r.medianError)} | ${pc(r.ninetiethError)} | ${pc(r.worstError)} | ${r.meetsBar ? 'yes' : '**no**'} |`;
+  return [
+    `The counter beside it takes a polygon, and an extended rupture's stadium is the footprint every scored earthquake of the calibration net counts its people in. It is not the circle counter with a different shape: it splits *every* cell of the bounding box, not only the ones the edge crosses, because a ring has no cheap "wholly inside" test — so a cell deep inside a stadium costs sixteen point-in-ring tests that all say yes, while the rim is cut as coarsely as the circles' was. Rules 98 to 101 (\`validation/polygonCountRules.ts\`) ask the same question of it: ${run.polygons.toString()} stadiums built by a fixed rule from the same centres, at three shapes — about an M 6.5, an M 7.5 and a megathrust — and a strike that turns 37° with each one, against the same counter on the same cells split 32 × 32. The reference is converged: at 48 × 48 it moves by at most ${pc(run.convergence.worst)}.`,
+    '',
+    '| Sub-grid on a cell | Stadiums scored | Median | 90th | Worst | Every one within 5 % |',
+    '|--------------------|----:|----:|----:|----:|:--:|',
+    row('4 × 4, in place', run.inPlace),
+    row('12 × 12, not adopted', run.candidate),
+    '',
+    `This one passes: ${pc(run.inPlace.worstError)} at its worst, ${pc(run.inPlace.medianError)} at the median, against a bar of 5 %. ${run.decision.changes ? '' : 'Nothing changes.'} The three worst are ${run.worstRows.map((r) => `${r.name} (${r.inPlace.toFixed(0)} against ${r.exact.toFixed(0)}, ${pc(r.error)})`).join('; ')}. The finer sub-grid costs far more here than it costs a circle, because this counter splits every cell and not only the rim, and rule 101's budget would have refused it on cost had it been needed; that too is a wall-clock measurement and lives in \`docs/BENCHMARK_PROTOCOL.md\`. Why this counter passes where the circle's failed is the size of the footprint, not the quality of the arithmetic: the smallest stadium here is about 130 km by 80 km, where the circles that failed were 40 km across and almost every cell they touched was a rim cell. This says nothing about what the polygon counter would do on a footprint a few cells wide.`,
+  ].join('\n');
+}
+
+/** Rules 98 to 101 in the report's JSON. */
+function polygonCountJson(run: PolygonCountRunResult) {
+  const reading = (r: PolygonCountRunResult['inPlace']) => ({
+    scored: r.scored,
+    medianError: fixed(r.medianError, 6),
+    ninetiethError: fixed(r.ninetiethError, 6),
+    worstError: fixed(r.worstError, 6),
+    meetsBar: r.meetsBar,
+  });
+  return {
+    polygons: run.polygons,
+    convergence: {
+      checked: run.convergence.checked,
+      worst: fixed(run.convergence.worst, 6),
+      passes: run.convergence.passes,
+    },
+    inPlace: reading(run.inPlace),
+    candidate: reading(run.candidate),
+    worstRows: run.worstRows.map((r) => ({
+      name: r.name,
+      strikeDeg: r.strikeDeg,
+      shape: r.shape,
       inPlace: fixed(r.inPlace, 1),
       exact: fixed(r.exact, 1),
       error: fixed(r.error, 6),
@@ -3461,6 +3511,7 @@ function main(): void {
   const dose = runDose();
   const crater = runCrater();
   const ringCount = runRingCount();
+  const polygonCount = runPolygonCount();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -3592,6 +3643,8 @@ ${craterSection(crater)}
 ### How many people the rings actually hold
 
 ${ringCountSection(ringCount)}
+
+${polygonCountSection(polygonCount)}
 
 ### Which checks are validation
 
@@ -3897,6 +3950,7 @@ otherwise.
       dose: doseJson(dose),
       crater: craterJson(crater),
       ringCount: ringCountJson(ringCount),
+      polygonCount: polygonCountJson(polygonCount),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,

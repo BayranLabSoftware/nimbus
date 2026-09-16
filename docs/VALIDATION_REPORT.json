@@ -4131,7 +4131,6 @@
         "worstError": 0.02732,
         "meetsBar": true
       },
-      "timeFactor": 1.073,
       "worstRows": [
         {
           "name": "drawn 6",
@@ -4165,6 +4164,59 @@
         "changes": true,
         "adopted": true,
         "reason": "the finer sub-grid brings every circle inside the bar within the time budget"
+      }
+    },
+    "polygonCount": {
+      "polygons": 30,
+      "convergence": {
+        "checked": 5,
+        "worst": 0.000019,
+        "passes": true
+      },
+      "inPlace": {
+        "scored": 27,
+        "medianError": 0.000324,
+        "ninetiethError": 0.003397,
+        "worstError": 0.011887,
+        "meetsBar": true
+      },
+      "candidate": {
+        "scored": 27,
+        "medianError": 0.000049,
+        "ninetiethError": 0.000432,
+        "worstError": 0.008522,
+        "meetsBar": true
+      },
+      "worstRows": [
+        {
+          "name": "70 N · M 6.5",
+          "strikeDeg": 279,
+          "shape": "M 6.5",
+          "inPlace": 11681.3,
+          "exact": 11821.8,
+          "error": 0.011887
+        },
+        {
+          "name": "busiest 3 · M 6.5",
+          "strikeDeg": 222,
+          "shape": "M 6.5",
+          "inPlace": 34642698,
+          "exact": 34476867.2,
+          "error": 0.00481
+        },
+        {
+          "name": "busiest 2 · M 6.5",
+          "strikeDeg": 111,
+          "shape": "M 6.5",
+          "inPlace": 28373880.1,
+          "exact": 28470583.7,
+          "error": 0.003397
+        }
+      ],
+      "decision": {
+        "changes": false,
+        "adopted": false,
+        "reason": "every polygon is already within the bar (rule 101)"
       }
     },
     "interfaceRules": {

@@ -1175,3 +1175,61 @@ touches is an edge cell. **Adopted:** splitting the edge cells 12 × 12 brings
 every scored circle inside, worst 2.7 %, for 1.07 times the wall-clock of the
 set, and the release gate stays PASS. The polygon counter keeps its 4 × 4, and
 measuring it is the obvious next round.
+
+## After the circles: how many people the rupture stadiums hold
+
+Written on 16 September 2026, before any polygon of the set was counted either
+way. The rules are numbered after the ninety-seven before them and live in
+`src/physics/validation/polygonCountRules.ts` (rules 98 to 101), with the run
+in `polygonCountRun.ts`.
+
+### What is already known, and so not held out
+
+Rules 94 to 97 measured the circle counter, found it up to 10.4 % from an exact
+count of the same cells, and said in their own text that the polygon counter
+beside it kept its 4 × 4 sub-grid until a round measured that too. This is that
+round. As in that one, the rules were written in full — the set, the reference,
+the bar and what decides — and then the set was counted, and only then were
+they committed, so a reader has the author's word and not a commit that nothing
+moved in between. The rules say so in their own header.
+
+The polygon counter is not the circle counter with a different shape. It splits
+_every_ cell of the footprint's bounding box, not only the ones the edge
+crosses, because a ring has no cheap "wholly inside" test the way a circle has
+its centre-to-centre distance — so a cell deep inside a stadium costs sixteen
+point-in-ring tests that all say yes, while the arithmetic that matters, the
+rim, is cut just as coarsely as the circles' was. And unlike the circles, this
+counter reaches scored rows: every extended-rupture earthquake of the
+calibration net counts its people through it.
+
+### The polygons, the reference and the decision
+
+Rule 98 builds thirty rupture stadiums from the same centres rule 94 used — the
+eight most populous cells of the shipped 0.125° planet plus the antimeridian
+and 70° N — at three shapes (about an M 6.5, an M 7.5 and a megathrust) and a
+strike that turns 37° with each polygon, drawn by the very
+`buildRuptureStadiumLatLon` the simulator draws them with. Rule 99's reference
+is the same counter on the same cells split 32 × 32, checked against 48 × 48 on
+every fifth polygon. Rule 100's bar is the standard's own: every polygon within
+5 %. Rule 101 changes nothing if nothing misses; otherwise the candidate is the
+same arithmetic split 12 × 12 — the number the circle round adopted, so the two
+counters agree on how finely a rim is cut — adopted only if it brings every
+polygon inside, costs no more than five times the wall-clock of the set, and
+leaves the release gate passing. The budget is looser than the circle's three
+because this counter splits every cell and not only the rim; if the cost is
+what fails, the obvious answer — a cheap test for the cells wholly inside — is
+left to a later round rather than invented here.
+
+### The outcome, 16 September 2026
+
+Run once, with `pnpm exec tsx scripts/benchmark/polygon-count.ts`. The reference
+converged: at 48 × 48 it moves by at most 0.002 %. **The count in place passes
+the bar** — a median 0.032 %, 0.34 % at the ninetieth percentile and 1.19 % at
+its worst, against 5 % — so rule 101 changes nothing. The finer sub-grid would
+have cost 8.8 times the wall-clock of the set, above rule 101's budget of five,
+which is a reminder that the budget was set for a reason: this counter splits
+every cell and not only the rim. The reason it passes where the circle counter
+failed is the size of the footprint, not the arithmetic: the smallest stadium
+of this set is about 130 km by 80 km where the circles that missed were 40 km
+across. Nothing here says what the polygon counter would do on a footprint a
+few cells wide.

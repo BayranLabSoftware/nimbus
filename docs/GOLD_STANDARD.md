@@ -282,8 +282,11 @@ not that a rule holds.
   count of the very same cells at 48 × 48 — above the 5 % every letter of this
   standard asks of a ring. Splitting 12 × 12 brings the worst to 2.7 % for
   seven per cent more time, and the release gate holds. The polygon counter an
-  extended rupture uses is still on 4 × 4 and still unmeasured (rules 94 to 97,
-  docs/SCIENCE.md, "How many people the rings actually hold").
+  extended rupture uses was measured the same night by rules 98 to 101 and
+  passes as it stands — a median 0.032 % and 1.19 % at its worst over thirty
+  stadiums — because a stadium is far larger than the circles that failed, not
+  because its arithmetic is finer (docs/SCIENCE.md, "How many people the rings
+  actually hold" and "And how many the rupture stadiums hold").
 - **16 September 2026, three clauses of N1 met.** N1 asks that no fit of the
   project's stand in where the book gives a curve. Rules 80 to 84 traced
   Glasstone & Dolan's Figure 12.64 from the public scan and adopted it: an
