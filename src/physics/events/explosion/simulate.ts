@@ -21,6 +21,7 @@ import { peakWindAtRange } from './peakWind.js';
 import { initialRadiationRadii, type RadiationDoseResult } from './radiation.js';
 import { computeSeaCoupling, type SeaCoupling } from '../../effects/seaCoupling.js';
 import type { BurnExposureSource, BurnSkin } from '../../effects/burnExposure.js';
+import type { RadiationSource } from '../../effects/initialRadiation.js';
 import {
   firstDegreeBurnRadius,
   secondDegreeBurnRadius,
@@ -71,6 +72,11 @@ export interface ExplosionScenarioInput {
    *  Omitted, the middle one — the average exposed population. Rule 83 of
    *  validation/burnRules.ts prints the other two beside it. */
   burnSkin?: BurnSkin;
+  /** Which law draws the initial-radiation rings (rule 86 of
+   *  validation/doseRules.ts): the project's yield^0.18 fit, or Glasstone &
+   *  Dolan's own dose–range figures. Omitted,
+   *  {@link DEFAULT_RADIATION_SOURCE}. */
+  radiationSource?: RadiationSource;
   /** Distance from the burst point to the nearest usable sea (m).
    *  Zero or omitted means the burst is over the water. A surface
    *  burst beside the sea is not a burst in it, and this is what
@@ -447,7 +453,10 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
     radiation:
       exoatmospheric || inWater || chemical
         ? { ld50Radius: m(0), ld100Radius: m(0), arsThresholdRadius: m(0) }
-        : initialRadiationRadii(input.yieldMegatons),
+        : initialRadiationRadii(input.yieldMegatons, {
+            heightOfBurstM: hobMeters,
+            ...(input.radiationSource === undefined ? {} : { source: input.radiationSource }),
+          }),
     emp: chemical
       ? { regime: 'NEGLIGIBLE', peakField: 0, affectedRadius: m(0) }
       : electromagneticPulse(input.yieldMegatons, hobMeters),

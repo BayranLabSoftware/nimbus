@@ -1,3 +1,8 @@
+import {
+  DEFAULT_RADIATION_SOURCE,
+  groundRangeForDoseM,
+  type RadiationSource,
+} from '../../effects/initialRadiation.js';
 import type { Meters } from '../../units.js';
 import { m } from '../../units.js';
 
@@ -16,12 +21,14 @@ import { m } from '../../units.js';
  * sits near 8 Gy. At these dose levels, the death window is 30–60 d
  * post-exposure without intensive medical support.
  *
- * The headline radii scale with yield^0.18, a project fit. The dose–
- * range curves of Glasstone & Dolan are Figs. 8.33a/b and 8.64a/b; the
- * "Fig. 8.46" the anchors below cite is not one of them, and the anchors
- * have not been rechecked against the book. Atmospheric scattering
- * and terrain shadowing are ignored; the radii should be read as
- * nominal upper envelopes on a flat, unshielded target at sea level.
+ * Two laws are here. Under `project` the headline radii scale with
+ * yield^0.18, a project fit whose anchors cite a "Fig. 8.46" that is not
+ * one of the book's dose–range figures. Under `glasstone1977` they are
+ * read off those figures themselves — 8.33a/b for gamma rays and 8.64a/b
+ * for neutrons, summed — as `effects/initialRadiation.ts` traces them;
+ * rules 85 to 89 of `validation/doseRules.ts` say which one a scenario
+ * that names none draws. Atmospheric scattering and terrain shadowing are
+ * ignored either way; the radii are for a flat, unshielded target.
  */
 
 /** Reference LD₅₀/60 radius for a 1 kt burst (project fit). */
@@ -53,12 +60,40 @@ export interface RadiationDoseResult {
   arsThresholdRadius: Meters;
 }
 
+/** The absorbed doses (rads in tissue) the three radii are drawn at: LD₁₀₀
+ *  near 8 Gy, LD₅₀/60 near 4.5 Gy and the acute-radiation-syndrome threshold
+ *  at 1 Gy. Project values, from UNSCEAR and BEIR VII rather than from
+ *  Glasstone & Dolan, and unchanged by which law draws the range. */
+export const LD100_RAD = 800;
+export const LD50_RAD = 450;
+export const ARS_THRESHOLD_RAD = 100;
+
+export interface RadiationRadiiOptions {
+  /** Which law draws the ranges. Omitted, {@link DEFAULT_RADIATION_SOURCE}. */
+  source?: RadiationSource;
+  /** Height of burst (m). The book's figures are drawn for 290·W^0.4 feet and
+   *  corrected below 300 feet (§8.37, §8.65), and they give a slant range, so
+   *  the ring on the ground depends on it. The project fit ignores it. */
+  heightOfBurstM?: number;
+}
+
 /** Headline initial-radiation radii for a given TNT-equivalent yield
  *  (megatons). See module header for references. */
-export function initialRadiationRadii(yieldMegatons: number): RadiationDoseResult {
+export function initialRadiationRadii(
+  yieldMegatons: number,
+  options: RadiationRadiiOptions = {}
+): RadiationDoseResult {
   const yieldKt = yieldMegatons * 1_000;
   if (!Number.isFinite(yieldKt) || yieldKt <= 0) {
     return { ld50Radius: m(0), ld100Radius: m(0), arsThresholdRadius: m(0) };
+  }
+  if ((options.source ?? DEFAULT_RADIATION_SOURCE) === 'glasstone1977') {
+    const h = options.heightOfBurstM ?? 0;
+    return {
+      ld50Radius: m(groundRangeForDoseM(LD50_RAD, yieldKt, h)),
+      ld100Radius: m(groundRangeForDoseM(LD100_RAD, yieldKt, h)),
+      arsThresholdRadius: m(groundRangeForDoseM(ARS_THRESHOLD_RAD, yieldKt, h)),
+    };
   }
   const ld50 = LD50_REFERENCE_RADIUS_KT1 * Math.pow(yieldKt, YIELD_EXPONENT);
   const ld100 = ld50 * LD100_TO_LD50_RATIO;

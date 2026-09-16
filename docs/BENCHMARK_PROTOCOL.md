@@ -989,3 +989,51 @@ flash at all, so its band does not move, and Hiroshima's, tuned on its own
 mortality, goes from 107 004 / 113 594 / 129 200 to 107 512 / 115 748 /
 129 492 against a record of 105 000. The validation report prints the table,
 and the light and dark curves beside it.
+
+## After the burns: the initial radiation, from the figures the book draws
+
+Written on 16 September 2026, before the candidate drew a ring for any preset
+of the product. The rules are numbered after the eighty-four before them and
+live in `src/physics/validation/doseRules.ts` (rules 85 to 89); the curves come
+first, in `src/physics/effects/initialRadiationData.ts`, traced by
+`scripts/benchmark/dose-curves.py` from the public scan of Glasstone & Dolan
+(1977), the model that reads them in `src/physics/effects/initialRadiation.ts`,
+and the run that will judge it in `doseRun.ts`, committed with the rules and
+run on nothing.
+
+### What is already known, and so not held out
+
+Nimbus draws its three initial-radiation rings from a project fit: 700 m at
+1 kt for the LD₅₀, growing as the yield to the 0.18, with LD₁₀₀ at 0.7 of it
+and the acute-radiation threshold at 1.4. The fit's own comment credits its
+anchors to a "Glasstone Fig. 8.46", which is not a dose–range figure of the
+book, and says they were never rechecked. The book's dose–range figures are
+8.33a and b for gamma rays and 8.64a and b for neutrons, six curves apiece at
+30, 100, 300, 1 000, 3 000 and 10 000 rads, the "a" of each pair for fission
+weapons from 1 to 100 kt and the "b" for thermonuclear weapons of 50 % fission
+yield from 0.1 to 20 Mt. Before these rules were written, those four pages were
+read, with Table 8.37 and §§8.33 to 8.37 and 8.63 to 8.65, the curves were
+traced, and the rings a handful of yields draw under them were printed. No row
+of the calibration net was run under the candidate — and none can judge it,
+since no death in this model is counted from radiation at all.
+
+### The curves, the candidate and the decision
+
+Rule 85 traces the twenty-four curves and refuses to write them unless each
+figure holds six, each rises with the yield, none crosses another, the fission
+and thermonuclear figures of one radiation agree within 18 % where they meet at
+100 kt, and the traced gamma table reproduces the book's own worked example at
+§8.34 — 2 000 yards from a 50 kt fission air burst, which the book reads as
+"somewhat less than 300 rads … about 250". Rule 86's candidate adds the gamma
+and neutron doses, reads the fission figures below 100 kt and the thermonuclear
+pair above, corrects towards a contact surface burst below 300 feet by Table
+8.37 for gamma rays and by one half for neutrons, and turns the figure's slant
+range into a ring on the ground. Rule 87 adopts the book — this replaces a fit
+of the project's with the source it cites — unless the trace fails its checks,
+the release gate stops passing, or the rings lose their order or stop growing
+with the yield, save at the 100 kt step the book itself draws. Rule 88 says
+what is printed, rule 89 what an adoption changes. What the rules cannot settle
+they say: no toll can judge this, the figures stop at 1 kt and 20 Mt, rads of
+neutrons are added as if they were worth the same as rads of gamma rays where
+the book says they are often worth more, and the book's own reliability is a
+factor of two either way for a fission weapon.
