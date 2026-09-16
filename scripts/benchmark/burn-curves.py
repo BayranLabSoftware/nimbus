@@ -5,10 +5,14 @@ from the page of Glasstone & Dolan (1977) that carries them.
 The book gives no fixed radiant exposure for a burn: the exposure that burns
 grows with the yield, because a larger explosion spreads its thermal pulse over
 a longer time and the skin sheds more of the heat as it arrives. Figure 12.64
-of the 1977 edition (the text calls it 12.65) draws nine curves — first, second
+of the 1977 edition draws nine curves — first, second
 and third degree, each for light, medium and dark skin — of the radiant
-exposure at which 50 % of an average exposed population receives that burn,
-against yields of 1 kt to 10 Mt.
+exposure required to produce that burn on that skin, against yields of 1 kt to
+10 Mt. Its caption is "Radiant exposure required to produce skin burns for
+different skin pigmentations"; it attaches no probability to a curve. The
+neighbouring Figure 12.65 does — its solid lines are the exposure at which 50 %
+of an average exposed population takes a burn of that degree, and its broken
+lines divide the 18 % and 82 % bands — and it is not what is traced here.
 
 This traces those nine curves from the scan: it takes the page's image, finds
 the frame and the axis ticks, seeds one point per curve in a column clear of
@@ -155,9 +159,10 @@ def main() -> None:
 /** The yields (kt) the curves are read at. */
 export const BURN_CURVE_YIELDS_KT: readonly number[] = [{', '.join(str(k) for k in GRID_KT)}];
 
-/** The radiant exposure (cal/cm²) at which 50 % of an average exposed
- *  population receives a burn of that degree, by skin pigmentation, at each
- *  of {{@link BURN_CURVE_YIELDS_KT}}. Traced from the scan; the reading is
+/** The radiant exposure (cal/cm²) required to produce a burn of that degree
+ *  on that skin pigmentation, at each of {{@link BURN_CURVE_YIELDS_KT}}. The
+ *  figure attaches no probability to a curve; its neighbour 12.65 does, and is
+ *  not this one. Traced from the scan; the reading is
  *  good to about a tenth of a cal/cm², half the thickness of a printed
  *  curve. */
 // prettier-ignore

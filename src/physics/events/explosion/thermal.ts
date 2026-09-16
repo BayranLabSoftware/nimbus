@@ -184,7 +184,7 @@ function solveAttenuatedBurnRadius(R0: number, L: number): number {
  *
  * Default threshold is the third-degree-burn line: Glasstone & Dolan's own
  * curve for this yield (6.2 cal/cm² at 1 kt rising to 11.8 at 10 Mt — the
- * exposure that burns half of an average exposed population), or the
+ * exposure the book's Figure 12.64 requires to burn that skin), or the
  * project's flat 8 cal/cm² where the caller asks for `project`.
  *
  * Two atmospheric-transmission modes are supported:

@@ -7,10 +7,9 @@ import type { BurnExposureSource } from '../effects/burnExposure.js';
  * Those three numbers are the project's own: Glasstone & Dolan give no fixed
  * thresholds. In their book the exposure that burns grows with the yield,
  * because a larger explosion spreads the same heat over a longer pulse and
- * the skin sheds more of it as it arrives, and their Figure 12.64 (page 564
- * of the 1977 edition; the text calls it 12.65) draws nine curves of it —
- * first, second and third degree, each for light, medium and dark skin — from
- * 1 kt to 10 Mt. The validation report has carried the difference as a
+ * the skin sheds more of it as it arrives, and their Figure 12.64 (page 564 of
+ * the 1977 edition) draws nine curves of it — first, second and third degree,
+ * each for light, medium and dark skin — from 1 kt to 10 Mt. The validation report has carried the difference as a
  * declared gap since 14 September 2026. These rules close it, or say why not.
  *
  * What was looked at before these rules were written, and is therefore not
@@ -43,6 +42,14 @@ import type { BurnExposureSource } from '../effects/burnExposure.js';
  *      partition, the transmission, the fireball. An impact's burn rings keep
  *      the project's fluences: the book's curves are the thermal pulse of a
  *      nuclear fireball, and an impact's is a separate gap.
+ *      (Corrected on 16 September 2026, after this round was run and adopted:
+ *      "the average exposed population" is wrong and the numbers are not.
+ *      Figure 12.64 is captioned "Radiant exposure required to produce skin
+ *      burns for different skin pigmentations" and attaches no probability to
+ *      any curve; "50 % of an average exposed population" belongs to the solid
+ *      lines of the neighbouring Figure 12.65, which this project does not
+ *      read. The middle curve is the middle pigmentation and nothing more. The
+ *      last paragraph says what that costs.)
  *  82. What decides. The candidate replaces three numbers of the project's own
  *      with the curves of the book the project cites for them, so it is
  *      adopted unless a guard fails: (a) rule 80's three checks on the trace;
@@ -67,9 +74,30 @@ import type { BurnExposureSource } from '../effects/burnExposure.js';
  * What these rules cannot settle. The curves were traced from a scan by
  * machine, and a systematic error in the axis would move every threshold
  * together; the checks catch a crossing or a fall, not a shift. The book's
- * lines are for an average exposed population with no evasive action, in the
- * lower atmosphere, and the exposure is what reaches the skin — clothing,
- * shade and pigment move it by more than the reading error. Nimbus's own
+ * lines are for exposed skin with no evasive action and no protection from
+ * structures or clothing (§12.64), in the lower atmosphere, and the exposure
+ * is what reaches the skin — clothing, shade and pigment move it by more than
+ * the reading error.
+ *
+ * And one thing these rules read wrongly, found on 16 September 2026 after
+ * they had been run and adopted, and left here rather than quietly mended.
+ * Figure 12.64 gives the exposure *required to produce* a burn of a degree on
+ * a pigmentation. It carries no probability. The book's Figure 12.65, on the
+ * next page, gives the same thing as probabilities — solid lines for 50 % of
+ * an average exposed population, broken lines for the 18 % and 82 % bands —
+ * and the worked example rule 80 checks against (§12.65: between 4.5 and
+ * 6 cal/cm² at 1 Mt, 18 % second-degree and the rest first) is read off *that*
+ * figure, not this one. So rule 80's fourth check is a consistency check
+ * across two figures and not a reproduction of an example on the one traced,
+ * and it is weaker than it was described as being. What the example does say
+ * is where the traced curves sit beside it: at 1 Mt the first-degree curve for
+ * a middling skin asks 3.32 cal/cm², below the 4.5-to-6 band in which §12.65
+ * puts 18 % of an exposed population at second-degree burns and the rest at
+ * first, and the second-degree curve asks 6.30, just above it. Whether the
+ * rings this project draws are wider or narrower than 12.65's 50 % rings is
+ * not settled here, because 12.65 has not been traced. Doing so — which would
+ * also give the product the book's own 18 % and 82 % bands around each ring —
+ * is a round nobody has run. Nimbus's own
  * transmission and partition sit between the yield and the exposure, and
  * neither is the book's (the partition is a straight line where the book
  * gives a table). And the tolls cannot judge the change: no row of the net

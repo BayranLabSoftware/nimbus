@@ -113,7 +113,7 @@ describe('thirdDegreeBurnRadius (8 cal/cm² project threshold)', () => {
   });
 
   it('draws the book’s curve where the caller names no exposure (rule 84)', () => {
-    // At 15 kt the book asks 7.20 cal/cm² of an average exposed population
+    // At 15 kt the book asks 7.20 cal/cm² of a middling skin
     // for a third-degree burn, less than the project's flat 8, so the ring
     // the simulator draws by default is the wider of the two.
     const asks = thirdDegreeBurnRadius({ yieldEnergy: HIROSHIMA_YIELD }) as number;

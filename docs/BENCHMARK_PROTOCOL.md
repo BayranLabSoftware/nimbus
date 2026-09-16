@@ -946,8 +946,7 @@ rules and run on nothing.
 ### What is already known, and so not held out
 
 Nimbus draws its burn rings at 8, 5 and 2 cal/cm², three numbers of the
-project's own: the book gives no fixed threshold, and its Figure 12.64 (page
-564; the text calls it 12.65) draws the exposure that burns as a curve rising
+project's own: the book gives no fixed threshold, and its Figure 12.64 (page 564) draws the exposure that burns as a curve rising
 with the yield, nine of them for three degrees and three skin pigmentations.
 The validation report has carried the difference as a declared gap since 14
 September 2026. Before these rules were written, that page was read, with the
@@ -971,6 +970,23 @@ what is printed, rule 84 what an adoption changes. A traced curve carries the
 scan's own error, and the tolls cannot judge the change, since no row of the
 net counts the burned apart from the dead; the rules say so rather than
 correct it.
+
+### A correction, 16 September 2026, after the round was adopted
+
+Figure 12.64 is captioned "Radiant exposure required to produce skin burns for
+different skin pigmentations" and attaches no probability to any curve. The
+rules, the report and the science notes all described it as the exposure at
+which half of an average exposed population takes the burn — which is the
+book's _next_ figure, 12.65, whose solid lines are exactly that and whose
+broken lines divide the 18 % and 82 % bands. The worked example rule 80 checks
+the trace against (§12.65, 4.5 to 6 cal/cm² at 1 Mt) is read off 12.65, so that
+check is a consistency check across two figures rather than the reproduction of
+an example on the figure traced, and it is weaker than it was described as
+being. The numbers are unchanged and correct for the figure they came from; the
+sentence describing them was not, and is corrected in every place it appeared.
+Tracing Figure 12.65 — which would also give the product the book's own 18 %
+and 82 % bands around each ring — is a round nobody has run, and is now a
+declared gap of the validation report.
 
 ### The outcome, 16 September 2026
 

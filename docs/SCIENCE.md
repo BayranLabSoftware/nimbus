@@ -2256,9 +2256,9 @@ rings mostly shrink and its third-degree ring grows: Hiroshima's three go from
 
 What this cannot settle is written in the rules. A systematic error in the axis
 would move every threshold together, and the checks catch a crossing or a fall,
-not a shift. The book's lines are for an average exposed population with no
-evasive action, and clothing, shade and pigment move the exposure by more than
-the reading error — the figure's own light and dark curves put Hiroshima's
+not a shift. The book's lines are for exposed skin with no evasive action and
+no protection from structures or clothing, and clothing, shade and pigment move
+the exposure by more than the reading error — the figure's own light and dark curves put Hiroshima's
 third-degree ring at 2.15 and 2.36 km around the 2.25 in place, and the report
 prints them beside, deciding nothing. And no row of the net can judge the
 change: only two of its rows are explosions, Hiroshima's toll is tuned on its
@@ -2266,6 +2266,31 @@ own mortality and Beirut's charge is chemical, which draws no flash at all.
 An impact keeps the project's fluences (rule 81): the book's curves are the
 pulse of a nuclear fireball, and what it takes to burn under an impact's is a
 gap of its own.
+
+And one thing this round read wrongly, found the same day, after it had been
+run and adopted, and written here rather than quietly mended. Figure 12.64 is
+captioned "Radiant exposure required to produce skin burns for different skin
+pigmentations". It attaches no probability to any curve. The rules, the report
+and this page all described it as the exposure at which half of an average
+exposed population takes the burn — and that is the book's _next_ figure, 12.65,
+whose solid lines are exactly that and whose broken lines divide the 18 % and
+82 % bands. The worked example rule 80 checks the trace against (§12.65: between
+4.5 and 6 cal/cm² at 1 Mt, 18 % second-degree and the rest first) is read off
+12.65, so that check is a consistency check across two figures and not the
+reproduction of an example on the figure traced. It is weaker than it was
+described as being.
+
+Where the two stand beside each other is this. At 1 Mt the traced first-degree
+curve for a middling skin asks 3.32 cal/cm², below the 4.5-to-6 band in which
+§12.65 puts 18 % of an exposed population at second-degree burns and the rest
+at first; the traced second-degree curve asks 6.30, just above that band.
+Whether the rings the simulator now draws are wider or narrower than 12.65's
+50 % rings is not settled here, because 12.65 has not been traced. The numbers
+are unchanged and correct for the figure they came from; what was wrong was the
+sentence describing them, and it is corrected in the rules' own text, in the
+report's declared gaps and here. Reading Figure 12.65 instead — which would
+also give the product the book's own 18 % and 82 % bands around each ring — is
+a round nobody has run.
 
 ### The entry model against the bolides (16 September 2026)
 

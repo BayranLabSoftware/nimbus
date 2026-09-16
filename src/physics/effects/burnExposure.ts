@@ -14,9 +14,12 @@ import { BURN_CURVES, BURN_CURVE_YIELDS_KT } from './burnExposureData.js';
  * explosion. The book does not: the exposure that burns grows with the yield,
  * because a bigger explosion spreads the same heat over a longer pulse and the
  * skin sheds more of it while it arrives. Its Figure 12.64 (page 564 of the
- * 1977 edition; the text calls it 12.65) draws the exposure at which half of
- * an average exposed population takes a burn of each degree, for three skin
- * pigmentations, from 1 kt to 10 Mt. `burnExposureData.ts` carries those nine
+ * 1977 edition) draws the exposure required to produce a burn of each degree on
+ * each of three skin pigmentations, from 1 kt to 10 Mt — "Radiant exposure
+ * required to produce skin burns for different skin pigmentations", with no
+ * probability attached to a curve. Its neighbour 12.65 draws the same thing as
+ * probabilities, 50 % of an average exposed population on the solid lines and
+ * 18 % and 82 % on the broken ones, and is not what is read here. `burnExposureData.ts` carries those nine
  * curves as traced from the public scan.
  */
 
@@ -34,7 +37,10 @@ export type BurnExposureSource = 'project' | 'glasstone1977';
 export const DEFAULT_BURN_EXPOSURE: BurnExposureSource = 'glasstone1977';
 
 /** The skin the book's curves are read at where a scenario names none: the
- *  middle of its three, which is the average exposed population. */
+ *  middle of the figure's three, the one drawn for a skin neither light nor
+ *  dark. It is not an average over pigmentations — the figure draws no such
+ *  curve — and rule 83 of validation/burnRules.ts prints the other two beside
+ *  it so the spread is visible. */
 export const DEFAULT_BURN_SKIN: BurnSkin = 'medium';
 
 /** One calorie per square centimetre, in joules per square metre. */

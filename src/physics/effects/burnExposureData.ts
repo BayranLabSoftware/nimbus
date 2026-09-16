@@ -6,9 +6,10 @@
 /** The yields (kt) the curves are read at. */
 export const BURN_CURVE_YIELDS_KT: readonly number[] = [1, 3, 10, 30, 100, 300, 1000, 3000, 10000];
 
-/** The radiant exposure (cal/cm²) at which 50 % of an average exposed
- *  population receives a burn of that degree, by skin pigmentation, at each
- *  of {@link BURN_CURVE_YIELDS_KT}. Traced from the scan; the reading is
+/** The radiant exposure (cal/cm²) required to produce a burn of that degree
+ *  on that skin pigmentation, at each of {@link BURN_CURVE_YIELDS_KT}. The
+ *  figure attaches no probability to a curve; its neighbour 12.65 does, and is
+ *  not this one. Traced from the scan; the reading is
  *  good to about a tenth of a cal/cm², half the thickness of a printed
  *  curve. */
 // prettier-ignore

@@ -69,8 +69,9 @@ export interface ExplosionScenarioInput {
    *  the yield. Omitted, {@link DEFAULT_BURN_EXPOSURE}. */
   burnExposure?: BurnExposureSource;
   /** Which of the book's three skin pigmentations its curves are read at.
-   *  Omitted, the middle one — the average exposed population. Rule 83 of
-   *  validation/burnRules.ts prints the other two beside it. */
+   *  Omitted, the middle one, drawn for a skin neither light nor dark rather
+   *  than averaged over the three. Rule 83 of validation/burnRules.ts prints
+   *  the other two beside it. */
   burnSkin?: BurnSkin;
   /** Which law draws the initial-radiation rings (rule 86 of
    *  validation/doseRules.ts): the project's yield^0.18 fit, or Glasstone &
