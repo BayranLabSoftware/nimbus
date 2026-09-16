@@ -5,8 +5,8 @@ Each point names a body and a range; the program is sent it as the campaign's
 scripts/eiep-reference.py sends a case, with the same fetch and the same
 parser, on the point's target (sedimentary where it names none), one request
 every 1.5 s. What comes back is
-the printed burst altitude (null where the body reaches the ground) and the
-printed overpressure, low and high ends. It runs the reference, never the
+the printed burst altitude (null where the body reaches the ground), the
+printed overpressure, low and high ends, and the seismic rings the map draws. It runs the reference, never the
 model: the scripts that write the points and read the answers are Nimbus's.
 
     python3 scripts/eiep-points.py <points.json> <out.json>
@@ -51,6 +51,7 @@ def main():
                 "breakupAltitudeM": got.get("breakupAltitudeM"),
                 "fireballRadiiM": got.get("fireballRadiiM"),
                 "overpressurePa": got.get("overpressurePa"),
+                "seismicRadiiM": got.get("seismicRadiiM"),
             }
         )
         print(

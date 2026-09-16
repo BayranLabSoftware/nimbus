@@ -112,6 +112,22 @@ export type EntryEquations = 'paper' | 'program';
 /** What an entry that names no equations uses. */
 export const DEFAULT_ENTRY_EQUATIONS: EntryEquations = 'program';
 
+/**
+ * The speed of an airburst at its burst altitude, where the program's
+ * equations are in place.
+ *
+ * - `paper`: Eq. 19's integral from the burst to the breakup.
+ * - `program`: as the program computes it (rules 154 to 157 of
+ *   validation/impactSeismicRules.ts): the same integral as its Eq. 20, from
+ *   the burst to the breakup, without the −3(l/H)² it lacks at the ground —
+ *   Eq. 19's integral plus H·L₀². The program reads an airburst's seismic
+ *   magnitude from the energy the body keeps there.
+ */
+export type BurstSpeed = 'paper' | 'program';
+
+/** What an airburst that names no burst speed uses. */
+export const DEFAULT_BURST_SPEED: BurstSpeed = 'paper';
+
 export interface AtmosphericEntryResult {
   /** Airburst altitude (m), Collins et al. Eq. 18; 0 when the body or
    *  its swarm reaches the ground. */
@@ -328,7 +344,8 @@ export function atmosphericEntry(
   impactorDensity: KilogramPerCubicMeter = kgPerM3(3_000),
   kineticEnergy?: Joules,
   impactAngle: Radians = (Math.PI / 4) as Radians,
-  equations: EntryEquations = DEFAULT_ENTRY_EQUATIONS
+  equations: EntryEquations = DEFAULT_ENTRY_EQUATIONS,
+  burstSpeed: BurstSpeed = DEFAULT_BURST_SPEED
 ): AtmosphericEntryResult {
   const program = equations === 'program';
   const v0 = impactVelocity as number;
@@ -393,11 +410,14 @@ export function atmosphericEntry(
   const k = (0.75 * DRAG_COEFFICIENT * rhoStar) / (rhoI * L0 ** 3 * sinTheta);
 
   if (zBurst > 0) {
-    // Eq. 19: the integral from the airburst to the breakup.
+    // Eq. 19: the integral from the airburst to the breakup. The program
+    // takes its Eq. 20 between the same altitudes, without the −3(l/H)² term,
+    // which is Eq. 19 plus H·L₀² (`BurstSpeed`).
     const integral =
       ((l * L0 * L0) / 24) *
-      alpha *
-      (8 * (3 + alpha * alpha) + 3 * alpha * (l / H_SCALE) * (2 + alpha * alpha));
+        alpha *
+        (8 * (3 + alpha * alpha) + 3 * alpha * (l / H_SCALE) * (2 + alpha * alpha)) +
+      (followsProgram && burstSpeed === 'program' ? H_SCALE * L0 * L0 : 0);
     const endVelocity = vStar * Math.exp(-k * integral);
     const atmosphericYieldJ = totalKE;
     // Collins et al. 2017: the blast is given the larger of the energy the

@@ -65,7 +65,11 @@ import {
   type ImpactDamageRadii,
 } from './events/impact/damageRings.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
-import { SEISMIC_EFFICIENCY_RANGE, seismicMagnitude } from './events/impact/seismic.js';
+import {
+  impactSeismicEnergy,
+  SEISMIC_EFFICIENCY_RANGE,
+  seismicMagnitude,
+} from './events/impact/seismic.js';
 import { synolakisRunup } from './events/tsunami/extendedEffects.js';
 import { dispersionFactor } from './tsunami/dispersion.js';
 import {
@@ -558,8 +562,17 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // The seismic source is the same ground-coupled energy: all of it for
   // an intact impactor, as in Collins et al. (2005), who report no
   // seismic effects for airbursts; for an airburst, the fraction that
-  // reaches the ground (a Nimbus extension of their relation).
-  const seismicM = seismicMagnitude(groundCoupledKe);
+  // reaches the ground (a Nimbus extension of their relation), or, as the
+  // Earth Impact Effects Program reads it, the energy the body keeps at its
+  // burst altitude (`ImpactSeismicSource` in events/impact/seismic.ts).
+  const seismicEnergy = impactSeismicEnergy({
+    kineticEnergy: ke,
+    energyFractionToGround: gf,
+    airburst: entry.regime === 'COMPLETE_AIRBURST',
+    entryVelocity: input.impactVelocity,
+    endVelocity: entry.endVelocity,
+  });
+  const seismicM = seismicMagnitude(seismicEnergy);
   // The flash travels in straight lines, so nothing burns and no fire
   // starts past the range where the fireball sets below the horizon —
   // the cut the casualty plan makes — or past the antipode. Until
@@ -740,8 +753,8 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     seismic: {
       magnitude: seismicM,
       magnitudeRange: {
-        low: seismicMagnitude(groundCoupledKe, SEISMIC_EFFICIENCY_RANGE.low),
-        high: seismicMagnitude(groundCoupledKe, SEISMIC_EFFICIENCY_RANGE.high),
+        low: seismicMagnitude(seismicEnergy, SEISMIC_EFFICIENCY_RANGE.low),
+        high: seismicMagnitude(seismicEnergy, SEISMIC_EFFICIENCY_RANGE.high),
       },
       liquefactionRadius: liquefactionRadius(seismicM),
     },

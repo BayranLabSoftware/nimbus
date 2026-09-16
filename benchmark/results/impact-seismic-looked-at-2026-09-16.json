@@ -1,0 +1,775 @@
+{
+ "reference": "Earth Impact Effects Program, impact.ese.ic.ac.uk (Collins, Melosh & Marcus 2005)",
+ "readOn": "2026-09-16",
+ "asked": "before rules 154 to 157 were written: a stone at 20 km/s and 45\u00b0, sized by Nimbus to put a ring where one of Eqs. 41* to 43* hands over to the next (key: the effective-magnitude drop at the level tested)",
+ "rows": [
+  {
+   "key": "far-4.90",
+   "diameterM": 1047.497,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     796393.2097458437
+    ],
+    [
+     4.0,
+     568915.5450344722
+    ],
+    [
+     7.0,
+     152980.84090639188
+    ],
+    [
+     9.0,
+     37794.07832019348
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-4.95",
+   "diameterM": 1108.935,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     853586.7797868485
+    ],
+    [
+     4.0,
+     579313.791737617
+    ],
+    [
+     7.0,
+     163379.0876095366
+    ],
+    [
+     9.0,
+     39893.7242890977
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-5.00",
+   "diameterM": 1174.006,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     914889.3134871436
+    ],
+    [
+     4.0,
+     589712.2948983655
+    ],
+    [
+     7.0,
+     173777.5907702852
+    ],
+    [
+     9.0,
+     41993.42204271041
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-5.05",
+   "diameterM": 1242.92,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     980592.9247464645
+    ],
+    [
+     4.0,
+     600110.5653756174
+    ],
+    [
+     7.0,
+     184175.861247537
+    ],
+    [
+     9.0,
+     44093.07281215548
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-5.10",
+   "diameterM": 1315.905,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     1051015.949150267
+    ],
+    [
+     4.0,
+     610508.9568676336
+    ],
+    [
+     7.0,
+     194574.25273955317
+    ],
+    [
+     9.0,
+     46192.74801727413
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-5.15",
+   "diameterM": 1393.199,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     1126496.1914738955
+    ],
+    [
+     4.0,
+     620907.303534831
+    ],
+    [
+     7.0,
+     204972.59940675064
+    ],
+    [
+     9.0,
+     48292.414171227465
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-5.20",
+   "diameterM": 1475.056,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     1207397.5476181423
+    ],
+    [
+     4.0,
+     631305.6986554641
+    ],
+    [
+     7.0,
+     215370.99452738385
+    ],
+    [
+     9.0,
+     50392.090109047625
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-5.25",
+   "diameterM": 1561.744,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     1294109.0151496483
+    ],
+    [
+     4.0,
+     641704.0977792515
+    ],
+    [
+     7.0,
+     225769.39365117115
+    ],
+    [
+     9.0,
+     52491.76685519699
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-5.30",
+   "diameterM": 1653.547,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     1387047.650125054
+    ],
+    [
+     4.0,
+     652102.4779325261
+    ],
+    [
+     7.0,
+     236167.77380444578
+    ],
+    [
+     9.0,
+     54591.43977076205
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.445",
+   "diameterM": 624.71,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     682257.6626451459
+    ],
+    [
+     4.0,
+     474290.3105811057
+    ],
+    [
+     7.0,
+     60680.46745311798
+    ],
+    [
+     9.0,
+     18687.05982480217
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.450",
+   "diameterM": 628.251,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     683297.4059436157
+    ],
+    [
+     4.0,
+     475330.0538795755
+    ],
+    [
+     7.0,
+     60890.41561915515
+    ],
+    [
+     9.0,
+     18897.00799083935
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.455",
+   "diameterM": 631.813,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     684337.2595193427
+    ],
+    [
+     4.0,
+     476369.9074553025
+    ],
+    [
+     7.0,
+     61100.386052715396
+    ],
+    [
+     9.0,
+     19106.978424399596
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.460",
+   "diameterM": 635.396,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     685377.1880558607
+    ],
+    [
+     4.0,
+     477409.8359918206
+    ],
+    [
+     7.0,
+     61475.131863740215
+    ],
+    [
+     9.0,
+     19316.963994273432
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.465",
+   "diameterM": 639,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     686417.1568335344
+    ],
+    [
+     4.0,
+     478449.8047694941
+    ],
+    [
+     7.0,
+     62515.100641413745
+    ],
+    [
+     9.0,
+     19526.957689765204
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.470",
+   "diameterM": 642.624,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     687456.8456634878
+    ],
+    [
+     4.0,
+     479489.49359944765
+    ],
+    [
+     7.0,
+     63554.789471367294
+    ],
+    [
+     9.0,
+     19736.89485735198
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.480",
+   "diameterM": 649.937,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     689536.6834623653
+    ],
+    [
+     4.0,
+     481569.3313983251
+    ],
+    [
+     7.0,
+     65634.62727024476
+    ],
+    [
+     9.0,
+     20156.862105202235
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.490",
+   "diameterM": 657.334,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     691616.1505433511
+    ],
+    [
+     4.0,
+     483648.79847931094
+    ],
+    [
+     7.0,
+     67714.09435123058
+    ],
+    [
+     9.0,
+     20576.754496555146
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-4.8700",
+   "diameterM": 1012.2924,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     770643.81854673
+    ],
+    [
+     4.0,
+     562676.4664826898
+    ],
+    [
+     7.0,
+     146741.76235460944
+    ],
+    [
+     9.0,
+     36534.2643818528
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-4.8750",
+   "diameterM": 1018.0758,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     771683.6533171264
+    ],
+    [
+     4.0,
+     563716.3012530863
+    ],
+    [
+     7.0,
+     147781.59712500588
+    ],
+    [
+     9.0,
+     36744.23101818285
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-4.8800",
+   "diameterM": 1023.8926,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     774603.0655234873
+    ],
+    [
+     4.0,
+     564756.1481766118
+    ],
+    [
+     7.0,
+     148821.44404853144
+    ],
+    [
+     9.0,
+     36954.20010851012
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "far-4.8900",
+   "diameterM": 1035.6268,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     785422.4036247026
+    ],
+    [
+     4.0,
+     566835.8138537677
+    ],
+    [
+     7.0,
+     150901.10972568736
+    ],
+    [
+     9.0,
+     37374.13260101276
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.4570",
+   "diameterM": 633.244,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     684753.3168269674
+    ],
+    [
+     4.0,
+     476785.96476292727
+    ],
+    [
+     7.0,
+     61184.39762444734
+    ],
+    [
+     9.0,
+     19190.989996131528
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.4580",
+   "diameterM": 633.9605,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     684961.2736970341
+    ],
+    [
+     4.0,
+     476993.921632994
+    ],
+    [
+     7.0,
+     61226.38891551848
+    ],
+    [
+     9.0,
+     19232.98128720268
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "near-1.4595",
+   "diameterM": 635.0369,
+   "densityKgM3": 3000,
+   "velocityKmS": 20,
+   "angleDeg": 45,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "seismicRadiiM": [
+    [
+     3.0,
+     685273.2348103094
+    ],
+    [
+     4.0,
+     477305.88274626917
+    ],
+    [
+     7.0,
+     61371.178618188795
+    ],
+    [
+     9.0,
+     19295.973435075557
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  }
+ ]
+}
