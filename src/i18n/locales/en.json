@@ -288,14 +288,18 @@
     "tsunamiCavity": "Water-cavity radius",
     "tsunamiAt1000km": "Wave at 1 000 km (Ward)",
     "tsunamiAt5000km": "Wave at 5 000 km (Ward)",
-    "tsunamiAt1000kmWunnemann": "Wave at 1 000 km (Wünnemann 2010 rim wave)",
+    "tsunamiAt1000kmWunnemann": "Wave at 1 000 km (Earth Impact Effects Program)",
     "tsunamiAt1000kmRange": "Wave at 1 000 km — published envelope",
     "tsunamiAt5000kmRange": "Wave at 5 000 km — published envelope",
     "tsunamiRimWaveSource": "Wave height at the cavity rim",
+    "tsunamiProgramSource": "Wave height one water crater out",
     "tsunamiRegime": "Wave regime (h/L)",
     "tsunamiRegimeShallow": "shallow water — rim wave only, decays as r^−{{q}}",
     "tsunamiRegimeDeep": "deep water — rim wave r^−{{q}} + collapse wave r^−{{qc}}",
-    "tsunamiAt5000kmWunnemann": "Wave at 5 000 km (Wünnemann 2010 rim wave)",
+    "tsunamiRegimeProgramDeep": "deep water",
+    "tsunamiRegimeProgramShallow": "shallow water, held to its depth",
+    "tsunamiRegimeProgram": "{{shelf}} — the wave falls as 1/r from one water crater ({{crater}} km) out",
+    "tsunamiAt5000kmWunnemann": "Wave at 5 000 km (Earth Impact Effects Program)",
     "runupAt1000km": "Coastal run-up @ 1 000 km (Synolakis)",
     "tsunamiAt5000kmDispersed": "Wave at 5 000 km (dispersed)",
     "tsunamiArrival": "Arrival at 1 000 km",
@@ -492,9 +496,9 @@
     },
     "tsunamiSeaCoupling": "Sea coupling",
     "seaCoupling": {
-      "water": "impact in water — 100 % of the energy enters the sea",
-      "crater": "the crater reaches the coast at {{distance}} — 100 % of the energy enters the sea",
-      "ejecta": "coast at {{distance}}: the ejecta blanket falls into the sea — {{fraction}} % of the energy (McGetchin 1973)"
+      "water": "impact in water — the whole wave",
+      "crater": "the crater reaches the coast at {{distance}} — the whole wave",
+      "ejecta": "coast at {{distance}}: the ejecta blanket falls into the sea — {{fraction}} % of the wave (McGetchin 1973)"
     }
   },
   "cascade": {
@@ -1218,7 +1222,7 @@
     "seismicMagnitudeRange": "The same relation across the seismic-efficiency range Collins et al. (2005) give, 10⁻⁵ to 10⁻³: ±0.67 around the central value.",
     "tsunamiCavity": "Water-cavity radius R_C = (3·E / (2π·ρ_w·g))^(1/4): Ward & Asphaug (2000) eq. 12 for a cavity as deep as its radius holding half the energy that enters the water, within 2 % of the Gault & Sonett law Wünnemann et al. (2010) quote.",
     "tsunamiFarField": "Reference far-field amplitude A(r) = A₀·R_C/r: a project source amplitude A₀ with a 1/r decay that simplifies Ward & Asphaug (2000) eq. 17, which runs from r^−1/2 to r^−1.075. Not the model's best estimate, which is the Wünnemann rim wave.",
-    "tsunamiWunnemann": "Rim wave of Wünnemann, Collins & Weiss 2010 (Rev. Geophys. 48, eq. 9a/10a): A(r) = min(0.14 R_w, h)·(R_w/r)^q_r with q_r = min(1.2, 0.5 + 2e^(−1.75 L/h)). A shallow-water impact decays as r^−0.5 (geometric spreading), a deep-ocean one as r^−1.2 — the best estimate the simulator uses for run-up and for the bathymetric propagation on the globe.",
+    "tsunamiWunnemann": "The wave of an impact as the Earth Impact Effects Program draws it, read off its map and held out on fourteen impacts in water (rules 150 to 153): the program opens a crater in the water D_w = 0.826 (ρᵢ/ρ_w)^⅓ L^0.78 v^0.44 sin^⅓θ — the form of Collins et al. 2005's Eq. 21 — and its wave is min(0.07 D_w, h)·D_w/r from one crater diameter out, the dispersion of the train already inside the 1/r. The simulator draws run-up and the bathymetric propagation on the globe on it. Until 16 September 2026 this was the rim wave of Wünnemann, Collins & Weiss 2010, which falls as r^−1.2 in deep water and made no wave at all from a broken body bringing less than half its energy to the water.",
     "tsunamiWunnemannBounds": "Published envelope of Wünnemann, Collins & Weiss 2010 (eqs. 7–8): upper bound min(0.28 R_w, h)·R_w/r; lower bound the smaller of the rim wave and the collapse wave 0.06·min(R_w/3, h)·(5R_w/r)^q_c, the latter only for h/L ≥ 2. The same range the Earth Impact Effects Program reports.",
     "synolakisRunup": "Coastal run-up on a 1:100 plane beach with 10 m offshore depth (Synolakis 1987, JFM 185 523–545). R = 2.831·H·√(cot β)·(H/d)^(1/4). Illustrative inundation height — real coastal run-up depends on bathymetry, harbour geometry, and breaking regime.",
     "tsunamiDispersion": "Dispersion of the leading wave: D = (4π²/6)·r·h²/λ³ on the source wavelength λ and the depth h, after Kajiura (1963), with a decay (1 + D)^(−½) that is a Nimbus closure. A wave from a megathrust barely disperses; a short wave from a slide or an impact does.",
@@ -1245,7 +1249,7 @@
     "nuclearCrater": "Apparent surface-burst crater diameter D = K · W_kt^0.3 (Glasstone & Dolan 1977 §6.09): K = 36.6 m for dry soil and firm ground, the book's 1 kt crater; 92 m for saturated reef, which puts Castle Bravo and Ivy Mike near their mile-wide craters (DTRIAC SR-12-001); hard rock and clay project values.",
     "atmosphericEntry": "Breakup altitude from Collins et al. 2005 Eq. 11, where the ram pressure first exceeds the impactor's strength; the broken body then spreads as a pancake (Chyba et al. 1993) and airbursts if it reaches seven times its size above the ground (Eq. 18).",
     "airburstBlast": "The Earth Impact Effects Program's air blast of an airburst (Collins et al. 2005 Eqs. 54, 57–58; Collins et al. 2017 Eq. 7): a still source at the burst altitude, given the larger of the energy the body keeps and the energy it has lost there, read off fits to nuclear tests — regular reflection near the point under the burst, Mach reflection farther out for a scaled burst below 550 m, joined by the straight line in range the program draws across the edge. Within three burst altitudes a moving source can give up to twice the overpressure, the upper figure. Held out, it reproduces the program's printed overpressure within 1 % on 24 of 24 airbursts, and on 72 of 72 points across that edge; a burst on a shallow path, as at Chelyabinsk, damages an ellipse this round source does not draw.",
-    "seaCoupling": "An impact on land reaches the sea with the crater, when the rim crosses the coast, or with the ejecta falling beyond the shoreline. The deposit thins as r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47), so the ejecta mass beyond a distance d falls as 1/d: the fraction beyond the shore, R/d, scales the energy the water cavity forms with — a Nimbus assumption. Beyond the 1 m isopach the sea is not moved.",
+    "seaCoupling": "An impact on land reaches the sea with the crater, when the rim crosses the coast, or with the ejecta falling beyond the shoreline. The deposit thins as r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47), so the ejecta mass beyond a distance d falls as 1/d: the fraction beyond the shore, R/d, scales the wave — a Nimbus assumption, which the Earth Impact Effects Program does not compute. Beyond the 1 m isopach the sea is not moved.",
     "explosionWaveHeight": "Height from crest to trough H ≈ 40 500·W^0.54/R feet in deep water (Glasstone & Dolan 1977 §6.119, to about 35 %), or H ≈ 150·d·W^0.25/R in water shallower than 100·W^0.25 ft (§6.121); W in kilotons, d the water depth. The amplitude shown is half the height. The relation already contains the train's dispersion.",
     "explosionWaveSource": "Inside this radius the height relation is not used: it is where Glasstone & Dolan's height would be steeper than the water can hold, H = 0.142·L·tanh(2πd/L) (Miche 1944), or the gas bubble's maximum radius, 128·W^0.25 ft (§6.119), whichever is larger.",
     "underwaterBurst": "A burst within the water (Glasstone & Dolan 1977). Much of the thermal and initial nuclear radiation is absorbed close to the burst, and the BAKER fireball was visible for only a few thousandths of a second (§2.64), so the model gives no burns, no fires and no initial radiation. The air blast reaches each overpressure at the surface burst's range shortened by e^(−ρ·λ_d/126), λ_d the depth in ft·kt⁻¹ᐟ³ (§6.81, §6.53). The waves are §6.119–6.121."

@@ -25,7 +25,7 @@ The count `docs/GOLD_STANDARD.md` reads below a 9, from `validation/goldStandard
 
 | Domain | Count | Rules that hold | Pending |
 | --- | --: | --: | --: |
-| Impacts | 3.8 | 3 of 9 | 1 |
+| Impacts | 3.9 | 3 of 9 | 1 |
 | Explosions | 3.2 | 2 of 8 | 1 |
 | Waves from landslides | 3.0 | 2 of 6 | 0 |
 | Volcanoes | 1.1 | 1 of 10 | 4 |
@@ -68,13 +68,13 @@ The count `docs/GOLD_STANDARD.md` reads below a 9, from `validation/goldStandard
 
 #### Impacts
 
-- **I1 (G1)**, 9 of 11 clauses — open: the seismic magnitude (pending); the impact tsunami (not met). Against the Earth Impact Effects Program on the grid of validation/eiepReference.ts, gated in eiepComparison.test.ts.
+- **I1 (G1)**, 10 of 11 clauses — open: the seismic magnitude (pending). Against the Earth Impact Effects Program on the grid of validation/eiepReference.ts, gated in eiepComparison.test.ts.
 - **I2**, met. Read against the program's entry on the 357 CNEOS fireballs (rules 126 to 128, validation/fireballAnchorRules.ts).
 - **I3**, not met. Tunguska's 20 kPa ring 0.43× the flattened forest.
 - **I4**, met. Rings counted within 2.7 % of an exact count (rules 94 to 97), and the toll carries its ceiling.
 - **G3**, not met. No quantity of an impact carries a band scored on a held-out set.
 - **G4**, not met. No measured cells for impacts.
-- **G5**, not met. 426 failures in the sweep of 16 September 2026; two are a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-11.json).
+- **G5**, not met. 426 failures in the sweep of 16 September 2026, which holds the wave a visitor is shown since rules 150 to 153; two are a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-15.json).
 - **G6**, not met. Every gap is declared in the report, but a 9 may carry only the ceilings, and the report declares gaps that are not ceilings.
 - **G7**, met. Every default changed since the rules were written changed by rules pushed before their candidate ran, with every outcome recorded (docs/BENCHMARK_PROTOCOL.md; the rule files of validation/).
 

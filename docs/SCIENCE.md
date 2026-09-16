@@ -230,7 +230,8 @@ Carlo wrappers for sampled inputs).
 | Firestorm ignition radius     | events/explosion/firestorm.ts       | R s.t. Q(R) = 4.19e5 J/m² (10 cal/cm², project value)                                                                                                                                                                          | Glasstone & Dolan 1977 §7.94–7.96 (fluence)                                           | ±30%              |
 | Tsunami cavity radius         | events/tsunami/impact.ts            | R_C = (3 E / 2π ρ g)^¼                                                                                                                                                                                                         | Ward & Asphaug 2000, eq. 12 (ε = ½, D_C = R_C)                                        | ±30%              |
 | Tsunami far-field (Ward)      | events/tsunami/impact.ts            | A(r) = A₀ R_C / r (A₀ project calibration)                                                                                                                                                                                     | simplifies Ward & Asphaug 2000, eq. 17                                                | reference         |
-| Tsunami far-field (best)      | events/tsunami/wunnemann.ts         | A_r = min(0.14 R_w, h)(R_w/r)^q_r, q_r = min(1.2, 0.5+2e^(−1.75L/h))                                                                                                                                                           | Wünnemann, Collins & Weiss 2010 eq. 9a/10a                                            | ±factor 3         |
+| Tsunami far-field (best)      | events/tsunami/impactProgram.ts     | A = f_sea min(0.07 D_w, h) D_w/r (r > D_w), D_w = 0.82581965 (ρᵢ/ρ_w)^⅓ L^0.78 v^0.44 sin^⅓θ (EIEP, rules 150–153)                                                                                                             |
+| Tsunami far-field (Wünnemann) | events/tsunami/wunnemann.ts         | A_r = min(0.14 R_w, h)(R_w/r)^q_r, q_r = min(1.2, 0.5+2e^(−1.75L/h)) (reference, the best estimate until 16 Sep 2026)                                                                                                          |
 | Tsunami far-field bounds      | events/tsunami/wunnemann.ts         | A_up = min(0.28 R_w, h) R_w/r ; A_low = min{A_r, A_c}, A_c = 0.06 min(R_w/3, h)(5R_w/r)^q_c                                                                                                                                    | Wünnemann et al. 2010 eq. 7–8, 9b/10b                                                 | envelope          |
 | Inland-impact sea coupling    | simulate.ts (tsunami block)         | reach = max(R_rim, R_w, r_ejecta 1 m); f_sea = min(1, max(R_rim, R_w)/d)                                                                                                                                                       | McGetchin et al. 1973 (r⁻³ ejecta)                                                    | ±factor 2         |
 | Tsunami propagation seeds     | tsunami/sourcePlacement.ts          | nearest water ≥ 10 m, body ≥ 24 cells, per compass sector, planetary mask                                                                                                                                                      | —                                                                                     | geometric         |
@@ -4284,11 +4285,14 @@ labelled in its JSDoc as a fit (not the cited authors' formula):
   Bralower 2018 hydrocode envelope, not Ward & Asphaug's raw
   A₀ = R_C/2. It survives as the historical Ward & Asphaug reference
   row. The simulator's best estimate — run-up, the on-globe veil, the
-  legend — is the Wünnemann, Collins & Weiss 2010 rim wave
-  (`events/tsunami/wunnemann.ts`), which is a transcription of their
-  eqs. 9a/10a, not a fit; the published upper/lower envelope
-  (eqs. 7–8) is reported next to it because the impact-tsunami hazard
-  itself is contested (Melosh 2003 "over-rated"; Wünnemann 2007).
+  legend — is, since 16 September 2026, the Earth Impact Effects
+  Program's wave (`events/tsunami/impactProgram.ts`), read off the rings
+  the program draws and held out on fourteen impacts (rules 150 to 153);
+  until then it was the Wünnemann, Collins & Weiss 2010 rim wave
+  (`events/tsunami/wunnemann.ts`), a transcription of their eqs. 9a/10a,
+  not a fit, which falls faster in deep water and is kept as a law the
+  model can still be run with. The impact-tsunami hazard itself is
+  contested (Melosh 2003 "over-rated"; Wünnemann 2007).
 - **Landslide / volcanic-collapse source amplitude**
   (`events/volcano/tsunami.ts`) — a Watts-2000-INSPIRED
   `K·(γ/γ_ref)·V^(1/3)·sinθ` calibrated per regime, not Watts'

@@ -356,9 +356,29 @@ function formatTsunamiRegime(
     rimWaveExponent: number;
     collapseWaveExponent: number;
     collapseWaveForms: boolean;
+    farFieldLaw?: 'wunnemann' | 'program';
+    farFieldReferenceRadius?: number;
+    rimWaveSourceAmplitude?: number;
+    seaCoupling?: { fraction: number };
   },
   t: (key: string, opts: Record<string, string>) => string
 ): string {
+  if (tsunami.farFieldLaw === 'program') {
+    const crater = tsunami.farFieldReferenceRadius ?? 0;
+    // The wave one crater out is min(0.07 D_w, h), scaled by the share of an
+    // inland strike that reaches the sea: the water holds it where it is the
+    // smaller of the two.
+    const coupling = tsunami.seaCoupling?.fraction ?? 1;
+    const atCrater = coupling > 0 ? (tsunami.rimWaveSourceAmplitude ?? 0) / coupling : 0;
+    const shallow = atCrater < 0.07 * crater * (1 - 1e-9);
+    return t('simulator.tsunamiRegimeProgram', {
+      shelf: t(
+        shallow ? 'simulator.tsunamiRegimeProgramShallow' : 'simulator.tsunamiRegimeProgramDeep',
+        {}
+      ),
+      crater: (crater / 1_000).toFixed(1),
+    });
+  }
   const ratio =
     tsunami.depthToImpactorRatio >= 10
       ? tsunami.depthToImpactorRatio.toFixed(0)
@@ -1066,7 +1086,13 @@ export function SimulatorPanel(): JSX.Element {
                       })}
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiRimWaveSource')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t(
+                      result.data.tsunami.farFieldLaw === 'program'
+                        ? 'simulator.tsunamiProgramSource'
+                        : 'simulator.tsunamiRimWaveSource'
+                    )}
+                  </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
                       {formatKilometres(result.data.tsunami.rimWaveSourceAmplitude)}
@@ -1078,24 +1104,29 @@ export function SimulatorPanel(): JSX.Element {
                       {formatTsunamiRegime(result.data.tsunami, t)}
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiAt1000kmRange')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiWunnemannBounds')}>
-                      {formatWaveEnvelope(
-                        result.data.tsunami.amplitudeAt1000kmLower,
-                        result.data.tsunami.amplitudeAt1000kmUpper
-                      )}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiAt5000kmRange')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiWunnemannBounds')}>
-                      {formatWaveEnvelope(
-                        result.data.tsunami.amplitudeAt5000kmLower,
-                        result.data.tsunami.amplitudeAt5000kmUpper
-                      )}
-                    </CitationTooltip>
-                  </dd>
+                  {/* The program draws one wave and publishes no envelope around it. */}
+                  {result.data.tsunami.farFieldLaw !== 'program' && (
+                    <>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiAt1000kmRange')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.tsunamiWunnemannBounds')}>
+                          {formatWaveEnvelope(
+                            result.data.tsunami.amplitudeAt1000kmLower,
+                            result.data.tsunami.amplitudeAt1000kmUpper
+                          )}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiAt5000kmRange')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.tsunamiWunnemannBounds')}>
+                          {formatWaveEnvelope(
+                            result.data.tsunami.amplitudeAt5000kmLower,
+                            result.data.tsunami.amplitudeAt5000kmUpper
+                          )}
+                        </CitationTooltip>
+                      </dd>
+                    </>
+                  )}
                   <dt className={styles.resultLabel}>{t('simulator.runupAt1000km')}</dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.synolakisRunup')}>

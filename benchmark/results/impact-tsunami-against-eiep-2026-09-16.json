@@ -1,0 +1,431 @@
+{
+ "rules": "src/physics/validation/impactTsunamiRules.ts, rules 150 to 153",
+ "verdict": {
+  "bodies": 13,
+  "rings": 49,
+  "departs": 0,
+  "heldOutPasses": true
+ },
+ "rings": [
+  {
+   "body": 1,
+   "level": 1,
+   "model": 3246295.288504318,
+   "program": 3246040.470756209,
+   "crater": 7873.624274810375,
+   "agreement": "agrees"
+  },
+  {
+   "body": 1,
+   "level": 10,
+   "model": 324629.5288504318,
+   "program": 324604.0470756209,
+   "crater": 7873.624274810375,
+   "agreement": "agrees"
+  },
+  {
+   "body": 1,
+   "level": 100,
+   "model": 32462.952885043178,
+   "program": 32460.40470756209,
+   "crater": 7873.624274810375,
+   "agreement": "agrees"
+  },
+  {
+   "body": 1,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 7873.624274810375,
+   "agreement": "agrees"
+  },
+  {
+   "body": 2,
+   "level": 1,
+   "model": 75677580.09239902,
+   "program": 27658.47466193464,
+   "crater": 66717.42933297982,
+   "agreement": "apart"
+  },
+  {
+   "body": 2,
+   "level": 10,
+   "model": 7567758.009239902,
+   "program": 7567163.978506457,
+   "crater": 66717.42933297982,
+   "agreement": "agrees"
+  },
+  {
+   "body": 2,
+   "level": 100,
+   "model": 756775.8009239902,
+   "program": 756716.3978506457,
+   "crater": 66717.42933297982,
+   "agreement": "agrees"
+  },
+  {
+   "body": 2,
+   "level": 1000,
+   "model": 75677.58009239902,
+   "program": 75671.63978506457,
+   "crater": 66717.42933297982,
+   "agreement": "agrees"
+  },
+  {
+   "body": 3,
+   "apart": "HTTP 500"
+  },
+  {
+   "body": 4,
+   "level": 1,
+   "model": 506021.240204121,
+   "program": 506021.865465456,
+   "crater": 2688.6567017860184,
+   "agreement": "agrees"
+  },
+  {
+   "body": 4,
+   "level": 10,
+   "model": 50602.1240204121,
+   "program": 50602.18654654561,
+   "crater": 2688.6567017860184,
+   "agreement": "agrees"
+  },
+  {
+   "body": 4,
+   "level": 100,
+   "model": 5060.21240204121,
+   "program": 5060.21865465456,
+   "crater": 2688.6567017860184,
+   "agreement": "agrees"
+  },
+  {
+   "body": 4,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 2688.6567017860184,
+   "agreement": "agrees"
+  },
+  {
+   "body": 5,
+   "level": 1,
+   "model": 201050.78273085496,
+   "program": 201035.01240544138,
+   "crater": 2425.2205395760548,
+   "agreement": "agrees"
+  },
+  {
+   "body": 5,
+   "level": 10,
+   "model": 20105.078273085495,
+   "program": 20103.501240544138,
+   "crater": 2425.2205395760548,
+   "agreement": "agrees"
+  },
+  {
+   "body": 5,
+   "level": 100,
+   "model": 0,
+   "program": 0,
+   "crater": 2425.2205395760548,
+   "agreement": "agrees"
+  },
+  {
+   "body": 5,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 2425.2205395760548,
+   "agreement": "agrees"
+  },
+  {
+   "body": 6,
+   "level": 1,
+   "model": 729572.921679925,
+   "program": 729573.4581383958,
+   "crater": 3228.3850931562074,
+   "agreement": "agrees"
+  },
+  {
+   "body": 6,
+   "level": 10,
+   "model": 72957.2921679925,
+   "program": 72957.34581383958,
+   "crater": 3228.3850931562074,
+   "agreement": "agrees"
+  },
+  {
+   "body": 6,
+   "level": 100,
+   "model": 7295.729216799251,
+   "program": 7295.734581383957,
+   "crater": 3228.3850931562074,
+   "agreement": "agrees"
+  },
+  {
+   "body": 6,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 3228.3850931562074,
+   "agreement": "agrees"
+  },
+  {
+   "body": 7,
+   "level": 1,
+   "model": 334385.44392354105,
+   "program": 334359.2077823638,
+   "crater": 2421.3283412276687,
+   "agreement": "agrees"
+  },
+  {
+   "body": 7,
+   "level": 10,
+   "model": 33438.5443923541,
+   "program": 33435.920778236374,
+   "crater": 2421.3283412276687,
+   "agreement": "agrees"
+  },
+  {
+   "body": 7,
+   "level": 100,
+   "model": 3343.8544392354106,
+   "program": 3343.5920778236377,
+   "crater": 2421.3283412276687,
+   "agreement": "agrees"
+  },
+  {
+   "body": 7,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 2421.3283412276687,
+   "agreement": "agrees"
+  },
+  {
+   "body": 8,
+   "level": 1,
+   "model": 7829246.018253861,
+   "program": 7828631.462482817,
+   "crater": 25720.256301753816,
+   "agreement": "agrees"
+  },
+  {
+   "body": 8,
+   "level": 10,
+   "model": 782924.601825386,
+   "program": 782863.1462482816,
+   "crater": 25720.256301753816,
+   "agreement": "agrees"
+  },
+  {
+   "body": 8,
+   "level": 100,
+   "model": 78292.4601825386,
+   "program": 78286.31462482816,
+   "crater": 25720.256301753816,
+   "agreement": "agrees"
+  },
+  {
+   "body": 8,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 25720.256301753816,
+   "agreement": "agrees"
+  },
+  {
+   "body": 9,
+   "level": 1,
+   "model": 3543121.4134752415,
+   "program": 3543121.334622733,
+   "crater": 7114.493670845694,
+   "agreement": "agrees"
+  },
+  {
+   "body": 9,
+   "level": 10,
+   "model": 354312.1413475241,
+   "program": 354312.1334622732,
+   "crater": 7114.493670845694,
+   "agreement": "agrees"
+  },
+  {
+   "body": 9,
+   "level": 100,
+   "model": 35431.214134752416,
+   "program": 35431.21334622733,
+   "crater": 7114.493670845694,
+   "agreement": "agrees"
+  },
+  {
+   "body": 9,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 7114.493670845694,
+   "agreement": "agrees"
+  },
+  {
+   "body": 10,
+   "level": 1,
+   "model": 1300187.4318972293,
+   "program": 1300187.431916388,
+   "crater": 4309.768691004242,
+   "agreement": "agrees"
+  },
+  {
+   "body": 10,
+   "level": 10,
+   "model": 130018.74318972293,
+   "program": 130018.74319163879,
+   "crater": 4309.768691004242,
+   "agreement": "agrees"
+  },
+  {
+   "body": 10,
+   "level": 100,
+   "model": 13001.874318972294,
+   "program": 13001.874319163879,
+   "crater": 4309.768691004242,
+   "agreement": "agrees"
+  },
+  {
+   "body": 10,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 4309.768691004242,
+   "agreement": "agrees"
+  },
+  {
+   "body": 11,
+   "level": 1,
+   "model": 3110795.427686083,
+   "program": 3110795.493995378,
+   "crater": 6666.328425845051,
+   "agreement": "agrees"
+  },
+  {
+   "body": 11,
+   "level": 10,
+   "model": 311079.5427686083,
+   "program": 311079.5493995378,
+   "crater": 6666.328425845051,
+   "agreement": "agrees"
+  },
+  {
+   "body": 11,
+   "level": 100,
+   "model": 31107.95427686083,
+   "program": 31107.95493995378,
+   "crater": 6666.328425845051,
+   "agreement": "agrees"
+  },
+  {
+   "body": 11,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 6666.328425845051,
+   "agreement": "agrees"
+  },
+  {
+   "body": 12,
+   "level": 1,
+   "model": 48037171.32304253,
+   "program": 6506.534718502466,
+   "crater": 26196.28417571647,
+   "agreement": "apart"
+  },
+  {
+   "body": 12,
+   "level": 10,
+   "model": 4803717.132304253,
+   "program": 4803717.024219241,
+   "crater": 26196.28417571647,
+   "agreement": "agrees"
+  },
+  {
+   "body": 12,
+   "level": 100,
+   "model": 480371.71323042526,
+   "program": 480371.70242192404,
+   "crater": 26196.28417571647,
+   "agreement": "agrees"
+  },
+  {
+   "body": 12,
+   "level": 1000,
+   "model": 48037.17132304253,
+   "program": 48037.170242192406,
+   "crater": 26196.28417571647,
+   "agreement": "agrees"
+  },
+  {
+   "body": 13,
+   "level": 1,
+   "model": 2090884.320536716,
+   "program": 2090720.196824232,
+   "crater": 11022.057567404934,
+   "agreement": "agrees"
+  },
+  {
+   "body": 13,
+   "level": 10,
+   "model": 209088.4320536716,
+   "program": 209072.01968242327,
+   "crater": 11022.057567404934,
+   "agreement": "agrees"
+  },
+  {
+   "body": 13,
+   "level": 100,
+   "model": 20908.84320536716,
+   "program": 20907.201968242323,
+   "crater": 11022.057567404934,
+   "agreement": "agrees"
+  },
+  {
+   "body": 13,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 11022.057567404934,
+   "agreement": "agrees"
+  },
+  {
+   "body": 14,
+   "level": 1,
+   "model": 12089484.355322534,
+   "program": 147.84894651500528,
+   "crater": 13141.800461190638,
+   "agreement": "apart"
+  },
+  {
+   "body": 14,
+   "level": 10,
+   "model": 1208948.4355322535,
+   "program": 1208948.4083347644,
+   "crater": 13141.800461190638,
+   "agreement": "agrees"
+  },
+  {
+   "body": 14,
+   "level": 100,
+   "model": 120894.84355322534,
+   "program": 120894.84083347644,
+   "crater": 13141.800461190638,
+   "agreement": "agrees"
+  },
+  {
+   "body": 14,
+   "level": 1000,
+   "model": 0,
+   "program": 0,
+   "crater": 13141.800461190638,
+   "agreement": "agrees"
+  }
+ ]
+}

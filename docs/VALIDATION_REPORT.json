@@ -249,7 +249,7 @@
               "G1"
             ],
             "holds": false,
-            "credit": 0.818,
+            "credit": 0.909,
             "status": null,
             "clauses": [
               {
@@ -294,7 +294,7 @@
               },
               {
                 "name": "the impact tsunami",
-                "status": "not met"
+                "status": "met"
               }
             ]
           },
@@ -365,8 +365,8 @@
         ],
         "held": 3,
         "pending": 1,
-        "credit": 3.818,
-        "reading": 3.8
+        "credit": 3.909,
+        "reading": 3.9
       },
       {
         "domain": "Explosions",

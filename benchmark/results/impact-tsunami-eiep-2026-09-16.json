@@ -1,0 +1,409 @@
+{
+ "reference": "Earth Impact Effects Program, impact.ese.ic.ac.uk/map (Collins, Melosh & Marcus 2005)",
+ "readOn": "2026-09-16",
+ "rows": [
+  {
+   "key": "body 1",
+   "diameterM": 216.693,
+   "densityKgM3": 2591.5,
+   "velocityKmS": 42.88,
+   "angleDeg": 74.77,
+   "waterDepthM": 412.3,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 40.0,
+   "waterCraterDiameterM": 7900.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     3246040.470756209
+    ],
+    [
+     10.0,
+     324604.0470756209
+    ],
+    [
+     100.0,
+     32460.40470756209
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "body 2",
+   "diameterM": 3528.53,
+   "densityKgM3": 1206.2,
+   "velocityKmS": 65.986,
+   "angleDeg": 72.46,
+   "waterDepthM": 1134.3,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 66.0,
+   "waterCraterDiameterM": 67000.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     27658.47466193464
+    ],
+    [
+     10.0,
+     7567163.978506457
+    ],
+    [
+     100.0,
+     756716.3978506457
+    ],
+    [
+     1000.0,
+     75671.63978506457
+    ]
+   ]
+  },
+  {
+   "key": "body 3",
+   "diameterM": 93.117,
+   "densityKgM3": 7233.8,
+   "velocityKmS": 44.339,
+   "angleDeg": 83.79,
+   "waterDepthM": 346.5,
+   "error": "HTTP 500",
+   "burstAltitudeM": null,
+   "impactVelocityKmS": null,
+   "waterCraterDiameterM": null,
+   "tsunamiRadiiM": null
+  },
+  {
+   "key": "body 4",
+   "diameterM": 65.963,
+   "densityKgM3": 7615.1,
+   "velocityKmS": 13.518,
+   "angleDeg": 75.5,
+   "waterDepthM": 239.8,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 13.0,
+   "waterCraterDiameterM": 2700.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     506021.865465456
+    ],
+    [
+     10.0,
+     50602.18654654561
+    ],
+    [
+     100.0,
+     5060.21865465456
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "body 5",
+   "diameterM": 87.084,
+   "densityKgM3": 5088.7,
+   "velocityKmS": 26.724,
+   "angleDeg": 35.69,
+   "waterDepthM": 82.9,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 12.0,
+   "waterCraterDiameterM": 2400.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     201035.01240544138
+    ],
+    [
+     10.0,
+     20103.501240544138
+    ],
+    [
+     100.0,
+     0.0
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "body 6",
+   "diameterM": 104.165,
+   "densityKgM3": 6752.5,
+   "velocityKmS": 16.225,
+   "angleDeg": 35.48,
+   "waterDepthM": 374.4,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 14.0,
+   "waterCraterDiameterM": 3200.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     729573.4581383958
+    ],
+    [
+     10.0,
+     72957.34581383958
+    ],
+    [
+     100.0,
+     7295.734581383957
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "body 7",
+   "diameterM": 48.921,
+   "densityKgM3": 6274.4,
+   "velocityKmS": 60.116,
+   "angleDeg": 57.03,
+   "waterDepthM": 138.1,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 22.0,
+   "waterCraterDiameterM": 2400.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     334359.2077823638
+    ],
+    [
+     10.0,
+     33435.920778236374
+    ],
+    [
+     100.0,
+     3343.5920778236377
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "body 8",
+   "diameterM": 1056.243,
+   "densityKgM3": 7254.4,
+   "velocityKmS": 42.068,
+   "angleDeg": 16.16,
+   "waterDepthM": 304.4,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 42.0,
+   "waterCraterDiameterM": 26000.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     7828631.462482817
+    ],
+    [
+     10.0,
+     782863.1462482816
+    ],
+    [
+     100.0,
+     78286.31462482816
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "body 9",
+   "diameterM": 180.607,
+   "densityKgM3": 4019.2,
+   "velocityKmS": 44.973,
+   "angleDeg": 44.24,
+   "waterDepthM": 520.7,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 40.0,
+   "waterCraterDiameterM": 7100.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     3543121.334622733
+    ],
+    [
+     10.0,
+     354312.1334622732
+    ],
+    [
+     100.0,
+     35431.21334622733
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "body 10",
+   "diameterM": 99.319,
+   "densityKgM3": 6013.5,
+   "velocityKmS": 57.845,
+   "angleDeg": 32.05,
+   "waterDepthM": 2009.7,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 34.0,
+   "waterCraterDiameterM": 4300.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     1300187.431916388
+    ],
+    [
+     10.0,
+     130018.74319163879
+    ],
+    [
+     100.0,
+     13001.874319163879
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "body 11",
+   "diameterM": 264.802,
+   "densityKgM3": 6320,
+   "velocityKmS": 47.672,
+   "angleDeg": 11.93,
+   "waterDepthM": 1092.6,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 31.0,
+   "waterCraterDiameterM": 6700.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     3110795.493995378
+    ],
+    [
+     10.0,
+     311079.5493995378
+    ],
+    [
+     100.0,
+     31107.95493995378
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "body 12",
+   "diameterM": 758.921,
+   "densityKgM3": 6825.1,
+   "velocityKmS": 34.29,
+   "angleDeg": 61.89,
+   "waterDepthM": 4006.4,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 34.0,
+   "waterCraterDiameterM": 26000.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     6506.534718502466
+    ],
+    [
+     10.0,
+     4803717.024219241
+    ],
+    [
+     100.0,
+     480371.70242192404
+    ],
+    [
+     1000.0,
+     48037.170242192406
+    ]
+   ]
+  },
+  {
+   "key": "body 13",
+   "diameterM": 173.27,
+   "densityKgM3": 5971.1,
+   "velocityKmS": 71.329,
+   "angleDeg": 69.83,
+   "waterDepthM": 189.7,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 69.0,
+   "waterCraterDiameterM": 11000.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     2090720.196824232
+    ],
+    [
+     10.0,
+     209072.01968242327
+    ],
+    [
+     100.0,
+     20907.201968242323
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "body 14",
+   "diameterM": 566.728,
+   "densityKgM3": 1740.7,
+   "velocityKmS": 58.753,
+   "angleDeg": 28.02,
+   "waterDepthM": 2267.3,
+   "error": null,
+   "burstAltitudeM": null,
+   "impactVelocityKmS": 54.0,
+   "waterCraterDiameterM": 13000.0,
+   "tsunamiRadiiM": [
+    [
+     1.0,
+     147.84894651500528
+    ],
+    [
+     10.0,
+     1208948.4083347644
+    ],
+    [
+     100.0,
+     120894.84083347644
+    ],
+    [
+     1000.0,
+     0.0
+    ]
+   ]
+  }
+ ]
+}

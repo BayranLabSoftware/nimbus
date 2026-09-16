@@ -751,16 +751,25 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'R_C = (3·E_c / (2π · ρ_w · g))^(1/4) ,  E_c = E · gf · f_water · f_sea ;  A₀ = 0.5·R_C·R_ref/(R_ref + R_C), R_ref = 3 km ;  A(r) = A₀ · R_C / r',
         description:
-          'A reference row, not the model’s best estimate (that is the rim wave below). The cavity is Ward & Asphaug’s (2000) eq. 12 for a cavity as deep as its radius, with half the energy in the water; they take about 15 % and a diameter 2.5–3 times the depth, which gives a cavity 9–17 % narrower. It is within 2 % of the Gault & Sonett law R_w = 121·E^(1/4) m (E in kt) that Wünnemann et al. (2010) quote. The source amplitude A₀ is a project calibration — Ward & Asphaug start the wave at min(D_C, h), the cavity depth or the water depth (eq. 18) — and 1/r simplifies their decay, which runs from r^−1/2 for a cavity much wider than the water is deep to r^−1.075 for a much narrower one (eq. 17).',
+          'A reference row, not the model’s best estimate (that is the Earth Impact Effects Program’s wave below). The cavity is Ward & Asphaug’s (2000) eq. 12 for a cavity as deep as its radius, with half the energy in the water; they take about 15 % and a diameter 2.5–3 times the depth, which gives a cavity 9–17 % narrower. It is within 2 % of the Gault & Sonett law R_w = 121·E^(1/4) m (E in kt) that Wünnemann et al. (2010) quote. The source amplitude A₀ is a project calibration — Ward & Asphaug start the wave at min(D_C, h), the cavity depth or the water depth (eq. 18) — and 1/r simplifies their decay, which runs from r^−1/2 for a cavity much wider than the water is deep to r^−1.075 for a much narrower one (eq. 17).',
         citation: ward2000,
       },
       {
+        id: 'impact-tsunami-program',
+        name: 'Impact-tsunami far field',
+        formula:
+          'D_w = 0.82581965 · (ρᵢ / ρ_w)^(1/3) · L^0.78 · v^0.44 · sin^(1/3) θ  (SI) ;  A(r) = f_sea · min(0.07 · D_w, h) · D_w / r for r > D_w, its value at D_w nearer',
+        description:
+          'The wave of an impact in water as the Earth Impact Effects Program draws it, read off its wave rings: a crater in the water of the form of Collins et al.’s Eq. 21, v the speed at the water, and a wave that falls as the inverse of the range from one crater diameter out, no taller there than the water is deep. Asked, after the rules were written, about fourteen impacts it had not been asked about, it answered thirteen, and agreed at all 49 of their levels: 37 rings within 1 %, the worst to 7.8 × 10⁻⁵, and 12 levels where neither draws one (rules 150 to 153). It is the amplitude the run-up, the friction correction, the legend and the bathymetric veil on the globe start from, for any body that reaches the water; Kajiura’s dispersion is not put on top of a 1/r that already carries it. An inland strike keeps the project’s reach to the sea, f_sea. Where the crater would be wider than the Earth, what is reported of it stops at the antipode. Hydrocode fits make the wave fall faster in deep water (the rim wave below) and no ocean has recorded one: this is what the field’s tool draws, not a measurement.',
+        citation: collins2005,
+      },
+      {
         id: 'impact-tsunami-wunnemann',
-        name: 'Impact-tsunami far field (rim wave)',
+        name: 'Impact-tsunami far field (Wünnemann rim wave)',
         formula:
           'A_r(r) = min(0.14 R_w, h) · (R_w / r)^q_r ;  q_r = min(1.2, 0.5 + 2 e^(−1.75 L/h))',
         description:
-          'Wünnemann, Collins & Weiss 2010 eqs. 9a/10a. The rim wave is the shallow-water-type wave that survives into the far field: pure r^−0.5 spreading when the impactor dwarfs the water depth, r^−1.2 for a deep-ocean strike. This is the amplitude the run-up, the friction and dispersion corrections, the legend and the bathymetric veil on the globe all start from.',
+          'Wünnemann, Collins & Weiss 2010 eqs. 9a/10a. The rim wave is the shallow-water-type wave that survives into the far field: pure r^−0.5 spreading when the impactor dwarfs the water depth, r^−1.2 for a deep-ocean strike. It was the amplitude the run-up, the dispersion correction and the veil on the globe started from until 16 September 2026, when the program’s wave above replaced it; it gives a deep-ocean strike a far field several times lower — a 1 km stone in 4 km of water, 6.9 m at 1 000 km where the program’s law gives 22.9.',
         citation: wunnemann2010,
       },
       {
@@ -776,9 +785,9 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         id: 'impact-sea-coupling',
         name: 'Inland impact: how the sea is reached',
         formula:
-          'reach = max(R_rim, R_w, r_ejecta(1 m)) ;  f_sea = 1 for d ≤ R₀ = max(R_rim, R_w), R₀ / d beyond ;  E_cavity = E · gf · f_water · f_sea',
+          'reach = max(R_rim, D_w / 2, r_ejecta(1 m)) ;  f_sea = 1 for d ≤ R₀ = max(R_rim, D_w / 2), R₀ / d beyond ;  A = f_sea · A_program',
         description:
-          'An impact on land near a coast reaches the sea with its crater when the rim crosses the shoreline, or with the ejecta curtain falling into the water beyond it. The deposit thins as r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47*), so the ejecta mass landing beyond a distance d falls as 1/d, and R₀/d of it reaches the water. Scaling the energy the water cavity forms with by that fraction is a Nimbus assumption; it is continuous across the shoreline. Beyond the 1 m isopach the sea is not moved and no tsunami is emitted. The propagation then starts from the nearest deep-enough water in every compass sector within that reach — for an impact in Florida, the Gulf and the Atlantic at once.',
+          'An impact on land near a coast reaches the sea with its crater when the rim crosses the shoreline, or with the ejecta curtain falling into the water beyond it. The deposit thins as r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47*), so the ejecta mass landing beyond a distance d falls as 1/d, and R₀/d of it reaches the water. Scaling the wave by that fraction is a Nimbus assumption, which the Earth Impact Effects Program does not compute; it is continuous across the shoreline. (Until 16 September 2026 the fraction scaled the energy the water cavity formed with.) Beyond the 1 m isopach the sea is not moved and no tsunami is emitted. The propagation then starts from the nearest deep-enough water in every compass sector within that reach — for an impact in Florida, the Gulf and the Atlantic at once.',
         citation: mcgetchin1973,
       },
       {

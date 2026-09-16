@@ -23,9 +23,13 @@ describe('collectImpactCitations', () => {
     const ks = keys(collectImpactCitations(r));
     expect(ks).toContain('collins2005');
     expect(ks).toContain('ward2000');
-    expect(ks).toContain('wunnemann2007');
     expect(ks).toContain('synolakis1987');
-    expect(ks).toContain('kajiura1963');
+    // Since rule 153 of validation/impactTsunamiRules.ts the wave is the
+    // Earth Impact Effects Program's (Collins et al. 2005), which carries its
+    // own dispersion: the rim wave's sources and Kajiura's are not used.
+    expect(ks).not.toContain('wunnemann2007');
+    expect(ks).not.toContain('wunnemann2010');
+    expect(ks).not.toContain('kajiura1963');
     expect(ks).toContain('toon1997');
     expect(ks).toContain('prinn1987');
     // Chicxulub Mw → liquefaction ring → Youd-Idriss + Joyner-Boore

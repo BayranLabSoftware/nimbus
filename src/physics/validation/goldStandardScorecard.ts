@@ -251,8 +251,9 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
           },
           {
             name: 'the impact tsunami',
-            status: 'not met',
-            evidence: 'BM-09.',
+            status: 'met',
+            evidence:
+              "The program's wave, 1/r from one water crater out: thirteen held-out impacts agree at all 49 levels, the rings within 1 % (rules 150 to 153).",
           },
         ],
       },
@@ -287,7 +288,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         rule: 'G5',
         status: 'not met',
         evidence:
-          "426 failures in the sweep of 16 September 2026; two are a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-11.json).",
+          "426 failures in the sweep of 16 September 2026, which holds the wave a visitor is shown since rules 150 to 153; two are a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-15.json).",
       },
       G6,
       G7,

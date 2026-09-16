@@ -845,8 +845,17 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       distance: m(5_000_000),
     });
     // The water crater the far field and the veil stand on: the program's
-    // where its law is in place, Ward & Asphaug's otherwise.
-    const cavityRadius = programWave ? m((programCraterDiameter as number) / 2) : wardCavityRadius;
+    // where its law is in place, Ward & Asphaug's otherwise. The program's
+    // grows as L^0.78 with nothing to stop it, and for a body some two
+    // thousand kilometres across it is wider than the Earth: what is reported
+    // of it stops at the antipode, like every other length. The wave does not
+    // move, since it holds its height inside the crater and no range on the
+    // sphere lies past it.
+    const halfCircumference = Math.PI * earthRadius;
+    const programReferenceRadius = m(Math.min(programCraterDiameter, halfCircumference));
+    const cavityRadius = programWave
+      ? m(Math.min((programCraterDiameter as number) / 2, halfCircumference))
+      : wardCavityRadius;
     // Wünnemann, Collins & Weiss (2010) far field. The Ward rows above
     // stay as the historical reference; the rim wave (eq. 9a) is the
     // best estimate every downstream consumer uses — run-up, Manning
@@ -981,7 +990,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       rimWaveSourceAmplitude,
       rimWaveExponent: programWave ? 1 : wunnemannRegime.rimWaveExponent,
       farFieldLaw: DEFAULT_IMPACT_TSUNAMI_LAW,
-      farFieldReferenceRadius: programWave ? programCraterDiameter : cavityRadius,
+      farFieldReferenceRadius: programWave ? programReferenceRadius : cavityRadius,
       collapseWaveExponent: wunnemannRegime.collapseWaveExponent,
       collapseWaveForms: wunnemannRegime.collapseWaveForms,
       depthToImpactorRatio: wunnemannRegime.depthToImpactorRatio,

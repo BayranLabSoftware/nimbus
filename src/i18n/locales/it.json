@@ -288,14 +288,18 @@
     "tsunamiCavity": "Raggio cavità in acqua",
     "tsunamiAt1000km": "Onda a 1 000 km (Ward)",
     "tsunamiAt5000km": "Onda a 5 000 km (Ward)",
-    "tsunamiAt1000kmWunnemann": "Onda a 1 000 km (Wünnemann 2010, onda di bordo)",
+    "tsunamiAt1000kmWunnemann": "Onda a 1 000 km (Earth Impact Effects Program)",
     "tsunamiAt1000kmRange": "Onda a 1 000 km — intervallo pubblicato",
     "tsunamiAt5000kmRange": "Onda a 5 000 km — intervallo pubblicato",
     "tsunamiRimWaveSource": "Altezza d'onda al bordo della cavità",
+    "tsunamiProgramSource": "Altezza d'onda a un diametro di cratere d'acqua",
     "tsunamiRegime": "Regime dell'onda (h/L)",
     "tsunamiRegimeShallow": "acqua bassa — solo onda di bordo, decadimento r^−{{q}}",
     "tsunamiRegimeDeep": "acqua profonda — onda di bordo r^−{{q}} + onda di collasso r^−{{qc}}",
-    "tsunamiAt5000kmWunnemann": "Onda a 5 000 km (Wünnemann 2010, onda di bordo)",
+    "tsunamiRegimeProgramDeep": "acqua profonda",
+    "tsunamiRegimeProgramShallow": "acqua bassa, limitata dalla sua profondità",
+    "tsunamiRegimeProgram": "{{shelf}} — l'onda cala come 1/r da un diametro di cratere d'acqua ({{crater}} km) in là",
+    "tsunamiAt5000kmWunnemann": "Onda a 5 000 km (Earth Impact Effects Program)",
     "runupAt1000km": "Run-up costiero @ 1 000 km (Synolakis)",
     "tsunamiAt5000kmDispersed": "Onda a 5 000 km (dispersa)",
     "tsunamiArrival": "Arrivo a 1 000 km",
@@ -492,9 +496,9 @@
     },
     "tsunamiSeaCoupling": "Accoppiamento al mare",
     "seaCoupling": {
-      "water": "impatto in acqua — energia in mare al 100 %",
-      "crater": "il cratere raggiunge la costa a {{distance}} — energia in mare al 100 %",
-      "ejecta": "costa a {{distance}}: la coltre di ejecta cade in mare — {{fraction}} % dell'energia (McGetchin 1973)"
+      "water": "impatto in acqua — l'onda intera",
+      "crater": "il cratere raggiunge la costa a {{distance}} — l'onda intera",
+      "ejecta": "costa a {{distance}}: la coltre di ejecta cade in mare — {{fraction}} % dell'onda (McGetchin 1973)"
     }
   },
   "cascade": {
@@ -1218,7 +1222,7 @@
     "seismicMagnitudeRange": "La stessa relazione sull'intervallo di efficienza sismica indicato da Collins et al. (2005), da 10⁻⁵ a 10⁻³: ±0,67 attorno al valore centrale.",
     "tsunamiCavity": "Raggio della cavità in acqua R_C = (3·E / (2π·ρ_w·g))^(1/4): l'eq. 12 di Ward & Asphaug (2000) per una cavità profonda quanto il suo raggio con metà dell'energia che entra in acqua, entro il 2 % dalla legge di Gault & Sonett citata da Wünnemann et al. (2010).",
     "tsunamiFarField": "Ampiezza di riferimento a grande distanza A(r) = A₀·R_C/r: un'ampiezza alla sorgente tarata dal progetto con un decadimento 1/r che semplifica l'eq. 17 di Ward & Asphaug (2000), che va da r^−1/2 a r^−1,075. Non è la stima migliore del modello, che è l'onda di bordo di Wünnemann.",
-    "tsunamiWunnemann": "Onda di bordo di Wünnemann, Collins & Weiss 2010 (Rev. Geophys. 48, eq. 9a/10a): A(r) = min(0,14 R_w, h)·(R_w/r)^q_r, con q_r = min(1,2; 0,5 + 2e^(−1,75 L/h)). In acqua bassa l'onda decade come r^−0,5 (dispersione geometrica), in oceano profondo come r^−1,2: è la stima migliore che il simulatore usa per il run-up e per la propagazione batimetrica sul globo.",
+    "tsunamiWunnemann": "L'onda di un impatto come la disegna l'Earth Impact Effects Program, letta sulla sua mappa e verificata su quattordici impatti in acqua mai usati (regole 150–153): il programma apre nell'acqua un cratere D_w = 0,826 (ρᵢ/ρ_w)^⅓ L^0,78 v^0,44 sin^⅓θ — la forma dell'Eq. 21 di Collins et al. 2005 — e la sua onda vale min(0,07 D_w, h)·D_w/r da un diametro di cratere in là, con la dispersione del treno già dentro l'1/r. Il simulatore ci disegna sopra il run-up e la propagazione sul globo. Fino al 16 settembre 2026 era l'onda di bordo di Wünnemann, Collins & Weiss 2010, che in acqua profonda cala come r^−1,2 e non dava alcuna onda da un corpo frammentato che porta all'acqua meno di metà della sua energia.",
     "tsunamiWunnemannBounds": "Inviluppo pubblicato da Wünnemann, Collins & Weiss 2010 (eq. 7–8): limite superiore min(0,28 R_w, h)·R_w/r; limite inferiore il minore fra onda di bordo e onda di collasso 0,06·min(R_w/3, h)·(5R_w/r)^q_c, quest'ultima solo per h/L ≥ 2. Lo stesso intervallo che riporta l'Earth Impact Effects Program.",
     "synolakisRunup": "Run-up costiero su spiaggia piana 1:100 con profondità offshore 10 m (Synolakis 1987, JFM 185 523–545). R = 2.831·H·√(cot β)·(H/d)^(1/4). Altezza di inondazione illustrativa — il run-up reale dipende da batimetria, geometria portuale e regime di frangimento.",
     "tsunamiDispersion": "Dispersione dell'onda di testa: D = (4π²/6)·r·h²/λ³ sulla lunghezza d'onda λ della sorgente e sulla profondità h, da Kajiura (1963), con un decadimento (1 + D)^(−½) che è una chiusura di Nimbus. L'onda di un megathrust disperde appena; un'onda corta da frana o impatto sì.",
@@ -1245,7 +1249,7 @@
     "nuclearCrater": "Diametro del cratere apparente di uno scoppio in superficie D = K · W_kt^0.3 (Glasstone & Dolan 1977 §6.09): K = 36,6 m per terreno secco e compatto, il cratere da 1 kt del libro; 92 m per la barriera corallina satura, che porta Castle Bravo e Ivy Mike vicino ai loro crateri larghi un miglio (DTRIAC SR-12-001); roccia dura e argilla valori del progetto.",
     "atmosphericEntry": "Quota di frammentazione dall'Eq. 11 di Collins et al. 2005, dove la pressione dinamica supera per la prima volta la resistenza del corpo; il corpo rotto si allarga poi come una pancake (Chyba et al. 1993) ed esplode in aria se raggiunge sette volte la sua dimensione sopra il suolo (Eq. 18).",
     "airburstBlast": "L'onda d'urto di un airburst dell'Earth Impact Effects Program (Collins et al. 2005 Eq. 54, 57–58; Collins et al. 2017 Eq. 7): una sorgente ferma alla quota di scoppio, con la maggiore tra l'energia che il corpo conserva e quella che ha perso lì, letta su fit dei test nucleari — riflessione regolare vicino al punto sotto lo scoppio, riflessione di Mach più lontano per una quota riscalata sotto i 550 m, raccordate dalla retta in distanza che il programma traccia attorno al bordo. Entro tre quote di scoppio una sorgente in moto può dare fino al doppio della sovrapressione, il valore alto. Su dati tenuti da parte riproduce la sovrapressione stampata dal programma entro l'1 % su 24 airburst su 24, e su 72 punti su 72 attorno a quel bordo; uno scoppio su una traiettoria radente, come a Čeljabinsk, danneggia un'ellisse che questa sorgente rotonda non disegna.",
-    "seaCoupling": "Un impatto sulla terraferma arriva al mare col cratere, se il bordo attraversa la costa, o con gli ejecta che cadono oltre la riva. Il deposito si assottiglia come r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47), quindi la massa di ejecta oltre una distanza d cala come 1/d: la frazione oltre la riva, R/d, scala l'energia con cui si forma la cavità d'acqua — un'ipotesi di Nimbus. Oltre l'isopaca di 1 m il mare non viene mosso.",
+    "seaCoupling": "Un impatto sulla terraferma arriva al mare col cratere, se il bordo attraversa la costa, o con gli ejecta che cadono oltre la riva. Il deposito si assottiglia come r⁻³ (McGetchin, Settle & Head 1973; Collins et al. 2005 Eq. 47), quindi la massa di ejecta oltre una distanza d cala come 1/d: la frazione oltre la riva, R/d, scala l'onda — un'ipotesi di Nimbus, che l'Earth Impact Effects Program non calcola. Oltre l'isopaca di 1 m il mare non viene mosso.",
     "explosionWaveHeight": "Altezza dal cavo alla cresta H ≈ 40 500·W^0,54/R piedi in acque profonde (Glasstone & Dolan 1977 §6.119, entro circa il 35 %), oppure H ≈ 150·d·W^0,25/R in acque meno profonde di 100·W^0,25 piedi (§6.121); W in kilotoni, d la profondità dell'acqua. L'ampiezza mostrata è metà dell'altezza. La relazione contiene già la dispersione del treno d'onde.",
     "explosionWaveSource": "Dentro questo raggio la relazione dell'altezza non si usa: è dove l'altezza di Glasstone & Dolan sarebbe più ripida di quanto l'acqua possa reggere, H = 0,142·L·tanh(2πd/L) (Miche 1944), oppure il raggio massimo della bolla di gas, 128·W^0,25 piedi (§6.119), il maggiore dei due.",
     "underwaterBurst": "Uno scoppio dentro l'acqua (Glasstone & Dolan 1977). Gran parte della radiazione termica e della radiazione nucleare iniziale viene assorbita vicino allo scoppio, e la palla di fuoco di BAKER restò visibile solo pochi millesimi di secondo (§2.64): il modello non dà ustioni, incendi né radiazione iniziale. L'onda d'urto in aria raggiunge ogni sovrappressione alla distanza dello scoppio in superficie accorciata di e^(−ρ·λ_d/126), con λ_d la profondità in ft·kt⁻¹ᐟ³ (§6.81, §6.53). Le onde sono §6.119–6.121."

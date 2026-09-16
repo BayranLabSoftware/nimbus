@@ -49,7 +49,12 @@ function cite(key: CitationKey, reason: string): TriggeredCitation {
 /** Collect the citations exercised by a cosmic-impact run. */
 export function collectImpactCitations(result: ImpactScenarioResult): TriggeredCitation[] {
   const triggers: TriggeredCitation[] = [
-    cite('collins2005', 'Impactor kinetic energy, crater diameters and depth, seismic magnitude.'),
+    cite(
+      'collins2005',
+      result.tsunami?.farFieldLaw === 'program'
+        ? 'Impactor kinetic energy, crater diameters and depth, seismic magnitude, and the far field of the wave as the Earth Impact Effects Program draws it.'
+        : 'Impactor kinetic energy, crater diameters and depth, seismic magnitude.'
+    ),
     cite('brittConsolmagno2003', 'Impactor taxonomy density classes.'),
   ];
 
@@ -105,13 +110,19 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
       );
     }
     triggers.push(cite('ward2000', 'Water-column cavity and 1/r reference envelope.'));
-    triggers.push(
-      cite('wunnemann2010', 'Rim-wave far field (eq. 9a) and published envelope (eqs. 7–8).')
-    );
-    triggers.push(cite('wunnemann2007', 'Hydrocode attenuation exponents behind eqs. 10a/10b.'));
+    // The program's wave carries its own dispersion and no envelope: the rim
+    // wave, its exponents and Kajiura's factor are used only under their law.
+    if (result.tsunami.farFieldLaw !== 'program') {
+      triggers.push(
+        cite('wunnemann2010', 'Rim-wave far field (eq. 9a) and published envelope (eqs. 7–8).')
+      );
+      triggers.push(cite('wunnemann2007', 'Hydrocode attenuation exponents behind eqs. 10a/10b.'));
+    }
     triggers.push(cite('synolakis1987', 'Plane-beach solitary-wave run-up at coast.'));
     triggers.push(cite('koshimura2009', 'Coastal toll by inundation depth (casualty estimate).'));
-    triggers.push(cite('kajiura1963', 'Dispersion parameter of the leading wave.'));
+    if (result.tsunami.farFieldLaw !== 'program') {
+      triggers.push(cite('kajiura1963', 'Dispersion parameter of the leading wave.'));
+    }
   }
   if ((result.damage.overpressure5psi as number) > 0) {
     triggers.push(cite('ota1979', 'Blast mortality by overpressure band (casualty estimate).'));

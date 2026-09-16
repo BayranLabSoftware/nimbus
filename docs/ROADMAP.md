@@ -847,12 +847,13 @@ same day, except where marked)_:
   make waves; a relation should be
   taken from a source that can be read and cited, not from a summary.
   Declared in the validation report.
-- **To check: the impact path may disperse its far field twice.** The
-  veil applies Kajiura's dispersion to an impact's Wünnemann rim wave,
-  whose exponent the module describes as already folding in the
-  dispersion of short impact waves. The explosion case was settled by
-  telling the veil so; whether Wünnemann's fit really contains it needs
-  the paper, not the comment.
+- **Settled on 16 September 2026: the impact path dispersed its far field
+  twice.** The veil applied Kajiura's dispersion to an impact's Wünnemann
+  rim wave, whose exponent the module describes as already folding in the
+  dispersion of short impact waves. The impact's wave is now the Earth
+  Impact Effects Program's 1/r (rules 150 to 153), which carries it, and
+  the veil is told so, as it was for explosions; whether Wünnemann's fit
+  contains it was never read in the paper, and no longer decides a wave.
 
 ### 3b. What the wave does at the coast, layer by layer
 

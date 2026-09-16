@@ -23,7 +23,7 @@ import { m } from '../../units.js';
 export type ImpactTsunamiLaw = 'wunnemann' | 'program';
 
 /** What an impact in water that names no law uses. */
-export const DEFAULT_IMPACT_TSUNAMI_LAW: ImpactTsunamiLaw = 'wunnemann';
+export const DEFAULT_IMPACT_TSUNAMI_LAW: ImpactTsunamiLaw = 'program';
 
 /** The prefactor of the program's water crater (SI units). */
 export const PROGRAM_WATER_CRATER_COEFFICIENT = 0.82581965;

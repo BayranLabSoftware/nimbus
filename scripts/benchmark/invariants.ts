@@ -95,6 +95,12 @@ const HAZARDS: readonly Hazard[] = [
       'ejecta.blanketEdge1mm',
       'seismic.magnitude',
       'tsunami.amplitudeAt1000km',
+      // The wave a visitor is shown: the program's since rule 153 of
+      // validation/impactTsunamiRules.ts, under the rim wave's old names.
+      'tsunami.amplitudeAt1000kmWunnemann',
+      'tsunami.amplitudeAt5000kmWunnemann',
+      'tsunami.amplitudeAt5000kmDispersed',
+      'tsunami.runupAt1000km',
     ],
   },
   {

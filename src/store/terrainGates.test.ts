@@ -104,11 +104,13 @@ describe('impact sea coupling (shoreDistance)', () => {
     const f = inland.tsunami?.seaCoupling.fraction ?? 0;
     expect(f).toBeGreaterThan(0.03);
     expect(f).toBeLessThan(0.2);
-    // Less energy in the water → smaller cavity, but a fourth root away.
-    const cavityCoast = coast.tsunami?.cavityRadius as number;
-    const cavityInland = inland.tsunami?.cavityRadius as number;
-    expect(cavityInland).toBeLessThan(cavityCoast);
-    expect(cavityInland / cavityCoast).toBeCloseTo(f ** 0.25, 2);
+    // Less of the strike reaches the water → a smaller wave. The program's wave
+    // (rule 153 of validation/impactTsunamiRules.ts) is scaled by that share
+    // itself, since its crater does not read the energy.
+    const waveCoast = coast.tsunami?.amplitudeAt1000kmWunnemann as number;
+    const waveInland = inland.tsunami?.amplitudeAt1000kmWunnemann as number;
+    expect(waveInland).toBeLessThan(waveCoast);
+    expect(waveInland / waveCoast).toBeCloseTo(f, 6);
   });
 
   it('Chicxulub 1 000 km inland is past the 1 m isopach: no tsunami block', () => {

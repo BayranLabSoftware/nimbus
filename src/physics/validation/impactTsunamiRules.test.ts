@@ -51,8 +51,8 @@ describe("rule 150: the program's wave, held to what it drew", () => {
     expect(programTsunamiReferenceAmplitude(crater, m(100)) as number).toBe(100);
   });
 
-  it('is not the default until rule 153 says so', () => {
-    expect(DEFAULT_IMPACT_TSUNAMI_LAW).toBe('wunnemann');
+  it('is the default since rule 153', () => {
+    expect(DEFAULT_IMPACT_TSUNAMI_LAW).toBe('program');
   });
 });
 

@@ -30,7 +30,7 @@ Mw 9, between an inland impact and one in the open ocean.
   Pinatubo, Storegga, Lituya Bay, and more.
 - Bathymetric tsunami propagation with Fast-Marching arrival isochrones
   and a Green's-law amplitude heatmap on the same grid; impact sources
-  follow the Wünnemann, Collins & Weiss (2010) rim-wave far field.
+  follow the far field the Earth Impact Effects Program draws.
 - Estimated casualties per hazard band — WorldPop 2020 population
   (zonal-statistics API, no key) times OTA 1979 blast, USGS PAGER
   shaking, Auker 2013 pyroclastic mortality, burns, mass fire, later

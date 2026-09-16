@@ -148,16 +148,21 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
     { label: 'Climate tier', value: r.atmosphere.climateTier },
   ];
   if (r.tsunami) {
+    const program = r.tsunami.farFieldLaw === 'program';
     outputs.push(
       { label: 'Tsunami cavity radius', value: fmtKm(r.tsunami.cavityRadius) },
-      // The wave the model propagates: Wünnemann's rim wave, which
-      // cannot stand taller than the water it stands in. It used to be
-      // printed below the one that follows, under a bare "source
-      // amplitude" label given to Ward & Asphaug's figure — which has no
-      // depth in it, and read 1 362 m in 200 m of sea for a Chicxulub on
-      // Rome. Ward stays, as the historical reference it is, and says so.
+      // The wave the model propagates, which cannot stand taller than the
+      // water it stands in: since 16 September 2026 the Earth Impact Effects
+      // Program's, one water-crater diameter out (rules 150 to 153), and
+      // Wünnemann's rim wave before. It used to be printed below the one
+      // that follows, under a bare "source amplitude" label given to Ward &
+      // Asphaug's figure — which has no depth in it, and read 1 362 m in
+      // 200 m of sea for a Chicxulub on Rome. Ward stays, as the historical
+      // reference it is, and says so.
       {
-        label: 'Tsunami source amplitude (Wünnemann 2010 rim wave, ≤ water depth)',
+        label: program
+          ? 'Tsunami amplitude one water crater out (Earth Impact Effects Program, ≤ water depth)'
+          : 'Tsunami source amplitude (Wünnemann 2010 rim wave, ≤ water depth)',
         value: `${(r.tsunami.rimWaveSourceAmplitude as number).toFixed(1)} m`,
       },
       {
@@ -169,29 +174,44 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
         value: `${(r.tsunami.amplitudeAt1000km as number).toFixed(2)} m`,
       },
       {
-        label: 'Tsunami A @ 1 000 km (Wünnemann 2010 rim wave)',
+        label: 'Tsunami A @ 1 000 km (Earth Impact Effects Program)',
         value: `${(r.tsunami.amplitudeAt1000kmWunnemann as number).toFixed(2)} m`,
       },
-      {
-        label: 'Tsunami A @ 1 000 km (Wünnemann 2010 envelope)',
-        value: `${(r.tsunami.amplitudeAt1000kmLower as number).toFixed(2)} – ${(r.tsunami.amplitudeAt1000kmUpper as number).toFixed(2)} m`,
-      },
+      // The program draws one wave and publishes no envelope around it.
+      ...(program
+        ? []
+        : [
+            {
+              label: 'Tsunami A @ 1 000 km (range)',
+              value: `${(r.tsunami.amplitudeAt1000kmLower as number).toFixed(2)} – ${(r.tsunami.amplitudeAt1000kmUpper as number).toFixed(2)} m`,
+            },
+          ]),
       {
         label: 'Sea coupling',
-        value: `${r.tsunami.seaCoupling.mechanism} · shore ${fmtKm(r.tsunami.seaCoupling.shoreDistance)} · ${(r.tsunami.seaCoupling.fraction * 100).toFixed(0)} % of the water-coupled energy`,
+        value: `${r.tsunami.seaCoupling.mechanism} · shore ${fmtKm(r.tsunami.seaCoupling.shoreDistance)} · ${(r.tsunami.seaCoupling.fraction * 100).toFixed(0)} % ${program ? 'of the wave' : 'of the water-coupled energy'}`,
       },
-      {
-        label: 'Wave regime h/L · rim-wave exponent q_r',
-        value: `${r.tsunami.depthToImpactorRatio.toFixed(2)} · ${r.tsunami.rimWaveExponent.toFixed(2)}${r.tsunami.collapseWaveForms ? ` (collapse wave q_c ${r.tsunami.collapseWaveExponent.toFixed(2)})` : ''}`,
-      },
+      program
+        ? {
+            label:
+              'Water crater D_w (Earth Impact Effects Program; the wave falls as 1/r beyond it)',
+            value: fmtKm(r.tsunami.farFieldReferenceRadius),
+          }
+        : {
+            label: 'Wave regime h/L · rim-wave exponent q_r',
+            value: `${r.tsunami.depthToImpactorRatio.toFixed(2)} · ${r.tsunami.rimWaveExponent.toFixed(2)}${r.tsunami.collapseWaveForms ? ` (collapse wave q_c ${r.tsunami.collapseWaveExponent.toFixed(2)})` : ''}`,
+          },
       {
         label: 'Tsunami A @ 5 000 km (Ward-Asphaug)',
         value: `${(r.tsunami.amplitudeAt5000km as number).toFixed(2)} m`,
       },
-      {
-        label: 'Tsunami A @ 5 000 km (Wünnemann 2010 envelope)',
-        value: `${(r.tsunami.amplitudeAt5000kmLower as number).toFixed(2)} – ${(r.tsunami.amplitudeAt5000kmUpper as number).toFixed(2)} m`,
-      },
+      ...(program
+        ? []
+        : [
+            {
+              label: 'Tsunami A @ 5 000 km (range)',
+              value: `${(r.tsunami.amplitudeAt5000kmLower as number).toFixed(2)} – ${(r.tsunami.amplitudeAt5000kmUpper as number).toFixed(2)} m`,
+            },
+          ]),
       {
         label: 'Tsunami A @ 5 000 km (dispersion-corrected)',
         value: `${(r.tsunami.amplitudeAt5000kmDispersed as number).toFixed(2)} m`,

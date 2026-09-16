@@ -116,11 +116,21 @@ describe('simulateImpact — land vs. ocean cascade', () => {
     expect(r.tsunami).toBeDefined();
     if (!r.tsunami) return;
 
-    // Cavity radius scales with f_water · KE for shelf impacts.
-    expect(r.tsunami.cavityRadius as number).toBeGreaterThan(20_000);
-    expect(r.tsunami.cavityRadius as number).toBeLessThan(35_000);
+    // Since rule 153 of validation/impactTsunamiRules.ts the water crater is
+    // the Earth Impact Effects Program's, D_w = 0.826 (ρᵢ/ρ_w)^⅓ L^0.78
+    // v^0.44 sin^⅓ θ, whatever share of the energy the shelf keeps: 150 km
+    // across for this body. On a 100 m shelf its wave is held to the water
+    // column, and falls as 1/r from one crater diameter out.
+    expect(r.tsunami.cavityRadius as number).toBeGreaterThan(70_000);
+    expect(r.tsunami.cavityRadius as number).toBeLessThan(80_000);
+    expect(r.tsunami.farFieldLaw).toBe('program');
+    expect(r.tsunami.rimWaveSourceAmplitude as number).toBeCloseTo(100, 6);
+    expect(r.tsunami.amplitudeAt1000kmWunnemann as number).toBeCloseTo(
+      (100 * 2 * (r.tsunami.cavityRadius as number)) / 1_000_000,
+      6
+    );
 
-    // Source amplitude near the upper bound of the K-Pg envelope.
+    // The Ward & Asphaug source stays as the historical row.
     expect(r.tsunami.sourceAmplitude as number).toBeGreaterThan(1_300);
     expect(r.tsunami.sourceAmplitude as number).toBeLessThan(1_400);
 
@@ -145,13 +155,15 @@ describe('simulateImpact — land vs. ocean cascade', () => {
     // dominant period ≈ λ/c ≈ 940 s ≈ 15 min.
     expect(r.tsunami.deepWaterCelerity as number).toBeGreaterThan(160);
     expect(r.tsunami.deepWaterCelerity as number).toBeLessThan(180);
-    // Phase-18: source wavelength = 2 × cavity. Cavity is now ~25 km
-    // (driven by f_water · KE), so wavelength ≈ 50 km and dominant
-    // period ≈ 50 km / 171 m/s ≈ 290 s.
-    expect(r.tsunami.sourceWavelength as number).toBeGreaterThan(40_000);
-    expect(r.tsunami.sourceWavelength as number).toBeLessThan(70_000);
-    expect(r.tsunami.dominantPeriod as number).toBeGreaterThan(200);
-    expect(r.tsunami.dominantPeriod as number).toBeLessThan(400);
+    // Source wavelength = 2 × cavity: since rule 153 the program's water
+    // crater, 150 km across, so the dominant period is ≈ 150 km / 171 m/s
+    // ≈ 880 s.
+    expect(r.tsunami.sourceWavelength as number).toBeCloseTo(
+      2 * (r.tsunami.cavityRadius as number),
+      6
+    );
+    expect(r.tsunami.dominantPeriod as number).toBeGreaterThan(800);
+    expect(r.tsunami.dominantPeriod as number).toBeLessThan(950);
   });
 
   it('ocean cascade on a shallow shelf leaves crater/seismic essentially unchanged vs land', () => {
@@ -177,6 +189,29 @@ describe('simulateImpact — land vs. ocean cascade', () => {
     }
     const ratio = (r.tsunami.amplitudeAt1000km as number) / (r.tsunami.amplitudeAt5000km as number);
     expect(ratio).toBeCloseTo(5, 6);
+  });
+
+  it("a water crater wider than the Earth stops at the antipode, and the wave stands at the water's depth", () => {
+    // The program's crater grows as L^0.78: for a 10 000 km body at 40 km/s
+    // it would be 38 000 km across. The invariants sweep of 16 September 2026
+    // found it, and the crater's half, past the antipode.
+    const r = simulateImpact({
+      impactorDiameter: m(10_000_000),
+      impactVelocity: mps(40_000),
+      impactorDensity: kgPerM3(5_000),
+      targetDensity: kgPerM3(2_500),
+      impactAngle: degreesToRadians(deg(45)),
+      waterDepth: m(4_000),
+    });
+    if (!r.tsunami) {
+      expect.fail('expected a tsunami block');
+      return;
+    }
+    const halfCircumference = Math.PI * 6_371_000;
+    expect(r.tsunami.farFieldReferenceRadius as number).toBeCloseTo(halfCircumference, 0);
+    expect(r.tsunami.cavityRadius as number).toBeLessThanOrEqual(halfCircumference);
+    expect(r.tsunami.amplitudeAt1000kmWunnemann as number).toBeCloseTo(4_000, 6);
+    expect(r.tsunami.amplitudeAt5000kmWunnemann as number).toBeCloseTo(4_000, 6);
   });
 
   it('airburst over ocean (gf < 0.10) emits no tsunami block', () => {
@@ -251,9 +286,9 @@ describe('simulateImpact — land vs. ocean cascade', () => {
       expect.fail('expected tsunami for Chicxulub ocean preset');
       return;
     }
-    // Phase-18 cavity matches the f_water-scaled energy.
-    expect(r.tsunami.cavityRadius as number).toBeGreaterThan(20_000);
-    expect(r.tsunami.cavityRadius as number).toBeLessThan(35_000);
+    // The partition still reads the shelf's share, for the seafloor crater
+    // and the Ward row; the wave, since rule 153, is the program's and does
+    // not take it.
     expect(r.tsunami.waterCouplingFraction).toBeLessThan(0.05);
     // Sanity: same impactor on land has no tsunami at all.
     expect(simulateImpact(land).tsunami).toBeUndefined();

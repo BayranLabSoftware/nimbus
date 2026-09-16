@@ -63,6 +63,52 @@
  * which the program does not compute.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 16 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `9c46fb5` and the program asked afterwards
+ * (`benchmark/results/impact-tsunami-eiep-2026-09-16.json`, scored in
+ * `impact-tsunami-against-eiep-2026-09-16.json`). It answered thirteen of the
+ * fourteen, every one struck in the water; body 3, a 93 m body of
+ * 7 234 kg/m³ at 44 km/s, it answered with an HTTP 500, and it is counted
+ * apart. **Every level agrees**: 37 rings beyond the water crater, from 3.3
+ * to 7 829 km, within 1 %, the worst to 7.8 × 10⁻⁵ (body 2 at 100 m,
+ * 756.78 km against 756.72), and 12 levels where neither draws a ring. Three
+ * rings of a metre lay past a quarter of the circumference, where the program
+ * draws its placeholder, and were counted apart. The release gate stays PASS.
+ *
+ * What moves. A wave in deep water now falls as 1/r, where Wünnemann's rim
+ * wave fell as r^−1.2 and Kajiura's dispersion was put on top: a 1 km stone
+ * at 20 km/s into 4 km of water, 6.9 to 22.9 m at 1 000 km, 0.14 to 4.5 m at
+ * 5 000 km, its run-up at 1 000 km 121 to 356 m; a 200 m stone, 0.37 to
+ * 1.5 m at 1 000 km. On a shelf, where both hold the wave to the water, less
+ * moves: Chicxulub on 100 m of water, 15.8 to 15.0 m at 1 000 km, its crater
+ * in the water 50 to 150 km across whatever share of the energy the shelf
+ * keeps. Nothing has measured which of the two is right. Three test files
+ * changed with it: the Chicxulub ocean preset's crater, wave and period,
+ * held to the program's law; an inland strike, whose wave is now scaled by
+ * the share of it that reaches the sea, where its cavity was scaled by the
+ * fourth root of that share; and the default's name.
+ *
+ * The sweep, in the same session (`invariants-2026-09-16-12.json` under the
+ * rim wave, `-13` under the program's law): 426 and 864. The 438 more were
+ * all the program's water crater for bodies some two thousand kilometres
+ * across and more, whose crater, and its half, lay past the antipode: the law
+ * grows as L^0.78 with nothing to stop it. What is reported of the crater
+ * now stops at the antipode, like every other length; it moves no ring the
+ * rules compared, each beyond a crater narrower than a quarter of the
+ * circumference, and no wave, which holds its height inside the crater. A
+ * test holds it. Swept again (`-14`): 426, the same failures as under the rim
+ * wave. The sweep held only Ward's row of the tsunami, not the wave a visitor
+ * is shown; it now holds that too, at 1 000 and 5 000 km, dispersed, and the
+ * run-up at 1 000 km, and none of them shrinks or jumps (`-15`). It does not
+ * decide.
+ *
+ * `DEFAULT_IMPACT_TSUNAMI_LAW` is `program`. I1's tsunami clause holds.
+ */
+
 /** Rule 152: G1's tolerance. */
 export const IMPACT_TSUNAMI_TOLERANCE = 0.01;
 /** Rule 153. */
