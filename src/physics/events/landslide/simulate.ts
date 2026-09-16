@@ -1,4 +1,5 @@
 import {
+  impulseProduct,
   impulseWaveAmplitudes,
   outsideTestedRange,
   slideFromVolume,
@@ -62,12 +63,18 @@ export const LANDSLIDE_DEFAULT_REGIME: LandslideRegime = 'submarine';
  * 40 % of the water column, with K set on Anak Krakatau (subaerial) and
  * Storegga (submarine).
  *
- * `heller2009` is the impulse-wave method of Heller, Hager & Minor (2009),
- * `effects/impulseWave.ts`, which CI holds to that manual's own worked
- * example. It needs a slide's speed, thickness and width, and closes them
- * where a caller has none.
+ * `impulseWaveManual` is the field's method for a slide entering water from
+ * above: the first crest of the impulse wave manual's three-dimensional
+ * generation (Evers et al. 2019, 2nd edition, `effects/impulseWave.ts`), which
+ * CI holds to the manual's worked examples. It needs a slide's speed,
+ * thickness and width, and closes them where a caller has none. It is read
+ * only for a subaerial slide in open water: a submarine slump and a confined
+ * basin keep the project's relations, whatever this says (rule 163 of
+ * validation/impulseWaveRules.ts). Named `heller2009` until 17 September 2026,
+ * after the first edition, which is not the one these equations come from
+ * (B-043).
  */
-export type LandslideWaveLaw = 'project' | 'heller2009';
+export type LandslideWaveLaw = 'project' | 'impulseWaveManual';
 
 /** What a scenario that names no law draws. */
 export const DEFAULT_LANDSLIDE_WAVE_LAW: LandslideWaveLaw = 'project';
@@ -113,9 +120,9 @@ export interface LandslideScenarioInput {
    *  density is read against. The same volume and slope make a wave up
    *  to 80 times taller as 'subaerial'. Defaults to 'submarine'. */
   regime?: LandslideRegime;
-  /** Slide thickness at impact (m). Heller's equations want it; absent, it is
-   *  closed as V^(1/3) and the result says so. Only the `heller2009` wave law
-   *  reads it. */
+  /** Slide thickness at impact (m). The manual's equations want it; absent, it
+   *  is closed as V^(1/3) and the result says so. Only the `impulseWaveManual`
+   *  wave law reads it. */
   slideThicknessM?: number;
   /** Slide width at impact (m). Same: absent, V^(1/3). */
   slideWidthM?: number;
@@ -126,10 +133,11 @@ export interface LandslideScenarioInput {
   dropHeightM?: number;
   /** A published impact speed (m/s), which overrides every closure. */
   impactVelocityMS?: number;
-  /** Which law makes the wave (rule 119 of validation/impulseWaveRules.ts).
-   *  Omitted, {@link DEFAULT_LANDSLIDE_WAVE_LAW}. It is read only in the
-   *  subaerial regime: Heller's experiments are a slide entering water from
-   *  above, and a submarine slump keeps Watts whatever this says. */
+  /** Which law makes the wave (rules 162 to 167 of
+   *  validation/impulseWaveRules.ts). Omitted, {@link DEFAULT_LANDSLIDE_WAVE_LAW}.
+   *  It is read only for a subaerial slide in open water: the manual's
+   *  experiments are a slide entering water from above, and a submarine slump
+   *  or a confined basin keeps the project's relation whatever this says. */
   waveLaw?: LandslideWaveLaw;
   /** Slide bulk density (kg/m³). Drives the Watts submerged
    *  specific-gravity factor in {@link volcanoTsunami}: a dense rock
@@ -177,43 +185,113 @@ export interface LandslideScenarioResult {
     /** The larger over the smaller, 1 where the two agree. */
     ratio: number;
   } | null;
-  /** Present only under `heller2009`: what the slide looked like to Heller's
-   *  equations, which of its three unknowns had to be closed, and which of his
-   *  tested ranges the scenario falls outside of — G4 of
-   *  docs/GOLD_STANDARD.md asks that the product say the last one. */
+  /** Present only where `impulseWaveManual` made the wave: what the slide
+   *  looked like to the manual's equations, which of its three unknowns had to
+   *  be closed, and which of the manual's limits the scenario falls outside
+   *  of — G4 of docs/GOLD_STANDARD.md asks that the product say the last one. */
   impulseWave?: {
+    /** Slide impact velocity (m/s), given or closed. */
+    impactVelocityMS: number;
     froude: number;
+    impulseProduct: number;
     thicknessM: number;
     widthM: number;
+    /** The first crest, first trough and second crest at the slide (m). */
+    firstCrestM: number;
+    firstTroughM: number;
+    secondCrestM: number;
     closed: SlideClosure['closed'];
     outsideTestedRange: string[];
+    /** True where the slide never reaches the water with any speed: at a
+     *  slope no steeper than its bed friction angle, Eq. 3.5 gives zero, and
+     *  so does every amplitude. There is then no wave, and the result says why
+     *  rather than falling back on another law. */
+    held: boolean;
   };
 }
 
-/** Both regimes' source amplitudes for the same slide, under the project law,
- *  so the result can say how much the switch decides. Null where there is no
- *  wave either way. */
+interface LandslideSource {
+  tsunami: VolcanoTsunamiResult | null;
+  impulseWave: LandslideScenarioResult['impulseWave'] | undefined;
+}
+
+/** The wave at the slide in one regime, under one law. */
+function landslideSource(
+  input: LandslideScenarioInput,
+  regime: LandslideRegime,
+  slopeDeg: number,
+  waveLaw: LandslideWaveLaw
+): LandslideSource {
+  const depthM = (input.meanOceanDepth as number | undefined) ?? 1_000;
+  const basin = input.confinedBasinArea as number | undefined;
+  const confined = basin !== undefined && Number.isFinite(basin) && basin > 0;
+  const shared = {
+    collapseVolumeM3: input.volumeM3,
+    slopeAngleRad: (slopeDeg * Math.PI) / 180,
+    regime,
+    ...(input.meanOceanDepth !== undefined && { meanOceanDepth: input.meanOceanDepth }),
+    ...(input.slideFootprintArea !== undefined && {
+      slideFootprintArea: input.slideFootprintArea,
+    }),
+    ...(input.confinedBasinArea !== undefined && { confinedBasinArea: input.confinedBasinArea }),
+    ...(input.confinementDynamicFactor !== undefined && {
+      confinementDynamicFactor: input.confinementDynamicFactor,
+    }),
+    ...(input.slideDensity !== undefined && { slideDensity: input.slideDensity }),
+  };
+  // The manual's experiments are a slide entering water from above, in open
+  // water or a basin wide enough for the wave to spread. A submarine slump is
+  // not one, and a confined basin keeps its own branch.
+  const manual =
+    waveLaw === 'impulseWaveManual' &&
+    regime === 'subaerial' &&
+    !confined &&
+    depthM > 0 &&
+    input.volumeM3 > 0 &&
+    slopeDeg > 0;
+  if (!manual) return { tsunami: volcanoTsunami(shared), impulseWave: undefined };
+
+  const closure = slideFromVolume({
+    volumeM3: input.volumeM3,
+    angleDeg: slopeDeg,
+    depthM,
+    densityKgM3: input.slideDensity ?? VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL,
+    ...(input.slideThicknessM !== undefined && { thicknessM: input.slideThicknessM }),
+    ...(input.slideWidthM !== undefined && { widthM: input.slideWidthM }),
+    ...(input.dropHeightM !== undefined && { dropHeightM: input.dropHeightM }),
+    ...(input.impactVelocityMS !== undefined && { impactVelocityMS: input.impactVelocityMS }),
+  });
+  const amplitudes = impulseWaveAmplitudes(closure.slide);
+  const crest = amplitudes.firstCrest;
+  const held = !(Number.isFinite(crest) && crest > 0);
+  return {
+    tsunami: held ? null : volcanoTsunami({ ...shared, sourceAmplitudeM: crest }),
+    impulseWave: {
+      impactVelocityMS: closure.impactVelocityMS,
+      froude: closure.slide.froude,
+      impulseProduct: impulseProduct(closure.slide),
+      thicknessM: closure.slide.thicknessM,
+      widthM: closure.slide.widthM,
+      firstCrestM: held ? 0 : crest,
+      firstTroughM: held ? 0 : amplitudes.firstTrough,
+      secondCrestM: held ? 0 : amplitudes.secondCrest,
+      closed: closure.closed,
+      outsideTestedRange: outsideTestedRange(closure.slide),
+      held,
+    },
+  };
+}
+
+/** Both regimes' source amplitudes for the same slide, under the law the
+ *  scenario runs, so the result can say how much the switch decides. Null
+ *  where there is no wave either way. */
 function regimeSensitivity(
   input: LandslideScenarioInput,
-  slopeDeg: number
+  slopeDeg: number,
+  waveLaw: LandslideWaveLaw
 ): LandslideScenarioResult['regimeSensitivity'] {
-  const under = (regime: LandslideRegime): number => {
-    const t = volcanoTsunami({
-      collapseVolumeM3: input.volumeM3,
-      slopeAngleRad: (slopeDeg * Math.PI) / 180,
-      regime,
-      ...(input.meanOceanDepth !== undefined && { meanOceanDepth: input.meanOceanDepth }),
-      ...(input.slideFootprintArea !== undefined && {
-        slideFootprintArea: input.slideFootprintArea,
-      }),
-      ...(input.confinedBasinArea !== undefined && { confinedBasinArea: input.confinedBasinArea }),
-      ...(input.confinementDynamicFactor !== undefined && {
-        confinementDynamicFactor: input.confinementDynamicFactor,
-      }),
-      ...(input.slideDensity !== undefined && { slideDensity: input.slideDensity }),
-    });
-    return Number(t?.sourceAmplitude ?? 0);
-  };
+  const under = (regime: LandslideRegime): number =>
+    Number(landslideSource(input, regime, slopeDeg, waveLaw).tsunami?.sourceAmplitude ?? 0);
   const subaerial = under('subaerial');
   const submarine = under('submarine');
   if (!(subaerial > 0) && !(submarine > 0)) return null;
@@ -235,45 +313,7 @@ export function simulateLandslide(input: LandslideScenarioInput): LandslideScena
   const regime = input.regime ?? LANDSLIDE_DEFAULT_REGIME;
   const sideLength = Math.cbrt(Math.max(input.volumeM3, 0));
   const waveLaw = input.waveLaw ?? DEFAULT_LANDSLIDE_WAVE_LAW;
-  // Heller's experiments are a slide entering water from above. A submarine
-  // slump is not one, and keeps Watts whatever the law says.
-  const depthM = (input.meanOceanDepth as number | undefined) ?? 1_000;
-  const impulse =
-    waveLaw === 'heller2009' && regime === 'subaerial' && depthM > 0 && input.volumeM3 > 0
-      ? slideFromVolume({
-          volumeM3: input.volumeM3,
-          angleDeg: slopeDeg,
-          depthM,
-          densityKgM3: input.slideDensity ?? VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL,
-          ...(input.slideThicknessM !== undefined && { thicknessM: input.slideThicknessM }),
-          ...(input.slideWidthM !== undefined && { widthM: input.slideWidthM }),
-          ...(input.dropHeightM !== undefined && { dropHeightM: input.dropHeightM }),
-          ...(input.impactVelocityMS !== undefined && {
-            impactVelocityMS: input.impactVelocityMS,
-          }),
-        })
-      : null;
-  const hellerCrest =
-    impulse === null ? undefined : impulseWaveAmplitudes(impulse.slide).firstCrest;
-  const tsunami = volcanoTsunami({
-    ...(hellerCrest !== undefined && Number.isFinite(hellerCrest) && hellerCrest > 0
-      ? { sourceAmplitudeM: hellerCrest }
-      : {}),
-    collapseVolumeM3: input.volumeM3,
-    slopeAngleRad: (slopeDeg * Math.PI) / 180,
-    regime,
-    ...(input.meanOceanDepth !== undefined && { meanOceanDepth: input.meanOceanDepth }),
-    ...(input.slideFootprintArea !== undefined && {
-      slideFootprintArea: input.slideFootprintArea,
-    }),
-    ...(input.confinedBasinArea !== undefined && {
-      confinedBasinArea: input.confinedBasinArea,
-    }),
-    ...(input.confinementDynamicFactor !== undefined && {
-      confinementDynamicFactor: input.confinementDynamicFactor,
-    }),
-    ...(input.slideDensity !== undefined && { slideDensity: input.slideDensity }),
-  });
+  const { tsunami, impulseWave } = landslideSource(input, regime, slopeDeg, waveLaw);
   return {
     inputs: input,
     characteristicLength: m(sideLength),
@@ -281,18 +321,8 @@ export function simulateLandslide(input: LandslideScenarioInput): LandslideScena
     tsunami,
     regime,
     waveLaw,
-    regimeSensitivity: regimeSensitivity(input, slopeDeg),
-    ...(impulse === null
-      ? {}
-      : {
-          impulseWave: {
-            froude: impulse.slide.froude,
-            thicknessM: impulse.slide.thicknessM,
-            widthM: impulse.slide.widthM,
-            closed: impulse.closed,
-            outsideTestedRange: outsideTestedRange(impulse.slide),
-          },
-        }),
+    regimeSensitivity: regimeSensitivity(input, slopeDeg, waveLaw),
+    ...(impulseWave === undefined ? {} : { impulseWave }),
   };
 }
 

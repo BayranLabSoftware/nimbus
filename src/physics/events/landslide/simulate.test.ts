@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import {
+  impulseWaveAmplitudes,
+  outsideTestedRange,
+  slideFromVolume,
+} from '../../effects/impulseWave.js';
 import { m } from '../../units.js';
+import { SOURCE_AMPLITUDE_CEILING } from '../volcano/tsunami.js';
 import { LANDSLIDE_PRESETS, simulateLandslide } from './simulate.js';
 
 describe('simulateLandslide', () => {
@@ -149,6 +155,120 @@ describe('simulateLandslide', () => {
       const r = simulateLandslide(preset.input);
       expect(r.characteristicLength as number, `${id}: char length > 0`).toBeGreaterThan(0);
       expect(r.regime, `${id}: regime defined`).toBeDefined();
+    }
+  });
+});
+
+describe('the impulse wave manual as the law that makes the wave (rule 163)', () => {
+  const law = 'impulseWaveManual' as const;
+  const lituya = { ...LANDSLIDE_PRESETS.LITUYA_BAY_1958.input, waveLaw: law };
+
+  it("draws the manual's first crest for a subaerial slide in open water, with no ceiling", () => {
+    const r = simulateLandslide(lituya);
+    const closure = slideFromVolume({
+      volumeM3: 3e7,
+      angleDeg: 35,
+      depthM: 120,
+      densityKgM3: 2_500,
+    });
+    const crest = impulseWaveAmplitudes(closure.slide).firstCrest;
+    expect(Number(r.tsunami?.sourceAmplitude ?? 0)).toBeCloseTo(crest, 9);
+    // Above the 0.4 of the depth the project law is held to.
+    expect(crest / 120).toBeGreaterThan(SOURCE_AMPLITUDE_CEILING);
+    expect(r.impulseWave?.firstCrestM).toBeCloseTo(crest, 9);
+    expect(r.impulseWave?.held).toBe(false);
+  });
+
+  it('names the limits the slide falls outside of, and what it had to close', () => {
+    const r = simulateLandslide(lituya);
+    const closure = slideFromVolume({
+      volumeM3: 3e7,
+      angleDeg: 35,
+      depthM: 120,
+      densityKgM3: 2_500,
+    });
+    expect(r.impulseWave?.outsideTestedRange).toEqual(outsideTestedRange(closure.slide));
+    expect(r.impulseWave?.closed).toEqual({
+      thickness: true,
+      width: true,
+      velocity: 'fromVolume',
+    });
+    const given = simulateLandslide({
+      ...lituya,
+      slideThicknessM: 90,
+      slideWidthM: 800,
+      impactVelocityMS: 110,
+    });
+    expect(given.impulseWave?.closed).toEqual({
+      thickness: false,
+      width: false,
+      velocity: 'given',
+    });
+    expect(given.impulseWave?.impactVelocityMS).toBe(110);
+  });
+
+  it('keeps the basin formula in a confined basin, and says nothing of the manual there', () => {
+    const vaiont = simulateLandslide({ ...LANDSLIDE_PRESETS.VAIONT_1963.input, waveLaw: law });
+    const project = simulateLandslide(LANDSLIDE_PRESETS.VAIONT_1963.input);
+    expect(Number(vaiont.tsunami?.sourceAmplitude)).toBe(Number(project.tsunami?.sourceAmplitude));
+    expect(vaiont.impulseWave).toBeUndefined();
+  });
+
+  it('keeps Watts for a submarine slide', () => {
+    const storegga = simulateLandslide({
+      ...LANDSLIDE_PRESETS.STOREGGA_8200_BP.input,
+      waveLaw: law,
+    });
+    const project = simulateLandslide(LANDSLIDE_PRESETS.STOREGGA_8200_BP.input);
+    expect(Number(storegga.tsunami?.sourceAmplitude)).toBe(
+      Number(project.tsunami?.sourceAmplitude)
+    );
+    expect(storegga.impulseWave).toBeUndefined();
+  });
+
+  it('makes no wave where the bed friction holds the slide, and says why', () => {
+    // tan δ = 0.3: a slide on 15° never gathers speed (Eq. 3.5), so the manual
+    // gives nothing — and nothing falls back on another law.
+    const r = simulateLandslide({
+      volumeM3: 1e8,
+      slopeAngleDeg: 15,
+      meanOceanDepth: m(300),
+      regime: 'subaerial',
+      waveLaw: law,
+    });
+    expect(r.tsunami).toBeNull();
+    expect(r.impulseWave?.held).toBe(true);
+    expect(r.impulseWave?.impactVelocityMS).toBe(0);
+    const given = simulateLandslide({
+      volumeM3: 1e8,
+      slopeAngleDeg: 15,
+      meanOceanDepth: m(300),
+      regime: 'subaerial',
+      waveLaw: law,
+      impactVelocityMS: 30,
+    });
+    expect(Number(given.tsunami?.sourceAmplitude ?? 0)).toBeGreaterThan(0);
+  });
+
+  it('says how much the regime decides under the law it runs', () => {
+    const r = simulateLandslide(lituya);
+    expect(Number(r.regimeSensitivity?.subaerialAmplitude)).toBeCloseTo(
+      Number(r.tsunami?.sourceAmplitude),
+      9
+    );
+    const below = simulateLandslide({ ...lituya, regime: 'submarine' });
+    expect(Number(r.regimeSensitivity?.submarineAmplitude)).toBeCloseTo(
+      Number(below.tsunami?.sourceAmplitude),
+      9
+    );
+  });
+
+  it('grows with the volume', () => {
+    let last = 0;
+    for (const volumeM3 of [1e5, 1e6, 1e7, 1e8, 1e9, 1e10]) {
+      const a = Number(simulateLandslide({ ...lituya, volumeM3 }).tsunami?.sourceAmplitude ?? 0);
+      expect(a).toBeGreaterThan(last);
+      last = a;
     }
   });
 });

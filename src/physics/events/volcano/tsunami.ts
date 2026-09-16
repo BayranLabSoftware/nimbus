@@ -204,8 +204,9 @@ export interface VolcanoTsunamiInput {
    *  cube root and its breaking cap. Everything downstream — the cavity
    *  radius, the 1/r decay, the travel times — is unchanged, so this hands
    *  the *generation* to another relation and keeps the propagation. The
-   *  landslide module passes Heller's first crest here
-   *  (effects/impulseWave.ts, rule 119 of validation/impulseWaveRules.ts). */
+   *  landslide module passes the impulse wave manual's first crest here
+   *  (effects/impulseWave.ts, rules 162 to 167 of
+   *  validation/impulseWaveRules.ts). */
   sourceAmplitudeM?: number;
   /** Optional: planform area of the CONFINED BASIN (reservoir, fjord)
    *  the slide enters (m²). When set, the source amplitude is
@@ -332,13 +333,19 @@ export function volcanoTsunami(input: VolcanoTsunamiInput): VolcanoTsunamiResult
     const dynamicAmp = staticRise * confinementFactor;
     eta0 = Math.min(dynamicAmp, sourceWaterDepth);
   } else if (supplied !== undefined && Number.isFinite(supplied) && supplied > 0) {
-    // (c) The generation came from another relation. A confined basin wins
-    // over it — a reservoir that sloshes is not a slide entering open water,
-    // and it is the case the relations handed in here least apply to. What
-    // stays is the breaking cap, which belongs to the water column and not to
-    // the law that made the wave: a crest taller than 40 % of its own depth
-    // has broken before it is a crest.
-    eta0 = Math.min(supplied, (sourceWaterDepth as number) * SOURCE_AMPLITUDE_CEILING);
+    // (c) The generation came from another relation, and it is taken as that
+    // relation gives it. A confined basin wins over it — a reservoir that
+    // sloshes is not a slide entering open water, and it is the case the
+    // relations handed in here least apply to.
+    //
+    // Until 17 September 2026 the 0.4 ceiling of branch (b) was applied here
+    // too. It has no source (B-039), and the relation that comes through here
+    // — the impulse wave manual's first crest — gives up to 0.94 of the depth
+    // inside the experiments it was fitted on, so the ceiling cut the field's
+    // method where the field has measured it (rule 163 of
+    // validation/impulseWaveRules.ts). Outside those experiments the caller
+    // says so; it does not clip.
+    eta0 = supplied;
   } else {
     // Watts (2000) submerged specific-gravity factor γ/γ_ref. γ_ref is
     // the regime's calibration density, so an unspecified slideDensity

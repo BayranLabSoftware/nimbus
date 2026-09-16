@@ -50,17 +50,22 @@ describe("B-039 the source ceiling is the project's own number, and says so", ()
     );
   });
 
-  it('holds a wave handed in from another relation to the same ceiling', () => {
-    // The Heller path passes its own first crest in; the ceiling is a property
-    // of the water column, so it applies there too — which is precisely why
-    // whether 0.4 is right matters beyond the law that used to make the wave.
+  it('does not clip a wave handed in from another relation', () => {
+    // Until 17 September 2026 it did: the impulse wave manual's first crest was
+    // held to the same 0.4 of the depth. The manual's equations give up to 0.94
+    // inside the experiments they were fitted on, so the ceiling cut the
+    // field's method exactly where the field has measured it, on the strength
+    // of a number nobody can source (rule 163 of
+    // validation/impulseWaveRules.ts). The relation that makes the wave is
+    // taken as it gives it; outside its experiments the caller warns.
     const tall = volcanoTsunami({
       collapseVolumeM3: 3e7,
       slopeAngleRad: (35 * Math.PI) / 180,
       regime: 'subaerial',
       meanOceanDepth: m(120),
-      sourceAmplitudeM: 10_000,
+      sourceAmplitudeM: 100,
     });
-    expect(Number(tall?.sourceAmplitude ?? 0)).toBeCloseTo(120 * SOURCE_AMPLITUDE_CEILING, 9);
+    expect(Number(tall?.sourceAmplitude ?? 0)).toBe(100);
+    expect(100 / 120).toBeGreaterThan(SOURCE_AMPLITUDE_CEILING);
   });
 });

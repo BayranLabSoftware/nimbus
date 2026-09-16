@@ -108,12 +108,16 @@ export function slideWaveRows(
       ...(e.dropHeightM > 0 && { dropHeightM: e.dropHeightM }),
     });
     const a = impulseWaveAmplitudes(closure.slide);
+    // `heller2009` when this ran (B-043), with B-042's slow speed and B-039's
+    // ceiling on the crest: rerun today it draws the manual's crest as rule
+    // 163 of impulseWaveRules.ts has it, and the figures committed for rules
+    // 118 to 125 are the record of what ran then.
     const drawn = simulateLandslide({
       volumeM3: e.volumeM3,
       slopeAngleDeg: deg,
       meanOceanDepth: m(e.depthM),
       regime: 'subaerial',
-      waveLaw: 'heller2009',
+      waveLaw: 'impulseWaveManual',
       ...(e.widthM > 0 && { slideWidthM: e.widthM }),
       ...(e.dropHeightM > 0 && { dropHeightM: e.dropHeightM }),
     });

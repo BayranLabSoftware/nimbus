@@ -34,6 +34,8 @@ import { DEFAULT_CONFINEMENT_DYNAMIC_FACTOR } from '../events/volcano/tsunami.js
 import { simulateVolcano, VOLCANO_PRESETS } from '../events/volcano/index.js';
 import { ashfallMassLoading } from '../events/volcano/ashfall.js';
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/index.js';
+import type { LandslideWaveLaw } from '../events/landslide/simulate.js';
+import { IMPULSE_WAVE_TESTED, slideImpactVelocity } from '../effects/impulseWave.js';
 import { simulateImpact, IMPACT_PRESETS } from '../simulate.js';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
 import { impactFireballRadius, nuclearFireballRadius } from '../effects/blastWave.js';
@@ -901,6 +903,46 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(EARTHQUAKE_INPUT_SIGMA.groundMotion.sigma).toBeGreaterThan(0.55);
   });
 
+  it('B-042 A slide falls its vertical drop to the water, as Eq. 3.5 of the impulse wave manual has it', () => {
+    // Pre-fix: v = √(2·g·Δz·(sin α − tan δ·cos α)), the manual's
+    // √(2·g·Δz·(1 − tan δ·cot α)) times sin α under the root — the drop
+    // measured along the slope where the input is the vertical one. Every
+    // speed was low by √(sin α). The manual's worked examples: 41.3 m/s from
+    // 100 m at 70°, then 58.0 m/s after 150 m more at 40° (Example 1), and
+    // 32.2 m/s from 110 m at 35° (Example 2), with δ = 20° throughout.
+    const tanDelta = Math.tan((20 * Math.PI) / 180);
+    const atChange = slideImpactVelocity(100, 70, tanDelta);
+    expect(atChange).toBeCloseTo(41.3, 1);
+    expect(Math.hypot(atChange, slideImpactVelocity(150, 40, tanDelta))).toBeCloseTo(58.0, 1);
+    expect(slideImpactVelocity(110, 35, tanDelta)).toBeCloseTo(32.2, 1);
+    // What the defect gave for Example 2: 24 % slow.
+    const defect = Math.sqrt(
+      2 * 9.81 * 110 * (Math.sin((35 * Math.PI) / 180) - tanDelta * Math.cos((35 * Math.PI) / 180))
+    );
+    expect(defect).toBeCloseTo(24.4, 1);
+  });
+
+  it('B-043 The impulse wave equations are credited to the edition they come from, with all its limits', () => {
+    // Pre-fix: effects/impulseWave.ts and everything citing it credited
+    // Heller, Hager & Minor 2009 (VAW-Mitteilung 211, the first edition), while
+    // the file read and pinned was the second edition (Evers et al. 2019,
+    // VAW-Mitteilung 254, version 2.1 of 2023), whose three-dimensional
+    // generation is the one implemented; the tested ranges left out Table 3-3's
+    // relative slide volume and density, and the law was named heller2009.
+    const source = readFileSync(
+      fileURLToPath(new URL('../effects/impulseWave.ts', import.meta.url)),
+      'utf8'
+    );
+    expect(source).toContain('Evers, Heller, Fuchs, Hager & Boes (2019)');
+    expect(source).toContain('doi:10.3929/ethz-b-000413216');
+    expect(IMPULSE_WAVE_TESTED.relativeVolume).toEqual([0.187, 0.75]);
+    expect(IMPULSE_WAVE_TESTED.relativeDensity).toEqual([0.59, 1.72]);
+    const law: LandslideWaveLaw = 'impulseWaveManual';
+    expect(simulateLandslide({ volumeM3: 1e7, regime: 'subaerial', waveLaw: law }).waveLaw).toBe(
+      law
+    );
+  });
+
   // Smoke test: verify every preset still renders sensible numbers
   // (catches regressions from any unrelated change to a preset).
   it('all 5 event-type preset-bundles produce non-degenerate output (smoke)', () => {
@@ -926,9 +968,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-041 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-043 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 41;
-    expect(expectedRows).toBe(41);
+    const expectedRows = 43;
+    expect(expectedRows).toBe(43);
   });
 });
