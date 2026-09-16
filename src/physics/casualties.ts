@@ -267,8 +267,9 @@ export const CONVENTIONAL_DELAYED_FRACTION: Triple = { low: 0.005, mid: 0.02, hi
  * the Earth Impact Effects Program makes. Past this range the direct
  * flash — the burns, the ignition of a mass fire — cannot arrive. The
  * program also dims the flash before the cut by the share of the
- * fireball still in sight (their Eq. 36*); this model keeps only the
- * cut. A 200 km fireball, the one a Chicxulub-class impact raises, is
+ * fireball still in sight (their Eq. 36*), and since 16 September 2026
+ * an impact's burn and fire rings are drawn dimmed the same way
+ * (effects/impactThermal.ts); the cut stays, for the flash in the air. A 200 km fireball, the one a Chicxulub-class impact raises, is
  * visible to about 1 600 km; a nuclear fireball to a few tens.
  *
  * Until 15 September 2026 this was R⊕ · arccos(R⊕ / (R⊕ + R_f)), the

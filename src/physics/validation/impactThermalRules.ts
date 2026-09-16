@@ -57,6 +57,40 @@
  * not by the atmosphere between: that is what the field's tool computes.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 16 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `6bcd10f` and the program asked afterwards
+ * (`benchmark/results/impact-thermal-eiep-2026-09-16.json`, scored in
+ * `impact-thermal-against-eiep-2026-09-16.json`). It answered all sixteen, on
+ * the ground. **Every ring agrees**, from 12.1 to 2 425 km, and every one
+ * within 1 % as well as within 200 m: the worst ×1.0065, 131 m on a ring of
+ * 20 km. The release gate stays PASS.
+ *
+ * What moves. An impact that reaches the ground burns and lights fires
+ * farther where its flash is far from the horizon — Meteor Crater's
+ * third-degree ring 5.46 to 7.13 km, its ignition ring 4.88 to 6.38 km — and
+ * less far where the horizon dims it: Boltysh's third-degree burns from
+ * 523 km, the horizon, to 462 km, Popigai's from 1 186 to 1 170 km. Airbursts do
+ * not move: with nothing at the ground the two laws are one flash, and the
+ * project's closed form is kept to the bit. Three tests changed with it: the
+ * default's name, and B-028 and B-038, which held the largest impacts' rings to
+ * the horizon itself; the flash now fades out just short of it and still
+ * never passes it.
+ *
+ * The sweep, in the same session (`invariants-2026-09-16-10.json` under the
+ * sphere, `-11` under the program's law): 425 and 426. The one more is a
+ * second-degree ring at the passage from a complete to a partial airburst, 138
+ * to 137 km: the fireball the ground gets is dimmed by its own horizon, the
+ * flash left in the air — the project's, which the program does not draw — is
+ * not, and where the first takes over from the second the ring steps back by
+ * 0.85 %. Declared; it does not decide.
+ *
+ * `DEFAULT_IMPACT_THERMAL` is `program`. I1's thermal clause holds.
+ */
+
 /** Rule 148: G1's tolerance, and the resolution of the program's radii (m). */
 export const IMPACT_THERMAL_TOLERANCE = 0.01;
 export const IMPACT_THERMAL_RESOLUTION_M = 200;

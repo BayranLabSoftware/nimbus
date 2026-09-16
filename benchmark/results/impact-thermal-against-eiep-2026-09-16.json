@@ -1,0 +1,123 @@
+{
+ "rules": "src/physics/validation/impactThermalRules.ts, rules 146 to 149",
+ "verdict": {
+  "compared": 16,
+  "agree": 16,
+  "apart": 0,
+  "heldOutPasses": true
+ },
+ "rows": [
+  {
+   "body": 1,
+   "model": 883582.6878136309,
+   "program": 883830.4242714896,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 2,
+   "model": 2426908.937980592,
+   "program": 2424907.289556048,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 3,
+   "model": 230607.5639863097,
+   "program": 230511.28065601434,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 4,
+   "model": 39212.734701368856,
+   "program": 39210.68797548674,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 5,
+   "model": 1141259.543260028,
+   "program": 1141706.434751344,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 6,
+   "model": 20263.409250457753,
+   "program": 20132.406810011224,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 7,
+   "model": 1276149.2328350206,
+   "program": 1275651.7561372211,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 8,
+   "model": 12117.085423303068,
+   "program": 12188.137387450033,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 9,
+   "model": 169005.61706819778,
+   "program": 168736.58151552625,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 10,
+   "model": 929990.415234112,
+   "program": 929476.3805838181,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 11,
+   "model": 60064.394801430826,
+   "program": 60090.98587075268,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 12,
+   "model": 941899.0498903245,
+   "program": 942294.4240741831,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 13,
+   "model": 109943.81242878018,
+   "program": 109970.78401236043,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 14,
+   "model": 142875.40770022917,
+   "program": 142876.78754730322,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 15,
+   "model": 16443.612872704813,
+   "program": 16341.22060319351,
+   "apart": null,
+   "agrees": true
+  },
+  {
+   "body": 16,
+   "model": 108246.19822930367,
+   "program": 108483.14603317634,
+   "apart": null,
+   "agrees": true
+  }
+ ]
+}

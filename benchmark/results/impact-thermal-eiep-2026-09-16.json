@@ -1,0 +1,342 @@
+{
+ "reference": "Earth Impact Effects Program, impact.ese.ic.ac.uk (Collins, Melosh & Marcus 2005)",
+ "readOn": "2026-09-16",
+ "rows": [
+  {
+   "key": "body 1",
+   "diameterM": 4218.102,
+   "densityKgM3": 1192,
+   "velocityKmS": 70.541,
+   "angleDeg": 10.81,
+   "target": "crystalline",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 100085.0,
+   "fireballRadiiM": [
+    96570.86626166567,
+    883830.4242714896,
+    1110600.7875221183
+   ],
+   "overpressurePa": [
+    7817209.214,
+    7817209.214
+   ]
+  },
+  {
+   "key": "body 2",
+   "diameterM": 12182.528,
+   "densityKgM3": 6663.4,
+   "velocityKmS": 70.586,
+   "angleDeg": 18.38,
+   "target": "sedimentary",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 45951.0,
+   "fireballRadiiM": [
+    500721.97770065686,
+    2424907.289556048,
+    2542551.780125445
+   ],
+   "overpressurePa": [
+    350140596.921,
+    350140596.921
+   ]
+  },
+  {
+   "key": "body 3",
+   "diameterM": 901.236,
+   "densityKgM3": 2541.5,
+   "velocityKmS": 55.909,
+   "angleDeg": 11.06,
+   "target": "sedimentary",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 78103.0,
+   "fireballRadiiM": [
+    21271.141239185836,
+    230511.28065601434,
+    520716.1360243429
+   ],
+   "overpressurePa": [
+    254628.34,
+    254628.34
+   ]
+  },
+  {
+   "key": "body 4",
+   "diameterM": 218.586,
+   "densityKgM3": 5091.4,
+   "velocityKmS": 31.865,
+   "angleDeg": 39.32,
+   "target": "crystalline",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 45036.0,
+   "fireballRadiiM": [
+    4661.3172189762445,
+    39210.68797548674,
+    243705.6121829407
+   ],
+   "overpressurePa": [
+    9256.307,
+    9256.307
+   ]
+  },
+  {
+   "key": "body 5",
+   "diameterM": 6108.262,
+   "densityKgM3": 1970.3,
+   "velocityKmS": 54.374,
+   "angleDeg": 22.53,
+   "target": "sedimentary",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 84584.0,
+   "fireballRadiiM": [
+    140346.93377912362,
+    1141706.434751344,
+    1339635.9735400055
+   ],
+   "overpressurePa": [
+    18194175.195,
+    18194175.195
+   ]
+  },
+  {
+   "key": "body 6",
+   "diameterM": 103.249,
+   "densityKgM3": 6949.5,
+   "velocityKmS": 38.419,
+   "angleDeg": 64,
+   "target": "crystalline",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 34218.0,
+   "fireballRadiiM": [
+    2728.6468960447096,
+    20132.406810011224,
+    186454.93712183554
+   ],
+   "overpressurePa": [
+    3552.853,
+    3552.853
+   ]
+  },
+  {
+   "key": "body 7",
+   "diameterM": 10186.949,
+   "densityKgM3": 1170.7,
+   "velocityKmS": 42.426,
+   "angleDeg": 50.21,
+   "target": "crystalline",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 92306.0,
+   "fireballRadiiM": [
+    166923.80497471936,
+    1275651.7561372211,
+    1461493.2713263743
+   ],
+   "overpressurePa": [
+    26914177.039,
+    26914177.039
+   ]
+  },
+  {
+   "key": "body 8",
+   "diameterM": 106.151,
+   "densityKgM3": 2253.1,
+   "velocityKmS": 57.173,
+   "angleDeg": 79.88,
+   "target": "crystalline",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 81848.0,
+   "fireballRadiiM": [
+    1803.3631757984272,
+    12188.137387450033,
+    151578.13490440752
+   ],
+   "overpressurePa": [
+    3997.854,
+    3997.854
+   ]
+  },
+  {
+   "key": "body 9",
+   "diameterM": 664.994,
+   "densityKgM3": 4960.6,
+   "velocityKmS": 36.789,
+   "angleDeg": 84.34,
+   "target": "sedimentary",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 48397.0,
+   "fireballRadiiM": [
+    16005.003410544667,
+    168736.58151552625,
+    451651.6217378459
+   ],
+   "overpressurePa": [
+    101484.831,
+    101484.831
+   ]
+  },
+  {
+   "key": "body 10",
+   "diameterM": 2780.936,
+   "densityKgM3": 5076.4,
+   "velocityKmS": 70.035,
+   "angleDeg": 43.5,
+   "target": "sedimentary",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 57758.0,
+   "fireballRadiiM": [
+    103794.74348826514,
+    929476.3805838181,
+    1151499.8195549892
+   ],
+   "overpressurePa": [
+    8867725.298,
+    8867725.298
+   ]
+  },
+  {
+   "key": "body 11",
+   "diameterM": 242.975,
+   "densityKgM3": 2645.4,
+   "velocityKmS": 64.096,
+   "angleDeg": 65.97,
+   "target": "sedimentary",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 79117.0,
+   "fireballRadiiM": [
+    6615.59583524002,
+    60090.98587075268,
+    290339.9450392035
+   ],
+   "overpressurePa": [
+    18382.455,
+    18382.455
+   ]
+  },
+  {
+   "key": "body 12",
+   "diameterM": 3176.663,
+   "densityKgM3": 6407.7,
+   "velocityKmS": 52.436,
+   "angleDeg": 64.14,
+   "target": "sedimentary",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 43013.0,
+   "fireballRadiiM": [
+    105694.31058248824,
+    942294.4240741831,
+    1162018.0050528897
+   ],
+   "overpressurePa": [
+    9133868.942,
+    9133868.942
+   ]
+  },
+  {
+   "key": "body 13",
+   "diameterM": 589.177,
+   "densityKgM3": 2506.3,
+   "velocityKmS": 35.691,
+   "angleDeg": 54.03,
+   "target": "crystalline",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 71325.0,
+   "fireballRadiiM": [
+    10991.92467216486,
+    109970.78401236043,
+    374269.17185625184
+   ],
+   "overpressurePa": [
+    46622.692,
+    46622.692
+   ]
+  },
+  {
+   "key": "body 14",
+   "diameterM": 982.415,
+   "densityKgM3": 6124.1,
+   "velocityKmS": 14.727,
+   "angleDeg": 62.96,
+   "target": "crystalline",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 24751.0,
+   "fireballRadiiM": [
+    13792.417958481908,
+    142876.78754730322,
+    419259.88562398206
+   ],
+   "overpressurePa": [
+    64169.521,
+    64169.521
+   ]
+  },
+  {
+   "key": "body 15",
+   "diameterM": 178.157,
+   "densityKgM3": 6419.5,
+   "velocityKmS": 12.958,
+   "angleDeg": 63.85,
+   "target": "crystalline",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 20536.0,
+   "fireballRadiiM": [
+    2305.638229078229,
+    16341.22060319351,
+    171393.12471253762
+   ],
+   "overpressurePa": [
+    1172.805,
+    1172.805
+   ]
+  },
+  {
+   "key": "body 16",
+   "diameterM": 677.686,
+   "densityKgM3": 1162.4,
+   "velocityKmS": 45.365,
+   "angleDeg": 28.32,
+   "target": "sedimentary",
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": null,
+   "breakupAltitudeM": 93518.0,
+   "fireballRadiiM": [
+    10846.522931748135,
+    108483.14603317634,
+    371784.7975016488
+   ],
+   "overpressurePa": [
+    54645.846,
+    54645.846
+   ]
+  }
+ ]
+}

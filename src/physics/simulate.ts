@@ -568,8 +568,12 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const thermalFluence = (range: number): number =>
     impactThermalExposure(m(range), groundThermalEnergy) +
     (IMPACT_LUMINOUS_EFFICIENCY * airThermalEnergy) / (4 * Math.PI * range * range);
+  // With nothing at the ground the two laws are the same flash in the air, and
+  // the project's closed form is kept to the bit.
   const thermalRing = (projectRing: Meters, exposure: number): Meters =>
-    DEFAULT_IMPACT_THERMAL === 'program' ? fluenceReach(thermalFluence, exposure) : projectRing;
+    DEFAULT_IMPACT_THERMAL === 'program' && (groundThermalEnergy as number) > 0
+      ? fluenceReach(thermalFluence, exposure)
+      : projectRing;
   // The blast of a body or swarm that reaches the ground: the larger of the
   // project's two Kinney–Graham rings, or the Earth Impact Effects Program's
   // own reading of it (effects/airburstBlast.ts, `GroundBlast`).

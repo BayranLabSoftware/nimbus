@@ -249,7 +249,7 @@
               "G1"
             ],
             "holds": false,
-            "credit": 0.727,
+            "credit": 0.818,
             "status": null,
             "clauses": [
               {
@@ -274,7 +274,7 @@
               },
               {
                 "name": "the thermal exposure",
-                "status": "not met"
+                "status": "met"
               },
               {
                 "name": "the ejecta",
@@ -365,8 +365,8 @@
         ],
         "held": 3,
         "pending": 1,
-        "credit": 3.727,
-        "reading": 3.7
+        "credit": 3.818,
+        "reading": 3.8
       },
       {
         "domain": "Explosions",

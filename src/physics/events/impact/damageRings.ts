@@ -88,7 +88,7 @@ export function combineImpactFlashes(
 export type ImpactThermal = 'project' | 'program';
 
 /** What an impact that names no thermal law uses. */
-export const DEFAULT_IMPACT_THERMAL: ImpactThermal = 'project';
+export const DEFAULT_IMPACT_THERMAL: ImpactThermal = 'program';
 
 export interface ImpactDamageRadii {
   craterRim: Meters;

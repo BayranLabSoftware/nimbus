@@ -225,8 +225,9 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
           },
           {
             name: 'the thermal exposure',
-            status: 'not met',
-            evidence: "The fireball's visible fraction (Eq. 36*) is not applied.",
+            status: 'met',
+            evidence:
+              "The program's exposure, half-space and Eq. 36*: sixteen held-out ignition rings within 1 % (rules 146 to 149).",
           },
           {
             name: 'the ejecta',
@@ -286,7 +287,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         rule: 'G5',
         status: 'not met',
         evidence:
-          "425 failures in the sweep of 16 September 2026; two are a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-8.json).",
+          "426 failures in the sweep of 16 September 2026; two are a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-11.json).",
       },
       G6,
       G7,

@@ -609,9 +609,12 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     ]) {
       const r = simulateImpact(preset.input);
       const horizon = thermalHorizonRadius(impactFireballRadius(r.impactor.kineticEnergy));
-      expect(r.damage.thirdDegreeBurn as number).toBeCloseTo(horizon, -2);
-      expect(r.damage.secondDegreeBurn as number).toBeCloseTo(horizon, -2);
+      // Since rule 149 the flash fades out before the horizon, as the share of
+      // the fireball above it falls to nothing (Collins et al.'s Eq. 36*); it
+      // never passes it.
       expect(r.damage.thirdDegreeBurn as number).toBeLessThanOrEqual(horizon);
+      expect(r.damage.secondDegreeBurn as number).toBeLessThanOrEqual(horizon);
+      expect(r.damage.thirdDegreeBurn as number).toBeGreaterThan(0.8 * horizon);
     }
     // A flash that does not reach its horizon keeps its fluence radius.
     const meteor = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
@@ -662,7 +665,11 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     const fireball = impactFireballRadius(chicxulub.impactor.kineticEnergy);
     const horizon = thermalHorizonRadius(fireball);
     const { ignitionRadius, sustainRadius, ignitionArea, sustainArea } = chicxulub.firestorm;
-    expect(ignitionRadius as number).toBeCloseTo(horizon, -2);
+    // Since rule 149 the exposure is the program's, dimmed by the share of the
+    // fireball still above the horizon, so the flash fades out just short of
+    // it rather than being cut there.
+    expect(ignitionRadius as number).toBeLessThanOrEqual(horizon);
+    expect(ignitionRadius as number).toBeGreaterThan(0.95 * horizon);
     expect(sustainRadius as number).toBeLessThanOrEqual(horizon);
     expect(ignitionArea as number).toBeCloseTo(capArea(ignitionRadius), -6);
     expect(sustainArea as number).toBeCloseTo(capArea(sustainRadius), -6);

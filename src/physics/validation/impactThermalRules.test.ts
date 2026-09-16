@@ -50,8 +50,8 @@ describe('rule 146: the law read off the program', () => {
     expect(checked).toBe(49);
   });
 
-  it('is not the default until rule 149 says so', () => {
-    expect(DEFAULT_IMPACT_THERMAL).toBe('project');
+  it('is the default since rule 149', () => {
+    expect(DEFAULT_IMPACT_THERMAL).toBe('program');
   });
 });
 

@@ -66,7 +66,7 @@ export function fluenceReach(fluence: (range: number) => number, threshold: numb
   let hi = Math.PI * RE;
   if (fluence(lo) < threshold) return m(0);
   if (fluence(hi) >= threshold) return m(hi);
-  for (let i = 0; i < 200 && hi - lo > 1e-6 * hi; i++) {
+  for (let i = 0; i < 200 && hi - lo > 1e-12 * hi; i++) {
     const mid = Math.sqrt(lo * hi);
     if (fluence(mid) >= threshold) lo = mid;
     else hi = mid;
