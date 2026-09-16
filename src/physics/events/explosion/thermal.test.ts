@@ -112,16 +112,23 @@ describe('thirdDegreeBurnRadius (8 cal/cm² project threshold)', () => {
     expect(rDefault).toBe(rExplicit);
   });
 
-  it('draws the book’s curve where the caller names no exposure (rule 84)', () => {
-    // At 15 kt the book asks 7.20 cal/cm² of a middling skin
-    // for a third-degree burn, less than the project's flat 8, so the ring
-    // the simulator draws by default is the wider of the two.
+  it('draws the book’s curve where the caller names no exposure (rules 84 and 117)', () => {
+    // At 15 kt Figure 12.64 asks 7.20 cal/cm² of a middling skin for a
+    // third-degree burn (rule 84), and Figure 12.65's 50 % line, the default
+    // since rule 117, asks 7.43 — both less than the project's flat 8, so the
+    // ring the simulator draws by default is still the wider of the two.
     const asks = thirdDegreeBurnRadius({ yieldEnergy: HIROSHIMA_YIELD }) as number;
+    const figure1264 = thirdDegreeBurnRadius({
+      yieldEnergy: HIROSHIMA_YIELD,
+      burnExposure: 'glasstone1977',
+    }) as number;
     const project = thirdDegreeBurnRadius({
       yieldEnergy: HIROSHIMA_YIELD,
       burnExposure: 'project',
     }) as number;
-    expect(asks / project).toBeCloseTo(Math.sqrt(8 / 7.2), 2);
+    expect(asks / project).toBeCloseTo(Math.sqrt(8 / 7.4341), 2);
+    expect(figure1264 / project).toBeCloseTo(Math.sqrt(8 / 7.2), 2);
+    expect(asks).toBeGreaterThan(project);
   });
 });
 

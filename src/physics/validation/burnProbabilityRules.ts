@@ -111,6 +111,46 @@ import type { BurnExposureSource } from '../effects/burnExposure.js';
  * before it may write anything at all.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 16 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * Every guard of rule 117 held:
+ *
+ *  (a) the trace passes its checks and reproduces §12.65's own example;
+ *  (b) the release gate stays PASS — no gated row of the calibration net
+ *      leaves its band, and the net's two explosion tolls, both notes and not
+ *      gates, keep their verdicts (Hiroshima inside, Beirut outside, its charge
+ *      chemical and flashless either way);
+ *  (c) the ring that moves most moves ×0.965, where rule 117 allows ×2;
+ *  (d) rule 19's invariants, taken under Figure 12.64 and again under Figure
+ *      12.65 in the same session, read 222 and 222, hazard by hazard and
+ *      failure by failure the same.
+ *
+ * `DEFAULT_BURN_EXPOSURE` is `glasstone1977probability`: a burn ring is drawn
+ * where half an average unshielded population takes that degree.
+ *
+ * **One sentence this project had printed was wrong, and the run is what
+ * showed it.** The validation report said Figure 12.64's middle pigmentation
+ * asks "a little more exposure than 12.65's 50 % line everywhere", so that
+ * adopting 12.65 would only ever widen the rings. It does not hold everywhere.
+ * At 1 kt and at 10 Mt, the two yields that sentence was read at, it holds;
+ * between about 10 kt and 300 kt the 50 % second-degree line lies *above* the
+ * middle curve — at 15 kt it asks 4.86 cal/cm² against 4.49 — and Hiroshima's
+ * second-degree ring shrinks by 3.5 % where the high-yield rings grow by 2 to
+ * 3.6 %. The sentence was an extrapolation from its two endpoints. It is
+ * corrected in the report.
+ *
+ * **And one defect of the product the adoption brought out.** The toll printed
+ * its total dead rounded once, and its prompt and delayed parts each rounded on
+ * their own, so the three could fail to add up: under Figure 12.65 Hiroshima's
+ * toll read 98 305 dead beside a prompt and a delayed toll that summed to
+ * 98 306, a test caught it, and the total is now the sum of the rounded parts
+ * (`casualties.ts`). Nothing about the burns caused it; the burns moved the
+ * fractions across a .5.
+ */
+
 /** Rule 116's candidate and the source in place. */
 export const BURN_PROBABILITY_IN_PLACE: BurnExposureSource = 'glasstone1977';
 export const BURN_PROBABILITY_CANDIDATE: BurnExposureSource = 'glasstone1977probability';

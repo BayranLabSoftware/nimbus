@@ -920,7 +920,10 @@ export function estimateCasualties(
       // callers that want the split.
       mortality: population > 0 ? (promptDeaths + delayedDeaths) / population : band.mortality,
       promptMortality: population > 0 ? promptDeaths / population : band.mortality,
-      deaths: Math.round(promptDeaths + delayedDeaths),
+      // The parts are rounded and the whole is their sum, so the three numbers
+      // a reader sees always add up. Rounding the whole on its own can land a
+      // person away from the rounded parts across a .5.
+      deaths: Math.round(promptDeaths) + Math.round(delayedDeaths),
       deathsLow: Math.round(promptLow + delayedLow),
       deathsHigh: Math.round(promptHigh + delayedHigh),
       promptDeaths: Math.round(promptDeaths),
@@ -938,7 +941,11 @@ export function estimateCasualties(
     model: plan.model,
     ...(plan.conventional === true && { conventional: true }),
     exposed: Math.round(previous),
-    deaths: Math.round(totals.deaths),
+    // As in each band: the printed total is the sum of the printed parts. On
+    // 16 September 2026 Hiroshima's read 98 305 dead against a prompt and a
+    // delayed toll that summed to 98 306, once Figure 12.65 moved the burn
+    // rings by under 4 % and the fractions crossed a .5.
+    deaths: Math.round(totals.promptDeaths) + Math.round(totals.delayedDeaths),
     deathsLow: Math.round(totals.deathsLow),
     deathsHigh: Math.round(totals.deathsHigh),
     promptDeaths: Math.round(totals.promptDeaths),

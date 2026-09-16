@@ -90,7 +90,7 @@
         "recordedHigh": 218,
         "model": 1432,
         "bandLow": 1296,
-        "bandHigh": 1586,
+        "bandHigh": 1585,
         "ratio": 6.569,
         "contains": false,
         "gated": false,
@@ -133,10 +133,10 @@
         "recorded": 105000,
         "recordedLow": 70000,
         "recordedHigh": 140000,
-        "model": 117299,
-        "bandLow": 105751,
-        "bandHigh": 130702,
-        "ratio": 1.117,
+        "model": 116639,
+        "bandLow": 105334,
+        "bandHigh": 130195,
+        "ratio": 1.111,
         "contains": true,
         "gated": false,
         "cause": "populationChanged",
@@ -689,7 +689,7 @@
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 2.71,
+          "bias": 2.7,
           "scatterLn": 0.89,
           "inside": 1,
           "bothZero": 0,
@@ -3579,12 +3579,12 @@
           "inPlace": [
             1296,
             1432,
-            1586
+            1585
           ],
           "candidate": [
             1296,
             1432,
-            1586
+            1585
           ],
           "insideInPlace": false,
           "insideCandidate": false
@@ -5495,9 +5495,9 @@
       {
         "event": "Beirut 2020",
         "measuredLow": 1296,
-        "measuredHigh": 1586,
+        "measuredHigh": 1585,
         "interpolatedLow": 1296,
-        "interpolatedHigh": 1586,
+        "interpolatedHigh": 1585,
         "comparable": true,
         "lowComparable": true
       },
@@ -5521,10 +5521,10 @@
       },
       {
         "event": "Hiroshima 1945",
-        "measuredLow": 105751,
-        "measuredHigh": 130702,
-        "interpolatedLow": 104710,
-        "interpolatedHigh": 130132,
+        "measuredLow": 105334,
+        "measuredHigh": 130195,
+        "interpolatedLow": 103862,
+        "interpolatedHigh": 129248,
         "comparable": true,
         "lowComparable": true
       },

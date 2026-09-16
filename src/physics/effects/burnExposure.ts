@@ -34,11 +34,14 @@ export type BurnSkin = 'light' | 'medium' | 'dark';
  *  say what separates the last two, and that no measurement can. */
 export type BurnExposureSource = 'project' | 'glasstone1977' | 'glasstone1977probability';
 
-/** What a scenario that names no source draws: the book's curves, adopted on
- *  16 September 2026 by rule 82 of validation/burnRules.ts. An impact names
- *  `project` for itself (rule 81) — the curves are a nuclear fireball's
+/** What a scenario that names no source draws: Figure 12.65's 50 % lines,
+ *  adopted on 16 September 2026 by rule 117 of
+ *  validation/burnProbabilityRules.ts — a ring where half an average unshielded
+ *  population takes the burn. Figure 12.64, which rule 82 of burnRules.ts
+ *  adopted earlier the same day, stays reachable as `glasstone1977`. An impact
+ *  names `project` for itself (rule 81): the curves are a nuclear fireball's
  *  pulse. */
-export const DEFAULT_BURN_EXPOSURE: BurnExposureSource = 'glasstone1977';
+export const DEFAULT_BURN_EXPOSURE: BurnExposureSource = 'glasstone1977probability';
 
 /** The skin the book's curves are read at where a scenario names none: the
  *  middle of the figure's three, the one drawn for a skin neither light nor

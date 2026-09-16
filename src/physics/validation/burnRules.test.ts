@@ -79,10 +79,12 @@ describe('rule 81: the exposure a scenario reads', () => {
     expect(burnFluenceThreshold('third', 4.184e13, 'project')).toBe(THIRD_DEGREE_BURN_FLUENCE);
     expect(burnFluenceThreshold('second', 4.184e13, 'project')).toBe(SECOND_DEGREE_BURN_FLUENCE);
     expect(burnFluenceThreshold('first', 4.184e13, 'project')).toBe(FIRST_DEGREE_BURN_FLUENCE);
-    // Rule 84, since the adoption of 16 September 2026: a scenario that names
-    // no source draws the book's curves. An impact names the project for
-    // itself, in events/impact/damageRings.ts.
-    expect(DEFAULT_BURN_EXPOSURE).toBe(BURN_CANDIDATE);
+    // Rule 84 made Figure 12.64 the default on 16 September 2026; rule 117 of
+    // burnProbabilityRules.ts moved it to Figure 12.65's 50 % lines the same
+    // evening. Rule 81's own candidate is still reachable by name, and an
+    // impact still names the project for itself, in events/impact/damageRings.ts.
+    expect(BURN_CANDIDATE).toBe('glasstone1977');
+    expect(DEFAULT_BURN_EXPOSURE).toBe('glasstone1977probability');
   });
 
   it('gives the book’s curve where the scenario names the book', () => {
@@ -98,7 +100,11 @@ describe('rule 81: the exposure a scenario reads', () => {
     const inPlace = simulateExplosion({ ...preset, burnExposure: BURN_IN_PLACE });
     const unnamed = simulateExplosion(preset);
     const book = simulateExplosion({ ...preset, burnExposure: BURN_CANDIDATE });
-    expect(unnamed.thermal).toEqual(book.thermal);
+    // An unnamed scenario draws Figure 12.65 since rule 117, not rule 81's
+    // Figure 12.64 — so the two differ, by the few per cent rule 117 measured.
+    const probability = simulateExplosion({ ...preset, burnExposure: 'glasstone1977probability' });
+    expect(unnamed.thermal).toEqual(probability.thermal);
+    expect(book.thermal.thirdDegreeBurnRadius).not.toBe(unnamed.thermal.thirdDegreeBurnRadius);
     expect(book.thermal.thirdDegreeBurnRadius).not.toBe(inPlace.thermal.thirdDegreeBurnRadius);
     // At 1 Mt the book asks more than 8 cal/cm² for a third-degree burn, so
     // the ring is smaller than the project's.
