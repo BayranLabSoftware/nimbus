@@ -126,7 +126,7 @@ export const DEFAULT_ENTRY_EQUATIONS: EntryEquations = 'program';
 export type BurstSpeed = 'paper' | 'program';
 
 /** What an airburst that names no burst speed uses. */
-export const DEFAULT_BURST_SPEED: BurstSpeed = 'paper';
+export const DEFAULT_BURST_SPEED: BurstSpeed = 'program';
 
 export interface AtmosphericEntryResult {
   /** Airburst altitude (m), Collins et al. Eq. 18; 0 when the body or

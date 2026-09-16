@@ -246,8 +246,9 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
           },
           {
             name: 'the seismic magnitude',
-            status: 'pending',
-            evidence: 'The two magnitudes have not been compared.',
+            status: 'met',
+            evidence:
+              "Read off the program's Mercalli rings: sixteen held-out bodies agree within 0.01 at all 45 rings (rules 154 to 157).",
           },
           {
             name: 'the impact tsunami',
@@ -288,7 +289,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         rule: 'G5',
         status: 'not met',
         evidence:
-          "426 failures in the sweep of 16 September 2026, which holds the wave a visitor is shown since rules 150 to 153; two are a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-15.json).",
+          "464 failures in the sweep of 16 September 2026; 38 are an airburst's magnitude falling as the body grows, as the program's does (rules 154 to 157), and two a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-17.json).",
       },
       G6,
       G7,

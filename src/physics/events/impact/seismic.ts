@@ -53,7 +53,7 @@ export function seismicMagnitude(energy: Joules, seismicEfficiency = SEISMIC_EFF
 export type ImpactSeismicSource = 'project' | 'program';
 
 /** What an impact that names no seismic source uses. */
-export const DEFAULT_IMPACT_SEISMIC_SOURCE: ImpactSeismicSource = 'project';
+export const DEFAULT_IMPACT_SEISMIC_SOURCE: ImpactSeismicSource = 'program';
 
 export interface ImpactSeismicEnergyInput {
   kineticEnergy: Joules;

@@ -1,0 +1,331 @@
+{
+ "rules": "src/physics/validation/impactSeismicRules.ts, rules 154 to 157",
+ "verdict": {
+  "bodies": 16,
+  "rings": 45,
+  "departs": 0,
+  "heldOutPasses": true
+ },
+ "bodies": [
+  {
+   "body": 1,
+   "candidateAirburst": true,
+   "programAirburst": true,
+   "candidateMagnitude": 4.493747865752858,
+   "ringsM": [
+    68493.4161781364,
+    20734.117557757272,
+    0,
+    0,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "neither",
+    "neither",
+    "neither"
+   ]
+  },
+  {
+   "body": 2,
+   "candidateAirburst": true,
+   "programAirburst": true,
+   "candidateMagnitude": 4.72322253889856,
+   "ringsM": [
+    116216.83776095019,
+    30370.577685056214,
+    0,
+    0,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "neither",
+    "neither",
+    "neither"
+   ]
+  },
+  {
+   "body": 3,
+   "candidateAirburst": true,
+   "programAirburst": true,
+   "candidateMagnitude": 4.894487190635727,
+   "ringsM": [
+    151834.29238011374,
+    37562.56371392578,
+    0,
+    0,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "neither",
+    "neither",
+    "neither"
+   ]
+  },
+  {
+   "body": 4,
+   "candidateAirburst": true,
+   "programAirburst": true,
+   "candidateMagnitude": 4.5894189271254175,
+   "ringsM": [
+    88390.03780371326,
+    24751.70461676799,
+    0,
+    0,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "neither",
+    "neither",
+    "neither"
+   ]
+  },
+  {
+   "body": 5,
+   "candidateAirburst": true,
+   "programAirburst": true,
+   "candidateMagnitude": 4.82809259617811,
+   "ringsM": [
+    138026.3402027646,
+    34774.41952426874,
+    0,
+    0,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "neither",
+    "neither",
+    "neither"
+   ]
+  },
+  {
+   "body": 6,
+   "candidateAirburst": true,
+   "programAirburst": true,
+   "candidateMagnitude": 4.774949108126571,
+   "ringsM": [
+    126974.18315624147,
+    32542.73396679773,
+    0,
+    0,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "neither",
+    "neither",
+    "neither"
+   ]
+  },
+  {
+   "body": 7,
+   "candidateAirburst": true,
+   "programAirburst": true,
+   "candidateMagnitude": 5.2376245411708195,
+   "ringsM": [
+    223195.66317386986,
+    51972.07127804961,
+    0,
+    0,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "neither",
+    "neither",
+    "neither"
+   ]
+  },
+  {
+   "body": 8,
+   "candidateAirburst": true,
+   "programAirburst": true,
+   "candidateMagnitude": 4.11095333907605,
+   "ringsM": [
+    46652.716353967444,
+    4659.308725651645,
+    0,
+    0,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "neither",
+    "neither",
+    "neither"
+   ]
+  },
+  {
+   "body": 9,
+   "candidateAirburst": false,
+   "programAirburst": false,
+   "candidateMagnitude": 8.43870065122594,
+   "ringsM": [
+    1681302.4612467864,
+    680947.6362970283,
+    265012.9321689481,
+    60415.94290205578,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "agrees",
+    "agrees",
+    "neither"
+   ]
+  },
+  {
+   "body": 10,
+   "candidateAirburst": false,
+   "programAirburst": false,
+   "candidateMagnitude": 8.559148751012728,
+   "ringsM": [
+    1987032.3831918822,
+    705996.9086659283,
+    290062.20453784795,
+    82094.85247380777,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "agrees",
+    "agrees",
+    "neither"
+   ]
+  },
+  {
+   "body": 11,
+   "candidateAirburst": false,
+   "programAirburst": false,
+   "candidateMagnitude": 5.436047927750718,
+   "ringsM": [
+    264461.25246333866,
+    60304.54603842313,
+    0,
+    0,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "neither",
+    "neither",
+    "neither"
+   ]
+  },
+  {
+   "body": 12,
+   "candidateAirburst": false,
+   "programAirburst": false,
+   "candidateMagnitude": 8.59256795818013,
+   "ringsM": [
+    2081311.0861141917,
+    712947.0126935028,
+    297012.30856542254,
+    89044.95650138233,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "agrees",
+    "agrees",
+    "neither"
+   ]
+  },
+  {
+   "body": 13,
+   "candidateAirburst": false,
+   "programAirburst": false,
+   "candidateMagnitude": 9.086385721458367,
+   "ringsM": [
+    4128740.4085332933,
+    1031354.432086271,
+    399710.2811965904,
+    191742.92913255023,
+    3627.630814467343
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "agrees",
+    "agrees",
+    "agrees"
+   ]
+  },
+  {
+   "body": 14,
+   "candidateAirburst": false,
+   "programAirburst": false,
+   "candidateMagnitude": 5.77638062719853,
+   "ringsM": [
+    335239.34279494477,
+    127271.99073090458,
+    0,
+    0,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "neither",
+    "neither",
+    "neither"
+   ]
+  },
+  {
+   "body": 15,
+   "candidateAirburst": false,
+   "programAirburst": false,
+   "candidateMagnitude": 8.946585826268471,
+   "ringsM": [
+    3400954.1220757784,
+    849554.2853397686,
+    370636.46717499854,
+    162669.11511095834,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "agrees",
+    "agrees",
+    "neither"
+   ]
+  },
+  {
+   "body": 16,
+   "candidateAirburst": false,
+   "programAirburst": false,
+   "candidateMagnitude": 8.736062243611201,
+   "ringsM": [
+    2539681.9836873566,
+    742789.1392709325,
+    326854.43514285213,
+    118887.08307881192,
+    0
+   ],
+   "agreements": [
+    "agrees",
+    "agrees",
+    "agrees",
+    "agrees",
+    "neither"
+   ]
+  }
+ ]
+}

@@ -111,9 +111,9 @@ describe('rule 154: the law read off the program', () => {
     expect(worst).toBeLessThan(0.0053);
   });
 
-  it('is not the default until rule 157 says so', () => {
-    expect(DEFAULT_IMPACT_SEISMIC_SOURCE).toBe('project');
-    expect(DEFAULT_BURST_SPEED).toBe('paper');
+  it('is the default since rule 157', () => {
+    expect(DEFAULT_IMPACT_SEISMIC_SOURCE).toBe('program');
+    expect(DEFAULT_BURST_SPEED).toBe('program');
   });
 });
 

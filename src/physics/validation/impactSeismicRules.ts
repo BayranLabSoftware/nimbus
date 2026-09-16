@@ -73,6 +73,43 @@
  * the program's.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the run of 16 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `dc0c09d` and the program asked afterwards
+ * (`benchmark/results/impact-seismic-eiep-2026-09-16.json`, scored in
+ * `impact-seismic-against-eiep-2026-09-16.json`). It answered all sixteen, and
+ * burst in the air the same eight the candidate bursts. **Every level
+ * agrees**: 45 rings, from 3.6 to 4 129 km, each read back within 9.1 × 10⁻⁷
+ * of the candidate's magnitude, and 35 levels where neither draws one. The
+ * release gate stays PASS.
+ *
+ * What moves. An airburst shakes: Tunguska at magnitude 4.70 (4.03 to 5.37
+ * across the seismic efficiency), Chelyabinsk at 4.24, Sikhote-Alin at 2.08 —
+ * whose entry is the paper's (rule 145), so its speed does not move — where
+ * each had none. An airburst keeps a little less speed at its burst altitude:
+ * Chelyabinsk 13.638 to 13.594 km/s, its blast 0.298 to 0.296 Mt, Tunguska's
+ * rings by 0.01 %; and the report's airburst overpressures against the program,
+ * which the blast takes from that speed, go from 0.999–1.003× to 1.000×.
+ * Nothing that reaches the ground moves. Two tests changed
+ * with it: the default's name, and B-011, which held an airburst's magnitude
+ * at zero.
+ *
+ * The sweep, in the same session (`invariants-2026-09-16-16.json` under the
+ * project's source and Eq. 19, `-17` under the program's): 426 and 464. The 38
+ * more are an airburst's magnitude falling, by a few ten-thousandths, when the
+ * body grows by 1 %: it bursts lower and keeps less of its energy. Asked on
+ * the first of them, the program's own rings fall the same way, 5.51187 to
+ * 5.51167 (`impact-seismic-monotone-eiep-2026-09-16.json`). Among the blast
+ * rings, which the burst speed moves, one more shrinks and one fewer jumps.
+ * Declared; it does not decide.
+ *
+ * `DEFAULT_IMPACT_SEISMIC_SOURCE` and `DEFAULT_BURST_SPEED` are `program`.
+ * I1's last clause holds, and I1 is met.
+ */
+
 import { atmosphericEntry, type BurstSpeed } from '../effects/atmosphericEntry.js';
 import {
   impactSeismicEnergy,

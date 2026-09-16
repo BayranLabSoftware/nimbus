@@ -215,10 +215,17 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(chicxulub.seismic.magnitude).toBeCloseTo(0.67 * Math.log10(E) - 5.87, 6);
     expect(chicxulub.seismic.magnitude).toBeGreaterThan(10);
     // An airburst delivers nothing to the ground, and Collins et al. give
-    // it no seismic effect.
+    // it no seismic effect; the Earth Impact Effects Program reads its
+    // magnitude from the energy the body keeps at its burst altitude, and
+    // since rule 157 of validation/impactSeismicRules.ts so does Nimbus.
     const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
     expect(tunguska.entry.energyFractionToGround).toBe(0);
-    expect(tunguska.seismic.magnitude).toBe(0);
+    const kept =
+      (tunguska.impactor.kineticEnergy as number) *
+      ((tunguska.entry.endVelocity as number) /
+        (IMPACT_PRESETS.TUNGUSKA.input.impactVelocity as number)) **
+        2;
+    expect(tunguska.seismic.magnitude).toBeCloseTo(0.67 * Math.log10(kept) - 5.87, 6);
   });
 
   it('B-012 Ejecta thickness uses the transient crater diameter', () => {

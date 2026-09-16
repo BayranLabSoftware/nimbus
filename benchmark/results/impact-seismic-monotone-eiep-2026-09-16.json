@@ -1,0 +1,71 @@
+{
+ "reference": "Earth Impact Effects Program, impact.ese.ic.ac.uk (Collins, Melosh & Marcus 2005)",
+ "readOn": "2026-09-16",
+ "asked": "after rules 154 to 157 were adopted: the first body the sweep of benchmark/results/invariants-2026-09-16-17.json found with a magnitude that falls as it grows, and the same body 1 % larger",
+ "rows": [
+  {
+   "key": "ex1-base",
+   "diameterM": 99.097471,
+   "densityKgM3": 3195.675254,
+   "velocityKmS": 51.718736,
+   "angleDeg": 33.203682,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": 786.53,
+   "seismicRadiiM": [
+    [
+     3.0,
+     280229.6742109845
+    ],
+    [
+     4.0,
+     72262.32214694435
+    ],
+    [
+     7.0,
+     0.0
+    ],
+    [
+     9.0,
+     0.0
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "key": "ex1-grown",
+   "diameterM": 100.088445,
+   "densityKgM3": 3195.675254,
+   "velocityKmS": 51.718736,
+   "angleDeg": 33.203682,
+   "rangeKm": 100,
+   "error": null,
+   "burstAltitudeM": 629.442,
+   "seismicRadiiM": [
+    [
+     3.0,
+     280188.88807574805
+    ],
+    [
+     4.0,
+     72221.53601170788
+    ],
+    [
+     7.0,
+     0.0
+    ],
+    [
+     9.0,
+     0.0
+    ],
+    [
+     12.0,
+     0.0
+    ]
+   ]
+  }
+ ]
+}
