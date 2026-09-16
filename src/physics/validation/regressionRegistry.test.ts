@@ -20,6 +20,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
+import { COMPLEX_DEPTH_COEFFICIENT, COMPLEX_DEPTH_EXPONENT } from '../events/impact/crater.js';
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/index.js';
 import { simulateExplosion } from '../events/explosion/simulate.js';
 import { NUCLEAR_CRATER_COEFFICIENT } from '../events/explosion/cratering.js';
@@ -229,10 +230,25 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // Pre-fix: d = 1.044·D^0.301 km (Pike's lunar complex-crater fit,
     // credited to Pike 1980) applied from 3.2 km: the depth jumped from
     // 627 m to 1 482 m at the transition, and Chicxulub came out 4.9 km.
+    //
+    // B-040, 16 September 2026: the fix landed on 0.4·D^0.3 and this test
+    // asserted it under the name "Collins Eq. 28". It is not Eq. 28 — it is
+    // Herrick et al.'s own Venus fit, and it made every complex crater 35 %
+    // too deep against the program that publishes Eq. 28. So the test was
+    // guarding the error its title denied. Eq. 28* is 0.294·D^0.301, and
+    // fitting the benchmark reference's own thirty-eight complex craters
+    // gives 0.2969·D^0.2991, which is that to three figures.
     const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
     const Dkm = (r.crater.finalDiameter as number) / 1000;
-    expect(r.crater.depth as number).toBeCloseTo(1000 * 0.4 * Dkm ** 0.3, 6);
+    expect(r.crater.depth as number).toBeCloseTo(
+      1000 * COMPLEX_DEPTH_COEFFICIENT * Dkm ** COMPLEX_DEPTH_EXPONENT,
+      6
+    );
+    expect(COMPLEX_DEPTH_COEFFICIENT).toBe(0.294);
+    expect(COMPLEX_DEPTH_EXPONENT).toBe(0.301);
     expect(r.crater.depth as number).toBeLessThan(2_000);
+    // And the lunar fit it was rescued from stays rejected.
+    expect(r.crater.depth as number).toBeLessThan(1000 * 1.044 * Dkm ** 0.301);
   });
 
   it('B-014 Stratospheric dust follows Toon et al. 1997 eq. 10, not a Table 3 anchor', () => {

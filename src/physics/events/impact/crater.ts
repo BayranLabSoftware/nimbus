@@ -117,13 +117,25 @@ export function finalCraterDiameter(
  *        d_fr = d_tc + h_fr − t_br                  (Eq. 26*)
  *     with D_tc = D_fr / 1.25 (Eq. 22* inverted), which makes the depth
  *     a fixed 0.213 of the diameter.
- *   - Complex craters (D_fr ≥ D_c): d_fr = 0.4 · D_fr^0.3, both in km
- *     (Eq. 28*) — the fit Herrick et al. (1997) made to fresh complex
- *     craters on Venus, whose gravity is close to Earth's; Collins et al.
- *     prefer it to terrestrial data, which are few and eroded.
+ *   - Complex craters (D_fr ≥ D_c): d_fr = 0.294 · D_fr^0.301, both in km
+ *     (Eq. 28*) — Collins et al.'s own fit, on the fresh complex craters
+ *     Herrick et al. (1997) measured on Venus, whose gravity is close to
+ *     Earth's; they prefer it to terrestrial data, which are few and eroded.
+ *
+ *     **Corrected on 16 September 2026 (B-040).** This branch read
+ *     d_fr = 0.4 · D_fr^0.3 and was credited to Eq. 28*, which is not what
+ *     Eq. 28* says: 0.4 · D^0.3 is Herrick et al.'s own Venus fit, carried
+ *     here from a source read only through Collins et al. It made every
+ *     complex crater 35 % too deep — 1.351× the program's own figure on the
+ *     thirty-eight distinct complex craters of the benchmark reference, none
+ *     of them within 1 %. The program's equation gives 0.997× with
+ *     twenty-four of the thirty-eight inside 1 %, the rest inside the two
+ *     decimals it prints kilometres to. Fitting the reference's own craters
+ *     gives 0.2969 · D^0.2991, which is Eq. 28* to three figures and is what
+ *     says the reading is right.
  *
  * The two branches do not join: at D_c = 3.2 km the simple rule gives
- * 681 m and the complex one 567 m.
+ * 681 m and the complex one 417 m.
  *
  * Source: Collins, Melosh & Marcus (2005), Meteoritics & Planetary
  * Science 40 (6), 817–840, Eqs. 22*–28*, 48*.
@@ -134,6 +146,12 @@ export function finalCraterDiameter(
  * These are fresh-crater depths; erosion and infill change what a real
  * crater preserves.
  */
+/** Eq. 28* of Collins et al. 2005, in kilometres: d_fr = 0.294 · D_fr^0.301.
+ *  Not 0.4 · D^0.3, which is Herrick et al.'s Venus fit and was here until
+ *  16 September 2026 (B-040). */
+export const COMPLEX_DEPTH_COEFFICIENT = 0.294;
+export const COMPLEX_DEPTH_EXPONENT = 0.301;
+
 export function craterDepth(
   diameter: Meters,
   transitionDiameter: Meters = SIMPLE_COMPLEX_TRANSITION_EARTH
@@ -149,5 +167,5 @@ export function craterDepth(
     const tbr = (2.8 * Vbr * (dtc + hfr)) / (dtc * Dfr ** 2);
     return m(dtc + hfr - tbr);
   }
-  return m(1000 * 0.4 * (Dfr / 1000) ** 0.3);
+  return m(1000 * COMPLEX_DEPTH_COEFFICIENT * (Dfr / 1000) ** COMPLEX_DEPTH_EXPONENT);
 }

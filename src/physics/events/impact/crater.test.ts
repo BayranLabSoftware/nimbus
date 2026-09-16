@@ -6,7 +6,13 @@ import {
   STANDARD_GRAVITY,
 } from '../../constants.js';
 import { deg, degreesToRadians, m as meters, mps } from '../../units.js';
-import { craterDepth, finalCraterDiameter, transientCraterDiameter } from './crater.js';
+import {
+  COMPLEX_DEPTH_COEFFICIENT,
+  COMPLEX_DEPTH_EXPONENT,
+  craterDepth,
+  finalCraterDiameter,
+  transientCraterDiameter,
+} from './crater.js';
 
 const FORTY_FIVE_DEG = degreesToRadians(deg(45));
 
@@ -106,29 +112,41 @@ describe('craterDepth (Collins et al. 2005)', () => {
     expect(craterDepth(D) as number).toBeCloseTo(212.8, 1);
   });
 
-  it('gives 0.4·D^0.3 km above the transition (Eq. 28, Herrick et al. 1997)', () => {
+  it('gives 0.294·D^0.301 km above the transition, which is Eq. 28*', () => {
+    // B-040, 16 September 2026: this read 0.4·D^0.3 and called it Eq. 28*.
+    // It is not — 0.4·D^0.3 is Herrick et al.'s own Venus fit, and it made
+    // every complex crater 35 % deeper than the program that publishes
+    // Eq. 28*. Fitting that program's own thirty-eight complex craters in
+    // validation/eiepReference.ts gives 0.2969·D^0.2991.
     const D = meters(100_000); // 100 km
-    expect(craterDepth(D) as number).toBeCloseTo(1000 * 0.4 * 100 ** 0.3, 6);
+    expect(craterDepth(D) as number).toBeCloseTo(
+      1000 * COMPLEX_DEPTH_COEFFICIENT * 100 ** COMPLEX_DEPTH_EXPONENT,
+      6
+    );
+    expect(craterDepth(D) as number).toBeLessThan(1000 * 0.4 * 100 ** 0.3);
   });
 
   it('drops, rather than jumps, across the 3.2 km transition', () => {
     const below = craterDepth(meters(3_199)) as number;
     const above = craterDepth(meters(3_200)) as number;
     expect(below).toBeCloseTo(681, 0);
-    expect(above).toBeCloseTo(567, 0);
+    expect(above).toBeCloseTo(417, 0);
+    expect(above).toBeLessThan(below);
   });
 
-  it('puts a fresh Chicxulub-size crater (≈ 180 km) at ≈ 1.9 km deep', () => {
+  it('puts a fresh Chicxulub-size crater (≈ 180 km) at ≈ 1.4 km deep', () => {
+    // 1.9 km until B-040, on the Venus fit.
     const depth = craterDepth(meters(180_000)) as number;
-    expect(depth).toBeCloseTo(1_900, -2);
+    expect(depth).toBeCloseTo(1_400, -2);
   });
 
   it('accepts a custom transition (e.g. Mars ≈ 7 km)', () => {
     const D = meters(4_000); // simple on Mars, complex on Earth
     const earthDepth = craterDepth(D, SIMPLE_COMPLEX_TRANSITION_EARTH) as number;
     const marsDepth = craterDepth(D, meters(7_000)) as number;
-    // Earth (complex): 0.4 × 4^0.3 km = 606 m. Mars (still simple): 0.213 × 4 000 = 851 m.
-    expect(earthDepth).toBeCloseTo(606, 0);
+    // Earth (complex): 0.294 × 4^0.301 km = 446 m. Mars (still simple):
+    // 0.213 × 4 000 = 851 m.
+    expect(earthDepth).toBeCloseTo(446, 0);
     expect(marsDepth).toBeCloseTo(851, 0);
   });
 

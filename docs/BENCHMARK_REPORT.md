@@ -525,6 +525,34 @@ epicentre at sea, though the radius Nimbus computes reaches the coast.
 | BM-18 | LAND | Source amplitude below Heller's band in about half the cases under the V^⅓ closure | Model-form difference / input mismatch | Low (closure-dependent) | `benchmark/results/landslide.json` |
 | BM-19 | UI | The open-water impact gate leaves `firestorm.sustainArea` (the printed firestorm area) untouched while zeroing the radii | Implementation defect | Low | Chicxulub (ocean variant) at sea |
 | BM-20 | UI | Megathrust presets print a liquefaction radius of 0 m (gate for an epicentre at sea) | Design choice to review | Low | Tōhoku 2011 at sea |
+| BM-21 | IMP | An impact's ground air blast answers the impact angle backwards: computed from the energy that reaches the ground, where an air blast comes from the energy deposited in the air, which a shallow entry leaves far more of. Of fourteen groups holding more than one angle at the same body, range and target, this model rises with a steeper impact in twelve and the program falls in twelve. This is the whole of the 0.24×–8.4× spread, and BM-02's "model-form difference" was the wrong classification for it | Implementation defect (sign) | Medium: the blast drives the toll | 100 m at 12 km/s from 100 km: 45° 1 390 Pa, 90° 2 030 Pa, against the program's 1 210 and 240 |
+
+### BM-21: what was tried on 16 September 2026, and what it gave
+
+The defect is diagnosed but not fixed. Four candidates were measured against
+the program's fifty-seven ground-impact overpressure points before the round
+was set aside, and none is a fix:
+
+| The blast source | bias | σ ln | within ×1.25 |
+| --- | --: | --: | --: |
+| Kinney & Graham on the ground energy (in place) | 1.466 | 0.650 | 16 % |
+| Collins Eq. 54 at zero height, on the ground energy | 1.352 | 0.450 | 32 % |
+| Collins Eq. 54 on the atmospheric energy | 0.116 | 1.903 | 14 % |
+| Collins Eq. 54 on the kinetic energy | 1.520 | 0.384 | 33 % |
+| Collins Eq. 54 on the atmospheric energy, burst at half the breakup altitude | 0.165 | 1.956 | 7 % |
+
+Two things the table says. Swapping the relation is not the fix: Eq. 54 on the
+same energy moves the bias from 1.47 to 1.35 and leaves every point outside
+1 %. And the energy the program's blast tracks most tightly is the **kinetic**
+energy, not the ground energy — the smallest scatter of the five, 0.384 — which
+is what would be expected if the blast came from the whole deposition and not
+from the part that reaches the ground. But kinetic energy has no angle
+dependence at all, and the program's overpressure falls with a steeper impact,
+so that is not the whole of it either. Inverting the program's own printed
+pressures for the energy they imply gives a scatter of about 1.0 in the log
+against either energy, so no single fraction reconciles them: what remains is
+the geometry of where along the path the energy goes, which is a model and not
+a constant.
 
 ## Deviations from the protocol
 
