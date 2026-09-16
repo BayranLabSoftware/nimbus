@@ -104,6 +104,15 @@ and by the size bands of the scorecard (`validation/scorecard.ts`).
 - Findings are listed with a reproducer and a classification: implementation
   defect, model-form difference, reference limitation, or input mismatch.
   None is fixed during the campaign.
+- **A guard on the invariants names the reading under the law in place, taken
+  in the same run as the candidate's, and never a count carried from another
+  day.** Added 16 September 2026, after rule 108 refused a candidate on a count
+  read at a commit three rounds earlier — two of which had changed a different
+  hazard's physics without re-reading the sweep. A count carried from another
+  day measures whatever else happened in between; a pair of readings taken
+  together measures the candidate, which is what such a guard is for. The
+  refusal it caused stands (see "The ash cloud's width"): this changes how the
+  next guard is written, not how that one was read.
 
 ## After the campaign: the airburst's blast (BM-02)
 
@@ -1412,3 +1421,43 @@ read as smaller. The solved edge is now held to its own limit. Under the law in
 place the sweep's volcano failures are the same six, in the same scenarios,
 with the same numbers as the day's reading — the line is inert where it stands
 and was fixed because it is wrong, not because it was in the way.
+
+### The same candidate again, to a baseline that is not stale (rules 110 to 113)
+
+Written on 16 September 2026 after the refusal above was committed and pushed
+(`05b1883`), and after Andrea was asked which of three ways to go and chose
+this one. **It is not a pre-registration and is not dressed as one**: the
+candidate's figures are in that commit, and they are why anyone would write
+these rules at all. The rules are in `src/physics/validation/ashRules.ts`
+beneath rules 106 to 109, whose text is not edited and whose verdict stands.
+
+What the round above got wrong was its arithmetic, not its judgement. Rule 108
+asked a real question — does this law break anything rule 19 watches? — and
+answered it with an absolute count read three rounds earlier. The Conduct
+section now carries the general form of the correction; these four rules are
+the particular one:
+
+- **110. The baseline.** The sweep under the law in place, 222 failures,
+  committed in `05b1883` as `benchmark/results/invariants-2026-09-16-1.json`
+  before this rule was written: impact 199, explosion 1, earthquake 16,
+  volcano 6, landslide 0.
+- **111. The candidate, unchanged to the constant.** Rule 107's closure exactly
+  as `05b1883` left it — C = 0.04, K = 5 138 m²/s, a threshold of 288 s,
+  isotropic, not added to the source width. `ashRules.test.ts` asserts each
+  constant and three values the closure returns, including the step at
+  Tephra2's own threshold, which is carried and not smoothed.
+- **112. What decides.** Rule 108's `improves()`, unchanged and still strict,
+  on the axis and across the wind alike; the release gate PASS; and the sweep
+  taken **again, with the candidate in place**, no worse than rule 110's 222.
+- **113. What an adoption does.** Makes `tephra2` the default, names the
+  closure in the methodology page and the report's declared gaps, and moves
+  V1's crosswind figure. It does not re-open rules 106 to 109, or any rule that
+  decided before (rules 5 and 6), though their printed figures may move
+  (rule 44).
+
+What a reader is owed, since this is not a pre-registration: three things
+checkable without trusting anybody — that the candidate is the one refused,
+which the test's constants pin; that the test of improvement is the same
+function, which the diff shows; and that the baseline is a file committed
+before this rule existed, which the history shows. The sweep with the candidate
+in place had not been run when this was written.

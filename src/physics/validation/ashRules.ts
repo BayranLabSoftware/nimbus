@@ -215,3 +215,112 @@ export function chooseAshSpread(input: {
     invariants,
   };
 }
+
+/**
+ * ===========================================================================
+ * The same candidate, to a baseline that is not stale (rules 110 to 113)
+ * ===========================================================================
+ *
+ * Written on 16 September 2026, after commit `05b1883` recorded the refusal
+ * above and pushed it. **This is not a pre-registration and must not be read
+ * as one**: the candidate's figures are in that commit, printed and committed,
+ * and they are the reason anyone would bother writing these rules. Saying so
+ * first is the only thing that makes the rest of it worth reading.
+ *
+ * What the round above got wrong was not its judgement but its arithmetic.
+ * Rule 108 asked a real question — does the candidate break anything rule 19
+ * watches? — and answered it with an absolute number, 221, read at commit
+ * `116dfdb` before the burn round (rules 80 to 84) and the radiation round
+ * (rules 85 to 89) changed the explosion's own physics. Neither of those
+ * re-read the sweep. So the bound measured the day's other work and not the
+ * candidate, and it refused a candidate that improved every figure it was
+ * actually pointed at.
+ *
+ * The refusal is not undone. It happened, it is in the protocol, in SCIENCE.md,
+ * in the gold standard, in `ashRules.test.ts` and in the history; rules 106 to
+ * 109 keep their verdict and their text is not edited. What follows is a
+ * second round, with its own number and its own verdict, run against a
+ * baseline that measures the right thing.
+ *
+ *  110. **The baseline, and how a baseline is named from here on.** Rule 19's
+ *       sweep under the law in place, 222 failures, committed in `05b1883` as
+ *       `benchmark/results/invariants-2026-09-16-1.json` before this rule was
+ *       written — impact 199, explosion 1, earthquake 16, volcano 6,
+ *       landslide 0. And the general form, which is the round above's real
+ *       lesson: **a guard on the invariants names the reading under the law in
+ *       place, taken in the same run as the candidate's, and never a count
+ *       carried from another day.** A count carried from another day measures
+ *       whatever else happened in between.
+ *
+ *  111. **The candidate, unchanged to the constant.** Rule 107's closure
+ *       exactly as `05b1883` left it: `tephra2DiffusionSigmaM` with C = 0.04,
+ *       K = 5 138 m²/s and a threshold of 288 s, isotropic, not added to the
+ *       source width. Not one constant moves, and `ashRules.test.ts` asserts
+ *       each of them and three values the closure returns, so a reader who
+ *       suspects the candidate was nudged to clear the guard can check rather
+ *       than trust. If any of it had to change, this would be a different
+ *       candidate and would need a different round. Including the part of it
+ *       that is ugly: Tephra2's two branches do not meet at their own
+ *       threshold — at 288 s the coarse branch is the wider — and the
+ *       candidate carries the step rather than smoothing it, because this is
+ *       a verification and a closure that agreed with the reference
+ *       everywhere except at its own threshold would be a different model
+ *       wearing its name.
+ *
+ *  112. **What decides.** Rule 108's `improves()`, unchanged and still strict:
+ *       on the wind axis and across it alike, the bias moves towards one, the
+ *       scatter falls and the share within a factor of two does not fall. The
+ *       release gate stays PASS. And the sweep is taken **again, with the
+ *       candidate in place**, and must come back no worse than rule 110's 222.
+ *       That last clause is what rule 108 was trying to ask: not "is the world
+ *       as good as it was on some other day" but "does this law break
+ *       anything".
+ *
+ *  113. **What an adoption does, and what it does not.** It makes `tephra2`
+ *       the default in `ashfall.ts`, names the closure and its constants in
+ *       the methodology page and in the report's declared gaps, and moves V1's
+ *       crosswind figure. It does not touch rules 106 to 109, whose refusal
+ *       stands as written; it does not re-open any rule that decided before
+ *       (rules 5 and 6), though their printed figures may move (rule 44); and
+ *       it does not make the ash agree with a deposit — Tephra2 is a model,
+ *       V3's ten published isopach maps are the rule that would read the
+ *       world, and that rule is still not measured.
+ *
+ * What a reader is owed, since this is not a pre-registration. Three things,
+ * each checkable without trusting anybody: that the candidate is the one that
+ * was refused, which the constants in the test pin; that the test of
+ * improvement is the same function, which the diff shows; and that the
+ * baseline is a file committed before this rule existed, which the history
+ * shows. If the answer had been no, it would have been no — the sweep with the
+ * candidate in place had not been run when this was written.
+ */
+
+/** Rule 110: the sweep under the law in place, in the same session as the
+ *  candidate's, committed in `05b1883` before this rule was written. */
+export const ASH2_BASELINE_INVARIANTS = 222;
+
+/** Rule 112: the sweep with the candidate in place may not be worse. */
+export function ashRoundTwoInvariantsPass(withCandidate: number): boolean {
+  return withCandidate <= ASH2_BASELINE_INVARIANTS;
+}
+
+/** Rule 112: whether the candidate is adopted, on a baseline that measures the
+ *  candidate rather than the calendar. */
+export function chooseAshSpreadAgain(input: {
+  axis: { before: AshReading; after: AshReading };
+  crosswind: { before: AshReading; after: AshReading };
+  gatePasses: boolean;
+  /** Rule 19's sweep taken with the candidate in place. */
+  invariantFailuresWithCandidate: number;
+}): { adopted: boolean; axis: boolean; crosswind: boolean; gate: boolean; invariants: boolean } {
+  const axis = improves(input.axis.before, input.axis.after);
+  const crosswind = improves(input.crosswind.before, input.crosswind.after);
+  const invariants = ashRoundTwoInvariantsPass(input.invariantFailuresWithCandidate);
+  return {
+    adopted: axis && crosswind && input.gatePasses && invariants,
+    axis,
+    crosswind,
+    gate: input.gatePasses,
+    invariants,
+  };
+}
