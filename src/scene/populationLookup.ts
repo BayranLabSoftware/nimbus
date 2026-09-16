@@ -694,8 +694,15 @@ function fineView(index: FineIndex, tiles: ReadonlyMap<string, FineTile>): GridV
   };
 }
 
-/** Sub-samples per axis for a cell the circle's edge crosses. */
+/** Sub-samples per axis for a cell the ring's edge crosses. Rules 94 to 97 of
+ *  physics/validation/ringCountRules.ts measured what this costs a circle
+ *  against a far finer count on the same raster; the polygon counter below
+ *  keeps it until a round measures that too. */
 const EDGE_SUBSAMPLES = 4;
+
+/** Sub-samples per axis for a cell a circle's edge crosses — what rules 94 to
+ *  97 decided, which is not the same number as the ring's above. */
+const CIRCLE_EDGE_SUBSAMPLES = 4;
 
 /**
  * People inside a circle on a grid. A cell wholly inside counts in
@@ -706,7 +713,13 @@ const EDGE_SUBSAMPLES = 4;
  * circle's area: a coastal cell's people live on its land, not on
  * the sea it also covers, so the share is capped at the whole cell.
  */
-function sumGridCircle(view: GridView, lat: number, lon: number, radiusM: number): number {
+function sumGridCircle(
+  view: GridView,
+  lat: number,
+  lon: number,
+  radiusM: number,
+  edgeSubsamples: number = CIRCLE_EDGE_SUBSAMPLES
+): number {
   const cellLatM = (view.cellDeg * Math.PI * EARTH_RADIUS_M) / 180;
   const cellLonM = cellLatM * Math.max(Math.cos((lat * Math.PI) / 180), 1e-6);
   const wrap = (c: number): number => ((c % view.nLon) + view.nLon) % view.nLon;
@@ -756,14 +769,14 @@ function sumGridCircle(view: GridView, lat: number, lon: number, radiusM: number
         continue;
       }
       let inside = 0;
-      for (let a = 0; a < EDGE_SUBSAMPLES; a++) {
-        const sLat = cellLat + ((a + 0.5) / EDGE_SUBSAMPLES - 0.5) * view.cellDeg;
-        for (let b = 0; b < EDGE_SUBSAMPLES; b++) {
-          const sLon = cellLon + ((b + 0.5) / EDGE_SUBSAMPLES - 0.5) * view.cellDeg;
+      for (let a = 0; a < edgeSubsamples; a++) {
+        const sLat = cellLat + ((a + 0.5) / edgeSubsamples - 0.5) * view.cellDeg;
+        for (let b = 0; b < edgeSubsamples; b++) {
+          const sLon = cellLon + ((b + 0.5) / edgeSubsamples - 0.5) * view.cellDeg;
           if (greatCircleM(lat, lon, sLat, sLon) <= radiusM) inside += 1;
         }
       }
-      sum += (people * inside) / (EDGE_SUBSAMPLES * EDGE_SUBSAMPLES);
+      sum += (people * inside) / (edgeSubsamples * edgeSubsamples);
     }
   }
   return sum;
@@ -1093,6 +1106,7 @@ export function _resetPopulationLookupCache(): void {
 
 /** Exposed for unit tests of the geometry helpers. */
 export const _internals = {
+  CIRCLE_EDGE_SUBSAMPLES,
   circleBoundingBox,
   landDensityAt,
   sumGridCircle,

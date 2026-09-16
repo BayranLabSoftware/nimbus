@@ -1118,3 +1118,47 @@ put Castle Bravo's crater at 0.89 km and Ivy Mike's at 0.80, where 92 puts
 them at 1.6 and 1.5, near the holes they left in the reef. Both numbers are
 printed side by side in the validation report. This is the first round where a
 rule had to say in advance that the book does not always win.
+
+## After the crater: how many people the rings actually hold
+
+Written on 16 September 2026. The rules are numbered after the ninety-three
+before them and live in `src/physics/validation/ringCountRules.ts` (rules 94 to
+97), with the run in `ringCountRun.ts`.
+
+### What is already known, and so not held out
+
+Every toll begins with a count: the people inside a circle on a raster. The
+cells are squares in degrees and the circle is a circle, so the cells its edge
+crosses are split into a 4 × 4 sub-grid and the sub-cells whose centres fall
+inside are counted. `populationLookup.ts` calls what that leaves behind "the
+±few-percent noise floor" and has never measured it.
+`docs/GOLD_STANDARD.md` asks (I4, and the same clause under every other letter)
+that the people inside each ring be counted within 5 % of an exact count on the
+same raster.
+
+This round's pre-registration is weaker than the three before it, and the rules
+say so in their own header: the set was counted once while they were being
+written, so what the count in place does was known before rule 97 was finished,
+and rule 97's guard about the release gate was added after that first count.
+It costs less here than it would anywhere else, because the reference is
+arithmetic on the very same cells rather than a measurement of the world —
+there is nothing to tune towards — but it is weaker, and it is said rather
+than hidden.
+
+### The circles, the reference and the decision
+
+Rule 94 builds the set from the raster by a fixed rule: the sixteen most
+populous cells of the shipped 0.125° planet, eight more drawn by a seeded
+generator, and four fixed geometric cases — the antimeridian, 70° N, the
+equator and an empty stretch of the southern ocean — each at radii from 20 to
+5 000 km. Circles narrower than one cell are counted apart and left out of the
+bar: the raster does not say where inside a cell its people live, so there is
+no exact answer to compare against. Rule 95's reference is the same geometry on
+the same cells with the edge cells split 48 × 48, checked for convergence
+against 96 × 96 on every fourth circle. Rule 96's bar is I4's own: every scored
+circle within 5 %, not the median. Rule 97 changes nothing if nothing misses;
+if anything misses, the candidate is the same arithmetic split 12 × 12, adopted
+only if it brings every circle inside, costs no more than three times the
+wall-clock of the set, and leaves the release gate passing. The polygon counter
+beside it, which scored rows depend on, keeps its 4 × 4 until a round measures
+that too.
