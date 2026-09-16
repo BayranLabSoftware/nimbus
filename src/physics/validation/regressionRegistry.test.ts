@@ -421,7 +421,10 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // 183 million people. Held to a count over every cell of the planet,
     // each decided as the counter decides a cell it looks at.
     const view = shippedCoarseView();
-    const { greatCircleM, sumGridCircle, EDGE_SUBSAMPLES } = _internals;
+    // The circle's own sub-grid, which rules 94 to 97 moved on 16 September
+    // 2026 from 4 to 12; B-026 is about the longitude window, not the
+    // sub-grid, so the reference here uses whatever the counter uses.
+    const { greatCircleM, sumGridCircle, CIRCLE_EDGE_SUBSAMPLES: EDGE_SUBSAMPLES } = _internals;
     const everyCell = (lat: number, lon: number, radiusM: number): number => {
       const cellLatM = (view.cellDeg * Math.PI * 6_371_000) / 180;
       let sum = 0;

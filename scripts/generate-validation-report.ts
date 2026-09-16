@@ -218,6 +218,7 @@ import { FIREBALL_READ_ON } from '../src/physics/validation/fireballSetData.js';
 import { runBurn, type BurnRunResult } from '../src/physics/validation/burnRun.js';
 import { runDose, type DoseRunResult } from '../src/physics/validation/doseRun.js';
 import { runCrater, type CraterRunResult } from '../src/physics/validation/craterRun.js';
+import { runRingCount, type RingCountRunResult } from '../src/physics/validation/ringCountRun.js';
 import { BURN_CURVE_YIELDS_KT } from '../src/physics/effects/burnExposureData.js';
 import { mulberry32 } from '../src/physics/montecarlo/sampling.js';
 import type { ProspectiveScore } from '../src/physics/validation/prospectiveRules.js';
@@ -2368,6 +2369,58 @@ function craterJson(run: CraterRunResult) {
   };
 }
 
+/** Rules 94 to 97: how many people the rings actually hold. */
+function ringCountSection(run: RingCountRunResult): string {
+  const pc = (x: number): string => `${(100 * x).toFixed(3)} %`;
+  const row = (label: string, r: RingCountRunResult['inPlace']): string =>
+    `| ${label} | ${r.scored.toString()} | ${pc(r.medianError)} | ${pc(r.ninetiethError)} | ${pc(r.worstError)} | ${r.meetsBar ? 'yes' : '**no**'} |`;
+  const worst = run.worstRows[0];
+  return [
+    `Every toll here begins with a count: the people inside a circle on a raster. The cells are squares in degrees and the circle is a circle, so the cells its edge crosses have to be split, and \`populationLookup.ts\` split them into a 4 × 4 sub-grid and called what that left behind "the ±few-percent noise floor" without measuring it. Rules 94 to 97 (\`validation/ringCountRules.ts\`) measure it, against a count of the very same cells with the edge cells split 48 × 48 — arithmetic, not the world, so what it can say is whether the footprint adds up and nothing about whether the raster knows where people live. The set is ${run.circles.toString()} circles built from the raster by a fixed rule: the sixteen most populous cells of the shipped ${run.raster.cellDeg.toString()}° planet, eight drawn by a seeded generator, and four geometric cases — the antimeridian, 70° N, the equator and an empty stretch of southern ocean — each at radii from 20 to 5 000 km. The reference is converged: at 96 × 96 it moves by at most ${pc(run.convergence.worst)}, over ${run.convergence.checked.toString()} of the circles.`,
+    '',
+    '| Sub-grid on an edge cell | Circles scored | Median | 90th | Worst | Every circle within 5 % |',
+    '|--------------------------|----:|----:|----:|----:|:--:|',
+    row('4 × 4, until 16 September 2026', run.inPlace),
+    row('12 × 12, adopted', run.candidate),
+    '',
+    `The count in place missed the bar docs/GOLD_STANDARD.md sets (I4, and the same clause under every other letter): ${pc(run.inPlace.worstError)} on a ${worst === undefined ? '20' : worst.radiusKm.toString()} km circle, where I4 asks 5 % of each ring and not of the median. The three worst were ${run.worstRows.map((r) => `${r.name} at ${r.radiusKm.toString()} km (${r.inPlace.toFixed(0)} against ${r.exact.toFixed(0)}, ${pc(r.error)})`).join('; ')}. Splitting the edge cells 12 × 12 brings every circle inside, at ${run.timeFactor.toFixed(2)}× the wall-clock of the set — the edge cells are a small share of a large circle — and the release gate stays PASS, so rule 97 adopts it. ${run.inPlace.belowACell.toString()} circles narrower than one cell are counted apart and scored by nobody: the raster does not say where inside a cell its people live, so there is no exact answer to compare against, and what the code does there is a model rather than an arithmetic. The polygon counter an extended rupture uses keeps its 4 × 4 until a round measures that too.`,
+  ].join('\n');
+}
+
+/** Rules 94 to 97 in the report's JSON. */
+function ringCountJson(run: RingCountRunResult) {
+  const reading = (r: RingCountRunResult['inPlace']) => ({
+    scored: r.scored,
+    belowACell: r.belowACell,
+    medianError: fixed(r.medianError, 6),
+    ninetiethError: fixed(r.ninetiethError, 6),
+    worstError: fixed(r.worstError, 6),
+    meetsBar: r.meetsBar,
+  });
+  return {
+    raster: run.raster,
+    circles: run.circles,
+    convergence: {
+      checked: run.convergence.checked,
+      worst: fixed(run.convergence.worst, 6),
+      passes: run.convergence.passes,
+    },
+    inPlace: reading(run.inPlace),
+    candidate: reading(run.candidate),
+    timeFactor: fixed(run.timeFactor, 3),
+    worstRows: run.worstRows.map((r) => ({
+      name: r.name,
+      latitude: fixed(r.latitude, 4),
+      longitude: fixed(r.longitude, 4),
+      radiusKm: r.radiusKm,
+      inPlace: fixed(r.inPlace, 1),
+      exact: fixed(r.exact, 1),
+      error: fixed(r.error, 6),
+    })),
+    decision: run.decision,
+  };
+}
+
 /** Rules 76 to 79 in the report's JSON. */
 function fireballJson(run: FireballRunResult) {
   const reading = (r: FireballReading) => ({
@@ -3407,6 +3460,7 @@ function main(): void {
   const burn = runBurn();
   const dose = runDose();
   const crater = runCrater();
+  const ringCount = runRingCount();
 
   const mode = selectMode();
   const decision = gate(replayAgg, goldenAgg, net, mode);
@@ -3534,6 +3588,10 @@ ${doseSection(dose)}
 ### The crater, from the numbers the book prints
 
 ${craterSection(crater)}
+
+### How many people the rings actually hold
+
+${ringCountSection(ringCount)}
 
 ### Which checks are validation
 
@@ -3838,6 +3896,7 @@ otherwise.
       burn: burnJson(burn),
       dose: doseJson(dose),
       crater: craterJson(crater),
+      ringCount: ringCountJson(ringCount),
       interfaceRules: {
         readOn: INTERFACE_SET_READ_ON,
         events: interfaceRules.events,

@@ -107,6 +107,10 @@ export const RING_COUNT_CONVERGENCE_SUBSAMPLES = 96;
 /** Rule 96: the bar I4 sets. */
 export const RING_COUNT_BAR = 0.05;
 
+/** What the product split an edge cell into before these rules were run —
+ *  kept so the report can always show what moved. */
+export const RING_COUNT_IN_PLACE_SUBSAMPLES = 4;
+
 /** Rule 97: the candidate's sub-grid, and the most time it may cost. */
 export const RING_COUNT_CANDIDATE_SUBSAMPLES = 12;
 export const RING_COUNT_TIME_FACTOR = 3;

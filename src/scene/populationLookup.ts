@@ -702,7 +702,7 @@ const EDGE_SUBSAMPLES = 4;
 
 /** Sub-samples per axis for a cell a circle's edge crosses — what rules 94 to
  *  97 decided, which is not the same number as the ring's above. */
-const CIRCLE_EDGE_SUBSAMPLES = 4;
+const CIRCLE_EDGE_SUBSAMPLES = 12;
 
 /**
  * People inside a circle on a grid. A cell wholly inside counts in

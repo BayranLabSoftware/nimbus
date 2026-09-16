@@ -1162,3 +1162,16 @@ only if it brings every circle inside, costs no more than three times the
 wall-clock of the set, and leaves the release gate passing. The polygon counter
 beside it, which scored rows depend on, keeps its 4 × 4 until a round measures
 that too.
+
+### The outcome, 16 September 2026
+
+Run once after the rules were pushed (`a4890d6`), with
+`pnpm exec tsx scripts/benchmark/ring-count.ts`. The reference converged: at
+96 × 96 it moves by at most 0.285 %, over 53 circles. **The count in place
+misses the bar.** It is a median 0.020 % from the reference, 1.03 % at the
+ninetieth percentile and 10.4 % at its worst, and I4 asks 5 % of each ring.
+Every one of the worst is a 20 km circle, where almost every cell the circle
+touches is an edge cell. **Adopted:** splitting the edge cells 12 × 12 brings
+every scored circle inside, worst 2.7 %, for 1.07 times the wall-clock of the
+set, and the release gate stays PASS. The polygon counter keeps its 4 × 4, and
+measuring it is the obvious next round.

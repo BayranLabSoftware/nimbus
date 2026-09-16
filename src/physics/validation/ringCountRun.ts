@@ -7,6 +7,7 @@ import {
   RING_COUNT_CONVERGENCE_SUBSAMPLES,
   RING_COUNT_DRAWN,
   RING_COUNT_EXACT_SUBSAMPLES,
+  RING_COUNT_IN_PLACE_SUBSAMPLES,
   RING_COUNT_MOST_POPULOUS,
   RING_COUNT_RADII_M,
   type RingCountReading,
@@ -154,7 +155,13 @@ export function runRingCount(): RingCountRunResult {
         RING_COUNT_EXACT_SUBSAMPLES
       );
       const t0 = performance.now();
-      const inPlace = _internals.sumGridCircle(view, centre.latitude, centre.longitude, radiusM);
+      const inPlace = exactCircleCount(
+        view,
+        centre.latitude,
+        centre.longitude,
+        radiusM,
+        RING_COUNT_IN_PLACE_SUBSAMPLES
+      );
       inPlaceMs += performance.now() - t0;
       const t1 = performance.now();
       const candidate = exactCircleCount(

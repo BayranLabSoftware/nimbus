@@ -2034,6 +2034,54 @@ one change that could keep the records and the narrower band together, and it
 was not tried; neither was the shorter range, 8.5 km, which averages more
 still. The prospective set of rules 27 to 30 will read whatever is in place.
 
+### How many people the rings actually hold (16 September 2026)
+
+`validation/ringCountRules.ts` (rules 94 to 97), `validation/ringCountRun.ts`.
+Every toll this project prints begins with a count: the people inside a circle
+on a raster. The raster's cells are squares in degrees and the circle is a
+circle, so the cells its edge crosses have to be split. Nimbus split them into
+a 4 × 4 sub-grid and counted the sub-cells whose centres fell inside, and the
+module's own header called what that left behind "the ±few-percent noise floor"
+without ever measuring it. `docs/GOLD_STANDARD.md` asks (I4, and the same
+clause under every other letter) for 5 % of an exact count on the same raster.
+
+It was not within 5 %. On a set of 224 circles built from the raster by a fixed
+rule — the sixteen most populous cells of the shipped 0.125° planet, eight
+drawn by a seeded generator, and four geometric cases at the antimeridian, 70°
+N, the equator and an empty stretch of southern ocean, each at radii from 20 to
+5 000 km — the count in place is a median 0.020 % from a count of the very same
+cells with the edge cells split 48 × 48, but 1.03 % at the ninetieth percentile
+and 10.4 % at its worst. The worst are all 20 km circles, where almost every
+cell the circle touches is an edge cell: a drawn centre in Mongolia counted 21
+people where 19 live there, one in Kenya 5 394 against 5 017, and a 20 km
+circle on the equator in Uganda 289 891 against 271 455.
+
+Splitting the edge cells 12 × 12 brings every scored circle inside — worst
+2.7 % — for 1.07 times the wall-clock of the whole set, because the edge cells
+are a small share of a large circle and a large circle is where the time goes.
+The release gate stays PASS, so rule 97 adopts it. Ten circles narrower than
+one cell of the raster are counted apart and scored by nobody: the raster does
+not say where inside a cell its people live, so there is no exact answer to
+compare against, and what the code does there — the cell's land density times
+the circle's area — is a model rather than an arithmetic.
+
+Two things this does not say. It is a verification and not a validation: the
+reference shares every assumption of the thing it checks — that a cell's people
+are spread evenly over its land, that a great-circle distance is the right
+distance — so if a cell's people are all in one corner, both counts are wrong
+together and this says nothing at all. And it touches only the circle. The
+polygon counter an extended rupture uses splits its own edge cells 4 × 4 too,
+scored rows depend on it, and no round has measured it: it keeps its number
+until one does.
+
+This round's pre-registration is weaker than the three before it, and the rules
+say so in their own header. The set was counted once while they were being
+written, so what the count in place does was known before rule 97 was finished,
+and rule 97's guard about the release gate was added after that first count.
+The reference is arithmetic on the very same cells rather than a measurement of
+the world — there is nothing to tune towards — but it is weaker, and a reader
+should weigh it as one.
+
 ### The crater, from the numbers the book prints (16 September 2026)
 
 `validation/craterRules.ts` (rules 90 to 93), `validation/craterRun.ts`,

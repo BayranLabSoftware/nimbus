@@ -43,10 +43,10 @@
         "recorded": 309,
         "recordedLow": 309,
         "recordedHigh": 309,
-        "model": 43,
+        "model": 42,
         "bandLow": 2,
-        "bandHigh": 4642,
-        "ratio": 0.139,
+        "bandHigh": 4693,
+        "ratio": 0.136,
         "contains": true,
         "gated": false,
         "cause": null,
@@ -60,7 +60,7 @@
         "recordedHigh": 299,
         "model": 1,
         "bandLow": 0,
-        "bandHigh": 236,
+        "bandHigh": 235,
         "ratio": 0.003,
         "contains": false,
         "gated": false,
@@ -103,10 +103,10 @@
         "recorded": 57,
         "recordedLow": 57,
         "recordedHigh": 57,
-        "model": 265,
-        "bandLow": 120,
-        "bandHigh": 692,
-        "ratio": 4.649,
+        "model": 278,
+        "bandLow": 115,
+        "bandHigh": 701,
+        "ratio": 4.877,
         "contains": false,
         "gated": false,
         "cause": "occupancy",
@@ -118,10 +118,10 @@
         "recorded": 847,
         "recordedLow": 847,
         "recordedHigh": 847,
-        "model": 82,
+        "model": 81,
         "bandLow": 32,
-        "bandHigh": 312,
-        "ratio": 0.097,
+        "bandHigh": 309,
+        "ratio": 0.096,
         "contains": false,
         "gated": false,
         "cause": "mechanismNotModelled",
@@ -133,10 +133,10 @@
         "recorded": 105000,
         "recordedLow": 70000,
         "recordedHigh": 140000,
-        "model": 115748,
-        "bandLow": 107512,
-        "bandHigh": 129492,
-        "ratio": 1.102,
+        "model": 117299,
+        "bandLow": 105751,
+        "bandHigh": 130702,
+        "ratio": 1.117,
         "contains": true,
         "gated": false,
         "cause": "populationChanged",
@@ -193,10 +193,10 @@
         "recorded": 273,
         "recordedLow": 49,
         "recordedHigh": 273,
-        "model": 198,
+        "model": 199,
         "bandLow": 0,
-        "bandHigh": 19404,
-        "ratio": 0.725,
+        "bandHigh": 20251,
+        "ratio": 0.729,
         "contains": true,
         "gated": false,
         "cause": null,
@@ -223,9 +223,9 @@
         "recorded": 0,
         "recordedLow": 0,
         "recordedHigh": 0,
-        "model": 135,
+        "model": 129,
         "bandLow": 0,
-        "bandHigh": 36916,
+        "bandHigh": 37746,
         "ratio": 9007199254740991,
         "contains": true,
         "gated": false,
@@ -240,7 +240,7 @@
         "recordedHigh": 51,
         "model": 15,
         "bandLow": 0,
-        "bandHigh": 1833,
+        "bandHigh": 1823,
         "ratio": 0.294,
         "contains": true,
         "gated": false,
@@ -253,10 +253,10 @@
         "recorded": 430,
         "recordedLow": 201,
         "recordedHigh": 445,
-        "model": 187,
-        "bandLow": 14,
-        "bandHigh": 304,
-        "ratio": 0.435,
+        "model": 139,
+        "bandLow": 41,
+        "bandHigh": 697,
+        "ratio": 0.323,
         "contains": true,
         "gated": false,
         "cause": null,
@@ -583,7 +583,7 @@
           "bothZero": 1,
           "falseAlarms": 1,
           "missedToZero": 1,
-          "medianBandDecades": 3.31
+          "medianBandDecades": 3.32
         }
       },
       {
@@ -605,8 +605,8 @@
         "all": {
           "rows": 5,
           "scored": 4,
-          "bias": 0.0293,
-          "scatterLn": 1.96,
+          "bias": 0.0292,
+          "scatterLn": 1.95,
           "inside": 3,
           "bothZero": 0,
           "falseAlarms": 1,
@@ -628,18 +628,18 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 4.29
+          "medianBandDecades": 4.31
         },
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 0.607,
+          "bias": 0.609,
           "scatterLn": 0.18,
           "inside": 2,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 3.3
+          "medianBandDecades": 3.31
         }
       },
       {
@@ -689,13 +689,13 @@
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 2.69,
+          "bias": 2.71,
           "scatterLn": 0.89,
           "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.08
+          "medianBandDecades": 0.09
         }
       },
       {
@@ -751,7 +751,7 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.08
+          "medianBandDecades": 0.09
         }
       },
       {
@@ -762,24 +762,24 @@
         "heldOut": {
           "rows": 3,
           "scored": 3,
-          "bias": 0.214,
-          "scatterLn": 0.62,
+          "bias": 0.193,
+          "scatterLn": 0.51,
           "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.99
+          "medianBandDecades": 0.98
         },
         "all": {
           "rows": 4,
           "scored": 4,
-          "bias": 0.462,
-          "scatterLn": 1.44,
+          "bias": 0.433,
+          "scatterLn": 1.47,
           "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.87
+          "medianBandDecades": 0.88
         }
       },
       {
@@ -790,24 +790,24 @@
         "heldOut": {
           "rows": 2,
           "scored": 2,
-          "bias": 0.318,
-          "scatterLn": 0.31,
+          "bias": 0.274,
+          "scatterLn": 0.16,
           "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.79
+          "medianBandDecades": 0.74
         },
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 0.318,
-          "scatterLn": 0.31,
+          "bias": 0.274,
+          "scatterLn": 0.16,
           "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.79
+          "medianBandDecades": 0.74
         }
       },
       {
@@ -835,7 +835,7 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.76
+          "medianBandDecades": 0.79
         }
       },
       {
@@ -852,7 +852,7 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.99
+          "medianBandDecades": 0.98
         },
         "all": {
           "rows": 1,
@@ -863,7 +863,7 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.99
+          "medianBandDecades": 0.98
         }
       },
       {
@@ -1297,26 +1297,26 @@
           {
             "sizeBand": "Mw < 6.5",
             "rows": 133,
-            "scored": 68,
-            "bias": 1.7,
+            "scored": 67,
+            "bias": 1.72,
             "scatterLn": 2.16,
             "inside": 121,
             "bothZero": 24,
             "falseAlarms": 23,
-            "missedToZero": 18,
+            "missedToZero": 19,
             "medianBandDecades": 2.78
           },
           {
             "sizeBand": "Mw 6.5–7.5",
             "rows": 115,
-            "scored": 54,
-            "bias": 0.984,
-            "scatterLn": 2.2,
+            "scored": 53,
+            "bias": 1.07,
+            "scatterLn": 2.13,
             "inside": 108,
-            "bothZero": 28,
-            "falseAlarms": 15,
-            "missedToZero": 18,
-            "medianBandDecades": 2.64
+            "bothZero": 29,
+            "falseAlarms": 14,
+            "missedToZero": 19,
+            "medianBandDecades": 2.65
           },
           {
             "sizeBand": "Mw ≥ 7.5",
@@ -1336,25 +1336,25 @@
             "sizeBand": "Mw < 6.5",
             "rows": 131,
             "scored": 51,
-            "bias": 0.698,
-            "scatterLn": 2.22,
+            "bias": 0.7,
+            "scatterLn": 2.21,
             "inside": 119,
             "bothZero": 34,
             "falseAlarms": 11,
             "missedToZero": 35,
-            "medianBandDecades": 2.27
+            "medianBandDecades": 2.31
           },
           {
             "sizeBand": "Mw 6.5–7.5",
             "rows": 107,
-            "scored": 36,
-            "bias": 0.233,
-            "scatterLn": 2.27,
+            "scored": 37,
+            "bias": 0.225,
+            "scatterLn": 2.25,
             "inside": 96,
-            "bothZero": 30,
-            "falseAlarms": 5,
-            "missedToZero": 36,
-            "medianBandDecades": 2.12
+            "bothZero": 31,
+            "falseAlarms": 4,
+            "missedToZero": 35,
+            "medianBandDecades": 2.11
           },
           {
             "sizeBand": "Mw ≥ 7.5",
@@ -1492,19 +1492,19 @@
       },
       "chains": {
         "inPlace": {
-          "peopleScore": 1.761,
+          "peopleScore": 1.759,
           "people": [
             {
               "level": 7,
               "sizeBand": "Mw < 6.5",
               "pairs": 54,
-              "bias": -1.378
+              "bias": -1.374
             },
             {
               "level": 7,
               "sizeBand": "Mw 6.5–7.5",
               "pairs": 49,
-              "bias": -2.149
+              "bias": -2.15
             },
             {
               "level": 7,
@@ -1516,13 +1516,13 @@
               "level": 8,
               "sizeBand": "Mw < 6.5",
               "pairs": 29,
-              "bias": -0.923
+              "bias": -0.922
             },
             {
               "level": 8,
               "sizeBand": "Mw 6.5–7.5",
               "pairs": 26,
-              "bias": -2.067
+              "bias": -2.059
             },
             {
               "level": 8,
@@ -1552,13 +1552,13 @@
           "tolls": [
             {
               "sizeBand": "Mw < 6.5",
-              "bias": 1.486,
+              "bias": 1.538,
               "inside": 120,
               "rows": 131
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "bias": 0.331,
+              "bias": 0.329,
               "inside": 106,
               "rows": 112
             },
@@ -1570,25 +1570,25 @@
             }
           ],
           "shakemapScore": 0.971,
-          "tollAgainstPager": 0.3,
+          "tollAgainstPager": 0.298,
           "alertAgreement": 0.658,
           "rule28Score": 0.116,
           "rule28Sharpness": 0.346
         },
         "pager": {
-          "peopleScore": 0.627,
+          "peopleScore": 0.625,
           "people": [
             {
               "level": 7,
               "sizeBand": "Mw < 6.5",
               "pairs": 56,
-              "bias": -0.651
+              "bias": -0.644
             },
             {
               "level": 7,
               "sizeBand": "Mw 6.5–7.5",
               "pairs": 53,
-              "bias": -0.982
+              "bias": -0.984
             },
             {
               "level": 7,
@@ -1600,13 +1600,13 @@
               "level": 8,
               "sizeBand": "Mw < 6.5",
               "pairs": 33,
-              "bias": -0.171
+              "bias": -0.164
             },
             {
               "level": 8,
               "sizeBand": "Mw 6.5–7.5",
               "pairs": 33,
-              "bias": -0.12
+              "bias": -0.125
             },
             {
               "level": 8,
@@ -1624,7 +1624,7 @@
               "level": 9,
               "sizeBand": "Mw 6.5–7.5",
               "pairs": 8,
-              "bias": -0.665
+              "bias": -0.653
             },
             {
               "level": 9,
@@ -1636,13 +1636,13 @@
           "tolls": [
             {
               "sizeBand": "Mw < 6.5",
-              "bias": 1.166,
+              "bias": 1.152,
               "inside": 127,
               "rows": 136
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "bias": 0.501,
+              "bias": 0.497,
               "inside": 119,
               "rows": 125
             },
@@ -1654,8 +1654,8 @@
             }
           ],
           "shakemapScore": 1.131,
-          "tollAgainstPager": 0.329,
-          "alertAgreement": 0.684,
+          "tollAgainstPager": 0.323,
+          "alertAgreement": 0.69,
           "rule28Score": 0.203,
           "rule28Sharpness": 0.377
         },
@@ -1666,13 +1666,13 @@
               "level": 7,
               "sizeBand": "Mw < 6.5",
               "pairs": 56,
-              "bias": -0.319
+              "bias": -0.315
             },
             {
               "level": 7,
               "sizeBand": "Mw 6.5–7.5",
               "pairs": 52,
-              "bias": -1.146
+              "bias": -1.144
             },
             {
               "level": 7,
@@ -1684,13 +1684,13 @@
               "level": 8,
               "sizeBand": "Mw < 6.5",
               "pairs": 41,
-              "bias": 0.4
+              "bias": 0.41
             },
             {
               "level": 8,
               "sizeBand": "Mw 6.5–7.5",
               "pairs": 31,
-              "bias": -0.419
+              "bias": -0.417
             },
             {
               "level": 8,
@@ -1720,13 +1720,13 @@
           "tolls": [
             {
               "sizeBand": "Mw < 6.5",
-              "bias": 1.52,
+              "bias": 1.519,
               "inside": 128,
               "rows": 136
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "bias": 0.345,
+              "bias": 0.348,
               "inside": 113,
               "rows": 118
             },
@@ -1738,25 +1738,25 @@
             }
           ],
           "shakemapScore": 0.971,
-          "tollAgainstPager": 0.367,
+          "tollAgainstPager": 0.371,
           "alertAgreement": 0.684,
           "rule28Score": 0.116,
           "rule28Sharpness": 0.346
         },
         "pgvWithRings": {
-          "peopleScore": 1.491,
+          "peopleScore": 1.492,
           "people": [
             {
               "level": 7,
               "sizeBand": "Mw < 6.5",
               "pairs": 53,
-              "bias": -1.866
+              "bias": -1.869
             },
             {
               "level": 7,
               "sizeBand": "Mw 6.5–7.5",
               "pairs": 49,
-              "bias": -2.005
+              "bias": -2.003
             },
             {
               "level": 7,
@@ -1768,13 +1768,13 @@
               "level": 8,
               "sizeBand": "Mw < 6.5",
               "pairs": 26,
-              "bias": -1.514
+              "bias": -1.516
             },
             {
               "level": 8,
               "sizeBand": "Mw 6.5–7.5",
               "pairs": 26,
-              "bias": -1.894
+              "bias": -1.905
             },
             {
               "level": 8,
@@ -1804,13 +1804,13 @@
           "tolls": [
             {
               "sizeBand": "Mw < 6.5",
-              "bias": 1.006,
+              "bias": 1.009,
               "inside": 117,
               "rows": 131
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "bias": 0.441,
+              "bias": 0.44,
               "inside": 107,
               "rows": 114
             },
@@ -1822,7 +1822,7 @@
             }
           ],
           "shakemapScore": 1.131,
-          "tollAgainstPager": 0.275,
+          "tollAgainstPager": 0.256,
           "alertAgreement": 0.663,
           "rule28Score": 0.203,
           "rule28Sharpness": 0.377
@@ -1866,9 +1866,9 @@
         "missing": 1
       },
       "score": {
-        "none": 1.185,
-        "midBand": 1.254,
-        "pager": 1.19
+        "none": 1.187,
+        "midBand": 1.251,
+        "pager": 1.199
       },
       "held": {
         "none": 261,
@@ -1974,7 +1974,7 @@
       },
       "besideRecorded": {
         "epicentral": {
-          "score": 1.08,
+          "score": 1.083,
           "held": 116,
           "rows": 129
         },
@@ -2165,8 +2165,8 @@
           "quiet": true
         },
         "tollLogBias": {
-          "inPlace": 0.722,
-          "winner": 0.372
+          "inPlace": 0.735,
+          "winner": 0.369
         },
         "inside": {
           "inPlace": [
@@ -2214,11 +2214,11 @@
       },
       "readings": {
         "boore2014": {
-          "score": 0.627,
+          "score": 0.631,
           "held": 139,
           "cells": [
             {
-              "bias": 4.697,
+              "bias": 4.673,
               "inside": 25,
               "rows": 67
             },
@@ -2235,7 +2235,7 @@
           ]
         },
         "allenMidBand": {
-          "score": 0.612,
+          "score": 0.61,
           "held": 164,
           "cells": [
             {
@@ -2249,7 +2249,7 @@
               "rows": 18
             },
             {
-              "bias": 3.888,
+              "bias": 3.6,
               "inside": 17,
               "rows": 17
             }
@@ -2284,7 +2284,7 @@
       "guards": null,
       "beside": {
         "allenNone": {
-          "score": 0.57,
+          "score": 0.571,
           "held": 128,
           "cells": [
             {
@@ -2305,11 +2305,11 @@
           ]
         },
         "booreMidBand": {
-          "score": 0.705,
+          "score": 0.702,
           "held": 172,
           "cells": [
             {
-              "bias": 4.054,
+              "bias": 3.972,
               "inside": 92,
               "rows": 111
             },
@@ -2319,18 +2319,18 @@
               "rows": 18
             },
             {
-              "bias": 3.888,
+              "bias": 3.6,
               "inside": 17,
               "rows": 17
             }
           ]
         },
         "boorePager": {
-          "score": 0.623,
+          "score": 0.619,
           "held": 170,
           "cells": [
             {
-              "bias": 2.586,
+              "bias": 2.506,
               "inside": 87,
               "rows": 108
             },
@@ -2442,7 +2442,7 @@
         "winner": "abrahamson2016Slab",
         "adopted": true,
         "inPlace": {
-          "score": 1.091,
+          "score": 1.097,
           "held": 58,
           "rows": 62,
           "cells": [
@@ -2540,20 +2540,20 @@
       "readings": {
         "rule11": {
           "inPlace": {
-            "intervalScore": 2.101,
+            "intervalScore": 2.102,
             "held": 258,
             "rows": 278,
-            "medianWidthDecades": 2.52,
+            "medianWidthDecades": 2.518,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 2.791,
+                "intervalScore": 2.789,
                 "held": 120,
                 "rows": 131
               },
               {
                 "group": "Mw 6.5–7.5",
-                "intervalScore": 1.585,
+                "intervalScore": 1.588,
                 "held": 106,
                 "rows": 112
               },
@@ -2566,10 +2566,10 @@
             ]
           },
           "candidate": {
-            "intervalScore": 2.145,
-            "held": 241,
+            "intervalScore": 2.138,
+            "held": 242,
             "rows": 269,
-            "medianWidthDecades": 2.36,
+            "medianWidthDecades": 2.354,
             "cells": [
               {
                 "group": "Mw < 6.5",
@@ -2579,13 +2579,13 @@
               },
               {
                 "group": "Mw 6.5–7.5",
-                "intervalScore": 1.641,
-                "held": 97,
+                "intervalScore": 1.627,
+                "held": 98,
                 "rows": 108
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 2.125,
+                "intervalScore": 2.126,
                 "held": 27,
                 "rows": 31
               }
@@ -2611,7 +2611,7 @@
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 2.139,
+                "intervalScore": 2.138,
                 "held": 32,
                 "rows": 35
               }
@@ -2620,14 +2620,14 @@
         },
         "rule45": {
           "inPlace": {
-            "intervalScore": 3.372,
+            "intervalScore": 3.368,
             "held": 210,
             "rows": 247,
-            "medianWidthDecades": 2.78,
+            "medianWidthDecades": 2.782,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.372,
+                "intervalScore": 3.368,
                 "held": 210,
                 "rows": 247
               },
@@ -2646,16 +2646,16 @@
             ]
           },
           "candidate": {
-            "intervalScore": 3.345,
-            "held": 200,
-            "rows": 245,
-            "medianWidthDecades": 2.737,
+            "intervalScore": 3.339,
+            "held": 201,
+            "rows": 246,
+            "medianWidthDecades": 2.736,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.345,
-                "held": 200,
-                "rows": 245
+                "intervalScore": 3.339,
+                "held": 201,
+                "rows": 246
               },
               {
                 "group": "Mw 6.5–7.5",
@@ -2672,14 +2672,14 @@
             ]
           },
           "beside": {
-            "intervalScore": 3.501,
+            "intervalScore": 3.504,
             "held": 208,
             "rows": 249,
-            "medianWidthDecades": 2.895,
+            "medianWidthDecades": 2.897,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.501,
+                "intervalScore": 3.504,
                 "held": 208,
                 "rows": 249
               },
@@ -2700,14 +2700,14 @@
         },
         "rule61": {
           "inPlace": {
-            "intervalScore": 3.741,
+            "intervalScore": 3.742,
             "held": 41,
             "rows": 96,
             "medianWidthDecades": 0,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.183,
+                "intervalScore": 3.184,
                 "held": 25,
                 "rows": 67
               },
@@ -2726,14 +2726,14 @@
             ]
           },
           "candidate": {
-            "intervalScore": 3.775,
+            "intervalScore": 3.774,
             "held": 40,
             "rows": 97,
             "medianWidthDecades": 0,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.273,
+                "intervalScore": 3.272,
                 "held": 24,
                 "rows": 68
               },
@@ -2745,27 +2745,27 @@
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 3.277,
+                "intervalScore": 3.276,
                 "held": 14,
                 "rows": 16
               }
             ]
           },
           "beside": {
-            "intervalScore": 3.761,
+            "intervalScore": 3.764,
             "held": 41,
             "rows": 96,
             "medianWidthDecades": 0,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.188,
+                "intervalScore": 3.19,
                 "held": 25,
                 "rows": 67
               },
               {
                 "group": "Mw 6.5–7.5",
-                "intervalScore": 7.774,
+                "intervalScore": 7.787,
                 "held": 2,
                 "rows": 13
               },
@@ -3594,14 +3594,14 @@
           "record": 105000,
           "gated": false,
           "inPlace": [
-            107004,
-            113594,
-            129200
+            104653,
+            115954,
+            129745
           ],
           "candidate": [
-            107512,
-            115748,
-            129492
+            105751,
+            117299,
+            130702
           ],
           "insideInPlace": true,
           "insideCandidate": true
@@ -4103,6 +4103,70 @@
         "order": true
       }
     },
+    "ringCount": {
+      "raster": {
+        "cellDeg": 0.125,
+        "nLon": 2880,
+        "nLat": 1440
+      },
+      "circles": 224,
+      "convergence": {
+        "checked": 53,
+        "worst": 0.002851,
+        "passes": true
+      },
+      "inPlace": {
+        "scored": 214,
+        "belowACell": 10,
+        "medianError": 0.000203,
+        "ninetiethError": 0.010259,
+        "worstError": 0.10425,
+        "meetsBar": false
+      },
+      "candidate": {
+        "scored": 214,
+        "belowACell": 10,
+        "medianError": 0.000034,
+        "ninetiethError": 0.001441,
+        "worstError": 0.02732,
+        "meetsBar": true
+      },
+      "timeFactor": 1.073,
+      "worstRows": [
+        {
+          "name": "drawn 6",
+          "latitude": 46.5625,
+          "longitude": 106.0625,
+          "radiusKm": 20,
+          "inPlace": 21.2,
+          "exact": 19.2,
+          "error": 0.10425
+        },
+        {
+          "name": "drawn 8",
+          "latitude": 2.1875,
+          "longitude": 40.4375,
+          "radiusKm": 20,
+          "inPlace": 5394.1,
+          "exact": 5017,
+          "error": 0.075158
+        },
+        {
+          "name": "equator",
+          "latitude": 0.0625,
+          "longitude": 32.0625,
+          "radiusKm": 20,
+          "inPlace": 289891.5,
+          "exact": 271455.3,
+          "error": 0.067916
+        }
+      ],
+      "decision": {
+        "changes": true,
+        "adopted": true,
+        "reason": "the finer sub-grid brings every circle inside the bar within the time budget"
+      }
+    },
     "interfaceRules": {
       "readOn": "2026-09-15",
       "events": {
@@ -4145,13 +4209,13 @@
           "boore2014": [
             {
               "sizeBand": "Mw < 6.5",
-              "bias": 5.058,
+              "bias": 5.007,
               "inside": 10,
               "rows": 12
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "bias": 1.975,
+              "bias": 1.911,
               "inside": 36,
               "rows": 38
             },
@@ -4171,7 +4235,7 @@
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "bias": 1.144,
+              "bias": 1.192,
               "inside": 10,
               "rows": 22
             },
@@ -4429,21 +4493,21 @@
             {
               "sizeBand": "Mw < 6.5",
               "rows": 131,
-              "scored": 63,
-              "bias": 1.49,
+              "scored": 62,
+              "bias": 1.54,
               "scatterLn": 2.27,
               "inside": 120,
               "bothZero": 29,
               "falseAlarms": 16,
-              "missedToZero": 23,
+              "missedToZero": 24,
               "medianBandDecades": 2.55
             },
             {
               "sizeBand": "Mw 6.5–7.5",
               "rows": 112,
               "scored": 45,
-              "bias": 0.331,
-              "scatterLn": 2.36,
+              "bias": 0.329,
+              "scatterLn": 2.35,
               "inside": 106,
               "bothZero": 30,
               "falseAlarms": 10,
@@ -4468,25 +4532,25 @@
               "sizeBand": "Mw < 6.5",
               "rows": 131,
               "scored": 51,
-              "bias": 0.698,
-              "scatterLn": 2.22,
+              "bias": 0.7,
+              "scatterLn": 2.21,
               "inside": 119,
               "bothZero": 34,
               "falseAlarms": 11,
               "missedToZero": 35,
-              "medianBandDecades": 2.27
+              "medianBandDecades": 2.31
             },
             {
               "sizeBand": "Mw 6.5–7.5",
               "rows": 107,
-              "scored": 36,
-              "bias": 0.233,
-              "scatterLn": 2.27,
+              "scored": 37,
+              "bias": 0.225,
+              "scatterLn": 2.25,
               "inside": 96,
-              "bothZero": 30,
-              "falseAlarms": 5,
-              "missedToZero": 36,
-              "medianBandDecades": 2.12
+              "bothZero": 31,
+              "falseAlarms": 4,
+              "missedToZero": 35,
+              "medianBandDecades": 2.11
             },
             {
               "sizeBand": "Mw ≥ 7.5",
@@ -4505,26 +4569,26 @@
             {
               "sizeBand": "Mw < 6.5",
               "rows": 131,
-              "scored": 62,
-              "bias": 1.37,
+              "scored": 61,
+              "bias": 1.42,
               "scatterLn": 2.29,
               "inside": 117,
               "bothZero": 31,
               "falseAlarms": 14,
-              "missedToZero": 24,
-              "medianBandDecades": 2.47
+              "missedToZero": 25,
+              "medianBandDecades": 2.48
             },
             {
               "sizeBand": "Mw 6.5–7.5",
               "rows": 108,
-              "scored": 37,
-              "bias": 0.407,
-              "scatterLn": 2.41,
+              "scored": 38,
+              "bias": 0.387,
+              "scatterLn": 2.39,
               "inside": 100,
               "bothZero": 31,
               "falseAlarms": 5,
-              "missedToZero": 35,
-              "medianBandDecades": 2.2
+              "missedToZero": 34,
+              "medianBandDecades": 2.19
             },
             {
               "sizeBand": "Mw ≥ 7.5",
@@ -4644,35 +4708,35 @@
             "group": null,
             "all": {
               "rows": 406,
-              "scored": 126,
-              "bias": 0.903,
-              "scatterLn": 2.43,
+              "scored": 125,
+              "bias": 0.913,
+              "scatterLn": 2.44,
               "inside": 386,
               "bothZero": 193,
               "falseAlarms": 34,
-              "missedToZero": 53,
+              "missedToZero": 54,
               "medianBandDecades": 1.54
             },
             "informative": {
               "rows": 278,
-              "scored": 126,
-              "bias": 0.903,
-              "scatterLn": 2.43,
+              "scored": 125,
+              "bias": 0.913,
+              "scatterLn": 2.44,
               "inside": 258,
               "bothZero": 65,
               "falseAlarms": 34,
-              "missedToZero": 53,
+              "missedToZero": 54,
               "medianBandDecades": 2.52
             },
             "unseen": {
               "rows": 272,
-              "scored": 121,
-              "bias": 0.969,
+              "scored": 120,
+              "bias": 0.981,
               "scatterLn": 2.43,
               "inside": 253,
               "bothZero": 65,
               "falseAlarms": 34,
-              "missedToZero": 52,
+              "missedToZero": 53,
               "medianBandDecades": 2.51
             }
           },
@@ -4681,35 +4745,35 @@
             "group": "Mw < 6.5",
             "all": {
               "rows": 152,
-              "scored": 63,
-              "bias": 1.49,
+              "scored": 62,
+              "bias": 1.54,
               "scatterLn": 2.27,
               "inside": 141,
               "bothZero": 50,
               "falseAlarms": 16,
-              "missedToZero": 23,
-              "medianBandDecades": 2.29
+              "missedToZero": 24,
+              "medianBandDecades": 2.28
             },
             "informative": {
               "rows": 131,
-              "scored": 63,
-              "bias": 1.49,
+              "scored": 62,
+              "bias": 1.54,
               "scatterLn": 2.27,
               "inside": 120,
               "bothZero": 29,
               "falseAlarms": 16,
-              "missedToZero": 23,
+              "missedToZero": 24,
               "medianBandDecades": 2.55
             },
             "unseen": {
               "rows": 129,
-              "scored": 61,
-              "bias": 1.67,
+              "scored": 60,
+              "bias": 1.74,
               "scatterLn": 2.18,
               "inside": 119,
               "bothZero": 29,
               "falseAlarms": 16,
-              "missedToZero": 23,
+              "missedToZero": 24,
               "medianBandDecades": 2.55
             }
           },
@@ -4719,8 +4783,8 @@
             "all": {
               "rows": 196,
               "scored": 45,
-              "bias": 0.331,
-              "scatterLn": 2.36,
+              "bias": 0.329,
+              "scatterLn": 2.35,
               "inside": 190,
               "bothZero": 114,
               "falseAlarms": 10,
@@ -4730,8 +4794,8 @@
             "informative": {
               "rows": 112,
               "scored": 45,
-              "bias": 0.331,
-              "scatterLn": 2.36,
+              "bias": 0.329,
+              "scatterLn": 2.35,
               "inside": 106,
               "bothZero": 30,
               "falseAlarms": 10,
@@ -4741,8 +4805,8 @@
             "unseen": {
               "rows": 111,
               "scored": 44,
-              "bias": 0.325,
-              "scatterLn": 2.38,
+              "bias": 0.323,
+              "scatterLn": 2.37,
               "inside": 105,
               "bothZero": 30,
               "falseAlarms": 10,
@@ -4806,9 +4870,9 @@
             "magnitude": 6.4,
             "recorded": 0,
             "missing": 0,
-            "model": 270,
+            "model": 268,
             "bandLow": 1,
-            "bandHigh": 38865,
+            "bandHigh": 38841,
             "seen": false
           },
           {
@@ -4830,7 +4894,7 @@
             "missing": 0,
             "model": 4,
             "bandLow": 0,
-            "bandHigh": 1901,
+            "bandHigh": 1912,
             "seen": false
           },
           {
@@ -4852,7 +4916,7 @@
             "missing": 0,
             "model": 0,
             "bandLow": 0,
-            "bandHigh": 53,
+            "bandHigh": 52,
             "seen": false
           },
           {
@@ -4883,9 +4947,9 @@
             "magnitude": 6,
             "recorded": 0,
             "missing": 0,
-            "model": 106,
+            "model": 104,
             "bandLow": 1,
-            "bandHigh": 15232,
+            "bandHigh": 15348,
             "seen": false
           },
           {
@@ -4905,9 +4969,9 @@
             "magnitude": 6.2,
             "recorded": 0,
             "missing": 0,
-            "model": 684,
+            "model": 677,
             "bandLow": 1,
-            "bandHigh": 6545,
+            "bandHigh": 6557,
             "seen": false
           },
           {
@@ -4982,9 +5046,9 @@
             "magnitude": 6,
             "recorded": 2,
             "missing": 0,
-            "model": 728,
+            "model": 703,
             "bandLow": 4,
-            "bandHigh": 163304,
+            "bandHigh": 163233,
             "seen": false
           },
           {
@@ -5016,7 +5080,7 @@
             "recorded": 309,
             "model": 40,
             "bandLow": 2,
-            "bandHigh": 2609,
+            "bandHigh": 2571,
             "contains": true
           },
           {
@@ -5024,7 +5088,7 @@
             "recorded": 299,
             "model": 1,
             "bandLow": 0,
-            "bandHigh": 293,
+            "bandHigh": 296,
             "contains": false
           }
         ]
@@ -5351,17 +5415,17 @@
       },
       {
         "event": "L'Aquila 2009",
-        "measuredLow": 9,
+        "measuredLow": 10,
         "measuredHigh": 1025,
         "interpolatedLow": 9,
-        "interpolatedHigh": 797,
+        "interpolatedHigh": 787,
         "comparable": true,
         "lowComparable": false
       },
       {
         "event": "Amatrice 2016",
         "measuredLow": 0,
-        "measuredHigh": 68,
+        "measuredHigh": 69,
         "interpolatedLow": 0,
         "interpolatedHigh": 62,
         "comparable": false,
@@ -5387,28 +5451,28 @@
       },
       {
         "event": "Mount St Helens 1980",
-        "measuredLow": 120,
-        "measuredHigh": 692,
-        "interpolatedLow": 164,
-        "interpolatedHigh": 708,
+        "measuredLow": 115,
+        "measuredHigh": 701,
+        "interpolatedLow": 172,
+        "interpolatedHigh": 718,
         "comparable": true,
         "lowComparable": true
       },
       {
         "event": "Pinatubo 1991",
         "measuredLow": 32,
-        "measuredHigh": 312,
+        "measuredHigh": 309,
         "interpolatedLow": 32,
-        "interpolatedHigh": 312,
+        "interpolatedHigh": 309,
         "comparable": true,
         "lowComparable": false
       },
       {
         "event": "Hiroshima 1945",
-        "measuredLow": 107512,
-        "measuredHigh": 129492,
-        "interpolatedLow": 105995,
-        "interpolatedHigh": 130680,
+        "measuredLow": 105751,
+        "measuredHigh": 130702,
+        "interpolatedLow": 104710,
+        "interpolatedHigh": 130132,
         "comparable": true,
         "lowComparable": true
       },
@@ -5442,9 +5506,9 @@
       {
         "event": "Kumamoto 2016",
         "measuredLow": 1,
-        "measuredHigh": 10890,
+        "measuredHigh": 10887,
         "interpolatedLow": 0,
-        "interpolatedHigh": 8449,
+        "interpolatedHigh": 8467,
         "comparable": true,
         "lowComparable": false
       },
@@ -5460,27 +5524,27 @@
       {
         "event": "Pohang 2017",
         "measuredLow": 1,
-        "measuredHigh": 20739,
+        "measuredHigh": 20670,
         "interpolatedLow": 1,
-        "interpolatedHigh": 21245,
+        "interpolatedHigh": 19809,
         "comparable": true,
         "lowComparable": false
       },
       {
         "event": "Durrës (Albania) 2019",
         "measuredLow": 1,
-        "measuredHigh": 552,
+        "measuredHigh": 551,
         "interpolatedLow": 1,
-        "interpolatedHigh": 584,
+        "interpolatedHigh": 585,
         "comparable": true,
         "lowComparable": false
       },
       {
         "event": "Fuego 2018",
-        "measuredLow": 14,
-        "measuredHigh": 304,
-        "interpolatedLow": 14,
-        "interpolatedHigh": 304,
+        "measuredLow": 41,
+        "measuredHigh": 697,
+        "interpolatedLow": 41,
+        "interpolatedHigh": 697,
         "comparable": true,
         "lowComparable": false
       },
