@@ -152,3 +152,123 @@ export function impulseWaveExampleOne(): ImpulseWaveAmplitudes & { impulseProduc
     ...impulseWaveAmplitudes(IMPULSE_WAVE_EXAMPLE_ONE_SLIDE),
   };
 }
+
+// ---------------------------------------------------------------------------
+// Closing what Heller needs and Nimbus does not have
+// ---------------------------------------------------------------------------
+
+/**
+ * Heller's equations want a slide's **speed, thickness and width** at the
+ * moment it meets the water. A Nimbus landslide is a volume, a slope and a
+ * depth. The three closures below are the project's own, not the manual's, and
+ * each is declared here so a reader can see exactly where a number stops being
+ * Heller's and starts being ours.
+ *
+ * How far off they are, against the three events with a published impact
+ * velocity (the drop heights are estimates, so this indicates rather than
+ * measures): from a drop height, Lituya Bay 1958 comes out 0.69× its published
+ * 110 m/s, Vaiont 1963 1.96× its 25 and Anak Krakatau 2018 0.63× its 30 — a
+ * factor of about 1.6 either way. From the volume alone it is nearer a factor
+ * of three. The first crest goes as √F exactly, so those become about 1.26×
+ * and 1.7× on the wave; the cube-root law they replace is out by 2.8× at the
+ * centre of Heller's own band, so even the crude closure is the better of the
+ * two. That is an argument for adopting it, not for trusting it.
+ */
+
+const GRAVITY = 9.81;
+
+/** Dynamic friction of a rock mass on its failure plane. A project value:
+ *  0.2 to 0.4 is the usual range for a rock avalanche, and large slides are
+ *  more mobile still. Nothing was fitted to choose it. */
+export const IMPULSE_WAVE_SLIDE_FRICTION = 0.3;
+
+/**
+ * The speed a slide reaches falling `dropHeightM` down a slope of `angleDeg`,
+ * from rest, against friction: v = √(2·g·Δz·(1 − μ·cot α)), and zero where
+ * friction holds it (α ≤ arctan μ).
+ */
+export function slideImpactVelocity(
+  dropHeightM: number,
+  angleDeg: number,
+  friction = IMPULSE_WAVE_SLIDE_FRICTION
+): number {
+  const a = (angleDeg * Math.PI) / 180;
+  const driving = Math.sin(a) - friction * Math.cos(a);
+  if (!(driving > 0) || !(dropHeightM > 0)) return 0;
+  return Math.sqrt(2 * GRAVITY * dropHeightM * driving);
+}
+
+export interface SlideClosureInput {
+  volumeM3: number;
+  angleDeg: number;
+  depthM: number;
+  densityKgM3: number;
+  /** Measured or published, where a caller has it (m). */
+  thicknessM?: number;
+  /** Measured or published, where a caller has it (m). */
+  widthM?: number;
+  /** How far the slide's centre of mass falls before it reaches the water
+   *  (m). Where a caller has it, the velocity comes from it. */
+  dropHeightM?: number;
+  /** A published impact velocity (m/s) overrides every closure below. */
+  impactVelocityMS?: number;
+}
+
+/** What each of the slide's three unknowns was: given, or closed here. */
+export interface SlideClosure {
+  slide: ImpulseWaveSlide;
+  closed: {
+    thickness: boolean;
+    width: boolean;
+    velocity: 'given' | 'fromDropHeight' | 'fromVolume';
+  };
+}
+
+/**
+ * A slide Heller's equations can take, from what a Nimbus landslide has.
+ *
+ * - **Thickness and width**, absent a measurement, are the slide's own
+ *   characteristic length V^(1/3) — the campaign's closure, kept so the
+ *   figures before and after can be compared. It makes the slide a cube, which
+ *   no slide is; a real slab is wide and thin, and that is the crudest thing
+ *   here.
+ * - **Velocity** comes from a published figure where there is one, else from a
+ *   drop height, else from a drop of V^(1/3)·sin α — a slide whose centre of
+ *   mass descends about its own along-slope length before it is in the water.
+ *   The last is the weakest of the three and is marked `fromVolume` so a
+ *   caller can say so.
+ */
+export function slideFromVolume(input: SlideClosureInput): SlideClosure {
+  const side = Math.cbrt(Math.max(input.volumeM3, 0));
+  const thicknessM = input.thicknessM ?? side;
+  const widthM = input.widthM ?? side;
+  let velocity: number;
+  let how: SlideClosure['closed']['velocity'];
+  if (input.impactVelocityMS !== undefined && input.impactVelocityMS > 0) {
+    velocity = input.impactVelocityMS;
+    how = 'given';
+  } else if (input.dropHeightM !== undefined && input.dropHeightM > 0) {
+    velocity = slideImpactVelocity(input.dropHeightM, input.angleDeg);
+    how = 'fromDropHeight';
+  } else {
+    const drop = side * Math.sin((input.angleDeg * Math.PI) / 180);
+    velocity = slideImpactVelocity(drop, input.angleDeg);
+    how = 'fromVolume';
+  }
+  return {
+    slide: {
+      froude: input.depthM > 0 ? velocity / Math.sqrt(GRAVITY * input.depthM) : 0,
+      thicknessM,
+      widthM,
+      volumeM3: input.volumeM3,
+      densityKgM3: input.densityKgM3,
+      angleDeg: input.angleDeg,
+      depthM: input.depthM,
+    },
+    closed: {
+      thickness: input.thicknessM === undefined,
+      width: input.widthM === undefined,
+      velocity: how,
+    },
+  };
+}

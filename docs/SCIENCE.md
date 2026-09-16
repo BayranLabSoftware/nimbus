@@ -2206,6 +2206,48 @@ wind with height where Nimbus holds one constant. V3 — ten eruptions with a
 published isopach map — is the rule that would read the world, and it is still
 not measured.
 
+### A ceiling credited to a man who gives a different number (16 September 2026)
+
+`events/volcano/tsunami.ts`, `events/volcano/sourceCeiling.test.ts`. B-039.
+
+The wave a landslide or a volcanic collapse raises at its own source is held
+to 0.4 of the water column there. The code said why: "to honour the McCowan
+1894 wave-breaking ceiling". McCowan's limit is **0.78** of the depth, and this
+project knows that — `tsunamiCasualties.ts` carries it as `BREAKING_INDEX =
+0.78`, and the shoaling section above uses it to carry a wave the last fifty
+metres to the shore. The same citation, two numbers, two modules.
+
+Nothing has been found that gives the 0.4. It is the project's own, and it now
+says so: the citation is removed and **the value is left exactly where it
+was**. Moving physics under cover of fixing a citation would be the worse of
+the two errors, and it would move a great deal — because this ceiling is not a
+rarely-touched guard but the answer itself for half the product's wave presets.
+Lituya Bay 1958, Anak Krakatau 2018 in both its landslide and its volcano
+framing, and Hunga Tonga 2022 all sit on it _exactly_: 48.0 m in 120 m of
+water, 80.0 in 200, 60.0 in 150. For those four, what a visitor reads is this
+number and not the relation above it, and `sourceCeiling.test.ts` pins that so
+a change to the ceiling breaks a test that names what it changes.
+
+What the right ceiling is remains open, and the two candidates both have a
+problem. McCowan's 0.78 is a solitary wave shoaling on a flat bottom, which a
+wave standing over its own source is not. And Heller, Hager & Minor's
+impulse-wave equations — the field's method for exactly this generation, now in
+`effects/impulseWave.ts` — produce first crests of up to 0.94 of the depth
+inside the ranges their own experiments span, so their laboratory carried waves
+that either limit would have cut. A ceiling put on top of those equations
+counts the same physics twice.
+
+Deciding it needs what rule L2 of the gold standard asks for and this project
+does not have: ten landslides with a published slide volume and a measured wave
+near the source. Until then the number is declared, its blast radius is
+measured, and it is not moved.
+
+This is the third number of its kind found by reading the page the project
+already cited — after the fireball radii credited to figures Glasstone & Dolan
+do not draw (B-036) and Figure 12.64 described as a probability it does not
+carry. The pattern is worth naming: a citation next to a number is not
+evidence that the number came from it.
+
 ### The coast, measured for the first time (16 September 2026)
 
 `validation/runupRules.ts` (rules 102 to 105), `validation/runupRun.ts`,

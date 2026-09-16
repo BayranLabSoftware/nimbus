@@ -1,6 +1,16 @@
+import {
+  impulseWaveAmplitudes,
+  outsideTestedRange,
+  slideFromVolume,
+  type SlideClosure,
+} from '../../effects/impulseWave.js';
 import type { Meters, SquareMeters } from '../../units.js';
 import { m } from '../../units.js';
-import { volcanoTsunami, type VolcanoTsunamiResult } from '../volcano/tsunami.js';
+import {
+  volcanoTsunami,
+  VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL,
+  type VolcanoTsunamiResult,
+} from '../volcano/tsunami.js';
 
 /**
  * Submarine / sub-aerial landslide tsunami source.
@@ -45,6 +55,23 @@ export const LANDSLIDE_DEFAULT_SLOPE_DEG = 20;
 /** Regime when the input gives none. */
 export const LANDSLIDE_DEFAULT_REGIME: LandslideRegime = 'submarine';
 
+/**
+ * Which law makes the wave at the slide.
+ *
+ * `project` is Watts (2000)'s cube root, K·(γ/γ_ref)·V^(1/3)·sin θ capped at
+ * 40 % of the water column, with K set on Anak Krakatau (subaerial) and
+ * Storegga (submarine).
+ *
+ * `heller2009` is the impulse-wave method of Heller, Hager & Minor (2009),
+ * `effects/impulseWave.ts`, which CI holds to that manual's own worked
+ * example. It needs a slide's speed, thickness and width, and closes them
+ * where a caller has none.
+ */
+export type LandslideWaveLaw = 'project' | 'heller2009';
+
+/** What a scenario that names no law draws. */
+export const DEFAULT_LANDSLIDE_WAVE_LAW: LandslideWaveLaw = 'project';
+
 export interface LandslideScenarioInput {
   /** Volume of the failed block (m³). Sub-aerial events sit at
    *  ≈ 10⁵ – 10⁹; submarine continental-margin events at ≈ 10⁹ – 10¹². */
@@ -86,6 +113,24 @@ export interface LandslideScenarioInput {
    *  density is read against. The same volume and slope make a wave up
    *  to 80 times taller as 'subaerial'. Defaults to 'submarine'. */
   regime?: LandslideRegime;
+  /** Slide thickness at impact (m). Heller's equations want it; absent, it is
+   *  closed as V^(1/3) and the result says so. Only the `heller2009` wave law
+   *  reads it. */
+  slideThicknessM?: number;
+  /** Slide width at impact (m). Same: absent, V^(1/3). */
+  slideWidthM?: number;
+  /** How far the slide's centre of mass falls before it reaches the water (m).
+   *  It is what sets the impact speed, and it is genuinely independent of the
+   *  volume — Lituya Bay's 30 × 10⁶ m³ fell nine hundred metres. Absent, it is
+   *  closed as V^(1/3)·sin α, which is the weakest closure here. */
+  dropHeightM?: number;
+  /** A published impact speed (m/s), which overrides every closure. */
+  impactVelocityMS?: number;
+  /** Which law makes the wave (rule 119 of validation/impulseWaveRules.ts).
+   *  Omitted, {@link DEFAULT_LANDSLIDE_WAVE_LAW}. It is read only in the
+   *  subaerial regime: Heller's experiments are a slide entering water from
+   *  above, and a submarine slump keeps Watts whatever this says. */
+  waveLaw?: LandslideWaveLaw;
   /** Slide bulk density (kg/m³). Drives the Watts submerged
    *  specific-gravity factor in {@link volcanoTsunami}: a dense rock
    *  avalanche makes a bigger wave than a soft sediment slump of the
@@ -108,6 +153,19 @@ export interface LandslideScenarioResult {
   tsunami: VolcanoTsunamiResult | null;
   /** Echo of the regime tag for the report. Defaults to 'submarine'. */
   regime: LandslideRegime;
+  /** Which law made the wave. */
+  waveLaw: LandslideWaveLaw;
+  /** Present only under `heller2009`: what the slide looked like to Heller's
+   *  equations, which of its three unknowns had to be closed, and which of his
+   *  tested ranges the scenario falls outside of — G4 of
+   *  docs/GOLD_STANDARD.md asks that the product say the last one. */
+  impulseWave?: {
+    froude: number;
+    thicknessM: number;
+    widthM: number;
+    closed: SlideClosure['closed'];
+    outsideTestedRange: string[];
+  };
 }
 
 /**
@@ -118,7 +176,31 @@ export function simulateLandslide(input: LandslideScenarioInput): LandslideScena
   const slopeDeg = input.slopeAngleDeg ?? LANDSLIDE_DEFAULT_SLOPE_DEG;
   const regime = input.regime ?? LANDSLIDE_DEFAULT_REGIME;
   const sideLength = Math.cbrt(Math.max(input.volumeM3, 0));
+  const waveLaw = input.waveLaw ?? DEFAULT_LANDSLIDE_WAVE_LAW;
+  // Heller's experiments are a slide entering water from above. A submarine
+  // slump is not one, and keeps Watts whatever the law says.
+  const depthM = (input.meanOceanDepth as number | undefined) ?? 1_000;
+  const impulse =
+    waveLaw === 'heller2009' && regime === 'subaerial' && depthM > 0 && input.volumeM3 > 0
+      ? slideFromVolume({
+          volumeM3: input.volumeM3,
+          angleDeg: slopeDeg,
+          depthM,
+          densityKgM3: input.slideDensity ?? VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL,
+          ...(input.slideThicknessM !== undefined && { thicknessM: input.slideThicknessM }),
+          ...(input.slideWidthM !== undefined && { widthM: input.slideWidthM }),
+          ...(input.dropHeightM !== undefined && { dropHeightM: input.dropHeightM }),
+          ...(input.impactVelocityMS !== undefined && {
+            impactVelocityMS: input.impactVelocityMS,
+          }),
+        })
+      : null;
+  const hellerCrest =
+    impulse === null ? undefined : impulseWaveAmplitudes(impulse.slide).firstCrest;
   const tsunami = volcanoTsunami({
+    ...(hellerCrest !== undefined && Number.isFinite(hellerCrest) && hellerCrest > 0
+      ? { sourceAmplitudeM: hellerCrest }
+      : {}),
     collapseVolumeM3: input.volumeM3,
     slopeAngleRad: (slopeDeg * Math.PI) / 180,
     regime,
@@ -140,6 +222,18 @@ export function simulateLandslide(input: LandslideScenarioInput): LandslideScena
     characteristicArea: (sideLength * sideLength) as SquareMeters,
     tsunami,
     regime,
+    waveLaw,
+    ...(impulse === null
+      ? {}
+      : {
+          impulseWave: {
+            froude: impulse.slide.froude,
+            thicknessM: impulse.slide.thicknessM,
+            widthM: impulse.slide.widthM,
+            closed: impulse.closed,
+            outsideTestedRange: outsideTestedRange(impulse.slide),
+          },
+        }),
   };
 }
 

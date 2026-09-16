@@ -117,6 +117,28 @@ export const VOLCANO_TSUNAMI_PREFACTOR_SUBMARINE = 0.005;
  * V^(1/3) form dropped: a dense basalt block makes a markedly larger
  * wave than a soft mud slump of the same volume and slope.
  */
+/**
+ * The share of the source water column the wave at the source is held to.
+ *
+ * **A project number with no source.** It was credited to McCowan (1894) until
+ * 16 September 2026, and it is not his: McCowan's solitary-wave breaking limit
+ * is 0.78 of the depth, which this project uses correctly in
+ * `tsunamiCasualties.ts` (BREAKING_INDEX) and states in docs/SCIENCE.md's
+ * shoaling section. Nothing has been found that gives 0.4, and the value is
+ * left exactly where it was rather than moved under cover of fixing the
+ * citation — see B-039 in docs/BUG_REGISTRY.md.
+ *
+ * What it decides: four of the product's eight wave presets sit exactly on it
+ * — Lituya Bay 1958, Anak Krakatau 2018 in both its framings, and Hunga Tonga
+ * 2022 — so for those the wave a visitor sees is this number and not the
+ * relation above it. Whether a generation-site ceiling should be 0.4, 0.78, or
+ * absent is an open question: McCowan's limit is for a solitary wave shoaling
+ * on a flat bottom, which a wave at its own source is not, and Heller's
+ * impulse-wave equations produce crests up to 0.94 of the depth inside the
+ * ranges his own experiments span.
+ */
+export const SOURCE_AMPLITUDE_CEILING = 0.4;
+
 export const VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL = 2_500;
 export const VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBMARINE = 1_950;
 
@@ -154,7 +176,7 @@ export interface VolcanoTsunamiInput {
    *  ocean mean. */
   meanOceanDepth?: Meters;
   /** Optional: depth of the water column AT THE SOURCE where the
-   *  collapse occurs (m). When set, this controls the McCowan-style
+   *  collapse occurs (m). When set, this controls the ceiling-style
    *  breaking cap on the source amplitude — distinct from the depth
    *  the wave PROPAGATES through (`meanOceanDepth`).
    *
@@ -178,6 +200,13 @@ export interface VolcanoTsunamiInput {
    *  For compact volcanic flank collapses (Anak Krakatau ~1 km block),
    *  V^(1/3) is already a good approximation; the field is opt-in. */
   slideFootprintArea?: SquareMeters;
+  /** A source amplitude (m) computed elsewhere, which replaces the Watts
+   *  cube root and its breaking cap. Everything downstream — the cavity
+   *  radius, the 1/r decay, the travel times — is unchanged, so this hands
+   *  the *generation* to another relation and keeps the propagation. The
+   *  landslide module passes Heller's first crest here
+   *  (effects/impulseWave.ts, rule 119 of validation/impulseWaveRules.ts). */
+  sourceAmplitudeM?: number;
   /** Optional: planform area of the CONFINED BASIN (reservoir, fjord)
    *  the slide enters (m²). When set, the source amplitude is
    *  computed as the basin-fill formula
@@ -281,20 +310,35 @@ export function volcanoTsunami(input: VolcanoTsunamiInput): VolcanoTsunamiResult
   // rise) and the impulsive entry amplifies that by a calibrated
   // factor (default 1.8, matching Vaiont 1963). The cap is the basin
   // depth — wave cannot exceed the water column it lives in, but is
-  // NOT subject to the McCowan 0.4·h breaking cap because confined-
+  // NOT subject to the 0.4·h source ceiling because confined-
   // basin sloshing modes can transiently exceed solitary-wave limits.
   //
   // (b) Open-ocean (every existing caller). The Watts (2000)
-  // cube-root form K · V^(1/3) · sin(θ) saturated at 40 % of the
-  // SOURCE water column to honour the McCowan 1894 wave-breaking
-  // ceiling applied at the generation site.
+  // cube-root form K · V^(1/3) · sin(θ) saturated at
+  // {@link SOURCE_AMPLITUDE_CEILING} of the SOURCE water column.
+  //
+  // That ceiling used to be credited here to McCowan 1894. It is not
+  // his: McCowan's solitary-wave breaking limit is 0.78 of the depth,
+  // which this project uses correctly elsewhere (BREAKING_INDEX in
+  // tsunamiCasualties.ts, and docs/SCIENCE.md's shoaling section). The
+  // 0.4 has no source that has been found, and it is now declared as
+  // the project number it is (B-039).
   const basinArea = input.confinedBasinArea as number | undefined;
   const confinementFactor = input.confinementDynamicFactor ?? DEFAULT_CONFINEMENT_DYNAMIC_FACTOR;
   let eta0: number;
+  const supplied = input.sourceAmplitudeM;
   if (basinArea !== undefined && Number.isFinite(basinArea) && basinArea > 0) {
     const staticRise = V / basinArea;
     const dynamicAmp = staticRise * confinementFactor;
     eta0 = Math.min(dynamicAmp, sourceWaterDepth);
+  } else if (supplied !== undefined && Number.isFinite(supplied) && supplied > 0) {
+    // (c) The generation came from another relation. A confined basin wins
+    // over it — a reservoir that sloshes is not a slide entering open water,
+    // and it is the case the relations handed in here least apply to. What
+    // stays is the breaking cap, which belongs to the water column and not to
+    // the law that made the wave: a crest taller than 40 % of its own depth
+    // has broken before it is a crest.
+    eta0 = Math.min(supplied, (sourceWaterDepth as number) * SOURCE_AMPLITUDE_CEILING);
   } else {
     // Watts (2000) submerged specific-gravity factor γ/γ_ref. γ_ref is
     // the regime's calibration density, so an unspecified slideDensity
@@ -316,8 +360,7 @@ export function volcanoTsunami(input: VolcanoTsunamiInput): VolcanoTsunamiResult
     const gammaRef = refDensity / seawater - 1;
     const gammaFactor = gamma > 0 ? gamma / gammaRef : 0;
     const wattsAmplitude = K * gammaFactor * Math.cbrt(V) * Math.sin(theta);
-    const breakingCap = (sourceWaterDepth as number) * 0.4;
-    eta0 = Math.min(wattsAmplitude, breakingCap);
+    eta0 = Math.min(wattsAmplitude, (sourceWaterDepth as number) * SOURCE_AMPLITUDE_CEILING);
   }
   const sourceAmplitude = m(eta0);
   // Cavity radius from collapse geometry (V^(1/3) ≈ characteristic
