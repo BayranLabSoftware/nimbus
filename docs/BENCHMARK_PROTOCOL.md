@@ -1055,3 +1055,50 @@ above the atmosphere draws nothing. One reading is declared rather than
 mended: at 50 Mt the figures are held flat at their 20 Mt end, so Tsar Bomba's
 rings are too small by an unknown amount. The validation report prints the
 table and the book's own reliability beside it.
+
+## After the radiation: the crater, from the numbers the book prints
+
+Written on 16 September 2026, before the candidate dug a crater for any preset
+of the product. The rules are numbered after the eighty-nine before them and
+live in `src/physics/validation/craterRules.ts` (rules 90 to 93); the numbers
+are in `src/physics/effects/nuclearCrater.ts`, read by eye from the page rather
+than traced, and the run that will judge them in `craterRun.ts`, committed with
+the rules and run on nothing.
+
+### What is already known, and so not held out
+
+Nimbus draws the apparent crater of a nuclear surface burst as
+D_a = K · W_kt^0.3, with a coefficient for each of five ground types. Two stand
+on nothing: hard rock's 29 m is "0.8 of dry soil, a project value" and clay's
+105 m is "a project value above wet soil, with no source". A third, firm
+ground's 36.6 m, was read from a sentence of the book. But because a crater's
+size changes so fast as the burst passes through the surface, the book prints
+the contact-surface-burst radius and depth of a 1 kt explosion in four media on
+Figures 6.72a and b themselves, in words: 82, 61, 58 and 49 feet of radius and
+31, 28, 28 and 22 feet of depth, for wet soil or wet soft rock, dry soil or dry
+soft rock, wet hard rock, and dry hard rock. §6.72 scales both as W^0.3. Those
+pages, their legends and the worked example facing Fig. 6.72a were read before
+these rules were written, as were the five coefficients already in the code and
+the comments that say where each came from. No row of the calibration net is
+scored on a nuclear crater — none exists — so none was run under the candidate,
+and none can judge it.
+
+### The numbers, the candidate and the decision
+
+Rule 90 holds the module to the eight printed numbers and to the exponent by
+the book's own arithmetic: its example divides a 270-foot depth at 20 kt by
+2.46 and multiplies the answer back by the same 2.46, and 20^0.3 = 2.4622. Rule
+91 reads each of the project's ground types as one of the book's media — hard
+rock as dry hard rock, firm ground and dry soil as dry soil or dry soft rock,
+wet soil as wet soil or wet soft rock — and leaves clay out, since the book has
+no clay. Rule 92 adopts, ground type by ground type, unless the numbers fail
+their checks, the gate stops passing, a coefficient moves by more than a factor
+of two, or the five lose their order — **and unless the project's coefficient
+was set on a crater somebody measured at a yield the book's figure does not
+cover.** That last clause is the one that matters here, and it is written
+before the run rather than after it: wet soil's 92 m was set on the craters
+Castle Bravo and Ivy Mike left in the Bikini reef at 15 and 10.4 Mt, where the
+book's figure is drawn for 1 kt, and a curve carried four decades up in yield is
+weaker evidence than a crater measured at the yield in question. So wet soil
+keeps its number and both are printed side by side. Rule 93 says what is
+printed and what an adoption does.
