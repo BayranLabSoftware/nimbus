@@ -47,15 +47,33 @@
  *       whole filter, and it is arithmetic on the file: no row is chosen or
  *       dropped by hand.
  *
- *  119. **The water depth**, which the catalogue does not give, is read from
- *       the same AWS Terrain Tiles the browser draws bathymetry from
- *       (`validation/terrariumTiles.ts`), at zoom {@link SLIDE_WAVE_TILE_ZOOM},
- *       as the deepest water within {@link SLIDE_WAVE_DEPTH_RADIUS_M} of the
- *       event's coordinates. Deepest rather than nearest, because a slide
- *       enters the water at the foot of its slope and not at the shoreline
- *       point the catalogue names, and because a nearest sample on a coast is
- *       as likely to be dry land. A row whose search finds no water is dropped
- *       and counted, not given a made-up depth.
+ *  119. **The water depth**, which the catalogue does not give, is the deepest
+ *       water within {@link SLIDE_WAVE_DEPTH_RADIUS_M} of the event's
+ *       coordinates in the **GMRT** grid ({@link SLIDE_WAVE_DEPTH_SOURCE}),
+ *       read once per event at its highest resolution and kept. Deepest rather
+ *       than nearest, because a slide enters the water at the foot of its
+ *       slope and not at the shoreline point the catalogue names, and because
+ *       a nearest sample on a coast is as likely to be dry land. A row whose
+ *       search finds no water is dropped and counted, never given a made-up
+ *       depth.
+ *
+ *       **Amended on 16 September 2026, before the model had been run on a
+ *       single row of the set.** As first written this rule read the depth
+ *       from the AWS Terrain Tiles the browser draws (`terrariumTiles.ts`),
+ *       and building the set showed that those tiles carry **no bathymetry
+ *       inside a fjord or an enclosed water**: they render the water surface.
+ *       Kitimat Arm, which is about 200 m deep, came back at 1 m with two of
+ *       65 536 pixels below sea level; Sognefjord, the deepest fjord in
+ *       Norway at about 1 200 m, came back at 0.8 m; only the open ocean was
+ *       right, Grand Banks at 2 583 m and Nice at 1 847. Half the set would
+ *       have carried depths of one and two metres, and L2 would have measured
+ *       a bathymetry rather than a model. GMRT reads Kitimat at 219.9 m.
+ *       Nothing had been scored when this was found, so no figure of the model
+ *       had failed anything and no bound is being moved: a broken instrument
+ *       was replaced before the measurement, which is a different act from
+ *       replacing a bound after one. It is recorded here rather than quietly
+ *       corrected, and the first rule's text is left above so the change can
+ *       be read.
  *
  *  120. **What is compared, and the thing this rule cannot fix.** The
  *       catalogue gives a wave **height**. Nimbus's `project` law gives an
@@ -82,14 +100,16 @@
  *       set may inform but may not be re-run to justify: once read, it is
  *       read.
  *
- * What these rules cannot settle. A catalogue's "maximum wave height" is not
+ * What these rules cannot settle. GMRT is a synthesis: multibeam surveys where
+ * ships have been, and a coarser grid where they have not, so a depth from it
+ * is only as good as the survey under it, and the rule takes the deepest
+ * sample in a 5 km box rather than the depth at the slide's own foot, which
+ * nobody published. A catalogue's "maximum wave height" is not
  * necessarily measured at the source, and a landslide's tsunami is usually
  * largest near it but not always — part of whatever bias comes out is that,
  * and no filter here can separate it. Twenty-six marine rows is a coarse test:
  * a bias within ×1.5 on twenty-six events says much less than the same bias on
- * three hundred earthquakes. The depths of rule 119 are a global terrain
- * mosaic read at a coordinate, which for a fjord or a narrow bay is the
- * roughest number in the whole chain. And an earthquake-triggered slide makes
+ * three hundred earthquakes. And an earthquake-triggered slide makes
  * a wave alongside the wave the shaking makes; the catalogue's cause column
  * says which rows those are, they are kept, and the split is printed.
  */
@@ -114,8 +134,15 @@ export const SLIDE_WAVE_CALIBRATED_ON: readonly string[] = [
 export const SLIDE_WAVE_MARINE: readonly string[] = ['OM', 'EM'];
 
 /** Rule 119: how the depth is read. */
-export const SLIDE_WAVE_TILE_ZOOM = 10;
+export const SLIDE_WAVE_DEPTH_SOURCE =
+  'GMRT (Global Multi-Resolution Topography) synthesis, Ryan, W B F et al. (2009), Geochem. Geophys. Geosyst. 10, Q03014, doi:10.1029/2008GC002332 — read through the public GridServer at https://www.gmrt.org/services/GridServer';
 export const SLIDE_WAVE_DEPTH_RADIUS_M = 5_000;
+
+/** Rule 119 as first written, and found broken before anything was scored: the
+ *  browser's terrain tiles have no bathymetry inside a fjord. Kept as a
+ *  constant so the amendment is in the code and not only in a comment. */
+export const SLIDE_WAVE_DEPTH_SOURCE_REJECTED =
+  'AWS Terrain Tiles at zoom 10 — rejected 16 September 2026: Kitimat Arm (about 200 m deep) read 1 m, Sognefjord (about 1 200 m) read 0.8 m';
 
 /** Rule 121: L2's bounds. */
 export const SLIDE_WAVE_BIAS_BOUND = 1.5;

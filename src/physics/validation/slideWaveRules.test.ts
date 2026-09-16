@@ -3,6 +3,9 @@ import {
   meetsL2,
   SLIDE_WAVE_BIAS_BOUND,
   SLIDE_WAVE_CALIBRATED_ON,
+  SLIDE_WAVE_DEPTH_RADIUS_M,
+  SLIDE_WAVE_DEPTH_SOURCE,
+  SLIDE_WAVE_DEPTH_SOURCE_REJECTED,
   SLIDE_WAVE_MARINE,
   SLIDE_WAVE_MIN_EVENTS,
   SLIDE_WAVE_PRINTED_WHILE_COUNTING,
@@ -33,6 +36,19 @@ describe('rule 118: the set is arithmetic on a file, not a list somebody wrote',
   it('keeps only water a bathymetry mosaic can reach', () => {
     expect([...SLIDE_WAVE_MARINE].sort()).toEqual(['EM', 'OM']);
     expect(SLIDE_WAVE_MARINE).not.toContain('IW');
+  });
+});
+
+describe('rule 119: the depth, and the instrument that was replaced', () => {
+  it('names GMRT, and names what it replaced and why', () => {
+    expect(SLIDE_WAVE_DEPTH_SOURCE).toContain('GMRT');
+    expect(SLIDE_WAVE_DEPTH_SOURCE).toContain('10.1029/2008GC002332');
+    expect(SLIDE_WAVE_DEPTH_SOURCE_REJECTED).toContain('Terrain Tiles');
+    expect(SLIDE_WAVE_DEPTH_SOURCE_REJECTED).toContain('Sognefjord');
+  });
+
+  it('searches five kilometres around the event', () => {
+    expect(SLIDE_WAVE_DEPTH_RADIUS_M).toBe(5_000);
   });
 });
 
