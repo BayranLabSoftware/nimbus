@@ -308,6 +308,64 @@ famine or disease):
 cumulative population inside every band's outer radius and evaluates
 the plan (`runCasualtyLookup` in `src/store/useAppStore.ts`).
 
+### What a flow covers, which is what the field predicts (19 September 2026)
+
+The globe was made to draw a lahar's reach on 18 September, because the model
+published it and the picture said nothing (B-054). Drawing it as a filled disc
+turned out to be the next defect, and a large one: a lahar of 5 × 10⁷ m³ runs
+42.1 km by our law, and a disc of that radius covers 5 576 km² where the
+field's own relation gives **27.1 km²**. Two hundred times the ground.
+
+The source was already in the scratchpad, downloaded on 16 September and never
+opened: Griswold & Iverson (2008), USGS SIR 2007-5276. Its Table 6 gives, for a
+fixed 2/3 slope, the maximum inundated cross-section A and the total inundated
+planimetric area B of a flow of volume V — (0.05, 200) for lahars, (0.1, 20)
+for non-volcanic debris flows, (0.2, 20) for rock avalanches — and its Appendix
+A carries the 207 events behind them.
+
+Two things came out of reading it. The field **publishes no runout length**:
+LaharZ does not predict a distance, it fills a valley from a DEM until the
+accumulated area reaches B. And our landslide module already computes
+`characteristicArea = V^(2/3)`, calls it "cosmetic… not consumed downstream",
+and it is the field's own variable missing only its coefficient.
+
+Under rules 202 to 207 (`validation/inundationAreaRules.ts`, pushed before
+anything of ours was scored), a lahar now publishes B, A and the swath width
+the area and the runout imply — 640 m for that lahar. The extraction of
+Appendix A was verified against the report's own counts (64 debris flows with
+50 cross-sections and 44 areas, 143 rock avalanches with 142 areas; thirteen
+rock avalanches carry a cross-section where the report says twelve, declared
+and not tidied away), and the laws were re-derived from it as a check on the
+transcription: 0.219·V^0.587 against a published 0.22·V^0.59, 10.17·V^0.731
+against 10·V^0.73.
+
+The globe draws the reach **unfilled** now. Rule 203 had proposed a ribbon of
+the swath width and rule 207 forbids it in the same breath, because a ribbon
+needs a direction and the direction is the valley's, which this project does
+not compute. An outline claims only that a valley can carry the flow that far;
+the ground is printed beside it as an area.
+
+The band, measured on the 207 events and declared in sample: σ(log10) 0.32 to
+0.44, a factor of 2.1 to 2.8 at one sigma, bias within 7 % of one. The spread
+of the relation, not a validation of it.
+
+**V4 stays open, and the energy cone says why.** ECMapProb was run offline on
+its own Vesuvius topography with the distribution its example carries: median
+reach 4.11 km, median inundated area 37.7 km². Our model gives 13.57 km for
+the same volcano from its volume scaling and 88.39 km from the energy line,
+and the 79 CE currents reached Pompeii at about 9 km with deposits beyond 15.
+The three numbers straddle the record, and the comparison is dominated by one
+parameter: H/L, which the energy cone takes and we do not have. Setting it
+from an eruption's volume is what Aravena et al. (2022)'s calibration
+strategies are for, and it is a round of its own.
+
+One more thing the reading turned up, of the same family as the report defects
+of 18 September: the page printed two reaches for one flow, six and a half
+times apart, the first labelled "PDC runout (Sheridan H/L = 0.1)" for a
+relation that is the project's own volume scaling with no H/L in it — its own
+citation says so — and the second with no hint that the module calls it an
+order-of-magnitude upper bound. Both labels now say what they are.
+
 ### What the globe draws, against what the model said (18 September 2026)
 
 The report page had been read and the two defects it showed were closed. The

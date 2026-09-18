@@ -520,6 +520,18 @@ not that a rule holds.
 
 ## What has moved since
 
+- **19 September 2026: a flow publishes the ground it covers.** The globe had
+  been drawing a lahar's reach as a filled disc, which claimed two hundred
+  times the area the field's own relation gives. Griswold & Iverson (2008) —
+  in the scratchpad since the 16th, unopened — publishes what a flow covers
+  and publishes no runout at all, LaharZ being a valley filled from a DEM until
+  the area is reached. Rules 202 to 207 adopt the area laws, transcribed and
+  checked by re-deriving them from the report's own 207 events, and the globe
+  draws an unfilled reach beside a published area. V4 is not closed: the energy
+  cone ran offline on Vesuvius and gives 4.11 km where our volume scaling gives
+  13.57 and our energy line 88.39, with the record at about 9 to 15 — the
+  comparison turns on H/L, which the reference takes and we do not have.
+
 - **18 September 2026, night: the wave crosses the dateline now, and T2 got
   worse for it.** The globe had never been read against its own numbers. An
   audit that reads the geometry the renderer hands to Cesium found, among
