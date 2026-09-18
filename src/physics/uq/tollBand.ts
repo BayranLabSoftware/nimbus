@@ -1,4 +1,5 @@
 import {
+  combineMortality,
   estimateCasualties,
   type BandEstimate,
   type CasualtyEstimate,
@@ -22,6 +23,12 @@ import { simulateEarthquake } from '../events/earthquake/simulate.js';
 import { simulateExplosion } from '../events/explosion/simulate.js';
 import { simulateVolcano } from '../events/volcano/simulate.js';
 import { simulateImpact } from '../simulate.js';
+import {
+  TOLL_BAND_CANDIDATE,
+  TOLL_BAND_IN_PLACE,
+  tripleSigmaLn,
+  type TollBandScatter,
+} from '../validation/tollBandRules.js';
 import type { ActiveResult } from '../../store/useAppStore.js';
 
 /**
@@ -65,6 +72,11 @@ import type { ActiveResult } from '../../store/useAppStore.js';
  *  and ninety-fifth percentiles are stable to the digit anyone reads,
  *  and few enough that a browser spends about ten milliseconds on it. */
 export const TOLL_BAND_SAMPLES = 200;
+
+/** What a realisation draws when a caller does not say (rules 182 to 186 of
+ *  validation/tollBandRules.ts): the inputs alone until the guard of rule 184
+ *  has run. */
+export const DEFAULT_TOLL_BAND_SCATTER: TollBandScatter = TOLL_BAND_IN_PLACE;
 
 /** The percentiles the band reports. */
 export const TOLL_BAND_LOW_Q = 0.05;
@@ -215,6 +227,11 @@ export function sampleScenarioPlans(options: {
   /** Draw the fatality curve's own scatter (default). Off, a band is
    *  the physics alone — what the interpolation check measures. */
   curveScatter?: boolean;
+  /** What a realisation draws, rules 182 to 186 of
+   *  validation/tollBandRules.ts. Omitted, {@link DEFAULT_TOLL_BAND_SCATTER};
+   *  `inputsOnly` keeps a plan's mortalities at the table's middle setting, as
+   *  they were until this was written. */
+  scatter?: TollBandScatter;
 }): CasualtyPlan[] {
   const rng = mulberry32(options.seed);
   // The curve's scatter has a stream of its own, so the physics of
@@ -243,7 +260,12 @@ export function sampleScenarioPlans(options: {
     if (realisation === null) return [];
     const plan = options.planFor(realisation);
     if (plan === null) continue;
-    plans.push(options.curveScatter === false ? plan : withCurveScatter(plan, curveRng));
+    const drawn = options.curveScatter === false ? plan : withCurveScatter(plan, curveRng);
+    plans.push(
+      (options.scatter ?? DEFAULT_TOLL_BAND_SCATTER) === TOLL_BAND_CANDIDATE
+        ? withVulnerabilityScatter(drawn, curveRng)
+        : drawn
+    );
   }
   return plans;
 }
@@ -277,6 +299,57 @@ function withCurveScatter(plan: CasualtyPlan, rng: Rng): CasualtyPlan {
       mortality: Math.min(1, band.mortality * factor),
     })),
   };
+}
+
+/**
+ * One draw of the vulnerability table's own ignorance, applied to a plan.
+ *
+ * A fatality curve fitted on earthquakes publishes its scatter and the draw
+ * above uses it. A blast, a burn, a firestorm has no such curve: what it has
+ * is a triple — the gentlest, the middle and the harshest setting the table
+ * states — and until 18 September 2026 a realisation drew nothing from it, so
+ * a toll of 2 800 000 came with a band of four per cent about it while the
+ * report said the mortality was uncertain by a factor of two (B-047 of
+ * docs/BUG_REGISTRY.md, from Andrea's reports of 17 September).
+ *
+ * Each hazard of the plan — the blast, the burns, the fire, the deaths that
+ * come later — takes one factor, drawn from the spread its own ends declare:
+ * a lognormal of σ = ln(high / low) / 3.29, the σ a 5–95 % interval that wide
+ * would have. One draw per hazard per realisation, not per band, because the
+ * uncertainty is of the model and not of each ring; the ends of the band move
+ * with it, no mortality passes one, and the central estimate is untouched.
+ *
+ * Rules 182 to 186 of validation/tollBandRules.ts decide it.
+ */
+export function withVulnerabilityScatter(plan: CasualtyPlan, rng: Rng): CasualtyPlan {
+  const factors = new Map<CasualtyHazard, number>();
+  const factorFor = (component: {
+    hazard: CasualtyHazard;
+    mortalityLow: number;
+    mortalityHigh: number;
+  }): number => {
+    const known = factors.get(component.hazard);
+    if (known !== undefined) return known;
+    const sigma = tripleSigmaLn(component.mortalityLow, component.mortalityHigh);
+    const factor = sigma > 0 ? Math.exp(sampleNormal(rng, 0, sigma)) : 1;
+    factors.set(component.hazard, factor);
+    return factor;
+  };
+  const bands = plan.bands.map((band) => {
+    if (band.components === undefined || band.components.length === 0) return band;
+    const components = band.components.map((component) => ({
+      ...component,
+      mortality: Math.min(1, component.mortality * factorFor(component)),
+    }));
+    return {
+      ...band,
+      components,
+      mortality: combineMortality(components.map((c) => c.mortality)),
+    };
+  });
+  // A hazard whose ends are equal draws a factor of one, so a plan with no
+  // spread to draw comes back with the same mortalities it went in with.
+  return { ...plan, bands };
 }
 
 /**
@@ -376,6 +449,7 @@ export function sampledTollBand(options: {
   seed: string | number;
   samples?: number;
   curveScatter?: boolean;
+  scatter?: TollBandScatter;
 }): PredictiveBand | null {
   return bandFromPlans(sampleScenarioPlans(options), options.populationAt);
 }
