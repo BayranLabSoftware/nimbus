@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 import { Pa } from '../units.js';
 import {
+  KINGERY_BULMASH_GRID,
+  KINGERY_BULMASH_IATG_CHECK,
+} from '../validation/kingeryBulmashReference.js';
+import {
   KINGERY_BULMASH_MAX_SCALED,
   KINGERY_BULMASH_MIN_SCALED,
   TNT_KG_PER_KILOTON,
@@ -34,6 +38,30 @@ describe('Kingery–Bulmash, the hemispherical TNT surface burst', () => {
       const scaled = 50 / Math.cbrt(kilograms);
       const pressure = (kingeryBulmashIncidentPressure(scaled) as number) / 1_000;
       expect(Math.abs(pressure / kPa - 1)).toBeLessThan(0.01);
+    }
+  });
+
+  it('agrees with an implementation of the same fits written by somebody else', () => {
+    // The black box of rules 177 to 181, read after the adoption at Andrea's
+    // request: the MIT-licensed `kingery-bulmash` package, run over eight
+    // charges and sixty-one scaled distances each by
+    // scripts/benchmark/kb-grid.py. Its answers are in the fixture; its code
+    // is not read, and the relation here is written from Swisdak's table.
+    expect(KINGERY_BULMASH_GRID.length).toBeGreaterThan(400);
+    let worst = 0;
+    for (const point of KINGERY_BULMASH_GRID) {
+      const ours = (kingeryBulmashIncidentPressure(point.scaled) as number) / 1_000;
+      expect(Number.isFinite(ours)).toBe(true);
+      worst = Math.max(worst, Math.abs(ours / point.kPa - 1));
+    }
+    expect(worst).toBeLessThan(1e-4);
+  });
+
+  it('inherits the package’s own distance from the printed examples', () => {
+    // The chain the fixture records: the package sits 0.53 % from IATG's
+    // printed bars, and this relation sits 2 × 10⁻⁶ from the package.
+    for (const check of KINGERY_BULMASH_IATG_CHECK) {
+      expect(Math.abs(check.relative)).toBeLessThan(0.01);
     }
   });
 

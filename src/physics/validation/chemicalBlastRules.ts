@@ -117,6 +117,18 @@ import type { ChemicalBlastSource } from '../events/explosion/overpressure.js';
  *     1 423 against a record of 218 (6.57× to 6.53×), its band with it, and
  *     the explosion family's bias from 2.61× to 2.60×. Nothing else moves.
  *
+ * **Read after the adoption, at Andrea's request, and declared as such.** The
+ * guard above holds the relation to what the reference prints, which is a
+ * step below what the other domains do: the impulse wave manual was asked 143
+ * cases by its own spreadsheet, and the Earth Impact Effects Program was asked
+ * 357 bolides. So an implementation of the same fits written by somebody else
+ * — the MIT-licensed `kingery-bulmash` package — was run as a black box on
+ * 488 points, eight charges from 1 kg to 1 kt at sixty-one scaled distances
+ * each (`scripts/benchmark/kb-grid.py`, the answers in
+ * `validation/kingeryBulmashReference.ts`). The relation here agrees with it
+ * within 1.9 × 10⁻⁶ everywhere, and `kingeryBulmash.test.ts` holds that in CI.
+ * It changes no verdict: the adoption stood on the guard as written.
+ *
  * `DEFAULT_CHEMICAL_BLAST_SOURCE` is `kingeryBulmash`, and N1's clause for a
  * charge on the ground is the relation itself rather than a fit within 10 % of
  * it. What it costs is written beside it: Beirut's toll is tuned and moves with

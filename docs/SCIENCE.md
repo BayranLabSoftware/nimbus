@@ -2638,10 +2638,14 @@ hundred tonnes; Swisdak (1994) republished those curves as one-line
 polynomials, "accurate to within 1 % of the original Kingery values", and the
 model is now written from his Table 1: three ranges of scaled distance from
 0.2 to 198.5 m·kg⁻¹ᐟ³, read from the scan of a document approved for public
-release and from nobody's code. Three readings hold the transcription in CI —
+release and from nobody's code. Four readings hold the transcription in CI —
 the worked examples the United Nations' IATG 01.80 prints for 1, 10 and 100 t
 at 50 m, within 1 %; the paper's own English coefficients, converted, within
-0.1 %; and the joins between its ranges, within 1 %.
+0.1 %; the joins between its ranges, within 1 %; and an implementation of the
+same fits written by somebody else, run as a black box on 488 points over
+eight charges from 1 kg to 1 kt, which it agrees with within 1.9 × 10⁻⁶. That
+last reading was taken after the adoption, at Andrea's request, and changed no
+verdict.
 
 What moved: a chemical charge's 5 psi ring by 0.9 %, its 1 psi ring by 6.6 %
 outward, its 0.5 psi ring by 2.9 % inward — one ratio each, at every charge
