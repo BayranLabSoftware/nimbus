@@ -51,10 +51,13 @@ export interface OverpressureInput {
  * Caveats:
  *   - Free air. A charge on the ground, reflecting perfectly, makes a
  *     hemispherical wave like twice its yield in free air (Takazawa et
- *     al. 2023); the explosion simulator passes a chemical charge at
- *     twice its yield. A nuclear yield puts only about half its energy
- *     into the air shock (Glasstone & Dolan §1.25), which the
- *     reflection restores, so a nuclear burst passes at its yield.
+ *     al. 2023). A nuclear yield puts only about half its energy into
+ *     the air shock (Glasstone & Dolan §1.25), which the reflection
+ *     restores, so a nuclear burst passes at its yield. A chemical
+ *     charge passed at twice its yield until 18 September 2026, when
+ *     rules 177 to 181 of validation/chemicalBlastRules.ts gave it
+ *     Kingery–Bulmash's own surface burst instead; a scenario can still
+ *     ask for this fit by name ({@link ChemicalBlastSource}).
  *   - Airbursts develop a Mach-stem reflection that boosts ground-range
  *     overpressure near the optimum height of burst; the HOB correction
  *     models that separately.
@@ -68,8 +71,10 @@ export interface OverpressureInput {
  */
 export type ChemicalBlastSource = 'kinneyGraham' | 'kingeryBulmash';
 
-/** What a scenario that names no source draws for a chemical charge. */
-export const DEFAULT_CHEMICAL_BLAST_SOURCE: ChemicalBlastSource = 'kinneyGraham';
+/** What a scenario that names no source draws for a chemical charge: the
+ *  field's own compilation since 18 September 2026, when rules 177 to 181 of
+ *  validation/chemicalBlastRules.ts adopted it. */
+export const DEFAULT_CHEMICAL_BLAST_SOURCE: ChemicalBlastSource = 'kingeryBulmash';
 
 export function peakOverpressure(input: OverpressureInput): Pascals {
   const Z = scaledDistance(input.distance, input.yieldEnergy);

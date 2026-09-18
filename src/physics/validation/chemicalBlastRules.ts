@@ -87,6 +87,43 @@ import type { ChemicalBlastSource } from '../events/explosion/overpressure.js';
  *       its own rules, and nothing of it is read here.
  */
 
+/*
+ * ===========================================================================
+ * The outcome of rules 177 to 181, 18 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `7b83b39` and the candidate, reachable but drawn by
+ * nothing, in `f912819`; then the guard ran.
+ *
+ * (a) The checks of rule 178 pass: the IATG examples come out at +0.53 %,
+ *     +0.07 % and +0.46 % of the printed bars — Swisdak's own claim against
+ *     the 1984 curves is 1 % — the paper's English coefficients agree within
+ *     0.02 % over the whole range, and the joins within 0.05 % and 0.70 %.
+ * (b) The release gate stays PASS (strict mode, exit 0).
+ * (c) The explosion sweep, both readings taken in the same session on the same
+ *     5 000 scenarios, gives 2 failures under the law in place
+ *     (`benchmark/results/invariants-2026-09-18.json`) and the same 2 under the
+ *     candidate (`-1.json`): the lethal-dose ring where the sphere meets the
+ *     ground tangentially, and a 5 psi ring just under the top of the book's
+ *     contour. Both were already declared.
+ * (d) The application prints what Node computes on every preset: ten
+ *     explosions, 57 numbers each, none different, and nine printed panel
+ *     values each, none off (`benchmark/results/ui.json`).
+ * (e) The three chemical presets move by the ratios of rule 177 and by nothing
+ *     else: 1.00923 at 5 psi, 0.93387 at 1 psi and 1.02908 at 0.5 psi, the law
+ *     in place over the candidate, on Beirut, Halifax and Texas City alike —
+ *     3 × 10⁻⁵ from the numbers rule 177 wrote down. The validation report
+ *     moves in three places, all of them Beirut's: its toll from 1 432 to
+ *     1 423 against a record of 218 (6.57× to 6.53×), its band with it, and
+ *     the explosion family's bias from 2.61× to 2.60×. Nothing else moves.
+ *
+ * `DEFAULT_CHEMICAL_BLAST_SOURCE` is `kingeryBulmash`, and N1's clause for a
+ * charge on the ground is the relation itself rather than a fit within 10 % of
+ * it. What it costs is written beside it: Beirut's toll is tuned and moves with
+ * its rings, and the campaign's CHEM figures stay where they are, with the new
+ * ones beside them.
+ */
+
 /** Rule 179's candidate and the law in place. */
 export const CHEMICAL_IN_PLACE: ChemicalBlastSource = 'kinneyGraham';
 export const CHEMICAL_CANDIDATE: ChemicalBlastSource = 'kingeryBulmash';

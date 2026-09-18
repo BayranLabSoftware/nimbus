@@ -520,6 +520,28 @@ not that a rule holds.
 
 ## What has moved since
 
+- **18 September 2026, a charge on the ground is the field's own relation.**
+  N1 asks that a charge on the ground be held to Kingery–Bulmash, and the
+  campaign had measured the project's rings against it at 0.990× with a
+  scatter of 0.04: within ten per cent, and not the same relation — a
+  free-air fit entered at twice the yield. It matters beyond N1, because N2
+  reads a held-out set of accidental explosions against Kingery–Bulmash's own
+  scaling, and those few per cent would have decided it instead of the
+  question the rule asks. Rules 177 to 181 were pushed before the candidate
+  drew anything, and `effects/kingeryBulmash.ts` was written from Swisdak's
+  (1994) Table 1 — the 1984 compilation as one-line polynomials, from a
+  document approved for public release, and from nobody's code — with three
+  checks in CI: the worked examples of IATG 01.80 within 1 %, the paper's own
+  English coefficients within 0.02 %, the joins between its ranges within
+  0.7 %. No guard failed: the explosion sweep reads the same two declared
+  failures under both laws in one session, the release gate stays PASS, the
+  application prints what Node computes on all ten explosion presets, and the
+  three chemical presets move by the ratios the rules wrote down beforehand
+  and by nothing else — 5 psi 0.9 % in, 1 psi 6.6 % out, 0.5 psi 2.9 % in.
+  The casualty bands' inner edges now come off the same curve as the rings
+  they are measured from. Beirut's toll is tuned and moves with its rings,
+  which is recorded, not corrected.
+
 - **17 September 2026, night, N1 held whole: an air burst's rings from the
   book's curves.** The last clause of N1 left was the overpressure with
   height of burst, drawn by a factor its own module called chosen. The seven

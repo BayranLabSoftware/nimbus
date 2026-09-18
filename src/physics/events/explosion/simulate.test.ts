@@ -265,11 +265,24 @@ describe('a chemical charge (Glasstone & Dolan §1.23–1.25; Takazawa et al. 20
       chargeType,
     });
 
-  it('on the ground blasts like a nuclear surface burst of twice its yield', () => {
+  /** The law rules 177 to 181 replaced, still reachable by name. */
+  const onKinneyGraham = (yieldMegatons: number) =>
+    simulateExplosion({
+      yieldMegatons,
+      groundType: 'WET_SOIL',
+      heightOfBurst: m(0),
+      chargeType: 'chemical',
+      chemicalBlast: 'kinneyGraham',
+    });
+
+  it('on the ground blasts like a nuclear surface burst of twice its yield, under the law it had', () => {
     // Kinney–Graham is a free-air fit: perfect reflection doubles a
     // charge on the ground. A nuclear burst's half-blast yield takes
-    // that back, so the nuclear surface burst is the fit at W.
-    const chemical = surface(0.0005, 'chemical');
+    // that back, so the nuclear surface burst is the fit at W. Since
+    // rules 177 to 181 a chemical charge is drawn by Kingery–Bulmash
+    // instead, and this holds the law they replaced, which a scenario
+    // can still ask for by name.
+    const chemical = onKinneyGraham(0.0005);
     const nuclearTwice = surface(0.001, 'nuclear');
     expect(chemical.blast.overpressure5psiRadius as number).toBeCloseTo(
       nuclearTwice.blast.overpressure5psiRadius,
@@ -281,11 +294,11 @@ describe('a chemical charge (Glasstone & Dolan §1.23–1.25; Takazawa et al. 20
     );
   });
 
-  it('draws its rings from Kingery–Bulmash when the scenario asks for it', () => {
+  it('draws its rings from Kingery–Bulmash, and the law it replaced is the ratio of rule 177 away', () => {
     // Rules 177 to 181 of validation/chemicalBlastRules.ts: the law in place
     // over the candidate, one ratio per ring at every charge mass.
     for (const megatons of [1e-7, 1e-5, 1e-3, 1]) {
-      const inPlace = surface(megatons, 'chemical');
+      const inPlace = onKinneyGraham(megatons);
       const candidate = simulateExplosion({
         yieldMegatons: megatons,
         groundType: 'WET_SOIL',

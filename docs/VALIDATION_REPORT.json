@@ -830,10 +830,10 @@
         "recorded": 218,
         "recordedLow": 218,
         "recordedHigh": 218,
-        "model": 1432,
-        "bandLow": 1296,
-        "bandHigh": 1585,
-        "ratio": 6.569,
+        "model": 1423,
+        "bandLow": 1289,
+        "bandHigh": 1576,
+        "ratio": 6.528,
         "contains": false,
         "gated": false,
         "cause": "populationRaster",
@@ -1431,7 +1431,7 @@
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 2.61,
+          "bias": 2.6,
           "scatterLn": 0.92,
           "inside": 1,
           "bothZero": 0,
@@ -4319,14 +4319,14 @@
           "record": 218,
           "gated": false,
           "inPlace": [
-            1296,
-            1432,
-            1585
+            1289,
+            1423,
+            1576
           ],
           "candidate": [
-            1296,
-            1432,
-            1585
+            1289,
+            1423,
+            1576
           ],
           "insideInPlace": false,
           "insideCandidate": false
@@ -6236,10 +6236,10 @@
       },
       {
         "event": "Beirut 2020",
-        "measuredLow": 1296,
-        "measuredHigh": 1585,
-        "interpolatedLow": 1296,
-        "interpolatedHigh": 1585,
+        "measuredLow": 1289,
+        "measuredHigh": 1576,
+        "interpolatedLow": 1289,
+        "interpolatedHigh": 1576,
         "comparable": true,
         "lowComparable": true
       },

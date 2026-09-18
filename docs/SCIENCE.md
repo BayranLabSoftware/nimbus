@@ -54,7 +54,13 @@ used.
   blast-wave relations.
 - **Kinney, G. F., & Graham, K. J. (1985).** _Explosive Shocks in
   Air_ (2nd ed.). Springer. Conventional-explosive overpressure
-  scaling.
+  scaling, in free air.
+- **Swisdak, M. M. Jr. (1994).** _Simplified Kingery Airblast
+  Calculations._ Minutes of the 26th DoD Explosives Safety Seminar,
+  Miami. Naval Surface Warfare Center, DTIC ADA526744. The
+  Kingery & Bulmash (1984) compilation for a hemispherical TNT surface
+  burst, as one-line polynomials: what a chemical charge on the ground
+  is drawn with since 18 September 2026.
 
 ### Tsunamis
 
@@ -225,7 +231,8 @@ Carlo wrappers for sampled inputs).
 | Ashfall isopach               | events/volcano/tephra2Fallout.ts    | Tephra2's forward model (beta release, Gaussian φ sizes, three settling regimes, fall-time diffusion), held to the program (rules 158–161)                                                                                     | Bonadonna et al. 2005; Connor & Connor 2006                                                   | ±factor 2                                           |
 | Pyroclastic runout            | events/volcano/pyroclasticRunout.ts | L = 10 · V_km³^(1/3) (Nimbus scaling)                                                                                                                                                                                          | Nimbus; Sheridan 1979 and Hayashi & Self 1992 background                                      | ±70%                                                |
 | Lateral-blast wedge           | events/volcano/extendedEffects.ts   | runout = 2.5 × Sheridan runout (Nimbus), sector up to 180°                                                                                                                                                                     | Crandell & Hoblitt 1986 (sector, ≈ 28 km)                                                     | ±50%                                                |
-| Overpressure ring             | events/explosion/overpressure.ts    | ΔP/P₀ = 808[1+(Z/4.5)²]/√(…), Z = R/W^⅓ (free air; chemical at 2W on the ground)                                                                                                                                               | Kinney & Graham 1985; reflection: Takazawa et al. 2023                                        | ±15%                                                |
+| Overpressure ring (chemical)  | effects/kingeryBulmash.ts           | P = exp(A + B·lnZ + … + G·ln⁶Z) over three ranges of Z = R/W_kg^⅓, the hemispherical TNT surface burst                                                                                                                         | Swisdak 1994 Table 1 (Kingery & Bulmash 1984)                                                 | 1 % of Kingery & Bulmash                            |
+| Overpressure ring (nuclear)   | events/explosion/overpressure.ts    | ΔP/P₀ = 808[1+(Z/4.5)²]/√(…), Z = R/W^⅓ (free air; the surface burst a nuclear yield enters at its own yield)                                                                                                                  | Kinney & Graham 1985; reflection: Takazawa et al. 2023                                        | ±15%                                                |
 | Thermal fluence               | events/explosion/thermal.ts         | Q = f W τ / (4π R²), f = 0.18 → 0.35 up to 200·W^0.4 ft, τ = e^(−R/L) (project L); none for chemical; burn at Glasstone & Dolan Fig. 12.64 (6.2 → 11.8 cal/cm² third degree, 1 kt → 10 Mt); an impact at the project's 8 and 5 | Glasstone & Dolan 1977 §7.94–7.96, §7.101                                                     | ±25%                                                |
 | Firestorm ignition radius     | events/explosion/firestorm.ts       | R s.t. Q(R) = 4.19e5 J/m² (10 cal/cm², project value)                                                                                                                                                                          | Glasstone & Dolan 1977 §7.94–7.96 (fluence)                                                   | ±30%                                                |
 | Tsunami cavity radius         | events/tsunami/impact.ts            | R_C = (3 E / 2π ρ g)^¼                                                                                                                                                                                                         | Ward & Asphaug 2000, eq. 12 (ε = ½, D_C = R_C)                                                | ±30%                                                |
@@ -2600,8 +2607,9 @@ there, and its people were in no band at all. The plan now keeps their 2 and
 
 What it leaves. The 0.5 psi light-damage ring, below anything the figure draws,
 carries the 1 psi curve out by the surface relation's ratio, the project's
-closure. A chemical charge keeps its Kingery–Bulmash surface radii and takes
-the curves' change with height at twice its yield. A burst in the water went on
+closure. A chemical charge keeps its own surface radii — Kingery–Bulmash's since
+18 September 2026, below — and takes the curves' change with height at twice
+its yield. A burst in the water went on
 shortening the surface relation's radius, so its 1 psi ring stepped by 14 %
 across the waterline; rules 174 to 176 closed that the same night, shortening
 the book's contact surface burst instead — the reference burst §6.81 adjusts —
@@ -2612,6 +2620,44 @@ read without the corrections the book describes. And the explosion sweep gains
 one failure, a 5 psi ring just under the top of its contour, where the
 farthest crossing moves steeply with the height — the geometry of any contour
 near its top, declared.
+
+### A charge on the ground, from the compilation the field uses (18 September 2026)
+
+`validation/chemicalBlastRules.ts` (rules 177 to 181), `effects/kingeryBulmash.ts`.
+A chemical charge drew its rings from Kinney & Graham's fit for a charge in
+free air, entered at twice its yield because a charge on the ground reflects
+its blast and, reflecting perfectly, acts like twice the charge. N1 asks that
+the same charge be held to Kingery & Bulmash — the compilation CONWEP, the
+United States explosives safety standard, NATO's AASTP-1 and the United
+Nations' IATG all compute a charge's blast with — and the campaign of 15
+September measured it: the rings came out 0.990× the reference with a scatter
+of 0.04 in the log. Within ten per cent, and not the same relation.
+
+Kingery & Bulmash fitted explosive trials from under a kilogramme to over four
+hundred tonnes; Swisdak (1994) republished those curves as one-line
+polynomials, "accurate to within 1 % of the original Kingery values", and the
+model is now written from his Table 1: three ranges of scaled distance from
+0.2 to 198.5 m·kg⁻¹ᐟ³, read from the scan of a document approved for public
+release and from nobody's code. Three readings hold the transcription in CI —
+the worked examples the United Nations' IATG 01.80 prints for 1, 10 and 100 t
+at 50 m, within 1 %; the paper's own English coefficients, converted, within
+0.1 %; and the joins between its ranges, within 1 %.
+
+What moved: a chemical charge's 5 psi ring by 0.9 %, its 1 psi ring by 6.6 %
+outward, its 0.5 psi ring by 2.9 % inward — one ratio each, at every charge
+mass, because both relations scale with the cube root. The inner edges of the
+casualty bands, 12 psi inside the 5 psi ring and 2 psi inside the 1 psi ring,
+now come off the same curve as the rings they are measured from. A nuclear
+burst is untouched, and the height-of-burst curves still change whichever
+surface burst the charge has.
+
+What it does not fix. Kingery's compilation carries the weather and the charge
+performance of the trials behind it; Swisdak's paper says its curves must not
+be extrapolated beyond the ranges printed, and warns that at low pressures,
+where weather rules, a measurement may differ from the standard by a long way.
+The curve also steps up by 0.65 % where its third range begins, at
+23.8 m·kg⁻¹ᐟ³, which is between the 1 psi and 0.5 psi rings and touches
+neither.
 
 ### The exposure that burns, from the book's own figure (16 September 2026)
 

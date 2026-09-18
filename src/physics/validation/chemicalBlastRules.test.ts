@@ -21,8 +21,8 @@ const PASSING: ChemicalGuard = {
 };
 
 describe('rules 177 to 181: a chemical charge drawn by Kingery–Bulmash', () => {
-  it('has not been adopted yet, so a scenario that names no source keeps the law in place', () => {
-    expect(DEFAULT_CHEMICAL_BLAST_SOURCE).toBe(CHEMICAL_IN_PLACE);
+  it('is the default since rule 180 adopted it, on 18 September 2026', () => {
+    expect(DEFAULT_CHEMICAL_BLAST_SOURCE).toBe(CHEMICAL_CANDIDATE);
   });
 
   it('adopts the candidate when every guard of rule 180 holds', () => {

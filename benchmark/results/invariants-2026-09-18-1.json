@@ -1,0 +1,43 @@
+{
+ "track": "INV",
+ "scenariosPerHazard": {
+  "explosion": 5000
+ },
+ "watchdogMs": 2000,
+ "failures": {
+  "explosion": {
+   "continuous: blast.overpressure5psiRadiusHob": {
+    "count": 1,
+    "examples": [
+     {
+      "input": {
+       "yieldMegatons": 131.66909115425688,
+       "chargeType": "nuclear",
+       "windSpeed": 106.40452310442924,
+       "windDirectionDeg": 31.838198888348415,
+       "chemicalBlast": "kingeryBulmash",
+       "heightOfBurst": 28233.249159529805
+      },
+      "detail": "1218.34 → 1331.04"
+     }
+    ]
+   },
+   "continuous: radiation.ld50Radius": {
+    "count": 1,
+    "examples": [
+     {
+      "input": {
+       "yieldMegatons": 1.258324978251819,
+       "chargeType": "nuclear",
+       "windSpeed": 61.4517717808485,
+       "windDirectionDeg": 175.49444534699433,
+       "chemicalBlast": "kingeryBulmash",
+       "heightOfBurst": 2751.6525704413652
+      },
+      "detail": "53.9129 → 73.9559"
+     }
+    ]
+   }
+  }
+ }
+}

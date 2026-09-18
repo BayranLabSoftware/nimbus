@@ -302,19 +302,34 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(r.tsunami?.sourceAmplitude as number).toBeLessThan(165);
   });
 
-  it('B-017 A chemical charge on the ground blasts at twice its yield and has no flash', () => {
+  it('B-017 A chemical charge on the ground blasts like a charge on the ground, and has no flash', () => {
     // Pre-fix: the free-air Kinney–Graham fit at the charge's yield
     // (radii 21 % short) and nuclear burn, fire and radiation rings
-    // drawn around Beirut, Halifax and Texas City.
+    // drawn around Beirut, Halifax and Texas City. The fix entered the
+    // fit at twice the yield, for the ground's reflection; since rules
+    // 177 to 181 the charge is drawn by Kingery–Bulmash's own surface
+    // burst instead, which is what the field computes it with, and the
+    // doubling is still what the law it replaced does.
     const chemical = simulateExplosion({
       yieldMegatons: 0.0005,
       heightOfBurst: m(0),
       chargeType: 'chemical',
     });
+    const atItsOwnYield = simulateExplosion({ yieldMegatons: 0.0005, heightOfBurst: m(0) });
     const nuclearTwice = simulateExplosion({ yieldMegatons: 0.001, heightOfBurst: m(0) });
-    expect(chemical.blast.overpressure5psiRadius as number).toBeCloseTo(
+    const doubled = simulateExplosion({
+      yieldMegatons: 0.0005,
+      heightOfBurst: m(0),
+      chargeType: 'chemical',
+      chemicalBlast: 'kinneyGraham',
+    });
+    expect(doubled.blast.overpressure5psiRadius as number).toBeCloseTo(
       nuclearTwice.blast.overpressure5psiRadius,
       6
+    );
+    // Well clear of the bug's own radii, whichever of the two laws draws it.
+    expect(chemical.blast.overpressure5psiRadius as number).toBeGreaterThan(
+      1.2 * (atItsOwnYield.blast.overpressure5psiRadius as number)
     );
     expect(chemical.thermal.thirdDegreeBurnRadius).toBe(0);
     expect(chemical.radiation.ld50Radius).toBe(0);

@@ -188,6 +188,14 @@ const kinneyGraham1985: Citation = {
   doi: '10.1007/978-3-642-86682-1',
 };
 
+const swisdak1994: Citation = {
+  authors: 'Swisdak, M. M. Jr.',
+  year: 1994,
+  title: 'Simplified Kingery Airblast Calculations',
+  venue:
+    'Minutes of the 26th DoD Explosives Safety Seminar, Miami; Naval Surface Warfare Center, DTIC ADA526744',
+};
+
 const takazawa2023: Citation = {
   authors: 'Takazawa, S. K., Kim, K. & Garcés, M.',
   year: 2023,
@@ -863,12 +871,21 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       'Surface / airburst detonations. Input is TNT-equivalent yield + height of burst + ground type; outputs include blast radii, thermal fluence, firestorm, crater, initial radiation, and EMP footprint.',
     entries: [
       {
+        id: 'chemical-blast',
+        name: 'A chemical charge on the ground (Kingery–Bulmash)',
+        formula:
+          'P = exp(A + B·lnZ + C·ln²Z + D·ln³Z + E·ln⁴Z) ,   Z = R · W^(−1/3)  (m, kg TNT), over 0.2–2.9, 2.9–23.8 and 23.8–198.5',
+        description:
+          'The compilation the field computes a charge’s blast with — CONWEP, the United States explosives safety standard, NATO’s AASTP-1 and the United Nations’ IATG all read it — written from Swisdak’s Table 1, which republishes Kingery & Bulmash’s (1984) curves for a hemispherical TNT surface burst as one-line polynomials within 1 % of them. It draws the 5, 1 and 0.5 psi rings of a chemical charge, and the inner edges of its casualty bands, since 18 September 2026 (rules 177 to 181); before that they came from the Kinney–Graham fit below at twice the yield, 0.9 % out at 5 psi, 6.6 % at 1 psi and 2.9 % at 0.5 psi. The curves carry the weather and the charge performance of the trials behind them, and their author warns against reading them outside the ranges above, or trusting them at low pressures where weather rules.',
+        citation: swisdak1994,
+      },
+      {
         id: 'overpressure',
         name: 'Peak overpressure (Kinney–Graham)',
         formula:
           'ΔP/P₀ = 808·[1 + (Z/4.5)²] / √([1 + (Z/0.048)²]·[1 + (Z/0.32)²]·[1 + (Z/1.35)²]) ,   Z = R · W^(−1/3)  (m, kg TNT)',
         description:
-          'The Kinney–Graham fit for a TNT charge in free air, inverted for the 5, 1 and 0.5 psi radii. A charge on the ground reflects its blast and, reflecting perfectly, acts like twice its yield in free air (Takazawa, Kim & Garcés 2023): a chemical charge, whose energy goes almost wholly into the blast (Glasstone & Dolan §1.23), enters the fit at twice its yield. A nuclear burst puts only about half its energy into the air shock (§1.25), which the reflection restores, so it enters at its yield. The height-of-burst factor below then scales the radii. Until 14 September 2026 a chemical charge entered at its yield, a quarter short in radius.',
+          'The Kinney–Graham fit for a TNT charge in free air. It draws a nuclear burst’s surface radii, which the height-of-burst curves then change: a nuclear burst puts about half its energy into the air shock (Glasstone & Dolan §1.25), and the ground’s reflection restores it, so it enters the fit at its yield. A chemical charge entered at twice its yield, for that reflection (Takazawa, Kim & Garcés 2023), until 18 September 2026, when Kingery–Bulmash above took over its rings; a scenario can still ask for this fit by name. Until 14 September 2026 a chemical charge entered at its yield, a quarter short in radius.',
         citation: kinneyGraham1985,
       },
       {
@@ -1592,6 +1609,7 @@ export const CITATIONS = {
   koshimura2009,
   jonkman2008,
   kinneyGraham1985,
+  swisdak1994,
   takazawa2023,
   nordyke1962,
   needham2018,

@@ -356,7 +356,8 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
           {
             name: 'overpressure with range',
             status: 'met',
-            evidence: 'Kingery–Bulmash within 10 % in range on all thirty rings of the campaign.',
+            evidence:
+              "Kingery–Bulmash itself for a chemical charge on the ground (rules 177 to 181), and the book's own curves for a nuclear burst at any height (rules 168 to 173).",
           },
           {
             name: 'overpressure with height of burst',
@@ -397,7 +398,8 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
           {
             name: 'Kingery–Bulmash for a charge on the ground',
             status: 'met',
-            evidence: 'All thirty rings within 10 %, worst 0.934×.',
+            evidence:
+              "The relation itself since rules 177 to 181: Swisdak's simplified fits for a hemispherical TNT surface burst, written from his Table 1 and held in CI to IATG 01.80's worked examples within 1 %, to his own English coefficients within 0.1 % and to itself at the joins. Before them, the Kinney–Graham fit at twice the yield, within 10 % of it on all thirty rings of the campaign, worst 0.934×.",
           },
         ],
       },
