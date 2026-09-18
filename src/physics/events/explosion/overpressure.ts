@@ -59,6 +59,18 @@ export interface OverpressureInput {
  *     overpressure near the optimum height of burst; the HOB correction
  *     models that separately.
  */
+/**
+ * What draws the rings of a chemical charge on the ground (rules 177 to 181 of
+ * validation/chemicalBlastRules.ts): `kinneyGraham`, the free-air fit below at
+ * twice the charge's yield, or `kingeryBulmash`, the field's own compilation
+ * for a hemispherical surface burst (`effects/kingeryBulmash.ts`). A nuclear
+ * burst is drawn by neither: its rings come from Glasstone & Dolan's curves.
+ */
+export type ChemicalBlastSource = 'kinneyGraham' | 'kingeryBulmash';
+
+/** What a scenario that names no source draws for a chemical charge. */
+export const DEFAULT_CHEMICAL_BLAST_SOURCE: ChemicalBlastSource = 'kinneyGraham';
+
 export function peakOverpressure(input: OverpressureInput): Pascals {
   const Z = scaledDistance(input.distance, input.yieldEnergy);
   const P0 = (input.ambientPressure ?? SEA_LEVEL_PRESSURE) as number;
