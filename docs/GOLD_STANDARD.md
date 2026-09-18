@@ -49,6 +49,30 @@ The terms are the validation report's:
   same rows.
 - **Cell:** the size cells the scorecard uses for the family.
 
+## Where a 9 is pursued
+
+Chosen with Andrea on 16 September 2026, and written here so that a reader
+sees a choice of scope and not a bar lowered after it was missed. It changes
+no rule, no bound and no status.
+
+- **A 9 is pursued on impacts, explosions, volcanoes and waves from
+  landslides.** The tools their rules read against — the Earth Impact Effects
+  Program, Glasstone & Dolan and Kingery–Bulmash, Mastin et al. and Tephra2,
+  the impulse wave manual — are closed forms or small programs, which a
+  browser can match, and every rule of those domains can be reached by
+  matching them and by the work their rules ask beyond them.
+- **Earthquakes and waves from earthquakes are measured and declared.** A 9
+  there asks for what ShakeMap and GeoClaw compute — ground motion conditioned
+  on stations and finite ruptures, waves carried over real bathymetry — and
+  reaching it means rewriting those systems inside a browser. The aim set that
+  day was a 7, when a grade was still a reading and not yet the count below.
+  The count reads both domains against every rule of this file, unchanged.
+
+The reason is the one the work of 15 and 16 September showed: effort spread
+over six domains moved each of them by a tenth. A project that says where it
+aims for a 9 and where it does not makes a claim that can be checked; one that
+aims for a 9 everywhere and stays at 5 everywhere makes none.
+
 ## Every domain
 
 **G1. Verification.** Every relation that sets a number the product prints
@@ -251,11 +275,13 @@ A bound changes only by a dated amendment in this file that says why,
 written before the figure it touches has been measured on the set it names,
 and it is never loosened after a figure has failed it.
 
-Two amendments have been made, and they are below. The first re-anchors
+Three amendments have been made, and they are below. The first re-anchors
 bounds to the rule this file opened with, rather than loosening any: the
 verdict each rule reached under its bound as first written stays recorded, and
 no rule is met today that was not met before it. The second changes no bound
-and no status: it reads the same verdicts under two measures.
+and no status: it reads the same verdicts under two measures. The third reads
+G3's two bounds as tests on a sample, because both are read from one, and it is
+written before any band has been scored on a held-out set.
 
 ## Amendment of 16 September 2026: every validation bound read against the field
 
@@ -405,6 +431,61 @@ accuracy: it means the model is the field's tool on the quantities that tool
 computes, errors included, and says nothing of what no tool computes — a toll,
 a band, a join between two tools. Those are counted beyond, and a 9 still
 needs them.
+
+## Amendment of 18 September 2026: G3 read as a test on a sample
+
+**Why.** G3 asks two things of a band: that it hold about nine records in ten,
+and that it be no wider than a band exactly calibrated at the quantity's σ_ln
+bound, exp(3.29 σ) — and the amendment of 16 September makes that σ the
+reference's, read on the same held-out rows. Both halves are then read from a
+sample, and neither reading is the thing it stands for: the reference's σ over
+eight rows is not its σ, and the share of records held on eight rows is not the
+band's coverage. The width bound turns on a coin — the sample σ falls below the
+true one about half the time, and every record is then held by a band the rule
+calls too wide, so the reading is nothing held at all.
+
+A band drawn at exactly the right scatter therefore fails more often than it
+passes. On an unbiased model, 20 000 draws per case
+(`scripts/benchmark/g3-sampling.py`, seed 18 092 026):
+
+| Rows | As written | Amended |
+| ---: | ---------: | ------: |
+|    8 |     26.0 % |  94.3 % |
+|   10 |     37.0 % |  93.7 % |
+|   30 |     28.4 % |  94.0 % |
+
+**The amendment.** G3's two bounds are read as tests of the claims they stand
+for, with the sample allowed for. Everything else in G3 is unchanged — the band
+is still the 5–95 % interval the product prints, a record held by a band wider
+than the bound is still not counted as held, and the cells are still read as the
+rule says.
+
+> **Width.** The median width is no more than exp(3.29 σ⁺), σ⁺ being the
+> one-sided 95 % upper confidence limit of the σ the bound names, read on the
+> rows: σ⁺ = σ · √((n − 1) / χ²₀․₀₅,ₙ₋₁), which is ×1.80 the reading on eight
+> rows, ×1.65 on ten, ×1.37 on twenty, ×1.28 on thirty.
+> **Coverage.** The records held lie in the central 95 % of Binomial(n, 0.9) —
+> the records a band that holds nine in ten may show on n rows: 5 to 8 of
+> eight, 7 to 10 of ten, 15 to 20 of twenty, 23 to 30 of thirty. On a set of
+> twenty rows or more the same test is read in every cell of twenty rows or
+> more.
+
+**What it refuses.** The test still catches a band that is not calibrated, where
+the rows are enough to see it: on thirty rows a band whose σ is 60 % too large
+passes 2.6 times in a hundred and one 30 % too small 51.8. On eight or ten rows
+it is weak — 59.7 % and 47.8 % for the same band 60 % too wide — and that
+weakness is the set's, not the reading's. This file already says that outside
+earthquakes the sets are small and test a band coarsely; the amendment does not
+mend that, and a domain whose G3 rests on eight rows should say so beside the
+verdict.
+
+**What it changes on the day it is written: nothing.** No band has been scored
+against a held-out set under G3 in any domain. Every G3 and the rules that
+follow it — E4, T5, L3, V6 — reads not met or pending, for want of a band, of a
+set, or of the rules they follow; the earthquake toll's band, the only one read
+against records, was read by the scorecard's own statistics and not by G3. So
+no figure that failed is being re-read under a looser rule. What changes is that
+a band which is right can now pass, and one which is wrong still cannot.
 
 ## Where each domain stands, 15 September 2026
 
