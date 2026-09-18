@@ -41,6 +41,8 @@ import { buildExplosionCascade, buildImpactCascade } from '../cascade.js';
 import { blastCasualtyPlan } from '../casualties.js';
 import { DEFAULT_TOLL_BAND_SCATTER, withVulnerabilityScatter } from '../uq/tollBand.js';
 import { TOLL_BAND_CANDIDATE } from './tollBandRules.js';
+import { applyIntentToStore, decodeUrl } from '../../store/urlState.js';
+import { radiansToDegrees } from '../units.js';
 import { fieldsFor } from '../../ui/pages/SimulationReportPage.js';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
 import { impactFireballRadius, nuclearFireballRadius } from '../effects/blastWave.js';
@@ -1084,13 +1086,81 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     for (const band of drawn.bands) expect(band.mortality).toBeLessThanOrEqual(1);
   });
 
+  it("B-048 A link's scenario is the one the report prints, or the reader is told why not", () => {
+    // Pre-fix: the link's fields were validated on their own, and the impact
+    // validator wants a target density — a fact about the ground, which no
+    // hand-written link carries. The link was dropped and the app ran its own
+    // default: a twenty-metre body came back as a fifteen-kilometre one, with
+    // the report printing the default's numbers and saying nothing.
+    const link = (query: string): void => {
+      applyIntentToStore(decodeUrl(`http://x/?${query}`), useAppStore.getState());
+    };
+    link('v=1&p=CUSTOM&m=report&t=impact&d=20&s=19200&a=18&rho=3300&lat=41.898&lon=12.481');
+    const restored = useAppStore.getState();
+    expect(restored.eventType).toBe('impact');
+    expect(restored.impact.preset).toBe('CUSTOM');
+    expect(restored.impact.input.impactorDiameter as number).toBe(20);
+    expect(restored.impact.input.impactVelocity as number).toBe(19_200);
+    expect(radiansToDegrees(restored.impact.input.impactAngle)).toBeCloseTo(18, 9);
+    // What the link does not say keeps the app's own value, and the page says
+    // which fields those were rather than letting them pass for the link's.
+    expect(restored.impact.input.targetDensity as number).toBeGreaterThan(0);
+    expect(restored.linkNotice).toMatch(/targetDensity/);
+
+    // And it takes nothing else with it: a link asking for a quiet Plinian
+    // column must not inherit the caldera collapse of whatever scenario the
+    // app was showing, which is how a Vesuvius-like column came back with a
+    // hundred-metre wave.
+    link('v=1&p=CUSTOM&m=report&t=volcano&ver=150000&vol=2500000000&ws=15&lat=40.75&lon=14.35');
+    const volcano = useAppStore.getState();
+    expect(volcano.volcano.input.volumeEruptionRate).toBe(150_000);
+    expect(volcano.volcano.input.flankCollapse).toBeUndefined();
+    expect(volcano.volcano.input.lateralBlast).toBeUndefined();
+
+    // A link the app cannot run leaves the scenario alone and says so.
+    link('v=1&p=CUSTOM&m=report&t=impact&d=20&s=19200&a=120&lat=41.898&lon=12.481');
+    const refused = useAppStore.getState();
+    expect(refused.linkNotice).not.toBeNull();
+    expect(refused.impact.input.impactorDiameter as number).toBe(20);
+  });
+
+  it('B-049 The light-damage ring is the one the burst actually draws', () => {
+    // Pre-fix: the report printed the 5 and 1 psi rings twice — the surface
+    // burst's and the one corrected for the height — and the 0.5 psi ring once,
+    // uncorrected and unlabelled. A megatonne at 40 km printed "—" for the two
+    // corrected rings and 25 km for the light-damage one.
+    const high = simulateExplosion({ yieldMegatons: 1, heightOfBurst: m(40_000) });
+    expect(high.blast.overpressure5psiRadiusHob).toBe(0);
+    expect(high.blast.lightDamageRadiusHob).toBe(0);
+    const labels = fieldsFor({ type: 'explosion', data: high } as never).outputs;
+    const light = labels.filter((f) => f.label.includes('0.5 psi'));
+    expect(light.length).toBe(2);
+    expect(light.some((f) => /baseline/i.test(f.label))).toBe(true);
+    const corrected = light.find((f) => /HOB-corrected/i.test(f.label));
+    expect(corrected?.value).toBe('—');
+  });
+
+  it('B-050 The wind at the ground follows the burst’s height', () => {
+    // Pre-fix: the peak wind rows read the surface burst's overpressure at a
+    // fixed range, so a megatonne at 40 km — whose rings never reach the
+    // ground — still claimed 784 m/s a kilometre from ground zero.
+    const surface = simulateExplosion({ yieldMegatons: 1, heightOfBurst: m(0) });
+    const high = simulateExplosion({ yieldMegatons: 1, heightOfBurst: m(40_000) });
+    expect(surface.peakWind.at1km as number).toBeGreaterThan(100);
+    expect(high.peakWind.at1km as number).toBe(0);
+    // An air burst at the optimum height drives more wind on the ground than
+    // the same yield on it, not less.
+    const optimum = simulateExplosion({ yieldMegatons: 1, heightOfBurst: m(2_000) });
+    expect(optimum.peakWind.at5km as number).toBeGreaterThan(surface.peakWind.at5km);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-047 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-050 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 47;
-    expect(expectedRows).toBe(47);
+    const expectedRows = 50;
+    expect(expectedRows).toBe(50);
   });
 });

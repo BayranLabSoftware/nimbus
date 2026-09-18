@@ -455,6 +455,14 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
     hobFactorOut = factor;
   }
 
+  /** The wind at the ground at `rangeM`, under the same change of range the
+   *  rings take for this burst's height (B-050). Zero where no ring reaches
+   *  the ground at all. */
+  const windAtGround = (rangeM: number): MetersPerSecond => {
+    if (!(hobFactorOut > 0)) return mps(0);
+    return peakWindAtRange({ distance: m(rangeM / hobFactorOut), yieldEnergy: blastYield });
+  };
+
   // Phase-17 thermal calibration. Pass `heightOfBurst` so the burn-
   // radius helpers solve self-consistently with a Beer-Lambert
   // atmospheric attenuation τ(R) = exp(−R / L_eff(HOB)). Without this,
@@ -518,10 +526,17 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       firstDegreeBurnRadius: absorbed(burn1),
     },
     peakWind: {
-      at1km: peakWindAtRange({ distance: m(1_000), yieldEnergy: blastYield }),
-      at5km: peakWindAtRange({ distance: m(5_000), yieldEnergy: blastYield }),
-      at10km: peakWindAtRange({ distance: m(10_000), yieldEnergy: blastYield }),
-      at50km: peakWindAtRange({ distance: m(50_000), yieldEnergy: blastYield }),
+      // The wind a burst drives at the ground is the wind of the overpressure
+      // that reaches the ground, and a burst in the air does not put the
+      // surface burst's overpressure there. The rings say by how much: the
+      // factor between the ring a burst draws and the one it would draw on the
+      // ground is the same factor in range, so the wind at r is the surface
+      // burst's wind at r over that factor — nothing at all where the rings
+      // reach nothing (B-050 of docs/BUG_REGISTRY.md).
+      at1km: windAtGround(1_000),
+      at5km: windAtGround(5_000),
+      at10km: windAtGround(10_000),
+      at50km: windAtGround(50_000),
     },
     firestorm: {
       ignitionRadius: absorbed(flash(flammableIgnitionRadius(fireInput))),

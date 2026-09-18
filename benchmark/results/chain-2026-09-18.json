@@ -1,0 +1,147 @@
+{
+ "what": "the chain a visitor runs, against the field’s references on the same inputs",
+ "rows": [
+  {
+   "scenario": "0.5 t of TNT on the ground",
+   "quantity": "5 psi ring",
+   "chain": 45.34485369664567,
+   "reference": 45.34485369664567,
+   "ratio": 1
+  },
+  {
+   "scenario": "0.5 t of TNT on the ground",
+   "quantity": "1 psi ring",
+   "chain": 144.00987393811852,
+   "reference": 144.00987393811852,
+   "ratio": 1
+  },
+  {
+   "scenario": "0.5 t of TNT on the ground",
+   "quantity": "0.5 psi ring",
+   "chain": 243.5842865759538,
+   "reference": 243.5842865759538,
+   "ratio": 1
+  },
+  {
+   "scenario": "5 t of TNT on the ground",
+   "quantity": "5 psi ring",
+   "chain": 97.69252581847392,
+   "reference": 97.69252581847392,
+   "ratio": 1
+  },
+  {
+   "scenario": "5 t of TNT on the ground",
+   "quantity": "1 psi ring",
+   "chain": 310.259868119401,
+   "reference": 310.259868119401,
+   "ratio": 1
+  },
+  {
+   "scenario": "5 t of TNT on the ground",
+   "quantity": "0.5 psi ring",
+   "chain": 524.7864369459026,
+   "reference": 524.7864369459026,
+   "ratio": 1
+  },
+  {
+   "scenario": "50 t of TNT on the ground",
+   "quantity": "5 psi ring",
+   "chain": 210.4721665801557,
+   "reference": 210.4721665801557,
+   "ratio": 1
+  },
+  {
+   "scenario": "50 t of TNT on the ground",
+   "quantity": "1 psi ring",
+   "chain": 668.4346228011549,
+   "reference": 668.4346228011549,
+   "ratio": 1
+  },
+  {
+   "scenario": "50 t of TNT on the ground",
+   "quantity": "0.5 psi ring",
+   "chain": 1130.6181046144823,
+   "reference": 1130.6181046144823,
+   "ratio": 1
+  },
+  {
+   "scenario": "500 t of TNT on the ground",
+   "quantity": "5 psi ring",
+   "chain": 453.4485369664567,
+   "reference": 453.4485369664567,
+   "ratio": 1
+  },
+  {
+   "scenario": "500 t of TNT on the ground",
+   "quantity": "1 psi ring",
+   "chain": 1440.0987393811852,
+   "reference": 1440.0987393811852,
+   "ratio": 1
+  },
+  {
+   "scenario": "500 t of TNT on the ground",
+   "quantity": "0.5 psi ring",
+   "chain": 2435.8428657595377,
+   "reference": 2435.8428657595377,
+   "ratio": 1
+  },
+  {
+   "scenario": "5000 t of TNT on the ground",
+   "quantity": "5 psi ring",
+   "chain": 976.9252581847393,
+   "reference": 976.9252581847393,
+   "ratio": 1
+  },
+  {
+   "scenario": "5000 t of TNT on the ground",
+   "quantity": "1 psi ring",
+   "chain": 3102.5986811940097,
+   "reference": 3102.5986811940097,
+   "ratio": 1
+  },
+  {
+   "scenario": "5000 t of TNT on the ground",
+   "quantity": "0.5 psi ring",
+   "chain": 5247.8643694590255,
+   "reference": 5247.8643694590255,
+   "ratio": 1
+  },
+  {
+   "scenario": "5e+2 m³/s of magma",
+   "quantity": "plume height",
+   "chain": 8942.969852443468,
+   "reference": 8942.969852443468,
+   "ratio": 1
+  },
+  {
+   "scenario": "5e+3 m³/s of magma",
+   "quantity": "plume height",
+   "chain": 15576.92635752002,
+   "reference": 15576.92635752002,
+   "ratio": 1
+  },
+  {
+   "scenario": "2e+5 m³/s of magma",
+   "quantity": "plume height",
+   "chain": 35356.395970789534,
+   "reference": 35356.395970789534,
+   "ratio": 1
+  },
+  {
+   "scenario": "1e+6 m³/s of magma",
+   "quantity": "plume height",
+   "chain": 55850.87682474675,
+   "reference": 55850.87682474675,
+   "ratio": 1
+  },
+  {
+   "scenario": "1e+7 m³/s of magma",
+   "quantity": "plume height",
+   "chain": 97281.44113829231,
+   "reference": 97281.44113829231,
+   "ratio": 1
+  }
+ ],
+ "worstRatio": 1,
+ "worstRow": "0.5 t of TNT on the ground — 5 psi ring"
+}

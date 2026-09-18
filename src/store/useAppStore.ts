@@ -522,6 +522,10 @@ export interface AppStore {
   deepDiveError: string | null;
   status: SimulationStatus;
   error: string | null;
+  /** What to say about the link that opened this page, when its scenario was
+   *  refused and the app's own is showing instead (B-048). Null when the link
+   *  was restored, or when there was none. */
+  linkNotice: string | null;
   lastEvaluatedAt: number | null;
   /** Coordinates the most recent `evaluate()` was run against. Used by
    *  the `setElevationGrid` catch-up to decide whether a freshly
@@ -675,6 +679,7 @@ type InitialSlice = Pick<
   | 'deepDiveError'
   | 'status'
   | 'error'
+  | 'linkNotice'
   | 'lastEvaluatedAt'
   | 'lastEvaluatedAtLocation'
   | 'elevationGrid'
@@ -757,6 +762,7 @@ function initialState(): InitialSlice {
     deepDiveError: null,
     status: 'idle',
     error: null,
+    linkNotice: null,
     lastEvaluatedAt: null,
     lastEvaluatedAtLocation: null,
     elevationGrid: null,
@@ -1421,14 +1427,14 @@ async function computeBathymetricLayerForResult(
     const localSeeds: PropagationSeed[] = seedsAlong(ctx.elevationGrid, ctx.globalBathymetricGrid);
     const primary = localSeeds[0] ?? globalSeeds[0];
     if (primary === undefined) {
-      if (import.meta.env.DEV) {
+      if (DEV_LOGS) {
         console.info(
           `[store] bathymetric tsunami: no propagable sea within ${(reachM / 1_000).toFixed(0)} km — layer skipped`
         );
       }
       return null;
     }
-    if (import.meta.env.DEV) {
+    if (DEV_LOGS) {
       console.info(
         `[store] tsunami seeds: ${localSeeds.length.toString()} local, ${globalSeeds.length.toString()} global (reach ${(reachM / 1_000).toFixed(0)} km, nearest ${(primary.distanceM / 1_000).toFixed(0)} km)`
       );
@@ -1472,12 +1478,12 @@ async function computeBathymetricLayerForResult(
     // isochrones may be empty — fall back to null silently.
     // We still log the error in dev mode so a real bug doesn't
     // hide behind the "expected silent fallback" semantics.
-    if (import.meta.env.DEV) {
+    if (DEV_LOGS) {
       console.warn('[store] bathymetric tsunami compute failed:', err);
     }
     bathymetricTsunami = null;
   }
-  if (import.meta.env.DEV) {
+  if (DEV_LOGS) {
     const elapsed = performance.now() - tsunamiStart;
     const hasGlobal = bathymetricTsunami?.global !== undefined;
     console.info(
@@ -2005,18 +2011,32 @@ function isValidCoordinates(c: Coordinates): boolean {
  * competing with the schema (closes the consolidation gap from
  * `CONSOLIDATION_AUDIT.md` L1).
  */
+/**
+ * Whether to warn on the console about a refused input. Vite defines
+ * `import.meta.env`; the offline harnesses that drive this store through tsx —
+ * `scripts/benchmark/chain-against-references.ts`, the report sweep — do not,
+ * and reading `.DEV` there throws.
+ */
+const DEV_LOGS: boolean = ((): boolean => {
+  try {
+    return import.meta.env.DEV;
+  } catch {
+    return false;
+  }
+})();
+
 function classifyStoreInput<T>(
   type: ScenarioType,
   merged: T
 ): { ok: true; classified: T } | { ok: false } {
   const v = validateScenario(type, merged as unknown as Record<string, unknown>);
   if (v.result.status === 'invalid') {
-    if (import.meta.env.DEV) {
+    if (DEV_LOGS) {
       console.warn(`[store] ${type} input rejected at schema (state unchanged):`, v.result.errors);
     }
     return { ok: false };
   }
-  if (import.meta.env.DEV) {
+  if (DEV_LOGS) {
     for (const w of v.result.warnings) {
       console.warn(`[store] ${type} ${w.field} ${w.code}: ${w.message}`);
     }
@@ -2412,6 +2432,52 @@ export const useAppStore = create<AppStore>((set, get) => ({
 
   restoreCustomInput: (type, raw) => {
     set((state) => {
+      /**
+       * A link is what it says, and no more.
+       *
+       * Until 18 September 2026 the link's fields were validated on their own,
+       * and the impact validator wants the target's density — a fact about the
+       * ground, which no hand-written link carries. The link was refused and
+       * the app quietly ran its own scenario instead: a twenty-metre body came
+       * back as a fifteen-kilometre one and the report printed it without a
+       * word (B-048 of docs/BUG_REGISTRY.md).
+       *
+       * What fills the gap is the app's default for that field alone, named by
+       * the validator itself, and nothing else: merging the link onto whatever
+       * scenario the app was showing would carry that scenario's own features
+       * across — Krakatau's caldera collapse arriving with a link that asked
+       * for a quiet Plinian column. So: validate; where the answer is that a
+       * field is missing, fill that field from the app's input for the type and
+       * try again; and if it is still refused, leave the scenario alone and say
+       * so in `linkNotice`, which the report prints.
+       */
+      const supplied: string[] = [];
+      const filled = (base: object): Record<string, unknown> | null => {
+        const candidate: Record<string, unknown> = { ...raw };
+        const source = base as Record<string, unknown>;
+        for (let round = 0; round < 6; round++) {
+          const v = validateScenario(type, candidate);
+          if (v.result.status !== 'invalid') return candidate;
+          const missing = v.result.errors.filter(
+            (e) => e.code === 'NOT_FINITE' && e.field in source
+          );
+          if (missing.length === 0) return null;
+          for (const error of missing) {
+            candidate[error.field] = source[error.field];
+            supplied.push(error.field);
+          }
+        }
+        return null;
+      };
+      /** What the app had to put in, so the reader is not left thinking the
+       *  link said it. */
+      const noticeForSupplied = (): string | null =>
+        supplied.length === 0
+          ? null
+          : `This link did not say ${supplied.join(', ')}; the app's own value was used.`;
+      const refused = (fields: string): Partial<AppStore> => ({
+        linkNotice: `This link's scenario was refused (${fields}); the one below is the app's own.`,
+      });
       const cleared: Partial<AppStore> = {
         selectedAftershockIndex: null,
         result: null,
@@ -2436,46 +2502,74 @@ export const useAppStore = create<AppStore>((set, get) => ({
       };
       switch (type) {
         case 'impact': {
-          const c = classifyStoreInput('impact', raw as unknown as ImpactScenarioInput);
-          if (!c.ok) return state;
+          const rawImpact = filled(state.impact.input);
+          const c =
+            rawImpact === null
+              ? ({ ok: false } as const)
+              : classifyStoreInput('impact', rawImpact as unknown as ImpactScenarioInput);
+          if (!c.ok) return { ...state, ...refused('impact') };
           return {
             ...cleared,
+            linkNotice: noticeForSupplied(),
             eventType: 'impact',
             impact: { preset: 'CUSTOM', input: c.classified },
           };
         }
         case 'explosion': {
-          const c = classifyStoreInput('explosion', raw as unknown as ExplosionScenarioInput);
-          if (!c.ok) return state;
+          const rawExplosion = filled(state.explosion.input);
+          const c =
+            rawExplosion === null
+              ? ({ ok: false } as const)
+              : classifyStoreInput('explosion', rawExplosion as unknown as ExplosionScenarioInput);
+          if (!c.ok) return { ...state, ...refused('explosion') };
           return {
             ...cleared,
+            linkNotice: noticeForSupplied(),
             eventType: 'explosion',
             explosion: { preset: 'CUSTOM', input: c.classified },
           };
         }
         case 'earthquake': {
-          const c = classifyStoreInput('earthquake', raw as unknown as EarthquakeScenarioInput);
-          if (!c.ok) return state;
+          const rawEarthquake = filled(state.earthquake.input);
+          const c =
+            rawEarthquake === null
+              ? ({ ok: false } as const)
+              : classifyStoreInput(
+                  'earthquake',
+                  rawEarthquake as unknown as EarthquakeScenarioInput
+                );
+          if (!c.ok) return { ...state, ...refused('earthquake') };
           return {
             ...cleared,
+            linkNotice: noticeForSupplied(),
             eventType: 'earthquake',
             earthquake: { preset: 'CUSTOM', input: c.classified },
           };
         }
         case 'volcano': {
-          const c = classifyStoreInput('volcano', raw as unknown as VolcanoScenarioInput);
-          if (!c.ok) return state;
+          const rawVolcano = filled(state.volcano.input);
+          const c =
+            rawVolcano === null
+              ? ({ ok: false } as const)
+              : classifyStoreInput('volcano', rawVolcano as unknown as VolcanoScenarioInput);
+          if (!c.ok) return { ...state, ...refused('volcano') };
           return {
             ...cleared,
+            linkNotice: noticeForSupplied(),
             eventType: 'volcano',
             volcano: { preset: 'CUSTOM', input: c.classified },
           };
         }
         case 'landslide': {
-          const c = classifyStoreInput('landslide', raw as unknown as LandslideScenarioInput);
-          if (!c.ok) return state;
+          const rawLandslide = filled(state.landslide.input);
+          const c =
+            rawLandslide === null
+              ? ({ ok: false } as const)
+              : classifyStoreInput('landslide', rawLandslide as unknown as LandslideScenarioInput);
+          if (!c.ok) return { ...state, ...refused('landslide') };
           return {
             ...cleared,
+            linkNotice: noticeForSupplied(),
             eventType: 'landslide',
             landslide: { preset: 'CUSTOM', input: c.classified },
           };

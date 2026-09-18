@@ -308,6 +308,32 @@ famine or disease):
 cumulative population inside every band's outer radius and evaluates
 the plan (`runCasualtyLookup` in `src/store/useAppStore.ts`).
 
+### Two things thirty scenarios found, still open (18 September 2026)
+
+Thirty scenarios were opened by link on the application's own report page and
+read one by one (`scripts/benchmark/report-sweep.ts`), the way Andrea read four
+of them the day before. Six defects came out; four are fixed and carry their
+rows in docs/BUG_REGISTRY.md (B-044 to B-050). Two are not, because each moves
+numbers a rule has already read and wants a round of its own:
+
+- **An earthquake's wave crosses the ocean at the depth of its own epicentre.**
+  `events/earthquake/simulate.ts` passes the water depth at the source as the
+  basin depth, and that depth carries the spreading, the dispersion and the
+  travel time all the way out: a Mw 9.0 on a shelf reports 1 000 km in 20 h
+  54 min, which is 13 m/s — the speed of a wave in eighteen metres of water,
+  not of one crossing an ocean. Impacts take a basin depth of their own
+  (4 000 m by default), landslides ignore the one they are given, and a
+  volcano's collapse takes the depth of the collapse. Four families, four
+  answers. Changing it moves the far-field amplitudes T1 was read against, so
+  it needs rules written first.
+
+- **The intensity at the epicentre and the rings do not agree.** The epicentral
+  MMI comes from one relation and the ring radii from the inversion of another,
+  so a Mw 9.0 prints MMI 10.7 at the epicentre with no MMI IX ring at all, and
+  a Mw 4.5 prints 7.4 with no MMI VII ring. Both statements cannot be true.
+  The rings are what every toll is counted in, so this is a change to the
+  numbers the calibration net reads.
+
 ### What the toll's band carries, and what it left out (18 September 2026)
 
 `uq/tollBand.ts`, `validation/tollBandRules.ts` (rules 182 to 186). Since 14

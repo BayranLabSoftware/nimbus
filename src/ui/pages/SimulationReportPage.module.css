@@ -302,3 +302,13 @@
     page-break-before: avoid;
   }
 }
+
+/* A link whose scenario the app refused: the report says so where the reader
+   arrives, rather than printing a different event in silence (B-048). */
+.linkNotice {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.8rem;
+  border-left: 3px solid var(--color-warning, #b8860b);
+  background: color-mix(in srgb, var(--color-warning, #b8860b) 10%, transparent);
+  font-size: 0.9rem;
+}

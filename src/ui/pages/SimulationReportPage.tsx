@@ -291,7 +291,13 @@ function explosionFields(r: ExplosionScenarioResult): { inputs: Field[]; outputs
     { label: '3rd-degree burn radius', value: fmtKm(r.thermal.thirdDegreeBurnRadius) },
     { label: '2nd-degree burn radius', value: fmtKm(r.thermal.secondDegreeBurnRadius) },
     { label: '1st-degree burn radius', value: fmtKm(r.thermal.firstDegreeBurnRadius) },
-    { label: '0.5 psi · light-damage radius', value: fmtKm(r.blast.lightDamageRadius) },
+    // The light-damage ring, like the two above it, twice: what the burst
+    // would draw on the ground and what it draws at its height (B-049).
+    { label: '0.5 psi · light damage (baseline)', value: fmtKm(r.blast.lightDamageRadius) },
+    {
+      label: '0.5 psi · light damage (HOB-corrected)',
+      value: fmtKm(r.blast.lightDamageRadiusHob),
+    },
     {
       label: 'Peak wind @ 1 km',
       value: `${(r.peakWind.at1km as number).toFixed(0)} m/s`,
@@ -500,7 +506,13 @@ function volcanoFields(r: VolcanoScenarioResult): { inputs: Field[]; outputs: Fi
     { label: 'Climate cooling ΔT', value: `${r.climateCoolingK.toFixed(2)} K` },
   ];
   if (r.laharRunout !== undefined) {
-    outputs.push({ label: 'Lahar runout (Iverson 1997)', value: fmtKm(r.laharRunout) });
+    // Not Iverson's equation: his is for inundated area, and this is the
+    // project's own recast of it as a length, tuned on Mount St Helens 1980.
+    // `extendedEffects.ts` says so; the report used to credit him for it.
+    outputs.push({
+      label: "Lahar runout (project recast of Iverson et al. 1998's area law)",
+      value: fmtKm(r.laharRunout),
+    });
   }
   if (r.windAdvectedAshfall) {
     outputs.push(
@@ -745,6 +757,8 @@ function formulasForCitation(
 export function SimulationReportPage(): JSX.Element {
   const { t } = useTranslation();
   const result = useAppStore((s) => s.result);
+  // What the link asked for, when the app could not run it (B-048).
+  const linkNotice = useAppStore((s) => s.linkNotice);
   const bathymetricTsunami = useAppStore((s) => s.bathymetricTsunami);
   const casualties = useAppStore((s) => s.casualties);
   const casualtyStatus = useAppStore((s) => s.casualtyStatus);
@@ -848,6 +862,12 @@ export function SimulationReportPage(): JSX.Element {
             </dd>
           </dl>
         </header>
+
+        {linkNotice !== null && (
+          <p role="status" className={styles.linkNotice}>
+            {linkNotice}
+          </p>
+        )}
 
         <section className={styles.section}>
           <h2>{t('report.inputsTitle')}</h2>

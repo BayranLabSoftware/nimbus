@@ -186,8 +186,12 @@ describe('applyIntentToStore', () => {
     // Nothing of the preset it replaced survives in it.
     expect(s.impact.input).not.toHaveProperty('waterDepth');
 
-    // Without the densities there is no impactor to rebuild: the store
-    // keeps what it had rather than inventing them.
+    // Until 18 September 2026 a link without the densities was dropped
+    // wholesale — "no impactor to rebuild" — and the app ran its own scenario
+    // while the report printed it as the link's (B-048 of
+    // docs/BUG_REGISTRY.md). A link is now rebuilt from what it says, with the
+    // app's own value for the fields the validator insists on, and the page
+    // says which those were.
     resetAppStore();
     const before = useAppStore.getState().impact;
     applyIntentToStore(
@@ -204,7 +208,12 @@ describe('applyIntentToStore', () => {
       },
       useAppStore.getState()
     );
-    expect(useAppStore.getState().impact).toEqual(before);
+    const rebuilt = useAppStore.getState();
+    expect(rebuilt.impact.input.impactorDiameter as number).toBe(500);
+    expect(rebuilt.impact.input.impactVelocity as number).toBe(18_000);
+    expect(rebuilt.impact.input.impactorDensity).toBe(before.input.impactorDensity);
+    expect(rebuilt.impact.input.targetDensity).toBe(before.input.targetDensity);
+    expect(rebuilt.linkNotice).toMatch(/did not say/);
   });
 });
 
