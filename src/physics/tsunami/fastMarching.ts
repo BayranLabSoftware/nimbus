@@ -47,6 +47,24 @@ const KNOWN = 2;
 /** Earth mean radius (m), matching src/physics/earthScale.ts. */
 const EARTH_RADIUS_M = 6_371_000;
 
+/**
+ * Whether a grid wraps around the planet: its longitude bounds cover 360°,
+ * within a cell. A global raster's first and last columns are then the same
+ * meridian, and a front that walks off one edge must arrive at the other.
+ *
+ * Rule 198 of validation/datelineRules.ts names this function as the test, so
+ * the rule and the march cannot disagree about what "global" means. It lives
+ * here, with the code it decides for, rather than in the rules file where the
+ * rule first put it — a physics module has no business importing a validation
+ * one, and one definition read from both places is the whole point.
+ */
+export function spansTheGlobe(grid: { minLon: number; maxLon: number; nLon: number }): boolean {
+  if (!(grid.nLon > 2)) return false;
+  const span = grid.maxLon - grid.minLon;
+  const cell = span / (grid.nLon - 1);
+  return span >= 360 - cell * 1.5;
+}
+
 export interface FastMarchingSeed {
   latitude: number;
   longitude: number;
@@ -333,6 +351,18 @@ export function computeTsunamiArrivalField(input: FastMarchingInput): FastMarchi
 
   /** Insert or update a trial neighbour (i, j) from the set of
    *  currently KNOWN cells. */
+  // Rule 198 of validation/datelineRules.ts: a raster that covers the planet
+  // has no edge in longitude. Its first and last columns are the same
+  // meridian, so the step over the seam skips the duplicate and lands on the
+  // next distinct column — the spacing at the dateline is the spacing
+  // everywhere else. A local tile keeps its edges: −1 means "no neighbour".
+  // Before this, `j + 1 < nLon` and `j - 1 >= 0` made the Pacific a wall: on a
+  // uniform ocean a point two degrees past the dateline read 30.31 h where the
+  // arc gives 1.72 (B-055).
+  const wrapsAround = spansTheGlobe(grid);
+  const eastOf = (col: number): number => (col + 1 < nLon ? col + 1 : wrapsAround ? 1 : -1);
+  const westOf = (col: number): number => (col - 1 >= 0 ? col - 1 : wrapsAround ? nLon - 2 : -1);
+
   const visit = (i: number, j: number): void => {
     if (i < 0 || i >= nLat || j < 0 || j >= nLon) return;
     const idx = i * nLon + j;
@@ -343,10 +373,12 @@ export function computeTsunamiArrivalField(input: FastMarchingInput): FastMarchi
       return;
     }
     const readTime = (flatIdx: number): number => arrivalTimes[flatIdx] ?? Infinity;
+    const jEast = eastOf(j);
+    const jWest = westOf(j);
     const tEast =
-      j + 1 < nLon && state[i * nLon + j + 1] === KNOWN ? readTime(i * nLon + j + 1) : Infinity;
+      jEast >= 0 && state[i * nLon + jEast] === KNOWN ? readTime(i * nLon + jEast) : Infinity;
     const tWest =
-      j - 1 >= 0 && state[i * nLon + j - 1] === KNOWN ? readTime(i * nLon + j - 1) : Infinity;
+      jWest >= 0 && state[i * nLon + jWest] === KNOWN ? readTime(i * nLon + jWest) : Infinity;
     const tNorth =
       i - 1 >= 0 && state[(i - 1) * nLon + j] === KNOWN ? readTime((i - 1) * nLon + j) : Infinity;
     const tSouth =
@@ -369,9 +401,17 @@ export function computeTsunamiArrivalField(input: FastMarchingInput): FastMarchi
   for (const { i, j } of seedCells) {
     visit(i - 1, j);
     visit(i + 1, j);
-    visit(i, j - 1);
-    visit(i, j + 1);
+    visit(i, westOf(j));
+    visit(i, eastOf(j));
   }
+
+  // On a global raster the first and last columns are the same meridian, so
+  // they are one place held twice. Finalising one finalises the other at the
+  // same time, or the seam carries a step of its own making: before this, the
+  // hour line at −180° sat two and a half minutes off the hour it claimed,
+  // each column having marched there from its own side.
+  const twinOf = (col: number): number =>
+    !wrapsAround ? -1 : col === 0 ? nLon - 1 : col === nLon - 1 ? 0 : -1;
 
   let reachableCount = seedCells.length; // the seeds themselves
   while (heap.size > 0) {
@@ -381,10 +421,23 @@ export function computeTsunamiArrivalField(input: FastMarchingInput): FastMarchi
     if (Number.isFinite(arrivalTimes[idx] ?? Infinity)) reachableCount++;
     const i = Math.floor(idx / nLon);
     const j = idx - i * nLon;
+    const twin = twinOf(j);
+    if (twin >= 0) {
+      const twinIdx = i * nLon + twin;
+      if (state[twinIdx] !== KNOWN) {
+        arrivalTimes[twinIdx] = arrivalTimes[idx] ?? Infinity;
+        state[twinIdx] = KNOWN;
+        if (Number.isFinite(arrivalTimes[twinIdx] ?? Infinity)) reachableCount++;
+        visit(i - 1, twin);
+        visit(i + 1, twin);
+        visit(i, westOf(twin));
+        visit(i, eastOf(twin));
+      }
+    }
     visit(i - 1, j);
     visit(i + 1, j);
-    visit(i, j - 1);
-    visit(i, j + 1);
+    visit(i, westOf(j));
+    visit(i, eastOf(j));
   }
 
   return { arrivalTimes, nLat, nLon, reachableCount };

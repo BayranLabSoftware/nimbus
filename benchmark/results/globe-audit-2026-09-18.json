@@ -31,7 +31,7 @@
    "eventType": "impact",
    "ringsDrawn": 9,
    "polygonsDrawn": 0,
-   "checked": 13
+   "checked": 15
   },
   {
    "scenario": "impact-ten-km",
@@ -223,7 +223,7 @@
    "eventType": "earthquake",
    "ringsDrawn": 4,
    "polygonsDrawn": 2,
-   "checked": 10
+   "checked": 12
   },
   {
    "scenario": "wave-slide-into-lake",
@@ -242,18 +242,7 @@
    "checked": 11
   }
  ],
- "findings": [
-  {
-   "scenario": "quake-megathrust-offshore",
-   "what": "tsunami-isochrone-8h-0 is drawn where the wave is not at that hour",
-   "detail": "1 of 199 vertices off, worst by 1941.2 min — lat -8.22, lon -180.00, field 40.35 h"
-  },
-  {
-   "scenario": "slide-submarine-shelf",
-   "what": "tsunami-isochrone-8h-0 is drawn where the wave is not at that hour",
-   "detail": "1 of 186 vertices off, worst by 1994.0 min — lat -6.75, lon -180.00, field 41.23 h"
-  }
- ],
+ "findings": [],
  "silences": [
   {
    "scenario": "slide-subaerial-fjord",

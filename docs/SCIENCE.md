@@ -391,28 +391,49 @@ rather than hiding it: the pyroclastic reach and the lahar are **circles about
 the vent**, while both flows follow valleys. The reach is the model's; the
 shape is not the mountain's.
 
-**And one the audit found that is not the globe's at all: the wave does not
+**And one the audit found that is not the globe's at all: the wave did not
 cross the antimeridian.** An «+8 h» isochrone carried a single vertex, one of
 199, at longitude −180.00 where the solver's own field says forty hours — and
 the same vertex, in the same place, on a second scenario. Following it down:
-`tsunami/fastMarching.ts` walks its neighbours with `j + 1 < nLon` and
-`j - 1 >= 0`, so the planetary raster is a wall at ±180° and a front can only
-reach the other side by going the long way round the globe. On a uniform ocean
-of 4 000 m, with the source at 0°N 170°E, the model reads 1.41 h at 179°E
-against the 1.40 the arc gives — and **30.31 h at 179°W against 1.72, seventeen
-times late**. Two degrees of longitude, thirty hours.
+`tsunami/fastMarching.ts` walked its neighbours with `j + 1 < nLon` and
+`j - 1 >= 0`, so the planetary raster was a wall at ±180° and a front reached
+the other side only by going the long way round the globe. On a uniform ocean
+of 4 000 m, source at 0°N 170°E, the model read 1.41 h at 179°E against the
+1.40 the arc gives — and **30.31 h at 179°W against 1.72, seventeen times
+late**. Two degrees of longitude, thirty hours.
 
-Every trans-Pacific arrival the product computes is affected, and so is
-anything that propagates on that field: the run-up rule of rules 102 to 105
-crosses it. The isochrone's stray vertex is the same defect seen from the
-drawing: the field is discontinuous along the seam, so the contour extractor
-finds a crossing there that is not a front.
+It is fixed (B-055), under rules 197 to 201 of `validation/datelineRules.ts`,
+written and pushed before anything was measured. The march wraps where a grid
+spans the globe and keeps its edges where it does not, and the edge meridian —
+which the raster holds twice — is finalised as the one place it is. That second
+part was not in the first cure: the guard caught it, the hour line at the seam
+still sitting 2.4 minutes off its own hour because the two columns had marched
+there from opposite sides. Now the uniform ocean reads a flat 0.28 % everywhere,
+the marcher's own discretisation, the same on both sides of the dateline.
 
-It is **open**, and it is not fixed here for two reasons worth stating. The
-cure moves numbers a rule has already read, so it wants its rules written
-first; and reading them again needs the planetary mosaic fetched tile by tile,
-which is a download and therefore Andrea's to authorise. What is recorded
-tonight is the defect, its size, and the reproduction that needs no network.
+**What it cost, declared:** the run-up set of rules 102 to 105 propagates every
+event on that mosaic, so it was read again, before and after, over the same
+2 468 bins of 64 events.
+
+|                  | bias   | σ_ln  | within ×2 |
+| ---------------- | ------ | ----- | --------- |
+| through the wall | 3.162× | 1.365 | 23 %      |
+| with it closed   | 3.685× | 1.354 | 22 %      |
+
+T2 was not met before and is not met after, and **the headline number got
+worse**. That is the interesting part and not a footnote: the wall was
+cancelling part of an error the model already had. A wave that reached a far
+Pacific coast the long way round had spread over a far longer path and arrived
+smaller, which flattered a model that runs high. Closing the seam removes a
+cancellation, not an accuracy — the arrival times are right where they were
+absurd, and the heights are as wrong as they always were, one sixth more
+visibly. Which events moved says the same thing: 27 of the 64, every Atlantic,
+Mediterranean and Indian-Ocean one, do not move by a thousandth; the ones that
+move are Pacific without exception, Andreanof by a factor of two.
+
+Still open from that round, and named in rule 201: the poles. The same walk
+stops a front at 85°, and no isochrone of the thirty scenarios reaches far
+enough to show it.
 
 What the second pass leaves declared and unmeasured: a landslide's own body is
 not drawn — the globe shows its wave, not the slide — which the audit counts

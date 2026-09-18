@@ -44,6 +44,7 @@ import { TOLL_BAND_CANDIDATE } from './tollBandRules.js';
 import { applyIntentToStore, decodeUrl } from '../../store/urlState.js';
 import { extractTsunamiMeta, seismicSourceCavityRadiusM } from '../../store/useAppStore.js';
 import { VISUAL_CONTRACTS } from '../../scene/visualContracts.js';
+import { computeTsunamiArrivalField, spansTheGlobe } from '../tsunami/fastMarching.js';
 import { radiansToDegrees } from '../units.js';
 import { fieldsFor } from '../../ui/pages/SimulationReportPage.js';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
@@ -1252,13 +1253,56 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(contract?.caveats.some((c) => /circle|valley/i.test(c))).toBe(true);
   });
 
+  it('B-055 A wave crosses the dateline as it crosses any other meridian', () => {
+    // Pre-fix: the raster was a wall at ±180°, so a front reached the far side
+    // only by going round the globe — 30.31 h where the arc gives 1.72.
+    const nLat = 180;
+    const nLon = 360;
+    const samples = new Float32Array(nLat * nLon).fill(-4_000);
+    const grid = {
+      minLat: -85,
+      maxLat: 85,
+      minLon: -180,
+      maxLon: 180,
+      nLat,
+      nLon,
+      samples,
+    } as unknown as Parameters<typeof computeTsunamiArrivalField>[0]['grid'];
+    const field = computeTsunamiArrivalField({
+      grid,
+      sourceLatitude: 0,
+      sourceLongitude: 170,
+    });
+    const dLat = 170 / (nLat - 1);
+    const dLon = 360 / (nLon - 1);
+    const at = (lat: number, lon: number): number =>
+      field.arrivalTimes[Math.round((85 - lat) / dLat) * nLon + Math.round((lon + 180) / dLon)] ??
+      Number.NaN;
+    const speed = Math.sqrt(9.80665 * 4_000);
+    const arcSeconds = (deg: number): number => (deg * Math.PI * 6_371_000) / 180 / speed;
+    // Two degrees past the seam, and twenty, and forty.
+    for (const [lon, deg] of [
+      [-179, 11],
+      [-170, 20],
+      [-150, 40],
+    ] as const) {
+      expect(at(0, lon) / arcSeconds(deg)).toBeCloseTo(1, 1);
+    }
+    // The edge meridian is one place, and the raster holds it twice: both
+    // copies carry the same arrival, or the seam draws a step of its own.
+    expect(at(0, -180)).toBe(at(0, 180));
+    // A grid that is not the whole planet keeps its edges.
+    expect(spansTheGlobe({ minLon: -180, maxLon: 180, nLon: 360 })).toBe(true);
+    expect(spansTheGlobe({ minLon: 10, maxLon: 12, nLon: 64 })).toBe(false);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-054 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-055 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 54;
-    expect(expectedRows).toBe(54);
+    const expectedRows = 55;
+    expect(expectedRows).toBe(55);
   });
 });

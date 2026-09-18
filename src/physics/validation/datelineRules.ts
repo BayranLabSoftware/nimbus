@@ -90,15 +90,80 @@
  *         before-and-after on one set can separate.
  */
 
+/*
+ * ===========================================================================
+ * The outcome of rules 197 to 201, 18 September 2026: DONE
+ * ===========================================================================
+ *
+ * The rules were pushed in `e6a6e0d`, before anything was measured. Andrea
+ * authorised the download the reading needed; it turned out not to be needed
+ * at all — the sixteen planetary tiles were still in the cache from an earlier
+ * session, and both run-up readings below touched no network.
+ *
+ * The cure. `spansTheGlobe` decides whether a raster wraps, and on one that
+ * does, the march steps over the seam as over any other meridian. It lives in
+ * `tsunami/fastMarching.ts` and not in this file, which is a correction to
+ * rule 198: a physics module has no business importing a validation one, and
+ * one definition read from both places was the point.
+ *
+ * It took two cuts. The first closed the seam, and guard (d) then caught what
+ * was left: the hour line at −180° still sat 2.4 minutes off its own hour,
+ * because the raster holds its edge meridian twice and the two columns had
+ * marched there from opposite sides. They are one place, so finalising one now
+ * finalises the other. After that the two columns agree to a hundredth of a
+ * second and the uniform ocean reads a flat 0.28 % everywhere — the marcher's
+ * own discretisation, the same on both sides of the dateline. A guard that
+ * finds the second defect after the first is fixed is a guard doing its job,
+ * and it is recorded rather than smoothed over.
+ *
+ * The guards.
+ * (a) The uniform ocean of rule 197: 175°E 1.0028×, 179°E 1.0028×, 179°W
+ *     1.0028×, 170°W 1.0028×, 150°W 1.0028×. Where the wall stood, 179°W read
+ *     30.31 h against an arc of 1.72; it reads 1.720.
+ * (b) A front that never reaches the seam moves not one cell. Of the 64 events
+ *     of the run-up set, 27 — every Atlantic, Mediterranean and Indian-Ocean
+ *     one — come back within a thousandth of where they were. The ones that
+ *     move are Pacific without exception: Andreanof ×2.02, the Rat Islands
+ *     ×1.36, the Kurils ×1.69, Kamchatka ×1.33, Vanuatu ×1.74, Japan ×1.45,
+ *     the South American coast ×1.30. A local tile is untouched by
+ *     construction: `spansTheGlobe` is false and nothing wraps.
+ * (c) The suite is green and no number of `docs/VALIDATION_REPORT.json` moves:
+ *     the report propagates on local grids and never on the planetary mosaic.
+ * (d) The globe audit comes back with no vertex off its own hour — the seam
+ *     included, where the worst vertex now reads 8.00 h on an 8 h line.
+ *
+ * The re-reading of T2 (rule 200), declared whichever way it falls, and it
+ * falls the wrong way:
+ *
+ *                      bias      σ_ln     within ×2
+ *   through the wall   3.162×    1.365      23 %
+ *   with it closed     3.685×    1.354      22 %
+ *
+ * over the same 2 468 bins, 64 events and 5 602 observations. T2 was not met
+ * before and is not met after; what changed is that the model now
+ * over-predicts a coastal run-up by a factor of 3.7 where it over-predicted by
+ * 3.2.
+ *
+ * That is worth saying plainly, because it is the interesting part: **the wall
+ * was cancelling part of an error the model already had.** A wave that reached
+ * a far Pacific coast the long way round the globe had spread over a far
+ * longer path and arrived smaller, which flattered a model that runs high. The
+ * fix removes a cancellation, not an accuracy: the arrival times are right now
+ * where they were absurd, and the heights are as wrong as they always were,
+ * one sixth more visibly. The run-up over-prediction is T2's own open problem
+ * (docs/GOLD_STANDARD.md, 16 September), and rule 5 forbids touching it on a
+ * set that has been read.
+ *
+ * What stays open: the poles, which rule 201 named and this round does not
+ * touch. The march still stops a front at 85°, and no isochrone of the thirty
+ * scenarios reaches far enough to show it.
+ */
+
 /** Rule 198: a grid spans the globe when its longitude bounds cover 360°,
- *  within a cell. Written here rather than in the solver so the rule and the
- *  code cannot disagree about what "global" means. */
-export function spansTheGlobe(grid: { minLon: number; maxLon: number; nLon: number }): boolean {
-  if (!(grid.nLon > 2)) return false;
-  const span = grid.maxLon - grid.minLon;
-  const cell = span / (grid.nLon - 1);
-  return span >= 360 - cell * 1.5;
-}
+ *  within a cell. It is the solver's own function, re-exported here so the
+ *  rule names the thing that decides rather than a copy of it — the copy is
+ *  what B-053 was made of. */
+export { spansTheGlobe } from '../tsunami/fastMarching.js';
 
 /** Rule 199 (a): how far a uniform-ocean arrival may sit from the arc over
  *  the celerity. The march is first-order and walks a lat–lon raster, so it
