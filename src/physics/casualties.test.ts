@@ -17,7 +17,8 @@ import {
   WHOLE_PLANET_RADIUS_M,
   type CasualtyPlan,
 } from './casualties.js';
-import { J, m as meters } from './units.js';
+import { J, Pa, m as meters } from './units.js';
+import { kingeryBulmashRadiusRatio } from './effects/kingeryBulmash.js';
 import {
   impactFireballRadius,
   joulesToKilotons,
@@ -39,6 +40,43 @@ describe('blastCasualtyPlan (OTA 1979)', () => {
     blastEnergy: J(15 * 4.184e12),
     overpressure5psiRadius: meters(1_700),
     overpressure1psiRadius: meters(5_000),
+  });
+
+  it('puts a chemical charge’s band edges on the curve that drew its rings', () => {
+    // Rule 179 of validation/chemicalBlastRules.ts. The ratios are the curve's
+    // own, so they do not depend on the charge: 12 psi inside 5 psi, 2 psi
+    // inside 1 psi.
+    const rings = { overpressure5psiRadius: meters(1_700), overpressure1psiRadius: meters(5_000) };
+    const onCurve = blastCasualtyPlan({
+      blastEnergy: J(15 * 4.184e12),
+      ...rings,
+      chargeType: 'chemical',
+      chemicalBlast: 'kingeryBulmash',
+    });
+    const inPlace = blastCasualtyPlan({
+      blastEnergy: J(15 * 4.184e12),
+      ...rings,
+      chargeType: 'chemical',
+      chemicalBlast: 'kinneyGraham',
+    });
+    expect(onCurve).not.toBeNull();
+    expect(inPlace).not.toBeNull();
+    if (onCurve === null || inPlace === null) return;
+    const twelve = onCurve.bands[0]?.outerRadiusM ?? 0;
+    const two = onCurve.bands[2]?.outerRadiusM ?? 0;
+    expect(twelve / 1_700).toBeCloseTo(
+      kingeryBulmashRadiusRatio(Pa(12 * 6_894.757), Pa(5 * 6_894.757)),
+      9
+    );
+    expect(two / 5_000).toBeCloseTo(
+      kingeryBulmashRadiusRatio(Pa(2 * 6_894.757), Pa(1 * 6_894.757)),
+      9
+    );
+    // The two laws do not give the same edges, or this test would prove
+    // nothing: they are within a few per cent of each other.
+    const twelveInPlace = inPlace.bands[0]?.outerRadiusM ?? 0;
+    expect(twelve).not.toBe(twelveInPlace);
+    expect(Math.abs(twelve / twelveInPlace - 1)).toBeLessThan(0.1);
   });
 
   it('builds four contiguous annuli inside the drawn 1 psi ring', () => {

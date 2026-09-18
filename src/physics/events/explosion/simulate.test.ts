@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { m } from '../../units.js';
 import { EXPLOSION_PRESETS, simulateExplosion } from './simulate.js';
+import {
+  CHEMICAL_LOOKED_AT_RATIO,
+  CHEMICAL_RATIO_TOLERANCE,
+} from '../../validation/chemicalBlastRules.js';
 
 describe('simulateExplosion — composition', () => {
   it('Hiroshima 15 kt: 1 psi ring in the 2–5 km band, 3rd-degree burn ≈ 2–3 km', () => {
@@ -274,6 +278,80 @@ describe('a chemical charge (Glasstone & Dolan §1.23–1.25; Takazawa et al. 20
     expect(chemical.blast.overpressure1psiRadius as number).toBeCloseTo(
       nuclearTwice.blast.overpressure1psiRadius,
       6
+    );
+  });
+
+  it('draws its rings from Kingery–Bulmash when the scenario asks for it', () => {
+    // Rules 177 to 181 of validation/chemicalBlastRules.ts: the law in place
+    // over the candidate, one ratio per ring at every charge mass.
+    for (const megatons of [1e-7, 1e-5, 1e-3, 1]) {
+      const inPlace = surface(megatons, 'chemical');
+      const candidate = simulateExplosion({
+        yieldMegatons: megatons,
+        groundType: 'WET_SOIL',
+        heightOfBurst: m(0),
+        chargeType: 'chemical',
+        chemicalBlast: 'kingeryBulmash',
+      });
+      const pairs: [number, number, number][] = [
+        [
+          inPlace.blast.overpressure5psiRadius,
+          candidate.blast.overpressure5psiRadius,
+          CHEMICAL_LOOKED_AT_RATIO['5 psi'] ?? 0,
+        ],
+        [
+          inPlace.blast.overpressure1psiRadius,
+          candidate.blast.overpressure1psiRadius,
+          CHEMICAL_LOOKED_AT_RATIO['1 psi'] ?? 0,
+        ],
+        [
+          inPlace.blast.lightDamageRadius,
+          candidate.blast.lightDamageRadius,
+          CHEMICAL_LOOKED_AT_RATIO['0.5 psi'] ?? 0,
+        ],
+      ];
+      for (const [before, after, expected] of pairs) {
+        expect(after).toBeGreaterThan(0);
+        expect(Math.abs(before / after / expected - 1)).toBeLessThan(CHEMICAL_RATIO_TOLERANCE);
+      }
+      expect(candidate.blast.chemicalBlastSource).toBe('kingeryBulmash');
+    }
+  });
+
+  it('leaves a nuclear burst where it was, whatever the chemical source says', () => {
+    const plain = surface(0.001, 'nuclear');
+    const asked = simulateExplosion({
+      yieldMegatons: 0.001,
+      groundType: 'WET_SOIL',
+      heightOfBurst: m(0),
+      chargeType: 'nuclear',
+      chemicalBlast: 'kingeryBulmash',
+    });
+    expect(asked.blast.overpressure5psiRadiusHob).toBe(plain.blast.overpressure5psiRadiusHob);
+    expect(asked.blast.overpressure1psiRadiusHob).toBe(plain.blast.overpressure1psiRadiusHob);
+  });
+
+  it('still takes the book’s change with height, from the surface burst it now has', () => {
+    const onTheGround = simulateExplosion({
+      yieldMegatons: 1e-5,
+      groundType: 'WET_SOIL',
+      heightOfBurst: m(0),
+      chargeType: 'chemical',
+      chemicalBlast: 'kingeryBulmash',
+    });
+    const inTheAir = simulateExplosion({
+      yieldMegatons: 1e-5,
+      groundType: 'WET_SOIL',
+      heightOfBurst: m(60),
+      chargeType: 'chemical',
+      chemicalBlast: 'kingeryBulmash',
+    });
+    expect(onTheGround.blast.overpressure5psiRadiusHob as number).toBeCloseTo(
+      onTheGround.blast.overpressure5psiRadius,
+      6
+    );
+    expect(inTheAir.blast.overpressure5psiRadiusHob as number).toBeGreaterThan(
+      onTheGround.blast.overpressure5psiRadiusHob
     );
   });
 

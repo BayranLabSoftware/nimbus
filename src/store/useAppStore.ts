@@ -1546,6 +1546,9 @@ export function casualtyPlanForResult(
         ...(result.data.inputs.chargeType !== undefined && {
           chargeType: result.data.inputs.chargeType,
         }),
+        // The band edges follow whatever drew the rings (rule 179 of
+        // validation/chemicalBlastRules.ts).
+        chemicalBlast: result.data.blast.chemicalBlastSource,
       });
     case 'earthquake': {
       // Which country's buildings. PAGER's fitted fatality curves run

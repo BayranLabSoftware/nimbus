@@ -149,6 +149,22 @@ export function kingeryBulmashScaledRange(target: Pascals): number {
 }
 
 /**
+ * The ratio between the ranges of two overpressures on this curve, which the
+ * charge's mass cancels out of: r(target) / r(reference). NaN where either
+ * pressure falls outside the range Table 1 prints.
+ *
+ * The casualty bands read it, to put their inner edges — 12 psi inside the
+ * 5 psi ring, 2 psi inside the 1 psi ring — on the same curve that drew the
+ * rings (rule 179 of validation/chemicalBlastRules.ts).
+ */
+export function kingeryBulmashRadiusRatio(target: Pascals, reference: Pascals): number {
+  const wanted = kingeryBulmashScaledRange(target);
+  const against = kingeryBulmashScaledRange(reference);
+  if (!Number.isFinite(wanted) || !Number.isFinite(against) || against <= 0) return Number.NaN;
+  return wanted / against;
+}
+
+/**
  * How far from a charge of `tntKilograms` on the ground the peak incident
  * overpressure falls to `target` (m). Zero where the curves do not reach that
  * pressure, which for the rings the product draws they always do.

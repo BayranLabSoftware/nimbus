@@ -41,6 +41,10 @@ const N = Number(process.argv[2] ?? 5_000);
 /** One hazard only, by name; each hazard has its own seed, so its
  *  scenarios are the same either way. */
 const ONLY = process.argv[3];
+/** Which relation draws a chemical charge's rings, when the sweep is asked to
+ *  read a candidate rather than the law in place (rule 180 (c) of
+ *  validation/chemicalBlastRules.ts). */
+const CHEMICAL_BLAST = process.env.NIMBUS_CHEMICAL_BLAST;
 const HALF_CIRCUMFERENCE = Math.PI * (EARTH_RADIUS as number);
 const EARTH_SURFACE = 4 * Math.PI * (EARTH_RADIUS as number) ** 2;
 
@@ -114,6 +118,10 @@ const HAZARDS: readonly Hazard[] = [
         windSpeed: lin(u(), 0, 120),
         windDirectionDeg: lin(u(), 0, 359),
       };
+      // A candidate law can be swept beside the one in place, in the same
+      // session, which is what a guard on the invariants names (the protocol's
+      // Conduct, 16 September 2026): NIMBUS_CHEMICAL_BLAST=kingeryBulmash.
+      if (CHEMICAL_BLAST !== undefined) input.chemicalBlast = CHEMICAL_BLAST;
       const hob = lin(u(), 0, 50_000);
       const depth = logU(u(), 1, 11_000);
       if (placement < 0.2) input.heightOfBurst = 0;

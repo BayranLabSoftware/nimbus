@@ -21,7 +21,12 @@ import {
   type WaterBlastSource,
 } from './hob.js';
 import { glasstoneGroundRangeM } from './hobCurves.js';
-import { peakOverpressure } from './overpressure.js';
+import {
+  DEFAULT_CHEMICAL_BLAST_SOURCE,
+  peakOverpressure,
+  type ChemicalBlastSource,
+} from './overpressure.js';
+import { TNT_KG_PER_KILOTON, kingeryBulmashRange } from '../../effects/kingeryBulmash.js';
 import { peakWindAtRange } from './peakWind.js';
 import { initialRadiationRadii, type RadiationDoseResult } from './radiation.js';
 import { computeSeaCoupling, type SeaCoupling } from '../../effects/seaCoupling.js';
@@ -91,6 +96,11 @@ export interface ExplosionScenarioInput {
   /** What a burst within the water shortens by its depth (rule 175 of
    *  validation/hobRules.ts). Omitted, {@link DEFAULT_WATER_BLAST_SOURCE}. */
   waterBlast?: WaterBlastSource;
+  /** What draws a chemical charge's surface burst (rule 179 of
+   *  validation/chemicalBlastRules.ts): the Kinney–Graham fit at twice the
+   *  yield, or Kingery–Bulmash's own hemispherical surface burst. Omitted,
+   *  {@link DEFAULT_CHEMICAL_BLAST_SOURCE}. Read only for a chemical charge. */
+  chemicalBlast?: ChemicalBlastSource;
   /** Distance from the burst point to the nearest usable sea (m).
    *  Zero or omitted means the burst is over the water. A surface
    *  burst beside the sea is not a burst in it, and this is what
@@ -184,6 +194,10 @@ export interface ExplosionBlastResult {
   hobFactor: number;
   /** What drew the three rings above. */
   hobBlastSource: HobBlastSource;
+  /** What drew a chemical charge's surface burst, before the height above
+   *  changed it (rule 179 of validation/chemicalBlastRules.ts). A nuclear
+   *  burst reads the law in place, which draws nothing of its rings. */
+  chemicalBlastSource: ChemicalBlastSource;
 }
 
 export interface ExplosionScenarioResult {
@@ -373,10 +387,22 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   // §1.25), which the reflection restores, so its surface burst is the
   // fit at the yield itself. The height-of-burst factor starts from
   // that surface burst either way.
+  //
+  // Under `kingeryBulmash` a chemical charge does not go through that fit at
+  // all: its surface burst is the field's own compilation for a hemispherical
+  // charge on the ground, at the charge's own TNT mass (rules 177 to 181 of
+  // validation/chemicalBlastRules.ts). A nuclear burst is untouched.
+  const chemicalSource = input.chemicalBlast ?? DEFAULT_CHEMICAL_BLAST_SOURCE;
+  const onKingeryBulmash = chemical && chemicalSource === 'kingeryBulmash';
   const blastYield = J((yieldJoules as number) * (chemical ? 2 : 1));
-  const r5psi = distanceForOverpressure(blastYield, FIVE_PSI);
-  const r1psi = distanceForOverpressure(blastYield, ONE_PSI);
-  const rLight = distanceForOverpressure(blastYield, OVERPRESSURE_LIGHT_DAMAGE);
+  const chargeKgTnt = yieldKilotons * TNT_KG_PER_KILOTON;
+  const surfaceRange = (target: Pascals): Meters =>
+    onKingeryBulmash
+      ? kingeryBulmashRange(chargeKgTnt, target)
+      : distanceForOverpressure(blastYield, target);
+  const r5psi = surfaceRange(FIVE_PSI);
+  const r1psi = surfaceRange(ONE_PSI);
+  const rLight = surfaceRange(OVERPRESSURE_LIGHT_DAMAGE);
 
   // The rings of a burst at its height. Under `glasstone1977` they are read
   // off the book's curves (Figure 3.73c) for a nuclear burst — its contact
@@ -484,6 +510,7 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       hobRegime: inWater ? 'UNDERWATER' : regime,
       hobFactor: hobFactorOut,
       hobBlastSource: hobSource,
+      chemicalBlastSource: chemicalSource,
     },
     thermal: {
       thirdDegreeBurnRadius: absorbed(burn3),

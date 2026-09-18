@@ -4,6 +4,11 @@ import {
   PAGER_WORST_STOCK,
   type PagerParameters,
 } from './pagerVulnerability.js';
+import { kingeryBulmashRadiusRatio } from './effects/kingeryBulmash.js';
+import {
+  DEFAULT_CHEMICAL_BLAST_SOURCE,
+  type ChemicalBlastSource,
+} from './events/explosion/overpressure.js';
 import { distanceForOverpressure } from './events/impact/damageRings.js';
 import type { Joules, Meters } from './units.js';
 import { EARTH_RADIUS } from './constants.js';
@@ -343,6 +348,11 @@ export interface BlastCasualtyInput {
    *  {@link CONVENTIONAL_BLAST_BANDS}. Defaults to nuclear, which is
    *  what an impact's air shock resembles. */
   chargeType?: 'nuclear' | 'chemical';
+  /** Which relation drew a chemical charge's rings (rule 179 of
+   *  validation/chemicalBlastRules.ts). The band edges below follow it, so
+   *  that the 12 psi and 2 psi circles sit on the same curve as the rings
+   *  they are measured from. Read only for a chemical charge. */
+  chemicalBlast?: ChemicalBlastSource;
 }
 
 /**
@@ -388,8 +398,21 @@ export function blastCasualtyPlan(input: BlastCasualtyInput): CasualtyPlan | nul
   // 30 km lacked until the rings came from Glasstone & Dolan's curves (rules
   // 168 to 173 of validation/hobRules.ts).
   if (r1 <= 0 || r1 <= r5) return null;
-  const r12 = r5 * overpressureRadiusRatio(input.blastEnergy, 12, 5);
-  const r2 = r1 * overpressureRadiusRatio(input.blastEnergy, 2, 1);
+  // The band edges sit on whichever curve drew the rings: Kingery–Bulmash for
+  // a chemical charge that draws its rings there, the Kinney–Graham fit
+  // otherwise (rule 179 of validation/chemicalBlastRules.ts).
+  const onKingeryBulmash =
+    input.chargeType === 'chemical' &&
+    (input.chemicalBlast ?? DEFAULT_CHEMICAL_BLAST_SOURCE) === 'kingeryBulmash';
+  const ratio = (psi: number, refPsi: number): number => {
+    if (onKingeryBulmash) {
+      const fromCurve = kingeryBulmashRadiusRatio(Pa(psi * PSI), Pa(refPsi * PSI));
+      if (Number.isFinite(fromCurve) && fromCurve > 0) return fromCurve;
+    }
+    return overpressureRadiusRatio(input.blastEnergy, psi, refPsi);
+  };
+  const r12 = r5 * ratio(12, 5);
+  const r2 = r1 * ratio(2, 1);
   const psiEdges = [0, Math.min(r12, r5), r5, Math.max(r5, Math.min(r2, r1)), r1];
   // Line of sight first: a fluence radius says how much heat would
   // arrive with nothing in the way, and for an impact-scale fireball
