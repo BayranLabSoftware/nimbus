@@ -503,9 +503,17 @@ function volcanoFields(r: VolcanoScenarioResult): { inputs: Field[]; outputs: Fi
       label: 'Mass eruption rate',
       value: `${r.massEruptionRate.toExponential(2)} kg/s`,
     },
-    { label: 'PDC runout (Sheridan H/L = 0.1)', value: fmtKm(r.pyroclasticRunout) },
+    // Two reaches for one flow, and they differ by a factor of six on a
+    // Plinian column, so the page has to say what each is. The first is the
+    // project's own volume scaling — the label used to credit Sheridan with
+    // an H/L of 0.1, and the relation is neither his nor parameterised by an
+    // H/L, as `citations.pyroclasticRunout` has always said. The second is
+    // the energy line run from a quarter of the plume top at H/L = 0.1, which
+    // `extendedEffects.ts` calls an order-of-magnitude upper bound; the page
+    // never repeated that part.
+    { label: 'PDC reach (project volume scaling, 10·V^⅓)', value: fmtKm(r.pyroclasticRunout) },
     {
-      label: 'PDC runout (Dade-Huppert energy-line)',
+      label: 'PDC reach (energy line from the collapse height — upper bound)',
       value: fmtKm(r.pyroclasticRunoutEnergyLine),
     },
     { label: 'Ashfall ≥ 1 mm area (circular)', value: fmtKm2(r.ashfallArea1mm) },
@@ -519,6 +527,22 @@ function volcanoFields(r: VolcanoScenarioResult): { inputs: Field[]; outputs: Fi
       label: "Lahar runout (project recast of Iverson et al. 1998's area law)",
       value: fmtKm(r.laharRunout),
     });
+    // The quantity the field actually publishes, beside the one we recast:
+    // Griswold & Iverson 2008's B = 200·V^(2/3), and the swath the two imply.
+    // A disc of the runout's radius would claim two hundred times this
+    // (rules 202 to 207 of validation/inundationAreaRules.ts).
+    if (r.laharInundationArea !== undefined) {
+      outputs.push({
+        label: 'Lahar ground covered (Griswold & Iverson 2008)',
+        value: fmtKm2(r.laharInundationArea),
+      });
+    }
+    if (r.laharSwathWidth !== undefined) {
+      outputs.push({
+        label: 'Lahar swath width (area over runout)',
+        value: `${(r.laharSwathWidth as number).toFixed(0)} m`,
+      });
+    }
   }
   if (r.windAdvectedAshfall) {
     outputs.push(

@@ -3,6 +3,11 @@ import type { Meters, SquareMeters } from '../../units.js';
 import { m } from '../../units.js';
 import { ashFootprint } from './ashfall.js';
 import {
+  inundatedCrossSection,
+  inundatedPlanimetricArea,
+  swathWidth,
+} from '../../effects/inundationArea.js';
+import {
   ashfallArea1mm,
   climateCoolingFromVEI,
   laharRunout,
@@ -134,6 +139,18 @@ export interface VolcanoScenarioResult {
   ashfallArea1mm: number;
   /** Optional lahar runout (m). Present only when laharVolume > 0. */
   laharRunout?: Meters;
+  /** The ground the lahar covers (m²) — Griswold & Iverson 2008's
+   *  B = 200·V^(2/3), which is the quantity the field actually publishes
+   *  for a flow of this kind; the runout above is a project recast of the
+   *  same relation read as a length, and no published law gives one.
+   *  Rules 202 to 207 of validation/inundationAreaRules.ts. */
+  laharInundationArea?: SquareMeters;
+  /** The largest valley cross-section it fills (m²), A = 0.05·V^(2/3). */
+  laharCrossSection?: SquareMeters;
+  /** How wide the swath is, the area over the runout (m). The two
+   *  together give what neither gives alone; it is what says that a disc
+   *  of the runout's radius claims two hundred times the ground. */
+  laharSwathWidth?: Meters;
   /** Optional wind-advected 1-mm isopach footprint. Present only when
    *  `inputs.windSpeed > 0`. Replaces the circular ashfallArea1mm for
    *  the globe rendering; the circular envelope is retained as a
@@ -180,6 +197,12 @@ export function simulateVolcano(input: VolcanoScenarioInput): VolcanoScenarioRes
   };
   if (input.laharVolume !== undefined && input.laharVolume > 0) {
     result.laharRunout = laharRunout(input.laharVolume);
+    result.laharInundationArea = inundatedPlanimetricArea(
+      input.laharVolume,
+      'lahar'
+    ) as SquareMeters;
+    result.laharCrossSection = inundatedCrossSection(input.laharVolume, 'lahar') as SquareMeters;
+    result.laharSwathWidth = m(swathWidth(input.laharVolume, result.laharRunout, 'lahar'));
   }
   if (input.windSpeed !== undefined && input.windSpeed > 0) {
     const footprint = ashFootprint({

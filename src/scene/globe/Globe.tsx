@@ -2567,7 +2567,19 @@ export function Globe(): JSX.Element {
         radiusM: laharRadius,
         geom: circularGeom(laharRadius),
         innerSemiMajorM: 0,
-        fillAlpha: zoneFillAlpha(laharRadius, 0.18, waveOnStage),
+        // No fill, and the reason is a number: a filled disc of this radius
+        // claims every hectare inside it. The field's own relation
+        // (`effects/inundationArea.ts`) gives a lahar of 5 × 10⁷ m³ an
+        // inundated area of 27.1 km², where a disc of its 42.1 km runout
+        // covers 5 576 km² — two hundred times the ground. The reach is a
+        // reach; the ground is published beside it as an area, and the
+        // outline says only "a valley can carry it this far".
+        //
+        // Rule 203 proposed a ribbon of the swath width instead, and rule 207
+        // forbids it in the same breath: a ribbon needs a direction, and the
+        // direction is the valley's, which this project does not compute. An
+        // unfilled reach claims neither.
+        fillAlpha: 0,
         sigmaKey: 'laharRunout',
         labelBearingDeg: 225,
         animate: true,

@@ -107,21 +107,81 @@
  *       other half and it waits for the energy cone.
  */
 
-/** Rule 203: the flow types the field distinguishes, and what tells them
- *  apart — a lahar is volcanic mud, a debris flow is the same physics without
- *  a volcano, a rock avalanche is dry rock. */
-export type FlowType = 'lahar' | 'debrisFlow' | 'rockAvalanche';
+/*
+ * ===========================================================================
+ * The outcome of rules 202 to 207, 19 September 2026: ADOPTED, in part
+ * ===========================================================================
+ *
+ * The rules were pushed in `cb0286b`, with the extracted set beside them and
+ * nothing of ours yet compared to it.
+ *
+ * What was adopted. A lahar now publishes the ground it covers, B = 200·V^(2/3),
+ * its maximum cross-section A = 0.05·V^(2/3), and the swath width the area and
+ * the runout imply. The law lives in `effects/inundationArea.ts` and the rules
+ * name it rather than holding a second copy — the same correction rule 198
+ * needed, made here before it could bite.
+ *
+ * The guards.
+ * (a) The transcription is checked by rule 202's re-derivation: the extracted
+ *     data give back 0.219·V^0.587 where the report publishes 0.22·V^0.59, and
+ *     10.17·V^0.731 where it publishes 10·V^0.73.
+ * (b) No number of `docs/VALIDATION_REPORT.json` moved: it regenerates byte for
+ *     byte. The runout length is untouched.
+ * (c) The suite is green, 2 273 tests.
+ * (d) The globe no longer claims the ground it does not have — see below.
+ *
+ * Rule 205's band, measured on the 207 events: σ(log10) is 0.32 for the debris
+ * flows' planimetric areas, 0.42 for the rock avalanches', 0.44 for both
+ * cross-sections — a factor of 2.1 to 2.8 at one sigma, with the bias within
+ * 7 % of one, which is what a transcribed coefficient sitting on its own data
+ * looks like. **In sample**, as rule 205 said in advance: the spread of the
+ * relation, not a validation of it.
+ *
+ * One correction to the rules, made rather than hidden. Rule 203 proposed
+ * drawing the flow as a ribbon of the swath width, and rule 207 forbids it in
+ * the same breath: a ribbon needs a direction, the direction is the valley's,
+ * and this project does not compute valleys. So the globe draws the reach as
+ * an **unfilled** outline and the area is published beside it. The fill was the
+ * defect all along — a filled disc of the 42.1 km runout claims 5 576 km²
+ * where the field gives 27.1, and an outline claims only that a valley can
+ * carry the flow that far.
+ *
+ * What the energy cone said, and why V4 is not closed. ECMapProb (Aravena et
+ * al.) was run offline on the package's own Vesuvius topography with the
+ * distribution its example carries — collapse height 600 ± 400 m, H/L
+ * 0.40 ± 0.05, 30 draws. It gives a median maximum reach of 4.11 km (0.30 to
+ * 6.99) and a median inundated area of 37.7 km². Our own model, for the
+ * Vesuvius 79 CE preset and its 2.5 km³, gives 13.57 km from the volume
+ * scaling and 88.39 km from the energy line. The historical currents reached
+ * Pompeii at about 9 km and left deposits beyond 15.
+ *
+ * So the three numbers straddle the record and the comparison is dominated by
+ * a parameter: H/L, which the energy cone takes and we do not have. Setting it
+ * from an eruption's volume is exactly what Aravena et al. (2022)'s calibration
+ * strategies are for, and it is a round of its own. **V4 stays open**: the tool
+ * runs, offline, on real topography, and what is missing is the calibration
+ * that would let the two models be asked the same question.
+ *
+ * And one thing found on the way, of the same family as the report defects of
+ * 18 September: the page printed two reaches for one flow, six and a half times
+ * apart, the first labelled "PDC runout (Sheridan H/L = 0.1)" for a relation
+ * that is the project's own volume scaling and carries no H/L — its own
+ * citation says so — and the second with no hint that `extendedEffects.ts`
+ * calls it an order-of-magnitude upper bound. Both labels now say what they
+ * are.
+ */
 
-/** Rule 203: Griswold & Iverson (2008), Table 6 — α₁ for the maximum
- *  inundated cross-section, α₂ for the total inundated planimetric area, both
- *  on V^(2/3). The lahar row is Iverson, Schilling & Vallance (1998)'s. */
-export const INUNDATION_COEFFICIENTS: Readonly<
-  Record<FlowType, { crossSection: number; planimetric: number }>
-> = {
-  lahar: { crossSection: 0.05, planimetric: 200 },
-  debrisFlow: { crossSection: 0.1, planimetric: 20 },
-  rockAvalanche: { crossSection: 0.2, planimetric: 20 },
-};
+/** Rules 203: the law itself lives with the physics, in
+ *  `effects/inundationArea.ts`, and is named here rather than copied — a copy
+ *  of a definition in two places is what B-053 was made of, and rule 198's
+ *  own correction said the same. */
+export {
+  INUNDATION_COEFFICIENTS,
+  inundatedCrossSection,
+  inundatedPlanimetricArea,
+  swathWidth,
+  type FlowType,
+} from '../effects/inundationArea.js';
 
 /** Rule 202's re-derivation, as numbers: what the extracted data give when the
  *  report's own regression is repeated on them, against what it published.
@@ -143,23 +203,3 @@ export const APPENDIX_A_COUNTS = {
   rockAvalanchesWithCrossSection: { reported: 12, extracted: 13 },
   rockAvalanchesWithPlanimetric: { reported: 142, extracted: 142 },
 } as const;
-
-/** Rule 203: the area a flow of this volume covers (m², V in m³). */
-export function inundatedPlanimetricArea(volumeM3: number, flow: FlowType): number {
-  if (!Number.isFinite(volumeM3) || volumeM3 <= 0) return 0;
-  return INUNDATION_COEFFICIENTS[flow].planimetric * Math.cbrt(volumeM3 * volumeM3);
-}
-
-/** Rule 203: the largest cross-section it fills on the way (m²). */
-export function inundatedCrossSection(volumeM3: number, flow: FlowType): number {
-  if (!Number.isFinite(volumeM3) || volumeM3 <= 0) return 0;
-  return INUNDATION_COEFFICIENTS[flow].crossSection * Math.cbrt(volumeM3 * volumeM3);
-}
-
-/** Rule 203: the width of the swath a runout of `lengthM` implies, given the
- *  area the flow covers. Zero where either is zero — a flow that goes nowhere
- *  has no swath. */
-export function swathWidth(volumeM3: number, lengthM: number, flow: FlowType): number {
-  if (!Number.isFinite(lengthM) || lengthM <= 0) return 0;
-  return inundatedPlanimetricArea(volumeM3, flow) / lengthM;
-}
