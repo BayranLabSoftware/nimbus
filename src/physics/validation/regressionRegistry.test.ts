@@ -38,6 +38,9 @@ import type { LandslideWaveLaw } from '../events/landslide/simulate.js';
 import { IMPULSE_WAVE_TESTED, slideImpactVelocity } from '../effects/impulseWave.js';
 import { simulateImpact, IMPACT_PRESETS } from '../simulate.js';
 import { buildExplosionCascade, buildImpactCascade } from '../cascade.js';
+import { blastCasualtyPlan } from '../casualties.js';
+import { DEFAULT_TOLL_BAND_SCATTER, withVulnerabilityScatter } from '../uq/tollBand.js';
+import { TOLL_BAND_CANDIDATE } from './tollBandRules.js';
 import { fieldsFor } from '../../ui/pages/SimulationReportPage.js';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
 import { impactFireballRadius, nuclearFireballRadius } from '../effects/blastWave.js';
@@ -1057,13 +1060,37 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(fault?.value).toMatch(/reverse/);
   });
 
+  it("B-047 A toll's band carries the vulnerability table's own spread", () => {
+    // Pre-fix: a realisation drew the scenario's inputs and, for shaking,
+    // PAGER's own scatter; a blast or a pyroclastic plan drew nothing, so a
+    // ten-megatonne burst printed 2 800 000 dead with four per cent either way
+    // on a page calling the mortality uncertain by a factor of two.
+    expect(DEFAULT_TOLL_BAND_SCATTER).toBe(TOLL_BAND_CANDIDATE);
+    const plan = blastCasualtyPlan({
+      blastEnergy: J(10 * 4.184e15),
+      overpressure5psiRadius: m(10_000),
+      overpressure1psiRadius: m(26_000),
+      thirdDegreeBurnRadius: m(20_000),
+      firestormRadius: m(52_000),
+    });
+    expect(plan).not.toBeNull();
+    if (plan === null) return;
+    const before = plan.bands.map((b) => b.mortality);
+    const drawn = withVulnerabilityScatter(plan, mulberry32(7));
+    expect(drawn.bands.map((b) => b.mortality)).not.toEqual(before);
+    // The draw is of the model and not of each ring: one factor per hazard,
+    // so the bands move together and the plan it came from does not move.
+    expect(plan.bands.map((b) => b.mortality)).toEqual(before);
+    for (const band of drawn.bands) expect(band.mortality).toBeLessThanOrEqual(1);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-046 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-047 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 46;
-    expect(expectedRows).toBe(46);
+    const expectedRows = 47;
+    expect(expectedRows).toBe(47);
   });
 });

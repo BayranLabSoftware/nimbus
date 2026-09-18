@@ -7,6 +7,7 @@ import {
   type ExposurePoint,
   type PredictiveBand,
 } from '../uq/tollBand.js';
+import type { TollBandScatter } from './tollBandRules.js';
 import type { ActiveResult } from '../../store/useAppStore.js';
 import { casualtyPlanForResult, configureCountryLookup } from '../../store/useAppStore.js';
 import {
@@ -348,7 +349,10 @@ export interface TollComparison {
 export function sampleToll(
   event: RecordedEvent,
   populationAt?: (radiusM: number, band: CasualtyBand) => number,
-  curveScatter = true
+  curveScatter = true,
+  /** What a realisation draws (rules 182 to 186 of tollBandRules.ts). The
+   *  guard of rule 184 reads both settings on the same rows. */
+  scatter?: TollBandScatter
 ): PredictiveBand | null {
   const location = { latitude: event.latitude, longitude: event.longitude };
   const result = event.run();
@@ -374,6 +378,7 @@ export function sampleToll(
     },
     seed: `${event.name}:${event.recordedDeaths.toString()}`,
     curveScatter,
+    ...(scatter === undefined ? {} : { scatter }),
   });
   return bandFromPlans(plans, populationAt ?? measuredPopulation(event, result, plans, ruptures));
 }

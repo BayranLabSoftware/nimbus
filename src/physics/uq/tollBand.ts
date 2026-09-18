@@ -25,7 +25,6 @@ import { simulateVolcano } from '../events/volcano/simulate.js';
 import { simulateImpact } from '../simulate.js';
 import {
   TOLL_BAND_CANDIDATE,
-  TOLL_BAND_IN_PLACE,
   tripleSigmaLn,
   type TollBandScatter,
 } from '../validation/tollBandRules.js';
@@ -76,7 +75,7 @@ export const TOLL_BAND_SAMPLES = 200;
 /** What a realisation draws when a caller does not say (rules 182 to 186 of
  *  validation/tollBandRules.ts): the inputs alone until the guard of rule 184
  *  has run. */
-export const DEFAULT_TOLL_BAND_SCATTER: TollBandScatter = TOLL_BAND_IN_PLACE;
+export const DEFAULT_TOLL_BAND_SCATTER: TollBandScatter = TOLL_BAND_CANDIDATE;
 
 /** The percentiles the band reports. */
 export const TOLL_BAND_LOW_Q = 0.05;
@@ -335,8 +334,22 @@ export function withVulnerabilityScatter(plan: CasualtyPlan, rng: Rng): Casualty
     factors.set(component.hazard, factor);
     return factor;
   };
+  // A plan whose bands carry no hazards of their own is a single-hazard plan —
+  // a pyroclastic current, a lateral blast — and the band itself is the hazard,
+  // with its own ends. A plan that publishes a scatter (the shaking's PAGER G)
+  // has already drawn it and draws nothing here, or it would count twice.
+  const single = plan.lossSigmaLn === undefined || !(plan.lossSigmaLn > 0);
   const bands = plan.bands.map((band) => {
-    if (band.components === undefined || band.components.length === 0) return band;
+    if (band.components === undefined || band.components.length === 0) {
+      if (!single) return band;
+      const sigma = tripleSigmaLn(band.mortalityLow, band.mortalityHigh);
+      if (!(sigma > 0)) return band;
+      const key = `${plan.model}:${band.key}` as unknown as CasualtyHazard;
+      const known = factors.get(key);
+      const factor = known ?? Math.exp(sampleNormal(rng, 0, sigma));
+      if (known === undefined) factors.set(key, factor);
+      return { ...band, mortality: Math.min(1, band.mortality * factor) };
+    }
     const components = band.components.map((component) => ({
       ...component,
       mortality: Math.min(1, component.mortality * factorFor(component)),

@@ -82,6 +82,38 @@ export type TollBandScatter = 'inputsOnly' | 'withVulnerability';
 export const TOLL_BAND_IN_PLACE: TollBandScatter = 'inputsOnly';
 export const TOLL_BAND_CANDIDATE: TollBandScatter = 'withVulnerability';
 
+/*
+ * ===========================================================================
+ * The outcome of rules 182 to 186, 18 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `fda8ef6`, with the candidate reachable by name and
+ * drawn by nothing; then the guard ran on every row of the calibration net,
+ * both settings in the same run (`scripts/benchmark/toll-band.ts`,
+ * `benchmark/results/toll-band-2026-09-18.json`).
+ *
+ * (a) No central toll moved: 0.000 % on all eighteen rows, which is what the
+ *     median plan going unsampled looks like.
+ * (b) The release gate stays PASS.
+ * (c) No band narrowed. Five widened, and they are the rows whose hazards have
+ *     a spread to draw: Beirut 2020 ×1.22 → ×4.62 (1 289–1 576 dead becomes
+ *     768–3 549), Hiroshima 1945 ×1.22 → ×1.71 (99 039–120 820 becomes
+ *     87 236–149 129), Mount St Helens 1980 ×6.10 → ×39.83, Fuego 2018
+ *     ×17.00 → ×50.62, Unzen 1991 ×1.75 → ×15.00. The thirteen earthquake
+ *     rows do not move: their bands are the ground-motion residual and PAGER's
+ *     G, which they already drew.
+ * (d) The application prints what Node computes on every volcano preset (eight
+ *     of them, 0 of 75 numbers different) and every explosion preset.
+ *
+ * Recorded, and not a score (rule 184): the rows whose band holds the record
+ * go from 12 to 13 of 18 — Mount St Helens comes inside, on a band eleven
+ * times wider. A wider band holds more records by construction. What the band
+ * says now is what the model does not know; whether it is the right width is a
+ * question for a held-out set nobody has (rule 186).
+ *
+ * `DEFAULT_TOLL_BAND_SCATTER` is `withVulnerability`.
+ */
+
 /** Rule 184 (a): how far a row's central toll may move, as a fraction. */
 export const TOLL_BAND_CENTRE_TOLERANCE = 0.005;
 

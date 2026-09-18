@@ -211,9 +211,10 @@
    "numbersDifferingCount": 0,
    "numbersDiffering": [],
    "browserOnly": 0,
-   "displayedChecked": 9,
+   "displayedChecked": 0,
    "displayedFailures": [],
-   "displayedMissing": []
+   "displayedMissing": [],
+   "error": "TimeoutError: locator.innerText: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('complementary', { name: 'Simulator controls' })\n"
   },
   {
    "type": "explosion",

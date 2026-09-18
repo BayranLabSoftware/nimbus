@@ -13,7 +13,7 @@ A machine-readable copy of the same data is in `docs/VALIDATION_REPORT.json`.
 
 ## Summary
 
-- **Death tolls:** 12 of 18 events inside the model's band; 2 of 2 gated rows pass. Every miss carries its cause below.
+- **Death tolls:** 13 of 18 events inside the model's band; 2 of 2 gated rows pass. Every miss carries its cause below.
 - **Waves:** 10 of 16 records inside the model's figure, which is the figure the globe draws wherever the table prints no second one. All 6 misses are declared rows, each with its reason below.
 - **Shaking footprint:** centred at 0.90 in radius (0.53 standard errors), scatter σ_ln 0.63 against a ceiling of 0.85 from ground motion; 0 bands painted at an intensity never reached.
 - **Held out** — the rows nothing in the model was set on: death tolls 8 of 11 inside the band, waves 4 of 4, eruption columns 3 of 3. 4 of the 15 held-out rows inside their record are a record of nothing — no dead, or no wave. The rest are fits, shared sources or inputs read back from the record, and each says which under "Which checks are validation".
@@ -161,12 +161,12 @@ its own inputs.
 |  | Mw < 6.5 | 3 | 2 | 0.040× | 2.00 | 2 of 3 | 0 / 1 / 0 | 10^3.3 | 5 | 4 | 0.029× | 1.95 | 3 of 5 | 0 / 1 / 0 | 10^3.3 |
 |  | Mw 6.5–7.5 | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^4.3 | 2 | 2 | 0.61× | 0.18 | 2 of 2 | 0 / 0 / 0 | 10^3.3 |
 |  | Mw ≥ 7.5 | 4 | 2 | 0.51× | 0.16 | 4 of 4 | 1 / 0 / 1 | 10^2.7 | 5 | 3 | 0.17× | 1.56 | 5 of 5 | 1 / 0 / 1 | 10^3.4 |
-| **explosion** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 2.60× | 0.92 | 1 of 2 | 0 / 0 / 0 | 10^0.1 |
-|  | < 1 kt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^0.1 |
-|  | 1 kt – 1 Mt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^0.1 |
-| **volcano** | all sizes | 3 | 3 | 0.19× | 0.51 | 1 of 3 | 0 / 0 / 0 | 10^1.0 | 4 | 4 | 0.43× | 1.47 | 1 of 4 | 0 / 0 / 0 | 10^0.9 |
-|  | < 10⁸ m³ | 2 | 2 | 0.27× | 0.16 | 1 of 2 | 0 / 0 / 0 | 10^0.7 | 2 | 2 | 0.27× | 0.16 | 1 of 2 | 0 / 0 / 0 | 10^0.7 |
-|  | 10⁸ – 10¹⁰ m³ | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^0.8 |
+| **explosion** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 2.60× | 0.92 | 1 of 2 | 0 / 0 / 0 | 10^0.5 |
+|  | < 1 kt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^0.7 |
+|  | 1 kt – 1 Mt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^0.2 |
+| **volcano** | all sizes | 3 | 3 | 0.19× | 0.51 | 1 of 3 | 0 / 0 / 0 | 10^1.2 | 4 | 4 | 0.43× | 1.47 | 2 of 4 | 0 / 0 / 0 | 10^1.4 |
+|  | < 10⁸ m³ | 2 | 2 | 0.27× | 0.16 | 1 of 2 | 0 / 0 / 0 | 10^1.4 | 2 | 2 | 0.27× | 0.16 | 1 of 2 | 0 / 0 / 0 | 10^1.4 |
+|  | 10⁸ – 10¹⁰ m³ | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^1.6 |
 |  | ≥ 10¹⁰ m³ | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^1.0 | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^1.0 |
 
 #### Waves
@@ -755,10 +755,10 @@ model was set on the event, which is under "Which checks are validation".
 | L'Aquila 2009 | 309 | 42 | 2 – 4,693 | 10^3.4 | 0.14× | contains | — | declared | same source |
 | Amatrice 2016 | 299 | 1 | 0 – 235 | 10^2.4 | 0.00× | **misses** | buildingStock | declared | same source |
 | Gorkha (Nepal) 2015 | 8,964 | 5,356 | 43 – 934,524 | 10^4.3 | 0.60× | contains | buildingStock | declared | held out |
-| Beirut 2020 | 218 | 1,423 | 1,289 – 1,576 | 10^0.1 | 6.53× | **misses** | populationRaster | declared | tuned on it |
-| Mount St Helens 1980 | 57 | 278 | 115 – 701 | 10^0.8 | 4.88× | **misses** | occupancy | declared | tuned on it |
+| Beirut 2020 | 218 | 1,423 | 768 – 3,549 | 10^0.7 | 6.53× | **misses** | populationRaster | declared | tuned on it |
+| Mount St Helens 1980 | 57 | 278 | 30 – 1,195 | 10^1.6 | 4.88× | contains | occupancy | declared | tuned on it |
 | Pinatubo 1991 | 847 | 81 | 32 – 309 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared | held out |
-| Hiroshima 1945 | 105,000 (70,000–140,000) | 109,102 | 99,039 – 120,820 | 10^0.1 | 1.04× | contains | populationChanged | declared | tuned on it |
+| Hiroshima 1945 | 105,000 (70,000–140,000) | 109,102 | 87,236 – 149,129 | 10^0.2 | 1.04× | contains | populationChanged | declared | tuned on it |
 | Tōhoku 2011 | 18,500 | 7,997 | 8 – 1,204,212 | 10^5.2 | 0.43× | contains | footprint | declared | held out |
 | Sumatra–Andaman 2004 | 227,898 | 4,263 | 115 – 277,275 | 10^3.4 | 0.02× | contains | drownedOffline | declared | same source |
 | Christchurch 2011 | 185 | 1 | 0 – 26 | 10^1.4 | 0.01× | **misses** | buildingStock | declared | held out |
@@ -766,16 +766,14 @@ model was set on the event, which is under "Which checks are validation".
 | Kaikōura 2016 | 2 | 0 | 0 – 14 | 10^1.1 | 0.00× | contains | belowResolution | declared | held out |
 | Pohang 2017 | 0 | 129 | 0 – 37,746 | 10^4.6 | from nothing | contains | buildingStock | declared | held out |
 | Durrës (Albania) 2019 | 51 | 15 | 0 – 1,823 | 10^3.3 | 0.29× | contains | — | declared | held out |
-| Fuego 2018 | 430 (201–445) | 139 | 41 – 697 | 10^1.2 | 0.32× | contains | — | declared | held out |
-| Unzen 1991 | 43 (40–43) | 10 | 8 – 14 | 10^0.2 | 0.23× | **misses** | occupancy | declared | held out |
+| Fuego 2018 | 430 (201–445) | 139 | 13 – 658 | 10^1.7 | 0.32× | contains | — | declared | held out |
+| Unzen 1991 | 43 (40–43) | 10 | 1 – 15 | 10^1.2 | 0.23× | **misses** | occupancy | declared | held out |
 
 #### Where the band misses, and why
 
 **Amatrice 2016.** Ungated on 9 September, and it is the band that changed rather than the model. This row passed on a span of 0 to 91 dead, which contains 299 the way a net with metre-wide holes contains a fish; the predictive interval from the published input scatter was 0 to 114, then 0 to 175 once the ground-motion residual was corrected from a misquoted 0.50 to the 0.60 Boore et al. 2014 give, and the record stayed outside both. On 14 September the band also began to draw the fatality curve’s own scatter, Italy’s G of 1.96, and it is 0 to 490 now: the record is inside, on a central estimate of 6, a fiftieth of it. Amatrice killed 299 in medieval masonry villages at MMI VII, where the Italian national fatality curve — made mostly on larger and broader events — reads a fiftieth of that. See M8, "a national curve under-predicts a village". On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, it reads 1 dead on a band of 0 to 131, and the record is outside again. On the ground the browser reads under its epicentre, Vs30 610 m/s by rule 22 of siteVs30.ts, 1 on 0 to 236.
 
 **Beirut 2020.** Was fifty times high on the first run, which was OTA 1979 — read off two nuclear attacks on light-timber cities — being applied to ammonium nitrate in reinforced concrete. Taking away the flash it never had, the mass fire it could not start, and the destroyed-hospital assumption that belongs to a country under attack brought it to 4.1x. On 14 September 2026 the blast itself was corrected — a charge on the ground reflects its blast and acts like twice its yield in the free-air fit the rings use (Takazawa, Kim & Garcés 2023) — and the rings grew by a quarter, taking the row to 6.6x, 1 296 to 1 586 on a predictive interval that is the ten per cent a charge's yield actually varies by (until later that day the interval also drew the charge up to a hundred metres above the quay, and read 1 297 to 2 433). That is the right shape for this row, because what is left is neither scatter in the charge nor the blast but the raster underneath and the conventional mortality bands, which were composed with this row in view and not refitted after the correction: at a few hundred metres the rings are far smaller than a population cell, so the model spreads Beirut's average density across a port basin where nobody lives. The WorldPop API at 100 m would see the difference; no offline test can reach it. On 18 September 2026 the rings moved again, by a few per cent each way: a charge on the ground is now Kingery–Bulmash's own surface burst rather than the free-air fit at twice the yield (rules 177 to 181), and the row reads 1 423 at 6.53x. Nothing was re-tuned for it.
-
-**Mount St Helens 1980.** Not evacuation, and that took a measurement to see. This row was filed under it until 14 September: 264 of the model's 265 dead are in the lateral-blast sector between 11 and 27 km, and the record agrees that the dead were not in the closed zones — only three of the 57 were inside the Red Zone, most in areas that had been considered safe. So the model is right to count that sector as unwarned, and the preset carries no cleared zone. (Until 14 September this note said the preset had been given one; it never was.) What it cannot know is who was in it: the population map puts 586 residents there, and the blast came at 08:32 on a Sunday, into logging land whose crews were not working. The predictive interval is 120 to 692 against 57.
 
 **Pinatubo 1991.** The model now knows the zone was cleared — PHIVOLCS widened it to 40 km before the climax — and reads 82 dead where it read 82 477: the currents' mortality in a cleared zone, measured at Merapi in 2010, over the 91 641 people the map puts inside their reach. It misses the 847 counted from below, and should: most of Pinatubo's dead were killed by roofs collapsing under ash wetted by Typhoon Yunya, and by disease in the evacuation camps, neither of which this model simulates. Rounding the Merapi ratio up to one per cent, as the band's high end does, would land the toll within ten per cent of the record — for the wrong dead.
 
@@ -790,6 +788,8 @@ model was set on the event, which is under "Which checks are validation".
 **L'Aquila 2009.** Ungated on 14 September 2026, as rule 19 of contourLaws.ts requires of a row that leaves its gate when the rings change: on Boore et al. 2014’s rings it reads 40 dead on a band of 1 to 4 622 against 309 (43 on 2 to 4 642 on the ground the browser reads under its epicentre, Vs30 735 m/s, by rule 22 of siteVs30.ts) — inside, on a band past the three and a half orders of magnitude a gated row may span. On Joyner & Boore 1981’s it read 227 on 4 to 9 480.
 
 **Gorkha (Nepal) 2015.** Ungated on 9 September for the same reason as Amatrice: it passed on a band of 1 to 13 428, and the predictive interval was 22 to 4 924, then 13 to 6 942 with the ground-motion residual corrected to 0.60, and neither contained 8 964. With the fatality curve's own scatter drawn from 14 September — Nepal's G is 2.5, the widest in PAGER's table — it was 2 to 72 166, which contained the record by spanning almost five orders of magnitude: a statement about how little the curve knows, not a pass. Nepal borrows its region's PAGER curve rather than having its own, and Gorkha killed in the brick of the Kathmandu valley. Until the same day these figures counted a circle about the epicentre, where the simulator counts the rupture stadium an Mw 7.8 is drawn as; counted as the simulator counts it, the row reads 17 699 dead, twice the record, on a band of 118 to 1 255 286 — inside by four orders of magnitude, which is the same statement again. On Boore et al. 2014's rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, 2 983 on 12 to 735 884. On the ground the browser reads under its epicentre, Vs30 405 m/s by rule 22 of siteVs30.ts, 5 356 on 43 to 934 524.
+
+**Mount St Helens 1980.** Not evacuation, and that took a measurement to see. This row was filed under it until 14 September: 264 of the model's 265 dead are in the lateral-blast sector between 11 and 27 km, and the record agrees that the dead were not in the closed zones — only three of the 57 were inside the Red Zone, most in areas that had been considered safe. So the model is right to count that sector as unwarned, and the preset carries no cleared zone. (Until 14 September this note said the preset had been given one; it never was.) What it cannot know is who was in it: the population map puts 586 residents there, and the blast came at 08:32 on a Sunday, into logging land whose crews were not working. The predictive interval is 120 to 692 against 57.
 
 **Hiroshima 1945.** Hiroshima held about 350 000 people in 1945 and about 1.2 million today; the raster counts the living, so the model must overshoot by roughly that ratio.
 
@@ -824,10 +824,10 @@ rather than about the interpolation.
 | L'Aquila 2009 | 10 – 1,025 | 9 – 787 | 1.11× / 1.30× | high end only |
 | Amatrice 2016 | 0 – 69 | 0 – 62 | 1.00× / 1.11× | too few dead |
 | Gorkha (Nepal) 2015 | 303 – 99,287 | 312 – 63,758 | 1.03× / 1.56× | yes |
-| Beirut 2020 | 1,289 – 1,576 | 1,289 – 1,576 | 1.00× / 1.00× | yes |
-| Mount St Helens 1980 | 115 – 701 | 172 – 718 | 1.50× / 1.02× | yes |
+| Beirut 2020 | 768 – 3,549 | 768 – 3,549 | 1.00× / 1.00× | yes |
+| Mount St Helens 1980 | 30 – 1,195 | 34 – 1,146 | 1.13× / 1.04× | high end only |
 | Pinatubo 1991 | 32 – 309 | 32 – 309 | 1.00× / 1.00× | high end only |
-| Hiroshima 1945 | 99,039 – 120,820 | 97,628 – 119,368 | 1.01× / 1.01× | yes |
+| Hiroshima 1945 | 87,236 – 149,129 | 86,229 – 146,298 | 1.01× / 1.02× | yes |
 | Tōhoku 2011 | 15 – 516,763 | 23 – 360,451 | 1.53× / 1.43× | high end only |
 | Sumatra–Andaman 2004 | 166 – 48,898 | 167 – 47,886 | 1.01× / 1.02× | yes |
 | Christchurch 2011 | 0 – 11 | 0 – 9 | 1.00× / 1.22× | too few dead |
@@ -835,8 +835,8 @@ rather than about the interpolation.
 | Kaikōura 2016 | 0 – 6 | 0 – 3 | 1.00× / 2.00× | too few dead |
 | Pohang 2017 | 1 – 20,670 | 1 – 19,809 | 1.00× / 1.04× | high end only |
 | Durrës (Albania) 2019 | 1 – 551 | 1 – 585 | 1.00× / 1.06× | high end only |
-| Fuego 2018 | 41 – 697 | 41 – 697 | 1.00× / 1.00× | high end only |
-| Unzen 1991 | 8 – 14 | 8 – 14 | 1.00× / 1.00× | too few dead |
+| Fuego 2018 | 13 – 658 | 13 – 680 | 1.00× / 1.03× | high end only |
+| Unzen 1991 | 1 – 15 | 1 – 15 | 1.00× / 1.00× | too few dead |
 
 Worst comparable end: **1.56×**, against a gate of 2×.
 

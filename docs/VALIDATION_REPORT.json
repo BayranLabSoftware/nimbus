@@ -831,8 +831,8 @@
         "recordedLow": 218,
         "recordedHigh": 218,
         "model": 1423,
-        "bandLow": 1289,
-        "bandHigh": 1576,
+        "bandLow": 768,
+        "bandHigh": 3549,
         "ratio": 6.528,
         "contains": false,
         "gated": false,
@@ -846,10 +846,10 @@
         "recordedLow": 57,
         "recordedHigh": 57,
         "model": 278,
-        "bandLow": 115,
-        "bandHigh": 701,
+        "bandLow": 30,
+        "bandHigh": 1195,
         "ratio": 4.877,
-        "contains": false,
+        "contains": true,
         "gated": false,
         "cause": "occupancy",
         "role": "tuned",
@@ -876,8 +876,8 @@
         "recordedLow": 70000,
         "recordedHigh": 140000,
         "model": 109102,
-        "bandLow": 99039,
-        "bandHigh": 120820,
+        "bandLow": 87236,
+        "bandHigh": 149129,
         "ratio": 1.039,
         "contains": true,
         "gated": false,
@@ -996,8 +996,8 @@
         "recordedLow": 201,
         "recordedHigh": 445,
         "model": 139,
-        "bandLow": 41,
-        "bandHigh": 697,
+        "bandLow": 13,
+        "bandHigh": 658,
         "ratio": 0.323,
         "contains": true,
         "gated": false,
@@ -1011,8 +1011,8 @@
         "recordedLow": 40,
         "recordedHigh": 43,
         "model": 10,
-        "bandLow": 8,
-        "bandHigh": 14,
+        "bandLow": 1,
+        "bandHigh": 15,
         "ratio": 0.233,
         "contains": false,
         "gated": false,
@@ -1437,7 +1437,7 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.09
+          "medianBandDecades": 0.45
         }
       },
       {
@@ -1465,7 +1465,7 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.09
+          "medianBandDecades": 0.66
         }
       },
       {
@@ -1493,7 +1493,7 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.09
+          "medianBandDecades": 0.23
         }
       },
       {
@@ -1510,18 +1510,18 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.98
+          "medianBandDecades": 1.18
         },
         "all": {
           "rows": 4,
           "scored": 4,
           "bias": 0.433,
           "scatterLn": 1.47,
-          "inside": 1,
+          "inside": 2,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.88
+          "medianBandDecades": 1.39
         }
       },
       {
@@ -1538,7 +1538,7 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.74
+          "medianBandDecades": 1.44
         },
         "all": {
           "rows": 2,
@@ -1549,7 +1549,7 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.74
+          "medianBandDecades": 1.44
         }
       },
       {
@@ -1573,11 +1573,11 @@
           "scored": 1,
           "bias": null,
           "scatterLn": null,
-          "inside": 0,
+          "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.79
+          "medianBandDecades": 1.6
         }
       },
       {
@@ -4319,14 +4319,14 @@
           "record": 218,
           "gated": false,
           "inPlace": [
-            1289,
+            768,
             1423,
-            1576
+            3549
           ],
           "candidate": [
-            1289,
+            768,
             1423,
-            1576
+            3549
           ],
           "insideInPlace": false,
           "insideCandidate": false
@@ -4336,14 +4336,14 @@
           "record": 105000,
           "gated": false,
           "inPlace": [
-            98261,
+            86618,
             108354,
-            120216
+            148784
           ],
           "candidate": [
-            99590,
+            87820,
             109968,
-            121488
+            149760
           ],
           "insideInPlace": true,
           "insideCandidate": true
@@ -6236,21 +6236,21 @@
       },
       {
         "event": "Beirut 2020",
-        "measuredLow": 1289,
-        "measuredHigh": 1576,
-        "interpolatedLow": 1289,
-        "interpolatedHigh": 1576,
+        "measuredLow": 768,
+        "measuredHigh": 3549,
+        "interpolatedLow": 768,
+        "interpolatedHigh": 3549,
         "comparable": true,
         "lowComparable": true
       },
       {
         "event": "Mount St Helens 1980",
-        "measuredLow": 115,
-        "measuredHigh": 701,
-        "interpolatedLow": 172,
-        "interpolatedHigh": 718,
+        "measuredLow": 30,
+        "measuredHigh": 1195,
+        "interpolatedLow": 34,
+        "interpolatedHigh": 1146,
         "comparable": true,
-        "lowComparable": true
+        "lowComparable": false
       },
       {
         "event": "Pinatubo 1991",
@@ -6263,10 +6263,10 @@
       },
       {
         "event": "Hiroshima 1945",
-        "measuredLow": 99039,
-        "measuredHigh": 120820,
-        "interpolatedLow": 97628,
-        "interpolatedHigh": 119368,
+        "measuredLow": 87236,
+        "measuredHigh": 149129,
+        "interpolatedLow": 86229,
+        "interpolatedHigh": 146298,
         "comparable": true,
         "lowComparable": true
       },
@@ -6335,19 +6335,19 @@
       },
       {
         "event": "Fuego 2018",
-        "measuredLow": 41,
-        "measuredHigh": 697,
-        "interpolatedLow": 41,
-        "interpolatedHigh": 697,
+        "measuredLow": 13,
+        "measuredHigh": 658,
+        "interpolatedLow": 13,
+        "interpolatedHigh": 680,
         "comparable": true,
         "lowComparable": false
       },
       {
         "event": "Unzen 1991",
-        "measuredLow": 8,
-        "measuredHigh": 14,
-        "interpolatedLow": 8,
-        "interpolatedHigh": 14,
+        "measuredLow": 1,
+        "measuredHigh": 15,
+        "interpolatedLow": 1,
+        "interpolatedHigh": 15,
         "comparable": false,
         "lowComparable": false
       }

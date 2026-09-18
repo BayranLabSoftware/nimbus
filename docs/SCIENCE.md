@@ -308,6 +308,40 @@ famine or disease):
 cumulative population inside every band's outer radius and evaluates
 the plan (`runCasualtyLookup` in `src/store/useAppStore.ts`).
 
+### What the toll's band carries, and what it left out (18 September 2026)
+
+`uq/tollBand.ts`, `validation/tollBandRules.ts` (rules 182 to 186). Since 14
+September the printed band is a predictive interval: draw the scenario a few
+hundred times from the scatter the literature publishes, run each draw through
+the plan builder the application uses, and report the fifth and ninety-fifth
+percentiles. For shaking a realisation also draws the fatality curve's own
+published scatter, PAGER's G. For everything else it drew nothing of the kind,
+and the module said so plainly — "plans without a published scatter — blast,
+pyroclastic — draw nothing, so their bands do not move".
+
+Andrea ran four scenarios through the product on 17 September and caught what
+that costs: a ten-megatonne burst over Rome printed 2 800 000 dead with
+2 700 000 to 2 900 000 beside it, four per cent either way, on a page whose own
+methodology calls the mortality uncertain by a factor of two. The band was
+carrying the yield's ten per cent and the height of burst, and nothing else.
+
+The vulnerability table already states what it does not know: every mortality
+comes as a triple — third-degree burns 0.3, 0.5 and 0.8; a firestorm 0.1, 0.3
+and 0.8; the share of the injured who die later 0.1, 0.3 and 0.6 — and every
+band of a plan carries its own ends. A realisation now draws one factor per
+hazard from that spread, a lognormal of σ = ln(high / low) / 3.29, the σ a
+5–95 % interval of that width would have; a plan with one hazard and no
+components draws for the band itself; the shaking still draws PAGER's G and
+nothing more, or it would count twice. The central estimate is untouched.
+
+What it moved, on the eighteen rows of the calibration net: no central estimate
+moved at all, no band narrowed, and three rows widened — Beirut from ×1.22 to
+×4.62, Hiroshima from ×1.22 to ×1.71, Mount St Helens from ×6.10 to ×39.83.
+One row, Mount St Helens, goes from outside its band to inside it. **A wider
+band holds more records by construction, so that is recorded and is not a
+score** (rule 184); what the band now says is what the model does not know, and
+whether it is the right width is a question for a held-out set nobody has.
+
 ### Two things a band has to admit (Phase 25)
 
 The calibration net found the casualty bands to be the wrong shape:
