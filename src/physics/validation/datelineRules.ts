@@ -156,7 +156,14 @@
  *
  * What stays open: the poles, which rule 201 named and this round does not
  * touch. The march still stops a front at 85°, and no isochrone of the thirty
- * scenarios reaches far enough to show it.
+ * scenarios reaches far enough to show it. It was measured afterwards rather
+ * than left as a worry: on the same uniform ocean, a front from 80°N 0° reaches
+ * 80°N 180° in 3.54 h where a path straight over the pole would take 3.12 —
+ * **1.1×**, not the 17.7× the dateline cost, because the raster reaches to 85°
+ * and the front simply goes round inside that band. The cap it cannot enter at
+ * all is 0.38 % of the Earth's surface, and it is under permanent ice. The
+ * limitation is real and it is small; saying which is the point of measuring
+ * it.
  */
 
 /** Rule 198: a grid spans the globe when its longitude bounds cover 360°,

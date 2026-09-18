@@ -433,7 +433,13 @@ move are Pacific without exception, Andreanof by a factor of two.
 
 Still open from that round, and named in rule 201: the poles. The same walk
 stops a front at 85°, and no isochrone of the thirty scenarios reaches far
-enough to show it.
+enough to show it. It was measured rather than left as a worry: on the same
+uniform ocean a front from 80°N 0° reaches 80°N 180° in 3.54 h where a path
+straight over the pole would take 3.12 — **1.1×**, against the 17.7× the
+dateline cost — because the raster reaches to 85° and the front goes round
+inside that band. The cap it cannot enter is 0.38 % of the Earth's surface,
+under permanent ice. Real, and small: which of the two it was is exactly what
+a measurement is for.
 
 What the second pass leaves declared and unmeasured: a landslide's own body is
 not drawn — the globe shows its wave, not the slide — which the audit counts
