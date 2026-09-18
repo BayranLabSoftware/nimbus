@@ -1,0 +1,246 @@
+{
+ "base": "http://localhost:5178",
+ "rows": [
+  {
+   "scenario": "impact-tiny-land",
+   "family": "impact",
+   "eventType": "impact",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 2
+  },
+  {
+   "scenario": "impact-chelyabinsk-like",
+   "family": "impact",
+   "eventType": "impact",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 2
+  },
+  {
+   "scenario": "impact-iron-ground",
+   "family": "impact",
+   "eventType": "impact",
+   "ringsDrawn": 9,
+   "polygonsDrawn": 0,
+   "checked": 6
+  },
+  {
+   "scenario": "impact-ocean-deep",
+   "family": "impact",
+   "eventType": "impact",
+   "ringsDrawn": 9,
+   "polygonsDrawn": 0,
+   "checked": 5
+  },
+  {
+   "scenario": "impact-ten-km",
+   "family": "impact",
+   "eventType": "impact",
+   "ringsDrawn": 11,
+   "polygonsDrawn": 0,
+   "checked": 6
+  },
+  {
+   "scenario": "explosion-hiroshima-like",
+   "family": "explosion",
+   "eventType": "explosion",
+   "ringsDrawn": 8,
+   "polygonsDrawn": 0,
+   "checked": 6
+  },
+  {
+   "scenario": "explosion-contact-city",
+   "family": "explosion",
+   "eventType": "explosion",
+   "ringsDrawn": 9,
+   "polygonsDrawn": 0,
+   "checked": 7
+  },
+  {
+   "scenario": "explosion-chemical-port",
+   "family": "explosion",
+   "eventType": "explosion",
+   "ringsDrawn": 5,
+   "polygonsDrawn": 0,
+   "checked": 3
+  },
+  {
+   "scenario": "explosion-underwater-shallow",
+   "family": "explosion",
+   "eventType": "explosion",
+   "ringsDrawn": 6,
+   "polygonsDrawn": 0,
+   "checked": 3
+  },
+  {
+   "scenario": "explosion-high-altitude",
+   "family": "explosion",
+   "eventType": "explosion",
+   "ringsDrawn": 3,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "quake-shallow-strike-slip",
+   "family": "earthquake",
+   "eventType": "earthquake",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 2
+  },
+  {
+   "scenario": "quake-deep-slab",
+   "family": "earthquake",
+   "eventType": "earthquake",
+   "ringsDrawn": 2,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "quake-megathrust-offshore",
+   "family": "earthquake",
+   "eventType": "earthquake",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 2,
+   "checked": 2
+  },
+  {
+   "scenario": "quake-small-remote",
+   "family": "earthquake",
+   "eventType": "earthquake",
+   "ringsDrawn": 2,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "quake-submarine-coastal",
+   "family": "earthquake",
+   "eventType": "earthquake",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 2,
+   "checked": 2
+  },
+  {
+   "scenario": "volcano-vesuvius-like",
+   "family": "volcano",
+   "eventType": "volcano",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "volcano-evacuated",
+   "family": "volcano",
+   "eventType": "volcano",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "volcano-small-lahar",
+   "family": "volcano",
+   "eventType": "volcano",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "volcano-caldera",
+   "family": "volcano",
+   "eventType": "volcano",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "volcano-flank-collapse",
+   "family": "volcano",
+   "eventType": "volcano",
+   "ringsDrawn": 6,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "slide-subaerial-fjord",
+   "family": "landslide",
+   "eventType": "landslide",
+   "ringsDrawn": 3,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "slide-submarine-shelf",
+   "family": "landslide",
+   "eventType": "landslide",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "slide-confined-basin",
+   "family": "landslide",
+   "eventType": "landslide",
+   "ringsDrawn": 3,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "slide-tiny",
+   "family": "landslide",
+   "eventType": "landslide",
+   "ringsDrawn": 3,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "slide-shallow-slope",
+   "family": "landslide",
+   "eventType": "landslide",
+   "ringsDrawn": 2,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "wave-impact-shelf",
+   "family": "wave",
+   "eventType": "impact",
+   "ringsDrawn": 11,
+   "polygonsDrawn": 0,
+   "checked": 6
+  },
+  {
+   "scenario": "wave-burst-in-water",
+   "family": "wave",
+   "eventType": "explosion",
+   "ringsDrawn": 6,
+   "polygonsDrawn": 0,
+   "checked": 3
+  },
+  {
+   "scenario": "wave-megathrust-far",
+   "family": "wave",
+   "eventType": "earthquake",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 2,
+   "checked": 2
+  },
+  {
+   "scenario": "wave-slide-into-lake",
+   "family": "wave",
+   "eventType": "landslide",
+   "ringsDrawn": 3,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "wave-caldera-collapse",
+   "family": "wave",
+   "eventType": "volcano",
+   "ringsDrawn": 6,
+   "polygonsDrawn": 0,
+   "checked": 1
+  }
+ ],
+ "findings": []
+}

@@ -308,6 +308,49 @@ famine or disease):
 cumulative population inside every band's outer radius and evaluates
 the plan (`runCasualtyLookup` in `src/store/useAppStore.ts`).
 
+### What the globe draws, against what the model said (18 September 2026)
+
+The report page had been read and the two defects it showed were closed. The
+globe had not: `scripts/benchmark/globe-audit.ts` reads the geometry the
+renderer hands to Cesium — every ellipse's axes, centre, rotation and caption,
+and every contour polygon's vertices — for the same thirty scenarios, through
+the `?probe` hook that was put in the code for exactly this and had never been
+called.
+
+Checked, on each contour that carries a published number: that the radius drawn
+is the radius published, that the caption states it, that the ring is centred on
+the event, that the drawn order is the order of the radii, that nothing is drawn
+with no number behind it and no number is left undrawn. For a great earthquake,
+whose shaking is a stadium around the rupture rather than a disc about the
+epicentre, that **every vertex** of the polygon lies the contour's own radius
+away from the rupture rectangle.
+
+151 ellipses and 6 polygons were drawn across the thirty; 64 of them carry a
+number, and all 64 carry it correctly. Nothing was found.
+
+Three things were reported and were the instrument, not the product, and they
+are written down because they are the reason the zero can be believed: an
+English caption's thousands comma read as a decimal point, which accused five
+correct captions; ellipses read and polygons not, which called three megathrust
+stadiums missing when they were there; and the nearest _vertex_ taken for the
+nearest point of the boundary, when a stadium has vertices only at its four
+corner caps — that one called eight correct contours twice too wide.
+
+What this does **not** cover, and must not be read as green. A landslide draws
+no contour that carries a published radius: zero of its five scenarios were
+compared, so the globe's landslide picture is unmeasured. Of a volcano only the
+pyroclastic ring was read; the ash blanket and the lahars are polygons bent by
+wind and valleys and were not. The wave's amplitude veil is a second
+calculation with a test of its own (`tsunami/fieldScalarAgreement.test.ts`), and
+the isochrones are contours of the solver's own arrival field. Colour, fill and
+animation are not read at all.
+
+Two things hold by construction and were confirmed by reading the code rather
+than the screen: the rings drawn and the rings the dead are counted in are the
+same fields — `blast.overpressure5psiRadiusHob` for a burst, `damage.*` for an
+impact — and the counter that climbs with the front is tested to end on the
+model's own total, band by band.
+
 ### Two things thirty scenarios found, and how they were closed (18 September 2026)
 
 Thirty scenarios were opened by link on the application's own report page and
