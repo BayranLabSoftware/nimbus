@@ -864,4 +864,21 @@ not that a rule holds.
   may be too.
 - I3 reads the only measured airbursts, which have been read; a 9 on the air
   blast of an airburst is a check that its band is honest, not a held-out
-  test.
+  test. **Measured on 18 September 2026, before any rule was written for it:
+  the check turns on the overpressure one assigns to the damage, more than on
+  the model.** The reach of the program's law at Tunguska's burst is 11.5 km
+  at 20 kPa, 20.1 at 10 and 29.2 at 6, against the 26.5 km radius of the
+  flattened forest; at Chelyabinsk's it is 30.1 km at 1 kPa, 47.6 at 0.7 and
+  67.8 at 0.5, against the 56 km radius over which windows broke. A factor of
+  three in radius sits between the ends of each of those ranges, and the
+  literature does not fix the threshold better than that. The model's own
+  scatter is smaller: against the twenty ranges Collins et al. (2017) publish
+  from their shock-physics runs, the law reads 1.09× with a σ_ln of 0.24, so a
+  band drawn at that scatter spans ×0.74 to ×1.61 and holds nineteen of the
+  twenty. Read at the paper's own thresholds — 20 kPa for the trees, 1 kPa for
+  the windows — such a band holds neither footprint: Tunguska would need ×2.31
+  and Chelyabinsk ×1.86. I3's width bound of ×3, chosen by the project on 15
+  September without measuring, cannot carry both the model's scatter and the
+  threshold's, and this file forbids loosening a bound after a figure has
+  failed it. So I3 stays not met, and the reason is now measured rather than
+  assumed.

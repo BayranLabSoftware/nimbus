@@ -59,11 +59,14 @@ function stage(key: string, onset: Seconds, tier: CascadeStage['tier']): Cascade
 
 /** Cosmic impact cascade. Ordered chronologically. */
 export function buildImpactCascade(result: ImpactScenarioResult): CascadeStage[] {
-  const stages: CascadeStage[] = [
-    stage('cascade.impact.flash', s(0), 'primary'),
-    stage('cascade.impact.crater', s(0), 'primary'),
-    stage('cascade.impact.seismic', s(0), 'secondary'),
-  ];
+  const stages: CascadeStage[] = [stage('cascade.impact.flash', s(0), 'primary')];
+  // No crater, no crater stage: a body that burns out in the air leaves the
+  // ground untouched, and the timeline used to dig a hole for it all the same
+  // (B-045 of docs/BUG_REGISTRY.md, found in Andrea's report of 17 September).
+  if ((result.crater.finalDiameter as number) > 0) {
+    stages.push(stage('cascade.impact.crater', s(0), 'primary'));
+  }
+  stages.push(stage('cascade.impact.seismic', s(0), 'secondary'));
 
   // Air blast: sound takes ~3 s/km at sea level. Use 1 psi ring as
   // the far-field anchor; "≈ 1 psi distance / 343 m/s" seconds.
@@ -206,10 +209,11 @@ export function buildImpactCascade(result: ImpactScenarioResult): CascadeStage[]
 
 /** Nuclear / conventional explosion cascade. */
 export function buildExplosionCascade(result: ExplosionScenarioResult): CascadeStage[] {
-  const stages: CascadeStage[] = [
-    stage('cascade.explosion.flash', s(0), 'primary'),
-    stage('cascade.explosion.crater', s(0), 'primary'),
-  ];
+  const stages: CascadeStage[] = [stage('cascade.explosion.flash', s(0), 'primary')];
+  // The same for a burst too high to touch the ground (B-045).
+  if ((result.crater.apparentDiameter as number) > 0) {
+    stages.push(stage('cascade.explosion.crater', s(0), 'primary'));
+  }
 
   const blastReach = result.blast.overpressure1psiRadius as number;
   if (blastReach > 0) {

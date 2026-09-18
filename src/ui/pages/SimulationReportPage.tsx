@@ -94,7 +94,18 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
     { label: 'Impact angle', value: `${radiansToDegrees(input.impactAngle).toFixed(0)}°` },
   ];
   if ((input.waterDepth as number | undefined) !== undefined && (input.waterDepth as number) > 0) {
-    inputs.push({ label: 'Water depth at impact', value: fmtKm(input.waterDepth as number) });
+    // On land the depth is the nearest sea's, which the store finds so the
+    // physics can say whether the crater or the ejecta reach it. Calling it
+    // "the water depth at impact" put an inland city under the sea (B-044).
+    const shore = input.shoreDistance as number | undefined;
+    inputs.push(
+      shore !== undefined && shore > 0
+        ? {
+            label: 'Nearest sea a wave could cross',
+            value: `${fmtKm(shore)} away, ${fmtKm(input.waterDepth as number)} deep`,
+          }
+        : { label: 'Water depth at impact', value: fmtKm(input.waterDepth as number) }
+    );
   }
   if ((input.meanOceanDepth as number | undefined) !== undefined) {
     inputs.push({ label: 'Mean basin depth', value: fmtKm(input.meanOceanDepth as number) });
@@ -117,7 +128,11 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
     { label: 'Transient crater diameter', value: fmtKm(r.crater.transientDiameter) },
     { label: 'Final crater diameter', value: fmtKm(r.crater.finalDiameter) },
     { label: 'Crater depth', value: fmtKm(r.crater.depth) },
-    { label: 'Crater morphology', value: r.crater.morphology },
+    // A morphology is a fact about a crater, and an airburst leaves none
+    // (B-045).
+    ...((r.crater.finalDiameter as number) > 0
+      ? [{ label: 'Crater morphology', value: r.crater.morphology }]
+      : []),
     { label: 'Seismic magnitude (Collins et al. 2005)', value: fmtNumber(r.seismic.magnitude, 1) },
     {
       label: 'Seismic magnitude, efficiency 10⁻⁵–10⁻³',
@@ -242,7 +257,15 @@ function explosionFields(r: ExplosionScenarioResult): { inputs: Field[]; outputs
     { label: 'Burst placement', value: placement },
   ];
   if ((r.inputs.waterDepth as number | undefined) !== undefined) {
-    inputs.push({ label: 'Water depth at burst', value: fmtKm(r.inputs.waterDepth as number) });
+    const shore = r.inputs.shoreDistance as number | undefined;
+    inputs.push(
+      r.placement.medium !== 'water' && shore !== undefined && shore > 0
+        ? {
+            label: 'Nearest sea a wave could cross',
+            value: `${fmtKm(shore)} away, ${fmtKm(r.inputs.waterDepth as number)} deep`,
+          }
+        : { label: 'Water depth at burst', value: fmtKm(r.inputs.waterDepth as number) }
+    );
   }
 
   const outputs: Field[] = [
@@ -343,7 +366,15 @@ function explosionFields(r: ExplosionScenarioResult): { inputs: Field[]; outputs
 function earthquakeFields(r: EarthquakeScenarioResult): { inputs: Field[]; outputs: Field[] } {
   const inputs: Field[] = [
     { label: 'Moment magnitude Mw', value: fmtNumber(r.inputs.magnitude, 1) },
-    { label: 'Fault type', value: r.inputs.faultType ?? 'all' },
+    {
+      label: 'Fault type',
+      // Under a subduction interface the model runs a thrust whatever the
+      // scenario asked for, and says so rather than printing both (B-046).
+      value:
+        r.inputs.subductionInterface === true
+          ? `${r.faultTypeUsed} (subduction interface)`
+          : (r.inputs.faultType ?? 'all'),
+    },
     {
       label: 'Hypocentre depth',
       value: r.inputs.depth === undefined ? '—' : fmtKm(r.inputs.depth),
@@ -641,7 +672,14 @@ function landslideFields(r: LandslideScenarioResult): { inputs: Field[]; outputs
   return { inputs, outputs };
 }
 
-function fieldsFor(result: ActiveResult): { inputs: Field[]; outputs: Field[] } {
+/**
+ * What the report says about a scenario, exported so that the regression tests
+ * of B-044 and B-045 read this page's own builder rather than a copy of it —
+ * splitting it into a module of its own would leave the two to drift, which is
+ * how B-045 survived in the first place.
+ */
+// eslint-disable-next-line react-refresh/only-export-components -- see above
+export function fieldsFor(result: ActiveResult): { inputs: Field[]; outputs: Field[] } {
   switch (result.type) {
     case 'impact':
       return impactFields(result.data);

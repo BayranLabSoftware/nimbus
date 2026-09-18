@@ -1110,7 +1110,7 @@ a stadium from Mw 7.5 only, so these are the figures under that geometry; the ru
 
 | Law | Rule 11's maps, rock | Rule 11's maps, browser's ground | Rule 23's maps, rock | Rule 23's maps, browser's ground | Sum |
 |-----|----:|----:|----:|----:|----:|
-| Boore et al. 2014 | 1.03 | 1.30 | 2.00 | 2.20 | 6.53 |
+| Boore et al. 2014 | 1.04 | 1.30 | 2.00 | 2.20 | 6.54 |
 | Abrahamson, Gregor & Addo 2016 on the interface | 0.72 | 0.60 | 2.15 | 2.13 | 5.60 |
 | Parker et al. 2022 on the interface (winner) | 0.75 | 0.70 | 1.94 | 1.72 | 5.12 |
 
@@ -1118,7 +1118,7 @@ Rule 11's maps on the browser's ground, by magnitude cell (the radius ratio, wit
 
 | Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
 |-----|----:|----:|----:|----:|----:|----:|
-| Boore et al. 2014 | 3.73× (28) | 3.36× (122) | 3.96× (44) | 1.30 | 141 | 0 |
+| Boore et al. 2014 | 3.69× (29) | 3.38× (122) | 3.96× (44) | 1.30 | 142 | 0 |
 | Abrahamson, Gregor & Addo 2016 on the interface | 0.52× (1) | 0.66× (30) | 2.06× (37) | 0.60 | 15 | 17 |
 | Parker et al. 2022 on the interface | 0.52× (1) | 0.47× (29) | 0.49× (32) | 0.70 | 9 | 26 |
 
@@ -1133,7 +1133,7 @@ Printed beside, deciding nothing (rule 39): the 61 maps with ten seismic station
 
 | Law | Mw < 6.5 | Mw 6.5–7.5 | Mw ≥ 7.5 | Mean abs. log bias | Bands invented | Bands missed |
 |-----|----:|----:|----:|----:|----:|----:|
-| Boore et al. 2014 | 3.60× (64) | 4.17× (42) | 4.12× (14) | 1.38 | 106 | 0 |
+| Boore et al. 2014 | 3.62× (66) | 4.17× (42) | 4.12× (14) | 1.38 | 108 | 0 |
 | Abrahamson, Gregor & Addo 2016 on the interface | 0.53× (1) | 0.85× (3) | 3.42× (12) | 0.68 | 2 | 2 |
 | Parker et al. 2022 on the interface | 0.53× (1) | 0.64× (3) | 1.15× (10) | 0.41 | 0 | 4 |
 
@@ -1166,8 +1166,8 @@ earthquakes to a toll of ten, hold no fewer records in either cell and read them
 
 | Geometry | Mw < 6.5 | Mw 6.5–7.5 | Mean abs. log bias | Bands invented | Bands missed |
 |----------|----:|----:|----:|----:|----:|
-| A stadium at every magnitude | 8.59× (62) | 11.43× (42) | 2.29 | 100 | 0 |
-| A stadium from Mw 7.5, a disc below | 2.97× (62) | 2.45× (42) | 0.99 | 100 | 0 |
+| A stadium at every magnitude | 8.61× (62) | 11.43× (42) | 2.29 | 100 | 0 |
+| A stadium from Mw 7.5, a disc below | 2.99× (62) | 2.45× (42) | 0.99 | 100 | 0 |
 
 | Geometry | Quiet earthquakes raised to ten | Recorded: mean abs. ln((toll + 1) / (record + 1)) | Records held (Mw < 6.5 · Mw 6.5–7.5) |
 |----------|----:|----:|----:|
@@ -1180,7 +1180,7 @@ Printed beside, deciding nothing (rule 44): rule 18's score below Mw 7.5 on rule
 
 | Maps | A stadium at every magnitude | A stadium from Mw 7.5, a disc below |
 |------|----:|----:|
-| Rule 11's maps, rock | 2.29 | 0.89 |
+| Rule 11's maps, rock | 2.29 | 0.90 |
 | Rule 11's maps, browser's ground | 2.41 | 1.26 |
 | Rule 23's maps, rock | 2.30 | 1.05 |
 | Rule 23's maps, browser's ground | 2.38 | 1.32 |

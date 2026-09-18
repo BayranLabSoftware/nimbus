@@ -332,6 +332,9 @@ export interface EarthquakeShakingResult {
 
 export interface EarthquakeScenarioResult {
   inputs: EarthquakeScenarioInput;
+  /** The fault the model ran, which is the scenario's own unless a subduction
+   *  interface was asked for: an interface is a thrust (B-046). */
+  faultTypeUsed: FaultType;
   seismicMoment: NewtonMeters;
   ruptureLength: Meters;
   /** Down-dip rupture width W (m) — Wells & Coppersmith 1994 Table 2A
@@ -381,7 +384,13 @@ export interface EarthquakeScenarioResult {
  * formula modules for equation-level citations.
  */
 export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeScenarioResult {
-  const faultType = input.faultType ?? 'all';
+  // A subduction interface is a thrust. A scenario could name a strike-slip
+  // fault and tick the interface at once, and the two then ran different parts
+  // of the model — Strasser's scaling for the rupture, the named fault for the
+  // ground motion (B-046 of docs/BUG_REGISTRY.md). The interface wins, and the
+  // result says which fault the model actually ran.
+  const faultType: FaultType =
+    input.subductionInterface === true ? 'reverse' : (input.faultType ?? 'all');
   const vs30 = input.vs30 ?? 760;
   const seismicMoment = seismicMomentFromMagnitude(input.magnitude);
   const ruptureLength =
@@ -604,6 +613,7 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
 
   const result: EarthquakeScenarioResult = {
     inputs: input,
+    faultTypeUsed: faultType,
     seismicMoment,
     ruptureLength,
     ruptureWidth,

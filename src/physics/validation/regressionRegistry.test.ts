@@ -37,6 +37,8 @@ import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/index.
 import type { LandslideWaveLaw } from '../events/landslide/simulate.js';
 import { IMPULSE_WAVE_TESTED, slideImpactVelocity } from '../effects/impulseWave.js';
 import { simulateImpact, IMPACT_PRESETS } from '../simulate.js';
+import { buildExplosionCascade, buildImpactCascade } from '../cascade.js';
+import { fieldsFor } from '../../ui/pages/SimulationReportPage.js';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
 import { impactFireballRadius, nuclearFireballRadius } from '../effects/blastWave.js';
 import * as casualtiesModule from '../casualties.js';
@@ -979,13 +981,89 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(tg.entry.atmosphericYieldMegatons).toBeGreaterThan(1);
   });
 
+  it('B-044 A scenario on dry land does not print the nearest sea as the water under it', () => {
+    // Pre-fix: the store hands the physics the depth of the nearest sea a wave
+    // could cross — 168 m of Tyrrhenian for a burst over Rome — and the report
+    // printed it as "Water depth at burst", with no distance beside it, so an
+    // event on dry land read as an event in the water.
+    const overLand = simulateExplosion({
+      yieldMegatons: 10,
+      heightOfBurst: m(400),
+      groundType: 'FIRM_GROUND',
+      waterDepth: m(168),
+      shoreDistance: m(25_000),
+    });
+    const labels = fieldsFor({ type: 'explosion', data: overLand } as never).inputs.map(
+      (f) => f.label
+    );
+    expect(labels).not.toContain('Water depth at burst');
+    expect(labels.some((l) => /nearest sea/i.test(l))).toBe(true);
+
+    const inWater = simulateExplosion({
+      yieldMegatons: 0.02,
+      heightOfBurst: m(-30),
+      waterDepth: m(100),
+    });
+    const inWaterLabels = fieldsFor({ type: 'explosion', data: inWater } as never).inputs.map(
+      (f) => f.label
+    );
+    expect(inWaterLabels).toContain('Water depth at burst');
+  });
+
+  it('B-045 Nothing digs a crater in an event that leaves none', () => {
+    // Pre-fix: the cascade timeline pushed its crater stage for every impact
+    // and every explosion, so a complete airburst printed "crater: —" among
+    // its outputs and "Crater excavation" among its stages; the impact report
+    // also printed a crater morphology for a crater that does not exist.
+    const airburst = simulateImpact(IMPACT_PRESETS.CHELYABINSK.input);
+    expect(airburst.crater.finalDiameter as number).toBe(0);
+    expect(buildImpactCascade(airburst).map((s) => s.key)).not.toContain('cascade.impact.crater');
+    const fields = fieldsFor({ type: 'impact', data: airburst } as never).outputs.map(
+      (f) => f.label
+    );
+    expect(fields).not.toContain('Crater morphology');
+
+    const ground = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    expect(ground.crater.finalDiameter as number).toBeGreaterThan(0);
+    expect(buildImpactCascade(ground).map((s) => s.key)).toContain('cascade.impact.crater');
+
+    const high = simulateExplosion({ yieldMegatons: 0.015, heightOfBurst: m(580) });
+    expect(high.crater.apparentDiameter as number).toBe(0);
+    expect(buildExplosionCascade(high).map((s) => s.key)).not.toContain('cascade.explosion.crater');
+  });
+
+  it('B-046 A subduction interface is a thrust, whatever fault type came with it', () => {
+    // Pre-fix: a scenario could carry `subductionInterface: true` and a
+    // strike-slip fault at once. The interface took the rupture scaling
+    // (Strasser) and the fault type took the ground motion, so one scenario
+    // ran two geometries, and the report printed both without a word.
+    const asked = simulateEarthquake({
+      magnitude: 7,
+      depth: m(12_000),
+      faultType: 'strike-slip',
+      subductionInterface: true,
+    });
+    const thrust = simulateEarthquake({
+      magnitude: 7,
+      depth: m(12_000),
+      faultType: 'reverse',
+      subductionInterface: true,
+    });
+    expect(asked.faultTypeUsed).toBe('reverse');
+    expect(asked.ruptureLength).toBe(thrust.ruptureLength);
+    expect(asked.shaking.mmi7Radius).toBe(thrust.shaking.mmi7Radius);
+    const labels = fieldsFor({ type: 'earthquake', data: asked } as never).inputs;
+    const fault = labels.find((f) => f.label === 'Fault type');
+    expect(fault?.value).toMatch(/reverse/);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-043 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-046 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 43;
-    expect(expectedRows).toBe(43);
+    const expectedRows = 46;
+    expect(expectedRows).toBe(46);
   });
 });

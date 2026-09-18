@@ -2579,8 +2579,8 @@
         "recorded": 11
       },
       "meanAbsoluteBias": {
-        "always": 2.293,
-        "fromMw7.5": 0.992
+        "always": 2.295,
+        "fromMw7.5": 0.995
       },
       "eligible": true,
       "dead": {
@@ -2656,12 +2656,12 @@
       "interface": {
         "meanAbsoluteBias": {
           "rock": {
-            "inPlace": 1.298,
+            "inPlace": 1.297,
             "parker2022Interface": 1.05,
             "abrahamson2016Interface": 1.108
           },
           "ground": {
-            "inPlace": 1.517,
+            "inPlace": 1.516,
             "parker2022Interface": 0.947,
             "abrahamson2016Interface": 1.162
           }
@@ -4969,22 +4969,22 @@
       },
       "meanAbsoluteBias": {
         "rule11Rock": {
-          "boore2014": 1.031,
+          "boore2014": 1.036,
           "abrahamson2016Interface": 0.724,
           "parker2022Interface": 0.755
         },
         "rule11Ground": {
-          "boore2014": 1.301,
+          "boore2014": 1.3,
           "abrahamson2016Interface": 0.599,
           "parker2022Interface": 0.705
         },
         "rule23Rock": {
-          "boore2014": 2,
+          "boore2014": 2.001,
           "abrahamson2016Interface": 2.152,
           "parker2022Interface": 1.943
         },
         "rule23Ground": {
-          "boore2014": 2.202,
+          "boore2014": 2.203,
           "abrahamson2016Interface": 2.128,
           "parker2022Interface": 1.716
         }
@@ -5015,7 +5015,7 @@
             },
             {
               "sizeBand": "Mw ≥ 7.5",
-              "bias": 13.206,
+              "bias": 13.207,
               "inside": 17,
               "rows": 18
             }
