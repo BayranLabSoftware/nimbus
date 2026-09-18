@@ -439,7 +439,13 @@ function earthquakeFields(r: EarthquakeScenarioResult): { inputs: Field[]; outpu
         label: 'Coastal run-up @ 1 000 km',
         value: `${(r.tsunami.runupAt1000km as number).toFixed(1)} m`,
       },
-      { label: 'Tsunami travel to 1 000 km', value: fmtMin(r.tsunami.travelTimeTo1000km) }
+      { label: 'Tsunami travel to 1 000 km', value: fmtMin(r.tsunami.travelTimeTo1000km) },
+      // Rule 188 of validation/basinDepthRules.ts: the travel time, the
+      // celerity and the period are all one depth's, so the report says which.
+      {
+        label: 'Ocean the wave crosses',
+        value: `${((r.tsunami.basinDepth as number) / 1_000).toFixed(2)} km`,
+      }
     );
   }
   outputs.push(

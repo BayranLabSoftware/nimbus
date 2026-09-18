@@ -141,6 +141,13 @@ const MODELS: Readonly<Record<SlabMotionModel, (input: SlabMotionInput) => numbe
   parker2022Slab: parker2022SlabPga,
 };
 
+/** The median PGA (g) one of rule 67's models gives. The ring below inverts
+ *  this; rule 193 of validation/epicentralIntensityRules.ts reads it at the
+ *  epicentre, so both ask one function and cannot drift apart. */
+export function slabPga(model: SlabMotionModel, input: SlabMotionInput): number {
+  return MODELS[model](input);
+}
+
 /**
  * Rule 67's ring: the epicentral distance at which the median PGA at the
  * hypocentral distance √(x² + h²), h the depth, falls to `targetG`. 0 where

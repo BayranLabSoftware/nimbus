@@ -520,6 +520,26 @@ not that a rule holds.
 
 ## What has moved since
 
+- **18 September 2026, evening: what a report says has to hold together.**
+  Thirty scenarios opened by link on the product's own report page found six
+  defects that 2 254 tests had not, because tests read numbers and a report is
+  read by a person. Four were fixed at once (B-044 to B-050). The two that
+  moved numbers a rule had already read got their rules first (`af73931`) and
+  were closed after. An earthquake's wave was crossing the ocean at the depth
+  of the water over its own epicentre, so a Mw 9.0 on a shelf made 1 000 km in
+  20 h 54 min — 13.3 m/s, four to fifteen times slower than every one of the
+  151 deep-ocean records BM-05 kept; the path has its own depth now, and the
+  4 000 m default sits on those records at a median ratio of 1.011. And the
+  intensity at the epicentre came from a law without a depth term while the
+  rings came from laws with one, so a Mw 7.5 three hundred kilometres down
+  printed MMI 9.3 at its epicentre and drew no MMI VII ring anywhere; the
+  epicentre is now the ring law's own value at zero distance, which moves the
+  model's peak from +2.14 to +1.96 intensity units against 1 100 ShakeMaps and
+  from +2.85 to +1.78 on the great earthquakes. Neither round moved a number of
+  the validation report: no earthquake preset carries a water depth, and no
+  ring radius changed. Two rounds, no score claimed — what they bought is that
+  the page cannot state two contradictory things about the same event.
+
 - **18 September 2026, a charge on the ground is the field's own relation.**
   N1 asks that a charge on the ground be held to Kingery–Bulmash, and the
   campaign had measured the project's rings against it at 0.990× with a

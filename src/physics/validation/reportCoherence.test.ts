@@ -26,13 +26,13 @@ import type { ActiveResult } from '../../store/useAppStore.js';
  * space: a field only where it applies, a stage only where the thing happened,
  * rings in order, a band around its own estimate.
  *
- * What is deliberately not here, because it is a defect and not yet fixed —
- * putting it here would cement it:
- *   - the intensity at the epicentre and the rings that should follow it
- *     disagree (Mw 9.0 reads MMI 10.7 at the epicentre with no MMI IX ring);
- *   - an earthquake's wave crosses the ocean at the depth of its own
- *     epicentre, so a shelf source gives 1 000 km in 21 hours.
- * Both are recorded in docs/BUG_REGISTRY.md and wait for a round of their own.
+ * Two more were left out of this file on the day it was written, because they
+ * were defects and not yet fixed and putting them here would have cemented
+ * them: the intensity at the epicentre disagreeing with the rings, and an
+ * earthquake's wave crossing the ocean at the depth of its own epicentre. Both
+ * were closed that evening under rules of their own, and their coherence is
+ * pinned where those rules live — `epicentralIntensityRules.test.ts` (B-051)
+ * and `basinDepthRules.test.ts` (B-052).
  */
 
 /** An impactor, spelled the way the physics wants it. */

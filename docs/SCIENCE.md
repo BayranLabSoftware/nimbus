@@ -308,31 +308,84 @@ famine or disease):
 cumulative population inside every band's outer radius and evaluates
 the plan (`runCasualtyLookup` in `src/store/useAppStore.ts`).
 
-### Two things thirty scenarios found, still open (18 September 2026)
+### Two things thirty scenarios found, and how they were closed (18 September 2026)
 
 Thirty scenarios were opened by link on the application's own report page and
-read one by one (`scripts/benchmark/report-sweep.ts`), the way Andrea read four
-of them the day before. Six defects came out; four are fixed and carry their
-rows in docs/BUG_REGISTRY.md (B-044 to B-050). Two are not, because each moves
-numbers a rule has already read and wants a round of its own:
+read one by one (`scripts/benchmark/report-sweep.ts`). Six defects came out.
+Four were fixed the same day and carry rows B-044 to B-050. Two were left open
+because each moved numbers a rule had already read; they were closed that
+evening, with their rules written and pushed first (`af73931`).
 
-- **An earthquake's wave crosses the ocean at the depth of its own epicentre.**
-  `events/earthquake/simulate.ts` passes the water depth at the source as the
-  basin depth, and that depth carries the spreading, the dispersion and the
-  travel time all the way out: a Mw 9.0 on a shelf reports 1 000 km in 20 h
-  54 min, which is 13 m/s — the speed of a wave in eighteen metres of water,
-  not of one crossing an ocean. Impacts take a basin depth of their own
-  (4 000 m by default), landslides ignore the one they are given, and a
-  volcano's collapse takes the depth of the collapse. Four families, four
-  answers. Changing it moves the far-field amplitudes T1 was read against, so
-  it needs rules written first.
+**An earthquake's wave crossed the ocean at the depth of its own epicentre**
+(B-052, rules 187 to 191 of `validation/basinDepthRules.ts`).
+`simulateEarthquake` passed `waterDepth` — the water over the source, the
+number that says whether the seafloor lifts any water at all — into the tsunami
+module as its `basinDepth`, and that depth carries the celerity, the travel time
+to 1 000 km, the dominant period and the dispersion of the far-field rows. A Mw
+9.0 on an eighteen-metre shelf reported 1 000 km in 20 h 54 min, which is
+13.3 m/s: the speed of a wave in eighteen metres of water, not of one crossing
+an ocean. The product did not believe it itself — the globe's solver was handed
+4 000 m for the same event and read the real bathymetry from there, so the
+picture and the row beside it disagreed.
 
-- **The intensity at the epicentre and the rings do not agree.** The epicentral
-  MMI comes from one relation and the ring radii from the inversion of another,
-  so a Mw 9.0 prints MMI 10.7 at the epicentre with no MMI IX ring at all, and
-  a Mw 4.5 prints 7.4 with no MMI VII ring. Both statements cannot be true.
-  The rings are what every toll is counted in, so this is a change to the
-  numbers the calibration net reads.
+The path now has its own input. The source's depth keeps the trigger; the store
+passes the median sea within 1 000 km of the source from the planetary mosaic;
+a caller who names nothing gets the 4 000 m the module always defaulted to,
+which is what the globe was already using. The result publishes the depth it
+travelled on and the report prints it, so a reader can see which ocean the
+travel time is about.
+
+What it is worth: against the 151 deep-ocean records BM-05 kept, whose crest
+times bound a wave's speed from below, the 4 000 m default has a median ratio
+of 1.011 and is certainly too slow on 47.7 % of them — an estimate sitting on
+the records. The law removed here, on the shelves the sweep found, has a median
+ratio of 0.068 at 18 m and is certainly too slow on **every** record; 0.124 at
+60 m, 0.226 at 200 m. Nothing was tuned on any of it: the default was 4 000 m
+before the reading and after it.
+
+**The intensity at the epicentre and the rings did not agree** (B-051, rules 192
+to 196 of `validation/epicentralIntensityRules.ts`). The rings are drawn by the
+law rules 17 to 19 chose, or by the interface and intraslab models of rules 36
+and 67, each inverted for the acceleration Worden et al. 2012 puts under an
+intensity. The epicentre was Joyner & Boore 1981 at distance zero, without a
+site term and without a depth — that function takes a magnitude and a distance
+and nothing else. So a Mw 7.5 three hundred kilometres down printed MMI 9.3 at
+its epicentre and drew no MMI VII ring anywhere, and a Mw 9.0 printed 10.7 with
+no MMI IX ring.
+
+Every one of those inverses already computes the number the report wanted: each
+begins by evaluating its own law at distance zero and returns a radius of zero
+when that value is below the threshold. The epicentre is now that value. The
+deep event reads 5.0, the Mw 9.0 reads 8.6 with an MMI VIII ring and no IX, and
+over 224 scenarios — seven magnitudes, eight depths from 5 to 300 km, three
+fault types, and an interface at each magnitude and depth — a ring of intensity
+k exists exactly when the epicentre reaches k. No ring radius moved.
+
+What it is worth, on the 1 100 atlas events that carry a ShakeMap peak
+intensity: mean model minus map +2.14 → **+1.96**, σ 1.08 → 1.12, and on Mw ≥
+7.5 +2.85 → **+1.78** with the share within one intensity unit going from 9.2 %
+to 20.0 %.
+
+Two things that reading does not say, and they matter more than the numbers.
+The atlas holds no event deeper than 71 km, so the slab law — the case the
+defect was loudest on — is not exercised by it at all. And a bias of +2 is not
+a model reading two units hot: the worst rows are Tonga, Fiji, Kermadec and the
+Azores, epicentres in open ocean where a ShakeMap's peak is the intensity at
+the nearest land while the model's is at the epicentre. Split on the elevation
+the atlas read under each epicentre, it is +1.19 on the 491 events on land and
++2.58 on the 609 at sea. **That split is a diagnostic and not a score**: it was
+found after the reading, by looking at which rows were worst, and rule 195
+declared the whole set.
+
+**Still open, and named so it is not lost again.** On land the model's
+strongest shaking reads about one intensity unit above the map's. The rings are
+drawn in Joyner–Boore distance, and a point source's own distance above itself
+is zero unless rule 51's averages are switched on, which they are not by
+default. Whether turning them on closes that unit is a question for a round
+with its rules written first; asking it now would be choosing a law after
+seeing a set. Open too, from the other round: the reference depth the globe's
+veil shoals from is a constant 4 000 m for every earthquake, where Green's law
+wants the water over the rupture, and moving it moves the run-up rule's rows.
 
 ### What the toll's band carries, and what it left out (18 September 2026)
 

@@ -143,21 +143,23 @@ describe('rule 51 (c): the scenario input', () => {
           );
         });
       }
-      expect({
-        ...moved.shaking,
+      // Everything but the rings — and the intensity at the epicentre, which
+      // is the ring law read at zero since rule 193 of
+      // validation/epicentralIntensityRules.ts and therefore stands at rule
+      // 51's own distance above the source. This test asserted that the
+      // epicentre did not move when the rings did, and that was the defect:
+      // the two came from different laws (B-051).
+      const exceptRings = (s: typeof plain.shaking) => ({
+        ...s,
         mmi5Radius: 0,
         mmi6Radius: 0,
         mmi7Radius: 0,
         mmi8Radius: 0,
         mmi9Radius: 0,
-      }).toEqual({
-        ...plain.shaking,
-        mmi5Radius: 0,
-        mmi6Radius: 0,
-        mmi7Radius: 0,
-        mmi8Radius: 0,
-        mmi9Radius: 0,
+        mmiAtEpicenter: 0,
+        mmiAtEpicenterEurope: 0,
       });
+      expect(exceptRings(moved.shaking)).toEqual(exceptRings(plain.shaking));
     }
   });
 

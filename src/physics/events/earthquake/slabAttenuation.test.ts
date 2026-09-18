@@ -149,15 +149,34 @@ describe('the deep law in the simulator', () => {
         isExtendedSource: undefined,
         inputs: undefined,
       }).toEqual({ ...plain, shaking: undefined, isExtendedSource: undefined, inputs: undefined });
-      const { mmi7Radius, mmi8Radius, mmi9Radius, ...rest } = deep.shaking;
+      // The rings, and the epicentre they start from: since rule 193 of
+      // validation/epicentralIntensityRules.ts the intensity at the epicentre
+      // is this same law at zero distance, so a slab law that moves the rings
+      // moves it too. It did not before, and that was the defect — Joyner &
+      // Boore 1981 at distance zero knows no depth, so a Mw 7.5 three hundred
+      // kilometres down read MMI 9.3 at its epicentre with no MMI VII ring
+      // anywhere (B-051).
+      const {
+        mmi7Radius,
+        mmi8Radius,
+        mmi9Radius,
+        mmiAtEpicenter,
+        mmiAtEpicenterEurope: _deepEurope,
+        ...rest
+      } = deep.shaking;
       const {
         mmi7Radius: plain7,
         mmi8Radius: plain8,
         mmi9Radius: plain9,
+        mmiAtEpicenter: plainEpicentre,
+        mmiAtEpicenterEurope: _plainEurope,
         ...plainRest
       } = plain.shaking;
       expect(rest).toEqual(plainRest);
       expect([mmi7Radius, mmi8Radius, mmi9Radius]).not.toEqual([plain7, plain8, plain9]);
+      // A depth the deep law knows about and the crustal one does not: it
+      // reads the epicentre quieter, not louder.
+      expect(mmiAtEpicenter).toBeLessThan(plainEpicentre);
     }
     for (const deepLaw of ['none', 'abrahamson2016Slab', 'parker2022Slab'] as const) {
       for (const [magnitude, depthKm] of [

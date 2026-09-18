@@ -21,6 +21,10 @@ import {
 import { destination } from '../physics/tsunami/ruptureGeometry.js';
 import type { TerrainSourceSpan } from '../scene/terrainSampling.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
+import {
+  BASIN_SAMPLE_RADIUS_M,
+  basinDepthFromSample,
+} from '../physics/validation/basinDepthRules.js';
 import type {
   PopulationLookupMethod,
   PopulationLookupResult,
@@ -1166,7 +1170,11 @@ export function extractTsunamiMeta(result: ActiveResult): {
       // file crests at 0.81 (B-034); the law it chose reads 1.00× at
       // the median of nine megathrusts (BM-05).
       sourceCavityRadiusM: Math.max((result.data.ruptureWidth as number) / 2, 10_000),
-      sourceDepthM: 4_000,
+      // The ocean the wave's own module carried it on (rule 188 of
+      // validation/basinDepthRules.ts), so the veil and the row printed
+      // beside it cannot disagree. A scenario that names no basin gets the
+      // module's 4 000 m, which is the constant that stood here before.
+      sourceDepthM: t.basinDepth,
       // Seven hundred kilometres of seafloor rising together radiate
       // across the trench, not in a circle. The amplitude above is
       // the peak, so it belongs on that axis and the pattern takes it
@@ -2933,6 +2941,27 @@ export const useAppStore = create<AppStore>((set, get) => ({
           );
           if (z < OCEAN_FLOOR_M) {
             earthquakeInput = { ...earthquakeInput, waterDepth: m(-z) };
+          }
+        }
+        // Rule 188 of validation/basinDepthRules.ts: the ocean the wave
+        // crosses is the sea around the source, and the planetary mosaic is
+        // where the product knows it. The water over the epicentre answers a
+        // different question and used to answer this one too (B-052).
+        if (
+          state.earthquake.input.basinDepth === undefined &&
+          state.location !== null &&
+          state.globalBathymetricGrid !== null
+        ) {
+          const basin = basinDepthFromSample(
+            findNearbyOceanDepth(
+              state.globalBathymetricGrid,
+              state.location.latitude,
+              state.location.longitude,
+              BASIN_SAMPLE_RADIUS_M
+            )
+          );
+          if (basin !== undefined) {
+            earthquakeInput = { ...earthquakeInput, basinDepth: basin };
           }
         }
         // DEM-driven beach slope for the seismic-tsunami run-up.

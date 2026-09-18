@@ -10,24 +10,30 @@ import {
   vs30SiteFactor,
   peakGroundAcceleration,
   peakGroundAccelerationNGAWest2,
+  peakGroundVelocityNGAWest2,
   type NGAFaultType,
 } from './attenuation.js';
 import {
   MMI_PER_LN_PGA,
+  mercalliIntensityFromPgv,
   mmiFromPgaEuropean,
   modifiedMercalliIntensity,
   pgaFromMercalliIntensity,
   pgvFromMercalliIntensity,
 } from './intensity.js';
-import { epicentralDistanceForIntensityAllen2012 } from './intensityPrediction.js';
+import {
+  allen2012HypocentralMmi,
+  epicentralDistanceForIntensityAllen2012,
+} from './intensityPrediction.js';
 import {
   distanceForInterfacePga,
   epicentralDistanceForInterfacePga,
+  interfacePga,
   type InterfaceMotionModel,
 } from './interfaceAttenuation.js';
 import { liquefactionRadius } from './liquefaction.js';
 import { pointSourceDistances } from './pointSourceDistance.js';
-import { epicentralDistanceForSlabPga, type SlabMotionModel } from './slabAttenuation.js';
+import { epicentralDistanceForSlabPga, slabPga, type SlabMotionModel } from './slabAttenuation.js';
 import type { GroundMotionResidual } from '../../uq/groundMotionResidual.js';
 import {
   megathrustRuptureLength,
@@ -69,6 +75,18 @@ export interface EarthquakeScenarioInput {
    *  with Mw ≥ 6.5 — without forcing the user to manually toggle
    *  `subductionInterface`. */
   waterDepth?: Meters;
+  /** Mean depth of the ocean the wave crosses (m) — rule 188 of
+   *  validation/basinDepthRules.ts.
+   *
+   *  Not {@link waterDepth}. That one is the water over the source and
+   *  answers whether the seafloor lifts any water at all; this one
+   *  carries the celerity, the travel time, the dominant period and
+   *  the dispersion of the far-field rows, which are properties of the
+   *  path and not of the epicentre. Until 18 September 2026 the source
+   *  depth was passed for both, so a Mw 9.0 on a shelf crossed 1 000 km
+   *  at 13 m/s (B-052). Omitted → the module's 4 000 m, which is what
+   *  the globe's own solver already used for every earthquake. */
+  basinDepth?: Meters;
   /** Beach slope (rad) for the Synolakis (1987) coastal run-up in
    *  the seismic-source tsunami block. Defaults to `atan(0.01)`
    *  (1:100 plane beach) when omitted. The store auto-derives a
@@ -453,13 +471,6 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   const pgaAt100km = scalePga(
     peakGroundAcceleration({ magnitude: input.magnitude, distance: m(100_000) })
   );
-  const epicentralPga = scalePga(
-    peakGroundAcceleration({
-      magnitude: input.magnitude,
-      distance: m(0),
-    })
-  );
-
   const ngaFault: NGAFaultType =
     faultType === 'strike-slip' || faultType === 'normal' || faultType === 'reverse'
       ? faultType
@@ -597,6 +608,94 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
                   input.magnitude,
                   mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
                 );
+  // Rule 193 of validation/epicentralIntensityRules.ts: the intensity at the
+  // epicentre is the ring law's own value at epicentral distance zero.
+  //
+  // Every inverse above starts by evaluating its law at zero and returns a
+  // radius of zero when that value is below the threshold — so reading the
+  // same laws here makes the two statements one. Until 18 September 2026 the
+  // epicentre was Joyner & Boore 1981 at distance zero, a law that takes a
+  // magnitude and a distance and *no depth*: a slab event three hundred
+  // kilometres down read MMI 9.3 at its epicentre and drew no MMI VII ring
+  // anywhere (B-051).
+  //
+  // The scaling is the rings': a contour stands where the median reaches
+  // `target`, the threshold over `gm`, so the field the rings describe is the
+  // median times `gm`. The site residual of rule 71, which is a place's own
+  // draw and not the footprint's, stays out of it.
+  const epicentralRjbKm = toRupture === null ? 0 : toRupture.rjbKm(0);
+  const epicentralRrupKm = toRupture === null ? depthKm : toRupture.rrupKm(0);
+  // The acceleration at the epicentre where the law gives one, in m/s².
+  const epicentralPgaFromLaw: MetersPerSecondSquared | null =
+    deepModel !== null
+      ? mps2(
+          slabPga(deepModel, {
+            magnitude: input.magnitude,
+            hypocentralKm: depthKm,
+            depthKm,
+            vs30,
+          }) *
+            STANDARD_GRAVITY *
+            gm
+        )
+      : interfaceModel !== null
+        ? mps2(
+            interfacePga(interfaceModel, {
+              magnitude: input.magnitude,
+              rrupKm: epicentralRrupKm,
+              vs30,
+            }) *
+              STANDARD_GRAVITY *
+              gm
+          )
+        : allen || byPgv
+          ? null
+          : boore
+            ? mps2(
+                (peakGroundAccelerationNGAWest2({
+                  magnitude: input.magnitude,
+                  distance: m(epicentralRjbKm * 1_000),
+                  faultType: ngaFault,
+                  vs30,
+                }) as number) * gm
+              )
+            : mps2(
+                (peakGroundAcceleration({
+                  magnitude: input.magnitude,
+                  distance: m(0),
+                }) as number) *
+                  siteGain *
+                  gm
+              );
+  // The intensity itself. Two laws speak intensity rather than acceleration:
+  // Allen 2012, which is an intensity prediction equation, and the rings drawn
+  // on velocity by rule 31.
+  const mmiAtEpicenter = allen
+    ? Math.max(
+        1,
+        Math.min(
+          12,
+          allen2012HypocentralMmi(input.magnitude, depthKm) +
+            (Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0)
+        )
+      )
+    : byPgv
+      ? mercalliIntensityFromPgv(
+          mps(
+            (peakGroundVelocityNGAWest2({
+              magnitude: input.magnitude,
+              distance: m(epicentralRjbKm * 1_000),
+              faultType: ngaFault,
+              vs30,
+            }) as number) * gm
+          )
+        )
+      : modifiedMercalliIntensity(epicentralPgaFromLaw ?? mps2(0));
+  // Rule 193: where the law gives no acceleration, the European reading is
+  // taken from the acceleration Worden's relation puts under the intensity —
+  // a stated convention, not a measurement.
+  const epicentralPga = epicentralPgaFromLaw ?? pgaFromMercalliIntensity(mmiAtEpicenter);
+
   const mmi7Radius = contourAt(bandEdge(7, banding));
   const mmi8Radius = contourAt(bandEdge(8, banding));
   const mmi9Radius = contourAt(bandEdge(9, banding));
@@ -623,7 +722,7 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
       pgaAt100km,
       pgaAt20kmNGA,
       pgaAt100kmNGA,
-      mmiAtEpicenter: modifiedMercalliIntensity(epicentralPga),
+      mmiAtEpicenter,
       mmiAtEpicenterEurope: mmiFromPgaEuropean(epicentralPga),
       ...pagerRings,
       mmi7Radius,
@@ -672,7 +771,10 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
       ...(input.subductionInterface !== undefined && {
         subductionInterface: input.subductionInterface,
       }),
-      ...(isSubmarine ? { basinDepth: m(waterDepthM) } : {}),
+      // Rule 188: the ocean the wave crosses, when the caller knows it.
+      // The water over the source is not it, and passing it here is what
+      // made a shelf event's wave take 21 hours to go 1 000 km (B-052).
+      ...(input.basinDepth !== undefined ? { basinDepth: input.basinDepth } : {}),
       ...(input.coastalBeachSlopeRad !== undefined && {
         coastalBeachSlopeRad: input.coastalBeachSlopeRad,
       }),

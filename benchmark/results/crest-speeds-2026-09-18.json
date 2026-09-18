@@ -1,0 +1,1231 @@
+{
+ "rule": "190",
+ "readOn": "2026-09-15",
+ "what": "the celerity a basin depth implies, against the speed a crest actually made",
+ "defaultBasinDepthM": 4000,
+ "defaultCelerity": 198.05706248452742,
+ "atDefault": {
+  "records": 151,
+  "events": 19,
+  "medianRatio": 1.0105193652872888,
+  "certainlySlowShare": 0.4768211920529801
+ },
+ "atBuoy": {
+  "records": 151,
+  "events": 19,
+  "medianRatio": 1.042182396386768,
+  "certainlySlowShare": 0.423841059602649
+ },
+ "medianBuoyDepthM": 4515.1,
+ "medianImpliedSpeed": 195.9953161592506,
+ "rows": [
+  [
+   "2006 Kuril Islands Earthquake",
+   "21414",
+   1873,
+   7830,
+   239.21,
+   5312
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "32401",
+   14923,
+   89490,
+   166.75,
+   4882
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "46402",
+   3114,
+   16350,
+   190.48,
+   4712
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "46403",
+   3571,
+   21990,
+   162.41,
+   4511
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "46404",
+   5740,
+   37590,
+   152.69,
+   2737
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "46405",
+   5765,
+   32670,
+   176.45,
+   3483
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "46408",
+   2732,
+   11610,
+   235.35,
+   5373
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "46409",
+   4060,
+   30510,
+   133.07,
+   4191
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "46410",
+   4299,
+   20550,
+   209.19,
+   3743
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "46411",
+   6255,
+   28470,
+   219.69,
+   4264
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "46413",
+   2472,
+   9810,
+   251.95,
+   5572
+  ],
+  [
+   "2006 Kuril Islands Earthquake",
+   "51407",
+   5432,
+   29430,
+   184.57,
+   4710
+  ],
+  [
+   "2007 Solomon Islands Earthquake",
+   "52403",
+   1879,
+   9510,
+   197.54,
+   4436
+  ],
+  [
+   "41 km SW of San Vicente de Cañete, Peru",
+   "32401",
+   873,
+   3450,
+   252.96,
+   4882
+  ],
+  [
+   "41 km SW of San Vicente de Cañete, Peru",
+   "32411",
+   2574,
+   27930,
+   92.16,
+   3247
+  ],
+  [
+   "41 km SW of San Vicente de Cañete, Peru",
+   "43412",
+   4675,
+   25410,
+   183.99,
+   3241
+  ],
+  [
+   "122 km SW of Bengkulu, Indonesia",
+   "23401",
+   2051,
+   10170,
+   201.64,
+   3467
+  ],
+  [
+   "36 km ESE of Tocopilla, Chile",
+   "32401",
+   406,
+   10410,
+   38.97,
+   4882
+  ],
+  [
+   "97 km WSW of Te Anau, New Zealand",
+   "55013",
+   439,
+   1950,
+   225.33,
+   4920
+  ],
+  [
+   "97 km WSW of Te Anau, New Zealand",
+   "55015",
+   495,
+   2130,
+   232.49,
+   4975
+  ],
+  [
+   "148 km NW of Sola, Vanuatu",
+   "21418",
+   6053,
+   30750,
+   196.84,
+   5663
+  ],
+  [
+   "196 km NW of Sola, Vanuatu",
+   "21418",
+   5997,
+   29850,
+   200.9,
+   5663
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "21413",
+   15822,
+   78270,
+   202.14,
+   5828
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "32412",
+   2413,
+   11790,
+   204.62,
+   4326
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "43412",
+   6816,
+   35310,
+   193.04,
+   3233
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "46403",
+   12758,
+   63570,
+   200.7,
+   4511
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "46404",
+   10691,
+   56130,
+   190.48,
+   2738
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "46407",
+   10440,
+   53910,
+   193.66,
+   3265
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "46408",
+   13436,
+   79110,
+   169.83,
+   5378
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "46409",
+   12431,
+   63510,
+   195.73,
+   4190
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "46410",
+   12329,
+   64290,
+   191.77,
+   3728
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "46412",
+   9092,
+   47370,
+   191.93,
+   3717
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "46419",
+   10978,
+   58230,
+   188.53,
+   2776
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "51406",
+   6086,
+   32190,
+   189.07,
+   4481
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "51425",
+   10560,
+   49890,
+   211.67,
+   4963
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "51426",
+   8982,
+   55890,
+   160.7,
+   5681
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "52401",
+   14933,
+   77370,
+   193,
+   5571
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "52403",
+   14700,
+   96570,
+   152.22,
+   4432
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "52405",
+   16422,
+   88230,
+   186.12,
+   5923
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "54401",
+   8715,
+   42750,
+   203.85,
+   5837
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "55013",
+   9356,
+   62430,
+   149.86,
+   4921
+  ],
+  [
+   "2010 Maule, Chile Earthquake",
+   "55015",
+   9364,
+   62190,
+   150.57,
+   4976
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "21401",
+   987,
+   3990,
+   247.47,
+   5264
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "21413",
+   1245,
+   4830,
+   257.85,
+   5825
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "21414",
+   3083,
+   13230,
+   232.99,
+   5466
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "21415",
+   2668,
+   11490,
+   232.22,
+   4710
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "21418",
+   558,
+   1950,
+   286.05,
+   5663
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "21419",
+   1297,
+   5370,
+   241.6,
+   5292
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "32401",
+   16069,
+   79530,
+   202.04,
+   4799
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "32411",
+   12734,
+   60570,
+   210.23,
+   3167
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "32412",
+   14803,
+   94350,
+   156.89,
+   4326
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "32413",
+   13470,
+   70170,
+   191.97,
+   3894
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "43412",
+   10612,
+   48810,
+   217.41,
+   3233
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "43413",
+   11550,
+   54150,
+   213.29,
+   3404
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "46402",
+   4353,
+   18930,
+   229.96,
+   4720
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "46403",
+   4830,
+   25710,
+   187.86,
+   4515
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "46404",
+   6996,
+   32010,
+   218.54,
+   2737
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "46407",
+   7154,
+   37410,
+   191.23,
+   3266
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "46408",
+   3953,
+   17010,
+   232.39,
+   5379
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "46409",
+   5336,
+   32370,
+   164.83,
+   4190
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "46410",
+   5581,
+   38490,
+   144.99,
+   3729
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "46411",
+   7479,
+   33630,
+   222.38,
+   4260
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "46412",
+   8392,
+   47910,
+   175.17,
+   3717
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "51406",
+   10816,
+   51270,
+   210.97,
+   4450
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "51407",
+   6179,
+   28590,
+   216.11,
+   4683
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "51425",
+   6829,
+   30930,
+   220.79,
+   4978
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "52402",
+   3146,
+   13470,
+   233.56,
+   5862
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "52403",
+   3826,
+   27570,
+   138.77,
+   4432
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "52405",
+   2987,
+   14670,
+   203.61,
+   5923
+  ],
+  [
+   "2011 Great Tohoku Earthquake, Japan",
+   "52406",
+   5388,
+   24450,
+   220.36,
+   1798
+  ],
+  [
+   "206 km SW of Prince Rupert, Canada",
+   "46402",
+   2193,
+   11070,
+   198.07,
+   4715
+  ],
+  [
+   "206 km SW of Prince Rupert, Canada",
+   "46403",
+   1667,
+   8670,
+   192.23,
+   4511
+  ],
+  [
+   "206 km SW of Prince Rupert, Canada",
+   "46404",
+   809,
+   4710,
+   171.66,
+   2740
+  ],
+  [
+   "206 km SW of Prince Rupert, Canada",
+   "46407",
+   1146,
+   6750,
+   169.82,
+   3268
+  ],
+  [
+   "206 km SW of Prince Rupert, Canada",
+   "46409",
+   1109,
+   5970,
+   185.75,
+   4190
+  ],
+  [
+   "206 km SW of Prince Rupert, Canada",
+   "46410",
+   914,
+   5430,
+   168.34,
+   3728
+  ],
+  [
+   "206 km SW of Prince Rupert, Canada",
+   "46411",
+   1545,
+   8970,
+   172.22,
+   4256
+  ],
+  [
+   "206 km SW of Prince Rupert, Canada",
+   "46419",
+   475,
+   2670,
+   177.87,
+   2774
+  ],
+  [
+   "206 km SW of Prince Rupert, Canada",
+   "51407",
+   4258,
+   23970,
+   177.62,
+   4738
+  ],
+  [
+   "2013 Santa Cruz Islands Earthquake",
+   "51425",
+   2044,
+   10770,
+   189.75,
+   4975
+  ],
+  [
+   "2013 Santa Cruz Islands Earthquake",
+   "52401",
+   3498,
+   21510,
+   162.64,
+   5570
+  ],
+  [
+   "2013 Santa Cruz Islands Earthquake",
+   "52402",
+   2816,
+   19290,
+   145.96,
+   5877
+  ],
+  [
+   "2013 Santa Cruz Islands Earthquake",
+   "52403",
+   2714,
+   16470,
+   164.79,
+   4436
+  ],
+  [
+   "2013 Santa Cruz Islands Earthquake",
+   "52406",
+   603,
+   3510,
+   171.91,
+   1800
+  ],
+  [
+   "93 km NW of Iquique, Chile",
+   "32401",
+   296,
+   1350,
+   219.11,
+   4798
+  ],
+  [
+   "93 km NW of Iquique, Chile",
+   "32402",
+   858,
+   4050,
+   211.95,
+   4068
+  ],
+  [
+   "93 km NW of Iquique, Chile",
+   "32412",
+   1652,
+   8070,
+   204.71,
+   4336
+  ],
+  [
+   "93 km NW of Iquique, Chile",
+   "32413",
+   2797,
+   13770,
+   203.12,
+   3887
+  ],
+  [
+   "93 km NW of Iquique, Chile",
+   "51426",
+   9900,
+   56190,
+   176.19,
+   5658
+  ],
+  [
+   "93 km NW of Iquique, Chile",
+   "52402",
+   15176,
+   80130,
+   189.39,
+   5877
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "21414",
+   14008,
+   68970,
+   203.1,
+   5468
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "21415",
+   14475,
+   71130,
+   203.5,
+   4713
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "32401",
+   1231,
+   5850,
+   210.41,
+   4831
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "32402",
+   582,
+   2370,
+   245.53,
+   4054
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "32411",
+   4542,
+   23670,
+   191.87,
+   3180
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "32412",
+   2113,
+   10290,
+   205.38,
+   4336
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "43412",
+   6497,
+   36630,
+   177.35,
+   3058
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "43413",
+   5607,
+   33810,
+   165.85,
+   3509
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "46403",
+   12452,
+   62310,
+   199.83,
+   4508
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "46408",
+   13178,
+   64350,
+   204.79,
+   5393
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "46411",
+   9736,
+   54390,
+   179,
+   4286
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "46413",
+   13407,
+   64950,
+   206.42,
+   5584
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "51407",
+   10672,
+   52710,
+   202.46,
+   4739
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "51425",
+   10806,
+   65250,
+   165.62,
+   4968
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "52404",
+   17344,
+   102270,
+   169.59,
+   5920
+  ],
+  [
+   "48 km W of Illapel, Chile",
+   "52405",
+   16817,
+   95190,
+   176.67,
+   5736
+  ],
+  [
+   "27 km SSE of Muisne, Ecuador",
+   "32413",
+   1735,
+   10590,
+   163.83,
+   3932
+  ],
+  [
+   "2021 Kermadec Islands, New Zealand Earthquake",
+   "32401",
+   10138,
+   53730,
+   188.69,
+   4778
+  ],
+  [
+   "2021 Kermadec Islands, New Zealand Earthquake",
+   "32411",
+   9944,
+   53430,
+   186.11,
+   3228
+  ],
+  [
+   "2021 Kermadec Islands, New Zealand Earthquake",
+   "32413",
+   9004,
+   57870,
+   155.59,
+   3909
+  ],
+  [
+   "2021 Kermadec Islands, New Zealand Earthquake",
+   "51425",
+   2250,
+   17070,
+   131.81,
+   4952
+  ],
+  [
+   "2021 Kermadec Islands, New Zealand Earthquake",
+   "52406",
+   3285,
+   18870,
+   174.09,
+   1778
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "21414",
+   1767,
+   9810,
+   180.15,
+   5412
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "46402",
+   647,
+   3870,
+   167.18,
+   4743
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "46403",
+   302,
+   1950,
+   154.87,
+   4486
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "46407",
+   2511,
+   12810,
+   196,
+   3271
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "46408",
+   1023,
+   5790,
+   176.75,
+   5387
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "46409",
+   588,
+   3030,
+   194.16,
+   4197
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "46413",
+   1360,
+   7470,
+   181.99,
+   5606
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "46414",
+   393,
+   1890,
+   207.94,
+   4666
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "46415",
+   1196,
+   6210,
+   192.53,
+   3589
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "46416",
+   1684,
+   8790,
+   191.55,
+   3380
+  ],
+  [
+   "2021 Chignik, Alaska Earthquake",
+   "46419",
+   2047,
+   10950,
+   186.94,
+   2773
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "21413",
+   2535,
+   9450,
+   268.25,
+   5780
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "21414",
+   1319,
+   6390,
+   206.42,
+   5443
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "21415",
+   849,
+   4230,
+   200.76,
+   4720
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "21416",
+   534,
+   1950,
+   273.69,
+   5788
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "21418",
+   1756,
+   6330,
+   277.47,
+   5609
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "21419",
+   961,
+   2610,
+   368.2,
+   5322
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "21420",
+   3336,
+   15270,
+   218.47,
+   4822
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "32402",
+   14727,
+   84030,
+   175.26,
+   4060
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "32413",
+   11763,
+   57090,
+   206.04,
+   3970
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "43412",
+   8785,
+   42510,
+   206.65,
+   3098
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "43413",
+   9694,
+   47910,
+   202.34,
+   3425
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "46402",
+   2435,
+   12090,
+   201.44,
+   4713
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "46403",
+   2846,
+   14670,
+   194.02,
+   4505
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "46404",
+   5003,
+   25290,
+   197.83,
+   2734
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "46407",
+   5203,
+   25650,
+   202.84,
+   3267
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "46408",
+   2099,
+   10230,
+   205.15,
+   5325
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "46411",
+   5560,
+   27030,
+   205.71,
+   4266
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "46413",
+   1902,
+   8970,
+   212.01,
+   5615
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "46415",
+   3909,
+   34890,
+   112.04,
+   3562
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "46416",
+   4402,
+   22470,
+   195.89,
+   3393
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "46419",
+   4764,
+   24570,
+   193.9,
+   2772
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "51425",
+   7249,
+   31290,
+   231.67,
+   4951
+  ],
+  [
+   "2025 Kamchatka Peninsula, Russia Earthquake",
+   "52402",
+   4547,
+   19170,
+   237.18,
+   5886
+  ],
+  [
+   "140 km E of Petropavlovsk-Kamchatsky, Russia",
+   "21414",
+   1302,
+   6150,
+   211.76,
+   5443
+  ],
+  [
+   "140 km E of Petropavlovsk-Kamchatsky, Russia",
+   "21415",
+   838,
+   3990,
+   210.13,
+   4720
+  ],
+  [
+   "140 km E of Petropavlovsk-Kamchatsky, Russia",
+   "21416",
+   588,
+   2310,
+   254.46,
+   5788
+  ],
+  [
+   "140 km E of Petropavlovsk-Kamchatsky, Russia",
+   "21419",
+   1040,
+   4350,
+   239.06,
+   5322
+  ],
+  [
+   "140 km E of Petropavlovsk-Kamchatsky, Russia",
+   "46413",
+   1877,
+   9270,
+   202.49,
+   5615
+  ]
+ ]
+}

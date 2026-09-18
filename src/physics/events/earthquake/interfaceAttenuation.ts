@@ -130,6 +130,13 @@ const MODELS: Readonly<Record<InterfaceMotionModel, (input: InterfaceMotionInput
   parker2022: parker2022InterfacePga,
 };
 
+/** The median PGA (g) one of rule 36's models gives. The rings below invert
+ *  this; rule 193 of validation/epicentralIntensityRules.ts reads it at the
+ *  epicentre, so both ask one function and cannot drift apart. */
+export function interfacePga(model: InterfaceMotionModel, input: InterfaceMotionInput): number {
+  return MODELS[model](input);
+}
+
 /**
  * Rule 51's ring of a point source: the epicentral distance at which the
  * median PGA at the rupture distance `rrupKm` gives for it falls to

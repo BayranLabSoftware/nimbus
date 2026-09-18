@@ -169,7 +169,10 @@ function dipDependentUpliftFactor(input: SeismicTsunamiInput): number {
  */
 const WAVE_COUPLING_EFFICIENCY = 0.7;
 
-const DEFAULT_BASIN_DEPTH = 4_000; // m — global-ocean mean
+/** The ocean a wave crosses when no caller names one (m) — the global-ocean
+ *  mean, and the depth the globe's own solver already used for every
+ *  earthquake. Rule 188 of validation/basinDepthRules.ts. */
+export const DEFAULT_BASIN_DEPTH = 4_000;
 const REFERENCE_RUNUP_SLOPE = Math.atan(1 / 100); // 1:100 plane beach
 const REFERENCE_OFFSHORE_DEPTH = 10; // m
 
@@ -211,6 +214,11 @@ export interface SeismicTsunamiResult {
   runupAt1000km: Meters;
   /** Lamb 1932 shallow-water travel time to 1 000 km (s). */
   travelTimeTo1000km: Seconds;
+  /** The mean ocean depth this wave was carried on (m) — rule 188 of
+   *  validation/basinDepthRules.ts. Published so a reader can see which
+   *  ocean the travel time, the celerity and the period are about, and
+   *  so the row and the globe cannot quietly disagree. */
+  basinDepth: Meters;
   /** Phase speed `c = √(g·h)` of a long gravity wave on the basin
    *  (Lamb 1932, Art. 170). At 4 km mean depth this is ≈ 198 m/s
    *  (≈ 713 km/h) — surfaces in the UI as the tsunami's open-ocean
@@ -309,6 +317,7 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
       amplitudeAt5000kmToward: m(0),
       runupAt1000km: m(0),
       travelTimeTo1000km: 0 as Seconds,
+      basinDepth: input.basinDepth ?? m(DEFAULT_BASIN_DEPTH),
       deepWaterCelerity: 0 as MetersPerSecond,
       sourceWavelength: m(0),
       ruptureWidth: m(0),
@@ -446,6 +455,7 @@ export function seismicTsunamiFromMegathrust(input: SeismicTsunamiInput): Seismi
     amplitudeAt5000kmToward: m(amp5000Disp * beamFactor),
     runupAt1000km: runup,
     travelTimeTo1000km: travel,
+    basinDepth: basin,
     deepWaterCelerity: celerity,
     sourceWavelength: wavelength,
     ruptureWidth: m(W),

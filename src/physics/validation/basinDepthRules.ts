@@ -102,6 +102,66 @@
  *         is about the ocean rather than about the epicentre.
  */
 
+/*
+ * ===========================================================================
+ * The outcome of rules 187 to 191, 18 September 2026: DONE
+ * ===========================================================================
+ *
+ * The rules were pushed in `af73931`, before a number was measured.
+ *
+ * The cure. `EarthquakeScenarioInput.basinDepth` is the ocean the wave
+ * crosses; `waterDepth` keeps the trigger and nothing else. The result
+ * publishes the depth it travelled on, the report prints it beside the travel
+ * time, and the store passes the median sea within 1 000 km of the source from
+ * the planetary mosaic. A Mw 9.0 on an eighteen-metre shelf now puts its wave
+ * 1 000 km away in 1 h 24 min at 198 m/s, where it used to take 20 h 54 min at
+ * 13.3 m/s — and the same scenario in 6 000 m of water gives the same answer,
+ * because the answer was never about the epicentre.
+ *
+ * The guards.
+ * (a) No number of `docs/VALIDATION_REPORT.json` moved. No earthquake preset
+ *     carries a water depth, so the calibration net and the wave rows were
+ *     never on this path.
+ * (b) The gate stays PASS and the suite is green.
+ * (c) Read as written, this guard names two quantities that are not the same
+ *     thing, and saying so is better than quietly satisfying it. `veilLaw`
+ *     does not propagate on `sourceDepthM`: it *shoals* from it, as Green's
+ *     law's reference depth, and the arrival times on the globe come from the
+ *     solver walking the real bathymetry. What was checked instead, and is
+ *     pinned by `basinDepthRules.test.ts`, is that the depth the report
+ *     prints, the celerity, the travel time to 1 000 km and the dominant
+ *     period are one number's; and `extractTsunamiMeta` now hands the veil
+ *     that same published depth in place of the constant 4 000 m it carried,
+ *     which is identical wherever no basin is named — every scenario the
+ *     rules read — and nearer the truth where one is: Green's reference wants
+ *     the water over the rupture, and the sea around the source is a better
+ *     guess at that than a global constant, in the Mediterranean by a factor
+ *     of two. The exact quantity stays rule 191's open question.
+ * (d) The run-up rule's set is untouched: `runupRun.ts` names no basin and so
+ *     takes the 4 000 m it always had.
+ *
+ * And in the product, read off its own report page by the sweep of rule 189's
+ * thirty scenarios: a Mw 9.0 off Tokyo Bay crosses 3.99 km of ocean and covers
+ * 1 000 km in 1 h 24 min; a Mw 7.8 in the Bay of Naples crosses 1.72 km — the
+ * Mediterranean, which is what the mosaic says it is — and takes 2 h 8 min.
+ * Two different seas, because the store now reads the sea and not the puddle.
+ *
+ * The reading (rule 190, `scripts/benchmark/crest-speeds.ts`,
+ * `benchmark/results/crest-speeds-2026-09-18.json`). 151 deep-ocean records
+ * over 19 events, median implied speed 196.0 m/s, median buoy depth 4 515 m.
+ *   - the 4 000 m default, 198.1 m/s: median ratio **1.011**, below the bound
+ *     on 47.7 % of records — an estimate sitting on the records rather than
+ *     beside them, which is what a median ratio of one and a near-even split
+ *     look like;
+ *   - each buoy's own depth: median ratio 1.042, below the bound on 42.4 %;
+ *   - and the law this round removed, on the shelves the sweep found: 18 m
+ *     gives a median ratio of **0.068** and is certainly too slow on **100 %**
+ *     of the records, 60 m gives 0.124 and 100 %, 200 m gives 0.226 and
+ *     99.3 %. A wave four to fifteen times too slow on every record there is.
+ * Nothing was tuned on any of it: the default was 4 000 m before the reading
+ * and is 4 000 m after it (rule 5).
+ */
+
 import { m } from '../units.js';
 import type { Meters } from '../units.js';
 

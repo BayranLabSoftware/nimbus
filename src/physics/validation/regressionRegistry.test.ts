@@ -1154,13 +1154,67 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(optimum.peakWind.at5km as number).toBeGreaterThan(surface.peakWind.at5km);
   });
 
+  it('B-051 A ring of intensity k is drawn exactly when the epicentre reaches k', () => {
+    // Pre-fix: the epicentre was Joyner & Boore 1981 at distance zero — a law
+    // with no depth term at all — while the rings were the interface, slab or
+    // Boore 2014 law. A Mw 7.5 three hundred kilometres down read MMI 9.3 at
+    // its epicentre and drew no MMI VII ring anywhere.
+    const deep = simulateEarthquake({
+      magnitude: 7.5,
+      depth: m(300_000),
+      faultType: 'reverse',
+    });
+    expect(deep.shaking.mmiAtEpicenter).toBeLessThan(7);
+    expect(deep.shaking.mmi7Radius as number).toBe(0);
+
+    const megathrust = simulateEarthquake({
+      magnitude: 9,
+      depth: m(20_000),
+      faultType: 'reverse',
+      subductionInterface: true,
+    });
+    expect(megathrust.shaking.mmiAtEpicenter).toBeLessThan(9);
+    expect(megathrust.shaking.mmi9Radius as number).toBe(0);
+    expect(megathrust.shaking.mmiAtEpicenter).toBeGreaterThanOrEqual(8);
+    expect(megathrust.shaking.mmi8Radius as number).toBeGreaterThan(0);
+  });
+
+  it('B-052 A wave crosses the ocean it is in, not the puddle it started in', () => {
+    // Pre-fix: the water over the epicentre was the basin, so this wave made
+    // 1 000 km in 20 h 54 min — 13.3 m/s, the speed of a wave in 18 m of
+    // water.
+    const shelf = simulateEarthquake({
+      magnitude: 9,
+      depth: m(20_000),
+      faultType: 'reverse',
+      subductionInterface: true,
+      waterDepth: m(18),
+    });
+    expect(shelf.tsunami?.basinDepth as number).toBe(4_000);
+    expect(shelf.tsunami?.deepWaterCelerity as number).toBeGreaterThan(190);
+    expect(shelf.tsunami?.travelTimeTo1000km as number).toBeLessThan(2 * 3_600);
+    // The source's own water still says the event is submarine.
+    expect(shelf.isSubmarine).toBe(true);
+    expect(shelf.submarineDepth as number).toBe(18);
+    // And a caller that knows the ocean is believed.
+    const named = simulateEarthquake({
+      magnitude: 9,
+      depth: m(20_000),
+      faultType: 'reverse',
+      subductionInterface: true,
+      waterDepth: m(18),
+      basinDepth: m(1_000),
+    });
+    expect(named.tsunami?.basinDepth as number).toBe(1_000);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-050 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-052 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 50;
-    expect(expectedRows).toBe(50);
+    const expectedRows = 52;
+    expect(expectedRows).toBe(52);
   });
 });
