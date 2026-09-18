@@ -391,6 +391,29 @@ rather than hiding it: the pyroclastic reach and the lahar are **circles about
 the vent**, while both flows follow valleys. The reach is the model's; the
 shape is not the mountain's.
 
+**And one the audit found that is not the globe's at all: the wave does not
+cross the antimeridian.** An «+8 h» isochrone carried a single vertex, one of
+199, at longitude −180.00 where the solver's own field says forty hours — and
+the same vertex, in the same place, on a second scenario. Following it down:
+`tsunami/fastMarching.ts` walks its neighbours with `j + 1 < nLon` and
+`j - 1 >= 0`, so the planetary raster is a wall at ±180° and a front can only
+reach the other side by going the long way round the globe. On a uniform ocean
+of 4 000 m, with the source at 0°N 170°E, the model reads 1.41 h at 179°E
+against the 1.40 the arc gives — and **30.31 h at 179°W against 1.72, seventeen
+times late**. Two degrees of longitude, thirty hours.
+
+Every trans-Pacific arrival the product computes is affected, and so is
+anything that propagates on that field: the run-up rule of rules 102 to 105
+crosses it. The isochrone's stray vertex is the same defect seen from the
+drawing: the field is discontinuous along the seam, so the contour extractor
+finds a crossing there that is not a front.
+
+It is **open**, and it is not fixed here for two reasons worth stating. The
+cure moves numbers a rule has already read, so it wants its rules written
+first; and reading them again needs the planetary mosaic fetched tile by tile,
+which is a download and therefore Andrea's to authorise. What is recorded
+tonight is the defect, its size, and the reproduction that needs no network.
+
 What the second pass leaves declared and unmeasured: a landslide's own body is
 not drawn — the globe shows its wave, not the slide — which the audit counts
 as a silence on all five of its scenarios rather than as coverage. And three

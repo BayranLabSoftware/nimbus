@@ -58,10 +58,30 @@ interface DrawnLine {
   vertices: { latDeg: number; lonDeg: number; heightM: number }[];
 }
 
+/** An hour line of the wave, read against the field it was drawn from. The
+ *  sampling happens in the page: the arrival field is half a million numbers
+ *  and has no business crossing to Node. */
+interface DrawnIsochrone {
+  id: string;
+  hours: number;
+  vertices: number;
+  /** The worst distance, in seconds, between the hour the line claims and the
+   *  hour the solver's field gives where the line was drawn. */
+  worstS: number;
+  /** How many vertices are more than a minute from the hour they claim, and
+   *  where the worst of them sits: one vertex adrift in four hundred is a
+   *  different statement from half the line being adrift. */
+  offCount: number;
+  worstAt: string;
+  /** Vertices that fell outside the field, on no cell at all. */
+  offField: number;
+}
+
 interface Drawn {
   rings: DrawnRing[];
   polygons: DrawnPolygon[];
   lines: DrawnLine[];
+  isochrones: DrawnIsochrone[];
   /** Captions belonging to no contour: an altitude beacon's. */
   labels: { id: string; text: string; heightM: number }[];
   /** Entity ids with no ellipse — polylines, billboards, the rupture. */
@@ -268,6 +288,7 @@ async function readGlobe(page: Page): Promise<Drawn> {
     const rings: DrawnRing[] = [];
     const polygons: DrawnPolygon[] = [];
     const lines: DrawnLine[] = [];
+    const isochrones: DrawnIsochrone[] = [];
     const labels: { id: string; text: string; heightM: number }[] = [];
     const others: string[] = [];
     if (viewer !== undefined) {
@@ -368,12 +389,81 @@ async function readGlobe(page: Page): Promise<Drawn> {
       }
     }
     const state = w.__nimbusStore?.getState();
+    // The hour lines of the wave, against the solver's own arrival field.
+    // `Globe.tsx` extracts them at hours × 3 600 s over the planetary raster
+    // between 85° south and 85° north, so the audit samples that same raster
+    // where each line was drawn: a line that says "+4 h" must lie where the
+    // field says four hours.
+    const bathy = state?.bathymetricTsunami as
+      | { global?: { field?: { arrivalTimes: ArrayLike<number>; nLat: number; nLon: number } } }
+      | null
+      | undefined;
+    const field = bathy?.global?.field;
+    if (field !== undefined) {
+      const { arrivalTimes, nLat, nLon } = field;
+      const minLat = -85;
+      const maxLat = 85;
+      const minLon = -180;
+      const maxLon = 180;
+      const dLat = (maxLat - minLat) / (nLat - 1);
+      const dLon = (maxLon - minLon) / (nLon - 1);
+      const sample = (latDeg: number, lonDeg: number): number => {
+        const y = (maxLat - latDeg) / dLat;
+        const x = (lonDeg - minLon) / dLon;
+        const i = Math.floor(y);
+        const j = Math.floor(x);
+        if (i < 0 || j < 0 || i >= nLat - 1 || j >= nLon - 1) return Number.NaN;
+        const fy = y - i;
+        const fx = x - j;
+        const v = (r: number, c: number): number => arrivalTimes[r * nLon + c] ?? Number.NaN;
+        const nw = v(i, j);
+        const ne = v(i, j + 1);
+        const sw = v(i + 1, j);
+        const se = v(i + 1, j + 1);
+        if (![nw, ne, sw, se].every((n) => Number.isFinite(n))) return Number.NaN;
+        return nw * (1 - fx) * (1 - fy) + ne * fx * (1 - fy) + sw * (1 - fx) * fy + se * fx * fy;
+      };
+      for (const line of lines) {
+        const match = /^tsunami-isochrone-(\d+)h-\d+$/.exec(line.id);
+        if (match === null) continue;
+        const hours = Number(match[1]);
+        let worstS = 0;
+        let offField = 0;
+        let offCount = 0;
+        let worstAt = '';
+        for (const vertex of line.vertices) {
+          const t = sample(vertex.latDeg, vertex.lonDeg);
+          if (!Number.isFinite(t)) {
+            offField += 1;
+            continue;
+          }
+          const off = Math.abs(t - hours * 3_600);
+          if (off > 60) offCount += 1;
+          if (off > worstS) {
+            worstS = off;
+            worstAt = `lat ${vertex.latDeg.toFixed(2)}, lon ${vertex.lonDeg.toFixed(2)}, field ${(
+              t / 3_600
+            ).toFixed(2)} h`;
+          }
+        }
+        isochrones.push({
+          id: line.id,
+          hours,
+          vertices: line.vertices.length,
+          worstS,
+          offCount,
+          worstAt,
+          offField,
+        });
+      }
+    }
     const active = state?.result as { type?: string; data?: Record<string, unknown> } | null;
     const loc = state?.location as { latitude: number; longitude: number } | null;
     return {
       rings,
       polygons,
       lines,
+      isochrones,
       labels,
       others,
       eventType: active?.type ?? null,
@@ -663,6 +753,31 @@ async function main(): Promise<void> {
           scenario: scenario.id,
           what: `${line.id} encloses an area its own number does not`,
           detail: `${(drawnArea / 1e6).toFixed(0)} km² drawn against ${(published / 1e6).toFixed(0)} km² published (${ratio.toFixed(3)}×)`,
+        });
+      }
+    }
+
+    // (3c-bis) an hour line lies where the solver says that hour is.
+    for (const iso of drawn.isochrones) {
+      if (iso.vertices === 0) continue;
+      checked += 1;
+      // The line is a crossing of the same raster, so agreement should be
+      // near exact; a tolerance of a minute leaves room for the chaining and
+      // for the float the field is stored in.
+      if (iso.worstS > 60) {
+        findings.push({
+          scenario: scenario.id,
+          what: `${iso.id} is drawn where the wave is not at that hour`,
+          detail: `${iso.offCount.toString()} of ${iso.vertices.toString()} vertices off, worst by ${(
+            iso.worstS / 60
+          ).toFixed(1)} min — ${iso.worstAt}`,
+        });
+      }
+      if (iso.offField > iso.vertices / 2) {
+        findings.push({
+          scenario: scenario.id,
+          what: `${iso.id} is drawn mostly off the field it came from`,
+          detail: `${iso.offField.toString()} of ${iso.vertices.toString()} vertices on no cell`,
         });
       }
     }

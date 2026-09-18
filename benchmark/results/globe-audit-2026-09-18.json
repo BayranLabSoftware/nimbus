@@ -31,7 +31,7 @@
    "eventType": "impact",
    "ringsDrawn": 9,
    "polygonsDrawn": 0,
-   "checked": 6
+   "checked": 13
   },
   {
    "scenario": "impact-ten-km",
@@ -39,7 +39,7 @@
    "eventType": "impact",
    "ringsDrawn": 11,
    "polygonsDrawn": 0,
-   "checked": 7
+   "checked": 18
   },
   {
    "scenario": "explosion-hiroshima-like",
@@ -103,7 +103,7 @@
    "eventType": "earthquake",
    "ringsDrawn": 4,
    "polygonsDrawn": 2,
-   "checked": 3
+   "checked": 21
   },
   {
    "scenario": "quake-small-remote",
@@ -119,7 +119,7 @@
    "eventType": "earthquake",
    "ringsDrawn": 4,
    "polygonsDrawn": 2,
-   "checked": 3
+   "checked": 10
   },
   {
    "scenario": "volcano-vesuvius-like",
@@ -159,7 +159,7 @@
    "eventType": "volcano",
    "ringsDrawn": 6,
    "polygonsDrawn": 0,
-   "checked": 4
+   "checked": 11
   },
   {
    "scenario": "slide-subaerial-fjord",
@@ -175,7 +175,7 @@
    "eventType": "landslide",
    "ringsDrawn": 4,
    "polygonsDrawn": 0,
-   "checked": 1
+   "checked": 14
   },
   {
    "scenario": "slide-confined-basin",
@@ -207,7 +207,7 @@
    "eventType": "impact",
    "ringsDrawn": 11,
    "polygonsDrawn": 0,
-   "checked": 7
+   "checked": 14
   },
   {
    "scenario": "wave-burst-in-water",
@@ -223,7 +223,7 @@
    "eventType": "earthquake",
    "ringsDrawn": 4,
    "polygonsDrawn": 2,
-   "checked": 3
+   "checked": 10
   },
   {
    "scenario": "wave-slide-into-lake",
@@ -239,10 +239,21 @@
    "eventType": "volcano",
    "ringsDrawn": 6,
    "polygonsDrawn": 0,
-   "checked": 4
+   "checked": 11
   }
  ],
- "findings": [],
+ "findings": [
+  {
+   "scenario": "quake-megathrust-offshore",
+   "what": "tsunami-isochrone-8h-0 is drawn where the wave is not at that hour",
+   "detail": "1 of 199 vertices off, worst by 1941.2 min — lat -8.22, lon -180.00, field 40.35 h"
+  },
+  {
+   "scenario": "slide-submarine-shelf",
+   "what": "tsunami-isochrone-8h-0 is drawn where the wave is not at that hour",
+   "detail": "1 of 186 vertices off, worst by 1994.0 min — lat -6.75, lon -180.00, field 41.23 h"
+  }
+ ],
  "silences": [
   {
    "scenario": "slide-subaerial-fjord",
