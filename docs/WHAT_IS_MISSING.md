@@ -23,16 +23,16 @@ standing rule is bands before sets. Every row below that spends a set says so.
 
 ## A: a reference exists and has never been run
 
-| Rule       | What has never run                                                                              | Cost                                                                                      | Spends a set                   |
-| ---------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------ |
-| E1         | ShakeMap, as a scenario without stations, on the maps already read                              | the program; the atlas is in hand                                                         | no — the maps are read already |
-| E3         | PAGER's own σ_ln on the same rows                                                               | PAGER is in hand (`scratchpad/oq`, `bench/pager`)                                         | no                             |
-| T1         | GeoClaw over real bathymetry — it has only run over a flat ocean                                | **GeoClaw is not installed here**; the setup is Linux/WSL2                                | no                             |
-| T2         | the same, on the coastal bins                                                                   | as T1                                                                                     | no — the run-up set is read    |
-| T3         | a reference travel-time computation on the records                                              | a travel-time atlas or GeoClaw                                                            | no                             |
-| V3         | Tephra2 on a set of isopach maps — the binary is built and has run on forty eruptions           | building the isopach set                                                                  | **yes**                        |
-| V4         | the energy cone and LaharZ on a set of currents                                                 | ECMapProb runs (19 September); LaharZ needs ArcGIS, so its published example is the check | partly                         |
-| G1 (waves) | the far-field and run-up relations held to a reference within 1 %, not to fixtures by tolerance | as T1                                                                                     | no                             |
+| Rule       | What has never run                                                                              | Cost                                                                                                              | Spends a set                   |
+| ---------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| E1         | ShakeMap, as a scenario without stations, on the maps already read                              | the program; the atlas is in hand                                                                                 | no — the maps are read already |
+| E3         | PAGER's own σ_ln on the same rows                                                               | PAGER is in hand (`scratchpad/oq`, `bench/pager`)                                                                 | no                             |
+| T1         | GeoClaw over real bathymetry — it has only run over a flat ocean                                | GeoClaw **runs here since 19 September** (short path required); the fixtures need regenerating on real bathymetry | no                             |
+| T2         | the same, on the coastal bins                                                                   | as T1                                                                                                             | no — the run-up set is read    |
+| T3         | a reference travel-time computation on the records                                              | a travel-time atlas or GeoClaw                                                                                    | no                             |
+| V3         | Tephra2 on a set of isopach maps — the binary is built and has run on forty eruptions           | building the isopach set                                                                                          | **yes**                        |
+| V4         | the energy cone and LaharZ on a set of currents                                                 | ECMapProb runs (19 September); LaharZ needs ArcGIS, so its published example is the check                         | partly                         |
+| G1 (waves) | the far-field and run-up relations held to a reference within 1 %, not to fixtures by tolerance | as T1                                                                                                             | no                             |
 
 ## B: the set does not exist
 
@@ -75,9 +75,12 @@ standing rule is bands before sets. Every row below that spends a set says so.
 Only family D is a literature problem, and half of it is a measurement rather
 than a missing law. The two biggest levers are elsewhere:
 
-1. **Install GeoClaw.** Four rules wait on it (T1, T2, T3, G1-waves) and it is
-   the declared reference for the whole wave track. It does not run on this
-   machine today.
+1. ~~**Install GeoClaw.**~~ Done on 19 September: the Chile 2010 example runs
+   here and gives a gauge series at DART 32412 with a crest of 0.178 m against
+   about 0.2 m observed. Four rules wait on what comes next — regenerating the
+   fixtures on real bathymetry (T1, T2), a reference travel time (T3), and
+   holding our relations to it within 1 % rather than to fixtures by tolerance
+   (G1-waves).
 2. **Decide what the remaining sets are spent on.** G3 has no band anywhere in
    the project, in any domain, and every unread set is a candidate for one. That
    is a choice about the shape of the 9, not a task.

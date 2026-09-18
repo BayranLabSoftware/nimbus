@@ -308,6 +308,51 @@ famine or disease):
 cumulative population inside every band's outer radius and evaluates
 the plan (`runCasualtyLookup` in `src/store/useAppStore.ts`).
 
+### GeoClaw runs here, and the first row of T1 (19 September 2026)
+
+T1 asks for the far field held to GeoClaw on real bathymetry, at the same DART
+records. The standing said "pending: GeoClaw has been run only over a flat
+ocean", and the reason was simpler than it sounded: GeoClaw did not run on this
+machine at all. It does now, and two things in `docs/GEOCLAW_SETUP.md` were
+wrong rather than anything in GeoClaw.
+
+`pip install clawpack` is not enough: the 5.14.0 wheel carries the Python
+tooling and not one `.f90`, not one Makefile, no `examples/`. And the Fortran
+**truncates file names**: with the tree at a 105-character scratch path the
+dtopo path was cut mid-filename, `xgeoclaw` exited at once, and it left a
+`_output/` full of `.data` files, a zero-byte `fort.amr` and no solution at all
+— while printing "Missing dtopo file" about a file that was plainly there. A
+ten-character symlink fixed it. Both are written down now, with the truncated
+message they print.
+
+**The committed fixture reproduces on a second platform.** `maule-2010.json`
+was computed on WSL2 with gfortran 11.4 on 29 April; the same example on macOS
+with gfortran 16.2 gives a crest of 0.1785 m at DART 32412 against the
+fixture's 0.178, and a peak time of 11 984 s against 11 984 — the same second.
+Two compilers, two architectures, three digits.
+
+**And the first row of T1, which is one row and not T1.** Feeding our own
+far-field law the example's own subfault — strike 16°, 450 × 100 km, 15 m of
+slip — and carrying its 1 000 km amplitude out to the buoy on the veil's own
+spreading exponent:
+
+|                            | amplitude at DART 32412                      |
+| -------------------------- | -------------------------------------------- |
+| Nimbus, toward the buoy    | 0.2385 m                                     |
+| GeoClaw on real bathymetry | 0.1785 m — we are **1.34×**                  |
+| the DART record itself     | 0.130 m — we are 1.83×, **GeoClaw is 1.37×** |
+
+The directivity is what makes that comparison honest rather than flattering:
+the beam factor toward that bearing is 0.463 and the buoy sits past the
+coherent lobe, so the peak across the fault — 0.5587 m — would have read 3.1×
+the reference. Taking the peak where the receiver is not is how a model looks
+worse than it is, or better; here it was worse.
+
+One row is not T1, which asks for the median over the records with a σ. What
+this row says is that the law is within a third of the reference where the
+reference is within a third of the buoy, and that the machinery to read the
+rest now exists.
+
 ### What a flow covers, which is what the field predicts (19 September 2026)
 
 The globe was made to draw a lahar's reach on 18 September, because the model
