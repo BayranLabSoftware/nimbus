@@ -351,6 +351,58 @@ same fields — `blast.overpressure5psiRadiusHob` for a burst, `damage.*` for an
 impact — and the counter that climbs with the front is tested to end on the
 model's own total, band by band.
 
+**The second pass, over the two families the first left unmeasured.** The
+landslides had been compared on nothing and the volcanoes on one ring, so the
+audit was taught what those two draw: an ash plume's ellipse against the
+downwind range and crosswind half-width that shape it, the dashed 1 mm isopach
+against the area the advected footprint publishes, the column beacon against
+the plume height, the wave cavity against the disc each family's wave leaves
+from, and the pyroclastic and lahar reaches against their own runouts. 94
+contours now carry a number and all 94 carry it correctly — up from 64, with
+every family represented.
+
+It found two defects, and both are the same shape as the report's were: the
+picture said something the numbers did not.
+
+- **B-053, the disc the wave leaves from.** The globe drew an earthquake's
+  wave source at a quarter of the rupture length while the wave was seeded
+  from half the down-dip width — the value `extractTsunamiMeta` moved to on 9
+  September, measured at DART 21413. The renderer had kept its own copy of the
+  old expression, with a comment beside it stating that the two were the same
+  number. For a Mw 9.2 the circle on screen was 201 km and the source 111 km.
+  One function is read by both now, and a test pins the ring, the veil and the
+  solver's seed to it.
+- **B-054, the lahar nobody drew.** The model publishes a lahar's reach, the
+  report prints it, the panel prints it with its citation — and the globe drew
+  nothing: forty kilometres of debris flow, and an eruption on screen with no
+  mud in it. It could stay invisible because `scene/visualContracts.ts`, the
+  file that lists what every shape on the globe is and whose own header says
+  its ids are there "so a runtime audit can verify each entity was added", had
+  no entry for the lahar — and nothing in the repository imported the
+  contracts at all. Thirty-four contracts, no reader. The lahar now has its
+  ring, its contract and its captions, and `scene/visualContracts.test.ts`
+  reads the contracts in CI: every captioned contour has a caption in both
+  languages, every hazard a volcano publishes has a contract, and the two
+  volcanic runouts state out loud that their circle is a placeholder for a
+  flow that follows a valley.
+
+Two shapes on that list are worth a reader's caution, and the contracts say so
+rather than hiding it: the pyroclastic reach and the lahar are **circles about
+the vent**, while both flows follow valleys. The reach is the model's; the
+shape is not the mountain's.
+
+What the second pass leaves declared and unmeasured: a landslide's own body is
+not drawn — the globe shows its wave, not the slide — which the audit counts
+as a silence on all five of its scenarios rather than as coverage. And three
+of the harness's own mistakes are recorded with the round, because they are
+why the zero can be believed: the cavity demanded of earthquakes that raise no
+wave, a reading taken before the ring cascade had started (a ring begins its
+growth at a millimetre, so "every ring is positive" was true before anything
+moved), and thirty scenarios sharing one page, which left the cascade of a
+later scenario unstarted and read a millimetre where the model published three
+hundred metres. The audit now opens a page per scenario and accepts a reading
+only when two of them agree and no ring is still at its starting millimetre.
+
 ### Two things thirty scenarios found, and how they were closed (18 September 2026)
 
 Thirty scenarios were opened by link on the application's own report page and

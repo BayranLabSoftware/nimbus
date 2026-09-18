@@ -803,6 +803,7 @@
       "tsunamiWaveFront1m": "Wave front · ≈ 1 m",
       "tsunamiWaveFront03m": "Wave front · ≈ 30 cm",
       "pyroclasticRunout": "Pyroclastic flow",
+      "laharRunout": "Lahar reach",
       "lateralBlast": "Lateral blast",
       "ashfallPlume": "Ashfall plume",
       "ejectaBlanket": "Ejecta blanket",
@@ -977,6 +978,7 @@
       "mmi9": "MMI IX",
       "tsunamiCavity": "Cavity",
       "pyroclasticRunout": "Pyroclastic flow",
+      "laharRunout": "Lahar",
       "lateralBlast": "Lateral blast",
       "ashfallPlume": "Ash 1 mm",
       "ejectaBlanket": "Ejecta"

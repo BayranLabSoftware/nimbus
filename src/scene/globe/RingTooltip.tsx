@@ -33,6 +33,7 @@ export type RingTooltipKind =
   | 'mmi8'
   | 'mmi9'
   | 'pyroclasticRunout'
+  | 'laharRunout'
   | 'lateralBlast'
   | 'ashfallPlume';
 

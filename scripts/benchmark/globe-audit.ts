@@ -52,9 +52,18 @@ interface DrawnPolygon {
   label: string | null;
 }
 
+/** A line: the dashed isopach around an ash plume, a beacon's shaft. */
+interface DrawnLine {
+  id: string;
+  vertices: { latDeg: number; lonDeg: number; heightM: number }[];
+}
+
 interface Drawn {
   rings: DrawnRing[];
   polygons: DrawnPolygon[];
+  lines: DrawnLine[];
+  /** Captions belonging to no contour: an altitude beacon's. */
+  labels: { id: string; text: string; heightM: number }[];
   /** Entity ids with no ellipse — polylines, billboards, the rupture. */
   others: string[];
   /** The store's own view of the same event. */
@@ -92,10 +101,43 @@ const RING_SOURCE: Record<string, string> = {
   'mmi-stadium-7': 'shaking.mmi7Radius',
   'mmi-stadium-8': 'shaking.mmi8Radius',
   'mmi-stadium-9': 'shaking.mmi9Radius',
-  // A volcano's one circular claim. Its ash is a wind-blown polygon and its
-  // lahars follow valleys, so neither is an ellipse and neither is read here.
+  // A volcano's pyroclastic reach, and the cavity every family's wave
+  // leaves — a slide's, a collapse's, a burst's, an impact's.
   'pyroclastic-ring': 'pyroclasticRunout',
+  'lahar-ring': 'laharRunout',
 };
+
+/**
+ * Rings whose radius is not a field but a derivation, with the expression the
+ * product uses. The wave's cavity is the case: a volcano, a slide, a burst
+ * and an impact each publish `tsunami.cavityRadius`, and an earthquake does
+ * not — its source disc is half the down-dip width, which is what
+ * `seismicSourceCavityRadiusM` gives the veil and the solver.
+ */
+const RING_DERIVED: Record<
+  string,
+  (r: Record<string, unknown> | null, eventType: string | null) => number | undefined
+> = {
+  'tsunami-cavity': (r, eventType) => {
+    if (eventType !== 'earthquake') return at(r, 'tsunami.cavityRadius');
+    // A dry earthquake raises no wave and leaves no cavity: the derivation
+    // is only a number when there is a wave to be the source of.
+    if (at(r, 'tsunami.initialAmplitude') === undefined) return undefined;
+    return Math.max((at(r, 'ruptureWidth') ?? 0) / 2, 10_000);
+  },
+};
+
+/** What a ring must measure, whether it is read or derived. */
+function expectedRadius(
+  id: string,
+  result: Record<string, unknown> | null,
+  eventType: string | null
+): number | undefined {
+  const derived = RING_DERIVED[id];
+  if (derived !== undefined) return derived(result, eventType);
+  const path = RING_SOURCE[id];
+  return path === undefined ? undefined : at(result, path);
+}
 
 /** Which family's event type each ring belongs to, for the other direction
  *  of check: a number published and nothing drawn. */
@@ -105,6 +147,9 @@ const RING_FAMILY: Record<string, string> = {
   'mmi-ring': 'earthquake',
   'mmi-stadium': 'earthquake',
   pyroclastic: 'volcano',
+  lahar: 'volcano',
+  // The cavity belongs to whichever event raised the wave.
+  'tsunami-cavity': '*',
 };
 
 /** Metres between two points on a sphere. */
@@ -128,6 +173,71 @@ function bearingDeg(lat1: number, lon1: number, lat2: number, lon2: number): num
     Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
     Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(dLon);
   return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
+}
+
+/**
+ * The ellipses a scenario elongates on purpose, and what their axes must be.
+ * An ash plume is the clear case: `Globe.tsx` draws it with a semi-major of
+ * half the downwind range and a semi-minor of the crosswind half-width, its
+ * centre pushed half the downwind range along the wind, so the shape runs
+ * from the vent to the far edge of the deposit. The caption carries the
+ * downwind range, not the semi-major.
+ */
+const SHAPED: Record<
+  string,
+  (r: Record<string, unknown> | null) => {
+    semiMajorM: number;
+    semiMinorM: number;
+    offsetM: number;
+    captionM: number;
+  } | null
+> = {
+  'ashfall-plume': (r) => {
+    const down = at(r, 'windAdvectedAshfall.downwindRange');
+    const cross = at(r, 'windAdvectedAshfall.crosswindHalfWidth');
+    if (down === undefined || cross === undefined || !(down > 0)) return null;
+    return { semiMajorM: down / 2, semiMinorM: cross, offsetM: down / 2, captionM: down };
+  },
+};
+
+/** The lines whose enclosed area is a published number. */
+const LINE_AREA: Record<string, string> = {
+  'ashfall-isopach-1mm': 'windAdvectedAshfall.area',
+};
+
+/** A beacon's top, against the height the model published. */
+const BEACON_HEIGHT: Record<string, string> = {
+  'beacon-volcano-column-top': 'plumeHeight',
+  'beacon-airburst-top': 'entry.burstAltitude',
+};
+
+/** What a family publishes and the globe draws nothing for. Named here so
+ *  the silence is counted rather than assumed. */
+const NEVER_DRAWN: { field: string; eventType: string; what: string }[] = [
+  { field: 'characteristicLength', eventType: 'landslide', what: 'the slide’s own length' },
+];
+
+/** Area of a closed ring of lat/lon points, on a sphere (m²). */
+function ringAreaM2(vertices: readonly { latDeg: number; lonDeg: number }[]): number {
+  if (vertices.length < 3) return 0;
+  const R = 6_371_008.8;
+  const toRad = (d: number): number => (d * Math.PI) / 180;
+  const lat0 = toRad(vertices[0]?.latDeg ?? 0);
+  const lon0 = toRad(vertices[0]?.lonDeg ?? 0);
+  // A local equirectangular frame is enough: these contours are small
+  // against the Earth, and the check is a factor, not a survey.
+  let area = 0;
+  for (let i = 0; i < vertices.length; i++) {
+    const a = vertices[i];
+    const b = vertices[(i + 1) % vertices.length];
+    if (a === undefined || b === undefined) continue;
+    const xa = R * (toRad(a.lonDeg) - lon0) * Math.cos(lat0);
+    const ya = R * (toRad(a.latDeg) - lat0);
+    const xb = R * (toRad(b.lonDeg) - lon0) * Math.cos(lat0);
+    const yb = R * (toRad(b.latDeg) - lat0);
+    area += xa * yb - xb * ya;
+  }
+  return Math.abs(area) / 2;
 }
 
 function at(result: Record<string, unknown> | null, path: string): number | undefined {
@@ -157,6 +267,8 @@ async function readGlobe(page: Page): Promise<Drawn> {
     const viewer = w.__nimbusViewer;
     const rings: DrawnRing[] = [];
     const polygons: DrawnPolygon[] = [];
+    const lines: DrawnLine[] = [];
+    const labels: { id: string; text: string; heightM: number }[] = [];
     const others: string[] = [];
     if (viewer !== undefined) {
       const now = viewer.clock.currentTime;
@@ -169,18 +281,23 @@ async function readGlobe(page: Page): Promise<Drawn> {
         x: number;
         y: number;
         z: number;
-      }): { latDeg: number; lonDeg: number } => {
+      }): { latDeg: number; lonDeg: number; heightM: number } => {
         const A = 6378137;
         const E2 = 6.69437999014e-3;
         const p = Math.sqrt(q.x * q.x + q.y * q.y);
         let lat = Math.atan2(q.z, p * (1 - E2));
-        for (let i = 0; i < 5; i++) {
+        let height = 0;
+        for (let i = 0; i < 6; i++) {
           const sn = Math.sin(lat);
           const N = A / Math.sqrt(1 - E2 * sn * sn);
-          const h = p / Math.cos(lat) - N;
-          lat = Math.atan2(q.z, p * (1 - (E2 * N) / (N + h)));
+          height = p / Math.cos(lat) - N;
+          lat = Math.atan2(q.z, p * (1 - (E2 * N) / (N + height)));
         }
-        return { latDeg: (lat * 180) / Math.PI, lonDeg: (Math.atan2(q.y, q.x) * 180) / Math.PI };
+        return {
+          latDeg: (lat * 180) / Math.PI,
+          lonDeg: (Math.atan2(q.y, q.x) * 180) / Math.PI,
+          heightM: height,
+        };
       };
       for (const raw of viewer.entities.values) {
         const entity = raw as {
@@ -199,9 +316,21 @@ async function readGlobe(page: Page): Promise<Drawn> {
               vertices: hierarchy.positions.map((q) => toLatLon(q)),
               label: null,
             });
-          } else {
-            others.push(entity.id);
+            continue;
           }
+          const line = value(
+            (entity as { polyline?: { positions?: unknown } }).polyline?.positions
+          ) as { x: number; y: number; z: number }[] | undefined;
+          if (line !== undefined) {
+            lines.push({ id: entity.id, vertices: line.map((q) => toLatLon(q)) });
+            continue;
+          }
+          const loose = value((entity as { label?: { text?: unknown } }).label?.text);
+          const where = value(entity.position) as { x: number; y: number; z: number } | undefined;
+          if (typeof loose === 'string' && where !== undefined) {
+            labels.push({ id: entity.id, text: loose, heightM: toLatLon(where).heightM });
+          }
+          others.push(entity.id);
           continue;
         }
         const a = value(entity.ellipse.semiMajorAxis);
@@ -244,6 +373,8 @@ async function readGlobe(page: Page): Promise<Drawn> {
     return {
       rings,
       polygons,
+      lines,
+      labels,
       others,
       eventType: active?.type ?? null,
       location: loc === null ? null : { lat: loc.latitude, lon: loc.longitude },
@@ -258,7 +389,12 @@ interface Finding {
   detail: string;
 }
 
+/** A contradiction: the picture and the numbers disagree. */
 const findings: Finding[] = [];
+/** A silence: the model published a quantity and the globe draws nothing for
+ *  it. Not a contradiction — the picture says nothing rather than something
+ *  false — but counted, so it cannot pass for coverage. */
+const silences: Finding[] = [];
 const rows: {
   scenario: string;
   family: string;
@@ -293,13 +429,18 @@ function radiusFromLabel(label: string): number | null {
 
 async function main(): Promise<void> {
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1_440, height: 900 } });
-  // The bundler this script runs under keeps function names by rewriting them
-  // through a `__name` helper, which exists in Node and not in the page: an
-  // evaluated closure that carries one throws `__name is not defined` before
-  // it reads anything. The page gets a no-op copy.
-  await page.addInitScript('globalThis.__name = globalThis.__name || ((f) => f);');
   for (const scenario of SWEEP_SCENARIOS) {
+    // A page of its own for each scenario. Sharing one across thirty left the
+    // ring cascade of a later scenario unstarted — a cavity read at a
+    // millimetre where the model published three hundred metres — and a
+    // reading that depends on how many scenarios ran before it is not a
+    // reading. Reopening costs a second and buys the zero its meaning.
+    const page = await browser.newPage({ viewport: { width: 1_440, height: 900 } });
+    // The bundler this script runs under keeps function names by rewriting
+    // them through a `__name` helper, which exists in Node and not in the
+    // page: an evaluated closure that carries one throws `__name is not
+    // defined` before it reads anything. The page gets a no-op copy.
+    await page.addInitScript('globalThis.__name = globalThis.__name || ((f) => f);');
     const url = link(scenario);
     await page.goto(url, { waitUntil: 'domcontentloaded' });
     try {
@@ -326,24 +467,52 @@ async function main(): Promise<void> {
         polygonsDrawn: 0,
         checked: 0,
       });
+      await page.close();
       continue;
     }
-    // The rings grow into place; read them once they have arrived.
-    await page.waitForTimeout(9_000);
-    const drawn = await readGlobe(page);
+    // The rings grow into place, and the store re-runs the scenario when the
+    // terrain tile arrives — which purges every ring and starts the growth
+    // again. A fixed wait can land in the middle of either, and then the
+    // audit reads a ring at nothing and calls the product wrong. So: read
+    // until two readings a second and a half apart agree on every radius.
+    let drawn = await readGlobe(page);
+    for (let settle = 0; settle < 12; settle++) {
+      await page.waitForTimeout(1_500);
+      const again = await readGlobe(page);
+      const shape = (d: Drawn): string =>
+        [
+          ...d.rings.map((r) => `${r.id}:${r.semiMajorM.toFixed(0)}:${r.semiMinorM.toFixed(0)}`),
+          ...d.polygons.map((r) => `${r.id}:${r.vertices.length.toString()}`),
+        ]
+          .sort((a, b) => a.localeCompare(b))
+          .join('|');
+      // Two readings agreeing is not enough on its own: the cascade staggers
+      // each ring's start by its own radius, so two reads taken before a far
+      // ring begins agree at nothing. A ring is only added when its radius is
+      // positive, so a settled globe has no ellipse still at zero.
+      // A ring begins its growth at RING_INITIAL_RADIUS_M, which is a
+      // millimetre — so "every ring is positive" is true before anything has
+      // moved, and two reads taken during a camera flight agree at a
+      // millimetre. A metre is the floor that means "arrived".
+      const settled =
+        shape(drawn) === shape(again) &&
+        again.rings.length > 0 &&
+        again.rings.every((r) => r.semiMajorM >= 1);
+      drawn = again;
+      if (settled) break;
+    }
     let checked = 0;
 
     // (1) and (2): what is drawn, against what was published.
     for (const ring of drawn.rings) {
-      const source = RING_SOURCE[ring.id];
-      if (source === undefined) continue;
-      const published = at(drawn.result, source);
+      if (RING_SOURCE[ring.id] === undefined && RING_DERIVED[ring.id] === undefined) continue;
+      const published = expectedRadius(ring.id, drawn.result, drawn.eventType);
       checked += 1;
       if (published === undefined) {
         findings.push({
           scenario: scenario.id,
           what: `${ring.id} is drawn from a number the result does not carry`,
-          detail: source,
+          detail: ring.id,
         });
         continue;
       }
@@ -351,28 +520,46 @@ async function main(): Promise<void> {
         findings.push({
           scenario: scenario.id,
           what: `${ring.id} is on the globe with nothing behind it`,
-          detail: `${source} = ${String(published)}, drawn at ${ring.semiMajorM.toFixed(0)} m`,
+          detail: `nothing published, drawn at ${ring.semiMajorM.toFixed(0)} m`,
         });
         continue;
       }
-      // (3) the axes bracket the published radius.
+      // (3) the axes. A ring the scenario elongates on purpose is held to
+      // the shape its own numbers describe; every other ring must bracket
+      // the radius it was drawn from.
+      const shape = SHAPED[ring.id]?.(drawn.result) ?? null;
       const lo = Math.min(ring.semiMinorM, ring.semiMajorM);
       const hi = Math.max(ring.semiMinorM, ring.semiMajorM);
-      if (published < lo * 0.999 || published > hi * 1.001) {
+      if (shape !== null) {
+        const wantHi = Math.max(shape.semiMajorM, shape.semiMinorM);
+        const wantLo = Math.min(shape.semiMajorM, shape.semiMinorM);
+        if (
+          Math.abs(hi - wantHi) > Math.max(500, 0.02 * wantHi) ||
+          Math.abs(lo - wantLo) > Math.max(500, 0.02 * wantLo)
+        ) {
+          findings.push({
+            scenario: scenario.id,
+            what: `${ring.id} is not the shape its numbers describe`,
+            detail: `drawn ${(lo / 1_000).toFixed(1)} × ${(hi / 1_000).toFixed(1)} km, wanted ${(wantLo / 1_000).toFixed(1)} × ${(wantHi / 1_000).toFixed(1)} km`,
+          });
+        }
+      } else if (published < lo * 0.999 || published > hi * 1.001) {
         findings.push({
           scenario: scenario.id,
           what: `${ring.id} is drawn away from its own number`,
           detail: `published ${published.toFixed(0)} m, drawn ${lo.toFixed(0)}–${hi.toFixed(0)} m`,
         });
       }
-      // (2) the caption states it.
+      // (2) the caption states it — the downwind range for a plume, the
+      // radius for a ring.
+      const captionWants = shape?.captionM ?? published;
       if (ring.label !== null) {
         const said = radiusFromLabel(ring.label);
-        if (said !== null && Math.abs(said - published) > Math.max(60, 0.06 * published)) {
+        if (said !== null && Math.abs(said - captionWants) > Math.max(60, 0.06 * captionWants)) {
           findings.push({
             scenario: scenario.id,
-            what: `${ring.id} is captioned with a radius that is not its own`,
-            detail: `caption "${ring.label}" (${said.toFixed(0)} m) against ${published.toFixed(0)} m`,
+            what: `${ring.id} is captioned with a number that is not its own`,
+            detail: `caption "${ring.label}" (${said.toFixed(0)} m) against ${captionWants.toFixed(0)} m`,
           });
         }
       }
@@ -384,11 +571,13 @@ async function main(): Promise<void> {
           111_000 *
           Math.cos((drawn.location.lat * Math.PI) / 180);
         const offset = Math.hypot(dLat, dLon);
-        if (offset > Math.max(2_000, 0.5 * published)) {
+        const wantOffset = shape?.offsetM ?? 0;
+        const slack = Math.max(2_000, 0.5 * (shape === null ? published : wantOffset));
+        if (Math.abs(offset - wantOffset) > slack) {
           findings.push({
             scenario: scenario.id,
-            what: `${ring.id} is not centred on the event`,
-            detail: `${(offset / 1_000).toFixed(1)} km away, on a ring of ${(published / 1_000).toFixed(1)} km`,
+            what: `${ring.id} is not where its own numbers put it`,
+            detail: `${(offset / 1_000).toFixed(1)} km from the event, wanted ${(wantOffset / 1_000).toFixed(1)} km`,
           });
         }
       }
@@ -459,12 +648,68 @@ async function main(): Promise<void> {
       }
     }
 
-    // (1) the other way: a published radius with no ring on the globe.
-    for (const [id, source] of Object.entries(RING_SOURCE)) {
+    // (3c) a line whose enclosed area is a published number: the dashed
+    // isopach the ash plume carries.
+    for (const line of drawn.lines) {
+      const source = LINE_AREA[line.id];
+      if (source === undefined) continue;
       const published = at(drawn.result, source);
       if (published === undefined || !(published > 0)) continue;
+      checked += 1;
+      const drawnArea = ringAreaM2(line.vertices);
+      const ratio = drawnArea / published;
+      if (ratio < 0.95 || ratio > 1.05) {
+        findings.push({
+          scenario: scenario.id,
+          what: `${line.id} encloses an area its own number does not`,
+          detail: `${(drawnArea / 1e6).toFixed(0)} km² drawn against ${(published / 1e6).toFixed(0)} km² published (${ratio.toFixed(3)}×)`,
+        });
+      }
+    }
+
+    // (3d) a beacon stands at the height the model published.
+    for (const label of drawn.labels) {
+      const source = BEACON_HEIGHT[label.id];
+      if (source === undefined) continue;
+      const published = at(drawn.result, source);
+      if (published === undefined || !(published > 0)) continue;
+      checked += 1;
+      if (Math.abs(label.heightM - published) > Math.max(200, 0.03 * published)) {
+        findings.push({
+          scenario: scenario.id,
+          what: `${label.id} stands at a height the model did not give it`,
+          detail: `${(label.heightM / 1_000).toFixed(1)} km drawn against ${(published / 1_000).toFixed(1)} km published`,
+        });
+      }
+      const said = radiusFromLabel(label.text);
+      if (said !== null && Math.abs(said - published) > Math.max(200, 0.06 * published)) {
+        findings.push({
+          scenario: scenario.id,
+          what: `${label.id} is captioned with a height that is not its own`,
+          detail: `caption "${label.text}" against ${published.toFixed(0)} m`,
+        });
+      }
+    }
+
+    // (3e) what the model published and the globe says nothing about.
+    for (const silent of NEVER_DRAWN) {
+      if (silent.eventType !== drawn.eventType) continue;
+      const published = at(drawn.result, silent.field);
+      if (published === undefined || !(published > 0)) continue;
+      silences.push({
+        scenario: scenario.id,
+        what: `${silent.what} is published and the globe draws nothing for it`,
+        detail: `${silent.field} = ${(published / 1_000).toFixed(1)} km`,
+      });
+    }
+
+    // (1) the other way: a published radius with no ring on the globe.
+    for (const id of [...Object.keys(RING_SOURCE), ...Object.keys(RING_DERIVED)]) {
+      const published = expectedRadius(id, drawn.result, drawn.eventType);
+      if (published === undefined || !(published > 0)) continue;
       const key = Object.keys(RING_FAMILY).find((k) => id.startsWith(k));
-      if (key === undefined || RING_FAMILY[key] !== drawn.eventType) continue;
+      if (key === undefined) continue;
+      if (RING_FAMILY[key] !== '*' && RING_FAMILY[key] !== drawn.eventType) continue;
       // A great earthquake draws stadiums instead of discs, and a small one
       // discs instead of stadiums: either shape answers for the number.
       const twin = id.startsWith('mmi-ring-')
@@ -478,15 +723,18 @@ async function main(): Promise<void> {
         findings.push({
           scenario: scenario.id,
           what: `${id} was published and is not on the globe`,
-          detail: `${source} = ${published.toFixed(0)} m`,
+          detail: `${(published / 1_000).toFixed(1)} km`,
         });
       }
     }
 
     // (4) nesting: the drawn order is the published order.
     const family = drawn.rings
-      .filter((r) => RING_SOURCE[r.id] !== undefined)
-      .map((r) => ({ ring: r, published: at(drawn.result, RING_SOURCE[r.id] ?? '') ?? 0 }))
+      .filter((r) => RING_SOURCE[r.id] !== undefined || RING_DERIVED[r.id] !== undefined)
+      .map((r) => ({
+        ring: r,
+        published: expectedRadius(r.id, drawn.result, drawn.eventType) ?? 0,
+      }))
       .filter((r) => r.published > 0)
       .sort((a, b) => a.published - b.published);
     for (let i = 1; i < family.length; i++) {
@@ -515,13 +763,16 @@ async function main(): Promise<void> {
     console.log(
       `${scenario.id.padEnd(26)} ${String(drawn.eventType).padEnd(10)} ${String(drawn.rings.length).padStart(3)} ellissi ${String(drawn.polygons.length).padStart(2)} poligoni, ${String(checked).padStart(2)} confrontate`
     );
+    await page.close();
   }
   await browser.close();
 
   mkdirSync(dirname(OUT), { recursive: true });
-  writeFileSync(OUT, `${JSON.stringify({ base: BASE, rows, findings }, null, 1)}\n`);
+  writeFileSync(OUT, `${JSON.stringify({ base: BASE, rows, findings, silences }, null, 1)}\n`);
   console.log(`\n${String(findings.length)} findings`);
   for (const f of findings) console.log(`  ${f.scenario}: ${f.what} — ${f.detail}`);
+  console.log(`${String(silences.length)} silences — published, and the globe says nothing`);
+  for (const f of silences) console.log(`  ${f.scenario}: ${f.what} — ${f.detail}`);
   console.log(`wrote ${OUT}`);
 }
 

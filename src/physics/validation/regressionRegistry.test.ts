@@ -42,6 +42,8 @@ import { blastCasualtyPlan } from '../casualties.js';
 import { DEFAULT_TOLL_BAND_SCATTER, withVulnerabilityScatter } from '../uq/tollBand.js';
 import { TOLL_BAND_CANDIDATE } from './tollBandRules.js';
 import { applyIntentToStore, decodeUrl } from '../../store/urlState.js';
+import { extractTsunamiMeta, seismicSourceCavityRadiusM } from '../../store/useAppStore.js';
+import { VISUAL_CONTRACTS } from '../../scene/visualContracts.js';
 import { radiansToDegrees } from '../units.js';
 import { fieldsFor } from '../../ui/pages/SimulationReportPage.js';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
@@ -1208,13 +1210,55 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(named.tsunami?.basinDepth as number).toBe(1_000);
   });
 
+  it('B-053 The disc the globe draws is the disc the wave leaves from', () => {
+    // Pre-fix: the renderer kept its own copy of an expression the store had
+    // moved on from — a quarter of the rupture length against half the
+    // down-dip width — and a comment claiming they agreed. A Mw 9.2 drew
+    // 201 km around a source of 111 km.
+    const megathrust = simulateEarthquake({
+      magnitude: 9.2,
+      depth: m(15_000),
+      faultType: 'reverse',
+      subductionInterface: true,
+      waterDepth: m(4_000),
+    });
+    const seeded = seismicSourceCavityRadiusM(megathrust);
+    expect(seeded).toBe(Math.max((megathrust.ruptureWidth as number) / 2, 10_000));
+    // The meta the globe's veil and the bathymetric solver read is that same
+    // number, so the ring, the veil and the seed cannot drift apart again.
+    const meta = extractTsunamiMeta({ type: 'earthquake', data: megathrust } as never);
+    expect(meta?.sourceCavityRadiusM).toBe(seeded);
+    // And it is not the old expression: the defect was a real gap, not a
+    // rounding.
+    expect(Math.max((megathrust.ruptureLength as number) / 4, 10_000) / seeded).toBeGreaterThan(
+      1.5
+    );
+  });
+
+  it('B-054 A hazard the model publishes is on the globe, or the contract says why not', () => {
+    const erupting = simulateVolcano({
+      volumeEruptionRate: 500,
+      totalEjectaVolume: 1e7,
+      windSpeed: 8,
+      laharVolume: 5e7,
+    });
+    // Pre-fix: this ran forty kilometres in the numbers and the globe showed
+    // nothing, because no contract named it and nothing read the contracts.
+    expect(erupting.laharRunout as number | undefined).toBeGreaterThan(40_000);
+    const contract = (
+      VISUAL_CONTRACTS as Record<string, { id: string; caveats: string[] } | undefined>
+    ).laharRunout;
+    expect(contract).toBeDefined();
+    expect(contract?.caveats.some((c) => /circle|valley/i.test(c))).toBe(true);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-052 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-054 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 52;
-    expect(expectedRows).toBe(52);
+    const expectedRows = 54;
+    expect(expectedRows).toBe(54);
   });
 });

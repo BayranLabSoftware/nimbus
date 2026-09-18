@@ -1049,6 +1049,23 @@ function gridCoversLocation(grid: ElevationGrid, c: Coordinates): boolean {
  *  Exported for the test that pins the field against the event's own
  *  published far-field amplitude — the map and the caption beside it
  *  have to agree. */
+/**
+ * How big a megathrust's wave source looks to the water: half the down-dip
+ * width, never less than ten kilometres.
+ *
+ * This radius does two jobs — it is where the amplitude field stops holding
+ * the source amplitude flat, and it is the disc the globe draws as the wave's
+ * cavity — and until 18 September 2026 the two were written out separately:
+ * the field took half the width (since 9 September, measured at DART 21413),
+ * the globe took a quarter of the along-strike length, and the comment beside
+ * the drawing said they were the same number. For a Mw 9.2 the circle on
+ * screen was 201 km where the wave left from 111 km (B-053). One function
+ * now, read by both.
+ */
+export function seismicSourceCavityRadiusM(result: EarthquakeScenarioResult): number {
+  return Math.max((result.ruptureWidth as number) / 2, 10_000);
+}
+
 export function extractTsunamiMeta(result: ActiveResult): {
   sourceAmplitudeM: number;
   sourceCavityRadiusM: number;
@@ -1169,7 +1186,7 @@ export function extractTsunamiMeta(result: ActiveResult): {
       // the choice was made against a record of 0.30 m, and the buoy's
       // file crests at 0.81 (B-034); the law it chose reads 1.00× at
       // the median of nine megathrusts (BM-05).
-      sourceCavityRadiusM: Math.max((result.data.ruptureWidth as number) / 2, 10_000),
+      sourceCavityRadiusM: seismicSourceCavityRadiusM(result.data),
       // The ocean the wave's own module carried it on (rule 188 of
       // validation/basinDepthRules.ts), so the veil and the row printed
       // beside it cannot disagree. A scenario that names no basin gets the

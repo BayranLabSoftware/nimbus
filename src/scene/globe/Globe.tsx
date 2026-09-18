@@ -34,6 +34,7 @@ import { ISOTROPIC_RING, type RingAsymmetry } from '../../physics/effects/asymme
 import { aftershockShakingFootprint } from '../../physics/events/earthquake/aftershocks.js';
 import type { ImpactDamageRadii } from '../../physics/events/impact/damageRings.js';
 import {
+  seismicSourceCavityRadiusM,
   terrainSpanForState,
   useAppStore,
   type ActiveMonteCarlo,
@@ -219,6 +220,13 @@ const LATERAL_BLAST_COLOR = Color.fromCssColorString('#BE185D');
 /** Wind-advected ashfall 1-mm isopach — pale grey, low-opacity fill. */
 const ASHFALL_PLUME_COLOR = Color.fromCssColorString('#9CA3AF');
 
+/** Lahar reach — wet volcanic mud, a warm brown that sits apart from the
+ *  crimson pyroclastic disc it is usually drawn inside and from the grey of
+ *  the ash. Until 18 September 2026 the model published this runout, the
+ *  report and the panel printed it, and the globe drew nothing at all
+ *  (B-054). */
+const LAHAR_RING_COLOR = Color.fromCssColorString('#B45309');
+
 /** Ejecta-blanket footprint — chocolate brown rather than the previous
  *  mid-amber so it never visually merges with the gold 5 psi
  *  overpressure ring on the same impact scene. */
@@ -318,6 +326,7 @@ const TSUNAMI_CAVITY_ID = 'tsunami-cavity';
 // TsunamiWaveFrontId retired in Phase 16 with the closed-form ring tiers.
 type MmiRingId = 'mmi-ring-7' | 'mmi-ring-8' | 'mmi-ring-9';
 const PYROCLASTIC_RING_ID = 'pyroclastic-ring';
+const LAHAR_RING_ID = 'lahar-ring';
 const ASHFALL_PLUME_ID = 'ashfall-plume';
 const EJECTA_BLANKET_ID = 'ejecta-blanket';
 const LATERAL_BLAST_ID = 'lateral-blast';
@@ -395,6 +404,8 @@ const RING_RADIUS_SIGMA: Record<string, number> = {
   empAffected: 0.4,
   // Volcanic
   pyroclasticRunout: 0.7,
+  // A factor-two band, as `uq/conventions.ts` declares for this runout.
+  laharRunout: 1.0,
   lateralBlast: 0.5,
   ashfallPlume: 1.0,
   // Ejecta + tsunami cavity
@@ -419,6 +430,7 @@ const SIM_ENTITY_PREFIXES: readonly string[] = [
   'tsunami-', // cavity, wavefronts, FMM heatmaps, isochrones
   'aftershock-', // AFTERSHOCK_ID_PREFIX + AFTERSHOCK_DETAIL_IDS
   'pyroclastic-', // PYROCLASTIC_RING_ID
+  'lahar-', // LAHAR_RING_ID
   'ashfall-', // ASHFALL_PLUME_ID
   'ejecta-', // EJECTA_BLANKET_ID
   'lateral-blast', // LATERAL_BLAST_ID
@@ -2487,13 +2499,15 @@ export function Globe(): JSX.Element {
     // landslides — this keeps the visual cascade coherent across event
     // types and lets the bathymetric iso-amplitude path (which doesn't
     // care about the closed-form propagation law) take precedence
-    // wherever the FMM amplitude field has segments to extract. The
-    // canonical equivalent cavity radius for a megathrust is
-    // ruptureLength / 4 — the same value `extractTsunamiMeta` feeds
-    // into computeBathymetricTsunami, so the cavity ring on screen and
-    // the FMM source seed are physically consistent.
+    // wherever the FMM amplitude field has segments to extract. The cavity
+    // radius is `seismicSourceCavityRadiusM`, the one `extractTsunamiMeta`
+    // feeds into computeBathymetricTsunami, so the ring on screen is the disc
+    // the wave actually leaves from. It used to be a quarter of the
+    // along-strike length, written out here a second time, while the field
+    // took half the down-dip width: for a Mw 9.2 the circle was 201 km and
+    // the source 111 km, and the comment claimed they agreed (B-053).
     if (result.type === 'earthquake' && result.data.tsunami !== undefined) {
-      const eqCavityRadius = Math.max((result.data.ruptureLength as number) / 4, 10_000);
+      const eqCavityRadius = seismicSourceCavityRadiusM(result.data);
       if (Number.isFinite(eqCavityRadius) && eqCavityRadius > 0) {
         addCavityRing(eqCavityRadius);
       }
@@ -2523,6 +2537,39 @@ export function Globe(): JSX.Element {
         fillAlpha: zoneFillAlpha(pyroRadius, 0.24, waveOnStage),
         sigmaKey: 'pyroclasticRunout',
         labelBearingDeg: 45,
+        animate: true,
+        label: true,
+        edge: true,
+      });
+    }
+
+    // --- Volcano: lahar reach ---------------------------------------
+    // A lahar runs down a valley, not out in a circle, and the contract in
+    // `scene/visualContracts.ts` says so: the reach is the model's own, the
+    // shape is the placeholder every volcanic runout wears here until the
+    // DEM's drainage network routes it. What it is not any longer is absent:
+    // the model published this runout and the globe drew nothing, so a
+    // reader saw an eruption with no mud in it while the report beside it
+    // printed forty kilometres of it (B-054).
+    const laharRadius =
+      result.type === 'volcano' ? (result.data.laharRunout as number | undefined) : undefined;
+    if (
+      result.type === 'volcano' &&
+      laharRadius !== undefined &&
+      Number.isFinite(laharRadius) &&
+      laharRadius > 0
+    ) {
+      addDamageRing({
+        id: LAHAR_RING_ID,
+        kind: 'overpressure',
+        tooltipKind: 'laharRunout',
+        color: LAHAR_RING_COLOR,
+        radiusM: laharRadius,
+        geom: circularGeom(laharRadius),
+        innerSemiMajorM: 0,
+        fillAlpha: zoneFillAlpha(laharRadius, 0.18, waveOnStage),
+        sigmaKey: 'laharRunout',
+        labelBearingDeg: 225,
         animate: true,
         label: true,
         edge: true,

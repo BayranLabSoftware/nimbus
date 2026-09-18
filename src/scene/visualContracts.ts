@@ -378,6 +378,19 @@ export const VISUAL_CONTRACTS = {
       'the runout MAGNITUDE is a faithful Sheridan formula; the SHAPE is a placeholder',
     ],
   }),
+  laharRunout: defineContract({
+    id: 'laharRunout',
+    quantity: 'Lahar (debris-flow) reach',
+    formula:
+      'project recast of Iverson, Schilling & Vallance (1998) GSA Bull. 110(8): 972–984, area law read as a length',
+    unit: 'metres',
+    geometry: 'point-source-ring',
+    isQuantitative: true,
+    caveats: [
+      'today rendered as a circle around the vent — a lahar follows a valley, and routing it needs the DEM drainage network, as the pyroclastic contract says of its own shape',
+      'the reach is a recast of an inundation-AREA law calibrated on Mount St Helens 1980, not a transcribed runout equation; its band is a factor of two',
+    ],
+  }),
   lateralBlast: defineContract({
     id: 'lateralBlast',
     quantity: 'Mt-St-Helens-style directional blast wedge',

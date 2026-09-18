@@ -5,6 +5,7 @@ export {
   configurePopulationLookup,
   configureTerrainLoaders,
   resetAppStore,
+  seismicSourceCavityRadiusM,
   terrainSpanForState,
   useAppStore,
   type ActiveEarthquakePreset,

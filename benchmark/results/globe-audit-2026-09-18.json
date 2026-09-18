@@ -7,7 +7,7 @@
    "eventType": "impact",
    "ringsDrawn": 4,
    "polygonsDrawn": 0,
-   "checked": 2
+   "checked": 3
   },
   {
    "scenario": "impact-chelyabinsk-like",
@@ -15,7 +15,7 @@
    "eventType": "impact",
    "ringsDrawn": 4,
    "polygonsDrawn": 0,
-   "checked": 2
+   "checked": 3
   },
   {
    "scenario": "impact-iron-ground",
@@ -31,7 +31,7 @@
    "eventType": "impact",
    "ringsDrawn": 9,
    "polygonsDrawn": 0,
-   "checked": 5
+   "checked": 6
   },
   {
    "scenario": "impact-ten-km",
@@ -39,7 +39,7 @@
    "eventType": "impact",
    "ringsDrawn": 11,
    "polygonsDrawn": 0,
-   "checked": 6
+   "checked": 7
   },
   {
    "scenario": "explosion-hiroshima-like",
@@ -71,7 +71,7 @@
    "eventType": "explosion",
    "ringsDrawn": 6,
    "polygonsDrawn": 0,
-   "checked": 3
+   "checked": 4
   },
   {
    "scenario": "explosion-high-altitude",
@@ -103,7 +103,7 @@
    "eventType": "earthquake",
    "ringsDrawn": 4,
    "polygonsDrawn": 2,
-   "checked": 2
+   "checked": 3
   },
   {
    "scenario": "quake-small-remote",
@@ -119,7 +119,7 @@
    "eventType": "earthquake",
    "ringsDrawn": 4,
    "polygonsDrawn": 2,
-   "checked": 2
+   "checked": 3
   },
   {
    "scenario": "volcano-vesuvius-like",
@@ -127,7 +127,7 @@
    "eventType": "volcano",
    "ringsDrawn": 4,
    "polygonsDrawn": 0,
-   "checked": 1
+   "checked": 3
   },
   {
    "scenario": "volcano-evacuated",
@@ -135,15 +135,15 @@
    "eventType": "volcano",
    "ringsDrawn": 4,
    "polygonsDrawn": 0,
-   "checked": 1
+   "checked": 3
   },
   {
    "scenario": "volcano-small-lahar",
    "family": "volcano",
    "eventType": "volcano",
-   "ringsDrawn": 4,
+   "ringsDrawn": 5,
    "polygonsDrawn": 0,
-   "checked": 1
+   "checked": 4
   },
   {
    "scenario": "volcano-caldera",
@@ -151,7 +151,7 @@
    "eventType": "volcano",
    "ringsDrawn": 4,
    "polygonsDrawn": 0,
-   "checked": 1
+   "checked": 3
   },
   {
    "scenario": "volcano-flank-collapse",
@@ -159,7 +159,7 @@
    "eventType": "volcano",
    "ringsDrawn": 6,
    "polygonsDrawn": 0,
-   "checked": 1
+   "checked": 4
   },
   {
    "scenario": "slide-subaerial-fjord",
@@ -167,7 +167,7 @@
    "eventType": "landslide",
    "ringsDrawn": 3,
    "polygonsDrawn": 0,
-   "checked": 0
+   "checked": 1
   },
   {
    "scenario": "slide-submarine-shelf",
@@ -175,7 +175,7 @@
    "eventType": "landslide",
    "ringsDrawn": 4,
    "polygonsDrawn": 0,
-   "checked": 0
+   "checked": 1
   },
   {
    "scenario": "slide-confined-basin",
@@ -183,7 +183,7 @@
    "eventType": "landslide",
    "ringsDrawn": 3,
    "polygonsDrawn": 0,
-   "checked": 0
+   "checked": 1
   },
   {
    "scenario": "slide-tiny",
@@ -191,7 +191,7 @@
    "eventType": "landslide",
    "ringsDrawn": 3,
    "polygonsDrawn": 0,
-   "checked": 0
+   "checked": 1
   },
   {
    "scenario": "slide-shallow-slope",
@@ -207,7 +207,7 @@
    "eventType": "impact",
    "ringsDrawn": 11,
    "polygonsDrawn": 0,
-   "checked": 6
+   "checked": 7
   },
   {
    "scenario": "wave-burst-in-water",
@@ -215,7 +215,7 @@
    "eventType": "explosion",
    "ringsDrawn": 6,
    "polygonsDrawn": 0,
-   "checked": 3
+   "checked": 4
   },
   {
    "scenario": "wave-megathrust-far",
@@ -223,7 +223,7 @@
    "eventType": "earthquake",
    "ringsDrawn": 4,
    "polygonsDrawn": 2,
-   "checked": 2
+   "checked": 3
   },
   {
    "scenario": "wave-slide-into-lake",
@@ -231,7 +231,7 @@
    "eventType": "landslide",
    "ringsDrawn": 3,
    "polygonsDrawn": 0,
-   "checked": 0
+   "checked": 1
   },
   {
    "scenario": "wave-caldera-collapse",
@@ -239,8 +239,40 @@
    "eventType": "volcano",
    "ringsDrawn": 6,
    "polygonsDrawn": 0,
-   "checked": 1
+   "checked": 4
   }
  ],
- "findings": []
+ "findings": [],
+ "silences": [
+  {
+   "scenario": "slide-subaerial-fjord",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 0.3 km"
+  },
+  {
+   "scenario": "slide-submarine-shelf",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 2.2 km"
+  },
+  {
+   "scenario": "slide-confined-basin",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 0.6 km"
+  },
+  {
+   "scenario": "slide-tiny",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 0.0 km"
+  },
+  {
+   "scenario": "slide-shallow-slope",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 0.4 km"
+  },
+  {
+   "scenario": "wave-slide-into-lake",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 0.3 km"
+  }
+ ]
 }

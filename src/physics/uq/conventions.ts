@@ -147,7 +147,15 @@ export const OUTPUT_SIGMA = {
     source: 'Sheridan 1979 vs Dade & Huppert 1998',
   },
   ashfallArea: { kind: 'lognormal', sigma: Math.LN2, source: 'Walker 1980 / Pyle 1989' }, // factor-2 band
-  laharRunout: { kind: 'lognormal', sigma: Math.LN2, source: 'Iverson 1997 volume-runout' }, // factor-2 band
+  // The law is a project recast of Iverson et al. 1998's inundation-AREA
+  // relation, not Iverson 1997 and not a published runout equation; the
+  // module that carries it has said so since 18 September 2026 and this row
+  // said otherwise.
+  laharRunout: {
+    kind: 'lognormal',
+    sigma: Math.LN2,
+    source: 'project recast of Iverson et al. 1998 area law',
+  }, // factor-2 band
   tsunamiRunup: { kind: 'linear-fraction', sigma: 0.3, source: 'Synolakis 1987 run-up' },
   tsunamiWunnemannFarField: {
     kind: 'lognormal',
