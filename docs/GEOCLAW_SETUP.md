@@ -84,18 +84,71 @@ cd /mnt/c/Users/panzo/Desktop/Nimbus-main
 # the rest of the commands in this doc run from here
 ```
 
-## Install (≈ 30 minutes total) — Linux / macOS shortcut
+## Install (≈ 30 minutes total) — Linux / macOS
+
+**`pip install clawpack` is not enough, and this document said it was until 19
+September 2026.** The wheel on PyPI (5.14.0) carries the Python tooling and
+nothing else: zero `.f90` files, zero Makefiles, no `examples/` directory. The
+recipe below — `pip install` and then `make` inside
+`$CLAW/geoclaw/examples/...` — cannot work against it, because neither the
+Fortran kernel nor the example is there. The fixtures this project ships were
+produced on the WSL2 path, where the source tree came from a checkout, and
+nobody had run the macOS path since.
+
+The Fortran comes from the source release:
 
 ```sh
-pip install clawpack
-export CLAW=$(python -c "import clawpack; print(clawpack.__path__[0])")
+# The Python side (setrun, clawutil, the plotting tools)
+python3 -m venv venv && ./venv/bin/pip install clawpack
+
+# The Fortran side and the examples: the source release, ~10 MB
+curl -sLO https://github.com/clawpack/clawpack/releases/download/v5.14.0/clawpack-v5.14.0.tar.gz
+tar xzf clawpack-v5.14.0.tar.gz
+
+export CLAW="$PWD/clawpack-v5.14.0"
+export PYTHONPATH="$CLAW"
+export PATH="$PWD/venv/bin:$PATH"
+export FC=gfortran          # gfortran 11+; Homebrew's GCC provides it on macOS
+
 cd "$CLAW/geoclaw/examples/tsunami/chile2010"
 make .output
 make plots
 ```
 
 If `make .output` produces a `_output/` directory full of `fort.t*` and
-`fort.q*` files, you are ready.
+`fort.q*` files, you are ready. The example fetches its own topography
+(`etopo10min120W60W60S0S.asc`) and builds its own source with the Okada model
+(`make topo`) on first run.
+
+### Keep the tree at a short path
+
+**GeoClaw's Fortran truncates file names.** It holds them in fixed-length
+character variables, and a path longer than about 150 characters is cut
+mid-name: the run then prints
+
+```
+ Missing dtopo file:
+     /very/long/path/.../geoclaw/scratch/dtopo_us
+```
+
+— note the truncated `dtopo_us` — and `xgeoclaw` exits at once, leaving a
+`_output/` with every `.data` file, a zero-byte `fort.amr`, and **no `fort.q`
+at all**. Nothing says "path too long"; it reads as a missing file that is
+plainly there.
+
+So put the source tree where its path is short, or point a short symlink at it
+and set `CLAW` to the symlink:
+
+```sh
+ln -sfn /the/very/long/path/clawpack-v5.14.0 /tmp/nclaw
+export CLAW=/tmp/nclaw
+```
+
+On 19 September 2026 this was what stood between the macOS path and a working
+GeoClaw: with `CLAW` at a 105-character scratch path the run died silently, and
+with the same tree reached through a 10-character symlink the Chile 2010 example
+produced 19 solution frames and a gauge series at DART 32412 — 549 samples over
+8.93 hours, crest 0.178 m, against about 0.2 m observed.
 
 ## Scenarios we ship
 
