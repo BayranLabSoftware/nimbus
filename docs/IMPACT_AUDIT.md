@@ -293,10 +293,16 @@ Nessuno dei punti dell'elenco resta aperto. Quello che resta è più grande di
 tutti loro e non è un difetto: **la forma vera di un airburst non è un
 cerchio.** Tunguska stese 2 200 km² di foresta a farfalla; la strada è la
 sorgente cilindrica di Collins et al. (2017) sulla deposizione del modello a
-frittella, e vuole un round suo. La pagina della metodologia, per di più, dice
-che l'ellisse vera «reaches farthest **across**» la traccia, mentre quella che
-abbiamo tolto era allungata **lungo**: quale delle due sia giusta è la prima
-domanda di quel round.
+frittella, e vuole un round suo. La direzione, che era la prima domanda di quel
+round, è **risolta**: Collins et al. (2017) la danno due volte citando Popova
+et al. (2013) — «semimajor axes **perpendicular** to the trajectory» e
+«~10 000 km² elongated in the direction **transverse** to the fireball
+trajectory» — e ne danno il motivo fisico, l'interferenza distruttiva fra i
+contributi della scia lungo la traccia. L'ellisse che avevamo era ruotata di
+novanta gradi rispetto a quella misurata (B-072). Disegnare quella vera vuole
+la sorgente cilindrica sulla deposizione del modello a frittella; disegnare
+un'ellisse trasversale tarata sull'unico evento che c'è sarebbe lo stesso
+errore nell'altro verso, e non si fa.
 
 Il round del fuoco ha anche chiuso due silenzi della mappa che non erano
 nell'elenco perché l'audit guardava gli impatti e non il globo: la vista

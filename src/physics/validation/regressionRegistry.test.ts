@@ -1559,13 +1559,30 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(panel).toContain('Math.max(casualties.delayedDeathsLow, casualties.delayedDeathsHigh)');
   });
 
+  it("B-072 an airburst's ellipse is measured across the track, not along it", () => {
+    // Settled by Collins et al. (2017), citing Popova et al. (2013). Nothing
+    // in the code draws it yet; what this holds is that no document still
+    // says the opposite, and that the envelope which pointed the wrong way is
+    // gone from a burst that never lands.
+    const asymmetry = readFileSync(
+      fileURLToPath(new URL('../effects/asymmetry.js', import.meta.url)).replace(/\.js$/, '.ts'),
+      'utf8'
+    );
+    expect(asymmetry).toContain('PERPENDICULAR to the trajectory');
+    expect(asymmetry).toContain('interfere destructively');
+    // And the law still refuses to be applied where nothing reaches the ground.
+    const ring = obliqueImpactRingAsymmetry(18, 45, 'thermal', false);
+    expect(ring.semiMajorMultiplier).toBe(1);
+    expect(ring.semiMinorMultiplier).toBe(1);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-071 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-072 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 71;
-    expect(expectedRows).toBe(71);
+    const expectedRows = 72;
+    expect(expectedRows).toBe(72);
   });
 });

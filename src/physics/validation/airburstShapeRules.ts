@@ -194,10 +194,32 @@ export const TUNGUSKA_FELLED_AREA_M2 = 2_200e6;
  * & Aftosmis (2018) for the analytic line source being inapplicable so close
  * to such a trail and noting that only three-dimensional hydrocodes have drawn
  * the shape. The envelope removed here elongated the rings ALONG the track. So
- * it was not merely the wrong size: by the project's own reading of the
- * literature it may have been the wrong direction. Which of the two the real
- * footprint takes is not settled here — it is the first question the line-
- * source round has to answer, before any axis is drawn again.
+ * it was not merely the wrong size; it was the wrong direction.
+ *
+ * SETTLED, later the same day, by the paper this round already rests on.
+ * Collins et al. (2017) say it twice and cite the measurement both times.
+ * Page 2: observations of Chelyabinsk "suggest elliptical-shaped blast damage
+ * contours with semimajor axes PERPENDICULAR to the trajectory, which
+ * contrasts with the circular peak pressure contours predicted by the
+ * static-source model". Page 12: "The ~500 kt Chelyabinsk airburst caused
+ * minor building damage and broken windows over an elliptical area of
+ * ~10,000 km² elongated in the direction TRANSVERSE to the fireball
+ * trajectory (Popova et al. 2013)". And page 10 gives the mechanism: "The
+ * amplitude of the blastwave vertically below the fireball is somewhat lower
+ * than that at azimuths more oblique to the fireball, owing to destructive
+ * interference of the shockwave emanating from different points along the
+ * meteoroid's trajectory." Along the track the trail's own contributions
+ * cancel; across it they add.
+ *
+ * So the ellipse this project used to draw was rotated ninety degrees from
+ * the one that was measured. Removing it was right for the reason given, and
+ * right for a reason that was not known when it was removed. What is still
+ * not done is drawing the true one: that wants the cylindrical line source on
+ * the pancake model's deposition, which Collins et al. describe, Avramenko et
+ * al. (2014) and Aftosmis et al. (2016) have run in three dimensions, and
+ * nobody has reduced to a law. Drawing a transverse ellipse fitted to the one
+ * event there is would be the same mistake in the other direction, and it is
+ * not done here.
  *
  * What the round leaves standing, and it is the honest part. The picture is
  * now internally consistent — the beacon says the burst is overhead and the

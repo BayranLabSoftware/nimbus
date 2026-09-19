@@ -218,12 +218,17 @@ export function craterAsymmetry(impactAngleDeg: number, impactAzimuthDeg: number
  * outside its domain by forgetting to ask. Rules 235 to 240 of
  * validation/airburstShapeRules.ts.
  *
- * What this is not: the real footprint of an airburst is not a circle. The
- * blast radiates from the meteoroid's trajectory, Tunguska felled 2 200 km² of
- * forest in a butterfly, and Collins et al. (2017) model that with a
- * cylindrical line source along the path. Nimbus does not yet integrate one,
- * and draws the shape its own source has rather than one nothing behind the
- * picture supports.
+ * What this is not: the real footprint of an airburst is not a circle, and it
+ * is not this envelope turned down either. Collins et al. (2017), citing
+ * Popova et al. (2013) on Chelyabinsk, put the damage ellipse's semi-major
+ * axis PERPENDICULAR to the trajectory — ~10 000 km² of broken windows
+ * elongated transverse to the fireball's path — because along the track the
+ * contributions from different points of the trail interfere destructively.
+ * This envelope elongated along it. Tunguska felled 2 200 km² of forest in a
+ * butterfly. Drawing the true shape wants the cylindrical line source on the
+ * pancake model's deposition, which Nimbus does not yet integrate; until it
+ * does, an airburst is drawn as the shape its own source has, and not as one
+ * nothing behind the picture supports.
  */
 export function obliqueImpactRingAsymmetry(
   impactAngleDeg: number,
