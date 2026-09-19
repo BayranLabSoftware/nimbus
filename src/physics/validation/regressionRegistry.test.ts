@@ -1524,13 +1524,37 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(VISUAL_CONTRACTS.fireIgnition.quantity).toBe('ignition radius');
   });
 
+  it('B-065 a mass is printed in the unit it is', () => {
+    // Andrea's own run, 19 September 2026: a 1 km stone at 7.5 km/s into
+    // 200 m of water off Miami. The report printed 49.1 Gt of stratospheric
+    // dust — thirty times the 1.6 Gt impactor that raised it — because the
+    // mass tiers ran kg, t, Mt, Gt and skipped the kilotonne.
+    const r = simulateImpact({
+      impactorDiameter: m(1_000),
+      impactorDensity: kgPerM3(3_000),
+      impactVelocity: mps(7_500),
+      targetDensity: kgPerM3(2_700),
+      impactAngle: degreesToRadians(deg(45)),
+      waterDepth: m(200),
+    });
+    // A gigatonne is 10¹² kg; the dust is 4.91 × 10¹⁰ of them, so megatonnes.
+    expect(r.atmosphere.stratosphericDust as number).toBeCloseTo(4.91e10, -8);
+    const fields = fieldsFor({ type: 'impact', data: r } as never).outputs;
+    const value = (label: string): string =>
+      fields.find((f) => f.label === label)?.value ?? '(missing)';
+    expect(value('Stratospheric dust')).toBe('49.1 Mt');
+    expect(value('Acid-rain mass (HNO₃)')).toBe('13.7 Mt');
+    // And the impactor's own mass, which used to read "1.6e+0 Gt".
+    expect(value('Impactor mass')).toBe('1.6 Gt');
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-064 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-065 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 64;
-    expect(expectedRows).toBe(64);
+    const expectedRows = 65;
+    expect(expectedRows).toBe(65);
   });
 });

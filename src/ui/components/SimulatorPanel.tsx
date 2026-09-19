@@ -456,15 +456,19 @@ function SectionHeading({ labelKey }: { labelKey: string }): JSX.Element {
 
 function formatMass(kilograms: number): string {
   if (!Number.isFinite(kilograms) || kilograms <= 0) return `0 kg`;
-  // Above 1 Tt (10¹² kg) the dynamic range collapses readability —
-  // fall back to scientific notation. Below that, walk the kg → t →
-  // Mt → Gt tiers with rounding-crossing detection.
-  if (kilograms >= 1e12) return `${formatScientific(kilograms)} kg`;
+  // A tonne is 10³ kg, a kilotonne 10⁶, a megatonne 10⁹, a gigatonne 10¹².
+  // The tiers below used to run kg, t, Mt, Gt — skipping the kilotonne and
+  // so naming every mass from a million kilogrammes up a thousand times
+  // larger than it is (B-065). Beyond a teratonne the dynamic range collapses
+  // readability and scientific notation takes over.
+  if (kilograms >= 1e18) return `${formatScientific(kilograms)} kg`;
   return formatWithUnitTiers(kilograms, [
     { scale: 1, digits: 0, label: 'kg' },
     { scale: 1_000, digits: 2, label: 't' },
-    { scale: 1e6, digits: 2, label: 'Mt' },
-    { scale: 1e9, digits: 2, label: 'Gt' },
+    { scale: 1e6, digits: 2, label: 'kt' },
+    { scale: 1e9, digits: 2, label: 'Mt' },
+    { scale: 1e12, digits: 2, label: 'Gt' },
+    { scale: 1e15, digits: 2, label: 'Tt' },
   ]);
 }
 

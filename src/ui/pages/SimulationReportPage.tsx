@@ -53,11 +53,19 @@ function fmtMt(mt: number): string {
   return `${(mt / 1_000).toFixed(2)} Gt`;
 }
 
+/** A tonne is 10³ kg, a kilotonne 10⁶, a megatonne 10⁹, a gigatonne 10¹², a
+ *  teratonne 10¹⁵. Two of the branches here named a mass a thousand times
+ *  larger than it is, so a 1 km stone's 49.1 megatonnes of stratospheric dust
+ *  printed as 49.1 gigatonnes — thirty times the impactor that raised it
+ *  (B-065). The exponential branch is gone with them: it wrote 1.571 × 10¹² kg
+ *  as "1.6e+0 Gt". */
 function fmtMass(kg: number): string {
   if (!Number.isFinite(kg) || kg <= 0) return '—';
-  if (kg >= 1e12) return `${(kg / 1e12).toExponential(1)} Gt`;
-  if (kg >= 1e9) return `${(kg / 1e9).toFixed(1)} Gt`;
-  if (kg >= 1e6) return `${(kg / 1e6).toFixed(1)} Mt`;
+  if (kg >= 1e18) return `${(kg / 1e15).toExponential(1)} Tt`;
+  if (kg >= 1e15) return `${(kg / 1e15).toFixed(1)} Tt`;
+  if (kg >= 1e12) return `${(kg / 1e12).toFixed(1)} Gt`;
+  if (kg >= 1e9) return `${(kg / 1e9).toFixed(1)} Mt`;
+  if (kg >= 1e6) return `${(kg / 1e6).toFixed(1)} kt`;
   if (kg >= 1_000) return `${(kg / 1_000).toFixed(0)} t`;
   return `${kg.toFixed(0)} kg`;
 }
