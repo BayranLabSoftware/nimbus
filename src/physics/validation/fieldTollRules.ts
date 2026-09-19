@@ -87,6 +87,80 @@
  * needs it will say so and pay for it.
  */
 
+/**
+ * THE OUTCOME, measured on 20 September 2026. Rules 335 to 341 were pushed in
+ * 15a3229, the arithmetic in e49ea2a and the harness in 4ccb567 — all three
+ * before one toll was read from any of them.
+ *
+ * **REFUSED on rule 338(b)**, and rule 339 said in advance what that means:
+ * the debt stays declared, and the round that answers this is about the
+ * curves.
+ *
+ * | row              | record | today | over the field | today | over the field |
+ * |------------------|-------:|------:|---------------:|------:|---------------:|
+ * | Northridge 1994  |     57 |    29 |             18 | 0.51  |          0.32  |
+ * | L'Aquila 2009    |    309 |    42 |             26 | 0.14  |          0.08  |
+ * | Amatrice 2016    |    299 |     1 |              1 | 0.00  |          0.00  |
+ * | Gorkha 2015      |  8 964 | 5 356 |          2 405 | 0.60  |          0.27  |
+ * | Tōhoku 2011      | 18 500 | 7 997 |          5 648 | 0.43  |          0.31  |
+ * | Sumatra 2004     |227 898 | 4 263 |          6 917 | 0.02  |          0.03  |
+ * | Kumamoto 2016    |    273 |   199 |             36 | 0.73  |          0.13  |
+ * | Durrës 2019      |     51 |    15 |              8 | 0.29  |          0.15  |
+ *
+ *   338(b) bias 0.103 → 0.064, σ 2.123 → 1.817 on ten rows — OUTSIDE
+ *   340    slowest toll 21 ms against 250                  — inside
+ *
+ * THE SCATTER TIGHTENS AND THE BIAS GETS WORSE, which is exactly the pair the
+ * amendment refuses: a count that agrees with itself more and with the record
+ * less. We were a tenth of the recorded dead; cell by cell we are a
+ * sixteenth.
+ *
+ * IT IS NOT A DEFECT OF THE COUNT, and that was checked before this was
+ * written rather than assumed:
+ *
+ *   - the field's own MMI VII area on Northridge, with the scenario's single
+ *     Vs30, is 903 km² against the 904 km² of the published radius — the field
+ *     reproduces the ring it replaces to one part in nine hundred;
+ *   - the people that field holds, summed by density times cell area, are
+ *     1.517 M against the 1.516 M the shipped counter reads in the same circle
+ *     — one part in fifteen hundred.
+ *
+ * So the arithmetic is right and the answer is smaller. Two things make it
+ * smaller, and both are the count becoming MORE faithful:
+ *
+ *   1. THE GROUND AT THE EPICENTRE IS SOFTER THAN THE GROUND AROUND IT. The
+ *      store reads Wald & Allen's Vs30 from the slope under the pick — 247 m/s
+ *      at Northridge, a soft-basin value — and hands it to the whole
+ *      footprint. The USGS grid, which carries California's own regional map,
+ *      gives harder ground over much of that footprint: the MMI VII area falls
+ *      from 903 km² to 646. Every row whose epicentre sits on the softest
+ *      patch of its own footprint has been counting the whole footprint on
+ *      that patch.
+ *   2. A BAND'S RATE IS NOT ITS AVERAGE. The annulus between MMI VII and VIII
+ *      is charged at 7.5, and most of its area — and most of its people, where
+ *      they are spread evenly — lies near its outer edge, at 7.0 to 7.3, where
+ *      PAGER's rate is several times lower. Counting each cell at its own
+ *      intensity removes that subsidy.
+ *
+ * WHAT THIS SETTLES. The toll's tenfold shortfall against the record was being
+ * masked, in part, by two generous approximations, and removing them makes it
+ * a sixteenfold shortfall. The deficit is not in the geometry of the count: it
+ * is in what the model says the ground does, or in what PAGER's curves say
+ * that shaking does to people — and this round cannot tell which, because rule
+ * 337 froze both.
+ *
+ * READ WITH E1's OUTCOME OF THE SAME DAY, the two are one statement: we paint
+ * MMI VII on nine tenths of the earthquakes whose published map holds none,
+ * and we kill a sixteenth of the people the record counts. Too much area at
+ * low intensity, too little intensity where the people are.
+ *
+ * NOTHING IS WIRED. `shakingCasualtyPlan` still lays annuli, every published
+ * figure still comes from them, the report is untouched, and rule 313's debt
+ * stands with this measurement written under it.
+ */
+export const FIELD_TOLL_CANDIDATE =
+  'REFUSED 20 September 2026 on rule 338(b): counting the dead cell by cell takes the bias from 0.103 to 0.064 of the record while tightening σ from 2.123 to 1.817 — agreeing with itself more and with the record less. The count was checked first and is right to one part in nine hundred on area and one in fifteen hundred on people; it is smaller because it is more faithful. The epicentre\u2019s Vs30 (247 m/s at Northridge) is softer than the ground around it, so the field\u2019s MMI VII area falls from 903 km\u00b2 to 646; and a band charged at 7.5 subsidises people who are mostly at 7.0 to 7.3. The tenfold shortfall in the dead was masked by two generous approximations and is really sixteenfold.';
+
 /** Rule 338(b) and (c): the pair a set is judged on, before and after. */
 export interface TollReading {
   bias: number;
