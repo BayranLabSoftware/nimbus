@@ -1,0 +1,1075 @@
+{
+  "rules": "342 to 348",
+  "set": "rule 11's 408 rows, already read — not held out (rule 345)",
+  "belowGreat": {
+    "checked": 350,
+    "moved": 0
+  },
+  "cell": {
+    "before": {
+      "rows": 58,
+      "withSomething": 34,
+      "bias": 1.976257036517351,
+      "scatterLn": 2.294962853532979,
+      "inside": 31
+    },
+    "after": {
+      "rows": 58,
+      "withSomething": 34,
+      "bias": 1.9898040828690065,
+      "scatterLn": 2.375021987805278,
+      "inside": 32
+    }
+  },
+  "bar": {
+    "bias": false,
+    "inside": true,
+    "below": true
+  },
+  "rows": [
+    {
+      "event": "2008-05-12 06:28 UTC, CHINA: SICHUAN PROVINCE",
+      "comcat": "usp000g650",
+      "magnitude": 7.9,
+      "source": "crustal",
+      "strikeDeg": 43.87214495824355,
+      "record": 87652,
+      "before": {
+        "model": 45565,
+        "inside": true,
+        "bandDecades": 3.8496243548038116
+      },
+      "after": {
+        "model": 10765,
+        "inside": true,
+        "bandDecades": 4.169393563481599
+      }
+    },
+    {
+      "event": "2009-01-03 19:43 UTC, PAPUA NEW GUINEA: NEAR NORTH COAST",
+      "comcat": "usp000gs2d",
+      "magnitude": 7.7,
+      "source": "crustal",
+      "strikeDeg": 98.95243633120566,
+      "record": 5,
+      "before": {
+        "model": 5,
+        "inside": true,
+        "bandDecades": 2.4983105537896004
+      },
+      "after": {
+        "model": 6,
+        "inside": true,
+        "bandDecades": 2.5658478186735176
+      }
+    },
+    {
+      "event": "2009-03-19 18:17 UTC, TONGA ISLANDS",
+      "comcat": "usp000gv5p",
+      "magnitude": 7.6,
+      "source": "interface-capacity",
+      "strikeDeg": 196.1649243940435,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2009-07-15 09:22 UTC, NEW ZEALAND: OFF WEST COAST OF SOUTH ISLAND",
+      "comcat": "usp000gz8j",
+      "magnitude": 7.8,
+      "source": "interface-depth",
+      "strikeDeg": 29.01417230669739,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2009-08-10 19:55 UTC, INDIA: ANDAMAN I",
+      "comcat": "usp000h05x",
+      "magnitude": 7.5,
+      "source": "interface-depth",
+      "strikeDeg": 27.537034829677282,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 2.1760912590556813
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 1.8808135922807914
+      }
+    },
+    {
+      "event": "2009-09-29 17:48 UTC, SAMOA ISLANDS",
+      "comcat": "usp000h1ys",
+      "magnitude": 8.1,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2009-10-07 22:18 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS",
+      "comcat": "usp000h2gd",
+      "magnitude": 7.8,
+      "source": "interface-depth",
+      "strikeDeg": 348.54862492425707,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0.9030899869919435
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 1.1760912590556813
+      }
+    },
+    {
+      "event": "2010-02-27 06:34 UTC, CHILE: MAULE, CONCEPCION, TALCAHUANO",
+      "comcat": "official20100227063411530_30",
+      "magnitude": 8.8,
+      "source": "interface-depth",
+      "strikeDeg": 16.776118298494453,
+      "record": 402,
+      "before": {
+        "model": 1267,
+        "inside": true,
+        "bandDecades": 2.9083980643319776
+      },
+      "after": {
+        "model": 1215,
+        "inside": true,
+        "bandDecades": 3.0504266297384093
+      }
+    },
+    {
+      "event": "2010-04-06 22:15 UTC, INDONESIA: SUMATRA",
+      "comcat": "usp000hat0",
+      "magnitude": 7.8,
+      "source": "interface-depth",
+      "strikeDeg": 319.8340253696621,
+      "record": 0,
+      "before": {
+        "model": 8,
+        "inside": true,
+        "bandDecades": 3.016197353512439
+      },
+      "after": {
+        "model": 9,
+        "inside": true,
+        "bandDecades": 2.9876662649262746
+      }
+    },
+    {
+      "event": "2010-06-12 19:26 UTC, INDIA: LITTLE NICOBAR ISLAND",
+      "comcat": "usp000hdwb",
+      "magnitude": 7.5,
+      "source": "crustal",
+      "strikeDeg": 346.3428232976289,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2010-10-25 14:42 UTC, INDONESIA: SUMATRA",
+      "comcat": "usp000hnj4",
+      "magnitude": 7.8,
+      "source": "interface-depth",
+      "strikeDeg": 326.53333790836325,
+      "record": 0,
+      "before": {
+        "model": 5,
+        "inside": true,
+        "bandDecades": 2.5774917998372255
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 1.8388490907372552
+      }
+    },
+    {
+      "event": "2011-03-11 05:46 UTC, JAPAN: HONSHU",
+      "comcat": "official20110311054624120_30",
+      "magnitude": 9.1,
+      "source": "interface-depth",
+      "strikeDeg": 199.84684622370014,
+      "record": 1474,
+      "before": {
+        "model": 2647,
+        "inside": true,
+        "bandDecades": 4.891917786575779
+      },
+      "after": {
+        "model": 1683,
+        "inside": true,
+        "bandDecades": 5.334630649907369
+      }
+    },
+    {
+      "event": "2011-03-11 06:25 UTC, JAPAN: OFF EAST COAST HONSHU",
+      "comcat": "usp000hvpg",
+      "magnitude": 7.7,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2011-07-06 19:03 UTC, NEW ZEALAND: KERMADEC ISLANDS",
+      "comcat": "usp000j48h",
+      "magnitude": 7.6,
+      "source": "interface-depth",
+      "strikeDeg": 199.53861647740712,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2012-04-11 08:38 UTC, INDONESIA: N SUMATRA: OFF WEST COAST",
+      "comcat": "official20120411083836720_20",
+      "magnitude": 8.6,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 10,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 2.7810369386211318
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 2.7810369386211318
+      }
+    },
+    {
+      "event": "2012-04-11 10:43 UTC, INDONESIA: N SUMATRA: OFF WEST COAST",
+      "comcat": "usp000jhjb",
+      "magnitude": 8.2,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2012-08-31 12:47 UTC, PHILIPPINES: CAGAYAN DE ORO, TACLOBAN",
+      "comcat": "usp000jr83",
+      "magnitude": 7.6,
+      "source": "crustal",
+      "strikeDeg": 160.99061966492582,
+      "record": 1,
+      "before": {
+        "model": 0,
+        "inside": false,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": false,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2012-09-05 14:42 UTC, COSTA RICA: NICOYA",
+      "comcat": "usp000jrsw",
+      "magnitude": 7.6,
+      "source": "interface-depth",
+      "strikeDeg": 305.7360481631863,
+      "record": 2,
+      "before": {
+        "model": 171,
+        "inside": false,
+        "bandDecades": 2.8303747831935504
+      },
+      "after": {
+        "model": 196,
+        "inside": true,
+        "bandDecades": 3.5110808455391185
+      }
+    },
+    {
+      "event": "2012-10-28 03:04 UTC, CANADA: QUEEN CHARLOTTE ISLANDS",
+      "comcat": "usp000juhz",
+      "magnitude": 7.8,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2013-01-05 08:58 UTC, ALASKA: SOUTHEASTERN",
+      "comcat": "ak0138esnzr",
+      "magnitude": 7.5,
+      "source": "crustal",
+      "strikeDeg": 332.9889148521677,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2013-02-06 01:12 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS",
+      "comcat": "usc000f1s0",
+      "magnitude": 8,
+      "source": "interface-depth",
+      "strikeDeg": 303.95358659516273,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 2.383815365980431
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 1.7323937598229686
+      }
+    },
+    {
+      "event": "2013-09-24 11:29 UTC, PAKISTAN: AWARAN, KECH",
+      "comcat": "usb000jyiv",
+      "magnitude": 7.7,
+      "source": "interface-depth",
+      "strikeDeg": 294.78274481034896,
+      "record": 825,
+      "before": {
+        "model": 5270,
+        "inside": true,
+        "bandDecades": 3.4474848867845473
+      },
+      "after": {
+        "model": 4562,
+        "inside": true,
+        "bandDecades": 3.6962350062227167
+      }
+    },
+    {
+      "event": "2013-11-17 09:04 UTC, SCOTIA SEA: SOUTH ORKNEY ISLANDS",
+      "comcat": "usb000l0gq",
+      "magnitude": 7.7,
+      "source": "crustal",
+      "strikeDeg": 101.501041511148,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2014-04-01 23:46 UTC, CHILE: NORTHERN: IQUIQUE, ALTO HOSPICIO",
+      "comcat": "usc000nzvd",
+      "magnitude": 8.2,
+      "source": "interface-depth",
+      "strikeDeg": 340.73868706582084,
+      "record": 7,
+      "before": {
+        "model": 1,
+        "inside": true,
+        "bandDecades": 3.0492180226701815
+      },
+      "after": {
+        "model": 44,
+        "inside": true,
+        "bandDecades": 3.5208763816883417
+      }
+    },
+    {
+      "event": "2014-04-03 02:43 UTC, CHILE: NORTHERN: IQUIQUE",
+      "comcat": "usc000p27i",
+      "magnitude": 7.7,
+      "source": "interface-depth",
+      "strikeDeg": 350.83646489957994,
+      "record": 0,
+      "before": {
+        "model": 29,
+        "inside": true,
+        "bandDecades": 3.1179338350396413
+      },
+      "after": {
+        "model": 5,
+        "inside": true,
+        "bandDecades": 2.781755374652469
+      }
+    },
+    {
+      "event": "2014-04-12 20:14 UTC, SOLOMON ISLANDS",
+      "comcat": "usc000phx5",
+      "magnitude": 7.6,
+      "source": "interface-depth",
+      "strikeDeg": 274.67345533049865,
+      "record": 0,
+      "before": {
+        "model": 1,
+        "inside": true,
+        "bandDecades": 2.0253058652647704
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2015-04-25 06:11 UTC, NEPAL: KATHMANDU; INDIA; CHINA; BANGLADESH",
+      "comcat": "us20002926",
+      "magnitude": 7.8,
+      "source": "interface-depth",
+      "strikeDeg": 281.78101338317356,
+      "record": 8957,
+      "before": {
+        "model": 2983,
+        "inside": true,
+        "bandDecades": 3.8045849835764063
+      },
+      "after": {
+        "model": 2914,
+        "inside": true,
+        "bandDecades": 3.8976069336947936
+      }
+    },
+    {
+      "event": "2015-09-16 22:54 UTC, CHILE: CENTRAL",
+      "comcat": "us20003k7a",
+      "magnitude": 8.3,
+      "source": "interface-depth",
+      "strikeDeg": 2.2882251913522396,
+      "record": 7,
+      "before": {
+        "model": 73,
+        "inside": true,
+        "bandDecades": 3.1730890999406967
+      },
+      "after": {
+        "model": 137,
+        "inside": true,
+        "bandDecades": 3.3518349434774417
+      }
+    },
+    {
+      "event": "2016-03-02 12:49 UTC, INDONESIA: SUMATRA:",
+      "comcat": "us10004u1y",
+      "magnitude": 7.8,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2016-04-16 23:58 UTC, ECUADOR: NEAR WEST COAST: MANABI, ESMERALDAS",
+      "comcat": "us20005j32",
+      "magnitude": 7.8,
+      "source": "interface-depth",
+      "strikeDeg": 25.772412869690527,
+      "record": 663,
+      "before": {
+        "model": 2591,
+        "inside": true,
+        "bandDecades": 3.5163581263422024
+      },
+      "after": {
+        "model": 3554,
+        "inside": true,
+        "bandDecades": 3.519531462404653
+      }
+    },
+    {
+      "event": "2016-11-13 11:02 UTC, NEW ZEALAND: AMBERLEY",
+      "comcat": "us1000778i",
+      "magnitude": 7.8,
+      "source": "crustal",
+      "strikeDeg": 248.15963435515687,
+      "record": 2,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 1.041392685158225
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0.7781512503836436
+      }
+    },
+    {
+      "event": "2016-12-08 17:38 UTC, SOLOMON ISLANDS",
+      "comcat": "us20007z80",
+      "magnitude": 7.8,
+      "source": "interface-depth",
+      "strikeDeg": 298.8474571732336,
+      "record": 1,
+      "before": {
+        "model": 18,
+        "inside": true,
+        "bandDecades": 3.3873898263387296
+      },
+      "after": {
+        "model": 8,
+        "inside": true,
+        "bandDecades": 3.071513805095089
+      }
+    },
+    {
+      "event": "2016-12-25 14:22 UTC, CHILE",
+      "comcat": "us10007mn3",
+      "magnitude": 7.6,
+      "source": "interface-depth",
+      "strikeDeg": 1.3438809021971565,
+      "record": 0,
+      "before": {
+        "model": 4,
+        "inside": true,
+        "bandDecades": 2.3283796034387376
+      },
+      "after": {
+        "model": 6,
+        "inside": true,
+        "bandDecades": 2.4712917110589387
+      }
+    },
+    {
+      "event": "2017-07-17 23:34 UTC, RUSSIA: BERING ISLAND",
+      "comcat": "us20009x42",
+      "magnitude": 7.7,
+      "source": "interface-depth",
+      "strikeDeg": 316.10861118653247,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2018-01-10 02:51 UTC, HONDURAS",
+      "comcat": "us1000c2zy",
+      "magnitude": 7.5,
+      "source": "crustal",
+      "strikeDeg": 76.25367494670292,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2018-01-23 09:31 UTC, ALASKA: KODIAK ISLAND",
+      "comcat": "us2000cmy3",
+      "magnitude": 7.9,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2018-02-25 17:44 UTC, PAPUA NEW GUINEA: S HIGHLANDS, HELA; INDONESIA",
+      "comcat": "us2000d7q6",
+      "magnitude": 7.5,
+      "source": "crustal",
+      "strikeDeg": 296.7454484485995,
+      "record": 145,
+      "before": {
+        "model": 450,
+        "inside": true,
+        "bandDecades": 3.695956738868444
+      },
+      "after": {
+        "model": 256,
+        "inside": true,
+        "bandDecades": 4.046260980192122
+      }
+    },
+    {
+      "event": "2018-09-28 10:02 UTC, INDONESIA: SULAWESI",
+      "comcat": "us1000h3p4",
+      "magnitude": 7.5,
+      "source": "crustal",
+      "strikeDeg": 339.65437433260604,
+      "record": 4340,
+      "before": {
+        "model": 141,
+        "inside": true,
+        "bandDecades": 3.4310419453358856
+      },
+      "after": {
+        "model": 150,
+        "inside": true,
+        "bandDecades": 4.1058506743851435
+      }
+    },
+    {
+      "event": "2018-12-05 04:18 UTC, NEW CALEDONIA: LOYALTY ISLANDS",
+      "comcat": "us1000i2gt",
+      "magnitude": 7.5,
+      "source": "interface-depth",
+      "strikeDeg": 320.73724347671055,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2019-05-14 12:58 UTC, PAPUA NEW GUINEA: RABAUL, DUKE OF YORK IS",
+      "comcat": "us70003kyy",
+      "magnitude": 7.6,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 0,
+      "before": {
+        "model": 37,
+        "inside": true,
+        "bandDecades": 3.739493230781615
+      },
+      "after": {
+        "model": 37,
+        "inside": true,
+        "bandDecades": 3.739493230781615
+      }
+    },
+    {
+      "event": "2020-01-28 19:10 UTC, CUBA: GRANMA; CAYMAN IS; JAMAICA",
+      "comcat": "us60007idc",
+      "magnitude": 7.7,
+      "source": "crustal",
+      "strikeDeg": 78.18141590456474,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0.6020599913279624
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2020-07-22 06:12 UTC, ALASKA",
+      "comcat": "us7000asvb",
+      "magnitude": 7.8,
+      "source": "interface-depth",
+      "strikeDeg": 237.3772779777621,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2020-10-19 20:54 UTC, ALASKA",
+      "comcat": "us6000c9hg",
+      "magnitude": 7.6,
+      "source": "interface-depth",
+      "strikeDeg": 242.85211662204097,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2021-02-10 13:19 UTC, NEW CALEDONIA: LOYALTY ISLANDS",
+      "comcat": "us6000dg77",
+      "magnitude": 7.7,
+      "source": "interface-depth",
+      "strikeDeg": 274.69710464176615,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2021-03-04 19:28 UTC, KERMADEC ISLANDS: SSE OF RAOUL ISLAND",
+      "comcat": "us7000dflf",
+      "magnitude": 8.1,
+      "source": "interface-depth",
+      "strikeDeg": 200.46896083135243,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2021-07-29 06:15 UTC, ALASKA PENINSULA",
+      "comcat": "ak0219neiszm",
+      "magnitude": 8.2,
+      "source": "interface-depth",
+      "strikeDeg": 232.4004052978653,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2022-09-19 18:05 UTC, MEXICO: MICHOACAN, COLIMA, JALISCO",
+      "comcat": "us7000i9bw",
+      "magnitude": 7.6,
+      "source": "interface-depth",
+      "strikeDeg": 290.6722087040007,
+      "record": 2,
+      "before": {
+        "model": 119,
+        "inside": true,
+        "bandDecades": 3.7840464158081133
+      },
+      "after": {
+        "model": 81,
+        "inside": true,
+        "bandDecades": 3.7212333700172775
+      }
+    },
+    {
+      "event": "2023-02-06 01:17 UTC, TURKEY: KAHRAMANMARAS; SYRIA",
+      "comcat": "us6000jllz",
+      "magnitude": 7.8,
+      "source": "crustal",
+      "strikeDeg": 24.946976792032387,
+      "record": 56697,
+      "before": {
+        "model": 8369,
+        "inside": true,
+        "bandDecades": 4.1136145434565705
+      },
+      "after": {
+        "model": 2380,
+        "inside": true,
+        "bandDecades": 4.331638711934266
+      }
+    },
+    {
+      "event": "2023-02-06 10:24 UTC, TURKEY; SYRIA",
+      "comcat": "us6000jlqa",
+      "magnitude": 7.5,
+      "source": "crustal",
+      "strikeDeg": 94.32740445199784,
+      "record": 0,
+      "before": {
+        "model": 1239,
+        "inside": false,
+        "bandDecades": 4.378821691512654
+      },
+      "after": {
+        "model": 327,
+        "inside": false,
+        "bandDecades": 4.586812269443376
+      }
+    },
+    {
+      "event": "2023-05-19 02:57 UTC, NEW CALEDONIA: LOYALTY ISLANDS",
+      "comcat": "us6000kd0n",
+      "magnitude": 7.7,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2023-12-02 14:37 UTC, PHILIPPINES: MINDANAO: E",
+      "comcat": "us7000lff4",
+      "magnitude": 7.6,
+      "source": "crustal",
+      "strikeDeg": 110.607679846429,
+      "record": 3,
+      "before": {
+        "model": 95,
+        "inside": true,
+        "bandDecades": 3.928447063209182
+      },
+      "after": {
+        "model": 102,
+        "inside": true,
+        "bandDecades": 3.905148001856016
+      }
+    },
+    {
+      "event": "2024-01-01 07:10 UTC, JAPAN: HONSHU: ISHIKAWA",
+      "comcat": "us6000m0xl",
+      "magnitude": 7.5,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 549,
+      "before": {
+        "model": 22,
+        "inside": true,
+        "bandDecades": 3.7134905430939424
+      },
+      "after": {
+        "model": 22,
+        "inside": true,
+        "bandDecades": 3.7134905430939424
+      }
+    },
+    {
+      "event": "2025-02-08 23:23 UTC, CAYMAN IS; HONDURAS",
+      "comcat": "us7000pcdl",
+      "magnitude": 7.6,
+      "source": "crustal",
+      "strikeDeg": 75.09799819624618,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2025-03-28 06:20 UTC, MYANMAR (BURMA); THAILAND",
+      "comcat": "us7000pn9s",
+      "magnitude": 7.7,
+      "source": "crustal",
+      "strikeDeg": 174.85218641615188,
+      "record": 3815,
+      "before": {
+        "model": 12799,
+        "inside": true,
+        "bandDecades": 4.086348404035327
+      },
+      "after": {
+        "model": 13643,
+        "inside": true,
+        "bandDecades": 4.421082680153258
+      }
+    },
+    {
+      "event": "2025-07-29 23:24 UTC, RUSSIA: KAMCHATKA PENINSULA",
+      "comcat": "us6000qw60",
+      "magnitude": 8.8,
+      "source": "interface-depth",
+      "strikeDeg": 212.67078398716592,
+      "record": 0,
+      "before": {
+        "model": 35,
+        "inside": true,
+        "bandDecades": 2.9339931638312424
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 2.0969100130080562
+      }
+    },
+    {
+      "event": "2025-08-22 02:16 UTC, CHILE: DRAKE PASSAGE",
+      "comcat": "us6000r2xq",
+      "magnitude": 7.5,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2025-09-18 18:58 UTC, RUSSIA: KAMCHATKA PENINSULA",
+      "comcat": "us7000qx2g",
+      "magnitude": 7.8,
+      "source": "interface-depth",
+      "strikeDeg": 209.7219591755869,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0.47712125471966244
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    },
+    {
+      "event": "2025-10-10 20:29 UTC, CHILE: DRAKE PASSAGE",
+      "comcat": "us6000rgf4",
+      "magnitude": 7.6,
+      "source": "unknown",
+      "strikeDeg": null,
+      "record": 0,
+      "before": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      },
+      "after": {
+        "model": 0,
+        "inside": true,
+        "bandDecades": 0
+      }
+    }
+  ]
+}

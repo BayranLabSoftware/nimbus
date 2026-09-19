@@ -129,6 +129,72 @@
  * unchanged since rule 294: a reader's click is not an earthquake.
  */
 
+/*
+ * ===========================================================================
+ * THE OUTCOME, 21 September 2026: REFUSED on rule 346(b)
+ * ===========================================================================
+ *
+ * Rules 342 to 348 were pushed in 3f83605 and the candidate in ef433bd, both
+ * before one toll was read. One run, `scripts/benchmark/held-out-strike.ts`,
+ * both sides in the same process, no re-tuning:
+ * `benchmark/results/held-out-strike-2026-09-21.json`.
+ *
+ *   rule 343's table                    : as written, 30 interface / 16
+ *                                         crustal / 12 unknown of 58
+ *   rule 346(c), below Mw 7.5           : 350 rows, 0 moved            MET
+ *   rule 346(b), inside                 : 31/34 -> 32/34               MET
+ *   rule 346(b), |ln bias|              : 0.681 -> 0.688, against the
+ *                                         0.683 fixed in the rule    NOT MET
+ *   bias                                : 1.98x -> 1.99x
+ *   scatter sigma_ln                    : 2.29 -> 2.38
+ *
+ * So the candidate is NOT adopted. `RULE_EARTHQUAKES` keeps rule 291's sweep,
+ * `RULE_EARTHQUAKES_POINTED` stays reachable and drawn by nothing, and the
+ * validation report does not move by one figure. The bar was fixed before the
+ * run and is not moved after it (rules 5, 6 and 347), and the margin it failed
+ * by — five thousandths of a log unit — is not a reason to move it. A bar that
+ * bends when the answer is close is not a bar.
+ *
+ * WHAT IT ACTUALLY FOUND, which is worth more than the verdict. Pointing the
+ * footprints does not move the cell as a whole and moves individual rows a
+ * great deal, in both directions, and the split is not random:
+ *
+ *   | row                          | source    | dead before | after | record |
+ *   |------------------------------|-----------|------------:|------:|-------:|
+ *   | Tohoku 2011 (NCEI row)       | interface |       2 647 | 1 683 |  1 474 |
+ *   | Kamchatka 2025 Mw 8.8        | interface |          35 |     0 |      0 |
+ *   | Sumatra 2010-10-25           | interface |           5 |     0 |      0 |
+ *   | Maule 2010                   | interface |       1 267 | 1 215 |    402 |
+ *   | Sichuan 2008                 | crustal   |      45 565 |10 765 | 87 652 |
+ *   | Kahramanmaras 2023           | crustal   |       8 369 | 2 380 | 56 697 |
+ *   | Turkey-Syria 2023 Mw 7.5     | crustal   |       1 239 |   327 |      0 |
+ *   | Myanmar 2025                 | crustal   |      12 799 |13 643 |  3 815 |
+ *
+ * The interface rows get better — Tohoku's own row lands at 1 683 dead
+ * against NCEI's 1 474 for the earthquake's own effects, from 2 647 — and the
+ * two great crustal ruptures that killed most get worse, because orienting
+ * their footprint takes it off the people it was covering by accident. The
+ * cell's bias is unmoved because it is dominated by rows whose record is
+ * small or zero, where a truer footprint mostly turns a small false toll into
+ * a smaller one.
+ *
+ * READ AFTER THE RUN, and therefore acted on by nothing here:
+ *
+ *  - the sweep of rule 291 is, on this cell, a good estimator of the median
+ *    row and a bad one of the individual row. That is what a median over
+ *    orientations is, and it is the first measurement of it;
+ *  - the refusal leaves a real inconsistency standing, and it should be
+ *    named rather than filed: the globe counts a reader's earthquake in the
+ *    footprint the lookup orients, and the harness counts rule 11's rows in a
+ *    sweep. The published bias of 0.92x is therefore a statement about a
+ *    geometry the product does not use. Rule 346(b) judged the candidate on
+ *    whether the dead got better, which is the wrong question for a change
+ *    whose purpose is to measure what we ship; the right question is whether
+ *    the harness may differ from the product at all, and what that costs. That
+ *    is a different bar, it belongs to a different block, and writing it here
+ *    after seeing this run would be exactly the amendment rule 347 forbids.
+ */
+
 /** Rule 343's reading of the lookup over rule 11's rows, written down before
  *  any of those rows was counted with it. `heldOutStrike.test.ts` holds the
  *  run to these counts, so a change in the shipped fault or slab tiles that
