@@ -544,13 +544,19 @@ export function measuredPopulation(
     return (radiusM, band) => {
       const mine = perRealisation.get(band);
       if (mine !== undefined) return mine.count(mine.halfLengthM, mine.halfWidthM, radiusM);
-      // A band from no realisation of this sweep — a caller counting one
-      // footprint of its own. It gets the rule's central answer.
+      // A band from a realisation this sweep does not cover. B-077: that is
+      // usually a realisation that is NOT an extended source at all — the
+      // band draws its own magnitude, so an earthquake near the threshold has
+      // realisations on both sides of it — and a point source is counted in
+      // its circle. Handing it the first extended realisation's stadium put
+      // 130 241 people inside a footprint that holds 576.
       const rupture = band.polygon === undefined ? undefined : ruptures.get(band.polygon);
-      const halfLengthM = rupture?.halfLengthM ?? sweep.halfLengthM;
-      const halfWidthM = rupture?.halfWidthM ?? sweep.halfWidthM;
-      return sweepStatistics(counters.map((count) => count(halfLengthM, halfWidthM, radiusM)))
-        .median;
+      if (rupture === undefined) return circle(radiusM);
+      // A polygon of its own, from a caller counting one footprint: rule
+      // 291's central answer over the sweep, on that rupture.
+      return sweepStatistics(
+        counters.map((count) => count(rupture.halfLengthM, rupture.halfWidthM, radiusM))
+      ).median;
     };
   }
 

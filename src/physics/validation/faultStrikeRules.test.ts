@@ -4,6 +4,7 @@ import { sweepStatistics, UNKNOWN_STRIKE_AZIMUTHS } from '../casualties.js';
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
 import { casualtyPlanForResult } from '../../store/useAppStore.js';
 import { measuredPopulation, type RecordedEvent } from './recordedTolls.js';
+import { shippedPopulationInRadius } from './shippedPopulation.js';
 import {
   FAULT_SEARCH_MARGIN_M,
   FAULT_SEARCH_REACH_CAP_M,
@@ -295,5 +296,60 @@ describe('rule 291 — an unknown orientation enters as a band', () => {
     const sweep = sweepStatistics(read.slice(0, UNKNOWN_STRIKE_AZIMUTHS.length));
     expect(sweep.median).toBeLessThan(sweep.high);
     expect(sweep.median).toBeGreaterThan(sweep.low);
+  });
+});
+
+/**
+ * B-077 of docs/BUG_REGISTRY.md.
+ *
+ * Rule 291's sweep is about an extended rupture whose strike nobody knows.
+ * But a predictive band draws its own magnitude, so an earthquake near the
+ * extended-source threshold has realisations on BOTH sides of it: some are
+ * ruptures a strike can turn, and some are points, which a strike cannot
+ * touch and which must be counted in a circle.
+ *
+ * The first implementation gave every band it did not recognise the
+ * half-length and half-width of the first extended realisation. A point
+ * source was therefore counted inside a stadium tens of kilometres long.
+ */
+describe('B-077 — a point-source realisation is counted in its circle', () => {
+  // Where there are people to miscount: the Kermanshah epicentre, whose row
+  // is one of the 36 the defect was found on.
+  const at = { latitude: 34.911, longitude: 45.959 };
+  const probe: RecordedEvent = {
+    name: 'B-077 probe',
+    latitude: at.latitude,
+    longitude: at.longitude,
+    recordedDeaths: 0,
+    source: 'not a record: a probe of B-077, scored nowhere',
+    run: () => ({ type: 'earthquake', data: simulateEarthquake({ magnitude: 7.3 }) }),
+    gated: false,
+  };
+
+  it("a realisation below the threshold is counted in its circle, not in another realisation's stadium", () => {
+    const small = { type: 'earthquake' as const, data: simulateEarthquake({ magnitude: 7.3 }) };
+    const large = { type: 'earthquake' as const, data: simulateEarthquake({ magnitude: 7.6 }) };
+    expect(small.data.isExtendedSource).toBe(false);
+    expect(large.data.isExtendedSource).toBe(true);
+
+    const planSmall = casualtyPlanForResult(small, at);
+    const planLarge = casualtyPlanForResult(large, at);
+    expect(planSmall).not.toBeNull();
+    expect(planLarge).not.toBeNull();
+    if (planSmall === null || planLarge === null) return;
+    // Only the extended realisation carries rule 291's sweep.
+    expect(planLarge.unknownStrike).toBeDefined();
+    expect(planSmall.unknownStrike).toBeUndefined();
+
+    const populationAt = measuredPopulation(probe, small, [planLarge, planSmall], new WeakMap());
+    for (const band of planSmall.bands) {
+      const circle = shippedPopulationInRadius(
+        at.latitude,
+        at.longitude,
+        band.outerRadiusM
+      ).exposed;
+      // A point source holds the people inside its circle. Not more.
+      expect(populationAt(band.outerRadiusM, band)).toBeCloseTo(circle, 6);
+    }
   });
 });
