@@ -66,13 +66,26 @@
  *      and no published figure moves by separating them. B-046's rule stands:
  *      an interface scenario is a thrust, whatever fault type it names.
  *
- * 371. THE CANDIDATE. Parker et al. 2022's global interface model — already
- *      implemented, already held to OpenQuake within 0.1 % by rule 36, and
- *      already the winner on the shaking by rule 37 — drawing the rings of a
- *      scenario the slab calls an interface, WITH the rupture scaling that
- *      scenario has today. BC Hydro is not a candidate here: measured on the
- *      same rows it reads 6.95x against the shipped 6.48x, and a law that
- *      does not move the defect does not get a round.
+ * 371. THE CANDIDATE, corrected on 21 September 2026 BEFORE anything was run,
+ *      because as first written this rule described a candidate the
+ *      diagnosis had not measured. Parker et al. 2022's global interface
+ *      model — implemented, held to OpenQuake within 0.1 % by rule 36, and
+ *      the winner on the shaking by rule 37 — drawing the rings of a row
+ *      rule 296 or 297 places on the interface, with Wells & Coppersmith's
+ *      rupture scaling named explicitly under rule 370.
+ *
+ *      Such a row therefore CARRIES `subductionInterface`, and with it the
+ *      thrust mechanism B-046 requires and the tsunami block the flag emits.
+ *      Both were present in the 2.26x measured above, and both are declared
+ *      here rather than wished away: the flag stays the gate on the law,
+ *      because an interface relation on a crustal earthquake is outside its
+ *      domain and `interfaceAttenuation.test.ts` holds the model to refusing
+ *      it. What rule 370 separates is the SCALING — the coupling rule 35
+ *      measured through — not the mechanism and not the wave.
+ *
+ *      BC Hydro is not a candidate: on the same rows it reads 6.95x against
+ *      the shipped 6.48x, and a law that does not move the defect does not
+ *      get a round.
  *
  * 372. WHAT DECIDES IS RULE 19, UNCHANGED, as rule 38 applies it. Not a bar
  *      written for this round: the bar the project already uses to adopt a
@@ -92,8 +105,9 @@
  *      and something rules 363 to 369 refused to let it propose, so the law
  *      follows the SAME test the mark would have used: rule 296 or 297 places
  *      the hypocentre on the interface. The scaling does NOT follow it — that
- *      is the whole point of rule 370 — and stays Wells & Coppersmith's
- *      unless a scenario asks otherwise.
+ *      is the whole point of rule 370 — and stays Wells & Coppersmith's,
+ *      named explicitly, which is the configuration the diagnosis measured
+ *      at 2.26x and which rule 38 never saw.
  *
  * 374. THE SET. Rule 11's tolls, as rule 19 prescribes, and rule 23's quiet
  *      earthquakes for rule 25's clause. Both are read: rule 345 applies and
@@ -109,8 +123,11 @@
  *      is superseded only if the candidate passes rule 19 as written. No
  *      threshold of rule 296 moves. Strasser's scaling is not deleted, and no
  *      preset loses it. The interface mark of rules 363 to 369 stays refused;
- *      this block gives the LAW to rows the slab recognises, not the rupture,
- *      not the mechanism, and not a tsunami. And if the bar is missed, the
+ *      this block gives the LAW and Wells & Coppersmith's rupture to the rows
+ *      the slab recognises. The mechanism and the tsunami come with the flag
+ *      that gates the law, as rule 371 now says and as the diagnosis
+ *      measured; what these rows do NOT get is Strasser's rupture, which is
+ *      the defect rules 363 to 369 refused. And if the bar is missed, the
  *      shipped law stays and the 6.48x is written into the declared gaps
  *      instead of being fixed quietly.
  *
