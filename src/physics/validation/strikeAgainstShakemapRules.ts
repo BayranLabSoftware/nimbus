@@ -93,6 +93,57 @@
  *      installation is not part of this repository — the clause is PENDING, and
  *      pending is not satisfied. It is not passed by (a) of rule 306.
  *
+ * 308. WHAT SHAKEMAP WAS ACTUALLY ASKED, on 20 September 2026, and why it is
+ *      not rule 307.
+ *
+ *      Rule 307 needs the published map of each preset to compare a run
+ *      against, and that download was not taken: asked which downloads to
+ *      authorise, Andrea authorised the ShakeMap installation and not the
+ *      published coverages. **Rule 307 therefore stays PENDING, and pending is
+ *      not satisfied.** Nothing below passes it, and nothing below should be
+ *      read as having passed it.
+ *
+ *      What a program that runs, with nothing published to be held against,
+ *      CANNOT be asked is "is our strike right". ShakeMap given a rupture at an
+ *      azimuth draws a footprint at that azimuth; finding that our footprint
+ *      agrees with its footprint when both were turned the same way is a
+ *      circle, and a circle is not a measurement. Two things can be asked, and
+ *      these are the two:
+ *
+ *      (a) WHAT DID NORTH COST. ShakeMap is run twice for each preset on one
+ *          source — same magnitude, depth, mechanism, rupture dimensions and
+ *          configuration — differing in ONE input: the azimuth of the finite
+ *          rupture it is given, ours and due north. The intersection over union
+ *          of the two MMI VII footprints, their areas, and the population
+ *          inside each, are the size of the error the default was making,
+ *          measured by the field's own program instead of by ours. No bound is
+ *          set: it is a quantity to report, and a bound on it would be a bound
+ *          on the tectonics of six places.
+ *      (b) DOES OUR FOOTPRINT HAVE THE SHAPE OF ITS FOOTPRINT, given the same
+ *          source? Our stadium at the found strike against ShakeMap's MMI VII
+ *          at the same rupture: the axis of each (rule 305), the areas, and the
+ *          intersection over union. This is E1's question asked about shape
+ *          instead of about amplitude. The amplitude gap is known going in —
+ *          our ring is 0.46 of ShakeMap's equivalent radius — and is neither
+ *          re-measured nor repaired here; it drags the intersection over union
+ *          down and that is stated with the number rather than corrected out of
+ *          it. Printed, not bounded: the bound belongs to E1, and E1 is scored
+ *          on three hundred maps and not on six.
+ *
+ *      (c) The configuration is a choice, and is declared with the result. The
+ *          installation's own test configuration is used, with the
+ *          ground-motion model set named per event — a subduction-interface set
+ *          where rule 296 said interface, the active-crustal default where rule
+ *          300(b) said crustal — because ShakeMap picks that set through its
+ *          `select` module, which shells out to STREC, which is not installed.
+ *          That configuration's Vs30 grid covers California and nothing else,
+ *          so every preset here runs on the configuration's default Vs30. The
+ *          dip given to the rupture is 15° for an interface and 90° for a
+ *          crustal strike-slip, from the source type and not from Slab2, since
+ *          rule 302 keeps this round out of the dip. All three change the
+ *          amplitude; none of them changes the azimuth, which is what (a) and
+ *          (b) measure.
+ *
  * WHAT THIS CANNOT SETTLE. Whether ShakeMap is right: it is the reference, not
  * the truth, and for the great megathrusts its own footprint is drawn from
  * models conditioned on the same finite-fault inversions the published strikes
