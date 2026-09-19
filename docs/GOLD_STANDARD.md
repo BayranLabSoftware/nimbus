@@ -68,6 +68,24 @@ no rule, no bound and no status.
   day was a 7, when a grade was still a reading and not yet the count below.
   The count reads both domains against every rule of this file, unchanged.
 
+- **Amended 20 September 2026, by Andrea's decision: a 9 IS now pursued on
+  earthquakes.** The paragraph above stands as it was written and is not
+  rewritten, because it says what a 9 there costs and that has not changed:
+  ground motion conditioned on stations and finite ruptures, measured against
+  what ShakeMap computes on the same rows. What changed is the choice of what
+  to spend, and who made it — "i terremoti potremmo anche portarli a 9, decido
+  io quando basta". The aim is recorded here on the day it was taken so that a
+  reader sees a scope widened deliberately and not a bar quietly moved; no
+  rule, bound or status of this file changes with it, and the count below is
+  the same count.
+
+  The work it opens was ordered, and the ordering was wrong, which is itself
+  recorded: rules 286 to 294 of `validation/faultStrikeRules.ts` put the fault
+  strike first and Slab2's subduction geometry second, and the first candidate
+  was refused because four of the six presets a strike is decided on are
+  subduction earthquakes, whose interface a database of crustal faults does not
+  carry. Slab2 comes first.
+
 The reason is the one the work of 15 and 16 September showed: effort spread
 over six domains moved each of them by a tenth. A project that says where it
 aims for a 9 and where it does not makes a claim that can be checked; one that
