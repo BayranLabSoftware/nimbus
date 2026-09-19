@@ -76,9 +76,87 @@
  *       earthquakes, or E4's band.
  */
 
-/** Rule 218(a). What the report publishes for these rows, and what this round
- *  must reproduce before any of its numbers may be read. */
-export const PUBLISHED_RULE_11_TOLL = { bias: 0.9, scatterLn: 2.42 } as const;
+/*
+ * ===========================================================================
+ * The outcome of rules 215 to 219, 19 September 2026: E3's scatter NOT MET
+ * ===========================================================================
+ *
+ * The rules were pushed in `7a75e56`, before PAGER's losses were joined to a
+ * single row of ours.
+ *
+ * What was looked at. The 406 held-out rows of rule 11's set, 213 of them
+ * informative. **184 carry a PAGER fatality estimate**, so rule 218(b)'s
+ * hundred is comfortably cleared; of the 222 that do not, 126 have no
+ * `losspager` product at all and 96 have the product without a machine-readable
+ * estimate — an older PAGER version publishes no `json/losses.json`. Those 222
+ * are named in `benchmark/results/pager-scatter-2026-09-19.json` and are out of
+ * both columns.
+ *
+ * One correction the first run forced, before any verdict was read. Rule 217
+ * says the two columns are read on one set of rows, and handing every answered
+ * row to `scoreStats` does not achieve that: the statistic scores a row only
+ * where the record and the model are both above zero, so the first run read
+ * ours on 64 rows and PAGER's on 55. That is not a comparison. The set is the
+ * intersection — a record above zero and both models above zero — which is
+ * **48 rows**, with 16 more scored by ours alone and 7 by PAGER's alone. The
+ * numbers below are on those 48.
+ *
+ *                     bias      σ_ln
+ *   Nimbus           0.901×     2.798
+ *   PAGER            3.375×     2.547
+ *
+ * The verdict. Under the amendment of 16 September, which took the allowance
+ * away, E3's scatter clause asks σ_ln(ours) ≤ σ_ln(PAGER) and ours is **1.286
+ * times wider**: not met, and for the first time the gap has a size. Its bias
+ * clause is met, at 0.901× here and 0.913× on every held-out row.
+ *
+ * And a coincidence worth printing rather than smoothing: under E3 **as first
+ * written**, σ_ln no more than PAGER's plus 0.25, the model misses by **0.00127
+ * in ln** — one part in two thousand. A rule that had not been tightened would
+ * have been decided by the fourth decimal place of a scatter measured on
+ * forty-eight earthquakes, which is worth remembering the next time a bound
+ * looks comfortable.
+ *
+ * Two things the round says about the reference itself. PAGER declares a σ for
+ * its own answer, the country `gnormvalue` this project already draws its toll
+ * band with, and across the countries it carries that runs from 1.0 to 2.5. Its
+ * *measured* scatter against the record on these rows, 2.547, sits just above
+ * the top of its own declared range — PAGER is about as uncertain as it says it
+ * is, and no better. And its 3.375× bias is not the same quantity as our
+ * 0.901×: `total_fatalities` is an expected value over PAGER's loss
+ * distribution and ours is a central estimate, and at a σ_ln of two and a half
+ * a mean and a median are an order of magnitude apart. The scatter of the log
+ * residual is the quantity E3 reads, and it is the one compared above; the two
+ * biases are printed beside each other and only the first is scored against
+ * ×1.5.
+ *
+ * What this does not settle, beyond rule 219's own warning: E3 also asks for
+ * no more than 2 % of the quiet earthquakes to carry a median toll of ten or
+ * more, and for the bias to hold in every cell. Neither is read here. Nor is
+ * E4's band.
+ */
+
+/*
+ * The outcome of rule 218(a), recorded before anything else was read, because
+ * the guard tripped on its first run and the reason was not the join.
+ *
+ * The guard was written against the two figures `docs/GOLD_STANDARD.md` prints
+ * for these rows, 0.90× and σ_ln 2.42. The column read 0.913× and 2.44 on 406
+ * rows, 125 of them scored — and that is exactly what
+ * `docs/VALIDATION_REPORT.json` itself holds at
+ * `calibration.byRule.earthquakes.cells[0].all`. So the join is right and the
+ * gold standard's row is a stale transcription of it: the report regenerates
+ * that cell every time and the document was written once. The guard therefore
+ * reads the report's own JSON from here on, where it cannot go stale, the gold
+ * standard's row is corrected to the figures the report publishes, and this
+ * paragraph is the record that the guard was not relaxed to let a number
+ * through — the number it was asked for was the wrong one.
+ */
+
+/** Rule 218(a). What the report's own cell holds for these rows, kept here as
+ *  a second copy only so a reader sees what the guard expects; the harness
+ *  reads `docs/VALIDATION_REPORT.json` and not this. */
+export const PUBLISHED_RULE_11_TOLL = { bias: 0.913, scatterLn: 2.44 } as const;
 
 /** Rule 218(b). E3's own set size. */
 export const MINIMUM_ROWS_WITH_PAGER = 100;

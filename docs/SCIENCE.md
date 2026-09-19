@@ -1370,9 +1370,12 @@ Rock wins on the ShakeMaps by 0.24 and loses on the tolls, 0.83 against
 Boore et al. 2014 (0.97, against 1.58 for Joyner & Boore 1981 and 1.30 for
 the split law). The harness runs every earthquake on the browser's ground
 since — the rule sets, the net and the footprint anchors. Held out by
-rule, the earthquakes read 0.90× their record (0.56× on rock) with a
-scatter of 2.42, and the band holds 260 of the 279 records it has
-something to say about (93 %). In the net twelve of eighteen tolls are
+rule, the earthquakes read 0.913× their record (0.56× on rock) with a
+scatter of 2.44, and the band holds 258 of the 278 records it has
+something to say about (93 %) — the figures the report's own cell carries
+today, corrected here on 19 September 2026 from the 0.90×, 2.42 and 260 of
+279 this paragraph was written with, which the regenerations since have
+moved. In the net twelve of eighteen tolls are
 inside: Northridge 29 dead on 2–415 against 57 (13 on 1–177 on rock),
 Kumamoto 198 against 273, Gorkha 5 356 against 8 964, and Sumatra's band
 for the shaking alone now reaches its record. The footprint anchors are

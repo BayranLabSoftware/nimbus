@@ -108,8 +108,9 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
       {
         rule: 'E3',
         measure: 'fidelity',
-        status: 'pending',
-        evidence: "PAGER's own σ_ln on the same rows has not been read.",
+        status: 'not met',
+        evidence:
+          "PAGER's own scatter read on 19 September 2026 (rules 215 to 219): on the 48 held-out rows where the record and both models are above zero, the toll is 0.901× with σ_ln 2.798 against PAGER's 3.375× and σ_ln 2.547 — a scatter 1.286 times the reference's, where the amendment of 16 September allows none. Under the bound as first written, PAGER's plus 0.25, it misses by 0.00127 in ln (benchmark/results/pager-scatter-2026-09-19.json).",
       },
       {
         rule: 'E4',
@@ -130,7 +131,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         measure: 'beyond',
         status: 'not met',
         evidence:
-          'The sweep of 16 September 2026 finds 16 failures: rings stepping over their thresholds (benchmark/results/invariants-2026-09-16-4.json).',
+          "The sweep of 19 September 2026 finds the same 16 failures as 16 September, and now says what they are: every one is a contour's radius, and on 19 September the sweep also read the field itself at fixed places and found it smooth. At Mw 9.5925 and 319 km depth a thousandth of a magnitude moves the MMI VII radius 15.6 %, from 13 445 m to 15 542 m, while the epicentral intensity moves from 7.0018 to 7.0024 and the accelerations at 20 and 100 km by 0.06 %: the epicentral contour of a source three hundred kilometres down is ill-conditioned, not discontinuous. The other ten are rings being born — 0 to 786 m for MMI IX as the epicentral intensity crosses 9.0000, 0 to 276 m for liquefaction — where the crossing moves as the square root of the excess. The continuity clause as written is about the radius, so this stays not met; whether a contour's conditioning should be read as a regime switch is a question for an amendment, and an amendment may not be written after the figure (benchmark/results/invariants-2026-09-19-1.json).",
       },
       G6,
       G7,
@@ -187,8 +188,9 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
       {
         rule: 'G5',
         measure: 'beyond',
-        status: 'pending',
-        evidence: "The earthquake sweep checks the shaking's rings and not the wave's.",
+        status: 'met',
+        evidence:
+          "Since 19 September 2026 the sweep reads the wave and not only the shaking: the slip, the seafloor uplift, the down-dip width, the source wavelength and period, the amplitudes at 1 000 and 5 000 km — undispersed, dispersed and toward a receiver — the run-up, the inundation distance and the travel time, fifteen quantities over 5 000 random scenarios, with no failure of monotonicity or continuity in any of them. The earthquake family's 16 failures are all in the shaking's contours and belong to that domain. The second clause, that the application prints what the model computes, was read by the globe audit of 18 September on 94 contours (benchmark/results/invariants-2026-09-19-1.json, benchmark/results/globe-audit-2026-09-18.json).",
       },
       G6,
       G7,

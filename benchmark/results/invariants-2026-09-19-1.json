@@ -1,0 +1,139 @@
+{
+ "track": "INV",
+ "scenariosPerHazard": {
+  "earthquake": 5000
+ },
+ "watchdogMs": 2000,
+ "failures": {
+  "earthquake": {
+   "continuous: shaking.liquefactionRadius": {
+    "count": 10,
+    "examples": [
+     {
+      "input": {
+       "magnitude": 5.233613200718537,
+       "depth": 634633.6998045444,
+       "vs30": 210.40573792173825,
+       "faultType": "normal",
+       "subductionInterface": false,
+       "waterDepth": 39.01538026687584
+      },
+      "detail": "533.678 → 627.750"
+     },
+     {
+      "input": {
+       "magnitude": 5.230722128180787,
+       "depth": 606833.9071702212,
+       "vs30": 929.9688811507427,
+       "faultType": "all",
+       "subductionInterface": false,
+       "waterDepth": 131.7386186625392
+      },
+      "detail": "0.00000 → 280.651"
+     },
+     {
+      "input": {
+       "magnitude": 5.234822563827038,
+       "depth": 85567.08269752562,
+       "vs30": 228.81903733420188,
+       "faultType": "normal",
+       "subductionInterface": false
+      },
+      "detail": "645.733 → 725.591"
+     },
+     {
+      "input": {
+       "magnitude": 5.238145739305764,
+       "depth": 673318.4147858992,
+       "vs30": 336.29385871015097,
+       "faultType": "reverse",
+       "subductionInterface": false
+      },
+      "detail": "884.139 → 944.409"
+     },
+     {
+      "input": {
+       "magnitude": 5.2377004022710025,
+       "depth": 535742.0076616108,
+       "vs30": 237.76959293625887,
+       "faultType": "normal",
+       "subductionInterface": true
+      },
+      "detail": "855.973 → 918.043"
+     }
+    ]
+   },
+   "continuous: shaking.mmi7Radius": {
+    "count": 5,
+    "examples": [
+     {
+      "input": {
+       "magnitude": 9.453160614706576,
+       "depth": 305117.7230430767,
+       "vs30": 256.2875997702353,
+       "faultType": "reverse",
+       "subductionInterface": false
+      },
+      "detail": "19890.2 → 21242.9"
+     },
+     {
+      "input": {
+       "magnitude": 9.592525381594896,
+       "depth": 319318.3220922947,
+       "vs30": 202.93887745014558,
+       "faultType": "reverse",
+       "subductionInterface": false,
+       "waterDepth": 27.789640921632838
+      },
+      "detail": "13502.5 → 15591.9"
+     },
+     {
+      "input": {
+       "magnitude": 9.221367546590045,
+       "depth": 284495.36620173603,
+       "vs30": 271.42615783175523,
+       "faultType": "normal",
+       "subductionInterface": false
+      },
+      "detail": "9868.70 → 12065.7"
+     },
+     {
+      "input": {
+       "magnitude": 8.345083438558504,
+       "depth": 188128.35516873747,
+       "vs30": 916.4301112623709,
+       "faultType": "all",
+       "subductionInterface": false
+      },
+      "detail": "13255.6 → 14015.0"
+     },
+     {
+      "input": {
+       "magnitude": 8.089049498783424,
+       "depth": 171039.63061235845,
+       "vs30": 1084.9948025488038,
+       "faultType": "strike-slip",
+       "subductionInterface": false
+      },
+      "detail": "11454.7 → 12172.6"
+     }
+    ]
+   },
+   "continuous: shaking.mmi9Radius": {
+    "count": 1,
+    "examples": [
+     {
+      "input": {
+       "magnitude": 9.884745781542733,
+       "depth": 71760.85002720356,
+       "vs30": 1245.250550995468,
+       "faultType": "all",
+       "subductionInterface": false
+      },
+      "detail": "0.00000 → 853.040"
+     }
+    ]
+   }
+  }
+ }
+}

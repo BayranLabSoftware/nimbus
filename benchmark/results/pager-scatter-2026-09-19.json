@@ -1,0 +1,1534 @@
+{
+ "track": "E3",
+ "readOn": "2026-09-19",
+ "rows": 406,
+ "informative": 213,
+ "answered": 184,
+ "shared": 48,
+ "scoredByOursOnly": 16,
+ "scoredByPagerOnly": 7,
+ "missing": [
+  {
+   "comcat": "usp000fx81",
+   "name": "2008-01-22 17:14 UTC, INDONESIA: SUMATRA: NIAS ISLAND: GUNUNGSITOLI",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000fzau",
+   "name": "2008-02-20 08:08 UTC, INDONESIA: SUMATERA: ACEH PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "nn00234425",
+   "name": "2008-02-21 14:16 UTC, NEVADA: WELLS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000fzx4",
+   "name": "2008-02-25 08:36 UTC, INDONESIA: SUMATRA: PADANG",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000g1w2",
+   "name": "2008-03-20 22:32 UTC, CHINA: XINJIANG PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000g3eq",
+   "name": "2008-04-09 12:46 UTC, NEW CALEDONIA: LOYALTY ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000g3y3",
+   "name": "2008-04-15 03:03 UTC, GUATEMALA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000g51v",
+   "name": "2008-04-28 18:33 UTC, VANUATU ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000g5rx",
+   "name": "2008-05-07 16:45 UTC, JAPAN: HONSHU: E COAST",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000g650",
+   "name": "2008-05-12 06:28 UTC, CHINA: SICHUAN PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000g7r4",
+   "name": "2008-05-25 08:21 UTC, CHINA: SICHUAN PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000g826",
+   "name": "2008-05-29 15:46 UTC, ICELAND: REYKJAVIK",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000g8vs",
+   "name": "2008-06-08 12:25 UTC, GREECE: ACHAIA, ILEIA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000g9h6",
+   "name": "2008-06-13 23:43 UTC, JAPAN: HONSHU: TOKYO",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gcjg",
+   "name": "2008-07-19 02:39 UTC, JAPAN: OFF EAST COAST OF HONSHU ISLAND",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gdw4",
+   "name": "2008-08-05 09:49 UTC, CHINA: SICHUAN PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000geqv",
+   "name": "2008-08-15 10:25 UTC, PHILIPPINES: LUZON: LEGASPI",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gf5p",
+   "name": "2008-08-21 12:24 UTC, CHINA: YUNNAN PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gfga",
+   "name": "2008-08-25 13:21 UTC, CHINA: TIBET (XIZANG PROVINCE)",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gfng",
+   "name": "2008-08-27 01:35 UTC, RUSSIA: LAKE BAYKAL (BAIKAL)",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000ggsg",
+   "name": "2008-09-10 11:00 UTC, IRAN: HORMOZGAN PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000ggu8",
+   "name": "2008-09-11 00:20 UTC, JAPAN: HOKKAIDO",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gjd4",
+   "name": "2008-10-05 15:52 UTC, KYRGYZSTAN: NURA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gjgt",
+   "name": "2008-10-06 08:30 UTC, CHINA: TIBET (XIZANG PROVINCE)",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gm8g",
+   "name": "2008-10-28 23:09 UTC, PAKISTAN: QUETTA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gma2",
+   "name": "2008-10-29 11:32 UTC, PAKISTAN: ZIARAT",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gnbj",
+   "name": "2008-11-10 01:22 UTC, CHINA: QINGHAI PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gnur",
+   "name": "2008-11-16 17:02 UTC, INDONESIA: MINAHASSA PENINSULA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gp1c",
+   "name": "2008-11-19 06:11 UTC, PANAMA: PASO CANOA, DAVID, PUERTO ARMUELLES",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gs2d",
+   "name": "2009-01-03 19:43 UTC, PAPUA NEW GUINEA: NEAR NORTH COAST",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gs3t",
+   "name": "2009-01-03 22:33 UTC, PAPUA NEW GUINEA: NEAR NORTH COAST",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gscg",
+   "name": "2009-01-08 19:21 UTC, COSTA RICA: LA PAZ",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gsmz",
+   "name": "2009-01-15 17:49 UTC, RUSSIA: KURIL ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gtnc",
+   "name": "2009-02-11 17:34 UTC, INDONESIA: KEPULAUAN TALAUD",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gv5p",
+   "name": "2009-03-19 18:17 UTC, TONGA ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gxkj",
+   "name": "2009-05-28 08:24 UTC, HONDURAS: NORTHERN; BELIZE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gxsf",
+   "name": "2009-06-02 02:17 UTC, VANUATU ISLANDS: TONGOA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gytt",
+   "name": "2009-07-01 09:30 UTC, GREECE: CRETE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gyxm",
+   "name": "2009-07-04 06:49 UTC, PANAMA: PANAMA CITY",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000gz8j",
+   "name": "2009-07-15 09:22 UTC, NEW ZEALAND: OFF WEST COAST OF SOUTH ISLAND",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h05x",
+   "name": "2009-08-10 19:55 UTC, INDIA: ANDAMAN I",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h05y",
+   "name": "2009-08-10 20:07 UTC, JAPAN: HONSHU: S COAST",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h0ew",
+   "name": "2009-08-16 07:38 UTC, INDONESIA: SUMATRA: PADANG",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h0y8",
+   "name": "2009-08-28 01:52 UTC, CHINA: QINGHAI PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h1fu",
+   "name": "2009-09-12 20:06 UTC, VENEZUELA: CARABOBO",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h1r4",
+   "name": "2009-09-21 08:53 UTC, BHUTAN: TASHIGANG",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h1ys",
+   "name": "2009-09-29 17:48 UTC, SAMOA ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h24c",
+   "name": "2009-10-01 01:52 UTC, INDONESIA: SUMATRA: SOUTHERN: KERINCI",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h2gd",
+   "name": "2009-10-07 22:18 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h39a",
+   "name": "2009-10-22 19:51 UTC, AFGHANISTAN: HINDU KUSH",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h3vc",
+   "name": "2009-11-08 19:41 UTC, INDONESIA: SUMABAWA: BIMA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h56x",
+   "name": "2009-12-19 23:19 UTC, MALAWI: KARONGA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h5nd",
+   "name": "2010-01-03 21:48 UTC, SOLOMON ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h5np",
+   "name": "2010-01-03 22:36 UTC, SOLOMON ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h5rn",
+   "name": "2010-01-05 12:15 UTC, SOLOMON ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "nc71338066",
+   "name": "2010-01-10 00:27 UTC, CALIFORNIA: OFF COAST NORTHERN",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h60h",
+   "name": "2010-01-12 21:53 UTC, HAITI: PORT-AU-PRINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h7qu",
+   "name": "2010-02-26 20:31 UTC, JAPAN: TORI SHIMA, OKINAWA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "official20100227063411530_30",
+   "name": "2010-02-27 06:34 UTC, CHILE: MAULE, CONCEPCION, TALCAHUANO",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h7yb",
+   "name": "2010-02-27 15:45 UTC, ARGENTINA: SALTA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h8nd",
+   "name": "2010-03-04 00:18 UTC, TAIWAN: KAO-HSIUNG",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h8x1",
+   "name": "2010-03-08 02:32 UTC, TURKEY: ELAZIG PROVINCE: OKCULAR, YUKARI DEMIRCI",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000h94t",
+   "name": "2010-03-11 14:39 UTC, CHILE: RANCAGUA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000ha59",
+   "name": "2010-03-30 16:54 UTC, INDIA: ANDAMAN ISLANDS: DIGLIPUR",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "ci14607652",
+   "name": "2010-04-04 22:40 UTC, MEXICO: BAJA CALIFORNIA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usp000hat0",
+   "name": "2010-04-06 22:15 UTC, INDONESIA: SUMATRA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hbbt",
+   "name": "2010-04-13 23:49 UTC, CHINA: QINGHAI PROVINCE: YUSHU",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hccn",
+   "name": "2010-05-06 02:42 UTC, PERU: TACNA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hchk",
+   "name": "2010-05-09 05:59 UTC, INDONESIA: N. SUMATRA: SIMEULUE ISLAND",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hd84",
+   "name": "2010-05-27 17:14 UTC, VANUATU ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hdwb",
+   "name": "2010-06-12 19:26 UTC, INDIA: LITTLE NICOBAR ISLAND",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000he3f",
+   "name": "2010-06-16 03:16 UTC, INDONESIA: NEW GUINEA: IRIAN JAYA: JAPEN",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000heqj",
+   "name": "2010-06-30 07:22 UTC, MEXICO: SAN ANDRES HUAXPALTEPEC",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hfku",
+   "name": "2010-07-18 13:34 UTC, PAPUA NEW GUINEA: NEW BRITAIN",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hhuc",
+   "name": "2010-08-10 05:23 UTC, VANUATU ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hj2j",
+   "name": "2010-08-13 21:19 UTC, GUAM, NORTHERN MARIANA ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hk46",
+   "name": "2010-09-03 16:35 UTC, NEW ZEALAND: CHRISTCHURCH",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hnj4",
+   "name": "2010-10-25 14:42 UTC, INDONESIA: SUMATRA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hr7k",
+   "name": "2010-12-20 18:41 UTC, IRAN: KERMAN",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hr97",
+   "name": "2010-12-21 17:19 UTC, JAPAN: BONIN ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hrw0",
+   "name": "2010-12-25 13:16 UTC, VANUATU ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hst4",
+   "name": "2011-01-09 10:03 UTC, VANUATU ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000ht15",
+   "name": "2011-01-13 16:16 UTC, NEW CALEDONIA: LOYALTY ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000huc2",
+   "name": "2011-02-11 20:05 UTC, CHILE: OFF COAST CENTRAL",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000huvq",
+   "name": "2011-02-21 23:51 UTC, NEW ZEALAND: CHRISTCHURCH, LYTTELTON",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hvhj",
+   "name": "2011-03-09 02:45 UTC, JAPAN: HONSHU: E COAST",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hvkh",
+   "name": "2011-03-09 21:24 UTC, JAPAN: SANRIKU",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "official20110311054624120_30",
+   "name": "2011-03-11 05:46 UTC, JAPAN: HONSHU",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hvpg",
+   "name": "2011-03-11 06:25 UTC, JAPAN: OFF EAST COAST HONSHU",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hyfx",
+   "name": "2011-03-24 13:55 UTC, MYANMAR: TACHILEK; THAILAND",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000hzq8",
+   "name": "2011-04-11 08:16 UTC, JAPAN: HONSHU",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j0hc",
+   "name": "2011-04-24 23:07 UTC, INDONESIA: SULAWESI: KENDARI",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j1a8",
+   "name": "2011-05-10 08:55 UTC, NEW CALEDONIA: LOYALTY ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j33b",
+   "name": "2011-06-13 02:20 UTC, NEW ZEALAND: SOUTH ISLAND: CANTERBURY",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j48h",
+   "name": "2011-07-06 19:03 UTC, NEW ZEALAND: KERMADEC ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j4gp",
+   "name": "2011-07-10 00:57 UTC, JAPAN: HONSHU: E COAST",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j560",
+   "name": "2011-07-19 19:35 UTC, UZBEKISTAN: FARGONA, VIOLYATI",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j6r4",
+   "name": "2011-08-20 16:55 UTC, VANUATU ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j6rj",
+   "name": "2011-08-20 18:19 UTC, VANUATU ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j7dc",
+   "name": "2011-09-02 10:55 UTC, ALASKA: ALEUTIAN ISLANDS: FOX ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j9nm",
+   "name": "2011-10-21 17:57 UTC, KERMADEC ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000j9rr",
+   "name": "2011-10-23 10:41 UTC, TURKEY: ERCIS, VAN",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000ja1p",
+   "name": "2011-10-28 18:54 UTC, PERU: SAN VICENTE DE CANETE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jcq2",
+   "name": "2011-12-27 15:21 UTC, RUSSIA: KYZYL",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jd8k",
+   "name": "2012-01-09 04:07 UTC, SOLOMON ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jeag",
+   "name": "2012-02-02 13:34 UTC, VANUATU ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jejw",
+   "name": "2012-02-06 03:49 UTC, PHILIPPINES: NEGROS ORIENTAL PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jfqx",
+   "name": "2012-03-03 12:19 UTC, NEW CALEDONIA: LOYALTY ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jfzj",
+   "name": "2012-03-09 07:09 UTC, VANUATU ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jg7e",
+   "name": "2012-03-14 09:08 UTC, JAPAN: HOKKAIDO",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jghj",
+   "name": "2012-03-20 18:02 UTC, MEXICO: GUERRERO, OAXACA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "official20120411083836720_20",
+   "name": "2012-04-11 08:38 UTC, INDONESIA: N SUMATRA: OFF WEST COAST",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usp000jhjb",
+   "name": "2012-04-11 10:43 UTC, INDONESIA: N SUMATRA: OFF WEST COAST",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usp000jhzj",
+   "name": "2012-04-14 22:05 UTC, VANUATU ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jj3u",
+   "name": "2012-04-17 03:50 UTC, CHILE: VALPARAISO",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jkdy",
+   "name": "2012-05-14 10:00 UTC, CHILE: ARICA; PERU: TACNA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jkn8",
+   "name": "2012-05-20 02:03 UTC, ITALY: EMILIA ROMAGNA: MIRANDOLA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usp000jmkj",
+   "name": "2012-06-10 12:44 UTC, TURKEY: FETHIYE; GREECE: RHODES",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jncx",
+   "name": "2012-06-29 21:07 UTC, CHINA: XINJIANG PROVINCE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jpe1",
+   "name": "2012-07-25 00:27 UTC, INDONESIA: BANDA ACEH",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jpeh",
+   "name": "2012-07-25 11:20 UTC, SOLOMON ISLANDS: GUADALCANAL",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jq5p",
+   "name": "2012-08-11 12:23 UTC, IRAN: AHAR, HARIS, VARZAGAN",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jqf3",
+   "name": "2012-08-18 09:41 UTC, INDONESIA: SULAWESI: SIGI, PARIGI MOUNTONG",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jqvm",
+   "name": "2012-08-27 04:37 UTC, NICARAGUA: OFF THE COAST",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jr83",
+   "name": "2012-08-31 12:47 UTC, PHILIPPINES: CAGAYAN DE ORO, TACLOBAN",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jrsw",
+   "name": "2012-09-05 14:42 UTC, COSTA RICA: NICOYA",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000juhz",
+   "name": "2012-10-28 03:04 UTC, CANADA: QUEEN CHARLOTTE ISLANDS",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jvbq",
+   "name": "2012-11-11 01:12 UTC, MYANMAR (BURMA): SHWEBO",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usp000jwjn",
+   "name": "2012-12-07 08:18 UTC, JAPAN: HONSHU: MIYAGI PREFECTURE",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "ak0138esnzr",
+   "name": "2013-01-05 08:58 UTC, ALASKA: SOUTHEASTERN",
+   "why": "no losspager product"
+  },
+  {
+   "comcat": "usb000esgn",
+   "name": "2013-01-21 22:22 UTC, INDONESIA: SUMATERA: N",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000f1s0",
+   "name": "2013-02-06 01:12 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000f40j",
+   "name": "2013-02-08 15:26 UTC, SOLOMON ISLANDS: SANTA CRUZ ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000g2y5",
+   "name": "2013-04-09 11:52 UTC, IRAN: BUSHEHR PROVINCE: SHANBE, KAKI, SENA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000gcdd",
+   "name": "2013-04-20 00:02 UTC, CHINA: SICHUAN PROVINCE: LONGMEN",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000gda9",
+   "name": "2013-04-22 01:16 UTC, MEXICO: MICHOACAN: LAZARO CARDENAS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000gtvs",
+   "name": "2013-05-11 02:08 UTC, IRAN: HORMOZGAN: BASHAGARD",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000hbrt",
+   "name": "2013-06-02 05:43 UTC, TAIWAN: JENAI",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000hrl4",
+   "name": "2013-06-15 16:11 UTC, GREECE: CRETE",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000i4re",
+   "name": "2013-07-02 07:37 UTC, INDONESIA: BANDA ACEH",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000iivv",
+   "name": "2013-07-21 05:09 UTC, NEW ZEALAND: COOK STRAIT",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000ije3",
+   "name": "2013-07-21 23:45 UTC, CHINA: GANSU: DINGXI, MIN",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000j4iz",
+   "name": "2013-08-16 02:31 UTC, NEW ZEALAND: WELLINGTON, MARLBOROUGH",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000j83t",
+   "name": "2013-08-21 12:38 UTC, MEXICO: SAN MARCOS, ACAPULCO",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000jyiv",
+   "name": "2013-09-24 11:29 UTC, PAKISTAN: AWARAN, KECH",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000jzma",
+   "name": "2013-09-25 16:42 UTC, PERU: AREQUIPA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000k1gb",
+   "name": "2013-09-28 07:34 UTC, PAKISTAN: AWARAN",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000kbn7",
+   "name": "2013-10-12 13:11 UTC, GREECE: CRETE: CHANIA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000kdb4",
+   "name": "2013-10-15 00:12 UTC, PHILIPPINES: BOHOL, CEBU, SIQUIJOR IS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000kn4n",
+   "name": "2013-10-25 17:10 UTC, JAPAN: HONSHU: E COAST",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000l0gq",
+   "name": "2013-11-17 09:04 UTC, SCOTIA SEA: SOUTH ORKNEY ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000m1w9",
+   "name": "2014-01-13 04:01 UTC, PUERTO RICO",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000m4i4",
+   "name": "2014-01-20 02:52 UTC, NEW ZEALAND: WELLINGTON, MANAWATU-WANGANUI",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000m8ch",
+   "name": "2014-01-26 13:55 UTC, GREECE: KEFALONIA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000mfuh",
+   "name": "2014-02-03 03:08 UTC, GREECE: KEFALONIA: LIXOURION",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000mnvj",
+   "name": "2014-02-12 09:19 UTC, CHINA: XINJIANG PROVINCE: YUTIAN",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000ndnj",
+   "name": "2014-03-16 21:16 UTC, CHILE: IQUIQUE",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000nzvd",
+   "name": "2014-04-01 23:46 UTC, CHILE: NORTHERN: IQUIQUE, ALTO HOSPICIO",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000p27i",
+   "name": "2014-04-03 02:43 UTC, CHILE: NORTHERN: IQUIQUE",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usd0003cqx",
+   "name": "2014-04-10 23:27 UTC, NICARAGUA: NAGAROTE, MANAGUA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000phx5",
+   "name": "2014-04-12 20:14 UTC, SOLOMON ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000piqj",
+   "name": "2014-04-13 12:36 UTC, SOLOMON ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000pq41",
+   "name": "2014-04-18 14:27 UTC, MEXICO: GUERRERO; MEXICO CITY",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000qack",
+   "name": "2014-05-05 11:08 UTC, THAILAND: CHIANG RAI",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000qea2",
+   "name": "2014-05-08 17:00 UTC, MEXICO: TECPAN",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000r2hc",
+   "name": "2014-05-24 09:25 UTC, GREECE, TURKEY",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000rkg5",
+   "name": "2014-06-23 19:19 UTC, KERMADEC ISLANDS: SSE OF RAOUL ISLAND",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000rs50",
+   "name": "2014-07-11 19:22 UTC, JAPAN: SANRIKU",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "ak0149guzic1",
+   "name": "2014-07-25 10:54 UTC, ALASKA: SOUTHEASTERN",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000rzmg",
+   "name": "2014-08-03 08:30 UTC, CHINA: YUNNAN: LUDIAN: LONGTOUSHAN, ZHAOTONG",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000s3np",
+   "name": "2014-08-18 02:32 UTC, IRAN: ILAM PROVINCE: ABDANAN",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "nc72282711",
+   "name": "2014-08-24 10:20 UTC, CALIFORNIA: NAPA, VALLEJO",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000sjim",
+   "name": "2014-10-07 13:49 UTC, CHINA: YUNNAN PROVINCE: YONGPING",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000sk6k",
+   "name": "2014-10-09 02:14 UTC, CHILE: EASTER ISLAND REGION",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000slwn",
+   "name": "2014-10-14 03:51 UTC, EL SALVADOR: GULF OF FONSECA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000syza",
+   "name": "2014-11-22 13:08 UTC, JAPAN: NAGANO: HAKUBA, OTARI",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usb000tpvj",
+   "name": "2015-02-16 23:06 UTC, JAPAN: HONSHU",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "usc000trf9",
+   "name": "2015-02-19 13:18 UTC, VANUATU ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us200027ps",
+   "name": "2015-04-20 01:42 UTC, TAIWAN: TAIPEI",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20002926",
+   "name": "2015-04-25 06:11 UTC, NEPAL: KATHMANDU; INDIA; CHINA; BANGLADESH",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20002ejl",
+   "name": "2015-05-12 07:05 UTC, NEPAL: DOLAKHA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20002m5s",
+   "name": "2015-06-04 23:15 UTC, MALAYSIA: SABAH: LAHAD,DATU,KANAK",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10002n4w",
+   "name": "2015-07-03 01:07 UTC, CHINA: S. XINJIANG: HOTAN",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10002n6s",
+   "name": "2015-07-03 06:43 UTC, PHILIPPINES: MINDANAO",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20002whh",
+   "name": "2015-07-10 04:12 UTC, SOLOMON ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20002yaw",
+   "name": "2015-07-18 02:27 UTC, SOLOMON ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us200030aq",
+   "name": "2015-07-27 04:49 UTC, ALASKA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20003nqr",
+   "name": "2015-09-24 15:53 UTC, INDONESIA: SORONG",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us200041ty",
+   "name": "2015-11-04 03:44 UTC, INDONESIA: EAST NUSA TENGGARA: ALOR",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10003x8t",
+   "name": "2015-11-11 01:54 UTC, CHILE: LA SERENA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10003y71",
+   "name": "2015-11-13 20:51 UTC, JAPAN: KYUSYU ISLAND",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10003ywp",
+   "name": "2015-11-17 07:10 UTC, GREECE: LEFKADA, KEFALONIA, ITHACA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10003zcp",
+   "name": "2015-11-18 18:31 UTC, SOLOMON ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us100044k6",
+   "name": "2015-12-07 07:50 UTC, TAJIKISTAN",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10004gy9",
+   "name": "2016-01-25 04:22 UTC, MOROCCO: MELILLA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20004y6h",
+   "name": "2016-02-05 19:57 UTC, TAIWAN: TAINAN",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10004u1y",
+   "name": "2016-03-02 12:49 UTC, INDONESIA: SUMATRA:",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20005e8t",
+   "name": "2016-04-03 08:23 UTC, VANUATU ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20005iis",
+   "name": "2016-04-15 16:25 UTC, JAPAN: KUMAMOTO, OITA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20005j32",
+   "name": "2016-04-16 23:58 UTC, ECUADOR: NEAR WEST COAST: MANABI, ESMERALDAS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10005c88",
+   "name": "2016-04-28 19:33 UTC, VANUATU ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10005i9n",
+   "name": "2016-05-18 16:46 UTC, ECUADOR: MANABI PROVINCE",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us200062l9",
+   "name": "2016-06-07 19:15 UTC, INDONESIA: MALUKU: TERNATE ISLAND",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10006d5h",
+   "name": "2016-08-12 01:26 UTC, NEW CALEDONIA: LOYALTY ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10006exl",
+   "name": "2016-08-19 07:32 UTC, SOUTH SANDWICH ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10006fdp",
+   "name": "2016-08-20 09:01 UTC, JAPAN: OFF EAST COAST HONSHU",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10006jbi",
+   "name": "2016-09-01 16:37 UTC, NEW ZEALAND: GISBORNE",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20007fta",
+   "name": "2016-10-21 05:07 UTC, JAPAN: KURAYOSHI",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us1000725y",
+   "name": "2016-10-26 19:18 UTC, ITALY: VISSO, USSITA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us1000731j",
+   "name": "2016-10-30 06:40 UTC, ITALY: NORCIA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us1000778i",
+   "name": "2016-11-13 11:02 UTC, NEW ZEALAND: AMBERLEY",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10007b88",
+   "name": "2016-11-21 20:59 UTC, JAPAN: NEAR E COAST HONSHU",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10007c4w",
+   "name": "2016-11-24 18:43 UTC, NICARAGUA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10007ca5",
+   "name": "2016-11-25 14:24 UTC, CHINA: XINJIANG PROVINCE: KASHGAR",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10007e55",
+   "name": "2016-12-01 22:40 UTC, PERU: PUNO, LAMPA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10007ghm",
+   "name": "2016-12-06 22:03 UTC, INDONESIA: SUMATRA: ACEH: PIDIE JAYA",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20007z2r",
+   "name": "2016-12-08 05:15 UTC, CHINA: N. XINJIANG: URUMQI",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20007z80",
+   "name": "2016-12-08 17:38 UTC, SOLOMON ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20007zlq",
+   "name": "2016-12-09 19:10 UTC, SOLOMON ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10007mn3",
+   "name": "2016-12-25 14:22 UTC, CHILE",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us10007pj6",
+   "name": "2017-01-03 21:52 UTC, FIJI ISLANDS",
+   "why": "no fatality estimate"
+  },
+  {
+   "comcat": "us20008ixa",
+   "name": "2017-02-10 14:03 UTC, PHILIPPINES: SURIGAO DEL NORTE",
+   "why": "no fatality estimate"
+  }
+ ],
+ "ourColumnOnEveryRow": {
+  "bias": 0.9130225851914264,
+  "scatterLn": 2.43566118441623,
+  "scored": 125
+ },
+ "onSharedRows": {
+  "ours": {
+   "bias": 0.9012293837871216,
+   "scatterLn": 2.798177009039345,
+   "scored": 48
+  },
+  "pager": {
+   "bias": 3.3749751735338442,
+   "scatterLn": 2.546902969353373,
+   "scored": 48
+  }
+ },
+ "guards": {
+  "reproducesPublished": true,
+  "hundredRows": true
+ },
+ "e3ScatterMet": false,
+ "gnormRange": [
+  1,
+  2.5
+ ],
+ "perRow": [
+  {
+   "comcat": "usp000jv5f",
+   "date": "2012-11-07",
+   "magnitude": 7.4,
+   "record": 48,
+   "ours": 1,
+   "pager": 82
+  },
+  {
+   "comcat": "us20003k7a",
+   "date": "2015-09-16",
+   "magnitude": 8.3,
+   "record": 7,
+   "ours": 126,
+   "pager": 64
+  },
+  {
+   "comcat": "us10008ei0",
+   "date": "2017-04-05",
+   "magnitude": 6.1,
+   "record": 2,
+   "ours": 10,
+   "pager": 1
+  },
+  {
+   "comcat": "us1000976a",
+   "date": "2017-07-06",
+   "magnitude": 6.5,
+   "record": 4,
+   "ours": 8,
+   "pager": 15
+  },
+  {
+   "comcat": "us2000atjv",
+   "date": "2017-09-23",
+   "magnitude": 6.1,
+   "record": 5,
+   "ours": 4,
+   "pager": 14
+  },
+  {
+   "comcat": "us2000bmcg",
+   "date": "2017-11-12",
+   "magnitude": 7.3,
+   "record": 630,
+   "ours": 197,
+   "pager": 10884
+  },
+  {
+   "comcat": "us2000d3km",
+   "date": "2018-02-16",
+   "magnitude": 7.2,
+   "record": 14,
+   "ours": 119,
+   "pager": 26
+  },
+  {
+   "comcat": "us2000d7q6",
+   "date": "2018-02-25",
+   "magnitude": 7.5,
+   "record": 145,
+   "ours": 544,
+   "pager": 28
+  },
+  {
+   "comcat": "us2000ggbs",
+   "date": "2018-07-28",
+   "magnitude": 6.4,
+   "record": 17,
+   "ours": 10,
+   "pager": 10
+  },
+  {
+   "comcat": "us1000g3ub",
+   "date": "2018-08-05",
+   "magnitude": 6.9,
+   "record": 560,
+   "ours": 43,
+   "pager": 483
+  },
+  {
+   "comcat": "us1000ghda",
+   "date": "2018-08-25",
+   "magnitude": 6,
+   "record": 2,
+   "ours": 63,
+   "pager": 7
+  },
+  {
+   "comcat": "us1000h3p4",
+   "date": "2018-09-28",
+   "magnitude": 7.5,
+   "record": 4340,
+   "ours": 313,
+   "pager": 2733
+  },
+  {
+   "comcat": "us1000hwdw",
+   "date": "2018-11-25",
+   "magnitude": 6.3,
+   "record": 1,
+   "ours": 115,
+   "pager": 59
+  },
+  {
+   "comcat": "us70005lfd",
+   "date": "2019-09-25",
+   "magnitude": 6.5,
+   "record": 31,
+   "ours": 4,
+   "pager": 1
+  },
+  {
+   "comcat": "us70005ulm",
+   "date": "2019-10-16",
+   "magnitude": 6.4,
+   "record": 7,
+   "ours": 1,
+   "pager": 1
+  },
+  {
+   "comcat": "us70006d0m",
+   "date": "2019-11-26",
+   "magnitude": 6.4,
+   "record": 51,
+   "ours": 15,
+   "pager": 123
+  },
+  {
+   "comcat": "us60007anp",
+   "date": "2020-01-19",
+   "magnitude": 6,
+   "record": 1,
+   "ours": 1,
+   "pager": 2
+  },
+  {
+   "comcat": "us60007ewc",
+   "date": "2020-01-24",
+   "magnitude": 6.7,
+   "record": 41,
+   "ours": 3,
+   "pager": 275
+  },
+  {
+   "comcat": "us70007v9g",
+   "date": "2020-02-23",
+   "magnitude": 6,
+   "record": 10,
+   "ours": 79,
+   "pager": 2
+  },
+  {
+   "comcat": "us6000ah9t",
+   "date": "2020-06-23",
+   "magnitude": 7.4,
+   "record": 10,
+   "ours": 6,
+   "pager": 184
+  },
+  {
+   "comcat": "us6000bgbr",
+   "date": "2020-08-18",
+   "magnitude": 6.6,
+   "record": 2,
+   "ours": 1,
+   "pager": 1
+  },
+  {
+   "comcat": "us7000c7y0",
+   "date": "2020-10-30",
+   "magnitude": 7,
+   "record": 117,
+   "ours": 1,
+   "pager": 17
+  },
+  {
+   "comcat": "us6000d3zh",
+   "date": "2020-12-29",
+   "magnitude": 6.4,
+   "record": 8,
+   "ours": 32,
+   "pager": 58
+  },
+  {
+   "comcat": "us7000dy3b",
+   "date": "2021-04-28",
+   "magnitude": 6,
+   "record": 2,
+   "ours": 703,
+   "pager": 391
+  },
+  {
+   "comcat": "us7000e54r",
+   "date": "2021-05-21",
+   "magnitude": 7.3,
+   "record": 20,
+   "ours": 3,
+   "pager": 80
+  },
+  {
+   "comcat": "us6000f65h",
+   "date": "2021-08-14",
+   "magnitude": 7.2,
+   "record": 2248,
+   "ours": 7941,
+   "pager": 26586
+  },
+  {
+   "comcat": "us7000f93v",
+   "date": "2021-09-08",
+   "magnitude": 7,
+   "record": 3,
+   "ours": 312,
+   "pager": 753
+  },
+  {
+   "comcat": "us7000fu12",
+   "date": "2021-11-14",
+   "magnitude": 6.4,
+   "record": 2,
+   "ours": 87,
+   "pager": 1329
+  },
+  {
+   "comcat": "us7000hj3u",
+   "date": "2022-06-21",
+   "magnitude": 6,
+   "record": 1039,
+   "ours": 426,
+   "pager": 348
+  },
+  {
+   "comcat": "us6000hz8x",
+   "date": "2022-07-01",
+   "magnitude": 6,
+   "record": 5,
+   "ours": 98,
+   "pager": 19
+  },
+  {
+   "comcat": "us7000i59t",
+   "date": "2022-09-05",
+   "magnitude": 6.6,
+   "record": 118,
+   "ours": 14,
+   "pager": 2
+  },
+  {
+   "comcat": "us7000i9bw",
+   "date": "2022-09-19",
+   "magnitude": 7.6,
+   "record": 2,
+   "ours": 136,
+   "pager": 51
+  },
+  {
+   "comcat": "us7000ia36",
+   "date": "2022-09-22",
+   "magnitude": 6.8,
+   "record": 3,
+   "ours": 2,
+   "pager": 3
+  },
+  {
+   "comcat": "us7000irp8",
+   "date": "2022-11-23",
+   "magnitude": 6.1,
+   "record": 2,
+   "ours": 51,
+   "pager": 60
+  },
+  {
+   "comcat": "us6000jllz",
+   "date": "2023-02-06",
+   "magnitude": 7.8,
+   "record": 56697,
+   "ours": 7676,
+   "pager": 21573
+  },
+  {
+   "comcat": "us6000jqcn",
+   "date": "2023-02-20",
+   "magnitude": 6.3,
+   "record": 6,
+   "ours": 138,
+   "pager": 4595
+  },
+  {
+   "comcat": "us7000kufc",
+   "date": "2023-09-08",
+   "magnitude": 6.8,
+   "record": 2946,
+   "ours": 32,
+   "pager": 1665
+  },
+  {
+   "comcat": "us6000ldpg",
+   "date": "2023-10-07",
+   "magnitude": 6.3,
+   "record": 1482,
+   "ours": 16,
+   "pager": 308
+  },
+  {
+   "comcat": "us6000len8",
+   "date": "2023-10-11",
+   "magnitude": 6.3,
+   "record": 3,
+   "ours": 73,
+   "pager": 1612
+  },
+  {
+   "comcat": "us6000lfn5",
+   "date": "2023-10-15",
+   "magnitude": 6.3,
+   "record": 4,
+   "ours": 7,
+   "pager": 298
+  },
+  {
+   "comcat": "us6000m0xl",
+   "date": "2024-01-01",
+   "magnitude": 7.5,
+   "record": 549,
+   "ours": 19,
+   "pager": 133
+  },
+  {
+   "comcat": "us7000m9g4",
+   "date": "2024-04-02",
+   "magnitude": 7.4,
+   "record": 18,
+   "ours": 1,
+   "pager": 11
+  },
+  {
+   "comcat": "us6000pi9w",
+   "date": "2025-01-07",
+   "magnitude": 7.1,
+   "record": 134,
+   "ours": 2,
+   "pager": 291
+  },
+  {
+   "comcat": "us7000pn9s",
+   "date": "2025-03-28",
+   "magnitude": 7.7,
+   "record": 3815,
+   "ours": 12934,
+   "pager": 67146
+  },
+  {
+   "comcat": "us6000qznb",
+   "date": "2025-08-10",
+   "magnitude": 6.1,
+   "record": 1,
+   "ours": 1,
+   "pager": 249
+  },
+  {
+   "comcat": "us7000qsvj",
+   "date": "2025-08-31",
+   "magnitude": 6,
+   "record": 2205,
+   "ours": 193,
+   "pager": 8590
+  },
+  {
+   "comcat": "us6000rdrz",
+   "date": "2025-09-30",
+   "magnitude": 6.9,
+   "record": 79,
+   "ours": 1,
+   "pager": 113
+  },
+  {
+   "comcat": "us6000rl31",
+   "date": "2025-11-02",
+   "magnitude": 6.2,
+   "record": 26,
+   "ours": 10,
+   "pager": 223
+  }
+ ]
+}

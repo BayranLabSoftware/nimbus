@@ -25,7 +25,12 @@ import { simulateImpact } from '../../src/physics/simulate.js';
  *   (a product such as height × range is not a range);
  * - monotone in size: the rings a visitor sees do not shrink when the
  *   impactor, the yield, the magnitude, the erupted volume or the slide
- *   grows by 1 % (magnitude by 0.01), the other inputs held;
+ *   grows by 1 % (magnitude by 0.01), the other inputs held. Since
+ *   19 September 2026 an earthquake's list holds the wave as well as the
+ *   shaking — the slip, the uplift, the amplitudes near and far, the run-up,
+ *   the period and the travel time — because the scorecard's own G5 for waves
+ *   from earthquakes read "the earthquake sweep checks the shaking's rings and
+ *   not the wave's", and it did;
  * - continuous (rings under a millimetre are not compared, in either
  *   check): the same rings move by less than 5 % when the size grows
  *   by 0.1 % (magnitude by 0.001), a magnitude by less than 0.05 — a
@@ -175,6 +180,49 @@ const HAZARDS: readonly Hazard[] = [
       'shaking.mmi9Radius',
       'shaking.liquefactionRadius',
       'ruptureLength',
+      // The field, not only its contours, from 19 September 2026. Every
+      // continuity failure this sweep has ever found in the earthquake family
+      // is a contour's radius, and a contour's radius is not the model: it is
+      // where a threshold is crossed, and its conditioning blows up in two
+      // places. At the onset of a ring the crossing moves like the square root
+      // of the excess, so the first millimetres of a ring are a vertical
+      // tangent; and for a source three hundred kilometres down, an epicentral
+      // radius of fourteen kilometres changes the hypocentral distance by four
+      // hundred metres in three hundred kilometres, so a thousandth of a
+      // magnitude has to be absorbed by a fifteen per cent move in the radius.
+      // These four accelerations and two intensities are the field itself at
+      // fixed places, which is what continuity is a property of: if they hold
+      // and the contours jump, the jump is the contour's conditioning and not
+      // a regime switch in the physics.
+      'shaking.pgaAt20km',
+      'shaking.pgaAt100km',
+      'shaking.pgaAt20kmNGA',
+      'shaking.pgaAt100kmNGA',
+      'shaking.mmiAtEpicenter',
+      'shaking.mmiAtEpicenterEurope',
+      // The wave, from 19 September 2026. Until then this sweep read an
+      // earthquake's shaking and not the sea it moves, which is what the
+      // scorecard's G5 for waves from earthquakes said in its own words:
+      // "the earthquake sweep checks the shaking's rings and not the wave's".
+      // A path that is absent — three scenarios in ten are put in water — is
+      // skipped, as every absent path is. The travel time and the celerity are
+      // in: they should not move with the magnitude at all, and a sweep that
+      // sees them move has found something.
+      'tsunami.meanSlip',
+      'tsunami.seafloorUplift',
+      'tsunami.ruptureWidth',
+      'tsunami.sourceWavelength',
+      'tsunami.dominantPeriod',
+      'tsunami.initialAmplitude',
+      'tsunami.amplitudeAt1000km',
+      'tsunami.amplitudeAt5000km',
+      'tsunami.amplitudeAt1000kmDispersed',
+      'tsunami.amplitudeAt5000kmDispersed',
+      'tsunami.amplitudeAt1000kmToward',
+      'tsunami.amplitudeAt5000kmToward',
+      'tsunami.runupAt1000km',
+      'tsunami.inundationDistanceAt1000km',
+      'tsunami.travelTimeTo1000km',
     ],
   },
   {
