@@ -120,6 +120,65 @@
  * the ground-motion residual being honest or the model being vague.
  */
 
+/*
+ * ===========================================================================
+ * THE OUTCOME, 21 September 2026: REFUSED on rules 381(a) and 381(b)
+ * ===========================================================================
+ *
+ * Rules 377 to 383 were pushed in ed5d7d4 and the candidate in 1c4e89c, both
+ * before one band was read. One run, both sides in one process:
+ * `scripts/benchmark/rupture-centre.ts`,
+ * `benchmark/results/rupture-centre-2026-09-21.json`.
+ *
+ *   381(a) falsified bands      : 6 -> 6                            NOT MET
+ *   381(b) rows leaving a band  : 1 — Chile (central), 16 Sep 2015  NOT MET
+ *   381(c) median band width    : 10^2.56 -> 10^2.57, ceiling +0.30     MET
+ *   381(d) central estimates    : 0 moved                               MET
+ *   bands that moved at all     : 63 of 408
+ *
+ * WHY IT FAILS, and it is a mistake in rule 380 rather than in the code. The
+ * rule predicted that "a footprint that reaches nobody when centred may
+ * reach somebody when slid". It cannot, for these rows: FIVE OF THE SIX
+ * falsified bands belong to POINT SOURCES — Taipei 2015 at Mw 6.4, Melilla
+ * 2016 at 6.3, Batanes 2019 at 6.0, Gulf of Fonseca 2014 at 7.3, Cagayan
+ * 2012 being the one extended row — and rule 378 sets the offset to zero for
+ * a point source, because a point has no length to slide along. The
+ * candidate could not move the rows it was built to move, and the run says
+ * so: not one of the six changes by a single person.
+ *
+ * I did not check, before writing rule 380, that the rows to be cured were
+ * extended. That is the same mistake as rule 351(b) earlier tonight, made
+ * again with the run to catch it this time instead of a clause.
+ *
+ * AND A DEFECT IN THE DIAGNOSIS ITSELF, found by the discrepancy between the
+ * 7 written into rule 381(a) and the 6 the run reads. They are not the same
+ * six-plus-one: the diagnosis counted Hindu Kush 2009 (Mw 6.2, 5 dead) as a
+ * falsified band, and it is not one. That row has NO CASUALTY PLAN at all —
+ * `centralEstimate` returns null — and `compareWithRecord` reports [0, 0] in
+ * that case as much as it does for a real band of zero. A silence and a
+ * prediction of nothing are printed identically, and the diagnosis read one
+ * as the other. `sampleToll` on that row gives [1, 21].
+ *
+ * So the count of genuinely falsified bands is SIX, and the seventh was a
+ * measurement error of mine. That the run exposed it is the only reason it
+ * is known.
+ *
+ * WHAT THIS LEAVES, for a block that is not written here. The cure for a
+ * [0, 0] band on a POINT SOURCE cannot be the rupture's centre. It has to be
+ * the epicentre's own location error — which rule 378 named, measured at
+ * nothing, and deliberately left out under "one change at a time". That
+ * decision was right procedurally and wrong empirically: the change that was
+ * left out is the one that was needed. A block for it needs the location
+ * errors themselves, which ComCat publishes per event and this project does
+ * not carry, and it needs to face what this run also showed — that the
+ * offset moved only 63 bands of 408 and cost a row, so position terms are
+ * not free.
+ *
+ * The candidate stays reachable and drawn by nothing:
+ * `sampleScenarioPlans({ drawRuptureCentre })` is false everywhere, and the
+ * validation report does not move by one figure.
+ */
+
 /** Rule 378's offset, as a fraction of the rupture's own length: uniform on
  *  [-1/2, +1/2] of L along strike. A project's choice, declared. */
 export const CENTRE_OFFSET_FRACTION = 0.5;

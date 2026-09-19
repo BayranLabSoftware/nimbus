@@ -1,0 +1,42 @@
+{
+  "rules": "377 to 383",
+  "falsified": {
+    "before": 6,
+    "after": 6,
+    "names": [
+      "2012-08-31 12:47 UTC, PHILIPPINES: CAGAYAN DE ORO, TACLOBAN",
+      "2014-10-14 03:51 UTC, EL SALVADOR: GULF OF FONSECA",
+      "2015-04-20 01:42 UTC, TAIWAN: TAIPEI",
+      "2016-01-25 04:22 UTC, MOROCCO: MELILLA",
+      "2019-07-26 23:37 UTC, PHILIPPINES: BATANES: ITBAYAT",
+      "2019-09-29 15:57 UTC, CHILE: CONCEPCION"
+    ]
+  },
+  "leftTheirBand": {
+    "rows": 1,
+    "names": [
+      "2015-09-16 22:54 UTC, CHILE: CENTRAL"
+    ]
+  },
+  "medianWidthDecades": {
+    "before": 2.5586489083231965,
+    "after": 2.5728716022004803,
+    "ceiling": 0.3
+  },
+  "centralMoved": 0,
+  "bands": {
+    "moved": 63,
+    "unchanged": 345
+  },
+  "inside": {
+    "before": 389,
+    "after": 389,
+    "rows": 408
+  },
+  "met": {
+    "a": false,
+    "b": false,
+    "c": true,
+    "d": true
+  }
+}
