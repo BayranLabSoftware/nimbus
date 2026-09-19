@@ -109,7 +109,43 @@ export function quantileOf(sorted: readonly number[], q: number): number {
 }
 
 /**
- * The outcome of the round, written after the candidate was measured and not
- * before. Left null until then, so a reader can tell a rule from a result.
+ * The outcome of the round, written after the candidate was measured, on
+ * 19 September 2026. The rules above were pushed in commit c40b296 before the
+ * candidate was written.
+ *
+ * ADOPTED. Rule 257 holds on every clause.
+ *
+ * (a) The deferred pair is the percentile of the deferred deaths, recomputed
+ *     the long way round from the same draws and equal to the bit.
+ *
+ * (b) Ordered by construction at all thirty-five presets of the four families.
+ *     And the finding turned out to be larger than the one report that found
+ *     it: the whole-realisation pair was printed backwards on SEVEN of the
+ *     thirty-five, most of them nuclear. Andrea's Miami run was not unlucky,
+ *     it was ordinary.
+ *
+ * (c) and (d) The total's band and the per-annulus columns do not move by one
+ *     person: the whole suite is green and docs/VALIDATION_REPORT.json
+ *     regenerates byte for byte identical. The total was always its own
+ *     percentile, because the draws are sorted on it.
+ *
+ * (e) Gate PASS in strict mode.
+ *
+ * Rule 258, recorded and not gated. The row's own pair contains the figure
+ * beside it on 35 of 35 presets. The whole-realisation pair, ordered first so
+ * the comparison is fair, contained it on 31 of 35. So the band that was
+ * supposed to be a claim about the row failed to contain the row on four
+ * presets, and the one that is a claim about the row contains it everywhere
+ * that was looked. That is a result and not a guarantee: nothing here forces
+ * a percentile over sampled draws to contain the single unsampled run, and
+ * rule 258 said in advance that demanding it would be the same mistake in a
+ * new place.
+ *
+ * What is left standing. The tails of a derived quantity are noisier than the
+ * tails of the ranking key, and a few hundred draws are what there are;
+ * nothing here measures that noise. And the wave's pair is still a parameter
+ * range rather than a percentile — the caption says so, and making it one is a
+ * different round, because the run-up's vulnerability is not sampled at all.
  */
-export const ROW_BAND_OUTCOME: string | null = null;
+export const ROW_BAND_OUTCOME =
+  "ADOPTED 19 September 2026: a summary row's pair is that row's own 5–95 percentile over the same draws. Ordered at all 35 presets, where the whole-realisation pair was backwards on 7; contains the figure beside it on 35 of 35, where the old one managed 31. The total's band and the per-annulus columns did not move.";

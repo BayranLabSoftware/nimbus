@@ -28,6 +28,7 @@ import {
   tripleSigmaLn,
   type TollBandScatter,
 } from '../validation/tollBandRules.js';
+import { quantileIndex, quantileOf } from '../validation/rowBandRules.js';
 import type { ActiveResult } from '../../store/useAppStore.js';
 
 /**
@@ -419,6 +420,21 @@ export interface PredictiveBand {
   low: CasualtyEstimate;
   high: CasualtyEstimate;
   samples: number;
+  /**
+   * A summary row's own fifth and ninety-fifth percentile, over the same
+   * draws and at the same indices as the total's band.
+   *
+   * The total is not here because it does not need to be: the draws are sorted
+   * on it, so {@link low}.deaths and {@link high}.deaths already are its
+   * percentiles. The deferred deaths are, because they are not — they run
+   * against the total, a harsher world killing outright and leaving fewer
+   * injured to lose in the weeks after, so the low-total world can hold more
+   * of them than the high-total one and the pair came out backwards (B-066,
+   * rules 255 to 260 of validation/rowBandRules.ts).
+   */
+  rows: {
+    delayedDeaths: { low: number; high: number };
+  };
 }
 
 /**
@@ -445,12 +461,24 @@ export function bandFromPlans(
     )
   );
   draws.sort((a, b) => a.deaths - b.deaths);
-  const at = (q: number): CasualtyEstimate | undefined =>
-    draws[Math.min(draws.length - 1, Math.max(0, Math.round(q * (draws.length - 1))))];
+  const at = (q: number): CasualtyEstimate | undefined => draws[quantileIndex(draws.length, q)];
   const low = at(TOLL_BAND_LOW_Q);
   const high = at(TOLL_BAND_HIGH_Q);
   if (low === undefined || high === undefined) return null;
-  return { low, high, samples: draws.length };
+  // And, beside the two whole realisations, each summary row that is not the
+  // one the sort is on, taken over the same draws at the same indices.
+  const deferred = draws.map((d) => d.delayedDeaths).sort((a, b) => a - b);
+  return {
+    low,
+    high,
+    samples: draws.length,
+    rows: {
+      delayedDeaths: {
+        low: quantileOf(deferred, TOLL_BAND_LOW_Q),
+        high: quantileOf(deferred, TOLL_BAND_HIGH_Q),
+      },
+    },
+  };
 }
 
 /** Draw the realisations and read the band off them in one call, for
@@ -499,8 +527,11 @@ export function withPredictiveBand(
     predictiveBand: true,
     deathsLow: band.low.deaths,
     deathsHigh: band.high.deaths,
-    delayedDeathsLow: band.low.delayedDeaths,
-    delayedDeathsHigh: band.high.delayedDeaths,
+    // The row's own percentile, not the deferred deaths of the world that had
+    // the fifth-lowest total — rule 255. The total above keeps the whole
+    // realisation, which for it is the same thing.
+    delayedDeathsLow: band.rows.delayedDeaths.low,
+    delayedDeathsHigh: band.rows.delayedDeaths.high,
     bands: central.bands.map((b, i) => {
       const l = low[i] ?? new Map<CasualtyHazard, number>();
       const h = high[i] ?? new Map<CasualtyHazard, number>();
