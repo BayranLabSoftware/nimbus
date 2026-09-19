@@ -18,7 +18,7 @@ import {
   megathrustRuptureLength,
   surfaceRuptureLength,
 } from '../physics/events/earthquake/ruptureLength.js';
-import { destination } from '../physics/tsunami/ruptureGeometry.js';
+import { ruptureOrigins } from '../physics/tsunami/sourcePlacement.js';
 import type { TerrainSourceSpan } from '../scene/terrainSampling.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
 import {
@@ -1357,38 +1357,6 @@ interface BathymetricContext {
 }
 
 /**
- * Where along the source the wave starts.
- *
- * One point for anything compact — a crater, a caldera, a charge.
- * For a rupture, points every fifty kilometres along its length, so
- * the arrival field measures travel time from the nearest part of the
- * fault rather than from one end of it. Fifty kilometres is finer
- * than any grid this field runs on, and the count is capped so a
- * fifteen-hundred-kilometre megathrust costs a bounded number of seed
- * searches.
- */
-const RUPTURE_SEED_SPACING_M = 50_000;
-const MAX_RUPTURE_SEEDS = 31;
-
-function ruptureOrigins(
-  location: Coordinates,
-  meta: ReturnType<typeof extractTsunamiMeta>
-): { latitude: number; longitude: number }[] {
-  const centre = { latitude: location.latitude, longitude: location.longitude };
-  const strikeDeg = meta?.strikeDeg;
-  const lengthM = meta?.ruptureLengthM ?? 0;
-  if (strikeDeg === undefined || !(lengthM > RUPTURE_SEED_SPACING_M)) return [centre];
-  const steps = Math.min(MAX_RUPTURE_SEEDS, Math.round(lengthM / RUPTURE_SEED_SPACING_M) | 1);
-  const half = lengthM / 2;
-  const out: { latitude: number; longitude: number }[] = [];
-  for (let i = 0; i < steps; i++) {
-    const t = -half + (lengthM * i) / (steps - 1);
-    out.push(destination(centre.latitude, centre.longitude, strikeDeg, t));
-  }
-  return out;
-}
-
-/**
  * Bathymetric-tsunami layer (FMM arrival field, amplitude veil,
  * run-up) for a result. Shared by `evaluate()` and by the late-mosaic
  * completion in `setGlobalBathymetricGrid`, so both paths seed the
@@ -1430,7 +1398,12 @@ async function computeBathymetricLayerForResult(
     // 2004 wave ran up fifteen to thirty metres. The seeds now run
     // along the fault, and the field's distance to a cell becomes the
     // distance to the nearest part of the rupture.
-    const origins = ruptureOrigins(ctx.location, tsunamiMeta);
+    const origins = ruptureOrigins(ctx.location, {
+      ...(tsunamiMeta?.strikeDeg !== undefined && { strikeDeg: tsunamiMeta.strikeDeg }),
+      ...(tsunamiMeta?.ruptureLengthM !== undefined && {
+        ruptureLengthM: tsunamiMeta.ruptureLengthM,
+      }),
+    });
     const seedsAlong = (grid: ElevationGrid, mask: ElevationGrid | null): PropagationSeed[] => {
       const seen = new Set<string>();
       const all: PropagationSeed[] = [];

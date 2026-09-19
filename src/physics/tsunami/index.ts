@@ -6,7 +6,10 @@ export {
 } from './fastMarching.js';
 export {
   findPropagationSeeds,
+  ruptureOrigins,
   waterBodyReaches,
+  MAX_RUPTURE_SEEDS,
+  RUPTURE_SEED_SPACING_M,
   type PropagationSeed,
   type SeedSearchOptions,
 } from './sourcePlacement.js';

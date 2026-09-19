@@ -444,8 +444,17 @@ def collect(events, work):
                     row[which] = None
                     continue
                 k = int(np.argmax(eta[inside]))
-                row[which] = {"crestM": float(eta[inside][k]),
+                crest = float(eta[inside][k])
+                # The front, for the arrival rule 211 reports: the first sample
+                # in the window that reaches a tenth of this gauge's own crest.
+                # A fixed threshold in metres would be a different quantity at
+                # a 3 cm buoy and a 3 m one; a tenth of the crest is the same
+                # question everywhere, and it is the front of the wave the model
+                # produced, not of the wave that was recorded.
+                over = np.nonzero(eta[inside] >= 0.1 * crest)[0]
+                row[which] = {"crestM": crest,
                               "crestAfterS": float(t[inside][k]),
+                              "frontAfterS": float(t[inside][over[0]]) if over.size else None,
                               "covered": covered,
                               "depthM": float(np.median(s["h"][:3]))}
             records.append(row)

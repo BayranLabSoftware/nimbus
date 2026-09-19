@@ -182,6 +182,23 @@ function score(reading: string) {
       farLn: median(far[row]),
     };
   }
+  // The same reading of C0 and C1 on every row of the set, so a reader can see
+  // whether the rows C2 survived on are the ones that flatter us. Rule 212
+  // compares on C2's rows; this exists to keep that comparison honest.
+  const onEveryRow = {} as Record<
+    'C0' | 'C1',
+    { events: number; biasLn: number; scatterLn: number }
+  >;
+  for (const row of ['C0', 'C1'] as const) {
+    const medians = events
+      .map((ev) => median(pairsOf(ev, reading).map((p) => p.logs[row])))
+      .filter((x) => Number.isFinite(x));
+    onEveryRow[row] = {
+      events: medians.length,
+      biasLn: median(medians),
+      scatterLn: sd(medians),
+    };
+  }
   const exists = summary.C2.events >= C2_GUARDS.minimumEvents && kept >= C2_GUARDS.minimumRecords;
   const noWorse = noWorseThanReference(summary.C0.biasLn, summary.C2.biasLn);
   const ownBounds =
@@ -197,6 +214,7 @@ function score(reading: string) {
     ownBoundsMet: ownBounds,
     t1Met: exists && noWorse && ownBounds,
     summary,
+    onEveryRow,
     arrival: {
       records: arrivals.filter(Number.isFinite).length,
       medianLn: median(arrivals.filter(Number.isFinite)),
@@ -228,6 +246,12 @@ for (const r of readings) {
     const s = r.summary[row];
     console.log(
       `${row}: bias ${factor(s.biasLn)} (ln ${s.biasLn.toFixed(3)}), scatter ln ${s.scatterLn.toFixed(3)}, beyond ${T1_BOUNDS.farFieldFromKm.toString()} km ${factor(s.farLn)}, ${s.events.toString()} events`
+    );
+  }
+  for (const row of ['C0', 'C1'] as const) {
+    const s2 = r.onEveryRow[row];
+    console.log(
+      `${row} on every row of the set: bias ${factor(s2.biasLn)}, scatter ln ${s2.scatterLn.toFixed(3)}, ${s2.events.toString()} events`
     );
   }
   console.log(

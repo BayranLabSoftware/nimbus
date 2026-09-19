@@ -1,5 +1,6 @@
 import type { ElevationGrid } from '../elevation/index.js';
 import { sampleElevation } from '../elevation/index.js';
+import { destination } from './ruptureGeometry.js';
 
 /**
  * Where does the wave start?
@@ -268,4 +269,42 @@ export function findPropagationSeeds(
   }
   seeds.sort((a, b) => a.distanceM - b.distanceM);
   return seeds;
+}
+
+/**
+ * Where along the source the wave starts.
+ *
+ * One point for anything compact — a crater, a caldera, a charge. For a
+ * rupture, points every fifty kilometres along its length, so the arrival
+ * field measures travel time from the nearest part of the fault rather than
+ * from one end of it. Fifty kilometres is finer than any grid this field runs
+ * on, and the count is capped so a fifteen-hundred-kilometre megathrust costs a
+ * bounded number of seed searches.
+ *
+ * This lived in the store until 19 September 2026, where a harness could not
+ * reach it: rule 211 of `validation/farFieldReferenceRules.ts` asks when Nimbus
+ * says the wave arrives at a DART buoy, and the answer has to be the product's
+ * own and not a copy — the difference is not small, because an epicentre that a
+ * 40 km raster calls land (three of BM-05's nine) radiates from whichever water
+ * touches that cell, which on the Alaska Peninsula is the wrong ocean.
+ */
+export const RUPTURE_SEED_SPACING_M = 50_000;
+export const MAX_RUPTURE_SEEDS = 31;
+
+export function ruptureOrigins(
+  centre: { latitude: number; longitude: number },
+  source: { strikeDeg?: number; ruptureLengthM?: number }
+): { latitude: number; longitude: number }[] {
+  const origin = { latitude: centre.latitude, longitude: centre.longitude };
+  const strikeDeg = source.strikeDeg;
+  const lengthM = source.ruptureLengthM ?? 0;
+  if (strikeDeg === undefined || !(lengthM > RUPTURE_SEED_SPACING_M)) return [origin];
+  const steps = Math.min(MAX_RUPTURE_SEEDS, Math.round(lengthM / RUPTURE_SEED_SPACING_M) | 1);
+  const half = lengthM / 2;
+  const out: { latitude: number; longitude: number }[] = [];
+  for (let i = 0; i < steps; i++) {
+    const t = -half + (lengthM * i) / (steps - 1);
+    out.push(destination(origin.latitude, origin.longitude, strikeDeg, t));
+  }
+  return out;
 }

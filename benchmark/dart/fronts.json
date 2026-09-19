@@ -1,0 +1,625 @@
+{
+ "model": "Nimbus eikonal front",
+ "zoom": 2,
+ "events": [
+  {
+   "id": "usp000exfn",
+   "seeds": 5,
+   "records": [
+    {
+     "station": "21414",
+     "frontAfterS": 8082.4794921875,
+     "flatOceanS": 9455.25569969343
+    },
+    {
+     "station": "32401",
+     "frontAfterS": 70369.578125,
+     "flatOceanS": 75331.58204947956
+    },
+    {
+     "station": "46402",
+     "frontAfterS": 13336.59375,
+     "flatOceanS": 15721.571182891219
+    },
+    {
+     "station": "46403",
+     "frontAfterS": 15496.6357421875,
+     "flatOceanS": 18029.09781414048
+    },
+    {
+     "station": "46404",
+     "frontAfterS": 26543.044921875,
+     "flatOceanS": 28975.588182114447
+    },
+    {
+     "station": "46405",
+     "frontAfterS": 26027.66015625,
+     "flatOceanS": 29100.783238896292
+    },
+    {
+     "station": "46408",
+     "frontAfterS": 11730.8486328125,
+     "flatOceanS": 13793.668272206263
+    },
+    {
+     "station": "46409",
+     "frontAfterS": 18197.455078125,
+     "flatOceanS": 20495.64236025378
+    },
+    {
+     "station": "46411",
+     "frontAfterS": 28293.296875,
+     "flatOceanS": 31574.395247892437
+    },
+    {
+     "station": "46413",
+     "frontAfterS": 10634.3173828125,
+     "flatOceanS": 12477.100900887499
+    },
+    {
+     "station": "51407",
+     "frontAfterS": 24449.876953125,
+     "flatOceanS": 27421.75598544299
+    }
+   ]
+  },
+  {
+   "id": "official20100227063411530_30",
+   "seeds": 23,
+   "records": [
+    {
+     "station": "21413",
+     "frontAfterS": 74621.6171875,
+     "flatOceanS": 79870.91249537616
+    },
+    {
+     "station": "32412",
+     "frontAfterS": 11779.36328125,
+     "flatOceanS": 12178.753003475922
+    },
+    {
+     "station": "43412",
+     "frontAfterS": 35173.125,
+     "flatOceanS": 34410.46713902312
+    },
+    {
+     "station": "46403",
+     "frontAfterS": 63158.48046875,
+     "flatOceanS": 64406.79888893149
+    },
+    {
+     "station": "46404",
+     "frontAfterS": 55774.7578125,
+     "flatOceanS": 53972.19476118652
+    },
+    {
+     "station": "46407",
+     "frontAfterS": 53718.8515625,
+     "flatOceanS": 52703.58517371564
+    },
+    {
+     "station": "46408",
+     "frontAfterS": 64929.37890625,
+     "flatOceanS": 67825.43164911964
+    },
+    {
+     "station": "46409",
+     "frontAfterS": 63064.09765625,
+     "flatOceanS": 62752.50775556815
+    },
+    {
+     "station": "46410",
+     "frontAfterS": 63784.05078125,
+     "flatOceanS": 62237.087783897725
+    },
+    {
+     "station": "46412",
+     "frontAfterS": 47070.83203125,
+     "flatOceanS": 45896.103961202774
+    },
+    {
+     "station": "46419",
+     "frontAfterS": 57901.88671875,
+     "flatOceanS": 55420.01501461529
+    },
+    {
+     "station": "51406",
+     "frontAfterS": 32097.48828125,
+     "flatOceanS": 30723.77560806417
+    },
+    {
+     "station": "51425",
+     "frontAfterS": 50411.83984375,
+     "flatOceanS": 53310.88216286306
+    },
+    {
+     "station": "51426",
+     "frontAfterS": 42510.05078125,
+     "flatOceanS": 45340.80330612201
+    },
+    {
+     "station": "52401",
+     "frontAfterS": 70518.3125,
+     "flatOceanS": 75382.56874599154
+    },
+    {
+     "station": "52403",
+     "frontAfterS": 72865.1171875,
+     "flatOceanS": 74206.84581355234
+    },
+    {
+     "station": "52405",
+     "frontAfterS": 79401.3984375,
+     "flatOceanS": 82899.82515945309
+    },
+    {
+     "station": "54401",
+     "frontAfterS": 41541.859375,
+     "flatOceanS": 43993.94680816247
+    }
+   ]
+  },
+  {
+   "id": "official20110311054624120_30",
+   "seeds": 15,
+   "records": [
+    {
+     "station": "21401",
+     "frontAfterS": 3597.59716796875,
+     "flatOceanS": 4984.580607515907
+    },
+    {
+     "station": "21413",
+     "frontAfterS": 4777.44580078125,
+     "flatOceanS": 6287.01305306898
+    },
+    {
+     "station": "21414",
+     "frontAfterS": 12512.3779296875,
+     "flatOceanS": 15561.038811695144
+    },
+    {
+     "station": "21415",
+     "frontAfterS": 10650.4482421875,
+     "flatOceanS": 13469.574617150034
+    },
+    {
+     "station": "21418",
+     "frontAfterS": 2437.400634765625,
+     "flatOceanS": 2815.8791400368373
+    },
+    {
+     "station": "21419",
+     "frontAfterS": 4798.9873046875,
+     "flatOceanS": 6549.518817288979
+    },
+    {
+     "station": "32401",
+     "frontAfterS": 74340.7578125,
+     "flatOceanS": 81116.80523786647
+    },
+    {
+     "station": "32411",
+     "frontAfterS": 59348.03515625,
+     "flatOceanS": 64281.099013372295
+    },
+    {
+     "station": "32412",
+     "frontAfterS": 67919.90625,
+     "flatOceanS": 74725.79951666419
+    },
+    {
+     "station": "32413",
+     "frontAfterS": 61740.3203125,
+     "flatOceanS": 68001.10858363609
+    },
+    {
+     "station": "43412",
+     "frontAfterS": 47717.6875,
+     "flatOceanS": 53570.35901441898
+    },
+    {
+     "station": "43413",
+     "frontAfterS": 53074.265625,
+     "flatOceanS": 58305.054327148544
+    },
+    {
+     "station": "46402",
+     "frontAfterS": 17849.275390625,
+     "flatOceanS": 21975.7710154327
+    },
+    {
+     "station": "46403",
+     "frontAfterS": 20009.318359375,
+     "flatOceanS": 24382.74694581915
+    },
+    {
+     "station": "46404",
+     "frontAfterS": 31055.705078125,
+     "flatOceanS": 35314.59756925008
+    },
+    {
+     "station": "46407",
+     "frontAfterS": 31341.005859375,
+     "flatOceanS": 36114.735331343734
+    },
+    {
+     "station": "46408",
+     "frontAfterS": 16242.716796875,
+     "flatOceanS": 19954.98144971605
+    },
+    {
+     "station": "46409",
+     "frontAfterS": 22710.140625,
+     "flatOceanS": 26935.615502858644
+    },
+    {
+     "station": "46410",
+     "frontAfterS": 24482.126953125,
+     "flatOceanS": 28171.411869802025
+    },
+    {
+     "station": "46411",
+     "frontAfterS": 32569.373046875,
+     "flatOceanS": 37752.872263831996
+    },
+    {
+     "station": "46412",
+     "frontAfterS": 36421.33984375,
+     "flatOceanS": 42366.41106999848
+    },
+    {
+     "station": "51406",
+     "frontAfterS": 48300.89453125,
+     "flatOceanS": 54602.713414091864
+    },
+    {
+     "station": "51407",
+     "frontAfterS": 27772.966796875,
+     "flatOceanS": 31190.228158332015
+    },
+    {
+     "station": "51425",
+     "frontAfterS": 29329.2578125,
+     "flatOceanS": 34473.56948619139
+    },
+    {
+     "station": "52402",
+     "frontAfterS": 12359.900390625,
+     "flatOceanS": 15882.103554087296
+    },
+    {
+     "station": "52403",
+     "frontAfterS": 15962.42578125,
+     "flatOceanS": 19313.86160248644
+    },
+    {
+     "station": "52405",
+     "frontAfterS": 12283.271484375,
+     "flatOceanS": 15078.43206055222
+    },
+    {
+     "station": "52406",
+     "frontAfterS": 23587.373046875,
+     "flatOceanS": 27198.62608585599
+    }
+   ]
+  },
+  {
+   "id": "usp000juhz",
+   "seeds": 10,
+   "records": [
+    {
+     "station": "46402",
+     "frontAfterS": 10756.6962890625,
+     "flatOceanS": 11068.656512091735
+    },
+    {
+     "station": "46403",
+     "frontAfterS": 8355.8857421875,
+     "flatOceanS": 8413.309743250973
+    },
+    {
+     "station": "46407",
+     "frontAfterS": 6898.59765625,
+     "flatOceanS": 5786.737644718944
+    },
+    {
+     "station": "46409",
+     "frontAfterS": 5671.53466796875,
+     "flatOceanS": 5597.935421991482
+    },
+    {
+     "station": "46410",
+     "frontAfterS": 4843.25634765625,
+     "flatOceanS": 4614.548443721178
+    },
+    {
+     "station": "46411",
+     "frontAfterS": 9044.9072265625,
+     "flatOceanS": 7798.44047244336
+    },
+    {
+     "station": "46419",
+     "frontAfterS": 2964.35693359375,
+     "flatOceanS": 2397.384373616877
+    }
+   ]
+  },
+  {
+   "id": "usc000nzvd",
+   "seeds": 5,
+   "records": [
+    {
+     "station": "32401",
+     "frontAfterS": 1214.3450927734375,
+     "flatOceanS": 1493.2539433899183
+    },
+    {
+     "station": "32402",
+     "frontAfterS": 3644.385009765625,
+     "flatOceanS": 4333.3643847393705
+    },
+    {
+     "station": "32412",
+     "frontAfterS": 7910.6484375,
+     "flatOceanS": 8339.606201758435
+    },
+    {
+     "station": "32413",
+     "frontAfterS": 13510.58203125,
+     "flatOceanS": 14119.276383594532
+    },
+    {
+     "station": "51426",
+     "frontAfterS": 49003.3515625,
+     "flatOceanS": 49976.55413849172
+    }
+   ]
+  },
+  {
+   "id": "us20003k7a",
+   "seeds": 12,
+   "records": [
+    {
+     "station": "21414",
+     "frontAfterS": 66716.8359375,
+     "flatOceanS": 70714.00469309432
+    },
+    {
+     "station": "21415",
+     "frontAfterS": 68853.96875,
+     "flatOceanS": 73074.03247718757
+    },
+    {
+     "station": "32401",
+     "frontAfterS": 5333.63134765625,
+     "flatOceanS": 6213.814330353788
+    },
+    {
+     "station": "32402",
+     "frontAfterS": 2387.5751953125,
+     "flatOceanS": 2937.54046537726
+    },
+    {
+     "station": "32411",
+     "frontAfterS": 23559.0234375,
+     "flatOceanS": 22926.84959195285
+    },
+    {
+     "station": "32412",
+     "frontAfterS": 10316.8974609375,
+     "flatOceanS": 10668.84004043358
+    },
+    {
+     "station": "43412",
+     "frontAfterS": 33436.80859375,
+     "flatOceanS": 32795.55187029278
+    },
+    {
+     "station": "43413",
+     "frontAfterS": 28303.19921875,
+     "flatOceanS": 28307.20812090814
+    },
+    {
+     "station": "46403",
+     "frontAfterS": 61863.26171875,
+     "flatOceanS": 62857.510061256144
+    },
+    {
+     "station": "46408",
+     "frontAfterS": 63737.0078125,
+     "flatOceanS": 66525.01847867595
+    },
+    {
+     "station": "46413",
+     "frontAfterS": 64241.3359375,
+     "flatOceanS": 67681.55829757598
+    },
+    {
+     "station": "51425",
+     "frontAfterS": 52943.078125,
+     "flatOceanS": 54552.7363551346
+    },
+    {
+     "station": "52404",
+     "frontAfterS": 83408.671875,
+     "flatOceanS": 87557.78801802603
+    },
+    {
+     "station": "52405",
+     "frontAfterS": 81923.6015625,
+     "flatOceanS": 84896.88824263446
+    }
+   ]
+  },
+  {
+   "id": "ak0219neiszm",
+   "seeds": 19,
+   "records": [
+    {
+     "station": "46402",
+     "frontAfterS": 2452.922119140625,
+     "flatOceanS": 3266.177489429605
+    },
+    {
+     "station": "46403",
+     "frontAfterS": 1389.6744384765625,
+     "flatOceanS": 1524.5527075853797
+    },
+    {
+     "station": "46414",
+     "frontAfterS": 1924.2427978515625,
+     "flatOceanS": 1983.9377949703783
+    },
+    {
+     "station": "46415",
+     "frontAfterS": 6185.97607421875,
+     "flatOceanS": 6035.613301950596
+    }
+   ]
+  },
+  {
+   "id": "us6000qw60",
+   "seeds": 9,
+   "records": [
+    {
+     "station": "21413",
+     "frontAfterS": 9866.865234375,
+     "flatOceanS": 12797.156005724959
+    },
+    {
+     "station": "21414",
+     "frontAfterS": 6090.341796875,
+     "flatOceanS": 6658.5596731957485
+    },
+    {
+     "station": "21415",
+     "frontAfterS": 4030.002197265625,
+     "flatOceanS": 4286.921057223525
+    },
+    {
+     "station": "21416",
+     "frontAfterS": 1770.89013671875,
+     "flatOceanS": 2694.2178146964147
+    },
+    {
+     "station": "21418",
+     "frontAfterS": 6588.57275390625,
+     "flatOceanS": 8866.637005307817
+    },
+    {
+     "station": "21419",
+     "frontAfterS": 3205.105712890625,
+     "flatOceanS": 4851.308450296523
+    },
+    {
+     "station": "21420",
+     "frontAfterS": 14756.0283203125,
+     "flatOceanS": 16841.259231044984
+    },
+    {
+     "station": "32402",
+     "frontAfterS": 70452.3671875,
+     "flatOceanS": 74344.1565209905
+    },
+    {
+     "station": "32413",
+     "frontAfterS": 56150.11328125,
+     "flatOceanS": 59380.31832289585
+    },
+    {
+     "station": "43412",
+     "frontAfterS": 41391.2265625,
+     "flatOceanS": 44347.31995230478
+    },
+    {
+     "station": "43413",
+     "frontAfterS": 46760.46484375,
+     "flatOceanS": 48938.14191349069
+    },
+    {
+     "station": "46402",
+     "frontAfterS": 10857.603515625,
+     "flatOceanS": 12294.356503488192
+    },
+    {
+     "station": "46403",
+     "frontAfterS": 13017.6357421875,
+     "flatOceanS": 14368.65685960353
+    },
+    {
+     "station": "46404",
+     "frontAfterS": 24064.06640625,
+     "flatOceanS": 25256.588249405344
+    },
+    {
+     "station": "46407",
+     "frontAfterS": 24357.73828125,
+     "flatOceanS": 26264.71134776561
+    },
+    {
+     "station": "46408",
+     "frontAfterS": 9252.9208984375,
+     "flatOceanS": 10594.631680163697
+    },
+    {
+     "station": "46411",
+     "frontAfterS": 25828.919921875,
+     "flatOceanS": 28069.438476778105
+    },
+    {
+     "station": "46413",
+     "frontAfterS": 8480.984375,
+     "flatOceanS": 9600.138688791778
+    },
+    {
+     "station": "46416",
+     "frontAfterS": 21088.955078125,
+     "flatOceanS": 22220.10330366824
+    },
+    {
+     "station": "46419",
+     "frontAfterS": 23146.990234375,
+     "flatOceanS": 24050.576190325384
+    },
+    {
+     "station": "51425",
+     "frontAfterS": 30901.365234375,
+     "flatOceanS": 36594.81798859992
+    },
+    {
+     "station": "52402",
+     "frontAfterS": 18580.40625,
+     "flatOceanS": 22952.595349597505
+    }
+   ]
+  },
+  {
+   "id": "us7000qx2g",
+   "seeds": 3,
+   "records": [
+    {
+     "station": "21414",
+     "frontAfterS": 5969.58935546875,
+     "flatOceanS": 6574.254937378941
+    },
+    {
+     "station": "21415",
+     "frontAfterS": 4111.50732421875,
+     "flatOceanS": 4232.400629270141
+    },
+    {
+     "station": "21416",
+     "frontAfterS": 2570.23046875,
+     "flatOceanS": 2967.324773240683
+    },
+    {
+     "station": "21419",
+     "frontAfterS": 4524.29345703125,
+     "flatOceanS": 5249.610465622638
+    }
+   ]
+  }
+ ]
+}
