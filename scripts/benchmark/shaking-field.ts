@@ -39,10 +39,25 @@ const LEVEL = 7;
 const site = shippedSiteLookup();
 if (site === null) throw new Error('no Vs30 tiles: run scripts/build-vs30.py first');
 
-/** Where each event happened, from the net the project already records. */
-function epicentreOf(name: string): { latitude: number; longitude: number } | null {
+/** Where each event happened, from the net the project already records.
+ *
+ *  Matched by PRESET and not by name: the fixture calls one event "Gorkha 2015"
+ *  and the net calls it "Gorkha (Nepal) 2015", and a prefix match silently
+ *  dropped two of the six from the first run of this benchmark. */
+const EPICENTRE_BY_PRESET: Record<string, string> = {
+  NORTHRIDGE_1994: 'Northridge 1994',
+  L_AQUILA_2009: "L'Aquila 2009",
+  AMATRICE_2016: 'Amatrice 2016',
+  NEPAL_2015: 'Gorkha (Nepal) 2015',
+  TOHOKU_2011: 'Tōhoku 2011',
+  KUNLUN_2001: 'Kokoxili (Kunlun) 2001',
+};
+
+function epicentreOf(preset: string): { latitude: number; longitude: number } | null {
+  const wanted = EPICENTRE_BY_PRESET[preset];
+  if (wanted === undefined) return null;
   for (const event of RECORDED_EVENTS) {
-    if (event.name.startsWith(name) || name.startsWith(event.name)) {
+    if (event.name === wanted) {
       return { latitude: event.latitude, longitude: event.longitude };
     }
   }
@@ -63,6 +78,18 @@ interface Row {
   rings: { single: number; field: number };
 }
 
+/** Rule 314(b): the ShakeMap scenario of each event, same source and same
+ *  rupture as ours, written for `strike-shakemap-scenario.py`. */
+const WHEN: Record<string, string> = {
+  NORTHRIDGE_1994: '1994-01-17T12:30:55Z',
+  L_AQUILA_2009: '2009-04-06T01:32:39Z',
+  AMATRICE_2016: '2016-08-24T01:36:32Z',
+  NEPAL_2015: '2015-04-25T06:11:25Z',
+  TOHOKU_2011: '2011-03-11T05:46:24Z',
+  KUNLUN_2001: '2001-11-14T09:26:10Z',
+};
+const scenarioCases: Record<string, unknown>[] = [];
+
 const rows: Row[] = [];
 console.log(
   '| evento | area pubblicata | area con un Vs30 | area col campo | rapporto prima | rapporto dopo | Vs30 unico | celle dal grigliato | passo | ms |'
@@ -80,7 +107,7 @@ for (const footprint of SHAKEMAP_FOOTPRINTS) {
     console.log(`| ${footprint.name} | — | preset assente | | | | | | | |`);
     continue;
   }
-  const where = epicentreOf(footprint.name);
+  const where = epicentreOf(footprint.preset);
   if (where === null) {
     console.log(`| ${footprint.name} | — | epicentro assente dalla rete | | | | | | | |`);
     continue;
@@ -134,6 +161,25 @@ for (const footprint of SHAKEMAP_FOOTPRINTS) {
     },
   };
   rows.push(row);
+  scenarioCases.push({
+    id: footprint.preset.toLowerCase(),
+    preset: footprint.preset,
+    variant: 'strike',
+    lat: where.latitude,
+    lon: where.longitude,
+    magnitude: preset.input.magnitude,
+    depthKm: ((preset.input.depth as number | undefined) ?? 10_000) / 1000,
+    time: WHEN[footprint.preset] ?? '2020-01-01T00:00:00Z',
+    place: footprint.name,
+    mech: preset.input.subductionInterface === true ? 'RS' : 'ALL',
+    strikeDeg: rupture.strikeDeg,
+    dipDeg: preset.input.subductionInterface === true ? 15 : 90,
+    lengthKm: (result.ruptureLength as number) / 1000,
+    widthKm: (result.ruptureWidth as number) / 1000,
+    ...(preset.input.subductionInterface === true
+      ? { gmpe: 'subduction_interface_nshmp2014' }
+      : {}),
+  });
   const fromGrid = field.provenance.grid / (field.points * field.points);
   console.log(
     `| ${row.name} | ${publishedKm2.toFixed(0)} km² | ${singleKm2.toFixed(0)} km² | ${fieldKm2.toFixed(0)} km² | ${row.singleRatio.toFixed(3)} | **${row.fieldRatio.toFixed(3)}** | ${vs30Single.toFixed(0)} | ${(100 * fromGrid).toFixed(0)} % | ${row.stepKm.toFixed(1)} km | ${row.elapsedMs.toString()} |`
@@ -173,4 +219,9 @@ const out = process.argv[2];
 if (out !== undefined) {
   writeFileSync(out, `${JSON.stringify({ level: LEVEL, rows }, null, 1)}\n`);
   console.log(`scritto ${out}`);
+}
+const cases = process.argv[3];
+if (cases !== undefined) {
+  writeFileSync(cases, `${JSON.stringify(scenarioCases, null, 1)}\n`);
+  console.log(`scritti ${scenarioCases.length.toString()} casi ShakeMap in ${cases}`);
 }

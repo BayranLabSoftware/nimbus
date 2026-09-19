@@ -138,6 +138,87 @@
  * after.
  */
 
+/**
+ * THE OUTCOME, measured on 20 September 2026. Rules 309 to 315 were pushed in
+ * 8b744b5 and the candidate in 8d23afb, both before one area was measured.
+ *
+ * REFUSED on rule 314(a), and the refusal is not the whole of what was found.
+ *
+ * THE AREA, against the published ShakeMap of each event (MMI ≥ 7):
+ *
+ * | event      | published | one Vs30 |  field | ratio before | ratio after | step |
+ * |------------|----------:|---------:|-------:|-------------:|------------:|-----:|
+ * | Northridge |     2 824 |      319 |    646 |        0.113 |       0.229 | 0.2 km |
+ * | L'Aquila   |        61 |      116 |    173 |        1.902 |       2.830 | 0.2 km |
+ * | Amatrice   |        26 |      107 |    133 |        4.124 |       5.111 | 0.2 km |
+ * | Gorkha     |    40 767 |   10 885 | 10 651 |        0.267 |       0.261 | 0.8 km |
+ * | Tōhoku     |   199 742 |  243 942 | 270 032|        1.221 |       1.352 | 3.7 km |
+ * | Kokoxili   |    51 427 |   11 850 | 16 732 |        0.230 |       0.325 | 1.0 km |
+ *
+ *   314(a) median ratio 0.744 → 0.839                      — closer to 1
+ *   314(a) L'Aquila worsens by 1.49×, Amatrice by 1.24×     — OUTSIDE (1.2× bound)
+ *   314(c) slowest field 30 ms against 250                  — inside
+ *
+ * THE SHAPE, against ShakeMap scenarios run here on the same source and the
+ * same rupture, intersection over union of the MMI VII masks on a 0.02°
+ * lattice:
+ *
+ * | event      | one Vs30 | field | better |
+ * |------------|---------:|------:|--------|
+ * | Northridge |    0.408 | 0.561 | yes    |
+ * | L'Aquila   |    0.176 | 0.269 | yes    |
+ * | Amatrice   |    0.178 | 0.248 | yes    |
+ * | Gorkha     |    0.804 | 0.767 | NO     |
+ * | Tōhoku     |    0.687 | 0.758 | yes    |
+ * | Kokoxili   |    0.679 | 0.885 | yes    |
+ *
+ *   314(b) median 0.544 → 0.659, better on 5 of 6 against 4 — inside
+ *
+ * WHAT THIS MEANS, and it is worth more than the verdict. The ground is not
+ * the cause of the area gap, and the measurement says so in one line: the gap
+ * DOES NOT HAVE ONE SIGN. Northridge is 0.11 of its published area, Kokoxili
+ * 0.23, Gorkha 0.27 — and L'Aquila is 1.9, Amatrice 4.1, Tōhoku 1.2. The field
+ * amplifies, because real ground is softer than the 760 m/s rock the harness
+ * runs on nearly everywhere people live, so it enlarges every footprint. That
+ * closes the three that were too small and opens the three that were too large.
+ * No multiplicative correction can close a gap that points both ways, and the
+ * ground is a multiplicative correction.
+ *
+ * So the area gap at Mw 6.2 to 6.3 is a defect of the CONTOUR LAW at moderate
+ * magnitudes, not of the site term, and that is a different block with a
+ * different reference. Rule 314(a) is what caught it, and it caught it by
+ * refusing a round whose median improved — which is exactly what the clause was
+ * written for.
+ *
+ * AND THE SHAPE IS A SEPARATE FINDING, measured against the field's own program
+ * and not against our own idea of a shape: with the ground under every point,
+ * our MMI VII mask agrees with ShakeMap's on five of six events, by a median
+ * intersection over union of 0.659 against 0.544. At Kokoxili it goes from
+ * 0.679 to 0.885. The one that does not improve is Gorkha, and for a reason
+ * that is not a flaw: the Himalaya is rock, our field reads it as rock, the
+ * footprint contracts — while the ShakeMap scenario it is compared against ran
+ * on its configuration's DEFAULT Vs30 and not on the real ground, because that
+ * installation carries a Californian Vs30 grid and nothing else (rule 308(c)).
+ * On that one event the comparison is measuring the reference's own missing
+ * ground.
+ *
+ * WHAT WAS NOT DONE. Rule 314(d) and (e) are untested here because nothing was
+ * wired: the toll still counts inside the stadium (rule 313) and no published
+ * figure moved. Nothing is adopted. The field, its reader and its tiles stay in
+ * the tree, measured and refused, for whichever round takes up the contour law.
+ *
+ * A DEFECT IN THE HARNESS, found between the first run and this table, recorded
+ * because the first numbers were printed and were incomplete: the benchmark
+ * matched an event to its epicentre by name, and the fixture calls one event
+ * "Gorkha 2015" where the net calls it "Gorkha (Nepal) 2015". Two of the six
+ * were silently dropped, and the median over the remaining four read 1.562 →
+ * 2.091 — the opposite verdict on that clause. The matching is now by preset.
+ * The candidate was not touched; only the rows it was measured on were
+ * completed.
+ */
+export const SHAKING_FIELD_CANDIDATE =
+  'REFUSED 20 September 2026 on rule 314(a): with the ground under every point the median area ratio improves (0.744 \u2192 0.839) but L\u2019Aquila worsens by 1.49\u00d7 and Amatrice by 1.24\u00d7, past the 1.2\u00d7 bound. The reason is that the area gap has no single sign \u2014 three events are at a fifth of their published area and three at one to four times it \u2014 and the ground is a multiplicative correction, which cannot close a gap that points both ways. The shape, separately, DOES improve: against ShakeMap scenarios run here, the median intersection over union goes 0.544 \u2192 0.659 and five of six improve. The area gap at moderate magnitude belongs to the contour law, not to the site term.';
+
 /** Rule 310: the grid rule 309 stands on. */
 export const USGS_VS30 = {
   name: 'USGS global Vs30',
