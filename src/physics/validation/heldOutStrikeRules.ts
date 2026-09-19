@@ -150,7 +150,14 @@
  *
  * So the candidate is NOT adopted. `RULE_EARTHQUAKES` keeps rule 291's sweep,
  * `RULE_EARTHQUAKES_POINTED` stays reachable and drawn by nothing, and the
- * validation report does not move by one figure. The bar was fixed before the
+ * validation report does not move by one figure.
+ *
+ * (Later the same evening, rules 349 to 355 of
+ * `harnessMatchesProductRules.ts` put the same candidate to a different
+ * question — not "do the dead get better" but "may the harness count
+ * differently from the product" — and were refused too, on their own rule
+ * 351(b). This verdict was not reversed by that attempt and is left exactly
+ * as it was written.) The bar was fixed before the
  * run and is not moved after it (rules 5, 6 and 347), and the margin it failed
  * by — five thousandths of a log unit — is not a reason to move it. A bar that
  * bends when the answer is close is not a bar.
