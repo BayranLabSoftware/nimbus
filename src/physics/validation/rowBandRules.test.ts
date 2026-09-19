@@ -53,7 +53,21 @@ function everyPreset(): ActiveResult[] {
   return out;
 }
 
+/**
+ * Every preset's pair, computed once for the whole file.
+ *
+ * Two tests read this and it is deterministic — one seed per preset index —
+ * so computing it twice is two seconds of the same arithmetic. That was
+ * enough to put `rule 258` over vitest's five-second default in CI, where
+ * coverage instrumentation roughly doubles it, while it passed locally
+ * without coverage: the run is `pnpm test -- --coverage`. Memoised here, and
+ * the two tests that use it carry an explicit timeout, because a test this
+ * size should say how long it may take rather than sit just under a default.
+ */
+let memoised: Row[] | null = null;
+
 function rowsOf(): Row[] {
+  if (memoised !== null) return memoised;
   const population = uniform(2_000);
   const rows: Row[] = [];
   for (const [i, result] of everyPreset().entries()) {
@@ -77,6 +91,7 @@ function rowsOf(): Row[] {
       samples: band.samples,
     });
   }
+  memoised = rows;
   return rows;
 }
 
@@ -118,7 +133,7 @@ describe('rules 255 to 260 — a pair beside a number is a claim about that numb
     console.log(
       `\nrule 257(b): ${rows.length.toString()} presets, none backwards. The whole-realisation pair was backwards on ${wholeBackwards.toString()} of them.`
     );
-  });
+  }, 30_000);
 
   it('rule 258: how often the pair contains the figure beside it — recorded, not gated', () => {
     const rows = rowsOf();
@@ -145,5 +160,5 @@ describe('rules 255 to 260 — a pair beside a number is a claim about that numb
     console.log(lines.join('\n'));
     // Nothing is asserted about the share. It is printed.
     expect(rows.length).toBeGreaterThan(0);
-  });
+  }, 30_000);
 });
