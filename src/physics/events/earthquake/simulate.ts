@@ -243,6 +243,29 @@ export type IntensityBanding = 'rings' | 'pager';
 
 /** The intensity at which band k begins: k itself on the shipped rings,
  *  k − ½ as PAGER and ShakeMap's legend band it. */
+/**
+ * Rule 309 of validation/shakingFieldRules.ts: each result's own contour law,
+ * read forwards, kept BESIDE the result and not inside it.
+ *
+ * A scenario result is data: several tests compare two of them whole, to say
+ * that a change moved the rings and nothing else, and a closure in the object
+ * makes two identical results unequal for ever. So the law lives in a weak map
+ * keyed by the result — it disappears when the result does, and a result that
+ * has been copied or serialised simply has no law, which `intensityLawOf`
+ * reports by returning null rather than by guessing one.
+ */
+const INTENSITY_LAWS = new WeakMap<
+  EarthquakeScenarioResult,
+  (distanceM: number, siteVs30: number) => number
+>();
+
+/** The law a result was drawn with, or null for a result that was copied. */
+export function intensityLawOf(
+  result: EarthquakeScenarioResult
+): ((distanceM: number, siteVs30: number) => number) | null {
+  return INTENSITY_LAWS.get(result) ?? null;
+}
+
 export function bandEdge(k: number, banding: IntensityBanding = 'rings'): number {
   return banding === 'pager' ? k - 0.5 : k;
 }
@@ -608,6 +631,78 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
                   input.magnitude,
                   mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
                 );
+  /**
+   * Rule 309 of validation/shakingFieldRules.ts: the intensity this scenario's
+   * own law gives at a distance and at a site — `contourAt` read forwards.
+   *
+   * The distance means what the radius `contourAt` returns means, so that a
+   * field evaluated with this function and a contour drawn from that radius are
+   * the same statement: the Joyner–Boore distance from the rupture where the
+   * source is extended, the epicentral distance where it is a point. The site
+   * is a parameter and not the scenario's `vs30`, because that is the whole
+   * point of a field: the ground under a city three hundred kilometres away is
+   * not the ground under the epicentre.
+   *
+   * Every branch mirrors the branch of `contourAt` above it, and the test
+   * `intensityAt(contourAt(mmi)) === mmi` holds them together — a law that
+   * drifted between the two would draw contours the field disagrees with.
+   */
+  const intensityAt = (distanceM: number, siteVs30: number): number => {
+    const dKm = Math.max(0, distanceM) / 1_000;
+    const v = Number.isFinite(siteVs30) && siteVs30 > 0 ? siteVs30 : vs30;
+    if (deepModel !== null) {
+      const pgaG = slabPga(deepModel, {
+        magnitude: input.magnitude,
+        hypocentralKm: Math.hypot(dKm, depthKm),
+        depthKm,
+        vs30: v,
+      });
+      return modifiedMercalliIntensity(mps2(pgaG * STANDARD_GRAVITY * gm));
+    }
+    if (interfaceModel !== null) {
+      const rrupKm = toRupture === null ? Math.hypot(dKm, depthKm) : toRupture.rrupKm(dKm);
+      const pgaG = interfacePga(interfaceModel, {
+        magnitude: input.magnitude,
+        rrupKm,
+        vs30: v,
+      });
+      return modifiedMercalliIntensity(mps2(pgaG * STANDARD_GRAVITY * gm));
+    }
+    if (allen) {
+      // Allen et al. 2012 predicts intensity directly and carries no site term.
+      return (
+        allen2012HypocentralMmi(input.magnitude, Math.hypot(dKm, depthKm)) +
+        (Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0)
+      );
+    }
+    const rjbKm = toRupture === null ? dKm : toRupture.rjbKm(dKm);
+    if (byPgv) {
+      const pgv = peakGroundVelocityNGAWest2({
+        magnitude: input.magnitude,
+        faultType: ngaFault,
+        vs30: v,
+        distance: m(rjbKm * 1_000),
+      });
+      return mercalliIntensityFromPgv(mps((pgv as number) * gm));
+    }
+    if (boore) {
+      const pga = peakGroundAccelerationNGAWest2({
+        magnitude: input.magnitude,
+        faultType: ngaFault,
+        vs30: v,
+        distance: m(rjbKm * 1_000),
+      });
+      return modifiedMercalliIntensity(mps2((pga as number) * gm));
+    }
+    // Joyner & Boore 1981 with the site term `siteGain` applies to the
+    // scenario's own vs30; at another site the same correction is taken there.
+    const rock =
+      (peakGroundAcceleration({ magnitude: input.magnitude, distance: m(10_000) }) as number) /
+      STANDARD_GRAVITY;
+    const pga = peakGroundAcceleration({ magnitude: input.magnitude, distance: m(dKm * 1_000) });
+    return modifiedMercalliIntensity(mps2((pga as number) * vs30SiteFactor(v, rock) * gm));
+  };
+
   // Rule 193 of validation/epicentralIntensityRules.ts: the intensity at the
   // epicentre is the ring law's own value at epicentral distance zero.
   //
@@ -781,6 +876,8 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
     });
   }
 
+  // Rule 309: the law that drew these contours, kept beside the result.
+  INTENSITY_LAWS.set(result, intensityAt);
   return result;
 }
 
