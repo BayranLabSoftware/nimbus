@@ -66,6 +66,24 @@ export interface EarthquakeScenarioInput {
   /** When true, use the Strasser 2010 interface rupture-length
    *  scaling instead of Wells & Coppersmith. */
   subductionInterface?: boolean;
+  /**
+   * Rule 370 of validation/interfaceLawRules.ts: which scaling law gives the
+   * rupture its size, said out loud.
+   *
+   * `subductionInterface` used to decide this AND which ground-motion law
+   * runs, and the two are independent — one says how the ground shakes at a
+   * distance, the other how long the break is. They were one input because
+   * they were written as one, and rule 35 carried the coupling into the
+   * measurement: when rule 38 refused Parker et al. 2022 on the dead, what it
+   * refused was Parker WITH Strasser. On rule 11's extended interface rows
+   * Parker with Wells & Coppersmith reads 2.26x its record where Parker with
+   * Strasser reads 4.12x and the shipped law reads 6.48x.
+   *
+   * Omitted, this changes nothing: the scaling is Strasser's for a scenario
+   * that ticks `subductionInterface` and Wells & Coppersmith's otherwise,
+   * exactly as before.
+   */
+  ruptureScaling?: 'wellsCoppersmith' | 'strasser';
   /** Water depth at the epicentre (m). 0 or omitted → continental /
    *  intra-plate scenario. Any positive value flags the event as
    *  submarine: the felt-intensity contours are still emitted (a
@@ -434,14 +452,19 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
     input.subductionInterface === true ? 'reverse' : (input.faultType ?? 'all');
   const vs30 = input.vs30 ?? 760;
   const seismicMoment = seismicMomentFromMagnitude(input.magnitude);
+  // Rule 370: the scaling is its own input, and defaults to what the
+  // interface flag used to decide alone.
+  const megathrustScaling =
+    (input.ruptureScaling ??
+      (input.subductionInterface === true ? 'strasser' : 'wellsCoppersmith')) === 'strasser';
   const ruptureLength =
     input.ruptureLengthOverride ??
-    (input.subductionInterface
+    (megathrustScaling
       ? megathrustRuptureLength(input.magnitude)
       : surfaceRuptureLength({ magnitude: input.magnitude, faultType }));
   const ruptureWidth =
     input.ruptureWidthOverride ??
-    (input.subductionInterface
+    (megathrustScaling
       ? megathrustRuptureWidth(input.magnitude)
       : surfaceRuptureWidth({ magnitude: input.magnitude, faultType }));
   // Extended-source threshold: 7.5 sits at the elbow where the W&C
@@ -558,6 +581,14 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
     (law === 'allen2012HypocentralBelowMw7.5' && input.magnitude < 7.5);
   // Rule 36 of validation/interfaceRules.ts: an interface model for a
   // scenario marked a subduction interface, Boore et al. 2014 otherwise.
+  //
+  //
+  // The flag stays the gate, and that is deliberate: an interface relation on
+  // a crustal earthquake is a relation outside its domain, and
+  // `interfaceAttenuation.test.ts` holds the model to refusing it. Rule 370
+  // separates the SCALING from the flag (see `ruptureScaling` above), which
+  // is the coupling rule 35 measured through; it does not open the law to
+  // scenarios that are not interfaces.
   const interfaceModel: InterfaceMotionModel | null =
     input.subductionInterface !== true
       ? null
