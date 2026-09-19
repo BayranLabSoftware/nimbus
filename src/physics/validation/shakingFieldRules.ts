@@ -219,6 +219,48 @@
 export const SHAKING_FIELD_CANDIDATE =
   'REFUSED 20 September 2026 on rule 314(a): with the ground under every point the median area ratio improves (0.744 \u2192 0.839) but L\u2019Aquila worsens by 1.49\u00d7 and Amatrice by 1.24\u00d7, past the 1.2\u00d7 bound. The reason is that the area gap has no single sign \u2014 three events are at a fifth of their published area and three at one to four times it \u2014 and the ground is a multiplicative correction, which cannot close a gap that points both ways. The shape, separately, DOES improve: against ShakeMap scenarios run here, the median intersection over union goes 0.544 \u2192 0.659 and five of six improve. The area gap at moderate magnitude belongs to the contour law, not to the site term.';
 
+/**
+ * READ AFTER THE RUN, 20 September 2026, and it changes what rule 314(a) was
+ * measuring. Declared as read after, under the protocol's fourth rule.
+ *
+ * The amendment of 16 September says a validation bar is worth what the
+ * reference reaches on the same rows. Rule 314(a) was not asked that question
+ * before it was written, and the answer was available: ShakeMap runs here, so
+ * the same six scenarios that rule 314(b) needed could also be summed against
+ * the same published areas. They were, with
+ * `scripts/benchmark/area-against-scenario.ts`:
+ *
+ * | event      | published | ShakeMap, no stations | the REFERENCE's ratio | ours (field) | ours / reference |
+ * |------------|----------:|----------------------:|----------------------:|-------------:|-----------------:|
+ * | Northridge |     2 824 |                   778 |                  0.28 |         0.23 |             0.83 |
+ * | L'Aquila   |        61 |                   675 |                 11.06 |         2.83 |             0.26 |
+ * | Amatrice   |        26 |                   573 |                 22.03 |         5.11 |             0.23 |
+ * | Gorkha     |    40 767 |                13 562 |                  0.33 |         0.26 |             0.79 |
+ * | Tōhoku     |   199 742 |               354 521 |                  1.77 |         1.35 |             0.76 |
+ * | Kokoxili   |    51 427 |                17 699 |                  0.34 |         0.33 |             0.95 |
+ *
+ * THE REFERENCE MISSES THE PUBLISHED AREA BY UP TO A FACTOR OF TWENTY-TWO. Not
+ * because ShakeMap is wrong — because a published ShakeMap of an Italian
+ * earthquake is drawn with a dense network of stations and thousands of felt
+ * reports, which pull the MMI VII contour in to the few tens of square
+ * kilometres that actually reached it, and a scenario with no stations cannot
+ * know that. Rule 314(a) therefore measured, in large part, THE ABSENCE OF
+ * STATIONS, and it refused a round for missing a bar that the field's own
+ * program misses by more.
+ *
+ * Against the reference on the same rows, our footprint with the ground under
+ * every point is 0.77 of its area at the median (0.23 to 0.95), and with the
+ * single Vs30 it was 0.53. So the ground moves us TOWARDS the reference on the
+ * anchored comparison while it moved us away on the unanchored one.
+ *
+ * THE VERDICT ABOVE IS NOT CHANGED BY THIS, and that matters: rule 293 forbids
+ * moving a bound after a measurement, and this is a bound being shown to have
+ * been the wrong bound, which is not a licence to re-score the round that
+ * already failed it. The candidate stands refused under rule 314(a) as written.
+ * What follows from this is a NEW round with an anchored bar and rows that have
+ * not been read — rules 316 and after — and the six events above are spent:
+ * they were read here and cannot be held out again.
+ */
 /** Rule 310: the grid rule 309 stands on. */
 export const USGS_VS30 = {
   name: 'USGS global Vs30',
