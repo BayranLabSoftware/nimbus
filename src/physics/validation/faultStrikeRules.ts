@@ -400,6 +400,86 @@ export const STRIKE_PRESETS: readonly {
   },
 ];
 
+/**
+ * THE OUTCOME OF THE FIRST CANDIDATE, measured on 20 September 2026. The rules
+ * above were pushed in commit 0a11a7a before it was written.
+ *
+ * REFUSED, on all three clauses of rule 292 that decide. Rule 293 forbids
+ * moving a bound to catch it, and no bound was moved.
+ *
+ * | preset      |  L km | published | found  |    Δ |  Δ from N | fault found              |
+ * |-------------|------:|----------:|-------:|-----:|----------:|--------------------------|
+ * | Tōhoku      |   702 |      200° |      — |    — |     20.0° | none in reach            |
+ * | Kokoxili    |   167 |       95° |  83.5° | 11.5°|     85.0° | unnamed sinistral, 8 km  |
+ * | Sumatra     | 1 300 |      330° |      — |    — |     30.0° | none in reach            |
+ * | Valdivia    | 1 204 |       10° | 324.9° | 45.1°|     10.0° | Falla Lanalhue, 22 km    |
+ * | Alaska      |   804 |      245° |      — |    — |     65.0° | none in reach            |
+ * | Gorkha      |   113 |      290° |      — |    — |     70.0° | none in reach            |
+ *
+ *   292(a) worst Δ 45.1° against 25°        — outside
+ *   292(b) beats north on 1 of 2 found      — outside
+ *   292(c) found 2 of 6 against 4           — outside
+ *
+ * THE CAUSE, and it is two causes and not one.
+ *
+ * (1) The database does not carry the geometry of a subduction interface. Its
+ *     1 181 Subduction_Thrust traces are plate-boundary lines, and almost none
+ *     carries a dip or a seismogenic depth of its own, so rule 289's median
+ *     fills them: 30° and 40 km, which give rule 288 a reach of 94 km. A real
+ *     shallow megathrust dips nearer 10° over a seismogenic zone reaching
+ *     50 km, whose surface projection is 284 km wide — which is why Tōhoku's
+ *     rupture ran two hundred kilometres landward of the Japan Trench. The
+ *     reach law is not wrong; the numbers fed to it are, and they are wrong
+ *     because the database was built for crustal faults.
+ *
+ *     Measured, the interface was there and out of reach every time: Tōhoku's
+ *     at 137 km against 94, Sumatra's at 151, Alaska's at 202. Valdivia's at
+ *     73 km was the one inside, and cause (2) then threw it away.
+ *
+ * (2) "The nearest trace" is the wrong fault where several are in reach.
+ *     Valdivia 1960 is Mw 9.5 on 1 204 km of rupture — an earthquake only a
+ *     subduction interface can make — and rule 286 handed it to Falla
+ *     Lanalhue, a crustal sinistral-reverse fault 22 km away, because 22 is
+ *     less than 73. Nearest is a proximity, not a plausibility. A magnitude
+ *     no crustal fault can produce must not be assigned to one.
+ *
+ *     This is a defect of the rules as written and not of their implementation.
+ *     Rule 286 says "the nearest", and the nearest is what it got.
+ *
+ * And one gap that is neither: Gorkha 2015 sits on the Main Himalayan Thrust,
+ * which this database does not carry as a thrust at all. Within 90 km of the
+ * epicentre it maps an anticline, a syncline and a normal fault — folds above
+ * the structure, not the structure. Its nearest Subduction_Thrust is 742 km
+ * away and is a different plate boundary entirely. No reach law reaches a
+ * fault that is not in the file, and rule 290's UNKNOWN is the honest answer
+ * for Gorkha whatever else changes.
+ *
+ * WHAT THIS REFUSAL SETTLES, and it is worth more than a pass would have been.
+ * The blocks were ordered wrongly. Slab2 (Hayes et al. 2018) was to be the
+ * second block's data, a refinement of the dip after the strike worked; the
+ * measurement says it is a PREREQUISITE of the strike, because four of the six
+ * presets are subduction earthquakes and the strike of a subduction earthquake
+ * cannot be read from a database of crustal faults. The order is now Slab2
+ * first, and the strike lookup measured again after it, under rules of its own
+ * that say what happens when a megathrust and a crustal fault are both in
+ * reach.
+ *
+ * WHAT WAS NOT DONE, so that nobody reads more into this than it says. Nothing
+ * is wired: the globe, the toll and the panel still read `strikeAzimuthDeg ??
+ * 0` exactly as they did, so no published figure has moved and none was
+ * allowed to. The defect the rules were written against is still open. The
+ * fault tiles are not shipped, because shipping 2.88 MB for a candidate that
+ * was refused would put weight on a reader for nothing.
+ *
+ * WHAT DID HOLD, and it is the part that says the method is sound rather than
+ * the data: Kokoxili, the one crustal earthquake among the six, found its
+ * fault 8 km away and read its strike to 11.5° where north is wrong by 85°.
+ * That is the database doing exactly what it was built to do, on exactly the
+ * kind of fault it was built for.
+ */
+export const FAULT_STRIKE_FIRST_CANDIDATE =
+  'REFUSED 20 September 2026: the strike read from the GEM database alone finds a fault for two of six presets and the right one for one, because the database carries no subduction-interface geometry (its median dip and depth give a megathrust a 94 km reach where the real surface projection is 284 km) and because "the nearest trace" handed Valdivia\u2019s Mw 9.5 to a crustal fault 22 km away over the interface at 73. No bound was moved and nothing was wired. Slab2 becomes a prerequisite of the strike and not a refinement after it.';
+
 /** Rule 292(d) and (e): what may not move while the strike changes. */
 export const FAULT_STRIKE_GUARDS: readonly string[] = [
   'no preset earthquake toll of the calibration net moves by a single death',
