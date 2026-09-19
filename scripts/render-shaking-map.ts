@@ -142,8 +142,17 @@ function render(
   parts.push(`<rect width="100%" height="100%" fill="#0b1220"/>`);
   parts.push(`<g transform="translate(0,64)">`);
   parts.push(
-    `<rect x="0" y="0" width="${WIDTH.toString()}" height="${height.toString()}" fill="#111a2b"/>`
+    `<rect x="0" y="0" width="${WIDTH.toString()}" height="${height.toString()}" fill="#0e1a2b"/>`
   );
+  // NO COASTLINE HERE, and it is not for want of trying. The population
+  // raster's green channel is documented as "land fraction of the cell",
+  // and it reads 1.00 everywhere — in the middle of the Pacific as much as
+  // on the Tibetan plateau. It is not a land mask: `build-population.ts`
+  // fills it with the share of source cells carrying a VALID value, and the
+  // source marks the sea as zero people rather than as no-data, so every
+  // cell is "valid". Drawing it painted the whole box one colour and said
+  // nothing. What looks like a coastline on Tōhoku's map is the MMI VI
+  // contour itself, bending where the Vs30 changes at the shore.
 
   for (const contour of ordered) {
     const band = INTENSITY_BANDS.find((x) => x.minValue === contour.level);
