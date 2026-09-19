@@ -1,0 +1,123 @@
+/**
+ * Putting the strike in the picture and in the count.
+ *
+ * WHAT IS STILL TRUE TODAY, five commits after the strike lookup was accepted:
+ * nothing reads it. `scene/globe/Globe.tsx` and `validation/recordedTolls.ts`
+ * still take `strikeAzimuthDeg ?? 0`, and `store/useAppStore.ts` passes the
+ * same default into the stadium it builds for the toll. Every earthquake a
+ * reader places is drawn, and counted, as a fault striking due north — which
+ * is what rules 286 to 294 were written against, and what rules 295 to 303 then
+ * measured a cure for: six presets of six, worst error 11.5°, north beaten on
+ * every one.
+ *
+ * And it is not cosmetic. Rule 308 measured what north was worth, with
+ * ShakeMap: turning the rupture from north to the strike the lookup finds moves
+ * 18 % to 68 % of the MMI VII footprint onto different ground at almost
+ * unchanged area, and under Sumatra it takes the population inside that
+ * footprint from 7.35 M to 19.93 M.
+ *
+ * So this round is the wiring, and it is the first of this series that MOVES
+ * PUBLISHED FIGURES. Eight of the twelve earthquakes in the calibration net
+ * carry no strike of their own and are therefore counted today inside a
+ * north–south stadium; with the lookup wired they will be counted inside the
+ * stadium of the fault the lookup finds. Their tolls will move. That is the
+ * point, and it is also the risk, and rule 326 is how it is judged.
+ *
+ * WHAT WAS LOOKED AT before these rules were fixed: the three call sites above;
+ * that the net holds twelve earthquakes and that four of them name a strike
+ * (Tōhoku, Sumatra, Valdivia, Alaska, Gorkha, Kokoxili and Lisbon name one in
+ * the preset table — four of them are net rows); the size of what would have to
+ * ship, 2 875 030 bytes of fault tiles with a worst tile of 92 373 and 218 911
+ * bytes of slab tiles with a worst tile of 7 267; and everything rules 286 to 308
+ * already recorded. NOT looked at: any toll, band or report figure computed
+ * with the lookup wired. Not one row has been run that way.
+ *
+ * 322. THE THREE CALL SITES, and one answer behind them. The globe, the store's
+ *      stadium and the recorded tolls stop defaulting to north. They call ONE
+ *      function — the lookup of rule 300 — and where a reader has typed a
+ *      strike, his own strike wins over it, because a reader's statement about
+ *      his own scenario is not the model's to overrule.
+ *
+ * 323. WHAT THE PRESETS DO, which is nothing. A preset that names a published
+ *      strike keeps it (rule 286). Their tolls, bands, waves, replays and
+ *      golden figures must not move by one unit, and a preset whose figure
+ *      moves is a defect of the wiring and not a result.
+ *
+ * 324. WHAT A READER PAYS. The tiles ship: 2.88 MB of faults and 0.22 MB of
+ *      slabs, and a click loads the one tile of each that holds its point — at
+ *      most 92 kB and 8 kB. Nothing is fetched until an earthquake is placed,
+ *      and a globe that never places one loads neither. The budgets of rules
+ *      292(f) and 301(f) are the bounds, unchanged and not re-opened here.
+ *
+ * 325. WHERE THE LOOKUP SAYS NOTHING, the picture and the count say so too, as
+ *      rules 290 and 291 already fixed: no oriented rectangle is drawn, and no
+ *      north is assumed. This round implements those two rules as written; it
+ *      does not reinterpret them. What it may NOT do is quietly fall back to
+ *      north and call it an assumption.
+ *
+ * 326. WHAT DECIDES, and the bar is the amendment of 16 September, not a hope
+ *      that the dead improve.
+ *      (a) Every row of the calibration net that is gated stays inside its
+ *          band. A row that leaves its band refuses the round outright: the
+ *          band is the project's own statement of what it knows about that
+ *          earthquake, and a more correct orientation that pushes a toll out of
+ *          it is telling us something we do not understand yet.
+ *      (b) On the net's earthquakes, the bias of the modelled dead against the
+ *          recorded dead is no further from 1 than it is today, and σ_ln is no
+ *          wider. Measured on the same rows, before and after, and printed row
+ *          by row.
+ *      (c) No preset moves at all (rule 323).
+ *      (d) The release gate stays PASS in strict mode, and
+ *          `docs/VALIDATION_REPORT.md` and its JSON are regenerated and
+ *          committed together — they will change, because the figures they
+ *          report change, and a report that did not change would mean the
+ *          wiring did nothing.
+ *      (e) The globe audit stays at its thirty scenarios with no finding.
+ *
+ * 327. WHAT MAY NOT HAPPEN. No strike is invented to move a toll; no bound of
+ *      rules 286 to 303 is touched; no band is widened to keep a row inside it;
+ *      and the ground-motion model, the contour law and the site term stay
+ *      exactly as they are — this round changes WHERE the rectangle points and
+ *      nothing else.
+ *
+ * 328. WHAT IS PRINTED: for every earthquake of the net, the strike before and
+ *      after and where the new one came from, the modelled dead before and
+ *      after against the record, whether the row is still inside its band, and
+ *      the two bias-and-σ pairs; the list of presets, which must be empty of
+ *      movement; and the bytes a reader loads for one click.
+ */
+
+/** Rule 324: what ships, measured before the round. */
+export const WIRED_STRIKE_PAYLOAD = {
+  faultBytes: 2_875_030,
+  worstFaultTileBytes: 92_373,
+  slabBytes: 218_911,
+  worstSlabTileBytes: 7_267,
+} as const;
+
+/** Rule 326(b): the two numbers the net is judged on, before and after. */
+export interface TollBias {
+  /** Geometric mean of modelled over recorded. */
+  bias: number;
+  /** Scatter of ln(modelled / recorded). */
+  sigma: number;
+  rows: number;
+}
+
+/** Rule 326(b): the amendment's test, applied to a pair of readings. */
+export function amendmentHolds(before: TollBias, after: TollBias): boolean {
+  const closer = Math.abs(Math.log(after.bias)) <= Math.abs(Math.log(before.bias));
+  return closer && after.sigma <= before.sigma;
+}
+
+/** Rule 322: a reader's own strike wins over the lookup's. */
+export function strikeForScenario(
+  typedByReader: number | undefined,
+  found: number | null
+): { strikeDeg: number | null; source: 'reader' | 'lookup' | 'unknown' } {
+  if (typedByReader !== undefined && Number.isFinite(typedByReader)) {
+    return { strikeDeg: typedByReader, source: 'reader' };
+  }
+  if (found !== null && Number.isFinite(found)) return { strikeDeg: found, source: 'lookup' };
+  return { strikeDeg: null, source: 'unknown' };
+}
