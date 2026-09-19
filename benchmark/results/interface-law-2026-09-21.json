@@ -1,0 +1,136 @@
+{
+  "rules": "370 to 376",
+  "interfaceRows": 157,
+  "scopes": {
+    "interface": {
+      "before": [
+        {
+          "label": "Mw < 6.5",
+          "withSomething": 20,
+          "bias": 1.8302926558995005,
+          "scatterLn": 2.3989135564296795,
+          "inside": 18,
+          "share": 0.9
+        },
+        {
+          "label": "Mw 6.5-7.5",
+          "withSomething": 47,
+          "bias": 1.526241003958632,
+          "scatterLn": 2.3488644986572473,
+          "inside": 44,
+          "share": 0.9361702127659575
+        },
+        {
+          "label": "Mw >= 7.5",
+          "withSomething": 20,
+          "bias": 6.477265974402212,
+          "scatterLn": 1.5687651077803615,
+          "inside": 20,
+          "share": 1
+        }
+      ],
+      "after": [
+        {
+          "label": "Mw < 6.5",
+          "withSomething": 9,
+          "bias": null,
+          "scatterLn": null,
+          "inside": 1,
+          "share": 0.1111111111111111
+        },
+        {
+          "label": "Mw 6.5-7.5",
+          "withSomething": 29,
+          "bias": 1.1919203590004483,
+          "scatterLn": 1.5997828395616263,
+          "inside": 14,
+          "share": 0.4827586206896552
+        },
+        {
+          "label": "Mw >= 7.5",
+          "withSomething": 18,
+          "bias": 2.242363014341738,
+          "scatterLn": 1.41326877755333,
+          "inside": 16,
+          "share": 0.8888888888888888
+        }
+      ],
+      "meanAbsLogBias": {
+        "before": 0.9651940771128232,
+        "after": 0.4915479902208675
+      },
+      "biasOk": true,
+      "failing": [
+        "Mw < 6.5",
+        "Mw 6.5-7.5"
+      ]
+    },
+    "all": {
+      "before": [
+        {
+          "label": "Mw < 6.5",
+          "withSomething": 133,
+          "bias": 1.3442005884003203,
+          "scatterLn": 2.380374620131344,
+          "inside": 121,
+          "share": 0.9097744360902256
+        },
+        {
+          "label": "Mw 6.5-7.5",
+          "withSomething": 112,
+          "bias": 0.3291321709849487,
+          "scatterLn": 2.3497059867497536,
+          "inside": 106,
+          "share": 0.9464285714285714
+        },
+        {
+          "label": "Mw >= 7.5",
+          "withSomething": 34,
+          "bias": 1.9898040828690065,
+          "scatterLn": 2.375021987805278,
+          "inside": 32,
+          "share": 0.9411764705882353
+        }
+      ],
+      "after": [
+        {
+          "label": "Mw < 6.5",
+          "withSomething": 122,
+          "bias": 1.301955593999395,
+          "scatterLn": 2.376161019442324,
+          "inside": 104,
+          "share": 0.8524590163934426
+        },
+        {
+          "label": "Mw 6.5-7.5",
+          "withSomething": 94,
+          "bias": 0.22998921746577133,
+          "scatterLn": 2.118837912413644,
+          "inside": 76,
+          "share": 0.8085106382978723
+        },
+        {
+          "label": "Mw >= 7.5",
+          "withSomething": 32,
+          "bias": 1.0101706273478959,
+          "scatterLn": 2.1173748014389537,
+          "inside": 28,
+          "share": 0.875
+        }
+      ],
+      "meanAbsLogBias": {
+        "before": 0.6983771782436227,
+        "after": 0.5812365145026502
+      },
+      "biasOk": true,
+      "failing": []
+    }
+  },
+  "quiet": {
+    "rows": 805,
+    "raisedShipped": 12,
+    "raisedCandidate": 7,
+    "quietOk": true
+  },
+  "adopted": false
+}

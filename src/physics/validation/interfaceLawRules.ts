@@ -159,6 +159,71 @@
  * conclusion at all beyond "the bar was met" or "it was not".
  */
 
+/*
+ * ===========================================================================
+ * THE OUTCOME, 21 September 2026: REFUSED on rule 19(b) — and the number it
+ * refuses is 1.01x
+ * ===========================================================================
+ *
+ * Rules 370 to 376 were pushed in cb7319e and a38c51b, the separation in
+ * d804b2d and the candidate in dba05f3, all before one toll was read. One
+ * run, both laws: `scripts/benchmark/interface-law.ts`,
+ * `benchmark/results/interface-law-2026-09-21.json`.
+ *
+ *   ON THE INTERFACE ROWS — 157 of 408 — which is how rule 38 applies rule 19:
+ *
+ *     cell         shipped   candidate   shipped inside   candidate inside
+ *     Mw < 6.5       1.83x          —x            18/20                1/9
+ *     Mw 6.5-7.5     1.53x       1.19x            44/47              14/29
+ *     Mw >= 7.5      6.48x       2.24x            20/20              16/18
+ *
+ *     19(a) mean |ln bias| : 0.965 -> 0.492                            MET
+ *     19(b) eight in ten   : 11 % and 48 % in the two lower cells  NOT MET
+ *
+ *   ON THE WHOLE SET, printed because a law that fixed its own rows by
+ *   breaking everyone else's would pass a test read only on its own:
+ *
+ *     Mw < 6.5       1.34x       1.30x          121/133            104/122
+ *     Mw 6.5-7.5     0.33x       0.23x          106/112             76/94
+ *     Mw >= 7.5      1.99x       1.01x            32/34             28/32
+ *
+ *     19(a) 0.698 -> 0.581  MET      19(b) MET
+ *
+ *   RULE 25, the quiet earthquakes: 805 rows, raised to a median toll of
+ *   ten by the shipped law 12 times (1.5 %) and by the candidate 7 (0.9 %).
+ *   MET, and better.
+ *
+ * SO THE SHIPPED LAW STAYS, on rule 19(b), read as rule 38 reads it. Rule 375
+ * said the bar would not be touched and it is not: the eight-in-ten is the
+ * clause that refused this law in September and it refuses it again, for a
+ * different reason and on a different configuration.
+ *
+ * AND THE THING THAT MUST NOT BE LOST IN THE VERDICT: on the whole set, the
+ * great ruptures go from 1.99x their record to 1.01x. That cell has been the
+ * worst-known figure in this project for a week — it was 6.47x before the
+ * strike was wired this evening — and Parker without Strasser puts it on the
+ * record. The mean absolute log bias falls on BOTH readings, and the quiet
+ * earthquakes get quieter.
+ *
+ * WHY IT FAILS, read after the run and acted on by nothing here. It fails
+ * where the law is furthest from what it was fitted for: the small
+ * interfaces. On Mw < 6.5 the rows with something fall from 20 to 9 and the
+ * band holds 1 of them. Parker draws smaller rings there, no realisation
+ * kills anybody, and the band collapses to [0, 0] — which is the SAME defect
+ * that made rules 356 to 362 refuse an alignment hours earlier, and the same
+ * one docs/SCIENCE.md records for moderate interface earthquakes. A band of
+ * [0, 0] beside a record of one is a claim that cannot be right, and it is
+ * now the thing standing between this project and a 1.01x on its worst cell.
+ *
+ * WHAT MAY NOT BE DONE NEXT, and it is the same trap as every other refusal
+ * tonight: a block that gives Parker only above some magnitude, with the
+ * threshold chosen from the table above, is a bar written after seeing the
+ * answer. If the split by magnitude is real it has to be predicted from the
+ * relation's own range of applicability — Parker et al. state theirs — and
+ * fixed before the run, on a set that has not been spent. The honest next
+ * block is not about the law at all: it is about the [0, 0] band.
+ */
+
 /** Rule 371's candidate, by name, so a run cannot become a different one. */
 export const INTERFACE_LAW_CANDIDATE = 'parker2022Interface' as const;
 
