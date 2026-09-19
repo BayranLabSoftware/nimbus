@@ -1548,13 +1548,24 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(value('Impactor mass')).toBe('1.6 Gt');
   });
 
+  it('B-066 a printed range runs upward', () => {
+    // The panel used to print the pair in the order the band hands it over,
+    // and that order is by total deaths, not by the row's own quantity.
+    const panel = readFileSync(
+      fileURLToPath(new URL('../../ui/components/CasualtiesPanel.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(panel).toContain('Math.min(casualties.delayedDeathsLow, casualties.delayedDeathsHigh)');
+    expect(panel).toContain('Math.max(casualties.delayedDeathsLow, casualties.delayedDeathsHigh)');
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-065 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-066 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 65;
-    expect(expectedRows).toBe(65);
+    const expectedRows = 66;
+    expect(expectedRows).toBe(66);
   });
 });

@@ -166,7 +166,17 @@ export function CasualtiesPanel({
                   {people(casualties.delayedDeaths)}
                   <span style={{ opacity: 0.75 }}>
                     {' '}
-                    ({people(casualties.delayedDeathsLow)} – {people(casualties.delayedDeathsHigh)})
+                    {/* The pair is the delayed deaths of the two realisations
+                        the band is taken from, and those are ranked by TOTAL
+                        deaths. Delayed deaths run the other way — a harsher
+                        world kills outright and leaves fewer injured to lose
+                        later — so the low-total world can hold more of them
+                        than the high-total one, and the pair came out printed
+                        backwards (B-066). Ordered here. That it can still fail
+                        to contain the figure beside it is a deeper thing and
+                        wants a round of its own. */}
+                    ({people(Math.min(casualties.delayedDeathsLow, casualties.delayedDeathsHigh))} –{' '}
+                    {people(Math.max(casualties.delayedDeathsLow, casualties.delayedDeathsHigh))})
                   </span>
                 </dd>
               </>
