@@ -83,6 +83,16 @@
  *      it. What rule 370 separates is the SCALING — the coupling rule 35
  *      measured through — not the mechanism and not the wave.
  *
+ *      ONE DIFFERENCE FROM THE DIAGNOSIS, declared before the run.
+ *      Wells & Coppersmith's scaling is per fault type, and the flag makes
+ *      the scenario a thrust (B-046). The diagnosis above held the rupture
+ *      byte for byte with `ruptureLengthOverride`, which is a harness trick;
+ *      the candidate computes W&C on the thrust mechanism instead, which is
+ *      what a scenario can actually express. On a row that named another
+ *      mechanism the rupture therefore differs from the diagnosed one by
+ *      about one and a half per cent in length. The 2.26x is a reading of
+ *      the configuration, not a prediction of this run's figure.
+ *
  *      BC Hydro is not a candidate: on the same rows it reads 6.95x against
  *      the shipped 6.48x, and a law that does not move the defect does not
  *      get a round.

@@ -7,6 +7,7 @@ import {
 import {
   RULE_EARTHQUAKES,
   RULE_EARTHQUAKES_GEOMETRY_DECIDES,
+  RULE_EARTHQUAKES_INTERFACE_LAW,
   RULE_EARTHQUAKES_TENSOR_MAY_REFUSE,
   type RuleEarthquake,
 } from './heldOutByRule.js';
@@ -179,6 +180,91 @@ describe('rules 363 to 369 — Slab2 may say an earthquake is a megathrust', () 
         expect(after.data.inputs.subductionInterface).toBe(tick);
         expect(after.data.inputs).toEqual(before.data.inputs);
       }
+    }
+  });
+});
+
+/**
+ * Rules 370 to 376's candidate, verified before one toll is scored with it.
+ *
+ * What these hold is that the candidate is what rule 371 says after its
+ * correction: Parker's law, Wells & Coppersmith's rupture, on the rows the
+ * slab answers for and on no others — and that the scored set still draws
+ * none of it.
+ */
+describe('rules 370 to 376 — the interface law without the interface rupture', () => {
+  it('rule 370: naming the scaling changes nothing that was not named', () => {
+    const input = { magnitude: 8.2, depth: m(25_000), faultType: 'reverse' as const };
+    const plain = simulateEarthquake(input);
+    const named = simulateEarthquake({ ...input, ruptureScaling: 'wellsCoppersmith' });
+    expect(named.ruptureLength).toBe(plain.ruptureLength);
+    expect(named.ruptureWidth).toBe(plain.ruptureWidth);
+
+    const flagged = simulateEarthquake({ ...input, subductionInterface: true });
+    const flaggedNamed = simulateEarthquake({
+      ...input,
+      subductionInterface: true,
+      ruptureScaling: 'strasser',
+    });
+    expect(flaggedNamed.ruptureLength).toBe(flagged.ruptureLength);
+    // And the separation itself: the flag with Wells & Coppersmith's rupture,
+    // which had no way of being expressed before rule 370.
+    const separated = simulateEarthquake({
+      ...input,
+      subductionInterface: true,
+      ruptureScaling: 'wellsCoppersmith',
+    });
+    expect(separated.ruptureLength).toBe(plain.ruptureLength);
+    expect(separated.ruptureWidth).toBe(plain.ruptureWidth);
+    expect(separated.ruptureWidth).not.toBe(flagged.ruptureWidth);
+  });
+
+  it('rule 371: the candidate gives Parker and Wells & Coppersmith to interface rows only', () => {
+    let given = 0;
+    for (const [index, quake] of RULE_EARTHQUAKES_INTERFACE_LAW.entries()) {
+      const row = RULE_EARTHQUAKES[index];
+      if (row === undefined) continue;
+      const before = row.event.run();
+      const after = quake.event.run();
+      if (before.type !== 'earthquake' || after.type !== 'earthquake') continue;
+      const answer = shippedStrikeAnswer(
+        quake.row.latitude,
+        quake.row.longitude,
+        quake.row.depthKm * 1_000,
+        before.data.ruptureLength
+      );
+      if (!answer.source.startsWith('interface')) {
+        expect(after.data.inputs).toEqual(before.data.inputs);
+        continue;
+      }
+      given += 1;
+      expect(after.data.inputs.contourLaw).toBe('parker2022Interface');
+      expect(after.data.inputs.subductionInterface).toBe(true);
+      // The whole point: the rupture is Wells & Coppersmith's, not
+      // Strasser's. It is W&C computed on the thrust mechanism the flag
+      // imposes (B-046), which is not quite the rupture the row had if it
+      // named another mechanism — W&C is per fault type. Rule 371 declares
+      // that; here it is checked.
+      const wellsCoppersmithOnAThrust = simulateEarthquake({
+        ...before.data.inputs,
+        faultType: 'reverse',
+      });
+      expect(after.data.ruptureLength).toBe(wellsCoppersmithOnAThrust.ruptureLength);
+      expect(after.data.ruptureWidth).toBe(wellsCoppersmithOnAThrust.ruptureWidth);
+      const strasser = simulateEarthquake({
+        ...before.data.inputs,
+        subductionInterface: true,
+      });
+      expect(after.data.ruptureWidth).not.toBe(strasser.ruptureWidth);
+    }
+    expect(given).toBe(INTERFACE_MARK_ROWS.geometryDecides.all);
+  });
+
+  it('the candidate is drawn by nothing: the scored set names no interface law', () => {
+    for (const quake of RULE_EARTHQUAKES) {
+      const result = quake.event.run();
+      if (result.type !== 'earthquake') continue;
+      expect(result.data.inputs.contourLaw).toBeUndefined();
     }
   });
 });

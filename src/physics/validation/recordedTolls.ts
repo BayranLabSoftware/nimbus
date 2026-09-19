@@ -24,6 +24,7 @@ import { HELD_OUT_EARTHQUAKES, HELD_OUT_VOLCANO_TOLLS } from './heldOutEvents.js
 import { siteVs30 } from './siteVs30.js';
 import { shippedStrikeAnswer } from './shippedFaults.js';
 import type { InterfaceMarkCandidate } from './interfaceMarkRules.js';
+import { INTERFACE_LAW_CANDIDATE } from './interfaceLawRules.js';
 import { NET_SITES } from './siteVs30Data.js';
 import {
   shippedCountryAt,
@@ -408,6 +409,48 @@ export function markingTheInterface(
       return {
         type: 'earthquake',
         data: simulateEarthquake({ ...result.data.inputs, subductionInterface: true }),
+      };
+    },
+  };
+}
+
+/**
+ * Rules 370 to 376 of `interfaceLawRules.ts`: the interface law WITHOUT the
+ * interface rupture.
+ *
+ * A row rule 296 or 297 places on the interface draws its rings with Parker
+ * et al. 2022 and keeps Wells & Coppersmith's rupture, which rule 370 now
+ * lets it say. The flag comes with it because the flag is the gate on the law
+ * (rule 371), and so do the thrust mechanism and the tsunami block — declared,
+ * not hidden, and present in the 2.26x the diagnosis measured.
+ *
+ * What this is NOT is rules 363 to 369's interface mark, which was refused:
+ * that gave these rows Strasser's rupture, and Strasser's rupture alone takes
+ * the toll from 6.48x to 14.72x.
+ */
+export function drawingTheInterfaceLaw(event: RecordedEvent): RecordedEvent {
+  const run = event.run;
+  return {
+    ...event,
+    run: () => {
+      const result = run();
+      if (result.type !== 'earthquake') return result;
+      if (result.data.inputs.subductionInterface !== undefined) return result;
+      const answer = shippedStrikeAnswer(
+        event.latitude,
+        event.longitude,
+        result.data.inputs.depth ?? 10_000,
+        result.data.ruptureLength
+      );
+      if (!answer.source.startsWith('interface')) return result;
+      return {
+        type: 'earthquake',
+        data: simulateEarthquake({
+          ...result.data.inputs,
+          subductionInterface: true,
+          ruptureScaling: 'wellsCoppersmith',
+          contourLaw: INTERFACE_LAW_CANDIDATE,
+        }),
       };
     },
   };

@@ -10,6 +10,7 @@ import {
   type RulePlumeRow,
 } from './heldOutByRuleData.js';
 import {
+  drawingTheInterfaceLaw,
   markingTheInterface,
   pointingWhereTheFaultPoints,
   type RecordedEvent,
@@ -263,6 +264,14 @@ export const RULE_EARTHQUAKES_GEOMETRY_DECIDES: readonly RuleEarthquake[] = RULE
     ...quake,
     event: markingTheInterface(quake.event, 'geometryDecides'),
   })
+);
+
+/**
+ * Rules 370 to 376's candidate, reachable by name and drawn by nothing.
+ * `RULE_EARTHQUAKES` is untouched, so the report is unchanged.
+ */
+export const RULE_EARTHQUAKES_INTERFACE_LAW: readonly RuleEarthquake[] = RULE_EARTHQUAKES.map(
+  (quake) => ({ ...quake, event: drawingTheInterfaceLaw(quake.event) })
 );
 
 export const RULE_PLUMES: readonly RulePlume[] = IVESPA_PLUME_ROWS.map((row) => ({
