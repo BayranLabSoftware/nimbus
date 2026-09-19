@@ -394,5 +394,67 @@ export function traceLengthM(trace: readonly TracePoint[]): number {
   return total;
 }
 
+/**
+ * THE OUTCOME OF THE SECOND CANDIDATE, measured on 20 September 2026. The rules
+ * above were pushed in commit 2b4bcf8 and the candidate in 5638ae9, both before
+ * one value of Slab2 was read at one epicentre.
+ *
+ * ACCEPTED, on all four clauses of rule 301 that a measurement can decide, and
+ * no bound was moved to get there.
+ *
+ * | preset      |  Mw |     L | published |  found |     Δ | Δ from N | source             | what answered                          |
+ * |-------------|----:|------:|----------:|-------:|------:|---------:|--------------------|----------------------------------------|
+ * | Tōhoku      | 9.1 |   702 |      200° | 199.5° |  0.5° |    20.0° | interface, rule 296 | slab 33 km, hypocentre 29 km, ±25 km  |
+ * | Kokoxili    | 7.8 |   167 |       95° |  83.5° | 11.5° |    85.0° | crustal, rule 300(b)| unnamed sinistral, 157 km of trace, 8 km away |
+ * | Sumatra     | 9.2 | 1 300 |      330° | 327.2° |  2.8° |    30.0° | interface, rule 296 | slab 32 km, hypocentre 30 km, ±22 km  |
+ * | Valdivia    | 9.5 | 1 204 |       10° |  11.2° |  1.2° |    10.0° | interface, rule 296 | slab 31 km, hypocentre 33 km, ±22 km  |
+ * | Alaska      | 9.2 |   804 |      245° | 234.8° | 10.2° |    65.0° | interface, rule 296 | slab 21 km, hypocentre 25 km, ±24 km  |
+ * | Gorkha      | 7.8 |   113 |      290° | 281.8° |  8.2° |    70.0° | interface, rule 296 | slab 22 km, hypocentre 8 km, ±19 km   |
+ *
+ *   301(a) worst Δ 11.5° against 25°              — inside
+ *   301(b) beats north on 6 of 6                  — inside
+ *   301(c) found 6 of 6 against 5                 — inside
+ *   301(f) 218 911 bytes against 1 500 000, worst tile 7 267 against 120 000 — inside
+ *
+ * WHAT THE MEASUREMENT SAYS, beyond the four INSIDEs.
+ *
+ * The first round's two causes are both closed, and closed by the DATA and not
+ * by a wider bound. Every one of the four subduction presets was answered by
+ * rule 296 — the hypocentre within tolerance of the mapped surface — and not by
+ * rule 297's capacity clause, which never had to fire. The interfaces the GEM
+ * database put 137, 151 and 202 km out of reach are, in Slab2, directly under
+ * the epicentres: 33, 32 and 21 km down, against hypocentres at 29, 30 and
+ * 25 km. Valdivia, which the first round handed to a crustal fault 22 km away,
+ * is 2 km from the surface of the Nazca slab and reads its strike to 1.2°.
+ *
+ * GORKHA IS THE RESULT THAT WAS NOT EXPECTED, and it is worth saying plainly
+ * because the first round wrote the opposite. It recorded that "no reach law
+ * reaches a fault that is not in the file, and rule 290's UNKNOWN is the honest
+ * answer for Gorkha whatever else changes" — the GEM database maps an
+ * anticline, a syncline and a normal fault within 90 km of that epicentre and
+ * no thrust. That sentence was true of the GEM database and wrong as a
+ * statement about Gorkha: Slab2 carries the Main Himalayan Thrust as its `him`
+ * model, 22 km under the epicentre, and reads its strike to 8.2° where north is
+ * wrong by 70. What was missing was never the law. It was the file.
+ *
+ * KOKOXILI IS UNCHANGED, to the decimal: 83.5°, 11.5° from the published strike,
+ * from the same unnamed sinistral trace 8 km away, which maps 157 km against the
+ * 167 km its rupture asks for and so passes rule 299 by a whisker. The crustal
+ * path is the first round's path and it was not touched; that it gives the same
+ * number is the check that rule 299 did not quietly change what it filtered.
+ *
+ * WHAT IT DOES NOT SAY. Six earthquakes are six earthquakes. Five of the six are
+ * answered by one model of one kind of structure, so what is measured here is
+ * mostly "does Slab2 hold the interfaces of the great megathrusts", to which the
+ * answer was never in doubt; the harder question — whether this picks the right
+ * structure where the tectonics are ambiguous — has no preset to ask it of. The
+ * tolerance of rule 296(c) was never stretched: the closest call was Gorkha, at
+ * 14 km inside a 19 km tolerance. And nothing here has been drawn: the numbers
+ * above are what the lookup returns, not what a reader sees, until the wiring
+ * puts them in the picture and in the toll.
+ */
+export const SLAB_STRIKE_SECOND_CANDIDATE =
+  'ACCEPTED 20 September 2026: with Slab2 under the strike, the six presets are found six of six, the worst error is 11.5\u00b0 against a 25\u00b0 bound, north is beaten on every one, and 218 911 bytes are shipped against a budget of 1 500 000. Four of the six are answered by rule 296 alone — the hypocentre on the mapped interface — and rule 297\u2019s capacity clause never had to fire. Gorkha, which the first round declared permanently UNKNOWN, is answered to 8.2\u00b0: Slab2 carries the Main Himalayan Thrust that the GEM database does not.';
+
 /** Which source answered, and under which clause of rule 300. */
 export type StrikeSource = 'interface-depth' | 'interface-capacity' | 'crustal' | 'unknown';

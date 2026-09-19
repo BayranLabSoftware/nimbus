@@ -86,6 +86,20 @@ no rule, no bound and no status.
   subduction earthquakes, whose interface a database of crustal faults does not
   carry. Slab2 comes first.
 
+  **The second candidate was accepted, on 20 September 2026.** Rules 295 to 303
+  of `validation/slabStrikeRules.ts` were fixed and pushed before it was
+  written, and they decide it: with Slab2 under the strike the six presets are
+  answered six of six, the worst error is 11.5° against a 25° bound, due north
+  — what is being replaced — is beaten on every one of the six, and 218 911
+  bytes are shipped against a budget of 1.5 MB. Four of the six are answered by
+  rule 296 alone, the hypocentre within the model's own published uncertainty of
+  the mapped interface, so rule 297's capacity clause — the one written for
+  Valdivia, whose Mw 9.5 the first round handed to a crustal fault 22 km away —
+  never had to fire. Gorkha, which the first round recorded as permanently
+  UNKNOWN because the GEM database maps no thrust within 90 km of it, is
+  answered to 8.2°: Slab2 carries the Main Himalayan Thrust that the fault
+  database does not. What was missing was the file and not the law.
+
 The reason is the one the work of 15 and 16 September showed: effort spread
 over six domains moved each of them by a tenth. A project that says where it
 aims for a 9 and where it does not makes a claim that can be checked; one that
