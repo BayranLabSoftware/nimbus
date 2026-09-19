@@ -113,6 +113,26 @@
  * speed of a slow strong body, which the program prints to two figures and
  * its blast reveals to five, and whether BM-13 is kept out of a ground blast
  * it moves this much.
+ *
+ * ===========================================================================
+ * WHAT HAPPENED NEXT, the same day: ADOPTED by rules 141 to 144
+ * ===========================================================================
+ *
+ * This refusal was not the end of it, and a reader who stops here is left with
+ * the wrong picture of what the product does. The next round changed one thing
+ * — the entry — and asked again. On the program's own entry equations (Eq. 11
+ * on twice Eq. 12's I_f, and Eq. 20 without the −3(l/H)² it lacks) its ground
+ * blast agreed on **60 of 60** ground overpressures, worst ×1.0019, with 8 of 8
+ * airburst ones, 16 breakup altitudes within 1.6 m and 4 burst altitudes within
+ * 10 cm. It was adopted in `9cd0935`, `DEFAULT_GROUND_BLAST` is `program`, and
+ * BM-21 is closed.
+ *
+ * So the five bodies that failed here failed on the paper's entry and not on
+ * the blast law, exactly as the paragraph above suspected: "the law is not what
+ * departs on that body". Kinney & Graham is no longer what an impact's
+ * overpressure rings are drawn with. Recorded on 19 September 2026, when the
+ * impact audit found this outcome standing alone and a visual contract written
+ * from it saying the wrong thing on the globe.
  */
 
 /** Rule 139: G1's tolerance, and half the program's last printed digit (Pa). */

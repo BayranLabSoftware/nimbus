@@ -168,7 +168,7 @@ export const VISUAL_CONTRACTS = {
     isQuantitative: true,
     caveats: [
       'ignores terrain channelling and reflections',
-      'the Earth Impact Effects Program’s own ground blast was measured against this on 16 September 2026 and REFUSED — it agrees on 55 of 60 ranges, the five outside all one body (rules 138 to 140 of validation/groundBlastRules.ts) — so Kinney & Graham is the model in place for an impact and BM-21 stays open',
+      'for an impact the model in place is NOT Kinney & Graham: rules 138 to 140 refused the Earth Impact Effects Program’s ground blast on the paper’s entry equations (55 of 60), and rules 141 to 144 adopted it the same day on the program’s own (60 of 60, worst ×1.0019), closing BM-21. An impact’s rings are the program’s Mach relation read at Eq. 18’s altitude, which for such a body lies below the ground; Kinney & Graham stays for the explosion side, and for the share a swarm leaves in the air',
     ],
   }),
   overpressure1psi: defineContract({
