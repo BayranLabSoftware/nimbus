@@ -43,6 +43,17 @@ EVENT_XML = """<?xml version="1.0" encoding="US-ASCII" standalone="yes"?>
 EARTH_RADIUS_KM = 6371.0
 
 
+def ascii_only(text):
+    """ShakeMap's event.xml declares US-ASCII, and ElementTree believes the
+    declaration: a place called Tohoku with a macron, or Sumatra-Andaman with
+    an en dash, fails to parse before a single ground motion is computed. The
+    name enters no number, so it is transliterated rather than the declaration
+    changed."""
+    table = {"\u014d": "o", "\u014c": "O", "\u2013": "-", "\u2014": "-", "\u2019": "'"}
+    out = "".join(table.get(c, c) for c in text)
+    return out.encode("ascii", "replace").decode("ascii")
+
+
 def offset(lat, lon, bearing_deg, distance_km):
     """A point at a bearing and a distance, on a sphere."""
     d = distance_km / EARTH_RADIUS_KM
@@ -141,7 +152,7 @@ def run_case(case, work, config, venv_bin, gmpe=None):
             mag=case["magnitude"],
             time=case["time"],
             depth=case["depthKm"],
-            place=case.get("place", case["id"]),
+            place=ascii_only(case.get("place", case["id"])),
             mech=case.get("mech", "ALL"),
             netid=case.get("netid", "us"),
         )

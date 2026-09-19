@@ -162,27 +162,39 @@ interface Grid {
   stderr?: string;
 }
 
-/** The cells of a grid at or above the footprint intensity, with their areas,
- *  and their keys on a common 0.01° lattice for rule 307(a)'s agreement. */
+/** ShakeMap chooses its own grid per run — two runs of one event came back
+ *  with origins 0.07° apart and cell sizes differing in the fourth decimal —
+ *  so two masks read off their native cells never share a cell and their
+ *  agreement comes out near zero whatever the shapes are. Both are sampled
+ *  onto one fixed lattice instead, finer than either grid. */
+const LATTICE_DEG = 0.02;
+
+/** The footprint of a grid: the lattice nodes at or above the footprint
+ *  intensity, with their areas, and their keys on the common lattice. */
 function footprint(grid: Grid): { cells: FootprintCell[]; keys: Set<string> } {
   const bytes = Buffer.from(grid.mmi10, 'base64');
+  const threshold = FOOTPRINT_MMI * 10;
   const cells: FootprintCell[] = [];
   const keys = new Set<string>();
-  const threshold = FOOTPRINT_MMI * 10;
-  for (let row = 0; row < grid.ny; row += 1) {
+  const i0 = Math.ceil(grid.ymin / LATTICE_DEG);
+  const i1 = Math.floor(grid.ymax / LATTICE_DEG);
+  const j0 = Math.ceil(grid.xmin / LATTICE_DEG);
+  const j1 = Math.floor(grid.xmax / LATTICE_DEG);
+  for (let i = i0; i <= i1; i += 1) {
+    const latitude = i * LATTICE_DEG;
     // The container's first row is the north edge.
-    const latitude = grid.ymax - row * grid.dy;
-    const latM = grid.dy * (Math.PI / 180) * EARTH_RADIUS_M;
+    const row = Math.round((grid.ymax - latitude) / grid.dy);
+    if (row < 0 || row >= grid.ny) continue;
+    const latM = LATTICE_DEG * (Math.PI / 180) * EARTH_RADIUS_M;
     const areaM2 =
-      latM * grid.dx * (Math.PI / 180) * EARTH_RADIUS_M * Math.cos((latitude * Math.PI) / 180);
-    for (let col = 0; col < grid.nx; col += 1) {
-      const v = bytes[row * grid.nx + col] ?? 0;
-      if (v < threshold) continue;
-      const longitude = grid.xmin + col * grid.dx;
+      latM * LATTICE_DEG * (Math.PI / 180) * EARTH_RADIUS_M * Math.cos((latitude * Math.PI) / 180);
+    for (let j = j0; j <= j1; j += 1) {
+      const longitude = j * LATTICE_DEG;
+      const col = Math.round((longitude - grid.xmin) / grid.dx);
+      if (col < 0 || col >= grid.nx) continue;
+      if ((bytes[row * grid.nx + col] ?? 0) < threshold) continue;
       cells.push({ latitude, longitude, areaM2 });
-      keys.add(
-        `${Math.round(latitude * 100).toString()}:${Math.round(longitude * 100).toString()}`
-      );
+      keys.add(`${i.toString()}:${j.toString()}`);
     }
   }
   return { cells, keys };

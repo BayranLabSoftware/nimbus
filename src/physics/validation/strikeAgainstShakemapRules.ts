@@ -154,6 +154,66 @@
  * which is a different debt, in a different block.
  */
 
+/**
+ * THE OUTCOME OF RULE 308, measured on 20 September 2026 with ShakeMap 4
+ * (`shakemap-modules` 1.2.4, `esi-shakelib` 1.2.6, Python 3.12), its own test
+ * configuration, gmpe `subduction_interface_nshmp2014` for the five interface
+ * events and `active_crustal_nshmp2014` for Kokoxili, gmice WGRW12, ipe
+ * AllenEtAl2012, default Vs30, no stations, no intensity reports. Twelve runs,
+ * two per preset, differing in one input.
+ *
+ * | preset      | strike given | ShakeMap's axis | at north | aspect | IoU of the two runs | MMI VII area (strike / north) | people under (strike / north) |
+ * |-------------|-------------:|----------------:|---------:|-------:|--------------------:|------------------------------:|------------------------------:|
+ * | Tōhoku      |       199.5° |           18.9° |     0.7° |   1.89 |               0.776 |   560 400 / 561 471 km²       |        58.37 M / 55.03 M      |
+ * | Kokoxili    |        83.5° |           83.5° |   180.0° |   2.24 |               0.318 |    33 858 /  33 888 km²       |         0.00 M /  0.00 M      |
+ * | Sumatra     |       327.2° |          147.2° |     0.0° |   2.92 |               0.444 |   943 675 / 942 064 km²       |        19.93 M /  7.35 M      |
+ * | Valdivia    |        11.2° |           10.4° |   179.1° |   2.19 |               0.824 | 1 248 731 / 1 251 290 km²     |        19.33 M / 17.62 M      |
+ * | Alaska      |       234.8° |           54.3° |     1.7° |   1.94 |               0.480 |   674 234 / 685 434 km²       |         0.51 M /  0.61 M      |
+ * | Gorkha      |       281.8° |          101.9° |     0.1° |   1.44 |               0.596 |    35 553 /  35 602 km²       |         7.81 M /  8.18 M      |
+ *
+ * THE HARNESS IS SOUND, and this had to be checked before anything else was
+ * read from the table. ShakeMap's own footprint comes back pointing where the
+ * rupture it was handed points, modulo 180 and within a degree on all six:
+ * 199.5 → 18.9 against the 19.5 expected, 83.5 → 83.5, 327.2 → 147.2, 11.2 →
+ * 10.4, 234.8 → 54.3, 281.8 → 101.9. At north every axis is 0 to 1.7°. So the
+ * rupture GeoJSON this harness writes is read as written, and rule 305's axis
+ * recovers an orientation from a footprint drawn by a program that knows
+ * nothing about rule 305.
+ *
+ * WHAT NORTH COST, which is rule 308(a) and the reason for running this at all.
+ * Rotating the rupture by the angle the default was wrong by moves between 18 %
+ * and 68 % of the MMI VII footprint onto different ground — an intersection
+ * over union of 0.318 at Kokoxili, where the strike was wrong by 83°, and 0.824
+ * at Valdivia, where north happened to be nearly right.
+ *
+ * AND THE AREA BARELY MOVES WHILE THE PEOPLE DO. Every pair of areas agrees
+ * within 1.7 %, because turning a rupture does not change how much ground
+ * shakes; and under Sumatra the population inside MMI VII goes from 7.35 M at
+ * north to 19.93 M at the strike the lookup found — a factor of 2.7, twelve and
+ * a half million people. Turning the fault does not change how much ground
+ * shakes. It changes WHOSE ground. That is the whole case for this block, and
+ * it is now measured by the field's program rather than argued from ours.
+ *
+ * WHAT THIS IS NOT. It is not rule 307, which stays PENDING: none of the twelve
+ * runs was compared against the published ShakeMap of its earthquake, because
+ * those coverages were not fetched. Nothing above says our strike is right —
+ * that is rules 295 to 303, measured against published finite-fault strikes.
+ * This says what the error was worth.
+ *
+ * A DEFECT IN THE COMPARISON, found and fixed before the table above was
+ * written, recorded because the first numbers were printed and were wrong:
+ * ShakeMap chooses its own grid for every run, and the two runs of Valdivia came
+ * back with origins 0.07° apart and cell sizes differing in the fourth decimal.
+ * Read off their native cells, two masks then share no cell at all and their
+ * agreement is near zero whatever the shapes: Valdivia came out at 0.025 for an
+ * 11° rotation, which is impossible and was the tell. Both masks are now
+ * sampled onto one fixed 0.02° lattice, finer than either grid. The twelve runs
+ * were not repeated — the fix is in the arithmetic that reads them, not in
+ * anything ShakeMap computed.
+ */
+export const STRIKE_AGAINST_SHAKEMAP_308 =
+  'MEASURED 20 September 2026: ShakeMap run twice per preset, one input different. Its own footprint points where the rupture it is given points (within 1\u00b0 on all six), so the harness is sound; and the strike the lookup found moves 18 % to 68 % of the MMI VII footprint off the ground due north put it on, at almost unchanged area — 943 675 km\u00b2 against 942 064 at Sumatra — while the population inside goes from 7.35 M to 19.93 M. Turning the fault does not change how much ground shakes; it changes whose. Rule 307 stays PENDING: no run was held against a published map.';
+
 /** Rule 305: the band whose mask is measured, as `pnpm shakemap:build` rounds
  *  an intensity. */
 export const FOOTPRINT_MMI = 6.5;
