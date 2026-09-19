@@ -1,0 +1,132 @@
+{
+ "track": "E1",
+ "readOn": "2026-09-19",
+ "modules": {
+  "gmpe": "active_crustal_nshmp2014",
+  "gmice": "WGRW12",
+  "ipe": "AllenEtAl2012"
+ },
+ "rows": [
+  {
+   "id": "northridge_scenario",
+   "magnitude": 6.7,
+   "depthKm": 18,
+   "shakemap": {
+    "maxMmi": 7.509727954864502,
+    "mmi7RadiusKm": 21.052714793560494,
+    "mmi8RadiusKm": 0
+   },
+   "nimbus": [
+    {
+     "vs30": 760,
+     "mmi7RadiusKm": 10.066514241051784,
+     "mmi8RadiusKm": 2.0190347372016055,
+     "mmiAtEpicentre": 8.110576355891999
+    },
+    {
+     "vs30": 350,
+     "mmi7RadiusKm": 15.698263186937446,
+     "mmi8RadiusKm": 5.17359982690186,
+     "mmiAtEpicentre": 8.451567286418232
+    }
+   ]
+  },
+  {
+   "id": "synthetic_m55_d10",
+   "magnitude": 5.5,
+   "depthKm": 10,
+   "shakemap": {
+    "maxMmi": 6.672525882720947,
+    "mmi7RadiusKm": 0,
+    "mmi8RadiusKm": 0
+   },
+   "nimbus": [
+    {
+     "vs30": 760,
+     "mmi7RadiusKm": 6.670209588499799,
+     "mmi8RadiusKm": 0,
+     "mmiAtEpicentre": 7.926012289441479
+    },
+    {
+     "vs30": 350,
+     "mmi7RadiusKm": 10.085231142862126,
+     "mmi8RadiusKm": 3.2299359301498196,
+     "mmiAtEpicentre": 8.28947751987726
+    }
+   ]
+  },
+  {
+   "id": "synthetic_m65_d10",
+   "magnitude": 6.5,
+   "depthKm": 10,
+   "shakemap": {
+    "maxMmi": 7.746362209320068,
+    "mmi7RadiusKm": 17.516769796923157,
+    "mmi8RadiusKm": 0
+   },
+   "nimbus": [
+    {
+     "vs30": 760,
+     "mmi7RadiusKm": 9.681232932737384,
+     "mmi8RadiusKm": 2.075777581307848,
+     "mmiAtEpicentre": 8.122264344635605
+    },
+    {
+     "vs30": 350,
+     "mmi7RadiusKm": 14.901847304145049,
+     "mmi8RadiusKm": 5.073643955149716,
+     "mmiAtEpicentre": 8.461815063084519
+    }
+   ]
+  },
+  {
+   "id": "synthetic_m75_d10",
+   "magnitude": 7.5,
+   "depthKm": 10,
+   "shakemap": {
+    "maxMmi": 8.019157409667969,
+    "mmi7RadiusKm": 43.716095828986774,
+    "mmi8RadiusKm": 3.3686599560250197
+   },
+   "nimbus": [
+    {
+     "vs30": 760,
+     "mmi7RadiusKm": 15.808073459763982,
+     "mmi8RadiusKm": 4.344198592757456,
+     "mmiAtEpicentre": 8.318516399829734
+    },
+    {
+     "vs30": 350,
+     "mmi7RadiusKm": 25.230277611995188,
+     "mmi8RadiusKm": 8.20426870483506,
+     "mmiAtEpicentre": 8.633597667844025
+    }
+   ]
+  },
+  {
+   "id": "synthetic_m65_d40",
+   "magnitude": 6.5,
+   "depthKm": 40,
+   "shakemap": {
+    "maxMmi": 6.2425642013549805,
+    "mmi7RadiusKm": 0,
+    "mmi8RadiusKm": 0
+   },
+   "nimbus": [
+    {
+     "vs30": 760,
+     "mmi7RadiusKm": 9.681232932737384,
+     "mmi8RadiusKm": 2.075777581307848,
+     "mmiAtEpicentre": 8.122264344635605
+    },
+    {
+     "vs30": 350,
+     "mmi7RadiusKm": 14.901847304145049,
+     "mmi8RadiusKm": 5.073643955149716,
+     "mmiAtEpicentre": 8.461815063084519
+    }
+   ]
+  }
+ ],
+ "rockGeometricMean": 0.4571882666784466
+}

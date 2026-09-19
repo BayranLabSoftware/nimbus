@@ -414,6 +414,28 @@ def run_one(job):
     return {**result, "series": None}
 
 
+def harvest(case, which, prepared):
+    """The gauge series of a finished run, read straight from `_output`."""
+    out = case / which / "_output"
+    if not out.is_dir():
+        return None
+    series = {}
+    for rec in prepared["records"]:
+        f = out / f"gauge{int(rec['station']):05d}.txt"
+        if not f.exists() or f.stat().st_size < 400:
+            continue
+        a = np.loadtxt(f, comments="#")
+        if a.ndim == 1:
+            continue
+        series[rec["station"]] = {"t": a[:, 1].tolist(), "eta": a[:, 5].tolist(),
+                                  "h": a[:, 2].tolist()}
+    if not series:
+        return None
+    cells = json.loads((case / which / "params.json").read_text())["cells"]
+    return {"id": prepared["id"], "which": which, "cells": cells, "ok": None,
+            "seconds": None, "series": series, "harvested": True}
+
+
 def collect(events, work):
     """Crest and its time, in the record's own window, from the finer run, with
     the coarser beside it as rule 210(b)'s check."""
@@ -424,7 +446,13 @@ def collect(events, work):
         runs = {}
         for which in ("coarse", "fine"):
             f = case / f"{which}.json"
-            runs[which] = json.loads(f.read_text()) if f.exists() else None
+            if f.exists():
+                runs[which] = json.loads(f.read_text())
+                continue
+            # A run whose worker died after GeoClaw finished leaves its gauge
+            # files and no summary. The gauges are the measurement, so read them
+            # rather than lose an event to an accident of process management.
+            runs[which] = harvest(case, which, p)
         records = []
         for rec in p["records"]:
             row = {"station": rec["station"], "rasterDepthM": rec["rasterDepthM"],

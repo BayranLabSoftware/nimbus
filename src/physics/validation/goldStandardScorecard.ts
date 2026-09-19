@@ -97,7 +97,8 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         rule: 'E1',
         measure: 'fidelity',
         status: 'pending',
-        evidence: 'A ShakeMap scenario run without stations on the same maps has not been run.',
+        evidence:
+          "ShakeMap 4 runs here since 19 September 2026 (docs/SHAKEMAP_SETUP.md): its own assemble and model, on an event with a source and no data, over its California Vs30 grid with active_crustal_nshmp2014, WGRW12 and Allen12IPE. On the first five scenarios our ring is 0.46 of ShakeMap's equivalent MMI VII radius at the rock reference, we draw 6.7 and 9.7 km of VII where it draws none, and at Mw 6.5 we draw the same 9.68 km at 10 km depth and at 40 where its own maximum intensity falls from 7.75 to 6.24. Five scenarios are not three hundred maps, so the rule stays pending on its set (benchmark/results/shakemap-against-nimbus-2026-09-19.json).",
       },
       {
         rule: 'E2',

@@ -1,0 +1,206 @@
+{
+ "track": "E1",
+ "reference": "ShakeMap 4 scenario, no stations",
+ "rows": [
+  {
+   "id": "northridge_scenario",
+   "ok": true,
+   "steps": [
+    {
+     "module": "assemble",
+     "returncode": 0
+    },
+    {
+     "module": "model",
+     "returncode": 0
+    }
+   ],
+   "maxMmi": 7.509727954864502,
+   "gridPoints": [
+    391,
+    325
+   ],
+   "mmi6.5": {
+    "areaKm2": 3352.127272167111,
+    "equivalentRadiusKm": 32.66519937911131
+   },
+   "mmi7": {
+    "areaKm2": 1392.4066433899243,
+    "equivalentRadiusKm": 21.052714793560494
+   },
+   "mmi8": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "mmi9": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "modules": {
+    "gmpe": "active_crustal_nshmp2014",
+    "gmice": "WGRW12",
+    "ipe": "AllenEtAl2012"
+   }
+  },
+  {
+   "id": "synthetic_m55_d10",
+   "ok": true,
+   "steps": [
+    {
+     "module": "assemble",
+     "returncode": 0
+    },
+    {
+     "module": "model",
+     "returncode": 0
+    }
+   ],
+   "maxMmi": 6.672525882720947,
+   "gridPoints": [
+    265,
+    217
+   ],
+   "mmi6.5": {
+    "areaKm2": 95.76671431687421,
+    "equivalentRadiusKm": 5.521185736270772
+   },
+   "mmi7": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "mmi8": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "mmi9": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "modules": {
+    "gmpe": "active_crustal_nshmp2014",
+    "gmice": "WGRW12",
+    "ipe": "AllenEtAl2012"
+   }
+  },
+  {
+   "id": "synthetic_m65_d10",
+   "ok": true,
+   "steps": [
+    {
+     "module": "assemble",
+     "returncode": 0
+    },
+    {
+     "module": "model",
+     "returncode": 0
+    }
+   ],
+   "maxMmi": 7.746362209320068,
+   "gridPoints": [
+    343,
+    279
+   ],
+   "mmi6.5": {
+    "areaKm2": 2328.4542145507803,
+    "equivalentRadiusKm": 27.22443747844621
+   },
+   "mmi7": {
+    "areaKm2": 963.9575691382483,
+    "equivalentRadiusKm": 17.516769796923157
+   },
+   "mmi8": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "mmi9": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "modules": {
+    "gmpe": "active_crustal_nshmp2014",
+    "gmice": "WGRW12",
+    "ipe": "AllenEtAl2012"
+   }
+  },
+  {
+   "id": "synthetic_m75_d10",
+   "ok": true,
+   "steps": [
+    {
+     "module": "assemble",
+     "returncode": 0
+    },
+    {
+     "module": "model",
+     "returncode": 0
+    }
+   ],
+   "maxMmi": 8.019157409667969,
+   "gridPoints": [
+    779,
+    635
+   ],
+   "mmi6.5": {
+    "areaKm2": 14654.80493192302,
+    "equivalentRadiusKm": 68.29911631877876
+   },
+   "mmi7": {
+    "areaKm2": 6003.888403974032,
+    "equivalentRadiusKm": 43.716095828986774
+   },
+   "mmi8": {
+    "areaKm2": 35.65038470961684,
+    "equivalentRadiusKm": 3.3686599560250197
+   },
+   "mmi9": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "modules": {
+    "gmpe": "active_crustal_nshmp2014",
+    "gmice": "WGRW12",
+    "ipe": "AllenEtAl2012"
+   }
+  },
+  {
+   "id": "synthetic_m65_d40",
+   "ok": true,
+   "steps": [
+    {
+     "module": "assemble",
+     "returncode": 0
+    },
+    {
+     "module": "model",
+     "returncode": 0
+    }
+   ],
+   "maxMmi": 6.2425642013549805,
+   "gridPoints": [
+    323,
+    263
+   ],
+   "mmi6.5": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "mmi7": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "mmi8": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "mmi9": {
+    "areaKm2": 0.0,
+    "equivalentRadiusKm": 0.0
+   },
+   "modules": {
+    "gmpe": "active_crustal_nshmp2014",
+    "gmice": "WGRW12",
+    "ipe": "AllenEtAl2012"
+   }
+  }
+ ]
+}
