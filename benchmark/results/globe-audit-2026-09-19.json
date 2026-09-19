@@ -29,7 +29,7 @@
    "scenario": "impact-ocean-deep",
    "family": "impact",
    "eventType": "impact",
-   "ringsDrawn": 12,
+   "ringsDrawn": 9,
    "polygonsDrawn": 0,
    "checked": 15
   },

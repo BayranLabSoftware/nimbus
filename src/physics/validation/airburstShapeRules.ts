@@ -153,7 +153,60 @@ export const SHAPE_SWEEP_ANGLES_DEG: readonly number[] = [
 export const TUNGUSKA_FELLED_AREA_M2 = 2_200e6;
 
 /**
- * The outcome of the round, written after the candidate was measured and not
- * before. Left null until then, so a reader can tell a rule from a result.
+ * The outcome of the round, written after the candidate was measured, on
+ * 19 September 2026. The rules above were pushed in commit d3f566e before the
+ * candidate was written.
+ *
+ * ADOPTED. Every check of rule 237 holds.
+ *
+ * (a) Circles where nothing lands. At all sixteen angles from 1° to 89°, for
+ *     both variants, the envelope returns both multipliers exactly 1 and the
+ *     offset exactly 0 when the event does not couple to the ground, and keeps
+ *     the azimuth. The four bodies of the finding:
+ *
+ *       20 m, 19.2 km/s, 18°   burst 30.86 km   b/a 0.742 → 1.000
+ *       40 m, 17 km/s, 10°     burst 28.97 km   b/a 0.702 → 1.000
+ *       30 m, 20 km/s, 45°     burst 14.33 km   b/a 0.879 → 1.000, offset 0.52 → 0 km
+ *       60 m, 20 km/s, 35°     burst  7.13 km   b/a 0.830 → 1.000, offset 4.10 → 0 km
+ *
+ *     All four open no crater, and every one of their five rings is now round.
+ *
+ * (b) Nothing moved where something lands. At the same sixteen angles the
+ *     multipliers and the offset agree with the arithmetic as it stood to
+ *     twelve decimal places, and a 1 km stone at 15° keeps its ellipse, its
+ *     downrange offset and its crater's own envelope.
+ *
+ * (c) No number moved at all. The whole suite passes and
+ *     docs/VALIDATION_REPORT.json regenerates byte for byte identical: not a
+ *     radius, not a toll, not a row of the calibration net. That is what was
+ *     expected and it is worth having checked — `damageAsymmetry` is read by
+ *     the renderer and by scripts/audit-rendering-data.ts and by nothing that
+ *     counts people.
+ *
+ * (d) Gate PASS in strict mode, and the globe audit reports no finding over
+ *     all thirty scenarios.
+ *
+ * And one thing the round found in the project's own shipped text, which makes
+ * the removal easier rather than harder. The methodology page, on the very
+ * entry that computes an airburst's rings, already says: "a burst on a shallow
+ * path spreads its energy along a line and damages an ellipse that reaches
+ * farthest ACROSS it, which this round source does not draw", citing Gi, Brown
+ * & Aftosmis (2018) for the analytic line source being inapplicable so close
+ * to such a trail and noting that only three-dimensional hydrocodes have drawn
+ * the shape. The envelope removed here elongated the rings ALONG the track. So
+ * it was not merely the wrong size: by the project's own reading of the
+ * literature it may have been the wrong direction. Which of the two the real
+ * footprint takes is not settled here — it is the first question the line-
+ * source round has to answer, before any axis is drawn again.
+ *
+ * What the round leaves standing, and it is the honest part. The picture is
+ * now internally consistent — the beacon says the burst is overhead and the
+ * rings agree — and it is not nature. Tunguska felled 2 200 km² of forest in a
+ * butterfly, and the blast of an airburst radiates from the trajectory, not
+ * from a point on it. The route is named in rule 240 and not taken: the
+ * cylindrical line source of Collins et al. (2017), driven by the energy the
+ * pancake model lays along the path. Until that is built and measured, the
+ * model draws the shape its own source has and says so.
  */
-export const AIRBURST_SHAPE_OUTCOME: string | null = null;
+export const AIRBURST_SHAPE_OUTCOME =
+  'ADOPTED 19 September 2026: the oblique envelope no longer applies where nothing reaches the ground, every ring of a complete airburst is a circle about the point under the burst, nothing that reaches the ground changed, and no published number moved.';

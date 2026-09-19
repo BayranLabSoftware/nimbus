@@ -680,27 +680,34 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const op5psiNominal = damage.overpressure5psi as number;
   const op1psiNominal = damage.overpressure1psi as number;
   const lightDamageNominal = damage.lightDamage as number;
+  // A burst that never touches the ground has no downrange. The envelope
+  // below is for a projectile that reaches the surface and opens a crater;
+  // where the swarm spreads above the ground the rings are drawn as the
+  // source they were computed from makes them — a circle about the point
+  // under the burst (B-067, rules 235 to 240 of
+  // validation/airburstShapeRules.ts).
+  const couplesToGround = entry.regime !== 'COMPLETE_AIRBURST';
   const damageAsymmetry = {
     craterRim: craterAsymmetry(angleDeg, azimuthDeg),
     thirdDegreeBurn: {
-      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'thermal'),
-      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, thermal3Nominal),
+      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'thermal', couplesToGround),
+      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, thermal3Nominal, couplesToGround),
     },
     secondDegreeBurn: {
-      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'thermal'),
-      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, thermal2Nominal),
+      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'thermal', couplesToGround),
+      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, thermal2Nominal, couplesToGround),
     },
     overpressure5psi: {
-      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'overpressure'),
-      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, op5psiNominal),
+      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'overpressure', couplesToGround),
+      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, op5psiNominal, couplesToGround),
     },
     overpressure1psi: {
-      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'overpressure'),
-      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, op1psiNominal),
+      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'overpressure', couplesToGround),
+      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, op1psiNominal, couplesToGround),
     },
     lightDamage: {
-      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'overpressure'),
-      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, lightDamageNominal),
+      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'overpressure', couplesToGround),
+      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, lightDamageNominal, couplesToGround),
     },
     ejectaBlanket: ejectaButterflyAsymmetry(asymmetryFactor, azimuthDeg, blanketEdge1mm),
   };

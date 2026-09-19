@@ -96,25 +96,25 @@ describe('craterAsymmetry — Pierazzo & Melosh / Gault & Wedekind envelope', ()
 
 describe('obliqueImpactRingAsymmetry — Pierazzo & Artemieva 2003 envelope', () => {
   it('returns a circle for vertical impacts', () => {
-    const op = obliqueImpactRingAsymmetry(90, 0, 'overpressure');
-    const th = obliqueImpactRingAsymmetry(90, 0, 'thermal');
+    const op = obliqueImpactRingAsymmetry(90, 0, 'overpressure', true);
+    const th = obliqueImpactRingAsymmetry(90, 0, 'thermal', true);
     expect(op).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 0 });
     expect(th).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 0 });
   });
 
   it('elongates the thermal contour more than the overpressure (Pierazzo & Artemieva 2003)', () => {
-    const op = obliqueImpactRingAsymmetry(15, 90, 'overpressure');
-    const th = obliqueImpactRingAsymmetry(15, 90, 'thermal');
+    const op = obliqueImpactRingAsymmetry(15, 90, 'overpressure', true);
+    const th = obliqueImpactRingAsymmetry(15, 90, 'thermal', true);
     expect(th.semiMajorMultiplier).toBeGreaterThan(op.semiMajorMultiplier);
   });
 
   it('caps the overpressure boost at ≤ 30 % even at extreme grazing', () => {
-    const op = obliqueImpactRingAsymmetry(1, 0, 'overpressure');
+    const op = obliqueImpactRingAsymmetry(1, 0, 'overpressure', true);
     expect(op.semiMajorMultiplier).toBeLessThanOrEqual(1.3 + 1e-9);
   });
 
   it('caps the thermal boost at ≤ 40 %', () => {
-    const th = obliqueImpactRingAsymmetry(1, 0, 'thermal');
+    const th = obliqueImpactRingAsymmetry(1, 0, 'thermal', true);
     expect(th.semiMajorMultiplier).toBeLessThanOrEqual(1.4 + 1e-9);
   });
 
@@ -122,43 +122,43 @@ describe('obliqueImpactRingAsymmetry — Pierazzo & Artemieva 2003 envelope', ()
     // sin(45°) ≈ 0.707, obliquity = 0.293
     // overpressure: 0.30 * 0.293 ≈ 0.088 (~8.8 % boost)
     // thermal:      0.40 * 0.293 ≈ 0.117 (~11.7 % boost)
-    const op = obliqueImpactRingAsymmetry(45, 0, 'overpressure');
-    const th = obliqueImpactRingAsymmetry(45, 0, 'thermal');
+    const op = obliqueImpactRingAsymmetry(45, 0, 'overpressure', true);
+    const th = obliqueImpactRingAsymmetry(45, 0, 'thermal', true);
     // Spread about one by `equalArea`, so the elongation to read is a/b.
     expect(op.semiMajorMultiplier / op.semiMinorMultiplier).toBeGreaterThan(1.13);
     expect(th.semiMajorMultiplier / th.semiMinorMultiplier).toBeGreaterThan(1.18);
   });
 
   it('compresses the cross-range axis (semi-minor < 1) at non-vertical angles', () => {
-    const op30 = obliqueImpactRingAsymmetry(30, 0, 'overpressure');
+    const op30 = obliqueImpactRingAsymmetry(30, 0, 'overpressure', true);
     expect(op30.semiMinorMultiplier).toBeLessThan(1);
     expect(op30.semiMinorMultiplier).toBeGreaterThanOrEqual(0.5);
   });
 
   it('floors the cross-range compression at 0.50 to keep a recognisable ellipse', () => {
-    const grazing = obliqueImpactRingAsymmetry(1, 0, 'thermal');
+    const grazing = obliqueImpactRingAsymmetry(1, 0, 'thermal', true);
     expect(grazing.semiMinorMultiplier).toBeGreaterThanOrEqual(0.5);
   });
 });
 
 describe('obliqueImpactCentreOffset', () => {
   it('returns 0 for vertical impacts', () => {
-    expect(obliqueImpactCentreOffset(90, 1_000)).toBe(0);
+    expect(obliqueImpactCentreOffset(90, 1_000, true)).toBe(0);
   });
 
   it('returns 0 for invalid inputs', () => {
-    expect(obliqueImpactCentreOffset(NaN, 1_000)).toBe(0);
-    expect(obliqueImpactCentreOffset(30, 0)).toBe(0);
-    expect(obliqueImpactCentreOffset(30, -500)).toBe(0);
+    expect(obliqueImpactCentreOffset(NaN, 1_000, true)).toBe(0);
+    expect(obliqueImpactCentreOffset(30, 0, true)).toBe(0);
+    expect(obliqueImpactCentreOffset(30, -500, true)).toBe(0);
   });
 
   it('shifts the centre downrange by ≈ 10 % of R at θ = 30°', () => {
     // 0.2 · (1 − sin 30°) · R = 0.2 · 0.5 · R = 0.10 R
-    expect(obliqueImpactCentreOffset(30, 1_000)).toBeCloseTo(100, 3);
+    expect(obliqueImpactCentreOffset(30, 1_000, true)).toBeCloseTo(100, 3);
   });
 
   it('caps the offset at ≤ 20 % of R for grazing impacts', () => {
-    expect(obliqueImpactCentreOffset(1, 1_000)).toBeLessThanOrEqual(200 + 1e-9);
+    expect(obliqueImpactCentreOffset(1, 1_000, true)).toBeLessThanOrEqual(200 + 1e-9);
   });
 });
 
@@ -261,7 +261,7 @@ describe('the picture covers the ground its caption claims', () => {
         `crater at ${String(angle)}°`
       ).toBeCloseTo(1, 12);
       for (const kind of ['overpressure', 'thermal'] as const) {
-        const ring = obliqueImpactRingAsymmetry(angle, 0, kind);
+        const ring = obliqueImpactRingAsymmetry(angle, 0, kind, true);
         expect(
           ring.semiMajorMultiplier * ring.semiMinorMultiplier,
           `${kind} at ${String(angle)}°`

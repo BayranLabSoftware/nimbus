@@ -277,8 +277,10 @@ climatico, la tempesta di fuoco, e gli inviluppi di asimmetria.
 1. ~~L'inversione della tempesta di fuoco~~ (§2.1) — **fatto**, regole 227-234,
    B-061 e B-062: le soglie vengono dalla Tabella 7.40, il §7.58 mette il
    cancello dell'area, Hiroshima legge 1,06× il terreno che bruciò davvero.
-2. **L'asimmetria obliqua sugli airburst** (§3.1) — un'ellisse al 67 % dove la
-   fisica dà un cerchio, e proprio sui casi più probabili.
+2. ~~L'asimmetria obliqua sugli airburst~~ (§3.1) — **fatto**, regole 235-240 e
+   B-067: dove nulla arriva a terra gli anelli sono cerchi attorno al punto
+   sotto lo scoppio, e l'inviluppo resta dove un corpo il suolo lo tocca.
+   Nessun raggio e nessun morto si è mosso: il report si rigenera identico.
 3. ~~La didascalia del cratere al bordo esterno~~ (§3.2) — **fatto**, B-059.
 4. ~~Gli anelli più larghi del numero~~ (§3.3) — **fatto**, B-059.
 5. ~~La coltre oltre il numero~~ (§3.4) — **fatto in parte**: area e centro sì,
@@ -287,8 +289,14 @@ climatico, la tempesta di fuoco, e gli inviluppi di asimmetria.
 7. ~~Il raggio chiamato come un diametro~~ (§3.6) — **fatto**.
 8. **L'orizzonte del lampo per un airburst** (§2.2) — latente, non morde.
 
-Resta il punto 2, che vuole il suo round: regole scritte e spinte prima della
-misura, non una pezza dopo.
+Nessuno dei punti dell'elenco resta aperto. Quello che resta è più grande di
+tutti loro e non è un difetto: **la forma vera di un airburst non è un
+cerchio.** Tunguska stese 2 200 km² di foresta a farfalla; la strada è la
+sorgente cilindrica di Collins et al. (2017) sulla deposizione del modello a
+frittella, e vuole un round suo. La pagina della metodologia, per di più, dice
+che l'ellisse vera «reaches farthest **across**» la traccia, mentre quella che
+abbiamo tolto era allungata **lungo**: quale delle due sia giusta è la prima
+domanda di quel round.
 
 Il round del fuoco ha anche chiuso due silenzi della mappa che non erano
 nell'elenco perché l'audit guardava gli impatti e non il globo: la vista

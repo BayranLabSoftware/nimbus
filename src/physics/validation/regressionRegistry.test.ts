@@ -1338,7 +1338,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
         `envelope at ${String(angle)}°`
       ).toBeCloseTo(Math.max(0.4, Math.cbrt(Math.sin((angle * Math.PI) / 180))), 12);
       for (const kind of ['overpressure', 'thermal'] as const) {
-        const ring = obliqueImpactRingAsymmetry(angle, 0, kind);
+        const ring = obliqueImpactRingAsymmetry(angle, 0, kind, true);
         expect(
           ring.semiMajorMultiplier * ring.semiMinorMultiplier,
           `${kind} at ${String(angle)}°`
@@ -1563,9 +1563,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-066 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-067 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 66;
-    expect(expectedRows).toBe(66);
+    const expectedRows = 67;
+    expect(expectedRows).toBe(67);
   });
 });

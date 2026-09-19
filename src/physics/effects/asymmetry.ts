@@ -202,13 +202,38 @@ export function craterAsymmetry(impactAngleDeg: number, impactAzimuthDeg: number
  * justified by the longer thermal-source dwell time along the
  * trajectory observed in their hydrocode runs.
  *
- * Returns {@link ISOTROPIC_RING} for θ ≥ 90° or invalid inputs.
+ * Returns {@link ISOTROPIC_RING} for θ ≥ 90°, for an event that does not
+ * couple to the ground, or for invalid inputs.
+ *
+ * The domain, which the caller must state. Pierazzo & Artemieva's runs are of
+ * asteroids that reach the ground and open craters, and what the envelope
+ * describes is a projectile whose momentum carries its melt, its vapour and
+ * its ejecta downrange of the point it struck. A body that bursts in the air
+ * strikes nothing, and the rings drawn for it are not computed from a
+ * trajectory either: an airburst's overpressures are the Earth Impact Effects
+ * Program's static source at the burst altitude and its burns a point fluence
+ * at the same altitude, both azimuthally symmetric by construction. So
+ * `couplesToGround` is a required argument rather than a default: passing
+ * false returns the isotropic ring, and a caller cannot apply the envelope
+ * outside its domain by forgetting to ask. Rules 235 to 240 of
+ * validation/airburstShapeRules.ts.
+ *
+ * What this is not: the real footprint of an airburst is not a circle. The
+ * blast radiates from the meteoroid's trajectory, Tunguska felled 2 200 km² of
+ * forest in a butterfly, and Collins et al. (2017) model that with a
+ * cylindrical line source along the path. Nimbus does not yet integrate one,
+ * and draws the shape its own source has rather than one nothing behind the
+ * picture supports.
  */
 export function obliqueImpactRingAsymmetry(
   impactAngleDeg: number,
   impactAzimuthDeg: number,
-  variant: 'overpressure' | 'thermal'
+  variant: 'overpressure' | 'thermal',
+  couplesToGround: boolean
 ): RingAsymmetry {
+  if (!couplesToGround) {
+    return { ...ISOTROPIC_RING, azimuthDeg: normaliseAzimuth(impactAzimuthDeg) };
+  }
   if (!Number.isFinite(impactAngleDeg) || impactAngleDeg <= 0) {
     return { ...ISOTROPIC_RING, azimuthDeg: normaliseAzimuth(impactAzimuthDeg) };
   }
@@ -243,8 +268,10 @@ export function obliqueImpactRingAsymmetry(
  */
 export function obliqueImpactCentreOffset(
   impactAngleDeg: number,
-  nominalRadiusMeters: number
+  nominalRadiusMeters: number,
+  couplesToGround: boolean
 ): number {
+  if (!couplesToGround) return 0;
   if (
     !Number.isFinite(impactAngleDeg) ||
     impactAngleDeg <= 0 ||
