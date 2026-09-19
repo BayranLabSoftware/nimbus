@@ -9,7 +9,11 @@ import {
   type RuleEarthquakeRow,
   type RulePlumeRow,
 } from './heldOutByRuleData.js';
-import { pointingWhereTheFaultPoints, type RecordedEvent } from './recordedTolls.js';
+import {
+  markingTheInterface,
+  pointingWhereTheFaultPoints,
+  type RecordedEvent,
+} from './recordedTolls.js';
 import { siteVs30, type SiteRule } from './siteVs30.js';
 import { RULE_SITES } from './siteVs30Data.js';
 
@@ -238,6 +242,28 @@ export const RULE_EARTHQUAKES: readonly RuleEarthquake[] =
     ...quake,
     event: pointingWhereTheFaultPoints(quake.event),
   }));
+
+/**
+ * Rules 363 to 369's two candidates, reachable by name and drawn by nothing.
+ *
+ * `RULE_EARTHQUAKES` above is what the report reads and is untouched, so the
+ * report is unchanged — the protocol's second step. Both candidates sit on
+ * top of the adopted strike lookup, because rule 365 asks the lookup once
+ * with the unmarked rupture and that is the rupture these rows carry.
+ */
+export const RULE_EARTHQUAKES_TENSOR_MAY_REFUSE: readonly RuleEarthquake[] = RULE_EARTHQUAKES.map(
+  (quake) => ({
+    ...quake,
+    event: markingTheInterface(quake.event, 'tensorMayRefuse'),
+  })
+);
+
+export const RULE_EARTHQUAKES_GEOMETRY_DECIDES: readonly RuleEarthquake[] = RULE_EARTHQUAKES.map(
+  (quake) => ({
+    ...quake,
+    event: markingTheInterface(quake.event, 'geometryDecides'),
+  })
+);
 
 export const RULE_PLUMES: readonly RulePlume[] = IVESPA_PLUME_ROWS.map((row) => ({
   row,

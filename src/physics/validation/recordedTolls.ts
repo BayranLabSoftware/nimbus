@@ -23,6 +23,7 @@ import { VOLCANO_PRESETS, simulateVolcano } from '../events/volcano/simulate.js'
 import { HELD_OUT_EARTHQUAKES, HELD_OUT_VOLCANO_TOLLS } from './heldOutEvents.js';
 import { siteVs30 } from './siteVs30.js';
 import { shippedStrikeAnswer } from './shippedFaults.js';
+import type { InterfaceMarkCandidate } from './interfaceMarkRules.js';
 import { NET_SITES } from './siteVs30Data.js';
 import {
   shippedCountryAt,
@@ -355,6 +356,58 @@ export function pointingWhereTheFaultPoints(event: RecordedEvent): RecordedEvent
           ...result.data.inputs,
           strikeAzimuthDeg: answer.strikeDeg,
         }),
+      };
+    },
+  };
+}
+
+/**
+ * Rules 363 and 364 of `interfaceMarkRules.ts`: where the slab says the
+ * hypocentre is on the interface, the scenario may say so too.
+ *
+ * Rule 365 fixes the order, because the flag and the lookup are circular —
+ * the mark changes the rupture length and rule 287 reads the strike over a
+ * window as long as the rupture. The lookup is asked ONCE, with the rupture
+ * the scenario has BEFORE the mark, which is what `event.run()` already
+ * carries here. Re-asking with Strasser's rupture was measured first and
+ * moves the strike by a median of 0.03 degrees and at most 2.81.
+ *
+ * What the mark then drags with it is not this function's choice and is
+ * listed in rule 363: Strasser's scaling, the mechanism forced to reverse
+ * (B-046), and a tsunami block. Rule 364(a) is the candidate that lets the
+ * moment tensor refuse that forcing; rule 364(b) is the one that does not.
+ */
+export function markingTheInterface(
+  event: RecordedEvent,
+  candidate: InterfaceMarkCandidate
+): RecordedEvent {
+  const run = event.run;
+  return {
+    ...event,
+    run: () => {
+      const result = run();
+      if (result.type !== 'earthquake') return result;
+      // A scenario that already says what it is keeps saying it: a reader's
+      // tick, or a preset's own flag, is not the lookup's to overrule.
+      if (result.data.inputs.subductionInterface !== undefined) return result;
+      const answer = shippedStrikeAnswer(
+        event.latitude,
+        event.longitude,
+        result.data.inputs.depth ?? 10_000,
+        result.data.ruptureLength
+      );
+      if (!answer.source.startsWith('interface')) return result;
+      if (candidate === 'tensorMayRefuse') {
+        // Rule 364(a): a megathrust is a thrust. An earthquake at interface
+        // depth that broke strike-slip or normal is more likely inside the
+        // slab or on the outer rise, and a model of a surface does not
+        // overrule a measurement of the event.
+        const mechanism = result.data.inputs.faultType ?? 'all';
+        if (mechanism !== 'reverse' && mechanism !== 'all') return result;
+      }
+      return {
+        type: 'earthquake',
+        data: simulateEarthquake({ ...result.data.inputs, subductionInterface: true }),
       };
     },
   };
