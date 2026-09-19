@@ -125,6 +125,14 @@
  * and nobody in the record either, so its footprint moved over ground with no
  * one on it.
  *
+ * RULE 326(e), RUN RATHER THAN ASSUMED: the globe audit was re-run against the
+ * dev server after both halves of the wiring and after rule 325's change to
+ * what is drawn where no strike is known — thirty scenarios, every ellipse and
+ * polygon the renderer hands to Cesium read back through the probe and checked
+ * against the numbers the store holds. **Zero findings.** The megathrust
+ * scenario is the one that exercises this round: four ellipses, two polygons
+ * and twenty-one quantities compared.
+ *
  * WHAT THAT SAYS ABOUT THE NET, and it is worth saying before anyone reads
  * "accepted" as "vindicated": THE CALIBRATION NET CANNOT MEASURE THIS CHANGE.
  * It holds twelve earthquakes, four of them presets that keep their published
