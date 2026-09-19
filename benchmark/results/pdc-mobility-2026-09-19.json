@@ -1,0 +1,90 @@
+{
+ "track": "V1-flows",
+ "readOn": "2026-09-19",
+ "pooled": {
+  "slope": -0.201,
+  "intercept": -0.386,
+  "msr": 0.00263,
+  "channelized": true
+ },
+ "rows": [
+  {
+   "event": "Unzen 1991 (dome collapse)",
+   "eruptedM3": 20000000,
+   "hOverLFromLaw": 0.17864586604873559,
+   "bandFactor": 1.2191342634163516,
+   "reachKvM": 2714.4176165949066,
+   "reachEnergyLineInPlaceM": null,
+   "reachEnergyLineWithLawM": null,
+   "observedReachM": 3200,
+   "observedMobility": 0.425,
+   "volumeTheLawWouldNeedM3": 268171.9088571099,
+   "disqualified": null
+  },
+  {
+   "event": "Mount St Helens 1980",
+   "eruptedM3": 1200000000,
+   "hOverLFromLaw": 0.07844848656272917,
+   "bandFactor": 1.3388747195831627,
+   "reachKvM": 10626.58569182611,
+   "reachEnergyLineInPlaceM": 64278.607854323185,
+   "reachEnergyLineWithLawM": 81937.3459842652,
+   "observedReachM": 8000,
+   "observedMobility": 0.23125,
+   "volumeTheLawWouldNeedM3": 5538273.778857763,
+   "disqualified": "the preset's eruption rate was tuned to the observed plume, which sets the drop"
+  },
+  {
+   "event": "Vesuvius 79 CE",
+   "eruptedM3": 2500000000,
+   "hOverLFromLaw": 0.06768837035158798,
+   "bandFactor": 1.385491526095775,
+   "reachKvM": 13572.088082974535,
+   "reachEnergyLineInPlaceM": 88390.98992697382,
+   "reachEnergyLineWithLawM": 130585.19427761665,
+   "observedReachM": 9000,
+   "observedMobility": 0.14233333333333334,
+   "volumeTheLawWouldNeedM3": 61945086.560311735,
+   "disqualified": "the preset's volume was lowered to bring the reach into the observed band"
+  },
+  {
+   "event": "Fuego 2018",
+   "eruptedM3": 49000000,
+   "hOverLFromLaw": 0.14920060628298693,
+   "bandFactor": 1.217899754759647,
+   "reachKvM": 3659.3057100229717,
+   "reachEnergyLineInPlaceM": null,
+   "reachEnergyLineWithLawM": null,
+   "observedReachM": 11700,
+   "observedMobility": 0.21367521367521367,
+   "volumeTheLawWouldNeedM3": 8206509.43245003,
+   "disqualified": "a held-out anchor: reading it for a model choice would spend it"
+  },
+  {
+   "event": "Krakatau 1883",
+   "eruptedM3": 20000000000,
+   "hOverLFromLaw": 0.04456490354353333,
+   "bandFactor": 1.5419877603558105,
+   "reachKvM": 27144.176165949062,
+   "reachEnergyLineInPlaceM": null,
+   "reachEnergyLineWithLawM": null,
+   "observedReachM": null,
+   "observedMobility": null,
+   "volumeTheLawWouldNeedM3": null,
+   "disqualified": null
+  },
+  {
+   "event": "Tambora 1815",
+   "eruptedM3": 140000000000,
+   "hOverLFromLaw": 0.030138960188609083,
+   "bandFactor": 1.7168459029215215,
+   "reachKvM": 51924.94101851103,
+   "reachEnergyLineInPlaceM": null,
+   "reachEnergyLineWithLawM": null,
+   "observedReachM": null,
+   "observedMobility": null,
+   "volumeTheLawWouldNeedM3": null,
+   "disqualified": null
+  }
+ ]
+}
