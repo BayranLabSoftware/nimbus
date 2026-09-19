@@ -104,6 +104,74 @@
  * point and nothing else.
  */
 
+/**
+ * THE OUTCOME, measured on 20 September 2026 with ShakeMap 4 (`shakemap-modules`
+ * 1.2.4, `esi-shakelib` 1.2.6), its own test configuration, gmpe
+ * `active_crustal_nshmp2014`, gmice WGRW12, ipe AllenEtAl2012, no stations.
+ * Rules 316 to 321 were pushed in dd071fe and the harness in the commit after
+ * it, both before one scenario was run.
+ *
+ * THE FIELD IS ADOPTED: rule 319 (a), (b) and (c) are all inside.
+ *
+ * | row (Mw)                        | reference km² | one Vs30 | field | ratio before | ratio after | IoU before | IoU after |
+ * |---------------------------------|--------------:|---------:|------:|-------------:|------------:|-----------:|----------:|
+ * | Mosquito Lake, Alaska (6.3)     |           952 |      258 |   293 |         0.27 |        0.31 |      0.272 |     0.308 |
+ * | Angoram, Papua New Guinea (6.2) |           592 |      222 |   321 |         0.37 |        0.54 |      0.375 |     0.542 |
+ * | Monte Cristo Range, Nevada (6.5)|         1 419 |      280 |   599 |         0.20 |        0.42 |      0.197 |     0.422 |
+ * | Kirakira, Solomon Islands (6.8) |         2 087 |      388 |   558 |         0.19 |        0.27 |      0.186 |     0.267 |
+ * | Gizo, Solomon Islands (6.5)     |         1 230 |      288 |   415 |         0.23 |        0.34 |      0.234 |     0.337 |
+ * | Coquimbo, Chile (6.9)           |         2 651 |      383 |   551 |         0.14 |        0.21 |      0.144 |     0.208 |
+ * | Hubbard Glacier, Alaska (7.0)   |         3 305 |      419 |   561 |         0.13 |        0.17 |      0.127 |     0.170 |
+ * | Banda Sea (7.1)                 |         4 807 |      506 |   727 |         0.11 |        0.15 |      0.105 |     0.151 |
+ *
+ *   319(a) median ratio 0.192 → 0.288                  — inside, closer to 1
+ *   319(b) median IoU 0.192 → 0.288, better on 8 of 8  — inside
+ *   319(c) no row worsens at all                       — inside
+ *
+ * FOUR OF THE TWELVE COULD NOT BE DECIDED, and the clause that asked for eight
+ * therefore passed with NO MARGIN AT ALL: on Naalehu (Mw 6.2 at 35 km), Tarakan
+ * (6.1), Port-Olry (7.0) and Tobelo (7.0) the reference's own scenario never
+ * reaches MMI VII, so there is no reference footprint to compare against.
+ * Rule 317's filter required a published MMI VII area and could not require
+ * what a scenario would produce, which is only knowable by running it. Eight of
+ * eight improved, so the clause is met as written; had one of the eight gone
+ * the other way it would have failed for want of rows rather than for want of
+ * quality. Said here because a bar met with no margin is not the same as a bar
+ * met, and the next set of rows should filter on the reference and not only on
+ * the published map.
+ *
+ * WHAT THE NUMBERS SAY BEYOND THE VERDICT, and it is the finding that matters.
+ * AGAINST THE REFERENCE WITH THE SAME INFORMATION — same source, same rupture,
+ * same strike, no stations for either — OUR MMI VII FOOTPRINT IS BETWEEN A
+ * NINTH AND A HALF OF ITS AREA, and 0.29 of it at the median even with the
+ * ground under every point. On the six larger events read earlier the same
+ * ratio was 0.77. So the gap is real, it is not the absence of stations, and it
+ * widens as the magnitude falls: this is the contour law at Mw 6 to 7, measured
+ * against a reference that can be run again whenever it is needed.
+ *
+ * That is the next round, and it now has a bar that the reference reaches by
+ * construction, rows that can be generated without a download, and a number to
+ * beat: 0.288.
+ *
+ * A BREAK IN THE PROTOCOL, recorded because it happened. The rules were pushed
+ * before the round (dd071fe) and the harness was written before it — but the
+ * harness's own commit FAILED on a lint error, in a command launched in the
+ * background whose result was not read, and it went unnoticed until after the
+ * measurement. So `scripts/benchmark/anchored-footprint.ts` is pushed after the
+ * numbers it produced, not before. The file was not edited between the run and
+ * that push except to satisfy the linter, and the comparison was rerun
+ * afterwards to the same three verdicts and the same medians to the third
+ * decimal. The bars, which are what a reader must be able to check were fixed
+ * in advance, were pushed in advance. The timing proof of the harness was not,
+ * and no wording here can put it back.
+ *
+ * WHAT DID NOT MOVE, checked and not assumed: the full suite is green (232
+ * files), nothing is wired into the globe or the toll, rule 313's debt stands,
+ * and `docs/VALIDATION_REPORT.md` is untouched.
+ */
+export const ANCHORED_FOOTPRINT_OUTCOME =
+  'ADOPTED 20 September 2026 under rules 319(a), (b) and (c): with Slab2\u2019s strike and the USGS ground under every point, our MMI VII area goes from 0.192 to 0.288 of the reference\u2019s and the shape from 0.192 to 0.288 in intersection over union, better on all eight decidable rows of twelve. Four rows could not be decided \u2014 the reference\u2019s own scenario never reaches MMI VII there \u2014 so the eight-of-twelve clause passed with no margin, and that is recorded. The finding beyond the verdict: against a reference with the same information our footprint is between a ninth and a half of its area, 0.29 at the median, where on six larger events it was 0.77. The residual gap is the contour law at Mw 6 to 7.';
+
 /** Rule 317: the rows, by ComCat identifier, in the order the filter picked
  *  them. Named here so that a reader can check the set was not chosen after
  *  the numbers were seen. */
