@@ -483,11 +483,15 @@ describe('the fireball sets: burns stop at the horizon', () => {
     const horizon = thermalHorizonRadius(impactFireballRadius(CHICXULUB_CLASS));
 
     // Without the horizon the burns reach the whole planet: the
-    // outermost band lies past the 1 psi ring and still kills.
+    // outermost band lies past the 1 psi ring and still kills. Its central
+    // mortality is the burns alone — 0.125 — since rules 261 to 266 moved the
+    // mass fire to the top of the band on 19 September 2026; the band's high
+    // end still carries the fire and reads 0.88.
     const farUnbounded = unbounded.bands[unbounded.bands.length - 1];
     if (farUnbounded === undefined) throw new Error('band');
     expect(farUnbounded.innerRadiusM).toBeGreaterThan(6_000_000);
-    expect(farUnbounded.mortality).toBeGreaterThan(0.3);
+    expect(farUnbounded.mortality).toBeGreaterThan(0.1);
+    expect(farUnbounded.mortalityHigh).toBeGreaterThan(0.8);
 
     // With it, no band beyond the horizon carries heat at all, and the
     // plan stops where the blast does.

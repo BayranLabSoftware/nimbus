@@ -161,7 +161,7 @@ its own inputs.
 |  | Mw < 6.5 | 3 | 2 | 0.040× | 2.00 | 2 of 3 | 0 / 1 / 0 | 10^3.3 | 5 | 4 | 0.029× | 1.95 | 3 of 5 | 0 / 1 / 0 | 10^3.3 |
 |  | Mw 6.5–7.5 | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^4.3 | 2 | 2 | 0.61× | 0.18 | 2 of 2 | 0 / 0 / 0 | 10^3.3 |
 |  | Mw ≥ 7.5 | 4 | 2 | 0.51× | 0.16 | 4 of 4 | 1 / 0 / 1 | 10^2.7 | 5 | 3 | 0.17× | 1.56 | 5 of 5 | 1 / 0 / 1 | 10^3.4 |
-| **explosion** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 2.41× | 1.00 | 1 of 2 | 0 / 0 / 0 | 10^0.4 |
+| **explosion** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 2.26× | 1.06 | 1 of 2 | 0 / 0 / 0 | 10^0.4 |
 |  | < 1 kt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^0.7 |
 |  | 1 kt – 1 Mt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^0.2 |
 | **volcano** | all sizes | 3 | 3 | 0.19× | 0.51 | 1 of 3 | 0 / 0 / 0 | 10^1.2 | 4 | 4 | 0.43× | 1.47 | 2 of 4 | 0 / 0 / 0 | 10^1.4 |
@@ -758,7 +758,7 @@ model was set on the event, which is under "Which checks are validation".
 | Beirut 2020 | 218 | 1,423 | 768 – 3,549 | 10^0.7 | 6.53× | **misses** | populationRaster | declared | tuned on it |
 | Mount St Helens 1980 | 57 | 278 | 30 – 1,195 | 10^1.6 | 4.88× | contains | occupancy | declared | tuned on it |
 | Pinatubo 1991 | 847 | 81 | 32 – 309 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared | held out |
-| Hiroshima 1945 | 105,000 (70,000–140,000) | 93,466 | 77,893 – 119,850 | 10^0.2 | 0.89× | contains | populationChanged | declared | tuned on it |
+| Hiroshima 1945 | 105,000 (70,000–140,000) | 81,885 | 65,756 – 100,886 | 10^0.2 | 0.78× | contains | populationChanged | declared | tuned on it |
 | Tōhoku 2011 | 18,500 | 7,997 | 8 – 1,204,212 | 10^5.2 | 0.43× | contains | footprint | declared | held out |
 | Sumatra–Andaman 2004 | 227,898 | 4,263 | 115 – 277,275 | 10^3.4 | 0.02× | contains | drownedOffline | declared | same source |
 | Christchurch 2011 | 185 | 1 | 0 – 26 | 10^1.4 | 0.01× | **misses** | buildingStock | declared | held out |
@@ -791,7 +791,7 @@ model was set on the event, which is under "Which checks are validation".
 
 **Mount St Helens 1980.** Not evacuation, and that took a measurement to see. This row was filed under it until 14 September: 264 of the model's 265 dead are in the lateral-blast sector between 11 and 27 km, and the record agrees that the dead were not in the closed zones — only three of the 57 were inside the Red Zone, most in areas that had been considered safe. So the model is right to count that sector as unwarned, and the preset carries no cleared zone. (Until 14 September this note said the preset had been given one; it never was.) What it cannot know is who was in it: the population map puts 586 residents there, and the blast came at 08:32 on a Sunday, into logging land whose crews were not working. The predictive interval is 120 to 692 against 57.
 
-**Hiroshima 1945.** Hiroshima held about 350 000 people in 1945 and about 1.2 million today; the raster counts the living, so the model must overshoot by roughly that ratio.
+**Hiroshima 1945.** The comparison is a city against a footprint, and that is worth saying because this row’s caveat used to get it backwards. Hiroshima holds about 1.2 million people today against 350 000 in 1945, but the rings reach 4.49 km — 63 km² of a city of 906 — and Glasstone & Dolan’s Table 12.09 puts 256 300 people inside the same 3.1 miles in 1945. The two populations are of one order, not three apart, so nothing here obliges the model to overshoot. Read per head against that table, which resolves both Japanese cities by distance, the model lands on 1.01 × the recorded mortality at Hiroshima and 1.04 × at Nagasaki since rules 261 to 266 of validation/japanMortalityRules.ts moved the mass fire out of the central estimate. The record quoted here, 105 000 on a range of 70 000 to 140 000, is the historical dispute; the table’s own 68 000 counts civilians within the affected area and excludes the military.
 
 **Tōhoku 2011.** Over 90 % of the dead drowned. This harness has no bathymetry and therefore no wave, so the number here is the shaking alone, and until 14 September 2026 it was far below the record — 0 dead on a band of 0 to 5 — because the harness counted a circle about an epicentre at sea. Counted as the simulator counts it, on the rupture stadium along the coast, the shaking alone reads 177 033 dead on a band of 2 529 to 2 969 170: nearly ten times the whole record, drowned included, where NCEI gives the earthquake’s own effects 1 474. Inside only because the band spans three orders of magnitude. The intensity rings are Joyner–Boore 1981 stretched along a megathrust, and painted three times the area of MMI VIII that USGS ShakeMap measured and 180 000 km² of MMI IX where it measured none. On Boore et al. 2014’s rings, adopted on 14 September 2026 by rule 19 of contourLaws.ts, the shaking alone reads 4 505 on 7 to 1 042 546: three times NCEI’s count for the earthquake’s own effects, the MMI VIII area 2.5 times the ShakeMap’s, and no MMI IX. On the ground the browser reads under its epicentre, the sea floor’s Vs30 337 m/s by rule 22 of siteVs30.ts, 7 997 on 8 to 1 204 212, with the MMI VIII area 2.8 times the ShakeMap’s.
 
@@ -827,7 +827,7 @@ rather than about the interpolation.
 | Beirut 2020 | 768 – 3,549 | 768 – 3,549 | 1.00× / 1.00× | yes |
 | Mount St Helens 1980 | 30 – 1,195 | 34 – 1,146 | 1.13× / 1.04× | high end only |
 | Pinatubo 1991 | 32 – 309 | 32 – 309 | 1.00× / 1.00× | high end only |
-| Hiroshima 1945 | 77,893 – 119,850 | 77,341 – 119,478 | 1.01× / 1.00× | yes |
+| Hiroshima 1945 | 65,756 – 100,886 | 65,179 – 100,989 | 1.01× / 1.00× | yes |
 | Tōhoku 2011 | 15 – 516,763 | 23 – 360,451 | 1.53× / 1.43× | high end only |
 | Sumatra–Andaman 2004 | 166 – 48,898 | 167 – 47,886 | 1.01× / 1.02× | yes |
 | Christchurch 2011 | 0 – 11 | 0 – 9 | 1.00× / 1.22× | too few dead |
@@ -1449,7 +1449,7 @@ Nimbus drew its burn rings at 8, 5 and 2 cal/cm², three numbers of the project'
 | 1 Mt reference | 1 Mt | 3.32 / 6.30 / 10.04 | 15.42 · 11.31 · 9.52 | 13.04 · 10.40 · 8.74 |
 | Ivy Mike 1952 | 10.4 Mt | 4.16 / 7.62 / 11.75 | 29.79 · 23.55 · 20.64 | 24.74 · 20.93 · 18.43 |
 
-The most any ring moves is a factor of 0.83; a misread figure could not stay inside two, which is the guard rule 82 set. The curves are adopted: they are the book the project cites for the number, where the three fluences were the project’s own. The two rows of the calibration net that are explosions read Beirut 2020 1423 against 218, Hiroshima 1945 94451 against 105000 — neither can judge the change (Hiroshima's toll is tuned on its own mortality, Beirut's charge is chemical and draws no flash), and no row of the net counts the burned apart from the dead.
+The most any ring moves is a factor of 0.83; a misread figure could not stay inside two, which is the guard rule 82 set. The curves are adopted: they are the book the project cites for the number, where the three fluences were the project’s own. The two rows of the calibration net that are explosions read Beirut 2020 1423 against 218, Hiroshima 1945 82871 against 105000 — neither can judge the change (Hiroshima's toll is tuned on its own mortality, Beirut's charge is chemical and draws no flash), and no row of the net counts the burned apart from the dead.
 
 Beside, deciding nothing — the figure's light and dark curves, which bracket the middle one, at the third-degree ring:
 

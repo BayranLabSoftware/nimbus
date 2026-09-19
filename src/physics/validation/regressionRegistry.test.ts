@@ -1563,9 +1563,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-070 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-071 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 70;
-    expect(expectedRows).toBe(70);
+    const expectedRows = 71;
+    expect(expectedRows).toBe(71);
   });
 });

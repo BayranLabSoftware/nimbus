@@ -311,11 +311,28 @@ export const THERMAL_EXPOSED_FRACTION: Triple = { low: 0.1, mid: 0.25, high: 0.5
  *  full-thickness burns are fatal untreated). */
 export const THIRD_DEGREE_MORTALITY: Triple = { low: 0.3, mid: 0.5, high: 0.8 };
 
-/** Mortality of the blast and burn survivors inside a sustained mass
- *  fire: the Hamburg 1943 and Dresden 1945 record at the low end,
- *  Hiroshima in the middle, the near-total mortality of a nuclear
- *  superfire (Postol 1986) at the high end. */
-export const FIRESTORM_MORTALITY: Triple = { low: 0.1, mid: 0.3, high: 0.8 };
+/**
+ * Mortality of the blast and burn survivors inside a sustained mass fire —
+ * in the band, and no longer in the middle of it.
+ *
+ * Until 19 September 2026 this was 0.3 (0.1 to 0.8): the Hamburg and Dresden
+ * record low, Hiroshima in the middle, Postol 1986's nuclear superfire high.
+ * Read per head against Glasstone & Dolan's Table 12.09, which resolves both
+ * Japanese cities by distance, the layer has no room in the record. Blast and
+ * burns alone land on 1.01 × Hiroshima and 1.04 × Nagasaki, with the middle
+ * zone nearly exact; the mass fire on top takes them to 1.23 × and 1.16 ×,
+ * and it breaks Nagasaki worst — where §7.72 records that no fire storm
+ * occurred at all and the model asserts one anyway, having no fuel map, no
+ * wind and no terrain to tell it otherwise (B-071).
+ *
+ * So the hazard stays where a reader can see it, named in its band and
+ * carried at 0.8 by the high end of every toll, and stops being asserted by
+ * the middle. Not a smaller middle, which would be tuning on the set being
+ * read: a statement that the model cannot decide whether a fire storm forms,
+ * which is what §7.58 says of the field as a whole. Rules 261 to 266 of
+ * validation/japanMortalityRules.ts.
+ */
+export const FIRESTORM_MORTALITY: Triple = { low: 0, mid: 0, high: 0.8 };
 
 /** Share of the prompt injured who die within the first weeks for
  *  lack of care — a project estimate. OTA 1979 expects many to die for

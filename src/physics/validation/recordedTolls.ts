@@ -247,7 +247,7 @@ const NET_ROWS: RecordedEvent[] = [
     cause: 'populationChanged',
     gated: false,
     caveat:
-      'Hiroshima held about 350 000 people in 1945 and about 1.2 million today; the raster counts the living, so the model must overshoot by roughly that ratio.',
+      'The comparison is a city against a footprint, and that is worth saying because this row\u2019s caveat used to get it backwards. Hiroshima holds about 1.2 million people today against 350 000 in 1945, but the rings reach 4.49 km \u2014 63 km\u00b2 of a city of 906 \u2014 and Glasstone & Dolan\u2019s Table 12.09 puts 256 300 people inside the same 3.1 miles in 1945. The two populations are of one order, not three apart, so nothing here obliges the model to overshoot. Read per head against that table, which resolves both Japanese cities by distance, the model lands on 1.01 \u00d7 the recorded mortality at Hiroshima and 1.04 \u00d7 at Nagasaki since rules 261 to 266 of validation/japanMortalityRules.ts moved the mass fire out of the central estimate. The record quoted here, 105 000 on a range of 70 000 to 140 000, is the historical dispute; the table\u2019s own 68 000 counts civilians within the affected area and excludes the military.',
   },
   {
     name: 'Tōhoku 2011',

@@ -168,12 +168,23 @@ describe('casualtyTimeline — burns and mass fire', () => {
   });
 
   it('the mass fire takes its toll between twenty minutes and six hours', () => {
-    expect(hazardTotal('firestorm')).toBeGreaterThan(0);
-    expect(hazardDeaths('firestorm', FIRESTORM_ONSET_S)).toBe(0);
-    const half = hazardDeaths('firestorm', (FIRESTORM_ONSET_S + FIRESTORM_END_S) / 2);
-    expect(half).toBeGreaterThan(0.4 * hazardTotal('firestorm'));
-    expect(half).toBeLessThan(0.6 * hazardTotal('firestorm'));
-    expect(hazardDeaths('firestorm', FIRESTORM_END_S)).toBeCloseTo(hazardTotal('firestorm'), 6);
+    // Since 19 September 2026 the mass fire carries no deaths in the central
+    // estimate: rules 261 to 266 of validation/japanMortalityRules.ts moved it
+    // to the top of the band, because read per head against Glasstone & Dolan's
+    // Table 12.09 the record leaves no room for it over blast and burns. The
+    // band is still here and still named, and the window it fills is still the
+    // window — which is what this test is about, so it is read off the swept
+    // fraction rather than off a toll that is now zero.
+    const fire = timeline.bands.filter((b) => b.hazard === 'firestorm');
+    expect(fire.length).toBeGreaterThan(0);
+    expect(hazardTotal('firestorm')).toBe(0);
+    for (const band of fire) {
+      expect(sweptFraction(band, FIRESTORM_ONSET_S)).toBe(0);
+      const half = sweptFraction(band, (FIRESTORM_ONSET_S + FIRESTORM_END_S) / 2);
+      expect(half).toBeGreaterThan(0.4);
+      expect(half).toBeLessThan(0.6);
+      expect(sweptFraction(band, FIRESTORM_END_S)).toBeCloseTo(1, 6);
+    }
   });
 
   it('the whole sweep is monotonic across five orders of magnitude in time', () => {

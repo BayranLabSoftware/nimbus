@@ -150,7 +150,55 @@ export const JAPAN_MORTALITY_TOLERANCE = 0.25;
 export const JAPAN_DECIDING_ZONE = 1;
 
 /**
- * The outcome of the round, written after the candidate was measured and not
- * before. Left null until then, so a reader can tell a rule from a result.
+ * The outcome of the round, written after the candidate was measured, on
+ * 19 September 2026. The rules above were pushed in commit 07f081d before the
+ * candidate was written.
+ *
+ * ADOPTED. Rule 263 holds on every clause.
+ *
+ *   city        zone          recorded   model    ratio
+ *   Hiroshima   0 – 0.6 mi      85.6 %   98.3 %   1.15 ×   (rule 264, not gated)
+ *               0.6 – 1.6 mi    27.3 %   26.4 %   0.97 ×
+ *               1.6 – 3.1 mi     2.1 %    0.1 %   0.05 ×   (rule 264, not gated)
+ *               all             26.5 %   26.9 %   1.01 ×
+ *   Nagasaki    0 – 0.6 mi      88.3 %   98.3 %   1.11 ×   (rule 264, not gated)
+ *               0.6 – 1.6 mi    34.3 %   32.4 %   0.94 ×
+ *               1.6 – 3.1 mi     1.1 %    0.2 %   0.22 ×   (rule 264, not gated)
+ *               all             21.9 %   22.8 %   1.04 ×
+ *
+ * (a) Both totals inside a quarter, at 1.01 × and 1.04 ×, where before the
+ *     round they were 1.23 × and 1.16 ×.
+ * (b) Both middle zones inside a quarter, at 0.97 × and 0.94 × — the zone
+ *     that holds two thirds of Hiroshima's dead and a quarter of Nagasaki's.
+ * (c) The high end of the band still runs above the record on both cities, so
+ *     the fire storm is still possible and still named; it is no longer
+ *     asserted.
+ * (d) FIRESTORM_MORTALITY is the only constant touched.
+ * (e) Gate PASS in strict mode.
+ *
+ * Rule 265, recorded. One toll of the calibration net moved: Hiroshima, from
+ * 93 466 to 81 885, on a band that went from 77 893 – 119 850 to
+ * 65 756 – 100 886. The recorded range, 70 000 to 140 000, still meets it.
+ * Nothing else in the net moved by one person, and no impact preset is in the
+ * net to move. An impact's mass fire is the same layer and moved the same way.
+ *
+ * And a fourth finding, which is not a number but a sentence. The Hiroshima
+ * row's caveat said the model must OVERSHOOT its record because the raster
+ * counts 1.2 million where the city held 350 000. That is false and this round
+ * is what shows it: the rings reach 4.49 km, 63 km² of a city of 906, and
+ * Table 12.09 puts 256 300 people inside the same 3.1 miles in 1945. There is
+ * no factor of three between the two populations; there is a city and a
+ * footprint. The caveat is corrected with the round, because leaving a false
+ * sentence in the report would cost more than the round gained.
+ *
+ * What the round did not settle, and named in advance (rule 264). The
+ * innermost zone: the model kills 98.3 % where Japan recorded 85.6 and 88.3,
+ * which is OTA's own figure 1 putting 98 % above 12 psi and Japan not. The
+ * outermost: 0.1 % and 0.2 % against 2.1 and 1.1, because below 2 psi the
+ * model carries no hazard at all. And the initial radiation, which §12.16
+ * makes 5 to 15 % of Japan's fatalities and which an explosion's toll does
+ * not count. Three rounds, and the second and third pull opposite ways from
+ * the first.
  */
-export const JAPAN_MORTALITY_OUTCOME: string | null = null;
+export const JAPAN_MORTALITY_OUTCOME =
+  'ADOPTED 19 September 2026: the mass fire left the central estimate for the top of the band. Read per head against Table 12.09, Hiroshima goes from 1.23× to 1.01× and Nagasaki from 1.16× to 1.04×, with the middle zones at 0.97× and 0.94×. One toll moved, Hiroshima from 93 466 to 81 885, and its record still meets its band.';
