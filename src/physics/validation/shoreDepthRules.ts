@@ -115,7 +115,64 @@ export const SHORE_DEPTH_CAP_M = 200;
 export const SHALLOW_COAST_MAX_M = 50;
 
 /**
- * The outcome of the round, written after the candidate was measured and not
- * before. Left null until then, so a reader can tell a rule from a result.
+ * The outcome of the round, written after the candidate was measured, on
+ * 19 September 2026. The rules above were pushed in commit 84309cc before the
+ * candidate was written.
+ *
+ * ADOPTED. Rule 250 is met on every clause.
+ *
+ * (a) The depth used is the water body the shore distance points at, at its
+ *     own cell. `nearestSeaForImpact` now returns both numbers and says which
+ *     is which: `shoreDepthM`, the water the coupling reaches, and
+ *     `basinDepthM`, the sea beyond it.
+ *
+ * (b) Against the world. Miami reads 4.2 m and Lisbon 2.7 m, both under the
+ *     50 m the rule fixed, and — the part that matters — they are no longer
+ *     the same number. Before the round both read 200.0 m, which is the cap
+ *     and not a measurement. What follows from it, the same 1 km stone:
+ *
+ *                     depth    f_water   crater    A @ 1000 km   drowned
+ *       Miami before  200.0 m  0.208     8.62 km   4.12 m        895 642
+ *       Miami after     4.2 m  0.0048    9.30 km   0.99 m          3 152
+ *       Lisbon before 200.0 m  0.208     8.62 km   4.12 m        420 445
+ *       Lisbon after    2.7 m  0.0031    9.31 km   0.83 m             12
+ *
+ *     The drowned at Miami fall by a factor of 284 and at Lisbon by 35 000.
+ *     Rule 254 said that would be the result and not a reason to re-tune, and
+ *     nothing was re-tuned.
+ *
+ *     The crater grows, which is the same correction seen from the other side:
+ *     a land impact was losing a fifth of its energy into a water column it
+ *     does not have, and a crater 6.7 % of its size with it. It now keeps
+ *     both.
+ *
+ * (c) The open-ocean strike is unchanged to the bit: 3 670.5 m under the
+ *     click, water coupling 1.0000, the same cavity, 1 038.3 m at the source,
+ *     7.00 m at a thousand kilometres, 1 431 090 drowned. The store's
+ *     open-water branch never calls this function and nothing in it moved.
+ *
+ * (d) Gate PASS in strict mode; the whole suite green; the globe audit over
+ *     thirty scenarios with no finding.
+ *
+ * Rule 251's net column is empty again, for the third round running:
+ * docs/VALIDATION_REPORT.json regenerates byte for byte identical, because no
+ * row of the calibration net passes through the store's terrain derivation.
+ * Three rounds have now corrected defects the net could not see. That is a
+ * statement about the net.
+ *
+ * One thing the rules named as an impact question and the correction did not
+ * confine to impacts: `nearestSeaForImpact` is read by the explosion path too,
+ * so a nuclear burst on a coast now gets its shore's own depth as well. That
+ * is the same defect in the same function and it moves the same way; it is
+ * recorded rather than scored, because rule 250's rows are impacts.
+ *
+ * And what stands, exactly as rule 249 said it would. A land impact is still
+ * handed a water column it does not have: `oceanCouplingPartition` is still
+ * asked how much energy reaches the seafloor through 4.2 m of Biscayne Bay,
+ * over ground that has no bay on it. The number is now small enough that the
+ * answer barely matters, which is luck and not design. Deciding where a
+ * coastal wave's energy really comes from — the excavation that reaches the
+ * water, not a column the body fell through — is the round after this one.
  */
-export const SHORE_DEPTH_OUTCOME: string | null = null;
+export const SHORE_DEPTH_OUTCOME =
+  'ADOPTED 19 September 2026: the wave is made in the water that is there. Miami 200.0 m to 4.2, Lisbon to 2.7, the drowned down by 284× and 35 000×, the crater up by the energy a land impact was losing to a sea five kilometres away, and an open-water strike unchanged to the bit.';

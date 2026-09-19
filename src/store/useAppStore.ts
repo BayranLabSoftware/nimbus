@@ -20,6 +20,7 @@ import {
 } from '../physics/events/earthquake/ruptureLength.js';
 import { ruptureOrigins } from '../physics/tsunami/sourcePlacement.js';
 import { RESOLUTION_FLOOR_CELLS as SHORE_RESOLUTION_FLOOR_CELLS } from '../physics/validation/shoreDistanceRules.js';
+import { SHORE_DEPTH_CAP_M } from '../physics/validation/shoreDepthRules.js';
 import type { TerrainSourceSpan } from '../scene/terrainSampling.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
 import {
@@ -922,7 +923,7 @@ export function nearestSeaForImpact(
   local: ElevationGrid,
   global: ElevationGrid | null,
   location: Coordinates
-): { distanceM: number; basinDepthM: number } | null {
+): { distanceM: number; shoreDepthM: number; basinDepthM: number } | null {
   // Shoreline, not solver floor: for the coupling question any
   // sea-connected water counts — a bay a few metres deep is where the
   // crater rim meets the sea — so the search runs at 1 m with a body
@@ -973,6 +974,15 @@ export function nearestSeaForImpact(
   );
   const nearest = seeds[0];
   if (nearest === undefined) return null;
+  // Two depths, because they answer two questions and used to be one number.
+  // `shoreDepthM` is the water the coupling actually reaches, at its own cell:
+  // a lagoon is a lagoon. `basinDepthM` is the median of everything within
+  // fifty kilometres — the sea beyond the shore, which is what a wave would
+  // travel on once it is away. Until 19 September 2026 the basin was handed to
+  // the physics as the water the wave is MADE in, and since it comes back over
+  // the 200 m cap on any coast, Miami and Lisbon read the same shelf and
+  // neither of them is one (B-069, rules 248 to 254 of
+  // validation/shoreDepthRules.ts).
   const depthGrid = global ?? local;
   const basin =
     findNearbyOceanDepth(
@@ -981,7 +991,7 @@ export function nearestSeaForImpact(
       location.longitude,
       Math.max(50_000, nearest.distanceM * 2)
     ) ?? nearest.depthM;
-  return { distanceM: nearest.distanceM, basinDepthM: basin };
+  return { distanceM: nearest.distanceM, shoreDepthM: nearest.depthM, basinDepthM: basin };
 }
 
 /**
@@ -2819,7 +2829,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
             if (sea !== null) {
               impactInput = {
                 ...impactInput,
-                waterDepth: m(Math.min(sea.basinDepthM, 200)),
+                waterDepth: m(Math.min(sea.shoreDepthM, SHORE_DEPTH_CAP_M)),
                 shoreDistance: m(sea.distanceM),
               };
             }
@@ -2893,7 +2903,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
               if (sea !== null) {
                 explosionInput = {
                   ...explosionInput,
-                  waterDepth: m(Math.min(sea.basinDepthM, 200)),
+                  waterDepth: m(Math.min(sea.shoreDepthM, SHORE_DEPTH_CAP_M)),
                   shoreDistance: m(sea.distanceM),
                 };
               }
