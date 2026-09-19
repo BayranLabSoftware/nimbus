@@ -215,6 +215,33 @@
  * [0, 0] beside a record of one is a claim that cannot be right, and it is
  * now the thing standing between this project and a 1.01x on its worst cell.
  *
+ * A ROAD LOOKED AT AND NOT TAKEN, 22 September 2026, read after the run and
+ * decided nothing by. The obvious answer to "19(b) fails on rows whose
+ * record is one" is a resolution threshold: this project already carries
+ * one, `INTERPOLATION_COMPARABLE_DEATHS = 100`, whose written reason is that
+ * below it two ways of counting differ by fewer people than live in one cell
+ * of the raster both read. Extending it here was authorised.
+ *
+ * It does not work, and the reason is numerosity rather than principle.
+ * Counting the rule 11 rows whose record clears each threshold, by cell,
+ * over all rows and over the interface rows alone:
+ *
+ *     threshold   Mw < 6.5      Mw 6.5-7.5     Mw >= 7.5
+ *         1        88 / 9        72 / 20        21 / 10
+ *        10        27 / 2        37 /  5        12 /  5
+ *       100        11 / 1        16 /  1        11 /  5
+ *
+ * At 100, the cells rule 19(b) is read on — the interface rows — hold ONE
+ * row each below Mw 7.5. "Eight records in ten" over one row is not a
+ * stricter test, it is a coin. The threshold does not make the measurement
+ * honest, it deletes it.
+ *
+ * What that exposes is not about thresholds at all: there are not enough
+ * DEADLY interface earthquakes below Mw 6.5 in this set to judge a law on
+ * that cell, at any threshold including today's. Whoever reopens rule 38
+ * has to face that before choosing a number, and no number chosen here
+ * would be anything but one that lets Parker through.
+ *
  * WHAT MAY NOT BE DONE NEXT, and it is the same trap as every other refusal
  * tonight: a block that gives Parker only above some magnitude, with the
  * threshold chosen from the table above, is a bar written after seeing the
