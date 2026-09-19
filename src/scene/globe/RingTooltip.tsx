@@ -13,6 +13,8 @@ export type RingTooltipKind =
   | 'craterRim'
   | 'thirdDegreeBurn'
   | 'secondDegreeBurn'
+  | 'massFire'
+  | 'fireIgnition'
   | 'overpressure5psi'
   | 'overpressure1psi'
   | 'lightDamage'

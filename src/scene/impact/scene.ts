@@ -247,7 +247,19 @@ export function sceneFromImpact(result: ImpactScenarioResult, origin: SceneOrigi
       // The thermal pulse travels at light speed: it is already there.
       zone('thermal3', 'thermal', result.damage.thirdDegreeBurn, s(0), true, 'thermal3'),
       zone('thermal2', 'thermal', result.damage.secondDegreeBurn, s(0), true, 'thermal2'),
-      zone('firestorm', 'firestorm', result.firestorm.ignitionRadius, s(0), true, 'firestorm'),
+      // The zone named for the fire storm is the mass fire, which is what it
+      // says: until 19 September 2026 it was drawn at the ignition radius,
+      // half again as wide (B-063). The fires that start around it and do not
+      // merge are the ring beyond.
+      zone('firestorm', 'firestorm', result.firestorm.sustainRadius, s(0), true, 'firestorm'),
+      zone(
+        'fireIgnition',
+        'firestorm',
+        result.firestorm.ignitionRadius,
+        s(0),
+        true,
+        'fireIgnition'
+      ),
       zone(
         'blast5',
         'blast',
@@ -339,7 +351,19 @@ export function sceneFromExplosion(
       zone('thermal3', 'thermal', result.thermal.thirdDegreeBurnRadius, s(0), true, 'thermal3'),
       zone('thermal2', 'thermal', result.thermal.secondDegreeBurnRadius, s(0), true, 'thermal2'),
       zone('thermal1', 'thermal', result.thermal.firstDegreeBurnRadius, s(0), true, 'thermal1'),
-      zone('firestorm', 'firestorm', result.firestorm.ignitionRadius, s(0), true, 'firestorm'),
+      // The zone named for the fire storm is the mass fire, which is what it
+      // says: until 19 September 2026 it was drawn at the ignition radius,
+      // half again as wide (B-063). The fires that start around it and do not
+      // merge are the ring beyond.
+      zone('firestorm', 'firestorm', result.firestorm.sustainRadius, s(0), true, 'firestorm'),
+      zone(
+        'fireIgnition',
+        'firestorm',
+        result.firestorm.ignitionRadius,
+        s(0),
+        true,
+        'fireIgnition'
+      ),
       zone(
         'blast5',
         'blast',

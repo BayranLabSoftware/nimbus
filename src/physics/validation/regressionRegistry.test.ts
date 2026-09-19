@@ -23,6 +23,7 @@ import { describe, expect, it } from 'vitest';
 import { COMPLEX_DEPTH_COEFFICIENT, COMPLEX_DEPTH_EXPONENT } from '../events/impact/crater.js';
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/index.js';
 import { projectAlongAzimuth } from '../../scene/stadiumPolygon.js';
+import { sceneFromExplosion } from '../../scene/impact/scene.js';
 import { craterAsymmetry, obliqueImpactRingAsymmetry } from '../effects/asymmetry.js';
 import { simulateExplosion } from '../events/explosion/simulate.js';
 import { NUCLEAR_CRATER_COEFFICIENT } from '../events/explosion/cratering.js';
@@ -1487,13 +1488,49 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(spansTheGlobe({ minLon: 10, maxLon: 12, nLon: 64 })).toBe(false);
   });
 
+  it('B-063 the close-up fire zone is the mass fire it is captioned with', () => {
+    // The close-up drew one fire disc, at the ignition radius, and captioned
+    // it a fire storm. Two zones now, each at its own radius.
+    const r = simulateExplosion({
+      yieldMegatons: 0.015,
+      heightOfBurst: m(580),
+      groundType: 'FIRM_GROUND',
+    });
+    const scene = sceneFromExplosion(r, { latitude: 34.3955, longitude: 132.4553 });
+    const at = (id: string): number | undefined => scene.effects.find((e) => e.id === id)?.radius;
+    expect(at('firestorm')).toBeCloseTo(r.firestorm.sustainRadius, 6);
+    expect(at('fireIgnition')).toBeCloseTo(r.firestorm.ignitionRadius, 6);
+    // And they are genuinely two different rings, so the caption matters.
+    expect(at('firestorm') ?? 0).toBeLessThan(at('fireIgnition') ?? 0);
+  });
+
+  it('B-064 the mass fire the toll counts is a ring on the globe', () => {
+    // The toll counts everyone inside the mass fire as caught by it, and the
+    // globe drew no shape for that circle in either family.
+    const globe = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/Globe.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(globe).toContain('radius: result.data.firestorm.sustainRadius');
+    expect(globe).toContain('result.data.firestorm.sustainRadius as number');
+    const legend = readFileSync(
+      fileURLToPath(new URL('../../ui/components/RingLegend.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(legend).toContain("push('massFire', result.data.firestorm.sustainRadius)");
+    expect(legend).toContain("push('fireIgnition', result.data.firestorm.ignitionRadius)");
+    // A ring on the globe is a ring with a contract behind it.
+    expect(VISUAL_CONTRACTS.massFire.quantity).toBe('mass-fire radius');
+    expect(VISUAL_CONTRACTS.fireIgnition.quantity).toBe('ignition radius');
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-060 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-064 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 60;
-    expect(expectedRows).toBe(60);
+    const expectedRows = 64;
+    expect(expectedRows).toBe(64);
   });
 });

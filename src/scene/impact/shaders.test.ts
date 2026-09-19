@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { EFFECT_SLOTS } from './effectStyle.js';
 import {
   BLUR_FS,
   BRIGHT_FS,
@@ -66,10 +67,11 @@ describe('shader sources', () => {
   });
 
   it('size the effect palette to match the table that fills it', () => {
-    // The shader indexes uEffectColor[0..10]; effectStyle.ts owns the
-    // slots. A mismatch is a silent out-of-range read.
-    expect(SCENE_FS).toContain('uniform vec3  uEffectColor[11]');
-    for (let slot = 0; slot < 11; slot++) {
+    // effectStyle.ts owns the slots and the shader indexes them; a mismatch is
+    // a silent out-of-range read. The count is read from the table rather than
+    // written here twice, which is how it came to be written here twice.
+    expect(SCENE_FS).toContain(`uniform vec3  uEffectColor[${String(EFFECT_SLOTS)}]`);
+    for (let slot = 0; slot < EFFECT_SLOTS; slot++) {
       expect(SCENE_FS, `slot ${String(slot)} unused`).toContain(`uEffectColor[${String(slot)}]`);
     }
   });

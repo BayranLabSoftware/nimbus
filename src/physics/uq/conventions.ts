@@ -130,15 +130,23 @@ export const EARTHQUAKE_INPUT_SIGMA = {
  * input-side and output-side σ live in one file.
  */
 export const OUTPUT_SIGMA = {
+  // Since 19 September 2026 both rings read Glasstone & Dolan 1977 Table 7.40
+  // itself, and the table's own footnote puts its exposures within ±50 % in
+  // the field. A radius goes as the inverse square root of the threshold, so
+  // that is ×0.82 to ×1.41 on the ring — which is what the project's 0.3 was
+  // already worth, for the first time on purpose. Rules 227 to 234 of
+  // validation/massFireRules.ts.
   firestormIgnition: {
     kind: 'linear-fraction',
     sigma: 0.3,
-    source: 'project value (thresholds after Glasstone & Dolan 1977 Table 7.40)',
+    source:
+      'Glasstone & Dolan 1977 Table 7.40, its own ±50 % field footnote through the inverse square',
   },
   firestormSustain: {
     kind: 'linear-fraction',
     sigma: 0.3,
-    source: 'project value (thresholds after Glasstone & Dolan 1977 Table 7.40)',
+    source:
+      'Glasstone & Dolan 1977 Table 7.40, its own ±50 % field footnote through the inverse square',
   },
   plumeHeight: { kind: 'lognormal', sigma: 0.5, source: 'Mastin 2009 Fig. 2 + Aubry 2023' },
   pyroclasticRunout: {

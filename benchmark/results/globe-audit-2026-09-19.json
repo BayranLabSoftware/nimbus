@@ -1,0 +1,278 @@
+{
+ "base": "http://localhost:5178",
+ "rows": [
+  {
+   "scenario": "impact-tiny-land",
+   "family": "impact",
+   "eventType": "impact",
+   "ringsDrawn": 5,
+   "polygonsDrawn": 0,
+   "checked": 4
+  },
+  {
+   "scenario": "impact-chelyabinsk-like",
+   "family": "impact",
+   "eventType": "impact",
+   "ringsDrawn": 6,
+   "polygonsDrawn": 0,
+   "checked": 5
+  },
+  {
+   "scenario": "impact-iron-ground",
+   "family": "impact",
+   "eventType": "impact",
+   "ringsDrawn": 11,
+   "polygonsDrawn": 0,
+   "checked": 8
+  },
+  {
+   "scenario": "impact-ocean-deep",
+   "family": "impact",
+   "eventType": "impact",
+   "ringsDrawn": 12,
+   "polygonsDrawn": 0,
+   "checked": 15
+  },
+  {
+   "scenario": "impact-ten-km",
+   "family": "impact",
+   "eventType": "impact",
+   "ringsDrawn": 13,
+   "polygonsDrawn": 0,
+   "checked": 20
+  },
+  {
+   "scenario": "explosion-hiroshima-like",
+   "family": "explosion",
+   "eventType": "explosion",
+   "ringsDrawn": 10,
+   "polygonsDrawn": 0,
+   "checked": 8
+  },
+  {
+   "scenario": "explosion-contact-city",
+   "family": "explosion",
+   "eventType": "explosion",
+   "ringsDrawn": 11,
+   "polygonsDrawn": 0,
+   "checked": 9
+  },
+  {
+   "scenario": "explosion-chemical-port",
+   "family": "explosion",
+   "eventType": "explosion",
+   "ringsDrawn": 5,
+   "polygonsDrawn": 0,
+   "checked": 3
+  },
+  {
+   "scenario": "explosion-underwater-shallow",
+   "family": "explosion",
+   "eventType": "explosion",
+   "ringsDrawn": 6,
+   "polygonsDrawn": 0,
+   "checked": 4
+  },
+  {
+   "scenario": "explosion-high-altitude",
+   "family": "explosion",
+   "eventType": "explosion",
+   "ringsDrawn": 3,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "quake-shallow-strike-slip",
+   "family": "earthquake",
+   "eventType": "earthquake",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 2
+  },
+  {
+   "scenario": "quake-deep-slab",
+   "family": "earthquake",
+   "eventType": "earthquake",
+   "ringsDrawn": 2,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "quake-megathrust-offshore",
+   "family": "earthquake",
+   "eventType": "earthquake",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 2,
+   "checked": 21
+  },
+  {
+   "scenario": "quake-small-remote",
+   "family": "earthquake",
+   "eventType": "earthquake",
+   "ringsDrawn": 2,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "quake-submarine-coastal",
+   "family": "earthquake",
+   "eventType": "earthquake",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 2,
+   "checked": 10
+  },
+  {
+   "scenario": "volcano-vesuvius-like",
+   "family": "volcano",
+   "eventType": "volcano",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 3
+  },
+  {
+   "scenario": "volcano-evacuated",
+   "family": "volcano",
+   "eventType": "volcano",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 3
+  },
+  {
+   "scenario": "volcano-small-lahar",
+   "family": "volcano",
+   "eventType": "volcano",
+   "ringsDrawn": 5,
+   "polygonsDrawn": 0,
+   "checked": 4
+  },
+  {
+   "scenario": "volcano-caldera",
+   "family": "volcano",
+   "eventType": "volcano",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 3
+  },
+  {
+   "scenario": "volcano-flank-collapse",
+   "family": "volcano",
+   "eventType": "volcano",
+   "ringsDrawn": 6,
+   "polygonsDrawn": 0,
+   "checked": 11
+  },
+  {
+   "scenario": "slide-subaerial-fjord",
+   "family": "landslide",
+   "eventType": "landslide",
+   "ringsDrawn": 3,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "slide-submarine-shelf",
+   "family": "landslide",
+   "eventType": "landslide",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 0,
+   "checked": 14
+  },
+  {
+   "scenario": "slide-confined-basin",
+   "family": "landslide",
+   "eventType": "landslide",
+   "ringsDrawn": 3,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "slide-tiny",
+   "family": "landslide",
+   "eventType": "landslide",
+   "ringsDrawn": 3,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "slide-shallow-slope",
+   "family": "landslide",
+   "eventType": "landslide",
+   "ringsDrawn": 2,
+   "polygonsDrawn": 0,
+   "checked": 0
+  },
+  {
+   "scenario": "wave-impact-shelf",
+   "family": "wave",
+   "eventType": "impact",
+   "ringsDrawn": 11,
+   "polygonsDrawn": 0,
+   "checked": 14
+  },
+  {
+   "scenario": "wave-burst-in-water",
+   "family": "wave",
+   "eventType": "explosion",
+   "ringsDrawn": 6,
+   "polygonsDrawn": 0,
+   "checked": 4
+  },
+  {
+   "scenario": "wave-megathrust-far",
+   "family": "wave",
+   "eventType": "earthquake",
+   "ringsDrawn": 4,
+   "polygonsDrawn": 2,
+   "checked": 12
+  },
+  {
+   "scenario": "wave-slide-into-lake",
+   "family": "wave",
+   "eventType": "landslide",
+   "ringsDrawn": 3,
+   "polygonsDrawn": 0,
+   "checked": 1
+  },
+  {
+   "scenario": "wave-caldera-collapse",
+   "family": "wave",
+   "eventType": "volcano",
+   "ringsDrawn": 6,
+   "polygonsDrawn": 0,
+   "checked": 11
+  }
+ ],
+ "findings": [],
+ "silences": [
+  {
+   "scenario": "slide-subaerial-fjord",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 0.3 km"
+  },
+  {
+   "scenario": "slide-submarine-shelf",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 2.2 km"
+  },
+  {
+   "scenario": "slide-confined-basin",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 0.6 km"
+  },
+  {
+   "scenario": "slide-tiny",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 0.0 km"
+  },
+  {
+   "scenario": "slide-shallow-slope",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 0.4 km"
+  },
+  {
+   "scenario": "wave-slide-into-lake",
+   "what": "the slide’s own length is published and the globe draws nothing for it",
+   "detail": "characteristicLength = 0.3 km"
+  }
+ ]
+}

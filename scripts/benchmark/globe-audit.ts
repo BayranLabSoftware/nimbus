@@ -103,6 +103,12 @@ const RING_SOURCE: Record<string, string> = {
   'explosion-5psi': 'blast.overpressure5psiRadiusHob',
   'explosion-1psi': 'blast.overpressure1psiRadiusHob',
   'explosion-light-damage': 'blast.lightDamageRadiusHob',
+  // The fire, drawn for both families since 19 September 2026 (rules 227 to
+  // 234). The mass fire is allowed to be zero — §7.58 asks for half a square
+  // mile of burning ground before there is a fire storm at all — and then
+  // nothing is drawn and nothing is checked.
+  'explosion-mass-fire': 'firestorm.sustainRadius',
+  'explosion-fire-ignition': 'firestorm.ignitionRadius',
   'explosion-radiation-ld50': 'radiation.ld50Radius',
   'explosion-emp': 'emp.affectedRadius',
   // An impact's, which the renderer takes from `damage` and not from the
@@ -113,6 +119,8 @@ const RING_SOURCE: Record<string, string> = {
   'damage-ring-overpressure5psi': 'damage.overpressure5psi',
   'damage-ring-overpressure1psi': 'damage.overpressure1psi',
   'damage-ring-lightDamage': 'damage.lightDamage',
+  'damage-ring-massFire': 'firestorm.sustainRadius',
+  'damage-ring-fireIgnition': 'firestorm.ignitionRadius',
   // An earthquake's: a disc about the epicentre, or a stadium about the
   // rupture for a great one.
   'mmi-ring-7': 'shaking.mmi7Radius',
@@ -272,7 +280,28 @@ function at(result: Record<string, unknown> | null, path: string): number | unde
   return half ? node / 2 : node;
 }
 
+/**
+ * A reading, or nothing when the viewer is not there to be read.
+ *
+ * The store re-runs a scenario when its terrain tile arrives, and the viewer
+ * goes with it: a read that lands inside that window finds `__nimbusViewer`
+ * still on the window and its widget already gone, and Cesium throws from the
+ * `clock` getter. Twice on 19 September 2026 that ended the audit fourteen
+ * scenarios in. A missing reading is not a finding — it is a reading that has
+ * not happened yet — so it is caught here and the settle loop asks again.
+ */
 async function readGlobe(page: Page): Promise<Drawn> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await readGlobeOnce(page);
+    } catch (error) {
+      if (attempt >= 8) throw error;
+      await page.waitForTimeout(1_000);
+    }
+  }
+}
+
+async function readGlobeOnce(page: Page): Promise<Drawn> {
   return page.evaluate(() => {
     const w = window as unknown as {
       __nimbusViewer?: {

@@ -13,11 +13,9 @@ import {
 } from './events/impact/crater.js';
 import {
   EARTH_RADIUS,
-  FLAMMABLE_IGNITION_FLUENCE,
   IMPACT_LUMINOUS_EFFICIENCY,
   SECOND_DEGREE_BURN_FLUENCE,
   THIRD_DEGREE_BURN_FLUENCE,
-  URBAN_FIRESTORM_FLUENCE,
 } from './constants.js';
 import {
   climateTier,
@@ -51,7 +49,12 @@ import {
   programTsunamiReferenceAmplitude,
   programWaterCraterDiameter,
 } from './events/tsunami/impactProgram.js';
-import { firestormSustainRadius, flammableIgnitionRadius } from './effects/firestorm.js';
+import {
+  firestormSustainRadius,
+  flammableIgnitionRadius,
+  passesMinimumBurningArea,
+} from './effects/firestorm.js';
+import { ignitionFluenceThreshold } from './effects/ignitionExposure.js';
 import { thermalHorizonRadius } from './casualties.js';
 import { oceanCouplingPartition } from './effects/oceanCoupling.js';
 import { liquefactionRadius } from './events/earthquake/liquefaction.js';
@@ -713,16 +716,28 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const capArea = (radius: Meters): SquareMeters =>
     sqm(2 * Math.PI * earthRadius ** 2 * (1 - Math.cos((radius as number) / earthRadius)));
   const ignitionRadius = seen(
-    thermalRing(flammableIgnitionRadius(firestormInputs), FLAMMABLE_IGNITION_FLUENCE)
+    thermalRing(flammableIgnitionRadius(firestormInputs), ignitionFluenceThreshold('tinder', ke))
   );
-  const sustainRadius = seen(
-    thermalRing(firestormSustainRadius(firestormInputs), URBAN_FIRESTORM_FLUENCE)
+  // The mass fire is contained by the fire that feeds it (Glasstone & Dolan
+  // §7.71 on Hiroshima), and below half a square mile of burning ground there
+  // is no fire storm at all (§7.58's fourth requirement). Rules 229 and 231.
+  const sustainReach = Math.min(
+    seen(
+      thermalRing(
+        firestormSustainRadius(firestormInputs),
+        ignitionFluenceThreshold('structural', ke)
+      )
+    ),
+    ignitionRadius
   );
+  const sustainBurning = capArea(m(sustainReach));
+  const sustains = passesMinimumBurningArea(sustainBurning);
+  const sustainRadius = sustains ? m(sustainReach) : m(0);
   const firestorm = {
     ignitionRadius,
     sustainRadius,
     ignitionArea: capArea(ignitionRadius),
-    sustainArea: capArea(sustainRadius),
+    sustainArea: sustains ? sustainBurning : sqm(0),
   };
 
   const atmosphere = {

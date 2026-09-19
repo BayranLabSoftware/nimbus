@@ -117,17 +117,12 @@ export const THIRD_DEGREE_BURN_FLUENCE = 3.35e5; // 8 cal/cm^2
 export const SECOND_DEGREE_BURN_FLUENCE = 2.09e5; // 5 cal/cm^2 — full-thickness blistering
 export const FIRST_DEGREE_BURN_FLUENCE = 8.37e4; // 2 cal/cm^2 — sunburn-like erythema
 
-// Fluence taken to ignite dry newsprint / light kindling — bounds the
-// urban-firestorm ignition radius. A project value, 10 cal/cm^2:
-// Glasstone & Dolan (1977) give ignition exposures that depend on the
-// material and the yield (Table 7.40). J/m^2.
-export const FLAMMABLE_IGNITION_FLUENCE = 4.19e5;
-
-// Fluence taken as the edge of a self-sustaining firestorm over dense
-// flammable urban terrain. A project value, 6 cal/cm^2: Glasstone &
-// Dolan (1977) define a fire storm by fuel, fire density, wind and area
-// rather than by an exposure (§7.58). J/m^2.
-export const URBAN_FIRESTORM_FLUENCE = 2.51e5;
+// The two fire fluences that stood here until 19 September 2026 — 10 cal/cm^2
+// to ignite light kindling and 6 cal/cm^2 to sustain a fire storm — were the
+// project's own, and the lower one put the fire storm outside the fire at
+// every scale (B-061). They are gone: both rings now read Glasstone & Dolan's
+// own Table 7.40 at the scenario's yield, in effects/ignitionExposure.ts, by
+// rules 227 to 234 of validation/massFireRules.ts.
 
 // Shear modulus (rigidity) of upper-crustal / oceanic rock — the
 // classical 30 GPa used in fault-slip inversions.

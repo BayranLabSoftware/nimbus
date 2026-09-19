@@ -790,6 +790,8 @@
       "craterRim": "Raggio del cratere",
       "thirdDegreeBurn": "Ustione III°",
       "secondDegreeBurn": "Ustione II°",
+      "massFire": "Tempesta di fuoco · edifici in fiamme",
+      "fireIgnition": "Accensione · prende fuoco l'esca",
       "overpressure5psi": "5 psi · crollo edifici",
       "overpressure1psi": "1 psi · rottura vetri",
       "lightDamage": "0.5 psi · vetri sparsi",
@@ -856,6 +858,14 @@
         "secondDegreeBurn": {
           "title": "Ustione di secondo grado",
           "description": "La pelle esposta forma vesciche e il derma sottostante viene danneggiato (soglia 5 cal/cm² di Glasstone). Ustioni dolorose e spesso invalidanti, sopravvivibili in adulti sani con cure mediche tempestive — ma in condizioni di disastro di massa la prognosi peggiora rapidamente."
+        },
+        "massFire": {
+          "title": "Tempesta di fuoco",
+          "description": "Il numero è il RAGGIO. Dentro, il lampo posa su un edificio abbastanza calore da accendere l'edificio stesso — la Tabella 7.40 di Glasstone & Dolan per il compensato di abete douglas a questa resa, il cui effetto registrato è la fiamma durante l'esposizione stessa. È una delle quattro condizioni che il loro §7.58 chiede a una tempesta di fuoco; le altre tre sono un carico di combustibile, un vento sotto le 8 miglia orarie e un'area in fiamme di almeno mezzo miglio quadrato, e qui è verificata solo l'ultima. Il libro dice nella stessa frase che nessuno conosce le condizioni in cui una tempesta di fuoco si forma. Il bilancio conta come presi dal fuoco quelli dentro questo cerchio."
+        },
+        "fireIgnition": {
+          "title": "Accensione",
+          "description": "Il numero è il RAGGIO a cui il lampo accende ancora l'esca leggera — la carta di giornale sminuzzata della stessa tabella. Fra questo anello e la tempesta di fuoco che sta dentro, i fuochi si accendono senza fondersi in uno solo: a Hiroshima il tiraggio verso l'interno della tempesta tenne il terreno bruciato più o meno alla distanza a cui i fuochi erano partiti. Le esposizioni della tabella sono valori di laboratorio, per un materiale rivolto in pieno verso la palla di fuoco, e la nota della tabella avverte che sul campo ne serve di più, non di meno."
         },
         "overpressure5psi": {
           "title": "Onda d'urto · 5 psi",
@@ -968,6 +978,8 @@
       "craterRim": "Raggio del cratere",
       "thirdDegreeBurn": "Ustioni III°",
       "secondDegreeBurn": "Ustioni II°",
+      "massFire": "Tempesta di fuoco",
+      "fireIgnition": "Accensione",
       "overpressure5psi": "5 psi",
       "overpressure1psi": "1 psi",
       "lightDamage": "0,5 psi",
@@ -1236,7 +1248,7 @@
     "transientCrater": "Diametro del cratere transiente dallo scaling π-group (Collins, Melosh & Marcus 2005, Eq. 21). Il transiente è la cavità al massimo escavo, prima del collasso gravitazionale.",
     "craterDepth": "Profondità dal bordo al fondo del cratere fresco (Collins, Melosh & Marcus 2005): per un cratere semplice la conca transitoria meno la lente di breccia più il bordo, 0,21 del diametro (Eq. 23–26); per un cratere complesso d = 0,4·D^0,3 km, il fit su Venere di Herrick et al. 1997 (Eq. 28).",
     "ejecta": "Spessore degli ejecta t = D_tc⁴ / (112·r³), con D_tc il diametro del cratere transitorio e r la distanza dal centro, solo fuori dal bordo finale (Collins, Melosh & Marcus 2005, Eq. 47; r⁻³ da McGetchin et al. 1973). È un limite inferiore. I bordi invertono la stessa formula allo spessore indicato.",
-    "firestorm": "Ignizione a 10 cal/cm² e tempesta di fuoco a 6 cal/cm²: soglie del progetto sulla fluenza a legge dell'inverso del quadrato di Glasstone & Dolan (1977, §7.94–7.96), che danno esposizioni di ignizione dipendenti da materiale e potenza (Tabella 7.40). Partizione termica 0,35 per un'esplosione nucleare in aria, 0,18 al suolo (§7.101); efficienza luminosa 3 × 10⁻³ per un impatto (Collins et al. 2005); nessuna per una carica chimica.",
+    "firestorm": "Entrambi gli anelli del fuoco si leggono dalla Tabella 7.40 di Glasstone & Dolan (1977) alla resa dello scenario, sulla loro fluenza a legge dell'inverso del quadrato (§7.94–7.96): carta di giornale sminuzzata — 4, 6 e 11 cal/cm² a 35 kt, 1,4 Mt e 20 Mt — per l'anello di accensione, compensato di abete douglas — 9, 16 e 20, fiamma durante l'esposizione — per la tempesta di fuoco, interpolati nel logaritmo della resa e tenuti piatti fuori dalla tabella. La tempesta di fuoco sta per una delle quattro condizioni che il §7.58 chiede, e la quarta del §7.58, un'area in fiamme di almeno mezzo miglio quadrato, è applicata come soglia; il carico di combustibile e il vento sono assunti, non verificati, e il libro dichiara che le condizioni in cui una tempesta di fuoco si forma non sono note. Fino al 19 settembre 2026 i due anelli erano soglie piatte del progetto, 10 cal/cm² e 6, che mettevano la tempesta di fuoco fuori dal fuoco a ogni scala. Partizione termica 0,35 per un'esplosione nucleare in aria, 0,18 al suolo (§7.101); efficienza luminosa 3 × 10⁻³ per un impatto (Collins et al. 2005); nessuna per una carica chimica.",
     "atmosphere": "Polvere in stratosfera: lo 0,1 % della roccia che il cratere polverizza, m ≈ 4·Y·(25 km/s / v)^0,33 Tg con Y in Mt (Toon et al. 1997, eq. 10 e §8.2). Acido nitrico: l'NO prodotto dall'aria riscaldata dall'urto, scalato dall'asteroide di Prinn & Fegley (1987) — 3 × 10³⁸ molecole per 10²³ J — tutto convertito in HNO₃, un limite superiore. Livello climatico: fasce di energia cinetica di Nimbus.",
     "seismicMagnitude": "Magnitudo sismica M = 0,67·log₁₀(E) − 5,87, con E l'energia che arriva al suolo in joule (Collins, Melosh & Marcus 2005, Eq. 40): la relazione magnitudo–energia di Gutenberg–Richter con un'efficienza sismica di 10⁻⁴ (Schultz & Gault 1975). È una magnitudo energetica, non una magnitudo momento.",
     "seismicMagnitudeRange": "La stessa relazione sull'intervallo di efficienza sismica indicato da Collins et al. (2005), da 10⁻⁵ a 10⁻³: ±0,67 attorno al valore centrale.",
@@ -1395,6 +1407,7 @@
     "thermal2": "ustione di 2° grado",
     "thermal1": "ustione di 1° grado",
     "firestorm": "tempesta di fuoco",
+    "fireIgnition": "fuochi accesi",
     "blast5": "5 psi · crollo edifici",
     "blast1": "1 psi · rottura vetri",
     "blastLight": "0.5 psi · vetri sparsi",

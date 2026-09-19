@@ -28,16 +28,21 @@ export const EFFECT_STYLE: Readonly<Record<string, EffectStyle>> = {
   thermal3: { slot: 2, rgb: [0.98, 0.45, 0.09], kind: 'thermal' },
   thermal2: { slot: 3, rgb: [0.99, 0.58, 0.25], kind: 'thermal' },
   thermal1: { slot: 4, rgb: [1.0, 0.72, 0.45], kind: 'thermal' },
-  firestorm: { slot: 5, rgb: [1.0, 0.34, 0.1], kind: 'firestorm' },
+  // The mass fire and the ring of scattered fires around it, in the same two
+  // colours the globe draws them in (#EA580C and #B45309). Until 19 September
+  // 2026 there was one fire zone, drawn at the ignition radius and labelled a
+  // fire storm (B-063).
+  firestorm: { slot: 5, rgb: [0.918, 0.345, 0.047], kind: 'firestorm' },
   blast5: { slot: 6, rgb: [0.98, 0.8, 0.08], kind: 'blast' },
   blast1: { slot: 7, rgb: [0.99, 0.88, 0.28], kind: 'blast' },
   blastLight: { slot: 8, rgb: [1.0, 0.95, 0.78], kind: 'blast' },
   radiation: { slot: 9, rgb: [0.66, 0.35, 0.97], kind: 'radiation' },
   emp: { slot: 10, rgb: [0.02, 0.71, 0.83], kind: 'emp' },
+  fireIgnition: { slot: 11, rgb: [0.706, 0.325, 0.035], kind: 'firestorm' },
 };
 
 /** Number of slots the uniform array must declare. */
-export const EFFECT_SLOTS = 11;
+export const EFFECT_SLOTS = 12;
 
 /** Flatten the palette into the array the shader binds. */
 export function effectColorArray(): Float32Array {

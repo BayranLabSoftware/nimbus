@@ -1,10 +1,7 @@
-import {
-  FLAMMABLE_IGNITION_FLUENCE,
-  NUCLEAR_THERMAL_PARTITION,
-  URBAN_FIRESTORM_FLUENCE,
-} from '../constants.js';
+import { NUCLEAR_THERMAL_PARTITION } from '../constants.js';
 import type { Joules, Meters, SquareMeters } from '../units.js';
-import { m, sqm } from '../units.js';
+import { m } from '../units.js';
+import { ignitionFluenceThreshold } from './ignitionExposure.js';
 
 /**
  * Thermal-pulse fire-hazard metrics shared between nuclear explosions
@@ -16,8 +13,15 @@ import { m, sqm } from '../units.js';
  * energy emitted as light in the thermal-pulse band; 0.35 (default) is
  * their value for a nuclear air burst (§1.25). For cosmic impacts
  * Collins et al. (2005) take a luminous efficiency of 3 × 10⁻³, within
- * 10⁻⁴–10⁻²; callers must supply it explicitly. The two thresholds are
- * project values (see constants.ts), not Glasstone & Dolan's.
+ * 10⁻⁴–10⁻², which callers supply explicitly.
+ *
+ * The two thresholds are the book's own, from Table 7.40 — the shredded
+ * newspaper for the fire, the douglas fir plywood for the mass fire — read at
+ * the scenario's yield by effects/ignitionExposure.ts. Until 19 September 2026
+ * they were two flat numbers of the project's own, 10 cal/cm² for the fire and
+ * 6 for the mass fire, which put the mass fire outside the fire at every scale
+ * (B-061). Rules 227 to 234 of validation/massFireRules.ts say what replaced
+ * them and what decided it.
  */
 
 export interface FirestormInput {
@@ -29,31 +33,49 @@ export interface FirestormInput {
   atmosphericTransmission?: number;
 }
 
-/** Radius at which the incident thermal fluence drops to the dry-
- *  kindling ignition threshold (~10 cal/cm²). Invert Q = f·τ·W/(4πR²). */
+/**
+ * §7.58's fourth minimum requirement for a fire storm: "a minimum burning area
+ * of about half a square mile". In square metres.
+ *
+ * The other three — at least 8 pounds of combustibles per square foot, at
+ * least half the structures alight at once, a wind under 8 miles per hour —
+ * want a fuel map and a weather this model does not hold, and are declared
+ * assumed rather than met (rule 229). §7.58 says in the same breath that there
+ * is no generally accepted definition of a fire storm and that the conditions
+ * under which one may be expected are not known.
+ */
+export const MINIMUM_BURNING_AREA_M2 = 0.5 * 2_589_988.110336;
+
+/** Whether a burning area clears §7.58's fourth requirement. Below it there is
+ *  no fire storm, and the model reports none — radius and area both zero. */
+export function passesMinimumBurningArea(area: SquareMeters | number): boolean {
+  return Number.isFinite(area) && area >= MINIMUM_BURNING_AREA_M2;
+}
+
+/**
+ * Range at which the incident thermal fluence drops to the exposure Table 7.40
+ * gives for shredded newspaper at this yield — 4 cal/cm² at 35 kt, 6 at
+ * 1.4 Mt, 11 at 20 Mt. The lightest household tinder the table lists, and so
+ * the outer of the two fire rings: beyond it, nothing the table knows of
+ * catches from the flash.
+ */
 export function flammableIgnitionRadius(input: FirestormInput): Meters {
-  return thresholdRadius(input, FLAMMABLE_IGNITION_FLUENCE);
+  return thresholdRadius(input, ignitionFluenceThreshold('tinder', input.yieldEnergy));
 }
 
-/** Radius at which the incident fluence drops to the firestorm
- *  sustainability threshold (~6 cal/cm²). Beyond this, fires still
- *  start but rarely merge into a self-sustaining column. */
+/**
+ * Range at which the fluence drops to the exposure Table 7.40 gives for
+ * douglas fir plywood — 9 cal/cm² at 35 kt, 16 at 1.4 Mt, 20 at 20 Mt, its one
+ * structural surface recorded as flaming during the exposure itself. It stands
+ * for the second of §7.58's four requirements, half the structures in the area
+ * on fire simultaneously, and it is the inner of the two rings: a mass fire is
+ * contained by the fire that feeds it, which is how §7.71 reads Hiroshima.
+ *
+ * The caller applies {@link passesMinimumBurningArea} to what this returns —
+ * below half a square mile of burning ground there is no fire storm at all.
+ */
 export function firestormSustainRadius(input: FirestormInput): Meters {
-  return thresholdRadius(input, URBAN_FIRESTORM_FLUENCE);
-}
-
-/** Ground-projected area enclosed by the flammable-ignition radius. */
-export function flammableIgnitionArea(input: FirestormInput): SquareMeters {
-  const r = flammableIgnitionRadius(input) as number;
-  return sqm(Math.PI * r * r);
-}
-
-/** Ground-projected area enclosed by the firestorm-sustainability
- *  radius. Realistic firestorm-prone area is the intersection of
- *  this disc with flammable urban land, which the caller must apply. */
-export function firestormArea(input: FirestormInput): SquareMeters {
-  const r = firestormSustainRadius(input) as number;
-  return sqm(Math.PI * r * r);
+  return thresholdRadius(input, ignitionFluenceThreshold('structural', input.yieldEnergy));
 }
 
 function thresholdRadius(input: FirestormInput, fluenceThreshold: number): Meters {

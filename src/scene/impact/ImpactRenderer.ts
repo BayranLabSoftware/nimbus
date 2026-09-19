@@ -797,10 +797,11 @@ export class ImpactRenderer {
       km(effectRadius(scene, 'blast1')),
       km(effectRadius(scene, 'blastLight'))
     );
-    gl.uniform2f(
+    gl.uniform3f(
       this.location(p, 'uFireEj'),
       km(effectRadius(scene, 'firestorm')),
-      km(effectRadius(scene, 'ejecta'))
+      km(effectRadius(scene, 'ejecta')),
+      km(effectRadius(scene, 'fireIgnition'))
     );
     gl.uniform2f(
       this.location(p, 'uRadEmp'),

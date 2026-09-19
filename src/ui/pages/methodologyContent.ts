@@ -917,9 +917,10 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
       {
         id: 'firestorm',
         name: 'Firestorm ignition / sustain',
-        formula: 'Ignition @ 4.19 × 10⁵ J/m² (10 cal/cm²) ;  Sustain @ 2.51 × 10⁵ J/m² (6 cal/cm²)',
+        formula:
+          'Ignition @ Table 7.40 shredded newspaper (4, 6, 11 cal/cm² at 35 kt, 1.4 Mt, 20 Mt) ;  Mass fire @ Table 7.40 douglas fir plywood (9, 16, 20), gated by §7.58 at half a square mile of burning ground',
         description:
-          'Project thresholds, without attenuation, on the fluence of the thermal card — with its height-dependent partition — and none for a chemical charge. Glasstone & Dolan give ignition exposures that depend on material and yield — shredded newspaper, for instance, at a few to about ten cal/cm² from 35 kt to 20 Mt (Table 7.40) — and define a fire storm by its merged convective column and inward winds rather than by an exposure (§7.58).',
+          'Both rings read Glasstone & Dolan’s own Table 7.40 at the scenario’s yield, interpolated in the logarithm of the yield and held flat outside its three columns, on the fluence of the thermal card and through the same atmosphere as the burn rings; none for a chemical charge. The mass fire is the plywood, the one structural surface the table records as flaming during the exposure, and it stands for the second of the four requirements §7.58 gives a fire storm — half the structures in the area alight at once. The fourth, a burning area of at least half a square mile, is applied as a gate, so below about 2 kt there is no fire storm at all. The remaining two, a fuel loading of 8 lb/ft² and a wind under 8 mph, are assumed and not evaluated, and §7.58 says in the same breath that there is no generally accepted definition of a fire storm and that the conditions under which one may be expected are not known. Measured against the only fire storm there is a measurement of: Hiroshima’s 4.4 square miles of severely fire-damaged ground (§7.62) is a radius of 1.90 km, and the model draws 2.02. Until 19 September 2026 the two rings were flat project thresholds, 10 cal/cm² and 6, and the lower one put the mass fire outside the fire at every scale.',
         citation: glasstoneDolan1977,
       },
       {

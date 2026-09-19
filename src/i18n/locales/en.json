@@ -790,6 +790,8 @@
       "craterRim": "Crater radius",
       "thirdDegreeBurn": "3rd-degree burn",
       "secondDegreeBurn": "2nd-degree burn",
+      "massFire": "Mass fire · structures alight",
+      "fireIgnition": "Ignition · kindling catches",
       "overpressure5psi": "5 psi · building collapse",
       "overpressure1psi": "1 psi · window breakage",
       "lightDamage": "0.5 psi · scattered windows",
@@ -856,6 +858,14 @@
         "secondDegreeBurn": {
           "title": "Second-degree burns",
           "description": "Exposed skin blisters and the underlying dermis is destroyed (5 cal/cm² Glasstone threshold). Painful, often disabling burns; survivable in healthy adults with prompt medical care, but in mass-casualty conditions outcomes degrade rapidly."
+        },
+        "massFire": {
+          "title": "Mass fire",
+          "description": "The figure is the RADIUS. Inside it the flash lays enough heat on a building to set the building itself alight — Glasstone & Dolan's Table 7.40 for douglas fir plywood at this yield, whose recorded effect is flaming during the exposure. That is one of the four conditions their §7.58 asks of a fire storm; the other three are a fuel loading, a wind under 8 mph and a burning area of at least half a square mile, and only the last is checked here. The book says in the same breath that nobody knows the conditions under which a fire storm forms. The death toll counts the people inside this circle as caught by fire."
+        },
+        "fireIgnition": {
+          "title": "Ignition",
+          "description": "The figure is the RADIUS at which the flash still sets light kindling alight — the same table's shredded newspaper. Between this ring and the mass fire inside it, fires start without merging into one: at Hiroshima the fire storm's own inward draft held the burnt-out ground to roughly the range where fires began. The table's exposures are laboratory values for a material facing the fireball square-on, and its own footnote warns that the field needs more heat than the laboratory, not less."
         },
         "overpressure5psi": {
           "title": "Blast wave · 5 psi",
@@ -968,6 +978,8 @@
       "craterRim": "Crater radius",
       "thirdDegreeBurn": "3rd-degree burns",
       "secondDegreeBurn": "2nd-degree burns",
+      "massFire": "Mass fire",
+      "fireIgnition": "Ignition",
       "overpressure5psi": "5 psi",
       "overpressure1psi": "1 psi",
       "lightDamage": "0.5 psi",
@@ -1236,7 +1248,7 @@
     "transientCrater": "Transient crater diameter from π-group scaling (Collins, Melosh & Marcus 2005, Eq. 21). The transient crater is the cavity at maximum excavation, before gravitational modification.",
     "craterDepth": "Rim-to-floor depth of the fresh crater (Collins, Melosh & Marcus 2005): for a simple crater the transient bowl less the breccia lens plus the rim, 0.21 of the diameter (Eqs. 23–26); for a complex crater d = 0.4·D^0.3 km, the Venus fit of Herrick et al. 1997 (Eq. 28).",
     "ejecta": "Ejecta thickness t = D_tc⁴ / (112·r³), with D_tc the transient crater diameter and r the distance from the centre, outside the final rim only (Collins, Melosh & Marcus 2005, Eq. 47; r⁻³ after McGetchin et al. 1973). A lower bound. The edges invert the same formula at the quoted thickness.",
-    "firestorm": "Ignition at 10 cal/cm² and firestorm at 6 cal/cm²: project thresholds on the inverse-square fluence of Glasstone & Dolan (1977, §7.94–7.96), whose ignition exposures depend on material and yield (Table 7.40). Thermal partition 0.35 for a nuclear air burst, 0.18 on the ground (§7.101); luminous efficiency 3 × 10⁻³ for an impact (Collins et al. 2005); none for a chemical charge.",
+    "firestorm": "Both fire rings are read from Glasstone & Dolan (1977) Table 7.40 at the scenario's yield, on their inverse-square fluence (§7.94–7.96): shredded newspaper — 4, 6 and 11 cal/cm² at 35 kt, 1.4 Mt and 20 Mt — for the ignition ring, douglas fir plywood — 9, 16 and 20, flaming during the exposure — for the mass fire, interpolated in the logarithm of the yield and held flat outside the table. The mass fire stands for one of the four requirements §7.58 gives for a fire storm, and §7.58's fourth, a burning area of at least half a square mile, is applied as a gate; its fuel loading and its wind are assumed, not evaluated, and the book states that the conditions under which a fire storm forms are not known. Until 19 September 2026 the two rings were flat project thresholds, 10 cal/cm² and 6, which put the mass fire outside the fire at every scale. Thermal partition 0.35 for a nuclear air burst, 0.18 on the ground (§7.101); luminous efficiency 3 × 10⁻³ for an impact (Collins et al. 2005); none for a chemical charge.",
     "atmosphere": "Stratospheric dust: 0.1 % of the rock the crater pulverizes, m ≈ 4·Y·(25 km/s / v)^0.33 Tg with Y in Mt (Toon et al. 1997, eq. 10 and §8.2). Nitric acid: the NO made by shock-heated air, scaled from the asteroid of Prinn & Fegley (1987) — 3 × 10³⁸ molecules for 10²³ J — all taken to HNO₃, an upper limit. Climate tier: Nimbus bands of kinetic energy.",
     "seismicMagnitude": "Seismic magnitude M = 0.67·log₁₀(E) − 5.87, E the energy delivered to the ground in joules (Collins, Melosh & Marcus 2005, Eq. 40): the Gutenberg–Richter magnitude–energy relation at a seismic efficiency of 10⁻⁴ (Schultz & Gault 1975). An energy magnitude, not a moment magnitude.",
     "seismicMagnitudeRange": "The same relation across the seismic-efficiency range Collins et al. (2005) give, 10⁻⁵ to 10⁻³: ±0.67 around the central value.",
@@ -1307,7 +1319,8 @@
     "thermal3": "3rd-degree burn",
     "thermal2": "2nd-degree burn",
     "thermal1": "1st-degree burn",
-    "firestorm": "firestorm",
+    "firestorm": "mass fire",
+    "fireIgnition": "fires start",
     "blast5": "5 psi · buildings collapse",
     "blast1": "1 psi · windows break",
     "blastLight": "0.5 psi · scattered glass",

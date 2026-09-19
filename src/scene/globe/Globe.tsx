@@ -168,6 +168,19 @@ const RADIATION_LD50_COLOR = Color.fromCssColorString('#A855F7');
  *  reads as cool / electronic vs the warm thermal/blast palette. */
 const EMP_AFFECTED_COLOR = Color.fromCssColorString('#06B6D4');
 
+/** The two fire rings, drawn for both families since 19 September 2026.
+ *
+ * They are a family of their own, like the burns and the overpressures, and
+ * they are deliberately smokier than either: a fire is not an injury and not a
+ * pressure. The inner one is the mass fire — the ground where the flash puts
+ * Glasstone & Dolan's Table 7.40 structural exposure on a building, §7.58's
+ * second requirement — and it is the ring the death toll integrates, so it
+ * carries the weight. The outer one is where the same table's shredded
+ * newspaper ignites: scattered fires, not a storm. Rules 227 to 234 of
+ * physics/validation/massFireRules.ts. */
+const MASS_FIRE_COLOR = Color.fromCssColorString('#EA580C');
+const FIRE_IGNITION_COLOR = Color.fromCssColorString('#B45309');
+
 /** Cool-blue palette for tsunami overlays — the only oceanic element
  *  on the globe, kept distinct from the warm damage rings. Brighter
  *  sky-cyan rather than the previous mid-blue so the cavity reads as
@@ -394,6 +407,10 @@ const RING_RADIUS_SIGMA: Record<string, number> = {
   craterRim: 0.1,
   thirdDegreeBurn: 0.3,
   secondDegreeBurn: 0.3,
+  // Table 7.40's own footnote: ±50 % in the field, which the inverse square
+  // carries onto a radius as ×0.82 to ×1.41.
+  massFire: 0.3,
+  fireIgnition: 0.3,
   overpressure5psi: 0.18,
   overpressure1psi: 0.18,
   // MMI shaking radii — Worden 2012 GMICE ±0.5 MMI ≈ ±25 % radius.
@@ -426,6 +443,8 @@ type ExplosionRingId =
   | 'explosion-crater'
   | 'explosion-thermal'
   | 'explosion-thermal-2nd'
+  | 'explosion-mass-fire'
+  | 'explosion-fire-ignition'
   | 'explosion-5psi'
   | 'explosion-1psi'
   | 'explosion-light-damage'
@@ -1899,7 +1918,7 @@ export function Globe(): JSX.Element {
         lightDamage: 'overpressure',
       };
       const impactFamily: FamilyMember[] = [];
-      (Object.keys(RING_COLORS) as (keyof ImpactDamageRadii)[]).forEach((key) => {
+      (Object.keys(impactRingKind) as (keyof ImpactDamageRadii)[]).forEach((key) => {
         const radius = radii[key] as number;
         if (!Number.isFinite(radius) || radius <= 0) return;
         // Per-ring asymmetry: oblique impacts elongate downrange and
@@ -1931,6 +1950,41 @@ export function Globe(): JSX.Element {
           edge: true,
         });
       });
+      // The fire, from the same table and under the same rules as an
+      // explosion's (227 to 234). It is not a member of ImpactDamageRadii and
+      // is not copied into one: the radii are published once, under
+      // `firestorm`, and read from there — one expression in one place, which
+      // is what B-053 and B-059 were both about.
+      for (const [id, radius, color, tooltipKind] of [
+        ['massFire', result.data.firestorm.sustainRadius as number, MASS_FIRE_COLOR, 'massFire'],
+        [
+          'fireIgnition',
+          result.data.firestorm.ignitionRadius as number,
+          FIRE_IGNITION_COLOR,
+          'fireIgnition',
+        ],
+      ] as const) {
+        if (!Number.isFinite(radius) || radius <= 0) continue;
+        const geom = computeAsymmetricGeometry(
+          asymmetries.thirdDegreeBurn,
+          radius,
+          ringAnchor.latitude,
+          ringAnchor.longitude
+        );
+        impactFamily.push({
+          id: `${RING_ID_PREFIX}${id}`,
+          kind: 'thermal',
+          tooltipKind,
+          color,
+          radiusM: radius,
+          geom: { ...geom, latDeg: ringAnchor.latitude, lonDeg: ringAnchor.longitude },
+          fillAlpha: zoneFillAlpha(radius, 0.2, waveOnStage),
+          sigmaKey: id,
+          animate: true,
+          label: true,
+          edge: true,
+        });
+      }
       addRingFamily(impactFamily);
       if (result.data.tsunami) {
         const cavityRadius = result.data.tsunami.cavityRadius as number;
@@ -2321,6 +2375,26 @@ export function Globe(): JSX.Element {
           kind: 'thermal',
           tooltipKind: 'secondDegreeBurn',
           asymmetry: asymmetry.secondDegreeBurn,
+        },
+        // The fire. Both rings read Glasstone & Dolan's Table 7.40 at this
+        // yield through the same atmosphere as the burns above them; the mass
+        // fire is the ring the toll integrates, and §7.58's half a square mile
+        // can put it at zero, in which case nothing is drawn (rules 227-234).
+        {
+          id: 'explosion-mass-fire',
+          radius: result.data.firestorm.sustainRadius,
+          color: MASS_FIRE_COLOR,
+          kind: 'thermal',
+          tooltipKind: 'massFire',
+          asymmetry: asymmetry.thermal,
+        },
+        {
+          id: 'explosion-fire-ignition',
+          radius: result.data.firestorm.ignitionRadius,
+          color: FIRE_IGNITION_COLOR,
+          kind: 'thermal',
+          tooltipKind: 'fireIgnition',
+          asymmetry: asymmetry.thermal,
         },
         // Phase-17 calibration. Use the HOB-corrected blast radii
         // (`overpressure*RadiusHob` / `lightDamageRadiusHob`) instead

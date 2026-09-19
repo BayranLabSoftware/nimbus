@@ -1,10 +1,6 @@
 import { ISOTROPIC_RING, windDriftAsymmetry, type RingAsymmetry } from '../../effects/asymmetry.js';
-import {
-  firestormArea,
-  firestormSustainRadius,
-  flammableIgnitionArea,
-  flammableIgnitionRadius,
-} from '../../effects/firestorm.js';
+import { passesMinimumBurningArea } from '../../effects/firestorm.js';
+import { ignitionFluenceThreshold } from '../../effects/ignitionExposure.js';
 import { OVERPRESSURE_LIGHT_DAMAGE, distanceForOverpressure } from '../impact/damageRings.js';
 import { NUCLEAR_CRATER_COEFFICIENT, nuclearApparentCraterDiameter } from './cratering.js';
 import { electromagneticPulse, type EmpResult } from './emp.js';
@@ -487,7 +483,29 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
   const burn3 = flash(thirdDegreeBurnRadius(burnInput));
   const burn2 = flash(secondDegreeBurnRadius(burnInput));
   const burn1 = flash(firstDegreeBurnRadius(burnInput));
-  const fireInput = { yieldEnergy: yieldJoules, thermalPartition };
+  // The fire rings are the burn rings at another threshold: one flash, one
+  // atmosphere, one geometry. Until 19 September 2026 they were solved in a
+  // clear vacuum while the burns beside them were solved through Beer-Lambert
+  // (B-062), and both thresholds were flat numbers of the project's own that
+  // put the mass fire outside the fire (B-061). Both now read Glasstone &
+  // Dolan's Table 7.40 at this yield — rules 227 to 234 of
+  // validation/massFireRules.ts.
+  const fireRadius = (material: 'tinder' | 'structural'): Meters =>
+    thirdDegreeBurnRadius({
+      yieldEnergy: yieldJoules,
+      heightOfBurst: hobMeters,
+      thermalPartition,
+      fluenceThreshold: ignitionFluenceThreshold(material, yieldJoules),
+    });
+  const noFire = exoatmospheric || inWater || chemical;
+  const ignitionReach = absorbed(flash(fireRadius('tinder')));
+  // A mass fire is contained by the fire that feeds it (§7.71 on Hiroshima),
+  // and below half a square mile of burning ground §7.58 has no fire storm at
+  // all. Rules 229 and 231.
+  const sustainReach = m(Math.min(absorbed(flash(fireRadius('structural'))), ignitionReach));
+  const disc = (radius: Meters): SquareMeters => sqm(Math.PI * (radius as number) ** 2);
+  const sustainBurning = disc(sustainReach);
+  const sustains = !noFire && passesMinimumBurningArea(sustainBurning);
 
   const result: ExplosionScenarioResult = {
     inputs: input,
@@ -539,11 +557,14 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       at50km: windAtGround(50_000),
     },
     firestorm: {
-      ignitionRadius: absorbed(flash(flammableIgnitionRadius(fireInput))),
-      sustainRadius: absorbed(flash(firestormSustainRadius(fireInput))),
-      ignitionArea:
-        exoatmospheric || inWater || chemical ? sqm(0) : flammableIgnitionArea(fireInput),
-      sustainArea: exoatmospheric || inWater || chemical ? sqm(0) : firestormArea(fireInput),
+      ignitionRadius: ignitionReach,
+      sustainRadius: sustains ? sustainReach : m(0),
+      // The area of the ring the model publishes. It was already the same
+      // disc before 19 September 2026 — the three gates that zero the radius
+      // are the three that zeroed the area — and it is computed from the
+      // published radius now so it cannot come apart later.
+      ignitionArea: noFire ? sqm(0) : disc(ignitionReach),
+      sustainArea: sustains ? sustainBurning : sqm(0),
     },
     crater: {
       // Glasstone & Dolan §6.10: a nuclear airburst at sufficient

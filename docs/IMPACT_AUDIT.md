@@ -71,8 +71,28 @@ definiscono una tempesta di fuoco per combustibile, densità di incendi, vento e
 area — non per un'esposizione. Le due aree pubblicate (`ignitionArea`,
 `sustainArea`) ereditano l'inversione.
 
-**Non l'ho corretta**: cambiare una costante è un cambio di modello e vuole
-regole pre-registrate.
+**Corretta il 19 settembre 2026**, con le regole 227-234 di
+`validation/massFireRules.ts`, scritte e spinte (6fdf58b) prima che il
+candidato esistesse. Entrambe le soglie ora si leggono dalla Tabella 7.40 del
+libro alla resa dello scenario — carta di giornale sminuzzata (4, 6, 11
+cal/cm²) per l'accensione, compensato di abete douglas (9, 16, 20, «flaming
+during exposure») per la tempesta di fuoco — e il §7.58 aggiunge il cancello
+che mancava: sotto mezzo miglio quadrato di terreno in fiamme non c'è tempesta
+di fuoco, cioè sotto circa 2 kt. L'ordinamento adesso regge per costruzione, in
+tutte e due le famiglie.
+
+A decidere è stato il terreno bruciato di Hiroshima, §7.62: 4,4 miglia
+quadrate, raggio equivalente 1 904 m. Il modello ne disegna 2 020 — **1,06×** —
+dentro la banda che la nota della tabella stessa implica. Prima ne disegnava
+2 640, e il fuoco che la alimenta a 2 040, cioè dentro.
+
+Il conto: il bilancio di Hiroshima scende da 109 102 a 93 466 su un record di
+105 000, banda da 77 893 a 119 850, che il record lo contiene ancora. Il
+rapporto passa da 1,04× a 0,89×, e la riga si aspetta un eccesso (il raster
+conta 1,2 milioni di vivi dove la città ne aveva 350 000): la mortalità per
+testa dentro il fuoco è quindi bassa più o meno quanto prima era alta. Non è
+stata ritoccata — le regole 5, 6 e 234 lo vietano nello stesso round — ed è la
+prossima cosa da guardare.
 
 ### 2.2 L'orizzonte del lampo è quello di una palla di fuoco a terra, applicato a scoppi in quota
 
@@ -254,8 +274,9 @@ climatico, la tempesta di fuoco, e gli inviluppi di asimmetria.
 
 ## 5. In ordine di importanza
 
-1. **L'inversione della tempesta di fuoco** (§2.1) — incoerenza interna del
-   modello, a ogni scala. Vuole un round con regole.
+1. ~~L'inversione della tempesta di fuoco~~ (§2.1) — **fatto**, regole 227-234,
+   B-061 e B-062: le soglie vengono dalla Tabella 7.40, il §7.58 mette il
+   cancello dell'area, Hiroshima legge 1,06× il terreno che bruciò davvero.
 2. **L'asimmetria obliqua sugli airburst** (§3.1) — un'ellisse al 67 % dove la
    fisica dà un cerchio, e proprio sui casi più probabili.
 3. ~~La didascalia del cratere al bordo esterno~~ (§3.2) — **fatto**, B-059.
@@ -266,6 +287,13 @@ climatico, la tempesta di fuoco, e gli inviluppi di asimmetria.
 7. ~~Il raggio chiamato come un diametro~~ (§3.6) — **fatto**.
 8. **L'orizzonte del lampo per un airburst** (§2.2) — latente, non morde.
 
-Restano i punti 1 e 2: cambiano numeri e forme che un visitatore legge, e
-vogliono il protocollo — regole scritte e spinte prima della misura, non una
-pezza dopo.
+Resta il punto 2, che vuole il suo round: regole scritte e spinte prima della
+misura, non una pezza dopo.
+
+Il round del fuoco ha anche chiuso due silenzi della mappa che non erano
+nell'elenco perché l'audit guardava gli impatti e non il globo: la vista
+ravvicinata disegnava una sola zona di fuoco, al raggio di accensione, e la
+chiamava tempesta di fuoco (B-063); e il globo non disegnava fuoco affatto,
+mentre il modello vittime contava come presi dal fuoco tutti quelli dentro la
+tempesta (B-064). Adesso gli anelli sono due, in tutte e due le viste, con
+legenda, tooltip e contratto visivo.

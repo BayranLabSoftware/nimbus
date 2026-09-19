@@ -188,7 +188,59 @@ export const MASS_FIRE_GUARDS = {
 } as const;
 
 /**
- * The outcome of the round, written after the candidate was measured and not
- * before. Left null until then, so a reader can tell a rule from a result.
+ * The outcome of the round, written after the candidate was measured, on
+ * 19 September 2026. The rules above were pushed in commit 6fdf58b before the
+ * candidate existed.
+ *
+ * ADOPTED. Rule 230 is met and rule 231 holds.
+ *
+ * Rule 230. Hiroshima, 15 kt at 580 m, draws its mass fire at 2.02 km against
+ * the 1.90 km of §7.62's 4.4 square miles: 1.062×, inside the band whichever
+ * way the band is read — the symmetric one the rule states in its last clause
+ * (×0.707 to ×1.414) and the narrower one its prose derives (×0.816 to
+ * ×1.414). Before the round the same scenario put the mass fire at 2.64 km,
+ * 1.39× the ground that burned, and the fire that fed it at 2.04 km, inside
+ * it. Without rule 228(c)'s atmosphere the mass fire reads 2.15 km, so the
+ * threshold did most of the work and the transmission the rest.
+ *
+ * Rule 231. Checked over seven yields from 1 kt to 1 000 Mt and four impact
+ * scales from an iron 50 m to a Chicxulub: the mass fire is inside the fire
+ * everywhere, in both families, by construction — Table 7.40 asks more of
+ * plywood than of newspaper in all three of its columns — and again by the
+ * explicit floor the two simulators apply.
+ *
+ * Rule 229. The gate bites where nothing else in the model does: below about
+ * 2 kt the burning ground falls under half a square mile and the model reports
+ * no fire storm at all. A 1 kt device ignites to 0.81 km and sustains nothing.
+ *
+ * Rule 232, and deciding nothing. Nagasaki draws 2.37 km where a quarter of
+ * Hiroshima's burnt ground is 0.95 km — 2.48× — and §7.72 records that no
+ * definite fire storm occurred there at all: the wind carried the fire up a
+ * valley with nothing to burn, and the narrow valley held too few dwellings to
+ * feed one. Both are conditions this model does not hold. It has no terrain
+ * and no fuel map, and it will draw a fire storm over Nagasaki every time.
+ * That is the honest shape of the gap, and §7.58 says the field has it too.
+ *
+ * The ignition ring reads 2.95 km at Hiroshima, 1.55× the ground that burned.
+ * §7.71 says the burnt-out radius "was not much greater than the range in
+ * which fires started", which this does not contradict: the table's exposures
+ * are laboratory coupons facing the fireball square-on, and a city's kindling
+ * is behind walls. The table's own footnote leans the same way — the field
+ * needs more heat than the laboratory, "with a greater likelihood of higher
+ * rather than lower values" — so the ignition ring is the outer bound of where
+ * anything at all could catch, not the edge of the fire.
+ *
+ * What it cost, recorded and not caught (rule 234). Hiroshima's toll falls
+ * from 109 102 to 93 466 against a record of 105 000, and its band from
+ * 87 236 – 149 129 to 77 893 – 119 850, which still contains the record. The
+ * ratio crosses from 1.04× to 0.89×, and the row's caveat expects an
+ * overshoot: the raster counts the 1.2 million who live in Hiroshima now
+ * against the 350 000 who were there in 1945. So the model now undershoots a
+ * record it should overshoot, which says its mortality per head inside the
+ * fire is too low by roughly the same factor it was too high before. Nothing
+ * was re-tuned to catch it: FIRESTORM_MORTALITY, the exposed fraction and the
+ * delayed-death fraction are exactly where they were, and this is the next
+ * thing to look at, not a thing this round may touch.
  */
-export const MASS_FIRE_OUTCOME: string | null = null;
+export const MASS_FIRE_OUTCOME =
+  'ADOPTED 19 September 2026: Table 7.40 replaces both project fluences, the mass fire is inside the fire in both families, §7.58 gates it at half a square mile, and Hiroshima draws 2.02 km against 1.90 km of burnt ground (1.06×).';

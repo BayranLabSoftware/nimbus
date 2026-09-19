@@ -29,6 +29,8 @@ const SWATCH: Record<string, string> = {
   craterRim: '#B91C1C',
   thirdDegreeBurn: '#F97316',
   secondDegreeBurn: '#FB923C',
+  massFire: '#EA580C',
+  fireIgnition: '#B45309',
   overpressure5psi: '#FACC15',
   overpressure1psi: '#FDE047',
   lightDamage: '#FEF3C7',
@@ -143,6 +145,8 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
       push('craterRim', d.craterRim);
       push('thirdDegreeBurn', d.thirdDegreeBurn);
       push('secondDegreeBurn', d.secondDegreeBurn);
+      push('massFire', result.data.firestorm.sustainRadius);
+      push('fireIgnition', result.data.firestorm.ignitionRadius);
       push('overpressure5psi', d.overpressure5psi);
       push('overpressure1psi', d.overpressure1psi);
       push('lightDamage', d.lightDamage);
@@ -158,6 +162,8 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
       push('craterRim', (result.data.crater.apparentDiameter as number) / 2);
       push('thirdDegreeBurn', result.data.thermal.thirdDegreeBurnRadius);
       push('secondDegreeBurn', result.data.thermal.secondDegreeBurnRadius);
+      push('massFire', result.data.firestorm.sustainRadius);
+      push('fireIgnition', result.data.firestorm.ignitionRadius);
       push('overpressure5psi', b.overpressure5psiRadiusHob);
       push('overpressure1psi', b.overpressure1psiRadiusHob);
       // B-058: the ring the globe draws, which is the one the burst's own

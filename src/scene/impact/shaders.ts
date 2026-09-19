@@ -106,7 +106,7 @@ uniform vec2  uMarchRange;
 // Effect footprints, in km. Zero means this event has none.
 uniform vec3  uThermal;    // 3rd, 2nd, 1st degree burn
 uniform vec3  uBlastR;     // 5 psi, 1 psi, 0.5 psi
-uniform vec2  uFireEj;     // firestorm ignition, ejecta blanket edge
+uniform vec3  uFireEj;     // mass fire, ejecta blanket edge, fire ignition
 uniform vec2  uRadEmp;     // radiation LD50, EMP footprint
 uniform float uEjArrival;  // s, when the blanket has landed
 // Camera distance over framing reach: crossfades from "standing next
@@ -115,7 +115,7 @@ uniform float uScale;
 // Contour palette, uploaded from scene/impact/effectStyle.ts. NOT
 // duplicated here: the legend and the shader index the same table, so
 // a colour cannot drift out of sync between them.
-uniform vec3  uEffectColor[11];
+uniform vec3  uEffectColor[12];
 
 const float RE  = 6371.008;          // km, IUGG mean radius
 /* Aerial perspective. Extinction at sea level for a clear day —
@@ -883,6 +883,7 @@ void main(){
       lit = contour(lit, d, uBlastR.z,  uEffectColor[8],  k * 0.8);
       lit = contour(lit, d, uRadEmp.x,  uEffectColor[9],  k);
       lit = contour(lit, d, uRadEmp.y,  uEffectColor[10], k * 0.8);
+      lit = contour(lit, d, uFireEj.z,  uEffectColor[11], k * 0.7);
     }
 
     // Aerial perspective. Kept light: the camera spends most of its
