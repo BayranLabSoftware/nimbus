@@ -1520,3 +1520,77 @@ verdicts side by side — the guard that bit, and the round that answered it.
 What neither settles is V3: Tephra2 is a model, its constants come from one
 inversion of one eruption at Colima, and ten eruptions with a published isopach
 map is the rule that would read the world.
+
+## Where an earthquake points: four rounds, two refused (20 September 2026)
+
+Eight commits of rules, four measurements, and two refusals. Written here
+because the refusals are the part worth reading.
+
+**Round A/1 — the strike from the fault database alone. REFUSED.** Rules 286
+to 294 fixed before the candidate; measured on six presets with a published
+strike and an instrumental epicentre. Found two of six, right on one. The GEM
+database carries no subduction-interface geometry, so its fallback medians gave
+a megathrust a 94 km reach where the real surface projection is 284 km; and
+"the nearest trace" handed Valdivia's Mw 9.5 to a crustal fault 22 km away over
+the interface at 73. No bound was moved and nothing was wired. The refusal
+reordered the work: Slab2 became the prerequisite of the strike rather than a
+later refinement of the dip.
+
+**Round A/2 — with Slab2 under it. ACCEPTED.** Rules 295 to 303 pushed in
+`2b4bcf8`, candidate in `5638ae9`, both before one value of Slab2 was read at
+one epicentre. Six of six, worst error 11.5° against 25°, north beaten on every
+one, 218 911 bytes shipped against a 1.5 MB budget. Four of the six were
+answered by the depth clause alone, so the capacity clause written for Valdivia
+never fired. Gorkha, recorded by round A/1 as permanently UNKNOWN, is answered
+to 8.2°.
+
+**Round D — what ShakeMap says the default cost.** Rules 304 to 308. Rule 307,
+which would have held each run against the PUBLISHED map of its earthquake,
+stays PENDING: that download was not authorised, and pending is not satisfied.
+What was run is rule 308 — the same earthquake twice, one input different.
+ShakeMap's own footprint comes back pointing where the rupture it is handed
+points, within a degree on all six, which is the check that the harness is
+sound; and the strike moves 18 % to 68 % of the MMI VII footprint onto
+different ground at unchanged area. A defect in the comparison is recorded with
+the result: ShakeMap chooses its own grid per run, two runs of Valdivia came
+back with origins 0.07° apart, and masks read off their native cells then share
+no cell at all — Valdivia printed 0.025 for an 11° rotation, which is
+impossible and was the tell. Both masks are now read on one 0.02° lattice; the
+runs were not repeated, because the fix is in the arithmetic that reads them.
+
+**Round C/1 — the ground at every point, against the published areas.
+REFUSED.** Rules 309 to 315. The median area ratio improved, 0.744 → 0.839, and
+L'Aquila worsened by 1.49× and Amatrice by 1.24×, past the 1.2× no-regression
+clause. The clause did its job: it refused a round whose median improved.
+
+**Read after that run, and declared as read after:** the amendment of 16
+September says a bar is worth what the reference reaches on the same rows, and
+that question had never been put to this one. ShakeMap without stations misses
+the same published areas by 0.28 at Northridge and 22.03 at Amatrice. The bar
+was measuring the absence of stations. **The refused verdict was NOT
+re-scored** — rule 293 forbids moving a bound after a measurement, and a bound
+shown to have been the wrong bound is not a licence to re-run the round that
+failed it. The six rows are spent.
+
+**Round C/2 — the same question, anchored, on rows nobody had read. ACCEPTED.**
+Rules 316 to 321, with the twelve rows named in the rules before they were run
+and a test that reruns the filter to prove the twelve are what it picks. Area
+ratio against the reference 0.192 → 0.288, agreement 0.192 → 0.288, better on
+every decidable row, none worse. Two things are recorded beside the verdict:
+four of the twelve could not be decided at all — the reference's own scenario
+never reaches MMI VII there — so the clause asking for eight of twelve passed
+with NO MARGIN; and **a break in the protocol**: the harness's commit failed on
+a lint error, in a background command whose result was not read, so it was
+pushed AFTER the numbers it produced. The bars were pushed in advance; the
+harness's timing proof was not, and saying so is the only repair available.
+
+**Round E — the wiring. ACCEPTED, and it moves nothing.** Rules 322 to 328.
+Seven of the eight net rows that pointed north now point somewhere real and not
+one toll moved by a single death, because those seven are point sources. The
+calibration net — twelve earthquakes, four presets with published strikes,
+seven point sources, one extended row with no dead — cannot measure this
+change, and the rules say so rather than letting "accepted" read as
+"confirmed". The product can: driven through the URL, a Mw 9.0 off Tōhoku lays
+its rupture along the trench at 198.4°, one off Concepción at 18.5°, one in the
+Tehachapi at 58.7° — the Garlock, not the San Andreas, and the structure at
+that point.

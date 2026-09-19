@@ -19,6 +19,46 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **An earthquake points where its fault points.** Until 20 September
+  2026 every earthquake a reader placed was drawn, and counted, as a
+  fault striking due north: three call sites read `strikeAzimuthDeg ??
+  0`, and only seven presets carried a published strike. The strike now
+  comes from the structure under the epicentre — Slab2 (Hayes et al.
+  2018, USGS, public domain) where a subduction interface holds the
+  hypocentre within two of the model's own published depth
+  uncertainties, the GEM Global Active Faults Database (Styron & Pagani
+  2020, CC-BY-SA-4.0) where a mapped crustal trace can host the rupture,
+  and UNKNOWN where neither is in reach. On the six presets with a
+  published strike and an instrumental epicentre: found six of six,
+  worst error 11.5° against a 25° bound, due north beaten on every one.
+  Gorkha, which the first attempt had recorded as permanently unknown
+  because the fault database maps no thrust within 90 km of it, is
+  answered to 8.2°: Slab2 carries the Main Himalayan Thrust 22 km under
+  that epicentre.
+- **What the default cost, measured by ShakeMap rather than argued.**
+  ShakeMap 4 now runs on this machine in scenario mode
+  (`docs/SHAKEMAP_SETUP.md`), and the same earthquake was run twice with
+  one input different — the azimuth of the finite rupture. Turning it
+  from north to the strike the lookup finds moves 18 % to 68 % of the
+  MMI VII footprint onto different ground while the AREA of that
+  footprint changes by at most 1.7 %, and the population inside it goes
+  from 7.35 M to 19.93 M under Sumatra. Turning the fault does not
+  change how much ground shakes; it changes whose.
+- **Where the fault is unknown, the picture says so.** An extended
+  rupture with no strike is no longer drawn as a north–south rectangle:
+  the globe draws no oriented shape for it and the toll is counted
+  inside the disc that contains the stadium at every orientation.
+- **The ground under the whole footprint.** The USGS global Vs30 grid —
+  the one ShakeMap and PAGER themselves read — is cut to the 2.5′ tiles
+  the population already ships on, and the shaking of an earthquake can
+  be evaluated as a FIELD over a 257 × 257 grid, each point standing on
+  its own ground, with contours taken by marching squares. Measured
+  against ShakeMap scenarios run here on twelve rows nobody had read, it
+  takes our MMI VII area from 0.192 to 0.288 of the reference's and the
+  agreement of the two footprints from 0.192 to 0.288, better on every
+  decidable row. It is adopted and not yet wired: the toll still counts
+  inside the smooth stadium, which is a declared debt with a round of
+  its own.
 - **What a 9 is.** `docs/GOLD_STANDARD.md` fixes, before any work towards
   it, what a 9 out of 10 means for each domain: every printed number held
   to a reference implementation; bias, scatter and a calibrated band no
@@ -895,6 +935,23 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   which is drawn, stays.
 
 ### Measured
+
+- **A validation bar that the reference misses by a factor of
+  twenty-two.** Our MMI VII area was held against the published ShakeMap
+  of six events and a round was refused on it. Asked afterwards what the
+  REFERENCE scores on those same rows — ShakeMap run the way we are run,
+  no stations, no felt reports — the answer is 0.28 at Northridge, 11.06
+  at L'Aquila, 22.03 at Amatrice: a published map of an Italian
+  earthquake is pulled in to the few tens of square kilometres that
+  really reached MMI VII by a dense network and thousands of felt
+  reports, and no blind model knows that. The bar was measuring the
+  absence of stations. Read the way the amendment of 16 September says
+  to read it, on the same rows: with the ground under every point our
+  bias is 0.851× and our scatter σ 1.335, against the reference's 1.546×
+  and 1.926 — closer to the record than the reference, on both clauses.
+  The refused verdict was not re-scored: a bound shown to have been the
+  wrong bound is not a licence to re-run the round that failed it.
+
 
 - **The invariants, drawn again after the campaign's fixes.** Five thousand
   random scenarios of every hazard, over the ranges the custom forms accept:

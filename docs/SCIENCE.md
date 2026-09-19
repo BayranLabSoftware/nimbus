@@ -164,6 +164,26 @@ used.
 - **Reasenberg, P. A., & Jones, L. M. (1989).** _Earthquake hazard
   after a mainshock in California._ Science 243, 1173–1176.
   Aftershock sequence model.
+- **Hayes, G. P., Moore, G. L., Portner, D. E., Hearne, M., Flamme, H.,
+  Furtney, M., & Smoczyk, G. M. (2018).** _Slab2, a comprehensive
+  subduction zone geometry model._ Science 362(6410), 58–61. DOI:
+  [10.1126/science.aat4723](https://doi.org/10.1126/science.aat4723).
+  Data: [10.5066/F7PV6JNV](https://doi.org/10.5066/F7PV6JNV), USGS,
+  public domain. The three-dimensional geometry of every subducting
+  slab: where its surface lies, which way it strikes, how far the
+  model's own uncertainty reaches. Since 20 September 2026 this is
+  where a subduction earthquake's strike comes from.
+- **Styron, R., & Pagani, M. (2020).** _The GEM Global Active Faults
+  Database._ Earthquake Spectra 36(1_suppl), 160–180. DOI:
+  [10.1177/8755293020944182](https://doi.org/10.1177/8755293020944182),
+  CC-BY-SA-4.0. 13 696 mapped active fault traces: where a crustal
+  earthquake's strike comes from.
+- **Allen, T. I., & Wald, D. J. (2009).** _On the use of
+  high-resolution topographic data as a proxy for seismic site
+  conditions (VS30)._ BSSA 99(2A), 935–943. The topographic-slope proxy
+  behind the USGS global Vs30 grid, which ShakeMap and PAGER read and
+  which Nimbus now reads at every point of a footprint rather than once
+  at the epicentre.
 
 ### Volcanic eruptions
 
@@ -308,6 +328,116 @@ famine or disease):
 `src/physics/casualties.ts` is pure and tested; the store fetches the
 cumulative population inside every band's outer radius and evaluates
 the plan (`runCasualtyLookup` in `src/store/useAppStore.ts`).
+
+### Where an earthquake points, and what it cost to be wrong (20 September 2026)
+
+Every earthquake a reader placed was drawn, and counted, as a fault
+striking due north. Seven presets carried a published strike; everything
+else took `strikeAzimuthDeg ?? 0`, in three places — the globe, the
+store's stadium, the recorded tolls. That is not an approximation. An
+approximation is a quantity carried with a known error; this was an
+assertion about the tectonics of a place, made silently, and wrong
+almost everywhere.
+
+**The shape was never the problem.** The locus of points at a fixed
+Joyner–Boore distance from a rectangle IS that rectangle widened by a
+disc, exactly, so the rounded rectangle the renderer draws is the
+correct contour for an extended source. It was the direction that was
+invented.
+
+**The first attempt failed, and the failure was informative.** Reading
+the strike from the GEM Global Active Faults Database alone found a
+fault for two of six presets and the right one for one. Two causes: the
+database carries no subduction-interface geometry — its plate-boundary
+traces have neither dip nor seismogenic depth, so the fallback medians
+gave a megathrust a 94 km reach where the real surface projection is
+284 km wide, and the interface was out of reach every time (137 km away
+at Tōhoku, 151 at Sumatra, 202 at Alaska) — and "the nearest trace" is
+the wrong fault where several are in reach: Valdivia 1960, Mw 9.5 on
+1 204 km of rupture, went to a crustal fault 22 km away over the
+interface at 73.
+
+**Slab2 is what the field uses for the other half.** Hayes et al. 2018
+model the three-dimensional surface of every subducting slab — depth,
+strike, dip and the model's own depth uncertainty, at 0.05° — and an
+earthquake belongs to that interface when it lies inside the model's own
+clipping mask, where the slab is no deeper than the interface
+seismogenic zone reaches (60 km, a project choice with margin over the
+~50 km the compilations report), and the hypocentre is within TWO OF THE
+MODEL'S OWN PUBLISHED UNCERTAINTIES of the surface, floored at 10 km
+because a global catalogue's depth is not known better than that — least
+of all for an earthquake of 1960. A second clause, written for Valdivia,
+gives the interface the answer anyway when no mapped crustal trace in
+reach can host the break: a rupture does not fit on a fault shorter than
+half of itself.
+
+On the six presets with a published strike and an instrumental
+epicentre: found six of six, worst error 11.5°, due north beaten on
+every one. Four were answered by the depth clause alone, so the capacity
+clause never had to fire. **Gorkha is the one worth naming:** the first
+round recorded it as permanently unknown, because the fault database
+maps an anticline, a syncline and a normal fault within 90 km of that
+epicentre and no thrust. Slab2 carries the Main Himalayan Thrust 22 km
+under it and reads the strike to 8.2°. What was missing was the file,
+not the law.
+
+**What being wrong had cost, measured by ShakeMap rather than argued.**
+ShakeMap 4 runs here in scenario mode; the same earthquake was run twice
+with one input different — the azimuth of the finite rupture. Its own
+footprint comes back pointing where the rupture it was handed points,
+within a degree on all six, which is the check that the harness is
+sound. Then: turning the rupture from north to the strike the lookup
+finds moves 18 % to 68 % of the MMI VII footprint onto different ground
+while its AREA changes by at most 1.7 % — 943 675 km² against 942 064 at
+Sumatra — and the population inside it goes from 7.35 M to 19.93 M.
+**Turning the fault does not change how much ground shakes. It changes
+whose.**
+
+**The ground under the footprint, and a bar that was measuring the wrong
+thing.** The site term was read once, at the epicentre: for Tōhoku, on
+the slope of a patch of sea floor 130 km off Sendai, with Tokyo shaken
+on it 380 km away. Reading the USGS global Vs30 grid — the one ShakeMap
+and PAGER themselves read — at every point of a 257 × 257 field makes
+the contours ragged, as every published map is, and was refused against
+the published MMI VII areas of six events: the median ratio improved,
+0.744 → 0.839, but L'Aquila worsened by 1.49× and Amatrice by 1.24×.
+
+Then the question the amendment of 16 September exists to force: what
+does the REFERENCE score on those same rows? ShakeMap without stations
+misses the same published areas by 0.28 at Northridge and by **22.03 at
+Amatrice**. A published ShakeMap of an Italian earthquake is pulled in to
+the few tens of square kilometres that really reached MMI VII by a dense
+network and thousands of felt reports; no blind model knows that, and
+the field's own program does not. The bar had been measuring the absence
+of stations.
+
+Read the way the amendment says to read it, on the same six rows against
+the same published areas:
+
+|                                 |       bias |      σ_ln |
+| ------------------------------- | ---------: | --------: |
+| ours, one Vs30 at the epicentre |     0.636× |     1.407 |
+| ours, the ground at every point | **0.851×** | **1.335** |
+| ShakeMap, no stations           |     1.546× |     1.926 |
+
+Both clauses hold: the bias is closer to one and the scatter is
+tighter than the reference's. Six rows are six rows and they are spent,
+so this licenses a round and not a claim — but it does settle the
+direction. Chasing the blind reference's area, which our footprint is
+0.29 of at Mw 6 to 7, would move us AWAY from the record.
+
+**What the calibration net could say about all this: nothing.** Wired,
+seven of its eight north-pointing rows now point somewhere real and not
+one toll moved by a single death, because those seven are point sources
+— a scenario is drawn as an extended rupture from Mw 7.5 or when it is
+marked an interface, and below that the stadium is a disc with no
+orientation to get wrong. The net holds twelve earthquakes: four presets
+with published strikes, seven point sources, one extended row with no
+dead. The change is right, it is measured, and the net cannot see it.
+The product can: a Mw 9.0 placed off Tōhoku now lays its rupture along
+the trench at 198.4°, one off Concepción at 18.5°, and one in the
+Tehachapi at 58.7° — which is not the San Andreas but the Garlock, and
+is the structure at that point.
 
 ### GeoClaw runs here, and the first row of T1 (19 September 2026)
 

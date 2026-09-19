@@ -1822,6 +1822,29 @@ measuring different things there. The toll correlates with what the
 buildings experienced, which is the macroseismic one. Any change to
 the contours has to say which of the two it is aiming at.
 
+**20 September 2026: the reference misses it the same way, and by
+more.** ShakeMap 4 now runs on this machine, so the question the
+amendment of 16 September exists to force could finally be put: what
+does the reference score against those same published areas, run the way
+we are run — one source, one rupture, no stations, no felt reports? It
+misses them by 0.28 at Northridge, 0.33 at Gorkha, 0.34 at Kokoxili —
+and by 11.06 at L'Aquila and **22.03 at Amatrice**. The Italian excess
+this entry calls "wildly too generous" is, for the most part, what a
+blind model does where the published map was drawn with a dense network
+and thousands of felt reports.
+
+Read as a bias and a scatter on those six rows, with the USGS ground
+under every point of the footprint: 0.851× and σ 1.335 for us against
+1.546× and σ 1.926 for the reference. Both clauses of the amendment
+hold. So the entry's premise — "one point-source attenuation curve
+inflated into a rupture stadium cannot be right at both ends of the
+magnitude range" — is still true of the absolute numbers and no longer
+supports the conclusion that the law must be replaced: against a
+reference given the same information we are closer to the record than it
+is. What remains open is the AMPLITUDE gap against the blind reference
+(our MMI VII area is 0.29 of its at Mw 6 to 7, 0.77 at Mw 6.7 to 9.5),
+and that is a different question from the one this entry opened.
+
 ### P0 — The intensity contours ignore the ground they stand on _(closed, 9 September)_
 
 `vs30` is an input a scenario can set. It reaches the reported
@@ -1917,6 +1940,45 @@ fjord, not an open coast a thousand kilometres from its source. The
 first coastal bands then die at 100 %. That chain carries 8.1 M of the
 33 M dead in that report, so this is not two cosmetic rows: it is a
 quarter of the toll.
+
+### P0 — Every earthquake pointed north _(closed, 20 September)_
+
+Three call sites read `strikeAzimuthDeg ?? 0`: the globe, the store's
+stadium and the recorded tolls. Seven presets carried a published
+strike; every other earthquake — every one a reader placed — was drawn
+AND counted as a fault striking due north, anywhere on Earth.
+
+Closed on 20 September by rules 286 to 328, in four rounds, two of which
+were refused:
+
+- the strike now comes from the structure under the epicentre — Slab2
+  for a subduction interface, the GEM database for a crustal fault, and
+  UNKNOWN where neither is in reach. Six presets of six, worst error
+  11.5° against a 25° bound, north beaten on every one;
+- ShakeMap, run here twice per event with the azimuth as the only
+  difference, says what north cost: 18 % to 68 % of the MMI VII
+  footprint on different ground at unchanged area, and Sumatra's exposed
+  population from 7.35 M to 19.93 M;
+- the tiles ship (2.88 MB of faults, 0.22 MB of slabs; one tile of each
+  per click, nothing until an earthquake is placed) and the store
+  derives the strike before it evaluates, where it already derives the
+  Vs30 and the water depth;
+- where no structure is in reach, no oriented rectangle is drawn and the
+  toll is counted in the disc that contains the stadium at every
+  orientation. Not north.
+
+**What the calibration net could say about it: nothing.** Seven of its
+eight north-pointing rows now point somewhere real and no toll moved by
+one death, because those seven are point sources and a disc has no
+orientation to get wrong. Twelve rows: four presets with published
+strikes, seven point sources, one extended row with no dead. The net
+cannot measure this, and the entry says so rather than letting
+"accepted" read as "confirmed".
+
+Still open from it: rule 290's picture — the ring of an unknown-strike
+rupture drawn at the envelope rather than at the published radius — which
+would put every caption a rupture-length off its ring, and belongs to a
+round with the captions in it.
 
 ### P4 — What the report says versus what the globe says
 
