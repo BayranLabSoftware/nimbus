@@ -135,6 +135,61 @@
  * reopened here.
  */
 
+/*
+ * ===========================================================================
+ * THE OUTCOME, 21 September 2026: BOTH CANDIDATES REFUSED
+ * ===========================================================================
+ *
+ * Rules 363 to 369 were pushed in bc6089e and both candidates in 10a6320,
+ * both before one toll was read. One run, three sides in one process, no
+ * re-tuning: `scripts/benchmark/interface-mark.ts`,
+ * `benchmark/results/interface-mark-2026-09-21.json`.
+ *
+ *                              | tensorMayRefuse | geometryDecides |
+ *   rows marked                |             127 |             157 |
+ *   MARKED rows, bias          |  2.96x -> 4.05x |  2.66x -> 3.18x |
+ *   MARKED rows, |ln bias|     |  1.084 -> 1.400 |  0.978 -> 1.158 |
+ *   MARKED rows, scatter       |    2.22 -> 2.35 |    2.22 -> 2.37 |
+ *   MARKED rows, inside        |   69/73 → 68/73 |   82/87 → 82/87 |
+ *   UNMARKED rows              |   0 moved, 0.63x unchanged        |
+ *   367(a) none left its band  |  NOT MET — Chile (central), 16 September
+ *                              |  2015, on both sides              |
+ *   367(c) unmarked unmoved    |  MET on both                      |
+ *
+ * Neither survives rule 367(a), and neither would have survived 367(b): the
+ * mark makes the dead WORSE on exactly the rows it marks, on both readings
+ * of who is an interface event. By rule 367(f) neither is adopted, and rule
+ * 302's clause goes back up — nothing in the shipped model marks an
+ * interface from Slab2. Rule 363's amendment stands as written and as
+ * measured: the permission was granted, exercised, and returned unused.
+ *
+ * WHY IT FAILS, which the numbers say without needing a theory. Strasser's
+ * interface scaling gives a rupture 2.09 times as wide (median, rule 363's
+ * table), the footprint grows with it, and more people fall inside a
+ * footprint whose toll was ALREADY 2.66 times its record. A model that
+ * over-counts does not improve by being given more ground.
+ *
+ * READ AFTER THE RUN, and acted on by nothing here, because it is the most
+ * useful thing this round produced:
+ *
+ *   THE ROWS SLAB2 CALLS AN INTERFACE ARE ALREADY THE WORST ROWS WE HAVE.
+ *   Before any mark, their toll is 2.66x their record where the rows the
+ *   slab does not answer for read 0.63x — over-counting by nearly three on
+ *   one set and under-counting by a third on the other, in the same run,
+ *   with the same law. That gap is four and a half times, it is the largest
+ *   split this harness has printed between two halves of one set, and no
+ *   rule has been written about it.
+ *
+ *   It also puts rule 38 in a new light. Rule 38 refused the interface
+ *   ground-motion models because their bands held fewer records — but those
+ *   models draw LOWER near the rupture and fall off more slowly, and the
+ *   defect measured here is over-counting on precisely their events. Whether
+ *   they would cure this split is not something this block may answer: it
+ *   did not measure them, rule 368 forbade it, and rule 38's refusal stands
+ *   until a block written for that question re-opens it on a set that has
+ *   not been spent.
+ */
+
 /** What rule 364's two candidates are, by name, so the run cannot quietly
  *  become a third one. */
 export type InterfaceMarkCandidate =

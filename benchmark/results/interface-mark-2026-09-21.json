@@ -1,0 +1,86 @@
+{
+  "rules": "363 to 369",
+  "winner": "none",
+  "sides": {
+    "tensorMayRefuse": {
+      "marked": 127,
+      "markedRows": {
+        "before": {
+          "rows": 127,
+          "withSomething": 73,
+          "bias": 2.955852466441878,
+          "scatterLn": 2.2212777904207184,
+          "inside": 69
+        },
+        "after": {
+          "rows": 127,
+          "withSomething": 73,
+          "bias": 4.053548591362194,
+          "scatterLn": 2.347802905751057,
+          "inside": 68
+        }
+      },
+      "unmarkedRows": {
+        "before": {
+          "rows": 281,
+          "withSomething": 206,
+          "bias": 0.6287202224001314,
+          "scatterLn": 2.44085963471682,
+          "inside": 190
+        },
+        "after": {
+          "rows": 281,
+          "withSomething": 206,
+          "bias": 0.6287202224001314,
+          "scatterLn": 2.44085963471682,
+          "inside": 190
+        }
+      },
+      "untouchedMoved": 0,
+      "leavers": [
+        "2015-09-16 22:54 UTC, CHILE: CENTRAL"
+      ],
+      "met": false
+    },
+    "geometryDecides": {
+      "marked": 157,
+      "markedRows": {
+        "before": {
+          "rows": 157,
+          "withSomething": 87,
+          "bias": 2.6590884486627577,
+          "scatterLn": 2.218487467934307,
+          "inside": 82
+        },
+        "after": {
+          "rows": 157,
+          "withSomething": 87,
+          "bias": 3.183782803533056,
+          "scatterLn": 2.3749389006852577,
+          "inside": 82
+        }
+      },
+      "unmarkedRows": {
+        "before": {
+          "rows": 251,
+          "withSomething": 192,
+          "bias": 0.6278748262341043,
+          "scatterLn": 2.45419001778416,
+          "inside": 177
+        },
+        "after": {
+          "rows": 251,
+          "withSomething": 192,
+          "bias": 0.6278748262341043,
+          "scatterLn": 2.45419001778416,
+          "inside": 177
+        }
+      },
+      "untouchedMoved": 0,
+      "leavers": [
+        "2015-09-16 22:54 UTC, CHILE: CENTRAL"
+      ],
+      "met": false
+    }
+  }
+}
