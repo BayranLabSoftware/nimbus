@@ -159,7 +159,47 @@ export const SHORE_TEST_POINTS: readonly {
 ];
 
 /**
- * The outcome of the round, written after the candidate was measured and not
- * before. Left null until then, so a reader can tell a rule from a result.
+ * The outcome of the round, written after the candidate was measured, on
+ * 19 September 2026. The rules above were pushed in commit 9f1178f before the
+ * candidate was written.
+ *
+ * ADOPTED. Rules 243, 244 and 245 are met and no published number moved.
+ *
+ * Rule 243, scored against the world. All four points land inside the bounds
+ * fixed before the candidate existed:
+ *
+ *   Miami        1 – 20 km        read 5.06 km     (was nought)
+ *   Lisbon       0.2 – 15 km      read 3.47 km
+ *   Madrid       250 – 400 km     read 331.87 km
+ *   Kansas City  over 800 km      read 1 033.67 km
+ *
+ * Rule 244. Miami is land for the fire — its ignition ring stands at 167 km,
+ * which an open-water strike would have zeroed — and its sea is 5.06 km away.
+ * The coupling is no longer "water" at a shore of nought: it is "crater",
+ * because a transient cavity 5.87 km across does reach a sea five kilometres
+ * off, which is a statement the model can defend. Madrid and Kansas City raise
+ * no wave at all, where before the round any point within tens of kilometres
+ * of a coast raised the whole one.
+ *
+ * Rule 245. Two open-ocean strikes, mid-Atlantic and mid-Pacific, read the
+ * depth under the click — 3 670 m and 4 236 m — couple as water at one, keep
+ * the same cavity to the bit and have their fire zeroed by the terrain gate.
+ * The open-water branch never calls this function and nothing in it changed.
+ *
+ * Rule 246. No toll moved: docs/VALIDATION_REPORT.json regenerates byte for
+ * byte identical and the gate is PASS in strict mode. That is not a small
+ * result, it is a finding of its own — no row of the calibration net exercises
+ * the store's terrain derivation at all, so the net could not have caught this
+ * and cannot catch the next one like it. The defect was found by a reader
+ * looking at a report of his own and not believing it.
+ *
+ * What is now true and was not, and what is still not. A shore distance is
+ * floored at half the cell of the map that found it, and the fine tile answers
+ * wherever it has anything to say. What the round did not touch, and said in
+ * advance it would not: Miami's sea is still given the nearest basin's depth
+ * capped at 200 m, while Biscayne Bay is a few metres deep, so a 5.87 km cavity
+ * is still computed in a water column that is not the one there. That is the
+ * next layer of the same question and it is a round of its own.
  */
-export const SHORE_DISTANCE_OUTCOME: string | null = null;
+export const SHORE_DISTANCE_OUTCOME =
+  'ADOPTED 19 September 2026: the fine tile answers where it can, no distance is nearer than half the cell that found it, all four points land inside their bounds, an open-water strike is unchanged, and no published number moved.';

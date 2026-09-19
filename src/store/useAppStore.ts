@@ -19,6 +19,7 @@ import {
   surfaceRuptureLength,
 } from '../physics/events/earthquake/ruptureLength.js';
 import { ruptureOrigins } from '../physics/tsunami/sourcePlacement.js';
+import { RESOLUTION_FLOOR_CELLS as SHORE_RESOLUTION_FLOOR_CELLS } from '../physics/validation/shoreDistanceRules.js';
 import type { TerrainSourceSpan } from '../scene/terrainSampling.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
 import {
@@ -102,7 +103,7 @@ import {
   type ImpactScenarioResult,
 } from '../physics/simulate.js';
 import { deg, degreesToRadians, J, kgPerM3, m, mps, Pa, sqm } from '../physics/units.js';
-import { IMPACT_BLAST_COUPLING } from '../physics/constants.js';
+import { EARTH_RADIUS, IMPACT_BLAST_COUPLING } from '../physics/constants.js';
 import { arrivalFunctionFor, buildCasualtyTimeline } from '../physics/casualtyTimeline.js';
 import type { CasualtyTimeline } from '../physics/casualtyTimeline.js';
 import {
@@ -917,7 +918,7 @@ export function gateImpactByTerrain(
  */
 const IMPACT_SEA_SEARCH_M = 2_500_000;
 
-function nearestSeaForImpact(
+export function nearestSeaForImpact(
   local: ElevationGrid,
   global: ElevationGrid | null,
   location: Coordinates
@@ -934,18 +935,42 @@ function nearestSeaForImpact(
     minBodyCells: 200,
     seaMaskNeighbourhoodCells: 1,
   };
-  const seeds: PropagationSeed[] = [
-    ...findPropagationSeeds(local, location.latitude, location.longitude, {
+  // Rules 241 to 247 of validation/shoreDistanceRules.ts. `findPropagationSeeds`
+  // answers nought metres when the cell holding the point reads water, which is
+  // what placing a wave source wants and is a claim about the world when it is
+  // read as a shore. The planetary mosaic's cell is a little over 39 km, and the
+  // one over Miami holds the Atlantic: every point within tens of kilometres of
+  // any coast was handed the sea at zero and the whole wave (B-068). So the fine
+  // tile answers where it has anything to say, the mosaic only where it has not,
+  // and no answer from either is nearer than half the cell that produced it.
+  const floorOf = (grid: ElevationGrid): number => {
+    const dLatDeg = (grid.maxLat - grid.minLat) / Math.max(1, grid.nLat - 1);
+    return (SHORE_RESOLUTION_FLOOR_CELLS * dLatDeg * ((EARTH_RADIUS as number) * Math.PI)) / 180;
+  };
+  const floored = (found: PropagationSeed[], grid: ElevationGrid): PropagationSeed[] => {
+    const floor = floorOf(grid);
+    return found.map((seed) => ({ ...seed, distanceM: Math.max(seed.distanceM, floor) }));
+  };
+  const fromTile = floored(
+    findPropagationSeeds(local, location.latitude, location.longitude, {
       ...shoreline,
       ...(global !== null && { seaMask: global }),
     }),
-    ...(global !== null
-      ? findPropagationSeeds(global, location.latitude, location.longitude, {
-          maxRadiusM: IMPACT_SEA_SEARCH_M,
-          minDepthM: 1,
-        })
-      : []),
-  ].sort((a, b) => a.distanceM - b.distanceM);
+    local
+  );
+  const fromMosaic =
+    global !== null
+      ? floored(
+          findPropagationSeeds(global, location.latitude, location.longitude, {
+            maxRadiusM: IMPACT_SEA_SEARCH_M,
+            minDepthM: 1,
+          }),
+          global
+        )
+      : [];
+  const seeds = (fromTile.length > 0 ? fromTile : fromMosaic).sort(
+    (a, b) => a.distanceM - b.distanceM
+  );
   const nearest = seeds[0];
   if (nearest === undefined) return null;
   const depthGrid = global ?? local;
