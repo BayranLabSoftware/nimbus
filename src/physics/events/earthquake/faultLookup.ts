@@ -5,6 +5,7 @@ import {
   traceStrikeDeg,
   type TracePoint,
 } from '../../validation/faultStrikeRules.js';
+import { canHostRupture, traceLengthM } from '../../validation/slabStrikeRules.js';
 
 /**
  * Which mapped fault an earthquake would break, and which way it points.
@@ -114,6 +115,8 @@ export interface FaultMatch {
   distanceM: number;
   /** Rule 288's reach for this fault, which the distance is inside (m). */
   reachM: number;
+  /** Rule 299: how much fault the database maps here (m). */
+  mappedLengthM: number;
   slipType: string;
   dipDeg: number;
   dipFromDatabase: boolean;
@@ -128,13 +131,20 @@ export interface FaultMatch {
  * hold this point, and the strike it gives a rupture of this length.
  *
  * Null where none reaches — which is an answer and not a failure.
+ *
+ * `requireCapacity` adds rule 299: only the traces that map at least half the
+ * rupture are considered, which is what rule 300(b) asks for. Left off, the
+ * function answers as rules 286 to 288 alone did, and the first round's
+ * measurement still reproduces.
  */
 export function findFault(
   faults: readonly DecodedFault[],
   latitude: number,
   longitude: number,
-  ruptureLengthM: number
+  ruptureLengthM: number,
+  options?: { requireCapacity?: boolean }
 ): FaultMatch | null {
+  const requireCapacity = options?.requireCapacity ?? false;
   let best: FaultMatch | null = null;
   for (const fault of faults) {
     const approach = nearestPointOnTrace(fault.trace, latitude, longitude);
@@ -142,12 +152,15 @@ export function findFault(
     const reachM = surfaceProjectionReachM(fault.dipDeg, 1_000 * fault.lowerDepthKm);
     if (approach.distanceM > reachM) continue;
     if (best !== null && approach.distanceM >= best.distanceM) continue;
+    const mappedLengthM = traceLengthM(fault.trace);
+    if (requireCapacity && !canHostRupture(mappedLengthM, ruptureLengthM)) continue;
     const strikeDeg = traceStrikeDeg(fault.trace, latitude, longitude, ruptureLengthM);
     if (strikeDeg === null) continue;
     best = {
       strikeDeg,
       distanceM: approach.distanceM,
       reachM,
+      mappedLengthM,
       slipType: fault.slipType,
       dipDeg: fault.dipDeg,
       dipFromDatabase: fault.dipFromDatabase,
