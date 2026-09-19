@@ -21,6 +21,7 @@ import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/sim
 import { VOLCANO_PRESETS, simulateVolcano } from '../events/volcano/simulate.js';
 import { HELD_OUT_EARTHQUAKES, HELD_OUT_VOLCANO_TOLLS } from './heldOutEvents.js';
 import { siteVs30 } from './siteVs30.js';
+import { shippedStrikeAnswer } from './shippedFaults.js';
 import { NET_SITES } from './siteVs30Data.js';
 import {
   shippedCountryAt,
@@ -308,7 +309,55 @@ function onTheBrowsersGround(event: RecordedEvent): RecordedEvent {
   };
 }
 
-export const RECORDED_EVENTS: RecordedEvent[] = NET_ROWS.map(onTheBrowsersGround);
+/**
+ * Rule 322 of wiredStrikeRules.ts: an earthquake of the net points where its
+ * fault points.
+ *
+ * Until 20 September 2026 a row that named no strike was counted inside a
+ * north–south stadium, because `strikeAzimuthDeg ?? 0` was the default in
+ * every place that read one. Eight of the twelve rows are such rows. This
+ * decorator gives them the strike of rules 295 to 303 — the interface under
+ * the hypocentre, or the mapped crustal fault that can host the rupture — and
+ * leaves alone every row that names its own (rule 323).
+ *
+ * Where the lookup finds nothing it changes nothing here, and the row keeps
+ * the behaviour it had; rule 325's band over orientations belongs to the
+ * picture and to the reader's scenario, and moving the harness onto it is a
+ * separate change with its own measurement.
+ */
+function pointingWhereTheFaultPoints(event: RecordedEvent): RecordedEvent {
+  const run = event.run;
+  return {
+    ...event,
+    run: () => {
+      const result = run();
+      if (result.type !== 'earthquake') return result;
+      if (result.data.inputs.strikeAzimuthDeg !== undefined) return result;
+      const answer = shippedStrikeAnswer(
+        event.latitude,
+        event.longitude,
+        result.data.inputs.depth ?? 10_000,
+        result.data.ruptureLength
+      );
+      if (answer.strikeDeg === null) return result;
+      return {
+        type: 'earthquake',
+        data: simulateEarthquake({
+          ...result.data.inputs,
+          strikeAzimuthDeg: answer.strikeDeg,
+        }),
+      };
+    },
+  };
+}
+
+/** The net as it was counted before rule 322 — kept for rule 328's before-and-
+ *  after, and for nothing else. Not the product's behaviour. */
+export const NET_WITHOUT_STRIKE_LOOKUP: RecordedEvent[] = NET_ROWS.map(onTheBrowsersGround);
+
+export const RECORDED_EVENTS: RecordedEvent[] = NET_WITHOUT_STRIKE_LOOKUP.map(
+  pointingWhereTheFaultPoints
+);
 
 export interface TollComparison {
   event: RecordedEvent;
