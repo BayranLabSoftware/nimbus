@@ -393,6 +393,12 @@ function tileRangeForSpan(
  * decoded once at app startup. Subsequent simulations reuse the
  * cached grid; per-click banwdith is unchanged.
  *
+ * The zoom is a parameter, defaulting to the 2 the globe uses. Only the
+ * default is cached, and only the default is ever asked for in the
+ * browser: the finer zooms exist so a validation harness can hand the
+ * same mosaic, built by this module rather than by a copy of it, to a
+ * reference tool that needs a seafloor finer than 40 km (rule 209).
+ *
  * The global grid is the engine that finally lets a Chicxulub-class
  * tsunami draw its 5 m / 1 m / 0.3 m iso-amplitude contours over
  * thousands of kilometres without truncating at the local tile
@@ -401,7 +407,6 @@ function tileRangeForSpan(
  */
 
 const GLOBAL_ZOOM = 2;
-const GLOBAL_GRID_DIMENSION = 4 * TILE_PIXELS; // 1024 × 1024
 let globalMosaicCache: ElevationGrid | null = null;
 let globalMosaicInflight: Promise<ElevationGrid> | null = null;
 
@@ -472,26 +477,28 @@ export function reprojectMercatorToLinearLat(
 export type TerrariumTileSamples = (zoom: number, x: number, y: number) => Promise<Float32Array>;
 
 export async function fetchGlobalBathymetricMosaic(
-  loadTile?: TerrariumTileSamples
+  loadTile?: TerrariumTileSamples,
+  zoom: number = GLOBAL_ZOOM
 ): Promise<ElevationGrid> {
   const injected = loadTile !== undefined;
-  if (!injected) {
+  const cacheable = !injected && zoom === GLOBAL_ZOOM;
+  if (cacheable) {
     if (globalMosaicCache !== null) return globalMosaicCache;
     if (globalMosaicInflight !== null) return globalMosaicInflight;
   }
 
   const build = async (): Promise<ElevationGrid> => {
-    const n = 2 ** GLOBAL_ZOOM;
-    const mercatorSamples = new Float32Array(GLOBAL_GRID_DIMENSION * GLOBAL_GRID_DIMENSION);
+    const n = 2 ** zoom;
+    const dimension = n * TILE_PIXELS;
+    const mercatorSamples = new Float32Array(dimension * dimension);
 
     const tilePromises: Promise<{ x: number; y: number; tile: Float32Array }>[] = [];
     for (let ty = 0; ty < n; ty++) {
       for (let tx = 0; tx < n; tx++) {
-        const url = TERRAIN_TILE_URL.replace('{z}', GLOBAL_ZOOM.toString())
+        const url = TERRAIN_TILE_URL.replace('{z}', zoom.toString())
           .replace('{x}', tx.toString())
           .replace('{y}', ty.toString());
-        const samples =
-          loadTile === undefined ? decodeTerrariumTile(url) : loadTile(GLOBAL_ZOOM, tx, ty);
+        const samples = loadTile === undefined ? decodeTerrariumTile(url) : loadTile(zoom, tx, ty);
         tilePromises.push(samples.then((tile) => ({ x: tx, y: ty, tile })));
       }
     }
@@ -505,8 +512,7 @@ export async function fetchGlobalBathymetricMosaic(
         for (let px = 0; px < TILE_PIXELS; px++) {
           const mosaicRow = ty * TILE_PIXELS + py;
           const mosaicCol = tx * TILE_PIXELS + px;
-          mercatorSamples[mosaicRow * GLOBAL_GRID_DIMENSION + mosaicCol] =
-            tile[py * TILE_PIXELS + px] ?? 0;
+          mercatorSamples[mosaicRow * dimension + mosaicCol] = tile[py * TILE_PIXELS + px] ?? 0;
         }
       }
     }
@@ -518,8 +524,8 @@ export async function fetchGlobalBathymetricMosaic(
     const MERCATOR_LIMIT_LAT = 85.05112878;
     const samples = reprojectMercatorToLinearLat(
       mercatorSamples,
-      GLOBAL_GRID_DIMENSION,
-      GLOBAL_GRID_DIMENSION,
+      dimension,
+      dimension,
       -MERCATOR_LIMIT_LAT,
       MERCATOR_LIMIT_LAT
     );
@@ -529,15 +535,15 @@ export async function fetchGlobalBathymetricMosaic(
       maxLat: MERCATOR_LIMIT_LAT,
       minLon: -180,
       maxLon: 180,
-      nLat: GLOBAL_GRID_DIMENSION,
-      nLon: GLOBAL_GRID_DIMENSION,
+      nLat: dimension,
+      nLon: dimension,
       samples,
     });
-    if (!injected) globalMosaicCache = grid;
+    if (cacheable) globalMosaicCache = grid;
     return grid;
   };
 
-  if (injected) return build();
+  if (!cacheable) return build();
   globalMosaicInflight = build();
   // Whatever happens, the next caller must be able to retry: a failed
   // fetch left `globalMosaicInflight` pointing at a rejected promise

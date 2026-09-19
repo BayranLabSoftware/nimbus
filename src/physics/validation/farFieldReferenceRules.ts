@@ -146,6 +146,28 @@
  *       not met, at 3.69×, and declared.
  */
 
+/*
+ * One thing rule 210 left unsaid, fixed here before the first crest of a run
+ * over real seafloor was read, and recorded so that it cannot later look like a
+ * choice made after the fact.
+ *
+ * Rule 210(b) asks for two runs per event — the base, and one further level of
+ * refinement over the source and the gauges — and says a crest counts only if
+ * they agree within 25 %. It does not say which of the two C2 is. **C2 is the
+ * refined run**: the base exists to test it, not to be averaged with it. In
+ * this project's shape that is the run at 0.031° over the source and the
+ * gauges, with 0.125° elsewhere, and the base is the same case at 0.125°
+ * throughout.
+ *
+ * Two smaller things, for the same reason. The reference is run as its own
+ * example configures it, so Coriolis is off and Manning's coefficient is 0.025
+ * with GeoClaw's own `friction_depth` — deviating from the tool's own
+ * configuration to make it look better or worse would be the whole point
+ * missed. And where the raster the reference is given differs from what the
+ * buoy reports, the raster's own depth at the gauge is recorded beside the
+ * record's, so a reader can see it.
+ */
+
 /** T1's bounds, as `docs/GOLD_STANDARD.md` states them. */
 export const T1_BOUNDS = {
   /** The median event's bias, as a factor either way. */
