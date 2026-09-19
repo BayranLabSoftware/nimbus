@@ -506,7 +506,9 @@ export function sampleToll(
   curveScatter = true,
   /** What a realisation draws (rules 182 to 186 of tollBandRules.ts). The
    *  guard of rule 184 reads both settings on the same rows. */
-  scatter?: TollBandScatter
+  scatter?: TollBandScatter,
+  /** Rules 377 and 378: draw the rupture's centre. Off by default. */
+  drawRuptureCentre = false
 ): PredictiveBand | null {
   const location = { latitude: event.latitude, longitude: event.longitude };
   const result = event.run();
@@ -514,7 +516,10 @@ export function sampleToll(
   // with its own rupture. The plan builder knows the rupture and the
   // band only its polygon, which survives the copies a band goes
   // through, so the rupture is remembered by the polygon.
-  const ruptures = new WeakMap<object, { halfLengthM: number; halfWidthM: number }>();
+  const ruptures = new WeakMap<
+    object,
+    { halfLengthM: number; halfWidthM: number; centreOffsetM: number }
+  >();
   const plans = sampleScenarioPlans({
     result,
     planFor: (r) => {
@@ -525,6 +530,8 @@ export function sampleToll(
           ruptures.set(band.polygon, {
             halfLengthM: (r.data.ruptureLength as number) / 2,
             halfWidthM: (r.data.ruptureWidth as number) / 2,
+            // Rule 377: this realisation's own centre, along strike.
+            centreOffsetM: (r.data.inputs.ruptureCentreOffsetM as number | undefined) ?? 0,
           });
         }
       }
@@ -532,6 +539,7 @@ export function sampleToll(
     },
     seed: `${event.name}:${event.recordedDeaths.toString()}`,
     curveScatter,
+    drawRuptureCentre,
     ...(scatter === undefined ? {} : { scatter }),
   });
   return bandFromPlans(plans, populationAt ?? measuredPopulation(event, result, plans, ruptures));
@@ -558,7 +566,7 @@ export function measuredPopulation(
   event: RecordedEvent,
   result: ActiveResult,
   plans: readonly CasualtyPlan[],
-  ruptures: WeakMap<object, { halfLengthM: number; halfWidthM: number }>
+  ruptures: WeakMap<object, { halfLengthM: number; halfWidthM: number; centreOffsetM: number }>
 ): (radiusM: number, band: CasualtyBand) => number {
   const circle = (radiusM: number): number =>
     shippedPopulationInRadius(event.latitude, event.longitude, radiusM).exposed;
@@ -568,7 +576,13 @@ export function measuredPopulation(
     for (const band of plan.bands) {
       const rupture = band.polygon === undefined ? undefined : ruptures.get(band.polygon);
       if (rupture === undefined) continue;
-      reachM = Math.max(reachM, rupture.halfLengthM + rupture.halfWidthM + band.outerRadiusM);
+      reachM = Math.max(
+        reachM,
+        rupture.halfLengthM +
+          rupture.halfWidthM +
+          band.outerRadiusM +
+          Math.abs(rupture.centreOffsetM)
+      );
     }
   }
   // Rule 291's sweep carries the rupture that the bands no longer carry as a
@@ -583,7 +597,13 @@ export function measuredPopulation(
       const declared = plan.unknownStrike;
       if (declared === undefined) continue;
       for (const band of plan.bands) {
-        reachM = Math.max(reachM, declared.halfLengthM + declared.halfWidthM + band.outerRadiusM);
+        reachM = Math.max(
+          reachM,
+          declared.halfLengthM +
+            declared.halfWidthM +
+            band.outerRadiusM +
+            Math.abs(plan.centreOffsetM ?? 0)
+        );
       }
     }
   }
@@ -620,9 +640,10 @@ export function measuredPopulation(
     const perRealisation = new WeakMap<
       CasualtyBand,
       {
-        count: (a: number, b: number, r: number) => number;
+        count: (a: number, b: number, r: number, offset?: number) => number;
         halfLengthM: number;
         halfWidthM: number;
+        centreOffsetM: number;
       }
     >();
     plans.forEach((plan, index) => {
@@ -634,12 +655,15 @@ export function measuredPopulation(
           count,
           halfLengthM: declared.halfLengthM,
           halfWidthM: declared.halfWidthM,
+          centreOffsetM: plan.centreOffsetM ?? 0,
         });
       }
     });
     return (radiusM, band) => {
       const mine = perRealisation.get(band);
-      if (mine !== undefined) return mine.count(mine.halfLengthM, mine.halfWidthM, radiusM);
+      if (mine !== undefined) {
+        return mine.count(mine.halfLengthM, mine.halfWidthM, radiusM, mine.centreOffsetM);
+      }
       // A band from a realisation this sweep does not cover. B-077: that is
       // usually a realisation that is NOT an extended source at all — the
       // band draws its own magnitude, so an earthquake near the threshold has
@@ -666,7 +690,7 @@ export function measuredPopulation(
     const rupture = band.polygon === undefined ? undefined : ruptures.get(band.polygon);
     return rupture === undefined
       ? circle(radiusM)
-      : stadium(rupture.halfLengthM, rupture.halfWidthM, radiusM);
+      : stadium(rupture.halfLengthM, rupture.halfWidthM, radiusM, rupture.centreOffsetM);
   };
 }
 

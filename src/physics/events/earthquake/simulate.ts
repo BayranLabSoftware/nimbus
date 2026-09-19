@@ -84,6 +84,24 @@ export interface EarthquakeScenarioInput {
    * exactly as before.
    */
   ruptureScaling?: 'wellsCoppersmith' | 'strasser';
+  /**
+   * Rule 377 of validation/ruptureCentreRules.ts: how far along strike the
+   * centre of the rupture sits from the hypocentre, in metres.
+   *
+   * The epicentre is where the rupture STARTED, not its middle — Tohoku's is
+   * roughly at one end of its slip — so laying the stadium down centred on
+   * it is an assumption, and a wrong one for every earthquake. It is also
+   * the term the predictive band was missing: a realisation drew its
+   * magnitude, its depth, its ground and its residual, and the footprint
+   * never moved, so a footprint that reached nobody reached nobody in all
+   * two hundred worlds and the band came out [0, 0] — "nobody dies,
+   * certainly" rather than "I do not know".
+   *
+   * Omitted or zero, nothing changes: the central estimate keeps the centre
+   * on the epicentre, and so does every picture the globe draws. Only a
+   * realisation of the band draws it (rule 378, uniform on [-L/2, +L/2]).
+   */
+  ruptureCentreOffsetM?: Meters;
   /** Water depth at the epicentre (m). 0 or omitted → continental /
    *  intra-plate scenario. Any positive value flags the event as
    *  submarine: the felt-intensity contours are still emitted (a

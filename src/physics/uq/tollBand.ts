@@ -6,7 +6,7 @@ import {
   type CasualtyHazard,
 } from '../casualties.js';
 import type { CasualtyBand, CasualtyPlan } from '../casualties.js';
-import { mulberry32, sampleNormal, type Rng } from '../montecarlo/sampling.js';
+import { mulberry32, sampleNormal, sampleUniform, type Rng } from '../montecarlo/sampling.js';
 import {
   earthquakeSampler,
   type EarthquakeSamplerOptions,
@@ -20,6 +20,8 @@ import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
 import { impactSampler } from '../montecarlo/impactMonteCarlo.js';
 import { volcanoSampler } from '../montecarlo/volcanoMonteCarlo.js';
 import { simulateEarthquake } from '../events/earthquake/simulate.js';
+import { CENTRE_OFFSET_FRACTION } from '../validation/ruptureCentreRules.js';
+import { m } from '../units.js';
 import { simulateExplosion } from '../events/explosion/simulate.js';
 import { simulateVolcano } from '../events/volcano/simulate.js';
 import { simulateImpact } from '../simulate.js';
@@ -174,26 +176,43 @@ export function exposureCurve(points: readonly ExposurePoint[]): ExposurePoint[]
 export function resampleResult(
   result: ActiveResult,
   rng: Rng,
-  earthquake: EarthquakeSamplerOptions = {}
+  earthquake: EarthquakeSamplerOptions = {},
+  /** Rules 377 and 378: draw where along the rupture the hypocentre sits.
+   *  Off by default — the candidate is reachable and drawn by nothing until
+   *  the run that adopts it. */
+  drawRuptureCentre = false
 ): ActiveResult | null {
   switch (result.type) {
-    case 'earthquake':
+    case 'earthquake': {
+      const data = simulateEarthquake(
+        earthquakeSampler(result.data.inputs, {
+          // Rule 71's parts are the median scenario's, which is this one.
+          parts:
+            earthquake.parts !== undefined
+              ? earthquake.parts
+              : (result.data.inputs.groundMotionResidual ?? DEFAULT_GROUND_MOTION_RESIDUAL) ===
+                  'onePerScenario'
+                ? null
+                : residualParts(result.data.inputs, mmi7FootprintKm2(result.data)),
+          ...(earthquake.withinRng === undefined ? {} : { withinRng: earthquake.withinRng }),
+        })(rng)
+      );
+      // Rules 377 and 378 of validation/ruptureCentreRules.ts: where along
+      // the rupture this realisation puts the hypocentre. Drawn AFTER the
+      // simulation and folded into its inputs, because the offset changes
+      // nothing the simulator computes — only where `casualtyPlanForResult`
+      // lays the stadium down — so it costs one draw and not a second
+      // simulation. A point source has no length to slide along.
+      if (!drawRuptureCentre || !data.isExtendedSource) return { type: 'earthquake', data };
+      const reach = CENTRE_OFFSET_FRACTION * (data.ruptureLength as number);
       return {
         type: 'earthquake',
-        data: simulateEarthquake(
-          earthquakeSampler(result.data.inputs, {
-            // Rule 71's parts are the median scenario's, which is this one.
-            parts:
-              earthquake.parts !== undefined
-                ? earthquake.parts
-                : (result.data.inputs.groundMotionResidual ?? DEFAULT_GROUND_MOTION_RESIDUAL) ===
-                    'onePerScenario'
-                  ? null
-                  : residualParts(result.data.inputs, mmi7FootprintKm2(result.data)),
-            ...(earthquake.withinRng === undefined ? {} : { withinRng: earthquake.withinRng }),
-          })(rng)
-        ),
+        data: {
+          ...data,
+          inputs: { ...data.inputs, ruptureCentreOffsetM: m(sampleUniform(rng, -reach, reach)) },
+        },
       };
+    }
     case 'explosion':
       return {
         type: 'explosion',
@@ -232,6 +251,9 @@ export function sampleScenarioPlans(options: {
    *  `inputsOnly` keeps a plan's mortalities at the table's middle setting, as
    *  they were until this was written. */
   scatter?: TollBandScatter;
+  /** Rules 377 and 378 of validation/ruptureCentreRules.ts: draw where along
+   *  the rupture the hypocentre sits. Off by default. */
+  drawRuptureCentre?: boolean;
 }): CasualtyPlan[] {
   const rng = mulberry32(options.seed);
   // The curve's scatter has a stream of its own, so the physics of
@@ -256,7 +278,12 @@ export function sampleScenarioPlans(options: {
   const plans: CasualtyPlan[] = [];
   const wanted = options.samples ?? TOLL_BAND_SAMPLES;
   for (let i = 0; i < wanted; i++) {
-    const realisation = resampleResult(options.result, rng, earthquake);
+    const realisation = resampleResult(
+      options.result,
+      rng,
+      earthquake,
+      options.drawRuptureCentre ?? false
+    );
     if (realisation === null) return [];
     const plan = options.planFor(realisation);
     if (plan === null) continue;

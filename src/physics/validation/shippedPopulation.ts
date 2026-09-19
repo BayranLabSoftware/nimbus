@@ -250,7 +250,7 @@ export function shippedStadiumCounter(
   longitude: number,
   strikeDeg: number,
   reachM: number
-): (halfLengthM: number, halfWidthM: number, radiusM: number) => number {
+): (halfLengthM: number, halfWidthM: number, radiusM: number, centreOffsetM?: number) => number {
   const toRad = Math.PI / 180;
   // The cap every stadium within reach lies in, on the sphere and across
   // the antimeridian (B-026, B-035); the columns are read wrapped.
@@ -328,12 +328,18 @@ export function shippedStadiumCounter(
     return Math.hypot(ex > 0 ? ex : 0, ey > 0 ? ey : 0);
   };
 
-  return (halfLengthM, halfWidthM, radiusM) => {
+  // Rule 379 of validation/ruptureCentreRules.ts: sliding the stadium along
+  // strike is a translation in the frame this counter already works in — the
+  // first axis IS the strike — so an offset costs one subtraction per cell
+  // and never a second pass over the raster. A realisation that puts the
+  // rupture's centre 200 km up-strike of the hypocentre is counted here at
+  // the same price as one that does not.
+  return (halfLengthM, halfWidthM, radiusM, centreOffsetM = 0) => {
     const a = Math.max(0, halfLengthM);
     const b = Math.max(0, halfWidthM);
     let sum = 0;
     for (let i = 0; i < P.length; i++) {
-      const d = outside(C[2 * i] ?? 0, C[2 * i + 1] ?? 0, a, b);
+      const d = outside((C[2 * i] ?? 0) - centreOffsetM, C[2 * i + 1] ?? 0, a, b);
       const spread = R[i] ?? 0;
       if (d - spread > radiusM) continue;
       const cellPeople = P[i] ?? 0;
@@ -344,7 +350,11 @@ export function shippedStadiumCounter(
       let inside = 0;
       const base = 2 * i * perCell;
       for (let k = 0; k < perCell; k++) {
-        if (outside(S[base + 2 * k] ?? 0, S[base + 2 * k + 1] ?? 0, a, b) <= radiusM) inside += 1;
+        if (
+          outside((S[base + 2 * k] ?? 0) - centreOffsetM, S[base + 2 * k + 1] ?? 0, a, b) <= radiusM
+        ) {
+          inside += 1;
+        }
       }
       sum += (cellPeople * inside) / perCell;
     }

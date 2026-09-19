@@ -36,6 +36,7 @@ import type {
   PopulationDensityOptions,
 } from '../scene/populationLookup.js';
 import { buildRuptureStadiumLatLon } from '../scene/stadiumPolygon.js';
+import { destination } from '../physics/tsunami/ruptureGeometry.js';
 import {
   impactFireballRadius,
   joulesToKilotons,
@@ -1671,10 +1672,21 @@ export function casualtyPlanForResult(
         const halfL = (result.data.ruptureLength as number) / 2;
         const halfW = (result.data.ruptureWidth as number) / 2;
         const strike = result.data.inputs.strikeAzimuthDeg;
+        // Rule 377 of validation/ruptureCentreRules.ts: the epicentre is
+        // where the rupture STARTED, so the centre of the stadium sits a
+        // drawn distance along strike from it. Zero — and therefore
+        // unchanged — for the central estimate and for every picture; only
+        // a realisation of the band draws it.
+        const offsetM = (result.data.inputs.ruptureCentreOffsetM as number | undefined) ?? 0;
+        const centre =
+          offsetM === 0
+            ? location
+            : destination(location.latitude, location.longitude, strike, offsetM);
+        plan.centreOffsetM = offsetM;
         for (const band of plan.bands) {
           band.polygon = buildRuptureStadiumLatLon({
-            centerLatDeg: location.latitude,
-            centerLonDeg: location.longitude,
+            centerLatDeg: centre.latitude,
+            centerLonDeg: centre.longitude,
             strikeAzimuthDeg: strike,
             halfLengthAlongStrikeM: halfL,
             halfWidthAcrossStrikeM: halfW,

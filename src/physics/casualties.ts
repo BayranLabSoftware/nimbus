@@ -194,6 +194,11 @@ export interface CasualtyPlan {
    *  statement for a picture — the shaking reaches this far, in a direction
    *  nobody knows — and a systematic over-count for a toll. Drawn as a disc
    *  and counted as a median, and the two rules say so. */
+  /** Rule 377 of validation/ruptureCentreRules.ts: how far along strike this
+   *  realisation put the centre of the rupture, relative to the hypocentre.
+   *  Zero for the central estimate and for anything the globe draws. The
+   *  harness reads it to slide the stadium its counter works in. */
+  centreOffsetM?: number;
   unknownStrike?: {
     halfLengthM: number;
     halfWidthM: number;
