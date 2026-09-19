@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { bandFor, fieldBounds, INTENSITY_BANDS, shakingContours } from './shakingOverlay.js';
 import {
+  areaAbove,
+  contourRings,
   evaluateShakingField,
   type RuptureFootprint,
 } from '../../physics/events/earthquake/shakingField.js';
@@ -102,6 +104,65 @@ describe('the shaking overlay', () => {
       expect(contour.label).toMatch(/^[IVX]+$/);
       expect(contour.labelAt).not.toBeNull();
       expect(contour.css).toContain('rgba');
+    }
+  });
+});
+
+/**
+ * The contours and the report must be measuring the same thing.
+ *
+ * `areaAbove` counts cells whose centre is above a level; `shakingContours`
+ * walks marching squares round the same level and hands back polygons. Those
+ * are two different arithmetics over one field, and the report quotes the
+ * first while the picture shows the second. If they disagree, one of them is
+ * lying to a reader — so this holds them together.
+ */
+describe('the contours agree with the area the report quotes', () => {
+  const result = simulateEarthquake(EARTHQUAKE_PRESETS.TOHOKU_2011.input);
+  const law = intensityLawOf(result);
+  const rupture: RuptureFootprint = {
+    latitude: 38.297,
+    longitude: 142.373,
+    strikeDeg: 200,
+    halfLengthM: (result.ruptureLength as number) / 2,
+    halfWidthM: (result.ruptureWidth as number) / 2,
+  };
+  const field =
+    law === null
+      ? null
+      : evaluateShakingField({
+          rupture,
+          intensityAt: law,
+          siteAt: () => ({ vs30: 760, provenance: 'rock' as const }),
+          halfSpanM: rupture.halfLengthM + 3 * (result.shaking.mmi7Radius as number),
+        });
+
+  /** Signed area of a ring in the field's own frame, by the shoelace. */
+  const ringArea = (ring: readonly { x: number; y: number }[]): number => {
+    let twice = 0;
+    for (let i = 0; i < ring.length; i += 1) {
+      const a = ring[i];
+      const b = ring[(i + 1) % ring.length];
+      if (a === undefined || b === undefined) continue;
+      twice += a.x * b.y - b.x * a.y;
+    }
+    return twice / 2;
+  };
+
+  it('the polygons enclose the area the cells count, within a cell of it', () => {
+    expect(field).not.toBeNull();
+    if (field === null) return;
+    for (const level of [7, 8]) {
+      const cells = areaAbove(field, level);
+      if (cells === 0) continue;
+      // The rings come back in the frame, before any projection: compare
+      // there, so nothing in this test depends on the map projection.
+      const rings = contourRings(field, level);
+      const polygons = rings.reduce((sum, ring) => sum + Math.abs(ringArea(ring)), 0);
+      // One row of cells around a perimeter is the honest tolerance between
+      // "centre is above" and "the line the corners interpolate to".
+      const perimeterSlack = 4 * Math.sqrt(cells) * field.stepM;
+      expect(Math.abs(polygons - cells)).toBeLessThanOrEqual(perimeterSlack);
     }
   });
 });
