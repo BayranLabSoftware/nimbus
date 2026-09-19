@@ -1576,13 +1576,34 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(ring.semiMinorMultiplier).toBe(1);
   });
 
+  it('the audit tells a declaration from a debt', () => {
+    // A silence is a quantity published and undrawn, and it is a debt. The
+    // landslide's characteristic length is V^(1/3), the side of a cube of its
+    // volume: nothing on the ground should be drawn for it, and a circle of
+    // that radius would be B-059 again. The audit counts the two apart now.
+    const audit = readFileSync(
+      fileURLToPath(new URL('../../..', import.meta.url)) +
+        'benchmark/results/globe-audit-2026-09-20.json',
+      'utf8'
+    );
+    const parsed = JSON.parse(audit) as {
+      findings: unknown[];
+      silences: unknown[];
+      declared?: { what: string; detail?: string }[];
+    };
+    expect(parsed.findings).toHaveLength(0);
+    expect(parsed.silences).toHaveLength(0);
+    expect(parsed.declared ?? []).toHaveLength(6);
+    expect((parsed.declared ?? [])[0]?.detail ?? '').toContain('V^(1/3)');
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-075 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-076 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 75;
-    expect(expectedRows).toBe(75);
+    const expectedRows = 76;
+    expect(expectedRows).toBe(76);
   });
 });

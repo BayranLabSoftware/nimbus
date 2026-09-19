@@ -121,6 +121,10 @@ export interface GlobeAuditArtefact {
   rows: { scenario: string; family: string; checked: number }[];
   findings: { scenario: string; what: string; detail?: string }[];
   silences: { scenario: string; what: string; detail?: string }[];
+  /** Published and deliberately not drawn, with the reason. A silence is a
+   *  debt; this is a choice, and the audit has counted them apart since
+   *  20 September 2026. Absent from files written before that. */
+  declared?: { scenario: string; what: string; detail?: string }[];
 }
 
 /**

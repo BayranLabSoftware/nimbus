@@ -3582,23 +3582,23 @@ function gate(
  *  over it. */
 function auditSection(audits: AuditEvidence): string {
   const lines: string[] = [];
-  lines.push('| Audit | File | Scope | Findings | Silences |');
-  lines.push('|-------|------|-------|---------:|---------:|');
+  lines.push('| Audit | File | Scope | Findings | Silences | Declared |');
+  lines.push('|-------|------|-------|---------:|---------:|---------:|');
   if (audits.globe === null) {
-    lines.push('| The globe | — | **none to read** | — | — |');
+    lines.push('| The globe | — | **none to read** | — | — | — |');
   } else {
     const rows = audits.globe.data.rows;
     const checked = rows.reduce((a, r) => a + r.checked, 0);
     lines.push(
-      `| The globe | \`${audits.globe.file}\` | ${rows.length.toString()} scenarios, ${checked.toString()} comparisons | **${audits.globe.data.findings.length.toString()}** | ${audits.globe.data.silences.length.toString()} |`
+      `| The globe | \`${audits.globe.file}\` | ${rows.length.toString()} scenarios, ${checked.toString()} comparisons | **${audits.globe.data.findings.length.toString()}** | ${audits.globe.data.silences.length.toString()} | ${(audits.globe.data.declared ?? []).length.toString()} |`
     );
   }
   if (audits.terrain === null) {
-    lines.push('| The terrain | — | **none to read** | — | — |');
+    lines.push('| The terrain | — | **none to read** | — | — | — |');
   } else {
     const problems = terrainGateProblems(audits.terrain.data);
     lines.push(
-      `| The terrain | \`${audits.terrain.file}\` | ${audits.terrain.data.rows.length.toString()} points against their geography | **${problems.length.toString()}** | — |`
+      `| The terrain | \`${audits.terrain.file}\` | ${audits.terrain.data.rows.length.toString()} points against their geography | **${problems.length.toString()}** | — | — |`
     );
   }
   lines.push('');
@@ -3608,6 +3608,22 @@ function auditSection(audits: AuditEvidence): string {
         .map((x) => `${x.scenario} — ${x.what}`)
         .join('; ')}.`
     );
+    lines.push('');
+  }
+  const declared = audits.globe?.data.declared ?? [];
+  if (declared.length > 0) {
+    // One line per reason, with the scenarios it covers: six scenarios sharing
+    // a reason is one declaration, not six.
+    const byReason = new Map<string, string[]>();
+    for (const d of declared) {
+      const key = `${d.what}${d.detail === undefined ? '' : ` — ${d.detail}`}`;
+      byReason.set(key, [...(byReason.get(key) ?? []), d.scenario]);
+    }
+    lines.push('Published and deliberately NOT drawn, which is a choice and not a debt:');
+    lines.push('');
+    for (const [reason, scenarios] of byReason) {
+      lines.push(`- ${reason} (${scenarios.length.toString()}: ${scenarios.join(', ')})`);
+    }
     lines.push('');
   }
   if (audits.terrain !== null) {

@@ -747,12 +747,14 @@ reads both audits now, and blocks on what they find. It does not regenerate
 them: each is written by the round that needs it and committed, and nothing
 here checks that a file describes the code beside it (rule 276).
 
-| Audit | File | Scope | Findings | Silences |
-|-------|------|-------|---------:|---------:|
-| The globe | `globe-audit-2026-09-19.json` | 30 scenarios, 182 comparisons | **0** | 6 |
-| The terrain | `terrain-derivation-2026-09-20.json` | 4 points against their geography | **0** | — |
+| Audit | File | Scope | Findings | Silences | Declared |
+|-------|------|-------|---------:|---------:|---------:|
+| The globe | `globe-audit-2026-09-20.json` | 30 scenarios, 182 comparisons | **0** | 0 | 6 |
+| The terrain | `terrain-derivation-2026-09-20.json` | 4 points against their geography | **0** | — | — |
 
-A silence is the picture saying nothing where the model published something, and it does not block (rule 275): slide-subaerial-fjord — the slide’s own length is published and the globe draws nothing for it; slide-submarine-shelf — the slide’s own length is published and the globe draws nothing for it; slide-confined-basin — the slide’s own length is published and the globe draws nothing for it; slide-tiny — the slide’s own length is published and the globe draws nothing for it; slide-shallow-slope — the slide’s own length is published and the globe draws nothing for it; wave-slide-into-lake — the slide’s own length is published and the globe draws nothing for it.
+Published and deliberately NOT drawn, which is a choice and not a debt:
+
+- the slide’s own length is published and deliberately not drawn — it is V^(1/3), the side of a cube of the slide’s volume, and not a distance on the ground; a circle of that radius would assert a footprint the model does not compute, which is what B-059 was about (6: slide-subaerial-fjord, slide-submarine-shelf, slide-confined-basin, slide-tiny, slide-shallow-slope, wave-slide-into-lake)
 
 | Point | Shore | Depth | Inside its bounds |
 |-------|------:|------:|:------------------|

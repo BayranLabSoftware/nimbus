@@ -241,8 +241,22 @@ const BEACON_HEIGHT: Record<string, string> = {
 
 /** What a family publishes and the globe draws nothing for. Named here so
  *  the silence is counted rather than assumed. */
-const NEVER_DRAWN: { field: string; eventType: string; what: string }[] = [
-  { field: 'characteristicLength', eventType: 'landslide', what: 'the slide’s own length' },
+const NEVER_DRAWN: {
+  field: string;
+  eventType: string;
+  what: string;
+  /** Why nothing is drawn, when nothing SHOULD be. A silence with a reason is
+   *  a declaration and not a debt, and the two are counted apart. */
+  declared?: string;
+}[] = [
+  {
+    field: 'characteristicLength',
+    eventType: 'landslide',
+    what: 'the slide’s own length',
+    declared:
+      'it is V^(1/3), the side of a cube of the slide’s volume, and not a distance on the ground; ' +
+      'a circle of that radius would assert a footprint the model does not compute, which is what B-059 was about',
+  },
 ];
 
 /** Area of a closed ring of lat/lon points, on a sphere (m²). */
@@ -514,6 +528,9 @@ const findings: Finding[] = [];
  *  it. Not a contradiction — the picture says nothing rather than something
  *  false — but counted, so it cannot pass for coverage. */
 const silences: Finding[] = [];
+/** A quantity published and deliberately not drawn, with the reason. Counted
+ *  apart from a silence, because a silence is a debt and this is a choice. */
+const declared: Finding[] = [];
 const rows: {
   scenario: string;
   family: string;
@@ -840,6 +857,15 @@ async function main(): Promise<void> {
       if (silent.eventType !== drawn.eventType) continue;
       const published = at(drawn.result, silent.field);
       if (published === undefined || !(published > 0)) continue;
+      // A silence with a reason is a declaration, not a debt.
+      if (silent.declared !== undefined) {
+        declared.push({
+          scenario: scenario.id,
+          what: `${silent.what} is published and deliberately not drawn`,
+          detail: silent.declared,
+        });
+        continue;
+      }
       silences.push({
         scenario: scenario.id,
         what: `${silent.what} is published and the globe draws nothing for it`,
@@ -912,11 +938,16 @@ async function main(): Promise<void> {
   await browser.close();
 
   mkdirSync(dirname(OUT), { recursive: true });
-  writeFileSync(OUT, `${JSON.stringify({ base: BASE, rows, findings, silences }, null, 1)}\n`);
+  writeFileSync(
+    OUT,
+    `${JSON.stringify({ base: BASE, rows, findings, silences, declared }, null, 1)}\n`
+  );
   console.log(`\n${String(findings.length)} findings`);
   for (const f of findings) console.log(`  ${f.scenario}: ${f.what} — ${f.detail}`);
   console.log(`${String(silences.length)} silences — published, and the globe says nothing`);
   for (const f of silences) console.log(`  ${f.scenario}: ${f.what} — ${f.detail}`);
+  console.log(`${String(declared.length)} declared — published, deliberately not drawn, and why`);
+  for (const f of declared) console.log(`  ${f.scenario}: ${f.what} — ${f.detail}`);
   console.log(`wrote ${OUT}`);
 }
 
