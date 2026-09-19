@@ -23,6 +23,7 @@ import { describe, expect, it } from 'vitest';
 import { COMPLEX_DEPTH_COEFFICIENT, COMPLEX_DEPTH_EXPONENT } from '../events/impact/crater.js';
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/index.js';
 import { projectAlongAzimuth } from '../../scene/stadiumPolygon.js';
+import { craterAsymmetry, obliqueImpactRingAsymmetry } from '../effects/asymmetry.js';
 import { simulateExplosion } from '../events/explosion/simulate.js';
 import { NUCLEAR_CRATER_COEFFICIENT } from '../events/explosion/cratering.js';
 import {
@@ -1316,6 +1317,64 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(globe).not.toContain('(sM * northDir) / mPerLat');
   });
 
+  it('B-059 The shape drawn covers the ground the number claims', () => {
+    // One number reaches the caption, the legend, the tooltip and the toll, and
+    // the toll counts the people inside a CIRCLE of that radius. The renderer
+    // replaces that circle with an ellipse carrying the oblique-impact
+    // envelope, and until 19 September 2026 it did so without keeping the area:
+    // a 45° crater was drawn at 0.891 of the ground its caption claimed, with
+    // the number sitting on the outer edge of its own ellipse, and the damage
+    // rings at 0.94 to 0.96.
+    for (const angle of [5, 15, 30, 45, 60, 89]) {
+      const crater = craterAsymmetry(angle, 0);
+      expect(
+        crater.semiMajorMultiplier * crater.semiMinorMultiplier,
+        `crater at ${String(angle)}°`
+      ).toBeCloseTo(1, 12);
+      // The envelope itself is untouched: b/a is still the cube root of sin θ.
+      expect(
+        crater.semiMinorMultiplier / crater.semiMajorMultiplier,
+        `envelope at ${String(angle)}°`
+      ).toBeCloseTo(Math.max(0.4, Math.cbrt(Math.sin((angle * Math.PI) / 180))), 12);
+      for (const kind of ['overpressure', 'thermal'] as const) {
+        const ring = obliqueImpactRingAsymmetry(angle, 0, kind);
+        expect(
+          ring.semiMajorMultiplier * ring.semiMinorMultiplier,
+          `${kind} at ${String(angle)}°`
+        ).toBeCloseTo(1, 12);
+      }
+    }
+  });
+
+  it('B-060 A shock front is as far as its own blast reached', () => {
+    // The legend's front row took the outermost ring whatever it was. For
+    // Chelyabinsk — a burst 31 km up that puts no overpressure on the ground at
+    // all — it read "shock front · travelling 1.7 km", the radius of its
+    // second-degree burn.
+    const chelyabinsk = simulateImpact({
+      impactorDiameter: m(20),
+      impactVelocity: mps(19_200),
+      impactorDensity: kgPerM3(3_300),
+      targetDensity: kgPerM3(2_500),
+      impactAngle: ((18 * Math.PI) / 180) as never,
+    });
+    // The event that found it: burns, and no blast anywhere on the ground.
+    expect(chelyabinsk.entry.regime).toBe('COMPLETE_AIRBURST');
+    expect(chelyabinsk.damage.secondDegreeBurn as number).toBeGreaterThan(1_000);
+    expect(chelyabinsk.damage.overpressure5psi as number).toBe(0);
+    expect(chelyabinsk.damage.overpressure1psi as number).toBe(0);
+    expect(chelyabinsk.damage.lightDamage as number).toBe(0);
+    // And the legend now reads the front off its own rings, so with none it
+    // writes no row.
+    const legend = readFileSync(
+      fileURLToPath(new URL('../../ui/components/RingLegend.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(legend).toContain("pushFront('shockFront', ANELLI_DURTO)");
+    expect(legend).toContain("pushFront('seismicFront', ANELLI_SISMICI)");
+    expect(legend).not.toContain('raggioMassimo');
+  });
+
   it('B-058 The legend states the ring the globe draws', () => {
     // 15 Mt at 700 m over New Orleans, which is what found it: the globe drew
     // the light-damage ring at 55.6 km — the radius the burst's own height
@@ -1432,9 +1491,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-058 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-060 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 58;
-    expect(expectedRows).toBe(58);
+    const expectedRows = 60;
+    expect(expectedRows).toBe(60);
   });
 });

@@ -106,6 +106,39 @@ function normaliseAzimuth(degrees: number): number {
  * from it (the offset effect is much stronger in the EJECTA blanket,
  * handled separately by {@link ejectaButterflyAsymmetry}).
  */
+/**
+ * Spread a pair of axis multipliers around one so the ellipse they describe
+ * has the area of the circle they replace.
+ *
+ * Why this exists. A ring carries one number — the radius the model computed —
+ * and the caption, the legend, the tooltip and the death toll all use that one
+ * number: the toll counts the people inside a circle of that radius. The
+ * asymmetry envelopes say what SHAPE the ring has, a ratio b/a from the
+ * oblique-impact literature, and nothing about its size. So the renderer has to
+ * choose where the radius sits between the two axes, and the only choice that
+ * keeps the picture and the toll telling the same story is the one that leaves
+ * the area alone: a·b = r².
+ *
+ * Until 19 September 2026 each producer chose for itself and none chose this.
+ * `craterAsymmetry` held the major axis at the radius and shrank the minor, so
+ * a 45° crater was drawn at 0.891 of the area its caption claimed and its
+ * number sat on the outer edge of its own ellipse; the damage rings stretched
+ * the major above one and shrank the minor below, landing at 0.94 to 0.96 of
+ * the area. The audit of the impacts found both (docs/IMPACT_AUDIT.md, §3.2 and
+ * §3.3).
+ *
+ * The ratio is untouched — that is the part the papers are about — and the
+ * caption's radius becomes the geometric mean of the axes, which is where a
+ * single number belongs between two.
+ */
+export function equalArea(major: number, minor: number): { major: number; minor: number } {
+  if (!Number.isFinite(major) || !Number.isFinite(minor) || major <= 0 || minor <= 0) {
+    return { major: 1, minor: 1 };
+  }
+  const scale = 1 / Math.sqrt(major * minor);
+  return { major: major * scale, minor: minor * scale };
+}
+
 export function craterAsymmetry(impactAngleDeg: number, impactAzimuthDeg: number): RingAsymmetry {
   if (!Number.isFinite(impactAngleDeg) || impactAngleDeg <= 0) {
     return { ...ISOTROPIC_RING, azimuthDeg: normaliseAzimuth(impactAzimuthDeg) };
@@ -125,10 +158,11 @@ export function craterAsymmetry(impactAngleDeg: number, impactAzimuthDeg: number
   // default scenario a recognisably elliptical crater.
   const angleRad = (impactAngleDeg * Math.PI) / 180;
   const ratio = Math.cbrt(Math.sin(angleRad));
-  const semiMinorMultiplier = Math.max(0.4, ratio);
+  // b/a is the envelope; {@link equalArea} decides where the radius sits.
+  const axes = equalArea(1, Math.max(0.4, ratio));
   return {
-    semiMajorMultiplier: 1,
-    semiMinorMultiplier,
+    semiMajorMultiplier: axes.major,
+    semiMinorMultiplier: axes.minor,
     azimuthDeg: normaliseAzimuth(impactAzimuthDeg),
     centerOffsetMeters: 0,
   };
@@ -192,9 +226,10 @@ export function obliqueImpactRingAsymmetry(
   // nominal radius. Callers obtain it from {@link obliqueImpactCentreOffset}
   // and overwrite the 0 returned below before handing the struct to the
   // renderer.
+  const axes = equalArea(1 + downrangeBoost, Math.max(0.5, 1 - crossrangeShrink));
   return {
-    semiMajorMultiplier: 1 + downrangeBoost,
-    semiMinorMultiplier: Math.max(0.5, 1 - crossrangeShrink),
+    semiMajorMultiplier: axes.major,
+    semiMinorMultiplier: axes.minor,
     azimuthDeg: normaliseAzimuth(impactAzimuthDeg),
     centerOffsetMeters: 0,
   };
@@ -331,9 +366,10 @@ export function ejectaButterflyAsymmetry(
   const f = Math.max(0, Math.min(1, asymmetryFactor));
   const radius = blanketEdgeRadius as number;
   const offset = Number.isFinite(radius) && radius > 0 ? radius * 0.3 * f : 0;
+  const axes = equalArea(1 + 0.4 * f, 1 - 0.25 * f);
   return {
-    semiMajorMultiplier: 1 + 0.4 * f,
-    semiMinorMultiplier: 1 - 0.25 * f,
+    semiMajorMultiplier: axes.major,
+    semiMinorMultiplier: axes.minor,
     azimuthDeg: normaliseAzimuth(azimuthDeg),
     centerOffsetMeters: offset,
   };

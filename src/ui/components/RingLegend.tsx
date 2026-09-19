@@ -96,10 +96,11 @@ function formatRange(radiusM: number): string {
 function buildRingRows(result: ActiveResult | null, t: (key: string) => string): LegendRow[] {
   if (result === null) return [];
   const out: LegendRow[] = [];
-  let raggioMassimo = 0;
+  /** Ogni raggio spinto, per chiave: il fronte legge solo i propri. */
+  const raggi = new Map<string, number>();
   const push = (key: keyof typeof SWATCH, radiusM: number): void => {
     if (!Number.isFinite(radiusM) || radiusM <= 0) return;
-    if (radiusM > raggioMassimo) raggioMassimo = radiusM;
+    raggi.set(key, radiusM);
     out.push({
       key,
       label: t(`globe.ringLabel.${key}`),
@@ -109,19 +110,32 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
     });
   };
 
-  /** Il fronte corre fino all'anello più esterno: la sua riga di
-   *  legenda porta quella distanza. Va aggiunta DOPO gli anelli, così
-   *  il massimo è già noto. */
-  const pushFront = (key: 'shockFront' | 'seismicFront'): void => {
-    if (raggioMassimo <= 0) return;
+  /**
+   * Il fronte corre fino al più esterno dei *propri* anelli, e se non ne ha
+   * nessuno non c'è riga: «A legend row is a promise that something is drawn»,
+   * e prima del 19 settembre 2026 questa riga prendeva l'anello più esterno
+   * qualunque fosse. Chelyabinsk, che a terra non produce alcuna
+   * sovrapressione, leggeva «onda d'urto · fronte in corsa 1,7 km» — il raggio
+   * della sua ustione di secondo grado (docs/IMPACT_AUDIT.md §3.5).
+   * Va chiamata DOPO gli anelli, così i raggi sono già noti.
+   */
+  const pushFront = (key: 'shockFront' | 'seismicFront', suoi: readonly string[]): void => {
+    let reach = 0;
+    for (const k of suoi) reach = Math.max(reach, raggi.get(k) ?? 0);
+    if (reach <= 0) return;
     out.push({
       key,
       label: t(`globe.ringLabel.${key}`),
       color: SWATCH[key] ?? '#ffffff',
-      radiusLabel: formatRange(raggioMassimo),
-      global: isGlobalReach(raggioMassimo),
+      radiusLabel: formatRange(reach),
+      global: isGlobalReach(reach),
     });
   };
+
+  /** Gli anelli che un fronte d'urto è: le sue sovrapressioni. */
+  const ANELLI_DURTO = ['overpressure5psi', 'overpressure1psi', 'lightDamage'] as const;
+  /** Quelli di un fronte sismico: le sue intensità. */
+  const ANELLI_SISMICI = ['mmi9', 'mmi8', 'mmi7'] as const;
 
   switch (result.type) {
     case 'impact': {
@@ -136,7 +150,7 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
       if (result.data.tsunami) {
         push('tsunamiCavity', result.data.tsunami.cavityRadius);
       }
-      pushFront('shockFront');
+      pushFront('shockFront', ANELLI_DURTO);
       break;
     }
     case 'explosion': {
@@ -167,7 +181,7 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
       if (result.data.tsunami) {
         push('tsunamiCavity', result.data.tsunami.cavityRadius);
       }
-      pushFront('shockFront');
+      pushFront('shockFront', ANELLI_DURTO);
       break;
     }
     case 'earthquake': {
@@ -175,7 +189,7 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
       push('mmi9', s.mmi9Radius);
       push('mmi8', s.mmi8Radius);
       push('mmi7', s.mmi7Radius);
-      pushFront('seismicFront');
+      pushFront('seismicFront', ANELLI_SISMICI);
       break;
     }
     case 'volcano': {

@@ -10,6 +10,13 @@ import {
   windDriftAsymmetry,
 } from './asymmetry.js';
 
+/** b/a — the envelope the papers constrain. Since 19 September 2026 the two
+ *  multipliers are spread around one so the drawn ellipse has the area of the
+ *  circle its caption names (`equalArea`), so neither axis alone is the
+ *  envelope any more: their ratio is. */
+const ba = (a: { semiMajorMultiplier: number; semiMinorMultiplier: number }): number =>
+  a.semiMinorMultiplier / a.semiMajorMultiplier;
+
 describe('ISOTROPIC_RING', () => {
   it('describes a unit-multiplier, zero-offset circle', () => {
     expect(ISOTROPIC_RING.semiMajorMultiplier).toBe(1);
@@ -32,44 +39,46 @@ describe('craterAsymmetry — Pierazzo & Melosh / Gault & Wedekind envelope', ()
     // smooth envelope keeps Chicxulub / Meteor Crater visibly oblique.
     const asym = craterAsymmetry(45, 90);
     // sin(45°)^(1/3) ≈ 0.891 → 11 % compression on the cross-range axis.
-    expect(asym.semiMinorMultiplier).toBeCloseTo(0.891, 3);
-    expect(asym.semiMajorMultiplier).toBe(1);
+    expect(ba(asym)).toBeCloseTo(0.891, 3);
+    // and the ellipse covers the ground its caption claims.
+    expect(asym.semiMajorMultiplier * asym.semiMinorMultiplier).toBeCloseTo(1, 12);
   });
 
   it('shows only mild compression at θ = 60° (within Gault & Wedekind scatter)', () => {
     const asym = craterAsymmetry(60, 0);
     // sin(60°)^(1/3) ≈ 0.953 → b/a still ≥ 0.95 — within experimental scatter of 1.0
-    expect(asym.semiMinorMultiplier).toBeGreaterThanOrEqual(0.94);
-    expect(asym.semiMinorMultiplier).toBeLessThan(1);
+    expect(ba(asym)).toBeGreaterThanOrEqual(0.94);
+    expect(ba(asym)).toBeLessThan(1);
   });
 
   it('elongates downrange below 45° per the cube-root sin envelope', () => {
     const asym30 = craterAsymmetry(30, 0);
     // sin(30°)^(1/3) = 0.5^(1/3) ≈ 0.7937
-    expect(asym30.semiMinorMultiplier).toBeCloseTo(0.7937, 3);
-    expect(asym30.semiMajorMultiplier).toBe(1);
+    expect(ba(asym30)).toBeCloseTo(0.7937, 3);
+    expect(asym30.semiMajorMultiplier * asym30.semiMinorMultiplier).toBeCloseTo(1, 12);
   });
 
   it('matches Gault & Wedekind 1978 Fig. 5 within ±0.06 across 5°–60°', () => {
     // Approximate b/a values read from Gault & Wedekind 1978 Fig. 5
     // for impactor angles near 5°, 15°, 30°, 45°, 60° (within ±0.05 of
     // the published curve — that is the data scatter band).
-    const expected: { angle: number; ba: number }[] = [
-      { angle: 5, ba: 0.45 }, // floored at 0.40 in our envelope
-      { angle: 15, ba: 0.65 },
-      { angle: 30, ba: 0.79 },
-      { angle: 45, ba: 0.89 },
-      { angle: 60, ba: 0.95 },
+    const expected: { angle: number; ratio: number }[] = [
+      { angle: 5, ratio: 0.45 }, // floored at 0.40 in our envelope
+      { angle: 15, ratio: 0.65 },
+      { angle: 30, ratio: 0.79 },
+      { angle: 45, ratio: 0.89 },
+      { angle: 60, ratio: 0.95 },
     ];
-    for (const { angle, ba } of expected) {
+    for (const { angle, ratio: expectedRatio } of expected) {
       const asym = craterAsymmetry(angle, 0);
-      expect(Math.abs(asym.semiMinorMultiplier - ba)).toBeLessThanOrEqual(0.06);
+      expect(Math.abs(ba(asym) - expectedRatio)).toBeLessThanOrEqual(0.06);
     }
   });
 
-  it('clamps the semi-minor multiplier at 0.40 to avoid degenerate ellipses', () => {
+  it('clamps the envelope at b/a = 0.40 to avoid degenerate ellipses', () => {
     const grazing = craterAsymmetry(1, 0);
-    expect(grazing.semiMinorMultiplier).toBe(0.4);
+    expect(ba(grazing)).toBeCloseTo(0.4, 12);
+    expect(grazing.semiMajorMultiplier * grazing.semiMinorMultiplier).toBeCloseTo(1, 12);
   });
 
   it('normalises the azimuth to [0, 360)', () => {
@@ -115,8 +124,9 @@ describe('obliqueImpactRingAsymmetry — Pierazzo & Artemieva 2003 envelope', ()
     // thermal:      0.40 * 0.293 ≈ 0.117 (~11.7 % boost)
     const op = obliqueImpactRingAsymmetry(45, 0, 'overpressure');
     const th = obliqueImpactRingAsymmetry(45, 0, 'thermal');
-    expect(op.semiMajorMultiplier).toBeGreaterThan(1.07);
-    expect(th.semiMajorMultiplier).toBeGreaterThan(1.1);
+    // Spread about one by `equalArea`, so the elongation to read is a/b.
+    expect(op.semiMajorMultiplier / op.semiMinorMultiplier).toBeGreaterThan(1.13);
+    expect(th.semiMajorMultiplier / th.semiMinorMultiplier).toBeGreaterThan(1.18);
   });
 
   it('compresses the cross-range axis (semi-minor < 1) at non-vertical angles', () => {
@@ -219,20 +229,64 @@ describe('ejectaButterflyAsymmetry — Nimbus heuristic', () => {
     expect(asym).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 90 });
   });
 
-  it('reproduces the inline factors (1 + 0.4 f, 1 − 0.25 f, 0.3 R · f)', () => {
+  it('reproduces the inline envelope (1 + 0.4 f) / (1 − 0.25 f) and the 0.3 R · f offset', () => {
     const f = 0.5;
     const R = 10_000;
     const asym = ejectaButterflyAsymmetry(f, 0, m(R));
-    expect(asym.semiMajorMultiplier).toBeCloseTo(1 + 0.4 * f, 6);
-    expect(asym.semiMinorMultiplier).toBeCloseTo(1 - 0.25 * f, 6);
+    // The two factors are the envelope; `equalArea` spreads them about one.
+    expect(ba(asym)).toBeCloseTo((1 - 0.25 * f) / (1 + 0.4 * f), 12);
+    expect(asym.semiMajorMultiplier * asym.semiMinorMultiplier).toBeCloseTo(1, 12);
     expect(asym.centerOffsetMeters).toBeCloseTo(0.3 * R * f, 6);
   });
 
   it('clamps the asymmetry factor to [0, 1]', () => {
     const above = ejectaButterflyAsymmetry(2, 0, m(1_000));
-    expect(above.semiMajorMultiplier).toBeCloseTo(1.4, 6);
+    expect(ba(above)).toBeCloseTo(0.75 / 1.4, 12);
     const below = ejectaButterflyAsymmetry(-0.5, 0, m(1_000));
     expect(below).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 0 });
+  });
+});
+
+describe('the picture covers the ground its caption claims', () => {
+  it('keeps every impact ring area-neutral, at every angle', () => {
+    // One number goes to the caption, the legend, the tooltip and the toll —
+    // the toll counts the people inside a circle of that radius — so the
+    // ellipse the renderer draws in its place must have that circle's area.
+    // Before 19 September 2026 a 45° crater was drawn at 0.891 of it and the
+    // damage rings at 0.94 to 0.96 (docs/IMPACT_AUDIT.md §3.2, §3.3).
+    for (let angle = 1; angle <= 90; angle += 1) {
+      const crater = craterAsymmetry(angle, 0);
+      expect(
+        crater.semiMajorMultiplier * crater.semiMinorMultiplier,
+        `crater at ${String(angle)}°`
+      ).toBeCloseTo(1, 12);
+      for (const kind of ['overpressure', 'thermal'] as const) {
+        const ring = obliqueImpactRingAsymmetry(angle, 0, kind);
+        expect(
+          ring.semiMajorMultiplier * ring.semiMinorMultiplier,
+          `${kind} at ${String(angle)}°`
+        ).toBeCloseTo(1, 12);
+      }
+    }
+    for (let f = 0; f <= 1; f += 0.05) {
+      const blanket = ejectaButterflyAsymmetry(f, 0, m(10_000));
+      expect(
+        blanket.semiMajorMultiplier * blanket.semiMinorMultiplier,
+        `blanket at f = ${f.toFixed(2)}`
+      ).toBeCloseTo(1, 12);
+    }
+  });
+
+  it('puts the caption between the axes, never on the edge', () => {
+    // The globe audit asks a ring's drawn axes to bracket the radius it is
+    // captioned with. The crater used to sit exactly on the upper bound: its
+    // major axis WAS the radius, so the caption was the farthest the shape
+    // reached and every other direction read less.
+    for (const angle of [5, 15, 30, 45, 60, 80]) {
+      const crater = craterAsymmetry(angle, 0);
+      expect(crater.semiMajorMultiplier, `crater at ${String(angle)}°`).toBeGreaterThan(1);
+      expect(crater.semiMinorMultiplier, `crater at ${String(angle)}°`).toBeLessThan(1);
+    }
   });
 });
 

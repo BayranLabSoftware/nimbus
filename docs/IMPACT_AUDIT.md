@@ -144,7 +144,7 @@ airburst non scava.
 E il caso peggiore è sistematico: l'inviluppo è più forte agli angoli bassi, che
 sono esattamente gli angoli a cui un corpo finisce in airburst.
 
-### 3.2 Il cratere è disegnato con sin^⅓θ due volte, e la didascalia sta al bordo esterno
+### 3.2 Il cratere è disegnato con sin^⅓θ due volte, e la didascalia sta al bordo esterno — **corretto**
 
 `craterAsymmetry` dice nel proprio commento di tenere il semiasse maggiore «al
 raggio nominale dell'impatto verticale». Ma il raggio nominale che riceve è
@@ -156,7 +156,7 @@ minore ×0,879), per il cratere sta **sul massimo** (maggiore ×1,000, minore
 ×0,891). Un lettore che misura il cratere nella direzione della traccia legge
 il numero scritto; in ogni altra direzione legge meno, fino al 56 % a 5°.
 
-### 3.3 Gli anelli sono disegnati più larghi del numero che portano
+### 3.3 Gli anelli sono disegnati più larghi del numero che portano — **corretto**
 
 Chicxulub, semiasse maggiore contro raggio in didascalia:
 
@@ -170,7 +170,7 @@ La didascalia resta compresa fra i due semiassi — che è la regola che l'audit
 del globo verifica — ma chi misura sulla mappa nella direzione più lunga trova
 **il 9–12 % in più** di quanto c'è scritto.
 
-### 3.4 La coltre di ejecta arriva più in là di quanto dichiara
+### 3.4 La coltre di ejecta arriva più in là di quanto dichiara — **corretto in parte**
 
 Per uno stony di 300 m a 30°, la coltre è un'ellisse di semiasse 102,2 km con il
 centro spostato **9,0 km** sottovento alla traccia: il bordo lontano è a
@@ -178,19 +178,65 @@ centro spostato **9,0 km** sottovento alla traccia: il bordo lontano è a
 sopravvento l'ellisse arriva comunque a 93 km, dove la «farfalla» fisica
 dovrebbe avere un settore vuoto: lo spostamento c'è, il vuoto no.
 
-### 3.5 La riga «onda d'urto» prende l'anello più esterno qualunque esso sia
+### 3.5 La riga «onda d'urto» prende l'anello più esterno qualunque esso sia — **corretto**
 
 Per Chelyabinsk, che non produce alcun blast al suolo, la legenda riporta
 «Shock front · travelling **1,7 km**» — il raggio dell'ustione di secondo grado,
 l'unico anello rimasto. Una riga d'onda d'urto che riporta la misura di un
 lampo.
 
-### 3.6 «Crater rim 433 m» è un raggio
+### 3.6 «Crater rim 433 m» è un raggio — **corretto**
 
 Tutte le voci sono raggi, e va bene. Ma i crateri, in letteratura e nel senso
 comune, si citano per **diametro**: Meteor Crater «è 1,2 km». Un lettore che
 legge «Crater rim 433 m» capirà 433 m di cratere, dove il modello dice 867 m di
 diametro. È l'unica voce con un'aspettativa forte in senso contrario.
+
+---
+
+## 3bis. Cosa è stato corretto, e come si vede che è corretto
+
+Il 19 settembre, subito dopo questo audit. Nessun numero del modello è cambiato:
+sono cambiati il disegno e le parole.
+
+**B-059 — la forma copre il terreno che il numero dichiara.** Un solo raggio va
+alla didascalia, alla legenda, al tooltip e al conteggio dei morti, e il
+conteggio prende le persone dentro un **cerchio** di quel raggio. Il renderer al
+suo posto disegna un'ellisse. Ora i due moltiplicatori sono distribuiti attorno
+a uno (`equalArea`), così `a·b = r²`: l'inviluppo b/a resta esattamente quello
+dei papers, e il raggio della didascalia diventa la media geometrica dei
+semiassi. Misurato sul renderer vero, su tre scenari e sette anelli ciascuno:
+
+|                                  | prima                                                 | dopo                   |
+| -------------------------------- | ----------------------------------------------------- | ---------------------- |
+| area disegnata / πr²             | 0,891 (cratere) · 0,94–0,96 (anelli) · 1,039 (coltre) | **1,0000 ovunque**     |
+| la didascalia sta fra i semiassi | no per il cratere (stava sul massimo)                 | **sì per ogni anello** |
+
+La coltre di ejecta non seguiva, e il fatto che non seguisse è ciò che ha rivelato
+il difetto sotto: il renderer **ricalcolava** i suoi fattori `(1 + 0,4 f)` e
+`(1 − 0,25 f)` invece di leggere la coppia che la fisica pubblica. Una
+espressione in due posti — è B-053 — rimasta muta finché una delle due non si è
+mossa. Ora legge `damageAsymmetry.ejectaBlanket` come ogni altro anello.
+
+**B-060 — un fronte d'urto è lungo quanto il proprio blast.** La riga prendeva
+l'anello più esterno qualunque fosse. Chelyabinsk ora non ha più la riga: le sue
+sovrapressioni al suolo sono tutte e tre zero, e una riga di legenda è la
+promessa che qualcosa è disegnato. Per il ferro da 50 m la riga passa da 12,7 km
+(la coltre di ejecta) a **8,4 km**, che è il suo anello da 0,5 psi.
+
+**Il raggio chiamato raggio.** «Crater rim» → «Crater radius», «Cratere» →
+«Raggio del cratere», e il tooltip dice in entrambe le lingue che il numero è il
+raggio e che il cratere misura il doppio da un bordo all'altro.
+
+**E il passo piatto del centro** (§3.4 e B-057): `computeAsymmetricGeometry`
+sposta il centro di ogni anello di un impatto obliquo fino a un quinto del suo
+raggio — per Chicxulub a 30° sono **799 km** — e lo faceva su 111 km/grado
+piatti, mettendolo a **45,0 km** da dove lo mette la sfera. Ora passa per
+`projectAlongAzimuth`.
+
+Quello che **non** è stato corretto di §3.4: la coltre resta un'ellisse spostata,
+non una farfalla con il settore vuoto sopravvento. Disegnare il vuoto è un
+cambio di forma, non di convenzione, e vuole il suo round.
 
 ---
 
@@ -212,12 +258,14 @@ climatico, la tempesta di fuoco, e gli inviluppi di asimmetria.
    modello, a ogni scala. Vuole un round con regole.
 2. **L'asimmetria obliqua sugli airburst** (§3.1) — un'ellisse al 67 % dove la
    fisica dà un cerchio, e proprio sui casi più probabili.
-3. **La didascalia del cratere al bordo esterno** (§3.2) e **il raggio chiamato
-   come un diametro** (§3.6) — due correzioni di presentazione, piccole.
-4. **La coltre di ejecta oltre il numero dichiarato** (§3.4).
-5. **L'orizzonte del lampo per un airburst** (§2.2) — latente.
-6. **La riga dell'onda d'urto** (§3.5).
+3. ~~La didascalia del cratere al bordo esterno~~ (§3.2) — **fatto**, B-059.
+4. ~~Gli anelli più larghi del numero~~ (§3.3) — **fatto**, B-059.
+5. ~~La coltre oltre il numero~~ (§3.4) — **fatto in parte**: area e centro sì,
+   il settore vuoto sopravvento no.
+6. ~~La riga dell'onda d'urto~~ (§3.5) — **fatto**, B-060.
+7. ~~Il raggio chiamato come un diametro~~ (§3.6) — **fatto**.
+8. **L'orizzonte del lampo per un airburst** (§2.2) — latente, non morde.
 
-I punti 1 e 2 cambiano numeri o forme che un visitatore legge, quindi vogliono
-il protocollo: regole scritte e spinte prima della misura. I punti 3, 4 e 6 sono
-presentazione e si possono fare subito.
+Restano i punti 1 e 2: cambiano numeri e forme che un visitatore legge, e
+vogliono il protocollo — regole scritte e spinte prima della misura, non una
+pezza dopo.

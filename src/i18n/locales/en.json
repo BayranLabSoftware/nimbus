@@ -787,7 +787,7 @@
   },
   "globe": {
     "ringLabel": {
-      "craterRim": "Crater rim",
+      "craterRim": "Crater radius",
       "thirdDegreeBurn": "3rd-degree burn",
       "secondDegreeBurn": "2nd-degree burn",
       "overpressure5psi": "5 psi · building collapse",
@@ -847,7 +847,7 @@
       "ring": {
         "craterRim": {
           "title": "Impact crater",
-          "description": "The ground inside this boundary was vaporised and excavated by the impact. There is no surface left here — only a depression of molten rock and glassy debris. Nothing organic survives."
+          "description": "The figure is the RADIUS, as it is for every ring here: the crater measures twice it across, the way craters are usually quoted. The ground inside this boundary was vaporised and excavated by the impact. There is no surface left here — only a depression of molten rock and glassy debris. Nothing organic survives."
         },
         "thirdDegreeBurn": {
           "title": "Third-degree burns",
@@ -965,7 +965,7 @@
       }
     },
     "ringShort": {
-      "craterRim": "Crater",
+      "craterRim": "Crater radius",
       "thirdDegreeBurn": "3rd-degree burns",
       "secondDegreeBurn": "2nd-degree burns",
       "overpressure5psi": "5 psi",

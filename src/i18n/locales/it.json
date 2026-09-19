@@ -787,7 +787,7 @@
   },
   "globe": {
     "ringLabel": {
-      "craterRim": "Cratere",
+      "craterRim": "Raggio del cratere",
       "thirdDegreeBurn": "Ustione III°",
       "secondDegreeBurn": "Ustione II°",
       "overpressure5psi": "5 psi · crollo edifici",
@@ -847,7 +847,7 @@
       "ring": {
         "craterRim": {
           "title": "Cratere d'impatto",
-          "description": "Il terreno qui dentro è stato vaporizzato e scavato dall'urto. Non c'è più suolo: solo una depressione di roccia fusa e detriti vetrificati. Niente di organico sopravvive."
+          "description": "Il numero è il RAGGIO, come per ogni altro anello: il cratere misura il doppio da un bordo all'altro, che è il modo in cui i crateri si citano di solito. Il terreno qui dentro è stato vaporizzato e scavato dall'urto. Non c'è più suolo: solo una depressione di roccia fusa e detriti vetrificati. Niente di organico sopravvive."
         },
         "thirdDegreeBurn": {
           "title": "Ustione di terzo grado",
@@ -965,7 +965,7 @@
       }
     },
     "ringShort": {
-      "craterRim": "Cratere",
+      "craterRim": "Raggio del cratere",
       "thirdDegreeBurn": "Ustioni III°",
       "secondDegreeBurn": "Ustioni II°",
       "overpressure5psi": "5 psi",

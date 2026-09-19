@@ -1406,14 +1406,15 @@ export function Globe(): JSX.Element {
       const semiMajor = nominalRadius * asymmetry.semiMajorMultiplier;
       const semiMinor = nominalRadius * asymmetry.semiMinorMultiplier;
       const offset = asymmetry.centerOffsetMeters;
-      const latRad = (centerLat * Math.PI) / 180;
-      const dLat = offset === 0 ? 0 : (offset * Math.cos(azimuthRad)) / 111_000;
-      const dLon =
+      // B-057: the centre slides along the sphere, like every other point this
+      // renderer places. An oblique impact shifts a ring by up to a fifth of
+      // its own radius, which for a planetary ring is hundreds of kilometres.
+      const centre =
         offset === 0
-          ? 0
-          : (offset * Math.sin(azimuthRad)) / (111_000 * Math.max(Math.cos(latRad), 1e-6));
+          ? { latDeg: centerLat, lonDeg: centerLon }
+          : projectAlongAzimuth(centerLat, centerLon, azimuthRad, offset);
       return {
-        position: Cartesian3.fromDegrees(centerLon + dLon, centerLat + dLat),
+        position: Cartesian3.fromDegrees(centre.lonDeg, centre.latDeg),
         semiMajor,
         semiMinor,
         cesiumRotation: Math.PI / 2 - azimuthRad,
@@ -1951,21 +1952,21 @@ export function Globe(): JSX.Element {
       // impacts (asymmetryFactor → 0 above 45°).
       const blanketRadius = result.data.ejecta.blanketEdge1mm as number;
       if (Number.isFinite(blanketRadius) && blanketRadius > 0) {
-        const f = result.data.ejecta.asymmetryFactor;
-        const azimuthRad = (result.data.ejecta.azimuthDeg * Math.PI) / 180;
-        const offsetMeters = result.data.ejecta.downrangeOffset as number;
-        const semiMajor = blanketRadius * (1 + 0.4 * f);
-        const semiMinor = blanketRadius * (1 - 0.25 * f);
-        // Convert (north, east) offset in metres to lat/lon deltas.
-        const latRad = (ringAnchor.latitude * Math.PI) / 180;
-        const northOffsetDeg = (offsetMeters * Math.cos(azimuthRad)) / 111_000;
-        const eastOffsetDeg =
-          (offsetMeters * Math.sin(azimuthRad)) / (111_000 * Math.max(Math.cos(latRad), 1e-6));
-        const blanketLat = ringAnchor.latitude + northOffsetDeg;
-        const blanketLon = ringAnchor.longitude + eastOffsetDeg;
-        // Cesium ellipse rotation: CCW from East (+x). Azimuth is CW
-        // from North → cesiumRotation = π/2 − azimuthRad.
-        const cesiumRotation = Math.PI / 2 - azimuthRad;
+        // B-059: the blanket's ellipse is the one the physics publishes, not a
+        // second copy of its factors. This block recomputed (1 + 0.4 f) and
+        // (1 − 0.25 f) inline, so when `ejectaButterflyAsymmetry` was made
+        // area-neutral the blanket alone kept drawing 3.9 % more ground than
+        // its caption claimed — the same defect as B-053, one expression in
+        // two places, found the moment one of them moved.
+        const blanketGeom = computeAsymmetricGeometry(
+          result.data.damageAsymmetry.ejectaBlanket,
+          blanketRadius,
+          ringAnchor.latitude,
+          ringAnchor.longitude
+        );
+        const { semiMajor, semiMinor, cesiumRotation } = blanketGeom;
+        const blanketLat = ringAnchor.latitude;
+        const blanketLon = ringAnchor.longitude;
         // Ejecta blanket joins the ring cascade so it grows from
         // r=0 to its asymmetric ellipse instead of popping in at
         // full size on the same frame the result lands. The
@@ -1982,7 +1983,7 @@ export function Globe(): JSX.Element {
           color: EJECTA_BLANKET_COLOR,
           radiusM: blanketRadius,
           geom: {
-            position: Cartesian3.fromDegrees(blanketLon, blanketLat),
+            position: blanketGeom.position,
             semiMajor: clampToGreatCircle(semiMajor),
             semiMinor: clampToGreatCircle(semiMinor),
             cesiumRotation,
