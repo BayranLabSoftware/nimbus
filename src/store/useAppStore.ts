@@ -1635,10 +1635,46 @@ export function casualtyPlanForResult(
       // globe draws, not circles round the epicentre — an offshore
       // megathrust's VIII band runs 500 km along the coast while a
       // circle of the same radius sits at sea and counts nobody.
-      if (plan !== null && result.data.isExtendedSource) {
+      // Rule 325: an oriented stadium only where there is an orientation. With
+      // no strike the toll is counted in the envelope over every orientation —
+      // the disc the globe draws for the same case — and never in a rectangle
+      // pointing north.
+      if (
+        plan !== null &&
+        result.data.isExtendedSource &&
+        result.data.inputs.strikeAzimuthDeg === undefined
+      ) {
+        // The envelope goes in the POLYGON and not in the radii. Inflating the
+        // radii was tried first and is wrong twice over: rule 46 holds the
+        // bands below MMI VII to the radii the model publishes, and a band
+        // whose inner and outer radius grow by different rules counts the
+        // people in the gap twice — it read 419 229 exposed at MMI VI where
+        // the model published 98 093. The radius stays what the model says;
+        // the shape the count is taken in is the disc that contains the
+        // stadium at every orientation.
+        const unorientedM = Math.hypot(
+          (result.data.ruptureLength as number) / 2,
+          (result.data.ruptureWidth as number) / 2
+        );
+        for (const band of plan.bands) {
+          band.polygon = buildRuptureStadiumLatLon({
+            centerLatDeg: location.latitude,
+            centerLonDeg: location.longitude,
+            strikeAzimuthDeg: 0,
+            halfLengthAlongStrikeM: 0,
+            halfWidthAcrossStrikeM: 0,
+            contourRadiusM: band.outerRadiusM + unorientedM,
+          });
+        }
+      }
+      if (
+        plan !== null &&
+        result.data.isExtendedSource &&
+        result.data.inputs.strikeAzimuthDeg !== undefined
+      ) {
         const halfL = (result.data.ruptureLength as number) / 2;
         const halfW = (result.data.ruptureWidth as number) / 2;
-        const strike = result.data.inputs.strikeAzimuthDeg ?? 0;
+        const strike = result.data.inputs.strikeAzimuthDeg;
         for (const band of plan.bands) {
           band.polygon = buildRuptureStadiumLatLon({
             centerLatDeg: location.latitude,

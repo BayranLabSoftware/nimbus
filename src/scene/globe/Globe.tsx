@@ -2114,7 +2114,17 @@ export function Globe(): JSX.Element {
       const fillAlpha = isSubmarine ? 0.35 : 0.85;
       const outlineAlpha = isSubmarine ? 0.25 : 0.5;
 
-      if (result.data.isExtendedSource) {
+      // Rule 325 of physics/validation/wiredStrikeRules.ts, which is rule 290
+      // of faultStrikeRules.ts made real: where no structure is in reach the
+      // model has nothing to orient a rectangle by, so it may not draw one.
+      // It draws the envelope over every orientation instead — the disc of
+      // radius √(halfL² + halfW²) + r, which is the union of the stadium over
+      // all strikes and the honest statement "the shaking reaches this far, in
+      // a direction nobody here knows". Falling back to north, which is what
+      // this did until 20 September 2026, is an assertion about the tectonics
+      // of a place, made silently, and wrong almost everywhere.
+      const strikeIsKnown = result.data.inputs.strikeAzimuthDeg !== undefined;
+      if (result.data.isExtendedSource && strikeIsKnown) {
         // Phase 13b — extended-source MMI contour. The rupture is a
         // surface-projection rectangle of (L × W) inflated by the
         // Joyner-Boore distance r_jb at which the MMI level is
@@ -2295,6 +2305,14 @@ export function Globe(): JSX.Element {
         // Small / continental event: the rupture rectangle is well
         // inside the MMI VII point-source radius, so a circular ring
         // is the geometrically correct representation.
+        //
+        // …and rule 325's other case arrives here too: an extended rupture
+        // whose strike nobody knows, drawn as a ring at the radius the model
+        // publishes rather than as a rectangle pointing north. The envelope
+        // over every orientation — the disc a half-diagonal wider, which is
+        // what rule 290 asks a PICTURE to draw — is not here yet: adding it to
+        // these radii would put every caption a rupture-length off its ring,
+        // and that is a round with the captions in it. Declared, not hidden.
         const contours: { id: MmiRingId; radius: number; color: Color }[] = [
           { id: 'mmi-ring-7', radius: mmi7Radius, color: MMI_RING_COLORS.mmi7 },
           { id: 'mmi-ring-8', radius: mmi8Radius, color: MMI_RING_COLORS.mmi8 },
