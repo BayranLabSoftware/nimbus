@@ -79,7 +79,8 @@ import {
   fetchTerrainGridForLocation,
   getCachedGlobalBathymetricMosaic,
 } from '../terrainSampling.js';
-import { buildRuptureStadiumPolygon } from '../stadiumPolygon.js';
+import { buildRuptureStadiumPolygon, projectAlongAzimuth } from '../stadiumPolygon.js';
+import { SIM_ENTITY_PREFIXES } from '../visualContracts.js';
 import { AftershockDetailCard } from './AftershockDetailCard.js';
 import { mushroomCloudAltitudeMeters, spawnExplosionVfxFromJoules } from './explosionVfx.js';
 import { spawnEruptionColumn } from './eruptionVfx.js';
@@ -412,34 +413,6 @@ const RING_RADIUS_SIGMA: Record<string, number> = {
   ejectaBlanket: 0.5,
   tsunamiCavity: 0.3,
 };
-
-/**
- * Every entity id the simulator pipeline creates starts with one of
- * these prefixes (or matches one of them exactly). The render effect
- * does a granular per-id sweep on the way in, and a final defensive
- * pass over this list at the end to catch anything a future addition
- * forgets to enumerate — re-running on a different click then never
- * leaves a ghost ring behind.
- */
-const SIM_ENTITY_PREFIXES: readonly string[] = [
-  'impact-marker', // marker dot + halo
-  'damage-ring-', // RING_ID_PREFIX
-  'mmi-ring-', // mmi-ring-7 / -8 / -9 (point-source disks)
-  'mmi-stadium-', // mmi-stadium-7 / -8 / -9 (extended-source rupture polygons)
-  'explosion-', // explosion-crater / -thermal / -5psi / -1psi / -emp / …
-  'tsunami-', // cavity, wavefronts, FMM heatmaps, isochrones
-  'aftershock-', // AFTERSHOCK_ID_PREFIX + AFTERSHOCK_DETAIL_IDS
-  'pyroclastic-', // PYROCLASTIC_RING_ID
-  'lahar-', // LAHAR_RING_ID
-  'ashfall-', // ASHFALL_PLUME_ID
-  'ejecta-', // EJECTA_BLANKET_ID
-  'lateral-blast', // LATERAL_BLAST_ID
-  'cascade-', // WAVEFRONT_INDICATOR_ID
-  'fuzzy-mc-', // FUZZY_RING_ID_PREFIX
-  'beacon-', // altitude beacons: airburst flash, HOB, eruption column
-  'eruption-vfx-', // colonna eruttiva 3D + ombrello
-  'fault-', // rupture trace polyline
-];
 
 function purgeSimulationEntities(viewer: Viewer): void {
   if (viewer.isDestroyed()) return;
@@ -2188,20 +2161,27 @@ export function Globe(): JSX.Element {
         // la traccia vola a quota fissa (il DEM è il fondale, e il
         // velo tsunami la coprirebbe); a terra drappeggia il rilievo.
         {
-          const θ = (strikeAzimuthDeg * Math.PI) / 180;
-          const eastDir = Math.sin(θ);
-          const northDir = Math.cos(θ);
-          const cosLat = Math.max(Math.cos((ringAnchor.latitude * Math.PI) / 180), 1e-6);
-          const mPerLat = 111_000;
-          const mPerLon = 111_000 * cosLat;
+          // B-056: the trace steps along the same sphere as the stadium it
+          // belongs to. It used to step on a flat 111 km per degree with the
+          // cosine taken once at the epicentre, and at 61°N — Alaska 1964 is
+          // a scenario this product can run — its far end landed 25.1 km from
+          // where `buildRuptureStadiumPolygon` puts the same corner, 6.3 % of
+          // the half-length. One rupture cannot have two geometries in one
+          // frame.
           const SAMPLE_M = 12_000;
           const steps = Math.max(4, Math.ceil(halfL / SAMPLE_M));
           const tracePoint = (sM: number): Cartesian3 => {
-            const lat = ringAnchor.latitude + (sM * northDir) / mPerLat;
-            const lon = ringAnchor.longitude + (sM * eastDir) / mPerLon;
+            // A negative distance is the other way along strike.
+            const azimuthRad = ((strikeAzimuthDeg + (sM < 0 ? 180 : 0)) * Math.PI) / 180;
+            const { latDeg, lonDeg } = projectAlongAzimuth(
+              ringAnchor.latitude,
+              ringAnchor.longitude,
+              azimuthRad,
+              Math.abs(sM)
+            );
             return isSubmarine
-              ? Cartesian3.fromDegrees(lon, lat, 2_500)
-              : Cartesian3.fromDegrees(lon, lat);
+              ? Cartesian3.fromDegrees(lonDeg, latDeg, 2_500)
+              : Cartesian3.fromDegrees(lonDeg, latDeg);
           };
           // Punti simmetrici attorno all'ipocentro: indice 0 = centro.
           const half: number[] = [];
@@ -2657,13 +2637,18 @@ export function Globe(): JSX.Element {
       // Offset the ellipse centre half-way along the wind direction so
       // the plume extends from ~vent to vent + downwindRange.
       const halfRange = downwind / 2;
-      // Convert (north, east) offsets in metres to lat/lon deltas.
-      const latRad = (ringAnchor.latitude * Math.PI) / 180;
-      const northOffsetDeg = (halfRange * Math.cos(windDirRad)) / 111_000;
-      const eastOffsetDeg =
-        (halfRange * Math.sin(windDirRad)) / (111_000 * Math.max(Math.cos(latRad), 1e-6));
-      const plumeLat = ringAnchor.latitude + northOffsetDeg;
-      const plumeLon = ringAnchor.longitude + eastOffsetDeg;
+      // B-057: the centre is projected on the sphere, like the ellipse Cesium
+      // draws around it. A flat 111 km per degree put it 1 552 km — 31 % —
+      // from where a 5 000 km plume's far edge belongs at 40°N, and the filled
+      // ellipse and its own dashed isopach then disagreed on screen.
+      const plumeCentre = projectAlongAzimuth(
+        ringAnchor.latitude,
+        ringAnchor.longitude,
+        windDirRad,
+        halfRange
+      );
+      const plumeLat = plumeCentre.latDeg;
+      const plumeLon = plumeCentre.lonDeg;
       // Cesium ellipse rotation is counter-clockwise from East (+x).
       // Wind direction is clockwise from North. Convert: ccwFromEast =
       // π/2 − windDirRad.
@@ -2713,9 +2698,15 @@ export function Globe(): JSX.Element {
         const y = bM * Math.sin(t);
         const north = x * Math.cos(windDirRad) - y * Math.sin(windDirRad);
         const east = x * Math.sin(windDirRad) + y * Math.cos(windDirRad);
-        const lat = plumeLat + north / 111_000;
-        const lon = plumeLon + east / (111_000 * Math.max(Math.cos(latRad), 1e-6));
-        isoPositions.push(Cartesian3.fromDegrees(lon, lat));
+        // B-057: on the sphere, from the plume's centre, at the bearing and
+        // range this point of the outline sits at.
+        const range = Math.hypot(north, east);
+        const bearing = Math.atan2(east, north);
+        const at =
+          range === 0
+            ? { latDeg: plumeLat, lonDeg: plumeLon }
+            : projectAlongAzimuth(plumeLat, plumeLon, bearing, range);
+        isoPositions.push(Cartesian3.fromDegrees(at.lonDeg, at.latDeg));
       }
       viewer.entities.add({
         id: 'ashfall-isopach-1mm',

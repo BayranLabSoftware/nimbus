@@ -22,6 +22,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { COMPLEX_DEPTH_COEFFICIENT, COMPLEX_DEPTH_EXPONENT } from '../events/impact/crater.js';
 import { simulateEarthquake, EARTHQUAKE_PRESETS } from '../events/earthquake/index.js';
+import { projectAlongAzimuth } from '../../scene/stadiumPolygon.js';
 import { simulateExplosion } from '../events/explosion/simulate.js';
 import { NUCLEAR_CRATER_COEFFICIENT } from '../events/explosion/cratering.js';
 import {
@@ -1253,6 +1254,137 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(contract?.caveats.some((c) => /circle|valley/i.test(c))).toBe(true);
   });
 
+  it('B-056 One rupture is drawn on one geometry', () => {
+    // The stadium is projected on the sphere by `projectAlongAzimuth`; the fault
+    // trace beside it stepped on a flat 111 km per degree, with the cosine taken
+    // once at the epicentre. At 61°N — Alaska 1964 is a scenario this product
+    // runs — the two put the same end of the same rupture 25 km apart.
+    const flat = (
+      lat0: number,
+      lon0: number,
+      azDeg: number,
+      dist: number
+    ): { latDeg: number; lonDeg: number } => {
+      const t = (azDeg * Math.PI) / 180;
+      const cosLat = Math.max(Math.cos((lat0 * Math.PI) / 180), 1e-6);
+      return {
+        latDeg: lat0 + (dist * Math.cos(t)) / 111_000,
+        lonDeg: lon0 + (dist * Math.sin(t)) / (111_000 * cosLat),
+      };
+    };
+    const apart = (
+      a: { latDeg: number; lonDeg: number },
+      b: { latDeg: number; lonDeg: number }
+    ): number => {
+      const R = 6_371_008;
+      const p1 = (a.latDeg * Math.PI) / 180;
+      const p2 = (b.latDeg * Math.PI) / 180;
+      const dp = p2 - p1;
+      const dl = ((b.lonDeg - a.lonDeg) * Math.PI) / 180;
+      const h = Math.sin(dp / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(h));
+    };
+    // Alaska 1964: a 800 km rupture at 61°N on a 250° strike.
+    const half = 400_000;
+    const sphere = projectAlongAzimuth(61, -147.6, (250 * Math.PI) / 180, half);
+    expect(apart(sphere, flat(61, -147.6, 250, half)) / 1_000).toBeGreaterThan(20);
+    // And the fix: the renderer now steps on the same sphere, so the trace's far
+    // end is the stadium's own corner along strike to the metre.
+    const stadium = buildRuptureStadiumLatLon({
+      centerLatDeg: 61,
+      centerLonDeg: -147.6,
+      strikeAzimuthDeg: 250,
+      halfLengthAlongStrikeM: half,
+      halfWidthAcrossStrikeM: 0,
+      contourRadiusM: 0,
+    });
+    const nearest = stadium.reduce(
+      (best, v) => Math.min(best, apart(sphere, { latDeg: v.latDeg, lonDeg: v.lonDeg })),
+      Number.POSITIVE_INFINITY
+    );
+    expect(nearest).toBeLessThan(1);
+    // The source of truth for the claim above: Globe.tsx draws the trace with
+    // the stadium's own projection and no flat step of its own.
+    const globe = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/Globe.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(globe).toContain('projectAlongAzimuth(');
+    // The trace's own flat step, gone. Eleven others remain elsewhere in this
+    // renderer and are declared, not fixed here: the worst is the ashfall
+    // rectangle, whose downwind edge can reach 5 000 km.
+    expect(globe).not.toContain('(sM * northDir) / mPerLat');
+  });
+
+  it('B-058 The legend states the ring the globe draws', () => {
+    // 15 Mt at 700 m over New Orleans, which is what found it: the globe drew
+    // the light-damage ring at 55.6 km — the radius the burst's own height
+    // gives — and the legend beside it read 61.8 km, the surface burst's. Its
+    // two neighbours already read the corrected ones, so the row was the odd
+    // one out, and the shock-front row, which takes the outermost radius the
+    // legend holds, inherited the same 61.8 km.
+    const r = simulateExplosion({
+      yieldMegatons: 15,
+      heightOfBurst: m(700),
+      groundType: 'FIRM_GROUND',
+    });
+    const b = r.blast;
+    // The two are genuinely different numbers, so the row cannot read either.
+    expect((b.lightDamageRadius as number) / 1_000).toBeCloseTo(61.8, 1);
+    expect((b.lightDamageRadiusHob as number) / 1_000).toBeCloseTo(55.6, 1);
+    // The legend reads the corrected one, like its neighbours.
+    const legend = readFileSync(
+      fileURLToPath(new URL('../../ui/components/RingLegend.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(legend).toContain("push('lightDamage', b.lightDamageRadiusHob)");
+    expect(legend).not.toContain("push('lightDamage', b.lightDamageRadius)");
+  });
+
+  it('B-057 The ash plume is drawn where the wind carries it', () => {
+    // The plume is a Cesium ellipse, which Cesium lays on the ellipsoid from a
+    // centre and two axes in metres — correctly. Its centre, and the 96 points
+    // of the dashed 1 mm isopach around it, were placed by a flat 111 km per
+    // degree with the cosine taken once at the vent. For the 5 000 km reach the
+    // ashfall model can publish, that puts the far edge 1 552 km — 31 % — from
+    // where the wind carries it, and the filled ellipse and its own outline
+    // then disagree on screen.
+    const R = 6_371_008;
+    const flat = (lat0: number, lon0: number, azRad: number, d: number) => {
+      const cosLat = Math.max(Math.cos((lat0 * Math.PI) / 180), 1e-6);
+      return {
+        latDeg: lat0 + (d * Math.cos(azRad)) / 111_000,
+        lonDeg: lon0 + (d * Math.sin(azRad)) / (111_000 * cosLat),
+      };
+    };
+    const apart = (
+      a: { latDeg: number; lonDeg: number },
+      b: { latDeg: number; lonDeg: number }
+    ): number => {
+      const p1 = (a.latDeg * Math.PI) / 180;
+      const p2 = (b.latDeg * Math.PI) / 180;
+      const dp = p2 - p1;
+      const dl = ((b.lonDeg - a.lonDeg) * Math.PI) / 180;
+      const h = Math.sin(dp / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(h));
+    };
+    const east = Math.PI / 2;
+    const sphere = projectAlongAzimuth(40, 14, east, 5_000_000);
+    expect(apart(sphere, flat(40, 14, east, 5_000_000)) / 1_000).toBeGreaterThan(1_000);
+    // A thousand kilometres is already 66 km out, which is a plume edge in the
+    // wrong country.
+    expect(
+      apart(projectAlongAzimuth(40, 14, east, 1_000_000), flat(40, 14, east, 1_000_000)) / 1_000
+    ).toBeGreaterThan(50);
+    const globe = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/Globe.tsx', import.meta.url)),
+      'utf8'
+    );
+    // The plume's centre and its outline both go through the sphere now.
+    expect(globe).toContain('const plumeCentre = projectAlongAzimuth(');
+    expect(globe).not.toContain('const lat = plumeLat + north / 111_000;');
+  });
+
   it('B-055 A wave crosses the dateline as it crosses any other meridian', () => {
     // Pre-fix: the raster was a wall at ±180°, so a front reached the far side
     // only by going round the globe — 30.31 h where the arc gives 1.72.
@@ -1300,9 +1432,9 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-055 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-058 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011).
-    const expectedRows = 55;
-    expect(expectedRows).toBe(55);
+    const expectedRows = 58;
+    expect(expectedRows).toBe(58);
   });
 });

@@ -38,8 +38,14 @@ const EARTH_MEAN_RADIUS_M = 6_371_008;
 /** Convert a (lat, lon, azimuth, distance) move on the sphere into a
  *  destination (lat, lon). Inputs in degrees, output in degrees.
  *  Standard great-circle "direct" formula (Vincenty 1975 Eq. 1 in
- *  the spherical limit). */
-function projectAlongAzimuth(
+ *  the spherical limit).
+ *
+ *  Exported since 19 September 2026 because the fault trace drawn beside
+ *  this stadium was stepping along a flat 111 km per degree with the
+ *  cosine taken once at the epicentre, and the two disagreed about where
+ *  the same rupture ends by up to 25 km (B-056). One rupture, one
+ *  geometry. */
+export function projectAlongAzimuth(
   lat0Deg: number,
   lon0Deg: number,
   azimuthRadFromN: number,

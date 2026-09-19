@@ -38,7 +38,7 @@
             "standsFor": [],
             "holds": false,
             "credit": 0,
-            "status": "pending",
+            "status": "not met",
             "clauses": []
           },
           {
@@ -92,13 +92,13 @@
           }
         ],
         "held": 1,
-        "pending": 3,
+        "pending": 2,
         "credit": 1,
         "reading": 1,
         "fidelity": {
           "rules": 4,
           "held": 0,
-          "pending": 2,
+          "pending": 1,
           "credit": 0,
           "reading": 0
         },
@@ -182,9 +182,9 @@
             "rule": "G5",
             "measure": "beyond",
             "standsFor": [],
-            "holds": false,
-            "credit": 0,
-            "status": "pending",
+            "holds": true,
+            "credit": 1,
+            "status": "met",
             "clauses": []
           },
           {
@@ -206,10 +206,10 @@
             "clauses": []
           }
         ],
-        "held": 1,
-        "pending": 5,
-        "credit": 1,
-        "reading": 0.9,
+        "held": 2,
+        "pending": 4,
+        "credit": 2,
+        "reading": 1.8,
         "fidelity": {
           "rules": 4,
           "held": 0,
@@ -219,10 +219,10 @@
         },
         "beyond": {
           "rules": 6,
-          "held": 1,
-          "pending": 2,
-          "credit": 1,
-          "reading": 1.5
+          "held": 2,
+          "pending": 1,
+          "credit": 2,
+          "reading": 3
         }
       },
       {

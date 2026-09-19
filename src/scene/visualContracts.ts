@@ -110,47 +110,72 @@ function defineContract<I extends string>(
 }
 
 export const VISUAL_CONTRACTS = {
-  // ---- Impact damage rings (point-source) -------------------------
+  // ---- Shapes an impact and an explosion share -------------------
+  // Six of these ids are used by both families, because the shape and
+  // the quantity are the same — a 5 psi ring is a 5 psi ring — while the
+  // relation behind it is not. Each therefore declares BOTH provenances,
+  // labelled, and the caveats say where the two differ materially. The
+  // audit of 19 September 2026 found every one of these six citing only
+  // one of its two families, and three citing a source the physics
+  // itself disclaims.
   craterRim: defineContract({
     id: 'craterRim',
     quantity: 'Final crater rim radius',
-    formula: 'Collins, Melosh & Marcus (2005) MAPS 40(6), Eq. 22 / 27',
+    formula:
+      'impact: Collins, Melosh & Marcus (2005) MAPS 40(6), Eq. 21 transient → Eq. 22 simple / Eq. 27 complex, halved · explosion: Glasstone & Dolan (1977) §6.09 with Figure 6.72a’s K and Nordyke (1962), D ∝ W^0.3',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: [],
+    caveats: [
+      'an explosion draws none unless the burst is on the surface: the K · W^0.3 scaling holds in the contact regime only, and Hiroshima’s observed crater was zero',
+    ],
   }),
   thirdDegreeBurn: defineContract({
     id: 'thirdDegreeBurn',
-    quantity: '3rd-degree burn fluence radius (8 cal/cm²)',
-    formula: 'Glasstone & Dolan (1977) Table 7.41',
+    quantity: '3rd-degree burn radius',
+    formula:
+      'explosion: Glasstone & Dolan (1977) Figure 12.65, the 50 % line of skin-burn probability for an average unshielded population, by yield (rules 114 to 117 of validation/burnProbabilityRules.ts) · impact: the same inverse-square radius at the project’s own 8 cal/cm² with Collins et al. (2005) Eq. 5’s luminous efficiency ≈ 3 × 10⁻³ (rule 81 of validation/burnRules.ts)',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: ['ignores atmospheric scattering and terrain shadowing'],
+    caveats: [
+      'ignores atmospheric scattering and terrain shadowing',
+      'the figure’s population is “average unshielded, taking no evasive action”, which a visitor’s usually is not',
+      'an impact combines its two flashes — the fireball at the ground and the energy left in the air — as √(r_ground² + r_air²), adopted by rule 135; Glasstone’s own burn curves are NOT used there, because they are drawn for a nuclear pulse lasting seconds',
+    ],
   }),
   secondDegreeBurn: defineContract({
     id: 'secondDegreeBurn',
-    quantity: '2nd-degree burn fluence radius (5 cal/cm²)',
-    formula: 'Glasstone & Dolan (1977) Table 7.41',
+    quantity: '2nd-degree burn radius',
+    formula:
+      'explosion: Glasstone & Dolan (1977) Figure 12.65’s 50 % line for the second degree · impact: the project’s own 5 cal/cm² with Collins et al. (2005)’s luminous efficiency',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: ['ignores atmospheric scattering'],
+    caveats: [
+      'ignores atmospheric scattering',
+      'always larger than the 3rd-degree ring',
+      'until 16 September 2026 an explosion read Figure 12.64 instead — the exposure three skin pigmentations need, which carries no probability; the two differ by a few per cent and not always in the same direction',
+    ],
   }),
   overpressure5psi: defineContract({
     id: 'overpressure5psi',
     quantity: '5 psi (34.5 kPa) overpressure radius',
-    formula: 'Kinney & Graham (1985) Ch. 4 + Glasstone HOB factor',
+    formula:
+      'threshold from Glasstone & Dolan (1977) §5.129 and Table 5.139; range by inverting Kinney & Graham (1985) Ch. 4 — explosion: with Glasstone’s height-of-burst factor · impact: on half the kinetic energy (IMPACT_BLAST_COUPLING), no height-of-burst factor',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: ['ignores terrain channelling and reflections'],
+    caveats: [
+      'ignores terrain channelling and reflections',
+      'the Earth Impact Effects Program’s own ground blast was measured against this on 16 September 2026 and REFUSED — it agrees on 55 of 60 ranges, the five outside all one body (rules 138 to 140 of validation/groundBlastRules.ts) — so Kinney & Graham is the model in place for an impact and BM-21 stays open',
+    ],
   }),
   overpressure1psi: defineContract({
     id: 'overpressure1psi',
     quantity: '1 psi (6.9 kPa) overpressure radius',
-    formula: 'Kinney & Graham (1985) Ch. 4',
+    formula:
+      'threshold from Glasstone & Dolan (1977) §5.139 and Table 5.139; range by inverting Kinney & Graham (1985) Ch. 4, with the height-of-burst factor for an explosion and half the kinetic energy for an impact',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
@@ -159,127 +184,171 @@ export const VISUAL_CONTRACTS = {
   lightDamage: defineContract({
     id: 'lightDamage',
     quantity: '0.5 psi (3.5 kPa) light-damage overpressure radius',
-    formula: 'Kinney & Graham (1985) Ch. 4',
+    formula:
+      'threshold from Glasstone & Dolan (1977) Table 5.139; range by inverting Kinney & Graham (1985) Ch. 4, as the two rings above',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: [],
+    caveats: [
+      'for an explosion this is the ring the burst actually draws at its own height, corrected on 18 September 2026 (B-049)',
+    ],
   }),
   radiationLD50: defineContract({
     id: 'radiationLD50',
-    quantity: 'Initial-radiation LD50/60 dose radius (~4.5 Gy)',
-    formula: 'Glasstone & Dolan (1977) Fig. 8.46 + UNSCEAR 2000',
+    quantity: 'Initial-radiation LD50/60 dose radius (≈ 4.5 Gy)',
+    formula:
+      'a project fit, range ∝ W^0.18, to three anchors: ≈ 0.7 km at 1 kt, ≈ 1.0 km at Hiroshima’s 15 kt and ≈ 2.5 km at 1 Mt; the doses themselves are UNSCEAR and BEIR VII values',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: ['ignores shielding (buildings, terrain)'],
+    caveats: [
+      'ignores shielding (buildings, terrain)',
+      'the “Glasstone Fig. 8.46” this contract credited until 19 September 2026 is flagged in the module itself as not a dose–range figure and unverified; the exponent is the project’s, fitted to the three anchors within 15 %',
+    ],
   }),
   empAffected: defineContract({
     id: 'empAffected',
     quantity: 'EMP-affected ground footprint',
-    formula: 'Glasstone §11 / IEC 61000-2-9',
+    formula:
+      'IEC 61000-2-9’s 50 kV/m canonical peak for a 1 Mt high-altitude burst, falling as the cube root of yield — a project assumption, not a published range law',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: ['exoatmospheric only; ground bursts have negligible EMP'],
+    caveats: [
+      'exoatmospheric only; a ground burst makes a local source-region field of order 0.1·√(W/kt) kV/m and no continental footprint',
+      'Meta-R-320 finds the early-time field weakly dependent on yield, which this scaling does not reproduce',
+    ],
   }),
 
   // ---- Earthquake MMI contours ------------------------------------
-  // Phase 13b — these split into two contracts depending on Mw and
-  // fault style. Small / continental events keep the point-source
-  // ring; megathrusts and Mw ≥ 7.5 events upgrade to extended-source
-  // stadium contour driven by the rupture rectangle (Wells &
-  // Coppersmith 1994 area scaling).
+  // Two shapes, chosen by Mw and fault style: the point-source ring for
+  // small and continental events, the extended-source stadium from
+  // Mw 7.5 and for any declared subduction interface. Which LAW draws
+  // the radius is chosen by depth, and the citations below say so — they
+  // credited Boore et al. 2014 alone until 19 September 2026, where a
+  // source deeper than 70 km has been drawn by an intraslab model since
+  // 15 September.
   mmi7Point: defineContract({
     id: 'mmi7Point',
-    quantity: 'MMI VII felt-intensity radius (point-source)',
-    formula: 'Worden 2012 GMICE + Boore 2014 NGA-West2',
+    quantity: 'MMI VII felt-intensity radius (point source)',
+    formula:
+      'Worden et al. (2012) PGA↔MMI inverted on the law the depth selects: Boore et al. (2014) NGA-West2 to 70 km, Abrahamson, Gregor & Addo (2016) intraslab beyond it (rules 66 to 70 of validation/deepRules.ts)',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: ['point-source attenuation; valid for crustal Mw < 7.5'],
+    caveats: [
+      'point-source attenuation, with one Vs30 read at the epicentre for the whole footprint where a ShakeMap reads each cell’s own',
+      'the two subduction-interface relations implemented were NOT adopted, so a megathrust no deeper than 70 km is shaken by a law fitted to shallow crustal events',
+      'against ShakeMap’s own scenario, on the first five of 19 September 2026, this ring is 0.46 of the equivalent radius of the area ShakeMap puts above MMI VII, and it is drawn where ShakeMap draws none',
+    ],
   }),
   mmi7Stadium: defineContract({
     id: 'mmi7Stadium',
     quantity: 'MMI VII felt-intensity contour around the rupture',
-    formula: 'Worden 2012 + Boore 2014 with r_jb to Wells & Coppersmith 1994 rupture',
+    formula:
+      'the point-source radius above, taken as a Joyner–Boore distance and swept around the surface projection of the rupture rectangle (L from Wells & Coppersmith 1994, or Strasser et al. 2010 for a megathrust)',
     unit: 'metres',
     geometry: 'extended-source-stadium',
     isQuantitative: true,
     caveats: [
-      'rupture is a rectangle of L × W from W&C area scaling',
-      'r_jb is the perpendicular distance to the surface projection',
+      'the across-strike half-width is the DOWN-DIP width W/2, not its surface projection W·cos(dip)/2: an earthquake here carries no dip, so the stadium is as wide across strike as the fault is deep, which for a 45° fault is about 40 % too wide and for a 15° megathrust about 3 %',
+      'the rupture is centred on the epicentre and symmetric about it, where a real rupture is usually one-sided',
+      'r_jb is the perpendicular distance to that projection; the radius itself is a point-source inverse, not a finite-fault relation, where a gold-standard product computes a distance metric cell by cell over a grid and lets the contour fall out of it',
+      'the slip is uniform, so the footprint is even along strike where a real one is patchy: no asperity, and no directivity',
     ],
   }),
   mmi8Point: defineContract({
     id: 'mmi8Point',
-    quantity: 'MMI VIII felt-intensity radius (point-source)',
-    formula: 'Worden 2012 + Boore 2014',
+    quantity: 'MMI VIII felt-intensity radius (point source)',
+    formula: 'as mmi7Point, at intensity VIII',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: [],
+    caveats: ['see mmi7Point'],
   }),
   mmi8Stadium: defineContract({
     id: 'mmi8Stadium',
     quantity: 'MMI VIII felt-intensity contour around the rupture',
-    formula: 'Worden 2012 + Boore 2014 + Wells & Coppersmith 1994',
+    formula: 'as mmi7Stadium, at intensity VIII',
     unit: 'metres',
     geometry: 'extended-source-stadium',
     isQuantitative: true,
-    caveats: [],
+    caveats: ['see mmi7Stadium'],
   }),
   mmi9Point: defineContract({
     id: 'mmi9Point',
-    quantity: 'MMI IX felt-intensity radius (point-source)',
-    formula: 'Worden 2012 + Boore 2014',
+    quantity: 'MMI IX felt-intensity radius (point source)',
+    formula: 'as mmi7Point, at intensity IX',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: [],
+    caveats: ['see mmi7Point'],
   }),
   mmi9Stadium: defineContract({
     id: 'mmi9Stadium',
     quantity: 'MMI IX felt-intensity contour around the rupture',
-    formula: 'Worden 2012 + Boore 2014 + Wells & Coppersmith 1994',
+    formula: 'as mmi7Stadium, at intensity IX',
     unit: 'metres',
     geometry: 'extended-source-stadium',
     isQuantitative: true,
-    caveats: [],
+    caveats: ['see mmi7Stadium'],
+  }),
+  faultTrace: defineContract({
+    id: 'faultTrace',
+    quantity: 'Surface trace of the rupture, along strike through the epicentre',
+    formula:
+      'a line of the rupture length L (Wells & Coppersmith 1994, or Strasser et al. 2010 for a megathrust) on the azimuth the scenario gives as its strike, laid on the same sphere as the stadium it belongs to',
+    unit: 'metres (length)',
+    geometry: 'extended-source-stadium',
+    isQuantitative: true,
+    caveats: [
+      'drawn only for an extended source — from Mw 7.5, or any declared subduction interface',
+      'a line where a gold-standard product draws the surface projection of the fault PLANE as a polygon, and where a real event’s trace is read from a finite-fault inversion rather than from a length relation',
+      'symmetric about the epicentre, like the stadium: the ignition animation runs both ways from the hypocentre because the model has no rupture direction',
+      'this entity was drawn without a contract at all until 19 September 2026, which is the defect B-054 found for the lahar, the other way round',
+    ],
   }),
 
   // ---- Tsunami: cavity, wavefronts, isochrones --------------------
   tsunamiCavity: defineContract({
     id: 'tsunamiCavity',
-    quantity: 'Initial water cavity radius',
-    formula: 'Ward & Asphaug (2000) Eq. 3 with size-dependent η coupling',
+    quantity: 'The disc the wave leaves from',
+    formula:
+      'impact: Ward & Asphaug (2000) Eq. 3 with the size-dependent coupling · earthquake: half the down-dip rupture width, floored at 10 km (`seismicSourceCavityRadiusM`), which is the disc the arrival field is seeded from',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: ['near-field; the ring marks where the cavity collapses, not where damage stops'],
+    caveats: [
+      'near field; the ring marks where the source ends, not where damage stops',
+      'until 18 September 2026 the globe drew a quarter of the rupture length here while the wave left from half the width — 201 km against 111 for a Mw 9.2 (B-053)',
+    ],
   }),
   tsunamiWaveFront5m: defineContract({
     id: 'tsunamiWaveFront5m',
     quantity: 'Iso-amplitude contour at 5 m wave height',
-    formula: 'Lamb 1932 FMM + Green 1838 shoaling + size-dependent Ward source',
+    formula:
+      'the amplitude veil of tsunami/amplitudeField.ts: geometric spreading from the source disc, Kajiura dispersion, and Green’s (1838) shoaling on the bathymetric grid, over the arrival field marched at Lamb (1932)’s long-wave speed',
     unit: 'metres (amplitude)',
     geometry: 'bathymetric-isocontour',
     isQuantitative: true,
-    caveats: ['follows real coastlines via the bathymetric grid'],
+    caveats: [
+      'follows real coastlines because the field is masked by land',
+      'the source amplitude is the event’s own — Ward & Asphaug for an impact, the megathrust relation for an earthquake, Glasstone & Dolan §6.121 for a burst in water, the impulse-wave manual for a slide',
+    ],
   }),
   tsunamiWaveFront1m: defineContract({
     id: 'tsunamiWaveFront1m',
     quantity: 'Iso-amplitude contour at 1 m wave height',
-    formula: 'Lamb 1932 FMM + Green 1838',
+    formula: 'as tsunamiWaveFront5m, at 1 m',
     unit: 'metres (amplitude)',
     geometry: 'bathymetric-isocontour',
     isQuantitative: true,
-    caveats: [],
+    caveats: ['see tsunamiWaveFront5m'],
   }),
   tsunamiWaveFront03m: defineContract({
     id: 'tsunamiWaveFront03m',
     quantity: 'Iso-amplitude contour at 0.3 m wave height',
-    formula: 'Lamb 1932 FMM + Green 1838',
+    formula: 'as tsunamiWaveFront5m, at 0.3 m',
     unit: 'metres (amplitude)',
     geometry: 'bathymetric-isocontour',
     isQuantitative: true,
@@ -288,16 +357,19 @@ export const VISUAL_CONTRACTS = {
   tsunamiIsochrone1h: defineContract({
     id: 'tsunamiIsochrone1h',
     quantity: 'Tsunami arrival contour at +1 hour',
-    formula: 'Lamb 1932 FMM eikonal arrival',
+    formula:
+      'the eikonal arrival field of tsunami/fastMarching.ts, marched at Lamb (1932)’s √(g·h) over the bathymetric grid from the seeds the store places along the source',
     unit: 'seconds (travel time)',
     geometry: 'bathymetric-isocontour',
     isQuantitative: true,
-    caveats: [],
+    caveats: [
+      'the march wraps the antimeridian since 18 September 2026; before that the Pacific was a wall and a point two degrees past the dateline read 17.7 times late (B-055)',
+    ],
   }),
   tsunamiIsochrone2h: defineContract({
     id: 'tsunamiIsochrone2h',
     quantity: 'Tsunami arrival contour at +2 hours',
-    formula: 'Lamb 1932 FMM',
+    formula: 'as tsunamiIsochrone1h',
     unit: 'seconds',
     geometry: 'bathymetric-isocontour',
     isQuantitative: true,
@@ -306,7 +378,7 @@ export const VISUAL_CONTRACTS = {
   tsunamiIsochrone4h: defineContract({
     id: 'tsunamiIsochrone4h',
     quantity: 'Tsunami arrival contour at +4 hours',
-    formula: 'Lamb 1932 FMM',
+    formula: 'as tsunamiIsochrone1h',
     unit: 'seconds',
     geometry: 'bathymetric-isocontour',
     isQuantitative: true,
@@ -315,7 +387,7 @@ export const VISUAL_CONTRACTS = {
   tsunamiIsochrone8h: defineContract({
     id: 'tsunamiIsochrone8h',
     quantity: 'Tsunami arrival contour at +8 hours',
-    formula: 'Lamb 1932 FMM',
+    formula: 'as tsunamiIsochrone1h',
     unit: 'seconds',
     geometry: 'bathymetric-isocontour',
     isQuantitative: true,
@@ -323,146 +395,289 @@ export const VISUAL_CONTRACTS = {
   }),
   tsunamiAmplitudeHeatmapLocal: defineContract({
     id: 'tsunamiAmplitudeHeatmapLocal',
-    quantity: 'Wave amplitude field, near-source high-resolution',
-    formula: 'Green 1838 shoaling + Lamb 1932 cylindrical spreading',
+    quantity: 'Wave amplitude field, near-source high resolution',
+    formula: 'the same veil as the iso-amplitude contours, drawn cell by cell',
     unit: 'metres (amplitude)',
     geometry: 'heatmap-rectangle',
     isQuantitative: true,
-    caveats: ['rendered as an image inside the local terrain tile bbox'],
+    caveats: ['rendered as an image inside the local terrain tile’s bounding box'],
   }),
   tsunamiAmplitudeHeatmapGlobal: defineContract({
     id: 'tsunamiAmplitudeHeatmapGlobal',
-    quantity: 'Wave amplitude field, planet-wide low-resolution',
-    formula: 'Green 1838 + Lamb 1932 on the zoom-2 mosaic',
+    quantity: 'Wave amplitude field, planet-wide low resolution',
+    formula: 'the same veil, on the zoom-2 terrarium mosaic',
     unit: 'metres (amplitude)',
     geometry: 'heatmap-rectangle',
     isQuantitative: true,
-    caveats: ['~40 km/pixel — coastlines smaller than this are smeared'],
+    caveats: [
+      '≈ 40 km a pixel — a coastline smaller than that is smeared, and three of the nine megathrust epicentres of BM-05 fall on land at this resolution',
+    ],
   }),
   tsunamiArrivalHeatmap: defineContract({
     id: 'tsunamiArrivalHeatmap',
     quantity: 'Tsunami travel-time field',
-    formula: 'Lamb 1932 FMM eikonal',
+    formula: 'as the isochrones: the eikonal march at Lamb (1932)’s long-wave speed',
     unit: 'seconds',
     geometry: 'heatmap-rectangle',
     isQuantitative: true,
     caveats: [],
   }),
-
-  // ---- Tsunami coastal run-up — Phase 13d will turn this into a
-  // coastal-band polygon. The current contract is documented as
-  // point-marker because that is what we render today.
   tsunamiCoastalRunup: defineContract({
     id: 'tsunamiCoastalRunup',
     quantity: 'Vertical run-up height at coastal cells',
-    formula: 'Synolakis (1987) plane-beach R = 2.831·H·√(cot β)·(H/d)^¼',
+    formula: 'Synolakis (1987) plane beach, R = 2.831 · H · √(cot β) · (H/d)^¼',
     unit: 'metres (vertical)',
     geometry: 'point-marker',
     isQuantitative: true,
     caveats: [
-      'today rendered as colour-tier dots — Phase 13d upgrades to coastal-band polygon strip',
-      'capped at 4× incoming amplitude (McCowan 1894 wave-breaking)',
+      'rendered as colour-tier dots, not yet a coastal band',
+      'the source amplitude is capped at 0.4 of the water column at the generation site — a number with NO source: the McCowan (1894) attribution was removed from the physics on 16 September 2026 (B-039), and McCowan’s own breaking limit is 0.78 of the depth',
+      'held out and measured on 18 September 2026, the run-up stands at 3.69× what was recorded over 2 468 coastal bins, against T2’s bound of ×1.5',
     ],
   }),
 
-  // ---- Volcano: PDC, lateral blast, ashfall, plume ---------------
+  // ---- Volcano: PDC, lahar, lateral blast, ashfall ----------------
   pyroclasticRunout: defineContract({
     id: 'pyroclasticRunout',
-    quantity: 'Pyroclastic-flow runout',
-    formula: 'Sheridan 1979 / Dade & Huppert 1998 mobility ratio',
+    quantity: 'Pyroclastic-current reach',
+    formula:
+      'L = K · V^(1/3) with K = 10, a Nimbus value: Sheridan (1979) and Hayashi & Self (1992) are background and, in the module’s own words, “not the source of the equation”',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
     caveats: [
-      'today rendered as a circle around the vent — Phase 13c upgrades to topographic-channel routed by DEM',
-      'the runout MAGNITUDE is a faithful Sheridan formula; the SHAPE is a placeholder',
+      'a circle about the vent: the reach is a magnitude, the shape is a placeholder, and routing it needs a DEM drainage network this project has not written',
+      'the field’s published mobility law is Ogburn et al. (2016), whose volume is ONE current’s and not an eruption’s — by a factor of 6 to 218 on the events this project quotes — so it was read on 19 September 2026 and not adopted (rules 220 to 226 of validation/pdcMobilityRules.ts)',
+      'the “PDC runout (energy line)” the page prints beside this is a different number, 64 km at Mount St Helens and 88 at Vesuvius against 8 and 9 observed, and it is NOT drawn here',
+      'this contract credited “Sheridan 1979 / Dade & Huppert 1998” until 19 September 2026, for a relation neither published',
     ],
   }),
   laharRunout: defineContract({
     id: 'laharRunout',
     quantity: 'Lahar (debris-flow) reach',
     formula:
-      'project recast of Iverson, Schilling & Vallance (1998) GSA Bull. 110(8): 972–984, area law read as a length',
+      'project recast of Iverson, Schilling & Vallance (1998) GSA Bull. 110(8): 972–984, an inundation-AREA law read as a length',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
     caveats: [
-      'today rendered as a circle around the vent — a lahar follows a valley, and routing it needs the DEM drainage network, as the pyroclastic contract says of its own shape',
-      'the reach is a recast of an inundation-AREA law calibrated on Mount St Helens 1980, not a transcribed runout equation; its band is a factor of two',
+      'an unfilled outline about the vent, because a filled disc of this radius claims 5 576 km² where Griswold & Iverson (2008)’s own area law gives 27.1 (rules 202 to 207)',
+      'a lahar follows a valley; routing it needs the DEM drainage network, as the pyroclastic contract says of its own shape',
+      'calibrated on Mount St Helens 1980, where it gives 42.1 km against about 50 observed; its band is a factor of two',
     ],
   }),
   lateralBlast: defineContract({
     id: 'lateralBlast',
-    quantity: 'Mt-St-Helens-style directional blast wedge',
-    formula: 'Glicken (1996) USGS OFR 96-677',
+    quantity: 'Mount-St-Helens-style directional blast wedge',
+    formula:
+      'a project multiplier on the pyroclastic reach above — itself a project scaling — calibrated so the Mount St Helens 1980 wedge reaches the ≈ 27 km of Glicken (1996) USGS OFR 96-677, which is the account it was fitted to and not a formula it provides',
     unit: 'metres',
     geometry: 'asymmetric-ellipse',
     isQuantitative: true,
-    caveats: ['wedge centred on the user-supplied direction'],
+    caveats: [
+      'the wedge is centred on the direction the scenario names, and its width is a choice',
+    ],
   }),
   ashfallPlume: defineContract({
     id: 'ashfallPlume',
-    quantity: 'Wind-advected ash deposit thickness',
-    formula: 'Suzuki 1983 + Bonadonna & Phillips 2003 + Ganser 1993',
-    unit: 'metres (deposit thickness)',
+    quantity: 'Extent of the 1 mm ash isopach, downwind and across the wind',
+    formula:
+      'Tephra2’s own advection–diffusion model (Connor & Connor 2006), written for Nimbus and adopted on 16 September 2026 by rules 158 to 161: a Suzuki release, Ganser (1993) settling, and the diffusion Tephra2 uses, walked band by band along the wind',
+    unit: 'metres (extent of the 1 mm contour)',
     geometry: 'heatmap-rectangle',
     isQuantitative: true,
-    caveats: ['2-D analytical advection; not a 3-D atmospheric solver'],
+    caveats: [
+      'what is drawn is the FOOTPRINT of the 1 mm isopach — a downwind reach and a crosswind half-width — and not a field of thickness',
+      'one wind, constant with height and time; not a 3-D atmospheric solver',
+      'agreeing with Tephra2 is agreeing with its parameters, inverted from one eruption at Colima; ten isopach maps, which gold-standard rule V3 asks for, have not been read',
+    ],
   }),
   ejectaBlanket: defineContract({
     id: 'ejectaBlanket',
     quantity: 'Impact ejecta blanket, 1 m thickness contour',
-    formula: 'Collins 2005 + Pierazzo & Melosh asymmetry',
+    formula:
+      'Collins, Melosh & Marcus (2005) Eq. 47*, the r⁻³ thickness law inverted for the range at 1 m, with the Pierazzo & Melosh downrange asymmetry',
     unit: 'metres',
     geometry: 'asymmetric-ellipse',
     isQuantitative: true,
-    caveats: [
-      'today renders only the 1 m thickness ring — Phase 13e adds 1 mm / 1 cm / 10 m tiers',
-    ],
+    caveats: ['only the 1 m tier is drawn; the model also publishes 1 mm'],
   }),
 
-  // ---- Cascade + animation markers --------------------------------
+  // ---- Markers, bands and illustrations ---------------------------
+  altitudeBeacon: defineContract({
+    id: 'altitudeBeacon',
+    quantity: 'Altitude of a burst, a height of burst, or an eruption column top',
+    formula:
+      'the altitude the model computes for that scenario: an airburst’s peak-brightness altitude from the entry model, the height of burst the scenario names, or Mastin et al. (2009)’s plume top',
+    unit: 'metres (altitude)',
+    geometry: 'point-marker',
+    isQuantitative: true,
+    caveats: [
+      'a vertical shaft to scale; nothing below 500 m is drawn',
+      'this entity was drawn without a contract until 19 September 2026',
+    ],
+  }),
+  eruptionColumn: defineContract({
+    id: 'eruptionColumn',
+    quantity: 'Eruption column, to the plume top',
+    formula: 'Mastin et al. (2009) plume height from the volume eruption rate',
+    unit: 'metres (altitude)',
+    geometry: 'illustrative-3d',
+    isQuantitative: false,
+    caveats: [
+      'the height matches the relation; the column’s shape and umbrella are qualitative',
+      'this entity was drawn without a contract until 19 September 2026',
+    ],
+  }),
+  cascadeWavefront: defineContract({
+    id: 'cascadeWavefront',
+    quantity: 'Where the wave front stands, during the cascade animation',
+    formula: 'the arrival field’s own contour at the animation’s current time',
+    unit: 'seconds (elapsed)',
+    geometry: 'point-marker',
+    isQuantitative: false,
+    caveats: [
+      'an indicator for the animation, not a hazard contour: the contoured field is the one the isochrones draw',
+      'this entity was drawn without a contract until 19 September 2026',
+    ],
+  }),
   aftershockMarker: defineContract({
     id: 'aftershockMarker',
     quantity: 'Aftershock event (location, magnitude)',
-    formula: 'Reasenberg & Jones 1989 sequence + Bath ceiling',
+    formula: 'Reasenberg & Jones (1989) sequence with Båth’s ceiling on the largest',
     unit: 'magnitude (Mw, dimensionless) + metres (offset)',
     geometry: 'point-marker',
     isQuantitative: true,
     caveats: [
-      'reveal time is log-compressed for UI display; physical onsets are listed in the panel',
+      'reveal time is log-compressed for display; the physical onsets are in the panel',
+      'the locations are drawn about the epicentre and are not on a fault',
     ],
   }),
   ecdfRadialBitmap: defineContract({
     id: 'ecdfRadialBitmap',
-    quantity: 'Probability-of-exceedance halo from MC ensemble',
-    formula: 'Empirical CDF of N=200 Monte-Carlo realisations',
+    quantity: 'Probability that a damage radius reaches this far',
+    formula:
+      'the empirical distribution of the Monte Carlo ensemble, 200 realisations by default (`DEFAULT_ITERATIONS`)',
     unit: 'dimensionless probability',
     geometry: 'heatmap-rectangle',
     isQuantitative: true,
-    caveats: ['alpha at distance r encodes P(R ≥ r); rotationally symmetric'],
+    caveats: ['alpha at range r encodes P(R ≥ r), rotationally symmetric'],
   }),
   sigmaUpperBand: defineContract({
     id: 'sigmaUpperBand',
     quantity: 'Upper-1σ envelope around a damage radius',
-    formula: 'Per-quantity 1σ from src/physics/uq/conventions.ts',
+    formula: 'the per-quantity 1σ of src/physics/uq/conventions.ts',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
-    caveats: ['outer halo only; symmetric inner band is pending'],
+    caveats: [
+      'the outer halo only; the symmetric inner band is not drawn',
+      'for most quantities that σ is a project convention and not a band scored on a held-out set, which is what gold-standard rule G3 asks for',
+    ],
   }),
   mushroomCloud: defineContract({
     id: 'mushroomCloud',
     quantity: 'Stabilisation altitude of the rising fireball cloud',
-    formula: 'Glasstone & Dolan §2.51 + Khariton et al. 2005 fit',
+    formula:
+      'a project fit, H[km] = 1.7 · W[kt]^0.42, to four observations — Hiroshima ≈ 6 km at 15 kt, Crossroads Baker ≈ 3 km, Castle Bravo ≈ 40 km at 15 Mt, Tsar Bomba ≈ 64 km at 50 Mt — capped at 60 km',
     unit: 'metres (altitude)',
     geometry: 'illustrative-3d',
     isQuantitative: false,
-    caveats: ['altitude matches the formula; cloud morphology is qualitative'],
+    caveats: [
+      'the altitude matches the fit; the cloud’s morphology is qualitative',
+      'Glasstone & Dolan §2.51 and Khariton et al. (2005) are where two of the four observations come from, not the source of the regression',
+    ],
   }),
 } as const satisfies Record<string, VisualContract>;
 
 export type VisualContractId = keyof typeof VISUAL_CONTRACTS;
+
+/**
+ * Every entity id the simulator pipeline creates starts with one of these
+ * prefixes, and each prefix names the contracts that describe what it draws.
+ *
+ * Two jobs in one list, and that is deliberate. The renderer sweeps these
+ * prefixes to purge a previous simulation's entities, so a shape added without
+ * an entry here leaves a ghost on the next click. And the registry's own rule
+ * at the top of this file — every entity the globe adds must reference a
+ * contract — is only enforceable if the two lists are written side by side:
+ * until 19 September 2026 they were not, and four families were drawn with no
+ * contract at all (the rupture trace, the altitude beacons, the eruption column
+ * and the cascade's wave-front indicator). B-054 was the same defect the other
+ * way round — a lahar with no contract, and so no entity either.
+ *
+ * `contracts: []` is allowed for a shape that carries no physical quantity, and
+ * the reason has to be written beside it.
+ */
+export const ENTITY_CONTRACTS: readonly {
+  prefix: string;
+  contracts: readonly VisualContractId[];
+  why?: string;
+}[] = [
+  {
+    prefix: 'impact-marker',
+    contracts: [],
+    why: 'the locator dot: where the user clicked, not a quantity',
+  },
+  {
+    prefix: 'damage-ring-',
+    contracts: [
+      'craterRim',
+      'thirdDegreeBurn',
+      'secondDegreeBurn',
+      'overpressure5psi',
+      'overpressure1psi',
+      'lightDamage',
+    ],
+  },
+  { prefix: 'mmi-ring-', contracts: ['mmi7Point', 'mmi8Point', 'mmi9Point'] },
+  { prefix: 'mmi-stadium-', contracts: ['mmi7Stadium', 'mmi8Stadium', 'mmi9Stadium'] },
+  {
+    prefix: 'explosion-',
+    contracts: [
+      'craterRim',
+      'thirdDegreeBurn',
+      'secondDegreeBurn',
+      'overpressure5psi',
+      'overpressure1psi',
+      'lightDamage',
+      'radiationLD50',
+      'empAffected',
+      'mushroomCloud',
+    ],
+  },
+  {
+    prefix: 'tsunami-',
+    contracts: [
+      'tsunamiCavity',
+      'tsunamiWaveFront5m',
+      'tsunamiWaveFront1m',
+      'tsunamiWaveFront03m',
+      'tsunamiIsochrone1h',
+      'tsunamiIsochrone2h',
+      'tsunamiIsochrone4h',
+      'tsunamiIsochrone8h',
+      'tsunamiAmplitudeHeatmapLocal',
+      'tsunamiAmplitudeHeatmapGlobal',
+      'tsunamiArrivalHeatmap',
+      'tsunamiCoastalRunup',
+    ],
+  },
+  { prefix: 'aftershock-', contracts: ['aftershockMarker'] },
+  { prefix: 'pyroclastic-', contracts: ['pyroclasticRunout'] },
+  { prefix: 'lahar-', contracts: ['laharRunout'] },
+  { prefix: 'ashfall-', contracts: ['ashfallPlume'] },
+  { prefix: 'ejecta-', contracts: ['ejectaBlanket'] },
+  { prefix: 'lateral-blast', contracts: ['lateralBlast'] },
+  { prefix: 'cascade-', contracts: ['cascadeWavefront'] },
+  { prefix: 'fuzzy-mc-', contracts: ['ecdfRadialBitmap', 'sigmaUpperBand'] },
+  { prefix: 'beacon-', contracts: ['altitudeBeacon'] },
+  { prefix: 'eruption-vfx-', contracts: ['eruptionColumn'] },
+  { prefix: 'fault-', contracts: ['faultTrace'] },
+];
+
+/** The prefixes alone, which is what the renderer's purge needs. */
+export const SIM_ENTITY_PREFIXES: readonly string[] = ENTITY_CONTRACTS.map((e) => e.prefix);
 
 /** Look up a contract by id, throwing in dev mode if it is missing. */
 export function getVisualContract(id: VisualContractId): VisualContract {

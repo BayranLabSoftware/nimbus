@@ -31,23 +31,23 @@ Beside the count, the same rules are split in two (the amendment of 16 September
 | Impacts | 4.0 | 9.0 (3 of 3) | 1.5 (1 of 6) | 4 of 9 | 0 |
 | Explosions | 3.3 | 4.5 (1 of 2) | 3.0 (2 of 6) | 3 of 8 | 1 |
 | Volcanoes | 2.2 | 1.1 (0 of 4) | 3.0 (2 of 6) | 2 of 10 | 4 |
-| Earthquakes | 1.0 | 0.0 (0 of 4) | 1.8 (1 of 5) | 1 of 9 | 3 |
-| Waves from earthquakes | 0.9 | 0.0 (0 of 4) | 1.5 (1 of 6) | 1 of 10 | 5 |
+| Waves from earthquakes | 1.8 | 0.0 (0 of 4) | 3.0 (2 of 6) | 2 of 10 | 4 |
+| Earthquakes | 1.0 | 0.0 (0 of 4) | 1.8 (1 of 5) | 1 of 9 | 2 |
 
 #### Earthquakes
 
 Fidelity:
 
 - **G1**, not met. Met for Boore et al. 2014 (to Boore's Fortran), Allen et al. 2012, the interface models and Thompson & Worden's distances; not for every relation that sets a printed number.
-- **E1**, pending. A ShakeMap scenario run without stations on the same maps has not been run.
+- **E1**, pending. ShakeMap 4 runs here since 19 September 2026 (docs/SHAKEMAP_SETUP.md): its own assemble and model, on an event with a source and no data, over its California Vs30 grid with active_crustal_nshmp2014, WGRW12 and Allen12IPE. On the first five scenarios our ring is 0.46 of ShakeMap's equivalent MMI VII radius at the rock reference, we draw 6.7 and 9.7 km of VII where it draws none, and at Mw 6.5 we draw the same 9.68 km at 10 km depth and at 40 where its own maximum intensity falls from 7.75 to 6.24. Five scenarios are not three hundred maps, so the rule stays pending on its set (benchmark/results/shakemap-against-nimbus-2026-09-19.json).
 - **E2**, not met. 0.13× PAGER's people at MMI VII and above, σ_ln 2.18.
-- **E3**, pending. PAGER's own σ_ln on the same rows has not been read.
+- **E3**, not met. PAGER's own scatter read on 19 September 2026 (rules 215 to 219): on the 48 held-out rows where the record and both models are above zero, the toll is 0.901× with σ_ln 2.798 against PAGER's 3.375× and σ_ln 2.547 — a scatter 1.286 times the reference's, where the amendment of 16 September allows none. Under the bound as first written, PAGER's plus 0.25, it misses by 0.00127 in ln (benchmark/results/pager-scatter-2026-09-19.json).
 
 Beyond:
 
 - **E4 (G3)**, pending. Follows E3.
 - **E5 (G4)**, not met. The envelope has no depth cells.
-- **G5**, not met. The sweep of 16 September 2026 finds 16 failures: rings stepping over their thresholds (benchmark/results/invariants-2026-09-16-4.json).
+- **G5**, not met. The sweep of 19 September 2026 finds the same 16 failures as 16 September, and now says what they are: every one is a contour's radius, and on 19 September the sweep also read the field itself at fixed places and found it smooth. At Mw 9.5925 and 319 km depth a thousandth of a magnitude moves the MMI VII radius 15.6 %, from 13 445 m to 15 542 m, while the epicentral intensity moves from 7.0018 to 7.0024 and the accelerations at 20 and 100 km by 0.06 %: the epicentral contour of a source three hundred kilometres down is ill-conditioned, not discontinuous. The other ten are rings being born — 0 to 786 m for MMI IX as the epicentral intensity crosses 9.0000, 0 to 276 m for liquefaction — where the crossing moves as the square root of the excess. The continuity clause as written is about the radius, so this stays not met; whether a contour's conditioning should be read as a regime switch is a question for an amendment, and an amendment may not be written after the figure (benchmark/results/invariants-2026-09-19-1.json).
 - **G6**, not met. Every gap is declared in the report, but a 9 may carry only the ceilings, and the report declares gaps that are not ceilings.
 - **G7**, met. Every default changed since the rules were written changed by rules pushed before their candidate ran, with every outcome recorded (docs/BENCHMARK_PROTOCOL.md; the rule files of validation/).
 
@@ -65,7 +65,7 @@ Beyond:
 - **T4**, pending. No held-out set of tsunami tolls.
 - **T5 (G3)**, not met. Waves carry no band.
 - **G4**, not met. No measured cells for waves.
-- **G5**, pending. The earthquake sweep checks the shaking's rings and not the wave's.
+- **G5**, met. Since 19 September 2026 the sweep reads the wave and not only the shaking: the slip, the seafloor uplift, the down-dip width, the source wavelength and period, the amplitudes at 1 000 and 5 000 km — undispersed, dispersed and toward a receiver — the run-up, the inundation distance and the travel time, fifteen quantities over 5 000 random scenarios, with no failure of monotonicity or continuity in any of them. The earthquake family's 16 failures are all in the shaking's contours and belong to that domain. The second clause, that the application prints what the model computes, was read by the globe audit of 18 September on 94 contours (benchmark/results/invariants-2026-09-19-1.json, benchmark/results/globe-audit-2026-09-18.json).
 - **G6**, not met. Every gap is declared in the report, but a 9 may carry only the ceilings, and the report declares gaps that are not ceilings.
 - **G7**, met. Every default changed since the rules were written changed by rules pushed before their candidate ran, with every outcome recorded (docs/BENCHMARK_PROTOCOL.md; the rule files of validation/).
 

@@ -2,7 +2,12 @@ import { describe, expect, it } from 'vitest';
 
 import en from '../i18n/locales/en.json';
 import itLocale from '../i18n/locales/it.json';
-import { VISUAL_CONTRACTS, type VisualContract } from './visualContracts.js';
+import {
+  ENTITY_CONTRACTS,
+  SIM_ENTITY_PREFIXES,
+  VISUAL_CONTRACTS,
+  type VisualContract,
+} from './visualContracts.js';
 import { simulateVolcano } from '../physics/events/volcano/simulate.js';
 
 /**
@@ -87,6 +92,71 @@ describe('the visual contracts', () => {
       const contract = (VISUAL_CONTRACTS as Record<string, VisualContract | undefined>)[id];
       expect(contract, `${what} has a visual contract`).toBeDefined();
     }
+  });
+
+  it('give every entity the globe draws a contract, or a written reason for none', () => {
+    // The rule this file opens with — every entity the globe adds references a
+    // contract — was unenforceable until 19 September 2026, because the list of
+    // entity prefixes lived in Globe.tsx and the contracts here, and nothing
+    // compared them. Four families were drawn with none: the rupture trace, the
+    // altitude beacons, the eruption column and the cascade's wave-front
+    // indicator.
+    expect(ENTITY_CONTRACTS.length).toBe(SIM_ENTITY_PREFIXES.length);
+    for (const entry of ENTITY_CONTRACTS) {
+      expect(entry.prefix.trim().length, 'a prefix is not empty').toBeGreaterThan(0);
+      if (entry.contracts.length === 0) {
+        expect(
+          entry.why?.trim().length,
+          `${entry.prefix} draws no quantity and says why`
+        ).toBeGreaterThan(0);
+        continue;
+      }
+      for (const id of entry.contracts) {
+        expect(
+          (VISUAL_CONTRACTS as Record<string, VisualContract | undefined>)[id],
+          `${entry.prefix} → ${id}`
+        ).toBeDefined();
+      }
+    }
+    // And the other way: no contract is written for a shape nobody draws.
+    const drawn = new Set(ENTITY_CONTRACTS.flatMap((e) => e.contracts));
+    for (const id of Object.keys(VISUAL_CONTRACTS)) {
+      expect(drawn.has(id as never), `${id} is drawn by some entity`).toBe(true);
+    }
+  });
+
+  it('credit no source the physics itself disclaims', () => {
+    // The audit of 19 September 2026: the pyroclastic ring credited "Sheridan
+    // 1979 / Dade & Huppert 1998" for a relation whose own module calls those
+    // papers "background, not the source of the equation", and the initial
+    // radiation ring credited a Glasstone figure the module flags as unverified
+    // and not a dose–range figure. A caption that names a paper for a project
+    // value is the same defect as a label that does, and the page's labels were
+    // corrected on 19 September while these were not.
+    const pdc = VISUAL_CONTRACTS.pyroclasticRunout;
+    expect(pdc.formula).toMatch(/Nimbus value|project/i);
+    expect(pdc.formula).not.toMatch(/Dade & Huppert/);
+    expect(VISUAL_CONTRACTS.radiationLD50.formula).toMatch(/project fit/i);
+    expect(VISUAL_CONTRACTS.mushroomCloud.formula).toMatch(/project fit/i);
+    // A shape that serves an impact and an explosion names both relations.
+    for (const id of ['craterRim', 'thirdDegreeBurn', 'overpressure5psi'] as const) {
+      expect(VISUAL_CONTRACTS[id].formula, id).toMatch(/impact:/);
+      expect(VISUAL_CONTRACTS[id].formula, id).toMatch(/explosion:/);
+    }
+  });
+
+  it('say how the rupture is drawn, and what the drawing does not know', () => {
+    const trace = VISUAL_CONTRACTS.faultTrace;
+    // The trace follows the strike the scenario gives, and the contract has to
+    // say the three things the drawing does not know: the dip, the direction,
+    // and that a gold-standard product draws the fault plane's surface
+    // projection rather than a line.
+    expect(trace.formula).toMatch(/strike/i);
+    expect(trace.caveats.some((c) => /polygon|surface projection/i.test(c))).toBe(true);
+    expect(trace.caveats.some((c) => /symmetric/i.test(c))).toBe(true);
+    expect(VISUAL_CONTRACTS.mmi7Stadium.caveats.some((c) => /down-dip|cos\(dip\)/i.test(c))).toBe(
+      true
+    );
   });
 
   it('say out loud where the shape is a placeholder and the number is not', () => {

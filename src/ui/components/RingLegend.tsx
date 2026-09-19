@@ -146,7 +146,13 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
       push('secondDegreeBurn', result.data.thermal.secondDegreeBurnRadius);
       push('overpressure5psi', b.overpressure5psiRadiusHob);
       push('overpressure1psi', b.overpressure1psiRadiusHob);
-      push('lightDamage', b.lightDamageRadius);
+      // B-058: the ring the globe draws, which is the one the burst's own
+      // height gives. This row read `lightDamageRadius` — the surface burst's —
+      // while its two neighbours already read the corrected ones, so a 15 Mt at
+      // 700 m put "0.5 psi · 61.8 km" in the legend beside a ring the globe
+      // labelled 55.6 km. B-049 corrected the globe on 18 September and left
+      // the legend behind.
+      push('lightDamage', b.lightDamageRadiusHob);
       // Initial radiation lethal-dose ring — only when LD50 actually
       // escapes the fireball (small for sub-megaton, suppressed by
       // the renderer for very large yields).
