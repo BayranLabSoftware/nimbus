@@ -33,6 +33,7 @@ import {
   fieldBounds,
   shakingContours,
 } from '../src/scene/globe/shakingOverlay.js';
+import { readFileSync } from 'node:fs';
 import { shippedSiteLookup } from '../src/physics/validation/shippedVs30.js';
 import { shippedStrikeAnswer } from '../src/physics/validation/shippedFaults.js';
 
@@ -47,7 +48,78 @@ const WHERE: Record<string, { lat: number; lon: number; title: string }> = {
 
 const WIDTH = 900;
 
-function render(field: ShakingField, title: string, subtitle: string): string {
+interface City {
+  name: string;
+  lat: number;
+  lon: number;
+  people: number;
+}
+
+/**
+ * The places a reader knows, from the same file the globe labels with:
+ * Natural Earth's 1:10m populated places, public domain.
+ *
+ * A map of intensity with no place names is a pretty abstraction — the
+ * whole point of drawing the field is that a reader can see WHICH GROUND
+ * shakes, and that needs somewhere they have heard of.
+ */
+function loadCities(): City[] {
+  const raw = JSON.parse(readFileSync('public/data/cities.json', 'utf8')) as {
+    columns: string[];
+    rows: (string | number)[][];
+  };
+  const at = (name: string): number => raw.columns.indexOf(name);
+  const iName = at('nameEn');
+  const iLat = at('lat');
+  const iLon = at('lon');
+  const iPop = at('popMax');
+  return raw.rows.map((row) => ({
+    name: String(row[iName] ?? ''),
+    lat: Number(row[iLat] ?? 0),
+    lon: Number(row[iLon] ?? 0),
+    people: Number(row[iPop] ?? 0),
+  }));
+}
+
+/**
+ * The cities worth drawing inside a box: the biggest first, and none within
+ * `minGapPx` of one already taken, so the labels do not pile up on a
+ * conurbation and hide the contours underneath.
+ */
+function citiesIn(
+  all: readonly City[],
+  bounds: { minLat: number; maxLat: number; minLon: number; maxLon: number },
+  px: (lon: number) => number,
+  py: (lat: number) => number,
+  limit = 14,
+  minGapPx = 52
+): City[] {
+  const inside = all
+    .filter(
+      (c) =>
+        c.lat >= bounds.minLat &&
+        c.lat <= bounds.maxLat &&
+        c.lon >= bounds.minLon &&
+        c.lon <= bounds.maxLon
+    )
+    .sort((a, b) => b.people - a.people);
+  const taken: City[] = [];
+  for (const city of inside) {
+    if (taken.length >= limit) break;
+    const x = px(city.lon);
+    const y = py(city.lat);
+    const clash = taken.some((t) => Math.hypot(px(t.lon) - x, py(t.lat) - y) < minGapPx);
+    if (!clash) taken.push(city);
+  }
+  return taken;
+}
+
+function render(
+  field: ShakingField,
+  title: string,
+  subtitle: string,
+  allCities: readonly City[]
+): string {
   const b = fieldBounds(field);
   const midLat = ((b.minLat + b.maxLat) / 2) * (Math.PI / 180);
   const lonScale = Math.cos(midLat);
@@ -57,6 +129,7 @@ function render(field: ShakingField, title: string, subtitle: string): string {
   const px = (lon: number): number => (((lon - b.minLon) * lonScale) / spanLon) * WIDTH;
   const py = (lat: number): number => ((b.maxLat - lat) / spanLat) * height;
 
+  const cities = citiesIn(allCities, b, px, py);
   const contours = shakingContours(field);
   // Outermost first, so the inner bands paint over them.
   const ordered = [...contours].sort((a, c) => a.level - c.level);
@@ -112,6 +185,19 @@ function render(field: ShakingField, title: string, subtitle: string): string {
       `<circle r="4.5" fill="none" stroke="#f8fafc" stroke-width="2"/></g>`
   );
 
+  // The places, under the contour labels so a name never hides a level.
+  for (const city of cities) {
+    const x = px(city.lon);
+    const y = py(city.lat);
+    if (x < 0 || x > WIDTH || y < 0 || y > height) continue;
+    parts.push(
+      `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="#f8fafc" stroke="#0b1220" stroke-width="1"/>`
+    );
+    parts.push(
+      `<text x="${(x + 6).toFixed(1)}" y="${(y + 4).toFixed(1)}" fill="#e2e8f0" font-size="11" paint-order="stroke" stroke="#0b1220" stroke-width="2.5">${city.name}</text>`
+    );
+  }
+
   // Labels on the contours.
   for (const contour of ordered) {
     if (contour.labelAt === null) continue;
@@ -160,6 +246,7 @@ function main(): void {
   // bending of the contours over soft ground, which is the whole reason a
   // real ShakeMap looks irregular. The subtitle says which one you are
   // looking at.
+  const allCities = loadCities();
   const site = shippedSiteLookup();
   const ground =
     site === null ? 'reference rock, Vs30 tiles absent' : 'the ground the browser reads';
@@ -231,7 +318,7 @@ function main(): void {
       `peak MMI ${peak.toFixed(2)} · ` +
       `field ${field.points.toString()}² over ${Math.round((2 * halfSpanM) / 1000).toString()} km on ${ground} · ` +
       `${(Date.now() - t0).toString()} ms`;
-    const svg = render(field, where.title, subtitle);
+    const svg = render(field, where.title, subtitle, allCities);
     const path = join(out, `${name.toLowerCase().replace(/_/g, '-')}.svg`);
     writeFileSync(path, `${svg}\n`);
     console.log(`  ${path}  (${subtitle})`);
