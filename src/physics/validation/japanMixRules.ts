@@ -167,11 +167,34 @@ export function initialRadiationMortality(
  * What stands, and rule 284 named it first: the burns are 9.1 % and 5.0 %
  * where §12.13 puts burns of one kind or another at about half the dead, and
  * the blast share is correspondingly too large. Adding radiation did not touch
- * that and was not allowed to. It is the next round, and it is a harder one:
- * the book's "burns of one kind or another" includes flame burns from the
- * fires, which this model has just moved out of its central estimate, and the
- * deferred deaths — a quarter of the toll and no cause at all — hide whatever
- * injured the people who later died of it.
+ * that and was not allowed to.
+ *
+ * PARKED on 20 September 2026, and the reason matters more than the parking.
+ * It is not that the gap is unimportant — it is that the gap is not yet
+ * MEASURABLE, and a round opened on it now would close it by tuning something
+ * that was never wrong.
+ *
+ *   The two numbers are not the same quantity. The model's "thermal" is the
+ *   flash burn: the fireball's pulse on skin in line of sight. The book's
+ *   "burns of one kind or another" includes flame burns from the fires that
+ *   followed, and this model moved the mass fire out of its central estimate
+ *   the day before (rules 261 to 266). So part of the book's half is a layer
+ *   this model deliberately does not assert.
+ *
+ *   And a quarter of the toll has no cause at all. The deferred deaths are
+ *   DELAYED_DEATH_FRACTION of the injured, and the injured are counted per
+ *   hazard — `injuryRate` on the blast components, from OTA's own bands, and
+ *   `survivorInjuryRate` on the thermal ones. The model knows which hazard
+ *   injured whom and throws it away at the step that kills them. Whoever
+ *   compares 9.1 % against 50 % is comparing across a bucket that holds the
+ *   answer.
+ *
+ * So the prerequisite, and it is a small one: attribute the deferred deaths to
+ * the hazard that did the injuring. It moves no total, no band and no
+ * published figure — it is bookkeeping on information already in hand — and it
+ * is worth doing for its own sake, because a reader is currently told that a
+ * quarter of the dead died of nothing in particular. After it, the model's
+ * burn share means what §12.13's means, and the round can be scored.
  */
 export const JAPAN_MIX_OUTCOME =
   'ADOPTED 20 September 2026: the initial radiation is a hazard of an explosion\u2019s toll at last, on the three contours the globe was already drawing. It takes 9.5 % of Hiroshima\u2019s dead and 5.1 % of Nagasaki\u2019s, both inside §12.16\u2019s 5 to 15 %, with no shielding constant invented; both totals stay inside the quarter rule 263 fixed. The burns, at a tenth where the book says a half, are the next round.';
