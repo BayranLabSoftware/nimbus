@@ -37,9 +37,9 @@
    "scenario": "impact-ten-km",
    "family": "impact",
    "eventType": "impact",
-   "ringsDrawn": 13,
+   "ringsDrawn": 12,
    "polygonsDrawn": 0,
-   "checked": 20
+   "checked": 9
   },
   {
    "scenario": "explosion-hiroshima-like",
