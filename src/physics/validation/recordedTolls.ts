@@ -334,7 +334,7 @@ function onTheBrowsersGround(event: RecordedEvent): RecordedEvent {
  * the net names its own strike — but in rule 11's held-out set, which is where
  * it was measured.
  */
-function pointingWhereTheFaultPoints(event: RecordedEvent): RecordedEvent {
+export function pointingWhereTheFaultPoints(event: RecordedEvent): RecordedEvent {
   const run = event.run;
   return {
     ...event,

@@ -9,7 +9,7 @@ import {
   type RuleEarthquakeRow,
   type RulePlumeRow,
 } from './heldOutByRuleData.js';
-import type { RecordedEvent } from './recordedTolls.js';
+import { pointingWhereTheFaultPoints, type RecordedEvent } from './recordedTolls.js';
 import { siteVs30, type SiteRule } from './siteVs30.js';
 import { RULE_SITES } from './siteVs30Data.js';
 
@@ -200,6 +200,30 @@ const SITES = new Map(RULE_SITES.map((site) => [site.key, site]));
 export function ruleSiteVs30(row: { comcat: string }, rule: SiteRule = 'pick'): number | undefined {
   return siteVs30(rule, SITES.get(row.comcat));
 }
+
+/**
+ * Rules 342 and 344 of `heldOutStrikeRules.ts`: the candidate, reachable by
+ * name and drawn by nothing.
+ *
+ * `RULE_EARTHQUAKES` below is unchanged, so the validation report is
+ * unchanged, which is what the protocol asks of the commit that carries a
+ * candidate. Turning this on is one word — the export the report reads — and
+ * that word is changed in the commit that also carries the run's outcome.
+ *
+ * What it does is rule 342 exactly: it asks each held-out row the question
+ * the calibration net's rows are already asked, through the same decorator,
+ * so that a row whose fault or slab the model can name is counted in a
+ * footprint pointing at it. A row the lookup cannot answer is returned
+ * untouched and keeps rule 291's sweep.
+ */
+export const RULE_EARTHQUAKES_POINTED: readonly RuleEarthquake[] = NCEI_EARTHQUAKE_ROWS.map(
+  (row) => ({
+    row,
+    event: pointingWhereTheFaultPoints(ruleEarthquakeEvent(row, { vs30: ruleSiteVs30(row) })),
+    role: row.comcat in RULE_TUNED_EARTHQUAKES ? 'tuned' : 'heldOut',
+    seen: row.comcat in RULE_SEEN_EARTHQUAKES,
+  })
+);
 
 export const RULE_EARTHQUAKES: readonly RuleEarthquake[] = NCEI_EARTHQUAKE_ROWS.map((row) => ({
   row,
