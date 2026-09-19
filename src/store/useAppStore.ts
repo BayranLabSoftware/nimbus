@@ -115,6 +115,7 @@ import {
   type TsunamiCoastCell,
 } from '../physics/tsunamiCasualties.js';
 import type { RunupCell } from '../physics/tsunami/runupField.js';
+import { loadStrikeTilesFor, strikeAnswerAt } from '../scene/strikeTiles.js';
 
 /** Top-level event categories the simulator supports. */
 export type EventType = 'impact' | 'explosion' | 'earthquake' | 'volcano' | 'landslide';
@@ -1335,10 +1336,23 @@ async function ensureTerrainForEvaluate(
   get: () => AppStore,
   set: (partial: Partial<AppStore>) => void
 ): Promise<void> {
+  const { location: pick } = get();
+  // Rule 324 of physics/validation/wiredStrikeRules.ts: the fault and slab
+  // tiles under the pick, fetched here so that the strike is known by the
+  // time the scenario is evaluated. One tile of each, and nothing at all
+  // until an earthquake is placed. A fetch that fails leaves the strike
+  // unknown, which rule 325 says is an answer.
+  const strikeTiles =
+    pick === null
+      ? Promise.resolve()
+      : loadStrikeTilesFor(pick.latitude, pick.longitude).catch(() => undefined);
   const loaders = terrainLoaders;
-  if (loaders === null) return;
+  if (loaders === null) {
+    await strikeTiles;
+    return;
+  }
   const { location, elevationGrid, globalBathymetricGrid } = get();
-  const pending: Promise<void>[] = [];
+  const pending: Promise<void>[] = [strikeTiles.then(() => undefined)];
   if (
     location !== null &&
     (elevationGrid === null || !gridCoversLocation(elevationGrid, location))
@@ -2956,6 +2970,35 @@ export const useAppStore = create<AppStore>((set, get) => ({
           );
           const vs30 = waldAllen2007Vs30FromSlope(slope);
           earthquakeInput = { ...earthquakeInput, vs30 };
+        }
+        // Rule 322 of physics/validation/wiredStrikeRules.ts: the fault
+        // under the pick decides which way the rupture points, unless the
+        // reader has said otherwise. Until 20 September 2026 this was
+        // `strikeAzimuthDeg ?? 0` in three places, so every earthquake a
+        // reader placed was drawn AND counted as striking due north,
+        // anywhere on Earth. Rules 295 to 303 measured the cure on six
+        // presets: found six of six, worst error 11.5°, north beaten on
+        // every one.
+        //
+        // The length handed to the lookup is the rupture's own, from the
+        // same scaling law the simulator will use, because rule 287 reads
+        // a strike over a window as long as the rupture: a 30 km break
+        // reads 30 km of fault and a 1 000 km break reads 1 000.
+        //
+        // Where the tiles have not arrived, or where no structure is in
+        // reach, the strike stays unset — which rule 325 says must be
+        // drawn as an unknown and never as north.
+        if (state.earthquake.input.strikeAzimuthDeg === undefined && state.location !== null) {
+          const forLength = simulateEarthquake(earthquakeInput);
+          const answer = strikeAnswerAt(
+            state.location.latitude,
+            state.location.longitude,
+            earthquakeInput.depth ?? m(10_000),
+            forLength.ruptureLength
+          );
+          if (answer !== null && answer.strikeDeg !== null) {
+            earthquakeInput = { ...earthquakeInput, strikeAzimuthDeg: answer.strikeDeg };
+          }
         }
         // Auto-derive waterDepth from the bathymetry sample when the
         // user has not specified one AND an elevation grid is loaded.

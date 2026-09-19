@@ -87,6 +87,59 @@
  *      movement; and the bytes a reader loads for one click.
  */
 
+/**
+ * THE OUTCOME OF THE HARNESS HALF, measured on 20 September 2026. Rules 322 to
+ * 328 were pushed in 8788d73 and the candidate in c6185fb, both before one toll
+ * was read.
+ *
+ * ACCEPTED on rules 326(a) and (b) — and it moves NOTHING, which is the result
+ * and needs explaining rather than celebrating.
+ *
+ * | row              | strike before | after | source  | dead before | after | record |
+ * |------------------|--------------:|------:|---------|------------:|------:|-------:|
+ * | Kokoxili 2001    |          95°  |   95° | preset  |           0 |     0 |      0 |
+ * | Northridge 1994  |         north |  293° | crustal |          29 |    29 |     57 |
+ * | L'Aquila 2009    |         north |  130° | crustal |          42 |    42 |    309 |
+ * | Amatrice 2016    |         north |  329° | crustal |           1 |     1 |    299 |
+ * | Gorkha 2015      |         290°  |  290° | preset  |       5 356 | 5 356 |  8 964 |
+ * | Tōhoku 2011      |         200°  |  200° | preset  |       7 997 | 7 997 | 18 500 |
+ * | Sumatra 2004     |         330°  |  330° | preset  |       4 263 | 4 263 |227 898 |
+ * | Christchurch 2011|         north |   79° | crustal |           1 |     1 |    185 |
+ * | Kumamoto 2016    |         north |   54° | crustal |         199 |   199 |    273 |
+ * | Kaikōura 2016    |         north |  248° | crustal |           0 |     0 |      2 |
+ * | Pohang 2017      |         north | north | unknown |         129 |   129 |      0 |
+ * | Durrës 2019      |         north |  338° | crustal |          15 |    15 |     51 |
+ *
+ *   326(a) rows leaving their band: 0        — inside
+ *   326(b) bias 0.129 → 0.129, σ 2.127 → 2.127 — inside, unchanged
+ *   rows whose toll moved: 0 of 12
+ *
+ * WHY NOTHING MOVED, and it is not that the lookup failed: seven of the eight
+ * rows that pointed north now point somewhere real, and the eighth (Pohang)
+ * honestly finds nothing. The tolls do not move because THOSE SEVEN ROWS ARE
+ * POINT SOURCES. A scenario is drawn as an extended rupture from Mw 7.5, or
+ * when it is marked a subduction interface; below that the stadium degenerates
+ * to a disc, and a disc has no orientation to get wrong. Northridge is Mw 6.7,
+ * L'Aquila 6.3, Amatrice 6.2, Christchurch 6.2, Durrës 6.4, Kumamoto 7.0. The
+ * one extended row among them, Kaikōura at Mw 7.8, kills nobody in the model
+ * and nobody in the record either, so its footprint moved over ground with no
+ * one on it.
+ *
+ * WHAT THAT SAYS ABOUT THE NET, and it is worth saying before anyone reads
+ * "accepted" as "vindicated": THE CALIBRATION NET CANNOT MEASURE THIS CHANGE.
+ * It holds twelve earthquakes, four of them presets that keep their published
+ * strike, seven point sources, and one extended row with no dead. There is no
+ * row in it where the orientation of an extended rupture decides a toll. Rule
+ * 308 measured, with ShakeMap, that the orientation moves 18 % to 68 % of an
+ * MMI VII footprint and takes Sumatra's exposed population from 7.35 M to
+ * 19.93 M — and none of that reaches a single figure this net prints.
+ *
+ * So the wiring is accepted because it breaks nothing and because rules 295 to
+ * 303 already measured that it is right. It is NOT accepted on the strength of
+ * a toll that improved, and no such claim is made here. What it changes is what
+ * a reader sees and counts when he places a great earthquake himself, which is
+ * the other half of the wiring and the round after this one.
+ */
 /** Rule 324: what ships, measured before the round. */
 export const WIRED_STRIKE_PAYLOAD = {
   faultBytes: 2_875_030,
