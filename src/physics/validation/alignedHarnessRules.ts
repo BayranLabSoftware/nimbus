@@ -134,6 +134,58 @@
  * fell.
  */
 
+/*
+ * ===========================================================================
+ * THE OUTCOME, 21 September 2026: REFUSED on rule 358(d)
+ * ===========================================================================
+ *
+ * The change of rule 357 was made and run over every one of the 408 rows,
+ * with the band, on both sides — `scripts/benchmark/held-out-strike.ts`,
+ * `benchmark/results/held-out-strike-2026-09-21.json` — and then put back.
+ *
+ *   358(a) identity            : `chooseStrike`'s answer for the 358 rows
+ *                                it answers, sweep for the other 50     MET
+ *   358(b) central below 7.5   : 350 rows, 0 moved                      MET
+ *   358(c) bands below 7.5     : 36 moved, expected and allowed          ok
+ *   358(d) none left its band  : ONE DID                             NOT MET
+ *   358(e) net and presets     : unmoved                                MET
+ *   358(f) gate                : PASS (strict)                          MET
+ *   359    drift |ln bias|     : 0.007 against a stop at 0.10   not triggered
+ *
+ * THE ROW. El Salvador, Gulf of Fonseca, 14 October 2014, Mw 7.3, one death
+ * recorded. Counted in the sweep its band is 0 to 4 and holds that death.
+ * Counted in the footprint the tiles orient, the rupture points out to sea
+ * and its band is 0 to 0: in none of the two hundred realisations does
+ * anybody die. The central estimate is 0 either way. So the alignment makes
+ * the model, on that row, MORE CERTAIN AND WRONG — and that is the one thing
+ * rule 358(d) was added to catch, written before the run by an author who
+ * knew the bands would narrow and did not know which row would pay for it.
+ *
+ * It is refused, on one row of 408, with a record of one. Saying that plainly
+ * is the point: the bar is not "the change is bad", it is "the change costs a
+ * record we used to hold", and that price is now measured instead of
+ * imagined. A band of [0, 0] beside a record of one is a claim that cannot be
+ * right, and the project has met it before — docs/SCIENCE.md, "The rings of a
+ * subduction interface", records the same shape of failure among moderate
+ * interface earthquakes with a few dead.
+ *
+ * WHAT MAY NOT BE DONE NEXT, and it is the whole lesson of three refusals in
+ * one evening. A fourth block that exempts this row, or reads 358(d) over the
+ * rows with something, or replaces "no row" with "no more than one row",
+ * would be the amendment rules 5, 6, 353 and 360 all forbid — and unlike
+ * rules 356's correction of a false premise, it would be a LOOSENING chosen
+ * after seeing which row failed. Three questions have now been put to this
+ * change and answered honestly: the dead do not improve (346(b)); rows below
+ * the threshold do move, through their realisations (351(b)); and aligning
+ * the harness with the product costs one held record (358(d)).
+ *
+ * What is left is not another bar. It is the [0, 0] band itself: a predictive
+ * interval that excludes a death which happened is a defect of the band, not
+ * of the geometry that revealed it, and the geometry is the one the product
+ * ships either way. That is a block about bands, on a set not yet spent, and
+ * it is not written here.
+ */
+
 import { ALIGNMENT_STOP_LN_BIAS } from './harnessMatchesProductRules.js';
 
 /** Rule 359's stop. Not a new number and not even a copy of one: it is rule

@@ -37,6 +37,7 @@ import {
   type ScoreRowInput,
 } from '../../src/physics/validation/scorecard.js';
 import { LOOKUP_ON_RULE_11_ROWS } from '../../src/physics/validation/heldOutStrikeRules.js';
+import { ALIGNMENT_STOP_LN_BIAS } from '../../src/physics/validation/alignedHarnessRules.js';
 
 const GREAT = 7.5;
 
@@ -90,25 +91,41 @@ function main(): void {
   console.log(`Rules 342 to 348 — rule 11's rows, counted where the model can point.\n`);
   console.log(`Rule 343 as written: ${JSON.stringify(LOOKUP_ON_RULE_11_ROWS.fromMw75)}\n`);
 
-  // ---- Rule 346(c): below Mw 7.5, nothing may move. Central estimates only.
+  // ---- Rule 346(c), and rules 358(b), (c) and (d) of alignedHarnessRules.ts,
+  // over EVERY row. 358(d) cannot be read off a cell, because one row leaving
+  // its band and another entering would cancel.
   let movedBelow = 0;
   let checkedBelow = 0;
+  let bandsMovedBelow = 0;
+  let leftTheirBand = 0;
+  const leavers: string[] = [];
   for (const [index, quake] of RULE_EARTHQUAKES.entries()) {
-    if (quake.row.magnitude >= GREAT) continue;
     const pointed = RULE_EARTHQUAKES_POINTED[index];
     if (pointed === undefined) continue;
+    const b = compareWithRecord(quake.event);
+    const a = compareWithRecord(pointed.event);
+    if (b.contains && !a.contains) {
+      leftTheirBand += 1;
+      leavers.push(`${quake.event.name} (record ${quake.event.recordedDeaths.toString()})`);
+    }
+    if (quake.row.magnitude >= GREAT) continue;
     checkedBelow += 1;
-    const before = centralEstimate(quake.event)?.deaths ?? 0;
-    const after = centralEstimate(pointed.event)?.deaths ?? 0;
-    if (before !== after) {
+    const beforeCentral = centralEstimate(quake.event)?.deaths ?? 0;
+    const afterCentral = centralEstimate(pointed.event)?.deaths ?? 0;
+    if (beforeCentral !== afterCentral) {
       movedBelow += 1;
       console.log(
-        `  346(c) VIOLATED: ${quake.event.name}: ${before.toString()} -> ${after.toString()}`
+        `  358(b) VIOLATED: ${quake.event.name}: ${beforeCentral.toString()} -> ${afterCentral.toString()}`
       );
     }
+    if (b.low !== a.low || b.high !== a.high) bandsMovedBelow += 1;
   }
   console.log(
-    `Rule 346(c): ${checkedBelow.toString()} rows below Mw ${GREAT.toString()}, ${movedBelow.toString()} moved.\n`
+    `Rule 358(b): ${checkedBelow.toString()} rows below Mw ${GREAT.toString()}, ` +
+      `${movedBelow.toString()} central estimates moved.\n` +
+      `Rule 358(c): ${bandsMovedBelow.toString()} of those rows have a band that moved.\n` +
+      `Rule 358(d): ${leftTheirBand.toString()} rows fell out of their band` +
+      `${leavers.length === 0 ? '' : ` — ${leavers.join('; ')}`}.\n`
   );
 
   // ---- The cell that carries the change, with its band, on both sides.
@@ -192,6 +209,21 @@ function main(): void {
       `  346(c)        : ${movedBelow === 0 ? 'MET' : 'NOT MET'}`
   );
 
+  // Rules 356 to 362 put the same change to a different question: identity
+  // decides, and the dead may only trip rule 359's stop.
+  const drift =
+    cb.bias === null || ca.bias === null
+      ? null
+      : Math.abs(Math.log(ca.bias)) - Math.abs(Math.log(cb.bias));
+  const stopped = drift !== null && Math.abs(drift) > ALIGNMENT_STOP_LN_BIAS;
+  console.log(
+    `\n  358(b) central below Mw ${GREAT.toString()} : ${movedBelow === 0 ? 'MET' : 'NOT MET'}\n` +
+      `  358(c) bands there moved      : ${bandsMovedBelow.toString()}, expected and allowed\n` +
+      `  358(d) none left their band   : ${leftTheirBand === 0 ? 'MET' : 'NOT MET'}\n` +
+      `  359  drift in |ln bias|       : ${drift === null ? '—' : drift.toFixed(3)} against a stop at ${ALIGNMENT_STOP_LN_BIAS.toFixed(2)}\n` +
+      `  359  stop                     : ${stopped ? 'TRIGGERED — hold the change' : 'not triggered'}`
+  );
+
   const out = 'benchmark/results/held-out-strike-2026-09-21.json';
   writeFileSync(
     out,
@@ -202,6 +234,15 @@ function main(): void {
         belowGreat: { checked: checkedBelow, moved: movedBelow },
         cell: { before: cb, after: ca },
         bar: { bias: biasOk, inside: insideOk, below: movedBelow === 0 },
+        belowBands: bandsMovedBelow,
+        leftTheirBand: { rows: leftTheirBand, names: leavers },
+        bar356: {
+          centralBelowHolds: movedBelow === 0,
+          noneLeftTheirBand: leftTheirBand === 0,
+          drift,
+          stop: ALIGNMENT_STOP_LN_BIAS,
+          stopTriggered: stopped,
+        },
         rows: rowsOut,
       },
       null,

@@ -26,6 +26,20 @@
     "inside": true,
     "below": true
   },
+  "belowBands": 36,
+  "leftTheirBand": {
+    "rows": 1,
+    "names": [
+      "2014-10-14 03:51 UTC, EL SALVADOR: GULF OF FONSECA (record 1)"
+    ]
+  },
+  "bar356": {
+    "centralBelowHolds": true,
+    "noneLeftTheirBand": false,
+    "drift": 0.0068315129949111375,
+    "stop": 0.1,
+    "stopTriggered": false
+  },
   "rows": [
     {
       "event": "2008-05-12 06:28 UTC, CHINA: SICHUAN PROVINCE",
