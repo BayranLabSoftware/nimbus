@@ -729,11 +729,37 @@ Left out without a ComCat event: NCEI 8532, 2009-09-06, GEORGIA: NORTHWESTERN (0
 |------|----------|-----------|
 | **strict** | PASS | 0 |
 
-**Policy:** `strict` (the CI default) blocks on any replay or golden failure
-and on any gated calibration row whose record falls outside the model's band.
+**Policy:** `strict` (the CI default) blocks on any replay or golden failure,
+on any gated calibration row whose record falls outside the model's band, and —
+since 20 September 2026, by rules 274 to 278 — on anything the two audits below
+found.
 Declared rows and suspicious-but-valid scenarios are reported, not blocking.
 `advisory` reports everything and blocks nothing — switch with
 `pnpm validation-report --mode=advisory` or `VALIDATION_MODE=advisory`.
+
+### What the audits found
+
+Until 20 September 2026 the gate was four things — a replay failure, a golden
+failure, a gated toll row, a gated wave row — and none of them was a picture or
+a terrain. Six defects of the day before were invisible to it for that reason,
+and four of those were found by a reader looking at a report of his own. It
+reads both audits now, and blocks on what they find. It does not regenerate
+them: each is written by the round that needs it and committed, and nothing
+here checks that a file describes the code beside it (rule 276).
+
+| Audit | File | Scope | Findings | Silences |
+|-------|------|-------|---------:|---------:|
+| The globe | `globe-audit-2026-09-19.json` | 30 scenarios, 182 comparisons | **0** | 6 |
+| The terrain | `terrain-derivation-2026-09-20.json` | 4 points against their geography | **0** | — |
+
+A silence is the picture saying nothing where the model published something, and it does not block (rule 275): slide-subaerial-fjord — the slide’s own length is published and the globe draws nothing for it; slide-submarine-shelf — the slide’s own length is published and the globe draws nothing for it; slide-confined-basin — the slide’s own length is published and the globe draws nothing for it; slide-tiny — the slide’s own length is published and the globe draws nothing for it; slide-shallow-slope — the slide’s own length is published and the globe draws nothing for it; wave-slide-into-lake — the slide’s own length is published and the globe draws nothing for it.
+
+| Point | Shore | Depth | Inside its bounds |
+|-------|------:|------:|:------------------|
+| Miami | 5.06 km | 4.2 m | yes |
+| Lisbon | 3.47 km | 2.7 m | yes |
+| Madrid | 331.87 km | 36.8 m | yes |
+| Kansas City | 1033.67 km | 2.1 m | yes |
 
 ## Against the record
 

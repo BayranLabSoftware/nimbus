@@ -1,6 +1,13 @@
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { chromium, type Browser } from '@playwright/test';
 import { SHORE_TEST_POINTS } from '../../src/physics/validation/shoreDistanceRules.js';
 import { SHALLOW_COAST_MAX_M } from '../../src/physics/validation/shoreDepthRules.js';
+import type {
+  TerrainDerivationArtefact,
+  TerrainDerivationRow,
+} from '../../src/physics/validation/gateReadsRules.js';
 
 /**
  * Rule 243 of validation/shoreDistanceRules.ts and rules 250(b) and 251 of
@@ -18,7 +25,10 @@ import { SHALLOW_COAST_MAX_M } from '../../src/physics/validation/shoreDepthRule
  * hook and reads the store, exactly as scripts/benchmark/globe-audit.ts does.
  */
 
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const BASE = process.argv[2] ?? 'http://localhost:5178';
+const OUT =
+  process.argv[3] ?? join(ROOT, 'benchmark', 'results', 'terrain-derivation-2026-09-20.json');
 
 interface Reading {
   waterDepth?: number;
@@ -134,6 +144,34 @@ async function main(): Promise<void> {
     );
   }
   console.log(`\nrule 250(b): ${allShallow ? 'MET' : 'NOT met'}`);
+
+  // Rule 274: the gate reads this, so it has to be written down. Each row
+  // carries what was derived and whether it is inside the bounds rules 243 and
+  // 250(b) fixed; the generator turns a false into a blocking problem.
+  const artefactRows: TerrainDerivationRow[] = SHORE_TEST_POINTS.map((p, i) => {
+    const r = readings[i];
+    const shore = r?.shoreDistance;
+    const depth = r?.waterDepth;
+    const coupled = r?.cavityRadius !== undefined;
+    return {
+      name: p.name,
+      latitude: p.latitude,
+      longitude: p.longitude,
+      shoreDistanceM: shore ?? null,
+      waterDepthM: depth ?? null,
+      shoreInsideBounds:
+        shore === undefined
+          ? p.maxM === null
+          : shore >= p.minM && (p.maxM === null || shore <= p.maxM),
+      // Only a coast that the event actually couples into can be wrong about
+      // its depth; a point with no wave has no depth to be wrong about.
+      depthInsideBounds: !coupled || depth === undefined || depth <= SHALLOW_COAST_MAX_M,
+    };
+  });
+  const artefact: TerrainDerivationArtefact = { base: BASE, rows: artefactRows };
+  mkdirSync(dirname(OUT), { recursive: true });
+  writeFileSync(OUT, `${JSON.stringify(artefact, null, 1)}\n`);
+  console.log(`wrote ${OUT}`);
   await browser.close();
 }
 

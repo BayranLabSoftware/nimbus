@@ -115,8 +115,78 @@ export function terrainGateProblems(artefact: TerrainDerivationArtefact): string
   return out;
 }
 
+/** What the globe audit writes, in the part the gate reads. */
+export interface GlobeAuditArtefact {
+  base: string;
+  rows: { scenario: string; family: string; checked: number }[];
+  findings: { scenario: string; what: string; detail?: string }[];
+  silences: { scenario: string; what: string; detail?: string }[];
+}
+
 /**
- * The outcome of the round, written after the candidate was measured and not
- * before. Left null until then, so a reader can tell a rule from a result.
+ * Rule 274: everything the two audits give the gate to block on, and nothing
+ * else. A missing artefact blocks, because a gate that cannot see is the
+ * thing this round is about. A silence does not — rule 275.
  */
-export const GATE_READS_OUTCOME: string | null = null;
+export function auditGateProblems(
+  globe: GlobeAuditArtefact | null,
+  terrain: TerrainDerivationArtefact | null
+): string[] {
+  const out: string[] = [];
+  if (globe === null) out.push('no globe audit in benchmark/results to read');
+  else if (globe.findings.length > 0) {
+    out.push(
+      `globe audit findings: ${globe.findings.map((f) => `${f.scenario} — ${f.what}`).join('; ')}`
+    );
+  }
+  if (terrain === null) out.push('no terrain derivation in benchmark/results to read');
+  else {
+    const problems = terrainGateProblems(terrain);
+    if (problems.length > 0) out.push(`terrain derivation: ${problems.join('; ')}`);
+  }
+  return out;
+}
+
+/**
+ * The outcome of the round, written after the candidate was measured, on
+ * 20 September 2026. The rules above were pushed in commit 6f94ce9 before the
+ * candidate was written.
+ *
+ * ADOPTED. Rule 277 holds on every clause.
+ *
+ * (a) Fed a globe audit with a finding, the gate blocks and names the scenario
+ *     and what was found.
+ * (b) Fed a terrain row outside its bounds it blocks and says which bound —
+ *     rule 243's for the shore, rule 250(b)'s for the depth — and two wrong at
+ *     once are two problems and not one.
+ * (c) Fed no artefact at all it blocks, for each that is missing. A gate that
+ *     cannot see is the thing this round is about, so not being able to see is
+ *     itself the failure.
+ * (d) Fed the artefacts as they stand — globe-audit-2026-09-19.json, thirty
+ *     scenarios and 182 comparisons with no finding and six silences, and
+ *     terrain-derivation-2026-09-20.json, four points all inside their bounds
+ *     — it gives the gate nothing, and the four arms it already had are
+ *     untouched.
+ * (e) The verdict on the tree is still PASS in strict mode, and no toll, wave,
+ *     replay or golden figure moved by anything: the report's diff is the two
+ *     new sections and the policy sentence.
+ *
+ * Rule 275 holds too, and it is the clause worth re-reading. The six silences
+ * do not block. They are printed in the report, in a sentence long enough to
+ * be irritating, which is the point: a silence is the picture saying nothing
+ * where the model published something, and it is a debt rather than a lie.
+ *
+ * What this round does not do, and rule 276 said so in advance: nothing here
+ * checks that an artefact describes the code beside it. A round that changes
+ * the map or the terrain and does not re-run its audit will commit a stale
+ * file and the gate will pass on it. Every round of 19 and 20 September
+ * re-ran its audit; that is discipline and not machinery, and calling it
+ * machinery would be a promise this project cannot keep.
+ *
+ * And the deeper thing the six defects had in common, which no gate closes:
+ * the calibration net has no impact row at all, because no impact in history
+ * left a death toll to compare. An impact's whole chain is gated by the
+ * field's own program and by nothing from the world.
+ */
+export const GATE_READS_OUTCOME =
+  'ADOPTED 20 September 2026: the release gate reads the globe audit and the terrain derivation and blocks on a finding, on a row outside its bounds, and on an artefact that is not there. A silence does not block and is printed. The tree still passes, and the four arms the gate already had are untouched.';

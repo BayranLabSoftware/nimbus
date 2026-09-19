@@ -742,6 +742,20 @@
       }
     ]
   },
+  "audits": {
+    "globe": {
+      "file": "globe-audit-2026-09-19.json",
+      "scenarios": 30,
+      "comparisons": 182,
+      "findings": 0,
+      "silences": 6
+    },
+    "terrain": {
+      "file": "terrain-derivation-2026-09-20.json",
+      "rows": 4,
+      "problems": []
+    }
+  },
   "gate": {
     "decision": "pass",
     "exitCode": 0,

@@ -1,0 +1,41 @@
+{
+ "base": "http://localhost:5178",
+ "rows": [
+  {
+   "name": "Miami",
+   "latitude": 25.79,
+   "longitude": -80.226,
+   "shoreDistanceM": 5060.1247730704135,
+   "waterDepthM": 4.15625,
+   "shoreInsideBounds": true,
+   "depthInsideBounds": true
+  },
+  {
+   "name": "Lisbon",
+   "latitude": 38.7223,
+   "longitude": -9.1393,
+   "shoreDistanceM": 3474.083747866432,
+   "waterDepthM": 2.66015625,
+   "shoreInsideBounds": true,
+   "depthInsideBounds": true
+  },
+  {
+   "name": "Madrid",
+   "latitude": 40.4168,
+   "longitude": -3.7038,
+   "shoreDistanceM": 331866.0124371414,
+   "waterDepthM": 36.760498046875,
+   "shoreInsideBounds": true,
+   "depthInsideBounds": true
+  },
+  {
+   "name": "Kansas City",
+   "latitude": 39.1,
+   "longitude": -94.58,
+   "shoreDistanceM": 1033665.878430963,
+   "waterDepthM": 2.0984408855438232,
+   "shoreInsideBounds": true,
+   "depthInsideBounds": true
+  }
+ ]
+}

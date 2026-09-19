@@ -27,10 +27,17 @@
  *   pnpm validation-report --mode=advisory  # report, do not block
  */
 
-import { writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { GOLDEN_DATASET } from '../src/physics/validation/goldenDataset.js';
+import {
+  AUDIT_ARTEFACTS,
+  auditGateProblems,
+  terrainGateProblems,
+  type GlobeAuditArtefact,
+  type TerrainDerivationArtefact,
+} from '../src/physics/validation/gateReadsRules.js';
 import {
   loadReplayFixtures,
   runReplay,
@@ -252,6 +259,51 @@ import {
 } from '../src/physics/validation/calibrationEnvelope.js';
 
 const REPO_ROOT = fileURLToPath(new URL('..', import.meta.url));
+
+/**
+ * What the two audits wrote, read from the newest file each has left in
+ * `benchmark/results`. Rules 274 to 278 of validation/gateReadsRules.ts: the
+ * gate is four things and none of them was a picture or a terrain, so six
+ * defects of 19 September 2026 passed it without being seen.
+ *
+ * Nothing here regenerates an audit. Each is produced by the round that needs
+ * it and committed, and rule 276 says plainly that nothing checks whether the
+ * file describes the code beside it.
+ */
+function newestArtefact(prefix: string): { file: string; data: unknown } | null {
+  const dir = join(REPO_ROOT, AUDIT_ARTEFACTS.globe.directory);
+  let names: string[];
+  try {
+    names = readdirSync(dir);
+  } catch {
+    return null;
+  }
+  const candidates = names.filter((n) => n.startsWith(prefix) && n.endsWith('.json')).sort();
+  const file = candidates[candidates.length - 1];
+  if (file === undefined) return null;
+  try {
+    return { file, data: JSON.parse(readFileSync(join(dir, file), 'utf8')) };
+  } catch {
+    return null;
+  }
+}
+
+interface AuditEvidence {
+  globe: { file: string; data: GlobeAuditArtefact } | null;
+  terrain: { file: string; data: TerrainDerivationArtefact } | null;
+}
+
+function readAudits(): AuditEvidence {
+  const globe = newestArtefact(AUDIT_ARTEFACTS.globe.prefix);
+  const terrain = newestArtefact(AUDIT_ARTEFACTS.terrain.prefix);
+  return {
+    globe: globe === null ? null : { file: globe.file, data: globe.data as GlobeAuditArtefact },
+    terrain:
+      terrain === null
+        ? null
+        : { file: terrain.file, data: terrain.data as TerrainDerivationArtefact },
+  };
+}
 
 // ---------------------------------------------------------------------
 // Formatting. Every figure is rounded to what it is quoted at, and
@@ -3498,9 +3550,12 @@ function gate(
   replay: AggregateBucket,
   golden: AggregateBucket,
   net: CalibrationNet,
-  mode: GateMode
+  mode: GateMode,
+  audits: AuditEvidence
 ): GateDecision {
-  const problems: string[] = [];
+  const problems: string[] = [
+    ...auditGateProblems(audits.globe?.data ?? null, audits.terrain?.data ?? null),
+  ];
   if (replay.failed > 0) problems.push(`replay failures: ${replay.failed.toString()}`);
   if (golden.failed > 0) problems.push(`golden failures: ${golden.failed.toString()}`);
   const tollMisses = net.tolls.filter((t) => t.event.gated && !t.contains);
@@ -3521,6 +3576,54 @@ function gate(
 }
 
 // ---------------------------------------------------------------------
+
+/** Rules 274 and 275: what the two audits say, printed whether or not it
+ *  blocks — a silence does not block and is counted here so a reader trips
+ *  over it. */
+function auditSection(audits: AuditEvidence): string {
+  const lines: string[] = [];
+  lines.push('| Audit | File | Scope | Findings | Silences |');
+  lines.push('|-------|------|-------|---------:|---------:|');
+  if (audits.globe === null) {
+    lines.push('| The globe | — | **none to read** | — | — |');
+  } else {
+    const rows = audits.globe.data.rows;
+    const checked = rows.reduce((a, r) => a + r.checked, 0);
+    lines.push(
+      `| The globe | \`${audits.globe.file}\` | ${rows.length.toString()} scenarios, ${checked.toString()} comparisons | **${audits.globe.data.findings.length.toString()}** | ${audits.globe.data.silences.length.toString()} |`
+    );
+  }
+  if (audits.terrain === null) {
+    lines.push('| The terrain | — | **none to read** | — | — |');
+  } else {
+    const problems = terrainGateProblems(audits.terrain.data);
+    lines.push(
+      `| The terrain | \`${audits.terrain.file}\` | ${audits.terrain.data.rows.length.toString()} points against their geography | **${problems.length.toString()}** | — |`
+    );
+  }
+  lines.push('');
+  if (audits.globe !== null && audits.globe.data.silences.length > 0) {
+    lines.push(
+      `A silence is the picture saying nothing where the model published something, and it does not block (rule 275): ${audits.globe.data.silences
+        .map((x) => `${x.scenario} — ${x.what}`)
+        .join('; ')}.`
+    );
+    lines.push('');
+  }
+  if (audits.terrain !== null) {
+    lines.push('| Point | Shore | Depth | Inside its bounds |');
+    lines.push('|-------|------:|------:|:------------------|');
+    for (const row of audits.terrain.data.rows) {
+      const km = (x: number | null): string => (x === null ? '—' : `${(x / 1000).toFixed(2)} km`);
+      const ok = row.shoreInsideBounds && row.depthInsideBounds;
+      lines.push(
+        `| ${row.name} | ${km(row.shoreDistanceM)} | ${row.waterDepthM === null ? '—' : `${row.waterDepthM.toFixed(1)} m`} | ${ok ? 'yes' : '**NO**'} |`
+      );
+    }
+    lines.push('');
+  }
+  return lines.join('\n');
+}
 
 /** What the wave misses are, in one sentence, or nothing when there are none. */
 function waveMissSummary(waves: readonly WaveComparison[]): string {
@@ -3586,7 +3689,8 @@ function main(): void {
   const polygonCount = runPolygonCount();
 
   const mode = selectMode();
-  const decision = gate(replayAgg, goldenAgg, net, mode);
+  const audits = readAudits();
+  const decision = gate(replayAgg, goldenAgg, net, mode, audits);
 
   const md = `# Nimbus validation report
 
@@ -3625,12 +3729,25 @@ ${byRuleSection(ruleSets, byRule)}
 
 ${decision.blocking.length === 0 ? '' : `**Blocking:**\n\n${bullet(decision.blocking)}\n`}
 ${decision.warnings.length === 0 ? '' : `**Warnings (non-blocking):**\n\n${bullet(decision.warnings)}\n`}
-**Policy:** \`strict\` (the CI default) blocks on any replay or golden failure
-and on any gated calibration row whose record falls outside the model's band.
+**Policy:** \`strict\` (the CI default) blocks on any replay or golden failure,
+on any gated calibration row whose record falls outside the model's band, and —
+since 20 September 2026, by rules 274 to 278 — on anything the two audits below
+found.
 Declared rows and suspicious-but-valid scenarios are reported, not blocking.
 \`advisory\` reports everything and blocks nothing — switch with
 \`pnpm validation-report --mode=advisory\` or \`VALIDATION_MODE=advisory\`.
 
+### What the audits found
+
+Until 20 September 2026 the gate was four things — a replay failure, a golden
+failure, a gated toll row, a gated wave row — and none of them was a picture or
+a terrain. Six defects of the day before were invisible to it for that reason,
+and four of those were found by a reader looking at a report of his own. It
+reads both audits now, and blocks on what they find. It does not regenerate
+them: each is written by the round that needs it and committed, and nothing
+here checks that a file describes the code beside it (rule 276).
+
+${auditSection(audits)}
 ## Against the record
 
 ### Death tolls
@@ -3821,6 +3938,26 @@ otherwise.
   const jsonSummary = {
     mode: decision.mode,
     goldStandard: goldStandardJson(),
+    audits: {
+      globe:
+        audits.globe === null
+          ? null
+          : {
+              file: audits.globe.file,
+              scenarios: audits.globe.data.rows.length,
+              comparisons: audits.globe.data.rows.reduce((a, r) => a + r.checked, 0),
+              findings: audits.globe.data.findings.length,
+              silences: audits.globe.data.silences.length,
+            },
+      terrain:
+        audits.terrain === null
+          ? null
+          : {
+              file: audits.terrain.file,
+              rows: audits.terrain.data.rows.length,
+              problems: terrainGateProblems(audits.terrain.data),
+            },
+    },
     gate: {
       decision: decision.blocking.length === 0 ? 'pass' : 'block',
       exitCode: decision.exitCode,
