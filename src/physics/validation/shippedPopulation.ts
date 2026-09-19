@@ -245,12 +245,32 @@ const STADIUM_EARTH_RADIUS_M = 6_371_008;
  * outside is decided by its centre alone. Its agreement with
  * `sumGridRing` on the polygon is tested in shippedPopulation.test.ts.
  */
-export function shippedStadiumCounter(
-  latitude: number,
-  longitude: number,
-  strikeDeg: number,
-  reachM: number
-): (halfLengthM: number, halfWidthM: number, radiusM: number, centreOffsetM?: number) => number {
+/** One pass over the raster, in the frame the strike will rotate: distance
+ *  and azimuth from the epicentre, laid out with NORTH as the first axis. */
+interface StadiumFrame {
+  /** (north, east) of each populated cell's centre, in metres. */
+  centres: Float64Array;
+  /** How far a cell's sub-samples reach from its centre. Rotation-invariant,
+   *  so it is computed once and never turned. */
+  spread: Float64Array;
+  people: Float64Array;
+  /** (north, east) of every sub-sample, `perCell` of them per cell. */
+  samples: Float64Array;
+  perCell: number;
+}
+
+/**
+ * The expensive half of {@link shippedStadiumCounter}, done once.
+ *
+ * Every cell within reach is read, and each of its sub-samples placed by a
+ * haversine and an `atan2` — which is where the time goes. NEITHER DEPENDS ON
+ * THE STRIKE: the distance from the epicentre and the azimuth to it are
+ * properties of the two points. Only the last step, resolving that azimuth
+ * onto the strike, does. So the pass is made once with north as the first
+ * axis and {@link rotateFrame} turns it, which is four multiplications per
+ * point and no trigonometry at all.
+ */
+function stadiumFrame(latitude: number, longitude: number, reachM: number): StadiumFrame {
   const toRad = Math.PI / 180;
   // The cap every stadium within reach lies in, on the sphere and across
   // the antimeridian (B-026, B-035); the columns are read wrapped.
@@ -272,10 +292,9 @@ export function shippedStadiumCounter(
 
   const lat0 = latitude * toRad;
   const lon0 = longitude * toRad;
-  const theta = strikeDeg * toRad;
   const sinLat0 = Math.sin(lat0);
   const cosLat0 = Math.cos(lat0);
-  // (x along strike, y across it) of a point, in metres.
+  // (north, east) of a point, in metres: the strike-zero frame.
   const frame = (latDeg: number, lonDeg: number): [number, number] => {
     const phi = latDeg * toRad;
     const dLambda = lonDeg * toRad - lon0;
@@ -286,11 +305,11 @@ export function shippedStadiumCounter(
       Math.sin(dLambda) * Math.cos(phi),
       cosLat0 * Math.sin(phi) - sinLat0 * Math.cos(phi) * Math.cos(dLambda)
     );
-    return [d * Math.cos(azimuth - theta), d * Math.sin(azimuth - theta)];
+    return [d * Math.cos(azimuth), d * Math.sin(azimuth)];
   };
 
   const centres: number[] = [];
-  const reach: number[] = [];
+  const spread: number[] = [];
   const people: number[] = [];
   const samples: number[] = [];
   for (let r = row0; r <= row1; r++) {
@@ -311,35 +330,70 @@ export function shippedStadiumCounter(
         }
       }
       centres.push(cx, cy);
-      reach.push(farthest);
+      spread.push(farthest);
       people.push(cell.people);
     }
   }
-  const C = Float64Array.from(centres);
-  const R = Float64Array.from(reach);
-  const P = Float64Array.from(people);
-  const S = Float64Array.from(samples);
-  const perCell = n * n;
-
-  // Distance from a point to the rectangle ±a along strike, ±b across.
-  const outside = (x: number, y: number, a: number, b: number): number => {
-    const ex = Math.abs(x) - a;
-    const ey = Math.abs(y) - b;
-    return Math.hypot(ex > 0 ? ex : 0, ey > 0 ? ey : 0);
+  return {
+    centres: Float64Array.from(centres),
+    spread: Float64Array.from(spread),
+    people: Float64Array.from(people),
+    samples: Float64Array.from(samples),
+    perCell: n * n,
   };
+}
 
+/** The frame turned onto a strike. A rigid rotation: the distance from the
+ *  epicentre is unchanged, so {@link StadiumFrame.spread} is not touched. */
+function rotateFrame(
+  frame: StadiumFrame,
+  strikeDeg: number
+): { centres: Float64Array; samples: Float64Array } {
+  const theta = (strikeDeg * Math.PI) / 180;
+  const cos = Math.cos(theta);
+  const sin = Math.sin(theta);
+  const turn = (src: Float64Array): Float64Array => {
+    const out = new Float64Array(src.length);
+    for (let i = 0; i < src.length; i += 2) {
+      const x = src[i] ?? 0;
+      const y = src[i + 1] ?? 0;
+      out[i] = x * cos + y * sin;
+      out[i + 1] = y * cos - x * sin;
+    }
+    return out;
+  };
+  return { centres: turn(frame.centres), samples: turn(frame.samples) };
+}
+
+/** Distance from a point to the rectangle ±a along strike, ±b across. */
+function outsideRectangle(x: number, y: number, a: number, b: number): number {
+  const ex = Math.abs(x) - a;
+  const ey = Math.abs(y) - b;
+  return Math.hypot(ex > 0 ? ex : 0, ey > 0 ? ey : 0);
+}
+
+type StadiumCount = (
+  halfLengthM: number,
+  halfWidthM: number,
+  radiusM: number,
+  centreOffsetM?: number
+) => number;
+
+/** A counter over an already-rotated frame. */
+function counterOver(frame: StadiumFrame, strikeDeg: number): StadiumCount {
+  const { centres: C, samples: S } = rotateFrame(frame, strikeDeg);
+  const R = frame.spread;
+  const P = frame.people;
+  const perCell = frame.perCell;
   // Rule 379 of validation/ruptureCentreRules.ts: sliding the stadium along
-  // strike is a translation in the frame this counter already works in — the
-  // first axis IS the strike — so an offset costs one subtraction per cell
-  // and never a second pass over the raster. A realisation that puts the
-  // rupture's centre 200 km up-strike of the hypocentre is counted here at
-  // the same price as one that does not.
+  // strike is a translation in this frame — the first axis IS the strike — so
+  // an offset costs one subtraction per cell and never a second pass.
   return (halfLengthM, halfWidthM, radiusM, centreOffsetM = 0) => {
     const a = Math.max(0, halfLengthM);
     const b = Math.max(0, halfWidthM);
     let sum = 0;
     for (let i = 0; i < P.length; i++) {
-      const d = outside((C[2 * i] ?? 0) - centreOffsetM, C[2 * i + 1] ?? 0, a, b);
+      const d = outsideRectangle((C[2 * i] ?? 0) - centreOffsetM, C[2 * i + 1] ?? 0, a, b);
       const spread = R[i] ?? 0;
       if (d - spread > radiusM) continue;
       const cellPeople = P[i] ?? 0;
@@ -351,7 +405,12 @@ export function shippedStadiumCounter(
       const base = 2 * i * perCell;
       for (let k = 0; k < perCell; k++) {
         if (
-          outside((S[base + 2 * k] ?? 0) - centreOffsetM, S[base + 2 * k + 1] ?? 0, a, b) <= radiusM
+          outsideRectangle(
+            (S[base + 2 * k] ?? 0) - centreOffsetM,
+            S[base + 2 * k + 1] ?? 0,
+            a,
+            b
+          ) <= radiusM
         ) {
           inside += 1;
         }
@@ -360,6 +419,58 @@ export function shippedStadiumCounter(
     }
     return sum;
   };
+}
+
+/**
+ * Every rupture stadium about one epicentre and one strike, counted
+ * fast enough for a predictive band.
+ *
+ * A band asks for the people inside six hundred stadiums — three
+ * intensity bands in each of two hundred realisations, each with its own
+ * rupture and contour radius — and a polygon summed cell by cell costs
+ * a few milliseconds, seconds an event. A stadium is a rectangle along
+ * the strike grown by a radius, so whether a point lies inside it is a
+ * distance from the rectangle, not a polygon test. This reads once the
+ * populated cells within `reachM` of the epicentre, places in them the
+ * sub-samples `sumGridRing` places, in the frame the polygon is laid
+ * out in (distance and azimuth from the epicentre on the sphere, the
+ * strike as the first axis), and answers a stadium by its sub-samples
+ * within the radius of the rectangle; a cell wholly inside or wholly
+ * outside is decided by its centre alone. Its agreement with
+ * `sumGridRing` on the polygon is tested in shippedPopulation.test.ts.
+ */
+export function shippedStadiumCounter(
+  latitude: number,
+  longitude: number,
+  strikeDeg: number,
+  reachM: number
+): StadiumCount {
+  return counterOver(stadiumFrame(latitude, longitude, reachM), strikeDeg);
+}
+
+/**
+ * The same counter at several strikes, for ONE pass over the raster.
+ *
+ * Rule 291's sweep needs six orientations of the same stadium, and until
+ * 22 September 2026 that meant six passes: six haversines and six `atan2`
+ * per sub-sample of every populated cell within reach, of which only the
+ * last step differs between them. The geometry does not depend on the
+ * strike — the distance and the azimuth are properties of two points — so
+ * the pass is made once and each orientation is a rigid rotation of it,
+ * four multiplications per point.
+ *
+ * Numerically this is a rotation composed with a rotation where there used
+ * to be one, so the two agree to floating-point and not to the bit;
+ * `shippedPopulation.test.ts` holds them to a relative 1e-9.
+ */
+export function shippedStadiumSweep(
+  latitude: number,
+  longitude: number,
+  strikesDeg: readonly number[],
+  reachM: number
+): StadiumCount[] {
+  const frame = stadiumFrame(latitude, longitude, reachM);
+  return strikesDeg.map((strike) => counterOver(frame, strike));
 }
 
 /** Land population density (people per km² of land) around a point. */

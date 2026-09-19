@@ -31,6 +31,7 @@ import {
   shippedPopulationInPolygon,
   shippedPopulationInRadius,
   shippedStadiumCounter,
+  shippedStadiumSweep,
 } from './shippedPopulation.js';
 
 /**
@@ -634,8 +635,14 @@ export function measuredPopulation(
   // orientation. That is the right picture and a systematic over-count when
   // the dead are counted in it.
   if (sweep !== undefined) {
-    const counters = sweep.azimuthsDeg.map((azimuth) =>
-      shippedStadiumCounter(event.latitude, event.longitude, azimuth, reachM)
+    // One pass over the raster for all six orientations: the geometry does
+    // not depend on the strike, so the pass is made once and each
+    // orientation is a rotation of it. Six counters used to mean six passes.
+    const counters = shippedStadiumSweep(
+      event.latitude,
+      event.longitude,
+      sweep.azimuthsDeg,
+      reachM
     );
     const perRealisation = new WeakMap<
       CasualtyBand,

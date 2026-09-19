@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { buildRuptureStadiumLatLon } from '../../scene/stadiumPolygon.js';
-import { shippedPopulationInPolygon, shippedStadiumCounter } from './shippedPopulation.js';
+import {
+  shippedPopulationInPolygon,
+  shippedStadiumCounter,
+  shippedStadiumSweep,
+} from './shippedPopulation.js';
 
 /**
  * The fast stadium count a predictive band uses against the polygon
@@ -49,4 +53,56 @@ describe('the stadium count agrees with the polygon the browser sums', () => {
       expect(Math.abs(innerFast - inner) / Math.max(inner, 1)).toBeLessThan(0.03);
     });
   }
+});
+
+/**
+ * One pass over the raster, six orientations.
+ *
+ * `shippedStadiumSweep` exists because rule 291's sweep asked for six
+ * counters and got six passes over the population raster, of which only the
+ * last step — resolving the azimuth onto the strike — differed. The pass is
+ * now made once with north as the first axis and each orientation is a rigid
+ * rotation of it.
+ *
+ * What has to be true is that it answers what six separate counters answer.
+ * It is a rotation composed with a rotation where there used to be one, so
+ * the agreement is floating-point and not bit-for-bit.
+ */
+describe('shippedStadiumSweep — one pass, several strikes', () => {
+  const at = { latitude: 38.297, longitude: 142.373 };
+  const strikes = [0, 30, 60, 90, 120, 150];
+  const reachM = 400_000;
+
+  it('answers what one counter per strike answers', () => {
+    const swept = shippedStadiumSweep(at.latitude, at.longitude, strikes, reachM);
+    expect(swept).toHaveLength(strikes.length);
+    for (const [i, strike] of strikes.entries()) {
+      const alone = shippedStadiumCounter(at.latitude, at.longitude, strike, reachM);
+      const together = swept[i];
+      expect(together).toBeDefined();
+      if (together === undefined) continue;
+      for (const [halfL, halfW, radius] of [
+        [0, 0, 50_000],
+        [200_000, 60_000, 30_000],
+        [350_000, 100_000, 80_000],
+      ] as const) {
+        const a = alone(halfL, halfW, radius);
+        const b = together(halfL, halfW, radius);
+        // A relative 1e-9: the same arithmetic reached two ways.
+        expect(Math.abs(a - b)).toBeLessThanOrEqual(1e-9 * Math.max(1, Math.abs(a)));
+      }
+    }
+  });
+
+  it('carries the offset of rule 377 through the rotation', () => {
+    const [swept] = shippedStadiumSweep(at.latitude, at.longitude, [200], reachM);
+    const alone = shippedStadiumCounter(at.latitude, at.longitude, 200, reachM);
+    expect(swept).toBeDefined();
+    if (swept === undefined) return;
+    for (const offset of [-150_000, 0, 150_000]) {
+      const a = alone(150_000, 50_000, 40_000, offset);
+      const b = swept(150_000, 50_000, 40_000, offset);
+      expect(Math.abs(a - b)).toBeLessThanOrEqual(1e-9 * Math.max(1, Math.abs(a)));
+    }
+  });
 });
