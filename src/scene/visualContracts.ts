@@ -356,6 +356,7 @@ export const VISUAL_CONTRACTS = {
     geometry: 'point-source-ring',
     isQuantitative: true,
     caveats: [
+      'for an impact on ground the cavity drawn is the equal-area circle of the segment of the transient crater that lies beyond the shoreline, and there is none at all where the crater stops short of the water (rules 267 to 273); until 19 September 2026 it was the water cavity the impact would have dug if it had happened at sea, which for an inland strike is a hole that is not there',
       'near field; the ring marks where the source ends, not where damage stops',
       'until 18 September 2026 the globe drew a quarter of the rupture length here while the wave left from half the width — 201 km against 111 for a Mw 9.2 (B-053)',
     ],

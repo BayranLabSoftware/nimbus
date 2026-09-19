@@ -56,7 +56,7 @@ describe('gateImpactByTerrain', () => {
     const synth = simulateImpact({
       ...IMPACT_PRESETS.CHICXULUB.input,
       waterDepth: m(200),
-      shoreDistance: m(85_000),
+      shoreDistance: m(40_000),
     });
     expect(synth.tsunami).toBeDefined();
     expect(gateImpactByTerrain(synth, false)).toBe(synth);
@@ -64,53 +64,71 @@ describe('gateImpactByTerrain', () => {
 });
 
 describe('impact sea coupling (shoreDistance)', () => {
-  it('Chicxulub 70 km inland (Winter Haven → Tampa Bay): the 82 km crater rim reaches the sea, full coupling', () => {
+  // Rules 267 to 273 of validation/coastalWaveRules.ts, 19 September 2026.
+  // The wave a land impact makes comes from the part of its TRANSIENT cavity
+  // that lies in the sea — a circular segment, half at the water's edge and
+  // nothing when the cavity stops short — and not from a water column the
+  // body never fell through. Chicxulub's transient cavity is 45.8 km across
+  // the radius; its final rim, 82.8, is what slumping leaves and is not what
+  // excavates the sea.
+  it('Chicxulub 40 km inland: the transient cavity reaches the sea, and the segment says how much of it is in the water', () => {
+    const r = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(200),
+      shoreDistance: m(40_000),
+    });
+    expect(r.tsunami).toBeDefined();
+    expect(r.tsunami?.seaCoupling.mechanism).toBe('crater');
+    const f = r.tsunami?.seaCoupling.fraction ?? 0;
+    // d/R = 40/45.8 = 0.87, and the segment there is a couple of per cent.
+    expect(f).toBeGreaterThan(0.01);
+    expect(f).toBeLessThan(0.05);
+    // Never more than half, wherever the shore is.
+    expect(f).toBeLessThanOrEqual(0.5);
+  });
+
+  it('Chicxulub 70 km inland: the transient cavity stops short and no wave is raised', () => {
+    // The final rim reaches past it, and the sea would drain into the hole —
+    // a resurge, which has its own literature and no law here. Rule 269 says
+    // the model raises no wave rather than one it cannot size.
     const r = simulateImpact({
       ...IMPACT_PRESETS.CHICXULUB.input,
       waterDepth: m(200),
       shoreDistance: m(70_000),
     });
-    expect(r.tsunami).toBeDefined();
-    expect(r.tsunami?.seaCoupling.mechanism).toBe('crater');
-    expect(r.tsunami?.seaCoupling.fraction).toBe(1);
+    expect(r.tsunami).toBeUndefined();
   });
 
-  it('Chicxulub 85 km inland: just past the rim, the ejecta couple ≈ 97 % of the energy', () => {
+  it('Chicxulub 85 km inland: the ejecta reach the sea and still raise nothing the model will size', () => {
     const r = simulateImpact({
       ...IMPACT_PRESETS.CHICXULUB.input,
       waterDepth: m(200),
       shoreDistance: m(85_000),
     });
-    expect(r.tsunami?.seaCoupling.mechanism).toBe('ejecta');
-    expect(r.tsunami?.seaCoupling.fraction).toBeGreaterThan(0.9);
-    expect(r.tsunami?.seaCoupling.fraction).toBeLessThan(1);
+    expect(r.tsunami).toBeUndefined();
   });
 
-  it('Chicxulub 600 km inland: the ejecta still reach the sea, coupling ≈ R/d', () => {
-    // Inside the 1 m isopach, which Collins et al. 2005 Eq. 47* puts
-    // ≈ 856 km out for this preset.
-    const coast = simulateImpact({
-      ...IMPACT_PRESETS.CHICXULUB.input,
-      waterDepth: m(200),
-      shoreDistance: m(0),
-    });
-    const inland = simulateImpact({
-      ...IMPACT_PRESETS.CHICXULUB.input,
-      waterDepth: m(200),
-      shoreDistance: m(600_000),
-    });
-    expect(inland.tsunami).toBeDefined();
-    expect(inland.tsunami?.seaCoupling.mechanism).toBe('ejecta');
-    const f = inland.tsunami?.seaCoupling.fraction ?? 0;
-    expect(f).toBeGreaterThan(0.03);
-    expect(f).toBeLessThan(0.2);
-    // Less of the strike reaches the water → a smaller wave. The program's wave
-    // (rule 153 of validation/impactTsunamiRules.ts) is scaled by that share
-    // itself, since its crater does not read the energy.
-    const waveCoast = coast.tsunami?.amplitudeAt1000kmWunnemann as number;
-    const waveInland = inland.tsunami?.amplitudeAt1000kmWunnemann as number;
-    expect(waveInland).toBeLessThan(waveCoast);
-    expect(waveInland / waveCoast).toBeCloseTo(f, 6);
+  it('the wave shrinks without a step as the shore goes inland, and stops where the cavity does', () => {
+    // Rule 270(d): monotone in the shore distance, and no wave past the
+    // transient cavity's own radius. The 1 m ejecta isopach still runs
+    // ≈ 856 km out for this preset (Collins et al. 2005 Eq. 47*) and raises
+    // nothing the model will size — rule 269.
+    const at = (shoreM: number) =>
+      simulateImpact({
+        ...IMPACT_PRESETS.CHICXULUB.input,
+        waterDepth: m(200),
+        shoreDistance: m(shoreM),
+      });
+    let previous = Number.POSITIVE_INFINITY;
+    for (const shore of [5_000, 15_000, 25_000, 35_000, 44_000]) {
+      const wave = at(shore).tsunami?.amplitudeAt1000kmWunnemann as number | undefined;
+      expect(wave, `${shore.toString()} m`).toBeDefined();
+      expect(wave ?? 0).toBeLessThan(previous);
+      previous = wave ?? 0;
+    }
+    for (const shore of [46_000, 70_000, 600_000]) {
+      expect(at(shore).tsunami, `${shore.toString()} m`).toBeUndefined();
+    }
   });
 
   it('Chicxulub 1 000 km inland is past the 1 m isopach: no tsunami block', () => {

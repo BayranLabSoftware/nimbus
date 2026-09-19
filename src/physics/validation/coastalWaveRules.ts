@@ -128,7 +128,59 @@ export function shoreSegmentEquivalentRadius(radiusM: number, shoreDistanceM: nu
 export const MAX_SHORE_SEGMENT_FRACTION = 0.5;
 
 /**
- * The outcome of the round, written after the candidate was measured and not
- * before. Left null until then, so a reader can tell a rule from a result.
+ * The outcome of the round, written after the candidate was measured, on
+ * 19 September 2026. The rules above were pushed in commit 9d966e6 before the
+ * candidate was written.
+ *
+ * ADOPTED. Rule 270 holds on every clause.
+ *
+ * (a) The segment is the closed form to twelve places, a half at the water's
+ *     edge, nothing at and past the rim, never more than a half, and falling
+ *     without a step.
+ *
+ * (b) A sea five kilometres away no longer shrinks a crater. At every shore
+ *     distance tried, a Chicxulub-class body's transient crater, final
+ *     crater, stratospheric dust and seismic magnitude are identical to the
+ *     bit to the same body with no sea in reach at all. At Miami the transient
+ *     crater goes from 6.70 km to 7.17 and the dust from 49.1 Mt to 62.0 —
+ *     the fifth of its energy it was losing to a sea it never touched.
+ *
+ * (c) An impact in open water is untouched: the column still suppresses the
+ *     crater, the mechanism is still "water", the coupling still 1.
+ *
+ * (d) Monotone. Chicxulub, transient radius 45.8 km, against the shore:
+ *
+ *       shore     in the sea    cavity      A at 1 000 km
+ *        1 km       48.61 %     31.90 km      14.562 m
+ *       10 km       36.20 %     27.53 km      10.845 m
+ *       20 km       23.09 %     21.99 km       6.917 m
+ *       30 km       11.48 %     15.51 km       3.440 m
+ *       40 km        2.63 %      7.42 km       0.788 m
+ *       44 km        0.45 %      3.07 km       0.135 m
+ *       46 km          —           —          no wave
+ *       70 km          —           —          no wave
+ *
+ * (e) Gate PASS in strict mode, and no toll of the calibration net moved by
+ *     one person: the net has no coastal impact row, which is the fourth
+ *     round running that its silence has been the answer.
+ *
+ * What it cost, and rule 272 said it would be the result. Miami's 1 km stone
+ * raises no wave at all now, where it drowned 895 642 people before the round
+ * of the shore depth and 3 152 after it. Its transient crater's radius is
+ * 3.58 km and Biscayne Bay is 5.06 km away: the hole does not reach the water.
+ * Chicxulub seventy kilometres inland likewise, where the old model gave full
+ * coupling on the strength of a final rim that slumping leaves behind after
+ * the wave would have been made.
+ *
+ * The three things that are wrong with that, said plainly because the round
+ * cannot fix them. The ejecta do reach the sea — at Miami the 1 m isopach runs
+ * to 26 km — and a curtain of rock falling into water raises something; nobody
+ * has published how much. A final crater whose rim encloses the coast drains
+ * the sea into itself, which is a resurge, has its own literature in the
+ * deposits at Chicxulub and Lockne, and has no law here. And the air blast
+ * pushes on the water like a meteotsunami, which this model has never
+ * counted. Each of the three makes the model understate a coastal land
+ * impact; the number it printed before understated nothing and meant nothing.
  */
-export const COASTAL_WAVE_OUTCOME: string | null = null;
+export const COASTAL_WAVE_OUTCOME =
+  'ADOPTED 19 September 2026: a land impact keeps its whole energy and its whole crater, and its wave is the circular segment of the transient cavity that lies in the sea — half at the water\u2019s edge, nothing when the cavity stops short. No constant was introduced. Miami raises no wave, because its hole does not reach the water; the ejecta wave, the resurge and the meteotsunami are declared and unsized.';

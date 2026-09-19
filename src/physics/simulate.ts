@@ -55,6 +55,7 @@ import {
   passesMinimumBurningArea,
 } from './effects/firestorm.js';
 import { ignitionFluenceThreshold } from './effects/ignitionExposure.js';
+import { shoreSegmentFraction } from './validation/coastalWaveRules.js';
 import { thermalHorizonRadius } from './casualties.js';
 import { oceanCouplingPartition } from './effects/oceanCoupling.js';
 import { liquefactionRadius } from './events/earthquake/liquefaction.js';
@@ -477,9 +478,22 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // (matching Eltanin's geological "no crater" record). See
   // {@link oceanCouplingPartition} for the calibration anchors.
   const waterDepth = (input.waterDepth as number | undefined) ?? 0;
+  // On dry ground the water column over the impact point is none, whatever
+  // the sea a few kilometres away is doing. `shoreDistance` is set only where
+  // the store found a coast to reach, and it is the flag for it: until
+  // 19 September 2026 a land impact was handed the shore's own depth here and
+  // lost a fifth of its energy and 6.7 % of its crater to a sea it never
+  // touched (B-073, rules 267 to 273 of validation/coastalWaveRules.ts).
+  const shoreDistanceM =
+    input.shoreDistance !== undefined &&
+    Number.isFinite(input.shoreDistance) &&
+    (input.shoreDistance as number) > 0
+      ? (input.shoreDistance as number)
+      : 0;
+  const onLand = shoreDistanceM > 0;
   const oceanPartition = oceanCouplingPartition({
     impactorDiameter: input.impactorDiameter,
-    waterDepth: input.waterDepth ?? m(0),
+    waterDepth: onLand ? m(0) : (input.waterDepth ?? m(0)),
     impactorDensity: input.impactorDensity,
   });
   const fSeafloor = oceanPartition.seafloorFraction;
@@ -837,23 +851,42 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // cavity is built from is scaled by the McGetchin ejecta fraction
   // falling beyond the shoreline — 1 while the crater rim (or the
   // cavity) reaches the water, R/d beyond.
-  const shoreDistanceM =
-    input.shoreDistance !== undefined &&
-    Number.isFinite(input.shoreDistance) &&
-    (input.shoreDistance as number) > 0
-      ? (input.shoreDistance as number)
-      : 0;
   const fullCouplingKe = J((ke as number) * gf * fWater);
+  // The part of the excavation that is in the sea. On dry ground it is the
+  // circular segment of the TRANSIENT crater beyond the shoreline — half at
+  // the water's edge, nothing when the crater stops short, never more than a
+  // half. In the sea it is the water fraction of the column the body fell
+  // through, which is what it always was. Rule 268.
+  const transientRadiusM = (Dtc as number) / 2;
+  const segmentFraction = onLand ? shoreSegmentFraction(transientRadiusM, shoreDistanceM) : 0;
   const seaCoupling = computeSeaCoupling({
     shoreDistanceM,
-    craterRimRadiusM: craterRimRadius,
-    cavityAtFullCouplingM: programWave
-      ? m((programCraterDiameter as number) / 2)
-      : impactCavityRadius({ kineticEnergy: fullCouplingKe }),
+    // On dry ground the hole that displaces water is the transient cavity, not
+    // the rim left after it collapses: by the time the rim exists the wave is
+    // made. Rule 268.
+    craterRimRadiusM: onLand ? m(transientRadiusM) : craterRimRadius,
+    // The crater that is actually dug, not the water cavity the impact would
+    // have opened if it had happened at sea: until this round a land impact's
+    // wave was justified by a hole in water that is not there.
+    cavityAtFullCouplingM: onLand
+      ? m(transientRadiusM)
+      : programWave
+        ? m((programCraterDiameter as number) / 2)
+        : impactCavityRadius({ kineticEnergy: fullCouplingKe }),
     ejectaReachM: ejecta.blanketEdge1m,
   });
-  const seaWithinReach = seaCoupling.fraction > 0 || shoreDistanceM <= 0;
-  const seaCouplingFraction = seaCoupling.fraction;
+  // Rule 269: where the crater does not reach the sea the model raises no
+  // wave. The ejecta do reach it and a curtain of rock falling into water
+  // does raise something; nobody has published how much, and the number this
+  // used to print was routed through a water column that is not there.
+  const seaWithinReach = onLand ? segmentFraction > 0 : true;
+  const seaCouplingFraction = onLand ? segmentFraction : seaCoupling.fraction;
+  // What is published is what is used. `computeSeaCoupling` answers 1 whenever
+  // the crater reaches the shore at all, which is the reach and not the share:
+  // on dry ground the share is the segment.
+  const seaCouplingOut = onLand
+    ? { ...seaCoupling, mechanism: 'crater' as const, fraction: segmentFraction }
+    : seaCoupling;
   if (waterDepth > 0 && reachesSurface && seaWithinReach) {
     const meanOceanDepth = input.meanOceanDepth ?? m(DEFAULT_MEAN_OCEAN_DEPTH);
     // Phase-18: route only the water-coupled fraction of the post-
@@ -866,7 +899,13 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     // applied above to `craterScale`. The sea-coupling fraction
     // (above) then discounts an inland strike by the ejecta that
     // never reaches the water.
-    const surfaceCoupledKe = J((fullCouplingKe as number) * seaCouplingFraction);
+    // On dry ground the whole ground-coupled energy is available and the
+    // segment says how much of the excavation is in the water; at sea the
+    // water column says how much energy is in the water and the reach
+    // fraction discounts an inland strike. Rules 267 and 268.
+    const surfaceCoupledKe = onLand
+      ? J((ke as number) * gf * seaCouplingFraction)
+      : J((fullCouplingKe as number) * seaCouplingFraction);
     const wardCavityRadius = impactCavityRadius({ kineticEnergy: surfaceCoupledKe });
     const sourceAmplitude = impactSourceAmplitude(wardCavityRadius);
     const amp1000 = impactAmplitudeAtDistance({
@@ -888,9 +927,16 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     // sphere lies past it.
     const halfCircumference = Math.PI * earthRadius;
     const programReferenceRadius = m(Math.min(programCraterDiameter, halfCircumference));
-    const cavityRadius = programWave
-      ? m(Math.min((programCraterDiameter as number) / 2, halfCircumference))
-      : wardCavityRadius;
+    // On dry ground neither the program's water crater nor Ward's cavity is
+    // the hole in the water: the source is the segment of the crater that
+    // lies in the sea, and what is published is its equal-area circle. Before
+    // rules 267 to 273 the globe drew a 5.87 km cavity ring for a land impact
+    // whose water source is a couple of hundred metres across.
+    const cavityRadius = onLand
+      ? m(transientRadiusM * Math.sqrt(seaCouplingFraction))
+      : programWave
+        ? m(Math.min((programCraterDiameter as number) / 2, halfCircumference))
+        : wardCavityRadius;
     // Wünnemann, Collins & Weiss (2010) far field. The Ward rows above
     // stay as the historical reference; the rim wave (eq. 9a) is the
     // best estimate every downstream consumer uses — run-up, Manning
@@ -1050,7 +1096,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       manningNPropagation: MANNING_OPEN_OCEAN,
       manningNRunup: MANNING_SAND_BEACH,
       nonLinearShoalingAlpha: 0.3,
-      seaCoupling,
+      seaCoupling: seaCouplingOut,
     };
   }
 
