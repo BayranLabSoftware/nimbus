@@ -1,5 +1,6 @@
 import { countryAtCached } from '../scene/globe/cityLabels.js';
 import { pagerVulnerabilityFor } from '../physics/pagerVulnerability.js';
+import { UNKNOWN_STRIKE_AZIMUTHS } from '../physics/casualties.js';
 import { create } from 'zustand';
 import {
   findNearbyOceanDepth,
@@ -1644,28 +1645,23 @@ export function casualtyPlanForResult(
         result.data.isExtendedSource &&
         result.data.inputs.strikeAzimuthDeg === undefined
       ) {
-        // The envelope goes in the POLYGON and not in the radii. Inflating the
-        // radii was tried first and is wrong twice over: rule 46 holds the
-        // bands below MMI VII to the radii the model publishes, and a band
-        // whose inner and outer radius grow by different rules counts the
-        // people in the gap twice — it read 419 229 exposed at MMI VI where
-        // the model published 98 093. The radius stays what the model says;
-        // the shape the count is taken in is the disc that contains the
-        // stadium at every orientation.
-        const unorientedM = Math.hypot(
-          (result.data.ruptureLength as number) / 2,
-          (result.data.ruptureWidth as number) / 2
-        );
-        for (const band of plan.bands) {
-          band.polygon = buildRuptureStadiumLatLon({
-            centerLatDeg: location.latitude,
-            centerLonDeg: location.longitude,
-            strikeAzimuthDeg: 0,
-            halfLengthAlongStrikeM: 0,
-            halfWidthAcrossStrikeM: 0,
-            contourRadiusM: band.outerRadiusM + unorientedM,
-          });
-        }
+        // RULE 291, AND NOT RULE 290. The disc that contains the stadium at
+        // every orientation is what the GLOBE draws here, and it is right
+        // there: it says the shaking reaches this far in a direction nobody
+        // knows. Counting the dead inside it is a different thing, and a
+        // systematic over-count — on Tōhoku the disc is 4.6 times the area of
+        // the stadium at MMI IX, and putting it in the toll took that row from
+        // 426 dead to 23 299 on 20 September 2026 before this was caught.
+        //
+        // Rule 291 said it from the first round: the central estimate is the
+        // MEDIAN over a sweep of orientations and the band is that sweep's 5th
+        // and 95th percentile. The plan carries the sweep and the counters
+        // take the median.
+        plan.unknownStrike = {
+          halfLengthM: (result.data.ruptureLength as number) / 2,
+          halfWidthM: (result.data.ruptureWidth as number) / 2,
+          azimuthsDeg: UNKNOWN_STRIKE_AZIMUTHS,
+        };
       }
       if (
         plan !== null &&

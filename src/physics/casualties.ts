@@ -183,6 +183,59 @@ export interface CasualtyPlan {
   lossSigmaLn?: number;
   /** Annuli, inner to outer, contiguous. */
   bands: CasualtyBand[];
+  /** Rule 291 of validation/faultStrikeRules.ts: where an extended rupture's
+   *  strike is unknown, the toll is not counted in one footprint. It is the
+   *  MEDIAN over these orientations, and the band is their 5th and 95th
+   *  percentile — an unknown orientation enters as a band, which is what a
+   *  band is for.
+   *
+   *  It is deliberately not the disc the globe draws for the same case (rule
+   *  290): that disc is the union over every orientation, which is the right
+   *  statement for a picture — the shaking reaches this far, in a direction
+   *  nobody knows — and a systematic over-count for a toll. Drawn as a disc
+   *  and counted as a median, and the two rules say so. */
+  unknownStrike?: {
+    halfLengthM: number;
+    halfWidthM: number;
+    azimuthsDeg: readonly number[];
+  };
+}
+
+/** Rule 291's sweep: six orientations thirty degrees apart. A stadium is
+ *  unchanged by θ → θ + 180, so six of them cover the half-circle that holds
+ *  every distinct one.
+ *
+ *  Twelve were tried first and are the reason this constant carries a comment:
+ *  each orientation is a full pass over the population raster, and twelve took
+ *  the validation report from three and a half minutes to over twenty-one —
+ *  which is a cost the CI pays on every push. Six halve it and change the
+ *  median of a quantity that varies smoothly with the angle by very little.
+ *  The number is a choice of this project and not of rule 291, which says
+ *  "a sweep" and fixes no count; the honest way to spend more is to make one
+ *  pass answer every orientation, and that is the optimisation this waits on. */
+export const UNKNOWN_STRIKE_AZIMUTHS: readonly number[] = [0, 30, 60, 90, 120, 150];
+
+/** The median of a list, and the percentiles rule 291's band is made of. */
+export function sweepStatistics(values: readonly number[]): {
+  median: number;
+  low: number;
+  high: number;
+} {
+  const sorted = [...values].filter((v) => Number.isFinite(v)).sort((a, b) => a - b);
+  if (sorted.length === 0) return { median: 0, low: 0, high: 0 };
+  const at = (fraction: number): number => {
+    const index = Math.min(
+      sorted.length - 1,
+      Math.max(0, Math.round(fraction * (sorted.length - 1)))
+    );
+    return sorted[index] ?? 0;
+  };
+  const middle = sorted.length >> 1;
+  const median =
+    sorted.length % 2 === 1
+      ? (sorted[middle] ?? 0)
+      : ((sorted[middle - 1] ?? 0) + (sorted[middle] ?? 0)) / 2;
+  return { median, low: at(0.05), high: at(0.95) };
 }
 
 /** Combine mortalities acting in sequence on the survivors of one

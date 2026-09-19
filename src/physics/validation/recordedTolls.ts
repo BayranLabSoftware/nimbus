@@ -15,6 +15,7 @@ import {
   type CasualtyBand,
   type CasualtyEstimate,
   type CasualtyPlan,
+  sweepStatistics,
 } from '../casualties.js';
 import { EXPLOSION_PRESETS, simulateExplosion } from '../events/explosion/simulate.js';
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
@@ -320,10 +321,18 @@ function onTheBrowsersGround(event: RecordedEvent): RecordedEvent {
  * the hypocentre, or the mapped crustal fault that can host the rupture — and
  * leaves alone every row that names its own (rule 323).
  *
- * Where the lookup finds nothing it changes nothing here, and the row keeps
- * the behaviour it had; rule 325's band over orientations belongs to the
- * picture and to the reader's scenario, and moving the harness onto it is a
- * separate change with its own measurement.
+ * Where the lookup finds nothing this decorator still changes nothing: it has
+ * no strike to give. What happens then was, until 21 September 2026, written
+ * here as belonging “to the picture and to the reader's scenario”, with moving
+ * the harness onto it left as a separate change with its own measurement.
+ *
+ * That change is this one, and the measurement is in the commit that carries
+ * it. `casualtyPlanForResult` now hands such a row rule 291's sweep instead of
+ * a stadium pointing north, `measuredPopulation` below gives each realisation
+ * one of its orientations, and the harness counts what the product counts. The
+ * rows this reaches are not in the calibration net — every extended rupture of
+ * the net names its own strike — but in rule 11's held-out set, which is where
+ * it was measured.
  */
 function pointingWhereTheFaultPoints(event: RecordedEvent): RecordedEvent {
   const run = event.run;
@@ -439,8 +448,17 @@ export function sampleToll(
  * stadium was counted as the circle of its contour radius, and an
  * offshore megathrust's stadium, which runs along the coast, as a
  * circle at sea.
+ *
+ * Exported for `faultStrikeRules.test.ts`, and for that alone: rule 291's
+ * second clause is a statement about what one REALISATION reads, and a
+ * realisation is not visible from outside the band it ends up in. A test that
+ * could only see the band would have to infer the clause from the band's
+ * width, which says nothing — measured on 21 September 2026, Tōhoku's band is
+ * NARROWER with the orientation unknown (ln width 7.73 against 8.61), because
+ * an orientation that misses the coast moves the whole distribution down and
+ * not only its spread.
  */
-function measuredPopulation(
+export function measuredPopulation(
   event: RecordedEvent,
   result: ActiveResult,
   plans: readonly CasualtyPlan[],
@@ -457,7 +475,85 @@ function measuredPopulation(
       reachM = Math.max(reachM, rupture.halfLengthM + rupture.halfWidthM + band.outerRadiusM);
     }
   }
+  // Rule 291's sweep carries the rupture that the bands no longer carry as a
+  // polygon: without this the reach stays zero, the counter falls back to a
+  // circle of the contour radius, and a Mw 9 is counted in a 50 km disc. That
+  // is what it did for one run on 20 September 2026, and Tōhoku's band came
+  // back 0 to 167 dead. Every realisation's own rupture is read, not the first
+  // one's: a realisation draws its own magnitude and therefore its own length.
+  const sweep = plans.find((plan) => plan.unknownStrike !== undefined)?.unknownStrike;
+  if (sweep !== undefined) {
+    for (const plan of plans) {
+      const declared = plan.unknownStrike;
+      if (declared === undefined) continue;
+      for (const band of plan.bands) {
+        reachM = Math.max(reachM, declared.halfLengthM + declared.halfWidthM + band.outerRadiusM);
+      }
+    }
+  }
   if (reachM <= 0) return circle;
+
+  // RULE 291, BOTH OF ITS CLAUSES. Where the rupture's strike is unknown the
+  // people are not those of one footprint, and the rule says what they are
+  // twice over: the central estimate is the MEDIAN over a sweep of
+  // orientations, and “the band is that sweep's 5th and 95th percentile — an
+  // unknown orientation enters as a band, which is what the band is for”.
+  //
+  // The median alone was written first and is only half of it. This function
+  // is what a REALISATION reads, and a realisation that reads the median reads
+  // the same orientation as every other one: the sweep then cancels out of the
+  // band exactly, and an unknown orientation enters nowhere. So each
+  // realisation is given ONE orientation of the sweep, cycling through them in
+  // order, and the band the realisations make carries the sweep's spread along
+  // with the magnitude's, the depth's and the ground motion's.
+  //
+  // Cycling rather than drawing at random is deliberate, and it is not a
+  // second scatter law (rules 182 to 186 fix those): the orientations are
+  // equally likely and nothing about a realisation says which it should have,
+  // so dealing them round gives each one the same count ± 1 with no seed of
+  // its own to keep deterministic. `centralEstimate` stays on the median,
+  // because a central estimate is not a realisation.
+  //
+  // What this is NOT is rule 290's disc, which is the union over every
+  // orientation. That is the right picture and a systematic over-count when
+  // the dead are counted in it.
+  if (sweep !== undefined) {
+    const counters = sweep.azimuthsDeg.map((azimuth) =>
+      shippedStadiumCounter(event.latitude, event.longitude, azimuth, reachM)
+    );
+    const perRealisation = new WeakMap<
+      CasualtyBand,
+      {
+        count: (a: number, b: number, r: number) => number;
+        halfLengthM: number;
+        halfWidthM: number;
+      }
+    >();
+    plans.forEach((plan, index) => {
+      const declared = plan.unknownStrike;
+      const count = counters[index % counters.length];
+      if (declared === undefined || count === undefined) return;
+      for (const band of plan.bands) {
+        perRealisation.set(band, {
+          count,
+          halfLengthM: declared.halfLengthM,
+          halfWidthM: declared.halfWidthM,
+        });
+      }
+    });
+    return (radiusM, band) => {
+      const mine = perRealisation.get(band);
+      if (mine !== undefined) return mine.count(mine.halfLengthM, mine.halfWidthM, radiusM);
+      // A band from no realisation of this sweep — a caller counting one
+      // footprint of its own. It gets the rule's central answer.
+      const rupture = band.polygon === undefined ? undefined : ruptures.get(band.polygon);
+      const halfLengthM = rupture?.halfLengthM ?? sweep.halfLengthM;
+      const halfWidthM = rupture?.halfWidthM ?? sweep.halfWidthM;
+      return sweepStatistics(counters.map((count) => count(halfLengthM, halfWidthM, radiusM)))
+        .median;
+    };
+  }
+
   const stadium = shippedStadiumCounter(
     event.latitude,
     event.longitude,
@@ -595,8 +691,28 @@ export function centralEstimate(event: RecordedEvent): CasualtyEstimate | null {
     longitude: event.longitude,
   });
   if (plan === null) return null;
+  // Rule 291: an unknown strike is a median over orientations, never the disc
+  // that contains them all.
+  const sweep = plan.unknownStrike;
+  const counters =
+    sweep === undefined
+      ? null
+      : sweep.azimuthsDeg.map((azimuth) =>
+          shippedStadiumCounter(
+            event.latitude,
+            event.longitude,
+            azimuth,
+            sweep.halfLengthM +
+              sweep.halfWidthM +
+              Math.max(...plan.bands.map((band) => band.outerRadiusM))
+          )
+        );
   const cumulative = plan.bands.map((band) =>
-    footprintPopulation(event, band.outerRadiusM, band.polygon)
+    counters === null || sweep === undefined
+      ? footprintPopulation(event, band.outerRadiusM, band.polygon)
+      : sweepStatistics(
+          counters.map((count) => count(sweep.halfLengthM, sweep.halfWidthM, band.outerRadiusM))
+        ).median
   );
   return estimateCasualties(plan, cumulative);
 }
