@@ -889,10 +889,10 @@
         "recorded": 105000,
         "recordedLow": 70000,
         "recordedHigh": 140000,
-        "model": 81885,
-        "bandLow": 65756,
-        "bandHigh": 100886,
-        "ratio": 0.78,
+        "model": 87306,
+        "bandLow": 78175,
+        "bandHigh": 105613,
+        "ratio": 0.831,
         "contains": true,
         "gated": false,
         "cause": "populationChanged",
@@ -1445,13 +1445,13 @@
         "all": {
           "rows": 2,
           "scored": 2,
-          "bias": 2.26,
-          "scatterLn": 1.06,
+          "bias": 2.33,
+          "scatterLn": 1.03,
           "inside": 1,
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.43
+          "medianBandDecades": 0.4
         }
       },
       {
@@ -1507,7 +1507,7 @@
           "bothZero": 0,
           "falseAlarms": 0,
           "missedToZero": 0,
-          "medianBandDecades": 0.19
+          "medianBandDecades": 0.13
         }
       },
       {
@@ -4350,14 +4350,14 @@
           "record": 105000,
           "gated": false,
           "inPlace": [
-            65252,
-            80869,
-            98108
+            77482,
+            86290,
+            102579
           ],
           "candidate": [
-            66367,
-            82871,
-            103358
+            78624,
+            88291,
+            108612
           ],
           "insideInPlace": true,
           "insideCandidate": true
@@ -6277,10 +6277,10 @@
       },
       {
         "event": "Hiroshima 1945",
-        "measuredLow": 65756,
-        "measuredHigh": 100886,
-        "interpolatedLow": 65179,
-        "interpolatedHigh": 100989,
+        "measuredLow": 78175,
+        "measuredHigh": 105613,
+        "interpolatedLow": 77338,
+        "interpolatedHigh": 106027,
         "comparable": true,
         "lowComparable": true
       },

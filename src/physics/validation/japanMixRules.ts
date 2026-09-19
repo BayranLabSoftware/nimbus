@@ -121,7 +121,57 @@ export function initialRadiationMortality(
 }
 
 /**
- * The outcome of the round, written after the candidate was measured and not
- * before. Left null until then, so a reader can tell a rule from a result.
+ * The outcome of the round, written after the candidate was measured, on
+ * 20 September 2026. The rules above were pushed in commit 845f6eb before the
+ * candidate was written.
+ *
+ * ADOPTED. Rule 282 holds on every clause, and with no shielding factor.
+ *
+ * (a) The initial radiation takes 9.5 % of Hiroshima's dead and 5.1 % of
+ *     Nagasaki's, both inside §12.16's 5 to 15 %. Rule 281 refused a shielding
+ *     constant and let the measurement answer: the free-field dose, applied to
+ *     everyone, lands inside the book's own range on both cities without one.
+ *     That is not a licence to believe there is no shielding — it is a
+ *     statement that the overstatement is smaller than the range the book
+ *     gives.
+ *
+ * (b) The totals go from 1.01 × to 1.16 × at Hiroshima and 1.04 × to 1.11 × at
+ *     Nagasaki, both inside the quarter rule 263 fixed.
+ *
+ * (c) Gate PASS in strict mode, with the two audit arms it gained this morning
+ *     still clean.
+ *
+ * (d) Nothing else was touched: the three doses are the module's own, and the
+ *     curve between them is defined by them.
+ *
+ * The mix, which is what the round was about:
+ *
+ *                  blast   burns   radiation   mass fire   deferred
+ *   Hiroshima      58.1 %   9.1 %      9.5 %       0 %      23.4 %
+ *   Nagasaki       68.1 %   5.0 %      5.1 %       0 %      21.8 %
+ *   the book       the rest ~50 %    5 – 15 %      —          —
+ *
+ * One toll of the net moved, and rule 285 said it would be recorded either
+ * way: Hiroshima from 81 885 to 87 306, on a band that went from
+ * 65 756 – 100 886 to 78 175 – 105 613 — which now holds the record itself,
+ * 105 000, at its very top.
+ *
+ * Something else moved that no rule named, and it is worth saying rather than
+ * leaving to be found. The casualty timeline's prompt sweep now runs to thirty
+ * days for a nuclear burst, where it used to end before the deferred deaths
+ * began. That is because a death from the initial dose is caused by the event
+ * and arrives over weeks: §12.16's "a number died two or more weeks later".
+ * The distinction the bar used to draw — prompt is fast, later is slow — was
+ * the approximation, and the radiation is where it breaks.
+ *
+ * What stands, and rule 284 named it first: the burns are 9.1 % and 5.0 %
+ * where §12.13 puts burns of one kind or another at about half the dead, and
+ * the blast share is correspondingly too large. Adding radiation did not touch
+ * that and was not allowed to. It is the next round, and it is a harder one:
+ * the book's "burns of one kind or another" includes flame burns from the
+ * fires, which this model has just moved out of its central estimate, and the
+ * deferred deaths — a quarter of the toll and no cause at all — hide whatever
+ * injured the people who later died of it.
  */
-export const JAPAN_MIX_OUTCOME: string | null = null;
+export const JAPAN_MIX_OUTCOME =
+  'ADOPTED 20 September 2026: the initial radiation is a hazard of an explosion\u2019s toll at last, on the three contours the globe was already drawing. It takes 9.5 % of Hiroshima\u2019s dead and 5.1 % of Nagasaki\u2019s, both inside §12.16\u2019s 5 to 15 %, with no shielding constant invented; both totals stay inside the quarter rule 263 fixed. The burns, at a tenth where the book says a half, are the next round.';

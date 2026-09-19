@@ -1581,6 +1581,16 @@ export function casualtyPlanForResult(
         thirdDegreeBurnRadius: result.data.thermal.thirdDegreeBurnRadius,
         secondDegreeBurnRadius: result.data.thermal.secondDegreeBurnRadius,
         firestormRadius: result.data.firestorm.sustainRadius,
+        // The three contours the globe has been drawing without counting
+        // (B-075, rules 279 to 285). An impact passes none: it has no initial
+        // nuclear radiation at all.
+        ...((result.data.radiation.ld50Radius as number) > 0 && {
+          initialRadiation: {
+            ld100M: result.data.radiation.ld100Radius,
+            ld50M: result.data.radiation.ld50Radius,
+            arsM: result.data.radiation.arsThresholdRadius,
+          },
+        }),
         fireballRadius: nuclearFireballRadius(joulesToKilotons(result.data.yield.joules)),
         ...(result.data.inputs.chargeType !== undefined && {
           chargeType: result.data.inputs.chargeType,

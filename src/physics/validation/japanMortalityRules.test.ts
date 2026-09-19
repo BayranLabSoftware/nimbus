@@ -163,7 +163,7 @@ describe('rules 261 to 266 — the only two cities there are, read per head', ()
       '',
       'Innermost: OTA figure 1 puts 98 % above 12 psi and Japan recorded 86 and 88.',
       'Outermost: below 2 psi the model carries no hazard at all, and Japan recorded 2.1 % and 1.1 %.',
-      'And §12.16 makes initial radiation 5 to 15 % of Japan’s fatalities, which this model does not count among an explosion’s dead.',
+      'Initial radiation: §12.16 makes it 5 to 15 % of Japan’s fatalities, and since rules 279 to 285 an explosion’s toll counts it — 9.5 % at Hiroshima, 5.1 % at Nagasaki.',
       'Each is a round of its own (rule 264).'
     );
     console.log(lines.join('\n'));

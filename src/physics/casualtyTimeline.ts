@@ -136,6 +136,14 @@ export function arrivalFunctionFor(input: ArrivalInput): ArrivalFunction {
         return firestorm(radiusM, band);
       case 'delayed':
         return delayed(radiusM, band);
+      // The dose arrives in the first second and the death does not.
+      // Glasstone & Dolan §12.16: among those who survived the first few days,
+      // "a number died two or more weeks later with symptoms which were
+      // ascribed to nuclear radiation injuries". So the initial radiation's
+      // dead land in the same window the other deferred dead do — one day to
+      // thirty — and no new window is invented for them (rules 279 to 285).
+      case 'radiation':
+        return delayed(radiusM, band);
       case 'shaking':
         return radiusM / SHEAR_WAVE_SPEED;
       case 'pyroclastic':

@@ -374,8 +374,14 @@ describe('useAppStore — casualty estimate', () => {
     if (timeline === null) throw new Error('timeline');
     expect(timeline.model).toBe('blast');
     expect(timeline.promptDeathsEndS).toBeGreaterThan(1);
-    // The later deaths run to a month; the sweep ends with them.
-    expect(timeline.deathsEndS).toBeGreaterThan(timeline.promptDeathsEndS);
+    // The later deaths run to a month; the sweep ends with them. Since rules
+    // 279 to 285 the initial nuclear radiation kills too, and it kills over
+    // weeks — Glasstone & Dolan §12.16, "a number died two or more weeks
+    // later" — so for a nuclear burst the prompt sweep now reaches the same
+    // month rather than ending before it. That is the truth about the event
+    // and not a loss: the distinction the bar used to draw, between a death
+    // the blast caused and one that came later, was the approximation.
+    expect(timeline.deathsEndS).toBeGreaterThanOrEqual(timeline.promptDeathsEndS);
     expect(timeline.endS).toBeGreaterThanOrEqual(timeline.deathsEndS);
     expect(timeline.deaths).toBeGreaterThan(0);
     expect(useAppStore.getState().casualtyClockStartedAt).not.toBeNull();

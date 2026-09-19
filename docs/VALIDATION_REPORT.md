@@ -161,9 +161,9 @@ its own inputs.
 |  | Mw < 6.5 | 3 | 2 | 0.040× | 2.00 | 2 of 3 | 0 / 1 / 0 | 10^3.3 | 5 | 4 | 0.029× | 1.95 | 3 of 5 | 0 / 1 / 0 | 10^3.3 |
 |  | Mw 6.5–7.5 | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^4.3 | 2 | 2 | 0.61× | 0.18 | 2 of 2 | 0 / 0 / 0 | 10^3.3 |
 |  | Mw ≥ 7.5 | 4 | 2 | 0.51× | 0.16 | 4 of 4 | 1 / 0 / 1 | 10^2.7 | 5 | 3 | 0.17× | 1.56 | 5 of 5 | 1 / 0 / 1 | 10^3.4 |
-| **explosion** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 2.26× | 1.06 | 1 of 2 | 0 / 0 / 0 | 10^0.4 |
+| **explosion** | all sizes | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 2 | 2 | 2.33× | 1.03 | 1 of 2 | 0 / 0 / 0 | 10^0.4 |
 |  | < 1 kt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 0 of 1 | 0 / 0 / 0 | 10^0.7 |
-|  | 1 kt – 1 Mt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^0.2 |
+|  | 1 kt – 1 Mt | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^0.1 |
 | **volcano** | all sizes | 3 | 3 | 0.19× | 0.51 | 1 of 3 | 0 / 0 / 0 | 10^1.2 | 4 | 4 | 0.43× | 1.47 | 2 of 4 | 0 / 0 / 0 | 10^1.4 |
 |  | < 10⁸ m³ | 2 | 2 | 0.27× | 0.16 | 1 of 2 | 0 / 0 / 0 | 10^1.4 | 2 | 2 | 0.27× | 0.16 | 1 of 2 | 0 / 0 / 0 | 10^1.4 |
 |  | 10⁸ – 10¹⁰ m³ | 0 | 0 | — | — | — | 0 / 0 / 0 | — | 1 | 1 | — | — | 1 of 1 | 0 / 0 / 0 | 10^1.6 |
@@ -784,7 +784,7 @@ model was set on the event, which is under "Which checks are validation".
 | Beirut 2020 | 218 | 1,423 | 768 – 3,549 | 10^0.7 | 6.53× | **misses** | populationRaster | declared | tuned on it |
 | Mount St Helens 1980 | 57 | 278 | 30 – 1,195 | 10^1.6 | 4.88× | contains | occupancy | declared | tuned on it |
 | Pinatubo 1991 | 847 | 81 | 32 – 309 | 10^1.0 | 0.10× | **misses** | mechanismNotModelled | declared | held out |
-| Hiroshima 1945 | 105,000 (70,000–140,000) | 81,885 | 65,756 – 100,886 | 10^0.2 | 0.78× | contains | populationChanged | declared | tuned on it |
+| Hiroshima 1945 | 105,000 (70,000–140,000) | 87,306 | 78,175 – 105,613 | 10^0.1 | 0.83× | contains | populationChanged | declared | tuned on it |
 | Tōhoku 2011 | 18,500 | 7,997 | 8 – 1,204,212 | 10^5.2 | 0.43× | contains | footprint | declared | held out |
 | Sumatra–Andaman 2004 | 227,898 | 4,263 | 115 – 277,275 | 10^3.4 | 0.02× | contains | drownedOffline | declared | same source |
 | Christchurch 2011 | 185 | 1 | 0 – 26 | 10^1.4 | 0.01× | **misses** | buildingStock | declared | held out |
@@ -853,7 +853,7 @@ rather than about the interpolation.
 | Beirut 2020 | 768 – 3,549 | 768 – 3,549 | 1.00× / 1.00× | yes |
 | Mount St Helens 1980 | 30 – 1,195 | 34 – 1,146 | 1.13× / 1.04× | high end only |
 | Pinatubo 1991 | 32 – 309 | 32 – 309 | 1.00× / 1.00× | high end only |
-| Hiroshima 1945 | 65,756 – 100,886 | 65,179 – 100,989 | 1.01× / 1.00× | yes |
+| Hiroshima 1945 | 78,175 – 105,613 | 77,338 – 106,027 | 1.01× / 1.00× | yes |
 | Tōhoku 2011 | 15 – 516,763 | 23 – 360,451 | 1.53× / 1.43× | high end only |
 | Sumatra–Andaman 2004 | 166 – 48,898 | 167 – 47,886 | 1.01× / 1.02× | yes |
 | Christchurch 2011 | 0 – 11 | 0 – 9 | 1.00× / 1.22× | too few dead |
@@ -1475,7 +1475,7 @@ Nimbus drew its burn rings at 8, 5 and 2 cal/cm², three numbers of the project'
 | 1 Mt reference | 1 Mt | 3.32 / 6.30 / 10.04 | 15.42 · 11.31 · 9.52 | 13.04 · 10.40 · 8.74 |
 | Ivy Mike 1952 | 10.4 Mt | 4.16 / 7.62 / 11.75 | 29.79 · 23.55 · 20.64 | 24.74 · 20.93 · 18.43 |
 
-The most any ring moves is a factor of 0.83; a misread figure could not stay inside two, which is the guard rule 82 set. The curves are adopted: they are the book the project cites for the number, where the three fluences were the project’s own. The two rows of the calibration net that are explosions read Beirut 2020 1423 against 218, Hiroshima 1945 82871 against 105000 — neither can judge the change (Hiroshima's toll is tuned on its own mortality, Beirut's charge is chemical and draws no flash), and no row of the net counts the burned apart from the dead.
+The most any ring moves is a factor of 0.83; a misread figure could not stay inside two, which is the guard rule 82 set. The curves are adopted: they are the book the project cites for the number, where the three fluences were the project’s own. The two rows of the calibration net that are explosions read Beirut 2020 1423 against 218, Hiroshima 1945 88291 against 105000 — neither can judge the change (Hiroshima's toll is tuned on its own mortality, Beirut's charge is chemical and draws no flash), and no row of the net counts the burned apart from the dead.
 
 Beside, deciding nothing — the figure's light and dark curves, which bracket the middle one, at the third-degree ring:
 

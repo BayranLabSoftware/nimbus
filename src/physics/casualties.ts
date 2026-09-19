@@ -10,6 +10,7 @@ import {
   type ChemicalBlastSource,
 } from './events/explosion/overpressure.js';
 import { distanceForOverpressure } from './events/impact/damageRings.js';
+import { initialRadiationMortality } from './validation/japanMixRules.js';
 import type { Joules, Meters } from './units.js';
 import { EARTH_RADIUS } from './constants.js';
 import { Pa } from './units.js';
@@ -106,6 +107,10 @@ export type CasualtyHazard =
   | 'blast'
   | 'thermal'
   | 'firestorm'
+  /** The initial gamma and neutron dose of a nuclear burst. An explosion's
+   *  alone: an impact has none (rules 279 to 285 of
+   *  validation/japanMixRules.ts). */
+  | 'radiation'
   | 'delayed'
   | 'shaking'
   | 'pyroclastic'
@@ -356,6 +361,16 @@ export interface BlastCasualtyInput {
   /** Radius inside which the fluence sustains a firestorm (m); omit
    *  or pass 0 for no mass fire. */
   firestormRadius?: Meters;
+  /**
+   * The three contours of the initial nuclear radiation (m), from the
+   * explosion module: LD₁₀₀ at 800 rad, LD₅₀ at 450 and the
+   * acute-radiation-syndrome threshold at 100, all on Glasstone & Dolan's own
+   * dose-against-range curves. Given, the toll gains the hazard that §12.16
+   * makes 5 to 15 % of Japan's fatalities and that the globe has been drawing
+   * without counting (B-075). Omitted — as an impact omits it, having no
+   * initial nuclear radiation at all — nothing is added.
+   */
+  initialRadiation?: { ld100M: number; ld50M: number; arsM: number };
   /** Luminous fireball radius (m). When given, the burn and mass-fire
    *  radii are cut at the range where the fireball sets below the
    *  horizon: past it the flash never arrives. See
@@ -443,10 +458,15 @@ export function blastCasualtyPlan(input: BlastCasualtyInput): CasualtyPlan | nul
   const burn3 = seen(input.thirdDegreeBurnRadius);
   const burn2 = Math.max(burn3, seen(input.secondDegreeBurnRadius));
   const fire = seen(input.firestormRadius);
+  // The initial dose does not travel by line of sight to a fireball the way a
+  // flash does, and it is not cut at the horizon: it is gamma and neutrons
+  // through air, and the three contours are where they stop mattering.
+  const rad = input.initialRadiation;
+  const radEdges = rad === undefined ? [] : [rad.ld100M, rad.ld50M, rad.arsM].filter((r) => r > 0);
 
-  const edges = [...new Set([...psiEdges, burn3, burn2, fire].filter((r) => r >= 0))].sort(
-    (a, b) => a - b
-  );
+  const edges = [
+    ...new Set([...psiEdges, burn3, burn2, fire, ...radEdges].filter((r) => r >= 0)),
+  ].sort((a, b) => a - b);
   const psiClassAt = (r: number): number => {
     // Index into OTA_BLAST_BANDS of the annulus containing radius r,
     // or -1 beyond the 1 psi ring.
@@ -504,6 +524,24 @@ export function blastCasualtyPlan(input: BlastCasualtyInput): CasualtyPlan | nul
         mortalityHigh: 0,
         survivorInjuryRate: THERMAL_EXPOSED_FRACTION.mid,
       });
+    }
+    // The initial nuclear radiation, rule 279: one inside LD₁₀₀, a half at
+    // LD₅₀, nothing at the acute-radiation-syndrome line, acting on the
+    // survivors of everything else like every other layer. A chemical charge
+    // has none, and neither has an impact — which passes no contours at all.
+    if (!chemical && rad !== undefined) {
+      const mortality = initialRadiationMortality(mid, rad.ld100M, rad.ld50M, rad.arsM);
+      if (mortality > 0) {
+        components.push({
+          hazard: 'radiation',
+          mortality,
+          // No shielding factor and no band of its own: rule 281 refuses to
+          // invent one, and the three doses the contours are drawn at are the
+          // only numbers here.
+          mortalityLow: mortality,
+          mortalityHigh: mortality,
+        });
+      }
     }
     if (!chemical && mid < fire) {
       components.push({
