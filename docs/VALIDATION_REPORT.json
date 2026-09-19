@@ -2064,15 +2064,15 @@
           },
           {
             "sizeBand": "Mw 6.5–7.5",
-            "rows": 120,
+            "rows": 114,
             "scored": 53,
             "bias": 1.07,
             "scatterLn": 2.13,
-            "inside": 103,
-            "bothZero": 34,
+            "inside": 107,
+            "bothZero": 28,
             "falseAlarms": 14,
             "missedToZero": 19,
-            "medianBandDecades": 2.81
+            "medianBandDecades": 2.66
           },
           {
             "sizeBand": "Mw ≥ 7.5",
@@ -2080,7 +2080,7 @@
             "scored": 19,
             "bias": 14,
             "scatterLn": 2.17,
-            "inside": 27,
+            "inside": 31,
             "bothZero": 4,
             "falseAlarms": 10,
             "missedToZero": 2,
@@ -2102,15 +2102,15 @@
           },
           {
             "sizeBand": "Mw 6.5–7.5",
-            "rows": 113,
+            "rows": 107,
             "scored": 37,
             "bias": 0.225,
             "scatterLn": 2.25,
-            "inside": 99,
-            "bothZero": 37,
+            "inside": 97,
+            "bothZero": 31,
             "falseAlarms": 4,
             "missedToZero": 35,
-            "medianBandDecades": 2.2
+            "medianBandDecades": 2.14
           },
           {
             "sizeBand": "Mw ≥ 7.5",
@@ -2118,7 +2118,7 @@
             "scored": 18,
             "bias": 1.72,
             "scatterLn": 2.26,
-            "inside": 31,
+            "inside": 33,
             "bothZero": 5,
             "falseAlarms": 8,
             "missedToZero": 3,
@@ -2248,7 +2248,7 @@
       },
       "chains": {
         "inPlace": {
-          "peopleScore": 1.814,
+          "peopleScore": 1.789,
           "people": [
             {
               "level": 7,
@@ -2266,7 +2266,7 @@
               "level": 7,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 14,
-              "bias": -0.922
+              "bias": -1.216
             },
             {
               "level": 8,
@@ -2284,7 +2284,7 @@
               "level": 8,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 11,
-              "bias": 0.615
+              "bias": -0.119
             },
             {
               "level": 9,
@@ -2315,24 +2315,24 @@
             {
               "sizeBand": "Mw 6.5–7.5",
               "bias": 0.329,
-              "inside": 109,
-              "rows": 118
+              "inside": 106,
+              "rows": 112
             },
             {
               "sizeBand": "Mw ≥ 7.5",
               "bias": 1.976,
-              "inside": 31,
+              "inside": 32,
               "rows": 34
             }
           ],
           "shakemapScore": 0.971,
-          "tollAgainstPager": 0.298,
-          "alertAgreement": 0.663,
+          "tollAgainstPager": 0.272,
+          "alertAgreement": 0.652,
           "rule28Score": 0.116,
           "rule28Sharpness": 0.346
         },
         "pager": {
-          "peopleScore": 0.668,
+          "peopleScore": 0.509,
           "people": [
             {
               "level": 7,
@@ -2350,7 +2350,7 @@
               "level": 7,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 15,
-              "bias": -0.18
+              "bias": -0.125
             },
             {
               "level": 8,
@@ -2368,7 +2368,7 @@
               "level": 8,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 11,
-              "bias": 1.175
+              "bias": 0.767
             },
             {
               "level": 9,
@@ -2386,7 +2386,7 @@
               "level": 9,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 9,
-              "bias": 1.417
+              "bias": 0.61
             }
           ],
           "tolls": [
@@ -2399,24 +2399,24 @@
             {
               "sizeBand": "Mw 6.5–7.5",
               "bias": 0.497,
-              "inside": 122,
-              "rows": 130
+              "inside": 118,
+              "rows": 124
             },
             {
               "sizeBand": "Mw ≥ 7.5",
               "bias": 4.44,
-              "inside": 35,
+              "inside": 37,
               "rows": 37
             }
           ],
           "shakemapScore": 1.131,
-          "tollAgainstPager": 0.318,
-          "alertAgreement": 0.69,
+          "tollAgainstPager": 0.296,
+          "alertAgreement": 0.695,
           "rule28Score": 0.203,
           "rule28Sharpness": 0.377
         },
         "pgaWithPagerBands": {
-          "peopleScore": 0.756,
+          "peopleScore": 0.666,
           "people": [
             {
               "level": 7,
@@ -2434,7 +2434,7 @@
               "level": 7,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 14,
-              "bias": -0.546
+              "bias": -0.44
             },
             {
               "level": 8,
@@ -2452,7 +2452,7 @@
               "level": 8,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 11,
-              "bias": 0.969
+              "bias": 0.472
             },
             {
               "level": 9,
@@ -2470,7 +2470,7 @@
               "level": 9,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 9,
-              "bias": 0.236
+              "bias": -0.117
             }
           ],
           "tolls": [
@@ -2483,24 +2483,24 @@
             {
               "sizeBand": "Mw 6.5–7.5",
               "bias": 0.348,
-              "inside": 116,
-              "rows": 124
+              "inside": 113,
+              "rows": 118
             },
             {
               "sizeBand": "Mw ≥ 7.5",
               "bias": 3.206,
-              "inside": 34,
+              "inside": 35,
               "rows": 35
             }
           ],
           "shakemapScore": 0.971,
-          "tollAgainstPager": 0.369,
+          "tollAgainstPager": 0.35,
           "alertAgreement": 0.684,
           "rule28Score": 0.116,
           "rule28Sharpness": 0.346
         },
         "pgvWithRings": {
-          "peopleScore": 1.504,
+          "peopleScore": 1.459,
           "people": [
             {
               "level": 7,
@@ -2518,7 +2518,7 @@
               "level": 7,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 14,
-              "bias": -0.712
+              "bias": -0.584
             },
             {
               "level": 8,
@@ -2536,7 +2536,7 @@
               "level": 8,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 11,
-              "bias": 0.834
+              "bias": 0.164
             },
             {
               "level": 9,
@@ -2554,7 +2554,7 @@
               "level": 9,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 9,
-              "bias": -1.188
+              "bias": -1.62
             }
           ],
           "tolls": [
@@ -2567,18 +2567,18 @@
             {
               "sizeBand": "Mw 6.5–7.5",
               "bias": 0.44,
-              "inside": 107,
-              "rows": 120
+              "inside": 106,
+              "rows": 113
             },
             {
               "sizeBand": "Mw ≥ 7.5",
               "bias": 5.373,
-              "inside": 33,
+              "inside": 36,
               "rows": 37
             }
           ],
           "shakemapScore": 1.131,
-          "tollAgainstPager": 0.257,
+          "tollAgainstPager": 0.237,
           "alertAgreement": 0.663,
           "rule28Score": 0.203,
           "rule28Sharpness": 0.377
@@ -2699,11 +2699,11 @@
                 12
               ],
               [
-                30,
-                41
+                35,
+                37
               ],
               [
-                14,
+                18,
                 18
               ]
             ],
@@ -2713,11 +2713,11 @@
                 5
               ],
               [
-                20,
-                36
+                27,
+                34
               ],
               [
-                11,
+                13,
                 16
               ]
             ]
@@ -2731,7 +2731,7 @@
       "besideRecorded": {
         "epicentral": {
           "score": 1.083,
-          "held": 117,
+          "held": 116,
           "rows": 129
         },
         "thompsonWorden2018": {
@@ -2931,11 +2931,11 @@
               131
             ],
             [
-              109,
-              118
+              106,
+              112
             ],
             [
-              31,
+              32,
               34
             ]
           ],
@@ -2945,12 +2945,12 @@
               113
             ],
             [
-              122,
-              138
+              128,
+              139
             ],
             [
-              32,
-              36
+              33,
+              35
             ]
           ]
         },
@@ -2971,7 +2971,7 @@
       "readings": {
         "boore2014": {
           "score": 0.646,
-          "held": 138,
+          "held": 139,
           "cells": [
             {
               "bias": 4.673,
@@ -2985,14 +2985,14 @@
             },
             {
               "bias": 3.463,
-              "inside": 13,
+              "inside": 14,
               "rows": 16
             }
           ]
         },
         "allenMidBand": {
           "score": 0.624,
-          "held": 163,
+          "held": 164,
           "cells": [
             {
               "bias": 1.861,
@@ -3006,7 +3006,7 @@
             },
             {
               "bias": 3.6,
-              "inside": 16,
+              "inside": 17,
               "rows": 17
             }
           ]
@@ -3062,7 +3062,7 @@
         },
         "booreMidBand": {
           "score": 0.716,
-          "held": 171,
+          "held": 172,
           "cells": [
             {
               "bias": 3.972,
@@ -3076,7 +3076,7 @@
             },
             {
               "bias": 3.6,
-              "inside": 16,
+              "inside": 17,
               "rows": 17
             }
           ]
@@ -3199,7 +3199,7 @@
         "adopted": true,
         "inPlace": {
           "score": 1.083,
-          "held": 55,
+          "held": 58,
           "rows": 62,
           "cells": [
             [
@@ -3207,7 +3207,7 @@
               21
             ],
             [
-              16,
+              19,
               19
             ],
             [
@@ -3218,7 +3218,7 @@
         },
         "candidate": {
           "score": 0.801,
-          "held": 37,
+          "held": 38,
           "rows": 62,
           "cells": [
             [
@@ -3230,7 +3230,7 @@
               19
             ],
             [
-              19,
+              20,
               22
             ]
           ]
@@ -3296,10 +3296,10 @@
       "readings": {
         "rule11": {
           "inPlace": {
-            "intervalScore": 2.325,
-            "held": 260,
-            "rows": 283,
-            "medianWidthDecades": 2.632,
+            "intervalScore": 2.085,
+            "held": 258,
+            "rows": 277,
+            "medianWidthDecades": 2.53,
             "cells": [
               {
                 "group": "Mw < 6.5",
@@ -3309,23 +3309,23 @@
               },
               {
                 "group": "Mw 6.5–7.5",
-                "intervalScore": 1.983,
-                "held": 109,
-                "rows": 118
+                "intervalScore": 1.586,
+                "held": 106,
+                "rows": 112
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 2.266,
-                "held": 31,
+                "intervalScore": 1.923,
+                "held": 32,
                 "rows": 34
               }
             ]
           },
           "candidate": {
-            "intervalScore": 2.384,
-            "held": 241,
-            "rows": 275,
-            "medianWidthDecades": 2.405,
+            "intervalScore": 2.108,
+            "held": 243,
+            "rows": 270,
+            "medianWidthDecades": 2.353,
             "cells": [
               {
                 "group": "Mw < 6.5",
@@ -3335,23 +3335,23 @@
               },
               {
                 "group": "Mw 6.5–7.5",
-                "intervalScore": 2.095,
-                "held": 97,
-                "rows": 113
+                "intervalScore": 1.629,
+                "held": 98,
+                "rows": 108
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 2.266,
-                "held": 27,
+                "intervalScore": 1.912,
+                "held": 28,
                 "rows": 32
               }
             ]
           },
           "beside": {
-            "intervalScore": 2.32,
-            "held": 260,
-            "rows": 283,
-            "medianWidthDecades": 2.584,
+            "intervalScore": 2.085,
+            "held": 258,
+            "rows": 277,
+            "medianWidthDecades": 2.516,
             "cells": [
               {
                 "group": "Mw < 6.5",
@@ -3361,14 +3361,14 @@
               },
               {
                 "group": "Mw 6.5–7.5",
-                "intervalScore": 1.967,
-                "held": 109,
-                "rows": 118
+                "intervalScore": 1.574,
+                "held": 106,
+                "rows": 112
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 2.259,
-                "held": 31,
+                "intervalScore": 1.938,
+                "held": 32,
                 "rows": 34
               }
             ]
@@ -3456,8 +3456,8 @@
         },
         "rule61": {
           "inPlace": {
-            "intervalScore": 3.774,
-            "held": 40,
+            "intervalScore": 3.753,
+            "held": 41,
             "rows": 96,
             "medianWidthDecades": 0,
             "cells": [
@@ -3475,15 +3475,15 @@
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 3.698,
-                "held": 13,
+                "intervalScore": 3.564,
+                "held": 14,
                 "rows": 16
               }
             ]
           },
           "candidate": {
-            "intervalScore": 3.831,
-            "held": 38,
+            "intervalScore": 3.815,
+            "held": 39,
             "rows": 97,
             "medianWidthDecades": 0,
             "cells": [
@@ -3501,15 +3501,15 @@
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 3.643,
-                "held": 12,
+                "intervalScore": 3.544,
+                "held": 13,
                 "rows": 16
               }
             ]
           },
           "beside": {
-            "intervalScore": 3.785,
-            "held": 40,
+            "intervalScore": 3.778,
+            "held": 41,
             "rows": 96,
             "medianWidthDecades": 0,
             "cells": [
@@ -3527,8 +3527,8 @@
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 3.819,
-                "held": 13,
+                "intervalScore": 3.772,
+                "held": 14,
                 "rows": 16
               }
             ]
@@ -5024,13 +5024,13 @@
             {
               "sizeBand": "Mw 6.5–7.5",
               "bias": 1.911,
-              "inside": 30,
-              "rows": 41
+              "inside": 35,
+              "rows": 37
             },
             {
               "sizeBand": "Mw ≥ 7.5",
               "bias": 12.491,
-              "inside": 14,
+              "inside": 18,
               "rows": 18
             }
           ],
@@ -5044,13 +5044,13 @@
             {
               "sizeBand": "Mw 6.5–7.5",
               "bias": 1.192,
-              "inside": 7,
+              "inside": 10,
               "rows": 22
             },
             {
               "sizeBand": "Mw ≥ 7.5",
               "bias": 3.011,
-              "inside": 12,
+              "inside": 13,
               "rows": 16
             }
           ]
@@ -5312,27 +5312,27 @@
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "rows": 118,
+              "rows": 112,
               "scored": 45,
               "bias": 0.329,
               "scatterLn": 2.35,
-              "inside": 109,
-              "bothZero": 36,
+              "inside": 106,
+              "bothZero": 30,
               "falseAlarms": 10,
               "missedToZero": 27,
-              "medianBandDecades": 2.43
+              "medianBandDecades": 2.35
             },
             {
               "sizeBand": "Mw ≥ 7.5",
               "rows": 34,
               "scored": 18,
-              "bias": 1.98,
-              "scatterLn": 2.29,
-              "inside": 31,
-              "bothZero": 5,
-              "falseAlarms": 8,
+              "bias": 1.99,
+              "scatterLn": 2.38,
+              "inside": 32,
+              "bothZero": 8,
+              "falseAlarms": 5,
               "missedToZero": 3,
-              "medianBandDecades": 3.08
+              "medianBandDecades": 3.21
             }
           ],
           "rock": [
@@ -5350,15 +5350,15 @@
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "rows": 113,
+              "rows": 107,
               "scored": 37,
               "bias": 0.225,
               "scatterLn": 2.25,
-              "inside": 99,
-              "bothZero": 37,
+              "inside": 97,
+              "bothZero": 31,
               "falseAlarms": 4,
               "missedToZero": 35,
-              "medianBandDecades": 2.2
+              "medianBandDecades": 2.14
             },
             {
               "sizeBand": "Mw ≥ 7.5",
@@ -5366,7 +5366,7 @@
               "scored": 18,
               "bias": 1.72,
               "scatterLn": 2.26,
-              "inside": 31,
+              "inside": 33,
               "bothZero": 5,
               "falseAlarms": 8,
               "missedToZero": 3,
@@ -5388,15 +5388,15 @@
             },
             {
               "sizeBand": "Mw 6.5–7.5",
-              "rows": 114,
+              "rows": 108,
               "scored": 38,
               "bias": 0.387,
               "scatterLn": 2.39,
-              "inside": 102,
-              "bothZero": 37,
+              "inside": 100,
+              "bothZero": 31,
               "falseAlarms": 5,
               "missedToZero": 34,
-              "medianBandDecades": 2.28
+              "medianBandDecades": 2.18
             },
             {
               "sizeBand": "Mw ≥ 7.5",
@@ -5404,11 +5404,11 @@
               "scored": 18,
               "bias": 1.86,
               "scatterLn": 2.25,
-              "inside": 31,
+              "inside": 32,
               "bothZero": 5,
               "falseAlarms": 8,
               "missedToZero": 3,
-              "medianBandDecades": 3
+              "medianBandDecades": 3.06
             }
           ]
         }
@@ -5517,35 +5517,35 @@
             "all": {
               "rows": 406,
               "scored": 125,
-              "bias": 0.915,
-              "scatterLn": 2.43,
-              "inside": 383,
-              "bothZero": 193,
-              "falseAlarms": 34,
+              "bias": 0.916,
+              "scatterLn": 2.44,
+              "inside": 387,
+              "bothZero": 196,
+              "falseAlarms": 31,
               "missedToZero": 54,
-              "medianBandDecades": 1.68
+              "medianBandDecades": 1.54
             },
             "informative": {
-              "rows": 283,
+              "rows": 277,
               "scored": 125,
-              "bias": 0.915,
-              "scatterLn": 2.43,
-              "inside": 260,
-              "bothZero": 70,
-              "falseAlarms": 34,
+              "bias": 0.916,
+              "scatterLn": 2.44,
+              "inside": 258,
+              "bothZero": 67,
+              "falseAlarms": 31,
               "missedToZero": 54,
-              "medianBandDecades": 2.63
+              "medianBandDecades": 2.53
             },
             "unseen": {
-              "rows": 277,
+              "rows": 271,
               "scored": 120,
-              "bias": 0.969,
-              "scatterLn": 2.43,
-              "inside": 255,
-              "bothZero": 70,
-              "falseAlarms": 34,
+              "bias": 0.974,
+              "scatterLn": 2.44,
+              "inside": 253,
+              "bothZero": 67,
+              "falseAlarms": 31,
               "missedToZero": 53,
-              "medianBandDecades": 2.58
+              "medianBandDecades": 2.53
             }
           },
           {
@@ -5593,33 +5593,33 @@
               "scored": 45,
               "bias": 0.329,
               "scatterLn": 2.35,
-              "inside": 187,
+              "inside": 190,
               "bothZero": 114,
               "falseAlarms": 10,
               "missedToZero": 27,
-              "medianBandDecades": 0.6
+              "medianBandDecades": 0.48
             },
             "informative": {
-              "rows": 118,
+              "rows": 112,
               "scored": 45,
               "bias": 0.329,
               "scatterLn": 2.35,
-              "inside": 109,
-              "bothZero": 36,
+              "inside": 106,
+              "bothZero": 30,
               "falseAlarms": 10,
               "missedToZero": 27,
-              "medianBandDecades": 2.43
+              "medianBandDecades": 2.35
             },
             "unseen": {
-              "rows": 117,
+              "rows": 111,
               "scored": 44,
               "bias": 0.323,
               "scatterLn": 2.37,
-              "inside": 108,
-              "bothZero": 36,
+              "inside": 105,
+              "bothZero": 30,
               "falseAlarms": 10,
               "missedToZero": 27,
-              "medianBandDecades": 2.42
+              "medianBandDecades": 2.33
             }
           },
           {
@@ -5628,35 +5628,35 @@
             "all": {
               "rows": 58,
               "scored": 18,
-              "bias": 1.98,
-              "scatterLn": 2.29,
-              "inside": 55,
-              "bothZero": 29,
-              "falseAlarms": 8,
+              "bias": 1.99,
+              "scatterLn": 2.38,
+              "inside": 56,
+              "bothZero": 32,
+              "falseAlarms": 5,
               "missedToZero": 3,
-              "medianBandDecades": 1.53
+              "medianBandDecades": 0.98
             },
             "informative": {
               "rows": 34,
               "scored": 18,
-              "bias": 1.98,
-              "scatterLn": 2.29,
-              "inside": 31,
-              "bothZero": 5,
-              "falseAlarms": 8,
+              "bias": 1.99,
+              "scatterLn": 2.38,
+              "inside": 32,
+              "bothZero": 8,
+              "falseAlarms": 5,
               "missedToZero": 3,
-              "medianBandDecades": 3.08
+              "medianBandDecades": 3.21
             },
             "unseen": {
               "rows": 31,
               "scored": 16,
-              "bias": 2.22,
-              "scatterLn": 2.39,
-              "inside": 28,
-              "bothZero": 5,
-              "falseAlarms": 8,
+              "bias": 2.31,
+              "scatterLn": 2.47,
+              "inside": 29,
+              "bothZero": 8,
+              "falseAlarms": 5,
               "missedToZero": 2,
-              "medianBandDecades": 3.05
+              "medianBandDecades": 3.07
             }
           }
         ],
@@ -5695,17 +5695,6 @@
             "seen": false
           },
           {
-            "event": "2010-04-04 22:40 UTC, MEXICO: BAJA CALIFORNIA",
-            "comcat": "ci14607652",
-            "magnitude": 7.2,
-            "recorded": 2,
-            "missing": 0,
-            "model": 60,
-            "bandLow": 33,
-            "bandHigh": 91505,
-            "seen": false
-          },
-          {
             "event": "2010-04-13 23:49 UTC, CHINA: QINGHAI PROVINCE: YUSHU",
             "comcat": "usp000hbbt",
             "magnitude": 6.9,
@@ -5739,17 +5728,6 @@
             "seen": false
           },
           {
-            "event": "2012-03-20 18:02 UTC, MEXICO: GUERRERO, OAXACA",
-            "comcat": "usp000jghj",
-            "magnitude": 7.4,
-            "recorded": 2,
-            "missing": 0,
-            "model": 95,
-            "bandLow": 21,
-            "bandHigh": 33403,
-            "seen": false
-          },
-          {
             "event": "2012-08-31 12:47 UTC, PHILIPPINES: CAGAYAN DE ORO, TACLOBAN",
             "comcat": "usp000jr83",
             "magnitude": 7.6,
@@ -5758,17 +5736,6 @@
             "model": 0,
             "bandLow": 0,
             "bandHigh": 0,
-            "seen": false
-          },
-          {
-            "event": "2012-09-05 14:42 UTC, COSTA RICA: NICOYA",
-            "comcat": "usp000jrsw",
-            "magnitude": 7.6,
-            "recorded": 2,
-            "missing": 0,
-            "model": 171,
-            "bandLow": 6,
-            "bandHigh": 4060,
             "seen": false
           },
           {
@@ -5794,17 +5761,6 @@
             "seen": false
           },
           {
-            "event": "2014-04-18 14:27 UTC, MEXICO: GUERRERO; MEXICO CITY",
-            "comcat": "usb000pq41",
-            "magnitude": 7.2,
-            "recorded": 0,
-            "missing": 0,
-            "model": 7,
-            "bandLow": 6,
-            "bandHigh": 10190,
-            "seen": false
-          },
-          {
             "event": "2014-08-18 02:32 UTC, IRAN: ILAM PROVINCE: ABDANAN",
             "comcat": "usb000s3np",
             "magnitude": 6.2,
@@ -5813,6 +5769,17 @@
             "model": 677,
             "bandLow": 1,
             "bandHigh": 6557,
+            "seen": false
+          },
+          {
+            "event": "2014-10-14 03:51 UTC, EL SALVADOR: GULF OF FONSECA",
+            "comcat": "usb000slwn",
+            "magnitude": 7.3,
+            "recorded": 1,
+            "missing": 0,
+            "model": 0,
+            "bandLow": 0,
+            "bandHigh": 0,
             "seen": false
           },
           {
@@ -5835,17 +5802,6 @@
             "model": 0,
             "bandLow": 0,
             "bandHigh": 0,
-            "seen": false
-          },
-          {
-            "event": "2018-02-16 23:39 UTC, MEXICO: OAXACA",
-            "comcat": "us2000d3km",
-            "magnitude": 7.2,
-            "recorded": 14,
-            "missing": 0,
-            "model": 119,
-            "bandLow": 23,
-            "bandHigh": 43439,
             "seen": false
           },
           {
@@ -5909,9 +5865,9 @@
             "magnitude": 7.5,
             "recorded": 0,
             "missing": 0,
-            "model": 1239,
-            "bandLow": 9,
-            "bandHigh": 215310,
+            "model": 327,
+            "bandLow": 1,
+            "bandHigh": 38620,
             "seen": false
           }
         ],

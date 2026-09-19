@@ -144,6 +144,12 @@
  *   Mw >= 7.5              : bias 1.98x -> 1.99x, inside 31/34 -> 32/34
  *   351(b) below Mw 7.5    : the Mw 6.5-7.5 cell MOVED               NOT MET
  *
+ * MEASURED WITH A DEFECT, and re-read after it was fixed. B-077 was live
+ * here too. Re-run with it fixed, the count of bands that move below Mw 7.5
+ * falls from 36 to 17 — half of that movement was the defect and not the
+ * orientation — and rule 351(b) is STILL NOT MET, because seventeen is not
+ * zero and the clause said zero. The verdict stands on its own terms.
+ *
  * WHAT MOVED, AND WHY THE CLAUSE WAS WRONG. Rule 351(b) said the rows below
  * Mw 7.5 could not move "since none of them is an extended source". None of
  * the ROWS is. Their REALISATIONS are: the band draws a magnitude from the

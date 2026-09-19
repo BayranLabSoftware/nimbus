@@ -23,7 +23,7 @@
 import { writeFileSync } from 'node:fs';
 import {
   RULE_EARTHQUAKES,
-  RULE_EARTHQUAKES_POINTED,
+  RULE_EARTHQUAKES_WITHOUT_STRIKE_LOOKUP,
 } from '../../src/physics/validation/heldOutByRule.js';
 import {
   centralEstimate,
@@ -83,9 +83,9 @@ function cell(rows: readonly ScoreRowInput[]): {
 const fmt = (x: number | null, digits = 2): string => (x === null ? '—' : x.toFixed(digits));
 
 function main(): void {
-  const great = RULE_EARTHQUAKES.map((quake, index) => ({
+  const great = RULE_EARTHQUAKES_WITHOUT_STRIKE_LOOKUP.map((quake, index) => ({
     quake,
-    pointed: RULE_EARTHQUAKES_POINTED[index],
+    pointed: RULE_EARTHQUAKES[index],
   })).filter((pair) => pair.quake.row.magnitude >= GREAT);
 
   console.log(`Rules 342 to 348 — rule 11's rows, counted where the model can point.\n`);
@@ -99,8 +99,8 @@ function main(): void {
   let bandsMovedBelow = 0;
   let leftTheirBand = 0;
   const leavers: string[] = [];
-  for (const [index, quake] of RULE_EARTHQUAKES.entries()) {
-    const pointed = RULE_EARTHQUAKES_POINTED[index];
+  for (const [index, quake] of RULE_EARTHQUAKES_WITHOUT_STRIKE_LOOKUP.entries()) {
+    const pointed = RULE_EARTHQUAKES[index];
     if (pointed === undefined) continue;
     const b = compareWithRecord(quake.event);
     const a = compareWithRecord(pointed.event);

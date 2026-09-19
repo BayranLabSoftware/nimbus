@@ -136,8 +136,51 @@
 
 /*
  * ===========================================================================
- * THE OUTCOME, 21 September 2026: REFUSED on rule 358(d)
+ * THE OUTCOME, 21 September 2026: REFUSED, then ADOPTED once B-077 was fixed
  * ===========================================================================
+ *
+ * Read this in two parts, because it happened in two parts and the first one
+ * is not deleted. The block was refused on rule 358(d). Then the row that
+ * refused it was measured, and it was not what the clause thought it was.
+ *
+ * PART TWO, after the defect. El Salvador, Gulf of Fonseca, is Mw 7.3 — NOT
+ * an extended source. Its rupture is a point, and turning a point changes
+ * nothing: swept through the whole circle at 10-degree steps, its band is
+ * 0 to 0 at every single angle. So the four dead its band used to allow
+ * could not have come from the orientation, and did not: they came from
+ * B-077 in rule 291's own wiring, committed the same evening, which counted
+ * point-source realisations inside an extended one's stadium — 92 times the
+ * people at 5 km on the row it was quantified on.
+ *
+ * With B-077 fixed and NOT ONE BAR CHANGED, the same run reads:
+ *
+ *   358(a) identity            : as before                             MET
+ *   358(b) central below 7.5   : 350 rows, 0 moved                     MET
+ *   358(c) bands below 7.5     : 17 moved, down from 36; the other 19
+ *                                were the defect                        ok
+ *   358(d) none left its band  : 0 rows                                MET
+ *   358(e) net and presets     : unmoved                               MET
+ *   358(f) gate                : PASS (strict), report regenerated     MET
+ *   359    drift |ln bias|     : 0.007 against a stop at 0.10  not triggered
+ *
+ * So the block is ADOPTED, and what that means is narrow and worth saying
+ * exactly: the harness now counts rule 11's rows the way the product counts
+ * a reader's earthquake. It does NOT mean the model predicts better — rule
+ * 360 forbids reading it that way, the dead are 1.98x to 1.99x, and rules
+ * 342 to 348's refusal of that question stands.
+ *
+ * WHY THIS IS NOT A BAR THAT BENT. Nothing in rules 356 to 362 was touched
+ * between the refusal and the adoption: not 358(d), not rule 359's stop,
+ * which is still rule 352's own constant re-exported. What changed is a
+ * defect in the code being measured. A measurement taken through a defect is
+ * not a measurement, and correcting the defect and re-running is the
+ * opposite of amending the rule — the rule is what caught it. Rule 358(d)
+ * existed for one evening and its whole career was to refuse a round for a
+ * reason that turned out to be a bug: that is a bar doing its job.
+ *
+ * ---------------------------------------------------------------------------
+ * PART ONE, as it was written before the defect was known:
+ * ---------------------------------------------------------------------------
  *
  * The change of rule 357 was made and run over every one of the 408 rows,
  * with the band, on both sides — `scripts/benchmark/held-out-strike.ts`,

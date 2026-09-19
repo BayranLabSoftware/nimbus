@@ -89,6 +89,7 @@ import {
   type RulePlume,
 } from '../src/physics/validation/heldOutByRule.js';
 import { NCEI_UNMATCHED, RULE_READ_ON } from '../src/physics/validation/heldOutByRuleData.js';
+import { shippedStrikeAnswer } from '../src/physics/validation/shippedFaults.js';
 import {
   compareCandidates,
   compareContourLaws,
@@ -3084,6 +3085,37 @@ function greatRuptureGap(cells: readonly RuleCell[]): string {
   return `**A great rupture's toll is read off rings drawn for a point.** From Mw 7.5 the intensity rings — Boore et al. 2014's since 14 September 2026 — are a relation for a point, stretched along the rupture as a stadium, and the simulator counts the people inside it; no finite-fault or subduction-interface relation is implemented. ${measured} On Joyner & Boore 1981's rings the same cell read 13.85×, a figure the calibration harness hid until the same day by counting circles about the epicentre (docs/ROADMAP.md, M9 move 4; docs/BUG_REGISTRY.md, B-022).`;
 }
 
+/**
+ * Rule 361 of `alignedHarnessRules.ts`: the report says which geometry its
+ * rows were counted in, and why a band moved, so a reader can tell without
+ * opening the source.
+ */
+function strikeProvenance(rows: readonly RuleQuakeRun[]): {
+  answered: number;
+  interface: number;
+  crustal: number;
+  swept: number;
+} {
+  let answered = 0;
+  let onInterface = 0;
+  let crustal = 0;
+  for (const run of rows) {
+    const result = run.quake.event.run();
+    if (result.type !== 'earthquake') continue;
+    if (result.data.inputs.strikeAzimuthDeg === undefined) continue;
+    answered += 1;
+    const answer = shippedStrikeAnswer(
+      run.quake.row.latitude,
+      run.quake.row.longitude,
+      run.quake.row.depthKm * 1_000,
+      result.data.ruptureLength
+    );
+    if (answer.source.startsWith('interface')) onInterface += 1;
+    else if (answer.source === 'crustal') crustal += 1;
+  }
+  return { answered, interface: onInterface, crustal, swept: rows.length - answered };
+}
+
 function byRuleSection(
   sets: RuleSets,
   cells: { earthquakes: RuleCell[]; plumes: RuleCell[] }
@@ -3118,7 +3150,10 @@ function byRuleSection(
     '',
     '#### Earthquake death tolls',
     '',
-    `${held.length.toString()} rows held out. ${unmatched.toString()} ${unmatched === 1 ? 'record has' : 'records have'} no ComCat event and ${unmatched === 1 ? 'is' : 'are'} left out, and the ${tuned.length.toString()} events the shaking contours were chosen with in view are scored apart, below. **With something** are the rows whose record or band is above zero: the other ${(quakes.all.rows - quakes.informative.rows).toString()} are a band of nothing about a record of nothing, inside by construction, so the share inside is read over the rows with something. Bias and scatter are over the rows where record and model are both above zero; zeros are both zero / a record of nothing where the model says something / a record the model makes nothing of; the band is the median width of the 5–95 % band over the rows with something.`,
+    `${(() => {
+      const p = strikeProvenance(held);
+      return `Counted as the globe counts a reader's earthquake (rules 356 to 362): in the rupture footprint the shipped fault and slab tiles orient, for the ${p.answered.toString()} rows they answer — ${p.interface.toString()} on a subduction interface and ${p.crustal.toString()} on a mapped crustal fault — and, for the ${p.swept.toString()} they do not, as rule 291's median over a sweep of orientations, never as a stadium pointing north. Below Mw 7.5 no central figure moved when this was wired in and seventeen bands narrowed: a row below the extended-source threshold is a point source, but the realisations its band is made of draw their own magnitude, and those landing above the threshold are ruptures an orientation can turn.`;
+    })()}\n\n${held.length.toString()} rows held out. ${unmatched.toString()} ${unmatched === 1 ? 'record has' : 'records have'} no ComCat event and ${unmatched === 1 ? 'is' : 'are'} left out, and the ${tuned.length.toString()} events the shaking contours were chosen with in view are scored apart, below. **With something** are the rows whose record or band is above zero: the other ${(quakes.all.rows - quakes.informative.rows).toString()} are a band of nothing about a record of nothing, inside by construction, so the share inside is read over the rows with something. Bias and scatter are over the rows where record and model are both above zero; zeros are both zero / a record of nothing where the model says something / a record the model makes nothing of; the band is the median width of the 5–95 % band over the rows with something.`,
     '',
     '| Size | Rows | With something | Scored | Bias | Scatter σ_ln | Inside, with something | Inside, all rows | Zeros | Band |',
     '|------|-----:|---------------:|-------:|-----:|-------------:|------------------------|------------------|-------|-----:|',

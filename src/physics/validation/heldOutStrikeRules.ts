@@ -162,6 +162,17 @@
  * by — five thousandths of a log unit — is not a reason to move it. A bar that
  * bends when the answer is close is not a bar.
  *
+ * MEASURED WITH A DEFECT IN THE SWEEP, and re-read after it was fixed. B-077
+ * of docs/BUG_REGISTRY.md — rule 291's wiring counting a point-source
+ * realisation inside an extended one's stadium — was live on the side this
+ * run calls "before", and was found three hours later. Re-run with it fixed,
+ * THE VERDICT IS UNCHANGED and so is the figure it turned on: bias 1.98x to
+ * 1.99x, |ln bias| 0.681 to 0.688 against the 0.683 written in rule 346(b),
+ * still NOT MET. What changes is the other column: the band held 32 of 34 on
+ * both sides, not 31 and then 32, because the defect was inflating the
+ * "before" as well. Rule 346(b)'s second clause is therefore met as an
+ * equality rather than an improvement, which does not save the round.
+ *
  * WHAT IT ACTUALLY FOUND, which is worth more than the verdict. Pointing the
  * footprints does not move the cell as a whole and moves individual rows a
  * great deal, in both directions, and the split is not random:

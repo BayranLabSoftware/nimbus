@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { LOOKUP_ON_RULE_11_ROWS } from './heldOutStrikeRules.js';
-import { RULE_EARTHQUAKES, RULE_EARTHQUAKES_POINTED } from './heldOutByRule.js';
+import { RULE_EARTHQUAKES, RULE_EARTHQUAKES_WITHOUT_STRIKE_LOOKUP } from './heldOutByRule.js';
 import { NCEI_EARTHQUAKE_ROWS } from './heldOutByRuleData.js';
 import { shippedStrikeAnswer } from './shippedFaults.js';
 import { simulateEarthquake } from '../events/earthquake/simulate.js';
@@ -63,11 +63,11 @@ describe('rules 342 to 348 — the strike we know, on the rows we measure on', (
     for (const a of answers) expect(a.extended).toBe(a.row.magnitude >= 7.5);
   });
 
-  it('rule 344: the candidate gives a strike exactly where the lookup has one', () => {
-    expect(RULE_EARTHQUAKES_POINTED).toHaveLength(answers.length);
+  it('rules 344 and 358(a): the set counts the strike the lookup gives, and only that', () => {
+    expect(RULE_EARTHQUAKES).toHaveLength(answers.length);
     let given = 0;
     for (const [index, a] of answers.entries()) {
-      const pointed = RULE_EARTHQUAKES_POINTED[index]?.event.run();
+      const pointed = RULE_EARTHQUAKES[index]?.event.run();
       expect(pointed?.type).toBe('earthquake');
       if (pointed?.type !== 'earthquake') continue;
       const strike = pointed.data.inputs.strikeAzimuthDeg;
@@ -81,9 +81,9 @@ describe('rules 342 to 348 — the strike we know, on the rows we measure on', (
   });
 
   it('rule 347: the candidate moves the strike and nothing else', () => {
-    for (const [index, plain] of RULE_EARTHQUAKES.entries()) {
+    for (const [index, plain] of RULE_EARTHQUAKES_WITHOUT_STRIKE_LOOKUP.entries()) {
       const before = plain.event.run();
-      const after = RULE_EARTHQUAKES_POINTED[index]?.event.run();
+      const after = RULE_EARTHQUAKES[index]?.event.run();
       if (before.type !== 'earthquake' || after?.type !== 'earthquake') continue;
       // The scenario is the same scenario: same magnitude, same depth, same
       // ground, same mechanism, same law, same rupture. Rule 302 stands —
@@ -100,13 +100,19 @@ describe('rules 342 to 348 — the strike we know, on the rows we measure on', (
     }
   });
 
-  it('the candidate is drawn by nothing yet: the scored set still names no strike', () => {
-    // The report reads `RULE_EARTHQUAKES`. While this holds, the candidate
-    // cannot have moved a published figure.
-    for (const quake of RULE_EARTHQUAKES) {
+  it('rule 358(a): the set the report reads asks the lookup, and the other one never does', () => {
+    // Until 21 September 2026 this test held the opposite, because the
+    // candidate was committed drawn by nothing (the protocol's second step).
+    // Rules 356 to 362 wired it in.
+    let asked = 0;
+    for (const [index, quake] of RULE_EARTHQUAKES.entries()) {
       const result = quake.event.run();
-      if (result.type !== 'earthquake') continue;
-      expect(result.data.inputs.strikeAzimuthDeg).toBeUndefined();
+      const before = RULE_EARTHQUAKES_WITHOUT_STRIKE_LOOKUP[index]?.event.run();
+      if (result.type !== 'earthquake' || before?.type !== 'earthquake') continue;
+      expect(before.data.inputs.strikeAzimuthDeg).toBeUndefined();
+      if (result.data.inputs.strikeAzimuthDeg !== undefined) asked += 1;
     }
+    expect(asked).toBe(LOOKUP_ON_RULE_11_ROWS.all.interface + LOOKUP_ON_RULE_11_ROWS.all.crustal);
+    expect(RULE_EARTHQUAKES.length - asked).toBe(LOOKUP_ON_RULE_11_ROWS.all.unknown);
   });
 });

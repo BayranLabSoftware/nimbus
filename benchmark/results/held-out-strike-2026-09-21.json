@@ -11,7 +11,7 @@
       "withSomething": 34,
       "bias": 1.976257036517351,
       "scatterLn": 2.294962853532979,
-      "inside": 31
+      "inside": 32
     },
     "after": {
       "rows": 58,
@@ -26,16 +26,14 @@
     "inside": true,
     "below": true
   },
-  "belowBands": 36,
+  "belowBands": 17,
   "leftTheirBand": {
-    "rows": 1,
-    "names": [
-      "2014-10-14 03:51 UTC, EL SALVADOR: GULF OF FONSECA (record 1)"
-    ]
+    "rows": 0,
+    "names": []
   },
   "bar356": {
     "centralBelowHolds": true,
-    "noneLeftTheirBand": false,
+    "noneLeftTheirBand": true,
     "drift": 0.0068315129949111375,
     "stop": 0.1,
     "stopTriggered": false
@@ -51,7 +49,7 @@
       "before": {
         "model": 45565,
         "inside": true,
-        "bandDecades": 3.8496243548038116
+        "bandDecades": 3.898647232792254
       },
       "after": {
         "model": 10765,
@@ -69,7 +67,7 @@
       "before": {
         "model": 5,
         "inside": true,
-        "bandDecades": 2.4983105537896004
+        "bandDecades": 2.4638929889859074
       },
       "after": {
         "model": 6,
@@ -123,7 +121,7 @@
       "before": {
         "model": 0,
         "inside": true,
-        "bandDecades": 2.1760912590556813
+        "bandDecades": 2.0293837776852097
       },
       "after": {
         "model": 0,
@@ -231,7 +229,7 @@
       "before": {
         "model": 5,
         "inside": true,
-        "bandDecades": 2.5774917998372255
+        "bandDecades": 2.509202522331103
       },
       "after": {
         "model": 0,
@@ -356,8 +354,8 @@
       "record": 2,
       "before": {
         "model": 171,
-        "inside": false,
-        "bandDecades": 2.8303747831935504
+        "inside": true,
+        "bandDecades": 3.4915017662373264
       },
       "after": {
         "model": 196,
@@ -429,7 +427,7 @@
       "before": {
         "model": 5270,
         "inside": true,
-        "bandDecades": 3.4474848867845473
+        "bandDecades": 3.785237689473268
       },
       "after": {
         "model": 4562,
@@ -501,7 +499,7 @@
       "before": {
         "model": 1,
         "inside": true,
-        "bandDecades": 2.0253058652647704
+        "bandDecades": 1.7993405494535817
       },
       "after": {
         "model": 0,
@@ -627,7 +625,7 @@
       "before": {
         "model": 4,
         "inside": true,
-        "bandDecades": 2.3283796034387376
+        "bandDecades": 2.2833012287035497
       },
       "after": {
         "model": 6,
@@ -699,7 +697,7 @@
       "before": {
         "model": 450,
         "inside": true,
-        "bandDecades": 3.695956738868444
+        "bandDecades": 4.216640858325449
       },
       "after": {
         "model": 256,
@@ -717,7 +715,7 @@
       "before": {
         "model": 141,
         "inside": true,
-        "bandDecades": 3.4310419453358856
+        "bandDecades": 3.6834973176798114
       },
       "after": {
         "model": 150,
@@ -753,12 +751,12 @@
       "before": {
         "model": 37,
         "inside": true,
-        "bandDecades": 3.739493230781615
+        "bandDecades": 3.5149460053080044
       },
       "after": {
         "model": 37,
         "inside": true,
-        "bandDecades": 3.739493230781615
+        "bandDecades": 3.5149460053080044
       }
     },
     {
@@ -771,7 +769,7 @@
       "before": {
         "model": 0,
         "inside": true,
-        "bandDecades": 0.6020599913279624
+        "bandDecades": 0.3010299956639812
       },
       "after": {
         "model": 0,
@@ -915,7 +913,7 @@
       "before": {
         "model": 1239,
         "inside": false,
-        "bandDecades": 4.378821691512654
+        "bandDecades": 4.994774527004258
       },
       "after": {
         "model": 327,
@@ -951,7 +949,7 @@
       "before": {
         "model": 95,
         "inside": true,
-        "bandDecades": 3.928447063209182
+        "bandDecades": 3.8936508169859634
       },
       "after": {
         "model": 102,
@@ -969,12 +967,12 @@
       "before": {
         "model": 22,
         "inside": true,
-        "bandDecades": 3.7134905430939424
+        "bandDecades": 3.4169731726030363
       },
       "after": {
         "model": 22,
         "inside": true,
-        "bandDecades": 3.7134905430939424
+        "bandDecades": 3.4169731726030363
       }
     },
     {
@@ -1005,7 +1003,7 @@
       "before": {
         "model": 12799,
         "inside": true,
-        "bandDecades": 4.086348404035327
+        "bandDecades": 4.429364632417697
       },
       "after": {
         "model": 13643,

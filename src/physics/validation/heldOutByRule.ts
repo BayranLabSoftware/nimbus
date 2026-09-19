@@ -202,35 +202,42 @@ export function ruleSiteVs30(row: { comcat: string }, rule: SiteRule = 'pick'): 
 }
 
 /**
- * Rules 342 and 344 of `heldOutStrikeRules.ts`: the candidate, reachable by
- * name and drawn by nothing.
- *
- * `RULE_EARTHQUAKES` below is unchanged, so the validation report is
- * unchanged, which is what the protocol asks of the commit that carries a
- * candidate. Turning this on is one word — the export the report reads — and
- * that word is changed in the commit that also carries the run's outcome.
- *
- * What it does is rule 342 exactly: it asks each held-out row the question
- * the calibration net's rows are already asked, through the same decorator,
- * so that a row whose fault or slab the model can name is counted in a
- * footprint pointing at it. A row the lookup cannot answer is returned
- * untouched and keeps rule 291's sweep.
+ * The set as it was counted before rule 357 — kept for the before-and-after
+ * of rules 342 to 348, 349 to 355 and 356 to 362, and for nothing else. Not
+ * the product's behaviour, and not what the report reads.
  */
-export const RULE_EARTHQUAKES_POINTED: readonly RuleEarthquake[] = NCEI_EARTHQUAKE_ROWS.map(
-  (row) => ({
+export const RULE_EARTHQUAKES_WITHOUT_STRIKE_LOOKUP: readonly RuleEarthquake[] =
+  NCEI_EARTHQUAKE_ROWS.map((row) => ({
     row,
-    event: pointingWhereTheFaultPoints(ruleEarthquakeEvent(row, { vs30: ruleSiteVs30(row) })),
+    event: ruleEarthquakeEvent(row, { vs30: ruleSiteVs30(row) }),
     role: row.comcat in RULE_TUNED_EARTHQUAKES ? 'tuned' : 'heldOut',
     seen: row.comcat in RULE_SEEN_EARTHQUAKES,
-  })
-);
+  }));
 
-export const RULE_EARTHQUAKES: readonly RuleEarthquake[] = NCEI_EARTHQUAKE_ROWS.map((row) => ({
-  row,
-  event: ruleEarthquakeEvent(row, { vs30: ruleSiteVs30(row) }),
-  role: row.comcat in RULE_TUNED_EARTHQUAKES ? 'tuned' : 'heldOut',
-  seen: row.comcat in RULE_SEEN_EARTHQUAKES,
-}));
+/**
+ * Rules 356 to 362 of `alignedHarnessRules.ts`: the harness counts what the
+ * product counts.
+ *
+ * `useAppStore.ts` calls `strikeAnswerAt` and gives a reader's earthquake the
+ * strike the shipped tiles answer with. Until 21 September 2026 these rows —
+ * the 408 the validation report scores — did not ask, so the report's bias
+ * was a statement about a geometry the product cannot produce. They ask now,
+ * through the decorator the calibration net already uses, and a row the tiles
+ * cannot answer keeps rule 291's sweep rather than assuming north.
+ *
+ * It took three blocks and a defect to get here. Rules 342 to 348 asked
+ * whether the dead improve and were refused (they do not). Rules 349 to 355
+ * were refused on a clause of their own that was false about the model. Rules
+ * 356 to 362 were refused too, until the row that refused them turned out not
+ * to be an extended source at all: B-077, in rule 291's own wiring, was
+ * counting point-source realisations inside an extended one's stadium. With
+ * that fixed the same bars, unchanged, are met.
+ */
+export const RULE_EARTHQUAKES: readonly RuleEarthquake[] =
+  RULE_EARTHQUAKES_WITHOUT_STRIKE_LOOKUP.map((quake) => ({
+    ...quake,
+    event: pointingWhereTheFaultPoints(quake.event),
+  }));
 
 export const RULE_PLUMES: readonly RulePlume[] = IVESPA_PLUME_ROWS.map((row) => ({
   row,
