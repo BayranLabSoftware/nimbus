@@ -133,6 +133,50 @@
  * scenario is the one that exercises this round: four ellipses, two polygons
  * and twenty-one quantities compared.
  *
+ * A CORRECTION, WRITTEN THE SAME EVENING AND BEFORE ANYONE ELSE FOUND IT. The
+ * commit that carried this round said `docs/VALIDATION_REPORT.md` "regenerates
+ * identical". IT DOES NOT, and the claim was made from a measurement that
+ * looked at the wrong set: rule 328's harness reads the twelve rows of the
+ * calibration net, where nothing moves for the reason given above, while the
+ * report also scores the 406 rows held out by rule 11 — and those are full of
+ * the extended ruptures this round turns. Regenerated from a clean tree:
+ *
+ * | row (held out by rule)      | dead before | after  | record |
+ * |-----------------------------|------------:|-------:|-------:|
+ * | Tōhoku 2011                 |         426 | 23 299 |  1 474 |
+ * | Sichuan 2008                |      29 787 |326 385 | 87 652 |
+ * | Chile, Maule 2010           |       1 346 |  2 422 |    402 |
+ * | Türkiye–Syria 2023          |       1 422 |  5 851 |      0 |
+ *
+ *   all sizes   bias 0.91× → 1.10×, σ 2.44 → 2.50, scored 125 → 126
+ *   Mw ≥ 7.5    bias 1.94× → 6.47×, σ 2.35 → 2.12, scored 18 → 19
+ *
+ * The cause is the one rule 308 measured and is not a defect: turned along its
+ * fault, Tōhoku's footprint runs down the coast of Japan instead of out to
+ * sea. The consequence is that on the held-out set the great earthquakes go
+ * from under-counting by two to over-counting by six and a half.
+ *
+ * THREE THINGS FOLLOW, and the third is the one that matters.
+ *
+ *   1. Rule 326(d) foresaw exactly this — "they will change, because the
+ *      figures they report change, and a report that did not change would mean
+ *      the wiring did nothing" — so the round is not invalidated by the report
+ *      moving. It is the ACCOUNT that was wrong, and it is corrected here and
+ *      in the commit that carries the regenerated report.
+ *   2. Rule 326(a) and (b) speak of the calibration net, and on the net they
+ *      hold exactly as recorded. They say nothing about the held-out set,
+ *      which is where this round's effect actually lands. That is a hole in a
+ *      rule I wrote, and naming it is the only repair available: a clause that
+ *      decides a wiring on twelve rows, none of which can feel it, decides
+ *      nothing.
+ *   3. The direction of the move is now known and is not comfortable: with the
+ *      faults pointing the right way, the model over-counts the great
+ *      earthquakes of the held-out set by 6.5× where it under-counted them by
+ *      2×. Read beside the same day's other two measurements — we paint MMI
+ *      VII on nine tenths of the maps that hold none, and counting the dead
+ *      cell by cell makes the shortfall worse — the picture is of a model
+ *      whose errors are large and whose geometry was hiding part of them.
+ *
  * WHAT THAT SAYS ABOUT THE NET, and it is worth saying before anyone reads
  * "accepted" as "vindicated": THE CALIBRATION NET CANNOT MEASURE THIS CHANGE.
  * It holds twelve earthquakes, four of them presets that keep their published

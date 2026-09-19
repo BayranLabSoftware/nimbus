@@ -966,7 +966,7 @@
         "recordedHigh": 2,
         "model": 0,
         "bandLow": 0,
-        "bandHigh": 14,
+        "bandHigh": 4,
         "ratio": 0,
         "contains": true,
         "gated": false,
@@ -1412,7 +1412,7 @@
           "bothZero": 1,
           "falseAlarms": 0,
           "missedToZero": 1,
-          "medianBandDecades": 2.74
+          "medianBandDecades": 2.47
         },
         "all": {
           "rows": 5,
@@ -2077,13 +2077,13 @@
           {
             "sizeBand": "Mw ≥ 7.5",
             "rows": 34,
-            "scored": 19,
-            "bias": 13.9,
-            "scatterLn": 2.16,
+            "scored": 20,
+            "bias": 40.6,
+            "scatterLn": 2.11,
             "inside": 29,
-            "bothZero": 4,
-            "falseAlarms": 9,
-            "missedToZero": 2,
+            "bothZero": 2,
+            "falseAlarms": 11,
+            "missedToZero": 1,
             "medianBandDecades": 2.93
           }
         ],
@@ -2115,13 +2115,13 @@
           {
             "sizeBand": "Mw ≥ 7.5",
             "rows": 34,
-            "scored": 17,
-            "bias": 1.92,
-            "scatterLn": 2.29,
+            "scored": 19,
+            "bias": 5.98,
+            "scatterLn": 2.1,
             "inside": 32,
-            "bothZero": 7,
-            "falseAlarms": 6,
-            "missedToZero": 4,
+            "bothZero": 4,
+            "falseAlarms": 9,
+            "missedToZero": 2,
             "medianBandDecades": 2.92
           }
         ]
@@ -2241,14 +2241,14 @@
           "pgvWithRings": {
             "adopted": false,
             "people": true,
-            "tolls": false,
+            "tolls": true,
             "shaking": false
           }
         }
       },
       "chains": {
         "inPlace": {
-          "peopleScore": 1.759,
+          "peopleScore": 1.879,
           "people": [
             {
               "level": 7,
@@ -2266,7 +2266,7 @@
               "level": 7,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 14,
-              "bias": -0.8
+              "bias": -0.366
             },
             {
               "level": 8,
@@ -2284,7 +2284,7 @@
               "level": 8,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 11,
-              "bias": 0.296
+              "bias": 1.687
             },
             {
               "level": 9,
@@ -2320,19 +2320,19 @@
             },
             {
               "sizeBand": "Mw ≥ 7.5",
-              "bias": 1.943,
+              "bias": 6.47,
               "inside": 32,
               "rows": 35
             }
           ],
           "shakemapScore": 0.971,
-          "tollAgainstPager": 0.298,
+          "tollAgainstPager": 0.347,
           "alertAgreement": 0.658,
           "rule28Score": 0.116,
           "rule28Sharpness": 0.346
         },
         "pager": {
-          "peopleScore": 0.625,
+          "peopleScore": 0.871,
           "people": [
             {
               "level": 7,
@@ -2349,8 +2349,8 @@
             {
               "level": 7,
               "sizeBand": "Mw ≥ 7.5",
-              "pairs": 14,
-              "bias": -0.128
+              "pairs": 15,
+              "bias": 0.19
             },
             {
               "level": 8,
@@ -2368,7 +2368,7 @@
               "level": 8,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 11,
-              "bias": 1.3
+              "bias": 1.951
             },
             {
               "level": 9,
@@ -2386,7 +2386,7 @@
               "level": 9,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 9,
-              "bias": 1.001
+              "bias": 2.26
             }
           ],
           "tolls": [
@@ -2404,19 +2404,19 @@
             },
             {
               "sizeBand": "Mw ≥ 7.5",
-              "bias": 4.704,
+              "bias": 13.012,
               "inside": 36,
               "rows": 37
             }
           ],
           "shakemapScore": 1.131,
-          "tollAgainstPager": 0.323,
-          "alertAgreement": 0.69,
+          "tollAgainstPager": 0.364,
+          "alertAgreement": 0.679,
           "rule28Score": 0.203,
           "rule28Sharpness": 0.377
         },
         "pgaWithPagerBands": {
-          "peopleScore": 0.678,
+          "peopleScore": 0.955,
           "people": [
             {
               "level": 7,
@@ -2434,7 +2434,7 @@
               "level": 7,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 14,
-              "bias": -0.364
+              "bias": -0.04
             },
             {
               "level": 8,
@@ -2452,7 +2452,7 @@
               "level": 8,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 11,
-              "bias": 0.645
+              "bias": 1.828
             },
             {
               "level": 9,
@@ -2470,7 +2470,7 @@
               "level": 9,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 9,
-              "bias": 0.118
+              "bias": 1.472
             }
           ],
           "tolls": [
@@ -2488,19 +2488,19 @@
             },
             {
               "sizeBand": "Mw ≥ 7.5",
-              "bias": 3.335,
+              "bias": 10.792,
               "inside": 34,
               "rows": 36
             }
           ],
           "shakemapScore": 0.971,
-          "tollAgainstPager": 0.371,
-          "alertAgreement": 0.684,
+          "tollAgainstPager": 0.438,
+          "alertAgreement": 0.679,
           "rule28Score": 0.116,
           "rule28Sharpness": 0.346
         },
         "pgvWithRings": {
-          "peopleScore": 1.492,
+          "peopleScore": 1.482,
           "people": [
             {
               "level": 7,
@@ -2518,7 +2518,7 @@
               "level": 7,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 14,
-              "bias": -0.537
+              "bias": -0.177
             },
             {
               "level": 8,
@@ -2536,7 +2536,7 @@
               "level": 8,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 11,
-              "bias": 0.521
+              "bias": 1.772
             },
             {
               "level": 9,
@@ -2554,7 +2554,7 @@
               "level": 9,
               "sizeBand": "Mw ≥ 7.5",
               "pairs": 9,
-              "bias": -1.578
+              "bias": -0.603
             }
           ],
           "tolls": [
@@ -2572,14 +2572,14 @@
             },
             {
               "sizeBand": "Mw ≥ 7.5",
-              "bias": 6.335,
+              "bias": 16.661,
               "inside": 34,
               "rows": 36
             }
           ],
           "shakemapScore": 1.131,
-          "tollAgainstPager": 0.256,
-          "alertAgreement": 0.663,
+          "tollAgainstPager": 0.303,
+          "alertAgreement": 0.658,
           "rule28Score": 0.203,
           "rule28Sharpness": 0.377
         }
@@ -2604,11 +2604,11 @@
           "recorded": true
         },
         "quietShare": {
-          "always": 0.0566,
+          "always": 0.0943,
           "fromMw7.5": 0
         },
         "recordedScore": {
-          "always": 1.694,
+          "always": 1.905,
           "fromMw7.5": 0.65
         }
       }
@@ -2921,8 +2921,8 @@
           "quiet": true
         },
         "tollLogBias": {
-          "inPlace": 0.735,
-          "winner": 0.369
+          "inPlace": 1.136,
+          "winner": 0.77
         },
         "inside": {
           "inPlace": [
@@ -2970,7 +2970,7 @@
       },
       "readings": {
         "boore2014": {
-          "score": 0.631,
+          "score": 0.663,
           "held": 139,
           "cells": [
             {
@@ -2984,14 +2984,14 @@
               "rows": 13
             },
             {
-              "bias": 3.542,
+              "bias": 4.004,
               "inside": 14,
               "rows": 16
             }
           ]
         },
         "allenMidBand": {
-          "score": 0.61,
+          "score": 0.643,
           "held": 164,
           "cells": [
             {
@@ -3005,14 +3005,14 @@
               "rows": 18
             },
             {
-              "bias": 3.6,
+              "bias": 3.864,
               "inside": 17,
               "rows": 17
             }
           ]
         },
         "allenPager": {
-          "score": 0.561,
+          "score": 0.594,
           "held": 161,
           "cells": [
             {
@@ -3026,7 +3026,7 @@
               "rows": 18
             },
             {
-              "bias": 2.288,
+              "bias": 2.495,
               "inside": 17,
               "rows": 17
             }
@@ -3040,7 +3040,7 @@
       "guards": null,
       "beside": {
         "allenNone": {
-          "score": 0.571,
+          "score": 0.603,
           "held": 128,
           "cells": [
             {
@@ -3054,14 +3054,14 @@
               "rows": 13
             },
             {
-              "bias": 3.542,
+              "bias": 4.004,
               "inside": 13,
               "rows": 16
             }
           ]
         },
         "booreMidBand": {
-          "score": 0.702,
+          "score": 0.735,
           "held": 172,
           "cells": [
             {
@@ -3075,14 +3075,14 @@
               "rows": 18
             },
             {
-              "bias": 3.6,
+              "bias": 3.864,
               "inside": 17,
               "rows": 17
             }
           ]
         },
         "boorePager": {
-          "score": 0.619,
+          "score": 0.652,
           "held": 170,
           "cells": [
             {
@@ -3096,7 +3096,7 @@
               "rows": 18
             },
             {
-              "bias": 2.288,
+              "bias": 2.495,
               "inside": 17,
               "rows": 17
             }
@@ -3198,7 +3198,7 @@
         "winner": "abrahamson2016Slab",
         "adopted": true,
         "inPlace": {
-          "score": 1.097,
+          "score": 1.229,
           "held": 58,
           "rows": 62,
           "cells": [
@@ -5029,7 +5029,7 @@
             },
             {
               "sizeBand": "Mw ≥ 7.5",
-              "bias": 13.207,
+              "bias": 27.751,
               "inside": 17,
               "rows": 18
             }
@@ -5049,7 +5049,7 @@
             },
             {
               "sizeBand": "Mw ≥ 7.5",
-              "bias": 3.156,
+              "bias": 5.687,
               "inside": 11,
               "rows": 16
             }
@@ -5325,13 +5325,13 @@
             {
               "sizeBand": "Mw ≥ 7.5",
               "rows": 35,
-              "scored": 18,
-              "bias": 1.94,
-              "scatterLn": 2.35,
+              "scored": 19,
+              "bias": 6.47,
+              "scatterLn": 2.12,
               "inside": 32,
-              "bothZero": 6,
-              "falseAlarms": 8,
-              "missedToZero": 3,
+              "bothZero": 4,
+              "falseAlarms": 10,
+              "missedToZero": 2,
               "medianBandDecades": 3.05
             }
           ],
@@ -5363,13 +5363,13 @@
             {
               "sizeBand": "Mw ≥ 7.5",
               "rows": 34,
-              "scored": 17,
-              "bias": 1.92,
-              "scatterLn": 2.29,
+              "scored": 19,
+              "bias": 5.98,
+              "scatterLn": 2.1,
               "inside": 32,
-              "bothZero": 7,
-              "falseAlarms": 6,
-              "missedToZero": 4,
+              "bothZero": 4,
+              "falseAlarms": 9,
+              "missedToZero": 2,
               "medianBandDecades": 2.92
             }
           ],
@@ -5401,13 +5401,13 @@
             {
               "sizeBand": "Mw ≥ 7.5",
               "rows": 34,
-              "scored": 17,
-              "bias": 2.11,
-              "scatterLn": 2.31,
+              "scored": 19,
+              "bias": 6.16,
+              "scatterLn": 2.1,
               "inside": 31,
-              "bothZero": 7,
-              "falseAlarms": 6,
-              "missedToZero": 4,
+              "bothZero": 4,
+              "falseAlarms": 9,
+              "missedToZero": 2,
               "medianBandDecades": 2.99
             }
           ]
@@ -5516,35 +5516,35 @@
             "group": null,
             "all": {
               "rows": 406,
-              "scored": 125,
-              "bias": 0.913,
-              "scatterLn": 2.44,
+              "scored": 126,
+              "bias": 1.1,
+              "scatterLn": 2.5,
               "inside": 386,
-              "bothZero": 193,
-              "falseAlarms": 34,
-              "missedToZero": 54,
+              "bothZero": 191,
+              "falseAlarms": 36,
+              "missedToZero": 53,
               "medianBandDecades": 1.54
             },
             "informative": {
               "rows": 278,
-              "scored": 125,
-              "bias": 0.913,
-              "scatterLn": 2.44,
+              "scored": 126,
+              "bias": 1.1,
+              "scatterLn": 2.5,
               "inside": 258,
-              "bothZero": 65,
-              "falseAlarms": 34,
-              "missedToZero": 54,
+              "bothZero": 63,
+              "falseAlarms": 36,
+              "missedToZero": 53,
               "medianBandDecades": 2.52
             },
             "unseen": {
               "rows": 272,
-              "scored": 120,
-              "bias": 0.981,
-              "scatterLn": 2.43,
+              "scored": 121,
+              "bias": 1.15,
+              "scatterLn": 2.49,
               "inside": 253,
-              "bothZero": 65,
-              "falseAlarms": 34,
-              "missedToZero": 53,
+              "bothZero": 63,
+              "falseAlarms": 36,
+              "missedToZero": 52,
               "medianBandDecades": 2.51
             }
           },
@@ -5627,35 +5627,35 @@
             "group": "Mw ≥ 7.5",
             "all": {
               "rows": 58,
-              "scored": 18,
-              "bias": 1.94,
-              "scatterLn": 2.35,
+              "scored": 19,
+              "bias": 6.47,
+              "scatterLn": 2.12,
               "inside": 55,
-              "bothZero": 29,
-              "falseAlarms": 8,
-              "missedToZero": 3,
+              "bothZero": 27,
+              "falseAlarms": 10,
+              "missedToZero": 2,
               "medianBandDecades": 0.85
             },
             "informative": {
               "rows": 35,
-              "scored": 18,
-              "bias": 1.94,
-              "scatterLn": 2.35,
+              "scored": 19,
+              "bias": 6.47,
+              "scatterLn": 2.12,
               "inside": 32,
-              "bothZero": 6,
-              "falseAlarms": 8,
-              "missedToZero": 3,
+              "bothZero": 4,
+              "falseAlarms": 10,
+              "missedToZero": 2,
               "medianBandDecades": 3.05
             },
             "unseen": {
               "rows": 32,
-              "scored": 16,
-              "bias": 2.44,
-              "scatterLn": 2.39,
+              "scored": 17,
+              "bias": 6.97,
+              "scatterLn": 2.16,
               "inside": 29,
-              "bothZero": 6,
-              "falseAlarms": 8,
-              "missedToZero": 2,
+              "bothZero": 4,
+              "falseAlarms": 10,
+              "missedToZero": 1,
               "medianBandDecades": 3.04
             }
           }
@@ -5733,7 +5733,7 @@
             "magnitude": 8.6,
             "recorded": 10,
             "missing": 0,
-            "model": 0,
+            "model": 57,
             "bandLow": 0,
             "bandHigh": 3,
             "seen": false
@@ -5876,7 +5876,7 @@
             "magnitude": 7.5,
             "recorded": 0,
             "missing": 0,
-            "model": 1422,
+            "model": 5851,
             "bandLow": 1,
             "bandHigh": 108048,
             "seen": false
@@ -6323,7 +6323,7 @@
       {
         "event": "Kaikōura 2016",
         "measuredLow": 0,
-        "measuredHigh": 6,
+        "measuredHigh": 2,
         "interpolatedLow": 0,
         "interpolatedHigh": 3,
         "comparable": false,
