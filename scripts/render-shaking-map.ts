@@ -36,6 +36,7 @@ import {
 import { readFileSync } from 'node:fs';
 import { shippedSiteLookup } from '../src/physics/validation/shippedVs30.js';
 import { shippedStrikeAnswer } from '../src/physics/validation/shippedFaults.js';
+import { pgaFromMercalliIntensity } from '../src/physics/events/earthquake/intensity.js';
 
 /** Where each preset happened, since a preset carries no epicentre. */
 const WHERE: Record<string, { lat: number; lon: number; title: string }> = {
@@ -221,13 +222,22 @@ function render(
     parts.push(
       `<rect x="${lx.toString()}" y="${(ly - 12).toString()}" width="26" height="14" fill="${band.css}" stroke="${band.lineCss}"/>`
     );
+    // What the intensity is in the quantity a seismologist reads: the peak
+    // ground acceleration Worden et al. 2012 puts at the foot of the band,
+    // as a fraction of gravity — the same conversion the contours are drawn
+    // with, so the legend cannot drift from the picture.
+    const g = (pgaFromMercalliIntensity(band.minValue) as number) / 9.80665;
+    const pga = g >= 0.1 ? `${(g * 100).toFixed(0)} %g` : `${(g * 100).toFixed(1)} %g`;
     parts.push(
-      `<text x="${(lx + 32).toString()}" y="${ly.toString()}" fill="#cbd5e1" font-size="13">${band.label}</text>`
+      `<text x="${(lx + 31).toString()}" y="${ly.toString()}" fill="#cbd5e1" font-size="13" font-weight="600">${band.label}</text>`
     );
-    lx += 32 + 14 + band.label.length * 8;
+    parts.push(
+      `<text x="${(lx + 31 + band.label.length * 9 + 6).toString()}" y="${ly.toString()}" fill="#7f8ea3" font-size="11">${pga}</text>`
+    );
+    lx += 31 + band.label.length * 9 + 6 + pga.length * 6.4 + 18;
   }
   parts.push(
-    `<text x="${(WIDTH - 20).toString()}" y="${ly.toString()}" fill="#64748b" font-size="11" text-anchor="end">Mercalli intensity on the ground the browser reads · rupture dashed</text>`
+    `<text x="${(WIDTH - 20).toString()}" y="${ly.toString()}" fill="#64748b" font-size="11" text-anchor="end">Mercalli intensity with the PGA at its foot · rupture dashed</text>`
   );
   parts.push(`</svg>`);
   return parts.join('\n');

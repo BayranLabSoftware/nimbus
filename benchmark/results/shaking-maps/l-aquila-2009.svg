@@ -45,10 +45,13 @@
 <text x="20" y="28" fill="#f8fafc" font-size="19" font-weight="600">L'Aquila 2009 — Mw 6.3</text>
 <text x="20" y="50" fill="#94a3b8" font-size="13">strike 130° from lookup (crustal) · peak MMI 7.98 · field 257² over 123 km on the ground the browser reads · 38 ms</text>
 <rect x="20" y="972" width="26" height="14" fill="rgba(125, 211, 252, 0.45)" stroke="rgba(56, 132, 189, 0.85)"/>
-<text x="52" y="984" fill="#cbd5e1" font-size="13">V</text>
-<rect x="74" y="972" width="26" height="14" fill="rgba(163, 230, 53, 0.45)" stroke="rgba(101, 143, 33, 0.85)"/>
-<text x="106" y="984" fill="#cbd5e1" font-size="13">VI</text>
-<rect x="136" y="972" width="26" height="14" fill="rgba(251, 146, 60, 0.50)" stroke="rgba(180, 95, 30, 0.9)"/>
-<text x="168" y="984" fill="#cbd5e1" font-size="13">VII</text>
-<text x="880" y="984" fill="#64748b" font-size="11" text-anchor="end">Mercalli intensity on the ground the browser reads · rupture dashed</text>
+<text x="51" y="984" fill="#cbd5e1" font-size="13" font-weight="600">V</text>
+<text x="66" y="984" fill="#7f8ea3" font-size="11">6.2 %g</text>
+<rect x="122.4" y="972" width="26" height="14" fill="rgba(163, 230, 53, 0.45)" stroke="rgba(101, 143, 33, 0.85)"/>
+<text x="153.4" y="984" fill="#cbd5e1" font-size="13" font-weight="600">VI</text>
+<text x="177.4" y="984" fill="#7f8ea3" font-size="11">12 %g</text>
+<rect x="227.4" y="972" width="26" height="14" fill="rgba(251, 146, 60, 0.50)" stroke="rgba(180, 95, 30, 0.9)"/>
+<text x="258.4" y="984" fill="#cbd5e1" font-size="13" font-weight="600">VII</text>
+<text x="291.4" y="984" fill="#7f8ea3" font-size="11">22 %g</text>
+<text x="880" y="984" fill="#64748b" font-size="11" text-anchor="end">Mercalli intensity with the PGA at its foot · rupture dashed</text>
 </svg>
