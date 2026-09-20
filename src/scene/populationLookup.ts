@@ -527,7 +527,7 @@ function assetUrl(path: string): string {
 }
 
 /** Decode a data PNG through a 2D canvas into its R and G planes. */
-async function decodePngPlanes(
+export async function decodePngPlanes(
   blob: Blob,
   width: number,
   height: number
