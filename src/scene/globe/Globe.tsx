@@ -81,9 +81,13 @@ import {
 } from '../terrainSampling.js';
 import { buildRuptureStadiumPolygon, projectAlongAzimuth } from '../stadiumPolygon.js';
 import { SIM_ENTITY_PREFIXES } from '../visualContracts.js';
-import { evaluateShakingField } from '../../physics/events/earthquake/shakingField.js';
 import { intensityLawOf, simulateEarthquake } from '../../physics/events/earthquake/simulate.js';
-import { edgeReading, fieldBounds, INTENSITY_BANDS, shakingContours } from './shakingOverlay.js';
+import {
+  fieldBounds,
+  fitShakingField,
+  INTENSITY_BANDS,
+  shakingContours,
+} from './shakingOverlay.js';
 import { hasGroundFor, siteAt } from '../vs30Tiles.js';
 import { AftershockDetailCard } from './AftershockDetailCard.js';
 import { mushroomCloudAltitudeMeters, spawnExplosionVfxFromJoules } from './explosionVfx.js';
@@ -2139,41 +2143,21 @@ export function Globe(): JSX.Element {
         // SOFT ground: the field reads the real Vs30, soft ground amplifies,
         // and a rock bisection leaves the band cut off at the edge of the
         // box where marching squares turns the cut into stray slivers.
-        const lowest = INTENSITY_BANDS[0]?.minValue ?? 5;
-        const rupture = {
-          latitude: location.latitude,
-          longitude: location.longitude,
-          strikeDeg: result.data.inputs.strikeAzimuthDeg ?? 0,
-          halfLengthM: halfL,
-          halfWidthM: halfW,
-        };
-        /** How far the law has to run before it drops below the lowest band
-         *  on ground this soft. */
-        const reachOn = (vs30: number): number => {
-          let near = 0;
-          let far = 3_000_000;
-          for (let i = 0; i < 44; i += 1) {
-            const mid = (near + far) / 2;
-            if (law(mid, vs30) >= lowest) near = mid;
-            else far = mid;
-          }
-          return near;
-        };
-        const spanFor = (vs30: number): number => halfL + Math.max(40_000, 1.1 * reachOn(vs30));
-        const evaluate = (halfSpanM: number): ReturnType<typeof evaluateShakingField> =>
-          evaluateShakingField({ rupture, intensityAt: law, siteAt, halfSpanM });
-        // First guess on soft ground (180 m/s); then MEASURE what the box
-        // actually touches. Where the real ground is softer than the guess
-        // the band reaches further than the guess allowed, and the picture
-        // would drop it — so ask the law again on the softest ground the
-        // edge reads, and widen once. Twice is the whole budget: each pass
-        // reads the Vs30 tiles 257 x 257 times.
-        let field = evaluate(spanFor(180));
-        const edge = edgeReading(field);
-        if (edge.maxMmi >= lowest && Number.isFinite(edge.minVs30)) {
-          const wider = spanFor(edge.minVs30);
-          if (wider > field.halfSpanM * 1.02) field = evaluate(wider);
-        }
+        // One rule, one place: `fitShakingField` sizes the box so that it
+        // contains the bands it will draw, and `scripts/render-shaking-map.ts`
+        // asks it the same question, so the globe and the flat SVG cannot
+        // draw one scenario two ways.
+        const { field } = fitShakingField({
+          rupture: {
+            latitude: location.latitude,
+            longitude: location.longitude,
+            strikeDeg: result.data.inputs.strikeAzimuthDeg ?? 0,
+            halfLengthM: halfL,
+            halfWidthM: halfW,
+          },
+          intensityAt: law,
+          siteAt,
+        });
         const bounds = fieldBounds(field);
         const contours = shakingContours(field);
         if (contours.length > 0) {

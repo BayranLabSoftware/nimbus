@@ -36,9 +36,12 @@
 
 import {
   contourRings,
+  evaluateShakingField,
   frameToGeographic,
+  type RuptureFootprint,
   type ShakingField,
 } from '../../physics/events/earthquake/shakingField.js';
+import type { SiteReading } from '../../physics/events/earthquake/shakingField.js';
 
 /** A band of the fill: everything at or above `minValue`, up to the next. */
 export interface IntensityBand {
@@ -176,6 +179,74 @@ export function shakingContours(
     });
   }
   return out;
+}
+
+/**
+ * A field wide enough to contain the bands it will draw.
+ *
+ * Two readers need this and they must not answer it differently: the globe,
+ * which paints the field on a canvas, and `scripts/render-shaking-map.ts`,
+ * which renders the same field to a flat SVG. A picture is evidence about
+ * the model, so two pictures of one scenario that disagree are worse than
+ * one picture.
+ *
+ * How wide is not a matter of taste, and the two traps are both recorded in
+ * the history of this file:
+ *
+ *   1. Sizing on the HIGHEST band cuts the lowest ones off at the edge of
+ *      the box, where marching squares turns the cut into a dozen slivers
+ *      that look like sedimentary basins and are nothing but the frame —
+ *      814 of Northridge's edge points once sat above MMI V.
+ *   2. Sizing on ROCK is not enough either. The field reads the real Vs30
+ *      and soft ground amplifies, so the band reaches further than a rock
+ *      bisection says: asking on rock still left 306 of Northridge's edge
+ *      points above MMI V and 61 stray rings.
+ *
+ * So the first guess asks the law where it falls below the lowest band on
+ * soft ground (180 m/s, the soft end of what the tiles carry), and then the
+ * result is MEASURED: if the band still reaches the edge, the law is asked
+ * again on the softest ground the edge actually reads, and the field is
+ * evaluated once more. Twice is the whole budget — each pass reads the
+ * ground `points²` times — and whatever still escapes is simply not drawn,
+ * which `shakingContours` enforces.
+ */
+export function fitShakingField(input: {
+  rupture: RuptureFootprint;
+  intensityAt: (distanceM: number, vs30: number) => number;
+  siteAt: (latitude: number, longitude: number) => SiteReading;
+  bands?: readonly IntensityBand[];
+  points?: number;
+}): { field: ShakingField; passes: number; widened: boolean } {
+  const bands = input.bands ?? INTENSITY_BANDS;
+  const lowest = bands[0]?.minValue ?? 5;
+  const reachOn = (vs30: number): number => {
+    let near = 0;
+    let far = 3_000_000;
+    for (let i = 0; i < 44; i += 1) {
+      const mid = (near + far) / 2;
+      if (input.intensityAt(mid, vs30) >= lowest) near = mid;
+      else far = mid;
+    }
+    return near;
+  };
+  const spanFor = (vs30: number): number =>
+    input.rupture.halfLengthM + Math.max(40_000, 1.1 * reachOn(vs30));
+  const evaluate = (halfSpanM: number): ShakingField =>
+    evaluateShakingField({
+      rupture: input.rupture,
+      intensityAt: input.intensityAt,
+      siteAt: input.siteAt,
+      halfSpanM,
+      ...(input.points === undefined ? {} : { points: input.points }),
+    });
+
+  const field = evaluate(spanFor(180));
+  const edge = edgeReading(field);
+  if (edge.maxMmi >= lowest && Number.isFinite(edge.minVs30)) {
+    const wider = spanFor(edge.minVs30);
+    if (wider > field.halfSpanM * 1.02) return { field: evaluate(wider), passes: 2, widened: true };
+  }
+  return { field, passes: 1, widened: false };
 }
 
 /**

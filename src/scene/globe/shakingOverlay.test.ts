@@ -3,6 +3,7 @@ import {
   bandFor,
   edgeReading,
   fieldBounds,
+  fitShakingField,
   INTENSITY_BANDS,
   shakingContours,
 } from './shakingOverlay.js';
@@ -170,6 +171,83 @@ describe('the shaking overlay', () => {
       expect(contour.labelAt).not.toBeNull();
       expect(contour.css).toContain('rgba');
     }
+  });
+});
+
+/**
+ * The one rule two pictures obey.
+ *
+ * The globe paints the field on a canvas and `scripts/render-shaking-map.ts`
+ * renders it to an SVG. Both ask `fitShakingField` how wide the field must
+ * be, and this is what the answer has to be worth: a box that contains what
+ * it draws, on soft ground as well as on rock.
+ */
+describe('fitting the field to what it will draw', () => {
+  const lowest = INTENSITY_BANDS[0]?.minValue ?? 5;
+
+  // A preset carries no coordinates — the user picks those — so the two
+  // epicentres are written here, as the tests above already write Tohoku's.
+  const WHERE = {
+    TOHOKU_2011: { latitude: 38.297, longitude: 142.373, strikeDeg: 200 },
+    NORTHRIDGE_1994: { latitude: 34.213, longitude: -118.537, strikeDeg: 293 },
+  } as const;
+
+  for (const key of ['TOHOKU_2011', 'NORTHRIDGE_1994'] as const) {
+    it(`contains its lowest band on ${key}`, () => {
+      const preset = EARTHQUAKE_PRESETS[key];
+      const where = WHERE[key];
+      const scenario = simulateEarthquake(preset.input);
+      const law = intensityLawOf(scenario);
+      expect(law).not.toBeNull();
+      if (law === null) return;
+      const fitted = fitShakingField({
+        rupture: {
+          latitude: where.latitude,
+          longitude: where.longitude,
+          strikeDeg: where.strikeDeg,
+          halfLengthM: scenario.isExtendedSource ? (scenario.ruptureLength as number) / 2 : 0,
+          halfWidthM: scenario.isExtendedSource ? (scenario.ruptureWidth as number) / 2 : 0,
+        },
+        intensityAt: law,
+        // Uniform soft ground: harder than the real thing, because every
+        // cell amplifies rather than only the soft ones.
+        siteAt: () => ({ vs30: 180, provenance: 'grid' as const }),
+        points: 65,
+      });
+      expect(edgeReading(fitted.field).maxMmi).toBeLessThan(lowest);
+      // And the lowest band is then drawn, rather than dropped.
+      expect(shakingContours(fitted.field).map((c) => c.level)).toContain(lowest);
+      // Two evaluations at most, because each one reads the ground once
+      // per cell and the browser waits for it.
+      expect(fitted.passes).toBeLessThanOrEqual(2);
+    });
+  }
+
+  it('widens when the ground is softer than the first guess', () => {
+    const preset = EARTHQUAKE_PRESETS.NORTHRIDGE_1994;
+    const scenario = simulateEarthquake(preset.input);
+    const law = intensityLawOf(scenario);
+    if (law === null) return;
+    const on = (vs30: number): ReturnType<typeof fitShakingField> =>
+      fitShakingField({
+        rupture: {
+          latitude: WHERE.NORTHRIDGE_1994.latitude,
+          longitude: WHERE.NORTHRIDGE_1994.longitude,
+          strikeDeg: 0,
+          halfLengthM: 0,
+          halfWidthM: 0,
+        },
+        intensityAt: law,
+        siteAt: () => ({ vs30, provenance: 'grid' as const }),
+        points: 65,
+      });
+    // 180 m/s is the first guess, so it needs no second pass; ground much
+    // softer than that reaches further and must be measured and widened.
+    expect(on(180).widened).toBe(false);
+    const soft = on(120);
+    expect(soft.widened).toBe(true);
+    expect(soft.field.halfSpanM).toBeGreaterThan(on(180).field.halfSpanM);
+    expect(edgeReading(soft.field).maxMmi).toBeLessThan(lowest);
   });
 });
 

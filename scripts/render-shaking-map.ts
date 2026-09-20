@@ -23,7 +23,6 @@ import {
   simulateEarthquake,
 } from '../src/physics/events/earthquake/simulate.js';
 import {
-  evaluateShakingField,
   frameToGeographic,
   type RuptureFootprint,
   type ShakingField,
@@ -31,6 +30,7 @@ import {
 import {
   INTENSITY_BANDS,
   fieldBounds,
+  fitShakingField,
   shakingContours,
 } from '../src/scene/globe/shakingOverlay.js';
 import { readFileSync } from 'node:fs';
@@ -298,36 +298,20 @@ function main(): void {
       halfLengthM: result.isExtendedSource ? (result.ruptureLength as number) / 2 : 0,
       halfWidthM: result.isExtendedSource ? (result.ruptureWidth as number) / 2 : 0,
     };
-    // The field must CONTAIN what it draws. Sized on MMI VII it cut the two
-    // lowest bands off at the edge of the box, and marching squares turned
-    // the cut into a dozen stray slivers that look like sedimentary basins
-    // and are nothing but the frame — 814 of Northridge's edge points sat
-    // above MMI V. `mmi5Radius` is optional and absent on most scenarios, so
-    // the distance is found from the law itself: the largest range at which
-    // it still reads the lowest band drawn, by bisection on rock.
-    // On SOFT ground, not on rock: the field reads the real Vs30 and soft
-    // ground amplifies, so the band reaches further than a rock bisection
-    // says. Asking on rock left 306 of Northridge's edge points above MMI V
-    // and 61 stray rings. 180 m/s is the soft end of what the tiles carry.
-    const lowestBand = INTENSITY_BANDS[0]?.minValue ?? 5;
-    let near = 0;
-    let far = 3_000_000;
-    for (let i = 0; i < 44; i += 1) {
-      const mid = (near + far) / 2;
-      if (law(mid, 180) >= lowestBand) near = mid;
-      else far = mid;
-    }
-    const halfSpanM = rupture.halfLengthM + Math.max(40_000, 1.1 * near);
+    // How wide the field must be is one rule, and it lives in
+    // `shakingOverlay.ts` so that this SVG and the globe cannot size one
+    // scenario two ways. Both traps this used to fall into — sizing on the
+    // highest band, and sizing on rock — are recorded there.
     const t0 = Date.now();
-    const field = evaluateShakingField({
+    const { field, widened } = fitShakingField({
       rupture,
       intensityAt: law,
       siteAt: (lat, lon) =>
         site === null
           ? { vs30: 760, provenance: 'rock' as const }
           : { vs30: site(lat, lon).vs30, provenance: 'grid' as const },
-      halfSpanM,
     });
+    const halfSpanM = field.halfSpanM;
     let peak = 0;
     for (const v of field.mmi) if (v > peak) peak = v;
     const source =
@@ -335,7 +319,8 @@ function main(): void {
     const subtitle =
       `strike ${Math.round(strike).toString()}° from ${source} · ` +
       `peak MMI ${peak.toFixed(2)} · ` +
-      `field ${field.points.toString()}² over ${Math.round((2 * halfSpanM) / 1000).toString()} km on ${ground} · ` +
+      `field ${field.points.toString()}² over ${Math.round((2 * halfSpanM) / 1000).toString()} km on ${ground}` +
+      `${widened ? ' (widened to contain the lowest band)' : ''} · ` +
       `${(Date.now() - t0).toString()} ms`;
     const svg = render(field, where.title, subtitle, allCities);
     const path = join(out, `${name.toLowerCase().replace(/_/g, '-')}.svg`);
