@@ -27,6 +27,7 @@
  *   pnpm validation-report --mode=advisory  # report, do not block
  */
 
+import { countMagnitudeInversions } from '../src/physics/validation/propertyPrecedenceRules.js';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -1791,10 +1792,26 @@ function runAtlasRules(): AtlasRun {
   if (plain.mmi7Radius !== named.mmi7Radius || plain.mmi8Radius !== named.mmi8Radius) {
     throw new Error('A scenario naming no law no longer draws Boore et al. 2014 on PGA');
   }
+  // Rule 398: a property outranks a score. Where rule 59 adopts a candidate
+  // on the dead and that candidate fails a property of the model, the
+  // adoption does not take effect — and the report says both things rather
+  // than the generator dying without printing anything.
   if (run.dead?.decision.adopted === true) {
-    throw new Error(
-      `Rule 59 adopts ${run.dead.winner}; the simulator still draws Boore et al. 2014`
+    const winner = run.dead.winner as ContourLaw;
+    const mono = countMagnitudeInversions(
+      (magnitude) =>
+        simulateEarthquake({
+          magnitude,
+          depth: m(10_000),
+          faultType: 'reverse',
+          contourLaw: winner,
+        }).shaking.mmi7Radius
     );
+    if (mono.inversions === 0) {
+      throw new Error(
+        `Rule 59 adopts ${run.dead.winner}, which holds P-MONO-MW; the simulator still draws Boore et al. 2014`
+      );
+    }
   }
   return run;
 }
@@ -1885,10 +1902,29 @@ function runAllenTollRules(): AllenTollRun {
   const run = runAllenToll();
   // Rules 63 and 64 adopt nothing unless the simulator's defaults move with
   // them; a scenario that names nothing is checked by the two sections above.
+  // Rule 398 again: the candidates of rules 63 and 64 are the same rings
+  // rule 59's winner draws, with PAGER's low bands added, so they carry the
+  // same discontinuity at Mw 7.5 and the same property refuses them.
   if (run.guards?.decision.adopted === true) {
-    throw new Error(
-      `Rule 64 adopts ${run.guards.winner}; the simulator still draws Boore et al. 2014 and counts inside MMI VII only`
-    );
+    const candidate = ALLEN_TOLL_CANDIDATES.find((c) => c.key === run.guards?.winner);
+    const mono =
+      candidate === undefined
+        ? { inversions: 0, worstDropKm: 0 }
+        : countMagnitudeInversions(
+            (magnitude) =>
+              simulateEarthquake({
+                magnitude,
+                depth: m(10_000),
+                faultType: 'reverse',
+                contourLaw: candidate.law,
+                lowIntensityDeaths: candidate.low,
+              }).shaking.mmi7Radius
+          );
+    if (mono.inversions === 0) {
+      throw new Error(
+        `Rule 64 adopts ${run.guards.winner}, which holds P-MONO-MW; the simulator still draws Boore et al. 2014 and counts inside MMI VII only`
+      );
+    }
   }
   return run;
 }

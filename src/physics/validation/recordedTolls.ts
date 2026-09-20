@@ -852,14 +852,27 @@ export function centralEstimate(event: RecordedEvent): CasualtyEstimate | null {
 
 export function compareWithRecord(event: RecordedEvent): TollComparison {
   const estimate = centralEstimate(event);
+  const sampledBand = sampleToll(event);
   if (estimate === null) {
+    // B-078: the MEDIAN scenario reaches nobody at a lethal intensity, so
+    // there is no plan to make and `centralEstimate` correctly returns
+    // null. The predictive band is a different question: it is drawn from
+    // two hundred realisations, and the ones that draw a larger magnitude
+    // DO reach people. Returning [0, 0] here scored the model as saying
+    // "nobody dies, certainly" when it had said no such thing, and a
+    // record inside that discarded band was counted as missed.
+    const low = sampledBand?.low.deaths ?? 0;
+    const high = sampledBand?.high.deaths ?? 0;
+    const recorded = event.recordedDeaths;
+    const lowRecord = event.recordedDeathsLow ?? recorded;
+    const highRecord = event.recordedDeathsHigh ?? recorded;
     return {
       event,
       estimate: null,
       deaths: 0,
-      low: 0,
-      high: 0,
-      contains: event.recordedDeaths === 0,
+      low,
+      high,
+      contains: low <= highRecord && high >= lowRecord,
       ratio: 0,
     };
   }
@@ -878,9 +891,8 @@ export function compareWithRecord(event: RecordedEvent): TollComparison {
   // ground-motion residual of σ_lnY ≈ 0.60 about the median. Sampled,
   // the fifth and ninety-fifth percentiles are a claim that can be
   // wrong.
-  const sampled = sampleToll(event);
-  const low = sampled?.low.deaths ?? estimate.deathsLow;
-  const high = sampled?.high.deaths ?? estimate.deathsHigh;
+  const low = sampledBand?.low.deaths ?? estimate.deathsLow;
+  const high = sampledBand?.high.deaths ?? estimate.deathsHigh;
   const record = event.recordedDeaths;
   const recordLow = event.recordedDeathsLow ?? record;
   const recordHigh = event.recordedDeathsHigh ?? record;

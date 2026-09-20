@@ -2052,15 +2052,15 @@
         "joynerBoore1981": [
           {
             "sizeBand": "Mw < 6.5",
-            "rows": 133,
+            "rows": 134,
             "scored": 67,
             "bias": 1.72,
             "scatterLn": 2.16,
-            "inside": 121,
-            "bothZero": 24,
+            "inside": 123,
+            "bothZero": 25,
             "falseAlarms": 23,
             "missedToZero": 19,
-            "medianBandDecades": 2.78
+            "medianBandDecades": 2.77
           },
           {
             "sizeBand": "Mw 6.5–7.5",
@@ -2090,15 +2090,15 @@
         "boore2014": [
           {
             "sizeBand": "Mw < 6.5",
-            "rows": 131,
+            "rows": 132,
             "scored": 51,
             "bias": 0.7,
             "scatterLn": 2.21,
-            "inside": 119,
-            "bothZero": 34,
+            "inside": 121,
+            "bothZero": 35,
             "falseAlarms": 11,
             "missedToZero": 35,
-            "medianBandDecades": 2.31
+            "medianBandDecades": 2.27
           },
           {
             "sizeBand": "Mw 6.5–7.5",
@@ -2309,8 +2309,8 @@
             {
               "sizeBand": "Mw < 6.5",
               "bias": 1.538,
-              "inside": 120,
-              "rows": 131
+              "inside": 122,
+              "rows": 132
             },
             {
               "sizeBand": "Mw 6.5–7.5",
@@ -2393,7 +2393,7 @@
             {
               "sizeBand": "Mw < 6.5",
               "bias": 1.152,
-              "inside": 127,
+              "inside": 128,
               "rows": 136
             },
             {
@@ -2477,7 +2477,7 @@
             {
               "sizeBand": "Mw < 6.5",
               "bias": 1.519,
-              "inside": 128,
+              "inside": 129,
               "rows": 136
             },
             {
@@ -2561,8 +2561,8 @@
             {
               "sizeBand": "Mw < 6.5",
               "bias": 1.009,
-              "inside": 117,
-              "rows": 131
+              "inside": 120,
+              "rows": 132
             },
             {
               "sizeBand": "Mw 6.5–7.5",
@@ -2627,7 +2627,7 @@
         "pager": 1.199
       },
       "held": {
-        "none": 261,
+        "none": 270,
         "midBand": 293,
         "pager": 295
       },
@@ -2709,16 +2709,16 @@
             ],
             "winner": [
               [
-                0,
-                5
+                8,
+                12
               ],
               [
-                27,
-                34
+                39,
+                42
               ],
               [
-                13,
-                16
+                17,
+                18
               ]
             ]
           },
@@ -2916,8 +2916,8 @@
       "dead": {
         "winner": "allen2012HypocentralBelowMw7.5",
         "decision": {
-          "adopted": false,
-          "tolls": false,
+          "adopted": true,
+          "tolls": true,
           "quiet": true
         },
         "tollLogBias": {
@@ -2927,8 +2927,8 @@
         "inside": {
           "inPlace": [
             [
-              120,
-              131
+              122,
+              132
             ],
             [
               106,
@@ -2941,12 +2941,12 @@
           ],
           "winner": [
             [
-              81,
-              113
+              126,
+              139
             ],
             [
-              128,
-              139
+              141,
+              146
             ],
             [
               33,
@@ -2971,73 +2971,92 @@
       "readings": {
         "boore2014": {
           "score": 0.646,
-          "held": 139,
+          "held": 160,
           "cells": [
             {
               "bias": 4.673,
-              "inside": 25,
-              "rows": 67
+              "inside": 102,
+              "rows": 126
             },
             {
               "bias": 1.26,
-              "inside": 2,
-              "rows": 13
+              "inside": 10,
+              "rows": 18
             },
             {
               "bias": 3.463,
-              "inside": 14,
-              "rows": 16
+              "inside": 16,
+              "rows": 18
             }
           ]
         },
         "allenMidBand": {
           "score": 0.624,
-          "held": 164,
+          "held": 186,
           "cells": [
             {
               "bias": 1.861,
-              "inside": 62,
-              "rows": 89
+              "inside": 115,
+              "rows": 123
             },
             {
               "bias": 9.675,
-              "inside": 15,
+              "inside": 18,
               "rows": 18
             },
             {
               "bias": 3.6,
-              "inside": 17,
-              "rows": 17
+              "inside": 24,
+              "rows": 24
             }
           ]
         },
         "allenPager": {
           "score": 0.576,
-          "held": 161,
+          "held": 178,
           "cells": [
             {
               "bias": null,
-              "inside": 56,
-              "rows": 86
+              "inside": 93,
+              "rows": 109
             },
             {
               "bias": 2.471,
-              "inside": 15,
+              "inside": 18,
               "rows": 18
             },
             {
               "bias": 2.264,
-              "inside": 17,
-              "rows": 17
+              "inside": 22,
+              "rows": 22
             }
           ]
         }
       },
       "choice": {
-        "winner": null,
-        "eligible": []
+        "winner": "allenPager",
+        "eligible": [
+          "allenMidBand",
+          "allenPager"
+        ]
       },
-      "guards": null,
+      "guards": {
+        "winner": "allenPager",
+        "decision": {
+          "adopted": true,
+          "rule11": true,
+          "quiet": true,
+          "moderate": true
+        },
+        "quietShare": {
+          "inPlace": 0.0286,
+          "winner": 0.0149
+        },
+        "moderate": {
+          "inPlace": 1.187,
+          "winner": 0.633
+        }
+      },
       "beside": {
         "allenNone": {
           "score": 0.586,
@@ -3045,60 +3064,60 @@
           "cells": [
             {
               "bias": null,
-              "inside": 3,
-              "rows": 55
+              "inside": 61,
+              "rows": 113
             },
             {
               "bias": 1.26,
-              "inside": 2,
-              "rows": 13
+              "inside": 7,
+              "rows": 18
             },
             {
               "bias": 3.463,
-              "inside": 13,
-              "rows": 16
+              "inside": 15,
+              "rows": 18
             }
           ]
         },
         "booreMidBand": {
           "score": 0.716,
-          "held": 172,
+          "held": 183,
           "cells": [
             {
               "bias": 3.972,
-              "inside": 92,
-              "rows": 111
+              "inside": 110,
+              "rows": 121
             },
             {
               "bias": 9.675,
-              "inside": 15,
+              "inside": 18,
               "rows": 18
             },
             {
               "bias": 3.6,
-              "inside": 17,
-              "rows": 17
+              "inside": 24,
+              "rows": 24
             }
           ]
         },
         "boorePager": {
           "score": 0.634,
-          "held": 170,
+          "held": 181,
           "cells": [
             {
               "bias": 2.506,
-              "inside": 87,
-              "rows": 108
+              "inside": 104,
+              "rows": 117
             },
             {
               "bias": 2.471,
-              "inside": 15,
+              "inside": 18,
               "rows": 18
             },
             {
               "bias": 2.264,
-              "inside": 17,
-              "rows": 17
+              "inside": 22,
+              "rows": 22
             }
           ]
         }
@@ -3218,15 +3237,15 @@
         },
         "candidate": {
           "score": 0.801,
-          "held": 38,
+          "held": 47,
           "rows": 62,
           "cells": [
             [
-              10,
+              16,
               21
             ],
             [
-              8,
+              11,
               19
             ],
             [
@@ -3296,16 +3315,16 @@
       "readings": {
         "rule11": {
           "inPlace": {
-            "intervalScore": 2.085,
-            "held": 258,
-            "rows": 277,
-            "medianWidthDecades": 2.53,
+            "intervalScore": 2.053,
+            "held": 260,
+            "rows": 278,
+            "medianWidthDecades": 2.528,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 2.789,
-                "held": 120,
-                "rows": 131
+                "intervalScore": 2.705,
+                "held": 122,
+                "rows": 132
               },
               {
                 "group": "Mw 6.5–7.5",
@@ -3322,16 +3341,16 @@
             ]
           },
           "candidate": {
-            "intervalScore": 2.108,
-            "held": 243,
-            "rows": 270,
-            "medianWidthDecades": 2.353,
+            "intervalScore": 2.081,
+            "held": 245,
+            "rows": 271,
+            "medianWidthDecades": 2.354,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 2.802,
-                "held": 117,
-                "rows": 130
+                "intervalScore": 2.73,
+                "held": 119,
+                "rows": 131
               },
               {
                 "group": "Mw 6.5–7.5",
@@ -3348,16 +3367,16 @@
             ]
           },
           "beside": {
-            "intervalScore": 2.085,
-            "held": 258,
-            "rows": 277,
-            "medianWidthDecades": 2.516,
+            "intervalScore": 2.056,
+            "held": 260,
+            "rows": 278,
+            "medianWidthDecades": 2.512,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 2.799,
-                "held": 120,
-                "rows": 131
+                "intervalScore": 2.724,
+                "held": 122,
+                "rows": 132
               },
               {
                 "group": "Mw 6.5–7.5",
@@ -3376,16 +3395,16 @@
         },
         "rule45": {
           "inPlace": {
-            "intervalScore": 3.368,
-            "held": 210,
-            "rows": 247,
-            "medianWidthDecades": 2.782,
+            "intervalScore": 3.341,
+            "held": 248,
+            "rows": 276,
+            "medianWidthDecades": 2.893,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.368,
-                "held": 210,
-                "rows": 247
+                "intervalScore": 3.341,
+                "held": 248,
+                "rows": 276
               },
               {
                 "group": "Mw 6.5–7.5",
@@ -3402,16 +3421,16 @@
             ]
           },
           "candidate": {
-            "intervalScore": 3.339,
-            "held": 201,
-            "rows": 246,
-            "medianWidthDecades": 2.736,
+            "intervalScore": 3.437,
+            "held": 238,
+            "rows": 277,
+            "medianWidthDecades": 2.826,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.339,
-                "held": 201,
-                "rows": 246
+                "intervalScore": 3.437,
+                "held": 238,
+                "rows": 277
               },
               {
                 "group": "Mw 6.5–7.5",
@@ -3428,16 +3447,16 @@
             ]
           },
           "beside": {
-            "intervalScore": 3.504,
-            "held": 208,
-            "rows": 249,
-            "medianWidthDecades": 2.897,
+            "intervalScore": 3.601,
+            "held": 245,
+            "rows": 280,
+            "medianWidthDecades": 2.976,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.504,
-                "held": 208,
-                "rows": 249
+                "intervalScore": 3.601,
+                "held": 245,
+                "rows": 280
               },
               {
                 "group": "Mw 6.5–7.5",
@@ -3456,80 +3475,80 @@
         },
         "rule61": {
           "inPlace": {
-            "intervalScore": 3.753,
-            "held": 41,
-            "rows": 96,
-            "medianWidthDecades": 0,
+            "intervalScore": 3.997,
+            "held": 128,
+            "rows": 162,
+            "medianWidthDecades": 2.386,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.184,
-                "held": 25,
-                "rows": 67
+                "intervalScore": 3.587,
+                "held": 102,
+                "rows": 126
               },
               {
                 "group": "Mw 6.5–7.5",
-                "intervalScore": 7.898,
-                "held": 2,
-                "rows": 13
+                "intervalScore": 7.712,
+                "held": 10,
+                "rows": 18
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 3.564,
-                "held": 14,
-                "rows": 16
+                "intervalScore": 3.348,
+                "held": 16,
+                "rows": 18
               }
             ]
           },
           "candidate": {
-            "intervalScore": 3.815,
-            "held": 39,
-            "rows": 97,
-            "medianWidthDecades": 0,
+            "intervalScore": 4.555,
+            "held": 140,
+            "rows": 174,
+            "medianWidthDecades": 2.554,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.272,
-                "held": 24,
-                "rows": 68
+                "intervalScore": 4.261,
+                "held": 109,
+                "rows": 133
               },
               {
                 "group": "Mw 6.5–7.5",
-                "intervalScore": 7.905,
-                "held": 2,
-                "rows": 13
+                "intervalScore": 7.654,
+                "held": 12,
+                "rows": 18
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 3.544,
-                "held": 13,
-                "rows": 16
+                "intervalScore": 3.785,
+                "held": 19,
+                "rows": 23
               }
             ]
           },
           "beside": {
-            "intervalScore": 3.778,
-            "held": 41,
-            "rows": 96,
-            "medianWidthDecades": 0,
+            "intervalScore": 4.463,
+            "held": 135,
+            "rows": 166,
+            "medianWidthDecades": 2.639,
             "cells": [
               {
                 "group": "Mw < 6.5",
-                "intervalScore": 3.19,
-                "held": 25,
-                "rows": 67
+                "intervalScore": 3.929,
+                "held": 109,
+                "rows": 129
               },
               {
                 "group": "Mw 6.5–7.5",
-                "intervalScore": 7.787,
-                "held": 2,
-                "rows": 13
+                "intervalScore": 8.763,
+                "held": 10,
+                "rows": 18
               },
               {
                 "group": "Mw ≥ 7.5",
-                "intervalScore": 3.772,
-                "held": 14,
-                "rows": 16
+                "intervalScore": 3.999,
+                "held": 16,
+                "rows": 19
               }
             ]
           }
@@ -3540,7 +3559,7 @@
         "score": false,
         "coverage": true,
         "rule45": true,
-        "rule61": true
+        "rule61": false
       }
     },
     "fireball": {
@@ -5038,20 +5057,20 @@
             {
               "sizeBand": "Mw < 6.5",
               "bias": null,
-              "inside": 0,
-              "rows": 5
+              "inside": 9,
+              "rows": 12
             },
             {
               "sizeBand": "Mw 6.5–7.5",
               "bias": 1.192,
-              "inside": 10,
-              "rows": 22
+              "inside": 38,
+              "rows": 42
             },
             {
               "sizeBand": "Mw ≥ 7.5",
               "bias": 3.011,
-              "inside": 13,
-              "rows": 16
+              "inside": 17,
+              "rows": 18
             }
           ]
         },
@@ -5300,15 +5319,15 @@
           "pick": [
             {
               "sizeBand": "Mw < 6.5",
-              "rows": 131,
+              "rows": 132,
               "scored": 62,
               "bias": 1.54,
               "scatterLn": 2.27,
-              "inside": 120,
-              "bothZero": 29,
+              "inside": 122,
+              "bothZero": 30,
               "falseAlarms": 16,
               "missedToZero": 24,
-              "medianBandDecades": 2.55
+              "medianBandDecades": 2.54
             },
             {
               "sizeBand": "Mw 6.5–7.5",
@@ -5338,15 +5357,15 @@
           "rock": [
             {
               "sizeBand": "Mw < 6.5",
-              "rows": 131,
+              "rows": 132,
               "scored": 51,
               "bias": 0.7,
               "scatterLn": 2.21,
-              "inside": 119,
-              "bothZero": 34,
+              "inside": 121,
+              "bothZero": 35,
               "falseAlarms": 11,
               "missedToZero": 35,
-              "medianBandDecades": 2.31
+              "medianBandDecades": 2.27
             },
             {
               "sizeBand": "Mw 6.5–7.5",
@@ -5376,15 +5395,15 @@
           "pickOnLand": [
             {
               "sizeBand": "Mw < 6.5",
-              "rows": 131,
+              "rows": 132,
               "scored": 61,
               "bias": 1.42,
               "scatterLn": 2.29,
-              "inside": 117,
-              "bothZero": 31,
+              "inside": 119,
+              "bothZero": 32,
               "falseAlarms": 14,
               "missedToZero": 25,
-              "medianBandDecades": 2.48
+              "medianBandDecades": 2.47
             },
             {
               "sizeBand": "Mw 6.5–7.5",
@@ -5519,33 +5538,33 @@
               "scored": 125,
               "bias": 0.916,
               "scatterLn": 2.44,
-              "inside": 387,
+              "inside": 388,
               "bothZero": 196,
               "falseAlarms": 31,
               "missedToZero": 54,
-              "medianBandDecades": 1.54
+              "medianBandDecades": 1.56
             },
             "informative": {
-              "rows": 277,
+              "rows": 278,
               "scored": 125,
               "bias": 0.916,
               "scatterLn": 2.44,
-              "inside": 258,
-              "bothZero": 67,
+              "inside": 260,
+              "bothZero": 68,
               "falseAlarms": 31,
               "missedToZero": 54,
               "medianBandDecades": 2.53
             },
             "unseen": {
-              "rows": 271,
+              "rows": 272,
               "scored": 120,
               "bias": 0.974,
               "scatterLn": 2.44,
-              "inside": 253,
-              "bothZero": 67,
+              "inside": 255,
+              "bothZero": 68,
               "falseAlarms": 31,
               "missedToZero": 53,
-              "medianBandDecades": 2.53
+              "medianBandDecades": 2.51
             }
           },
           {
@@ -5556,33 +5575,33 @@
               "scored": 62,
               "bias": 1.54,
               "scatterLn": 2.27,
-              "inside": 141,
+              "inside": 142,
               "bothZero": 50,
               "falseAlarms": 16,
               "missedToZero": 24,
               "medianBandDecades": 2.28
             },
             "informative": {
-              "rows": 131,
+              "rows": 132,
               "scored": 62,
               "bias": 1.54,
               "scatterLn": 2.27,
-              "inside": 120,
-              "bothZero": 29,
+              "inside": 122,
+              "bothZero": 30,
               "falseAlarms": 16,
               "missedToZero": 24,
-              "medianBandDecades": 2.55
+              "medianBandDecades": 2.54
             },
             "unseen": {
-              "rows": 129,
+              "rows": 130,
               "scored": 60,
               "bias": 1.74,
               "scatterLn": 2.18,
-              "inside": 119,
-              "bothZero": 29,
+              "inside": 121,
+              "bothZero": 30,
               "falseAlarms": 16,
               "missedToZero": 24,
-              "medianBandDecades": 2.55
+              "medianBandDecades": 2.54
             }
           },
           {
@@ -5681,17 +5700,6 @@
             "model": 268,
             "bandLow": 1,
             "bandHigh": 38841,
-            "seen": false
-          },
-          {
-            "event": "2009-10-22 19:51 UTC, AFGHANISTAN: HINDU KUSH",
-            "comcat": "usp000h39a",
-            "magnitude": 6.2,
-            "recorded": 5,
-            "missing": 0,
-            "model": 0,
-            "bandLow": 0,
-            "bandHigh": 0,
             "seen": false
           },
           {

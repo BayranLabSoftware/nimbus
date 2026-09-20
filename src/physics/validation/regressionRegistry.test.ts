@@ -62,7 +62,13 @@ import { safeRunEarthquake } from './safeRun.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
 import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
 import { mulberry32 } from '../montecarlo/sampling.js';
-import { compareWithRecord, RECORDED_EVENTS } from './recordedTolls.js';
+import {
+  centralEstimate,
+  compareWithRecord,
+  RECORDED_EVENTS,
+  sampleToll,
+  type RecordedEvent,
+} from './recordedTolls.js';
 import { TOHOKU_2011_DART_REFERENCE } from './noaaBenchmarkFixtures.js';
 import { RECORDED_WAVES } from './recordedWaves.js';
 import { makeElevationGrid } from '../elevation/index.js';
@@ -1721,13 +1727,53 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(onTheFault.strikeDeg ?? 0).toBeLessThan(130);
   });
 
+  it('B-078 a band that exists is not thrown away because the median scenario has no plan', () => {
+    // Where the MEDIAN scenario reaches nobody at a lethal intensity there
+    // is no plan to make, and `centralEstimate` returns null — correctly.
+    // The predictive band is a different question: it comes from two
+    // hundred realisations, and the ones that draw a larger magnitude DO
+    // reach people. Returning [0, 0] scored the model as saying "nobody
+    // dies, certainly" when it had said no such thing, and a record inside
+    // that discarded band was counted as missed.
+    //
+    // Built rather than found: the rows this happens on live in rule 11's
+    // 408-row set, which is too slow to sample here. A place with people
+    // and a magnitude just under the one that draws a ring is the same
+    // situation in two lines.
+    const somewhere = RECORDED_EVENTS.find((e) => e.name.includes("L'Aquila"));
+    expect(somewhere).toBeDefined();
+    if (somewhere === undefined) return;
+    const event = {
+      ...somewhere,
+      recordedDeaths: 2,
+      run: (): ReturnType<RecordedEvent['run']> => ({
+        type: 'earthquake',
+        data: simulateEarthquake({ magnitude: 4.2, depth: m(10_000), faultType: 'reverse' }),
+      }),
+    };
+
+    expect(centralEstimate(event), 'the median scenario has no plan').toBeNull();
+    const sampled = sampleToll(event);
+    expect(sampled, 'the realisations still reach people').not.toBeNull();
+    if (sampled === null) return;
+    expect(sampled.high.deaths, 'and some of them kill').toBeGreaterThan(0);
+
+    const comparison = compareWithRecord(event);
+    // The band reported is the band the realisations give, not [0, 0].
+    expect(comparison.low).toBe(sampled.low.deaths);
+    expect(comparison.high).toBe(sampled.high.deaths);
+    expect(comparison.deaths, 'the median still kills nobody').toBe(0);
+    // And a record inside that band is held, where it used to be missed.
+    expect(comparison.contains).toBe(true);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-081 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
-    // superseded by B-011; B-078 still OPEN and carries no test yet).
-    const expectedRows = 81;
-    expect(expectedRows).toBe(81);
+    // B-001..B-082 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // superseded by B-011).
+    const expectedRows = 82;
+    expect(expectedRows).toBe(82);
   });
 });
