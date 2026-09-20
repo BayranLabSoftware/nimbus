@@ -4,6 +4,7 @@ import type { ExplosionScenarioInput } from '../../physics/events/explosion/inde
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
+import { ModelNotes } from './ModelNotes.js';
 import { QuantityKey, QuantityRow } from './QuantityRow.js';
 import styles from './SimulatorPanel.module.css';
 
@@ -225,6 +226,7 @@ export function ExplosionCustomInputs(): JSX.Element {
       </QuantityRow>
 
       <QuantityKey />
+      <ModelNotes eventType="explosion" />
     </fieldset>
   );
 }

@@ -379,7 +379,16 @@
       "vs30Read": "letto dalle tessere USGS spedite: {{value}} m/s",
       "vs30Yours": "scelto da te — svuota il campo per leggerlo dal terreno",
       "vs30Placeholder": "dal terreno",
-      "megathrustNote": "scala di Strasser et al. 2010 — solo su faglia inversa"
+      "megathrustNote": "scala di Strasser et al. 2010 — solo su faglia inversa",
+      "landmarks": {
+        "laquila": "L'Aquila",
+        "northridge": "Northridge",
+        "gorkha": "Gorkha",
+        "maule": "Maule",
+        "valdivia": "Valdivia"
+      },
+      "beyondTheRecord": "oltre Valdivia 1960, il più forte terremoto mai registrato: qui nulla tara il modello.",
+      "depthShort": "a che profondità comincia la rottura"
     },
     "explosion": {
       "summaryHeading": "Detonazione · resa, onda d'urto, impulso termico",
@@ -557,6 +566,26 @@
     },
     "provenance": {
       "noCommit": "da un albero di lavoro non registrato"
+    },
+    "tabs": {
+      "aria": "Sezioni del pannello",
+      "parameters": "Parametri",
+      "results": "Esito"
+    },
+    "modelNotes": {
+      "aria": "Cosa il modello non fa",
+      "title_one": "{{count}} nota su questo modello",
+      "title_other": "{{count}} note su questo modello",
+      "items": {
+        "depth": "la profondità dell'ipocentro non entra nelle intensità: la relazione che le disegna non ha la profondità",
+        "areas": "rispetto agli ShakeMap pubblicati le aree dipinte sbagliano di un fattore di qualche unità, in entrambi i versi — 2,6× di terreno in più a MMI VIII sul Tōhoku, 0,10× su Northridge",
+        "topography": "il campo conosce la rigidità del suolo ma non la topografia, la profondità del bacino, né quanto lo scuotimento è correlato da un punto al vicino",
+        "impactAngle": "l'angolo cambia il cratere e la coltre di ejecta, non la quota dell'airburst, che dipende solo da resistenza e velocità",
+        "impactToll": "non è mai stato registrato un bilancio di vittime da impatto: qui è tarato su esplosioni di pari energia",
+        "explosionEnvelope": "misurato fino alla Tsar Bomba di 50 Mt e a Hiroshima per le vittime; oltre, il modello estrapola",
+        "volcanoPlume": "l'altezza del pennacchio segue la sola portata eruttiva: niente taglio del vento, niente profilo atmosferico",
+        "landslideRunup": "la risalita è quella del manuale delle onde d'impulso, tarata in canaletta e applicata a una costa"
+      }
     }
   },
   "cascade": {

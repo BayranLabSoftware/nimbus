@@ -80,7 +80,9 @@ export function QuantityRow(props: QuantityRowProps): JSX.Element {
           )}
         </span>
       </div>
-      {props.note !== undefined && <p className={styles.quantityNote}>{props.note}</p>}
+      {/* A div, not a paragraph: a note may be a scale or a small chart,
+          and a <p> may not contain one. */}
+      {props.note !== undefined && <div className={styles.quantityNote}>{props.note}</div>}
       {props.field !== undefined && props.issues !== undefined && (
         <FieldFeedback
           field={props.field}

@@ -561,6 +561,27 @@ export function SimulatorPanel(): JSX.Element {
   }, []);
 
   const isRunning = simulationStatus === 'running';
+  /**
+   * Which half of the panel is showing.
+   *
+   * The results used to sit UNDER the controls, in the same column, so a
+   * scenario that had run turned the panel into a scroll: the fields a
+   * reader wanted to change were above a page and a half of output they
+   * had already read. Two tabs, and the column is one thing at a time.
+   *
+   * Launching moves to the results, because that is what the launch was
+   * for; changing any input moves back, because the results on screen are
+   * no longer the results of what the panel says.
+   */
+  const [tab, setTab] = useState<'parameters' | 'results'>('parameters');
+  const previousResult = useRef(result);
+  useEffect(() => {
+    if (result !== previousResult.current) {
+      previousResult.current = result;
+      setTab(result === null ? 'parameters' : 'results');
+    }
+  }, [result]);
+
   const canLaunch = location !== null && !isRunning;
   const statusKey = isRunning ? 'running' : canLaunch ? 'ready' : 'waiting';
   const backLabel = t('simulator.back');
@@ -651,60 +672,1182 @@ export function SimulatorPanel(): JSX.Element {
       </div>
 
       <div className={styles.body}>
-        <fieldset className={styles.segFieldset}>
-          <legend className={styles.label}>{t('simulator.eventType')}</legend>
-          <div className={styles.seg}>
-            {EVENT_TYPES.map((type) => (
-              <label key={type} className={styles.segItem}>
-                <input
-                  type="radio"
-                  name="event-type"
-                  value={type}
-                  checked={eventType === type}
-                  onChange={handleEventTypeChange}
-                  className={styles.segInput}
-                />
-                <EventGlyph type={type} />
-                <span className={styles.segLabel}>{t(`simulator.eventTypes.${type}`)}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        <div className={styles.field}>
-          <label htmlFor="preset-select" className={styles.label}>
-            {t('simulator.preset')}
-          </label>
-          <select
-            id="preset-select"
-            className={styles.select}
-            value={presetValue}
-            onChange={handlePresetChange}
+        {/* One column, one thing at a time: the results used to sit under
+            the controls and turn the panel into a scroll. */}
+        <div className={styles.tabBar} role="tablist" aria-label={t('simulator.tabs.aria')}>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={tab === 'parameters'}
+            className={styles.tabButton}
+            data-active={tab === 'parameters'}
+            onClick={(): void => {
+              setTab('parameters');
+            }}
           >
-            {presetIds.map((id) => (
-              <option key={id} value={id}>
-                {labelFor(id)}
-              </option>
-            ))}
-            {currentPreset === 'CUSTOM' && (
-              <option value="CUSTOM">{t('simulator.customPreset')}</option>
-            )}
-          </select>
-          {presetNote !== null && <p className={styles.presetNote}>{presetNote}</p>}
+            {t('simulator.tabs.parameters')}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={tab === 'results'}
+            className={styles.tabButton}
+            data-active={tab === 'results'}
+            disabled={result === null}
+            onClick={(): void => {
+              setTab('results');
+            }}
+          >
+            {t('simulator.tabs.results')}
+          </button>
         </div>
 
-        {eventType === 'impact' && <ImpactCustomInputs />}
-        {eventType === 'explosion' && <ExplosionCustomInputs />}
-        {eventType === 'earthquake' && <EarthquakeCustomInputs />}
-        {eventType === 'volcano' && <VolcanoCustomInputs />}
-        {eventType === 'landslide' && <LandslideCustomInputs />}
+        {tab === 'parameters' && (
+          <>
+            <fieldset className={styles.segFieldset}>
+              <legend className={styles.label}>{t('simulator.eventType')}</legend>
+              <div className={styles.seg}>
+                {EVENT_TYPES.map((type) => (
+                  <label key={type} className={styles.segItem}>
+                    <input
+                      type="radio"
+                      name="event-type"
+                      value={type}
+                      checked={eventType === type}
+                      onChange={handleEventTypeChange}
+                      className={styles.segInput}
+                    />
+                    <EventGlyph type={type} />
+                    <span className={styles.segLabel}>{t(`simulator.eventTypes.${type}`)}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
 
-        {/* The laws that drew the numbers above, and the commit they were
+            <div className={styles.field}>
+              <label htmlFor="preset-select" className={styles.label}>
+                {t('simulator.preset')}
+              </label>
+              <select
+                id="preset-select"
+                className={styles.select}
+                value={presetValue}
+                onChange={handlePresetChange}
+              >
+                {presetIds.map((id) => (
+                  <option key={id} value={id}>
+                    {labelFor(id)}
+                  </option>
+                ))}
+                {currentPreset === 'CUSTOM' && (
+                  <option value="CUSTOM">{t('simulator.customPreset')}</option>
+                )}
+              </select>
+              {presetNote !== null && <p className={styles.presetNote}>{presetNote}</p>}
+            </div>
+
+            {eventType === 'impact' && <ImpactCustomInputs />}
+            {eventType === 'explosion' && <ExplosionCustomInputs />}
+            {eventType === 'earthquake' && <EarthquakeCustomInputs />}
+            {eventType === 'volcano' && <VolcanoCustomInputs />}
+            {eventType === 'landslide' && <LandslideCustomInputs />}
+
+            {/* The laws that drew the numbers above, and the commit they were
             built from: in sight, not only in the printed report. */}
-        <ProvenanceBar eventType={eventType} />
+            <ProvenanceBar eventType={eventType} />
 
-        <CitySearch />
+            <CitySearch />
+          </>
+        )}
 
+        {tab === 'results' && (
+          <>
+            {result?.type === 'impact' && (
+              <>
+                <SectionHeading labelKey="simulator.impactSummaryHeading" />
+                <dl className={styles.result} aria-label={t('simulator.impactSummaryHeading')}>
+                  <dt className={styles.resultLabel}>{t('simulator.energy')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.kineticEnergy')}>
+                      {formatMegatons(joulesToMegatons(result.data.impactor.kineticEnergy))}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.crater')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.finalCrater')}>
+                      {formatKilometres(result.data.crater.finalDiameter)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.transientCrater')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.transientCrater')}>
+                      {formatKilometres(result.data.crater.transientDiameter)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.craterDepth')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.craterDepth')}>
+                      {formatKilometres(result.data.crater.depth)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.magnitude')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.seismicMagnitude')}>
+                      M {result.data.seismic.magnitude.toFixed(1)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.magnitudeRange')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.seismicMagnitudeRange')}>
+                      {`M ${result.data.seismic.magnitudeRange.low.toFixed(1)}–${result.data.seismic.magnitudeRange.high.toFixed(1)}`}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.impactLiquefaction')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.liquefaction')}>
+                      <RangeValue meters={result.data.seismic.liquefactionRadius} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.morphology')}</dt>
+                  <dd className={styles.resultValue}>
+                    {t(`simulator.${result.data.crater.morphology}`)}
+                  </dd>
+                </dl>
+                <SectionHeading labelKey="simulator.damageLabel" />
+                <dl className={styles.result} aria-label={t('simulator.damageLabel')}>
+                  <dt className={styles.resultLabel}>{t('simulator.thirdDegreeBurn')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.thermal')}>
+                      <RangeValue meters={result.data.damage.thirdDegreeBurn} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.fivePsiRing')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.blast')}>
+                      <RangeValue meters={result.data.damage.overpressure5psi} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.onePsiRing')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.blast')}>
+                      <RangeValue meters={result.data.damage.overpressure1psi} />
+                    </CitationTooltip>
+                  </dd>
+                </dl>
+                <SectionHeading labelKey="simulator.entryLabel" />
+                <dl className={styles.result} aria-label={t('simulator.entryLabel')}>
+                  <dt className={styles.resultLabel}>{t('simulator.entryRegime')}</dt>
+                  <dd className={styles.resultValue}>
+                    {t(`simulator.entryRegimes.${result.data.entry.regime}`)}
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.burstAltitude')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatKilometres(result.data.entry.burstAltitude)}
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.breakupAltitude')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.atmosphericEntry')}>
+                      {formatKilometres(result.data.entry.breakupAltitude)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.endVelocity')}</dt>
+                  <dd className={styles.resultValue}>
+                    {((result.data.entry.endVelocity as number) / 1_000).toFixed(1)} km/s
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.energyFractionToGround')}</dt>
+                  <dd className={styles.resultValue}>
+                    {(result.data.entry.energyFractionToGround * 100).toFixed(1)} %
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.atmosphericYield')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatMegatons(result.data.entry.atmosphericYieldMegatons)}
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.entryRegimeExplainer')}</dt>
+                  <dd className={styles.resultValue}>
+                    {t(`simulator.entryRegimeExplain.${result.data.entry.regime}`)}
+                  </dd>
+                </dl>
+                {result.data.entry.regime !== 'INTACT' && (
+                  <>
+                    <SectionHeading labelKey="simulator.entryFlashLabel" />
+                    <dl className={styles.result} aria-label={t('simulator.entryFlashLabel')}>
+                      <dt className={styles.resultLabel}>{t('simulator.entryFlashFirstDegree')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.thermal')}>
+                          <RangeValue meters={result.data.entry.flashBurnRadii.firstDegree} />
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.entryFlashSecondDegree')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <RangeValue meters={result.data.entry.flashBurnRadii.secondDegree} />
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.entryFlashThirdDegree')}</dt>
+                      <dd className={styles.resultValue}>
+                        <RangeValue meters={result.data.entry.flashBurnRadii.thirdDegree} />
+                      </dd>
+                    </dl>
+                    <SectionHeading labelKey="simulator.entryShockLabel" />
+                    <dl className={styles.result} aria-label={t('simulator.entryShockLabel')}>
+                      {result.data.entry.regime === 'COMPLETE_AIRBURST' && (
+                        <>
+                          <dt className={styles.resultLabel}>{t('simulator.entryBlastYield')}</dt>
+                          <dd className={styles.resultValue}>
+                            <CitationTooltip citation={t('citations.airburstBlast')}>
+                              {formatMegatons(result.data.entry.blastYieldMegatons)}
+                            </CitationTooltip>
+                          </dd>
+                        </>
+                      )}
+                      <dt className={styles.resultLabel}>{t('simulator.entryShockLightDamage')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip
+                          citation={t(
+                            result.data.entry.regime === 'COMPLETE_AIRBURST'
+                              ? 'citations.airburstBlast'
+                              : 'citations.blast'
+                          )}
+                        >
+                          <ShockRangeValue
+                            low={result.data.entry.shockWaveRadii.lightDamage}
+                            high={result.data.entry.shockWaveRadiiHigh.lightDamage}
+                          />
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.entryShockOnePsi')}</dt>
+                      <dd className={styles.resultValue}>
+                        <ShockRangeValue
+                          low={result.data.entry.shockWaveRadii.onePsi}
+                          high={result.data.entry.shockWaveRadiiHigh.onePsi}
+                        />
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.entryShockFivePsi')}</dt>
+                      <dd className={styles.resultValue}>
+                        <ShockRangeValue
+                          low={result.data.entry.shockWaveRadii.fivePsi}
+                          high={result.data.entry.shockWaveRadiiHigh.fivePsi}
+                        />
+                      </dd>
+                    </dl>
+                  </>
+                )}
+                <SectionHeading labelKey="simulator.firestormLabel" />
+                <dl className={styles.result} aria-label={t('simulator.firestormLabel')}>
+                  <dt className={styles.resultLabel}>{t('simulator.ignitionRadius')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.firestorm')}>
+                      <RangeValueWithBand
+                        meters={result.data.firestorm.ignitionRadius}
+                        field="firestormIgnition"
+                      />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.sustainRadius')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.firestorm')}>
+                      <RangeValueWithBand
+                        meters={result.data.firestorm.sustainRadius}
+                        field="firestormSustain"
+                      />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.ignitionArea')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatArea(result.data.firestorm.ignitionArea)}
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.sustainArea')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatArea(result.data.firestorm.sustainArea)}
+                  </dd>
+                </dl>
+                <SectionHeading labelKey="simulator.ejectaLabel" />
+                <dl className={styles.result} aria-label={t('simulator.ejectaLabel')}>
+                  <dt className={styles.resultLabel}>{t('simulator.ejectaEdge1m')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.ejecta')}>
+                      <RangeValue meters={result.data.ejecta.blanketEdge1m} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.ejectaEdge1mm')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.ejecta')}>
+                      <RangeValue meters={result.data.ejecta.blanketEdge1mm} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.ejectaAt2R')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.ejecta')}>
+                      {formatKilometres(result.data.ejecta.thicknessAt2R)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.ejectaAt10R')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.ejecta')}>
+                      {formatKilometres(result.data.ejecta.thicknessAt10R)}
+                    </CitationTooltip>
+                  </dd>
+                </dl>
+                <SectionHeading labelKey="simulator.atmosphereLabel" />
+                <dl className={styles.result} aria-label={t('simulator.atmosphereLabel')}>
+                  <dt className={styles.resultLabel}>{t('simulator.climateTier')}</dt>
+                  <dd className={styles.resultValue}>
+                    {t(`simulator.tier.${result.data.atmosphere.climateTier}`)}
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.stratosphericDust')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.atmosphere')}>
+                      {formatMass(result.data.atmosphere.stratosphericDust)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.acidRainMass')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.atmosphere')}>
+                      {formatMass(result.data.atmosphere.acidRainMass)}
+                    </CitationTooltip>
+                  </dd>
+                </dl>
+                {result.data.tsunami && (
+                  <>
+                    <SectionHeading labelKey="simulator.tsunamiLabel" />
+                    <dl className={styles.result} aria-label={t('simulator.tsunamiLabel')}>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiCavity')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.tsunamiCavity')}>
+                          {formatKilometres(result.data.tsunami.cavityRadius)}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiAt1000km')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.tsunamiFarField')}>
+                          {formatKilometres(result.data.tsunami.amplitudeAt1000km)}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiAt5000km')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.amplitudeAt5000km)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.tsunamiAt1000kmWunnemann')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
+                          {formatKilometres(result.data.tsunami.amplitudeAt1000kmWunnemann)}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.tsunamiAt5000kmWunnemann')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
+                          <RangeValueWithBand
+                            meters={result.data.tsunami.amplitudeAt5000kmWunnemann}
+                            field="tsunamiWunnemannFarField"
+                          />
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiSeaCoupling')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.seaCoupling')}>
+                          {t(`simulator.seaCoupling.${result.data.tsunami.seaCoupling.mechanism}`, {
+                            distance: formatKilometres(
+                              result.data.tsunami.seaCoupling.shoreDistance
+                            ),
+                            fraction: (result.data.tsunami.seaCoupling.fraction * 100).toFixed(0),
+                          })}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t(
+                          result.data.tsunami.farFieldLaw === 'program'
+                            ? 'simulator.tsunamiProgramSource'
+                            : 'simulator.tsunamiRimWaveSource'
+                        )}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
+                          {formatKilometres(result.data.tsunami.rimWaveSourceAmplitude)}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiRegime')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
+                          {formatTsunamiRegime(result.data.tsunami, t)}
+                        </CitationTooltip>
+                      </dd>
+                      {/* The program draws one wave and publishes no envelope around it. */}
+                      {result.data.tsunami.farFieldLaw !== 'program' && (
+                        <>
+                          <dt className={styles.resultLabel}>
+                            {t('simulator.tsunamiAt1000kmRange')}
+                          </dt>
+                          <dd className={styles.resultValue}>
+                            <CitationTooltip citation={t('citations.tsunamiWunnemannBounds')}>
+                              {formatWaveEnvelope(
+                                result.data.tsunami.amplitudeAt1000kmLower,
+                                result.data.tsunami.amplitudeAt1000kmUpper
+                              )}
+                            </CitationTooltip>
+                          </dd>
+                          <dt className={styles.resultLabel}>
+                            {t('simulator.tsunamiAt5000kmRange')}
+                          </dt>
+                          <dd className={styles.resultValue}>
+                            <CitationTooltip citation={t('citations.tsunamiWunnemannBounds')}>
+                              {formatWaveEnvelope(
+                                result.data.tsunami.amplitudeAt5000kmLower,
+                                result.data.tsunami.amplitudeAt5000kmUpper
+                              )}
+                            </CitationTooltip>
+                          </dd>
+                        </>
+                      )}
+                      <dt className={styles.resultLabel}>{t('simulator.runupAt1000km')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.synolakisRunup')}>
+                          <RangeValueWithBand
+                            meters={result.data.tsunami.runupAt1000km}
+                            field="tsunamiRunup"
+                          />
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiDamageLabel')}</dt>
+                      <dd className={styles.resultValue}>
+                        {t(coastalDamageTierKey(result.data.tsunami.runupAt1000km as number))}
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiSlopeLabel')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatBeachSlope(
+                          result.data.tsunami.beachSlopeRadUsed,
+                          result.data.tsunami.beachSlopeFromDEM,
+                          t
+                        )}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.tsunamiAt5000kmDispersed')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.tsunamiDispersion')}>
+                          {formatKilometres(result.data.tsunami.amplitudeAt5000kmDispersed)}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiArrival')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatDurationMinutes(result.data.tsunami.travelTimeTo1000km)}
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiCelerity')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatTsunamiCelerity(result.data.tsunami.deepWaterCelerity)}
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiWavelength')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.sourceWavelength)}
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiPeriod')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatDurationMinutes(result.data.tsunami.dominantPeriod)}
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiInundation')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.inundationDistanceAt1000km)}
+                      </dd>
+                    </dl>
+                  </>
+                )}
+                <CascadeTimeline stages={buildImpactCascade(result.data)} />
+              </>
+            )}
+
+            {result?.type === 'explosion' && (
+              <>
+                <SectionHeading labelKey="simulator.explosion.summaryHeading" />
+                <dl className={styles.result} aria-label={t('simulator.explosion.summaryHeading')}>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.yield')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatMegatons(result.data.yield.megatons)}
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.yieldKilotons')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatKilotons(result.data.yield.kilotons)}
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.yieldJoules')}</dt>
+                  <dd className={styles.resultValue}>{formatJoules(result.data.yield.joules)}</dd>
+                  {result.data.placement.medium === 'water' && (
+                    <>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.explosion.placementResult')}
+                      </dt>
+                      <dd className={styles.resultValue} data-testid="explosion-placement-result">
+                        <CitationTooltip citation={t('citations.underwaterBurst')}>
+                          {t('simulator.explosion.placementResultWater', {
+                            depth: formatKilometres(result.data.placement.depth ?? 0),
+                            sea: formatKilometres(
+                              (result.data.inputs.waterDepth as number | undefined) ?? 0
+                            ),
+                          })}
+                        </CitationTooltip>
+                      </dd>
+                    </>
+                  )}
+                  {result.data.placement.medium === 'buried' && (
+                    <>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.explosion.placementResult')}
+                      </dt>
+                      <dd className={styles.resultValue} data-testid="explosion-placement-result">
+                        {t('simulator.explosion.placementResultBuried')}
+                      </dd>
+                    </>
+                  )}
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.fiveBpsi')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.blast')}>
+                      <RangeValue meters={result.data.blast.overpressure5psiRadius} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.oneBpsi')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.blast')}>
+                      <RangeValue meters={result.data.blast.overpressure1psiRadius} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.peakAt1km')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.blast')}>
+                      {formatKilopascals(result.data.blast.peakAt1km)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.peakAt5km')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.blast')}>
+                      {formatKilopascals(result.data.blast.peakAt5km)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.thermal')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.thermal')}>
+                      <RangeValue meters={result.data.thermal.thirdDegreeBurnRadius} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.crater')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.nuclearCrater')}>
+                      {formatKilometres(result.data.crater.apparentDiameter)}
+                    </CitationTooltip>
+                  </dd>
+                </dl>
+                <SectionHeading labelKey="simulator.explosion.hobLabel" />
+                <dl className={styles.result} aria-label={t('simulator.explosion.hobLabel')}>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.hobRegime')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.hob')}>
+                      {t(`simulator.explosion.regimes.${result.data.blast.hobRegime}`)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.hobScaled')}</dt>
+                  <dd className={styles.resultValue}>
+                    {result.data.blast.hobScaled.toFixed(0)} m·kt⁻¹ᐟ³
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.hobFactor')}</dt>
+                  <dd className={styles.resultValue}>×{result.data.blast.hobFactor.toFixed(2)}</dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.fivePsiHob')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.hob')}>
+                      <RangeValue meters={result.data.blast.overpressure5psiRadiusHob} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.onePsiHob')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.hob')}>
+                      <RangeValue meters={result.data.blast.overpressure1psiRadiusHob} />
+                    </CitationTooltip>
+                  </dd>
+                </dl>
+                <SectionHeading labelKey="simulator.firestormLabel" />
+                <dl className={styles.result} aria-label={t('simulator.firestormLabel')}>
+                  <dt className={styles.resultLabel}>{t('simulator.ignitionRadius')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.firestorm')}>
+                      <RangeValueWithBand
+                        meters={result.data.firestorm.ignitionRadius}
+                        field="firestormIgnition"
+                      />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.sustainRadius')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.firestorm')}>
+                      <RangeValueWithBand
+                        meters={result.data.firestorm.sustainRadius}
+                        field="firestormSustain"
+                      />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.ignitionArea')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatArea(result.data.firestorm.ignitionArea)}
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.sustainArea')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatArea(result.data.firestorm.sustainArea)}
+                  </dd>
+                </dl>
+                <SectionHeading labelKey="simulator.explosion.radiationLabel" />
+                <dl className={styles.result} aria-label={t('simulator.explosion.radiationLabel')}>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.ld50')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.radiation')}>
+                      <RangeValue meters={result.data.radiation.ld50Radius} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.ld100')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.radiation')}>
+                      <RangeValue meters={result.data.radiation.ld100Radius} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.arsThreshold')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.radiation')}>
+                      <RangeValue meters={result.data.radiation.arsThresholdRadius} />
+                    </CitationTooltip>
+                  </dd>
+                </dl>
+                <SectionHeading labelKey="simulator.explosion.empLabel" />
+                <dl className={styles.result} aria-label={t('simulator.explosion.empLabel')}>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.empRegime')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.emp')}>
+                      {t(`simulator.explosion.empRegimes.${result.data.emp.regime}`)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.empPeak')}</dt>
+                  <dd className={styles.resultValue}>
+                    {result.data.emp.peakField >= 1_000
+                      ? `${(result.data.emp.peakField / 1_000).toFixed(1)} kV/m`
+                      : `${result.data.emp.peakField.toFixed(0)} V/m`}
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.explosion.empRadius')}</dt>
+                  <dd className={styles.resultValue}>
+                    <RangeValue meters={result.data.emp.affectedRadius} />
+                  </dd>
+                </dl>
+                {result.data.tsunami && (
+                  <>
+                    <SectionHeading labelKey="simulator.explosion.tsunamiLabel" />
+                    <dl
+                      className={styles.result}
+                      aria-label={t('simulator.explosion.tsunamiLabel')}
+                    >
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.explosion.tsunamiRelation')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.explosionWaveHeight')}>
+                          {t(
+                            result.data.tsunami.regime === 'deep'
+                              ? 'simulator.explosion.tsunamiRelationDeep'
+                              : result.data.tsunami.regime === 'shallow'
+                                ? 'simulator.explosion.tsunamiRelationShallow'
+                                : 'simulator.explosion.tsunamiRelationBetween'
+                          )}
+                          {!result.data.tsunami.withinStatedRange &&
+                            ` · ${t('simulator.explosion.tsunamiRelationExtrapolated')}`}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.explosion.tsunamiSourceRadius')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.explosionWaveSource')}>
+                          {formatKilometres(result.data.tsunami.cavityRadius)}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.explosion.tsunamiSourceAmplitude')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.sourceAmplitude)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.explosion.tsunamiAt100km')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.explosionWaveHeight')}>
+                          {formatKilometres(result.data.tsunami.amplitudeAt100km)}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.explosion.tsunamiAt1000km')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.amplitudeAt1000km)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.explosion.tsunamiArrival100km')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatDurationMinutes(result.data.tsunami.travelTimeTo100km)}
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiCelerity')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatTsunamiCelerity(result.data.tsunami.deepWaterCelerity)}
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiWavelength')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.sourceWavelength)}
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiPeriod')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatDurationMinutes(result.data.tsunami.dominantPeriod)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.explosion.tsunamiRunup')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.synolakisRunup')}>
+                          {formatKilometres(result.data.tsunami.runupAt100km)}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiDamageLabel')}</dt>
+                      <dd className={styles.resultValue}>
+                        {t(coastalDamageTierKey(result.data.tsunami.runupAt100km as number))}
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiSlopeLabel')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatBeachSlope(
+                          result.data.tsunami.beachSlopeRadUsed,
+                          result.data.tsunami.beachSlopeFromDEM,
+                          t
+                        )}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.explosion.tsunamiInundation')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.inundationDistanceAt100km)}
+                      </dd>
+                    </dl>
+                  </>
+                )}
+                <CascadeTimeline stages={buildExplosionCascade(result.data)} />
+              </>
+            )}
+
+            {result?.type === 'earthquake' && (
+              <>
+                <SectionHeading labelKey="simulator.earthquake.summaryHeading" />
+                <dl className={styles.result} aria-label={t('simulator.earthquake.summaryHeading')}>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.mw')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.seismicMoment')}>
+                      Mw {result.data.inputs.magnitude.toFixed(1)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.moment')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatScientific(result.data.seismicMoment)} N·m
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.rupture')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.ruptureLength')}>
+                      {formatKilometres(result.data.ruptureLength)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.epicenterMmi')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.mmi')}>
+                      MMI {result.data.shaking.mmiAtEpicenter.toFixed(1)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.mmi7')}</dt>
+                  <dd className={styles.resultValue}>
+                    <RangeValue meters={result.data.shaking.mmi7Radius} />
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.mmi8')}</dt>
+                  <dd className={styles.resultValue}>
+                    <RangeValue meters={result.data.shaking.mmi8Radius} />
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.mmi9')}</dt>
+                  <dd className={styles.resultValue}>
+                    <RangeValue meters={result.data.shaking.mmi9Radius} />
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.pgaAt20km')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.mmi')}>
+                      {formatG(result.data.shaking.pgaAt20km)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.pgaAt100km')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.mmi')}>
+                      {formatG(result.data.shaking.pgaAt100km)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.pgaAt20kmNGA')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.ngaWest2')}>
+                      {formatG(result.data.shaking.pgaAt20kmNGA)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.pgaAt100kmNGA')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.ngaWest2')}>
+                      {formatG(result.data.shaking.pgaAt100kmNGA)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.earthquake.epicenterMmiEurope')}
+                  </dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.mmiEurope')}>
+                      MMI {result.data.shaking.mmiAtEpicenterEurope.toFixed(1)}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.earthquake.liquefactionRadius')}
+                  </dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.liquefaction')}>
+                      <RangeValue meters={result.data.shaking.liquefactionRadius} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.earthquake.siteVs30')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.waldAllen')}>
+                      {result.data.shaking.siteVs30.toFixed(0)} m/s (NEHRP{' '}
+                      {result.data.shaking.siteClass})
+                    </CitationTooltip>
+                  </dd>
+                </dl>
+                {result.data.tsunami && (
+                  <>
+                    <SectionHeading labelKey="simulator.earthquake.seismicTsunamiLabel" />
+                    <dl
+                      className={styles.result}
+                      aria-label={t('simulator.earthquake.seismicTsunamiLabel')}
+                    >
+                      <dt className={styles.resultLabel}>{t('simulator.earthquake.meanSlip')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.meanSlip)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.seafloorUplift')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.seafloorUplift)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.tsunamiInitialAmplitude')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.initialAmplitude)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.tsunamiAt1000km')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.amplitudeAt1000km)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.tsunamiAt5000km')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.amplitudeAt5000km)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.tsunamiAt5000kmDispersed')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.tsunamiDispersion')}>
+                          {formatKilometres(result.data.tsunami.amplitudeAt5000kmDispersed)}
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.tsunamiRunup')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.synolakisRunup')}>
+                          <RangeValueWithBand
+                            meters={result.data.tsunami.runupAt1000km}
+                            field="tsunamiRunup"
+                          />
+                        </CitationTooltip>
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiDamageLabel')}</dt>
+                      <dd className={styles.resultValue}>
+                        {t(coastalDamageTierKey(result.data.tsunami.runupAt1000km as number))}
+                      </dd>
+                      <dt className={styles.resultLabel}>{t('simulator.tsunamiSlopeLabel')}</dt>
+                      <dd className={styles.resultValue}>
+                        {formatBeachSlope(
+                          result.data.tsunami.beachSlopeRadUsed,
+                          result.data.tsunami.beachSlopeFromDEM,
+                          t
+                        )}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.tsunamiTravel')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatDurationMinutes(result.data.tsunami.travelTimeTo1000km)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.tsunamiCelerity')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatTsunamiCelerity(result.data.tsunami.deepWaterCelerity)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.tsunamiWavelength')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.sourceWavelength)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.tsunamiPeriod')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatDurationMinutes(result.data.tsunami.dominantPeriod)}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.earthquake.tsunamiInundation')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatKilometres(result.data.tsunami.inundationDistanceAt1000km)}
+                      </dd>
+                    </dl>
+                  </>
+                )}
+                <CascadeTimeline stages={buildEarthquakeCascade(result.data)} />
+              </>
+            )}
+
+            {result?.type === 'volcano' && (
+              <>
+                <SectionHeading labelKey="simulator.volcano.summaryHeading" />
+                <dl className={styles.result} aria-label={t('simulator.volcano.summaryHeading')}>
+                  <dt className={styles.resultLabel}>{t('simulator.volcano.vei')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.vei')}>
+                      VEI {result.data.vei.toString()}
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.volcano.plume')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.plumeHeight')}>
+                      <RangeValueWithBand meters={result.data.plumeHeight} field="plumeHeight" />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.volcano.runout')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.pyroclasticRunout')}>
+                      <RangeValueWithBand
+                        meters={result.data.pyroclasticRunout}
+                        field="pyroclasticRunout"
+                      />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.volcano.mer')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatScientific(result.data.massEruptionRate)} kg/s
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.volcano.runoutEnergyLine')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.pdcEnergyLine')}>
+                      <RangeValue meters={result.data.pyroclasticRunoutEnergyLine} />
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.volcano.climateCooling')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.climateCooling')}>
+                      {result.data.climateCoolingK.toFixed(2)} K
+                    </CitationTooltip>
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.volcano.ashfallArea')}</dt>
+                  <dd className={styles.resultValue}>
+                    <CitationTooltip citation={t('citations.ashfall')}>
+                      <AreaWithBand m2={result.data.ashfallArea1mm} field="ashfallArea" />
+                    </CitationTooltip>
+                  </dd>
+                  {result.data.laharRunout !== undefined && (
+                    <>
+                      <dt className={styles.resultLabel}>{t('simulator.volcano.laharRunout')}</dt>
+                      <dd className={styles.resultValue}>
+                        <CitationTooltip citation={t('citations.lahar')}>
+                          <RangeValueWithBand
+                            meters={result.data.laharRunout}
+                            field="laharRunout"
+                          />
+                        </CitationTooltip>
+                      </dd>
+                    </>
+                  )}
+                  {result.data.windAdvectedAshfall !== undefined && (
+                    <>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.volcano.ashfallDownwindRange')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <RangeValue meters={result.data.windAdvectedAshfall.downwindRange} />
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.volcano.ashfallCrosswindHalfWidth')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        <RangeValue meters={result.data.windAdvectedAshfall.crosswindHalfWidth} />
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.volcano.ashfallWindAdvectedArea')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {formatArea(result.data.windAdvectedAshfall.area)}
+                      </dd>
+                    </>
+                  )}
+                </dl>
+                <CascadeTimeline stages={buildVolcanoCascade(result.data)} />
+              </>
+            )}
+
+            {result?.type === 'landslide' && (
+              <>
+                <SectionHeading labelKey="simulator.landslide.summaryHeading" />
+                <dl className={styles.result} aria-label={t('simulator.landslide.summaryHeading')}>
+                  <dt className={styles.resultLabel}>{t('simulator.landslide.volume')}</dt>
+                  <dd className={styles.resultValue}>
+                    {formatScientific(result.data.inputs.volumeM3)} m³
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.landslide.charLength')}</dt>
+                  <dd className={styles.resultValue}>
+                    <RangeValue meters={result.data.characteristicLength} />
+                  </dd>
+                  <dt className={styles.resultLabel}>{t('simulator.landslide.sourceLabel')}</dt>
+                  <dd className={styles.resultValue} data-testid="landslide-source-result">
+                    {result.data.tsunami === null
+                      ? result.data.impulseWave?.held === true
+                        ? t('simulator.landslide.sourceHeld', {
+                            delta: formatDecimal(
+                              (Math.atan(IMPULSE_WAVE_SLIDE_FRICTION) * 180) / Math.PI,
+                              1
+                            ),
+                          })
+                        : t('simulator.landslide.sourceDry')
+                      : result.data.inputs.confinedBasinArea !== undefined
+                        ? t('simulator.landslide.sourceConfined')
+                        : result.data.impulseWave !== undefined
+                          ? t('simulator.landslide.sourceManual')
+                          : t('simulator.landslide.sourceOpenWater')}
+                  </dd>
+                  {result.data.tsunami !== null && (
+                    <>
+                      <dt className={styles.resultLabel}>{t('simulator.landslide.tsunamiAmp')}</dt>
+                      <dd className={styles.resultValue}>
+                        {(result.data.tsunami.sourceAmplitude as number).toFixed(0)} m
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.landslide.tsunamiTravel')}
+                      </dt>
+                      <dd className={styles.resultValue}>
+                        {Math.round((result.data.tsunami.travelTimeTo100km as number) / 60)} min
+                      </dd>
+                      {result.data.regimeSensitivity !== null &&
+                        (result.data.regimeSensitivity.ratio === null ||
+                          result.data.regimeSensitivity.ratio > 1.05) && (
+                          <>
+                            <dt className={styles.resultLabel}>
+                              {t('simulator.landslide.regimeOtherLabel')}
+                            </dt>
+                            <dd className={styles.resultValue} data-testid="landslide-regime-note">
+                              {result.data.regimeSensitivity.ratio === null
+                                ? t('simulator.landslide.regimeNoWave')
+                                : t('simulator.landslide.regimeNote', {
+                                    other: (
+                                      (result.data.regime === 'subaerial'
+                                        ? result.data.regimeSensitivity.submarineAmplitude
+                                        : result.data.regimeSensitivity
+                                            .subaerialAmplitude) as number
+                                    ).toFixed(0),
+                                    ratio: result.data.regimeSensitivity.ratio.toFixed(0),
+                                    direction: t(
+                                      result.data.regime === 'subaerial'
+                                        ? 'simulator.landslide.regimeLower'
+                                        : 'simulator.landslide.regimeHigher'
+                                    ),
+                                  })}
+                            </dd>
+                          </>
+                        )}
+                    </>
+                  )}
+                  {result.data.impulseWave !== undefined && !result.data.impulseWave.held && (
+                    <>
+                      <dt className={styles.resultLabel}>{t('simulator.landslide.impactSpeed')}</dt>
+                      <dd className={styles.resultValue} data-testid="landslide-impact-speed">
+                        {t(
+                          result.data.impulseWave.closed.velocity === 'given'
+                            ? 'simulator.landslide.speedGiven'
+                            : result.data.impulseWave.closed.velocity === 'fromDropHeight'
+                              ? 'simulator.landslide.speedFromDrop'
+                              : 'simulator.landslide.speedFromVolume',
+                          { v: formatDecimal(result.data.impulseWave.impactVelocityMS, 1) }
+                        )}
+                      </dd>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.landslide.manualLimitsLabel')}
+                      </dt>
+                      <dd className={styles.resultValue} data-testid="landslide-manual-limits">
+                        {result.data.impulseWave.outsideTestedRange.length === 0
+                          ? t('simulator.landslide.manualInside')
+                          : t('simulator.landslide.manualOutside', {
+                              list: result.data.impulseWave.outsideTestedRange.join(', '),
+                            })}
+                      </dd>
+                      {(result.data.impulseWave.closed.thickness ||
+                        result.data.impulseWave.closed.width) && (
+                        <>
+                          <dt className={styles.resultLabel}>
+                            {t('simulator.landslide.closedLabel')}
+                          </dt>
+                          <dd className={styles.resultValue} data-testid="landslide-closed">
+                            {[
+                              result.data.impulseWave.closed.thickness
+                                ? t('simulator.landslide.closedThickness')
+                                : null,
+                              result.data.impulseWave.closed.width
+                                ? t('simulator.landslide.closedWidth')
+                                : null,
+                            ]
+                              .filter((x): x is string => x !== null)
+                              .join(', ')}
+                          </dd>
+                        </>
+                      )}
+                    </>
+                  )}
+                </dl>
+                <CascadeTimeline stages={buildLandslideCascade(result.data)} />
+              </>
+            )}
+
+            {result !== null && (casualties !== null || casualtyStatus !== 'idle') && (
+              <CasualtiesPanel
+                casualties={casualties}
+                status={casualtyStatus}
+                envelope={envelopeOf(result, 'toll')}
+              />
+            )}
+
+            {monteCarlo !== null && <MonteCarloPanel mc={monteCarlo} />}
+
+            {deepDive !== null && <DeepDivePanel dd={deepDive} />}
+          </>
+        )}
+
+        {/* The launch stays out of both tabs, at the foot of the column.
+            Inside a tab it was unmounted by the tab switch its own click
+            caused, which timed the click out; and from the results, a
+            re-run should not need a trip back to the fields. */}
         <div className={styles.status} data-state={statusKey} role="status" aria-live="polite">
           {isRunning
             ? t('simulator.running')
@@ -808,1033 +1951,6 @@ export function SimulatorPanel(): JSX.Element {
         {deepDiveStatus === 'error' && deepDiveError !== null && (
           <p className={styles.presetNote} role="alert">{`Deep Dive error: ${deepDiveError}`}</p>
         )}
-
-        {result?.type === 'impact' && (
-          <>
-            <SectionHeading labelKey="simulator.impactSummaryHeading" />
-            <dl className={styles.result} aria-label={t('simulator.impactSummaryHeading')}>
-              <dt className={styles.resultLabel}>{t('simulator.energy')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.kineticEnergy')}>
-                  {formatMegatons(joulesToMegatons(result.data.impactor.kineticEnergy))}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.crater')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.finalCrater')}>
-                  {formatKilometres(result.data.crater.finalDiameter)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.transientCrater')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.transientCrater')}>
-                  {formatKilometres(result.data.crater.transientDiameter)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.craterDepth')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.craterDepth')}>
-                  {formatKilometres(result.data.crater.depth)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.magnitude')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.seismicMagnitude')}>
-                  M {result.data.seismic.magnitude.toFixed(1)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.magnitudeRange')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.seismicMagnitudeRange')}>
-                  {`M ${result.data.seismic.magnitudeRange.low.toFixed(1)}–${result.data.seismic.magnitudeRange.high.toFixed(1)}`}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.impactLiquefaction')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.liquefaction')}>
-                  <RangeValue meters={result.data.seismic.liquefactionRadius} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.morphology')}</dt>
-              <dd className={styles.resultValue}>
-                {t(`simulator.${result.data.crater.morphology}`)}
-              </dd>
-            </dl>
-            <SectionHeading labelKey="simulator.damageLabel" />
-            <dl className={styles.result} aria-label={t('simulator.damageLabel')}>
-              <dt className={styles.resultLabel}>{t('simulator.thirdDegreeBurn')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.thermal')}>
-                  <RangeValue meters={result.data.damage.thirdDegreeBurn} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.fivePsiRing')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.blast')}>
-                  <RangeValue meters={result.data.damage.overpressure5psi} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.onePsiRing')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.blast')}>
-                  <RangeValue meters={result.data.damage.overpressure1psi} />
-                </CitationTooltip>
-              </dd>
-            </dl>
-            <SectionHeading labelKey="simulator.entryLabel" />
-            <dl className={styles.result} aria-label={t('simulator.entryLabel')}>
-              <dt className={styles.resultLabel}>{t('simulator.entryRegime')}</dt>
-              <dd className={styles.resultValue}>
-                {t(`simulator.entryRegimes.${result.data.entry.regime}`)}
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.burstAltitude')}</dt>
-              <dd className={styles.resultValue}>
-                {formatKilometres(result.data.entry.burstAltitude)}
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.breakupAltitude')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.atmosphericEntry')}>
-                  {formatKilometres(result.data.entry.breakupAltitude)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.endVelocity')}</dt>
-              <dd className={styles.resultValue}>
-                {((result.data.entry.endVelocity as number) / 1_000).toFixed(1)} km/s
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.energyFractionToGround')}</dt>
-              <dd className={styles.resultValue}>
-                {(result.data.entry.energyFractionToGround * 100).toFixed(1)} %
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.atmosphericYield')}</dt>
-              <dd className={styles.resultValue}>
-                {formatMegatons(result.data.entry.atmosphericYieldMegatons)}
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.entryRegimeExplainer')}</dt>
-              <dd className={styles.resultValue}>
-                {t(`simulator.entryRegimeExplain.${result.data.entry.regime}`)}
-              </dd>
-            </dl>
-            {result.data.entry.regime !== 'INTACT' && (
-              <>
-                <SectionHeading labelKey="simulator.entryFlashLabel" />
-                <dl className={styles.result} aria-label={t('simulator.entryFlashLabel')}>
-                  <dt className={styles.resultLabel}>{t('simulator.entryFlashFirstDegree')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.thermal')}>
-                      <RangeValue meters={result.data.entry.flashBurnRadii.firstDegree} />
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.entryFlashSecondDegree')}</dt>
-                  <dd className={styles.resultValue}>
-                    <RangeValue meters={result.data.entry.flashBurnRadii.secondDegree} />
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.entryFlashThirdDegree')}</dt>
-                  <dd className={styles.resultValue}>
-                    <RangeValue meters={result.data.entry.flashBurnRadii.thirdDegree} />
-                  </dd>
-                </dl>
-                <SectionHeading labelKey="simulator.entryShockLabel" />
-                <dl className={styles.result} aria-label={t('simulator.entryShockLabel')}>
-                  {result.data.entry.regime === 'COMPLETE_AIRBURST' && (
-                    <>
-                      <dt className={styles.resultLabel}>{t('simulator.entryBlastYield')}</dt>
-                      <dd className={styles.resultValue}>
-                        <CitationTooltip citation={t('citations.airburstBlast')}>
-                          {formatMegatons(result.data.entry.blastYieldMegatons)}
-                        </CitationTooltip>
-                      </dd>
-                    </>
-                  )}
-                  <dt className={styles.resultLabel}>{t('simulator.entryShockLightDamage')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip
-                      citation={t(
-                        result.data.entry.regime === 'COMPLETE_AIRBURST'
-                          ? 'citations.airburstBlast'
-                          : 'citations.blast'
-                      )}
-                    >
-                      <ShockRangeValue
-                        low={result.data.entry.shockWaveRadii.lightDamage}
-                        high={result.data.entry.shockWaveRadiiHigh.lightDamage}
-                      />
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.entryShockOnePsi')}</dt>
-                  <dd className={styles.resultValue}>
-                    <ShockRangeValue
-                      low={result.data.entry.shockWaveRadii.onePsi}
-                      high={result.data.entry.shockWaveRadiiHigh.onePsi}
-                    />
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.entryShockFivePsi')}</dt>
-                  <dd className={styles.resultValue}>
-                    <ShockRangeValue
-                      low={result.data.entry.shockWaveRadii.fivePsi}
-                      high={result.data.entry.shockWaveRadiiHigh.fivePsi}
-                    />
-                  </dd>
-                </dl>
-              </>
-            )}
-            <SectionHeading labelKey="simulator.firestormLabel" />
-            <dl className={styles.result} aria-label={t('simulator.firestormLabel')}>
-              <dt className={styles.resultLabel}>{t('simulator.ignitionRadius')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.firestorm')}>
-                  <RangeValueWithBand
-                    meters={result.data.firestorm.ignitionRadius}
-                    field="firestormIgnition"
-                  />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.sustainRadius')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.firestorm')}>
-                  <RangeValueWithBand
-                    meters={result.data.firestorm.sustainRadius}
-                    field="firestormSustain"
-                  />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.ignitionArea')}</dt>
-              <dd className={styles.resultValue}>
-                {formatArea(result.data.firestorm.ignitionArea)}
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.sustainArea')}</dt>
-              <dd className={styles.resultValue}>
-                {formatArea(result.data.firestorm.sustainArea)}
-              </dd>
-            </dl>
-            <SectionHeading labelKey="simulator.ejectaLabel" />
-            <dl className={styles.result} aria-label={t('simulator.ejectaLabel')}>
-              <dt className={styles.resultLabel}>{t('simulator.ejectaEdge1m')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.ejecta')}>
-                  <RangeValue meters={result.data.ejecta.blanketEdge1m} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.ejectaEdge1mm')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.ejecta')}>
-                  <RangeValue meters={result.data.ejecta.blanketEdge1mm} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.ejectaAt2R')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.ejecta')}>
-                  {formatKilometres(result.data.ejecta.thicknessAt2R)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.ejectaAt10R')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.ejecta')}>
-                  {formatKilometres(result.data.ejecta.thicknessAt10R)}
-                </CitationTooltip>
-              </dd>
-            </dl>
-            <SectionHeading labelKey="simulator.atmosphereLabel" />
-            <dl className={styles.result} aria-label={t('simulator.atmosphereLabel')}>
-              <dt className={styles.resultLabel}>{t('simulator.climateTier')}</dt>
-              <dd className={styles.resultValue}>
-                {t(`simulator.tier.${result.data.atmosphere.climateTier}`)}
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.stratosphericDust')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.atmosphere')}>
-                  {formatMass(result.data.atmosphere.stratosphericDust)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.acidRainMass')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.atmosphere')}>
-                  {formatMass(result.data.atmosphere.acidRainMass)}
-                </CitationTooltip>
-              </dd>
-            </dl>
-            {result.data.tsunami && (
-              <>
-                <SectionHeading labelKey="simulator.tsunamiLabel" />
-                <dl className={styles.result} aria-label={t('simulator.tsunamiLabel')}>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiCavity')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiCavity')}>
-                      {formatKilometres(result.data.tsunami.cavityRadius)}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiAt1000km')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiFarField')}>
-                      {formatKilometres(result.data.tsunami.amplitudeAt1000km)}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiAt5000km')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.amplitudeAt5000km)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiAt1000kmWunnemann')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
-                      {formatKilometres(result.data.tsunami.amplitudeAt1000kmWunnemann)}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiAt5000kmWunnemann')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
-                      <RangeValueWithBand
-                        meters={result.data.tsunami.amplitudeAt5000kmWunnemann}
-                        field="tsunamiWunnemannFarField"
-                      />
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiSeaCoupling')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.seaCoupling')}>
-                      {t(`simulator.seaCoupling.${result.data.tsunami.seaCoupling.mechanism}`, {
-                        distance: formatKilometres(result.data.tsunami.seaCoupling.shoreDistance),
-                        fraction: (result.data.tsunami.seaCoupling.fraction * 100).toFixed(0),
-                      })}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t(
-                      result.data.tsunami.farFieldLaw === 'program'
-                        ? 'simulator.tsunamiProgramSource'
-                        : 'simulator.tsunamiRimWaveSource'
-                    )}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
-                      {formatKilometres(result.data.tsunami.rimWaveSourceAmplitude)}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiRegime')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiWunnemann')}>
-                      {formatTsunamiRegime(result.data.tsunami, t)}
-                    </CitationTooltip>
-                  </dd>
-                  {/* The program draws one wave and publishes no envelope around it. */}
-                  {result.data.tsunami.farFieldLaw !== 'program' && (
-                    <>
-                      <dt className={styles.resultLabel}>{t('simulator.tsunamiAt1000kmRange')}</dt>
-                      <dd className={styles.resultValue}>
-                        <CitationTooltip citation={t('citations.tsunamiWunnemannBounds')}>
-                          {formatWaveEnvelope(
-                            result.data.tsunami.amplitudeAt1000kmLower,
-                            result.data.tsunami.amplitudeAt1000kmUpper
-                          )}
-                        </CitationTooltip>
-                      </dd>
-                      <dt className={styles.resultLabel}>{t('simulator.tsunamiAt5000kmRange')}</dt>
-                      <dd className={styles.resultValue}>
-                        <CitationTooltip citation={t('citations.tsunamiWunnemannBounds')}>
-                          {formatWaveEnvelope(
-                            result.data.tsunami.amplitudeAt5000kmLower,
-                            result.data.tsunami.amplitudeAt5000kmUpper
-                          )}
-                        </CitationTooltip>
-                      </dd>
-                    </>
-                  )}
-                  <dt className={styles.resultLabel}>{t('simulator.runupAt1000km')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.synolakisRunup')}>
-                      <RangeValueWithBand
-                        meters={result.data.tsunami.runupAt1000km}
-                        field="tsunamiRunup"
-                      />
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiDamageLabel')}</dt>
-                  <dd className={styles.resultValue}>
-                    {t(coastalDamageTierKey(result.data.tsunami.runupAt1000km as number))}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiSlopeLabel')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatBeachSlope(
-                      result.data.tsunami.beachSlopeRadUsed,
-                      result.data.tsunami.beachSlopeFromDEM,
-                      t
-                    )}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiAt5000kmDispersed')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiDispersion')}>
-                      {formatKilometres(result.data.tsunami.amplitudeAt5000kmDispersed)}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiArrival')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatDurationMinutes(result.data.tsunami.travelTimeTo1000km)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiCelerity')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatTsunamiCelerity(result.data.tsunami.deepWaterCelerity)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiWavelength')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.sourceWavelength)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiPeriod')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatDurationMinutes(result.data.tsunami.dominantPeriod)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiInundation')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.inundationDistanceAt1000km)}
-                  </dd>
-                </dl>
-              </>
-            )}
-            <CascadeTimeline stages={buildImpactCascade(result.data)} />
-          </>
-        )}
-
-        {result?.type === 'explosion' && (
-          <>
-            <SectionHeading labelKey="simulator.explosion.summaryHeading" />
-            <dl className={styles.result} aria-label={t('simulator.explosion.summaryHeading')}>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.yield')}</dt>
-              <dd className={styles.resultValue}>{formatMegatons(result.data.yield.megatons)}</dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.yieldKilotons')}</dt>
-              <dd className={styles.resultValue}>{formatKilotons(result.data.yield.kilotons)}</dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.yieldJoules')}</dt>
-              <dd className={styles.resultValue}>{formatJoules(result.data.yield.joules)}</dd>
-              {result.data.placement.medium === 'water' && (
-                <>
-                  <dt className={styles.resultLabel}>{t('simulator.explosion.placementResult')}</dt>
-                  <dd className={styles.resultValue} data-testid="explosion-placement-result">
-                    <CitationTooltip citation={t('citations.underwaterBurst')}>
-                      {t('simulator.explosion.placementResultWater', {
-                        depth: formatKilometres(result.data.placement.depth ?? 0),
-                        sea: formatKilometres(
-                          (result.data.inputs.waterDepth as number | undefined) ?? 0
-                        ),
-                      })}
-                    </CitationTooltip>
-                  </dd>
-                </>
-              )}
-              {result.data.placement.medium === 'buried' && (
-                <>
-                  <dt className={styles.resultLabel}>{t('simulator.explosion.placementResult')}</dt>
-                  <dd className={styles.resultValue} data-testid="explosion-placement-result">
-                    {t('simulator.explosion.placementResultBuried')}
-                  </dd>
-                </>
-              )}
-              <dt className={styles.resultLabel}>{t('simulator.explosion.fiveBpsi')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.blast')}>
-                  <RangeValue meters={result.data.blast.overpressure5psiRadius} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.oneBpsi')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.blast')}>
-                  <RangeValue meters={result.data.blast.overpressure1psiRadius} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.peakAt1km')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.blast')}>
-                  {formatKilopascals(result.data.blast.peakAt1km)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.peakAt5km')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.blast')}>
-                  {formatKilopascals(result.data.blast.peakAt5km)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.thermal')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.thermal')}>
-                  <RangeValue meters={result.data.thermal.thirdDegreeBurnRadius} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.crater')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.nuclearCrater')}>
-                  {formatKilometres(result.data.crater.apparentDiameter)}
-                </CitationTooltip>
-              </dd>
-            </dl>
-            <SectionHeading labelKey="simulator.explosion.hobLabel" />
-            <dl className={styles.result} aria-label={t('simulator.explosion.hobLabel')}>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.hobRegime')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.hob')}>
-                  {t(`simulator.explosion.regimes.${result.data.blast.hobRegime}`)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.hobScaled')}</dt>
-              <dd className={styles.resultValue}>
-                {result.data.blast.hobScaled.toFixed(0)} m·kt⁻¹ᐟ³
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.hobFactor')}</dt>
-              <dd className={styles.resultValue}>×{result.data.blast.hobFactor.toFixed(2)}</dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.fivePsiHob')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.hob')}>
-                  <RangeValue meters={result.data.blast.overpressure5psiRadiusHob} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.onePsiHob')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.hob')}>
-                  <RangeValue meters={result.data.blast.overpressure1psiRadiusHob} />
-                </CitationTooltip>
-              </dd>
-            </dl>
-            <SectionHeading labelKey="simulator.firestormLabel" />
-            <dl className={styles.result} aria-label={t('simulator.firestormLabel')}>
-              <dt className={styles.resultLabel}>{t('simulator.ignitionRadius')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.firestorm')}>
-                  <RangeValueWithBand
-                    meters={result.data.firestorm.ignitionRadius}
-                    field="firestormIgnition"
-                  />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.sustainRadius')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.firestorm')}>
-                  <RangeValueWithBand
-                    meters={result.data.firestorm.sustainRadius}
-                    field="firestormSustain"
-                  />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.ignitionArea')}</dt>
-              <dd className={styles.resultValue}>
-                {formatArea(result.data.firestorm.ignitionArea)}
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.sustainArea')}</dt>
-              <dd className={styles.resultValue}>
-                {formatArea(result.data.firestorm.sustainArea)}
-              </dd>
-            </dl>
-            <SectionHeading labelKey="simulator.explosion.radiationLabel" />
-            <dl className={styles.result} aria-label={t('simulator.explosion.radiationLabel')}>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.ld50')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.radiation')}>
-                  <RangeValue meters={result.data.radiation.ld50Radius} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.ld100')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.radiation')}>
-                  <RangeValue meters={result.data.radiation.ld100Radius} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.arsThreshold')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.radiation')}>
-                  <RangeValue meters={result.data.radiation.arsThresholdRadius} />
-                </CitationTooltip>
-              </dd>
-            </dl>
-            <SectionHeading labelKey="simulator.explosion.empLabel" />
-            <dl className={styles.result} aria-label={t('simulator.explosion.empLabel')}>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.empRegime')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.emp')}>
-                  {t(`simulator.explosion.empRegimes.${result.data.emp.regime}`)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.empPeak')}</dt>
-              <dd className={styles.resultValue}>
-                {result.data.emp.peakField >= 1_000
-                  ? `${(result.data.emp.peakField / 1_000).toFixed(1)} kV/m`
-                  : `${result.data.emp.peakField.toFixed(0)} V/m`}
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.explosion.empRadius')}</dt>
-              <dd className={styles.resultValue}>
-                <RangeValue meters={result.data.emp.affectedRadius} />
-              </dd>
-            </dl>
-            {result.data.tsunami && (
-              <>
-                <SectionHeading labelKey="simulator.explosion.tsunamiLabel" />
-                <dl className={styles.result} aria-label={t('simulator.explosion.tsunamiLabel')}>
-                  <dt className={styles.resultLabel}>{t('simulator.explosion.tsunamiRelation')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.explosionWaveHeight')}>
-                      {t(
-                        result.data.tsunami.regime === 'deep'
-                          ? 'simulator.explosion.tsunamiRelationDeep'
-                          : result.data.tsunami.regime === 'shallow'
-                            ? 'simulator.explosion.tsunamiRelationShallow'
-                            : 'simulator.explosion.tsunamiRelationBetween'
-                      )}
-                      {!result.data.tsunami.withinStatedRange &&
-                        ` · ${t('simulator.explosion.tsunamiRelationExtrapolated')}`}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.explosion.tsunamiSourceRadius')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.explosionWaveSource')}>
-                      {formatKilometres(result.data.tsunami.cavityRadius)}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.explosion.tsunamiSourceAmplitude')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.sourceAmplitude)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.explosion.tsunamiAt100km')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.explosionWaveHeight')}>
-                      {formatKilometres(result.data.tsunami.amplitudeAt100km)}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.explosion.tsunamiAt1000km')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.amplitudeAt1000km)}
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.explosion.tsunamiArrival100km')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    {formatDurationMinutes(result.data.tsunami.travelTimeTo100km)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiCelerity')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatTsunamiCelerity(result.data.tsunami.deepWaterCelerity)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiWavelength')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.sourceWavelength)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiPeriod')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatDurationMinutes(result.data.tsunami.dominantPeriod)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.explosion.tsunamiRunup')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.synolakisRunup')}>
-                      {formatKilometres(result.data.tsunami.runupAt100km)}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiDamageLabel')}</dt>
-                  <dd className={styles.resultValue}>
-                    {t(coastalDamageTierKey(result.data.tsunami.runupAt100km as number))}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiSlopeLabel')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatBeachSlope(
-                      result.data.tsunami.beachSlopeRadUsed,
-                      result.data.tsunami.beachSlopeFromDEM,
-                      t
-                    )}
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.explosion.tsunamiInundation')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.inundationDistanceAt100km)}
-                  </dd>
-                </dl>
-              </>
-            )}
-            <CascadeTimeline stages={buildExplosionCascade(result.data)} />
-          </>
-        )}
-
-        {result?.type === 'earthquake' && (
-          <>
-            <SectionHeading labelKey="simulator.earthquake.summaryHeading" />
-            <dl className={styles.result} aria-label={t('simulator.earthquake.summaryHeading')}>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.mw')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.seismicMoment')}>
-                  Mw {result.data.inputs.magnitude.toFixed(1)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.moment')}</dt>
-              <dd className={styles.resultValue}>
-                {formatScientific(result.data.seismicMoment)} N·m
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.rupture')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.ruptureLength')}>
-                  {formatKilometres(result.data.ruptureLength)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.epicenterMmi')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.mmi')}>
-                  MMI {result.data.shaking.mmiAtEpicenter.toFixed(1)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.mmi7')}</dt>
-              <dd className={styles.resultValue}>
-                <RangeValue meters={result.data.shaking.mmi7Radius} />
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.mmi8')}</dt>
-              <dd className={styles.resultValue}>
-                <RangeValue meters={result.data.shaking.mmi8Radius} />
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.mmi9')}</dt>
-              <dd className={styles.resultValue}>
-                <RangeValue meters={result.data.shaking.mmi9Radius} />
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.pgaAt20km')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.mmi')}>
-                  {formatG(result.data.shaking.pgaAt20km)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.pgaAt100km')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.mmi')}>
-                  {formatG(result.data.shaking.pgaAt100km)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.pgaAt20kmNGA')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.ngaWest2')}>
-                  {formatG(result.data.shaking.pgaAt20kmNGA)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.pgaAt100kmNGA')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.ngaWest2')}>
-                  {formatG(result.data.shaking.pgaAt100kmNGA)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.epicenterMmiEurope')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.mmiEurope')}>
-                  MMI {result.data.shaking.mmiAtEpicenterEurope.toFixed(1)}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.liquefactionRadius')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.liquefaction')}>
-                  <RangeValue meters={result.data.shaking.liquefactionRadius} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.earthquake.siteVs30')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.waldAllen')}>
-                  {result.data.shaking.siteVs30.toFixed(0)} m/s (NEHRP{' '}
-                  {result.data.shaking.siteClass})
-                </CitationTooltip>
-              </dd>
-            </dl>
-            {result.data.tsunami && (
-              <>
-                <SectionHeading labelKey="simulator.earthquake.seismicTsunamiLabel" />
-                <dl
-                  className={styles.result}
-                  aria-label={t('simulator.earthquake.seismicTsunamiLabel')}
-                >
-                  <dt className={styles.resultLabel}>{t('simulator.earthquake.meanSlip')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.meanSlip)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.earthquake.seafloorUplift')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.seafloorUplift)}
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.earthquake.tsunamiInitialAmplitude')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.initialAmplitude)}
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.earthquake.tsunamiAt1000km')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.amplitudeAt1000km)}
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.earthquake.tsunamiAt5000km')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.amplitudeAt5000km)}
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.earthquake.tsunamiAt5000kmDispersed')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.tsunamiDispersion')}>
-                      {formatKilometres(result.data.tsunami.amplitudeAt5000kmDispersed)}
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.earthquake.tsunamiRunup')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.synolakisRunup')}>
-                      <RangeValueWithBand
-                        meters={result.data.tsunami.runupAt1000km}
-                        field="tsunamiRunup"
-                      />
-                    </CitationTooltip>
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiDamageLabel')}</dt>
-                  <dd className={styles.resultValue}>
-                    {t(coastalDamageTierKey(result.data.tsunami.runupAt1000km as number))}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.tsunamiSlopeLabel')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatBeachSlope(
-                      result.data.tsunami.beachSlopeRadUsed,
-                      result.data.tsunami.beachSlopeFromDEM,
-                      t
-                    )}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.earthquake.tsunamiTravel')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatDurationMinutes(result.data.tsunami.travelTimeTo1000km)}
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.earthquake.tsunamiCelerity')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    {formatTsunamiCelerity(result.data.tsunami.deepWaterCelerity)}
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.earthquake.tsunamiWavelength')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.sourceWavelength)}
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.earthquake.tsunamiPeriod')}</dt>
-                  <dd className={styles.resultValue}>
-                    {formatDurationMinutes(result.data.tsunami.dominantPeriod)}
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.earthquake.tsunamiInundation')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    {formatKilometres(result.data.tsunami.inundationDistanceAt1000km)}
-                  </dd>
-                </dl>
-              </>
-            )}
-            <CascadeTimeline stages={buildEarthquakeCascade(result.data)} />
-          </>
-        )}
-
-        {result?.type === 'volcano' && (
-          <>
-            <SectionHeading labelKey="simulator.volcano.summaryHeading" />
-            <dl className={styles.result} aria-label={t('simulator.volcano.summaryHeading')}>
-              <dt className={styles.resultLabel}>{t('simulator.volcano.vei')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.vei')}>
-                  VEI {result.data.vei.toString()}
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.volcano.plume')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.plumeHeight')}>
-                  <RangeValueWithBand meters={result.data.plumeHeight} field="plumeHeight" />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.volcano.runout')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.pyroclasticRunout')}>
-                  <RangeValueWithBand
-                    meters={result.data.pyroclasticRunout}
-                    field="pyroclasticRunout"
-                  />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.volcano.mer')}</dt>
-              <dd className={styles.resultValue}>
-                {formatScientific(result.data.massEruptionRate)} kg/s
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.volcano.runoutEnergyLine')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.pdcEnergyLine')}>
-                  <RangeValue meters={result.data.pyroclasticRunoutEnergyLine} />
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.volcano.climateCooling')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.climateCooling')}>
-                  {result.data.climateCoolingK.toFixed(2)} K
-                </CitationTooltip>
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.volcano.ashfallArea')}</dt>
-              <dd className={styles.resultValue}>
-                <CitationTooltip citation={t('citations.ashfall')}>
-                  <AreaWithBand m2={result.data.ashfallArea1mm} field="ashfallArea" />
-                </CitationTooltip>
-              </dd>
-              {result.data.laharRunout !== undefined && (
-                <>
-                  <dt className={styles.resultLabel}>{t('simulator.volcano.laharRunout')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.lahar')}>
-                      <RangeValueWithBand meters={result.data.laharRunout} field="laharRunout" />
-                    </CitationTooltip>
-                  </dd>
-                </>
-              )}
-              {result.data.windAdvectedAshfall !== undefined && (
-                <>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.volcano.ashfallDownwindRange')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    <RangeValue meters={result.data.windAdvectedAshfall.downwindRange} />
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.volcano.ashfallCrosswindHalfWidth')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    <RangeValue meters={result.data.windAdvectedAshfall.crosswindHalfWidth} />
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.volcano.ashfallWindAdvectedArea')}
-                  </dt>
-                  <dd className={styles.resultValue}>
-                    {formatArea(result.data.windAdvectedAshfall.area)}
-                  </dd>
-                </>
-              )}
-            </dl>
-            <CascadeTimeline stages={buildVolcanoCascade(result.data)} />
-          </>
-        )}
-
-        {result?.type === 'landslide' && (
-          <>
-            <SectionHeading labelKey="simulator.landslide.summaryHeading" />
-            <dl className={styles.result} aria-label={t('simulator.landslide.summaryHeading')}>
-              <dt className={styles.resultLabel}>{t('simulator.landslide.volume')}</dt>
-              <dd className={styles.resultValue}>
-                {formatScientific(result.data.inputs.volumeM3)} m³
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.landslide.charLength')}</dt>
-              <dd className={styles.resultValue}>
-                <RangeValue meters={result.data.characteristicLength} />
-              </dd>
-              <dt className={styles.resultLabel}>{t('simulator.landslide.sourceLabel')}</dt>
-              <dd className={styles.resultValue} data-testid="landslide-source-result">
-                {result.data.tsunami === null
-                  ? result.data.impulseWave?.held === true
-                    ? t('simulator.landslide.sourceHeld', {
-                        delta: formatDecimal(
-                          (Math.atan(IMPULSE_WAVE_SLIDE_FRICTION) * 180) / Math.PI,
-                          1
-                        ),
-                      })
-                    : t('simulator.landslide.sourceDry')
-                  : result.data.inputs.confinedBasinArea !== undefined
-                    ? t('simulator.landslide.sourceConfined')
-                    : result.data.impulseWave !== undefined
-                      ? t('simulator.landslide.sourceManual')
-                      : t('simulator.landslide.sourceOpenWater')}
-              </dd>
-              {result.data.tsunami !== null && (
-                <>
-                  <dt className={styles.resultLabel}>{t('simulator.landslide.tsunamiAmp')}</dt>
-                  <dd className={styles.resultValue}>
-                    {(result.data.tsunami.sourceAmplitude as number).toFixed(0)} m
-                  </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.landslide.tsunamiTravel')}</dt>
-                  <dd className={styles.resultValue}>
-                    {Math.round((result.data.tsunami.travelTimeTo100km as number) / 60)} min
-                  </dd>
-                  {result.data.regimeSensitivity !== null &&
-                    (result.data.regimeSensitivity.ratio === null ||
-                      result.data.regimeSensitivity.ratio > 1.05) && (
-                      <>
-                        <dt className={styles.resultLabel}>
-                          {t('simulator.landslide.regimeOtherLabel')}
-                        </dt>
-                        <dd className={styles.resultValue} data-testid="landslide-regime-note">
-                          {result.data.regimeSensitivity.ratio === null
-                            ? t('simulator.landslide.regimeNoWave')
-                            : t('simulator.landslide.regimeNote', {
-                                other: (
-                                  (result.data.regime === 'subaerial'
-                                    ? result.data.regimeSensitivity.submarineAmplitude
-                                    : result.data.regimeSensitivity.subaerialAmplitude) as number
-                                ).toFixed(0),
-                                ratio: result.data.regimeSensitivity.ratio.toFixed(0),
-                                direction: t(
-                                  result.data.regime === 'subaerial'
-                                    ? 'simulator.landslide.regimeLower'
-                                    : 'simulator.landslide.regimeHigher'
-                                ),
-                              })}
-                        </dd>
-                      </>
-                    )}
-                </>
-              )}
-              {result.data.impulseWave !== undefined && !result.data.impulseWave.held && (
-                <>
-                  <dt className={styles.resultLabel}>{t('simulator.landslide.impactSpeed')}</dt>
-                  <dd className={styles.resultValue} data-testid="landslide-impact-speed">
-                    {t(
-                      result.data.impulseWave.closed.velocity === 'given'
-                        ? 'simulator.landslide.speedGiven'
-                        : result.data.impulseWave.closed.velocity === 'fromDropHeight'
-                          ? 'simulator.landslide.speedFromDrop'
-                          : 'simulator.landslide.speedFromVolume',
-                      { v: formatDecimal(result.data.impulseWave.impactVelocityMS, 1) }
-                    )}
-                  </dd>
-                  <dt className={styles.resultLabel}>
-                    {t('simulator.landslide.manualLimitsLabel')}
-                  </dt>
-                  <dd className={styles.resultValue} data-testid="landslide-manual-limits">
-                    {result.data.impulseWave.outsideTestedRange.length === 0
-                      ? t('simulator.landslide.manualInside')
-                      : t('simulator.landslide.manualOutside', {
-                          list: result.data.impulseWave.outsideTestedRange.join(', '),
-                        })}
-                  </dd>
-                  {(result.data.impulseWave.closed.thickness ||
-                    result.data.impulseWave.closed.width) && (
-                    <>
-                      <dt className={styles.resultLabel}>{t('simulator.landslide.closedLabel')}</dt>
-                      <dd className={styles.resultValue} data-testid="landslide-closed">
-                        {[
-                          result.data.impulseWave.closed.thickness
-                            ? t('simulator.landslide.closedThickness')
-                            : null,
-                          result.data.impulseWave.closed.width
-                            ? t('simulator.landslide.closedWidth')
-                            : null,
-                        ]
-                          .filter((x): x is string => x !== null)
-                          .join(', ')}
-                      </dd>
-                    </>
-                  )}
-                </>
-              )}
-            </dl>
-            <CascadeTimeline stages={buildLandslideCascade(result.data)} />
-          </>
-        )}
-
-        {result !== null && (casualties !== null || casualtyStatus !== 'idle') && (
-          <CasualtiesPanel
-            casualties={casualties}
-            status={casualtyStatus}
-            envelope={envelopeOf(result, 'toll')}
-          />
-        )}
-
-        {monteCarlo !== null && <MonteCarloPanel mc={monteCarlo} />}
-
-        {deepDive !== null && <DeepDivePanel dd={deepDive} />}
       </div>
     </aside>
   );

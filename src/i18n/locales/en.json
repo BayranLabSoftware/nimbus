@@ -379,7 +379,16 @@
       "vs30Read": "read from the shipped USGS tiles: {{value}} m/s",
       "vs30Yours": "yours — clear the field to read it from the terrain",
       "vs30Placeholder": "from terrain",
-      "megathrustNote": "Strasser et al. 2010 scaling — only on a thrust"
+      "megathrustNote": "Strasser et al. 2010 scaling — only on a thrust",
+      "landmarks": {
+        "laquila": "L'Aquila",
+        "northridge": "Northridge",
+        "gorkha": "Gorkha",
+        "maule": "Maule",
+        "valdivia": "Valdivia"
+      },
+      "beyondTheRecord": "past Valdivia 1960, the largest earthquake ever recorded: nothing calibrates the model here.",
+      "depthShort": "how deep the rupture starts"
     },
     "explosion": {
       "summaryHeading": "Detonation · yield, blast wave, thermal pulse",
@@ -557,6 +566,26 @@
     },
     "provenance": {
       "noCommit": "built from an unrecorded working tree"
+    },
+    "tabs": {
+      "aria": "Panel sections",
+      "parameters": "Parameters",
+      "results": "Result"
+    },
+    "modelNotes": {
+      "aria": "What the model does not do",
+      "title_one": "{{count}} note on this model",
+      "title_other": "{{count}} notes on this model",
+      "items": {
+        "depth": "the hypocentre depth does not enter the intensities: the relation that draws them has no depth in it",
+        "areas": "against the published ShakeMaps the painted areas are wrong by a factor of a few, in both directions — 2.6× too much ground at MMI VIII on Tōhoku, 0.10× of it on Northridge",
+        "topography": "the field knows the ground stiffness but not the topography, the basin depth, or how shaking correlates from one place to the next",
+        "impactAngle": "the angle changes the crater and the ejecta, not the airburst altitude, which is read from strength and speed alone",
+        "impactToll": "no impact death toll has ever been recorded, so the toll here is calibrated on explosions of the same energy",
+        "explosionEnvelope": "measured up to the Tsar Bomba at 50 Mt and Hiroshima for the toll; beyond those the model extrapolates",
+        "volcanoPlume": "the plume height follows the eruption rate alone: no wind shear, no atmospheric profile",
+        "landslideRunup": "the run-up is the impulse-wave manual's, calibrated in a flume and applied to a coast"
+      }
     }
   },
   "cascade": {

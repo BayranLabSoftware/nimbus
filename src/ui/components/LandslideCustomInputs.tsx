@@ -13,6 +13,7 @@ import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { formatDecimal, formatInteger } from '../utils/numberFormat.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
+import { ModelNotes } from './ModelNotes.js';
 import { QuantityKey, QuantityRow } from './QuantityRow.js';
 import { fromScientific, isMantissa, splitScientific } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
@@ -346,6 +347,7 @@ export function LandslideCustomInputs(): JSX.Element {
       )}
 
       <QuantityKey />
+      <ModelNotes eventType="landslide" />
     </fieldset>
   );
 }

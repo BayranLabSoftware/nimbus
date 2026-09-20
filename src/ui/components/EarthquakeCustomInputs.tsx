@@ -7,6 +7,8 @@ import { strikeAnswerAt } from '../../scene/strikeTiles.js';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
+import { MagnitudeScale } from './MagnitudeScale.js';
+import { ModelNotes } from './ModelNotes.js';
 import { QuantityKey, QuantityRow } from './QuantityRow.js';
 import { scaleTyped } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
@@ -126,7 +128,7 @@ export function EarthquakeCustomInputs(): JSX.Element {
         label={t('simulator.earthquake.magnitudeInput')}
         unit="Mw"
         source="user"
-        note={t('simulator.earthquake.magnitudeNote')}
+        note={<MagnitudeScale magnitude={input.magnitude} />}
         field="magnitude"
         issues={magnitudeIssues}
       >
@@ -147,7 +149,7 @@ export function EarthquakeCustomInputs(): JSX.Element {
         label={t('simulator.earthquake.depthInput')}
         unit="km"
         source="user"
-        note={t('simulator.earthquake.depthHelp')}
+        note={t('simulator.earthquake.depthShort')}
         field="depth"
         issues={depthIssues}
       >
@@ -266,6 +268,7 @@ export function EarthquakeCustomInputs(): JSX.Element {
       </QuantityRow>
 
       <QuantityKey />
+      <ModelNotes eventType="earthquake" />
     </fieldset>
   );
 }

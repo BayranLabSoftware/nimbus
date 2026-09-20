@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
+import { ModelNotes } from './ModelNotes.js';
 import { QuantityKey, QuantityRow } from './QuantityRow.js';
 import { fromScientific, isMantissa, scaleTyped, splitScientific } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
@@ -227,6 +228,7 @@ export function VolcanoCustomInputs(): JSX.Element {
       </QuantityRow>
 
       <QuantityKey />
+      <ModelNotes eventType="volcano" />
     </fieldset>
   );
 }
