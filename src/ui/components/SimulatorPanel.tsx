@@ -46,6 +46,7 @@ import { EarthquakeCustomInputs } from './EarthquakeCustomInputs.js';
 import { ExplosionCustomInputs } from './ExplosionCustomInputs.js';
 import { ImpactCustomInputs } from './ImpactCustomInputs.js';
 import { LandslideCustomInputs } from './LandslideCustomInputs.js';
+import { ProvenanceBar } from './ProvenanceBar.js';
 import { VolcanoCustomInputs } from './VolcanoCustomInputs.js';
 import styles from './SimulatorPanel.module.css';
 
@@ -697,6 +698,10 @@ export function SimulatorPanel(): JSX.Element {
         {eventType === 'earthquake' && <EarthquakeCustomInputs />}
         {eventType === 'volcano' && <VolcanoCustomInputs />}
         {eventType === 'landslide' && <LandslideCustomInputs />}
+
+        {/* The laws that drew the numbers above, and the commit they were
+            built from: in sight, not only in the printed report. */}
+        <ProvenanceBar eventType={eventType} />
 
         <CitySearch />
 

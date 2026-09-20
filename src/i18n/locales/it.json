@@ -335,8 +335,8 @@
       "depthHelp": "Non sposta ancora gli anelli dello scuotimento: la relazione che li disegna non ha profondità.",
       "faultType": "Tipo di faglia",
       "vs30Input": "Vs30 sito (m/s)",
-      "vs30FromTerrain": "dal terreno",
-      "megathrustInput": "Interfaccia di subduzione (Strasser 2010)",
+      "vs30FromTerrain": "dal terreno sotto il punto",
+      "megathrustInput": "Interfaccia di subduzione",
       "seismicTsunamiLabel": "Sorgente tsunami sismica",
       "meanSlip": "Scivolamento cosismico medio",
       "seafloorUplift": "Sollevamento del fondale",
@@ -369,7 +369,12 @@
         "preset": "dal preset, come pubblicata per quell’evento",
         "fault": "dalla faglia mappata sotto il punto (faglie attive GEM)",
         "none": "nessuna faglia mappata a portata: il modello disegna ogni direzione, non il nord"
-      }
+      },
+      "magnitudeNote": "il modello è tarato fino a Mw 9,5 (Valdivia 1960); oltre, estrapola",
+      "vs30Read": "letto dalle tessere USGS spedite: {{value}} m/s",
+      "vs30Yours": "scelto da te — svuota il campo per leggerlo dal terreno",
+      "vs30Placeholder": "dal terreno",
+      "megathrustNote": "scala di Strasser et al. 2010 — solo su faglia inversa"
     },
     "explosion": {
       "summaryHeading": "Detonazione · resa, onda d'urto, impulso termico",
@@ -526,6 +531,13 @@
       "water": "impatto in acqua — l'onda intera",
       "crater": "il cratere raggiunge la costa a {{distance}} — l'onda intera",
       "ejecta": "costa a {{distance}}: la coltre di ejecta cade in mare — {{fraction}} % dell'onda (McGetchin 1973)"
+    },
+    "quantity": {
+      "yours": "scelta da te",
+      "read": "letta dai dati sotto il punto"
+    },
+    "provenance": {
+      "noCommit": "da un albero di lavoro non registrato"
     }
   },
   "cascade": {

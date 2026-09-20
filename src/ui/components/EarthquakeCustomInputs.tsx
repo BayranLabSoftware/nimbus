@@ -7,7 +7,7 @@ import { strikeAnswerAt } from '../../scene/strikeTiles.js';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
-import { FieldFeedback } from './FieldFeedback.js';
+import { QuantityKey, QuantityRow } from './QuantityRow.js';
 import { scaleTyped } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
 
@@ -111,78 +111,71 @@ export function EarthquakeCustomInputs(): JSX.Element {
     setEarthquakeInput({ subductionInterface: e.target.checked });
   };
 
+  /** The Vs30 the scenario ran on, when it has run: the panel shows the
+   *  ground the model actually used, not a placeholder for it. */
+  const vs30Ran =
+    result?.type === 'earthquake'
+      ? (result.data.shaking.siteVs30 as number | undefined)
+      : undefined;
+
   return (
-    <fieldset className={styles.customParams}>
+    <fieldset className={styles.customParams} style={{ display: 'block' }}>
       <legend className={styles.customParamsLegend}>{t('simulator.customParams')}</legend>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="quake-magnitude">
-          {t('simulator.earthquake.magnitudeInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.earthquake.magnitudeInput')}
+        unit="Mw"
+        source="user"
+        note={t('simulator.earthquake.magnitudeNote')}
+        field="magnitude"
+        issues={magnitudeIssues}
+      >
         <DraftNumberInput
           id="quake-magnitude"
-          className={styles.paramInput}
           inputMode="decimal"
           min={3}
           max={10}
           step={0.1}
           value={input.magnitude}
           onValueText={updateMagnitude}
+          aria-label={t('simulator.earthquake.magnitudeInput')}
           aria-invalid={magnitudeIssues.hasError || undefined}
-          aria-describedby={magnitudeIssues.topMessage ? 'quake-magnitude-feedback' : undefined}
         />
-        <span id="quake-magnitude-feedback">
-          <FieldFeedback
-            field="magnitude"
-            message={magnitudeIssues.topMessage}
-            code={magnitudeIssues.topCode}
-            isError={magnitudeIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="quake-depth">
-          {t('simulator.earthquake.depthInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.earthquake.depthInput')}
+        unit="km"
+        source="user"
+        note={t('simulator.earthquake.depthHelp')}
+        field="depth"
+        issues={depthIssues}
+      >
         <DraftNumberInput
           id="quake-depth"
-          className={styles.paramInput}
           inputMode="decimal"
           min={0}
           max={700}
           step={1}
           value={depthKm}
           onValueText={updateDepth}
+          aria-label={t('simulator.earthquake.depthInput')}
           aria-invalid={depthIssues.hasError || undefined}
-          aria-describedby={
-            depthIssues.topMessage ? 'quake-depth-help quake-depth-feedback' : 'quake-depth-help'
-          }
         />
-        <span id="quake-depth-help" className={styles.presetNote}>
-          {t('simulator.earthquake.depthHelp')}
-        </span>
-        <span id="quake-depth-feedback">
-          <FieldFeedback
-            field="depth"
-            message={depthIssues.topMessage}
-            code={depthIssues.topCode}
-            isError={depthIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="quake-fault">
-          {t('simulator.earthquake.faultType')}
-        </label>
+      <QuantityRow
+        label={t('simulator.earthquake.faultType')}
+        source="user"
+        field="faultType"
+        issues={faultIssues}
+      >
         <select
           id="quake-fault"
-          className={styles.paramInput}
           value={input.faultType ?? 'all'}
           onChange={updateFault}
+          aria-label={t('simulator.earthquake.faultType')}
           aria-invalid={faultIssues.hasError || undefined}
-          aria-describedby={faultIssues.topMessage ? 'quake-fault-feedback' : undefined}
         >
           {FAULT_TYPES.map((f) => (
             <option key={f} value={f}>
@@ -190,99 +183,89 @@ export function EarthquakeCustomInputs(): JSX.Element {
             </option>
           ))}
         </select>
-        <span id="quake-fault-feedback">
-          <FieldFeedback
-            field="faultType"
-            message={faultIssues.topMessage}
-            code={faultIssues.topCode}
-            isError={faultIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="quake-vs30">
-          {t('simulator.earthquake.vs30Input')}
-        </label>
-        <DraftNumberInput
-          id="quake-vs30"
-          className={styles.paramInput}
-          inputMode="decimal"
-          min={100}
-          max={2_000}
-          step={10}
-          value={input.vs30 ?? ''}
-          placeholder={t('simulator.earthquake.vs30FromTerrain')}
-          onValueText={updateVs30}
-          aria-invalid={vs30Issues.hasError || undefined}
-          aria-describedby={vs30Issues.topMessage ? 'quake-vs30-feedback' : undefined}
-        />
-        <span id="quake-vs30-feedback">
-          <FieldFeedback
-            field="vs30"
-            message={vs30Issues.topMessage}
-            code={vs30Issues.topCode}
-            isError={vs30Issues.hasError}
-          />
-        </span>
-      </div>
-
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="quake-strike">
-          {t('simulator.earthquake.strikeInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.earthquake.strikeInput')}
+        unit="°N"
+        source={strike.source === 'fault' ? 'read' : strike.source === 'none' ? 'none' : 'user'}
+        highlight={strike.source === 'fault'}
+        note={
+          <>
+            {t(`simulator.earthquake.strikeFrom.${strike.source}`)}
+            {strike.source === 'user' && (
+              <>
+                {' · '}
+                <button
+                  type="button"
+                  className={styles.linkButton}
+                  onClick={(): void => {
+                    setEarthquakeInput({ strikeAzimuthDeg: null });
+                  }}
+                >
+                  {t('simulator.earthquake.strikeAuto')}
+                </button>
+              </>
+            )}
+          </>
+        }
+      >
         <DraftNumberInput
           id="quake-strike"
-          className={styles.paramInput}
           value={strike.deg === null ? '' : Math.round(strike.deg * 10) / 10}
           placeholder={t('simulator.earthquake.strikeUnknown')}
           onValueText={updateStrike}
+          aria-label={t('simulator.earthquake.strikeInput')}
         />
-        <p className={styles.paramHint}>
-          {t(`simulator.earthquake.strikeFrom.${strike.source}`)}
-          {strike.source === 'user' && (
-            <>
-              {' · '}
-              <button
-                type="button"
-                className={styles.linkButton}
-                onClick={(): void => {
-                  setEarthquakeInput({ strikeAzimuthDeg: null });
-                }}
-              >
-                {t('simulator.earthquake.strikeAuto')}
-              </button>
-            </>
-          )}
-        </p>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-        <label className={styles.paramLabel} htmlFor="quake-megathrust">
-          <input
-            id="quake-megathrust"
-            type="checkbox"
-            checked={input.subductionInterface ?? false}
-            onChange={toggleMegathrust}
-            style={{ marginRight: 6 }}
-            aria-describedby={interfaceIssues.topMessage ? 'quake-megathrust-feedback' : undefined}
-          />
-          {t('simulator.earthquake.megathrustInput')}
-        </label>
-        {/* B-080: an interface is a thrust (B-046), so a scenario that
-            arrives with one and a strike-slip or normal fault will not run
-            the fault it names. Saying so here is the difference between a
-            reader choosing that and a reader inheriting it from the preset
-            they started from. */}
-        <span id="quake-megathrust-feedback">
-          <FieldFeedback
-            field="subductionInterface"
-            message={interfaceIssues.topMessage}
-            code={interfaceIssues.topCode}
-            isError={interfaceIssues.hasError}
-          />
-        </span>
-      </div>
+      <QuantityRow
+        label={t('simulator.earthquake.vs30Input')}
+        unit="m/s"
+        source={input.vs30 === undefined ? 'read' : 'user'}
+        highlight={input.vs30 === undefined}
+        note={
+          input.vs30 === undefined
+            ? vs30Ran === undefined
+              ? t('simulator.earthquake.vs30FromTerrain')
+              : t('simulator.earthquake.vs30Read', { value: Math.round(vs30Ran).toString() })
+            : t('simulator.earthquake.vs30Yours')
+        }
+        field="vs30"
+        issues={vs30Issues}
+      >
+        <DraftNumberInput
+          id="quake-vs30"
+          inputMode="decimal"
+          min={100}
+          max={2000}
+          step={10}
+          value={input.vs30 ?? (vs30Ran === undefined ? '' : Math.round(vs30Ran))}
+          placeholder={t('simulator.earthquake.vs30Placeholder')}
+          onValueText={updateVs30}
+          aria-label={t('simulator.earthquake.vs30Input')}
+          aria-invalid={vs30Issues.hasError || undefined}
+        />
+      </QuantityRow>
+
+      <QuantityRow
+        label={t('simulator.earthquake.megathrustInput')}
+        source="user"
+        note={t('simulator.earthquake.megathrustNote')}
+        field="subductionInterface"
+        issues={interfaceIssues}
+      >
+        <input
+          id="quake-megathrust"
+          type="checkbox"
+          checked={input.subductionInterface ?? false}
+          onChange={toggleMegathrust}
+          aria-label={t('simulator.earthquake.megathrustInput')}
+          style={{ width: 18, height: 18, margin: '0 6px 0 auto', accentColor: '#F5A524' }}
+        />
+      </QuantityRow>
+
+      <QuantityKey />
     </fieldset>
   );
 }

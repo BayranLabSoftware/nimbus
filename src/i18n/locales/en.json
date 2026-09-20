@@ -335,8 +335,8 @@
       "depthHelp": "Does not move the shaking rings yet: the relation that draws them has no depth.",
       "faultType": "Fault type",
       "vs30Input": "Vs30 site (m/s)",
-      "vs30FromTerrain": "from the terrain",
-      "megathrustInput": "Subduction interface (Strasser 2010)",
+      "vs30FromTerrain": "from the terrain under the pick",
+      "megathrustInput": "Subduction interface",
       "seismicTsunamiLabel": "Seismic tsunami source",
       "meanSlip": "Mean coseismic slip",
       "seafloorUplift": "Seafloor uplift",
@@ -369,7 +369,12 @@
         "preset": "from the preset, as published for that event",
         "fault": "from the mapped fault under the pick (GEM active faults)",
         "none": "no mapped fault in reach: the model draws every direction, not north"
-      }
+      },
+      "magnitudeNote": "the model is calibrated to Mw 9.5 (Valdivia 1960); above that it extrapolates",
+      "vs30Read": "read from the shipped USGS tiles: {{value}} m/s",
+      "vs30Yours": "yours — clear the field to read it from the terrain",
+      "vs30Placeholder": "from terrain",
+      "megathrustNote": "Strasser et al. 2010 scaling — only on a thrust"
     },
     "explosion": {
       "summaryHeading": "Detonation · yield, blast wave, thermal pulse",
@@ -526,6 +531,13 @@
       "water": "impact in water — the whole wave",
       "crater": "the crater reaches the coast at {{distance}} — the whole wave",
       "ejecta": "coast at {{distance}}: the ejecta blanket falls into the sea — {{fraction}} % of the wave (McGetchin 1973)"
+    },
+    "quantity": {
+      "yours": "yours",
+      "read": "read from the data under the pick"
+    },
+    "provenance": {
+      "noCommit": "built from an unrecorded working tree"
     }
   },
   "cascade": {

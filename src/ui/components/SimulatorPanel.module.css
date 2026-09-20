@@ -742,3 +742,153 @@ select.paramInput {
 .linkButton:hover {
   opacity: 1;
 }
+
+/* --- The instrument's rows -------------------------------------------
+ * A measured quantity is four columns: name, value, unit, provenance.
+ * Values are right-aligned in tabular figures so the digits line up down
+ * the column, and the provenance mark makes "what did I choose and what
+ * did the model read?" answerable by looking down one column.
+ */
+.quantityRow {
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.quantityRead {
+  background: rgba(127, 179, 213, 0.045);
+  margin: 0 -14px;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.quantityLine {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 30px;
+}
+
+.quantityLabel {
+  flex-grow: 1;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.quantityValue {
+  /* A minimum, not a width: the numeric columns line up because every
+   * column AFTER this one is fixed and the values are right-aligned, so
+   * a longer control (a fault-type menu) may take room from the label
+   * without moving the unit or the provenance mark. */
+  min-width: 96px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Inputs inside a row: the value itself, not a box around it. */
+.quantityValue input,
+.quantityValue select {
+  width: 100%;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: inherit;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  padding: 4px 6px;
+  min-height: 30px;
+  box-sizing: border-box;
+}
+
+.quantityValue select {
+  text-align: left;
+  font-family: inherit;
+  font-size: 13px;
+  /* Room for the native disclosure arrow, which otherwise sits on the
+   * last letter of "Trascorrente". */
+  padding-right: 20px;
+}
+
+.quantityValue input:hover,
+.quantityValue select:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.quantityValue input:focus,
+.quantityValue select:focus {
+  border-color: #f5a524;
+  outline: 2px solid rgba(245, 165, 36, 0.25);
+  outline-offset: 0;
+}
+
+.quantityUnit {
+  width: 34px;
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  opacity: 0.55;
+}
+
+.quantitySource {
+  width: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.quantityRead .quantitySource {
+  color: #7fb3d5;
+}
+
+.quantityNote {
+  margin: 3px 0 0 0;
+  font-size: 11px;
+  line-height: 1.45;
+  opacity: 0.6;
+}
+
+.quantityKey {
+  display: flex;
+  gap: 16px;
+  padding: 9px 0 2px 0;
+}
+
+.quantityKeyItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  opacity: 0.55;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.quantityKeyRead {
+  color: #7fb3d5;
+  opacity: 0.75;
+}
+
+/* --- What drew this, at the foot of the panel ------------------------
+ * A tool that wants to be cited keeps its provenance in sight, not only
+ * in the report: the laws that drew the numbers above, and the commit
+ * they were built from.
+ */
+.provenanceBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 9px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  opacity: 0.62;
+}
+
+.provenanceBar a {
+  color: inherit;
+}
