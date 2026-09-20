@@ -154,14 +154,14 @@
       "warningAria": "Avviso di validazione su {{field}}: {{message}}"
     },
     "impact": {
-      "diameter": "Diametro impattore (km)",
-      "velocity": "Velocità d'impatto (km/s)",
-      "impactorDensity": "Densità impattore (kg/m³)",
-      "targetDensity": "Densità bersaglio (kg/m³)",
-      "angle": "Angolo d'impatto (°)",
+      "diameter": "Diametro impattore",
+      "velocity": "Velocità d'impatto",
+      "impactorDensity": "Densità impattore",
+      "targetDensity": "Densità bersaglio",
+      "angle": "Angolo d'impatto",
       "azimuth": "Azimuth downrange (° da N): {{degrees}}",
       "azimuthAria": "Direzione impattore {{degrees}} gradi da nord, {{cardinal}}",
-      "taxonomy": "Classe asteroide (riempie densità)",
+      "taxonomy": "Classe asteroide",
       "taxonomyPlaceholder": "Scegli una classe…",
       "taxonomyClasses": {
         "COMETARY": "Nucleo cometario (ρ ≈ 600 kg/m³)",
@@ -169,7 +169,12 @@
         "S_TYPE": "S-type rocciosa (ρ ≈ 3 300)",
         "M_TYPE": "M-type metallica (ρ ≈ 5 300)",
         "IRON": "Meteorite ferrosa (ρ ≈ 7 800)"
-      }
+      },
+      "angleNote": "misurato dall'orizzonte: 90° è una caduta verticale",
+      "azimuthLabel": "Direzione di volo",
+      "azimuthNote": "{{degrees}}° — verso dove vola l’impattore, da nord",
+      "diameterInKm": "{{value}} km",
+      "taxonomyNote": "riempie densità e resistenza con i valori della classe"
     },
     "clickGlobe": "Clicca un punto qualsiasi del globo per scegliere la posizione dell'evento.",
     "locationReady": "Selezionato: {{lat}}°, {{lon}}°. Pronto al lancio.",
@@ -446,7 +451,10 @@
       "tsunamiRelationShallow": "Acque basse (Glasstone & Dolan §6.121)",
       "tsunamiRelationBetween": "Tra acque basse e profonde (interpolata)",
       "tsunamiRelationExtrapolated": "fuori dalla profondità per cui è stata data",
-      "tsunamiSourceRadius": "Raggio della sorgente dell'onda"
+      "tsunamiSourceRadius": "Raggio della sorgente dell'onda",
+      "yieldNote": "Hiroshima 0,015 Mt · la Tsar Bomba 50 Mt",
+      "hobNote": "quota della detonazione: 0 è al suolo",
+      "windDirectionLabel": "Direzione del vento"
     },
     "volcano": {
       "summaryHeading": "Eruzione vulcanica · VEI, pennacchio, flussi piroclastici",
@@ -470,7 +478,10 @@
       "ashfallCrosswindHalfWidth": "Isopaca 1 mm — semi-larghezza trasversale",
       "ashfallWindAdvectedArea": "Area isopaca 1 mm (orientata col vento)",
       "evacuationRadiusInput": "Zona evacuata prima dell'eruzione (raggio in km)",
-      "evacuationRadiusHelp": "0 = nessuno è stato avvisato. Dentro la zona il modello usa la mortalità misurata al Merapi nel 2010 (367 morti su 410 388 evacuati); oltre, tutti quelli che una corrente raggiunge."
+      "evacuationRadiusHelp": "0 = nessuno è stato avvisato. Dentro la zona il modello usa la mortalità misurata al Merapi nel 2010 (367 morti su 410 388 evacuati); oltre, tutti quelli che una corrente raggiunge.",
+      "vdotLabel": "Portata eruttiva",
+      "volumeLabel": "Volume totale emesso",
+      "vdotNote": "Pinatubo 1991 ≈ 1,5 × 10⁸ m³/s al culmine"
     },
     "landslide": {
       "summaryHeading": "Frana sottomarina · volume, geometria, sorgente tsunami",

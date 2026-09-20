@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
-import { FieldFeedback } from './FieldFeedback.js';
+import { QuantityKey, QuantityRow } from './QuantityRow.js';
 import { fromScientific, isMantissa, scaleTyped, splitScientific } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
 
@@ -73,190 +73,160 @@ export function VolcanoCustomInputs(): JSX.Element {
   };
 
   return (
-    <fieldset className={styles.customParams}>
+    <fieldset className={styles.customParams} style={{ display: 'block' }}>
       <legend className={styles.customParamsLegend}>{t('simulator.customParams')}</legend>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="volcano-vdot-m">
-          {t('simulator.volcano.vdotInput')}
-        </label>
-        <DraftNumberInput
-          id="volcano-vdot-m"
-          className={styles.paramInput}
-          inputMode="decimal"
-          min={1}
-          max={9.9}
-          step={0.1}
-          value={vdot.mantissa.toFixed(1)}
-          onValueText={updateVdotMantissa}
-          aria-invalid={vdotIssues.hasError || undefined}
-          aria-describedby={vdotIssues.topMessage ? 'volcano-vdot-feedback' : undefined}
-        />
-      </div>
-
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="volcano-vdot-e">
-          {t('simulator.volcano.vdotExp')}
-        </label>
-        <select
-          id="volcano-vdot-e"
-          className={styles.paramInput}
-          value={vdot.exp}
-          onChange={updateVdotExp}
-        >
-          {EXPONENTS_VDOT.map((e) => (
-            <option key={e} value={e}>
-              10^{e}
-            </option>
-          ))}
-        </select>
-        <span id="volcano-vdot-feedback">
-          <FieldFeedback
-            field="volumeEruptionRate"
-            message={vdotIssues.topMessage}
-            code={vdotIssues.topCode}
-            isError={vdotIssues.hasError}
+      {/* A mantissa and an exponent are two controls for ONE quantity, so
+          they share one row: the value column holds both, and the unit
+          and provenance columns stay where every other row has them. */}
+      <QuantityRow
+        label={t('simulator.volcano.vdotLabel')}
+        unit="m³/s"
+        source="user"
+        note={t('simulator.volcano.vdotNote')}
+        field="volumeEruptionRate"
+        issues={vdotIssues}
+      >
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center', width: '100%' }}>
+          <DraftNumberInput
+            id="volcano-vdot-m"
+            inputMode="decimal"
+            min={1}
+            max={9.9}
+            step={0.1}
+            value={vdot.mantissa.toFixed(1)}
+            onValueText={updateVdotMantissa}
+            aria-label={t('simulator.volcano.vdotInput')}
+            aria-invalid={vdotIssues.hasError || undefined}
+            style={{ width: 52 }}
           />
-        </span>
-      </div>
+          <select
+            id="volcano-vdot-e"
+            value={vdot.exp}
+            onChange={updateVdotExp}
+            aria-label={t('simulator.volcano.vdotExp')}
+            style={{ width: 66 }}
+          >
+            {EXPONENTS_VDOT.map((e) => (
+              <option key={e} value={e}>
+                ×10^{e}
+              </option>
+            ))}
+          </select>
+        </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="volcano-vol-m">
-          {t('simulator.volcano.volumeInput')}
-        </label>
-        <DraftNumberInput
-          id="volcano-vol-m"
-          className={styles.paramInput}
-          inputMode="decimal"
-          min={1}
-          max={9.9}
-          step={0.1}
-          value={vol.mantissa.toFixed(1)}
-          onValueText={updateVolMantissa}
-          aria-invalid={volIssues.hasError || undefined}
-          aria-describedby={volIssues.topMessage ? 'volcano-vol-feedback' : undefined}
-        />
-      </div>
-
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="volcano-vol-e">
-          {t('simulator.volcano.volumeExp')}
-        </label>
-        <select
-          id="volcano-vol-e"
-          className={styles.paramInput}
-          value={vol.exp}
-          onChange={updateVolExp}
-        >
-          {EXPONENTS_VOLUME.map((e) => (
-            <option key={e} value={e}>
-              10^{e}
-            </option>
-          ))}
-        </select>
-        <span id="volcano-vol-feedback">
-          <FieldFeedback
-            field="totalEjectaVolume"
-            message={volIssues.topMessage}
-            code={volIssues.topCode}
-            isError={volIssues.hasError}
+      <QuantityRow
+        label={t('simulator.volcano.volumeLabel')}
+        unit="m³"
+        source="user"
+        field="totalEjectaVolume"
+        issues={volIssues}
+      >
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center', width: '100%' }}>
+          <DraftNumberInput
+            id="volcano-vol-m"
+            inputMode="decimal"
+            min={1}
+            max={9.9}
+            step={0.1}
+            value={vol.mantissa.toFixed(1)}
+            onValueText={updateVolMantissa}
+            aria-label={t('simulator.volcano.volumeInput')}
+            aria-invalid={volIssues.hasError || undefined}
+            style={{ width: 52 }}
           />
-        </span>
-      </div>
+          <select
+            id="volcano-vol-e"
+            value={vol.exp}
+            onChange={updateVolExp}
+            aria-label={t('simulator.volcano.volumeExp')}
+            style={{ width: 66 }}
+          >
+            {EXPONENTS_VOLUME.map((e) => (
+              <option key={e} value={e}>
+                ×10^{e}
+              </option>
+            ))}
+          </select>
+        </div>
+      </QuantityRow>
 
-      <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-        <label className={styles.paramLabel} htmlFor="volcano-lahar">
-          {t('simulator.volcano.laharVolumeInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.volcano.laharVolumeInput')}
+        unit="m³"
+        source="user"
+        field="laharVolume"
+        issues={laharIssues}
+      >
         <DraftNumberInput
           id="volcano-lahar"
-          className={styles.paramInput}
           inputMode="decimal"
           min={0}
-          step={1e6}
+          step={1_000_000}
           value={input.laharVolume ?? 0}
           onValueText={updateLahar}
+          aria-label={t('simulator.volcano.laharVolumeInput')}
           aria-invalid={laharIssues.hasError || undefined}
-          aria-describedby={laharIssues.topMessage ? 'volcano-lahar-feedback' : undefined}
         />
-        <span id="volcano-lahar-feedback">
-          <FieldFeedback
-            field="laharVolume"
-            message={laharIssues.topMessage}
-            code={laharIssues.topCode}
-            isError={laharIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-        <label className={styles.paramLabel} htmlFor="volcano-evacuation">
-          {t('simulator.volcano.evacuationRadiusInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.volcano.evacuationRadiusInput')}
+        unit="km"
+        source="user"
+        note={t('simulator.volcano.evacuationRadiusHelp')}
+        field="evacuationRadiusM"
+        issues={evacIssues}
+      >
         <DraftNumberInput
-          id="volcano-evacuation"
-          className={styles.paramInput}
+          id="volcano-evac"
           inputMode="decimal"
           min={0}
-          max={200}
           step={1}
-          value={((input.evacuationRadiusM as number | undefined) ?? 0) / 1_000}
+          value={
+            input.evacuationRadiusM === undefined ? 0 : (input.evacuationRadiusM as number) / 1_000
+          }
           onValueText={updateEvacuation}
+          aria-label={t('simulator.volcano.evacuationRadiusInput')}
           aria-invalid={evacIssues.hasError || undefined}
-          aria-describedby="volcano-evacuation-help"
         />
-        <span id="volcano-evacuation-help" className={styles.presetNote}>
-          {t('simulator.volcano.evacuationRadiusHelp')}
-        </span>
-        <FieldFeedback
-          field="evacuationRadiusM"
-          message={evacIssues.topMessage}
-          code={evacIssues.topCode}
-          isError={evacIssues.hasError}
-        />
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="volcano-wind-speed">
-          {t('simulator.volcano.windSpeedInput')}
-        </label>
+      <QuantityRow label={t('simulator.volcano.windSpeedInput')} unit="m/s" source="user">
         <DraftNumberInput
           id="volcano-wind-speed"
-          className={styles.paramInput}
           inputMode="decimal"
           min={0}
-          max={60}
+          max={120}
           step={1}
           value={input.windSpeed ?? 0}
           onValueText={updateWindSpeed}
+          aria-label={t('simulator.volcano.windSpeedInput')}
         />
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="volcano-wind-dir">
-          {t('simulator.volcano.windDirectionInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.volcano.windDirectionInput')}
+        unit="°N"
+        source="user"
+        field="windDirectionDegrees"
+        issues={windDirIssues}
+      >
         <DraftNumberInput
           id="volcano-wind-dir"
-          className={styles.paramInput}
           inputMode="decimal"
           min={0}
           max={359}
           step={1}
           value={input.windDirectionDegrees ?? 90}
           onValueText={updateWindDirection}
+          aria-label={t('simulator.volcano.windDirectionInput')}
           aria-invalid={windDirIssues.hasError || undefined}
-          aria-describedby={windDirIssues.topMessage ? 'volcano-wind-dir-feedback' : undefined}
         />
-        <span id="volcano-wind-dir-feedback">
-          <FieldFeedback
-            field="windDirectionDegrees"
-            message={windDirIssues.topMessage}
-            code={windDirIssues.topCode}
-            isError={windDirIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
+
+      <QuantityKey />
     </fieldset>
   );
 }

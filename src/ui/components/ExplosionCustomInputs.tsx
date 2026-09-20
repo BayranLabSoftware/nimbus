@@ -3,9 +3,8 @@ import { useTranslation } from 'react-i18next';
 import type { ExplosionScenarioInput } from '../../physics/events/explosion/index.js';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
-import { cx } from '../utils/cx.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
-import { FieldFeedback } from './FieldFeedback.js';
+import { QuantityKey, QuantityRow } from './QuantityRow.js';
 import styles from './SimulatorPanel.module.css';
 
 type GroundType = NonNullable<ExplosionScenarioInput['groundType']>;
@@ -73,46 +72,42 @@ export function ExplosionCustomInputs(): JSX.Element {
   const windDirectionValue = input.windDirectionDeg ?? 90;
 
   return (
-    <fieldset className={styles.customParams}>
+    <fieldset className={styles.customParams} style={{ display: 'block' }}>
       <legend className={styles.customParamsLegend}>{t('simulator.customParams')}</legend>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="explosion-yield">
-          {t('simulator.explosion.yieldInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.explosion.yieldInput')}
+        unit="Mt"
+        source="user"
+        note={t('simulator.explosion.yieldNote')}
+        field="yieldMegatons"
+        issues={yieldIssues}
+      >
         <DraftNumberInput
           id="explosion-yield"
-          className={styles.paramInput}
           inputMode="decimal"
           min={0.0001}
           max={10_000}
           step={0.1}
           value={input.yieldMegatons}
           onValueText={updateYield}
+          aria-label={t('simulator.explosion.yieldInput')}
           aria-invalid={yieldIssues.hasError || undefined}
-          aria-describedby={yieldIssues.topMessage ? 'explosion-yield-feedback' : undefined}
         />
-        <span id="explosion-yield-feedback">
-          <FieldFeedback
-            field="yieldMegatons"
-            message={yieldIssues.topMessage}
-            code={yieldIssues.topCode}
-            isError={yieldIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="explosion-ground">
-          {t('simulator.explosion.groundType')}
-        </label>
+      <QuantityRow
+        label={t('simulator.explosion.groundType')}
+        source="user"
+        field="groundType"
+        issues={groundIssues}
+      >
         <select
           id="explosion-ground"
-          className={styles.paramInput}
           value={input.groundType ?? 'FIRM_GROUND'}
           onChange={updateGround}
+          aria-label={t('simulator.explosion.groundType')}
           aria-invalid={groundIssues.hasError || undefined}
-          aria-describedby={groundIssues.topMessage ? 'explosion-ground-feedback' : undefined}
         >
           {GROUND_TYPES.map((g) => (
             <option key={g} value={g}>
@@ -120,21 +115,12 @@ export function ExplosionCustomInputs(): JSX.Element {
             </option>
           ))}
         </select>
-        <span id="explosion-ground-feedback">
-          <FieldFeedback
-            field="groundType"
-            message={groundIssues.topMessage}
-            code={groundIssues.topCode}
-            isError={groundIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <fieldset className={cx(styles.segFieldset, styles.placementFieldset)}>
-        <legend className={styles.paramLabel}>{t('simulator.explosion.placementLabel')}</legend>
-        <div className={cx(styles.seg, styles.segTwo)}>
+      <QuantityRow label={t('simulator.explosion.placementLabel')} source="user">
+        <div style={{ display: 'flex', gap: 4 }}>
           {PLACEMENTS.map((p) => (
-            <label key={p} className={styles.segItem}>
+            <label key={p} className={styles.segItem} style={{ minHeight: 30 }}>
               <input
                 type="radio"
                 name="explosion-placement"
@@ -154,100 +140,91 @@ export function ExplosionCustomInputs(): JSX.Element {
             </label>
           ))}
         </div>
-      </fieldset>
+      </QuantityRow>
 
       {placement === 'above' ? (
-        <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-          <label className={styles.paramLabel} htmlFor="explosion-hob">
-            {t('simulator.explosion.hobInput')}
-          </label>
+        <QuantityRow
+          label={t('simulator.explosion.hobInput')}
+          unit="m"
+          source="user"
+          note={t('simulator.explosion.hobNote')}
+          field="heightOfBurst"
+          issues={hobIssues}
+        >
           <DraftNumberInput
             id="explosion-hob"
-            className={styles.paramInput}
             inputMode="decimal"
             min={0}
-            max={50_000}
-            step={100}
+            step={10}
             value={hobValue}
             onValueText={updateHob}
+            aria-label={t('simulator.explosion.hobInput')}
             aria-invalid={hobIssues.hasError || undefined}
-            aria-describedby={hobIssues.topMessage ? 'explosion-hob-feedback' : undefined}
           />
-          <span id="explosion-hob-feedback">
-            <FieldFeedback
-              field="heightOfBurst"
-              message={hobIssues.topMessage}
-              code={hobIssues.topCode}
-              isError={hobIssues.hasError}
-            />
-          </span>
-        </div>
+        </QuantityRow>
       ) : (
-        <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-          <label className={styles.paramLabel} htmlFor="explosion-depth">
-            {t('simulator.explosion.depthInput')}
-          </label>
+        <QuantityRow
+          label={t('simulator.explosion.depthInput')}
+          unit="m"
+          source="user"
+          note={t('simulator.explosion.depthHelp')}
+          field="heightOfBurst"
+          issues={hobIssues}
+        >
           <DraftNumberInput
             id="explosion-depth"
-            className={styles.paramInput}
             inputMode="decimal"
             min={1}
             max={MAX_BURST_DEPTH_M}
             step={10}
             value={depthValue}
             onValueText={updateDepth}
+            aria-label={t('simulator.explosion.depthInput')}
             aria-invalid={hobIssues.hasError || undefined}
-            aria-describedby="explosion-depth-help"
           />
-          <span id="explosion-depth-help" className={styles.presetNote}>
-            {t('simulator.explosion.depthHelp')}
-          </span>
-          <FieldFeedback
-            field="heightOfBurst"
-            message={hobIssues.topMessage}
-            code={hobIssues.topCode}
-            isError={hobIssues.hasError}
-          />
-        </div>
+        </QuantityRow>
       )}
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="explosion-wind-speed">
-          {t('simulator.explosion.windSpeedInput')}
-        </label>
+      <QuantityRow label={t('simulator.explosion.windSpeedInput')} unit="m/s" source="user">
         <DraftNumberInput
           id="explosion-wind-speed"
-          className={styles.paramInput}
           inputMode="decimal"
           min={0}
           max={120}
           step={1}
           value={windSpeedValue}
           onValueText={updateWindSpeed}
+          aria-label={t('simulator.explosion.windSpeedInput')}
         />
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="explosion-wind-direction">
-          {t('simulator.explosion.windDirectionInput', {
-            degrees: windDirectionValue.toFixed(0),
-          })}
-        </label>
+      <QuantityRow
+        label={t('simulator.explosion.windDirectionLabel')}
+        unit="°N"
+        source="user"
+        note={t('simulator.explosion.windDirectionAria', {
+          degrees: windDirectionValue.toFixed(0),
+          cardinal: cardinalFromDeg(windDirectionValue),
+        })}
+      >
         <input
           id="explosion-wind-direction"
-          className={styles.paramInput}
           type="range"
           min={0}
           max={359}
           step={1}
           value={windDirectionValue}
           onChange={updateWindDirection}
+          aria-label={t('simulator.explosion.windDirectionLabel')}
           aria-valuetext={t('simulator.explosion.windDirectionAria', {
             degrees: windDirectionValue.toFixed(0),
             cardinal: cardinalFromDeg(windDirectionValue),
           })}
+          style={{ width: '100%', accentColor: '#F5A524' }}
         />
-      </div>
+      </QuantityRow>
+
+      <QuantityKey />
     </fieldset>
   );
 }

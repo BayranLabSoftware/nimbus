@@ -5,7 +5,7 @@ import { radiansToDegrees } from '../../physics/units.js';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
-import { FieldFeedback } from './FieldFeedback.js';
+import { QuantityKey, QuantityRow } from './QuantityRow.js';
 import { scaleTyped } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
 
@@ -41,7 +41,13 @@ export function ImpactCustomInputs(): JSX.Element {
   const angleIssues = useFieldIssues('impact', 'impactAngle');
   const azimuthIssues = useFieldIssues('impact', 'impactAzimuthDeg');
 
-  const diameterKm = (input.impactorDiameter as number) / 1_000;
+  // B-082: the diameter was edited in kilometres, so Chelyabinsk — which
+  // the preset's own caption calls "a body of 19,8 m" — read 0.0198 in
+  // the field beneath it. Metres are the unit that reads for both ends of
+  // the range this model covers (a 19 m airburster and a 10 km
+  // dinosaur-killer), so the field is metres and the note gives the
+  // kilometres when there are enough of them to matter.
+  const diameterM = input.impactorDiameter as number;
   const velocityKms = (input.impactVelocity as number) / 1_000;
   // Round to 2 decimals: degrees↔radians round-trips would otherwise
   // surface noise like "29,9999999999°" for a preset that started as
@@ -50,8 +56,9 @@ export function ImpactCustomInputs(): JSX.Element {
   const azimuthDeg = input.impactAzimuthDeg ?? 90;
 
   const updateDiameter = (text: string): void => {
-    const km = parseFloat(text);
-    if (Number.isFinite(km) && km > 0) setImpactInput({ impactorDiameter: scaleTyped(km, 1_000) });
+    const metres = parseFloat(text);
+    if (Number.isFinite(metres) && metres > 0)
+      setImpactInput({ impactorDiameter: scaleTyped(metres, 1) });
   };
   const updateVelocity = (text: string): void => {
     const kms = parseFloat(text);
@@ -89,18 +96,19 @@ export function ImpactCustomInputs(): JSX.Element {
   };
 
   return (
-    <fieldset className={styles.customParams}>
+    <fieldset className={styles.customParams} style={{ display: 'block' }}>
       <legend className={styles.customParamsLegend}>{t('simulator.customParams')}</legend>
 
-      <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-        <label className={styles.paramLabel} htmlFor="impact-taxonomy">
-          {t('simulator.impact.taxonomy')}
-        </label>
+      <QuantityRow
+        label={t('simulator.impact.taxonomy')}
+        source="user"
+        note={t('simulator.impact.taxonomyNote')}
+      >
         <select
           id="impact-taxonomy"
-          className={styles.paramInput}
           defaultValue=""
           onChange={applyTaxonomy}
+          aria-label={t('simulator.impact.taxonomy')}
         >
           <option value="" disabled>
             {t('simulator.impact.taxonomyPlaceholder')}
@@ -111,169 +119,130 @@ export function ImpactCustomInputs(): JSX.Element {
             </option>
           ))}
         </select>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="impact-diameter">
-          {t('simulator.impact.diameter')}
-        </label>
+      <QuantityRow
+        label={t('simulator.impact.diameter')}
+        unit="m"
+        source="user"
+        note={
+          diameterM >= 1_000
+            ? t('simulator.impact.diameterInKm', {
+                value: (diameterM / 1_000).toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                }),
+              })
+            : undefined
+        }
+        field="impactorDiameter"
+        issues={diameterIssues}
+      >
         <DraftNumberInput
           id="impact-diameter"
-          className={styles.paramInput}
           inputMode="decimal"
-          min={0.001}
-          max={100_000}
-          step={0.1}
-          value={diameterKm}
+          min={0.1}
+          step={1}
+          value={diameterM}
           onValueText={updateDiameter}
+          aria-label={t('simulator.impact.diameter')}
           aria-invalid={diameterIssues.hasError || undefined}
-          aria-describedby={diameterIssues.topMessage ? 'impact-diameter-feedback' : undefined}
         />
-        <span id="impact-diameter-feedback">
-          <FieldFeedback
-            field="impactorDiameter"
-            message={diameterIssues.topMessage}
-            code={diameterIssues.topCode}
-            isError={diameterIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="impact-velocity">
-          {t('simulator.impact.velocity')}
-        </label>
+      <QuantityRow
+        label={t('simulator.impact.velocity')}
+        unit="km/s"
+        source="user"
+        field="impactVelocity"
+        issues={velocityIssues}
+      >
         <DraftNumberInput
           id="impact-velocity"
-          className={styles.paramInput}
           inputMode="decimal"
           min={1}
-          max={72}
-          step={0.5}
+          max={80}
+          step={0.1}
           value={velocityKms}
           onValueText={updateVelocity}
+          aria-label={t('simulator.impact.velocity')}
           aria-invalid={velocityIssues.hasError || undefined}
-          aria-describedby={velocityIssues.topMessage ? 'impact-velocity-feedback' : undefined}
         />
-        <span id="impact-velocity-feedback">
-          <FieldFeedback
-            field="impactVelocity"
-            message={velocityIssues.topMessage}
-            code={velocityIssues.topCode}
-            isError={velocityIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="impact-impactor-density">
-          {t('simulator.impact.impactorDensity')}
-        </label>
+      <QuantityRow
+        label={t('simulator.impact.impactorDensity')}
+        unit="kg/m³"
+        source="user"
+        field="impactorDensity"
+        issues={impactorDensityIssues}
+      >
         <DraftNumberInput
-          id="impact-impactor-density"
-          className={styles.paramInput}
+          id="impact-density"
           inputMode="decimal"
-          min={500}
-          max={10_000}
+          min={100}
           step={100}
           value={input.impactorDensity}
           onValueText={updateImpactorDensity}
+          aria-label={t('simulator.impact.impactorDensity')}
           aria-invalid={impactorDensityIssues.hasError || undefined}
-          aria-describedby={
-            impactorDensityIssues.topMessage ? 'impact-impactor-density-feedback' : undefined
-          }
         />
-        <span id="impact-impactor-density-feedback">
-          <FieldFeedback
-            field="impactorDensity"
-            message={impactorDensityIssues.topMessage}
-            code={impactorDensityIssues.topCode}
-            isError={impactorDensityIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="impact-target-density">
-          {t('simulator.impact.targetDensity')}
-        </label>
+      <QuantityRow label={t('simulator.impact.targetDensity')} unit="kg/m³" source="user">
         <DraftNumberInput
           id="impact-target-density"
-          className={styles.paramInput}
           inputMode="decimal"
-          min={1_000}
-          max={5_000}
+          min={100}
           step={100}
           value={input.targetDensity}
           onValueText={updateTargetDensity}
+          aria-label={t('simulator.impact.targetDensity')}
         />
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="impact-angle">
-          {t('simulator.impact.angle')}
-        </label>
+      <QuantityRow
+        label={t('simulator.impact.angle')}
+        unit="°"
+        source="user"
+        note={t('simulator.impact.angleNote')}
+        field="impactAngle"
+        issues={angleIssues}
+      >
         <DraftNumberInput
           id="impact-angle"
-          className={styles.paramInput}
           inputMode="decimal"
-          min={5}
+          min={1}
           max={90}
-          step={5}
+          step={1}
           value={angleDeg}
           onValueText={updateAngle}
+          aria-label={t('simulator.impact.angle')}
           aria-invalid={angleIssues.hasError || undefined}
-          aria-describedby={angleIssues.topMessage ? 'impact-angle-feedback' : undefined}
         />
-        <span id="impact-angle-feedback">
-          <FieldFeedback
-            field="impactAngle"
-            message={angleIssues.topMessage}
-            code={angleIssues.topCode}
-            isError={angleIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-        <label className={styles.paramLabel} htmlFor="impact-azimuth">
-          {t('simulator.impact.azimuth', { degrees: azimuthDeg.toFixed(0) })}
-        </label>
+      <QuantityRow
+        label={t('simulator.impact.azimuthLabel')}
+        unit="°N"
+        source="user"
+        note={t('simulator.impact.azimuthNote', { degrees: Math.round(azimuthDeg).toString() })}
+        field="impactAzimuthDeg"
+        issues={azimuthIssues}
+      >
         <input
           id="impact-azimuth"
-          className={styles.paramInput}
           type="range"
           min={0}
           max={359}
           step={1}
           value={azimuthDeg}
           onChange={updateAzimuth}
-          aria-valuetext={t('simulator.impact.azimuthAria', {
-            degrees: azimuthDeg.toFixed(0),
-            cardinal: cardinalFromDeg(azimuthDeg),
-          })}
-          aria-invalid={azimuthIssues.hasError || undefined}
-          aria-describedby={azimuthIssues.topMessage ? 'impact-azimuth-feedback' : undefined}
+          aria-label={t('simulator.impact.azimuthLabel')}
+          style={{ width: '100%', accentColor: '#F5A524' }}
         />
-        <span id="impact-azimuth-feedback">
-          <FieldFeedback
-            field="impactAzimuthDeg"
-            message={azimuthIssues.topMessage}
-            code={azimuthIssues.topCode}
-            isError={azimuthIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
+
+      <QuantityKey />
     </fieldset>
   );
-}
-
-/** Map a compass azimuth to the nearest 8-wind cardinal label
- *  (N, NE, E, SE, S, SW, W, NW). Used for the slider's
- *  aria-valuetext so screen-reader users hear "120° east-south-east"
- *  instead of just the numeric value. */
-function cardinalFromDeg(deg: number): string {
-  const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-  const idx = Math.round((((deg % 360) + 360) % 360) / 45) % 8;
-  return dirs[idx] ?? 'N';
 }

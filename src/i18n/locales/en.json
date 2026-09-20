@@ -154,14 +154,14 @@
       "warningAria": "Validation warning on {{field}}: {{message}}"
     },
     "impact": {
-      "diameter": "Impactor diameter (km)",
-      "velocity": "Impact velocity (km/s)",
-      "impactorDensity": "Impactor density (kg/m³)",
-      "targetDensity": "Target density (kg/m³)",
-      "angle": "Impact angle (°)",
+      "diameter": "Impactor diameter",
+      "velocity": "Impact velocity",
+      "impactorDensity": "Impactor density",
+      "targetDensity": "Target density",
+      "angle": "Impact angle",
       "azimuth": "Downrange azimuth (° from N): {{degrees}}",
       "azimuthAria": "Impactor heading {{degrees}} degrees from north, {{cardinal}}",
-      "taxonomy": "Asteroid class (auto-fills density)",
+      "taxonomy": "Asteroid class",
       "taxonomyPlaceholder": "Pick a class…",
       "taxonomyClasses": {
         "COMETARY": "Cometary nucleus (ρ ≈ 600 kg/m³)",
@@ -169,7 +169,12 @@
         "S_TYPE": "S-type stony (ρ ≈ 3 300)",
         "M_TYPE": "M-type metallic (ρ ≈ 5 300)",
         "IRON": "Iron meteorite (ρ ≈ 7 800)"
-      }
+      },
+      "angleNote": "from the horizon: 90° is a vertical fall",
+      "azimuthLabel": "Downrange direction",
+      "azimuthNote": "{{degrees}}° — the way the impactor is flying, from north",
+      "diameterInKm": "{{value}} km",
+      "taxonomyNote": "fills density and strength with that class’s values"
     },
     "clickGlobe": "Click anywhere on the globe to pick the event location.",
     "locationReady": "Selected: {{lat}}°, {{lon}}°. Ready to launch.",
@@ -446,7 +451,10 @@
       "tsunamiRelationShallow": "Shallow water (Glasstone & Dolan §6.121)",
       "tsunamiRelationBetween": "Between shallow and deep water (interpolated)",
       "tsunamiRelationExtrapolated": "outside the depth it was stated for",
-      "tsunamiSourceRadius": "Wave source radius"
+      "tsunamiSourceRadius": "Wave source radius",
+      "yieldNote": "Hiroshima 0.015 Mt · the Tsar Bomba 50 Mt",
+      "hobNote": "detonation height: 0 is at the ground",
+      "windDirectionLabel": "Wind direction"
     },
     "volcano": {
       "summaryHeading": "Volcanic eruption · VEI, plume, pyroclastic flows",
@@ -470,7 +478,10 @@
       "ashfallCrosswindHalfWidth": "1 mm isopach — crosswind half-width",
       "ashfallWindAdvectedArea": "1 mm isopach area (wind-oriented)",
       "evacuationRadiusInput": "Zone evacuated before the eruption (km radius)",
-      "evacuationRadiusHelp": "0 = nobody was told to leave. Inside the zone the model uses the mortality measured at Merapi 2010 (367 dead among 410 388 evacuated); beyond it, everyone a current reaches."
+      "evacuationRadiusHelp": "0 = nobody was told to leave. Inside the zone the model uses the mortality measured at Merapi 2010 (367 dead among 410 388 evacuated); beyond it, everyone a current reaches.",
+      "vdotLabel": "Eruption rate",
+      "volumeLabel": "Total ejecta volume",
+      "vdotNote": "Pinatubo 1991 peaked near 1.5 × 10⁸ m³/s"
     },
     "landslide": {
       "summaryHeading": "Submarine landslide · volume, geometry, tsunami source",

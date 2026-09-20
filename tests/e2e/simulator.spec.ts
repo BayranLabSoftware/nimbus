@@ -275,9 +275,10 @@ test.describe('simulator flow', () => {
     );
     await expandSimulatorPanelIfCollapsed(page);
     await expect(page.getByRole('radio', { name: 'Cosmic impact' })).toBeChecked();
-    await expect(page.getByLabel('Impactor diameter (km)')).toHaveValue('0.06');
-    await expect(page.getByLabel('Impactor density (kg/m³)')).toHaveValue('7800');
-    await expect(page.getByText('Downrange azimuth (° from N): 200')).toBeVisible();
+    await expect(page.getByLabel('Impactor diameter')).toHaveValue('60');
+    await expect(page.getByLabel('Impactor density')).toHaveValue('7800');
+    // The heading is under the slider now, with the direction spelled out.
+    await expect(page.getByText(/200° — the way the impactor is flying/)).toBeVisible();
     // And the link the page writes back still carries them.
     await expect.poll(() => new URL(page.url()).searchParams.get('str')).toBe('50000000');
     await expect.poll(() => new URL(page.url()).searchParams.get('az')).toBe('200');
@@ -339,8 +340,12 @@ test.describe('simulator flow', () => {
     {
       what: "an impactor's diameter",
       url: '/?lng=en&t=impact&p=TUNGUSKA&m=globe',
-      label: 'Impactor diameter (km)',
-      text: '0.07',
+      // Metres since the panel became an instrument: the unit has a column
+      // of its own, so it left the label, and the field holds metres
+      // because kilometres printed Chelyabinsk's 19.8 m body as 0.0198
+      // under a caption that called it 19,8 m (B-082).
+      label: 'Impactor diameter',
+      text: '70',
       key: 'd',
       stored: '70',
     },
