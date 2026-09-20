@@ -2495,6 +2495,29 @@ export const useAppStore = create<AppStore>((set, get) => ({
       else if (overrides.vs30 !== undefined) merged.vs30 = overrides.vs30;
       if (overrides.subductionInterface !== undefined)
         merged.subductionInterface = overrides.subductionInterface;
+      // B-080: naming a fault that is not a thrust puts the interface out.
+      //
+      // The inputs are inherited from whatever preset came before and edited
+      // one field at a time, so a reader who took Tohoku and then said
+      // "strike-slip" kept the interface tick — and B-046 says an interface
+      // is a thrust whatever fault came with it, so the model quietly ran a
+      // reverse fault with Strasser's scaling: 139 x 78 km where the fault
+      // the reader named is 198 x 24. A strike-slip fault 78 km wide would
+      // reach 78 km down a vertical plane, through a seismogenic crust that
+      // ends at fifteen.
+      //
+      // Saying "this fault is strike-slip" is saying it is not a subduction
+      // interface, so the tick goes. Ticking the box in the same edit wins,
+      // because then the reader has said both things at once and the later
+      // word is theirs; B-046 still decides what the model does with it.
+      if (
+        overrides.faultType !== undefined &&
+        overrides.faultType !== 'reverse' &&
+        overrides.subductionInterface === undefined &&
+        merged.subductionInterface === true
+      ) {
+        delete merged.subductionInterface;
+      }
 
       const classification = classifyStoreInput('earthquake', merged);
       if (!classification.ok) return state;

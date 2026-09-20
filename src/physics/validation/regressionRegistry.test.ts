@@ -56,7 +56,7 @@ import * as casualtiesModule from '../casualties.js';
 import { thermalHorizonRadius } from '../casualties.js';
 import { CRUSTAL_ROCK_DENSITY, IMPACT_LUMINOUS_EFFICIENCY } from '../constants.js';
 import { deg, degreesToRadians, J, kgPerM3, m, mps } from '../units.js';
-import { validateScenario } from './inputSchema.js';
+import { validateEarthquakeInput, validateScenario } from './inputSchema.js';
 import { safeRunEarthquake } from './safeRun.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
 import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
@@ -1634,13 +1634,55 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(atSea.tsunami).toBeDefined();
   });
 
+  it('B-080 naming a fault that is not a thrust puts the subduction interface out', () => {
+    // The inputs are inherited from the preset that came before and edited
+    // one field at a time. A reader took Tohoku — interface ticked — changed
+    // the magnitude, the depth and the fault type to strike-slip, and moved
+    // the pick to the San Andreas. The tick survived, B-046 made the model
+    // run a thrust with Strasser's scaling, and the fault the reader named
+    // was not the fault that ran.
+    resetAppStore();
+    const store = (): ReturnType<typeof useAppStore.getState> => useAppStore.getState();
+    store().selectEventType('earthquake');
+    store().selectPreset('TOHOKU_2011');
+    expect(store().earthquake.input.subductionInterface).toBe(true);
+
+    store().setEarthquakeInput({ faultType: 'strike-slip' });
+    expect(store().earthquake.input.faultType).toBe('strike-slip');
+    expect(store().earthquake.input.subductionInterface).toBeUndefined();
+
+    // And the geometry is the one the named fault has: a 198 km break 24 km
+    // wide, not a 139 x 78 km thrust. A strike-slip rupture 78 km wide would
+    // reach 78 km down a vertical plane, through a crust that breaks to
+    // fifteen.
+    const named = simulateEarthquake({ ...store().earthquake.input, magnitude: 7.9 });
+    expect(named.faultTypeUsed).toBe('strike-slip');
+    expect(named.ruptureWidth / 1000).toBeLessThan(40);
+
+    // Ticking the box in the same edit is the reader saying both things at
+    // once, and their later word stands: B-046 still decides what runs.
+    store().setEarthquakeInput({ faultType: 'normal', subductionInterface: true });
+    expect(store().earthquake.input.subductionInterface).toBe(true);
+
+    // A link that carries the pair anyway — the way this reaches someone who
+    // never ticked anything — is accepted and says what will happen.
+    const checked = validateEarthquakeInput({
+      magnitude: 7.9,
+      depth: 12_000,
+      faultType: 'strike-slip',
+      subductionInterface: true,
+    });
+    expect(checked.status).not.toBe('invalid');
+    expect(checked.warnings.map((w) => w.code)).toContain('PHYS_INCONSISTENT');
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-079 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-080 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011; B-078 still OPEN and carries no test yet).
-    const expectedRows = 79;
-    expect(expectedRows).toBe(79);
+    const expectedRows = 80;
+    expect(expectedRows).toBe(80);
   });
 });

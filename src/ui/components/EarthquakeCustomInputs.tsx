@@ -24,6 +24,7 @@ export function EarthquakeCustomInputs(): JSX.Element {
   const magnitudeIssues = useFieldIssues('earthquake', 'magnitude');
   const depthIssues = useFieldIssues('earthquake', 'depth');
   const faultIssues = useFieldIssues('earthquake', 'faultType');
+  const interfaceIssues = useFieldIssues('earthquake', 'subductionInterface');
   const vs30Issues = useFieldIssues('earthquake', 'vs30');
 
   const depthKm = input.depth === undefined ? '' : (input.depth as number) / 1_000;
@@ -177,9 +178,23 @@ export function EarthquakeCustomInputs(): JSX.Element {
             checked={input.subductionInterface ?? false}
             onChange={toggleMegathrust}
             style={{ marginRight: 6 }}
+            aria-describedby={interfaceIssues.topMessage ? 'quake-megathrust-feedback' : undefined}
           />
           {t('simulator.earthquake.megathrustInput')}
         </label>
+        {/* B-080: an interface is a thrust (B-046), so a scenario that
+            arrives with one and a strike-slip or normal fault will not run
+            the fault it names. Saying so here is the difference between a
+            reader choosing that and a reader inheriting it from the preset
+            they started from. */}
+        <span id="quake-megathrust-feedback">
+          <FieldFeedback
+            field="subductionInterface"
+            message={interfaceIssues.topMessage}
+            code={interfaceIssues.topCode}
+            isError={interfaceIssues.hasError}
+          />
+        </span>
       </div>
     </fieldset>
   );

@@ -54,6 +54,7 @@ export type ValidationCode =
   | 'NORMALIZED_SLOPE' // S2: slope clamped to envelope
   | 'PHYS_SUSPICIOUS_HIGH' // S3: above typical-event ceiling
   | 'PHYS_SUSPICIOUS_LOW' // S3: below typical-event floor
+  | 'PHYS_INCONSISTENT' // S3: two fields that cannot both be true of one event
   | 'UNKNOWN_FIELD'; // S2: extra field ignored
 
 export interface ValidationIssue {
@@ -242,6 +243,24 @@ export function validateEarthquakeInput(
 
   if (typeof raw.subductionInterface === 'boolean') {
     out.subductionInterface = raw.subductionInterface;
+    // B-080: a subduction interface is a thrust, and B-046 makes the model
+    // run one whatever fault came with it. That is a defined behaviour and
+    // it stays — but arriving here with a strike-slip or normal fault means
+    // the fault the caller NAMED will not be the fault the model runs, and
+    // until now nothing said so outside the report. A shared link is the way
+    // this reaches a reader who never ticked the box.
+    if (
+      raw.subductionInterface &&
+      typeof raw.faultType === 'string' &&
+      (raw.faultType === 'strike-slip' || raw.faultType === 'normal')
+    ) {
+      warnings.push({
+        field: 'subductionInterface',
+        code: 'PHYS_INCONSISTENT',
+        message: `a subduction interface is a thrust: the model will run a reverse fault with Strasser's scaling, not the ${raw.faultType} fault asked for`,
+        rawValue: raw.subductionInterface,
+      });
+    }
   }
 
   if (raw.strikeAzimuthDeg !== undefined) {
