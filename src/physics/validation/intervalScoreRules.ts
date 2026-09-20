@@ -107,6 +107,88 @@
  *       at once would be unreadable.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 453 and published
+ * as it came out: no arm passes rule 451, what ships stays — and rule 452
+ * has its disagreement.
+ *
+ * THE DEAD, on the net rows. Lower is better:
+ *
+ *   | arm        | score | the old clause                              |
+ *   | ---------- | ----- | ------------------------------------------- |
+ *   | in place   | 204.1 | 13/13, nothing lost                  PASS   |
+ *   | C geometry | 208.2 | lost Pohang, gained Amatrice         FAIL   |
+ *   | D top band | 212.6 | lost Sumatra–Andaman                 FAIL   |
+ *   | E both     | **201.6** | lost Sumatra, gained Amatrice    FAIL   |
+ *
+ * RULE 452'S FINDING: the two clauses disagree about arm E, and it is the
+ * arm the last round called the proposal. Membership refused it for
+ * losing one row. The score says it is the BEST of the four on these
+ * eighteen earthquakes — better than what ships. Row by row:
+ *
+ *   Sumatra–Andaman 2004   in place  7.8   E  10.6   (E worse by 2.8)
+ *   Pohang 2017            in place 10.5   E  11.1   (E worse by 0.6)
+ *   Amatrice 2016          in place 10.3   E   6.4   (E better by 3.9)
+ *
+ *   The row E loses is paid for by the row it gains, with change to
+ *   spare. Membership could not see that, because membership counts rows
+ *   and not distances: Amatrice moving from a band that missed 299 dead to
+ *   one that holds them is worth one row to it, exactly as Sumatra's high
+ *   end slipping under a record the model misses by fifty-three times
+ *   costs one row.
+ *
+ *   And the score is not being kind to arm C. It agrees with membership
+ *   there, and says why: Pohang alone costs C 24.5 against the 10.5 it
+ *   costs the law in place, because a band that cannot reach a record of
+ *   zero is penalised twenty times over per natural log of the miss.
+ *
+ * THE QUIET, on 805 earthquakes. Lower is better:
+ *
+ *   | arm        | score    | toll >= 10 | reaches zero | median width |
+ *   | ---------- | -------- | ---------- | ------------ | ------------ |
+ *   | in place   | 1195     | 23         | 799          | 3.69         |
+ *   | C geometry | 1889     | 51         | 784          | 4.43         |
+ *   | D top band | **1117** | **18**     | **801**      | **3.58**     |
+ *   | E both     | 1644     | 36         | 794          | 4.31         |
+ *
+ * AND THE SCORE DOES NOT RESCUE THE GEOMETRY, which is the thing to check
+ * when a project writes its own new measure knowing which candidate it
+ * would like to see pass. On the quiet earthquakes the new score agrees
+ * with the old count and by a wider margin: C is 1889 against 1195, E is
+ * 1644. The geometry's cost there is real under both measures. A clause
+ * built to let a favourite through would not have done that.
+ *
+ * SO NOBODY PASSES. Rule 451(a) asks for a lower score on the net rows AND
+ * on the quiet, "not one bought with the other", and each arm buys one
+ * with the other:
+ *
+ *   C   net worse,  quiet worse
+ *   D   net worse,  quiet BETTER
+ *   E   net BETTER, quiet worse
+ *
+ * WHAT THIS ROUND LEAVES, and it is narrower than what it found:
+ *
+ *   1. The clause is fixed, and it fails for reasons that survive reading.
+ *      Rule 443(b) refused arm E for one row in eighteen; the score says
+ *      that row was paid for. Rule 443(b) refused arm D for a 13 % move
+ *      towards a record; the score agrees D is worse on the net, but says
+ *      so with a number — 212.6 against 204.1 — that can be argued with
+ *      instead of a yes or no.
+ *
+ *   2. The split is now clean and it is not about the clause. Everything
+ *      that improves the MAP and the NET rows makes the QUIET set worse,
+ *      under either measure. That is one tension, in one place, and it is
+ *      the last one standing between a measurably correct footprint and
+ *      the product.
+ *
+ *   3. Where it must be looked for, as rule 447 already listed and this
+ *      round may not touch: the vulnerability table, the population
+ *      raster, the country assignment. The quiet earthquakes are moderate
+ *      events over populated ground in countries that borrow another
+ *      country's curve. That is the shape of the remaining error, and it
+ *      is a round with its own rules.
+ */
+
 export const INTERVAL_SCORE_RULES = 'rules 448 to 453, fixed 20 September 2026';
 
 /** Rule 448: these bands are the 5th to 95th percentile, so alpha is the
