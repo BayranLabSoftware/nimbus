@@ -114,3 +114,77 @@ for (const [name, p] of Object.entries(PUBLISHED)) {
     `  ${name.padEnd(22)} ${((scenarioAltitudeKm(p.energyMt) * 1_000) / Math.cbrt(kt)).toFixed(0)}`
   );
 }
+
+// ======================================================================
+// Rules 571 to 578: the band from the reference's own three models.
+// ======================================================================
+import {
+  AGREEMENT_BURST_HEIGHTS,
+  LINE_SOURCE_FACTOR_ABSTRACT,
+  LINE_SOURCE_FACTOR_BODY,
+  MOVING_SOURCE_FACTOR,
+  WIDTH_LIMIT,
+} from '../../src/physics/validation/airburstThreeModelRules.js';
+
+/** The band at a threshold: the static reach at half of it (the moving
+ *  source, which reaches further) and at `lineFactor` times it (the line
+ *  source, which does not), each clipped to three burst heights beyond
+ *  which the three models agree. */
+const band = (
+  energyMt: number,
+  kPa: number,
+  altitudeKm: number,
+  lineFactor: number
+): { low: number; mid: number; high: number } => {
+  const mid = reachKm(energyMt, kPa, altitudeKm);
+  const agree = AGREEMENT_BURST_HEIGHTS * altitudeKm;
+  const rawHigh = reachKm(energyMt, kPa / MOVING_SOURCE_FACTOR, altitudeKm);
+  const rawLow = reachKm(energyMt, kPa * lineFactor, altitudeKm);
+  // Beyond three burst heights the models agree, so the band closes there.
+  const high = mid >= agree ? mid : Math.min(Math.max(rawHigh, mid), Math.max(agree, mid));
+  const low = mid >= agree ? mid : Math.min(rawLow, mid);
+  return { low, mid, high };
+};
+
+console.log('\n\n=== rules 571 to 578: the three-model band ===');
+for (const [label, lineFactor] of [
+  ["abstract's x2", LINE_SOURCE_FACTOR_ABSTRACT],
+  ["body's x4", LINE_SOURCE_FACTOR_BODY],
+] as const) {
+  console.log(`\nwith the line source at ${label}`);
+  console.log("rule 573(a): the width, against I3's limit of " + String(WIDTH_LIMIT));
+  for (const [name, p] of Object.entries(PUBLISHED)) {
+    const z = scenarioAltitudeKm(p.energyMt);
+    const b = band(p.energyMt, p.thresholdKPa, z, lineFactor);
+    const w = b.low > 0 ? b.high / b.low : Number.POSITIVE_INFINITY;
+    console.log(
+      `  ${name.padEnd(22)} ${b.low.toFixed(2)} | ${b.mid.toFixed(2)} | ${b.high.toFixed(2)} km   width ${Number.isFinite(w) ? w.toFixed(2) + 'x' : 'unbounded'}   ${w <= WIDTH_LIMIT ? 'within I3' : 'TOO WIDE'}`
+    );
+    // rule 574(d): the band must contain the static source
+    if (!(b.low <= b.mid && b.mid <= b.high)) console.log('    574(d) INVERTED');
+  }
+
+  console.log('rule 573(b): Tunguska, the felled forest at 26.5 km');
+  for (const energyMt of [5, 10, 15, 20, 30]) {
+    const z = scenarioAltitudeKm(energyMt);
+    const parts: string[] = [];
+    for (const kPa of [TREE_DAMAGE_KPA.upper, TREE_DAMAGE_KPA.lower]) {
+      const b = band(energyMt, kPa, z, lineFactor);
+      const holds =
+        TUNGUSKA_FELLED.equivalentRadiusKm >= b.low && TUNGUSKA_FELLED.equivalentRadiusKm <= b.high;
+      parts.push(
+        `${String(kPa)} kPa ${b.low.toFixed(1)}-${b.high.toFixed(1)} ${holds ? 'HOLDS' : 'misses'}`
+      );
+    }
+    console.log(
+      `  ${String(energyMt).padStart(2)} Mt (z ${z.toFixed(1)} km):  ${parts.join('   ')}`
+    );
+  }
+
+  console.log('rule 573(c): Chelyabinsk, ~50 km of broken windows');
+  const p = PUBLISHED.chelyabinskAt1kPa;
+  const b = band(p.energyMt, p.thresholdKPa, scenarioAltitudeKm(p.energyMt), lineFactor);
+  console.log(
+    `  ${b.low.toFixed(1)} to ${b.high.toFixed(1)} km  against 40-60  ${b.low <= 50 && b.high >= 50 ? 'HOLDS 50' : 'misses 50'}`
+  );
+}
