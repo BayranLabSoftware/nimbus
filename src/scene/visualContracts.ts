@@ -306,7 +306,8 @@ export const VISUAL_CONTRACTS = {
     caveats: [
       'this is a PREDICTION and not a measurement: a USGS ShakeMap, which it resembles, is partly made of accelerometers and felt reports, and there are none here',
       'the contour is drawn as a line where the ground-motion residual is sigma_lnY = 0.60 about the median — through Worden et al. 2012 that is about ONE WHOLE INTENSITY DEGREE, so a line labelled VII could honestly be VI or VIII',
-      'the areas are known to be too large: on Tohoku the model paints MMI VIII over 192 279 km2 where the published ShakeMap measures 67 625, a factor of 2.84, and the picture does not say so',
+      'the areas are wrong by a factor of a few, in BOTH directions, and the picture does not say so: measured against the published ShakeMaps, the field paints 2.64x too much ground at MMI VIII on Tohoku and 5.13x too much at MMI VII on Amatrice, but only 0.10x of it at MMI VIII on Northridge and 0.26x at MMI VII on Gorkha',
+      'drawing the field instead of the rings does NOT make it more accurate: over the ten bands both reach, the field sits at 0.73x of the recorded area against the rings 0.81x, with the same scatter (sigma_ln 1.34 against 1.32). It is the same law, drawn on the ground that is there rather than swept around a rectangle',
       'the irregularity comes ONLY from the Vs30 grid, whose own convention in this project carries 30 % uncertainty; there is no topography, no basin depth and no within-event spatial correlation',
       'what the field fixes, relative to the rings it is drawn beside: the contour falls out of a distance metric computed cell by cell rather than being a point-source radius swept around a rectangle',
     ],
