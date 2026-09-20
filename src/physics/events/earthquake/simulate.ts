@@ -218,6 +218,14 @@ export interface EarthquakeScenarioInput {
    *  and 43 adopted on 15 September 2026; `always` was the geometry until
    *  then. */
   interfaceStadium?: InterfaceStadium;
+  /** Whether an UNMARKED scenario — not a subduction interface, not deeper
+   *  than 70 km — is a rupture stadium at every magnitude (`always`) or
+   *  from Mw 7.5 only, a disc about the epicentre below (`fromMw7.5`):
+   *  rule 412 of validation/extendedSourceRules.ts. Only the SHAPE moves;
+   *  every ring keeps its radius. A marked scenario is governed by
+   *  {@link interfaceStadium} and a deep one by rules 66 to 70, and
+   *  neither reads this. Omitted, `fromMw7.5`. */
+  extendedSource?: ExtendedSource;
   /** Whether the toll counts the dead below MMI VII (rule 46 of
    *  validation/lowIntensityRules.ts): not at all (`none`), or in the V
    *  and VI bands the rings draw at 5.0 and 6.0, at PAGER's rates for the
@@ -270,6 +278,11 @@ export function deepLawFor(
 /** Rule 41 of validation/interfaceStadiumRules.ts: the geometry of a
  *  scenario marked a subduction interface below Mw 7.5. */
 export type InterfaceStadium = 'always' | 'fromMw7.5';
+
+/** Rule 412 of validation/extendedSourceRules.ts: the geometry of a
+ *  scenario that is NOT marked a subduction interface and not deeper than
+ *  70 km, below Mw 7.5. */
+export type ExtendedSource = 'always' | 'fromMw7.5';
 
 /** Rule 46 of validation/lowIntensityRules.ts: the dead below MMI VII. */
 export type LowIntensityDeaths = 'none' | 'midBand' | 'pager';
@@ -512,10 +525,17 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // had read and read the dead of 62 deep earthquakes nearer their records
   // (0.80 against 1.09), though its band held fewer of them (38 against 58).
   const deepModel = deepLawFor(input);
+  // Rule 412 of validation/extendedSourceRules.ts: an unmarked scenario may
+  // be a stadium at every magnitude. Which input decides depends on what the
+  // scenario IS — a marked one keeps rule 44's geometry, a deep one is a disc
+  // by rules 66 to 70 and reads neither — so that widening the shape of a
+  // crustal earthquake cannot reach into a decision made on other evidence.
   const isExtendedSource =
     deepModel === null &&
     (input.magnitude >= 7.5 ||
-      (input.subductionInterface === true && (input.interfaceStadium ?? 'fromMw7.5') === 'always'));
+      (input.subductionInterface === true
+        ? (input.interfaceStadium ?? 'fromMw7.5') === 'always'
+        : (input.extendedSource ?? 'fromMw7.5') === 'always'));
 
   // Ground-motion aleatory residual: exp(residual) scales every PGA.
   // Default 0 → gm = 1 → median scenario unchanged. The Monte-Carlo

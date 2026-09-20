@@ -139,6 +139,83 @@ import { SIZE_BANDS } from './scorecard.js';
  *       law is adjusted after a number is seen.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 418 and published
+ * as it came out: the candidate is REFUSED, on rule 416(d), the dead.
+ *
+ * The map, on the 116, with `boore2014` as rule 415 asks:
+ *
+ *   | geometry   | bands | mean    | scatter | Mw < 6.5 | Mw 6.5–7.5 | Mw >= 7.5 |
+ *   | ---------- | ----- | ------- | ------- | -------- | ---------- | --------- |
+ *   | fromMw7.5  | 165   | 0.393x  | 1.579   | 0.56x    | **0.22x**  | 1.27x     |
+ *   | always     | 169   | 1.601x  | 1.211   | 1.84x    | **1.62x**  | 1.27x     |
+ *
+ *   (a) the worst cell   PASS  1.536 to 0.612
+ *   (b) no cell worse    PASS  worst growth +0.037, under the 0.05 margin
+ *   (c) overall          PASS  |ln bias| 0.935 to 0.470, scatter 1.579 to 1.211
+ *   (d) the dead         FAIL  one record lost
+ *   (e) monotonicity     PASS  0 inversions, both geometries, radius and area
+ *
+ * THE DIAGNOSIS WAS RIGHT AND THE SHAPE WAS THE CAUSE. Closing the hole
+ * moves the broken cell from 0.22x to 1.62x, and the cell above Mw 7.5 does
+ * not move at all — 1.273x before and 1.273x after, to the digit, because
+ * nothing there changed. A geometry that touched more than it claimed would
+ * have moved that number, and it did not.
+ *
+ * WHY IT IS REFUSED, and it is not a formality. Of the 18 net rows the
+ * geometry moves 7, and two cross their band in opposite directions:
+ *
+ *   Amatrice 2016   Mw 6.2, 299 dead:  [0–235] MISSED  ->  [0–917] contains
+ *   Pohang 2017     Mw 5.5, 0 dead:    [0–37746] contains  ->  **[2–91004]**
+ *
+ *   Pohang killed nobody. Under the candidate the LOW end of its predictive
+ *   band lifts off zero: two hundred realisations and not one of them lets
+ *   everybody live. A model that has stopped being able to say "possibly
+ *   nobody" about a Mw 5.5 has lost something a wider footprint does not pay
+ *   for, and rule 416(d) is the clause that noticed.
+ *
+ * WHAT THE ROUND FOUND OUT ABOUT ITS OWN RULE, published because it is the
+ * most useful thing here. Clause (b) was written to stop the candidate
+ * "buying the middle by overshooting the small end". It passed, and the
+ * small end overshot anyway: Mw < 6.5 goes from 0.56x to 1.84x — under by
+ * 1.8 times, then over by 1.8 times. The clause measures |ln bias|, those
+ * two are 0.574 and 0.612, and the growth of 0.037 slipped under a margin
+ * of 0.05. A clause that treats "too small by 1.8" and "too big by 1.8" as
+ * the same distance cannot see a sign change, and a sign change is exactly
+ * what over-correction looks like. The clause is not amended here — it did
+ * what it was written to do, and what it was written to do was not enough.
+ * The next round needs one that reads the sign.
+ *
+ * And one prediction in rule 416(e) was simply WRONG. It said the geometry
+ * in place "fails by construction at Mw 7.5" on the area, and no test had
+ * ever asked. A test asks now, and it passes: the area JUMPS at Mw 7.5, it
+ * does not drop, and a jump upward is not an inversion. The discontinuity
+ * is real and P-MONO-MW cannot see it, but neither can a monotonicity count
+ * on the area — it needs a test of continuity, which is a different thing
+ * and does not exist.
+ *
+ * WHERE THE OVERSHOOT COMES FROM, named rather than guessed, and this is
+ * the handover. `surfaceRuptureWidth` returns Wells & Coppersmith's
+ * DOWN-DIP width, and says so: "Returned as a true down-dip distance (NOT
+ * the surface projection). For megathrusts with shallow dip the surface
+ * projection W·cos(δ) is within ~5 % of W; the renderer uses W directly
+ * when laying out the stadium polygon." That reasoning is sound for what
+ * the stadium was built for — shallow megathrusts at Mw 7.5 and above,
+ * where cos δ is near 1. This candidate took the same stadium down to every
+ * crustal earthquake, where the faults are steep and often vertical, and a
+ * vertical rupture has a surface projection of W·cos(90°) = 0. So the
+ * candidate lays ten kilometres of down-dip width flat on the ground for a
+ * fault that outcrops as a line, and the footprint grows on both flanks by
+ * ground that is not there.
+ *
+ * That is a testable claim, it is about the rupture and not about the
+ * threshold, and it is what the next round should put rules around: not
+ * "stadium or disc", but whether the stadium is laid on the rupture's
+ * SURFACE PROJECTION. The hole between Mw 6.5 and 7.5 is still open, the
+ * shape is still its cause, and the geometry in place still draws a fifth
+ * of the ground there.
+ */
+
 export const EXTENDED_SOURCE_RULES = 'rules 412 to 418, fixed 20 September 2026';
 
 /** Rule 416's cells: the repository's own, imported rather than restated. */
