@@ -108,4 +108,76 @@
  *       is the published model or it is nothing.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 389 and published
+ * as it came out: the candidate is REFUSED. The shipped law stays.
+ *
+ * Rule 385 — faithful to its source: PASSED. 2 268 cases, worst
+ * disagreement 1.8e-15. The check earned its place twice over: it caught
+ * the magnitude term read as clamped (a factor of 2.5 at Mw 8.0), and
+ * running the round caught a second mistake of mine that no unit test
+ * would have — R_rup was being measured to the HYPOCENTRE rather than to
+ * the top of the rupture. A rupture reaches up from its focus by about
+ * half its width, so Northridge's focus at 18 km sits under a rupture
+ * whose top is near 5: a factor of three on the distance to every site
+ * above it. With that corrected the candidate's areas moved from 0.51x to
+ * 1.04x, which is the difference between a broken candidate and a real
+ * one.
+ *
+ * Rule 387(a) — areas, on the six ShakeMap anchors: FAILED, on the clause
+ * that matters most and by a single band.
+ *
+ *   | law        | geometric mean | scatter    | bands |
+ *   | ---------- | -------------- | ---------- | ----- |
+ *   | boore2014  | 0.81x          | sigma 1.32 | 10    |
+ *   | CB14       | **1.04x**      | sigma 1.33 | 9     |
+ *
+ *   CB14 is BETTER CENTRED than the shipped law — 1.04x against 0.81x,
+ *   with the same scatter — and it still fails, because it loses
+ *   Northridge's MMI VIII band: 823 km² recorded, 68 km² from Boore, none
+ *   at all from CB14. Rule 387(a) says losing a band the shipped law draws
+ *   and the record has fails the clause outright whatever the means say,
+ *   and it was written that way before any of this was run.
+ *
+ * Rule 387(c) — monotonicity in magnitude: PASSED. Zero inversions over
+ * 101 magnitudes, the same as the shipped law, and unlike the law rule 59
+ * adopts, which drops 38.8 km at Mw 7.5.
+ *
+ * Rule 388 — the depth does something: HALF PASSED, and the half that
+ * failed is a rule written badly rather than a candidate behaving badly.
+ *
+ *   The epicentral intensity falls by 1.9 to 2.8 MMI degrees between 5 km
+ *   and 50 km, where the rule asked for at least one. That is the defect
+ *   this round set out to fix, and the candidate fixes it.
+ *
+ *   The MMI VII radius is NOT strictly decreasing in depth: at Mw 6.5 it
+ *   reads 12.9 km at 5 km deep and 13.1 km at 15 km. The reason is in the
+ *   model and was measured before the round: CB14's depth term is positive
+ *   — at equal distance a deeper source shakes harder, because less of the
+ *   path spends itself in the slow top of the crust — and between 7 and
+ *   20 km it briefly beats the geometry. Rule 388 was written before that
+ *   was known, and it asked for a monotonicity the model does not have and
+ *   does not claim. It is not amended here: an outcome measured against a
+ *   rule written afterwards is worth nothing, and this one is published as
+ *   it stands.
+ *
+ * WHAT THIS ROUND LEAVES. The shipped law keeps drawing the rings, and a
+ * hypocentre depth still does nothing to them below 70 km. What is now
+ * known that was not:
+ *
+ *   - A law that carries the depth is here, written, checked against its
+ *     source, and reachable as `campbellBozorgnia2014` for anyone who asks
+ *     for it by name.
+ *   - It is better centred on the recorded areas than the law that ships,
+ *     and it is refused on one band of one event — which is a much
+ *     narrower defeat than the 2.58x of the other candidate.
+ *   - The band it loses is Northridge's MMI VIII, a shallow rupture close
+ *     under a city: exactly the case where the hanging-wall term rule 386
+ *     declares missing would be largest, since its published maximum is
+ *     about a factor of 1.5 on PGA at short distance on the upthrown side.
+ *     Whether feeding that term would recover the band is the next round's
+ *     question, not this one's, and answering it needs R_x and a fault
+ *     plane the product does not have today.
+ */
+
 export const DEPTH_CARRYING_LAW_RULES = 'rules 384 to 389, fixed 20 September 2026';

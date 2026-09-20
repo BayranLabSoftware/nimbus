@@ -4,6 +4,10 @@ import type { Meters, MetersPerSecondSquared, NewtonMeters } from '../../units.j
 import { m, mps, mps2 } from '../../units.js';
 import { generateAftershockSequence, type AftershockSequenceResult } from './aftershocks.js';
 import {
+  campbellBozorgnia2014PgaAtEpicentralDistance,
+  epicentralDistanceForCampbellBozorgnia2014,
+} from './campbellBozorgnia2014.js';
+import {
   distanceForPga,
   distanceForPgaNGAWest2,
   distanceForPgvNGAWest2,
@@ -357,6 +361,7 @@ export type ContourLaw =
   | 'boore2014FromMw7.5'
   | 'allen2012Hypocentral'
   | 'allen2012HypocentralBelowMw7.5'
+  | 'campbellBozorgnia2014'
   | 'abrahamson2016Interface'
   | 'parker2022Interface';
 
@@ -597,6 +602,25 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   const allen =
     law === 'allen2012Hypocentral' ||
     (law === 'allen2012HypocentralBelowMw7.5' && input.magnitude < 7.5);
+  // Rule 384: Campbell & Bozorgnia 2014, the NGA-West2 model that carries
+  // the hypocentral depth Boore et al. 2014 has no room for.
+  const campbell = law === 'campbellBozorgnia2014';
+  // CB14 knows three styles and nothing else: an unspecified fault is drawn
+  // as strike-slip, whose style term is zero — the model's own neutral case.
+  const cbStyle: 'reverse' | 'normal' | 'strike-slip' =
+    faultType === 'reverse' || faultType === 'normal' ? faultType : 'strike-slip';
+  /**
+   * Depth to the top of the rupture, which is what R_rup is measured to.
+   *
+   * A rupture reaches UP from its hypocentre by about half its width along
+   * dip, so Northridge's focus at 18 km sits under a rupture whose top is
+   * near 5 — a factor of three on the distance to every site above it, and
+   * the difference between drawing its MMI VIII band and losing it. Zero
+   * where the rupture reaches the surface.
+   */
+  const dipRad =
+    (cbStyle === 'strike-slip' ? 90 : cbStyle === 'normal' ? 55 : 45) * (Math.PI / 180);
+  const ztorKm = Math.max(0, depthKm - ((ruptureWidth as number) / 2_000) * Math.sin(dipRad));
   // Rule 36 of validation/interfaceRules.ts: an interface model for a
   // scenario marked a subduction interface, Boore et al. 2014 otherwise.
   //
@@ -617,6 +641,7 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
           : null;
   const boore =
     !allen &&
+    !campbell &&
     (law === 'boore2014' ||
       law === 'allen2012HypocentralBelowMw7.5' ||
       law === 'abrahamson2016Interface' ||
@@ -655,31 +680,44 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
               (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY,
               toRupture.rrupKm
             )
-        : allen
-          ? epicentralDistanceForIntensityAllen2012(
-              input.magnitude,
-              depthKm,
-              mmi,
-              Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0
-            )
-          : byPgv
-            ? fromJoynerBoore(
-                distanceForPgvNGAWest2(
-                  { magnitude: input.magnitude, faultType: ngaFault, vs30 },
-                  mps((pgvFromMercalliIntensity(mmi) as number) / gm)
-                )
+        : campbell
+          ? m(
+              epicentralDistanceForCampbellBozorgnia2014(
+                {
+                  magnitude: input.magnitude,
+                  vs30,
+                  hypocentreDepth: m(depthKm * 1_000),
+                  topOfRuptureDepth: m(ztorKm * 1_000),
+                  style: cbStyle,
+                },
+                (target(pgaFromMercalliIntensity(mmi)) as number) / STANDARD_GRAVITY
               )
-            : boore
+            )
+          : allen
+            ? epicentralDistanceForIntensityAllen2012(
+                input.magnitude,
+                depthKm,
+                mmi,
+                Number.isFinite(residual) ? residual * MMI_PER_LN_PGA : 0
+              )
+            : byPgv
               ? fromJoynerBoore(
-                  distanceForPgaNGAWest2(
+                  distanceForPgvNGAWest2(
                     { magnitude: input.magnitude, faultType: ngaFault, vs30 },
-                    target(pgaFromMercalliIntensity(mmi))
+                    mps((pgvFromMercalliIntensity(mmi) as number) / gm)
                   )
                 )
-              : distanceForPga(
-                  input.magnitude,
-                  mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
-                );
+              : boore
+                ? fromJoynerBoore(
+                    distanceForPgaNGAWest2(
+                      { magnitude: input.magnitude, faultType: ngaFault, vs30 },
+                      target(pgaFromMercalliIntensity(mmi))
+                    )
+                  )
+                : distanceForPga(
+                    input.magnitude,
+                    mps2((target(pgaFromMercalliIntensity(mmi)) as number) / siteGain)
+                  );
   /**
    * Rule 309 of validation/shakingFieldRules.ts: the intensity this scenario's
    * own law gives at a distance and at a site — `contourAt` read forwards.
@@ -715,6 +753,19 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
         rrupKm,
         vs30: v,
       });
+      return modifiedMercalliIntensity(mps2(pgaG * STANDARD_GRAVITY * gm));
+    }
+    if (campbell) {
+      const pgaG = campbellBozorgnia2014PgaAtEpicentralDistance(
+        {
+          magnitude: input.magnitude,
+          vs30: v,
+          hypocentreDepth: m(depthKm * 1_000),
+          topOfRuptureDepth: m(ztorKm * 1_000),
+          style: cbStyle,
+        },
+        distanceM
+      );
       return modifiedMercalliIntensity(mps2(pgaG * STANDARD_GRAVITY * gm));
     }
     if (allen) {
@@ -792,25 +843,40 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
               STANDARD_GRAVITY *
               gm
           )
-        : allen || byPgv
-          ? null
-          : boore
-            ? mps2(
-                (peakGroundAccelerationNGAWest2({
+        : campbell
+          ? mps2(
+              campbellBozorgnia2014PgaAtEpicentralDistance(
+                {
                   magnitude: input.magnitude,
-                  distance: m(epicentralRjbKm * 1_000),
-                  faultType: ngaFault,
                   vs30,
-                }) as number) * gm
-              )
-            : mps2(
-                (peakGroundAcceleration({
-                  magnitude: input.magnitude,
-                  distance: m(0),
-                }) as number) *
-                  siteGain *
-                  gm
-              );
+                  hypocentreDepth: m(depthKm * 1_000),
+                  topOfRuptureDepth: m(ztorKm * 1_000),
+                  style: cbStyle,
+                },
+                0
+              ) *
+                STANDARD_GRAVITY *
+                gm
+            )
+          : allen || byPgv
+            ? null
+            : boore
+              ? mps2(
+                  (peakGroundAccelerationNGAWest2({
+                    magnitude: input.magnitude,
+                    distance: m(epicentralRjbKm * 1_000),
+                    faultType: ngaFault,
+                    vs30,
+                  }) as number) * gm
+                )
+              : mps2(
+                  (peakGroundAcceleration({
+                    magnitude: input.magnitude,
+                    distance: m(0),
+                  }) as number) *
+                    siteGain *
+                    gm
+                );
   // The intensity itself. Two laws speak intensity rather than acceleration:
   // Allen 2012, which is an intensity prediction equation, and the rings drawn
   // on velocity by rule 31.

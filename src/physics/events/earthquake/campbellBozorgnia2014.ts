@@ -39,7 +39,7 @@
  * rule 386 requires their size to be printed where they decide an answer.
  */
 
-import type { Meters } from '../../units.js';
+import { m, type Meters } from '../../units.js';
 
 /** The PGA row of the model's coefficient table. */
 const C = {
@@ -215,4 +215,62 @@ export function campbellBozorgnia2014Sigma(magnitude: number): number {
         ? C.phi2
         : C.phi1 + (C.phi2 - C.phi1) * (magnitude - 4.5);
   return Math.sqrt(between * between + within * within);
+}
+
+/**
+ * The epicentral distance at which this model's PGA falls to a target, for
+ * a source at a given depth.
+ *
+ * The model is written in R_rup, the closest distance to the rupture
+ * surface; a point on the surface at epicentral distance d from a source
+ * z deep is sqrt(d² + z²) away from it, which is where the depth enters
+ * the answer. Solved by bisection, as every other inversion here is: the
+ * form is monotone in distance, so there is one root.
+ *
+ * `shiftLnPga` is the ground-motion residual, in natural logs of PGA, for
+ * the realisations of a predictive band.
+ */
+export function epicentralDistanceForCampbellBozorgnia2014(
+  input: Omit<CampbellBozorgniaInput, 'ruptureDistance'> & {
+    /** Depth to the TOP of the rupture (m). A rupture reaches up from its
+     *  hypocentre, and R_rup is measured to the plane, not to the focus:
+     *  Northridge's hypocentre is 18 km down and the top of its rupture
+     *  about 5, which is a factor of three on the distance to every site
+     *  above it. Defaults to the hypocentral depth for a point source. */
+    topOfRuptureDepth?: Meters;
+  },
+  targetPgaG: number,
+  shiftLnPga = 0
+): number {
+  const zKm = Math.max(((input.topOfRuptureDepth ?? input.hypocentreDepth) as number) / 1_000, 0);
+  const shift = Math.exp(shiftLnPga);
+  const at = (epicentralKm: number): number =>
+    campbellBozorgnia2014Pga({
+      ...input,
+      ruptureDistance: m(Math.hypot(epicentralKm, zKm) * 1_000),
+    }) * shift;
+  if (at(0) < targetPgaG) return 0;
+  let lo = 0;
+  let hi = 2_000;
+  if (at(hi) >= targetPgaG) return hi * 1_000;
+  for (let i = 0; i < 60; i += 1) {
+    const mid = 0.5 * (lo + hi);
+    if (at(mid) >= targetPgaG) lo = mid;
+    else hi = mid;
+  }
+  return 0.5 * (lo + hi) * 1_000;
+}
+
+/** The PGA this model gives at an epicentral distance, the inversion above
+ *  read forwards — the pair `contourAt` and `intensityAt` need. */
+export function campbellBozorgnia2014PgaAtEpicentralDistance(
+  input: Omit<CampbellBozorgniaInput, 'ruptureDistance'> & { topOfRuptureDepth?: Meters },
+  epicentralDistanceM: number
+): number {
+  const zKm = Math.max(((input.topOfRuptureDepth ?? input.hypocentreDepth) as number) / 1_000, 0);
+  const dKm = Math.max(epicentralDistanceM, 0) / 1_000;
+  return campbellBozorgnia2014Pga({
+    ...input,
+    ruptureDistance: m(Math.hypot(dKm, zKm) * 1_000),
+  });
 }
