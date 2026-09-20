@@ -530,7 +530,7 @@ export function sampleToll(
           if (band.polygon === undefined) continue;
           ruptures.set(band.polygon, {
             halfLengthM: (r.data.ruptureLength as number) / 2,
-            halfWidthM: (r.data.ruptureWidth as number) / 2,
+            halfWidthM: (r.data.ruptureFootprintWidth as number) / 2,
             // Rule 377: this realisation's own centre, along strike.
             centreOffsetM: (r.data.inputs.ruptureCentreOffsetM as number | undefined) ?? 0,
           });

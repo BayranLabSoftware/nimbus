@@ -2144,7 +2144,9 @@ export function Globe(): JSX.Element {
       const law = intensityLawOf(simulateEarthquake(result.data.inputs));
       if (law !== null) {
         const halfL = result.data.isExtendedSource ? (result.data.ruptureLength as number) / 2 : 0;
-        const halfW = result.data.isExtendedSource ? (result.data.ruptureWidth as number) / 2 : 0;
+        const halfW = result.data.isExtendedSource
+          ? (result.data.ruptureFootprintWidth as number) / 2
+          : 0;
         // Wide enough to contain the lowest band drawn, asked of the law on
         // SOFT ground: the field reads the real Vs30, soft ground amplifies,
         // and a rock bisection leaves the band cut off at the edge of the
@@ -2379,7 +2381,7 @@ export function Globe(): JSX.Element {
         // propagating front. The point-source ring branch below keeps
         // the cinematic cascade for small / continental events.
         const halfL = (result.data.ruptureLength as number) / 2;
-        const halfW = (result.data.ruptureWidth as number) / 2;
+        const halfW = (result.data.ruptureFootprintWidth as number) / 2;
         const strikeAzimuthDeg = result.data.inputs.strikeAzimuthDeg ?? 0;
         const stadiumContours: {
           id: 'mmi-stadium-7' | 'mmi-stadium-8' | 'mmi-stadium-9';

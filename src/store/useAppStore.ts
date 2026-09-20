@@ -1692,7 +1692,7 @@ export function casualtyPlanForResult(
         // take the median.
         plan.unknownStrike = {
           halfLengthM: (result.data.ruptureLength as number) / 2,
-          halfWidthM: (result.data.ruptureWidth as number) / 2,
+          halfWidthM: (result.data.ruptureFootprintWidth as number) / 2,
           azimuthsDeg: UNKNOWN_STRIKE_AZIMUTHS,
         };
       }
@@ -1702,7 +1702,7 @@ export function casualtyPlanForResult(
         result.data.inputs.strikeAzimuthDeg !== undefined
       ) {
         const halfL = (result.data.ruptureLength as number) / 2;
-        const halfW = (result.data.ruptureWidth as number) / 2;
+        const halfW = (result.data.ruptureFootprintWidth as number) / 2;
         const strike = result.data.inputs.strikeAzimuthDeg;
         // Rule 377 of validation/ruptureCentreRules.ts: the epicentre is
         // where the rupture STARTED, so the centre of the stadium sits a

@@ -237,7 +237,7 @@ if (mode === '--cases') {
       longitude: one.lon,
       strikeDeg: one.strikeDeg,
       halfLengthM: result.isExtendedSource ? (result.ruptureLength as number) / 2 : 0,
-      halfWidthM: result.isExtendedSource ? (result.ruptureWidth as number) / 2 : 0,
+      halfWidthM: result.isExtendedSource ? (result.ruptureFootprintWidth as number) / 2 : 0,
     };
 
     const bytes = Buffer.from(grid.mmi10, 'base64');

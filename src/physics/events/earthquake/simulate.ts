@@ -226,6 +226,16 @@ export interface EarthquakeScenarioInput {
    *  {@link interfaceStadium} and a deep one by rules 66 to 70, and
    *  neither reads this. Omitted, `fromMw7.5`. */
   extendedSource?: ExtendedSource;
+  /** Whether the footprint laid on the ground is built from the rupture's
+   *  true DOWN-DIP width (`downDip`) or from its surface projection,
+   *  W·cos δ (`surfaceProjection`): rule 419 of
+   *  validation/surfaceProjectionRules.ts. A vertical fault outcrops as a
+   *  line and projects no width at all. {@link ruptureWidth} is unchanged
+   *  either way — it is a real down-dip width and the tsunami source reads
+   *  it; what moves is {@link EarthquakeScenarioResult.ruptureFootprintWidth}.
+   *  A scenario marked a subduction interface and one deeper than 70 km do
+   *  not read this (rule 421). Omitted, `downDip`. */
+  stadiumWidth?: StadiumWidth;
   /** Whether the toll counts the dead below MMI VII (rule 46 of
    *  validation/lowIntensityRules.ts): not at all (`none`), or in the V
    *  and VI bands the rings draw at 5.0 and 6.0, at PAGER's rates for the
@@ -283,6 +293,10 @@ export type InterfaceStadium = 'always' | 'fromMw7.5';
  *  scenario that is NOT marked a subduction interface and not deeper than
  *  70 km, below Mw 7.5. */
 export type ExtendedSource = 'always' | 'fromMw7.5';
+
+/** Rule 419 of validation/surfaceProjectionRules.ts: which width the
+ *  footprint laid on the ground is built from. */
+export type StadiumWidth = 'downDip' | 'surfaceProjection';
 
 /** Rule 46 of validation/lowIntensityRules.ts: the dead below MMI VII. */
 export type LowIntensityDeaths = 'none' | 'midBand' | 'pager';
@@ -434,11 +448,20 @@ export interface EarthquakeScenarioResult {
   seismicMoment: NewtonMeters;
   ruptureLength: Meters;
   /** Down-dip rupture width W (m) — Wells & Coppersmith 1994 Table 2A
-   *  for crustal events, Strasser 2010 for explicit megathrusts. The
-   *  globe renderer uses (L, W, strikeAzimuthDeg) to lay out the
-   *  surface-projection rectangle that the stadium MMI contours
-   *  inflate around. */
+   *  for crustal events, Strasser 2010 for explicit megathrusts. A true
+   *  distance along the dipping plane, not a distance on the map: what
+   *  the stadium is laid on is {@link ruptureFootprintWidth}. Until rule
+   *  419 this field was used for both, and the comment here called the
+   *  result a "surface-projection rectangle" while handing it a down-dip
+   *  width. */
   ruptureWidth: Meters;
+  /** The width (m) of the rectangle the footprint is laid on: what the
+   *  rupture covers ON THE MAP. Equal to {@link ruptureWidth} under the
+   *  geometry in place, and to W·cos δ where rule 419's
+   *  `surfaceProjection` applies. Everything that draws or counts inside
+   *  a stadium — the field, the harness footprint, the casualty counter,
+   *  the globe — reads this one. */
+  ruptureFootprintWidth: Meters;
   /** True when the renderer should treat this event as an extended
    *  source (rupture rectangle ≫ point) for the MMI contours. Set
    *  whenever Mw ≥ 7.5 OR the user toggled `subductionInterface`.
@@ -658,6 +681,18 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   });
   /** Half the rupture's surface projection across strike (km). */
   const halfWidthKm = ((ruptureWidth as number) / 2_000) * Math.cos(dipRad);
+  // Rule 419: the width the footprint is laid on. The projection is the
+  // one directly above — the same number CB14's R_x has used since rule
+  // 391 — so there is one expression for it and not two that can drift.
+  // Rule 421's domain: a marked interface keeps its width, because the dip
+  // table here has no megathrust in it and would hand one 45° where it
+  // dips 15 to 25; a deep scenario is a disc at every magnitude anyway.
+  const ruptureFootprintWidth: Meters =
+    deepModel === null &&
+    input.subductionInterface !== true &&
+    (input.stadiumWidth ?? 'downDip') === 'surfaceProjection'
+      ? m(halfWidthKm * 2_000)
+      : ruptureWidth;
   // Rule 36 of validation/interfaceRules.ts: an interface model for a
   // scenario marked a subduction interface, Boore et al. 2014 otherwise.
   //
@@ -977,6 +1012,7 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
     seismicMoment,
     ruptureLength,
     ruptureWidth,
+    ruptureFootprintWidth,
     isExtendedSource,
     shaking: {
       pgaAt20km,

@@ -4,7 +4,6 @@ import {
   simulateEarthquake,
   type ContourLaw,
   type EarthquakeScenarioInput,
-  type ExtendedSource,
 } from '../src/physics/events/earthquake/simulate.js';
 import { areaAbove, type RuptureFootprint } from '../src/physics/events/earthquake/shakingField.js';
 import { fitShakingField } from '../src/scene/globe/shakingOverlay.js';
@@ -20,6 +19,7 @@ import {
   magnitudeCell,
   worstCell,
 } from '../src/physics/validation/extendedSourceRules.js';
+import { cellsThatFlippedSign } from '../src/physics/validation/surfaceProjectionRules.js';
 import { countMagnitudeInversions } from '../src/physics/validation/propertyPrecedenceRules.js';
 import {
   compareWithRecord,
@@ -29,19 +29,33 @@ import {
 import type { Meters } from '../src/physics/units.js';
 
 /**
- * The round of rules 412 to 418: the rupture stadium at every magnitude,
- * against the disc below Mw 7.5.
+ * The round of rules 419 to 426: the stadium laid on the rupture's surface
+ * projection.
  *
- * Nothing here chooses anything. It measures and prints; the verdict is
- * read off rule 416's five clauses, which were written and pushed first.
+ * Three arms, one run. Nothing here chooses anything — it measures and
+ * prints, and the verdict is read off rule 424's six clauses, which were
+ * written and pushed first.
  *
  * Usage:
- *   pnpm exec tsx scripts/extended-source-round.ts [--dead-only]
+ *   pnpm exec tsx scripts/surface-projection-round.ts
  */
 
-const GEOMETRIES: readonly ExtendedSource[] = ['fromMw7.5', 'always'];
+/** Rule 420's arms. The first is the geometry in place. */
+const ARMS = [
+  { key: 'in place', settings: {} },
+  { key: 'A projection', settings: { stadiumWidth: 'surfaceProjection' } },
+  {
+    key: 'B projection+always',
+    settings: { stadiumWidth: 'surfaceProjection', extendedSource: 'always' },
+  },
+] as const satisfies readonly {
+  key: string;
+  settings: Partial<Pick<EarthquakeScenarioInput, 'stadiumWidth' | 'extendedSource'>>;
+}[];
+type ArmKey = (typeof ARMS)[number]['key'];
+
 const LAWS: readonly ContourLaw[] = ['boore2014', 'campbellBozorgnia2014'];
-/** Rule 415: the geometry is decided on the law the product draws. */
+/** Rule 422: the geometry is decided on the law the product draws. */
 const DECIDING_LAW: ContourLaw = 'boore2014';
 const THRESHOLDS = [7, 8, 9] as const;
 type Threshold = (typeof THRESHOLDS)[number];
@@ -54,8 +68,8 @@ interface Band {
   modelKm2: number;
 }
 
-type Key = `${ContourLaw}/${ExtendedSource}`;
-const keyOf = (law: ContourLaw, geometry: ExtendedSource): Key => `${law}/${geometry}`;
+type Key = `${ContourLaw}|${ArmKey}`;
+const keyOf = (law: ContourLaw, arm: ArmKey): Key => `${law}|${arm}`;
 
 function fieldAreasKm2(
   input: EarthquakeScenarioInput,
@@ -89,8 +103,6 @@ function fieldAreasKm2(
   return out;
 }
 
-/** Rule 409's statistic, unchanged: the geometric mean of the AREA ratio
- *  with the sample standard deviation of its logarithm. */
 function score(bands: readonly Band[]): { bands: number; bias: number; sdLn: number } {
   const logs = bands
     .filter((b) => b.observedKm2 > 0 && b.modelKm2 > 0)
@@ -104,7 +116,6 @@ function score(bands: readonly Band[]): { bands: number; bias: number; sdLn: num
   };
 }
 
-/** Rule 416(a) and (b): the bias in each of the repository's three cells. */
 function biasByCell(bands: readonly Band[]): Record<string, number | null> {
   const out: Record<string, number | null> = {};
   for (const cell of EXTENDED_SOURCE_CELLS) {
@@ -114,23 +125,24 @@ function biasByCell(bands: readonly Band[]): Record<string, number | null> {
   return out;
 }
 
-/** Rule 412: the scenario the product builds for a ComCat row. */
 function scenarioFor(
   event: AtlasEarthquake,
   law: ContourLaw,
-  geometry: ExtendedSource
+  settings: Partial<EarthquakeScenarioInput>
 ): EarthquakeScenarioInput {
   return {
     magnitude: event.magnitude,
     depth: (Math.max(0, event.depthKm) * 1_000) as Meters,
     faultType: event.faultType,
     contourLaw: law,
-    extendedSource: geometry,
+    ...settings,
   };
 }
 
-/** Rule 416(d): the same row, drawn as a stadium at every magnitude. */
-function asAStadiumAtEveryMagnitude(event: RecordedEvent): RecordedEvent {
+function withSettings(
+  event: RecordedEvent,
+  settings: Partial<EarthquakeScenarioInput>
+): RecordedEvent {
   const run = event.run;
   return {
     ...event,
@@ -139,7 +151,7 @@ function asAStadiumAtEveryMagnitude(event: RecordedEvent): RecordedEvent {
       if (result.type !== 'earthquake') return result;
       return {
         type: 'earthquake',
-        data: simulateEarthquake({ ...result.data.inputs, extendedSource: 'always' }),
+        data: simulateEarthquake({ ...result.data.inputs, ...settings }),
       };
     },
   };
@@ -150,68 +162,65 @@ const NET_ROW_NAME: Readonly<Record<string, string>> = {
   'Kokoxili 2001': 'Kokoxili (Kunlun) 2001',
 };
 
+/** Rule 424(d), on every arm. */
 function theDead(): void {
-  console.log('\n### rule 416(d) — the dead, on the net rows of rule 11');
-  const rows = RECORDED_EVENTS;
-  let inPlaceIn = 0;
-  let candidateIn = 0;
-  const lost: string[] = [];
-  const gained: string[] = [];
-  let moved = 0;
-  for (const row of rows) {
-    const a = compareWithRecord(row);
-    const b = compareWithRecord(asAStadiumAtEveryMagnitude(row));
-    if (a.deaths !== b.deaths) moved += 1;
-    if (a.contains) inPlaceIn += 1;
-    if (b.contains) candidateIn += 1;
-    if (a.contains && !b.contains) lost.push(row.name);
-    if (!a.contains && b.contains) gained.push(row.name);
+  console.log('\n### rule 424(d) — the dead, on the net rows');
+  const base = RECORDED_EVENTS.map((row) => compareWithRecord(row));
+  const inPlaceIn = base.filter((c) => c.contains).length;
+  for (const arm of ARMS) {
+    if (arm.key === 'in place') continue;
+    const lost: string[] = [];
+    const gained: string[] = [];
+    let moved = 0;
+    let inside = 0;
+    RECORDED_EVENTS.forEach((row, i) => {
+      const a = base[i];
+      if (a === undefined) return;
+      const b = compareWithRecord(withSettings(row, arm.settings));
+      if (a.deaths !== b.deaths) moved += 1;
+      if (b.contains) inside += 1;
+      if (a.contains && !b.contains) lost.push(row.name);
+      if (!a.contains && b.contains) gained.push(row.name);
+    });
+    const pass = inside >= inPlaceIn && lost.length === 0;
+    console.log(
+      `  ${arm.key.padEnd(20)} moves ${moved.toString().padStart(2)} rows, inside ${inside.toString()} ` +
+        `against ${inPlaceIn.toString()} · lost ${lost.length === 0 ? 'none' : lost.join(', ')} · ` +
+        `gained ${gained.length === 0 ? 'none' : gained.join(', ')} → ${pass ? 'PASS' : 'FAIL'}`
+    );
   }
-  console.log(`  rows ${rows.length.toString()}, of which the geometry moves ${moved.toString()}`);
-  console.log(
-    `  inside their band: in place ${inPlaceIn.toString()}, candidate ${candidateIn.toString()}`
-  );
-  console.log(`  lost:   ${lost.length === 0 ? 'none' : lost.join(', ')}`);
-  console.log(`  gained: ${gained.length === 0 ? 'none' : gained.join(', ')}`);
-  const pass = candidateIn >= inPlaceIn && lost.length === 0;
-  console.log(`  rule 416(d) → ${pass ? 'PASS' : 'FAIL'}`);
 }
 
 function main(): void {
   const site = shippedSiteLookup();
   if (site === null) {
-    console.error('The shipped Vs30 tiles are absent; rule 414 asks for the ground the browser');
+    console.error('The shipped Vs30 tiles are absent; rule 422 asks for the ground the browser');
     console.error('reads. Build public/data/vs30 first.');
     process.exit(1);
   }
-  if (process.argv.includes('--dead-only')) {
-    theDead();
-    return;
-  }
-
   const jury = widerJury();
   const wide = new Map<Key, Band[]>();
   const six = new Map<Key, Band[]>();
   for (const law of LAWS)
-    for (const g of GEOMETRIES) {
-      wide.set(keyOf(law, g), []);
-      six.set(keyOf(law, g), []);
+    for (const arm of ARMS) {
+      wide.set(keyOf(law, arm.key), []);
+      six.set(keyOf(law, arm.key), []);
     }
 
   let done = 0;
   for (const event of jury) {
     const cell = magnitudeCell(event.magnitude);
     for (const law of LAWS)
-      for (const g of GEOMETRIES) {
+      for (const arm of ARMS) {
         const areas = fieldAreasKm2(
-          scenarioFor(event, law, g),
+          scenarioFor(event, law, arm.settings),
           event.latitude,
           event.longitude,
           site
         );
         if (areas === null) continue;
         for (const t of THRESHOLDS)
-          wide.get(keyOf(law, g))?.push({
+          wide.get(keyOf(law, arm.key))?.push({
             event: event.comcat,
             cell,
             threshold: t,
@@ -229,16 +238,16 @@ function main(): void {
     if (spot === undefined) continue;
     const cell = magnitudeCell(preset.input.magnitude);
     for (const law of LAWS)
-      for (const g of GEOMETRIES) {
+      for (const arm of ARMS) {
         const areas = fieldAreasKm2(
-          { ...preset.input, contourLaw: law, extendedSource: g },
+          { ...preset.input, contourLaw: law, ...arm.settings },
           spot.latitude,
           spot.longitude,
           site
         );
         if (areas === null) continue;
         for (const t of THRESHOLDS)
-          six.get(keyOf(law, g))?.push({
+          six.get(keyOf(law, arm.key))?.push({
             event: f.name,
             cell,
             threshold: t,
@@ -249,89 +258,78 @@ function main(): void {
   }
 
   const table = (title: string, by: Map<Key, Band[]>): void => {
-    console.log(`\n### ${title}`);
     const cells = EXTENDED_SOURCE_CELLS.map((c) => c.label);
-    console.log(`| law | geometry | bands | mean | scatter | ${cells.join(' | ')} |`);
+    console.log(`\n### ${title}`);
+    console.log(`| law | arm | bands | mean | scatter | ${cells.join(' | ')} |`);
     console.log(`| --- | --- | --- | --- | --- | ${cells.map(() => '---').join(' | ')} |`);
     for (const law of LAWS)
-      for (const g of GEOMETRIES) {
-        const bands = by.get(keyOf(law, g)) ?? [];
+      for (const arm of ARMS) {
+        const bands = by.get(keyOf(law, arm.key)) ?? [];
         const s = score(bands);
-        const cellBias = biasByCell(bands);
+        const cb = biasByCell(bands);
         const cols = cells.map((c) => {
-          const v = cellBias[c];
+          const v = cb[c];
           return v === null || v === undefined ? '—' : `${v.toFixed(2)}x`;
         });
         console.log(
-          `| ${law} | ${g} | ${s.bands.toString()} | ${s.bias.toFixed(3)}x | ` +
+          `| ${law} | ${arm.key} | ${s.bands.toString()} | ${s.bias.toFixed(3)}x | ` +
             `${s.sdLn.toFixed(3)} | ${cols.join(' | ')} |`
         );
       }
   };
 
-  table(`the jury of ${jury.length.toString()} — rules 412 to 416`, wide);
+  table(`the jury of ${jury.length.toString()} — rules 419 to 424`, wide);
   table('the six fixtures, deciding nothing', six);
 
-  // --- rule 416, clause by clause, on the deciding law -------------------
-  const a = wide.get(keyOf(DECIDING_LAW, 'fromMw7.5')) ?? [];
-  const b = wide.get(keyOf(DECIDING_LAW, 'always')) ?? [];
-  const wa = worstCell(biasByCell(a));
-  const wb = worstCell(biasByCell(b));
-  console.log(`\n### rule 416, clause by clause (${DECIDING_LAW})`);
-  console.log(
-    `  (a) worst cell: in place ${wa?.label ?? '—'} ${wa?.distance.toFixed(3) ?? '—'}, ` +
-      `candidate ${wb?.label ?? '—'} ${wb?.distance.toFixed(3) ?? '—'} → ` +
-      (wa !== null && wb !== null && wa.distance - wb.distance >= EXTENDED_SOURCE_MARGIN
-        ? 'PASS'
-        : 'FAIL')
-  );
-  const cellA = biasByCell(a);
-  const cellB = biasByCell(b);
-  const worsened: string[] = [];
-  for (const cell of EXTENDED_SOURCE_CELLS.map((c) => c.label)) {
-    const x = cellA[cell];
-    const y = cellB[cell];
-    if (x === null || x === undefined || y === null || y === undefined) continue;
-    const grew = Math.abs(Math.log(y)) - Math.abs(Math.log(x));
+  const inPlace = wide.get(keyOf(DECIDING_LAW, 'in place')) ?? [];
+  const cellsIn = biasByCell(inPlace);
+  const worstIn = worstCell(cellsIn);
+  const sIn = score(inPlace);
+  console.log(`\n### rule 424, clause by clause (${DECIDING_LAW})`);
+  for (const arm of ARMS) {
+    if (arm.key === 'in place') continue;
+    const bands = wide.get(keyOf(DECIDING_LAW, arm.key)) ?? [];
+    const cellsOut = biasByCell(bands);
+    const worstOut = worstCell(cellsOut);
+    const s = score(bands);
+    console.log(`\n  ${arm.key}`);
+    const a =
+      worstIn !== null &&
+      worstOut !== null &&
+      worstIn.distance - worstOut.distance >= EXTENDED_SOURCE_MARGIN;
     console.log(
-      `      ${cell}: ${x.toFixed(3)}x → ${y.toFixed(3)}x  (|ln| ${grew >= 0 ? '+' : ''}${grew.toFixed(3)})`
+      `    (a) worst cell ${worstIn?.label ?? '—'} ${worstIn?.distance.toFixed(3) ?? '—'} → ` +
+        `${worstOut?.label ?? '—'} ${worstOut?.distance.toFixed(3) ?? '—'} → ${a ? 'PASS' : 'FAIL'}`
     );
-    if (grew > EXTENDED_SOURCE_MARGIN) worsened.push(cell);
-  }
-  console.log(
-    `  (b) no cell worse by more than ${EXTENDED_SOURCE_MARGIN.toFixed(2)}: ` +
-      (worsened.length === 0 ? 'none worsened → PASS' : `${worsened.join(', ')} → FAIL`)
-  );
-  const sa = score(a);
-  const sb = score(b);
-  const centred = Math.abs(Math.log(sb.bias)) <= Math.abs(Math.log(sa.bias));
-  console.log(
-    `  (c) overall: ${sa.bias.toFixed(3)}x/${sa.sdLn.toFixed(3)} → ${sb.bias.toFixed(3)}x/${sb.sdLn.toFixed(3)} → ` +
-      (centred && sb.sdLn <= sa.sdLn ? 'PASS' : 'FAIL') +
-      `${centred ? '' : ' (bias)'}${sb.sdLn <= sa.sdLn ? '' : ' (scatter)'}`
-  );
-
-  // (e) monotonicity, on the radius as P-MONO-MW reads it and on the area,
-  // which no test has ever asked.
-  for (const g of GEOMETRIES) {
-    const radius = (magnitude: number): number =>
-      simulateEarthquake({ magnitude, contourLaw: DECIDING_LAW, extendedSource: g }).shaking
-        .mmi7Radius || 0;
-    const area = (magnitude: number): number => {
-      const r = simulateEarthquake({ magnitude, contourLaw: DECIDING_LAW, extendedSource: g });
-      const rad = ((r.shaking.mmi7Radius as number) || 0) / 1_000;
-      if (!(rad > 0)) return 0;
-      if (!r.isExtendedSource) return Math.PI * rad * rad;
-      const l = (r.ruptureLength as number) / 1_000;
-      const w = (r.ruptureFootprintWidth as number) / 1_000;
-      return l * w + 2 * rad * (l + w) + Math.PI * rad * rad;
-    };
-    const mr = countMagnitudeInversions(radius);
-    const ma = countMagnitudeInversions(area);
+    const worsened: string[] = [];
+    for (const cell of EXTENDED_SOURCE_CELLS.map((c) => c.label)) {
+      const x = cellsIn[cell];
+      const y = cellsOut[cell];
+      if (x === null || x === undefined || y === null || y === undefined) continue;
+      const grew = Math.abs(Math.log(y)) - Math.abs(Math.log(x));
+      console.log(
+        `        ${cell}: ${x.toFixed(3)}x → ${y.toFixed(3)}x  (|ln| ${grew >= 0 ? '+' : ''}${grew.toFixed(3)})`
+      );
+      if (grew > EXTENDED_SOURCE_MARGIN) worsened.push(cell);
+    }
     console.log(
-      `  (e) ${g.padEnd(10)} radius ${mr.inversions.toString()} inversions, ` +
-        `area ${ma.inversions.toString()} inversions (worst jump ${ma.worstDropKm.toFixed(0)})`
+      `    (b) no cell worse: ${worsened.length === 0 ? 'none → PASS' : `${worsened.join(', ')} → FAIL`}`
     );
+    const centred = Math.abs(Math.log(s.bias)) <= Math.abs(Math.log(sIn.bias));
+    console.log(
+      `    (c) overall ${sIn.bias.toFixed(3)}x/${sIn.sdLn.toFixed(3)} → ${s.bias.toFixed(3)}x/${s.sdLn.toFixed(3)} → ` +
+        (centred && s.sdLn <= sIn.sdLn ? 'PASS' : 'FAIL')
+    );
+    const flipped = cellsThatFlippedSign(cellsIn, cellsOut);
+    console.log(
+      `    (f) no cell trades under for over: ${flipped.length === 0 ? 'none → PASS' : `${flipped.join(', ')} → FAIL`}`
+    );
+    const mono = countMagnitudeInversions(
+      (magnitude) =>
+        simulateEarthquake({ magnitude, contourLaw: DECIDING_LAW, ...arm.settings }).shaking
+          .mmi7Radius || 0
+    );
+    console.log(`    (e) monotonicity: ${mono.inversions.toString()} inversions`);
   }
 
   theDead();

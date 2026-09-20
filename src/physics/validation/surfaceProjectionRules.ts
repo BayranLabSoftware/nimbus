@@ -133,6 +133,102 @@ import { EXTENDED_SOURCE_CELLS, EXTENDED_SOURCE_MARGIN } from './extendedSourceR
  *       threshold is adjusted after a number is seen.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 426 and published
+ * as it came out: BOTH ARMS ARE REFUSED, the geometry in place stays, and
+ * the round found the weakness rule 421 had declared before it ran.
+ *
+ * The map, on the 116, with `boore2014`:
+ *
+ *   | arm                  | bands | mean   | scatter | Mw < 6.5 | Mw 6.5–7.5 | Mw >= 7.5 |
+ *   | -------------------- | ----- | ------ | ------- | -------- | ---------- | --------- |
+ *   | in place             | 165   | 0.393x | 1.579   | 0.56x    | 0.22x      | 1.27x     |
+ *   | A projection         | 165   | 0.353x | 1.507   | 0.56x    | 0.22x      | 0.73x     |
+ *   | B projection+always  | 169   | 0.865x | 1.283   | **1.01x** | **0.85x** | 0.73x     |
+ *
+ * THE PREDICTION WAS RIGHT, and it is worth saying plainly because the
+ * point of writing a closing note is that it can be wrong. Rules 412 to
+ * 418 refused `extendedSource: 'always'` for overshooting — 1.84x and
+ * 1.62x in the two lower cells — and named the down-dip width as the
+ * reason. Project the width and the overshoot is gone: the same two cells
+ * read 1.01x and 0.85x. The smallest earthquakes, which the geometry in
+ * place draws at 0.56x and the last candidate at 1.84x, land on ONE. The
+ * hole between Mw 6.5 and 7.5 goes from 0.22x to 0.85x. Overall the bias
+ * moves from 0.393x to 0.865x and the scatter from 1.579 to 1.283 — the
+ * best geometry measured in this whole line of rounds.
+ *
+ * AND IT IS STILL REFUSED, for two reasons that are now located exactly.
+ *
+ * FIRST, rule 424(b) and (f), on the largest cell: Mw >= 7.5 goes from
+ * 1.273x to 0.731x. It crosses from over-drawing to under-drawing and its
+ * |ln bias| grows by 0.072, past the 0.05 margin — so the clause written
+ * last round to catch a sign change caught one, on its first outing, and
+ * caught the candidate that introduced it. Arm A isolates the cause
+ * completely: it changes NOTHING but the width, the two lower cells do not
+ * move by a digit, and that cell alone falls from 1.273x to 0.731x.
+ *
+ * WHY, measured: of the 20 earthquakes of the jury at Mw 7.5 and above,
+ * ELEVEN have no mechanism in the catalogue. CB14's neutral case is
+ * strike-slip, strike-slip means dip 90 degrees, and cos 90 is zero, so
+ * their footprint width comes out at exactly 0.0 km. They are:
+ *
+ *   usp0000888  Mw 7.6  77 km WSW of Callao, Peru
+ *   hv19755025  Mw 7.7  Hawaii
+ *   usp0000ex3  Mw 7.5  Los Amates, Guatemala
+ *   usp0000hvb  Mw 7.9  Palimbang, Philippines
+ *   usp0000xp7  Mw 7.7  San Agustín Loxicha, Mexico
+ *
+ *   Peru, Guatemala, the Philippines, Oaxaca. These are SUBDUCTION
+ *   earthquakes. They dip fifteen to twenty-five degrees, their surface
+ *   projection is about 0.95 W, and the model hands them a vertical fault
+ *   and a projection of nothing. They are not marked `subductionInterface`
+ *   because that flag is a thing a user ticks, and an atlas row does not
+ *   tick it.
+ *
+ *   Rule 421 said this before the run, in its own words: "the dip is a
+ *   constant per style, not a measured dip... Where a fault's real dip is
+ *   known — the GEM tiles carry one — reading it is a later round, and it
+ *   can only help." The run did not discover a new problem; it measured
+ *   the size of the one that was declared. What it adds is that the
+ *   declared weakness is not small and not confined to marked scenarios:
+ *   it is more than half of the largest cell.
+ *
+ * SECOND, rule 424(d), the dead: Pohang 2017 is still lost, and the
+ * projection nearly but does not quite rescue it —
+ *
+ *   in place            central 129  band [0–37746]  contains 0
+ *   always only         central 501  band [2–91004]  misses
+ *   projection + always central 428  band [1–81833]  misses
+ *
+ *   The projection pulls the low end from 2 to 1 and the central figure
+ *   from 501 to 428, and the band still cannot say "possibly nobody" about
+ *   an earthquake that killed nobody. This one is not the width: at Mw 5.5
+ *   the projected width is zero already, so what is left is the stadium's
+ *   length — five kilometres of line grown by the ring radius — and that
+ *   alone is enough to put somebody inside the lethal band in all two
+ *   hundred realisations. Amatrice 2016 is gained in exchange, as before.
+ *
+ * WHAT THIS ROUND LEAVES, and the next one is not a guess:
+ *
+ *   1. THE DIP. Read the fault's real dip where the repository already
+ *      knows it. `shippedStrikeAnswer` consults the slab model and the GEM
+ *      fault tiles for the strike already, on the same call, for the same
+ *      scenario; the dip is beside the strike in both. A round that takes
+ *      the dip from where the strike comes from would give those eleven
+ *      subduction earthquakes something near 0.95 W instead of zero, and
+ *      it is the largest cell's whole problem. Rules first, as always.
+ *
+ *   2. POHANG. A Mw 5.5 whose band cannot reach zero is a statement about
+ *      the toll model, not about the map: the geometry in place gets there
+ *      only because a disc of that radius holds fewer people than a
+ *      stadium of the same radius, which is luck rather than physics. It
+ *      deserves its own look, not a geometry chosen to keep it.
+ *
+ *   3. And the hole is still open. The simulator still draws 0.22x of the
+ *      ground between Mw 6.5 and 7.5, and this round measured a geometry
+ *      that draws 0.85x of it and cannot be adopted yet.
+ */
+
 export const SURFACE_PROJECTION_RULES = 'rules 419 to 426, fixed 20 September 2026';
 
 /** Rule 424: the cells and the margin, both imported so that this round

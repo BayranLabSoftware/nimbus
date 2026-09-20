@@ -82,7 +82,7 @@ function fieldAreasKm2(
     longitude,
     strikeDeg: result.inputs.strikeAzimuthDeg ?? answer.strikeDeg ?? 0,
     halfLengthM: result.isExtendedSource ? (result.ruptureLength as number) / 2 : 0,
-    halfWidthM: result.isExtendedSource ? (result.ruptureWidth as number) / 2 : 0,
+    halfWidthM: result.isExtendedSource ? (result.ruptureFootprintWidth as number) / 2 : 0,
   };
   const { field } = fitShakingField({
     rupture,

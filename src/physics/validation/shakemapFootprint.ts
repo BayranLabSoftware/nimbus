@@ -57,7 +57,9 @@ export function footprintAreaKm2(
   // the radius on every side, which is the shape the globe draws and
   // the casualty bands count inside.
   const lKm = (r.ruptureLength as number) / 1000;
-  const wKm = (r.ruptureWidth as number) / 1000;
+  // Rule 419: what the rupture covers on the MAP, which is what an area
+  // compared with a ShakeMap's area has to be built from.
+  const wKm = (r.ruptureFootprintWidth as number) / 1000;
   return lKm * wKm + 2 * radiusKm * (lKm + wKm) + Math.PI * radiusKm * radiusKm;
 }
 

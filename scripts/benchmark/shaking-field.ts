@@ -121,7 +121,7 @@ for (const footprint of SHAKEMAP_FOOTPRINTS) {
     longitude: where.longitude,
     strikeDeg: preset.input.strikeAzimuthDeg ?? 0,
     halfLengthM: result.isExtendedSource ? (result.ruptureLength as number) / 2 : 0,
-    halfWidthM: result.isExtendedSource ? (result.ruptureWidth as number) / 2 : 0,
+    halfWidthM: result.isExtendedSource ? (result.ruptureFootprintWidth as number) / 2 : 0,
   };
   // Rule 312: wide enough to hold the outermost contour and then some, because
   // soft ground pushes it out.

@@ -296,7 +296,7 @@ function main(): void {
       longitude: where.lon,
       strikeDeg: strike,
       halfLengthM: result.isExtendedSource ? (result.ruptureLength as number) / 2 : 0,
-      halfWidthM: result.isExtendedSource ? (result.ruptureWidth as number) / 2 : 0,
+      halfWidthM: result.isExtendedSource ? (result.ruptureFootprintWidth as number) / 2 : 0,
     };
     // How wide the field must be is one rule, and it lives in
     // `shakingOverlay.ts` so that this SVG and the globe cannot size one
