@@ -217,6 +217,188 @@ work towards it, so that the bar does not move with the work.
 
 ---
 
+## M10 — The road to a 9, counted rule by rule _(open, 20 September 2026)_
+
+M9 is the shape of the work. This is the arithmetic of what is left of
+it, read on 20 September 2026 from the scorecard the report
+regenerates, and the order in which it should be done.
+
+**Fifteen rules of fifty-two hold.** Thirty-seven remain, and C1 to C3
+beside them.
+
+| Domain                 | Count | Hold    | Left | What actually blocks it                             |
+| ---------------------- | ----: | ------- | ---: | --------------------------------------------------- |
+| Waves from landslides  |   4.5 | 3 of 6  |    3 | two regimes with no worked example                  |
+| Impacts                |   4.0 | 4 of 9  |    5 | everything beyond: bands, cells, the sweep          |
+| Explosions             |   3.3 | 3 of 8  |    5 | no set of accidental explosions exists              |
+| Volcanoes              |   2.2 | 2 of 10 |    8 | four held-out sets never acquired                   |
+| Waves from earthquakes |   1.8 | 2 of 10 |    8 | GeoClaw never run on real bathymetry                |
+| Earthquakes            |   1.0 | 1 of 9  |    8 | E1 at 0.46×, E2 at 0.13×, E3 short by 0.00127 in ln |
+
+### The three families, and why only one of them is cheap
+
+The fifty-two rules divide into three kinds of work whose costs are not
+comparable, and the plan follows from that and from nothing else.
+
+**Fidelity** — G1 and the rules that stand for it (I1, N1, V1, L1) —
+asks the model to give what a tool of the field gives on the same
+inputs. It closes with **code and references. It spends no data**, and
+it can be repeated as often as it fails.
+
+**Accuracy** — E1 to E3, T1 to T4, L2, I2, N2, N3, V2 to V5 — asks for
+bias and scatter inside a bound on a held-out set of a named size. It
+closes **only with rows nothing in the model has ever read**, and rule 5
+spends the set on the first reading. There is no second attempt on the
+same rows.
+
+**Beyond** — G3, G4, G5, G6, G7 — asks for bands, a declared input
+space, robustness, declared gaps and the method. It is **machinery,
+built once and paid for six times**.
+
+Today G7 holds on all six panels and almost nothing else that cuts
+across them does. **G3 and G4 fail on all six**: twelve of the thirty-seven rules
+left, which is very nearly a third of the remaining work, and it is one
+job done six times rather than six jobs.
+
+### Phase 0 — What can be closed without spending a single row
+
+Nothing here reads a held-out set. It comes first because **measuring a
+model that is not yet the field's tool measures noise**: a bound met by
+a model that disagrees with the reference is met by luck, and the set is
+spent either way.
+
+| Work                          | Domain          | Where it stands                                                                                                                                                 |
+| ----------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| L1, the two remaining regimes | Landslide waves | a submerged slide and a confined basin still draw the project's own calibrated forms; open water from above already draws the manual, held to 10⁻⁹ on 143 cases |
+| G5, the sweep                 | Impacts         | 464 failures in 5 000 scenarios                                                                                                                                 |
+| G5, the sweep                 | Earthquakes     | 16 failures, every one an ill-conditioned contour radius                                                                                                        |
+| I3, the airburst's blast      | Impacts         | Tunguska's 20 kPa ring is 0.43× the flattened forest — and I3 is a check, not a held-out test, so it can be closed and re-closed                                |
+| V1, two clauses of four       | Volcanoes       | pyroclastic currents and lahars not held to LaharZ                                                                                                              |
+| G1, the wave relations        | Waves from eq.  | held to GeoClaw fixtures by tolerance, not within 1 % of a reference                                                                                            |
+
+**Six rules, no data spent.** Start with the landslide waves: highest
+count, nothing pending, and L1 is the only rule in the project whose
+missing piece is a model rather than a measurement.
+
+### Phase 1 — The machinery built once and paid for six times
+
+**G4 and E5 — the envelope, declared cell by cell.** The product must
+say, for every input the form accepts, whether the scenario lies inside
+the cells a held-out set has measured, and the report must print G2 and
+G3 cell by cell. The earthquakes already name their cells (the
+scorecard's magnitude cells crossed with four depth cells: to 40 km, 40
+to 70, 70 to 300, deeper). Built once in general, this closes **six
+rules**.
+
+**The Monte Carlo sampler — G3, L3, T5, E4, V6.** Today a wave carries
+no band, an impact carries no band, an explosion carries no band. This
+closes **six rules**, but only after the matching accuracy rule has
+fixed the σ its width is judged against, so it cannot be brought
+forward.
+
+Phase 0 and Phase 1 together are **twelve of the thirty-seven**, and
+neither spends a row.
+
+### Phase 2 — The data, which is where the plan becomes expensive
+
+Each line is an acquisition the owner has to authorise, and the sets
+must be disjoint from everything already read.
+
+| Rule | Needs                                                                       | Have                                                       |
+| ---- | --------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| E1   | ≥ 300 USGS ShakeMaps of every depth, held out                               | ShakeMap 4 **already runs here**; the atlas is partly read |
+| E2   | ≥ 100 earthquakes with a PAGER exposure                                     | none                                                       |
+| E3   | ≥ 100 earthquakes with a PAGER loss estimate                                | none, **and the 1973–2007 window is burned**               |
+| T1   | ≥ 100 DART records from ≥ 10 earthquakes                                    | partial (151 deep-ocean records), NDBC files defective     |
+| T2   | ≥ 500 NCEI run-up observations from ≥ 10 events                             | **the set is spent**                                       |
+| T3   | reference travel times on T1's records                                      | none                                                       |
+| T4   | ≥ 15 tsunamis with a counted toll                                           | none                                                       |
+| N2   | ≥ 8 accidental explosions with a mapped damage radius                       | **none at all**                                            |
+| N3   | ≥ 10 explosions with a counted toll, Hiroshima and Beirut excluded as tuned | two, both excluded                                         |
+| V2   | ≥ 30 eruption phases **not** in IVESPA 1.0                                  | none; IVESPA is read                                       |
+| V3   | ≥ 10 eruptions with a published isopach map                                 | none                                                       |
+| V4   | ≥ 30 pyroclastic currents and lahars with volume and runout                 | none                                                       |
+| V5   | ≥ 15 fatal eruptions                                                        | none                                                       |
+
+**Twelve held-out sets, and the project has one and a half.** This, and
+not the physics, is why the counts do not move.
+
+### Three problems this plan does not solve
+
+**T2 is in a dead end, and a rule of ours built it.** This file's
+companion says a bound _"is never loosened after a figure has failed
+it."_ T2 has been measured and failed — 3.16× under the bound as first
+written, 3.69× after the dateline fix corrected a wall that had been
+cancelling part of the error. So **T2 cannot be amended**, and its set
+is spent. Closing it needs 500 run-up observations disjoint from those
+already read. Whether NCEI still holds them is a question to settle
+**before** promising T2 is reachable; if it does not, waves from
+earthquakes stop at 8 of 10 permanently.
+
+**The PAGER window is burned.** The fatality curves are calibrated on
+1973–2007, so E3's hundred rows have to come from outside it or the
+measurement is circular. That leaves roughly nineteen years to draw
+from.
+
+**E3 missed by 0.00127 in ln** — one part in a thousand, on the bound as
+first written. Not amendable, for the same reason as T2. It closes by
+improving the model, not the bound.
+
+### Phase 3 — Citability, last
+
+**Decided by Andrea on 20 September 2026**, against the order first
+proposed:
+
+> Citability goes last, because first we have to have software that is
+> right — otherwise it is pointless.
+
+The reasoning holds and is recorded as the decision: a DOI is a
+**permanent citation target**, and minting one over a model whose
+earthquake footprint is 0.46× the field's tool points other people's
+papers at the wrong version for good. C1 to C3 therefore come after the
+model, not beside it.
+
+Recorded against it, because this file records disagreements rather
+than settling them silently:
+
+- C3 has a floor of March 2027 and a journal takes months beyond
+  acceptance, so the lead time is long and it is spent waiting either
+  way.
+- The assessment in the section below is that a 9 on all six panels is
+  **not reachable with the data available**. Read strictly, "first the
+  software has to be right" can mean never.
+
+The mitigation costs nothing and is already almost true: **keep C1's
+machinery honest as the work goes**, since the report is already
+deterministic and regenerates from its own commit. Then tagging is a
+day's work whenever the owner judges the model ready, rather than a
+project of its own.
+
+### What a 9 on all six panels would actually take
+
+Stated plainly so that no later reader mistakes the plan for a promise:
+
+- **Impacts and landslide waves can reach 7 to 8** on Phase 0 and Phase
+  1, with almost no new data.
+- **Explosions and volcanoes depend entirely on acquisition.** The data
+  exists in the world; nobody has fetched it.
+- **Earthquakes and waves from earthquakes are months**, and T2 may
+  already be closed forever by a rule this project wrote about itself.
+
+A paper is written on that, not on a nine that is not there: _here is
+what the model does as well as the field's tool, here is where it is
+wrong and by how much, here is what it cannot measure and why._ That is
+a publishable result, and Phase 0 brings it within reach.
+
+**Exit:** every rule of [GOLD_STANDARD.md](GOLD_STANDARD.md) holds in
+the validation report the commit regenerates, carrying no gap but the
+ceilings, and C1 to C3 are met in that order after it. **Phase exit:**
+a phase ends when every rule it names has a verdict in the report — met
+or refused with its reason — and no phase begins while the one before
+it has a rule still pending.
+
+---
+
 ## M9 — Laboratory level: how the model gets there _(open, 9 September)_
 
 M8 is a list of things that were wrong. This is the shape of the work
