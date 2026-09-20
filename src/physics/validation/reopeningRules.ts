@@ -110,6 +110,77 @@
  *       written before it and a new candidate would not be.
  */
 
+/**
+ * THE OUTCOME, run once under rule 499: **NOT REPLACED.** Rules 52 and 53
+ * keep their verdict, `epicentral` stays, the guard stays, and the cell
+ * chosen from the frontier cannot ship as it is.
+ *
+ * RULE 496(a) — does rule 52's own test turn over on the proposed
+ * geometry? NO, and it cannot. Measured directly: the MMI VII ring of a
+ * point source is IDENTICAL with and without the surface projection at
+ * Mw 5.2, 6.0, 6.8 and 7.4 — 1.16, 7.60, 10.53 and 14.21 km either way —
+ * because below Mw 7.5 no stadium is drawn and there is nothing to
+ * project. Rule 52 scores only those cells. Its numbers stand exactly as
+ * published: 1.53 and 1.78 against 0.88 and 1.17.
+ *
+ * RULE 496(b) — is rule 52's test BLIND to the defect at issue, as
+ * P-MONO-MW was? NO, and the numbers say the opposite. The area bias by
+ * magnitude cell on rule 405's 116:
+ *
+ *   | arm                          | overall | Mw<6.5 | 6.5–7.5 | >=7.5 | worst step |
+ *   | ---------------------------- | ------- | ------ | ------- | ----- | ---------- |
+ *   | shipped  downDip+epicentral  | 0.393x  | 0.56x  | 0.22x   | 1.27x | x9.19      |
+ *   | projection + epicentral      | 0.353x  | 0.56x  | 0.22x   | 0.73x | x4.91      |
+ *   | downDip + Thompson-Worden    | 1.087x  | 1.49x  | 0.88x   | 1.27x | x2.07      |
+ *   | projection + T-W (proposed)  | 0.978x  | 1.49x  | 0.88x   | 0.73x | x1.87      |
+ *   | always + downDip (no T-W)    | 1.601x  | 1.84x  | 1.62x   | 1.27x | x1.41      |
+ *
+ *   Read the Thompson & Worden rows against the ones above them. The
+ *   correction moves the two cells BELOW Mw 7.5 and leaves the one above
+ *   untouched — 1.27x to 1.27x. Its entire effect is in the regime rule
+ *   52 scores.
+ *
+ *   SO RULE 52 IS NOT BLIND TO IT. It is looking exactly where the
+ *   candidate acts, and it says the candidate is worse there. And the
+ *   cells say why: the correction takes the smallest earthquakes from
+ *   0.56x to 1.49x — from under by 1.8 to OVER by 1.5 — while repairing
+ *   the middle from 0.22x to 0.88x. Rule 52's statistic weights both
+ *   cells below Mw 7.5, so the overshoot at the small end costs it
+ *   eligibility, and it is right to.
+ *
+ *   The overall figure of 0.978x that the frontier reported is those two
+ *   movements averaging out, plus the projection's separate gain above
+ *   Mw 7.5. An average over three cells can hide one going the wrong way;
+ *   rule 52 looks at the two it cares about and does not.
+ *
+ * SO BOTH DOORS RULE 496 LEFT OPEN ARE SHUT, and neither is shut by a
+ * technicality. `epicentral` stays.
+ *
+ * RULE 498 ALSO ASKS FOR THE ALTERNATIVE, and there is exactly one. Of
+ * the 26 frontier cells, five hold every property; four of those are
+ * duplicates of one another and the fifth is the cell just refused. What
+ * remains is a single distinct option:
+ *
+ *   boore2014 / extendedSource: always / downDip / style / toPeak /
+ *   epicentral
+ *
+ *     areas   |ln bias| 0.471 against 0.935 — twice as centred
+ *     peak    1.956, untouched
+ *     dead    197.5 against 204.1 — better
+ *     quiet   1 736 against 1 195 — worse by 45 %
+ *     seam    x1.41, the smallest measured anywhere
+ *
+ *   It contradicts no rule's verdict that this round can find: rules 40
+ *   to 44 decided `fromMw7.5` for a MARKED subduction interface and this
+ *   touches only unmarked scenarios; rules 412 to 418 refused it on their
+ *   own clause and rules 488 to 494 re-measured it under rules written
+ *   first. Whether the repository agrees is not a matter of opinion —
+ *   the report's guards will say, and they are the test.
+ *
+ *   It is named here and not adopted here. Rule 491 gives that choice to
+ *   the owner of the project and this file does not take it.
+ */
+
 export const REOPENING_RULES = 'rules 495 to 499, fixed 20 September 2026';
 
 /** Rule 496(a): rule 52's own bar, restated so the run can be read against
