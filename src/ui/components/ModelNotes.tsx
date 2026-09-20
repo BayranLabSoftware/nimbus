@@ -19,7 +19,7 @@ import styles from './SimulatorPanel.module.css';
  */
 
 const NOTES: Record<EventType, readonly string[]> = {
-  earthquake: ['depth', 'areas', 'topography'],
+  earthquake: ['depth', 'areas', 'topography', 'vulnerability', 'fires'],
   impact: ['impactAngle', 'impactToll'],
   explosion: ['explosionEnvelope'],
   volcano: ['volcanoPlume'],

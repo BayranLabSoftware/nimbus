@@ -584,7 +584,9 @@
         "impactToll": "no impact death toll has ever been recorded, so the toll here is calibrated on explosions of the same energy",
         "explosionEnvelope": "measured up to the Tsar Bomba at 50 Mt and Hiroshima for the toll; beyond those the model extrapolates",
         "volcanoPlume": "the plume height follows the eruption rate alone: no wind shear, no atmospheric profile",
-        "landslideRunup": "the run-up is the impulse-wave manual's, calibrated in a flume and applied to a coast"
+        "landslideRunup": "the run-up is the impulse-wave manual's, calibrated in a flume and applied to a coast",
+        "vulnerability": "the death rate is PAGER's curve for the COUNTRY under the epicentre, and which class a country is in changes the answer by a factor of a hundred: the United States, Canada and Australia carry PAGER's best-stock curve, so a Mw 7.9 under a Californian city kills a few hundred where the same event on the global median curve would kill tens of thousands",
+        "fires": "only the shaking is counted. Fire after the earthquake, which the USGS ShakeOut scenario puts at about half the dead for a Mw 7.8 on the San Andreas, is not in this model at all"
       }
     }
   },
@@ -1408,7 +1410,8 @@
       "mortality": "Mortality",
       "deaths": "Deaths",
       "hazards": "Causes",
-      "total": "Total"
+      "total": "Total",
+      "oneIn": "1 in {{n}}"
     },
     "band": {
       "blast12psi": "≥ 12 psi",

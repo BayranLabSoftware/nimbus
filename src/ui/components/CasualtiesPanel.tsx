@@ -7,6 +7,7 @@ import {
 } from '../../physics/validation/calibrationEnvelope.js';
 import type { PopulationLookupMethod } from '../../scene/populationLookup.js';
 import type { CasualtyStatus } from '../../store/index.js';
+import { formatMortality } from '../utils/mortalityFormat.js';
 import { bandLabelKey } from './casualtyBandLabel.js';
 import { cx } from '../utils/cx.js';
 import {
@@ -236,8 +237,9 @@ export function CasualtiesPanel({
                     </td>
                     <td>{people(band.population)}</td>
                     <td>
-                      {(band.mortality * 100).toLocaleString(locale, { maximumFractionDigits: 1 })}{' '}
-                      %
+                      {formatMortality(band.mortality, locale, (n: string) =>
+                        t('casualties.table.oneIn', { n })
+                      )}
                     </td>
                     <td>{people(band.deaths)}</td>
                     <td>{band.hazards.map((h) => t(`casualties.hazard.${h}`)).join(' · ')}</td>

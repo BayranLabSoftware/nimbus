@@ -584,7 +584,9 @@
         "impactToll": "non è mai stato registrato un bilancio di vittime da impatto: qui è tarato su esplosioni di pari energia",
         "explosionEnvelope": "misurato fino alla Tsar Bomba di 50 Mt e a Hiroshima per le vittime; oltre, il modello estrapola",
         "volcanoPlume": "l'altezza del pennacchio segue la sola portata eruttiva: niente taglio del vento, niente profilo atmosferico",
-        "landslideRunup": "la risalita è quella del manuale delle onde d'impulso, tarata in canaletta e applicata a una costa"
+        "landslideRunup": "la risalita è quella del manuale delle onde d'impulso, tarata in canaletta e applicata a una costa",
+        "vulnerability": "il tasso di mortalità è la curva PAGER del PAESE sotto l'epicentro, e la classe in cui un paese ricade cambia la risposta di un fattore cento: Stati Uniti, Canada e Australia portano la curva degli edifici migliori, così un Mw 7,9 sotto una città californiana uccide qualche centinaio dove lo stesso evento sulla curva mediana mondiale ne ucciderebbe decine di migliaia",
+        "fires": "si contano solo i morti da scuotimento. Gli incendi dopo il terremoto, che lo scenario ShakeOut dell'USGS stima attorno alla metà delle vittime per un Mw 7,8 sulla San Andreas, in questo modello non ci sono"
       }
     }
   },
@@ -1495,7 +1497,8 @@
       "mortality": "Mortalità",
       "deaths": "Morti",
       "hazards": "Cause",
-      "total": "Totale"
+      "total": "Totale",
+      "oneIn": "1 su {{n}}"
     },
     "band": {
       "blast12psi": "≥ 12 psi",
