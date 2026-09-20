@@ -2203,6 +2203,32 @@ export function Globe(): JSX.Element {
             }
             mmiFieldDrawn = true;
             mmiFieldBands = [...contours].sort((a, b) => a.level - b.level).map((c) => c.label);
+            // The numeral ON the contour, which is how every published
+            // intensity map is read: the colour says roughly, the numeral
+            // says which line you are looking at. `labelAt` is the
+            // northernmost point of each contour's longest ring, so the
+            // labels sit along the top edge where a reader's eye lands
+            // first and two of them rarely collide.
+            for (const contour of contours) {
+              if (contour.labelAt === null) continue;
+              viewer.entities.add({
+                id: `mmi-field-label-${contour.label}`,
+                position: Cartesian3.fromDegrees(
+                  contour.labelAt.longitude,
+                  contour.labelAt.latitude
+                ),
+                label: {
+                  text: contour.label,
+                  font: 'bold 13px "JetBrains Mono", monospace',
+                  fillColor: Color.WHITE.withAlpha(0.95),
+                  outlineColor: Color.fromCssColorString('#0A0E16').withAlpha(0.9),
+                  outlineWidth: 3,
+                  style: LabelStyle.FILL_AND_OUTLINE,
+                  heightReference: HeightReference.CLAMP_TO_GROUND,
+                  disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                },
+              });
+            }
             viewer.entities.add({
               id: 'mmi-field',
               rectangle: {
@@ -2259,6 +2285,23 @@ export function Globe(): JSX.Element {
       // this did until 20 September 2026, is an assertion about the tectonics
       // of a place, made silently, and wrong almost everywhere.
       const strikeIsKnown = result.data.inputs.strikeAzimuthDeg !== undefined;
+      // Drawn as the gold standard draws one.
+      //
+      // A USGS ShakeMap puts ONE surface on the map for the intensity, its
+      // contours labelled, with the fault trace as a line over it. It does
+      // not put a stadium and a disc and a field on top of each other for
+      // the same quantity: a reader looking at four outlines cannot tell
+      // which one is the answer, and on 20 September 2026 one such map — a
+      // field, an MMI VII stadium, an MMI VIII stadium and a tsunami cavity
+      // over southern California — is what made a reader say that this is
+      // not how an earthquake is drawn. He was right.
+      //
+      // So where the field is painted, it IS the intensity, and the rings
+      // are not drawn at all. Where it is not — no Vs30 tiles yet, a
+      // scenario on reference rock — the rings still carry the whole
+      // picture, as they always have. The radii themselves have not moved:
+      // they are in the report, in the legend's own numbers, and in the
+      // tooltips of the map that has no field.
       if (result.data.isExtendedSource && strikeIsKnown) {
         // Phase 13b — extended-source MMI contour. The rupture is a
         // surface-projection rectangle of (L × W) inflated by the
@@ -2303,6 +2346,7 @@ export function Globe(): JSX.Element {
         // Render outermost first (VII larger than IX) so the inner
         // bands paint on top and remain visible.
         for (const { id, radius, color, tooltipKind } of stadiumContours) {
+          if (mmiFieldDrawn) break;
           if (!Number.isFinite(radius) || radius <= 0) continue;
           const verts = buildRuptureStadiumPolygon({
             centerLatDeg: ringAnchor.latitude,
@@ -2436,7 +2480,7 @@ export function Globe(): JSX.Element {
             requestAnimationFrame(tick);
           }
         }
-      } else {
+      } else if (!mmiFieldDrawn) {
         // Small / continental event: the rupture rectangle is well
         // inside the MMI VII point-source radius, so a circular ring
         // is the geometrically correct representation.

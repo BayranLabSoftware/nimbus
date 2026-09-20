@@ -96,14 +96,25 @@ function formatRange(radiusM: number): string {
  * the store. Returns an empty array when no simulation has run yet so
  * the caller can render the empty-state copy.
  */
-function buildRingRows(result: ActiveResult | null, t: (key: string) => string): LegendRow[] {
+function buildRingRows(
+  result: ActiveResult | null,
+  t: (key: string) => string,
+  /** True when the globe painted the intensity FIELD for this scenario.
+   *  The MMI rings are then not drawn at all — the field is the intensity
+   *  — and a legend row is a promise that something is drawn, so their
+   *  rows go with them. Their radii stay in the report, and the seismic
+   *  front still runs to the outermost of them, which is why they are
+   *  still measured here and only their rows are withheld. */
+  fieldDrawn = false
+): LegendRow[] {
   if (result === null) return [];
   const out: LegendRow[] = [];
   /** Ogni raggio spinto, per chiave: il fronte legge solo i propri. */
   const raggi = new Map<string, number>();
-  const push = (key: keyof typeof SWATCH, radiusM: number): void => {
+  const push = (key: keyof typeof SWATCH, radiusM: number, rowToo = true): void => {
     if (!Number.isFinite(radiusM) || radiusM <= 0) return;
     raggi.set(key, radiusM);
+    if (!rowToo) return;
     out.push({
       key,
       label: t(`globe.ringLabel.${key}`),
@@ -193,9 +204,9 @@ function buildRingRows(result: ActiveResult | null, t: (key: string) => string):
     }
     case 'earthquake': {
       const s = result.data.shaking;
-      push('mmi9', s.mmi9Radius);
-      push('mmi8', s.mmi8Radius);
-      push('mmi7', s.mmi7Radius);
+      push('mmi9', s.mmi9Radius, !fieldDrawn);
+      push('mmi8', s.mmi8Radius, !fieldDrawn);
+      push('mmi7', s.mmi7Radius, !fieldDrawn);
       pushFront('seismicFront', ANELLI_SISMICI);
       break;
     }
@@ -246,7 +257,7 @@ export function RingLegend(): JSX.Element {
   const globalBathymetricGrid = useAppStore((s) => s.globalBathymetricGrid);
   const [collapsed, setCollapsed] = useState(false);
 
-  const rows = buildRingRows(result, t);
+  const rows = buildRingRows(result, t, shakingFieldBands !== null);
   const anyHidden = rows.some((r) => hiddenRingKeys.has(r.key));
 
   // Phase 12c — tsunami map status. Surfaces the user-facing question

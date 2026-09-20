@@ -309,7 +309,8 @@ export const VISUAL_CONTRACTS = {
       'the areas are wrong by a factor of a few, in BOTH directions, and the picture does not say so: measured against the published ShakeMaps, the field paints 2.64x too much ground at MMI VIII on Tohoku and 5.13x too much at MMI VII on Amatrice, but only 0.10x of it at MMI VIII on Northridge and 0.26x at MMI VII on Gorkha',
       'drawing the field instead of the rings does NOT make it more accurate: over the ten bands both reach, the field sits at 0.73x of the recorded area against the rings 0.81x, with the same scatter (sigma_ln 1.34 against 1.32). It is the same law, drawn on the ground that is there rather than swept around a rectangle',
       'the irregularity comes ONLY from the Vs30 grid, whose own convention in this project carries 30 % uncertainty; there is no topography, no basin depth and no within-event spatial correlation',
-      'what the field fixes, relative to the rings it is drawn beside: the contour falls out of a distance metric computed cell by cell rather than being a point-source radius swept around a rectangle',
+      'what the field fixes, relative to the rings it replaces: the contour falls out of a distance metric computed cell by cell rather than being a point-source radius swept around a rectangle',
+      'where this field is painted the MMI rings and stadiums are NOT drawn: a gold-standard intensity map carries one surface for the intensity, its contours labelled, with the fault trace as a line over it, and four outlines for one quantity leave a reader unable to tell which is the answer. The radii are still published, in the report and in the tooltips of the map that has no field',
     ],
   }),
   mmi8Point: defineContract({
