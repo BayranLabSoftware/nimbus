@@ -66,6 +66,61 @@ import { simulateEarthquake, type EarthquakeScenarioInput } from '../events/eart
  * in its own rules before it runs.
  */
 
+/**
+ * THE RE-FILTER, run after this file was committed, AND A CORRECTION I
+ * OWE.
+ *
+ * When this gate was committed its message said: "the repair does not
+ * unblock what prompted it — Thompson & Worden now passes the narrowed
+ * radius gate and fails the new area one." THAT CLAIM IS WRONG about the
+ * thing it names. It is true of Thompson & Worden ALONE, which is what
+ * the test in this file checks and which still fails at x2.07. It is
+ * FALSE of the cell that was actually blocked, which carried the surface
+ * projection and the top band with it:
+ *
+ *   boore2014 / fromMw7.5 / surfaceProjection / style / toPeak /
+ *   thompsonWorden2018   →   worst step x1.87   →   PASSES
+ *
+ * The projection closes enough of the Mw 7.5 seam that the correction's
+ * x2.07 drops below the bound, and the worst step moves to the Mw 5.2
+ * one at 1.87. So the repaired gate DOES let through the adoption the
+ * broken gate refused. That is the right outcome — the old gate was
+ * measuring the wrong quantity and said so — but I claimed the opposite,
+ * and the claim flattered the repair. It is corrected here rather than
+ * left standing.
+ *
+ * THE RE-FILTER ITSELF, on the 26 frontier cells of rules 488 to 494,
+ * with a `structure` dip walked at all six net sites and required to hold
+ * at every one. FIVE HOLD EVERY PROPERTY, and the shipped model is not
+ * among them:
+ *
+ *   | peak  | areas | dead  | quiet | worst step | cell                                   |
+ *   | ----- | ----- | ----- | ----- | ---------- | -------------------------------------- |
+ *   | 1.956 | 0.022 | 198.2 | 1547  | x1.87      | boore/7.5/projection/style/toPeak/T-W  |
+ *   | 1.956 | 0.471 | 197.5 | 1736  | x1.41      | boore/always/downDip/-/toPeak/-        |
+ *   | 1.956 | 0.935 | 204.1 | 1195  | **x9.19**  | SHIPPED — fails P-CONT-AREA            |
+ *
+ * AND TWO FINDINGS THE GATE PRODUCED ON ITS FIRST FULL OUTING, neither
+ * of which any score had ever shown:
+ *
+ *   CAMPBELL & BOZORGNIA HAS ITS OWN SEAM, AND IT IS WORSE. Its cells
+ *   read a worst step of x9.87 at Mw 5.28 and x17.13 at Mw 5.49 — a
+ *   seventeen-fold jump in the shaken ground for a hundredth of a
+ *   magnitude, down where the earthquakes are common. Four rounds scored
+ *   that law on areas and on the peak and none of them could see it.
+ *
+ *   THE STRUCTURE DIP BREAKS P-MONO-AREA. Five cells carrying it show the
+ *   ground SHRINKING as the magnitude rises. The dip is looked up from
+ *   the rupture length, the rupture length grows with magnitude, so the
+ *   dip can step to a different fault mid-sweep and the projected width
+ *   with it. A footprint that shrinks when the earthquake grows is the
+ *   thing P-MONO-MW was written to forbid, and it was happening in the
+ *   quantity P-MONO-MW does not read.
+ *
+ * Neither is fixed here. Both are recorded, and any round that proposes
+ * CB14 or the structure dip now has to answer them first.
+ */
+
 /** P-CONT-AREA: a factor of two over a step of 0.01 in magnitude, where
  *  the model's own rupture scaling implies 1.023. Forty times looser than
  *  the derivation, on purpose. */
