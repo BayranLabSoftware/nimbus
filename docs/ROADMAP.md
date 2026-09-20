@@ -322,6 +322,59 @@ relation whose fitted range and the events this product draws actually
 overlap, and the confined-basin half needs the rewiring these rounds
 deliberately refused to bundle with a transcription.
 
+#### And what the rest of the night did, 21 September
+
+Nine more rounds, rules 541 to 578. One defect found and closed, one
+audit, and four refusals — three of them refusing a candidate I would
+have shipped.
+
+**B-084, found and closed the same night.** The fair comparison inside
+the confined-basin round asked whether the SHIPPED subaerial branch did
+any better on the invariant the candidate was breaking. It did not: 278
+of the sweep's 1 827 subaerial scenarios drew a wave taller than their
+own water, the worst at 1 102 times. The cause was dated — rule 163
+removed a 0.4 h ceiling on 17 September, correctly, because the manual
+reaches 0.94 h inside its own experiments, and nothing replaced it
+outside that range. Rules 541 to 547 closed it with the manual's own
+maximum over Table 3-3's box, 0.939651 h, derived rather than chosen.
+The 278 are now none.
+
+**The audit of rules 548 to 554.** B-084 was found by accident, so this
+asks the other questions on purpose: seven invariants G5 does not read,
+over the same 25 000 scenarios, with the sweep's own seeds. Every one
+came back clean, and `waveInsideItsWater` — B-084's own question — reads
+zero where four hours earlier it read 278. Six readings were withdrawn
+as not being laws, each on grounds independent of its having failed, and
+all six are printed rather than deleted. A seventh question could not be
+asked at all: no result of the sweep carries a toll.
+
+**408 of the 464 impact G5 failures are explained** (rules 555 to 562),
+and the explanation is that G5's clause is false about the mechanism:
+"the other inputs held" is not true of an impactor's size, which SETS
+the burst altitude. The claim was refused by one scenario in 408 — one
+where the body bursts higher rather than lower, the same mechanism with
+its sign reversed — and it is not restated in a looser form to make it
+pass.
+
+**I3 is measured and not closed** (rules 563 to 578). Three findings.
+The report's "0.43× the flattened forest" compares against one threshold
+where the field names two: at 15 Mt the forest's 26.5 km sits BETWEEN
+the model's 20 kPa ring at 15.71 km and its 10 kPa ring at 37.42 km, and
+the bracket holds at 15 Mt and fails at 10 and 20, so the felled area
+picks out an energy. A band built from Collins et al. 2017's own three
+models holds both measured footprints and is 3.79× wide, where I3 allows
+3 — **I3's width is tighter than the spread the field reports on its own
+models**, so a band that met it would claim more precision than the
+reference claims. And Table 2 was read off the page at last, from the
+620 sideways glyphs no extractor returns, only to find that it carries
+no burst altitude: I3's "ninety per cent of the runs" needs one more
+column than the paper prints.
+
+**What did not move.** No default, on any domain. The validation report
+regenerates unchanged and the gate passes. Of the nine rounds, four were
+refusals, two were transcriptions, one was an audit, one a diagnosis and
+one a repair.
+
 ### Phase 1 — The machinery built once and paid for six times
 
 **G4 and E5 — the envelope, declared cell by cell.** The product must
