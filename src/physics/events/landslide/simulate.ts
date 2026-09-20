@@ -12,6 +12,7 @@ import {
   SUBMARINE_SLIDE_WATER_DENSITY,
   type SubmarineSlideClosure,
 } from '../../effects/submarineSlide.js';
+import type { SubmarineRelation } from '../../validation/submarineSplitRules.js';
 import type { Meters, SquareMeters } from '../../units.js';
 import { m } from '../../units.js';
 import {
@@ -82,7 +83,11 @@ export const LANDSLIDE_DEFAULT_REGIME: LandslideRegime = 'submarine';
  * after the first edition, which is not the one these equations come from
  * (B-043).
  */
-export type LandslideWaveLaw = 'project' | 'impulseWaveManual' | 'submarinePredictive';
+export type LandslideWaveLaw =
+  | 'project'
+  | 'impulseWaveManual'
+  | 'submarinePredictive'
+  | 'submarineInRange';
 
 /** What a scenario that names no law draws: the impulse wave manual since
  *  17 September 2026, when rules 162 to 167 of validation/impulseWaveRules.ts
@@ -240,10 +245,19 @@ export interface LandslideScenarioResult {
     depthM: number;
     /** γ = ρ_slide/ρ_water. */
     specificDensity: number;
-    /** η₀ over the slide (m), the depression Eq. (17) gives, as a magnitude. */
+    /** η₀ over the slide (m), the depression Eq. (17) gives, as a magnitude.
+     *  Zero where the prefactor drew the wave instead. */
     amplitudeM: number;
     closed: SubmarineSlideClosure['closed'];
     outsideTestedRange: string[];
+    /**
+     * Rule 514: which relation actually made the wave. `predictiveEquations`
+     * is Watts et al. 2005's Eq. (17), used where the scenario is inside
+     * every range those equations were fitted on; `projectPrefactor` is
+     * K·V^(1/3)·sin θ, used where it is not — and then `outsideTestedRange`
+     * names the limits that sent it there.
+     */
+    relation: SubmarineRelation;
   };
 }
 
@@ -296,7 +310,11 @@ function landslideSource(
   // against a recorded 0.3 to 3.0 m at a thousand kilometres. It stays
   // selectable because the transcription is verified and the next round needs
   // to be able to run it; it is not what ships.
-  if (waveLaw === 'submarinePredictive' && drawable && regime === 'submarine') {
+  if (
+    (waveLaw === 'submarinePredictive' || waveLaw === 'submarineInRange') &&
+    drawable &&
+    regime === 'submarine'
+  ) {
     const closure = submarineSlideFromVolume({
       volumeM3: input.volumeM3,
       angleDeg: slopeDeg,
@@ -307,9 +325,21 @@ function landslideSource(
       ...(input.slideThicknessM !== undefined && { thicknessM: input.slideThicknessM }),
       ...(input.slideWidthM !== undefined && { widthM: input.slideWidthM }),
     });
-    const amplitude = submarineSlideAmplitude(closure.slide);
+    const outside = submarineSlideOutsideTestedRange(closure.slide);
+    // Two candidates, both refused, both kept selectable so their figures
+    // stay reproducible. `submarinePredictive` (rules 500 to 508) reaches
+    // past the fitted ranges and returns 458 m on Storegga.
+    // `submarineInRange` (rules 509 to 517) stops at them and hands the rest
+    // to the prefactor — it gets Storegga right and opens a seam of 21.1× at
+    // d/B = 0.06, twice B-083's, which rule 511 refuses at 2×.
+    const useEquations = waveLaw === 'submarinePredictive' || outside.length === 0;
+    const amplitude = useEquations ? submarineSlideAmplitude(closure.slide) : 0;
     return {
-      tsunami: amplitude > 0 ? volcanoTsunami({ ...shared, sourceAmplitudeM: amplitude }) : null,
+      tsunami: useEquations
+        ? amplitude > 0
+          ? volcanoTsunami({ ...shared, sourceAmplitudeM: amplitude })
+          : null
+        : volcanoTsunami(shared),
       impulseWave: undefined,
       submarineSlide: {
         lengthM: closure.slide.lengthM,
@@ -319,7 +349,8 @@ function landslideSource(
         specificDensity: closure.slide.specificDensity,
         amplitudeM: amplitude,
         closed: closure.closed,
-        outsideTestedRange: submarineSlideOutsideTestedRange(closure.slide),
+        outsideTestedRange: outside,
+        relation: useEquations ? 'predictiveEquations' : 'projectPrefactor',
       },
     };
   }

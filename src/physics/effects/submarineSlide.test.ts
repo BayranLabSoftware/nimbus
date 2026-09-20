@@ -418,3 +418,80 @@ describe('rules 500 to 508: the outcome', () => {
     expect(Number(candidate.tsunami?.sourceAmplitude)).toBeCloseTo(458.5, 0);
   });
 });
+
+/**
+ * THE OUTCOME OF RULES 509 TO 517, run once on 20 September 2026: REFUSED by
+ * rule 511, and pinned here.
+ *
+ * The split — the field's equations inside their fitted range, the project's
+ * prefactor outside it — got everything right except the thing rule 511 was
+ * written to catch. It holds Storegga (6.29 m at the source, 0.604 m at a
+ * thousand kilometres, both inside), it reaches 442 of the 1 739 submarine
+ * scenarios of the sweep so it is not cosmetic, and it says which relation
+ * drew each number.
+ *
+ * And it opens a seam of **21.1×** at d/B = 0.06. Twice B-083's tenfold jump,
+ * against a limit of 2 taken from the landslide source scatter this project
+ * has declared since before the round. The seam does not depend on the slide's
+ * volume at all — 7.85× at 3°, 13.74× at 8°, 18.22× at 15°, 21.08× at 25° —
+ * because the two relations scale differently in every variable, so it is
+ * structural and no closure fixes it.
+ *
+ * Rule 517 says what happens next and it is being obeyed: the prefactor
+ * stays, L1's submarine half stays open with both readings and both figures
+ * published, and no third arrangement is invented tonight.
+ */
+describe('rules 509 to 517: the outcome', () => {
+  it('pins the seam that refused the split', async () => {
+    const { LANDSLIDE_PRESETS: _p, simulateLandslide } =
+      await import('../events/landslide/simulate.js');
+    const at = (ratio: number, volumeM3: number, slopeDeg: number): number => {
+      const { slide } = submarineSlideFromVolume({
+        volumeM3,
+        angleDeg: slopeDeg,
+        depthM: 1,
+        specificDensity: 1_950 / 1_030,
+      });
+      const r = simulateLandslide({
+        volumeM3,
+        regime: 'submarine',
+        slopeAngleDeg: slopeDeg,
+        meanOceanDepth: ratio * slide.lengthM,
+        waveLaw: 'submarineInRange',
+      });
+      return Number(r.tsunami?.sourceAmplitude ?? 0);
+    };
+    // The seam is the same whatever the slide weighs, and grows with slope.
+    for (const [slopeDeg, expected] of [
+      [3, 7.852],
+      [8, 13.744],
+      [15, 18.224],
+      [25, 21.076],
+    ] as const) {
+      for (const volumeM3 of [1e7, 3e12]) {
+        const below = at(0.0599, volumeM3, slopeDeg);
+        const above = at(0.0601, volumeM3, slopeDeg);
+        expect(above / below, `${String(slopeDeg)}° at ${volumeM3.toExponential(0)}`).toBeCloseTo(
+          expected,
+          2
+        );
+      }
+    }
+  });
+
+  it('leaves the shipped submarine wave exactly where it was', async () => {
+    const { LANDSLIDE_PRESETS, simulateLandslide } =
+      await import('../events/landslide/simulate.js');
+    const shipped = simulateLandslide(LANDSLIDE_PRESETS.STOREGGA_8200_BP.input);
+    expect(shipped.submarineSlide).toBeUndefined();
+    expect(Number(shipped.tsunami?.sourceAmplitude)).toBeCloseTo(6.29, 2);
+    // And the refused split, run on purpose, gets Storegga right — which is
+    // exactly why the seam had to be measured rather than assumed away.
+    const split = simulateLandslide({
+      ...LANDSLIDE_PRESETS.STOREGGA_8200_BP.input,
+      waveLaw: 'submarineInRange',
+    });
+    expect(split.submarineSlide?.relation).toBe('projectPrefactor');
+    expect(Number(split.tsunami?.sourceAmplitude)).toBeCloseTo(6.29, 2);
+  });
+});
