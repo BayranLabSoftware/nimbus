@@ -113,6 +113,115 @@
  *       frontier.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 494: NO CELL
+ * DOMINATES the shipped model, so nothing is adopted — and rule 491(b)
+ * turns out to be VACUOUS, which is the fifth fault these rounds have
+ * found in their own clauses and the first that is a plain logical error.
+ *
+ * The shipped model: peak 1.956 · areas 0.935 · dead 204.1 · quiet 1 195.
+ *
+ * RULE 491(a): nothing dominates it. Zero cells of ninety-six.
+ *
+ * RULE 491(b) RECOMMENDS THE SHIPPED MODEL, and it could never have
+ * recommended anything else. Minimax regret measures each cell's worst
+ * relative change AGAINST the baseline, and the baseline is in the
+ * candidate set, so its worst change is zero by construction while every
+ * other cell is worse somewhere. The rule can only ever return the
+ * incumbent when 491(a) is empty. It was written to hand a judgement to
+ * the project's owner and instead it hands back "change nothing", dressed
+ * as a recommendation.
+ *
+ * It is not amended. It is recorded, and the frontier is published so
+ * that the judgement can actually be made.
+ *
+ * THE FRONTIER: 26 cells of 96. Its corners, against the shipped model:
+ *
+ *   | cell                                                    | peak  | areas | dead  | quiet |
+ *   | ------------------------------------------------------- | ----- | ----- | ----- | ----- |
+ *   | SHIPPED  boore/7.5/downDip/style/midpoint/epicentral     | 1.956 | 0.935 | 204.1 | 1195  |
+ *   | best areas  boore/7.5/projection/style/toPeak/T-W        | 1.956 | **0.022** | **198.2** | 1547 |
+ *   | best dead   boore/always/downDip/-/toPeak/-              | 1.956 | 0.471 | **197.5** | 1736 |
+ *   | best quiet  boore/7.5/downDip/-/toPeak/epicentral        | 1.956 | 0.935 | 212.6 | **1117** |
+ *   | best peak   allen/7.5/projection/style/toPeak/-          | **0.582** | 0.176 | 207.0 | 1698 |
+ *
+ *   Three of the four objectives have a cell that beats the shipped
+ *   model: the areas by a factor of forty in log bias, the dead by 6.6
+ *   points, the quiet by 78. None of them beats it on all four, which is
+ *   why the conjunctions of thirteen rounds refused everything.
+ *
+ *   The cell worth looking at hardest is the second row. Its areas read
+ *   1.022x — the map essentially centred — its dead are BETTER than what
+ *   ships, its peak is untouched, and it pays 29 % on the quiet. One law,
+ *   one geometry switch, one band rule, one distance. Nobody had run it.
+ *
+ * RULE 492(a), THE MAIN EFFECTS — what each knob does, averaged over every
+ * setting of the others. This is what thirteen one-at-a-time rounds could
+ * not have produced at any cost:
+ *
+ *   | factor                 | peak   | areas  | dead | quiet |
+ *   | ---------------------- | ------ | ------ | ---- | ----- |
+ *   | CB14 over boore        | -0.750 | +0.081 |  +26 |  +198 |
+ *   | Allen over boore       | -1.374 | +0.178 |  +14 |  +551 |
+ *   | extendedSource always  |  0.000 | +0.157 |   +7 |  +583 |
+ *   | surfaceProjection      |  0.000 | -0.157 |   +1 |   -73 |
+ *   | structure dip          | -0.097 | +0.035 |   -0 |    +1 |
+ *   | **topBand toPeak**     |  0.000 |  0.000 |  -12 |  -297 |
+ *   | Thompson-Worden        |  0.000 | -0.153 |   -1 |   +85 |
+ *
+ *   ONE FACTOR IS GOOD OR NEUTRAL ON ALL FOUR: the top band bounded by the
+ *   peak. It costs nothing on the map and takes 12 off the dead and 297
+ *   off the quiet. It is the only free move in the whole space, and it was
+ *   refused in the round that introduced it for losing Sumatra-Andaman by
+ *   thirteen per cent of a toll the model misses by a factor of fifty
+ *   three.
+ *
+ *   (Its cell in the SHIPPED configuration still does not dominate: the
+ *   dead go 204.1 to 212.6 there. The gain is an average over the grid,
+ *   and the loss is that one row. Both are true and both are printed.)
+ *
+ * RULE 492(b), THE INTERACTIONS — the couplings that made thirteen rounds
+ * unreadable, now visible. The four that matter most:
+ *
+ *   Thompson-Worden moves the areas by -0.460 under boore2014 and by
+ *   EXACTLY ZERO under CB14 and under Allen. Mechanically right: those two
+ *   do not take R_JB, so a correction to it cannot reach them. The design
+ *   found that on its own.
+ *
+ *   `extendedSource: always` moves the areas by -0.007 WITH the surface
+ *   projection and by +0.321 without it. The stadium at every magnitude is
+ *   only worth having if it is laid on what the rupture projects — which
+ *   is rules 419 to 426's finding, arrived at over two rounds, here in one
+ *   line.
+ *
+ *   The top band takes 400 off the quiet WITH `always` and 195 without.
+ *   The two halves do need each other, as rules 483 to 487 concluded, and
+ *   the size of the help is twice.
+ *
+ *   The structure dip moves the peak by -0.290 under CB14 and by zero
+ *   under boore2014. The dip only reaches the peak through a law that
+ *   measures its distance to the rupture.
+ *
+ * RULE 493: 50 of 96 cells duplicate another cell's four numbers. More
+ * than half this grid is inert, because most factors do nothing under most
+ * settings of the others. That is a fact about the model worth knowing
+ * before anybody designs the next experiment on it.
+ *
+ * WHAT THIS ROUND HAS ACTUALLY DELIVERED, and it is not a verdict:
+ *
+ *   The space is mapped. For the first time this project knows what each
+ *   of its six choice points does to each of its four measures, which of
+ *   them interact and by how much, and where the frontier of what is
+ *   achievable runs. Thirteen rounds of one-at-a-time produced thirteen
+ *   points and no map; one night produced ninety-six points, a frontier
+ *   and seven main effects.
+ *
+ *   And the decision is now genuinely, visibly a value judgement: three of
+ *   the four objectives can be improved and none of them for free. No
+ *   clause can make that choice, and the one that claimed it could has
+ *   been shown to return the incumbent by construction.
+ */
+
 export const FACTORIAL_RULES = 'rules 488 to 494, fixed 20 September 2026';
 
 /** Rule 489: lower is better in all four, so domination needs no signs. */

@@ -1,0 +1,1634 @@
+[
+ {
+  "cell": {
+   "id": 0,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.9350665862068959,
+   "dead": 204.08339673202693,
+   "quiet": 1194.761394585129
+  }
+ },
+ {
+  "cell": {
+   "id": 1,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.08360087910654221,
+   "dead": 211.4008199091385,
+   "quiet": 1785.9844729601173
+  }
+ },
+ {
+  "cell": {
+   "id": 2,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.9350665862068959,
+   "dead": 212.59935138449544,
+   "quiet": 1116.88107739832
+  }
+ },
+ {
+  "cell": {
+   "id": 3,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.08360087910654221,
+   "dead": 199.11003711845643,
+   "quiet": 1547.5785762264134
+  }
+ },
+ {
+  "cell": {
+   "id": 4,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.9350665862068959,
+   "dead": 204.08339673202693,
+   "quiet": 1194.761394585129
+  }
+ },
+ {
+  "cell": {
+   "id": 5,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.08360087910654221,
+   "dead": 211.4008199091385,
+   "quiet": 1785.9844729601173
+  }
+ },
+ {
+  "cell": {
+   "id": 6,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.9350665862068959,
+   "dead": 212.59935138449544,
+   "quiet": 1116.88107739832
+  }
+ },
+ {
+  "cell": {
+   "id": 7,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.08360087910654221,
+   "dead": 199.11003711845643,
+   "quiet": 1547.5785762264134
+  }
+ },
+ {
+  "cell": {
+   "id": 8,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 1.0425714368477745,
+   "dead": 203.27826508752565,
+   "quiet": 1194.447737026274
+  }
+ },
+ {
+  "cell": {
+   "id": 9,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.02198424205860646,
+   "dead": 210.59568826463723,
+   "quiet": 1785.9844729601173
+  }
+ },
+ {
+  "cell": {
+   "id": 10,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 1.0425714368477745,
+   "dead": 211.69533173884193,
+   "quiet": 1116.8120845268331
+  }
+ },
+ {
+  "cell": {
+   "id": 11,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.02198424205860646,
+   "dead": 198.2060174728029,
+   "quiet": 1547.4388142840382
+  }
+ },
+ {
+  "cell": {
+   "id": 12,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.9884532817048144,
+   "dead": 202.89340394885755,
+   "quiet": 1194.4990303206614
+  }
+ },
+ {
+  "cell": {
+   "id": 13,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.03116751745680115,
+   "dead": 210.21082712596913,
+   "quiet": 1785.9844729601173
+  }
+ },
+ {
+  "cell": {
+   "id": 14,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.9884532817048144,
+   "dead": 211.36283858569115,
+   "quiet": 1116.88107739832
+  }
+ },
+ {
+  "cell": {
+   "id": 15,
+   "law": "boore2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.03116751745680115,
+   "dead": 197.87352431965212,
+   "quiet": 1547.5341244638425
+  }
+ },
+ {
+  "cell": {
+   "id": 16,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.4705296341561832,
+   "dead": 209.64740502226337,
+   "quiet": 2000.7003150208893
+  }
+ },
+ {
+  "cell": {
+   "id": 17,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.4705296341561832,
+   "dead": 209.64740502226337,
+   "quiet": 2000.7003150208893
+  }
+ },
+ {
+  "cell": {
+   "id": 18,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.4705296341561832,
+   "dead": 197.5424425683776,
+   "quiet": 1736.0999776626313
+  }
+ },
+ {
+  "cell": {
+   "id": 19,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.4705296341561832,
+   "dead": 197.5424425683776,
+   "quiet": 1736.0999776626313
+  }
+ },
+ {
+  "cell": {
+   "id": 20,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.4705296341561832,
+   "dead": 209.64740502226337,
+   "quiet": 2000.7003150208893
+  }
+ },
+ {
+  "cell": {
+   "id": 21,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.4705296341561832,
+   "dead": 209.64740502226337,
+   "quiet": 2000.7003150208893
+  }
+ },
+ {
+  "cell": {
+   "id": 22,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.4705296341561832,
+   "dead": 197.5424425683776,
+   "quiet": 1736.0999776626313
+  }
+ },
+ {
+  "cell": {
+   "id": 23,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.4705296341561832,
+   "dead": 197.5424425683776,
+   "quiet": 1736.0999776626313
+  }
+ },
+ {
+  "cell": {
+   "id": 24,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.14483770292967152,
+   "dead": 210.0895890022607,
+   "quiet": 1795.6909224496362
+  }
+ },
+ {
+  "cell": {
+   "id": 25,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.14483770292967152,
+   "dead": 210.0895890022607,
+   "quiet": 1795.6909224496362
+  }
+ },
+ {
+  "cell": {
+   "id": 26,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.14483770292967152,
+   "dead": 202.90156212233293,
+   "quiet": 1589.1651096387027
+  }
+ },
+ {
+  "cell": {
+   "id": 27,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.14483770292967152,
+   "dead": 202.90156212233293,
+   "quiet": 1589.1651096387027
+  }
+ },
+ {
+  "cell": {
+   "id": 28,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.1284499475951898,
+   "dead": 208.18942355849288,
+   "quiet": 1889.0260880929839
+  }
+ },
+ {
+  "cell": {
+   "id": 29,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.1284499475951898,
+   "dead": 208.18942355849288,
+   "quiet": 1889.0260880929839
+  }
+ },
+ {
+  "cell": {
+   "id": 30,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.1284499475951898,
+   "dead": 201.5790474515733,
+   "quiet": 1644.3343767156766
+  }
+ },
+ {
+  "cell": {
+   "id": 31,
+   "law": "boore2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.95582743640183,
+   "areas": 0.1284499475951898,
+   "dead": 201.5790474515733,
+   "quiet": 1644.3343767156766
+  }
+ },
+ {
+  "cell": {
+   "id": 32,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.42092725896317573,
+   "dead": 232.8738987496656,
+   "quiet": 1576.8008100256677
+  }
+ },
+ {
+  "cell": {
+   "id": 33,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.42092725896317573,
+   "dead": 232.8738987496656,
+   "quiet": 1576.8008100256677
+  }
+ },
+ {
+  "cell": {
+   "id": 34,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.42092725896317573,
+   "dead": 217.7761080115048,
+   "quiet": 1378.1290392635844
+  }
+ },
+ {
+  "cell": {
+   "id": 35,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.42092725896317573,
+   "dead": 217.7761080115048,
+   "quiet": 1378.1290392635844
+  }
+ },
+ {
+  "cell": {
+   "id": 36,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.5880012520559715,
+   "dead": 233.59365993430268,
+   "quiet": 1555.8638706165461
+  }
+ },
+ {
+  "cell": {
+   "id": 37,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.5880012520559715,
+   "dead": 233.59365993430268,
+   "quiet": 1555.8638706165461
+  }
+ },
+ {
+  "cell": {
+   "id": 38,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.5880012520559715,
+   "dead": 218.34507039351365,
+   "quiet": 1356.4998683297022
+  }
+ },
+ {
+  "cell": {
+   "id": 39,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.5880012520559715,
+   "dead": 218.34507039351365,
+   "quiet": 1356.4998683297022
+  }
+ },
+ {
+  "cell": {
+   "id": 40,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.4853844665268581,
+   "dead": 232.65153517078465,
+   "quiet": 1576.1289658642913
+  }
+ },
+ {
+  "cell": {
+   "id": 41,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.4853844665268581,
+   "dead": 232.65153517078465,
+   "quiet": 1576.1289658642913
+  }
+ },
+ {
+  "cell": {
+   "id": 42,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.4853844665268581,
+   "dead": 217.53747028935186,
+   "quiet": 1377.9592866075254
+  }
+ },
+ {
+  "cell": {
+   "id": 43,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.4853844665268581,
+   "dead": 217.53747028935186,
+   "quiet": 1377.9592866075254
+  }
+ },
+ {
+  "cell": {
+   "id": 44,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.6227000369466681,
+   "dead": 233.09547235186503,
+   "quiet": 1555.8638706165461
+  }
+ },
+ {
+  "cell": {
+   "id": 45,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.6227000369466681,
+   "dead": 233.09547235186503,
+   "quiet": 1555.8638706165461
+  }
+ },
+ {
+  "cell": {
+   "id": 46,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.6227000369466681,
+   "dead": 217.7256486747683,
+   "quiet": 1356.4533483140672
+  }
+ },
+ {
+  "cell": {
+   "id": 47,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.6227000369466681,
+   "dead": 217.7256486747683,
+   "quiet": 1356.4533483140672
+  }
+ },
+ {
+  "cell": {
+   "id": 48,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.6796062625161072,
+   "dead": 240.39963316647987,
+   "quiet": 2479.989619064635
+  }
+ },
+ {
+  "cell": {
+   "id": 49,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.6796062625161072,
+   "dead": 240.39963316647987,
+   "quiet": 2479.989619064635
+  }
+ },
+ {
+  "cell": {
+   "id": 50,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.6796062625161072,
+   "dead": 232.34304102720282,
+   "quiet": 2016.3205783001506
+  }
+ },
+ {
+  "cell": {
+   "id": 51,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.6796062625161072,
+   "dead": 232.34304102720282,
+   "quiet": 2016.3205783001506
+  }
+ },
+ {
+  "cell": {
+   "id": 52,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.5851012120827377,
+   "dead": 241.41849381544952,
+   "quiet": 2400.440618630592
+  }
+ },
+ {
+  "cell": {
+   "id": 53,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.5851012120827377,
+   "dead": 241.41849381544952,
+   "quiet": 2400.440618630592
+  }
+ },
+ {
+  "cell": {
+   "id": 54,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.5851012120827377,
+   "dead": 232.95903102852628,
+   "quiet": 1930.9774734475989
+  }
+ },
+ {
+  "cell": {
+   "id": 55,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.5851012120827377,
+   "dead": 232.95903102852628,
+   "quiet": 1930.9774734475989
+  }
+ },
+ {
+  "cell": {
+   "id": 56,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.22568873594577046,
+   "dead": 247.44319652847298,
+   "quiet": 2272.755503335348
+  }
+ },
+ {
+  "cell": {
+   "id": 57,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.22568873594577046,
+   "dead": 247.44319652847298,
+   "quiet": 2272.755503335348
+  }
+ },
+ {
+  "cell": {
+   "id": 58,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.22568873594577046,
+   "dead": 232.87857866054162,
+   "quiet": 1893.8286524323182
+  }
+ },
+ {
+  "cell": {
+   "id": 59,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.3509473864119605,
+   "areas": 0.22568873594577046,
+   "dead": 232.87857866054162,
+   "quiet": 1893.8286524323182
+  }
+ },
+ {
+  "cell": {
+   "id": 60,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.31881764616541125,
+   "dead": 247.02243363216434,
+   "quiet": 2280.1066517009963
+  }
+ },
+ {
+  "cell": {
+   "id": 61,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.31881764616541125,
+   "dead": 247.02243363216434,
+   "quiet": 2280.1066517009963
+  }
+ },
+ {
+  "cell": {
+   "id": 62,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.31881764616541125,
+   "dead": 232.42256483834592,
+   "quiet": 1846.6429675414424
+  }
+ },
+ {
+  "cell": {
+   "id": 63,
+   "law": "campbellBozorgnia2014",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 1.0609112873815447,
+   "areas": 0.31881764616541125,
+   "dead": 232.42256483834592,
+   "quiet": 1846.6429675414424
+  }
+ },
+ {
+  "cell": {
+   "id": 64,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.22778789304381758,
+   "dead": 224.08515286625152,
+   "quiet": 1924.9853620890663
+  }
+ },
+ {
+  "cell": {
+   "id": 65,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.22778789304381758,
+   "dead": 224.08515286625152,
+   "quiet": 1924.9853620890663
+  }
+ },
+ {
+  "cell": {
+   "id": 66,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.22778789304381758,
+   "dead": 207.41636584843747,
+   "quiet": 1698.4648640797113
+  }
+ },
+ {
+  "cell": {
+   "id": 67,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.22778789304381758,
+   "dead": 207.41636584843747,
+   "quiet": 1698.4648640797113
+  }
+ },
+ {
+  "cell": {
+   "id": 68,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.22778789304381758,
+   "dead": 224.08515286625152,
+   "quiet": 1924.9853620890663
+  }
+ },
+ {
+  "cell": {
+   "id": 69,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.22778789304381758,
+   "dead": 224.08515286625152,
+   "quiet": 1924.9853620890663
+  }
+ },
+ {
+  "cell": {
+   "id": 70,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.22778789304381758,
+   "dead": 207.41636584843747,
+   "quiet": 1698.4648640797113
+  }
+ },
+ {
+  "cell": {
+   "id": 71,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.22778789304381758,
+   "dead": 207.41636584843747,
+   "quiet": 1698.4648640797113
+  }
+ },
+ {
+  "cell": {
+   "id": 72,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.17590601212041504,
+   "dead": 223.84066743219213,
+   "quiet": 1924.9853620890663
+  }
+ },
+ {
+  "cell": {
+   "id": 73,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.17590601212041504,
+   "dead": 223.84066743219213,
+   "quiet": 1924.9853620890663
+  }
+ },
+ {
+  "cell": {
+   "id": 74,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.17590601212041504,
+   "dead": 207.28050461689222,
+   "quiet": 1698.4077056658712
+  }
+ },
+ {
+  "cell": {
+   "id": 75,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.17590601212041504,
+   "dead": 207.28050461689222,
+   "quiet": 1698.4077056658712
+  }
+ },
+ {
+  "cell": {
+   "id": 76,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.2005124012799314,
+   "dead": 223.66268294555232,
+   "quiet": 1924.9853620890663
+  }
+ },
+ {
+  "cell": {
+   "id": 77,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.2005124012799314,
+   "dead": 223.66268294555232,
+   "quiet": 1924.9853620890663
+  }
+ },
+ {
+  "cell": {
+   "id": 78,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.2005124012799314,
+   "dead": 206.95417151548673,
+   "quiet": 1698.4077056658712
+  }
+ },
+ {
+  "cell": {
+   "id": 79,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "fromMw7.5",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.2005124012799314,
+   "dead": 206.95417151548673,
+   "quiet": 1698.4077056658712
+  }
+ },
+ {
+  "cell": {
+   "id": 80,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 1.1015724716916595,
+   "dead": 230.07916881893817,
+   "quiet": 2850.275922667775
+  }
+ },
+ {
+  "cell": {
+   "id": 81,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 1.1015724716916595,
+   "dead": 230.07916881893817,
+   "quiet": 2850.275922667775
+  }
+ },
+ {
+  "cell": {
+   "id": 82,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 1.1015724716916595,
+   "dead": 215.26970937872224,
+   "quiet": 2314.57470886588
+  }
+ },
+ {
+  "cell": {
+   "id": 83,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 1.1015724716916595,
+   "dead": 215.26970937872224,
+   "quiet": 2314.57470886588
+  }
+ },
+ {
+  "cell": {
+   "id": 84,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 1.1015724716916595,
+   "dead": 230.07916881893817,
+   "quiet": 2850.275922667775
+  }
+ },
+ {
+  "cell": {
+   "id": 85,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 1.1015724716916595,
+   "dead": 230.07916881893817,
+   "quiet": 2850.275922667775
+  }
+ },
+ {
+  "cell": {
+   "id": 86,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 1.1015724716916595,
+   "dead": 215.26970937872224,
+   "quiet": 2314.57470886588
+  }
+ },
+ {
+  "cell": {
+   "id": 87,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "downDip",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 1.1015724716916595,
+   "dead": 215.26970937872224,
+   "quiet": 2314.57470886588
+  }
+ },
+ {
+  "cell": {
+   "id": 88,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.7684980884182213,
+   "dead": 233.25685601175041,
+   "quiet": 2620.6762706157588
+  }
+ },
+ {
+  "cell": {
+   "id": 89,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.7684980884182213,
+   "dead": 233.25685601175041,
+   "quiet": 2620.6762706157588
+  }
+ },
+ {
+  "cell": {
+   "id": 90,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.7684980884182213,
+   "dead": 218.3604750085882,
+   "quiet": 2131.088036491586
+  }
+ },
+ {
+  "cell": {
+   "id": 91,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "style",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.7684980884182213,
+   "dead": 218.3604750085882,
+   "quiet": 2131.088036491586
+  }
+ },
+ {
+  "cell": {
+   "id": 92,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.8987001400238935,
+   "dead": 232.29277145416856,
+   "quiet": 2714.0373667167596
+  }
+ },
+ {
+  "cell": {
+   "id": 93,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "midpoint",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.8987001400238935,
+   "dead": 232.29277145416856,
+   "quiet": 2714.0373667167596
+  }
+ },
+ {
+  "cell": {
+   "id": 94,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "epicentral"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.8987001400238935,
+   "dead": 217.81455903245742,
+   "quiet": 2206.9286149733593
+  }
+ },
+ {
+  "cell": {
+   "id": 95,
+   "law": "allen2012Hypocentral",
+   "extendedSource": "always",
+   "stadiumWidth": "surfaceProjection",
+   "dip": "structure",
+   "topBand": "toPeak",
+   "distance": "thompsonWorden2018"
+  },
+  "objectives": {
+   "peak": 0.5817882276126891,
+   "areas": 0.8987001400238935,
+   "dead": 217.81455903245742,
+   "quiet": 2206.9286149733593
+  }
+ }
+]
