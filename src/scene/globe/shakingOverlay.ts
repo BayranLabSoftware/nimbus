@@ -250,6 +250,64 @@ export function fitShakingField(input: {
 }
 
 /**
+ * The published scatter of the ground motion, as an intensity.
+ *
+ * Boore et al. 2014 gives sigma_lnY around 0.60 at the magnitudes that
+ * matter, and Worden et al. 2012's relation turns that into very nearly
+ * ONE WHOLE MMI DEGREE. It is the single most important number about this
+ * map and the hardest to see: a contour labelled VII is a line whose true
+ * place is a band about a degree wide.
+ */
+export const INTENSITY_SIGMA = 1;
+
+/**
+ * The layers that draw a band's edge as the band it is.
+ *
+ * A filled polygon with a crisp edge says the shaking stops there. It does
+ * not: the edge is a median, and the scatter about it is about one degree.
+ * Rather than paint a probability per pixel — which would mean projecting
+ * every pixel back into the rupture's frame — the same statement is made
+ * with the contours the field already gives: the median one at full
+ * strength, and two outside it at one half and one sigma, each fainter,
+ * so the band keeps its colour where the level is certain and fades
+ * outward across the sigma where it is not.
+ *
+ * Only OUTWARD. The first attempt fanned out on both sides at equal alpha
+ * and washed the whole map pale: every band bled into its neighbour and
+ * the four colours stopped being four colours. Inside the median the
+ * higher band is painting anyway, so a layer there buys nothing and costs
+ * the legibility the map is for.
+ */
+export const UNCERTAINTY_LAYERS: readonly { offset: number; alpha: number }[] = [
+  { offset: -1, alpha: 0.28 },
+  { offset: -0.5, alpha: 0.55 },
+  { offset: 0, alpha: 1 },
+] as const;
+
+/**
+ * A band's edge as the band it is: rings at one sigma either side of the
+ * level, in geographic coordinates, ready to be painted at a low alpha
+ * each so they overlap into a gradient.
+ *
+ * The offsets are `UNCERTAINTY_LAYERS`, and the one at zero is the median
+ * contour itself — returned here too, so a caller paints one list and does
+ * not have to special-case the middle.
+ */
+export function uncertaintyLayers(
+  field: ShakingField,
+  level: number
+): { latitude: number; longitude: number }[][][] {
+  return UNCERTAINTY_LAYERS.map((layer) =>
+    contourRings(field, level + layer.offset * INTENSITY_SIGMA).map((ring) =>
+      ring.map((point) => {
+        const here = frameToGeographic(field.rupture, point);
+        return { latitude: here.latitude, longitude: here.longitude };
+      })
+    )
+  );
+}
+
+/**
  * The bounding box the fill canvas covers, in degrees.
  *
  * The field is square in the rupture's frame, so its geographic box is the

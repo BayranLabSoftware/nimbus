@@ -90,6 +90,8 @@ import {
   fitShakingField,
   INTENSITY_BANDS,
   shakingContours,
+  UNCERTAINTY_LAYERS,
+  uncertaintyLayers,
 } from './shakingOverlay.js';
 import { hasGroundFor, siteAt } from '../vs30Tiles.js';
 import { mushroomCloudAltitudeMeters, spawnExplosionVfxFromJoules } from './explosionVfx.js';
@@ -2184,24 +2186,50 @@ export function Globe(): JSX.Element {
               ((lon - bounds.minLon) / (bounds.maxLon - bounds.minLon)) * canvas.width;
             const py = (lat: number): number =>
               ((bounds.maxLat - lat) / (bounds.maxLat - bounds.minLat)) * canvas.height;
+            /** Trace a ring's geography onto the canvas. */
+            const trace = (ring: { latitude: number; longitude: number }[]): void => {
+              ctx.beginPath();
+              for (const [i, point] of ring.entries()) {
+                const x = px(point.longitude);
+                const y = py(point.latitude);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+              ctx.closePath();
+            };
+
+            // The edge of a band is a MEDIAN, and the published scatter
+            // about it is about one whole MMI degree. A crisp filled edge
+            // says the shaking stops there, which is the most confident
+            // claim on the map and the least true. So each band is painted
+            // as a handful of contours from one sigma below its level to
+            // one sigma above, each at a low alpha: they overlap into a
+            // gradient, opaque where the level is certain and fading out
+            // where it is not. The band's own level keeps the line and the
+            // numeral, so what is quoted is still what is drawn.
+            //
             // Outermost first, so the inner bands paint over them.
             for (const contour of [...contours].sort((a, b) => a.level - b.level)) {
               const band = INTENSITY_BANDS.find((x) => x.minValue === contour.level);
               if (band === undefined) continue;
-              ctx.fillStyle = band.css;
+              const layers = uncertaintyLayers(field, contour.level);
+              for (const [index, rings] of layers.entries()) {
+                ctx.globalAlpha = UNCERTAINTY_LAYERS[index]?.alpha ?? 1;
+                ctx.fillStyle = band.css;
+                for (const ring of rings) {
+                  if (ring.length < 3) continue;
+                  trace(ring);
+                  ctx.fill();
+                }
+              }
+              ctx.globalAlpha = 1;
+              // The median contour keeps its line: the level the report
+              // quotes is still a line a reader can point at.
               ctx.strokeStyle = band.lineCss;
               ctx.lineWidth = 2;
               for (const ring of contour.rings) {
                 if (ring.length < 3) continue;
-                ctx.beginPath();
-                for (const [i, point] of ring.entries()) {
-                  const x = px(point.longitude);
-                  const y = py(point.latitude);
-                  if (i === 0) ctx.moveTo(x, y);
-                  else ctx.lineTo(x, y);
-                }
-                ctx.closePath();
-                ctx.fill();
+                trace(ring);
                 ctx.stroke();
               }
             }
@@ -2213,14 +2241,45 @@ export function Globe(): JSX.Element {
             // northernmost point of each contour's longest ring, so the
             // labels sit along the top edge where a reader's eye lands
             // first and two of them rarely collide.
+            // Concentric contours have their northernmost points almost on
+            // top of one another, so four numerals landed in a stack. Each
+            // label goes to the point of its own contour that is furthest
+            // from the labels already placed.
+            const placed: { latitude: number; longitude: number }[] = [];
+            const farthestFromPlaced = (
+              rings: { latitude: number; longitude: number }[][]
+            ): { latitude: number; longitude: number } | null => {
+              let best: { latitude: number; longitude: number } | null = null;
+              let bestScore = -Infinity;
+              for (const ring of rings) {
+                const stride = Math.max(1, Math.floor(ring.length / 24));
+                for (let i = 0; i < ring.length; i += stride) {
+                  const point = ring[i];
+                  if (point === undefined) continue;
+                  let nearest = Infinity;
+                  for (const other of placed) {
+                    nearest = Math.min(
+                      nearest,
+                      Math.hypot(point.latitude - other.latitude, point.longitude - other.longitude)
+                    );
+                  }
+                  // With nothing placed yet, north wins, as before.
+                  const score = placed.length === 0 ? point.latitude : nearest;
+                  if (score > bestScore) {
+                    bestScore = score;
+                    best = point;
+                  }
+                }
+              }
+              return best;
+            };
             for (const contour of contours) {
-              if (contour.labelAt === null) continue;
+              const at = farthestFromPlaced(contour.rings);
+              if (at === null) continue;
+              placed.push(at);
               viewer.entities.add({
                 id: `mmi-field-label-${contour.label}`,
-                position: Cartesian3.fromDegrees(
-                  contour.labelAt.longitude,
-                  contour.labelAt.latitude
-                ),
+                position: Cartesian3.fromDegrees(at.longitude, at.latitude),
                 label: {
                   text: contour.label,
                   font: 'bold 13px "JetBrains Mono", monospace',
