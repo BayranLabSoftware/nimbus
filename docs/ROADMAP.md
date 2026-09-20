@@ -280,6 +280,48 @@ spent either way.
 count, nothing pending, and L1 is the only rule in the project whose
 missing piece is a model rather than a measurement.
 
+#### What the night of 20/21 September did to the first item
+
+Four rounds on L1's two regimes. **No default changed**, and that is the
+result rather than a failure to reach one: the two candidates that would
+have changed one were each refused by a bar written before they ran.
+
+- **Rules 500 to 508, the submarine slide.** Watts et al. 2005's Eqs. (17)
+  and (18) transcribed and held to every worked example their sources
+  print. REFUSED as a default: Storegga, the only recorded submarine wave
+  this project holds, lies outside the equations' own fitted range at
+  d/B = 0.018 against a required 0.06, and there Eq. (17) returns 458 m
+  against a record of 0.3 to 3.0 m.
+- **Rules 509 to 517, the same equations inside their range only.** It
+  holds Storegga, reaches a quarter of the sweep's submarine scenarios,
+  and says which relation drew each number. REFUSED by rule 511: the seam
+  at the threshold is **21.1×**, twice B-083's, against a limit of 2 taken
+  from Tappin 2017's published scatter. The seam is independent of slide
+  volume and grows with slope, so it is structural.
+- **Rules 518 to 524, the manual's 2D case.** Transcribed and verified
+  against the manual's own worked channel decay.
+- **Rules 525 to 531, the manual's 3D propagation.** Transcribed and
+  verified against eleven printed numbers of its worked Example 2.
+
+**What changed in the diagnosis, which is the part worth keeping.** L1's
+confined-basin half was described here as "a regime with no worked
+example". That was wrong. The impulse wave manual is titled _Landslide-
+generated Impulse Waves in Reservoirs_; its §3.2.4 is "Reservoir shape"
+and splits into a 2D and a 3D extreme case, and a confined basin is the
+2D one. The manual's own Example 2 generates in 3D and switches to the 2D
+decay only where the reservoir narrows — so **the confined basin is a
+propagation case, and this project replaced its generation**. The larger
+finding behind it: Nimbus had the manual's generation and none of its
+propagation, handing the generated amplitude to Ward & Asphaug's 1/r
+instead. Both of the manual's shapes are now transcribed and verified,
+which is what the round that rewires the branch needs.
+
+**What L1 now costs.** Not "find a source with worked examples" — the
+sources are read, transcribed and in CI. The submarine half needs a
+relation whose fitted range and the events this product draws actually
+overlap, and the confined-basin half needs the rewiring these rounds
+deliberately refused to bundle with a transcription.
+
 ### Phase 1 — The machinery built once and paid for six times
 
 **G4 and E5 — the envelope, declared cell by cell.** The product must
