@@ -77,9 +77,11 @@
  *     P = 1.00   H(X_M)/H_M = 0.857   (−14.3 %)
  *     P = 2.08   H(X_M)/H_M = 0.777   (−22.3 %)
  *
- * The two zones of the manual's own Figure 3-3a do not join. They cross near
- * P ≈ 0.37 and diverge either side, by a quarter at the top of the fitted
- * range. This is a property of the reference, not of the transcription:
+ * The two zones of the manual's own Figure 3-3a do not join. They cross at
+ * P = 0.3139 and diverge either side, by a quarter at the top of the fitted
+ * range. (This file said "near P ≈ 0.37" when it was pushed, which was read
+ * off the four sampled points rather than solved; the ratio is
+ * 0.856848·P^(−2/15) and it passes 1 at 0.31389.) This is a property of the reference, not of the transcription:
  * Eq. (3.13) has P^(4/5) and Eq. (3.19) at X_M has P^(2/3), so no
  * coefficient could make them agree at every P.
  *

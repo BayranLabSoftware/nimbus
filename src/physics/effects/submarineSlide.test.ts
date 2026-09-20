@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { m } from '../units.js';
 import {
   ENET_GRILLI_MODEL,
   EQ17_AGAINST_BEM_COLUMN,
@@ -456,7 +457,7 @@ describe('rules 509 to 517: the outcome', () => {
         volumeM3,
         regime: 'submarine',
         slopeAngleDeg: slopeDeg,
-        meanOceanDepth: ratio * slide.lengthM,
+        meanOceanDepth: m(ratio * slide.lengthM),
         waveLaw: 'submarineInRange',
       });
       return Number(r.tsunami?.sourceAmplitude ?? 0);
