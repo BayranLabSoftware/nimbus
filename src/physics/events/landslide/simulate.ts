@@ -1,4 +1,9 @@
 import {
+  channelMaximumAmplitude,
+  channelMaximumDistance,
+  channelMaximumWaveHeight,
+} from '../../effects/channelDecay.js';
+import {
   impulseProduct,
   impulseWaveAmplitudes,
   outsideTestedRange,
@@ -12,6 +17,7 @@ import {
   SUBMARINE_SLIDE_WATER_DENSITY,
   type SubmarineSlideClosure,
 } from '../../effects/submarineSlide.js';
+import type { ReservoirShape } from '../../validation/confinedBasinRules.js';
 import type { SubmarineRelation } from '../../validation/submarineSplitRules.js';
 import type { Meters, SquareMeters } from '../../units.js';
 import { m } from '../../units.js';
@@ -87,7 +93,8 @@ export type LandslideWaveLaw =
   | 'project'
   | 'impulseWaveManual'
   | 'submarinePredictive'
-  | 'submarineInRange';
+  | 'submarineInRange'
+  | 'confinedBasin2D';
 
 /** What a scenario that names no law draws: the impulse wave manual since
  *  17 September 2026, when rules 162 to 167 of validation/impulseWaveRules.ts
@@ -259,12 +266,32 @@ export interface LandslideScenarioResult {
      */
     relation: SubmarineRelation;
   };
+  /**
+   * Present only where a confined basin drew its wave from the impulse wave
+   * manual's two-dimensional case (rules 532 to 540): the impulse product
+   * the slide carried, what the manual's Eqs. (3.13) and (3.16) make of it,
+   * where the maximum sits, which of the slide's unknowns had to be closed,
+   * and which of the manual's limits the scenario falls outside of.
+   */
+  confinedBasin?: {
+    shape: ReservoirShape;
+    impulseProduct: number;
+    maximumWaveHeightM: number;
+    /** a_M = (4/5) H_M, the source amplitude handed downstream (m). */
+    amplitudeM: number;
+    distanceOfMaximumM: number;
+    closed: SlideClosure['closed'];
+    outsideTestedRange: string[];
+    /** True where the slide never reaches the water with any speed. */
+    held: boolean;
+  };
 }
 
 interface LandslideSource {
   tsunami: VolcanoTsunamiResult | null;
   impulseWave: LandslideScenarioResult['impulseWave'] | undefined;
   submarineSlide?: LandslideScenarioResult['submarineSlide'];
+  confinedBasin?: LandslideScenarioResult['confinedBasin'];
 }
 
 /** The wave at the slide in one regime, under one law. */
@@ -291,11 +318,65 @@ function landslideSource(
     }),
     ...(input.slideDensity !== undefined && { slideDensity: input.slideDensity }),
   };
-  // The manual's experiments are a slide entering water from above, in open
-  // water or a basin wide enough for the wave to spread. A confined basin
-  // keeps its own branch — it is the half of L1 rule 505(b) left alone.
-  const drawable = !confined && depthM > 0 && input.volumeM3 > 0 && slopeDeg > 0;
+  const wellPosed = depthM > 0 && input.volumeM3 > 0 && slopeDeg > 0;
+  const drawable = !confined && wellPosed;
   const manual = waveLaw === 'impulseWaveManual' && drawable && regime === 'subaerial';
+
+  // A CONFINED BASIN is the impulse wave manual's extreme case (a), the
+  // two-dimensional one: "impulse waves propagating longitudinally in a
+  // laterally confined reservoir". §3.2.4.1 says the choice between the two
+  // extreme cases IS Step 1 of the manual's procedure, and that intermediate
+  // geometries are refined in Step 2 — which needs a water body side angle
+  // this product does not have, so Step 1 is where it stops. Example 2 calls
+  // the 2D assumption "on the safe side".
+  //
+  // The shipped branch draws min(V/A · factor, h) with the factor at 1.8,
+  // chosen so Vaiont lands at 162 m: tuned on the one event it is checked
+  // against. Rules 532 to 540 ran this candidate against it on
+  // 21 September 2026 and it was REFUSED — it gives Vaiont 336 m in a 238 m
+  // lake and reopens B-003 and B-016, two registered defects about exactly
+  // that source being too large. It stays selectable so the figure remains
+  // reproducible; the shipped default is unchanged.
+  //
+  // Note what leaves: the basin's AREA no longer enters the wave. The
+  // manual's 2D case does not use it. `confinedBasinArea` is now the flag
+  // that says the reservoir is laterally confined, and nothing more.
+  if (waveLaw === 'confinedBasin2D' && confined && wellPosed) {
+    const closure = slideFromVolume({
+      volumeM3: input.volumeM3,
+      angleDeg: slopeDeg,
+      depthM,
+      densityKgM3: input.slideDensity ?? VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL,
+      ...(input.slideThicknessM !== undefined && { thicknessM: input.slideThicknessM }),
+      ...(input.slideWidthM !== undefined && { widthM: input.slideWidthM }),
+      ...(input.dropHeightM !== undefined && { dropHeightM: input.dropHeightM }),
+      ...(input.impactVelocityMS !== undefined && { impactVelocityMS: input.impactVelocityMS }),
+    });
+    const p = impulseProduct(closure.slide);
+    const amplitude = channelMaximumAmplitude(p, depthM);
+    const held = !(Number.isFinite(amplitude) && amplitude > 0);
+    // `volcanoTsunami` gives its own basin-fill branch precedence over a
+    // supplied amplitude — deliberately, since a sloshing reservoir is "the
+    // case the relations handed in here least apply to". That precedence is
+    // what this round is replacing, so the flag is withheld here rather than
+    // the rule being changed there: `waveLaw: 'project'` still reaches the
+    // basin-fill form with the flag intact.
+    const { confinedBasinArea: _flag, confinementDynamicFactor: _factor, ...openShared } = shared;
+    return {
+      tsunami: held ? null : volcanoTsunami({ ...openShared, sourceAmplitudeM: amplitude }),
+      impulseWave: undefined,
+      confinedBasin: {
+        shape: 'channel2D',
+        impulseProduct: p,
+        maximumWaveHeightM: channelMaximumWaveHeight(p, depthM),
+        amplitudeM: held ? 0 : amplitude,
+        distanceOfMaximumM: channelMaximumDistance(p, depthM),
+        closed: closure.closed,
+        outsideTestedRange: outsideTestedRange(closure.slide),
+        held,
+      },
+    };
+  }
 
   // A slide that fails UNDER the water is not the manual's experiment. It
   // draws K·V^(1/3)·sin θ with K = 0.005, a prefactor set on one event
@@ -419,7 +500,7 @@ export function simulateLandslide(input: LandslideScenarioInput): LandslideScena
   const regime = input.regime ?? LANDSLIDE_DEFAULT_REGIME;
   const sideLength = Math.cbrt(Math.max(input.volumeM3, 0));
   const waveLaw = input.waveLaw ?? DEFAULT_LANDSLIDE_WAVE_LAW;
-  const { tsunami, impulseWave, submarineSlide } = landslideSource(
+  const { tsunami, impulseWave, submarineSlide, confinedBasin } = landslideSource(
     input,
     regime,
     slopeDeg,
@@ -435,6 +516,7 @@ export function simulateLandslide(input: LandslideScenarioInput): LandslideScena
     regimeSensitivity: regimeSensitivity(input, slopeDeg, waveLaw),
     ...(impulseWave === undefined ? {} : { impulseWave }),
     ...(submarineSlide === undefined ? {} : { submarineSlide }),
+    ...(confinedBasin === undefined ? {} : { confinedBasin }),
   };
 }
 

@@ -8,6 +8,8 @@ import { impulseProduct } from './impulseWave.js';
 import {
   CHANNEL_DECAY_EXPONENT,
   channelDecay,
+  channelMaximumAmplitude,
+  channelWaveAmplitude,
   channelMaximumDistance,
   channelMaximumWaveHeight,
   channelWaveHeight,
@@ -145,5 +147,23 @@ describe('rule 518: nothing in the product calls this yet', () => {
     // Vaiont is the confined-basin preset this round refuses to rewire.
     const vaiont = simulateLandslide(LANDSLIDE_PRESETS.VAIONT_1963.input);
     expect(Number(vaiont.tsunami?.sourceAmplitude)).toBeCloseTo(162.0, 1);
+  });
+});
+
+describe('Eq. (3.16): the amplitude from the height', () => {
+  it('is four fifths of it, and leaves the trough at a fifth as the manual says', () => {
+    expect(channelWaveAmplitude(10)).toBeCloseTo(8, 12);
+    // "The wave trough is thus equal on average to only about 20 % of the
+    // wave height H in 2D" — a free check that the 4/5 is the right way up.
+    const H = 10;
+    expect(H - channelWaveAmplitude(H)).toBeCloseTo(0.2 * H, 12);
+    expect(channelWaveAmplitude(0)).toBe(0);
+    expect(channelWaveAmplitude(-3)).toBe(0);
+  });
+
+  it('gives a confined basin its source amplitude, (4/9) P^(4/5) h', () => {
+    for (const P of [0.13, 0.43, 2.08]) {
+      expect(channelMaximumAmplitude(P, 238)).toBeCloseTo((4 / 9) * Math.pow(P, 0.8) * 238, 9);
+    }
   });
 });

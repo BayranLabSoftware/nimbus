@@ -55,6 +55,32 @@ export function channelWavePeriod(impulseProduct: number, depthM: number): numbe
 }
 
 /**
+ * Eq. (3.16): the amplitude of a wave whose height is known.
+ *
+ *     a = (4/5) H
+ *
+ * The manual computes a height first and the amplitude from it, in both
+ * zones — "the value of the wave amplitude a is determined indirectly from
+ * the wave height H, by applying Eqs. (3.13) or (3.19)". It also states the
+ * consequence in words, which is a free check on the transcription: "the
+ * wave trough is thus equal on average to only about 20 % of the wave height
+ * H in 2D".
+ */
+export function channelWaveAmplitude(waveHeightM: number): number {
+  return waveHeightM > 0 ? (4 / 5) * waveHeightM : 0;
+}
+
+/**
+ * The crest amplitude in the slide impact zone: Eq. (3.13) through
+ * Eq. (3.16), which is what a confined basin hands downstream as its source.
+ *
+ *     a_M = (4/5)(5/9) P^(4/5) h = (4/9) P^(4/5) h
+ */
+export function channelMaximumAmplitude(impulseProduct: number, depthM: number): number {
+  return channelWaveAmplitude(channelMaximumWaveHeight(impulseProduct, depthM));
+}
+
+/**
  * Eq. (3.19): the wave height farther down the channel than the maximum.
  *
  *     H(x) = (3/4) (P X^(−1/3))^(4/5) h      for X = x/h > X_M = x_M/h
