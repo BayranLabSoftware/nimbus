@@ -75,6 +75,67 @@
  *  482. One run, no re-tuning.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 482: REFUSED, on
+ * all three toll figures — and rule 481's attribution is answered.
+ *
+ *   | arm                     | net score | quiet score | toll >= 10 | reaches zero |
+ *   | ----------------------- | --------- | ----------- | ---------- | ------------ |
+ *   | ships                   | 204.1     | 1195        | 23         | 799 of 805   |
+ *   | boore + Thompson-Worden | 211.4     | **1786**    | **43**     | 787 of 805   |
+ *
+ * RULE 481: THE COST FOLLOWS THE EXPOSURE. This is the first candidate
+ * whose peak is the shipped law's TO THE LAST DIGIT — a test pins it at
+ * five magnitudes and four depths — so the only thing that moved is how
+ * much ground the rings cover: 0.393x to 1.087x. The false alarms went
+ * from 23 to 43. Nothing about the intensity charged to anybody changed;
+ * only the number of people charged it.
+ *
+ * So the eleven rounds' pattern is not an accident of which law or which
+ * shape. The toll chain is calibrated against rings two and a half times
+ * too small, and correcting them alone costs twenty earthquakes that
+ * killed nobody.
+ *
+ * AND THE FULLER PICTURE, from figures every round published beside its
+ * own verdict, which this one finally lines up:
+ *
+ *   | arm                    | areas  | peak  | toll >= 10 |
+ *   | ---------------------- | ------ | ----- | ---------- |
+ *   | ships                  | 0.393x | +1.96 | 23         |
+ *   | boore + Thompson-Worden| 1.087x | +1.96 | 43         |
+ *   | boore + geometry (C)   | 1.137x | +1.96 | 51         |
+ *   | CB14 + geometry        | 1.376x | +1.06 | **29**     |
+ *
+ *   Read down the peak column. The two arms that leave it at +1.96 pay
+ *   twenty and twenty-eight false alarms for their rings. The one that
+ *   cools it to +1.06 draws the BIGGEST rings of the four and pays six.
+ *
+ *   THE TWO ERRORS HAVE BEEN CANCELLING, AND NOW THE SIZE OF EACH IS
+ *   KNOWN. Fixing the rings alone costs about twenty false alarms.
+ *   Fixing the peak with them gives back about three quarters of that.
+ *   Every round before this one moved the two together and could only see
+ *   the sum.
+ *
+ * ONE DISAGREEMENT WORTH NAMING, because rule 452 said such a thing must
+ * not be absorbed quietly. On the quiet set CB14 + geometry has the
+ * FEWEST false alarms of the corrected arms (29) and the WORST interval
+ * score (2280 against 1195). Its central tolls cross ten less often and
+ * its bands are wider, and the score reads the width. Which of the two a
+ * reader should care about is a question this project has not settled,
+ * and rules 448 to 454 chose the score deliberately — so the score
+ * refuses that arm and the count nearly clears it.
+ *
+ * WHAT THIS LEAVES, and it is narrower than anything these rounds have
+ * left so far:
+ *
+ *   The map's two defects are separately measured, their toll costs are
+ *   separately measured, and they nearly cancel. CB14 + geometry is
+ *   within six false alarms of what ships while reading 1.376x on areas
+ *   against 0.393x and +1.06 on the peak against +1.96. The remaining
+ *   obstacle is not a law and not a geometry: it is six earthquakes and a
+ *   band width. That is the smallest gap any candidate has left.
+ */
+
 export const POINT_DISTANCE_TOLL_RULES = 'rules 478 to 482, fixed 20 September 2026';
 
 /** Rule 479: what af2ffe4 published for this arm, pinned so this round
