@@ -76,40 +76,24 @@ describe('the shaking footprint against the ShakeMap that recorded it', () => {
    * the model shakes ground the event never shook at all.
    */
   const DECLARED: Record<string, Partial<Record<7 | 8 | 9, number>>> = {
-    // Re-pinned on 20 September 2026, when the cell chosen from the
-    // re-filtered frontier was adopted: Boore et al. 2014's rings at
-    // Thompson & Worden's point-source distance, laid on the rupture's
-    // surface projection, with the topmost casualty band bounded by the
-    // peak. Rule 44: the figures the earlier rules published move.
-    //
-    // They do NOT all move the same way, and the title of this test used
-    // to say "and no worse", which is no longer true and has been
-    // dropped. Against the values pinned on 14 September:
-    //
-    //   Northridge   0.32   -> 0.733   and 0.0831 -> 0.484   much better
-    //   Gorkha       0.372  -> 0.325   and 1.92   -> 1.531   mixed
-    //   Tohoku       1.53   -> 1.526   and 2.84   -> 2.843   unmoved, as
-    //                it is an extended source and the correction is read
-    //                only for a point one
-    //   Kokoxili     0.373  -> 0.273   and 0.326  -> 0.149   worse
-    //   L'Aquila     2.03   -> 6.822                         much worse
-    //   Amatrice     6.08   -> 17.451                        much worse
-    //
-    // The two Apennine normal-faulting events were already the ones both
-    // laws overdrew by three to eleven times, and a wider ring overdraws
-    // them further. On the 116 ShakeMaps of rule 405 the same change
-    // takes the area bias from 0.393x to 1.022x; these six are not that
-    // jury and never were. `0` is a band the ShakeMap reached and the
-    // model does not.
-    'Northridge 1994': { 7: 0.733, 8: 0.484 },
-    "L'Aquila 2009": { 7: 6.822 },
-    'Amatrice 2016': { 7: 17.451 },
-    'Gorkha 2015': { 7: 0.325, 8: 1.531 },
-    'Tōhoku 2011': { 7: 1.526, 8: 2.843 },
-    'Kokoxili 2001': { 7: 0.273, 8: 0.149, 9: 0 },
+    // Boore et al. 2014's rings since 14 September 2026 (rule 19 of
+    // contourLaws.ts), on the ground the browser reads under each
+    // epicentre since the same day (rule 22 of siteVs30.ts). On rock
+    // they read Northridge 0.113 / 0.0156, L'Aquila 1.9, Amatrice 4.12,
+    // Gorkha 0.267 / 1.55, Tōhoku 1.22 / 2.49, Kokoxili 0.233 / 0.247 /
+    // 0; on Joyner & Boore 1981's, Northridge 0.32 / 0.21, L'Aquila 8.92
+    // / invented, Amatrice 18.19 / invented, Gorkha 0.42 / 2.77 /
+    // invented, Tōhoku 1.30 / 3.12 / invented, Kokoxili 0.36 / 0.48 /
+    // 3.97. `0` is a band the ShakeMap reached and the model does not.
+    'Northridge 1994': { 7: 0.32, 8: 0.0831 },
+    "L'Aquila 2009": { 7: 2.03 },
+    'Amatrice 2016': { 7: 6.08 },
+    'Gorkha 2015': { 7: 0.372, 8: 1.92 },
+    'Tōhoku 2011': { 7: 1.53, 8: 2.84 },
+    'Kokoxili 2001': { 7: 0.373, 8: 0.326, 9: 0 },
   };
 
-  it('the footprint sits where it was last measured', () => {
+  it('the footprint sits where it was last measured, and no worse', () => {
     for (const f of SHAKEMAP_FOOTPRINTS) {
       const declared = DECLARED[f.name];
       expect(declared, f.name).toBeDefined();

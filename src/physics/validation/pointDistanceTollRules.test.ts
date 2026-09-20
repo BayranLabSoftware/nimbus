@@ -27,21 +27,14 @@ describe('rule 478: the candidate moves the rings and nothing else', () => {
   });
 
   it('does move the rings, which is the whole point', () => {
-    // Measured against `epicentral` by name: since the adoption of
-    // 20 September this correction IS the default, so the comparison has
-    // to name the thing it replaced.
     for (const magnitude of [5.5, 6.2, 7.0]) {
-      const before = simulateEarthquake({
-        magnitude,
-        depth: km(12),
-        pointSourceDistance: 'epicentral',
-      });
+      const plain = simulateEarthquake({ magnitude, depth: km(12) });
       const fixed = simulateEarthquake({
         magnitude,
         depth: km(12),
         pointSourceDistance: 'thompsonWorden2018',
       });
-      expect(fixed.shaking.mmi7Radius).not.toBe(before.shaking.mmi7Radius);
+      expect(fixed.shaking.mmi7Radius).not.toBe(plain.shaking.mmi7Radius);
     }
   });
 

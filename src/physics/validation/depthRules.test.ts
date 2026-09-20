@@ -26,16 +26,11 @@ describe("rule 24's candidates", () => {
   });
 
   it('draw the hypocentral equation at the depth the scenario sets', () => {
-    // Since 20 September the point-source distance defaults to Thompson &
-    // Worden's, so the ring is the EPICENTRAL distance whose average R_JB
-    // meets the threshold, not the R_JB itself. This test is about which
-    // LAW is drawn, so it names the old convention and keeps asking that.
     const shallow = simulateEarthquake({
       magnitude: 6.5,
       depth: m(10_000),
       faultType: 'reverse',
       contourLaw: 'allen2012Hypocentral',
-      pointSourceDistance: 'epicentral',
     });
     expect(shallow.shaking.mmi7Radius).toBe(epicentralDistanceForIntensityAllen2012(6.5, 10, 7));
     const deep = simulateEarthquake({
@@ -43,31 +38,14 @@ describe("rule 24's candidates", () => {
       depth: m(35_000),
       faultType: 'reverse',
       contourLaw: 'allen2012Hypocentral',
-      pointSourceDistance: 'epicentral',
     });
     // The ground above a source 35 km down never reaches MMI VII.
     expect(deep.shaking.mmi7Radius).toBe(0);
-    // And the law in place STILL barely sees the depth — but no longer
-    // not at all. Since 20 September the point-source distance defaults
-    // to Thompson & Worden's, which is computed from the magnitude AND
-    // the depth, so Boore's ring now moves with it: 15 911 m at 10 km
-    // against 15 830 at 35, half a per cent. A law that carries the depth
-    // draws no MMI VII ring at 35 km whatsoever, which is the gap rules
-    // 24 and 384 onward were written about and which this does not close.
+    // And the law in place does not see the depth at all.
     const inPlace = (depthM: number) =>
       simulateEarthquake({ magnitude: 6.5, depth: m(depthM), faultType: 'reverse' }).shaking
-        .mmi7Radius as number;
-    expect(inPlace(10_000)).not.toBe(inPlace(35_000));
-    expect(Math.abs(inPlace(10_000) / inPlace(35_000) - 1)).toBeLessThan(0.01);
-    // Named the old way, it is exactly as blind as it was.
-    const blind = (depthM: number) =>
-      simulateEarthquake({
-        magnitude: 6.5,
-        depth: m(depthM),
-        faultType: 'reverse',
-        pointSourceDistance: 'epicentral',
-      }).shaking.mmi7Radius;
-    expect(blind(10_000)).toBe(blind(35_000));
+        .mmi7Radius;
+    expect(inPlace(10_000)).toBe(inPlace(35_000));
   });
 
   it('draw a scenario with no depth at 15 km, as the band assumes', () => {

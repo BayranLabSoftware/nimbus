@@ -139,28 +139,9 @@ describe('the deep law in the simulator', () => {
       [6.2, 71],
       [8.2, 110],
     ] as const) {
-      // Since 20 September the point-source distance defaults to Thompson
-      // & Worden's, which is read only where a scenario is NOT extended —
-      // so flipping this flag would flip the distance convention too. The
-      // old convention is named on both sides, so the flag is measured
-      // alone. That coupling is a real property of the adopted defaults
-      // and is recorded in the adoption's own notes.
-      const plain = simulateEarthquake(
-        scenario(magnitude, depthKm, {
-          deepLaw: 'none',
-          pointSourceDistance: 'epicentral',
-          // Rule 421 leaves a DEEP scenario its down-dip width, so the deep
-          // law would otherwise move the footprint width too. Named on both
-          // sides so the law is measured alone.
-          stadiumWidth: 'downDip',
-        })
-      );
+      const plain = simulateEarthquake(scenario(magnitude, depthKm, { deepLaw: 'none' }));
       const deep = simulateEarthquake(
-        scenario(magnitude, depthKm, {
-          deepLaw: 'abrahamson2016Slab',
-          pointSourceDistance: 'epicentral',
-          stadiumWidth: 'downDip',
-        })
+        scenario(magnitude, depthKm, { deepLaw: 'abrahamson2016Slab' })
       );
       expect({
         ...deep,
