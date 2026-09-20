@@ -88,6 +88,73 @@
  *       number is seen.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 404 and published
+ * as it came out: the candidate is REFUSED. The shipped law stays. This
+ * is the third refusal in a row, and the closest of the three.
+ *
+ * Rule 400 — faithful to its source: PASSED exactly, 0 difference across
+ * magnitudes 4.0 to 8.5 on both branches.
+ *
+ * Rule 401 — the incumbent does not move: PASSED. Boore et al. 2014 reads
+ * no top of rupture and its field is identical to the last digit, 0.73x
+ * with scatter 1.34 before and after.
+ *
+ * Rule 402(a) — areas on the field: FAILED, on the second half of the
+ * clause.
+ *
+ *   | law       | geometric mean | scatter    | bands |
+ *   | --------- | -------------- | ---------- | ----- |
+ *   | boore2014 | 0.73x          | sigma 1.34 | 10    |
+ *   | CB14      | **0.92x**      | sigma 1.53 | 10    |
+ *
+ *   The geometry did what it was meant to. Northridge's MMI VIII band is
+ *   BACK — 92 km² against the shipped law's 79, where the ShakeMap has
+ *   823 — and no band is lost at all, where the last round lost one. The
+ *   bias improves from 0.73x to 0.92x, which is most of the way to
+ *   centred.
+ *
+ *   And the scatter widens, from 1.34 to 1.53, which the clause forbids.
+ *   Combining the two into one number does not rescue it: the total error
+ *   in log terms, sqrt(ln(bias)² + scatter²), is 1.376 for the shipped law
+ *   against 1.532 for the candidate. The clause is not being clever at the
+ *   candidate's expense; the candidate is genuinely not better overall on
+ *   this set.
+ *
+ *   Where the scatter comes from is worth having: both laws overdraw the
+ *   two small Italian events and the candidate overdraws them more —
+ *   L'Aquila 392 km² against 61 recorded (6.4x, where Boore gives 2.8x),
+ *   Amatrice 294 against 26 (11x, where Boore gives 5.1x). Both models are
+ *   fitted on NGA-West2's mostly Californian data, and both are furthest
+ *   from the record on the Apennine normal-faulting earthquakes. The
+ *   candidate carries more of the ground motion into the answer, so it
+ *   carries more of that error too.
+ *
+ * Rule 402(c) — monotonicity: PASSED, zero inversions.
+ * Rule 403 — the depth still does something: PASSED, and this is what the
+ * three rounds were for. The epicentral intensity falls 1.85, 2.45 and
+ * 1.46 MMI degrees between 5 km and 50 km at Mw 5.5, 6.5 and 7.5. A law
+ * that carries the depth, with a rupture top that is not invented, is
+ * here and works.
+ *
+ * WHAT THE THREE ROUNDS LEAVE. A complete, checked NGA-West2 model with
+ * the hanging wall, a defensible rupture geometry and the depth in its
+ * answers, reachable as `campbellBozorgnia2014`, refused three times on
+ * the areas of six ShakeMaps — the last time by a scatter of 1.53 against
+ * 1.34. And a shipped law that keeps the rings while carrying no depth at
+ * all, which the panel still has to say out loud.
+ *
+ * The honest next question is not about the candidate. It is whether six
+ * events is enough of a jury to decide a contour law on, when two of them
+ * are Apennine normal faults that BOTH laws miss by a factor of three or
+ * more, and a seventh event could move the scatter either way. Rule 18
+ * chose the shipped law on 370 ShakeMaps; rules 394, 402 and their
+ * ancestors decide on six, because six is what the repository carries as
+ * fixtures. Widening that set is a round of its own, it needs no new
+ * physics, and it would tell us whether this candidate has been refused
+ * three times by the evidence or by the sample.
+ */
+
 export const TOP_OF_RUPTURE_RULES = 'rules 399 to 404, fixed 20 September 2026';
 
 /**

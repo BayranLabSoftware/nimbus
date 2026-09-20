@@ -2,6 +2,7 @@ import { STANDARD_GRAVITY } from '../../constants.js';
 import { nehrpClassFromVs30, type NEHRPClass } from '../../elevation/index.js';
 import type { Meters, MetersPerSecondSquared, NewtonMeters } from '../../units.js';
 import { m, mps, mps2 } from '../../units.js';
+import { topOfRuptureKm } from '../../validation/topOfRuptureRules.js';
 import { generateAftershockSequence, type AftershockSequenceResult } from './aftershocks.js';
 import {
   campbellBozorgnia2014PgaAtEpicentralDistance,
@@ -618,9 +619,23 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
    * the difference between drawing its MMI VIII band and losing it. Zero
    * where the rupture reaches the surface.
    */
-  const dipRad =
-    (cbStyle === 'strike-slip' ? 90 : cbStyle === 'normal' ? 55 : 45) * (Math.PI / 180);
-  const ztorKm = Math.max(0, depthKm - ((ruptureWidth as number) / 2_000) * Math.sin(dipRad));
+  const dipDeg = cbStyle === 'strike-slip' ? 90 : cbStyle === 'normal' ? 55 : 45;
+  const dipRad = dipDeg * (Math.PI / 180);
+  // Rule 399: the NGA-West2 estimate of Chiou & Youngs 2014 as a FLOOR,
+  // bounded by the rupture the scenario has. Hanging the rupture
+  // symmetrically about its focus — what this did until rules 399 to 404
+  // ran — put Northridge's top at 14.2 km where the real one reached about
+  // 5, and cost the candidate its MMI VIII band. The estimator alone would
+  // have been worse: it depends on magnitude and style and nothing else,
+  // so every depth would give the same distance and the depth would leave
+  // the model by the back door.
+  const ztorKm = topOfRuptureKm({
+    magnitude: input.magnitude,
+    hypocentreDepthKm: depthKm,
+    ruptureWidthKm: (ruptureWidth as number) / 1_000,
+    dipDeg,
+    style: cbStyle,
+  });
   /** Half the rupture's surface projection across strike (km). */
   const halfWidthKm = ((ruptureWidth as number) / 2_000) * Math.cos(dipRad);
   // Rule 36 of validation/interfaceRules.ts: an interface model for a
