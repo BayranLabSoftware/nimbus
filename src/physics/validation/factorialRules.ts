@@ -222,6 +222,79 @@
  *   been shown to return the incumbent by construction.
  */
 
+/**
+ * THE ADOPTION THAT WAS TRIED AND BLOCKED, 20 September 2026.
+ *
+ * The project's owner chose from the published frontier — which is what
+ * rule 491(b) failed to do and what rule 491 says is his to do — and
+ * chose the best-areas cell:
+ *
+ *   boore2014 | fromMw7.5 | surfaceProjection | style | toPeak |
+ *   thompsonWorden2018
+ *   peak 1.956 (unchanged) · areas 0.022 · dead 198.2 · quiet 1547
+ *
+ * Its three defaults were flipped and the suite was run. SEVENTEEN tests
+ * failed. Sixteen were figures that rule 44 says move when a model is
+ * adopted. THE SEVENTEENTH WAS NOT:
+ *
+ *   P-MONO-MW: the MMI VII radius is 29.17 km at Mw 7.4 and 14.88 km at
+ *   Mw 7.5. It HALVES.
+ *
+ * Thompson & Worden's distance is read only where a scenario is a point
+ * source — `!isExtendedSource`, which today means below Mw 7.5 — so at
+ * that threshold the model switches distance convention and the most
+ * visible number it draws falls by half. Rule 398 is binding and was
+ * written before any of this: a property outranks a score, and an
+ * adoption that fails a property test does not take effect.
+ *
+ * The defaults were reverted. The suite is green at 2 014.
+ *
+ * AND THE FAULT IS IN RULE 489, WHICH IS MINE. It named four objectives —
+ * peak, areas, dead, quiet — and omitted the PROPERTY GATES that rules
+ * 402(c), 416(e) and 424(e) had every one of them carried. A frontier
+ * computed without them offers cells that cannot be shipped, and the
+ * owner made a good-faith choice from a menu that should not have
+ * contained that dish. Sixth fault found in these clauses, and the first
+ * that reached as far as flipping a default.
+ *
+ * WHAT THE PROPERTY GATE SAYS ABOUT THE FRONTIER, measured after the
+ * revert on all 26 cells: TWENTY-FOUR HOLD P-MONO-MW. The two that fail
+ * are exactly the two carrying `thompsonWorden2018` with
+ * `extendedSource: fromMw7.5`.
+ *
+ * AND THAT IS THE WHOLE OF THOMPSON & WORDEN'S REACH. With
+ * `extendedSource: always` every scenario is an extended source, so the
+ * correction is never read and its cells are byte-identical duplicates —
+ * which is why rule 492(b) found it moving the areas by EXACTLY ZERO
+ * there. So the only configuration in which that distance does anything
+ * is the one in which it also halves a radius. AS WIRED, IT CANNOT BE
+ * ADOPTED AT ALL.
+ *
+ * WHICH LEAVES A DIAGNOSIS WORTH MORE THAN THE CELL. At Mw 7.5 the same
+ * earthquake has two representations — a point source at Thompson &
+ * Worden's averaged rupture distance, and an explicit finite rupture —
+ * and they disagree about the MMI VII reach by a factor of two, 29.2 km
+ * against 14.9. They are meant to be the same earthquake. One of the two
+ * is wrong by that factor and nobody had ever put them side by side,
+ * because nothing in this project ever crossed that threshold with the
+ * correction on.
+ *
+ * The frontier cells that hold the property, best areas first:
+ *
+ *   | cell                                            | peak  | areas | dead  | quiet |
+ *   | ----------------------------------------------- | ----- | ----- | ----- | ----- |
+ *   | allen/7.5/projection/style/toPeak               | 0.582 | 0.176 | 207.3 | 1698  |
+ *   | CB14/7.5/downDip/style/toPeak                   | 1.351 | 0.421 | 217.8 | 1378  |
+ *   | boore/always/downDip/style/toPeak               | 1.956 | 0.471 | **197.5** | 1736 |
+ *   | CB14/7.5/downDip/structure/toPeak               | 1.061 | 0.588 | 218.3 | 1356  |
+ *   | boore/7.5/downDip/style/toPeak/epicentral       | 1.956 | 0.935 | 212.6 | **1117** |
+ *   | SHIPPED                                         | 1.956 | 0.935 | 204.1 | 1195  |
+ *
+ * None of them dominates the shipped model either, so rule 491(a) is
+ * still empty and the choice is still a judgement — but now it is a
+ * judgement over cells that can actually be shipped.
+ */
+
 export const FACTORIAL_RULES = 'rules 488 to 494, fixed 20 September 2026';
 
 /** Rule 489: lower is better in all four, so domination needs no signs. */
