@@ -57,10 +57,14 @@ describe('rule 419: the footprint width is the rupture on the map', () => {
     }
   });
 
-  it('is off by default: the footprint width IS the rupture width', () => {
+  it('is ON by default since the adoption of 20 September', () => {
+    // Adopted as part of the cell chosen from the re-filtered frontier.
+    // Asking for the old behaviour by name still gives it.
     for (const magnitude of [5.5, 6.8, 7.9]) {
-      const r = simulateEarthquake({ magnitude, depth: km(15) });
-      expect(r.ruptureFootprintWidth).toBe(r.ruptureWidth);
+      const now = simulateEarthquake({ magnitude, depth: km(15) });
+      const before = simulateEarthquake({ magnitude, depth: km(15), stadiumWidth: 'downDip' });
+      expect(before.ruptureFootprintWidth).toBe(before.ruptureWidth);
+      expect(now.ruptureFootprintWidth as number).toBeLessThan(now.ruptureWidth);
     }
   });
 

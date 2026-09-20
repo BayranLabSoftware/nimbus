@@ -22,11 +22,25 @@ const scenario = (magnitude: number, extra: Partial<EarthquakeScenarioInput> = {
 describe('an interface scenario below Mw 7.5, drawn from Mw 7.5 only', () => {
   it('is a disc of the same ring radii below Mw 7.5, the rupture and the tsunami untouched', () => {
     for (const magnitude of [6, 6.5, 7, 7.4]) {
+      // Since 20 September the point-source distance defaults to Thompson
+      // & Worden's, which is read only where a scenario is NOT extended —
+      // so flipping this flag would flip the distance convention too. The
+      // old convention is named on both sides, so the flag is measured
+      // alone. That coupling is a real property of the adopted defaults
+      // and is recorded in the adoption's own notes.
       const always = simulateEarthquake(
-        scenario(magnitude, { subductionInterface: true, interfaceStadium: 'always' })
+        scenario(magnitude, {
+          subductionInterface: true,
+          interfaceStadium: 'always',
+          pointSourceDistance: 'epicentral',
+        })
       );
       const disc = simulateEarthquake(
-        scenario(magnitude, { subductionInterface: true, interfaceStadium: 'fromMw7.5' })
+        scenario(magnitude, {
+          subductionInterface: true,
+          interfaceStadium: 'fromMw7.5',
+          pointSourceDistance: 'epicentral',
+        })
       );
       expect(always.isExtendedSource).toBe(true);
       expect(disc.isExtendedSource).toBe(false);

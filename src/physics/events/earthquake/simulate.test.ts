@@ -13,11 +13,13 @@ describe('simulateEarthquake', () => {
     expect(r.ruptureLength as number).toBeLessThan(30_000);
     expect(r.shaking.mmiAtEpicenter).toBeGreaterThan(7);
     expect(r.shaking.mmiAtEpicenter).toBeLessThan(10);
-    // Boore et al. 2014's median on reference rock puts MMI VII at about
-    // 10 km; the ShakeMap's grid and Wald's survey put it at 25–30 km, the
-    // gap the validation report declares.
-    expect(r.shaking.mmi7Radius as number).toBeGreaterThan(8_000);
-    expect(r.shaking.mmi7Radius as number).toBeLessThan(12_000);
+    // Boore et al. 2014's median on reference rock used to put MMI VII at
+    // about 10 km against the ShakeMap's 25–30. Since the adoption of
+    // 20 September the ring is drawn at Thompson & Worden's point-source
+    // distance and reads about 18 km, so the gap the validation report
+    // declares is roughly halved and still there.
+    expect(r.shaking.mmi7Radius as number).toBeGreaterThan(15_000);
+    expect(r.shaking.mmi7Radius as number).toBeLessThan(22_000);
   });
 
   it('Tōhoku 2011 Mw 9.1 → M₀ ≈ 5 × 10²² N·m, and no MMI IX anywhere, as its ShakeMap', () => {
@@ -174,8 +176,9 @@ describe('the ground the rings stand on', () => {
     // saturates: soil that is already shaking hard stops behaving
     // elastically, which a power law could not have said.
     expect(ring(300) - ring(400)).toBeGreaterThan(ring(250) - ring(300));
-    // Rock, where every preset in the calibration net stands.
-    expect(rock).toBeCloseTo(10.1, 0);
+    // Rock, where every preset in the calibration net stands. 10.1 km
+    // until 20 September, when the point-source distance was adopted.
+    expect(rock).toBeCloseTo(18.1, 0);
   });
 });
 

@@ -98,11 +98,21 @@ describe('rules 21 and 22, as they ran', () => {
       'boore2014'
     );
     expect(sites.winner).toBe('rock');
+    // Rule 44: a re-run figure, and this one MOVED when the cell from the
+    // re-filtered frontier was adopted on 20 September. Scored on today's
+    // geometry, rule 18's comparison would pick `boore2014FromMw7.5` — the
+    // split law — over the one that ships.
+    //
+    // It does NOT change what ships. Rule 19's verdict stands and rule 44
+    // says its printed figures move while its verdict keeps; nothing here
+    // adopts anything. But it is a live signal that the law and the
+    // geometry were chosen against each other, and a round that re-opens
+    // rule 18 on the adopted geometry now has a reason to.
     const laws = compareContourLaws(RULE_SHAKEMAPS, {
       inPlace: 'boore2014',
       vs30For: (row) => ruleSiteVs30(row, 'pick'),
     });
-    expect(laws.winner).toBe('boore2014');
+    expect(laws.winner).toBe('boore2014FromMw7.5');
   }, 30_000);
 
   it("stand every earthquake the harness scores on the browser's ground", () => {

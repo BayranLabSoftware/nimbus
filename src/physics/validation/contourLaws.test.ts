@@ -35,7 +35,16 @@ describe('the candidate laws', () => {
   });
 
   it('draw Boore et al. 2014 with its fault type when asked', () => {
-    const r = simulateEarthquake({ magnitude: 6.8, faultType: 'normal', contourLaw: 'boore2014' });
+    // Since 20 September the point-source distance defaults to Thompson &
+    // Worden's, so the ring is the EPICENTRAL distance whose average R_JB
+    // meets the threshold, not the R_JB itself. This test is about which
+    // LAW is drawn, so it names the old convention and keeps asking that.
+    const r = simulateEarthquake({
+      magnitude: 6.8,
+      faultType: 'normal',
+      contourLaw: 'boore2014',
+      pointSourceDistance: 'epicentral',
+    });
     expect(r.shaking.mmi7Radius).toBe(
       distanceForPgaNGAWest2(
         { magnitude: 6.8, faultType: 'normal', vs30: 760 },

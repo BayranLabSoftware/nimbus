@@ -713,7 +713,7 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   const ruptureFootprintWidth: Meters =
     deepModel === null &&
     input.subductionInterface !== true &&
-    (input.stadiumWidth ?? 'downDip') === 'surfaceProjection'
+    (input.stadiumWidth ?? 'surfaceProjection') === 'surfaceProjection'
       ? m(halfWidthKm * 2_000)
       : ruptureWidth;
   // Rule 36 of validation/interfaceRules.ts: an interface model for a
@@ -750,7 +750,9 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   // Rule 51 of validation/pointSourceRules.ts: a disc's rings at Thompson
   // & Worden 2018's average distances to the rupture, where asked.
   const toRupture =
-    deepModel === null && !isExtendedSource && input.pointSourceDistance === 'thompsonWorden2018'
+    deepModel === null &&
+    !isExtendedSource &&
+    (input.pointSourceDistance ?? 'thompsonWorden2018') === 'thompsonWorden2018'
       ? pointSourceDistances(input.magnitude, depthKm)
       : null;
   const fromJoynerBoore = (rjb: Meters): Meters =>

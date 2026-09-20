@@ -1664,7 +1664,7 @@ export function casualtyPlanForResult(
           // Rule 440: the ceiling of the topmost band, which is what the
           // scenario says it reaches and not the next whole degree.
           peakMmi: result.data.shaking.mmiAtEpicenter,
-          topBand: result.data.inputs.topBand ?? 'midpoint',
+          topBand: result.data.inputs.topBand ?? 'toPeak',
           lowIntensity: result.data.inputs.lowIntensityDeaths ?? 'none',
         },
         pagerVulnerabilityFor(countryLookup(location.latitude, location.longitude))

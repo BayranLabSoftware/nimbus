@@ -58,7 +58,17 @@ describe('rule 413: the candidate reaches only where it says', () => {
 
   it('changes the shape, and only the shape, where it does reach', () => {
     for (const magnitude of [6.0, 6.6, 7.0, 7.4]) {
-      const input: EarthquakeScenarioInput = { magnitude, depth: km(12) };
+      // Since 20 September the point-source distance defaults to Thompson
+      // & Worden's, which is read only where a scenario is NOT extended —
+      // so flipping this flag would flip the distance convention too. The
+      // old convention is named on both sides, so the flag is measured
+      // alone. That coupling is a real property of the adopted defaults
+      // and is recorded in the adoption's own notes.
+      const input: EarthquakeScenarioInput = {
+        magnitude,
+        depth: km(12),
+        pointSourceDistance: 'epicentral',
+      };
       const a = simulateEarthquake(input);
       const b = simulateEarthquake({ ...input, extendedSource: 'always' });
       expect(a.isExtendedSource, `Mw ${magnitude.toString()} in place`).toBe(false);

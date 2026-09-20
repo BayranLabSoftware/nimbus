@@ -762,7 +762,8 @@ export function shakingCasualtyPlan(
   // already the middle of what it spans. PAGER's own banding is left alone:
   // its bins run from k − 1/2 to k + 1/2 at the rate of k, which is PAGER's
   // convention and rule 447 forbids touching it.
-  const boundTop = !pager && input.topBand === 'toPeak' && input.peakMmi !== undefined;
+  const boundTop =
+    !pager && (input.topBand ?? 'toPeak') === 'toPeak' && input.peakMmi !== undefined;
   const topKey = drawn[0]?.key;
   const bands: CasualtyBand[] = drawn.map((r) => {
     const mmi =

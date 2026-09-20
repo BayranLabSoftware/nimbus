@@ -63,14 +63,26 @@ const evenly = (radiiM: readonly number[]): number[] =>
 describe('rule 46: the dead below MMI VII', () => {
   it('draws V and VI at 5.0 and 6.0 as it draws VII to IX, and moves nothing else', () => {
     for (const s of SCENARIOS) {
-      const none = simulateEarthquake(s);
+      // The rings here are compared against the raw NGA-West2 distance, so
+      // they name the convention that distance IS: since 20 September the
+      // default is Thompson & Worden's, which converts it.
+      const none = simulateEarthquake({ ...s, pointSourceDistance: 'epicentral' });
       expect(none.shaking.mmi5Radius).toBeUndefined();
       expect(none.shaking.mmi6Radius).toBeUndefined();
       const site = { magnitude: s.magnitude, faultType: ngaFault(s), vs30: s.vs30 ?? 760 };
       const at = (mmi: number): number =>
         distanceForPgaNGAWest2(site, pgaFromMercalliIntensity(mmi));
       for (const toll of CANDIDATES) {
-        const low = simulateEarthquake({ ...s, lowIntensityDeaths: toll });
+        const low = simulateEarthquake({
+          ...s,
+          lowIntensityDeaths: toll,
+          pointSourceDistance: 'epicentral',
+          // Rule 440 bounds the TOPMOST band by the peak, and for a
+          // scenario that never reaches MMI VII the topmost band is the
+          // VI one this rule is about. Named so that rule 46 is tested
+          // and not rule 440.
+          topBand: 'midpoint',
+        });
         const { mmi5Radius, mmi6Radius, ...above } = low.shaking;
         expect({ ...low, inputs: none.inputs, shaking: above }).toEqual(none);
         expect(mmi5Radius).toBe(at(5));
@@ -85,7 +97,14 @@ describe('rule 46: the dead below MMI VII', () => {
   it('counts above VII exactly the deaths in place, and below it the rate its rule names', () => {
     let belowCounted = 0;
     for (const s of SCENARIOS) {
-      const none = simulateEarthquake(s);
+      // Both conventions named, for the reasons the sibling test gives:
+      // the rings are checked against the raw law, and rule 440's bound
+      // would otherwise reach the VI band this rule is about.
+      const none = simulateEarthquake({
+        ...s,
+        pointSourceDistance: 'epicentral',
+        topBand: 'midpoint',
+      });
       const inPlace = planOf(none);
       const inPlaceBands = inPlace?.bands ?? [];
       const inPlaceDeaths = estimateCasualties(
@@ -93,7 +112,16 @@ describe('rule 46: the dead below MMI VII', () => {
         evenly(inPlaceBands.map((b) => b.outerRadiusM))
       );
       for (const toll of CANDIDATES) {
-        const low = simulateEarthquake({ ...s, lowIntensityDeaths: toll });
+        const low = simulateEarthquake({
+          ...s,
+          lowIntensityDeaths: toll,
+          pointSourceDistance: 'epicentral',
+          // Rule 440 bounds the TOPMOST band by the peak, and for a
+          // scenario that never reaches MMI VII the topmost band is the
+          // VI one this rule is about. Named so that rule 46 is tested
+          // and not rule 440.
+          topBand: 'midpoint',
+        });
         const plan = planOf(low);
         expect(plan).not.toBeNull();
         if (plan === null) continue;

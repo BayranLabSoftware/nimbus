@@ -113,10 +113,13 @@ describe('rule 51 (c): the scenario input', () => {
     },
   ];
 
-  it('draws with `epicentral` exactly what the simulator draws when it names nothing', () => {
+  it('draws with `thompsonWorden2018` what the simulator draws when it names nothing', () => {
+    // Adopted as a default on 20 September, from the re-filtered frontier.
+    // `epicentral` is still reachable by name and still means what it
+    // meant; it is simply no longer what silence means.
     for (const input of scenarios) {
       const plain = simulateEarthquake(input);
-      const named = simulateEarthquake({ ...input, pointSourceDistance: 'epicentral' });
+      const named = simulateEarthquake({ ...input, pointSourceDistance: 'thompsonWorden2018' });
       expect({ ...named, inputs: plain.inputs }).toEqual(plain);
     }
   });
@@ -167,7 +170,9 @@ describe('rule 51 (c): the scenario input', () => {
     const disc = { magnitude: 6.9, depth: m(15_000), faultType: 'reverse' } as const;
     expect(
       simulateEarthquake({ ...disc, pointSourceDistance: 'thompsonWorden2018' }).shaking.mmi7Radius
-    ).toBeGreaterThan(simulateEarthquake(disc).shaking.mmi7Radius);
+    ).toBeGreaterThan(
+      simulateEarthquake({ ...disc, pointSourceDistance: 'epicentral' }).shaking.mmi7Radius
+    );
     // The average rupture reaches nearer the surface than a hypocentre 15 km
     // down, so the interface model's ring moves out too.
     const marked = {
@@ -176,7 +181,10 @@ describe('rule 51 (c): the scenario input', () => {
       subductionInterface: true,
       contourLaw: 'parker2022Interface',
     } as const;
-    const epicentral = simulateEarthquake(marked).shaking.mmi7Radius;
+    const epicentral = simulateEarthquake({
+      ...marked,
+      pointSourceDistance: 'epicentral',
+    }).shaking.mmi7Radius;
     expect(epicentral).toBeGreaterThan(0);
     expect(
       simulateEarthquake({ ...marked, pointSourceDistance: 'thompsonWorden2018' }).shaking
