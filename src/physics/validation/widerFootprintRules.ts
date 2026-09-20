@@ -136,6 +136,94 @@ import type { AtlasEarthquake } from './atlasRules.js';
  *       shipped law stays and the numbers are published anyway.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 411 and published
+ * as it came out: the candidate is REFUSED a fourth time — and the two
+ * clauses that refused it the first three times both PASS.
+ *
+ * Rule 409, clause by clause, on the 116:
+ *
+ *   | law       | bands | geometric mean | scatter | combined | lost | invented |
+ *   | --------- | ----- | -------------- | ------- | -------- | ---- | -------- |
+ *   | boore2014 | 165   | 0.393x         | 1.579   | 1.835    | 13   | 58       |
+ *   | CB14      | 155   | **0.656x**     | 1.479   | 1.538    | 23   | 60       |
+ *
+ *   centred      PASS   0.656x against 0.393x; |ln bias| 0.421 against 0.935
+ *   scatter      PASS   1.479 against 1.579 — the clause that refused it
+ *                       three times, passed on the wider jury
+ *   bands lost   FAIL   the candidate leaves blank 16 bands the shipped law
+ *                       draws and the record has: 12 at MMI VIII, 4 at VII
+ *   monotonicity PASS   0 inversions over Mw 4.0 to 9.0
+ *   depth        PASS   the epicentral intensity falls 1.84, 2.50 and 1.27
+ *                       MMI degrees from 5 km to 50 km at Mw 5.5, 6.5, 7.5
+ *
+ * RULE 410'S FINDING, and it is the reason this round was run: THE TWO
+ * JURIES DISAGREE, on exactly the clause that had been deciding.
+ *
+ *   | jury        | shipped        | candidate      | scatter clause |
+ *   | ----------- | -------------- | -------------- | -------------- |
+ *   | six events  | 0.733x / 1.336 | 0.918x / 1.529 | candidate WORSE |
+ *   | 116 events  | 0.393x / 1.579 | 0.656x / 1.479 | candidate BETTER |
+ *
+ *   The Z_tor round refused Campbell & Bozorgnia 2014 because its scatter
+ *   was 1.53 against 1.34. On a jury picked by rule instead of by which
+ *   events have presets, the same two laws in the same code swap places:
+ *   1.48 against 1.58. That refusal was a fact about the sample. Two of the
+ *   six fixtures are Apennine normal faults that both laws overdraw by
+ *   three to eleven times, and on ten bands two events set the scatter.
+ *
+ * AND A FINDING ABOUT THE SHIPPED LAW, which is not about the candidate at
+ * all and matters more. Boore et al. 2014 reads **0.393x** on the wider
+ * jury: across 165 bands it draws well under half the ground the ShakeMaps
+ * record. The six fixtures said 0.73x. The law the simulator ships is
+ * roughly twice as far from centred as six events had been reporting, and
+ * nothing but the width of the jury changed to show it.
+ *
+ * WHY THE CANDIDATE LOSES THOSE 16 BANDS, measured rather than guessed.
+ * It is not a defect; it is Campbell & Bozorgnia's nonlinear site term.
+ * For the 1979 Imperial Valley earthquake (Mw 6.4 at 15 km, on the valley's
+ * deep soft sediments) the epicentral intensity is:
+ *
+ *   on rock, Vs30 760:   shipped 8.04, candidate 8.53
+ *   on soft, Vs30 270:   shipped 8.32, candidate **8.17**
+ *
+ *   The candidate is the STRONGER law on rock and the weaker one on soft
+ *   ground, because its soil term de-amplifies harder as the shaking gets
+ *   big. So it spreads a wider MMI VII skirt and reaches MMI VIII less
+ *   often, which is exactly the pattern in the counts: it loses 12 MMI VIII
+ *   bands and paints 43 where the shipped law paints 52, while beating it
+ *   on MMI VII area everywhere.
+ *
+ * WHAT THE CLAUSE THAT REFUSED IT IS WORTH, said plainly because the rule
+ * was fixed before the run and will not be amended after it. At Imperial
+ * Valley the record has 485 km² at MMI VIII, the shipped law draws 27 and
+ * the candidate draws none. The clause counts that as the shipped law
+ * holding a band the candidate loses. It is also the shipped law missing
+ * 94 % of that band. A clause that protects a band drawn at a twentieth of
+ * its size is protecting very little, and on this jury it is the only thing
+ * standing between the candidate and adoption. That is an argument for a
+ * better clause in a later round, written before its run like this one —
+ * NOT for setting this one aside now that its answer is known.
+ *
+ * ONE MEASUREMENT ARTEFACT, named so nobody reads the "invented" column as
+ * false alarms. The record's area comes from `coverage_mmi_low_res.covjson`,
+ * whose cells are coarse: of the 6 events whose record has no MMI VII area,
+ * ALL SIX reached MMI VII at their peak, and 17 of the 56 with no MMI VIII
+ * area reached MMI VIII. So a good part of both laws' 58 and 60 "invented"
+ * bands are bands the earthquake really had and the grid could not resolve.
+ * The deciding clause is clean of this: a lost band is one where the record
+ * has positive measured area, and all 16 do — from 52 km² to 2 356 km².
+ *
+ * WHAT THIS ROUND LEAVES. The shipped law stays, by rule 409. Four rounds
+ * have now refused this candidate and the refusals have got steadily
+ * narrower: one band, one band, a scatter, and now a clause about bands
+ * whose own accuracy is 5 %. The candidate is better centred than the
+ * shipped law on both juries and better scattered on the wider one. The
+ * next round is not another coefficient — it is a clause that can tell a
+ * band drawn WELL from a band merely drawn, on a jury of 116 rather than
+ * six, and the shipped law's 0.393x is what it has to answer for.
+ */
+
 export const WIDER_FOOTPRINT_RULES = 'rules 405 to 411, fixed 20 September 2026';
 
 /** Rule 405(b): the intensity a record must reach to have a band worth
