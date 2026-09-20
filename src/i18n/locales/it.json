@@ -360,6 +360,15 @@
         "reverse": "Inversa (thrust)",
         "normal": "Diretta",
         "all": "Generica / mista"
+      },
+      "strikeInput": "Direzione della faglia (° da N)",
+      "strikeUnknown": "sconosciuta",
+      "strikeAuto": "leggila dalla faglia",
+      "strikeFrom": {
+        "user": "scelta da te — resta anche se sposti l’epicentro",
+        "preset": "dal preset, come pubblicata per quell’evento",
+        "fault": "dalla faglia mappata sotto il punto (faglie attive GEM)",
+        "none": "nessuna faglia mappata a portata: il modello disegna ogni direzione, non il nord"
       }
     },
     "explosion": {

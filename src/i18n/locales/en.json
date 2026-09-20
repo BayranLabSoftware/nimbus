@@ -360,6 +360,15 @@
         "reverse": "Reverse (thrust)",
         "normal": "Normal",
         "all": "Generic / mixed"
+      },
+      "strikeInput": "Fault strike (° from N)",
+      "strikeUnknown": "unknown",
+      "strikeAuto": "read it from the fault",
+      "strikeFrom": {
+        "user": "yours — it stays when you move the epicentre",
+        "preset": "from the preset, as published for that event",
+        "fault": "from the mapped fault under the pick (GEM active faults)",
+        "none": "no mapped fault in reach: the model draws every direction, not north"
       }
     },
     "explosion": {

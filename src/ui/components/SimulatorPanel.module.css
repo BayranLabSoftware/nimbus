@@ -716,3 +716,29 @@ select.paramInput {
   font-weight: 600;
   color: rgba(255, 255, 255, 0.92);
 }
+
+/* Where a value came from, under the field that shows it: the strike is
+   read from the mapped fault unless the reader wrote one, and a number on
+   screen with no provenance is what let a preset's strike point a rupture
+   anywhere on Earth (B-081). */
+.paramHint {
+  font-size: 10px;
+  line-height: 1.4;
+  margin: 4px 0 0 0;
+  opacity: 0.6;
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.linkButton:hover {
+  opacity: 1;
+}

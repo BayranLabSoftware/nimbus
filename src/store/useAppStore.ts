@@ -325,6 +325,10 @@ export interface EarthquakeInputOverrides {
   vs30?: number | null;
   /** Megathrust rupture scaling flag (Strasser 2010). */
   subductionInterface?: boolean;
+  /** Which way the rupture points, in degrees from north. Setting it marks
+   *  the strike as the reader's, so it survives a change of place; `null`
+   *  hands the choice back to the fault under the pick (B-081). */
+  strikeAzimuthDeg?: number | null;
 }
 
 /** UI-facing overrides for the landslide scenario. */
@@ -442,7 +446,23 @@ export interface AppStore {
   eventType: EventType;
   impact: { preset: ActiveImpactPreset; input: ImpactScenarioInput };
   explosion: { preset: ActiveExplosionPreset; input: ExplosionScenarioInput };
-  earthquake: { preset: ActiveEarthquakePreset; input: EarthquakeScenarioInput };
+  earthquake: {
+    preset: ActiveEarthquakePreset;
+    input: EarthquakeScenarioInput;
+    /** Whether the strike in `input` is the READER's, rather than one
+     *  inherited from a preset.
+     *
+     *  B-081: a preset's strike is a published measurement of ONE fault —
+     *  Tohoku's 200° is the Japan Trench from Hayes's finite-fault model —
+     *  and it stayed in the inputs when the reader changed the scenario and
+     *  moved the pick, so a Mw 7.9 placed on the San Andreas at San
+     *  Bernardino was drawn and counted striking 200°, when the mapped
+     *  fault under that point strikes 106°. A preset's strike is
+     *  authoritative while the preset is; once the scenario is CUSTOM the
+     *  ground under the pick knows better — unless the reader said
+     *  otherwise, which is what this records. */
+    strikeIsUsers: boolean;
+  };
   volcano: { preset: ActiveVolcanoPreset; input: VolcanoScenarioInput };
   landslide: { preset: ActiveLandslidePreset; input: LandslideScenarioInput };
 
@@ -755,6 +775,7 @@ function initialState(): InitialSlice {
     earthquake: {
       preset: INITIAL_EARTHQUAKE_PRESET,
       input: EARTHQUAKE_PRESETS[INITIAL_EARTHQUAKE_PRESET].input,
+      strikeIsUsers: false,
     },
     volcano: {
       preset: INITIAL_VOLCANO_PRESET,
@@ -2305,7 +2326,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
     if (isEarthquakePresetId(id)) {
       set({
         eventType: 'earthquake',
-        earthquake: { preset: id, input: EARTHQUAKE_PRESETS[id].input },
+        earthquake: { preset: id, input: EARTHQUAKE_PRESETS[id].input, strikeIsUsers: false },
         selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
@@ -2495,6 +2516,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
       else if (overrides.vs30 !== undefined) merged.vs30 = overrides.vs30;
       if (overrides.subductionInterface !== undefined)
         merged.subductionInterface = overrides.subductionInterface;
+      if (overrides.strikeAzimuthDeg === null) delete merged.strikeAzimuthDeg;
+      else if (overrides.strikeAzimuthDeg !== undefined)
+        merged.strikeAzimuthDeg = overrides.strikeAzimuthDeg;
       // B-080: naming a fault that is not a thrust puts the interface out.
       //
       // The inputs are inherited from whatever preset came before and edited
@@ -2525,7 +2549,17 @@ export const useAppStore = create<AppStore>((set, get) => ({
 
       return {
         eventType: 'earthquake',
-        earthquake: { preset: 'CUSTOM', input: next },
+        earthquake: {
+          preset: 'CUSTOM',
+          input: next,
+          // Writing a strike makes it the reader's and it stays; clearing it
+          // gives the choice back to the ground; any other edit leaves the
+          // question as it was.
+          strikeIsUsers:
+            overrides.strikeAzimuthDeg === null
+              ? false
+              : overrides.strikeAzimuthDeg !== undefined || state.earthquake.strikeIsUsers,
+        },
         selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
@@ -2708,7 +2742,13 @@ export const useAppStore = create<AppStore>((set, get) => ({
             ...cleared,
             linkNotice: noticeForSupplied(),
             eventType: 'earthquake',
-            earthquake: { preset: 'CUSTOM', input: c.classified },
+            earthquake: {
+              preset: 'CUSTOM',
+              input: c.classified,
+              // A link is a state its sender saved: a strike written in it
+              // is theirs, and is not re-read from the ground.
+              strikeIsUsers: c.classified.strikeAzimuthDeg !== undefined,
+            },
           };
         }
         case 'volcano': {
@@ -3096,7 +3136,21 @@ export const useAppStore = create<AppStore>((set, get) => ({
         // Where the tiles have not arrived, or where no structure is in
         // reach, the strike stays unset — which rule 325 says must be
         // drawn as an unknown and never as north.
-        if (state.earthquake.input.strikeAzimuthDeg === undefined && state.location !== null) {
+        //
+        // B-081: "unset" was too narrow a test. A preset's strike is a
+        // published measurement of ONE fault — Tohoku's 200° is the Japan
+        // Trench — and it rode along when the reader changed the scenario
+        // and moved the pick 9 000 km, so a Mw 7.9 on the San Andreas at San
+        // Bernardino was drawn and counted striking 200° while the mapped
+        // fault under that very point strikes 106°, which the shipped tiles
+        // knew and were never asked. A preset's strike is authoritative
+        // while the preset is; once the scenario is CUSTOM the ground under
+        // the pick knows better, unless the reader set the strike
+        // themselves.
+        const strikeStands =
+          state.earthquake.input.strikeAzimuthDeg !== undefined &&
+          (state.earthquake.preset !== 'CUSTOM' || state.earthquake.strikeIsUsers);
+        if (!strikeStands && state.location !== null) {
           const forLength = simulateEarthquake(earthquakeInput);
           const answer = strikeAnswerAt(
             state.location.latitude,
@@ -3106,6 +3160,12 @@ export const useAppStore = create<AppStore>((set, get) => ({
           );
           if (answer !== null && answer.strikeDeg !== null) {
             earthquakeInput = { ...earthquakeInput, strikeAzimuthDeg: answer.strikeDeg };
+          } else {
+            // Nothing under the pick can host this rupture. Rule 325: an
+            // unknown strike is drawn as unknown and never as north — so the
+            // inherited one goes rather than standing in for an answer.
+            const { strikeAzimuthDeg: _dropped, ...withoutStrike } = earthquakeInput;
+            earthquakeInput = withoutStrike;
           }
         }
         // Auto-derive waterDepth from the bathymetry sample when the

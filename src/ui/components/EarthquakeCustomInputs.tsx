@@ -1,6 +1,9 @@
 import type { ChangeEvent, JSX } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { FaultType } from '../../physics/events/earthquake/index.js';
+import { simulateEarthquake } from '../../physics/events/earthquake/index.js';
+import { strikeAnswerAt } from '../../scene/strikeTiles.js';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
@@ -13,6 +16,10 @@ const FAULT_TYPES: FaultType[] = ['strike-slip', 'reverse', 'normal', 'all'];
 export function EarthquakeCustomInputs(): JSX.Element {
   const { t } = useTranslation();
   const input = useAppStore((s) => s.earthquake.input);
+  const preset = useAppStore((s) => s.earthquake.preset);
+  const strikeIsUsers = useAppStore((s) => s.earthquake.strikeIsUsers);
+  const location = useAppStore((s) => s.location);
+  const result = useAppStore((s) => s.result);
   const setEarthquakeInput = useAppStore((s) => s.setEarthquakeInput);
 
   // Per-field issues come straight from `validateScenario` — no
@@ -29,6 +36,47 @@ export function EarthquakeCustomInputs(): JSX.Element {
 
   const depthKm = input.depth === undefined ? '' : (input.depth as number) / 1_000;
 
+  /**
+   * Which way the rupture points, and where that answer comes from.
+   *
+   * B-081: until now this was not on the panel at all, so a strike
+   * inherited from a preset could point a rupture anywhere on Earth with
+   * nothing on screen to show it. The reading repeats what the store will
+   * do at evaluate time, from the same tiles and the same rupture length,
+   * so the panel cannot promise one strike and the simulation draw another.
+   */
+  const strike = useMemo((): {
+    deg: number | null;
+    source: 'user' | 'preset' | 'fault' | 'none';
+  } => {
+    const own = input.strikeAzimuthDeg;
+    if (own !== undefined && (preset !== 'CUSTOM' || strikeIsUsers)) {
+      return { deg: own, source: strikeIsUsers ? 'user' : 'preset' };
+    }
+    // Once a scenario has run, the strike it RAN is the answer — no
+    // reconstruction can be more faithful than the value itself, and the
+    // store waits for the tiles before it evaluates while this component
+    // renders long before they land. Editing any input clears the result,
+    // so a stale strike cannot survive an edit.
+    if (result?.type === 'earthquake') {
+      const ran = result.data.inputs.strikeAzimuthDeg;
+      return ran === undefined ? { deg: null, source: 'none' } : { deg: ran, source: 'fault' };
+    }
+    if (location === null)
+      return { deg: own ?? null, source: own === undefined ? 'none' : 'preset' };
+    // The window the lookup reads is as long as the rupture (rule 287), so
+    // the length comes from the same scaling law the simulator will use.
+    const length = simulateEarthquake(input).ruptureLength as number;
+    const answer = strikeAnswerAt(
+      location.latitude,
+      location.longitude,
+      (input.depth as number | undefined) ?? 10_000,
+      length
+    );
+    if (answer?.strikeDeg == null) return { deg: null, source: 'none' };
+    return { deg: answer.strikeDeg, source: 'fault' };
+  }, [input, preset, strikeIsUsers, location, result]);
+
   const updateMagnitude = (text: string): void => {
     const v = parseFloat(text);
     if (Number.isFinite(v) && v > 0) setEarthquakeInput({ magnitude: v });
@@ -36,6 +84,15 @@ export function EarthquakeCustomInputs(): JSX.Element {
   const updateDepth = (text: string): void => {
     const km = parseFloat(text);
     if (Number.isFinite(km) && km >= 0) setEarthquakeInput({ depth: scaleTyped(km, 1_000) });
+  };
+  const updateStrike = (text: string): void => {
+    if (text.trim() === '') {
+      // Cleared: the ground under the pick decides again.
+      setEarthquakeInput({ strikeAzimuthDeg: null });
+      return;
+    }
+    const deg = parseFloat(text);
+    if (Number.isFinite(deg)) setEarthquakeInput({ strikeAzimuthDeg: deg });
   };
   const updateFault = (e: ChangeEvent<HTMLSelectElement>): void => {
     setEarthquakeInput({ faultType: e.target.value as FaultType });
@@ -168,6 +225,36 @@ export function EarthquakeCustomInputs(): JSX.Element {
             isError={vs30Issues.hasError}
           />
         </span>
+      </div>
+
+      <div className={styles.paramField}>
+        <label className={styles.paramLabel} htmlFor="quake-strike">
+          {t('simulator.earthquake.strikeInput')}
+        </label>
+        <DraftNumberInput
+          id="quake-strike"
+          className={styles.paramInput}
+          value={strike.deg === null ? '' : Math.round(strike.deg * 10) / 10}
+          placeholder={t('simulator.earthquake.strikeUnknown')}
+          onValueText={updateStrike}
+        />
+        <p className={styles.paramHint}>
+          {t(`simulator.earthquake.strikeFrom.${strike.source}`)}
+          {strike.source === 'user' && (
+            <>
+              {' · '}
+              <button
+                type="button"
+                className={styles.linkButton}
+                onClick={(): void => {
+                  setEarthquakeInput({ strikeAzimuthDeg: null });
+                }}
+              >
+                {t('simulator.earthquake.strikeAuto')}
+              </button>
+            </>
+          )}
+        </p>
       </div>
 
       <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>

@@ -57,6 +57,7 @@ import { thermalHorizonRadius } from '../casualties.js';
 import { CRUSTAL_ROCK_DENSITY, IMPACT_LUMINOUS_EFFICIENCY } from '../constants.js';
 import { deg, degreesToRadians, J, kgPerM3, m, mps } from '../units.js';
 import { validateEarthquakeInput, validateScenario } from './inputSchema.js';
+import { shippedStrikeAnswer } from './shippedFaults.js';
 import { safeRunEarthquake } from './safeRun.js';
 import { EARTHQUAKE_INPUT_SIGMA } from '../uq/conventions.js';
 import { explosionSampler } from '../montecarlo/explosionMonteCarlo.js';
@@ -1676,13 +1677,57 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(checked.warnings.map((w) => w.code)).toContain('PHYS_INCONSISTENT');
   });
 
+  it('B-081 a strike inherited from a preset does not outlive the place it was measured at', () => {
+    // Tohoku's 200° is the Japan Trench, from Hayes's finite-fault model.
+    // It rode along when the reader changed the scenario and moved the pick
+    // to the San Andreas at San Bernardino, so a Mw 7.9 was drawn AND
+    // counted striking 200° while the mapped fault under that very point
+    // strikes 106° — which the shipped tiles knew and were never asked,
+    // because the lookup only ran when the strike was unset.
+    resetAppStore();
+    const store = (): ReturnType<typeof useAppStore.getState> => useAppStore.getState();
+    store().selectEventType('earthquake');
+    store().selectPreset('TOHOKU_2011');
+    expect(store().earthquake.input.strikeAzimuthDeg).toBe(200);
+    expect(store().earthquake.strikeIsUsers).toBe(false);
+
+    // While the preset IS the scenario, its published strike stands.
+    expect(store().earthquake.preset).toBe('TOHOKU_2011');
+
+    // Editing any field makes the scenario CUSTOM, and the preset's strike
+    // stops being a measurement of this scenario's fault.
+    store().setEarthquakeInput({ magnitude: 7.9 });
+    expect(store().earthquake.preset).toBe('CUSTOM');
+    expect(store().earthquake.strikeIsUsers).toBe(false);
+
+    // A strike the reader writes is theirs and survives everything else.
+    store().setEarthquakeInput({ strikeAzimuthDeg: 45 });
+    expect(store().earthquake.strikeIsUsers).toBe(true);
+    store().setEarthquakeInput({ depth: 12_000 });
+    expect(store().earthquake.input.strikeAzimuthDeg).toBe(45);
+    expect(store().earthquake.strikeIsUsers).toBe(true);
+
+    // And handing it back puts the ground in charge again.
+    store().setEarthquakeInput({ strikeAzimuthDeg: null });
+    expect(store().earthquake.input.strikeAzimuthDeg).toBeUndefined();
+    expect(store().earthquake.strikeIsUsers).toBe(false);
+
+    // The tiles had the answer all along: the offline reader, which reads
+    // the same shipped files the browser does, puts the San Andreas under
+    // that point at 106°, not 200°.
+    const onTheFault = shippedStrikeAnswer(34.122, -117.302, 12_000, 198_000);
+    expect(onTheFault.strikeDeg).not.toBeNull();
+    expect(onTheFault.strikeDeg ?? 0).toBeGreaterThan(90);
+    expect(onTheFault.strikeDeg ?? 0).toBeLessThan(130);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-080 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // B-001..B-081 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
     // superseded by B-011; B-078 still OPEN and carries no test yet).
-    const expectedRows = 80;
-    expect(expectedRows).toBe(80);
+    const expectedRows = 81;
+    expect(expectedRows).toBe(81);
   });
 });
