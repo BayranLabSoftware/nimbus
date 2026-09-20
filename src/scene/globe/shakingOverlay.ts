@@ -81,6 +81,41 @@ export const INTENSITY_BANDS: readonly IntensityBand[] = [
   { minValue: 10, label: 'X', css: 'rgba(69, 10, 10, 0.65)', lineCss: 'rgba(30, 5, 5, 0.95)' },
 ] as const;
 
+/**
+ * What the field reads along the edge of its own box.
+ *
+ * `contourRings` hands back a ring that runs off the edge as an OPEN ring,
+ * and says in as many words that the caller decides what to do with it. A
+ * picture that closes such a ring draws a straight line along the side of the
+ * box and a right angle at its corner — a boundary the ground does not have,
+ * and the most confident-looking thing on the map. So the picture asks this
+ * first.
+ *
+ * `minVs30` is the softest ground the edge touches, which is how far out the
+ * box must reach to contain the band: the level is set by the law on the
+ * softest ground, not on the average or on rock.
+ */
+export function edgeReading(field: ShakingField): { maxMmi: number; minVs30: number } {
+  const n = field.points;
+  let maxMmi = -Infinity;
+  let minVs30 = Infinity;
+  const look = (index: number): void => {
+    const mmi = field.mmi[index];
+    const vs30 = field.vs30[index];
+    if (mmi !== undefined && mmi > maxMmi) maxMmi = mmi;
+    if (vs30 !== undefined && vs30 < minVs30) minVs30 = vs30;
+  };
+  for (let col = 0; col < n; col += 1) {
+    look(col);
+    look((n - 1) * n + col);
+  }
+  for (let row = 1; row < n - 1; row += 1) {
+    look(row * n);
+    look(row * n + n - 1);
+  }
+  return { maxMmi, minVs30 };
+}
+
 /** One contour, in geographic coordinates, ready to be drawn. */
 export interface GeographicContour {
   level: number;
@@ -99,13 +134,21 @@ export interface GeographicContour {
  * A level the field never reaches yields no ring and is dropped rather than
  * drawn empty — the report's own rule that no band is painted at an
  * intensity its event never reached, applied to the picture.
+ *
+ * A level that runs off the EDGE of the field is dropped too, for the
+ * opposite reason: its ring is open, and closing it would draw the side of
+ * the box as though it were the edge of the shaking. Widen the field and the
+ * level comes back.
  */
 export function shakingContours(
   field: ShakingField,
   bands: readonly IntensityBand[] = INTENSITY_BANDS
 ): GeographicContour[] {
   const out: GeographicContour[] = [];
+  // A level the field does not contain is not drawn: see `edgeReading`.
+  const edge = edgeReading(field);
   for (const band of bands) {
+    if (band.minValue <= edge.maxMmi) continue;
     const rings = contourRings(field, band.minValue);
     if (rings.length === 0) continue;
     const geographic = rings.map((ring) =>

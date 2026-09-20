@@ -8,6 +8,7 @@ import {
   NON_FINITE_PLACEHOLDER,
   type UnitTier,
 } from '../utils/numberFormat.js';
+import { INTENSITY_BANDS } from '../../scene/globe/shakingOverlay.js';
 import styles from './RingLegend.module.css';
 
 const TIERS_RANGE: readonly UnitTier[] = [
@@ -238,6 +239,7 @@ export function RingLegend(): JSX.Element {
   const { t } = useTranslation();
   const result = useAppStore((s) => s.result);
   const hiddenRingKeys = useAppStore((s) => s.hiddenRingKeys);
+  const shakingFieldBands = useAppStore((s) => s.shakingFieldBands);
   const toggleRingVisibility = useAppStore((s) => s.toggleRingVisibility);
   const showAllRings = useAppStore((s) => s.showAllRings);
   const bathymetricTsunami = useAppStore((s) => s.bathymetricTsunami);
@@ -250,6 +252,14 @@ export function RingLegend(): JSX.Element {
   // Phase 12c — tsunami map status. Surfaces the user-facing question
   // "did the trans-oceanic propagation actually run for this scenario?"
   // without making them open dev-tools.
+  // The bands the globe painted, in the globe's own table — imported
+  // rather than mirrored like SWATCH above, because this table is already
+  // exported and a second copy is a second thing to forget.
+  const fieldBands =
+    shakingFieldBands === null
+      ? []
+      : INTENSITY_BANDS.filter((band) => shakingFieldBands.includes(band.label));
+
   const tsunamiPresent = bathymetricTsunami !== null;
   const globalAvailable = globalBathymetricGrid !== null;
   const globalActive = bathymetricTsunami?.global !== undefined;
@@ -341,6 +351,23 @@ export function RingLegend(): JSX.Element {
                 );
               })}
             </ul>
+          )}
+          {fieldBands.length > 0 && (
+            <section className={styles.fieldSection} data-testid="legend-shaking-field">
+              <h3 className={styles.fieldTitle}>{t('globe.legend.field.title')}</h3>
+              <ul className={styles.fieldScale}>
+                {fieldBands.map((band) => (
+                  <li
+                    key={band.label}
+                    className={styles.fieldBand}
+                    style={{ background: band.css, borderColor: band.lineCss }}
+                  >
+                    {band.label}
+                  </li>
+                ))}
+              </ul>
+              <p className={styles.fieldNote}>{t('globe.legend.field.note')}</p>
+            </section>
           )}
           {tsunamiStatusKey !== null && (
             <p className={styles.tsunamiStatus} data-status={tsunamiStatusKey}>

@@ -827,6 +827,10 @@
         "globalActive": "Tsunami map: global + local layer active — trans-oceanic propagation rendered.",
         "localOnly": "Tsunami map: local layer only (~150 km) — the planetary mosaic was not ready for this run; it completes as soon as it lands, otherwise press Launch simulation again.",
         "globalLoading": "Tsunami map: local layer only — global mosaic still loading; press Launch again in a moment."
+      },
+      "field": {
+        "title": "Shaking field",
+        "note": "Predicted intensity on the ground that is actually there, read from the shipped Vs30 tiles — not a measurement. Published scatter is about one MMI degree, so a band could be one step lighter or heavier. The rings above are the same levels on reference rock."
       }
     },
     "aftershockDetail": {

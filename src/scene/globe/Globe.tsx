@@ -81,6 +81,10 @@ import {
 } from '../terrainSampling.js';
 import { buildRuptureStadiumPolygon, projectAlongAzimuth } from '../stadiumPolygon.js';
 import { SIM_ENTITY_PREFIXES } from '../visualContracts.js';
+import { evaluateShakingField } from '../../physics/events/earthquake/shakingField.js';
+import { intensityLawOf, simulateEarthquake } from '../../physics/events/earthquake/simulate.js';
+import { edgeReading, fieldBounds, INTENSITY_BANDS, shakingContours } from './shakingOverlay.js';
+import { hasGroundFor, siteAt } from '../vs30Tiles.js';
 import { AftershockDetailCard } from './AftershockDetailCard.js';
 import { mushroomCloudAltitudeMeters, spawnExplosionVfxFromJoules } from './explosionVfx.js';
 import { spawnEruptionColumn } from './eruptionVfx.js';
@@ -527,6 +531,7 @@ export function Globe(): JSX.Element {
   const terrainPulsingRef = useRef(false);
 
   const setLocation = useAppStore((s) => s.setLocation);
+  const setShakingFieldBands = useAppStore((s) => s.setShakingFieldBands);
   const selectAftershock = useAppStore((s) => s.selectAftershock);
   const selectedAftershockIndex = useAppStore((s) => s.selectedAftershockIndex);
   const location = useAppStore((s) => s.location);
@@ -2082,7 +2087,15 @@ export function Globe(): JSX.Element {
             // the reveal.
             show: false,
             pixelSize,
-            color: color.withAlpha(0.85),
+            // Tinted circles, not solid discs. Two reasons, both about
+            // truth rather than taste. The sequence runs to 500 markers
+            // over a 700 km rupture, and at 0.85 alpha they merge into one
+            // opaque blot that hides the intensity field underneath — the
+            // quantity a reader actually came for. And the contract says
+            // what these markers are: a Reasenberg & Jones SAMPLE drawn
+            // about the epicentre, "not on a fault". A solid disc reads as
+            // a recorded epicentre; an outlined circle reads as what it is.
+            color: color.withAlpha(0.3),
             outlineColor: Color.BLACK,
             outlineWidth: 1,
           },
@@ -2098,6 +2111,135 @@ export function Globe(): JSX.Element {
       cancelAftershockAnimationRef.current = animateAftershocksImperatively(aftershockSpecs);
     }
 
+    // --- Earthquake: the intensity as a FIELD, under the rings --------
+    // Whether the field got drawn decides how the rings below are drawn:
+    // two filled shapes for one quantity make a colour that is neither.
+    let mmiFieldDrawn = false;
+    /** The bands the legend is allowed to promise: the ones painted. */
+    let mmiFieldBands: string[] | null = null;
+    //
+    // The rings say "MMI VII reaches this far". The field says which ground
+    // shakes: the scenario's own law evaluated cell by cell on the Vs30 the
+    // shipped tiles give, with the bands taken off it by marching squares.
+    // It is drawn UNDER the rings, not instead of them, so the two can be
+    // compared — and it is skipped entirely when the tiles have not arrived,
+    // because on reference rock the field is a smooth ellipse and the rings
+    // already draw that.
+    if (result.type === 'earthquake' && hasGroundFor(location.latitude, location.longitude)) {
+      // Rule 309's law lives in a WeakMap keyed by the result, so that two
+      // identical results stay equal — and a result that has been through
+      // the store is a copy, which has no law. Re-running the simulator on
+      // the same inputs gives one that does; it is deterministic, so the
+      // law is the same law, and it costs a fraction of a millisecond.
+      const law = intensityLawOf(simulateEarthquake(result.data.inputs));
+      if (law !== null) {
+        const halfL = result.data.isExtendedSource ? (result.data.ruptureLength as number) / 2 : 0;
+        const halfW = result.data.isExtendedSource ? (result.data.ruptureWidth as number) / 2 : 0;
+        // Wide enough to contain the lowest band drawn, asked of the law on
+        // SOFT ground: the field reads the real Vs30, soft ground amplifies,
+        // and a rock bisection leaves the band cut off at the edge of the
+        // box where marching squares turns the cut into stray slivers.
+        const lowest = INTENSITY_BANDS[0]?.minValue ?? 5;
+        const rupture = {
+          latitude: location.latitude,
+          longitude: location.longitude,
+          strikeDeg: result.data.inputs.strikeAzimuthDeg ?? 0,
+          halfLengthM: halfL,
+          halfWidthM: halfW,
+        };
+        /** How far the law has to run before it drops below the lowest band
+         *  on ground this soft. */
+        const reachOn = (vs30: number): number => {
+          let near = 0;
+          let far = 3_000_000;
+          for (let i = 0; i < 44; i += 1) {
+            const mid = (near + far) / 2;
+            if (law(mid, vs30) >= lowest) near = mid;
+            else far = mid;
+          }
+          return near;
+        };
+        const spanFor = (vs30: number): number => halfL + Math.max(40_000, 1.1 * reachOn(vs30));
+        const evaluate = (halfSpanM: number): ReturnType<typeof evaluateShakingField> =>
+          evaluateShakingField({ rupture, intensityAt: law, siteAt, halfSpanM });
+        // First guess on soft ground (180 m/s); then MEASURE what the box
+        // actually touches. Where the real ground is softer than the guess
+        // the band reaches further than the guess allowed, and the picture
+        // would drop it — so ask the law again on the softest ground the
+        // edge reads, and widen once. Twice is the whole budget: each pass
+        // reads the Vs30 tiles 257 x 257 times.
+        let field = evaluate(spanFor(180));
+        const edge = edgeReading(field);
+        if (edge.maxMmi >= lowest && Number.isFinite(edge.minVs30)) {
+          const wider = spanFor(edge.minVs30);
+          if (wider > field.halfSpanM * 1.02) field = evaluate(wider);
+        }
+        const bounds = fieldBounds(field);
+        const contours = shakingContours(field);
+        if (contours.length > 0) {
+          const canvas = document.createElement('canvas');
+          canvas.width = 1024;
+          canvas.height = Math.max(
+            1,
+            Math.round(
+              (1024 * (bounds.maxLat - bounds.minLat)) /
+                Math.max(
+                  1e-9,
+                  (bounds.maxLon - bounds.minLon) *
+                    Math.cos(((bounds.minLat + bounds.maxLat) / 2) * (Math.PI / 180))
+                )
+            )
+          );
+          const ctx = canvas.getContext('2d');
+          if (ctx !== null) {
+            const px = (lon: number): number =>
+              ((lon - bounds.minLon) / (bounds.maxLon - bounds.minLon)) * canvas.width;
+            const py = (lat: number): number =>
+              ((bounds.maxLat - lat) / (bounds.maxLat - bounds.minLat)) * canvas.height;
+            // Outermost first, so the inner bands paint over them.
+            for (const contour of [...contours].sort((a, b) => a.level - b.level)) {
+              const band = INTENSITY_BANDS.find((x) => x.minValue === contour.level);
+              if (band === undefined) continue;
+              ctx.fillStyle = band.css;
+              ctx.strokeStyle = band.lineCss;
+              ctx.lineWidth = 2;
+              for (const ring of contour.rings) {
+                if (ring.length < 3) continue;
+                ctx.beginPath();
+                for (const [i, point] of ring.entries()) {
+                  const x = px(point.longitude);
+                  const y = py(point.latitude);
+                  if (i === 0) ctx.moveTo(x, y);
+                  else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+              }
+            }
+            mmiFieldDrawn = true;
+            mmiFieldBands = [...contours].sort((a, b) => a.level - b.level).map((c) => c.label);
+            viewer.entities.add({
+              id: 'mmi-field',
+              rectangle: {
+                coordinates: Rectangle.fromDegrees(
+                  bounds.minLon,
+                  bounds.minLat,
+                  bounds.maxLon,
+                  bounds.maxLat
+                ),
+                material: new ImageMaterialProperty({ image: canvas, transparent: true }),
+                heightReference: HeightReference.CLAMP_TO_GROUND,
+              },
+            });
+          }
+        }
+      }
+    }
+
+    // The legend promises exactly what was painted — including nothing.
+    setShakingFieldBands(mmiFieldBands);
+
     // --- Earthquake: three MMI felt-intensity contours ---------------
     if (result.type === 'earthquake') {
       const { mmi7Radius, mmi8Radius, mmi9Radius } = result.data.shaking;
@@ -2111,8 +2253,17 @@ export function Globe(): JSX.Element {
       // tsunami amplitude/isochrone heatmaps painted further down
       // own the rest of the visual budget.
       const isSubmarine = result.data.isSubmarine;
-      const fillAlpha = isSubmarine ? 0.35 : 0.85;
-      const outlineAlpha = isSubmarine ? 0.25 : 0.5;
+      // With the field drawn, the rings stop being fills and become lines.
+      // They are the SAME quantity as the field — MMI VII, VIII, IX — read
+      // on reference rock instead of on the ground that is there, so two
+      // fills stack into a colour that belongs to neither reading, and the
+      // reader cannot tell which shape they are looking at. As lines over
+      // the field they say the one thing that is worth saying: this is how
+      // far the level would reach if the ground were uniform. The fill is
+      // kept at a trace rather than removed so the rings stay clickable and
+      // their tooltips keep working.
+      const fillAlpha = mmiFieldDrawn ? 0.06 : isSubmarine ? 0.35 : 0.85;
+      const outlineAlpha = mmiFieldDrawn ? 0.9 : isSubmarine ? 0.25 : 0.5;
 
       // Rule 325 of physics/validation/wiredStrikeRules.ts, which is rule 290
       // of faultStrikeRules.ts made real: where no structure is in reach the
@@ -4032,7 +4183,16 @@ export function Globe(): JSX.Element {
     // FMM heatmap appear on the very next frame instead of waiting for
     // the user to mouse over the canvas.
     viewer.scene.requestRender();
-  }, [location, lastEvaluatedAtLocation, result, bathymetricTsunami, monteCarlo]);
+  }, [
+    location,
+    lastEvaluatedAtLocation,
+    result,
+    bathymetricTsunami,
+    monteCarlo,
+    // A zustand action: the same function for the life of the store, so
+    // listing it satisfies the rule without re-running the redraw.
+    setShakingFieldBands,
+  ]);
 
   // --- Aftershock click-through detail rings ---------------------------
   // When the user clicks an aftershock dot, paint three dim MMI V/VI/VII

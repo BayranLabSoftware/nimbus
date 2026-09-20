@@ -294,6 +294,23 @@ export const VISUAL_CONTRACTS = {
       'the slip is uniform, so the footprint is even along strike where a real one is patchy: no asperity, and no directivity',
     ],
   }),
+  mmiField: defineContract({
+    id: 'mmiField',
+    quantity:
+      'the felt-intensity field around a rupture, drawn as filled bands and labelled contours',
+    formula:
+      "the scenario's own intensity law evaluated cell by cell on a 257 x 257 grid in the rupture's frame, each cell on the Vs30 the shipped USGS tiles give it, with the bands V to X taken off that grid by marching squares",
+    unit: 'Modified Mercalli intensity',
+    geometry: 'heatmap-rectangle',
+    isQuantitative: true,
+    caveats: [
+      'this is a PREDICTION and not a measurement: a USGS ShakeMap, which it resembles, is partly made of accelerometers and felt reports, and there are none here',
+      'the contour is drawn as a line where the ground-motion residual is sigma_lnY = 0.60 about the median — through Worden et al. 2012 that is about ONE WHOLE INTENSITY DEGREE, so a line labelled VII could honestly be VI or VIII',
+      'the areas are known to be too large: on Tohoku the model paints MMI VIII over 192 279 km2 where the published ShakeMap measures 67 625, a factor of 2.84, and the picture does not say so',
+      'the irregularity comes ONLY from the Vs30 grid, whose own convention in this project carries 30 % uncertainty; there is no topography, no basin depth and no within-event spatial correlation',
+      'what the field fixes, relative to the rings it is drawn beside: the contour falls out of a distance metric computed cell by cell rather than being a point-source radius swept around a rectangle',
+    ],
+  }),
   mmi8Point: defineContract({
     id: 'mmi8Point',
     quantity: 'MMI VIII felt-intensity radius (point source)',
@@ -672,6 +689,11 @@ export const ENTITY_CONTRACTS: readonly {
   },
   { prefix: 'mmi-ring-', contracts: ['mmi7Point', 'mmi8Point', 'mmi9Point'] },
   { prefix: 'mmi-stadium-', contracts: ['mmi7Stadium', 'mmi8Stadium', 'mmi9Stadium'] },
+  {
+    prefix: 'mmi-field',
+    contracts: ['mmiField'],
+    why: 'the intensity as a field, under the rings that summarise it',
+  },
   {
     prefix: 'explosion-',
     contracts: [

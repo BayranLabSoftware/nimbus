@@ -262,3 +262,52 @@
     z-index: 8;
   }
 }
+
+/* --- The shaking field ------------------------------------------------
+ * A continuous scale, not a list of toggles: the field is one painted
+ * texture, and a row here would promise a switch that does not exist.
+ */
+.fieldSection {
+  margin: 10px 0 0 0;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.fieldTitle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 6px 0;
+  opacity: 0.75;
+}
+
+.fieldScale {
+  display: flex;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fieldBand {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 18px;
+  height: 18px;
+  border-radius: 3px;
+  border: 1px solid;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.fieldNote {
+  font-size: 10px;
+  line-height: 1.4;
+  margin: 6px 0 0 0;
+  opacity: 0.55;
+  font-style: italic;
+}

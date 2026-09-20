@@ -827,6 +827,10 @@
         "globalActive": "Mappa tsunami: layer globale + locale attivi — propagazione trans-oceanica renderizzata.",
         "localOnly": "Mappa tsunami: solo layer locale (~150 km) — il mosaico planetario non era pronto per questa simulazione; verrà completata appena arriva, altrimenti premi di nuovo Avvia simulazione.",
         "globalLoading": "Mappa tsunami: solo layer locale — mosaico globale in caricamento, premi Launch tra un momento."
+      },
+      "field": {
+        "title": "Campo di scuotimento",
+        "note": "Intensità prevista sul terreno che c’è davvero, letto dalle tessere Vs30 spedite — non è una misura. La dispersione pubblicata è di circa un grado MMI, quindi una banda può valere un gradino in più o in meno. Gli anelli qui sopra sono gli stessi livelli su roccia di riferimento."
       }
     },
     "aftershockDetail": {

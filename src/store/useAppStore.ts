@@ -118,6 +118,7 @@ import {
 } from '../physics/tsunamiCasualties.js';
 import type { RunupCell } from '../physics/tsunami/runupField.js';
 import { loadStrikeTilesFor, strikeAnswerAt } from '../scene/strikeTiles.js';
+import { loadVs30TilesFor } from '../scene/vs30Tiles.js';
 
 /** Top-level event categories the simulator supports. */
 export type EventType = 'impact' | 'explosion' | 'earthquake' | 'volcano' | 'landslide';
@@ -467,6 +468,16 @@ export interface AppStore {
    *  preset, location, or evaluate so a stale "I hid the 5 m wave-front"
    *  doesn't persist into the next scenario. */
   hiddenRingKeys: ReadonlySet<string>;
+  /** The intensity bands the globe actually painted for the current
+   *  earthquake, outermost first ('V', 'VI', ...), or null when no field
+   *  was drawn — on reference rock, or before the Vs30 tiles arrive, the
+   *  globe draws rings only.
+   *
+   *  The legend reads this rather than the band table, because a legend row
+   *  is a promise that something is drawn: an event that never reaches
+   *  MMI IX must not have a IX swatch in its legend. The globe is the only
+   *  writer, and it writes on every redraw, so the two cannot drift. */
+  shakingFieldBands: readonly string[] | null;
   /** Camera flight asked for by the UI — the city search in the
    *  simulator panel. The globe consumes it by `seq`; the store never
    *  moves the camera itself. */
@@ -598,6 +609,8 @@ export interface AppStore {
   /** Clear the pinned aftershock selection. */
   clearAftershock: () => void;
   /** Flip the visibility of a single legend row + its globe ring. */
+  /** Called by the globe once per redraw with the bands it painted. */
+  setShakingFieldBands: (bands: readonly string[] | null) => void;
   toggleRingVisibility: (key: string) => void;
   /** Reset every legend toggle so all rings render again. Wired to a
    *  "show all" button in the legend header. */
@@ -670,6 +683,7 @@ type InitialSlice = Pick<
   | 'location'
   | 'selectedAftershockIndex'
   | 'hiddenRingKeys'
+  | 'shakingFieldBands'
   | 'cameraRequest'
   | 'result'
   | 'bathymetricTsunami'
@@ -753,6 +767,7 @@ function initialState(): InitialSlice {
     location: null,
     selectedAftershockIndex: null,
     hiddenRingKeys: new Set<string>(),
+    shakingFieldBands: null,
     cameraRequest: null,
     result: null,
     bathymetricTsunami: null,
@@ -1347,7 +1362,19 @@ async function ensureTerrainForEvaluate(
   const strikeTiles =
     pick === null
       ? Promise.resolve()
-      : loadStrikeTilesFor(pick.latitude, pick.longitude).catch(() => undefined);
+      : Promise.all([
+          loadStrikeTilesFor(pick.latitude, pick.longitude),
+          // The ground the intensity field reads, fetched with the same
+          // timing and on the same terms: one tile of 60° by 30°, nothing
+          // until an earthquake is placed, and a failure leaves the field on
+          // reference rock rather than blocking the scenario. Eight degrees
+          // of reach covers the widest field the globe draws — Tōhoku's is
+          // about eleven across — without pulling a second tile for a small
+          // event.
+          loadVs30TilesFor(pick.latitude, pick.longitude, 8),
+        ])
+          .then(() => undefined)
+          .catch(() => undefined);
   const loaders = terrainLoaders;
   if (loaders === null) {
     await strikeTiles;
@@ -2159,6 +2186,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       eventType: type,
       selectedAftershockIndex: null,
       hiddenRingKeys: new Set<string>(),
+      shakingFieldBands: null,
       result: null,
       bathymetricTsunami: null,
       populationExposure: null,
@@ -2176,6 +2204,19 @@ export const useAppStore = create<AppStore>((set, get) => ({
       lastEvaluatedAt: null,
       lastEvaluatedAtLocation: null,
     });
+  },
+
+  setShakingFieldBands: (bands) => {
+    // Same bands, same array contents: skip the set, so a redraw that
+    // changes nothing cannot re-render the legend.
+    const now = get().shakingFieldBands;
+    const same =
+      now === bands ||
+      (now !== null &&
+        bands !== null &&
+        now.length === bands.length &&
+        now.every((label, i) => label === bands[i]));
+    if (!same) set({ shakingFieldBands: bands });
   },
 
   toggleRingVisibility: (key) => {

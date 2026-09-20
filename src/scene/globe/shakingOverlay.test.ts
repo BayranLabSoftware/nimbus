@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { bandFor, fieldBounds, INTENSITY_BANDS, shakingContours } from './shakingOverlay.js';
+import {
+  bandFor,
+  edgeReading,
+  fieldBounds,
+  INTENSITY_BANDS,
+  shakingContours,
+} from './shakingOverlay.js';
 import {
   areaAbove,
   contourRings,
@@ -95,6 +101,65 @@ describe('the shaking overlay', () => {
       if (next === undefined) continue;
       expect(spread(next)).toBeLessThanOrEqual(spread(contour) + 1e-6);
     }
+  });
+
+  /**
+   * The straight edge is the lie this guards against.
+   *
+   * `contourRings` hands back an OPEN ring for a level that runs off the
+   * side of the field. Drawing it means closing it, and a closed open ring
+   * is a straight line along the side of the box with a right angle at the
+   * corner — the most confident-looking boundary on the map, belonging to
+   * the box rather than to the ground. So a level that escapes is not drawn
+   * at all, and a field wide enough to contain it draws it again.
+   */
+  it('does not draw a level that runs off the edge of the field', () => {
+    const tight = evaluateShakingField({
+      rupture,
+      intensityAt: law ?? ((): number => 0),
+      siteAt: () => ({ vs30: 760, provenance: 'rock' as const }),
+      // A third of the way to MMI VII: every band below it escapes.
+      halfSpanM: rupture.halfLengthM + (result.shaking.mmi7Radius as number) / 3,
+    });
+    const edge = edgeReading(tight);
+    expect(edge.maxMmi).toBeGreaterThanOrEqual(5);
+    const drawn = shakingContours(tight).map((c) => c.level);
+    // Nothing at or below what the edge itself reads may be drawn.
+    for (const level of drawn) expect(level).toBeGreaterThan(edge.maxMmi);
+    // And the level the tight field cuts through is exactly what the wide
+    // field draws and this one does not: the rule removes bands, and
+    // widening the field brings them back.
+    expect(field).not.toBeNull();
+    if (field === null) return;
+    const wide = shakingContours(field).map((c) => c.level);
+    expect(wide.length).toBeGreaterThan(drawn.length);
+    for (const level of drawn) expect(wide).toContain(level);
+  });
+
+  it('the edge reading looks at the perimeter and nothing else', () => {
+    // A field whose interior is hot and whose border is cold: if the
+    // reading peeked inside, it would report the interior.
+    const n = 5;
+    const mmi = new Float32Array(n * n);
+    const vs30 = new Float32Array(n * n).fill(760);
+    for (let row = 0; row < n; row += 1)
+      for (let col = 0; col < n; col += 1) {
+        const border = row === 0 || col === 0 || row === n - 1 || col === n - 1;
+        mmi[row * n + col] = border ? 3 : 9;
+        if (border) vs30[row * n + col] = 200 + col;
+      }
+    const reading = edgeReading({
+      points: n,
+      halfSpanM: 1000,
+      stepM: 500,
+      rupture,
+      mmi,
+      vs30,
+      provenance: { grid: 0, slope: 0, rock: n * n },
+      elapsedMs: 0,
+    });
+    expect(reading.maxMmi).toBe(3);
+    expect(reading.minVs30).toBe(200);
   });
 
   it('every contour carries a label and somewhere to put it', () => {
