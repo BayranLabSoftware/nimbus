@@ -1657,7 +1657,21 @@ function runPointSourceRules(): PointSourceRun {
   // What a disc draws when it names no distance must be what rules 52 and
   // 53 decided, and a scenario marked a subduction interface that names no
   // law must draw what rule 54 left in place.
-  const disc = { magnitude: 6.8, depth: m(15_000), faultType: 'reverse' } as const;
+  //
+  // The probe pins `extendedSource: 'fromMw7.5'`. It infers which distance
+  // is drawn by asking whether naming Thompson & Worden's changes the
+  // ring, and that only discriminates on a POINT SOURCE — the correction
+  // is read nowhere else. Without the pin, a default of
+  // `extendedSource: 'always'` would make both simulations identical for
+  // the wrong reason and the guard would fire on a scenario that still
+  // draws `epicentral` everywhere it matters. Found by probing the guard
+  // itself before proposing that default, not by it firing.
+  const disc = {
+    magnitude: 6.8,
+    depth: m(15_000),
+    faultType: 'reverse',
+    extendedSource: 'fromMw7.5',
+  } as const;
   const drawn =
     simulateEarthquake(disc).shaking.mmi7Radius ===
     simulateEarthquake({ ...disc, pointSourceDistance: 'thompsonWorden2018' }).shaking.mmi7Radius
