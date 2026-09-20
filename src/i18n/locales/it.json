@@ -529,7 +529,15 @@
       "widthInput": "Larghezza della frana (m, vuoto = V^⅓)",
       "speedInput": "Velocità d'ingresso in acqua (m/s, facoltativa)",
       "dropInput": "Dislivello del baricentro fino all'acqua (m, facoltativo)",
-      "manualHelp": "Sopra l'acqua l'onda è la prima cresta del manuale delle onde d'impulso, che vuole spessore, larghezza e velocità della frana quando tocca l'acqua. Se li lasci vuoti vengono stimati da volume e pendenza, e il risultato lo dice. Una velocità indicata vale più di un dislivello."
+      "manualHelp": "Sopra l'acqua l'onda è la prima cresta del manuale delle onde d'impulso, che vuole spessore, larghezza e velocità della frana quando tocca l'acqua. Se li lasci vuoti vengono stimati da volume e pendenza, e il risultato lo dice. Una velocità indicata vale più di un dislivello.",
+      "volumeLabel": "Volume della frana",
+      "slopeLabel": "Pendenza del piano di scivolamento",
+      "densityLabel": "Densità",
+      "densityNote": "vuoto = {{reference}} per questo regime",
+      "depthLabel": "Profondità dell'acqua",
+      "footprintLabel": "Area coperta dalla frana",
+      "basinLabel": "Superficie del bacino chiuso",
+      "factorLabel": "Amplificazione"
     },
     "citySearch": {
       "label": "Vai a una città",

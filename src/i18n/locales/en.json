@@ -529,7 +529,15 @@
       "widthInput": "Slide width (m, empty = V^⅓)",
       "speedInput": "Speed into the water (m/s, optional)",
       "dropInput": "Drop of its centre to the water (m, optional)",
-      "manualHelp": "Above the water, the wave is the impulse wave manual's first crest, and the manual wants the slide's thickness, width and speed as it meets the water. Empty, they are estimated from the volume and the slope, and the result says so. A speed given wins over a drop height."
+      "manualHelp": "Above the water, the wave is the impulse wave manual's first crest, and the manual wants the slide's thickness, width and speed as it meets the water. Empty, they are estimated from the volume and the slope, and the result says so. A speed given wins over a drop height.",
+      "volumeLabel": "Slide volume",
+      "slopeLabel": "Slope of the sliding plane",
+      "densityLabel": "Density",
+      "densityNote": "empty = {{reference}} for this regime",
+      "depthLabel": "Water depth",
+      "footprintLabel": "Area the slide covers",
+      "basinLabel": "Confined basin surface",
+      "factorLabel": "Amplification"
     },
     "citySearch": {
       "label": "Go to a city",

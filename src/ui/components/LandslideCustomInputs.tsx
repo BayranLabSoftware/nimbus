@@ -2,21 +2,18 @@ import type { ChangeEvent, JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   LANDSLIDE_DEFAULT_REGIME,
-  LANDSLIDE_DEFAULT_SLOPE_DEG,
   type LandslideRegime,
 } from '../../physics/events/landslide/index.js';
 import {
   DEFAULT_CONFINEMENT_DYNAMIC_FACTOR,
-  DEFAULT_SOURCE_BASIN_DEPTH_M,
   VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL,
   VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBMARINE,
 } from '../../physics/events/volcano/tsunami.js';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
-import { cx } from '../utils/cx.js';
 import { formatDecimal, formatInteger } from '../utils/numberFormat.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
-import { FieldFeedback } from './FieldFeedback.js';
+import { QuantityKey, QuantityRow } from './QuantityRow.js';
 import { fromScientific, isMantissa, splitScientific } from './typedNumber.js';
 import styles from './SimulatorPanel.module.css';
 
@@ -117,61 +114,53 @@ export function LandslideCustomInputs(): JSX.Element {
   ] as const;
 
   return (
-    <fieldset className={styles.customParams}>
+    <fieldset className={styles.customParams} style={{ display: 'block' }}>
       <legend className={styles.customParamsLegend}>{t('simulator.customParams')}</legend>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="landslide-volume-m">
-          {t('simulator.landslide.volumeInput')}
-        </label>
-        <DraftNumberInput
-          id="landslide-volume-m"
-          className={styles.paramInput}
-          inputMode="decimal"
-          min={1}
-          max={9.9}
-          step={0.1}
-          value={volume.mantissa.toFixed(1)}
-          onValueText={updateVolumeMantissa}
-          aria-invalid={volumeIssues.hasError || undefined}
-          aria-describedby={volumeIssues.topMessage ? 'landslide-volume-feedback' : undefined}
-        />
-      </div>
-
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="landslide-volume-e">
-          {t('simulator.landslide.volumeExp')}
-        </label>
-        <select
-          id="landslide-volume-e"
-          className={styles.paramInput}
-          value={volume.exp}
-          onChange={updateVolumeExp}
-        >
-          {exponents.map((e) => (
-            <option key={e} value={e}>
-              10^{e}
-            </option>
-          ))}
-        </select>
-        <span id="landslide-volume-feedback">
-          <FieldFeedback
-            field="volumeM3"
-            message={volumeIssues.topMessage}
-            code={volumeIssues.topCode}
-            isError={volumeIssues.hasError}
-          />
-        </span>
-      </div>
-
-      <fieldset
-        className={cx(styles.segFieldset, styles.regimeFieldset)}
-        aria-describedby="landslide-regime-help"
+      <QuantityRow
+        label={t('simulator.landslide.volumeLabel')}
+        unit="m³"
+        source="user"
+        field="volumeM3"
+        issues={volumeIssues}
       >
-        <legend className={styles.paramLabel}>{t('simulator.landslide.regimeLabel')}</legend>
-        <div className={cx(styles.seg, styles.segTwo)}>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center', width: '100%' }}>
+          <DraftNumberInput
+            id="landslide-volume-m"
+            inputMode="decimal"
+            min={1}
+            max={9.9}
+            step={0.1}
+            value={volume.mantissa.toFixed(1)}
+            onValueText={updateVolumeMantissa}
+            aria-label={t('simulator.landslide.volumeInput')}
+            aria-invalid={volumeIssues.hasError || undefined}
+            style={{ width: 52 }}
+          />
+          <select
+            id="landslide-volume-e"
+            value={volume.exp}
+            onChange={updateVolumeExp}
+            aria-label={t('simulator.landslide.volumeExp')}
+            style={{ width: 66 }}
+          >
+            {exponents.map((e) => (
+              <option key={e} value={e}>
+                ×10^{e}
+              </option>
+            ))}
+          </select>
+        </div>
+      </QuantityRow>
+
+      <QuantityRow
+        label={t('simulator.landslide.regimeLabel')}
+        source="user"
+        note={t('simulator.landslide.regimeHelp')}
+      >
+        <div style={{ display: 'flex', gap: 4 }}>
           {REGIMES.map((r) => (
-            <label key={r} className={styles.segItem}>
+            <label key={r} className={styles.segItem} style={{ minHeight: 30 }}>
               <input
                 type="radio"
                 name="landslide-regime"
@@ -179,7 +168,6 @@ export function LandslideCustomInputs(): JSX.Element {
                 checked={regime === r}
                 onChange={updateRegime}
                 className={styles.segInput}
-                data-testid={`landslide-regime-${r}`}
               />
               <span className={styles.segLabelWide}>
                 {t(
@@ -191,212 +179,173 @@ export function LandslideCustomInputs(): JSX.Element {
             </label>
           ))}
         </div>
-        <span id="landslide-regime-help" className={styles.presetNote}>
-          {t('simulator.landslide.regimeHelp')}
-        </span>
-      </fieldset>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="landslide-slope">
-          {t('simulator.landslide.slopeInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.landslide.slopeLabel')}
+        unit="°"
+        source="user"
+        field="slopeAngleDeg"
+        issues={slopeIssues}
+      >
         <DraftNumberInput
           id="landslide-slope"
-          className={styles.paramInput}
           inputMode="decimal"
           min={1}
           max={89}
           step={1}
-          value={input.slopeAngleDeg ?? LANDSLIDE_DEFAULT_SLOPE_DEG}
+          value={input.slopeAngleDeg ?? 30}
           onValueText={updateSlope}
+          aria-label={t('simulator.landslide.slopeInput')}
           aria-invalid={slopeIssues.hasError || undefined}
-          aria-describedby={slopeIssues.topMessage ? 'landslide-slope-feedback' : undefined}
         />
-        <span id="landslide-slope-feedback">
-          <FieldFeedback
-            field="slopeAngleDeg"
-            message={slopeIssues.topMessage}
-            code={slopeIssues.topCode}
-            isError={slopeIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField}>
-        <label className={styles.paramLabel} htmlFor="landslide-density">
-          {t('simulator.landslide.densityInput', { reference: formatInteger(referenceDensity) })}
-        </label>
+      <QuantityRow
+        label={t('simulator.landslide.densityLabel')}
+        unit="kg/m³"
+        source="user"
+        note={t('simulator.landslide.densityNote', {
+          reference: formatInteger(referenceDensity),
+        })}
+        field="slideDensity"
+        issues={densityIssues}
+      >
         <DraftNumberInput
           id="landslide-density"
-          className={styles.paramInput}
           inputMode="decimal"
-          min={1}
-          max={5_000}
-          step={50}
-          placeholder={String(referenceDensity)}
+          min={500}
+          step={100}
+          // Empty means "the reference for this regime", which is what the
+          // model uses: filling the box with that number would say the
+          // reader chose it.
           value={input.slideDensity ?? ''}
+          placeholder={formatInteger(referenceDensity)}
           onValueText={updateDensity}
+          aria-label={t('simulator.landslide.densityInput', {
+            reference: formatInteger(referenceDensity),
+          })}
           aria-invalid={densityIssues.hasError || undefined}
-          aria-describedby={densityIssues.topMessage ? 'landslide-density-feedback' : undefined}
         />
-        <span id="landslide-density-feedback">
-          <FieldFeedback
-            field="slideDensity"
-            message={densityIssues.topMessage}
-            code={densityIssues.topCode}
-            isError={densityIssues.hasError}
-          />
-        </span>
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-        <label className={styles.paramLabel} htmlFor="landslide-depth">
-          {t('simulator.landslide.depthInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.landslide.depthLabel')}
+        unit="m"
+        source="user"
+        note={t('simulator.landslide.depthHelp')}
+        field="meanOceanDepth"
+        issues={depthIssues}
+      >
         <DraftNumberInput
           id="landslide-depth"
-          className={styles.paramInput}
           inputMode="decimal"
-          min={0}
-          max={11_000}
+          min={1}
           step={10}
-          value={input.meanOceanDepth ?? DEFAULT_SOURCE_BASIN_DEPTH_M}
+          value={input.meanOceanDepth ?? ''}
           onValueText={updateDepth}
+          aria-label={t('simulator.landslide.depthInput')}
           aria-invalid={depthIssues.hasError || undefined}
-          aria-describedby="landslide-depth-help"
         />
-        <span id="landslide-depth-help" className={styles.presetNote}>
-          {t('simulator.landslide.depthHelp')}
-        </span>
-        <FieldFeedback
-          field="meanOceanDepth"
-          message={depthIssues.topMessage}
-          code={depthIssues.topCode}
-          isError={depthIssues.hasError}
-        />
-      </div>
+      </QuantityRow>
 
       {regime === 'subaerial' &&
         measures.map(([id, field, label, issues, step]) => (
-          <div key={id} className={styles.paramField}>
-            <label className={styles.paramLabel} htmlFor={id}>
-              {t(`simulator.landslide.${label}`)}
-            </label>
+          <QuantityRow
+            key={id}
+            label={t(`simulator.landslide.${label}`)}
+            unit={label === 'speedInput' ? 'm/s' : 'm'}
+            source="user"
+            field={field}
+            issues={issues}
+          >
             <DraftNumberInput
               id={id}
-              className={styles.paramInput}
               inputMode="decimal"
               min={0}
               step={step}
               value={input[field] ?? ''}
-              onValueText={(text: string) => {
+              onValueText={(text: string): void => {
                 const v = optional(text);
                 if (v !== undefined) setLandslideInput({ [field]: v });
               }}
+              aria-label={t(`simulator.landslide.${label}`)}
               aria-invalid={issues.hasError || undefined}
-              aria-describedby="landslide-manual-help"
               data-testid={id}
             />
-            <FieldFeedback
-              field={field}
-              message={issues.topMessage}
-              code={issues.topCode}
-              isError={issues.hasError}
-            />
-          </div>
+          </QuantityRow>
         ))}
+
       {regime === 'subaerial' && (
-        <span
-          id="landslide-manual-help"
-          className={styles.presetNote}
-          style={{ gridColumn: '1 / -1' }}
-        >
-          {t('simulator.landslide.manualHelp')}
-        </span>
+        <p className={styles.quantityNote}>{t('simulator.landslide.manualHelp')}</p>
       )}
 
-      <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-        <label className={styles.paramLabel} htmlFor="landslide-footprint">
-          {t('simulator.landslide.footprintInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.landslide.footprintLabel')}
+        unit="km²"
+        source="user"
+        note={t('simulator.landslide.footprintHelp')}
+        field="slideFootprintArea"
+        issues={footprintIssues}
+      >
         <DraftNumberInput
           id="landslide-footprint"
-          className={styles.paramInput}
           inputMode="decimal"
           min={0}
           step={1}
           value={footprintArea === undefined ? '' : footprintArea / M2_PER_KM2}
           onValueText={updateFootprint}
+          aria-label={t('simulator.landslide.footprintInput')}
           aria-invalid={footprintIssues.hasError || undefined}
-          aria-describedby="landslide-footprint-help"
         />
-        <span id="landslide-footprint-help" className={styles.presetNote}>
-          {t('simulator.landslide.footprintHelp')}
-        </span>
-        <FieldFeedback
-          field="slideFootprintArea"
-          message={footprintIssues.topMessage}
-          code={footprintIssues.topCode}
-          isError={footprintIssues.hasError}
-        />
-      </div>
+      </QuantityRow>
 
-      <div className={styles.paramField} style={{ gridColumn: '1 / -1' }}>
-        <label className={styles.paramLabel} htmlFor="landslide-basin">
-          {t('simulator.landslide.basinInput')}
-        </label>
+      <QuantityRow
+        label={t('simulator.landslide.basinLabel')}
+        unit="km²"
+        source="user"
+        field="confinedBasinArea"
+        issues={basinIssues}
+      >
         <DraftNumberInput
           id="landslide-basin"
-          className={styles.paramInput}
           inputMode="decimal"
           min={0}
           step={1}
           value={basinArea === undefined ? '' : basinArea / M2_PER_KM2}
           onValueText={updateBasin}
+          aria-label={t('simulator.landslide.basinInput')}
           aria-invalid={basinIssues.hasError || undefined}
-          aria-describedby="landslide-basin-help"
         />
-        <span id="landslide-basin-help" className={styles.presetNote}>
-          {t('simulator.landslide.basinHelp')}
-        </span>
-        <FieldFeedback
-          field="confinedBasinArea"
-          message={basinIssues.topMessage}
-          code={basinIssues.topCode}
-          isError={basinIssues.hasError}
-        />
-      </div>
+      </QuantityRow>
 
+      {/* The amplification acts on a confined basin: with no basin there is
+          nothing for it to act on, so the row is not there to be filled in.
+          Guarded by the E2E "a landslide is edited in the panel". */}
       {basinArea !== undefined && (
-        <div className={styles.paramField}>
-          <label className={styles.paramLabel} htmlFor="landslide-factor">
-            {t('simulator.landslide.factorInput', {
-              default: formatDecimal(DEFAULT_CONFINEMENT_DYNAMIC_FACTOR, 1),
-            })}
-          </label>
+        <QuantityRow
+          label={t('simulator.landslide.factorLabel')}
+          source="user"
+          field="confinementDynamicFactor"
+          issues={factorIssues}
+        >
           <DraftNumberInput
             id="landslide-factor"
-            className={styles.paramInput}
             inputMode="decimal"
-            min={0.1}
-            max={10}
+            min={1}
             step={0.1}
-            placeholder={String(DEFAULT_CONFINEMENT_DYNAMIC_FACTOR)}
             value={input.confinementDynamicFactor ?? ''}
             onValueText={updateFactor}
+            aria-label={t('simulator.landslide.factorInput', {
+              default: formatDecimal(DEFAULT_CONFINEMENT_DYNAMIC_FACTOR, 1),
+            })}
+            placeholder={String(DEFAULT_CONFINEMENT_DYNAMIC_FACTOR)}
             aria-invalid={factorIssues.hasError || undefined}
-            aria-describedby={factorIssues.topMessage ? 'landslide-factor-feedback' : undefined}
           />
-          <span id="landslide-factor-feedback">
-            <FieldFeedback
-              field="confinementDynamicFactor"
-              message={factorIssues.topMessage}
-              code={factorIssues.topCode}
-              isError={factorIssues.hasError}
-            />
-          </span>
-        </div>
+        </QuantityRow>
       )}
+
+      <QuantityKey />
     </fieldset>
   );
 }
