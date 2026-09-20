@@ -103,6 +103,71 @@ import { QUIET_DEATHS_BELOW } from './depthRules.js';
  *       above are not treated differently from the other 799.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 439 and published
+ * as it came out: the quiet evidence CORROBORATES rule 433(d)'s refusal of
+ * arm C, and not narrowly.
+ *
+ *   | arm      | toll >= 10 | share | band reaches zero | median width (ln) |
+ *   | -------- | ---------- | ----- | ----------------- | ----------------- |
+ *   | in place | 23         | 2.9 % | 799 of 805        | 3.69              |
+ *   | arm C    | **51**     | 6.3 % | 784 of 805        | 4.43              |
+ *
+ * Rule 438(a) asked for more than one earthquake. It got twenty-eight.
+ * The geometry that draws the best map this project has measured — every
+ * cell improved, the hole between Mw 6.5 and 7.5 closed — more than
+ * DOUBLES the number of earthquakes it kills ten or more people in, among
+ * 805 that killed fewer than ten. Twenty-four of the fifty-one are new:
+ * Chile, the Philippines, Papua New Guinea, Ecuador, Indonesia, Costa
+ * Rica, all between Mw 6.0 and 6.9. And the bands get WIDER as well, 3.69
+ * to 4.43 in log width, so the model is both more wrong and less sure.
+ *
+ *   usp000h60j  Mw 6.0  Haiti       6204 → 10356
+ *   us6000rcnw  Mw 6.2  Venezuela    353 →  3337
+ *   us7000pn9z  Mw 6.7  Myanmar      174 →   630
+ *   us20002bi4  Mw 6.1  Nepal         66 →   430
+ *
+ * So Pohang was not an unlucky single row out of eighteen. It was the
+ * visible corner of a cost that this set shows the size of.
+ *
+ * AND THE TWO RESULTS TOGETHER SAY SOMETHING NEITHER SAYS ALONE. The
+ * footprint of the geometry in place is 0.393x of the ground the ShakeMaps
+ * record; arm C's is 1.137x. Fixing that — putting roughly the right
+ * number of people inside the rings at last — makes the tolls WORSE, on
+ * 805 earthquakes, by a factor of more than two.
+ *
+ * A vulnerability curve is fitted by hindcasting recorded deaths against
+ * an exposure. PAGER fits its curves against PAGER's exposure. This model
+ * has been feeding those curves an exposure that was two and a half times
+ * too small, and its tolls came out roughly right — which means the
+ * curves, as this model uses them, have been absorbing the geometric
+ * error. Correct the geometry alone and the compensation goes with it.
+ *
+ * That is not an argument for keeping a footprint that is wrong. It is the
+ * measurement of why the two cannot be adopted one at a time, and it is
+ * the reason rule 433(d) exists.
+ *
+ * WHAT THIS ROUND LEAVES, and it is a different block from the one that
+ * was expected two rounds ago:
+ *
+ *   1. THE GEOMETRY AND THE CURVES MOVE TOGETHER OR NOT AT ALL. Arm C
+ *      cannot be adopted with the vulnerability table as it stands, and
+ *      the table cannot be judged against a footprint known to be 0.393x.
+ *      A round that changes both and is scored on both — the areas of the
+ *      116 and the tolls of the 18 and the 805 — is the one that can
+ *      settle it. Rules first, and they will need to say what "both" means
+ *      before either number is seen.
+ *
+ *   2. THE BAND IS NOT THE PROBLEM, which is what these rules set out to
+ *      test and what they found. 799 of 805 already reach zero. What the
+ *      bands are is UNINFORMATIVE: a median log width of 3.69 is a factor
+ *      of forty between the ends, and Haiti's 42 to 271 621 is five orders
+ *      of magnitude. Rule 433(d) and rule 19 both decide by asking whether
+ *      a record falls inside such a band. That test is very hard to fail,
+ *      and a clause that cannot fail is not evidence. A sharpness bound
+ *      belongs beside every coverage clause this project has.
+ */
+
 export const QUIET_BAND_RULES = 'rules 435 to 439, fixed 20 September 2026';
 
 /** Rule 437(a): ten dead, which is what `QUIET_DEATHS_BELOW` has always
