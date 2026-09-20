@@ -5,11 +5,19 @@ import {
   slideFromVolume,
   type SlideClosure,
 } from '../../effects/impulseWave.js';
+import {
+  submarineSlideAmplitude,
+  submarineSlideFromVolume,
+  submarineSlideOutsideTestedRange,
+  SUBMARINE_SLIDE_WATER_DENSITY,
+  type SubmarineSlideClosure,
+} from '../../effects/submarineSlide.js';
 import type { Meters, SquareMeters } from '../../units.js';
 import { m } from '../../units.js';
 import {
   volcanoTsunami,
   VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBAERIAL,
+  VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBMARINE,
   type VolcanoTsunamiResult,
 } from '../volcano/tsunami.js';
 
@@ -74,7 +82,7 @@ export const LANDSLIDE_DEFAULT_REGIME: LandslideRegime = 'submarine';
  * after the first edition, which is not the one these equations come from
  * (B-043).
  */
-export type LandslideWaveLaw = 'project' | 'impulseWaveManual';
+export type LandslideWaveLaw = 'project' | 'impulseWaveManual' | 'submarinePredictive';
 
 /** What a scenario that names no law draws: the impulse wave manual since
  *  17 September 2026, when rules 162 to 167 of validation/impulseWaveRules.ts
@@ -216,11 +224,33 @@ export interface LandslideScenarioResult {
      *  rather than falling back on another law. */
     held: boolean;
   };
+  /**
+   * Present only where the submarine predictive equations made the wave: the
+   * slide as Watts et al. 2005's Eq. (17) sees it, which of its dimensions
+   * had to be closed from the volume, and which of the ranges the equations
+   * were fitted on the scenario falls outside of (rules 500 to 508 of
+   * `validation/submarineSlideRules.ts`; G4 of docs/GOLD_STANDARD.md asks for
+   * the last one).
+   */
+  submarineSlide?: {
+    /** B, T, w and d as the equations read them (m). */
+    lengthM: number;
+    thicknessM: number;
+    widthM: number;
+    depthM: number;
+    /** γ = ρ_slide/ρ_water. */
+    specificDensity: number;
+    /** η₀ over the slide (m), the depression Eq. (17) gives, as a magnitude. */
+    amplitudeM: number;
+    closed: SubmarineSlideClosure['closed'];
+    outsideTestedRange: string[];
+  };
 }
 
 interface LandslideSource {
   tsunami: VolcanoTsunamiResult | null;
   impulseWave: LandslideScenarioResult['impulseWave'] | undefined;
+  submarineSlide?: LandslideScenarioResult['submarineSlide'];
 }
 
 /** The wave at the slide in one regime, under one law. */
@@ -248,15 +278,52 @@ function landslideSource(
     ...(input.slideDensity !== undefined && { slideDensity: input.slideDensity }),
   };
   // The manual's experiments are a slide entering water from above, in open
-  // water or a basin wide enough for the wave to spread. A submarine slump is
-  // not one, and a confined basin keeps its own branch.
-  const manual =
-    waveLaw === 'impulseWaveManual' &&
-    regime === 'subaerial' &&
-    !confined &&
-    depthM > 0 &&
-    input.volumeM3 > 0 &&
-    slopeDeg > 0;
+  // water or a basin wide enough for the wave to spread. A confined basin
+  // keeps its own branch — it is the half of L1 rule 505(b) left alone.
+  const drawable = !confined && depthM > 0 && input.volumeM3 > 0 && slopeDeg > 0;
+  const manual = waveLaw === 'impulseWaveManual' && drawable && regime === 'subaerial';
+
+  // A slide that fails UNDER the water is not the manual's experiment. It
+  // draws K·V^(1/3)·sin θ with K = 0.005, a prefactor set on one event
+  // against a source amplitude that event's paper never printed.
+  //
+  // `submarinePredictive` is the field's published alternative — Watts et al.
+  // 2005's Eqs. (17) and (18), transcribed and verified in
+  // `effects/submarineSlide.ts`. Rules 500 to 508 ran it on 20 September 2026
+  // and it was REFUSED as a default: Storegga is the one recorded submarine
+  // wave this project has, and it lies outside the equations' own fitted
+  // range at d/B = 0.018 against a required 0.06, where they return 458 m
+  // against a recorded 0.3 to 3.0 m at a thousand kilometres. It stays
+  // selectable because the transcription is verified and the next round needs
+  // to be able to run it; it is not what ships.
+  if (waveLaw === 'submarinePredictive' && drawable && regime === 'submarine') {
+    const closure = submarineSlideFromVolume({
+      volumeM3: input.volumeM3,
+      angleDeg: slopeDeg,
+      depthM,
+      specificDensity:
+        (input.slideDensity ?? VOLCANO_TSUNAMI_REFERENCE_DENSITY_SUBMARINE) /
+        SUBMARINE_SLIDE_WATER_DENSITY,
+      ...(input.slideThicknessM !== undefined && { thicknessM: input.slideThicknessM }),
+      ...(input.slideWidthM !== undefined && { widthM: input.slideWidthM }),
+    });
+    const amplitude = submarineSlideAmplitude(closure.slide);
+    return {
+      tsunami: amplitude > 0 ? volcanoTsunami({ ...shared, sourceAmplitudeM: amplitude }) : null,
+      impulseWave: undefined,
+      submarineSlide: {
+        lengthM: closure.slide.lengthM,
+        thicknessM: closure.slide.thicknessM,
+        widthM: closure.slide.widthM,
+        depthM: closure.slide.depthM,
+        specificDensity: closure.slide.specificDensity,
+        amplitudeM: amplitude,
+        closed: closure.closed,
+        outsideTestedRange: submarineSlideOutsideTestedRange(closure.slide),
+      },
+    };
+  }
+
   if (!manual) return { tsunami: volcanoTsunami(shared), impulseWave: undefined };
 
   const closure = slideFromVolume({
@@ -321,7 +388,12 @@ export function simulateLandslide(input: LandslideScenarioInput): LandslideScena
   const regime = input.regime ?? LANDSLIDE_DEFAULT_REGIME;
   const sideLength = Math.cbrt(Math.max(input.volumeM3, 0));
   const waveLaw = input.waveLaw ?? DEFAULT_LANDSLIDE_WAVE_LAW;
-  const { tsunami, impulseWave } = landslideSource(input, regime, slopeDeg, waveLaw);
+  const { tsunami, impulseWave, submarineSlide } = landslideSource(
+    input,
+    regime,
+    slopeDeg,
+    waveLaw
+  );
   return {
     inputs: input,
     characteristicLength: m(sideLength),
@@ -331,6 +403,7 @@ export function simulateLandslide(input: LandslideScenarioInput): LandslideScena
     waveLaw,
     regimeSensitivity: regimeSensitivity(input, slopeDeg, waveLaw),
     ...(impulseWave === undefined ? {} : { impulseWave }),
+    ...(submarineSlide === undefined ? {} : { submarineSlide }),
   };
 }
 
