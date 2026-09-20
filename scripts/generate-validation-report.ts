@@ -28,6 +28,10 @@
  */
 
 import { countMagnitudeInversions } from '../src/physics/validation/propertyPrecedenceRules.js';
+import {
+  radiusInversionsWithinRegime,
+  walkArea,
+} from '../src/physics/validation/areaPropertyRules.js';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -1061,6 +1065,9 @@ interface GroundRun {
   laws: ContourComparison;
   lawTolls: TollCells | null;
   lawAdopted: boolean;
+  /** Rule 398: rules 18 and 19 adopt a law that fails a property of the
+   *  model, so the adoption does not take effect and this is printed. */
+  propertyRefused: boolean;
 }
 
 /** Rules 20 to 22 (siteVs30.ts), run on the sites stored by rule 20. */
@@ -1099,12 +1106,43 @@ function runGround(sets: RuleSets, rockTolls: TollCells): GroundRun {
   // The harness and the browser stand on the browser's ground with Boore
   // et al. 2014. Rules that leave anything else have not been followed by
   // the code, and a report that printed them beside it would be wrong.
-  if (standing !== 'pick' || lawAdopted) {
+  //
+  // Rule 398, as `allenTollRun` applies it above: a PROPERTY outranks a
+  // score, so a winner that fails one is not adopted and the report says
+  // so instead of dying. Since B-083 the property that guards the contour
+  // geometry is P-CONT-AREA — the ground above MMI VII may not jump at a
+  // modelling threshold — because P-MONO-MW reads a radius whose meaning
+  // changes at the one place it matters.
+  //
+  // On the geometry adopted on 20 September, rules 18 and 19 together
+  // adopt `boore2014FromMw7.5`, and it jumps the shaken area by 9.39 at
+  // Mw 4.97. So the adoption does not take effect, and this prints the
+  // conflict rather than stopping the report.
+  const winnerHoldsProperties =
+    !lawAdopted ||
+    (() => {
+      const walk = walkArea({ contourLaw: laws.winner });
+      const regime = radiusInversionsWithinRegime({ contourLaw: laws.winner });
+      return (
+        walk.inversions === 0 && walk.jumps === 0 && regime.belowThreshold + regime.atOrAbove === 0
+      );
+    })();
+  if (standing !== 'pick' || (lawAdopted && winnerHoldsProperties)) {
     throw new Error(
       `Rules 21 and 22 now leave ${standing} with ${lawAdopted ? laws.winner : 'boore2014'}; the harness runs pick with boore2014`
     );
   }
-  return { sites, tolls, siteAdopted, standing, laws, lawTolls, lawAdopted };
+  const propertyRefused = lawAdopted && !winnerHoldsProperties;
+  return {
+    sites,
+    tolls,
+    siteAdopted,
+    standing,
+    laws,
+    lawTolls,
+    lawAdopted,
+    propertyRefused,
+  };
 }
 
 function contourLawSection(run: ContourLawRun): string {
@@ -1190,7 +1228,16 @@ function groundSection(run: GroundRun): string {
   const lawVerdict =
     laws.winner === 'boore2014'
       ? 'Boore et al. 2014 is not beaten by 0.05, and stays.'
-      : `${CONTOUR_LAW_LABEL[laws.winner]} beats Boore et al. 2014 on the ShakeMaps; on the tolls it reads ${run.lawTolls === null ? '—' : cellsText(run.lawTolls)}, and it is ${run.lawAdopted ? 'adopted' : 'not adopted'}.`;
+      : `${CONTOUR_LAW_LABEL[laws.winner]} beats Boore et al. 2014 on the ShakeMaps; on the tolls it reads ${run.lawTolls === null ? '—' : cellsText(run.lawTolls)}, and it is ${run.lawAdopted ? 'adopted' : 'not adopted'}.${
+          run.propertyRefused
+            ? ' **Rule 398: the adoption does not take effect.** That law fails P-CONT-AREA' +
+              ' of `validation/areaPropertyRules.ts` — the ground it shakes above MMI VII' +
+              ' multiplies by 9.39 over one hundredth of a magnitude at Mw 4.97, where the' +
+              ' shipped law holds every step under 1.87. A property outranks a score, so Boore' +
+              ' et al. 2014 keeps drawing the rings and both figures are printed. What the' +
+              ' score decided is above; what refused it is this.'
+            : ''
+        }`;
   return [
     'Rules 17 to 19 stood every earthquake on reference rock; the browser gives the simulator',
     'the Vs30 of the slope under the pick. Rules 20 to 22 (`validation/siteVs30.ts`), committed',
