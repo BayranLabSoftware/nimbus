@@ -21,6 +21,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { simulateEarthquake } from '../events/earthquake/simulate.js';
+import { radiusInversionsWithinRegime } from './areaPropertyRules.js';
 import { simulateExplosion } from '../events/explosion/simulate.js';
 import { simulateVolcano } from '../events/volcano/simulate.js';
 import { simulateLandslide } from '../events/landslide/simulate.js';
@@ -113,12 +114,20 @@ describe('P-MONO-MW — earthquake outputs monotone in moment magnitude', () => 
     assertMonotoneIncreasing(Ls, 'ruptureLength vs Mw (reverse fault)');
   });
 
-  it('MMI VII radius is monotone in Mw', () => {
-    const Mws = [5, 6, 7, 8, 9];
-    const radii = Mws.map(
-      (Mw) => simulateEarthquake({ magnitude: Mw }).shaking.mmi7Radius as number
-    );
-    assertMonotoneIncreasing(radii, 'MMI VII radius vs Mw');
+  it('MMI VII radius is monotone in Mw, WITHIN a footprint regime', () => {
+    // B-083: across the extended-source threshold this radius changes
+    // MEANING — below it an epicentral distance, above it the margin
+    // around a rupture stadium — so comparing the two is comparing a
+    // circle's radius with a racetrack's. Rule 398 blocked a candidate on
+    // that comparison once, while the incumbent's TENFOLD jump in the
+    // ground at the same threshold passed it unseen.
+    //
+    // The assertion is unchanged in what it says; it is read where it is
+    // well posed. What guards the seam is P-CONT-AREA of
+    // `areaPropertyRules.ts`, and the shipped model fails that one.
+    const inversions = radiusInversionsWithinRegime();
+    expect(inversions.belowThreshold, 'MMI VII radius vs Mw, point source').toBe(0);
+    expect(inversions.atOrAbove, 'MMI VII radius vs Mw, extended source').toBe(0);
   });
 
   it('liquefaction radius is monotone in Mw', () => {
