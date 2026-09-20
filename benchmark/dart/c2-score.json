@@ -1,0 +1,1058 @@
+{
+ "headline": "bracketed-2cm",
+ "readings": [
+  {
+   "reading": "bracketed-2cm",
+   "looked": 113,
+   "kept": 93,
+   "c2Exists": true,
+   "noWorseThanReference": true,
+   "ownBoundsMet": true,
+   "t1Met": true,
+   "summary": {
+    "C0": {
+     "events": 9,
+     "biasLn": 0.013588085269347351,
+     "scatterLn": 0.43521679702505606,
+     "farLn": -0.1437601159102235
+    },
+    "C1": {
+     "events": 9,
+     "biasLn": 0.32149192758467365,
+     "scatterLn": 0.5044792466937448,
+     "farLn": 0.19017591178864857
+    },
+    "C2": {
+     "events": 9,
+     "biasLn": -0.08584870539093226,
+     "scatterLn": 0.4386725626200754,
+     "farLn": -0.21078486149645664
+    }
+   },
+   "onEveryRow": {
+    "C0": {
+     "events": 9,
+     "biasLn": -0.0015081155837615781,
+     "scatterLn": 0.44168076744201623
+    },
+    "C1": {
+     "events": 9,
+     "biasLn": 0.32149192758467365,
+     "scatterLn": 0.48428220801800737
+    }
+   },
+   "arrival": {
+    "records": 93,
+    "medianLn": -0.02200144799486259,
+    "within5pc": 0.5483870967741935
+   },
+   "events": [
+    {
+     "id": "usp000exfn",
+     "date": "2006-11-15",
+     "place": "2006 Kuril Islands Earthquake",
+     "magnitude": 8.3,
+     "inC2": 10,
+     "ofRecords": 11,
+     "medianLn": {
+      "C0": -0.0729220152912193,
+      "C1": 0.10089615643519023,
+      "C2": -0.21825291053595486
+     }
+    },
+    {
+     "id": "official20100227063411530_30",
+     "date": "2010-02-27",
+     "place": "2010 Maule, Chile Earthquake",
+     "magnitude": 8.8,
+     "inC2": 16,
+     "ofRecords": 18,
+     "medianLn": {
+      "C0": -0.1437601159102235,
+      "C1": 0.2007118949122186,
+      "C2": -0.005221465439110565
+     }
+    },
+    {
+     "id": "official20110311054624120_30",
+     "date": "2011-03-11",
+     "place": "2011 Great Tohoku Earthquake, Japan",
+     "magnitude": 9.1,
+     "inC2": 27,
+     "ofRecords": 28,
+     "medianLn": {
+      "C0": -0.32632424169832364,
+      "C1": -0.43080440467946124,
+      "C2": -0.5496350355083783
+     }
+    },
+    {
+     "id": "usp000juhz",
+     "date": "2012-10-28",
+     "place": "206 km SW of Prince Rupert, Canada",
+     "magnitude": 7.8,
+     "inC2": 7,
+     "ofRecords": 7,
+     "medianLn": {
+      "C0": -0.26962956387240666,
+      "C1": 0.19324747740868253,
+      "C2": -0.08584870539093226
+     }
+    },
+    {
+     "id": "usc000nzvd",
+     "date": "2014-04-01",
+     "place": "93 km NW of Iquique, Chile",
+     "magnitude": 8.2,
+     "inC2": 2,
+     "ofRecords": 5,
+     "medianLn": {
+      "C0": 0.021632075052876884,
+      "C1": 0.334193430088189,
+      "C2": -0.32375427315686317
+     }
+    },
+    {
+     "id": "us20003k7a",
+     "date": "2015-09-16",
+     "place": "48 km W of Illapel, Chile",
+     "magnitude": 8.3,
+     "inC2": 12,
+     "ofRecords": 14,
+     "medianLn": {
+      "C0": 0.013588085269347351,
+      "C1": 0.32149192758467365,
+      "C2": -0.007864741769622737
+     }
+    },
+    {
+     "id": "ak0219neiszm",
+     "date": "2021-07-29",
+     "place": "2021 Chignik, Alaska Earthquake",
+     "magnitude": 8.2,
+     "inC2": 4,
+     "ofRecords": 4,
+     "medianLn": {
+      "C0": 1.089124403285488,
+      "C1": 1.3133276207840074,
+      "C2": 0.684936923873618
+     }
+    },
+    {
+     "id": "us6000qw60",
+     "date": "2025-07-29",
+     "place": "2025 Kamchatka Peninsula, Russia Earthquake",
+     "magnitude": 8.8,
+     "inC2": 12,
+     "ofRecords": 22,
+     "medianLn": {
+      "C0": 0.4399654536259451,
+      "C1": 0.9733325730925058,
+      "C2": 0.7770333014709527
+     }
+    },
+    {
+     "id": "us7000qx2g",
+     "date": "2025-09-18",
+     "place": "140 km E of Petropavlovsk-Kamchatsky, Russia",
+     "magnitude": 7.8,
+     "inC2": 3,
+     "ofRecords": 4,
+     "medianLn": {
+      "C0": 0.07412545132565052,
+      "C1": 0.4518921526241971,
+      "C2": -0.09043762392311158
+     }
+    }
+   ],
+   "exclusions": [
+    {
+     "id": "usp000exfn",
+     "station": "32401",
+     "reason": "not converged: 46 % between the two grids"
+    },
+    {
+     "id": "official20100227063411530_30",
+     "station": "51406",
+     "reason": "not converged: 32 % between the two grids"
+    },
+    {
+     "id": "official20100227063411530_30",
+     "station": "52405",
+     "reason": "not converged: 27 % between the two grids"
+    },
+    {
+     "id": "official20110311054624120_30",
+     "station": "46407",
+     "reason": "not converged: 30 % between the two grids"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "32412",
+     "reason": "not converged: 35 % between the two grids"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "32413",
+     "reason": "not converged: 28 % between the two grids"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "51426",
+     "reason": "the run stopped before the window closed"
+    },
+    {
+     "id": "us20003k7a",
+     "station": "21415",
+     "reason": "not converged: 25 % between the two grids"
+    },
+    {
+     "id": "us20003k7a",
+     "station": "52405",
+     "reason": "not converged: 27 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21413",
+     "reason": "not converged: 29 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21414",
+     "reason": "not converged: 26 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21419",
+     "reason": "not converged: 26 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "32402",
+     "reason": "not converged: 42 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "32413",
+     "reason": "not converged: 37 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "43412",
+     "reason": "not converged: 38 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "43413",
+     "reason": "not converged: 35 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46404",
+     "reason": "not converged: 28 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46411",
+     "reason": "not converged: 34 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46413",
+     "reason": "not converged: 32 % between the two grids"
+    },
+    {
+     "id": "us7000qx2g",
+     "station": "21414",
+     "reason": "not converged: 29 % between the two grids"
+    }
+   ]
+  },
+  {
+   "reading": "bracketed-1cm",
+   "looked": 139,
+   "kept": 93,
+   "c2Exists": true,
+   "noWorseThanReference": true,
+   "ownBoundsMet": true,
+   "t1Met": true,
+   "summary": {
+    "C0": {
+     "events": 9,
+     "biasLn": 0.013588085269347351,
+     "scatterLn": 0.43521679702505606,
+     "farLn": -0.1437601159102235
+    },
+    "C1": {
+     "events": 9,
+     "biasLn": 0.32149192758467365,
+     "scatterLn": 0.5044792466937448,
+     "farLn": 0.19017591178864857
+    },
+    "C2": {
+     "events": 9,
+     "biasLn": -0.08584870539093226,
+     "scatterLn": 0.4386725626200754,
+     "farLn": -0.21078486149645664
+    }
+   },
+   "onEveryRow": {
+    "C0": {
+     "events": 11,
+     "biasLn": 0.24289321211406975,
+     "scatterLn": 0.4574866918508551
+    },
+    "C1": {
+     "events": 11,
+     "biasLn": 0.5228636871611974,
+     "scatterLn": 0.5498643652961677
+    }
+   },
+   "arrival": {
+    "records": 93,
+    "medianLn": -0.02200144799486259,
+    "within5pc": 0.5483870967741935
+   },
+   "events": [
+    {
+     "id": "usp000exfn",
+     "date": "2006-11-15",
+     "place": "2006 Kuril Islands Earthquake",
+     "magnitude": 8.3,
+     "inC2": 10,
+     "ofRecords": 12,
+     "medianLn": {
+      "C0": -0.0729220152912193,
+      "C1": 0.10089615643519023,
+      "C2": -0.21825291053595486
+     }
+    },
+    {
+     "id": "official20100227063411530_30",
+     "date": "2010-02-27",
+     "place": "2010 Maule, Chile Earthquake",
+     "magnitude": 8.8,
+     "inC2": 16,
+     "ofRecords": 20,
+     "medianLn": {
+      "C0": -0.1437601159102235,
+      "C1": 0.2007118949122186,
+      "C2": -0.005221465439110565
+     }
+    },
+    {
+     "id": "official20110311054624120_30",
+     "date": "2011-03-11",
+     "place": "2011 Great Tohoku Earthquake, Japan",
+     "magnitude": 9.1,
+     "inC2": 27,
+     "ofRecords": 28,
+     "medianLn": {
+      "C0": -0.32632424169832364,
+      "C1": -0.43080440467946124,
+      "C2": -0.5496350355083783
+     }
+    },
+    {
+     "id": "usp000juhz",
+     "date": "2012-10-28",
+     "place": "206 km SW of Prince Rupert, Canada",
+     "magnitude": 7.8,
+     "inC2": 7,
+     "ofRecords": 8,
+     "medianLn": {
+      "C0": -0.26962956387240666,
+      "C1": 0.19324747740868253,
+      "C2": -0.08584870539093226
+     }
+    },
+    {
+     "id": "usc000nzvd",
+     "date": "2014-04-01",
+     "place": "93 km NW of Iquique, Chile",
+     "magnitude": 8.2,
+     "inC2": 2,
+     "ofRecords": 6,
+     "medianLn": {
+      "C0": 0.021632075052876884,
+      "C1": 0.334193430088189,
+      "C2": -0.32375427315686317
+     }
+    },
+    {
+     "id": "us20003k7a",
+     "date": "2015-09-16",
+     "place": "48 km W of Illapel, Chile",
+     "magnitude": 8.3,
+     "inC2": 12,
+     "ofRecords": 16,
+     "medianLn": {
+      "C0": 0.013588085269347351,
+      "C1": 0.32149192758467365,
+      "C2": -0.007864741769622737
+     }
+    },
+    {
+     "id": "ak0219neiszm",
+     "date": "2021-07-29",
+     "place": "2021 Chignik, Alaska Earthquake",
+     "magnitude": 8.2,
+     "inC2": 4,
+     "ofRecords": 11,
+     "medianLn": {
+      "C0": 1.089124403285488,
+      "C1": 1.3133276207840074,
+      "C2": 0.684936923873618
+     }
+    },
+    {
+     "id": "us6000qw60",
+     "date": "2025-07-29",
+     "place": "2025 Kamchatka Peninsula, Russia Earthquake",
+     "magnitude": 8.8,
+     "inC2": 12,
+     "ofRecords": 23,
+     "medianLn": {
+      "C0": 0.4399654536259451,
+      "C1": 0.9733325730925058,
+      "C2": 0.7770333014709527
+     }
+    },
+    {
+     "id": "us7000qx2g",
+     "date": "2025-09-18",
+     "place": "140 km E of Petropavlovsk-Kamchatsky, Russia",
+     "magnitude": 7.8,
+     "inC2": 3,
+     "ofRecords": 5,
+     "medianLn": {
+      "C0": 0.07412545132565052,
+      "C1": 0.4518921526241971,
+      "C2": -0.09043762392311158
+     }
+    }
+   ],
+   "exclusions": [
+    {
+     "id": "usp000exfn",
+     "station": "32401",
+     "reason": "not converged: 46 % between the two grids"
+    },
+    {
+     "id": "usp000exfn",
+     "station": "46410",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "official20100227063411530_30",
+     "station": "51406",
+     "reason": "not converged: 32 % between the two grids"
+    },
+    {
+     "id": "official20100227063411530_30",
+     "station": "52405",
+     "reason": "not converged: 27 % between the two grids"
+    },
+    {
+     "id": "official20100227063411530_30",
+     "station": "55013",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "official20100227063411530_30",
+     "station": "55015",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "official20110311054624120_30",
+     "station": "46407",
+     "reason": "not converged: 30 % between the two grids"
+    },
+    {
+     "id": "usp000juhz",
+     "station": "51407",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "usc000f1s0",
+     "station": "51425",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "usc000f1s0",
+     "station": "52401",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "usc000f1s0",
+     "station": "52402",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "usc000f1s0",
+     "station": "52403",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "usc000f1s0",
+     "station": "52406",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "32412",
+     "reason": "not converged: 35 % between the two grids"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "32413",
+     "reason": "not converged: 28 % between the two grids"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "51426",
+     "reason": "the run stopped before the window closed"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "52402",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "us20003k7a",
+     "station": "21415",
+     "reason": "not converged: 25 % between the two grids"
+    },
+    {
+     "id": "us20003k7a",
+     "station": "46411",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "us20003k7a",
+     "station": "51407",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "us20003k7a",
+     "station": "52405",
+     "reason": "not converged: 27 % between the two grids"
+    },
+    {
+     "id": "us7000dflf",
+     "station": "32401",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "us7000dflf",
+     "station": "32411",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "us7000dflf",
+     "station": "32413",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "us7000dflf",
+     "station": "51425",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "us7000dflf",
+     "station": "52406",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "ak0219neiszm",
+     "station": "21414",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "ak0219neiszm",
+     "station": "46407",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "ak0219neiszm",
+     "station": "46408",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "ak0219neiszm",
+     "station": "46409",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "ak0219neiszm",
+     "station": "46413",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "ak0219neiszm",
+     "station": "46416",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "ak0219neiszm",
+     "station": "46419",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21413",
+     "reason": "not converged: 29 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21414",
+     "reason": "not converged: 26 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21419",
+     "reason": "not converged: 26 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "32402",
+     "reason": "not converged: 42 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "32413",
+     "reason": "not converged: 37 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "43412",
+     "reason": "not converged: 38 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "43413",
+     "reason": "not converged: 35 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46404",
+     "reason": "not converged: 28 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46411",
+     "reason": "not converged: 34 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46413",
+     "reason": "not converged: 32 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46415",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "us7000qx2g",
+     "station": "21414",
+     "reason": "not converged: 29 % between the two grids"
+    },
+    {
+     "id": "us7000qx2g",
+     "station": "46413",
+     "reason": "the event was not run"
+    }
+   ]
+  },
+  {
+   "reading": "covered-2cm",
+   "looked": 62,
+   "kept": 52,
+   "c2Exists": false,
+   "noWorseThanReference": true,
+   "ownBoundsMet": true,
+   "t1Met": false,
+   "summary": {
+    "C0": {
+     "events": 6,
+     "biasLn": -0.02564497011917121,
+     "scatterLn": 0.27843176310129725,
+     "farLn": -0.39363195679284924
+    },
+    "C1": {
+     "events": 6,
+     "biasLn": 0.21754479326168963,
+     "scatterLn": 0.4646566065715824,
+     "farLn": -0.37163776336729304
+    },
+    "C2": {
+     "events": 6,
+     "biasLn": -0.1620174618418237,
+     "scatterLn": 0.3634588998875575,
+     "farLn": -0.638811084205572
+    }
+   },
+   "onEveryRow": {
+    "C0": {
+     "events": 6,
+     "biasLn": 0.04279365821432042,
+     "scatterLn": 0.30198102112695346
+    },
+    "C1": {
+     "events": 6,
+     "biasLn": 0.2941370381639437,
+     "scatterLn": 0.4394411152775357
+    }
+   },
+   "arrival": {
+    "records": 52,
+    "medianLn": -0.033687246161864665,
+    "within5pc": 0.5
+   },
+   "events": [
+    {
+     "id": "usp000exfn",
+     "date": "2006-11-15",
+     "place": "2006 Kuril Islands Earthquake",
+     "magnitude": 8.3,
+     "inC2": 6,
+     "ofRecords": 6,
+     "medianLn": {
+      "C0": -0.0729220152912193,
+      "C1": 0.10089615643519023,
+      "C2": -0.2118699075247672
+     }
+    },
+    {
+     "id": "official20110311054624120_30",
+     "date": "2011-03-11",
+     "place": "2011 Great Tohoku Earthquake, Japan",
+     "magnitude": 9.1,
+     "inC2": 25,
+     "ofRecords": 25,
+     "medianLn": {
+      "C0": -0.30742157215188176,
+      "C1": -0.43080440467946124,
+      "C2": -0.5496350355083783
+     }
+    },
+    {
+     "id": "usp000juhz",
+     "date": "2012-10-28",
+     "place": "206 km SW of Prince Rupert, Canada",
+     "magnitude": 7.8,
+     "inC2": 6,
+     "ofRecords": 7,
+     "medianLn": {
+      "C0": -0.30315520032443155,
+      "C1": 0.09875073247237191,
+      "C2": -0.11216501615888017
+     }
+    },
+    {
+     "id": "usc000nzvd",
+     "date": "2014-04-01",
+     "place": "93 km NW of Iquique, Chile",
+     "magnitude": 8.2,
+     "inC2": 2,
+     "ofRecords": 4,
+     "medianLn": {
+      "C0": 0.021632075052876884,
+      "C1": 0.334193430088189,
+      "C2": -0.32375427315686317
+     }
+    },
+    {
+     "id": "us6000qw60",
+     "date": "2025-07-29",
+     "place": "2025 Kamchatka Peninsula, Russia Earthquake",
+     "magnitude": 8.8,
+     "inC2": 10,
+     "ofRecords": 16,
+     "medianLn": {
+      "C0": 0.4399654536259451,
+      "C1": 0.9733325730925058,
+      "C2": 0.5321099783073576
+     }
+    },
+    {
+     "id": "us7000qx2g",
+     "date": "2025-09-18",
+     "place": "140 km E of Petropavlovsk-Kamchatsky, Russia",
+     "magnitude": 7.8,
+     "inC2": 3,
+     "ofRecords": 4,
+     "medianLn": {
+      "C0": 0.07412545132565052,
+      "C1": 0.4518921526241971,
+      "C2": -0.09043762392311158
+     }
+    }
+   ],
+   "exclusions": [
+    {
+     "id": "usp000juhz",
+     "station": "46404",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "32412",
+     "reason": "not converged: 35 % between the two grids"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "32413",
+     "reason": "not converged: 28 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21413",
+     "reason": "not converged: 29 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21414",
+     "reason": "not converged: 26 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21419",
+     "reason": "not converged: 26 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46404",
+     "reason": "not converged: 28 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46411",
+     "reason": "not converged: 34 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46413",
+     "reason": "not converged: 32 % between the two grids"
+    },
+    {
+     "id": "us7000qx2g",
+     "station": "21414",
+     "reason": "not converged: 29 % between the two grids"
+    }
+   ]
+  },
+  {
+   "reading": "covered-1cm",
+   "looked": 69,
+   "kept": 55,
+   "c2Exists": false,
+   "noWorseThanReference": true,
+   "ownBoundsMet": true,
+   "t1Met": false,
+   "summary": {
+    "C0": {
+     "events": 7,
+     "biasLn": 0.021632075052876884,
+     "scatterLn": 0.48646557346312447,
+     "farLn": -0.39363195679284924
+    },
+    "C1": {
+     "events": 7,
+     "biasLn": 0.334193430088189,
+     "scatterLn": 0.5959787511366968,
+     "farLn": -0.37163776336729304
+    },
+    "C2": {
+     "events": 7,
+     "biasLn": -0.11216501615888017,
+     "scatterLn": 0.37914154408840434,
+     "farLn": -0.638811084205572
+    }
+   },
+   "onEveryRow": {
+    "C0": {
+     "events": 7,
+     "biasLn": 0.24289321211406975,
+     "scatterLn": 0.5660301492759116
+    },
+    "C1": {
+     "events": 7,
+     "biasLn": 0.5228636871611974,
+     "scatterLn": 0.6063771329312724
+    }
+   },
+   "arrival": {
+    "records": 55,
+    "medianLn": -0.03498865173177589,
+    "within5pc": 0.4727272727272727
+   },
+   "events": [
+    {
+     "id": "usp000exfn",
+     "date": "2006-11-15",
+     "place": "2006 Kuril Islands Earthquake",
+     "magnitude": 8.3,
+     "inC2": 6,
+     "ofRecords": 6,
+     "medianLn": {
+      "C0": -0.0729220152912193,
+      "C1": 0.10089615643519023,
+      "C2": -0.2118699075247672
+     }
+    },
+    {
+     "id": "official20110311054624120_30",
+     "date": "2011-03-11",
+     "place": "2011 Great Tohoku Earthquake, Japan",
+     "magnitude": 9.1,
+     "inC2": 25,
+     "ofRecords": 25,
+     "medianLn": {
+      "C0": -0.30742157215188176,
+      "C1": -0.43080440467946124,
+      "C2": -0.5496350355083783
+     }
+    },
+    {
+     "id": "usp000juhz",
+     "date": "2012-10-28",
+     "place": "206 km SW of Prince Rupert, Canada",
+     "magnitude": 7.8,
+     "inC2": 6,
+     "ofRecords": 8,
+     "medianLn": {
+      "C0": -0.30315520032443155,
+      "C1": 0.09875073247237191,
+      "C2": -0.11216501615888017
+     }
+    },
+    {
+     "id": "usc000nzvd",
+     "date": "2014-04-01",
+     "place": "93 km NW of Iquique, Chile",
+     "magnitude": 8.2,
+     "inC2": 2,
+     "ofRecords": 4,
+     "medianLn": {
+      "C0": 0.021632075052876884,
+      "C1": 0.334193430088189,
+      "C2": -0.32375427315686317
+     }
+    },
+    {
+     "id": "ak0219neiszm",
+     "date": "2021-07-29",
+     "place": "2021 Chignik, Alaska Earthquake",
+     "magnitude": 8.2,
+     "inC2": 3,
+     "ofRecords": 5,
+     "medianLn": {
+      "C0": 1.0727842518917432,
+      "C1": 1.3623582566427497,
+      "C2": 0.3594700340324184
+     }
+    },
+    {
+     "id": "us6000qw60",
+     "date": "2025-07-29",
+     "place": "2025 Kamchatka Peninsula, Russia Earthquake",
+     "magnitude": 8.8,
+     "inC2": 10,
+     "ofRecords": 16,
+     "medianLn": {
+      "C0": 0.4399654536259451,
+      "C1": 0.9733325730925058,
+      "C2": 0.5321099783073576
+     }
+    },
+    {
+     "id": "us7000qx2g",
+     "date": "2025-09-18",
+     "place": "140 km E of Petropavlovsk-Kamchatsky, Russia",
+     "magnitude": 7.8,
+     "inC2": 3,
+     "ofRecords": 5,
+     "medianLn": {
+      "C0": 0.07412545132565052,
+      "C1": 0.4518921526241971,
+      "C2": -0.09043762392311158
+     }
+    }
+   ],
+   "exclusions": [
+    {
+     "id": "usp000juhz",
+     "station": "46404",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "usp000juhz",
+     "station": "51407",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "32412",
+     "reason": "not converged: 35 % between the two grids"
+    },
+    {
+     "id": "usc000nzvd",
+     "station": "32413",
+     "reason": "not converged: 28 % between the two grids"
+    },
+    {
+     "id": "ak0219neiszm",
+     "station": "46408",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "ak0219neiszm",
+     "station": "46409",
+     "reason": "the event was not run"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21413",
+     "reason": "not converged: 29 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21414",
+     "reason": "not converged: 26 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "21419",
+     "reason": "not converged: 26 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46404",
+     "reason": "not converged: 28 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46411",
+     "reason": "not converged: 34 % between the two grids"
+    },
+    {
+     "id": "us6000qw60",
+     "station": "46413",
+     "reason": "not converged: 32 % between the two grids"
+    },
+    {
+     "id": "us7000qx2g",
+     "station": "21414",
+     "reason": "not converged: 29 % between the two grids"
+    },
+    {
+     "id": "us7000qx2g",
+     "station": "46413",
+     "reason": "the event was not run"
+    }
+   ]
+  }
+ ]
+}

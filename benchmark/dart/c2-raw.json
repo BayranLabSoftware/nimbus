@@ -1,0 +1,2359 @@
+{
+ "model": "C2",
+ "events": [
+  {
+   "id": "usp000exfn",
+   "runs": {
+    "coarse": {
+     "ok": true,
+     "cells": [
+      793,
+      494
+     ],
+     "seconds": 1406.5527131557465
+    },
+    "fine": {
+     "ok": true,
+     "cells": [
+      1586,
+      987
+     ],
+     "seconds": 10208.497957229614
+    }
+   },
+   "records": [
+    {
+     "station": "21414",
+     "rasterDepthM": 5370.80712890625,
+     "reportedDepthM": 5311.7,
+     "coarse": {
+      "crestM": 0.05916593,
+      "crestAfterS": 7994.93,
+      "frontAfterS": 7605.05,
+      "covered": true,
+      "depthM": 5182.19
+     },
+     "fine": {
+      "crestM": 0.06182117,
+      "crestAfterS": 7888.886,
+      "frontAfterS": 7630.313,
+      "covered": true,
+      "depthM": 5231.021
+     }
+    },
+    {
+     "station": "32401",
+     "rasterDepthM": 4712.04150390625,
+     "reportedDepthM": 4882.0,
+     "coarse": {
+      "crestM": 0.006710997,
+      "crestAfterS": 78040.45,
+      "frontAfterS": 69398.12,
+      "covered": true,
+      "depthM": 4797.558
+     },
+     "fine": {
+      "crestM": 0.01232602,
+      "crestAfterS": 81978.51,
+      "frontAfterS": 69696.27,
+      "covered": true,
+      "depthM": 4789.216
+     }
+    },
+    {
+     "station": "46402",
+     "rasterDepthM": 4655.728515625,
+     "reportedDepthM": 4711.8,
+     "coarse": {
+      "crestM": 0.02446705,
+      "crestAfterS": 13583.21,
+      "frontAfterS": 13063.37,
+      "covered": true,
+      "depthM": 4720.676
+     },
+     "fine": {
+      "crestM": 0.02865383,
+      "crestAfterS": 13512.86,
+      "frontAfterS": 13125.0,
+      "covered": true,
+      "depthM": 4695.472
+     }
+    },
+    {
+     "station": "46403",
+     "rasterDepthM": 4552.8515625,
+     "reportedDepthM": 4510.5,
+     "coarse": {
+      "crestM": 0.01467188,
+      "crestAfterS": 15987.46,
+      "frontAfterS": 15337.66,
+      "covered": true,
+      "depthM": 4556.662
+     },
+     "fine": {
+      "crestM": 0.01706807,
+      "crestAfterS": 15969.3,
+      "frontAfterS": 15387.51,
+      "covered": true,
+      "depthM": 4554.113
+     }
+    },
+    {
+     "station": "46404",
+     "rasterDepthM": 2785.2109375,
+     "reportedDepthM": 2737.4,
+     "coarse": {
+      "crestM": 0.01875793,
+      "crestAfterS": 26514.21,
+      "frontAfterS": 26124.33,
+      "covered": true,
+      "depthM": 2765.856
+     },
+     "fine": {
+      "crestM": 0.02363073,
+      "crestAfterS": 26506.17,
+      "frontAfterS": 26182.95,
+      "covered": true,
+      "depthM": 2767.609
+     }
+    },
+    {
+     "station": "46405",
+     "rasterDepthM": 3533.23828125,
+     "reportedDepthM": 3483.1,
+     "coarse": {
+      "crestM": 0.02152388,
+      "crestAfterS": 25994.37,
+      "frontAfterS": 25539.51,
+      "covered": true,
+      "depthM": 3531.908
+     },
+     "fine": {
+      "crestM": 0.02607732,
+      "crestAfterS": 25989.02,
+      "frontAfterS": 25665.81,
+      "covered": true,
+      "depthM": 3526.384
+     }
+    },
+    {
+     "station": "46408",
+     "rasterDepthM": 5265.11279296875,
+     "reportedDepthM": 5372.6,
+     "coarse": {
+      "crestM": 0.03902967,
+      "crestAfterS": 11698.79,
+      "frontAfterS": 11373.89,
+      "covered": true,
+      "depthM": 5263.156
+     },
+     "fine": {
+      "crestM": 0.0457289,
+      "crestAfterS": 11702.84,
+      "frontAfterS": 11444.27,
+      "covered": true,
+      "depthM": 5254.385
+     }
+    },
+    {
+     "station": "46409",
+     "rasterDepthM": 4164.31201171875,
+     "reportedDepthM": 4191.1,
+     "coarse": {
+      "crestM": 0.007790021,
+      "crestAfterS": 19041.52,
+      "frontAfterS": 18196.78,
+      "covered": true,
+      "depthM": 4158.539
+     },
+     "fine": {
+      "crestM": 0.008972136,
+      "crestAfterS": 19072.19,
+      "frontAfterS": 18296.47,
+      "covered": true,
+      "depthM": 4149.224
+     }
+    },
+    {
+     "station": "46411",
+     "rasterDepthM": 4330.0263671875,
+     "reportedDepthM": 4264.3,
+     "coarse": {
+      "crestM": 0.02523396,
+      "crestAfterS": 28203.69,
+      "frontAfterS": 27813.81,
+      "covered": true,
+      "depthM": 4328.01
+     },
+     "fine": {
+      "crestM": 0.03248729,
+      "crestAfterS": 28251.54,
+      "frontAfterS": 27928.32,
+      "covered": true,
+      "depthM": 4324.183
+     }
+    },
+    {
+     "station": "46413",
+     "rasterDepthM": 5590.23681640625,
+     "reportedDepthM": 5572.0,
+     "coarse": {
+      "crestM": 0.05170292,
+      "crestAfterS": 10529.15,
+      "frontAfterS": 10139.27,
+      "covered": true,
+      "depthM": 5630.093
+     },
+     "fine": {
+      "crestM": 0.05623783,
+      "crestAfterS": 10603.91,
+      "frontAfterS": 10151.4,
+      "covered": true,
+      "depthM": 5663.548
+     }
+    },
+    {
+     "station": "51407",
+     "rasterDepthM": 4652.56689453125,
+     "reportedDepthM": 4710.1,
+     "coarse": {
+      "crestM": 0.02179813,
+      "crestAfterS": 28918.47,
+      "frontAfterS": 23785.06,
+      "covered": true,
+      "depthM": 4661.764
+     },
+     "fine": {
+      "crestM": 0.02829036,
+      "crestAfterS": 29027.26,
+      "frontAfterS": 23920.44,
+      "covered": true,
+      "depthM": 4666.706
+     }
+    }
+   ]
+  },
+  {
+   "id": "official20100227063411530_30",
+   "runs": {
+    "coarse": {
+     "ok": true,
+     "cells": [
+      915,
+      600
+     ],
+     "seconds": 2092.9650061130524
+    },
+    "fine": {
+     "ok": true,
+     "cells": [
+      1830,
+      1200
+     ],
+     "seconds": 16791.219475984573
+    }
+   },
+   "records": [
+    {
+     "station": "21413",
+     "rasterDepthM": 5903.92919921875,
+     "reportedDepthM": 5827.5,
+     "coarse": {
+      "crestM": 0.09717447,
+      "crestAfterS": 76772.98,
+      "frontAfterS": 74888.5,
+      "covered": true,
+      "depthM": 5902.479
+     },
+     "fine": {
+      "crestM": 0.09997908,
+      "crestAfterS": 76631.32,
+      "frontAfterS": 75036.47,
+      "covered": true,
+      "depthM": 5895.355
+     }
+    },
+    {
+     "station": "32412",
+     "rasterDepthM": 4340.443359375,
+     "reportedDepthM": 4325.5,
+     "coarse": {
+      "crestM": 0.1354678,
+      "crestAfterS": 11634.22,
+      "frontAfterS": 11049.38,
+      "covered": true,
+      "depthM": 4391.826
+     },
+     "fine": {
+      "crestM": 0.1455822,
+      "crestAfterS": 11549.16,
+      "frontAfterS": 11166.4,
+      "covered": true,
+      "depthM": 4371.271
+     }
+    },
+    {
+     "station": "43412",
+     "rasterDepthM": 3279.677734375,
+     "reportedDepthM": 3233.3,
+     "coarse": {
+      "crestM": 0.08673862,
+      "crestAfterS": 35157.78,
+      "frontAfterS": 34313.01,
+      "covered": true,
+      "depthM": 3377.972
+     },
+     "fine": {
+      "crestM": 0.08626594,
+      "crestAfterS": 35025.45,
+      "frontAfterS": 34387.51,
+      "covered": true,
+      "depthM": 3359.421
+     }
+    },
+    {
+     "station": "46403",
+     "rasterDepthM": 4552.8515625,
+     "reportedDepthM": 4511.2,
+     "coarse": {
+      "crestM": 0.06749332,
+      "crestAfterS": 62996.76,
+      "frontAfterS": 62216.98,
+      "covered": true,
+      "depthM": 4556.532
+     },
+     "fine": {
+      "crestM": 0.0752061,
+      "crestAfterS": 63170.74,
+      "frontAfterS": 62341.42,
+      "covered": true,
+      "depthM": 4554.113
+     }
+    },
+    {
+     "station": "46404",
+     "rasterDepthM": 2785.2109375,
+     "reportedDepthM": 2737.8,
+     "coarse": {
+      "crestM": 0.04814842,
+      "crestAfterS": 56082.05,
+      "frontAfterS": 54847.39,
+      "covered": true,
+      "depthM": 2752.833
+     },
+     "fine": {
+      "crestM": 0.04922298,
+      "crestAfterS": 56141.35,
+      "frontAfterS": 54929.26,
+      "covered": true,
+      "depthM": 2767.609
+     }
+    },
+    {
+     "station": "46407",
+     "rasterDepthM": 3314.447998046875,
+     "reportedDepthM": 3265.1,
+     "coarse": {
+      "crestM": 0.05149951,
+      "crestAfterS": 53937.64,
+      "frontAfterS": 52767.96,
+      "covered": true,
+      "depthM": 3311.112
+     },
+     "fine": {
+      "crestM": 0.05117841,
+      "crestAfterS": 54099.94,
+      "frontAfterS": 52887.84,
+      "covered": true,
+      "depthM": 3313.705
+     }
+    },
+    {
+     "station": "46408",
+     "rasterDepthM": 5265.11279296875,
+     "reportedDepthM": 5378.0,
+     "coarse": {
+      "crestM": 0.07201346,
+      "crestAfterS": 64881.25,
+      "frontAfterS": 63971.5,
+      "covered": true,
+      "depthM": 5267.829
+     },
+     "fine": {
+      "crestM": 0.08229537,
+      "crestAfterS": 64956.98,
+      "frontAfterS": 64127.66,
+      "covered": true,
+      "depthM": 5254.385
+     }
+    },
+    {
+     "station": "46409",
+     "rasterDepthM": 4164.31201171875,
+     "reportedDepthM": 4190.0,
+     "coarse": {
+      "crestM": 0.06583079,
+      "crestAfterS": 62996.76,
+      "frontAfterS": 62151.99,
+      "covered": true,
+      "depthM": 4153.129
+     },
+     "fine": {
+      "crestM": 0.06835348,
+      "crestAfterS": 63170.74,
+      "frontAfterS": 62277.62,
+      "covered": true,
+      "depthM": 4126.411
+     }
+    },
+    {
+     "station": "46410",
+     "rasterDepthM": 3760.59912109375,
+     "reportedDepthM": 3727.7,
+     "coarse": {
+      "crestM": 0.05195583,
+      "crestAfterS": 63711.57,
+      "frontAfterS": 62801.82,
+      "covered": true,
+      "depthM": 3775.542
+     },
+     "fine": {
+      "crestM": 0.05452107,
+      "crestAfterS": 63936.27,
+      "frontAfterS": 62915.56,
+      "covered": true,
+      "depthM": 3767.424
+     }
+    },
+    {
+     "station": "46412",
+     "rasterDepthM": 3796.603271484375,
+     "reportedDepthM": 3717.0,
+     "coarse": {
+      "crestM": 0.07106471,
+      "crestAfterS": 47244.47,
+      "frontAfterS": 46139.77,
+      "covered": true,
+      "depthM": 3827.645
+     },
+     "fine": {
+      "crestM": 0.0700585,
+      "crestAfterS": 46827.39,
+      "frontAfterS": 46317.04,
+      "covered": true,
+      "depthM": 3828.324
+     }
+    },
+    {
+     "station": "46419",
+     "rasterDepthM": 2816.831787109375,
+     "reportedDepthM": 2776.3,
+     "coarse": {
+      "crestM": 0.05004505,
+      "crestAfterS": 58161.48,
+      "frontAfterS": 56926.82,
+      "covered": true,
+      "depthM": 2714.092
+     },
+     "fine": {
+      "crestM": 0.0499863,
+      "crestAfterS": 58310.36,
+      "frontAfterS": 57034.47,
+      "covered": true,
+      "depthM": 2768.64
+     }
+    },
+    {
+     "station": "51406",
+     "rasterDepthM": 4384.7734375,
+     "reportedDepthM": 4480.6,
+     "coarse": {
+      "crestM": 0.1810181,
+      "crestAfterS": 31843.69,
+      "frontAfterS": 31193.86,
+      "covered": true,
+      "depthM": 4342.581
+     },
+     "fine": {
+      "crestM": 0.2643583,
+      "crestAfterS": 31835.74,
+      "frontAfterS": 31389.18,
+      "covered": true,
+      "depthM": 4344.264
+     }
+    },
+    {
+     "station": "51425",
+     "rasterDepthM": 4821.56005859375,
+     "reportedDepthM": 4962.5,
+     "coarse": {
+      "crestM": 0.0454891,
+      "crestAfterS": 56471.94,
+      "frontAfterS": 50753.51,
+      "covered": true,
+      "depthM": 4786.186
+     },
+     "fine": {
+      "crestM": 0.04583837,
+      "crestAfterS": 56651.71,
+      "frontAfterS": 50846.43,
+      "covered": true,
+      "depthM": 4776.682
+     }
+    },
+    {
+     "station": "51426",
+     "rasterDepthM": 5615.53125,
+     "reportedDepthM": 5680.7,
+     "coarse": {
+      "crestM": 0.03578993,
+      "crestAfterS": 43865.39,
+      "frontAfterS": 42825.68,
+      "covered": true,
+      "depthM": 5598.997
+     },
+     "fine": {
+      "crestM": 0.03848082,
+      "crestAfterS": 43956.65,
+      "frontAfterS": 42872.15,
+      "covered": true,
+      "depthM": 5608.118
+     }
+    },
+    {
+     "station": "52401",
+     "rasterDepthM": 5601.00048828125,
+     "reportedDepthM": 5571.4,
+     "coarse": {
+      "crestM": 0.03694107,
+      "crestAfterS": 72809.08,
+      "frontAfterS": 70924.59,
+      "covered": true,
+      "depthM": 5618.292
+     },
+     "fine": {
+      "crestM": 0.03764242,
+      "crestAfterS": 79757.24,
+      "frontAfterS": 70953.64,
+      "covered": true,
+      "depthM": 5619.243
+     }
+    },
+    {
+     "station": "52403",
+     "rasterDepthM": 4497.41357421875,
+     "reportedDepthM": 4431.8,
+     "coarse": {
+      "crestM": 0.04122095,
+      "crestAfterS": 78137.6,
+      "frontAfterS": 73718.82,
+      "covered": true,
+      "depthM": 4461.39
+     },
+     "fine": {
+      "crestM": 0.04673388,
+      "crestAfterS": 78417.56,
+      "frontAfterS": 73824.38,
+      "covered": true,
+      "depthM": 4503.056
+     }
+    },
+    {
+     "station": "52405",
+     "rasterDepthM": 5439.9296875,
+     "reportedDepthM": 5923.3,
+     "coarse": {
+      "crestM": 0.02454531,
+      "crestAfterS": 86975.18,
+      "frontAfterS": 81061.8,
+      "covered": true,
+      "depthM": 5612.915
+     },
+     "fine": {
+      "crestM": 0.03340253,
+      "crestAfterS": 87093.57,
+      "frontAfterS": 81479.68,
+      "covered": true,
+      "depthM": 5619.297
+     }
+    },
+    {
+     "station": "54401",
+     "rasterDepthM": 5687.904296875,
+     "reportedDepthM": 5836.8,
+     "coarse": {
+      "crestM": 0.03173563,
+      "crestAfterS": 43475.5,
+      "frontAfterS": 42240.84,
+      "covered": true,
+      "depthM": 5697.164
+     },
+     "fine": {
+      "crestM": 0.03392006,
+      "crestAfterS": 59650.04,
+      "frontAfterS": 42298.0,
+      "covered": true,
+      "depthM": 5684.395
+     }
+    }
+   ]
+  },
+  {
+   "id": "official20110311054624120_30",
+   "runs": {
+    "coarse": {
+     "ok": true,
+     "cells": [
+      912,
+      507
+     ],
+     "seconds": 1844.211693763733
+    },
+    "fine": {
+     "ok": true,
+     "cells": [
+      1825,
+      1014
+     ],
+     "seconds": 13710.06931591034
+    }
+   },
+   "records": [
+    {
+     "station": "21401",
+     "rasterDepthM": 5288.5361328125,
+     "reportedDepthM": 5263.6,
+     "coarse": {
+      "crestM": 0.2574558,
+      "crestAfterS": 3389.214,
+      "frontAfterS": 2868.165,
+      "covered": true,
+      "depthM": 5267.083
+     },
+     "fine": {
+      "crestM": 0.2579902,
+      "crestAfterS": 3638.673,
+      "frontAfterS": 2873.142,
+      "covered": true,
+      "depthM": 5283.981
+     }
+    },
+    {
+     "station": "21413",
+     "rasterDepthM": 5903.92919921875,
+     "reportedDepthM": 5824.9,
+     "coarse": {
+      "crestM": 0.3677392,
+      "crestAfterS": 4496.441,
+      "frontAfterS": 4170.786,
+      "covered": true,
+      "depthM": 5903.557
+     },
+     "fine": {
+      "crestM": 0.4123704,
+      "crestAfterS": 4467.998,
+      "frontAfterS": 4212.821,
+      "covered": true,
+      "depthM": 5895.355
+     }
+    },
+    {
+     "station": "21414",
+     "rasterDepthM": 5370.80712890625,
+     "reportedDepthM": 5465.6,
+     "coarse": {
+      "crestM": 0.1101045,
+      "crestAfterS": 12768.05,
+      "frontAfterS": 11791.08,
+      "covered": true,
+      "depthM": 5228.42
+     },
+     "fine": {
+      "crestM": 0.1139165,
+      "crestAfterS": 12761.25,
+      "frontAfterS": 11804.34,
+      "covered": true,
+      "depthM": 5231.021
+     }
+    },
+    {
+     "station": "21415",
+     "rasterDepthM": 4669.00927734375,
+     "reportedDepthM": 4709.8,
+     "coarse": {
+      "crestM": 0.1143723,
+      "crestAfterS": 10944.39,
+      "frontAfterS": 9967.437,
+      "covered": true,
+      "depthM": 4702.843
+     },
+     "fine": {
+      "crestM": 0.1179314,
+      "crestAfterS": 11038.81,
+      "frontAfterS": 9954.305,
+      "covered": true,
+      "depthM": 4711.293
+     }
+    },
+    {
+     "station": "21418",
+     "rasterDepthM": 5737.5087890625,
+     "reportedDepthM": 5662.5,
+     "coarse": {
+      "crestM": 0.8722646,
+      "crestAfterS": 1826.069,
+      "frontAfterS": 1630.676,
+      "covered": true,
+      "depthM": 5715.17
+     },
+     "fine": {
+      "crestM": 1.130853,
+      "crestAfterS": 1852.434,
+      "frontAfterS": 1724.845,
+      "covered": true,
+      "depthM": 5724.434
+     }
+    },
+    {
+     "station": "21419",
+     "rasterDepthM": 5342.32666015625,
+     "reportedDepthM": 5292.4,
+     "coarse": {
+      "crestM": 0.2123708,
+      "crestAfterS": 4952.358,
+      "frontAfterS": 4040.524,
+      "covered": true,
+      "depthM": 5288.89
+     },
+     "fine": {
+      "crestM": 0.222016,
+      "crestAfterS": 4978.353,
+      "frontAfterS": 4085.233,
+      "covered": true,
+      "depthM": 5329.306
+     }
+    },
+    {
+     "station": "32401",
+     "rasterDepthM": 4712.04150390625,
+     "reportedDepthM": 4798.5,
+     "coarse": {
+      "crestM": 0.05955228,
+      "crestAfterS": 79355.74,
+      "frontAfterS": 73363.69,
+      "covered": true,
+      "depthM": 4800.648
+     },
+     "fine": {
+      "crestM": 0.06291298,
+      "crestAfterS": 79561.99,
+      "frontAfterS": 73501.54,
+      "covered": true,
+      "depthM": 4792.552
+     }
+    },
+    {
+     "station": "32411",
+     "rasterDepthM": 3278.163818359375,
+     "reportedDepthM": 3167.2,
+     "coarse": {
+      "crestM": 0.05651008,
+      "crestAfterS": 59490.79,
+      "frontAfterS": 58555.11,
+      "covered": true,
+      "depthM": 3294.483
+     },
+     "fine": {
+      "crestM": 0.05861182,
+      "crestAfterS": 59403.02,
+      "frontAfterS": 58629.25,
+      "covered": true,
+      "depthM": 3289.14
+     }
+    },
+    {
+     "station": "32412",
+     "rasterDepthM": 4340.443359375,
+     "reportedDepthM": 4325.5,
+     "coarse": {
+      "crestM": 0.0629013,
+      "crestAfterS": 68739.38,
+      "frontAfterS": 66980.85,
+      "covered": true,
+      "depthM": 4383.192
+     },
+     "fine": {
+      "crestM": 0.0723182,
+      "crestAfterS": 72863.6,
+      "frontAfterS": 67058.32,
+      "covered": true,
+      "depthM": 4371.271
+     }
+    },
+    {
+     "station": "32413",
+     "rasterDepthM": 3902.387451171875,
+     "reportedDepthM": 3893.6,
+     "coarse": {
+      "crestM": 0.05746898,
+      "crestAfterS": 67306.5,
+      "frontAfterS": 60728.27,
+      "covered": true,
+      "depthM": 3930.016
+     },
+     "fine": {
+      "crestM": 0.06736587,
+      "crestAfterS": 67760.06,
+      "frontAfterS": 60870.29,
+      "covered": true,
+      "depthM": 3922.087
+     }
+    },
+    {
+     "station": "43412",
+     "rasterDepthM": 3279.677734375,
+     "reportedDepthM": 3233.0,
+     "coarse": {
+      "crestM": 0.06018041,
+      "crestAfterS": 47808.5,
+      "frontAfterS": 46961.8,
+      "covered": true,
+      "depthM": 3364.288
+     },
+     "fine": {
+      "crestM": 0.06779635,
+      "crestAfterS": 52313.63,
+      "frontAfterS": 47018.71,
+      "covered": true,
+      "depthM": 3359.421
+     }
+    },
+    {
+     "station": "43413",
+     "rasterDepthM": 3426.938720703125,
+     "reportedDepthM": 3404.1,
+     "coarse": {
+      "crestM": 0.06584651,
+      "crestAfterS": 52888.71,
+      "frontAfterS": 52237.41,
+      "covered": true,
+      "depthM": 3496.647
+     },
+     "fine": {
+      "crestM": 0.08025559,
+      "crestAfterS": 52951.57,
+      "frontAfterS": 52377.43,
+      "covered": true,
+      "depthM": 3428.782
+     }
+    },
+    {
+     "station": "46402",
+     "rasterDepthM": 4655.728515625,
+     "reportedDepthM": 4719.8,
+     "coarse": {
+      "crestM": 0.08265533,
+      "crestAfterS": 19346.28,
+      "frontAfterS": 17392.35,
+      "covered": true,
+      "depthM": 4725.077
+     },
+     "fine": {
+      "crestM": 0.09379644,
+      "crestAfterS": 19395.83,
+      "frontAfterS": 17481.99,
+      "covered": true,
+      "depthM": 4719.555
+     }
+    },
+    {
+     "station": "46403",
+     "rasterDepthM": 4552.8515625,
+     "reportedDepthM": 4515.1,
+     "coarse": {
+      "crestM": 0.07353155,
+      "crestAfterS": 21690.99,
+      "frontAfterS": 19802.2,
+      "covered": true,
+      "depthM": 4556.111
+     },
+     "fine": {
+      "crestM": 0.08211928,
+      "crestAfterS": 21820.01,
+      "frontAfterS": 19842.39,
+      "covered": true,
+      "depthM": 4554.113
+     }
+    },
+    {
+     "station": "46404",
+     "rasterDepthM": 2785.2109375,
+     "reportedDepthM": 2737.2,
+     "coarse": {
+      "crestM": 0.06479695,
+      "crestAfterS": 31656.03,
+      "frontAfterS": 30353.41,
+      "covered": true,
+      "depthM": 2756.114
+     },
+     "fine": {
+      "crestM": 0.0826363,
+      "crestAfterS": 35982.32,
+      "frontAfterS": 30432.22,
+      "covered": true,
+      "depthM": 2767.609
+     }
+    },
+    {
+     "station": "46407",
+     "rasterDepthM": 3314.447998046875,
+     "reportedDepthM": 3265.5,
+     "coarse": {
+      "crestM": 0.1099054,
+      "crestAfterS": 35889.54,
+      "frontAfterS": 30744.19,
+      "covered": true,
+      "depthM": 3309.186
+     },
+     "fine": {
+      "crestM": 0.1567858,
+      "crestAfterS": 35918.53,
+      "frontAfterS": 30814.98,
+      "covered": true,
+      "depthM": 3313.705
+     }
+    },
+    {
+     "station": "46408",
+     "rasterDepthM": 5265.11279296875,
+     "reportedDepthM": 5379.1,
+     "coarse": {
+      "crestM": 0.09714954,
+      "crestAfterS": 16871.31,
+      "frontAfterS": 15568.68,
+      "covered": true,
+      "depthM": 5265.842
+     },
+     "fine": {
+      "crestM": 0.1075687,
+      "crestAfterS": 16971.64,
+      "frontAfterS": 15631.96,
+      "covered": true,
+      "depthM": 5254.385
+     }
+    },
+    {
+     "station": "46409",
+     "rasterDepthM": 4164.31201171875,
+     "reportedDepthM": 4189.8,
+     "coarse": {
+      "crestM": 0.0535127,
+      "crestAfterS": 24687.02,
+      "frontAfterS": 22798.22,
+      "covered": true,
+      "depthM": 4142.911
+     },
+     "fine": {
+      "crestM": 0.0564941,
+      "crestAfterS": 24818.34,
+      "frontAfterS": 22840.72,
+      "covered": true,
+      "depthM": 4126.411
+     }
+    },
+    {
+     "station": "46410",
+     "rasterDepthM": 3760.59912109375,
+     "reportedDepthM": 3729.3,
+     "coarse": {
+      "crestM": 0.04463026,
+      "crestAfterS": 26640.94,
+      "frontAfterS": 24687.02,
+      "covered": true,
+      "depthM": 3775.551
+     },
+     "fine": {
+      "crestM": 0.04643795,
+      "crestAfterS": 26732.15,
+      "frontAfterS": 24690.75,
+      "covered": true,
+      "depthM": 3767.424
+     }
+    },
+    {
+     "station": "46411",
+     "rasterDepthM": 4330.0263671875,
+     "reportedDepthM": 4259.7,
+     "coarse": {
+      "crestM": 0.07692063,
+      "crestAfterS": 32828.38,
+      "frontAfterS": 31916.55,
+      "covered": true,
+      "depthM": 4317.623
+     },
+     "fine": {
+      "crestM": 0.0801061,
+      "crestAfterS": 32856.4,
+      "frontAfterS": 31963.28,
+      "covered": true,
+      "depthM": 4317.027
+     }
+    },
+    {
+     "station": "46412",
+     "rasterDepthM": 3796.603271484375,
+     "reportedDepthM": 3717.3,
+     "coarse": {
+      "crestM": 0.06527791,
+      "crestAfterS": 36801.37,
+      "frontAfterS": 35629.01,
+      "covered": true,
+      "depthM": 3833.28
+     },
+     "fine": {
+      "crestM": 0.0678701,
+      "crestAfterS": 36684.06,
+      "frontAfterS": 35663.35,
+      "covered": true,
+      "depthM": 3828.324
+     }
+    },
+    {
+     "station": "51406",
+     "rasterDepthM": 4384.7734375,
+     "reportedDepthM": 4450.3,
+     "coarse": {
+      "crestM": 0.1251348,
+      "crestAfterS": 49045.99,
+      "frontAfterS": 47482.85,
+      "covered": true,
+      "depthM": 4351.107
+     },
+     "fine": {
+      "crestM": 0.1247385,
+      "crestAfterS": 49251.51,
+      "frontAfterS": 47592.86,
+      "covered": true,
+      "depthM": 4344.264
+     }
+    },
+    {
+     "station": "51407",
+     "rasterDepthM": 4652.56689453125,
+     "reportedDepthM": 4682.6,
+     "coarse": {
+      "crestM": 0.3063553,
+      "crestAfterS": 28204.08,
+      "frontAfterS": 26966.6,
+      "covered": true,
+      "depthM": 4635.098
+     },
+     "fine": {
+      "crestM": 0.3008384,
+      "crestAfterS": 28135.62,
+      "frontAfterS": 27114.92,
+      "covered": true,
+      "depthM": 4659.506
+     }
+    },
+    {
+     "station": "51425",
+     "rasterDepthM": 4821.56005859375,
+     "reportedDepthM": 4977.9,
+     "coarse": {
+      "crestM": 0.1113546,
+      "crestAfterS": 30092.88,
+      "frontAfterS": 28529.74,
+      "covered": true,
+      "depthM": 4791.862
+     },
+     "fine": {
+      "crestM": 0.1140056,
+      "crestAfterS": 30240.83,
+      "frontAfterS": 28582.18,
+      "covered": true,
+      "depthM": 4776.682
+     }
+    },
+    {
+     "station": "52402",
+     "rasterDepthM": 5963.33984375,
+     "reportedDepthM": 5861.8,
+     "coarse": {
+      "crestM": 0.1130706,
+      "crestAfterS": 12377.26,
+      "frontAfterS": 11921.34,
+      "covered": true,
+      "depthM": 5951.043
+     },
+     "fine": {
+      "crestM": 0.1379585,
+      "crestAfterS": 12378.49,
+      "frontAfterS": 12059.52,
+      "covered": true,
+      "depthM": 5962.664
+     }
+    },
+    {
+     "station": "52403",
+     "rasterDepthM": 4497.41357421875,
+     "reportedDepthM": 4431.7,
+     "coarse": {
+      "crestM": 0.08524015,
+      "crestAfterS": 17652.88,
+      "frontAfterS": 16089.73,
+      "covered": true,
+      "depthM": 4456.962
+     },
+     "fine": {
+      "crestM": 0.08769657,
+      "crestAfterS": 17673.38,
+      "frontAfterS": 16206.11,
+      "covered": true,
+      "depthM": 4503.056
+     }
+    },
+    {
+     "station": "52405",
+     "rasterDepthM": 5439.9296875,
+     "reportedDepthM": 5922.9,
+     "coarse": {
+      "crestM": 0.06503236,
+      "crestAfterS": 13614.75,
+      "frontAfterS": 12181.87,
+      "covered": true,
+      "depthM": 5613.048
+     },
+     "fine": {
+      "crestM": 0.06547275,
+      "crestAfterS": 13590.57,
+      "frontAfterS": 12187.1,
+      "covered": true,
+      "depthM": 5619.297
+     }
+    },
+    {
+     "station": "52406",
+     "rasterDepthM": 1991.3863525390625,
+     "reportedDepthM": 1798.1,
+     "coarse": {
+      "crestM": 0.08065411,
+      "crestAfterS": 23775.18,
+      "frontAfterS": 22928.48,
+      "covered": true,
+      "depthM": 2204.558
+     },
+     "fine": {
+      "crestM": 0.08942755,
+      "crestAfterS": 23861.43,
+      "frontAfterS": 23032.1,
+      "covered": true,
+      "depthM": 2132.603
+     }
+    }
+   ]
+  },
+  {
+   "id": "usp000juhz",
+   "runs": {
+    "coarse": {
+     "ok": true,
+     "cells": [
+      492,
+      292
+     ],
+     "seconds": 317.77390813827515
+    },
+    "fine": {
+     "ok": true,
+     "cells": [
+      984,
+      584
+     ],
+     "seconds": 2600.8408601284027
+    }
+   },
+   "records": [
+    {
+     "station": "46402",
+     "rasterDepthM": 4655.728515625,
+     "reportedDepthM": 4715.3,
+     "coarse": {
+      "crestM": 0.03078673,
+      "crestAfterS": 10979.0,
+      "frontAfterS": 10572.46,
+      "covered": true,
+      "depthM": 4696.13
+     },
+     "fine": {
+      "crestM": 0.03291536,
+      "crestAfterS": 10992.27,
+      "frontAfterS": 10654.9,
+      "covered": true,
+      "depthM": 4677.824
+     }
+    },
+    {
+     "station": "46403",
+     "rasterDepthM": 4552.8515625,
+     "reportedDepthM": 4511.3,
+     "coarse": {
+      "crestM": 0.03306744,
+      "crestAfterS": 8607.516,
+      "frontAfterS": 8200.975,
+      "covered": true,
+      "depthM": 4561.274
+     },
+     "fine": {
+      "crestM": 0.03423544,
+      "crestAfterS": 8630.677,
+      "frontAfterS": 8225.831,
+      "covered": true,
+      "depthM": 4560.872
+     }
+    },
+    {
+     "station": "46407",
+     "rasterDepthM": 3314.447998046875,
+     "reportedDepthM": 3267.5,
+     "coarse": {
+      "crestM": 0.04904999,
+      "crestAfterS": 6778.082,
+      "frontAfterS": 6439.298,
+      "covered": true,
+      "depthM": 3316.338
+     },
+     "fine": {
+      "crestM": 0.05087712,
+      "crestAfterS": 6741.396,
+      "frontAfterS": 6471.499,
+      "covered": true,
+      "depthM": 3316.473
+     }
+    },
+    {
+     "station": "46409",
+     "rasterDepthM": 4164.31201171875,
+     "reportedDepthM": 4189.8,
+     "coarse": {
+      "crestM": 0.03338328,
+      "crestAfterS": 6032.757,
+      "frontAfterS": 5626.216,
+      "covered": true,
+      "depthM": 4171.598
+     },
+     "fine": {
+      "crestM": 0.03469031,
+      "crestAfterS": 6066.653,
+      "frontAfterS": 5594.333,
+      "covered": true,
+      "depthM": 4177.263
+     }
+    },
+    {
+     "station": "46410",
+     "rasterDepthM": 3760.59912109375,
+     "reportedDepthM": 3727.7,
+     "coarse": {
+      "crestM": 0.03382492,
+      "crestAfterS": 5287.432,
+      "frontAfterS": 4813.134,
+      "covered": true,
+      "depthM": 3769.679
+     },
+     "fine": {
+      "crestM": 0.03542443,
+      "crestAfterS": 5256.962,
+      "frontAfterS": 4852.116,
+      "covered": true,
+      "depthM": 3766.051
+     }
+    },
+    {
+     "station": "46411",
+     "rasterDepthM": 4330.0263671875,
+     "reportedDepthM": 4256.2,
+     "coarse": {
+      "crestM": 0.03801092,
+      "crestAfterS": 9014.057,
+      "frontAfterS": 8607.516,
+      "covered": true,
+      "depthM": 4329.161
+     },
+     "fine": {
+      "crestM": 0.04129236,
+      "crestAfterS": 8968.049,
+      "frontAfterS": 8630.677,
+      "covered": true,
+      "depthM": 4328.968
+     }
+    },
+    {
+     "station": "46419",
+     "rasterDepthM": 2816.831787109375,
+     "reportedDepthM": 2774.2,
+     "coarse": {
+      "crestM": 0.05618008,
+      "crestAfterS": 2983.7,
+      "frontAfterS": 2509.402,
+      "covered": true,
+      "depthM": 2790.854
+     },
+     "fine": {
+      "crestM": 0.06033809,
+      "crestAfterS": 3030.31,
+      "frontAfterS": 2557.989,
+      "covered": true,
+      "depthM": 2800.669
+     }
+    }
+   ]
+  },
+  {
+   "id": "usc000nzvd",
+   "runs": {
+    "coarse": {
+     "ok": true,
+     "cells": [
+      590,
+      153
+     ],
+     "seconds": 207.40601086616516
+    },
+    "fine": {
+     "ok": true,
+     "cells": [
+      1180,
+      305
+     ],
+     "seconds": 1639.1043028831482
+    }
+   },
+   "records": [
+    {
+     "station": "32401",
+     "rasterDepthM": 4712.04150390625,
+     "reportedDepthM": 4797.6,
+     "coarse": {
+      "crestM": 0.1670098,
+      "crestAfterS": 1295.054,
+      "frontAfterS": 1295.054,
+      "covered": true,
+      "depthM": 4814.125
+     },
+     "fine": {
+      "crestM": 0.1761345,
+      "crestAfterS": 1266.299,
+      "frontAfterS": 1266.299,
+      "covered": true,
+      "depthM": 4804.249
+     }
+    },
+    {
+     "station": "32402",
+     "rasterDepthM": 4085.818603515625,
+     "reportedDepthM": 4067.9,
+     "coarse": {
+      "crestM": 0.04553692,
+      "crestAfterS": 3979.791,
+      "frontAfterS": 3383.181,
+      "covered": true,
+      "depthM": 4019.256
+     },
+     "fine": {
+      "crestM": 0.04571306,
+      "crestAfterS": 3868.442,
+      "frontAfterS": 3422.36,
+      "covered": true,
+      "depthM": 4026.61
+     }
+    },
+    {
+     "station": "32412",
+     "rasterDepthM": 4340.443359375,
+     "reportedDepthM": 4335.6,
+     "coarse": {
+      "crestM": 0.05599279,
+      "crestAfterS": 7758.317,
+      "frontAfterS": 7360.578,
+      "covered": true,
+      "depthM": 4373.767
+     },
+     "fine": {
+      "crestM": 0.08672421,
+      "crestAfterS": 7734.49,
+      "frontAfterS": 7511.449,
+      "covered": true,
+      "depthM": 4340.283
+     }
+    },
+    {
+     "station": "32413",
+     "rasterDepthM": 3902.387451171875,
+     "reportedDepthM": 3887.4,
+     "coarse": {
+      "crestM": 0.03272765,
+      "crestAfterS": 13326.67,
+      "frontAfterS": 12829.5,
+      "covered": true,
+      "depthM": 3932.224
+     },
+     "fine": {
+      "crestM": 0.04520585,
+      "crestAfterS": 13384.87,
+      "frontAfterS": 12938.79,
+      "covered": true,
+      "depthM": 3919.828
+     }
+    },
+    {
+     "station": "51426",
+     "rasterDepthM": 5615.53125,
+     "reportedDepthM": 5658.4,
+     "coarse": {
+      "crestM": 0.01143392,
+      "crestAfterS": 49884.73,
+      "frontAfterS": 49089.25,
+      "covered": false,
+      "depthM": 5623.746
+     },
+     "fine": {
+      "crestM": 0.01596711,
+      "crestAfterS": 49899.02,
+      "frontAfterS": 49304.25,
+      "covered": false,
+      "depthM": 5618.337
+     }
+    }
+   ]
+  },
+  {
+   "id": "us20003k7a",
+   "runs": {
+    "coarse": {
+     "ok": true,
+     "cells": [
+      923,
+      544
+     ],
+     "seconds": 2084.6750569343567
+    },
+    "fine": {
+     "ok": true,
+     "cells": [
+      1845,
+      1087
+     ],
+     "seconds": 16228.856199979782
+    }
+   },
+   "records": [
+    {
+     "station": "21414",
+     "rasterDepthM": 5370.80712890625,
+     "reportedDepthM": 5467.5,
+     "coarse": {
+      "crestM": 0.01799726,
+      "crestAfterS": 66753.53,
+      "frontAfterS": 66043.46,
+      "covered": true,
+      "depthM": 5203.154
+     },
+     "fine": {
+      "crestM": 0.02174994,
+      "crestAfterS": 66661.46,
+      "frontAfterS": 66211.12,
+      "covered": true,
+      "depthM": 5233.291
+     }
+    },
+    {
+     "station": "21415",
+     "rasterDepthM": 4669.00927734375,
+     "reportedDepthM": 4713.4,
+     "coarse": {
+      "crestM": 0.0174888,
+      "crestAfterS": 68754.64,
+      "frontAfterS": 68109.12,
+      "covered": true,
+      "depthM": 4662.957
+     },
+     "fine": {
+      "crestM": 0.02333053,
+      "crestAfterS": 68784.48,
+      "frontAfterS": 68334.14,
+      "covered": true,
+      "depthM": 4711.293
+     }
+    },
+    {
+     "station": "32401",
+     "rasterDepthM": 4712.04150390625,
+     "reportedDepthM": 4830.5,
+     "coarse": {
+      "crestM": 0.0658262,
+      "crestAfterS": 6005.732,
+      "frontAfterS": 5231.109,
+      "covered": true,
+      "depthM": 4795.733
+     },
+     "fine": {
+      "crestM": 0.06456894,
+      "crestAfterS": 6178.471,
+      "frontAfterS": 5213.46,
+      "covered": true,
+      "depthM": 4789.216
+     }
+    },
+    {
+     "station": "32402",
+     "rasterDepthM": 4085.818603515625,
+     "reportedDepthM": 4054.3,
+     "coarse": {
+      "crestM": 0.098512,
+      "crestAfterS": 2778.134,
+      "frontAfterS": 2068.063,
+      "covered": true,
+      "depthM": 4020.077
+     },
+     "fine": {
+      "crestM": 0.1013319,
+      "crestAfterS": 2318.426,
+      "frontAfterS": 2061.09,
+      "covered": true,
+      "depthM": 4026.61
+     }
+    },
+    {
+     "station": "32411",
+     "rasterDepthM": 3278.163818359375,
+     "reportedDepthM": 3180.0,
+     "coarse": {
+      "crestM": 0.02430165,
+      "crestAfterS": 23822.07,
+      "frontAfterS": 22982.9,
+      "covered": true,
+      "depthM": 3302.789
+     },
+     "fine": {
+      "crestM": 0.02464728,
+      "crestAfterS": 24192.01,
+      "frontAfterS": 23098.33,
+      "covered": true,
+      "depthM": 3283.479
+     }
+    },
+    {
+     "station": "32412",
+     "rasterDepthM": 4340.443359375,
+     "reportedDepthM": 4335.7,
+     "coarse": {
+      "crestM": 0.06821313,
+      "crestAfterS": 10395.27,
+      "frontAfterS": 9878.85,
+      "covered": true,
+      "depthM": 4397.529
+     },
+     "fine": {
+      "crestM": 0.07306481,
+      "crestAfterS": 10231.52,
+      "frontAfterS": 9974.181,
+      "covered": true,
+      "depthM": 4369.207
+     }
+    },
+    {
+     "station": "43412",
+     "rasterDepthM": 3279.677734375,
+     "reportedDepthM": 3058.1,
+     "coarse": {
+      "crestM": 0.02868164,
+      "crestAfterS": 33569.42,
+      "frontAfterS": 32859.35,
+      "covered": true,
+      "depthM": 3418.181
+     },
+     "fine": {
+      "crestM": 0.0273967,
+      "crestAfterS": 33456.12,
+      "frontAfterS": 32877.11,
+      "covered": true,
+      "depthM": 3362.806
+     }
+    },
+    {
+     "station": "43413",
+     "rasterDepthM": 3426.938720703125,
+     "reportedDepthM": 3509.0,
+     "coarse": {
+      "crestM": 0.01985465,
+      "crestAfterS": 28469.81,
+      "frontAfterS": 27695.19,
+      "covered": true,
+      "depthM": 3499.232
+     },
+     "fine": {
+      "crestM": 0.02032631,
+      "crestAfterS": 28695.39,
+      "frontAfterS": 27794.72,
+      "covered": true,
+      "depthM": 3435.761
+     }
+    },
+    {
+     "station": "46403",
+     "rasterDepthM": 4552.8515625,
+     "reportedDepthM": 4507.6,
+     "coarse": {
+      "crestM": 0.02309724,
+      "crestAfterS": 61843.18,
+      "frontAfterS": 61133.11,
+      "covered": true,
+      "depthM": 4559.065
+     },
+     "fine": {
+      "crestM": 0.02676589,
+      "crestAfterS": 61827.44,
+      "frontAfterS": 61312.77,
+      "covered": true,
+      "depthM": 4557.893
+     }
+    },
+    {
+     "station": "46408",
+     "rasterDepthM": 5265.11279296875,
+     "reportedDepthM": 5392.9,
+     "coarse": {
+      "crestM": 0.02553561,
+      "crestAfterS": 63784.14,
+      "frontAfterS": 63134.22,
+      "covered": true,
+      "depthM": 5261.391
+     },
+     "fine": {
+      "crestM": 0.03247632,
+      "crestAfterS": 63830.76,
+      "frontAfterS": 63316.08,
+      "covered": true,
+      "depthM": 5254.385
+     }
+    },
+    {
+     "station": "46413",
+     "rasterDepthM": 5590.23681640625,
+     "reportedDepthM": 5583.9,
+     "coarse": {
+      "crestM": 0.0213389,
+      "crestAfterS": 64365.11,
+      "frontAfterS": 63655.04,
+      "covered": true,
+      "depthM": 5614.394
+     },
+     "fine": {
+      "crestM": 0.02484976,
+      "crestAfterS": 64345.43,
+      "frontAfterS": 63766.42,
+      "covered": true,
+      "depthM": 5663.571
+     }
+    },
+    {
+     "station": "51425",
+     "rasterDepthM": 4821.56005859375,
+     "reportedDepthM": 4968.4,
+     "coarse": {
+      "crestM": 0.02221445,
+      "crestAfterS": 54484.25,
+      "frontAfterS": 53580.53,
+      "covered": true,
+      "depthM": 4816.08
+     },
+     "fine": {
+      "crestM": 0.02755913,
+      "crestAfterS": 54493.36,
+      "frontAfterS": 53785.68,
+      "covered": true,
+      "depthM": 4810.383
+     }
+    },
+    {
+     "station": "52404",
+     "rasterDepthM": 5869.0,
+     "reportedDepthM": 5919.7,
+     "coarse": {
+      "crestM": 0.02252532,
+      "crestAfterS": 85086.28,
+      "frontAfterS": 83859.79,
+      "covered": true,
+      "depthM": 5950.236
+     },
+     "fine": {
+      "crestM": 0.02605556,
+      "crestAfterS": 85253.99,
+      "frontAfterS": 84031.65,
+      "covered": true,
+      "depthM": 5924.342
+     }
+    },
+    {
+     "station": "52405",
+     "rasterDepthM": 5439.9296875,
+     "reportedDepthM": 5736.3,
+     "coarse": {
+      "crestM": 0.01047968,
+      "crestAfterS": 94446.31,
+      "frontAfterS": 83085.17,
+      "covered": true,
+      "depthM": 5644.933
+     },
+     "fine": {
+      "crestM": 0.01430887,
+      "crestAfterS": 94518.1,
+      "frontAfterS": 83323.97,
+      "covered": true,
+      "depthM": 5619.297
+     }
+    }
+   ]
+  },
+  {
+   "id": "ak0219neiszm",
+   "runs": {
+    "coarse": {
+     "ok": true,
+     "cells": [
+      173,
+      63
+     ],
+     "seconds": 9.333112001419067
+    },
+    "fine": {
+     "ok": true,
+     "cells": [
+      345,
+      126
+     ],
+     "seconds": 77.27126002311707
+    }
+   },
+   "records": [
+    {
+     "station": "46402",
+     "rasterDepthM": 4655.728515625,
+     "reportedDepthM": 4743.3,
+     "coarse": {
+      "crestM": 0.03083487,
+      "crestAfterS": 2927.712,
+      "frontAfterS": 2383.471,
+      "covered": true,
+      "depthM": 4711.931
+     },
+     "fine": {
+      "crestM": 0.03151654,
+      "crestAfterS": 2848.172,
+      "frontAfterS": 2441.634,
+      "covered": true,
+      "depthM": 4696.13
+     }
+    },
+    {
+     "station": "46403",
+     "rasterDepthM": 4552.8515625,
+     "reportedDepthM": 4486.1,
+     "coarse": {
+      "crestM": 0.1102567,
+      "crestAfterS": 1363.015,
+      "frontAfterS": 1226.954,
+      "covered": true,
+      "depthM": 4563.469
+     },
+     "fine": {
+      "crestM": 0.1118783,
+      "crestAfterS": 1357.536,
+      "frontAfterS": 1222.023,
+      "covered": true,
+      "depthM": 4561.274
+     }
+    },
+    {
+     "station": "46414",
+     "rasterDepthM": 4614.837890625,
+     "reportedDepthM": 4665.7,
+     "coarse": {
+      "crestM": 0.1029778,
+      "crestAfterS": 1975.29,
+      "frontAfterS": 1499.077,
+      "covered": true,
+      "depthM": 4637.924
+     },
+     "fine": {
+      "crestM": 0.1206724,
+      "crestAfterS": 2035.097,
+      "frontAfterS": 1628.561,
+      "covered": true,
+      "depthM": 4672.619
+     }
+    },
+    {
+     "station": "46415",
+     "rasterDepthM": 3543.29638671875,
+     "reportedDepthM": 3588.5,
+     "coarse": {
+      "crestM": 0.04978372,
+      "crestAfterS": 6193.182,
+      "frontAfterS": 5580.906,
+      "covered": true,
+      "depthM": 3579.848
+     },
+     "fine": {
+      "crestM": 0.05520887,
+      "crestAfterS": 6168.25,
+      "frontAfterS": 5761.71,
+      "covered": true,
+      "depthM": 3569.554
+     }
+    }
+   ]
+  },
+  {
+   "id": "us6000qw60",
+   "runs": {
+    "coarse": {
+     "ok": true,
+     "cells": [
+      893,
+      515
+     ],
+     "seconds": 1504.5713021755219
+    },
+    "fine": {
+     "ok": true,
+     "cells": [
+      1787,
+      1029
+     ],
+     "seconds": 12131.871353149414
+    }
+   },
+   "records": [
+    {
+     "station": "21413",
+     "rasterDepthM": 5903.92919921875,
+     "reportedDepthM": 5779.7,
+     "coarse": {
+      "crestM": 0.07123677,
+      "crestAfterS": 9898.748,
+      "frontAfterS": 9573.207,
+      "covered": true,
+      "depthM": 5904.911
+     },
+     "fine": {
+      "crestM": 0.1006896,
+      "crestAfterS": 9895.639,
+      "frontAfterS": 9636.989,
+      "covered": true,
+      "depthM": 5895.355
+     }
+    },
+    {
+     "station": "21414",
+     "rasterDepthM": 5370.80712890625,
+     "reportedDepthM": 5442.6,
+     "coarse": {
+      "crestM": 0.7296847,
+      "crestAfterS": 5796.926,
+      "frontAfterS": 5536.491,
+      "covered": true,
+      "depthM": 5182.765
+     },
+     "fine": {
+      "crestM": 0.9885066,
+      "crestAfterS": 5821.916,
+      "frontAfterS": 5627.927,
+      "covered": true,
+      "depthM": 5231.021
+     }
+    },
+    {
+     "station": "21415",
+     "rasterDepthM": 4669.00927734375,
+     "reportedDepthM": 4720.1,
+     "coarse": {
+      "crestM": 1.041476,
+      "crestAfterS": 3778.544,
+      "frontAfterS": 3518.111,
+      "covered": true,
+      "depthM": 4685.139
+     },
+     "fine": {
+      "crestM": 1.361542,
+      "crestAfterS": 3752.687,
+      "frontAfterS": 3558.7,
+      "covered": true,
+      "depthM": 4711.293
+     }
+    },
+    {
+     "station": "21416",
+     "rasterDepthM": 5808.201171875,
+     "reportedDepthM": 5788.4,
+     "coarse": {
+      "crestM": 0.4340073,
+      "crestAfterS": 1629.944,
+      "frontAfterS": 1369.509,
+      "covered": true,
+      "depthM": 5745.383
+     },
+     "fine": {
+      "crestM": 0.4295879,
+      "crestAfterS": 1618.803,
+      "frontAfterS": 1424.81,
+      "covered": true,
+      "depthM": 5725.024
+     }
+    },
+    {
+     "station": "21418",
+     "rasterDepthM": 5737.5087890625,
+     "reportedDepthM": 5609.0,
+     "coarse": {
+      "crestM": 0.07098315,
+      "crestAfterS": 6903.762,
+      "frontAfterS": 6448.008,
+      "covered": true,
+      "depthM": 5728.059
+     },
+     "fine": {
+      "crestM": 0.08453029,
+      "crestAfterS": 6856.511,
+      "frontAfterS": 6468.538,
+      "covered": true,
+      "depthM": 5724.434
+     }
+    },
+    {
+     "station": "21419",
+     "rasterDepthM": 5342.32666015625,
+     "reportedDepthM": 5321.7,
+     "coarse": {
+      "crestM": 0.1581843,
+      "crestAfterS": 3257.679,
+      "frontAfterS": 2997.246,
+      "covered": true,
+      "depthM": 5291.408
+     },
+     "fine": {
+      "crestM": 0.2141053,
+      "crestAfterS": 3235.388,
+      "frontAfterS": 3106.063,
+      "covered": true,
+      "depthM": 5329.306
+     }
+    },
+    {
+     "station": "21420",
+     "rasterDepthM": 4809.244140625,
+     "reportedDepthM": 4822.2,
+     "coarse": {
+      "crestM": 0.03113817,
+      "crestAfterS": 15302.74,
+      "frontAfterS": 14716.77,
+      "covered": true,
+      "depthM": 4804.46
+     },
+     "fine": {
+      "crestM": 0.03844761,
+      "crestAfterS": 15197.98,
+      "frontAfterS": 14810.0,
+      "covered": true,
+      "depthM": 4784.76
+     }
+    },
+    {
+     "station": "32402",
+     "rasterDepthM": 4085.818603515625,
+     "reportedDepthM": 4059.7,
+     "coarse": {
+      "crestM": 0.05744765,
+      "crestAfterS": 70128.39,
+      "frontAfterS": 69542.42,
+      "covered": true,
+      "depthM": 4028.081
+     },
+     "fine": {
+      "crestM": 0.09875527,
+      "crestAfterS": 70167.57,
+      "frontAfterS": 69779.59,
+      "covered": true,
+      "depthM": 4029.171
+     }
+    },
+    {
+     "station": "32413",
+     "rasterDepthM": 3902.387451171875,
+     "reportedDepthM": 3970.2,
+     "coarse": {
+      "crestM": 0.08427771,
+      "crestAfterS": 55869.61,
+      "frontAfterS": 55283.64,
+      "covered": true,
+      "depthM": 3932.824
+     },
+     "fine": {
+      "crestM": 0.1339629,
+      "crestAfterS": 55941.75,
+      "frontAfterS": 55489.11,
+      "covered": true,
+      "depthM": 3926.336
+     }
+    },
+    {
+     "station": "43412",
+     "rasterDepthM": 3279.677734375,
+     "reportedDepthM": 3098.0,
+     "coarse": {
+      "crestM": 0.07242783,
+      "crestAfterS": 41411.24,
+      "frontAfterS": 40890.37,
+      "covered": true,
+      "depthM": 3377.722
+     },
+     "fine": {
+      "crestM": 0.1167592,
+      "crestAfterS": 41386.37,
+      "frontAfterS": 41063.06,
+      "covered": true,
+      "depthM": 3310.138
+     }
+    },
+    {
+     "station": "43413",
+     "rasterDepthM": 3426.938720703125,
+     "reportedDepthM": 3425.3,
+     "coarse": {
+      "crestM": 0.0760607,
+      "crestAfterS": 46685.03,
+      "frontAfterS": 46164.16,
+      "covered": true,
+      "depthM": 3511.12
+     },
+     "fine": {
+      "crestM": 0.1169045,
+      "crestAfterS": 46753.38,
+      "frontAfterS": 46365.41,
+      "covered": true,
+      "depthM": 3428.782
+     }
+    },
+    {
+     "station": "46402",
+     "rasterDepthM": 4655.728515625,
+     "reportedDepthM": 4712.8,
+     "coarse": {
+      "crestM": 0.1363699,
+      "crestAfterS": 11396.24,
+      "frontAfterS": 10614.94,
+      "covered": true,
+      "depthM": 4732.268
+     },
+     "fine": {
+      "crestM": 0.1685792,
+      "crestAfterS": 11447.54,
+      "frontAfterS": 10671.59,
+      "covered": true,
+      "depthM": 4695.472
+     }
+    },
+    {
+     "station": "46403",
+     "rasterDepthM": 4552.8515625,
+     "reportedDepthM": 4504.5,
+     "coarse": {
+      "crestM": 0.08857359,
+      "crestAfterS": 13870.36,
+      "frontAfterS": 12958.84,
+      "covered": true,
+      "depthM": 4556.946
+     },
+     "fine": {
+      "crestM": 0.1041387,
+      "crestAfterS": 13904.73,
+      "frontAfterS": 12999.45,
+      "covered": true,
+      "depthM": 4554.113
+     }
+    },
+    {
+     "station": "46404",
+     "rasterDepthM": 2785.2109375,
+     "reportedDepthM": 2734.1,
+     "coarse": {
+      "crestM": 0.09242089,
+      "crestAfterS": 24352.81,
+      "frontAfterS": 23766.83,
+      "covered": true,
+      "depthM": 2766.096
+     },
+     "fine": {
+      "crestM": 0.1290096,
+      "crestAfterS": 24444.74,
+      "frontAfterS": 23798.12,
+      "covered": true,
+      "depthM": 2767.609
+     }
+    },
+    {
+     "station": "46407",
+     "rasterDepthM": 3314.447998046875,
+     "reportedDepthM": 3266.5,
+     "coarse": {
+      "crestM": 0.09466516,
+      "crestAfterS": 24743.46,
+      "frontAfterS": 24157.49,
+      "covered": true,
+      "depthM": 3311.88
+     },
+     "fine": {
+      "crestM": 0.1258922,
+      "crestAfterS": 24768.06,
+      "frontAfterS": 24186.09,
+      "covered": true,
+      "depthM": 3313.705
+     }
+    },
+    {
+     "station": "46408",
+     "rasterDepthM": 5265.11279296875,
+     "reportedDepthM": 5324.7,
+     "coarse": {
+      "crestM": 0.2239407,
+      "crestAfterS": 9573.207,
+      "frontAfterS": 8922.125,
+      "covered": true,
+      "depthM": 5255.252
+     },
+     "fine": {
+      "crestM": 0.2836032,
+      "crestAfterS": 9572.326,
+      "frontAfterS": 8990.363,
+      "covered": true,
+      "depthM": 5254.385
+     }
+    },
+    {
+     "station": "46411",
+     "rasterDepthM": 4330.0263671875,
+     "reportedDepthM": 4266.1,
+     "coarse": {
+      "crestM": 0.1382105,
+      "crestAfterS": 26110.74,
+      "frontAfterS": 25654.98,
+      "covered": true,
+      "depthM": 4323.964
+     },
+     "fine": {
+      "crestM": 0.2102999,
+      "crestAfterS": 26190.64,
+      "frontAfterS": 25802.66,
+      "covered": true,
+      "depthM": 4321.132
+     }
+    },
+    {
+     "station": "46413",
+     "rasterDepthM": 5590.23681640625,
+     "reportedDepthM": 5615.0,
+     "coarse": {
+      "crestM": 0.4285781,
+      "crestAfterS": 8401.256,
+      "frontAfterS": 8075.712,
+      "covered": true,
+      "depthM": 5628.296
+     },
+     "fine": {
+      "crestM": 0.6302765,
+      "crestAfterS": 8408.396,
+      "frontAfterS": 8149.746,
+      "covered": true,
+      "depthM": 5641.391
+     }
+    },
+    {
+     "station": "46416",
+     "rasterDepthM": 3393.0,
+     "reportedDepthM": 3392.6,
+     "coarse": {
+      "crestM": 0.08852726,
+      "crestAfterS": 21618.26,
+      "frontAfterS": 20836.96,
+      "covered": true,
+      "depthM": 3407.351
+     },
+     "fine": {
+      "crestM": 0.1140576,
+      "crestAfterS": 21664.25,
+      "frontAfterS": 20888.3,
+      "covered": true,
+      "depthM": 3388.553
+     }
+    },
+    {
+     "station": "46419",
+     "rasterDepthM": 2816.831787109375,
+     "reportedDepthM": 2772.3,
+     "coarse": {
+      "crestM": 0.09096316,
+      "crestAfterS": 23636.62,
+      "frontAfterS": 22920.43,
+      "covered": true,
+      "depthM": 2727.463
+     },
+     "fine": {
+      "crestM": 0.121051,
+      "crestAfterS": 23733.45,
+      "frontAfterS": 23022.17,
+      "covered": true,
+      "depthM": 2768.64
+     }
+    },
+    {
+     "station": "51425",
+     "rasterDepthM": 4821.56005859375,
+     "reportedDepthM": 4951.4,
+     "coarse": {
+      "crestM": 0.04151702,
+      "crestAfterS": 31905.39,
+      "frontAfterS": 30342.79,
+      "covered": true,
+      "depthM": 4772.844
+     },
+     "fine": {
+      "crestM": 0.05096236,
+      "crestAfterS": 31880.95,
+      "frontAfterS": 30458.38,
+      "covered": true,
+      "depthM": 4776.682
+     }
+    },
+    {
+     "station": "52402",
+     "rasterDepthM": 5963.33984375,
+     "reportedDepthM": 5886.4,
+     "coarse": {
+      "crestM": 0.05860287,
+      "crestAfterS": 19209.25,
+      "frontAfterS": 18362.84,
+      "covered": true,
+      "depthM": 5957.124
+     },
+     "fine": {
+      "crestM": 0.07580053,
+      "crestAfterS": 19336.39,
+      "frontAfterS": 18431.11,
+      "covered": true,
+      "depthM": 5962.664
+     }
+    }
+   ]
+  },
+  {
+   "id": "us7000qx2g",
+   "runs": {
+    "coarse": {
+     "ok": true,
+     "cells": [
+      326,
+      177
+     ],
+     "seconds": 103.37059617042542
+    },
+    "fine": {
+     "ok": true,
+     "cells": [
+      652,
+      354
+     ],
+     "seconds": 765.3289148807526
+    }
+   },
+   "records": [
+    {
+     "station": "21414",
+     "rasterDepthM": 5370.80712890625,
+     "reportedDepthM": 5442.5,
+     "coarse": {
+      "crestM": 0.0686304,
+      "crestAfterS": 5985.457,
+      "frontAfterS": 5728.121,
+      "covered": true,
+      "depthM": 5233.291
+     },
+     "fine": {
+      "crestM": 0.09659385,
+      "crestAfterS": 6031.577,
+      "frontAfterS": 5775.016,
+      "covered": true,
+      "depthM": 5241.608
+     }
+    },
+    {
+     "station": "21415",
+     "rasterDepthM": 4669.00927734375,
+     "reportedDepthM": 4719.9,
+     "coarse": {
+      "crestM": 0.1089553,
+      "crestAfterS": 3926.767,
+      "frontAfterS": 3798.099,
+      "covered": true,
+      "depthM": 4711.293
+     },
+     "fine": {
+      "crestM": 0.1430996,
+      "crestAfterS": 3914.948,
+      "frontAfterS": 3786.668,
+      "covered": true,
+      "depthM": 4713.488
+     }
+    },
+    {
+     "station": "21416",
+     "rasterDepthM": 5808.201171875,
+     "reportedDepthM": 5788.2,
+     "coarse": {
+      "crestM": 0.0587332,
+      "crestAfterS": 2382.752,
+      "frontAfterS": 2254.084,
+      "covered": true,
+      "depthM": 5688.774
+     },
+     "fine": {
+      "crestM": 0.06184607,
+      "crestAfterS": 2439.723,
+      "frontAfterS": 2247.302,
+      "covered": true,
+      "depthM": 5683.677
+     }
+    },
+    {
+     "station": "21419",
+     "rasterDepthM": 5342.32666015625,
+     "reportedDepthM": 5321.5,
+     "coarse": {
+      "crestM": 0.0183552,
+      "crestAfterS": 4570.107,
+      "frontAfterS": 4248.437,
+      "covered": true,
+      "depthM": 5307.91
+     },
+     "fine": {
+      "crestM": 0.01921969,
+      "crestAfterS": 4492.21,
+      "frontAfterS": 4235.649,
+      "covered": true,
+      "depthM": 5316.208
+     }
+    }
+   ]
+  }
+ ]
+}

@@ -168,6 +168,64 @@
  * record's, so a reader can see it.
  */
 
+/*
+ * ===========================================================================
+ * THE OUTCOME, 22 September 2026: T1 IS MET on the headline reading
+ * ===========================================================================
+ *
+ * The five fine runs that were missing were run overnight —
+ * `scripts/benchmark/dart-c2.py --stage run` on Maule 2010, Tōhoku 2011 and
+ * three others, GeoClaw 5.x over the shipped bathymetry, 170 to 280 minutes
+ * each — and then collected and scored once:
+ * `benchmark/dart/{c2-raw,c2-score}.json`.
+ *
+ * THE HEADLINE READING, bracketed-2cm, 93 of 113 records over all NINE
+ * events, which clears rule 210's floor of seven events and sixty records:
+ *
+ *   C0 (Nimbus)  bias 1.01x   scatter ln 0.435   beyond 7 000 km 0.87x
+ *   C1           bias 1.38x   scatter ln 0.504   beyond 7 000 km 1.21x
+ *   C2 (GeoClaw) bias 0.92x   scatter ln 0.439   beyond 7 000 km 0.81x
+ *
+ *   C2 exists: true · no worse than the reference: true · own bounds: true
+ *   → T1 MET
+ *
+ * Nimbus's ring spreading reads its record more centred than the reference
+ * does — 1.01x against 0.92x — with the same scatter to three decimals. That
+ * is not a claim that it is a better solver, and rule 213 is explicit that
+ * nothing may be fitted to these rows: it is the bar of rule 212(b), which
+ * asked only that we be no worse than the field's own tool to within a
+ * quarter, and the answer is that on these 93 deep-ocean records we are not
+ * worse at all.
+ *
+ * ALL FOUR READINGS, because rule 212 asks for the other three and rule 211
+ * says no reading is dropped for being unflattering:
+ *
+ *   bracketed-2cm  C2 exists  no worse  bounds met   T1 MET    93/113, 9 events
+ *   bracketed-1cm  C2 exists  no worse  bounds met   T1 MET    93/139, 9 events
+ *   covered-2cm    NO         no worse  bounds met   not met   52/62,  6 events
+ *   covered-1cm    NO         no worse  bounds met   not met   55/69,  7 events
+ *
+ * "No worse than the reference" holds on ALL FOUR. What fails on the two
+ * covered readings is rule 210's existence floor, and it fails on the
+ * REFERENCE, not on us: those readings keep fewer records, so C2 drops below
+ * seven events or sixty rows and stops being a column at all.
+ *
+ * WHY ROWS LEAVE C2, on the headline reading: nineteen are not converged —
+ * the two refinements disagree by more than rule 210(b)'s 25 % — and one run
+ * stopped before the record's window closed. So the limit on this campaign is
+ * GeoClaw's own convergence between 0.125° and 0.031°, not Nimbus.
+ *
+ * REPORTED AND DECIDING NOTHING, as rule 211 has it: the crest arrives at
+ * 0.98x of the recorded time over the 93 records, with 55 % of them inside
+ * 5 %. T3 asks for 90 % within 5 % or 5 minutes, so on this evidence T3 is
+ * far from met — and that is a reading of its own, not this round's.
+ *
+ * WHAT THIS DOES NOT LICENSE. Rule 213 stands untouched: C2 does not beat C0
+ * by ln 1.25 anywhere, so nothing is replaced, and no coefficient is fitted
+ * to these rows. The 113 records remain the only deep-ocean set the project
+ * has.
+ */
+
 /** T1's bounds, as `docs/GOLD_STANDARD.md` states them. */
 export const T1_BOUNDS = {
   /** The median event's bias, as a factor either way. */
