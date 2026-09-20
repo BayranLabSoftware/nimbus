@@ -108,6 +108,93 @@
  *       peak stays wrong by a published amount.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 477: the first
+ * candidate in eleven rounds to PASS its conjunction — and it is NOT
+ * adopted, because rule 476's conjunction was incomplete and the omission
+ * is the third fault these rounds have found in their own rules.
+ *
+ * Rule 475(a), the peak, on 1 100:
+ *
+ *   | arm                     | mean bias | sd   | within 1 degree |
+ *   | ----------------------- | --------- | ---- | --------------- |
+ *   | ships                   | +1.96     | 1.12 | 16 %            |
+ *   | boore + Thompson-Worden | **+1.96** | 1.12 | **16 %**        |
+ *   | CB14 + geometry         | +1.06     | 0.97 | 48 %            |
+ *   | allen + geometry        | +0.58     | 0.98 | 68 %            |
+ *
+ *   The second row is the property test made flesh: Thompson & Worden's
+ *   distance moves the peak by NOTHING, to the last digit, at every
+ *   magnitude in the atlas. R_JB is horizontal and the depth is not in it.
+ *
+ * Rule 475(b), the areas, on the 116:
+ *
+ *   | arm                     | mean   | Mw < 6.5 | Mw 6.5–7.5 | Mw >= 7.5 |
+ *   | ----------------------- | ------ | -------- | ---------- | --------- |
+ *   | ships                   | 0.393x | 0.56x    | 0.22x      | 1.27x     |
+ *   | boore + Thompson-Worden | **1.087x** | 1.49x | 0.88x     | 1.27x     |
+ *   | CB14 + geometry         | 1.376x | 1.62x    | 1.36x      | 1.16x     |
+ *   | allen + geometry        | 2.456x | 2.03x    | 2.34x      | 3.35x     |
+ *
+ * Rule 476: **CB14 + geometry DISPLACES.** Its peak is closer by 0.90 of a
+ * degree with a narrower spread, and every one of its three area cells is
+ * closer to 1 than the shipped law's, the Mw >= 7.5 cell that refused it
+ * last round included. Nothing had passed a conjunction since rule 405.
+ *
+ * AND IT IS NOT ADOPTED. Before changing a default, the tolls were
+ * measured — on the sets rules 435 to 454 established, with the score
+ * rules 448 to 454 established:
+ *
+ *   | arm             | net rows (score) | quiet (score) | toll >= 10 | reaches zero |
+ *   | --------------- | ---------------- | ------------- | ---------- | ------------ |
+ *   | ships           | 204.1            | 1195          | 23         | 799 of 805   |
+ *   | CB14 + geometry | **247.0**        | **2280**      | 29         | 776 of 805   |
+ *
+ *   Worse on both, and not narrowly. Adopting it would ship a model that
+ *   kills more people who did not die, and it would do so on the authority
+ *   of a clause that simply did not ask.
+ *
+ * RULE 476 WAS INCOMPLETE, and that is this round's finding about itself.
+ * It asked for the peak and the areas because this round was about a law
+ * and a geometry. Every round from 435 onward had treated the tolls as
+ * evidence; rule 444 required all three sets; rule 476 quietly dropped to
+ * two, because the question in front of it was about the map. A clause
+ * that narrows to the question in front of it is how a project adopts
+ * something it has already measured as harmful.
+ *
+ * So the pair is refused, by the evidence and not by the clause, and the
+ * clause is recorded as faulty. This is the third: rule 416(b) could not
+ * see a sign change, rule 459 conditioned its jury on the quantity it
+ * measured, and rule 476 asked two of three questions.
+ *
+ * WHAT ELEVEN ROUNDS HAVE ESTABLISHED, which is the useful summary:
+ *
+ *   1. THE MAP IS FIXABLE AND THE FIX IS KNOWN. CB14 with the geometry of
+ *      rules 427 to 434 reads 1.376x on areas against 0.393x and +1.06 on
+ *      the peak against +1.96, with every cell improved. That is not a
+ *      hypothesis any more.
+ *
+ *   2. EVERY FIX TO THE MAP MAKES THE TOLLS WORSE. Four geometries and
+ *      three laws, in every combination tried: the better the footprint,
+ *      the worse the dead and the quiet. The relationship is now robust
+ *      enough to be called a property of the model rather than a run of
+ *      bad luck.
+ *
+ *   3. SO THE TOLL CHAIN IS CALIBRATED AGAINST A MAP THAT IS WRONG, and
+ *      the calibration is load-bearing. Rule 455 acquitted the
+ *      vulnerability table on a count, so the compensation is not in
+ *      PAGER's curves but in how this project applies them. Rule 440 found
+ *      one piece of it — the top band with no ceiling, worth 15 of 28
+ *      false alarms — and something else holds the rest.
+ *
+ *   4. And a cheap thing nobody has scored: `boore2014` with Thompson &
+ *      Worden's distance, ONE INPUT, takes the areas from 0.393x to
+ *      1.087x with the scatter from 1.579 to 1.288 — the best-centred
+ *      areas measured here — while moving the peak by exactly nothing. It
+ *      was refused by rule 476(a) for the half it cannot do. What it costs
+ *      on the tolls has never been measured, and that is one run.
+ */
+
 export const NEAR_FIELD_RULES = 'rules 472 to 477, fixed 20 September 2026';
 
 /**
