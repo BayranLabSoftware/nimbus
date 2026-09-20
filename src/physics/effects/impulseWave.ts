@@ -114,16 +114,54 @@ export interface ImpulseWaveAmplitudes {
 }
 
 /**
+ * The largest first crest Eq. (3.26) can produce anywhere inside the box
+ * Table 3-3 fits it in: P ≤ 2.08, b/h ≤ 5 and α ≥ 30°, so
+ *
+ *     max(a_0,c1 / h) = 0.2 · 2.08^0.5 · 5^0.75 · cos(6·30°/7)^0.25 = 0.9396510698
+ *
+ * It is written below as that expression over {@link IMPULSE_WAVE_TESTED}
+ * rather than as a literal, for two reasons. A six-figure literal binds by
+ * seven parts in a thousand million AT the corner, which is a rounding
+ * artefact reading as a violation of rule 543; and a ceiling that moves when
+ * the manual's limits move is one fewer number to keep in step by hand.
+ *
+ * B-084 is that the first crest had no upper bound OUTSIDE that box, and
+ * drew 594 m of wave in 30 m of water. Rules 541 to 547 cap it here.
+ *
+ * The number is derived, not chosen. It is the manual read at the corner of
+ * the manual's own limits, so by construction it cuts nothing inside them —
+ * `amplitudeCeiling.test.ts` walks the box and checks that rather than
+ * assuming it. Rule 163's removal of the old 0.4 h ceiling stands: that one
+ * cut the field's method where the field had measured it, and this one
+ * cannot.
+ *
+ * It is the FIRST CREST's ceiling and no other's. Over the same box the
+ * trough reaches 1.071370 h and the second crest 0.244942 h, so one number
+ * for all three would cut the trough inside the fitted range.
+ */
+export const IMPULSE_WAVE_FIRST_CREST_CEILING =
+  0.2 *
+  IMPULSE_WAVE_TESTED.impulseProduct[1] ** 0.5 *
+  IMPULSE_WAVE_TESTED.relativeWidth[1] ** 0.75 *
+  Math.cos(((6 / 7) * IMPULSE_WAVE_TESTED.angleDeg[0] * Math.PI) / 180) ** 0.25;
+
+/**
  * The initial amplitudes of the first crest, the first trough and the second
  * crest at the slide (Eqs. 3.26 to 3.28), in metres. The manual writes α_eff
  * for 6α/7.
+ *
+ * The first crest carries {@link IMPULSE_WAVE_FIRST_CREST_CEILING}; the other
+ * two are as the manual gives them.
  */
 export function impulseWaveAmplitudes(s: ImpulseWaveSlide): ImpulseWaveAmplitudes {
   const P = impulseProduct(s);
   const B = s.widthM / s.depthM;
   const cosTerm = Math.cos(((6 / 7) * s.angleDeg * Math.PI) / 180);
   return {
-    firstCrest: 0.2 * P ** 0.5 * B ** 0.75 * cosTerm ** 0.25 * s.depthM,
+    firstCrest: Math.min(
+      0.2 * P ** 0.5 * B ** 0.75 * cosTerm ** 0.25 * s.depthM,
+      IMPULSE_WAVE_FIRST_CREST_CEILING * s.depthM
+    ),
     firstTrough: 0.35 * P ** 0.5 * B ** 0.5 * cosTerm ** 0.5 * s.depthM,
     secondCrest: 0.14 * P ** 0.25 * B ** 0.25 * cosTerm ** 0.25 * s.depthM,
   };

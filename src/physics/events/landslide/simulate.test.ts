@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  IMPULSE_WAVE_FIRST_CREST_CEILING,
   impulseWaveAmplitudes,
   outsideTestedRange,
   slideFromVolume,
@@ -274,12 +275,29 @@ describe('the impulse wave manual as the law that makes the wave (rule 163)', ()
     );
   });
 
-  it('grows with the volume', () => {
+  it('grows with the volume until the wave fills the water, then says so', () => {
+    // This walked 1e5 to 1e10 and asserted strict growth throughout. It
+    // passed because of B-084: at 1e10 in 120 m of water the uncapped
+    // relation gave about a kilometre of wave, and a test that only asks
+    // "bigger" is satisfied by an impossible number. Rules 541 to 547 put
+    // the manual's own ceiling on the first crest, 0.939651 h, and the
+    // plateau above it is not the model claiming the wave stops growing —
+    // it is the model refusing to extrapolate past where the field measured.
+    const cap = IMPULSE_WAVE_FIRST_CREST_CEILING * 120;
+    expect(cap).toBeCloseTo(112.758, 3);
     let last = 0;
-    for (const volumeM3 of [1e5, 1e6, 1e7, 1e8, 1e9, 1e10]) {
+    for (const volumeM3 of [1e5, 1e6, 1e7, 3e7]) {
       const a = Number(simulateLandslide({ ...lituya, volumeM3 }).tsunami?.sourceAmplitude ?? 0);
-      expect(a).toBeGreaterThan(last);
+      expect(a, `V=${volumeM3.toExponential(0)}`).toBeGreaterThan(last);
+      expect(a).toBeLessThan(cap);
       last = a;
+    }
+    // Lituya's own 3e7 is the last volume under the ceiling in its own
+    // geometry, and it is unmoved at 93.9 m.
+    expect(last).toBeCloseTo(93.9, 1);
+    for (const volumeM3 of [1e8, 1e9, 1e10]) {
+      const a = Number(simulateLandslide({ ...lituya, volumeM3 }).tsunami?.sourceAmplitude ?? 0);
+      expect(a, `V=${volumeM3.toExponential(0)}`).toBeCloseTo(cap, 9);
     }
   });
 });

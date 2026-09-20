@@ -4,12 +4,19 @@ import { mulberry32 } from '../montecarlo/sampling.js';
 import { m, type SquareMeters } from '../units.js';
 
 /**
- * B-084, pinned as it is — not as it should be.
+ * B-084, found and CLOSED the same night.
  *
- * This is a characterisation test. It records a defect in the law this
- * product **ships**, so that the day somebody repairs it these numbers go
- * red and they have to say so deliberately, rather than the impossibility
- * quietly becoming something else.
+ * It was a defect in the law this product ships: the impulse wave manual's
+ * generation had no upper bound outside the ranges it was fitted on, and the
+ * product drew it there anyway — 594 m of wave in 30 m of water, and 278 of
+ * the invariant sweep's 1 827 subaerial scenarios above their own water
+ * depth, the worst at 1 102 times.
+ *
+ * Rules 541 to 547 closed it with the manual's own ceiling on the first
+ * crest, 0.939651 h — the largest Eq. (3.26) can produce anywhere inside
+ * Table 3-3's box, so it cuts nothing the field has measured. The figures
+ * below are what the defect WAS, kept beside what the repair leaves, so the
+ * size of it stays on the record.
  *
  * The impulse wave manual's generation has no upper bound outside the ranges
  * it was fitted on, and the product draws it there anyway. The cause is
@@ -28,7 +35,7 @@ const sourceAmplitude = (input: LandslideScenarioInput): number =>
   Number(simulateLandslide(input).tsunami?.sourceAmplitude ?? 0);
 
 describe('B-084: a wave taller than its water', () => {
-  it('draws 594 m of wave in 30 m of water, and says it is extrapolating', () => {
+  it('drew 594 m of wave in 30 m of water, and now draws the ceiling', () => {
     const input: LandslideScenarioInput = {
       volumeM3: 3e8,
       regime: 'subaerial',
@@ -36,8 +43,9 @@ describe('B-084: a wave taller than its water', () => {
       meanOceanDepth: m(30),
     };
     const a = sourceAmplitude(input);
-    expect(a).toBeCloseTo(593.9, 1);
-    expect(a / 30).toBeGreaterThan(19);
+    // Was 593.9 m, twenty times the column. Is the manual's own maximum.
+    expect(a).toBeCloseTo(0.939651 * 30, 3);
+    expect(a).toBeLessThan(30);
     // The product is not silent about it: every limit it is outside of is
     // named. A declared impossibility is still an impossibility.
     expect(simulateLandslide(input).impulseWave?.outsideTestedRange).toEqual([
@@ -51,14 +59,15 @@ describe('B-084: a wave taller than its water', () => {
     ]);
   });
 
-  it('gets worse as the slide grows, without limit', () => {
+  it('no longer grows without limit as the slide does', () => {
     const at = (volumeM3: number): number =>
       sourceAmplitude({ volumeM3, regime: 'subaerial', slopeAngleDeg: 45, meanOceanDepth: m(15) });
-    expect(at(1e9) / 15).toBeGreaterThan(100);
-    expect(at(1e11) / 15).toBeGreaterThan(1_000);
+    // 108x and 1 077x the water column before the repair.
+    expect(at(1e9) / 15).toBeCloseTo(0.939651, 6);
+    expect(at(1e11) / 15).toBeCloseTo(0.939651, 6);
   });
 
-  it('is 278 of the 1 827 subaerial scenarios of the sweep, worst at 1 102x', () => {
+  it('was 278 of the 1 827 subaerial scenarios of the sweep; it is now none', () => {
     // The same 5 000 scenarios `scripts/benchmark/invariants.ts` draws, with
     // its own seed, so this counts what that sweep walks past.
     const lin = (u: number, a: number, b: number): number => a + (b - a) * u;
@@ -99,14 +108,15 @@ describe('B-084: a wave taller than its water', () => {
       }
     }
     expect(subaerial).toBe(1_827);
-    expect(over).toBe(278);
-    expect(worst).toBeCloseTo(1_102.3, 0);
+    expect(over).toBe(0);
+    expect(worst).toBe(0);
   });
 
-  it('is absent from the branch the manual is replacing, which capped', () => {
+  it('was absent from the branch the manual would have replaced, which capped', () => {
     // Worth recording plainly: the tuned, unprincipled basin-fill form did
-    // one thing right that the field's own relation does not. It capped the
-    // wave at the water column, by construction.
+    // one thing right that the field's own relation did not. It capped the
+    // wave at the water column, by construction — and noticing that it did
+    // is what found B-084.
     const confined: LandslideScenarioInput = {
       volumeM3: 3e8,
       regime: 'subaerial',

@@ -50,11 +50,19 @@
  * (B-083, and the 21× seam of rules 509 to 517). One expression, no seam.
  *
  * RULE 545. THE FIRST CREST ONLY. The manual's other two amplitudes have
- * their own maxima over the same box — the first trough reaches 1.4666 h and
- * the second crest 0.3923 h — so a single ceiling applied to all three would
- * cut the trough inside the fitted range, which is exactly the mistake rule
- * 163 undid. The first crest is what this product hands downstream as its
- * source amplitude, and it is the only thing this round touches.
+ * their own maxima over the same box — the first trough reaches 1.071370 h
+ * and the second crest 0.244942 h — so a single ceiling applied to all three
+ * would cut the trough inside the fitted range, which is exactly the mistake
+ * rule 163 undid. The first crest is what this product hands downstream as
+ * its source amplitude, and it is the only thing this round touches.
+ *
+ * (This file said 1.4666 and 0.3923 when it was pushed. Those came from a
+ * misreading of Eqs. (3.27) and (3.28) out of a PDF extractor — P and cos
+ * α_eff at the wrong powers. `impulseWave.ts` has the right exponents and is
+ * verified to the manual's worked Examples 1 and 2 to their last digit, so
+ * the implementation was right and the derivation in this file was not. The
+ * argument survives unchanged: the trough still passes the water column
+ * inside the box, so one ceiling on all three would still cut it.)
  *
  * RULE 546. WHAT MAY NOT MOVE, with a prediction attached so the clause can
  * be wrong.
@@ -99,8 +107,8 @@ export const CEILING_DERIVATION = {
 /** Rule 545: the other two amplitudes' maxima over the same box, recorded so
  *  that nobody later applies this one ceiling to all three. */
 export const OTHER_MAXIMA = {
-  firstTrough: 1.4666,
-  secondCrest: 0.3923,
+  firstTrough: 1.07137,
+  secondCrest: 0.244942,
 } as const;
 
 /** Rule 546(b): where the presets stand, as fractions of their own depth. */
