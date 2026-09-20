@@ -85,6 +85,94 @@ import type { AtlasEarthquake } from './atlasRules.js';
  *       stays, and the peak is wrong by whatever this round measures.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 471 and published
+ * as it came out: BOTH CANDIDATES WIN THE PEAK AND LOSE THE AREAS, so
+ * rule 470 applies, nothing is adopted, and the shipped law stays.
+ *
+ * Rule 466 first, before any law: 1 100 earthquakes, record peak 3.60 to
+ * 10.00, median 6.27, **78 % below MMI 7**. Rule 459's jury, put through
+ * the same gate: 116 events, median 8.23, **0 % below MMI 7 — REFUSED**.
+ * The test that would have stopped the last round, run on the last
+ * round's jury, stops it.
+ *
+ * Rule 468, the peak, on all 1 100:
+ *
+ *   | law                   | mean bias | sd   | within 1 degree |
+ *   | --------------------- | --------- | ---- | --------------- |
+ *   | boore2014             | **+1.96** | 1.12 | **16 %**        |
+ *   | campbellBozorgnia2014 | +1.35     | 1.03 | 36 %            |
+ *   | allen2012Hypocentral  | **+0.58** | 0.98 | **68 %**        |
+ *
+ * AND THE TABLE THIS ROUND EXISTS FOR — the same bias, split by how hot
+ * the record itself was:
+ *
+ *   | record band | n   | boore2014 | CB14  | allen2012 |
+ *   | ----------- | --- | --------- | ----- | --------- |
+ *   | below 5     | 141 | **+3.68** | +2.84 | +2.00     |
+ *   | 5 to 6      | 290 | +2.66     | +1.65 | +0.86     |
+ *   | 6 to 7      | 423 | +1.79     | +1.23 | +0.46     |
+ *   | 7 to 8      | 158 | +0.87     | +0.78 | +0.02     |
+ *   | 8 and up    |  88 | **-0.38** | -0.44 | -1.03     |
+ *
+ *   THAT COLUMN IS SATURATION, WRITTEN OUT. The shipped law's error falls
+ *   straight from +3.68 to -0.38 as the record warms. It is not a law
+ *   that is a bit too hot; it is a law that says nearly the same thing
+ *   whatever happened, and so looks right exactly where the earthquake
+ *   happened to be as hot as it always says.
+ *
+ *   And the bottom row is the last round in one number. Rule 459's jury
+ *   was the "8 and up" band and nothing else — 88 events of this shape —
+ *   where the shipped law reads -0.38. The -0.12 it measured there was
+ *   never a property of the law. It was the property of a jury.
+ *
+ *   Allen's column is flatter by half and crosses zero where the records
+ *   are 7 to 8 (+0.02). A law whose distance is hypocentral has the depth
+ *   in it at the epicentre, and it shows.
+ *
+ * Rule 469(c), the areas, on the 116 where an area exists:
+ *
+ *   | law                   | mean   | Mw < 6.5 | Mw 6.5–7.5 | Mw >= 7.5 |
+ *   | --------------------- | ------ | -------- | ---------- | --------- |
+ *   | boore2014             | 0.393x | 0.56x    | 0.22x      | 1.27x     |
+ *   | campbellBozorgnia2014 | 0.656x | 0.99x    | 0.42x      | 1.45x     |
+ *   | allen2012Hypocentral  | 1.256x | 1.03x    | 0.87x      | **3.79x** |
+ *
+ * THE VERDICT, and it is rule 470's case exactly:
+ *
+ *   campbellBozorgnia2014   peak PASS   areas fail (Mw >= 7.5)   refused
+ *   allen2012Hypocentral    peak PASS   areas fail (Mw >= 7.5)   refused
+ *
+ *   Both beat the shipped law on the peak by more than rule 462's quarter
+ *   degree AND with a narrower spread. Both are refused on the rings
+ *   above Mw 7.5. Allen draws the peak four times better and the great
+ *   earthquakes' rings three times too wide.
+ *
+ * WHAT THIS ROUND LEAVES, and it is the clearest statement of the
+ * project's position that these rounds have produced:
+ *
+ *   1. THE SHIPPED LAW'S PEAK IS WRONG BY +1.96 MMI ON AVERAGE AND BY
+ *      +3.68 WHERE THE EARTHQUAKE WAS WEAK. Sixteen per cent of its peaks
+ *      are within a whole degree. That is now measured on 1 100
+ *      earthquakes with a jury that was shown able to see it first, and
+ *      nothing about it is in dispute.
+ *
+ *   2. ONE EQUATION IS BEING ASKED TWO QUESTIONS. The intensity field has
+ *      to set the peak AND the fall-off, and no law in this repository is
+ *      good at both: the one in Joyner-Boore distance has the far field
+ *      and saturates at the source; the one in hypocentral distance has
+ *      the source and spreads the far field three times too wide. Every
+ *      round from 384 to here has been judging single laws on one of the
+ *      two and calling the answer a verdict on the law.
+ *
+ *   3. So the next round is not another candidate from the same shelf. It
+ *      is whether the near field and the far field are one question or
+ *      two — and if two, what says so before any number is seen. There
+ *      are NGA-West2 models built for near-source saturation that this
+ *      project has not read, and there is the honest alternative of
+ *      declaring the split. Either needs its rules first.
+ */
+
 export const WHOLE_ATLAS_PEAK_RULES = 'rules 465 to 471, fixed 20 September 2026';
 
 /** Rule 465: every atlas row whose ShakeMap has a peak to compare. */
