@@ -236,6 +236,12 @@ export interface EarthquakeScenarioInput {
    *  A scenario marked a subduction interface and one deeper than 70 km do
    *  not read this (rule 421). Omitted, `downDip`. */
   stadiumWidth?: StadiumWidth;
+  /** Rule 440 of validation/topBandRules.ts: whether the casualty plan's
+   *  topmost band is charged a fixed midpoint or the middle of what it
+   *  actually spans. Carried here so a scenario can say it and the store
+   *  can read it; the simulator itself draws no casualties. Omitted,
+   *  `midpoint`. */
+  topBand?: 'midpoint' | 'toPeak';
   /** The dip of the structure this scenario is drawn along, degrees from
    *  horizontal: rule 427 of validation/dipRules.ts. It reaches the
    *  simulator the way the strike does, as an input, because the tiles are

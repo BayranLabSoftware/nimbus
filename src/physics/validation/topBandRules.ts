@@ -129,6 +129,105 @@
  *       it runs.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 446 and published
+ * as it came out: every arm is REFUSED. What ships stays. And the round
+ * answered the question it was built for — the halves DO need each other —
+ * while failing on a clause that, read closely, is barely a clause at all.
+ *
+ * Rule 443(a), the map on 116 ShakeMaps. Arms D and E share a geometry
+ * with the two above them, so there are two rows and not four:
+ *
+ *   | geometry   | bands | mean   | scatter | Mw < 6.5 | Mw 6.5–7.5 | Mw >= 7.5 |
+ *   | ---------- | ----- | ------ | ------- | -------- | ---------- | --------- |
+ *   | in place   | 165   | 0.393x | 1.579   | 0.56x    | 0.22x      | 1.27x     |
+ *   | C geometry | 169   | 1.137x | 1.273   | 1.24x    | 1.15x      | 0.97x     |
+ *
+ * Rule 443(b), the dead on the net rows:
+ *
+ *   in place     13/13   —                                    PASS
+ *   C geometry   13/13   lost Pohang, gained Amatrice         FAIL
+ *   D top band   12/13   lost Sumatra–Andaman                 FAIL
+ *   E both       13/13   lost Sumatra–Andaman, gained Amatrice FAIL
+ *
+ * Rule 443(c), the quiet on 805:
+ *
+ *   | arm        | toll >= 10 | band reaches zero | median width (ln) |
+ *   | ---------- | ---------- | ----------------- | ----------------- |
+ *   | in place   | 23         | 799 of 805        | 3.69              |
+ *   | C geometry | 51         | 784 of 805        | 4.43              |
+ *   | D top band | **18**     | **801 of 805**    | **3.58**          |
+ *   | E both     | 36         | 794 of 805        | 4.31              |
+ *
+ * WHAT THE ROUND WAS BUILT TO TEST, AND WHAT IT FOUND. The halves need
+ * each other, and the evidence is one row:
+ *
+ *   Pohang 2017, record 0, peak MMI 8.15
+ *     in place     129  [0–37746]   in
+ *     C geometry   428  [1–81833]   OUT   <- the row that refused arm C
+ *     D top band    98  [0–40212]   in
+ *     E both       241  [0–67295]   **in**
+ *
+ *   The band bound recovers exactly the row the geometry lost. Two rounds
+ *   turned on Pohang; together the two halves put it back, because the
+ *   model stops charging 8.5 to an earthquake that reaches 8.15.
+ *
+ * AND THE TOP BAND ALONE IS A FREE IMPROVEMENT ON THE QUIET SET. Arm D
+ * lowers the false alarms below what ships — 23 to 18 — raises the count
+ * of bands that can say "nobody" from 799 to 801, and NARROWS the bands
+ * from 3.69 to 3.58. Nothing else in this whole line of rounds has moved
+ * all three the right way at once.
+ *
+ * WHY IT IS REFUSED ANYWAY, and the reason is not what rule 440 predicted.
+ * That rule warned its upward half would cost the candidate: where a great
+ * earthquake's peak sits above threshold + 1, the rate RISES. It was
+ * written in deliberately and a test pins it. It is not what happened.
+ *
+ *   Sumatra–Andaman 2004, record 227 898, peak MMI **8.89**
+ *     in place    4263  [115–277275]  in
+ *     D and E     3724  [54–202718]   OUT
+ *
+ *   Its peak is BELOW 9, so its top band is the MMI VIII one and the bound
+ *   lowers it, from 8.5 to 8.445. The toll falls 13 %. And the high end of
+ *   its band falls from 277 275 to 202 718 — just under the record.
+ *
+ *   So the model misses Sumatra–Andaman by a factor of FIFTY-THREE, 4 263
+ *   against 227 898, and was counted as containing it because a band
+ *   spanning 115 to 277 275 — a factor of 2 400 — happened to reach past
+ *   it. Thirteen per cent of movement in the right direction of accuracy
+ *   is what pushed the record out. Rules 435 to 439 said a clause that
+ *   cannot fail is not evidence; here is the other face of it, a clause
+ *   that fails for a reason that has nothing to do with being right.
+ *
+ * WHAT IS STILL UNEXPLAINED, and it is the honest remainder. The geometry
+ * costs 28 false alarms on the quiet set, from 23 to 51. The band bound
+ * gives back 15 of them, from 51 to 36. Half the compensation is
+ * accounted for and half is not. The top band was one real defect, and it
+ * is not the only one.
+ *
+ * WHAT THIS ROUND LEAVES:
+ *
+ *   1. The clauses, before any more physics. Rule 443(b) is decided by
+ *      whether a record falls inside bands spanning factors of thousands,
+ *      and it has now refused two candidates for movements of 13 % and
+ *      for one row in eighteen. It needs a sharpness bound and a statement
+ *      about accuracy, not only membership, and that is a round of rules
+ *      with no new model in it at all.
+ *
+ *   2. The remaining half of the compensation. With the footprint right
+ *      and the top band bounded, the quiet false alarms are still 36
+ *      against 23. Something else in the chain was absorbing the
+ *      geometric error, and rule 447 forbids this round from guessing
+ *      which — the vulnerability table, the population raster and the
+ *      country assignment are each a candidate and each needs its own
+ *      rules written first.
+ *
+ *   3. Arm D is the cheapest thing on the table. It improves the quiet set
+ *      on all three measures, costs nothing on the map, and is refused by
+ *      one row it moves 13 %. When the clauses of (1) exist, it should be
+ *      the first candidate put through them.
+ */
+
 export const TOP_BAND_RULES = 'rules 440 to 447, fixed 20 September 2026';
 
 /**

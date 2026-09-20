@@ -10,6 +10,7 @@ import {
   type ChemicalBlastSource,
 } from './events/explosion/overpressure.js';
 import { distanceForOverpressure } from './events/impact/damageRings.js';
+import { topBandIntensity } from './validation/topBandRules.js';
 import { initialRadiationMortality } from './validation/japanMixRules.js';
 import type { Joules, Meters } from './units.js';
 import { EARTH_RADIUS } from './constants.js';
@@ -687,6 +688,16 @@ export interface ShakingCasualtyInput {
    *  `mmi5Radius` and the VI band from `mmi6Radius` at PAGER's rates for
    *  5.5 and 6.5 (`midBand`) or for 5 and 6 (`pager`). Omitted, `none`. */
   lowIntensity?: 'none' | 'midBand' | 'pager';
+  /** Rule 440 of validation/topBandRules.ts: the intensity the scenario
+   *  reaches at its epicentre, which is the ceiling of its topmost band.
+   *  Read only when {@link topBand} asks for it. */
+  peakMmi?: number | undefined;
+  /** Rule 440: whether the topmost band is charged a fixed midpoint
+   *  (`midpoint`, what ships) or the middle of what it actually spans,
+   *  (threshold + peak) / 2 (`toPeak`). Every other band is bounded above
+   *  by the ring over it and is unaffected either way. Omitted,
+   *  `midpoint`. */
+  topBand?: 'midpoint' | 'toPeak' | undefined;
 }
 
 /**
@@ -744,16 +755,29 @@ export function shakingCasualtyPlan(
               { key: 'mmi5', inner: inner6, outer: Math.max(inner6, r5), mmi: lowRate(5) },
             ]),
       ];
-  const bands: CasualtyBand[] = rings
-    .filter((r) => r.outer > r.inner)
-    .map((r) => ({
+  const drawn = rings.filter((r) => r.outer > r.inner);
+  // Rule 440: the TOPMOST band has no ring above it, so its ceiling is the
+  // intensity the scenario actually reaches and not the next whole degree.
+  // Every other band is bounded by the ring over it, and its midpoint is
+  // already the middle of what it spans. PAGER's own banding is left alone:
+  // its bins run from k − 1/2 to k + 1/2 at the rate of k, which is PAGER's
+  // convention and rule 447 forbids touching it.
+  const boundTop = !pager && input.topBand === 'toPeak' && input.peakMmi !== undefined;
+  const topKey = drawn[0]?.key;
+  const bands: CasualtyBand[] = drawn.map((r) => {
+    const mmi =
+      boundTop && r.key === topKey
+        ? topBandIntensity(Math.floor(r.mmi), input.peakMmi ?? Number.NaN)
+        : r.mmi;
+    return {
       key: r.key,
       innerRadiusM: r.inner,
       outerRadiusM: r.outer,
-      mortality: pagerFatalityRate(r.mmi, vulnerability.mid),
-      mortalityLow: pagerFatalityRate(r.mmi, vulnerability.low),
-      mortalityHigh: pagerFatalityRate(r.mmi, vulnerability.high),
-    }));
+      mortality: pagerFatalityRate(mmi, vulnerability.mid),
+      mortalityLow: pagerFatalityRate(mmi, vulnerability.low),
+      mortalityHigh: pagerFatalityRate(mmi, vulnerability.high),
+    };
+  });
   if (bands.length === 0) return null;
   return {
     model: 'shaking',
