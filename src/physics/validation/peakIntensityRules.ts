@@ -86,6 +86,94 @@
  *       remains wrong by a published amount.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 464 and published
+ * as it came out: both candidates are REFUSED, the shipped law stays —
+ * and the run found that RULE 459 PICKED A JURY THAT CANNOT SEE THE
+ * DEFECT IT WAS BUILT TO MEASURE. That is the finding, and it is a
+ * mistake in these rules, not in the model.
+ *
+ * Rule 461, the peak, on rule 459's 116:
+ *
+ *   | law                   | mean bias | sd   | within 1 degree | worst |
+ *   | --------------------- | --------- | ---- | --------------- | ----- |
+ *   | boore2014             | **-0.12** | 0.74 | 78 %            | +1.25 |
+ *   | campbellBozorgnia2014 | +0.06     | 0.89 | 74 %            | +1.98 |
+ *   | allen2012Hypocentral  | -0.66     | 0.83 | 64 %            | +1.01 |
+ *
+ * Rule 461, the peak, on rule 23's 805 quiet:
+ *
+ *   | law                   | mean bias | sd   | within 1 degree | worst |
+ *   | --------------------- | --------- | ---- | --------------- | ----- |
+ *   | boore2014             | **+2.84** | 1.20 | **6 %**         | +5.72 |
+ *   | campbellBozorgnia2014 | +2.20     | 1.30 | 18 %            | +5.78 |
+ *   | allen2012Hypocentral  | **+1.50** | 1.30 | **43 %**        | +5.10 |
+ *
+ * THE SAME LAW READS -0.12 ON ONE SET AND +2.84 ON THE OTHER. A law
+ * cannot be unbiased and nearly three degrees too hot at once, so one of
+ * the two juries is not measuring what it claims. Both were checked
+ * afterwards, on the records alone and not on any model:
+ *
+ *   the 116 of rule 459      record peak: min 7.01, MEDIAN 8.24
+ *   the whole atlas, 1 101   record peak: min 3.60, MEDIAN 6.27
+ *   the 805 quiet             record peak: min 2.39, MEDIAN 5.38
+ *
+ *   Rule 405 admits an earthquake to the 116 only if its ShakeMap reaches
+ *   MMI 7. So the 116 are, by construction, the earthquakes whose records
+ *   are HOT — a median of 8.24. And the defect rules 455 to 458 described
+ *   is that the model's peak saturates near 8.3 for anything of Mw 6 and
+ *   up. A model that always says 8.3, measured only on earthquakes whose
+ *   records average 8.25, comes out unbiased. It would come out unbiased
+ *   if it ignored its inputs entirely.
+ *
+ *   RULE 459 CONDITIONED ITS JURY ON THE QUANTITY IT WAS MEASURING. That
+ *   is the oldest mistake there is and it went in unnoticed, because the
+ *   116 had been the right jury for the four rounds before this one —
+ *   AREAS at MMI VII need an MMI VII band to exist, and peaks do not.
+ *
+ * SO WHAT DOES THE ROUND ACTUALLY SHOW. Not that the shipped law's peak
+ * is fine; rules 455 to 458 measured it wrong and nothing here undoes
+ * that. What it shows is that on the only set of the two whose records
+ * span the range — the quiet 805, median 5.38 — the ranking is the
+ * OPPOSITE of the one rule 462 read, and it is the ranking the physics
+ * predicts:
+ *
+ *   boore2014, no depth at the source,   6 % of peaks within a degree
+ *   campbellBozorgnia2014, depth,       18 %
+ *   allen2012Hypocentral, hypocentral,  **43 %**
+ *
+ *   A law whose distance is hypocentral cannot be asked for the shaking
+ *   at zero: at the epicentre its distance IS the depth. It is seven times
+ *   better at getting the peak within a degree than the law that ships.
+ *
+ * AND BOTH CANDIDATES FAIL RULE 462(c) ANYWAY, on the areas, in the cell
+ * above Mw 7.5 — CB14 at 1.45x where the shipped law is 1.27x, and Allen
+ * at **3.79x**, which is not a near miss. Allen draws the peak far better
+ * and the big rings far worse. Nothing in the repository is good at both,
+ * and this round is the first to know that because it is the first to
+ * have measured both.
+ *
+ * WHAT THIS ROUND LEAVES:
+ *
+ *   1. The jury, before the physics. The peak must be measured on a set
+ *      that is not selected on intensity, and one exists and is unread:
+ *      rule 56's atlas entire, 1 101 earthquakes with a median record peak
+ *      of 6.27. Rule 459 named it in its own preamble and then did not use
+ *      it. The next round uses it, and its rules say so before it runs.
+ *
+ *   2. The two halves of the problem are now separate and both measured:
+ *      a law that gets the AREAS right (Boore with the geometry of rules
+ *      427 to 434, 1.137x) and a law that gets the PEAK right (Allen,
+ *      hypocentral). No candidate does both, and pretending one does by
+ *      measuring only one is exactly what the last five rounds did.
+ *
+ *   3. And a rule about rules, earned twice now. Rules 416(b) and 459 both
+ *      failed by being written for the quantity in front of them without
+ *      asking what their set was selected on. A clause is only as good as
+ *      the jury it reads, and the jury has to be checked against the
+ *      measurement, not against the round before.
+ */
+
 import { EXTENDED_SOURCE_MARGIN } from './extendedSourceRules.js';
 
 export const PEAK_INTENSITY_RULES = 'rules 459 to 464, fixed 20 September 2026';
