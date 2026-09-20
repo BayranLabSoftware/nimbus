@@ -842,19 +842,6 @@
         "note": "Predicted intensity on the ground that is actually there, read from the shipped Vs30 tiles — not a measurement. Published scatter is about one MMI degree, so a band could be one step lighter or heavier. The rings above are the same levels on reference rock."
       }
     },
-    "aftershockDetail": {
-      "aria": "Aftershock detail panel",
-      "title": "Aftershock detail",
-      "close": "Close",
-      "magnitude": "Magnitude",
-      "timing": "Time after mainshock",
-      "distanceFromEpicenter": "Distance from epicentre",
-      "epicentralMmi": "Peak felt intensity",
-      "mmi5Reach": "MMI V reach",
-      "mmi6Reach": "MMI VI reach",
-      "mmi7Reach": "MMI VII reach",
-      "description": "Felt-intensity contours computed for this aftershock alone using the same Joyner-Boore (1981) attenuation and Worden et al. (2012) MMI conversion as the mainshock. Click the globe elsewhere to dismiss."
-    },
     "tooltip": {
       "radiusLine": "Radius: ≈ {{value}}",
       "waveHeightLine": "Wave height: ≈ {{value}}",
@@ -973,7 +960,10 @@
         "title": "Aftershock",
         "magnitudeLine": "Magnitude Mw {{mw}}",
         "timeLine": "≈ {{time}} after the mainshock",
-        "description": "A follow-up rupture on the same fault. Aftershocks obey Omori's law: they are most frequent right after the mainshock and become rarer over time. A strong aftershock can cause as much damage as a standalone earthquake, especially on already-weakened buildings."
+        "description": "A follow-up rupture on the same fault. Aftershocks obey Omori's law: they are most frequent right after the mainshock and become rarer over time. A strong aftershock can cause as much damage as a standalone earthquake, especially on already-weakened buildings.",
+        "distanceLine": "{{distance}} from the mainshock epicentre",
+        "intensityLine": "MMI {{mmi}} at its own epicentre · felt to {{felt}}",
+        "damageLine": "damaging (MMI VII) within {{radius}}"
       },
       "duration": {
         "seconds": "{{value}} s",

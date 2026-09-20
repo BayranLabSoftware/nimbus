@@ -56,6 +56,15 @@ export interface AftershockHoverInfo {
   timeAfterMainshock: number;
   /** Hex tint matching the dot's gradient position. */
   color: string;
+  /** Straight-line distance from the mainshock epicentre (m). */
+  distanceFromEpicentreM: number;
+  /** Intensity at this aftershock's own epicentre, on Worden's scale. */
+  peakMmi: number;
+  /** How far this aftershock alone is felt — MMI V (m). */
+  feltRadiusM: number;
+  /** How far it alone does damage — MMI VII (m); zero when it never
+   *  reaches that level, which is most of a sequence. */
+  damageRadiusM: number;
 }
 
 export interface CityHoverInfo {
@@ -68,6 +77,17 @@ export interface CityHoverInfo {
 }
 
 export type HoverInfo = RingHoverInfo | AftershockHoverInfo | CityHoverInfo;
+
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'] as const;
+
+/** An MMI value as the convention reports it: an integer numeral. Worden's
+ *  piecewise fit returns floats, and half-up is what the detail card this
+ *  tooltip replaces did, so the two never disagreed by a step. */
+function romanMmi(value: number): string {
+  if (!Number.isFinite(value)) return '—';
+  const index = Math.min(Math.max(Math.round(value), 1), 12) - 1;
+  return ROMAN[index] ?? '—';
+}
 
 function formatRadius(radiusM: number): string {
   if (!Number.isFinite(radiusM) || radiusM <= 0) return '—';
@@ -162,6 +182,24 @@ export const RingTooltip = forwardRef(function RingTooltip(
           time: formatDuration(aftershock.timeAfterMainshock, t),
         })}
       </p>
+      <p className={styles.meta}>
+        {t('globe.tooltip.aftershock.distanceLine', {
+          distance: formatRadius(aftershock.distanceFromEpicentreM),
+        })}
+      </p>
+      <p className={styles.meta}>
+        {t('globe.tooltip.aftershock.intensityLine', {
+          mmi: romanMmi(aftershock.peakMmi),
+          felt: formatRadius(aftershock.feltRadiusM),
+        })}
+      </p>
+      {aftershock.damageRadiusM > 0 && (
+        <p className={styles.meta}>
+          {t('globe.tooltip.aftershock.damageLine', {
+            radius: formatRadius(aftershock.damageRadiusM),
+          })}
+        </p>
+      )}
       <p className={styles.description}>{t('globe.tooltip.aftershock.description')}</p>
     </>
   );

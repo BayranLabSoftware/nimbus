@@ -842,19 +842,6 @@
         "note": "Intensità prevista sul terreno che c’è davvero, letto dalle tessere Vs30 spedite — non è una misura. La dispersione pubblicata è di circa un grado MMI, quindi una banda può valere un gradino in più o in meno. Gli anelli qui sopra sono gli stessi livelli su roccia di riferimento."
       }
     },
-    "aftershockDetail": {
-      "aria": "Pannello di dettaglio scossa di assestamento",
-      "title": "Dettaglio scossa di assestamento",
-      "close": "Chiudi",
-      "magnitude": "Magnitudo",
-      "timing": "Tempo dalla scossa principale",
-      "distanceFromEpicenter": "Distanza dall'epicentro",
-      "epicentralMmi": "Intensità percepita di picco",
-      "mmi5Reach": "Raggio MMI V",
-      "mmi6Reach": "Raggio MMI VI",
-      "mmi7Reach": "Raggio MMI VII",
-      "description": "Contorni di intensità percepita calcolati per questa singola replica usando la stessa attenuazione di Joyner-Boore (1981) e la conversione MMI di Worden et al. (2012) della scossa principale. Clicca altrove sul globo per chiudere."
-    },
     "tooltip": {
       "radiusLine": "Raggio: ≈ {{value}}",
       "waveHeightLine": "Altezza dell'onda: ≈ {{value}}",
@@ -973,7 +960,10 @@
         "title": "Replica sismica",
         "magnitudeLine": "Magnitudo Mw {{mw}}",
         "timeLine": "≈ {{time}} dopo la scossa principale",
-        "description": "Una scossa di assestamento sulla stessa faglia. Le repliche seguono la legge di Omori: sono più frequenti subito dopo l'evento principale e diventano più rare nel tempo. Una replica forte può fare danni quanto un terremoto autonomo, specie su edifici già indeboliti."
+        "description": "Una scossa di assestamento sulla stessa faglia. Le repliche seguono la legge di Omori: sono più frequenti subito dopo l'evento principale e diventano più rare nel tempo. Una replica forte può fare danni quanto un terremoto autonomo, specie su edifici già indeboliti.",
+        "distanceLine": "{{distance}} dall’epicentro della scossa principale",
+        "intensityLine": "MMI {{mmi}} al proprio epicentro · avvertita fino a {{felt}}",
+        "damageLine": "dannosa (MMI VII) entro {{radius}}"
       },
       "duration": {
         "seconds": "{{value}} s",

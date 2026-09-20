@@ -32,6 +32,9 @@ import { EARTH_GREAT_CIRCLE_MAX, clampToGreatCircle } from '../../physics/earthS
 import { orientedEllipse } from './orientedEllipse.js';
 import { ISOTROPIC_RING, type RingAsymmetry } from '../../physics/effects/asymmetry.js';
 import { aftershockShakingFootprint } from '../../physics/events/earthquake/aftershocks.js';
+import { peakGroundAcceleration } from '../../physics/events/earthquake/attenuation.js';
+import { modifiedMercalliIntensity } from '../../physics/events/earthquake/intensity.js';
+import { m } from '../../physics/units.js';
 import type { ImpactDamageRadii } from '../../physics/events/impact/damageRings.js';
 import {
   seismicSourceCavityRadiusM,
@@ -89,7 +92,6 @@ import {
   shakingContours,
 } from './shakingOverlay.js';
 import { hasGroundFor, siteAt } from '../vs30Tiles.js';
-import { AftershockDetailCard } from './AftershockDetailCard.js';
 import { mushroomCloudAltitudeMeters, spawnExplosionVfxFromJoules } from './explosionVfx.js';
 import { spawnEruptionColumn } from './eruptionVfx.js';
 import { radialDamageMaterial } from './radialDamageMaterial.js';
@@ -353,14 +355,6 @@ const ASHFALL_PLUME_ID = 'ashfall-plume';
 const EJECTA_BLANKET_ID = 'ejecta-blanket';
 const LATERAL_BLAST_ID = 'lateral-blast';
 const AFTERSHOCK_ID_PREFIX = 'aftershock-';
-/** Entity ids for the three "click-through" felt-intensity contours we
- *  paint around the aftershock the user has pinned. Kept as a tuple so
- *  the teardown / setup sweep stays tightly scoped. */
-const AFTERSHOCK_DETAIL_IDS = [
-  'aftershock-detail-mmi5',
-  'aftershock-detail-mmi6',
-  'aftershock-detail-mmi7',
-] as const;
 /** Aftershock points are colour-graded by magnitude — pale-orange for
  *  Mc-class events, deep-red for Båth-ceiling-class. */
 const AFTERSHOCK_COLOR_LOW = Color.fromCssColorString('#fbbf24');
@@ -536,8 +530,6 @@ export function Globe(): JSX.Element {
 
   const setLocation = useAppStore((s) => s.setLocation);
   const setShakingFieldBands = useAppStore((s) => s.setShakingFieldBands);
-  const selectAftershock = useAppStore((s) => s.selectAftershock);
-  const selectedAftershockIndex = useAppStore((s) => s.selectedAftershockIndex);
   const location = useAppStore((s) => s.location);
   // The location at which the most recent simulation was actually
   // run. Pin marker follows the live `location` (so the user sees
@@ -889,17 +881,13 @@ export function Globe(): JSX.Element {
         // pickable at the cursor, so the dot is preferred over the
         // imagery layer behind it.
         const picks = activeViewer.scene.drillPick(event.position);
-        for (const p of picks) {
-          const pickedId = (p as { id?: { id?: unknown } | undefined }).id?.id;
-          if (typeof pickedId === 'string' && pickedId.startsWith(AFTERSHOCK_ID_PREFIX)) {
-            const idxString = pickedId.slice(AFTERSHOCK_ID_PREFIX.length);
-            const idx = Number.parseInt(idxString, 10);
-            if (Number.isFinite(idx) && idx >= 0) {
-              selectAftershock(idx);
-              return;
-            }
-          }
-        }
+        // An aftershock is not clickable. It used to be: a click pinned it,
+        // drew three dim MMI contours around it and opened a panel over the
+        // map. A sequence is 500 markers, and asking a reader to click each
+        // one to learn what it was is the wrong question — everything that
+        // panel held now rides in the hover tooltip, where it costs nothing
+        // to ask. A click through the cloud does what a click on the globe
+        // does: it moves the epicentre.
 
         // A city dot or name under the cursor: the pick lands on the
         // city itself, not on whatever pixel of terrain sits behind
@@ -1158,7 +1146,7 @@ export function Globe(): JSX.Element {
       cleanupViewer.destroy();
       viewerRef.current = null;
     };
-  }, [setLocation, selectAftershock]);
+  }, [setLocation]);
 
   // Camera flights asked for by the UI (the city search): a top-down
   // framing of the requested radius, or an instant cut under
@@ -1290,13 +1278,23 @@ export function Globe(): JSX.Element {
       entityId: string,
       magnitude: number,
       timeAfterMainshock: number,
-      tint: Color
+      tint: Color,
+      distanceFromEpicentreM: number
     ): void => {
+      // Everything the detail card used to show on a click, computed from
+      // the same chain it used — Joyner & Boore's attenuation through
+      // Worden's intensity — so that hovering answers the question the
+      // click used to, without a panel opening over the map.
+      const footprint = aftershockShakingFootprint(magnitude);
       tooltipMetaRef.current.set(entityId, {
         type: 'aftershock',
         magnitude,
         timeAfterMainshock,
         color: tint.toCssHexString(),
+        distanceFromEpicentreM,
+        peakMmi: modifiedMercalliIntensity(peakGroundAcceleration({ magnitude, distance: m(0) })),
+        feltRadiusM: footprint.mmi5Radius,
+        damageRadiusM: footprint.mmi7Radius,
       });
     };
 
@@ -2110,7 +2108,13 @@ export function Globe(): JSX.Element {
           finalPixelSize: pixelSize,
           haloColor: color,
         });
-        registerAftershockTooltip(entityId, event.magnitude, event.timeAfterMainshock, color);
+        registerAftershockTooltip(
+          entityId,
+          event.magnitude,
+          event.timeAfterMainshock,
+          color,
+          Math.hypot(event.northOffsetM, event.eastOffsetM)
+        );
       });
       cancelAftershockAnimationRef.current = animateAftershocksImperatively(aftershockSpecs);
     }
@@ -4224,94 +4228,16 @@ export function Globe(): JSX.Element {
 
   // --- Aftershock click-through detail rings ---------------------------
   // When the user clicks an aftershock dot, paint three dim MMI V/VI/VII
-  // contours around its offset position. We compute radii on demand via
-  // the same Joyner–Boore + Worden 2012 chain used for the mainshock —
-  // see `aftershockShakingFootprint` in
-  // src/physics/events/earthquake/aftershocks.ts. The detail rings are
-  // *non-cascading* (they pop in at full size) because they answer a
-  // direct user question ("what's the reach of this aftershock?")
-  // rather than dramatising a wavefront — adding the cascade animation
-  // would just delay the answer for no pedagogical gain.
-  useEffect(() => {
-    const viewer = viewerRef.current;
-    if (!viewer || viewer.isDestroyed()) return;
-
-    // Tear down any pre-existing detail rings (covers re-pin onto a
-    // different aftershock and dismissal alike).
-    AFTERSHOCK_DETAIL_IDS.forEach((id) => {
-      const e = viewer.entities.getById(id);
-      if (e) viewer.entities.remove(e);
-    });
-
-    if (selectedAftershockIndex === null || result?.type !== 'earthquake' || location === null) {
-      return;
-    }
-
-    const event = result.data.aftershocks.events[selectedAftershockIndex];
-    if (event === undefined) return;
-
-    const footprint = aftershockShakingFootprint(event.magnitude);
-    const latRad = (location.latitude * Math.PI) / 180;
-    const cosLat = Math.max(Math.cos(latRad), 1e-6);
-    const dlat = (event.northOffsetM as number) / 111_000;
-    const dlon = (event.eastOffsetM as number) / (111_000 * cosLat);
-    const center = Cartesian3.fromDegrees(location.longitude + dlon, location.latitude + dlat);
-
-    const contours: { id: string; radius: number; color: Color; alpha: number }[] = [
-      // The MMI ramp goes "lightest contour at the largest radius" so
-      // the eye reads outward → safer, mirroring how the mainshock
-      // mmi7/8/9 rings are painted.
-      {
-        id: AFTERSHOCK_DETAIL_IDS[0],
-        radius: footprint.mmi5Radius,
-        color: MMI_RING_COLORS.mmi7,
-        alpha: 0.25,
-      },
-      {
-        id: AFTERSHOCK_DETAIL_IDS[1],
-        radius: footprint.mmi6Radius,
-        color: MMI_RING_COLORS.mmi8,
-        alpha: 0.35,
-      },
-      {
-        id: AFTERSHOCK_DETAIL_IDS[2],
-        radius: footprint.mmi7Radius,
-        color: MMI_RING_COLORS.mmi9,
-        alpha: 0.45,
-      },
-    ];
-
-    contours.forEach(({ id, radius, color, alpha }) => {
-      if (!Number.isFinite(radius) || radius <= 0) return;
-      viewer.entities.add({
-        id,
-        position: center,
-        ellipse: {
-          semiMajorAxis: clampToGreatCircle(radius),
-          semiMinorAxis: clampToGreatCircle(radius),
-          material: radialDamageMaterial(color, alpha),
-          outline: true,
-          outlineColor: color.withAlpha(0.55),
-          height: 0,
-          heightReference: HeightReference.CLAMP_TO_GROUND,
-        },
-      });
-    });
-
-    return (): void => {
-      if (viewer.isDestroyed()) return;
-      AFTERSHOCK_DETAIL_IDS.forEach((id) => {
-        const e = viewer.entities.getById(id);
-        if (e) viewer.entities.remove(e);
-      });
-    };
-  }, [selectedAftershockIndex, result, location]);
+  // Aftershock detail rings retired on 20 September 2026 with the click
+  // that opened them: a sequence is 500 markers, and what those rings and
+  // their panel said — the reach at MMI V and VII, the intensity at its own
+  // epicentre, the distance from the mainshock — is in the hover tooltip
+  // now, where reading one costs a glance instead of a click and a dismiss.
 
   return (
     <>
       <div ref={containerRef} className={styles.container} data-testid="globe-viewer" />
       <RingTooltip ref={tooltipElRef} info={hoverInfo} />
-      <AftershockDetailCard />
     </>
   );
 }

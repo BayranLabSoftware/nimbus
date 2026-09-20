@@ -470,13 +470,6 @@ export interface AppStore {
   location: Coordinates | null;
 
   // --- Aftershock detail selection ------------------------------------
-  /** Index of the aftershock currently "pinned" by a click on its
-   *  globe entity, or null when no aftershock is selected. The
-   *  Globe layer reads this to render a dim MMI V/VI/VII contour
-   *  set around the picked aftershock and to surface the detail
-   *  card. Resets whenever the result, location, event type, or
-   *  earthquake inputs change. */
-  selectedAftershockIndex: number | null;
 
   // --- Per-ring visibility toggle ------------------------------------
   /** Set of ring keys (matching `RingTooltipKind` in the legend) the
@@ -621,13 +614,6 @@ export interface AppStore {
   restoreCustomInput: (type: EventType, raw: Record<string, unknown>) => void;
   setLocation: (coords: Coordinates) => void;
   clearLocation: () => void;
-  /** Pin a specific aftershock for click-through detail. The globe
-   *  draws three dim MMI V/VI/VII contours around the picked event;
-   *  the detail card surfaces magnitude, time-since-mainshock and
-   *  estimated felt-intensity reach. */
-  selectAftershock: (index: number) => void;
-  /** Clear the pinned aftershock selection. */
-  clearAftershock: () => void;
   /** Flip the visibility of a single legend row + its globe ring. */
   /** Called by the globe once per redraw with the bands it painted. */
   setShakingFieldBands: (bands: readonly string[] | null) => void;
@@ -701,7 +687,6 @@ type InitialSlice = Pick<
   | 'volcano'
   | 'landslide'
   | 'location'
-  | 'selectedAftershockIndex'
   | 'hiddenRingKeys'
   | 'shakingFieldBands'
   | 'cameraRequest'
@@ -786,7 +771,6 @@ function initialState(): InitialSlice {
       input: LANDSLIDE_PRESETS[INITIAL_LANDSLIDE_PRESET].input,
     },
     location: null,
-    selectedAftershockIndex: null,
     hiddenRingKeys: new Set<string>(),
     shakingFieldBands: null,
     cameraRequest: null,
@@ -2205,7 +2189,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
   selectEventType: (type) => {
     set({
       eventType: type,
-      selectedAftershockIndex: null,
       hiddenRingKeys: new Set<string>(),
       shakingFieldBands: null,
       result: null,
@@ -2273,7 +2256,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
       set({
         eventType: 'impact',
         impact: { preset: id, input: IMPACT_PRESETS[id].input },
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2300,7 +2282,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
       set({
         eventType: 'explosion',
         explosion: { preset: id, input: EXPLOSION_PRESETS[id].input },
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2327,7 +2308,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
       set({
         eventType: 'earthquake',
         earthquake: { preset: id, input: EARTHQUAKE_PRESETS[id].input, strikeIsUsers: false },
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2358,7 +2338,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
       set({
         eventType: 'volcano',
         volcano: { preset: id, input: VOLCANO_PRESETS[id].input },
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2385,7 +2364,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
       set({
         eventType: 'landslide',
         landslide: { preset: id, input: LANDSLIDE_PRESETS[id].input },
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2440,7 +2418,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
       return {
         eventType: 'impact',
         impact: { preset: 'CUSTOM', input: next },
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2482,7 +2459,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
       return {
         eventType: 'explosion',
         explosion: { preset: 'CUSTOM', input: next },
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2560,7 +2536,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
               ? false
               : overrides.strikeAzimuthDeg !== undefined || state.earthquake.strikeIsUsers,
         },
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2605,7 +2580,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
       return {
         eventType: 'volcano',
         volcano: { preset: 'CUSTOM', input: next },
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2678,7 +2652,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
         linkNotice: `This link's scenario was refused (${fields}); the one below is the app's own.`,
       });
       const cleared: Partial<AppStore> = {
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2820,7 +2793,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
       return {
         eventType: 'landslide',
         landslide: { preset: 'CUSTOM', input: next },
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
@@ -2853,24 +2825,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
     // A fresh epicentre pick supersedes any pinned aftershock — the
     // selection points at an entity that the next render pass will
     // tear down.
-    set({ location: coords, selectedAftershockIndex: null });
+    set({ location: coords });
   },
 
   clearLocation: () => {
-    set({ location: null, selectedAftershockIndex: null });
-  },
-
-  selectAftershock: (index) => {
-    if (!Number.isInteger(index) || index < 0) {
-      throw new Error(
-        `Aftershock index must be a non-negative integer (received ${String(index)}).`
-      );
-    }
-    set({ selectedAftershockIndex: index });
-  },
-
-  clearAftershock: () => {
-    set({ selectedAftershockIndex: null });
+    set({ location: null });
   },
 
   setElevationGrid: (grid) => {
@@ -3309,7 +3268,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
       set({
         status: 'error',
         error: err instanceof Error ? err.message : String(err),
-        selectedAftershockIndex: null,
         result: null,
         bathymetricTsunami: null,
         populationExposure: null,
