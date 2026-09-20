@@ -61,6 +61,23 @@ async function loadIndexes(): Promise<void> {
 }
 
 /** Decode a slab tile's three channels through a canvas. */
+/** Rule 429: the dip's own png, red channel, decoded beside its tile. */
+async function decodeDipPlane(blob: Blob, size: number): Promise<Uint8Array> {
+  const bitmap = await createImageBitmap(blob);
+  try {
+    const canvas = new OffscreenCanvas(size, size);
+    const context = canvas.getContext('2d');
+    if (context === null) throw new Error('2D context unavailable');
+    context.drawImage(bitmap, 0, 0);
+    const pixels = context.getImageData(0, 0, size, size).data;
+    const dip = new Uint8Array(size * size);
+    for (let i = 0; i < dip.length; i += 1) dip[i] = pixels[i * 4] ?? 0;
+    return dip;
+  } finally {
+    bitmap.close();
+  }
+}
+
 async function decodeSlabTile(blob: Blob, size: number): Promise<SlabTile> {
   const bitmap = await createImageBitmap(blob);
   try {
@@ -129,7 +146,14 @@ export async function loadStrikeTilesFor(latitude: number, longitude: number): P
               slabTiles.set(key, null);
               return;
             }
-            slabTiles.set(key, await decodeSlabTile(await response.blob(), slabIndex.tilePx));
+            const tile = await decodeSlabTile(await response.blob(), slabIndex.tilePx);
+            // Rule 429: the dip is a second file. A tile without one is a
+            // tile whose slab has no dip, which rule 427 treats as an
+            // answer and not as a failure, so this never rejects.
+            const dip = await fetch(assetUrl(`data/slab2/${key}_dip.png`))
+              .then(async (r) => (r.ok ? decodeDipPlane(await r.blob(), slabIndex.tilePx) : null))
+              .catch(() => null);
+            slabTiles.set(key, dip === null ? tile : { ...tile, dip });
           })
           .catch(() => {
             slabTiles.set(key, null);

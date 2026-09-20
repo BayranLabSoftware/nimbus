@@ -235,6 +235,11 @@ export interface SlabSample {
   depthM: number;
   /** Slab2's own published uncertainty on that depth (m). */
   depthUncertaintyM: number;
+  /** Rule 427 of dipRules.ts: the slab's dip at that point, degrees from
+   *  horizontal, or null where the dip grid has no value there. Null is an
+   *  answer — rule 427 falls through to the next source rather than
+   *  inventing one. */
+  dipDeg: number | null;
 }
 
 /** Rule 298: a slab as the walk sees it — a value at a place, or nothing where

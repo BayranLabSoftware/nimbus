@@ -10,6 +10,7 @@ import {
 } from '../events/earthquake/faultLookup.js';
 import { chooseStrike, type StrikeAnswer } from '../events/earthquake/strikeSource.js';
 import { shippedSlabField } from './shippedSlab2.js';
+import { dipFor, type DipSource } from './dipRules.js';
 
 /**
  * The shipped fault tiles, read from disk instead of fetched, and the strike
@@ -63,6 +64,37 @@ export function shippedFaultsAt(latitude: number, longitude: number): DecodedFau
  * Rule 300's answer for a place, from the shipped tiles: an interface, a
  * crustal fault that can host the rupture, or nothing.
  */
+/**
+ * Rule 428: the dip, from the same one answer the strike comes from.
+ *
+ * `simulate.ts` cannot reach a tile — the strike gets to it as an input and
+ * so does this. One exported function, so the globe, the harness and the
+ * benchmarks cannot each find their own dip for the same spot.
+ *
+ * Returns null where no structure answered, which is rule 427's third case:
+ * the caller then passes nothing and the simulator keeps its style constant.
+ */
+export function shippedDipAnswer(
+  latitude: number,
+  longitude: number,
+  hypocentreDepthM: number,
+  ruptureLengthM: number
+): { dipDeg: number; source: DipSource } | null {
+  const answer = shippedStrikeAnswer(latitude, longitude, hypocentreDepthM, ruptureLengthM);
+  const chosen = dipFor({
+    slabDipDeg: answer.slab?.dipDeg ?? null,
+    faultDipDeg: answer.fault?.dipDeg ?? null,
+    strikeFromSlab: answer.source.startsWith('interface'),
+    strikeFromFault: answer.source === 'crustal',
+    // Rule 427's third case is "keep what the scenario has", and the
+    // simulator owns that number; NaN here can never be chosen, because it
+    // is reached only when both structures declined, and then this returns
+    // null rather than a dip.
+    styleDipDeg: Number.NaN,
+  });
+  return chosen.source === 'style' ? null : chosen;
+}
+
 export function shippedStrikeAnswer(
   latitude: number,
   longitude: number,

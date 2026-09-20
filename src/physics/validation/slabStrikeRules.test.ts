@@ -62,6 +62,7 @@ describe('rules 295 to 303 — where a megathrust points', () => {
       strikeDeg: 200,
       depthM: INTERFACE_SEISMOGENIC_DEPTH_LIMIT_M + 1,
       depthUncertaintyM: 5_000,
+      dipDeg: null,
     };
     // The hypocentre sits exactly on the surface and it still is not an interface.
     expect(isOnInterface(deep, deep.depthM)).toBe(false);
@@ -72,7 +73,12 @@ describe('rules 295 to 303 — where a megathrust points', () => {
   });
 
   it('rule 296(c): the hypocentre is on the surface or it is not', () => {
-    const slab: SlabSample = { strikeDeg: 200, depthM: 30_000, depthUncertaintyM: 6_000 };
+    const slab: SlabSample = {
+      strikeDeg: 200,
+      depthM: 30_000,
+      depthUncertaintyM: 6_000,
+      dipDeg: null,
+    };
     // Tolerance is max(2 × 6, 10) = 12 km.
     expect(isOnInterface(slab, 30_000)).toBe(true);
     expect(isOnInterface(slab, 42_000)).toBe(true);
@@ -82,7 +88,12 @@ describe('rules 295 to 303 — where a megathrust points', () => {
   });
 
   it('rule 297: the interface answers anyway, depth set aside, seismogenic limit not', () => {
-    const slab: SlabSample = { strikeDeg: 200, depthM: 40_000, depthUncertaintyM: 4_000 };
+    const slab: SlabSample = {
+      strikeDeg: 200,
+      depthM: 40_000,
+      depthUncertaintyM: 4_000,
+      dipDeg: null,
+    };
     // A depth no tolerance covers — a historical catalogue's guess.
     expect(isOnInterface(slab, 5_000)).toBe(false);
     expect(interfaceHostsAnyway(slab)).toBe(true);
@@ -124,7 +135,12 @@ describe('rules 295 to 303 — where a megathrust points', () => {
   });
 
   it('rule 298: on a slab that points one way, the walk reads that way', () => {
-    const field = uniformField({ strikeDeg: 200, depthM: 25_000, depthUncertaintyM: 5_000 });
+    const field = uniformField({
+      strikeDeg: 200,
+      depthM: 25_000,
+      depthUncertaintyM: 5_000,
+      dipDeg: null,
+    });
     const strike = slabStrikeDeg(field, 0.5, 100, 300_000);
     expect(strike).not.toBeNull();
     // The chord of a walk at constant bearing is a great circle and the walk is
@@ -142,6 +158,7 @@ describe('rules 295 to 303 — where a megathrust points', () => {
       strikeDeg: lon <= 100 ? 90 : 90 - 20 * (lon - 100),
       depthM: 25_000,
       depthUncertaintyM: 5_000,
+      dipDeg: null,
     });
     const local = 90;
     const short = slabStrikeDeg(field, 0, 100, 20_000);
@@ -163,6 +180,7 @@ describe('rules 295 to 303 — where a megathrust points', () => {
       strikeDeg: 90 - 10 * (lon - 100),
       depthM: 25_000,
       depthUncertaintyM: 5_000,
+      dipDeg: null,
     });
     const strike = slabStrikeDeg(field, 0, 100, 800_000);
     expect(strikeDifferenceDeg(strike ?? 0, 90)).toBeLessThan(0.5);
@@ -172,7 +190,7 @@ describe('rules 295 to 303 — where a megathrust points', () => {
     // A slab that exists only west of 100°E: the eastward half of the window is
     // cut, and the strike still reads, from what there is.
     const field: SlabField = (_lat, lon) =>
-      lon <= 100 ? { strikeDeg: 90, depthM: 25_000, depthUncertaintyM: 5_000 } : null;
+      lon <= 100 ? { strikeDeg: 90, depthM: 25_000, depthUncertaintyM: 5_000, dipDeg: null } : null;
     const strike = slabStrikeDeg(field, 0, 99.9, 400_000);
     expect(strike).not.toBeNull();
     expect(strikeDifferenceDeg(strike ?? 0, 90)).toBeLessThan(1);

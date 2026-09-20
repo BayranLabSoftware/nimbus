@@ -236,6 +236,15 @@ export interface EarthquakeScenarioInput {
    *  A scenario marked a subduction interface and one deeper than 70 km do
    *  not read this (rule 421). Omitted, `downDip`. */
   stadiumWidth?: StadiumWidth;
+  /** The dip of the structure this scenario is drawn along, degrees from
+   *  horizontal: rule 427 of validation/dipRules.ts. It reaches the
+   *  simulator the way the strike does, as an input, because the tiles are
+   *  a lookup the CALLER makes — `shippedDipAnswer` is the one answer
+   *  behind it. Omitted, the style constant below: 90 strike-slip, 55
+   *  normal, 45 reverse. Rule 430: one dip, read by the footprint's
+   *  projection, by rule 399's top of rupture and by CB14's dip and
+   *  hanging-wall terms alike. */
+  dipDeg?: number;
   /** Whether the toll counts the dead below MMI VII (rule 46 of
    *  validation/lowIntensityRules.ts): not at all (`none`), or in the V
    *  and VI bands the rings draw at 5.0 and 6.0, at PAGER's rates for the
@@ -662,7 +671,15 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
    * the difference between drawing its MMI VIII band and losing it. Zero
    * where the rupture reaches the surface.
    */
-  const dipDeg = cbStyle === 'strike-slip' ? 90 : cbStyle === 'normal' ? 55 : 45;
+  // Rule 427: the dip of the structure the scenario is drawn along where a
+  // caller found one, and the style constant where nothing answered. A
+  // megathrust handed 90° here is what gave eleven of the jury's twenty
+  // largest earthquakes a surface projection of exactly zero.
+  const styleDipDeg = cbStyle === 'strike-slip' ? 90 : cbStyle === 'normal' ? 55 : 45;
+  const dipDeg =
+    input.dipDeg !== undefined && Number.isFinite(input.dipDeg) && input.dipDeg > 0
+      ? Math.min(90, input.dipDeg)
+      : styleDipDeg;
   const dipRad = dipDeg * (Math.PI / 180);
   // Rule 399: the NGA-West2 estimate of Chiou & Youngs 2014 as a FLOOR,
   // bounded by the rupture the scenario has. Hanging the rupture

@@ -10,9 +10,16 @@ Survey, public domain. 27 zones, five grids each, sampled every 0.05 degrees
 (0.02 in five zones), NaN outside each model's own clipping mask.
 
 Rules 295 to 303 of `src/physics/validation/slabStrikeRules.ts` say what this
-is for and what it may cost. Three of the five grids are read: strike, depth
-and the model's own depth uncertainty. The dip is not read, because rule 302
-keeps this round out of the dip.
+is for and what it may cost. Four of the five grids are read: strike, depth,
+the model's own depth uncertainty and — since rules 427 to 434 of
+`src/physics/validation/dipRules.ts`, which rule 302 said would come — the dip.
+
+The dip is written as a SECOND png a tile, `<tile>_dip.png`, with the dip in
+the red channel. Rule 429 says why it is not the alpha channel of the tile
+beside it: the browser reads these through `getImageData`, which returns
+un-premultiplied bytes and rounds whenever alpha is below 255, so a dip in
+alpha would corrupt the strike, depth and uncertainty that pixel carries. The
+three-channel tiles come out of this rebuild byte for byte as they went in.
 
 Three choices are made here and not in the rules, because they are choices of
 construction:
@@ -61,17 +68,20 @@ N_LAT = int(round(180 / CELL_DEG))
 STRIKE_STEP_DEG = 360 / 256
 DEPTH_STEP_M = 3000
 UNCERTAINTY_STEP_M = 1000
+# Rule 429 of dipRules.ts. A byte of zero means "no dip here", so the scale
+# starts at one and 0 to 90 degrees fits with room to spare.
+DIP_STEP_DEG = 0.5
 
 
 def zone_grids(src: Path):
-    """The zones, each with its strike, depth and uncertainty grid."""
+    """The zones, each with its strike, depth, uncertainty and dip grid."""
     out = {}
     for path in sorted(src.glob("*_slab2_*.grd")):
         m = re.match(r"([a-z]{3})_slab2_(dep|str|dip|thk|unc)_", path.name)
         if m is None:
             continue
         zone, field = m.group(1), m.group(2)
-        if field not in ("dep", "str", "unc"):
+        if field not in ("dep", "str", "unc", "dip"):
             continue
         out.setdefault(zone, {})[field] = path
     return {z: g for z, g in out.items() if {"dep", "str", "unc"} <= set(g)}
@@ -98,6 +108,7 @@ def main() -> int:
     strike_b = np.zeros((N_LAT, N_LON), dtype=np.uint8)
     depth_b = np.zeros((N_LAT, N_LON), dtype=np.uint8)
     unc_b = np.zeros((N_LAT, N_LON), dtype=np.uint8)
+    dip_b = np.zeros((N_LAT, N_LON), dtype=np.uint8)
     depth_m = np.full((N_LAT, N_LON), np.inf, dtype="float64")
 
     zones_written = []
@@ -105,6 +116,9 @@ def main() -> int:
         xs, ys, strike = read(grids[zone]["str"])
         _, _, depth = read(grids[zone]["dep"])
         _, _, unc = read(grids[zone]["unc"])
+        # Rule 427: a zone whose dip grid is missing simply has no dip, and
+        # the reader falls through to the next source rather than guessing.
+        dip = read(grids[zone]["dip"])[2] if "dip" in grids[zone] else None
         dx = float(xs[1] - xs[0])
         dy = float(ys[1] - ys[0])
 
@@ -123,6 +137,7 @@ def main() -> int:
         sub_s = strike[np.ix_(iy, jx)]
         sub_d = depth[np.ix_(iy, jx)]
         sub_u = unc[np.ix_(iy, jx)]
+        sub_p = dip[np.ix_(iy, jx)] if dip is not None else None
 
         good = np.isfinite(sub_s) & np.isfinite(sub_d)
         if not good.any():
@@ -148,6 +163,12 @@ def main() -> int:
         strike_b[r, c] = np.rint(np.mod(sub_s[shallower], 360.0) / STRIKE_STEP_DEG).astype(int) % 256
         depth_b[r, c] = np.minimum(255, np.rint(d_m[shallower] / DEPTH_STEP_M).astype(int) + 1)
         unc_b[r, c] = np.minimum(255, np.rint(u_m[shallower] / UNCERTAINTY_STEP_M).astype(int))
+        if sub_p is not None:
+            p = sub_p[shallower]
+            ok = np.isfinite(p) & (p >= 0)
+            dip_b[r[ok], c[ok]] = np.minimum(
+                255, np.rint(p[ok] / DIP_STEP_DEG).astype(int) + 1
+            )
         zones_written.append(zone)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -155,6 +176,8 @@ def main() -> int:
         old.unlink()
 
     tiles = []
+    dip_tiles = []
+    dip_bytes = 0
     total_bytes = 0
     worst_tile = ("", 0)
     nodes = 0
@@ -175,6 +198,16 @@ def main() -> int:
             Image.fromarray(rgb, mode="RGB").save(path, optimize=True)
             size = path.stat().st_size
             total_bytes += size
+
+            # Rule 429: the dip beside it, never inside it.
+            block_p = dip_b[r0 : r0 + TILE_PX, c0 : c0 + TILE_PX]
+            if block_p.any():
+                d_rgb = np.zeros((TILE_PX, TILE_PX, 3), dtype=np.uint8)
+                d_rgb[:, :, 0] = block_p[::-1, :]
+                d_path = OUT_DIR / f"{name}_dip.png"
+                Image.fromarray(d_rgb, mode="RGB").save(d_path, optimize=True)
+                dip_bytes += d_path.stat().st_size
+                dip_tiles.append(name)
             if size > worst_tile[1]:
                 worst_tile = (name, size)
             tiles.append(name)
@@ -195,6 +228,8 @@ def main() -> int:
         "tilePx": TILE_PX,
         "rowsFromNorth": True,
         "strikeStepDeg": STRIKE_STEP_DEG,
+        "dipStepDeg": DIP_STEP_DEG,
+        "dipTiles": sorted(dip_tiles),
         "depthStepM": DEPTH_STEP_M,
         "uncertaintyStepM": UNCERTAINTY_STEP_M,
         "nodes": nodes,
@@ -207,6 +242,9 @@ def main() -> int:
     print(f"tiles      {len(tiles)}")
     print(f"total      {total_bytes} bytes ({total_bytes / 1e6:.2f} MB)")
     print(f"worst tile {worst_tile[0]} at {worst_tile[1]} bytes")
+    # Rule 429: what the dip costs, printed on its own so it can be judged.
+    print(f"dip tiles  {len(dip_tiles)}")
+    print(f"dip bytes  {dip_bytes} ({dip_bytes / 1e6:.2f} MB, +{100 * dip_bytes / max(total_bytes, 1):.0f} %)")
     return 0
 
 

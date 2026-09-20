@@ -1,3 +1,4 @@
+import { decodeDipByte } from '../../validation/dipRules.js';
 import {
   SLAB_CELL_DEG,
   SLAB_TILE_DEG,
@@ -46,6 +47,9 @@ export interface SlabTile {
   strike: Uint8Array;
   depth: Uint8Array;
   uncertainty: Uint8Array;
+  /** Rule 429: the dip, from the tile's own `_dip.png` beside it. Absent
+   *  where that file was not built or has not arrived. */
+  dip?: Uint8Array;
 }
 
 /** How many lattice nodes there are around the planet, and up it. */
@@ -109,6 +113,7 @@ function nodeSample(
     strikeDeg: decodeStrikeByte(tile.strike[at] ?? 0),
     depthM,
     depthUncertaintyM: decodeUncertaintyByte(tile.uncertainty[at] ?? 0),
+    dipDeg: tile.dip === undefined ? null : decodeDipByte(tile.dip[at] ?? 0),
   };
 }
 
@@ -157,10 +162,19 @@ export function makeSlabField(
     let total = 0;
     let depthM = 0;
     let uncertaintyM = 0;
+    // Rule 427: the dip is averaged over the corners that HAVE one, with its
+    // own weight, so a corner outside the dip grid neither drags the answer
+    // towards zero nor throws the whole sample away.
+    let dipWeight = 0;
+    let dipDeg = 0;
     for (const c of corners) {
       total += c.weight;
       depthM += c.weight * c.sample.depthM;
       uncertaintyM += c.weight * c.sample.depthUncertaintyM;
+      if (c.sample.dipDeg !== null) {
+        dipWeight += c.weight;
+        dipDeg += c.weight * c.sample.dipDeg;
+      }
     }
     if (!(total > 0)) return null;
     const strikeDeg = meanDirectionDeg(
@@ -171,6 +185,7 @@ export function makeSlabField(
       strikeDeg,
       depthM: depthM / total,
       depthUncertaintyM: uncertaintyM / total,
+      dipDeg: dipWeight > 0 ? dipDeg / dipWeight : null,
     };
   };
 }

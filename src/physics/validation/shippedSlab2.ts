@@ -45,7 +45,16 @@ function loadTile(key: string): SlabTile | null {
     return null;
   }
   const png = decodePng(readFileSync(path));
-  const tile: SlabTile = { strike: png.red, depth: png.green, uncertainty: png.blue };
+  // Rule 429: the dip lives in its own png beside the tile, never in an alpha
+  // channel the browser would round.
+  const dipPath = join(DATA_DIR, `${key}_dip.png`);
+  const dip = existsSync(dipPath) ? decodePng(readFileSync(dipPath)).red : undefined;
+  const tile: SlabTile = {
+    strike: png.red,
+    depth: png.green,
+    uncertainty: png.blue,
+    ...(dip === undefined ? {} : { dip }),
+  };
   tiles.set(key, tile);
   return tile;
 }

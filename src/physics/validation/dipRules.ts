@@ -111,6 +111,82 @@
  * it does not change which structure the strike came from.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 434 and published
+ * as it came out: arm C is REFUSED on rule 433(d), the dead — and it is
+ * the first candidate in this whole line of rounds to IMPROVE EVERY CELL
+ * and to pass five clauses of six.
+ *
+ * The map, on the 116, with `boore2014`:
+ *
+ *   | arm                  | bands | mean   | scatter | Mw < 6.5 | Mw 6.5–7.5 | Mw >= 7.5 |
+ *   | -------------------- | ----- | ------ | ------- | -------- | ---------- | --------- |
+ *   | in place             | 165   | 0.393x | 1.579   | 0.56x    | 0.22x      | 1.27x     |
+ *   | B projection+always  | 169   | 0.865x | 1.283   | 1.01x    | 0.85x      | 0.73x     |
+ *   | C B + structure dip  | 169   | 1.137x | 1.273   | 1.24x    | **1.15x**  | **0.97x** |
+ *
+ *   (a) worst cell   PASS  1.536 (Mw 6.5–7.5) → 0.217 (Mw < 6.5)
+ *   (b) no cell worse PASS  every cell improves
+ *   (c) overall      PASS  |ln bias| 0.935 → 0.129, scatter 1.579 → 1.273
+ *   (e) monotonicity PASS  0 inversions
+ *   (f) no sign trade PASS
+ *   (d) the dead     FAIL  one row lost, and it is the same row as before
+ *
+ * THE DIP DID EXACTLY WHAT IT WAS ASKED TO. C and B differ in nothing but
+ * the dip, so the column is the dip on its own: the largest cell goes from
+ * 0.731x to 0.966x, which is the clause that refused the last round, gone.
+ * And it is not only the large cell — the hole between Mw 6.5 and 7.5 goes
+ * from 0.85x to 1.15x and the smallest cell moves too, because a crustal
+ * fault's own dip is not 90 degrees either. Of the twenty earthquakes at
+ * Mw 7.5 and above, ten now take a dip of 18 to 34 degrees from Slab2, eight
+ * take 30 to 90 from a crustal fault, and two keep the style constant; the
+ * megathrusts that had a footprint width of 0.0 km now have 24 to 40 km.
+ *
+ * WHAT IS LEFT IS ONE ROW, and it is worth setting out in full because the
+ * clause that refuses is reading less than the run contains. Every net row
+ * the geometry moves, central estimate against record:
+ *
+ *   Northridge 1994     29 → 95     record 57      in  → in
+ *   L'Aquila 2009       42 → 69     record 309     in  → in
+ *   Amatrice 2016        1 → 7      record 299     OUT → **in**
+ *   Gorkha 2015       5356 → 5165   record 8964    in  → in
+ *   Christchurch 2011    1 → 2      record 185     OUT → OUT
+ *   Kumamoto 2016      199 → 424    record 273     in  → in
+ *   Durrës 2019         15 → 87     record 51      in  → in
+ *   **Pohang 2017      129 → 428    record 0       in  → OUT**
+ *
+ *   Seven of the eight move TOWARDS their record, several of them a long
+ *   way: Durrës from 15 against 51 to 87, Kumamoto from 199 against 273 to
+ *   424, Northridge from 29 against 57 to 95, Amatrice from 1 against 299
+ *   to 7, which is still far out but far enough in to cross into its band.
+ *   Rule 433(d) counts how many records sit inside a band and whether any
+ *   left; thirteen sit inside either way, and one left. So the clause reads
+ *   13 against 13 and a loss, and does not see that the estimates got
+ *   better almost everywhere.
+ *
+ *   That is not an argument for setting the clause aside — it was written
+ *   before the run and it stands. It is the measurement of what the clause
+ *   is blind to, published so that whoever writes the next one knows.
+ *
+ * AND POHANG IS NOT A GEOMETRY PROBLEM, which the last round already said
+ * and this one confirms. Its record is ZERO dead. The geometry in place
+ * predicts 129 and the candidate 428; both are badly wrong, and the
+ * incumbent keeps the row only because a disc of that radius holds few
+ * enough people for the low end of its band to reach zero. The dip does
+ * not move it at all — B and C give the identical [1–81833] — because at
+ * Mw 5.5 the projected width is already zero and what remains is the
+ * stadium's length.
+ *
+ * WHAT THIS ROUND LEAVES. The geometry question is, as far as the map goes,
+ * answered: 0.393x to 1.137x, the scatter from 1.579 to 1.273, and no cell
+ * left worse. What stands between that and the product is one Mw 5.5 whose
+ * predictive band cannot reach zero. THE NEXT BLOCK IS THE BAND AT SMALL
+ * MAGNITUDE, not the geometry — how a toll model says "possibly nobody"
+ * about an earthquake that hurt nobody, which is a question about the
+ * vulnerability curves and the low tail of the realisations and not about
+ * the shape of a footprint. Rules first, as ever.
+ */
+
 export const DIP_RULES = 'rules 427 to 434, fixed 20 September 2026';
 
 /** Rule 427: where a scenario's dip came from. */

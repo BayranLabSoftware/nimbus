@@ -52,7 +52,12 @@ describe('rule 300 — who answers, when both could', () => {
   const lon = -73.5;
 
   it('300(a)/296: a hypocentre on the interface takes the interface', () => {
-    const slab = uniformSlab({ strikeDeg: 10, depthM: 30_000, depthUncertaintyM: 8_000 });
+    const slab = uniformSlab({
+      strikeDeg: 10,
+      depthM: 30_000,
+      depthUncertaintyM: 8_000,
+      dipDeg: null,
+    });
     const answer = chooseStrike(
       { latitude: lat, longitude: lon, hypocentreDepthM: 25_000, ruptureLengthM: 400_000 },
       slab,
@@ -69,7 +74,12 @@ describe('rule 300 — who answers, when both could', () => {
     // Valdivia in miniature: Mw 9.5 is 1 204 km of rupture, the slab is deeper
     // than any tolerance covers because a 1960 depth is a guess, and the only
     // fault in reach maps 90 km.
-    const slab = uniformSlab({ strikeDeg: 10, depthM: 45_000, depthUncertaintyM: 4_000 });
+    const slab = uniformSlab({
+      strikeDeg: 10,
+      depthM: 45_000,
+      depthUncertaintyM: 4_000,
+      dipDeg: null,
+    });
     const answer = chooseStrike(
       { latitude: lat, longitude: lon, hypocentreDepthM: 8_000, ruptureLengthM: 1_204_000 },
       slab,
@@ -117,7 +127,12 @@ describe('rule 300 — who answers, when both could', () => {
   it('296(b): a slab deeper than the seismogenic zone does not answer', () => {
     // An intraslab earthquake at 200 km, sitting exactly on the surface: the
     // interface is not what breaks there, and no crustal fault is in reach.
-    const slab = uniformSlab({ strikeDeg: 10, depthM: 200_000, depthUncertaintyM: 10_000 });
+    const slab = uniformSlab({
+      strikeDeg: 10,
+      depthM: 200_000,
+      depthUncertaintyM: 10_000,
+      dipDeg: null,
+    });
     const answer = chooseStrike(
       { latitude: lat, longitude: lon, hypocentreDepthM: 200_000, ruptureLengthM: 60_000 },
       slab,
