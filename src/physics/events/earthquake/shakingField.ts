@@ -40,7 +40,14 @@ export interface SiteReading {
 export interface ShakingFieldInput {
   rupture: RuptureFootprint;
   /** Rule 311: the scenario's own law, read forwards. */
-  intensityAt: (distanceM: number, vs30: number) => number;
+  /**
+   * The scenario's own law. The third argument is the cell's position
+   * ACROSS strike in metres, signed — the frame's own `y`, which is R_x
+   * for a law that has a hanging wall (rule 391). A ring has no such
+   * thing, which is why it is the field and not the rings that can carry
+   * that term; a law without one ignores it.
+   */
+  intensityAt: (distanceM: number, vs30: number, acrossStrikeM?: number) => number;
   /** Rule 310: the ground, wherever it comes from. */
   siteAt: (latitude: number, longitude: number) => SiteReading;
   /** Half the side of the square the field covers (m). */
@@ -127,7 +134,7 @@ export function evaluateShakingField(input: ShakingFieldInput): ShakingField {
       const at = row * points + col;
       vs30[at] = site.vs30;
       provenance[site.provenance] += 1;
-      mmi[at] = input.intensityAt(frameDistanceM(input.rupture, { x, y }), site.vs30);
+      mmi[at] = input.intensityAt(frameDistanceM(input.rupture, { x, y }), site.vs30, y);
     }
   }
 

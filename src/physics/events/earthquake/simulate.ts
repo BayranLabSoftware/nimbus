@@ -621,6 +621,8 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   const dipRad =
     (cbStyle === 'strike-slip' ? 90 : cbStyle === 'normal' ? 55 : 45) * (Math.PI / 180);
   const ztorKm = Math.max(0, depthKm - ((ruptureWidth as number) / 2_000) * Math.sin(dipRad));
+  /** Half the rupture's surface projection across strike (km). */
+  const halfWidthKm = ((ruptureWidth as number) / 2_000) * Math.cos(dipRad);
   // Rule 36 of validation/interfaceRules.ts: an interface model for a
   // scenario marked a subduction interface, Boore et al. 2014 otherwise.
   //
@@ -734,7 +736,7 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
    * `intensityAt(contourAt(mmi)) === mmi` holds them together — a law that
    * drifted between the two would draw contours the field disagrees with.
    */
-  const intensityAt = (distanceM: number, siteVs30: number): number => {
+  const intensityAt = (distanceM: number, siteVs30: number, acrossStrikeM?: number): number => {
     const dKm = Math.max(0, distanceM) / 1_000;
     const v = Number.isFinite(siteVs30) && siteVs30 > 0 ? siteVs30 : vs30;
     if (deepModel !== null) {
@@ -756,6 +758,19 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
       return modifiedMercalliIntensity(mps2(pgaG * STANDARD_GRAVITY * gm));
     }
     if (campbell) {
+      // Rule 391: the hanging wall, where the caller says which side of the
+      // trace this is. `acrossStrikeM` is the field's own y — signed, and
+      // positive where the plane dips — so a cell on the upthrown side gets
+      // the term and a ring, which has no side, gets nothing.
+      const hangingWall =
+        acrossStrikeM === undefined
+          ? undefined
+          : {
+              rxKm: acrossStrikeM / 1_000,
+              rjbKm: Math.max(0, Math.abs(acrossStrikeM) / 1_000 - halfWidthKm),
+              ztorKm,
+              widthKm: (ruptureWidth as number) / 1_000,
+            };
       const pgaG = campbellBozorgnia2014PgaAtEpicentralDistance(
         {
           magnitude: input.magnitude,
@@ -763,6 +778,7 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
           hypocentreDepth: m(depthKm * 1_000),
           topOfRuptureDepth: m(ztorKm * 1_000),
           style: cbStyle,
+          ...(hangingWall === undefined ? {} : { hangingWall }),
         },
         distanceM
       );

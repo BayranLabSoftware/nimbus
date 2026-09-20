@@ -111,4 +111,67 @@
  *       was learned is written down.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 397 and published
+ * as it came out: the candidate is REFUSED again, on the same band, and
+ * the run says something about the clause that refused it.
+ *
+ * Rule 392 — faithful to its source with the term in: PASSED. 864 cases
+ * across R_x, dip, Z_tor and width, worst disagreement 9.9e-16.
+ *
+ * Rule 393 — the areas, measured on the FIELD for both:
+ *
+ *   | measurement                  | geometric mean | scatter    | bands |
+ *   | ---------------------------- | -------------- | ---------- | ----- |
+ *   | rings, as the report quoted  | 0.81x          | sigma 1.32 | 10    |
+ *   | boore2014 on the field       | 0.73x          | sigma 1.34 | 10    |
+ *   | CB14 on the field, with HW   | **1.08x**      | sigma 1.39 | 9     |
+ *
+ *   The first two lines are the inconsistency this rule was written to
+ *   end: the same shipped law, measured two ways, is 0.81x from its rings
+ *   and 0.73x from the field the reader actually sees. Neither is wrong;
+ *   they are different geometries, and the report has been quoting the one
+ *   nobody looks at.
+ *
+ * Rule 394(a) — areas: FAILED, twice over. The scatter is wider (1.39
+ * against 0.73x's 1.34), and Northridge's MMI VIII band is still lost.
+ *
+ * Rule 394(c) — monotonicity in magnitude: PASSED, zero inversions.
+ * Rule 395 — the depth still does something: PASSED, 1.9 to 2.8 MMI
+ * degrees between 5 km and 50 km.
+ *
+ * Rule 396 — with the term and without it, on Northridge: MMI VII goes
+ * from 2 373 km² to 2 477, and the peak intensity from 7.60 to 7.73. The
+ * term is real and it is working. It is not enough, and the reason is
+ * geometric rather than seismological: MMI VIII needs 8.0, and CB14 puts
+ * Northridge's peak at 7.73 because the closest the rupture gets to the
+ * city, in the geometry rule 390 infers, is 14.2 km.
+ *
+ * WHY THAT NUMBER IS WHAT IT IS, and it is the finding of this round.
+ * Rule 390 builds the plane by hanging the rupture symmetrically about its
+ * hypocentre: Z_tor = depth − (W/2)·sin(dip), which for Northridge's focus
+ * at 19 km and a 13.7 km width gives 14.2 km. The real Northridge ruptured
+ * UPWARD from its focus and its top reached about 5 km. A rupture is not
+ * centred on its hypocentre, and no scaling law knows which way a
+ * particular one grew. The product cannot read it either — the shipped
+ * tiles carry a strike and nothing about where a rupture would nucleate on
+ * the plane.
+ *
+ * So the candidate loses a band because the product cannot know a piece of
+ * geometry, not because its physics is worse. And the law that wins that
+ * band wins it by ignoring depth altogether: Boore et al. 2014 reads R_jb
+ * = 0 above the rupture whatever the depth, so it draws MMI VIII — 79 km²
+ * of it, against the 823 the ShakeMap recorded, which is a tenth of the
+ * truth. The clause as written credits that and refuses 1.08x. It is
+ * published as written: a clause read after the fact is not a clause.
+ *
+ * WHAT WOULD SETTLE IT, for whoever picks this up: a rupture's top is a
+ * quantity the NGA-West2 programme itself estimates from magnitude and
+ * style when it is not known — Chiou & Youngs 2014 equations 4 and 5, which
+ * OpenQuake carries as `estimate_ztor`. Adopting that estimator is a
+ * change to rule 390's geometry, which means a round of its own with its
+ * own rules written first, and it must be adopted for BOTH contenders or
+ * it is a thumb on the scale.
+ */
+
 export const HANGING_WALL_RULES = 'rules 390 to 397, fixed 20 September 2026';

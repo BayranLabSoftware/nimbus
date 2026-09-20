@@ -65,6 +65,12 @@ const C = {
   c19: 0.00757,
   c20: -0.0055,
   dc20: 0,
+  a2: 0.167,
+  h1: 0.241,
+  h2: 1.474,
+  h3: -0.715,
+  h5: -0.337,
+  h6: -0.27,
   k1: 865,
   k2: -1.186,
   k3: 1.839,
@@ -77,6 +83,7 @@ const C = {
 /** The model's own constants (its `CONSTS`). */
 const N = 1.18;
 const C_NONLINEAR = 1.88;
+const H4 = 1.0;
 
 /** The reference rock the site term is measured against. */
 const ROCK_VS30 = 1100;
@@ -92,8 +99,22 @@ export interface CampbellBozorgniaInput {
   /** Depth of the hypocentre below the surface (m). */
   hypocentreDepth: Meters;
   style: StyleOfFaulting;
-  /** Dip of the fault plane (degrees). Only enters below Mw 5.5. */
+  /** Dip of the fault plane (degrees). Enters the dip term below Mw 5.5
+   *  and the hanging wall at every magnitude. */
   dipDeg?: number;
+  /**
+   * The hanging wall, where the geometry is known. All four are needed
+   * together, and without them the term is zero — which is the model's own
+   * behaviour off the upthrown side, and what rules 384 to 389 ran with.
+   *
+   * `rxKm` is SIGNED: positive on the side the plane dips towards.
+   */
+  hangingWall?: {
+    rxKm: number;
+    rjbKm: number;
+    ztorKm: number;
+    widthKm: number;
+  };
 }
 
 /**
@@ -144,6 +165,54 @@ function dipTerm(mw: number, dipDeg: number): number {
   return C.c19 * (5.5 - mw) * dipDeg;
 }
 
+/**
+ * Equations 7 to 16: the hanging wall.
+ *
+ * Five factors multiplied together, each of which can switch the term off
+ * on its own: the site must be on the upthrown side (R_x), the rupture
+ * must not be directly under it (R_rup against R_jb), the event must be
+ * big enough (Mw 5.5 up), its top must be shallow (nothing past 16.66 km),
+ * and the plane must actually dip (nothing at 90°). It is the term this
+ * project could not feed until it had a fault plane to build R_x from.
+ */
+function hangingWallTerm(input: {
+  magnitude: number;
+  rxKm: number;
+  rjbKm: number;
+  rrupKm: number;
+  ztorKm: number;
+  dipDeg: number;
+  widthKm: number;
+}): number {
+  const { magnitude: mw, rxKm, rjbKm, rrupKm, ztorKm, dipDeg, widthKm } = input;
+  // Equation 16: a vertical plane has no hanging wall.
+  const fDip = (90 - dipDeg) / 45;
+  if (fDip <= 0) return 0;
+  // Equation 15: nothing once the top of the rupture is deep.
+  const fZtor = ztorKm > 16.66 ? 0 : 1 - 0.06 * ztorKm;
+  if (fZtor <= 0) return 0;
+  // Equation 14: nothing below Mw 5.5.
+  const fMag =
+    mw < 5.5 ? 0 : mw > 6.5 ? 1 + C.a2 * (mw - 6.5) : (mw - 5.5) * (1 + C.a2 * (mw - 6.5));
+  if (fMag === 0) return 0;
+  // Equation 13: nothing where the rupture is directly below.
+  const fRrup = rrupKm > 0 ? (rrupKm - rjbKm) / rrupKm : 1;
+  // Equations 7 to 12: the distance across the trace, signed.
+  const r1 = widthKm * Math.cos((dipDeg * Math.PI) / 180);
+  const r2 = 62 * mw - 350;
+  let fRx: number;
+  if (rxKm < 0) fRx = 0;
+  else if (rxKm < r1) {
+    const ratio = r1 === 0 ? 0 : rxKm / r1;
+    fRx = C.h1 + C.h2 * ratio + C.h3 * ratio * ratio;
+  } else {
+    const span = r2 - r1;
+    const d = span === 0 ? 0 : (rxKm - r1) / span;
+    fRx = Math.max(0, H4 + C.h5 * d + C.h6 * d * d);
+  }
+  return C.c10 * fRx * fRrup * fMag * fZtor * fDip;
+}
+
 /** Equation 25: anelastic attenuation, beyond 80 km only. */
 function anelasticTerm(rrupKm: number): number {
   return rrupKm >= 80 ? (C.c20 + C.dc20) * (rrupKm - 80) : 0;
@@ -177,8 +246,18 @@ function baseTerms(input: CampbellBozorgniaInput): number {
     styleTerm(mw, input.style) +
     hypocentralDepthTerm(mw, depthKm) +
     dipTerm(mw, dip) +
-    anelasticTerm(rrupKm)
-    // + hangingWallTerm: not available here, see the file's header
+    anelasticTerm(rrupKm) +
+    (input.hangingWall === undefined
+      ? 0
+      : hangingWallTerm({
+          magnitude: mw,
+          rxKm: input.hangingWall.rxKm,
+          rjbKm: input.hangingWall.rjbKm,
+          rrupKm,
+          ztorKm: input.hangingWall.ztorKm,
+          dipDeg: dip,
+          widthKm: input.hangingWall.widthKm,
+        }))
     // + basinTerm: not available here, see the file's header
   );
 }
