@@ -93,6 +93,76 @@
  *  487. One run, no re-tuning.
  */
 
+/**
+ * THE OUTCOME, run once on 20 September 2026 under rule 487: REFUSED on
+ * the two toll clauses — and it is the closest anything has come, with
+ * one figure beaten for the first time.
+ *
+ *   (a) the peak, 1 100    ships +1.96, 16 %      union **+1.06, 48 %**   PASS
+ *   (b) the areas, 116     ships 0.393x           union **1.376x**        PASS
+ *                          cells 0.56 / 0.22 / 1.27  →  1.62 / 1.36 / 1.16
+ *   (c) the dead, net      ships 204.1            union 232.4             FAIL
+ *   (d) the quiet, 805     ships 1195             union 1847              FAIL
+ *                          toll >= 10:  23        union **22**
+ *                          reaches zero: 799      union 791
+ *
+ * WHAT THE TOP BAND WAS WORTH, which is why this round was run. Against
+ * CB14 + geometry without it, measured in rules 478 to 482:
+ *
+ *   quiet score     2280  ->  1847
+ *   toll >= 10        29  ->  **22**
+ *   bands at zero    776  ->  791
+ *
+ *   The diagnosis was right. The penalty was bands losing their zero, the
+ *   bound put fifteen of the twenty-three back, and the loud count is now
+ *   BELOW the shipped law's — the first toll figure any corrected-map
+ *   candidate has ever won.
+ *
+ * AND IT IS STILL REFUSED, on the interval score of both toll sets. What
+ * remains is eight quiet bands that no longer reach zero, and 652 points
+ * of quiet score, and 28 on the net.
+ *
+ * A FOURTH THING TO SAY ABOUT THESE CLAUSES, and it is structural rather
+ * than a mistake. For an earthquake that killed nobody the interval score
+ * is ln(high + 1) when the band reaches zero, so it is simply how large a
+ * toll the model was willing to contemplate. A model that draws smaller
+ * footprints contemplates smaller tolls and scores better, and a model
+ * that predicted nothing at all would score ZERO on all 805. The quiet set
+ * cannot be won by being right; it can be won by being timid.
+ *
+ * That is not an argument for ignoring it — rule 485(c) exists precisely
+ * to stop timidity, and the union fails that one too. But it does mean the
+ * two sets pull in opposite directions by construction, 805 events that
+ * reward drawing less against 18 that reward drawing enough, and this
+ * project has never weighed them against each other on purpose.
+ *
+ * WHAT THIRTEEN ROUNDS HAVE PRODUCED, stated plainly because the honest
+ * summary is now more useful than another candidate:
+ *
+ *   THE MAP IS SOLVED, as far as measurement can say. The union reads
+ *   1.376x on areas against 0.393x, with every cell closer to 1, and
+ *   +1.06 on the peak against +1.96 with three times as many peaks within
+ *   a degree. Both numbers come from juries shown fit for the question
+ *   first. Nothing in this project is in doubt about the map any more.
+ *
+ *   THE TOLLS ARE NOT, AND THE REASON IS MEASURED. The toll chain reads
+ *   correctly only when it is fed a footprint two and a half times too
+ *   small. Rules 478 to 482 proved the cost follows the exposure by
+ *   holding the peak fixed to the digit. Rule 455 acquitted PAGER's table
+ *   on a count. Rule 440 found one piece of the compensation, worth
+ *   fifteen of twenty-three lost zeros. The rest of the compensation is
+ *   still somewhere in how this project applies PAGER, and it is worth
+ *   about 650 points of quiet score.
+ *
+ *   SO THE NEXT STEP IS NOT A ROUND. Every remaining candidate of this
+ *   shape will fail the same clause for the same reason. What has to
+ *   happen is a decision about whether the toll chain is re-derived
+ *   against the corrected map — which means departing from PAGER as this
+ *   project currently applies it, and which is a choice about what Nimbus
+ *   is, not a measurement. That belongs to whoever owns the project and
+ *   not to a rule written inside it.
+ */
+
 export const UNION_RULES = 'rules 483 to 487, fixed 20 September 2026';
 
 /** Rule 483's candidate, in one place so the round and any later
