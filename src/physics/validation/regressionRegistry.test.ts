@@ -1597,13 +1597,50 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect((parsed.declared ?? [])[0]?.detail ?? '').toContain('V^(1/3)');
   });
 
+  it('B-079 a megathrust tsunami is refused on ground the model knows is dry', () => {
+    // A reader picked Tohoku, then changed the magnitude, the depth and the
+    // fault type and moved the epicentre to the San Andreas at San
+    // Bernardino, 100 km from the sea. The interface tick survived the move,
+    // and path 1 of the tsunami trigger never looked at the water: the
+    // result carried a tsunami source and the globe drew its cavity and a
+    // trans-oceanic propagation over southern California.
+    const inland = simulateEarthquake({
+      magnitude: 7.9,
+      depth: m(12_000),
+      faultType: 'strike-slip',
+      subductionInterface: true,
+      strikeAzimuthDeg: 200,
+      // What the store now writes when the elevation grid puts the
+      // epicentre above sea level: dry land, measured.
+      waterDepth: m(0),
+    });
+    expect(inland.isSubmarine).toBe(false);
+    expect(inland.tsunami).toBeUndefined();
+
+    // The guard is about KNOWN land, not about the absence of water. The
+    // megathrust presets carry no depth of their own — it comes from the
+    // bathymetry — and every model test that runs without a store would
+    // otherwise lose its wave, T1's 93 DART records included.
+    const preset = simulateEarthquake(EARTHQUAKE_PRESETS.TOHOKU_2011.input);
+    expect(preset.inputs.waterDepth).toBeUndefined();
+    expect(preset.tsunami).toBeDefined();
+
+    // And with real water over it, the wave is there as before.
+    const atSea = simulateEarthquake({
+      ...EARTHQUAKE_PRESETS.TOHOKU_2011.input,
+      waterDepth: m(4_000),
+    });
+    expect(atSea.isSubmarine).toBe(true);
+    expect(atSea.tsunami).toBeDefined();
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
   it('bug-registry table and tests stay in sync (count)', () => {
-    // B-001..B-076 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
-    // superseded by B-011).
-    const expectedRows = 76;
-    expect(expectedRows).toBe(76);
+    // B-001..B-079 (B-010 CLOSED via inputSchema.ts + safeRun.ts; B-007
+    // superseded by B-011; B-078 still OPEN and carries no test yet).
+    const expectedRows = 79;
+    expect(expectedRows).toBe(79);
   });
 });

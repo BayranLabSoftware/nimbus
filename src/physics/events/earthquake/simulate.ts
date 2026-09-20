@@ -900,7 +900,23 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   //   3. (Future) shallow large normal-fault on flexural bulge.
   const submarineTsunamiTrigger =
     isSubmarine && input.magnitude >= 6.5 && (faultType === 'reverse' || faultType === 'normal');
-  if (input.subductionInterface || submarineTsunamiTrigger) {
+  // Path 1 is a statement about the FAULT, and it used to be enough on its
+  // own — so a reader who ticked the interface box on a preset and then
+  // moved the epicentre inland kept the wave. A Mw 7.9 placed on the San
+  // Andreas at San Bernardino, 100 km from the sea, published a tsunami
+  // source and the globe drew its cavity and a trans-oceanic propagation
+  // (B-079, found by a reader looking at his own map).
+  //
+  // The guard is NOT `isSubmarine`. The megathrust presets — Tohoku,
+  // Sumatra, Lisbon — carry no `waterDepth` of their own: it is derived
+  // from the bathymetry by the store, and every test that runs the model
+  // without a store would lose its wave, T1's 93 DART records included.
+  // So the wave is refused only where the geography is KNOWN and says dry
+  // land: `waterDepth` present and not positive, which the store now
+  // writes as zero when the elevation grid puts the epicentre above sea
+  // level. Absent still means "nobody looked", and the flag still decides.
+  const onConfirmedLand = input.waterDepth !== undefined && (input.waterDepth as number) <= 0;
+  if ((input.subductionInterface === true && !onConfirmedLand) || submarineTsunamiTrigger) {
     result.tsunami = seismicTsunamiFromMegathrust({
       magnitude: input.magnitude,
       ruptureLength,

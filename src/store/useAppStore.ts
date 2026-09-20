@@ -3104,6 +3104,15 @@ export const useAppStore = create<AppStore>((set, get) => ({
           );
           if (z < OCEAN_FLOOR_M) {
             earthquakeInput = { ...earthquakeInput, waterDepth: m(-z) };
+          } else if (z > 0) {
+            // Dry land, measured. Zero is not the same as absent here: the
+            // model refuses a megathrust tsunami on land it KNOWS is dry,
+            // and treats an absent depth as "nobody looked" so that the
+            // presets and the offline tests keep their waves (B-079).
+            // Between the shoreline and OCEAN_FLOOR_M the ground is neither
+            // — a foreshore the tsunami pipeline has no business on — so it
+            // is left unset, exactly as before.
+            earthquakeInput = { ...earthquakeInput, waterDepth: m(0) };
           }
         }
         // Rule 188 of validation/basinDepthRules.ts: the ocean the wave
