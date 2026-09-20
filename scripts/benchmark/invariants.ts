@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { isMainThread, parentPort, Worker } from 'node:worker_threads';
 import { EARTH_RADIUS } from '../../src/physics/constants.js';
 import { simulateEarthquake } from '../../src/physics/events/earthquake/simulate.js';
@@ -53,9 +53,9 @@ const CHEMICAL_BLAST = process.env.NIMBUS_CHEMICAL_BLAST;
 const HALF_CIRCUMFERENCE = Math.PI * (EARTH_RADIUS as number);
 const EARTH_SURFACE = 4 * Math.PI * (EARTH_RADIUS as number) ** 2;
 
-type Json = Record<string, unknown>;
+export type Json = Record<string, unknown>;
 
-interface Hazard {
+export interface Hazard {
   name: string;
   sample: (u: () => number) => Json;
   grow: (input: Json, factor: number, step: 'monotone' | 'continuity') => Json;
@@ -72,7 +72,7 @@ const pick = <T>(u: number, xs: readonly T[]): T =>
 const scientific = (u1: number, u2: number, exponents: readonly number[]): number =>
   lin(u1, 1, 9.9) * 10 ** pick(u2, exponents);
 
-const HAZARDS: readonly Hazard[] = [
+export const HAZARDS: readonly Hazard[] = [
   {
     name: 'impact',
     sample: (u) => {
@@ -487,9 +487,16 @@ async function main(): Promise<void> {
   console.error(`wrote ${out}`);
 }
 
-if (isMainThread) {
+/** Run the sweep only when this file IS the command, not when another module
+ *  imports {@link HAZARDS} from it. Until 21 September 2026 the check was
+ *  `isMainThread` alone, so importing the samplers ran all 25 000 scenarios
+ *  as a side effect and wrote a results file nobody asked for. */
+const entry = process.argv[1];
+const isEntryModule = entry !== undefined && import.meta.url === pathToFileURL(entry).href;
+
+if (isMainThread && isEntryModule) {
   await main();
-} else {
+} else if (!isMainThread) {
   const port = parentPort;
   if (port !== null) {
     port.on('message', ({ hazard, input }: { hazard: string; input: Json }) => {
