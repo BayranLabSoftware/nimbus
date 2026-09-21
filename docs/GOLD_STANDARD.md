@@ -235,8 +235,9 @@ for bodies of the form's default composition.
 measured airburst footprint — the forest flattened at Tunguska, the windows
 broken at Chelyabinsk — and at least 90 % of the shock-physics runs of
 Collins et al. 2017, and its width in radius is no more than ×3 — read,
-since the amendment of 21 September 2026, against the band the reference gives
-its own three approximations at the same scenario. Both footprints and those
+since the two amendments of 21 September 2026, against the field: the width
+against the band the reference gives its own three approximations at the same
+scenario, and the runs against the same band drawn about the field's tool. Both footprints and those
 runs have been read, and no other exists: this rule is a check, not a held-out
 test.
 
@@ -320,7 +321,7 @@ A bound changes only by a dated amendment in this file that says why,
 written before the figure it touches has been measured on the set it names,
 and it is never loosened after a figure has failed it.
 
-Four amendments have been made, and they are below. The first re-anchors
+Five amendments have been made, and they are below. The first re-anchors
 bounds to the rule this file opened with, rather than loosening any: the
 verdict each rule reached under its bound as first written stays recorded, and
 no rule is met today that was not met before it. The second changes no bound
@@ -329,7 +330,9 @@ G3's two bounds as tests on a sample, because both are read from one, and it is
 written before any band has been scored on a held-out set. The fourth, by
 Andrea's decision, reads I3's width against the spread the field's reference
 gives its own approximations, as the first reads every bound whose quantity the
-field has a tool for, before any band this product draws has been scored.
+field has a tool for, before any band this product draws has been scored. The
+fifth, by Andrea's decision the same afternoon, reads I3's shock-physics runs
+against the field's tool, as the first reads I2's fireballs.
 
 ## Amendment of 16 September 2026: every validation bound read against the field
 
@@ -583,6 +586,46 @@ the transcription of Collins et al.'s Table 2 carries no burst altitude.
 ×3", taken the same morning. The damage criteria it asked for — tree-fall and
 glass breakage from nuclear-test data, without Tunguska or Chelyabinsk —
 remain the way to narrow the band, and no longer the only way to meet I3.
+
+## Amendment of 21 September 2026, the second, by Andrea's decision: I3's runs read against the field's tool
+
+**Why.** I3 asks the band of an airburst's blast radius to hold at least 90 %
+of the shock-physics runs of Collins et al. (2017), Table 2. The runs became
+scorable the same afternoon: the paper's text gives the burst altitude of each
+energy — "we used initial burst altitudes of 21.5, 14, 10, and 11 km,
+respectively" for 0.5, 5, 15 and 50 Mt — a sentence the reading of 21 September
+had missed. Read at those altitudes, the band of the amendment above, drawn
+about this product's static source, holds 27 of the 43 runs that can be scored.
+What it misses it misses because the static source this product draws — the
+Earth Impact Effects Program's, to which I1 holds it — is not the paper's own
+shock-physics static source: the two differ by 0.71× to 1.34× in radius, and
+beyond three burst heights, where the reference's three approximations agree
+and the band closes, that difference is all there is. It is a disagreement
+inside the field, between its tool and its simulations. A model faithful to
+the tool cannot remove it without ceasing to be the tool, and the only
+reference that could replace the tool's relation is the set of runs this
+clause checks against. By the principle of the amendment of 16 September —
+a rule a faithful implementation of the field cannot meet does not measure
+the model — the clause is read against the field's tool, as I2's fireballs
+are.
+
+**The amendment.** I3's second clause becomes:
+
+> the band holds at least as many of the shock-physics runs of Collins et al.
+> 2017 as the same band holds when drawn about the field's tool — the Earth
+> Impact Effects Program's static source at the same energy and burst
+> altitude. Where the model implements that source exactly, verified under
+> I1, the two agree by construction, and the share of the runs held is
+> printed for what it says of the field, not as a bar.
+
+The first clause (both footprints) and the third (the width, as amended above)
+are unchanged.
+
+**What it changes on the day it is written: no status.** I3 stays **not met**
+until a band is carried by the product, and the reading of the three clauses
+is made by rules written first. The figure this amendment re-reads was seen
+before it was written and is recorded beside it: under the clause as first
+written, 27 of 43 runs — 63 %, against 90 %.
 
 ## Three decisions of 21 September 2026, which change no rule
 

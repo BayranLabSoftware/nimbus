@@ -53,6 +53,21 @@
  *
  * The one row that does line up is 15 Mt: its least-squares altitude is
  * 10.36 km and "halfway between z_1% and z_50%" gives 10.37.
+ *
+ * CORRECTED THE SAME AFTERNOON: THE ALTITUDES ARE PRINTED. The paragraph
+ * before the table, on page 10 of the copy read, says: "In the static- and
+ * moving-source models, we used initial burst altitudes of 21.5, 14, 10,
+ * and 11 km, respectively, for the different energy scenarios. For the
+ * three lowest energy scenarios, these burst altitudes are between the
+ * worst-case (zb,1%) and median (zb,50%) scenarios from our Monte Carlo
+ * analysis, given by Equation 6. For the 50 Mt scenario, the burst altitude
+ * was set to the median burst altitude, because in the worst-case scenario
+ * the meteoroid strikes the ground." The 21.8, 17, 13.5 and 10.9 km read
+ * earlier are the altitudes of the SOVA comparison of the paper's Figure 9,
+ * for asteroids of 20 to 50 m, and belong to no row of this table. So the
+ * runs are scorable, at `TABLE_2_BURST_ALTITUDE_KM`; and this model's static
+ * source, at those altitudes and the rows' energies, reads 0.71× to 1.34×
+ * of the paper's S column.
  */
 
 /** One model's outcomes at one energy. `null` is the table's "n/a" — no
@@ -121,6 +136,15 @@ export const COLLINS_2017_TABLE_2: readonly Table2Row[] = [
   },
 ];
 
+/** The burst altitude of each row, km, as the paper's text prints it for
+ *  the static- and moving-source runs (see the correction above). */
+export const TABLE_2_BURST_ALTITUDE_KM: Readonly<Record<number, number>> = {
+  0.5: 21.5,
+  5: 14,
+  15: 10,
+  50: 11,
+};
+
 /** The three models, in the order the table's columns run. */
 export const TABLE_2_MODELS = ['static', 'moving', 'cylindricalLine'] as const;
 
@@ -134,6 +158,9 @@ export const ALTITUDE_ASSIGNMENTS = {
   statedInOrder: { altitudesKm: [21.8, 17, 13.5, 10.9], radiiWithinTenPercent: 1, of: 11 },
   /** "Approximately halfway between the worst-case and median scenarios". */
   halfwayOfEq6: { altitudesKm: [21.38, 14.21, 10.37, 5.85], worstRatio: 0.72, bestRatio: 1.09 },
+  /** The altitudes the paper prints, found the same afternoon: this
+   *  model's static source against the S column, where both are numbers. */
+  printed: { altitudesKm: [21.5, 14, 10, 11], worstRatio: 0.71, bestRatio: 1.34 },
   /** Least squares in log over each row's whole set of S values. */
   leastSquares: {
     altitudesKm: [17.52, 12.19, 10.36, 12.92],

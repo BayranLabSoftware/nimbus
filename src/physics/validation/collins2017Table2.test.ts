@@ -5,6 +5,7 @@ import { burstAltitudeKm, PUBLISHED, TREE_DAMAGE_KPA } from './airburstBandRules
 import {
   ALTITUDE_ASSIGNMENTS,
   COLLINS_2017_TABLE_2,
+  TABLE_2_BURST_ALTITUDE_KM,
   TABLE_2_MODELS,
   type TableEntry,
 } from './collins2017Table2.js';
@@ -16,11 +17,15 @@ import {
  * is in `collins2017Table2.ts` and this holds it to two things the paper's
  * own prose says about it, so a transcription error cannot pass.
  *
- * And the hour's real finding is that the table is NOT ENOUGH. It carries no
+ * And the hour's real finding was that the table is NOT ENOUGH. It carries no
  * burst altitude, and the three models are run at one. Three assignments
  * were tried and none stands up, so I3's "ninety per cent of the
- * shock-physics runs" is still not scorable — what is missing is one column,
+ * shock-physics runs" was not scorable — what is missing is one column,
  * and now the repository says exactly which.
+ *
+ * Corrected the same afternoon: the column is in the paper's text, the
+ * paragraph before the table — 21.5, 14, 10 and 11 km for 0.5, 5, 15 and
+ * 50 Mt (`TABLE_2_BURST_ALTITUDE_KM`) — and the runs are scorable.
  */
 
 const MT = 4.184e15;
@@ -147,5 +152,39 @@ describe('and the table is not enough: no row carries its burst altitude', () =>
     );
     expect(scorable).toBe(false);
     expect(TREE_DAMAGE_KPA.lower).toBe(10);
+  });
+});
+
+describe('the altitudes the paper prints for the table', () => {
+  it('are the four of its text, three between z_1% and z_50% and the fourth the median', () => {
+    expect(COLLINS_2017_TABLE_2.map((r) => TABLE_2_BURST_ALTITUDE_KM[r.energyMt])).toEqual([
+      21.5, 14, 10, 11,
+    ]);
+    for (const energyMt of [0.5, 5, 15]) {
+      const z = TABLE_2_BURST_ALTITUDE_KM[energyMt] ?? NaN;
+      expect(z, `${String(energyMt)} Mt`).toBeGreaterThan(burstAltitudeKm(energyMt, 1));
+      expect(z).toBeLessThan(burstAltitudeKm(energyMt, 50));
+    }
+    // "For the 50 Mt scenario, the burst altitude was set to the median".
+    expect(burstAltitudeKm(50, 50)).toBeCloseTo(11.5, 1);
+    expect(ALTITUDE_ASSIGNMENTS.printed.altitudesKm).toEqual([21.5, 14, 10, 11]);
+  });
+
+  it("put this model's static source at 0.71 to 1.34 of the paper's", () => {
+    const ratios: number[] = [];
+    for (const row of COLLINS_2017_TABLE_2) {
+      const z = (TABLE_2_BURST_ALTITUDE_KM[row.energyMt] ?? NaN) * 1_000;
+      for (const kPa of ['1', '10', '20', '35'] as const) {
+        const paper = num(row.rangeKm[kPa][0]);
+        if (paper === undefined) continue;
+        const model =
+          Number(
+            airburstReach((Number(kPa) * 1_000) as Pascals, m(z), (row.energyMt * MT) as Joules)
+          ) / 1_000;
+        if (model > 0) ratios.push(model / paper);
+      }
+    }
+    expect(Math.min(...ratios)).toBeCloseTo(ALTITUDE_ASSIGNMENTS.printed.worstRatio, 2);
+    expect(Math.max(...ratios)).toBeCloseTo(ALTITUDE_ASSIGNMENTS.printed.bestRatio, 2);
   });
 });
