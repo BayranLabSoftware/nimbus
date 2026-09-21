@@ -47,8 +47,11 @@ import {
  * fills, V ≤ B_max · L — it passes with a factor of 7 to spare, on all
  * 1 435. That reading was made after the run and is recorded as such.
  *
- * ONE REAL, and it is registered as B-087 rather than fixed, as rule 611
- * requires. 53 of 5 000 earthquakes imply a fault slip above 100 m, the
+ * ONE REAL, registered as B-087 rather than fixed, as rule 611 requires —
+ * and then closed in its own round the same night, by rules 613 to 620,
+ * which gave the rupture area a floor of M₀/(μ·D_max). The 53 went to
+ * none, with ten readings sitting ON the bound and over it by 3 × 10⁻¹⁴ m,
+ * which is the square root's own rounding. What the round found was: 53 of 5 000 earthquakes imply a fault slip above 100 m, the
  * worst 186.2 m — where the largest slip ever measured is Tōhoku's ≈ 50 to
  * 60 m and the bound was set at twice it so that it could only fire on the
  * impossible. Every one of the 53 is a NORMAL fault, off the subduction
@@ -111,39 +114,45 @@ describe('rules 605 to 612: what comes out is not more than what went in', () =>
     ).toBeCloseTo(13, 0);
   });
 
-  it('B-087: a normal fault slipping further than any fault has', () => {
-    // The 53. Every one is a normal fault off the interface above Mw 9.6,
-    // and the geometry is Wells & Coppersmith's normal-fault regression,
-    // whose own dataset stops near Mw 7.3.
+  it('B-087: a normal fault that was slipping further than any fault has', () => {
+    // CLOSED by rules 613 to 620, the same night. What the audit found is
+    // kept here as the nominal geometry — the rupture the scaling relation
+    // returns, before `simulate.ts` applies the area floor — because that is
+    // what the 53 readings were.
+    const magnitude = 9.833853679476306;
+    const nominalLength = Number(surfaceRuptureLength({ magnitude, faultType: 'normal' }));
+    const nominalWidth = Number(surfaceRuptureWidth({ magnitude, faultType: 'normal' }));
+    expect(nominalLength / 1_000).toBeCloseTo(807, 0);
+    expect(nominalWidth / 1_000).toBeCloseTo(200, 0);
+
     const r = simulateEarthquake({
-      magnitude: 9.833853679476306,
+      magnitude,
       depth: m(608_577.5586776435),
       vs30: 138.09486301080557,
       faultType: 'normal',
       subductionInterface: false,
     } as never);
-    expect(Number(r.ruptureLength) / 1_000).toBeCloseTo(807, 0);
-    expect(Number(r.ruptureWidth) / 1_000).toBeCloseTo(200, 0);
+    // On that geometry the moment needed 146.2 m of slip.
+    expect(slipOf(Number(r.seismicMoment), nominalLength, nominalWidth)).toBeCloseTo(146.2, 1);
+    // On the geometry the product now uses, it needs the bound and no more.
     const slip = slipOf(Number(r.seismicMoment), Number(r.ruptureLength), Number(r.ruptureWidth));
-    expect(slip).toBeCloseTo(146.2, 1);
-    expect(slip).toBeGreaterThan(MAX_CREDIBLE_SLIP_M);
+    expect(slip).toBeCloseTo(MAX_CREDIBLE_SLIP_M, 6);
+    expect(slip).not.toBeGreaterThan(MAX_CREDIBLE_SLIP_M + 1e-9);
+
     // And it is the relation being outside its box, not the moment being
     // wrong: the interface scaling at the same magnitude gives a rupture
-    // four times the area and a slip a fault could have.
+    // four times the area and a slip a fault could have, with no floor
+    // needed at all.
     const interfaceArea =
-      Number(megathrustRuptureLength(9.833853679476306)) *
-      Number(megathrustRuptureWidth(9.833853679476306));
-    const normalArea =
-      Number(surfaceRuptureLength({ magnitude: 9.833853679476306, faultType: 'normal' })) *
-      Number(surfaceRuptureWidth({ magnitude: 9.833853679476306, faultType: 'normal' }));
-    expect(interfaceArea / normalArea).toBeGreaterThan(4);
+      Number(megathrustRuptureLength(magnitude)) * Number(megathrustRuptureWidth(magnitude));
+    expect(interfaceArea / (nominalLength * nominalWidth)).toBeGreaterThan(4);
     expect(
       slipOf(
         Number(r.seismicMoment),
-        Number(megathrustRuptureLength(9.833853679476306)),
-        Number(megathrustRuptureWidth(9.833853679476306))
+        Number(megathrustRuptureLength(magnitude)),
+        Number(megathrustRuptureWidth(magnitude))
       )
-    ).toBeLessThan(MAX_CREDIBLE_SLIP_M);
+    ).toBeCloseTo(33.74, 1);
   });
 
   it('leaves everything a fault really does alone', () => {

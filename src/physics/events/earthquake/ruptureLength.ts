@@ -137,3 +137,53 @@ export function megathrustRuptureWidth(magnitude: number): Meters {
   const WkmLog = -0.882 + 0.351 * magnitude;
   return m(10 ** WkmLog * 1_000);
 }
+
+/**
+ * Rules 613 to 620 — a rupture big enough for its own moment.
+ *
+ * M₀ = μ·L·W·D ties the moment, the rupture and the slip together, so a
+ * rupture that comes back too small for its moment makes the slip
+ * impossible rather than making itself bigger. B-087 is what that looks
+ * like: Wells & Coppersmith's normal-fault regressions, five magnitude
+ * units past their own dataset, returning 807 × 200 km at Mw 9.83 for a
+ * moment that then needs 146.2 m of slip out of it.
+ *
+ * So the area has a floor, M₀ / (μ · D_max), and the scaling relations are
+ * used unchanged below it. The rules name these functions; they live here,
+ * with the physics, because a physics module has no business importing a
+ * validation one.
+ */
+
+/** Crustal rigidity, Pa. The same value rules 605 to 612 fixed. */
+export const CRUSTAL_RIGIDITY_PA = 3e10;
+
+/**
+ * The largest slip this product will let a rupture imply, in metres —
+ * twice Tōhoku's measured 50 to 60 m, the largest ever recorded. Rule 614
+ * takes it from rules 605 to 612, where it was fixed before any of this
+ * was measured; `conservationInvariants.test.ts` holds the two equal.
+ */
+export const MAX_CREDIBLE_SLIP_M = 100;
+
+/** The smallest rupture area a moment can be carried on, m². */
+export function ruptureAreaFloor(seismicMomentNm: number): number {
+  if (!Number.isFinite(seismicMomentNm) || seismicMomentNm <= 0) return 0;
+  return seismicMomentNm / (CRUSTAL_RIGIDITY_PA * MAX_CREDIBLE_SLIP_M);
+}
+
+/**
+ * Rule 615: grow a rupture to its own moment's floor, keeping the aspect
+ * ratio the scaling relation gave it. Returns the factor L and W are each
+ * multiplied by — 1 whenever the rupture is already big enough, which is
+ * everything at or below Mw 9.5 on every fault type.
+ */
+export function ruptureGrowthForMoment(
+  lengthM: number,
+  widthM: number,
+  seismicMomentNm: number
+): number {
+  const area = lengthM * widthM;
+  if (!Number.isFinite(area) || area <= 0) return 1;
+  const floor = ruptureAreaFloor(seismicMomentNm);
+  return floor > area ? Math.sqrt(floor / area) : 1;
+}

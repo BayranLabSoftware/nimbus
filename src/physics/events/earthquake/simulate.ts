@@ -46,6 +46,7 @@ import {
   surfaceRuptureLength,
   surfaceRuptureWidth,
   type FaultType,
+  ruptureGrowthForMoment,
 } from './ruptureLength.js';
 import { seismicMomentFromMagnitude } from './seismicMoment.js';
 import { seismicTsunamiFromMegathrust, type SeismicTsunamiResult } from './seismicTsunami.js';
@@ -532,16 +533,28 @@ export function simulateEarthquake(input: EarthquakeScenarioInput): EarthquakeSc
   const megathrustScaling =
     (input.ruptureScaling ??
       (input.subductionInterface === true ? 'strasser' : 'wellsCoppersmith')) === 'strasser';
-  const ruptureLength =
+  const nominalRuptureLength =
     input.ruptureLengthOverride ??
     (megathrustScaling
       ? megathrustRuptureLength(input.magnitude)
       : surfaceRuptureLength({ magnitude: input.magnitude, faultType }));
-  const ruptureWidth =
+  const nominalRuptureWidth =
     input.ruptureWidthOverride ??
     (megathrustScaling
       ? megathrustRuptureWidth(input.magnitude)
       : surfaceRuptureWidth({ magnitude: input.magnitude, faultType }));
+  // Rules 613 to 620: a rupture big enough for its own moment. M0 = mu L W D,
+  // so a rupture too small for its moment makes the slip impossible instead
+  // of making itself bigger — B-087, an 807 x 200 km normal fault asked to
+  // carry 7.09e23 N.m on 146.2 m of slip. The factor is 1 for everything at
+  // or below Mw 9.5 on every fault type, so nothing the world has done moves.
+  const ruptureGrowth = ruptureGrowthForMoment(
+    nominalRuptureLength,
+    nominalRuptureWidth,
+    seismicMoment
+  );
+  const ruptureLength = m((nominalRuptureLength as number) * ruptureGrowth);
+  const ruptureWidth = m((nominalRuptureWidth as number) * ruptureGrowth);
   // Extended-source threshold: 7.5 sits at the elbow where the W&C
   // surface-rupture length (≈ 50 km) starts to exceed the MMI VII
   // point-source attenuation radius (≈ 35–55 km depending on faultType
