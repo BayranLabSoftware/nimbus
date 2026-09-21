@@ -100,6 +100,17 @@ no rule, no bound and no status.
   answered to 8.2°: Slab2 carries the Main Himalayan Thrust that the fault
   database does not. What was missing was the file and not the law.
 
+- **Amended 21 September 2026, by Andrea's decision: a 9 is pursued on every
+  domain, waves from earthquakes included — and on one domain at a time.**
+  Andrea accepted that day the plan of `ROADMAP.md`, M11, with a condition that
+  answers the paragraph below rather than overruling it: the work goes
+  **domain by domain, and never moves to another domain without Andrea's
+  explicit order**. The risk the paragraph below names — effort spread over
+  six domains moving each by a tenth — is the risk of working on six at once,
+  and that is now forbidden. The two paragraphs above stand as written; no
+  rule, bound or status of this file changes with this one, and the count is
+  the same count.
+
 The reason is the one the work of 15 and 16 September showed: effort spread
 over six domains moved each of them by a tenth. A project that says where it
 aims for a 9 and where it does not makes a claim that can be checked; one that
@@ -518,6 +529,49 @@ set, or of the rules they follow; the earthquake toll's band, the only one read
 against records, was read by the scorecard's own statistics and not by G3. So
 no figure that failed is being re-read under a looser rule. What changes is that
 a band which is right can now pass, and one which is wrong still cannot.
+
+## Three decisions of 21 September 2026, which change no rule
+
+Taken in the plan Andrea asked for that morning, and accepted by Andrea
+(`ROADMAP.md`, M11). None of them moves a bound, and none moves a status: a
+status still changes only with the verdict that changes it.
+
+**G5 is read by its text.** G5 asks that five thousand scenarios finish,
+give finite numbers, no area larger than the Earth, no distance past the
+antipode, and are _monotone wherever the physics is_. It asks nothing of
+continuity. The continuity check the verdicts of 16 and 19 September counted
+belongs to the benchmark's invariants track, where
+`BENCHMARK_PROTOCOL.md` defines it as **continuity at regime switches**, and
+the harness applied it to every output at every point. The thirteen impact
+failures and the sixteen earthquake failures it reported are threshold
+contours at their birth or ill-conditioned near it, **none at a regime
+switch** (`events/impact/ringBirth.test.ts` proves the impact ones: the ring
+grows as the square root of the excess, so no correct model can pass a
+continuity test on its radius there). So the harness is corrected to the
+protocol's own definition, and it is made **stricter** where the physics is
+continuous: the _field_ — overpressure, intensity — is checked for
+continuity at fixed places, everywhere. The corrected harness gets its rules
+before it runs, and G5 is re-read only by its run, one domain at a time.
+
+**I3 keeps its ×3.** Measured on 18 September, the model's scatter against the
+twenty shock-physics ranges is σ_ln 0.24 — a band at that scatter holds
+nineteen of twenty and is ×2.18 wide — and what the band cannot hold is the
+two footprints, because damage is read from a single overpressure threshold
+whose value the literature does not fix better than a factor of three. The
+decision is to meet I3 by modelling the **damage** rather than widening the
+**band**: a tree-fall criterion and a glass-breakage criterion from the
+field's own data (nuclear tests on forests and windows), calibrated without
+Tunguska or Chelyabinsk, and then the check. If the band still needs more
+than ×3, I3 stays not met.
+
+**Nothing is printed where no verified relation holds.** G4 allows a number
+outside the measured cells with a warning, and L1 allows a relation outside
+its fitted ranges with a warning. The product holds itself to more: where no
+relation verified under G1 covers the scenario, it prints **no number** and
+says why, because a laboratory quotes the number and not the warning beside
+it. Where the field computes such a case with a numerical model — a
+submarine slide past every closed form — the product may earn it back with a
+numerical model of its own, verified as G1 asks.
 
 ## Where each domain stands, 15 September 2026
 

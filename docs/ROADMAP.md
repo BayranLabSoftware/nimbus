@@ -217,7 +217,172 @@ work towards it, so that the bar does not move with the work.
 
 ---
 
-## M10 — The road to a 9, counted rule by rule _(open, 20 September 2026)_
+## M11 — A 9 on every domain, one domain at a time _(accepted 21 September 2026)_
+
+Andrea asked on the morning of 21 September for a plan to a 9 on everything,
+"reasoned to perfection, with no compromise", and accepted it the same
+morning with two conditions, which are part of it:
+
+- **The work goes domain by domain, and never moves to another domain without
+  Andrea's explicit order.**
+- **On the globe, everything is drawn with the scientific fidelity a software
+  like this one owes its readers** — a domain is not done until it is (the
+  list is below).
+
+M10 stays below as it was written: its arithmetic and its three problems are
+still true, and two of its claims are corrected here rather than rewritten
+there. This section supersedes its order.
+
+### The reasoning
+
+A 9 does not come from tuning coefficients: days of it moved no grade. It
+comes one way, which the rules already say: **where the field has a tool, a
+bound is read against that tool on the same rows** (the amendment of
+16 September). So where the model _becomes_ the field's tool, verified under
+G1, every accuracy rule on that quantity closes by reading a new set, and
+what is left is data. Where no tool of the field exists — the dead of an
+explosion, an eruption, a tsunami — the model must earn the bound itself.
+That is the real risk, and it is treated apart.
+
+### Working rules
+
+1. **No rule is loosened.** Not even where it would be convenient.
+2. **The model becomes the field's tool** — rewritten from the publications
+   and verified black-box against the real program run here. No copying.
+3. **No held-out set is read before the model of that quantity is final.**
+   Development happens on declared development data; each held-out set is
+   read once, last.
+4. **Data is counted before anything is built.** Counting rows without reading
+   their values does not spend them — NCEI's run-ups were counted that way.
+5. **Nothing is printed where no verified relation holds** (GOLD_STANDARD,
+   the decisions of 21 September).
+6. **One domain at a time**, and the next one only by Andrea's order.
+7. **A domain is done only when the globe draws it faithfully.**
+
+### The three decisions
+
+Written in `GOLD_STANDARD.md`, "Three decisions of 21 September 2026, which
+change no rule": G5 is read by its text, with the harness corrected to the
+protocol's own definition and made stricter where the physics is continuous;
+I3 keeps its ×3 and is met by modelling the damage instead of widening the
+band; and nothing is printed where no verified relation holds.
+
+### What this corrects
+
+- **T2 is not a dead end.** NCEI's table holds **594 events no rule has ever
+  compared with the model** — dropped on 16 September only because each had
+  fewer than thirty observations (`runupSetData.ts`,
+  `RUNUP_EVENTS_TOO_SMALL`). And under the re-anchored bound T2 is pending the
+  reference, GeoClaw on the same coastal bins, not failed.
+- **T1 has been met since 20 September** (`ec25310`: Nimbus no worse than
+  GeoClaw on 93 DART records), but `goldStandardScorecard.ts` still reads it
+  pending over a flat ocean, so the report counts waves from earthquakes at
+  1.8 where the verdict gives 2.7. **E1's evidence line is stale too**: it
+  says five scenarios, where 300 held-out ShakeMaps were read on 20 September.
+  Both are the scorecard not following a verdict already written; they are
+  corrected when their domain is opened, or earlier if Andrea orders it.
+- **E1's 300 maps are spent.** E1 needs a new set of 300, disjoint by rule.
+- **E3 has a floor set by the calendar, not by this project.** Every NCEI
+  earthquake record of 2008 to 2025 of magnitude 4 or more has been read, so
+  E3 can only be met on earthquakes after 15 September 2026 — about eighty a
+  year, fewer with dead — or on a set before 1973, opened by rules of its own,
+  with PAGER's own empirical model run on it. Both are legitimate; neither is
+  quick. **No read row is ever read again to shorten this.**
+
+### Three machines, each built in the first domain that needs it
+
+| Machine                                                                                                              | Domains                                                         | Rules                                                           |
+| -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| **Fidelity to the field's tools**                                                                                    | all                                                             | G1, I1, N1, V1, L1, and every accuracy rule read against a tool |
+| **A shallow-water solver in the browser** — BROWNI shows 25 hours of propagation in 1.6 minutes on an integrated GPU | waves from earthquakes; submarine slides past every closed form | G1 of the waves, T1–T3, L1                                      |
+| **Calibrated bands and measured cells**                                                                              | all                                                             | G3, G4, L3, T5, E4, E5, V6                                      |
+
+### Domain by domain
+
+- **Impacts, 4.0 → 9.** Already the field's tool (I1, 11 of 11). Left: G5 (the
+  real monotonicity failures), I3 (damage criteria), G4 (cells from the 357
+  fireballs already read), G3 (the entry altitude's band, on fireballs no rule
+  has read), G6.
+- **Waves from landslides, 4.5 → 9.** L1 under decision three, with the
+  solver earning back the submarine regime; L3, the sampler and at least ten
+  landslide waves disjoint from the forty-three read; G6.
+- **Explosions, 3.3 → 9.** N2 closes on its set, since the model is Glasstone
+  and Kingery–Bulmash: at least eight accidental explosions with a mapped
+  damage radius. N3 has no tool of the field: a model of the dead built with
+  the band the rule asks for (mortality and population, not the yield alone),
+  developed on Hiroshima, Nagasaki and Beirut, read on at least ten new ones.
+- **Volcanoes, 2.2 → 9.** V1 with LaharZ on real terrain; V2, V3 and V4 close
+  on their sets, since the model is Mastin, Tephra2 and the energy cone; V5
+  has no tool: a model of the dead developed on one part of Brown et al.
+  (2017), read on at least fifteen eruptions split from it by rule before
+  either is looked at.
+- **Waves from earthquakes, 1.8 (2.7 by its verdicts) → 9.** The solver, held
+  to GeoClaw run here and to the NTHMP benchmark cases within 1 %; a nested
+  nonlinear solver at the coast for the run-up, the heaviest piece of the
+  whole plan; arrivals corrected for the delay shallow water carries by
+  construction. Then T3 on T1's buoys, T2 on the 594 events, T4.
+- **Earthquakes, 1.0 → 9.** No more choosing between laws: the model becomes
+  **ShakeMap in scenario mode** — its ground-motion models, its site terms,
+  its distances, its conversion to intensity — each verified against the
+  ShakeMap that runs here, and **PAGER** for the dead, its empirical model with
+  its country parameters. B-083's seam goes with it, since it was a threshold
+  of ours. Then E1 on a new 300, E2, and E3 as above.
+
+### What "drawn faithfully" means on the globe
+
+Checked for every domain before it is called done:
+
+1. Every geometry is the model's own number — the one the panel and the
+   report print and Node computes (G5's second clause), checked by the globe
+   audit.
+2. On the sphere: caps, geodesic polygons, horizon cuts. No planar circle
+   stands in for a cap.
+3. Every contour with its band once the domain has one, not a bare line.
+4. Labelled with its quantity, threshold and unit; provenance one click away.
+5. Outside the measured cells (G4), or outside every verified relation
+   (decision three), said **on the globe**, not only in the panel.
+6. Nothing decorative that reads as a physical claim — no glow that looks
+   like a footprint, no colour ramp implying a gradient the model does not
+   compute.
+7. Every preset and a sweep of custom scenarios, audited and photographed
+   headless.
+
+### Domain 1: impacts
+
+| Task      | What                                                                                                                                                                                                            | Closes                             |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| **IMP-0** | Census: fireballs outside the 357 read (CNEOS since I2's reading, other networks), counted not read; every gap the report declares for impacts, classified — ceiling, closed by this domain, or work of its own | tells whether IMP-6 can happen now |
+| **IMP-1** | G5's harness corrected (decision one), rules first, one run                                                                                                                                                     | —                                  |
+| **IMP-2** | G5's real monotonicity failures: the one case in 408; the crater transition joined as a named departure; the seafloor cutoff; the 38 airburst magnitudes, physics or defect                                     | G5                                 |
+| **IMP-3** | I3: tree-fall and glass-breakage criteria from nuclear-test and explosion data, without Tunguska or Chelyabinsk; then the check at ×3                                                                           | I3                                 |
+| **IMP-4** | The band machinery, first instance, generic: model error sampled on every quantity the impact rules name                                                                                                        | —                                  |
+| **IMP-5** | The cell machinery, first instance, generic: the product says for every input whether it lies in I2's measured cells; the report prints G2 and G3 cell by cell                                                  | G4                                 |
+| **IMP-6** | G3: the entry altitude's band read on IMP-0's fireballs, only after IMP-4 is frozen                                                                                                                             | G3                                 |
+| **IMP-7** | The globe, faithful, for everything an impact draws                                                                                                                                                             | exit                               |
+| **IMP-8** | G6: every impact gap that is not a ceiling, closed                                                                                                                                                              | G6                                 |
+| **IMP-9** | The verdict: the report regenerated, and impacts at 9 — or exactly what is missing, and why                                                                                                                     | —                                  |
+
+Then the work **stops** and waits for Andrea's order. The order suggested
+after impacts, each only by that order: waves from landslides, volcanoes,
+explosions, waves from earthquakes, earthquakes.
+
+### The risks, and what is done about each
+
+| Risk                                   | Where               | What is done                                                                                            |
+| -------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------- |
+| A model of the dead that fails its set | N3, V5, T4          | developed only on development data, frozen, read once; a failed read spends the set, so these come last |
+| Too few events                         | N2, L3, impacts' G3 | the census says so at the start of the domain, not at the end                                           |
+| The solver too heavy for a phone       | waves               | a grid that adapts to the device, verified at every resolution the product uses                         |
+| A set read and failed                  | every domain        | never read again and never tuned on: recorded, the model improved, a new set sought                     |
+| The calendar                           | E3, E4              | new earthquakes accumulate at their own pace; a set before 1973 is the other honest route               |
+
+**Exit.** Every rule of `GOLD_STANDARD.md` holds at one commit, carrying no
+gap but the ceilings, every domain drawn faithfully on the globe; then C1 to
+C3, in that order.
+
+---
+
+## M10 — The road to a 9, counted rule by rule _(open, 20 September 2026; its order superseded by M11 on 21 September)_
 
 M9 is the shape of the work. This is the arithmetic of what is left of
 it, read on 20 September 2026 from the scorecard the report
