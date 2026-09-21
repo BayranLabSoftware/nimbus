@@ -24,11 +24,14 @@ const B097 = {
   impactAngle: 0.8228827580155595,
 } as unknown as ImpactScenarioInput;
 
+// The iron field these rules were written and run with (the cut at 20 m, until
+// rules 764 to 771): B-097's body is an iron, which digs as one since.
 const run = (input: ImpactScenarioInput, size: number, law: LowBurstCrater): Result =>
   simulateImpact({
     ...input,
     impactorDiameter: m(Number(input.impactorDiameter) * size),
     lowBurstCrater: law,
+    ironCraterField: 'cut',
   });
 
 /** Bodies of every entry regime the form draws, the presets, and B-097's
@@ -116,10 +119,11 @@ describe('rules 756 to 763: a low airburst digs where its kept energy strikes th
       const hazard = {
         ...impact,
         run: (input: Record<string, unknown>) =>
-          simulateImpact({ ...input, lowBurstCrater: law } as never) as unknown as Record<
-            string,
-            unknown
-          >,
+          simulateImpact({
+            ...input,
+            lowBurstCrater: law,
+            ironCraterField: 'cut',
+          } as never) as unknown as Record<string, unknown>,
       };
       return (size: number, body: ImpactScenarioInput = B097) =>
         checkScenario(hazard, {

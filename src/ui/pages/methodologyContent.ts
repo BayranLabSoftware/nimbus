@@ -157,6 +157,14 @@ const glasstoneDolan1977: Citation = {
   doi: '10.21236/ADA087568',
 };
 
+const blandArtemieva2006: Citation = {
+  authors: 'Bland, P. A. & Artemieva, N. A.',
+  year: 2006,
+  title: 'The rate of small impacts on Earth',
+  venue: 'Meteoritics & Planetary Science 41 (4), 607–631',
+  doi: '10.1111/j.1945-5100.2006.tb00485.x',
+};
+
 const harkrider1974: Citation = {
   authors: 'Harkrider, D. G., Newton, C. A. & Flinn, E. A.',
   year: 1974,
@@ -702,7 +710,7 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         name: 'Transient crater diameter',
         formula: 'D_tc = 1.161 · (ρ_i/ρ_t)^(1/3) · L^0.78 · v^0.44 · g^(−0.22) · sin^(1/3)(θ)',
         description:
-          'π-group scaling, Collins et al. 2005 Eq. 21*: the diameter of the transient crater at the pre-impact surface, for solid rock where gravity stops the growth. The constant 1.161 is a best estimate within 0.8–1.5. v is the speed the body or its swarm strikes the ground at. Nimbus then scales D_tc by f_seafloor^(1/3.4) for the energy a water column keeps from the seafloor, and by 0.15 for the largest crater of an iron strewn field; and a complete airburst that bursts at z_b below the radius R = 0.002 E^(1/3) of the fireball of the energy E it keeps there (Eq. 32*) digs with the share 1 − z_b/R of its mass at its burst speed, since 21 September 2026 (rules 756 to 763): the share its flash and its magnitude read, so that at z_b = 0 it digs the partial airburst’s crater it becomes, where until then a crater opened at full size — all Nimbus steps, not in Collins et al.',
+          'π-group scaling, Collins et al. 2005 Eq. 21*: the diameter of the transient crater at the pre-impact surface, for solid rock where gravity stops the growth. The constant 1.161 is a best estimate within 0.8–1.5. v is the speed the body or its swarm strikes the ground at. Nimbus then scales D_tc by f_seafloor^(1/3.4) for the energy a water column keeps from the seafloor, and by 0.15 for the largest crater of an iron’s strewn field (below); and a complete airburst that bursts at z_b below the radius R = 0.002 E^(1/3) of the fireball of the energy E it keeps there (Eq. 32*) digs with the share 1 − z_b/R of its mass at its burst speed, since 21 September 2026 (rules 756 to 763): the share its flash and its magnitude read, so that at z_b = 0 it digs the partial airburst’s crater it becomes, where until then a crater opened at full size — all Nimbus steps, not in Collins et al.',
         citation: collins2005,
       },
       {
@@ -713,6 +721,15 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         description:
           'Rim-to-rim diameter of the fresh crater after collapse. The two fits do not join: at D_tc = 2.56 km the simple rule gives 3.20 km and the complex one 2.91 km. Since 21 September 2026 (rules 647 to 653) the complex fit is held at D_c until it reaches it — a transient of 2.56 to 2.78 km on Earth — so that a larger transient never leaves a smaller crater; everywhere else it is Eq. 27* exactly.',
         citation: collins2005,
+      },
+      {
+        id: 'iron-crater-field',
+        name: 'Crater of an iron that breaks up',
+        formula:
+          'm ≤ 3 × 10⁶ kg:  D_tc = 0.15 · D_tc(v₀)   (strewn field) ;  m ≥ 10⁷ kg:  D_tc = D_tc(v_end)   (one crater) ;  between:  D_tc = (0.15 · D_tc(v₀))^w · D_tc(v_end)^(1 − w),  w = log(10⁷ / m) / log(10⁷ / 3 × 10⁶)',
+        description:
+          'An iron’s fragments are strong and heavy and do not spread as the pancake spreads a stony body: they reach the ground and dig, and how depends on how far apart they land. Bland & Artemieva (2006) ran their separated-fragments model on irons of 1 kg to 10⁸ kg at an average 18 km/s and 45°: fragmented irons under 2–3 × 10⁶ kg form multiple craters, and above 10⁷ kg closely spaced fragments form one simple crater, as Melosh (1981) had proposed; between, a strewn field becomes an irregular crater and then a single one. The terrestrial record agrees — nine of the fourteen craters under 0.3 km are multiple, none of those of 0.3 to 1.5 km is. Nimbus draws a strewn field up to 3 × 10⁶ kg with its largest crater 0.15 of the whole body’s at its entry speed, Sikhote-Alin’s calibration (26 m against 178 m); from 10⁷ kg the whole body’s crater at the speed the entry leaves it, whatever the pancake calls the burst — which digs Bland & Artemieva’s 10⁸ kg iron at 18 km/s 992 m wide at 90° and 727 m at 45°, where they find about 1 km and 0.9 km; and between the two the geometric mean, weighted by the logarithm of the mass, which is the project’s. Since 21 September 2026 (rules 764 to 771); until then the field ended at a diameter of 20 m, with no source, and an iron the pancake burst above 20 m dug nothing. The masses do not depend on speed or angle, which the model’s averages do not give; a shallower entry keeps a field longer.',
+        citation: blandArtemieva2006,
       },
       {
         id: 'crater-depth',

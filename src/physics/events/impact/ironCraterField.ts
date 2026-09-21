@@ -33,8 +33,9 @@
  */
 export type IronCraterField = 'cut' | 'mass';
 
-/** What an impact that names no iron crater field uses. */
-export const DEFAULT_IRON_CRATER_FIELD: IronCraterField = 'cut';
+/** What an impact that names no iron crater field uses: `mass`, since rules
+ *  764 to 771 of validation/ironCraterFieldRules.ts. */
+export const DEFAULT_IRON_CRATER_FIELD: IronCraterField = 'mass';
 
 /** The density from which a body is drawn as an iron (kg/m³). */
 export const IRON_DENSITY = 6_000;

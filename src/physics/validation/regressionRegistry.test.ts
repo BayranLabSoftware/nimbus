@@ -58,6 +58,7 @@ import {
   DEFAULT_LOW_BURST_FLASH,
 } from '../effects/atmosphericEntry.js';
 import { DEFAULT_AIRBURST_SEISMIC } from '../events/impact/airburstSeismic.js';
+import { DEFAULT_IRON_CRATER_FIELD } from '../events/impact/ironCraterField.js';
 import { entryRegimeExplainKey } from '../../ui/components/entryRegimeExplain.js';
 import { computeTsunamiArrivalField, spansTheGlobe } from '../tsunami/fastMarching.js';
 import { radiansToDegrees } from '../units.js';
@@ -1869,6 +1870,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(DEFAULT_AIRBURST_SEISMIC).toBe('harkrider');
     expect(DEFAULT_GROUND_BLAST).toBe('surface');
     expect(DEFAULT_LOW_BURST_CRATER).toBe('share');
+    expect(DEFAULT_IRON_CRATER_FIELD).toBe('mass');
     const methodology = METHODOLOGY_SECTIONS.flatMap((s) => s.entries)
       .map((e) => `${e.formula}\n${e.description}`)
       .join('\n');
@@ -1880,6 +1882,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       '730 to 738',
       '748 to 755',
       '756 to 763',
+      '764 to 771',
     ]) {
       expect(methodology, rules).toContain(rules);
     }
@@ -1902,18 +1905,25 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(Number(sikhote.crater.finalDiameter)).toBeGreaterThan(0);
     expect(sikhote.crater.origin).toBe('strewnField');
     expect(entryRegimeExplainKey(sikhote)).toBe('STREWN_FIELD');
-    // ...and, since rules 756 to 763, a burst below its own fireball.
-    const low = simulateImpact({
+    // ...since rules 756 to 763, a burst below its own fireball — B-097's
+    // iron, read with the iron field of its round...
+    const lowBody = {
       impactorDiameter: m(28),
       impactVelocity: mps(36_782),
       impactorDensity: kgPerM3(9_747),
       targetDensity: kgPerM3(1_897),
       impactAngle: degreesToRadians(deg(47.15)),
-    });
+    };
+    const low = simulateImpact({ ...lowBody, ironCraterField: 'cut' });
     expect(low.entry.regime).toBe('COMPLETE_AIRBURST');
     expect(Number(low.crater.finalDiameter)).toBeGreaterThan(0);
     expect(low.crater.origin).toBe('lowBurst');
     expect(entryRegimeExplainKey(low)).toBe('COMPLETE_AIRBURST_LOW');
+    // ...and since rules 764 to 771 the same iron's fragments, which dig as one.
+    const swarm = simulateImpact(lowBody);
+    expect(swarm.entry.regime).toBe('COMPLETE_AIRBURST');
+    expect(swarm.crater.origin).toBe('ironSwarm');
+    expect(entryRegimeExplainKey(swarm)).toBe('IRON_SWARM');
     // The rest keep their regime's sentence.
     const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
     expect(tunguska.crater.origin).toBe('none');
@@ -1926,6 +1936,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       itLocale.simulator.entryRegimeExplain,
     ]) {
       expect(explain.STREWN_FIELD.length).toBeGreaterThan(0);
+      expect(explain.IRON_SWARM.length).toBeGreaterThan(0);
       expect(explain.COMPLETE_AIRBURST_LOW.length).toBeGreaterThan(0);
     }
     const panel = readFileSync(

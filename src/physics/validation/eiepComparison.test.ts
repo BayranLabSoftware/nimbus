@@ -50,7 +50,18 @@ describe('the impact pipeline agrees with its reference implementation where it 
         const programAirburst = row.burstAltitudeM !== null && row.burstAltitudeM !== undefined;
         expect(r.entry.regime === 'COMPLETE_AIRBURST', label).toBe(programAirburst);
         const crater = (r.crater.finalDiameter as number) > 0 ? r.crater.morphology : 'none';
-        expect(crater, label).toBe(row.craterType ?? 'none');
+        if (programAirburst && row.craterType === null) {
+          // The program's third answer, which the page's parser records as
+          // neither kind: "Large fragments strike the surface and may create a
+          // crater strewn field", printed for an iron's airburst (the grid's
+          // 30 m iron, read again on 21 September 2026), with no size; its map
+          // draws the ejecta of the whole body's crater at its residual speed.
+          // Since rules 764 to 771 an iron that breaks up digs, and that
+          // crater's blanket is held to the map's below, within 2 %.
+          expect(crater, label).not.toBe('none');
+        } else {
+          expect(crater, label).toBe(row.craterType ?? 'none');
+        }
       }
     }
   });

@@ -420,6 +420,7 @@ Read on the sweep's own seed, 5 000 impacts, round by round:
 | An airburst's magnitude from the air that carries it (Harkrider)  | 730 to 738 | adopted by Andrea's choice: B-092 closed; G5 met                         |    **0** |
 | An impact that reaches the ground bursts at the ground            | 748 to 755 | adopted: the explained blast rings fall to the airbursts'                |    **0** |
 | A low airburst digs where its kept energy strikes the ground      | 756 to 763 | adopted: B-097 closed; the harness reads a crater's birth as a contour's |    **0** |
+| An iron's crater field ends where its fragments dig as one        | 764 to 771 | adopted: B-098 closed, by Bland & Artemieva's masses                     |    **0** |
 
 Nothing is left on the own seed. The burn ring at the passage from a complete
 airburst to a partial one is gone (B-093, rules 714 to 721), and the 38
@@ -434,8 +435,10 @@ rises with the body's size; a crater that opened at full size where a
 complete airburst becomes a partial one (B-097), closed by rules 756 to 763:
 below its own fireball an airburst digs with the share of the energy it keeps
 that strikes the ground, as its flash and its magnitude already read it; and
-an iron's crater that vanishes at the strewn field's cut at 20 m (B-098),
-which B-091 had been given.
+an iron's crater that vanished at the strewn field's cut at 20 m (B-098),
+which B-091 had been given, closed by rules 764 to 771: an iron's field ends
+by its mass where Bland & Artemieva (2006) end it, and from 10⁷ kg its
+fragments dig as one.
 
 #### IMP-3, done 21 September 2026: I3 met
 
@@ -555,11 +558,13 @@ are missing, and why:
   the ground bursts at the ground.
 
 Open, and outside the benchmark's draw on which G5 is met: B-091, the
-paper's sharp strength at I_f = 1; B-098, an iron's crater that vanishes at
-the strewn field's cut at 20 m. B-097, a crater that opened at full size
-where a complete airburst becomes a partial one, is closed by rules 756 to
-763 (Andrea's order of that evening). The work on impacts stops here and
-waits for Andrea's order.
+paper's sharp strength at I_f = 1. By Andrea's order of that evening B-097,
+a crater that opened at full size where a complete airburst becomes a
+partial one, is closed by rules 756 to 763, and B-098, an iron's crater that
+vanished at the strewn field's cut at 20 m, by rules 764 to 771; and the
+texts that went on describing the day's replaced laws (B-102) and a panel
+that told an airburst no crater forms beside its crater (B-103) with them.
+The work on impacts stops here and waits for Andrea's order.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

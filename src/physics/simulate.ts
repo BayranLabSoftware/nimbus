@@ -636,7 +636,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
 
   const seafloorScale = Math.pow(fSeafloor, 1 / 3.4);
 
-  // Iron strewn-field branch. Small iron meteorites (D < 20 m) that
+  // Iron strewn-field branch. Small iron meteorites that
   // begin atmospheric breakup but recover to a low-altitude burst
   // (the model's INTACT-via-bottoming-out branch) actually fragment
   // into many ground-impacting pieces because of pre-existing
@@ -656,16 +656,15 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // strikes the ground together (Collins et al. 2005 Eq. 20) and digs
   // one crater, 1.2 km observed.
   //
-  // Custom user inputs benefit automatically: any iron-density (>6000
-  // kg/m³) bolide with original diameter < 20 m that fragments will
-  // produce the strewn-field largest-crater estimate, not the
-  // unphysical single-impactor one.
+  // Where the field ends, since rules 764 to 771 (B-098): at 3 × 10⁶ kg,
+  // and from 10⁷ kg an iron's fragments dig one crater, as Bland &
+  // Artemieva (2006) find (`events/impact/ironCraterField.ts`); until then
+  // it ended at a diameter of 20 m, with no source.
   const STREWN_FIELD_PRIMARY_CRATER_FACTOR = 0.15;
   // An iron that breaks up falls as a strewn field whether Collins et
   // al.'s pancake calls the break an airburst or not: Sikhote-Alin's does
   // at about 5 km. Its largest crater keeps the calibration above, on
-  // the single-impactor crater at the entry speed. Where the field ends is
-  // B-098's (`IronCraterField`): at 20 m, or by the body's mass.
+  // the single-impactor crater at the entry speed.
   const ironLaw = input.ironCraterField ?? DEFAULT_IRON_CRATER_FIELD;
   const ironBreaks =
     (input.impactorDensity as number) >= IRON_DENSITY && (entry.breakupAltitude as number) > 0;

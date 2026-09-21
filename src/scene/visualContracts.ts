@@ -128,6 +128,7 @@ export const VISUAL_CONTRACTS = {
     isQuantitative: true,
     caveats: [
       'an explosion draws none unless the burst is on the surface: the K · W^0.3 scaling holds in the contact regime only, and Hiroshima’s observed crater was zero',
+      'an impact’s crater takes three steps of this project’s, not in Collins et al.: a complete airburst digs none unless it bursts below its own fireball, where the share 1 − z/R of its mass digs at its burst speed (rules 756 to 763); an iron that breaks up draws the largest crater of its strewn field, 0.15 of the whole body’s at its entry speed (Sikhote-Alin, B-004), up to 3 × 10⁶ kg; and from 10⁷ kg the one crater its fragments dig together, the whole body’s at its end speed, whatever the pancake calls its burst (Bland & Artemieva 2006, rules 764 to 771)',
     ],
   }),
   thirdDegreeBurn: defineContract({

@@ -3516,7 +3516,11 @@ function runEiep(): EiepRun {
   for (const row of EIEP_REFERENCE) {
     if (row.error !== null) continue;
     const r = simulateEiepRow(row);
-    const crater = `${row.craterType ?? 'none'} → ${(r.crater.finalDiameter as number) > 0 ? r.crater.morphology : 'none'}`;
+    // The program's third answer, which its page gives an iron's airburst: a
+    // crater strewn field, with no size (rules 764 to 771).
+    const programAirburst = row.burstAltitudeM !== null && row.burstAltitudeM !== undefined;
+    const programCrater = row.craterType ?? (programAirburst ? 'strewn field' : 'none');
+    const crater = `${programCrater} → ${(r.crater.finalDiameter as number) > 0 ? r.crater.morphology : 'none'}`;
     craters[crater] = (craters[crater] ?? 0) + 1;
     const outcome =
       row.burstAltitudeM === null || row.burstAltitudeM === undefined ? 'ground' : 'airburst';
@@ -3577,6 +3581,7 @@ function eiepSection(run: EiepRun): string {
       '**Complex crater depth.** Closed on 16 September 2026 (B-040), and the note that stood here was wrong in a way worth recording: it read "the simulator follows Eq. 28 of the paper, d = 0.4 D^0.3; the online program prints about three quarters of that ... which the authors now intend is a question for them". The paper and the program agree. Eq. 28* is d = 0.294 D^0.301, and 0.4 D^0.3 is Herrick et al.\'s own Venus fit, carried here from a source this project read only through Collins et al. The discrepancy was ours, and the note blamed the reference for it. Fitting the program\'s own thirty-eight complex craters gives 0.2969 D^0.2991, which is Eq. 28* to three figures; the depth is now 0.995× where it was 1.293×.',
       "**Air blast of an impact that reaches the ground.** Closed on 16 September 2026. The simulator read Kinney & Graham's free-air fit on the energy that reaches the ground, and parted from the program by a quarter to eight times, rising with a steeper impact where the program falls (BM-21). The program reads its airburst law at the altitude Collins et al.'s Eq. 18 gives, which for a body that reaches the ground lies below it: the crossover of its Mach relation shortens as a steeper entry puts that altitude deeper. The simulator now does the same (rules 138 to 145); held out on twelve bodies it agreed on 55 of 60 points and was refused on a slow iron whose ground speed the paper's entry gives 1.3 % fast, then, on the program's entry, on 60 of 60 and every breakup and burst altitude of sixteen new bodies.",
       "**Strength.** Where a strength class is chosen — every impact preset but Tunguska, and the custom panel's taxonomy — the simulator takes it (Popova et al. 2011); the grid, like the program, takes the strength of Collins et al.'s Eq. 9 from density.",
+      "**An iron's airburst.** For the grid's one iron that bursts, 30 m at 20 km/s and 45 degrees, the program prints no crater's size — \"Large fragments strike the surface and may create a crater strewn field\" — and its map draws the ejecta of the whole body's crater at its residual speed. Since 21 September 2026 the simulator digs that crater (rules 764 to 771, B-098: from 10⁷ kg an iron's fragments dig as one, Bland & Artemieva 2006), and its blanket lies within 1 % of the map's at every thickness. The same map draws a blanket for every stony airburst too, where the program prints that no crater forms; the simulator draws none there.",
     ]),
   ].join('\n');
 }

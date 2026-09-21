@@ -92,6 +92,45 @@
  * vanishes there.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `24df625` and the four sweeps made on that commit
+ * (`benchmark/results/invariants-2026-09-21-44.json` and `-45` on the own
+ * seed, `cut` and `mass`; `-46` and `-47` on
+ * `benchmark-2026-09-21-heldout-iron`). Then the default moved.
+ *
+ * (a) HOLDS. `ironCraterFieldRules.test.ts`, in CI on `24df625`: no crater of
+ *     a body that is not an iron that breaks up moves; B-098's body keeps its
+ *     crater across 20 m within 1 %; the crater is continuous at both masses
+ *     and grows across them on 24 speeds, angles and densities; Bland &
+ *     Artemieva's 10⁸ kg iron digs 992 m at 90 degrees and 727 m at 45.
+ * (b) HOLDS. G5 reads 0 under both laws on both seeds. On the own seed the
+ *     scenarios that differ are the two irons of rules 756 to 763 whose crater
+ *     was born, or nearly, below their fireball, printed only as it was and
+ *     as steep: they dig as one now (1 654 m and 573 m) and print nothing. On
+ *     the unseen seed every key and every example is the same under both.
+ * (c) HOLDS. No preset moves (`ironCraterFieldRules.test.ts`, and every
+ *     preset's test on the new default).
+ * (d) HOLDS. The report regenerated on the new default: release gate PASS.
+ *
+ * What the new default asked of the tests of other rounds, each named: rules
+ * 756 to 763 read B-097's iron with the cut they were written with; and the
+ * grid of the Earth Impact Effects Program read its 30 m iron's airburst as
+ * "no crater", where the program prints "Large fragments strike the surface
+ * and may create a crater strewn field" — read again on 21 September 2026 —
+ * and its map draws the ejecta of the whole body's crater at its residual
+ * speed: the model digs that crater now, its blanket within 2 % of the map's
+ * at all three thicknesses, and the test reads the program's third answer as
+ * a crater, not as none. The same map draws a blanket for every stony
+ * airburst too, where the program prints that no crater forms; that is not
+ * read here.
+ *
+ * So `DEFAULT_IRON_CRATER_FIELD` is `mass`, and B-098 is closed.
+ */
+
 /** Rule 769 (b): the seed of the run on scenarios nobody has seen. */
 export const IRON_FIELD_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-iron';
 
