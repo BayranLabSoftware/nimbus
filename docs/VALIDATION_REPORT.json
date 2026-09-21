@@ -406,9 +406,9 @@
             "rule": "G4",
             "measure": "beyond",
             "standsFor": [],
-            "holds": false,
-            "credit": 0,
-            "status": "not met",
+            "holds": true,
+            "credit": 1,
+            "status": "met",
             "clauses": []
           },
           {
@@ -439,10 +439,10 @@
             "clauses": []
           }
         ],
-        "held": 5,
+        "held": 6,
         "pending": 0,
-        "credit": 5,
-        "reading": 5,
+        "credit": 6,
+        "reading": 6,
         "fidelity": {
           "rules": 3,
           "held": 3,
@@ -452,10 +452,10 @@
         },
         "beyond": {
           "rules": 6,
-          "held": 2,
+          "held": 3,
           "pending": 0,
-          "credit": 2,
-          "reading": 3
+          "credit": 3,
+          "reading": 4.5
         }
       },
       {
@@ -3744,6 +3744,218 @@
         ]
       }
     },
+    "entryCells": [
+      {
+        "spans": [
+          {
+            "key": "energy",
+            "unit": "kt",
+            "from": 0.048,
+            "to": 0.3
+          },
+          {
+            "key": "speed",
+            "unit": "km/s",
+            "from": 9.8,
+            "to": 17
+          }
+        ],
+        "rows": 96,
+        "scored": true,
+        "counts": {
+          "within": 94,
+          "bm13": 2,
+          "departs": 0,
+          "regime": 0,
+          "unanswered": 0
+        },
+        "model": {
+          "medianAbsKm": 13.4,
+          "meanKm": 11.51
+        },
+        "program": {
+          "medianAbsKm": 13.28,
+          "meanKm": 11.42
+        },
+        "g2": "met",
+        "g3": "not read"
+      },
+      {
+        "spans": [
+          {
+            "key": "energy",
+            "unit": "kt",
+            "from": 0.048,
+            "to": 0.3
+          },
+          {
+            "key": "speed",
+            "unit": "km/s",
+            "from": 17,
+            "to": 71.1
+          }
+        ],
+        "rows": 104,
+        "scored": true,
+        "counts": {
+          "within": 102,
+          "bm13": 1,
+          "departs": 0,
+          "regime": 0,
+          "unanswered": 1
+        },
+        "model": {
+          "medianAbsKm": 16.15,
+          "meanKm": 15.25
+        },
+        "program": {
+          "medianAbsKm": 16.12,
+          "meanKm": 15.18
+        },
+        "g2": "met",
+        "g3": "not read"
+      },
+      {
+        "spans": [
+          {
+            "key": "energy",
+            "unit": "kt",
+            "from": 0.3,
+            "to": 3
+          },
+          {
+            "key": "speed",
+            "unit": "km/s",
+            "from": 9.8,
+            "to": 17
+          }
+        ],
+        "rows": 59,
+        "scored": true,
+        "counts": {
+          "within": 58,
+          "bm13": 1,
+          "departs": 0,
+          "regime": 0,
+          "unanswered": 0
+        },
+        "model": {
+          "medianAbsKm": 10.22,
+          "meanKm": 9.93
+        },
+        "program": {
+          "medianAbsKm": 10.19,
+          "meanKm": 9.86
+        },
+        "g2": "met",
+        "g3": "not read"
+      },
+      {
+        "spans": [
+          {
+            "key": "energy",
+            "unit": "kt",
+            "from": 0.3,
+            "to": 3
+          },
+          {
+            "key": "speed",
+            "unit": "km/s",
+            "from": 17,
+            "to": 71.1
+          }
+        ],
+        "rows": 70,
+        "scored": true,
+        "counts": {
+          "within": 70,
+          "bm13": 0,
+          "departs": 0,
+          "regime": 0,
+          "unanswered": 0
+        },
+        "model": {
+          "medianAbsKm": 14.99,
+          "meanKm": 14.87
+        },
+        "program": {
+          "medianAbsKm": 14.98,
+          "meanKm": 14.84
+        },
+        "g2": "met",
+        "g3": "not read"
+      },
+      {
+        "spans": [
+          {
+            "key": "energy",
+            "unit": "kt",
+            "from": 3,
+            "to": 49
+          },
+          {
+            "key": "speed",
+            "unit": "km/s",
+            "from": 9.8,
+            "to": 17
+          }
+        ],
+        "rows": 13,
+        "scored": false,
+        "counts": {
+          "within": 13,
+          "bm13": 0,
+          "departs": 0,
+          "regime": 0,
+          "unanswered": 0
+        },
+        "model": {
+          "medianAbsKm": 12.08,
+          "meanKm": 7.13
+        },
+        "program": {
+          "medianAbsKm": 12.06,
+          "meanKm": 7.1
+        },
+        "g2": "read in the whole",
+        "g3": "not read"
+      },
+      {
+        "spans": [
+          {
+            "key": "energy",
+            "unit": "kt",
+            "from": 3,
+            "to": 49
+          },
+          {
+            "key": "speed",
+            "unit": "km/s",
+            "from": 17,
+            "to": 71.1
+          }
+        ],
+        "rows": 15,
+        "scored": false,
+        "counts": {
+          "within": 15,
+          "bm13": 0,
+          "departs": 0,
+          "regime": 0,
+          "unanswered": 0
+        },
+        "model": {
+          "medianAbsKm": 9.48,
+          "meanKm": 9.69
+        },
+        "program": {
+          "medianAbsKm": 9.48,
+          "meanKm": 9.68
+        },
+        "g2": "read in the whole",
+        "g3": "not read"
+      }
+    ],
     "burn": {
       "trace": {
         "nine": true,

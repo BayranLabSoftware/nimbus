@@ -82,4 +82,41 @@
  * holds fewer than the twenty G2 scores a cell alone from.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the machinery was built, 21 September 2026: G4
+ * MET for impacts
+ * ===========================================================================
+ *
+ * The rules were pushed in `b9303c2`, before `measuredCells.ts`,
+ * `entryCells.ts` or `entryCellsReading.ts` existed.
+ *
+ * (a) HOLDS. `entryCells.test.ts` recomputes every edge and count from the
+ *     set — 0.048, 0.3, 3 and 49 kt, 9.8, 17 and 71.1 km/s, 96, 104, 59, 70,
+ *     13 and 15 fireballs — and the span of angles, which the constants widen
+ *     by 5e-5 and 8e-5 of a degree; it places a body in every cell and at
+ *     every edge, and puts one out past every bound and for each condition.
+ * (b) HOLDS. Chicxulub (both), Popigai, Boltysh, Tunguska, Chelyabinsk and
+ *     Meteor Crater read outside by energy, above 49 kt; Sikhote-Alin by its
+ *     density. Rule 723 named Chelyabinsk's energy only: its 3 300 kg/m³ and
+ *     2 MPa put it out as well, and the verdict names the first it reads,
+ *     the axes before the conditions.
+ * (c) HOLDS. `entryCellsReading.test.ts`: the cells hold 357 fireballs, as
+ *     rule 723 counted them, and their agreement adds up to the set's, 352
+ *     within 1 %, 4 through BM-13, one refused. The model as it runs now
+ *     gives the burst altitudes the program was compared with on
+ *     16 September to the bit, on all 357.
+ * (d) HOLDS. Read headless on Chelyabinsk and Tunguska and on a 1 kt body at
+ *     20 km/s, in English and Italian: the beacon reads "27 km / outside the
+ *     measured cells" and "46 km / in una cella misurata", the legend and
+ *     the panel the sentence; the altitude beacon's visual contract says so.
+ * (e) HOLDS. The verdict is added to the result and moves nothing in it; the
+ *     report, regenerated with its new table, keeps the release gate at PASS.
+ *
+ * So G4 is met for impacts. Found while reading the globe, and not these
+ * rules' to fix: a scenario that draws no ring — Chelyabinsk's, whose flash and
+ * blast reach nothing on the ground — had the legend ask the reader to click
+ * the globe and press Simulate, as if nothing had been run.
+ */
+
 export const ENTRY_CELLS_RULES = 'rules 722 to 729, fixed 21 September 2026';

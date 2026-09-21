@@ -887,6 +887,7 @@
       "heading": "Legenda anelli",
       "subheading": "Clicca una voce per nascondere o mostrare il rispettivo anello sul globo.",
       "empty": "Clicca un punto sul globo e premi Simula per vedere gli anelli di danno.",
+      "noRings": "Questo scenario non disegna anelli: nulla di ciò che calcola arriva al suolo sopra la soglia di un anello.",
       "toggleHide": "Nascondi legenda",
       "toggleShow": "Mostra legenda",
       "showAll": "Mostra tutti",
@@ -1822,6 +1823,29 @@
       "unestablished": {
         "label": "da stabilire",
         "body": "Non ancora verificato; il report completo dice cosa resta aperto."
+      }
+    }
+  },
+  "measuredCells": {
+    "entry": {
+      "label": "Cella misurata",
+      "legend": "Quota d'ingresso: {{sentence}}",
+      "inside": "dentro, {{cell}}: {{rows}} bolidi (I2)",
+      "insideThin": "dentro, {{cell}}: {{rows}} bolidi, meno dei {{scoredFrom}} con cui una cella si valuta da sola (I2)",
+      "shortInside": "in una cella misurata",
+      "shortOutside": "fuori dalle celle misurate",
+      "outside": {
+        "energy": {
+          "above": "fuori: {{value}} kt, oltre il più grande dei 357 bolidi su cui l'ingresso è stato misurato ({{bound}} kt, I2)",
+          "below": "fuori: {{value}} kt, sotto il più piccolo dei 357 bolidi su cui l'ingresso è stato misurato ({{bound}} kt, I2)"
+        },
+        "speed": {
+          "above": "fuori: {{value}} km/s, più veloce del più veloce dei 357 bolidi su cui l'ingresso è stato misurato ({{bound}} km/s, I2)",
+          "below": "fuori: {{value}} km/s, più lento del più lento dei 357 bolidi su cui l'ingresso è stato misurato ({{bound}} km/s, I2)"
+        },
+        "density": "fuori: i 357 bolidi su cui l'ingresso è stato misurato sono stati calcolati come corpi da 3 000 kg/m³ senza classe (I2)",
+        "strength": "fuori: i 357 bolidi su cui l'ingresso è stato misurato sono stati calcolati senza una resistenza propria (I2)",
+        "angle": "fuori: i 357 bolidi su cui l'ingresso è stato misurato sono entrati fra 0,68° e 88,35° dall'orizzonte (I2)"
       }
     }
   }

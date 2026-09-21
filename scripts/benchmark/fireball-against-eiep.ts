@@ -1,12 +1,11 @@
 import { readFileSync, writeFileSync } from 'node:fs';
-import { atmosphericEntry, collinsStrength } from '../../src/physics/effects/atmosphericEntry.js';
 import {
-  FIREBALL_ANCHOR_SCALE_HEIGHT_M,
+  burstOnProgramIfKm,
   fireballAgreement,
   fireballAnchorVerdict,
   type FireballAnchorRow,
+  type FireballSent,
 } from '../../src/physics/validation/fireballAnchorRules.js';
-import { J, kgPerM3, m, mps, rad } from '../../src/physics/units.js';
 
 /**
  * Rules 126 to 128 of src/physics/validation/fireballAnchorRules.ts, run on
@@ -20,46 +19,13 @@ import { J, kgPerM3, m, mps, rad } from '../../src/physics/units.js';
  * eiepComparison.test.ts holds to 0.1 % in CI (BM-13).
  */
 
-interface Sent {
-  diameterM: number;
-  densityKgM3: number;
-  velocityKmS: number;
-  angleDeg: number;
-}
 interface Fetched {
   date: string;
-  sent: Sent;
+  sent: FireballSent;
   error: string | null;
   observedKm: number;
   nimbusBurstKm: number | null;
   eiepBurstKm: number | null;
-}
-
-/** BM-13: the model's burst altitude had it broken the body up on twice
- *  Eq. 12's I_f, as the program does. Null where the formula does not apply. */
-function onEiepIf(s: Sent, energyJ: number): number | null {
-  const H = FIREBALL_ANCHOR_SCALE_HEIGHT_M;
-  const v = s.velocityKmS * 1_000;
-  const theta = (s.angleDeg * Math.PI) / 180;
-  const sinTheta = Math.sin(theta);
-  const entry = atmosphericEntry(
-    m(s.diameterM),
-    mps(v),
-    undefined,
-    kgPerM3(s.densityKgM3),
-    J(energyJ),
-    rad(theta)
-  );
-  const breakupNimbus = entry.breakupAltitude as number;
-  if (!(breakupNimbus > 0)) return null;
-  const strength = collinsStrength(kgPerM3(s.densityKgM3)) as number;
-  const If = (4.07 * 2 * H * strength) / (s.densityKgM3 * s.diameterM * v * v * sinTheta);
-  if (!(If > 0) || 1 - 2 * If < 0) return null;
-  const breakup =
-    breakupNimbus + H * (0.314 * If + 1.303 * (Math.sqrt(1 - 2 * If) - Math.sqrt(1 - If)));
-  const spread = s.diameterM * sinTheta * Math.sqrt(s.densityKgM3 / (2 * Math.exp(-breakup / H)));
-  const burst = breakup - 2 * H * Math.log(1 + (spread * Math.sqrt(7 * 7 - 1)) / (2 * H));
-  return burst > 0 ? burst / 1_000 : null;
 }
 
 const path = process.argv[2];
@@ -68,18 +34,14 @@ if (path === undefined) {
   process.exit(2);
 }
 const fetched = (JSON.parse(readFileSync(path, 'utf8')) as { rows: Fetched[] }).rows;
-const rows: FireballAnchorRow[] = fetched.map((f) => {
-  const mass = (Math.PI / 6) * f.sent.densityKgM3 * f.sent.diameterM ** 3;
-  const energyJ = 0.5 * mass * (f.sent.velocityKmS * 1_000) ** 2;
-  return {
-    date: f.date,
-    observedKm: f.observedKm,
-    nimbusBurstKm: f.nimbusBurstKm,
-    eiepBurstKm: f.eiepBurstKm,
-    eiepError: f.error,
-    nimbusOnEiepIfKm: onEiepIf(f.sent, energyJ),
-  };
-});
+const rows: FireballAnchorRow[] = fetched.map((f) => ({
+  date: f.date,
+  observedKm: f.observedKm,
+  nimbusBurstKm: f.nimbusBurstKm,
+  eiepBurstKm: f.eiepBurstKm,
+  eiepError: f.error,
+  nimbusOnEiepIfKm: burstOnProgramIfKm(f.sent),
+}));
 const v = fireballAnchorVerdict(rows);
 console.log(`${rows.length.toString()} fireballs`);
 console.log(`  agree within 1 %:          ${v.counts.within.toString()}`);

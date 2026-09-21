@@ -239,6 +239,12 @@ import {
   type FireballReading,
 } from '../src/physics/validation/fireballRules.js';
 import { runFireball, type FireballRunResult } from '../src/physics/validation/fireballRun.js';
+import {
+  readEntryCells,
+  type EiepFireball,
+  type EntryCellReading,
+} from '../src/physics/validation/entryCellsReading.js';
+import { ENTRY_CELLS, ENTRY_CELLS_ANGLE_DEG } from '../src/physics/validation/entryCells.js';
 import { FIREBALL_READ_ON } from '../src/physics/validation/fireballSetData.js';
 import { runBurn, type BurnRunResult } from '../src/physics/validation/burnRun.js';
 import { runDose, type DoseRunResult } from '../src/physics/validation/doseRun.js';
@@ -2405,6 +2411,89 @@ function fireballSection(run: FireballRunResult): string {
   ].join('\n');
 }
 
+/** Rule 726: the program's answers on the 357 fireballs, as
+ *  `scripts/eiep-fireballs.py` brought them back on 16 September 2026. */
+const EIEP_FIREBALLS_FILE = 'benchmark/results/eiep-fireballs-2026-09-16.json';
+
+function readEntryCellsFor(run: FireballRunResult): EntryCellReading[] {
+  const eiep = (
+    JSON.parse(readFileSync(join(REPO_ROOT, EIEP_FIREBALLS_FILE), 'utf8')) as {
+      rows: EiepFireball[];
+    }
+  ).rows;
+  return readEntryCells(run.rows.default ?? [], eiep);
+}
+
+/** Rules 722 to 729 (G4): where the entry was measured, cell by cell. */
+function entryCellsSection(cells: readonly EntryCellReading[]): string {
+  const span = (c: EntryCellReading): string =>
+    c.spans.map((x) => `${x.from.toString()}–${x.to.toString()} ${x.unit}`).join(', ');
+  const signed = (x: number): string =>
+    `${x > 0 ? '+' : x < 0 ? '−' : ''}${Math.abs(x).toFixed(1)}`;
+  const pair = (e: { medianAbsKm: number; meanKm: number }): string =>
+    `${e.medianAbsKm.toFixed(1)} · ${signed(e.meanKm)} km`;
+  const outsideBy = new Map<string, string[]>();
+  for (const [id, preset] of Object.entries(IMPACT_PRESETS)) {
+    const v = simulateImpact(preset.input).measuredCells.entry;
+    const why = v.inside
+      ? 'inside'
+      : v.outside.kind === 'axis'
+        ? `${v.outside.key} ${v.outside.side === 'above' ? 'above' : 'below'} the set's`
+        : `its ${v.outside.key}`;
+    outsideBy.set(why, [...(outsideBy.get(why) ?? []), id]);
+  }
+  const presets = [...outsideBy.entries()]
+    .map(([why, ids]) => `${ids.join(', ')} (${why})`)
+    .join('; ');
+  return [
+    `G4 asks the product to say, for every input, whether the scenario lies inside the cells a held-out set measured, and the report to give the figures cell by cell. For an impact the set is the ${ENTRY_CELLS.rows.reduce((a, b) => a + b, 0).toString()} fireballs above and the quantity their altitude (rules 722 to 729, \`validation/entryCellsRules.ts\`): rule 78's axes crossed, and closed at the set's bounds — ${ENTRY_CELLS.axes.map((a) => `${(a.edges[0] ?? 0).toString()} to ${(a.edges[a.edges.length - 1] ?? 0).toString()} ${a.unit}`).join(', ')} — for bodies of 3 000 kg/m³ with no class, at ${ENTRY_CELLS_ANGLE_DEG.least.toFixed(2)}° to ${ENTRY_CELLS_ANGLE_DEG.greatest.toFixed(2)}° from the horizontal. The product carries the verdict (\`measuredCells.entry\`) and says it in the panel, under the burst's beacon on the globe and in the legend. The presets: ${presets}.`,
+    '',
+    "Cell by cell, the model and the program against the sky (median \\|Δh\\| · mean Δh, over the fireballs both burst in the air), rules 126 to 128's agreement (within 1 % · through BM-13 · departing · one bursting where the other lands · refused by the program), and G2 as rule 128 reads it in every cell of twenty fireballs or more:",
+    '',
+    '| Cell | Fireballs | The model | The program | Agreement | G2 | G3 |',
+    '|------|----:|----:|----:|:--:|:--|:--|',
+    ...cells.map((c) => {
+      const a = c.anchor;
+      const counts = [
+        a.counts.within,
+        a.counts.bm13,
+        a.counts.departs,
+        a.counts.regime,
+        a.counts.unanswered,
+      ]
+        .map((n) => n.toString())
+        .join(' · ');
+      const g2 = c.scored
+        ? a.met
+          ? 'met'
+          : '**not met**'
+        : `fewer than ${ENTRY_CELLS.scoredFrom.toString()}: read in the whole`;
+      return `| ${span(c)} | ${c.rows.toString()} | ${pair(a.nimbus)} | ${pair(a.eiep)} | ${counts} | ${g2} | not read |`;
+    }),
+    '',
+    "G3's column is empty until a band is read on held-out fireballs (IMP-6, not before spring 2027): G4 reads that the table exists and where a scenario lies, and G3's figures will fill it.",
+  ].join('\n');
+}
+
+function entryCellsJson(cells: readonly EntryCellReading[]) {
+  return cells.map((c) => ({
+    spans: c.spans,
+    rows: c.rows,
+    scored: c.scored,
+    counts: c.anchor.counts,
+    model: {
+      medianAbsKm: fixed(c.anchor.nimbus.medianAbsKm, 2),
+      meanKm: fixed(c.anchor.nimbus.meanKm, 2),
+    },
+    program: {
+      medianAbsKm: fixed(c.anchor.eiep.medianAbsKm, 2),
+      meanKm: fixed(c.anchor.eiep.meanKm, 2),
+    },
+    g2: c.scored ? (c.anchor.met ? 'met' : 'not met') : 'read in the whole',
+    g3: 'not read',
+  }));
+}
+
 /** The gap rule 79 declares where the entry misses the bar of I2. */
 /** Rules 706 to 713: what I3's band reads, from the product itself. */
 function airburstBandSentence(): string {
@@ -3885,6 +3974,7 @@ function main(): void {
   const slab = runSlabRules();
   const residual = runResidualRules();
   const fireball = runFireball();
+  const entryCells = readEntryCellsFor(fireball);
   const burn = runBurn();
   const dose = runDose();
   const crater = runCrater();
@@ -4023,6 +4113,10 @@ ${residualSection(residual)}
 ### The entry model against the bolides that fell
 
 ${fireballSection(fireball)}
+
+### G4: the cells the entry was measured in
+
+${entryCellsSection(entryCells)}
 
 ### The exposure that burns, from the book's own figure
 
@@ -4370,6 +4464,7 @@ otherwise.
       slab: slabJson(slab),
       residual: residualJson(residual),
       fireball: fireballJson(fireball),
+      entryCells: entryCellsJson(entryCells),
       burn: burnJson(burn),
       dose: doseJson(dose),
       crater: craterJson(crater),

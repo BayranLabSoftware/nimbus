@@ -39,6 +39,7 @@ import {
 } from '../utils/numberFormat.js';
 import { CascadeTimeline } from './CascadeTimeline.js';
 import { CitationTooltip } from './CitationTooltip.js';
+import { entryCellSentence } from '../../scene/globe/measuredCellText.js';
 import { CasualtiesPanel } from './CasualtiesPanel.js';
 import { envelopeOf } from '../../physics/validation/calibrationEnvelope.js';
 import { CitySearch } from './CitySearch.js';
@@ -478,7 +479,7 @@ function formatMass(kilograms: number): string {
 // keep one source of truth for super/subscript glyphs.
 
 export function SimulatorPanel(): JSX.Element {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const eventType = useAppStore((s) => s.eventType);
   const impactPreset = useAppStore((s) => s.impact.preset);
   const explosionPreset = useAppStore((s) => s.explosion.preset);
@@ -849,6 +850,11 @@ export function SimulatorPanel(): JSX.Element {
                     <CitationTooltip citation={t('citations.atmosphericEntry')}>
                       {formatKilometres(result.data.entry.breakupAltitude)}
                     </CitationTooltip>
+                  </dd>
+                  {/* G4 (rules 722 to 729): where the entry was measured. */}
+                  <dt className={styles.resultLabel}>{t('measuredCells.entry.label')}</dt>
+                  <dd className={styles.resultValue} data-testid="entry-measured-cell">
+                    {entryCellSentence(result.data.measuredCells.entry, i18n.language)}
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.endVelocity')}</dt>
                   <dd className={styles.resultValue}>

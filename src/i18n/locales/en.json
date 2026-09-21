@@ -887,6 +887,7 @@
       "heading": "Ring legend",
       "subheading": "Click a row to hide or show the matching ring on the globe.",
       "empty": "Click a point on the globe and press Simulate to reveal damage rings.",
+      "noRings": "This scenario draws no ring: nothing it computes reaches the ground above a ring's threshold.",
       "toggleHide": "Hide legend",
       "toggleShow": "Show legend",
       "showAll": "Show all",
@@ -1735,6 +1736,29 @@
       "unestablished": {
         "label": "not established",
         "body": "Not yet checked; the full report says what is still open."
+      }
+    }
+  },
+  "measuredCells": {
+    "entry": {
+      "label": "Measured cell",
+      "legend": "Entry altitude: {{sentence}}",
+      "inside": "inside, {{cell}}: {{rows}} fireballs (I2)",
+      "insideThin": "inside, {{cell}}: {{rows}} fireballs, fewer than the {{scoredFrom}} a cell is scored from alone (I2)",
+      "shortInside": "inside a measured cell",
+      "shortOutside": "outside the measured cells",
+      "outside": {
+        "energy": {
+          "above": "outside: {{value}} kt, above the largest of the 357 fireballs the entry was measured on ({{bound}} kt, I2)",
+          "below": "outside: {{value}} kt, below the smallest of the 357 fireballs the entry was measured on ({{bound}} kt, I2)"
+        },
+        "speed": {
+          "above": "outside: {{value}} km/s, faster than the fastest of the 357 fireballs the entry was measured on ({{bound}} km/s, I2)",
+          "below": "outside: {{value}} km/s, slower than the slowest of the 357 fireballs the entry was measured on ({{bound}} km/s, I2)"
+        },
+        "density": "outside: the 357 fireballs the entry was measured on were run as bodies of 3,000 kg/m³ with no class (I2)",
+        "strength": "outside: the 357 fireballs the entry was measured on were run with no strength of their own (I2)",
+        "angle": "outside: the 357 fireballs the entry was measured on came in at 0.68° to 88.35° from the horizontal (I2)"
       }
     }
   }

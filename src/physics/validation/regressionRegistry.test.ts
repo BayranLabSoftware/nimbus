@@ -1780,6 +1780,32 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(comparison.contains).toBe(true);
   });
 
+  it('B-099 The legend tells a scenario that draws no ring that it draws none', () => {
+    // Chelyabinsk's preset: a burst 27 km up whose flash and blast reach
+    // nothing on the ground since B-094, no crater and no ejecta. With no row
+    // to list, the legend printed its empty state, "Click a point on the globe
+    // and press Simulate to reveal damage rings", after a simulation had run.
+    const r = simulateImpact(IMPACT_PRESETS.CHELYABINSK.input);
+    for (const radius of [
+      r.damage.craterRim,
+      r.damage.thirdDegreeBurn,
+      r.damage.secondDegreeBurn,
+      r.damage.overpressure5psi,
+      r.damage.overpressure1psi,
+      r.damage.lightDamage,
+      r.firestorm.sustainRadius,
+      r.firestorm.ignitionRadius,
+      r.ejecta.blanketEdge1mm,
+    ]) {
+      expect(Number(radius)).toBe(0);
+    }
+    const legend = readFileSync(
+      fileURLToPath(new URL('../../ui/components/RingLegend.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(legend).toContain("result === null ? 'globe.legend.empty' : 'globe.legend.noRings'");
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.

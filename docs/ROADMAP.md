@@ -444,6 +444,18 @@ runs, what the program's static source holds, which reads 0.71× to 1.34× of
 the paper's own. Impacts count 5.0. The globe does not draw the band yet —
 IMP-7's check 3.
 
+#### IMP-5, done 21 September 2026: G4 met
+
+Rules 722 to 729 (`validation/entryCellsRules.ts`) gave the one quantity of
+an impact a held-out set measured, the entry's altitude, its cells: rule 78's
+axes crossed and closed at the 357 fireballs' bounds (0.048 to 49 kt, 9.8 to
+71.1 km/s), for the body the rows were run as (3 000 kg/m³, no class) at their
+angles. The machinery is generic (`validation/measuredCells.ts`); the product
+carries the verdict for every input (`measuredCells.entry`) and says it in the
+panel, under the burst's beacon and in the legend; the report prints I2 cell
+by cell, with G3's column empty until IMP-6. Every preset lies outside — the
+entry was measured on bodies of 49 kt at most. Impacts count 6.0.
+
 #### IMP-7, begun 21 September 2026: what the globe drew that the model did not
 
 The first pass of the seven checks, on the impact presets, found two things
@@ -463,10 +475,13 @@ the globe claimed that the model does not:
   legend says which is which (checked headless on Tunguska: the 1 psi band
   15.7 to 29.4 km, the 5 psi high edge 13.1 km).
 
+- **Check 5, outside the measured cells**: since IMP-5 the burst's beacon
+  says under its altitude whether the entry was measured there, and the
+  legend says it for every impact (read headless in both languages).
+
 Still to do for impacts: check 3 for every other ring (their bands wait for
-IMP-4), check 5 (outside the measured cells, once IMP-5 builds them), check
-4's provenance click, and the full headless sweep of presets and custom
-scenarios (check 7).
+IMP-4), check 4's provenance click, and the full headless sweep of presets
+and custom scenarios (check 7).
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

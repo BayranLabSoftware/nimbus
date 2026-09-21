@@ -9,6 +9,7 @@ import {
   type UnitTier,
 } from '../utils/numberFormat.js';
 import { INTENSITY_BANDS } from '../../scene/globe/shakingOverlay.js';
+import { entryCellSentence } from '../../scene/globe/measuredCellText.js';
 import styles from './RingLegend.module.css';
 
 const TIERS_RANGE: readonly UnitTier[] = [
@@ -247,7 +248,7 @@ function buildRingRows(
  * cross-reference the side simulator panel.
  */
 export function RingLegend(): JSX.Element {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const result = useAppStore((s) => s.result);
   const hiddenRingKeys = useAppStore((s) => s.hiddenRingKeys);
   const shakingFieldBands = useAppStore((s) => s.shakingFieldBands);
@@ -319,7 +320,11 @@ export function RingLegend(): JSX.Element {
         <>
           <p className={styles.subheading}>{t('globe.legend.subheading')}</p>
           {rows.length === 0 ? (
-            <p className={styles.empty}>{t('globe.legend.empty')}</p>
+            // B-099: a scenario that ran and draws no ring is told so, not
+            // asked to run.
+            <p className={styles.empty}>
+              {t(result === null ? 'globe.legend.empty' : 'globe.legend.noRings')}
+            </p>
           ) : (
             <ul className={styles.list}>
               {rows.map((row) => {
@@ -383,6 +388,13 @@ export function RingLegend(): JSX.Element {
           {tsunamiStatusKey !== null && (
             <p className={styles.tsunamiStatus} data-status={tsunamiStatusKey}>
               {t(`globe.legend.tsunamiStatus.${tsunamiStatusKey}`)}
+            </p>
+          )}
+          {result?.type === 'impact' && (
+            <p className={styles.uncertaintyNote} data-testid="legend-entry-cell">
+              {t('measuredCells.entry.legend', {
+                sentence: entryCellSentence(result.data.measuredCells.entry, i18n.language),
+              })}
             </p>
           )}
           {rows.length > 0 && (

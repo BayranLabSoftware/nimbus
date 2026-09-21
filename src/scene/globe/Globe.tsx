@@ -100,6 +100,7 @@ import {
   spawnImpactFireball,
 } from './explosionVfx.js';
 import { impactFireballRadius } from '../../physics/effects/blastWave.js';
+import { entryCellShort } from './measuredCellText.js';
 import { spawnEruptionColumn } from './eruptionVfx.js';
 import { radialDamageMaterial } from './radialDamageMaterial.js';
 import {
@@ -1823,6 +1824,9 @@ export function Globe(): JSX.Element {
       longitude: number;
       altitudeM: number;
       color: Color;
+      /** A second line under the altitude, read in the interface's language
+       *  as it changes (G4's verdict for an impact's entry). */
+      note?: (language: string) => string;
     }): void => {
       if (!Number.isFinite(opts.altitudeM) || opts.altitudeM < 500) return;
       const top = Cartesian3.fromDegrees(opts.longitude, opts.latitude, opts.altitudeM);
@@ -1850,6 +1854,8 @@ export function Globe(): JSX.Element {
             return opts.color.withAlpha(0.2 + 0.35 * Math.sin(t * Math.PI * 2) ** 2);
           }, false);
       const km = opts.altitudeM / 1_000;
+      const altitudeText = `${km >= 10 ? km.toFixed(0) : km.toFixed(1)} km`;
+      const note = opts.note;
       viewer.entities.add({
         id: `${opts.idPrefix}-top`,
         position: top,
@@ -1860,7 +1866,10 @@ export function Globe(): JSX.Element {
           outlineWidth: 6,
         },
         label: {
-          text: `${km >= 10 ? km.toFixed(0) : km.toFixed(1)} km`,
+          text:
+            note === undefined
+              ? altitudeText
+              : new CallbackProperty(() => `${altitudeText}\n${note(i18next.language)}`, false),
           font: '11px "JetBrains Mono", monospace',
           fillColor: opts.color.withAlpha(0.95),
           outlineColor: Color.fromCssColorString('#0A0E16').withAlpha(0.85),
@@ -1951,12 +1960,15 @@ export function Globe(): JSX.Element {
       // Un impatto INTACT arriva al suolo e non ha nulla da segnare.
       const entry = result.data.entry;
       if (entry.regime === 'COMPLETE_AIRBURST' || entry.regime === 'PARTIAL_AIRBURST') {
+        const entryCell = result.data.measuredCells.entry;
         addAltitudeBeacon({
           idPrefix: 'beacon-airburst',
           latitude: ringAnchor.latitude,
           longitude: ringAnchor.longitude,
           altitudeM: entry.burstAltitude,
           color: Color.fromCssColorString('#FFD98A'),
+          // G4 (rules 722 to 729): whether the entry was measured here.
+          note: (language) => entryCellShort(entryCell, language),
         });
       }
       const radii = result.data.damage;

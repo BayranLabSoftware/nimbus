@@ -61,6 +61,8 @@ import {
 } from './effects/firestorm.js';
 import { ignitionFluenceThreshold } from './effects/ignitionExposure.js';
 import { shoreSegmentFraction } from './validation/coastalWaveRules.js';
+import { entryCellVerdict } from './validation/entryCells.js';
+import type { CellVerdict } from './validation/measuredCells.js';
 import { thermalHorizonRadius } from './casualties.js';
 import { oceanCouplingPartition } from './effects/oceanCoupling.js';
 import { liquefactionRadius } from './events/earthquake/liquefaction.js';
@@ -475,6 +477,14 @@ export interface ImpactScenarioResult {
     overpressure1psi: { low: Meters; high: Meters };
     lightDamage: { low: Meters; high: Meters };
   } | null;
+  /**
+   * G4: whether the scenario lies inside the cells a held-out set measured,
+   * quantity by quantity. An impact has one such quantity, the altitude its
+   * entry spends the energy at, measured on the 357 bolides of rules 76 to 79
+   * (rules 722 to 729 of `validation/entryCellsRules.ts`). Said beside the
+   * numbers, never applied to them.
+   */
+  measuredCells: { entry: CellVerdict };
 }
 
 /**
@@ -916,6 +926,15 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     atmosphere,
     field: impactFieldSamples({ inputs: input, impactor: { kineticEnergy: ke }, entry }),
     airburstBand: airburstBandOf(entry, damage),
+    measuredCells: {
+      entry: entryCellVerdict({
+        kineticEnergy: ke,
+        impactVelocity: input.impactVelocity,
+        impactorDensity: input.impactorDensity,
+        impactorStrength: input.impactorStrength,
+        impactAngle: input.impactAngle,
+      }),
+    },
   };
 
   // Tsunami cascade activation rule — Phase 14 tightening.

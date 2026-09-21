@@ -1,3 +1,6 @@
+import { atmosphericEntry, collinsStrength } from '../effects/atmosphericEntry.js';
+import { J, kgPerM3, m, mps, rad } from '../units.js';
+
 /**
  * I2, read against the field's own tool, as the amendment of 16 September 2026
  * to docs/GOLD_STANDARD.md asks.
@@ -138,4 +141,45 @@ export function fireballAnchorVerdict(rows: readonly FireballAnchorRow[]): Fireb
   const bare =
     nimbus.medianAbsKm <= eiep.medianAbsKm && Math.abs(nimbus.meanKm) <= Math.abs(eiep.meanKm);
   return { counts, implementsReference, nimbus, eiep, met: implementsReference || bare };
+}
+
+/** A fireball as `scripts/eiep-fireballs.py` sent it to the program. */
+export interface FireballSent {
+  diameterM: number;
+  densityKgM3: number;
+  velocityKmS: number;
+  angleDeg: number;
+}
+
+/**
+ * BM-13: the model's burst altitude (km) had it broken the body up on twice
+ * Eq. 12's I_f, as the program does; null where the formula does not apply.
+ * Rule 126's recomputation, by the formula `eiepComparison.test.ts` holds to
+ * 0.1 % in CI.
+ */
+export function burstOnProgramIfKm(sent: FireballSent): number | null {
+  const H = FIREBALL_ANCHOR_SCALE_HEIGHT_M;
+  const v = sent.velocityKmS * 1_000;
+  const theta = (sent.angleDeg * Math.PI) / 180;
+  const sinTheta = Math.sin(theta);
+  const mass = (Math.PI / 6) * sent.densityKgM3 * sent.diameterM ** 3;
+  const entry = atmosphericEntry(
+    m(sent.diameterM),
+    mps(v),
+    undefined,
+    kgPerM3(sent.densityKgM3),
+    J(0.5 * mass * v * v),
+    rad(theta)
+  );
+  const breakupModel = entry.breakupAltitude as number;
+  if (!(breakupModel > 0)) return null;
+  const strength = collinsStrength(kgPerM3(sent.densityKgM3)) as number;
+  const If = (4.07 * 2 * H * strength) / (sent.densityKgM3 * sent.diameterM * v * v * sinTheta);
+  if (!(If > 0) || 1 - 2 * If < 0) return null;
+  const breakup =
+    breakupModel + H * (0.314 * If + 1.303 * (Math.sqrt(1 - 2 * If) - Math.sqrt(1 - If)));
+  const spread =
+    sent.diameterM * sinTheta * Math.sqrt(sent.densityKgM3 / (2 * Math.exp(-breakup / H)));
+  const burst = breakup - 2 * H * Math.log(1 + (spread * Math.sqrt(7 * 7 - 1)) / (2 * H));
+  return burst > 0 ? burst / 1_000 : null;
 }

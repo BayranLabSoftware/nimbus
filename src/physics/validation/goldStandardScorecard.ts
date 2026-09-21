@@ -333,8 +333,9 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
       {
         rule: 'G4',
         measure: 'beyond',
-        status: 'not met',
-        evidence: 'No measured cells for impacts.',
+        status: 'met',
+        evidence:
+          "Rules 722 to 729 (validation/entryCellsRules.ts, 21 September 2026): the one quantity of an impact a held-out set measured, the altitude its entry spends the energy at, has its cells — rule 78's axes crossed and closed at the 357 fireballs' bounds, 0.048 to 49 kt and 9.8 to 71.1 km/s, for bodies of 3 000 kg/m³ with no class at 0.68 to 88.35 degrees. The product carries the verdict for every input (`measuredCells.entry`, validation/measuredCells.ts, generic) and says it in the panel, under the burst's beacon on the globe and in the legend, read headless in both languages; every preset lies outside, seven by energy and Sikhote-Alin by its composition. The report prints I2 cell by cell — the model and the program against the sky, rules 126 to 128's agreement, G2 in the four cells of twenty fireballs or more — and G3's column, empty until a band is read on held-out fireballs (IMP-6). Nothing else of an impact has a held-out set, so G4 gives nothing else a cell.",
       },
       {
         rule: 'G5',
