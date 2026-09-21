@@ -83,6 +83,41 @@
  * another domain, and B-094 records it for them.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `68b89cb` and the four sweeps made on that commit
+ * (`benchmark/results/invariants-2026-09-21-23.json` and `-24` on the own
+ * seed, the flash on the ground and at the burst; `-25` and `-26` on
+ * `benchmark-2026-09-21-heldout-flash`). Then the default moved.
+ *
+ * (a) HOLDS. Of 3 903 bodies of the own seed and 3 919 of the unseen one that
+ *     are not complete airbursts, none moves a burn ring, a fire ring or a
+ *     thermal field sample; nor does any on the I1 grid or among the presets.
+ * (b) HOLDS. Every ring of the 1 097 and 1 081 complete airbursts is the
+ *     ground range at slant of what it was, or less where the horizon's cut
+ *     already held it (five rings of three bodies of more than 28 000 Mt, the
+ *     cut and the slant within 20 m of each other); no field sample rises.
+ *     `airFlashRules.test.ts` holds it in CI, with the bound that nowhere
+ *     receives more than the flash puts under itself.
+ * (c) HOLDS. `impactField.test.ts` passes on the new default.
+ * (d) HOLDS. G5 reads 39 on the own seed and 40 on the unseen one under both
+ *     placements, the same keys, and no scenario's failures differ.
+ * (e) HOLDS. The report regenerated on the new default: release gate PASS
+ *     (strict), tolls 13 of 18, waves 10 of 16, replay 3 of 3, golden 12 of 12.
+ * (f) HOLDS. The presets move as rule 701 lists: Tunguska's, Chelyabinsk's and
+ *     Sikhote-Alin's burn and fire rings to none, the five crater-forming ones
+ *     not at all.
+ *
+ * Two tests of the regression registry changed, and why: B-041's check that
+ * the airburst's flash burns at the project's fluences now reads the ground
+ * range at slant of those radii; B-060's Chelyabinsk had burns and no blast,
+ * and now has neither. So `DEFAULT_AIR_FLASH` is `burst`, B-094 is closed,
+ * and the report declares what it costs, B-095.
+ */
+
 /** Rule 703: the seed of the run on scenarios nobody has seen. */
 export const AIR_FLASH_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-flash';
 

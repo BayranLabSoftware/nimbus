@@ -52,6 +52,7 @@ import { radiansToDegrees } from '../units.js';
 import { fieldsFor } from '../../ui/pages/SimulationReportPage.js';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
 import { impactFireballRadius, nuclearFireballRadius } from '../effects/blastWave.js';
+import { groundRangeAtSlant } from '../effects/atmosphericEntry.js';
 import * as casualtiesModule from '../casualties.js';
 import { thermalHorizonRadius } from '../casualties.js';
 import { CRUSTAL_ROCK_DENSITY, IMPACT_LUMINOUS_EFFICIENCY } from '../constants.js';
@@ -873,23 +874,31 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
         thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
         burnExposure: 'project' as const,
       };
+      // Since B-094 (rules 698 to 705) the flash is at the burst altitude:
+      // the radii are the ground ranges at which the slant distance to the
+      // burst is the range these fluences reach.
+      const z = r.entry.burstAltitude as number;
       expect(r.entry.flashBurnRadii.thirdDegree as number).toBeCloseTo(
-        thirdDegreeBurnRadius(flash),
+        groundRangeAtSlant(thirdDegreeBurnRadius(flash), z),
         6
       );
       expect(r.entry.flashBurnRadii.secondDegree as number).toBeCloseTo(
-        secondDegreeBurnRadius(flash),
+        groundRangeAtSlant(secondDegreeBurnRadius(flash), z),
         6
       );
       expect(r.entry.flashBurnRadii.firstDegree as number).toBeCloseTo(
-        firstDegreeBurnRadius(flash),
+        groundRangeAtSlant(firstDegreeBurnRadius(flash), z),
         6
       );
       // And the ring an airburst draws is that flash.
       expect(r.damage.thirdDegreeBurn).toBe(r.entry.flashBurnRadii.thirdDegree);
     }
-    const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
+    // The 5.22 km of the fix is the flash on the ground; at the burst
+    // altitude, since B-094, it reaches no ground at that exposure.
+    const tunguska = simulateImpact({ ...IMPACT_PRESETS.TUNGUSKA.input, airFlash: 'ground' });
     expect((tunguska.entry.flashBurnRadii.thirdDegree as number) / 1_000).toBeCloseTo(5.22, 2);
+    const atBurst = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
+    expect(atBurst.entry.flashBurnRadii.thirdDegree as number).toBe(0);
   });
 
   it('B-033 The Chelyabinsk preset flies the body Popova et al. 2013 measured', () => {
@@ -1367,8 +1376,10 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       impactAngle: ((18 * Math.PI) / 180) as never,
     });
     // The event that found it: burns, and no blast anywhere on the ground.
+    // Since B-094 (rules 698 to 705) its flash is 31 km up and burns nothing
+    // either, so there is no ring at all for the front to take.
     expect(chelyabinsk.entry.regime).toBe('COMPLETE_AIRBURST');
-    expect(chelyabinsk.damage.secondDegreeBurn as number).toBeGreaterThan(1_000);
+    expect(chelyabinsk.damage.secondDegreeBurn as number).toBe(0);
     expect(chelyabinsk.damage.overpressure5psi as number).toBe(0);
     expect(chelyabinsk.damage.overpressure1psi as number).toBe(0);
     expect(chelyabinsk.damage.lightDamage as number).toBe(0);

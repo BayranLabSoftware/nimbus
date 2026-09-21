@@ -173,7 +173,7 @@ export const DEFAULT_ENTRY_BOUNDARY: EntryBoundary = 'switch';
 export type AirFlash = 'ground' | 'burst';
 
 /** What an entry that names no flash placement uses. */
-export const DEFAULT_AIR_FLASH: AirFlash = 'ground';
+export const DEFAULT_AIR_FLASH: AirFlash = 'burst';
 
 /** The ground range at which the slant distance to a source at `altitude`
  *  is `slant` (m); 0 where the source is farther than that. */

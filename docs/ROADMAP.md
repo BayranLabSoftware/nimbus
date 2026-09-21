@@ -403,18 +403,19 @@ band now and freeze it before a single held-out fireball exists.
 
 Read on the sweep's own seed, 5 000 impacts, round by round:
 
-| Round                                               | Rules      | Outcome                                                                 | G5 reads |
-| --------------------------------------------------- | ---------- | ----------------------------------------------------------------------- | -------: |
-| The harness corrected (IMP-1)                       | 621 to 629 | adopted                                                                 |      465 |
-| The ground blast held at its checked crossover      | 630 to 637 | adopted, B-088 closed                                                   |      449 |
-| Two causes for a shrinking blast ring               | 638 to 646 | refused on an unseen seed: B-089, and B-090 withdrawn                   |      449 |
-| The final crater joined                             | 647 to 653 | adopted                                                                 |      447 |
-| The seafloor share tapered                          | 654 to 659 | adopted                                                                 |      445 |
-| The field read as a limit                           | 660 to 666 | adopted: ten "jumps" were slopes                                        |      435 |
-| The paper's entry, to close B-089                   | 667 to 675 | refused by the letter of 673 (e): one key G5 does not read              |        — |
-| The paper's entry, asked again                      | 676 to 682 | refused on an unseen seed: three more rings the height of burst shrinks |        — |
-| The blast rings a source moves                      | 683 to 690 | adopted: all 396 moved by their source's altitude; B-091 found          |   **39** |
-| The paper's entry, read by what a wrong entry shows | 691 to 697 | adopted: no new kind of failure, no jumping source; B-089 closed        |       39 |
+| Round                                                             | Rules      | Outcome                                                                 | G5 reads |
+| ----------------------------------------------------------------- | ---------- | ----------------------------------------------------------------------- | -------: |
+| The harness corrected (IMP-1)                                     | 621 to 629 | adopted                                                                 |      465 |
+| The ground blast held at its checked crossover                    | 630 to 637 | adopted, B-088 closed                                                   |      449 |
+| Two causes for a shrinking blast ring                             | 638 to 646 | refused on an unseen seed: B-089, and B-090 withdrawn                   |      449 |
+| The final crater joined                                           | 647 to 653 | adopted                                                                 |      447 |
+| The seafloor share tapered                                        | 654 to 659 | adopted                                                                 |      445 |
+| The field read as a limit                                         | 660 to 666 | adopted: ten "jumps" were slopes                                        |      435 |
+| The paper's entry, to close B-089                                 | 667 to 675 | refused by the letter of 673 (e): one key G5 does not read              |        — |
+| The paper's entry, asked again                                    | 676 to 682 | refused on an unseen seed: three more rings the height of burst shrinks |        — |
+| The blast rings a source moves                                    | 683 to 690 | adopted: all 396 moved by their source's altitude; B-091 found          |   **39** |
+| The paper's entry, read by what a wrong entry shows               | 691 to 697 | adopted: no new kind of failure, no jumping source; B-089 closed        |       39 |
+| An airburst's flash where the airburst is (IMP-7's first finding) | 698 to 705 | adopted: B-094 closed; the efficiency, B-095, next                      |       39 |
 
 What is left: the 38 airburst magnitudes, where the program reads an
 airburst's seismic source as the energy the body keeps and that falls as
