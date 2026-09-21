@@ -1,4 +1,11 @@
 import { DRE_DENSITY } from '../../constants.js';
+import { standardAtmosphere } from '../../effects/standardAtmosphere.js';
+import {
+  AIR_MOLAR_MASS,
+  CEILING_ADIABATIC_EXPONENT,
+  CEILING_PLUME_MOLAR_MASS,
+  CEILING_VENT_TEMPERATURE_K,
+} from '../../validation/plumeCeilingRules.js';
 import type { KilogramPerCubicMeter, Meters } from '../../units.js';
 import { m } from '../../units.js';
 
@@ -42,8 +49,62 @@ export interface PlumeHeightInput {
  */
 export function plumeHeight(input: PlumeHeightInput): Meters {
   const heightKm = MASTIN_2009_COEFFICIENT * input.volumeEruptionRate ** MASTIN_2009_EXPONENT;
-  return m(heightKm * 1_000);
+  // Rule 599: a minimum, not a rewrite. Below the crossing the relation is
+  // untouched; above it the relation is a fit outside its box and the
+  // atmosphere decides instead.
+  return m(Math.min(heightKm * 1_000, PLUME_CEILING_ABOVE_VENT_M));
 }
+
+/**
+ * The highest a volcanic plume can rise above its vent, in metres — rules
+ * 593 to 604.
+ *
+ * A plume rises because it is lighter than the air around it. It expands as
+ * it rises and expanding cools it, so there is a height at which it is no
+ * longer lighter, and no eruption rate can carry it past that height. The
+ * level is where
+ *
+ *     T_plume / T_air  =  M_plume / M_air
+ *
+ * with the plume expanding adiabatically from the vent,
+ * T_plume(P) = T_vent · (P / P_vent)^κ, and T_air and P from the US
+ * Standard Atmosphere 1976.
+ *
+ * Rule 595 takes every parameter at the value that puts the level higher,
+ * so what comes back is a BOUND and not a prediction: the plume is pure
+ * water vapour, the lightest a volcanic plume can be; it is at 1 700 K,
+ * above any terrestrial magma; and it entrains nothing and radiates
+ * nothing, so it keeps every joule it left the vent with. A real column is
+ * mostly entrained air with ash in it and reaches its own neutral level far
+ * lower — 36 to 45 km for a silicate column at 1 100 to 1 700 K, which is
+ * where Pinatubo (≈ 40 km) and Tambora (≈ 43 km) sit.
+ *
+ * The bound is on the height ABOVE THE VENT and barely depends on where the
+ * vent is: 71.9 km from sea level, 72.0 km from 7 000 m.
+ */
+export function plumeCeilingAboveVent(ventElevation: Meters = m(0)): Meters {
+  const ventPressure = standardAtmosphere(ventElevation).pressure as number;
+  const massRatio = CEILING_PLUME_MOLAR_MASS / AIR_MOLAR_MASS;
+  const stillLighter = (height: number): boolean => {
+    const air = standardAtmosphere(m(height));
+    const plumeK =
+      CEILING_VENT_TEMPERATURE_K *
+      ((air.pressure as number) / ventPressure) ** CEILING_ADIABATIC_EXPONENT;
+    return plumeK / air.temperatureK > massRatio;
+  };
+  let low = (ventElevation as number) + 1;
+  let high = 84_852;
+  if (stillLighter(high)) return m(high - (ventElevation as number));
+  for (let i = 0; i < 200; i++) {
+    const mid = (low + high) / 2;
+    if (stillLighter(mid)) low = mid;
+    else high = mid;
+  }
+  return m((low + high) / 2 - (ventElevation as number));
+}
+
+/** Rule 601: the ceiling `plumeHeight` applies, from a vent at sea level. */
+export const PLUME_CEILING_ABOVE_VENT_M = plumeCeilingAboveVent() as number;
 
 /**
  * Inverse of {@link plumeHeight}: the Mastin 2009 volume-rate that

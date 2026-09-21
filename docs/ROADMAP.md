@@ -278,7 +278,7 @@ four of the seven lines. The three sections below it say how.
 | I3, the airburst's blast      | Impacts         | **measured, and not closable as written.** The felled forest sits between the two thresholds the field names, not outside one. A band from the reference's own three models holds both measured footprints and is 3.79× wide where I3 allows 3 — the rule is tighter than the spread the field reports on itself. And the ninety per cent of the runs needs a burst altitude Table 2 does not print                     |
 | V1, two clauses of four       | Volcanoes       | pyroclastic currents and lahars not held to LaharZ. Unchanged                                                                                                                                                                                                                                                                                                                                                           |
 | G1, the wave relations        | Waves from eq.  | held to GeoClaw fixtures by tolerance, not within 1 % of a reference. Unchanged                                                                                                                                                                                                                                                                                                                                         |
-| **POS, the seventh**          | every domain    | **new, and the one that paid.** Ask whether an output is POSSIBLE rather than whether it is right. Three defects in one night — B-084 and B-086 closed, B-085 open — none of which any held-out set would catch, because they live where no event has happened and the product draws them anyway. `pnpm audit:invariants`                                                                                               |
+| **POS, the seventh**          | every domain    | **new, and the one that paid.** Ask whether an output is POSSIBLE rather than whether it is right. Three defects in one night, all three closed — B-084, B-085 and B-086 — none of which any held-out set would catch, because they live where no event has happened and the product draws them anyway. `pnpm audit:invariants`                                                                                         |
 
 **Seven rules, no data spent.** The night of 20/21 September spent the
 first item and found the seventh. What it did not do is close L1: the
@@ -393,10 +393,18 @@ more the same night, in two other domains.
   1815)" it returns 82.3 km — above every plume ever measured, Hunga
   Tonga's 57 km included. It passes the Kármán line at 1.12×10⁷, and the
   invariant sweep's own volcano sampler draws to 9.9×10⁹, where it returns
-  512.8 km. OPEN, and the obvious repair is ruled out: the paper's Table 1
-  tops out at 4×10⁸ kg/s, which is 35.9 km, so capping at the fit's own
-  maximum — B-084's pattern — would cut Pinatubo and Hunga Tonga. A
-  plume's ceiling has to be physical rather than statistical.
+  512.8 km. CLOSED the same night by rules 593 to 604, and not by the
+  obvious repair, which was ruled out first: the paper's Table 1 tops out
+  at 4×10⁸ kg/s, which is 35.9 km, so capping at the fit's own maximum —
+  B-084's pattern — would cut Pinatubo and Hunga Tonga. A plume's ceiling
+  has to be physical rather than statistical, so it was taken from the
+  atmosphere. A plume rises because it is lighter than the air around it,
+  and expanding as it rises cools it, so there is a height at which it
+  stops being lighter. Computed on the US Standard Atmosphere with every
+  parameter fixed in advance at the value that puts it higher — pure water
+  vapour at 1 700 K, entraining nothing — that height is 71.89 km above
+  the vent: 14.9 km above the highest plume ever measured, and it leaves
+  Mastin untouched to the bit throughout the box it was fitted in.
 - **B-086, an explosion burning past its own horizon.** CLOSED the same
   night. The flash travels in straight lines, `simulate.ts` has cut an
   impact's fire and burn radii at the fireball's horizon since
