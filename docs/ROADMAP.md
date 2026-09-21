@@ -267,18 +267,23 @@ model that is not yet the field's tool measures noise**: a bound met by
 a model that disagrees with the reference is met by luck, and the set is
 spent either way.
 
-| Work                          | Domain          | Where it stands                                                                                                                                                 |
-| ----------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| L1, the two remaining regimes | Landslide waves | a submerged slide and a confined basin still draw the project's own calibrated forms; open water from above already draws the manual, held to 10⁻⁹ on 143 cases |
-| G5, the sweep                 | Impacts         | 464 failures in 5 000 scenarios                                                                                                                                 |
-| G5, the sweep                 | Earthquakes     | 16 failures, every one an ill-conditioned contour radius                                                                                                        |
-| I3, the airburst's blast      | Impacts         | Tunguska's 20 kPa ring is 0.43× the flattened forest — and I3 is a check, not a held-out test, so it can be closed and re-closed                                |
-| V1, two clauses of four       | Volcanoes       | pyroclastic currents and lahars not held to LaharZ                                                                                                              |
-| G1, the wave relations        | Waves from eq.  | held to GeoClaw fixtures by tolerance, not within 1 % of a reference                                                                                            |
+The table is the state after the night of 20/21 September, which moved
+four of the seven lines. The three sections below it say how.
 
-**Six rules, no data spent.** Start with the landslide waves: highest
-count, nothing pending, and L1 is the only rule in the project whose
-missing piece is a model rather than a measurement.
+| Work                          | Domain          | Where it stands, 21 September 2026                                                                                                                                                                                                                                                                                                                                                                                      |
+| ----------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| L1, the two remaining regimes | Landslide waves | **the sources are read.** Watts et al. 2005's submarine equations and both of the manual's reservoir shapes are transcribed and verified in CI. Three candidates refused, each with its figure — 458 m on Storegga, a 21.1× seam, 336 m in a 238 m lake. What is left is a relation whose fitted range overlaps the events this product draws, and the rewiring rules 532 to 540 refused to bundle with a transcription |
+| G5, the sweep                 | Impacts         | 464 failures, **408 of them now explained**: G5's clause is false about the mechanism, since an impactor's size sets the burst altitude rather than being held against it. 40 had a cause already; sixteen remain                                                                                                                                                                                                       |
+| G5, the sweep                 | Earthquakes     | 16 failures, every one an ill-conditioned contour radius. Unchanged, and blocked on an amendment that may not be written after the figure                                                                                                                                                                                                                                                                               |
+| I3, the airburst's blast      | Impacts         | **measured, and not closable as written.** The felled forest sits between the two thresholds the field names, not outside one. A band from the reference's own three models holds both measured footprints and is 3.79× wide where I3 allows 3 — the rule is tighter than the spread the field reports on itself. And the ninety per cent of the runs needs a burst altitude Table 2 does not print                     |
+| V1, two clauses of four       | Volcanoes       | pyroclastic currents and lahars not held to LaharZ. Unchanged                                                                                                                                                                                                                                                                                                                                                           |
+| G1, the wave relations        | Waves from eq.  | held to GeoClaw fixtures by tolerance, not within 1 % of a reference. Unchanged                                                                                                                                                                                                                                                                                                                                         |
+| **POS, the seventh**          | every domain    | **new, and the one that paid.** Ask whether an output is POSSIBLE rather than whether it is right. Three defects in one night — B-084 and B-086 closed, B-085 open — none of which any held-out set would catch, because they live where no event has happened and the product draws them anyway. `pnpm audit:invariants`                                                                                               |
+
+**Seven rules, no data spent.** The night of 20/21 September spent the
+first item and found the seventh. What it did not do is close L1: the
+sources are read and the candidates are refused, which is most of the
+work and none of the rule.
 
 #### What the night of 20/21 September did to the first item
 
