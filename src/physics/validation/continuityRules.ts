@@ -49,8 +49,9 @@
  * pass for a jump in the physics.
  *
  * RULE 625. WHERE A FIELD SAMPLE IS TOO SMALL TO MATTER, it is not compared:
- * an overpressure below 100 Pa in both runs — a twentieth of the lightest
- * damage the product draws — and a thermal exposure below 1 000 J/m² in both,
+ * an overpressure below 100 Pa in both runs — a thirty-fourth of the
+ * lightest damage the product draws, 3 447 Pa (the rule as pushed said "a
+ * twentieth"; the number was always 100 Pa) — and a thermal exposure below 1 000 J/m² in both,
  * about a two-hundredth of the lowest burn threshold. The same reason the
  * harness has never compared a ring under a millimetre.
  *

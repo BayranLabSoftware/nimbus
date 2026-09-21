@@ -68,6 +68,7 @@ import {
   OVERPRESSURE_WINDOW_BREAK,
   type ImpactDamageRadii,
 } from './events/impact/damageRings.js';
+import { impactFieldSamples } from './events/impact/impactField.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
 import {
   impactSeismicEnergy,
@@ -420,6 +421,15 @@ export interface ImpactScenarioResult {
     climateTier: ClimateTier;
   };
   tsunami?: ImpactTsunamiResult;
+  /**
+   * The field itself, at seven fixed ground ranges: the overpressure (Pa)
+   * and the thermal exposure (J/m²), keyed like `overpressureAt30km`. Read
+   * from the same branches the rings above are drawn from
+   * (`events/impact/impactField.ts`), and what G5's harness checks for
+   * continuity everywhere, where it checks a ring only at a regime switch
+   * (rules 621 to 629 of `validation/continuityRules.ts`).
+   */
+  field: Record<string, number>;
 }
 
 /**
@@ -800,6 +810,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     firestorm,
     entry,
     atmosphere,
+    field: impactFieldSamples({ impactor: { kineticEnergy: ke }, entry }),
   };
 
   // Tsunami cascade activation rule — Phase 14 tightening.

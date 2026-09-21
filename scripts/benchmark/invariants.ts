@@ -9,6 +9,7 @@ import { simulateLandslide } from '../../src/physics/events/landslide/simulate.j
 import { simulateVolcano } from '../../src/physics/events/volcano/simulate.js';
 import { mulberry32 } from '../../src/physics/montecarlo/sampling.js';
 import { simulateImpact } from '../../src/physics/simulate.js';
+import { CONTINUITY_TOLERANCE, FIELD_FLOOR } from '../../src/physics/validation/continuityRules.js';
 
 /**
  * Track INV of the benchmark protocol: invariants every output must keep,
@@ -62,6 +63,16 @@ export interface Hazard {
   run: (input: Json) => Json;
   /** Paths of the rings a visitor sees. */
   rings: readonly string[];
+  /**
+   * Rules 621 to 629 of validation/continuityRules.ts, for a hazard whose
+   * domain has been opened: the rings that are CONTOURS (a threshold crossed)
+   * are checked for continuity only where the regime switches, as
+   * BENCHMARK_PROTOCOL.md defines continuity; the FIELD, at fixed places, is
+   * checked everywhere. A hazard without a regime keeps the check it had.
+   */
+  regime?: (result: Json) => string;
+  contours?: readonly string[];
+  fields?: readonly { path: string; floor: number }[];
 }
 
 const logU = (u: number, lo: number, hi: number): number =>
@@ -92,6 +103,29 @@ export const HAZARDS: readonly Hazard[] = [
     },
     grow: (input, f) => ({ ...input, impactorDiameter: (input.impactorDiameter as number) * f }),
     run: (input) => simulateImpact(input as never) as unknown as Json,
+    // Rule 623: an impact's regime is its entry regime with its crater's
+    // morphology.
+    regime: (r) => {
+      const entry = r.entry as Json | undefined;
+      const crater = r.crater as Json | undefined;
+      return `${String(entry?.regime)}|${String(crater?.morphology)}`;
+    },
+    // Rule 622: the contours, the ranges where a threshold is crossed.
+    contours: [
+      'damage.craterRim',
+      'damage.thirdDegreeBurn',
+      'damage.secondDegreeBurn',
+      'damage.overpressure5psi',
+      'damage.overpressure1psi',
+      'damage.lightDamage',
+      'ejecta.blanketEdge1m',
+      'ejecta.blanketEdge1mm',
+    ],
+    // Rules 624 and 625: the field at seven fixed ranges, with its floors.
+    fields: [1, 3, 10, 30, 100, 300, 1000].flatMap((km) => [
+      { path: `field.overpressureAt${String(km)}km`, floor: FIELD_FLOOR.overpressurePa },
+      { path: `field.thermalExposureAt${String(km)}km`, floor: FIELD_FLOOR.thermalExposureJm2 },
+    ]),
     rings: [
       'damage.craterRim',
       'damage.thirdDegreeBurn',
@@ -323,8 +357,10 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
     found.push({ key, input: at, detail });
   };
   const base = new Map<string, number>();
+  let baseResult: Json;
   try {
-    leaves(hazard.run(input), '', base);
+    baseResult = hazard.run(input);
+    leaves(baseResult, '', base);
   } catch (e) {
     fail('finite: the run throws', input, String(e).slice(0, 200));
     return found;
@@ -353,12 +389,17 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
   ] as const) {
     const grownInput = hazard.grow(input, factor, step);
     const grown = new Map<string, number>();
+    let grownResult: Json;
     try {
-      leaves(hazard.run(grownInput), '', grown);
+      grownResult = hazard.run(grownInput);
+      leaves(grownResult, '', grown);
     } catch (e) {
       fail('finite: the run throws', grownInput, String(e).slice(0, 200));
       continue;
     }
+    // Rule 623: whether the step crossed a regime, for a hazard that has one.
+    const regimeSwitched =
+      hazard.regime === undefined ? true : hazard.regime(baseResult) !== hazard.regime(grownResult);
     for (const ring of hazard.rings) {
       const a = base.get(ring);
       const b = grown.get(ring);
@@ -371,8 +412,37 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
       if (check === 'continuous') {
         // A magnitude is a logarithm: its jump is measured in units, not as a share.
         const scale = ring.endsWith('magnitude') ? 1 : Math.max(Math.abs(a), Math.abs(b));
-        if (scale > 0 && Math.abs(b - a) / scale > 0.05)
-          fail(`continuous: ${ring}`, input, `${a.toPrecision(6)} → ${b.toPrecision(6)}`);
+        const jumped = scale > 0 && Math.abs(b - a) / scale > 0.05;
+        const detail = `${a.toPrecision(6)} → ${b.toPrecision(6)}`;
+        if (hazard.regime === undefined) {
+          if (jumped) fail(`continuous: ${ring}`, input, detail);
+        } else {
+          // Rule 627: the check as it was, read in the same run, beside the
+          // check as corrected — a count carried from another day measures
+          // whatever else happened in between.
+          if (jumped) fail(`continuous, as it was: ${ring}`, input, detail);
+          const isContour = hazard.contours?.includes(ring) ?? false;
+          if (jumped && (!isContour || regimeSwitched))
+            fail(`continuous: ${ring}`, input, `${detail}${isContour ? ' (regime switch)' : ''}`);
+        }
+      }
+    }
+    // Rule 624: the field, at fixed places, everywhere.
+    if (check === 'continuous' && hazard.fields !== undefined) {
+      for (const { path, floor } of hazard.fields) {
+        const a = base.get(path);
+        const b = grown.get(path);
+        if (a === undefined || b === undefined || !Number.isFinite(a) || !Number.isFinite(b))
+          continue;
+        // Rule 625: below its floor in both runs a sample is not compared.
+        if (Math.max(Math.abs(a), Math.abs(b)) < floor) continue;
+        const scale = Math.max(Math.abs(a), Math.abs(b));
+        if (Math.abs(b - a) / scale > CONTINUITY_TOLERANCE)
+          fail(
+            `continuous (field): ${path}`,
+            input,
+            `${a.toPrecision(6)} → ${b.toPrecision(6)}${regimeSwitched ? ' (regime switch)' : ''}`
+          );
       }
     }
   }
