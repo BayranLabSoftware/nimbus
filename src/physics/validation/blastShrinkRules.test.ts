@@ -103,9 +103,11 @@ describe('rules 638 to 646: refused, and what the refusal found', () => {
     expect(Number(b.damage.overpressure1psi)).toBeCloseTo(3_093, -1);
   });
 
-  it('leaves the causes unread by the harness', async () => {
-    const { HAZARDS } = await import('../../../scripts/benchmark/invariants.js');
+  it('leaves its causes unread by the harness, which reads rule 685’s statement instead', async () => {
+    const { HAZARDS, explainImpactBlastShrink } =
+      await import('../../../scripts/benchmark/invariants.js');
     const impact = HAZARDS.find((h) => h.name === 'impact');
-    expect(impact?.explainShrink).toBeUndefined();
+    expect(impact?.explainShrink).toBeDefined();
+    expect(impact?.explainShrink).not.toBe(explainImpactBlastShrink);
   });
 });

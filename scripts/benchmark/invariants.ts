@@ -17,6 +17,11 @@ import {
   OVERPRESSURE_WINDOW_BREAK,
 } from '../../src/physics/events/impact/damageRings.js';
 import { CONTINUITY_TOLERANCE, FIELD_FLOOR } from '../../src/physics/validation/continuityRules.js';
+import {
+  blastSourceOf,
+  explainBlastShrink,
+  type BlastSource,
+} from '../../src/physics/validation/blastSource.js';
 import { searchFieldJump } from '../../src/physics/validation/fieldJump.js';
 import { FIELD_JUMP_GATE, FIELD_JUMP_SHARE } from '../../src/physics/validation/fieldJumpRules.js';
 
@@ -74,6 +79,9 @@ const GROUND_BLAST = process.env.NIMBUS_GROUND_BLAST;
  *  read a candidate rather than the default (rule 678 of
  *  validation/entryPaperAgainRules.ts). */
 const ENTRY_EQUATIONS = process.env.NIMBUS_ENTRY_EQUATIONS;
+/** Rule 688 (c) of validation/blastShrinkSourceRules.ts: read the harness as
+ *  it was, with no cause asked of a shrinking ring. */
+const NO_CAUSES = process.env.NIMBUS_NO_CAUSES !== undefined;
 /** Rule 642 of validation/blastShrinkRules.ts: the seed of a held-out run. */
 const SWEEP_SEED_OVERRIDE = process.env.NIMBUS_SWEEP_SEED;
 const HALF_CIRCUMFERENCE = Math.PI * (EARTH_RADIUS as number);
@@ -103,7 +111,12 @@ export interface Hazard {
    * any, under which a ring may shrink as the size grows. A ring a cause
    * explains is printed under it and not counted as a failure.
    */
-  explainShrink?: (ring: string, base: Json, grown: Json) => string | null;
+  explainShrink?: (
+    ring: string,
+    base: Json,
+    grown: Json,
+    runAt: (factor: number) => Json
+  ) => string | null;
 }
 
 const logU = (u: number, lo: number, hi: number): number =>
@@ -195,10 +208,24 @@ export const HAZARDS: readonly Hazard[] = [
         ...(GROUND_BLAST === undefined ? {} : { groundBlast: GROUND_BLAST }),
         ...(ENTRY_EQUATIONS === undefined ? {} : { entryEquations: ENTRY_EQUATIONS }),
       } as never) as unknown as Json,
-    // Rules 638 to 646 read two causes a blast ring may shrink by, and were
-    // REFUSED on the held-out seed on 21 September 2026 by two scenarios with
-    // neither (B-089, B-090): the hook is not wired, and every shrinking ring
-    // counts. `explainImpactBlastShrink` stays exported for the next round.
+    // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring
+    // that shrinks is explained when its source moved it without a step
+    // (`blastSource.ts`). Rules 638 to 646 read two causes here and were
+    // refused; `explainImpactBlastShrink` is theirs, kept for the record.
+    explainShrink: (ring, base, grown, runAt) => {
+      const threshold = BLAST_RING_THRESHOLD[ring];
+      const before = (base.damage as Json | undefined)?.[ring.replace('damage.', '')];
+      if (threshold === undefined || typeof before !== 'number') return null;
+      const sourceOf = (r: Json): BlastSource => blastSourceOf(r as never);
+      return explainBlastShrink(
+        threshold,
+        before,
+        sourceOf(base),
+        sourceOf(grown),
+        (k) => sourceOf(runAt(k)),
+        1.01
+      );
+    },
     // Rule 623: an impact's regime is its entry regime with its crater's
     // morphology.
     regime: (r) => {
@@ -510,7 +537,11 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
       // Below a millimetre a ring is not drawn, and its digits are rounding.
       if (Math.max(Math.abs(a), Math.abs(b)) < 1e-3) continue;
       if (check === 'monotone' && b < a * (1 - 1e-9) - 1e-9) {
-        const cause = hazard.explainShrink?.(ring, baseResult, grownResult) ?? null;
+        const cause = NO_CAUSES
+          ? null
+          : (hazard.explainShrink?.(ring, baseResult, grownResult, (k) =>
+              hazard.run(hazard.grow(input, k, step))
+            ) ?? null);
         if (cause === null)
           fail(`monotone in size: ${ring}`, input, `${a.toPrecision(6)} → ${b.toPrecision(6)}`);
         else
@@ -578,11 +609,13 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
   return found;
 }
 
-/** Rule 664 of validation/fieldJumpRules.ts: the keys G5 does not read. */
+/** Rule 664 of validation/fieldJumpRules.ts, and rule 683 of
+ *  validation/blastShrinkSourceRules.ts: the keys G5 does not read. */
 export const NOT_READ_BY_G5 = [
   'continuous, as it was',
   'continuous (field), as rule 624 read it',
   'steep, not a jump (field)',
+  'explained, ',
 ] as const;
 
 /** How long a scenario's three runs may take before they count as not returning. */
