@@ -92,7 +92,10 @@ describe('rules 248 to 254 — the water a wave is made in', () => {
       });
     const shelf = of(200);
     const lagoon = of(2);
-    expect(shelf.waterFraction).toBeCloseTo(0.208, 3);
+    // 0.208 under the seafloor step; 0.219 since rules 654 to 659 put the
+    // taper in its place, which moves an ocean impact's share by at most
+    // 1 / (1 − e^(−3)).
+    expect(shelf.waterFraction).toBeCloseTo(0.219, 3);
     expect(lagoon.waterFraction).toBeLessThan(0.005);
     // The crater scales as the seafloor fraction to the one over 3.4.
     const craterScale = (f: number): number => Math.pow(f, 1 / 3.4);

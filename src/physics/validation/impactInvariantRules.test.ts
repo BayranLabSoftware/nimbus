@@ -103,8 +103,11 @@ describe('rules 135 and 136: what decides', () => {
 });
 
 describe('the outcome of 16 September 2026', () => {
-  it('adopted the flashes that add and refused the taper', () => {
+  it('adopted the flashes that add and refused the taper — which rules 654 to 659 then adopted', () => {
     expect(DEFAULT_IMPACT_FLASH_COMBINER).toBe('sum');
-    expect(DEFAULT_SEAFLOOR_CUTOFF).toBe('step');
+    // Refused on 16 September on rule 136 (b) alone, a crater moved onto the
+    // simple-to-complex step; adopted on 21 September, with that step joined
+    // by rules 647 to 653 and rule 136's bar unchanged.
+    expect(DEFAULT_SEAFLOOR_CUTOFF).toBe('taper');
   });
 });

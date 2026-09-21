@@ -137,7 +137,7 @@ export interface OceanCouplingInput {
 export type SeafloorCutoff = 'step' | 'taper';
 
 /** What a partition that names no cutoff uses. */
-export const DEFAULT_SEAFLOOR_CUTOFF: SeafloorCutoff = 'step';
+export const DEFAULT_SEAFLOOR_CUTOFF: SeafloorCutoff = 'taper';
 
 export interface OceanCouplingResult {
   /** Fraction of post-atmospheric KE that reaches the seafloor as

@@ -1544,12 +1544,14 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       impactAngle: degreesToRadians(deg(45)),
       waterDepth: m(200),
     });
-    // A gigatonne is 10¹² kg; the dust is 4.91 × 10¹⁰ of them, so megatonnes.
-    expect(r.atmosphere.stratosphericDust as number).toBeCloseTo(4.91e10, -8);
+    // A gigatonne is 10¹² kg; the dust is 4.84 × 10¹⁰ of them, so megatonnes.
+    // (4.91 × 10¹⁰ under the seafloor step; the taper of rules 654 to 659
+    // sends 1.4 % less of this body's energy to the seafloor.)
+    expect(r.atmosphere.stratosphericDust as number).toBeCloseTo(4.842e10, -8);
     const fields = fieldsFor({ type: 'impact', data: r } as never).outputs;
     const value = (label: string): string =>
       fields.find((f) => f.label === label)?.value ?? '(missing)';
-    expect(value('Stratospheric dust')).toBe('49.1 Mt');
+    expect(value('Stratospheric dust')).toBe('48.4 Mt');
     expect(value('Acid-rain mass (HNO₃)')).toBe('13.7 Mt');
     // And the impactor's own mass, which used to read "1.6e+0 Gt".
     expect(value('Impactor mass')).toBe('1.6 Gt');
