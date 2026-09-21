@@ -16,8 +16,14 @@ const RINGS = [
   ['lightDamage', OVERPRESSURE_LIGHT_DAMAGE],
 ] as const;
 
+// A blast source, which no flash moves: read without the radiation's integral
+// since rules 780 to 787, as the harness reads it.
 const run = (input: ImpactScenarioInput, k: number): ReturnType<typeof simulateImpact> =>
-  simulateImpact({ ...input, impactorDiameter: (Number(input.impactorDiameter) * k) as never });
+  simulateImpact({
+    ...input,
+    impactorDiameter: (Number(input.impactorDiameter) * k) as never,
+    airburstRadiation: 'efficiency',
+  });
 
 const cause = (
   input: ImpactScenarioInput,

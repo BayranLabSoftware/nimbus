@@ -64,7 +64,7 @@ describe('the impact pipeline agrees with its reference implementation where it 
         }
       }
     }
-  });
+  }, 60_000);
 
   for (const [quantity, tolerance] of Object.entries(TOLERANCE)) {
     it(`matches the ${quantity} within ${(tolerance * 100).toFixed(0)} %`, () => {

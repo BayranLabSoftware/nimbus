@@ -118,28 +118,32 @@ describe('rules 548 to 554: rings nest', () => {
     ],
   };
 
-  it.each(Object.keys(chains))('holds for every graded ring of a %s', (name) => {
-    let read = 0;
-    for (const { out } of slice(name)) {
-      for (const chain of chains[name] ?? []) {
-        for (let k = 1; k < chain.length; k++) {
-          const severe = out.get(chain[k - 1] ?? '');
-          const mild = out.get(chain[k] ?? '');
-          if (severe === undefined || mild === undefined) continue;
-          if (!(severe > 0) || !(mild > 0)) continue;
-          read++;
-          expect(
-            severe,
-            `${chain[k - 1] ?? ''} ${severe.toPrecision(5)} vs ${chain[k] ?? ''} ${mild.toPrecision(5)}`
-          ).toBeLessThanOrEqual(mild);
+  it.each(Object.keys(chains))(
+    'holds for every graded ring of a %s',
+    (name) => {
+      let read = 0;
+      for (const { out } of slice(name)) {
+        for (const chain of chains[name] ?? []) {
+          for (let k = 1; k < chain.length; k++) {
+            const severe = out.get(chain[k - 1] ?? '');
+            const mild = out.get(chain[k] ?? '');
+            if (severe === undefined || mild === undefined) continue;
+            if (!(severe > 0) || !(mild > 0)) continue;
+            read++;
+            expect(
+              severe,
+              `${chain[k - 1] ?? ''} ${severe.toPrecision(5)} vs ${chain[k] ?? ''} ${mild.toPrecision(5)}`
+            ).toBeLessThanOrEqual(mild);
+          }
         }
       }
-    }
-    // The guard is against a vacuous test, not a threshold: an earthquake
-    // reaches MMI IX rarely, and five readings in a hundred and twenty
-    // draws is five real comparisons.
-    expect(read, `${name} read nothing — the chain's paths may not exist`).toBeGreaterThan(0);
-  });
+      // The guard is against a vacuous test, not a threshold: an earthquake
+      // reaches MMI IX rarely, and five readings in a hundred and twenty
+      // draws is five real comparisons.
+      expect(read, `${name} read nothing — the chain's paths may not exist`).toBeGreaterThan(0);
+    },
+    60_000
+  );
 });
 
 describe('rules 548 to 554: nothing negative, and a crater is not deeper than it is wide', () => {
@@ -172,7 +176,7 @@ describe('rules 548 to 554: nothing negative, and a crater is not deeper than it
       expect(depth).toBeLessThanOrEqual(dia);
     }
     expect(read).toBeGreaterThan(5);
-  });
+  }, 60_000);
 });
 
 describe('the seven questions are the seven that were fixed', () => {

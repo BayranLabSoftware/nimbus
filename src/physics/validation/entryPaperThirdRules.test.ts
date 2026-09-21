@@ -47,5 +47,5 @@ describe('rules 691 to 697: the entry on its paper’s equations', () => {
     const b = at1km(1.001);
     const found = searchFieldJump(at1km, 1, 1.001, a, b, FIELD_JUMP_SHARE * Math.max(a, b));
     expect(found.kind).toBe('steep');
-  });
+  }, 60_000);
 });

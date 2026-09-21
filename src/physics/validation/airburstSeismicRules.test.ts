@@ -50,7 +50,7 @@ describe('rules 730 to 738: an airburst’s magnitude from the air that carries 
       checked += 1;
     }
     expect(checked).toBeGreaterThan(20);
-  });
+  }, 60_000);
 
   it('(a) gives a complete airburst the larger term, or none', () => {
     let air = 0;

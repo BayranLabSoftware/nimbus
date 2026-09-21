@@ -26,9 +26,11 @@ import { runImpactMonteCarlo } from './impactMonteCarlo.js';
  * twice with the same seed must yield bit-identical percentiles. This
  * is the contract that lets us hash a seed into a shareable URL.
  *
- * Both tests run on the Tunguska preset because its small size keeps
- * the simulator below 0.5 ms per iteration, so even N=2 000 finishes
- * in well under a second.
+ * Both tests run on the Tunguska preset. Its small size kept the
+ * simulator below 0.5 ms per iteration; since rules 780 to 787 its
+ * flash is integrated along the entry's path, about 5 ms an iteration,
+ * so the N=2 000 reference takes some ten seconds and the tests that
+ * draw two more runs have a minute.
  */
 
 const NOMINAL = IMPACT_PRESETS.TUNGUSKA.input;
@@ -116,7 +118,7 @@ describe('Monte-Carlo determinism — same seed produces identical percentiles',
       expect(fa.p90).toBe(fb.p90);
       expect(fa.mean).toBe(fb.mean);
     }
-  });
+  }, 60_000);
 
   it('different seeds produce different percentiles (sanity)', () => {
     const a = runImpactMonteCarlo({
@@ -136,5 +138,5 @@ describe('Monte-Carlo determinism — same seed produces identical percentiles',
     const a10 = a.metrics.kineticEnergy.p10;
     const b10 = b.metrics.kineticEnergy.p10;
     expect(a10).not.toBe(b10);
-  });
+  }, 60_000);
 });

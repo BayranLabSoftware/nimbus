@@ -422,6 +422,7 @@ Read on the sweep's own seed, 5 000 impacts, round by round:
 | A low airburst digs where its kept energy strikes the ground      | 756 to 763 | adopted: B-097 closed; the harness reads a crater's birth as a contour's |    **0** |
 | An iron's crater field ends where its fragments dig as one        | 764 to 771 | adopted: B-098 closed, by Bland & Artemieva's masses                     |    **0** |
 | An airburst's flash from the field's model of it (ATAP)           | 772 to 779 | refused by 777 (b): the watchdog, and two rings at the V/H edge          |    **0** |
+| The same, asked again with each cause answered                    | 780 to 787 | adopted: B-095 closed, G6 met; impacts at 8.0                            |    **0** |
 
 Nothing is left on the own seed. The burn ring at the passage from a complete
 airburst to a partial one is gone (B-093, rules 714 to 721), and the 38
@@ -542,6 +543,9 @@ them no band.
 
 #### IMP-9, 21 September 2026: the verdict — impacts at 7.0, and what is missing
 
+_Updated that night: with G6 met by rules 780 to 787 impacts count **8.0**,
+and only G3 is missing, by the calendar._
+
 The report regenerated on `cc825ee` reads impacts at **7.0**: I1, I2, I3 and
 I4, G4, G5 and G7 met, where the domain opened that morning at 5.0. Two rules
 are missing, and why:
@@ -551,16 +555,22 @@ are missing, and why:
   eight are expected around March 2027 (IMP-0). IMP-6 scores it then, and
   fixes with Andrea how G3's width bound, written for a σ_ln, reads
   kilometres.
-- **G6, by one gap that is not a ceiling.** An airburst's flash, too faint
-  by the luminous efficiency of an impact's plume (B-095). Johnston & Stern's
-  paper was read that evening and rules 772 to 779 drew the flash from its
-  correlation, the stronger of it and the efficiency's at every range as
-  Andrea decided, and were refused by their own condition (b): the harness's
-  searches no longer return within the watchdog at 6 to 12 ms a run, and two
-  bodies reaching low and fast draw burn rings that shrink as they grow. A
-  second round would need a cheaper run or a watchdog that reads a run that
-  does not return, and a reading below V/H = 1.8 that does not lift a deeper
-  body higher. The other, an impact's air blast read from under the ground as
+- **G6, met that night.** An airburst's flash, too faint by the luminous
+  efficiency of an impact's plume (B-095). Johnston & Stern's paper was read
+  that evening and rules 772 to 779 drew the flash from its correlation, the
+  stronger of it and the efficiency's at every range as Andrea decided, and
+  were refused by their own condition (b): the harness's searches no longer
+  returned within the watchdog at 6 to 12 ms a run, and two bodies reaching
+  low and fast drew burn rings that shrank as they grew. Rules 780 to 787
+  asked it again with each cause answered — the correlation read at its edge
+  one input at a time, the footprint's area summed where the path lays its
+  heat, a blast ring's cause read from runs without the integral and a
+  watchdog of 10 s — and were adopted: G5 reads 0 on the own seed under both
+  laws and the same 8 on a seed no run had used. What the correlation cannot
+  read is drawn at PAIR's nominal, the field's own, by Andrea's decision. The
+  other gap, an impact's air blast read from under the ground as the program
+  reads it, was closed by rules 748 to 755. Impacts count 8.0 of 9; G3 waits
+  for the calendar. The other, an impact's air blast read from under the ground as
   the program reads it, is closed by rules 748 to 755: a body that reaches
   the ground bursts at the ground.
 

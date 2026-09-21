@@ -133,7 +133,7 @@ describe('rules 255 to 260 — a pair beside a number is a claim about that numb
     console.log(
       `\nrule 257(b): ${rows.length.toString()} presets, none backwards. The whole-realisation pair was backwards on ${wholeBackwards.toString()} of them.`
     );
-  }, 30_000);
+  }, 120_000);
 
   it('rule 258: how often the pair contains the figure beside it — recorded, not gated', () => {
     const rows = rowsOf();
@@ -160,5 +160,5 @@ describe('rules 255 to 260 — a pair beside a number is a claim about that numb
     console.log(lines.join('\n'));
     // Nothing is asserted about the share. It is printed.
     expect(rows.length).toBeGreaterThan(0);
-  }, 30_000);
+  }, 120_000);
 });

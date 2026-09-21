@@ -135,7 +135,7 @@ export const VISUAL_CONTRACTS = {
     id: 'thirdDegreeBurn',
     quantity: '3rd-degree burn radius',
     formula:
-      'explosion: Glasstone & Dolan (1977) Figure 12.65, the 50 % line of skin-burn probability for an average unshielded population, by yield (rules 114 to 117 of validation/burnProbabilityRules.ts) · impact: Collins, Melosh & Marcus (2005)’s exposure — the fireball of the energy at the ground radiating η = 3 × 10⁻³ of it into the half-space, under its horizon (Eqs. 32–37, rules 146 to 149), the flash of the energy left in the air from the burst altitude (rules 698 to 705), and below a burst’s own fireball a share of its kept energy on the ground (rules 714 to 721) — at the project’s own 8 cal/cm²',
+      'explosion: Glasstone & Dolan (1977) Figure 12.65, the 50 % line of skin-burn probability for an average unshielded population, by yield (rules 114 to 117 of validation/burnProbabilityRules.ts) · impact: Collins, Melosh & Marcus (2005)’s exposure — the fireball of the energy at the ground radiating η = 3 × 10⁻³ of it into the half-space, under its horizon (Eqs. 32–37, rules 146 to 149), the flash of the energy left in the air from the burst altitude (rules 698 to 705), no fainter at any range than the radiation of the entry’s shock layer and wake along its path (Johnston & Stern 2019, NASA ATAP; rules 780 to 787), and below a burst’s own fireball a share of its kept energy on the ground (rules 714 to 721) — at the project’s own 8 cal/cm²',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
@@ -150,7 +150,7 @@ export const VISUAL_CONTRACTS = {
     id: 'secondDegreeBurn',
     quantity: '2nd-degree burn radius',
     formula:
-      'explosion: Glasstone & Dolan (1977) Figure 12.65’s 50 % line for the second degree · impact: the third degree’s exposure (Collins, Melosh & Marcus 2005, Eqs. 32–37, with the flash in the air from the burst altitude) at the project’s own 5 cal/cm²',
+      'explosion: Glasstone & Dolan (1977) Figure 12.65’s 50 % line for the second degree · impact: the third degree’s exposure (Collins, Melosh & Marcus 2005, Eqs. 32–37, with the flash in the air from the burst altitude and no fainter than the entry’s radiation along its path, Johnston & Stern 2019) at the project’s own 5 cal/cm²',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,

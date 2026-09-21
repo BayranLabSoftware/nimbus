@@ -96,6 +96,59 @@
  * RULE 787. WHAT IT DOES NOT CLAIM: as rule 779.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `cfaf022` and the four sweeps made on that commit
+ * (`benchmark/results/invariants-2026-09-21-52.json` and `-53` on the own
+ * seed, `efficiency` and `atap`; `-54` and `-55` on
+ * `benchmark-2026-09-21-heldout-atap-2`). Then the default moved.
+ *
+ * (a) HOLDS. `atapRadiationRules.test.ts` and `atapRadiationAgainRules.test.ts`,
+ *     in CI on `cfaf022`: rule 777 (a); no burn or fire ring falling at
+ *     shallow entries; the 56.5 m body's rings growing; the causes read from
+ *     runs without the integral the same as with it, the two stopped
+ *     scenarios well within the watchdog.
+ * (b) HOLDS. On the own seed G5 reads 0 under both laws. On the unseen seed
+ *     it reads 8 under both, the same keys and the same scenario: a 1.59 m
+ *     body at 9.9 km/s whose burns and blast vanish at B-091's switch. The
+ *     scenarios whose failures differ print only keys G5 does not read: burn
+ *     rings that move by more than 5 % on a step inside a regime — contours
+ *     born or steep there, which G5 reads only where the regime switches —
+ *     printed as the check was; and on the unseen seed one field sample at
+ *     3 km, steep and not a jump.
+ * (c) HOLDS. The presets move as rule 783 lists them, and no other.
+ * (d) HOLDS. The report regenerated on the new default: release gate PASS.
+ *
+ * What the new default asked of the tests of other rounds, each named: B-041
+ * and rules 698 to 705 read the luminous efficiency's flash, whose fluences
+ * and placement they hold; rules 683 to 690 and 764 to 771 read blast sources
+ * and craters, which no flash moves, from runs without the integral. And
+ * time: a radiating impact takes 3 to 8 ms on the presets, where it took
+ * under 0.2, so the tests that run such impacts by the hundred have a budget
+ * of their own — the Monte Carlo's determinism and wrappers, rules 255 to
+ * 260, 548 to 554, 630 to 637, 691 to 697, 714 to 721, 730 to 738 and 756 to
+ * 763, and the comparison with the Earth Impact Effects Program — and nothing
+ * else of theirs moved.
+ *
+ * What it asked of the product, measured on the machine that ran the sweeps,
+ * in Chromium on its GPU. The toll band's two hundred draws, which the
+ * application makes after every Launch on the globe's own thread, take 0.8 to
+ * 1.4 s for a radiating preset where they took 4 to 14 ms: launched on Meteor
+ * Crater, the globe stopped for some 0.95 s. They are drawn in slices that
+ * hand the thread back to the browser (`useAppStore.ts`), the same draws in
+ * the same order (`tollBand.test.ts`): the globe then draws some 110 frames
+ * while the band is drawn, none more than 55 ms apart, and the toll comes
+ * some 0.6 s later than it did. The Monte Carlo's thousand runs take 5 to
+ * 8 s in their worker, where they took 60 to 200 ms: declared, not changed.
+ *
+ * So `DEFAULT_AIRBURST_RADIATION` is `atap`, B-095 is closed, and G6 for
+ * impacts is read as Andrea decided: the flash is the field's model where it
+ * reads, and PAIR's nominal, the field's own, beyond it.
+ */
+
 /** Rule 785 (b): the seed of the run on scenarios nobody has seen. */
 export const ATAP_AGAIN_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-atap-2';
 

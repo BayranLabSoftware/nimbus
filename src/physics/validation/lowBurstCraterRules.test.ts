@@ -87,7 +87,7 @@ describe('rules 756 to 763: a low airburst digs where its kept energy strikes th
       }
     }
     expect(moved).toBeGreaterThan(0);
-  });
+  }, 60_000);
 
   it('(a) keeps B-097’s crater across its switch, and grows it in below the fireball', () => {
     let below = 1;

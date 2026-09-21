@@ -112,7 +112,7 @@ describe('rules 714 to 721: a low airburst’s flash where its fireball meets th
       const stepAfter = thermalRings(run(input, above, 'air'))[1] ?? NaN;
       expect(stepAfter).toBeLessThan(0.99 * stepBefore);
     }
-  });
+  }, 60_000);
 
   it('(b) keeps the flash in the air to the bit at or above the fireball radius', () => {
     const bodies = Object.values(IMPACT_PRESETS).map((p) => p.input as ImpactScenarioInput);

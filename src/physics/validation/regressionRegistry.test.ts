@@ -59,6 +59,7 @@ import {
 } from '../effects/atmosphericEntry.js';
 import { DEFAULT_AIRBURST_SEISMIC } from '../events/impact/airburstSeismic.js';
 import { DEFAULT_IRON_CRATER_FIELD } from '../events/impact/ironCraterField.js';
+import { DEFAULT_AIRBURST_RADIATION } from '../effects/atapRadiation.js';
 import { entryRegimeExplainKey } from '../../ui/components/entryRegimeExplain.js';
 import { computeTsunamiArrivalField, spansTheGlobe } from '../tsunami/fastMarching.js';
 import { radiansToDegrees } from '../units.js';
@@ -887,8 +888,11 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // curves on 16 September 2026 the airbursts' rings moved with it:
     // Tunguska's third-degree burns from 5.22 to 4.46 km and its first-degree
     // from 10.43 to 7.75, Chelyabinsk's third from 1.32 to 1.22.
+    // The luminous efficiency's flash, whose fluences this reads: since rules
+    // 780 to 787 the flash in the air is the stronger of it and Johnston &
+    // Stern's heat along the path, read at the same fluences.
     for (const preset of [IMPACT_PRESETS.TUNGUSKA, IMPACT_PRESETS.CHELYABINSK]) {
-      const r = simulateImpact(preset.input);
+      const r = simulateImpact({ ...preset.input, airburstRadiation: 'efficiency' });
       expect(r.entry.regime).toBe('COMPLETE_AIRBURST');
       const flash = {
         yieldEnergy: J(r.entry.atmosphericYieldMegatons * 4.184e15),
@@ -1871,6 +1875,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(DEFAULT_GROUND_BLAST).toBe('surface');
     expect(DEFAULT_LOW_BURST_CRATER).toBe('share');
     expect(DEFAULT_IRON_CRATER_FIELD).toBe('mass');
+    expect(DEFAULT_AIRBURST_RADIATION).toBe('atap');
     const methodology = METHODOLOGY_SECTIONS.flatMap((s) => s.entries)
       .map((e) => `${e.formula}\n${e.description}`)
       .join('\n');
@@ -1883,6 +1888,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       '748 to 755',
       '756 to 763',
       '764 to 771',
+      '780 to 787',
     ]) {
       expect(methodology, rules).toContain(rules);
     }

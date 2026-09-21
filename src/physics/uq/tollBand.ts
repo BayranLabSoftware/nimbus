@@ -227,16 +227,8 @@ export function resampleResult(
   }
 }
 
-/**
- * The plans of a few hundred realisations of one scenario.
- *
- * Sampled once and kept, because two different questions are asked of
- * the same draws: which radii the population has to be measured at,
- * and, once it has been, what the toll does. Drawing twice would
- * answer the second question about a different set of worlds from the
- * first.
- */
-export function sampleScenarioPlans(options: {
+/** What {@link sampleScenarioPlans} draws from. */
+export interface ScenarioPlanOptions {
   result: ActiveResult;
   planFor: (result: ActiveResult) => CasualtyPlan | null;
   /** Anything stable about this scenario. The band must not move
@@ -254,7 +246,39 @@ export function sampleScenarioPlans(options: {
   /** Rules 377 and 378 of validation/ruptureCentreRules.ts: draw where along
    *  the rupture the hypocentre sits. Off by default. */
   drawRuptureCentre?: boolean;
-}): CasualtyPlan[] {
+}
+
+/**
+ * The plans of a few hundred realisations of one scenario.
+ *
+ * Sampled once and kept, because two different questions are asked of
+ * the same draws: which radii the population has to be measured at,
+ * and, once it has been, what the toll does. Drawing twice would
+ * answer the second question about a different set of worlds from the
+ * first.
+ */
+export function sampleScenarioPlans(options: ScenarioPlanOptions): CasualtyPlan[] {
+  const plans: CasualtyPlan[] = [];
+  const draws = scenarioPlanDraws(options);
+  for (;;) {
+    const step = draws.next();
+    if (step.done === true) return step.value ? plans : [];
+    if (step.value !== null) plans.push(step.value);
+  }
+}
+
+/**
+ * The same draws one realisation at a time: each step is a realisation's
+ * plan, or null where it has none, and the end says whether the scenario
+ * could be drawn at all. A caller on the browser's thread can hand the
+ * thread back between steps — since rules 780 to 787 a radiating impact's
+ * realisation takes milliseconds, and two hundred of them at once would
+ * stop the globe — and gets, step for step, what {@link sampleScenarioPlans}
+ * returns.
+ */
+export function* scenarioPlanDraws(
+  options: ScenarioPlanOptions
+): Generator<CasualtyPlan | null, boolean, void> {
   const rng = mulberry32(options.seed);
   // The curve's scatter has a stream of its own, so the physics of
   // every realisation is the same whether it is drawn or not.
@@ -275,7 +299,6 @@ export function sampleScenarioPlans(options: {
           withinRng,
         }
       : {};
-  const plans: CasualtyPlan[] = [];
   const wanted = options.samples ?? TOLL_BAND_SAMPLES;
   for (let i = 0; i < wanted; i++) {
     const realisation = resampleResult(
@@ -284,17 +307,18 @@ export function sampleScenarioPlans(options: {
       earthquake,
       options.drawRuptureCentre ?? false
     );
-    if (realisation === null) return [];
+    if (realisation === null) return false;
     const plan = options.planFor(realisation);
-    if (plan === null) continue;
+    if (plan === null) {
+      yield null;
+      continue;
+    }
     const drawn = options.curveScatter === false ? plan : withCurveScatter(plan, curveRng);
-    plans.push(
-      (options.scatter ?? DEFAULT_TOLL_BAND_SCATTER) === TOLL_BAND_CANDIDATE
-        ? withVulnerabilityScatter(drawn, curveRng)
-        : drawn
-    );
+    yield (options.scatter ?? DEFAULT_TOLL_BAND_SCATTER) === TOLL_BAND_CANDIDATE
+      ? withVulnerabilityScatter(drawn, curveRng)
+      : drawn;
   }
-  return plans;
+  return true;
 }
 
 /**

@@ -7,8 +7,10 @@ import {
   sampleScenarioPlans,
   sampledTollBand,
   samplingFootprints,
+  scenarioPlanDraws,
   withPredictiveBand,
   type ExposurePoint,
+  type ScenarioPlanOptions,
 } from './tollBand.js';
 import { blastCasualtyPlan, estimateCasualties, type CasualtyPlan } from '../casualties.js';
 import { joulesToKilotons, nuclearFireballRadius } from '../effects/blastWave.js';
@@ -25,6 +27,7 @@ import {
   type ActiveResult,
 } from '../../store/useAppStore.js';
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
+import { IMPACT_PRESETS, simulateImpact } from '../simulate.js';
 
 const explosion = (
   input: ExplosionScenarioInput = EXPLOSION_PRESETS.HIROSHIMA_1945.input
@@ -140,6 +143,55 @@ describe('resampleResult', () => {
       sampleScenarioPlans({ result: { type: 'landslide' } as ActiveResult, planFor, seed: 1 })
     ).toHaveLength(0);
     expect(resampleResult({ type: 'landslide' } as ActiveResult, rng)).toBeNull();
+  });
+});
+
+describe('the draws one at a time', () => {
+  // The store draws the band a step at a time and hands the thread back to
+  // the browser between steps: since rules 780 to 787 an impact whose flash
+  // is read along its path takes milliseconds a realisation. What it gets
+  // must be, plan for plan, what the whole draw returns.
+  const location = { latitude: 45.46, longitude: 9.19 };
+  const stepwise = (options: ScenarioPlanOptions): { plans: CasualtyPlan[]; drawn: boolean } => {
+    const plans: CasualtyPlan[] = [];
+    const draws = scenarioPlanDraws(options);
+    for (;;) {
+      const step = draws.next();
+      if (step.done === true) return { plans, drawn: step.value };
+      if (step.value !== null) plans.push(step.value);
+    }
+  };
+
+  it('are the plans sampleScenarioPlans returns, for an impact, a quake and a blast', () => {
+    configureCountryLookup(() => 'IT');
+    const results: ActiveResult[] = [
+      { type: 'impact', data: simulateImpact(IMPACT_PRESETS.TUNGUSKA.input) },
+      { type: 'earthquake', data: simulateEarthquake(EARTHQUAKE_PRESETS.L_AQUILA_2009.input) },
+      explosion(),
+    ];
+    for (const result of results) {
+      const options: ScenarioPlanOptions = {
+        result,
+        planFor: (r) => casualtyPlanForResult(r, location),
+        seed: `stepwise:${result.type}`,
+      };
+      const whole = sampleScenarioPlans(options);
+      const { plans, drawn } = stepwise(options);
+      expect(drawn, result.type).toBe(true);
+      expect(whole.length, result.type).toBeGreaterThan(100);
+      expect(plans, result.type).toEqual(whole);
+    }
+    configureCountryLookup(null);
+  }, 60_000);
+
+  it('end on "not drawn" where the scenario has no sampler', () => {
+    const { plans, drawn } = stepwise({
+      result: { type: 'landslide' } as ActiveResult,
+      planFor,
+      seed: 1,
+    });
+    expect(drawn).toBe(false);
+    expect(plans).toHaveLength(0);
   });
 });
 

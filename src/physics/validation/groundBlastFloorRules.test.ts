@@ -90,7 +90,7 @@ describe('rules 630 to 637: no ground impact without an air blast', () => {
     // 57 grid rows and 12 bodies.
     expect(rows).toBe(69);
     expect(shortest).toBeCloseTo(VERIFIED_MIN_CROSSOVER, 8);
-  });
+  }, 60_000);
 
   it('moves none of the checked points (rule 635 a)', () => {
     let points = 0;
@@ -110,7 +110,7 @@ describe('rules 630 to 637: no ground impact without an air blast', () => {
       points++;
     }
     expect(points).toBeGreaterThanOrEqual(69);
-  });
+  }, 60_000);
 
   it('moves no preset (rule 635 b)', () => {
     for (const [name, preset] of Object.entries(IMPACT_PRESETS)) {

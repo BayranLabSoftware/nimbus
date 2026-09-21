@@ -44,8 +44,21 @@ describe('rules 698 to 705: an airburst’s flash where the airburst is', () => 
       // All of the flash in the air, as these rules read it: below its own
       // fireball a burst puts a share on the ground since rules 714 to 721,
       // and that share does not move with the placement.
-      const onGround = simulateImpact({ ...input, airFlash: 'ground', lowBurstFlash: 'air' });
-      const atBurst = simulateImpact({ ...input, airFlash: 'burst', lowBurstFlash: 'air' });
+      // And the luminous efficiency's flash, which is what these rules place;
+      // since rules 780 to 787 the flash is the stronger of it and the path's
+      // radiation, which no placement moves.
+      const onGround = simulateImpact({
+        ...input,
+        airFlash: 'ground',
+        lowBurstFlash: 'air',
+        airburstRadiation: 'efficiency',
+      });
+      const atBurst = simulateImpact({
+        ...input,
+        airFlash: 'burst',
+        lowBurstFlash: 'air',
+        airburstRadiation: 'efficiency',
+      });
       if (atBurst.entry.regime !== 'COMPLETE_AIRBURST') continue;
       complete += 1;
       const z = Number(atBurst.entry.burstAltitude);

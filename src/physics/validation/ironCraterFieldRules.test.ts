@@ -17,8 +17,10 @@ const craterOf = (r: Result): number[] => [
   Number(r.damage.craterRim),
   Number(r.ejecta.blanketEdge1m),
 ];
+// Craters, which no flash moves: read without the radiation's integral since
+// rules 780 to 787.
 const run = (input: ImpactScenarioInput, law: IronCraterField): Result =>
-  simulateImpact({ ...input, ironCraterField: law });
+  simulateImpact({ ...input, ironCraterField: law, airburstRadiation: 'efficiency' });
 const final = (input: ImpactScenarioInput, law: IronCraterField): number =>
   Number(run(input, law).crater.finalDiameter);
 

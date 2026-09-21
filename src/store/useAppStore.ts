@@ -54,9 +54,10 @@ import {
   bandFromPlans,
   exposureCurve,
   populationWithin,
-  sampleScenarioPlans,
   samplingFootprints,
+  scenarioPlanDraws,
   withPredictiveBand,
+  type ScenarioPlanOptions,
 } from '../physics/uq/tollBand.js';
 import { findPropagationSeeds, type PropagationSeed } from '../physics/tsunami/index.js';
 import { wrap, type Remote } from 'comlink';
@@ -1928,6 +1929,54 @@ async function runTsunamiCasualties(
   publishCasualties(result, get, set);
 }
 
+/**
+ * The toll band's draws, with the thread handed back to the browser
+ * whenever a slice of them has run. Since rules 780 to 787 an impact
+ * whose flash is read along its path takes some 3 to 8 ms a
+ * realisation, and the two hundred at once stopped the globe for more
+ * than a second just after Launch. The draws are `scenarioPlanDraws`'s,
+ * in its order, so the plans are the ones `sampleScenarioPlans` returns;
+ * null when a newer result has taken this one's place on the way.
+ */
+async function drawPlansInSlices(
+  options: ScenarioPlanOptions,
+  stale: () => boolean
+): Promise<CasualtyPlan[] | null> {
+  const plans: CasualtyPlan[] = [];
+  const draws = scenarioPlanDraws(options);
+  let since = performance.now();
+  for (;;) {
+    const step = draws.next();
+    if (step.done === true) return step.value ? plans : [];
+    if (step.value !== null) plans.push(step.value);
+    if (performance.now() - since > DRAW_SLICE_MS) {
+      await handBackTheThread();
+      if (stale()) return null;
+      since = performance.now();
+    }
+  }
+}
+
+/** How long the draws hold the thread before handing it back (ms): a
+ *  share of a 60 Hz frame that leaves the globe its own. */
+const DRAW_SLICE_MS = 6;
+
+/** A turn of the event loop, without the 4 ms that nested timers are
+ *  held to, where the page has a MessageChannel. */
+function handBackTheThread(): Promise<void> {
+  if (typeof MessageChannel === 'undefined') {
+    return new Promise((resolve) => setTimeout(resolve, 0));
+  }
+  return new Promise((resolve) => {
+    const channel = new MessageChannel();
+    channel.port1.onmessage = () => {
+      channel.port1.close();
+      resolve();
+    };
+    channel.port2.postMessage(null);
+  });
+}
+
 /** A seed that is the scenario itself: the same picture draws the
  *  same two hundred worlds, every time it is drawn. */
 function tollBandSeed(result: ActiveResult, location: Coordinates): string {
@@ -1960,11 +2009,11 @@ async function runCasualtyLookup(
     return;
   }
   // Let the browser paint the result before any of this runs. The
-  // band's two hundred draws are about ten milliseconds of arithmetic,
-  // but they would land in the same tick as the cascade that has just
-  // finished, on a thread the globe is already mid-frame on. A
-  // macrotask costs nothing and keeps the first frame after Launch
-  // free of work nobody is waiting on yet.
+  // band's two hundred draws are about ten milliseconds of arithmetic
+  // for most scenarios, but they would land in the same tick as the
+  // cascade that has just finished, on a thread the globe is already
+  // mid-frame on. A macrotask costs nothing and keeps the first frame
+  // after Launch free of work nobody is waiting on yet.
   await new Promise((resolve) => setTimeout(resolve, 0));
   if (get().result !== result) return;
   // One query per distinct footprint: bands keyed by radius plus
@@ -1998,15 +2047,21 @@ async function runCasualtyLookup(
   // lookups is what a predictive interval costs; without them the
   // outer draws read an extrapolation of the last annulus's density
   // and the band becomes a statement about the interpolation. About
-  // ten milliseconds of arithmetic for the draws themselves.
+  // ten milliseconds of arithmetic for the draws themselves, and more
+  // than a second for an impact whose flash is integrated along its path
+  // (rules 780 to 787): drawn in slices, so the globe keeps turning.
   const plans =
     plan === null
       ? []
-      : sampleScenarioPlans({
-          result,
-          planFor: (r) => casualtyPlanForResult(r, location),
-          seed: tollBandSeed(result, location),
-        });
+      : await drawPlansInSlices(
+          {
+            result,
+            planFor: (r) => casualtyPlanForResult(r, location),
+            seed: tollBandSeed(result, location),
+          },
+          () => get().result !== result
+        );
+  if (plans === null) return; // superseded while it was drawing
   for (const f of samplingFootprints(plans)) forCurve(f.radiusM, f.polygon);
 
   const collect = async (

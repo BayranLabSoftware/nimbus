@@ -32,7 +32,7 @@ import type { EntryPathSample } from './atmosphericEntry.js';
 export type AirburstRadiation = 'efficiency' | 'atap';
 
 /** What an impact that names no airburst radiation uses. */
-export const DEFAULT_AIRBURST_RADIATION: AirburstRadiation = 'efficiency';
+export const DEFAULT_AIRBURST_RADIATION: AirburstRadiation = 'atap';
 
 /** Where the correlation was fitted: the simulation matrix of Johnston &
  *  Stern's Section 4, in their units. */

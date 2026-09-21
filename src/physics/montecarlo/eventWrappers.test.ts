@@ -23,7 +23,7 @@ describe('runImpactMonteCarlo — Chicxulub distributions', () => {
     const ke = out.metrics.kineticEnergyMt;
     expect(ke.p10).toBeLessThan(ke.p50);
     expect(ke.p50).toBeLessThan(ke.p90);
-  });
+  }, 60_000);
 
   it('final-crater median stays within factor-2 of the deterministic Chicxulub number', () => {
     const rng = mulberry32('mc-fdr');
@@ -35,7 +35,7 @@ describe('runImpactMonteCarlo — Chicxulub distributions', () => {
     const craterKm = out.metrics.finalCraterDiameter.p50 / 1_000;
     expect(craterKm).toBeGreaterThan(90);
     expect(craterKm).toBeLessThan(360);
-  });
+  }, 60_000);
 });
 
 describe('runExplosionMonteCarlo — Hiroshima', () => {

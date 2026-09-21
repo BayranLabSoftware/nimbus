@@ -273,7 +273,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
             name: 'the thermal exposure',
             status: 'met',
             evidence:
-              "The program's exposure, half-space and Eq. 36*: sixteen held-out ignition rings within 1 % (rules 146 to 149).",
+              "The program's exposure, half-space and Eq. 36*: sixteen held-out ignition rings within 1 % (rules 146 to 149). A named departure since 21 September 2026 (rules 780 to 787, B-095): the flash in the air is the stronger, at every range, of the program's efficiency and the radiation Johnston & Stern's correlation lays along the entry's path, which the program does not compute; for a body that reaches the ground it adds to the program's fireball, and Meteor Crater's third-degree ring reaches 8.42 km where the fireball alone draws 7.15. The fireball's own law stays held to the program.",
           },
           {
             name: 'the ejecta',
@@ -350,9 +350,9 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
       {
         rule: 'G6',
         measure: 'beyond',
-        status: 'not met',
+        status: 'met',
         evidence:
-          "Read for impacts on 21 September 2026 (IMP-8). Of the gaps the report declares for an impact, three are ceilings of docs/GOLD_STANDARD.md: its toll, which no impact in recorded history left; the deaths no count of the prompt effects sees, climate first; and, since I3's band holds both measured footprints, an airburst's round footprint. The entry's miss of the sky is the field's own — the Earth Impact Effects Program misses the same 357 fireballs by 13.68 km in the median, and the model is that program on them — so it is printed beside the program's, as the amendment of 16 September 2026 says, and not carried as a gap. One gap is not a ceiling: an airburst's flash, too faint by the luminous efficiency of an impact's plume (B-095, declared by Andrea's decision of 21 September 2026 and reopened by it that evening). The other, an impact's air blast read from under the ground as the program reads it, was closed the same evening by rules 748 to 755: a body that reaches the ground bursts at the ground.",
+          "Met on 21 September 2026, read for impacts by IMP-8 and closed by rules 780 to 787. Of the gaps the report declares for an impact, three are ceilings of docs/GOLD_STANDARD.md: its toll, which no impact in recorded history left; the deaths no count of the prompt effects sees, climate first; and, since I3's band holds both measured footprints, an airburst's round footprint. The entry's miss of the sky is the field's own — the Earth Impact Effects Program misses the same 357 fireballs by 13.68 km in the median, and the model is that program on them — so it is printed beside the program's, as the amendment of 16 September 2026 says, and not carried as a gap. The two gaps that were not ceilings are closed. An impact's air blast read from under the ground, as the program reads it, by rules 748 to 755: a body that reaches the ground bursts at the ground. And an airburst's flash, too faint by the luminous efficiency of an impact's plume (B-095), by rules 780 to 787, asked again after rules 772 to 779 were refused: the flash in the air is, at every range, the stronger of that efficiency's and the radiation Johnston & Stern's correlation for NASA's ATAP (Icarus 327, 2019) lays along the entry's path, read inside its fitted range and at its edge beyond — their six Tunguska radii within 7.2 % through this project's path. What the correlation cannot read is drawn at the efficiency PAIR, NASA's operational risk model, takes as its nominal: the field's own, printed beside it, by Andrea's decision of that evening. Under it Tunguska's preset draws a first-degree flash 10.1 km out and still chars no forest, its 60 m body at 0.34 MPa being smaller and weaker than the paper's, whose size is the field's open question",
       },
       G7,
     ],

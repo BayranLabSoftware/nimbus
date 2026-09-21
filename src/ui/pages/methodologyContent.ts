@@ -165,6 +165,14 @@ const blandArtemieva2006: Citation = {
   doi: '10.1111/j.1945-5100.2006.tb00485.x',
 };
 
+const johnstonStern2019: Citation = {
+  authors: 'Johnston, C. O. & Stern, E. C.',
+  year: 2019,
+  title: 'A model for thermal radiation from the Tunguska airburst',
+  venue: 'Icarus 327, 48–59',
+  doi: '10.1016/j.icarus.2019.01.028',
+};
+
 const harkrider1974: Citation = {
   authors: 'Harkrider, D. G., Newton, C. A. & Flinn, E. A.',
   year: 1974,
@@ -876,8 +884,17 @@ export const METHODOLOGY_SECTIONS: MethodologySection[] = [
         formula:
           'r_flash(Q) = √(R_thermal(η · E_atm, Q)² − z_b²) ;   r_shock(p) = R_airburst(W, z_b, p) for an airburst',
         description:
-          'Burn (1st, 2nd, 3rd degree) and shock (5, 1, 0.5 psi) radii at the ground from the energy left in the air. The flash takes the project’s burn fluences of 8, 5 and 2 cal/cm², as every impact does — Glasstone & Dolan’s yield-dependent curves are a nuclear fireball’s pulse — with the impact luminous efficiency η = 3 × 10⁻³ of Collins et al. (2005), and no gain for altitude. An airburst’s flash is at its burst altitude, as NASA’s PAIR places it, since 21 September 2026 (rules 698 to 705): a burn ring is the ground range at which the slant distance to the burst is the range the flash reaches, and there is none where the burst is farther than that; until then that range was drawn on the ground as if the flash were there. A burst below its own fireball’s radius R = 0.002 · E^(1/3), E the energy it keeps (Eq. 32*), radiates the share 1 − z_b/R of that energy as the fireball on the ground below, the rest in the air (rules 714 to 721), so that a burst on the ground is the partial airburst it becomes. The shock of an airburst is the program’s air blast above. A broken swarm that still strikes the ground is blasted, since 16 September 2026, by the program’s blast of a ground impact below, which already counts the energy lost in the air; until then it blasted like a ground impact, Kinney–Graham on half that energy.',
+          'Burn (1st, 2nd, 3rd degree) and shock (5, 1, 0.5 psi) radii at the ground from the energy left in the air. The flash takes the project’s burn fluences of 8, 5 and 2 cal/cm², as every impact does — Glasstone & Dolan’s yield-dependent curves are a nuclear fireball’s pulse — with the impact luminous efficiency η = 3 × 10⁻³ of Collins et al. (2005), and no gain for altitude. An airburst’s flash is at its burst altitude, as NASA’s PAIR places it, since 21 September 2026 (rules 698 to 705): a burn ring is the ground range at which the slant distance to the burst is the range the flash reaches, and there is none where the burst is farther than that; until then that range was drawn on the ground as if the flash were there. A burst below its own fireball’s radius R = 0.002 · E^(1/3), E the energy it keeps (Eq. 32*), radiates the share 1 − z_b/R of that energy as the fireball on the ground below, the rest in the air (rules 714 to 721), so that a burst on the ground is the partial airburst it becomes. Since the same night (rules 780 to 787) the flash in the air is no fainter, at any range, than the radiation of the entry’s shock layer and wake along its path (below). The shock of an airburst is the program’s air blast above. A broken swarm that still strikes the ground is blasted, since 16 September 2026, by the program’s blast of a ground impact below, which already counts the energy lost in the air; until then it blasted like a ground impact, Kinney–Graham on half that energy.',
         citation: collins2005,
+      },
+      {
+        id: 'airburst-radiation',
+        name: 'Radiation of an entry’s shock layer and wake',
+        formula:
+          'q = [2.75 + 9.6 (ϕ/60)^a] (4.15 e^(−0.1423 H))^b (R/25)^1.7 (10/L)² e^(4.1267 − 0.0357 V − 54.137/V)  W/cm²,  a = 0.69 (V/H)², b = 1.3 − 0.015 V^1.12 R^0.21 ;  × G(ψ, ϕ) for the atmosphere ;  heat = Σ q G Δt along the path',
+        description:
+          'Johnston & Stern (2019), for NASA’s Asteroid Threat Assessment Project, ray-traced Navier–Stokes flowfields of meteors, with coupled radiation and ablation, to the ground, at 6 to 18 km/s, radii of 25 to 200 m and altitudes of 10 to 30 km, and correlated the flux, ϕ the view angle from the velocity in degrees, R in m, L and H in km, V in km/s (their Eq. 9, within ±30 % of the simulations), and the atmosphere’s absorption (their Eq. 3). Since 21 September 2026 (rules 780 to 787) Nimbus integrates it along the entry’s own path — Collins et al.’s equations, the debris cloud’s radius held at four times the body’s as the paper holds it — each point radiating for the time the body takes to cross it, reduces the footprint to the disc of equal area at each exposure as NASA’s risk model PAIR does (Coates et al. 2023), and draws the flash in the air as the stronger of this and the luminous efficiency’s at every range. Beyond the fitted range the correlation is read at its edge, one input at a time: a faster body as one at 18 km/s, a wider cloud at 200 m, the view angle’s exponent at most its fitted 2.24; below 25 m its (R/25)^1.7 is continued. Through this path it gives the paper’s six optimal Tunguska radii within 7.2 %. What it cannot read is drawn at the efficiency PAIR takes as its nominal, the field’s own baseline.',
+        citation: johnstonStern2019,
       },
       {
         id: 'damage-rings-airburst-honest',
