@@ -633,6 +633,21 @@ export const VISUAL_CONTRACTS = {
       'for most quantities that σ is a project convention and not a band scored on a held-out set, which is what gold-standard rule G3 asks for',
     ],
   }),
+  airburstBlastBand: defineContract({
+    id: 'airburstBlastBand',
+    quantity:
+      'The band of an airburst’s blast ring: how far Collins et al. 2017’s three approximations of the blast disagree',
+    formula:
+      'Collins, Lynch, McAdam & Davison (2017) MAPS 52(8), abstract: within three burst altitudes the moving source gives twice the static overpressure and the line source half; beyond, the three agree — the static reach at half and at twice the threshold (`airburstBlastBand`; rules 706 to 713, I3)',
+    unit: 'metres',
+    geometry: 'point-source-ring',
+    isQuantitative: true,
+    caveats: [
+      'drawn for a complete airburst only; a body that reaches the ground has the program’s own blast, which this band is not about',
+      'no edge is drawn where the band closes on the ring — beyond three burst altitudes, where the three approximations agree — nor a low edge where twice the threshold is reached nowhere',
+      'it is the reference’s spread of its own approximations, not the uncertainty of the true blast',
+    ],
+  }),
   impactFireball: defineContract({
     id: 'impactFireball',
     quantity: 'The fireball of an impact that reaches the ground',
@@ -703,6 +718,8 @@ export const ENTITY_CONTRACTS: readonly {
       'overpressure5psi',
       'overpressure1psi',
       'lightDamage',
+      'airburstBlastBand',
+      'sigmaUpperBand',
     ],
   },
   { prefix: 'mmi-ring-', contracts: ['mmi7Point', 'mmi8Point', 'mmi9Point'] },

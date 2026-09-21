@@ -105,6 +105,7 @@ import { radialDamageMaterial } from './radialDamageMaterial.js';
 import {
   addRingEdge,
   addRingLabel,
+  addBandEdgeLine,
   addSigmaBandLine,
   formatRingRadius,
   outlinePointAtBearing,
@@ -1500,6 +1501,9 @@ export function Globe(): JSX.Element {
       fillAlpha: number;
       /** Key into RING_RADIUS_SIGMA for the dashed upper-σ line. */
       sigmaKey?: string;
+      /** The reference's band about an airburst blast ring (I3), in metres
+       *  of nominal radius; drawn instead of the σ line where it is given. */
+      band?: { lowM: number; highM: number };
       labelBearingDeg: number;
       animate: boolean;
       label: boolean;
@@ -1526,7 +1530,31 @@ export function Globe(): JSX.Element {
           registerRingTooltip(e.id, spec.tooltipKind, spec.radiusM, spec.color);
         }
       }
-      if (spec.sigmaKey !== undefined) {
+      if (spec.band !== undefined) {
+        // I3's band: an edge is drawn where it stands off the ring by more
+        // than a per cent, and the low edge only where it is reached at all.
+        for (const [edge, radiusM] of [
+          ['low', spec.band.lowM],
+          ['high', spec.band.highM],
+        ] as const) {
+          if (!(radiusM > 0) || Math.abs(radiusM - spec.radiusM) <= 0.01 * spec.radiusM) continue;
+          const k = radiusM / spec.radiusM;
+          const line = addBandEdgeLine(
+            viewer,
+            spec.id,
+            ringOutlinePositions({
+              centerLatDeg: spec.geom.latDeg,
+              centerLonDeg: spec.geom.lonDeg,
+              semiMajorM: clampToGreatCircle(a * k),
+              semiMinorM: clampToGreatCircle(b * k),
+              rotationRad: spec.geom.cesiumRotation,
+            }),
+            spec.color,
+            edge
+          );
+          if (line !== null) registerRingTooltip(line.id, spec.tooltipKind, radiusM, spec.color);
+        }
+      } else if (spec.sigmaKey !== undefined) {
         const sigma = RING_RADIUS_SIGMA[spec.sigmaKey];
         // Below 0.18 the dashed line would sit inside the contour's own
         // stroke at any practical zoom.
@@ -1941,6 +1969,22 @@ export function Globe(): JSX.Element {
         overpressure1psi: 'overpressure',
         lightDamage: 'overpressure',
       };
+      // I3: a complete airburst's blast rings carry the reference's band.
+      const airburstBand = result.data.airburstBand;
+      const airburstBandFor = (
+        key: keyof ImpactDamageRadii
+      ): { lowM: number; highM: number } | undefined => {
+        if (airburstBand === null) return undefined;
+        if (key !== 'overpressure5psi' && key !== 'overpressure1psi' && key !== 'lightDamage')
+          return undefined;
+        return { lowM: airburstBand[key].low, highM: airburstBand[key].high };
+      };
+      const bandSpec = (
+        key: keyof ImpactDamageRadii
+      ): { band?: { lowM: number; highM: number } } => {
+        const band = airburstBandFor(key);
+        return band === undefined ? {} : { band };
+      };
       const impactFamily: FamilyMember[] = [];
       (Object.keys(impactRingKind) as (keyof ImpactDamageRadii)[]).forEach((key) => {
         const radius = radii[key] as number;
@@ -1969,6 +2013,7 @@ export function Globe(): JSX.Element {
           geom: { ...geom, latDeg: ringAnchor.latitude, lonDeg: ringAnchor.longitude },
           fillAlpha: zoneFillAlpha(radius, key === 'craterRim' ? 0.3 : 0.2, waveOnStage),
           sigmaKey: key,
+          ...bandSpec(key),
           animate: true,
           label: true,
           edge: true,

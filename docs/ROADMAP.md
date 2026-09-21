@@ -452,9 +452,17 @@ the globe claimed that the model does not:
   the ground and a dome from a nuclear scaling, for airbursts too. Replaced by
   the model's own fireball on the ground, and nothing for an airburst.
 
-Still to do for impacts: check 3 (the band, once I3's is drawn), check 5
-(outside the measured cells, once IMP-5 builds them), check 4's provenance
-click, and the full headless sweep of presets and custom scenarios (check 7).
+- **Check 3, the band, for an airburst's blast rings**: since I3 is met the
+  globe draws the reference's band about each blast ring of a complete
+  airburst — dotted edges at the line-source and moving-source reaches, none
+  where the band closes on the ring — in place of the generic σ halo, and the
+  legend says which is which (checked headless on Tunguska: the 1 psi band
+  15.7 to 29.4 km, the 5 psi high edge 13.1 km).
+
+Still to do for impacts: check 3 for every other ring (their bands wait for
+IMP-4), check 5 (outside the measured cells, once IMP-5 builds them), check
+4's provenance click, and the full headless sweep of presets and custom
+scenarios (check 7).
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

@@ -198,6 +198,33 @@ export function addSigmaBandLine(
   });
 }
 
+/** One edge of an airburst blast ring's band (I3, rules 706 to 713): the
+ *  reference's line-source edge (`low`) or moving-source edge (`high`), as a
+ *  dotted line — a different stroke from the σ halo, because it is a
+ *  different claim: the spread Collins et al. 2017 give their own models. */
+export function addBandEdgeLine(
+  viewer: Viewer,
+  id: string,
+  positions: readonly Cartesian3[],
+  color: Color,
+  edge: 'low' | 'high'
+): Entity | null {
+  if (positions.length < 2) return null;
+  return viewer.entities.add({
+    id: `${id}-band-${edge}`,
+    polyline: {
+      positions: [...positions],
+      width: 1.8,
+      clampToGround: true,
+      material: new PolylineDashMaterialProperty({
+        color: color.withAlpha(edge === 'high' ? 0.7 : 0.5),
+        gapColor: Color.TRANSPARENT,
+        dashLength: 4,
+      }),
+    },
+  });
+}
+
 export interface RingLabelOptions {
   id: string;
   text: string;

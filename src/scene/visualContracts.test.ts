@@ -39,10 +39,11 @@ const captions = (bundle: typeof en): { short: Captions; label: Captions } => ({
 /** The contracts a visitor meets as a captioned contour on the ground. */
 const CAPTIONED: VisualContract['geometry'][] = ['point-source-ring', 'asymmetric-ellipse'];
 
-/** The one contour that carries no caption of its own, and should not: the
- *  dashed upper-σ halo belongs to the ring it surrounds and says that ring's
- *  number. `addSigmaBandLine` adds a line and no label. */
-const UNCAPTIONED_BY_DESIGN = new Set(['sigmaUpperBand']);
+/** The contours that carry no caption of their own, and should not: the
+ *  dashed upper-σ halo and the dotted edges of an airburst ring's band (I3)
+ *  belong to the ring they surround and say that ring's number.
+ *  `addSigmaBandLine` and `addBandEdgeLine` add a line and no label. */
+const UNCAPTIONED_BY_DESIGN = new Set(['sigmaUpperBand', 'airburstBlastBand']);
 
 describe('the visual contracts', () => {
   const all = Object.values(VISUAL_CONTRACTS) as VisualContract[];
