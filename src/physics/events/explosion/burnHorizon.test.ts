@@ -6,7 +6,7 @@ import { m } from '../../units.js';
 import { simulateExplosion } from './simulate.js';
 
 /**
- * B-086, pinned as it is — not as it should be.
+ * B-086, found and CLOSED the same night.
  *
  * The flash travels in straight lines, so nothing burns past the range at
  * which the fireball sets below the horizon. `src/physics/simulate.ts` cuts
@@ -22,9 +22,14 @@ import { simulateExplosion } from './simulate.js';
  * G5 walked past it for the same reason it walked past B-084 and B-085:
  * 1 606 km is a finite length well inside the antipode.
  *
- * NOT FIXED HERE. Applying the sibling's ceiling moves shipped radii above
- * about a thousand megatons, which is a default change and needs rules
- * written before it.
+ * Closed by rules 579 to 585: the sibling's own expression, unchanged,
+ * applied to the sibling's problem. The figures below are what the defect
+ * WAS, kept beside what the repair leaves.
+ *
+ * Every prediction rule 582 carried held. Nothing below about a thousand
+ * megatons moved, no preset, no recorded event, no row of the calibration
+ * net, no figure of the report, and no other domain. The only tests that
+ * went red were the four that had been pinning the defect.
  */
 
 /** The horizon from the top of a surface fireball, as the impact path
@@ -41,19 +46,21 @@ const burnKm = (yieldMegatons: number, burstAltitudeM = 0): number =>
   ).thermal.firstDegreeBurnRadius / 1_000;
 
 describe("B-086: burn rings past the fireball's horizon", () => {
-  it('is inside the horizon up to a thousand megatons and outside it above two', () => {
+  it('leaves alone every yield that was already inside its horizon', () => {
+    // Rule 583: the ceiling only shortens. Below the crossing nothing moved.
     expect(burnKm(100)).toBeLessThan(horizonKm(100));
     expect(burnKm(1_000)).toBeLessThan(horizonKm(1_000));
-    expect(burnKm(2_000)).toBeGreaterThan(horizonKm(2_000));
-    expect(burnKm(10_000) / horizonKm(10_000)).toBeCloseTo(2.36, 1);
+    expect(burnKm(100)).toBeCloseTo(42.9, 1);
   });
 
-  it('draws 1 653 km of first-degree burn where the fireball sets at 700', () => {
-    expect(burnKm(1e4)).toBeCloseTo(1_653, -1);
-    expect(horizonKm(1e4)).toBeCloseTo(700, -1);
+  it('cuts at the horizon above it: 1 653 km becomes 700', () => {
+    // Was 1 653 km of first-degree burn where the fireball sets at 700.
+    expect(horizonKm(1e4)).toBeCloseTo(700.4, 1);
+    expect(burnKm(1e4)).toBeCloseTo(horizonKm(1e4), 6);
+    expect(burnKm(2_000)).toBeCloseTo(horizonKm(2_000), 6);
   });
 
-  it('is reached by the sweep, 156 rings of 5 000 scenarios', () => {
+  it('was reached by the sweep in 156 rings of 5 000; it is now none', () => {
     // The sweep's own explosion sampler draws the yield over 1e-4 to 1e4 Mt,
     // so the top of its range is where this lives.
     const logU = (u: number, a: number, b: number): number =>
@@ -70,17 +77,16 @@ describe("B-086: burn rings past the fireball's horizon", () => {
         worst = Math.max(worst, b / h);
       }
     }
-    // A smaller draw than the sweep's, so the count is its own; what it
-    // holds is that the defect is common rather than a single corner.
-    expect(over).toBeGreaterThan(10);
-    expect(worst).toBeGreaterThan(2);
+    // A smaller draw than the sweep's, but the answer is the same: none.
+    expect(over).toBe(0);
+    expect(worst).toBe(0);
   });
 
-  it('is absent from the impact path, which has the ceiling the explosion lacks', () => {
-    // The asymmetry is the finding. `simulate.ts` cuts at the horizon and
-    // `events/explosion/simulate.ts` has no such cut, so a 10 000 Mt burst
-    // burns past where its own fireball can be seen while an impact of the
-    // same energy does not.
-    expect(burnKm(1e4)).toBeGreaterThan(horizonKm(1e4));
+  it('now has the same ceiling as the impact path, which is where it came from', () => {
+    // The asymmetry WAS the finding: `simulate.ts` cut at the horizon and
+    // this module did not. Both do now, with the same expression.
+    for (const y of [2_000, 5_000, 1e4]) {
+      expect(burnKm(y), `${String(y)} Mt`).toBeLessThanOrEqual(horizonKm(y) * (1 + 1e-9));
+    }
   });
 });

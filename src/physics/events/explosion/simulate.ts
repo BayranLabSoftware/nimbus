@@ -1,4 +1,7 @@
 import { ISOTROPIC_RING, windDriftAsymmetry, type RingAsymmetry } from '../../effects/asymmetry.js';
+import { nuclearFireballRadius } from '../../effects/blastWave.js';
+import { thermalHorizonRadius } from '../../casualties.js';
+import { EARTH_RADIUS } from '../../constants.js';
 import { passesMinimumBurningArea } from '../../effects/firestorm.js';
 import { ignitionFluenceThreshold } from '../../effects/ignitionExposure.js';
 import { OVERPRESSURE_LIGHT_DAMAGE, distanceForOverpressure } from '../impact/damageRings.js';
@@ -480,9 +483,28 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
     ...(input.burnExposure === undefined ? {} : { burnExposure: input.burnExposure }),
     ...(input.burnSkin === undefined ? {} : { burnSkin: input.burnSkin }),
   };
-  const burn3 = flash(thirdDegreeBurnRadius(burnInput));
-  const burn2 = flash(secondDegreeBurnRadius(burnInput));
-  const burn1 = flash(firstDegreeBurnRadius(burnInput));
+  // The flash travels in straight lines, so nothing burns and no fire
+  // starts past the range at which the fireball sets below the horizon.
+  // `simulate.ts` has cut an impact's fire and burn radii there since
+  // 15 September 2026 — B-028, where Chicxulub's fire reached 24 579 km,
+  // and B-038, where Boltysh's third-degree burns reached 936 km and its
+  // fireball sets at 523 — and this module never got the same cut. It is
+  // B-086, closed by rules 579 to 585.
+  //
+  // The height the horizon is taken from is the TOP of the fireball: its
+  // own radius plus the burst altitude. A surface burst's fireball still
+  // has a top, and taking the altitude alone would put the horizon at zero
+  // and cut every burst on the ground (rule 580).
+  const fireballTop = (nuclearFireballRadius(yieldKilotons) as number) + hobMeters;
+  const flashReach = Math.min(
+    thermalHorizonRadius(m(fireballTop)),
+    Math.PI * (EARTH_RADIUS as number)
+  );
+  const seen = (radius: Meters): Meters => m(Math.min(radius, flashReach));
+
+  const burn3 = seen(flash(thirdDegreeBurnRadius(burnInput)));
+  const burn2 = seen(flash(secondDegreeBurnRadius(burnInput)));
+  const burn1 = seen(flash(firstDegreeBurnRadius(burnInput)));
   // The fire rings are the burn rings at another threshold: one flash, one
   // atmosphere, one geometry. Until 19 September 2026 they were solved in a
   // clear vacuum while the burns beside them were solved through Beer-Lambert
@@ -498,11 +520,11 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
       fluenceThreshold: ignitionFluenceThreshold(material, yieldJoules),
     });
   const noFire = exoatmospheric || inWater || chemical;
-  const ignitionReach = absorbed(flash(fireRadius('tinder')));
+  const ignitionReach = seen(absorbed(flash(fireRadius('tinder'))));
   // A mass fire is contained by the fire that feeds it (§7.71 on Hiroshima),
   // and below half a square mile of burning ground §7.58 has no fire storm at
   // all. Rules 229 and 231.
-  const sustainReach = m(Math.min(absorbed(flash(fireRadius('structural'))), ignitionReach));
+  const sustainReach = m(Math.min(seen(absorbed(flash(fireRadius('structural')))), ignitionReach));
   const disc = (radius: Meters): SquareMeters => sqm(Math.PI * (radius as number) ** 2);
   const sustainBurning = disc(sustainReach);
   const sustains = !noFire && passesMinimumBurningArea(sustainBurning);
