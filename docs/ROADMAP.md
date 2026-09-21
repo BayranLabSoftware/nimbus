@@ -491,11 +491,24 @@ the globe claimed that the model does not:
 
 - **Check 5, outside the measured cells**: since IMP-5 the burst's beacon
   says under its altitude whether the entry was measured there, and the
-  legend says it for every impact (read headless in both languages).
+  legend says it for every impact (read headless in both languages). Where
+  no relation covers a scenario, it prints no number and says why: an
+  airburst's magnitude outside Harkrider's table (rules 730 to 738).
+- **Check 4, provenance**: every ring of an impact names on the globe the
+  relation it is drawn from, under what it means (read headless in both
+  languages); the panel cites an impact's own thermal and blast relations
+  where it cited an explosion's, and the visual contracts say what the model
+  computes (B-101).
+- **Checks 1 and 7, read on 21 September 2026**: the globe audit draws every
+  radius the model publishes, captioned with its number, on the six impact
+  scenarios of the sweep, and the UI track prints every impact preset as Node
+  computes it, but Chicxulub at sea, where the application zeroes the fires
+  and the liquefaction of an open-water strike on purpose. Photographed
+  headless: Chelyabinsk, Tunguska, Meteor Crater, a 1 kt body and a 45 MT
+  comet. Found on the way and closed: B-099, B-100, B-101.
 
-Still to do for impacts: check 3 for every other ring (their bands wait for
-IMP-4), check 4's provenance click, and the full headless sweep of presets
-and custom scenarios (check 7).
+Still to do for impacts: check 3 for every other ring, whose bands wait for
+IMP-4.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

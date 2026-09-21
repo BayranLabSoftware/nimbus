@@ -60,3 +60,21 @@
   line-height: 1.5;
   opacity: 0.95;
 }
+
+/* IMP-7's check 4: the relation a ring is drawn from, under what it means. */
+.source {
+  margin: 8px 0 0 0;
+  padding-top: 6px;
+  border-top: 1px solid var(--glass-border, rgba(255, 255, 255, 0.09));
+  font-size: 11px;
+  line-height: 1.45;
+  opacity: 0.8;
+}
+
+.sourceLabel {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}

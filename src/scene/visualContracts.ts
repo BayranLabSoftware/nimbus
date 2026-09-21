@@ -134,7 +134,7 @@ export const VISUAL_CONTRACTS = {
     id: 'thirdDegreeBurn',
     quantity: '3rd-degree burn radius',
     formula:
-      'explosion: Glasstone & Dolan (1977) Figure 12.65, the 50 % line of skin-burn probability for an average unshielded population, by yield (rules 114 to 117 of validation/burnProbabilityRules.ts) · impact: the same inverse-square radius at the project’s own 8 cal/cm² with Collins et al. (2005) Eq. 5’s luminous efficiency ≈ 3 × 10⁻³ (rule 81 of validation/burnRules.ts)',
+      'explosion: Glasstone & Dolan (1977) Figure 12.65, the 50 % line of skin-burn probability for an average unshielded population, by yield (rules 114 to 117 of validation/burnProbabilityRules.ts) · impact: Collins, Melosh & Marcus (2005)’s exposure — the fireball of the energy at the ground radiating η = 3 × 10⁻³ of it into the half-space, under its horizon (Eqs. 32–37, rules 146 to 149), the flash of the energy left in the air from the burst altitude (rules 698 to 705), and below a burst’s own fireball a share of its kept energy on the ground (rules 714 to 721) — at the project’s own 8 cal/cm²',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
@@ -142,14 +142,14 @@ export const VISUAL_CONTRACTS = {
       'drawn as an ellipse elongated along the track and slid downrange where the body reaches the ground, and as a circle about the point under the burst where it does not: an airburst’s radii come from a source that is azimuthally symmetric by construction, and Collins et al. (2017) assessed exactly that approximation. The real footprint of an airburst is not a circle either: Collins et al. (2017), citing Popova et al. (2013) on Chelyabinsk, put the damage ellipse’s semi-major axis PERPENDICULAR to the trajectory, ~10 000 km² of broken windows elongated across the path, because along it the trail’s contributions interfere destructively. Tunguska felled 2 200 km² in a butterfly. The line source that would give that shape is named in rules 235 to 240 and not yet built',
       'ignores atmospheric scattering and terrain shadowing',
       'the figure’s population is “average unshielded, taking no evasive action”, which a visitor’s usually is not',
-      'an impact combines its two flashes — the fireball at the ground and the energy left in the air — as √(r_ground² + r_air²), adopted by rule 135; Glasstone’s own burn curves are NOT used there, because they are drawn for a nuclear pulse lasting seconds',
+      'an impact that reaches the ground adds its two exposures, the fireball at the ground and the flash of the energy left in the air (rules 146 to 149), where from rule 135 until then it combined their rings as √(r_ground² + r_air²); Glasstone’s own burn curves are NOT used for an impact, because they are drawn for a nuclear pulse lasting seconds',
     ],
   }),
   secondDegreeBurn: defineContract({
     id: 'secondDegreeBurn',
     quantity: '2nd-degree burn radius',
     formula:
-      'explosion: Glasstone & Dolan (1977) Figure 12.65’s 50 % line for the second degree · impact: the project’s own 5 cal/cm² with Collins et al. (2005)’s luminous efficiency',
+      'explosion: Glasstone & Dolan (1977) Figure 12.65’s 50 % line for the second degree · impact: the third degree’s exposure (Collins, Melosh & Marcus 2005, Eqs. 32–37, with the flash in the air from the burst altitude) at the project’s own 5 cal/cm²',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
@@ -196,7 +196,7 @@ export const VISUAL_CONTRACTS = {
     id: 'overpressure5psi',
     quantity: '5 psi (34.5 kPa) overpressure radius',
     formula:
-      'threshold from Glasstone & Dolan (1977) §5.129 and Table 5.139; range by inverting Kinney & Graham (1985) Ch. 4 — explosion: with Glasstone’s height-of-burst factor · impact: on half the kinetic energy (IMPACT_BLAST_COUPLING), no height-of-burst factor',
+      'threshold from Glasstone & Dolan (1977) §5.129 and Table 5.139 — explosion: range by inverting Kinney & Graham (1985) Ch. 4, with Glasstone’s height-of-burst factor · impact: the Earth Impact Effects Program’s air blast (Collins et al. 2005, Eqs. 54, 57–58; Collins et al. 2017, Eq. 7), an airburst’s still source at its burst altitude and a ground impact’s at Eq. 18’s altitude below the ground, its Mach crossover held where the program was checked (rules 630 to 637)',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
@@ -210,7 +210,7 @@ export const VISUAL_CONTRACTS = {
     id: 'overpressure1psi',
     quantity: '1 psi (6.9 kPa) overpressure radius',
     formula:
-      'threshold from Glasstone & Dolan (1977) §5.139 and Table 5.139; range by inverting Kinney & Graham (1985) Ch. 4, with the height-of-burst factor for an explosion and half the kinetic energy for an impact',
+      'threshold from Glasstone & Dolan (1977) §5.139 and Table 5.139 — explosion: range by inverting Kinney & Graham (1985) Ch. 4, with the height-of-burst factor · impact: the Earth Impact Effects Program’s air blast, as the 5 psi ring',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
@@ -220,7 +220,7 @@ export const VISUAL_CONTRACTS = {
     id: 'lightDamage',
     quantity: '0.5 psi (3.5 kPa) light-damage overpressure radius',
     formula:
-      'threshold from Glasstone & Dolan (1977) Table 5.139; range by inverting Kinney & Graham (1985) Ch. 4, as the two rings above',
+      'threshold from Glasstone & Dolan (1977) Table 5.139 — explosion: range by inverting Kinney & Graham (1985) Ch. 4 · impact: the Earth Impact Effects Program’s air blast — as the two rings above',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
@@ -371,7 +371,7 @@ export const VISUAL_CONTRACTS = {
     id: 'tsunamiCavity',
     quantity: 'The disc the wave leaves from',
     formula:
-      'impact: Ward & Asphaug (2000) Eq. 3 with the size-dependent coupling · earthquake: half the down-dip rupture width, floored at 10 km (`seismicSourceCavityRadiusM`), which is the disc the arrival field is seeded from',
+      'impact: Ward & Asphaug (2000) eq. 12, a cavity as deep as its radius holding half the energy that enters the water · earthquake: half the down-dip rupture width, floored at 10 km (`seismicSourceCavityRadiusM`), which is the disc the arrival field is seeded from',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,

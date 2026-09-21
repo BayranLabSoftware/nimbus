@@ -803,7 +803,7 @@ export function SimulatorPanel(): JSX.Element {
                     >
                       {result.data.seismic.magnitude === null
                         ? t('simulator.magnitudeNone')
-                        : `M ${result.data.seismic.magnitude.toFixed(1)}`}
+                        : `M ${formatDecimal(result.data.seismic.magnitude, 1)}`}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.magnitudeRange')}</dt>
@@ -811,7 +811,7 @@ export function SimulatorPanel(): JSX.Element {
                     <CitationTooltip citation={t('citations.seismicMagnitudeRange')}>
                       {result.data.seismic.magnitudeRange === null
                         ? '—'
-                        : `M ${result.data.seismic.magnitudeRange.low.toFixed(1)}–${result.data.seismic.magnitudeRange.high.toFixed(1)}`}
+                        : `M ${formatDecimal(result.data.seismic.magnitudeRange.low, 1)}–${formatDecimal(result.data.seismic.magnitudeRange.high, 1)}`}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.impactLiquefaction')}</dt>
@@ -833,21 +833,22 @@ export function SimulatorPanel(): JSX.Element {
                 </dl>
                 <SectionHeading labelKey="simulator.damageLabel" />
                 <dl className={styles.result} aria-label={t('simulator.damageLabel')}>
+                  {/* B-101: an impact's rings cite the impact's relations. */}
                   <dt className={styles.resultLabel}>{t('simulator.thirdDegreeBurn')}</dt>
                   <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.thermal')}>
+                    <CitationTooltip citation={t('citations.impactThermal')}>
                       <RangeValue meters={result.data.damage.thirdDegreeBurn} />
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.fivePsiRing')}</dt>
                   <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.blast')}>
+                    <CitationTooltip citation={t('citations.impactBlast')}>
                       <RangeValue meters={result.data.damage.overpressure5psi} />
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.onePsiRing')}</dt>
                   <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.blast')}>
+                    <CitationTooltip citation={t('citations.impactBlast')}>
                       <RangeValue meters={result.data.damage.overpressure1psi} />
                     </CitationTooltip>
                   </dd>

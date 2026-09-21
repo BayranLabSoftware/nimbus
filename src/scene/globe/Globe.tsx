@@ -494,6 +494,21 @@ function localSolarNoonForLongitude(longitudeDeg: number): JulianDate {
   return JulianDate.fromDate(new Date(noonUtcMs - offsetMs));
 }
 
+/** B-101 and IMP-7's check 4: the relation an impact's ring is drawn from,
+ *  keyed into `globe.tooltip.source`. */
+const IMPACT_RING_SOURCES: Partial<Record<RingTooltipKind, string>> = {
+  craterRim: 'impactCrater',
+  thirdDegreeBurn: 'impactBurn',
+  secondDegreeBurn: 'impactBurn',
+  massFire: 'impactFire',
+  fireIgnition: 'impactFire',
+  overpressure5psi: 'impactBlast',
+  overpressure1psi: 'impactBlast',
+  lightDamage: 'impactBlast',
+  ejectaBlanket: 'impactEjecta',
+  tsunamiCavity: 'impactCavity',
+};
+
 /** Caption stamped at a contour's rim: short threshold name + radius,
  *  e.g. "5 psi · 1,7 km". Falls back to the legend label when no short
  *  form exists for the kind. */
@@ -1260,6 +1275,12 @@ export function Globe(): JSX.Element {
     ringLabelsRef.current.clear();
     setHoverInfo(null);
 
+    /** The relation each ring of this scenario is drawn from, by kind, for the
+     *  tooltip (IMP-7's check 4); filled by the hazard's branch below, empty
+     *  where that hazard's rings do not name one yet. */
+    const ringSources: Partial<Record<RingTooltipKind, string>> =
+      result?.type === 'impact' ? IMPACT_RING_SOURCES : {};
+
     /** Register tooltip metadata for an entity. Called inline at every
      *  add() site so the metadata Map stays in lock-step with the
      *  Cesium entity collection. Also wires a `CallbackProperty` to the
@@ -1272,11 +1293,13 @@ export function Globe(): JSX.Element {
       radiusM: number,
       tint: Color
     ): void => {
+      const source = ringSources[kind];
       tooltipMetaRef.current.set(entityId, {
         type: 'ring',
         kind,
         radiusM,
         color: tint.toCssHexString(),
+        ...(source === undefined ? {} : { source }),
       });
       const entity = viewer.entities.getById(entityId);
       if (entity === undefined) return;

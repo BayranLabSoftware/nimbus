@@ -1825,6 +1825,29 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(panel).toContain('(result.data.crater.finalDiameter as number) > 0 && (');
   });
 
+  it("B-101 An impact's rings cite the impact's relations", () => {
+    const panel = readFileSync(
+      fileURLToPath(new URL('../../ui/components/SimulatorPanel.tsx', import.meta.url)),
+      'utf8'
+    );
+    const damage = panel.slice(panel.indexOf("t('simulator.thirdDegreeBurn')"));
+    const rows = damage.slice(0, damage.indexOf("t('simulator.entryLabel')"));
+    expect(rows).toContain("t('citations.impactThermal')");
+    expect(rows).toContain("t('citations.impactBlast')");
+    expect(rows).not.toContain("t('citations.thermal')");
+    expect(rows).not.toContain("t('citations.blast')");
+    const globe = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/Globe.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(globe).toContain("overpressure5psi: 'impactBlast'");
+    const contracts = readFileSync(
+      fileURLToPath(new URL('../../scene/visualContracts.ts', import.meta.url)),
+      'utf8'
+    );
+    expect(contracts).not.toContain('IMPACT_BLAST_COUPLING');
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.

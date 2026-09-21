@@ -46,6 +46,9 @@ export interface RingHoverInfo {
   radiusM: number;
   /** Hex tint used for the title accent bar. */
   color: string;
+  /** The relation the ring is drawn from, keyed into
+   *  `globe.tooltip.source.<key>` (IMP-7's check 4: provenance on the globe). */
+  source?: string;
 }
 
 export interface AftershockHoverInfo {
@@ -89,10 +92,15 @@ function romanMmi(value: number): string {
   return ROMAN[index] ?? '—';
 }
 
-function formatRadius(radiusM: number): string {
+function formatRadius(radiusM: number, language: string): string {
   if (!Number.isFinite(radiusM) || radiusM <= 0) return '—';
   const clamped = clampToGreatCircle(radiusM) as number;
-  return clamped < 1_000 ? `${clamped.toFixed(0)} m` : `${(clamped / 1_000).toFixed(1)} km`;
+  // The decimal mark of the interface's language, as the panel and the
+  // ring captions print it.
+  const locale = language.toLowerCase().startsWith('it') ? 'it-IT' : 'en-US';
+  return clamped < 1_000
+    ? `${clamped.toLocaleString(locale, { maximumFractionDigits: 0 })} m`
+    : `${(clamped / 1_000).toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`;
 }
 
 /**
@@ -145,7 +153,7 @@ export const RingTooltip = forwardRef(function RingTooltip(
   { info }: RingTooltipProps,
   ref: ForwardedRef<HTMLDivElement>
 ): JSX.Element {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const visible = info !== null;
 
   const renderRing = (ringInfo: RingHoverInfo): JSX.Element => {
@@ -159,13 +167,19 @@ export const RingTooltip = forwardRef(function RingTooltip(
       ? t('globe.tooltip.runupLine', { value: formatWaveHeight(ringInfo.radiusM) })
       : isWaveAmplitude
         ? t('globe.tooltip.waveHeightLine', { value: formatWaveHeight(ringInfo.radiusM) })
-        : t('globe.tooltip.radiusLine', { value: formatRadius(ringInfo.radiusM) });
+        : t('globe.tooltip.radiusLine', { value: formatRadius(ringInfo.radiusM, i18n.language) });
     return (
       <>
         <div className={styles.titleBar} style={{ backgroundColor: ringInfo.color }} aria-hidden />
         <h3 className={styles.title}>{t(`globe.tooltip.ring.${ringInfo.kind}.title`)}</h3>
         <p className={styles.meta}>{metaLine}</p>
         <p className={styles.description}>{t(`globe.tooltip.ring.${ringInfo.kind}.description`)}</p>
+        {ringInfo.source !== undefined && (
+          <p className={styles.source} data-testid="ring-tooltip-source">
+            <span className={styles.sourceLabel}>{t('globe.tooltip.sourceLabel')}</span>{' '}
+            {t(`globe.tooltip.source.${ringInfo.source}`)}
+          </p>
+        )}
       </>
     );
   };
@@ -184,19 +198,19 @@ export const RingTooltip = forwardRef(function RingTooltip(
       </p>
       <p className={styles.meta}>
         {t('globe.tooltip.aftershock.distanceLine', {
-          distance: formatRadius(aftershock.distanceFromEpicentreM),
+          distance: formatRadius(aftershock.distanceFromEpicentreM, i18n.language),
         })}
       </p>
       <p className={styles.meta}>
         {t('globe.tooltip.aftershock.intensityLine', {
           mmi: romanMmi(aftershock.peakMmi),
-          felt: formatRadius(aftershock.feltRadiusM),
+          felt: formatRadius(aftershock.feltRadiusM, i18n.language),
         })}
       </p>
       {aftershock.damageRadiusM > 0 && (
         <p className={styles.meta}>
           {t('globe.tooltip.aftershock.damageLine', {
-            radius: formatRadius(aftershock.damageRadiusM),
+            radius: formatRadius(aftershock.damageRadiusM, i18n.language),
           })}
         </p>
       )}
