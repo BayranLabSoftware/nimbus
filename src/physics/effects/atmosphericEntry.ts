@@ -585,3 +585,133 @@ export function atmosphericEntry(
     ...computeEntryDamage(atmosphericYieldJ, 0, atmosphericYieldJ, airFlash),
   };
 }
+
+/** A point of an entry's path: what radiates, where, and how fast (B-095). */
+export interface EntryPathSample {
+  /** Altitude (m). */
+  altitude: number;
+  /** Speed (m/s). */
+  velocity: number;
+  /** The radiating radius (m): the body's, or its debris cloud's, held at a
+   *  multiple of the body's as Johnston & Stern (2019) hold it. */
+  radius: number;
+}
+
+export interface EntryPathOptions {
+  /** The highest altitude sampled (m). */
+  top: number;
+  /** The spacing of the samples in altitude (m). */
+  step: number;
+  /** The most the radiating radius may grow, as a multiple of the body's:
+   *  Johnston & Stern's "maximum radius factor". */
+  radiusCap: number;
+  equations?: EntryEquations;
+  boundary?: EntryBoundary;
+}
+
+/**
+ * The path of an entry, sampled in altitude from `top` down to where the body
+ * or its swarm reaches the ground, or, for a complete airburst, on below its
+ * burst altitude with its debris cloud held at the pancake's seven diameters
+ * and slowed by drag on them, to the ground: the speed and the radiating
+ * radius Johnston & Stern's correlation of the ground's radiative flux reads
+ * (`effects/atapRadiation.ts`).
+ *
+ * The same equations as {@link atmosphericEntry}: Eq. 8 for the whole body;
+ * after the breakup the pancake's diameter L(z) of Eq. 16 and the speed of
+ * Eq. 17, whose integral from the breakup, with w = e^((z*−z)/2H) and
+ * c = 2H/l, is 2H L₀² [(w² − 1)/2 + c² (w⁴/4 − 2w³/3 + w²/2 − 1/12)] — at
+ * the burst altitude it is Eq. 19's. Below the burst the cloud keeps
+ * L = f_p L₀ and its speed falls as e^(−3 C_D f_p² H (ρ(z) − ρ(z_b)) /
+ * (4 ρ_i L₀ sin θ)), the same drag on a cloud that no longer spreads: this
+ * project's, where Collins et al. stop.
+ */
+export function entryPath(
+  impactorDiameter: Meters,
+  impactVelocity: MetersPerSecond,
+  impactorStrength: Pascals | undefined,
+  impactorDensity: KilogramPerCubicMeter,
+  impactAngle: Radians,
+  options: EntryPathOptions
+): EntryPathSample[] {
+  const equations = options.equations ?? DEFAULT_ENTRY_EQUATIONS;
+  const boundary = options.boundary ?? DEFAULT_ENTRY_BOUNDARY;
+  const v0 = impactVelocity as number;
+  const L0 = impactorDiameter as number;
+  const rhoI = impactorDensity as number;
+  const sinTheta = Math.sin(impactAngle);
+  const Y = (impactorStrength ?? collinsStrength(impactorDensity)) as number;
+  if (
+    ![v0, L0, rhoI, Y, sinTheta].every(Number.isFinite) ||
+    v0 <= 0 ||
+    L0 <= 0 ||
+    rhoI <= 0 ||
+    sinTheta <= 0 ||
+    !(options.step > 0) ||
+    !(options.top > 0)
+  ) {
+    return [];
+  }
+  const density = (z: number): number => RHO_0 * Math.exp(-z / H_SCALE);
+  const wholeSpeed = (z: number): number =>
+    v0 * Math.exp((-3 * density(z) * DRAG_COEFFICIENT * H_SCALE) / (4 * rhoI * L0 * sinTheta));
+  const cap = options.radiusCap * L0;
+  const paperIf = (4.07 * DRAG_COEFFICIENT * H_SCALE * Y) / (rhoI * L0 * v0 * v0 * sinTheta);
+  const followsProgram = equations === 'program' && (boundary === 'joined' || 2 * paperIf < 1);
+  const If = followsProgram ? 2 * paperIf : paperIf;
+  const samples: EntryPathSample[] = [];
+  const altitudes: number[] = [];
+  for (let z = options.top; z > 0; z -= options.step) altitudes.push(z);
+  altitudes.push(0);
+  if (If >= 1) {
+    for (const z of altitudes)
+      samples.push({ altitude: z, velocity: wholeSpeed(z), radius: L0 / 2 });
+    return samples;
+  }
+  const zStar = Math.max(
+    -H_SCALE * (Math.log(Y / (RHO_0 * v0 * v0)) + 1.308 - 0.314 * If - 1.303 * Math.sqrt(1 - If)),
+    0
+  );
+  const rhoStar = density(zStar);
+  const vStar = wholeSpeed(zStar);
+  const l = L0 * sinTheta * Math.sqrt(rhoI / (DRAG_COEFFICIENT * rhoStar));
+  const alpha = Math.sqrt(PANCAKE_FACTOR * PANCAKE_FACTOR - 1);
+  const zBurst = zStar - 2 * H_SCALE * Math.log(1 + (l / (2 * H_SCALE)) * alpha);
+  const k = (0.75 * DRAG_COEFFICIENT * rhoStar) / (rhoI * L0 ** 3 * sinTheta);
+  const c = (2 * H_SCALE) / l;
+  const pancake = (z: number): { diameter: number; velocity: number } => {
+    const w = Math.exp((zStar - z) / (2 * H_SCALE));
+    const integral =
+      2 *
+      H_SCALE *
+      L0 *
+      L0 *
+      ((w * w - 1) / 2 + c * c * (w ** 4 / 4 - (2 * w ** 3) / 3 + (w * w) / 2 - 1 / 12));
+    return {
+      diameter: L0 * Math.sqrt(1 + c * c * (w - 1) ** 2),
+      velocity: vStar * Math.exp(-k * integral),
+    };
+  };
+  const burst = zBurst > 0 ? pancake(zBurst) : null;
+  for (const z of altitudes) {
+    if (z >= zStar) {
+      samples.push({ altitude: z, velocity: wholeSpeed(z), radius: L0 / 2 });
+    } else if (burst === null || z >= zBurst) {
+      const p = pancake(z);
+      samples.push({ altitude: z, velocity: p.velocity, radius: Math.min(p.diameter, cap) / 2 });
+    } else {
+      const velocity =
+        burst.velocity *
+        Math.exp(
+          (-3 * DRAG_COEFFICIENT * PANCAKE_FACTOR ** 2 * H_SCALE * (density(z) - density(zBurst))) /
+            (4 * rhoI * L0 * sinTheta)
+        );
+      samples.push({
+        altitude: z,
+        velocity,
+        radius: Math.min(PANCAKE_FACTOR * L0, cap) / 2,
+      });
+    }
+  }
+  return samples;
+}

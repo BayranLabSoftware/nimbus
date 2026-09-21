@@ -13,6 +13,7 @@ import {
   type EntryRegime,
   type LowBurstFlash,
 } from '../../effects/atmosphericEntry.js';
+import { radiantHeatExposure, type RadiantHeat } from '../../effects/atapRadiation.js';
 import { impactThermalExposure } from '../../effects/impactThermal.js';
 import { J, m } from '../../units.js';
 import { peakOverpressure } from '../explosion/overpressure.js';
@@ -43,7 +44,10 @@ import { peakOverpressure } from '../explosion/overpressure.js';
  *     the atmospheric yield when it is not — the same three cases the rings
  *     are drawn in;
  *   - the flash is the program's fireball on the ground plus the project's
- *     flash in the air (`simulate.ts`, `thermalFluence`).
+ *     flash in the air (`simulate.ts`, `thermalFluence`), which is, where the
+ *     result carries a radiant heat (B-095), the stronger at every range of
+ *     that flash and the heat Johnston & Stern's correlation lays along the
+ *     path.
  *
  * `impactField.test.ts` holds the functions to the rings: at the radius of
  * every overpressure ring the overpressure is that ring's threshold, and at
@@ -61,6 +65,8 @@ export interface ImpactFieldSource {
     impactVelocity?: number;
   };
   impactor: { kineticEnergy: number };
+  /** The heat load along the entry's path, as its equal-area profile (B-095). */
+  radiantHeat?: RadiantHeat | null;
   entry: {
     regime: EntryRegime;
     /** The speed at the burst or at the ground (m/s). */
@@ -138,10 +144,12 @@ export function impactThermalExposureAt(source: ImpactFieldSource, rangeM: numbe
       ? groundFireballShare(source.entry.burstAltitude, kept)
       : 0;
   const onGround = kept * share;
+  const inTheAir =
+    (IMPACT_LUMINOUS_EFFICIENCY * (airEnergy - onGround)) /
+    (4 * Math.PI * (rangeM * rangeM + flashAltitude * flashAltitude));
   return (
     impactThermalExposure(m(rangeM), J(Number(groundEnergy) + onGround)) +
-    (IMPACT_LUMINOUS_EFFICIENCY * (airEnergy - onGround)) /
-      (4 * Math.PI * (rangeM * rangeM + flashAltitude * flashAltitude))
+    Math.max(inTheAir, radiantHeatExposure(source.radiantHeat ?? null, rangeM))
   );
 }
 

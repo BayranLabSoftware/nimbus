@@ -13,6 +13,7 @@ import {
 } from './events/impact/crater.js';
 import {
   EARTH_RADIUS,
+  FIRST_DEGREE_BURN_FLUENCE,
   IMPACT_LUMINOUS_EFFICIENCY,
   SECOND_DEGREE_BURN_FLUENCE,
   THIRD_DEGREE_BURN_FLUENCE,
@@ -84,6 +85,17 @@ import {
 } from './events/impact/airburstSeismic.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
 import {
+  ATAP_PATH_STEP,
+  ATAP_RADIUS_CAP,
+  ATAP_TOP_KM,
+  DEFAULT_AIRBURST_RADIATION,
+  radiantHeatExposure,
+  radiantHeatOf,
+  radiantHeatRadius,
+  type AirburstRadiation,
+  type RadiantHeat,
+} from './effects/atapRadiation.js';
+import {
   DEFAULT_IRON_CRATER_FIELD,
   IRON_DENSITY,
   ironFieldShare,
@@ -93,6 +105,7 @@ import {
   DEFAULT_AIR_FLASH,
   DEFAULT_LOW_BURST_CRATER,
   DEFAULT_LOW_BURST_FLASH,
+  entryPath,
   groundFireballShare,
   groundRangeAtSlant,
   type AirFlash,
@@ -214,6 +227,9 @@ export interface ImpactScenarioInput {
   /** How the crater of an iron that breaks up is drawn (B-098);
    *  {@link DEFAULT_IRON_CRATER_FIELD} when omitted. */
   ironCraterField?: IronCraterField;
+  /** What an airburst's flash is drawn from (B-095);
+   *  {@link DEFAULT_AIRBURST_RADIATION} when omitted. */
+  airburstRadiation?: AirburstRadiation;
   /** What a complete airburst's seismic magnitude is read from (B-092);
    *  {@link DEFAULT_AIRBURST_SEISMIC} when omitted. For reading two on one
    *  commit. */
@@ -502,6 +518,10 @@ export interface ImpactScenarioResult {
    * (rules 621 to 629 of `validation/continuityRules.ts`).
    */
   field: Record<string, number>;
+  /** The heat load Johnston & Stern's correlation lays on the ground along the
+   *  entry's path, as its equal-area profile (B-095); null where it is not
+   *  asked for or no part of the path lies where it was fitted. */
+  radiantHeat: RadiantHeat | null;
   /**
    * The band of each blast ring of a complete airburst: Collins et al.
    * (2017)'s own statement of how far their three approximations disagree,
@@ -798,6 +818,32 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     Math.PI * earthRadius
   );
   const seen = (radius: Meters): Meters => m(Math.min(radius, flashReach));
+  // B-095: the radiation of the shock layer and wake along the path, where
+  // Johnston & Stern's correlation holds; the flash in the air is the
+  // stronger of it and the luminous efficiency's at every range.
+  const radiantHeat: RadiantHeat | null =
+    (input.airburstRadiation ?? DEFAULT_AIRBURST_RADIATION) === 'atap'
+      ? radiantHeatOf(
+          entryPath(
+            input.impactorDiameter,
+            input.impactVelocity,
+            input.impactorStrength,
+            input.impactorDensity,
+            input.impactAngle,
+            {
+              top: ATAP_TOP_KM * 1_000,
+              step: ATAP_PATH_STEP,
+              radiusCap: ATAP_RADIUS_CAP,
+              ...(input.entryEquations === undefined ? {} : { equations: input.entryEquations }),
+              ...(input.entryBoundary === undefined ? {} : { boundary: input.entryBoundary }),
+            }
+          ),
+          input.impactAngle,
+          entry.regime === 'COMPLETE_AIRBURST' ? entry.burstAltitude : 0
+        )
+      : null;
+  const inTheAir = (flash: number, range: number): number =>
+    Math.max(flash, radiantHeatExposure(radiantHeat, range));
   // The thermal exposure the burn and fire rings are drawn on: the project's
   // spheres, or the program's fireball on the ground plus the project's flash
   // in the air (`ImpactThermal` in events/impact/damageRings.ts).
@@ -805,7 +851,10 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const airThermalEnergy = entry.atmosphericYieldMegatons * 4.184e15;
   const thermalFluence = (range: number): number =>
     impactThermalExposure(m(range), groundThermalEnergy) +
-    (IMPACT_LUMINOUS_EFFICIENCY * airThermalEnergy) / (4 * Math.PI * range * range);
+    inTheAir(
+      (IMPACT_LUMINOUS_EFFICIENCY * airThermalEnergy) / (4 * Math.PI * range * range),
+      range
+    );
   // Where a complete airburst's flash is placed (B-094).
   const airFlash = input.airFlash ?? DEFAULT_AIR_FLASH;
   // B-093: a complete airburst bursting below the fireball of the energy it
@@ -821,8 +870,11 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     const onGround = keptEnergy * lowBurstShare;
     return (
       impactThermalExposure(m(range), J(onGround)) +
-      (IMPACT_LUMINOUS_EFFICIENCY * (airThermalEnergy - onGround)) /
-        (4 * Math.PI * (range * range + z * z))
+      inTheAir(
+        (IMPACT_LUMINOUS_EFFICIENCY * (airThermalEnergy - onGround)) /
+          (4 * Math.PI * (range * range + z * z)),
+        range
+      )
     );
   };
   // With nothing at the ground the two laws are the same flash in the air, and
@@ -832,7 +884,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       ? fluenceReach(thermalFluence, exposure)
       : lowBurstShare > 0
         ? fluenceReach(lowBurstFluence, exposure)
-        : projectRing;
+        : m(Math.max(projectRing, radiantHeatRadius(radiantHeat, exposure)));
   // The blast of a body or swarm that reaches the ground: the larger of the
   // project's two Kinney–Graham rings, or the Earth Impact Effects Program's
   // own reading of it (effects/airburstBlast.ts, `GroundBlast`).
@@ -1032,9 +1084,42 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     damageAsymmetry,
     ejecta,
     firestorm,
-    entry,
+    entry:
+      radiantHeat === null
+        ? entry
+        : {
+            ...entry,
+            // The panel's flash radii are the flash in the air's, the stronger
+            // of the two there too.
+            flashBurnRadii: {
+              firstDegree: m(
+                Math.max(
+                  entry.flashBurnRadii.firstDegree,
+                  radiantHeatRadius(radiantHeat, FIRST_DEGREE_BURN_FLUENCE)
+                )
+              ),
+              secondDegree: m(
+                Math.max(
+                  entry.flashBurnRadii.secondDegree,
+                  radiantHeatRadius(radiantHeat, SECOND_DEGREE_BURN_FLUENCE)
+                )
+              ),
+              thirdDegree: m(
+                Math.max(
+                  entry.flashBurnRadii.thirdDegree,
+                  radiantHeatRadius(radiantHeat, THIRD_DEGREE_BURN_FLUENCE)
+                )
+              ),
+            },
+          },
     atmosphere,
-    field: impactFieldSamples({ inputs: input, impactor: { kineticEnergy: ke }, entry }),
+    field: impactFieldSamples({
+      inputs: input,
+      impactor: { kineticEnergy: ke },
+      entry,
+      radiantHeat,
+    }),
+    radiantHeat,
     airburstBand: airburstBandOf(entry, damage),
     measuredCells: {
       entry: entryCellVerdict({
