@@ -34,10 +34,22 @@ import { simulateVolcano } from './simulate.js';
  * a bound that was never put in place outside the range a relation was
  * fitted on.
  *
- * NOT FIXED HERE. The ceiling has to be derived, from Mastin's own fitted
- * range or from a published maximum, and not chosen; the paper did not
- * download tonight; and a fix bundled with the search that found it can be
- * reviewed as neither.
+ * NOT FIXED HERE, AND THE OBVIOUS REPAIR IS NOW KNOWN NOT TO WORK. The paper
+ * turned up later the same night, free, and its Table 1 spans mass eruption
+ * rates of about 6×10³ to 4×10⁸ kg/s — at this project's DRE density, 2.4 to
+ * 1.6×10⁵ m³/s, and plume heights of 2.5 to 35.9 km.
+ *
+ * So B-084's pattern does not transfer. Capping at the largest value the
+ * relation gives inside its own fitted box would put a volcanic plume at
+ * about 36 km, BELOW eruptions that have happened: Pinatubo 1991 reached
+ * about 40 km and Hunga Tonga about 57. That is the very mistake rule 163
+ * undid for the impulse wave — a ceiling cutting the field's method where
+ * the world has already gone past it.
+ *
+ * A plume's ceiling has to be physical rather than statistical, the
+ * atmosphere it rises through, and choosing between the observed maximum,
+ * the mesopause and the Kármán line is a judgement for a round with rules,
+ * not for four in the morning.
  */
 
 const km = (v: number): number => Number(plumeHeight({ volumeEruptionRate: v })) / 1_000;
@@ -78,6 +90,17 @@ describe('B-085: a plume with no ceiling', () => {
     // (V̇ ≈ 2 × 10⁵ m³/s) ≈ 38 km plume".
     expect(km(2e5)).toBeCloseTo(37.9, 1);
     expect(9.9e9 / 2e5).toBeGreaterThan(1e4);
+  });
+
+  it("and the fit's own top is BELOW eruptions that have happened", () => {
+    // Mastin's Table 1 tops out near 4×10⁸ kg/s, which at 2 500 kg/m³ DRE is
+    // 1.6×10⁵ m³/s. Capping there — B-084's pattern — would cut Pinatubo
+    // 1991 at about 40 km and Hunga Tonga at about 57.
+    const topOfFit = 4e8 / 2_500;
+    expect(topOfFit).toBeCloseTo(1.6e5, -3);
+    expect(km(topOfFit)).toBeCloseTo(35.9, 1);
+    expect(km(topOfFit)).toBeLessThan(40);
+    expect(km(topOfFit)).toBeLessThan(57);
   });
 
   it('is reached by the sweep, not only by a hand-built scenario', () => {
