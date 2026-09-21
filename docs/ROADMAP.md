@@ -421,6 +421,7 @@ Read on the sweep's own seed, 5 000 impacts, round by round:
 | An impact that reaches the ground bursts at the ground            | 748 to 755 | adopted: the explained blast rings fall to the airbursts'                |    **0** |
 | A low airburst digs where its kept energy strikes the ground      | 756 to 763 | adopted: B-097 closed; the harness reads a crater's birth as a contour's |    **0** |
 | An iron's crater field ends where its fragments dig as one        | 764 to 771 | adopted: B-098 closed, by Bland & Artemieva's masses                     |    **0** |
+| An airburst's flash from the field's model of it (ATAP)           | 772 to 779 | refused by 777 (b): the watchdog, and two rings at the V/H edge          |    **0** |
 
 Nothing is left on the own seed. The burn ring at the passage from a complete
 airburst to a partial one is gone (B-093, rules 714 to 721), and the 38
@@ -551,9 +552,15 @@ are missing, and why:
   fixes with Andrea how G3's width bound, written for a σ_ln, reads
   kilometres.
 - **G6, by one gap that is not a ceiling.** An airburst's flash, too faint
-  by the luminous efficiency of an impact's plume (B-095, declared by
-  Andrea's decision while the field's airburst radiation models cannot be
-  read free). The other, an impact's air blast read from under the ground as
+  by the luminous efficiency of an impact's plume (B-095). Johnston & Stern's
+  paper was read that evening and rules 772 to 779 drew the flash from its
+  correlation, the stronger of it and the efficiency's at every range as
+  Andrea decided, and were refused by their own condition (b): the harness's
+  searches no longer return within the watchdog at 6 to 12 ms a run, and two
+  bodies reaching low and fast draw burn rings that shrink as they grow. A
+  second round would need a cheaper run or a watchdog that reads a run that
+  does not return, and a reading below V/H = 1.8 that does not lift a deeper
+  body higher. The other, an impact's air blast read from under the ground as
   the program reads it, is closed by rules 748 to 755: a body that reaches
   the ground bursts at the ground.
 

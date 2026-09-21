@@ -116,6 +116,51 @@
  * model reads, and nowhere a flash fainter than the field's operational one.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: REFUSED
+ * ===========================================================================
+ *
+ * The rules were pushed in `ca4686e` and the four sweeps made on that commit
+ * (`benchmark/results/invariants-2026-09-21-48.json` and `-49` on the own
+ * seed, `efficiency` and `atap`; `-50` and `-51` on
+ * `benchmark-2026-09-21-heldout-atap`).
+ *
+ * (a) HOLDS. `atapRadiationRules.test.ts`: Eq. (9) within 10 % of the twenty
+ *     points of Figs. 15 to 17; the six optimal radii of Fig. 24 within 12 %
+ *     and inside 30 to 45 m; never fainter; a body none of whose path is read
+ *     unchanged to the bit; no ring falling through the fitted range's edges
+ *     on the grid.
+ * (b) FAILS. On the own seed G5 reads 0 under `efficiency` and 2 under
+ *     `atap`, a key the first does not print: "finite: the run does not
+ *     return within 2 s", for a 47.4 m body of 6 511 kg/m³ at 17.5 km/s and
+ *     41.7 degrees and a 48.0 m body of 4 816 kg/m³ at 14.7 km/s and 58.9
+ *     degrees. Both burst within 200 m of the ground, where the field at
+ *     1 km moves by 1.2 % on the step of continuity under either law — the
+ *     fireball on the ground there — and the harness searches it by halving,
+ *     as rule 662 does; a run takes 0.2 ms under `efficiency` and 6 to 12 ms
+ *     under `atap`, and the search no longer returns within the watchdog's two
+ *     seconds. On the unseen seed the keys are the same, 5 against 7, and two
+ *     more bodies draw a burn ring that shrinks as they grow: a 14.7 m iron at
+ *     27.3 km/s and 6.4 degrees, whose second-degree ring, born a hair above
+ *     its threshold, falls from 555 m to 335 m, and a 56.5 m body of
+ *     6 956 kg/m³ at 14.3 km/s and 17.6 degrees, whose third-degree ring
+ *     falls by 1.6 %. Both burst below 5 km, where the body is faster than
+ *     1.8 km/s for each kilometre of its altitude and the correlation is read
+ *     at the altitude where it is not; the deeper the body goes, the higher
+ *     that reading lifts it: the edge in V/H is not monotone for a body that
+ *     reaches low and fast.
+ * (c) HOLDS. The presets move as rule 775 lists them, and no other.
+ * (d) Not read: the default did not move.
+ *
+ * So `DEFAULT_AIRBURST_RADIATION` stays `efficiency`, B-095 stays open and G6
+ * with it. What a second round would have to answer, printed and not
+ * decided here: a run cheap enough for the harness's searches, or a watchdog
+ * that reads a run that does not return rather than one that returns slowly;
+ * and a reading of the correlation below V/H = 1.8 that does not lift a
+ * deeper body higher.
+ */
+
 /** Rule 777 (b): the seed of the run on scenarios nobody has seen. */
 export const ATAP_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-atap';
 
