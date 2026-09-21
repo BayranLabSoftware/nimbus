@@ -101,7 +101,11 @@ export function finalCraterDiameter(
   if (simple < Dc) {
     return m(simple);
   }
-  return m((1.17 * Dtc ** 1.13) / Dc ** 0.13);
+  // Rules 647 to 653 of validation/craterJoinRules.ts: the two fits do not
+  // meet, so the complex one is held at D_c until it reaches it, and a larger
+  // transient never cuts a smaller crater. On Earth that is a transient from
+  // 2 560 to 2 784.9 m; everywhere else this is Eq. 27 exactly.
+  return m(Math.max((1.17 * Dtc ** 1.13) / Dc ** 0.13, Dc));
 }
 
 /**
