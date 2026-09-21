@@ -456,6 +456,18 @@ panel, under the burst's beacon and in the legend; the report prints I2 cell
 by cell, with G3's column empty until IMP-6. Every preset lies outside — the
 entry was measured on bodies of 49 kt at most. Impacts count 6.0.
 
+#### IMP-8, begun 21 September 2026: the gaps, classified
+
+The report now says which of an impact's declared gaps are ceilings — its
+toll, which no impact left; the deaths no count of the prompt effects sees;
+and, since I3's band holds both footprints, an airburst's round footprint —
+and prints the entry's miss of the sky in the entry's own section, beside the
+program's identical miss, as the field's error and no longer as a gap (the
+amendment of 16 September). Two gaps are not ceilings, and G6 is not met
+while they stand: an impact's air blast read from under the ground (work of
+its own, a physical surface burst for the energy that reaches the ground) and
+the airburst flash's efficiency (B-095, declared by Andrea's decision).
+
 #### IMP-7, begun 21 September 2026: what the globe drew that the model did not
 
 The first pass of the seven checks, on the impact presets, found two things
