@@ -79,6 +79,9 @@ const GROUND_BLAST = process.env.NIMBUS_GROUND_BLAST;
  *  read a candidate rather than the default (rule 678 of
  *  validation/entryPaperAgainRules.ts). */
 const ENTRY_EQUATIONS = process.env.NIMBUS_ENTRY_EQUATIONS;
+/** Where a complete airburst's flash is placed, when the sweep is asked to
+ *  read a candidate (rule 703 of validation/airFlashRules.ts). */
+const AIR_FLASH = process.env.NIMBUS_AIR_FLASH;
 /** Rule 688 (c) of validation/blastShrinkSourceRules.ts: read the harness as
  *  it was, with no cause asked of a shrinking ring. */
 const NO_CAUSES = process.env.NIMBUS_NO_CAUSES !== undefined;
@@ -207,6 +210,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...input,
         ...(GROUND_BLAST === undefined ? {} : { groundBlast: GROUND_BLAST }),
         ...(ENTRY_EQUATIONS === undefined ? {} : { entryEquations: ENTRY_EQUATIONS }),
+        ...(AIR_FLASH === undefined ? {} : { airFlash: AIR_FLASH }),
       } as never) as unknown as Json,
     // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring
     // that shrinks is explained when its source moved it without a step

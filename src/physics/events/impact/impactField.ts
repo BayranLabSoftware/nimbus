@@ -5,7 +5,11 @@ import {
   groundImpactOverpressure,
   type GroundBlast,
 } from '../../effects/airburstBlast.js';
-import type { EntryRegime } from '../../effects/atmosphericEntry.js';
+import {
+  DEFAULT_AIR_FLASH,
+  type AirFlash,
+  type EntryRegime,
+} from '../../effects/atmosphericEntry.js';
 import { impactThermalExposure } from '../../effects/impactThermal.js';
 import { J, m } from '../../units.js';
 import { peakOverpressure } from '../explosion/overpressure.js';
@@ -46,7 +50,7 @@ import { peakOverpressure } from '../explosion/overpressure.js';
 /** What these functions read from a result: nothing a result does not carry. */
 export interface ImpactFieldSource {
   /** The law the rings were drawn with, where the input names one. */
-  inputs?: { groundBlast?: GroundBlast };
+  inputs?: { groundBlast?: GroundBlast; airFlash?: AirFlash };
   impactor: { kineticEnergy: number };
   entry: {
     regime: EntryRegime;
@@ -106,9 +110,16 @@ export function impactThermalExposureAt(source: ImpactFieldSource, rangeM: numbe
   const ke = source.impactor.kineticEnergy;
   const groundEnergy = J(ke * Math.max(source.entry.energyFractionToGround, 0));
   const airEnergy = source.entry.atmosphericYieldMegatons * JOULES_PER_MEGATON;
+  // B-094: a complete airburst's flash at its burst altitude, when asked.
+  const flashAltitude =
+    (source.inputs?.airFlash ?? DEFAULT_AIR_FLASH) === 'burst' &&
+    source.entry.regime === 'COMPLETE_AIRBURST'
+      ? Math.max(source.entry.burstAltitude, 0)
+      : 0;
   return (
     impactThermalExposure(m(rangeM), groundEnergy) +
-    (IMPACT_LUMINOUS_EFFICIENCY * airEnergy) / (4 * Math.PI * rangeM * rangeM)
+    (IMPACT_LUMINOUS_EFFICIENCY * airEnergy) /
+      (4 * Math.PI * (rangeM * rangeM + flashAltitude * flashAltitude))
   );
 }
 

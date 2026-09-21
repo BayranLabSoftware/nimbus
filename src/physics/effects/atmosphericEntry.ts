@@ -157,6 +157,31 @@ export type EntryBoundary = 'switch' | 'joined';
 /** What an entry that names no boundary uses. */
 export const DEFAULT_ENTRY_BOUNDARY: EntryBoundary = 'switch';
 
+/**
+ * Where the flash of a complete airburst is placed (B-094).
+ *
+ * - `ground`: under the burst. The burn radii are the slant ranges at which
+ *   the flash falls to each exposure (Glasstone & Dolan §7.94–7.96), drawn as
+ *   if they were ground ranges from a flash on the ground.
+ * - `burst`: at the burst altitude, where it is: a burn ring is the ground
+ *   range at which the slant distance to the burst equals the range the flash
+ *   reaches, and there is none where the burst is farther than that.
+ *
+ * A swarm that reaches the ground keeps its flash at the ground either way,
+ * where the two meet as a burst altitude goes to zero.
+ */
+export type AirFlash = 'ground' | 'burst';
+
+/** What an entry that names no flash placement uses. */
+export const DEFAULT_AIR_FLASH: AirFlash = 'ground';
+
+/** The ground range at which the slant distance to a source at `altitude`
+ *  is `slant` (m); 0 where the source is farther than that. */
+export function groundRangeAtSlant(slant: number, altitude: number): number {
+  const z = Math.max(altitude, 0);
+  return slant > z ? Math.sqrt(slant * slant - z * z) : 0;
+}
+
 export interface AtmosphericEntryResult {
   /** Airburst altitude (m), Collins et al. Eq. 18; 0 when the body or
    *  its swarm reaches the ground. */
@@ -282,7 +307,8 @@ const ZERO_ENTRY_DAMAGE = {
 function computeEntryDamage(
   atmosphericYieldJ: number,
   burstAltitudeM: number,
-  blastYieldJ: number
+  blastYieldJ: number,
+  airFlash: AirFlash = DEFAULT_AIR_FLASH
 ): Pick<
   AtmosphericEntryResult,
   'flashBurnRadii' | 'shockWaveRadii' | 'shockWaveRadiiHigh' | 'blastYieldMegatons'
@@ -291,7 +317,11 @@ function computeEntryDamage(
     return ZERO_ENTRY_DAMAGE;
   }
   const yieldEnergy = J(atmosphericYieldJ);
-  const flashBurnRadii = {
+  // B-094: the radii below are slant ranges; a flash at the burst altitude
+  // reaches the ground only where the slant distance to it is shorter.
+  const onGround = (slant: Meters): Meters =>
+    airFlash === 'burst' ? m(groundRangeAtSlant(slant, burstAltitudeM)) : slant;
+  const slantFlash = {
     // The atmospheric-entry flash-burn radii are an impact phenomenon
     // (thermal pulse from a meteor / bolide entry, not a nuclear
     // detonation), so the burn-radius helpers are passed the impact
@@ -316,6 +346,11 @@ function computeEntryDamage(
       thermalPartition: IMPACT_LUMINOUS_EFFICIENCY,
       burnExposure: 'project',
     }),
+  };
+  const flashBurnRadii = {
+    firstDegree: onGround(slantFlash.firstDegree),
+    secondDegree: onGround(slantFlash.secondDegree),
+    thirdDegree: onGround(slantFlash.thirdDegree),
   };
 
   if (Number.isFinite(burstAltitudeM) && burstAltitudeM > 0) {
@@ -375,7 +410,8 @@ export function atmosphericEntry(
   impactAngle: Radians = (Math.PI / 4) as Radians,
   equations: EntryEquations = DEFAULT_ENTRY_EQUATIONS,
   burstSpeed: BurstSpeed = DEFAULT_BURST_SPEED,
-  boundary: EntryBoundary = DEFAULT_ENTRY_BOUNDARY
+  boundary: EntryBoundary = DEFAULT_ENTRY_BOUNDARY,
+  airFlash: AirFlash = DEFAULT_AIR_FLASH
 ): AtmosphericEntryResult {
   const program = equations === 'program';
   const joined = boundary === 'joined';
@@ -472,7 +508,7 @@ export function atmosphericEntry(
       endVelocity: mps(endVelocity),
       energyFractionToGround: 0,
       atmosphericYieldMegatons: atmosphericYieldJ / JOULES_PER_MEGATON_TNT,
-      ...computeEntryDamage(atmosphericYieldJ, zBurst, blastYield),
+      ...computeEntryDamage(atmosphericYieldJ, zBurst, blastYield, airFlash),
     };
   }
 
@@ -496,6 +532,6 @@ export function atmosphericEntry(
     endVelocity: mps(endVelocity),
     energyFractionToGround,
     atmosphericYieldMegatons: atmosphericYieldJ / JOULES_PER_MEGATON_TNT,
-    ...computeEntryDamage(atmosphericYieldJ, 0, atmosphericYieldJ),
+    ...computeEntryDamage(atmosphericYieldJ, 0, atmosphericYieldJ, airFlash),
   };
 }

@@ -74,7 +74,13 @@ import {
 } from './events/impact/damageRings.js';
 import { impactFieldSamples } from './events/impact/impactField.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
-import type { EntryBoundary, EntryEquations } from './effects/atmosphericEntry.js';
+import {
+  DEFAULT_AIR_FLASH,
+  groundRangeAtSlant,
+  type AirFlash,
+  type EntryBoundary,
+  type EntryEquations,
+} from './effects/atmosphericEntry.js';
 import {
   impactSeismicEnergy,
   SEISMIC_EFFICIENCY_RANGE,
@@ -176,6 +182,9 @@ export interface ImpactScenarioInput {
    *  {@link DEFAULT_ENTRY_EQUATIONS} when omitted. For reading two on one
    *  commit, as `groundBlast` is. */
   entryEquations?: EntryEquations;
+  /** Where a complete airburst's flash is placed (B-094);
+   *  {@link DEFAULT_AIR_FLASH} when omitted. For reading two on one commit. */
+  airFlash?: AirFlash;
 }
 
 /**
@@ -479,7 +488,8 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     input.impactAngle,
     input.entryEquations,
     undefined,
-    input.entryBoundary
+    input.entryBoundary,
+    input.airFlash
   );
   // Crater and ejecta come from the speed the body or its swarm strikes
   // the ground at, as Collins et al. compute them (their Eq. 21* with
@@ -767,8 +777,18 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // 3.7 times the Earth's surface (B-028).
   const capArea = (radius: Meters): SquareMeters =>
     sqm(2 * Math.PI * earthRadius ** 2 * (1 - Math.cos((radius as number) / earthRadius)));
+  // B-094: the fire radii are slant ranges, as the burn radii are; a complete
+  // airburst's flash is placed at its burst altitude when asked.
+  const airFlash = input.airFlash ?? DEFAULT_AIR_FLASH;
+  const flashOnGround = (slant: Meters): Meters =>
+    airFlash === 'burst' && entry.regime === 'COMPLETE_AIRBURST'
+      ? m(groundRangeAtSlant(slant, entry.burstAltitude))
+      : slant;
   const ignitionRadius = seen(
-    thermalRing(flammableIgnitionRadius(firestormInputs), ignitionFluenceThreshold('tinder', ke))
+    thermalRing(
+      flashOnGround(flammableIgnitionRadius(firestormInputs)),
+      ignitionFluenceThreshold('tinder', ke)
+    )
   );
   // The mass fire is contained by the fire that feeds it (Glasstone & Dolan
   // §7.71 on Hiroshima), and below half a square mile of burning ground there
@@ -776,7 +796,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const sustainReach = Math.min(
     seen(
       thermalRing(
-        firestormSustainRadius(firestormInputs),
+        flashOnGround(firestormSustainRadius(firestormInputs)),
         ignitionFluenceThreshold('structural', ke)
       )
     ),
