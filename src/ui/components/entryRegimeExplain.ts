@@ -4,6 +4,7 @@ import type { ImpactScenarioResult } from '../../physics/simulate.js';
 export type EntryRegimeExplainKey =
   | ImpactScenarioResult['entry']['regime']
   | 'STREWN_FIELD'
+  | 'IRON_SWARM'
   | 'COMPLETE_AIRBURST_LOW';
 
 /**
@@ -17,6 +18,7 @@ export function entryRegimeExplainKey(
   result: Pick<ImpactScenarioResult, 'entry' | 'crater'>
 ): EntryRegimeExplainKey {
   if (result.crater.origin === 'strewnField') return 'STREWN_FIELD';
+  if (result.crater.origin === 'ironSwarm') return 'IRON_SWARM';
   if (result.crater.origin === 'lowBurst') return 'COMPLETE_AIRBURST_LOW';
   return result.entry.regime;
 }

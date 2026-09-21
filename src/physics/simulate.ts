@@ -84,6 +84,12 @@ import {
 } from './events/impact/airburstSeismic.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
 import {
+  DEFAULT_IRON_CRATER_FIELD,
+  IRON_DENSITY,
+  ironFieldShare,
+  type IronCraterField,
+} from './events/impact/ironCraterField.js';
+import {
   DEFAULT_AIR_FLASH,
   DEFAULT_LOW_BURST_CRATER,
   DEFAULT_LOW_BURST_FLASH,
@@ -205,6 +211,9 @@ export interface ImpactScenarioInput {
   /** Whether a complete airburst below its own fireball digs (B-097);
    *  {@link DEFAULT_LOW_BURST_CRATER} when omitted. */
   lowBurstCrater?: LowBurstCrater;
+  /** How the crater of an iron that breaks up is drawn (B-098);
+   *  {@link DEFAULT_IRON_CRATER_FIELD} when omitted. */
+  ironCraterField?: IronCraterField;
   /** What a complete airburst's seismic magnitude is read from (B-092);
    *  {@link DEFAULT_AIRBURST_SEISMIC} when omitted. For reading two on one
    *  commit. */
@@ -379,10 +388,11 @@ export interface ImpactScenarioResult {
     morphology: 'simple' | 'complex';
     /** What dug the crater (B-103): the body or swarm that reaches the ground
      *  (`impact`), the largest crater of an iron's strewn field
-     *  (`strewnField`), the share of a complete airburst's kept energy that
-     *  strikes the ground below its fireball (`lowBurst`, rules 756 to 763),
-     *  or nothing (`none`). */
-    origin: 'impact' | 'strewnField' | 'lowBurst' | 'none';
+     *  (`strewnField`), an iron's fragments digging as one where the pancake
+     *  calls its burst an airburst (`ironSwarm`, B-098), the share of a
+     *  complete airburst's kept energy that strikes the ground below its
+     *  fireball (`lowBurst`, rules 756 to 763), or nothing (`none`). */
+    origin: 'impact' | 'strewnField' | 'ironSwarm' | 'lowBurst' | 'none';
   };
   seismic: {
     /** Seismic magnitude of the energy delivered to the ground (Collins
@@ -654,12 +664,15 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // An iron that breaks up falls as a strewn field whether Collins et
   // al.'s pancake calls the break an airburst or not: Sikhote-Alin's does
   // at about 5 km. Its largest crater keeps the calibration above, on
-  // the single-impactor crater at the entry speed.
-  const isIronStrewnField =
-    (input.impactorDensity as number) >= 6000 &&
-    (entry.breakupAltitude as number) > 0 &&
-    diameterM < 20;
-  const craterVelocity = isIronStrewnField ? input.impactVelocity : entry.endVelocity;
+  // the single-impactor crater at the entry speed. Where the field ends is
+  // B-098's (`IronCraterField`): at 20 m, or by the body's mass.
+  const ironLaw = input.ironCraterField ?? DEFAULT_IRON_CRATER_FIELD;
+  const ironBreaks =
+    (input.impactorDensity as number) >= IRON_DENSITY && (entry.breakupAltitude as number) > 0;
+  const strewnShare = ironBreaks ? ironFieldShare(ironLaw, mass, diameterM) : 0;
+  // Whether the iron's own fragments dig its crater: in its strewn field, and
+  // by the body's mass wherever it breaks up.
+  const ironDigs = ironBreaks && (strewnShare > 0 || ironLaw === 'mass');
   // The energy the body keeps at its burst: the flash's share below its own
   // fireball (B-093), the ground's term of an airburst's magnitude (B-092) and
   // the crater of a burst below its fireball (B-097).
@@ -670,21 +683,35 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // B-097: below its own fireball, the share of the kept energy that strikes
   // the ground digs, as the body's mass in that share at its burst speed.
   const lowBurstCraterShare =
-    airburst && !isIronStrewnField && (input.lowBurstCrater ?? DEFAULT_LOW_BURST_CRATER) === 'share'
+    airburst && !ironDigs && (input.lowBurstCrater ?? DEFAULT_LOW_BURST_CRATER) === 'share'
       ? groundFireballShare(entry.burstAltitude, keptEnergy)
       : 0;
+  // The crater of the whole body at the speed the entry leaves it: a body or
+  // swarm that reaches the ground, and an iron's fragments that dig as one.
+  const wholeCrater = (): number =>
+    (transientCraterDiameter({ ...input, impactVelocity: entry.endVelocity }) as number) *
+    seafloorScale;
+  // The largest crater of an iron's strewn field.
+  const strewnCrater = (): number =>
+    (transientCraterDiameter({ ...input, impactVelocity: input.impactVelocity }) as number) *
+    seafloorScale *
+    STREWN_FIELD_PRIMARY_CRATER_FACTOR;
   const Dtc = m(
-    airburst && !isIronStrewnField
-      ? lowBurstCraterShare > 0
-        ? (transientCraterDiameter({
-            ...input,
-            impactorDiameter: m(diameterM * Math.cbrt(lowBurstCraterShare)),
-            impactVelocity: entry.endVelocity,
-          }) as number) * seafloorScale
-        : 0
-      : (transientCraterDiameter({ ...input, impactVelocity: craterVelocity }) as number) *
-          seafloorScale *
-          (isIronStrewnField ? STREWN_FIELD_PRIMARY_CRATER_FACTOR : 1)
+    ironDigs
+      ? strewnShare >= 1
+        ? strewnCrater()
+        : strewnShare <= 0
+          ? wholeCrater()
+          : strewnCrater() ** strewnShare * wholeCrater() ** (1 - strewnShare)
+      : airburst
+        ? lowBurstCraterShare > 0
+          ? (transientCraterDiameter({
+              ...input,
+              impactorDiameter: m(diameterM * Math.cbrt(lowBurstCraterShare)),
+              impactVelocity: entry.endVelocity,
+            }) as number) * seafloorScale
+          : 0
+        : wholeCrater()
   );
   const Dfr = m(finalCraterDiameter(Dtc));
   const depth = m(craterDepth(Dfr));
@@ -693,11 +720,13 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const craterOrigin: ImpactScenarioResult['crater']['origin'] =
     (Dfr as number) <= 0
       ? 'none'
-      : isIronStrewnField
+      : ironDigs && strewnShare > 0
         ? 'strewnField'
-        : lowBurstCraterShare > 0
-          ? 'lowBurst'
-          : 'impact';
+        : ironDigs && airburst
+          ? 'ironSwarm'
+          : lowBurstCraterShare > 0
+            ? 'lowBurst'
+            : 'impact';
 
   // Damage rings = max(ground-coupled surface burst, atmospheric
   // airburst). The two physical components target the same observer

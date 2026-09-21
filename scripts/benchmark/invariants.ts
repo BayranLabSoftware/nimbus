@@ -94,6 +94,9 @@ const AIRBURST_SEISMIC = process.env.NIMBUS_AIRBURST_SEISMIC;
 /** Whether a complete airburst below its own fireball digs, when the sweep is
  *  asked to read a candidate (rule 761 of validation/lowBurstCraterRules.ts). */
 const LOW_BURST_CRATER = process.env.NIMBUS_LOW_BURST_CRATER;
+/** Where an iron's crater field ends, when the sweep is asked to read a
+ *  candidate (rule 769 of validation/ironCraterFieldRules.ts). */
+const IRON_CRATER_FIELD = process.env.NIMBUS_IRON_CRATER_FIELD;
 /** Rule 688 (c) of validation/blastShrinkSourceRules.ts: read the harness as
  *  it was, with no cause asked of a shrinking ring. */
 const NO_CAUSES = process.env.NIMBUS_NO_CAUSES !== undefined;
@@ -234,6 +237,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(LOW_BURST_FLASH === undefined ? {} : { lowBurstFlash: LOW_BURST_FLASH }),
         ...(AIRBURST_SEISMIC === undefined ? {} : { airburstSeismic: AIRBURST_SEISMIC }),
         ...(LOW_BURST_CRATER === undefined ? {} : { lowBurstCrater: LOW_BURST_CRATER }),
+        ...(IRON_CRATER_FIELD === undefined ? {} : { ironCraterField: IRON_CRATER_FIELD }),
       } as never) as unknown as Json,
     // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring
     // that shrinks is explained when its source moved it without a step
