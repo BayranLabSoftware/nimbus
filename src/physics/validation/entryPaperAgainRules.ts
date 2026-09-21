@@ -59,6 +59,53 @@
  * real bodies, or that G5 is met.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: REFUSED, by
+ * rule 679 (e) on the unseen seed
+ * ===========================================================================
+ *
+ * The rules were pushed in `167c1ed` and the four runs made on that commit,
+ * the default `program` and the paper's entry read through
+ * `NIMBUS_ENTRY_EQUATIONS=paper` (`benchmark/results/invariants-2026-09-21-
+ * 11.json` and `-12` on the own seed, `-13` and `-14` on
+ * `benchmark-2026-09-21-heldout-entry`).
+ *
+ *                                   program's entry   paper's entry
+ *   own seed, count G5 reads                   435             431
+ *   unseen seed, count G5 reads                409             412
+ *   keys G5 reads, new on the paper's           —         none, on either
+ *
+ * (e) fails on the unseen seed: the count rises by three — 1 psi rings 124 to
+ * 126, light-damage rings 135 to 137, airburst magnitudes 29 to 28. The run
+ * stopped there; (a) to (d) and (f) were not read again.
+ *
+ * What rule 680 asks to be listed. Six rings shrink on the paper's entry and
+ * not on the program's, all three blast rings of two bodies: a 7.15 m iron
+ * at 17.9 km/s and 81°, I_f 0.436, a complete airburst; and a 24.6 m iron at
+ * 21.3 km/s and 35°, I_f 0.221, a partial one. Two rings shrink on the
+ * program's and not on the paper's, one 5 psi ring each of a 49.3 m stone
+ * at 1.5 km/s (I_f 0.116) and a 42.2 m body at 17.3 km/s (0.003). Every one
+ * is where the doubling of I_f moves the breakup — I_f from 0.1 to 0.44 —
+ * and on the paper's entry each of the six has a source that moves without
+ * a step and, at the larger body's energy and the smaller body's altitude, a
+ * ring that does not shrink: the altitude moved it, as the height of burst
+ * does (`blastSource.ts`, read after the run).
+ *
+ * So what (e) measured is how many rings the height of burst shrinks, which
+ * moves with every breakup altitude, and not whether the paper's entry adds
+ * a kind of failure — which it did not, on either seed. The criterion was
+ * the wrong instrument, and it was written before the run; the round is
+ * refused as it says. The default stays `program`, and B-089 stays open.
+ *
+ * What comes next follows from it. Until the harness can tell a ring the
+ * height of burst shrinks from a ring a defect shrinks, no change to the
+ * entry can be read against G5 by its count. That is IMP-2b's statement,
+ * refused on B-089's seam: asked again as the source's altitude and energy,
+ * on the program's entry, with the seam's rings counted by name — and then
+ * the paper's entry, read by the failures no cause explains.
+ */
+
 /** Rule 678: the seed of the run on scenarios nobody has seen. */
 export const ENTRY_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-entry';
 
