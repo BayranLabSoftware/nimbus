@@ -19,8 +19,7 @@ import { HELD_OUT_SWEEP_SEED } from './blastShrinkRules.js';
  * to take them in, and they are not. The harness does not read the causes;
  * every shrinking ring counts, as before.
  *
- * WHAT THE REFUSAL FOUND. Neither scenario is physics the two causes missed.
- * Both are the model jumping:
+ * WHAT THE REFUSAL FOUND. One defect, and one mistake of the causes' own.
  *
  *   B-089, the entry. A 30 m iron at 17° from the horizon. Between a body
  *   0.5 % and one 1 % larger than it, the share of its energy reaching the
@@ -28,18 +27,22 @@ import { HELD_OUT_SWEEP_SEED } from './blastShrinkRules.js';
  *   once; every blast ring halves. A body does not change what reaches the
  *   ground by a tenth for half a per cent of its size.
  *
- *   B-090, the blast. A 6.8 m iron bursting near a kilometre. Its burst
- *   altitude and its yield both rise smoothly, and its 1 psi ring falls from
- *   5 271 m to 3 093 m over a 1.2 % range of size: as the edge of the Mach
- *   region moves out past the ring, the program's linear blend between
- *   regular and Mach reflection lets the ring collapse. Glasstone & Dolan's
- *   height-of-burst curves are smooth, with one optimum for each overpressure;
- *   this one has a dip the world does not. It is also why rule 640's cause (i)
- *   could not see it: its "optimum height" assumed a curve with one peak.
+ *   B-090, registered the same hour and WITHDRAWN: not a defect. A 6.8 m iron
+ *   bursting near a kilometre; its burst altitude and yield rise smoothly and
+ *   its 1 psi ring falls from 5 271 m to 3 093 m. This file first called that
+ *   a dip Glasstone & Dolan's height-of-burst curves do not have. They have
+ *   it: read against the project's own trace of Figure 3.73c, the book's 5 psi
+ *   ring falls 32 % between scaled heights of 300 and 350, the knee of §3.73
+ *   where the Mach contour folds back. The curve has ONE optimum; the body's
+ *   1 % step carried its burst across it onto the steep side, and cause (i),
+ *   which read the distance to the optimum and not the side of it, missed
+ *   that. So this ring is the height of burst after all — and the causes as
+ *   written could not say so, which is a fault of theirs.
  *
- * So the statement is refused, and two defects are registered in its place.
- * A statement that is right about the physics can be tested again only on a
- * seed nobody has read, and only after the model stops jumping under it.
+ * So the statement is refused, one defect is registered, and one flaw of the
+ * causes is on record. A statement that is right about the physics can be
+ * tested again only on a seed nobody has read, and only after the model
+ * stops jumping under it (B-089).
  */
 
 const B089 = {
@@ -83,7 +86,7 @@ describe('rules 638 to 646: refused, and what the refusal found', () => {
     );
   });
 
-  it('B-090: the blast collapses while the burst rises smoothly', () => {
+  it('B-090, withdrawn: the ring crosses the knee, which the book has too', () => {
     const a = grown(B090, 1.007);
     const b = grown(B090, 1.01);
     expect(a.entry.regime).toBe('COMPLETE_AIRBURST');
