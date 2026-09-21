@@ -70,6 +70,10 @@ const CHEMICAL_BLAST = process.env.NIMBUS_CHEMICAL_BLAST;
  *  the sweep is asked to read one (rule 636 of
  *  validation/groundBlastFloorRules.ts). */
 const GROUND_BLAST = process.env.NIMBUS_GROUND_BLAST;
+/** Which entry equations an impact is read with, when the sweep is asked to
+ *  read a candidate rather than the default (rule 678 of
+ *  validation/entryPaperAgainRules.ts). */
+const ENTRY_EQUATIONS = process.env.NIMBUS_ENTRY_EQUATIONS;
 /** Rule 642 of validation/blastShrinkRules.ts: the seed of a held-out run. */
 const SWEEP_SEED_OVERRIDE = process.env.NIMBUS_SWEEP_SEED;
 const HALF_CIRCUMFERENCE = Math.PI * (EARTH_RADIUS as number);
@@ -186,9 +190,11 @@ export const HAZARDS: readonly Hazard[] = [
     grow: (input, f) => ({ ...input, impactorDiameter: (input.impactorDiameter as number) * f }),
     // Rule 636: the sweep runs under a named ground blast when asked to.
     run: (input) =>
-      simulateImpact(
-        (GROUND_BLAST === undefined ? input : { ...input, groundBlast: GROUND_BLAST }) as never
-      ) as unknown as Json,
+      simulateImpact({
+        ...input,
+        ...(GROUND_BLAST === undefined ? {} : { groundBlast: GROUND_BLAST }),
+        ...(ENTRY_EQUATIONS === undefined ? {} : { entryEquations: ENTRY_EQUATIONS }),
+      } as never) as unknown as Json,
     // Rules 638 to 646 read two causes a blast ring may shrink by, and were
     // REFUSED on the held-out seed on 21 September 2026 by two scenarios with
     // neither (B-089, B-090): the hook is not wired, and every shrinking ring
