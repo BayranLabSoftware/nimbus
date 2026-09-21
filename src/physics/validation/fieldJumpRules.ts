@@ -91,6 +91,44 @@
  * holds: G5 is met only by a run with no failure.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `646dbe1` and the two runs made on that commit,
+ * with the default in place (`benchmark/results/invariants-2026-09-21-8.json`
+ * on the sweep's own seed, `-9` on `benchmark-2026-09-21-heldout-field`).
+ *
+ *                                        own seed     unseen seed
+ *   field samples the 1 % gate searched       167             150
+ *     read as steep                            167             150
+ *     jumps                                      0               0
+ *     unresolved                                 0               0
+ *   field samples rule 624 counted              10               7
+ *   impact failures G5 reads                   435             383
+ *
+ * (a) holds on both seeds: no search was unresolved, and none reached the
+ * bottom, so none was a jump; the deepest of the examples the harness keeps
+ * ended at the third halving. (b) holds: rule 661's ten are read as steep.
+ * (c) no jump on either seed, so nothing is registered. (d) holds: on the own
+ * seed every other count is the one of the run at `4c0e1c7` (`-7`), key for
+ * key — 145, 133 and 118 blast rings, 38 magnitudes, one second-degree burn,
+ * and the contours as they were, 4, 3 and 3. The positive controls of rule
+ * 666 are `fieldJumpRules.test.ts`, in CI at `646dbe1`.
+ *
+ * So the field is continuous on ten thousand impacts, where rule 624 read
+ * ten and seven jumps, and G5's impact count on the own seed goes from 445 to
+ * 435: the 396 blast rings that shrink as a body grows by 1 %, the 38
+ * magnitudes, one burn. Rule 629 holds, and G5 is not met.
+ *
+ * What the unseen seed shows besides, which these rules did not ask: three
+ * bodies whose crater vanishes as they grow by 1 % — 168.8 m to nothing — a
+ * body that reaches the ground whole beside one a hair larger that breaks
+ * high enough to burst in the air. They are counted, as monotonicity
+ * failures, and they are IMP-2's.
+ */
+
 /** Rule 662: the share of its scale a 0.1 % step must move a sample by
  *  for it to be searched. */
 export const FIELD_JUMP_GATE = 0.01;
