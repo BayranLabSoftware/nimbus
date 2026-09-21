@@ -403,21 +403,23 @@ band now and freeze it before a single held-out fireball exists.
 
 Read on the sweep's own seed, 5 000 impacts, round by round:
 
-| Round                                                             | Rules      | Outcome                                                                 | G5 reads |
-| ----------------------------------------------------------------- | ---------- | ----------------------------------------------------------------------- | -------: |
-| The harness corrected (IMP-1)                                     | 621 to 629 | adopted                                                                 |      465 |
-| The ground blast held at its checked crossover                    | 630 to 637 | adopted, B-088 closed                                                   |      449 |
-| Two causes for a shrinking blast ring                             | 638 to 646 | refused on an unseen seed: B-089, and B-090 withdrawn                   |      449 |
-| The final crater joined                                           | 647 to 653 | adopted                                                                 |      447 |
-| The seafloor share tapered                                        | 654 to 659 | adopted                                                                 |      445 |
-| The field read as a limit                                         | 660 to 666 | adopted: ten "jumps" were slopes                                        |      435 |
-| The paper's entry, to close B-089                                 | 667 to 675 | refused by the letter of 673 (e): one key G5 does not read              |        — |
-| The paper's entry, asked again                                    | 676 to 682 | refused on an unseen seed: three more rings the height of burst shrinks |        — |
-| The blast rings a source moves                                    | 683 to 690 | adopted: all 396 moved by their source's altitude; B-091 found          |       39 |
-| The paper's entry, read by what a wrong entry shows               | 691 to 697 | adopted: no new kind of failure, no jumping source; B-089 closed        |       39 |
-| An airburst's flash where the airburst is (IMP-7's first finding) | 698 to 705 | adopted: B-094 closed; the efficiency, B-095, next                      |       39 |
-| A low airburst's flash where its fireball meets the ground        | 714 to 721 | adopted: B-093 closed; B-097 and B-098 found on the unseen seed         |       38 |
-| An airburst's magnitude from the air that carries it (Harkrider)  | 730 to 738 | adopted by Andrea's choice: B-092 closed; G5 met                        |    **0** |
+| Round                                                             | Rules      | Outcome                                                                  | G5 reads |
+| ----------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------ | -------: |
+| The harness corrected (IMP-1)                                     | 621 to 629 | adopted                                                                  |      465 |
+| The ground blast held at its checked crossover                    | 630 to 637 | adopted, B-088 closed                                                    |      449 |
+| Two causes for a shrinking blast ring                             | 638 to 646 | refused on an unseen seed: B-089, and B-090 withdrawn                    |      449 |
+| The final crater joined                                           | 647 to 653 | adopted                                                                  |      447 |
+| The seafloor share tapered                                        | 654 to 659 | adopted                                                                  |      445 |
+| The field read as a limit                                         | 660 to 666 | adopted: ten "jumps" were slopes                                         |      435 |
+| The paper's entry, to close B-089                                 | 667 to 675 | refused by the letter of 673 (e): one key G5 does not read               |        — |
+| The paper's entry, asked again                                    | 676 to 682 | refused on an unseen seed: three more rings the height of burst shrinks  |        — |
+| The blast rings a source moves                                    | 683 to 690 | adopted: all 396 moved by their source's altitude; B-091 found           |       39 |
+| The paper's entry, read by what a wrong entry shows               | 691 to 697 | adopted: no new kind of failure, no jumping source; B-089 closed         |       39 |
+| An airburst's flash where the airburst is (IMP-7's first finding) | 698 to 705 | adopted: B-094 closed; the efficiency, B-095, next                       |       39 |
+| A low airburst's flash where its fireball meets the ground        | 714 to 721 | adopted: B-093 closed; B-097 and B-098 found on the unseen seed          |       38 |
+| An airburst's magnitude from the air that carries it (Harkrider)  | 730 to 738 | adopted by Andrea's choice: B-092 closed; G5 met                         |    **0** |
+| An impact that reaches the ground bursts at the ground            | 748 to 755 | adopted: the explained blast rings fall to the airbursts'                |    **0** |
+| A low airburst digs where its kept energy strikes the ground      | 756 to 763 | adopted: B-097 closed; the harness reads a crater's birth as a contour's |    **0** |
 
 Nothing is left on the own seed. The burn ring at the passage from a complete
 airburst to a partial one is gone (B-093, rules 714 to 721), and the 38
@@ -428,9 +430,12 @@ table's own period, as the blast rings' are. G5 is met on the benchmark's
 draw, and impacts count 7.0. What the unseen seeds draw besides: the entry's jump B-091 (the paper's own I_f = 1, a body
 that lands whole beside one that bursts; B-089, the program's doubled I_f
 against the paper's, is closed), and its neighbourhood, where the breakup
-rises with the body's size; a crater that opens at full size where a complete
-airburst becomes a partial one (B-097); and an iron's crater that vanishes
-at the strewn field's cut at 20 m (B-098), which B-091 had been given.
+rises with the body's size; a crater that opened at full size where a
+complete airburst becomes a partial one (B-097), closed by rules 756 to 763:
+below its own fireball an airburst digs with the share of the energy it keeps
+that strikes the ground, as its flash and its magnitude already read it; and
+an iron's crater that vanishes at the strewn field's cut at 20 m (B-098),
+which B-091 had been given.
 
 #### IMP-3, done 21 September 2026: I3 met
 
@@ -549,9 +554,10 @@ are missing, and why:
   program reads it, for which a physical surface burst is work of its own.
 
 Open, and outside the benchmark's draw on which G5 is met: B-091, the
-paper's sharp strength at I_f = 1; B-097, a crater that opens at full size
-where a complete airburst becomes a partial one; B-098, an iron's crater that
-vanishes at the strewn field's cut at 20 m. The work on impacts stops here and
+paper's sharp strength at I_f = 1; B-098, an iron's crater that vanishes at
+the strewn field's cut at 20 m. B-097, a crater that opened at full size
+where a complete airburst becomes a partial one, is closed by rules 756 to
+763 (Andrea's order of that evening). The work on impacts stops here and
 waits for Andrea's order.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_

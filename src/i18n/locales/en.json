@@ -912,7 +912,7 @@
       "runupLine": "run-up: {{value}}",
       "sourceLabel": "Source",
       "source": {
-        "impactCrater": "Collins, Melosh & Marcus (2005), Eqs. 21–27: π-group scaling, a simple or a complex crater",
+        "impactCrater": "Collins, Melosh & Marcus (2005), Eqs. 21–27: π-group scaling, a simple or a complex crater; a complete airburst below its own fireball digs on the share 1 − z/R of its mass (rules 756 to 763)",
         "impactBurn": "Collins, Melosh & Marcus (2005): the fireball's exposure at η = 3 × 10⁻³, into the half-space and under its horizon (Eqs. 32–37); an airburst's flash from its burst altitude (rules 698 to 705); 8 and 5 cal/cm²",
         "impactFire": "Glasstone & Dolan (1977) Table 7.40, on the impact's own fluence at η = 3 × 10⁻³ (Collins et al. 2005)",
         "impactBlast": "The Earth Impact Effects Program's air blast (Collins et al. 2005, Eqs. 54–58; Collins et al. 2017, Eq. 7): an airburst's still source at its burst altitude, a ground impact's at Eq. 18's altitude below the ground",

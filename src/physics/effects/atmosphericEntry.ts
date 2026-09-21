@@ -211,8 +211,9 @@ export const DEFAULT_LOW_BURST_FLASH: LowBurstFlash = 'fireball';
  */
 export type LowBurstCrater = 'none' | 'share';
 
-/** What an impact that names no low-burst crater uses. */
-export const DEFAULT_LOW_BURST_CRATER: LowBurstCrater = 'none';
+/** What an impact that names no low-burst crater uses: `share`, since rules
+ *  756 to 763 of validation/lowBurstCraterRules.ts. */
+export const DEFAULT_LOW_BURST_CRATER: LowBurstCrater = 'share';
 
 /** The share of an airburst's kept energy that radiates as a fireball on the
  *  ground (B-093): 1 − z/R, with R = 0.002 · E^(1/3) the fireball radius of

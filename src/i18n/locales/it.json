@@ -912,7 +912,7 @@
       "runupLine": "run-up: {{value}}",
       "sourceLabel": "Fonte",
       "source": {
-        "impactCrater": "Collins, Melosh & Marcus (2005), Eq. 21–27: scalatura a gruppi π, cratere semplice o complesso",
+        "impactCrater": "Collins, Melosh & Marcus (2005), Eq. 21–27: scalatura a gruppi π, cratere semplice o complesso; un airburst completo sotto la propria palla di fuoco scava con la quota 1 − z/R della sua massa (regole 756–763)",
         "impactBurn": "Collins, Melosh & Marcus (2005): l'esposizione della palla di fuoco con η = 3 × 10⁻³, nel semispazio e sotto il suo orizzonte (Eq. 32–37); il lampo di un airburst dalla sua quota di scoppio (regole 698–705); 8 e 5 cal/cm²",
         "impactFire": "Glasstone & Dolan (1977) Tabella 7.40, sulla fluenza dell'impatto con η = 3 × 10⁻³ (Collins et al. 2005)",
         "impactBlast": "Il blast dell'Earth Impact Effects Program (Collins et al. 2005, Eq. 54–58; Collins et al. 2017, Eq. 7): per un airburst una sorgente ferma alla quota di scoppio, per un impatto al suolo alla quota dell'Eq. 18 sotto il suolo",

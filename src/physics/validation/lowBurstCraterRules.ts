@@ -94,6 +94,46 @@
  * size at the switch.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `45323b8` and the four sweeps made on that commit
+ * (`benchmark/results/invariants-2026-09-21-40.json` and `-41` on the own
+ * seed, `none` and `share`; `-42` and `-43` on
+ * `benchmark-2026-09-21-heldout-crater`). Then the default moved.
+ *
+ * (a) HOLDS. `lowBurstCraterRules.test.ts`, in CI on `45323b8`: no crater of
+ *     a body that is not a complete airburst below its fireball moves;
+ *     B-097's crater is 1 183.5 m either side of its switch; a burst at or
+ *     above its fireball digs nothing; and the harness reads B-097's birth
+ *     only as it was, prints the step just past it as steep, counts B-097's
+ *     switch under `none` as a jump at a regime switch, and B-098's cut as a
+ *     jump under both laws.
+ * (b) HOLDS. G5 reads 0 on the own seed under both laws, as the last run
+ *     there read under the harness before this round (`-37`), and 7 on the
+ *     unseen seed under both, the same keys. The scenarios whose failures
+ *     differ: on the own seed, a 73.3 m iron at 24.3 km/s over 196 m of
+ *     water whose crater is born on the step, its burst falling from 803 m to
+ *     796 m (nothing to 159.4 m, read only as it was), and a 44.7 m iron at
+ *     41.2 km/s near its birth (737.2 m to 810.3 m, steep within 3
+ *     halvings); on the unseen seed, a 38.4 m iron at 47.1 km/s near its
+ *     birth (60.0 m to 82.2 m, steep within 5 halvings), and a 60.7 m stone
+ *     at 3.9 km/s and 5.9 degrees that breaks higher as it grows (B-091's
+ *     neighbourhood, 2 452 m to 2 530 m) and so passes from a partial
+ *     airburst to a complete one bursting 6 m up: its crater vanished there
+ *     under `none` — B-097 the other way round — and falls by 3.6 % under
+ *     `share` (247.2 m to 238.3 m), a fall the same key already printed.
+ * (c) HOLDS. No preset moves (`lowBurstCraterRules.test.ts`, and every
+ *     preset's test passes on the new default).
+ * (d) HOLDS. The report regenerated on the new default: release gate PASS.
+ *
+ * So `DEFAULT_LOW_BURST_CRATER` is `share`, and B-097 is closed. B-098's cut
+ * is not touched: the 20 m iron of its record bursts 1 157 m up, above its
+ * fireball, and still digs nothing past 20 m.
+ */
+
 /** Rule 761 (b): the seed of the run on scenarios nobody has seen. */
 export const LOW_BURST_CRATER_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-crater';
 

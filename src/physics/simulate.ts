@@ -572,7 +572,8 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   );
   // Crater and ejecta come from the speed the body or its swarm strikes
   // the ground at, as Collins et al. compute them (their Eq. 21* with
-  // the velocity of Eq. 8, 17 or 20), and an airburst leaves no crater.
+  // the velocity of Eq. 8, 17 or 20), and an airburst leaves no crater
+  // unless it bursts below its own fireball (B-097, rules 756 to 763).
   // Until 14 September 2026 the crater was scaled by the share of the
   // energy a tuned classifier left for the ground, and a burst more than
   // five diameters up suppressed it.
