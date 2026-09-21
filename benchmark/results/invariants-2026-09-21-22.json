@@ -1,0 +1,1072 @@
+{
+ "track": "INV",
+ "scenariosPerHazard": {
+  "impact": 5000
+ },
+ "watchdogMs": 2000,
+ "failures": {
+  "impact": {
+   "steep, not a jump (field): field.thermalExposureAt300km": {
+    "count": 32,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 519.1535286781594,
+       "impactVelocity": 13069.204210070893,
+       "impactorDensity": 8312.38471029792,
+       "targetDensity": 1119.8263661935925,
+       "impactAngle": 0.6378431926377873,
+       "impactAzimuthDeg": 298.8593260284979
+      },
+      "detail": "5065.30 → 5184.35, continuous below 1 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 477.73078272471065,
+       "impactVelocity": 17614.59615221247,
+       "impactorDensity": 5926.959826378152,
+       "targetDensity": 2621.1347272619605,
+       "impactAngle": 0.44693002494756934,
+       "impactAzimuthDeg": 111.08197711897083
+      },
+      "detail": "7636.77 → 7753.88, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 223.17459427825037,
+       "impactVelocity": 50241.82304390706,
+       "impactorDensity": 9416.47584468592,
+       "targetDensity": 2856.501259841025,
+       "impactAngle": 1.0641738547823865,
+       "impactAzimuthDeg": 331.64516667067073,
+       "waterDepth": 1.3713402594781012
+      },
+      "detail": "24163.4 → 24433.4, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 491.78736344762893,
+       "impactVelocity": 25767.376966774464,
+       "impactorDensity": 2946.5530916349962,
+       "targetDensity": 3558.632447384298,
+       "impactAngle": 1.0599344374774486,
+       "impactAzimuthDeg": 50.037782202707604
+      },
+      "detail": "15160.9 → 15356.6, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 191.88187188358108,
+       "impactVelocity": 67804.95201796293,
+       "impactorDensity": 6310.583817888983,
+       "targetDensity": 1438.926258124411,
+       "impactAngle": 1.505761906703591,
+       "impactAzimuthDeg": 193.30032294313423
+      },
+      "detail": "9268.28 → 9394.07, continuous below 0 halvings"
+     }
+    ]
+   },
+   "explained, the source altitude: damage.overpressure5psi": {
+    "count": 104,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 35.59010979080422,
+       "impactVelocity": 8758.823330048472,
+       "impactorDensity": 4856.478494708426,
+       "targetDensity": 1555.9735922142863,
+       "impactAngle": 1.261716169328259,
+       "impactAzimuthDeg": 31.017363754101098,
+       "waterDepth": 3815.2759120791925
+      },
+      "detail": "5672.52 → 5595.14"
+     },
+     {
+      "input": {
+       "impactorDiameter": 10.82435204384568,
+       "impactVelocity": 19317.39901029505,
+       "impactorDensity": 9743.909208686091,
+       "targetDensity": 3673.4574595466256,
+       "impactAngle": 1.3199952244708641,
+       "impactAzimuthDeg": 234.19054372399114
+      },
+      "detail": "1565.72 → 1544.57"
+     },
+     {
+      "input": {
+       "impactorDiameter": 174.52036721134914,
+       "impactVelocity": 25411.62865050137,
+       "impactorDensity": 2368.133877054788,
+       "targetDensity": 4342.838539741933,
+       "impactAngle": 0.6964411939318115,
+       "impactAzimuthDeg": 164.51090374053456,
+       "waterDepth": 27.305056081311783
+      },
+      "detail": "20702.2 → 20664.3"
+     },
+     {
+      "input": {
+       "impactorDiameter": 177.95343339297975,
+       "impactVelocity": 2597.454123897478,
+       "impactorDensity": 1320.8653627661988,
+       "targetDensity": 4014.4932875409722,
+       "impactAngle": 0.40408078955000154,
+       "impactAzimuthDeg": 325.3351615178399
+      },
+      "detail": "9123.72 → 9043.77"
+     },
+     {
+      "input": {
+       "impactorDiameter": 57.30892246280981,
+       "impactVelocity": 18209.90497083403,
+       "impactorDensity": 4624.941097106785,
+       "targetDensity": 4647.739478386939,
+       "impactAngle": 1.5091678198090985,
+       "impactAzimuthDeg": 168.07936316193081,
+       "waterDepth": 3.266270420386237
+      },
+      "detail": "6520.99 → 6430.19"
+     }
+    ]
+   },
+   "explained, the source altitude: damage.overpressure1psi": {
+    "count": 124,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 35.59010979080422,
+       "impactVelocity": 8758.823330048472,
+       "impactorDensity": 4856.478494708426,
+       "targetDensity": 1555.9735922142863,
+       "impactAngle": 1.261716169328259,
+       "impactAzimuthDeg": 31.017363754101098,
+       "waterDepth": 3815.2759120791925
+      },
+      "detail": "15259.0 → 15050.8"
+     },
+     {
+      "input": {
+       "impactorDiameter": 10.82435204384568,
+       "impactVelocity": 19317.39901029505,
+       "impactorDensity": 9743.909208686091,
+       "targetDensity": 3673.4574595466256,
+       "impactAngle": 1.3199952244708641,
+       "impactAzimuthDeg": 234.19054372399114
+      },
+      "detail": "4211.76 → 4154.86"
+     },
+     {
+      "input": {
+       "impactorDiameter": 174.52036721134914,
+       "impactVelocity": 25411.62865050137,
+       "impactorDensity": 2368.133877054788,
+       "targetDensity": 4342.838539741933,
+       "impactAngle": 0.6964411939318115,
+       "impactAzimuthDeg": 164.51090374053456,
+       "waterDepth": 27.305056081311783
+      },
+      "detail": "55688.6 → 55586.5"
+     },
+     {
+      "input": {
+       "impactorDiameter": 177.95343339297975,
+       "impactVelocity": 2597.454123897478,
+       "impactorDensity": 1320.8653627661988,
+       "targetDensity": 4014.4932875409722,
+       "impactAngle": 0.40408078955000154,
+       "impactAzimuthDeg": 325.3351615178399
+      },
+      "detail": "24542.6 → 24327.6"
+     },
+     {
+      "input": {
+       "impactorDiameter": 57.30892246280981,
+       "impactVelocity": 18209.90497083403,
+       "impactorDensity": 4624.941097106785,
+       "targetDensity": 4647.739478386939,
+       "impactAngle": 1.5091678198090985,
+       "impactAzimuthDeg": 168.07936316193081,
+       "waterDepth": 3.266270420386237
+      },
+      "detail": "17541.3 → 17297.1"
+     }
+    ]
+   },
+   "explained, the source altitude: damage.lightDamage": {
+    "count": 126,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 35.59010979080422,
+       "impactVelocity": 8758.823330048472,
+       "impactorDensity": 4856.478494708426,
+       "targetDensity": 1555.9735922142863,
+       "impactAngle": 1.261716169328259,
+       "impactAzimuthDeg": 31.017363754101098,
+       "waterDepth": 3815.2759120791925
+      },
+      "detail": "25618.7 → 25269.3"
+     },
+     {
+      "input": {
+       "impactorDiameter": 10.82435204384568,
+       "impactVelocity": 19317.39901029505,
+       "impactorDensity": 9743.909208686091,
+       "targetDensity": 3673.4574595466256,
+       "impactAngle": 1.3199952244708641,
+       "impactAzimuthDeg": 234.19054372399114
+      },
+      "detail": "7071.25 → 6975.71"
+     },
+     {
+      "input": {
+       "impactorDiameter": 174.52036721134914,
+       "impactVelocity": 25411.62865050137,
+       "impactorDensity": 2368.133877054788,
+       "targetDensity": 4342.838539741933,
+       "impactAngle": 0.6964411939318115,
+       "impactAzimuthDeg": 164.51090374053456,
+       "waterDepth": 27.305056081311783
+      },
+      "detail": "93497.2 → 93325.9"
+     },
+     {
+      "input": {
+       "impactorDiameter": 177.95343339297975,
+       "impactVelocity": 2597.454123897478,
+       "impactorDensity": 1320.8653627661988,
+       "targetDensity": 4014.4932875409722,
+       "impactAngle": 0.40408078955000154,
+       "impactAzimuthDeg": 325.3351615178399
+      },
+      "detail": "41205.3 → 40844.3"
+     },
+     {
+      "input": {
+       "impactorDiameter": 57.30892246280981,
+       "impactVelocity": 18209.90497083403,
+       "impactorDensity": 4624.941097106785,
+       "targetDensity": 4647.739478386939,
+       "impactAngle": 1.5091678198090985,
+       "impactAzimuthDeg": 168.07936316193081,
+       "waterDepth": 3.266270420386237
+      },
+      "detail": "29450.7 → 29040.6"
+     }
+    ]
+   },
+   "steep, not a jump (field): field.overpressureAt1km": {
+    "count": 78,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 35.59010979080422,
+       "impactVelocity": 8758.823330048472,
+       "impactorDensity": 4856.478494708426,
+       "targetDensity": 1555.9735922142863,
+       "impactAngle": 1.261716169328259,
+       "impactAzimuthDeg": 31.017363754101098,
+       "waterDepth": 3815.2759120791925
+      },
+      "detail": "553796 → 564890, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 177.95343339297975,
+       "impactVelocity": 2597.454123897478,
+       "impactorDensity": 1320.8653627661988,
+       "targetDensity": 4014.4932875409722,
+       "impactAngle": 0.40408078955000154,
+       "impactAzimuthDeg": 325.3351615178399
+      },
+      "detail": "347821 → 352641, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 35.89083496280973,
+       "impactVelocity": 3180.8443404734135,
+       "impactorDensity": 4255.408033146523,
+       "targetDensity": 3512.6172732561827,
+       "impactAngle": 1.1218510816615082,
+       "impactAzimuthDeg": 336.2420183015056
+      },
+      "detail": "80366.7 → 79557.7, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 23.182542122296873,
+       "impactVelocity": 46039.20382540673,
+       "impactorDensity": 9742.223205743358,
+       "targetDensity": 4629.557475447655,
+       "impactAngle": 0.9068862003088113,
+       "impactAzimuthDeg": 17.804461813066155
+      },
+      "detail": "1.37507e+6 → 1.39081e+6, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 141.0726938809816,
+       "impactVelocity": 68205.44768520631,
+       "impactorDensity": 4384.948643972166,
+       "targetDensity": 3177.5616137310863,
+       "impactAngle": 0.24680361001687665,
+       "impactAzimuthDeg": 16.814553610049188
+      },
+      "detail": "2.66651e+7 → 2.69378e+7, continuous below 0 halvings"
+     }
+    ]
+   },
+   "monotone in size: seismic.magnitude": {
+    "count": 35,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 177.95343339297975,
+       "impactVelocity": 2597.454123897478,
+       "impactorDensity": 1320.8653627661988,
+       "targetDensity": 4014.4932875409722,
+       "impactAngle": 0.40408078955000154,
+       "impactAzimuthDeg": 325.3351615178399
+      },
+      "detail": "3.66526 → 3.66250"
+     },
+     {
+      "input": {
+       "impactorDiameter": 142.81081584605042,
+       "impactVelocity": 62314.664614154026,
+       "impactorDensity": 570.3925366979092,
+       "targetDensity": 1657.7867297455668,
+       "impactAngle": 0.6454846641141591,
+       "impactAzimuthDeg": 17.780175173655152,
+       "waterDepth": 1783.0417176753554
+      },
+      "detail": "4.93324 → 4.92786"
+     },
+     {
+      "input": {
+       "impactorDiameter": 110.4140861175433,
+       "impactVelocity": 24392.223932081833,
+       "impactorDensity": 1229.907246422954,
+       "targetDensity": 4642.64471642673,
+       "impactAngle": 0.9437759223715848,
+       "impactAzimuthDeg": 227.15264953719452,
+       "waterDepth": 1.0598563763901667
+      },
+      "detail": "4.32024 → 4.31430"
+     },
+     {
+      "input": {
+       "impactorDiameter": 96.63496678313473,
+       "impactVelocity": 32769.15953680873,
+       "impactorDensity": 2012.123423977755,
+       "targetDensity": 3554.0208565071225,
+       "impactAngle": 0.6623478868550736,
+       "impactAzimuthDeg": 205.06602693977766
+      },
+      "detail": "5.00757 → 5.00653"
+     },
+     {
+      "input": {
+       "impactorDiameter": 114.51982791744001,
+       "impactVelocity": 53778.82103808224,
+       "impactorDensity": 678.3217990305275,
+       "targetDensity": 4530.18029872328,
+       "impactAngle": 1.3856357915020514,
+       "impactAzimuthDeg": 353.59595767920837
+      },
+      "detail": "4.26829 → 4.25855"
+     }
+    ]
+   },
+   "steep, not a jump (field): field.overpressureAt3km": {
+    "count": 7,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 177.95343339297975,
+       "impactVelocity": 2597.454123897478,
+       "impactorDensity": 1320.8653627661988,
+       "targetDensity": 4014.4932875409722,
+       "impactAngle": 0.40408078955000154,
+       "impactAzimuthDeg": 325.3351615178399
+      },
+      "detail": "207736 → 209870, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 21.926613206681118,
+       "impactVelocity": 4994.569235481322,
+       "impactorDensity": 5778.49999954924,
+       "targetDensity": 4977.099284529686,
+       "impactAngle": 0.7298547614464143,
+       "impactAzimuthDeg": 118.24328348971903
+      },
+      "detail": "21389.0 → 21860.9, continuous below 1 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 70.56443676859404,
+       "impactVelocity": 9372.738952049986,
+       "impactorDensity": 1773.730437969789,
+       "targetDensity": 3973.6034525558352,
+       "impactAngle": 1.0238865920365012,
+       "impactAzimuthDeg": 63.73872666945681,
+       "waterDepth": 6.357368557573858
+      },
+      "detail": "147241 → 148957, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 197.400629992229,
+       "impactVelocity": 1892.939431592822,
+       "impactorDensity": 798.0352209415287,
+       "targetDensity": 3678.9378812536597,
+       "impactAngle": 0.8015036884845158,
+       "impactAzimuthDeg": 60.85321841784753
+      },
+      "detail": "6067.34 → 5977.09, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 42.59271234752808,
+       "impactVelocity": 16759.803781984374,
+       "impactorDensity": 4657.6469640713185,
+       "targetDensity": 2078.8627127185464,
+       "impactAngle": 0.8921428166130986,
+       "impactAzimuthDeg": 88.71134298713878
+      },
+      "detail": "184127 → 185988, continuous below 0 halvings"
+     }
+    ]
+   },
+   "steep, not a jump (field): field.overpressureAt10km": {
+    "count": 8,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 33.29954524720794,
+       "impactVelocity": 33149.02036404237,
+       "impactorDensity": 4224.15316675324,
+       "targetDensity": 4272.507084533572,
+       "impactAngle": 1.0785110784132355,
+       "impactAzimuthDeg": 163.0773201494012
+      },
+      "detail": "31180.2 → 31576.0, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 218.07627835493005,
+       "impactVelocity": 5531.956672668457,
+       "impactorDensity": 627.2536105243489,
+       "targetDensity": 2546.840850263834,
+       "impactAngle": 0.36229935181398454,
+       "impactAzimuthDeg": 47.58670244854875
+      },
+      "detail": "40521.2 → 40985.4, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 50.02900636639904,
+       "impactVelocity": 44573.11007473618,
+       "impactorDensity": 1352.4710373021662,
+       "targetDensity": 3423.0704735964537,
+       "impactAngle": 1.4469699701390033,
+       "impactAzimuthDeg": 234.83145479601808,
+       "waterDepth": 210.4761001580822
+      },
+      "detail": "46386.1 → 46871.3, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 197.400629992229,
+       "impactVelocity": 1892.939431592822,
+       "impactorDensity": 798.0352209415287,
+       "targetDensity": 3678.9378812536597,
+       "impactAngle": 0.8015036884845158,
+       "impactAzimuthDeg": 60.85321841784753
+      },
+      "detail": "1384.93 → 1368.50, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 34.10053640750494,
+       "impactVelocity": 14964.606176363304,
+       "impactorDensity": 6817.409264156595,
+       "targetDensity": 4563.304325565696,
+       "impactAngle": 0.515479184092023,
+       "impactAzimuthDeg": 21.341576074715704,
+       "waterDepth": 2.4535799112357237
+      },
+      "detail": "27135.8 → 27441.3, continuous below 0 halvings"
+     }
+    ]
+   },
+   "steep, not a jump (field): field.thermalExposureAt1000km": {
+    "count": 44,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 2459.9640384061768,
+       "impactVelocity": 50223.60146185383,
+       "impactorDensity": 9812.746788142249,
+       "targetDensity": 3668.037067167461,
+       "impactAngle": 0.14086152615527084,
+       "impactAzimuthDeg": 262.4404753509443,
+       "waterDepth": 20.307918170748053
+      },
+      "detail": "3.10762e+6 → 3.14268e+6, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 2661.690111324896,
+       "impactVelocity": 44650.427068118006,
+       "impactorDensity": 7683.131588506512,
+       "targetDensity": 4227.96246688813,
+       "impactAngle": 0.1723189937015694,
+       "impactAzimuthDeg": 172.96231514634565
+      },
+      "detail": "951768 → 970340, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 3187.2869125110783,
+       "impactVelocity": 40711.694608442485,
+       "impactorDensity": 5263.280506129377,
+       "targetDensity": 1578.6848962306976,
+       "impactAngle": 0.30636484643541495,
+       "impactAzimuthDeg": 18.95378453214653
+      },
+      "detail": "787226 → 804486, continuous below 1 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 2459.840969468432,
+       "impactVelocity": 48380.80383744091,
+       "impactorDensity": 9106.311139301397,
+       "targetDensity": 3999.451817944646,
+       "impactAngle": 1.2150609748842045,
+       "impactAzimuthDeg": 111.39208242646419
+      },
+      "detail": "1.55068e+6 → 1.57534e+6, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 17898.76491965743,
+       "impactVelocity": 5230.530845234171,
+       "impactorDensity": 2326.4338835142553,
+       "targetDensity": 1018.4277584776282,
+       "impactAngle": 1.088557702396403,
+       "impactAzimuthDeg": 107.59091517631896,
+       "waterDepth": 189.1997119178943
+      },
+      "detail": "2.91706e+6 → 2.95155e+6, continuous below 0 halvings"
+     }
+    ]
+   },
+   "steep, not a jump (field): field.overpressureAt30km": {
+    "count": 8,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 14.994987146384084,
+       "impactVelocity": 25665.594939375296,
+       "impactorDensity": 9465.33671405632,
+       "targetDensity": 3057.159064337611,
+       "impactAngle": 0.5481247536075374,
+       "impactAzimuthDeg": 95.96397363510914
+      },
+      "detail": "2680.44 → 2770.32, continuous below 1 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 42.17969477074868,
+       "impactVelocity": 55554.50860434212,
+       "impactorDensity": 2257.5421481160447,
+       "targetDensity": 3913.4559258818626,
+       "impactAngle": 0.8062681992248775,
+       "impactAzimuthDeg": 192.23515138425864
+      },
+      "detail": "10764.6 → 10949.2, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 29.139058183958166,
+       "impactVelocity": 68091.44470421597,
+       "impactorDensity": 3188.0598452407867,
+       "targetDensity": 2678.8543378934264,
+       "impactAngle": 1.2659659033753117,
+       "impactAzimuthDeg": 240.88608563202433
+      },
+      "detail": "9398.40 → 9575.19, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 35.69941706761897,
+       "impactVelocity": 60782.88970980793,
+       "impactorDensity": 3425.9822071762756,
+       "targetDensity": 2473.7317198887467,
+       "impactAngle": 0.7890825706938328,
+       "impactAzimuthDeg": 329.7708423193544
+      },
+      "detail": "15361.8 → 15552.6, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 28.579526566998247,
+       "impactVelocity": 61401.79953793995,
+       "impactorDensity": 5491.303241928108,
+       "targetDensity": 1803.327215835452,
+       "impactAngle": 0.7554180477710094,
+       "impactAzimuthDeg": 194.52096450165845,
+       "waterDepth": 151.99932267890108
+      },
+      "detail": "11725.8 → 11905.2, continuous below 0 halvings"
+     }
+    ]
+   },
+   "continuous, as it was: damage.overpressure1psi": {
+    "count": 3,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 8.738476462326181,
+       "impactVelocity": 51207.07949344069,
+       "impactorDensity": 9711.721935076639,
+       "targetDensity": 3071.369770914316,
+       "impactAngle": 0.7933043122707596,
+       "impactAzimuthDeg": 91.07091825222597
+      },
+      "detail": "0.00000 → 414.203"
+     },
+     {
+      "input": {
+       "impactorDiameter": 30.954465285604353,
+       "impactVelocity": 51253.29048046842,
+       "impactorDensity": 973.9126391941682,
+       "targetDensity": 4844.451806508005,
+       "impactAngle": 1.0107026297820303,
+       "impactAzimuthDeg": 77.66429149848409
+      },
+      "detail": "0.00000 → 1189.68"
+     },
+     {
+      "input": {
+       "impactorDiameter": 3.1157899002556597,
+       "impactVelocity": 12609.066336415708,
+       "impactorDensity": 8112.541310256347,
+       "targetDensity": 4178.294745273888,
+       "impactAngle": 1.1936027958230107,
+       "impactAzimuthDeg": 72.00081399246119
+      },
+      "detail": "367.854 → 305.492"
+     }
+    ]
+   },
+   "continuous, as it was: damage.lightDamage": {
+    "count": 1,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 22.89389438766589,
+       "impactVelocity": 52763.34655913524,
+       "impactorDensity": 1846.670588827692,
+       "targetDensity": 4193.674535490572,
+       "impactAngle": 0.5723561836879899,
+       "impactAzimuthDeg": 323.4227979222778,
+       "waterDepth": 6445.116481094704
+      },
+      "detail": "4039.24 → 4385.30"
+     }
+    ]
+   },
+   "steep, not a jump (field): field.overpressureAt300km": {
+    "count": 1,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 30.84816574726045,
+       "impactVelocity": 67444.1236667335,
+       "impactorDensity": 4499.309057136998,
+       "targetDensity": 4530.074011534452,
+       "impactAngle": 0.6116748311843049,
+       "impactAzimuthDeg": 266.13694754079916
+      },
+      "detail": "1212.53 → 1240.72, continuous below 3 halvings"
+     }
+    ]
+   },
+   "continuous (field), as rule 624 read it: field.thermalExposureAt1000km": {
+    "count": 4,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 2347.563551599828,
+       "impactVelocity": 45333.51288805716,
+       "impactorDensity": 8815.273390733637,
+       "targetDensity": 4689.971514977515,
+       "impactAngle": 0.5333251134783598,
+       "impactAzimuthDeg": 37.29134726640768
+      },
+      "detail": "51704.3 → 56173.5"
+     },
+     {
+      "input": {
+       "impactorDiameter": 3692.2541999765385,
+       "impactVelocity": 37752.08362354897,
+       "impactorDensity": 3328.8776524132118,
+       "targetDensity": 1590.3919115662575,
+       "impactAngle": 1.163108124038163,
+       "impactAzimuthDeg": 23.436278621433303
+      },
+      "detail": "82624.8 → 88905.7"
+     },
+     {
+      "input": {
+       "impactorDiameter": 5702.660983781621,
+       "impactVelocity": 14147.647241828963,
+       "impactorDensity": 6412.784244632348,
+       "targetDensity": 2127.0490577444434,
+       "impactAngle": 0.16503248923956992,
+       "impactAzimuthDeg": 318.05896340613253
+      },
+      "detail": "101136 → 107021"
+     },
+     {
+      "input": {
+       "impactorDiameter": 2764.9466560801984,
+       "impactVelocity": 41269.72055551596,
+       "impactorDensity": 6480.729695409536,
+       "targetDensity": 2365.071825683117,
+       "impactAngle": 0.9930875304195794,
+       "impactAzimuthDeg": 126.00262940279208,
+       "waterDepth": 1.4246653858809877
+      },
+      "detail": "36247.7 → 40247.5"
+     }
+    ]
+   },
+   "steep, not a jump (field): field.overpressureAt100km": {
+    "count": 4,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 53.20330352542318,
+       "impactVelocity": 29137.12625275366,
+       "impactorDensity": 1298.0299559421837,
+       "targetDensity": 1802.636611275375,
+       "impactAngle": 1.064324827460846,
+       "impactAzimuthDeg": 220.2542960769497,
+       "waterDepth": 239.86975634248856
+      },
+      "detail": "2809.23 → 2923.95, continuous below 1 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 56.40049571000885,
+       "impactVelocity": 26347.416701726615,
+       "impactorDensity": 1004.2172063840553,
+       "targetDensity": 3654.3717300519347,
+       "impactAngle": 1.3302212312047734,
+       "impactAzimuthDeg": 69.62313011125661
+      },
+      "detail": "1229.85 → 1378.81, continuous below 3 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 197.400629992229,
+       "impactVelocity": 1892.939431592822,
+       "impactorDensity": 798.0352209415287,
+       "targetDensity": 3678.9378812536597,
+       "impactAngle": 0.8015036884845158,
+       "impactAzimuthDeg": 60.85321841784753
+      },
+      "detail": "127.565 → 126.190, continuous below 0 halvings"
+     },
+     {
+      "input": {
+       "impactorDiameter": 50.393760325675885,
+       "impactVelocity": 31828.522669384256,
+       "impactorDensity": 6965.839836513624,
+       "targetDensity": 2867.0490253716707,
+       "impactAngle": 0.18403178777058343,
+       "impactAzimuthDeg": 158.99881296465173,
+       "waterDepth": 6.047531370674102
+      },
+      "detail": "3820.54 → 3889.56, continuous below 0 halvings"
+     }
+    ]
+   },
+   "monotone in size: damage.craterRim": {
+    "count": 2,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 19.823922596701365,
+       "impactVelocity": 50840.73338354938,
+       "impactorDensity": 9259.848762536421,
+       "targetDensity": 1542.7178824320436,
+       "impactAngle": 1.1464616938094316,
+       "impactAzimuthDeg": 44.90199575177394,
+       "waterDepth": 11.772768288187486
+      },
+      "detail": "124.006 → 0.00000"
+     },
+     {
+      "input": {
+       "impactorDiameter": 19.96379758653977,
+       "impactVelocity": 58172.26600437425,
+       "impactorDensity": 6589.258700958453,
+       "targetDensity": 3235.3213112801313,
+       "impactAngle": 0.32394202931817484,
+       "impactAzimuthDeg": 180.92879376746714,
+       "waterDepth": 75.81439655125607
+      },
+      "detail": "6.27220 → 0.00000"
+     }
+    ]
+   },
+   "monotone in size: crater.finalDiameter": {
+    "count": 2,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 19.823922596701365,
+       "impactVelocity": 50840.73338354938,
+       "impactorDensity": 9259.848762536421,
+       "targetDensity": 1542.7178824320436,
+       "impactAngle": 1.1464616938094316,
+       "impactAzimuthDeg": 44.90199575177394,
+       "waterDepth": 11.772768288187486
+      },
+      "detail": "248.013 → 0.00000"
+     },
+     {
+      "input": {
+       "impactorDiameter": 19.96379758653977,
+       "impactVelocity": 58172.26600437425,
+       "impactorDensity": 6589.258700958453,
+       "targetDensity": 3235.3213112801313,
+       "impactAngle": 0.32394202931817484,
+       "impactAzimuthDeg": 180.92879376746714,
+       "waterDepth": 75.81439655125607
+      },
+      "detail": "12.5444 → 0.00000"
+     }
+    ]
+   },
+   "monotone in size: ejecta.blanketEdge1m": {
+    "count": 1,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 19.823922596701365,
+       "impactVelocity": 50840.73338354938,
+       "impactorDensity": 9259.848762536421,
+       "targetDensity": 1542.7178824320436,
+       "impactAngle": 1.1464616938094316,
+       "impactAzimuthDeg": 44.90199575177394,
+       "waterDepth": 11.772768288187486
+      },
+      "detail": "240.074 → 0.00000"
+     }
+    ]
+   },
+   "monotone in size: ejecta.blanketEdge1mm": {
+    "count": 2,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 19.823922596701365,
+       "impactVelocity": 50840.73338354938,
+       "impactorDensity": 9259.848762536421,
+       "targetDensity": 1542.7178824320436,
+       "impactAngle": 1.1464616938094316,
+       "impactAzimuthDeg": 44.90199575177394,
+       "waterDepth": 11.772768288187486
+      },
+      "detail": "2400.74 → 0.00000"
+     },
+     {
+      "input": {
+       "impactorDiameter": 19.96379758653977,
+       "impactVelocity": 58172.26600437425,
+       "impactorDensity": 6589.258700958453,
+       "targetDensity": 3235.3213112801313,
+       "impactAngle": 0.32394202931817484,
+       "impactAzimuthDeg": 180.92879376746714,
+       "waterDepth": 75.81439655125607
+      },
+      "detail": "44.9070 → 0.00000"
+     }
+    ]
+   },
+   "continuous (field), as rule 624 read it: field.overpressureAt100km": {
+    "count": 1,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 56.40049571000885,
+       "impactVelocity": 26347.416701726615,
+       "impactorDensity": 1004.2172063840553,
+       "targetDensity": 3654.3717300519347,
+       "impactAngle": 1.3302212312047734,
+       "impactAzimuthDeg": 69.62313011125661
+      },
+      "detail": "1229.85 → 1378.81"
+     }
+    ]
+   },
+   "monotone in size: tsunami.amplitudeAt1000km": {
+    "count": 1,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 5.198158178626097,
+       "impactVelocity": 9901.9830157049,
+       "impactorDensity": 8051.691632717848,
+       "targetDensity": 3187.881122343242,
+       "impactAngle": 1.4231218421909726,
+       "impactAzimuthDeg": 217.68132323445752,
+       "waterDepth": 2.7371669897170863
+      },
+      "detail": "0.00614864 → 0.00604173"
+     }
+    ]
+   },
+   "monotone in size: tsunami.runupAt1000km": {
+    "count": 1,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 5.198158178626097,
+       "impactVelocity": 9901.9830157049,
+       "impactorDensity": 8051.691632717848,
+       "targetDensity": 3187.881122343242,
+       "impactAngle": 1.4231218421909726,
+       "impactAzimuthDeg": 217.68132323445752,
+       "waterDepth": 2.7371669897170863
+      },
+      "detail": "0.00168550 → 0.00167529"
+     }
+    ]
+   },
+   "continuous, as it was: damage.craterRim": {
+    "count": 2,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 10.62630786537382,
+       "impactVelocity": 68912.0886742603,
+       "impactorDensity": 6670.435814885423,
+       "targetDensity": 1863.0718048661947,
+       "impactAngle": 0.5863984831356502,
+       "impactAzimuthDeg": 242.20355210849084,
+       "waterDepth": 40.541438760207285
+      },
+      "detail": "7.37533 → 8.04090"
+     },
+     {
+      "input": {
+       "impactorDiameter": 19.96379758653977,
+       "impactVelocity": 58172.26600437425,
+       "impactorDensity": 6589.258700958453,
+       "targetDensity": 3235.3213112801313,
+       "impactAngle": 0.32394202931817484,
+       "impactAzimuthDeg": 180.92879376746714,
+       "waterDepth": 75.81439655125607
+      },
+      "detail": "6.27220 → 7.31298"
+     }
+    ]
+   },
+   "continuous, as it was: crater.finalDiameter": {
+    "count": 2,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 10.62630786537382,
+       "impactVelocity": 68912.0886742603,
+       "impactorDensity": 6670.435814885423,
+       "targetDensity": 1863.0718048661947,
+       "impactAngle": 0.5863984831356502,
+       "impactAzimuthDeg": 242.20355210849084,
+       "waterDepth": 40.541438760207285
+      },
+      "detail": "14.7507 → 16.0818"
+     },
+     {
+      "input": {
+       "impactorDiameter": 19.96379758653977,
+       "impactVelocity": 58172.26600437425,
+       "impactorDensity": 6589.258700958453,
+       "targetDensity": 3235.3213112801313,
+       "impactAngle": 0.32394202931817484,
+       "impactAzimuthDeg": 180.92879376746714,
+       "waterDepth": 75.81439655125607
+      },
+      "detail": "12.5444 → 14.6260"
+     }
+    ]
+   },
+   "continuous: crater.finalDiameter": {
+    "count": 2,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 10.62630786537382,
+       "impactVelocity": 68912.0886742603,
+       "impactorDensity": 6670.435814885423,
+       "targetDensity": 1863.0718048661947,
+       "impactAngle": 0.5863984831356502,
+       "impactAzimuthDeg": 242.20355210849084,
+       "waterDepth": 40.541438760207285
+      },
+      "detail": "14.7507 → 16.0818"
+     },
+     {
+      "input": {
+       "impactorDiameter": 19.96379758653977,
+       "impactVelocity": 58172.26600437425,
+       "impactorDensity": 6589.258700958453,
+       "targetDensity": 3235.3213112801313,
+       "impactAngle": 0.32394202931817484,
+       "impactAzimuthDeg": 180.92879376746714,
+       "waterDepth": 75.81439655125607
+      },
+      "detail": "12.5444 → 14.6260"
+     }
+    ]
+   },
+   "continuous, as it was: ejecta.blanketEdge1mm": {
+    "count": 2,
+    "examples": [
+     {
+      "input": {
+       "impactorDiameter": 10.62630786537382,
+       "impactVelocity": 68912.0886742603,
+       "impactorDensity": 6670.435814885423,
+       "targetDensity": 1863.0718048661947,
+       "impactAngle": 0.5863984831356502,
+       "impactAzimuthDeg": 242.20355210849084,
+       "waterDepth": 40.541438760207285
+      },
+      "detail": "55.7352 → 62.5404"
+     },
+     {
+      "input": {
+       "impactorDiameter": 19.96379758653977,
+       "impactVelocity": 58172.26600437425,
+       "impactorDensity": 6589.258700958453,
+       "targetDensity": 3235.3213112801313,
+       "impactAngle": 0.32394202931817484,
+       "impactAzimuthDeg": 180.92879376746714,
+       "waterDepth": 75.81439655125607
+      },
+      "detail": "44.9070 → 55.1078"
+     }
+    ]
+   }
+  }
+ }
+}

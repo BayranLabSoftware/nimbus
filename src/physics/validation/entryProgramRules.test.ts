@@ -47,8 +47,8 @@ describe('rule 141: where the program parts from the paper', () => {
     expect(Math.abs(high('program') / high('paper') - 1)).toBeLessThan(0.002);
   });
 
-  it('is the default since rule 144', () => {
-    expect(DEFAULT_ENTRY_EQUATIONS).toBe('program');
+  it('was the default from rule 144 until rules 691 to 697 took the paper’s', () => {
+    expect(DEFAULT_ENTRY_EQUATIONS).toBe('paper');
   });
 
   it("uses the paper's equations where the program has no answer (rule 145)", () => {

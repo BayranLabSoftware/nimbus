@@ -62,6 +62,52 @@
  * met.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `63a2ff4` and the four sweeps made on that commit
+ * (`benchmark/results/invariants-2026-09-21-19.json` and `-20` on the own
+ * seed, the program's entry and the paper's; `-21` and `-22` on
+ * `benchmark-2026-09-21-heldout-entry-3`). Then the default moved.
+ *
+ *                                   program's entry   paper's entry
+ *   own seed, count G5 reads                    39              39
+ *   unseen seed, count G5 reads                 46              46
+ *   blast rings explained, own seed            396             392
+ *   blast rings explained, unseen seed         347             354
+ *
+ * (a) HOLDS. The report regenerated on the paper's entry: release gate PASS
+ *     (strict), tolls 13 of 18, waves 10 of 16, replay 3 of 3, golden 12 of
+ *     12. The grid's breakup altitudes read 1.00–1.01× of the program's, burst
+ *     altitudes 1.00–1.05×, airburst overpressures 1.00–1.01×. And rule 696's
+ *     line: on the 357 bolides the body with no class misses the sky by
+ *     +12.8 km on average where it missed by +12.7; the stony class by a
+ *     median 8.3 km where it missed by 8.1, 99 within 5 km where 105 were.
+ * (b) HOLDS. I2's script: 352 within 1 %, 4 through BM-13, none beyond, 1
+ *     refused by the program; the model implements the reference; I2 MET.
+ * (c) HOLDS. Every test holding what the program prints passes on the
+ *     program's arm, which each names; every test of every project passes on
+ *     the new default, 2 779.
+ * (d) HOLDS. `effects/entryExactBreakup.test.ts` passes.
+ * (e) HOLDS. On both seeds the keys G5 reads are the same under both
+ *     entries, and so are their counts.
+ * (f) HOLDS. No blast ring is counted for a jumping source under the paper's
+ *     entry on either seed; the program's runs drew no body at B-089's seam
+ *     on these two seeds, so there was none to lose.
+ * (g) HOLDS. `entryPaperThirdRules.test.ts`: across the old seam, in steps of
+ *     0.005 %, the share of energy at the ground moves by less than 0.01 %
+ *     at a time, and rule 662's search finds no jump in the field at 1 km.
+ *
+ * Rule 695's list is empty: on both seeds, for every key G5 reads, the same
+ * scenarios fail under both entries.
+ *
+ * So `DEFAULT_ENTRY_EQUATIONS` is `paper`, the departure from the program is
+ * named in I1 with its reason, and B-089 is closed. B-091, the paper's own
+ * jump where I_f crosses 1, stays open.
+ */
+
 /** Rule 693: the seed of the run on scenarios nobody has seen. */
 export const ENTRY_THIRD_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-entry-3';
 

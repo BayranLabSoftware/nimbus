@@ -109,8 +109,16 @@ export type EntryRegime = 'INTACT' | 'PARTIAL_AIRBURST' | 'COMPLETE_AIRBURST';
  */
 export type EntryEquations = 'paper' | 'program';
 
-/** What an entry that names no equations uses. */
-export const DEFAULT_ENTRY_EQUATIONS: EntryEquations = 'program';
+/** What an entry that names no equations uses: the paper's, since rules 691
+ *  to 697 of validation/entryPaperThirdRules.ts (21 September 2026), for
+ *  the reasons of rules 668 to 670 of validation/entryPaperRules.ts. Eq. 12's
+ *  I_f is the exact condition, in Eqs. 8 to 10, for the ram pressure to reach
+ *  the strength; on twice it a body breaks below where its ram pressure
+ *  passed its strength, Sikhote-Alin does not break, and the seam with the
+ *  paper's equations where the program has no answer was B-089. The
+ *  program's equations were the default from rule 144 until then, and every
+ *  test that holds what the program prints runs on them by name. */
+export const DEFAULT_ENTRY_EQUATIONS: EntryEquations = 'paper';
 
 /**
  * The speed of an airburst at its burst altitude, where the program's
