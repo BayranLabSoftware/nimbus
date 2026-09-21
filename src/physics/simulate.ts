@@ -779,7 +779,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const groundBlast =
     groundBlastLaw !== 'project' && entry.regime !== 'COMPLETE_AIRBURST'
       ? {
-          altitude: entry.virtualBurstAltitude,
+          altitude: groundBlastLaw === 'surface' ? m(0) : entry.virtualBurstAltitude,
           energy: J((ke as number) * Math.max(gf, 1 - gf)),
           held: groundBlastLaw === 'programHeld',
         }

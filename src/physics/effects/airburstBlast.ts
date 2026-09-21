@@ -207,8 +207,12 @@ export function airburstOverpressureRange(input: AirburstBlastInput): {
  * - `programHeld`: the program's own, with its crossover held at
  *   {@link GROUND_BLAST_MIN_CROSSOVER} wherever it would be shorter — so a
  *   body that reaches the ground always blasts (B-088).
+ * - `surface`: the same law and energy read at the ground, z₁ = 0, where a
+ *   body that reaches it releases its energy: the Mach relation with
+ *   r_x = 290 scaled metres, Collins et al. 2005's Eq. 54 for a burst on the
+ *   surface, which the program drew before it read Eq. 18 below the ground.
  */
-export type GroundBlast = 'project' | 'program' | 'programHeld';
+export type GroundBlast = 'project' | 'program' | 'programHeld' | 'surface';
 
 /**
  * Rules 630 to 637 (validation/groundBlastFloorRules.ts): the shortest Mach

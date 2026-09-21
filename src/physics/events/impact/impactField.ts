@@ -82,7 +82,7 @@ export function impactOverpressureAt(source: ImpactFieldSource, rangeM: number):
   if (law !== 'project' && source.entry.regime !== 'COMPLETE_AIRBURST') {
     return groundImpactOverpressure({
       groundRange: m(rangeM),
-      virtualBurstAltitude: m(source.entry.virtualBurstAltitude),
+      virtualBurstAltitude: m(law === 'surface' ? 0 : source.entry.virtualBurstAltitude),
       blastYield: J(ke * Math.max(gf, 1 - gf)),
       held: law === 'programHeld',
     });

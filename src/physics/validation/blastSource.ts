@@ -1,4 +1,9 @@
-import { airburstReach, groundImpactReach } from '../effects/airburstBlast.js';
+import {
+  airburstReach,
+  DEFAULT_GROUND_BLAST,
+  groundImpactReach,
+  type GroundBlast,
+} from '../effects/airburstBlast.js';
 import { J, m, Pa } from '../units.js';
 import { searchFieldJump } from './fieldJump.js';
 
@@ -35,15 +40,18 @@ interface EntryLike {
 export function blastSourceOf(result: {
   impactor: { kineticEnergy: number };
   entry: EntryLike;
+  inputs?: { groundBlast?: GroundBlast };
 }): BlastSource {
   const e = result.entry;
   if (e.regime === 'COMPLETE_AIRBURST') {
     return { energy: e.blastYieldMegatons * 4.184e15, altitude: e.burstAltitude };
   }
   const f = e.energyFractionToGround;
+  // A body that reaches the ground bursts at it under `surface`.
+  const law = result.inputs?.groundBlast ?? DEFAULT_GROUND_BLAST;
   return {
     energy: result.impactor.kineticEnergy * Math.max(f, 1 - f),
-    altitude: e.virtualBurstAltitude,
+    altitude: law === 'surface' ? 0 : e.virtualBurstAltitude,
   };
 }
 
