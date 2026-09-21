@@ -206,7 +206,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         standsFor: ['G1', 'G4'],
         status: 'not met',
         evidence:
-          "A slide entering open water from above draws the impulse wave manual's first crest (Evers et al. 2019, 2nd edition), held in CI to its worked Examples 1 and 2 and to the manual's own spreadsheet on 143 held-out cases within 10⁻⁹, and the panel and the report name each of the manual's limits a scenario falls outside of (rules 162 to 167). A slide under the water and a confined basin still draw the project's calibrated forms, which no source's worked example holds.",
+          "A slide entering open water from above draws the impulse wave manual's first crest (Evers et al. 2019, 2nd edition), held in CI to its worked Examples 1 and 2 and to the manual's own spreadsheet on 143 held-out cases within 10⁻⁹, and the panel and the report name each of the manual's limits a scenario falls outside of (rules 162 to 167). A slide under the water and a confined basin still draw the project's calibrated forms. What changed on 21 September 2026 is why. It is no longer that no source's worked example holds them: rules 500 to 540 transcribed and verified three more laws — Watts et al. 2005's predictive equations for a submerged slide, and both of the manual's own reservoir shapes, its 2D channel decay and its 3D propagation. Three candidates were then REFUSED. The submarine equations return 458 m on Storegga, which lies outside their own fitted range at d/B = 0.018 against 0.06. Using them only inside that range opens a seam of 21.1× at the threshold, twice B-083's, against a limit of 2 taken from Tappin 2017's published scatter. And the manual's own case, applied to the confined basin, gives Vaiont 336 m in a 238 m lake and reopens B-003 and B-016. The confined basin also turns out to be the manual's 2D extreme case rather than something outside the manual — its §3.2.4 is \"Reservoir shape\" — so what this project replaced for it was the GENERATION where the manual only changes the decay.",
       },
       {
         rule: 'L2',
@@ -314,7 +314,8 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         rule: 'I3',
         measure: 'beyond',
         status: 'not met',
-        evidence: "Tunguska's 20 kPa ring 0.43× the flattened forest.",
+        evidence:
+          "No band exists, and rules 563 to 578 measured what one would be made of. The 0.43× this line carried until 21 September 2026 compares against ONE threshold where the field names two: Collins et al. 2017 call 10 and 20 kPa the lower and upper limits for extensive tree damage, and at 15 Mt the felled forest's 26.5 km equivalent radius sits BETWEEN the model's 15.71 km at 20 kPa and its 37.42 km at 10 — bracketed at 15 Mt and missed at 10 and 20, so the felled area picks out an energy. A band from the reference's own three models holds Tunguska and Chelyabinsk and is 3.79× wide, where this rule allows 3: I3's width is tighter than the spread the field reports on its own approximations, so a band that met it would claim more precision than Collins et al. claim. And the ninety per cent of the shock-physics runs is not scorable: their Table 2 is transcribed in validation/collins2017Table2.ts, read off the 620 sideways glyphs no text extractor returns, and it carries no burst altitude — the one column the comparison needs.",
       },
       {
         rule: 'I4',
@@ -340,7 +341,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         measure: 'beyond',
         status: 'not met',
         evidence:
-          "464 failures in the sweep of 16 September 2026; 38 are an airburst's magnitude falling as the body grows, as the program's does (rules 154 to 157), and two a seafloor cutoff of the model's own (benchmark/results/invariants-2026-09-16-17.json).",
+          "464 failures in the sweep of 16 September 2026. 408 of them are three damage rings shrinking as the impactor grows — lightDamage 149, overpressure1psi 137, overpressure5psi 122 — and rules 555 to 562 say what they are: G5's clause reads \"the other inputs held\", and an impactor's size is not held against the burst altitude, it SETS it. A bigger body bursts lower, and below the height-of-burst optimum a lower burst puts less overpressure on the ground than a higher one of slightly larger yield. The blast law itself is monotone in yield at a held geometry, over 42 107 pairs. The diagnosis was refused by one case in 408, where the body bursts HIGHER because it decelerates less, and it is not restated loosely to pass. 38 more are an airburst's magnitude falling as the body grows, as the program's does (rules 154 to 157), and two a seafloor cutoff of the model's own; sixteen remain undiagnosed (benchmark/results/invariants-2026-09-16-17.json).",
       },
       G6,
       G7,
