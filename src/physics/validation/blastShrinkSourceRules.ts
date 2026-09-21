@@ -87,6 +87,57 @@
  * as those relations move it. And G5 is not met while anything is counted.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `6bc147f` and four runs made on that commit, the
+ * harness with the statement and without it (`NIMBUS_NO_CAUSES`), on the own
+ * seed (`benchmark/results/invariants-2026-09-21-15.json` without, `-16`
+ * with) and on `benchmark-2026-09-21-heldout-blast` (`-17` without, `-18`
+ * with).
+ *
+ *                                         own seed     unseen seed
+ *   blast rings that shrink                     396             330
+ *     explained, the source altitude            396             321
+ *     explained, the source energy                0               0
+ *     counted, their source jumping               0               9
+ *   count G5 reads, without the statement       435             400
+ *   count G5 reads, with it                      39              79
+ *
+ * (a) HOLDS. Every blast ring that shrinks on the unseen seed is explained,
+ * or its source jumps: the nine counted are the three rings of three bodies,
+ * and each body's source energy jumps within the step. None has a source that
+ * moves without a step and no cause.
+ *
+ * (b) HOLDS as it is written, and the reading is stated because another is
+ * possible. It reads "a source that jumps lies where the doubled I_f crosses
+ * 1 within the step, B-089's seam; any other is a defect, registered for
+ * IMP-2". Two of the three do lie there — a 40.6 m iron at 9.5 km/s whose
+ * doubled I_f goes from 1.0005 to 0.9906, jumping at 1.000511 times its size,
+ * and a 35.3 m one at 4.9 km/s, from 1.0074 to 0.9974, jumping at 1.0074. The
+ * third does not: a 2.1 m stone at 4.9 km/s whose I_f itself, the paper's,
+ * crosses 1 at 1.003492 times its size, where it passes from landing whole to
+ * bursting in the air. It is registered, B-091. Read as a prediction that
+ * every jumping source is B-089's, (b) would fail; read with its own second
+ * clause, it prescribes what an other is, and it is done. The statement is
+ * not what the third body tests — it refused to explain that body's rings,
+ * which is its job — the model is.
+ *
+ * (c) HOLDS. On both seeds every count but the three blast rings' is the same
+ * with the statement and without it, key for key, and the blast rings add up:
+ * 396 = 396 explained on the own seed, 330 = 321 + 9 on the unseen one.
+ *
+ * So the statement is adopted and the hook stays wired. On the own seed, what
+ * G5 reads on impacts is 39: the 38 airburst magnitudes that fall as the body
+ * grows — the program's own reading, a defect of a relation and not of the
+ * harness — and one second-degree burn ring. The unseen seed shows what the
+ * own one does not, and IMP-2 owns it: B-089 and B-091, two places where the
+ * entry's source jumps; the craters and blankets that vanish with B-091's
+ * switch; three burns; and one far wave.
+ */
+
 /** Rule 688: the seed of the run on scenarios nobody has seen. */
 export const BLAST_SOURCE_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-blast';
 
