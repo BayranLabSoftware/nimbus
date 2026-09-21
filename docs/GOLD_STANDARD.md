@@ -234,9 +234,11 @@ for bodies of the form's default composition.
 **I3. Air blast.** The band of an airburst's blast radius holds every
 measured airburst footprint — the forest flattened at Tunguska, the windows
 broken at Chelyabinsk — and at least 90 % of the shock-physics runs of
-Collins et al. 2017, and its width in radius is no more than ×3. Both
-footprints and those runs have been read, and no other exists: this rule is a
-check, not a held-out test.
+Collins et al. 2017, and its width in radius is no more than ×3 — read,
+since the amendment of 21 September 2026, against the band the reference gives
+its own three approximations at the same scenario. Both footprints and those
+runs have been read, and no other exists: this rule is a check, not a held-out
+test.
 
 **I4. Tolls.** The people inside each ring are counted within 5 % of an exact
 count on the same raster, and the toll carries the ceiling below.
@@ -318,13 +320,16 @@ A bound changes only by a dated amendment in this file that says why,
 written before the figure it touches has been measured on the set it names,
 and it is never loosened after a figure has failed it.
 
-Three amendments have been made, and they are below. The first re-anchors
+Four amendments have been made, and they are below. The first re-anchors
 bounds to the rule this file opened with, rather than loosening any: the
 verdict each rule reached under its bound as first written stays recorded, and
 no rule is met today that was not met before it. The second changes no bound
 and no status: it reads the same verdicts under two measures. The third reads
 G3's two bounds as tests on a sample, because both are read from one, and it is
-written before any band has been scored on a held-out set.
+written before any band has been scored on a held-out set. The fourth, by
+Andrea's decision, reads I3's width against the spread the field's reference
+gives its own approximations, as the first reads every bound whose quantity the
+field has a tool for, before any band this product draws has been scored.
 
 ## Amendment of 16 September 2026: every validation bound read against the field
 
@@ -530,6 +535,55 @@ against records, was read by the scorecard's own statistics and not by G3. So
 no figure that failed is being re-read under a looser rule. What changes is that
 a band which is right can now pass, and one which is wrong still cannot.
 
+## Amendment of 21 September 2026, by Andrea's decision: I3's width read against its reference
+
+**Why.** I3 allows an airburst's blast band no more than ×3 in radius, a
+number written on 15 September without measuring what the field claims for
+the same quantity. The field's reference has since been read. Collins et al.
+(2017), the paper whose static source the product draws, state that inside
+three burst heights their moving-source approximation gives twice the static
+source's overpressure and their line-source approximation half of it, and
+that all three agree beyond. A band honest about the reference — the static
+source's reach at half and at twice the threshold inside three burst heights,
+the static reach beyond — measures 3.34× at Chelyabinsk and 3.79× at
+Tunguska's 15 Mt, and has no lower edge where twice the threshold is reached
+nowhere (rules 571 to 578). Under ×3 no band that states what the reference
+states could be met: it would have to claim more precision than Collins et al.
+claim for their own models. A rule a faithful implementation of the field
+cannot meet does not measure the model — the principle of the amendment of 16
+September, which reads every bound whose quantity the field has a tool for
+against that tool.
+
+**The amendment.** I3's third clause becomes:
+
+> its width in radius is no more, at each scenario, than the band the
+> reference gives its own three approximations at the same yield and burst
+> altitude — the static source's reach at half and at twice the threshold
+> within three burst heights, and the static reach beyond them.
+
+The other two clauses are unchanged: the band holds every measured airburst
+footprint, and at least 90 % of the shock-physics runs of Collins et al. 2017.
+
+**What it changes on the day it is written: no status.** No band this product
+draws has been scored against I3. The two measurements made — the model's
+scatter against the twenty shock-physics ranges on 18 September, σ_ln 0.24, a
+band ×2.18 wide that holds nineteen runs of twenty and neither footprint; and
+the reference's three-model band of rules 571 to 578, which holds both
+footprints — were of bands that might be built, each declared not adopted, and
+the second said so of the bound in its own words: it "is not spent". So the
+amendment is written before the figure it touches, as this file requires, and
+the verdicts reached under ×3 stay recorded beside it: the three-model band not
+met at 3.34× and 3.79×; the narrowest band that would hold nineteen runs and
+both footprints, ×0.74 to ×2.31 of the model, 3.12× — 4 % over. I3 stays **not
+met** until a band is drawn by the product and scored: it must hold both
+footprints and nine runs in ten, and the runs are not yet scorable, because
+the transcription of Collins et al.'s Table 2 carries no burst altitude.
+
+**What it supersedes.** The second of the three decisions below, "I3 keeps its
+×3", taken the same morning. The damage criteria it asked for — tree-fall and
+glass breakage from nuclear-test data, without Tunguska or Chelyabinsk —
+remain the way to narrow the band, and no longer the only way to meet I3.
+
 ## Three decisions of 21 September 2026, which change no rule
 
 Taken in the plan Andrea asked for that morning, and accepted by Andrea
@@ -553,7 +607,8 @@ continuous: the _field_ — overpressure, intensity — is checked for
 continuity at fixed places, everywhere. The corrected harness gets its rules
 before it runs, and G5 is re-read only by its run, one domain at a time.
 
-**I3 keeps its ×3.** Measured on 18 September, the model's scatter against the
+**I3 keeps its ×3** — superseded the same afternoon by Andrea's decision, the
+amendment above. Measured on 18 September, the model's scatter against the
 twenty shock-physics ranges is σ_ln 0.24 — a band at that scatter holds
 nineteen of twenty and is ×2.18 wide — and what the band cannot hold is the
 two footprints, because damage is read from a single overpressure threshold
