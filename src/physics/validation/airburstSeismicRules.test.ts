@@ -35,9 +35,9 @@ const BODIES: ImpactScenarioInput[] = [
 ];
 
 describe('rules 730 to 738: an airburst’s magnitude from the air that carries it', () => {
-  it('reads its unseen seed from the rules, and keeps the program’s law by default', () => {
+  it('is the default, and reads its unseen seed from the rules', () => {
     expect(AIRBURST_SEISMIC_HELD_OUT_SEED).toBe('benchmark-2026-09-21-heldout-seismic');
-    expect(DEFAULT_AIRBURST_SEISMIC).toBe('program');
+    expect(DEFAULT_AIRBURST_SEISMIC).toBe('harkrider');
   });
 
   it('(a) moves nothing of a body that is not a complete airburst', () => {

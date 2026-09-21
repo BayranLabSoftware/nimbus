@@ -142,8 +142,9 @@ export function harkriderMs(
  */
 export type AirburstSeismic = 'program' | 'harkrider';
 
-/** What an impact that names no airburst seismic law uses. */
-export const DEFAULT_AIRBURST_SEISMIC: AirburstSeismic = 'program';
+/** What an impact that names no airburst seismic law uses: `harkrider` since
+ *  rules 730 to 738. */
+export const DEFAULT_AIRBURST_SEISMIC: AirburstSeismic = 'harkrider';
 
 export interface AirburstMagnitudeInput {
   /** The blast yield the airburst's blast rings are drawn from (kT). */

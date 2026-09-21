@@ -134,6 +134,50 @@
  * rules 714 to 721 give.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `e975c0a`, with the relation of `bb9a320`, and
+ * the four sweeps made on that commit, with the harness of rule 735 for both
+ * laws (`benchmark/results/invariants-2026-09-21-32.json` and `-33` on the
+ * own seed, the program's reading and the candidate; `-34` and `-35` on
+ * `benchmark-2026-09-21-heldout-seismic`). Then the default moved.
+ *
+ * (a) HOLDS. `airburstSeismic.test.ts` holds the relation to Table 4, and
+ *     `airburstSeismicRules.test.ts` holds the rest in CI: no body that is not
+ *     a complete airburst moves; a complete airburst takes the larger term or
+ *     none; B-093's body keeps its magnitude to 1e-6 across its switch.
+ * (b) HOLDS. On the own seed G5 reads 0 against 38: nineteen falls are the
+ *     source altitude's, one is the table's period, and the two moves of more
+ *     than 0.05 on the step of continuity are steep — the rises rule 733
+ *     found, the ground's term born below a burst's fireball. On the unseen
+ *     seed 9 against 35: its 26 magnitudes are gone (nineteen the altitude's,
+ *     seven the table's period, one steep), and the nine keys left are one
+ *     iron of 1.44 m that the paper's I_f = 1 turns from whole to burst
+ *     (B-091), printed under both laws. The scenarios whose failures differ
+ *     are the bodies whose magnitude fell under the program's reading, 38 and
+ *     26; no other.
+ * (c) HOLDS. Tunguska 4.31, Chelyabinsk 4.00, Sikhote-Alin 2.48; the five
+ *     that reach the ground unchanged.
+ * (d) HOLDS. A 150 m comet of 600 kg/m³ at 20 km/s and 15 degrees, 45 MT
+ *     bursting at 19.6 km, read headless: the panel prints "— none: no
+ *     relation this simulator verifies covers this airburst" and, in Italian,
+ *     "— nessuna: nessuna relazione verificata dal simulatore copre questo
+ *     airburst", with no range and no liquefaction; the report page, which is
+ *     English in both languages, prints the same in its words.
+ * (e) HOLDS. The report regenerated on the new default: release gate PASS.
+ *
+ * Changed with it, and why: the regression test of B-011 reads the
+ * program's reading for Tunguska and now asks for it; B-007's list of the
+ * seismic block's keys gains `magnitudeSource`, the one magnitude naming what
+ * it is read from. Found while reading the panel, and closed apart (B-100):
+ * it gave a crater's morphology to an airburst that opens none. So
+ * `DEFAULT_AIRBURST_SEISMIC` is `harkrider`, B-092 is closed, and the impact
+ * family's G5 reads 0 on the benchmark's draw.
+ */
+
 /** Rule 736 (b): the seed of the run on scenarios nobody has seen. */
 export const AIRBURST_SEISMIC_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-seismic';
 

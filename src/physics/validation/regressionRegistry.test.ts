@@ -243,8 +243,13 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // An airburst delivers nothing to the ground, and Collins et al. give
     // it no seismic effect; the Earth Impact Effects Program reads its
     // magnitude from the energy the body keeps at its burst altitude, and
-    // since rule 157 of validation/impactSeismicRules.ts so does Nimbus.
-    const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
+    // from rule 157 of validation/impactSeismicRules.ts so did Nimbus. Since
+    // rules 730 to 738 the default reads it from the air (B-092); the
+    // program's reading is kept as `airburstSeismic: 'program'`.
+    const tunguska = simulateImpact({
+      ...IMPACT_PRESETS.TUNGUSKA.input,
+      airburstSeismic: 'program',
+    });
     expect(tunguska.entry.energyFractionToGround).toBe(0);
     const kept =
       (tunguska.impactor.kineticEnergy as number) *
@@ -1807,6 +1812,17 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       'utf8'
     );
     expect(legend).toContain("result === null ? 'globe.legend.empty' : 'globe.legend.noRings'");
+  });
+
+  it('B-100 The panel gives no morphology to an airburst that opens no crater', () => {
+    // Tunguska opens no crater, and a morphology is a fact about a crater.
+    const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
+    expect(Number(tunguska.crater.finalDiameter)).toBe(0);
+    const panel = readFileSync(
+      fileURLToPath(new URL('../../ui/components/SimulatorPanel.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(panel).toContain('(result.data.crater.finalDiameter as number) > 0 && (');
   });
 
   // Bypass guard: the test count below MUST equal the registry row

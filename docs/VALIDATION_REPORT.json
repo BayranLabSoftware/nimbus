@@ -415,9 +415,9 @@
             "rule": "G5",
             "measure": "beyond",
             "standsFor": [],
-            "holds": false,
-            "credit": 0,
-            "status": "not met",
+            "holds": true,
+            "credit": 1,
+            "status": "met",
             "clauses": []
           },
           {
@@ -439,10 +439,10 @@
             "clauses": []
           }
         ],
-        "held": 6,
+        "held": 7,
         "pending": 0,
-        "credit": 6,
-        "reading": 6,
+        "credit": 7,
+        "reading": 7,
         "fidelity": {
           "rules": 3,
           "held": 3,
@@ -452,10 +452,10 @@
         },
         "beyond": {
           "rules": 6,
-          "held": 3,
+          "held": 4,
           "pending": 0,
-          "credit": 3,
-          "reading": 4.5
+          "credit": 4,
+          "reading": 6
         }
       },
       {

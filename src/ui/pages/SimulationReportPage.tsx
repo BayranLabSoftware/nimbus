@@ -143,9 +143,11 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
       : []),
     {
       label:
-        r.seismic.magnitudeSource === 'air' || r.seismic.magnitudeSource === 'ground'
-          ? 'Seismic magnitude (Harkrider et al. 1974 and Collins et al. 2005, rule 730)'
-          : 'Seismic magnitude (Collins et al. 2005)',
+        r.seismic.magnitudeSource === null
+          ? 'Seismic magnitude'
+          : r.seismic.magnitudeSource === 'program'
+            ? 'Seismic magnitude (Collins et al. 2005)'
+            : 'Seismic magnitude (Harkrider et al. 1974 and Collins et al. 2005, rule 730)',
       value:
         r.seismic.magnitude === null
           ? '— none: no relation this simulator verifies covers this airburst'

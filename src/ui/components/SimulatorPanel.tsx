@@ -820,10 +820,16 @@ export function SimulatorPanel(): JSX.Element {
                       <RangeValue meters={result.data.seismic.liquefactionRadius} />
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.morphology')}</dt>
-                  <dd className={styles.resultValue}>
-                    {t(`simulator.${result.data.crater.morphology}`)}
-                  </dd>
+                  {/* B-100: a morphology is a fact about a crater, and an
+                      airburst leaves none (as B-045 said of the report page). */}
+                  {(result.data.crater.finalDiameter as number) > 0 && (
+                    <>
+                      <dt className={styles.resultLabel}>{t('simulator.morphology')}</dt>
+                      <dd className={styles.resultValue} data-testid="impact-morphology">
+                        {t(`simulator.${result.data.crater.morphology}`)}
+                      </dd>
+                    </>
+                  )}
                 </dl>
                 <SectionHeading labelKey="simulator.damageLabel" />
                 <dl className={styles.result} aria-label={t('simulator.damageLabel')}>

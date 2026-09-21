@@ -416,14 +416,16 @@ Read on the sweep's own seed, 5 000 impacts, round by round:
 | The blast rings a source moves                                    | 683 to 690 | adopted: all 396 moved by their source's altitude; B-091 found          |       39 |
 | The paper's entry, read by what a wrong entry shows               | 691 to 697 | adopted: no new kind of failure, no jumping source; B-089 closed        |       39 |
 | An airburst's flash where the airburst is (IMP-7's first finding) | 698 to 705 | adopted: B-094 closed; the efficiency, B-095, next                      |       39 |
-| A low airburst's flash where its fireball meets the ground        | 714 to 721 | adopted: B-093 closed; B-097 and B-098 found on the unseen seed         |   **38** |
+| A low airburst's flash where its fireball meets the ground        | 714 to 721 | adopted: B-093 closed; B-097 and B-098 found on the unseen seed         |       38 |
+| An airburst's magnitude from the air that carries it (Harkrider)  | 730 to 738 | adopted by Andrea's choice: B-092 closed; G5 met                        |    **0** |
 
-What is left on the own seed: the 38 airburst magnitudes, where the program
-reads an airburst's seismic source as the energy the body keeps and that
-falls as the body grows — a relation to replace with a physical one, as a
-named departure (B-092). The burn ring at the passage from a complete
-airburst to a partial one is gone (B-093, rules 714 to 721). What the unseen
-seeds draw besides: the entry's jump B-091 (the paper's own I_f = 1, a body
+Nothing is left on the own seed. The burn ring at the passage from a complete
+airburst to a partial one is gone (B-093, rules 714 to 721), and the 38
+airburst magnitudes with it (B-092, rules 730 to 738): an airburst's
+magnitude is read from the air that carries its blast, Harkrider, Newton &
+Flinn (1974)'s Table 4, and the falls left are its source's altitude or the
+table's own period, as the blast rings' are. G5 is met on the benchmark's
+draw, and impacts count 7.0. What the unseen seeds draw besides: the entry's jump B-091 (the paper's own I_f = 1, a body
 that lands whole beside one that bursts; B-089, the program's doubled I_f
 against the paper's, is closed), and its neighbourhood, where the breakup
 rises with the body's size; a crater that opens at full size where a complete

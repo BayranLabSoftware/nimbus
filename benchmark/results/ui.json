@@ -10,7 +10,7 @@
     "lon": -100
    },
    "launched": true,
-   "numbersCompared": 69,
+   "numbersCompared": 89,
    "numbersDifferingCount": 0,
    "numbersDiffering": [],
    "browserOnly": 0,
@@ -26,8 +26,8 @@
     "lon": -140
    },
    "launched": true,
-   "numbersCompared": 102,
-   "numbersDifferingCount": 4,
+   "numbersCompared": 123,
+   "numbersDifferingCount": 5,
    "numbersDiffering": [
     {
      "path": "seismic.liquefactionRadius",
@@ -37,17 +37,22 @@
     {
      "path": "firestorm.ignitionRadius",
      "browser": 0,
-     "node": 24578790.554203406
+     "node": 1604808.2058302595
     },
     {
      "path": "firestorm.sustainRadius",
      "browser": 0,
-     "node": 31756355.827742066
+     "node": 1598350.7551343886
     },
     {
      "path": "firestorm.ignitionArea",
      "browser": 0,
-     "node": 1897889356658511.8
+     "node": 8048197048138.085
+    },
+    {
+     "path": "firestorm.sustainArea",
+     "browser": 0,
+     "node": 7983897847548.93
     }
    ],
    "browserOnly": 0,
@@ -63,7 +68,7 @@
     "lon": -100
    },
    "launched": true,
-   "numbersCompared": 69,
+   "numbersCompared": 95,
    "numbersDifferingCount": 0,
    "numbersDiffering": [],
    "browserOnly": 0,
@@ -79,7 +84,7 @@
     "lon": -100
    },
    "launched": true,
-   "numbersCompared": 69,
+   "numbersCompared": 89,
    "numbersDifferingCount": 0,
    "numbersDiffering": [],
    "browserOnly": 0,
@@ -95,7 +100,7 @@
     "lon": -100
    },
    "launched": true,
-   "numbersCompared": 69,
+   "numbersCompared": 95,
    "numbersDifferingCount": 0,
    "numbersDiffering": [],
    "browserOnly": 0,
@@ -111,7 +116,7 @@
     "lon": -100
    },
    "launched": true,
-   "numbersCompared": 69,
+   "numbersCompared": 89,
    "numbersDifferingCount": 0,
    "numbersDiffering": [],
    "browserOnly": 0,
@@ -127,7 +132,7 @@
     "lon": -100
    },
    "launched": true,
-   "numbersCompared": 69,
+   "numbersCompared": 89,
    "numbersDifferingCount": 0,
    "numbersDiffering": [],
    "browserOnly": 0,
@@ -143,7 +148,7 @@
     "lon": -100
    },
    "launched": true,
-   "numbersCompared": 69,
+   "numbersCompared": 93,
    "numbersDifferingCount": 0,
    "numbersDiffering": [],
    "browserOnly": 0,
