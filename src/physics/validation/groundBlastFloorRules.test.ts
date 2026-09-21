@@ -36,19 +36,21 @@ const crossover = (virtualBurstAltitude: number, blastYield: number): number =>
 
 /** Every point at which the program's ground blast has been checked here:
  *  the I1 grid's ground rows, and the twelve held-out bodies of rule 139 at
- *  each of their ranges. */
+ *  each of their ranges — on the program's own entry, where it was checked,
+ *  whichever entry is the default. */
 function checkedPoints(): { input: ImpactScenarioInput; rangeM: number }[] {
   const out: { input: ImpactScenarioInput; rangeM: number }[] = [];
   for (const row of EIEP_REFERENCE) {
     if (row.error !== null) continue;
     const airburst = row.burstAltitudeM !== null && row.burstAltitudeM !== undefined;
     if (airburst || row.overpressurePa === null || row.overpressurePa === undefined) continue;
-    const r = simulateEiepRow(row);
+    const r = simulateEiepRow(row, { entryEquations: 'program' });
     if (r.entry.regime === 'COMPLETE_AIRBURST') continue;
-    out.push({ input: r.inputs, rangeM: row.distanceKm * 1_000 });
+    out.push({ input: { ...r.inputs, entryEquations: 'program' }, rangeM: row.distanceKm * 1_000 });
   }
   for (const b of GROUND_BLAST_BODIES) {
     const input = {
+      entryEquations: 'program',
       impactorDiameter: m(b.diameterM),
       impactVelocity: b.velocityKmS * 1_000,
       impactorDensity: b.densityKgM3,

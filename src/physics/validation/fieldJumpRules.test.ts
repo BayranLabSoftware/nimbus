@@ -67,8 +67,10 @@ describe('rules 660 to 666: the field read as the limit continuity is', () => {
     expect(found.kind).toBe('unresolved');
   });
 
-  it('finds B-089, the entry’s seam, as a jump in the field', () => {
+  it('finds B-089, the entry’s seam, as a jump in the field, on the program’s equations', () => {
+    // The seam is the program's equations', and is read on them.
     const b089 = {
+      entryEquations: 'program',
       impactorDiameter: 30.35083106505634,
       impactVelocity: 13632.485304726288,
       impactorDensity: 9127.968714106828,

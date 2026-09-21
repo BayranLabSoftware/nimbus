@@ -48,7 +48,10 @@ describe('rules 555 to 562: the 408, as the run left them', () => {
   });
 
   it('pins the one scenario that refused rule 556(a)', () => {
+    // Read on the program's entry equations, and pinned there; on the
+    // paper's this body breaks near 13.3 km.
     const input = {
+      entryEquations: 'program',
       impactorDiameter: 5.050986692006226,
       impactVelocity: 31_365.74542708695,
       impactorDensity: 9_459.625942981802,

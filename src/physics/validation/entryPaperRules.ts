@@ -121,6 +121,60 @@
  * that separates them agree with. And G5 is not met by this round.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: REFUSED, by the
+ * letter of rule 673 (e)
+ * ===========================================================================
+ *
+ * The rules were pushed in `646dbe1`; the default was then moved to `paper`
+ * in the working tree and read.
+ *
+ * (a) HOLDS. The validation report regenerated on the paper's entry: release
+ *     gate PASS (strict), tolls 13 of 18, waves 10 of 16, replay 3 of 3,
+ *     golden 12 of 12. It moves where rule 671 said: the grid's breakup
+ *     altitudes to 1.00–1.01× of the program, burst altitudes 1.00–1.05×,
+ *     airburst overpressures 1.00–1.01×. And one thing rule 671 did not
+ *     name: on the 357 bolides the entry misses the sky a little more — the
+ *     body with no class by +12.8 km on average where it was +12.7; the
+ *     panel's stony class by a median of 8.3 km where it was 8.1, 99 within
+ *     5 km where there were 105. Twice Eq. 12's I_f breaks a body lower, and
+ *     a model that bursts too high is helped by anything that lowers it; that
+ *     is not a reason for a relation, and it is printed.
+ * (b) HOLDS. I2's script on the paper's entry: 352 within 1 %, 4 through
+ *     BM-13, none beyond, 1 refused by the program — the model implements the
+ *     reference, I2 MET — where on the default in place it reads NOT MET.
+ * (c) HOLDS. Eight test files moved onto `entryEquations: 'program'` where
+ *     they hold what the program prints or pin a scenario read on its entry,
+ *     their tolerances unchanged; every test of every project passes, 2 770.
+ * (d) HOLDS. `effects/entryExactBreakup.test.ts`: every body of the grid,
+ *     rule 143, the presets, a scan of irons and ten irons placed through the
+ *     fold, within 50 m of the exact root up to I_f 0.98 and within 500 m
+ *     above; the program's arm 350 m and more below it on rule 143's fifth
+ *     body and Meteor Crater.
+ * (e) FAILS, BY ITS LETTER. On the own seed (`benchmark/results/invariants-
+ *     2026-09-21-10.json`, against `-8`), the count G5 reads falls from 435 to
+ *     431 — the light-damage rings 145 to 142, the 1 psi rings 133 to 132 —
+ *     and no key G5 reads appears. But one key appears that `-8` did not
+ *     print: `continuous (field), as rule 624 read it: field.overpressureAt10km`,
+ *     the retired check printed beside the corrected one, on an 18.8 m body at
+ *     2.9 km/s whose overpressure at 10 km the corrected check reads as steep.
+ *     The rule says no key, and a key is a key. It meant a kind of failure,
+ *     and it did not say so.
+ * (f) HOLDS. At B-089's old seam, a body half a step short of it: on the
+ *     paper's entry the overpressure at 1 km moves 0.27 % across the step,
+ *     below the gate; on the program's it falls 77.6 % and rule 662's search
+ *     finds the jump at the step's middle.
+ *
+ * So the round is refused as rule 674 says: the default goes back to
+ * `program`, and B-089 stays open. The tests of (c) stay on the program's
+ * arm, where they hold what they held; (d) holds the paper's equations
+ * explicitly, which is rule 668 whatever the default. Nothing read here is
+ * carried: the round that asks again reads everything again, on its own
+ * commit, with its criterion written as meant and read on a seed no run has
+ * used.
+ */
+
 /** Rule 673 (d): how far the breakup may lie from the exact first crossing
  *  (m) for an I_f up to {@link ENTRY_FOLD_IF}; Eq. 11 on Eq. 12 as printed is
  *  within 40 m there. */

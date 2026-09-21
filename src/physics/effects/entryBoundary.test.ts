@@ -21,6 +21,9 @@ import { IMPACT_PRESETS, simulateImpact, type ImpactScenarioInput } from '../sim
  * as the model in place has it. The doubled I_f is the program's, and for
  * that iron it is wrong; B-089 is a choice between the two I_f, to be made on
  * observed fragmentation.
+ *
+ * Rules 667 to 675 (`validation/entryPaperRules.ts`) take up that choice.
+ * Both options here belong to the program's equations, and are read on them.
  */
 
 const B089 = {
@@ -42,6 +45,7 @@ const worstStep = (boundary: 'switch' | 'joined'): number => {
       ...B089,
       impactorDiameter: (Number(B089.impactorDiameter) * k) as never,
       entryBoundary: boundary,
+      entryEquations: 'program',
     }).entry.energyFractionToGround;
     if (previous !== undefined) worst = Math.max(worst, f / previous, previous / f);
     previous = f;
@@ -61,8 +65,12 @@ describe('B-089: the joined entry, measured and not adopted', () => {
 
   it('makes Sikhote-Alin arrive whole, which the fall did not', () => {
     const preset = IMPACT_PRESETS.SIKHOTE_ALIN_1947.input;
-    const inPlace = simulateImpact(preset);
-    const joined = simulateImpact({ ...preset, entryBoundary: 'joined' });
+    const inPlace = simulateImpact({ ...preset, entryEquations: 'program' });
+    const joined = simulateImpact({
+      ...preset,
+      entryEquations: 'program',
+      entryBoundary: 'joined',
+    });
     expect(inPlace.entry.regime).toBe('COMPLETE_AIRBURST');
     expect(Number(inPlace.entry.breakupAltitude)).toBeCloseTo(6_016, -1);
     expect(Number(inPlace.crater.finalDiameter)).toBeCloseTo(26.7, 1);

@@ -45,7 +45,10 @@ import { HELD_OUT_SWEEP_SEED } from './blastShrinkRules.js';
  * stops jumping under it (B-089).
  */
 
+// Both were read on the program's entry equations, and are pinned there
+// whichever entry is the default (rules 667 to 675, `entryPaperRules.ts`).
 const B089 = {
+  entryEquations: 'program',
   impactorDiameter: 30.35083106505634,
   impactVelocity: 13632.485304726288,
   impactorDensity: 9127.968714106828,
@@ -55,6 +58,7 @@ const B089 = {
 } as unknown as ImpactScenarioInput;
 
 const B090 = {
+  entryEquations: 'program',
   impactorDiameter: 6.775448268956815,
   impactVelocity: 9247.191035188735,
   impactorDensity: 7234.419007087126,

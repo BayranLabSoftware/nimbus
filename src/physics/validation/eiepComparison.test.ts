@@ -12,12 +12,18 @@ import { EIEP_REFERENCE } from './eiepReference.js';
  * significant figures; the air blast, of an airburst, low and high end,
  * and of an impact that reaches the ground, within 1 %; the breakup and
  * burst altitudes, which the program prints to the metre, within 0.2 %
- * since the entry takes the program's doubled I_f (BM-13, rule 144 of
+ * on the program's own entry, which doubles I_f (BM-13, rule 144 of
  * entryProgramRules.ts). The complex crater's depth differs by design, and
  * the report says how much.
+ *
+ * The relations are held to the program on the program's entry, named, so
+ * that they stay held whichever entry is the default; and the paper's entry
+ * is held to the departure rule 671 of entryPaperRules.ts measured.
  */
 
-const ratios = eiepRatios();
+const PROGRAM = { entryEquations: 'program' } as const;
+const PAPER = { entryEquations: 'paper' } as const;
+const ratios = eiepRatios(EIEP_REFERENCE, PROGRAM);
 const answered = EIEP_REFERENCE.filter((row) => row.error === null);
 
 const TOLERANCE: Readonly<Record<Exclude<EiepQuantity, 'finalDepth'>, number>> = {
@@ -37,12 +43,15 @@ const TOLERANCE: Readonly<Record<Exclude<EiepQuantity, 'finalDepth'>, number>> =
 describe('the impact pipeline agrees with its reference implementation where it means to', () => {
   it('bursts in the air exactly the impacts the program bursts, and digs the same kind of crater', () => {
     for (const row of answered) {
-      const r = simulateEiepRow(row);
-      const label = `${row.diameterM.toString()} m at ${row.velocityKmS.toString()} km/s, ${row.angleDeg.toString()}°, ${row.densityKgM3.toString()} kg/m³`;
-      const programAirburst = row.burstAltitudeM !== null && row.burstAltitudeM !== undefined;
-      expect(r.entry.regime === 'COMPLETE_AIRBURST', label).toBe(programAirburst);
-      const crater = (r.crater.finalDiameter as number) > 0 ? r.crater.morphology : 'none';
-      expect(crater, label).toBe(row.craterType ?? 'none');
+      // On both entries: the departure moves no body between the air and
+      // the ground.
+      for (const r of [simulateEiepRow(row, PROGRAM), simulateEiepRow(row, PAPER)]) {
+        const label = `${row.diameterM.toString()} m at ${row.velocityKmS.toString()} km/s, ${row.angleDeg.toString()}°, ${row.densityKgM3.toString()} kg/m³`;
+        const programAirburst = row.burstAltitudeM !== null && row.burstAltitudeM !== undefined;
+        expect(r.entry.regime === 'COMPLETE_AIRBURST', label).toBe(programAirburst);
+        const crater = (r.crater.finalDiameter as number) > 0 ? r.crater.morphology : 'none';
+        expect(crater, label).toBe(row.craterType ?? 'none');
+      }
     }
   });
 
@@ -68,7 +77,7 @@ describe('the impact pipeline agrees with its reference implementation where it 
     for (const row of answered) {
       const programBreakup = row.breakupAltitudeM ?? null;
       if (programBreakup === null) continue;
-      const r = simulateEiepRow(row);
+      const r = simulateEiepRow(row, PROGRAM);
       const label = `${row.diameterM.toString()} m at ${row.velocityKmS.toString()} km/s, ${row.angleDeg.toString()}°, ${row.densityKgM3.toString()} kg/m³`;
       expect(
         Math.abs(Math.log((r.entry.breakupAltitude as number) / programBreakup)),
@@ -85,4 +94,27 @@ describe('the impact pipeline agrees with its reference implementation where it 
     }
     expect(checked).toBeGreaterThan(60);
   });
+});
+
+describe('the paper’s entry departs from the program through BM-13 alone (rule 671)', () => {
+  const onDefault = eiepRatios(EIEP_REFERENCE, PAPER);
+  /** Rule 671: what the departure was measured to cost, rounded up. */
+  const DEPARTURE: Readonly<Partial<Record<EiepQuantity, number>>> = {
+    breakupAltitude: 0.01,
+    burstAltitude: 0.05,
+  };
+
+  for (const [quantity, tolerance] of Object.entries(TOLERANCE)) {
+    const bound = DEPARTURE[quantity as EiepQuantity] ?? tolerance;
+    it(`keeps the ${quantity} within ${(bound * 100).toFixed(0)} %`, () => {
+      const pairs = onDefault.filter((r) => r.quantity === quantity);
+      expect(pairs.length).toBeGreaterThan(15);
+      for (const r of pairs) {
+        expect(
+          Math.abs(Math.log(r.model / r.reference)),
+          `${quantity} ${String(r.detail ?? '')} for ${r.row.diameterM.toString()} m at ${r.row.velocityKmS.toString()} km/s, ${r.row.angleDeg.toString()}°`
+        ).toBeLessThan(bound);
+      }
+    });
+  }
 });
