@@ -9,6 +9,13 @@ import { simulateLandslide } from '../../src/physics/events/landslide/simulate.j
 import { simulateVolcano } from '../../src/physics/events/volcano/simulate.js';
 import { mulberry32 } from '../../src/physics/montecarlo/sampling.js';
 import { simulateImpact } from '../../src/physics/simulate.js';
+import { airburstReach } from '../../src/physics/effects/airburstBlast.js';
+import { J, m, Pa } from '../../src/physics/units.js';
+import {
+  OVERPRESSURE_BUILDING_COLLAPSE,
+  OVERPRESSURE_LIGHT_DAMAGE,
+  OVERPRESSURE_WINDOW_BREAK,
+} from '../../src/physics/events/impact/damageRings.js';
 import { CONTINUITY_TOLERANCE, FIELD_FLOOR } from '../../src/physics/validation/continuityRules.js';
 
 /**
@@ -55,6 +62,8 @@ const CHEMICAL_BLAST = process.env.NIMBUS_CHEMICAL_BLAST;
  *  the sweep is asked to read one (rule 636 of
  *  validation/groundBlastFloorRules.ts). */
 const GROUND_BLAST = process.env.NIMBUS_GROUND_BLAST;
+/** Rule 642 of validation/blastShrinkRules.ts: the seed of a held-out run. */
+const SWEEP_SEED_OVERRIDE = process.env.NIMBUS_SWEEP_SEED;
 const HALF_CIRCUMFERENCE = Math.PI * (EARTH_RADIUS as number);
 const EARTH_SURFACE = 4 * Math.PI * (EARTH_RADIUS as number) ** 2;
 
@@ -77,6 +86,12 @@ export interface Hazard {
   regime?: (result: Json) => string;
   contours?: readonly string[];
   fields?: readonly { path: string; floor: number }[];
+  /**
+   * Rules 638 to 646 of validation/blastShrinkRules.ts: the physical cause, if
+   * any, under which a ring may shrink as the size grows. A ring a cause
+   * explains is printed under it and not counted as a failure.
+   */
+  explainShrink?: (ring: string, base: Json, grown: Json) => string | null;
 }
 
 const logU = (u: number, lo: number, hi: number): number =>
@@ -86,6 +101,61 @@ const pick = <T>(u: number, xs: readonly T[]): T =>
   xs[Math.min(xs.length - 1, Math.floor(u * xs.length))] as T;
 const scientific = (u1: number, u2: number, exponents: readonly number[]): number =>
   lin(u1, 1, 9.9) * 10 ** pick(u2, exponents);
+
+/** Rule 640: the threshold of each blast ring the causes are read for. */
+const BLAST_RING_THRESHOLD: Readonly<Record<string, number>> = {
+  'damage.overpressure5psi': OVERPRESSURE_BUILDING_COLLAPSE,
+  'damage.overpressure1psi': OVERPRESSURE_WINDOW_BREAK,
+  'damage.lightDamage': OVERPRESSURE_LIGHT_DAMAGE,
+};
+
+/** The burst altitude (m) at which the model's own airburst law, at this
+ *  yield, carries this threshold farthest: a coarse scan, then a golden
+ *  section on the best bracket. */
+function optimumBurstAltitude(threshold: number, yieldJ: number, near: number): number {
+  const reach = (z: number): number => airburstReach(Pa(threshold), m(z), J(yieldJ), 'low');
+  const top = Math.max(3 * near, 60_000);
+  let bestK = 0;
+  let best = -1;
+  for (let k = 0; k <= 200; k++) {
+    const r = reach((top * k) / 200);
+    if (r > best) {
+      best = r;
+      bestK = k;
+    }
+  }
+  let a = (top * Math.max(bestK - 1, 0)) / 200;
+  let b = (top * Math.min(bestK + 1, 200)) / 200;
+  const g = (Math.sqrt(5) - 1) / 2;
+  for (let i = 0; i < 60; i++) {
+    const c = b - g * (b - a);
+    const d = a + g * (b - a);
+    if (reach(c) >= reach(d)) b = d;
+    else a = c;
+  }
+  return (a + b) / 2;
+}
+
+/** Rules 639 and 640: why an impact's blast ring shrank, if physics says. */
+export function explainImpactBlastShrink(ring: string, base: Json, grown: Json): string | null {
+  const threshold = BLAST_RING_THRESHOLD[ring];
+  if (threshold === undefined) return null;
+  const e0 = base.entry as Json | undefined;
+  const e1 = grown.entry as Json | undefined;
+  if (e0 === undefined || e1 === undefined) return null;
+  // (i) the height of burst.
+  if (e0.regime === 'COMPLETE_AIRBURST' && e1.regime === 'COMPLETE_AIRBURST') {
+    const z0 = Number(e0.burstAltitude);
+    const z1 = Number(e1.burstAltitude);
+    const w1 = Number(e1.blastYieldMegatons) * 4.184e15;
+    const zOpt = optimumBurstAltitude(threshold, w1, Math.max(z0, z1));
+    if (Math.abs(z1 - zOpt) > Math.abs(z0 - zOpt)) return 'height of burst';
+  }
+  // (ii) from the air to the ground.
+  if (Number(e1.energyFractionToGround) > Number(e0.energyFractionToGround))
+    return 'from the air to the ground';
+  return null;
+}
 
 export const HAZARDS: readonly Hazard[] = [
   {
@@ -111,6 +181,10 @@ export const HAZARDS: readonly Hazard[] = [
       simulateImpact(
         (GROUND_BLAST === undefined ? input : { ...input, groundBlast: GROUND_BLAST }) as never
       ) as unknown as Json,
+    // Rules 638 to 646 read two causes a blast ring may shrink by, and were
+    // REFUSED on the held-out seed on 21 September 2026 by two scenarios with
+    // neither (B-089, B-090): the hook is not wired, and every shrinking ring
+    // counts. `explainImpactBlastShrink` stays exported for the next round.
     // Rule 623: an impact's regime is its entry regime with its crater's
     // morphology.
     regime: (r) => {
@@ -415,8 +489,13 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
         continue;
       // Below a millimetre a ring is not drawn, and its digits are rounding.
       if (Math.max(Math.abs(a), Math.abs(b)) < 1e-3) continue;
-      if (check === 'monotone' && b < a * (1 - 1e-9) - 1e-9)
-        fail(`monotone in size: ${ring}`, input, `${a.toPrecision(6)} → ${b.toPrecision(6)}`);
+      if (check === 'monotone' && b < a * (1 - 1e-9) - 1e-9) {
+        const cause = hazard.explainShrink?.(ring, baseResult, grownResult) ?? null;
+        if (cause === null)
+          fail(`monotone in size: ${ring}`, input, `${a.toPrecision(6)} → ${b.toPrecision(6)}`);
+        else
+          fail(`explained, ${cause}: ${ring}`, input, `${a.toPrecision(6)} → ${b.toPrecision(6)}`);
+      }
       if (check === 'continuous') {
         // A magnitude is a logarithm: its jump is measured in units, not as a share.
         const scale = ring.endsWith('magnitude') ? 1 : Math.max(Math.abs(a), Math.abs(b));
@@ -509,7 +588,8 @@ async function main(): Promise<void> {
   const scenarios: Record<string, number> = {};
   const runner = new Runner();
   for (const hazard of HAZARDS.filter((h) => ONLY === undefined || h.name === ONLY)) {
-    const rng = mulberry32(`benchmark-2026-09-15-inv-${hazard.name}`);
+    // Rule 642: a run may be asked for a seed no run has used.
+    const rng = mulberry32(SWEEP_SEED_OVERRIDE ?? `benchmark-2026-09-15-inv-${hazard.name}`);
     const u = (): number => rng.next();
     const tallies: Record<string, Tally> = {};
     const fail = (key: string, input: Json, detail: string): void => {
