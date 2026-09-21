@@ -62,6 +62,7 @@ import {
 import { ignitionFluenceThreshold } from './effects/ignitionExposure.js';
 import { shoreSegmentFraction } from './validation/coastalWaveRules.js';
 import { entryCellVerdict } from './validation/entryCells.js';
+import { entryAltitudeBand } from './validation/entryBand.js';
 import type { CellVerdict } from './validation/measuredCells.js';
 import { thermalHorizonRadius } from './casualties.js';
 import { oceanCouplingPartition } from './effects/oceanCoupling.js';
@@ -501,6 +502,14 @@ export interface ImpactScenarioResult {
    * numbers, never applied to them.
    */
   measuredCells: { entry: CellVerdict };
+  /**
+   * The band of the entry's burst altitude (m): the burst altitude plus the
+   * 5th and 95th percentiles of the model's error on the fireballs of its
+   * measured cell (rules 739 to 747 of `validation/entryBandRules.ts`). Null
+   * outside the measured cells and for a body the model does not burst in the
+   * air.
+   */
+  entryAltitudeBand: { low: number; high: number } | null;
 }
 
 /**
@@ -974,7 +983,13 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
         impactAngle: input.impactAngle,
       }),
     },
+    entryAltitudeBand: null,
   };
+  result.entryAltitudeBand = entryAltitudeBand(
+    result.measuredCells.entry,
+    entry.burstAltitude,
+    entry.regime === 'COMPLETE_AIRBURST'
+  );
 
   // Tsunami cascade activation rule — Phase 14 tightening.
   //

@@ -328,7 +328,8 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         rule: 'G3',
         measure: 'beyond',
         status: 'not met',
-        evidence: 'No quantity of an impact carries a band scored on a held-out set.',
+        evidence:
+          "The quantity I2 names, the entry's burst altitude, carries a band since rules 739 to 747 (validation/entryBandRules.ts): the altitude plus the 5th and 95th percentiles of the model's error over the fireballs of its measured cell, sampled on the 357 of rules 76 to 79 and frozen on 21 September 2026, drawn in the panel and on the burst's beacon, none outside the cells. It is scored on the fireballs NASA JPL's catalogue publishes after the freeze, first when there are eight — about March 2027 at sixteen a year (IMP-0) — and how G3's width bound, written for a σ_ln, reads kilometres is IMP-6's to fix with Andrea before then. No band of an impact has yet been scored on a held-out set.",
       },
       {
         rule: 'G4',

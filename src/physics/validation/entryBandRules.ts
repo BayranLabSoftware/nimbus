@@ -71,4 +71,34 @@
  * anything outside the cells: there it is not drawn.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the band was built, 21 September 2026: FROZEN
+ * ===========================================================================
+ *
+ * The rules were pushed in `5e9e951`; the percentiles were computed after,
+ * and are `ENTRY_ALTITUDE_BAND` in `entryBand.ts`: from −22.1 to +2.7 km below
+ * 0.3 kt and 17 km/s (96 fireballs), −29.5 to +6.4 from 17 km/s (103), −22.2
+ * to +2.2 from 0.3 to 3 kt below 17 km/s (59), −23.6 to −3.4 from 17 km/s
+ * (70), and −21.9 to +3.4 above 3 kt (28, the two cells pooled). The model
+ * bursts a body higher than the sky does, as the program does, and the band
+ * lies mostly below its burst altitude.
+ *
+ * (a) HOLDS. `entryBandRules.test.ts` recomputes the ten numbers from the rows
+ *     to 1e-9 km, bands a burst inside every cell with its group's pair, and
+ *     none for a body that reaches the ground or any preset (all outside).
+ * (b) HOLDS. Nothing else moves: the result gains `entryAltitudeBand`, and
+ *     every other number is the same.
+ * (c) HOLDS. Read headless on a 1 kt stone at 20 km/s, bursting at 45.8 km:
+ *     the panel prints "22,2 km – 42,3 km" in Italian and "22.2 km – 42.3 km"
+ *     in English, and the beacon draws the shaft between the two wider; on
+ *     Chelyabinsk, outside, "— none: outside the measured cells, or no burst
+ *     in the air" and no band on the shaft.
+ * (d) HOLDS. The report, regenerated with the band beside I2's cells, keeps
+ *     the release gate at PASS.
+ *
+ * So the band is frozen, and IMP-6 scores it when the catalogue has eight
+ * fireballs published after 21 September 2026.
+ */
+
 export const ENTRY_BAND_RULES = 'rules 739 to 747, fixed 21 September 2026';

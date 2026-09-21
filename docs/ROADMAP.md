@@ -458,6 +458,19 @@ panel, under the burst's beacon and in the legend; the report prints I2 cell
 by cell, with G3's column empty until IMP-6. Every preset lies outside — the
 entry was measured on bodies of 49 kt at most. Impacts count 6.0.
 
+#### IMP-4, done 21 September 2026: the entry altitude's band, frozen
+
+Rules 739 to 747 (`validation/entryBandRules.ts`) built the band of the
+quantity I2 names on the 357 fireballs IMP-0 made its development data, and
+froze it before the first fireball it will be scored on exists: the burst
+altitude plus the 5th and 95th percentiles of the model's error over the
+fireballs of its measured cell, sampled and not fitted (the two cells above
+3 kT pooled). It lies mostly below the burst — the model, like the program,
+bursts a body higher than the sky does — and it is drawn in the panel and on
+the burst's beacon, none outside the cells. IMP-6 scores it on the fireballs
+published after 21 September 2026, from eight, and fixes with Andrea how G3's
+width bound, written for a σ_ln, reads kilometres.
+
 #### IMP-8, begun 21 September 2026: the gaps, classified
 
 The report now says which of an impact's declared gaps are ceilings — its
@@ -507,8 +520,13 @@ the globe claimed that the model does not:
   headless: Chelyabinsk, Tunguska, Meteor Crater, a 1 kt body and a 45 MT
   comet. Found on the way and closed: B-099, B-100, B-101.
 
-Still to do for impacts: check 3 for every other ring, whose bands wait for
-IMP-4.
+- **Check 3, the band, for the entry's altitude**: since IMP-4 the burst's
+  beacon draws I2's band on its shaft, inside the measured cells.
+
+Still to do for impacts: nothing of the seven checks. The rings of an impact
+other than an airburst's blast carry the generic σ halo of their published
+scatter; no rule of this domain names them with a held-out set, so G3 asks
+them no band.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

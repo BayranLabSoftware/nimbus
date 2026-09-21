@@ -1755,6 +1755,8 @@
   "measuredCells": {
     "entry": {
       "label": "Measured cell",
+      "bandLabel": "Band, 5–95 % of I2's fireballs",
+      "bandNone": "— none: outside the measured cells, or no burst in the air",
       "legend": "Entry altitude: {{sentence}}",
       "inside": "inside, {{cell}}: {{rows}} fireballs (I2)",
       "insideThin": "inside, {{cell}}: {{rows}} fireballs, fewer than the {{scoredFrom}} a cell is scored from alone (I2)",

@@ -1850,6 +1850,9 @@ export function Globe(): JSX.Element {
       /** A second line under the altitude, read in the interface's language
        *  as it changes (G4's verdict for an impact's entry). */
       note?: (language: string) => string;
+      /** The altitude's band (m), drawn on the shaft between its edges
+       *  (rules 739 to 747: I2's band of an impact's entry). */
+      band?: { low: number; high: number } | null;
     }): void => {
       if (!Number.isFinite(opts.altitudeM) || opts.altitudeM < 500) return;
       const top = Cartesian3.fromDegrees(opts.longitude, opts.latitude, opts.altitudeM);
@@ -1876,6 +1879,19 @@ export function Globe(): JSX.Element {
             const t = (Date.now() % 1_800) / 1_800;
             return opts.color.withAlpha(0.2 + 0.35 * Math.sin(t * Math.PI * 2) ** 2);
           }, false);
+      if (opts.band !== undefined && opts.band !== null && opts.band.high > opts.band.low) {
+        viewer.entities.add({
+          id: `${opts.idPrefix}-band`,
+          polyline: {
+            positions: [
+              Cartesian3.fromDegrees(opts.longitude, opts.latitude, opts.band.low),
+              Cartesian3.fromDegrees(opts.longitude, opts.latitude, opts.band.high),
+            ],
+            width: 11,
+            material: opts.color.withAlpha(0.3),
+          },
+        });
+      }
       const km = opts.altitudeM / 1_000;
       const altitudeText = `${km >= 10 ? km.toFixed(0) : km.toFixed(1)} km`;
       const note = opts.note;
@@ -1992,6 +2008,8 @@ export function Globe(): JSX.Element {
           color: Color.fromCssColorString('#FFD98A'),
           // G4 (rules 722 to 729): whether the entry was measured here.
           note: (language) => entryCellShort(entryCell, language),
+          // I2's band of that altitude, where it was measured (rules 739 to 747).
+          band: result.data.entryAltitudeBand,
         });
       }
       const radii = result.data.damage;

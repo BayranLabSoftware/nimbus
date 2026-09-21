@@ -574,6 +574,7 @@ export const VISUAL_CONTRACTS = {
       'a vertical shaft to scale; nothing below 500 m is drawn',
       'this entity was drawn without a contract until 19 September 2026',
       'for an impact, the label says under the altitude whether the scenario lies inside the cells the entry was measured in (G4, rules 722 to 729 of validation/entryCellsRules.ts), and the legend says it for every impact, beacon or none',
+      'inside those cells, the shaft between the altitude’s band — the burst altitude plus the 5th and 95th percentiles of the model’s error on the fireballs of the cell (rules 739 to 747) — is drawn wider and fainter; outside them there is no band to draw',
     ],
   }),
   eruptionColumn: defineContract({

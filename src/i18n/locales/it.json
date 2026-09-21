@@ -1842,6 +1842,8 @@
   "measuredCells": {
     "entry": {
       "label": "Cella misurata",
+      "bandLabel": "Banda, 5–95 % dei bolidi di I2",
+      "bandNone": "— nessuna: fuori dalle celle misurate, o nessuno scoppio in aria",
       "legend": "Quota d'ingresso: {{sentence}}",
       "inside": "dentro, {{cell}}: {{rows}} bolidi (I2)",
       "insideThin": "dentro, {{cell}}: {{rows}} bolidi, meno dei {{scoredFrom}} con cui una cella si valuta da sola (I2)",

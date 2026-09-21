@@ -245,6 +245,7 @@ import {
   type EntryCellReading,
 } from '../src/physics/validation/entryCellsReading.js';
 import { ENTRY_CELLS, ENTRY_CELLS_ANGLE_DEG } from '../src/physics/validation/entryCells.js';
+import { ENTRY_ALTITUDE_BAND, ENTRY_BAND_GROUPS } from '../src/physics/validation/entryBand.js';
 import { FIREBALL_READ_ON } from '../src/physics/validation/fireballSetData.js';
 import { runBurn, type BurnRunResult } from '../src/physics/validation/burnRun.js';
 import { runDose, type DoseRunResult } from '../src/physics/validation/doseRun.js';
@@ -2450,8 +2451,8 @@ function entryCellsSection(cells: readonly EntryCellReading[]): string {
     '',
     "Cell by cell, the model and the program against the sky (median \\|Δh\\| · mean Δh, over the fireballs both burst in the air), rules 126 to 128's agreement (within 1 % · through BM-13 · departing · one bursting where the other lands · refused by the program), and G2 as rule 128 reads it in every cell of twenty fireballs or more:",
     '',
-    '| Cell | Fireballs | The model | The program | Agreement | G2 | G3 |',
-    '|------|----:|----:|----:|:--:|:--|:--|',
+    '| Cell | Fireballs | The model | The program | Agreement | G2 | Band of the error | G3 |',
+    '|------|----:|----:|----:|:--:|:--|:--|:--|',
     ...cells.map((c) => {
       const a = c.anchor;
       const counts = [
@@ -2468,10 +2469,18 @@ function entryCellsSection(cells: readonly EntryCellReading[]): string {
           ? 'met'
           : '**not met**'
         : `fewer than ${ENTRY_CELLS.scoredFrom.toString()}: read in the whole`;
-      return `| ${span(c)} | ${c.rows.toString()} | ${pair(a.nimbus)} | ${pair(a.eiep)} | ${counts} | ${g2} | not read |`;
+      const cell = cells.indexOf(c);
+      const groupIndex = ENTRY_BAND_GROUPS.findIndex((g) => g.cells.includes(cell));
+      const group = ENTRY_ALTITUDE_BAND.groups[groupIndex];
+      const pooled = (ENTRY_BAND_GROUPS[groupIndex]?.cells.length ?? 0) > 1;
+      const bandText =
+        group === undefined
+          ? '—'
+          : `${signed(group.lowKm)} to ${signed(group.highKm)} km${pooled ? `, pooled (${group.rows.toString()})` : ''}`;
+      return `| ${span(c)} | ${c.rows.toString()} | ${pair(a.nimbus)} | ${pair(a.eiep)} | ${counts} | ${g2} | ${bandText} | not read |`;
     }),
     '',
-    "G3's column is empty until a band is read on held-out fireballs (IMP-6, not before spring 2027): G4 reads that the table exists and where a scenario lies, and G3's figures will fill it.",
+    `The band of the error is I2's band (rules 739 to 747, \`validation/entryBandRules.ts\`): the 5th and 95th percentiles of the record less the model's burst altitude over the cell's fireballs, the two cells above 3 kT pooled, frozen on ${ENTRY_ALTITUDE_BAND.frozenOn}; the product draws the burst altitude's band as the altitude plus that pair, inside the measured cells only. G3's column is empty until the band is scored on the fireballs the catalogue publishes after the freeze (IMP-6, not before spring 2027): G4 reads that the table exists and where a scenario lies, and G3's figures will fill it.`,
   ].join('\n');
 }
 

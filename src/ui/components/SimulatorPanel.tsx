@@ -874,6 +874,13 @@ export function SimulatorPanel(): JSX.Element {
                   <dd className={styles.resultValue} data-testid="entry-measured-cell">
                     {entryCellSentence(result.data.measuredCells.entry, i18n.language)}
                   </dd>
+                  {/* G3's band of the same altitude (rules 739 to 747). */}
+                  <dt className={styles.resultLabel}>{t('measuredCells.entry.bandLabel')}</dt>
+                  <dd className={styles.resultValue} data-testid="entry-altitude-band">
+                    {result.data.entryAltitudeBand === null
+                      ? t('measuredCells.entry.bandNone')
+                      : `${formatKilometres(result.data.entryAltitudeBand.low)} – ${formatKilometres(result.data.entryAltitudeBand.high)}`}
+                  </dd>
                   <dt className={styles.resultLabel}>{t('simulator.endVelocity')}</dt>
                   <dd className={styles.resultValue}>
                     {((result.data.entry.endVelocity as number) / 1_000).toFixed(1)} km/s
