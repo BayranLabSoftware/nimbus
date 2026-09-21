@@ -196,14 +196,14 @@ export const VISUAL_CONTRACTS = {
     id: 'overpressure5psi',
     quantity: '5 psi (34.5 kPa) overpressure radius',
     formula:
-      'threshold from Glasstone & Dolan (1977) §5.129 and Table 5.139 — explosion: range by inverting Kinney & Graham (1985) Ch. 4, with Glasstone’s height-of-burst factor · impact: the Earth Impact Effects Program’s air blast (Collins et al. 2005, Eqs. 54, 57–58; Collins et al. 2017, Eq. 7), an airburst’s still source at its burst altitude and a ground impact’s at Eq. 18’s altitude below the ground, its Mach crossover held where the program was checked (rules 630 to 637)',
+      'threshold from Glasstone & Dolan (1977) §5.129 and Table 5.139 — explosion: range by inverting Kinney & Graham (1985) Ch. 4, with Glasstone’s height-of-burst factor · impact: the Earth Impact Effects Program’s air blast (Collins et al. 2005, Eqs. 54, 57–58; Collins et al. 2017, Eq. 7), an airburst’s still source at its burst altitude and a ground impact’s at the ground, Eq. 54 at z₁ = 0 (rules 748 to 755)',
     unit: 'metres',
     geometry: 'point-source-ring',
     isQuantitative: true,
     caveats: [
       'drawn as an ellipse elongated along the track and slid downrange where the body reaches the ground, and as a circle about the point under the burst where it does not: an airburst’s radii come from a source that is azimuthally symmetric by construction, and Collins et al. (2017) assessed exactly that approximation. The real footprint of an airburst is not a circle either: Collins et al. (2017), citing Popova et al. (2013) on Chelyabinsk, put the damage ellipse’s semi-major axis PERPENDICULAR to the trajectory, ~10 000 km² of broken windows elongated across the path, because along it the trail’s contributions interfere destructively. Tunguska felled 2 200 km² in a butterfly. The line source that would give that shape is named in rules 235 to 240 and not yet built',
       'ignores terrain channelling and reflections',
-      'for an impact the model in place is NOT Kinney & Graham: rules 138 to 140 refused the Earth Impact Effects Program’s ground blast on the paper’s entry equations (55 of 60), and rules 141 to 144 adopted it the same day on the program’s own (60 of 60, worst ×1.0019), closing BM-21. An impact’s rings are the program’s Mach relation read at Eq. 18’s altitude, which for such a body lies below the ground; Kinney & Graham stays for the explosion side, and for the share a swarm leaves in the air',
+      'for an impact the model in place is NOT Kinney & Graham: rules 138 to 140 refused the Earth Impact Effects Program’s ground blast on the paper’s entry equations (55 of 60), and rules 141 to 144 adopted it the same day on the program’s own (60 of 60, worst ×1.0019), closing BM-21. An impact’s rings are the program’s law — an airburst’s at its burst altitude, and since rules 748 to 755 a body’s that reaches the ground at the ground, where the program reads Eq. 18’s altitude below it; Kinney & Graham stays for the explosion side, and for an impact only under the project’s own ground blast, which must be asked for by name',
     ],
   }),
   overpressure1psi: defineContract({

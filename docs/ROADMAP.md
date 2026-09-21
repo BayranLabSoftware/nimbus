@@ -547,11 +547,12 @@ are missing, and why:
   eight are expected around March 2027 (IMP-0). IMP-6 scores it then, and
   fixes with Andrea how G3's width bound, written for a σ_ln, reads
   kilometres.
-- **G6, by two gaps that are not ceilings.** An airburst's flash, too faint
+- **G6, by one gap that is not a ceiling.** An airburst's flash, too faint
   by the luminous efficiency of an impact's plume (B-095, declared by
   Andrea's decision while the field's airburst radiation models cannot be
-  read free); and an impact's air blast read from under the ground as the
-  program reads it, for which a physical surface burst is work of its own.
+  read free). The other, an impact's air blast read from under the ground as
+  the program reads it, is closed by rules 748 to 755: a body that reaches
+  the ground bursts at the ground.
 
 Open, and outside the benchmark's draw on which G5 is met: B-091, the
 paper's sharp strength at I_f = 1; B-098, an iron's crater that vanishes at

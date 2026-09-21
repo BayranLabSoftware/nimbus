@@ -47,6 +47,17 @@ import { TOLL_BAND_CANDIDATE } from './tollBandRules.js';
 import { applyIntentToStore, decodeUrl } from '../../store/urlState.js';
 import { extractTsunamiMeta, seismicSourceCavityRadiusM } from '../../store/useAppStore.js';
 import { VISUAL_CONTRACTS } from '../../scene/visualContracts.js';
+import { METHODOLOGY_SECTIONS } from '../../ui/pages/methodologyContent.js';
+import enLocale from '../../i18n/locales/en.json';
+import itLocale from '../../i18n/locales/it.json';
+import { DEFAULT_GROUND_BLAST } from '../effects/airburstBlast.js';
+import {
+  DEFAULT_AIR_FLASH,
+  DEFAULT_ENTRY_EQUATIONS,
+  DEFAULT_LOW_BURST_CRATER,
+  DEFAULT_LOW_BURST_FLASH,
+} from '../effects/atmosphericEntry.js';
+import { DEFAULT_AIRBURST_SEISMIC } from '../events/impact/airburstSeismic.js';
 import { computeTsunamiArrivalField, spansTheGlobe } from '../tsunami/fastMarching.js';
 import { radiansToDegrees } from '../units.js';
 import { fieldsFor } from '../../ui/pages/SimulationReportPage.js';
@@ -1846,6 +1857,40 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       'utf8'
     );
     expect(contracts).not.toContain('IMPACT_BLAST_COUPLING');
+  });
+
+  it('B-102 The product names the impact laws in place', () => {
+    // The laws of an impact adopted on 21 September 2026, which the product's
+    // texts went on describing as they were before.
+    expect(DEFAULT_ENTRY_EQUATIONS).toBe('paper');
+    expect(DEFAULT_AIR_FLASH).toBe('burst');
+    expect(DEFAULT_LOW_BURST_FLASH).toBe('fireball');
+    expect(DEFAULT_AIRBURST_SEISMIC).toBe('harkrider');
+    expect(DEFAULT_GROUND_BLAST).toBe('surface');
+    expect(DEFAULT_LOW_BURST_CRATER).toBe('share');
+    const methodology = METHODOLOGY_SECTIONS.flatMap((s) => s.entries)
+      .map((e) => `${e.formula}\n${e.description}`)
+      .join('\n');
+    for (const rules of [
+      '647 to 653',
+      '691 to 697',
+      '698 to 705',
+      '714 to 721',
+      '730 to 738',
+      '748 to 755',
+      '756 to 763',
+    ]) {
+      expect(methodology, rules).toContain(rules);
+    }
+    // The program's doubled I_f is no longer the entry's.
+    expect(methodology).not.toContain('I_f = 2 · 4.07');
+    // The blast of a body that reaches the ground, where a visitor reads it:
+    // the globe's tooltip, the panel's citation and the visual contract.
+    expect(enLocale.globe.tooltip.source.impactBlast).toContain('rules 748 to 755');
+    expect(itLocale.globe.tooltip.source.impactBlast).toContain('regole 748–755');
+    expect(enLocale.citations.impactBlast).toContain('rules 748 to 755');
+    expect(itLocale.citations.impactBlast).toContain('regole 748–755');
+    expect(VISUAL_CONTRACTS.overpressure5psi.formula).toContain('rules 748 to 755');
   });
 
   // Bypass guard: the test count below MUST equal the registry row

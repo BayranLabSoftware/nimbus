@@ -33,9 +33,10 @@ import { peakOverpressure } from '../explosion/overpressure.js';
  * So these functions take the branches `simulateImpact` takes, from the
  * numbers the result itself carries:
  *
- *   - a body that reaches the ground (INTACT or PARTIAL_AIRBURST) blasts as
- *     the Earth Impact Effects Program reads it, from Eq. 18's altitude and
- *     E₀ · max(f, 1 − f) (`groundImpactOverpressure`);
+ *   - a body that reaches the ground (INTACT or PARTIAL_AIRBURST) blasts with
+ *     the Earth Impact Effects Program's law on E₀ · max(f, 1 − f), at the
+ *     ground since rules 748 to 755, or from Eq. 18's altitude as the program
+ *     reads it where that law is asked for (`groundImpactOverpressure`);
  *   - a COMPLETE_AIRBURST blasts as the larger of the surface burst of the
  *     energy that reached the ground and the air burst of the entry, at the
  *     burst altitude when it is above the ground, and as a surface burst of
