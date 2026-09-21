@@ -65,6 +65,8 @@ describe('rules 621 to 629: the harness as the protocol defines it', () => {
     const impact = HAZARDS.find((h) => h.name === 'impact');
     expect(impact?.regime).toBeTypeOf('function');
     expect(impact?.contours).toHaveLength(8);
+    // Rule 756 of lowBurstCraterRules.ts: the final crater's birth only.
+    expect(impact?.births).toEqual(['crater.finalDiameter']);
     expect(impact?.fields).toHaveLength(14);
     // The module rule of 21 September: no other domain is opened here.
     for (const h of HAZARDS.filter((x) => x.name !== 'impact')) {

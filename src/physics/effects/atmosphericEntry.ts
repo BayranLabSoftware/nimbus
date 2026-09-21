@@ -197,6 +197,23 @@ export type LowBurstFlash = 'air' | 'fireball';
  *  714 to 721. */
 export const DEFAULT_LOW_BURST_FLASH: LowBurstFlash = 'fireball';
 
+/**
+ * Whether a complete airburst that bursts below its own fireball digs a crater
+ * (B-097).
+ *
+ * - `none`: no airburst digs; a swarm that reaches the ground digs the whole
+ *   body's crater at its speed there, so a crater opens at full size where a
+ *   complete airburst becomes a partial one.
+ * - `share`: below the fireball radius R of the energy it keeps, the share
+ *   1 − z/R of that energy strikes the ground, as the flash's does (B-093),
+ *   and digs the crater of that share of the body's mass at its burst speed;
+ *   a burst on the ground digs the partial airburst's.
+ */
+export type LowBurstCrater = 'none' | 'share';
+
+/** What an impact that names no low-burst crater uses. */
+export const DEFAULT_LOW_BURST_CRATER: LowBurstCrater = 'none';
+
 /** The share of an airburst's kept energy that radiates as a fireball on the
  *  ground (B-093): 1 − z/R, with R = 0.002 · E^(1/3) the fireball radius of
  *  the kept energy E, and 0 for a burst at or above R. */

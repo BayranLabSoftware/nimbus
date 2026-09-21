@@ -91,6 +91,9 @@ const LOW_BURST_FLASH = process.env.NIMBUS_LOW_BURST_FLASH;
  *  is asked to read a candidate (rule 736 of
  *  validation/airburstSeismicRules.ts). */
 const AIRBURST_SEISMIC = process.env.NIMBUS_AIRBURST_SEISMIC;
+/** Whether a complete airburst below its own fireball digs, when the sweep is
+ *  asked to read a candidate (rule 761 of validation/lowBurstCraterRules.ts). */
+const LOW_BURST_CRATER = process.env.NIMBUS_LOW_BURST_CRATER;
 /** Rule 688 (c) of validation/blastShrinkSourceRules.ts: read the harness as
  *  it was, with no cause asked of a shrinking ring. */
 const NO_CAUSES = process.env.NIMBUS_NO_CAUSES !== undefined;
@@ -117,6 +120,14 @@ export interface Hazard {
    */
   regime?: (result: Json) => string;
   contours?: readonly string[];
+  /**
+   * Rule 756 of validation/lowBurstCraterRules.ts: rings read as values whose
+   * BIRTH is read as a contour's. On a step where one is born from nothing —
+   * under a millimetre for the smaller body, drawn for the larger — it is read
+   * only where the regime switches; on every other step it is read as a value,
+   * and a move past the tolerance is searched by halving (rule 662).
+   */
+  births?: readonly string[];
   fields?: readonly { path: string; floor: number }[];
   /**
    * Rules 638 to 646 of validation/blastShrinkRules.ts: the physical cause, if
@@ -222,6 +233,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(AIR_FLASH === undefined ? {} : { airFlash: AIR_FLASH }),
         ...(LOW_BURST_FLASH === undefined ? {} : { lowBurstFlash: LOW_BURST_FLASH }),
         ...(AIRBURST_SEISMIC === undefined ? {} : { airburstSeismic: AIRBURST_SEISMIC }),
+        ...(LOW_BURST_CRATER === undefined ? {} : { lowBurstCrater: LOW_BURST_CRATER }),
       } as never) as unknown as Json,
     // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring
     // that shrinks is explained when its source moved it without a step
@@ -278,6 +290,9 @@ export const HAZARDS: readonly Hazard[] = [
       'ejecta.blanketEdge1m',
       'ejecta.blanketEdge1mm',
     ],
+    // Rule 756 of validation/lowBurstCraterRules.ts: the final crater, a value
+    // whose birth from nothing is read as a contour's.
+    births: ['crater.finalDiameter'],
     // Rules 624 and 625: the field at seven fixed ranges, with its floors.
     fields: [1, 3, 10, 30, 100, 300, 1000].flatMap((km) => [
       { path: `field.overpressureAt${String(km)}km`, floor: FIELD_FLOOR.overpressurePa },
@@ -507,14 +522,15 @@ interface Tally {
   examples: { input: Json; detail: string }[];
 }
 
-interface Finding {
+export interface Finding {
   key: string;
   input: Json;
   detail: string;
 }
 
-/** Every invariant of one scenario, in the worker. */
-function checkScenario(hazard: Hazard, input: Json): Finding[] {
+/** Every invariant of one scenario, in the worker; exported for the tests of
+ *  the harness's own reading (rule 761 of validation/lowBurstCraterRules.ts). */
+export function checkScenario(hazard: Hazard, input: Json): Finding[] {
   const found: Finding[] = [];
   const fail = (key: string, at: Json, detail: string): void => {
     found.push({ key, input: at, detail });
@@ -594,29 +610,37 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
           // whatever else happened in between.
           if (jumped) fail(`continuous, as it was: ${ring}`, input, detail);
           const isContour = hazard.contours?.includes(ring) ?? false;
-          if (jumped && (!isContour || regimeSwitched)) {
+          // Rule 756 of validation/lowBurstCraterRules.ts: a value born from
+          // nothing on this step is read as a contour at its birth is.
+          const isValueBorn = hazard.births?.includes(ring) ?? false;
+          const bornHere = isValueBorn && Math.abs(a) < 1e-3;
+          if (jumped && (!(isContour || bornHere) || regimeSwitched)) {
             // Rule 735 of validation/airburstSeismicRules.ts: a magnitude that
             // moves that much is searched by halving, as rule 662 searches a
             // field sample; a steep one is printed apart and G5 does not read it.
-            const found = ring.endsWith('magnitude')
-              ? searchFieldJump(
-                  (k: number): number => {
-                    try {
-                      return numberAt(hazard.run(hazard.grow(input, k, step)), ring);
-                    } catch {
-                      return NaN;
-                    }
-                  },
-                  1,
-                  factor,
-                  a,
-                  b,
-                  FIELD_JUMP_SHARE
-                )
-              : null;
+            // Rule 756: so is a value whose birth is read as a contour's.
+            const found =
+              ring.endsWith('magnitude') || isValueBorn
+                ? searchFieldJump(
+                    (k: number): number => {
+                      try {
+                        return numberAt(hazard.run(hazard.grow(input, k, step)), ring);
+                      } catch {
+                        return NaN;
+                      }
+                    },
+                    1,
+                    factor,
+                    a,
+                    b,
+                    // A share of the value's scale, as rule 662's; a magnitude's
+                    // scale is one unit.
+                    FIELD_JUMP_SHARE * scale
+                  )
+                : null;
             if (found?.kind === 'steep')
               fail(
-                `steep, not a jump (magnitude): ${ring}`,
+                `steep, not a jump (${isValueBorn ? 'crater' : 'magnitude'}): ${ring}`,
                 input,
                 `${detail}, continuous below ${String(found.depth)} halvings`
               );
@@ -624,7 +648,7 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
               fail(
                 `continuous: ${ring}`,
                 input,
-                `${detail}${isContour ? ' (regime switch)' : ''}${found === null ? '' : `, ${found.kind === 'jump' ? `a jump at ×${found.at.toPrecision(12)}` : `unresolved: ${found.why}`}`}`
+                `${detail}${isContour || bornHere ? ' (regime switch)' : ''}${found === null ? '' : `, ${found.kind === 'jump' ? `a jump at ×${found.at.toPrecision(12)}` : `unresolved: ${found.why}`}`}`
               );
           }
         }
@@ -684,6 +708,8 @@ export const NOT_READ_BY_G5 = [
   'explained, ',
   // Rule 735 of validation/airburstSeismicRules.ts.
   'steep, not a jump (magnitude)',
+  // Rule 756 of validation/lowBurstCraterRules.ts.
+  'steep, not a jump (crater)',
 ] as const;
 
 /** How long a scenario's three runs may take before they count as not returning. */

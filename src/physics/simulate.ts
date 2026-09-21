@@ -85,10 +85,12 @@ import {
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
 import {
   DEFAULT_AIR_FLASH,
+  DEFAULT_LOW_BURST_CRATER,
   DEFAULT_LOW_BURST_FLASH,
   groundFireballShare,
   groundRangeAtSlant,
   type AirFlash,
+  type LowBurstCrater,
   type LowBurstFlash,
   type EntryBoundary,
   type EntryEquations,
@@ -200,6 +202,9 @@ export interface ImpactScenarioInput {
   /** How a complete airburst below its own fireball radiates (B-093);
    *  {@link DEFAULT_LOW_BURST_FLASH} when omitted. */
   lowBurstFlash?: LowBurstFlash;
+  /** Whether a complete airburst below its own fireball digs (B-097);
+   *  {@link DEFAULT_LOW_BURST_CRATER} when omitted. */
+  lowBurstCrater?: LowBurstCrater;
   /** What a complete airburst's seismic magnitude is read from (B-092);
    *  {@link DEFAULT_AIRBURST_SEISMIC} when omitted. For reading two on one
    *  commit. */
@@ -648,9 +653,28 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     (entry.breakupAltitude as number) > 0 &&
     diameterM < 20;
   const craterVelocity = isIronStrewnField ? input.impactVelocity : entry.endVelocity;
+  // The energy the body keeps at its burst: the flash's share below its own
+  // fireball (B-093), the ground's term of an airburst's magnitude (B-092) and
+  // the crater of a burst below its fireball (B-097).
+  const keptEnergy =
+    entry.regime === 'COMPLETE_AIRBURST' && (input.impactVelocity as number) > 0
+      ? (ke as number) * Math.min(1, (entry.endVelocity / (input.impactVelocity as number)) ** 2)
+      : 0;
+  // B-097: below its own fireball, the share of the kept energy that strikes
+  // the ground digs, as the body's mass in that share at its burst speed.
+  const lowBurstCraterShare =
+    airburst && !isIronStrewnField && (input.lowBurstCrater ?? DEFAULT_LOW_BURST_CRATER) === 'share'
+      ? groundFireballShare(entry.burstAltitude, keptEnergy)
+      : 0;
   const Dtc = m(
     airburst && !isIronStrewnField
-      ? 0
+      ? lowBurstCraterShare > 0
+        ? (transientCraterDiameter({
+            ...input,
+            impactorDiameter: m(diameterM * Math.cbrt(lowBurstCraterShare)),
+            impactVelocity: entry.endVelocity,
+          }) as number) * seafloorScale
+        : 0
       : (transientCraterDiameter({ ...input, impactVelocity: craterVelocity }) as number) *
           seafloorScale *
           (isIronStrewnField ? STREWN_FIELD_PRIMARY_CRATER_FACTOR : 1)
@@ -702,12 +726,6 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     entryVelocity: input.impactVelocity,
     endVelocity: entry.endVelocity,
   });
-  // The energy the body keeps at its burst: the flash's share below its own
-  // fireball (B-093) and the ground's term of an airburst's magnitude (B-092).
-  const keptEnergy =
-    entry.regime === 'COMPLETE_AIRBURST' && (input.impactVelocity as number) > 0
-      ? (ke as number) * Math.min(1, (entry.endVelocity / (input.impactVelocity as number)) ** 2)
-      : 0;
   // B-092 (rules 730 to 738): a complete airburst's magnitude from the air
   // that carries it, where asked; undefined where the program's is kept.
   const airburstM =
