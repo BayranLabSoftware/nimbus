@@ -375,6 +375,49 @@ regenerates unchanged and the gate passes. Of the nine rounds, four were
 refusals, two were transcriptions, one was an audit, one a diagnosis and
 one a repair.
 
+#### The lens that paid, and what it found — 21 September
+
+B-084 was found by accident. Its deepest lesson was not an invariant but a
+shape: **a bound removed for a good reason, or never placed, outside the
+range a relation was fitted on.** Looking for more of that shape found two
+more the same night, in two other domains.
+
+- **B-085, a volcanic plume with no ceiling.** Mastin et al. 2009's
+  H = 2.00 V̇^0.241 has no upper bound. At the 5×10⁶ m³/s that
+  `inputSchema.ts` itself calls "the largest known eruption (Tambora
+  1815)" it returns 82.3 km — above every plume ever measured, Hunga
+  Tonga's 57 km included. It passes the Kármán line at 1.12×10⁷, and the
+  invariant sweep's own volcano sampler draws to 9.9×10⁹, where it returns
+  512.8 km. OPEN, and the obvious repair is ruled out: the paper's Table 1
+  tops out at 4×10⁸ kg/s, which is 35.9 km, so capping at the fit's own
+  maximum — B-084's pattern — would cut Pinatubo and Hunga Tonga. A
+  plume's ceiling has to be physical rather than statistical.
+- **B-086, an explosion burning past its own horizon.** CLOSED the same
+  night. The flash travels in straight lines, `simulate.ts` has cut an
+  impact's fire and burn radii at the fireball's horizon since
+  15 September — it was B-028 and B-038 — and
+  `events/explosion/simulate.ts` never got the same cut. 156 rings of the
+  sweep's 5 000 explosions were outside it, the worst at 2.32×. The repair
+  is the sibling's expression, unchanged.
+
+**G5 walked past all three for the same reason**: its clauses read
+finiteness, area and the antipode, and 512 km is a finite length well
+inside both. One clause, three defects, two domains it had never been
+pointed at.
+
+**And the audit's seventh question is answered** (rules 586 to 592). It
+could not be asked before because no result of the sweep carries a toll;
+with synthetic people under it — a hundred to the square kilometre — the
+casualty arithmetic holds over 11 142 plans and 33 790 bands on all five
+counts. Nothing is spent: no tile read, no held-out row touched.
+
+**What this says about the plan.** Phase 0 was written as six items of
+verification. It is turning out to have a seventh that costs nothing and
+pays more than any of them: **ask the model whether it can do the
+impossible.** Three defects in one night, two closed, none of which any
+held-out set would ever have caught, because they live where no event has
+ever happened and the product draws them anyway.
+
 ### Phase 1 — The machinery built once and paid for six times
 
 **G4 and E5 — the envelope, declared cell by cell.** The product must
