@@ -74,6 +74,7 @@ import {
 } from './events/impact/damageRings.js';
 import { impactFieldSamples } from './events/impact/impactField.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
+import type { EntryBoundary } from './effects/atmosphericEntry.js';
 import {
   impactSeismicEnergy,
   SEISMIC_EFFICIENCY_RANGE,
@@ -168,6 +169,9 @@ export interface ImpactScenarioInput {
    *  default is {@link DEFAULT_GROUND_BLAST}. Rules 630 to 637 run the sweep
    *  under two laws on one commit, which is what this is for. */
   groundBlast?: GroundBlast;
+  /** How the entry behaves where the program's model reaches the edge of
+   *  breaking up (B-089); {@link DEFAULT_ENTRY_BOUNDARY} when omitted. */
+  entryBoundary?: EntryBoundary;
 }
 
 /**
@@ -468,7 +472,10 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     input.impactorStrength,
     input.impactorDensity,
     ke,
-    input.impactAngle
+    input.impactAngle,
+    undefined,
+    undefined,
+    input.entryBoundary
   );
   // Crater and ejecta come from the speed the body or its swarm strikes
   // the ground at, as Collins et al. compute them (their Eq. 21* with

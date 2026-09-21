@@ -128,6 +128,27 @@ export type BurstSpeed = 'paper' | 'program';
 /** What an airburst that names no burst speed uses. */
 export const DEFAULT_BURST_SPEED: BurstSpeed = 'program';
 
+/**
+ * How the entry behaves where the program's own model reaches the edge of
+ * breaking up (B-089).
+ *
+ * - `switch`: rule 145 — where the program's doubled I_f reaches 1, the
+ *   paper's equations are used, with the paper's I_f. A body 0.1 % larger can
+ *   then break up kilometres lower and send a tenth less of its energy to the
+ *   ground.
+ * - `joined`: the program's doubled I_f throughout, and where it reaches 1 the
+ *   body does not break, as the model the program implements says; Eq. 20 and
+ *   the burst speed with the paper's −3(l/H)² restored, so that a body that
+ *   breaks at the ground arrives as a whole body does rather than having a
+ *   whole body's drag counted twice; and a body that never breaks given the
+ *   virtual altitude Eq. 18 gives at a breakup on the ground, so that its blast
+ *   joins its neighbour's.
+ */
+export type EntryBoundary = 'switch' | 'joined';
+
+/** What an entry that names no boundary uses. */
+export const DEFAULT_ENTRY_BOUNDARY: EntryBoundary = 'switch';
+
 export interface AtmosphericEntryResult {
   /** Airburst altitude (m), Collins et al. Eq. 18; 0 when the body or
    *  its swarm reaches the ground. */
@@ -345,9 +366,11 @@ export function atmosphericEntry(
   kineticEnergy?: Joules,
   impactAngle: Radians = (Math.PI / 4) as Radians,
   equations: EntryEquations = DEFAULT_ENTRY_EQUATIONS,
-  burstSpeed: BurstSpeed = DEFAULT_BURST_SPEED
+  burstSpeed: BurstSpeed = DEFAULT_BURST_SPEED,
+  boundary: EntryBoundary = DEFAULT_ENTRY_BOUNDARY
 ): AtmosphericEntryResult {
   const program = equations === 'program';
+  const joined = boundary === 'joined';
   const v0 = impactVelocity as number;
   const L0 = impactorDiameter as number;
   const rhoI = impactorDensity as number;
@@ -355,10 +378,14 @@ export function atmosphericEntry(
   const totalKE = (kineticEnergy as number | undefined) ?? 0;
   const Y = (impactorStrength ?? collinsStrength(impactorDensity)) as number;
 
-  const whole = (endVelocity: number, breakupAltitude = 0): AtmosphericEntryResult => ({
+  const whole = (
+    endVelocity: number,
+    breakupAltitude = 0,
+    virtualAltitude = 0
+  ): AtmosphericEntryResult => ({
     burstAltitude: m(0),
     breakupAltitude: m(breakupAltitude),
-    virtualBurstAltitude: m(0),
+    virtualBurstAltitude: m(virtualAltitude),
     regime: 'INTACT',
     endVelocity: mps(endVelocity),
     energyFractionToGround: v0 > 0 ? Math.min(1, (endVelocity / v0) ** 2) : 1,
@@ -386,13 +413,20 @@ export function atmosphericEntry(
   // and has no answer, and the paper's equations are used (rule 145 of
   // validation/entryProgramRules.ts).
   const paperIf = (4.07 * DRAG_COEFFICIENT * H_SCALE * Y) / (rhoI * L0 * v0 * v0 * sinTheta);
-  const followsProgram = program && 2 * paperIf < 1;
+  const followsProgram = program && (joined || 2 * paperIf < 1);
   const If = followsProgram ? 2 * paperIf : paperIf;
+  const alpha = Math.sqrt(PANCAKE_FACTOR * PANCAKE_FACTOR - 1);
   if (If >= 1) {
     // Never breaks. The speed at the ground, never below the terminal
     // velocity of the body.
     const terminal = Math.sqrt((4 * rhoI * L0 * GRAVITY) / (3 * RHO_0 * DRAG_COEFFICIENT));
-    return whole(Math.max(wholeSpeed(0), Math.min(terminal, v0)));
+    // Joined (B-089): the virtual altitude of a breakup on the ground, Eq. 18
+    // at z* = 0, which is where a body that only just breaks has it.
+    const groundL = L0 * sinTheta * Math.sqrt(rhoI / (DRAG_COEFFICIENT * RHO_0));
+    const groundVirtual = joined
+      ? -2 * H_SCALE * Math.log(1 + (groundL / (2 * H_SCALE)) * alpha)
+      : 0;
+    return whole(Math.max(wholeSpeed(0), Math.min(terminal, v0)), 0, groundVirtual);
   }
 
   // Eq. 11: the breakup altitude.
@@ -404,7 +438,6 @@ export function atmosphericEntry(
   const vStar = wholeSpeed(zStar);
   // Eq. 16: the dispersion length; Eq. 18: the airburst altitude.
   const l = L0 * sinTheta * Math.sqrt(rhoI / (DRAG_COEFFICIENT * rhoStar));
-  const alpha = Math.sqrt(PANCAKE_FACTOR * PANCAKE_FACTOR - 1);
   const zBurst = zStar - 2 * H_SCALE * Math.log(1 + (l / (2 * H_SCALE)) * alpha);
   // Eq. 17's coefficient on the integral of e^((z*−z)/H) L(z)².
   const k = (0.75 * DRAG_COEFFICIENT * rhoStar) / (rhoI * L0 ** 3 * sinTheta);
@@ -417,7 +450,7 @@ export function atmosphericEntry(
       ((l * L0 * L0) / 24) *
         alpha *
         (8 * (3 + alpha * alpha) + 3 * alpha * (l / H_SCALE) * (2 + alpha * alpha)) +
-      (followsProgram && burstSpeed === 'program' ? H_SCALE * L0 * L0 : 0);
+      (followsProgram && burstSpeed === 'program' && !joined ? H_SCALE * L0 * L0 : 0);
     const endVelocity = vStar * Math.exp(-k * integral);
     const atmosphericYieldJ = totalKE;
     // Collins et al. 2017: the blast is given the larger of the energy the
@@ -442,7 +475,7 @@ export function atmosphericEntry(
     (3 * (4 + r * r) * Math.exp(zStar / H_SCALE) +
       6 * Math.exp((2 * zStar) / H_SCALE) -
       16 * Math.exp((3 * zStar) / (2 * H_SCALE)) -
-      (followsProgram ? 0 : 3 * r * r) -
+      (followsProgram && !joined ? 0 : 3 * r * r) -
       2);
   const endVelocity = vStar * Math.exp(-k * Math.max(integral, 0));
   const energyFractionToGround = Math.min(1, (endVelocity / v0) ** 2);
