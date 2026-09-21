@@ -76,6 +76,11 @@ import {
   type ImpactDamageRadii,
 } from './events/impact/damageRings.js';
 import { impactFieldSamples } from './events/impact/impactField.js';
+import {
+  airburstMagnitude,
+  DEFAULT_AIRBURST_SEISMIC,
+  type AirburstSeismic,
+} from './events/impact/airburstSeismic.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
 import {
   DEFAULT_AIR_FLASH,
@@ -194,6 +199,10 @@ export interface ImpactScenarioInput {
   /** How a complete airburst below its own fireball radiates (B-093);
    *  {@link DEFAULT_LOW_BURST_FLASH} when omitted. */
   lowBurstFlash?: LowBurstFlash;
+  /** What a complete airburst's seismic magnitude is read from (B-092);
+   *  {@link DEFAULT_AIRBURST_SEISMIC} when omitted. For reading two on one
+   *  commit. */
+  airburstSeismic?: AirburstSeismic;
 }
 
 /**
@@ -365,11 +374,18 @@ export interface ImpactScenarioResult {
   };
   seismic: {
     /** Seismic magnitude of the energy delivered to the ground (Collins
-     *  et al. 2005 Eq. 40*, seismic efficiency 10⁻⁴). */
-    magnitude: number;
+     *  et al. 2005 Eq. 40*, seismic efficiency 10⁻⁴). Null where no
+     *  relation covers the scenario: under `airburstSeismic: 'harkrider'`, a
+     *  complete airburst that Harkrider et al.'s table does not cover and
+     *  whose kept energy does not reach the ground (rule 730). */
+    magnitude: number | null;
     /** The same magnitude across the seismic-efficiency range Collins
-     *  et al. give, 10⁻⁵ (low) to 10⁻³ (high). */
-    magnitudeRange: { low: number; high: number };
+     *  et al. give, 10⁻⁵ (low) to 10⁻³ (high); null with it. */
+    magnitudeRange: { low: number; high: number } | null;
+    /** What the magnitude is read from: the program's source (`program`), or,
+     *  for a complete airburst under `airburstSeismic: 'harkrider'`, the air's
+     *  term or the ground's (rule 730); null with the magnitude. */
+    magnitudeSource: 'program' | 'air' | 'ground' | null;
     /** Impact-induced liquefaction radius on saturated sandy soil —
      *  cross-bridge to the earthquake module's Youd & Idriss (2001)
      *  threshold, fed by {@link magnitude}. 0 when the magnitude is too
@@ -677,7 +693,28 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     entryVelocity: input.impactVelocity,
     endVelocity: entry.endVelocity,
   });
-  const seismicM = seismicMagnitude(seismicEnergy);
+  // The energy the body keeps at its burst: the flash's share below its own
+  // fireball (B-093) and the ground's term of an airburst's magnitude (B-092).
+  const keptEnergy =
+    entry.regime === 'COMPLETE_AIRBURST' && (input.impactVelocity as number) > 0
+      ? (ke as number) * Math.min(1, (entry.endVelocity / (input.impactVelocity as number)) ** 2)
+      : 0;
+  // B-092 (rules 730 to 738): a complete airburst's magnitude from the air
+  // that carries it, where asked; undefined where the program's is kept.
+  const airburstM =
+    (input.airburstSeismic ?? DEFAULT_AIRBURST_SEISMIC) === 'harkrider' &&
+    entry.regime === 'COMPLETE_AIRBURST'
+      ? airburstMagnitude({
+          blastYieldKt: entry.blastYieldMegatons * 1_000,
+          burstAltitude: entry.burstAltitude,
+          keptEnergy,
+          overWater:
+            ((input.waterDepth as number | undefined) ?? 0) > 0 &&
+            !(input.shoreDistance !== undefined && (input.shoreDistance as number) > 0),
+        })
+      : undefined;
+  const seismicM: number | null =
+    airburstM === undefined ? seismicMagnitude(seismicEnergy) : (airburstM?.magnitude ?? null);
   // The flash travels in straight lines, so nothing burns and no fire
   // starts past the range where the fireball sets below the horizon —
   // the cut the casualty plan makes — or past the antipode. Until
@@ -705,10 +742,6 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // keeps radiates a share of that energy as a fireball on the ground, and
   // the rest from its burst altitude — continuous with the partial airburst
   // it becomes as the burst altitude reaches the ground.
-  const keptEnergy =
-    entry.regime === 'COMPLETE_AIRBURST' && (input.impactVelocity as number) > 0
-      ? (ke as number) * Math.min(1, (entry.endVelocity / (input.impactVelocity as number)) ** 2)
-      : 0;
   const lowBurstShare =
     (input.lowBurstFlash ?? DEFAULT_LOW_BURST_FLASH) === 'fireball'
       ? groundFireballShare(entry.burstAltitude, keptEnergy)
@@ -912,11 +945,17 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     },
     seismic: {
       magnitude: seismicM,
-      magnitudeRange: {
-        low: seismicMagnitude(seismicEnergy, SEISMIC_EFFICIENCY_RANGE.low),
-        high: seismicMagnitude(seismicEnergy, SEISMIC_EFFICIENCY_RANGE.high),
-      },
-      liquefactionRadius: liquefactionRadius(seismicM),
+      magnitudeRange:
+        airburstM === undefined
+          ? {
+              low: seismicMagnitude(seismicEnergy, SEISMIC_EFFICIENCY_RANGE.low),
+              high: seismicMagnitude(seismicEnergy, SEISMIC_EFFICIENCY_RANGE.high),
+            }
+          : airburstM === null
+            ? null
+            : { low: airburstM.low, high: airburstM.high },
+      magnitudeSource: airburstM === undefined ? 'program' : (airburstM?.term ?? null),
+      liquefactionRadius: seismicM === null ? m(0) : liquefactionRadius(seismicM),
     },
     damage,
     damageAsymmetry,

@@ -178,7 +178,7 @@ describe('simulateImpact — land vs. ocean cascade', () => {
       (ocean.crater.finalDiameter as number) / (land.crater.finalDiameter as number);
     expect(craterRatio).toBeGreaterThan(0.99);
     expect(craterRatio).toBeLessThanOrEqual(1.0);
-    expect(ocean.seismic.magnitude).toBeCloseTo(land.seismic.magnitude, 1);
+    expect(ocean.seismic.magnitude).toBeCloseTo(land.seismic.magnitude ?? Number.NaN, 1);
   });
 
   it('5 000 km tsunami amplitude is 1/5 of the 1 000 km amplitude (1/r decay)', () => {

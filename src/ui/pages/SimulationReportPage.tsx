@@ -141,10 +141,22 @@ function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Fiel
     ...((r.crater.finalDiameter as number) > 0
       ? [{ label: 'Crater morphology', value: r.crater.morphology }]
       : []),
-    { label: 'Seismic magnitude (Collins et al. 2005)', value: fmtNumber(r.seismic.magnitude, 1) },
+    {
+      label:
+        r.seismic.magnitudeSource === 'air' || r.seismic.magnitudeSource === 'ground'
+          ? 'Seismic magnitude (Harkrider et al. 1974 and Collins et al. 2005, rule 730)'
+          : 'Seismic magnitude (Collins et al. 2005)',
+      value:
+        r.seismic.magnitude === null
+          ? '— none: no relation this simulator verifies covers this airburst'
+          : fmtNumber(r.seismic.magnitude, 1),
+    },
     {
       label: 'Seismic magnitude, efficiency 10⁻⁵–10⁻³',
-      value: `${fmtNumber(r.seismic.magnitudeRange.low, 1)}–${fmtNumber(r.seismic.magnitudeRange.high, 1)}`,
+      value:
+        r.seismic.magnitudeRange === null
+          ? '—'
+          : `${fmtNumber(r.seismic.magnitudeRange.low, 1)}–${fmtNumber(r.seismic.magnitudeRange.high, 1)}`,
     },
     { label: 'Liquefaction radius', value: fmtKm(r.seismic.liquefactionRadius) },
     { label: 'Crater rim radius', value: fmtKm(r.damage.craterRim) },

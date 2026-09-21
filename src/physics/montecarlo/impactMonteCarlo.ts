@@ -112,7 +112,9 @@ export function runImpactMonteCarlo(
       finalCraterDiameter: r.crater.finalDiameter,
       ejectaEdge1m: r.ejecta.blanketEdge1m,
       firestormIgnition: r.firestorm.ignitionRadius,
-      seismicMagnitude: r.seismic.magnitude,
+      // No magnitude where no relation covers the burst (rule 730): the
+      // engine drops what is not a number.
+      seismicMagnitude: r.seismic.magnitude ?? Number.NaN,
     }),
   });
 }

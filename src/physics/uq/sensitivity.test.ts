@@ -51,7 +51,7 @@ function simulate(params: {
   return {
     kineticEnergy: result.impactor.kineticEnergy,
     finalCraterDiameter: result.crater.finalDiameter,
-    seismicMagnitude: result.seismic.magnitude,
+    seismicMagnitude: result.seismic.magnitude ?? Number.NaN,
   };
 }
 

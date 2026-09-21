@@ -792,15 +792,26 @@ export function SimulatorPanel(): JSX.Element {
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.magnitude')}</dt>
-                  <dd className={styles.resultValue}>
-                    <CitationTooltip citation={t('citations.seismicMagnitude')}>
-                      M {result.data.seismic.magnitude.toFixed(1)}
+                  <dd className={styles.resultValue} data-testid="impact-magnitude">
+                    <CitationTooltip
+                      citation={t(
+                        result.data.seismic.magnitudeSource === 'air' ||
+                          result.data.seismic.magnitudeSource === 'ground'
+                          ? 'citations.seismicMagnitudeAirburst'
+                          : 'citations.seismicMagnitude'
+                      )}
+                    >
+                      {result.data.seismic.magnitude === null
+                        ? t('simulator.magnitudeNone')
+                        : `M ${result.data.seismic.magnitude.toFixed(1)}`}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.magnitudeRange')}</dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.seismicMagnitudeRange')}>
-                      {`M ${result.data.seismic.magnitudeRange.low.toFixed(1)}–${result.data.seismic.magnitudeRange.high.toFixed(1)}`}
+                      {result.data.seismic.magnitudeRange === null
+                        ? '—'
+                        : `M ${result.data.seismic.magnitudeRange.low.toFixed(1)}–${result.data.seismic.magnitudeRange.high.toFixed(1)}`}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.impactLiquefaction')}</dt>

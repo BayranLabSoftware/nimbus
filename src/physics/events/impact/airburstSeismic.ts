@@ -1,3 +1,7 @@
+import { groundFireballShare } from '../../effects/atmosphericEntry.js';
+import { J } from '../../units.js';
+import { SEISMIC_EFFICIENCY, SEISMIC_EFFICIENCY_RANGE, seismicMagnitude } from './seismic.js';
+
 /**
  * The Rayleigh waves an explosion in the air sends through the ground, as
  * Harkrider, Newton & Flinn (1974) computed them: "Theoretical effect of yield
@@ -122,4 +126,66 @@ export function harkriderMs(
     return lo + byYield.f * (hi - lo);
   };
   return at(byAltitude.i) + byAltitude.f * (at(byAltitude.i + 1) - at(byAltitude.i));
+}
+
+/**
+ * What a complete airburst's seismic magnitude is read from (rules 730 to 738
+ * of validation/airburstSeismicRules.ts).
+ *
+ * - `program`: the kinetic energy the body keeps at its burst, read as an
+ *   impact's on the ground (`impactSeismicEnergy`), as the Earth Impact
+ *   Effects Program reads it.
+ * - `harkrider`: the larger of the air's term — Table 4 above, for the blast
+ *   yield at the burst altitude — and the ground's: the program's relation on
+ *   the share of the kept energy that reaches the ground below the burst's own
+ *   fireball (B-093's share). None where neither covers the burst.
+ */
+export type AirburstSeismic = 'program' | 'harkrider';
+
+/** What an impact that names no airburst seismic law uses. */
+export const DEFAULT_AIRBURST_SEISMIC: AirburstSeismic = 'program';
+
+export interface AirburstMagnitudeInput {
+  /** The blast yield the airburst's blast rings are drawn from (kT). */
+  blastYieldKt: number;
+  /** Its burst altitude (m). */
+  burstAltitude: number;
+  /** The kinetic energy the body keeps at its burst (J). */
+  keptEnergy: number;
+  /** Whether the burst is over the ocean, where the oceanic model applies. */
+  overWater: boolean;
+}
+
+export interface AirburstMagnitude {
+  magnitude: number;
+  /** The range: the ground's term across Collins et al.'s efficiencies, the
+   *  air's held. */
+  low: number;
+  high: number;
+  /** Which term decides the magnitude. */
+  term: 'air' | 'ground';
+}
+
+/** Rule 730: a complete airburst's magnitude under `harkrider`, or null where
+ *  neither term covers the burst. */
+export function airburstMagnitude(input: AirburstMagnitudeInput): AirburstMagnitude | null {
+  const air = harkriderMs(
+    input.blastYieldKt,
+    input.burstAltitude / 1_000,
+    input.overWater ? 'oceanic' : 'continental'
+  );
+  const onGround = groundFireballShare(input.burstAltitude, input.keptEnergy) * input.keptEnergy;
+  const groundAt = (efficiency: number): number | null =>
+    onGround > 0 ? seismicMagnitude(J(onGround), efficiency) : null;
+  const ground = groundAt(SEISMIC_EFFICIENCY);
+  if (air === null && ground === null) return null;
+  const larger = (g: number | null): number =>
+    Math.max(air ?? Number.NEGATIVE_INFINITY, g ?? Number.NEGATIVE_INFINITY);
+  return {
+    magnitude: larger(ground),
+    low: larger(groundAt(SEISMIC_EFFICIENCY_RANGE.low)),
+    high: larger(groundAt(SEISMIC_EFFICIENCY_RANGE.high)),
+    term:
+      (air ?? Number.NEGATIVE_INFINITY) >= (ground ?? Number.NEGATIVE_INFINITY) ? 'air' : 'ground',
+  };
 }

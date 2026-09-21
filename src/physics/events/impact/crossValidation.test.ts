@@ -91,7 +91,7 @@ describe('Impact cross-validation (published reference values)', () => {
     const r = simulateImpact(input);
     const Dtc = r.crater.transientDiameter as number;
     const Dfr = r.crater.finalDiameter as number;
-    const Mw = r.seismic.magnitude;
+    const Mw = r.seismic.magnitude ?? Number.NaN;
     // Collins 2005 Table 4 reference values for this geometry: D_tc
     // ≈ 79 km, D_fr ≈ 142 km, Mw ≈ 9.2. Our π-group-only implementation
     // sits at ≈67 km / ≈116 km / ≈9.87 — within ±20 % on the geometries

@@ -167,13 +167,16 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // Collins et al. 2005 magnitude ≈ 10.2 for Chicxulub. B-011 found
     // that estimator was neither Teanby & Wookey's nor physically
     // sound, and removed it: one magnitude is left, with its range.
-    // Commit: b75a35e (superseded)
+    // Commit: b75a35e (superseded). Since rules 730 to 738 the one magnitude
+    // also names what it is read from; it is still one magnitude.
     const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
     expect(Object.keys(r.seismic).sort()).toEqual([
       'liquefactionRadius',
       'magnitude',
       'magnitudeRange',
+      'magnitudeSource',
     ]);
+    expect(r.seismic.magnitudeSource).toBe('program');
   });
 
   it('B-008 Eltanin deep-water disruption cutoff', () => {

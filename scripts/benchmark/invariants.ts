@@ -23,6 +23,7 @@ import {
   type BlastSource,
 } from '../../src/physics/validation/blastSource.js';
 import { searchFieldJump } from '../../src/physics/validation/fieldJump.js';
+import { explainMagnitudeFall } from '../../src/physics/validation/magnitudeSource.js';
 import { FIELD_JUMP_GATE, FIELD_JUMP_SHARE } from '../../src/physics/validation/fieldJumpRules.js';
 
 /**
@@ -86,6 +87,10 @@ const AIR_FLASH = process.env.NIMBUS_AIR_FLASH;
  *  the sweep is asked to read a candidate (rule 719 of
  *  validation/lowBurstFlashRules.ts). */
 const LOW_BURST_FLASH = process.env.NIMBUS_LOW_BURST_FLASH;
+/** What a complete airburst's seismic magnitude is read from, when the sweep
+ *  is asked to read a candidate (rule 736 of
+ *  validation/airburstSeismicRules.ts). */
+const AIRBURST_SEISMIC = process.env.NIMBUS_AIRBURST_SEISMIC;
 /** Rule 688 (c) of validation/blastShrinkSourceRules.ts: read the harness as
  *  it was, with no cause asked of a shrinking ring. */
 const NO_CAUSES = process.env.NIMBUS_NO_CAUSES !== undefined;
@@ -216,16 +221,36 @@ export const HAZARDS: readonly Hazard[] = [
         ...(ENTRY_EQUATIONS === undefined ? {} : { entryEquations: ENTRY_EQUATIONS }),
         ...(AIR_FLASH === undefined ? {} : { airFlash: AIR_FLASH }),
         ...(LOW_BURST_FLASH === undefined ? {} : { lowBurstFlash: LOW_BURST_FLASH }),
+        ...(AIRBURST_SEISMIC === undefined ? {} : { airburstSeismic: AIRBURST_SEISMIC }),
       } as never) as unknown as Json,
     // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring
     // that shrinks is explained when its source moved it without a step
     // (`blastSource.ts`). Rules 638 to 646 read two causes here and were
     // refused; `explainImpactBlastShrink` is theirs, kept for the record.
     explainShrink: (ring, base, grown, runAt) => {
+      const sourceOf = (r: Json): BlastSource => blastSourceOf(r as never);
+      // Rule 735 of validation/airburstSeismicRules.ts: an airburst's
+      // magnitude read from the air asks its source, as a blast ring does.
+      if (ring === 'seismic.magnitude') {
+        const seismic = base.seismic as Json | undefined;
+        const magnitude = seismic?.magnitude;
+        if (seismic?.magnitudeSource !== 'air' || typeof magnitude !== 'number') return null;
+        const inputs = base.inputs as Json | undefined;
+        const overWater =
+          ((inputs?.waterDepth as number | undefined) ?? 0) > 0 &&
+          !(((inputs?.shoreDistance as number | undefined) ?? 0) > 0);
+        return explainMagnitudeFall(
+          magnitude,
+          sourceOf(base),
+          sourceOf(grown),
+          overWater ? 'oceanic' : 'continental',
+          (k) => sourceOf(runAt(k)),
+          1.01
+        );
+      }
       const threshold = BLAST_RING_THRESHOLD[ring];
       const before = (base.damage as Json | undefined)?.[ring.replace('damage.', '')];
       if (threshold === undefined || typeof before !== 'number') return null;
-      const sourceOf = (r: Json): BlastSource => blastSourceOf(r as never);
       return explainBlastShrink(
         threshold,
         before,
@@ -569,8 +594,39 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
           // whatever else happened in between.
           if (jumped) fail(`continuous, as it was: ${ring}`, input, detail);
           const isContour = hazard.contours?.includes(ring) ?? false;
-          if (jumped && (!isContour || regimeSwitched))
-            fail(`continuous: ${ring}`, input, `${detail}${isContour ? ' (regime switch)' : ''}`);
+          if (jumped && (!isContour || regimeSwitched)) {
+            // Rule 735 of validation/airburstSeismicRules.ts: a magnitude that
+            // moves that much is searched by halving, as rule 662 searches a
+            // field sample; a steep one is printed apart and G5 does not read it.
+            const found = ring.endsWith('magnitude')
+              ? searchFieldJump(
+                  (k: number): number => {
+                    try {
+                      return numberAt(hazard.run(hazard.grow(input, k, step)), ring);
+                    } catch {
+                      return NaN;
+                    }
+                  },
+                  1,
+                  factor,
+                  a,
+                  b,
+                  FIELD_JUMP_SHARE
+                )
+              : null;
+            if (found?.kind === 'steep')
+              fail(
+                `steep, not a jump (magnitude): ${ring}`,
+                input,
+                `${detail}, continuous below ${String(found.depth)} halvings`
+              );
+            else
+              fail(
+                `continuous: ${ring}`,
+                input,
+                `${detail}${isContour ? ' (regime switch)' : ''}${found === null ? '' : `, ${found.kind === 'jump' ? `a jump at ×${found.at.toPrecision(12)}` : `unresolved: ${found.why}`}`}`
+              );
+          }
         }
       }
     }
@@ -618,13 +674,16 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
   return found;
 }
 
-/** Rule 664 of validation/fieldJumpRules.ts, and rule 683 of
- *  validation/blastShrinkSourceRules.ts: the keys G5 does not read. */
+/** Rule 664 of validation/fieldJumpRules.ts, rule 683 of
+ *  validation/blastShrinkSourceRules.ts and rule 735 of
+ *  validation/airburstSeismicRules.ts: the keys G5 does not read. */
 export const NOT_READ_BY_G5 = [
   'continuous, as it was',
   'continuous (field), as rule 624 read it',
   'steep, not a jump (field)',
   'explained, ',
+  // Rule 735 of validation/airburstSeismicRules.ts.
+  'steep, not a jump (magnitude)',
 ] as const;
 
 /** How long a scenario's three runs may take before they count as not returning. */

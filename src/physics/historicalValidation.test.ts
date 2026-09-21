@@ -96,9 +96,10 @@ describe('Historical validation — cosmic impacts', () => {
     // Collins et al. 2005 Eq. 40* for ≈ 10²⁴ J at the ground: M ≈ 10.2,
     // far past the Joyner–Boore calibration, so the ≈ 200 km ring is an
     // extrapolation and a floor, not a map of liquefied ground.
-    expect(r.seismic.magnitude).toBeGreaterThan(10);
-    expect(r.seismic.magnitudeRange.low).toBeCloseTo(r.seismic.magnitude - 0.67, 6);
-    expect(r.seismic.magnitudeRange.high).toBeCloseTo(r.seismic.magnitude + 0.67, 6);
+    const magnitude = r.seismic.magnitude ?? Number.NaN;
+    expect(magnitude).toBeGreaterThan(10);
+    expect(r.seismic.magnitudeRange?.low).toBeCloseTo(magnitude - 0.67, 6);
+    expect(r.seismic.magnitudeRange?.high).toBeCloseTo(magnitude + 0.67, 6);
     expect((r.seismic.liquefactionRadius as number) / 1_000).toBeGreaterThan(150);
   });
 
