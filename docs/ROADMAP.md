@@ -525,6 +525,14 @@ the globe claimed that the model does not:
   languages); the panel cites an impact's own thermal and blast relations
   where it cited an explosion's, and the visual contracts say what the model
   computes (B-101).
+- **Check 4, the captions, that night**: an impact's rings carry no caption on
+  the globe, by Andrea's decision — the legend names each with its quantity,
+  threshold, unit and radius, and a caption only repeated it; once the flash
+  of rules 780 to 787 drew Meteor Crater's third-degree burns at 8.4 km, its
+  caption printed over the 5 psi ring's at 8.5 km. The tooltip keeps the
+  provenance one click away, the burst's beacon keeps its note of the
+  measured cells, and the globe audit's second check, on captions, has
+  nothing left to read for an impact.
 - **Checks 1 and 7, read on 21 September 2026**: the globe audit draws every
   radius the model publishes, captioned with its number, on the six impact
   scenarios of the sweep, and the UI track prints every impact preset as Node

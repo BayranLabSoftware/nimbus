@@ -1691,7 +1691,7 @@ export function Globe(): JSX.Element {
     /** Tsunami source cavity — the same blue disc for every event
      *  family, so an underwater burst and an ocean impact read as the
      *  same phenomenon. */
-    const addCavityRing = (cavityRadius: number): void => {
+    const addCavityRing = (cavityRadius: number, label = true): void => {
       if (!Number.isFinite(cavityRadius) || cavityRadius <= 0) return;
       addDamageRing({
         id: TSUNAMI_CAVITY_ID,
@@ -1704,7 +1704,7 @@ export function Globe(): JSX.Element {
         fillAlpha: 0.2,
         labelBearingDeg: 225,
         animate: true,
-        label: true,
+        label,
         edge: true,
       });
     };
@@ -2038,6 +2038,11 @@ export function Globe(): JSX.Element {
         const band = airburstBandFor(key);
         return band === undefined ? {} : { band };
       };
+      // No captions on an impact's rings (Andrea, 21 September 2026): the
+      // legend names every one with its quantity, threshold and radius, and a
+      // caption on the globe only repeated it — and, once the flash of rules
+      // 780 to 787 drew the burns beside the blast, printed over the next.
+      // The tooltip keeps the provenance one click away.
       const impactFamily: FamilyMember[] = [];
       (Object.keys(impactRingKind) as (keyof ImpactDamageRadii)[]).forEach((key) => {
         const radius = radii[key] as number;
@@ -2068,7 +2073,7 @@ export function Globe(): JSX.Element {
           sigmaKey: key,
           ...bandSpec(key),
           animate: true,
-          label: true,
+          label: false,
           edge: true,
         });
       });
@@ -2103,7 +2108,7 @@ export function Globe(): JSX.Element {
           fillAlpha: zoneFillAlpha(radius, 0.2, waveOnStage),
           sigmaKey: id,
           animate: true,
-          label: true,
+          label: false,
           edge: true,
         });
       }
@@ -2111,7 +2116,7 @@ export function Globe(): JSX.Element {
       if (result.data.tsunami) {
         const cavityRadius = result.data.tsunami.cavityRadius as number;
         if (Number.isFinite(cavityRadius) && cavityRadius > 0) {
-          addCavityRing(cavityRadius);
+          addCavityRing(cavityRadius, false);
         }
         // Phase 16 — wave-front rings retired. The propagating wave is
         // now rendered globally as the discrete-band amplitude heatmap
@@ -2171,7 +2176,7 @@ export function Globe(): JSX.Element {
           sigmaKey: 'ejectaBlanket',
           labelBearingDeg: 135,
           animate: true,
-          label: true,
+          label: false,
           edge: true,
         });
       }
