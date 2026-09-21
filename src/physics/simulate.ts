@@ -74,7 +74,7 @@ import {
 } from './events/impact/damageRings.js';
 import { impactFieldSamples } from './events/impact/impactField.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
-import type { EntryBoundary } from './effects/atmosphericEntry.js';
+import type { EntryBoundary, EntryEquations } from './effects/atmosphericEntry.js';
 import {
   impactSeismicEnergy,
   SEISMIC_EFFICIENCY_RANGE,
@@ -172,6 +172,10 @@ export interface ImpactScenarioInput {
   /** How the entry behaves where the program's model reaches the edge of
    *  breaking up (B-089); {@link DEFAULT_ENTRY_BOUNDARY} when omitted. */
   entryBoundary?: EntryBoundary;
+  /** Whose entry equations, the program's or its paper's (BM-13, B-089);
+   *  {@link DEFAULT_ENTRY_EQUATIONS} when omitted. For reading two on one
+   *  commit, as `groundBlast` is. */
+  entryEquations?: EntryEquations;
 }
 
 /**
@@ -473,7 +477,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     input.impactorDensity,
     ke,
     input.impactAngle,
-    undefined,
+    input.entryEquations,
     undefined,
     input.entryBoundary
   );

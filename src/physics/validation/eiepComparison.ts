@@ -6,7 +6,11 @@ import {
 import { ejectaBlanketOuterEdge } from '../effects/ejecta.js';
 import { impactFireballRadius } from '../effects/blastWave.js';
 import { peakOverpressure } from '../events/explosion/overpressure.js';
-import { simulateImpact, type ImpactScenarioResult } from '../simulate.js';
+import {
+  simulateImpact,
+  type ImpactScenarioInput,
+  type ImpactScenarioResult,
+} from '../simulate.js';
 import { deg, degreesToRadians, J, kgPerM3, m, mps } from '../units.js';
 import { EIEP_REFERENCE, type EiepRow } from './eiepReference.js';
 
@@ -31,13 +35,19 @@ export const EIEP_TARGET_DENSITY: Readonly<Record<EiepRow['target'], number>> = 
   crystalline: 2_750,
 };
 
-export function simulateEiepRow(row: EiepRow): ImpactScenarioResult {
+/** A row of the grid as the model runs it; `options` names a law other than
+ *  the default, for reading two on one commit. */
+export function simulateEiepRow(
+  row: EiepRow,
+  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary'> = {}
+): ImpactScenarioResult {
   return simulateImpact({
     impactorDiameter: m(row.diameterM),
     impactVelocity: mps(row.velocityKmS * 1_000),
     impactorDensity: kgPerM3(row.densityKgM3),
     targetDensity: kgPerM3(EIEP_TARGET_DENSITY[row.target]),
     impactAngle: degreesToRadians(deg(row.angleDeg)),
+    ...options,
   });
 }
 
@@ -65,11 +75,14 @@ export interface EiepRatio {
 }
 
 /** Every pair where both sides answer with a number above zero. */
-export function eiepRatios(rows: readonly EiepRow[] = EIEP_REFERENCE): EiepRatio[] {
+export function eiepRatios(
+  rows: readonly EiepRow[] = EIEP_REFERENCE,
+  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary'> = {}
+): EiepRatio[] {
   const out: EiepRatio[] = [];
   for (const row of rows) {
     if (row.error !== null) continue;
-    const r = simulateEiepRow(row);
+    const r = simulateEiepRow(row, options);
     const groundEnergy = (r.impactor.kineticEnergy as number) * r.entry.energyFractionToGround;
     const pair = (
       quantity: EiepQuantity,
