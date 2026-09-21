@@ -146,6 +146,13 @@ export interface Hazard {
     grown: Json,
     runAt: (factor: number) => Json
   ) => string | null;
+  /**
+   * Rule 780 of validation/atapRadiationAgainRules.ts: the run a cause is read
+   * from, where it can be had without work the cause does not read. An
+   * impact's blast source is its burst's altitude and energy, which no flash
+   * moves, so it is read from a run without the radiation's integral.
+   */
+  runSource?: (input: Json) => Json;
 }
 
 const logU = (u: number, lo: number, hi: number): number =>
@@ -242,6 +249,21 @@ export const HAZARDS: readonly Hazard[] = [
         ...(LOW_BURST_CRATER === undefined ? {} : { lowBurstCrater: LOW_BURST_CRATER }),
         ...(IRON_CRATER_FIELD === undefined ? {} : { ironCraterField: IRON_CRATER_FIELD }),
         ...(AIRBURST_RADIATION === undefined ? {} : { airburstRadiation: AIRBURST_RADIATION }),
+      } as never) as unknown as Json,
+    // Rule 780 of validation/atapRadiationAgainRules.ts: the blast source,
+    // read from a run whose flash is the luminous efficiency's — no flash
+    // moves a burst's altitude or energy.
+    runSource: (input) =>
+      simulateImpact({
+        ...input,
+        ...(GROUND_BLAST === undefined ? {} : { groundBlast: GROUND_BLAST }),
+        ...(ENTRY_EQUATIONS === undefined ? {} : { entryEquations: ENTRY_EQUATIONS }),
+        ...(AIR_FLASH === undefined ? {} : { airFlash: AIR_FLASH }),
+        ...(LOW_BURST_FLASH === undefined ? {} : { lowBurstFlash: LOW_BURST_FLASH }),
+        ...(AIRBURST_SEISMIC === undefined ? {} : { airburstSeismic: AIRBURST_SEISMIC }),
+        ...(LOW_BURST_CRATER === undefined ? {} : { lowBurstCrater: LOW_BURST_CRATER }),
+        ...(IRON_CRATER_FIELD === undefined ? {} : { ironCraterField: IRON_CRATER_FIELD }),
+        airburstRadiation: 'efficiency',
       } as never) as unknown as Json,
     // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring
     // that shrinks is explained when its source moved it without a step
@@ -598,7 +620,7 @@ export function checkScenario(hazard: Hazard, input: Json): Finding[] {
         const cause = NO_CAUSES
           ? null
           : (hazard.explainShrink?.(ring, baseResult, grownResult, (k) =>
-              hazard.run(hazard.grow(input, k, step))
+              (hazard.runSource ?? hazard.run)(hazard.grow(input, k, step))
             ) ?? null);
         if (cause === null)
           fail(`monotone in size: ${ring}`, input, `${a.toPrecision(6)} → ${b.toPrecision(6)}`);
@@ -720,8 +742,12 @@ export const NOT_READ_BY_G5 = [
   'steep, not a jump (crater)',
 ] as const;
 
-/** How long a scenario's three runs may take before they count as not returning. */
-const WATCHDOG_MS = 2_000;
+/** How long a scenario's runs, searches included, may take before they count
+ *  as not returning. Two seconds until rule 780 of
+ *  validation/atapRadiationAgainRules.ts, set when an impact ran in 0.05 ms;
+ *  the watchdog reads a run that does not return, not one that returns in
+ *  seconds. */
+const WATCHDOG_MS = 10_000;
 
 class Runner {
   private worker: Worker | null = null;

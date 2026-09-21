@@ -132,8 +132,9 @@ export function radiantHeatOf(
   endAltitude: number
 ): RadiantHeat | null {
   const heatAt = radiantHeatField(path, angle, endAltitude);
-  if (heatAt === null) return null;
-  return equalAreaProfile(heatAt);
+  const centre = radiantCentroid(path, angle, endAltitude);
+  if (heatAt === null || centre === null) return null;
+  return equalAreaProfile(heatAt, centre);
 }
 
 /**
@@ -146,57 +147,10 @@ export function radiantHeatField(
   angle: number,
   endAltitude: number
 ): ((x: number, y: number) => number) | null {
+  const sources = radiantSources(path, angle, endAltitude);
+  if (sources === null) return null;
   const sinTheta = Math.sin(angle);
   const cosTheta = Math.cos(angle);
-  const tanTheta = sinTheta / cosTheta;
-  if (!(sinTheta > 0) || path.length < 2) return null;
-  const earthRadiusKm = (EARTH_RADIUS as number) / 1_000;
-  // The samples read, with what depends on them alone.
-  const sources: {
-    x: number;
-    h: number;
-    a: number;
-    rest: number;
-    dt: number;
-    horizon2: number;
-  }[] = [];
-  for (let i = 0; i < path.length; i++) {
-    const s = path[i];
-    if (s === undefined) continue;
-    const h = s.altitude / 1_000;
-    if (h > ATAP_TOP_KM || h <= 0) continue;
-    // Below 6 km/s the correlation gives under 0.4 % of its flux at 18 km/s,
-    // and nothing is read there.
-    if (s.velocity / 1_000 < ATAP_DOMAIN.velocity[0]) continue;
-    // Past the fitted range the correlation is read at its edge, never beyond:
-    // a faster body at 18 km/s, a wider cloud at 200 m, and a body too fast
-    // for its altitude at the altitude where V/H is the matrix's largest. A
-    // sharp cut there drew the rings smaller as the body grew. Below 25 m the
-    // fitted (R/25)^1.7 of the radiating layer's projected area is continued,
-    // so that the flux falls to nothing with the radius and never steps.
-    const v = Math.min(s.velocity / 1_000, ATAP_DOMAIN.velocity[1]);
-    const r = Math.min(s.radius, ATAP_DOMAIN.radius[1]);
-    const hFit = Math.max(h, v / ATAP_DOMAIN.velocityOverAltitude);
-    const next = path[i + 1] ?? path[i - 1];
-    if (next === undefined) continue;
-    const dz = Math.abs(s.altitude - next.altitude);
-    const dt = dz / sinTheta / s.velocity;
-    const b = 1.3 - 0.015 * v ** 1.12 * r ** 0.21;
-    // Eq. (9)'s factors that do not depend on the point on the ground (W/cm²).
-    const rest =
-      (4.15 * Math.exp(-0.1423 * hFit)) ** b *
-      (r / 25) ** 1.7 *
-      Math.exp(4.1267 - 0.0357 * v - 54.137 / v);
-    sources.push({
-      x: -(s.altitude - endAltitude) / 1_000 / tanTheta,
-      h,
-      a: 0.69 * (v / hFit) ** 2,
-      rest,
-      dt,
-      horizon2: 2 * earthRadiusKm * h,
-    });
-  }
-  if (sources.length === 0) return null;
   const heatAt = (xg: number, yg: number): number => {
     let total = 0;
     for (const s of sources) {
@@ -218,68 +172,171 @@ export function radiantHeatField(
   return heatAt;
 }
 
-/** The equal-area profile of a heat-load field, on a polar grid about the
- *  origin over the half-plane y ≥ 0 (the footprint is symmetric about the
- *  path). */
-function equalAreaProfile(heatAt: (x: number, y: number) => number): RadiantHeat | null {
-  // The polar grid, over the half-plane y ≥ 0: the footprint is symmetric.
+/** A sample of the path as the correlation reads it: its place on the track
+ *  (km from the point under the end of the path), its altitude (km), the
+ *  view-angle exponent, Eq. (9)'s factors that do not depend on the point on
+ *  the ground (W/cm²), the seconds it radiates, and its horizon (km²). */
+interface RadiantSource {
+  x: number;
+  h: number;
+  a: number;
+  rest: number;
+  dt: number;
+  horizon2: number;
+}
+
+function radiantSources(
+  path: readonly EntryPathSample[],
+  angle: number,
+  endAltitude: number
+): RadiantSource[] | null {
+  const sinTheta = Math.sin(angle);
+  const cosTheta = Math.cos(angle);
+  const tanTheta = sinTheta / cosTheta;
+  if (!(sinTheta > 0) || path.length < 2) return null;
+  const earthRadiusKm = (EARTH_RADIUS as number) / 1_000;
+  const sources: RadiantSource[] = [];
+  for (let i = 0; i < path.length; i++) {
+    const s = path[i];
+    if (s === undefined) continue;
+    const h = s.altitude / 1_000;
+    if (h > ATAP_TOP_KM || h <= 0) continue;
+    // Below 6 km/s the correlation gives under 0.4 % of its flux at 18 km/s,
+    // and nothing is read there.
+    if (s.velocity / 1_000 < ATAP_DOMAIN.velocity[0]) continue;
+    // Past the fitted range the correlation is read at its edge, never beyond,
+    // one input at a time, so that none is read through another: a faster
+    // body as one at 18 km/s, for the time one at 18 km/s takes to cross the
+    // step (a faster body's flux over its shorter time only grows, so this is
+    // the least it lays); a wider cloud as one of 200 m; and the view angle's
+    // exponent a = 0.69 (V/H)² at most its fitted 2.24, where V/H is 1.8.
+    // The altitude is the body's own, below 10 km as Johnston & Stern read it
+    // along their Tunguska trajectories. Below 25 m the fitted (R/25)^1.7 of
+    // the radiating layer's projected area is continued, so that the flux
+    // falls to nothing with the radius and never steps. A sharp cut at any of
+    // these drew the rings smaller as the body grew.
+    const v = Math.min(s.velocity / 1_000, ATAP_DOMAIN.velocity[1]);
+    const r = Math.min(s.radius, ATAP_DOMAIN.radius[1]);
+    const next = path[i + 1] ?? path[i - 1];
+    if (next === undefined) continue;
+    const dz = Math.abs(s.altitude - next.altitude);
+    const dt = dz / sinTheta / (v * 1_000);
+    const b = 1.3 - 0.015 * v ** 1.12 * r ** 0.21;
+    // Eq. (9)'s factors that do not depend on the point on the ground (W/cm²).
+    const rest =
+      (4.15 * Math.exp(-0.1423 * h)) ** b *
+      (r / 25) ** 1.7 *
+      Math.exp(4.1267 - 0.0357 * v - 54.137 / v);
+    sources.push({
+      x: -(s.altitude - endAltitude) / 1_000 / tanTheta,
+      h,
+      a: 0.69 * Math.min(v / h, ATAP_DOMAIN.velocityOverAltitude) ** 2,
+      rest,
+      dt,
+      horizon2: 2 * earthRadiusKm * h,
+    });
+  }
+  return sources.length === 0 ? null : sources;
+}
+
+/** The centre the footprint is measured about (km along the track, from the
+ *  point under the end of the path): the samples' positions weighted by the
+ *  heat each lays directly beneath it, which moves with the body without a
+ *  step. */
+function radiantCentroid(
+  path: readonly EntryPathSample[],
+  angle: number,
+  endAltitude: number
+): number | null {
+  const sources = radiantSources(path, angle, endAltitude);
+  if (sources === null) return null;
+  // Straight beneath a sample: L = H, ψ = 0 and ϕ = 90° − θ.
+  const phi = 90 - (angle * 180) / Math.PI;
+  const beneath = atapTransmission(0, phi);
+  let weight = 0;
+  let moment = 0;
+  for (const s of sources) {
+    const w = (2.75 + 9.6 * (phi / 60) ** s.a) * s.rest * (10 / s.h) ** 2 * beneath * s.dt;
+    if (!(w > 0) || !Number.isFinite(w)) continue;
+    weight += w;
+    moment += w * s.x;
+  }
+  return weight > 0 ? moment / weight : null;
+}
+
+/**
+ * The equal-area profile of a heat-load field. The polar grid is centred on
+ * `centre` (km along the track), over the half-plane y ≥ 0 (the footprint is
+ * symmetric about the track), and the area at each exposure is summed segment
+ * by segment where the exposure reaches it — no shape is assumed, so a
+ * footprint far from the burst, as a shallow entry lays it, is measured as it
+ * is, and a larger exposure everywhere is a larger area.
+ */
+function equalAreaProfile(
+  heatAt: (x: number, y: number) => number,
+  centre: number
+): RadiantHeat | null {
+  const hottest = heatAt(centre, 0);
   const radii: number[] = [];
   for (let k = 0; k < RADIAL_COUNT; k++) {
     radii.push(INNER_RADIUS * (OUTER_RADIUS / INNER_RADIUS) ** (k / (RADIAL_COUNT - 1)));
   }
   const rays: number[][] = [];
-  let peak = 0;
+  let peak = Math.max(hottest, 0);
   for (let j = 0; j < RAY_COUNT; j++) {
     const beta = (Math.PI * j) / (RAY_COUNT - 1);
     const ray: number[] = [];
     for (const r of radii) {
-      const heat = heatAt((r / 1_000) * Math.cos(beta), (r / 1_000) * Math.sin(beta));
+      const heat = heatAt(centre + (r / 1_000) * Math.cos(beta), (r / 1_000) * Math.sin(beta));
       ray.push(heat);
       if (heat > peak) peak = heat;
     }
     rays.push(ray);
   }
   if (!(peak > 0)) return null;
-  // The equal-area profile, level by level, down to where a ray's outermost
-  // point still lies inside the level.
+  // Where a segment of a ray crosses a level: log–log between its ends.
+  const crossing = (r0: number, h0: number, r1: number, h1: number, level: number): number => {
+    if (h0 > 0 && h1 > 0 && h0 !== h1) {
+      return Math.exp(
+        Math.log(r0) +
+          ((Math.log(h0) - Math.log(level)) / (Math.log(h0) - Math.log(h1))) *
+            (Math.log(r1) - Math.log(r0))
+      );
+    }
+    return h0 === h1 ? r0 : r0 + ((h0 - level) / (h0 - h1)) * (r1 - r0);
+  };
   const exposures: number[] = [peak];
   const profile: number[] = [0];
   const dBeta = Math.PI / (RAY_COUNT - 1);
+  const inner = radii[0] ?? 0;
   for (let n = 1; n <= LEVELS_PER_DECADE * DECADES; n++) {
     const level = peak * 10 ** (-n / LEVELS_PER_DECADE);
     let halfArea = 0;
     let truncated = false;
     for (let j = 0; j < RAY_COUNT; j++) {
       const ray = rays[j] ?? [];
-      let outer = -1;
-      for (let k = ray.length - 1; k >= 0; k--) {
-        if ((ray[k] ?? 0) >= level) {
-          outer = k;
-          break;
-        }
-      }
-      let reach = 0;
-      if (outer === ray.length - 1) {
+      if ((ray[ray.length - 1] ?? 0) >= level) {
         truncated = true;
         break;
       }
-      if (outer >= 0) {
-        const r0 = radii[outer] ?? 0;
-        const r1 = radii[outer + 1] ?? r0;
-        const h0 = ray[outer] ?? level;
-        const h1 = ray[outer + 1] ?? 0;
-        // Log–log between the last point inside and the first outside.
-        reach =
-          h1 > 0
-            ? Math.exp(
-                Math.log(r0) +
-                  ((Math.log(h0) - Math.log(level)) / (Math.log(h0) - Math.log(h1))) *
-                    (Math.log(r1) - Math.log(r0))
-              )
-            : r0;
+      // The inner disc, as its first point.
+      let area = (ray[0] ?? 0) >= level ? (inner * inner) / 2 : 0;
+      for (let k = 0; k + 1 < ray.length; k++) {
+        const r0 = radii[k] ?? 0;
+        const r1 = radii[k + 1] ?? r0;
+        const h0 = ray[k] ?? 0;
+        const h1 = ray[k + 1] ?? 0;
+        if (h0 >= level && h1 >= level) area += (r1 * r1 - r0 * r0) / 2;
+        else if (h0 >= level) {
+          const rc = crossing(r0, h0, r1, h1, level);
+          area += (rc * rc - r0 * r0) / 2;
+        } else if (h1 >= level) {
+          const rc = crossing(r0, h0, r1, h1, level);
+          area += (r1 * r1 - rc * rc) / 2;
+        }
       }
       const weight = j === 0 || j === RAY_COUNT - 1 ? 0.5 : 1;
-      halfArea += (weight * dBeta * reach * reach) / 2;
+      halfArea += weight * dBeta * area;
     }
     if (truncated) break;
     const radius = Math.sqrt((2 * halfArea) / Math.PI);
