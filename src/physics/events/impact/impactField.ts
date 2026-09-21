@@ -7,8 +7,11 @@ import {
 } from '../../effects/airburstBlast.js';
 import {
   DEFAULT_AIR_FLASH,
+  DEFAULT_LOW_BURST_FLASH,
+  groundFireballShare,
   type AirFlash,
   type EntryRegime,
+  type LowBurstFlash,
 } from '../../effects/atmosphericEntry.js';
 import { impactThermalExposure } from '../../effects/impactThermal.js';
 import { J, m } from '../../units.js';
@@ -50,10 +53,17 @@ import { peakOverpressure } from '../explosion/overpressure.js';
 /** What these functions read from a result: nothing a result does not carry. */
 export interface ImpactFieldSource {
   /** The law the rings were drawn with, where the input names one. */
-  inputs?: { groundBlast?: GroundBlast; airFlash?: AirFlash };
+  inputs?: {
+    groundBlast?: GroundBlast;
+    airFlash?: AirFlash;
+    lowBurstFlash?: LowBurstFlash;
+    impactVelocity?: number;
+  };
   impactor: { kineticEnergy: number };
   entry: {
     regime: EntryRegime;
+    /** The speed at the burst or at the ground (m/s). */
+    endVelocity?: number;
     energyFractionToGround: number;
     burstAltitude: number;
     virtualBurstAltitude: number;
@@ -116,9 +126,20 @@ export function impactThermalExposureAt(source: ImpactFieldSource, rangeM: numbe
     source.entry.regime === 'COMPLETE_AIRBURST'
       ? Math.max(source.entry.burstAltitude, 0)
       : 0;
+  // B-093: below its own fireball, a share of the kept energy on the ground.
+  const v0 = source.inputs?.impactVelocity ?? 0;
+  const kept =
+    source.entry.regime === 'COMPLETE_AIRBURST' && v0 > 0 && source.entry.endVelocity !== undefined
+      ? ke * Math.min(1, (source.entry.endVelocity / v0) ** 2)
+      : 0;
+  const share =
+    (source.inputs?.lowBurstFlash ?? DEFAULT_LOW_BURST_FLASH) === 'fireball'
+      ? groundFireballShare(source.entry.burstAltitude, kept)
+      : 0;
+  const onGround = kept * share;
   return (
-    impactThermalExposure(m(rangeM), groundEnergy) +
-    (IMPACT_LUMINOUS_EFFICIENCY * airEnergy) /
+    impactThermalExposure(m(rangeM), J(Number(groundEnergy) + onGround)) +
+    (IMPACT_LUMINOUS_EFFICIENCY * (airEnergy - onGround)) /
       (4 * Math.PI * (rangeM * rangeM + flashAltitude * flashAltitude))
   );
 }

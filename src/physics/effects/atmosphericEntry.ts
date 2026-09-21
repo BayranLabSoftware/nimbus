@@ -175,6 +175,32 @@ export type AirFlash = 'ground' | 'burst';
 /** What an entry that names no flash placement uses. */
 export const DEFAULT_AIR_FLASH: AirFlash = 'burst';
 
+/**
+ * How the flash of a complete airburst that bursts below its own fireball is
+ * drawn (B-093).
+ *
+ * - `air`: all of it in the air, at the burst altitude.
+ * - `fireball`: where the burst altitude z is below the fireball radius R of
+ *   the energy the body keeps at its burst (Collins et al. 2005 Eq. 32*), a
+ *   share 1 − z/R of that kept energy radiates as the fireball on the ground
+ *   (the program's, into the half-space and dimmed by the horizon), the rest
+ *   in the air; a burst on the ground is then the partial airburst it becomes.
+ */
+export type LowBurstFlash = 'air' | 'fireball';
+
+/** What an impact that names no low-burst flash uses. */
+export const DEFAULT_LOW_BURST_FLASH: LowBurstFlash = 'air';
+
+/** The share of an airburst's kept energy that radiates as a fireball on the
+ *  ground (B-093): 1 − z/R, with R = 0.002 · E^(1/3) the fireball radius of
+ *  the kept energy E, and 0 for a burst at or above R. */
+export function groundFireballShare(burstAltitude: number, keptEnergy: number): number {
+  if (!(keptEnergy > 0)) return 0;
+  const radius = 0.002 * Math.cbrt(keptEnergy);
+  const z = Math.max(burstAltitude, 0);
+  return z < radius ? 1 - z / radius : 0;
+}
+
 /** The ground range at which the slant distance to a source at `altitude`
  *  is `slant` (m); 0 where the source is farther than that. */
 export function groundRangeAtSlant(slant: number, altitude: number): number {

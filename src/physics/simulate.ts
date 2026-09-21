@@ -77,8 +77,11 @@ import { impactFieldSamples } from './events/impact/impactField.js';
 import { impactorMass, kineticEnergy } from './events/impact/kinetic.js';
 import {
   DEFAULT_AIR_FLASH,
+  DEFAULT_LOW_BURST_FLASH,
+  groundFireballShare,
   groundRangeAtSlant,
   type AirFlash,
+  type LowBurstFlash,
   type EntryBoundary,
   type EntryEquations,
 } from './effects/atmosphericEntry.js';
@@ -186,6 +189,9 @@ export interface ImpactScenarioInput {
   /** Where a complete airburst's flash is placed (B-094);
    *  {@link DEFAULT_AIR_FLASH} when omitted. For reading two on one commit. */
   airFlash?: AirFlash;
+  /** How a complete airburst below its own fireball radiates (B-093);
+   *  {@link DEFAULT_LOW_BURST_FLASH} when omitted. */
+  lowBurstFlash?: LowBurstFlash;
 }
 
 /**
@@ -683,12 +689,37 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const thermalFluence = (range: number): number =>
     impactThermalExposure(m(range), groundThermalEnergy) +
     (IMPACT_LUMINOUS_EFFICIENCY * airThermalEnergy) / (4 * Math.PI * range * range);
+  // Where a complete airburst's flash is placed (B-094).
+  const airFlash = input.airFlash ?? DEFAULT_AIR_FLASH;
+  // B-093: a complete airburst bursting below the fireball of the energy it
+  // keeps radiates a share of that energy as a fireball on the ground, and
+  // the rest from its burst altitude — continuous with the partial airburst
+  // it becomes as the burst altitude reaches the ground.
+  const keptEnergy =
+    entry.regime === 'COMPLETE_AIRBURST' && (input.impactVelocity as number) > 0
+      ? (ke as number) * Math.min(1, (entry.endVelocity / (input.impactVelocity as number)) ** 2)
+      : 0;
+  const lowBurstShare =
+    (input.lowBurstFlash ?? DEFAULT_LOW_BURST_FLASH) === 'fireball'
+      ? groundFireballShare(entry.burstAltitude, keptEnergy)
+      : 0;
+  const lowBurstFluence = (range: number): number => {
+    const z = airFlash === 'burst' ? (entry.burstAltitude as number) : 0;
+    const onGround = keptEnergy * lowBurstShare;
+    return (
+      impactThermalExposure(m(range), J(onGround)) +
+      (IMPACT_LUMINOUS_EFFICIENCY * (airThermalEnergy - onGround)) /
+        (4 * Math.PI * (range * range + z * z))
+    );
+  };
   // With nothing at the ground the two laws are the same flash in the air, and
   // the project's closed form is kept to the bit.
   const thermalRing = (projectRing: Meters, exposure: number): Meters =>
     DEFAULT_IMPACT_THERMAL === 'program' && (groundThermalEnergy as number) > 0
       ? fluenceReach(thermalFluence, exposure)
-      : projectRing;
+      : lowBurstShare > 0
+        ? fluenceReach(lowBurstFluence, exposure)
+        : projectRing;
   // The blast of a body or swarm that reaches the ground: the larger of the
   // project's two Kinney–Graham rings, or the Earth Impact Effects Program's
   // own reading of it (effects/airburstBlast.ts, `GroundBlast`).
@@ -812,7 +843,6 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     sqm(2 * Math.PI * earthRadius ** 2 * (1 - Math.cos((radius as number) / earthRadius)));
   // B-094: the fire radii are slant ranges, as the burn radii are; a complete
   // airburst's flash is placed at its burst altitude when asked.
-  const airFlash = input.airFlash ?? DEFAULT_AIR_FLASH;
   const flashOnGround = (slant: Meters): Meters =>
     airFlash === 'burst' && entry.regime === 'COMPLETE_AIRBURST'
       ? m(groundRangeAtSlant(slant, entry.burstAltitude))

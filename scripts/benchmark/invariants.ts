@@ -82,6 +82,10 @@ const ENTRY_EQUATIONS = process.env.NIMBUS_ENTRY_EQUATIONS;
 /** Where a complete airburst's flash is placed, when the sweep is asked to
  *  read a candidate (rule 703 of validation/airFlashRules.ts). */
 const AIR_FLASH = process.env.NIMBUS_AIR_FLASH;
+/** How a complete airburst that bursts below its own fireball radiates, when
+ *  the sweep is asked to read a candidate (rule 719 of
+ *  validation/lowBurstFlashRules.ts). */
+const LOW_BURST_FLASH = process.env.NIMBUS_LOW_BURST_FLASH;
 /** Rule 688 (c) of validation/blastShrinkSourceRules.ts: read the harness as
  *  it was, with no cause asked of a shrinking ring. */
 const NO_CAUSES = process.env.NIMBUS_NO_CAUSES !== undefined;
@@ -211,6 +215,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(GROUND_BLAST === undefined ? {} : { groundBlast: GROUND_BLAST }),
         ...(ENTRY_EQUATIONS === undefined ? {} : { entryEquations: ENTRY_EQUATIONS }),
         ...(AIR_FLASH === undefined ? {} : { airFlash: AIR_FLASH }),
+        ...(LOW_BURST_FLASH === undefined ? {} : { lowBurstFlash: LOW_BURST_FLASH }),
       } as never) as unknown as Json,
     // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring
     // that shrinks is explained when its source moved it without a step
@@ -722,19 +727,25 @@ async function main(): Promise<void> {
   const resultsDir = join(ROOT, 'benchmark', 'results');
   mkdirSync(resultsDir, { recursive: true });
   // A name nothing has taken: the day, then the day and a number. A sweep
-  // never writes over a sweep.
+  // never writes over a sweep: the file is created exclusively, so two sweeps
+  // that end together cannot both take the name they both found free.
   const stamp = new Date().toISOString().slice(0, 10);
+  const body = `${JSON.stringify({ track: 'INV', scenariosPerHazard: scenarios, watchdogMs: WATCHDOG_MS, failures: report }, null, 1)}\n`;
   let out = join(resultsDir, 'invariants.json');
-  for (let n = 0; existsSync(out); n++) {
+  for (let n = 0; ; n++) {
+    if (!existsSync(out)) {
+      try {
+        writeFileSync(out, body, { flag: 'wx' });
+        break;
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error;
+      }
+    }
     out = join(
       resultsDir,
       n === 0 ? `invariants-${stamp}.json` : `invariants-${stamp}-${n.toString()}.json`
     );
   }
-  writeFileSync(
-    out,
-    `${JSON.stringify({ track: 'INV', scenariosPerHazard: scenarios, watchdogMs: WATCHDOG_MS, failures: report }, null, 1)}\n`
-  );
   console.error(`wrote ${out}`);
 }
 
