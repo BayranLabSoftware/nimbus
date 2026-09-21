@@ -366,15 +366,48 @@ Then the work **stops** and waits for Andrea's order. The order suggested
 after impacts, each only by that order: waves from landslides, volcanoes,
 explosions, waves from earthquakes, earthquakes.
 
+#### IMP-0, done 21 September 2026: what the census found
+
+**No held-out fireball exists today.** The 357 that I2 read were every
+bolide of NASA JPL's catalogue carrying an altitude of peak brightness and a
+speed on 15 September (1 072 listed, 472 without an altitude, 242 without a
+speed, Chelyabinsk seen). On 21 September the catalogue lists 1 073, and
+**the same 358** carry both — none gained the two numbers since, and none new
+has them. Over the last year sixteen did, so new ones arrive at about
+**sixteen a year**: eight rows, the smallest set G3's amendment of
+18 September reads, around **March 2027**; twenty around the end of 2027.
+
+So **G3 cannot be read on impacts before then**, and neither can the G3 half
+of G4, which prints G3's figures cell by cell. Impacts cannot reach a 9
+before spring 2027, whatever this domain does now. What it can close now is
+everything else, and it does.
+
+Not done, deliberately: instrumentally observed meteorite falls lie inside
+the form's range and are not in the 357, but I2 names the bolides of the
+CNEOS catalogue, and drawing G3's held-out set from another population would
+read the rule wider than it is written. They serve instead, with the 357, as
+the band's **development** data — which is also what lets IMP-4 build the
+band now and freeze it before a single held-out fireball exists.
+
+**The five gaps the report declares for impacts**, classified:
+
+| Gap                                                                                                                                | Class                                                                                                                                                                                                                                        | Closed by |
+| ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| No impact in recorded history left a toll                                                                                          | ceiling                                                                                                                                                                                                                                      | —         |
+| Climate, famine and disease outside the count                                                                                      | ceiling                                                                                                                                                                                                                                      | —         |
+| The airburst drawn as round rings                                                                                                  | a ceiling **only where I3's band holds the measured footprints**                                                                                                                                                                             | IMP-3     |
+| The entry bursts a body 13.7 km higher than the sky does                                                                           | the field's own miss — the program's to 0.086 %. The amendment of 16 September says a 9 "misses it too, and the validation report prints by how much", so it is printed as the field's error and not carried as a gap                        | IMP-8     |
+| A ground impact's blast read from under the ground, as the program reads it — the construct that shrinks 407 rings as a body grows | work of its own: a physical surface-burst blast for the energy that reaches the ground, as a named departure from the program (G1 allows one with its reason). It is very likely most of G5's 408 as well, which IMP-2 will say ring by ring | IMP-2     |
+
 ### The risks, and what is done about each
 
-| Risk                                   | Where               | What is done                                                                                            |
-| -------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------- |
-| A model of the dead that fails its set | N3, V5, T4          | developed only on development data, frozen, read once; a failed read spends the set, so these come last |
-| Too few events                         | N2, L3, impacts' G3 | the census says so at the start of the domain, not at the end                                           |
-| The solver too heavy for a phone       | waves               | a grid that adapts to the device, verified at every resolution the product uses                         |
-| A set read and failed                  | every domain        | never read again and never tuned on: recorded, the model improved, a new set sought                     |
-| The calendar                           | E3, E4              | new earthquakes accumulate at their own pace; a set before 1973 is the other honest route               |
+| Risk                                   | Where               | What is done                                                                                                                 |
+| -------------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| A model of the dead that fails its set | N3, V5, T4          | developed only on development data, frozen, read once; a failed read spends the set, so these come last                      |
+| Too few events                         | N2, L3, impacts' G3 | the census says so at the start of the domain, not at the end — and for impacts' G3 it has: none today, about sixteen a year |
+| The solver too heavy for a phone       | waves               | a grid that adapts to the device, verified at every resolution the product uses                                              |
+| A set read and failed                  | every domain        | never read again and never tuned on: recorded, the model improved, a new set sought                                          |
+| The calendar                           | E3, E4              | new earthquakes accumulate at their own pace; a set before 1973 is the other honest route                                    |
 
 **Exit.** Every rule of `GOLD_STANDARD.md` holds at one commit, carrying no
 gap but the ceilings, every domain drawn faithfully on the globe; then C1 to
