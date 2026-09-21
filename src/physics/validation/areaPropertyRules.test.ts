@@ -18,6 +18,8 @@ describe('P-MONO-AREA — the ground never shrinks as the earthquake grows', () 
     expect(walkArea().inversions).toBe(0);
   });
 
+  // Five walks up the magnitudes: 0.6 s alone here, and past the default 5 s
+  // on the CI runner under the full suite (40259c3, 21 September 2026).
   it('holds for every geometry the frontier offers', () => {
     for (const settings of [
       { extendedSource: 'always' as const },
@@ -28,7 +30,7 @@ describe('P-MONO-AREA — the ground never shrinks as the earthquake grows', () 
     ]) {
       expect(walkArea(settings).inversions, JSON.stringify(settings)).toBe(0);
     }
-  });
+  }, 30_000);
 });
 
 describe('P-CONT-AREA — B-083, recorded as it is', () => {
