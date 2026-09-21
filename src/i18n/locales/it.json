@@ -252,7 +252,9 @@
     "entryRegimeExplain": {
       "INTACT": "Il corpo è abbastanza resistente, per la sua dimensione e velocità, da non frammentarsi mai. Rallenta per l'attrito dell'aria e colpisce il suolo intero, e l'energia che ancora porta va nel cratere, negli ejecta e nello scuotimento del terreno.",
       "PARTIAL_AIRBURST": "Il corpo si frammenta e si schiaccia mentre cade, ma lo sciame che si allarga arriva al suolo prima di essere sette volte più largo: colpisce come un unico colpo che scava un cratere, alla velocità che l'aria gli lascia, e l'aria si prende il resto dell'energia. Lo fa ogni corpo da un chilometro in su, e lo fece il ferro di Meteor Crater.",
-      "COMPLETE_AIRBURST": "Il corpo si frammenta e i frammenti si allargano fino a sette volte la sua dimensione prima di arrivare al suolo: l'energia va nell'aria come palla di fuoco e onda d'urto, e non si forma alcun cratere. Tunguska 1908 e Čeljabinsk 2013 sono i casi canonici."
+      "COMPLETE_AIRBURST": "Il corpo si frammenta e i frammenti si allargano fino a sette volte la sua dimensione prima di arrivare al suolo: l'energia va nell'aria come palla di fuoco e onda d'urto, e non si forma alcun cratere. Tunguska 1908 e Čeljabinsk 2013 sono i casi canonici.",
+      "COMPLETE_AIRBURST_LOW": "Il corpo si frammenta e i frammenti si allargano fino a sette volte la sua dimensione appena sopra il suolo, più in basso del raggio della sua palla di fuoco: la maggior parte dell'energia va nell'aria come palla di fuoco e onda d'urto, e la quota di ciò che il corpo trattiene che colpisce il suolo scava un cratere, tanto più grande quanto più basso è lo scoppio (un passo di Nimbus, regole 756–763).",
+      "STREWN_FIELD": "Il ferro si frammenta in aria e i frammenti cadono come un campo di crateri, di cui è disegnato il più grande: 0,15 del cratere che il corpo intero scaverebbe alla sua velocità d'ingresso, la quota tarata sulla caduta di Sikhote-Alin del 1947 (il suo cratere più grande misura 26 m, dove un corpo unico ne scaverebbe circa 178)."
     },
     "burstAltitude": "Altezza detonazione",
     "breakupAltitude": "Inizio frammentazione",

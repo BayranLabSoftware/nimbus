@@ -58,6 +58,7 @@ import {
   DEFAULT_LOW_BURST_FLASH,
 } from '../effects/atmosphericEntry.js';
 import { DEFAULT_AIRBURST_SEISMIC } from '../events/impact/airburstSeismic.js';
+import { entryRegimeExplainKey } from '../../ui/components/entryRegimeExplain.js';
 import { computeTsunamiArrivalField, spansTheGlobe } from '../tsunami/fastMarching.js';
 import { radiansToDegrees } from '../units.js';
 import { fieldsFor } from '../../ui/pages/SimulationReportPage.js';
@@ -1891,6 +1892,47 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(enLocale.citations.impactBlast).toContain('rules 748 to 755');
     expect(itLocale.citations.impactBlast).toContain('regole 748–755');
     expect(VISUAL_CONTRACTS.overpressure5psi.formula).toContain('rules 748 to 755');
+  });
+
+  it('B-103 The panel says a crater forms where one does', () => {
+    // Every complete airburst was told that "no crater forms", beside the
+    // crater its own panel printed: an iron's strewn field, Sikhote-Alin's...
+    const sikhote = simulateImpact(IMPACT_PRESETS.SIKHOTE_ALIN_1947.input);
+    expect(sikhote.entry.regime).toBe('COMPLETE_AIRBURST');
+    expect(Number(sikhote.crater.finalDiameter)).toBeGreaterThan(0);
+    expect(sikhote.crater.origin).toBe('strewnField');
+    expect(entryRegimeExplainKey(sikhote)).toBe('STREWN_FIELD');
+    // ...and, since rules 756 to 763, a burst below its own fireball.
+    const low = simulateImpact({
+      impactorDiameter: m(28),
+      impactVelocity: mps(36_782),
+      impactorDensity: kgPerM3(9_747),
+      targetDensity: kgPerM3(1_897),
+      impactAngle: degreesToRadians(deg(47.15)),
+    });
+    expect(low.entry.regime).toBe('COMPLETE_AIRBURST');
+    expect(Number(low.crater.finalDiameter)).toBeGreaterThan(0);
+    expect(low.crater.origin).toBe('lowBurst');
+    expect(entryRegimeExplainKey(low)).toBe('COMPLETE_AIRBURST_LOW');
+    // The rest keep their regime's sentence.
+    const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
+    expect(tunguska.crater.origin).toBe('none');
+    expect(entryRegimeExplainKey(tunguska)).toBe('COMPLETE_AIRBURST');
+    const meteor = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    expect(meteor.crater.origin).toBe('impact');
+    expect(entryRegimeExplainKey(meteor)).toBe('PARTIAL_AIRBURST');
+    for (const explain of [
+      enLocale.simulator.entryRegimeExplain,
+      itLocale.simulator.entryRegimeExplain,
+    ]) {
+      expect(explain.STREWN_FIELD.length).toBeGreaterThan(0);
+      expect(explain.COMPLETE_AIRBURST_LOW.length).toBeGreaterThan(0);
+    }
+    const panel = readFileSync(
+      fileURLToPath(new URL('../../ui/components/SimulatorPanel.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(panel).toContain('entryRegimeExplainKey(result.data)');
   });
 
   // Bypass guard: the test count below MUST equal the registry row

@@ -40,6 +40,7 @@ import {
 import { CascadeTimeline } from './CascadeTimeline.js';
 import { CitationTooltip } from './CitationTooltip.js';
 import { entryCellSentence } from '../../scene/globe/measuredCellText.js';
+import { entryRegimeExplainKey } from './entryRegimeExplain.js';
 import { CasualtiesPanel } from './CasualtiesPanel.js';
 import { envelopeOf } from '../../physics/validation/calibrationEnvelope.js';
 import { CitySearch } from './CitySearch.js';
@@ -895,7 +896,7 @@ export function SimulatorPanel(): JSX.Element {
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.entryRegimeExplainer')}</dt>
                   <dd className={styles.resultValue}>
-                    {t(`simulator.entryRegimeExplain.${result.data.entry.regime}`)}
+                    {t(`simulator.entryRegimeExplain.${entryRegimeExplainKey(result.data)}`)}
                   </dd>
                 </dl>
                 {result.data.entry.regime !== 'INTACT' && (

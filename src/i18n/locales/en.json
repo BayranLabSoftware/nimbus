@@ -252,7 +252,9 @@
     "entryRegimeExplain": {
       "INTACT": "The body is strong enough, for its size and speed, never to break up. It slows by drag and strikes the ground whole, and the energy it still carries goes into the crater, the ejecta and the ground shaking.",
       "PARTIAL_AIRBURST": "The body breaks up and flattens as it falls, but the spreading swarm reaches the ground before it is seven times its size: it strikes as one crater-forming blow, at the speed the air leaves it, and the air takes the rest of the energy. Every body a kilometre across and more does this, and so did Meteor Crater's iron.",
-      "COMPLETE_AIRBURST": "The body breaks up and its fragments spread to seven times its size before they reach the ground: the energy goes into the air as a fireball and a shock wave, and no crater forms. Tunguska 1908 and Chelyabinsk 2013 are the canonical examples."
+      "COMPLETE_AIRBURST": "The body breaks up and its fragments spread to seven times its size before they reach the ground: the energy goes into the air as a fireball and a shock wave, and no crater forms. Tunguska 1908 and Chelyabinsk 2013 are the canonical examples.",
+      "COMPLETE_AIRBURST_LOW": "The body breaks up and its fragments spread to seven times its size just above the ground, lower than the radius of its own fireball: most of the energy goes into the air as a fireball and a shock wave, and the share of what the body keeps that strikes the ground digs a crater, the larger the lower the burst (a Nimbus step, rules 756 to 763).",
+      "STREWN_FIELD": "The iron breaks up in the air and its fragments fall as a strewn field of craters, of which the largest is drawn: 0.15 of the crater the whole body would dig at its entry speed, the share Sikhote-Alin's fall of 1947 calibrates (its largest crater 26 m, where one body would dig about 178 m)."
     },
     "burstAltitude": "Burst altitude",
     "breakupAltitude": "Fragmentation onset",

@@ -377,6 +377,12 @@ export interface ImpactScenarioResult {
     finalDiameter: Meters;
     depth: Meters;
     morphology: 'simple' | 'complex';
+    /** What dug the crater (B-103): the body or swarm that reaches the ground
+     *  (`impact`), the largest crater of an iron's strewn field
+     *  (`strewnField`), the share of a complete airburst's kept energy that
+     *  strikes the ground below its fireball (`lowBurst`, rules 756 to 763),
+     *  or nothing (`none`). */
+    origin: 'impact' | 'strewnField' | 'lowBurst' | 'none';
   };
   seismic: {
     /** Seismic magnitude of the energy delivered to the ground (Collins
@@ -684,6 +690,14 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const depth = m(craterDepth(Dfr));
   const morphology: 'simple' | 'complex' =
     (Dfr as number) < (SIMPLE_COMPLEX_TRANSITION_EARTH as number) ? 'simple' : 'complex';
+  const craterOrigin: ImpactScenarioResult['crater']['origin'] =
+    (Dfr as number) <= 0
+      ? 'none'
+      : isIronStrewnField
+        ? 'strewnField'
+        : lowBurstCraterShare > 0
+          ? 'lowBurst'
+          : 'impact';
 
   // Damage rings = max(ground-coupled surface burst, atmospheric
   // airburst). The two physical components target the same observer
@@ -970,6 +984,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       finalDiameter: Dfr,
       depth,
       morphology,
+      origin: craterOrigin,
     },
     seismic: {
       magnitude: seismicM,
