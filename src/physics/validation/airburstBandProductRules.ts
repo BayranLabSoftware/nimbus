@@ -83,6 +83,38 @@
  * them.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: I3 MET
+ * ===========================================================================
+ *
+ * The rules were committed in `f71dcb3`, before the band was built, and
+ * pushed with it.
+ *
+ * (a) HOLDS. Tunguska's preset, over 10 to 20 kPa: 4.0 to 29.4 km, holding
+ *     the felled forest's 26.5 km. Chelyabinsk's, over 0.5 to 5 kPa: from
+ *     0 km — twice the window threshold is reached nowhere under a burst
+ *     27 km up — to past 50 km, holding its 50 km.
+ * (b) HOLDS. 27 of the 43 scorable runs, as seen before the rules; beyond
+ *     three burst altitudes the program's static source reads 0.73× to 1.23×
+ *     of the paper's, and over every run where both are numbers 0.71× to
+ *     1.34×. Printed in the report.
+ * (c) HOLDS. Every ring of the 1 097 complete airbursts of the own seed's
+ *     5 000 lies in its band; none of the 3 903 other bodies carries one; and
+ *     so for every preset and the test's grid.
+ * (d) HOLDS. Every test of every project passes, 2 790, and the sweep reads
+ *     G5 39 with the same keys (`benchmark/results/invariants-2026-09-21-27.json`);
+ *     the report moves by the band's sentence and I3's line.
+ * (e) HOLDS. The report regenerated with the band: release gate PASS
+ *     (strict), tolls 13 of 18, waves 10 of 16, replay 3 of 3, golden 12 of
+ *     12; it prints the band's sentence — Chelyabinsk's window band 0 to
+ *     81.4 km, the high edge at three burst altitudes — and impacts count
+ *     5.0 where they counted 4.0, five rules of nine.
+ *
+ * So I3 is met, as read under the two amendments of 21 September; under the
+ * bound as first written it is not, and the scorecard says both.
+ */
+
 /** Rule 707(a): the field's range for extensive tree damage, kPa. */
 export const TREE_DAMAGE_RANGE_KPA = [10, 20] as const;
 

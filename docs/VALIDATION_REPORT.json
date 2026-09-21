@@ -379,9 +379,9 @@
             "rule": "I3",
             "measure": "beyond",
             "standsFor": [],
-            "holds": false,
-            "credit": 0,
-            "status": "not met",
+            "holds": true,
+            "credit": 1,
+            "status": "met",
             "clauses": []
           },
           {
@@ -439,10 +439,10 @@
             "clauses": []
           }
         ],
-        "held": 4,
+        "held": 5,
         "pending": 0,
-        "credit": 4,
-        "reading": 4,
+        "credit": 5,
+        "reading": 5,
         "fidelity": {
           "rules": 3,
           "held": 3,
@@ -452,10 +452,10 @@
         },
         "beyond": {
           "rules": 6,
-          "held": 1,
+          "held": 2,
           "pending": 0,
-          "credit": 1,
-          "reading": 1.5
+          "credit": 2,
+          "reading": 3
         }
       },
       {

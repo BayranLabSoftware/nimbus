@@ -43,6 +43,7 @@ import {
 import { impactFireballRadius } from './effects/blastWave.js';
 import {
   DEFAULT_GROUND_BLAST,
+  airburstBlastBand,
   groundImpactReach,
   type GroundBlast,
 } from './effects/airburstBlast.js';
@@ -455,6 +456,19 @@ export interface ImpactScenarioResult {
    * (rules 621 to 629 of `validation/continuityRules.ts`).
    */
   field: Record<string, number>;
+  /**
+   * The band of each blast ring of a complete airburst: Collins et al.
+   * (2017)'s own statement of how far their three approximations disagree,
+   * about the static source the ring is drawn from (`airburstBlastBand`;
+   * rules 706 to 713 of `validation/airburstBandProductRules.ts`, I3). Null
+   * for a body that reaches the ground, whose blast is the program's own
+   * construct and not that static source.
+   */
+  airburstBand: {
+    overpressure5psi: { low: Meters; high: Meters };
+    overpressure1psi: { low: Meters; high: Meters };
+    lightDamage: { low: Meters; high: Meters };
+  } | null;
 }
 
 /**
@@ -475,6 +489,25 @@ export interface ImpactScenarioResult {
  * Ward & Asphaug (2000); see the individual formula modules for
  * equation-level citations.
  */
+/** Rule 706: the band of each blast ring of a complete airburst, holding
+ *  the ring the product draws; null for a body that reaches the ground. */
+function airburstBandOf(
+  entry: AtmosphericEntryResult,
+  damage: ImpactDamageRadii
+): ImpactScenarioResult['airburstBand'] {
+  if (entry.regime !== 'COMPLETE_AIRBURST') return null;
+  const blastYield = J(Math.max(entry.blastYieldMegatons * 4.184e15, 0));
+  const band = (threshold: Pascals, ring: Meters): { low: Meters; high: Meters } => {
+    const b = airburstBlastBand(threshold, entry.burstAltitude, blastYield);
+    return { low: m(Math.min(b.low, ring)), high: m(Math.max(b.high, ring)) };
+  };
+  return {
+    overpressure5psi: band(OVERPRESSURE_BUILDING_COLLAPSE, damage.overpressure5psi),
+    overpressure1psi: band(OVERPRESSURE_WINDOW_BREAK, damage.overpressure1psi),
+    lightDamage: band(OVERPRESSURE_LIGHT_DAMAGE, damage.lightDamage),
+  };
+}
+
 export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult {
   const mass = impactorMass(input.impactorDiameter, input.impactorDensity);
   const ke = kineticEnergy(mass, input.impactVelocity);
@@ -852,6 +885,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     entry,
     atmosphere,
     field: impactFieldSamples({ inputs: input, impactor: { kineticEnergy: ke }, entry }),
+    airburstBand: airburstBandOf(entry, damage),
   };
 
   // Tsunami cascade activation rule — Phase 14 tightening.

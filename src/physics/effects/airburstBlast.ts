@@ -389,3 +389,43 @@ export function airburstReach(
   const nearField = scaledReach(target / 2, z1, Math.min(3 * z1, limit), transition);
   return m(Math.max(low, nearField) * s);
 }
+
+/**
+ * The band Collins et al. (2017) give their own three approximations of an
+ * airburst's blast, about the static source this module draws (rules 571 to
+ * 578 and 706 to 713 of validation/; I3 of docs/GOLD_STANDARD.md). Their
+ * abstract: "Predicted overpressures from all three models are broadly
+ * consistent at radial distances from ground zero that exceed three times the
+ * burst height. At smaller radial distances, the moving-source model predicts
+ * overpressures two times greater than the static-source model, whereas the
+ * cylindrical line-source model ... two times lower."
+ */
+export const AIRBURST_BAND = {
+  /** The moving source's overpressure over the static source's. */
+  movingSourceFactor: 2,
+  /** The static source's overpressure over the line source's. */
+  lineSourceFactor: 2,
+  /** Beyond this many burst altitudes the three agree. */
+  agreementBurstHeights: 3,
+} as const;
+
+/**
+ * An airburst ring's band (m): the static reach at twice the threshold for
+ * the low edge and at half of it for the high edge, both within three burst
+ * altitudes, and the static reach itself beyond them. It always contains the
+ * static reach. 0 to 0 where the static source reaches nothing.
+ */
+export function airburstBlastBand(
+  threshold: Pascals,
+  burstAltitude: Meters,
+  blastYield: Joules
+): { low: Meters; high: Meters } {
+  const reach = (p: number): number => airburstReach(Pa(p), burstAltitude, blastYield);
+  const t = threshold as number;
+  const mid = reach(t);
+  const agree = AIRBURST_BAND.agreementBurstHeights * Math.max(burstAltitude, 0);
+  if (!(mid < agree)) return { low: m(mid), high: m(mid) };
+  const high = Math.min(Math.max(reach(t / AIRBURST_BAND.movingSourceFactor), mid), agree);
+  const low = Math.min(reach(t * AIRBURST_BAND.lineSourceFactor), mid);
+  return { low: m(low), high: m(high) };
+}

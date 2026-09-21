@@ -426,6 +426,20 @@ whole beside one that bursts; B-089, the program's doubled I_f against the
 paper's, is closed), which the own seed does not draw but an unseen one does, with three burn rings, one far wave and an 11 m
 crater there besides.
 
+#### IMP-3, done 21 September 2026: I3 met
+
+By Andrea's two decisions of that afternoon I3 is read against the field:
+its width against the band Collins et al. 2017 give their own three
+approximations, its shock-physics runs against the same band drawn about the
+field's tool. The runs became scorable when the paper's text turned out to
+print Table 2's burst altitudes (21.5, 14, 10 and 11 km). Rules 706 to 713:
+the product carries the reference's band for every complete airburst's blast
+rings; it holds Tunguska's felled forest over 10 to 20 kPa (4.0 to 29.4 km
+against 26.5) and Chelyabinsk's windows over 0.5 to 5 kPa; it holds 27 of 43
+runs, what the program's static source holds, which reads 0.71× to 1.34× of
+the paper's own. Impacts count 5.0. The globe does not draw the band yet —
+IMP-7's check 3.
+
 #### IMP-7, begun 21 September 2026: what the globe drew that the model did not
 
 The first pass of the seven checks, on the impact presets, found two things

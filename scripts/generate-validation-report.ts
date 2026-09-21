@@ -130,6 +130,18 @@ import { RULE_SITES, SITES_READ_ON } from '../src/physics/validation/siteVs30Dat
 import { adoptOnTolls, CONTOUR_LAWS } from '../src/physics/validation/contourLaws.js';
 import { RULE_SHAKEMAPS } from '../src/physics/validation/ruleShakemapData.js';
 import type { ContourLaw } from '../src/physics/events/earthquake/simulate.js';
+import { IMPACT_PRESETS, simulateImpact } from '../src/physics/simulate.js';
+import { airburstBlastBand } from '../src/physics/effects/airburstBlast.js';
+import {
+  CHELYABINSK_WINDOWS_RADIUS_KM,
+  TREE_DAMAGE_RANGE_KPA,
+  WINDOW_DAMAGE_RANGE_KPA,
+} from '../src/physics/validation/airburstBandProductRules.js';
+import { TUNGUSKA_FELLED } from '../src/physics/validation/airburstBandRules.js';
+import {
+  COLLINS_2017_TABLE_2,
+  TABLE_2_BURST_ALTITUDE_KM,
+} from '../src/physics/validation/collins2017Table2.js';
 import {
   eiepRatios,
   simulateEiepRow,
@@ -2394,6 +2406,48 @@ function fireballSection(run: FireballRunResult): string {
 }
 
 /** The gap rule 79 declares where the entry misses the bar of I2. */
+/** Rules 706 to 713: what I3's band reads, from the product itself. */
+function airburstBandSentence(): string {
+  const MT = 4.184e15;
+  const union = (
+    input: (typeof IMPACT_PRESETS)[keyof typeof IMPACT_PRESETS]['input'],
+    [lowKPa, highKPa]: readonly [number, number]
+  ): { low: number; high: number } => {
+    const r = simulateImpact(input);
+    const w = (r.entry.blastYieldMegatons * MT) as never;
+    const atHigh = airburstBlastBand((highKPa * 1_000) as never, r.entry.burstAltitude, w);
+    const atLow = airburstBlastBand((lowKPa * 1_000) as never, r.entry.burstAltitude, w);
+    return { low: Number(atHigh.low) / 1_000, high: Number(atLow.high) / 1_000 };
+  };
+  const t = union(IMPACT_PRESETS.TUNGUSKA.input, TREE_DAMAGE_RANGE_KPA);
+  const c = union(IMPACT_PRESETS.CHELYABINSK.input, WINDOW_DAMAGE_RANGE_KPA);
+  let held = 0;
+  let scored = 0;
+  const ratios: number[] = [];
+  for (const row of COLLINS_2017_TABLE_2) {
+    const z = ((TABLE_2_BURST_ALTITUDE_KM[row.energyMt] ?? NaN) * 1_000) as never;
+    const w = (row.energyMt * MT) as never;
+    for (const kPa of ['1', '10', '20', '35'] as const) {
+      const band = airburstBlastBand((Number(kPa) * 1_000) as never, z, w);
+      const low = Number(band.low) / 1_000;
+      const high = Number(band.high) / 1_000;
+      row.rangeKm[kPa].forEach((entry, i) => {
+        if (entry === 'offMesh') return;
+        const km = entry ?? 0;
+        scored += 1;
+        if (km >= low - 1e-9 && km <= high + 1e-9) held += 1;
+        if (i === 0 && entry !== null && low === high && high > 0) ratios.push(high / km);
+      });
+    }
+  }
+  const fmt = (x: number): string => x.toFixed(1);
+  return (
+    `Since 21 September 2026 the product carries, for every complete airburst, the band Collins et al. 2017 give their own three approximations about the static source it draws — twice and half the static overpressure within three burst altitudes, the static source beyond (rules 706 to 713, I3). ` +
+    `Over the field's range for tree damage, ${TREE_DAMAGE_RANGE_KPA[0].toString()} to ${TREE_DAMAGE_RANGE_KPA[1].toString()} kPa, Tunguska's preset reads ${fmt(t.low)} to ${fmt(t.high)} km, holding the felled forest's ${TUNGUSKA_FELLED.equivalentRadiusKm.toString()} km; over the range for window damage, ${WINDOW_DAMAGE_RANGE_KPA[0].toString()} to ${WINDOW_DAMAGE_RANGE_KPA[1].toString()} kPa, Chelyabinsk's reads ${fmt(c.low)} to ${fmt(c.high)} km, holding its ${CHELYABINSK_WINDOWS_RADIUS_KM.toString()} km. ` +
+    `At the altitudes the paper prints for its Table 2 the band holds ${held.toString()} of the ${scored.toString()} shock-physics runs that can be scored: beyond three burst altitudes, where the three approximations agree, the program's static source — which this product draws — reads ${Math.min(...ratios).toFixed(2)}× to ${Math.max(...ratios).toFixed(2)}× of the paper's own, a disagreement inside the field that I3 reads against the field's tool (docs/GOLD_STANDARD.md, the amendments of 21 September).`
+  );
+}
+
 function fireballGap(run: FireballRunResult): string[] {
   const first = FIREBALL_BODIES[0];
   const reading = run.readings[first.key];
@@ -4043,7 +4097,9 @@ ${bullet([
   "**Subduction-interface earthquakes are shaken with laws fitted to crustal ones.** The intensity rings of a scenario no deeper than 70 km and the reported accelerations use Boore et al. 2014, fitted on shallow crustal events; the two subduction-interface relations implemented were not adopted (rules 35 to 39 and 50 to 55), and Tōhoku's MMI VIII band in the footprint table, nearly three times the ShakeMap's area, is where it shows. Two more simplifications show on the same event. Every fault slips on one rigidity, 30 GPa, where along megathrusts it changes with depth (Bilek & Lay 1999). And Tōhoku's mean slip is 13.0 m where the inversions average about 10, because the Strasser et al. 2010 rupture area it is divided by is smaller than the inverted one; a rigidity changed across the board does not mend it, since the rows that depend on it need to move in opposite directions (docs/ROADMAP.md, M9 move 3).",
   "**Two wave calibrations stand on numbers their sources do not give.** Anak Krakatau's subaerial prefactor, K = 0.4, was set on an ≈ 85 m source amplitude credited to Grilli et al. 2019, who simulate a leading wave nearly 50 m high near the island; the preset makes 80 m, and no row of this report checks it. Storegga's submarine prefactor, K = 0.005, was set on a 5–10 m source amplitude credited to Bondevik et al. 2005, who read run-up from deposits (its row above says so). Neither is re-tuned until a number the source does give is chosen to tune on (docs/ROADMAP.md, move 0b).",
   "**Two numbers are not traced to a source read here.** The arrival times the travel-time tests compared against had a citation that does not exist, so `tsunami.test.ts` skips them until times are read from a published table. The complex-crater depth was the second and is closed: it was Herrick et al. 1997's Venus relation read only through Collins et al. 2005, and since 16 September 2026 it is Collins et al.'s own Eq. 28* (B-040). A third, the 30 cm at DART 21413 that the Tōhoku wave row was tuned on, was read from the buoy's own file on 15 September 2026: it crests at 0.81 m, and the row is declared (B-034).",
-  "**An airburst's blast is a point that does not move, drawn as round rings.** Since 15 September 2026 it is the Earth Impact Effects Program's own air blast (Collins et al. 2005 and 2017; B-032), reproduced within 1 % on the airburst rows above, which were held out when it was adopted. What that model is not was checked against rules written first (`docs/BENCHMARK_PROTOCOL.md`): against the shock-physics runs of Collins et al. 2017, Table 2, its figures are 0.92× theirs, the median off by a factor of 1.21; at Tunguska its 20 kPa ring reaches 11.5 km, against the 26.5 km radius of the ~2 200 km² of flattened forest (0.43×), beyond a factor of two. At Chelyabinsk the check first flagged a 1 kPa ring of 17.6 km against the 56 km radius of the ~10 000 km² over which windows broke; the preset then took the body Popova et al. 2013 measured, as its source says and not as the check asked (B-033), and on a re-run that is not a validation the ring reaches 30.2 km (0.54×), 68.0 km for a moving source. In the city, 45 km out, the law gives 0.74 kPa where the broken windows put about 3.2 kPa (Brown et al. 2013). A shallow, high burst spreads its energy along its path and damages an ellipse, farthest across the path; ReVelle's weak-shock line source, the only analytic one, is \"largely inapplicable\" beneath Chelyabinsk's trail (Gi, Brown & Aftosmis 2018), and the elongated footprint has been reproduced only by three-dimensional hydrocodes (Popova et al. 2013; Aftosmis et al. 2016). Tunguska's blast row checks the energy, not the blast (`effects/airburstBlast.ts`).",
+  "**An airburst's blast is a point that does not move, drawn as round rings.** Since 15 September 2026 it is the Earth Impact Effects Program's own air blast (Collins et al. 2005 and 2017; B-032), reproduced within 1 % on the airburst rows above, which were held out when it was adopted. What that model is not was checked against rules written first (`docs/BENCHMARK_PROTOCOL.md`): against the shock-physics runs of Collins et al. 2017, Table 2, its figures are 0.92× theirs, the median off by a factor of 1.21; at Tunguska its 20 kPa ring reaches 11.5 km, against the 26.5 km radius of the ~2 200 km² of flattened forest (0.43×), beyond a factor of two. At Chelyabinsk the check first flagged a 1 kPa ring of 17.6 km against the 56 km radius of the ~10 000 km² over which windows broke; the preset then took the body Popova et al. 2013 measured, as its source says and not as the check asked (B-033), and on a re-run that is not a validation the ring reaches 30.2 km (0.54×), 68.0 km for a moving source. In the city, 45 km out, the law gives 0.74 kPa where the broken windows put about 3.2 kPa (Brown et al. 2013). A shallow, high burst spreads its energy along its path and damages an ellipse, farthest across the path; ReVelle's weak-shock line source, the only analytic one, is \"largely inapplicable\" beneath Chelyabinsk's trail (Gi, Brown & Aftosmis 2018), and the elongated footprint has been reproduced only by three-dimensional hydrocodes (Popova et al. 2013; Aftosmis et al. 2016). Tunguska's blast row checks the energy, not the blast (`effects/airburstBlast.ts`)." +
+    ' ' +
+    airburstBandSentence(),
   "**Parts of the explosion model are the project's, not the book's.** The thermal partition between a burst on the ground and one in the air is a straight line rather than the book's Table 7.101, and the conventional mortality bands were composed with Beirut in view (docs/ROADMAP.md, move 0b).",
   "**The burn rings are drawn where half a population burns, and what that population is, is the figure's.** Since 16 September 2026 an explosion's burn rings are read off Glasstone & Dolan's Figure 12.65, \"skin burn probabilities for an average unshielded population taking no evasive action\", at its solid 50 % line (rules 114 to 117, `validation/burnProbabilityRules.ts`). Earlier the same day they were read off Figure 12.64, the exposure required to burn three skin pigmentations, which attaches no probability to any curve. The two differ by a few per cent and not always in the same direction: this report said until the same day that 12.64's middle skin asks a little more exposure than 12.65's 50 % line *everywhere*, which holds at 1 kt and at 10 Mt, the two yields the sentence was read at, and not between — from about 10 to 300 kt the 50 % second-degree line lies above the middle curve (4.86 against 4.49 cal/cm² at 15 kt), and Hiroshima's second-degree ring shrank by 3.5 % where the high-yield rings grew by 2 to 3.6 %. What the figure's population is, the figure says, and a visitor's is usually not it: most people are indoors, behind something, or facing away. The broken 18 % and 82 % lines bound the spread across people at one exposure, and that spread is not a confidence interval on the ring.",
   "**No impact in recorded history left a death toll**, so an impact's toll will never be validated. The simulator says so beside every impact toll.",
