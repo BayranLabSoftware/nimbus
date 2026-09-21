@@ -91,6 +91,49 @@
  * It does not close B-095.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `f0f7c09` and the four sweeps made on that commit
+ * (`benchmark/results/invariants-2026-09-21-28.json` and `-29` on the own
+ * seed, the flash all in the air and tapered; `-30` and `-31` on
+ * `benchmark-2026-09-21-heldout-lowburst`). Then the default moved.
+ *
+ * (a) HOLDS. Of 4 980 bodies of the own seed and 4 986 of the unseen one that
+ *     are not complete airbursts bursting below their fireball, none moves a
+ *     burn ring, a fire ring or a thermal field sample; nor does any row of
+ *     the I1 grid or any preset. The 20 and 14 that are all move, from −4.8 %
+ *     to +4.0 % and from −3.2 % to +5.7 %.
+ * (b) HOLDS. `lowBurstFlashRules.test.ts`: across both switches the rings and
+ *     the field agree to 1e-6 and the field is steep at 10, 50 and 100 km,
+ *     where the law before steps by more than 1 %; the presets keep the flash
+ *     in the air to the bit.
+ * (c) HOLDS. `impactField.test.ts` passes on the new default.
+ * (d) HOLDS. On the own seed G5 reads 38 against 39: B-093's burn ring is
+ *     gone, and it is the one scenario whose failures differ. On the unseen
+ *     seed 50 against 57, and every key printed under the taper is printed
+ *     under the law before; the one scenario that differs is a 28.3 m iron at
+ *     36.8 km/s, whose burn rings and thermal field at five ranges no longer
+ *     jump at its switch. What that seed prints under both laws: 31 airburst
+ *     magnitudes (B-092); the same iron's crater, which opens at full size at
+ *     that switch (B-097, new); two irons whose crater vanishes as they grow,
+ *     one of 1.07 m where I_f crosses 1 (B-091) and one of 19.8 m at the
+ *     strewn field's cut at 20 m (B-098, new, and the cut B-091 had been
+ *     given twice before); a 16.3 m iron at 5.8 km/s, I_f 0.94, whose burn
+ *     rings shrink by 0.3 % because the paper's breakup rises with its size
+ *     near I_f = 1 (B-091's neighbourhood).
+ * (e) HOLDS. The report regenerated on the new default: release gate PASS.
+ * (f) HOLDS. No preset moves.
+ *
+ * One test of rules 698 to 705 changed, and why: its check that a complete
+ * airburst's rings are the ground ranges at slant of what they were compares
+ * two placements of a flash all in the air, and now asks for one
+ * (`lowBurstFlash: 'air'`). So `DEFAULT_LOW_BURST_FLASH` is `fireball` and
+ * B-093 is closed.
+ */
+
 /** Rule 719: the seed of the run on scenarios nobody has seen. */
 export const LOW_BURST_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-lowburst';
 

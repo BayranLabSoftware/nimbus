@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { groundFireballShare, type LowBurstFlash } from '../effects/atmosphericEntry.js';
+import {
+  DEFAULT_LOW_BURST_FLASH,
+  groundFireballShare,
+  type LowBurstFlash,
+} from '../effects/atmosphericEntry.js';
 import { impactThermalExposureAt } from '../events/impact/impactField.js';
 import { IMPACT_PRESETS, simulateImpact, type ImpactScenarioInput } from '../simulate.js';
 import { m } from '../units.js';
@@ -67,7 +71,8 @@ function switchOf(input: ImpactScenarioInput): { below: number; above: number } 
 }
 
 describe('rules 714 to 721: a low airburst’s flash where its fireball meets the ground', () => {
-  it('reads its unseen seed from the rules', () => {
+  it('is the default, and reads its unseen seed from the rules', () => {
+    expect(DEFAULT_LOW_BURST_FLASH).toBe('fireball');
     expect(LOW_BURST_HELD_OUT_SEED).toBe('benchmark-2026-09-21-heldout-lowburst');
   });
 

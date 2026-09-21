@@ -413,18 +413,22 @@ Read on the sweep's own seed, 5 000 impacts, round by round:
 | The field read as a limit                                         | 660 to 666 | adopted: ten "jumps" were slopes                                        |      435 |
 | The paper's entry, to close B-089                                 | 667 to 675 | refused by the letter of 673 (e): one key G5 does not read              |        — |
 | The paper's entry, asked again                                    | 676 to 682 | refused on an unseen seed: three more rings the height of burst shrinks |        — |
-| The blast rings a source moves                                    | 683 to 690 | adopted: all 396 moved by their source's altitude; B-091 found          |   **39** |
+| The blast rings a source moves                                    | 683 to 690 | adopted: all 396 moved by their source's altitude; B-091 found          |       39 |
 | The paper's entry, read by what a wrong entry shows               | 691 to 697 | adopted: no new kind of failure, no jumping source; B-089 closed        |       39 |
 | An airburst's flash where the airburst is (IMP-7's first finding) | 698 to 705 | adopted: B-094 closed; the efficiency, B-095, next                      |       39 |
+| A low airburst's flash where its fireball meets the ground        | 714 to 721 | adopted: B-093 closed; B-097 and B-098 found on the unseen seed         |   **38** |
 
-What is left: the 38 airburst magnitudes, where the program reads an
-airburst's seismic source as the energy the body keeps and that falls as
-the body grows — a relation to replace with a physical one, as a named
-departure; one second-degree burn ring at the passage from a complete
-airburst to a partial one; and the entry's jump B-091 (the paper's own I_f = 1, a body that lands
-whole beside one that bursts; B-089, the program's doubled I_f against the
-paper's, is closed), which the own seed does not draw but an unseen one does, with three burn rings, one far wave and an 11 m
-crater there besides.
+What is left on the own seed: the 38 airburst magnitudes, where the program
+reads an airburst's seismic source as the energy the body keeps and that
+falls as the body grows — a relation to replace with a physical one, as a
+named departure (B-092). The burn ring at the passage from a complete
+airburst to a partial one is gone (B-093, rules 714 to 721). What the unseen
+seeds draw besides: the entry's jump B-091 (the paper's own I_f = 1, a body
+that lands whole beside one that bursts; B-089, the program's doubled I_f
+against the paper's, is closed), and its neighbourhood, where the breakup
+rises with the body's size; a crater that opens at full size where a complete
+airburst becomes a partial one (B-097); and an iron's crater that vanishes
+at the strewn field's cut at 20 m (B-098), which B-091 had been given.
 
 #### IMP-3, done 21 September 2026: I3 met
 
