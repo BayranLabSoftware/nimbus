@@ -483,7 +483,7 @@ while they stand: an impact's air blast read from under the ground (work of
 its own, a physical surface burst for the energy that reaches the ground) and
 the airburst flash's efficiency (B-095, declared by Andrea's decision).
 
-#### IMP-7, begun 21 September 2026: what the globe drew that the model did not
+#### IMP-7, done 21 September 2026: what the globe drew that the model did not
 
 The first pass of the seven checks, on the impact presets, found two things
 the globe claimed that the model does not:
@@ -527,6 +527,29 @@ Still to do for impacts: nothing of the seven checks. The rings of an impact
 other than an airburst's blast carry the generic σ halo of their published
 scatter; no rule of this domain names them with a held-out set, so G3 asks
 them no band.
+
+#### IMP-9, 21 September 2026: the verdict — impacts at 7.0, and what is missing
+
+The report regenerated on `cc825ee` reads impacts at **7.0**: I1, I2, I3 and
+I4, G4, G5 and G7 met, where the domain opened that morning at 5.0. Two rules
+are missing, and why:
+
+- **G3, by the calendar.** The band of the entry's altitude is built and
+  frozen (IMP-4); the held-out fireballs it is scored on do not exist yet, and
+  eight are expected around March 2027 (IMP-0). IMP-6 scores it then, and
+  fixes with Andrea how G3's width bound, written for a σ_ln, reads
+  kilometres.
+- **G6, by two gaps that are not ceilings.** An airburst's flash, too faint
+  by the luminous efficiency of an impact's plume (B-095, declared by
+  Andrea's decision while the field's airburst radiation models cannot be
+  read free); and an impact's air blast read from under the ground as the
+  program reads it, for which a physical surface burst is work of its own.
+
+Open, and outside the benchmark's draw on which G5 is met: B-091, the
+paper's sharp strength at I_f = 1; B-097, a crater that opens at full size
+where a complete airburst becomes a partial one; B-098, an iron's crater that
+vanishes at the strewn field's cut at 20 m. The work on impacts stops here and
+waits for Andrea's order.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
