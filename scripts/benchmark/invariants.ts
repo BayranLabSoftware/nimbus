@@ -17,6 +17,8 @@ import {
   OVERPRESSURE_WINDOW_BREAK,
 } from '../../src/physics/events/impact/damageRings.js';
 import { CONTINUITY_TOLERANCE, FIELD_FLOOR } from '../../src/physics/validation/continuityRules.js';
+import { searchFieldJump } from '../../src/physics/validation/fieldJump.js';
+import { FIELD_JUMP_GATE, FIELD_JUMP_SHARE } from '../../src/physics/validation/fieldJumpRules.js';
 
 /**
  * Track INV of the benchmark protocol: invariants every output must keep,
@@ -42,7 +44,13 @@ import { CONTINUITY_TOLERANCE, FIELD_FLOOR } from '../../src/physics/validation/
  * - continuous (rings under a millimetre are not compared, in either
  *   check): the same rings move by less than 5 % when the size grows
  *   by 0.1 % (magnitude by 0.001), a magnitude by less than 0.05 — a
- *   larger jump is a regime switch that is not continuous.
+ *   larger jump is a regime switch that is not continuous. For impacts,
+ *   since 21 September 2026, a contour is held to that only where the
+ *   regime switches, and the field at seven fixed ranges everywhere: a
+ *   sample a 0.1 % step moves by more than 1 % is searched for a jump by
+ *   halving the step thirty times, and counted only if it has one (rules
+ *   621 to 629 of validation/continuityRules.ts, 660 to 666 of
+ *   validation/fieldJumpRules.ts).
  *
  * Each scenario runs in a worker thread with a watchdog: three runs that
  * have not returned in two seconds (they take milliseconds) are a run that
@@ -401,6 +409,12 @@ export const HAZARDS: readonly Hazard[] = [
   },
 ];
 
+/** The number at a dotted path of a result, or NaN. */
+function numberAt(result: Json, path: string): number {
+  const v = path.split('.').reduce<unknown>((o, k) => (o as Json | undefined)?.[k], result);
+  return typeof v === 'number' ? v : NaN;
+}
+
 function leaves(value: unknown, path: string, out: Map<string, number>): void {
   if (typeof value === 'number') {
     out.set(path, value);
@@ -514,7 +528,8 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
         }
       }
     }
-    // Rule 624: the field, at fixed places, everywhere.
+    // Rule 624: the field, at fixed places, everywhere — read since rules 660
+    // to 666 of validation/fieldJumpRules.ts as the limit continuity is.
     if (check === 'continuous' && hazard.fields !== undefined) {
       for (const { path, floor } of hazard.fields) {
         const a = base.get(path);
@@ -524,17 +539,45 @@ function checkScenario(hazard: Hazard, input: Json): Finding[] {
         // Rule 625: below its floor in both runs a sample is not compared.
         if (Math.max(Math.abs(a), Math.abs(b)) < floor) continue;
         const scale = Math.max(Math.abs(a), Math.abs(b));
-        if (Math.abs(b - a) / scale > CONTINUITY_TOLERANCE)
+        const moved = Math.abs(b - a) / scale;
+        const detail = `${a.toPrecision(6)} → ${b.toPrecision(6)}${regimeSwitched ? ' (regime switch)' : ''}`;
+        // Rule 663: the field as rule 624 read it, printed beside the search.
+        if (moved > CONTINUITY_TOLERANCE)
+          fail(`continuous (field), as rule 624 read it: ${path}`, input, detail);
+        // Rule 662: a sample the step moves by more than the gate is searched.
+        if (moved <= FIELD_JUMP_GATE) continue;
+        const valueAt = (k: number): number => {
+          try {
+            return numberAt(hazard.run(hazard.grow(input, k, step)), path);
+          } catch {
+            return NaN;
+          }
+        };
+        const found = searchFieldJump(valueAt, 1, factor, a, b, FIELD_JUMP_SHARE * scale);
+        if (found.kind === 'steep')
+          fail(
+            `steep, not a jump (field): ${path}`,
+            input,
+            `${detail}, continuous below ${String(found.depth)} halvings`
+          );
+        else
           fail(
             `continuous (field): ${path}`,
             input,
-            `${a.toPrecision(6)} → ${b.toPrecision(6)}${regimeSwitched ? ' (regime switch)' : ''}`
+            `${detail}, ${found.kind === 'jump' ? `a jump at ×${found.at.toPrecision(12)}` : `unresolved: ${found.why}`}`
           );
       }
     }
   }
   return found;
 }
+
+/** Rule 664 of validation/fieldJumpRules.ts: the keys G5 does not read. */
+export const NOT_READ_BY_G5 = [
+  'continuous, as it was',
+  'continuous (field), as rule 624 read it',
+  'steep, not a jump (field)',
+] as const;
 
 /** How long a scenario's three runs may take before they count as not returning. */
 const WATCHDOG_MS = 2_000;
@@ -613,8 +656,15 @@ async function main(): Promise<void> {
     report[hazard.name] = tallies;
     scenarios[hazard.name] = N;
     const failures = Object.values(tallies).reduce((s, t) => s + t.count, 0);
+    // Rule 664 of validation/fieldJumpRules.ts: what G5 reads leaves out the
+    // checks as they were, printed beside the corrected ones, and the field
+    // the search found continuous.
+    const read = Object.entries(tallies)
+      .filter(([key]) => !NOT_READ_BY_G5.some((prefix) => key.startsWith(prefix)))
+      .reduce((s, [, t]) => s + t.count, 0);
     console.log(
-      `${hazard.name}: ${N.toString()} scenarios, ${failures.toString()} invariant failures`
+      `${hazard.name}: ${N.toString()} scenarios, ${failures.toString()} invariant failures` +
+        (read === failures ? '' : `, ${read.toString()} read by G5`)
     );
     for (const [key, t] of Object.entries(tallies).sort((a, b) => b[1].count - a[1].count)) {
       console.log(
