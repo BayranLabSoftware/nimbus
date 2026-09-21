@@ -68,9 +68,12 @@ describe('rules 660 to 666: the field read as the limit continuity is', () => {
   });
 
   it('finds B-089, the entry’s seam, as a jump in the field, on the program’s equations', () => {
-    // The seam is the program's equations', and is read on them.
+    // The seam is the program's equations', and is read on them — and on the
+    // program's ground blast, which reads Eq. 18's altitude below the ground,
+    // where it shows (the default since rules 748 to 755 bursts at the ground).
     const b089 = {
       entryEquations: 'program',
+      groundBlast: 'programHeld',
       impactorDiameter: 30.35083106505634,
       impactVelocity: 13632.485304726288,
       impactorDensity: 9127.968714106828,

@@ -478,10 +478,13 @@ toll, which no impact left; the deaths no count of the prompt effects sees;
 and, since I3's band holds both footprints, an airburst's round footprint —
 and prints the entry's miss of the sky in the entry's own section, beside the
 program's identical miss, as the field's error and no longer as a gap (the
-amendment of 16 September). Two gaps are not ceilings, and G6 is not met
-while they stand: an impact's air blast read from under the ground (work of
-its own, a physical surface burst for the energy that reaches the ground) and
-the airburst flash's efficiency (B-095, declared by Andrea's decision).
+amendment of 16 September). Two gaps were not ceilings. An impact's air blast
+read from under the ground is closed by rules 748 to 755 (Andrea's order of
+that evening): a body that reaches the ground bursts at the ground, the
+program's law at z₁ = 0, Collins et al. 2005's Eq. 54 — no blast ring of the
+own seed falls as its body grows, and Meteor Crater's grow 4.4 times in
+range, where Kring (1997) put its flattened trees. The airburst flash's
+efficiency (B-095) remains, and G6 with it.
 
 #### IMP-7, done 21 September 2026: what the globe drew that the model did not
 

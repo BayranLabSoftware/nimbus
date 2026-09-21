@@ -75,6 +75,39 @@
  * the relation the field wrote for it, and that its blast then grows with it.
  */
 
+/*
+ * ===========================================================================
+ * The outcome, written after the runs of 21 September 2026: ADOPTED
+ * ===========================================================================
+ *
+ * The rules were pushed in `3bd4650` and the four sweeps made on that commit
+ * (`benchmark/results/invariants-2026-09-21-36.json` and `-37` on the own
+ * seed, the held law and the surface; `-38` and `-39` on
+ * `benchmark-2026-09-21-heldout-surface`). Then the default moved.
+ *
+ * (a) HOLDS. `surfaceBlastRules.test.ts`: no ring or overpressure sample of a
+ *     complete airburst moves, and every blast ring of a body that reaches the
+ *     ground is the law at z₁ = 0 on W, to the bit.
+ * (b) HOLDS. G5 reads 0 on the own seed under both laws, and 8 on the unseen
+ *     seed under both, the same keys and the same scenarios: two slow irons
+ *     near I_f = 1 whose magnitude and burns fall as the breakup rises with
+ *     their size (B-091's neighbourhood), and a 19.8 m iron whose crater
+ *     vanishes at the strewn field's cut (B-098). The blast rings the harness
+ *     explains by their source's altitude fall from 142, 118 and 132 to 65,
+ *     41 and 55 on the own seed, and from 124, 97 and 114 to 66, 39 and 56 on
+ *     the unseen one: what is left is airbursts, whose source is in the air.
+ * (c) HOLDS. `impactField.test.ts` passes on the new default.
+ * (d) HOLDS. The presets move as rule 751 lists them, and no other.
+ * (e) HOLDS. The report regenerated on the new default: release gate PASS.
+ *
+ * Three tests of the rounds that read the program's held law now ask for it
+ * (`groundBlast: 'programHeld'`): B-089's halving rings in
+ * `blastShrinkRules.test.ts`, its field jump in `fieldJumpRules.test.ts`, and
+ * the default named in `airburstBlast.test.ts`. So `DEFAULT_GROUND_BLAST` is
+ * `surface`, and the gap of an impact's blast read from under the ground is
+ * closed.
+ */
+
 /** Rule 753 (a): the seed of the run on scenarios nobody has seen. */
 export const SURFACE_BLAST_HELD_OUT_SEED = 'benchmark-2026-09-21-heldout-surface';
 

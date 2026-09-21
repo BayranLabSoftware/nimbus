@@ -227,10 +227,11 @@ export type GroundBlast = 'project' | 'program' | 'programHeld' | 'surface';
  */
 export const GROUND_BLAST_MIN_CROSSOVER = 53.0467685789;
 
-/** What an impact that names no ground blast draws. */
-/** Since rules 630 to 637 (B-088): the program's law, held at the shortest
- *  crossover it has been checked at. */
-export const DEFAULT_GROUND_BLAST: GroundBlast = 'programHeld';
+/** What an impact that names no ground blast draws: since rules 748 to 755
+ *  the program's law at the ground, where a body that reaches it bursts;
+ *  from rules 630 to 637 (B-088) until then, the program's law held at the
+ *  shortest crossover it has been checked at. */
+export const DEFAULT_GROUND_BLAST: GroundBlast = 'surface';
 
 export interface GroundImpactBlastInput {
   /** Distance along the ground from the point of impact (m). */

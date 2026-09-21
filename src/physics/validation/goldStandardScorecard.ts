@@ -287,7 +287,8 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
           {
             name: 'the air blast of ground impacts',
             status: 'met',
-            evidence: 'Gated at 1 % since rules 141 to 145 (BM-21 closed).',
+            evidence:
+              "Gated at 1 % since rules 141 to 145 (BM-21 closed). A named departure since 21 September 2026 (rules 748 to 755): a body that reaches the ground bursts at the ground — the program's law on the program's energy at z₁ = 0, Collins et al. 2005's Eq. 54 — where the program reads Eq. 18's altitude below it, which no paper derives and which made a larger body blast less. The program's law stays as `groundBlast: 'programHeld'` and keeps its 69 checked points; the energy a ground impact couples to the air follows Collins et al.'s surface burst, which no impact on the ground has been measured to test.",
           },
           {
             name: 'the seismic magnitude',
@@ -350,7 +351,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         measure: 'beyond',
         status: 'not met',
         evidence:
-          "Read for impacts on 21 September 2026 (IMP-8). Of the gaps the report declares for an impact, three are ceilings of docs/GOLD_STANDARD.md: its toll, which no impact in recorded history left; the deaths no count of the prompt effects sees, climate first; and, since I3's band holds both measured footprints, an airburst's round footprint. The entry's miss of the sky is the field's own — the Earth Impact Effects Program misses the same 357 fireballs by 13.68 km in the median, and the model is that program on them — so it is printed beside the program's, as the amendment of 16 September 2026 says, and not carried as a gap. Two gaps are not ceilings: an impact's air blast read from under the ground, as the program reads it, for which a physical surface burst is work of its own (IMP-2); and an airburst's flash, too faint by the luminous efficiency of an impact's plume (B-095, declared by Andrea's decision of 21 September 2026).",
+          "Read for impacts on 21 September 2026 (IMP-8). Of the gaps the report declares for an impact, three are ceilings of docs/GOLD_STANDARD.md: its toll, which no impact in recorded history left; the deaths no count of the prompt effects sees, climate first; and, since I3's band holds both measured footprints, an airburst's round footprint. The entry's miss of the sky is the field's own — the Earth Impact Effects Program misses the same 357 fireballs by 13.68 km in the median, and the model is that program on them — so it is printed beside the program's, as the amendment of 16 September 2026 says, and not carried as a gap. One gap is not a ceiling: an airburst's flash, too faint by the luminous efficiency of an impact's plume (B-095, declared by Andrea's decision of 21 September 2026 and reopened by it that evening). The other, an impact's air blast read from under the ground as the program reads it, was closed the same evening by rules 748 to 755: a body that reaches the ground bursts at the ground.",
       },
       G7,
     ],

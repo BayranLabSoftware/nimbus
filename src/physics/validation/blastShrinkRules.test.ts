@@ -67,8 +67,14 @@ const B090 = {
   impactAzimuthDeg: 84.49035208928399,
 } as unknown as ImpactScenarioInput;
 
+// The program's ground blast, read at Eq. 18's altitude below the ground, which
+// these rules read and the default has not been since rules 748 to 755.
 const grown = (input: ImpactScenarioInput, k: number): ReturnType<typeof simulateImpact> =>
-  simulateImpact({ ...input, impactorDiameter: (Number(input.impactorDiameter) * k) as never });
+  simulateImpact({
+    groundBlast: 'programHeld',
+    ...input,
+    impactorDiameter: (Number(input.impactorDiameter) * k) as never,
+  });
 
 describe('rules 638 to 646: refused, and what the refusal found', () => {
   it('was run on a seed no run had used', () => {
