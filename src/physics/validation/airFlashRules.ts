@@ -116,6 +116,18 @@
  * range at slant of those radii; B-060's Chelyabinsk had burns and no blast,
  * and now has neither. So `DEFAULT_AIR_FLASH` is `burst`, B-094 is closed,
  * and the report declares what it costs, B-095.
+ *
+ * ---------------------------------------------------------------------------
+ * Found after the adoption, the same afternoon, and added to rule 700's
+ * sources without changing any rule: the field's own risk model places an
+ * airburst's flash exactly so. NASA's PAIR (Mathias, Wheeler & Dotson 2017,
+ * Icarus 289; NTRS 20160013841, §2.4) "extends the formulation to include
+ * airburst cases by taking the Collins hemispherical radius, r, centered at
+ * the burst altitude, h, and computing the intersecting ground radius as
+ * R_ground = √(r² − h²)", with Collins et al.'s luminous efficiency sampled
+ * from 1e-4 to 1e-2 around 3e-3. PAIR keeps the hemisphere, "as an upper
+ * bound on the area", where it says the flash of an airburst is realistically
+ * spherical; this model keeps the sphere, which is what the flash is.
  */
 
 /** Rule 703: the seed of the run on scenarios nobody has seen. */

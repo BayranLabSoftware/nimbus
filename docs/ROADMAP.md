@@ -426,6 +426,22 @@ whole beside one that bursts; B-089, the program's doubled I_f against the
 paper's, is closed), which the own seed does not draw but an unseen one does, with three burn rings, one far wave and an 11 m
 crater there besides.
 
+#### IMP-7, begun 21 September 2026: what the globe drew that the model did not
+
+The first pass of the seven checks, on the impact presets, found two things
+the globe claimed that the model does not:
+
+- **Burns and fire under an airburst** (check 1 read against physics, B-094):
+  the flash's slant ranges were drawn as ground ranges. Fixed by rules 698 to
+  705, as NASA's PAIR places an airburst's flash (Mathias et al. 2017).
+- **A nuclear mushroom cloud for every impact** (check 6, B-096): a column from
+  the ground and a dome from a nuclear scaling, for airbursts too. Replaced by
+  the model's own fireball on the ground, and nothing for an airburst.
+
+Still to do for impacts: check 3 (the band, once I3's is drawn), check 5
+(outside the measured cells, once IMP-5 builds them), check 4's provenance
+click, and the full headless sweep of presets and custom scenarios (check 7).
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this
