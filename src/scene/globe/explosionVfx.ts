@@ -586,3 +586,78 @@ export function spawnExplosionVfxFromJoules(
   const { energyJoules: _energy, ...rest } = input;
   return spawnExplosionVfx({ ...rest, yieldKilotons: kt });
 }
+
+export interface ImpactFireballInput {
+  viewer: Viewer;
+  /** WGS84 latitude of the point of impact (deg). */
+  latitude: number;
+  /** WGS84 longitude (deg). */
+  longitude: number;
+  /** The model's fireball radius (m): `impactFireballRadius` on the energy
+   *  that reaches the ground. 0 draws nothing. */
+  radiusM: number;
+}
+
+/** How long the impact's fireball lives on the globe (s): the flash, then
+ *  its fade. An animation's timing, not a physical duration. */
+const IMPACT_FIREBALL_S = FIREBALL_BURST_S + FIREBALL_FADE_S + 1.2;
+
+/**
+ * The fireball of an impact that reaches the ground, at the model's own
+ * radius — Collins, Melosh & Marcus (2005) Eq. 32*, R_f = 0.002 · E^(1/3) on
+ * the energy that reaches the ground — as a hemisphere on the ground that
+ * flashes and fades.
+ *
+ * Nothing else. Until 21 September 2026 every impact drew the explosions'
+ * mushroom cloud: a stem rooted at the ground and a cap at the altitude a fit
+ * to four nuclear clouds gives for its whole kinetic energy, with a shock dome
+ * sized by a nuclear scaling — for Chelyabinsk, a dome 117 km across under a
+ * burst 27 km up that puts no overpressure on the ground. None of those is a
+ * number the impact model computes, and an airburst is not on the ground.
+ * An airburst sends nothing to the ground and draws nothing here: the model
+ * computes no fireball in the air, and the altitude beacon marks the burst.
+ */
+export function spawnImpactFireball(input: ImpactFireballInput): () => void {
+  const { viewer, latitude, longitude, radiusM } = input;
+  if (!(radiusM > 0) || !Number.isFinite(radiusM)) {
+    return () => {
+      /* no-op */
+    };
+  }
+  const t0 = performance.now();
+  const elapsedSec = (): number => (performance.now() - t0) / 1000;
+  const radii = new CallbackProperty(() => {
+    const r = Math.max(1, radiusM * easeOutCubic(elapsedSec() / FIREBALL_BURST_S));
+    return new Cartesian3(r, r, r);
+  }, false);
+  const colour = new CallbackProperty(() => {
+    const e = elapsedSec();
+    if (e < FIREBALL_BURST_S)
+      return Color.fromCssColorString(CLOUD_COLOURS.fireCore).withAlpha(0.9);
+    const fadeT = Math.min((e - FIREBALL_BURST_S) / (IMPACT_FIREBALL_S - FIREBALL_BURST_S), 1);
+    const start = Color.fromCssColorString(CLOUD_COLOURS.fireMid).withAlpha(0.8);
+    const end = Color.fromCssColorString(CLOUD_COLOURS.fireOuter).withAlpha(0);
+    return Color.lerp(start, end, fadeT, new Color());
+  }, false);
+  const entity = viewer.entities.add({
+    id: 'impact-fireball',
+    position: Cartesian3.fromDegrees(longitude, latitude, 0),
+    ellipsoid: {
+      radii,
+      // The upper half only: a fireball on the ground is a hemisphere.
+      minimumCone: 0,
+      maximumCone: Math.PI / 2,
+      material: new ColorMaterialProperty(colour),
+      outline: false,
+    },
+  });
+  let disposed = false;
+  const cleanup = (): void => {
+    if (disposed) return;
+    disposed = true;
+    window.clearTimeout(timer);
+    if (!viewer.isDestroyed()) viewer.entities.remove(entity);
+  };
+  const timer = window.setTimeout(cleanup, (IMPACT_FIREBALL_S + 0.5) * 1000);
+  return cleanup;
+}

@@ -94,7 +94,12 @@ import {
   uncertaintyLayers,
 } from './shakingOverlay.js';
 import { hasGroundFor, siteAt } from '../vs30Tiles.js';
-import { mushroomCloudAltitudeMeters, spawnExplosionVfxFromJoules } from './explosionVfx.js';
+import {
+  mushroomCloudAltitudeMeters,
+  spawnExplosionVfxFromJoules,
+  spawnImpactFireball,
+} from './explosionVfx.js';
+import { impactFireballRadius } from '../../physics/effects/blastWave.js';
 import { spawnEruptionColumn } from './eruptionVfx.js';
 import { radialDamageMaterial } from './radialDamageMaterial.js';
 import {
@@ -504,6 +509,16 @@ function ringCaption(kind: RingTooltipKind, radiusM: number, language: string): 
  *  worth a restart; a driver that cannot compile a shader is not
  *  worth an infinite one. */
 const MAX_RENDER_ERROR_RESTARTS = 5;
+
+/** The model's fireball radius for an impact (m): Collins et al.'s Eq. 32*
+ *  on the energy that reaches the ground, 0 for an airburst. */
+function impactFireballGroundRadius(data: {
+  impactor: { kineticEnergy: number };
+  entry: { energyFractionToGround: number };
+}): number {
+  const ground = data.impactor.kineticEnergy * Math.max(data.entry.energyFractionToGround, 0);
+  return impactFireballRadius(ground as never);
+}
 
 export function Globe(): JSX.Element {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -4147,12 +4162,14 @@ export function Globe(): JSX.Element {
       const fireballVolumetrica =
         volParam !== null && (volParam === 'force' || !softwareRendererRef.current);
       if (result.type === 'impact') {
-        cancelExplosionVfxRef.current = spawnExplosionVfxFromJoules({
+        // The model's own fireball on the ground, and nothing for an
+        // airburst: until 21 September 2026 every impact drew a nuclear
+        // mushroom cloud rooted at the ground (IMP-7, check 6).
+        cancelExplosionVfxRef.current = spawnImpactFireball({
           viewer,
           latitude: ringAnchor.latitude,
           longitude: ringAnchor.longitude,
-          energyJoules: result.data.impactor.kineticEnergy,
-          volumetricFireball: fireballVolumetrica,
+          radiusM: impactFireballGroundRadius(result.data),
         });
       } else if (result.type === 'explosion') {
         cancelExplosionVfxRef.current = spawnExplosionVfxFromJoules({
@@ -4185,7 +4202,12 @@ export function Globe(): JSX.Element {
     // alla seconda.
     const cloudTopM =
       result.type === 'impact'
-        ? mushroomCloudAltitudeMeters(result.data.impactor.kineticEnergy / 4.184e12)
+        ? // What an impact draws above the ground: its fireball, or the
+          // beacon of a burst in the air.
+          Math.max(
+            impactFireballGroundRadius(result.data),
+            result.data.entry.regime === 'COMPLETE_AIRBURST' ? result.data.entry.burstAltitude : 0
+          )
         : result.type === 'explosion'
           ? mushroomCloudAltitudeMeters(result.data.yield.joules / 4.184e12)
           : result.type === 'volcano'

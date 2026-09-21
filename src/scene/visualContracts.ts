@@ -633,6 +633,20 @@ export const VISUAL_CONTRACTS = {
       'for most quantities that σ is a project convention and not a band scored on a held-out set, which is what gold-standard rule G3 asks for',
     ],
   }),
+  impactFireball: defineContract({
+    id: 'impactFireball',
+    quantity: 'The fireball of an impact that reaches the ground',
+    formula:
+      'Collins, Melosh & Marcus (2005) Eq. 32*: R_f = 0.002 · E^(1/3) (m, J) on the energy that reaches the ground — `impactFireballRadius`, the radius the model takes its thermal horizon from',
+    unit: 'metres',
+    geometry: 'illustrative-3d',
+    isQuantitative: true,
+    caveats: [
+      'the radius is the model’s; the flash and its fade are an animation',
+      'an airburst sends nothing to the ground and nothing is drawn for it: the model computes no fireball in the air, and the altitude beacon marks the burst',
+      'until 21 September 2026 every impact drew the explosions’ mushroom cloud — a stem from the ground and a cap at the height a fit to nuclear clouds gives — which the impact model does not compute',
+    ],
+  }),
   mushroomCloud: defineContract({
     id: 'mushroomCloud',
     quantity: 'Stabilisation altitude of the rising fireball cloud',
@@ -677,6 +691,7 @@ export const ENTITY_CONTRACTS: readonly {
     contracts: [],
     why: 'the locator dot: where the user clicked, not a quantity',
   },
+  { prefix: 'impact-fireball', contracts: ['impactFireball'] },
   {
     prefix: 'damage-ring-',
     contracts: [
