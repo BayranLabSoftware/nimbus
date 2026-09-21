@@ -51,6 +51,10 @@ const ONLY = process.argv[3];
  *  read a candidate rather than the law in place (rule 180 (c) of
  *  validation/chemicalBlastRules.ts). */
 const CHEMICAL_BLAST = process.env.NIMBUS_CHEMICAL_BLAST;
+/** Which law draws the air blast of an impact that reaches the ground, when
+ *  the sweep is asked to read one (rule 636 of
+ *  validation/groundBlastFloorRules.ts). */
+const GROUND_BLAST = process.env.NIMBUS_GROUND_BLAST;
 const HALF_CIRCUMFERENCE = Math.PI * (EARTH_RADIUS as number);
 const EARTH_SURFACE = 4 * Math.PI * (EARTH_RADIUS as number) ** 2;
 
@@ -102,7 +106,11 @@ export const HAZARDS: readonly Hazard[] = [
       return input;
     },
     grow: (input, f) => ({ ...input, impactorDiameter: (input.impactorDiameter as number) * f }),
-    run: (input) => simulateImpact(input as never) as unknown as Json,
+    // Rule 636: the sweep runs under a named ground blast when asked to.
+    run: (input) =>
+      simulateImpact(
+        (GROUND_BLAST === undefined ? input : { ...input, groundBlast: GROUND_BLAST }) as never
+      ) as unknown as Json,
     // Rule 623: an impact's regime is its entry regime with its crater's
     // morphology.
     regime: (r) => {

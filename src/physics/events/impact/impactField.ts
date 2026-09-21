@@ -3,6 +3,7 @@ import {
   airburstOverpressure,
   DEFAULT_GROUND_BLAST,
   groundImpactOverpressure,
+  type GroundBlast,
 } from '../../effects/airburstBlast.js';
 import type { EntryRegime } from '../../effects/atmosphericEntry.js';
 import { impactThermalExposure } from '../../effects/impactThermal.js';
@@ -44,6 +45,8 @@ import { peakOverpressure } from '../explosion/overpressure.js';
 
 /** What these functions read from a result: nothing a result does not carry. */
 export interface ImpactFieldSource {
+  /** The law the rings were drawn with, where the input names one. */
+  inputs?: { groundBlast?: GroundBlast };
   impactor: { kineticEnergy: number };
   entry: {
     regime: EntryRegime;
@@ -61,11 +64,13 @@ const JOULES_PER_MEGATON = 4.184e15;
 export function impactOverpressureAt(source: ImpactFieldSource, rangeM: number): number {
   const ke = source.impactor.kineticEnergy;
   const gf = source.entry.energyFractionToGround;
-  if (DEFAULT_GROUND_BLAST === 'program' && source.entry.regime !== 'COMPLETE_AIRBURST') {
+  const law = source.inputs?.groundBlast ?? DEFAULT_GROUND_BLAST;
+  if (law !== 'project' && source.entry.regime !== 'COMPLETE_AIRBURST') {
     return groundImpactOverpressure({
       groundRange: m(rangeM),
       virtualBurstAltitude: m(source.entry.virtualBurstAltitude),
       blastYield: J(ke * Math.max(gf, 1 - gf)),
+      held: law === 'programHeld',
     });
   }
   const surfaceEnergy = ke * Math.max(gf, 0) * IMPACT_BLAST_COUPLING;

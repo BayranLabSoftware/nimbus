@@ -204,11 +204,29 @@ export function airburstOverpressureRange(input: AirburstBlastInput): {
  *   blasts less. Where r_x ≤ 0 the program answers with an error and this
  *   draws no blast; a body that never breaks, which the program refuses too,
  *   is read at z₁ = 0.
+ * - `programHeld`: the program's own, with its crossover held at
+ *   {@link GROUND_BLAST_MIN_CROSSOVER} wherever it would be shorter — so a
+ *   body that reaches the ground always blasts (B-088).
  */
-export type GroundBlast = 'project' | 'program';
+export type GroundBlast = 'project' | 'program' | 'programHeld';
+
+/**
+ * Rules 630 to 637 (validation/groundBlastFloorRules.ts): the shortest Mach
+ * crossover, in scaled metres, at which the program's ground blast has been
+ * checked here — every ground point of the I1 grid and the twelve held-out
+ * bodies of rule 139, 69 points. `programHeld` is the program's law exactly
+ * where its crossover is at least this, and holds the crossover here below
+ * it, with the program's own energy: past its checks the program's construct
+ * heads to r_x ≤ 0, where the program errors and this project used to draw no
+ * blast at all (B-088). The number is not physics; it is where the field's
+ * tool has been checked.
+ */
+export const GROUND_BLAST_MIN_CROSSOVER = 53.0467685789;
 
 /** What an impact that names no ground blast draws. */
-export const DEFAULT_GROUND_BLAST: GroundBlast = 'program';
+/** Since rules 630 to 637 (B-088): the program's law, held at the shortest
+ *  crossover it has been checked at. */
+export const DEFAULT_GROUND_BLAST: GroundBlast = 'programHeld';
 
 export interface GroundImpactBlastInput {
   /** Distance along the ground from the point of impact (m). */
@@ -217,19 +235,28 @@ export interface GroundImpactBlastInput {
   virtualBurstAltitude: Meters;
   /** E₀ · max(f, 1 − f) (J). */
   blastYield: Joules;
+  /** Rule 633: hold the crossover at {@link GROUND_BLAST_MIN_CROSSOVER}. */
+  held?: boolean;
 }
 
 /** The scaled altitude and crossover the program's ground blast is read at,
  *  or null where there is no blast. */
 function groundScaled(
   virtualBurstAltitude: Meters,
-  blastYield: Joules
+  blastYield: Joules,
+  held = false
 ): { s: number; z1: number } | null {
   const s = yieldScale(blastYield);
   const z = virtualBurstAltitude as number;
   if (!Number.isFinite(s) || !Number.isFinite(z)) return null;
   const z1 = Math.min(z, 0) / s;
-  return PROGRAM_CROSSOVER_BASE + 0.65 * z1 > 0 ? { s, z1 } : null;
+  // Rule 633: held, the crossover r_x = base + 0.65 z₁ never falls below the
+  // shortest the program has been checked at, so z₁ never falls below the
+  // altitude that gives it.
+  const z1Used = held
+    ? Math.max(z1, (GROUND_BLAST_MIN_CROSSOVER - PROGRAM_CROSSOVER_BASE) / 0.65)
+    : z1;
+  return PROGRAM_CROSSOVER_BASE + 0.65 * z1Used > 0 ? { s, z1: z1Used } : null;
 }
 
 /** Peak overpressure on the ground from an impact that reaches it, as the
@@ -238,8 +265,9 @@ export function groundImpactOverpressure({
   groundRange,
   virtualBurstAltitude,
   blastYield,
+  held = false,
 }: GroundImpactBlastInput): Pascals {
-  const g = groundScaled(virtualBurstAltitude, blastYield);
+  const g = groundScaled(virtualBurstAltitude, blastYield, held);
   const r = Math.abs(groundRange);
   if (g === null || !Number.isFinite(r)) return Pa(0);
   const r1 = r / g.s;
@@ -251,9 +279,10 @@ export function groundImpactOverpressure({
 export function groundImpactReach(
   threshold: Pascals,
   virtualBurstAltitude: Meters,
-  blastYield: Joules
+  blastYield: Joules,
+  held = false
 ): Meters {
-  const g = groundScaled(virtualBurstAltitude, blastYield);
+  const g = groundScaled(virtualBurstAltitude, blastYield, held);
   const target = threshold as number;
   if (g === null || !(target > 0)) return m(0);
   const limit = HALF_CIRCUMFERENCE / g.s;

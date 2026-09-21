@@ -41,7 +41,11 @@ import {
   ejectaThicknessAt2R,
 } from './effects/ejecta.js';
 import { impactFireballRadius } from './effects/blastWave.js';
-import { DEFAULT_GROUND_BLAST, groundImpactReach } from './effects/airburstBlast.js';
+import {
+  DEFAULT_GROUND_BLAST,
+  groundImpactReach,
+  type GroundBlast,
+} from './effects/airburstBlast.js';
 import { fluenceReach, impactThermalExposure } from './effects/impactThermal.js';
 import {
   DEFAULT_IMPACT_TSUNAMI_LAW,
@@ -160,6 +164,10 @@ export interface ImpactScenarioInput {
    *  the "beach to dune face" envelope) — see `evaluate()`. Bypassing
    *  this from the CLI is fine: the test suite passes the default. */
   coastalBeachSlopeRad?: number;
+  /** How the air blast of a body that reaches the ground is drawn; the
+   *  default is {@link DEFAULT_GROUND_BLAST}. Rules 630 to 637 run the sweep
+   *  under two laws on one commit, which is what this is for. */
+  groundBlast?: GroundBlast;
 }
 
 /**
@@ -630,17 +638,19 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // The blast of a body or swarm that reaches the ground: the larger of the
   // project's two Kinney–Graham rings, or the Earth Impact Effects Program's
   // own reading of it (effects/airburstBlast.ts, `GroundBlast`).
+  const groundBlastLaw = input.groundBlast ?? DEFAULT_GROUND_BLAST;
   const groundBlast =
-    DEFAULT_GROUND_BLAST === 'program' && entry.regime !== 'COMPLETE_AIRBURST'
+    groundBlastLaw !== 'project' && entry.regime !== 'COMPLETE_AIRBURST'
       ? {
           altitude: entry.virtualBurstAltitude,
           energy: J((ke as number) * Math.max(gf, 1 - gf)),
+          held: groundBlastLaw === 'programHeld',
         }
       : null;
   const blastRing = (surface: Meters, air: Meters, threshold: Pascals): Meters =>
     groundBlast === null
       ? m(Math.max(surface, air))
-      : groundImpactReach(threshold, groundBlast.altitude, groundBlast.energy);
+      : groundImpactReach(threshold, groundBlast.altitude, groundBlast.energy, groundBlast.held);
   const damage: ImpactDamageRadii = {
     craterRim: surfaceDamage.craterRim,
     thirdDegreeBurn: seen(
@@ -810,7 +820,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     firestorm,
     entry,
     atmosphere,
-    field: impactFieldSamples({ impactor: { kineticEnergy: ke }, entry }),
+    field: impactFieldSamples({ inputs: input, impactor: { kineticEnergy: ke }, entry }),
   };
 
   // Tsunami cascade activation rule — Phase 14 tightening.

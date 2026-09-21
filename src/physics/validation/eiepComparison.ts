@@ -109,11 +109,12 @@ export function eiepRatios(rows: readonly EiepRow[] = EIEP_REFERENCE): EiepRatio
       // program's own since rule 144 of entryProgramRules.ts.
       pair(
         'overpressure',
-        DEFAULT_GROUND_BLAST === 'program'
+        DEFAULT_GROUND_BLAST !== 'project'
           ? groundImpactOverpressure({
               groundRange: distance,
               virtualBurstAltitude: r.entry.virtualBurstAltitude,
               blastYield: J((r.impactor.kineticEnergy as number) * Math.max(gf, 1 - gf)),
+              held: DEFAULT_GROUND_BLAST === 'programHeld',
             })
           : peakOverpressure({ distance, yieldEnergy: J(groundEnergy) }),
         row.overpressurePa[0]
