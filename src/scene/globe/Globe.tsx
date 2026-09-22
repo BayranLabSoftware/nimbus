@@ -125,7 +125,13 @@ import {
 } from './cityLabels.js';
 import { RingTooltip, type HoverInfo, type RingTooltipKind } from './RingTooltip.js';
 import { RING_RADIUS_SIGMA } from './ringSigma.js';
-import { buildImpactLayer, formatRange, resolveImpactLayer } from './impactFieldMap.js';
+import {
+  buildImpactLayer,
+  familyShapes,
+  formatRange,
+  isolinePointAtBearing,
+  resolveImpactLayer,
+} from './impactFieldMap.js';
 import {
   BASE_TONE,
   clearImpactFieldLayer,
@@ -153,6 +159,10 @@ Ion.defaultAccessToken = '';
 // usato in precedenza, che fuori da localhost rispondeva 429 e lasciava
 // una sfera nera — quindi il look di produzione e quello di sviluppo
 // coincidono. Lo schema tile di ArcGIS è {z}/{y}/{x}, non {z}/{x}/{y}.
+/** How often the hover tooltip may pick, and how deep a pick may drill. */
+const HOVER_PICK_MS = 90;
+const HOVER_PICK_LIMIT = 8;
+
 const BASE_TILE_URL =
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 const BASE_TILE_ATTRIBUTION = 'Esri, Maxar, Earthstar Geographics, and the GIS User Community';
@@ -531,6 +541,8 @@ export function Globe(): JSX.Element {
   const framedLayerRef = useRef<{ result: object; layer: string } | null>(null);
   /** Bumped after the report's photographs, so the map is drawn again. */
   const [shotTick, setShotTick] = useState(0);
+  /** The idle pick that compiles a layer's pick shaders ahead of the cursor. */
+  const warmPickRef = useRef<number | null>(null);
   const uiLanguage = uiI18n.language;
   const location = useAppStore((s) => s.location);
   // The location at which the most recent simulation was actually
@@ -641,6 +653,8 @@ export function Globe(): JSX.Element {
 
     let viewer: Viewer | null = null;
     let handler: ScreenSpaceEventHandler | null = null;
+    /** Cancels a hover pick still waiting when the globe goes. */
+    let hoverTeardown: () => void = () => undefined;
 
     // Cesium reaches into OffscreenCanvas and other browser APIs that
     // not every engine exposes in its dev-build configuration (WebKit
@@ -923,19 +937,49 @@ export function Globe(): JSX.Element {
       //     the *smallest* containing ring rather than whichever
       //     happens to be on top — the smallest ring is the most
       //     specific damage threshold and the most useful tooltip.
-      handler.setInputAction((event: ScreenSpaceEventHandler.MotionEvent) => {
+      // The pick runs at most every HOVER_PICK_MS, at the cursor's last
+      // position, and not at all while a button or a finger is down: a
+      // drillPick renders every pickable into the pick buffer and reads its
+      // pixels back from the GPU, synchronously, once per object it finds.
+      // Run on every mouse move it cost Chrome most of a frame each time
+      // and made Safari stutter, and during a drag it picked for nothing
+      // (measured on 22 September 2026: 7.5 ms a move on the Mac's GPU).
+      let pressed = false;
+      let pickTimer: number | null = null;
+      let pickAt: Cartesian2 | null = null;
+      const press = (): void => {
+        pressed = true;
+        setHoverInfo(null);
+      };
+      const release = (): void => {
+        pressed = false;
+      };
+      for (const type of [
+        ScreenSpaceEventType.LEFT_DOWN,
+        ScreenSpaceEventType.RIGHT_DOWN,
+        ScreenSpaceEventType.MIDDLE_DOWN,
+        ScreenSpaceEventType.PINCH_START,
+      ]) {
+        handler.setInputAction(press, type);
+      }
+      for (const type of [
+        ScreenSpaceEventType.LEFT_UP,
+        ScreenSpaceEventType.RIGHT_UP,
+        ScreenSpaceEventType.MIDDLE_UP,
+        ScreenSpaceEventType.PINCH_END,
+      ]) {
+        handler.setInputAction(release, type);
+      }
+      const pickHover = (): void => {
+        pickTimer = null;
         const activeViewer = viewerRef.current;
-        if (!activeViewer || activeViewer.isDestroyed()) return;
-        const tooltipEl = tooltipElRef.current;
-        if (tooltipEl !== null) {
-          tooltipEl.style.left = `${(event.endPosition.x + 16).toString()}px`;
-          tooltipEl.style.top = `${(event.endPosition.y + 16).toString()}px`;
-        }
-        const picks = activeViewer.scene.drillPick(event.endPosition);
+        if (!activeViewer || activeViewer.isDestroyed() || pickAt === null || pressed) return;
+        const picks = activeViewer.scene.drillPick(pickAt, HOVER_PICK_LIMIT);
         let bestRing: HoverInfo | null = null;
         let bestRadius = Infinity;
         let aftershockHit: HoverInfo | null = null;
         let cityHit: HoverInfo | null = null;
+        let isolineHit: HoverInfo | null = null;
         for (const p of picks) {
           const rawId = (p as { id?: unknown }).id;
           if (isCityPick(rawId)) {
@@ -959,21 +1003,39 @@ export function Globe(): JSX.Element {
             bestRadius = meta.radiusM;
           } else if (meta.type === 'aftershock' && aftershockHit === null) {
             aftershockHit = meta;
+          } else if (meta.type === 'isoline' && isolineHit === null) {
+            // An impact's isoline (IMP-7b): its tooltips were filed and
+            // never read, until this handler asked for them.
+            isolineHit = meta;
           }
         }
         // A city wins over the ring underneath it: the name is the
-        // smaller, more specific target.
-        const next = cityHit ?? bestRing ?? aftershockHit;
+        // smaller, more specific target; a line over the zone it bounds.
+        const next = cityHit ?? isolineHit ?? bestRing ?? aftershockHit;
         setHoverInfo((prev) => {
           if (prev === next) return prev;
-          // City hover info is rebuilt on every move; keep the previous
+          // City hover info is rebuilt on every pick; keep the previous
           // object while it describes the same city so React doesn't
-          // re-render the tooltip sixty times a second.
+          // re-render the tooltip for nothing.
           if (prev?.type === 'city' && next?.type === 'city' && prev.name === next.name)
             return prev;
           return next;
         });
+      };
+      handler.setInputAction((event: ScreenSpaceEventHandler.MotionEvent) => {
+        const tooltipEl = tooltipElRef.current;
+        if (tooltipEl !== null) {
+          tooltipEl.style.left = `${(event.endPosition.x + 16).toString()}px`;
+          tooltipEl.style.top = `${(event.endPosition.y + 16).toString()}px`;
+        }
+        if (pressed) return;
+        pickAt = Cartesian2.clone(event.endPosition, pickAt ?? new Cartesian2());
+        pickTimer ??= window.setTimeout(pickHover, HOVER_PICK_MS);
       }, ScreenSpaceEventType.MOUSE_MOVE);
+      hoverTeardown = (): void => {
+        if (pickTimer !== null) window.clearTimeout(pickTimer);
+        pickTimer = null;
+      };
 
       viewerRef.current = viewer;
 
@@ -1131,6 +1193,7 @@ export function Globe(): JSX.Element {
     const cleanupViewer = viewer;
     const cleanupHandler = handler;
     return () => {
+      hoverTeardown();
       cleanupHandler.destroy();
       // Detach the WebGL-context-loss listeners and the
       // ResizeObserver before destroying the viewer — the destroy
@@ -4254,6 +4317,14 @@ export function Globe(): JSX.Element {
   // previous run's map with every other overlay when the result changes.
   useEffect(() => {
     const viewer = viewerRef.current;
+    if (warmPickRef.current !== null) {
+      if (typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(warmPickRef.current);
+      } else {
+        window.clearTimeout(warmPickRef.current);
+      }
+      warmPickRef.current = null;
+    }
     if (!viewer || viewer.isDestroyed()) return;
     for (const id of clearImpactFieldLayer(viewer)) tooltipMetaRef.current.delete(id);
     const impact = result?.type === 'impact' ? result : null;
@@ -4286,6 +4357,34 @@ export function Globe(): JSX.Element {
       craterLabel
     );
     for (const [id, info] of hover) tooltipMetaRef.current.set(id, info);
+    // The first pick of what a layer draws compiles its pick shaders, which
+    // froze the globe for up to a second under the reader's cursor (466 ms
+    // on Chicxulub's planetary layer in WebKit). Picked once as soon as the
+    // browser is idle — at the point of impact and on the first isoline's
+    // label — the compiling is done before the cursor gets there (B-112).
+    const warmPicks = [
+      Cartesian3.fromDegrees(anchor.longitude, anchor.latitude),
+      ...layer.isolines.slice(0, 1).map((line) => {
+        const p = isolinePointAtBearing(
+          { latDeg: anchor.latitude, lonDeg: anchor.longitude },
+          familyShapes(impact.data)[line.family],
+          line.radiusM,
+          line.labelBearingDeg
+        );
+        return Cartesian3.fromDegrees(p.lonDeg, p.latDeg);
+      }),
+    ];
+    const warm = (): void => {
+      if (viewer.isDestroyed()) return;
+      for (const world of warmPicks) {
+        const at = viewer.scene.cartesianToCanvasCoordinates(world);
+        if (at !== undefined) viewer.scene.pick(at);
+      }
+    };
+    warmPickRef.current =
+      typeof window.requestIdleCallback === 'function'
+        ? window.requestIdleCallback(warm, { timeout: 1_500 })
+        : window.setTimeout(warm, 400);
     // A layer the reader picks is framed on its own outermost isoline: the
     // shaking's III can lie two hundred kilometres out where the blast's
     // lines lie twenty. A new result is framed by the redraw above instead.

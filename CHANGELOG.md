@@ -447,6 +447,16 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The globe no longer picks at every mouse move (B-112).** The hover
+  tooltip drew every pickable into the pick buffer and read it back from the
+  GPU at each move of the mouse, dragging included — most of a frame each
+  time on Chrome, and a stutter on Safari. It now picks at most every 90 ms,
+  at the cursor's last position, and never while the camera is dragged; and
+  a new layer's pick shaders are compiled at the first idle moment after it
+  is drawn, where the first hover used to freeze the globe for up to half a
+  second.
+- **An impact's isolines answer the cursor (B-111).** Their tooltips — what a
+  line is, its value and reach, its source — were filed and never read.
 - **The printed report prints only the formulas the run used (B-108).** A
   formula was matched to the run by its source alone, so an impact whose burn
   toll cites Glasstone & Dolan printed six formulas of the explosions — the

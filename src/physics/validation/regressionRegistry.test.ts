@@ -2202,6 +2202,43 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(offenders).toEqual([]);
   });
 
+  it("B-111 An impact's isolines answer the cursor", () => {
+    // Pre-fix: the map filed a tooltip for every isoline, and the globe's
+    // hover handler read only rings and aftershocks.
+    const globe = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/Globe.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(globe).toContain("meta.type === 'isoline' && isolineHit === null");
+    expect(globe).toContain('cityHit ?? isolineHit ?? bestRing ?? aftershockHit');
+  });
+
+  it('B-112 The hover tooltip picks at most every 90 ms, and never during a drag', () => {
+    // Pre-fix: a drillPick — a pick pass and a synchronous read from the GPU
+    // per object found — at every mouse move, dragging included.
+    const globe = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/Globe.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(globe).toContain('const HOVER_PICK_MS = 90;');
+    const move = globe.slice(
+      globe.indexOf('handler.setInputAction((event: ScreenSpaceEventHandler.MotionEvent) => {'),
+      globe.indexOf('}, ScreenSpaceEventType.MOUSE_MOVE);')
+    );
+    expect(move.length).toBeGreaterThan(0);
+    expect(move).not.toContain('drillPick');
+    expect(move).toContain('if (pressed) return;');
+    expect(move).toContain('pickTimer ??= window.setTimeout(pickHover, HOVER_PICK_MS);');
+    expect(globe).toContain('scene.drillPick(pickAt, HOVER_PICK_LIMIT)');
+    for (const down of ['LEFT_DOWN', 'RIGHT_DOWN', 'MIDDLE_DOWN', 'PINCH_START']) {
+      expect(globe).toContain(`ScreenSpaceEventType.${down},`);
+    }
+    // And a layer's pick shaders are compiled when the browser is idle,
+    // not under the cursor at the first hover.
+    expect(globe).toContain('window.requestIdleCallback(warm, { timeout: 1_500 })');
+    expect(globe).toContain('window.cancelIdleCallback(warmPickRef.current)');
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
