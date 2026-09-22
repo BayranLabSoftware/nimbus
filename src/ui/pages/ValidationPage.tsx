@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import report from '../../../docs/VALIDATION_REPORT.json';
 import { BUILD_INFO, shortCommit, validationReportUrl, REPOSITORY_URL } from '../../buildInfo.js';
 import { useAppStore } from '../../store/index.js';
+import { EvidenceTable } from '../components/EvidenceTable.js';
 import { cx } from '../utils/cx';
 import { ProgramChart, type ProgramChartRow } from './landing/ProgramChart.js';
 import styles from './ValidationPage.module.css';
@@ -423,6 +424,10 @@ export function ValidationPage(): JSX.Element {
             ))}
         </section>
       )}
+
+      <section className={styles.section} data-testid="validation-evidence">
+        <EvidenceTable tone="page" />
+      </section>
 
       <section className={styles.section} data-testid="validation-unmeasured">
         <h2>{t('validation.unmeasured.title')}</h2>

@@ -1,0 +1,34 @@
+/* The class of evidence beside a number. The text keeps its context's colour,
+   so the tag reads on the dark panel and on the report's paper alike; only
+   the border tells the classes apart. */
+.tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 999px;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  vertical-align: 1px;
+  white-space: nowrap;
+  cursor: help;
+}
+
+.checked {
+  border: 1px solid currentColor;
+  opacity: 0.85;
+}
+
+.exploratory {
+  border: 1px dashed currentColor;
+  font-weight: 700;
+}
+
+.hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

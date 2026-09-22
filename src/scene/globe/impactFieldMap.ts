@@ -57,6 +57,8 @@ import {
   WAVE_STREAK_CSS,
 } from '../heatmap.js';
 import { projectAlongAzimuth } from '../stadiumPolygon.js';
+import type { EvidenceQuantity } from '../../physics/validation/evidenceClasses.js';
+import { evidenceText, type EvidenceText } from './evidenceText.js';
 import { RING_RADIUS_SIGMA } from './ringSigma.js';
 import { INTENSITY_BANDS } from './shakingOverlay.js';
 
@@ -374,6 +376,45 @@ export interface ImpactMapLayer {
   categories: CategoryKey[];
   notes: { label: string; text: string }[];
   uncertainty?: { choices: UncertaintyChoice[]; selected: UncertaintyChoice | null };
+  /** What the layer's numbers can claim (physics/validation/evidenceClasses.ts):
+   *  the legend prints it above everything else the layer says. */
+  evidence: LayerEvidence;
+}
+
+/** A layer as its builder makes it, before its evidence is attached. */
+type RawLayer = Omit<ImpactMapLayer, 'evidence'>;
+
+export type LayerEvidence = Pick<
+  EvidenceText,
+  'quantity' | 'klass' | 'label' | 'short' | 'summary'
+>;
+
+/** The family of numbers each layer draws; the uncertainty view takes the
+ *  family of the threshold it reads. */
+const LAYER_EVIDENCE: Readonly<Record<Exclude<ImpactLayerId, 'uncertainty'>, EvidenceQuantity>> = {
+  overpressure: 'blast',
+  wind: 'blast',
+  thermal: 'thermal',
+  ejecta: 'ejecta',
+  shaking: 'seismic',
+  tsunami: 'tsunami',
+};
+
+const FAMILY_EVIDENCE: Readonly<Record<FamilyId, EvidenceQuantity>> = {
+  blast: 'blast',
+  heat: 'thermal',
+  ejecta: 'ejecta',
+  crater: 'crater',
+  circle: 'seismic',
+};
+
+function layerEvidence(layer: RawLayer, ctx: ImpactMapContext): LayerEvidence {
+  const quantity =
+    layer.id === 'uncertainty'
+      ? FAMILY_EVIDENCE[layer.uncertainty?.selected?.family ?? 'blast']
+      : LAYER_EVIDENCE[layer.id];
+  const { klass, label, short, summary } = evidenceText(quantity, ctx.t, ctx.language);
+  return { quantity, klass, label, short, summary };
 }
 
 export interface ImpactMapContext {
@@ -623,10 +664,7 @@ function isCompleteAirburst(result: ImpactScenarioResult): boolean {
   return result.entry.regime === 'COMPLETE_AIRBURST';
 }
 
-function overpressureLayer(
-  result: ImpactScenarioResult,
-  ctx: ImpactMapContext
-): ImpactMapLayer | null {
+function overpressureLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLayer | null {
   const { t, language } = ctx;
   const source = fieldSourceOf(result);
   const present = PSI.filter((p) => (result.damage[p.key] as number) > 0);
@@ -727,7 +765,7 @@ export function windReachM(result: ImpactScenarioResult, kmh: number): number {
   return impactFieldReach((r) => impactPeakWindAt(source, r), kmh / 3.6, 1, outer * 1.01);
 }
 
-function windLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): ImpactMapLayer | null {
+function windLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLayer | null {
   const { t, language } = ctx;
   const source = fieldSourceOf(result);
   const outer = Math.max(
@@ -800,7 +838,7 @@ function windLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): ImpactM
   };
 }
 
-function thermalLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): ImpactMapLayer | null {
+function thermalLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLayer | null {
   const { t, language } = ctx;
   const source = fieldSourceOf(result);
   const rings = [
@@ -880,7 +918,7 @@ function thermalLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): Impa
 /** The thicknesses the ejecta layer draws a line at (m). */
 export const EJECTA_LEVELS_M = [1, 0.1, 0.01, 0.001] as const;
 
-function ejectaLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): ImpactMapLayer | null {
+function ejectaLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLayer | null {
   const { t, language } = ctx;
   const edge = result.ejecta.blanketEdge1mm as number;
   if (!(edge > 0)) return null;
@@ -987,7 +1025,7 @@ function intensityBandCss(level: number): string | null {
   return chosen;
 }
 
-function shakingLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): ImpactMapLayer | null {
+function shakingLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLayer | null {
   const { t, language } = ctx;
   const levels = shakingLevels(result);
   if (levels.length === 0) return null;
@@ -1215,10 +1253,7 @@ export function probabilityRadius(medianM: number, sigma: number, p: number): nu
   return medianM * Math.exp(z * sl);
 }
 
-function uncertaintyLayer(
-  result: ImpactScenarioResult,
-  ctx: ImpactMapContext
-): ImpactMapLayer | null {
+function uncertaintyLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLayer | null {
   const { t, language } = ctx;
   const choices = uncertaintyChoices(result, ctx);
   const usable = choices.filter((c) => c.unavailable === undefined);
@@ -1382,7 +1417,7 @@ function veilPalette(top: number): string[] {
  * before the field covered it. What is drawn is that map's, untouched; this
  * layer names what it has drawn (`ctx.waveMap`) and says where it comes from.
  */
-function tsunamiLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): ImpactMapLayer | null {
+function tsunamiLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLayer | null {
   const wave = result.tsunami;
   if (wave === undefined) return unsizedWaveLayer(result, ctx);
   const { t, language } = ctx;
@@ -1539,11 +1574,7 @@ export const COINCIDENT_SHARE = 0.005;
  * map drew the ignition of clothing, the third-degree and the second-degree
  * burns as three circles within 6 km of each other at 1 610 km.
  */
-function settleIsolines(
-  layer: ImpactMapLayer,
-  ctx: ImpactMapContext,
-  horizonM: number | null
-): ImpactMapLayer {
+function settleIsolines(layer: RawLayer, ctx: ImpactMapContext, horizonM: number | null): RawLayer {
   if (layer.isolines.length === 0) return layer;
   const { t, language } = ctx;
   const halfEarth = Math.PI * (EARTH_RADIUS as number);
@@ -1634,10 +1665,7 @@ function settleIsolines(
  * it used to say nothing: Chicxulub on Houston, whose crater swallows the
  * coast, and on Austin, where 44 m of rock fall into the Gulf, drew no tab.
  */
-function unsizedWaveLayer(
-  result: ImpactScenarioResult,
-  ctx: ImpactMapContext
-): ImpactMapLayer | null {
+function unsizedWaveLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLayer | null {
   const shore = (result.inputs.shoreDistance as number | undefined) ?? 0;
   const transient = (result.crater.transientDiameter as number) / 2;
   const rim = (result.crater.finalDiameter as number) / 2;
@@ -1705,14 +1733,19 @@ export function buildImpactLayer(
     id === 'thermal'
       ? thermalHorizonRadius(impactFireballRadius(J(result.impactor.kineticEnergy)))
       : null;
-  return settleIsolines(layer, ctx, horizon !== null && Number.isFinite(horizon) ? horizon : null);
+  const settled = settleIsolines(
+    layer,
+    ctx,
+    horizon !== null && Number.isFinite(horizon) ? horizon : null
+  );
+  return { ...settled, evidence: layerEvidence(settled, ctx) };
 }
 
 function buildRawLayer(
   result: ImpactScenarioResult,
   id: ImpactLayerId,
   ctx: ImpactMapContext
-): ImpactMapLayer | null {
+): RawLayer | null {
   switch (id) {
     case 'overpressure':
       return overpressureLayer(result, ctx);

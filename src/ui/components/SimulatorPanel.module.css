@@ -250,6 +250,19 @@
   font-style: italic;
 }
 
+/* An impact's toll is a scenario: the warning that says so is the first
+   thing under the heading, not a footnote (evidence classes, phase 1). */
+.notValidated {
+  margin: 6px 0 8px 0;
+  padding: 6px 8px;
+  border: 1px solid var(--accent, #e8a33d);
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--text-primary, #e5e7eb);
+}
+
 .customParams {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1071,6 +1084,10 @@ select.paramInput {
 }
 [data-tone='paper'] .resultValue {
   color: #111111;
+}
+[data-tone='paper'] .notValidated {
+  color: #111111;
+  border-color: #a8620f;
 }
 [data-tone='paper'] .presetNote,
 [data-tone='paper'] .mcFooter {

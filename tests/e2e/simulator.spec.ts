@@ -600,6 +600,34 @@ test.describe('calibration envelope', () => {
     await expect(note).toContainText('No impact in recorded history left a death toll');
   });
 
+  test('every number of an impact’s results carries its class of evidence', async ({ page }) => {
+    // Phase 1 of the plan of 22 September 2026: no figure without the class
+    // of what it rests on — its own, or its section's where the section's
+    // numbers share one. The toll opens with its warning, and the table that
+    // says what every class means sits under the results.
+    await envelopeNoteFor(page, 't=impact&p=METEOR_CRATER&lat=35.027&lon=-111.022');
+    const panel = page.getByRole('complementary', { name: 'Simulator controls' });
+    const bare = await panel.evaluate((root) => {
+      const out: string[] = [];
+      for (const dl of Array.from(root.querySelectorAll('dl'))) {
+        if (dl.closest('[data-testid="casualties"], [data-testid="evidence-table"]') !== null)
+          continue;
+        const heading = dl.previousElementSibling;
+        if (heading?.tagName !== 'H3') continue;
+        const headed = heading.querySelector('[data-evidence]') !== null;
+        for (const dt of Array.from(dl.querySelectorAll(':scope > dt'))) {
+          if (!headed && dt.querySelector('[data-evidence]') === null)
+            out.push(`${heading.textContent}: ${dt.textContent}`);
+        }
+      }
+      return out;
+    });
+    expect(bare).toEqual([]);
+    await expect(panel.locator('[data-evidence]').first()).toBeAttached();
+    await expect(panel.getByTestId('casualties-not-validated')).toBeVisible({ timeout: 90_000 });
+    await expect(panel.getByTestId('evidence-table')).toBeAttached();
+  });
+
   // Hidden with the module it drives: since 22 September 2026 the site offers
   // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
   // one a visitor can walk. The test is kept, not deleted: it comes back with

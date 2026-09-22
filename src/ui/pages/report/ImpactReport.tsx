@@ -19,6 +19,8 @@ import { populationGridFor } from '../../../scene/populationLookup.js';
 import { useAppStore, type ActiveResult } from '../../../store/index.js';
 import { CascadeTimeline } from '../../components/CascadeTimeline.js';
 import { CasualtiesPanel } from '../../components/CasualtiesPanel.js';
+import { EvidenceTable } from '../../components/EvidenceTable.js';
+import { EvidenceTag } from '../../components/EvidenceTag.js';
 import {
   buildImpactReport,
   nearestPlace,
@@ -59,6 +61,9 @@ function Legend({ layer, barHeight }: { layer: ImpactMapLayer; barHeight: number
     <div>
       <div className={styles.legendTitle}>{layer.title}</div>
       <div className={styles.legendUnit}>{layer.unit}</div>
+      <p className={styles.legendEvidence} data-evidence-class={layer.evidence.klass}>
+        <b>{layer.evidence.label}.</b> {layer.evidence.summary}
+      </p>
       {layer.colorbar !== null && <ReportColorbar spec={layer.colorbar} height={barHeight} />}
       {layer.categories.length > 0 && (
         <ul className={styles.cats}>
@@ -204,7 +209,10 @@ function Groups({ groups }: { groups: ReportGroup[] }): JSX.Element {
           <dl>
             {g.rows.map((r) => (
               <div key={r.id} className={styles.row}>
-                <dt>{r.label}</dt>
+                <dt>
+                  {r.label}
+                  {r.evidence !== undefined && <EvidenceTag quantity={r.evidence} />}
+                </dt>
                 <dd>
                   {r.value}
                   {r.figure !== undefined && (
@@ -555,7 +563,10 @@ export function ImpactReport({
           <div className={styles.keys}>
             {model.keyFigures.map((k) => (
               <div key={k.id} className={styles.key}>
-                <div className={styles.keyLabel}>{k.label}</div>
+                <div className={styles.keyLabel}>
+                  {k.label}
+                  <EvidenceTag quantity={k.evidence} />
+                </div>
                 <div className={styles.keyValue}>{k.value}</div>
                 <div className={styles.keyDetail}>{k.detail}</div>
               </div>
@@ -596,6 +607,10 @@ export function ImpactReport({
         <Sheet foot={foot} testId="numbers">
           <h2 className={styles.sectionTitle}>{t('report.impact.numbers')}</h2>
           <Groups groups={model.groups} />
+        </Sheet>
+
+        <Sheet foot={foot} testId="evidence">
+          <EvidenceTable tone="paper" rows={model.evidence} />
         </Sheet>
 
         <Sheet foot={foot} testId="toll">

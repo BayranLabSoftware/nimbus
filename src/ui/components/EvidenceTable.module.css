@@ -1,0 +1,103 @@
+/* What each number rests on (evidence classes, phase 1). Colours are
+   inherited, so the block reads on the panel's glass and on paper alike. */
+.table {
+  margin-top: 12px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.heading {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.intro {
+  margin: 6px 0;
+}
+
+.classes {
+  margin: 6px 0 10px;
+  display: grid;
+  gap: 4px;
+}
+
+.class {
+  display: grid;
+  gap: 1px;
+}
+
+.class dt {
+  font-weight: 600;
+}
+
+.class dd {
+  margin: 0;
+  opacity: 0.85;
+}
+
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.row {
+  padding-left: 8px;
+  border-left: 2px solid currentColor;
+}
+
+.exploratory {
+  border-left-style: dashed;
+}
+
+.name {
+  margin: 0 0 2px;
+}
+
+.facts {
+  margin: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.facts dt {
+  margin-top: 3px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.facts dd {
+  margin: 0;
+}
+
+/* On paper the table holds one A4 sheet: two columns, a family never split. */
+.paper {
+  font-size: 9.5px;
+  line-height: 1.4;
+}
+
+.paper .classes {
+  grid-template-columns: 1fr 1fr;
+  column-gap: 18px;
+}
+
+.paper .rows {
+  display: block;
+  columns: 2;
+  column-gap: 18px;
+}
+
+.paper .row {
+  break-inside: avoid;
+  margin-bottom: 8px;
+}

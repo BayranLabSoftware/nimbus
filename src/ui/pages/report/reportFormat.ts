@@ -126,6 +126,23 @@ export function percent(fraction: number, digits: number, language: string): str
   return `${fixed(fraction * 100, digits, language)} %`;
 }
 
+/**
+ * A share of the energy, never rounded onto a whole it is not: a body that
+ * keeps 0.04 % in the air is not "100 %" to the ground, and printing it so
+ * beside "breaks up in the air" read as a contradiction (the astrophysicist's
+ * review of 22 September 2026). Whole per cent where that is honest, one
+ * decimal near either end, and "> 99.9 %" or "< 0.1 %" beyond.
+ */
+export function energyShare(fraction: number, language: string): string {
+  if (!Number.isFinite(fraction)) return NONE;
+  if (fraction <= 0 || fraction >= 1)
+    return percent(Math.min(Math.max(fraction, 0), 1), 0, language);
+  if (fraction > 0.999) return `> ${fixed(99.9, 1, language)} %`;
+  if (fraction < 0.001) return `< ${fixed(0.1, 1, language)} %`;
+  const digits = fraction > 0.99 || fraction < 0.01 ? 1 : 0;
+  return percent(fraction, digits, language);
+}
+
 /** Latitude and longitude with their hemispheres. */
 export function coordinates(
   latitude: number,
@@ -185,6 +202,18 @@ export const COMPASS_POINTS = [
 export function compassPoint(bearingDeg: number): (typeof COMPASS_POINTS)[number] {
   const i = Math.round((((bearingDeg % 360) + 360) % 360) / 22.5) % 16;
   return COMPASS_POINTS[i] ?? 'n';
+}
+
+/**
+ * People as an order of magnitude: one significant figure behind "≈". The
+ * headline of a modelled toll — read as a count when it was printed to two
+ * figures (the astrophysicist's review of 22 September 2026).
+ */
+export function peopleOrder(n: number, language: string): string {
+  if (!Number.isFinite(n) || n < 0) return NONE;
+  if (n < 1) return '0';
+  const magnitude = 10 ** Math.floor(Math.log10(n));
+  return `≈ ${(Math.round(n / magnitude) * magnitude).toLocaleString(localeOf(language))}`;
 }
 
 /** People, to the two significant figures the casualty panel prints them

@@ -66,6 +66,19 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
             <h3 className={styles.title}>{layer.title}</h3>
             <p className={styles.unit}>{layer.unit}</p>
           </div>
+          {/* Phase 1: what the layer's numbers can claim, above all it says. */}
+          <p
+            className={[
+              styles.evidence,
+              layer.evidence.klass === 'exploratory' ? styles.evidenceExploratory : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+            data-testid="impact-layer-evidence"
+            data-evidence-class={layer.evidence.klass}
+          >
+            <strong>{layer.evidence.label}.</strong> {layer.evidence.summary}
+          </p>
           {layer.uncertainty !== undefined && (
             <div
               className={styles.chips}

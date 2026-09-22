@@ -219,3 +219,16 @@
   border-radius: 2px;
   background: #ffffff;
 }
+
+/* What the layer's numbers can claim (evidence classes, phase 1). */
+.evidence {
+  margin: 0;
+  padding: 3px 0 3px 8px;
+  border-left: 2px solid currentColor;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.evidenceExploratory {
+  border-left-style: dashed;
+}

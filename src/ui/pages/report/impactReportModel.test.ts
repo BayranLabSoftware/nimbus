@@ -17,6 +17,7 @@ import {
   type ImpactReportContext,
   type ImpactReportModel,
 } from './impactReportModel.js';
+import { energyShare } from './reportFormat.js';
 
 const keyOnly = ((key: string) => key) as unknown as TFunction;
 
@@ -173,11 +174,33 @@ describe("an impact's report, in the reader's language (IMP-7c)", () => {
       m.groups.flatMap((g) => g.rows).find((row) => row.id === id)?.value;
     expect(value(it_, 'impactVelocity')).toBe('12,8 km/s');
     expect(value(en_, 'impactVelocity')).toBe('12.8 km/s');
-    expect(value(it_, 'entryRegime')).toBe('airburst parziale');
-    expect(value(en_, 'entryRegime')).toBe('partial airburst');
+    expect(value(it_, 'entryRegime')).toBe('si frammenta in aria, colpisce il suolo');
+    expect(value(en_, 'entryRegime')).toBe('breaks up in the air, strikes the ground');
     expect(value(it_, 'craterMorphology')).toBe('semplice');
     expect(it_.subtitle).toBe('Impatto cosmico · Meteor Crater (Barringer)');
     expect(it_.generated).toBe('22 settembre 2026 alle ore 10:37 CEST');
+  });
+
+  it('never prints the whole energy to the ground beside a break-up in the air', () => {
+    // The astrophysicist's review of 22 September 2026: «partial airburst»
+    // beside «100 % of the energy to the ground» read as a contradiction. A
+    // share is printed to the decimal that keeps it off a whole it is not.
+    for (const id of Object.keys(IMPACT_PRESETS) as (keyof typeof IMPACT_PRESETS)[]) {
+      const r = simulateImpact(IMPACT_PRESETS[id].input);
+      if (r.entry.regime !== 'PARTIAL_AIRBURST') continue;
+      const model = buildImpactReport(r, context(english, 'en'));
+      const share = model.groups
+        .flatMap((g) => g.rows)
+        .find((row) => row.id === 'energyToGround')?.value;
+      expect(share, id).not.toBe('100 %');
+      expect(model.keyFigures.find((k) => k.id === 'entry')?.detail, id).not.toMatch(/^100 %/);
+    }
+    expect(energyShare(0.9996, 'en')).toBe('> 99.9 %');
+    expect(energyShare(0.9951, 'it')).toBe('99,5 %');
+    expect(energyShare(0.62, 'en')).toBe('62 %');
+    expect(energyShare(0.0004, 'en')).toBe('< 0.1 %');
+    expect(energyShare(1, 'en')).toBe('100 %');
+    expect(energyShare(0, 'en')).toBe('0 %');
   });
 
   it('points every row that a map draws to its figure', () => {

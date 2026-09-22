@@ -641,3 +641,15 @@
     break-inside: avoid;
   }
 }
+
+/* What the figure's numbers can claim (evidence classes, phase 1). */
+.legendEvidence {
+  margin: 4px 0 6px;
+  padding-left: 6px;
+  border-left: 2px solid currentColor;
+  font-size: 9px;
+  line-height: 1.35;
+}
+.legendEvidence[data-evidence-class='exploratory'] {
+  border-left-style: dashed;
+}

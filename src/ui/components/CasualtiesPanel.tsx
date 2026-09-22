@@ -17,6 +17,7 @@ import {
   type UnitTier,
 } from '../utils/numberFormat.js';
 import { formatElapsed } from '../utils/timeFormat.js';
+import { EvidenceTag } from './EvidenceTag.js';
 import styles from './SimulatorPanel.module.css';
 
 const TIERS_RANGE: readonly UnitTier[] = [
@@ -133,12 +134,24 @@ export function CasualtiesPanel({
   const { t, i18n } = useTranslation();
   const locale = i18n.language.toLowerCase().startsWith('it') ? 'it-IT' : 'en-US';
   const people = (n: number): string => formatPeople(n, locale);
+  const impact = envelope?.eventType === 'impact';
 
   return (
     // A plain block: the two-column grid belongs to the <dl> below, not
     // to the section — nested in it, every note fell into a 60 px cell.
     <section aria-label={t('casualties.label')} data-testid="casualties" data-tone={tone}>
-      <h3 className={styles.sectionHeading}>{t('casualties.label')}</h3>
+      <h3 className={styles.sectionHeading}>
+        {t('casualties.label')}
+        {impact && <EvidenceTag quantity="casualties" />}
+      </h3>
+      {impact && (
+        // Phase 1: an impact's toll is a scenario, never a count, and the
+        // first thing under its heading says so (the astrophysicist's review
+        // of 22 September 2026: the dominant warning, not a footnote).
+        <p className={styles.notValidated} role="note" data-testid="casualties-not-validated">
+          {t('casualties.notValidated')}
+        </p>
+      )}
       {status === 'fetching' && casualties === null && (
         <p className={styles.presetNote}>{t('casualties.loading')}</p>
       )}

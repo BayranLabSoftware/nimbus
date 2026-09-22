@@ -11,7 +11,12 @@ import type { TFunction } from 'i18next';
 import type { CasualtyEstimate } from '../../../physics/casualties.js';
 import type { ImpactScenarioResult } from '../../../physics/simulate.js';
 import { joulesToMegatons, radiansToDegrees } from '../../../physics/units.js';
+import {
+  EVIDENCE_QUANTITIES,
+  type EvidenceQuantity,
+} from '../../../physics/validation/evidenceClasses.js';
 import { SHORE_DEPTH_CAP_M } from '../../../physics/validation/shoreDepthRules.js';
+import { evidenceText, type EvidenceText } from '../../../scene/globe/evidenceText.js';
 import {
   availableImpactLayers,
   isFieldLayer,
@@ -32,12 +37,14 @@ import {
   countryName,
   dateTime,
   duration,
+  energyShare,
   fixed,
   length,
   mass,
   meters,
   NONE,
   people,
+  peopleOrder,
   percent,
   tnt,
 } from './reportFormat.js';
@@ -48,6 +55,9 @@ export interface ReportRow {
   value: string;
   /** The figure that draws this quantity, where one does. */
   figure?: number;
+  /** What the number can claim (evidence classes, phase 1); absent only on
+   *  the scenario's own inputs, which are the reader's, not the model's. */
+  evidence?: EvidenceQuantity;
 }
 
 export interface ReportGroup {
@@ -61,6 +71,7 @@ export interface KeyFigure {
   label: string;
   value: string;
   detail: string;
+  evidence: EvidenceQuantity;
 }
 
 export interface ReportFigure {
@@ -118,6 +129,8 @@ export interface ImpactReportModel {
   keyFigures: KeyFigure[];
   figures: ReportFigure[];
   groups: ReportGroup[];
+  /** What each family of numbers rests on, every family, in the table's order. */
+  evidence: EvidenceText[];
   sources: ReportSource[];
 }
 
@@ -280,17 +293,22 @@ function groups(
   const { t, language: l } = ctx;
   const fig = figureNumbers(figures);
   const crater = (r.crater.finalDiameter as number) > 0;
-  const group = (id: string, rows: ReportRow[]): ReportGroup => ({
+  // Every row of a group carries its family's class, unless it names its own.
+  const group = (id: string, rows: ReportRow[], evidence?: EvidenceQuantity): ReportGroup => ({
     id,
     title: t(`report.impact.group.${id}`),
-    rows,
+    rows:
+      evidence === undefined
+        ? rows
+        : rows.map((one) => (one.evidence === undefined ? { ...one, evidence } : one)),
   });
+  const tagged = (one: ReportRow, evidence: EvidenceQuantity): ReportRow => ({ ...one, evidence });
 
   const body = group('body', [
-    row(t, 'impactorMass', mass(r.impactor.mass, l)),
-    row(t, 'kineticEnergy', tnt(joulesToMegatons(r.impactor.kineticEnergy), l)),
-    row(t, 'entryRegime', t(`report.impact.enum.regime.${r.entry.regime}`)),
-    row(t, 'energyToGround', percent(r.entry.energyFractionToGround, 0, l)),
+    tagged(row(t, 'impactorMass', mass(r.impactor.mass, l)), 'energy'),
+    tagged(row(t, 'kineticEnergy', tnt(joulesToMegatons(r.impactor.kineticEnergy), l)), 'energy'),
+    tagged(row(t, 'entryRegime', t(`report.impact.enum.regime.${r.entry.regime}`)), 'entry'),
+    tagged(row(t, 'energyToGround', energyShare(r.entry.energyFractionToGround, l)), 'entry'),
   ]);
 
   const craterRows = [
@@ -328,21 +346,29 @@ function groups(
   }
 
   const heatFigure = fig('thermal');
-  const heat = group('heat', [
-    row(t, 'thirdDegreeBurn', length(r.damage.thirdDegreeBurn, l), heatFigure),
-    row(t, 'secondDegreeBurn', length(r.damage.secondDegreeBurn, l), heatFigure),
-    row(t, 'fireIgnition', length(r.firestorm.ignitionRadius, l), heatFigure),
-    row(t, 'fireSustain', length(r.firestorm.sustainRadius, l), heatFigure),
-    row(t, 'fireIgnitionArea', area(r.firestorm.ignitionArea, l)),
-  ]);
+  const heat = group(
+    'heat',
+    [
+      row(t, 'thirdDegreeBurn', length(r.damage.thirdDegreeBurn, l), heatFigure),
+      row(t, 'secondDegreeBurn', length(r.damage.secondDegreeBurn, l), heatFigure),
+      row(t, 'fireIgnition', length(r.firestorm.ignitionRadius, l), heatFigure),
+      row(t, 'fireSustain', length(r.firestorm.sustainRadius, l), heatFigure),
+      row(t, 'fireIgnitionArea', area(r.firestorm.ignitionArea, l)),
+    ],
+    'thermal'
+  );
 
   const ejectaFigure = fig('ejecta');
-  const ejecta = group('ejecta', [
-    row(t, 'ejectaEdge1mm', length(r.ejecta.blanketEdge1mm, l), ejectaFigure),
-    row(t, 'ejectaEdge1m', length(r.ejecta.blanketEdge1m, l), ejectaFigure),
-    row(t, 'ejectaAt2R', meters(r.ejecta.thicknessAt2R, 1, l)),
-    row(t, 'ejectaAt10R', meters(r.ejecta.thicknessAt10R, 2, l)),
-  ]);
+  const ejecta = group(
+    'ejecta',
+    [
+      row(t, 'ejectaEdge1mm', length(r.ejecta.blanketEdge1mm, l), ejectaFigure),
+      row(t, 'ejectaEdge1m', length(r.ejecta.blanketEdge1m, l), ejectaFigure),
+      row(t, 'ejectaAt2R', meters(r.ejecta.thicknessAt2R, 1, l)),
+      row(t, 'ejectaAt10R', meters(r.ejecta.thicknessAt10R, 2, l)),
+    ],
+    'ejecta'
+  );
 
   const shakingFigure = fig('shaking');
   const range = r.seismic.magnitudeRange;
@@ -373,26 +399,39 @@ function groups(
     row(t, 'liquefaction', length(liquefaction, l), liquefaction > 0 ? shakingFigure : undefined)
   );
 
-  const atmosphere = group('atmosphere', [
-    row(t, 'stratDust', mass(r.atmosphere.stratosphericDust, l)),
-    row(t, 'acidRain', mass(r.atmosphere.acidRainMass, l)),
-    row(t, 'climateTier', t(`report.impact.enum.climate.${r.atmosphere.climateTier}`)),
-  ]);
+  const atmosphere = group(
+    'atmosphere',
+    [
+      row(t, 'stratDust', mass(r.atmosphere.stratosphericDust, l)),
+      row(t, 'acidRain', mass(r.atmosphere.acidRainMass, l)),
+      row(t, 'climateTier', t(`report.impact.enum.climate.${r.atmosphere.climateTier}`)),
+    ],
+    'atmosphere'
+  );
 
   const out = [
     group('scenario', scenarioRows(r, ctx)),
     body,
-    group('crater', craterRows),
-    group('blast', blastRows),
+    group('crater', craterRows, 'crater'),
+    group('blast', blastRows, 'blast'),
     heat,
     ejecta,
-    group('shaking', shakingRows),
+    group('shaking', shakingRows, 'seismic'),
     atmosphere,
   ];
   const wave = tsunamiRows(r, ctx);
-  if (wave.length > 0) out.push(group('tsunami', wave));
+  if (wave.length > 0) out.push(group('tsunami', wave, 'tsunami'));
   return out;
 }
+
+/** The family of each key figure. */
+const KEY_EVIDENCE: Readonly<Record<string, EvidenceQuantity>> = {
+  energy: 'energy',
+  entry: 'entry',
+  crater: 'crater',
+  magnitude: 'seismic',
+  deaths: 'casualties',
+};
 
 function keyFigures(r: ImpactScenarioResult, ctx: ImpactReportContext): KeyFigure[] {
   const { t, language: l } = ctx;
@@ -401,6 +440,7 @@ function keyFigures(r: ImpactScenarioResult, ctx: ImpactReportContext): KeyFigur
     label: t(`report.impact.key.${id}`),
     value,
     detail,
+    evidence: KEY_EVIDENCE[id] ?? 'energy',
   });
   const regime = r.entry.regime;
   const crater = (r.crater.finalDiameter as number) > 0;
@@ -418,7 +458,8 @@ function keyFigures(r: ImpactScenarioResult, ctx: ImpactReportContext): KeyFigur
       regime === 'INTACT'
         ? t('report.impact.key.entryIntact')
         : t('report.impact.key.entryDetail', {
-            share: percent(r.entry.energyFractionToGround, 0, l),
+            share: energyShare(r.entry.energyFractionToGround, l),
+            air: energyShare(1 - r.entry.energyFractionToGround, l),
           })
     ),
     k(
@@ -443,7 +484,7 @@ function keyFigures(r: ImpactScenarioResult, ctx: ImpactReportContext): KeyFigur
     ),
     k(
       'deaths',
-      toll === null ? NONE : people(toll.deaths, l),
+      toll === null ? NONE : peopleOrder(toll.deaths, l),
       toll === null
         ? t('report.impact.key.deathsPending')
         : t(
@@ -576,6 +617,7 @@ export function buildImpactReport(
     keyFigures: keyFigures(result, ctx),
     figures,
     groups: groups(result, ctx, figures),
+    evidence: EVIDENCE_QUANTITIES.map((q) => evidenceText(q, ctx.t, ctx.language)),
     sources: sources(result, ctx),
   };
 }

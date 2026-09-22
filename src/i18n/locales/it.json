@@ -1289,7 +1289,7 @@
         "energy": "Energia cinetica",
         "energyDetail": "TNT equivalente",
         "entry": "Ingresso in atmosfera",
-        "entryDetail": "il {{share}} dell’energia arriva al suolo",
+        "entryDetail": "il {{share}} dell’energia arriva al suolo, il {{air}} si libera in aria",
         "entryIntact": "il corpo arriva intero al suolo",
         "crater": "Cratere finale",
         "craterDetail": "profondo {{depth}} · {{morphology}}",
@@ -1297,9 +1297,9 @@
         "magnitude": "Magnitudo sismica",
         "magnitudeDetail": "da {{low}} a {{high}} con l’efficienza sismica",
         "magnitudeNone": "nessuna relazione verificata la copre",
-        "deaths": "Morti stimati",
-        "deathsBand": "banda 5–95 %: da {{low}} a {{high}}",
-        "deathsTable": "banda della tabella: da {{low}} a {{high}}",
+        "deaths": "Mortalità modellata (scenario)",
+        "deathsBand": "ordine di grandezza · banda 5–95 %: da {{low}} a {{high}} · non validato per stime demografiche",
+        "deathsTable": "ordine di grandezza · banda della tabella: da {{low}} a {{high}} · non validato per stime demografiche",
         "deathsPending": "in calcolo"
       },
       "group": {
@@ -1382,8 +1382,8 @@
       "enum": {
         "regime": {
           "INTACT": "intatto",
-          "PARTIAL_AIRBURST": "airburst parziale",
-          "COMPLETE_AIRBURST": "airburst completo"
+          "PARTIAL_AIRBURST": "si frammenta in aria, colpisce il suolo",
+          "COMPLETE_AIRBURST": "esplode in aria"
         },
         "morphology": {
           "simple": "semplice",
@@ -1844,12 +1844,12 @@
     "viewImpact": "Ravvicinata",
     "viewSwitchLabel": "Punto di vista",
     "viewImpactUnavailable": "La vista ravvicinata è disponibile per impatti ed esplosioni",
-    "casualties": "Vittime",
+    "casualties": "Morti modellati",
     "casualtiesPending": "stima in corso…",
     "casualtiesBand": "{{low}} – {{high}}",
     "casualtiesProvisional": "provvisoria",
-    "casualtiesTitle": "Morti stimati mentre l'evento si svolge: il numero sale con il fronte d'urto, le ustioni, la tempesta di fuoco, nelle ore l'onda che tocca le coste e, nelle settimane, i feriti senza cure; per sismi e vulcani con lo scuotimento o il flusso. Ordine di grandezza: i dettagli sono nel pannello.",
-    "casualtiesFinal": "Morti stimati: {{deaths}}, da {{low}} a {{high}}, a {{time}} dall'evento."
+    "casualtiesTitle": "Morti modellati mentre l’evento si svolge — uno scenario di esposizione, non validato per stime demografiche. Il numero sale con il fronte d’urto, le ustioni, la tempesta di fuoco, nelle ore l’onda che tocca le coste e, nelle settimane, i feriti senza cure. Un ordine di grandezza con la sua banda 5–95 %: i dettagli sono nel pannello.",
+    "casualtiesFinal": "Morti modellati: {{deaths}}, da {{low}} a {{high}}, a {{time}} dall’evento."
   },
   "impactView": {
     "title": "Vista ravvicinata",
@@ -1883,11 +1883,11 @@
     "renderFailed": "Il renderer non è partito — dettagli nella console del browser."
   },
   "casualties": {
-    "label": "Vittime stimate",
+    "label": "Scenario di esposizione e mortalità modellata",
     "loading": "Stima in corso: WorldPop calcola la popolazione dentro ogni fascia di danno (15–45 s per fascia)…",
     "unavailable": "Stima non disponibile: né l'API WorldPop né il raster di riserva hanno risposto.",
     "unsupported": "Nessuna stima per questo evento: il modello copre onda d'urto, scuotimento, flussi piroclastici e la costa raggiunta dall'onda; il conteggio dello tsunami compare quando la mappa d'onda tocca una costa.",
-    "deaths": "Morti stimati",
+    "deaths": "Morti modellati",
     "injured": "Feriti (immediati)",
     "exposed": "Popolazione esposta",
     "table": {
@@ -1967,7 +1967,8 @@
       "anchors": "Eventi di questo tipo con {{what}} agli atti: {{list}}."
     },
     "bandNote": "La coppia fra parentesi è la banda 5–95 %: rifacendo lo stesso evento con la dispersione pubblicata dei suoi ingressi, nove volte su dieci il conto cade lì dentro. Per un terremoto porta anche la dispersione che USGS PAGER pubblica per la curva di mortalità del Paese; per un’esplosione o un’eruzione non porta l’incertezza dei tassi di mortalità, e per nessun evento quella del censimento.",
-    "bandNoteWave": "La riga dell’onda porta ancora l’intervallo dei parametri, non la banda 5–95 %."
+    "bandNoteWave": "La riga dell’onda porta ancora l’intervallo dei parametri, non la banda 5–95 %.",
+    "notValidated": "Non validato per stime demografiche. Nessun impatto nella storia ha lasciato un bilancio di vittime: la mortalità è presa da esplosioni di pari energia ed estrapolata. Un ordine di grandezza, mai un conteggio."
   },
   "validation": {
     "back": "Torna alla home",
@@ -2498,6 +2499,119 @@
     "percentile-band": {
       "name": "Percentili del campione non pesati",
       "formula": "P_n = ordina(campioni)[⌊n · N / 100⌋]"
+    }
+  },
+  "evidence": {
+    "heading": "Su che cosa poggia ogni numero",
+    "intro": "Ogni numero che un impatto stampa porta una classe: con che cosa è stato confrontato, in quale dominio, con quale errore — e dove è soltanto uno scenario.",
+    "tagTitle": "{{label}} — {{summary}}",
+    "checked": "Confrontato con l’{{program}} su {{impacts}} impatti ({{readings}} letture), ciascuna entro il {{worst}} %.",
+    "observedBolides": "Sui {{events}} bolidi misurati nel catalogo del JPL, l’ingresso sbaglia la quota di {{error}} km in mediana; la soglia di {{bar}} km non è raggiunta.",
+    "columns": {
+      "quantity": "Grandezza",
+      "class": "Classe",
+      "domain": "Dove vale",
+      "error": "Errore",
+      "missing": "Che cosa la alzerebbe"
+    },
+    "class": {
+      "A": {
+        "label": "A · implementazione verificata",
+        "short": "A",
+        "meaning": "Il codice calcola le equazioni che cita come il programma dei loro stessi autori, entro l’errore dichiarato, a ogni commit. Non dice che le equazioni descrivano il mondo."
+      },
+      "B": {
+        "label": "B · validato nel dominio dichiarato",
+        "short": "B",
+        "meaning": "Confrontato con ciò che è stato osservato, entro una soglia scritta prima."
+      },
+      "C": {
+        "label": "C · di screening negli intervalli indicati",
+        "short": "C",
+        "meaning": "Confrontato con risultati pubblicati di hydrocode su una griglia di casi."
+      },
+      "D": {
+        "label": "D · coerente con gli intervalli della letteratura",
+        "short": "D",
+        "meaning": "Dentro la dispersione degli studi pubblicati; non una previsione validata."
+      },
+      "exploratory": {
+        "label": "Solo esplorativo",
+        "short": "esplorativo",
+        "meaning": "Non ancora confrontato con nulla: uno scenario, non una previsione."
+      }
+    },
+    "quantity": {
+      "energy": {
+        "name": "Energia cinetica",
+        "summary": "½ m v² degli ingressi; il programma di riferimento concorda entro il {{worst}} %.",
+        "domain": "Qualunque corpo il pannello accetti: è l’aritmetica degli ingressi.",
+        "error": "",
+        "missing": "Nulla oltre agli ingressi stessi."
+      },
+      "entry": {
+        "name": "Ingresso in atmosfera",
+        "summary": "L’ingresso del programma di riferimento, entro il {{worst}} %; entrambi sbagliano di {{error}} km in mediana le quote misurate in cielo.",
+        "domain": "Corpi da 10 m a 10 km, da 12 a 50 km/s, sulla griglia di riferimento: l’esplosione in aria, la frammentazione che arriva comunque al suolo, il corpo che arriva intero.",
+        "error": "",
+        "missing": "Livello B: un ingresso che rispetti le quote osservate — la soglia di {{bar}} km sui bolidi, Čeljabinsk e Tunguska nel test in cieco."
+      },
+      "crater": {
+        "name": "Cratere",
+        "summary": "Le leggi di scala del cratere del programma di riferimento, entro il {{worst}} %; non ancora confrontate con un cratere misurato.",
+        "domain": "Crateri semplici e complessi in roccia sedimentaria e cristallina, dai corpi della griglia di riferimento che arrivano al suolo.",
+        "error": "",
+        "missing": "Livello B: Meteor Crater nel test in cieco; livello C: risultati di hydrocode (iSALE, CTH) su angoli e bersagli diversi."
+      },
+      "blast": {
+        "name": "Onda d’urto",
+        "summary": "L’onda d’urto del programma di riferimento, entro il {{worst}} %; le sue curve sono scalate da test nucleari.",
+        "domain": "Esplosioni in aria e impatti al suolo, da 1 a 1 000 km, sulla griglia di riferimento.",
+        "error": "",
+        "missing": "Livello B: i danni lasciati da Čeljabinsk e Tunguska, nel test in cieco."
+      },
+      "thermal": {
+        "name": "Calore, ustioni e incendi",
+        "summary": "Soglie di ustione e di accensione misurate su lampi nucleari di secondi, applicate a impulsi che possono durare minuti.",
+        "domain": "Il raggio della palla di fuoco è quello del programma di riferimento (entro il {{worst}} %); gli anelli di ustione, accensione e incendio che ne derivano non sono verificati.",
+        "error": "Non stabilito: nessuna ustione né incendio lasciati da un impatto è stato confrontato.",
+        "missing": "Soglie per impulsi lunghi, e la foresta bruciata di Tunguska come verifica."
+      },
+      "ejecta": {
+        "name": "Ejecta",
+        "summary": "La coltre di ejecta del programma di riferimento, entro il {{worst}} %; non ancora confrontata con una coltre misurata.",
+        "domain": "Il bordo della coltre da 1 mm a 100 m di spessore, attorno ai crateri della griglia di riferimento.",
+        "error": "",
+        "missing": "Livello B: coltri misurate — Meteor Crater, il Ries."
+      },
+      "seismic": {
+        "name": "Scuotimento sismico",
+        "summary": "Indicativo: una magnitudo da una quota supposta dell’energia che diventa onde sismiche.",
+        "domain": "La relazione di Schultz & Gault (1975) con la quota sismica a 10⁻⁴, come la usa il programma di riferimento; gli anelli Mercalli derivano da quella magnitudo.",
+        "error": "Non stabilito: ogni fattore dieci nella quota sposta la magnitudo di 0,67, e la quota non è misurata per gli impatti. L’energia accoppiata al suolo, lo spettro, la durata e l’attenuazione non sono modellati.",
+        "missing": "Una sorgente accoppiata e una legge di attenuazione, confrontate con corse di hydrocode o impatti registrati."
+      },
+      "atmosphere": {
+        "name": "Polveri, fuliggine e clima",
+        "summary": "Leggi di scala per polveri, fuliggine e acido; il livello climatico le legge, non è un modello climatico.",
+        "domain": "Gli effetti globali dei più grandi impatti, da leggi di scala pubblicate.",
+        "error": "Non stabilito.",
+        "missing": "Risultati di modelli climatici di grandi impatti con cui confrontarli (livello D)."
+      },
+      "tsunami": {
+        "name": "Tsunami",
+        "summary": "Nessuna onda sollevata da un impatto è mai stata registrata per verificarne la sorgente.",
+        "domain": "La sorgente dalle leggi di scala dell’impatto — la cavità nell’acqua e il suo collasso — e la sua propagazione sull’oceano con quella del modello.",
+        "error": "Non stabilito per gli impatti: nessuna onda d’impatto registrata, e i risultati di hydrocode di impatti in acqua non ancora confrontati.",
+        "missing": "Livello C: risultati di hydrocode di impatti in acqua."
+      },
+      "casualties": {
+        "name": "Scenario di esposizione e mortalità modellata",
+        "summary": "Chi vive oggi dentro ogni anello, e una mortalità presa da esplosioni di pari energia. Non validato per stime demografiche.",
+        "domain": "La popolazione di oggi dentro ogni anello, dalle mappe di popolazione, e tassi di mortalità per anello tarati su esplosioni.",
+        "error": "Non stabilito: nessun impatto nella storia ha lasciato un bilancio di vittime, quindi è un’estrapolazione. Un ordine di grandezza, mai un conteggio.",
+        "missing": "Nulla può validarlo finché un impatto non lascia un bilancio; si può portare la dispersione di ogni tasso che usa."
+      }
     }
   }
 }

@@ -901,6 +901,53 @@ report was regenerated unchanged.
   before — Hiroshima, Tōhoku, Pinatubo, Beirut — calibrate engines the impacts
   share, but not one of them is an impact.
 
+### Every number says what it rests on _(phase 1 closed, 23 September 2026)_
+
+The astrophysicist's question — in which domain is the model reliable, with
+what error, and when is it only extrapolating — is now answered on every card,
+from one table: `physics/validation/evidenceClasses.ts`, beside the
+calibration envelope, on his scale. **A**, implementation verified: energy,
+entry, crater, air blast and ejecta, each checked against the Earth Impact
+Effects Program as its authors run it, with the number of impacts, of
+readings and the widest gap of any single one (5.0 % at worst, the entry's),
+and a class A that says in its own words that it does not mean the equations
+describe the world. **Exploratory only**: heat, burns and fire (thresholds
+measured on nuclear flashes of seconds, applied to pulses of minutes),
+seismic shaking (indicative: each decade of the unmeasured seismic share moves
+the magnitude by 0.67), dust and climate, the tsunami (no impact wave was ever
+recorded) and the toll. B, C and D are in the scale and in no row yet: the
+blind tests and the hydrocode grid are phases 3 and 5. The entry carries both
+its check and its miss — within 5 % of the program, and 13.7 km from the
+altitudes 357 bolides were measured at, the 5 km bar not reached.
+
+- **The globe's legend** opens every layer with its class and one sentence of
+  what it rests on; the uncertainty view takes the class of the threshold it
+  reads.
+- **The panel** tags every figure — the section's heading where its numbers
+  share a class, the row where they do not — and folds the whole table under
+  the results; the validation page prints it open.
+- **The report** tags every row but the reader's own inputs, and every key
+  figure, and prints the table on a sheet of its own; the report's model
+  carries it, so the seal covers it.
+- **The toll is renamed** «exposure scenario and modelled mortality», opens
+  with the warning that it is not validated for demographic estimates — no
+  impact has a recorded toll — and its headline is an order of magnitude,
+  one significant figure behind «≈», beside its band.
+- **The entry no longer contradicts itself**: «breaks up in the air, strikes
+  the ground» beside a share that is never rounded onto a whole it is not
+  (> 99.9 %, and what is released in the air).
+- The four drawing corrections the plan listed had closed the day before
+  (B-118 to B-120).
+
+The proof is two tests and an end-to-end check: the table's figures are
+recomputed from the program's comparison and from the validation report, a
+class A cannot stand over a reading past the 10 % audit bar, and on the seal's
+308 scenarios, in both languages, no layer, no report row and no key figure
+appears without its class; on the page, no row of an impact's results does.
+**No number moved**: the seal was re-taken with its reason, and of its 1 232
+digests the numbers' 308 are unchanged — only the drawing (279) and the
+report's text (616) moved, carrying their classes.
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this

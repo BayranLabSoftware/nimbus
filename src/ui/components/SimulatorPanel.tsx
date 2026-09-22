@@ -18,6 +18,7 @@ import {
 } from '../../physics/cascade.js';
 import { bandFor, type ConfidenceField } from '../../physics/confidence.js';
 import { OUTPUT_SIGMA } from '../../physics/uq/conventions.js';
+import type { EvidenceQuantity } from '../../physics/validation/evidenceClasses.js';
 import { clampToGreatCircle, isGlobalReach } from '../../physics/earthScale.js';
 import { IMPACT_PRESETS, type ImpactPresetId } from '../../physics/simulate.js';
 import { availableImpactLayers, isFieldLayer } from '../../scene/globe/impactFieldMap.js';
@@ -51,7 +52,10 @@ import { EarthquakeCustomInputs } from './EarthquakeCustomInputs.js';
 import { ExplosionCustomInputs } from './ExplosionCustomInputs.js';
 import { ImpactCustomInputs } from './ImpactCustomInputs.js';
 import { LandslideCustomInputs } from './LandslideCustomInputs.js';
+import { EvidenceTable } from './EvidenceTable.js';
+import { EvidenceTag } from './EvidenceTag.js';
 import { ProvenanceBar } from './ProvenanceBar.js';
+import { energyShare } from '../pages/report/reportFormat.js';
 import { VolcanoCustomInputs } from './VolcanoCustomInputs.js';
 import styles from './SimulatorPanel.module.css';
 
@@ -459,9 +463,22 @@ function formatArea(m2: number): string {
  * between, e.g., the crater radii block and the atmospheric-entry
  * block — two physically distinct phenomena printed side by side.
  */
-function SectionHeading({ labelKey }: { labelKey: string }): JSX.Element {
+function SectionHeading({
+  labelKey,
+  evidence,
+}: {
+  labelKey: string;
+  /** The class of evidence of every number under the heading, where they
+   *  share one (phase 1); rows of mixed groups carry their own. */
+  evidence?: EvidenceQuantity;
+}): JSX.Element {
   const { t } = useTranslation();
-  return <h3 className={styles.sectionHeading}>{t(labelKey)}</h3>;
+  return (
+    <h3 className={styles.sectionHeading}>
+      {t(labelKey)}
+      {evidence !== undefined && <EvidenceTag quantity={evidence} />}
+    </h3>
+  );
 }
 
 function formatMass(kilograms: number): string {
@@ -803,31 +820,46 @@ export function SimulatorPanel(): JSX.Element {
               <>
                 <SectionHeading labelKey="simulator.impactSummaryHeading" />
                 <dl className={styles.result} aria-label={t('simulator.impactSummaryHeading')}>
-                  <dt className={styles.resultLabel}>{t('simulator.energy')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.energy')}
+                    <EvidenceTag quantity="energy" />
+                  </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.kineticEnergy')}>
                       {formatMegatons(joulesToMegatons(result.data.impactor.kineticEnergy))}
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.crater')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.crater')}
+                    <EvidenceTag quantity="crater" />
+                  </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.finalCrater')}>
                       {formatKilometres(result.data.crater.finalDiameter)}
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.transientCrater')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.transientCrater')}
+                    <EvidenceTag quantity="crater" />
+                  </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.transientCrater')}>
                       {formatKilometres(result.data.crater.transientDiameter)}
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.craterDepth')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.craterDepth')}
+                    <EvidenceTag quantity="crater" />
+                  </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.craterDepth')}>
                       {formatKilometres(result.data.crater.depth)}
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.magnitude')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.magnitude')}
+                    <EvidenceTag quantity="seismic" />
+                  </dt>
                   <dd className={styles.resultValue} data-testid="impact-magnitude">
                     <CitationTooltip
                       citation={t(
@@ -842,7 +874,10 @@ export function SimulatorPanel(): JSX.Element {
                         : `M ${formatDecimal(result.data.seismic.magnitude, 1)}`}
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.magnitudeRange')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.magnitudeRange')}
+                    <EvidenceTag quantity="seismic" />
+                  </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.seismicMagnitudeRange')}>
                       {result.data.seismic.magnitudeRange === null
@@ -850,7 +885,10 @@ export function SimulatorPanel(): JSX.Element {
                         : `M ${formatDecimal(result.data.seismic.magnitudeRange.low, 1)}–${formatDecimal(result.data.seismic.magnitudeRange.high, 1)}`}
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.impactLiquefaction')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.impactLiquefaction')}
+                    <EvidenceTag quantity="seismic" />
+                  </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.liquefaction')}>
                       <RangeValue meters={result.data.seismic.liquefactionRadius} />
@@ -860,7 +898,10 @@ export function SimulatorPanel(): JSX.Element {
                       airburst leaves none (as B-045 said of the report page). */}
                   {(result.data.crater.finalDiameter as number) > 0 && (
                     <>
-                      <dt className={styles.resultLabel}>{t('simulator.morphology')}</dt>
+                      <dt className={styles.resultLabel}>
+                        {t('simulator.morphology')}
+                        <EvidenceTag quantity="crater" />
+                      </dt>
                       <dd className={styles.resultValue} data-testid="impact-morphology">
                         {t(`simulator.${result.data.crater.morphology}`)}
                       </dd>
@@ -870,26 +911,35 @@ export function SimulatorPanel(): JSX.Element {
                 <SectionHeading labelKey="simulator.damageLabel" />
                 <dl className={styles.result} aria-label={t('simulator.damageLabel')}>
                   {/* B-101: an impact's rings cite the impact's relations. */}
-                  <dt className={styles.resultLabel}>{t('simulator.thirdDegreeBurn')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.thirdDegreeBurn')}
+                    <EvidenceTag quantity="thermal" />
+                  </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.impactThermal')}>
                       <RangeValue meters={result.data.damage.thirdDegreeBurn} />
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.fivePsiRing')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.fivePsiRing')}
+                    <EvidenceTag quantity="blast" />
+                  </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.impactBlast')}>
                       <RangeValue meters={result.data.damage.overpressure5psi} />
                     </CitationTooltip>
                   </dd>
-                  <dt className={styles.resultLabel}>{t('simulator.onePsiRing')}</dt>
+                  <dt className={styles.resultLabel}>
+                    {t('simulator.onePsiRing')}
+                    <EvidenceTag quantity="blast" />
+                  </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.impactBlast')}>
                       <RangeValue meters={result.data.damage.overpressure1psi} />
                     </CitationTooltip>
                   </dd>
                 </dl>
-                <SectionHeading labelKey="simulator.entryLabel" />
+                <SectionHeading labelKey="simulator.entryLabel" evidence="entry" />
                 <dl className={styles.result} aria-label={t('simulator.entryLabel')}>
                   <dt className={styles.resultLabel}>{t('simulator.entryRegime')}</dt>
                   <dd className={styles.resultValue}>
@@ -923,7 +973,7 @@ export function SimulatorPanel(): JSX.Element {
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.energyFractionToGround')}</dt>
                   <dd className={styles.resultValue}>
-                    {(result.data.entry.energyFractionToGround * 100).toFixed(1)} %
+                    {energyShare(result.data.entry.energyFractionToGround, i18n.language)}
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.atmosphericYield')}</dt>
                   <dd className={styles.resultValue}>
@@ -936,7 +986,7 @@ export function SimulatorPanel(): JSX.Element {
                 </dl>
                 {result.data.entry.regime !== 'INTACT' && (
                   <>
-                    <SectionHeading labelKey="simulator.entryFlashLabel" />
+                    <SectionHeading labelKey="simulator.entryFlashLabel" evidence="thermal" />
                     <dl className={styles.result} aria-label={t('simulator.entryFlashLabel')}>
                       <dt className={styles.resultLabel}>{t('simulator.entryFlashFirstDegree')}</dt>
                       <dd className={styles.resultValue}>
@@ -955,7 +1005,7 @@ export function SimulatorPanel(): JSX.Element {
                         <RangeValue meters={result.data.entry.flashBurnRadii.thirdDegree} />
                       </dd>
                     </dl>
-                    <SectionHeading labelKey="simulator.entryShockLabel" />
+                    <SectionHeading labelKey="simulator.entryShockLabel" evidence="blast" />
                     <dl className={styles.result} aria-label={t('simulator.entryShockLabel')}>
                       {result.data.entry.regime === 'COMPLETE_AIRBURST' && (
                         <>
@@ -999,7 +1049,7 @@ export function SimulatorPanel(): JSX.Element {
                     </dl>
                   </>
                 )}
-                <SectionHeading labelKey="simulator.firestormLabel" />
+                <SectionHeading labelKey="simulator.firestormLabel" evidence="thermal" />
                 <dl className={styles.result} aria-label={t('simulator.firestormLabel')}>
                   <dt className={styles.resultLabel}>{t('simulator.ignitionRadius')}</dt>
                   <dd className={styles.resultValue}>
@@ -1028,7 +1078,7 @@ export function SimulatorPanel(): JSX.Element {
                     {formatArea(result.data.firestorm.sustainArea)}
                   </dd>
                 </dl>
-                <SectionHeading labelKey="simulator.ejectaLabel" />
+                <SectionHeading labelKey="simulator.ejectaLabel" evidence="ejecta" />
                 <dl className={styles.result} aria-label={t('simulator.ejectaLabel')}>
                   <dt className={styles.resultLabel}>{t('simulator.ejectaEdge1m')}</dt>
                   <dd className={styles.resultValue}>
@@ -1055,7 +1105,7 @@ export function SimulatorPanel(): JSX.Element {
                     </CitationTooltip>
                   </dd>
                 </dl>
-                <SectionHeading labelKey="simulator.atmosphereLabel" />
+                <SectionHeading labelKey="simulator.atmosphereLabel" evidence="atmosphere" />
                 <dl className={styles.result} aria-label={t('simulator.atmosphereLabel')}>
                   <dt className={styles.resultLabel}>{t('simulator.climateTier')}</dt>
                   <dd className={styles.resultValue}>
@@ -1076,7 +1126,7 @@ export function SimulatorPanel(): JSX.Element {
                 </dl>
                 {result.data.tsunami && (
                   <>
-                    <SectionHeading labelKey="simulator.tsunamiLabel" />
+                    <SectionHeading labelKey="simulator.tsunamiLabel" evidence="tsunami" />
                     <dl className={styles.result} aria-label={t('simulator.tsunamiLabel')}>
                       <dt className={styles.resultLabel}>{t('simulator.tsunamiCavity')}</dt>
                       <dd className={styles.resultValue}>
@@ -1222,6 +1272,7 @@ export function SimulatorPanel(): JSX.Element {
                   </>
                 )}
                 <CascadeTimeline stages={buildImpactCascade(result.data)} />
+                <EvidenceTable />
               </>
             )}
 

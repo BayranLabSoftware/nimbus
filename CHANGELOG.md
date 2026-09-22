@@ -19,6 +19,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Every number an impact prints says what it rests on.** A class of
+  evidence, on the scale of the astrophysicist's review, beside every figure
+  of the panel, on every layer of the globe's legend and on every row and key
+  figure of the report, with a table of what each class means, where it
+  holds, its error and what would raise it: class A, implementation
+  verified against the Earth Impact Effects Program, for the energy, the
+  entry, the crater, the air blast and the ejecta; exploratory only for the
+  heat and fire, the seismic shaking, the dust and climate, the tsunami and
+  the toll. The toll is now an «exposure scenario and modelled mortality»,
+  opens with the warning that it is not validated for demographic estimates,
+  and heads the report as an order of magnitude beside its band. No computed
+  number changed.
+
 - **An impact's report is the globe's map, in the reader's language.** The
   report of an impact now carries every layer the globe draws — overpressure,
   wind, thermal fluence, ejecta, shaking and the uncertainty view — each as a
