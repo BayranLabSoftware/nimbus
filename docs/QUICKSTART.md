@@ -4,7 +4,7 @@ The launcher does the setup. Run it once, you're in.
 
 ## What you need
 
-Node 20 LTS (https://nodejs.org/). Nothing else — pnpm, dependencies
+Node 22 LTS (https://nodejs.org/). Nothing else — pnpm, dependencies
 and Playwright browsers are provisioned on demand.
 
 ## Run
@@ -34,7 +34,7 @@ On macOS / Linux replace `nimbus` with `./nimbus.sh` (`./nimbus.sh test`,
 
 ## When things go wrong
 
-- **"Node.js not found"** — install Node 20 LTS, reopen the terminal.
+- **"Node.js not found"** — install Node 22 LTS, reopen the terminal.
 - **"Node 20+ required"** — upgrade Node.
 - **`pnpm install` fails** — delete `node_modules/` and retry. If it
   still fails, file the log in an issue.

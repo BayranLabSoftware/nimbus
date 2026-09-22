@@ -49,7 +49,8 @@ and run from the command line the events you know.
 
 ## Reproducing
 
-Node 20 or later and pnpm 9.
+Node 22.20.0, the version in `.nvmrc` (the impacts seal is compared on it,
+on macOS arm64), and pnpm 9.
 
 ```bash
 git clone https://github.com/BayranLabSoftware/nimbus.git

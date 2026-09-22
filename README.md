@@ -71,7 +71,7 @@ report you are quoting, or the release that contains it.
 
 ## Running it
 
-The fastest path is the bundled launcher. Install Node 20 LTS and:
+The fastest path is the bundled launcher. Install Node 22 LTS and:
 
 - **Windows** — double-click `nimbus.cmd`.
 - **macOS / Linux** — `./nimbus.sh`.
