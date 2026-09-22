@@ -79,7 +79,18 @@ export interface CityHoverInfo {
   capital: boolean;
 }
 
-export type HoverInfo = RingHoverInfo | AftershockHoverInfo | CityHoverInfo;
+/** An isoline of an impact's map (IMP-7b): what it is, its value and reach,
+ *  and the relation it stands on, all as the legend prints them. */
+export interface IsolineHoverInfo {
+  type: 'isoline';
+  title: string;
+  meta: string;
+  description: string;
+  source: string;
+  color: string;
+}
+
+export type HoverInfo = RingHoverInfo | AftershockHoverInfo | CityHoverInfo | IsolineHoverInfo;
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'] as const;
 
@@ -218,6 +229,18 @@ export const RingTooltip = forwardRef(function RingTooltip(
     </>
   );
 
+  const renderIsoline = (line: IsolineHoverInfo): JSX.Element => (
+    <>
+      <div className={styles.titleBar} style={{ backgroundColor: line.color }} aria-hidden />
+      <h3 className={styles.title}>{line.title}</h3>
+      <p className={styles.meta}>{line.meta}</p>
+      <p className={styles.description}>{line.description}</p>
+      <p className={styles.source} data-testid="ring-tooltip-source">
+        <span className={styles.sourceLabel}>{t('globe.tooltip.sourceLabel')}</span> {line.source}
+      </p>
+    </>
+  );
+
   const renderCity = (city: CityHoverInfo): JSX.Element => (
     <>
       <div className={styles.titleBar} style={{ backgroundColor: '#F4F1EA' }} aria-hidden />
@@ -244,6 +267,7 @@ export const RingTooltip = forwardRef(function RingTooltip(
       {info?.type === 'ring' && renderRing(info)}
       {info?.type === 'aftershock' && renderAftershock(info)}
       {info?.type === 'city' && renderCity(info)}
+      {info?.type === 'isoline' && renderIsoline(info)}
     </div>
   );
 });

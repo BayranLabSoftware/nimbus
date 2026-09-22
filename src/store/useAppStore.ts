@@ -23,6 +23,7 @@ import { ruptureOrigins } from '../physics/tsunami/sourcePlacement.js';
 import { RESOLUTION_FLOOR_CELLS as SHORE_RESOLUTION_FLOOR_CELLS } from '../physics/validation/shoreDistanceRules.js';
 import { SHORE_DEPTH_CAP_M } from '../physics/validation/shoreDepthRules.js';
 import type { TerrainSourceSpan } from '../scene/terrainSampling.js';
+import type { ImpactLayerId } from '../scene/globe/impactFieldMap.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
 import {
   BASIN_SAMPLE_RADIUS_M,
@@ -492,6 +493,18 @@ export interface AppStore {
    *  MMI IX must not have a IX swatch in its legend. The globe is the only
    *  writer, and it writes on every redraw, so the two cannot drift. */
   shakingFieldBands: readonly string[] | null;
+  /** The layer an impact's map shows (ROADMAP IMP-7b): the overpressure
+   *  first, as Andrea decided on 22 September 2026, and the reader's choice
+   *  from then on. A layer the result does not have falls back to the first
+   *  it has (`resolveImpactLayer`). */
+  impactFieldLayer: ImpactLayerId;
+  /** The threshold the uncertainty view reads, by key; null reads the first
+   *  the result has. */
+  impactUncertaintyKey: string | null;
+  /** True while the animated shock front is on the globe: an impact's legend
+   *  lists it only then, since a row is a promise that something is drawn
+   *  (B-107). The globe is the only writer. */
+  shockFrontActive: boolean;
   /** Camera flight asked for by the UI — the city search in the
    *  simulator panel. The globe consumes it by `seq`; the store never
    *  moves the camera itself. */
@@ -618,6 +631,12 @@ export interface AppStore {
   /** Flip the visibility of a single legend row + its globe ring. */
   /** Called by the globe once per redraw with the bands it painted. */
   setShakingFieldBands: (bands: readonly string[] | null) => void;
+  /** Show another layer of an impact's map. */
+  setImpactFieldLayer: (layer: ImpactLayerId) => void;
+  /** Read another threshold in the uncertainty view. */
+  setImpactUncertaintyKey: (key: string | null) => void;
+  /** Called by the globe when the shock front starts and when it is gone. */
+  setShockFrontActive: (active: boolean) => void;
   toggleRingVisibility: (key: string) => void;
   /** Reset every legend toggle so all rings render again. Wired to a
    *  "show all" button in the legend header. */
@@ -690,6 +709,9 @@ type InitialSlice = Pick<
   | 'location'
   | 'hiddenRingKeys'
   | 'shakingFieldBands'
+  | 'impactFieldLayer'
+  | 'impactUncertaintyKey'
+  | 'shockFrontActive'
   | 'cameraRequest'
   | 'result'
   | 'bathymetricTsunami'
@@ -774,6 +796,9 @@ function initialState(): InitialSlice {
     location: null,
     hiddenRingKeys: new Set<string>(),
     shakingFieldBands: null,
+    impactFieldLayer: 'overpressure',
+    impactUncertaintyKey: null,
+    shockFrontActive: false,
     cameraRequest: null,
     result: null,
     bathymetricTsunami: null,
@@ -2250,6 +2275,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
       eventType: type,
       hiddenRingKeys: new Set<string>(),
       shakingFieldBands: null,
+      impactUncertaintyKey: null,
+      shockFrontActive: false,
       result: null,
       bathymetricTsunami: null,
       populationExposure: null,
@@ -2280,6 +2307,18 @@ export const useAppStore = create<AppStore>((set, get) => ({
         now.length === bands.length &&
         now.every((label, i) => label === bands[i]));
     if (!same) set({ shakingFieldBands: bands });
+  },
+
+  setImpactFieldLayer: (layer) => {
+    if (get().impactFieldLayer !== layer) set({ impactFieldLayer: layer });
+  },
+
+  setImpactUncertaintyKey: (key) => {
+    if (get().impactUncertaintyKey !== key) set({ impactUncertaintyKey: key });
+  },
+
+  setShockFrontActive: (active) => {
+    if (get().shockFrontActive !== active) set({ shockFrontActive: active });
   },
 
   toggleRingVisibility: (key) => {

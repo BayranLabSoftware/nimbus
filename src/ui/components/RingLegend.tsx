@@ -10,6 +10,7 @@ import {
 } from '../utils/numberFormat.js';
 import { INTENSITY_BANDS } from '../../scene/globe/shakingOverlay.js';
 import { entryCellSentence } from '../../scene/globe/measuredCellText.js';
+import { ImpactFieldLegend } from './ImpactFieldLegend.js';
 import styles from './RingLegend.module.css';
 
 const TIERS_RANGE: readonly UnitTier[] = [
@@ -154,20 +155,14 @@ function buildRingRows(
 
   switch (result.type) {
     case 'impact': {
-      const d = result.data.damage;
-      push('craterRim', d.craterRim);
-      push('thirdDegreeBurn', d.thirdDegreeBurn);
-      push('secondDegreeBurn', d.secondDegreeBurn);
-      push('massFire', result.data.firestorm.sustainRadius);
-      push('fireIgnition', result.data.firestorm.ignitionRadius);
-      push('overpressure5psi', d.overpressure5psi);
-      push('overpressure1psi', d.overpressure1psi);
-      push('lightDamage', d.lightDamage);
-      push('ejectaBlanket', result.data.ejecta.blanketEdge1mm);
+      // Since 22 September 2026 an impact is drawn as the field's own map,
+      // and its legend is that map's (`ImpactFieldLegend`): the colour
+      // scale, the thresholds on it and their reach, and the front while it
+      // runs (B-107). What stays a row is the tsunami's cavity, drawn as it
+      // was.
       if (result.data.tsunami) {
         push('tsunamiCavity', result.data.tsunami.cavityRadius);
       }
-      pushFront('shockFront', ANELLI_DURTO);
       break;
     }
     case 'explosion': {
@@ -260,6 +255,7 @@ export function RingLegend(): JSX.Element {
 
   const rows = buildRingRows(result, t, shakingFieldBands !== null);
   const anyHidden = rows.some((r) => hiddenRingKeys.has(r.key));
+  const impactMap = result?.type === 'impact' ? result.data : null;
 
   // Phase 12c — tsunami map status. Surfaces the user-facing question
   // "did the trans-oceanic propagation actually run for this scenario?"
@@ -284,12 +280,16 @@ export function RingLegend(): JSX.Element {
 
   return (
     <aside
-      className={styles.legend}
-      aria-label={t('globe.legend.heading')}
+      className={[styles.legend, impactMap !== null ? styles.legendMap : '']
+        .filter(Boolean)
+        .join(' ')}
+      aria-label={t(impactMap !== null ? 'globe.impactMap.heading' : 'globe.legend.heading')}
       data-testid="ring-legend"
     >
       <header className={styles.header}>
-        <h2 className={styles.heading}>{t('globe.legend.heading')}</h2>
+        <h2 className={styles.heading}>
+          {t(impactMap !== null ? 'globe.impactMap.heading' : 'globe.legend.heading')}
+        </h2>
         <div className={styles.headerActions}>
           {anyHidden && (
             <button
@@ -318,8 +318,11 @@ export function RingLegend(): JSX.Element {
       </header>
       {!collapsed && (
         <>
-          <p className={styles.subheading}>{t('globe.legend.subheading')}</p>
-          {rows.length === 0 ? (
+          {impactMap !== null && <ImpactFieldLegend result={impactMap} />}
+          {(impactMap === null || rows.length > 0) && (
+            <p className={styles.subheading}>{t('globe.legend.subheading')}</p>
+          )}
+          {impactMap !== null && rows.length === 0 ? null : rows.length === 0 ? (
             // B-099: a scenario that ran and draws no ring is told so, not
             // asked to run.
             <p className={styles.empty}>
@@ -397,7 +400,7 @@ export function RingLegend(): JSX.Element {
               })}
             </p>
           )}
-          {rows.length > 0 && (
+          {rows.length > 0 && impactMap === null && (
             <p className={styles.uncertaintyNote}>{t('globe.legend.uncertaintyNote')}</p>
           )}
         </>

@@ -19,6 +19,24 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **An impact is drawn as the field's own map.** Until 22 September 2026
+  an impact's globe drew every quantity as a ring, and most as two or three
+  — the contour, the dashed line of its published scatter and, for an
+  airburst's blast, the dotted edges of its band — with the zones of
+  different quantities tiling one another. Now it draws one quantity at a
+  time, as ShakeMap draws shaking and Glasstone & Dolan a blast: the
+  overpressure first, then the wind behind the shock front, the thermal
+  fluence with its two fire thresholds, the ejecta blanket with the crater,
+  the program's shaking with the liquefaction, and an uncertainty view — the
+  probability of exceeding a threshold from its published scatter, or, for a
+  complete airburst's blast, the agreement of its band. Each is a continuous
+  surface in its units, the model's thresholds as isolines carrying their
+  value, and a legend with the colour scale, what each threshold means and
+  how far it reaches, over imagery turned to greys. Tsunamis are drawn as
+  before. Closes B-104 (the zone of 5 psi left unpainted at Meteor Crater),
+  B-105 (an oblique impact's edges drawn about the point of impact, their
+  zones about the model's centre) and B-107 (shaking and liquefaction not on
+  the globe, and a legend row for a front already gone).
 - **An impact has a wind.** The Earth Impact Effects Program prints the
   peak wind behind the shock front beside the overpressure; until 22
   September 2026 the impact domain computed none (B-106). It is now the

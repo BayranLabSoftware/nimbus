@@ -41,6 +41,16 @@ import type { LandslideWaveLaw } from '../events/landslide/simulate.js';
 import { IMPULSE_WAVE_TESTED, slideImpactVelocity } from '../effects/impulseWave.js';
 import { simulateImpact, IMPACT_PRESETS } from '../simulate.js';
 import { impactPeakWindAt, programPeakWind } from '../events/impact/impactField.js';
+import type { TFunction } from 'i18next';
+import {
+  availableImpactLayers,
+  buildImpactLayer,
+  familyShapes,
+  levelGeometry,
+} from '../../scene/globe/impactFieldMap.js';
+
+/** A translator that answers with the key, for the map's pure layers. */
+const keyOnly = ((key: string) => key) as unknown as TFunction;
 import { buildExplosionCascade, buildImpactCascade } from '../cascade.js';
 import { blastCasualtyPlan } from '../casualties.js';
 import { DEFAULT_TOLL_BAND_SCATTER, withVulnerabilityScatter } from '../uq/tollBand.js';
@@ -1556,7 +1566,14 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       'utf8'
     );
     expect(globe).toContain('radius: result.data.firestorm.sustainRadius');
-    expect(globe).toContain('result.data.firestorm.sustainRadius as number');
+    // Since 22 September 2026 an impact is drawn as the field's map (ROADMAP
+    // IMP-7b), and its mass fire is an isoline of the thermal layer, at the
+    // radius the toll counts.
+    const meteor = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    const thermal = buildImpactLayer(meteor, 'thermal', { t: keyOnly, language: 'en' });
+    expect(thermal?.isolines.find((l) => l.id === 'heat-massFire')?.radiusM).toBe(
+      meteor.firestorm.sustainRadius
+    );
     const legend = readFileSync(
       fileURLToPath(new URL('../../ui/components/RingLegend.tsx', import.meta.url)),
       'utf8'
@@ -1971,6 +1988,88 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(at5psi).toBeGreaterThan(71);
     expect(at5psi).toBeLessThan(72);
     expect(impactPeakWindAt(source, r.damage.overpressure1psi)).toBeLessThan(at5psi);
+  });
+
+  it("B-104 An impact's zones nest within their own quantity", () => {
+    // At Meteor Crater the third-degree burn's ellipse is larger downrange
+    // than the 5 psi one's, and a zone's inner edge was the previous ring of
+    // any quantity, so the zone where buildings collapse painted nothing. On
+    // the field's map a layer paints one quantity, every range out to its
+    // lowest isoline, and carries no other quantity's line.
+    const meteor = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    const a = meteor.damageAsymmetry;
+    expect(meteor.damage.thirdDegreeBurn * a.thirdDegreeBurn.semiMajorMultiplier).toBeGreaterThan(
+      meteor.damage.overpressure5psi * a.overpressure5psi.semiMajorMultiplier
+    );
+    const layer = buildImpactLayer(meteor, 'overpressure', { t: keyOnly, language: 'en' });
+    for (let r: number = meteor.damage.craterRim; r < meteor.damage.overpressure5psi; r *= 1.05) {
+      expect(layer?.field?.colorAt(r)?.[3] ?? 0, `${r.toFixed(0)} m`).toBeGreaterThan(0);
+    }
+    expect(layer?.isolines.every((l) => l.family === 'blast')).toBe(true);
+    const globe = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/Globe.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(globe).not.toContain('addRingFamily(impactFamily)');
+  });
+
+  it("B-105 An oblique impact's isolines stand about the model's centre", () => {
+    // The edge polyline was drawn about the point of impact while the zone
+    // stood about the centre the model moves downrange: 2.24 km apart for
+    // Meteor Crater's 0.5 psi. The map draws the line and the colour from one
+    // geometry, the model's ellipse about its own centre.
+    const meteor = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    const anchor = { latDeg: 35.0275, lonDeg: -111.0225 };
+    const ring = meteor.damageAsymmetry.lightDamage;
+    expect(ring.centerOffsetMeters).toBeGreaterThan(1_000);
+    const g = levelGeometry(anchor, familyShapes(meteor).blast, meteor.damage.lightDamage);
+    const centre = projectAlongAzimuth(
+      anchor.latDeg,
+      anchor.lonDeg,
+      (ring.azimuthDeg * Math.PI) / 180,
+      ring.centerOffsetMeters
+    );
+    expect(g.centerLatDeg).toBeCloseTo(centre.latDeg, 9);
+    expect(g.centerLonDeg).toBeCloseTo(centre.lonDeg, 9);
+    const renderer = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/impactFieldRenderer.ts', import.meta.url)),
+      'utf8'
+    );
+    expect(renderer).toContain('const g = levelGeometry(anchor, shape, line.radiusM);');
+    expect(renderer).toContain('rasterizeGround(layer.field, shapes[layer.field.family], anchor)');
+  });
+
+  it('B-107 The globe draws every quantity an impact computes', () => {
+    // The program's Mercalli rings were read only by the rules and the
+    // liquefaction only by the panel; the wind was not computed (B-106); and
+    // the legend kept the travelling front's row after the front had gone.
+    const ctx = { t: keyOnly, language: 'en' };
+    const meteor = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    const layers = availableImpactLayers(meteor, ctx).map((l) => l.id);
+    for (const id of ['overpressure', 'wind', 'thermal', 'ejecta', 'shaking', 'uncertainty']) {
+      expect(layers).toContain(id);
+    }
+    expect(buildImpactLayer(meteor, 'shaking', ctx)?.isolines.map((l) => l.label)).toEqual([
+      'III',
+      'V',
+    ]);
+    const chicxulub = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+    expect(chicxulub.seismic.liquefactionRadius).toBeGreaterThan(0);
+    expect(
+      buildImpactLayer(chicxulub, 'shaking', ctx)?.isolines.find((l) => l.id === 'liquefaction')
+        ?.radiusM
+    ).toBe(chicxulub.seismic.liquefactionRadius);
+    const legend = readFileSync(
+      fileURLToPath(new URL('../../ui/components/ImpactFieldLegend.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(legend).toContain('{frontActive && (');
+    const globe = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/Globe.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(globe).toContain("if (result.type === 'impact') setShockFrontActive(true);");
+    expect(globe).toContain('setShockFrontActive(false);');
   });
 
   // Bypass guard: the test count below MUST equal the registry row

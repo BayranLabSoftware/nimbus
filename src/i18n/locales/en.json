@@ -1073,6 +1073,133 @@
       "lateralBlast": "Lateral blast",
       "ashfallPlume": "Ash 1 mm",
       "ejectaBlanket": "Ejecta"
+    },
+    "impactMap": {
+      "heading": "Map legend",
+      "tabsAria": "Layer of the map",
+      "thresholdAria": "Threshold the uncertainty view reads",
+      "craterLabel": "crater Ø {{diameter}}",
+      "layer": {
+        "overpressure": {
+          "tab": "Overpressure",
+          "title": "Peak overpressure at the ground",
+          "unit": "kPa · thresholds in psi"
+        },
+        "wind": {
+          "tab": "Wind",
+          "title": "Peak wind behind the shock front",
+          "unit": "km/h, logarithmic scale"
+        },
+        "thermal": {
+          "tab": "Thermal fluence",
+          "title": "Thermal fluence",
+          "unit": "kJ/m² · isolines in cal/cm²"
+        },
+        "ejecta": {
+          "tab": "Ejecta blanket",
+          "title": "Thickness of the ejecta blanket",
+          "unit": "metres, logarithmic scale"
+        },
+        "shaking": {
+          "tab": "Shaking",
+          "title": "Ground shaking",
+          "unit": "Modified Mercalli intensity, the program's"
+        },
+        "probability": {
+          "tab": "Probability",
+          "title": "Probability of exceeding {{threshold}}",
+          "unit": "per cent"
+        },
+        "agreement": {
+          "tab": "Field agreement",
+          "title": "Agreement of the field on {{threshold}}",
+          "unit": "the band Collins et al. (2017) give their own approximations"
+        }
+      },
+      "markWithWind": "{{range}} · wind {{wind}} km/h",
+      "noteLabel": {
+        "isolines": "Isolines",
+        "uncertainty": "Uncertainty",
+        "source": "Source",
+        "limit": "Limit",
+        "what": "What it is",
+        "magnitude": "Magnitude",
+        "liquefaction": "Liquefaction",
+        "caveat": "Caveat",
+        "from": "From",
+        "reading": "Reading",
+        "not": "It is not"
+      },
+      "note": {
+        "isolinesMedian": "the model's thresholds, at the median",
+        "bandSigma": "radius ±{{sigma}} % (1σ): the Probability view",
+        "bandAgreement": "within three burst altitudes a factor of two in overpressure (Collins et al. 2017): the Field agreement view",
+        "belowLowestBlast": "below 0.5 psi the field is not painted; past 1 MPa the scale stops",
+        "windWhat": "the gust of air the shock front pushes: it lasts as long as the overpressure phase, then reverses",
+        "windLimit": "below 0.5 psi not painted; past 1,000 km/h the scale stops; inside the crater nothing",
+        "isolinesThermal": "the model's burn and fire thresholds, at the median",
+        "thermalLimit": "below the lowest threshold not painted; past the fireball's horizon nothing",
+        "isolinesEjecta": "thicknesses of the same law that gives the 1 mm edge",
+        "ejectaInside": "inside the crater the thickness is not reported",
+        "magnitude": "M {{m}}, from 10⁻⁴ of the energy at the ground (Collins et al. 2005, Eq. 40*)",
+        "magnitudeSpread": "M {{m}} ({{low}}–{{high}} with the seismic efficiency from 10⁻⁵ to 10⁻³), from 10⁻⁴ of the energy at the ground (Collins et al. 2005, Eq. 40*)",
+        "magnitudeAir": "M {{m}}, from the wave in the air (Harkrider; rules 730 to 738), with no spread",
+        "liquefactionReach": "out to {{range}} on saturated sandy ground",
+        "liquefactionNone": "none: the magnitude is too low to liquefy saturated sandy ground",
+        "shakingBelowV": "below V only a line, as the earthquakes are drawn",
+        "shakingAirburst": "the program draws these rings for an airburst too, but Collins et al. (2005) report no seismic effects for airbursts; Tunguska's shaking reached seismographs and is not compared here with a record",
+        "probabilityFrom": "the published scatter of the radius, 1σ = {{sigma}} %, read as lognormal",
+        "probabilityIsolines": "90, 50 and 10 %; 50 % is the line of the map of the field",
+        "agreementReading": "the whole band exceeds the threshold out to {{low}}; only its upper edge out to {{high}}",
+        "agreementNowhere": "nowhere does the whole band exceed the threshold; its upper edge does, out to {{high}}",
+        "agreementNot": "a probability: it is the band the field gives its own models, and so it is not turned into percentages"
+      },
+      "source": {
+        "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 at the ground (rules 748 to 755), verified against the Earth Impact Effects Program (I1)",
+        "airBlast": "the larger of the burst in the air at its altitude and the surface burst of the energy that reached the ground (Collins et al. 2005; the band, Collins et al. 2017), verified against the Earth Impact Effects Program (I1)",
+        "wind": "Collins et al. (2005)'s relation with the program's 1 bar and 330 m/s, on the blast of the Overpressure layer (rules 793 to 797)",
+        "thermal": "the program's fireball at the ground and the flash in the air (Collins et al. 2005; Johnston & Stern 2019 along an airburst's path); thresholds Glasstone & Dolan (1977)",
+        "ejecta": "Collins, Melosh & Marcus (2005), thickness in r⁻³",
+        "shaking": "the program's attenuation (Eqs. 41*–43*) and Table 3 of Collins et al. (2005), verified on the program's rings (rules 154 to 157)",
+        "liquefaction": "Youd & Idriss (2001)'s threshold, fed by the magnitude",
+        "probability": "the published scatter of the radius, read as lognormal",
+        "agreement": "the band of rule 706 (Collins et al. 2017)"
+      },
+      "isoline": {
+        "overpressure": "the peak overpressure at this line; the air behind the front moves at {{wind}} km/h",
+        "windTitle": "Wind {{value}} km/h",
+        "wind": "the peak wind behind the shock front reaches this speed out to this line",
+        "thermal": "{{value}} cal/cm² of thermal fluence at this line",
+        "ejectaTitle": "Ejecta blanket {{value}}",
+        "ejecta": "the blanket is this thick at this line, thicker inside it",
+        "mercalliTitle": "Mercalli {{level}}",
+        "mercalli": "the program's shaking reaches this intensity out to this line",
+        "mercalliSpread": "the program's shaking reaches this intensity out to this line; from {{low}} to {{high}} with the seismic efficiency",
+        "liquefactionTitle": "Liquefaction",
+        "liquefaction": "saturated sandy ground liquefies out to this line",
+        "probabilityTitle": "{{p}} % · {{threshold}}",
+        "probability": "the threshold is exceeded with this probability at this line (published 1σ scatter {{sigma}} %)",
+        "agreementTitle": "{{threshold}} · the median",
+        "agreement": "the line of the map of the field; the band about it is the field's"
+      },
+      "liquefactionLabel": "liquefaction",
+      "ejectaEdge": "edge of the blanket",
+      "shakingZone": "{{levels}} · out to {{range}}",
+      "shakingZoneLine": "{{levels}} · out to {{range}}, a line only",
+      "noBand": "no published band",
+      "windChoice": "Wind {{value}} km/h",
+      "choice": {
+        "thirdDegreeBurn": "3rd-degree burn",
+        "secondDegreeBurn": "2nd-degree burn",
+        "massFire": "Structures alight",
+        "fireIgnition": "Kindling catches",
+        "ejectaBlanket": "Blanket 1 mm"
+      },
+      "probabilityMedian": "{{p}} % · the median",
+      "probabilityLevel": "{{p}} %",
+      "upTo": "out to {{range}}",
+      "agreementAll": "exceeded by the whole band, its low edge (P/2) included · out to {{range}}",
+      "agreementSome": "exceeded only by the upper edge (2P) · out to {{range}}"
     }
   },
   "report": {

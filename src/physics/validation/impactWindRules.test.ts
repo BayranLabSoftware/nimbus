@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   impactOverpressureAt,
   impactPeakWindAt,
+  programOverpressureForWind,
   programPeakWind,
   type ImpactFieldSource,
 } from '../events/impact/impactField.js';
@@ -42,6 +43,14 @@ describe('rules 793 to 797: the peak wind of an impact', () => {
     expect(Number(peakWindFromOverpressure(fivePsi as never))).toBeCloseTo(72.8, 0);
     expect(programPeakWind(0)).toBe(0);
     expect(programPeakWind(-5)).toBe(0);
+  });
+
+  it('solves the relation back for the overpressure a wind needs, both ways', () => {
+    for (const kmh of [30, 100, 200, 300, 500, 1_000, 5_000]) {
+      const wind = kmh / 3.6;
+      expect(programPeakWind(programOverpressureForWind(wind)) / wind).toBeCloseTo(1, 12);
+    }
+    expect(programOverpressureForWind(0)).toBe(0);
   });
 
   it('draws an airburst the program’s wind within 1 %, on both entries (rule 796)', () => {

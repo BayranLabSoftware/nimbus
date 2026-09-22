@@ -315,6 +315,23 @@ export const VISUAL_CONTRACTS = {
       'where this field is painted the MMI rings and stadiums are NOT drawn: a gold-standard intensity map carries one surface for the intensity, its contours labelled, with the fault trace as a line over it, and four outlines for one quantity leave a reader unable to tell which is the answer. The radii are still published, in the report and in the tooltips of the map that has no field',
     ],
   }),
+  impactFieldMap: defineContract({
+    id: 'impactFieldMap',
+    quantity:
+      "an impact's field, one quantity at a time — the peak overpressure at the ground, the peak wind behind the shock front, the thermal fluence, the ejecta blanket's thickness, the program's shaking — or, in the uncertainty view, where a threshold is exceeded, drawn as a continuous surface with the model's thresholds as isolines carrying their value (ROADMAP IMP-7b, approved by Andrea on 22 September 2026)",
+    formula:
+      "the functions the result publishes, read at every nominal range: impactOverpressureAt (Collins et al. 2005, the Earth Impact Effects Program's air blast, an airburst's static source at its burst altitude and a ground impact's at the ground, rules 748 to 755), impactPeakWindAt (Collins et al. 2005's wind relation with the program's 1 bar and 330 m/s, rules 793 to 797), impactThermalExposureAt, the ejecta's r⁻³ thickness (Collins et al. 2005) and the program's Mercalli rings (rules 154 to 157); an uncertainty view reads the published scatter as a lognormal radius, or I3's band (Collins et al. 2017, rule 706)",
+    unit: 'per layer: kPa (thresholds in psi), km/h, kJ/m² (thresholds in cal/cm²), metres, Modified Mercalli intensity, per cent',
+    geometry: 'heatmap-rectangle',
+    isQuantitative: true,
+    caveats: [
+      "each isoline is the model's own ellipse — its oblique envelope about the centre the model moves downrange — at a radius the result prints or the field reaches; the colour under it is the same field read back through the same family, solved in the azimuthal-equidistant plane about the point of impact, which differs from the sphere's ellipse by the offset's curvature, second order in the offset over the Earth's radius",
+      'below the lowest threshold nothing is painted: an overpressure or a wind under 0.5 psi, a fluence under the lowest burn or fire drawn, a blanket thinner than 1 mm, a shaking below V (as the earthquakes are drawn; III is a line); past the top of a scale the colour saturates',
+      'an isoline is the MEDIAN: its band is on the globe in the uncertainty view, not as more lines on the map — a probability from the published 1σ scatter read as a lognormal radius, or, for a complete airburst, the agreement of I3’s band (what the whole band exceeds, and what only its upper edge does), which is not a probability',
+      "a body that reaches the ground is drawn the blast, and so the wind, of rules 748 to 755, I1's named departure from the program, which reads its law below the ground",
+      'an airburst is drawn round: the trajectory’s own shock, which laid Tunguska’s forest down in a butterfly, stands only in I3’s band (a ceiling while that band holds the measured footprints)',
+    ],
+  }),
   mmi8Point: defineContract({
     id: 'mmi8Point',
     quantity: 'MMI VIII felt-intensity radius (point source)',
@@ -710,6 +727,7 @@ export const ENTITY_CONTRACTS: readonly {
     why: 'the locator dot: where the user clicked, not a quantity',
   },
   { prefix: 'impact-fireball', contracts: ['impactFireball'] },
+  { prefix: 'impact-field-', contracts: ['impactFieldMap'] },
   {
     prefix: 'damage-ring-',
     contracts: [

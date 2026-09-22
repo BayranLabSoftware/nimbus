@@ -121,6 +121,17 @@ export function programPeakWind(overpressurePa: number): number {
   return (5 * x * PROGRAM_SOUND_SPEED_M_S) / Math.sqrt(1 + 6 * x);
 }
 
+/** The peak overpressure (Pa) whose wind, by {@link programPeakWind}, is
+ *  `windMs`: the same relation solved for p, in closed form. Where a map draws
+ *  a wind's contour it draws this overpressure's, so the two cannot part. */
+export function programOverpressureForWind(windMs: number): number {
+  if (!Number.isFinite(windMs) || windMs <= 0) return 0;
+  const c2 = PROGRAM_SOUND_SPEED_M_S * PROGRAM_SOUND_SPEED_M_S;
+  const u2 = windMs * windMs;
+  const x = (6 * u2 + Math.sqrt(36 * u2 * u2 + 100 * c2 * u2)) / (50 * c2);
+  return 7 * PROGRAM_AMBIENT_PRESSURE_PA * x;
+}
+
 /** Rule 790: the peak wind (m/s) the impact's shock sets the air moving at,
  *  at a ground range (m) — the program's relation on the impact's own
  *  overpressure, the field its blast rings are drawn from. */

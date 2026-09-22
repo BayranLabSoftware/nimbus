@@ -1073,6 +1073,133 @@
       "lateralBlast": "Blast laterale",
       "ashfallPlume": "Cenere 1 mm",
       "ejectaBlanket": "Ejecta"
+    },
+    "impactMap": {
+      "heading": "Legenda della carta",
+      "tabsAria": "Livello della carta",
+      "thresholdAria": "Soglia letta dalla vista dell'incertezza",
+      "craterLabel": "cratere Ø {{diameter}}",
+      "layer": {
+        "overpressure": {
+          "tab": "Sovrappressione",
+          "title": "Sovrappressione di picco al suolo",
+          "unit": "kPa · soglie in psi"
+        },
+        "wind": {
+          "tab": "Vento",
+          "title": "Vento di picco dietro il fronte d'urto",
+          "unit": "km/h, scala logaritmica"
+        },
+        "thermal": {
+          "tab": "Fluenza termica",
+          "title": "Fluenza termica",
+          "unit": "kJ/m² · isolinee in cal/cm²"
+        },
+        "ejecta": {
+          "tab": "Coltre di ejecta",
+          "title": "Spessore della coltre di ejecta",
+          "unit": "metri, scala logaritmica"
+        },
+        "shaking": {
+          "tab": "Scuotimento",
+          "title": "Scuotimento del suolo",
+          "unit": "intensità di Mercalli, dal programma"
+        },
+        "probability": {
+          "tab": "Probabilità",
+          "title": "Probabilità di superare {{threshold}}",
+          "unit": "per cento"
+        },
+        "agreement": {
+          "tab": "Accordo del campo",
+          "title": "Accordo del campo su {{threshold}}",
+          "unit": "la forchetta che Collins et al. (2017) danno alle loro approssimazioni"
+        }
+      },
+      "markWithWind": "{{range}} · vento {{wind}} km/h",
+      "noteLabel": {
+        "isolines": "Isolinee",
+        "uncertainty": "Incertezza",
+        "source": "Fonte",
+        "limit": "Limite",
+        "what": "Cos'è",
+        "magnitude": "Magnitudo",
+        "liquefaction": "Liquefazione",
+        "caveat": "Attenzione",
+        "from": "Da dove",
+        "reading": "Lettura",
+        "not": "Non è"
+      },
+      "note": {
+        "isolinesMedian": "le soglie del modello, alla mediana",
+        "bandSigma": "raggio ±{{sigma}} % (1σ): vista Probabilità",
+        "bandAgreement": "entro tre quote di scoppio un fattore 2 in sovrappressione (Collins et al. 2017): vista Accordo del campo",
+        "belowLowestBlast": "sotto 0,5 psi il campo non si disegna; oltre 1 MPa la scala si ferma",
+        "windWhat": "la raffica dell'aria spinta dal fronte d'urto: dura quanto la fase di sovrappressione, poi si inverte",
+        "windLimit": "sotto 0,5 psi non si disegna; oltre 1000 km/h la scala si ferma; dentro il cratere nulla",
+        "isolinesThermal": "le soglie del modello per ustioni e incendi, alla mediana",
+        "thermalLimit": "sotto la soglia più bassa non si disegna; oltre l'orizzonte della palla di fuoco nulla",
+        "isolinesEjecta": "spessori della stessa legge che dà il bordo a 1 mm",
+        "ejectaInside": "dentro il cratere lo spessore non è riportato",
+        "magnitude": "M {{m}}, dal 10⁻⁴ dell'energia al suolo (Collins et al. 2005, Eq. 40*)",
+        "magnitudeSpread": "M {{m}} ({{low}}–{{high}} con l'efficienza sismica da 10⁻⁵ a 10⁻³), dal 10⁻⁴ dell'energia al suolo (Collins et al. 2005, Eq. 40*)",
+        "magnitudeAir": "M {{m}}, dall'onda nell'aria (Harkrider; regole 730–738), senza forchetta",
+        "liquefactionReach": "fino a {{range}} su suolo sabbioso saturo",
+        "liquefactionNone": "nessuna: la magnitudo non basta a liquefare un suolo sabbioso saturo",
+        "shakingBelowV": "sotto V solo la linea, come per i terremoti",
+        "shakingAirburst": "il programma disegna questi anelli anche per un airburst, ma Collins et al. (2005) non riportano scuotimento per gli airburst; quello di Tunguska arrivò ai sismografi e qui non è confrontato con una registrazione",
+        "probabilityFrom": "lo scarto pubblicato del raggio, 1σ = {{sigma}} %, letto come lognormale",
+        "probabilityIsolines": "90, 50 e 10 %; il 50 % è la linea della carta del campo",
+        "agreementReading": "tutta la forchetta supera la soglia fino a {{low}}; solo il suo bordo alto fino a {{high}}",
+        "agreementNowhere": "in nessun punto tutta la forchetta supera la soglia; il suo bordo alto sì, fino a {{high}}",
+        "agreementNot": "una probabilità: è la forchetta che il campo dà ai propri modelli, e per questo non la si trasforma in percentuali"
+      },
+      "source": {
+        "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 al suolo (regole 748–755), verificata contro l'Earth Impact Effects Program (I1)",
+        "airBlast": "il maggiore fra lo scoppio in aria alla sua quota e quello al suolo dell'energia arrivata (Collins et al. 2005; la forchetta, Collins et al. 2017), verificato contro l'Earth Impact Effects Program (I1)",
+        "wind": "la relazione di Collins et al. (2005) con 1 bar e 330 m/s del programma, sull'onda d'urto del livello Sovrappressione (regole 793–797)",
+        "thermal": "la palla di fuoco del programma al suolo e il lampo in aria (Collins et al. 2005; Johnston & Stern 2019 lungo la traiettoria di un airburst); soglie Glasstone & Dolan (1977)",
+        "ejecta": "Collins, Melosh & Marcus (2005), spessore in r⁻³",
+        "shaking": "l'attenuazione del programma (Eq. 41*–43*) e la Tabella 3 di Collins et al. (2005), verificate sugli anelli del programma (regole 154–157)",
+        "liquefaction": "la soglia di Youd & Idriss (2001), dalla magnitudo",
+        "probability": "lo scarto pubblicato del raggio, letto come lognormale",
+        "agreement": "la forchetta della regola 706 (Collins et al. 2017)"
+      },
+      "isoline": {
+        "overpressure": "la sovrappressione di picco su questa linea; l'aria dietro il fronte corre a {{wind}} km/h",
+        "windTitle": "Vento {{value}} km/h",
+        "wind": "il vento di picco dietro il fronte d'urto raggiunge questa velocità fino a questa linea",
+        "thermal": "{{value}} cal/cm² di fluenza termica su questa linea",
+        "ejectaTitle": "Coltre di ejecta {{value}}",
+        "ejecta": "la coltre ha questo spessore su questa linea, di più all'interno",
+        "mercalliTitle": "Mercalli {{level}}",
+        "mercalli": "lo scuotimento del programma raggiunge questa intensità fino a questa linea",
+        "mercalliSpread": "lo scuotimento del programma raggiunge questa intensità fino a questa linea; da {{low}} a {{high}} con l'efficienza sismica",
+        "liquefactionTitle": "Liquefazione",
+        "liquefaction": "il suolo sabbioso saturo si liquefa fino a questa linea",
+        "probabilityTitle": "{{p}} % · {{threshold}}",
+        "probability": "la soglia è superata con questa probabilità su questa linea (scarto pubblicato 1σ {{sigma}} %)",
+        "agreementTitle": "{{threshold}} · la mediana",
+        "agreement": "la linea della carta del campo; la forchetta attorno è quella del campo"
+      },
+      "liquefactionLabel": "liquefazione",
+      "ejectaEdge": "bordo della coltre",
+      "shakingZone": "{{levels}} · fino a {{range}}",
+      "shakingZoneLine": "{{levels}} · fino a {{range}}, solo la linea",
+      "noBand": "nessuna banda pubblicata",
+      "windChoice": "Vento {{value}} km/h",
+      "choice": {
+        "thirdDegreeBurn": "Ustione III°",
+        "secondDegreeBurn": "Ustione II°",
+        "massFire": "Edifici in fiamme",
+        "fireIgnition": "Prende fuoco l'esca",
+        "ejectaBlanket": "Coltre 1 mm"
+      },
+      "probabilityMedian": "{{p}} % · la mediana",
+      "probabilityLevel": "{{p}} %",
+      "upTo": "fino a {{range}}",
+      "agreementAll": "superata da tutta la forchetta, anche dal bordo basso (P/2) · fino a {{range}}",
+      "agreementSome": "superata solo dal bordo alto (2P) · fino a {{range}}"
     }
   },
   "report": {

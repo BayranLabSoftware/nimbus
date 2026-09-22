@@ -20,6 +20,12 @@
   z-index: 9;
 }
 
+.legendMap {
+  width: min(320px, calc(100vw - 32px));
+  max-height: calc(100% - 120px);
+  overflow-y: auto;
+}
+
 .header {
   display: flex;
   align-items: center;

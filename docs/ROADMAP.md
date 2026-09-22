@@ -597,6 +597,32 @@ The wind is new to the model and is verified before it is drawn: rules 788 to
 from one geometry, the model's oblique ellipse about its downrange centre, so
 that no second copy of it can drift (B-053, B-059).
 
+**Done the same day.** The wind was refused by rules 788 to 792 on the
+mechanism and adopted by rules 793 to 797 (I1's twelfth clause, `2b84a81`).
+The map is `scene/globe/impactFieldMap.ts` — what is drawn, computed only from
+the functions the result publishes — `impactFieldRenderer.ts`, which hands it
+to Cesium, and `ui/components/ImpactFieldLegend.tsx`, which reads the same
+layer the globe draws. The layers a scenario has are the ones its result
+reaches: Meteor Crater six, Tunguska four (no burn and no crater),
+Chelyabinsk only its shaking, Sikhote-Alin its blanket and its uncertainty.
+Every isoline stands on a radius the result prints or the field reaches, and
+the colour under it is read back through the same family to within 0.3 % of
+Cesium's own ellipse (`impactFieldMap.test.ts`); B-104, B-105 and B-107 are
+closed. A layer costs at most 9 ms to build and 26 ms to paint, Chicxulub's
+planetary map included, and a layer the reader picks is framed on its own
+outermost line. Photographed headless on the Mac's GPU for every layer of
+Meteor Crater, Tunguska and Chicxulub, in both languages; axe finds nothing in
+the legend.
+
+Left, each named: the Monte Carlo's two halos of an impact (the crater and
+the ignition, after a Monte Carlo is run) are still drawn over every layer —
+whether they move into the uncertainty view is Andrea's to say; on the GPU a
+straight seam of the terrain's tiles can show through a field, which the
+texture itself does not carry; and two defects of the other domains were seen
+and left to them — `outlinePointAtBearing` folds a bearing past 180° onto the
+south for every caption that still uses it, and the legend of an explosion or
+an earthquake keeps the travelling front's row after the front has gone.
+
 #### IMP-9, 21 September 2026: the verdict — impacts at 7.0, and what is missing
 
 _Updated that night: with G6 met by rules 780 to 787 impacts count **8.0**,

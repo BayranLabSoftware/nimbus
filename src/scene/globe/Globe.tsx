@@ -28,6 +28,7 @@ import 'cesium/Build/Cesium/Widgets/widgets.css';
 import i18next from 'i18next';
 import type { JSX } from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { EARTH_GREAT_CIRCLE_MAX, clampToGreatCircle } from '../../physics/earthScale.js';
 import { orientedEllipse } from './orientedEllipse.js';
 import { ISOTROPIC_RING, type RingAsymmetry } from '../../physics/effects/asymmetry.js';
@@ -122,6 +123,15 @@ import {
   type CityLayerHandle,
 } from './cityLabels.js';
 import { RingTooltip, type HoverInfo, type RingTooltipKind } from './RingTooltip.js';
+import { RING_RADIUS_SIGMA } from './ringSigma.js';
+import { formatRange, resolveImpactLayer } from './impactFieldMap.js';
+import {
+  BASE_TONE,
+  clearImpactFieldLayer,
+  drawImpactFieldLayer,
+  MAP_TONE,
+  setImageryTone,
+} from './impactFieldRenderer.js';
 import styles from './Globe.module.css';
 
 /**
@@ -260,11 +270,6 @@ const ASHFALL_PLUME_COLOR = Color.fromCssColorString('#9CA3AF');
  *  (B-054). */
 const LAHAR_RING_COLOR = Color.fromCssColorString('#B45309');
 
-/** Ejecta-blanket footprint — chocolate brown rather than the previous
- *  mid-amber so it never visually merges with the gold 5 psi
- *  overpressure ring on the same impact scene. */
-const EJECTA_BLANKET_COLOR = Color.fromCssColorString('#78350F');
-
 const MARKER_ID = 'impact-marker';
 const MARKER_HALO_ID = 'impact-marker-halo';
 /** Marker tint — warm gold matching the existing accent token, with
@@ -352,7 +357,6 @@ function loopAtFps(fps: number, step: (nowMs: number) => void): () => void {
   };
 }
 
-const RING_ID_PREFIX = 'damage-ring-';
 const TSUNAMI_CAVITY_ID = 'tsunami-cavity';
 /** Entity ids for the three concentric wave-front rings painted at
  *  the source-amplitude → 5 m / 1 m / 0.3 m thresholds. */
@@ -361,7 +365,6 @@ type MmiRingId = 'mmi-ring-7' | 'mmi-ring-8' | 'mmi-ring-9';
 const PYROCLASTIC_RING_ID = 'pyroclastic-ring';
 const LAHAR_RING_ID = 'lahar-ring';
 const ASHFALL_PLUME_ID = 'ashfall-plume';
-const EJECTA_BLANKET_ID = 'ejecta-blanket';
 const LATERAL_BLAST_ID = 'lateral-blast';
 const AFTERSHOCK_ID_PREFIX = 'aftershock-';
 /** Aftershock points are colour-graded by magnitude — pale-orange for
@@ -392,55 +395,6 @@ function veilAltitudeFade(viewer: Viewer): number {
   if (h <= VEIL_GONE_H_M) return 0;
   return (h - VEIL_GONE_H_M) / (VEIL_FULL_H_M - VEIL_GONE_H_M);
 }
-
-/**
- * Per-ring 1σ scatter expressed as a fractional half-range on the
- * radius. Sourced from the same papers cited in
- * src/physics/uq/conventions.ts and src/physics/confidence.ts —
- * single source-of-truth, just expressed in linear-radius form
- * because the visual band is rendered in metres.
- *
- * Phase 8b of the defensibility plan: render an "upper σ" band ring
- * at R(1+σ) for every entity in this table so the published scatter
- * is visually proportional to the band width. A 1.5 km MMI VII ring
- * with σ=0.25 shows a soft halo extending out to 1.875 km; the same
- * ring at σ=0.7 (e.g. pyroclastic runout) shows a halo nearly twice
- * the inner radius — visible at a glance. Rings with σ < 0.18 do not
- * qualify (the halo would be < 1 mm at typical zoom, not legible).
- *
- * The lower-bound R(1−σ) is implicit in the visualisation: the user
- * reads the inner solid ring as "the wave at least gets here" and
- * the outer halo as "but might extend this far". A symmetrical
- * inner halo would double entity count without adding clarity.
- */
-const RING_RADIUS_SIGMA: Record<string, number> = {
-  // Impact damage rings (Collins 2005 ± Glasstone)
-  craterRim: 0.1,
-  thirdDegreeBurn: 0.3,
-  secondDegreeBurn: 0.3,
-  // Table 7.40's own footnote: ±50 % in the field, which the inverse square
-  // carries onto a radius as ×0.82 to ×1.41.
-  massFire: 0.3,
-  fireIgnition: 0.3,
-  overpressure5psi: 0.18,
-  overpressure1psi: 0.18,
-  // MMI shaking radii — Worden 2012 GMICE ±0.5 MMI ≈ ±25 % radius.
-  mmi7: 0.25,
-  mmi8: 0.25,
-  mmi9: 0.3,
-  // Radiation / EMP
-  radiationLD50: 0.25,
-  empAffected: 0.4,
-  // Volcanic
-  pyroclasticRunout: 0.7,
-  // A factor-two band, as `uq/conventions.ts` declares for this runout.
-  laharRunout: 1.0,
-  lateralBlast: 0.5,
-  ashfallPlume: 1.0,
-  // Ejecta + tsunami cavity
-  ejectaBlanket: 0.5,
-  tsunamiCavity: 0.3,
-};
 
 function purgeSimulationEntities(viewer: Viewer): void {
   if (viewer.isDestroyed()) return;
@@ -564,6 +518,13 @@ export function Globe(): JSX.Element {
 
   const setLocation = useAppStore((s) => s.setLocation);
   const setShakingFieldBands = useAppStore((s) => s.setShakingFieldBands);
+  const setShockFrontActive = useAppStore((s) => s.setShockFrontActive);
+  const impactFieldLayer = useAppStore((s) => s.impactFieldLayer);
+  const impactUncertaintyKey = useAppStore((s) => s.impactUncertaintyKey);
+  const { i18n: uiI18n } = useTranslation();
+  /** The result and layer the camera last framed an impact's map on. */
+  const framedLayerRef = useRef<{ result: object; layer: string } | null>(null);
+  const uiLanguage = uiI18n.language;
   const location = useAppStore((s) => s.location);
   // The location at which the most recent simulation was actually
   // run. Pin marker follows the live `location` (so the user sees
@@ -727,10 +688,7 @@ export function Globe(): JSX.Element {
       // Colour grade della fotografia satellitare: desaturata di poco e
       // con un filo piu' di contrasto, verso il registro documentario —
       // mai la cartolina. Valori scelti dal vivo sulla scena reale.
-      baseLayer.saturation = 0.82;
-      baseLayer.contrast = 1.08;
-      baseLayer.brightness = 0.92;
-      baseLayer.gamma = 1.05;
+      setImageryTone(baseLayer, BASE_TONE);
       // Web Mercator si ferma a ±85°: oltre, il globo mostrerebbe il
       // proprio baseColor come un disco nero sul polo. Un tono ghiaccio
       // spento fa leggere la calotta scoperta come banchisa.
@@ -2012,107 +1970,13 @@ export function Globe(): JSX.Element {
           band: result.data.entryAltitudeBand,
         });
       }
-      const radii = result.data.damage;
-      const asymmetries = result.data.damageAsymmetry;
-      const impactRingKind: Record<keyof ImpactDamageRadii, RingKind> = {
-        craterRim: 'crater',
-        thirdDegreeBurn: 'thermal',
-        secondDegreeBurn: 'thermal',
-        overpressure5psi: 'overpressure',
-        overpressure1psi: 'overpressure',
-        lightDamage: 'overpressure',
-      };
-      // I3: a complete airburst's blast rings carry the reference's band.
-      const airburstBand = result.data.airburstBand;
-      const airburstBandFor = (
-        key: keyof ImpactDamageRadii
-      ): { lowM: number; highM: number } | undefined => {
-        if (airburstBand === null) return undefined;
-        if (key !== 'overpressure5psi' && key !== 'overpressure1psi' && key !== 'lightDamage')
-          return undefined;
-        return { lowM: airburstBand[key].low, highM: airburstBand[key].high };
-      };
-      const bandSpec = (
-        key: keyof ImpactDamageRadii
-      ): { band?: { lowM: number; highM: number } } => {
-        const band = airburstBandFor(key);
-        return band === undefined ? {} : { band };
-      };
-      // No captions on an impact's rings (Andrea, 21 September 2026): the
-      // legend names every one with its quantity, threshold and radius, and a
-      // caption on the globe only repeated it — and, once the flash of rules
-      // 780 to 787 drew the burns beside the blast, printed over the next.
-      // The tooltip keeps the provenance one click away.
-      const impactFamily: FamilyMember[] = [];
-      (Object.keys(impactRingKind) as (keyof ImpactDamageRadii)[]).forEach((key) => {
-        const radius = radii[key] as number;
-        if (!Number.isFinite(radius) || radius <= 0) return;
-        // Per-ring asymmetry: oblique impacts elongate downrange and
-        // shrink cross-range per Pierazzo & Melosh / Pierazzo &
-        // Artemieva envelopes. The geometry helper folds in the
-        // azimuthal rotation and the centre offset.
-        const geom = computeAsymmetricGeometry(
-          asymmetries[key],
-          radius,
-          ringAnchor.latitude,
-          ringAnchor.longitude
-        );
-        impactFamily.push({
-          id: `${RING_ID_PREFIX}${key}`,
-          kind: impactRingKind[key],
-          tooltipKind: key,
-          color: RING_COLORS[key],
-          // Tooltip and caption report the NOMINAL ground-range radius
-          // (not the elongated semi-major) — that is what is
-          // scientifically meaningful ("crater rim 8.5 km"). The
-          // asymmetric on-screen shape is a rendering refinement, not
-          // a different physical quantity.
-          radiusM: radius,
-          geom: { ...geom, latDeg: ringAnchor.latitude, lonDeg: ringAnchor.longitude },
-          fillAlpha: zoneFillAlpha(radius, key === 'craterRim' ? 0.3 : 0.2, waveOnStage),
-          sigmaKey: key,
-          ...bandSpec(key),
-          animate: true,
-          label: false,
-          edge: true,
-        });
-      });
-      // The fire, from the same table and under the same rules as an
-      // explosion's (227 to 234). It is not a member of ImpactDamageRadii and
-      // is not copied into one: the radii are published once, under
-      // `firestorm`, and read from there — one expression in one place, which
-      // is what B-053 and B-059 were both about.
-      for (const [id, radius, color, tooltipKind] of [
-        ['massFire', result.data.firestorm.sustainRadius as number, MASS_FIRE_COLOR, 'massFire'],
-        [
-          'fireIgnition',
-          result.data.firestorm.ignitionRadius as number,
-          FIRE_IGNITION_COLOR,
-          'fireIgnition',
-        ],
-      ] as const) {
-        if (!Number.isFinite(radius) || radius <= 0) continue;
-        const geom = computeAsymmetricGeometry(
-          asymmetries.thirdDegreeBurn,
-          radius,
-          ringAnchor.latitude,
-          ringAnchor.longitude
-        );
-        impactFamily.push({
-          id: `${RING_ID_PREFIX}${id}`,
-          kind: 'thermal',
-          tooltipKind,
-          color,
-          radiusM: radius,
-          geom: { ...geom, latDeg: ringAnchor.latitude, lonDeg: ringAnchor.longitude },
-          fillAlpha: zoneFillAlpha(radius, 0.2, waveOnStage),
-          sigmaKey: id,
-          animate: true,
-          label: false,
-          edge: true,
-        });
-      }
-      addRingFamily(impactFamily);
+      // Since 22 September 2026 an impact is drawn as the field's own map
+      // (ROADMAP IMP-7b): one quantity at a time, its thresholds as isolines
+      // carrying their value, the crater as the hole it is. Its rings, their
+      // zones, the dashed line of their scatter and the dotted edges of I3's
+      // band are no longer drawn here — the layer is, by the effect below
+      // (`impactFieldRenderer.ts`), which the legend's tabs redraw without
+      // flying the camera or starting the cascade again.
       if (result.data.tsunami) {
         const cavityRadius = result.data.tsunami.cavityRadius as number;
         if (Number.isFinite(cavityRadius) && cavityRadius > 0) {
@@ -2125,61 +1989,7 @@ export function Globe(): JSX.Element {
         // source point survives at the per-event level.
       }
 
-      // --- Impact ejecta blanket: asymmetric ellipse offset downrange.
-      // Nimbus oblique-impact heuristic (effects/asymmetry.ts): the ellipse
-      // stretches along the impactor's downrange azimuth and slides
-      // forward by the same amount, producing the "butterfly" pattern
-      // visible at θ < 30° while staying near-circular for steep
-      // impacts (asymmetryFactor → 0 above 45°).
-      const blanketRadius = result.data.ejecta.blanketEdge1mm as number;
-      if (Number.isFinite(blanketRadius) && blanketRadius > 0) {
-        // B-059: the blanket's ellipse is the one the physics publishes, not a
-        // second copy of its factors. This block recomputed (1 + 0.4 f) and
-        // (1 − 0.25 f) inline, so when `ejectaButterflyAsymmetry` was made
-        // area-neutral the blanket alone kept drawing 3.9 % more ground than
-        // its caption claimed — the same defect as B-053, one expression in
-        // two places, found the moment one of them moved.
-        const blanketGeom = computeAsymmetricGeometry(
-          result.data.damageAsymmetry.ejectaBlanket,
-          blanketRadius,
-          ringAnchor.latitude,
-          ringAnchor.longitude
-        );
-        const { semiMajor, semiMinor, cesiumRotation } = blanketGeom;
-        const blanketLat = ringAnchor.latitude;
-        const blanketLon = ringAnchor.longitude;
-        // Ejecta blanket joins the ring cascade so it grows from
-        // r=0 to its asymmetric ellipse instead of popping in at
-        // full size on the same frame the result lands. The
-        // asymmetric semi-major / semi-minor pair is honored by
-        // the animator just like every other ring.
-        // The blanket is what lies OUTSIDE the crater: painted as a zone
-        // from the crater rim outward, so it never tints the crater
-        // floor. Joins the cascade on the crater's beat — they are the
-        // same physical event (excavation) and belong together.
-        addDamageRing({
-          id: EJECTA_BLANKET_ID,
-          kind: 'crater',
-          tooltipKind: 'ejectaBlanket',
-          color: EJECTA_BLANKET_COLOR,
-          radiusM: blanketRadius,
-          geom: {
-            position: blanketGeom.position,
-            semiMajor: clampToGreatCircle(semiMajor),
-            semiMinor: clampToGreatCircle(semiMinor),
-            cesiumRotation,
-            latDeg: blanketLat,
-            lonDeg: blanketLon,
-          },
-          innerSemiMajorM: radii.craterRim,
-          fillAlpha: zoneFillAlpha(blanketRadius, 0.16, waveOnStage),
-          sigmaKey: 'ejectaBlanket',
-          labelBearingDeg: 135,
-          animate: true,
-          label: false,
-          edge: true,
-        });
-      }
+      // The ejecta blanket is a layer of the map, with the crater (IMP-7b).
     }
 
     // --- Earthquake: aftershock point cloud ------------------------
@@ -4108,8 +3918,19 @@ export function Globe(): JSX.Element {
       typeof window !== 'undefined' &&
       typeof window.matchMedia === 'function' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // An impact's map has no rings to grow (IMP-7b); its cascade still runs,
+    // for the shock front and the fireball, out to the outermost isoline of
+    // its overpressure.
+    const impactFrontRadiusM =
+      result.type === 'impact'
+        ? Math.max(
+            result.data.damage.lightDamage,
+            result.data.damage.overpressure1psi,
+            result.data.damage.overpressure5psi
+          )
+        : 0;
     const startCascade = (): void => {
-      if (ringSpecs.length === 0) return;
+      if (ringSpecs.length === 0 && result.type !== 'impact') return;
       cancelRingAnimationRef.current = animateRingsImperatively(ringSpecs);
 
       // Fronte d'urto — la controparte di terra della cresta tsunami
@@ -4121,7 +3942,10 @@ export function Globe(): JSX.Element {
       // sono una seconda tavolozza: vengono letti dagli anelli veri
       // della cascata, così legenda, anelli e fronte dicono la stessa
       // cosa per ogni tipo di evento.
-      const cascadeMaxRadiusM = ringSpecs.reduce((m, s) => Math.max(m, s.finalSemiMajor), 0);
+      const cascadeMaxRadiusM =
+        result.type === 'impact'
+          ? impactFrontRadiusM
+          : ringSpecs.reduce((m, s) => Math.max(m, s.finalSemiMajor), 0);
       const eventoConFronte =
         result.type === 'impact' || result.type === 'explosion' || result.type === 'earthquake';
       if (cascadeMaxRadiusM > 0 && eventoConFronte) {
@@ -4189,7 +4013,10 @@ export function Globe(): JSX.Element {
         const FRONT_DURATION_MS = reduceMotionFront ? 1_800 : 6_500;
         const cascadeT0 = performance.now();
         let stopFront: (() => void) | null = null;
+        // B-107: an impact's legend lists the front only while it runs.
+        if (result.type === 'impact') setShockFrontActive(true);
         const removeFrontRings = (): void => {
+          setShockFrontActive(false);
           if (viewer.isDestroyed()) return;
           for (const ring of rings) {
             const stale = viewer.entities.getById(ring.entity.id);
@@ -4410,6 +4237,79 @@ export function Globe(): JSX.Element {
     // A zustand action: the same function for the life of the store, so
     // listing it satisfies the rule without re-running the redraw.
     setShakingFieldBands,
+    setShockFrontActive,
+  ]);
+
+  // --- An impact's map (ROADMAP IMP-7b) ---------------------------------
+  // The layer the legend asks for, drawn apart from the scenario's other
+  // overlays: changing layer redraws the map alone, with no camera flight
+  // and no cascade. Declared after the redraw above, which purges the
+  // previous run's map with every other overlay when the result changes.
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer || viewer.isDestroyed()) return;
+    for (const id of clearImpactFieldLayer(viewer)) tooltipMetaRef.current.delete(id);
+    const impact = result?.type === 'impact' ? result : null;
+    // Under an impact's map the imagery turns to greys; back otherwise.
+    setImageryTone(viewer.imageryLayers.get(0), impact === null ? BASE_TONE : MAP_TONE);
+    const anchor = lastEvaluatedAtLocation ?? location;
+    if (impact === null || anchor === null) {
+      viewer.scene.requestRender();
+      return;
+    }
+    const ctx = {
+      t: i18next.t.bind(i18next),
+      language: uiLanguage,
+      uncertaintyKey: impactUncertaintyKey,
+    };
+    const layer = resolveImpactLayer(impact.data, impactFieldLayer, ctx);
+    if (layer === null) {
+      viewer.scene.requestRender();
+      return;
+    }
+    const craterLabel = i18next.t('globe.impactMap.craterLabel', {
+      diameter: formatRange((impact.data.damage.craterRim as number) * 2, uiLanguage),
+    });
+    const hover = drawImpactFieldLayer(
+      viewer,
+      impact.data,
+      layer,
+      { latDeg: anchor.latitude, lonDeg: anchor.longitude },
+      uiLanguage,
+      craterLabel
+    );
+    for (const [id, info] of hover) tooltipMetaRef.current.set(id, info);
+    // A layer the reader picks is framed on its own outermost isoline: the
+    // shaking's III can lie two hundred kilometres out where the blast's
+    // lines lie twenty. A new result is framed by the redraw above instead.
+    const previous = framedLayerRef.current;
+    framedLayerRef.current = { result: impact.data, layer: layer.id };
+    const picked =
+      previous !== null && previous.result === impact.data && previous.layer !== layer.id;
+    const outer = Math.max(0, ...layer.isolines.map((l) => l.radiusM));
+    if (picked && outer > 0) {
+      // The whole of the outer line in view: at the camera's 60° field of
+      // view a circle fits at twice its radius, and a little more.
+      const padded = Math.min(Math.max(outer * 1.15, 30_000), 8_500_000);
+      viewer.camera.flyToBoundingSphere(
+        new BoundingSphere(Cartesian3.fromDegrees(anchor.longitude, anchor.latitude), padded),
+        {
+          duration: 1.0,
+          offset: new HeadingPitchRange(
+            0,
+            -CesiumMath.toRadians(75),
+            Math.min(padded * 2.6, 28_000_000)
+          ),
+        }
+      );
+    }
+  }, [
+    result,
+    lastEvaluatedAtLocation,
+    location,
+    impactFieldLayer,
+    impactUncertaintyKey,
+    uiLanguage,
   ]);
 
   // --- Aftershock click-through detail rings ---------------------------
