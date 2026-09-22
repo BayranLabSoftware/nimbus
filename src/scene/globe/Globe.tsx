@@ -14,6 +14,7 @@ import {
   Ion,
   JulianDate,
   Math as CesiumMath,
+  PerspectiveFrustum,
   PolygonHierarchy,
   PolylineDashMaterialProperty,
   PolylineGlowMaterialProperty,
@@ -124,14 +125,18 @@ import {
 } from './cityLabels.js';
 import { RingTooltip, type HoverInfo, type RingTooltipKind } from './RingTooltip.js';
 import { RING_RADIUS_SIGMA } from './ringSigma.js';
-import { formatRange, resolveImpactLayer } from './impactFieldMap.js';
+import { buildImpactLayer, formatRange, resolveImpactLayer } from './impactFieldMap.js';
 import {
   BASE_TONE,
   clearImpactFieldLayer,
   drawImpactFieldLayer,
+  grabSquare,
   MAP_TONE,
   setImageryTone,
+  settleScene,
 } from './impactFieldRenderer.js';
+import { registerGlobeShots, type GlobeShots } from './globeShots.js';
+import { reportMapHalfWidth } from './reportMap.js';
 import styles from './Globe.module.css';
 
 /**
@@ -524,6 +529,8 @@ export function Globe(): JSX.Element {
   const { i18n: uiI18n } = useTranslation();
   /** The result and layer the camera last framed an impact's map on. */
   const framedLayerRef = useRef<{ result: object; layer: string } | null>(null);
+  /** Bumped after the report's photographs, so the map is drawn again. */
+  const [shotTick, setShotTick] = useState(0);
   const uiLanguage = uiI18n.language;
   const location = useAppStore((s) => s.location);
   // The location at which the most recent simulation was actually
@@ -4310,7 +4317,80 @@ export function Globe(): JSX.Element {
     impactFieldLayer,
     impactUncertaintyKey,
     uiLanguage,
+    shotTick,
   ]);
+
+  // --- Photographs for the report (ROADMAP IMP-7c) ----------------------
+  // The report replaces the globe, so the button that opens it asks for the
+  // globe's view of each layer first: each layer drawn without its words, so
+  // that a photograph reads the same in either language, seen from straight
+  // above over the square the report's own map of it covers; then the
+  // reader's layer and camera are put back.
+  useEffect(
+    () =>
+      registerGlobeShots(async (layers, progress) => {
+        const viewer = viewerRef.current;
+        if (!viewer || viewer.isDestroyed()) return {};
+        const state = useAppStore.getState();
+        const impact = state.result?.type === 'impact' ? state.result.data : null;
+        const anchor = state.lastEvaluatedAtLocation ?? state.location;
+        if (impact === null || anchor === null) return {};
+        const language = i18next.language;
+        const ctx = {
+          t: i18next.t.bind(i18next),
+          language,
+          uncertaintyKey: state.impactUncertaintyKey,
+        };
+        const camera = viewer.camera;
+        const saved = {
+          destination: camera.positionWC.clone(),
+          orientation: { direction: camera.directionWC.clone(), up: camera.upWC.clone() },
+        };
+        const fovy =
+          (camera.frustum instanceof PerspectiveFrustum ? camera.frustum.fovy : undefined) ??
+          CesiumMath.toRadians(40);
+        cityLayerRef.current?.setVisible(false);
+        const shots: GlobeShots = {};
+        try {
+          for (const [i, id] of layers.entries()) {
+            const layer = buildImpactLayer(impact, id, ctx);
+            if (layer !== null) {
+              clearImpactFieldLayer(viewer);
+              drawImpactFieldLayer(
+                viewer,
+                impact,
+                layer,
+                { latDeg: anchor.latitude, lonDeg: anchor.longitude },
+                language,
+                '',
+                { labels: false }
+              );
+              const half = reportMapHalfWidth(impact, layer);
+              camera.setView({
+                destination: Cartesian3.fromDegrees(
+                  anchor.longitude,
+                  anchor.latitude,
+                  half / Math.tan(fovy / 2)
+                ),
+                orientation: { heading: 0, pitch: -CesiumMath.PI_OVER_TWO, roll: 0 },
+              });
+              await settleScene(viewer);
+              const shot = grabSquare(viewer, 560);
+              if (shot !== null) shots[id] = shot;
+            }
+            progress(i + 1, layers.length);
+          }
+        } finally {
+          if (!viewer.isDestroyed()) {
+            camera.setView(saved);
+            cityLayerRef.current?.setVisible(true);
+            setShotTick((n) => n + 1);
+          }
+        }
+        return shots;
+      }),
+    []
+  );
 
   // --- Aftershock click-through detail rings ---------------------------
   // When the user clicks an aftershock dot, paint three dim MMI V/VI/VII

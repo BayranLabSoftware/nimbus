@@ -623,6 +623,57 @@ and left to them — `outlinePointAtBearing` folds a bearing past 180° onto the
 south for every caption that still uses it, and the legend of an explosion or
 an earthquake keeps the travelling front's row after the front has gone.
 
+#### IMP-7c, 22 September 2026: the report says what the globe says, in the reader's language
+
+Andrea asked that afternoon for the downloadable and shareable report to follow
+the new maps, and for every word of it to be in the language chosen. The
+Italian report printed its rows in English, its numbers with the English
+decimal point, its event and regimes as raw values, its place without
+hemispheres and its time in UTC; the formulas' names and the reasons for each
+source were English; the band column of the casualty table and the headers of
+the timeline printed white on white; and it carried no map. A plan with mocks
+followed, and he chose the same day: **map C** — the model's own map, with the
+globe's photograph of the layer in its corner — on the **light paper ground**,
+the **atlas** layout, the link in the **sender's language**, and **only the
+impacts translated for now**.
+
+**Done the same day.** `ui/pages/report/impactReportModel.ts` builds an
+impact's report — every label through the locales, every number through
+`reportFormat.ts` (the language's decimal separator and grouping, a true
+minus, radii exactly as the legend prints them, the date in the reader's zone,
+the nearest named place and its country from the city index and the browser's
+own tables), every map through `availableImpactLayers`, the same the globe
+draws — and `ImpactReport.tsx` renders it as A4 sheets: the summary with the
+first map, an atlas of every layer with its colour bar, its isolines and what
+it cannot say (and, under the uncertainty view, every threshold at 90, 50 and
+10 %), the numbers grouped by effect with the figure that draws each, the toll
+and the timeline, the formulas the run used, the bibliography and the
+provenance. `scene/globe/reportMap.ts` lays a layer flat in the azimuthal
+equidistant plane about the point of impact — the plane the model's families
+are defined in, so that a pixel's colour is the globe's for the same distance
+and bearing, the isolines are the model's own curves and every distance from
+the centre is true, which is what lets the page carry a scale bar — on a paper
+ground of sea, land and people from the shipped GHS-POP tiles, with the
+graticule, the north and the cities of the index. The photograph is taken from
+the globe as the report is opened (`globeShots.ts`), each layer drawn without
+its words so that it reads the same in either language; a report opened from a
+link has no globe behind it, prints the model's maps alone and says so. The
+link carries the language and the threshold of the uncertainty view (`lng`,
+`thr`), and the report's bar switches the language. B-108 (the formulas,
+`impactFormulas.ts`: each with the condition under which an impact runs it),
+B-109 (the toll and the timeline on paper, in every module's report) and B-110
+(the decimal comma, the globe's Italian strings included) are closed. The
+other modules' reports are otherwise unchanged: their rows stay in English
+until their turn comes, one module at a time.
+
+Verified by the unit tests — the Italian report and maps of five presets carry
+no English word and no decimal point, with keys for words only keys and
+numbers remain, the map's isolines are the globe's to 10⁻⁵, a pixel's colour
+is the globe's for its range — by the e2e — a cold link in Italian and in
+English, the contrast of every printed word above 3 in the impact's report and
+in an earthquake's, A4 pages — and printed on the Mac for Meteor Crater,
+Tunguska and Chicxulub in both languages, with and without the globe behind.
+
 #### IMP-9, 21 September 2026: the verdict — impacts at 7.0, and what is missing
 
 _Updated that night: with G6 met by rules 780 to 787 impacts count **8.0**,

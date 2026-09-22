@@ -1049,3 +1049,78 @@ select.paramInput {
   line-height: 1.45;
   opacity: 0.8;
 }
+
+/* The casualty panel on paper, in the printed report (B-109): the same
+   panel in ink, since the console's light-on-dark colours printed the band
+   column, the notes and the calibration line white on white. */
+[data-tone='paper'] .sectionHeading {
+  color: #a8620f;
+  opacity: 1;
+}
+[data-tone='paper'] .result {
+  background: #faf8f3;
+  border-color: #e0dcd2;
+}
+[data-tone='paper'] .result dt:nth-of-type(even),
+[data-tone='paper'] .result dd:nth-of-type(even) {
+  background: #f3f0e8;
+}
+[data-tone='paper'] .resultLabel {
+  color: #57534c;
+  opacity: 1;
+}
+[data-tone='paper'] .resultValue {
+  color: #111111;
+}
+[data-tone='paper'] .presetNote,
+[data-tone='paper'] .mcFooter {
+  color: #4a4741;
+  opacity: 1;
+}
+[data-tone='paper'] .envelopeNote {
+  color: #3b3833;
+  border-left-color: #d8d3c8;
+}
+[data-tone='paper'] .envelopeNoteOutside {
+  color: #3b3833;
+  border-left-color: #a8620f;
+}
+[data-tone='paper'] .mcTable th {
+  color: #6b675f;
+  border-bottom-color: #1b1b19;
+}
+[data-tone='paper'] .mcTable td {
+  color: #1f1e1b;
+  border-bottom-color: #ebe7de;
+}
+[data-tone='paper'] .mcTable td:first-child {
+  color: #1b1b19;
+}
+[data-tone='paper'] .mcTable tfoot td {
+  color: #111111;
+  border-top-color: #1b1b19;
+}
+/* A sheet is narrower than the console: the band table in the report's
+   own type size, each radius on one line. */
+[data-tone='paper'] .mcTable {
+  font-size: 9.2px;
+}
+[data-tone='paper'] .mcTable th {
+  padding: 3px 5px;
+  font-size: 7.6px;
+}
+[data-tone='paper'] .mcTable td {
+  padding: 2.5px 5px;
+}
+[data-tone='paper'] .mcTable td:nth-child(2) {
+  white-space: nowrap;
+}
+[data-tone='paper'] .result dt,
+[data-tone='paper'] .result dd {
+  padding: 4px 8px;
+}
+[data-tone='paper'] .presetNote,
+[data-tone='paper'] .mcFooter,
+[data-tone='paper'] .envelopeNote {
+  font-size: 9px;
+}

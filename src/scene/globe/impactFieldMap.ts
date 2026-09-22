@@ -261,6 +261,42 @@ export interface ColorbarSpec {
   marks: readonly { value: number; label: string; detail: string }[];
 }
 
+/**
+ * Where a colour bar puts its ticks and its thresholds, `top` to `top +
+ * height` from the high end down: each tick at its value, each threshold's
+ * mark at its value and its words spread upward so that no two print within
+ * `minGap` of each other, lifted back inside the bar if the spread ran past
+ * its top. The globe's legend and the printed report both lay their bars out
+ * with it, so the two cannot place a threshold differently.
+ */
+export function layoutColorbar(
+  spec: ColorbarSpec,
+  top: number,
+  height: number,
+  minGap: number
+): {
+  yOf: (value: number) => number;
+  ticks: { y: number; label: string }[];
+  marks: { y: number; ly: number; label: string; detail: string }[];
+} {
+  const at = (v: number): number => (spec.log ? Math.log10(v) : v);
+  const yOf = (v: number): number => top + (1 - (at(v) - spec.lo) / (spec.hi - spec.lo)) * height;
+  const ticks = spec.ticks
+    .filter((tk) => at(tk.value) >= spec.lo - 1e-9 && at(tk.value) <= spec.hi + 1e-9)
+    .map((tk) => ({ y: yOf(tk.value), label: tk.label }));
+  const marks = spec.marks
+    .map((m) => ({ y: yOf(m.value), ly: yOf(m.value), label: m.label, detail: m.detail }))
+    .sort((a, b) => b.y - a.y);
+  let previous = Number.POSITIVE_INFINITY;
+  for (const m of marks) {
+    m.ly = Math.min(m.y, previous - minGap);
+    previous = m.ly;
+  }
+  const lift = marks.length > 0 ? Math.max(0, top + 10 - Math.min(...marks.map((m) => m.ly))) : 0;
+  for (const m of marks) m.ly += lift;
+  return { yOf, ticks, marks };
+}
+
 export interface CategoryKey {
   color: string;
   hatched: boolean;

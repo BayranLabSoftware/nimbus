@@ -1,0 +1,643 @@
+/*
+ * An impact's report (ROADMAP IMP-7c): A4 sheets on the console's dark desk
+ * on screen, a page each on paper. Every colour inside a sheet is paper's,
+ * whatever the application's theme, because what prints is what is seen;
+ * the maps' own colours are the globe's.
+ */
+
+.root {
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 500px at 50% -10%, rgba(232, 163, 61, 0.06), transparent 60%),
+    var(--bg-top, #0a0e16);
+  color: #1b1b19;
+  font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+  line-height: 1.45;
+  padding: 24px 16px 64px;
+}
+
+.toolbar {
+  max-width: 794px;
+  margin: 0 auto 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toolGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.toolButton,
+.printButton,
+.langButton {
+  font: inherit;
+  font-size: 13px;
+  border-radius: var(--radius-s, 8px);
+  padding: 7px 12px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.toolButton:hover,
+.langButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.printButton {
+  background: linear-gradient(180deg, #f2b45a, #e8a33d 55%, #c9852b);
+  color: #201302;
+  border: none;
+  font-weight: 700;
+}
+
+.langSwitch {
+  display: inline-flex;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-s, 8px);
+  overflow: hidden;
+}
+
+.langButton {
+  border: none;
+  border-radius: 0;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+}
+
+.langButton[aria-pressed='true'] {
+  background: rgba(232, 163, 61, 0.22);
+  color: #f5c46f;
+  font-weight: 600;
+}
+
+.toolButton:focus-visible,
+.printButton:focus-visible,
+.langButton:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+.linkNotice {
+  max-width: 794px;
+  margin: 0 auto 16px;
+  padding: 0.6rem 0.8rem;
+  border-left: 3px solid #b8860b;
+  background: #fff8e6;
+  font-size: 0.9rem;
+}
+
+.sheets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 794px;
+  min-height: 1123px;
+  background: #ffffff;
+  color: #1b1b19;
+  padding: 46px 54px 44px;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.55);
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.sheetBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.sheetFoot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 6px;
+  border-top: 1px solid #e3dfd6;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 8.5px;
+  color: #77736b;
+}
+
+.brand {
+  margin: 0 0 4px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a8620f;
+}
+
+.title {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: #111111;
+}
+
+.subtitle {
+  margin: 3px 0 12px;
+  font-size: 13.5px;
+  color: #3f3c37;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 3px 12px;
+  margin: 0 0 12px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid #1b1b19;
+  font-size: 10.5px;
+}
+
+.meta dt {
+  padding-top: 2px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #77736b;
+}
+
+.meta dd {
+  margin: 0;
+}
+
+.meta a,
+.provenance a {
+  color: #1b1b19;
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0 0 12px;
+}
+
+.key {
+  border: 1px solid #e0dcd2;
+  border-radius: 6px;
+  padding: 6px 8px 7px;
+  background: #faf8f3;
+}
+
+.keyLabel {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 8px;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #77736b;
+}
+
+.keyValue {
+  margin-top: 2px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #111111;
+}
+
+.keyDetail {
+  margin-top: 2px;
+  font-size: 8.8px;
+  line-height: 1.3;
+  color: #56524b;
+}
+
+.figureTitle {
+  margin: 0 0 6px;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  color: #111111;
+}
+
+.figure + .figure {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #d9d4ca;
+}
+
+.atlasKicker {
+  margin: 0 0 6px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a8620f;
+}
+
+.figBig,
+.figHalf {
+  display: grid;
+  gap: 10px;
+  align-items: start;
+}
+
+.figBig {
+  grid-template-columns: 404px minmax(0, 1fr);
+}
+
+.figHalf {
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+
+.mapSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mapText {
+  font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+}
+
+.mapTextMono {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+}
+
+.credit {
+  margin: 2px 0 0;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 7.5px;
+  color: #8a867e;
+}
+
+.legendTitle {
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #111111;
+}
+
+.legendUnit {
+  margin-bottom: 2px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 8.5px;
+  color: #77736b;
+}
+
+.colorbar {
+  display: block;
+  width: min(300px, 100%);
+  height: auto;
+}
+
+.barTick {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 8.6px;
+  fill: #57534c;
+}
+
+.barMark {
+  font-size: 9.2px;
+  font-weight: 600;
+  fill: #161616;
+}
+
+.barDetail {
+  font-size: 8.4px;
+  fill: #5d5a53;
+}
+
+.cats {
+  list-style: none;
+  margin: 4px 0 6px;
+  padding: 0;
+  font-size: 9.5px;
+}
+
+.cat {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.swatch {
+  width: 20px;
+  height: 10px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.swatchLine {
+  background: repeating-linear-gradient(90deg, #141414 0 1.2px, transparent 1.2px 20px);
+}
+
+.notes {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 3px 6px;
+  margin: 4px 0 0;
+  padding-top: 5px;
+  border-top: 1px dashed #d8d3c8;
+  font-size: 8.6px;
+  line-height: 1.35;
+}
+
+.notes dt {
+  padding-top: 1px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 7.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #8a867e;
+}
+
+.notes dd {
+  margin: 0;
+  color: #3b3833;
+}
+
+.caption {
+  margin: 5px 0 6px;
+  font-size: 9px;
+  line-height: 1.4;
+  color: #4a4741;
+}
+
+.caption b {
+  color: #111111;
+}
+
+.table {
+  width: 100%;
+  margin-top: 6px;
+  border-collapse: collapse;
+  font-size: 9.4px;
+  line-height: 1.3;
+}
+
+.table th {
+  padding: 3px 6px 3px 0;
+  border-bottom: 1px solid #1b1b19;
+  text-align: left;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 7.6px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #77736b;
+}
+
+.table td {
+  padding: 2.2px 6px 2.2px 0;
+  border-bottom: 1px solid #ebe7de;
+  vertical-align: top;
+  color: #1f1e1b;
+}
+
+.table .num {
+  text-align: right;
+  white-space: nowrap;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+}
+
+.table .lab {
+  white-space: nowrap;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-weight: 600;
+}
+
+.table .small {
+  display: block;
+  font-size: 8.4px;
+  color: #6b675f;
+}
+
+.table tr.selected td {
+  background: #fff6e3;
+}
+
+.onMap {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: #1f6f43;
+  color: #ffffff;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 7px;
+  letter-spacing: 0.08em;
+  vertical-align: 1px;
+}
+
+.sourceLine {
+  margin: 3px 0 0;
+  font-size: 8.2px;
+  line-height: 1.35;
+  color: #6b675f;
+}
+
+.subheading {
+  margin: 12px 0 4px;
+  font-size: 11.5px;
+  color: #111111;
+}
+
+.note {
+  margin: 0 0 5px;
+  font-size: 9.2px;
+  line-height: 1.45;
+  color: #4a4741;
+}
+
+.sectionTitle {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #111111;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 22px;
+}
+
+.group {
+  margin-bottom: 9px;
+}
+
+.groupTitle {
+  margin: 0 0 2px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a8620f;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 2.4px 0;
+  border-bottom: 1px dotted #ddd8ce;
+  font-size: 9.6px;
+}
+
+.row dt {
+  color: #1f1e1b;
+}
+
+.row dd {
+  margin: 0;
+  text-align: right;
+  white-space: nowrap;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+}
+
+.figureRef {
+  margin-left: 4px;
+  font-size: 8.4px;
+  color: #a8620f;
+}
+
+.panels {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 11px;
+}
+
+.source {
+  margin-bottom: 5px;
+  padding: 5px 8px;
+  border: 1px solid #e3dfd6;
+  border-radius: 6px;
+  break-inside: avoid;
+}
+
+.sourceHeader {
+  margin: 0;
+  font-size: 10.5px;
+  color: #111111;
+}
+
+.reason {
+  margin: 0 0 3px;
+  font-size: 8.6px;
+  font-style: italic;
+  color: #5d5a53;
+}
+
+.formulaName {
+  margin: 3px 0 0;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 7.4px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #77736b;
+}
+
+.formula {
+  margin: 1px 0 0;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: #f7f5f0;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 8.3px;
+  white-space: pre-wrap;
+  color: #1f1e1b;
+}
+
+.bibliography {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 8.6px;
+  line-height: 1.4;
+  color: #2b2a26;
+}
+
+.bibliography li {
+  margin-bottom: 3px;
+  break-inside: avoid;
+}
+
+.provenance {
+  margin: 0;
+  font-size: 8.8px;
+  line-height: 1.45;
+  color: #2b2a26;
+}
+
+.provenance dt {
+  margin-top: 4px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 7.6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #77736b;
+}
+
+.provenance dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  .sheet {
+    min-height: 0;
+    padding: 28px 20px 24px;
+  }
+  .keys {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .figBig,
+  .figHalf,
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media print {
+  .root {
+    background: #ffffff;
+    padding: 0;
+  }
+  .toolbar,
+  .sheetFoot,
+  .linkNotice {
+    display: none;
+  }
+  .sheets {
+    display: block;
+  }
+  .sheet {
+    max-width: none;
+    min-height: 0;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    break-after: page;
+  }
+  .sheet:last-child {
+    break-after: auto;
+  }
+  .figure,
+  .source,
+  .group,
+  .bibliography li {
+    break-inside: avoid;
+  }
+}

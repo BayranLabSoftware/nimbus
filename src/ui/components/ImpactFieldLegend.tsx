@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
 import {
   availableImpactLayers,
+  layoutColorbar,
   rampColor,
   resolveImpactLayer,
   type ColorbarSpec,
@@ -135,8 +136,7 @@ function Colorbar({ spec }: { spec: ColorbarSpec }): JSX.Element {
   const height = 176;
   const x = 8;
   const width = 12;
-  const at = (v: number): number => (spec.log ? Math.log10(v) : v);
-  const yOf = (v: number): number => top + (1 - (at(v) - spec.lo) / (spec.hi - spec.lo)) * height;
+  const { ticks, marks } = layoutColorbar(spec, top, height, 26);
   const stops = Array.from({ length: 17 }, (_, i) => {
     const [r, g, b] = rampColor(spec.palette, 1 - i / 16);
     return (
@@ -147,20 +147,6 @@ function Colorbar({ spec }: { spec: ColorbarSpec }): JSX.Element {
       />
     );
   });
-  const ticks = spec.ticks.filter(
-    (tk) => at(tk.value) >= spec.lo - 1e-9 && at(tk.value) <= spec.hi + 1e-9
-  );
-  const marks = spec.marks
-    .map((m) => ({ ...m, y: yOf(m.value) }))
-    .sort((a, b) => b.y - a.y)
-    .map((m) => ({ ...m, ly: m.y }));
-  let previous = Number.POSITIVE_INFINITY;
-  for (const m of marks) {
-    m.ly = Math.min(m.y, previous - 26);
-    previous = m.ly;
-  }
-  const lift = marks.length > 0 ? Math.max(0, top + 10 - Math.min(...marks.map((m) => m.ly))) : 0;
-  for (const m of marks) m.ly += lift;
   const labelX = 104;
   return (
     <svg
@@ -182,13 +168,12 @@ function Colorbar({ spec }: { spec: ColorbarSpec }): JSX.Element {
         fill={`url(#${gradientId})`}
         stroke="rgba(255,255,255,0.3)"
       />
-      {ticks.map((tk) => {
-        const y = yOf(tk.value);
+      {ticks.map(({ y, label }) => {
         return (
-          <g key={tk.label}>
+          <g key={label}>
             <line x1={x + width} x2={x + width + 4} y1={y} y2={y} stroke="#8a857c" />
             <text x={x + width + 7} y={y + 3.5} className={styles.tick}>
-              {tk.label}
+              {label}
             </text>
           </g>
         );

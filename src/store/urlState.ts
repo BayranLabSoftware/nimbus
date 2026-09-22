@@ -27,6 +27,9 @@ export const URL_KEYS = {
   mode: 'm',
   // `t` is already the event type, so the playhead gets its own key.
   simTime: 'ts',
+  // The threshold an impact's uncertainty view reads (ROADMAP IMP-7c): the
+  // report's probability map is the one its sender saw.
+  impactThreshold: 'thr',
   // impact CUSTOM inputs
   diameter: 'd',
   velocity: 's',
@@ -116,6 +119,7 @@ type SyncableState = Pick<
   | 'location'
   | 'mode'
   | 'simTime'
+  | 'impactUncertaintyKey'
 >;
 
 function isEventType(value: string | null): value is EventType {
@@ -288,6 +292,14 @@ export function encodeStateToSearchParams(state: SyncableState): URLSearchParams
     params.set(URL_KEYS.simTime, trim(state.simTime, 2));
   }
 
+  if (
+    state.eventType === 'impact' &&
+    state.impactUncertaintyKey !== null &&
+    (state.mode === 'globe' || state.mode === 'report')
+  ) {
+    params.set(URL_KEYS.impactThreshold, state.impactUncertaintyKey);
+  }
+
   return params;
 }
 
@@ -305,6 +317,9 @@ export interface DecodedStateIntent {
   mode: ViewMode | null;
   /** Playhead in simulation seconds; null when the URL carries none. */
   simTime: number | null;
+  /** The threshold of an impact's uncertainty view, by key; null when the
+   *  URL carries none or one that is not a key. */
+  impactThreshold: string | null;
   /** A link whose preset is 'CUSTOM': the input fields it carried, each
    *  checked against its domain. The store validates them as a whole
    *  when it restores them. */
@@ -467,7 +482,15 @@ export function decodeSearchParamsToIntent(search: URLSearchParams): DecodedStat
   const customInput: DecodedStateIntent['customInput'] =
     eventType !== null && preset === 'CUSTOM' ? decodeCustomInput(eventType, search) : null;
 
-  return { eventType, preset, location, mode, simTime, customInput };
+  // A key is a word of letters and digits; the layer itself falls back to
+  // its first threshold when the result has no such key.
+  const rawThreshold = search.get(URL_KEYS.impactThreshold);
+  const impactThreshold =
+    eventType === 'impact' && rawThreshold !== null && /^[A-Za-z0-9]{1,40}$/.test(rawThreshold)
+      ? rawThreshold
+      : null;
+
+  return { eventType, preset, location, mode, simTime, customInput, impactThreshold };
 }
 
 /**
@@ -487,6 +510,7 @@ export function decodeUrl(url: string, base = 'http://localhost/'): DecodedState
       mode: null,
       simTime: null,
       customInput: null,
+      impactThreshold: null,
     };
   }
 }
@@ -517,6 +541,7 @@ export function applyIntentToStore(intent: DecodedStateIntent, store: AppStore):
     store.setMode(intent.mode);
   }
   store.setSimTime(intent.simTime);
+  if (intent.impactThreshold !== null) store.setImpactUncertaintyKey(intent.impactThreshold);
 }
 
 /**
@@ -536,6 +561,7 @@ export function projectSyncableState(store: AppStore): SyncableState {
     location: store.location,
     mode: store.mode,
     simTime: store.simTime,
+    impactUncertaintyKey: store.impactUncertaintyKey,
   };
 }
 

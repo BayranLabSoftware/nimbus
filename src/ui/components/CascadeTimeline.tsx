@@ -40,10 +40,19 @@ function prefersReducedMotion(): boolean {
  * stages appear at the tail. Honours `prefers-reduced-motion` by
  * revealing everything instantly.
  */
-export function CascadeTimeline({ stages }: { stages: CascadeStage[] }): JSX.Element {
+export function CascadeTimeline({
+  stages,
+  variant = 'screen',
+}: {
+  stages: CascadeStage[];
+  /** On paper every stage shows at once and the note about the on-screen
+   *  reveal goes: a report printed as it opens loses nothing (B-109). */
+  variant?: 'screen' | 'print';
+}): JSX.Element {
   const { t } = useTranslation();
+  const still = variant === 'print';
   const [revealedUntilMs, setRevealedUntilMs] = useState(() =>
-    prefersReducedMotion() ? Number.POSITIVE_INFINITY : 0
+    still || prefersReducedMotion() ? Number.POSITIVE_INFINITY : 0
   );
 
   // Per-stage UI-space onset (0 → CASCADE_ANIMATION_MS) derived by
@@ -78,7 +87,7 @@ export function CascadeTimeline({ stages }: { stages: CascadeStage[] }): JSX.Ele
   // Single rAF loop per stages change. Bails out on prefers-reduced-
   // motion (initial state is already ∞). Cancelled on unmount.
   useEffect(() => {
-    if (prefersReducedMotion()) {
+    if (still || prefersReducedMotion()) {
       setRevealedUntilMs(Number.POSITIVE_INFINITY);
       return;
     }
@@ -100,11 +109,16 @@ export function CascadeTimeline({ stages }: { stages: CascadeStage[] }): JSX.Ele
       cancelled = true;
       if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(handle);
     };
-  }, [stages]);
+  }, [stages, still]);
 
   if (stages.length === 0) return <></>;
   return (
-    <section className={styles.timeline} aria-label={t('cascade.label')} aria-live="polite">
+    <section
+      className={styles.timeline}
+      aria-label={t('cascade.label')}
+      aria-live={still ? undefined : 'polite'}
+      data-variant={variant}
+    >
       <h3 className={styles.heading}>{t('cascade.label')}</h3>
       <ol className={styles.list}>
         {phaseGroups.map(({ phase, items }) => (
@@ -133,7 +147,7 @@ export function CascadeTimeline({ stages }: { stages: CascadeStage[] }): JSX.Ele
           </Fragment>
         ))}
       </ol>
-      <p className={styles.scaleNote}>{t('cascade.scaleNote')}</p>
+      {!still && <p className={styles.scaleNote}>{t('cascade.scaleNote')}</p>}
     </section>
   );
 }

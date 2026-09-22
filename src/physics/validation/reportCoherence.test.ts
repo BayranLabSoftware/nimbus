@@ -8,7 +8,25 @@ import { simulateVolcano } from '../events/volcano/simulate.js';
 import { simulateImpact } from '../simulate.js';
 import { deg, degreesToRadians, kgPerM3, m, mps } from '../units.js';
 import { fieldsFor } from '../../ui/pages/SimulationReportPage.js';
+import { buildImpactReport } from '../../ui/pages/report/impactReportModel.js';
+import type { TFunction } from 'i18next';
+import type { ImpactScenarioResult } from '../simulate.js';
 import type { ActiveResult } from '../../store/useAppStore.js';
+
+const keyOnly = ((key: string) => key) as unknown as TFunction;
+/** An impact's rows as its report prints them, keys for labels. */
+const impactRows = (r: ImpactScenarioResult) =>
+  buildImpactReport(r, {
+    t: keyOnly,
+    language: 'en',
+    location: null,
+    evaluatedAt: null,
+    presetName: null,
+    uncertaintyKey: null,
+    casualties: null,
+    nearest: null,
+    extras: { bathymetricTsunami: false, monteCarlo: false, predictiveBand: false },
+  }).groups.flatMap((g) => g.rows);
 
 /**
  * What the report says about a scenario, checked for the things a reader
@@ -97,10 +115,7 @@ describe('what a report says holds together', () => {
     const airburst = simulateImpact(body(20, 19_200, 18, 3_300));
     expect(airburst.crater.finalDiameter as number).toBe(0);
     expect(buildImpactCascade(airburst).map((s) => s.key)).not.toContain('cascade.impact.crater');
-    const labels = fieldsFor({ type: 'impact', data: airburst } as never).outputs.map(
-      (f) => f.label
-    );
-    expect(labels).not.toContain('Crater morphology');
+    expect(impactRows(airburst).map((row) => row.id)).not.toContain('craterMorphology');
 
     const high = simulateExplosion({ yieldMegatons: 1, heightOfBurst: m(40_000) });
     expect(high.crater.apparentDiameter as number).toBe(0);
@@ -210,11 +225,12 @@ describe('what a report says holds together', () => {
       },
     ];
     for (const result of results) {
-      const fields = fieldsFor(result);
-      expect(fields.inputs.length).toBeGreaterThan(0);
-      for (const field of [...fields.inputs, ...fields.outputs]) {
-        expect(field.value).not.toMatch(/NaN|Infinity|undefined|null/);
-      }
+      const values =
+        result.type === 'impact'
+          ? impactRows(result.data).map((row) => row.value)
+          : [...fieldsFor(result).inputs, ...fieldsFor(result).outputs].map((f) => f.value);
+      expect(values.length).toBeGreaterThan(0);
+      for (const value of values) expect(value).not.toMatch(/NaN|Infinity|undefined|null/);
     }
   });
 });

@@ -39,7 +39,7 @@ import { ashfallMassLoading } from '../events/volcano/ashfall.js';
 import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/index.js';
 import type { LandslideWaveLaw } from '../events/landslide/simulate.js';
 import { IMPULSE_WAVE_TESTED, slideImpactVelocity } from '../effects/impulseWave.js';
-import { simulateImpact, IMPACT_PRESETS } from '../simulate.js';
+import { simulateImpact, IMPACT_PRESETS, type ImpactScenarioResult } from '../simulate.js';
 import { impactPeakWindAt, programPeakWind } from '../events/impact/impactField.js';
 import type { TFunction } from 'i18next';
 import {
@@ -51,6 +51,21 @@ import {
 
 /** A translator that answers with the key, for the map's pure layers. */
 const keyOnly = ((key: string) => key) as unknown as TFunction;
+/** An impact's report as the page builds it, in `language` with `t`. */
+function impactReportOf(r: ImpactScenarioResult, t: TFunction = keyOnly, language = 'en') {
+  return buildImpactReport(r, {
+    t,
+    language,
+    location: null,
+    evaluatedAt: null,
+    presetName: null,
+    uncertaintyKey: null,
+    casualties: null,
+    nearest: null,
+    extras: { bathymetricTsunami: false, monteCarlo: false, predictiveBand: false },
+  });
+}
+const impactRowsOf = (r: ImpactScenarioResult) => impactReportOf(r).groups.flatMap((g) => g.rows);
 import { buildExplosionCascade, buildImpactCascade } from '../cascade.js';
 import { blastCasualtyPlan } from '../casualties.js';
 import { DEFAULT_TOLL_BAND_SCATTER, withVulnerabilityScatter } from '../uq/tollBand.js';
@@ -75,6 +90,9 @@ import { entryRegimeExplainKey } from '../../ui/components/entryRegimeExplain.js
 import { computeTsunamiArrivalField, spansTheGlobe } from '../tsunami/fastMarching.js';
 import { radiansToDegrees } from '../units.js';
 import { fieldsFor } from '../../ui/pages/SimulationReportPage.js';
+import { buildImpactReport } from '../../ui/pages/report/impactReportModel.js';
+import { impactFormulaIds } from '../../ui/pages/report/impactFormulas.js';
+import i18next from 'i18next';
 import { oceanCouplingPartition } from '../effects/oceanCoupling.js';
 import { impactFireballRadius, nuclearFireballRadius } from '../effects/blastWave.js';
 import { groundRangeAtSlant } from '../effects/atmosphericEntry.js';
@@ -1081,10 +1099,10 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     const airburst = simulateImpact(IMPACT_PRESETS.CHELYABINSK.input);
     expect(airburst.crater.finalDiameter as number).toBe(0);
     expect(buildImpactCascade(airburst).map((s) => s.key)).not.toContain('cascade.impact.crater');
-    const fields = fieldsFor({ type: 'impact', data: airburst } as never).outputs.map(
-      (f) => f.label
-    );
-    expect(fields).not.toContain('Crater morphology');
+    expect(impactRowsOf(airburst).map((row) => row.id)).not.toContain('craterMorphology');
+    expect(
+      impactRowsOf(simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input)).map((row) => row.id)
+    ).toContain('craterMorphology');
 
     const ground = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
     expect(ground.crater.finalDiameter as number).toBeGreaterThan(0);
@@ -1602,13 +1620,12 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // (4.91 × 10¹⁰ under the seafloor step; the taper of rules 654 to 659
     // sends 1.4 % less of this body's energy to the seafloor.)
     expect(r.atmosphere.stratosphericDust as number).toBeCloseTo(4.842e10, -8);
-    const fields = fieldsFor({ type: 'impact', data: r } as never).outputs;
-    const value = (label: string): string =>
-      fields.find((f) => f.label === label)?.value ?? '(missing)';
-    expect(value('Stratospheric dust')).toBe('48.4 Mt');
-    expect(value('Acid-rain mass (HNO₃)')).toBe('13.7 Mt');
+    const rows = impactRowsOf(r);
+    const value = (id: string): string => rows.find((row) => row.id === id)?.value ?? '(missing)';
+    expect(value('stratDust')).toBe('48.4 Mt');
+    expect(value('acidRain')).toBe('13.7 Mt');
     // And the impactor's own mass, which used to read "1.6e+0 Gt".
-    expect(value('Impactor mass')).toBe('1.6 Gt');
+    expect(value('impactorMass')).toBe('1.6 Gt');
   });
 
   it('B-066 a printed range runs upward', () => {
@@ -2070,6 +2087,119 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     );
     expect(globe).toContain("if (result.type === 'impact') setShockFrontActive(true);");
     expect(globe).toContain('setShockFrontActive(false);');
+  });
+
+  it('B-108 An impact report prints the formulas the impact used, and no other', () => {
+    // Pre-fix: a formula was matched to the run by its source alone, so the
+    // burn toll's Glasstone & Dolan brought six explosion formulas into every
+    // impact, and the dust, the acid and an airburst's magnitude went
+    // unprinted where their source was not cited.
+    const none = { bathymetricTsunami: false, monteCarlo: false, predictiveBand: false };
+    const explosionOnly = [
+      'chemical-blast',
+      'overpressure',
+      'hob-correction',
+      'thermal',
+      'crater',
+      'radiation',
+      'emp',
+      'underwater-burst-tsunami',
+      'underwater-burst-air-effects',
+      'contact-water-burst-flag',
+      'coastal-explosion-tsunami',
+    ];
+    const meteor = impactFormulaIds(simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input), none);
+    for (const id of explosionOnly) expect(meteor).not.toContain(id);
+    for (const id of ['transient-crater', 'final-crater', 'strat-dust', 'acid-rain', 'ejecta']) {
+      expect(meteor).toContain(id);
+    }
+    expect(meteor).not.toContain('airburst-blast');
+    const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
+    expect(
+      tunguska.seismic.magnitudeSource === 'air' || tunguska.seismic.magnitudeSource === 'ground'
+    ).toBe(true);
+    const air = impactFormulaIds(tunguska, none);
+    for (const id of explosionOnly) expect(air).not.toContain(id);
+    expect(air).toContain('airburst-seismic');
+    expect(air).toContain('airburst-blast');
+    expect(air).not.toContain('transient-crater');
+    expect(air).not.toContain('damage-rings-airburst-honest');
+  });
+
+  it('B-109 Every word of the printed report is dark on white', () => {
+    // Pre-fix: the casualty table and the cascade kept the console's
+    // light-on-dark colours on the sheet, and the timeline faded its stages
+    // in over five seconds from nothing.
+    const read = (path: string): string =>
+      readFileSync(fileURLToPath(new URL(path, import.meta.url)), 'utf8');
+    const panelCss = read('../../ui/components/SimulatorPanel.module.css');
+    for (const rule of [
+      "[data-tone='paper'] .mcTable td:first-child",
+      "[data-tone='paper'] .presetNote",
+      "[data-tone='paper'] .envelopeNote",
+      "[data-tone='paper'] .sectionHeading",
+    ]) {
+      expect(panelCss).toContain(rule);
+    }
+    expect(read('../../ui/components/CascadeTimeline.module.css')).toContain(
+      ".timeline[data-variant='print'] .phaseHeader"
+    );
+    // On paper every stage shows at once and the reveal's note goes; the
+    // rendering itself is held by cascadeTimelinePrint.test.ts.
+    const timeline = read('../../ui/components/CascadeTimeline.tsx');
+    expect(timeline).toContain('still || prefersReducedMotion()');
+    expect(timeline).toContain('{!still && <p className={styles.scaleNote}>');
+    for (const page of [
+      '../../ui/pages/SimulationReportPage.tsx',
+      '../../ui/pages/report/ImpactReport.tsx',
+    ]) {
+      const source = read(page);
+      expect(source).toContain('tone="paper"');
+      expect(source).toContain('variant="print"');
+    }
+  });
+
+  it('B-110 Italian numbers in the impact report and map carry the decimal comma', async () => {
+    // Pre-fix: the report wrote every value with toFixed, and the Italian
+    // strings of the map and its tooltips wrote "0.5 psi" and "3.4 kPa".
+    const italian = i18next.createInstance();
+    await italian.init({
+      resources: { en: { translation: enLocale }, it: { translation: itLocale } },
+      lng: 'it',
+      fallbackLng: 'en',
+      interpolation: { escapeValue: false },
+    });
+    const t = italian.t.bind(italian) as unknown as TFunction;
+    // A decimal point between digits: not a group of thousands, which in
+    // Italian is a point followed by three digits ("12.461 km"), nor a
+    // table's or a section's number ("Tabella 7.40", "§7.58").
+    const pointed =
+      /(?<!(?:Tabella|Table|Fig\.|Figura|§|Eq\.|eq\.|Eqs\.|eqs\.|cap\.)\s?)\b\d+\.(?:\d{1,2}|\d{4,})\b/;
+    const offenders: string[] = [];
+    for (const key of ['METEOR_CRATER', 'TUNGUSKA', 'CHICXULUB', 'CHELYABINSK'] as const) {
+      const r = simulateImpact(IMPACT_PRESETS[key].input);
+      const report = impactReportOf(r, t, 'it');
+      const strings: string[] = [report.subtitle, report.event];
+      for (const k of report.keyFigures) strings.push(k.label, k.value, k.detail);
+      for (const g of report.groups) {
+        strings.push(g.title);
+        for (const row of g.rows) strings.push(row.label, row.value);
+      }
+      for (const f of report.figures) {
+        const l = f.layer;
+        strings.push(l.title, l.unit, l.tab);
+        for (const n of l.notes) strings.push(n.label, n.text);
+        for (const c of l.categories) strings.push(c.label);
+        for (const i of l.isolines) strings.push(i.label, i.title, i.description);
+        for (const m of l.colorbar?.marks ?? []) strings.push(m.label, m.detail);
+      }
+      for (const s of report.sources) {
+        if (s.reason !== null) strings.push(s.reason);
+        for (const f of s.formulas) strings.push(f.name, f.formula);
+      }
+      for (const s of strings) if (pointed.test(s)) offenders.push(`${key}: ${s}`);
+    }
+    expect(offenders).toEqual([]);
   });
 
   // Bypass guard: the test count below MUST equal the registry row

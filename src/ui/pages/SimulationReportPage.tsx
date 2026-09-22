@@ -16,8 +16,6 @@ import {
 } from '../../physics/events/landslide/index.js';
 import type { VolcanoScenarioResult } from '../../physics/events/volcano/index.js';
 import { DEFAULT_CONFINEMENT_DYNAMIC_FACTOR } from '../../physics/events/volcano/tsunami.js';
-import type { ImpactScenarioResult } from '../../physics/simulate.js';
-import { joulesToMegatons, radiansToDegrees } from '../../physics/units.js';
 import { useAppStore, type ActiveResult } from '../../store/index.js';
 import { CascadeTimeline } from '../components/CascadeTimeline.js';
 import { CasualtiesPanel } from '../components/CasualtiesPanel.js';
@@ -29,6 +27,7 @@ import {
   type TriggeredCitation,
 } from './reportCitations.js';
 import { BUILD_INFO, commitUrl, shortCommit, validationReportUrl } from '../../buildInfo.js';
+import { ImpactReport } from './report/ImpactReport.js';
 import styles from './SimulationReportPage.module.css';
 
 function fmtKm(meters: number): string {
@@ -53,23 +52,6 @@ function fmtMt(mt: number): string {
   return `${(mt / 1_000).toFixed(2)} Gt`;
 }
 
-/** A tonne is 10³ kg, a kilotonne 10⁶, a megatonne 10⁹, a gigatonne 10¹², a
- *  teratonne 10¹⁵. Two of the branches here named a mass a thousand times
- *  larger than it is, so a 1 km stone's 49.1 megatonnes of stratospheric dust
- *  printed as 49.1 gigatonnes — thirty times the impactor that raised it
- *  (B-065). The exponential branch is gone with them: it wrote 1.571 × 10¹² kg
- *  as "1.6e+0 Gt". */
-function fmtMass(kg: number): string {
-  if (!Number.isFinite(kg) || kg <= 0) return '—';
-  if (kg >= 1e18) return `${(kg / 1e15).toExponential(1)} Tt`;
-  if (kg >= 1e15) return `${(kg / 1e15).toFixed(1)} Tt`;
-  if (kg >= 1e12) return `${(kg / 1e12).toFixed(1)} Gt`;
-  if (kg >= 1e9) return `${(kg / 1e9).toFixed(1)} Mt`;
-  if (kg >= 1e6) return `${(kg / 1e6).toFixed(1)} kt`;
-  if (kg >= 1_000) return `${(kg / 1_000).toFixed(0)} t`;
-  return `${kg.toFixed(0)} kg`;
-}
-
 function fmtMin(seconds: number): string {
   if (!Number.isFinite(seconds) || seconds <= 0) return '—';
   const minutes = seconds / 60;
@@ -87,180 +69,6 @@ function fmtNumber(n: number, digits = 2): string {
 interface Field {
   label: string;
   value: string;
-}
-
-function impactFields(r: ImpactScenarioResult): { inputs: Field[]; outputs: Field[] } {
-  const input = r.inputs;
-  const inputs: Field[] = [
-    { label: 'Impactor diameter', value: fmtKm(input.impactorDiameter) },
-    {
-      label: 'Impact velocity',
-      value: `${((input.impactVelocity as number) / 1_000).toFixed(1)} km/s`,
-    },
-    { label: 'Impactor density', value: `${fmtNumber(input.impactorDensity, 0)} kg/m³` },
-    { label: 'Target density', value: `${fmtNumber(input.targetDensity, 0)} kg/m³` },
-    { label: 'Impact angle', value: `${radiansToDegrees(input.impactAngle).toFixed(0)}°` },
-  ];
-  if ((input.waterDepth as number | undefined) !== undefined && (input.waterDepth as number) > 0) {
-    // On land the depth is the nearest sea's, which the store finds so the
-    // physics can say whether the crater or the ejecta reach it. Calling it
-    // "the water depth at impact" put an inland city under the sea (B-044).
-    const shore = input.shoreDistance as number | undefined;
-    inputs.push(
-      shore !== undefined && shore > 0
-        ? {
-            label: 'Nearest sea a wave could cross',
-            value: `${fmtKm(shore)} away, ${fmtKm(input.waterDepth as number)} deep`,
-          }
-        : { label: 'Water depth at impact', value: fmtKm(input.waterDepth as number) }
-    );
-  }
-  if ((input.meanOceanDepth as number | undefined) !== undefined) {
-    inputs.push({ label: 'Mean basin depth', value: fmtKm(input.meanOceanDepth as number) });
-  }
-  if (input.impactorStrength !== undefined) {
-    inputs.push({
-      label: 'Impactor tensile strength',
-      value: `${((input.impactorStrength as number) / 1e6).toFixed(2)} MPa`,
-    });
-  }
-
-  const outputs: Field[] = [
-    { label: 'Impactor mass', value: fmtMass(r.impactor.mass) },
-    { label: 'Kinetic energy', value: fmtMt(joulesToMegatons(r.impactor.kineticEnergy)) },
-    { label: 'Entry regime', value: r.entry.regime.replace(/_/g, ' ').toLowerCase() },
-    {
-      label: 'Energy fraction to ground',
-      value: `${(r.entry.energyFractionToGround * 100).toFixed(0)}%`,
-    },
-    { label: 'Transient crater diameter', value: fmtKm(r.crater.transientDiameter) },
-    { label: 'Final crater diameter', value: fmtKm(r.crater.finalDiameter) },
-    { label: 'Crater depth', value: fmtKm(r.crater.depth) },
-    // A morphology is a fact about a crater, and an airburst leaves none
-    // (B-045).
-    ...((r.crater.finalDiameter as number) > 0
-      ? [{ label: 'Crater morphology', value: r.crater.morphology }]
-      : []),
-    {
-      label:
-        r.seismic.magnitudeSource === null
-          ? 'Seismic magnitude'
-          : r.seismic.magnitudeSource === 'program'
-            ? 'Seismic magnitude (Collins et al. 2005)'
-            : 'Seismic magnitude (Harkrider et al. 1974 and Collins et al. 2005, rule 730)',
-      value:
-        r.seismic.magnitude === null
-          ? '— none: no relation this simulator verifies covers this airburst'
-          : fmtNumber(r.seismic.magnitude, 1),
-    },
-    {
-      label: 'Seismic magnitude, efficiency 10⁻⁵–10⁻³',
-      value:
-        r.seismic.magnitudeRange === null
-          ? '—'
-          : `${fmtNumber(r.seismic.magnitudeRange.low, 1)}–${fmtNumber(r.seismic.magnitudeRange.high, 1)}`,
-    },
-    { label: 'Liquefaction radius', value: fmtKm(r.seismic.liquefactionRadius) },
-    { label: 'Crater rim radius', value: fmtKm(r.damage.craterRim) },
-    { label: '3rd-degree burn radius', value: fmtKm(r.damage.thirdDegreeBurn) },
-    { label: '2nd-degree burn radius', value: fmtKm(r.damage.secondDegreeBurn) },
-    { label: '5 psi overpressure radius', value: fmtKm(r.damage.overpressure5psi) },
-    { label: '1 psi overpressure radius', value: fmtKm(r.damage.overpressure1psi) },
-    { label: '0.5 psi · light-damage radius', value: fmtKm(r.damage.lightDamage) },
-    { label: 'Firestorm ignition radius', value: fmtKm(r.firestorm.ignitionRadius) },
-    { label: 'Firestorm sustain radius', value: fmtKm(r.firestorm.sustainRadius) },
-    { label: 'Firestorm ignition area', value: fmtKm2(r.firestorm.ignitionArea) },
-    { label: 'Ejecta blanket outer edge (1 mm)', value: fmtKm(r.ejecta.blanketEdge1mm) },
-    { label: 'Ejecta blanket outer edge (1 m)', value: fmtKm(r.ejecta.blanketEdge1m) },
-    {
-      label: 'Ejecta thickness at 2 R',
-      value: `${(r.ejecta.thicknessAt2R as number).toFixed(1)} m`,
-    },
-    {
-      label: 'Ejecta thickness at 10 R',
-      value: `${(r.ejecta.thicknessAt10R as number).toFixed(2)} m`,
-    },
-    { label: 'Stratospheric dust', value: fmtMass(r.atmosphere.stratosphericDust) },
-    { label: 'Acid-rain mass (HNO₃)', value: fmtMass(r.atmosphere.acidRainMass) },
-    { label: 'Climate tier', value: r.atmosphere.climateTier },
-  ];
-  if (r.tsunami) {
-    const program = r.tsunami.farFieldLaw === 'program';
-    outputs.push(
-      { label: 'Tsunami cavity radius', value: fmtKm(r.tsunami.cavityRadius) },
-      // The wave the model propagates, which cannot stand taller than the
-      // water it stands in: since 16 September 2026 the Earth Impact Effects
-      // Program's, one water-crater diameter out (rules 150 to 153), and
-      // Wünnemann's rim wave before. It used to be printed below the one
-      // that follows, under a bare "source amplitude" label given to Ward &
-      // Asphaug's figure — which has no depth in it, and read 1 362 m in
-      // 200 m of sea for a Chicxulub on Rome. Ward stays, as the historical
-      // reference it is, and says so.
-      {
-        label: program
-          ? 'Tsunami amplitude one water crater out (Earth Impact Effects Program, ≤ water depth)'
-          : 'Tsunami source amplitude (Wünnemann 2010 rim wave, ≤ water depth)',
-        value: `${(r.tsunami.rimWaveSourceAmplitude as number).toFixed(1)} m`,
-      },
-      {
-        label: 'Ward & Asphaug 2000 source amplitude (reference; no depth limit)',
-        value: `${(r.tsunami.sourceAmplitude as number).toFixed(1)} m`,
-      },
-      {
-        label: 'Tsunami A @ 1 000 km (Ward-Asphaug)',
-        value: `${(r.tsunami.amplitudeAt1000km as number).toFixed(2)} m`,
-      },
-      {
-        label: 'Tsunami A @ 1 000 km (Earth Impact Effects Program)',
-        value: `${(r.tsunami.amplitudeAt1000kmWunnemann as number).toFixed(2)} m`,
-      },
-      // The program draws one wave and publishes no envelope around it.
-      ...(program
-        ? []
-        : [
-            {
-              label: 'Tsunami A @ 1 000 km (range)',
-              value: `${(r.tsunami.amplitudeAt1000kmLower as number).toFixed(2)} – ${(r.tsunami.amplitudeAt1000kmUpper as number).toFixed(2)} m`,
-            },
-          ]),
-      {
-        label: 'Sea coupling',
-        value: `${r.tsunami.seaCoupling.mechanism} · shore ${fmtKm(r.tsunami.seaCoupling.shoreDistance)} · ${(r.tsunami.seaCoupling.fraction * 100).toFixed(0)} % ${program ? 'of the wave' : 'of the water-coupled energy'}`,
-      },
-      program
-        ? {
-            label:
-              'Water crater D_w (Earth Impact Effects Program; the wave falls as 1/r beyond it)',
-            value: fmtKm(r.tsunami.farFieldReferenceRadius),
-          }
-        : {
-            label: 'Wave regime h/L · rim-wave exponent q_r',
-            value: `${r.tsunami.depthToImpactorRatio.toFixed(2)} · ${r.tsunami.rimWaveExponent.toFixed(2)}${r.tsunami.collapseWaveForms ? ` (collapse wave q_c ${r.tsunami.collapseWaveExponent.toFixed(2)})` : ''}`,
-          },
-      {
-        label: 'Tsunami A @ 5 000 km (Ward-Asphaug)',
-        value: `${(r.tsunami.amplitudeAt5000km as number).toFixed(2)} m`,
-      },
-      ...(program
-        ? []
-        : [
-            {
-              label: 'Tsunami A @ 5 000 km (range)',
-              value: `${(r.tsunami.amplitudeAt5000kmLower as number).toFixed(2)} – ${(r.tsunami.amplitudeAt5000kmUpper as number).toFixed(2)} m`,
-            },
-          ]),
-      {
-        label: 'Tsunami A @ 5 000 km (dispersion-corrected)',
-        value: `${(r.tsunami.amplitudeAt5000kmDispersed as number).toFixed(2)} m`,
-      },
-      {
-        label: 'Coastal run-up @ 1 000 km (Synolakis 1:100)',
-        value: `${(r.tsunami.runupAt1000km as number).toFixed(1)} m`,
-      },
-      { label: 'Tsunami travel to 1 000 km', value: fmtMin(r.tsunami.travelTimeTo1000km) }
-    );
-  }
-  return { inputs, outputs };
 }
 
 function explosionFields(r: ExplosionScenarioResult): { inputs: Field[]; outputs: Field[] } {
@@ -743,10 +551,12 @@ function landslideFields(r: LandslideScenarioResult): { inputs: Field[]; outputs
  * how B-045 survived in the first place.
  */
 // eslint-disable-next-line react-refresh/only-export-components -- see above
-export function fieldsFor(result: ActiveResult): { inputs: Field[]; outputs: Field[] } {
+export function fieldsFor(result: Exclude<ActiveResult, { type: 'impact' }>): {
+  inputs: Field[];
+  outputs: Field[];
+} {
+  // An impact's report has a builder of its own (report/impactReportModel.ts).
   switch (result.type) {
-    case 'impact':
-      return impactFields(result.data);
     case 'explosion':
       return explosionFields(result.data);
     case 'earthquake':
@@ -847,6 +657,10 @@ export function SimulationReportPage(): JSX.Element {
       </div>
     );
   }
+
+  // An impact's report is its own (ROADMAP IMP-7c): the globe's maps, every
+  // word in the reader's language. The other modules keep this page.
+  if (result.type === 'impact') return <ImpactReport active={result} result={result.data} />;
 
   const { inputs, outputs } = fieldsFor(result);
   const cascade = cascadeFor(result);
@@ -952,13 +766,14 @@ export function SimulationReportPage(): JSX.Element {
               status={casualtyStatus}
               compact={false}
               envelope={envelopeOf(result, 'toll')}
+              tone="paper"
             />
           </section>
         )}
 
         {cascade.length > 0 && (
           <section className={styles.section}>
-            <CascadeTimeline stages={cascade} />
+            <CascadeTimeline stages={cascade} variant="print" />
           </section>
         )}
 

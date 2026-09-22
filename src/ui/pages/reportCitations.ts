@@ -29,6 +29,9 @@ export interface TriggeredCitation {
   key: CitationKey;
   citation: Citation;
   reason: string;
+  /** The reason's key in the locales, where the report prints it in the
+   *  reader's language (the impact report, B-110); `reason` is its English. */
+  reasonKey?: string;
 }
 
 /** De-duplicates entries by CitationKey, keeping the first reason. */
@@ -43,8 +46,13 @@ function dedupe(triggers: TriggeredCitation[]): TriggeredCitation[] {
   return out;
 }
 
-function cite(key: CitationKey, reason: string): TriggeredCitation {
-  return { key, citation: CITATIONS[key], reason };
+function cite(key: CitationKey, reason: string, reasonKey?: string): TriggeredCitation {
+  return {
+    key,
+    citation: CITATIONS[key],
+    reason,
+    ...(reasonKey !== undefined && { reasonKey: `report.impact.reason.${reasonKey}` }),
+  };
 }
 
 /** Collect the citations exercised by a cosmic-impact run. */
@@ -54,50 +62,74 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
       'collins2005',
       result.tsunami?.farFieldLaw === 'program'
         ? 'Impactor kinetic energy, crater diameters and depth, seismic magnitude, and the far field of the wave as the Earth Impact Effects Program draws it.'
-        : 'Impactor kinetic energy, crater diameters and depth, seismic magnitude.'
+        : 'Impactor kinetic energy, crater diameters and depth, seismic magnitude.',
+      result.tsunami?.farFieldLaw === 'program' ? 'collinsWave' : 'collins'
     ),
-    cite('brittConsolmagno2003', 'Impactor taxonomy density classes.'),
+    cite('brittConsolmagno2003', 'Impactor taxonomy density classes.', 'britt'),
   ];
 
   if (result.crater.morphology === 'complex') {
-    triggers.push(cite('herrick1997', 'Complex crater depth (Collins et al. 2005 Eq. 28).'));
+    triggers.push(
+      cite('herrick1997', 'Complex crater depth (Collins et al. 2005 Eq. 28).', 'herrick')
+    );
   }
 
   if (result.entry.regime !== 'INTACT') {
     triggers.push(
-      cite('chyba1993', 'The pancake model of a breaking body (Collins et al. 2005 Eqs. 13–20).')
+      cite(
+        'chyba1993',
+        'The pancake model of a breaking body (Collins et al. 2005 Eqs. 13–20).',
+        'chyba'
+      )
     );
   }
   if (result.entry.regime === 'COMPLETE_AIRBURST') {
-    triggers.push(cite('popova2013', 'Chelyabinsk 2013, the airburst the entry is checked on.'));
+    triggers.push(
+      cite('popova2013', 'Chelyabinsk 2013, the airburst the entry is checked on.', 'popova')
+    );
     triggers.push(
       cite(
         'collins2017',
-        'Air blast of the airburst: regular reflection (Eq. 7), its energy and its factor-of-two range.'
+        'Air blast of the airburst: regular reflection (Eq. 7), its energy and its factor-of-two range.',
+        'collins2017'
       )
     );
   }
 
   if ((result.ejecta.blanketEdge1m as number) > 0) {
     triggers.push(
-      cite('mcgetchin1973', 'r⁻³ thinning of the ejecta deposit (Collins et al. 2005 Eq. 47).')
+      cite(
+        'mcgetchin1973',
+        'r⁻³ thinning of the ejecta deposit (Collins et al. 2005 Eq. 47).',
+        'mcgetchinEjecta'
+      )
     );
   }
 
   if ((result.atmosphere.stratosphericDust as number) > 1e13) {
-    triggers.push(cite('toon1997', 'Stratospheric dust loading scaling (Chicxulub anchor).'));
+    triggers.push(
+      cite('toon1997', 'Stratospheric dust loading scaling (Chicxulub anchor).', 'toon')
+    );
   }
 
   if ((result.atmosphere.acidRainMass as number) > 1e13) {
-    triggers.push(cite('prinn1987', 'Shock-produced HNO₃ (bolide acid-rain) mass.'));
+    triggers.push(cite('prinn1987', 'Shock-produced HNO₃ (bolide acid-rain) mass.', 'prinn'));
   }
 
   if ((result.seismic.liquefactionRadius as number) > 0) {
     triggers.push(
-      cite('youdIdriss2001', 'Impact-induced liquefaction on saturated sandy soil (cross-bridge).')
+      cite(
+        'youdIdriss2001',
+        'Impact-induced liquefaction on saturated sandy soil (cross-bridge).',
+        'youdIdriss'
+      )
     );
     triggers.push(
-      cite('joynerBoore1981', 'Distance-for-PGA inversion used by the liquefaction ring.')
+      cite(
+        'joynerBoore1981',
+        'Distance-for-PGA inversion used by the liquefaction ring.',
+        'joynerBoore'
+      )
     );
   }
 
@@ -106,39 +138,55 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
       triggers.push(
         cite(
           'mcgetchin1973',
-          'Ejecta fraction beyond the shoreline — sea coupling of an inland impact.'
+          'Ejecta fraction beyond the shoreline — sea coupling of an inland impact.',
+          'mcgetchinSea'
         )
       );
     }
-    triggers.push(cite('ward2000', 'Water-column cavity and 1/r reference envelope.'));
+    triggers.push(cite('ward2000', 'Water-column cavity and 1/r reference envelope.', 'ward'));
     // The program's wave carries its own dispersion and no envelope: the rim
     // wave, its exponents and Kajiura's factor are used only under their law.
     if (result.tsunami.farFieldLaw !== 'program') {
       triggers.push(
-        cite('wunnemann2010', 'Rim-wave far field (eq. 9a) and published envelope (eqs. 7–8).')
+        cite(
+          'wunnemann2010',
+          'Rim-wave far field (eq. 9a) and published envelope (eqs. 7–8).',
+          'wunnemann2010'
+        )
       );
-      triggers.push(cite('wunnemann2007', 'Hydrocode attenuation exponents behind eqs. 10a/10b.'));
+      triggers.push(
+        cite(
+          'wunnemann2007',
+          'Hydrocode attenuation exponents behind eqs. 10a/10b.',
+          'wunnemann2007'
+        )
+      );
     }
-    triggers.push(cite('synolakis1987', 'Plane-beach solitary-wave run-up at coast.'));
-    triggers.push(cite('koshimura2009', 'Coastal toll by inundation depth (casualty estimate).'));
+    triggers.push(cite('synolakis1987', 'Plane-beach solitary-wave run-up at coast.', 'synolakis'));
+    triggers.push(
+      cite('koshimura2009', 'Coastal toll by inundation depth (casualty estimate).', 'koshimura')
+    );
     if (result.tsunami.farFieldLaw !== 'program') {
-      triggers.push(cite('kajiura1963', 'Dispersion parameter of the leading wave.'));
+      triggers.push(cite('kajiura1963', 'Dispersion parameter of the leading wave.', 'kajiura'));
     }
   }
   if ((result.damage.overpressure5psi as number) > 0) {
-    triggers.push(cite('ota1979', 'Blast mortality by overpressure band (casualty estimate).'));
+    triggers.push(
+      cite('ota1979', 'Blast mortality by overpressure band (casualty estimate).', 'ota')
+    );
   }
   if ((result.damage.thirdDegreeBurn as number) > 0) {
     triggers.push(
       cite(
         'glasstoneDolan1977',
-        'Burn mortality on the fraction in sight of the fireball (casualty estimate).'
+        'Burn mortality on the fraction in sight of the fireball (casualty estimate).',
+        'glasstoneBurns'
       )
     );
   }
   if ((result.firestorm.sustainRadius as number) > 0) {
     triggers.push(
-      cite('postol1986', 'Mass-fire mortality among the survivors (casualty estimate).')
+      cite('postol1986', 'Mass-fire mortality among the survivors (casualty estimate).', 'postol')
     );
   }
 

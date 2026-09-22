@@ -108,6 +108,9 @@ export interface CasualtiesPanelProps {
   compact?: boolean;
   /** Where this scenario sits against the measured record. */
   envelope?: CalibrationEnvelope | null;
+  /** `paper` in the printed report: the console's light-on-dark colours
+   *  would print white on white (B-109). */
+  tone?: 'console' | 'paper';
 }
 
 /**
@@ -125,6 +128,7 @@ export function CasualtiesPanel({
   status,
   compact = true,
   envelope = null,
+  tone = 'console',
 }: CasualtiesPanelProps): JSX.Element {
   const { t, i18n } = useTranslation();
   const locale = i18n.language.toLowerCase().startsWith('it') ? 'it-IT' : 'en-US';
@@ -133,7 +137,7 @@ export function CasualtiesPanel({
   return (
     // A plain block: the two-column grid belongs to the <dl> below, not
     // to the section — nested in it, every note fell into a 60 px cell.
-    <section aria-label={t('casualties.label')} data-testid="casualties">
+    <section aria-label={t('casualties.label')} data-testid="casualties" data-tone={tone}>
       <h3 className={styles.sectionHeading}>{t('casualties.label')}</h3>
       {status === 'fetching' && casualties === null && (
         <p className={styles.presetNote}>{t('casualties.loading')}</p>

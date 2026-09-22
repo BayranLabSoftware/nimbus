@@ -24,6 +24,7 @@ import { RESOLUTION_FLOOR_CELLS as SHORE_RESOLUTION_FLOOR_CELLS } from '../physi
 import { SHORE_DEPTH_CAP_M } from '../physics/validation/shoreDepthRules.js';
 import type { TerrainSourceSpan } from '../scene/terrainSampling.js';
 import type { ImpactLayerId } from '../scene/globe/impactFieldMap.js';
+import type { GlobeShots } from '../scene/globe/globeShots.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
 import {
   BASIN_SAMPLE_RADIUS_M,
@@ -505,6 +506,10 @@ export interface AppStore {
    *  lists it only then, since a row is a promise that something is drawn
    *  (B-107). The globe is the only writer. */
   shockFrontActive: boolean;
+  /** The globe's photographs of an impact's layers, taken as the report is
+   *  opened (ROADMAP IMP-7c), for the result they were taken of: a report
+   *  prints them only beside that result's maps. */
+  reportGlobeShots: { result: object; shots: GlobeShots } | null;
   /** Camera flight asked for by the UI — the city search in the
    *  simulator panel. The globe consumes it by `seq`; the store never
    *  moves the camera itself. */
@@ -637,6 +642,8 @@ export interface AppStore {
   setImpactUncertaintyKey: (key: string | null) => void;
   /** Called by the globe when the shock front starts and when it is gone. */
   setShockFrontActive: (active: boolean) => void;
+  /** Keep the globe's photographs for the report. */
+  setReportGlobeShots: (value: { result: object; shots: GlobeShots } | null) => void;
   toggleRingVisibility: (key: string) => void;
   /** Reset every legend toggle so all rings render again. Wired to a
    *  "show all" button in the legend header. */
@@ -712,6 +719,7 @@ type InitialSlice = Pick<
   | 'impactFieldLayer'
   | 'impactUncertaintyKey'
   | 'shockFrontActive'
+  | 'reportGlobeShots'
   | 'cameraRequest'
   | 'result'
   | 'bathymetricTsunami'
@@ -799,6 +807,7 @@ function initialState(): InitialSlice {
     impactFieldLayer: 'overpressure',
     impactUncertaintyKey: null,
     shockFrontActive: false,
+    reportGlobeShots: null,
     cameraRequest: null,
     result: null,
     bathymetricTsunami: null,
@@ -2277,6 +2286,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       shakingFieldBands: null,
       impactUncertaintyKey: null,
       shockFrontActive: false,
+      reportGlobeShots: null,
       result: null,
       bathymetricTsunami: null,
       populationExposure: null,
@@ -2319,6 +2329,10 @@ export const useAppStore = create<AppStore>((set, get) => ({
 
   setShockFrontActive: (active) => {
     if (get().shockFrontActive !== active) set({ shockFrontActive: active });
+  },
+
+  setReportGlobeShots: (value) => {
+    set({ reportGlobeShots: value });
   },
 
   toggleRingVisibility: (key) => {

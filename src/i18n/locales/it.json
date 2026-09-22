@@ -592,7 +592,8 @@
         "vulnerability": "il tasso di mortalità è la curva PAGER del PAESE sotto l'epicentro, e la classe in cui un paese ricade cambia la risposta di un fattore cento: Stati Uniti, Canada e Australia portano la curva degli edifici migliori, così un Mw 7,9 sotto una città californiana uccide qualche centinaio dove lo stesso evento sulla curva mediana mondiale ne ucciderebbe decine di migliaia",
         "fires": "si contano solo i morti da scuotimento. Gli incendi dopo il terremoto, che lo scenario ShakeOut dell'USGS stima attorno alla metà delle vittime per un Mw 7,8 sulla San Andreas, in questo modello non ci sono"
       }
-    }
+    },
+    "preparingReport": "Preparo il report… {{done}}/{{total}}"
   },
   "cascade": {
     "label": "Timeline a cascata",
@@ -869,7 +870,7 @@
       "fireIgnition": "Accensione · prende fuoco l'esca",
       "overpressure5psi": "5 psi · crollo edifici",
       "overpressure1psi": "1 psi · rottura vetri",
-      "lightDamage": "0.5 psi · vetri sparsi",
+      "lightDamage": "0,5 psi · vetri sparsi",
       "radiationLD50": "Radiazione iniziale · LD₅₀",
       "empAffected": "Impulso elettromagnetico",
       "mmi7": "MMI VII · scuotimento forte",
@@ -952,8 +953,8 @@
           "description": "La pressione qui (≈ 7 kPa sopra l'atmosferica) spacca i vetri delle finestre e abbatte le strutture leggere come tettoie e capanni. Raramente letale, ma le schegge di vetro causano ferite estese su chi sta vicino alle vetrate."
         },
         "lightDamage": {
-          "title": "Onda d'urto · 0.5 psi",
-          "description": "Il limite più esterno del fronte d'urto (≈ 3.4 kPa sopra l'atmosferica). Si rompono ancora vetri sparsi, soprattutto sul lato esposto al lampo; vetrine e insegne non rinforzate possono cedere. Ferite personali rare se non da schegge di vetro."
+          "title": "Onda d'urto · 0,5 psi",
+          "description": "Il limite più esterno del fronte d'urto (≈ 3,4 kPa sopra l'atmosferica). Si rompono ancora vetri sparsi, soprattutto sul lato esposto al lampo; vetrine e insegne non rinforzate possono cedere. Ferite personali rare se non da schegge di vetro."
         },
         "radiationLD50": {
           "title": "Radiazione iniziale · LD₅₀",
@@ -1222,7 +1223,230 @@
       "modelUnknown": "non tracciabile a un commit"
     },
     "validationReport": "Rapporto di validazione di questo modello, con ogni cifra confrontata con gli eventi registrati:",
-    "validationUnavailable": "Questa stampa non viene da un modello committato, quindi non c'è un rapporto di validazione che la descriva."
+    "validationUnavailable": "Questa stampa non viene da un modello committato, quindi non c'è un rapporto di validazione che la descriva.",
+    "impact": {
+      "subtitle": "Impatto cosmico · {{name}}",
+      "event": "Impatto cosmico — scenario «{{name}}»",
+      "eventCustom": "Impatto cosmico — scenario personalizzato",
+      "custom": "scenario personalizzato",
+      "hemisphere": {
+        "n": "N",
+        "s": "S",
+        "e": "E",
+        "w": "O"
+      },
+      "near": "{{distance}} a {{direction}} di {{place}}",
+      "nearCountry": "{{distance}} a {{direction}} di {{place}} ({{country}})",
+      "compass": {
+        "n": "nord",
+        "nne": "nord-nord-est",
+        "ne": "nord-est",
+        "ene": "est-nord-est",
+        "e": "est",
+        "ese": "est-sud-est",
+        "se": "sud-est",
+        "sse": "sud-sud-est",
+        "s": "sud",
+        "ssw": "sud-sud-ovest",
+        "sw": "sud-ovest",
+        "wsw": "ovest-sud-ovest",
+        "w": "ovest",
+        "wnw": "ovest-nord-ovest",
+        "nw": "nord-ovest",
+        "nnw": "nord-nord-ovest"
+      },
+      "key": {
+        "energy": "Energia cinetica",
+        "energyDetail": "TNT equivalente",
+        "entry": "Ingresso in atmosfera",
+        "entryDetail": "il {{share}} dell’energia arriva al suolo",
+        "entryIntact": "il corpo arriva intero al suolo",
+        "crater": "Cratere finale",
+        "craterDetail": "profondo {{depth}} · {{morphology}}",
+        "craterNone": "nessuno: il corpo esplode in aria",
+        "magnitude": "Magnitudo sismica",
+        "magnitudeDetail": "da {{low}} a {{high}} con l’efficienza sismica",
+        "magnitudeNone": "nessuna relazione verificata la copre",
+        "deaths": "Morti stimati",
+        "deathsBand": "banda 5–95 %: da {{low}} a {{high}}",
+        "deathsTable": "banda della tabella: da {{low}} a {{high}}",
+        "deathsPending": "in calcolo"
+      },
+      "group": {
+        "scenario": "Parametri dello scenario",
+        "body": "Corpo e ingresso in atmosfera",
+        "crater": "Cratere",
+        "blast": "Onda d’urto e vento",
+        "heat": "Calore e incendi",
+        "ejecta": "Coltre di ejecta",
+        "shaking": "Scuotimento del suolo",
+        "atmosphere": "Atmosfera e clima",
+        "tsunami": "Tsunami"
+      },
+      "field": {
+        "impactorDiameter": "Diametro del corpo",
+        "impactVelocity": "Velocità d’impatto",
+        "impactorDensity": "Densità del corpo",
+        "targetDensity": "Densità del bersaglio",
+        "impactAngle": "Angolo d’impatto",
+        "nearestSea": "Mare più vicino che un’onda potrebbe attraversare",
+        "waterDepth": "Profondità dell’acqua nel punto d’impatto",
+        "meanBasinDepth": "Profondità media del bacino",
+        "impactorStrength": "Resistenza a trazione del corpo",
+        "impactorMass": "Massa del corpo",
+        "kineticEnergy": "Energia cinetica",
+        "entryRegime": "Regime d’ingresso",
+        "energyToGround": "Frazione dell’energia al suolo",
+        "transientCrater": "Diametro del cratere transiente",
+        "finalCrater": "Diametro del cratere finale",
+        "craterDepth": "Profondità del cratere",
+        "craterMorphology": "Morfologia del cratere",
+        "craterRim": "Raggio del bordo del cratere",
+        "overpressure5psi": "Raggio della sovrappressione di 5 psi",
+        "overpressure1psi": "Raggio della sovrappressione di 1 psi",
+        "lightDamage": "Raggio di 0,5 psi · danni lievi",
+        "windOutTo": "Vento di {{speed}} fino a",
+        "thirdDegreeBurn": "Raggio delle ustioni di terzo grado",
+        "secondDegreeBurn": "Raggio delle ustioni di secondo grado",
+        "fireIgnition": "Raggio di accensione",
+        "fireSustain": "Raggio della tempesta di fuoco",
+        "fireIgnitionArea": "Area di accensione",
+        "ejectaEdge1mm": "Bordo esterno della coltre (1 mm)",
+        "ejectaEdge1m": "Bordo esterno della coltre (1 m)",
+        "ejectaAt2R": "Spessore della coltre a 2 R",
+        "ejectaAt10R": "Spessore della coltre a 10 R",
+        "seismicMagnitude": "Magnitudo sismica",
+        "seismicMagnitudeProgram": "Magnitudo sismica (Collins et al. 2005)",
+        "seismicMagnitudeAir": "Magnitudo sismica (Harkrider et al. 1974 e Collins et al. 2005, regola 730)",
+        "magnitudeRange": "Magnitudo sismica con efficienza 10⁻⁵–10⁻³",
+        "mercalliOutTo": "Mercalli {{level}} fino a",
+        "liquefaction": "Raggio di liquefazione",
+        "stratDust": "Polveri stratosferiche",
+        "acidRain": "Massa di pioggia acida (HNO₃)",
+        "climateTier": "Classe climatica",
+        "tsunamiCavity": "Raggio della cavità dello tsunami",
+        "tsunamiSourceProgram": "Ampiezza dello tsunami a un cratere d’acqua (Earth Impact Effects Program, ≤ profondità dell’acqua)",
+        "tsunamiSourceRimWave": "Ampiezza alla sorgente (onda del bordo di Wünnemann 2010, ≤ profondità dell’acqua)",
+        "tsunamiSourceWard": "Ampiezza alla sorgente di Ward & Asphaug 2000 (riferimento; senza limite di profondità)",
+        "tsunamiAt1000Ward": "Ampiezza a 1000 km (Ward-Asphaug)",
+        "tsunamiAt1000Program": "Ampiezza a 1000 km (Earth Impact Effects Program)",
+        "tsunamiAt1000Range": "Ampiezza a 1000 km (intervallo)",
+        "seaCoupling": "Accoppiamento col mare",
+        "waterCrater": "Cratere d’acqua D_w (Earth Impact Effects Program; oltre, l’onda cala come 1/r)",
+        "waveRegime": "Regime dell’onda h/L · esponente dell’onda del bordo q_r",
+        "tsunamiAt5000Ward": "Ampiezza a 5000 km (Ward-Asphaug)",
+        "tsunamiAt5000Range": "Ampiezza a 5000 km (intervallo)",
+        "tsunamiAt5000Dispersed": "Ampiezza a 5000 km (corretta per la dispersione)",
+        "runupAt1000": "Risalita sulla costa a 1000 km (Synolakis 1:100)",
+        "travelTo1000": "Tempo di viaggio dello tsunami fino a 1000 km"
+      },
+      "value": {
+        "nearestSea": "a {{distance}}, profondo {{depth}}",
+        "magnitudeNone": "— nessuna: nessuna relazione verificata da questo simulatore copre questo airburst",
+        "seaCouplingWave": "{{mechanism}} · costa a {{shore}} · {{fraction}} dell’onda",
+        "seaCouplingEnergy": "{{mechanism}} · costa a {{shore}} · {{fraction}} dell’energia accoppiata all’acqua",
+        "collapseWave": " (onda di collasso q_c {{exponent}})"
+      },
+      "enum": {
+        "regime": {
+          "INTACT": "intatto",
+          "PARTIAL_AIRBURST": "airburst parziale",
+          "COMPLETE_AIRBURST": "airburst completo"
+        },
+        "morphology": {
+          "simple": "semplice",
+          "complex": "complesso"
+        },
+        "climate": {
+          "LOCAL": "locale",
+          "REGIONAL": "regionale",
+          "CONTINENTAL": "continentale",
+          "GLOBAL": "globale",
+          "EXTINCTION": "da estinzione"
+        },
+        "mechanism": {
+          "water": "in acqua",
+          "crater": "il cratere raggiunge il mare",
+          "ejecta": "gli ejecta raggiungono il mare"
+        }
+      },
+      "reason": {
+        "collins": "Energia cinetica del corpo, diametri e profondità del cratere, magnitudo sismica.",
+        "collinsWave": "Energia cinetica del corpo, diametri e profondità del cratere, magnitudo sismica, e il campo lontano dell’onda come lo disegna l’Earth Impact Effects Program.",
+        "britt": "Classi di densità per tassonomia del corpo.",
+        "herrick": "Profondità di un cratere complesso (Collins et al. 2005, Eq. 28).",
+        "chyba": "Il modello a frittella di un corpo che si frantuma (Collins et al. 2005, Eq. 13–20).",
+        "popova": "Čeljabinsk 2013, l’airburst su cui è verificato l’ingresso in atmosfera.",
+        "collins2017": "Onda d’urto dell’airburst: riflessione regolare (Eq. 7), la sua energia e il suo intervallo di un fattore due.",
+        "mcgetchinEjecta": "Assottigliamento in r⁻³ della coltre di ejecta (Collins et al. 2005, Eq. 47).",
+        "mcgetchinSea": "Frazione di ejecta oltre la linea di costa: come un impatto nell’entroterra raggiunge il mare.",
+        "toon": "Legge delle polveri stratosferiche (ancorata a Chicxulub).",
+        "prinn": "Massa di HNO₃ prodotta dall’onda d’urto (pioggia acida del bolide).",
+        "youdIdriss": "Liquefazione indotta dall’impatto su suolo sabbioso saturo (dal modulo dei terremoti).",
+        "joynerBoore": "Inversione della distanza per la PGA usata dal raggio di liquefazione.",
+        "ward": "Cavità nella colonna d’acqua e inviluppo di riferimento in 1/r.",
+        "wunnemann2010": "Campo lontano dell’onda del bordo (eq. 9a) e inviluppo pubblicato (eq. 7–8).",
+        "wunnemann2007": "Esponenti di attenuazione da idrocodice dietro le eq. 10a/10b.",
+        "synolakis": "Risalita sulla costa di un’onda solitaria su spiaggia piana.",
+        "koshimura": "Vittime costiere in funzione della profondità d’inondazione (stima delle vittime).",
+        "kajiura": "Parametro di dispersione dell’onda di testa.",
+        "ota": "Mortalità per fascia di sovrappressione (stima delle vittime).",
+        "glasstoneBurns": "Mortalità per ustioni sulla frazione in vista della palla di fuoco (stima delle vittime).",
+        "postol": "Mortalità da tempesta di fuoco tra i sopravvissuti (stima delle vittime)."
+      },
+      "figure": "Figura {{n}}",
+      "figureRef": "→ Fig. {{n}}",
+      "caption": "Isolinee alle soglie del modello, alla mediana; colori sulla scala del globo. Proiezione azimutale equidistante centrata sul punto d’impatto: le distanze dal centro sono vere in ogni direzione.",
+      "captionGlobe": "Nell’angolo, il globo com’era quando il report è stato fatto.",
+      "table": {
+        "isoline": "Isolinea",
+        "marks": "Che cosa segna",
+        "radius": "Raggio",
+        "source": "Fonte"
+      },
+      "thresholds": {
+        "title": "Tutte le soglie",
+        "threshold": "Soglia",
+        "p90": "P ≥ 90 % entro",
+        "p50": "P ≥ 50 % entro",
+        "p10": "P ≥ 10 % entro",
+        "sigma": "1σ",
+        "onMap": "sulla carta",
+        "agreeNear": "ogni modello entro",
+        "agreeMedian": "mediana",
+        "agreeFar": "qualche modello fino a"
+      },
+      "howTitle": "Come leggere questo report",
+      "how": "Le carte sono quelle del globo: le stesse funzioni, gli stessi colori, le stesse soglie. I valori sono mediane; di quanto possono scostarsi lo dice la carta della probabilità. Ogni cifra rimanda alla legge che la produce (ultime pagine) e alla versione del modello che l’ha calcolata.",
+      "atlas": "Atlante degli effetti",
+      "numbers": "Parametri e risultati",
+      "method": "Metodo e fonti",
+      "formulas": "Equazioni usate da questo lancio",
+      "formulasBody": "Solo le formule che questo scenario ha usato, ciascuna sotto la fonte da cui viene.",
+      "provenance": {
+        "title": "Provenienza",
+        "validation": "Rapporto di validazione",
+        "link": "Riapri questo report",
+        "data": "Dati",
+        "dataText": "popolazione GHS-POP 2020 (JRC, CC BY 4.0), tasselli da 2,5′; città Natural Earth 1:10m (pubblico dominio)",
+        "globe": "Viste del globo",
+        "globeTaken": "prese dal globo quando il report è stato fatto; immagini Esri, Maxar, Earthstar Geographics and the GIS User Community",
+        "globeNone": "nessuna: questo report è stato aperto da un link, senza il globo dietro; le sue carte sono quelle del modello"
+      },
+      "credit": {
+        "model": "popolazione GHS-POP 2020 (JRC, CC BY 4.0) · città Natural Earth",
+        "globe": "globo · immagini Esri, Maxar, Earthstar Geographics"
+      },
+      "onGlobe": "sul globo",
+      "toolbar": {
+        "language": "Lingua del report",
+        "copyLink": "Copia link al report",
+        "linkCopied": "Link copiato ✓"
+      },
+      "foot": "Bayran Nimbus · Report di simulazione · {{name}} · modello {{model}}",
+      "page": "Pagina",
+      "pageOf": "di"
+    }
   },
   "about": {
     "trigger": "Informazioni",
@@ -1619,7 +1843,7 @@
     "fireIgnition": "fuochi accesi",
     "blast5": "5 psi · crollo edifici",
     "blast1": "1 psi · rottura vetri",
-    "blastLight": "0.5 psi · vetri sparsi",
+    "blastLight": "0,5 psi · vetri sparsi",
     "radiation": "radiazione LD50",
     "emp": "impronta EMP",
     "legendTitle": "Effetti",
@@ -1992,6 +2216,172 @@
         "strength": "fuori: i 357 bolidi su cui l'ingresso è stato misurato sono stati calcolati senza una resistenza propria (I2)",
         "angle": "fuori: i 357 bolidi su cui l'ingresso è stato misurato sono entrati fra 0,68° e 88,35° dall'orizzonte (I2)"
       }
+    }
+  },
+  "methodologyFormula": {
+    "kinetic-energy": {
+      "name": "Energia cinetica del corpo",
+      "formula": "E = ½ · m · v² ,   m = (π/6) · D³ · ρ"
+    },
+    "taxonomy": {
+      "name": "Preset tassonomici del corpo",
+      "formula": "COMETARIO (ρ=600), tipo C (2000), tipo S (3300), tipo M (5300), ferro (7800)"
+    },
+    "airburst": {
+      "name": "Ingresso in atmosfera e airburst",
+      "formula": "I_f = 4,07 C_D H Y / (ρᵢ L₀ v₀² sin θ) ;  z* ≈ −H [ln(Y / ρ₀v₀²) + 1,308 − 0,314 I_f − 1,303 √(1 − I_f)] ;  z_b = z* − 2H ln(1 + (l / 2H) √(f_p² − 1))"
+    },
+    "atmospheric-yield": {
+      "name": "Energia rilasciata in aria",
+      "formula": "E_atm = (1 − gf) · E_cinetica"
+    },
+    "transient-crater": {
+      "name": "Diametro del cratere transiente",
+      "formula": "D_tc = 1,161 · (ρ_i/ρ_t)^(1/3) · L^0,78 · v^0,44 · g^(−0,22) · sin^(1/3)(θ)"
+    },
+    "iron-crater-field": {
+      "name": "Cratere di un ferro che si frantuma",
+      "formula": "m ≤ 3 × 10⁶ kg:  D_tc = 0,15 · D_tc(v₀)   (campo di crateri) ;  m ≥ 10⁷ kg:  D_tc = D_tc(v_fin)   (un solo cratere) ;  in mezzo:  D_tc = (0,15 · D_tc(v₀))^w · D_tc(v_fin)^(1 − w),  w = log(10⁷ / m) / log(10⁷ / 3 × 10⁶)"
+    },
+    "final-crater": {
+      "name": "Diametro del cratere finale",
+      "formula": "D_fr = { 1,25 · D_tc                          (semplice, Eq. 22*, D_tc ≤ 2,56 km)\n        max(1,17 · D_tc^1,13 / D_c^0,13; D_c) (complesso, Eq. 27*, D_c = 3,2 km) }"
+    },
+    "crater-depth": {
+      "name": "Profondità del cratere",
+      "formula": "semplice: d_fr = d_tc + h_fr − t_br ≈ 0,213 · D_fr  (Eq. 23*–26*, 48*)\ncomplesso: d_fr = 0,4 · D_fr^0,3  (km, Eq. 28*)"
+    },
+    "seismic-magnitude": {
+      "name": "Magnitudo sismica",
+      "formula": "M = 0,67 · log₁₀(E) − 5,87   (E in J; ±0,67 per efficienze da 10⁻⁵ a 10⁻³) ;  E = (v_fin / v₀)² · E_cinetica, al suolo"
+    },
+    "airburst-seismic": {
+      "name": "Magnitudo sismica di un airburst",
+      "formula": "M = max(Ms(W; z_b); 0,67 · log₁₀(10⁻⁴ · (1 − z_b / R) · E_trattenuta) − 5,87) ;  W = E₀ · max(f; 1 − f),  R = 0,002 · E_trattenuta^(1/3)"
+    },
+    "ejecta": {
+      "name": "Spessore della coltre di ejecta",
+      "formula": "t_e(r) = D_tc⁴ / (112 · r³)     (r ≥ D_fr / 2)"
+    },
+    "ejecta-asymmetry": {
+      "name": "Asimmetria degli ejecta di un impatto obliquo",
+      "formula": "f = max(0; 1 − θ° / 45°);  semiasse maggiore × (1 + 0,4·f);  semiasse minore × (1 − 0,25·f);  spostamento lungo la traiettoria = 0,3·f·bordo della coltre"
+    },
+    "strat-dust": {
+      "name": "Carico di polveri stratosferiche",
+      "formula": "M_polveri = 0,1 % · m_p ,   m_p ≈ 4 · Y · (25 km/s / v)^0,33  Tg   (Y in Mt)"
+    },
+    "acid-rain": {
+      "name": "Massa di HNO₃ prodotta dall’onda d’urto",
+      "formula": "M_HNO₃ ≲ 3,1 × 10¹³ · (E / 10²³ J)  kg"
+    },
+    "damage-rings-airburst-honest": {
+      "name": "Anelli di danno di un airburst",
+      "formula": "urto(p) = R_programma(E_cinetica · max(gf; 1 − gf); z₁ = 0; p) per un corpo che arriva al suolo ;  ustione(Q): f(Δ) · η · gf · E / (2π Δ²) + η · (1 − gf) · E / (4π Δ²) = Q"
+    },
+    "airburst-blast": {
+      "name": "Onda d’urto di un airburst",
+      "formula": "W = E₀ · max(f; 1 − f),  f = (v_b / v₀)² ;  r₁ = r / W_kt^⅓,  z₁ = z_b / W_kt^⅓ ;  regolare: p = 3,14 × 10¹¹ (r₁² + z₁²)^(−1,3) + 1,8 × 10⁷ (r₁² + z₁²)^(−0,565) ;  Mach (z₁ < 550 m; r₁ ≥ r_m1 + w): p = (p_x r_x / 4r₁)(1 + 3 (r_x / r₁)^1,3),  p_x = 75 kPa,  r_x = 290 + 0,65 z₁ ;  fra i due (|r₁ − r_m1| < w,  r_m1 = 550 z₁ / 1,2(550 − z₁),  w = 0,00328 z₁²): p lineare in r₁ dal valore regolare in r_m1 − w al valore di Mach in r_m1 + w ;  entro r < 3 z_b: p fino a 2p"
+    },
+    "entry-flash-shock": {
+      "name": "Raggi di danno del lampo e dell’urto in atmosfera",
+      "formula": "r_lampo(Q) = √(R_termico(η · E_atm; Q)² − z_b²) ;   r_urto(p) = R_airburst(W; z_b; p) per un airburst"
+    },
+    "airburst-radiation": {
+      "name": "Radiazione dello strato d’urto e della scia dell’ingresso",
+      "formula": "q = [2,75 + 9,6 (ϕ/60)^a] (4,15 e^(−0,1423 H))^b (R/25)^1,7 (10/L)² e^(4,1267 − 0,0357 V − 54,137/V)  W/cm²,  a = 0,69 (V/H)², b = 1,3 − 0,015 V^1,12 R^0,21 ;  × G(ψ; ϕ) per l’atmosfera ;  calore = Σ q G Δt lungo la traiettoria"
+    },
+    "blast-thresholds": {
+      "name": "Soglie di danno dell’onda d’urto",
+      "formula": "5 psi ≈ 34,5 kPa  (crollo delle abitazioni) ;  1 psi ≈ 6,9 kPa  (danni lievi)"
+    },
+    "firestorm": {
+      "name": "Accensione e tempesta di fuoco",
+      "formula": "Accensione @ Tabella 7.40, carta di giornale sminuzzata (4; 6; 11 cal/cm² a 35 kt; 1,4 Mt; 20 Mt) ;  Tempesta di fuoco @ Tabella 7.40, compensato di abete douglas (9; 16; 20), con la soglia del §7.58 a mezzo miglio quadrato di terreno in fiamme"
+    },
+    "casualties-horizon": {
+      "name": "Il lampo si ferma all’orizzonte",
+      "formula": "d = R⊕ · arccos(1 − R_f / R⊕); R_f = 0,002 · E^(1/3) (impatto, Collins et al. 2005 eq. 32*), 2 · 100 · W^0,4 ft ≈ 61 · W^0,4 m (nucleare, Glasstone & Dolan 1977 §2.127)"
+    },
+    "impact-tsunami-cavity": {
+      "name": "Cavità di uno tsunami da impatto in mare",
+      "formula": "R_C = (3·E_c / (2π · ρ_w · g))^(1/4) ,  E_c = E · gf · f_acqua · f_mare ;  A₀ = 0,5·R_C·R_rif/(R_rif + R_C), R_rif = 3 km ;  A(r) = A₀ · R_C / r"
+    },
+    "impact-tsunami-program": {
+      "name": "Campo lontano dello tsunami da impatto",
+      "formula": "D_w = 0,82581965 · (ρᵢ / ρ_w)^(1/3) · L^0,78 · v^0,44 · sin^(1/3) θ  (SI) ;  A(r) = f_mare · min(0,07 · D_w; h) · D_w / r per r > D_w, il suo valore in D_w più vicino"
+    },
+    "impact-tsunami-wunnemann": {
+      "name": "Campo lontano dello tsunami da impatto (onda del bordo di Wünnemann)",
+      "formula": "A_r(r) = min(0,14 R_w; h) · (R_w / r)^q_r ;  q_r = min(1,2; 0,5 + 2 e^(−1,75 L/h))"
+    },
+    "impact-tsunami-wunnemann-envelope": {
+      "name": "Inviluppo pubblicato dello tsunami da impatto",
+      "formula": "A_sup = min(0,28 R_w; h) · R_w / r ;  A_inf = min{A_r; 0,06 · min(R_w/3; h) · (5R_w / r)^q_c},  q_c = 3 e^(−0,8 L/h) (h/L ≥ 2)"
+    },
+    "impact-sea-coupling": {
+      "name": "Impatto nell’entroterra: come si raggiunge il mare",
+      "formula": "portata = max(R_bordo; D_w / 2; r_ejecta(1 m)) ;  f_mare = 1 per d ≤ R₀ = max(R_bordo; D_w / 2), R₀ / d oltre ;  A = f_mare · A_programma"
+    },
+    "celerity": {
+      "name": "Celerità delle onde lunghe",
+      "formula": "c = √(g · h)"
+    },
+    "dispersion": {
+      "name": "Dispersione nel campo lontano",
+      "formula": "D = (4π²/6) · r · h² / λ³ ;   f_disp = (1 + D)^(−1/2)"
+    },
+    "synolakis-runup": {
+      "name": "Risalita su spiaggia piana (Synolakis)",
+      "formula": "R_max = 2,831 · H · √(cot β) · (H / d)^(1/4)"
+    },
+    "fast-marching": {
+      "name": "Campo degli arrivi sulla batimetria (Fast Marching)",
+      "formula": "|∇T|² = 1 / c(x, y)²   ;   c = √(g · h(x, y))"
+    },
+    "casualties-blast": {
+      "name": "Vittime dell’onda d’urto (impatti, esplosioni)",
+      "formula": "morti = Σ_fascia pop(fascia) · m(fascia) ;  m = 98 % (≥ 12 psi), 50 % (5–12), 5 % (2–5), 0 % (1–2) ;  feriti: 2 / 40 / 45 / 25 %"
+    },
+    "casualties-burns": {
+      "name": "Ustioni",
+      "formula": "m = esposti × mortalità = 0,25 (0,1–0,5) × 0,5 (0,3–0,8) entro il raggio di terzo grado, sui sopravvissuti all’onda d’urto"
+    },
+    "casualties-firestorm": {
+      "name": "Tempesta di fuoco",
+      "formula": "m = 0,3 (0,1–0,8) dei sopravvissuti entro il raggio della tempesta di fuoco, da +20 min a +6 h"
+    },
+    "casualties-delayed": {
+      "name": "Morti differiti",
+      "formula": "differiti = 0,3 (0,1–0,6) × feriti immediati, dal primo giorno al primo mese"
+    },
+    "casualties-tsunami": {
+      "name": "Il bilancio costiero dell’onda",
+      "formula": "H = min(R; (d·γ)^(1/5)·A^(4/5)), d = 50 m, γ = 0,78; X = 0,06 · H^(4/3) / n², n = 0,03 (≤ 10 km); persone = densità a terra × X × costa; ν(h) = Φ(ln(h/θ)/β), h = H/2, θ = 8·2^f m (basso 16·2^f, alto 4 m), β = 0,8, f: 0 → 1 mentre il preavviso (arrivo − 10 min) va da 30 min a 3 h"
+    },
+    "casualties-honesty": {
+      "name": "Cosa non è il conto delle vittime",
+      "formula": "ordine di grandezza, banda bassa–alta, fonti sull’etichetta"
+    },
+    "toll-band": {
+      "name": "La banda 5–95 % del bilancio",
+      "formula": "morti_basso = bilancio(estrazione al P5),  morti_alto = bilancio(estrazione al P95),  N = 200 ;  scuotimento: m × exp(N(0; G_paese))"
+    },
+    "sin-weighted-angle": {
+      "name": "Distribuzione dell’angolo di un impatto casuale",
+      "formula": "p(θ) dθ = sin(2θ) dθ   ;   θ = arcsin(√u)"
+    },
+    "boxMuller": {
+      "name": "Deviata normale e log-normale",
+      "formula": "z = √(−2 ln u) · cos(2π v)   (Box–Muller, forma base; il partner in seno è scartato)"
+    },
+    "mulberry32": {
+      "name": "Generatore pseudocasuale deterministico con seme",
+      "formula": "a ← a + 0x6d2b79f5;  t ← Math.imul(a ^ (a ≫ 15), a | 1); …"
+    },
+    "percentile-band": {
+      "name": "Percentili del campione non pesati",
+      "formula": "P_n = ordina(campioni)[⌊n · N / 100⌋]"
     }
   }
 }

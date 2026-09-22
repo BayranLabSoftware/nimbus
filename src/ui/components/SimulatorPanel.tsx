@@ -20,6 +20,8 @@ import { bandFor, type ConfidenceField } from '../../physics/confidence.js';
 import { OUTPUT_SIGMA } from '../../physics/uq/conventions.js';
 import { clampToGreatCircle, isGlobalReach } from '../../physics/earthScale.js';
 import { IMPACT_PRESETS, type ImpactPresetId } from '../../physics/simulate.js';
+import { availableImpactLayers } from '../../scene/globe/impactFieldMap.js';
+import { takeGlobeShots } from '../../scene/globe/globeShots.js';
 import { joulesToMegatons } from '../../physics/units.js';
 import {
   useAppStore,
@@ -504,6 +506,30 @@ export function SimulatorPanel(): JSX.Element {
   const simulationStatus = useAppStore((s) => s.status);
   const casualties = useAppStore((s) => s.casualties);
   const casualtyStatus = useAppStore((s) => s.casualtyStatus);
+  const impactUncertaintyKey = useAppStore((s) => s.impactUncertaintyKey);
+  const setReportGlobeShots = useAppStore((s) => s.setReportGlobeShots);
+  /** The globe's photographs being taken for the report (IMP-7c). */
+  const [preparing, setPreparing] = useState<{ done: number; total: number } | null>(null);
+
+  const handleOpenReport = useCallback(async (): Promise<void> => {
+    // An impact's report carries, in the corner of each map, the globe's own
+    // view of that layer, and only the globe can take it: the report replaces
+    // the globe, so the photographs are taken first (ROADMAP IMP-7c).
+    if (result?.type === 'impact') {
+      const layers = availableImpactLayers(result.data, {
+        t,
+        language: i18n.language,
+        uncertaintyKey: impactUncertaintyKey,
+      }).map((l) => l.id);
+      setPreparing({ done: 0, total: layers.length });
+      const shots = await takeGlobeShots(layers, (done, total) => {
+        setPreparing({ done, total });
+      });
+      setReportGlobeShots({ result, shots });
+      setPreparing(null);
+    }
+    setMode('report');
+  }, [result, t, i18n.language, impactUncertaintyKey, setReportGlobeShots, setMode]);
 
   const handleEventTypeChange = (event: ChangeEvent<HTMLInputElement>): void => {
     selectEventType(event.target.value as EventType);
@@ -1916,11 +1942,19 @@ export function SimulatorPanel(): JSX.Element {
             <button
               type="button"
               className={styles.secondary}
+              disabled={preparing !== null}
               onClick={() => {
-                setMode('report');
+                void handleOpenReport();
               }}
             >
-              {t('simulator.downloadReport')}
+              <span aria-live="polite">
+                {preparing === null
+                  ? t('simulator.downloadReport')
+                  : t('simulator.preparingReport', {
+                      done: preparing.done,
+                      total: preparing.total,
+                    })}
+              </span>
             </button>
           )}
 

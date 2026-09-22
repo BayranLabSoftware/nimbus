@@ -496,7 +496,7 @@ interface FineTile {
  * and the fine tiles both present themselves this way, so one piece
  * of geometry serves both.
  */
-interface GridView {
+export interface GridView {
   cellDeg: number;
   nLon: number;
   nLat: number;
@@ -690,6 +690,51 @@ function fineView(index: FineIndex, tiles: ReadonlyMap<string, FineTile>): GridV
         people: decodeCell(tile.values[i] ?? 0, index.pMax),
         landFraction: (tile.land[i] ?? 0) / 255,
       };
+    },
+  };
+}
+
+/**
+ * The shipped population over a box, for a map to be drawn on (the report's
+ * maps, ROADMAP IMP-7c): the 2.5′ tiles where the index lists one, and the
+ * 0.125° planet where it lists none — a tile it does not list holds nobody,
+ * and its sea is the planet's to say — or where the box is too wide for them.
+ * The box's longitudes run west to east and may pass ±180°.
+ */
+export async function populationGridFor(bbox: {
+  minLat: number;
+  maxLat: number;
+  minLon: number;
+  maxLon: number;
+}): Promise<GridView | null> {
+  const coarseRaster = await loadCoarseRaster();
+  const coarse = coarseRaster === null ? null : coarseView(coarseRaster);
+  const span = Math.max(bbox.maxLat - bbox.minLat, bbox.maxLon - bbox.minLon);
+  const index = span <= 40 ? await loadFineIndex() : null;
+  if (index === null) return coarse;
+  const tiles = new Map<string, FineTile>();
+  for (const name of tilesForBbox(index, bbox)) {
+    const tile = await loadFineTile(index, name);
+    if (tile !== null) tiles.set(name, tile);
+  }
+  const fine = fineView(index, tiles);
+  const share = coarse === null ? 0 : (index.cellDeg / coarse.cellDeg) ** 2;
+  return {
+    ...fine,
+    cellAt(row, col) {
+      const name = `${Math.floor(col / index.tileWidthPx).toString()}_${Math.floor(row / index.tileHeightPx).toString()}`;
+      if (tiles.has(name) || coarse === null) return fine.cellAt(row, col);
+      const lat = 90 - (row + 0.5) * index.cellDeg;
+      const lon = -180 + (col + 0.5) * index.cellDeg;
+      const cRow = Math.min(
+        coarse.nLat - 1,
+        Math.max(0, Math.floor((coarse.maxLat - lat) / coarse.cellDeg))
+      );
+      const cCol =
+        ((Math.floor((lon - coarse.minLon) / coarse.cellDeg) % coarse.nLon) + coarse.nLon) %
+        coarse.nLon;
+      const cell = coarse.cellAt(cRow, cCol);
+      return { people: cell.people * share, landFraction: cell.landFraction };
     },
   };
 }

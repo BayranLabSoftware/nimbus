@@ -130,3 +130,46 @@
   border-top: 1px dashed rgba(251, 191, 36, 0.2);
   line-height: 1.4;
 }
+
+/* On paper, in the printed report (B-109): ink instead of the console's
+   pale tints, and no panel around it. */
+.timeline[data-variant='print'] {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: #1b1b19;
+}
+.timeline[data-variant='print'] .heading {
+  color: #a8620f;
+}
+.timeline[data-variant='print'] .phaseHeader {
+  opacity: 1;
+}
+.timeline[data-variant='print'] .phaseHeader[data-phase='immediate'] {
+  color: #b3261e;
+}
+.timeline[data-variant='print'] .phaseHeader[data-phase='shortTerm'] {
+  color: #a8620f;
+}
+.timeline[data-variant='print'] .phaseHeader[data-phase='mediumTerm'] {
+  color: #1f6f43;
+}
+.timeline[data-variant='print'] .phaseHeader[data-phase='longTerm'] {
+  color: #1d4ed8;
+}
+.timeline[data-variant='print'] .item {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.timeline[data-variant='print'] .description {
+  color: #4a4741;
+  opacity: 1;
+  font-size: 9.6px;
+}
+.timeline[data-variant='print'] .list {
+  gap: 6px;
+}
+.timeline[data-variant='print'] .name {
+  font-size: 11px;
+}

@@ -19,6 +19,24 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **An impact's report is the globe's map, in the reader's language.** The
+  report of an impact now carries every layer the globe draws — overpressure,
+  wind, thermal fluence, ejecta, shaking and the uncertainty view — each as a
+  flat map in the azimuthal equidistant projection about the point of impact
+  (the plane the model's own families live in, so every distance from the
+  centre is true), on a paper ground of sea, land and people, with its
+  isolines and their values, a scale bar, the north, the nearby cities, the
+  colour bar and notes of the globe's legend, a table of its isolines and, in
+  the corner, the globe's own photograph of the layer taken as the report is
+  opened. Every word follows the language chosen — labels, values with the
+  language's decimal separator, regimes, the place with its hemispheres and
+  the nearest town, the date in the reader's zone, the formulas and the
+  reasons for each source — and the link opens the same report in the
+  sender's language, with the same threshold on its probability map. The
+  numbers are grouped by effect, each pointing to the figure that draws it.
+  The other modules' reports keep their rows as they were, in English, until
+  their turn.
+
 - **An impact is drawn as the field's own map.** Until 22 September 2026
   an impact's globe drew every quantity as a ring, and most as two or three
   — the contour, the dashed line of its published scatter and, for an
@@ -428,6 +446,23 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   reaches the page through the depth of burst below.
 
 ### Fixed
+
+- **The printed report prints only the formulas the run used (B-108).** A
+  formula was matched to the run by its source alone, so an impact whose burn
+  toll cites Glasstone & Dolan printed six formulas of the explosions — the
+  height-of-burst curves, the initial radiation, the underwater burst — while
+  the dust and the acid of a small impact, and an airburst's magnitude, went
+  unprinted where their source was not cited. Each formula an impact can run
+  is now listed with the condition under which it runs.
+- **Every word of the printed report is dark on white (B-109).** The casualty
+  table and the cascade kept the console's light-on-dark colours on the sheet:
+  the band column, the notes and the calibration line printed white on white,
+  and the timeline faded its stages in from nothing over five seconds, so a
+  report printed as it opened lost the stages not yet shown. Both now have a
+  paper version, in every module's report.
+- **Italian numbers carry the decimal comma (B-110).** The report wrote every
+  value with the English point, and the Italian map and tooltips of an impact
+  said "0.5 psi" and "3.4 kPa".
 
 - **An airburst blasts the ground as the Earth Impact Effects Program
   has it.** Its shock rings were a surface burst's reach multiplied by a

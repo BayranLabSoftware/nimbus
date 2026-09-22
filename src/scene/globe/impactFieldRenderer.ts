@@ -91,8 +91,12 @@ export function drawImpactFieldLayer(
   layer: ImpactMapLayer,
   anchor: GeoPoint,
   language: string,
-  craterLabel: string
+  craterLabel: string,
+  /** Without its words: the report's photographs of the globe carry none,
+   *  so that they read the same in either language (IMP-7c). */
+  options: { labels?: boolean } = {}
 ): Map<string, IsolineHoverInfo> {
+  const labels = options.labels !== false;
   const hover = new Map<string, IsolineHoverInfo>();
   const shapes = familyShapes(result);
 
@@ -140,21 +144,22 @@ export function drawImpactFieldLayer(
         clampToGround: true,
       },
     });
-    viewer.entities.add({
-      id: `${IMPACT_FIELD_PREFIX}crater-label`,
-      position: Cartesian3.fromDegrees(g.centerLonDeg, g.centerLatDeg),
-      label: {
-        text: craterLabel,
-        font: '600 12px Inter, system-ui, sans-serif',
-        fillColor: Color.WHITE.withAlpha(0.95),
-        outlineColor: LABEL_OUTLINE,
-        outlineWidth: 3,
-        style: LabelStyle.FILL_AND_OUTLINE,
-        pixelOffset: new Cartesian2(0, 18),
-        heightReference: HeightReference.CLAMP_TO_GROUND,
-        disableDepthTestDistance: Number.POSITIVE_INFINITY,
-      },
-    });
+    if (labels)
+      viewer.entities.add({
+        id: `${IMPACT_FIELD_PREFIX}crater-label`,
+        position: Cartesian3.fromDegrees(g.centerLonDeg, g.centerLatDeg),
+        label: {
+          text: craterLabel,
+          font: '600 12px Inter, system-ui, sans-serif',
+          fillColor: Color.WHITE.withAlpha(0.95),
+          outlineColor: LABEL_OUTLINE,
+          outlineWidth: 3,
+          style: LabelStyle.FILL_AND_OUTLINE,
+          pixelOffset: new Cartesian2(0, 18),
+          heightReference: HeightReference.CLAMP_TO_GROUND,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        },
+      });
   }
 
   for (const line of layer.isolines) {
@@ -168,20 +173,21 @@ export function drawImpactFieldLayer(
       polyline: { positions, width: 3, material: ISOLINE_MATERIAL, clampToGround: true },
     });
     const at = isolinePointAtBearing(anchor, shape, line.radiusM, line.labelBearingDeg);
-    viewer.entities.add({
-      id: `${base}-label`,
-      position: Cartesian3.fromDegrees(at.lonDeg, at.latDeg),
-      label: {
-        text: line.label,
-        font: 'bold 13px "JetBrains Mono", monospace',
-        fillColor: Color.WHITE.withAlpha(0.95),
-        outlineColor: LABEL_OUTLINE,
-        outlineWidth: 3,
-        style: LabelStyle.FILL_AND_OUTLINE,
-        heightReference: HeightReference.CLAMP_TO_GROUND,
-        disableDepthTestDistance: Number.POSITIVE_INFINITY,
-      },
-    });
+    if (labels)
+      viewer.entities.add({
+        id: `${base}-label`,
+        position: Cartesian3.fromDegrees(at.lonDeg, at.latDeg),
+        label: {
+          text: line.label,
+          font: 'bold 13px "JetBrains Mono", monospace',
+          fillColor: Color.WHITE.withAlpha(0.95),
+          outlineColor: LABEL_OUTLINE,
+          outlineWidth: 3,
+          style: LabelStyle.FILL_AND_OUTLINE,
+          heightReference: HeightReference.CLAMP_TO_GROUND,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        },
+      });
     const info: IsolineHoverInfo = {
       type: 'isoline',
       title: line.title,
@@ -194,4 +200,40 @@ export function drawImpactFieldLayer(
   }
   viewer.scene.requestRender();
   return hover;
+}
+
+/** Wait until the imagery under the camera has loaded and every entity has
+ *  its geometry, or `timeoutMs` has passed, rendering as it goes. */
+export function settleScene(viewer: Viewer, timeoutMs = 6_000): Promise<void> {
+  const start = performance.now();
+  let frames = 0;
+  return new Promise((resolve) => {
+    const tick = (): void => {
+      if (viewer.isDestroyed()) {
+        resolve();
+        return;
+      }
+      viewer.scene.requestRender();
+      frames += 1;
+      const ready = viewer.scene.globe.tilesLoaded && viewer.dataSourceDisplay.ready;
+      if ((ready && frames > 4) || performance.now() - start > timeoutMs) resolve();
+      else requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}
+
+/** The scene rendered now, the square at its centre, `side` pixels a side:
+ *  read in the same task as the render, while the drawing buffer holds it. */
+export function grabSquare(viewer: Viewer, side: number): string | null {
+  viewer.render();
+  const source = viewer.canvas;
+  const s = Math.min(source.width, source.height);
+  const out = document.createElement('canvas');
+  out.width = side;
+  out.height = side;
+  const ctx = out.getContext('2d');
+  if (ctx === null || s === 0) return null;
+  ctx.drawImage(source, (source.width - s) / 2, (source.height - s) / 2, s, s, 0, 0, side, side);
+  return out.toDataURL('image/jpeg', 0.85);
 }

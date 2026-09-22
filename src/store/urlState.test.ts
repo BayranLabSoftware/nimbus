@@ -149,6 +149,7 @@ describe('applyIntentToStore', () => {
         mode: 'globe',
         simTime: null,
         customInput: null,
+        impactThreshold: null,
       },
       useAppStore.getState()
     );
@@ -176,6 +177,7 @@ describe('applyIntentToStore', () => {
         mode: null,
         simTime: null,
         customInput: { type: 'impact', raw: impact },
+        impactThreshold: null,
       },
       useAppStore.getState()
     );
@@ -205,6 +207,7 @@ describe('applyIntentToStore', () => {
           type: 'impact',
           raw: { impactorDiameter: 500, impactVelocity: 18_000, impactAngleDeg: 60 },
         },
+        impactThreshold: null,
       },
       useAppStore.getState()
     );
@@ -585,5 +588,34 @@ describe('every preset, edited in the panel and shared', () => {
     applyIntentToStore(decodeSearchParamsToIntent(params), store());
     expect(store().eventType).toBe('landslide');
     expect(store().landslide.preset).toBe('ANAK_KRAKATAU_2018');
+  });
+});
+
+describe("an impact's uncertainty threshold in the link (IMP-7c)", () => {
+  it('carries the threshold of the report and the globe, and reads it back', () => {
+    const store = useAppStore.getState();
+    store.setMode('report');
+    store.setImpactUncertaintyKey('overpressure1psi');
+    const params = encodeStateToSearchParams(projectSyncableState(useAppStore.getState()));
+    expect(params.get(URL_KEYS.impactThreshold)).toBe('overpressure1psi');
+    resetAppStore();
+    applyIntentToStore(decodeSearchParamsToIntent(params), useAppStore.getState());
+    expect(useAppStore.getState().impactUncertaintyKey).toBe('overpressure1psi');
+  });
+
+  it('keeps it out of a link that has no map to read it, and refuses what is not a key', () => {
+    const store = useAppStore.getState();
+    store.setImpactUncertaintyKey('overpressure1psi');
+    // The landing page draws no map.
+    expect(
+      encodeStateToSearchParams(projectSyncableState(useAppStore.getState())).get(
+        URL_KEYS.impactThreshold
+      )
+    ).toBeNull();
+    expect(decodeUrl('/?t=impact&p=TUNGUSKA&thr=%3Cscript%3E').impactThreshold).toBeNull();
+    expect(
+      decodeUrl('/?t=earthquake&p=NORTHRIDGE_1994&thr=overpressure1psi').impactThreshold
+    ).toBeNull();
+    expect(decodeUrl('/?t=impact&p=TUNGUSKA&thr=lightDamage').impactThreshold).toBe('lightDamage');
   });
 });
