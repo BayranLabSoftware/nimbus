@@ -74,3 +74,35 @@
  *      the search's own and the lattice is rule 798's. If the drowned move,
  *      that is the result.
  */
+
+/**
+ * The outcome of the round, written after the candidate was measured, on
+ * 22 September 2026. The rules above were pushed in commit 4044331 before the
+ * candidate was written.
+ *
+ * REFUSED by rule 807(b). On the Yucatán every seed stayed, the one on the
+ * Caribbean side included: within the crater's 45.8 km the lattice counts
+ * water in almost every sector — the Gulf to the north and the coastal
+ * lagoons along the shore to the east, the south and the west — so almost
+ * every sector "holds the crater's sea", and in each the seed kept is still
+ * the nearest water the solver can march from, 214 km to the south, 244 km to
+ * the east and 312 km to the south-east, across the peninsula. At Lisbon the
+ * seed 738 km to the north-east stayed for the same reason: the estuary lies
+ * north-east of the point.
+ *
+ *                  seeds before → after                        drowned
+ *   Yucatán        13 → 13 (214, 244 and 312 km kept)          137 869 → 137 869
+ *   New Orleans     5 → 3  (88 km S and 122 km SW dropped)          20 → 20
+ *   Tampa           9 → 6  (the Atlantic side dropped)            1 537 → 2
+ *   Lisbon         12 → 11 (277 km E dropped, 738 km NE kept) 3 231 344 → 3 214 144
+ *
+ * What the round showed, and the next one uses. A sector is too coarse a
+ * question: the crater's sea is a set of points, and the wave should leave
+ * from those of them the solver can march from, not from the nearest deep
+ * water anywhere in a direction the crater touches. Tampa shows what that is
+ * worth: with the Atlantic seeds gone its drowned fall from 1 537 to 2, the
+ * wave reaching the Atlantic coast of Florida through the Straits, late and
+ * low. Rules 819 to 825 take it up. The candidate's code was not kept.
+ */
+export const SEED_DIRECTION_OUTCOME =
+  'REFUSED 22 September 2026 by rule 807(b): the crater reaches water in almost every sector — the Gulf and the coastal lagoons — so the Yucatán kept its seeds 214 to 312 km away across the peninsula, and Lisbon its seed 738 km north-east. Taken up by rules 819 to 825.';
