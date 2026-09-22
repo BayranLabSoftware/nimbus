@@ -121,6 +121,40 @@ describe('buildCrestFrames', () => {
     expect(max - min).toBeLessThan(2.5);
   });
 
+  it('B-118 gives the source basin its frames when the wave crosses a planet', () => {
+    // A basin five cells across, crossed in two hours, opening on an ocean
+    // a hundred cells across that the wave takes a day to fill: the basin is
+    // under 1 % of the reached cells, which the old quantiles gave no frame.
+    const N = 101;
+    const field = new Float32Array(N * N);
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N; j++) {
+        const r = Math.hypot(i - 50, j - 50);
+        field[i * N + j] = r <= 5 ? r * 1_440 : 7_200 + (r - 5) * 1_200;
+      }
+    }
+    const frames = buildCrestFrames({
+      arrivalTimes: field,
+      nLat: N,
+      nLon: N,
+      minLat: -50,
+      maxLat: 50,
+      minLon: -50,
+      maxLon: 50,
+      frameCount: 28,
+      endPercentile: 0.85,
+    });
+    expect(frames).toHaveLength(28);
+    const inBasin = frames.filter((f) => f.timeSeconds < 7_200);
+    expect(inBasin.length).toBeGreaterThanOrEqual(5);
+    const first = frames.find((f) => f.chains.length > 0);
+    const reach = Math.max(...(first?.chains.flat().map((p) => Math.hypot(p.lat, p.lon)) ?? [99]));
+    expect(reach).toBeLessThan(5);
+    // A logarithmic clock: the same ratio between each frame and the next.
+    const ratio = (frames[1]?.timeSeconds ?? 0) / (frames[0]?.timeSeconds ?? 1);
+    expect((frames[20]?.timeSeconds ?? 0) / (frames[19]?.timeSeconds ?? 1)).toBeCloseTo(ratio, 9);
+  });
+
   it('returns [] when the field has no finite arrivals', () => {
     const dead = new Float32Array(9).fill(Number.POSITIVE_INFINITY);
     expect(

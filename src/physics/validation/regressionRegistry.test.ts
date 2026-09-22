@@ -42,6 +42,7 @@ import { IMPULSE_WAVE_TESTED, slideImpactVelocity } from '../effects/impulseWave
 import { simulateImpact, IMPACT_PRESETS, type ImpactScenarioResult } from '../simulate.js';
 import { impactPeakWindAt, programPeakWind } from '../events/impact/impactField.js';
 import type { TFunction } from 'i18next';
+import { buildCrestFrames } from '../../scene/tsunamiCrest.js';
 import {
   availableImpactLayers,
   buildImpactLayer,
@@ -2334,6 +2335,59 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     );
     expect(legend).toContain('useAppStore((s) => s.waveMapKey)');
     expect(legend).toMatch(/waveMap\.scope === 'global'\s*\?\s*'globalActive'\s*:\s*'localDrawn'/);
+  });
+
+  it('B-118 The crest’s first frames are in the basin the wave leaves', () => {
+    // Pre-fix: frames on quantiles of the whole reached ocean, so a wave
+    // that crosses the planet had none in its source basin — Chicxulub's
+    // first fell at 6.1 h, on the coast of New York.
+    const N = 101;
+    const field = new Float32Array(N * N);
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N; j++) {
+        const r = Math.hypot(i - 50, j - 50);
+        field[i * N + j] = r <= 5 ? r * 1_440 : 7_200 + (r - 5) * 1_200;
+      }
+    }
+    const frames = buildCrestFrames({
+      arrivalTimes: field,
+      nLat: N,
+      nLon: N,
+      minLat: -50,
+      maxLat: 50,
+      minLon: -50,
+      maxLon: 50,
+      frameCount: 28,
+      endPercentile: 0.85,
+    });
+    expect(frames.filter((f) => f.timeSeconds < 7_200).length).toBeGreaterThanOrEqual(5);
+  });
+
+  it('B-119 Thresholds that coincide on the map are one line, and an antipode line none', () => {
+    // Pre-fix: Chicxulub's ignition, third- and second-degree burns drawn as
+    // three circles within 6 km of each other at 1 610 km.
+    const t = ((k: string) => k) as unknown as TFunction;
+    const chicxulub = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+    const thermal = buildImpactLayer(chicxulub, 'thermal', { t, language: 'it' });
+    expect(thermal?.isolines.some((l) => (l.members?.length ?? 0) >= 2)).toBe(true);
+    expect(thermal?.notes.map((n) => n.text)).toContain('globe.impactMap.note.coincideHorizon');
+  });
+
+  it('B-120 The tsunami’s tab says why there is no wave where the impact reaches the sea', () => {
+    // Pre-fix: Chicxulub on Houston, whose final crater swallows the coast,
+    // and on Austin, where 44 m of ejecta fall into the Gulf, had no tab and
+    // no word on the globe.
+    const t = ((k: string) => k) as unknown as TFunction;
+    for (const shore of [66_590, 242_050]) {
+      const land = simulateImpact({
+        ...IMPACT_PRESETS.CHICXULUB.input,
+        waterDepth: m(4),
+        shoreDistance: m(shore),
+      });
+      expect(land.tsunami).toBeUndefined();
+      const tab = buildImpactLayer(land, 'tsunami', { t, language: 'it' });
+      expect(tab?.notes.map((n) => n.text)).toContain('globe.impactMap.note.tsunamiWhyNone');
+    }
   });
 
   // Bypass guard: the test count below MUST equal the registry row

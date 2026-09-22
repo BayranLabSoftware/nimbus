@@ -5,7 +5,11 @@ import { buildImpactCascade } from '../../../physics/cascade.js';
 import { IMPACT_PRESETS, type ImpactScenarioResult } from '../../../physics/simulate.js';
 import { envelopeOf } from '../../../physics/validation/calibrationEnvelope.js';
 import { loadCityIndex, type CityRecord } from '../../../scene/globe/cityLabels.js';
-import { formatRange, type ImpactMapLayer } from '../../../scene/globe/impactFieldMap.js';
+import {
+  formatRange,
+  isolineMembers,
+  type ImpactMapLayer,
+} from '../../../scene/globe/impactFieldMap.js';
 import {
   reportMapBox,
   reportMapHalfWidth,
@@ -95,7 +99,10 @@ function IsolineTable({
   // A line's own sentence is printed where it tells the lines apart — the wind
   // on each overpressure, the fluence of each burn, the reach of each
   // intensity — and left out where every line says the same.
-  const distinct = new Set(layer.isolines.map((l) => l.description)).size > 1;
+  // A line the globe draws for several thresholds that coincide there keeps a
+  // row for each, at its own radius (B-119).
+  const lines = layer.isolines.flatMap(isolineMembers);
+  const distinct = new Set(lines.map((l) => l.description)).size > 1;
   const source = layer.isolines[0]?.source;
   return (
     <>
@@ -108,7 +115,7 @@ function IsolineTable({
           </tr>
         </thead>
         <tbody>
-          {layer.isolines.map((l) => (
+          {lines.map((l) => (
             <tr key={l.id}>
               <td className={styles.lab}>{l.label}</td>
               <td>

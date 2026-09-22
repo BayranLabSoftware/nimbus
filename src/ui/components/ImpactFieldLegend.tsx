@@ -27,15 +27,16 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
   const setUncertaintyKey = useAppStore((s) => s.setImpactUncertaintyKey);
   const frontActive = useAppStore((s) => s.shockFrontActive);
   const waveMap = useAppStore((s) => s.waveMapKey);
+  const waveUnpropagatedReachM = useAppStore((s) => s.waveUnpropagatedReachM);
   const language = i18n.language;
 
   const { layers, layer } = useMemo(() => {
-    const ctx = { t, language, uncertaintyKey, waveMap };
+    const ctx = { t, language, uncertaintyKey, waveMap, waveUnpropagatedReachM };
     return {
       layers: availableImpactLayers(result, ctx),
       layer: resolveImpactLayer(result, layerId, ctx),
     };
-  }, [result, t, language, uncertaintyKey, layerId, waveMap]);
+  }, [result, t, language, uncertaintyKey, layerId, waveMap, waveUnpropagatedReachM]);
 
   return (
     <section className={styles.map} data-testid="impact-field-legend">

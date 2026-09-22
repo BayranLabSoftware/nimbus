@@ -1121,7 +1121,8 @@
         "tsunami": {
           "tab": "Tsunami",
           "title": "The wave at sea",
-          "unit": "the wave's height carried to 1,000 m of depth by Green's law · m"
+          "unit": "the wave's height carried to 1,000 m of depth by Green's law · m",
+          "unitUnsized": "no wave Nimbus can size"
         }
       },
       "markWithWind": "{{range}} · wind {{wind}} km/h",
@@ -1136,7 +1137,10 @@
         "caveat": "Caveat",
         "from": "From",
         "reading": "Reading",
-        "not": "It is not"
+        "not": "It is not",
+        "coincide": "Lines joined",
+        "wholeEarth": "Whole Earth",
+        "why": "Why"
       },
       "note": {
         "isolinesMedian": "the model's thresholds, at the median",
@@ -1163,6 +1167,14 @@
         "agreementNot": "a probability: it is the band the field gives its own models, and so it is not turned into percentages",
         "tsunamiSourceProgram": "{{amplitude}} at the source, one water crater's diameter from the point of impact, never taller than the water it is raised in ({{depth}}): the Earth Impact Effects Program's law (Collins et al. 2005, rules 150 to 153)",
         "depthWithinCrater": "{{depth}} on average within the crater, rules 798 to 804",
+        "coincide": "{{lines}} fall within {{gap}} of each other, at {{range}}: at this scale they are one line and are drawn as one; the line's tooltip gives each one's radius",
+        "coincideHorizon": "{{lines}} fall within {{gap}} of each other, on the fireball's horizon ({{horizon}}): up to there the heat passes every one of these thresholds, beyond it the fireball is below the horizon and no direct heat arrives. Drawn as one line",
+        "wholeEarth": "{{lines}}: over the whole Earth, out to the antipode, so no line to draw",
+        "tsunamiWhyNone": "the transient crater ({{crater}}) stops short of the nearest sea ({{shore}}), and Nimbus raises a wave only with the part of a crater that lies in the sea (rules 267 to 273)",
+        "unsizedResurge": "the final crater ({{rim}}) encloses the coast and the sea pours back into it",
+        "unsizedEjecta": "{{thickness}} of ejecta fall on the coast",
+        "tsunamiUnsized": "{{causes}}: a wave is raised, but no published law says how high, and Nimbus neither draws it nor counts it in the toll",
+        "tsunamiNoSea": "the wave is raised ({{amplitude}} at the source), but within {{reach}} there is no sea at least {{floor}} deep to carry it over the real sea floor: the computation does not start and the globe has nothing to draw",
         "depthWithinCraterCapped": "{{depth}}, rule 248's cap: the water within the crater is deeper on average, rules 798 to 804",
         "tsunamiSourceRimWave": "{{amplitude}} at the source, the rim wave of Wünnemann, Collins & Weiss (2010), never taller than the water it is raised in ({{depth}})",
         "tsunamiVeilGlobal": "a see-through veil over the planet's grid, from 1 m to {{top}} (the field's 98th percentile, never under 10 m); below 1 m no colour. The hours of arrival are computed over the real sea floor (Fast Marching)",
@@ -1220,7 +1232,7 @@
       "agreementSome": "exceeded only by the upper edge (2P) · out to {{range}}",
       "tsunamiContour": "isoline of {{height}} (a NOAA threshold)",
       "tsunamiIsochrones": "hours of arrival: {{hours}}",
-      "tsunamiCrest": "the crest, replaying the wave's arrival",
+      "tsunamiCrest": "the crest, replaying the wave's arrival on a logarithmic clock: the first hours slowed down",
       "tsunamiStreaks": "the wave's direction, where it passes 1 m",
       "tsunamiRunupBand": "run-up on the coast from {{low}} to {{high}}",
       "tsunamiRunupFrom": "run-up on the coast above {{height}}"

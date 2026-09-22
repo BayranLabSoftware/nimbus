@@ -242,12 +242,22 @@ export function finitePercentile(values: ArrayLike<number>, p: number): number {
   return finite[idx] ?? 0;
 }
 
+/** B-118: the crest's clock starts when the front has covered this share of
+ *  the ocean it reaches, and never before this many seconds. */
+export const CREST_START_SHARE = 1e-4;
+export const CREST_START_FLOOR_S = 60;
+
 /**
  * Resample the arrival-time field into crest animation frames.
- * Frame times sit on QUANTILES of the finite arrival distribution, so
- * every frame advances the front across an equal share of the reached
- * ocean: the crossing of the source basin gets as many frames as the
- * slow trans-oceanic tail, instead of being swallowed by frame one.
+ *
+ * Frame times run on a LOGARITHMIC clock, from the moment the front has
+ * covered a ten-thousandth of the ocean it reaches to the end percentile, so
+ * the source basin and the ocean beyond it both get frames. Until 22
+ * September 2026 they sat on quantiles of the whole reached ocean (B-118):
+ * for a wave that crosses the planet the first frame already covered 3 % of
+ * it — Chicxulub's fell at 6.1 h, on the coast of New York — and the Gulf of
+ * Mexico it crossed in two hours had none. Where the field is too small for
+ * a clock (its start at or past its end) the frames keep the quantiles.
  */
 export function buildCrestFrames(input: CrestFramesInput): CrestFrame[] {
   const frameCount = input.frameCount ?? 28;
@@ -283,10 +293,24 @@ export function buildCrestFrames(input: CrestFramesInput): CrestFrame[] {
   finite.sort((a, b) => a - b);
   const quantile = (q: number): number =>
     finite[Math.min(finite.length - 1, Math.max(0, Math.round(q * (finite.length - 1))))] ?? 0;
-  if (quantile(endPercentile) <= 0) return [];
+  const end = quantile(endPercentile);
+  if (end <= 0) return [];
+  let firstPositive = 0;
+  while (firstPositive < finite.length && (finite[firstPositive] ?? 0) <= 0) firstPositive++;
+  const positives = finite.length - firstPositive;
+  const start = Math.max(
+    CREST_START_FLOOR_S,
+    finite[firstPositive + Math.floor(CREST_START_SHARE * Math.max(0, positives - 1))] ?? end
+  );
   const thresholds: number[] = [];
   for (let k = 1; k <= frameCount; k++) {
-    thresholds.push(quantile((k / frameCount) * endPercentile));
+    thresholds.push(
+      start < end
+        ? frameCount === 1
+          ? end
+          : start * (end / start) ** ((k - 1) / (frameCount - 1))
+        : quantile((k / frameCount) * endPercentile)
+    );
   }
 
   return thresholds.map((threshold) => ({

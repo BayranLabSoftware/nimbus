@@ -1121,7 +1121,8 @@
         "tsunami": {
           "tab": "Tsunami",
           "title": "L'onda in mare",
-          "unit": "altezza dell'onda riportata a 1000 m di profondità con la legge di Green · m"
+          "unit": "altezza dell'onda riportata a 1000 m di profondità con la legge di Green · m",
+          "unitUnsized": "nessuna onda che Nimbus sappia dimensionare"
         }
       },
       "markWithWind": "{{range}} · vento {{wind}} km/h",
@@ -1136,7 +1137,10 @@
         "caveat": "Attenzione",
         "from": "Da dove",
         "reading": "Lettura",
-        "not": "Non è"
+        "not": "Non è",
+        "coincide": "Linee unite",
+        "wholeEarth": "Tutta la Terra",
+        "why": "Perché"
       },
       "note": {
         "isolinesMedian": "le soglie del modello, alla mediana",
@@ -1163,6 +1167,14 @@
         "agreementNot": "una probabilità: è la forchetta che il campo dà ai propri modelli, e per questo non la si trasforma in percentuali",
         "tsunamiSourceProgram": "alla sorgente {{amplitude}}, a un diametro del cratere d'acqua dal punto d'impatto, mai più alta dell'acqua in cui nasce ({{depth}}): la legge dell'Earth Impact Effects Program (Collins et al. 2005, regole 150–153)",
         "depthWithinCrater": "in media {{depth}} dentro il cratere, regole 798–804",
+        "coincide": "{{lines}} cadono entro {{gap}} l'una dall'altra, a {{range}}: a questa scala sono una linea sola e così sono disegnate; il tooltip della linea dà il raggio di ciascuna",
+        "coincideHorizon": "{{lines}} cadono entro {{gap}} l'una dall'altra, sull'orizzonte della palla di fuoco ({{horizon}}): fin lì il calore supera tutte queste soglie, oltre la palla di fuoco è sotto l'orizzonte e il calore diretto non arriva. Disegnate come una linea sola",
+        "wholeEarth": "{{lines}}: su tutta la Terra, fino all'antipodo, quindi nessuna linea da disegnare",
+        "tsunamiWhyNone": "il cratere transitorio ({{crater}}) si ferma prima del mare più vicino ({{shore}}), e Nimbus solleva l'onda solo con la parte di cratere che cade in mare (regole 267–273)",
+        "unsizedResurge": "il cratere finale ({{rim}}) racchiude la costa e il mare vi rientra",
+        "unsizedEjecta": "sulla costa cadono {{thickness}} di ejecta",
+        "tsunamiUnsized": "{{causes}}: un'onda nasce, ma nessuna legge pubblicata dice quanto è alta, e Nimbus non la disegna né la conta tra le vittime",
+        "tsunamiNoSea": "l'onda nasce ({{amplitude}} alla sorgente), ma entro {{reach}} non c'è mare profondo almeno {{floor}} da cui propagarla sul fondale vero: il calcolo non parte e il globo non ha niente da disegnare",
         "depthWithinCraterCapped": "{{depth}}, il tetto della regola 248: dentro il cratere l'acqua è in media più profonda, regole 798–804",
         "tsunamiSourceRimWave": "alla sorgente {{amplitude}}, l'onda del bordo di Wünnemann, Collins & Weiss (2010), mai più alta dell'acqua in cui nasce ({{depth}})",
         "tsunamiVeilGlobal": "velatura semitrasparente sul reticolo del pianeta, da 1 m a {{top}} (il 98° percentile del campo, mai meno di 10 m); sotto 1 m nessun colore. Le ore d'arrivo sono calcolate sul fondale vero (Fast Marching)",
@@ -1220,7 +1232,7 @@
       "agreementSome": "superata solo dal bordo alto (2P) · fino a {{range}}",
       "tsunamiContour": "isolinea di {{height}} (soglia NOAA)",
       "tsunamiIsochrones": "ore d'arrivo: {{hours}}",
-      "tsunamiCrest": "la cresta, che ripercorre l'arrivo dell'onda",
+      "tsunamiCrest": "la cresta, che ripercorre l'arrivo dell'onda su un orologio logaritmico: le prime ore al rallentatore",
       "tsunamiStreaks": "direzione dell'onda, dove supera 1 m",
       "tsunamiRunupBand": "risalita sulla costa da {{low}} a {{high}}",
       "tsunamiRunupFrom": "risalita sulla costa oltre {{height}}"

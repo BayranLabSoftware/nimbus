@@ -15,6 +15,7 @@ import { SHORE_DEPTH_CAP_M } from '../../../physics/validation/shoreDepthRules.j
 import {
   availableImpactLayers,
   isFieldLayer,
+  isolineMembers,
   probabilityRadius,
   windReachM,
   WIND_LEVELS_KMH,
@@ -360,8 +361,8 @@ function groups(
     ),
   ];
   const shakingLayer = figures.find((f) => f.layer.id === 'shaking')?.layer;
-  for (const line of shakingLayer?.isolines ?? []) {
-    if (!line.id.startsWith('mercalli-')) continue;
+  for (const line of (shakingLayer?.isolines ?? []).flatMap(isolineMembers)) {
+    if (!line.id.split('+')[0]?.startsWith('mercalli-')) continue;
     shakingRows.push({
       ...row(t, 'mercalliOutTo', length(line.radiusM, l), shakingFigure, { level: line.label }),
       id: `mercalliOutTo${line.label}`,

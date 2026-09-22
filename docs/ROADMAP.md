@@ -741,6 +741,28 @@ question; the maps read a lake by its surface and a polder by its floor; the
 explosion path keeps the shore's cell; and the Monte Carlo still runs on the
 panel's inputs, without the coast.
 
+#### IMP-7f, 22 September 2026: what the map got wrong, measured
+
+Andrea found the crest of Chicxulub's wave starting from New York, a Texas
+impact with no tsunami and two burn circles a kilometre apart, and asked for
+a careful check across places and bodies. Measured the same evening, without
+touching the code: 600 bodies in the pure layer builders (comet, stone and
+iron; 20 m to 15 km; 12 to 70 km/s; 15° to 90°) and ten places on the real
+globe (the Yucatán, Austin, Dallas, Houston, New York, Madrid, Tokyo, the
+open Atlantic, Fiji across the antimeridian). Every line in order, no radius
+impossible, the open ocean and the antimeridian right. Found: the crest's
+frames skipping the source basin (B-118); lines the map cannot tell apart
+drawn apart, and lines at the antipode (B-119); a silent globe where the
+impact reaches the sea without a wave the model sizes, or where a wave has no
+sea to carry it (B-120) — all three corrected that night, the drawing only.
+And three that change numbers, each a round with its rules first: the wave's
+seeds are found out to the ejecta's reach (856 km for Chicxulub, one of them
+214 km away on another coast) though its height comes from the crater alone;
+the shore search gives up near cities, whose nearest water is canals, rivers,
+polders and the terrain's artefacts (Tokyo 41 km where the bay is 13; New
+Orleans the mosaic's cell under the city); and the ejecta's wave, the resurge
+and the air's absorption on grazing paths have no law yet.
+
 #### IMP-9, 21 September 2026: the verdict — impacts at 7.0, and what is missing
 
 _Updated that night: with G6 met by rules 780 to 787 impacts count **8.0**,

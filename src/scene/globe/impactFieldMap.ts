@@ -46,6 +46,7 @@ import {
   programShakingRadiusKm,
 } from '../../physics/events/impact/seismic.js';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
+import { DEFAULT_MIN_DEPTH_M } from '../../physics/tsunami/sourcePlacement.js';
 import { SHORE_DEPTH_CAP_M } from '../../physics/validation/shoreDepthRules.js';
 import { J, m, Pa } from '../../physics/units.js';
 import {
@@ -264,6 +265,18 @@ export interface MapIsoline {
   title: string;
   description: string;
   source: string;
+  /** The thresholds a drawn line stands for when they coincide at the
+   *  map's scale (B-119), each at its own radius. */
+  members?: readonly { label: string; title: string; description: string; radiusM: number }[];
+}
+
+/** The thresholds a drawn line stands for, each with its own radius: the
+ *  line itself, or the lines it joins (B-119). A table lists these. */
+export function isolineMembers(
+  line: MapIsoline
+): { id: string; label: string; title: string; description: string; radiusM: number }[] {
+  if (line.members === undefined) return [line];
+  return line.members.map((m, k) => ({ id: `${line.id}#${k.toString()}`, ...m }));
 }
 
 export interface ColorbarSpec {
@@ -371,6 +384,9 @@ export interface ImpactMapContext {
   /** What the globe's wave map has drawn, for the tsunami's layer to name
    *  it and nothing else; null while it has drawn nothing. */
   waveMap?: WaveMapKey | null;
+  /** Set when the wave found no sea deep enough to carry it within this
+   *  reach (m), so that nothing will be drawn (B-120). */
+  waveUnpropagatedReachM?: number | null;
 }
 
 /**
@@ -1368,7 +1384,7 @@ function veilPalette(top: number): string[] {
  */
 function tsunamiLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): ImpactMapLayer | null {
   const wave = result.tsunami;
-  if (wave === undefined) return null;
+  if (wave === undefined) return unsizedWaveLayer(result, ctx);
   const { t, language } = ctx;
   const drawn = ctx.waveMap ?? null;
   const metres = (v: number, digits: number): string => `${formatNumber(v, digits, language)} m`;
@@ -1482,7 +1498,13 @@ function tsunamiLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): Impa
         label: t('globe.impactMap.noteLabel.reading'),
         text:
           drawn === null
-            ? t('globe.impactMap.note.tsunamiNothing')
+            ? ctx.waveUnpropagatedReachM !== undefined && ctx.waveUnpropagatedReachM !== null
+              ? t('globe.impactMap.note.tsunamiNoSea', {
+                  amplitude: metres(source, source < 10 ? 2 : 0),
+                  reach: formatRange(ctx.waveUnpropagatedReachM, language),
+                  floor: metres(DEFAULT_MIN_DEPTH_M, 0),
+                })
+              : t('globe.impactMap.note.tsunamiNothing')
             : top === null
               ? t('globe.impactMap.note.tsunamiLinesOnly')
               : t(
@@ -1502,6 +1524,166 @@ function tsunamiLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): Impa
   };
 }
 
+/** B-119: isolines closer than this share of their radius are one line at
+ *  the map's scale, and are drawn as one. */
+export const COINCIDENT_SHARE = 0.005;
+
+/**
+ * The isolines of a layer as they can be drawn (B-119). A line that reaches
+ * the antipode is no line — the zone it bounds is the whole Earth — so it is
+ * named in the notes and not drawn; and lines of different thresholds that
+ * fall within `COINCIDENT_SHARE` of their radius of each other are drawn as
+ * one, labelled with every threshold, each kept at its own radius in
+ * `members`, and the notes say which and why — on the fireball's horizon when
+ * that is where they gather (`horizonM`). Until 22 September 2026 Chicxulub's
+ * map drew the ignition of clothing, the third-degree and the second-degree
+ * burns as three circles within 6 km of each other at 1 610 km.
+ */
+function settleIsolines(
+  layer: ImpactMapLayer,
+  ctx: ImpactMapContext,
+  horizonM: number | null
+): ImpactMapLayer {
+  if (layer.isolines.length === 0) return layer;
+  const { t, language } = ctx;
+  const halfEarth = Math.PI * (EARTH_RADIUS as number);
+  const atAntipode = (r: number): boolean => r >= halfEarth * (1 - 1e-6);
+  const whole = layer.isolines.filter((l) => atAntipode(l.radiusM));
+  const kept = layer.isolines.filter((l) => !atAntipode(l.radiusM));
+  const sorted = [...kept].sort((a, b) => a.radiusM - b.radiusM);
+  const groups: MapIsoline[][] = [];
+  for (const line of sorted) {
+    const group = groups[groups.length - 1];
+    const last = group?.[group.length - 1];
+    if (
+      group !== undefined &&
+      last !== undefined &&
+      line.radiusM - last.radiusM <= COINCIDENT_SHARE * line.radiusM
+    ) {
+      group.push(line);
+    } else {
+      groups.push([line]);
+    }
+  }
+  const notes = [...layer.notes];
+  // Each group is drawn once, where its first line stood: the order the
+  // layer gave its lines is the order the legend and the report read.
+  const drawnFor = new Map<MapIsoline, MapIsoline>();
+  for (const group of groups) {
+    const outer = group[group.length - 1];
+    const inner = group[0];
+    if (outer === undefined || inner === undefined) continue;
+    if (group.length === 1) {
+      drawnFor.set(outer, outer);
+      continue;
+    }
+    // A title may hold a «·» of its own; thresholds are told apart by «;».
+    const titles = group.map((l) => l.title).join('; ');
+    const onHorizon =
+      horizonM !== null &&
+      horizonM > 0 &&
+      Math.abs(outer.radiusM - horizonM) <= 2 * COINCIDENT_SHARE * horizonM;
+    notes.push({
+      label: t('globe.impactMap.noteLabel.coincide'),
+      text: onHorizon
+        ? t('globe.impactMap.note.coincideHorizon', {
+            lines: titles,
+            gap: formatRange(outer.radiusM - inner.radiusM, language),
+            horizon: formatRange(horizonM, language),
+          })
+        : t('globe.impactMap.note.coincide', {
+            lines: titles,
+            gap: formatRange(outer.radiusM - inner.radiusM, language),
+            range: formatRange(outer.radiusM, language),
+          }),
+    });
+    const joined: MapIsoline = {
+      ...outer,
+      id: group.map((l) => l.id).join('+'),
+      label: group.map((l) => l.label).join(' · '),
+      title: titles,
+      description: group.map((l) => `${l.title}: ${formatRange(l.radiusM, language)}`).join(' · '),
+      members: group.map((l) => ({
+        label: l.label,
+        title: l.title,
+        description: l.description,
+        radiusM: l.radiusM,
+      })),
+    };
+    for (const l of group) drawnFor.set(l, joined);
+  }
+  const isolines: MapIsoline[] = [];
+  for (const l of kept) {
+    const drawn = drawnFor.get(l);
+    if (drawn !== undefined && !isolines.includes(drawn)) isolines.push(drawn);
+  }
+  if (whole.length > 0) {
+    notes.push({
+      label: t('globe.impactMap.noteLabel.wholeEarth'),
+      text: t('globe.impactMap.note.wholeEarth', { lines: whole.map((l) => l.title).join('; ') }),
+    });
+  }
+  return { ...layer, isolines, notes };
+}
+
+/**
+ * The tsunami's layer where the model raises no wave but the impact reaches
+ * the sea another way (B-120): the final crater encloses the coast, so the
+ * sea pours back into it, or the ejecta blanket falls on the coast. Neither
+ * wave has a published law (rules 267 to 273), and the globe says so where
+ * it used to say nothing: Chicxulub on Houston, whose crater swallows the
+ * coast, and on Austin, where 44 m of rock fall into the Gulf, drew no tab.
+ */
+function unsizedWaveLayer(
+  result: ImpactScenarioResult,
+  ctx: ImpactMapContext
+): ImpactMapLayer | null {
+  const shore = (result.inputs.shoreDistance as number | undefined) ?? 0;
+  const transient = (result.crater.transientDiameter as number) / 2;
+  const rim = (result.crater.finalDiameter as number) / 2;
+  if (!(shore > 0) || !(transient > 0)) return null;
+  const thickness = ejectaThickness(m(shore), result.crater.transientDiameter, m(rim)) as number;
+  const encloses = rim >= shore;
+  const blanket = thickness >= 0.001;
+  if (!encloses && !blanket) return null;
+  const { t, language } = ctx;
+  const thick =
+    thickness >= 1
+      ? `${formatNumber(thickness, thickness < 10 ? 1 : 0, language)} m`
+      : thickness >= 0.01
+        ? `${formatNumber(thickness * 100, 0, language)} cm`
+        : `${formatNumber(thickness * 1_000, 0, language)} mm`;
+  const causes = [
+    ...(encloses
+      ? [t('globe.impactMap.note.unsizedResurge', { rim: formatRange(rim, language) })]
+      : []),
+    ...(blanket ? [t('globe.impactMap.note.unsizedEjecta', { thickness: thick })] : []),
+  ].join('; ');
+  return {
+    id: 'tsunami',
+    tab: t('globe.impactMap.layer.tsunami.tab'),
+    title: t('globe.impactMap.layer.tsunami.title'),
+    unit: t('globe.impactMap.layer.tsunami.unitUnsized'),
+    field: null,
+    isolines: [],
+    colorbar: null,
+    categories: [],
+    notes: [
+      {
+        label: t('globe.impactMap.noteLabel.why'),
+        text: t('globe.impactMap.note.tsunamiWhyNone', {
+          crater: formatRange(transient, language),
+          shore: formatRange(shore, language),
+        }),
+      },
+      {
+        label: t('globe.impactMap.noteLabel.limit'),
+        text: t('globe.impactMap.note.tsunamiUnsized', { causes }),
+      },
+    ],
+  };
+}
+
 /** The layers this result draws, in the order the legend offers them. */
 export function availableImpactLayers(
   result: ImpactScenarioResult,
@@ -1513,6 +1695,20 @@ export function availableImpactLayers(
 }
 
 export function buildImpactLayer(
+  result: ImpactScenarioResult,
+  id: ImpactLayerId,
+  ctx: ImpactMapContext
+): ImpactMapLayer | null {
+  const layer = buildRawLayer(result, id, ctx);
+  if (layer === null) return null;
+  const horizon =
+    id === 'thermal'
+      ? thermalHorizonRadius(impactFireballRadius(J(result.impactor.kineticEnergy)))
+      : null;
+  return settleIsolines(layer, ctx, horizon !== null && Number.isFinite(horizon) ? horizon : null);
+}
+
+function buildRawLayer(
   result: ImpactScenarioResult,
   id: ImpactLayerId,
   ctx: ImpactMapContext

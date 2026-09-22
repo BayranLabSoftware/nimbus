@@ -447,6 +447,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The tsunami's crest starts where the wave does (B-118).** Its frames now
+  run on a logarithmic clock; Chicxulub's crest used to appear first off New
+  York, six hours in, with nothing in the Gulf it crossed.
+- **Lines the map cannot tell apart are drawn as one (B-119).** Chicxulub's
+  burns and ignition gather on the fireball's horizon within 6 km of each
+  other and were three circles; now one line, each threshold at its own
+  radius in its tooltip and in the report, and the legend says why. A line at
+  the antipode is not drawn: the legend says «the whole Earth».
+- **The tsunami's tab says why there is no wave (B-120),** where the final
+  crater swallows the coast or the ejecta fall on it — a wave nobody has sized
+  — and why a wave is not drawn when no sea deep enough carries it.
 - **The coast nearest a tsunami's source has its run-up markers (B-116).**
   With the planet's veil drawn, the markers stopped short of a square of 1.5°
   about the source and the fine tile's were not drawn; now the tile's are

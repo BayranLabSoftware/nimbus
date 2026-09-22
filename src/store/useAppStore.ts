@@ -516,6 +516,10 @@ export interface AppStore {
    *  nothing else (B-113); null while it has drawn nothing. The globe is the
    *  only writer. */
   waveMapKey: WaveMapKey | null;
+  /** Set when the result raises a wave but no sea deep enough to carry it
+   *  lies within this reach (m): nothing will be drawn, and the legend says
+   *  why (B-120). */
+  waveUnpropagatedReachM: number | null;
   /** The globe's photographs of an impact's layers, taken as the report is
    *  opened (ROADMAP IMP-7c), for the result they were taken of: a report
    *  prints them only beside that result's maps. */
@@ -732,6 +736,7 @@ type InitialSlice = Pick<
   | 'impactUncertaintyKey'
   | 'shockFrontActive'
   | 'waveMapKey'
+  | 'waveUnpropagatedReachM'
   | 'reportGlobeShots'
   | 'cameraRequest'
   | 'result'
@@ -821,6 +826,7 @@ function initialState(): InitialSlice {
     impactUncertaintyKey: null,
     shockFrontActive: false,
     waveMapKey: null,
+    waveUnpropagatedReachM: null,
     reportGlobeShots: null,
     cameraRequest: null,
     result: null,
@@ -1540,6 +1546,10 @@ interface BathymetricContext {
  * the UI before the worker existed. Returns null when the result has
  * no tsunami source or the compute fails.
  */
+/** The reach within which a result found no sea to carry its wave (B-120),
+ *  read by the evaluation that asked. */
+const unpropagatedReach = new WeakMap<ActiveResult, number>();
+
 async function computeBathymetricLayerForResult(
   result: ActiveResult,
   ctx: BathymetricContext,
@@ -1599,6 +1609,7 @@ async function computeBathymetricLayerForResult(
     const localSeeds: PropagationSeed[] = seedsAlong(ctx.elevationGrid, ctx.globalBathymetricGrid);
     const primary = localSeeds[0] ?? globalSeeds[0];
     if (primary === undefined) {
+      unpropagatedReach.set(result, reachM);
       if (DEV_LOGS) {
         console.info(
           `[store] bathymetric tsunami: no propagable sea within ${(reachM / 1_000).toFixed(0)} km — layer skipped`
@@ -2343,6 +2354,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       impactUncertaintyKey: null,
       shockFrontActive: false,
       waveMapKey: null,
+      waveUnpropagatedReachM: null,
       reportGlobeShots: null,
       result: null,
       bathymetricTsunami: null,
@@ -3054,7 +3066,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       if (layer === null) return;
       if (evaluationAtStart !== currentEvaluationId) return;
       if (get().result !== result) return;
-      set({ bathymetricTsunami: layer });
+      set({ bathymetricTsunami: layer, waveUnpropagatedReachM: null });
       void runTsunamiCasualties(result, get, set);
     });
   },
@@ -3420,6 +3432,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
       set({
         result,
         bathymetricTsunami,
+        waveUnpropagatedReachM:
+          bathymetricTsunami === null ? (unpropagatedReach.get(result) ?? null) : null,
         populationExposure: null,
         populationStatus: 'fetching',
         casualties: null,

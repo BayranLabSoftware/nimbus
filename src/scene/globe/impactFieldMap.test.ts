@@ -10,7 +10,7 @@ import {
 } from '../../physics/events/impact/impactField.js';
 import { programShakingRadiusKm } from '../../physics/events/impact/seismic.js';
 import { IMPACT_PRESETS, simulateImpact } from '../../physics/simulate.js';
-import { J, m, Pa } from '../../physics/units.js';
+import { J, kgPerM3, m, mps, Pa } from '../../physics/units.js';
 import {
   heatmapColorAt,
   WAVE_CONTOUR_STYLES,
@@ -439,5 +439,96 @@ describe('the tsunami’s layer: the wave map, named as the globe draws it (B-11
     const capped = buildImpactLayer(lisbon, 'tsunami', ctx)?.notes[0]?.text ?? '';
     expect(capped).toContain('globe.impactMap.note.depthWithinCraterCapped');
     expect(capped).toContain('200 m');
+  });
+});
+
+describe('lines the map cannot tell apart are drawn as one (B-119)', () => {
+  const chicxulub = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+
+  it('joins Chicxulub’s burns and ignition on the fireball’s horizon, each kept at its radius', () => {
+    const layer = buildImpactLayer(chicxulub, 'thermal', ctx);
+    const joined = layer?.isolines.find((l) => l.members !== undefined);
+    expect(joined).toBeDefined();
+    const radii = (joined?.members ?? []).map((m) => m.radiusM).sort((a, b) => a - b);
+    expect(radii).toContain(chicxulub.damage.thirdDegreeBurn);
+    expect(radii).toContain(chicxulub.damage.secondDegreeBurn);
+    expect(joined?.radiusM).toBe(radii[radii.length - 1]);
+    expect(layer?.notes.map((n) => n.text).join(' ')).toContain(
+      'globe.impactMap.note.coincideHorizon'
+    );
+    // No two lines left within the share of each other.
+    const drawn = [...(layer?.isolines ?? [])].sort((a, b) => a.radiusM - b.radiusM);
+    for (let i = 1; i < drawn.length; i++) {
+      const gap = (drawn[i]?.radiusM ?? 0) - (drawn[i - 1]?.radiusM ?? 0);
+      expect(gap).toBeGreaterThan(0.005 * (drawn[i]?.radiusM ?? 0));
+    }
+  });
+
+  it('keeps Meteor Crater’s four thermal lines apart', () => {
+    expect(buildImpactLayer(meteor, 'thermal', ctx)?.isolines).toHaveLength(4);
+  });
+
+  it('draws no line at the antipode, and says the zone is the whole Earth', () => {
+    const giant = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      impactorDensity: kgPerM3(7_800),
+      impactVelocity: mps(70_000),
+    });
+    const layer = buildImpactLayer(giant, 'overpressure', ctx);
+    for (const l of layer?.isolines ?? []) expect(l.radiusM).toBeLessThan(Math.PI * 6_371_000);
+    expect(layer?.notes.map((n) => n.text).join(' ')).toContain('globe.impactMap.note.wholeEarth');
+  });
+});
+
+describe('the tsunami’s tab says why there is no wave, or why it is not drawn (B-120)', () => {
+  const chicxulubAt = (shore: number) =>
+    simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(4),
+      shoreDistance: m(shore),
+    });
+
+  it('Houston: the final crater encloses the coast — the resurge, unsized', () => {
+    const houston = chicxulubAt(66_590);
+    expect(houston.tsunami).toBeUndefined();
+    const layer = buildImpactLayer(houston, 'tsunami', ctx);
+    expect(layer?.field).toBeNull();
+    const text = layer?.notes.map((n) => n.text).join(' ') ?? '';
+    expect(text).toContain('globe.impactMap.note.tsunamiWhyNone');
+    expect(text).toContain('globe.impactMap.note.unsizedResurge');
+    expect(text).not.toContain('globe.impactMap.note.unsizedEjecta');
+  });
+
+  it('Austin: 44 m of ejecta fall on the coast — that wave, unsized', () => {
+    const austin = chicxulubAt(242_050);
+    const text =
+      buildImpactLayer(austin, 'tsunami', ctx)
+        ?.notes.map((n) => n.text)
+        .join(' ') ?? '';
+    expect(text).toContain('globe.impactMap.note.unsizedEjecta');
+    expect(text).toContain('44 m');
+  });
+
+  it('offers no tab where neither the crater nor the blanket reaches the sea', () => {
+    const inland = simulateImpact({
+      ...IMPACT_PRESETS.METEOR_CRATER.input,
+      waterDepth: m(4),
+      shoreDistance: m(600_000),
+    });
+    expect(availableImpactLayers(inland, ctx).map((l) => l.id)).not.toContain('tsunami');
+  });
+
+  it('New York: a wave with no sea deep enough to carry it says so', () => {
+    const ny = simulateImpact({
+      ...IMPACT_PRESETS.METEOR_CRATER.input,
+      impactorDiameter: m(300),
+      waterDepth: m(8.97),
+      shoreDistance: m(1_210),
+    });
+    expect(ny.tsunami).toBeDefined();
+    const layer = buildImpactLayer(ny, 'tsunami', { ...ctx, waveUnpropagatedReachM: 14_000 });
+    const reading = layer?.notes.map((n) => n.text).join(' ') ?? '';
+    expect(reading).toContain('globe.impactMap.note.tsunamiNoSea');
+    expect(reading).toContain('"floor":"10 m"');
   });
 });
