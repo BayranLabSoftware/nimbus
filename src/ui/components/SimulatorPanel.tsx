@@ -20,7 +20,7 @@ import { bandFor, type ConfidenceField } from '../../physics/confidence.js';
 import { OUTPUT_SIGMA } from '../../physics/uq/conventions.js';
 import { clampToGreatCircle, isGlobalReach } from '../../physics/earthScale.js';
 import { IMPACT_PRESETS, type ImpactPresetId } from '../../physics/simulate.js';
-import { availableImpactLayers } from '../../scene/globe/impactFieldMap.js';
+import { availableImpactLayers, isFieldLayer } from '../../scene/globe/impactFieldMap.js';
 import { takeGlobeShots } from '../../scene/globe/globeShots.js';
 import { joulesToMegatons } from '../../physics/units.js';
 import {
@@ -520,7 +520,9 @@ export function SimulatorPanel(): JSX.Element {
         t,
         language: i18n.language,
         uncertaintyKey: impactUncertaintyKey,
-      }).map((l) => l.id);
+      })
+        .filter((l) => isFieldLayer(l.id))
+        .map((l) => l.id);
       setPreparing({ done: 0, total: layers.length });
       const shots = await takeGlobeShots(layers, (done, total) => {
         setPreparing({ done, total });

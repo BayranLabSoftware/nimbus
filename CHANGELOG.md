@@ -447,6 +447,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **An impact's wave can be seen (B-113).** Since the map of the field, the
+  layer chosen covered the globe whenever an impact was drawn, the tsunami's
+  wave map with it, and nothing took the field off: Chicxulub on New Orleans
+  read as if it raised no wave. The map's legend now has a «Tsunami» tab
+  wherever the impact raises one; it takes the field off, gives the imagery
+  back its colours and shows the wave map as the globe has always drawn it.
+  Its keys are what the globe says it drew — the veil's scale in the
+  heatmap's own colours up to the top it was painted to, each NOAA isoline,
+  the hours of arrival, the crest, the streaks and the tiers of run-up — and
+  nothing else, with the source's height and the depth of the water it rose
+  in. The report's flat maps do not draw the wave, and print no figure of it.
 - **The globe no longer picks at every mouse move (B-112).** The hover
   tooltip drew every pickable into the pick buffer and read it back from the
   GPU at each move of the mouse, dragging included — most of a frame each

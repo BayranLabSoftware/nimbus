@@ -143,6 +143,33 @@ function sampleColormap(t: number, name: Colormap): [number, number, number] {
   ];
 }
 
+/** Where a value falls on a continuous colour map, 0 to 1: its place between
+ *  `vMin` and `vMin + range`, bent by `scale`. */
+function heatmapPosition(
+  v: number,
+  vMin: number,
+  range: number,
+  scale: 'linear' | 'sqrt' | undefined
+): number {
+  const t = Math.max(0, Math.min(1, (v - vMin) / range));
+  return scale === 'sqrt' ? Math.sqrt(t) : t;
+}
+
+/**
+ * The colour {@link renderScalarFieldHeatmap} paints a value with, on a
+ * continuous colour map from `valueMin` to `valueMax`: a legend that draws
+ * its scale with this cannot tell a colour differently from the map.
+ */
+export function heatmapColorAt(
+  value: number,
+  valueMin: number,
+  valueMax: number,
+  colormap: Colormap,
+  scale?: 'linear' | 'sqrt'
+): [number, number, number] {
+  return sampleColormap(heatmapPosition(value, valueMin, valueMax - valueMin, scale), colormap);
+}
+
 export interface HeatmapOptions {
   /** Lower value mapped to the coolest colormap stop (defaults to
    *  the field's min). */
@@ -304,8 +331,7 @@ export function renderScalarFieldHeatmap(
         }
         [r, g, b] = chosen;
       } else {
-        let t = Math.max(0, Math.min(1, (v - vMin) / range));
-        if (options.scale === 'sqrt') t = Math.sqrt(t);
+        const t = heatmapPosition(v, vMin, range, options.scale);
         [r, g, b] = sampleColormap(t, colormap);
         if (options.opacityByValue !== undefined) {
           const { min, max } = options.opacityByValue;
@@ -365,6 +391,28 @@ export function levelSeparatesField(
   if (bagnate === 0) return false;
   const frazione = sopra / bagnate;
   return frazione >= minFraction && frazione <= maxFraction;
+}
+
+/** The colours the wave map draws its dashed lines of arrival, its running
+ *  crest's head and its streaks of direction with; the legend reads them
+ *  here too. */
+export const WAVE_ISOCHRONE_CSS = '#CFE8F2';
+export const WAVE_CREST_CSS = '#63D2FF';
+export const WAVE_STREAK_CSS = '#BFE8F5';
+
+/** The run-up markers on the coast, coloured by the height the wave runs up
+ *  to (m): from 2, from 5, from 10. */
+export const WAVE_RUNUP_TIERS: readonly { from: number; css: string }[] = [
+  { from: 2, css: '#E8A33D' },
+  { from: 5, css: '#E06E28' },
+  { from: 10, css: '#CC3C26' },
+];
+
+/** The tier a run-up is drawn in: the highest whose foot it reaches. */
+export function waveRunupTier(runupM: number): { from: number; css: string } {
+  let tier = WAVE_RUNUP_TIERS[0] ?? { from: 2, css: '#E8A33D' };
+  for (const candidate of WAVE_RUNUP_TIERS) if (runupM >= candidate.from) tier = candidate;
+  return tier;
 }
 
 export const WAVE_CONTOUR_STYLES: readonly { threshold: number; css: string }[] = [

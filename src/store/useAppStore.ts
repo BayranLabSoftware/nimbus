@@ -23,7 +23,7 @@ import { ruptureOrigins } from '../physics/tsunami/sourcePlacement.js';
 import { RESOLUTION_FLOOR_CELLS as SHORE_RESOLUTION_FLOOR_CELLS } from '../physics/validation/shoreDistanceRules.js';
 import { SHORE_DEPTH_CAP_M } from '../physics/validation/shoreDepthRules.js';
 import type { TerrainSourceSpan } from '../scene/terrainSampling.js';
-import type { ImpactLayerId } from '../scene/globe/impactFieldMap.js';
+import type { ImpactLayerId, WaveMapKey } from '../scene/globe/impactFieldMap.js';
 import type { GlobeShots } from '../scene/globe/globeShots.js';
 import { validateScenario, type ScenarioType } from '../physics/validation/inputSchema.js';
 import {
@@ -506,6 +506,10 @@ export interface AppStore {
    *  lists it only then, since a row is a promise that something is drawn
    *  (B-107). The globe is the only writer. */
   shockFrontActive: boolean;
+  /** What the globe's wave map has drawn, for a legend to name it and
+   *  nothing else (B-113); null while it has drawn nothing. The globe is the
+   *  only writer. */
+  waveMapKey: WaveMapKey | null;
   /** The globe's photographs of an impact's layers, taken as the report is
    *  opened (ROADMAP IMP-7c), for the result they were taken of: a report
    *  prints them only beside that result's maps. */
@@ -642,6 +646,8 @@ export interface AppStore {
   setImpactUncertaintyKey: (key: string | null) => void;
   /** Called by the globe when the shock front starts and when it is gone. */
   setShockFrontActive: (active: boolean) => void;
+  /** Called by the globe each time it has drawn the wave map, or cleared it. */
+  setWaveMapKey: (key: WaveMapKey | null) => void;
   /** Keep the globe's photographs for the report. */
   setReportGlobeShots: (value: { result: object; shots: GlobeShots } | null) => void;
   toggleRingVisibility: (key: string) => void;
@@ -719,6 +725,7 @@ type InitialSlice = Pick<
   | 'impactFieldLayer'
   | 'impactUncertaintyKey'
   | 'shockFrontActive'
+  | 'waveMapKey'
   | 'reportGlobeShots'
   | 'cameraRequest'
   | 'result'
@@ -807,6 +814,7 @@ function initialState(): InitialSlice {
     impactFieldLayer: 'overpressure',
     impactUncertaintyKey: null,
     shockFrontActive: false,
+    waveMapKey: null,
     reportGlobeShots: null,
     cameraRequest: null,
     result: null,
@@ -2286,6 +2294,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       shakingFieldBands: null,
       impactUncertaintyKey: null,
       shockFrontActive: false,
+      waveMapKey: null,
       reportGlobeShots: null,
       result: null,
       bathymetricTsunami: null,
@@ -2329,6 +2338,10 @@ export const useAppStore = create<AppStore>((set, get) => ({
 
   setShockFrontActive: (active) => {
     if (get().shockFrontActive !== active) set({ shockFrontActive: active });
+  },
+
+  setWaveMapKey: (key) => {
+    set({ waveMapKey: key });
   },
 
   setReportGlobeShots: (value) => {

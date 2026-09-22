@@ -26,15 +26,16 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
   const setLayer = useAppStore((s) => s.setImpactFieldLayer);
   const setUncertaintyKey = useAppStore((s) => s.setImpactUncertaintyKey);
   const frontActive = useAppStore((s) => s.shockFrontActive);
+  const waveMap = useAppStore((s) => s.waveMapKey);
   const language = i18n.language;
 
   const { layers, layer } = useMemo(() => {
-    const ctx = { t, language, uncertaintyKey };
+    const ctx = { t, language, uncertaintyKey, waveMap };
     return {
       layers: availableImpactLayers(result, ctx),
       layer: resolveImpactLayer(result, layerId, ctx),
     };
-  }, [result, t, language, uncertaintyKey, layerId]);
+  }, [result, t, language, uncertaintyKey, layerId, waveMap]);
 
   return (
     <section className={styles.map} data-testid="impact-field-legend">
@@ -94,10 +95,18 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
               {layer.categories.map((c) => (
                 <li key={c.label} className={styles.category}>
                   <span
-                    className={[styles.swatch, c.hatched ? styles.hatched : '']
+                    className={[
+                      styles.swatch,
+                      c.hatched ? styles.hatched : '',
+                      c.shape !== undefined ? styles[c.shape] : '',
+                    ]
                       .filter(Boolean)
                       .join(' ')}
-                    style={{ backgroundColor: c.hatched ? undefined : c.color, color: c.color }}
+                    style={{
+                      backgroundColor: c.hatched || c.shape === 'dashed' ? undefined : c.color,
+                      color: c.color,
+                    }}
+                    data-shape={c.shape ?? 'area'}
                     aria-hidden="true"
                   />
                   <span>{c.label}</span>

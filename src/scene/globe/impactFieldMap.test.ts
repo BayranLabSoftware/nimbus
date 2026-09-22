@@ -11,12 +11,22 @@ import {
 import { programShakingRadiusKm } from '../../physics/events/impact/seismic.js';
 import { IMPACT_PRESETS, simulateImpact } from '../../physics/simulate.js';
 import { J, m, Pa } from '../../physics/units.js';
+import {
+  heatmapColorAt,
+  WAVE_CONTOUR_STYLES,
+  WAVE_CREST_CSS,
+  WAVE_ISOCHRONE_CSS,
+  WAVE_RUNUP_TIERS,
+  WAVE_STREAK_CSS,
+} from '../heatmap.js';
 import { projectAlongAzimuth } from '../stadiumPolygon.js';
 import {
   availableImpactLayers,
   buildImpactLayer,
   familyShapes,
   fieldSourceOf,
+  IMPACT_LAYER_ORDER,
+  isFieldLayer,
   isolinePointAtBearing,
   levelGeometry,
   nominalRangeAt,
@@ -24,6 +34,7 @@ import {
   rasterizeGround,
   uncertaintyChoices,
   type GeoPoint,
+  type WaveMapKey,
 } from './impactFieldMap.js';
 import { ringOutlinePositions } from './ringPresentation.js';
 
@@ -283,5 +294,129 @@ describe('the ground painted as an image', () => {
     expect(polar.length).toBe(1);
     expect(polar[0]?.west).toBe(-180);
     expect(polar[0]?.east).toBe(180);
+  });
+});
+
+describe('the tsunami’s layer: the wave map, named as the globe draws it (B-113)', () => {
+  // Chicxulub on New Orleans, as the globe evaluates it: 9.2 km inland, the
+  // nearest sea 1.17 m deep.
+  const neworleans = simulateImpact({
+    ...IMPACT_PRESETS.CHICXULUB.input,
+    waterDepth: m(1.17),
+    shoreDistance: m(9_245),
+  });
+  const ocean = simulateImpact({ ...IMPACT_PRESETS.METEOR_CRATER.input, waterDepth: m(100) });
+  const nothing: WaveMapKey = {
+    scope: 'global',
+    veilTop: null,
+    veilOpacity: { min: 0, max: 0 },
+    contours: [],
+    isochroneHours: [],
+    crest: false,
+    streaks: false,
+    runup: [],
+  };
+  const hex = ([r, g, b]: [number, number, number]): string =>
+    `#${[r, g, b].map((c) => Math.round(c).toString(16).padStart(2, '0')).join('')}`;
+
+  it('is offered only where the impact raises a wave, after the shaking, and is no field', () => {
+    expect(meteor.tsunami).toBeUndefined();
+    expect(availableImpactLayers(meteor, ctx).map((l) => l.id)).not.toContain('tsunami');
+    expect(neworleans.tsunami).toBeDefined();
+    const ids = availableImpactLayers(neworleans, ctx).map((l) => l.id);
+    expect(ids.slice(-3)).toEqual(['shaking', 'tsunami', 'uncertainty']);
+    for (const id of IMPACT_LAYER_ORDER) expect(isFieldLayer(id)).toBe(id !== 'tsunami');
+    const layer = buildImpactLayer(neworleans, 'tsunami', ctx);
+    expect(layer?.field).toBeNull();
+    expect(layer?.isolines).toEqual([]);
+  });
+
+  it('promises nothing while the globe has drawn nothing', () => {
+    for (const waveMap of [undefined, null]) {
+      const layer = buildImpactLayer(neworleans, 'tsunami', { ...ctx, waveMap });
+      expect(layer?.colorbar).toBeNull();
+      expect(layer?.categories).toEqual([]);
+      expect(layer?.notes.map((n) => n.text)).toContain('globe.impactMap.note.tsunamiNothing');
+    }
+  });
+
+  it('keys each thing drawn, as it is drawn, and nothing else', () => {
+    const drawn: WaveMapKey = {
+      ...nothing,
+      isochroneHours: [1, 2, 4, 8],
+      crest: true,
+      streaks: true,
+      runup: WAVE_RUNUP_TIERS.slice(0, 1),
+    };
+    const layer = buildImpactLayer(neworleans, 'tsunami', { ...ctx, waveMap: drawn });
+    expect(layer?.colorbar).toBeNull();
+    expect(layer?.categories.map((c) => [c.shape, c.color])).toEqual([
+      ['dashed', WAVE_ISOCHRONE_CSS],
+      ['line', WAVE_CREST_CSS],
+      ['line', WAVE_STREAK_CSS],
+      ['dot', WAVE_RUNUP_TIERS[0]?.css],
+    ]);
+    expect(layer?.categories[0]?.label).toBe(
+      'globe.impactMap.tsunamiIsochrones{"hours":"+1 h · +2 h · +4 h · +8 h"}'
+    );
+    expect(layer?.categories[3]?.label).toBe(
+      'globe.impactMap.tsunamiRunupBand{"low":"2","high":"5 m"}'
+    );
+    expect(layer?.notes.map((n) => n.text)).toContain('globe.impactMap.note.tsunamiLinesOnly');
+    const top = buildImpactLayer(neworleans, 'tsunami', {
+      ...ctx,
+      waveMap: { ...nothing, runup: WAVE_RUNUP_TIERS.slice(2) },
+    });
+    expect(top?.categories.map((c) => c.label)).toEqual([
+      'globe.impactMap.tsunamiRunupFrom{"height":"10 m"}',
+    ]);
+  });
+
+  it('draws the veil’s scale in the colours the heatmap paints, over the heights it spans', () => {
+    const drawn: WaveMapKey = {
+      ...nothing,
+      veilTop: 38,
+      veilOpacity: { min: 0.1, max: 0.34 },
+      contours: WAVE_CONTOUR_STYLES.slice(0, 3),
+    };
+    const layer = buildImpactLayer(ocean, 'tsunami', { ...ctx, waveMap: drawn });
+    const bar = layer?.colorbar;
+    expect(bar).toBeDefined();
+    if (bar === null || bar === undefined) return;
+    expect([bar.log, bar.lo]).toEqual([true, 0]);
+    expect(bar.hi).toBeCloseTo(Math.log10(38), 12);
+    // Each stop of the bar is the heatmap's colour at the height it stands at.
+    bar.palette.forEach((colour, i) => {
+      const height = 10 ** ((i / (bar.palette.length - 1)) * Math.log10(38));
+      expect(colour).toBe(hex(heatmapColorAt(height, 1, 38, 'waveVeil', 'sqrt')));
+    });
+    expect(bar.ticks.map((tick) => tick.label)).toEqual(['1 m', '3 m', '6 m', '10 m', '38 m']);
+    expect(layer?.categories.map((c) => [c.shape, c.label])).toEqual([
+      ['line', 'globe.impactMap.tsunamiContour{"height":"1 m"}'],
+      ['line', 'globe.impactMap.tsunamiContour{"height":"3 m"}'],
+      ['line', 'globe.impactMap.tsunamiContour{"height":"6 m"}'],
+    ]);
+    expect(layer?.notes.map((n) => n.text)).toContain(
+      'globe.impactMap.note.tsunamiVeilGlobal{"top":"38 m"}'
+    );
+    const local = buildImpactLayer(ocean, 'tsunami', {
+      ...ctx,
+      waveMap: { ...drawn, scope: 'local', veilTop: 10 },
+    });
+    expect(local?.colorbar?.ticks.map((tick) => tick.label)).toEqual(['1 m', '3 m', '6 m', '10 m']);
+    expect(local?.notes.map((n) => n.text)).toContain(
+      'globe.impactMap.note.tsunamiVeilLocal{"top":"10 m"}'
+    );
+  });
+
+  it('says what raised the wave and in how much water', () => {
+    const layer = buildImpactLayer(neworleans, 'tsunami', ctx);
+    const source = layer?.notes[0]?.text ?? '';
+    expect(source).toContain('globe.impactMap.note.tsunamiSourceProgram');
+    expect(source).toContain('"depth":"1,17 m"');
+    expect(layer?.notes[2]?.text).toBe('globe.impactMap.note.tsunamiLimitLand');
+    expect(buildImpactLayer(ocean, 'tsunami', ctx)?.notes[2]?.text).toBe(
+      'globe.impactMap.note.tsunamiLimitSea'
+    );
   });
 });

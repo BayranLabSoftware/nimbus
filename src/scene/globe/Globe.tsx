@@ -60,6 +60,11 @@ import {
   toDeepWaterEquivalent,
   veilUpperBound,
   WAVE_CONTOUR_STYLES,
+  WAVE_CREST_CSS,
+  WAVE_ISOCHRONE_CSS,
+  WAVE_RUNUP_TIERS,
+  WAVE_STREAK_CSS,
+  waveRunupTier,
 } from '../heatmap.js';
 import { computeRunupField, extractAmplitudeContours } from '../../physics/tsunami/index.js';
 import { renderRadialEcdfBitmap } from '../radialEcdfBitmap.js';
@@ -129,8 +134,10 @@ import {
   buildImpactLayer,
   familyShapes,
   formatRange,
+  isFieldLayer,
   isolinePointAtBearing,
   resolveImpactLayer,
+  type WaveMapKey,
 } from './impactFieldMap.js';
 import {
   BASE_TONE,
@@ -534,6 +541,7 @@ export function Globe(): JSX.Element {
   const setLocation = useAppStore((s) => s.setLocation);
   const setShakingFieldBands = useAppStore((s) => s.setShakingFieldBands);
   const setShockFrontActive = useAppStore((s) => s.setShockFrontActive);
+  const setWaveMapKey = useAppStore((s) => s.setWaveMapKey);
   const impactFieldLayer = useAppStore((s) => s.impactFieldLayer);
   const impactUncertaintyKey = useAppStore((s) => s.impactUncertaintyKey);
   const { i18n: uiI18n } = useTranslation();
@@ -1395,6 +1403,7 @@ export function Globe(): JSX.Element {
     if (!location) {
       // No pin → wipe everything (result + marker) and bail.
       purgeSimulationEntities(viewer);
+      setWaveMapKey(null);
       viewer.scene.requestRender();
       return;
     }
@@ -1441,6 +1450,7 @@ export function Globe(): JSX.Element {
     // from the new payload. The prefix sweep also pulls down the
     // stale marker, which the block below re-creates.
     purgeSimulationEntities(viewer);
+    setWaveMapKey(null);
 
     // Anchor the sun to local solar noon over the picked longitude.
     // Driven from the rendering effect (not the viewer-init effect) so
@@ -1828,17 +1838,15 @@ export function Globe(): JSX.Element {
     const addRunupMarkers = (
       peaks: readonly { latitude: number; longitude: number; runupM: number }[],
       idPrefix: string
-    ): void => {
+    ): { from: number; css: string }[] => {
       const reduce =
         typeof window.matchMedia === 'function' &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const tiers = new Set<{ from: number; css: string }>();
       peaks.forEach((peak, index) => {
-        const tint =
-          peak.runupM >= 10
-            ? Color.fromCssColorString('#CC3C26')
-            : peak.runupM >= 5
-              ? Color.fromCssColorString('#E06E28')
-              : Color.fromCssColorString('#E8A33D');
+        const tier = waveRunupTier(peak.runupM);
+        tiers.add(tier);
+        const tint = Color.fromCssColorString(tier.css);
         const size = 7 + 9 * Math.min(1, peak.runupM / 15);
         const phase = (index * 467) % 1_400;
         const haloColor = reduce
@@ -1859,6 +1867,7 @@ export function Globe(): JSX.Element {
         });
         registerRingTooltip(`${idPrefix}-${index.toString()}`, 'tsunamiRunup', peak.runupM, tint);
       });
+      return WAVE_RUNUP_TIERS.filter((tier) => tiers.has(tier));
     };
 
     /**
@@ -3067,6 +3076,27 @@ export function Globe(): JSX.Element {
     // polylines, no run-up coastal markers, no closed-form rings —
     // anything the simulator computes about onshore inundation goes
     // to the analysis panel as text.
+    // B-113: what the wave map puts on the globe, as it puts it, for the
+    // legend to name that and nothing else.
+    const waveDrawn: {
+      scope: WaveMapKey['scope'];
+      veilTop: number | null;
+      veilOpacity: WaveMapKey['veilOpacity'];
+      contours: { threshold: number; css: string }[];
+      isochroneHours: number[];
+      crest: boolean;
+      streaks: boolean;
+      runup: { from: number; css: string }[];
+    } = {
+      scope: 'global',
+      veilTop: null,
+      veilOpacity: { min: 0, max: 0 },
+      contours: [],
+      isochroneHours: [],
+      crest: false,
+      streaks: false,
+      runup: [],
+    };
     if (bathymetricTsunami !== null) {
       const grid = useAppStore.getState().elevationGrid;
       // Cesium Rectangle.fromDegrees enforces lon ∈ [−180, 180] and
@@ -3143,6 +3173,11 @@ export function Globe(): JSX.Element {
               ? toDeepWaterEquivalent(gAmp.amplitudes, gGridForVeil.samples)
               : gAmp.amplitudes;
           const gDisplay = smoothFieldForContours(gDeep, gAmp.nLat, gAmp.nLon, 2);
+          const gTop = veilUpperBound(gDisplay);
+          const gOpacity = { min: 0.1, max: 0.34 };
+          const gLevels = WAVE_CONTOUR_STYLES.filter(({ threshold }) =>
+            levelSeparatesField(gDisplay, threshold)
+          );
           const gHeatmap = renderScalarFieldHeatmap(gDisplay, gAmp.nLat, gAmp.nLon, {
             opacity: 0.38,
             // Misurato sul posto: col tetto al 50% un impatto che porta
@@ -3152,10 +3187,10 @@ export function Globe(): JSX.Element {
             // sparivano sotto. A un terzo il campo si legge ancora ma
             // il pianeta resta visibile: è la differenza fra una
             // velatura e una coperta.
-            opacityByValue: { min: 0.1, max: 0.34 },
+            opacityByValue: gOpacity,
             colormap: 'waveVeil',
             valueMin: 1,
-            valueMax: veilUpperBound(gDisplay),
+            valueMax: gTop,
             transparentBelow: 1,
             scale: 'sqrt',
             // downsample 2× — the global 1024² grid maps to a 512²
@@ -3174,9 +3209,7 @@ export function Globe(): JSX.Element {
           contourCanvas.height = gHeatmap.canvas.height;
           drawContourOverlay(
             contourCanvas,
-            WAVE_CONTOUR_STYLES.filter(({ threshold }) =>
-              levelSeparatesField(gDisplay, threshold)
-            ).map(({ threshold, css }) => ({
+            gLevels.map(({ threshold, css }) => ({
               css,
               segments:
                 extractAmplitudeContours({
@@ -3222,6 +3255,11 @@ export function Globe(): JSX.Element {
               height: 1_000,
             },
           });
+          if (gDisplay.some((v) => v > 1)) {
+            waveDrawn.veilTop = gTop;
+            waveDrawn.veilOpacity = gOpacity;
+          }
+          waveDrawn.contours = [...gLevels];
         } catch (err: unknown) {
           console.warn('[Globe] global amplitude heatmap render failed:', err);
         }
@@ -3236,7 +3274,7 @@ export function Globe(): JSX.Element {
             // size and colour do NOT encode intensity (the heatmap
             // does that). Only the rotation varies, which is the
             // local direction of propagation.
-            const COMET_COLOR = Color.fromCssColorString('#BFE8F5');
+            const COMET_COLOR = Color.fromCssColorString(WAVE_STREAK_CSS);
             const cometMaterial = new PolylineGlowMaterialProperty({
               color: COMET_COLOR.withAlpha(0.55),
               glowPower: 0.3,
@@ -3347,6 +3385,7 @@ export function Globe(): JSX.Element {
                 totalArrows++;
               }
             }
+            if (totalArrows > 0) waveDrawn.streaks = true;
             if (import.meta.env.DEV) {
               console.info(
                 `[Globe] tsunami arrows: ${totalArrows.toString()} placed (${candidateCount.toString()} candidates, step ${stepDeg.toString()}°×${stepDeg.toString()}°, cap ${MAX_ARROWS.toString()})`
@@ -3400,7 +3439,7 @@ export function Globe(): JSX.Element {
           // velatura calda di un evento catastrofico (misurato: la
           // cresta toccava lo 0,3 % dei pixel). La coda scende al blu
           // profondo, cosi' la direzione di marcia resta leggibile.
-          const CREST_HEAD = Color.fromCssColorString('#63D2FF');
+          const CREST_HEAD = Color.fromCssColorString(WAVE_CREST_CSS);
           const CREST_TAIL = Color.fromCssColorString('#1B5FAF');
           // Un colore-istanza dedicato per fotogramma, passato al
           // materiale UNA volta e poi mutato sul posto. La prima
@@ -3446,6 +3485,7 @@ export function Globe(): JSX.Element {
             );
           });
           if (frameEntities.length > 0) {
+            waveDrawn.crest = frameEntities.some((entities) => entities.length > 0);
             // La corsa dura 9 s, poi la cresta si spegne e resta buio
             // per 1,8 s prima di ricominciare. Senza questa pausa il
             // fronte rientrava di colpo alla sorgente e l'occhio lo
@@ -3579,10 +3619,10 @@ export function Globe(): JSX.Element {
         try {
           const ISOCHRONE_HOURS = [1, 2, 4, 8];
           const isoMaterial = new PolylineDashMaterialProperty({
-            color: Color.fromCssColorString('#CFE8F2').withAlpha(0.4),
+            color: Color.fromCssColorString(WAVE_ISOCHRONE_CSS).withAlpha(0.4),
             dashLength: 12,
           });
-          const isoLabelColor = Color.fromCssColorString('#CFE8F2').withAlpha(0.85);
+          const isoLabelColor = Color.fromCssColorString(WAVE_ISOCHRONE_CSS).withAlpha(0.85);
           for (const hours of ISOCHRONE_HOURS) {
             const chains = stitchSegmentsIntoChains(
               extractFrontContour({
@@ -3599,6 +3639,7 @@ export function Globe(): JSX.Element {
             )
               .sort((a, b) => b.length - a.length)
               .slice(0, 6);
+            if (chains.length > 0) waveDrawn.isochroneHours.push(hours);
             chains.forEach((chain, i) => {
               viewer.entities.add({
                 id: `tsunami-isochrone-${hours.toString()}h-${i.toString()}`,
@@ -3649,7 +3690,7 @@ export function Globe(): JSX.Element {
               ),
               { binDeg: 3, minRunupM: 2, maxCount: 14 }
             );
-            addRunupMarkers(peaks, 'tsunami-runup-global');
+            waveDrawn.runup.push(...addRunupMarkers(peaks, 'tsunami-runup-global'));
           }
         } catch (err: unknown) {
           console.warn('[Globe] global runup markers failed:', err);
@@ -3696,20 +3737,23 @@ export function Globe(): JSX.Element {
             ampField.nLon,
             2
           );
+          const localTop = veilUpperBound(localDisplay);
+          const localOpacity = { min: 0.12, max: 0.36 };
+          const localLevels = WAVE_CONTOUR_STYLES.filter(({ threshold }) =>
+            levelSeparatesField(localDisplay, threshold)
+          );
           const ampHeatmap = renderScalarFieldHeatmap(localDisplay, ampField.nLat, ampField.nLon, {
             opacity: 0.45,
-            opacityByValue: { min: 0.12, max: 0.36 },
+            opacityByValue: localOpacity,
             colormap: 'waveVeil',
             valueMin: 1,
-            valueMax: veilUpperBound(localDisplay),
+            valueMax: localTop,
             transparentBelow: 1,
             scale: 'sqrt',
           });
           drawContourOverlay(
             ampHeatmap.canvas,
-            WAVE_CONTOUR_STYLES.filter(({ threshold }) =>
-              levelSeparatesField(localDisplay, threshold)
-            ).map(({ threshold, css }) => ({
+            localLevels.map(({ threshold, css }) => ({
               css,
               segments:
                 extractAmplitudeContours({
@@ -3742,6 +3786,12 @@ export function Globe(): JSX.Element {
               height: 0,
             },
           });
+          waveDrawn.scope = 'local';
+          if (localDisplay.some((v) => v > 1)) {
+            waveDrawn.veilTop = localTop;
+            waveDrawn.veilOpacity = localOpacity;
+          }
+          waveDrawn.contours = [...localLevels];
         } catch (err: unknown) {
           console.warn('[Globe] local amplitude heatmap render failed:', err);
         }
@@ -3761,7 +3811,7 @@ export function Globe(): JSX.Element {
         try {
           const ampField = bathymetricTsunami.amplitude;
           const arrField = bathymetricTsunami.field;
-          const LOCAL_COMET_COLOR = Color.fromCssColorString('#BFE8F5');
+          const LOCAL_COMET_COLOR = Color.fromCssColorString(WAVE_STREAK_CSS);
           const localCometMaterial = new PolylineGlowMaterialProperty({
             color: LOCAL_COMET_COLOR.withAlpha(0.55),
             glowPower: 0.3,
@@ -3822,6 +3872,7 @@ export function Globe(): JSX.Element {
               localArrows += 1;
             }
           }
+          if (localArrows > 0) waveDrawn.streaks = true;
           if (import.meta.env.DEV) {
             console.info(
               `[Globe] tsunami local arrows: ${localArrows.toString()} placed (stride ${stride.toString()} cells over ${ampField.nLat.toString()}×${ampField.nLon.toString()} tile)`
@@ -3840,12 +3891,25 @@ export function Globe(): JSX.Element {
               minRunupM: 2,
               maxCount: 8,
             });
-            addRunupMarkers(peaks, 'tsunami-runup-local');
+            waveDrawn.runup.push(...addRunupMarkers(peaks, 'tsunami-runup-local'));
           }
         } catch (err: unknown) {
           console.warn('[Globe] local runup markers failed:', err);
         }
       }
+    }
+    if (
+      waveDrawn.veilTop !== null ||
+      waveDrawn.contours.length > 0 ||
+      waveDrawn.isochroneHours.length > 0 ||
+      waveDrawn.crest ||
+      waveDrawn.streaks ||
+      waveDrawn.runup.length > 0
+    ) {
+      setWaveMapKey({
+        ...waveDrawn,
+        runup: WAVE_RUNUP_TIERS.filter((tier) => waveDrawn.runup.includes(tier)),
+      });
     }
 
     // Ring animation start is deferred until after the camera fly-to
@@ -4308,6 +4372,7 @@ export function Globe(): JSX.Element {
     // listing it satisfies the rule without re-running the redraw.
     setShakingFieldBands,
     setShockFrontActive,
+    setWaveMapKey,
   ]);
 
   // --- An impact's map (ROADMAP IMP-7b) ---------------------------------
@@ -4328,20 +4393,22 @@ export function Globe(): JSX.Element {
     if (!viewer || viewer.isDestroyed()) return;
     for (const id of clearImpactFieldLayer(viewer)) tooltipMetaRef.current.delete(id);
     const impact = result?.type === 'impact' ? result : null;
-    // Under an impact's map the imagery turns to greys; back otherwise.
-    setImageryTone(viewer.imageryLayers.get(0), impact === null ? BASE_TONE : MAP_TONE);
     const anchor = lastEvaluatedAtLocation ?? location;
-    if (impact === null || anchor === null) {
-      viewer.scene.requestRender();
-      return;
-    }
     const ctx = {
       t: i18next.t.bind(i18next),
       language: uiLanguage,
       uncertaintyKey: impactUncertaintyKey,
     };
-    const layer = resolveImpactLayer(impact.data, impactFieldLayer, ctx);
-    if (layer === null) {
+    const layer = impact === null ? null : resolveImpactLayer(impact.data, impactFieldLayer, ctx);
+    // Under an impact's map the imagery turns to greys; back otherwise, and
+    // under the tsunami's layer, whose wave map was drawn on the colours.
+    setImageryTone(
+      viewer.imageryLayers.get(0),
+      layer === null || !isFieldLayer(layer.id) ? BASE_TONE : MAP_TONE
+    );
+    // The tsunami's layer takes the field off the globe and draws nothing of
+    // its own: the wave map the redraw above has drawn is what it shows.
+    if (impact === null || anchor === null || layer === null || !isFieldLayer(layer.id)) {
       viewer.scene.requestRender();
       return;
     }

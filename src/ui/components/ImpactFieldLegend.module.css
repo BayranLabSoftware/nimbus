@@ -151,6 +151,29 @@
   );
 }
 
+/* Keys of what the globe draws as lines and points (the wave map). */
+.line,
+.dashed {
+  height: 3px;
+  border: 0;
+  border-radius: 2px;
+  justify-self: center;
+}
+
+.dashed {
+  height: 2px;
+  background-image: repeating-linear-gradient(90deg, currentColor 0 5px, transparent 5px 8px);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 0;
+  justify-self: center;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 35%, transparent);
+}
+
 .notes {
   margin: 0;
   display: flex;

@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { computeValueRange, levelSeparatesField, veilUpperBound } from './heatmap.js';
+import {
+  computeValueRange,
+  heatmapColorAt,
+  levelSeparatesField,
+  veilUpperBound,
+  waveRunupTier,
+  WAVE_RUNUP_TIERS,
+} from './heatmap.js';
 
 describe('computeValueRange', () => {
   it('returns the min / max of a finite, positive field', () => {
@@ -103,5 +110,29 @@ describe('veilUpperBound', () => {
 
   it('non scende mai sotto i dieci metri', () => {
     expect(veilUpperBound(new Float32Array([0.1, 0.2, 0.3]))).toBe(10);
+  });
+});
+
+describe('heatmapColorAt, the colour a legend reads its scale with', () => {
+  it('paints the foot of the veil in its first stop and its top in its last', () => {
+    expect(heatmapColorAt(1, 1, 10, 'waveVeil', 'sqrt')).toEqual([10, 28, 60]);
+    expect(heatmapColorAt(10, 1, 10, 'waveVeil', 'sqrt')).toEqual([178, 24, 32]);
+    expect(heatmapColorAt(400, 1, 10, 'waveVeil', 'sqrt')).toEqual([178, 24, 32]);
+  });
+
+  it('bends the veil on a square root: a quarter of the way up is halfway along its ramp', () => {
+    // Eleven stops: halfway is the sixth.
+    expect(heatmapColorAt(1 + 9 / 4, 1, 10, 'waveVeil', 'sqrt')).toEqual([52, 120, 150]);
+    expect(heatmapColorAt(5.5, 1, 10, 'waveVeil')).toEqual([52, 120, 150]);
+  });
+});
+
+describe('waveRunupTier', () => {
+  it('draws a run-up in the highest tier whose foot it reaches', () => {
+    expect(waveRunupTier(2)).toBe(WAVE_RUNUP_TIERS[0]);
+    expect(waveRunupTier(4.99)).toBe(WAVE_RUNUP_TIERS[0]);
+    expect(waveRunupTier(5)).toBe(WAVE_RUNUP_TIERS[1]);
+    expect(waveRunupTier(10)).toBe(WAVE_RUNUP_TIERS[2]);
+    expect(waveRunupTier(80)).toBe(WAVE_RUNUP_TIERS[2]);
   });
 });

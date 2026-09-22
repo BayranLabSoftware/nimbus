@@ -13,6 +13,7 @@ import type { ImpactScenarioResult } from '../../../physics/simulate.js';
 import { joulesToMegatons, radiansToDegrees } from '../../../physics/units.js';
 import {
   availableImpactLayers,
+  isFieldLayer,
   probabilityRadius,
   windReachM,
   WIND_LEVELS_KMH,
@@ -544,11 +545,15 @@ export function buildImpactReport(
   ctx: ImpactReportContext
 ): ImpactReportModel {
   const { t, language } = ctx;
+  // The tsunami's layer is the globe's wave map, which a flat map of the
+  // report does not draw; the wave is in the numbers.
   const figures = availableImpactLayers(result, {
     t,
     language,
     uncertaintyKey: ctx.uncertaintyKey,
-  }).map((layer, i) => ({ number: i + 1, layer }));
+  })
+    .filter((layer) => isFieldLayer(layer.id))
+    .map((layer, i) => ({ number: i + 1, layer }));
   const name = ctx.presetName ?? t('report.impact.custom');
   return {
     title: t('report.title'),

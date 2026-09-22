@@ -47,6 +47,13 @@ import {
 } from '../../physics/events/impact/seismic.js';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
 import { J, m, Pa } from '../../physics/units.js';
+import {
+  heatmapColorAt,
+  WAVE_CREST_CSS,
+  WAVE_ISOCHRONE_CSS,
+  WAVE_RUNUP_TIERS,
+  WAVE_STREAK_CSS,
+} from '../heatmap.js';
 import { projectAlongAzimuth } from '../stadiumPolygon.js';
 import { RING_RADIUS_SIGMA } from './ringSigma.js';
 import { INTENSITY_BANDS } from './shakingOverlay.js';
@@ -221,6 +228,7 @@ export type ImpactLayerId =
   | 'thermal'
   | 'ejecta'
   | 'shaking'
+  | 'tsunami'
   | 'uncertainty';
 
 export const IMPACT_LAYER_ORDER: readonly ImpactLayerId[] = [
@@ -229,8 +237,16 @@ export const IMPACT_LAYER_ORDER: readonly ImpactLayerId[] = [
   'thermal',
   'ejecta',
   'shaking',
+  'tsunami',
   'uncertainty',
 ];
+
+/** The layers drawn as a field of this module. The tsunami's is the wave
+ *  map the globe has always drawn for it (`Globe.tsx`), which the report's
+ *  flat maps cannot draw: it prints the wave in its numbers instead. */
+export function isFieldLayer(id: ImpactLayerId): boolean {
+  return id !== 'tsunami';
+}
 
 export type FamilyId = 'blast' | 'heat' | 'ejecta' | 'crater' | 'circle';
 
@@ -301,6 +317,9 @@ export interface CategoryKey {
   color: string;
   hatched: boolean;
   label: string;
+  /** What it is on the globe when not an area: a line, a dashed line or a
+   *  point; the key is drawn the same way. */
+  shape?: 'line' | 'dashed' | 'dot';
 }
 
 /** How the ground is coloured: a colour for each nominal radius, read in the
@@ -348,6 +367,34 @@ export interface ImpactMapContext {
   language: string;
   /** The threshold the uncertainty view reads; the first it has when null. */
   uncertaintyKey?: string | null;
+  /** What the globe's wave map has drawn, for the tsunami's layer to name
+   *  it and nothing else; null while it has drawn nothing. */
+  waveMap?: WaveMapKey | null;
+}
+
+/**
+ * What the globe's wave map has on the globe (`Globe.tsx`, the tsunami's
+ * drawing of every module), as it drew it: a key is a promise that something
+ * is drawn (B-107), so the tsunami's layer lists these and only these.
+ */
+export interface WaveMapKey {
+  /** The planet's grid, or the tile about the source where the planet's
+   *  grid has no wave of a metre. */
+  scope: 'global' | 'local';
+  /** The veil's scale: its colour map runs from 1 m to this height (m), on
+   *  a square root; null when no cell of the veil passes 1 m. */
+  veilTop: number | null;
+  /** The veil's opacity at the foot and at the top of its scale. */
+  veilOpacity: { min: number; max: number };
+  /** The NOAA heights (m) drawn as isolines, with their colours. */
+  contours: readonly { threshold: number; css: string }[];
+  /** The hours drawn as dashed lines of arrival. */
+  isochroneHours: readonly number[];
+  /** The running crest, and the streaks of the wave's direction. */
+  crest: boolean;
+  streaks: boolean;
+  /** The tiers of the run-up markers on the coast, those drawn. */
+  runup: readonly { from: number; css: string }[];
 }
 
 // ---------------------------------------------------------------------------
@@ -1299,6 +1346,151 @@ function uncertaintyLayer(
   };
 }
 
+/** The veil's colour map in the legend, from its foot to its top, as the
+ *  heatmap paints it (`heatmapColorAt`): the bar is logarithmic, so each of
+ *  its stops is sampled at its own height. */
+function veilPalette(top: number): string[] {
+  const hex = (c: number): string => Math.round(c).toString(16).padStart(2, '0');
+  return Array.from({ length: 17 }, (_, i) => {
+    const height = 10 ** ((i / 16) * Math.log10(top));
+    const [r, g, b] = heatmapColorAt(height, 1, top, 'waveVeil', 'sqrt');
+    return `#${hex(r)}${hex(g)}${hex(b)}`;
+  });
+}
+
+/**
+ * The wave, where the impact raises one (Andrea's choice of 22 September
+ * 2026): a layer of its own in the map's tabs, which takes the field off the
+ * globe so that the wave map the globe has always drawn is seen as it was
+ * before the field covered it. What is drawn is that map's, untouched; this
+ * layer names what it has drawn (`ctx.waveMap`) and says where it comes from.
+ */
+function tsunamiLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): ImpactMapLayer | null {
+  const wave = result.tsunami;
+  if (wave === undefined) return null;
+  const { t, language } = ctx;
+  const drawn = ctx.waveMap ?? null;
+  const metres = (v: number, digits: number): string => `${formatNumber(v, digits, language)} m`;
+  const source = wave.rimWaveSourceAmplitude as number;
+  const onLand = ((result.inputs.shoreDistance as number | undefined) ?? 0) > 0;
+  const top = drawn?.veilTop ?? null;
+  const colorbar: ColorbarSpec | null =
+    top === null
+      ? null
+      : {
+          palette: veilPalette(top),
+          lo: 0,
+          hi: Math.log10(top),
+          log: true,
+          ticks: [1, 3, 6, 10, ...(top >= 20 ? [top] : [])]
+            .filter((h) => h <= top)
+            .map((h) => ({ value: Math.log10(h), label: metres(h, 0) })),
+          marks: [],
+        };
+  const categories: CategoryKey[] =
+    drawn === null
+      ? []
+      : [
+          ...drawn.contours.map((c) => ({
+            color: c.css,
+            hatched: false,
+            shape: 'line' as const,
+            label: t('globe.impactMap.tsunamiContour', { height: metres(c.threshold, 0) }),
+          })),
+          ...(drawn.isochroneHours.length > 0
+            ? [
+                {
+                  color: WAVE_ISOCHRONE_CSS,
+                  hatched: false,
+                  shape: 'dashed' as const,
+                  label: t('globe.impactMap.tsunamiIsochrones', {
+                    hours: drawn.isochroneHours.map((h) => `+${h.toString()} h`).join(' · '),
+                  }),
+                },
+              ]
+            : []),
+          ...(drawn.crest
+            ? [
+                {
+                  color: WAVE_CREST_CSS,
+                  hatched: false,
+                  shape: 'line' as const,
+                  label: t('globe.impactMap.tsunamiCrest'),
+                },
+              ]
+            : []),
+          ...(drawn.streaks
+            ? [
+                {
+                  color: WAVE_STREAK_CSS,
+                  hatched: false,
+                  shape: 'line' as const,
+                  label: t('globe.impactMap.tsunamiStreaks'),
+                },
+              ]
+            : []),
+          ...drawn.runup.map((tier) => {
+            const next = WAVE_RUNUP_TIERS.find((c) => c.from > tier.from);
+            return {
+              color: tier.css,
+              hatched: false,
+              shape: 'dot' as const,
+              label:
+                next === undefined
+                  ? t('globe.impactMap.tsunamiRunupFrom', { height: metres(tier.from, 0) })
+                  : t('globe.impactMap.tsunamiRunupBand', {
+                      low: formatNumber(tier.from, 0, language),
+                      high: metres(next.from, 0),
+                    }),
+            };
+          }),
+        ];
+  return {
+    id: 'tsunami',
+    tab: t('globe.impactMap.layer.tsunami.tab'),
+    title: t('globe.impactMap.layer.tsunami.title'),
+    unit: t('globe.impactMap.layer.tsunami.unit'),
+    field: null,
+    isolines: [],
+    colorbar,
+    categories,
+    notes: [
+      {
+        label: t('globe.impactMap.noteLabel.source'),
+        text: t(
+          wave.farFieldLaw === 'program'
+            ? 'globe.impactMap.note.tsunamiSourceProgram'
+            : 'globe.impactMap.note.tsunamiSourceRimWave',
+          {
+            amplitude: metres(source, source < 10 ? 2 : 0),
+            depth: metres((result.inputs.waterDepth as number | undefined) ?? 0, 2),
+          }
+        ),
+      },
+      {
+        label: t('globe.impactMap.noteLabel.reading'),
+        text:
+          drawn === null
+            ? t('globe.impactMap.note.tsunamiNothing')
+            : top === null
+              ? t('globe.impactMap.note.tsunamiLinesOnly')
+              : t(
+                  drawn.scope === 'global'
+                    ? 'globe.impactMap.note.tsunamiVeilGlobal'
+                    : 'globe.impactMap.note.tsunamiVeilLocal',
+                  { top: metres(top, 0) }
+                ),
+      },
+      {
+        label: t('globe.impactMap.noteLabel.limit'),
+        text: t(
+          onLand ? 'globe.impactMap.note.tsunamiLimitLand' : 'globe.impactMap.note.tsunamiLimitSea'
+        ),
+      },
+    ],
+  };
+}
+
 /** The layers this result draws, in the order the legend offers them. */
 export function availableImpactLayers(
   result: ImpactScenarioResult,
@@ -1325,6 +1517,8 @@ export function buildImpactLayer(
       return ejectaLayer(result, ctx);
     case 'shaking':
       return shakingLayer(result, ctx);
+    case 'tsunami':
+      return tsunamiLayer(result, ctx);
     case 'uncertainty':
       return uncertaintyLayer(result, ctx);
   }

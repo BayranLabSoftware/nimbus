@@ -1115,6 +1115,11 @@
           "tab": "Accordo del campo",
           "title": "Accordo del campo su {{threshold}}",
           "unit": "la forchetta che Collins et al. (2017) danno alle loro approssimazioni"
+        },
+        "tsunami": {
+          "tab": "Tsunami",
+          "title": "L'onda in mare",
+          "unit": "altezza dell'onda riportata a 1000 m di profondità con la legge di Green · m"
         }
       },
       "markWithWind": "{{range}} · vento {{wind}} km/h",
@@ -1153,7 +1158,15 @@
         "probabilityIsolines": "90, 50 e 10 %; il 50 % è la linea della carta del campo",
         "agreementReading": "tutta la forchetta supera la soglia fino a {{low}}; solo il suo bordo alto fino a {{high}}",
         "agreementNowhere": "in nessun punto tutta la forchetta supera la soglia; il suo bordo alto sì, fino a {{high}}",
-        "agreementNot": "una probabilità: è la forchetta che il campo dà ai propri modelli, e per questo non la si trasforma in percentuali"
+        "agreementNot": "una probabilità: è la forchetta che il campo dà ai propri modelli, e per questo non la si trasforma in percentuali",
+        "tsunamiSourceProgram": "alla sorgente {{amplitude}}, a un diametro del cratere d'acqua dal punto d'impatto, mai più alta dell'acqua in cui nasce ({{depth}}): la legge dell'Earth Impact Effects Program (Collins et al. 2005, regole 150–153)",
+        "tsunamiSourceRimWave": "alla sorgente {{amplitude}}, l'onda del bordo di Wünnemann, Collins & Weiss (2010), mai più alta dell'acqua in cui nasce ({{depth}})",
+        "tsunamiVeilGlobal": "velatura semitrasparente sul reticolo del pianeta, da 1 m a {{top}} (il 98° percentile del campo, mai meno di 10 m); sotto 1 m nessun colore. Le ore d'arrivo sono calcolate sul fondale vero (Fast Marching)",
+        "tsunamiVeilLocal": "velatura semitrasparente sul riquadro attorno alla sorgente, perché sul reticolo del pianeta l'onda non arriva a 1 m: da 1 m a {{top}} (il 98° percentile del campo, mai meno di 10 m); sotto 1 m nessun colore",
+        "tsunamiLinesOnly": "nessuna cella della velatura supera 1 m; restano le linee e i segni elencati sopra",
+        "tsunamiNothing": "sul globo non c'è ancora nulla: nessuna cella supera 1 m, o il calcolo sul fondale non è finito",
+        "tsunamiLimitLand": "un impatto sulla terraferma solleva l'onda solo con il segmento di cratere che cade in mare; gli ejecta che ricadono in acqua non sono contati, perché nessuno ha pubblicato quanto sollevano (regole 267–273)",
+        "tsunamiLimitSea": "la risalita sulla costa è una stima su spiaggia piana (Synolakis 1987), non una mappa d'inondazione"
       },
       "source": {
         "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 al suolo (regole 748–755), verificata contro l'Earth Impact Effects Program (I1)",
@@ -1200,7 +1213,13 @@
       "probabilityLevel": "{{p}} %",
       "upTo": "fino a {{range}}",
       "agreementAll": "superata da tutta la forchetta, anche dal bordo basso (P/2) · fino a {{range}}",
-      "agreementSome": "superata solo dal bordo alto (2P) · fino a {{range}}"
+      "agreementSome": "superata solo dal bordo alto (2P) · fino a {{range}}",
+      "tsunamiContour": "isolinea di {{height}} (soglia NOAA)",
+      "tsunamiIsochrones": "ore d'arrivo: {{hours}}",
+      "tsunamiCrest": "la cresta, che ripercorre l'arrivo dell'onda",
+      "tsunamiStreaks": "direzione dell'onda, dove supera 1 m",
+      "tsunamiRunupBand": "risalita sulla costa da {{low}} a {{high}}",
+      "tsunamiRunupFrom": "risalita sulla costa oltre {{height}}"
     }
   },
   "report": {

@@ -674,6 +674,39 @@ English, the contrast of every printed word above 3 in the impact's report and
 in an earthquake's, A4 pages — and printed on the Mac for Meteor Crater,
 Tunguska and Chicxulub in both languages, with and without the globe behind.
 
+#### IMP-7d, 22 September 2026: an impact's wave, in a tab of its own
+
+Andrea asked that evening why Chicxulub on New Orleans raised no tsunami. It
+raised one: the model computed it and the globe drew its wave map — but under
+the field of the layer chosen, which since IMP-7b covers the globe whenever an
+impact is drawn, with nothing to take it off (B-113). He chose **a «Tsunami»
+tab in the map's legend**, which takes the field off and shows the wave map as
+it was drawn before.
+
+**Done the same day.** `impactFieldMap.ts` offers a `tsunami` layer wherever
+the result raises a wave, between the shaking and the uncertainty view; it is
+not a field (`isFieldLayer`), so the globe draws nothing of its own for it and
+turns the imagery back to its colours, and the report, whose flat maps cannot
+draw the wave, prints no figure of it. What its legend keys is what the globe
+says it drew: `Globe.tsx` records, as it draws the wave map of any module,
+the veil's scope and the top of its scale, the NOAA isolines that divide the
+field, the hours of arrival drawn, the crest, the streaks and the tiers of the
+run-up markers (`waveMapKey` in the store), and the legend reads the veil's
+scale with the heatmap's own colour function (`heatmapColorAt`) and the wave
+map's colours from `heatmap.ts`, where the globe now reads them too. Its notes
+say what raised the wave and in how much water, how to read the veil, and
+what the wave of an impact on land leaves out (rules 267 to 273).
+
+New Orleans shows why the reader saw nothing: its source is 0.44 m, raised in
+the 1.17 m of water of the nearest sea cell, and no cell of the veil passes a
+metre; what is drawn is the hours of arrival, the crest, the streaks and the
+run-up of two to five metres on the coast. Whether that source should rise in
+the water the crater reaches rather than in the nearest cell's is the next
+entry's question. Seen and left to the tsunami's own turn: with the planet's
+veil drawn, the coast within 1.5° of the source gets no run-up marker (the
+local tile that would carry them is drawn only without the planet's veil),
+and the status line says «global + local» when only the global is drawn.
+
 #### IMP-9, 21 September 2026: the verdict — impacts at 7.0, and what is missing
 
 _Updated that night: with G6 met by rules 780 to 787 impacts count **8.0**,

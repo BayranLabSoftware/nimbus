@@ -2239,6 +2239,37 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(globe).toContain('window.cancelIdleCallback(warmPickRef.current)');
   });
 
+  it('B-113 An impact’s wave is seen: its own layer takes the field off, and names only what is drawn', () => {
+    // Pre-fix: the field of the layer chosen covered the globe whenever an
+    // impact raised a tsunami, greys over the wave map and nothing to take
+    // them off; Chicxulub on New Orleans read as if it raised no wave.
+    const neworleans = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(1.17),
+      shoreDistance: m(9_245),
+    });
+    expect(neworleans.tsunami).toBeDefined();
+    const globe = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/Globe.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(globe).toContain('layer === null || !isFieldLayer(layer.id) ? BASE_TONE : MAP_TONE');
+    expect(globe).toContain(
+      'if (impact === null || anchor === null || layer === null || !isFieldLayer(layer.id)) {'
+    );
+    // The legend's keys are what the globe says it drew, cleared with it.
+    expect(globe).toContain('setWaveMapKey(null);');
+    expect(globe).toContain('setWaveMapKey({');
+    // And each of the wave map's colours is read where the legend reads it.
+    for (const literal of ['#CFE8F2', '#63D2FF', '#BFE8F5', '#CC3C26', '#E06E28', '#E8A33D']) {
+      expect(globe).not.toContain(`'${literal}'`);
+    }
+    // The report's flat maps do not draw the wave map: no figure of it.
+    const figures = impactReportOf(neworleans).figures.map((f) => f.layer.id);
+    expect(figures).not.toContain('tsunami');
+    expect(figures.length).toBeGreaterThan(0);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.

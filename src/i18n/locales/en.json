@@ -1115,6 +1115,11 @@
           "tab": "Field agreement",
           "title": "Agreement of the field on {{threshold}}",
           "unit": "the band Collins et al. (2017) give their own approximations"
+        },
+        "tsunami": {
+          "tab": "Tsunami",
+          "title": "The wave at sea",
+          "unit": "the wave's height carried to 1,000 m of depth by Green's law · m"
         }
       },
       "markWithWind": "{{range}} · wind {{wind}} km/h",
@@ -1153,7 +1158,15 @@
         "probabilityIsolines": "90, 50 and 10 %; 50 % is the line of the map of the field",
         "agreementReading": "the whole band exceeds the threshold out to {{low}}; only its upper edge out to {{high}}",
         "agreementNowhere": "nowhere does the whole band exceed the threshold; its upper edge does, out to {{high}}",
-        "agreementNot": "a probability: it is the band the field gives its own models, and so it is not turned into percentages"
+        "agreementNot": "a probability: it is the band the field gives its own models, and so it is not turned into percentages",
+        "tsunamiSourceProgram": "{{amplitude}} at the source, one water crater's diameter from the point of impact, never taller than the water it is raised in ({{depth}}): the Earth Impact Effects Program's law (Collins et al. 2005, rules 150 to 153)",
+        "tsunamiSourceRimWave": "{{amplitude}} at the source, the rim wave of Wünnemann, Collins & Weiss (2010), never taller than the water it is raised in ({{depth}})",
+        "tsunamiVeilGlobal": "a see-through veil over the planet's grid, from 1 m to {{top}} (the field's 98th percentile, never under 10 m); below 1 m no colour. The hours of arrival are computed over the real sea floor (Fast Marching)",
+        "tsunamiVeilLocal": "a see-through veil over the tile about the source, since on the planet's grid the wave does not reach 1 m: from 1 m to {{top}} (the field's 98th percentile, never under 10 m); below 1 m no colour",
+        "tsunamiLinesOnly": "no cell of the veil passes 1 m; the lines and marks listed above remain",
+        "tsunamiNothing": "nothing on the globe yet: no cell passes 1 m, or the computation over the sea floor has not finished",
+        "tsunamiLimitLand": "an impact on land raises the wave only with the segment of its crater that lies in the sea; ejecta falling into the water are not counted, for nobody has published how much they raise (rules 267 to 273)",
+        "tsunamiLimitSea": "the run-up on the coast is a plane-beach estimate (Synolakis 1987), not a map of the flooding"
       },
       "source": {
         "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 at the ground (rules 748 to 755), verified against the Earth Impact Effects Program (I1)",
@@ -1200,7 +1213,13 @@
       "probabilityLevel": "{{p}} %",
       "upTo": "out to {{range}}",
       "agreementAll": "exceeded by the whole band, its low edge (P/2) included · out to {{range}}",
-      "agreementSome": "exceeded only by the upper edge (2P) · out to {{range}}"
+      "agreementSome": "exceeded only by the upper edge (2P) · out to {{range}}",
+      "tsunamiContour": "isoline of {{height}} (a NOAA threshold)",
+      "tsunamiIsochrones": "hours of arrival: {{hours}}",
+      "tsunamiCrest": "the crest, replaying the wave's arrival",
+      "tsunamiStreaks": "the wave's direction, where it passes 1 m",
+      "tsunamiRunupBand": "run-up on the coast from {{low}} to {{high}}",
+      "tsunamiRunupFrom": "run-up on the coast above {{height}}"
     }
   },
   "report": {
