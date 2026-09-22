@@ -1,11 +1,18 @@
 {
   "seed": "impact-seal-v1",
+  "engine": {"node":"v22.20.0","icu":"77.1","platform":"darwin-arm64"},
   "reasons": [
       {
           "date": "2026-09-22",
           "commit": "246bfac",
           "openedBy": "rules 826 to 835",
           "moved": "nothing: the first seal"
+      },
+      {
+          "date": "2026-09-22",
+          "commit": "bd01331",
+          "openedBy": "rule 836: the seal names the engine it was read on, after the CI on Node 20 read 782 digests moved",
+          "moved": "nothing: every digest is the one sealed at bd01331; the file gains the engine"
       }
   ],
   "readings": [

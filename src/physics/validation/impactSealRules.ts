@@ -147,6 +147,9 @@
  *     reproduce; the second reading of five scenarios taken apart from the
  *     first is identical too, so no reading depends on a clock or on what the
  *     scenario before it left behind.
+ *     [Corrected on 23 September 2026, rule 836: on the same machine. Read on
+ *     the CI runner, on another Node, 782 of the 1 232 moved — "reproduces"
+ *     held on one engine and was written as if it held on every one.]
  * (b) One unit in the last place of the chondritic density — 3 000 to
  *     3 000.000 000 000 000 5 kg/m³, tried on a scratch tree and reverted —
  *     turns the test red on eleven digests of four presets, and the message
@@ -177,4 +180,44 @@
  * presets do.
  */
 export const IMPACT_SEAL_OUTCOME =
-  'ADOPTED 22 September 2026: the impacts module is sealed to the bit — 308 scenarios, four digests each (numbers, drawing, report text in Italian and in English), 5.3 s on every commit. One unit in the last place of a density turns it red and names what moved.';
+  'ADOPTED 22 September 2026: the impacts module is sealed to the bit — 308 scenarios, four digests each (numbers, drawing, report text in Italian and in English), 5.3 s on every commit. One unit in the last place of a density turns it red and names what moved. To the bit on one engine: the Node version pinned in .nvmrc (rule 836).';
+
+/**
+ * 836. The engine. Written on 23 September 2026 after the CI had read the seal
+ *      of commit bd01331 red, so written knowing what it answers — and said so.
+ *
+ *      On the CI runner (Node 20, Linux x64), 782 of the 1 232 digests taken on
+ *      Andrea's machine (Node 22.20.0, ICU 77.1, macOS arm64) moved, and not
+ *      one of rule 830's key numbers did. Two causes, both of the engine and
+ *      neither of the model. The drawing and the report format their numbers,
+ *      and the report its date, through ICU, whose locale data changes between
+ *      Node releases: on ICU 77 Italian writes 1234,5 with no separator of the
+ *      thousands. And Meteor Crater's numbers moved as well, though they hold
+ *      no formatted text at all: the engine's arithmetic itself answered with
+ *      another last bit somewhere. Which of V8's routines, the failed run does
+ *      not say — its message reads only rule 830's table, which did not move.
+ *
+ *      So a seal to the bit is a seal on an engine, and it names its engine:
+ *      (a) the seal's file records the Node version it was read on, that
+ *          Node's ICU, and the platform;
+ *      (b) the repository pins one Node version, exact to the patch, in
+ *          `.nvmrc`, and the CI's verify job runs on that;
+ *      (c) the test refuses to compare digests on another Node or ICU and
+ *          says why, instead of listing hundreds of digests that moved for a
+ *          reason that is not the module's; and it fails if the seal's Node
+ *          is not the one `.nvmrc` pins;
+ *      (d) the re-seal script refuses to run on any Node but the pinned one;
+ *      (e) moving the engine is a re-seal under rule 833, with the move as its
+ *          reason, and it is a decision taken for itself — never a side effect
+ *          of another change.
+ *      The platform is recorded and not compared. V8 ships its own Math
+ *      routines instead of the system's, but whether the same Node answers
+ *      alike on the runner's x64 and on an arm64 Mac is not known here: it is
+ *      read by the first CI run after this rule. If it does not, the platform
+ *      joins clause (c), and the seal is taken where the CI compares.
+ *
+ *      What this does not change: the seal is still a statement about Node.
+ *      A browser runs its own engine, with its own ICU, and the seal says
+ *      nothing about the last bit a visitor's browser computes — it guards the
+ *      code against change, not the arithmetic of every machine that runs it.
+ */

@@ -15,12 +15,8 @@ permissions:
 
 jobs:
   verify:
-    name: verify (node ${{ matrix.node }})
+    name: verify
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node: [20]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,10 +24,14 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Setup Node ${{ matrix.node }}
+      - name: Setup Node
+        # The exact version in .nvmrc, not a major: the impacts seal is a
+        # digest to the bit, and ICU's formatting and V8's last bit move
+        # between Node releases (rule 836 of impactSealRules.ts). Moving it is
+        # a re-seal with that as its reason.
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version-file: .nvmrc
           cache: pnpm
 
       - name: Install dependencies
@@ -96,7 +96,6 @@ jobs:
         run: pnpm build-storybook --quiet
 
       - name: Upload coverage
-        if: matrix.node == 20
         uses: actions/upload-artifact@v4
         with:
           name: coverage

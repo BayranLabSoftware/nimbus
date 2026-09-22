@@ -446,8 +446,32 @@ export interface SealReason {
   moved: string;
 }
 
+/**
+ * Rule 836: the engine a seal was read on. A digest to the bit is a digest of
+ * what one engine answers: ICU formats the report's numbers and dates, and V8
+ * gives a Math function its last bit, and both change between Node versions.
+ */
+export interface SealEngine {
+  /** `process.version`, which fixes V8 and the ICU Node ships with. */
+  node: string;
+  /** The ICU the numbers and dates were formatted with. */
+  icu: string;
+  /** Recorded, not compared (rule 836). */
+  platform: string;
+}
+
+/** The engine this process runs on. */
+export function currentEngine(): SealEngine {
+  return {
+    node: process.version,
+    icu: process.versions.icu ?? 'none',
+    platform: `${process.platform}-${process.arch}`,
+  };
+}
+
 export interface SealFile {
   seed: string;
+  engine: SealEngine;
   reasons: SealReason[];
   readings: SealReading[];
 }

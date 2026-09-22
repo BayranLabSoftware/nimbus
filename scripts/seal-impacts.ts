@@ -14,13 +14,32 @@
  */
 
 import { execFileSync } from 'node:child_process';
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readSeal, sealTranslators, SEAL_SEED, type SealFile } from '../src/seal/impactSeal.js';
+import {
+  currentEngine,
+  readSeal,
+  sealTranslators,
+  SEAL_SEED,
+  type SealFile,
+} from '../src/seal/impactSeal.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'src', 'seal', 'impactSealData.json');
+
+// Rule 836(d): a seal taken on another Node would be compared by the CI on the
+// pinned one and read as a module that moved.
+const pinned = `v${readFileSync(join(ROOT, '.nvmrc'), 'utf8').trim()}`;
+const engine = currentEngine();
+if (engine.node !== pinned) {
+  console.error(
+    `Refusing to seal on Node ${engine.node}: the repository pins ${pinned} in .nvmrc, ` +
+      'and the CI compares on that (rule 836).\n' +
+      `  Seal on ${pinned}, or move .nvmrc first and give the move as the reason.`
+  );
+  process.exit(2);
+}
 
 function flag(name: string): string | null {
   const i = process.argv.indexOf(`--${name}`);
@@ -61,6 +80,7 @@ const seconds = (performance.now() - started) / 1_000;
 
 const file: SealFile = {
   seed: SEAL_SEED,
+  engine,
   reasons: [...(previous?.reasons ?? []), { date, commit, openedBy, moved }],
   readings,
 };
@@ -70,6 +90,7 @@ const file: SealFile = {
 const text = [
   '{',
   `  "seed": ${JSON.stringify(file.seed)},`,
+  `  "engine": ${JSON.stringify(file.engine)},`,
   `  "reasons": ${JSON.stringify(file.reasons, null, 4).replace(/\n/g, '\n  ')},`,
   '  "readings": [',
   file.readings.map((reading) => `    ${JSON.stringify(reading)}`).join(',\n'),

@@ -1,7 +1,9 @@
+import { readFileSync } from 'node:fs';
 import { beforeAll, describe, expect, it } from 'vitest';
 import sealed from './impactSealData.json' with { type: 'json' };
 import {
   buildSealScenarios,
+  currentEngine,
   readScenario,
   sealTranslators,
   SEAL_SEED,
@@ -62,7 +64,29 @@ describe('the seal of the impacts module', () => {
     expect(now.map((reading) => reading.id)).toEqual(file.readings.map((reading) => reading.id));
   });
 
+  it('was taken on the Node the repository pins', () => {
+    // Rule 836(b): the CI's verify job runs on `.nvmrc`, so a seal taken on
+    // any other Node would be compared on an engine it was never read on.
+    const pinned = `v${readFileSync(new URL('../../.nvmrc', import.meta.url), 'utf8').trim()}`;
+    expect(file.engine.node, 'the seal and .nvmrc name different Node versions').toBe(pinned);
+  });
+
   it('answers to the bit what it answered when it was sealed', () => {
+    // Rule 836(c): on another engine the digests move for reasons that are not
+    // the module's — ICU's formatting, V8's last bit — and listing hundreds of
+    // them would only hide that.
+    const engine = currentEngine();
+    if (engine.node !== file.engine.node || engine.icu !== file.engine.icu) {
+      throw new Error(
+        `The seal was taken on Node ${file.engine.node} (ICU ${file.engine.icu}); ` +
+          `this is Node ${engine.node} (ICU ${engine.icu}).\n` +
+          `A seal holds to the bit only on the engine it was taken on (rule 836): ICU formats ` +
+          `the report's numbers and dates, and V8 gives a Math function its last bit.\n` +
+          `Run the tests on ${file.engine.node}, the version in .nvmrc — or, if the engine is ` +
+          `being moved on purpose, move .nvmrc and re-seal with that as the reason.`
+      );
+    }
+
     const mismatches: Mismatch[] = [];
     for (const reading of now) {
       const was = file.readings.find((r) => r.id === reading.id);
