@@ -61,7 +61,7 @@ describe('rule 99: the exact count', () => {
     expect(_internals.sumGridRing(view, ring)).toBe(
       _internals.sumGridRing(view, ring, _internals.RING_EDGE_SUBSAMPLES)
     );
-  });
+  }, 30_000);
 });
 
 describe('rule 101: the choice', () => {

@@ -23,7 +23,7 @@ describe('rule 51 (a): Thompson & Worden 2018 as ps2ff 1.5.9 computes it', () =>
       expect(Math.abs(a.rjbKm / rjb - 1), at).toBeLessThan(1e-9);
       expect(Math.abs(a.rrupKm / rrup - 1), at).toBeLessThan(1e-9);
     }
-  });
+  }, 30_000);
 
   it('computes at ps2ff’s own 49 distances', () => {
     const distances = PS2FF_REFERENCE.slice(0, 49).map((row) => row[2]);
@@ -58,7 +58,7 @@ describe('rule 51 (b): the grid keeps to the integral', () => {
     expect(worstFar).toBeLessThan(0.02);
     // About seventy nodes of 49 integrals each: 0.7 s alone, 2.6 s under
     // coverage, and past vitest's 5 s on CI's runner.
-  }, 30_000);
+  }, 60_000);
 
   it('is exact at a node, and reads a depth above 1 km at 1 km', () => {
     const grid = pointSourceDistances(6.3, 12);

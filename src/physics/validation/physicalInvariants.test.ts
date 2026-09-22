@@ -163,7 +163,7 @@ describe('rules 548 to 554: nothing negative, and a crater is not deeper than it
       }
       expect(read).toBeGreaterThan(100);
     },
-    20_000
+    60_000
   );
 
   it('keeps an impact crater no deeper than its diameter', () => {

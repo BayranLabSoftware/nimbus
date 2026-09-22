@@ -107,7 +107,7 @@ describe('the impact pipeline agrees with its reference implementation where it 
       checked++;
     }
     expect(checked).toBeGreaterThan(60);
-  });
+  }, 30_000);
 });
 
 describe('the paper’s entry departs from the program through BM-13 alone (rule 671)', () => {

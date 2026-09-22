@@ -259,4 +259,10 @@ export const IMPACT_SEAL_OUTCOME =
  *      taken on — the same processor family and the same Node binary, but not
  *      the same system — is read by the first run of that job. If it does not,
  *      the seal is taken where the CI compares, and this rule says so.
+ *
+ *      Read the same night, on commit 8b46921: the job's first run passed.
+ *      GitHub's macOS arm64 runner reproduces every one of the 1 232 digests
+ *      taken on the Mac, in 17 seconds, and the verify job on Linux x64 skips
+ *      the comparison as clause (c) says. The seal holds across two machines of
+ *      one platform — which is what rule 832(a) had claimed for every machine.
  */

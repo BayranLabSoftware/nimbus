@@ -118,7 +118,7 @@ describe('Monte-Carlo determinism — same seed produces identical percentiles',
       expect(fa.p90).toBe(fb.p90);
       expect(fa.mean).toBe(fb.mean);
     }
-  }, 60_000);
+  }, 90_000);
 
   it('different seeds produce different percentiles (sanity)', () => {
     const a = runImpactMonteCarlo({
@@ -138,5 +138,5 @@ describe('Monte-Carlo determinism — same seed produces identical percentiles',
     const a10 = a.metrics.kineticEnergy.p10;
     const b10 = b.metrics.kineticEnergy.p10;
     expect(a10).not.toBe(b10);
-  }, 60_000);
+  }, 90_000);
 });

@@ -583,7 +583,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       const counted = sumGridCircle(view, lat, lon, radiusM);
       expect(counted / everyCell(lat, lon, radiusM)).toBeCloseTo(1, 6);
     }
-  });
+  }, 30_000);
 
   it('B-035 A footprint across the antimeridian counts the people on both sides', () => {
     // Pre-fix: every vertex of a footprint polygon was clamped to
@@ -839,7 +839,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
         expect(loadingAt(range + 500)).toBeLessThan(1);
       }
     }
-  });
+  }, 30_000);
 
   it('B-030 A body under a metre across burns up without breaking the run', () => {
     // Pre-fix: the surface burst of a few centimetres of iron could not

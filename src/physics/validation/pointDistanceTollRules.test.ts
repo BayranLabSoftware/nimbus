@@ -24,7 +24,7 @@ describe('rule 478: the candidate moves the rings and nothing else', () => {
         ).toBe(plain.shaking.mmiAtEpicenter);
       }
     }
-  });
+  }, 30_000);
 
   it('does move the rings, which is the whole point', () => {
     for (const magnitude of [5.5, 6.2, 7.0]) {

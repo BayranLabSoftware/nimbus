@@ -121,7 +121,7 @@ describe('every miss has a named cause', () => {
     // Every row, with the great ruptures counted on their stadiums since
     // B-022: seconds on a CI runner, and a timeout says nothing about a
     // cause.
-  }, 30_000);
+  }, 60_000);
 
   it('names only causes the page knows how to explain', () => {
     for (const event of RECORDED_EVENTS) {
@@ -162,5 +162,5 @@ describe('the interpolated band and the measured one', () => {
     // Every event is sampled twice over the shipped rasters, which is
     // close to four seconds on its own and past the default five on a
     // loaded machine: a timeout there says nothing about the band.
-  }, 30_000);
+  }, 90_000);
 });

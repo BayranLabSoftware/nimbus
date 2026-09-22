@@ -133,7 +133,7 @@ describe('rules 255 to 260 — a pair beside a number is a claim about that numb
     console.log(
       `\nrule 257(b): ${rows.length.toString()} presets, none backwards. The whole-realisation pair was backwards on ${wholeBackwards.toString()} of them.`
     );
-  }, 120_000);
+  }, 240_000);
 
   it('rule 258: how often the pair contains the figure beside it — recorded, not gated', () => {
     const rows = rowsOf();

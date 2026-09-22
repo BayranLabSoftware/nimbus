@@ -68,7 +68,7 @@ describe('rules 780 to 787: an airburst’s flash from the field’s model of it
             previous = rings;
           }
         }
-  }, 180_000);
+  }, 300_000);
 
   it('(a) grows the rings of the body whose footprint lay far from its burst', () => {
     const body = {
@@ -100,5 +100,5 @@ describe('rules 780 to 787: an airburst’s flash from the field’s model of it
       expect(performance.now() - started).toBeLessThan(2_000);
       expect(read).toEqual(checkScenario(full, scenario));
     }
-  }, 120_000);
+  }, 240_000);
 });

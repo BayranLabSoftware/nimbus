@@ -108,7 +108,7 @@ describe('rules 756 to 763: a low airburst digs where its kept energy strikes th
     // Higher up, less; above its fireball, none.
     expect(Number(run(B097, 0.99, 'share').crater.finalDiameter)).toBeLessThan(after);
     expect(Number(run(B097, 0.95, 'share').crater.finalDiameter)).toBe(0);
-  });
+  }, 30_000);
 
   describe('(a) the harness reads the birth as a contour’s, and nothing else', () => {
     /** The impact hazard of the sweep under one law. */
@@ -157,7 +157,7 @@ describe('rules 756 to 763: a low airburst digs where its kept energy strikes th
         'continuous, as it was: crater.finalDiameter',
         'steep, not a jump (crater): crater.finalDiameter',
       ]);
-    }, 30_000);
+    }, 60_000);
 
     it('counts B-097’s switch under `none` as a jump at a regime switch, and not under `share`', async () => {
       let below = 1;

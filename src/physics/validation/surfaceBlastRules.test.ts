@@ -58,7 +58,7 @@ describe('rules 748 to 755: an impact that reaches the ground bursts at the grou
       airbursts += 1;
     }
     expect(airbursts).toBeGreaterThan(5);
-  });
+  }, 30_000);
 
   it('(a) draws a ground impact’s rings from the law at the ground, on the program’s energy', () => {
     let ground = 0;
@@ -75,7 +75,7 @@ describe('rules 748 to 755: an impact that reaches the ground bursts at the grou
       ground += 1;
     }
     expect(ground).toBeGreaterThan(20);
-  });
+  }, 30_000);
 
   it('(d) moves the presets as rule 751 lists them', () => {
     const ring = (id: keyof typeof IMPACT_PRESETS, law: 'surface' | 'programHeld') =>

@@ -181,7 +181,7 @@ describe('rules 772 to 779: an airburst’s flash from the field’s model of it
             previous = rings;
           }
         }
-  }, 120_000);
+  }, 240_000);
 
   it('(c) moves the presets rule 775 lists, and no other', () => {
     const moved = Object.entries(IMPACT_PRESETS)

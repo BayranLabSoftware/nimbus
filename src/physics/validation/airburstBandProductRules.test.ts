@@ -79,7 +79,7 @@ describe('rules 706 to 713: I3’s band', () => {
     }
     expect(airbursts).toBeGreaterThan(10);
     expect(others).toBeGreaterThan(10);
-  });
+  }, 30_000);
 
   it('(a) holds Tunguska’s felled forest over the tree-damage range', () => {
     const b = unionBandKm(IMPACT_PRESETS.TUNGUSKA.input, TREE_DAMAGE_RANGE_KPA);

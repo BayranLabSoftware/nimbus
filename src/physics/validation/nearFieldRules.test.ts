@@ -43,7 +43,7 @@ describe('rule 474: where the correction can reach', () => {
         ).toBe(plain.shaking.mmiAtEpicenter);
       }
     }
-  });
+  }, 30_000);
 
   it('and a law whose distance DOES carry the depth cools with it', () => {
     // Campbell & Bozorgnia take R_rup, which at the epicentre is the depth

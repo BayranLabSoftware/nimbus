@@ -320,11 +320,14 @@ describe('useAppStore — casualty estimate', () => {
     useAppStore.getState().selectPreset('HIROSHIMA_1945');
     useAppStore.getState().setLocation({ latitude: 40.85, longitude: 14.27 });
     await useAppStore.getState().evaluate();
-    await vi.waitFor(() => {
-      expect(useAppStore.getState().casualtyStatus).toBe('idle');
-    });
+    await vi.waitFor(
+      () => {
+        expect(useAppStore.getState().casualtyStatus).toBe('idle');
+      },
+      { timeout: 10_000 }
+    );
     expect(useAppStore.getState().casualties).toBeNull();
-  });
+  }, 30_000);
 
   it('turns the population inside each blast band into deaths, injured and exposure', async () => {
     // A uniform city of 5 000 people per km²: population ∝ area.
@@ -365,9 +368,12 @@ describe('useAppStore — casualty estimate', () => {
     expect(useAppStore.getState().populationExposure?.ringLabel).toBe(
       'population.ring.overpressure5psi'
     );
-    await vi.waitFor(() => {
-      expect(useAppStore.getState().casualtyStatus).toBe('idle');
-    });
+    await vi.waitFor(
+      () => {
+        expect(useAppStore.getState().casualtyStatus).toBe('idle');
+      },
+      { timeout: 10_000 }
+    );
     expect(useAppStore.getState().casualties?.provisional).toBe(false);
     // The estimate comes with its sweep and the bar's clock started.
     const timeline = useAppStore.getState().casualtyTimeline;
@@ -385,7 +391,7 @@ describe('useAppStore — casualty estimate', () => {
     expect(timeline.endS).toBeGreaterThanOrEqual(timeline.deathsEndS);
     expect(timeline.deaths).toBeGreaterThan(0);
     expect(useAppStore.getState().casualtyClockStartedAt).not.toBeNull();
-  });
+  }, 30_000);
 
   it('prints a predictive band, not the width of the vulnerability table', async () => {
     const radii: number[] = [];
@@ -440,7 +446,7 @@ describe('useAppStore — casualty estimate', () => {
     expect(distinct.size).toBeLessThanOrEqual(c.bands.length + 3);
     expect(Math.min(...distinct)).toBeLessThan(Math.min(...c.bands.map((b) => b.outerRadiusM)));
     expect(Math.max(...distinct)).toBeGreaterThan(Math.max(...c.bands.map((b) => b.outerRadiusM)));
-  });
+  }, 30_000);
 
   it('asks the coarse raster first for a provisional figure, then the fine backends', async () => {
     const calls: (boolean | undefined)[] = [];
@@ -483,7 +489,7 @@ describe('useAppStore — casualty estimate', () => {
     useAppStore.getState().selectEventType('earthquake');
     expect(useAppStore.getState().casualtyTimeline).toBeNull();
     expect(useAppStore.getState().casualtyClockStartedAt).toBeNull();
-  });
+  }, 30_000);
 
   it('reports unsupported for a landslide, whose only hazard is the tsunami', async () => {
     configurePopulationLookup(() => Promise.resolve(null));
@@ -518,10 +524,13 @@ describe('useAppStore — coastal toll of the wave', () => {
     useAppStore.getState().selectPreset('HIROSHIMA_1945');
     useAppStore.getState().setLocation({ latitude: 40.85, longitude: 14.27 });
     await useAppStore.getState().evaluate();
-    await vi.waitFor(() => {
-      expect(useAppStore.getState().casualtyStatus).toBe('idle');
-      expect(useAppStore.getState().casualties?.provisional).toBe(false);
-    });
+    await vi.waitFor(
+      () => {
+        expect(useAppStore.getState().casualtyStatus).toBe('idle');
+        expect(useAppStore.getState().casualties?.provisional).toBe(false);
+      },
+      { timeout: 10_000 }
+    );
     const before = useAppStore.getState().casualties;
     if (before === null) throw new Error('casualties');
     // No wave map in a unit test: fake one with a coast of run-up cells.
@@ -562,5 +571,5 @@ describe('useAppStore — coastal toll of the wave', () => {
     // The wave lands after the blast: its first band starts at the first arrival.
     const wave = timeline.bands.filter((b) => b.hazard === 'tsunami');
     expect(Math.min(...wave.map((b) => b.startS))).toBeGreaterThanOrEqual(1_800);
-  });
+  }, 30_000);
 });

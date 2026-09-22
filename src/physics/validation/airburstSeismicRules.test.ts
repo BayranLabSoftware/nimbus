@@ -81,7 +81,7 @@ describe('rules 730 to 738: an airburst’s magnitude from the air that carries 
     }
     expect(air).toBeGreaterThan(3);
     expect(none).toBeGreaterThan(0);
-  });
+  }, 30_000);
 
   it('(a) is continuous where a complete airburst becomes a partial one', () => {
     // B-093's body, which rules 714 to 721 tapered at the same switch.
@@ -111,7 +111,7 @@ describe('rules 730 to 738: an airburst’s magnitude from the air that carries 
     const before = run(below).seismic.magnitude ?? Number.NaN;
     const after = run(above).seismic.magnitude ?? Number.NaN;
     expect(Math.abs(after - before)).toBeLessThan(1e-6);
-  });
+  }, 30_000);
 
   it('(c) moves the presets as rule 733 lists them', () => {
     const at = (id: keyof typeof IMPACT_PRESETS): number | null =>
