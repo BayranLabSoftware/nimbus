@@ -763,6 +763,15 @@ polders and the terrain's artefacts (Tokyo 41 km where the bay is 13; New
 Orleans the mosaic's cell under the city); and the ejecta's wave, the resurge
 and the air's absorption on grazing paths have no law yet.
 
+**The two rounds that change numbers, the same night.** The wave's seeds:
+rules 805 to 811 (seeds only in the sectors holding the crater's sea) were
+refused by their own 807(b) — the crater reaches water in almost every
+sector — and rules 819 to 825 seed the wave at the points of the crater's own
+sea deep enough for the solver, else at the one nearest deep water (B-121).
+The shore near cities: rules 812 to 818, every cell of a sector tried and the
+mosaic vouching for a body (B-122). Left: the ejecta's wave, the resurge, the
+air on grazing paths — the literature first.
+
 #### IMP-9, 21 September 2026: the verdict — impacts at 7.0, and what is missing
 
 _Updated that night: with G6 met by rules 780 to 787 impacts count **8.0**,

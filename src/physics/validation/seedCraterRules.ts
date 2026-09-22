@@ -65,3 +65,54 @@
  *      are the solver's and the search's, the lattice rule 798's. If the
  *      drowned move, that is the result.
  */
+
+/**
+ * The outcome of the round, written after the candidate was measured, on
+ * 22 September 2026. The rules above were pushed in commit 34d6f12 before the
+ * candidate was written.
+ *
+ * ADOPTED. Rule 821 holds on every clause.
+ *
+ * (a) On made maps a crater half in a sea 30 m deep seeds only inside itself
+ *     and never the second sea 90 km away; a crater in a lagoon 3 m deep
+ *     seeds the one nearest deep water; one seed per cell, nearest first.
+ * (b) On the Yucatán every seed lies within the transient crater's 45.8 km —
+ *     354 on the tile and 9 on the mosaic, all in the Gulf the crater opens
+ *     on — the wave propagates, and the Caribbean coast of Quintana Roo is
+ *     reached at 3.24 h instead of 0.40 h: the wave goes round the peninsula
+ *     through the Yucatán Channel, as it must.
+ * (c) New Orleans propagates from two points of its crater's sea, 34 and
+ *     41 km east; Tampa, whose crater's sea (Tampa Bay) is nowhere 10 m deep,
+ *     from the one nearest deep water on each map, 48 and 63 km south and
+ *     south-west, none on the Atlantic side; Lisbon from 211 points within
+ *     46 km, none in the Bay of Biscay.
+ * (d) Only an impact on ground whose wave rises in its crater is re-seeded:
+ *     the gate in the store is tested; the sea and every other module keep
+ *     the search's seeds.
+ * (e) The physics does not read the seeds: its result is the same object.
+ * (f) See the commit that adopts this.
+ *
+ * Rule 822's table (scripts in the session's scratchpad, as for rule 808):
+ *
+ *                  seeds (farthest)              Quintana Roo   drowned
+ *   Yucatán        13 (312 km) → 363 (46 km)     0.40 → 3.24 h  137 869 → 3 307
+ *   New Orleans     5 (122 km) → 2 (41 km)       2.97 → 7.59 h       20 → 1
+ *   Tampa           9 (264 km) → 2 (63 km)       3.68 → 3.95 h    1 537 → 1
+ *   Lisbon         12 (738 km) → 211 (46 km)                  3 231 344 → 3 210 737
+ *
+ *   The Yucatán's arrivals, before → after: the Gulf north of the crater
+ *   1.15 → 0.69 h, Cancún 0.63 → 2.98, Havana 1.47 → 2.80, the Straits of
+ *   Florida 1.87 → 3.18, New York 7.56 → 9.77.
+ *
+ * What it means. The drowned of a Chicxulub on the Yucatán fall forty-fold
+ * because the wave no longer starts on the Caribbean coast at the moment of
+ * impact: Cancún and the Riviera Maya are reached three hours later, round the
+ * peninsula, by a lower wave. Tampa's fall to one because its crater's sea is
+ * Tampa Bay, a few metres deep, and the wave it raises is small (rule 798);
+ * the fifteen hundred drowned before were a wave that started, at the moment
+ * of impact, on the Atlantic coast of Florida. Rule 820 stands: where the
+ * crater's sea is too shallow for the solver, the wave starts at the nearest
+ * deep water at t = 0, and the time to cross the shallows is not counted.
+ */
+export const SEED_CRATER_OUTCOME =
+  'ADOPTED 22 September 2026: a land impact whose wave rises in its crater is seeded from the points of its crater’s own sea the solver can march at, else from the one nearest deep water. The Yucatán’s seeds all within 46 km instead of out to 312 km across the peninsula; Quintana Roo reached at 3.2 h instead of 0.4; the drowned 137 869 → 3 307, Tampa 1 537 → 1.';

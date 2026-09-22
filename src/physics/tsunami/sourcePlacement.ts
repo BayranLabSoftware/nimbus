@@ -78,6 +78,69 @@ export interface SeedSearchOptions {
    *  Gulf sits in the next cell, while an inland lake two cells from
    *  any coast still fails. */
   seaMaskNeighbourhoodCells?: number;
+  /** How many of each sector's nearest water cells are tried; the rest are
+   *  never looked at. Six unless the caller asks for more (rule 812(a):
+   *  an impact's shore search tries them all). */
+  candidatesPerSector?: number;
+  /** What the mask vouches for: the candidate's own cell, or any cell of the
+   *  connected body it belongs to (rule 812(b): an impact's shore search, so
+   *  that a bay narrower than the mask's cells counts where the mask sees any
+   *  part of it as sea). */
+  seaMaskScope?: 'cell' | 'body';
+}
+
+/**
+ * True when the mask vouches, within `neighbourhoodCells`, for some cell of
+ * the connected body (at least `minDepthM` deep) that cell (i, j) belongs to.
+ * The search stops at the first vouched cell; `memo` remembers every cell it
+ * visited, a body being one answer for all its cells.
+ */
+function bodyVouched(
+  grid: ElevationGrid,
+  i: number,
+  j: number,
+  minDepthM: number,
+  mask: ElevationGrid | undefined,
+  neighbourhoodCells: number,
+  memo: Map<number, boolean>
+): boolean {
+  const start = i * grid.nLon + j;
+  const known = memo.get(start);
+  if (known !== undefined) return known;
+  const seen = new Set<number>([start]);
+  const queue: number[] = [start];
+  let head = 0;
+  let vouched = false;
+  while (head < queue.length) {
+    const idx = queue[head++] ?? 0;
+    const remembered = memo.get(idx);
+    if (remembered === true) {
+      vouched = true;
+      break;
+    }
+    const ci = Math.floor(idx / grid.nLon);
+    const cj = idx - ci * grid.nLon;
+    const c = cellCenter(grid, ci, cj);
+    if (seaMaskAllows(mask, c.lat, c.lon, neighbourhoodCells)) {
+      vouched = true;
+      break;
+    }
+    const neighbours: [number, number][] = [
+      [ci - 1, cj],
+      [ci + 1, cj],
+      [ci, cj - 1],
+      [ci, cj + 1],
+    ];
+    for (const [ni, nj] of neighbours) {
+      if (!isWaterCell(grid, ni, nj, minDepthM)) continue;
+      const nidx = ni * grid.nLon + nj;
+      if (seen.has(nidx)) continue;
+      seen.add(nidx);
+      queue.push(nidx);
+    }
+  }
+  for (const idx of seen) memo.set(idx, vouched);
+  return vouched;
 }
 
 interface Candidate extends PropagationSeed {
@@ -184,6 +247,9 @@ export interface WaterWithinReading {
   water: number;
   /** The mean depth of those (m); null when none counts. */
   meanDepthM: number | null;
+  /** Each point that counts: where it is, how far and which way from the
+   *  centre, and how deep (m). */
+  waterPoints: PropagationSeed[];
 }
 
 /** The terms a point counts as water on (the shoreline search's own). */
@@ -223,8 +289,9 @@ export function waterWithinRadius(
   let onTile = 0;
   let water = 0;
   let depthSum = 0;
+  const waterPoints: PropagationSeed[] = [];
   if (!(radiusM > 0) || !Number.isFinite(radiusM)) {
-    return { points, onTile, water, meanDepthM: null };
+    return { points, onTile, water, meanDepthM: null, waterPoints };
   }
   // A body is the same body for every point that falls in it.
   const bodies = new Map<ElevationGrid, Map<number, boolean>>();
@@ -249,7 +316,8 @@ export function waterWithinRadius(
       const range = Math.hypot(east, north);
       if (range > radiusM) continue;
       points++;
-      const at = destination(lat, lon, (Math.atan2(east, north) * 180) / Math.PI, range);
+      const bearing = ((((Math.atan2(east, north) * 180) / Math.PI) % 360) + 360) % 360;
+      const at = destination(lat, lon, bearing, range);
       const pLat = at.latitude;
       const pLon = ((((at.longitude + 180) % 360) + 360) % 360) - 180;
       let depth: number | null = null;
@@ -276,10 +344,59 @@ export function waterWithinRadius(
       if (depth !== null) {
         water++;
         depthSum += depth;
+        waterPoints.push({
+          latitude: pLat,
+          longitude: pLon,
+          depthM: depth,
+          distanceM: range,
+          bearingDeg: bearing,
+        });
       }
     }
   }
-  return { points, onTile, water, meanDepthM: water > 0 ? depthSum / water : null };
+  return {
+    points,
+    onTile,
+    water,
+    meanDepthM: water > 0 ? depthSum / water : null,
+    waterPoints,
+  };
+}
+
+/**
+ * The seeds of a land impact's wave on one grid (rules 819 to 825 of
+ * validation/seedCraterRules.ts): the points of its crater's own sea
+ * (`craterSea`, rule 798's lattice) at which the solver can march on `grid` —
+ * a cell at least `minDepthM` deep in a body of `minBodyCells`, vouched for by
+ * `seaMask` when one is given — one seed per cell, nearest first. Where none
+ * is, the nearest of `search`, the seeds the ordinary search found, and only
+ * that one.
+ */
+export function seedsFromCraterSea(
+  craterSea: readonly PropagationSeed[],
+  grid: ElevationGrid,
+  search: readonly PropagationSeed[],
+  options: { minDepthM?: number; minBodyCells?: number; seaMask?: ElevationGrid } = {}
+): PropagationSeed[] {
+  const minDepthM = options.minDepthM ?? DEFAULT_MIN_DEPTH_M;
+  const minBodyCells = options.minBodyCells ?? DEFAULT_MIN_BODY_CELLS;
+  const seen = new Set<number>();
+  const seeds: PropagationSeed[] = [];
+  for (const point of [...craterSea].sort((a, b) => a.distanceM - b.distanceM)) {
+    const cell = cellOf(grid, point.latitude, point.longitude);
+    if (cell === null) continue;
+    const key = cell.i * grid.nLon + cell.j;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    if (!isWaterCell(grid, cell.i, cell.j, minDepthM)) continue;
+    if (!waterBodyReaches(grid, cell.i, cell.j, minDepthM, minBodyCells)) continue;
+    if (!seaMaskAllows(options.seaMask, point.latitude, point.longitude, 0)) continue;
+    const z = grid.samples[key] ?? 0;
+    seeds.push({ ...point, depthM: -z });
+  }
+  if (seeds.length > 0) return seeds;
+  const nearest = [...search].sort((a, b) => a.distanceM - b.distanceM)[0];
+  return nearest === undefined ? [] : [nearest];
 }
 
 /**
@@ -298,6 +415,13 @@ export function findPropagationSeeds(
   const minBodyCells = options.minBodyCells ?? DEFAULT_MIN_BODY_CELLS;
   const sectors = Math.max(1, Math.floor(options.sectors ?? DEFAULT_SECTORS));
   const maskCells = Math.max(0, Math.floor(options.seaMaskNeighbourhoodCells ?? 0));
+  const budget = options.candidatesPerSector ?? CANDIDATES_PER_SECTOR;
+  const bodyScope = options.seaMaskScope === 'body';
+  const vouchedMemo = new Map<number, boolean>();
+  const maskAllows = (i: number, j: number, cLat: number, cLon: number): boolean =>
+    bodyScope
+      ? bodyVouched(grid, i, j, minDepthM, options.seaMask, maskCells, vouchedMemo)
+      : seaMaskAllows(options.seaMask, cLat, cLon, maskCells);
   const maxRadiusM = options.maxRadiusM;
   if (!Number.isFinite(maxRadiusM) || maxRadiusM <= 0) return [];
   if (grid.nLat < 2 || grid.nLon < 2) return [];
@@ -318,7 +442,7 @@ export function findPropagationSeeds(
     oj < grid.nLon &&
     isWaterCell(grid, oi, oj, minDepthM) &&
     waterBodyReaches(grid, oi, oj, minDepthM, minBodyCells) &&
-    seaMaskAllows(options.seaMask, lat, lon, maskCells)
+    maskAllows(oi, oj, lat, lon)
   ) {
     const z = grid.samples[oi * grid.nLon + oj] ?? 0;
     return [{ latitude: lat, longitude: lon, depthM: -z, distanceM: 0, bearingDeg: 0 }];
@@ -357,23 +481,37 @@ export function findPropagationSeeds(
         i,
         j,
       };
+      if (!Number.isFinite(budget)) {
+        bucket.push(candidate);
+        continue;
+      }
       // Keep the bucket sorted by distance, bounded in size.
       let k = bucket.length;
       while (k > 0 && (bucket[k - 1]?.distanceM ?? 0) > dist) k--;
-      if (k < CANDIDATES_PER_SECTOR) {
+      if (k < budget) {
         bucket.splice(k, 0, candidate);
-        if (bucket.length > CANDIDATES_PER_SECTOR) bucket.length = CANDIDATES_PER_SECTOR;
+        if (bucket.length > budget) bucket.length = budget;
       }
     }
+  }
+  if (!Number.isFinite(budget)) {
+    for (const bucket of perSector) bucket.sort((a, b) => a.distanceM - b.distanceM);
   }
 
   const seeds: PropagationSeed[] = [];
   for (const bucket of perSector) {
     for (const candidate of bucket) {
-      if (!seaMaskAllows(options.seaMask, candidate.latitude, candidate.longitude, maskCells)) {
-        continue;
+      if (bodyScope) {
+        if (!waterBodyReaches(grid, candidate.i, candidate.j, minDepthM, minBodyCells)) continue;
+        if (!maskAllows(candidate.i, candidate.j, candidate.latitude, candidate.longitude)) {
+          continue;
+        }
+      } else {
+        if (!maskAllows(candidate.i, candidate.j, candidate.latitude, candidate.longitude)) {
+          continue;
+        }
+        if (!waterBodyReaches(grid, candidate.i, candidate.j, minDepthM, minBodyCells)) continue;
       }
-      if (!waterBodyReaches(grid, candidate.i, candidate.j, minDepthM, minBodyCells)) continue;
       seeds.push({
         latitude: candidate.latitude,
         longitude: candidate.longitude,

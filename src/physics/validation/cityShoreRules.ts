@@ -80,3 +80,54 @@
  *      moves nearer and a wave appears where there was none, or a toll moves,
  *      that is the result.
  */
+
+/**
+ * The outcome of the round, written after the candidate was measured, on
+ * 22 September 2026. The rules above were pushed in commit 4044331 before the
+ * candidate was written.
+ *
+ * ADOPTED. Rule 814 holds on every clause.
+ *
+ * (a) On made maps a bay 0.2° wide, narrower than the mosaic's half-degree
+ *     cells and open to the sea the mosaic sees, is found at its own 33 km
+ *     where the search of before went to the mosaic, past 100 km; a lake the
+ *     mosaic calls sea nowhere is still refused; the sea 40 km behind eight
+ *     ponds of one cell is found.
+ * (b) Tokyo reads 12.59 km, 1.57 m deep: Tokyo Bay, inside the 8 to 16 km the
+ *     rule fixed. It read 41.07 km, 15.85 m, the mosaic's.
+ * (c) Miami 5.06 km, Lisbon 3.47 km, Madrid 331.87 km and Kansas City
+ *     1 033.62 km are unchanged, inside their bounds.
+ * (d) New Orleans is unchanged, 9.24 km and 1.17 m: its tile still has no
+ *     body of 200 cells, and the mosaic still answers.
+ * (e) The explosion path does not ask for the city shore, and the search
+ *     with no options is the search of before (tested).
+ * (f) See the commit that adopts this.
+ *
+ * Rule 815's table, read on the running app with the function in both of its
+ * modes on the same maps:
+ *
+ *                     before                 after
+ *   Tokyo             41.07 km, 15.85 m      12.59 km, 1.57 m   (the bay)
+ *   San Francisco     59.07 km, 142.3 m       3.26 km, 5.0 m    (the bay)
+ *   New Orleans        9.24 km, 1.17 m       unchanged
+ *   Miami              5.06 km, 4.16 m       unchanged
+ *   Lisbon             3.47 km, 2.66 m       unchanged
+ *   Madrid           331.87 km, 36.76 m      unchanged
+ *   Kansas City     1033.62 km, 2.1 m        unchanged
+ *   Rio de Janeiro     1.20 km, 1.75 m       unchanged
+ *
+ *   On Tokyo a 1 km stone's crater (5.5 km) reaches neither shore; a 3 km
+ *   stone's (13.0 km) did not reach the mosaic's and now reaches the bay,
+ *   with a wave of 6 mm at the source and no one drowned. On San Francisco a
+ *   1 km stone now reaches the bay, 0.74 m at the source, where it raised no
+ *   wave.
+ *
+ * What it means. Two of the eight cities were handed a shore on the far side
+ * of the city, or out in the ocean, because their bay was narrower than a
+ * cell of the planetary map; they now read their bay, a few metres deep, and
+ * the waves an impact raises in it are small, as rule 798 said they would
+ * be. Rule 813 stands: a polder the mosaic calls sea anywhere can pass for
+ * sea, and a lake shown by its surface is still land.
+ */
+export const CITY_SHORE_OUTCOME =
+  'ADOPTED 22 September 2026: an impact’s shore search tries every water cell of a sector in turn and lets the mosaic vouch for a body, not a cell. Tokyo 41.07 → 12.59 km (the bay), San Francisco 59.07 → 3.26 km (the bay); New Orleans, Miami, Lisbon, Madrid, Kansas City and Rio unchanged.';

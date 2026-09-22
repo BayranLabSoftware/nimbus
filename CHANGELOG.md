@@ -447,6 +447,16 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A land impact's wave leaves from its crater's own sea (B-121, rules 819
+  to 825).** It used to start, at the moment of impact, on every coast within
+  the ejecta's reach: Chicxulub on the Yucatán started it on the Caribbean
+  side of the peninsula as well, and Tampa on the Atlantic side of Florida.
+  The drowned fall accordingly — the Yucatán's from 137 869 to 3 307, Tampa's
+  from 1 537 to 1 — the wave now reaching those coasts hours later and lower.
+- **Near a city the shore search finds the bay (B-122, rules 812 to 818).**
+  Tokyo was handed a shore 41 km away and San Francisco the open Pacific,
+  their bays narrower than a cell of the planetary map; they now read 12.6 and
+  3.3 km.
 - **The tsunami's crest starts where the wave does (B-118).** Its frames now
   run on a logarithmic clock; Chicxulub's crest used to appear first off New
   York, six hours in, with nothing in the Gulf it crossed.

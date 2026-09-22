@@ -22,6 +22,7 @@ import {
 import {
   DEFAULT_MIN_BODY_CELLS,
   ruptureOrigins,
+  seedsFromCraterSea,
   waterWithinRadius,
   type WaterWithinReading,
 } from '../physics/tsunami/sourcePlacement.js';
@@ -1016,9 +1017,21 @@ const IMPACT_SHORELINE = {
 export function nearestSeaForImpact(
   local: ElevationGrid,
   global: ElevationGrid | null,
-  location: Coordinates
+  location: Coordinates,
+  options: { cityShore?: boolean } = {}
 ): { distanceM: number; shoreDepthM: number; basinDepthM: number } | null {
-  const shoreline = { maxRadiusM: IMPACT_SEA_SEARCH_M, ...IMPACT_SHORELINE };
+  // Rules 812 to 818: for an impact, every water cell of a sector is tried in
+  // turn, and the mosaic vouches for a body, not a cell — near a city the six
+  // nearest were canals and the terrain's artefacts, and a bay narrower than a
+  // mosaic cell was refused as a lake. The explosion path keeps the search.
+  const shoreline = {
+    maxRadiusM: IMPACT_SEA_SEARCH_M,
+    ...IMPACT_SHORELINE,
+    ...(options.cityShore === true && {
+      candidatesPerSector: Number.POSITIVE_INFINITY,
+      seaMaskScope: 'body' as const,
+    }),
+  };
   // Rules 241 to 247 of validation/shoreDistanceRules.ts. `findPropagationSeeds`
   // answers nought metres when the cell holding the point reads water, which is
   // what placing a wave source wants and is a claim about the world when it is
@@ -1077,6 +1090,29 @@ export function nearestSeaForImpact(
   return { distanceM: nearest.distanceM, shoreDepthM: nearest.depthM, basinDepthM: basin };
 }
 
+/** Rule 798's lattice of the water within a land impact's transient crater. */
+function craterWaterReading(
+  result: ImpactScenarioResult,
+  local: ElevationGrid,
+  global: ElevationGrid | null,
+  location: Coordinates
+): WaterWithinReading {
+  return waterWithinRadius(
+    local,
+    global,
+    location.latitude,
+    location.longitude,
+    (result.crater.transientDiameter as number) / 2,
+    {
+      lattice: CRATER_WATER_LATTICE,
+      minDepthM: IMPACT_SHORELINE.minDepthM,
+      tileBodyCells: IMPACT_SHORELINE.minBodyCells,
+      mosaicBodyCells: DEFAULT_MIN_BODY_CELLS,
+      seaMaskNeighbourhoodCells: IMPACT_SHORELINE.seaMaskNeighbourhoodCells,
+    }
+  );
+}
+
 /**
  * The depth a land impact's wave is built in, once the physics has said how
  * far its crater reaches: the mean of the water within the transient
@@ -1096,20 +1132,7 @@ export function craterWaterDepth(
 ): { depthM: number; reading: WaterWithinReading } | null {
   const shore = (result.inputs.shoreDistance as number | undefined) ?? 0;
   if (!(shore > 0) || result.tsunami === undefined) return null;
-  const reading = waterWithinRadius(
-    local,
-    global,
-    location.latitude,
-    location.longitude,
-    (result.crater.transientDiameter as number) / 2,
-    {
-      lattice: CRATER_WATER_LATTICE,
-      minDepthM: IMPACT_SHORELINE.minDepthM,
-      tileBodyCells: IMPACT_SHORELINE.minBodyCells,
-      mosaicBodyCells: DEFAULT_MIN_BODY_CELLS,
-      seaMaskNeighbourhoodCells: IMPACT_SHORELINE.seaMaskNeighbourhoodCells,
-    }
-  );
+  const reading = craterWaterReading(result, local, global, location);
   if (reading.meanDepthM === null) return null;
   return { depthM: Math.min(reading.meanDepthM, SHORE_DEPTH_CAP_M), reading };
 }
@@ -1604,9 +1627,31 @@ async function computeBathymetricLayerForResult(
       }
       return all;
     };
-    const globalSeeds: PropagationSeed[] =
+    let globalSeeds: PropagationSeed[] =
       ctx.globalBathymetricGrid !== null ? seedsAlong(ctx.globalBathymetricGrid, null) : [];
-    const localSeeds: PropagationSeed[] = seedsAlong(ctx.elevationGrid, ctx.globalBathymetricGrid);
+    let localSeeds: PropagationSeed[] = seedsAlong(ctx.elevationGrid, ctx.globalBathymetricGrid);
+    // Rules 819 to 825: a land impact's wave rises in its crater, so it leaves
+    // from the crater's own sea where the solver can march there, and else
+    // from the one nearest deep water — not from every coast within the
+    // ejecta's reach, which put seeds 214 to 312 km across the Yucatán.
+    if (
+      result.type === 'impact' &&
+      result.data.tsunami?.seaCoupling.mechanism === 'crater' &&
+      ((result.data.inputs.shoreDistance as number | undefined) ?? 0) > 0
+    ) {
+      const craterSea = craterWaterReading(
+        result.data,
+        ctx.elevationGrid,
+        ctx.globalBathymetricGrid,
+        ctx.location
+      ).waterPoints;
+      localSeeds = seedsFromCraterSea(craterSea, ctx.elevationGrid, localSeeds, {
+        ...(ctx.globalBathymetricGrid !== null && { seaMask: ctx.globalBathymetricGrid }),
+      });
+      if (ctx.globalBathymetricGrid !== null) {
+        globalSeeds = seedsFromCraterSea(craterSea, ctx.globalBathymetricGrid, globalSeeds);
+      }
+    }
     const primary = localSeeds[0] ?? globalSeeds[0];
     if (primary === undefined) {
       unpropagatedReach.set(result, reachM);
@@ -3143,7 +3188,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
             const sea = nearestSeaForImpact(
               state.elevationGrid,
               state.globalBathymetricGrid,
-              state.location
+              state.location,
+              { cityShore: true }
             );
             if (sea !== null) {
               impactInput = {
