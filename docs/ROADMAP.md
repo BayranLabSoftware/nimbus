@@ -549,6 +549,54 @@ other than an airburst's blast carry the generic σ halo of their published
 scatter; no rule of this domain names them with a held-out set, so G3 asks
 them no band.
 
+#### IMP-7b, 22 September 2026: the impact drawn as the field's map
+
+Andrea looked at the globe on the morning of 22 September and did not accept
+it: every quantity carried two or three rings — the contour, the dashed line
+of its published scatter and, for an airburst's blast, the dotted edges of
+I3's band — of one colour and different radii. The impacts are not closed
+until the globe draws them as he approves. Two sets of mocks followed; he
+approved the second, the impact drawn **as the field's own map**, the way
+ShakeMap draws shaking and Glasstone & Dolan draw a blast: one quantity at a
+time as a continuous surface in its units, the model's thresholds as
+isolines carrying their value, a colour scale that says what they mean, a
+scale bar, and the uncertainty in a view of its own.
+
+Looking closely for the mocks found four defects in what the globe drew,
+registered as B-104 to B-107: the zones of different quantities tiled one
+another, so that the zone of 5 psi — where buildings collapse — was left
+unpainted at Meteor Crater, its inner edge being the larger ellipse of the
+third-degree burn; an oblique impact's ring edges were drawn about the point
+of impact while their zones stood about the centre the model moves
+downrange, 2.24 km apart for Meteor Crater's 0.5 psi; the legend kept the
+travelling shock front's row after the front had gone; and two quantities an
+impact computes were not on the globe at all, its shaking (the program's
+Mercalli rings, verified by rules 154 to 157) and its liquefaction, while a
+third, the peak wind the program prints beside the overpressure, was not
+computed.
+
+**Decided by Andrea that day**, on the approved proposal:
+
+- The layers, every quantity and nothing left out: **overpressure** (the
+  one shown first), **wind** behind the shock front, **thermal fluence** with
+  the two fire thresholds, the **ejecta blanket** with the crater,
+  **shaking** with the liquefaction, and the **uncertainty view** —
+  probability from the published scatter, or, for a complete airburst's
+  blast, the agreement of I3's band. Tsunamis and waves stay as they are.
+- **Check 4: the value on the isoline.** On a map of the field the value is
+  written on its line (5 psi, 1 cm, V); this replaces, for an impact, the
+  decision of 21 September to draw rings without captions.
+- **Check 3, read on the approved proposal:** an isoline is the median, and
+  its band is drawn on the globe in the uncertainty view rather than as more
+  lines on the map of the field.
+- The imagery turns to greys under an impact's map, as ShakeMap's
+  topography does, so that colour belongs to the data alone.
+
+The wind is new to the model and is verified before it is drawn: rules 788 to
+792 (`validation/impactWindRules.ts`). The isolines and the field are drawn
+from one geometry, the model's oblique ellipse about its downrange centre, so
+that no second copy of it can drift (B-053, B-059).
+
 #### IMP-9, 21 September 2026: the verdict — impacts at 7.0, and what is missing
 
 _Updated that night: with G6 met by rules 780 to 787 impacts count **8.0**,
@@ -577,10 +625,8 @@ are missing, and why:
   laws and the same 8 on a seed no run had used. What the correlation cannot
   read is drawn at PAIR's nominal, the field's own, by Andrea's decision. The
   other gap, an impact's air blast read from under the ground as the program
-  reads it, was closed by rules 748 to 755. Impacts count 8.0 of 9; G3 waits
-  for the calendar. The other, an impact's air blast read from under the ground as
-  the program reads it, is closed by rules 748 to 755: a body that reaches
-  the ground bursts at the ground.
+  reads it, was closed by rules 748 to 755: a body that reaches the ground
+  bursts at the ground. Impacts count 8.0 of 9; G3 waits for the calendar.
 
 Open, and outside the benchmark's draw on which G5 is met: B-091, the
 paper's sharp strength at I_f = 1. By Andrea's order of that evening B-097,
