@@ -1,0 +1,142 @@
+/**
+ * The wave of an impact on land is raised in the water its crater reaches.
+ *
+ * Andrea asked on 22 September 2026 why Chicxulub on New Orleans raised no
+ * tsunami. Part of the answer was the drawing — the wave map lay under the
+ * field of the layer chosen (B-113). The rest is the number. Rule 268 raises
+ * a land impact's wave in the circular segment of its transient crater that
+ * lies beyond the shore; everything downstream was left as it was, and that
+ * includes the depth the wave is built in, which rule 248 had fixed a round
+ * earlier as the nearest sea's own cell. At the time the source was a cavity
+ * at the shore, and the shore's cell was the water it reached. Since rule 268
+ * the source is a segment of crater that runs from the shore out to the
+ * transient rim, and the shore's cell is only its landward edge — the
+ * shallowest water it has. The program's law caps its wave at the depth of
+ * the water it rises in, so the cap binds on the edge.
+ *
+ * At New Orleans the edge is not even water. The fine tile under the city
+ * (0.53 km to the cell, 29.54° to 30.75° N, 91.41° to 90.00° W) holds no
+ * seed the shoreline search accepts, so the answer comes from the planetary
+ * mosaic, 18.5 km to the cell, and the mosaic's cell under the city itself
+ * averages to 1.17 m below the sea: the model is handed a sea at the floor of
+ * half a cell, 9.24 km, 1.17 m deep. A Chicxulub-class body there digs a
+ * transient crater 45.8 km in radius, of which the segment puts 37 % beyond
+ * that shore, and the program's wave is min(0.07 D, h) times that share, D
+ * its water crater: the cap of 1.17 m gives 0.44 m at the source.
+ *
+ * What was looked at before these rules were written, and is therefore not
+ * held out. The chain above, and `nearestSeaForImpact`, `findPropagationSeeds`,
+ * `waterBodyReaches` and the program's `programTsunamiReferenceAmplitude` in
+ * full. The seed search at New Orleans (no seed on the tile; the mosaic's cell
+ * at the origin, 1.17 m). The source at five depths with the rest held: 0.436 m
+ * at 1.17 m of water, 0.745 at 2, 1.489 at 4, 2.122 at 5.7 and 3.723 at 10 —
+ * the cap is linear in the depth and nothing else moves. A reading taken by
+ * random sampling of the transient disc, which is this round's candidate asked
+ * loosely: the tile covers 59.9 % of the disc, and only 1.3 to 1.7 % of what it
+ * covers reads water 1 m deep or more, at a mean of 2.0 to 5.3 m (river and
+ * polder, most of it, since the tile shows a lake by its surface); the 41 %
+ * outside the tile reads 64.8 % water on the mosaic, at a mean of 5.7 m; the
+ * final rim, 82.8 km, 27.7 % water at a mean of 7.4 m. That a coastal
+ * Chicxulub costs 7.0 ms a run in Node, and that the Monte Carlo runs on the
+ * panel's inputs, without the coast. No candidate code was written or run
+ * before these rules were fixed.
+ *
+ * The rules, fixed on 22 September 2026, before the candidate was written, and
+ * numbered after the seven hundred and ninety-seven before them:
+ *
+ * 798. The candidate. For an impact on ground whose transient crater reaches
+ *      the sea — the physics raises a wave, rule 268's segment is not empty —
+ *      the depth the wave is built in is the mean depth of the water within
+ *      the transient crater's radius of the point of impact. The disc is read
+ *      on a fixed lattice of points, 33 by 33 over its square, those inside
+ *      the radius kept, each placed on the sphere by its range and bearing.
+ *      Every point is read on the finest map that covers it — the local tile,
+ *      else the planetary mosaic — at the cell it falls in, and counts as
+ *      water on the terms the shoreline search already uses on that map: at
+ *      least 1 m below the sea, in a body of at least 200 such cells vouched
+ *      for by the mosaic within one of its cells on the tile, of at least 24
+ *      on the mosaic. The mean is over the points that count, capped at rule
+ *      248's 200 m. Where none counts, rule 248's depth stays. The crater is
+ *      the result's own: the store runs the physics once to read it, and again
+ *      with the depth, only when the first run raises a wave.
+ *
+ * 799. What is not in the candidate, and is named so it is not forgotten.
+ *      (a) The share of the crater in the sea stays rule 268's segment of a
+ *          straight coast at the shore distance; the lattice could measure the
+ *          share too, and that is a change of its own.
+ *      (b) Rule 269's three waves — the ejecta falling into the sea, the sea
+ *          draining into a crater that encloses the coast, the air blast on
+ *          the water — stay unsized. At New Orleans they are most of the
+ *          answer to Andrea's question and this round does not touch them.
+ *      (c) The maps' own limits: the tile shows a lake by its surface and a
+ *          polder by its floor, so Lake Pontchartrain reads land and the
+ *          city's districts below the sea read water; the body test keeps
+ *          small polders out and no test here keeps a large one out. The
+ *          mosaic's cell averages its land and its sea. The candidate reads
+ *          what the maps say and cannot read past them.
+ *      (d) The explosion path, which reads the same shore search, keeps rule
+ *          248's depth: one module at a time.
+ *      (e) The Monte Carlo keeps running on the panel's inputs, with no coast
+ *          and so no wave for a land impact. Named, not touched.
+ *
+ * 800. What decides.
+ *      (a) Exact: the depth handed to the physics is the lattice mean of rule
+ *          798 on synthetic maps whose answer is known — a disc half sea of
+ *          one depth, a disc read partly on the tile and partly on the
+ *          mosaic, a pond and a polder that the body test must drop, a disc
+ *          with no water — to within a millimetre.
+ *      (b) Where the crater does not reach the sea, nothing moves, to the bit:
+ *          a 1 km stone at Miami, and Chicxulub seventy kilometres inland.
+ *      (c) An impact in open water is unchanged to the bit.
+ *      (d) Of a land impact, every output but the wave is unchanged to the
+ *          bit — crater, dust, magnitude, blast, heat, ejecta — since the
+ *          depth reaches none of them (rule 267).
+ *      (e) Against the world, at New Orleans: the depth read lies above the
+ *          1.17 m of the cell under the city and under 10 m. The water within
+ *          46 km of the city is lakes, marsh and sounds a few metres deep —
+ *          Lake Borgne, the west end of Mississippi Sound, the head of Breton
+ *          Sound — and the open shelf lies beyond. A reading past 10 m says the
+ *          lattice found a channel or a map's artefact, and refuses.
+ *      (f) The release gate stays PASS, and the validation report is
+ *          regenerated once.
+ *      Any of these failing refuses the candidate.
+ *
+ * 801. What is printed. For Chicxulub at New Orleans, at Tampa and at Lisbon,
+ *      and for rule 250's 1 km stone at Lisbon: the shore's distance and
+ *      depth, the lattice's points, the share of them on the tile and the
+ *      share that counts as water, the depth before and after, the segment,
+ *      the source, the wave at 1 000 km as the program and Wünnemann print
+ *      it, and the drowned. For the calibration net, every toll that moves.
+ *
+ * 802. What an adoption does. The registry takes the row. The legend's note
+ *      and the report's row of the nearest sea say, for a land impact that
+ *      raises a wave, that its depth is the mean of the water within the
+ *      crater; the methodology page says it where it tells rules 248 and 268.
+ *
+ * 803. What is not touched. The wave's laws — the program's, Ward & Asphaug,
+ *      Wünnemann, Collins & Weiss — the segment, the run-up, the damping, the
+ *      dispersion; rule 248's cap and its shore search; the far field's
+ *      4 000 m; the open-water path; the explosion path.
+ *
+ * 804. What may not happen. No constant is tuned to make the wave larger: the
+ *      lattice's 33 points a side is a sampling choice, fixed here, and every
+ *      other number is one the shoreline search already uses. If the source
+ *      at New Orleans stays near two metres, that is the result, and it is
+ *      recorded as the result (rules 5 and 6).
+ *
+ * What these rules cannot settle. Whether the program's cap, written for a
+ * crater in water of one depth, is the right law for a segment over a floor
+ * that deepens from the shore; the mean is the depth that holds the same water
+ * over the same area, which is a choice and not a derivation. Whether a wave
+ * raised in a few metres of lake and sound is a tsunami or a surge that dies
+ * against the first bank. And rule 799(b), which is the larger part of the
+ * question Andrea asked.
+ */
+
+/** Rule 798: the lattice is this many points a side over the disc's square. */
+export const CRATER_WATER_LATTICE = 33;
+
+/** Rule 800(e): the depth read at New Orleans must come in under this, in
+ *  metres; the cell under the city, 1.17 m, is the floor it must pass. */
+export const NEW_ORLEANS_WATER_MAX_M = 10;
+export const NEW_ORLEANS_SHORE_DEPTH_M = 1.17;
