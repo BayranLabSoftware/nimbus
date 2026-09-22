@@ -3,81 +3,113 @@ import { useTranslation } from 'react-i18next';
 import report from '../../../../docs/VALIDATION_REPORT.json';
 import { BUILD_INFO, shortCommit } from '../../../buildInfo.js';
 import { useAppStore } from '../../../store/index.js';
-import { TollChart, type TollChartRow } from './TollChart.js';
+import { ProgramChart, type ProgramChartRow } from './ProgramChart.js';
 import styles from './LandingValidation.module.css';
 
 /** The slice of the validation report the landing page reads. */
 interface LandingReportData {
+  verification: {
+    eiep: {
+      readOn: string;
+      impacts: number;
+      summaries: ProgramChartRow[];
+    };
+  };
   calibration: {
-    tolls: (TollChartRow & { role: string })[];
-    waves: { contains: boolean; role: string }[];
-    footprint: { geometricMeanRadiusRatio: number };
+    fireball: {
+      events: { bolides: number };
+      meetsBar: boolean;
+      readings: Record<string, { medianAbsoluteErrorKm: number; withinFiveKm: number }>;
+    };
   };
 }
 
 const DATA: LandingReportData = report;
 
 /**
- * The validation section of the landing page: four figures and the death
- * toll chart, computed from docs/VALIDATION_REPORT.json exactly as the
- * validation page computes its own tiles, so the two pages always show the
- * same numbers — and neither goes stale, since CI regenerates the report
- * from the code.
+ * The validation section of the landing page — the impacts' own evidence,
+ * and what is missing from it.
  *
- * Loaded on its own chunk: the report is 130 KB of JSON that the validation
- * page already fetches lazily, and the landing page's first paint should not
- * wait for it.
+ * Until 22 September 2026 this section showed eighteen recorded death tolls:
+ * Hiroshima, Tōhoku, Pinatubo, Beirut. They calibrate the engines the impacts
+ * share — the casualty model, the waves, the shaking — but not one of them is
+ * an impact, and on a site that is now an instrument for cosmic impacts alone
+ * (store/visibleEvents.ts) they would read as evidence borrowed from other
+ * phenomena. Andrea's decision that evening: show the impacts' own evidence,
+ * and say plainly what is not there.
+ *
+ * What is here: the comparison, quantity by quantity, against the Earth
+ * Impact Effects Program as its authors run it — the reference implementation
+ * of the equations this model cites — and the 357 bolides whose entry the sky
+ * actually measured. What is not here, and is said in the fourth figure: no
+ * impact in recorded history has left a death toll, so the mortality is
+ * calibrated on explosions of the same energy, and it is an extrapolation.
+ *
+ * Every number comes from docs/VALIDATION_REPORT.json, which the CI
+ * regenerates from the code of the commit that built this page.
  */
 export function LandingValidation(): JSX.Element {
   const { t, i18n } = useTranslation();
   const setMode = useAppStore((s) => s.setMode);
   const locale = i18n.language.toLowerCase().startsWith('it') ? 'it-IT' : 'en-US';
 
-  const { tolls, waves, footprint } = DATA.calibration;
-  const tollsInside = tolls.filter((r) => r.contains).length;
-  const wavesInside = waves.filter((r) => r.contains).length;
-  const heldTolls = tolls.filter((r) => r.role === 'heldOut');
-  const heldWaves = waves.filter((r) => r.role === 'heldOut');
-  const heldInside =
-    heldTolls.filter((r) => r.contains).length + heldWaves.filter((r) => r.contains).length;
-  const ratio = footprint.geometricMeanRadiusRatio.toLocaleString(locale, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+  const { eiep } = DATA.verification;
+  const { fireball } = DATA.calibration;
+  const quantities = eiep.summaries;
+
+  // The widest disagreement of any quantity's central value — the honest
+  // headline for "how close to the reference implementation", since a mean of
+  // means would hide the one that drifts.
+  const worst = Math.max(...quantities.map((q) => Math.abs(q.geometricMean - 1)));
+  const worstPercent = (worst * 100).toLocaleString(locale, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
   });
-  const outside = tolls.length - tollsInside;
+  const cases = quantities.reduce((sum, q) => sum + q.pairs, 0);
+  const entry = fireball.readings.default;
+  const entryError = (entry?.medianAbsoluteErrorKm ?? 0).toLocaleString(locale, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
 
   return (
     <>
       <ul className={styles.tiles}>
         <li className={styles.tile}>
           <span className={styles.value}>
-            {tollsInside} / {tolls.length}
+            {quantities.length} / {quantities.length}
           </span>
-          <span className={styles.label}>{t('landing.validation.tolls')}</span>
+          <span className={styles.label}>
+            {t('landing.validation.quantitiesWithin', { percent: worstPercent })}
+          </span>
         </li>
         <li className={styles.tile}>
-          <span className={styles.value}>
-            {wavesInside} / {waves.length}
+          <span className={styles.value}>{cases.toLocaleString(locale)}</span>
+          <span className={styles.label}>
+            {t('landing.validation.programCases', { impacts: eiep.impacts })}
           </span>
-          <span className={styles.label}>{t('landing.validation.waves')}</span>
         </li>
         <li className={styles.tile}>
-          <span className={styles.value}>{ratio}×</span>
-          <span className={styles.label}>{t('landing.validation.footprint')}</span>
+          <span className={styles.value}>{entryError} km</span>
+          <span className={styles.label}>
+            {t('landing.validation.entryError', { bolides: fireball.events.bolides })}
+          </span>
         </li>
         <li className={styles.tile}>
-          <span className={styles.value}>
-            {heldInside} / {heldTolls.length + heldWaves.length}
-          </span>
-          <span className={styles.label}>{t('landing.validation.heldOut')}</span>
+          <span className={styles.value}>0</span>
+          <span className={styles.label}>{t('landing.validation.noToll')}</span>
         </li>
       </ul>
 
       <figure className={styles.figure}>
-        <TollChart rows={tolls} />
+        <ProgramChart rows={quantities} />
         <figcaption className={styles.caption}>
           <b>{t('landing.validation.figure')}</b> —{' '}
-          {t('landing.validation.caption', { count: tolls.length, outside })}
+          {t('landing.validation.captionProgram', {
+            count: quantities.length,
+            impacts: eiep.impacts,
+            readOn: eiep.readOn,
+          })}
         </figcaption>
       </figure>
 

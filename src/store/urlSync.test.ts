@@ -55,14 +55,27 @@ beforeEach(() => {
 });
 
 describe('hydrateStoreFromUrl', () => {
-  it('applies an earthquake preset from the search fragment', () => {
+  it('applies an impact preset from the search fragment', () => {
+    hydrateStoreFromUrl(
+      'http://localhost/?t=impact&p=TUNGUSKA&lat=60.886&lon=101.894&m=globe',
+      useAppStore.getState()
+    );
+    const s = useAppStore.getState();
+    expect(s.eventType).toBe('impact');
+    expect(s.impact.preset).toBe('TUNGUSKA');
+    expect(s.location).toEqual({ latitude: 60.886, longitude: 101.894 });
+    expect(s.mode).toBe('globe');
+  });
+
+  it('opens on the impacts when the link asks for a module the site has hidden', () => {
+    // Andrea, 22 September 2026: the site is for cosmic impacts alone
+    // (visibleEvents.ts). An old shared link keeps its place and its view.
     hydrateStoreFromUrl(
       'http://localhost/?t=earthquake&p=TOHOKU_2011&lat=38.1&lon=142.4&m=globe',
       useAppStore.getState()
     );
     const s = useAppStore.getState();
-    expect(s.eventType).toBe('earthquake');
-    expect(s.earthquake.preset).toBe('TOHOKU_2011');
+    expect(s.eventType).toBe('impact');
     expect(s.location).toEqual({ latitude: 38.1, longitude: 142.4 });
     expect(s.mode).toBe('globe');
   });
@@ -144,8 +157,8 @@ describe('writeStoreToHistory', () => {
 
   it('round-trips through a shared-link flow', async () => {
     // 1. User A builds a scenario and publishes the URL.
-    useAppStore.getState().selectPreset('KRAKATAU_1883');
-    useAppStore.getState().setLocation({ latitude: -6.1, longitude: 105.4 });
+    useAppStore.getState().selectPreset('METEOR_CRATER');
+    useAppStore.getState().setLocation({ latitude: 35.0275, longitude: -111.0225 });
     useAppStore.getState().setMode('globe');
     const { win, pushed } = createFakeWindow('http://app.test/');
     writeStoreToHistory(useAppStore.getState(), win);
@@ -157,10 +170,10 @@ describe('writeStoreToHistory', () => {
     await maybeAutoEvaluate(useAppStore.getState());
 
     const s = useAppStore.getState();
-    expect(s.eventType).toBe('volcano');
-    expect(s.volcano.preset).toBe('KRAKATAU_1883');
-    expect(s.location).toEqual({ latitude: -6.1, longitude: 105.4 });
+    expect(s.eventType).toBe('impact');
+    expect(s.impact.preset).toBe('METEOR_CRATER');
+    expect(s.location).toEqual({ latitude: 35.0275, longitude: -111.0225 });
     expect(s.mode).toBe('globe');
-    expect(s.result?.type).toBe('volcano');
+    expect(s.result?.type).toBe('impact');
   });
 });

@@ -72,6 +72,7 @@ import { blastCasualtyPlan } from '../casualties.js';
 import { DEFAULT_TOLL_BAND_SCATTER, withVulnerabilityScatter } from '../uq/tollBand.js';
 import { TOLL_BAND_CANDIDATE } from './tollBandRules.js';
 import { applyIntentToStore, decodeUrl } from '../../store/urlState.js';
+import { ALL_EVENT_TYPES } from '../../store/visibleEvents.js';
 import { extractTsunamiMeta, seismicSourceCavityRadiusM } from '../../store/useAppStore.js';
 import { VISUAL_CONTRACTS } from '../../scene/visualContracts.js';
 import { METHODOLOGY_SECTIONS } from '../../ui/pages/methodologyContent.js';
@@ -1169,8 +1170,15 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // hand-written link carries. The link was dropped and the app ran its own
     // default: a twenty-metre body came back as a fifteen-kilometre one, with
     // the report printing the default's numbers and saying nothing.
+    // Read with every module offered: what this regression protects is the
+    // codec's promise — a link rebuilds its own scenario or says why not —
+    // and that promise outlives the site offering the impacts alone since
+    // 22 September 2026 (store/visibleEvents.ts).
     const link = (query: string): void => {
-      applyIntentToStore(decodeUrl(`http://x/?${query}`), useAppStore.getState());
+      applyIntentToStore(
+        decodeUrl(`http://x/?${query}`, undefined, { offered: ALL_EVENT_TYPES }),
+        useAppStore.getState()
+      );
     };
     link('v=1&p=CUSTOM&m=report&t=impact&d=20&s=19200&a=18&rho=3300&lat=41.898&lon=12.481');
     const restored = useAppStore.getState();

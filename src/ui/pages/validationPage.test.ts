@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import en from '../../i18n/locales/en.json';
 import it_ from '../../i18n/locales/it.json';
 import report from '../../../docs/VALIDATION_REPORT.json';
-import { VALIDATION_GAPS } from './validationGaps.js';
+import { IMPACT_GAPS, VALIDATION_GAPS } from './validationGaps.js';
 
 /**
  * The validation page reads its figures from the generated report and
@@ -98,6 +98,31 @@ describe('the validation page has words for everything its data can say', () => 
       'byRule.table.inside',
       'byRule.insideShare',
       'byRule.note',
+      // The impacts' page, since 22 September 2026.
+      'summary.quantities',
+      'summary.comparisons',
+      'summary.entry',
+      'summary.tollsMeasured',
+      'program.title',
+      'program.body',
+      'program.extremes',
+      'program.regimes',
+      'entry.title',
+      'entry.body',
+      'entry.barMissed',
+      'entry.cells',
+      'entry.cellsNote',
+      'rules.title',
+      'rules.body',
+      'rules.reading',
+      'rules.held',
+      'rules.notHeld',
+      'unmeasured.title',
+      'unmeasured.body',
+      'unmeasured.others',
+      'gate.title',
+      'gate.body',
+      'gate.pass',
     ]) {
       expectText(`validation.${key}`);
     }
@@ -105,6 +130,32 @@ describe('the validation page has words for everything its data can say', () => 
       if (c.kind === 'morphology') expectText(`validation.byRule.morphology.${String(c.group)}`);
     }
     for (const gap of VALIDATION_GAPS) {
+      expectText(`validation.gaps.${gap}.item`);
+      expectText(`validation.gaps.${gap}.note`);
+    }
+  });
+
+  it('every quantity the reference comparison can name, in both languages', () => {
+    // A quantity added to the grid must not reach the page as a raw key.
+    for (const q of report.verification.eiep.summaries) {
+      expectText(`landing.validation.quantities.${q.quantity}`);
+    }
+  });
+
+  it('every reading and span of the entry, and every measure of a rule', () => {
+    for (const key of ['default', 'stony', 'iron']) expectText(`validation.entry.readings.${key}`);
+    for (const cell of report.calibration.entryCells) {
+      for (const span of cell.spans) expectText(`validation.entry.span.${span.key}`);
+    }
+    const impacts = report.goldStandard.domains.find((d) => d.domain === 'Impacts');
+    expect(impacts, 'the report has no Impacts domain').toBeDefined();
+    for (const rule of impacts?.rules ?? []) {
+      expectText(`validation.rules.measures.${rule.measure}`);
+    }
+  });
+
+  it('every gap the impacts page lists', () => {
+    for (const gap of IMPACT_GAPS) {
       expectText(`validation.gaps.${gap}.item`);
       expectText(`validation.gaps.${gap}.note`);
     }

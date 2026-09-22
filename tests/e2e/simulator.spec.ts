@@ -121,12 +121,11 @@ test.describe('simulator flow', () => {
     // Default Chicxulub preset has the K-Pg impactor note.
     await expect(page.getByText(/Hildebrand et al\. 1991/)).toBeVisible();
 
-    // Switching to volcano: the store keeps `KRAKATAU_1883` as the
-    // active volcano preset (not the dropdown's first option), so the
-    // caption updates to Krakatau's note about the Sunda Strait
-    // paroxysmal eruption.
-    await page.getByRole('radio', { name: 'Volcanic eruption' }).check();
-    await expect(page.getByText(/Sunda Strait paroxysmal eruption/)).toBeVisible();
+    // Switching preset: the caption follows it. Since 22 September 2026 the
+    // site offers the impacts alone (src/store/visibleEvents.ts), so the
+    // switch that used to be to a volcano is now to another impact.
+    await page.getByLabel('Preset').selectOption('TUNGUSKA');
+    await expect(page.getByText(/Boslough & Crawford 2008/)).toBeVisible();
   });
 
   test('preset dropdown offers every impact scenario by default', async ({ page }) => {
@@ -148,7 +147,13 @@ test.describe('simulator flow', () => {
     ]);
   });
 
-  test('event-type selector swaps the preset list across all five categories', async ({ page }) => {
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('event-type selector swaps the preset list across all five categories', async ({
+    page,
+  }) => {
     // Five event switches and five full option-list comparisons: about
     // 16 s alone and no headroom at all inside the 30 s default, so it
     // times out whenever the machine is busy with other workers.
@@ -212,7 +217,11 @@ test.describe('simulator flow', () => {
     ]);
   });
 
-  test('an explosion can be placed under the water, with a depth instead of a height', async ({
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('an explosion can be placed under the water, with a depth instead of a height', async ({
     page,
   }) => {
     await page.goto('/?lng=en');
@@ -248,22 +257,34 @@ test.describe('simulator flow', () => {
     await page.getByLabel('Preset').selectOption('TUNGUSKA');
     await expect.poll(() => new URL(page.url()).searchParams.get('p')).toBe('TUNGUSKA');
 
-    await page.getByRole('radio', { name: 'Volcanic eruption' }).check();
-    await expect.poll(() => new URL(page.url()).searchParams.get('t')).toBe('volcano');
-    await expect.poll(() => new URL(page.url()).searchParams.get('p')).toBe('KRAKATAU_1883');
+    await page.getByLabel('Preset').selectOption('METEOR_CRATER');
+    await expect.poll(() => new URL(page.url()).searchParams.get('p')).toBe('METEOR_CRATER');
+    // The event stays what the site offers: since 22 September 2026 there is
+    // one, and no chooser to switch it with (src/store/visibleEvents.ts).
+    await expect.poll(() => new URL(page.url()).searchParams.get('t')).toBe('impact');
 
     // The existing `lng=en` query param must survive every write.
     await expect.poll(() => new URL(page.url()).searchParams.get('lng')).toBe('en');
   });
 
-  test('shared URL hydrates the event type + preset + mode on load', async ({ page }) => {
-    await page.goto('/?lng=en&t=earthquake&p=NORTHRIDGE_1994&m=globe');
+  test('shared URL hydrates the preset + mode on load', async ({ page }) => {
+    await page.goto('/?lng=en&t=impact&p=METEOR_CRATER&m=globe');
     await expandSimulatorPanelIfCollapsed(page);
 
     // The landing CTA is bypassed because mode=globe, so the panel is
-    // already mounted with the earthquake preset pre-selected.
-    await expect(page.getByRole('radio', { name: 'Earthquake' })).toBeChecked();
-    await expect(page.getByLabel('Preset')).toHaveValue('NORTHRIDGE_1994');
+    // already mounted with the preset pre-selected.
+    await expect(page.getByLabel('Preset')).toHaveValue('METEOR_CRATER');
+  });
+
+  test('a link to a module the site has hidden opens on the impacts', async ({ page }) => {
+    // Andrea, 22 September 2026: the site is for cosmic impacts alone
+    // (src/store/visibleEvents.ts). An old shared link must not leave a
+    // visitor inside a module the panel has no chooser for.
+    await page.goto('/?lng=en&t=earthquake&p=NORTHRIDGE_1994&m=globe');
+    await expandSimulatorPanelIfCollapsed(page);
+
+    await expect.poll(() => new URL(page.url()).searchParams.get('t')).toBe('impact');
+    await expect(page.getByRole('radio', { name: 'Earthquake' })).toHaveCount(0);
   });
 
   test('a shared link rebuilds a custom iron impactor, heading and all', async ({ page }) => {
@@ -274,7 +295,8 @@ test.describe('simulator flow', () => {
       '/?lng=en&t=impact&p=CUSTOM&d=60&s=12800&a=45&rho=7800&trho=2500&g=9.80665&str=50000000&az=200&m=globe'
     );
     await expandSimulatorPanelIfCollapsed(page);
-    await expect(page.getByRole('radio', { name: 'Cosmic impact' })).toBeChecked();
+    // The chooser is gone with the other modules (src/store/visibleEvents.ts):
+    // what the link rebuilds is the impact's own fields.
     await expect(page.getByLabel('Impactor diameter')).toHaveValue('60');
     await expect(page.getByLabel('Impactor density')).toHaveValue('7800');
     // The heading is under the slider now, with the direction spelled out.
@@ -284,7 +306,13 @@ test.describe('simulator flow', () => {
     await expect.poll(() => new URL(page.url()).searchParams.get('az')).toBe('200');
   });
 
-  test('a shared link rebuilds a custom explosion placed under the water', async ({ page }) => {
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('a shared link rebuilds a custom explosion placed under the water', async ({
+    page,
+  }) => {
     await page.goto('/?lng=en&t=explosion&p=CUSTOM&y=2.5&h=-40&gt=WET_SOIL&m=globe');
     await expandSimulatorPanelIfCollapsed(page);
 
@@ -297,7 +325,11 @@ test.describe('simulator flow', () => {
     await expect.poll(() => new URL(page.url()).searchParams.get('y')).toBe('2.5');
   });
 
-  test('a shared link rebuilds a custom earthquake and a custom volcano', async ({ page }) => {
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('a shared link rebuilds a custom earthquake and a custom volcano', async ({ page }) => {
     await page.goto('/?lng=en&t=earthquake&p=CUSTOM&mw=7.1&dep=12000&ft=reverse&m=globe');
     await expandSimulatorPanelIfCollapsed(page);
     await expect(page.getByRole('radio', { name: 'Earthquake' })).toBeChecked();
@@ -313,7 +345,11 @@ test.describe('simulator flow', () => {
     await expect.poll(() => new URL(page.url()).searchParams.get('ev')).toBe('12000');
   });
 
-  test('Anak Krakatau 2018 picked on the landslide tab stays a landslide, and so does its link', async ({
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('Anak Krakatau 2018 picked on the landslide tab stays a landslide, and so does its link', async ({
     page,
   }) => {
     await page.goto('/?lng=en');
@@ -351,6 +387,7 @@ test.describe('simulator flow', () => {
     },
     {
       what: "an explosion's yield",
+      hidden: true,
       url: '/?lng=en&t=explosion&p=HIROSHIMA_1945&m=globe',
       label: 'Yield (Mt TNT)',
       text: '0.02',
@@ -359,6 +396,7 @@ test.describe('simulator flow', () => {
     },
     {
       what: "an earthquake's depth",
+      hidden: true,
       url: '/?lng=en&t=earthquake&p=NORTHRIDGE_1994&m=globe',
       label: 'Depth (km)',
       text: '8.05',
@@ -367,6 +405,7 @@ test.describe('simulator flow', () => {
     },
     {
       what: "an eruption's rate",
+      hidden: true,
       url: '/?lng=en&t=volcano&p=KRAKATAU_1883&m=globe',
       label: 'V̇ mantissa (m³/s)',
       text: '2.5',
@@ -375,7 +414,11 @@ test.describe('simulator flow', () => {
     },
   ];
   for (const c of TYPED_OVER) {
+    // The rows of a module the site has hidden are kept and skipped, as the
+    // tests above are (src/store/visibleEvents.ts).
+    const hidden = 'hidden' in c && c.hidden;
     test(`${c.what} typed over the old one is the number typed`, async ({ page }) => {
+      test.skip(hidden, 'the site offers the cosmic impacts alone');
       await page.goto(c.url);
       await expandSimulatorPanelIfCollapsed(page);
       const field = page.getByLabel(c.label, { exact: true });
@@ -390,7 +433,11 @@ test.describe('simulator flow', () => {
     });
   }
 
-  test('a landslide is edited in the panel, confined basin and all', async ({ page }) => {
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('a landslide is edited in the panel, confined basin and all', async ({ page }) => {
     await page.goto('/?lng=en&t=landslide&p=VAIONT_1963&m=globe');
     await expandSimulatorPanelIfCollapsed(page);
 
@@ -427,7 +474,11 @@ test.describe('simulator flow', () => {
     await expect(page.getByLabel('Density (kg/m³, empty = 1,950)')).toHaveValue('');
   });
 
-  test('a shared link rebuilds a custom landslide', async ({ page }) => {
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('a shared link rebuilds a custom landslide', async ({ page }) => {
     await page.goto(
       '/?lng=en&t=landslide&p=CUSTOM&lv=300000000&sl=12&od=400&rg=submarine&sd=2100&fa=50000000&m=globe'
     );
@@ -494,7 +545,7 @@ test.describe('simulator flow', () => {
     if (canReadClipboard) {
       await context.grantPermissions(['clipboard-read', 'clipboard-write']);
     }
-    await page.goto('/?lng=en&t=volcano&p=KRAKATAU_1883&m=globe');
+    await page.goto('/?lng=en&t=impact&p=METEOR_CRATER&m=globe');
     await expandSimulatorPanelIfCollapsed(page);
 
     const copyButton = page.getByRole('button', { name: 'Copy shareable link' });
@@ -505,8 +556,8 @@ test.describe('simulator flow', () => {
 
     if (canReadClipboard) {
       const clipboard = await page.evaluate(() => navigator.clipboard.readText());
-      expect(clipboard).toContain('t=volcano');
-      expect(clipboard).toContain('p=KRAKATAU_1883');
+      expect(clipboard).toContain('t=impact');
+      expect(clipboard).toContain('p=METEOR_CRATER');
     }
   });
 });
@@ -549,7 +600,11 @@ test.describe('calibration envelope', () => {
     await expect(note).toContainText('No impact in recorded history left a death toll');
   });
 
-  test('Hiroshima names itself as the measured event of its size', async ({ page }) => {
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('Hiroshima names itself as the measured event of its size', async ({ page }) => {
     const note = await envelopeNoteFor(
       page,
       't=explosion&p=HIROSHIMA_1945&lat=34.3955&lon=132.4553'
@@ -559,7 +614,11 @@ test.describe('calibration envelope', () => {
     await expect(note).toContainText('the death toll on record');
   });
 
-  test('a fifty-megatonne charge says how far past the record it is', async ({ page }) => {
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('a fifty-megatonne charge says how far past the record it is', async ({ page }) => {
     const note = await envelopeNoteFor(page, 't=explosion&p=TSAR_BOMBA_1961&lat=45.4642&lon=9.19');
     await expect(note).toHaveAttribute('data-standing', 'extrapolated');
     // Tsar Bomba is beside a measured wave and three thousand times

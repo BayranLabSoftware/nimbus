@@ -63,7 +63,11 @@ test.describe('accessibility', () => {
     await auditPage(page);
   });
 
-  test('landslide panel, every custom field showing, has no WCAG 2.1 AA violations', async ({
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('landslide panel, every custom field showing, has no WCAG 2.1 AA violations', async ({
     page,
   }) => {
     // Vaiont has a confined basin, so the amplification field is there too.

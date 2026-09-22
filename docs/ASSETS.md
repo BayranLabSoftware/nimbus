@@ -122,10 +122,10 @@ Community` is shown in the Cesium credit overlay (wired via
 
 ### Landing page images
 
-| File                                           | Purpose                         | Licence / terms                                                          | Source                               | Added      |
-| ---------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------ | ------------------------------------ | ---------- |
-| `public/landing/globe-chicxulub.webp`          | Landing hero, Chicxulub preset  | Screenshot of Nimbus; basemap Esri World Imagery (free with attribution) | Captured from the deployed simulator | 2026-09-16 |
-| `public/landing/simulator-tohoku-{it,en}.webp` | Landing figure 1, Tōhoku preset | Screenshot of Nimbus; basemap Esri World Imagery (free with attribution) | Captured from the deployed simulator | 2026-09-16 |
+| File                                              | Purpose                            | Licence / terms                                                          | Source                               | Added      |
+| ------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------ | ------------------------------------ | ---------- |
+| `public/landing/globe-chicxulub.webp`             | Landing hero, Chicxulub preset     | Screenshot of Nimbus; basemap Esri World Imagery (free with attribution) | Captured from the deployed simulator | 2026-09-16 |
+| `public/landing/simulator-chicxulub-{it,en}.webp` | Landing figure 1, Chicxulub preset | Screenshot of Nimbus; basemap Esri World Imagery (free with attribution) | Captured from the local simulator    | 2026-09-22 |
 
 Both images show the satellite basemap, so both captions on the landing
 page carry the World Imagery attribution (`landing.instrument.imagery`),

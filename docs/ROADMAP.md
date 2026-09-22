@@ -863,6 +863,41 @@ is right, and it protects a defect as faithfully as a virtue. What says
 whether an answer is right is the certification the plan of 22 September
 builds on top of it.
 
+### The site offers the impacts alone _(Andrea's decision, 22 September 2026)_
+
+"On the site they will not be there any more, it will be only for cosmic
+impacts. Then, once we are at a 9 from a laboratory, we will think about the
+other modules." The first block of the plan's first phase, honesty on the
+cards, and it moves no number: the seal reads the same and the validation
+report was regenerated unchanged.
+
+- **One list is the whole decision.** `store/visibleEvents.ts` names what the
+  site offers — the impacts; reopening a module is adding a line there. The
+  chooser disappears while there is one event, and a link to a hidden module
+  opens on the impacts, keeping its place and its view.
+- **The code of the other four is untouched**: their physics, presets, store
+  and unit tests stay, and the codec still reads all five. Their end-to-end
+  tests are skipped, each with the reason beside it, not deleted.
+- **The landing page** speaks of impacts only: its presets, the models of the
+  impact and of its tsunami, the kinetic energy and the transient crater among
+  the formulas, and a new figure made with the simulator (Chicxulub) in place
+  of the two screenshots of Tōhoku.
+- **The methodology** keeps the sections an impact uses — the impact, the
+  tsunami, the population, the Monte Carlo — and every entry of its list now
+  names its family.
+- **The validation, on the landing page and on its own page, shows the
+  impacts' own evidence and says what is missing**, as Andrea chose: thirteen
+  quantities of thirteen agree with the Earth Impact Effects Program run as
+  its authors run it (the widest gap of a median 0.5 %), 938 comparisons on
+  83 impacts; a median error of 13.7 km on the altitude of entry over the 357
+  bolides of JPL's catalogue, **with the bar of 5 km written as not reached**;
+  and **no impact with a recorded death toll** — the mortality is calibrated
+  on explosions of the same energy, and that is an extrapolation. Beside them
+  the rules of `GOLD_STANDARD.md`, eight of nine held and G3 written as not
+  held, and a section on what has never been measured. The eighteen recorded tolls it showed
+  before — Hiroshima, Tōhoku, Pinatubo, Beirut — calibrate engines the impacts
+  share, but not one of them is an impact.
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this

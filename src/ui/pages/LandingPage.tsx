@@ -1,9 +1,5 @@
 import { Suspense, lazy, type JSX } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EARTHQUAKE_PRESETS } from '../../physics/events/earthquake/index.js';
-import { EXPLOSION_PRESETS } from '../../physics/events/explosion/index.js';
-import { LANDSLIDE_PRESETS } from '../../physics/events/landslide/index.js';
-import { VOLCANO_PRESETS } from '../../physics/events/volcano/index.js';
 import { IMPACT_PRESETS } from '../../physics/simulate.js';
 import { useAppStore } from '../../store/index.js';
 import { REPOSITORY_URL } from '../../buildInfo.js';
@@ -20,33 +16,23 @@ const LandingValidation = lazy(() =>
 );
 
 /**
- * The event types the simulator offers, each with the sources behind its
- * principal relations. Tsunamis are not a type of their own: they are what
- * an impact, an earthquake or a landslide can generate.
+ * What the simulator models, each with the sources behind its principal
+ * relations. Since 22 September 2026 the site is an instrument for cosmic
+ * impacts alone (store/visibleEvents.ts); the tsunami is not an event of its
+ * own here, it is what an impact in or near the sea generates.
  */
 const MODELS = [
   { key: 'impact', sources: [CITATIONS.collins2005] },
-  { key: 'explosion', sources: [CITATIONS.glasstoneDolan1977] },
-  { key: 'earthquake', sources: [CITATIONS.hanksKanamori1979, CITATIONS.boore2014] },
-  { key: 'volcano', sources: [CITATIONS.mastin2009, CITATIONS.auker2013] },
-  { key: 'landslide', sources: [CITATIONS.watts2000] },
   { key: 'tsunami', sources: [CITATIONS.ward2000, CITATIONS.wunnemann2010] },
 ] as const;
-const EVENT_TYPE_COUNT = MODELS.filter((m) => m.key !== 'tsunami').length;
 
-// Counted from the preset tables themselves, so the figure follows the code.
-const PRESET_COUNT = [
-  IMPACT_PRESETS,
-  EXPLOSION_PRESETS,
-  EARTHQUAKE_PRESETS,
-  VOLCANO_PRESETS,
-  LANDSLIDE_PRESETS,
-].reduce((sum, table) => sum + Object.keys(table).length, 0);
+// Counted from the preset table itself, so the figure follows the code.
+const PRESET_COUNT = Object.keys(IMPACT_PRESETS).length;
 
 // The two equations shown are taken verbatim from the methodology page.
 const FORMULAS = [
   { id: 'kinetic-energy', label: 'kineticEnergy' },
-  { id: 'seismic-moment', label: 'seismicMoment' },
+  { id: 'transient-crater', label: 'transientCrater' },
 ] as const;
 const formulaEntry = (id: string) =>
   METHODOLOGY_SECTIONS.flatMap((s) => s.entries).find((e) => e.id === id);
@@ -188,10 +174,6 @@ export function LandingPage(): JSX.Element {
         <section className={styles.facts} aria-label={t('landing.facts.label')}>
           <dl className={styles.factsRow}>
             <div className={styles.fact}>
-              <dt>{EVENT_TYPE_COUNT}</dt>
-              <dd>{t('landing.facts.eventTypes')}</dd>
-            </div>
-            <div className={styles.fact}>
               <dt>{PRESET_COUNT}</dt>
               <dd>{t('landing.facts.presets')}</dd>
             </div>
@@ -259,7 +241,7 @@ export function LandingPage(): JSX.Element {
           </div>
           <figure className={styles.screen}>
             <img
-              src={`${base}landing/simulator-tohoku-${italian ? 'it' : 'en'}.webp`}
+              src={`${base}landing/simulator-chicxulub-${italian ? 'it' : 'en'}.webp`}
               alt={t('landing.instrument.alt')}
               width={1920}
               height={1200}

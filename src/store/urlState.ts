@@ -5,6 +5,7 @@ import { VOLCANO_PRESETS } from '../physics/events/volcano/index.js';
 import { STANDARD_GRAVITY } from '../physics/constants.js';
 import { IMPACT_PRESETS } from '../physics/simulate.js';
 import { deg, degreesToRadians, kgPerM3, m, mps, radiansToDegrees } from '../physics/units.js';
+import { VISIBLE_EVENT_TYPES } from './visibleEvents.js';
 import type { AppStore, EventType, ViewMode } from './useAppStore.js';
 import { CLOSE_UP_VIEW_ENABLED } from './useAppStore.js';
 
@@ -303,6 +304,11 @@ export function encodeStateToSearchParams(state: SyncableState): URLSearchParams
   return params;
 }
 
+/** Which events a decoder will read. Defaults to the ones the site offers. */
+export interface DecodeOptions {
+  offered?: readonly EventType[];
+}
+
 /**
  * Output of {@link decodeSearchParamsToIntent}. Null-typed fields
  * mean "do not override the existing store value"; they correspond
@@ -451,9 +457,18 @@ function decodeCustomInput(
  * function is pure and returns null for every field the URL did not
  * express (or expressed invalidly).
  */
-export function decodeSearchParamsToIntent(search: URLSearchParams): DecodedStateIntent {
+export function decodeSearchParamsToIntent(
+  search: URLSearchParams,
+  options: DecodeOptions = {}
+): DecodedStateIntent {
+  const offered = options.offered ?? VISIBLE_EVENT_TYPES;
   const rawType = search.get(URL_KEYS.eventType);
-  const eventType = isEventType(rawType) ? rawType : null;
+  // A link to an event the site does not offer (visibleEvents.ts) is read as a
+  // link with no event at all: it opens on the impacts, rather than rebuilding
+  // a module the chooser has no entry for and leaving the visitor inside it
+  // with no way back. The codec itself still round-trips every module — pass
+  // `offered` to read one the site has hidden, as the round-trip tests do.
+  const eventType = isEventType(rawType) && offered.includes(rawType) ? rawType : null;
 
   let preset: string | null = null;
   const rawPreset = search.get(URL_KEYS.preset);
@@ -498,10 +513,14 @@ export function decodeSearchParamsToIntent(search: URLSearchParams): DecodedStat
  * decoded intent. Pass `window.location.href` from the browser; tests
  * pass crafted strings directly.
  */
-export function decodeUrl(url: string, base = 'http://localhost/'): DecodedStateIntent {
+export function decodeUrl(
+  url: string,
+  base = 'http://localhost/',
+  options: DecodeOptions = {}
+): DecodedStateIntent {
   try {
     const parsed = new URL(url, base);
-    return decodeSearchParamsToIntent(parsed.searchParams);
+    return decodeSearchParamsToIntent(parsed.searchParams, options);
   } catch {
     return {
       eventType: null,

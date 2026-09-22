@@ -30,6 +30,7 @@ import {
   type DeepDiveResult,
   type EventType,
 } from '../../store/index.js';
+import { VISIBLE_EVENT_TYPES } from '../../store/visibleEvents.js';
 import { cx } from '../utils/cx.js';
 import {
   formatDecimal,
@@ -107,7 +108,11 @@ const LANDSLIDE_PRESET_IDS: LandslidePresetId[] = [
   'LITUYA_BAY_1958',
   'ELM_1881',
 ];
-const EVENT_TYPES: EventType[] = ['impact', 'explosion', 'earthquake', 'volcano', 'landslide'];
+/** The events the site offers — one, since 22 September 2026
+ *  (store/visibleEvents.ts). The chooser is drawn only where there is a
+ *  choice: a segmented control with a single button is furniture, not a
+ *  control. */
+const EVENT_TYPES: readonly EventType[] = VISIBLE_EVENT_TYPES;
 
 /* One pictogram per event family, stroked in currentColor so the
  * segmented control can tint the active family without extra CSS. */
@@ -734,25 +739,27 @@ export function SimulatorPanel(): JSX.Element {
 
         {tab === 'parameters' && (
           <>
-            <fieldset className={styles.segFieldset}>
-              <legend className={styles.label}>{t('simulator.eventType')}</legend>
-              <div className={styles.seg}>
-                {EVENT_TYPES.map((type) => (
-                  <label key={type} className={styles.segItem}>
-                    <input
-                      type="radio"
-                      name="event-type"
-                      value={type}
-                      checked={eventType === type}
-                      onChange={handleEventTypeChange}
-                      className={styles.segInput}
-                    />
-                    <EventGlyph type={type} />
-                    <span className={styles.segLabel}>{t(`simulator.eventTypes.${type}`)}</span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
+            {EVENT_TYPES.length > 1 && (
+              <fieldset className={styles.segFieldset}>
+                <legend className={styles.label}>{t('simulator.eventType')}</legend>
+                <div className={styles.seg}>
+                  {EVENT_TYPES.map((type) => (
+                    <label key={type} className={styles.segItem}>
+                      <input
+                        type="radio"
+                        name="event-type"
+                        value={type}
+                        checked={eventType === type}
+                        onChange={handleEventTypeChange}
+                        className={styles.segInput}
+                      />
+                      <EventGlyph type={type} />
+                      <span className={styles.segLabel}>{t(`simulator.eventTypes.${type}`)}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            )}
 
             <div className={styles.field}>
               <label htmlFor="preset-select" className={styles.label}>

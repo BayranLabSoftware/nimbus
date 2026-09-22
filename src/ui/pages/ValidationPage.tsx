@@ -1,177 +1,131 @@
+import type { TFunction } from 'i18next';
 import type { JSX, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import report from '../../../docs/VALIDATION_REPORT.json';
 import { BUILD_INFO, shortCommit, validationReportUrl, REPOSITORY_URL } from '../../buildInfo.js';
 import { useAppStore } from '../../store/index.js';
 import { cx } from '../utils/cx';
+import { ProgramChart, type ProgramChartRow } from './landing/ProgramChart.js';
 import styles from './ValidationPage.module.css';
-import { VALIDATION_GAPS } from './validationGaps.js';
+import { IMPACT_GAPS } from './validationGaps.js';
 
 /**
- * The model against the record, in public.
+ * The impacts against what has been measured, in public.
  *
  * Every figure on this page is read from `docs/VALIDATION_REPORT.json`,
- * which the report generator writes from the code and CI refuses to
- * let drift from it by a single byte. So the page cannot go stale any
- * more than the report can, and it says nothing the report does not:
- * the tolls that sit inside the model's band, the ones that do not,
- * and — for every one that does not — the named cause.
+ * which the report generator writes from the code and CI refuses to let
+ * drift from it by a single byte. So the page cannot go stale any more than
+ * the report can, and it says nothing the report does not.
  *
- * The misses are the point of the page rather than its fine print. A
- * simulator that shows only where it is right is asking to be taken on
- * trust; one that shows where it is wrong and why is giving a reader
- * the means not to.
+ * Until 22 September 2026 this page carried all five modules: eighteen
+ * recorded death tolls, sixteen wave heights, the ShakeMap footprints, the
+ * sets chosen by rule for earthquakes and plumes. The site is now an
+ * instrument for cosmic impacts alone (store/visibleEvents.ts), and Andrea's
+ * decision that evening was that the page shows the impacts' own evidence and
+ * says plainly what is not there — rather than leaving a reader to take a
+ * calibration made on explosions and earthquakes for a validation of impacts.
+ * Those tables are in the report, which is linked from the top of the page,
+ * and they come back with their modules.
+ *
+ * What is here, in order: how far the pipeline is from the reference
+ * implementation of the equations it cites; what the sky has actually
+ * measured of an entry; the rules of the gold standard the domain holds and
+ * the one it does not; what has never been measured at all; and the gaps the
+ * model declares. The misses are the point of the page rather than its fine
+ * print. A simulator that shows only where it is right is asking to be taken
+ * on trust; one that shows where it is wrong and why is giving a reader the
+ * means not to.
  */
 
-interface TollRow {
-  event: string;
-  recorded: number;
-  recordedLow: number;
-  recordedHigh: number;
-  model: number;
-  bandLow: number;
-  bandHigh: number;
-  ratio: number;
-  contains: boolean;
-  gated: boolean;
-  cause: string | null;
-  role: string;
-  source: string;
+interface EiepSummary extends ProgramChartRow {
+  min: number;
+  max: number;
 }
 
-interface WaveRow {
-  record: string;
-  rangeM: number;
-  observedLowM: number;
-  observedHighM: number;
-  modelM: number;
-  contains: boolean;
-  globeM: number | null;
-  globeContains: boolean | null;
-  gated: boolean;
-  role: string;
-  source: string;
-}
-
-interface FootprintRow {
-  event: string;
-  mmi: number;
-  shakemapKm2: number;
-  modelKm2: number;
-}
-
-interface InterpolationRow {
-  event: string;
-  measuredLow: number;
-  measuredHigh: number;
-  interpolatedLow: number;
-  interpolatedHigh: number;
-  comparable: boolean;
-  /** Whether the low end, on its own, has dead enough to compare. */
-  lowComparable: boolean;
-}
-
-interface AnchorRow {
-  name: string;
-  eventType: string;
-  quantities: string[];
-  gated: string[];
-  use: Record<string, { role: string; how: string } | undefined>;
-  source: string;
-}
-
-interface ScoreFigures {
+interface EntryReading {
   rows: number;
-  scored: number;
-  bias: number | null;
-  scatterLn: number | null;
-  inside: number;
-  bothZero: number;
-  falseAlarms: number;
-  missedToZero: number;
-  medianBandDecades: number | null;
+  burst: number;
+  toTheGround: number;
+  medianAbsoluteErrorKm: number;
+  meanErrorKm: number;
+  withinFiveKm: number;
 }
 
-interface ScoreCellRow {
-  quantity: string;
-  family: string;
-  sizeBand: string | null;
-  predictive: boolean;
-  heldOut: ScoreFigures;
-  all: ScoreFigures;
+interface RuleClause {
+  name: string;
+  status: string;
 }
 
-const SCORED_QUANTITIES = ['toll', 'wave', 'plume'] as const;
-
-/** A cell of a set held out by rule (heldOutByRule.ts): the set as a
- *  whole, a size band, or a plume morphology. */
-interface RuleCellRow {
-  kind: string;
-  group: string | null;
-  all: ScoreFigures;
-  /** The rows whose record or band is above zero. */
-  informative?: ScoreFigures;
-  /** Those rows, less the ones checked in the net before the rule. */
-  unseen: ScoreFigures;
+interface DomainRule {
+  rule: string;
+  measure: string;
+  holds: boolean;
+  credit: number;
+  status: string | null;
+  clauses: RuleClause[];
 }
 
-interface ByRuleData {
-  readOn: string;
-  earthquakes: { heldOut: number; seen: number; cells: RuleCellRow[] };
-  plumes: { rows: number; cells: RuleCellRow[] };
-}
-
-interface ValidationReportData {
-  calibration: {
-    scorecard: ScoreCellRow[];
-    byRule: ByRuleData;
-    tolls: TollRow[];
-    waves: WaveRow[];
-    footprint: {
-      rows: FootprintRow[];
-      geometricMeanRadiusRatio: number;
-      biasInStandardErrors: number;
-      sdLn: number;
-      /** The ceiling one sigma of ground motion implies, in radius. */
-      expectedSdLn: number;
-      /** The between-event part of it alone. */
-      betweenEventSdLn: number;
-      inventedBands: string[];
+interface ReportData {
+  goldStandard: {
+    domains: {
+      domain: string;
+      rules: DomainRule[];
+      held: number;
+      pending: number;
+      reading: number;
+    }[];
+  };
+  gate: { decision: string };
+  replay: { total: number; passed: number };
+  golden: { total: number; passed: number };
+  verification: {
+    eiep: {
+      readOn: string;
+      impacts: number;
+      failed: number;
+      summaries: EiepSummary[];
+      regimes: Record<string, number>;
+      craters: Record<string, number>;
     };
-    interpolation: InterpolationRow[];
-    anchors: AnchorRow[];
+  };
+  calibration: {
+    fireball: {
+      readOn: string;
+      events: { bolides: number; fast: number };
+      meetsBar: boolean;
+      readings: Record<string, EntryReading>;
+    };
+    entryCells: {
+      spans: { key: string; unit: string; from: number; to: number }[];
+      rows: number;
+      scored: boolean;
+      counts: { within: number; bm13: number; departs: number };
+      model: { medianAbsKm: number };
+      program: { medianAbsKm: number };
+      g2: string;
+      g3: string;
+    }[];
   };
 }
 
-const DATA: ValidationReportData = report;
+const DATA = report as unknown as ReportData;
 
-/** The causes the page can explain; the harness test holds every miss
- *  to one of these. */
-const CAUSES = [
-  'evacuation',
-  'buildingStock',
-  'populationRaster',
-  'drownedOffline',
-  'populationChanged',
-  'occupancy',
-  'mechanismNotModelled',
-  'belowResolution',
-  'footprint',
-] as const;
-type Cause = (typeof CAUSES)[number];
-const isCause = (c: string | null): c is Cause =>
-  c !== null && (CAUSES as readonly string[]).includes(c);
+/**
+ * A clause of a rule, in the reader's language. The report writes the names
+ * in English — it is a document for reviewers — so the page looks each one up
+ * by its slug and falls back to the report's own words for a clause added
+ * since this was translated, rather than printing a key.
+ */
+function clauseName(t: TFunction, name: string): string {
+  const slug = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  return t(`validation.rules.clause.${slug}`, { defaultValue: name });
+}
 
-/** Whether the model was set on the event behind a check, most
- *  compromising first — `CalibrationRole` in calibrationEnvelope.ts. */
-const ROLES = ['tuned', 'inputInferred', 'sameSource', 'heldOut', 'unestablished'] as const;
-type Role = (typeof ROLES)[number];
-const isRole = (r: string | undefined): r is Role =>
-  r !== undefined && (ROLES as readonly string[]).includes(r);
-
-const FAMILIES = ['impact', 'explosion', 'earthquake', 'volcano', 'landslide'] as const;
-
-const ROMAN: Readonly<Record<number, string>> = { 7: 'VII', 8: 'VIII', 9: 'IX' };
+/** The readings of the entry the page prints, in this order. */
+const ENTRY_READINGS = ['default', 'stony', 'iron'] as const;
 
 export function ValidationPage(): JSX.Element {
   const { t, i18n } = useTranslation();
@@ -181,63 +135,18 @@ export function ValidationPage(): JSX.Element {
   const int = (n: number): string => Math.round(n).toLocaleString(locale);
   const dec = (n: number, digits: number): string =>
     n.toLocaleString(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits });
-  const metres = (v: number): string => `${dec(v, v >= 10 ? 1 : 2)} m`;
-  const distance = (m: number): string => (m >= 10_000 ? `${int(m / 1000)} km` : `${int(m)} m`);
+  const ratio = (v: number): string => `${dec(v, 3)}×`;
 
-  const { tolls, waves, footprint, interpolation, anchors, byRule } = DATA.calibration;
-  const quakesByRule = byRule.earthquakes.cells.find((c) => c.group === null);
-  const biasText = (bias: number | null): string =>
-    bias === null
-      ? '—'
-      : `${bias >= 0.1 ? dec(bias, 2) : bias.toLocaleString(locale, { maximumSignificantDigits: 2 })}×`;
-
-  const tollsInside = tolls.filter((r) => r.contains).length;
-  const gated = tolls.filter((r) => r.gated);
-  const wavesInside = waves.filter((r) => r.contains).length;
-  const globeMisses = waves.filter((r) => r.globeContains === false);
-  const causesShown = CAUSES.filter((c) => tolls.some((r) => r.cause === c));
-  const heldTolls = tolls.filter((r) => r.role === 'heldOut');
-  const heldWaves = waves.filter((r) => r.role === 'heldOut');
-  // A held-out row that passes on a record of nothing — no dead, no
-  // wave — checks a rule rather than a number; the tile says so.
-  const heldInside = [
-    ...heldTolls.filter((r) => r.contains).map((r) => r.recorded === 0),
-    ...heldWaves.filter((r) => r.contains).map((r) => r.observedHighM <= 0),
-  ];
-  const heldInsideAllZeros = heldInside.length > 0 && heldInside.every(Boolean);
-  const checks = anchors.flatMap((a) =>
-    a.quantities.map((q) => ({ name: a.name, quantity: q, role: a.use[q]?.role }))
+  const { eiep } = DATA.verification;
+  const { fireball, entryCells } = DATA.calibration;
+  const impacts = DATA.goldStandard.domains.find((d) => d.domain === 'Impacts');
+  const quantities = eiep.summaries;
+  const worstPercent = dec(
+    Math.max(...quantities.map((q) => Math.abs(q.geometricMean - 1))) * 100,
+    1
   );
-  const worstInterpolation = interpolation
-    .filter((r) => r.comparable)
-    .reduce((worst, r) => {
-      const f = (a: number, b: number): number => {
-        const x = Math.max(a, 1);
-        const y = Math.max(b, 1);
-        return x > y ? x / y : y / x;
-      };
-      return Math.max(
-        worst,
-        r.lowComparable ? f(r.measuredLow, r.interpolatedLow) : 1,
-        f(r.measuredHigh, r.interpolatedHigh)
-      );
-    }, 1);
-
-  const recorded = (r: TollRow): string =>
-    r.recordedLow === r.recordedHigh
-      ? int(r.recorded)
-      : `${int(r.recorded)} (${int(r.recordedLow)}–${int(r.recordedHigh)})`;
-
-  const ratio = (r: TollRow): string => {
-    if (r.recorded === 0) return r.model === 0 ? t('validation.table.bothZero') : '—';
-    return `${dec(r.ratio, 2)}×`;
-  };
-
-  const footprintRatio = (r: FootprintRow): string => {
-    if (r.shakemapKm2 === 0 && r.modelKm2 === 0) return t('validation.footprint.neither');
-    if (r.shakemapKm2 === 0) return t('validation.footprint.fromNothing');
-    return `${dec(r.modelKm2 / r.shakemapKm2, 2)}×`;
-  };
+  const comparisons = quantities.reduce((sum, q) => sum + q.pairs, 0);
+  const entry = fireball.readings.default;
 
   const provenance = (): JSX.Element => {
     if (BUILD_INFO.commit === null) return <>{t('validation.provenanceUnknown')}</>;
@@ -274,205 +183,181 @@ export function ValidationPage(): JSX.Element {
         <ul className={styles.tiles}>
           <li className={styles.tile}>
             <span className={styles.tileValue}>
-              {tollsInside} / {tolls.length}
+              {quantities.length} / {quantities.length}
             </span>
-            <span className={styles.tileLabel}>{t('validation.summary.tolls')}</span>
+            <span className={styles.tileLabel}>{t('validation.summary.quantities')}</span>
             <span className={styles.tileNote}>
-              {t('validation.summary.tollsGated', {
-                pass: gated.filter((r) => r.contains).length,
-                total: gated.length,
+              {t('validation.summary.quantitiesNote', { percent: worstPercent })}
+            </span>
+          </li>
+          <li className={styles.tile}>
+            <span className={styles.tileValue}>{int(comparisons)}</span>
+            <span className={styles.tileLabel}>{t('validation.summary.comparisons')}</span>
+            <span className={styles.tileNote}>
+              {t('validation.summary.comparisonsNote', {
+                impacts: eiep.impacts,
+                readOn: eiep.readOn,
               })}
             </span>
           </li>
           <li className={styles.tile}>
-            <span className={styles.tileValue}>
-              {wavesInside} / {waves.length}
-            </span>
-            <span className={styles.tileLabel}>{t('validation.summary.waves')}</span>
-            {globeMisses.length > 0 && (
-              <span className={cx(styles.tileNote, styles.tileWarn)}>
-                {t('validation.summary.wavesGlobe', { count: globeMisses.length })}
-              </span>
-            )}
-          </li>
-          <li className={styles.tile}>
-            <span className={styles.tileValue}>{dec(footprint.geometricMeanRadiusRatio, 2)}×</span>
-            <span className={styles.tileLabel}>{t('validation.summary.footprint')}</span>
-            <span className={styles.tileNote}>
-              {t('validation.summary.footprintScatter', {
-                sd: dec(footprint.sdLn, 2),
-                expected: dec(footprint.expectedSdLn, 2),
-              })}
+            <span className={styles.tileValue}>{dec(entry?.medianAbsoluteErrorKm ?? 0, 1)} km</span>
+            <span className={styles.tileLabel}>{t('validation.summary.entry')}</span>
+            <span className={cx(styles.tileNote, styles.tileWarn)}>
+              {t('validation.summary.entryNote', { bolides: fireball.events.bolides })}
             </span>
           </li>
           <li className={styles.tile}>
-            <span className={styles.tileValue}>
-              {heldTolls.filter((r) => r.contains).length +
-                heldWaves.filter((r) => r.contains).length}{' '}
-              / {heldTolls.length + heldWaves.length}
+            <span className={styles.tileValue}>0</span>
+            <span className={styles.tileLabel}>{t('validation.summary.tollsMeasured')}</span>
+            <span className={cx(styles.tileNote, styles.tileWarn)}>
+              {t('validation.summary.tollsMeasuredNote')}
             </span>
-            <span className={styles.tileLabel}>{t('validation.summary.heldOut')}</span>
-            <span className={styles.tileNote}>
-              {t('validation.summary.heldOutNote', {
-                tollsInside: heldTolls.filter((r) => r.contains).length,
-                tolls: heldTolls.length,
-                wavesInside: heldWaves.filter((r) => r.contains).length,
-                waves: heldWaves.length,
-              })}
-            </span>
-            {heldInsideAllZeros && (
-              <span className={cx(styles.tileNote, styles.tileWarn)}>
-                {t('validation.summary.heldOutZeros')}
-              </span>
-            )}
-          </li>
-          <li className={styles.tile}>
-            <span className={styles.tileValue}>{footprint.inventedBands.length}</span>
-            <span className={styles.tileLabel}>{t('validation.summary.invented')}</span>
           </li>
         </ul>
       </section>
 
-      <section className={styles.section} data-testid="validation-scorecard">
-        <h2>{t('validation.scorecard.title')}</h2>
-        <p className={styles.prose}>{t('validation.scorecard.body')}</p>
-        {SCORED_QUANTITIES.map((q) => {
-          const cells = DATA.calibration.scorecard.filter(
-            (c) => c.quantity === q && c.heldOut.rows > 0
-          );
-          if (cells.length === 0) return null;
-          return (
-            <TableRegion key={q} label={t(`validation.scorecard.quantity.${q}`)}>
-              <table className={styles.table}>
-                <caption>{t(`validation.scorecard.quantity.${q}`)}</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">{t('validation.scorecard.table.events')}</th>
-                    <th scope="col" className={styles.num}>
-                      {t('validation.scorecard.table.rows')}
-                    </th>
-                    <th scope="col" className={styles.num}>
-                      {t('validation.scorecard.table.bias')}
-                    </th>
-                    <th scope="col" className={styles.num}>
-                      {t('validation.scorecard.table.scatter')}
-                    </th>
-                    <th scope="col" className={styles.num}>
-                      {t('validation.scorecard.table.inside')}
-                    </th>
-                    <th scope="col" className={styles.num}>
-                      {t('validation.scorecard.table.band')}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cells.map((c) => (
-                    <tr key={`${c.family}:${c.sizeBand ?? 'all'}`}>
-                      <th scope="row">
-                        {c.sizeBand === null
-                          ? t(`simulator.eventTypes.${c.family}`)
-                          : `· ${c.sizeBand}`}
-                      </th>
-                      <td className={styles.num}>
-                        {t('validation.scorecard.scored', {
-                          rows: c.heldOut.rows,
-                          scored: c.heldOut.scored,
-                        })}
-                      </td>
-                      <td className={styles.num}>
-                        {c.heldOut.bias === null
-                          ? '—'
-                          : `${
-                              c.heldOut.bias >= 0.1
-                                ? dec(c.heldOut.bias, 2)
-                                : c.heldOut.bias.toLocaleString(locale, {
-                                    maximumSignificantDigits: 2,
-                                  })
-                            }×`}
-                      </td>
-                      <td className={styles.num}>
-                        {c.heldOut.scatterLn === null ? '—' : dec(c.heldOut.scatterLn, 2)}
-                      </td>
-                      <td className={styles.num}>
-                        {t(
-                          c.predictive
-                            ? 'validation.scorecard.insideOf'
-                            : 'validation.scorecard.acceptedOf',
-                          { inside: c.heldOut.inside, rows: c.heldOut.rows }
-                        )}
-                      </td>
-                      <td className={styles.num}>
-                        {c.heldOut.medianBandDecades === null
-                          ? '—'
-                          : `10^${dec(c.heldOut.medianBandDecades, 1)}`}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </TableRegion>
-          );
-        })}
-        <p className={styles.note}>{t('validation.scorecard.note')}</p>
-      </section>
-
-      <section className={styles.section} data-testid="validation-by-rule">
-        <h2>{t('validation.byRule.title')}</h2>
-        <p className={styles.prose}>
-          {t('validation.byRule.body', {
-            earthquakes: int(byRule.earthquakes.heldOut),
-            plumes: int(byRule.plumes.rows),
-          })}
-        </p>
-        <TableRegion label={t('validation.byRule.earthquakes')}>
+      <section className={styles.section} data-testid="validation-program">
+        <h2>{t('validation.program.title')}</h2>
+        <p className={styles.prose}>{t('validation.program.body')}</p>
+        <ProgramChart rows={quantities} />
+        <TableRegion label={t('validation.program.title')}>
           <table className={styles.table}>
-            <caption>{t('validation.byRule.earthquakes')}</caption>
             <thead>
               <tr>
-                <th scope="col">{t('validation.scorecard.table.events')}</th>
+                <th scope="col">{t('landing.validation.tableQuantity')}</th>
                 <th scope="col" className={styles.num}>
-                  {t('validation.scorecard.table.rows')}
+                  {t('landing.validation.tableCases')}
                 </th>
                 <th scope="col" className={styles.num}>
-                  {t('validation.scorecard.table.bias')}
+                  {t('landing.validation.tableRatio')}
                 </th>
                 <th scope="col" className={styles.num}>
-                  {t('validation.scorecard.table.scatter')}
+                  {t('landing.validation.tableSpread')}
                 </th>
                 <th scope="col" className={styles.num}>
-                  {t('validation.byRule.table.inside')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.scorecard.table.band')}
+                  {t('validation.program.extremes')}
                 </th>
               </tr>
             </thead>
             <tbody>
-              {byRule.earthquakes.cells.map((c) => {
-                const held = c.informative ?? c.all;
+              {quantities.map((q) => (
+                <tr key={q.quantity}>
+                  <th scope="row">{t(`landing.validation.quantities.${q.quantity}`)}</th>
+                  <td className={styles.num}>{int(q.pairs)}</td>
+                  <td className={styles.num}>{ratio(q.geometricMean)}</td>
+                  <td className={styles.num}>
+                    {ratio(q.p10)}–{ratio(q.p90)}
+                  </td>
+                  <td className={styles.num}>
+                    {ratio(q.min)}–{ratio(q.max)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </TableRegion>
+        <p className={styles.note}>
+          {t('validation.program.regimes', {
+            regimes: Object.entries(eiep.regimes)
+              .map(([k, n]) => `${k} (${int(n)})`)
+              .join(' · '),
+            craters: Object.entries(eiep.craters)
+              .map(([k, n]) => `${k} (${int(n)})`)
+              .join(' · '),
+          })}
+        </p>
+        {eiep.failed > 0 && (
+          <p className={styles.note}>
+            {t('validation.program.failed', { count: eiep.failed, impacts: eiep.impacts })}
+          </p>
+        )}
+      </section>
+
+      <section className={styles.section} data-testid="validation-entry">
+        <h2>{t('validation.entry.title')}</h2>
+        <p className={styles.prose}>
+          {t('validation.entry.body', {
+            bolides: fireball.events.bolides,
+            readOn: fireball.readOn,
+          })}
+        </p>
+        <TableRegion label={t('validation.entry.title')}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th scope="col">{t('validation.entry.reading')}</th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.entry.median')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.entry.mean')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.entry.withinFive')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.entry.toTheGround')}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {ENTRY_READINGS.map((key) => {
+                const row = fireball.readings[key];
+                if (row === undefined) return null;
                 return (
-                  <tr key={c.group ?? 'all'}>
-                    <th scope="row">
-                      {c.group === null ? t('simulator.eventTypes.earthquake') : `· ${c.group}`}
-                    </th>
+                  <tr key={key}>
+                    <th scope="row">{t(`validation.entry.readings.${key}`)}</th>
+                    <td className={styles.num}>{dec(row.medianAbsoluteErrorKm, 2)} km</td>
+                    <td className={styles.num}>{dec(row.meanErrorKm, 2)} km</td>
                     <td className={styles.num}>
-                      {t('validation.scorecard.scored', { rows: c.all.rows, scored: c.all.scored })}
+                      {int(row.withinFiveKm)} / {int(row.rows)}
                     </td>
-                    <td className={styles.num}>{biasText(c.all.bias)}</td>
+                    <td className={styles.num}>{int(row.toTheGround)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </TableRegion>
+        <p className={styles.note}>
+          {t(fireball.meetsBar ? 'validation.entry.barMet' : 'validation.entry.barMissed')}
+        </p>
+        <TableRegion label={t('validation.entry.cells')}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th scope="col">{t('validation.entry.cell')}</th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.entry.rows')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.entry.model')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.entry.program')}
+                </th>
+                <th scope="col" className={styles.num}>
+                  {t('validation.entry.within')}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {entryCells.map((cell) => {
+                const label = cell.spans
+                  .map(
+                    (s) =>
+                      `${t(`validation.entry.span.${s.key}`)} ${dec(s.from, 2)}–${dec(s.to, 2)} ${s.unit}`
+                  )
+                  .join(' · ');
+                return (
+                  <tr key={label}>
+                    <th scope="row">{label}</th>
+                    <td className={styles.num}>{int(cell.rows)}</td>
+                    <td className={styles.num}>{dec(cell.model.medianAbsKm, 2)} km</td>
+                    <td className={styles.num}>{dec(cell.program.medianAbsKm, 2)} km</td>
                     <td className={styles.num}>
-                      {c.all.scatterLn === null ? '—' : dec(c.all.scatterLn, 2)}
-                    </td>
-                    <td className={styles.num}>
-                      {t('validation.byRule.insideShare', {
-                        inside: held.inside,
-                        rows: held.rows,
-                        percent: held.rows === 0 ? 0 : Math.round((100 * held.inside) / held.rows),
-                      })}
-                    </td>
-                    <td className={styles.num}>
-                      {held.medianBandDecades === null
-                        ? '—'
-                        : `10^${dec(held.medianBandDecades, 1)}`}
+                      {int(cell.counts.within)} / {int(cell.rows)}
                     </td>
                   </tr>
                 );
@@ -480,366 +365,107 @@ export function ValidationPage(): JSX.Element {
             </tbody>
           </table>
         </TableRegion>
-        <TableRegion label={t('validation.byRule.plumes')}>
-          <table className={styles.table}>
-            <caption>{t('validation.byRule.plumes')}</caption>
-            <thead>
-              <tr>
-                <th scope="col">{t('validation.scorecard.table.events')}</th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.scorecard.table.rows')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.scorecard.table.bias')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.scorecard.table.scatter')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.scorecard.table.inside')}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {byRule.plumes.cells.map((c) => (
-                <tr key={`${c.kind}:${c.group ?? 'all'}`}>
-                  <th scope="row">
-                    {c.group === null
-                      ? t('validation.scorecard.quantity.plume')
-                      : c.kind === 'morphology'
-                        ? `· ${t(`validation.byRule.morphology.${c.group}`)}`
-                        : `· ${c.group}`}
-                  </th>
-                  <td className={styles.num}>{int(c.all.rows)}</td>
-                  <td className={styles.num}>{biasText(c.all.bias)}</td>
-                  <td className={styles.num}>
-                    {c.all.scatterLn === null ? '—' : dec(c.all.scatterLn, 2)}
-                  </td>
-                  <td className={styles.num}>
-                    {t('validation.scorecard.acceptedOf', {
-                      inside: c.all.inside,
-                      rows: c.all.rows,
-                    })}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableRegion>
-        {quakesByRule !== undefined && (
+        <p className={styles.note}>{t('validation.entry.cellsNote')}</p>
+      </section>
+
+      {impacts && (
+        <section className={styles.section} data-testid="validation-rules">
+          <h2>{t('validation.rules.title')}</h2>
+          <p className={styles.prose}>{t('validation.rules.body')}</p>
           <p className={styles.note}>
-            {t('validation.byRule.note', {
-              zeros: int(quakesByRule.all.rows - (quakesByRule.informative?.rows ?? 0)),
-              seen: int(byRule.earthquakes.seen),
-              bias: biasText(quakesByRule.unseen.bias),
-              inside: quakesByRule.unseen.inside,
-              rows: quakesByRule.unseen.rows,
+            {t('validation.rules.reading', {
+              held: impacts.held,
+              of: impacts.rules.length,
+              reading: dec(impacts.reading, 1),
             })}
           </p>
-        )}
-      </section>
-
-      <section className={styles.section}>
-        <h2>{t('validation.tolls.title')}</h2>
-        <p className={styles.prose}>{t('validation.tolls.body')}</p>
-        <TableRegion label={t('validation.tolls.title')}>
-          <table className={styles.table} data-testid="validation-tolls">
-            <thead>
-              <tr>
-                <th scope="col">{t('validation.table.event')}</th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.recorded')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.model')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.band')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.ratio')}
-                </th>
-                <th scope="col">{t('validation.table.verdict')}</th>
-                <th scope="col">{t('validation.table.cause')}</th>
-                <th scope="col">{t('validation.table.role')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tolls.map((r) => (
-                <tr key={r.event}>
-                  <th scope="row">
-                    {r.event}
-                    {r.gated && (
-                      <span className={styles.gated}>{t('validation.standing.gated')}</span>
-                    )}
-                  </th>
-                  <td className={styles.num}>{recorded(r)}</td>
-                  <td className={styles.num}>{int(r.model)}</td>
-                  <td className={styles.num}>
-                    {int(r.bandLow)} – {int(r.bandHigh)}
-                  </td>
-                  <td className={styles.num}>{ratio(r)}</td>
-                  <td>
-                    <Verdict inside={r.contains} />
-                  </td>
-                  <td>{isCause(r.cause) ? t(`validation.causes.${r.cause}.label`) : '—'}</td>
-                  <td>
-                    <RoleChip role={r.role} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableRegion>
-      </section>
-
-      <section className={styles.section}>
-        <h2>{t('validation.causesTitle')}</h2>
-        <p className={styles.prose}>{t('validation.causesBody')}</p>
-        <dl className={styles.causes}>
-          {causesShown.map((c) => (
-            <div key={c} className={styles.cause}>
-              <dt>{t(`validation.causes.${c}.label`)}</dt>
-              <dd>
-                <p>{t(`validation.causes.${c}.body`)}</p>
-                <p className={styles.causeEvents}>
-                  {tolls
-                    .filter((r) => r.cause === c)
-                    .map((r) => r.event)
-                    .join(' · ')}
-                </p>
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      <section className={styles.section}>
-        <h2>{t('validation.waves.title')}</h2>
-        <p className={styles.prose}>{t('validation.waves.body')}</p>
-        <TableRegion label={t('validation.waves.title')}>
-          <table className={styles.table} data-testid="validation-waves">
-            <thead>
-              <tr>
-                <th scope="col">{t('validation.table.record')}</th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.range')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.observed')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.model')}
-                </th>
-                <th scope="col">{t('validation.table.verdict')}</th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.globe')}
-                </th>
-                <th scope="col">{t('validation.table.role')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {waves.map((r) => (
-                <tr key={r.record}>
-                  <th scope="row">{r.record}</th>
-                  <td className={styles.num}>{distance(r.rangeM)}</td>
-                  <td className={styles.num}>
-                    {r.observedHighM <= 0
-                      ? t('validation.waves.noWave')
-                      : `${metres(r.observedLowM)} – ${metres(r.observedHighM)}`}
-                  </td>
-                  <td className={styles.num}>{metres(r.modelM)}</td>
-                  <td>
-                    <Verdict inside={r.contains} />
-                  </td>
-                  <td className={styles.num}>
-                    {r.globeM === null ? (
-                      t('validation.waves.globeSame')
-                    ) : (
-                      <>
-                        {metres(r.globeM)} {r.globeContains === false && <Verdict inside={false} />}
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <RoleChip role={r.role} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableRegion>
-        {globeMisses.length > 0 && (
-          <p className={styles.note}>
-            {t('validation.waves.globeNote', {
-              list: globeMisses.map((r) => r.record).join(' · '),
-            })}
-          </p>
-        )}
-      </section>
-
-      <section className={styles.section}>
-        <h2>{t('validation.footprint.title')}</h2>
-        <p className={styles.prose}>{t('validation.footprint.body')}</p>
-        <TableRegion label={t('validation.footprint.title')}>
-          <table className={styles.table} data-testid="validation-footprint">
-            <thead>
-              <tr>
-                <th scope="col">{t('validation.table.event')}</th>
-                <th scope="col">{t('validation.table.threshold')}</th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.shakemap')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.model')}
-                </th>
-                <th scope="col" className={styles.num}>
-                  {t('validation.table.ratio')}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {footprint.rows.map((r) => (
-                <tr key={`${r.event}-${r.mmi.toString()}`}>
-                  <th scope="row">{r.event}</th>
-                  <td>MMI ≥ {ROMAN[r.mmi] ?? r.mmi}</td>
-                  <td className={styles.num}>{int(r.shakemapKm2)} km²</td>
-                  <td className={styles.num}>{int(r.modelKm2)} km²</td>
-                  <td className={styles.num}>{footprintRatio(r)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableRegion>
-        <p className={styles.note}>
-          {/* A median can be held to being centred, and the answer is a
-              standard error rather than a bound somebody picked: inside
-              two of them the model cannot be shown to be off-centre. */}
-          {t(
-            footprint.biasInStandardErrors < 2
-              ? 'validation.footprint.bias'
-              : 'validation.footprint.biasOff',
-            {
-              ratio: dec(footprint.geometricMeanRadiusRatio, 2),
-              se: dec(footprint.biasInStandardErrors, 2),
-              sd: dec(footprint.sdLn, 2),
-              expected: dec(footprint.expectedSdLn, 2),
-              between: dec(footprint.betweenEventSdLn, 2),
-            }
-          )}
-        </p>
-        {footprint.inventedBands.length > 0 && (
-          <p className={styles.note}>
-            {t('validation.footprint.invented', { list: footprint.inventedBands.join(' · ') })}
-          </p>
-        )}
-      </section>
-
-      <section className={styles.section}>
-        <details className={styles.details}>
-          <summary>{t('validation.interpolation.title')}</summary>
-          <p className={styles.prose}>{t('validation.interpolation.body')}</p>
-          <TableRegion label={t('validation.interpolation.title')}>
+          <TableRegion label={t('validation.rules.title')}>
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th scope="col">{t('validation.table.event')}</th>
-                  <th scope="col" className={styles.num}>
-                    {t('validation.interpolation.measured')}
-                  </th>
-                  <th scope="col" className={styles.num}>
-                    {t('validation.interpolation.interpolated')}
-                  </th>
+                  <th scope="col">{t('validation.rules.rule')}</th>
+                  <th scope="col">{t('validation.rules.measure')}</th>
+                  <th scope="col">{t('validation.rules.status')}</th>
                 </tr>
               </thead>
               <tbody>
-                {interpolation.map((r) => (
-                  <tr key={r.event}>
-                    <th scope="row">{r.event}</th>
-                    <td className={styles.num}>
-                      {int(r.measuredLow)} – {int(r.measuredHigh)}
-                    </td>
-                    <td className={styles.num}>
-                      {int(r.interpolatedLow)} – {int(r.interpolatedHigh)}
-                      {!r.comparable && ` · ${t('validation.interpolation.tooFew')}`}
-                      {r.comparable &&
-                        !r.lowComparable &&
-                        ` · ${t('validation.interpolation.tooFewLow')}`}
+                {impacts.rules.map((rule) => (
+                  <tr key={rule.rule}>
+                    <th scope="row">{rule.rule}</th>
+                    <td>{t(`validation.rules.measures.${rule.measure}`)}</td>
+                    <td>
+                      <span className={rule.holds ? styles.inside : styles.misses}>
+                        {t(rule.holds ? 'validation.rules.held' : 'validation.rules.notHeld')}
+                      </span>
+                      {rule.clauses.length > 0 && (
+                        <span className={styles.tileNote}>
+                          {' '}
+                          {t('validation.rules.clauses', {
+                            met: rule.clauses.filter((c) => c.status === 'met').length,
+                            total: rule.clauses.length,
+                          })}
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </TableRegion>
-          <p className={styles.note}>
-            {t('validation.interpolation.worst', { factor: dec(worstInterpolation, 2) })}
-          </p>
-        </details>
+          {impacts.rules
+            .filter((rule) => rule.clauses.length > 0)
+            .map((rule) => (
+              <p key={rule.rule} className={styles.note}>
+                <strong>{rule.rule}</strong>
+                {' — '}
+                {rule.clauses.map((c) => clauseName(t, c.name)).join(' · ')}
+              </p>
+            ))}
+        </section>
+      )}
+
+      <section className={styles.section} data-testid="validation-unmeasured">
+        <h2>{t('validation.unmeasured.title')}</h2>
+        <p className={styles.prose}>{t('validation.unmeasured.body')}</p>
+        <ul className={styles.gaps}>
+          <li>
+            <strong>{t('validation.unmeasured.toll.item')}</strong>
+            <span>{t('validation.unmeasured.toll.note')}</span>
+          </li>
+          <li>
+            <strong>{t('validation.unmeasured.wave.item')}</strong>
+            <span>{t('validation.unmeasured.wave.note')}</span>
+          </li>
+          <li>
+            <strong>{t('validation.unmeasured.crater.item')}</strong>
+            <span>{t('validation.unmeasured.crater.note')}</span>
+          </li>
+        </ul>
+        <p className={styles.note}>{t('validation.unmeasured.others')}</p>
       </section>
 
-      <section className={styles.section} data-testid="validation-roles">
-        <h2>{t('validation.roles.title')}</h2>
-        <p className={styles.prose}>{t('validation.roles.body')}</p>
-        <dl className={styles.causes}>
-          {ROLES.filter((role) => checks.some((c) => c.role === role)).map((role) => (
-            <div key={role} className={styles.cause}>
-              <dt>{t(`validation.role.${role}.label`)}</dt>
-              <dd>
-                <p>{t(`validation.role.${role}.body`)}</p>
-                <p className={styles.causeEvents}>
-                  {checks
-                    .filter((c) => c.role === role)
-                    .map((c) => `${c.name} (${t(`validation.quantity.${c.quantity}`)})`)
-                    .join(' · ')}
-                </p>
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      <section className={styles.section}>
-        <h2>{t('validation.anchors.title')}</h2>
-        <p className={styles.prose}>{t('validation.anchors.body')}</p>
-        <div className={styles.families}>
-          {FAMILIES.map((family) => (
-            <div key={family} className={styles.family}>
-              <h3>{t(`simulator.eventTypes.${family}`)}</h3>
-              <ul>
-                {anchors
-                  .filter((a) => a.eventType === family)
-                  .map((a) => (
-                    <li key={a.name}>
-                      <span className={styles.anchorName}>{a.name}</span>
-                      <span className={styles.anchorQuantities}>
-                        {a.quantities.map((q) => (
-                          <span
-                            key={q}
-                            className={a.gated.includes(q) ? styles.chipGated : styles.chip}
-                          >
-                            {t(`validation.quantity.${q}`)} ·{' '}
-                            {t(
-                              a.gated.includes(q)
-                                ? 'validation.standing.gated'
-                                : 'validation.standing.declared'
-                            )}
-                            <AnchorRole role={a.use[q]?.role} />
-                          </span>
-                        ))}
-                      </span>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+      <section className={styles.section} data-testid="validation-gate">
+        <h2>{t('validation.gate.title')}</h2>
+        <p className={styles.prose}>
+          {t('validation.gate.body', {
+            replayPassed: DATA.replay.passed,
+            replayTotal: DATA.replay.total,
+            goldenPassed: DATA.golden.passed,
+            goldenTotal: DATA.golden.total,
+          })}
+        </p>
+        <p className={styles.note}>
+          <span className={DATA.gate.decision === 'pass' ? styles.inside : styles.misses}>
+            {t(`validation.gate.${DATA.gate.decision === 'pass' ? 'pass' : 'fail'}`)}
+          </span>
+        </p>
       </section>
 
       <section className={styles.section}>
         <h2>{t('validation.gaps.title')}</h2>
         <p className={styles.prose}>{t('validation.gaps.body')}</p>
         <ul className={styles.gaps}>
-          {VALIDATION_GAPS.map((g) => (
+          {IMPACT_GAPS.map((g) => (
             <li key={g}>
               <strong>{t(`validation.gaps.${g}.item`)}</strong>
               <span>{t(`validation.gaps.${g}.note`)}</span>
@@ -865,34 +491,6 @@ export function ValidationPage(): JSX.Element {
         </p>
       </footer>
     </div>
-  );
-}
-
-/** The role beside an anchor's quantity chip, when it has one. */
-function AnchorRole({ role }: { role: string | undefined }): JSX.Element | null {
-  const { t } = useTranslation();
-  if (!isRole(role)) return null;
-  return <> · {t(`validation.role.${role}.label`)}</>;
-}
-
-/** Whether the model was set on the event behind a row. Held out is the
- *  one that counts as validation, so it is the one set apart. */
-function RoleChip({ role }: { role: string }): JSX.Element {
-  const { t } = useTranslation();
-  if (!isRole(role)) return <>—</>;
-  return (
-    <span className={role === 'heldOut' ? styles.chipHeldOut : styles.chip}>
-      {t(`validation.role.${role}.label`)}
-    </span>
-  );
-}
-
-function Verdict({ inside }: { inside: boolean }): JSX.Element {
-  const { t } = useTranslation();
-  return (
-    <span className={inside ? styles.inside : styles.misses}>
-      {t(inside ? 'validation.verdict.inside' : 'validation.verdict.misses')}
-    </span>
   );
 }
 

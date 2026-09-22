@@ -2,6 +2,14 @@ import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../store/index.js';
 import { METHODOLOGY_SECTIONS, VALIDATION_ROSTER, type Citation } from './methodologyContent.js';
+
+/**
+ * The sections the page shows: the impacts, and what an impact needs — the
+ * wave it raises, the people it reaches, the sampling that bands it. The
+ * others stay in `methodologyContent.ts`, with their modules, for the day the
+ * site offers them again (store/visibleEvents.ts).
+ */
+const SHOWN_SECTIONS = ['impact', 'tsunami', 'population', 'monteCarlo'];
 import styles from './MethodologyPage.module.css';
 
 function renderCitation(c: Citation): string {
@@ -34,7 +42,7 @@ export function MethodologyPage(): JSX.Element {
         <p className={styles.prose}>{t('methodology.overviewBody')}</p>
       </section>
 
-      {METHODOLOGY_SECTIONS.map((section) => (
+      {METHODOLOGY_SECTIONS.filter((s) => SHOWN_SECTIONS.includes(s.id)).map((section) => (
         <section key={section.id} className={styles.section}>
           <h2 id={section.id}>{section.title}</h2>
           <p className={styles.prose}>{section.blurb}</p>
@@ -72,7 +80,7 @@ export function MethodologyPage(): JSX.Element {
           </button>
         </p>
         <ul className={styles.validationList}>
-          {VALIDATION_ROSTER.map((v) => {
+          {VALIDATION_ROSTER.filter((v) => v.family === 'impact').map((v) => {
             const label =
               v.year < 0 ? `${Math.abs(v.year).toLocaleString()} yr ago` : String(v.year);
             return (

@@ -8,8 +8,8 @@
     "skipLink": "Skip to main content",
     "projectName": "Bayran Nimbus",
     "eyebrow": "Scientific simulator · free software",
-    "tagline": "Simulation of natural and human-made catastrophic events on a true-scale 3D Earth.",
-    "description": "Nimbus computes the physical effects of asteroid impacts, explosions, earthquakes, volcanic eruptions and submarine landslides, including the tsunamis they generate, and maps them onto the Earth's surface at their true extent. The relations it uses come from the scientific literature, and every estimate carries its own uncertainty interval.",
+    "tagline": "Simulation of asteroid and comet impacts on a true-scale 3D Earth.",
+    "description": "Nimbus computes the physical effects of an asteroid or comet impact — atmospheric entry, crater, air blast, thermal radiation, ejecta, seismic shaking and the tsunami it raises — and maps them onto the Earth's surface at their true extent. The relations it uses come from the scientific literature, and every estimate carries its own uncertainty interval.",
     "meta": "AGPL-3.0 licence · Interface in English and Italian",
     "hero": {
       "alt": "The simulator's globe with the effect radii of the Chicxulub impact",
@@ -28,8 +28,7 @@
     },
     "facts": {
       "label": "Nimbus in figures",
-      "eventTypes": "event types, plus the tsunamis they generate",
-      "presets": "preset scenarios, historical and reference",
+      "presets": "preset impacts, historical and reference",
       "band": "predictive interval on every casualty estimate",
       "monteCarlo": "confidence intervals from Monte Carlo sampling",
       "accessibility": "accessibility level of the interface"
@@ -38,40 +37,24 @@
       "eyebrow": "01 — Physical models",
       "title": "Physical models and sources",
       "body": "Each phenomenon is described by relations published in peer-reviewed journals. In the simulator every numerical value shows its source, the equation used and, where available, the article's DOI.",
-      "listLabel": "Event types and principal sources",
+      "listLabel": "Models and principal sources",
       "impact": {
         "name": "Cosmic impact",
         "detail": "Energy, crater, seismic magnitude, thermal radiation, ejecta"
-      },
-      "explosion": {
-        "name": "Explosion",
-        "detail": "Overpressure, thermal fluence, fireball, underwater bursts"
-      },
-      "earthquake": {
-        "name": "Earthquake",
-        "detail": "Seismic moment, rupture, macroseismic intensity footprint"
-      },
-      "volcano": {
-        "name": "Volcanic eruption",
-        "detail": "Eruption column height, pyroclastic density currents, lateral blast"
-      },
-      "landslide": {
-        "name": "Submarine landslide",
-        "detail": "Wave source from the volume and slope of the slide body"
       },
       "tsunami": {
         "name": "Tsunami",
         "detail": "Propagation over bathymetry, arrival isochrones, coastal amplitude"
       },
       "kineticEnergy": "Kinetic energy of the impactor",
-      "seismicMoment": "Seismic moment from moment magnitude"
+      "transientCrater": "Transient crater diameter"
     },
     "instrument": {
       "eyebrow": "02 — The simulator",
       "title": "Mapping at true geographic scale",
       "body": "Damage zones are drawn on the globe at their actual radius, with no graphic exaggeration. Lighting follows the real position of the Sun over the chosen point, and a legend explains each threshold.",
-      "alt": "The simulator running the 2011 Tōhoku earthquake scenario, with intensity contours and tsunami isochrones",
-      "caption": "Tōhoku 2011, Mw 9.1. Rupture trace, MMI VIII (25.4 km) and MMI VII (78.1 km) contours, tsunami isochrones at +1 h and +2 h. Screenshot of the simulator.",
+      "alt": "The simulator running the Chicxulub impact scenario, with the overpressure field, its thresholds and the tsunami on the globe",
+      "caption": "Chicxulub on the Yucatán, 66 million years ago. Peak overpressure at the ground: 5 psi at 2 759 km, 1 psi at 7 422 km, 0.5 psi at 12 461 km; the tsunami is drawn on the whole planet. Screenshot of the simulator.",
       "figure": "Figure 1",
       "imagery": "Satellite imagery: Esri, Maxar, Earthstar Geographics, and the GIS User Community.",
       "scale": {
@@ -89,27 +72,39 @@
     },
     "validation": {
       "eyebrow": "03 — Validation",
-      "title": "Validation against recorded events",
-      "body": "The model's estimates are compared with observed data: death tolls, wave heights recorded by buoys and surveys, USGS shaking footprints. The report shows matches and misses alike, each with its cause.",
-      "tolls": "death tolls inside the model's interval",
-      "waves": "wave heights consistent with the model's estimate",
-      "footprint": "mean ratio of simulated radius to the USGS ShakeMap footprint",
-      "heldOut": "checks independent of calibration that contain the observed value",
+      "title": "What the model is measured against",
+      "body": "An impact's numbers are held to the Earth Impact Effects Program, the reference implementation of the equations this model cites, and to the bolides whose entry the sky has actually measured. Where nothing has ever been measured — and for an impact that is most of it — the section says so rather than borrowing a proof from another phenomenon.",
+      "quantitiesWithin": "quantities whose median agrees with the reference program; the widest departure is {{percent}} %",
+      "programCases": "comparisons, over {{impacts}} impacts of a fixed grid",
+      "entryError": "median error on the altitude of peak brightness, over {{bolides}} recorded bolides: the 5 km bar is not met",
+      "noToll": "impacts in recorded history with a death toll: the mortality is calibrated on explosions of the same energy, and is an extrapolation",
       "figure": "Figure 2",
-      "caption": "Death tolls for {{count}} events: the model's 5–95 % predictive interval, the recorded value and the central estimate, from the most severe. Events outside the interval: {{outside}}.",
-      "legendBand": "5–95 % predictive interval",
-      "legendRecorded": "recorded value",
-      "legendModel": "model estimate",
-      "axis": "death toll (logarithmic scale)",
+      "captionProgram": "{{count}} quantities against the Earth Impact Effects Program as its authors run it, over {{impacts}} impacts read on {{readOn}}: the bar is the 10th–90th percentile of the ratio Nimbus / program, the dot its geometric mean, the line agreement to the last printed digit. This says the equations are implemented as they were published — not that they describe the world.",
+      "legendSpread": "10th–90th percentile of the ratio",
+      "legendRatio": "geometric mean",
+      "legendAgreement": "agreement to the last digit",
+      "axisRatio": "ratio Nimbus / reference program",
       "chartRegion": "Figure 2, chart scrolling sideways; the same data is in the table below",
-      "inside": "inside",
-      "outside": "outside",
-      "tableCaption": "Data of figure 2",
-      "tableEvent": "Event",
-      "tableRecorded": "Recorded",
-      "tableModel": "Model",
-      "tableBand": "5–95 % interval",
-      "tableResult": "Result",
+      "tableProgramCaption": "Data of figure 2",
+      "tableQuantity": "Quantity",
+      "tableCases": "Comparisons",
+      "tableRatio": "Median ratio",
+      "tableSpread": "10th–90th percentile",
+      "quantities": {
+        "energy": "Energy at the top of the atmosphere",
+        "breakupAltitude": "Breakup altitude",
+        "burstAltitude": "Airburst altitude",
+        "airburstOverpressure": "Airburst overpressure, low end",
+        "airburstOverpressureHigh": "Airburst overpressure, high end",
+        "wind": "Peak wind speed",
+        "groundVelocity": "Speed at the ground",
+        "transientDiameter": "Transient crater diameter",
+        "finalDiameter": "Final crater diameter",
+        "finalDepth": "Final crater depth",
+        "overpressure": "Overpressure at a distance",
+        "fireballRadius": "Fireball radius",
+        "ejectaEdge": "Edge of the ejecta blanket"
+      },
       "source": "Data from the validation report of version {{commit}}",
       "sourceUnknown": "Data from the validation report of this version",
       "fullReport": "Full report →",
@@ -1889,24 +1884,22 @@
   },
   "validation": {
     "back": "Back to home",
-    "title": "Validation: the model against real events",
-    "subtitle": "Every event the world has already lived through and someone measured, put through the same simulator you use. Where the model lands inside the record and — shown just as prominently — where it does not, and why.",
+    "title": "Validation: the impacts against what has been measured",
+    "subtitle": "What an impact's numbers are held to — the reference implementation of the equations they cite, and the bolides the sky has measured — where they agree, where they do not, and what has never been measured at all.",
     "provenance": "Generated from the code in commit {{commit}}. The build fails if this page and the code drift apart.",
     "provenanceDirty": "Development build from commit {{commit}} with uncommitted changes: these figures may not match any published model.",
     "provenanceUnknown": "This build cannot tell which commit it came from.",
     "fullReport": "Full report for this model",
     "summaryLabel": "Summary",
     "summary": {
-      "tolls": "counted death tolls inside the model's band",
-      "tollsGated": "{{pass}} of {{total}} gated rows pass",
-      "waves": "measured waves inside the model's figure",
-      "wavesGlobe": "but the globe draws {{count}} of them outside",
-      "footprint": "shaking footprint against USGS ShakeMap, centred in radius",
-      "footprintScatter": "scatter {{sd}}, against a ceiling of {{expected}} from ground motion",
-      "invented": "intensity bands the model paints where the earthquake never reached them",
-      "heldOut": "held-out checks inside their record",
-      "heldOutNote": "tolls {{tollsInside}} of {{tolls}} · waves {{wavesInside}} of {{waves}}; the other rows are fits or shared sources",
-      "heldOutZeros": "every one of them a record of nothing — no dead, or no wave"
+      "quantities": "quantities agreeing with the reference program",
+      "quantitiesNote": "widest departure of a median: {{percent}} %",
+      "comparisons": "comparisons against the reference program",
+      "comparisonsNote": "over {{impacts}} impacts of a fixed grid, read on {{readOn}}",
+      "entry": "median error on the entry's altitude",
+      "entryNote": "over {{bolides}} recorded bolides: the 5 km bar is not met",
+      "tollsMeasured": "impacts with a recorded death toll",
+      "tollsMeasuredNote": "the mortality is calibrated on explosions of the same energy: it is an extrapolation"
     },
     "scorecard": {
       "title": "Scorecard: how accurate, and how precise",
@@ -2141,6 +2134,92 @@
         "label": "not established",
         "body": "Not yet checked; the full report says what is still open."
       }
+    },
+    "program": {
+      "title": "Against the reference implementation",
+      "body": "The Earth Impact Effects Program (Collins, Melosh & Marcus 2005), run by its authors on a fixed grid of impacts, is the reference implementation of the equations this model cites. Agreement here says the equations are implemented as they were published. It does not say the equations describe the world: that is what observations are for, and an impact has left very few.",
+      "extremes": "Smallest–largest",
+      "regimes": "Entry regimes read the same way: {{regimes}}. Crater morphologies: {{craters}}.",
+      "failed": "{{count}} of the {{impacts}} impacts of the grid are cases the program itself refuses; they are left out of every ratio."
+    },
+    "entry": {
+      "title": "The entry, against the sky",
+      "body": "The one part of an impact the world measures often: {{bolides}} bolides whose altitude of peak brightness was recorded from orbit, read on {{readOn}}. Each is run through the same entry model the simulator uses, and the error is the model's altitude minus the recorded one.",
+      "reading": "Reading",
+      "median": "Median absolute error",
+      "mean": "Mean error",
+      "withinFive": "Within 5 km",
+      "toTheGround": "Reaching the ground",
+      "readings": {
+        "default": "As the panel runs it (stony, 1 MPa)",
+        "stony": "Ordinary chondrite strength",
+        "iron": "Iron strength"
+      },
+      "barMet": "The bar of a median error under 5 km is met.",
+      "barMissed": "The bar of a median error under 5 km is not met — neither by this model nor by the reference program, which misses the recorded altitude by about as much. It is a gap of the published equations, not of this implementation, and closing it is work of its own.",
+      "cells": "The entry, cell by cell",
+      "cell": "Cell",
+      "rows": "Bolides",
+      "model": "This model",
+      "program": "Reference program",
+      "within": "Inside the cell's band",
+      "span": {
+        "energy": "energy",
+        "speed": "speed"
+      },
+      "cellsNote": "The cells are fixed before the scoring, by energy and by speed, so that an average cannot hide a corner where the model drifts."
+    },
+    "rules": {
+      "title": "The rules of the gold standard",
+      "body": "The domain's own bar, written before it was measured: I-rules for fidelity to the equations, G-rules for what lies beyond them — held-out sets, bands, the sky. A rule holds or it does not; there is no partial credit.",
+      "reading": "{{held}} of {{of}} rules hold: the domain reads {{reading}} out of 9.",
+      "rule": "Rule",
+      "measure": "What it measures",
+      "status": "Verdict",
+      "measures": {
+        "fidelity": "fidelity to the equations",
+        "beyond": "beyond the equations"
+      },
+      "held": "holds",
+      "notHeld": "does not hold",
+      "clauses": "({{met}} of {{total}} clauses met)",
+      "clause": {
+        "the-entry": "the entry",
+        "the-burst": "the burst",
+        "the-speed-and-energy-at-the-ground": "the speed and energy at the ground",
+        "the-crater-s-diameters-and-depth": "the crater's diameters and depth",
+        "the-fireball-and-its-horizon": "the fireball and its horizon",
+        "the-thermal-exposure": "the thermal exposure",
+        "the-ejecta": "the ejecta",
+        "the-air-blast-of-airbursts": "the air blast of airbursts",
+        "the-air-blast-of-ground-impacts": "the air blast of ground impacts",
+        "the-seismic-magnitude": "the seismic magnitude",
+        "the-impact-tsunami": "the impact tsunami",
+        "the-peak-wind": "the peak wind"
+      }
+    },
+    "unmeasured": {
+      "title": "What has never been measured",
+      "body": "The honest half of the page. These are not misses of the model: they are quantities the world has not recorded, so nothing here can be checked against a fact.",
+      "toll": {
+        "item": "No impact death toll exists",
+        "note": "No asteroid impact in recorded history has killed anyone who was counted. The casualty model is the one calibrated on explosions of the same energy, and every toll this simulator prints for an impact is an extrapolation from them."
+      },
+      "wave": {
+        "item": "No wave from an impact has been recorded",
+        "note": "The tsunami of an impact is checked against the equations and against other numerical models, never against a tide gauge: there is no tide gauge reading of an impact wave."
+      },
+      "crater": {
+        "item": "The craters are old and eroded",
+        "note": "Chicxulub, Popigai and Boltysh are known through drilling and geophysics, tens of millions of years after the fact; Meteor Crater, at fifty thousand years, is the youngest large one. What is compared is a present shape, not a measurement of the event."
+      },
+      "others": "The engines an impact shares with the other modules — the casualty model, the wave's propagation, the shaking — carry their own calibration against recorded earthquakes, explosions and eruptions. Those tables are in the full report linked at the top of this page; they are not shown here, because a calibration made on another phenomenon is not a validation of an impact."
+    },
+    "gate": {
+      "title": "The gate at every commit",
+      "body": "The fixtures the build replays on every commit: {{replayPassed}} of {{replayTotal}} replays and {{goldenPassed}} of {{goldenTotal}} golden cases. A failure blocks the release.",
+      "pass": "the gate passes",
+      "fail": "the gate blocks"
     }
   },
   "measuredCells": {

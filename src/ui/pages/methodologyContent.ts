@@ -1728,155 +1728,252 @@ export interface ValidationEntry {
   event: string;
   year: number;
   note: string;
+  /** Which module the event belongs to. The site shows the roster of what it
+   *  offers, and since 22 September 2026 that is the cosmic impacts alone
+   *  (store/visibleEvents.ts); the rest stay here for when a module returns. */
+  family: EventFamily;
 }
+
+export type EventFamily = 'impact' | 'explosion' | 'earthquake' | 'volcano' | 'landslide';
 
 export const VALIDATION_ROSTER: ValidationEntry[] = [
   // ─── Cosmic impacts ─────────────────────────────────────────────
   {
     event: 'Chicxulub',
+    family: 'impact',
     year: -66_000_000,
     note: 'Morgan et al. 2016 — peak-ring impact crater, K-Pg extinction',
   },
-  { event: 'Popigai', year: -35_700_000, note: 'Tagle & Hecht 2006 — 100 km Siberian crater' },
+  {
+    event: 'Popigai',
+    year: -35_700_000,
+    note: 'Tagle & Hecht 2006 — 100 km Siberian crater',
+    family: 'impact',
+  },
   {
     event: 'Boltysh',
+    family: 'impact',
     year: -65_400_000,
     note: 'Kelley & Gurov 2002 — 24 km; about 0.65 Myr after Chicxulub (Pickersgill et al. 2021)',
   },
-  { event: 'Meteor Crater', year: -50_000, note: 'Kring 2007 — iron impactor, 1.2 km crater' },
-  { event: 'Tunguska', year: 1908, note: 'Boslough & Crawford 2008 — low-altitude airburst' },
+  {
+    event: 'Meteor Crater',
+    year: -50_000,
+    note: 'Kring 2007 — iron impactor, 1.2 km crater',
+    family: 'impact',
+  },
+  {
+    event: 'Tunguska',
+    year: 1908,
+    note: 'Boslough & Crawford 2008 — low-altitude airburst',
+    family: 'impact',
+  },
   {
     event: 'Sikhote-Alin',
+    family: 'impact',
     year: 1947,
     note: 'Krinov 1966 — largest iron-meteorite shower on instrumental record',
   },
   {
     event: 'Chelyabinsk',
+    family: 'impact',
     year: 2013,
     note: 'Popova et al. 2013 / Brown et al. 2013 — burst at 27 km, 400–600 kt, window damage modelled to 120 km',
   },
   // ─── Explosions ─────────────────────────────────────────────────
   {
     event: 'Halifax',
+    family: 'explosion',
     year: 1917,
     note: 'Ruffman & Howell 1994 — ≈ 2.9 kt, the SS Mont-Blanc’s cargo',
   },
   {
     event: 'Hiroshima',
+    family: 'explosion',
     year: 1945,
     note: 'Airburst ≈ 600 m, 16 kt in the DS02 dosimetry (Little Boy)',
   },
-  { event: 'Nagasaki', year: 1945, note: 'Airburst 503 m, 21 kt (Fat Man)' },
-  { event: 'Texas City', year: 1947, note: 'SS Grandcamp ammonium-nitrate detonation' },
+  { event: 'Nagasaki', year: 1945, note: 'Airburst 503 m, 21 kt (Fat Man)', family: 'explosion' },
+  {
+    event: 'Texas City',
+    year: 1947,
+    note: 'SS Grandcamp ammonium-nitrate detonation',
+    family: 'explosion',
+  },
   {
     event: 'Ivy Mike',
+    family: 'explosion',
     year: 1952,
     note: 'DOE/NV-209 — first thermonuclear test, 10.4 Mt, vapourised Elugelab',
   },
-  { event: 'Castle Bravo', year: 1954, note: 'Bikini Atoll thermonuclear surface burst, 15 Mt' },
-  { event: 'Tsar Bomba', year: 1961, note: 'Airburst 4 000 m, 50 Mt — largest human detonation' },
+  {
+    event: 'Castle Bravo',
+    year: 1954,
+    note: 'Bikini Atoll thermonuclear surface burst, 15 Mt',
+    family: 'explosion',
+  },
+  {
+    event: 'Tsar Bomba',
+    year: 1961,
+    note: 'Airburst 4 000 m, 50 Mt — largest human detonation',
+    family: 'explosion',
+  },
   {
     event: 'Starfish Prime',
+    family: 'explosion',
     year: 1962,
     note: 'HEMP 400 km altitude, Oahu street-lamps at 1 450 km',
   },
   {
     event: 'Beirut port',
+    family: 'explosion',
     year: 2020,
     note: 'Rigby 2020; Diaz 2021 — 0.5 kt NH₄NO₃ on portside quay',
   },
   // ─── Earthquakes ────────────────────────────────────────────────
   {
     event: 'Lisbon',
+    family: 'earthquake',
     year: 1755,
     note: 'Baptista & Miranda 2009 — Mw 8.5 ± 0.3 off SW Iberia, transatlantic tsunami',
   },
   {
     event: 'Valdivia',
+    family: 'earthquake',
     year: 1960,
     note: 'Kanamori 1977 — Mw 9.5, largest instrumentally recorded',
   },
-  { event: 'Great Alaska', year: 1964, note: 'Plafker 1965; Kanamori 1977 — Mw 9.2 megathrust' },
+  {
+    event: 'Great Alaska',
+    year: 1964,
+    note: 'Plafker 1965; Kanamori 1977 — Mw 9.2 megathrust',
+    family: 'earthquake',
+  },
   {
     event: 'Northridge',
+    family: 'earthquake',
     year: 1994,
     note: 'Blind thrust Mw 6.7; PGA ≈ 1 g near the fault, 1.82 g at Tarzana',
   },
-  { event: 'Kokoxili (Kunlun)', year: 2001, note: 'Strike-slip Mw 7.8 with ~400 km rupture' },
+  {
+    event: 'Kokoxili (Kunlun)',
+    year: 2001,
+    note: 'Strike-slip Mw 7.8 with ~400 km rupture',
+    family: 'earthquake',
+  },
   {
     event: 'Sumatra–Andaman',
+    family: 'earthquake',
     year: 2004,
     note: 'Lay et al. 2005 — Mw 9.1–9.3 Sunda megathrust, over 283 000 dead',
   },
   {
     event: "L'Aquila",
+    family: 'earthquake',
     year: 2009,
     note: 'Chiarabba 2009 — Mw 6.3 normal-fault on the Paganica system',
   },
-  { event: 'Tōhoku', year: 2011, note: 'Mw 9.1 megathrust with basin-scale tsunami' },
-  { event: 'Nepal Gorkha', year: 2015, note: 'Avouac 2015 — Mw 7.8 Main Himalayan Thrust' },
+  {
+    event: 'Tōhoku',
+    year: 2011,
+    note: 'Mw 9.1 megathrust with basin-scale tsunami',
+    family: 'earthquake',
+  },
+  {
+    event: 'Nepal Gorkha',
+    year: 2015,
+    note: 'Avouac 2015 — Mw 7.8 Main Himalayan Thrust',
+    family: 'earthquake',
+  },
   {
     event: 'Amatrice',
+    family: 'earthquake',
     year: 2016,
     note: 'Chiaraluce 2017 — first main shock of the central-Italy sequence',
   },
   // ─── Volcanoes ──────────────────────────────────────────────────
   {
     event: 'Vesuvius',
+    family: 'volcano',
     year: 79,
     note: 'Cioni 1992 — type Plinian eruption, buried Pompeii + Herculaneum',
   },
-  { event: 'Etna', year: 1669, note: 'Branca 2013 — 4-month flank eruption, lava reached Catania' },
-  { event: 'Tambora', year: 1815, note: "VEI 7 'year without a summer' climate event" },
+  {
+    event: 'Etna',
+    year: 1669,
+    note: 'Branca 2013 — 4-month flank eruption, lava reached Catania',
+    family: 'volcano',
+  },
+  {
+    event: 'Tambora',
+    year: 1815,
+    note: "VEI 7 'year without a summer' climate event",
+    family: 'volcano',
+  },
   {
     event: 'Krakatau',
+    family: 'volcano',
     year: 1883,
     note: 'Sunda Strait VEI 6 paroxysm and tsunami — source debated; Maeno & Imamura 2011 favour pyroclastic flows entering the sea',
   },
   {
     event: 'Mount Pelée',
+    family: 'volcano',
     year: 1902,
     note: 'Lacroix 1904 — type "nuée ardente", Saint-Pierre incinerated',
   },
   {
     event: 'Mount St Helens',
+    family: 'volcano',
     year: 1980,
     note: 'Cascade-arc VEI 5 lateral blast + Plinian column',
   },
-  { event: 'Pinatubo', year: 1991, note: 'Best-instrumented VEI 6 — global ΔT ≈ −0.5 K' },
+  {
+    event: 'Pinatubo',
+    year: 1991,
+    note: 'Best-instrumented VEI 6 — global ΔT ≈ −0.5 K',
+    family: 'volcano',
+  },
   {
     event: 'Eyjafjallajökull',
+    family: 'volcano',
     year: 2010,
     note: 'Gudmundsson 2012 — ice-capped summit eruption, grounded European aviation',
   },
   {
     event: 'Anak Krakatau',
+    family: 'volcano',
     year: 2018,
     note: 'Grilli 2019 — flank-collapse tsunami, ≈ 0.27 km³ block',
   },
   {
     event: 'Hunga Tonga',
+    family: 'volcano',
     year: 2022,
     note: 'Proud et al. 2022 — 57 km plume into the mesosphere, global tsunami signal',
   },
   // ─── Landslides ─────────────────────────────────────────────────
   {
     event: 'Storegga slide',
+    family: 'landslide',
     year: -8200,
     note: 'Norwegian continental margin, ≈ 2 400–3 200 km³, North-Atlantic tsunami',
   },
   {
     event: 'Lituya Bay',
+    family: 'landslide',
     year: 1958,
     note: 'Miller 1960 — sub-aerial rockfall into a fjord, 524 m run-up',
   },
   {
     event: 'Vaiont reservoir',
+    family: 'landslide',
     year: 1963,
     note: 'Genevois & Ghirotti 2005 — 270 Mm³ rockslide, wave crested 140 m above the dam',
   },
   {
     event: 'Elm rockslide',
+    family: 'landslide',
     year: 1881,
     note: 'Heim 1932; Hsü 1975 — founding case for long-runout sturzstrom mobility',
   },

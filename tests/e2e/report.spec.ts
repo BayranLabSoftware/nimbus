@@ -118,7 +118,13 @@ test.describe('the impact report', () => {
     expect(worst.lowest, worst.where).toBeGreaterThan(3);
   });
 
-  test('B-109 the other modules print their toll and timeline in ink too', async ({ page }) => {
+  // Hidden with the module it drives: since 22 September 2026 the site offers
+  // the cosmic impacts alone (src/store/visibleEvents.ts), so this path is not
+  // one a visitor can walk. The test is kept, not deleted: it comes back with
+  // the module, and nothing of the module's own code has changed.
+  test.skip('B-109 the other modules print their toll and timeline in ink too', async ({
+    page,
+  }) => {
     await page.goto('/?t=earthquake&p=NORTHRIDGE_1994&lat=34.213&lon=-118.537&m=report&lng=it');
     await expect(page.getByTestId('casualties')).toBeVisible({ timeout: 60_000 });
     await page.emulateMedia({ media: 'print' });

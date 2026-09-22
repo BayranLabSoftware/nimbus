@@ -6,8 +6,8 @@ import { VOLCANO_PRESETS } from '../physics/events/volcano/index.js';
 import { IMPACT_PRESETS } from '../physics/simulate.js';
 import {
   applyIntentToStore,
-  decodeSearchParamsToIntent,
-  decodeUrl,
+  decodeSearchParamsToIntent as decodeParamsOffering,
+  decodeUrl as decodeUrlOffering,
   encodeStateToSearchParams,
   knownUrlKeys,
   projectSyncableState,
@@ -16,6 +16,20 @@ import {
 } from './urlState.js';
 import type { AppStore } from './useAppStore.js';
 import { CLOSE_UP_VIEW_ENABLED, resetAppStore, useAppStore } from './useAppStore.js';
+import { ALL_EVENT_TYPES } from './visibleEvents.js';
+
+/**
+ * Since 22 September 2026 the site offers the impacts alone
+ * (`visibleEvents.ts`), and the decoder reads a link to a hidden module as a
+ * link with no module. These tests are the codec's, not the site's offer: they
+ * read every module the code still holds, so that what a shared link carries
+ * stays tested for the day a module is offered again. What the site itself
+ * does with such a link is the block "a link to a module the site has hidden".
+ */
+const decodeSearchParamsToIntent = (params: URLSearchParams) =>
+  decodeParamsOffering(params, { offered: ALL_EVENT_TYPES });
+const decodeUrl = (url: string, base?: string) =>
+  decodeUrlOffering(url, base, { offered: ALL_EVENT_TYPES });
 
 beforeEach(() => {
   resetAppStore();
@@ -121,6 +135,36 @@ describe('decodeSearchParamsToIntent', () => {
       `?${URL_KEYS.eventType}=impact&${URL_KEYS.preset}=CHICXULUB&${URL_KEYS.diameter}=500`
     );
     expect(decodeSearchParamsToIntent(params).customInput).toBeNull();
+  });
+});
+
+describe('a link to a module the site has hidden', () => {
+  // Andrea, 22 September 2026: the site is for cosmic impacts alone. A link
+  // made before that — or by hand — must not drop a visitor inside a module
+  // the chooser has no entry for.
+  it('is read as a link with no module at all', () => {
+    const intent = decodeParamsOffering(
+      new URLSearchParams('t=earthquake&p=NORTHRIDGE_1994&lat=34.213&lon=-118.537&m=globe')
+    );
+    expect(intent.eventType).toBeNull();
+    expect(intent.preset).toBeNull();
+    // What the link says about the place and the view it still keeps.
+    expect(intent.location).toEqual({ latitude: 34.213, longitude: -118.537 });
+    expect(intent.mode).toBe('globe');
+  });
+
+  it('leaves the store on the impacts it opened on', () => {
+    applyIntentToStore(
+      decodeParamsOffering(new URLSearchParams('t=volcano&p=KRAKATAU_1883&m=globe')),
+      useAppStore.getState()
+    );
+    expect(useAppStore.getState().eventType).toBe('impact');
+  });
+
+  it('reads a link to the impacts as it always did', () => {
+    const intent = decodeParamsOffering(new URLSearchParams('t=impact&p=TUNGUSKA&m=globe'));
+    expect(intent.eventType).toBe('impact');
+    expect(intent.preset).toBe('TUNGUSKA');
   });
 });
 

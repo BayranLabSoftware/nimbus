@@ -340,6 +340,22 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Changed
 
+- **The site offers cosmic impacts alone.** By Andrea's decision of
+  22 September 2026, until the impacts reach a laboratory's 9: explosions,
+  earthquakes, volcanoes and submarine landslides are no longer in the
+  chooser, which disappears while one event is left, and a shared link to one
+  of them opens on an impact at the same place and view. Their code, physics,
+  presets and unit tests are untouched, and reopening one is a line in
+  `store/visibleEvents.ts`. The landing page, the methodology and the
+  validation speak of impacts only; the validation shows the impacts' own
+  evidence — thirteen quantities of thirteen within a median 0.5 % of the
+  Earth Impact Effects Program, 938 comparisons on 83 impacts, a median error
+  of 13.7 km on the altitude of entry over 357 bolides, which misses its bar
+  of 5 km and says so — and says what is missing: no impact has a recorded
+  death toll, so the mortality is an extrapolation from explosions of the
+  same energy. The eighteen recorded tolls it showed before calibrate engines
+  the impacts share, but none of them is an impact.
+
 - **Earthquakes deeper than 70 km are drawn with a model for a subducting
   slab.** No ring law read a deep earthquake's depth: Boore et al. 2014 drew
   one at 200 km as one at 10 km, and painted MMI VII about every earthquake

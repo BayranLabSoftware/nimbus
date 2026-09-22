@@ -30,14 +30,14 @@ test.describe('landing page', () => {
 
     // Start in English. The tagline carries the language.
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await expect(page.getByText('Simulation of natural and human-made')).toBeVisible();
+    await expect(page.getByText('Simulation of asteroid and comet impacts')).toBeVisible();
 
     // Button is labelled for screen readers regardless of language.
     const button = page.getByRole('button', { name: /Switch language|Cambia lingua/ });
     await button.click();
 
     await expect(page.locator('html')).toHaveAttribute('lang', 'it');
-    await expect(page.getByText('Simulazione degli eventi catastrofici')).toBeVisible();
+    await expect(page.getByText('Simulazione degli impatti di asteroidi')).toBeVisible();
 
     // Flip back.
     await button.click();
@@ -50,7 +50,7 @@ test.describe('landing page', () => {
     for (const name of [
       'Physical models and sources',
       'Mapping at true geographic scale',
-      'Validation against recorded events',
+      'What the model is measured against',
       'Citing the software',
     ]) {
       await expect(page.getByRole('heading', { level: 2, name })).toBeVisible();
@@ -62,7 +62,7 @@ test.describe('landing page', () => {
     // The section loads on its own chunk. Its figures come from
     // docs/VALIDATION_REPORT.json, the same file the validation page reads,
     // so the landing page cannot show a number that page does not.
-    const figure = page.getByText(/Death tolls for \d+ events/);
+    const figure = page.getByText(/\d+ quantities against the Earth Impact Effects Program/);
     await figure.scrollIntoViewIfNeeded();
     await expect(figure).toBeVisible();
     await expect(page.getByRole('table', { name: 'Data of figure 2' })).toBeAttached();
