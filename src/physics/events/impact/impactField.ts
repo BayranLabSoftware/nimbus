@@ -17,6 +17,10 @@ import { radiantHeatExposure, type RadiantHeat } from '../../effects/atapRadiati
 import { impactThermalExposure } from '../../effects/impactThermal.js';
 import { J, m } from '../../units.js';
 import { peakOverpressure } from '../explosion/overpressure.js';
+import {
+  PROGRAM_AMBIENT_PRESSURE_PA,
+  PROGRAM_SOUND_SPEED_M_S,
+} from '../../validation/impactWindRules.js';
 
 /**
  * The field an impact makes — its overpressure and its thermal exposure at a
@@ -100,6 +104,64 @@ export function impactOverpressureAt(source: ImpactFieldSource, rangeM: number):
       ? (peakOverpressure({ distance: m(rangeM), yieldEnergy: J(surfaceEnergy) }) as number)
       : 0;
   return Math.max(surface, airOverpressureAt(source, rangeM));
+}
+
+/**
+ * The peak wind (m/s) behind a shock front whose peak overpressure is
+ * `overpressurePa`: Collins, Melosh & Marcus (2005)'s relation,
+ * u = (5p / 7P₀) · c₀ / √(1 + 6p / 7P₀), with the round constants the Earth
+ * Impact Effects Program uses, P₀ = 10⁵ Pa and c₀ = 330 m/s (rules 788 to
+ * 792). An explosion reads the same relation at Glasstone & Dolan's sea level
+ * (`events/explosion/peakWind.ts`); each domain implements its own field's
+ * tool. Zero where there is no shock.
+ */
+export function programPeakWind(overpressurePa: number): number {
+  if (!Number.isFinite(overpressurePa) || overpressurePa <= 0) return 0;
+  const x = overpressurePa / (7 * PROGRAM_AMBIENT_PRESSURE_PA);
+  return (5 * x * PROGRAM_SOUND_SPEED_M_S) / Math.sqrt(1 + 6 * x);
+}
+
+/** Rule 790: the peak wind (m/s) the impact's shock sets the air moving at,
+ *  at a ground range (m) — the program's relation on the impact's own
+ *  overpressure, the field its blast rings are drawn from. */
+export function impactPeakWindAt(source: ImpactFieldSource, rangeM: number): number {
+  return programPeakWind(impactOverpressureAt(source, rangeM));
+}
+
+/**
+ * The farthest ground range (m), between `minRangeM` and `maxRangeM`, at which
+ * a field still reaches `value`: a scan in the logarithm of the range, 64
+ * steps to a decade from the far end inward, refined by halving. 0 where it
+ * reaches it nowhere in the span, `maxRangeM` where it still does there. The
+ * field is the one the result publishes, read where it is, so that a contour
+ * drawn at a level stands where the field says and nowhere else.
+ */
+export function impactFieldReach(
+  fieldAt: (rangeM: number) => number,
+  value: number,
+  minRangeM: number,
+  maxRangeM: number
+): number {
+  if (!(value > 0) || !(maxRangeM > minRangeM) || !(minRangeM > 0)) return 0;
+  if (fieldAt(maxRangeM) >= value) return maxRangeM;
+  const steps = Math.max(1, Math.ceil(64 * Math.log10(maxRangeM / minRangeM)));
+  const ratio = Math.pow(maxRangeM / minRangeM, 1 / steps);
+  let outer = maxRangeM;
+  for (let i = 1; i <= steps; i++) {
+    const inner = maxRangeM / Math.pow(ratio, i);
+    if (fieldAt(inner) >= value) {
+      let lo = inner;
+      let hi = outer;
+      for (let k = 0; k < 40; k++) {
+        const mid = Math.sqrt(lo * hi);
+        if (fieldAt(mid) >= value) lo = mid;
+        else hi = mid;
+      }
+      return lo;
+    }
+    outer = inner;
+  }
+  return 0;
 }
 
 /** The entry's air shock at a range, in the two cases `atmosphericEntry.ts`

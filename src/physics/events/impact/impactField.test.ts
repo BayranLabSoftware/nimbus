@@ -16,9 +16,11 @@ import {
 import {
   IMPACT_FIELD_RANGES_M,
   impactFieldKey,
+  impactFieldReach,
   impactOverpressureAt,
   impactThermalExposureAt,
 } from './impactField.js';
+import { IMPACT_PRESETS } from '../../simulate.js';
 
 /**
  * Rule 626 of `validation/continuityRules.ts`: the field G5's harness reads
@@ -104,4 +106,37 @@ describe('rule 626: the field is the one the rings are drawn from', () => {
     }
     expect(burnsChecked).toBeGreaterThan(100);
   }, 60_000);
+});
+
+describe('impactFieldReach: a level of the field is found where the field says', () => {
+  it('finds every overpressure ring of the presets where the result publishes it', () => {
+    for (const key of ['METEOR_CRATER', 'TUNGUSKA', 'CHICXULUB', 'SIKHOTE_ALIN_1947'] as const) {
+      const input = IMPACT_PRESETS[key].input;
+      const r = simulateImpact(input);
+      const source = {
+        inputs: input,
+        impactor: { kineticEnergy: r.impactor.kineticEnergy },
+        entry: r.entry,
+        radiantHeat: r.radiantHeat,
+      };
+      for (const [ring, threshold] of RINGS) {
+        const published = r.damage[ring] as number;
+        if (!(published > 0)) continue;
+        const found = impactFieldReach(
+          (range) => impactOverpressureAt(source, range),
+          threshold,
+          1,
+          Math.max(published * 4, 1e4)
+        );
+        expect(Math.abs(found / published - 1), `${key} ${ring}`).toBeLessThan(1e-6);
+      }
+    }
+  });
+
+  it('says nowhere where the field never reaches the level, and the far end where it still does', () => {
+    const flat = (): number => 5;
+    expect(impactFieldReach(flat, 10, 1, 1e5)).toBe(0);
+    expect(impactFieldReach(flat, 1, 1, 1e5)).toBe(1e5);
+    expect(impactFieldReach(flat, 0, 1, 1e5)).toBe(0);
+  });
 });

@@ -19,6 +19,19 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **An impact has a wind.** The Earth Impact Effects Program prints the
+  peak wind behind the shock front beside the overpressure; until 22
+  September 2026 the impact domain computed none (B-106). It is now the
+  program's relation — Collins, Melosh & Marcus (2005), with the round
+  constants the program uses, 1 bar and 330 m/s — on the impact's own
+  blast, and I1 holds it as a twelfth clause: on the overpressure gated for
+  each of the 81 rows that print a wind it reads the program's at 0.9999×
+  to 1.0008×, and an airburst's drawn wind within 1 %. A body that reaches
+  the ground is drawn the wind of the blast it is drawn, the ground burst of
+  rules 748 to 755, I1's named departure. The first reading, rules 788 to
+  792, was refused by its own check: it had taken the gated overpressure of
+  a ground impact for the drawn one (rules 793 to 797,
+  `validation/impactWindRules.ts`).
 - **An earthquake points where its fault points.** Until 20 September
   2026 every earthquake a reader placed was drawn, and counted, as a
   fault striking due north: three call sites read `strikeAzimuthDeg ??

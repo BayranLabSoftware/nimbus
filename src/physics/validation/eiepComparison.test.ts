@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { eiepRatios, simulateEiepRow, type EiepQuantity } from './eiepComparison.js';
 import { EIEP_REFERENCE } from './eiepReference.js';
+import { IMPACT_WIND_TOLERANCE } from './impactWindRules.js';
 
 /**
  * The impact pipeline against the Earth Impact Effects Program, on the
@@ -38,6 +39,8 @@ const TOLERANCE: Readonly<Record<Exclude<EiepQuantity, 'finalDepth'>, number>> =
   fireballRadius: 0.02,
   airburstOverpressure: 0.01,
   airburstOverpressureHigh: 0.01,
+  // Rules 788 to 792: the peak wind, G1's 1 %.
+  wind: IMPACT_WIND_TOLERANCE,
 };
 
 describe('the impact pipeline agrees with its reference implementation where it means to', () => {

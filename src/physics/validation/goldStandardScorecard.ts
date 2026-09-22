@@ -303,6 +303,12 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
             evidence:
               "The program's wave, 1/r from one water crater out: thirteen held-out impacts agree at all 49 levels, the rings within 1 % (rules 150 to 153).",
           },
+          {
+            name: 'the peak wind',
+            status: 'met',
+            evidence:
+              "Since 22 September 2026 (rules 793 to 797, validation/impactWindRules.ts; rules 788 to 792 refused on the mechanism): Collins et al. 2005's relation with the program's round constants, 1 bar and 330 m/s, reads the program's wind at 0.9999× to 1.0008× on the overpressure gated for each of the 81 rows that print one, and an airburst's drawn wind within 1 % on both entries. It is drawn on the impact's own blast, so a body that reaches the ground carries the ground blast's named departure (rules 748 to 755).",
+          },
         ],
       },
       {

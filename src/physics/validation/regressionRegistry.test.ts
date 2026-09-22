@@ -40,6 +40,7 @@ import { simulateLandslide, LANDSLIDE_PRESETS } from '../events/landslide/index.
 import type { LandslideWaveLaw } from '../events/landslide/simulate.js';
 import { IMPULSE_WAVE_TESTED, slideImpactVelocity } from '../effects/impulseWave.js';
 import { simulateImpact, IMPACT_PRESETS } from '../simulate.js';
+import { impactPeakWindAt, programPeakWind } from '../events/impact/impactField.js';
 import { buildExplosionCascade, buildImpactCascade } from '../cascade.js';
 import { blastCasualtyPlan } from '../casualties.js';
 import { DEFAULT_TOLL_BAND_SCATTER, withVulnerabilityScatter } from '../uq/tollBand.js';
@@ -1950,6 +1951,26 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       'utf8'
     );
     expect(panel).toContain('entryRegimeExplainKey(result.data)');
+  });
+
+  it("B-106 An impact carries the program's peak wind", () => {
+    // The program prints the wind behind the shock beside the overpressure;
+    // the impact domain computed none. Since rules 793 to 797 it is the
+    // program's relation, 1 bar and 330 m/s, on the impact's own blast: at
+    // Meteor Crater's 5 psi ring, 5 psi's wind, falling outward with the blast.
+    const input = IMPACT_PRESETS.METEOR_CRATER.input;
+    const r = simulateImpact(input);
+    const source = {
+      inputs: input,
+      impactor: { kineticEnergy: r.impactor.kineticEnergy },
+      entry: r.entry,
+      radiantHeat: r.radiantHeat,
+    };
+    const at5psi = impactPeakWindAt(source, r.damage.overpressure5psi);
+    expect(Math.abs(at5psi / programPeakWind(34_473.8) - 1)).toBeLessThan(1e-3);
+    expect(at5psi).toBeGreaterThan(71);
+    expect(at5psi).toBeLessThan(72);
+    expect(impactPeakWindAt(source, r.damage.overpressure1psi)).toBeLessThan(at5psi);
   });
 
   // Bypass guard: the test count below MUST equal the registry row

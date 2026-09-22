@@ -6,6 +6,7 @@ import {
 import { ejectaBlanketOuterEdge } from '../effects/ejecta.js';
 import { impactFireballRadius } from '../effects/blastWave.js';
 import { peakOverpressure } from '../events/explosion/overpressure.js';
+import { programPeakWind } from '../events/impact/impactField.js';
 import {
   simulateImpact,
   type ImpactScenarioInput,
@@ -37,18 +38,25 @@ export const EIEP_TARGET_DENSITY: Readonly<Record<EiepRow['target'], number>> = 
 
 /** A row of the grid as the model runs it; `options` names a law other than
  *  the default, for reading two on one commit. */
-export function simulateEiepRow(
+export function eiepRowInput(
   row: EiepRow,
   options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary'> = {}
-): ImpactScenarioResult {
-  return simulateImpact({
+): ImpactScenarioInput {
+  return {
     impactorDiameter: m(row.diameterM),
     impactVelocity: mps(row.velocityKmS * 1_000),
     impactorDensity: kgPerM3(row.densityKgM3),
     targetDensity: kgPerM3(EIEP_TARGET_DENSITY[row.target]),
     impactAngle: degreesToRadians(deg(row.angleDeg)),
     ...options,
-  });
+  };
+}
+
+export function simulateEiepRow(
+  row: EiepRow,
+  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary'> = {}
+): ImpactScenarioResult {
+  return simulateImpact(eiepRowInput(row, options));
 }
 
 export type EiepQuantity =
@@ -63,7 +71,8 @@ export type EiepQuantity =
   | 'airburstOverpressure'
   | 'airburstOverpressureHigh'
   | 'fireballRadius'
-  | 'ejectaEdge';
+  | 'ejectaEdge'
+  | 'wind';
 
 export interface EiepRatio {
   row: EiepRow;
@@ -114,14 +123,15 @@ export function eiepRatios(
       });
       pair('airburstOverpressure', p.low, row.overpressurePa[0]);
       pair('airburstOverpressureHigh', p.high, row.overpressurePa[1]);
+      // Rule 795: the program's wind relation, on the low end it reads it at.
+      pair('wind', programPeakWind(p.low), row.windMs);
     }
     if (!airburst && row.overpressurePa !== null && row.overpressurePa !== undefined) {
       const distance = m(row.distanceKm * 1_000);
       const gf = r.entry.energyFractionToGround;
       // The blast the model draws for an impact that reaches the ground: the
       // program's own since rule 144 of entryProgramRules.ts.
-      pair(
-        'overpressure',
+      const overpressure =
         DEFAULT_GROUND_BLAST !== 'project'
           ? groundImpactOverpressure({
               groundRange: distance,
@@ -129,9 +139,10 @@ export function eiepRatios(
               blastYield: J((r.impactor.kineticEnergy as number) * Math.max(gf, 1 - gf)),
               held: DEFAULT_GROUND_BLAST === 'programHeld',
             })
-          : peakOverpressure({ distance, yieldEnergy: J(groundEnergy) }),
-        row.overpressurePa[0]
-      );
+          : peakOverpressure({ distance, yieldEnergy: J(groundEnergy) });
+      pair('overpressure', overpressure, row.overpressurePa[0]);
+      // Rule 795: the program's wind relation, on the overpressure gated here.
+      pair('wind', programPeakWind(overpressure), row.windMs);
     }
     if (!airburst)
       pair('fireballRadius', impactFireballRadius(J(groundEnergy)), row.fireballRadiiM?.[0]);
